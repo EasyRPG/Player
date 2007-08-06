@@ -3,7 +3,7 @@
 CC = g++
 CFLAGS = `sdl-config --cflags`
 #Usually SDL's CFLAGS -I/usr/include/SDL -D_REENTRANT -g
-LDFLAGS = `sdl-config --libs`
+LDFLAGS = `sdl-config --libs` -lSDL_image
 #Usually SDL's LDFLAGS -L/usr/lib -lSDL -lpthread -lSDL_image -g
 
 
