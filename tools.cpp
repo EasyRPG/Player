@@ -18,7 +18,8 @@
     #include <stdlib.h>
     #include <stdio.h>
     #include <string>
-    #include <SDL/SDL.h>
+    #include "SDL.h"
+    #include "SDL_image.h"
     #include "tools.h"
     using namespace std;
     // =========================================================================
@@ -28,7 +29,7 @@
         unsigned long Value = 0;
         unsigned char Temporal = 0;
         
-        int i = 0;
+        // int i = 0;
         do
         {
             Value <<= 7;
@@ -83,7 +84,7 @@
         return String;
     }
 
-    SDL_Surface * CreateSurface(int Width, int Height, Color TransColor)
+    SDL_Surface * CreateSurface(int Width, int Height, int)
     {
         SDL_Surface * dummySurface = NULL;
         SDL_Surface * realSurface = NULL;
@@ -95,25 +96,25 @@
         SDL_FreeSurface(dummySurface);
         if ( !realSurface ) return NULL;
         
-        SDL_SetColorKey(realSurface, realSurface->flags|SDL_SRCCOLORKEY, TransColor.GetColorFromFormat(realSurface->format));
-        SDL_FillRect(realSurface, NULL, TransColor.GetColorFromFormat(realSurface->format));
+        SDL_SetColorKey(realSurface, realSurface->flags|SDL_SRCCOLORKEY, 0);
+        SDL_FillRect(realSurface, NULL, 0);
         
         return realSurface;
     }
     
-    SDL_Surface * LoadSurface(string Filename, Color TransColor)
+    SDL_Surface * LoadSurface(string Filename)
     {       
         SDL_Surface * dummySurface = NULL;
         SDL_Surface * realSurface = NULL;
         
-        dummySurface = SDL_LoadBMP(Filename.c_str());
+        dummySurface = IMG_Load(Filename.c_str());
         if (!dummySurface) return NULL;
         
         realSurface  = SDL_DisplayFormat(dummySurface);
         SDL_FreeSurface(dummySurface);
         if ( !realSurface ) return NULL;
         
-        SDL_SetColorKey(realSurface, SDL_SRCCOLORKEY, TransColor.GetColorFromFormat(realSurface->format));
+        SDL_SetColorKey(realSurface, SDL_SRCCOLORKEY, 0);
         
         return realSurface;
     }
@@ -140,7 +141,7 @@
 
     SDL_Surface * GrabFromSurface(SDL_Surface * Source, int sX, int sY, int sW, int sH)
     {
-        SDL_Surface * Return = CreateSurface(16, 16, Color(255, 0, 255));
+        SDL_Surface * Return = CreateSurface(16, 16, 0);
         DrawSurface(Return, 0, 0, Source, sX, sY, sW, sH);
         
         return Return;

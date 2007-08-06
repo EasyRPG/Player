@@ -22,7 +22,7 @@
     #include <stdlib.h>
     #include <stdio.h>
     #include <string>
-    #include <SDL/SDL.h>
+    #include "SDL.h"
     #include "tools.h"
     #include "chipset.h"
     using namespace std;

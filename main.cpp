@@ -16,7 +16,7 @@
    
     #include <stdlib.h>
     #include <stdio.h>
-    #include <SDL/SDL.h>
+    #include "SDL.h"
     #include "tools.h"
     #include "map.h"
     using namespace std;
@@ -34,7 +34,7 @@
             frames = 0;
             nextTicks = SDL_GetTicks() + 1000;
             
-            sprintf(stringBuffer, "Map test - FPS %i", fps);
+            sprintf(stringBuffer, "Map test - FPS %lu", fps);
             SDL_WM_SetCaption (stringBuffer, NULL);
         }
     }
@@ -63,7 +63,7 @@
         if (argCounts!=2) Map.Load("Map0001.lmu");
         else              Map.Load(argStrings[1]);       
         Map.ShowInformation(); 
-        Map.Chipset.GenerateFromFile("basis.bmp", Color(255, 0, 255));
+        Map.Chipset.GenerateFromFile("Basis.png");
 	        
         // ===[ ENTRY POINT ]===================================================
         // Main loop

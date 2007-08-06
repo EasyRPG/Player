@@ -18,7 +18,7 @@
     #include <stdlib.h>
     #include <stdio.h>
     #include <string>
-    #include <SDL/SDL.h>
+    #include "SDL.h"
     #include "tools.h"
     #include "map.h"
     // =========================================================================
@@ -49,7 +49,7 @@
         CHUNK_MAP_UPPER_LAYER       = 0x48,
         CHUNK_MAP_EVENTS_LAYER      = 0x51,
         
-        CHUNK_MAP_TIMES_SAVED       = 0x5B,
+        CHUNK_MAP_TIMES_SAVED       = 0x5B
     };
     
     enum eMapEventChunks
@@ -194,10 +194,10 @@
         }
     }
     
-    void stMap::ProcessChunk(FILE * Stream, tChunk * Chunk)
-    {
-
-    }
+    //void stMap::ProcessChunk(FILE * Stream, tChunk * Chunk)
+    //{
+    //
+    //}
     
     void stMap::ShowInformation()
     {
@@ -247,16 +247,17 @@
             }
         }
         printf("Number of times saved : %i\n", TimesSaved);
-    };
+    }
 
     void stMap::Render(SDL_Surface * Destiny, int Layer, int CameraX, int CameraY)
     {
         // Declarate the variables we're going to use...        
-        int x, y, xStart, xEnd, yStart, yEnd, Tile;
+        int x, y, xStart, xEnd, yStart, yEnd;
+	//int Tile;
         unsigned short * TilePointer;
         unsigned long  StepPerY;
         int Frame = SDL_GetTicks()>>7;
-        SDL_Rect destinyRect;
+        //SDL_Rect destinyRect;
         
         // Calculate boundaries
         xStart = (CameraX>>4) - 1;

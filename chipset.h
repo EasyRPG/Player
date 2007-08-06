@@ -22,7 +22,7 @@
     #include <stdlib.h>
     #include <stdio.h>
     #include <string>
-    #include <SDL/SDL.h>
+    #include "SDL.h"
     #include "tools.h"
     using namespace std;
 // =============================================================================
@@ -41,7 +41,7 @@
         
         // --- Methods declaration ---------------------------------------------
         bool GenerateFromSurface(SDL_Surface * Surface);
-        bool GenerateFromFile(string Filename, Color KeyColor);
+        bool GenerateFromFile(string Filename);
         void Release();
                
         void RenderTile(SDL_Surface * Destiny, int x, int y, unsigned short Tile, int Frame);

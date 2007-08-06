@@ -21,7 +21,7 @@
     #include <stdlib.h>
     #include <stdio.h>
     #include <string>
-    #include <SDL/SDL.h>
+    #include "SDL.h"
     using namespace std;
     // =========================================================================
     
@@ -58,8 +58,8 @@
         }
     };
     
-    SDL_Surface * CreateSurface(int Width, int Height, Color TransColor);
-    SDL_Surface * LoadSurface(string Filename, Color TransColor);
+    SDL_Surface * CreateSurface(int Width, int Height, int Index);
+    SDL_Surface * LoadSurface(string Filename);
     SDL_Surface * GrabFromSurface(SDL_Surface * Source, int sX, int sY, int sW, int sH);
     void DrawSurface(SDL_Surface * Destiny, int dX, int dY, SDL_Surface * Source, int sX=0, int sY=0, int sW=-1, int sH=-1);
     

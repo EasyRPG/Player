@@ -19,7 +19,7 @@
     #include <stdlib.h>
     #include <stdio.h>
     #include <string>
-    #include <SDL/SDL.h>
+    #include "SDL.h"
     #include "tools.h"
     #include "chipset.h"
     using namespace std;
@@ -37,8 +37,8 @@
     {
         // Set base surface, used for generating the tileset
         BaseSurface     = Surface;
-        ChipsetSurface  = CreateSurface(32*16, 45*16, Color(255, 0, 255));
-        UnsupportedTile = LoadSurface(string("unsupported.bmp"), Color(255, 0, 255));
+        ChipsetSurface  = CreateSurface(32*16, 45*16, 0);
+        UnsupportedTile = LoadSurface(string("unsupported.png"));
         
         int CurrentTile = 0;
         
@@ -82,9 +82,9 @@
         return true;
     }
        
-    bool stChipset::GenerateFromFile(string Filename, Color KeyColor)
+    bool stChipset::GenerateFromFile(string Filename)
     {
-        SDL_Surface * FileSurface = LoadSurface(Filename, KeyColor);
+        SDL_Surface * FileSurface = LoadSurface(Filename);
         return GenerateFromSurface(FileSurface);
     }
     
@@ -125,7 +125,7 @@
     void stChipset::RenderWaterTile(SDL_Surface * Destiny, int x, int y, int Frame, int Border, int Water, int Combination)
     {
         int SFrame       = Frame*16, SBorder = Border*48;
-        int SFrameBorder = SFrame+SBorder;
+        //int SFrameBorder = SFrame+SBorder;
         Combination &= 0x3F;
         
         // Since this function isn't meant to be used in realtime, we can allow
