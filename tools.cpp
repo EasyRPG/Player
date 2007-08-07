@@ -114,7 +114,7 @@
         SDL_FreeSurface(dummySurface);
         if ( !realSurface ) return NULL;
         
-        SDL_SetColorKey(realSurface, SDL_SRCCOLORKEY, 0);
+        SDL_SetColorKey(realSurface, SDL_SRCCOLORKEY, 1);
         
         return realSurface;
     }
