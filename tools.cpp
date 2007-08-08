@@ -88,17 +88,29 @@
     {
         SDL_Surface * dummySurface = NULL;
         SDL_Surface * realSurface = NULL;
-        
-        dummySurface = SDL_CreateRGBSurface(SDL_SRCCOLORKEY, Width, Height, 32, 0, 0, 0, 0);
+        Uint32 transparentPixel;
+        Uint8 red, green, blue;
+
+        dummySurface = SDL_CreateRGBSurface(SDL_SRCCOLORKEY, Width, Height, 8, 0, 0, 0, 0);
         if (!dummySurface) return NULL;
+
+        SDL_LockSurface(dummySurface);
+        red = dummySurface->format->palette->colors[0].r;
+        green = dummySurface->format->palette->colors[0].g;
+        blue = dummySurface->format->palette->colors[0].b;
+        transparentPixel = SDL_MapRGB(dummySurface->format, red, green, blue);
+        SDL_UnlockSurface(dummySurface);
+//        SDL_SetColorKey(dummySurface, dummySurface->flags|SDL_SRCCOLORKEY, transparentPixel);
         
         realSurface  = SDL_DisplayFormat(dummySurface);
+
+        SDL_SetColorKey(realSurface, realSurface->flags|SDL_SRCCOLORKEY, transparentPixel);
+
         SDL_FreeSurface(dummySurface);
         if ( !realSurface ) return NULL;
-        
-        SDL_SetColorKey(realSurface, realSurface->flags|SDL_SRCCOLORKEY, 0);
+
         SDL_FillRect(realSurface, NULL, 0);
-        
+
         return realSurface;
     }
     

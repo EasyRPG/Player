@@ -1,6 +1,6 @@
 #makefile for easyrpg's player
 
-CC = g++
+CC = g++ -g
 CFLAGS = `sdl-config --cflags`
 #Usually SDL's CFLAGS -I/usr/include/SDL -D_REENTRANT -g
 LDFLAGS = `sdl-config --libs` -lSDL_image
