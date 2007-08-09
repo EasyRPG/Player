@@ -37,7 +37,6 @@
         // as their properties and the methods for correctly displaying them.
         SDL_Surface * BaseSurface;      // Chipset's base surface!
         SDL_Surface * ChipsetSurface;   // Chipset's precalculated surface
-        SDL_Surface * UnsupportedTile;  // Used to denote that tile is unsupported ;o
         
         // --- Methods declaration ---------------------------------------------
         bool GenerateFromSurface(SDL_Surface * Surface);

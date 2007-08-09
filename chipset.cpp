@@ -26,19 +26,13 @@
     
 // =============================================================================
 // *****************************************************************************
-    
-    enum eWaterTilePiece
-    {
-    
-    };
-    
+
     // === Chipset structure ===================================================
     bool stChipset::GenerateFromSurface(SDL_Surface * Surface)
     {
         // Set base surface, used for generating the tileset
         BaseSurface     = Surface;
-        ChipsetSurface  = CreateSurface(32*16, 45*16, 0);
-        UnsupportedTile = LoadSurface(string("unsupported.png"));
+        ChipsetSurface  = CreateSurface(32*16, 45*16);
         
         int CurrentTile = 0;
         

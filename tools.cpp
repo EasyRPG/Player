@@ -84,7 +84,7 @@
         return String;
     }
 
-    SDL_Surface * CreateSurface(int Width, int Height, int)
+    SDL_Surface * CreateSurface(int Width, int Height)
     {
         SDL_Surface * dummySurface = NULL;
         SDL_Surface * realSurface = NULL;
@@ -126,7 +126,7 @@
         SDL_FreeSurface(dummySurface);
         if ( !realSurface ) return NULL;
         
-        SDL_SetColorKey(realSurface, SDL_SRCCOLORKEY, 1);
+        SDL_SetColorKey(realSurface, SDL_SRCCOLORKEY, 0);
         
         return realSurface;
     }
@@ -153,7 +153,7 @@
 
     SDL_Surface * GrabFromSurface(SDL_Surface * Source, int sX, int sY, int sW, int sH)
     {
-        SDL_Surface * Return = CreateSurface(16, 16, 0);
+        SDL_Surface * Return = CreateSurface(16, 16);
         DrawSurface(Return, 0, 0, Source, sX, sY, sW, sH);
         
         return Return;
