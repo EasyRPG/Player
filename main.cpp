@@ -107,7 +107,7 @@
             // Get FPS
             CalculateFPS();
             
-            // Delay to 60 fps
+            // Delay to ~60 fps
 //            SDL_Delay(1000/60);
         }
         return true;

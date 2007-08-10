@@ -88,45 +88,48 @@
     {
         SDL_Surface * dummySurface = NULL;
         SDL_Surface * realSurface = NULL;
-        Uint32 transparentPixel;
-        Uint8 red, green, blue;
+	SDL_Color transparentIndex;
+        Uint32 colorKey;
 
         dummySurface = SDL_CreateRGBSurface(SDL_SRCCOLORKEY, Width, Height, 8, 0, 0, 0, 0);
         if (!dummySurface) return NULL;
 
-        SDL_LockSurface(dummySurface);
-        red = dummySurface->format->palette->colors[0].r;
-        green = dummySurface->format->palette->colors[0].g;
-        blue = dummySurface->format->palette->colors[0].b;
-        transparentPixel = SDL_MapRGB(dummySurface->format, red, green, blue);
-        SDL_UnlockSurface(dummySurface);
-//        SDL_SetColorKey(dummySurface, dummySurface->flags|SDL_SRCCOLORKEY, transparentPixel);
-        
         realSurface  = SDL_DisplayFormat(dummySurface);
-
-        SDL_SetColorKey(realSurface, realSurface->flags|SDL_SRCCOLORKEY, transparentPixel);
-
-        SDL_FreeSurface(dummySurface);
         if ( !realSurface ) return NULL;
 
+        transparentIndex = dummySurface->format->palette->colors[0];
+        colorKey = SDL_MapRGB(realSurface->format, \
+		transparentIndex.r, transparentIndex.g, transparentIndex.b);
+        SDL_SetColorKey(realSurface, SDL_SRCCOLORKEY, colorKey);
+
+        SDL_FreeSurface(dummySurface);
+
+        if ( !realSurface ) return NULL;
         SDL_FillRect(realSurface, NULL, 0);
 
         return realSurface;
+
     }
     
     SDL_Surface * LoadSurface(string Filename)
     {       
         SDL_Surface * dummySurface = NULL;
         SDL_Surface * realSurface = NULL;
+	SDL_Color transparentIndex;
+        Uint32 colorKey;
         
         dummySurface = IMG_Load(Filename.c_str());
         if (!dummySurface) return NULL;
         
         realSurface  = SDL_DisplayFormat(dummySurface);
-        SDL_FreeSurface(dummySurface);
         if ( !realSurface ) return NULL;
-        
-        SDL_SetColorKey(realSurface, SDL_SRCCOLORKEY, 0);
+
+        transparentIndex = dummySurface->format->palette->colors[0];
+        colorKey = SDL_MapRGB(realSurface->format, \
+		transparentIndex.r, transparentIndex.g, transparentIndex.b);
+        SDL_SetColorKey(realSurface, SDL_SRCCOLORKEY, colorKey);
+
+        SDL_FreeSurface(dummySurface);
         
         return realSurface;
     }
