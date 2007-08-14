@@ -84,22 +84,45 @@
         return String;
     }
 
+void SetTransparent(SDL_Surface * ima)
+{
+    /* rm2k uses palette index 0 for transparent color instead of colorkey */
+    SDL_Color colorkey = ima->format->palette->colors[0];
+    SDL_Color * color;
+    int maxColors = ima->format->palette->ncolors;
+    for (int i = 1; i < maxColors; i ++)
+    {
+        /* Workaround to set transparency only in index 0 */
+        color = & ima->format->palette->colors[i];
+        if (colorkey.r == color->r && \
+            colorkey.g == color->g && \
+            colorkey.b == color->b)
+        {
+            if (color->b > 255 - 8)
+                color->b -= 8;
+            else
+                color->b += 8;
+        }
+    } /* Thanks to Hugo Ruscitti (www.losersjuegos.com.ar) for this fix */
+}
+
     SDL_Surface * CreateSurface(int Width, int Height)
     {
         SDL_Surface * dummySurface = NULL;
         SDL_Surface * realSurface = NULL;
-	SDL_Color transparentIndex;
+        SDL_Color color;
         Uint32 colorKey;
 
         dummySurface = SDL_CreateRGBSurface(SDL_SRCCOLORKEY, Width, Height, 8, 0, 0, 0, 0);
         if (!dummySurface) return NULL;
 
+        SetTransparent(dummySurface);
+
         realSurface  = SDL_DisplayFormat(dummySurface);
         if ( !realSurface ) return NULL;
 
-        transparentIndex = dummySurface->format->palette->colors[0];
-        colorKey = SDL_MapRGB(realSurface->format, \
-		transparentIndex.r, transparentIndex.g, transparentIndex.b);
+        color = dummySurface->format->palette->colors[0];
+        colorKey = SDL_MapRGB(realSurface->format, color.r, color.g, color.b);
         SDL_SetColorKey(realSurface, SDL_SRCCOLORKEY, colorKey);
 
         SDL_FreeSurface(dummySurface);
@@ -115,18 +138,19 @@
     {       
         SDL_Surface * dummySurface = NULL;
         SDL_Surface * realSurface = NULL;
-	SDL_Color transparentIndex;
+        SDL_Color color;
         Uint32 colorKey;
         
         dummySurface = IMG_Load(Filename.c_str());
         if (!dummySurface) return NULL;
+
+        SetTransparent(dummySurface);
         
         realSurface  = SDL_DisplayFormat(dummySurface);
         if ( !realSurface ) return NULL;
 
-        transparentIndex = dummySurface->format->palette->colors[0];
-        colorKey = SDL_MapRGB(realSurface->format, \
-		transparentIndex.r, transparentIndex.g, transparentIndex.b);
+        color = dummySurface->format->palette->colors[0];
+        colorKey = SDL_MapRGB(realSurface->format, color.r, color.g, color.b);
         SDL_SetColorKey(realSurface, SDL_SRCCOLORKEY, colorKey);
 
         SDL_FreeSurface(dummySurface);

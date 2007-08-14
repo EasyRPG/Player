@@ -58,6 +58,7 @@
         }
     };
     
+    void SetTransparent(SDL_Surface * ima);
     SDL_Surface * CreateSurface(int Width, int Height);
     SDL_Surface * LoadSurface(string Filename);
     SDL_Surface * GrabFromSurface(SDL_Surface * Source, int sX, int sY, int sW, int sH);
