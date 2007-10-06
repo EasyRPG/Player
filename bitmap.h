@@ -43,7 +43,7 @@ struct Rect
 {
 	Sint16 x, y;		///< x and y coordinates.
 	Uint16 w, h;		///< width and height.
-	Rect() : x(0), y(0), w(0), h(0) { }			///< Default constructor (0)
+	Rect() : x(0), y(0), w(0), h(0) { }	///< Default constructor (0)
 	/// Construct with specific values.
 	Rect(Sint16 nx, Sint16 ny, Uint16 nw, Uint16 nh)
 		: x(nx), y(ny), w(nw), h(nh) { }
@@ -63,9 +63,6 @@ struct Rect
  *****************************************************************************/
 class Bitmap
 {
-private:
-	SDL_Surface* bmp;		///< Surface to hold the image
-	Uint8 alpha;			///< Alpha 0(transparent)..255(opaque)
 public:
 // Constructors & Destructor
 	Bitmap();
@@ -73,9 +70,9 @@ public:
 	Bitmap(Sint32 width, Sint32 height);
 	~Bitmap();
 // Accessors
-	SDL_Surface* surface() { return bmp; }		///< Get the surface (for blitting)
-	Sint32 width() { return bmp->w; }			///< Get width
-	Sint32 height() { return bmp->h; }			///< Get height
+	SDL_Surface* surface() { return m_bmp; }	///< Get the surface (for blitting)
+	Sint32 width() { return m_bmp->w; }		///< Get width
+	Sint32 height() { return m_bmp->h; }		///< Get height
 // Methods
 	void load(const string& filename);
 	void blit(SDL_Surface* dest_surface, Rect dest, Rect src);
@@ -84,6 +81,9 @@ public:
 	void blit(Rect dest);
 	void draw_text(Sint32 x, Sint32 y, const string& text);
 	void clear(Color clear_color);
+private:
+	SDL_Surface* m_bmp;		///< Surface to hold the image
+	Uint8 m_alpha;			///< Alpha 0(transparent)..255(opaque)
 };
 
 #endif

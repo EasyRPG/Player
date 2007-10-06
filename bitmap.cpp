@@ -41,8 +41,8 @@ using namespace std;
  *****************************************************************************/
 Bitmap::Bitmap()
 {
-	alpha = 255;
-	bmp = NULL;
+	m_alpha = 255;
+	m_bmp = NULL;
 }
 
 /******************************************************************************
@@ -55,8 +55,7 @@ Bitmap::Bitmap()
  *****************************************************************************/
 Bitmap::Bitmap(const string& filename)
 {
-	printf("Inside constructor, filename is %s\n", filename.c_str());
-	alpha = 255;
+	m_alpha = 255;
 	load(filename);
 }
 
@@ -71,8 +70,8 @@ Bitmap::Bitmap(const string& filename)
  *****************************************************************************/
 Bitmap::Bitmap(Sint32 width, Sint32 height)
 {
-	alpha = 255;
-	bmp = CreateSurface(width, height);
+	m_alpha = 255;
+	m_bmp = CreateSurface(width, height);
 }
 
 /******************************************************************************
@@ -83,8 +82,8 @@ Bitmap::Bitmap(Sint32 width, Sint32 height)
  *****************************************************************************/
 Bitmap::~Bitmap()
 {
-	if (bmp != NULL) {
-		SDL_FreeSurface(bmp);
+	if (m_bmp != NULL) {
+		SDL_FreeSurface(m_bmp);
 	}
 }
 
@@ -98,8 +97,8 @@ Bitmap::~Bitmap()
  *****************************************************************************/
 void Bitmap::load(const string& filename)
 {
-	bmp = LoadSurface(filename);
-	if (bmp == NULL) {
+	m_bmp = LoadSurface(filename);
+	if (m_bmp == NULL) {
 		printf("Error: Couldn't load bitmap.\n");
 		exit(1);
 	}
@@ -112,14 +111,14 @@ void Bitmap::load(const string& filename)
  *	scaling. So for now the width and height of the destination surface
  *	are ignored.
  *
- *	@param	dest_surface	[in] the surface to draw to.
+ *	@param	dest_surface		[in] the surface to draw to.
  *	@param	dest			[in] the destination rectangle.
- *	@param	src				[in] the source rectangle.
+ *	@param	src			[in] the source rectangle.
  *
  *****************************************************************************/
 void Bitmap::blit(SDL_Surface* dest_surface, Rect dest, Rect src)
 {
-	DrawSurface(dest_surface, dest.x, dest.y, bmp, src.x, src.y, src.w, src.h);
+	DrawSurface(dest_surface, dest.x, dest.y, m_bmp, src.x, src.y, src.w, src.h);
 }
 
 /******************************************************************************
@@ -129,7 +128,7 @@ void Bitmap::blit(SDL_Surface* dest_surface, Rect dest, Rect src)
  *
  *	@param	dest_bmp		[in] the Bitmap to draw to.
  *	@param	dest			[in] the destination rectangle.
- *	@param	src				[in] the source rectangle.
+ *	@param	src			[in] the source rectangle.
  *
  *****************************************************************************/
 void Bitmap::blit(Bitmap& dest_bmp, Rect dest, Rect src)
@@ -144,7 +143,7 @@ void Bitmap::blit(Bitmap& dest_bmp, Rect dest, Rect src)
  *	surface (the screen) as the SDL_Surface.
  *
  *	@param	dest			[in] the destination rectangle.
- *	@param	src				[in] the source rectangle.
+ *	@param	src			[in] the source rectangle.
  *
  *****************************************************************************/
 void Bitmap::blit(Rect dest, Rect src)
@@ -157,17 +156,17 @@ void Bitmap::blit(Rect dest, Rect src)
  *
  *	Just call the SDL_Surface constructor with the current video
  *	surface (the screen) as the SDL_Surface and with src as the entire
- *  bitmap.
+ *  	bitmap.
  *
  *	@param	dest			[in] the destination rectangle.
- *	@param	src				[in] the source rectangle.
+ *	@param	src			[in] the source rectangle.
  *
  *****************************************************************************/
 void Bitmap::blit(Rect dest) {
 	Rect src;
 	src.x = src.y = 0;
-	src.w = bmp->w;
-	src.h = bmp->h;
+	src.w = m_bmp->w;
+	src.h = m_bmp->h;
 	blit(SDL_GetVideoSurface(), dest, src);
 }
 
@@ -176,12 +175,13 @@ void Bitmap::blit(Rect dest) {
  *
  *	Just a dummy function for the future, does nothing right now.
  *
- *	@param	x				[in] x coordinate.
- *	@param	y				[in] y coordinate.
+ *	@param	x			[in] x coordinate.
+ *	@param	y			[in] y coordinate.
  *	@param	text			[in] text to draw.
  *
  *****************************************************************************/
-void Bitmap::draw_text(Sint32 x, Sint32 y, const string& text) {
+void Bitmap::draw_text(Sint32 x, Sint32 y, const string& text)
+{
 	// Nothing for now
 }
 
@@ -193,7 +193,8 @@ void Bitmap::draw_text(Sint32 x, Sint32 y, const string& text) {
  *	@param	clear_color		[in] Color to clear to.
  *
  *****************************************************************************/
-void Bitmap::clear(Color clear_color) {
+void Bitmap::clear(Color clear_color)
+{
 	// Nothing for now
 }
 
