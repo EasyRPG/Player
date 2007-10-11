@@ -8,7 +8,7 @@ LDFLAGS = `sdl-config --libs` -lSDL_image
 
 
 all: main.o tools.o map.o chipset.o bitmap.o
-	$(CC) main.o tools.o map.o chipset.o bitmap.o -o easyRPGPlayer $(LDFLAGS)
+	$(CC) main.o tools.o map.o chipset.o bitmap.o -o easyrpg $(LDFLAGS)
 main.o: tools.h map.h bitmap.h main.cpp
 	$(CC) $(CFLAGS) -c main.cpp
 tools.o: tools.h tools.cpp
@@ -20,5 +20,5 @@ chipset.o: chipset.h tools.h chipset.cpp
 bitmap.o: bitmap.h tools.h bitmap.cpp
 	$(CC) $(CFLAGS) -c bitmap.cpp
 clean:
-	rm *.o easyRPGPlayer
+	rm *.o easyrpg
 
