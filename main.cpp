@@ -66,7 +66,7 @@
         else
         	Map.Load(argv[1]);
         Map.ShowInformation();
-        Map.Chipset.GenerateFromFile("Basis.png");
+        Map.Chipset.GenerateFromFile("ChipSet/Basis.png");
 
         // ===[ ENTRY POINT ]===================================================
         // Main loop
