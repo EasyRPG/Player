@@ -36,7 +36,7 @@
 
         int CurrentTile = 0;
 
-        // Generate water A
+       	// Generate water A
         for (int j=0; j<3; j++)
             for (int i=0; i<47; i++, CurrentTile++)
                 RenderWaterTile(ChipsetSurface, (CurrentTile%32)*16, (CurrentTile/32)*16, j, 0, 0, i);
