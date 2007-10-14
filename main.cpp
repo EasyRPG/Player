@@ -19,7 +19,7 @@
     #include "SDL.h"
     #include "tools.h"
     #include "map.h"
-    #include "bitmap.h"
+    #include "window.h"
     using namespace std;
 
     SDL_Surface * Screen;
@@ -74,10 +74,14 @@
         SDL_Event event;
         unsigned char * keyData;
         int cX = 0, cY = 0;
+
         // TESTING BITMAPS!
         //Bitmap bmp("Basis.png");
         //Rect src(387, 32, 88, 64);
         //Rect dest(0, 0, 64, 64);
+
+        //TESTING WINDOW!
+        //Window win("solidblue.png", 10, 10, 130, 107);
 
         while (running)
         {
@@ -110,6 +114,7 @@
                 /*dest.x = cX;
                 dest.y = cY;
                 bmp.blit(Screen, dest, src);*/
+                //win.draw();
 
             // Flip
             SDL_Flip(Screen);

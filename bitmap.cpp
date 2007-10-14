@@ -28,7 +28,6 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "bitmap.h"
-using namespace std;
 /*****************************************************************************/
 
 
@@ -53,7 +52,7 @@ Bitmap::Bitmap()
  *	@param	filename		[in] name of bitmap file.
  *
  *****************************************************************************/
-Bitmap::Bitmap(const string& filename)
+Bitmap::Bitmap(const std::string& filename)
 {
 	m_alpha = 255;
 	load(filename);
@@ -95,7 +94,7 @@ Bitmap::~Bitmap()
  *	@param	filename		[in] name of bitmap file.
  *
  *****************************************************************************/
-void Bitmap::load(const string& filename)
+void Bitmap::load(const std::string& filename)
 {
 	m_bmp = LoadSurface(filename);
 	if (m_bmp == NULL) {

@@ -29,7 +29,6 @@
 #include <string>
 #include "SDL.h"
 #include "tools.h"
-using namespace std;
 /*****************************************************************************/
 
 
@@ -66,7 +65,7 @@ class Bitmap
 public:
 // Constructors & Destructor
 	Bitmap();
-	Bitmap(const string& filename);
+	Bitmap(const std::string& filename);
 	Bitmap(Sint32 width, Sint32 height);
 	~Bitmap();
 // Accessors
@@ -74,7 +73,7 @@ public:
 	Sint32 width() { return m_bmp->w; }		///< Get width
 	Sint32 height() { return m_bmp->h; }		///< Get height
 // Methods
-	void load(const string& filename);
+	void load(const std::string& filename);
 	void blit(SDL_Surface* dest_surface, Rect dest, Rect src);
 	void blit(Bitmap& dest_bmp, Rect dest, Rect src);
 	void blit(Rect dest, Rect src);
@@ -82,6 +81,7 @@ public:
 	void draw_text(Sint32 x, Sint32 y, const string& text);
 	void clear(Color clear_color);
 private:
+// Member Variables
 	SDL_Surface* m_bmp;		///< Surface to hold the image
 	Uint8 m_alpha;			///< Alpha 0(transparent)..255(opaque)
 };

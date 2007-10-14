@@ -2,8 +2,8 @@ CC = g++
 CFLAGS = `sdl-config --cflags`
 LDFLAGS = `sdl-config --libs` -lSDL_image
 
-all: main.o tools.o map.o chipset.o bitmap.o
-	$(CC) main.o tools.o map.o chipset.o bitmap.o -o easyrpg $(LDFLAGS)
+all: main.o tools.o map.o chipset.o bitmap.o window.o
+	$(CC) main.o tools.o map.o chipset.o bitmap.o window.o -o easyrpg $(LDFLAGS)
 
 main.o: tools.h map.h bitmap.h main.cpp
 	$(CC) $(CFLAGS) -c main.cpp
@@ -19,6 +19,9 @@ chipset.o: chipset.h tools.h chipset.cpp
 
 bitmap.o: bitmap.h tools.h bitmap.cpp
 	$(CC) $(CFLAGS) -c bitmap.cpp
+
+window.o: window.h bitmap.h window.cpp
+	$(CC) $(CFLAGS) -c window.cpp
 
 clean:
 	rm *.o easyrpg
