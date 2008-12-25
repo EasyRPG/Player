@@ -79,6 +79,11 @@
     bool stChipset::GenerateFromFile(string Filename)
     {
         SDL_Surface * FileSurface = LoadSurface(Filename);
+	  if (FileSurface == NULL)
+	  {
+		printf("Unable to open file: %s\n", Filename);
+		exit(1);
+	  }
         return GenerateFromSurface(FileSurface);
     }
     void stChipset::dispose()

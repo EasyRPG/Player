@@ -1,7 +1,22 @@
+/*Window_Player_Select.cpp, Window_Player_Select routines.
+    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
 
-#include"Window_Player_Select.h"
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-voidWindow_Player_Select::init(Audio*theaudio,bool*run,intComandX,intComandY,intSizeX,intSizeY,intPosX,intPosY,intcurX,intcurY)
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+ 
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+
+#include "Window_Player_Select.h"
+
+void Window_Player_Select::init(Audio*theaudio,bool*run,intComandX,intComandY,intSizeX,intSizeY,intPosX,intPosY,intcurX,intcurY)
 {
 	menu.init(theaudio,run,ComandX,ComandY);
 	System.init_Sistem();
@@ -28,17 +43,17 @@ voidWindow_Player_Select::init(Audio*theaudio,bool*run,intComandX,intComandY,int
 	visible_window=true;//delaventana
 }
 
-voidWindow_Player_Select::init_curXY(intx,inty)
+void Window_Player_Select::init_curXY(intx,inty)
 {
 	Cur_pos_X=x;
 	Cur_pos_Y=y;
 }
 
-voidWindow_Player_Select::set_curY(inty)
+void Window_Player_Select::set_curY(inty)
 {
 	Cur_pos_Y=y;
 }
-voidWindow_Player_Select::add_text(constchar*ctext,intx,inty)
+void Window_Player_Select::add_text(constchar*ctext,intx,inty)
 {
 
 	text.x=pos_X+x;
@@ -48,7 +63,7 @@ voidWindow_Player_Select::add_text(constchar*ctext,intx,inty)
 
 }
 
-voidWindow_Player_Select::dispose()
+void Window_Player_Select::dispose()
 {
 	disposing=true;
 	inti,tp;
@@ -68,27 +83,27 @@ voidWindow_Player_Select::dispose()
 	restarmenu();
 }
 
-boolWindow_Player_Select::desition()
+bool Window_Player_Select::desition()
 {
 	return(menu.desition());
 }
 
-voidWindow_Player_Select::restarmenu()
+void Window_Player_Select::restarmenu()
 {
 	menu.restarmenu();
 }
 
-intWindow_Player_Select::getindexY()
+int Window_Player_Select::getindexY()
 {
 	return(menu.getindexY());
 }
 
-intWindow_Player_Select::getindexX()
+int Window_Player_Select::getindexX()
 {
 	return(menu.getindexX());
 }
 
-voidWindow_Player_Select::updatekey()
+void Window_Player_Select::updatekey()
 {
 	if(visible)
 	{	
@@ -96,14 +111,14 @@ voidWindow_Player_Select::updatekey()
 	}
 }
 
-voidWindow_Player_Select::add_sprite(Sprite*the_sprite,intx,inty)
+void Window_Player_Select::add_sprite(Sprite*the_sprite,intx,inty)
 {
 	(*the_sprite).x=pos_X+x;
 	(*the_sprite).y=pos_Y+y;
 	V_Sprite.push_back((int)the_sprite);
 }
 
-voidWindow_Player_Select::draw(SDL_Surface*Screen)
+void Window_Player_Select::draw(SDL_Surface*Screen)
 {
 	unsignedinti;
 	intoffset=0;

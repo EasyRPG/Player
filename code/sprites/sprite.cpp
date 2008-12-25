@@ -1,14 +1,93 @@
+/*sprite.cpp, sprite routines.
+    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+ 
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #include "sprite.h"
 #define TRUE 1
 #define FALSE 0
 
+void setx(int posx) 
+{
+	x=posx;
+}
+
+void sety(int posy) 
+{
+	y=posy;
+}
+
+void setcols(int icols) 
+{
+	cols=icols;
+}
+
+void setrows(int irows) 
+{
+	rows=irows;
+}
+
+void addx(int c) 
+{
+	x+=c;
+}
+
+void addy(int c) 
+{
+	y+=c;
+}
+
+int getx() 
+{
+	return x;
+}
+
+int gety() 
+{
+	return y;
+}
+
+int getw() 
+{
+	return img->w/cols;
+}
+
+int geth()
+{
+	return img->h/rows;
+}
+
+int getcols() 
+{
+	return cols;
+}
+
+int getrows() 
+{
+	return rows;
+}
 
 void Sprite::setimg(const char* string)
 { 
 	visible=true;
 	not_clean =true;
 	img = IMG_Load (string);
+	if (img == NULL)
+	{
+	std::cerr << "Error: Unable to open file: " << string <<  std::endl;
+	exit(1);
+	}
 }
 
 void Sprite::set_surface(SDL_Surface * imag)

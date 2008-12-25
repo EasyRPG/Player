@@ -1,3 +1,18 @@
+/*CActor.cpp, CActor routines.
+    Copyright (C) 2007 EasyRPG Project <http://easyrpg.sourceforge.net/>.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+ 
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 //extern CWorld  * World; //cuando exista
 #include <SDL/SDL.h>
@@ -68,51 +83,83 @@ void CActor::setposXY(int x,int y)
 	realY=(sll)y;
 }
 
-void CActor::MoveOnInput() {
-if (flags & ACTOR_FLAGS_FREEZE) return;
-switch(state) {
-case ACTOR_STATE_IDLE:
-unsigned char * keyData;
-keyData = SDL_GetKeyState(NULL);
-if ( keyData[SDLK_UP]  ){
-// && World->CollisionAt(GridX, GridY-1, WORLD_COLLISION_FROM_DOWN)==false) {
-state            = ACTOR_STATE_MOVING;
-Cmotion.direction = ACTOR_DIRECTION_UP;
-dir=0;
-Cmotion.distance  = 0;
-} else if (keyData[SDLK_DOWN]  ){// && World->CollisionAt(GridX, GridY+1, WORLD_COLLISION_FROM_UP)==false) {
-state            = ACTOR_STATE_MOVING;
-Cmotion.direction = ACTOR_DIRECTION_DOWN;
-dir=2;
-Cmotion.distance  = 0;
-} else if ( keyData[SDLK_LEFT] ){// && World->CollisionAt(GridX-1, GridY, WORLD_COLLISION_FROM_RIGHT)==false) {
-state            = ACTOR_STATE_MOVING;
-Cmotion.direction = ACTOR_DIRECTION_LEFT;
-dir=3;
-Cmotion.distance  = 0;
-} else if ( keyData[SDLK_RIGHT] ){ //&& World->CollisionAt(GridX+1, GridY, WORLD_COLLISION_FROM_LEFT)==false) {
-state            = ACTOR_STATE_MOVING;
-Cmotion.direction = ACTOR_DIRECTION_RIGHT;
-dir=1;
-Cmotion.distance  = 0;
-}else{frame=0;}
-// 	    GridX = (x)>>4; GridY = (y)>>4;// Calculate Grid X and Grid Y
-break;
-case ACTOR_STATE_MOVING:
-// Calculate how many pixels has the actor travelled  and how many's left
-Cmotion.delta    =Clampf(ACTOR_SPEED_SLOW*System.deltaTime, 0, 16-Cmotion.distance); // Clampf(value, min, max)
-Cmotion.distance = Minf(Cmotion.distance+ACTOR_SPEED_SLOW*System.deltaTime, 16.0f);//Minf(distancia + movimiento, maximo )
-frameupdate();
-// Change position of character by adding the delta
-switch(Cmotion.direction) {
-case ACTOR_DIRECTION_UP:    realY=sllsub(realY, Cmotion.delta);  break;
-case ACTOR_DIRECTION_DOWN:  realY=slladd(realY, Cmotion.delta);  break;
-case ACTOR_DIRECTION_LEFT:  realX=sllsub(realX, Cmotion.delta);  break;
-case ACTOR_DIRECTION_RIGHT:  realX=slladd(realX, Cmotion.delta); break;
-}
+void CActor::MoveOnInput() 
+{
+	if (flags & ACTOR_FLAGS_FREEZE) 
+	{
+		return;
+	}
+	switch(state) 
+	{
+		case ACTOR_STATE_IDLE:
+						unsigned char * keyData;
+						keyData = SDL_GetKeyState(NULL);
+						if ( keyData[SDLK_UP]  )
+						{
+							// && World->CollisionAt(GridX, GridY-1, WORLD_COLLISION_FROM_DOWN)==false) {
+							state            = ACTOR_STATE_MOVING;
+							Cmotion.direction = ACTOR_DIRECTION_UP;
+							dir=0;
+							Cmotion.distance  = 0;
+						} 
+						else 
+						{
+						if (keyData[SDLK_DOWN]  )
+						{// && World->CollisionAt(GridX, GridY+1, WORLD_COLLISION_FROM_UP)==false) {
+							state            = ACTOR_STATE_MOVING;
+							Cmotion.direction = ACTOR_DIRECTION_DOWN;
+							dir=2;
+							Cmotion.distance  = 0;
+						} 
+						else 
+						if ( keyData[SDLK_LEFT] )
+						{// && World->CollisionAt(GridX-1, GridY, WORLD_COLLISION_FROM_RIGHT)==false) {
+							state            = ACTOR_STATE_MOVING;
+							Cmotion.direction = ACTOR_DIRECTION_LEFT;
+							dir=3;
+							Cmotion.distance  = 0;
+						} 
+						else 
+						if ( keyData[SDLK_RIGHT] )
+						{ //&& World->CollisionAt(GridX+1, GridY, WORLD_COLLISION_FROM_LEFT)==false) {
+							state            = ACTOR_STATE_MOVING;
+							Cmotion.direction = ACTOR_DIRECTION_RIGHT;
+							dir=1;
+							Cmotion.distance  = 0;
+						}
+						else
+						{
+							frame=0;
+						}
+						}
+						// 	    GridX = (x)>>4; GridY = (y)>>4;// Calculate Grid X and Grid Y
+		break;
 
-if (Cmotion.distance == 16.0f)
-state = ACTOR_STATE_IDLE;
-break;
-}
+		case ACTOR_STATE_MOVING:
+						// Calculate how many pixels has the actor travelled  and how many's left
+						Cmotion.delta    =Clampf(ACTOR_SPEED_SLOW*System.deltaTime, 0, 16-Cmotion.distance); // Clampf(value, min, max)
+						Cmotion.distance = Minf(Cmotion.distance+ACTOR_SPEED_SLOW*System.deltaTime, 16.0f);//Minf(distancia + movimiento, maximo )
+						frameupdate();
+						// Change position of character by adding the delta
+						switch(Cmotion.direction) 
+						{
+							case ACTOR_DIRECTION_UP:    
+								realY=sllsub(realY, Cmotion.delta);  
+								break;
+							case ACTOR_DIRECTION_DOWN:  
+								realY=slladd(realY, Cmotion.delta);  
+								break;
+							case ACTOR_DIRECTION_LEFT:  
+								realX=sllsub(realX, Cmotion.delta);  
+								break;
+							case ACTOR_DIRECTION_RIGHT:  
+								realX=slladd(realX, Cmotion.delta); 
+								break;
+						}
+						if (Cmotion.distance == 16.0f)
+						{
+							state = ACTOR_STATE_IDLE;
+						}
+		break;
+	}
 }
