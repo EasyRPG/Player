@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
@@ -32,9 +32,6 @@ void Map_Scene::init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * Th
 	Actor.setposXY(12,12);
 	npc.setx(120);
 	npc.sety(120);
-	red.setimg("../title/malla.png");
-	red.x=0;
-	red.y=0;
 	// ===[ LOADING MAP DATA ]==============================================
 	Map.Load("../Map0001.lmu");
 	Map.Chipset.GenerateFromFile("../ChipSet/Basis.png");
@@ -46,7 +43,7 @@ void Map_Scene::init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * Th
 }
 
 void Map_Scene::update(SDL_Surface* Screen)
-{     
+{
 	// SDL_FillRect(Screen, NULL, 0x0);// Clear screen  inutil
 	Map.Render(Screen, 0, (*myteam).view.x, (*myteam).view.y); //dibuja mapa capa 1 con repecto a la vista
 	Map.Render(Screen, 1, (*myteam).view.x, (*myteam).view.y);//dibuja mapa capa 2 con repecto a la vista
@@ -56,7 +53,6 @@ void Map_Scene::update(SDL_Surface* Screen)
 	npc.drawc(Screen);
 	npc.addx(+(*myteam).view.x);
 	npc.addy(+(*myteam).view.y);
-	//red.draw(Screen);
 	//ver los datos del mapa
 }
 
@@ -70,11 +66,11 @@ void Map_Scene::Scroll() {
 	}
 	else
 	{
-		Actor.x=(SCREEN_SIZE_X>>1)-8; 
+		Actor.x=(SCREEN_SIZE_X>>1)-8;
 	}
 	(*myteam).view.y= Actor.Clamp((int) sll2dbl(Actor.realY) - (SCREEN_SIZE_Y>>1), 0, (Map.MapHeight<<4)-SCREEN_SIZE_Y);
 	if(!Actor.outofarea)
-	{ 
+	{
 		Actor.y=(int)sll2dbl(Actor.realY)-(*myteam).view.y;
 	}
 	else
@@ -88,8 +84,8 @@ void Map_Scene::updatekey() {
 	Actor.MoveOnInput();
 	Scroll();
 	if (Key_press_and_realsed(LMK_X ))
-	{ 
-		(*myaudio).soundload("../Sound/Cursor1.wav");* NScene=4; 
+	{
+		(*myaudio).soundload("../Sound/Cursor1.wav");* NScene=4;
 	}
 }
 

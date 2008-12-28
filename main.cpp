@@ -60,7 +60,6 @@
     //unsigned long nextTicks = 0, fps = 0, frames = 0;
     //char stringBuffer[255];
     unsigned char speed=4,timer=0;
-    static unsigned long  FRECUENCIA=17;
     Scene * actual;
     Map_Scene mapas;
     Title_Scene titulo;

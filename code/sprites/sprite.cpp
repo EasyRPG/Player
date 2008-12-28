@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
@@ -18,68 +18,68 @@
 #define TRUE 1
 #define FALSE 0
 
-void setx(int posx) 
+void Sprite::setx(int posx)
 {
 	x=posx;
 }
 
-void sety(int posy) 
+void Sprite::sety(int posy)
 {
 	y=posy;
 }
 
-void setcols(int icols) 
+void Sprite::setcols(int icols)
 {
 	cols=icols;
 }
 
-void setrows(int irows) 
+void Sprite::setrows(int irows)
 {
 	rows=irows;
 }
 
-void addx(int c) 
+void Sprite::addx(int c)
 {
 	x+=c;
 }
 
-void addy(int c) 
+void Sprite::addy(int c)
 {
 	y+=c;
 }
 
-int getx() 
+int Sprite::getx()
 {
 	return x;
 }
 
-int gety() 
+int Sprite::gety()
 {
 	return y;
 }
 
-int getw() 
+int Sprite::getw()
 {
 	return img->w/cols;
 }
 
-int geth()
+int Sprite::geth()
 {
 	return img->h/rows;
 }
 
-int getcols() 
+int Sprite::getcols()
 {
 	return cols;
 }
 
-int getrows() 
+int Sprite::getrows()
 {
 	return rows;
 }
 
 void Sprite::setimg(const char* string)
-{ 
+{
 	visible=true;
 	not_clean =true;
 	img = IMG_Load (string);
@@ -91,7 +91,7 @@ void Sprite::setimg(const char* string)
 }
 
 void Sprite::set_surface(SDL_Surface * imag)
-{    
+{
 	visible=true;
 	not_clean =true;
 	img=imag;
@@ -100,16 +100,16 @@ void Sprite::set_surface(SDL_Surface * imag)
 void Sprite::dispose()
 {
         if(not_clean)
-        { 
+        {
 		SDL_FreeSurface(img);
         	not_clean =false;
 	}
 }
 
 void Sprite::draw (SDL_Surface * screen)
-{   
+{
 	if(visible)
-	{	
+	{
 	SDL_Rect rect = {x, y, 0, 0};
 	SDL_BlitSurface (img, NULL,	screen, &rect);
 	}

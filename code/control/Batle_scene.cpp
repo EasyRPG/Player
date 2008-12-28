@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
@@ -24,7 +24,7 @@ Batle_scene::Batle_scene()
 }
 */
 
-voidBatle_scene::init(Audio*theaudio,bool*run,unsignedchar*TheScene,Player_Team*TheTeam)
+void Batle_scene::init(Audio *theaudio,bool  *run,unsigned char  *TheScene,Player_Team *TheTeam)
 {
 
 	myteam=TheTeam;
@@ -48,8 +48,8 @@ voidBatle_scene::init(Audio*theaudio,bool*run,unsignedchar*TheScene,Player_Team*
 	menu.setComands(&str_Vector);
 	running=run;
 	NScene=TheScene;
-	MCcomando;
-	inti;
+	MC comando;
+	int i;
 	for(i=0;i<(*myteam).get_size();i++)//tantoscomandoscomojugadores.
 	{
 		Comands.push_back(comando);
@@ -63,11 +63,11 @@ voidBatle_scene::init(Audio*theaudio,bool*run,unsignedchar*TheScene,Player_Team*
 	moster_select.visible=false;
 }
 
-voidBatle_scene::update_window_stats()
+void Batle_scene::update_window_stats()
 {
 	window.init(myaudio,the_run,0,3,224,80,96,160,214,16);
-	inti=0;
-	charstringBuffer[255];
+	int i=0;
+	char stringBuffer[255];
 	for(i=0;i<(*myteam).get_size();i++)
 	{
 		sprintf(stringBuffer,"Hp%d/%dMp%d",(*(*myteam).get_HP(i)),(*(*myteam).get_MaxHP(i)),(*(*myteam).get_MP(i)));
@@ -84,9 +84,9 @@ voidBatle_scene::update_window_stats()
 	}
 }
 
-voidBatle_scene::windowtext_showdamange(booltype,intatak,intataked,intdamange)
+void Batle_scene::windowtext_showdamange(bool  type,int  atak,int  ataked,int  damange)
 {
-	charstringBuffer[255];
+	char stringBuffer[255];
 	sprintf(stringBuffer,"%dHPperdidos",damange);
 	Window_text.init(320,80,0,160);
 
@@ -106,9 +106,9 @@ voidBatle_scene::windowtext_showdamange(booltype,intatak,intataked,intdamange)
 	}
 }
 
-voidBatle_scene::update_window_mosterselect()
+void Batle_scene::update_window_mosterselect()
 {
-	inti,j,k=0;
+	int i,j,k=0;
 	j=(*myteam).Enemys.size();
 
 	for(i=0;i<j;i++)//dibujatodoslosmoster
@@ -124,9 +124,9 @@ voidBatle_scene::update_window_mosterselect()
 }
 
 
-voidBatle_scene::update(SDL_Surface*Screen)
+void Batle_scene::update(SDL_Surface *Screen)
 {
-	inti,j;
+	int i,j;
 	SDL_FillRect(Screen,NULL,0x0);//Clearscreen
 	j=(*myteam).Enemys.size();
 	title.draw(Screen);
@@ -148,10 +148,10 @@ voidBatle_scene::update(SDL_Surface*Screen)
 	}
 }
 
-voidBatle_scene::win()
+void Batle_scene::win()
 {
-	unsignedinti;
-	intk=0;
+	unsigned int i;
+	int k=0;
 	for(i=0;i<((*myteam).Enemys).size();i++)
 	{
 		if((*((*myteam).Enemys.at(i)).get_HP())==0)//cambiarporarreglo
@@ -166,9 +166,9 @@ voidBatle_scene::win()
 	}
 }
 
-voidBatle_scene::lose()
+void Batle_scene::lose()
 {
-	inti,k=0;
+	int i,k=0;
 	for(i=0;i<(*myteam).get_size();i++)
 	{
 		if((*(*myteam).get_HP(i))==0)
@@ -185,9 +185,9 @@ voidBatle_scene::lose()
 
 
 
-voidBatle_scene::atack(SDL_Surface*Screen,intnperso,intenemy)
+void Batle_scene::atack(SDL_Surface *Screen,int  nperso,int  enemy)
 {
-	intdamange;
+	int damange;
 	while((*(((*myteam).Enemys.at(enemy)).get_HP()))==0)//siestamuertoelelgido
 	{
 		enemy++;//eligeotro
@@ -224,11 +224,11 @@ voidBatle_scene::atack(SDL_Surface*Screen,intnperso,intenemy)
 	}
 }
 
-voidBatle_scene::atacked(intenemy)
+void Batle_scene::atacked(int enemy)
 {
-	inti,j;
-	staticintposxt=title.x,flag=0,timer=0,moves=0;
-	staticboolfinish=false;
+	int i,j;
+	static int posxt=title.x,flag=0,timer=0,moves=0;
+	static bool finish=false;
 	if((((*myteam).Enemys.at(enemy)).Batler).visible)//siestavivoelenemigo
 	{
 		timer++;
@@ -264,9 +264,9 @@ voidBatle_scene::atacked(intenemy)
 			timer=10;
 			title.x=posxt;/////////////////////////restauradodeposiciones
 			j=(*myteam).Enemys.size();
-			intdamange;
+			int damange;
 			///////////////////////////////////////////eleciondeplayer
-			intk=(rand()%(*myteam).get_size());//eleccionalazar
+			int k=(rand()%(*myteam).get_size());//eleccionalazar
 			while((*(*myteam).get_HP(k))==0)//siestamuertoelelgido
 			{
 				k++;//eligeotro
@@ -328,7 +328,7 @@ voidBatle_scene::atacked(intenemy)
 	}
 }
 
-voidBatle_scene::Give_turn()
+void Batle_scene::Give_turn()
 {
 	moster_select.dispose();
 	update_window_mosterselect();
@@ -342,12 +342,12 @@ voidBatle_scene::Give_turn()
 	Nmenu_used=0;
 }
 
-voidBatle_scene::action_mosterselect()
+void Batle_scene::action_mosterselect()
 {
-	inti,j;
+	int i,j;
 	j=(*myteam).Enemys.size();
 	for(i=0;i<j;i++)
-	{	
+	{
 		if(moster_select.getindexY()==i)
 		{
 		Comands.at(Nmenu_used).selected_moster=i;
@@ -369,9 +369,9 @@ voidBatle_scene::action_mosterselect()
 	}
 }
 
-voidBatle_scene::action()
+void Batle_scene::action()
 {
-	inti;
+	int i;
 	//Comands.at(num).des2
 	if(menu.visible)
 	{
@@ -393,7 +393,7 @@ voidBatle_scene::action()
 	}
 }
 
-voidBatle_scene::updatekey()
+void Batle_scene::updatekey()
 {
 	if(Nmenu_used<(*myteam).get_size())//siaunnohanelegidotodos
 	{
@@ -411,7 +411,7 @@ voidBatle_scene::updatekey()
 			if(window.visible!=true)//queseveaquepersoelige
 			{
 				window.visible=true;
-			}		
+			}
 			window.set_curY((16*Nmenu_used)+5);//posicionadoenelperso
 			if(menu.desition())
 			{
@@ -421,7 +421,7 @@ voidBatle_scene::updatekey()
 	}
 }
 
-voidBatle_scene::dispose()
+void Batle_scene::dispose()
 {
 	title.dispose();
 	window.dispose();

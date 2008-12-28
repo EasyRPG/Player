@@ -10,13 +10,13 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #include "Window_Player_Select.h"
 
-void Window_Player_Select::init(Audio*theaudio,bool*run,intComandX,intComandY,intSizeX,intSizeY,intPosX,intPosY,intcurX,intcurY)
+void Window_Player_Select::init(Audio*theaudio,bool *run,int ComandX,int ComandY,int SizeX,int SizeY,int PosX,int PosY,int curX,int curY)
 {
 	menu.init(theaudio,run,ComandX,ComandY);
 	System.init_Sistem();
@@ -43,17 +43,17 @@ void Window_Player_Select::init(Audio*theaudio,bool*run,intComandX,intComandY,in
 	visible_window=true;//delaventana
 }
 
-void Window_Player_Select::init_curXY(intx,inty)
+void Window_Player_Select::init_curXY(int x,int y)
 {
 	Cur_pos_X=x;
 	Cur_pos_Y=y;
 }
 
-void Window_Player_Select::set_curY(inty)
+void Window_Player_Select::set_curY(int y)
 {
 	Cur_pos_Y=y;
 }
-void Window_Player_Select::add_text(constchar*ctext,intx,inty)
+void Window_Player_Select::add_text(const char *ctext,int x,int y)
 {
 
 	text.x=pos_X+x;
@@ -66,7 +66,7 @@ void Window_Player_Select::add_text(constchar*ctext,intx,inty)
 void Window_Player_Select::dispose()
 {
 	disposing=true;
-	inti,tp;
+	int i,tp;
 	System.dispose();
 	cursor.dispose();
 	tapiz.dispose();
@@ -83,7 +83,7 @@ void Window_Player_Select::dispose()
 	restarmenu();
 }
 
-bool Window_Player_Select::desition()
+bool  Window_Player_Select::desition()
 {
 	return(menu.desition());
 }
@@ -93,12 +93,12 @@ void Window_Player_Select::restarmenu()
 	menu.restarmenu();
 }
 
-int Window_Player_Select::getindexY()
+int  Window_Player_Select::getindexY()
 {
 	return(menu.getindexY());
 }
 
-int Window_Player_Select::getindexX()
+int  Window_Player_Select::getindexX()
 {
 	return(menu.getindexX());
 }
@@ -106,27 +106,27 @@ int Window_Player_Select::getindexX()
 void Window_Player_Select::updatekey()
 {
 	if(visible)
-	{	
+	{
 		menu.updatekey();
 	}
 }
 
-void Window_Player_Select::add_sprite(Sprite*the_sprite,intx,inty)
+void Window_Player_Select::add_sprite(Sprite*the_sprite,int x,int y)
 {
 	(*the_sprite).x=pos_X+x;
 	(*the_sprite).y=pos_Y+y;
-	V_Sprite.push_back((int)the_sprite);
+	V_Sprite.push_back((int )the_sprite);
 }
 
 void Window_Player_Select::draw(SDL_Surface*Screen)
 {
-	unsignedinti;
-	intoffset=0;
+	unsigned int i;
+	int offset=0;
 	if(visible_window)
 	if(!disposing)
 	{
 		tapiz.draw(Screen);
-		intMax_to_show=((Size_Y-20)/fuente.size);//losquecaben
+		int Max_to_show=((Size_Y-20)/fuente.size);//losquecaben
 		if(Max_to_show>Comand_Y)
 		{
 			Max_to_show=Comand_Y;
@@ -143,7 +143,7 @@ void Window_Player_Select::draw(SDL_Surface*Screen)
 		}
 
 		if((Comand_Y!=getindexY())&&(Max_to_show<Comand_Y))
-		{	
+		{
 			System.draw(Screen,45,(pos_X+Size_X/2-8),(pos_Y+Size_Y-11));//flechas
 			System.draw(Screen,46,(pos_X+Size_X/2),(pos_Y+Size_Y-11));
 		}

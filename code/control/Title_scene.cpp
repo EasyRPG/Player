@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
@@ -52,7 +52,7 @@ void Title_Scene::update(SDL_Surface* Screen)
 	if(retardo==0)
 	{
 		title.draw(Screen);
-		menu.draw(Screen); 
+		menu.draw(Screen);
 	}
 	retardo++;
 	//if(retardo==5)
@@ -66,10 +66,10 @@ void Title_Scene::action()
 {
 	static bool used=false;
 	if(used==false)
-	{  
+	{
 		used=true;
 		if(menu.getindexY()==2)
-		{	
+		{
 			* running =false;
 		}
 		if(menu.getindexY()==0)
@@ -232,7 +232,7 @@ Player Caro;
 
 Chara Carochara;
 Carochara.init_Chara();
-Carochara.setimg("../chara/Chara1.PNG");
+Carochara.setimg("../chara/Chara1.png");
 Caro.set_chara(Carochara);
 Faceset CaroFase;
 CaroFase.setimg("../Faceset/Chara1.png");
