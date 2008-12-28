@@ -32,8 +32,7 @@
 
 #include <SDL_image.h>
 
-#include <stdio.h>
-#include <ostream.h>
+#include <iostream>
 #include <stdlib.h>
 //
 #define pi2 6.28318

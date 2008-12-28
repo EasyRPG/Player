@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
@@ -95,7 +95,7 @@ int Window_Select::getindexX()
 	return (menu.getindexX());
 }
 
-void Window_Select::updatekey() 
+void Window_Select::updatekey()
 {
 
 	if(visible)
@@ -107,7 +107,7 @@ void Window_Select::updatekey()
 	}
 }
 
-void Window_Select::set_posx_text(int x) 
+void Window_Select::set_posx_text(int x)
 {
 	Init_text_X=x;
 }
@@ -140,7 +140,7 @@ void Window_Select::draw(SDL_Surface* Screen)
 		{
 			Max_to_show=Comand_Y;
 		}
-	
+
 		if(getindexY()>Max_to_show)
 		{
 			offset=getindexY()-Max_to_show;
@@ -153,7 +153,7 @@ void Window_Select::draw(SDL_Surface* Screen)
 		}
 
 		if((Comand_Y!=getindexY())&&(Max_to_show<Comand_Y))
-		{    
+		{
 
 			System.draw(Screen,45, (pos_X+ Size_X/2-8), (pos_Y+Size_Y-11));//flechas
 			System.draw(Screen,46, (pos_X+ Size_X/2), (pos_Y+Size_Y-11));
@@ -171,9 +171,9 @@ void Window_Select::draw(SDL_Surface* Screen)
 				(My_Sprite.at(j)).y=((pos_Y+5)+((j-offset)/(Comand_X+1))*fuente.size);
 			}
 			else
-			{    				
+			{
 				(My_Sprite.at(j)).y=((pos_Y+5)+((j-offset)*fuente.size));
-			}    
+			}
 				(My_Sprite.at(j)).draw(Screen);
 		}
 

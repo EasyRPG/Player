@@ -19,7 +19,7 @@
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
-#include <ostream.h>
+#include <iostream>
 
 class Font
 {
