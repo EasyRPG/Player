@@ -35,7 +35,7 @@ void Map_Scene::init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * Th
 	// ===[ LOADING MAP DATA ]==============================================
 	Map.Load("../Map0001.lmu");
 	Map.Chipset.GenerateFromFile("../ChipSet/Basis.png");
-	(* myaudio).musicload("../Music/Town.mid");
+	(* myaudio).load("../Music/Town.mid");
 	NScene=TheScene;
 	moving=false;
 	to_move=0;
@@ -85,7 +85,7 @@ void Map_Scene::updatekey() {
 	Scroll();
 	if (Key_press_and_realsed(LMK_X ))
 	{
-		(*myaudio).soundload("../Sound/Cursor1.wav");* NScene=4;
+		(*myaudio).load("../Sound/Cursor1.wav");* NScene=4;
 	}
 }
 
@@ -144,7 +144,7 @@ void Map_Scene::dispose() {
 	npc.dispose();
 	Map.Chipset.dispose();
 	alexface.dispose();
-	(*myaudio).stopmusic();
+	(*myaudio).stop();
 
 }
 

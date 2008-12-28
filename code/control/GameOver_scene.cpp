@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
@@ -30,12 +30,12 @@ GO_Scene:: GO_Scene()
 */
 
 void GO_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
-{    
+{
 	myteam=TheTeam;
 	(*myteam).clear_team();
 	(*myteam).clear_obj();
 	myaudio=theaudio;
-	(*myaudio).musicload("../Music/2003sorrow.mid");
+	(*myaudio).load("../Music/2003sorrow.mid");
 	title.x=0;
 	title.y=0;
 	title.setimg("../GameOver/gameover.png");
@@ -53,7 +53,7 @@ void GO_Scene::action()
 	*NScene=0;
 }
 
-void GO_Scene::updatekey() 
+void GO_Scene::updatekey()
 {
 	unsigned char * keyData;
 	static int delay=0;
@@ -61,11 +61,11 @@ void GO_Scene::updatekey()
 	if(delay==40)
 	{
 		keyData = SDL_GetKeyState(NULL);
-		if ( keyData[SDLK_ESCAPE] ) 
+		if ( keyData[SDLK_ESCAPE] )
 		{
 			* running = false;
 		}
-		if ( keyData[LMK_Z]  ) 
+		if ( keyData[LMK_Z]  )
 		{
 			action();
 		}

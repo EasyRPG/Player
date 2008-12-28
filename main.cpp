@@ -113,75 +113,75 @@ return 1;
 }
 
 
- void CambioScene(Audio myaudio, Scene  ** apuntador) //si no haces esto, te cartgas la memoria donde lo estas ejecutando
+ void CambioScene(Audio * myaudio, Scene  ** apuntador) //si no haces esto, te cartgas la memoria donde lo estas ejecutando
  {   unsigned static char LastScene=0;
       if(TheScene!=LastScene)
      {  //si alguie encuntra una mejor forma de hacerlo que avise -_-
       (**apuntador).dispose();
       if(TheScene==0)
         {
-         titulo.init(& myaudio,& running,& TheScene,& team);
+         titulo.init( myaudio,& running,& TheScene,& team);
          *apuntador=(& titulo);
          LastScene=0;
          }
       if(TheScene==1)
         {
-         mapas.init(&myaudio,320,240,& TheScene,& team);
+         mapas.init(myaudio,320,240,& TheScene,& team);
         *apuntador=& mapas;
          LastScene=1;
          }
        if(TheScene==2)
         {
-         batalla.init(& myaudio,& running,& TheScene,& team);
+         batalla.init(myaudio,& running,& TheScene,& team);
         *apuntador=& batalla;
          LastScene=2;
          }
        if(TheScene==3)
         {
-        fin.init(& myaudio,& running,& TheScene,& team);
+        fin.init(myaudio,& running,& TheScene,& team);
         *apuntador=& fin;
          LastScene=3;
          }
         if(TheScene==4)
         {
-        Menu_Main.init(& myaudio,& running,& TheScene,& team);
+        Menu_Main.init(myaudio,& running,& TheScene,& team);
         *apuntador=& Menu_Main;
          LastScene=4;
          }
         if(TheScene==5)
         {
-        Menu_Objects.init(& myaudio,& running,& TheScene,& team);
+        Menu_Objects.init(myaudio,& running,& TheScene,& team);
         *apuntador=& Menu_Objects;
          LastScene=5;
          }
         if(TheScene==6)
         {
-        Menu_Skills.init(& myaudio,& running,& TheScene,& team);
+        Menu_Skills.init(myaudio,& running,& TheScene,& team);
         *apuntador=& Menu_Skills;
          LastScene=6;
          }
          if(TheScene==7)
         {
-        Menu_Euip.init(& myaudio,& running,& TheScene,& team);
+        Menu_Euip.init(myaudio,& running,& TheScene,& team);
         *apuntador=& Menu_Euip;
          LastScene=7;
          }
         if(TheScene==8)
         {
-        Menu_Stats.init(& myaudio,& running,& TheScene,& team);
+        Menu_Stats.init(myaudio,& running,& TheScene,& team);
         *apuntador=& Menu_Stats;
          LastScene=8;
          }
 
         if(TheScene==9)
         {
-        Menu_Save_Load.init(& myaudio,& running,& TheScene,& team);
+        Menu_Save_Load.init(myaudio,& running,& TheScene,& team);
         *apuntador=& Menu_Save_Load;
          LastScene=9;
          }
        if(TheScene==10)
         {
-        Menu_item_use.init(& myaudio,& running,& TheScene,& team);
+        Menu_item_use.init(myaudio,& running,& TheScene,& team);
         *apuntador=& Menu_item_use;
          LastScene=10;
          }
@@ -193,7 +193,7 @@ return 1;
 
 int main(int argc, char** argv)
     {
-      Audio myaudio;
+      Music myaudio;
         int repxciclo,i;
 	    // ===[ INITIALIZATION ]================================================
         // Start SDL
@@ -258,7 +258,7 @@ int main(int argc, char** argv)
 	}
 
     actual->update(Screen);
-    CambioScene( myaudio, & actual);
+    CambioScene(& myaudio, & actual);
     SDL_Flip(Screen); // Flip
 
     }

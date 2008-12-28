@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
@@ -49,12 +49,12 @@ void Skills_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheSce
 		menu.add_text(stringBuffer,Size_of_Block-10+((Size_of_Block+10)*((i)%(2))),5+((i/2)*space));
 	}
 	if(str_Vector.size()%2)//para que no truene si son nones
-	{ 
+	{
 		str_Vector.push_back( " " );
 	}
 
 	while(str_Vector.size()<2)//para que no truene si no hay nada
-	{ 
+	{
 		str_Vector.push_back( " " );
 	}
 	menu.setComands(& str_Vector);
@@ -64,7 +64,7 @@ void Skills_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheSce
 }
 
 void Skills_Menu_Scene::update(SDL_Surface* Screen)
-{ 
+{
 	if(retardo==0)
 	{
 		menu.draw(Screen);
@@ -88,21 +88,21 @@ void Skills_Menu_Scene::action()
     * NScene=1;     */
 }
 
-void Skills_Menu_Scene::updatekey() 
+void Skills_Menu_Scene::updatekey()
 {
 	menu.updatekey();
 	if(menu.desition())
-	{	
+	{
 		action();
 	}
 
 	if (Key_press_and_realsed(LMK_X ))
-	{ 
-		(*myaudio).soundload("../Sound/Cansel2.wav");* NScene=4; 
+	{
+		(*myaudio).load("../Sound/Cansel2.wav");* NScene=4;
 	}
 }
 
-void Skills_Menu_Scene::dispose() 
+void Skills_Menu_Scene::dispose()
 {
 	menu.dispose();
 	descripcion.dispose();

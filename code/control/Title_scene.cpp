@@ -33,7 +33,7 @@ void Title_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Pla
 {
 	myteam=TheTeam;
 	myaudio=theaudio;
-	(*myaudio).musicload("../Music/2003wingtoskies.mid");
+	(*myaudio).load("../Music/2003wingtoskies.mid");
 	title.x=0;
 	title.y=0;
 	title.setimg("../title/title2.png");
@@ -45,6 +45,7 @@ void Title_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Pla
 	running=  run;
 	NScene=TheScene;
 	retardo=0;
+    (*myaudio).play(-1);
 }
 
 void Title_Scene::update(SDL_Surface* Screen)
@@ -340,5 +341,5 @@ void Title_Scene::dispose() {
 
 	title.dispose();
 	menu.dispose();
-	(*myaudio).stopmusic();
+	(*myaudio).stop();
 }

@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
@@ -37,7 +37,7 @@ void Stats_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScen
 	int space=17;
 	char stringBuffer[255];
 	sprintf(stringBuffer, "Hp %d / %d", (*(*myteam).get_HP(i)), (*(*myteam).get_MaxHP(i)));
-	Status_vit.add_text(stringBuffer,10,10);	
+	Status_vit.add_text(stringBuffer,10,10);
 	sprintf(stringBuffer, "Mp %d / %d", (*(*myteam).get_MP(i)), (*(*myteam).get_MaxMP(i)));
 	Status_vit.add_text(stringBuffer,10,10+(1*space));
 	sprintf(stringBuffer, "Exp%d / %d", (*(*myteam).get_Exp(i)), (*(*myteam).get_MaxExp(i)));
@@ -70,7 +70,7 @@ void Stats_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScen
 	Aramas.add_text(  (*((*myteam).get_Armor(i))).get_name(),75,5+(2*space));
 	Aramas.add_text(  (*((*myteam).get_Helmet(i))).get_name(),75,5+(3*space));
 	Aramas.add_text(  (*((*myteam).get_Accessory(i))).get_name(),75,5+(4*space));
-	
+
 	Aramas.add_text("Arma",10,5);
 	Aramas.add_text("Escudo",10,5+(1*space));
 	Aramas.add_text("Armadura",10,5+(2*space));
@@ -86,7 +86,7 @@ void Stats_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScen
 void Stats_Menu_Scene::update(SDL_Surface* Screen)
 {
 	if(retardo==0)
-	{  
+	{
 		Status.draw(Screen);
 		Status_vit.draw(Screen);
 		Profesion.draw(Screen);
@@ -95,15 +95,15 @@ void Stats_Menu_Scene::update(SDL_Surface* Screen)
 	}
 }
 
-void Stats_Menu_Scene::updatekey() 
+void Stats_Menu_Scene::updatekey()
 {
 	if (Key_press_and_realsed(LMK_X ))
 	{
-		(*myaudio).soundload("../Sound/Cansel2.wav");* NScene=4; 
+		(*myaudio).load("../Sound/Cansel2.wav");* NScene=4;
 	}
 }
 
-void Stats_Menu_Scene::dispose() 
+void Stats_Menu_Scene::dispose()
 {
 	Status.dispose();
 	Status_vit.dispose();

@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
@@ -25,7 +25,7 @@ Main_Menu_Scene::Main_Menu_Scene()
 */
 
 void Main_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
-{  
+{
 	int i;
 	myteam=TheTeam;
 	myaudio=theaudio;
@@ -74,7 +74,7 @@ void Main_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene
 }
 
 void Main_Menu_Scene::update(SDL_Surface* Screen)
-{  
+{
 	// static int retardo =0;
 	if(retardo==0)
 	{
@@ -95,12 +95,12 @@ void Main_Menu_Scene::update(SDL_Surface* Screen)
 }
 
 void Main_Menu_Scene::action()
-{ 
+{
 	int i;
 	for(i=1;i<4;i++)
 	{
 		if(menu.getindexY()==i)
-		{ 
+		{
 			players.visible=true;
 		}
 	}
@@ -126,7 +126,7 @@ void Main_Menu_Scene::action2()
 		* NScene=0;
 	}
 	if(menu_exit.getindexY()==1)
-	{	
+	{
 		(*running)=false;
 	}
 	if(menu_exit.getindexY()==2)
@@ -139,19 +139,19 @@ void Main_Menu_Scene::action2()
 }
 
 void Main_Menu_Scene::action3()
-{ 
+{
 	int i;
 	(*myteam).select=players.getindexY();
 	for(i=1;i<4;i++)
 	{
 		if(menu.getindexY()==i)
-		{	
+		{
 			* NScene=5+i;
 		}
 	}
 }
 
-void Main_Menu_Scene::updatekey() 
+void Main_Menu_Scene::updatekey()
 {
 
 	if(players.visible)
@@ -177,8 +177,8 @@ void Main_Menu_Scene::updatekey()
 	}
 	if (Key_press_and_realsed(LMK_X ))
 	{
-		(*myaudio).soundload("../Sound/Cansel2.wav");
-		* NScene=1; 
+		(*myaudio).load("../Sound/Cansel2.wav");
+		* NScene=1;
 	}
 }
 void Main_Menu_Scene::dispose() {

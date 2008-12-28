@@ -30,7 +30,7 @@ void Batle_scene::init(Audio *theaudio,bool  *run,unsigned char  *TheScene,Playe
 	myteam=TheTeam;
 	myaudio=theaudio;
 	the_run=run;
-	(*myaudio).musicload("../Music/Battle2.mid");
+	(*myaudio).load("../Music/Battle2.mid");
 	title.x=0;
 	title.y=0;
 	title.setimg("../Backdrop/Grass.png");
@@ -426,6 +426,6 @@ void Batle_scene::dispose()
 	title.dispose();
 	window.dispose();
 	(*myteam).clear_enemy();
-	(*myaudio).stopmusic();
+	(*myaudio).stop();
 	menu.dispose();
 }

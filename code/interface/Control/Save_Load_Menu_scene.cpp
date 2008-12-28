@@ -10,13 +10,13 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #include "Save_Load_Menu_scene.h"
 
-/* 
+/*
 Save_Load_Menu_Scene::~ Save_Load_Menu_Scene()
 {
 }
@@ -26,7 +26,7 @@ Save_Load_Menu_Scene:: Save_Load_Menu_Scene()
 */
 
 void Save_Load_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
-{    
+{
 	myteam=TheTeam;
 	myaudio=theaudio;
 	descripcion.init(320,30,0,0);
@@ -52,15 +52,15 @@ void Save_Load_Menu_Scene::update(SDL_Surface* Screen)
 	}
 }
 
-void Save_Load_Menu_Scene::updatekey() 
+void Save_Load_Menu_Scene::updatekey()
 {
 	if (Key_press_and_realsed(LMK_X ))
-	{ 
-		(*myaudio).soundload("../Sound/Cansel2.wav");* NScene=4; 
+	{
+		(*myaudio).load("../Sound/Cansel2.wav");* NScene=4;
 	}
 }
 
-void Save_Load_Menu_Scene::dispose() 
+void Save_Load_Menu_Scene::dispose()
 {
 	Save_pos_1.dispose();
 	Save_pos_2.dispose();

@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
@@ -49,9 +49,9 @@ void Equip_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScen
 	menu.add_text("Casco",10,5+(3*space));
 	menu.add_text("Otros",10,5+(4*space));
 	menu.setComands(& str_Vector);
-  
+
   	int item_tipe=(*( (*((*myteam).get_Weapon(i))).get_type()));
-  	
+
 	for(j=0;j<(*myteam).get_num_items();j++)
 	{
 		item_tipe2= (*((*myteam).get_type(j)));
@@ -86,7 +86,7 @@ void Equip_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScen
 }
 
 void Equip_Menu_Scene::update_1_menu()
-{  
+{
 	int i=(*myteam).select;
 	int space=16;
 	//int Size_of_Block=150;
@@ -114,7 +114,7 @@ void Equip_Menu_Scene::update_2_menu()
 	char stringBuffer[255];
 	int space=16,Size_of_Block=150;
 	Armas.dispose();
-	
+
 	Armas.init( myaudio, therun, 1,0, 320, 105, 0, 135);
 	int j=(*myteam).select;
 	unsigned char item_tipe2,item_tipe=4;
@@ -159,15 +159,15 @@ void Equip_Menu_Scene::update_2_menu()
 }
 
 void Equip_Menu_Scene::update(SDL_Surface* Screen)
-{ 
+{
 	int static lastcusor=0;
 	retardo++;
 	if(retardo==6)
 	{
 		menu.draw(Screen);
 		if(lastcusor !=menu.getindexY())
-		{  
-			update_2_menu();lastcusor=menu.getindexY(); 
+		{
+			update_2_menu();lastcusor=menu.getindexY();
 		}
 		Armas.draw(Screen);
 		stats.draw(Screen);
@@ -177,13 +177,13 @@ void Equip_Menu_Scene::update(SDL_Surface* Screen)
 }
 
 void Equip_Menu_Scene::action()
-{ 
+{
 	Armas.on_use=true;
 }
 
 
 void Equip_Menu_Scene::action2()
-{ 
+{
 	int i=(*myteam).select;
 	std::string strd;
 	const char * cadena;
@@ -203,7 +203,7 @@ void Equip_Menu_Scene::action2()
 			(*myteam).add_item((*((*myteam).get_Armor(i))));
 		}
 		if(menu.getindexY()==3)
-		{	
+		{
 			(*myteam).add_item((*((*myteam).get_Helmet(i))));
 		}
 		if(menu.getindexY()==4)
@@ -263,7 +263,7 @@ void Equip_Menu_Scene::action2()
 			(*myteam).set_Shield(i ,(*myteam).get_item(j)  );
 		}
 		if(menu.getindexY()==2)
-		{		
+		{
 			(*myteam).set_Armor(i ,(*myteam).get_item(j)  );
 		}
 		if(menu.getindexY()==3)
@@ -276,7 +276,7 @@ void Equip_Menu_Scene::action2()
 		}
 		(*(*myteam).get_NOI(j))=(*(*myteam).get_NOI(j))-1;
 		if((*(*myteam).get_NOI(j))==0)
-		{ 
+		{
 			(*myteam).erase_item(j);
 		}
 	}
@@ -289,7 +289,7 @@ void Equip_Menu_Scene::action2()
 
 }
 
-void Equip_Menu_Scene::updatekey() 
+void Equip_Menu_Scene::updatekey()
 {
 	if(Armas.on_use)
 	{
@@ -303,19 +303,19 @@ void Equip_Menu_Scene::updatekey()
 	{
 		menu.updatekey();
 		if(menu.desition())
-		{	
+		{
 		action();
 		}
 	}
 
 
 	if (Key_press_and_realsed(LMK_X ))
-	{ 
-		(*myaudio).soundload("../Sound/Cansel2.wav");* NScene=4; 
+	{
+		(*myaudio).load("../Sound/Cansel2.wav");* NScene=4;
 	}
 }
 
-void Equip_Menu_Scene::dispose() 
+void Equip_Menu_Scene::dispose()
 {
 	menu.dispose();
 	Armas.dispose();

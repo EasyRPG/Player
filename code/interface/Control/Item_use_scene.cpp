@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
@@ -24,7 +24,7 @@ Item_use_scene::Item_use_scene()
 }
 */
 void Item_use_scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
-{  
+{
 	int i;
 	myteam=TheTeam;
 	myaudio=theaudio;
@@ -111,12 +111,12 @@ void Item_use_scene::updatekey() {
 		}
 	}
 	if (Key_press_and_realsed(LMK_X ))//retorna alos objetos
-	{ 
-		(*myaudio).soundload("../Sound/Cansel2.wav");* NScene=5; 
+	{
+		(*myaudio).load("../Sound/Cansel2.wav");* NScene=5;
 	}
 }
 
-void Item_use_scene::dispose() 
+void Item_use_scene::dispose()
 {
 	players.dispose();
 	itemwin.dispose();
