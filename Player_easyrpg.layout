@@ -28,7 +28,7 @@
 	<File name="code/control/Batle_scene.cpp" open="0" top="0" tabpos="4">
 		<Cursor position="10014" topLine="414" />
 	</File>
-	<File name="code/control/Batle_scene.h" open="1" top="0" tabpos="2">
+	<File name="code/control/Batle_scene.h" open="0" top="0" tabpos="2">
 		<Cursor position="2437" topLine="114" />
 	</File>
 	<File name="code/control/GameOver_scene.cpp" open="0" top="0" tabpos="14">
@@ -40,8 +40,8 @@
 	<File name="code/control/Map_scene.cpp" open="0" top="0" tabpos="3">
 		<Cursor position="4256" topLine="133" />
 	</File>
-	<File name="code/control/Title_scene.cpp" open="1" top="1" tabpos="4">
-		<Cursor position="1421" topLine="32" />
+	<File name="code/control/Title_scene.cpp" open="0" top="0" tabpos="4">
+		<Cursor position="1421" topLine="41" />
 	</File>
 	<File name="code/control/scene.cpp" open="0" top="0" tabpos="16">
 		<Cursor position="0" topLine="0" />
@@ -121,8 +121,8 @@
 	<File name="code/sprites/sprite.h" open="0" top="0" tabpos="43">
 		<Cursor position="1129" topLine="24" />
 	</File>
-	<File name="code/tools/CDeltaTime.cpp" open="0" top="0" tabpos="35">
-		<Cursor position="0" topLine="0" />
+	<File name="code/tools/CDeltaTime.cpp" open="0" top="0" tabpos="2">
+		<Cursor position="0" topLine="32" />
 	</File>
 	<File name="code/tools/SDL_rotozoom.cpp" open="0" top="0" tabpos="36">
 		<Cursor position="0" topLine="0" />
@@ -133,7 +133,7 @@
 	<File name="code/tools/audio.cpp" open="0" top="0" tabpos="38">
 		<Cursor position="5516" topLine="259" />
 	</File>
-	<File name="code/tools/audio.h" open="1" top="0" tabpos="3">
+	<File name="code/tools/audio.h" open="0" top="0" tabpos="3">
 		<Cursor position="1070" topLine="39" />
 	</File>
 	<File name="code/tools/font.cpp" open="0" top="0" tabpos="39">
@@ -148,7 +148,7 @@
 	<File name="code/tools/tools.cpp" open="0" top="0" tabpos="41">
 		<Cursor position="0" topLine="9" />
 	</File>
-	<File name="main.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="6126" topLine="185" />
+	<File name="main.cpp" open="0" top="0" tabpos="1">
+		<Cursor position="2051" topLine="43" />
 	</File>
 </CodeBlocks_layout_file>
