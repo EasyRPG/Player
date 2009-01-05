@@ -10,16 +10,16 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #ifndef ITEM_USE_SCENE_H_
 #define ITEM_USE_SCENE_H_
 
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
-#include <SDL/SDL_mixer.h>
+#include "SDL.h"
+#include "SDL_image.h"
+#include "SDL_mixer.h"
 #include "../../sprites/sprite.h"
 #include "../../tools/key.h"
 #include "../../tools/font.h"
@@ -37,7 +37,7 @@
 #include "../Windows/Window_Base.h"
 #include "../Windows/Window_Player_Select.h"
 
-class Item_use_scene: public Scene 
+class Item_use_scene: public Scene
 {
 
 private:

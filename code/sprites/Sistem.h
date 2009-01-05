@@ -21,13 +21,13 @@
 // *****************************************************************************
 // =============================================================================
 
-#include <SDL.h>
+#include "SDL.h"
 
-#include "../tools/SDL_rotozoom.h"
+#include "SDL_rotozoom.h"
 
 #include "../tools/tools.h"
 
-#include <SDL_image.h>
+#include "SDL_image.h"
 
 #include <iostream>
 

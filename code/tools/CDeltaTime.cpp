@@ -10,36 +10,36 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #include <stdio.h>
-#include <SDL/SDL.h>
+#include "SDL.h"
 #include "CDeltaTime.h"
 
-CDeltaTime::CDeltaTime(int pIdealFPS) 
+CDeltaTime::CDeltaTime(int pIdealFPS)
 {
 	//calls the set function
 	setIdealFPS(pIdealFPS);
 }
-void CDeltaTime::setIdealFPS(int pIdealFPS) 
+void CDeltaTime::setIdealFPS(int pIdealFPS)
 {
 	// Change FPS settings and calculates ideal time.
 	idealFPS  = pIdealFPS;
 	idealTime = 1/float(idealFPS);
 	clear();
 }
-void CDeltaTime::clear() 
+void CDeltaTime::clear()
 {
 	timePrevious = SDL_GetTicks();
 	timeCurrent  = SDL_GetTicks();
-	for (int i=15; i>=0; i--) 
+	for (int i=15; i>=0; i--)
 	{
 		deltaTimeArray[i] = idealTime;
 	}
 }
-void CDeltaTime::update() 
+void CDeltaTime::update()
 {
 	// Calculate interval between frames
 	timePrevious = timeCurrent;

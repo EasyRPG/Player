@@ -10,11 +10,12 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #include "Sistem.h"
+#include "SDL_rotozoom.h"
 
 
 void Sistem::init_Sistem()
@@ -41,28 +42,28 @@ SDL_Surface * Sistem::CubeDraw (SDL_Surface * screen,int sizeX,int sizeY)
 	int cubesY=((sizeY-1*h)/h);
 
 	draw (screen,4,0, 0);//primera parte del cuadrado
-	
+
 	for(i=0;i<cubesX;i++)
 	{
 		draw (screen,5,w*(i+1), 0);//primera parte del cuadrado
 	}
-	
+
 	for(i=0;i<cubesY;i++)
-	{	
+	{
 		draw (screen,24,0,h*(i+1));
 	}
 
 	draw (screen,7,(sizeX-w), 0);//segunda parte del cuadrado
-	
+
 	for(i=0;i<cubesY;i++)
 	{
 		draw (screen,27,(sizeX-w), h*(i+1));
 	}
 
 	draw (screen,64,0, (sizeY-h));//segunda parte del cuadrado
-	
+
 	for(i=0;i<cubesX;i++)
-	{	
+	{
 	draw (screen,65,w*(i+1), (sizeY-h));//primera parte del cuadrado
 	}
 
@@ -70,7 +71,7 @@ SDL_Surface * Sistem::CubeDraw (SDL_Surface * screen,int sizeX,int sizeY)
 	return (screen);
 }
 SDL_Surface * Sistem::Exdraw (int sizeX,int sizeY)
-{   
+{
 
 	SDL_Surface * Eximg;
 	SDL_Surface * Eximg2;
@@ -98,7 +99,7 @@ SDL_Surface * Sistem::Cube_select(int type,int sizeX,int sizeY)
 	int cubesY=((sizeY-1*h)/h);
 
 	for(j=1;j<cubesX+1;j++)
-	{	
+	{
 		for(i=1;i<cubesY+1;i++)
 		{
 			draw (screen,(25+(4*type)),w*(j), h*(i));//cuadro
@@ -120,23 +121,23 @@ SDL_Surface * Sistem::Cube_select(int type,int sizeX,int sizeY)
 	draw (screen,(7+(4*type)),(sizeX-w), 0);//esquina derecha arriva
 
 	for(i=0;i<cubesY;i++)
-	{	
+	{
 		draw (screen,(27+(4*type)),(sizeX-w), h*(i+1));//recta vertical derecha
 	}
-	
+
 	draw (screen,(64+(4*type)),0, (sizeY-h));//esquina izquierda abajo
 
 	for(i=0;i<cubesX;i++)
-	{	
+	{
 		draw (screen,(65+(4*type)),w*(i+1), (sizeY-h));//recta horisontal abajo
 	}
-	
+
 	draw (screen,(67+(4*type)),(sizeX-w), (sizeY-h));//esquina derecha abajo
 	return (screen);
 }
 
 SDL_Surface * Sistem::ExdrawT (int sizeX,int sizeY,int tipe)
-{   
+{
 	SDL_Surface * Eximg;
 	SDL_Surface * Eximg2;
 	double zoomX =((double)sizeX/32);

@@ -22,6 +22,7 @@
     #include "SDL.h"
     #include "../tools/tools.h"
     #include "chipset.h"
+    #include <iostream>
     using namespace std;
 
 // =============================================================================
@@ -81,7 +82,7 @@
         SDL_Surface * FileSurface = LoadSurface(Filename);
 	  if (FileSurface == NULL)
 	  {
-		printf("Unable to open file: %s\n", Filename);
+		std::cerr << "Unable to open file: " << Filename << std::endl;
 		exit(1);
 	  }
         return GenerateFromSurface(FileSurface);
