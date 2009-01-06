@@ -302,7 +302,7 @@
                             DrawSurface(Destiny, x, y+8, BaseSurface, XTerrain+16, YTerrain+56, 16, 8);
                         } else {
                             DrawSurface(Destiny, x, y, BaseSurface, XTerrain, YTerrain+32, 8, 16);
-                            DrawSurface(Destiny, x+8, y, BaseSurface, XTerrain+32, YTerrain+32, 8, 16);
+                            DrawSurface(Destiny, x+8, y, BaseSurface, XTerrain+40, YTerrain+32, 8, 16);
                         }
                         break;
                     case 0x01:
@@ -368,7 +368,7 @@
             if (Combination&0x01) DrawSurface(Destiny, x, y,     BaseSurface, XTerrain+32, YTerrain, 8, 8);
             if (Combination&0x02) DrawSurface(Destiny, x+8, y,   BaseSurface, XTerrain+40, YTerrain, 8, 8);
             if (Combination&0x04) DrawSurface(Destiny, x+8, y+8, BaseSurface, XTerrain+40, YTerrain+8, 8, 8);
-            if (Combination&0x08) DrawSurface(Destiny, x, y+8,   BaseSurface, XTerrain+32+128, YTerrain+8, 8, 8);
+            if (Combination&0x08) DrawSurface(Destiny, x, y+8,   BaseSurface, XTerrain+32, YTerrain+8, 8, 8);
         }
     }
 
