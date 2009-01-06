@@ -40,6 +40,7 @@ void Map_Scene::init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * Th
 	moving=false;
 	to_move=0;
 	fuente.init_Font();
+	(*myaudio).play(-1);
 }
 
 void Map_Scene::update(SDL_Surface* Screen)

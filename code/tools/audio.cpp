@@ -64,6 +64,8 @@ bool Music::load(const char* musicf)
     }
     else
     {
+        Mix_FreeMusic(music);
+        music = Mix_LoadMUS(musicf);
         std::cerr << "Error: Cannot load: " << musicf << "  Music already loaded" << std::endl;
     }
 
