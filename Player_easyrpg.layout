@@ -124,9 +124,6 @@
 	<File name="code/tools/CDeltaTime.cpp" open="0" top="0" tabpos="2">
 		<Cursor position="0" topLine="32" />
 	</File>
-	<File name="code/tools/SDL_rotozoom.cpp" open="0" top="0" tabpos="36">
-		<Cursor position="0" topLine="0" />
-	</File>
 	<File name="code/tools/Timer.cpp" open="0" top="0" tabpos="37">
 		<Cursor position="0" topLine="0" />
 	</File>
@@ -148,7 +145,7 @@
 	<File name="code/tools/tools.cpp" open="0" top="0" tabpos="41">
 		<Cursor position="0" topLine="9" />
 	</File>
-	<File name="main.cpp" open="0" top="0" tabpos="1">
-		<Cursor position="2051" topLine="43" />
+	<File name="main.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="2051" topLine="76" />
 	</File>
 </CodeBlocks_layout_file>

@@ -14,6 +14,20 @@
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
+				<Linker>
+					<Add option="`sdl-config --cflags --libs` -lSDL_image -lSDL_mixer -lSDL_ttf -lSDL_gfx" />
+					<Add library="/usr/lib/libSDL.a" />
+					<Add library="/usr/lib/libSDL.so" />
+					<Add library="/usr/lib/libSDL_gfx.a" />
+					<Add library="/usr/lib/libSDL_gfx.so" />
+					<Add library="/usr/lib/libSDL_image.a" />
+					<Add library="/usr/lib/libSDL_image.so" />
+					<Add library="/usr/lib/libSDLmain.a" />
+					<Add library="/usr/lib/libSDL_mixer.a" />
+					<Add library="/usr/lib/libSDL_mixer.so" />
+					<Add library="/usr/lib/libSDL_ttf.a" />
+					<Add library="/usr/lib/libSDL_ttf.so" />
+				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/Player_easyrpg" prefix_auto="1" extension_auto="1" />
@@ -25,9 +39,11 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add option="`sdl-config --cflags --libs` -lSDL_image -lSDL_mixer -lSDL_ttf" />
+					<Add option="`sdl-config --cflags --libs` -lSDL_image -lSDL_mixer -lSDL_ttf -lSDL_gfx" />
 					<Add library="/usr/lib/libSDL.a" />
 					<Add library="/usr/lib/libSDL.so" />
+					<Add library="/usr/lib/libSDL_gfx.a" />
+					<Add library="/usr/lib/libSDL_gfx.so" />
 					<Add library="/usr/lib/libSDL_image.a" />
 					<Add library="/usr/lib/libSDL_image.so" />
 					<Add library="/usr/lib/libSDLmain.a" />
@@ -43,9 +59,11 @@
 			<Add option="`sdl-config --cflags`" />
 		</Compiler>
 		<Linker>
-			<Add option="`sdl-config --cflags --libs` -lSDL_image -lSDL_mixer -lSDL_ttf" />
+			<Add option="`sdl-config --cflags --libs` -lSDL_image -lSDL_mixer -lSDL_ttf -lSDL_gfx" />
 			<Add library="/usr/lib/libSDL.a" />
 			<Add library="/usr/lib/libSDL.so" />
+			<Add library="/usr/lib/libSDL_gfx.a" />
+			<Add library="/usr/lib/libSDL_gfx.so" />
 			<Add library="/usr/lib/libSDL_image.a" />
 			<Add library="/usr/lib/libSDL_image.so" />
 			<Add library="/usr/lib/libSDLmain.a" />
@@ -115,8 +133,6 @@
 		<Unit filename="code/sprites/sprite.h" />
 		<Unit filename="code/tools/CDeltaTime.cpp" />
 		<Unit filename="code/tools/CDeltaTime.h" />
-		<Unit filename="code/tools/SDL_rotozoom.cpp" />
-		<Unit filename="code/tools/SDL_rotozoom.h" />
 		<Unit filename="code/tools/Timer.cpp" />
 		<Unit filename="code/tools/Timer.h" />
 		<Unit filename="code/tools/audio.cpp" />
