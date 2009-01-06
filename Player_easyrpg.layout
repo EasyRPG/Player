@@ -110,7 +110,7 @@
 		<Cursor position="1145" topLine="30" />
 	</File>
 	<File name="code/sprites/chipset.cpp" open="0" top="0" tabpos="33">
-		<Cursor position="0" topLine="0" />
+		<Cursor position="15821" topLine="282" />
 	</File>
 	<File name="code/sprites/map.cpp" open="0" top="0" tabpos="34">
 		<Cursor position="0" topLine="0" />
@@ -131,7 +131,7 @@
 		<Cursor position="1455" topLine="62" />
 	</File>
 	<File name="code/tools/audio.h" open="1" top="0" tabpos="3">
-		<Cursor position="1243" topLine="34" />
+		<Cursor position="1243" topLine="26" />
 	</File>
 	<File name="code/tools/font.cpp" open="0" top="0" tabpos="39">
 		<Cursor position="0" topLine="0" />
