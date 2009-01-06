@@ -19,7 +19,6 @@
     #include "SDL.h"
     #include "tools.h"
     #include "map.h"
-    #include "window.h"
     using namespace std;
 
     SDL_Surface * Screen;
@@ -86,7 +85,7 @@
         while (running)
         {
             // Check for events
-            while (SDL_PollEvent (&event));
+            while (SDL_PollEvent (&event))
             {
                 switch (event.type)
                 {
