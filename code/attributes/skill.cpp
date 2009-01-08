@@ -20,7 +20,6 @@
 #include "../tools/key.h"
 #include "../tools/font.h"
 #include "../tools/audio.h"
-#include "../sprites/map.h"
 #include <vector>
 #include <string>
 #include "skill.h"

@@ -16,7 +16,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.*/
 
 
 #include "code/tools/tools.h"
-#include "code/sprites/map.h"
 #include "code/sprites/sprite.h"
 #include "code/tools/key.h"
 #include "code/tools/font.h"
@@ -45,6 +44,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.*/
 #include "code/interface/Control/Save_Load_Menu_scene.h"
 #include "code/interface/Control/Skills_Menu_scene.h"
 #include "code/interface/Control/Stats_Menu_scene.h"
+#include "code/sprites/chipset.h"
+#include "code/readers/map.h"
 
 #define SCREEN_SIZE_X 320
 #define SCREEN_SIZE_Y 240
@@ -253,12 +254,16 @@ int main(int argc, char** argv)
 		}
 		repxciclo = fps_sincronizar ();
 		// SDL_FillRect(Screen, NULL, 0x0);// Clear screen
+
+
 		for (i = 0; i < repxciclo; i ++)
 		{
 			System.update(); //updates delta
 			actual->updatekey( );		}
 		actual->update(Screen);
+
 		CambioScene(& myaudio, & actual);
+
 		SDL_Flip(Screen); // Flip
 	}
 	SDL_Quit();

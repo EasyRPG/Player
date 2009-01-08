@@ -23,30 +23,36 @@
     #include <stdio.h>
     #include <string>
     #include "SDL.h"
+    #include "SDL_image.h"
     #include "../tools/tools.h"
+    #include "../readers/map.h"
+
     using namespace std;
 // =============================================================================
 // *****************************************************************************
 
-    // === Chipset structure ===================================================
-    struct stChipset
+    class Chipset
     {
-        // --- Fields declaration ----------------------------------------------
+     SDL_Surface * ChipsetSurface;   // Chipset's precalculated surface
+     void RenderTile(SDL_Surface * Destiny, int x, int y, unsigned short Tile, int Frame);
+public:
+     map_data * data;
+     void init(SDL_Surface * precalculated,map_data * m_data);
+     void Render(SDL_Surface * Destiny, int Layer, int CameraX, int CameraY);
 
-        // The chipset structure holds the graphic tileset of a chipset, as well
-        // as their properties and the methods for correctly displaying them.
+    };
+    class Pre_Chipset
+    {
+    private:
         SDL_Surface * BaseSurface;      // Chipset's base surface!
-        SDL_Surface * ChipsetSurface;   // Chipset's precalculated surface
-
-        // --- Methods declaration ---------------------------------------------
-        bool GenerateFromSurface(SDL_Surface * Surface);
-        bool GenerateFromFile(string Filename);
-        void Release();
-        void dispose();
-        void RenderTile(SDL_Surface * Destiny, int x, int y, unsigned short Tile, int Frame);
         void RenderWaterTile(SDL_Surface * Destiny, int x, int y, int Frame, int Border, int Water, int Combination);
         void RenderDepthTile(SDL_Surface * Destiny, int x, int y, int Frame, int Depth, int DepthCombination);
         void RenderTerrainTile(SDL_Surface * Destiny, int x, int y, int Terrain, int Combination);
-    };
+    public:
+        SDL_Surface * ChipsetSurface;   // Chipset's precalculated surface
+        bool GenerateFromSurface(SDL_Surface * Surface);
+        bool GenerateFromFile(string Filename);
+        void dispose();
+     };
 
 #endif

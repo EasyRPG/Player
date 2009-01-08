@@ -27,14 +27,14 @@
 #include "SDL_mixer.h"
 
 #include "../sprites/sprite.h"
-
+#include "../sprites/chipset.h"
 #include "../tools/key.h"
 
 #include "../tools/font.h"
 
 #include "../tools/audio.h"
 
-#include "../sprites/map.h"
+#include "../readers/map.h"
 
 #include <vector>
 #include <string>
@@ -70,7 +70,11 @@ private:
 	Font fuente;
 	bool moving;
 	int to_move;
-	stMap Map;
+	Pre_Chipset pre_chip;
+	Chipset chip;
+	map_reader Map;
+	map_data data;
+
 	char stringBuffer[255];
 
 public:

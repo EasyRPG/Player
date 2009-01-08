@@ -116,6 +116,14 @@
 		<Unit filename="code/interface/Windows/Window_Player_Select.h" />
 		<Unit filename="code/interface/Windows/Window_Select.cpp" />
 		<Unit filename="code/interface/Windows/Window_Select.h" />
+		<Unit filename="code/readers/eventchunks.h" />
+		<Unit filename="code/readers/map.cpp" />
+		<Unit filename="code/readers/map.h" />
+		<Unit filename="code/readers/mapchunks.h" />
+		<Unit filename="code/readers/stevent.cpp" />
+		<Unit filename="code/readers/stevent.h" />
+		<Unit filename="code/readers/strmap.cpp" />
+		<Unit filename="code/readers/strmap.h" />
 		<Unit filename="code/sprites/Animacion.cpp" />
 		<Unit filename="code/sprites/Animacion.h" />
 		<Unit filename="code/sprites/Batler.cpp" />
@@ -127,7 +135,6 @@
 		<Unit filename="code/sprites/Sistem.h" />
 		<Unit filename="code/sprites/chipset.cpp" />
 		<Unit filename="code/sprites/chipset.h" />
-		<Unit filename="code/sprites/map.cpp" />
 		<Unit filename="code/sprites/map.h" />
 		<Unit filename="code/sprites/sprite.cpp" />
 		<Unit filename="code/sprites/sprite.h" />

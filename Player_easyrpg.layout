@@ -37,13 +37,16 @@
 	<File name="code/control/GameOver_scene.h" open="0" top="0" tabpos="1">
 		<Cursor position="2033" topLine="66" />
 	</File>
-	<File name="code/control/Map_scene.cpp" open="1" top="1" tabpos="5">
-		<Cursor position="1574" topLine="27" />
+	<File name="code/control/Map_scene.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="1448" topLine="33" />
 	</File>
-	<File name="code/control/Title_scene.cpp" open="1" top="0" tabpos="4">
+	<File name="code/control/Map_scene.h" open="1" top="0" tabpos="6">
+		<Cursor position="1931" topLine="59" />
+	</File>
+	<File name="code/control/Title_scene.cpp" open="0" top="0" tabpos="4">
 		<Cursor position="1401" topLine="38" />
 	</File>
-	<File name="code/control/scene.cpp" open="0" top="0" tabpos="16">
+	<File name="code/control/scene.cpp" open="1" top="0" tabpos="3">
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="code/interface/Control/Equip_Menu_scene.cpp" open="0" top="0" tabpos="17">
@@ -109,11 +112,8 @@
 	<File name="code/sprites/Sistem.h" open="0" top="0" tabpos="44">
 		<Cursor position="1145" topLine="30" />
 	</File>
-	<File name="code/sprites/chipset.cpp" open="0" top="0" tabpos="33">
-		<Cursor position="15821" topLine="282" />
-	</File>
-	<File name="code/sprites/map.cpp" open="0" top="0" tabpos="34">
-		<Cursor position="0" topLine="0" />
+	<File name="code/sprites/chipset.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="5688" topLine="134" />
 	</File>
 	<File name="code/sprites/sprite.cpp" open="0" top="0" tabpos="2">
 		<Cursor position="0" topLine="78" />
@@ -127,10 +127,10 @@
 	<File name="code/tools/Timer.cpp" open="0" top="0" tabpos="37">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="code/tools/audio.cpp" open="1" top="0" tabpos="2">
+	<File name="code/tools/audio.cpp" open="1" top="0" tabpos="1">
 		<Cursor position="1455" topLine="62" />
 	</File>
-	<File name="code/tools/audio.h" open="1" top="0" tabpos="3">
+	<File name="code/tools/audio.h" open="0" top="0" tabpos="3">
 		<Cursor position="1243" topLine="26" />
 	</File>
 	<File name="code/tools/font.cpp" open="0" top="0" tabpos="39">
@@ -145,7 +145,7 @@
 	<File name="code/tools/tools.cpp" open="0" top="0" tabpos="41">
 		<Cursor position="0" topLine="9" />
 	</File>
-	<File name="main.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="2051" topLine="118" />
+	<File name="main.cpp" open="1" top="1" tabpos="5">
+		<Cursor position="6628" topLine="198" />
 	</File>
 </CodeBlocks_layout_file>

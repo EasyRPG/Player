@@ -22,79 +22,66 @@
     #include "SDL.h"
     #include "../tools/tools.h"
     #include "chipset.h"
-    #include <iostream>
     using namespace std;
 
 // =============================================================================
 // *****************************************************************************
 
-    // === Chipset structure ===================================================
-    bool stChipset::GenerateFromSurface(SDL_Surface * Surface)
+    void Chipset::init(SDL_Surface * precalculated,map_data * m_data)
     {
-        // Set base surface, used for generating the tileset
-        BaseSurface     = Surface;
-        ChipsetSurface  = CreateSurface(32*16, 45*16);
-
-        int CurrentTile = 0;
-
-        // Generate water A
-        for (int j=0; j<3; j++)
-            for (int i=0; i<47; i++, CurrentTile++)
-                RenderWaterTile(ChipsetSurface, (CurrentTile%32)*16, (CurrentTile/32)*16, j, 0, 0, i);
-
-        // Generate water B
-        for (int j=0; j<3; j++)
-            for (int i=0; i<47; i++, CurrentTile++)
-                RenderWaterTile(ChipsetSurface, (CurrentTile%32)*16, (CurrentTile/32)*16, j, 1, 0, i);
-
-        // Generate water C
-        for (int j=0; j<3; j++)
-            for (int i=0; i<47; i++, CurrentTile++)
-                RenderWaterTile(ChipsetSurface, (CurrentTile%32)*16, (CurrentTile/32)*16, j, 0, 3, i);
-
-        // Generate water depth tiles
-        for (int i=0; i<48; i++, CurrentTile++)
-            RenderDepthTile(ChipsetSurface, (CurrentTile%32)*16, (CurrentTile/32)*16, i/16, 1, i%16);
-
-        for (int i=0; i<48; i++, CurrentTile++)
-            RenderDepthTile(ChipsetSurface, (CurrentTile%32)*16, (CurrentTile/32)*16, i/16, 3, i%16);
-
-        // Generate animated tiles
-        for (int j=0; j<3; j++)
-            for (int i=0; i<4; i++, CurrentTile++)
-                DrawSurface(ChipsetSurface, (CurrentTile%32)*16, (CurrentTile/32)*16, BaseSurface, 48+j*16, 64+i*16, 16, 16);
-
-        // Generate terrain tiles
-        for (int j=0; j<12; j++)
-            for (int i=0; i<50; i++, CurrentTile++)
-                RenderTerrainTile(ChipsetSurface, (CurrentTile%32)*16, (CurrentTile/32)*16, j, i);
-
-        // Generate common tiles
-        for (int i=0; i<288; i++, CurrentTile++)
-            DrawSurface(ChipsetSurface, (CurrentTile%32)*16, (CurrentTile/32)*16, BaseSurface, 192+((i%6)*16)+(i/96)*96, ((i/6)%16)*16, 16, 16);
-
-        // Done
-        return true;
+        ChipsetSurface=precalculated;
+        data=m_data;
     }
 
-    bool stChipset::GenerateFromFile(string Filename)
+    void Chipset::Render(SDL_Surface * Destiny, int Layer, int CameraX, int CameraY)
     {
-        SDL_Surface * FileSurface = LoadSurface(Filename);
-	  if (FileSurface == NULL)
-	  {
-		std::cerr << "Unable to open file: " << Filename << std::endl;
-		exit(1);
-	  }
-        return GenerateFromSurface(FileSurface);
-    }
-    void stChipset::dispose()
-    {
-         SDL_FreeSurface(BaseSurface);
-         SDL_FreeSurface(ChipsetSurface);
+        // Declarate the variables we're going to use...
+        int x, y, xStart, xEnd, yStart, yEnd;
+	    //int Tile;
+        unsigned short * TilePointer;
+        unsigned long  StepPerY;
+        int Frame = SDL_GetTicks()>>7;
+        //SDL_Rect destinyRect;
+
+        // Calculate boundaries
+        xStart = (CameraX>>4) - 1;
+        yStart = (CameraY>>4) - 1;
+        xEnd   = ((CameraX + Destiny->w)>>4) + 1;
+        yEnd   = ((CameraY + Destiny->h)>>4) + 1;
+
+        // Clipping
+        if ( xStart < 0        ) xStart = 0;
+        if ( yStart < 0        ) yStart = 0;
+        if ( xEnd   > (data->MapWidth) ) xEnd   = data->MapWidth;
+        if ( yEnd   > (data->MapHeight)) yEnd   = data->MapHeight;
+
+        switch(Layer)
+        {
+            case 0:
+                // Calculate initial pointer and step
+                TilePointer = &data->LowerLayer[xStart + yStart * (data->MapWidth)];
+                StepPerY    = data->MapWidth - (xEnd-xStart);
+
+                // Run through the whole map
+                for ( y=yStart; y<yEnd; y++, TilePointer+=StepPerY )
+                    for ( x = xStart; x < xEnd; x++, TilePointer++ )
+                        RenderTile(Destiny, (x<<4)-CameraX, (y<<4)-CameraY, *TilePointer, Frame);
+                break;
+            case 1:
+                // Calculate initial pointer and step
+                TilePointer = &data->UpperLayer[xStart + yStart * (data->MapWidth)];
+                StepPerY    = data->MapWidth - (xEnd-xStart);
+
+                // Run through the whole map
+                for ( y=yStart; y<yEnd; y++, TilePointer+=StepPerY )
+                    for ( x = xStart; x < xEnd; x++, TilePointer++ )
+                        RenderTile(Destiny, (x<<4)-CameraX, (y<<4)-CameraY, *TilePointer, Frame);
+                break;
+        }
+
     }
 
-    // =========================================================================
-    void stChipset::RenderTile(SDL_Surface * Destiny, int x, int y, unsigned short Tile, int Frame)
+   void Chipset::RenderTile(SDL_Surface * Destiny, int x, int y, unsigned short Tile, int Frame)
     {
         if (Tile >= 0x2710)         // Upper layer tiles
         {
@@ -117,16 +104,83 @@
             Tile = 0x0207 + (((Tile-0x0BB8)/50)<<2) + Frame;
             DrawSurface(Destiny, x, y, ChipsetSurface, ((Tile&0x1F)<<4), ((Tile>>5)<<4), 16, 16);
         } else {                    // Water tiles
+
             Frame %= 3;
-            int WaterTile =  Tile%50;
+            int WaterTile =  (Tile%50);
             int WaterType = ((Tile/50)/20);
             Tile = WaterType*141+WaterTile+(Frame*47);
 
             DrawSurface(Destiny, x, y, ChipsetSurface, ((Tile&0x1F)<<4), ((Tile>>5)<<4), 16, 16);
         }
+
     }
 
-    void stChipset::RenderWaterTile(SDL_Surface * Destiny, int x, int y, int Frame, int Border, int Water, int Combination)
+    // === Chipset structure ===================================================
+    bool Pre_Chipset::GenerateFromSurface(SDL_Surface * Surface)
+    {
+        // Set base surface, used for generating the tileset
+        BaseSurface     = Surface;
+        ChipsetSurface  = CreateSurface(32*16, 45*16);
+
+        int CurrentTile = 0;
+
+        // Generate water A
+        for (int j=0; j<3; j++)
+            for (int i=0; i<47; i++, CurrentTile++)
+                RenderWaterTile(ChipsetSurface, (CurrentTile%32)*16, (CurrentTile/32)*16, j, 0, 0, i);
+
+        // Generate water B
+        for (int j=0; j<3; j++)
+            for (int i=0; i<47; i++, CurrentTile++)
+                RenderWaterTile(ChipsetSurface, (CurrentTile%32)*16, (CurrentTile/32)*16, j, 1, 0, i);
+
+        // Generate water C
+        for (int j=0; j<3; j++)
+            for (int i=0; i<47; i++, CurrentTile++)
+                RenderWaterTile(ChipsetSurface, (CurrentTile%32)*16, (CurrentTile/32)*16, j, 0, 2, i);
+
+        // Generate water depth tiles
+        for (int i=0; i<48; i++, CurrentTile++)
+            RenderDepthTile(ChipsetSurface, (CurrentTile%32)*16, (CurrentTile/32)*16, i/16, 2, i%16);
+
+        for (int i=0; i<48; i++, CurrentTile++)
+            RenderDepthTile(ChipsetSurface, (CurrentTile%32)*16, (CurrentTile/32)*16, i/16, 1, i%16);
+
+      //  for (int i=0; i<48; i++, CurrentTile++)
+        //    RenderDepthTile(ChipsetSurface, (CurrentTile%32)*16, (CurrentTile/32)*16, i/16, 2, i%16);
+
+        // Generate animated tiles
+        for (int j=0; j<3; j++)
+            for (int i=0; i<4; i++, CurrentTile++)
+                DrawSurface(ChipsetSurface, (CurrentTile%32)*16, (CurrentTile/32)*16, BaseSurface, 48+j*16, 64+i*16, 16, 16);
+
+        // Generate terrain tiles
+        for (int j=0; j<12; j++)
+            for (int i=0; i<50; i++, CurrentTile++)
+                RenderTerrainTile(ChipsetSurface, (CurrentTile%32)*16, (CurrentTile/32)*16, j, i);
+
+        // Generate common tiles
+        for (int i=0; i<288; i++, CurrentTile++)
+            DrawSurface(ChipsetSurface, (CurrentTile%32)*16, (CurrentTile/32)*16, BaseSurface, 192+((i%6)*16)+(i/96)*96, ((i/6)%16)*16, 16, 16);
+
+        // Done
+        return true;
+    }
+
+    bool Pre_Chipset::GenerateFromFile(string Filename)
+    {
+        SDL_Surface * FileSurface = LoadSurface(Filename);
+        if(FileSurface==NULL)
+        printf("error");
+        return GenerateFromSurface(FileSurface);
+    }
+    void Pre_Chipset::dispose()
+    {
+         SDL_FreeSurface(BaseSurface);
+         SDL_FreeSurface(ChipsetSurface);
+    }
+
+    void Pre_Chipset::RenderWaterTile(SDL_Surface * Destiny, int x, int y, int Frame, int Border, int Water, int Combination)
     {
         int SFrame       = Frame*16, SBorder = Border*48;
         //int SFrameBorder = SFrame+SBorder;
@@ -254,7 +308,8 @@
         }
     }
 
-    void stChipset::RenderTerrainTile(SDL_Surface * Destiny, int x, int y, int Terrain, int Combination)
+
+    void Pre_Chipset::RenderTerrainTile(SDL_Surface * Destiny, int x, int y, int Terrain, int Combination)
     {
         Terrain += 4;
         int XTerrain = ((Terrain%2)*48)+(Terrain/8)*96, YTerrain = ((Terrain/2)%4)*64;
@@ -382,15 +437,24 @@
         }
     }
 
-    void stChipset::RenderDepthTile(SDL_Surface * Destiny, int x, int y, int Frame, int Depth, int DepthCombination)
+    void Pre_Chipset::RenderDepthTile(SDL_Surface * Destiny, int x, int y, int Frame, int Depth, int DepthCombination)
     {
+
         int SFrame = Frame*16;
 
         // Now render the depth part
-        if (DepthCombination&0x01) DrawSurface(Destiny, x,   y,   BaseSurface, SFrame,   64+(Depth*16),   8, 8);
-        if (DepthCombination&0x02) DrawSurface(Destiny, x+8, y,   BaseSurface, SFrame+8, 64+(Depth*16),   8, 8);
-        if (DepthCombination&0x04) DrawSurface(Destiny, x+8, y+8, BaseSurface, SFrame+8, 64+(Depth*16)+8, 8, 8);
-        if (DepthCombination&0x08) DrawSurface(Destiny, x,   y+8, BaseSurface, SFrame,   64+(Depth*16)+8, 8, 8);
+        if (DepthCombination&0x01)
+        DrawSurface(Destiny, x,   y,   BaseSurface, SFrame,   64+(Depth*16),   8, 8);
+
+        if (DepthCombination&0x02)
+        DrawSurface(Destiny, x+8, y,   BaseSurface, SFrame+8, 64+(Depth*16),   8, 8);
+
+        if (DepthCombination&0x04)
+        DrawSurface(Destiny, x+8, y+8, BaseSurface, SFrame+8, 64+(Depth*16)+8, 8, 8);
+
+        if (DepthCombination&0x08)
+        DrawSurface(Destiny, x,   y+8, BaseSurface, SFrame,   64+(Depth*16)+8, 8, 8);
+
     }
 
     // =========================================================================

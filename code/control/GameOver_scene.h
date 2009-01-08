@@ -35,7 +35,6 @@
 
 #include "../tools/audio.h"
 
-#include "../sprites/map.h"
 
 #include <vector>
 

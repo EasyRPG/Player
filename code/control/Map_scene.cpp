@@ -33,8 +33,11 @@ void Map_Scene::init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * Th
 	npc.setx(120);
 	npc.sety(120);
 	// ===[ LOADING MAP DATA ]==============================================
-	Map.Load("../Map0001.lmu");
-	Map.Chipset.GenerateFromFile("../ChipSet/Basis.png");
+	pre_chip.GenerateFromFile("../ChipSet/Basis.png");
+
+    Map.Load("Map0001.lmu",&data);
+    chip.init(pre_chip.ChipsetSurface,&data);
+
 	(* myaudio).load("../Music/Town.mid");
 	NScene=TheScene;
 	moving=false;
@@ -46,21 +49,23 @@ void Map_Scene::init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * Th
 void Map_Scene::update(SDL_Surface* Screen)
 {
 	// SDL_FillRect(Screen, NULL, 0x0);// Clear screen  inutil
-	Map.Render(Screen, 0, (*myteam).view.x, (*myteam).view.y); //dibuja mapa capa 1 con repecto a la vista
-	Map.Render(Screen, 1, (*myteam).view.x, (*myteam).view.y);//dibuja mapa capa 2 con repecto a la vista
+	chip.Render(Screen, 0, (*myteam).view.x, (*myteam).view.y); //dibuja mapa capa 1 con repecto a la vista
+	chip.Render(Screen, 1, (*myteam).view.x, (*myteam).view.y);//dibuja mapa capa 2 con repecto a la vista
+
+
 	Actor.drawc(Screen);
 	npc.addx(-(*myteam).view.x);
 	npc.addy(-(*myteam).view.y);
 	npc.drawc(Screen);
 	npc.addx(+(*myteam).view.x);
 	npc.addy(+(*myteam).view.y);
-	//ver los datos del mapa
+
 }
 
 
 void Map_Scene::Scroll() {
 
-	(*myteam).view.x= Actor.Clamp((int) sll2dbl(Actor.realX)+ 8 - (SCREEN_SIZE_X>>1),0, (Map.MapWidth<<4)-SCREEN_SIZE_X);
+	(*myteam).view.x= Actor.Clamp((int) sll2dbl(Actor.realX)+ 8 - (SCREEN_SIZE_X>>1),0, ((chip.data->MapWidth)<<4)-SCREEN_SIZE_X);
 	if(!Actor.outofarea)
 	{
 		Actor.x= (int)sll2dbl(Actor.realX)  -(*myteam).view.x;
@@ -69,7 +74,7 @@ void Map_Scene::Scroll() {
 	{
 		Actor.x=(SCREEN_SIZE_X>>1)-8;
 	}
-	(*myteam).view.y= Actor.Clamp((int) sll2dbl(Actor.realY) - (SCREEN_SIZE_Y>>1), 0, (Map.MapHeight<<4)-SCREEN_SIZE_Y);
+	(*myteam).view.y= Actor.Clamp((int) sll2dbl(Actor.realY) - (SCREEN_SIZE_Y>>1), 0, ((chip.data->MapHeight)<<4)-SCREEN_SIZE_Y);
 	if(!Actor.outofarea)
 	{
 		Actor.y=(int)sll2dbl(Actor.realY)-(*myteam).view.y;
@@ -143,7 +148,7 @@ void Map_Scene::dispose() {
 	red.dispose();
 	//(*player).dispose();
 	npc.dispose();
-	Map.Chipset.dispose();
+	pre_chip.dispose();
 	alexface.dispose();
 	(*myaudio).stop();
 
