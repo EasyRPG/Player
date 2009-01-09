@@ -117,6 +117,8 @@
 		<Unit filename="code/interface/Windows/Window_Select.cpp" />
 		<Unit filename="code/interface/Windows/Window_Select.h" />
 		<Unit filename="code/readers/eventchunks.h" />
+		<Unit filename="code/readers/lmt.cpp" />
+		<Unit filename="code/readers/lmt.h" />
 		<Unit filename="code/readers/map.cpp" />
 		<Unit filename="code/readers/map.h" />
 		<Unit filename="code/readers/mapchunks.h" />

@@ -35,7 +35,7 @@
 #include "../tools/audio.h"
 
 #include "../readers/map.h"
-
+#include "../readers/lmt.h"
 #include <vector>
 #include <string>
 
