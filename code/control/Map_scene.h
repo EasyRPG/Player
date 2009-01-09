@@ -36,6 +36,7 @@
 
 #include "../readers/map.h"
 #include "../readers/lmt.h"
+#include "../readers/ldb.h"
 #include <vector>
 #include <string>
 

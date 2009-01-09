@@ -37,10 +37,10 @@ void Map_Scene::init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * Th
 
     Map.Load("Map0001.lmu",&data);
     chip.init(pre_chip.ChipsetSurface,&data);
-       lmt_reader my_lmt;
-       lmt_data data2;
-        my_lmt.load("RPG_RT.lmt",&data2);
-        my_lmt.print(&data2);
+    LDB_reader my_ldb;
+    LDB_data data2;
+    my_ldb.Load("RPG_RT.ldb",&data2);
+    my_ldb.ShowInformation(&data2);
 	(* myaudio).load("../Music/Town.mid");
 	NScene=TheScene;
 	moving=false;

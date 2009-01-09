@@ -1905,10 +1905,10 @@
 	"../attributes/CActor.h"
 	"scene.h"
 
-1231538216 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Map_scene.cpp
+1231542025 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Map_scene.cpp
 	"Map_scene.h"
 
-1231537987 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Map_scene.h
+1231541950 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Map_scene.h
 	"SDL.h"
 	"SDL_image.h"
 	"SDL_mixer.h"
@@ -1919,6 +1919,7 @@
 	"../tools/audio.h"
 	"../readers/map.h"
 	"../readers/lmt.h"
+	"../readers/ldb.h"
 	<vector>
 	<string>
 	"../attributes/skill.h"
@@ -2910,4 +2911,17 @@
 	<algorithm>
 	"../tools/tools.h"
 	"lmt.h"
+
+1231541756 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/ldb.h
+	<vector>
+	"ldbchunks.h"
+	"ldbstr.h"
+	"../tools/tools.h"
+
+1231542464 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/ldbchunks.h
+
+1231386380 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/ldbstr.h
+	<string>
+	<vector>
+	"stevent.h"
 

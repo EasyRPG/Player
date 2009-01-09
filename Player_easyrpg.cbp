@@ -117,6 +117,11 @@
 		<Unit filename="code/interface/Windows/Window_Select.cpp" />
 		<Unit filename="code/interface/Windows/Window_Select.h" />
 		<Unit filename="code/readers/eventchunks.h" />
+		<Unit filename="code/readers/ldb.cpp" />
+		<Unit filename="code/readers/ldb.h" />
+		<Unit filename="code/readers/ldbchunks.h" />
+		<Unit filename="code/readers/ldbstr.cpp" />
+		<Unit filename="code/readers/ldbstr.h" />
 		<Unit filename="code/readers/lmt.cpp" />
 		<Unit filename="code/readers/lmt.h" />
 		<Unit filename="code/readers/map.cpp" />

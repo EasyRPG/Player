@@ -37,11 +37,11 @@
 	<File name="code/control/GameOver_scene.h" open="0" top="0" tabpos="1">
 		<Cursor position="2033" topLine="66" />
 	</File>
-	<File name="code/control/Map_scene.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="1609" topLine="0" />
+	<File name="code/control/Map_scene.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="1697" topLine="38" />
 	</File>
-	<File name="code/control/Map_scene.h" open="1" top="0" tabpos="2">
-		<Cursor position="1294" topLine="26" />
+	<File name="code/control/Map_scene.h" open="1" top="0" tabpos="4">
+		<Cursor position="1933" topLine="61" />
 	</File>
 	<File name="code/control/Title_scene.cpp" open="0" top="0" tabpos="4">
 		<Cursor position="1401" topLine="38" />
@@ -85,11 +85,26 @@
 	<File name="code/interface/Windows/Window_Select.cpp" open="0" top="0" tabpos="26">
 		<Cursor position="4302" topLine="170" />
 	</File>
-	<File name="code/readers/lmt.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="9906" topLine="269" />
+	<File name="code/readers/ldb.cpp" open="1" top="1" tabpos="2">
+		<Cursor position="92703" topLine="2464" />
 	</File>
-	<File name="code/readers/map.cpp" open="1" top="0" tabpos="4">
+	<File name="code/readers/ldb.h" open="1" top="0" tabpos="3">
+		<Cursor position="1112" topLine="26" />
+	</File>
+	<File name="code/readers/ldbchunks.h" open="1" top="0" tabpos="5">
+		<Cursor position="717" topLine="12" />
+	</File>
+	<File name="code/readers/ldbstr.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="0" topLine="36" />
+	</File>
+	<File name="code/readers/lmt.cpp" open="0" top="0" tabpos="3">
+		<Cursor position="854" topLine="21" />
+	</File>
+	<File name="code/readers/map.cpp" open="0" top="0" tabpos="4">
 		<Cursor position="4336" topLine="66" />
+	</File>
+	<File name="code/readers/mapchunks.h" open="1" top="0" tabpos="6">
+		<Cursor position="2874" topLine="64" />
 	</File>
 	<File name="code/sprites/Animacion.cpp" open="0" top="0" tabpos="28">
 		<Cursor position="0" topLine="0" />
@@ -148,7 +163,7 @@
 	<File name="code/tools/key.cpp" open="0" top="0" tabpos="40">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="code/tools/tools.cpp" open="1" top="0" tabpos="5">
+	<File name="code/tools/tools.cpp" open="0" top="0" tabpos="5">
 		<Cursor position="1152" topLine="11" />
 	</File>
 	<File name="main.cpp" open="0" top="0" tabpos="5">
