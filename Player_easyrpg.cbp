@@ -142,6 +142,7 @@
 		<Unit filename="code/sprites/Sistem.h" />
 		<Unit filename="code/sprites/chipset.cpp" />
 		<Unit filename="code/sprites/chipset.h" />
+		<Unit filename="code/sprites/map.h" />
 		<Unit filename="code/sprites/sprite.cpp" />
 		<Unit filename="code/sprites/sprite.h" />
 		<Unit filename="code/tools/CDeltaTime.cpp" />
@@ -150,6 +151,12 @@
 		<Unit filename="code/tools/Timer.h" />
 		<Unit filename="code/tools/audio.cpp" />
 		<Unit filename="code/tools/audio.h" />
+		<Unit filename="code/tools/control.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="code/tools/control.h">
+			<Option target="Debug" />
+		</Unit>
 		<Unit filename="code/tools/font.cpp" />
 		<Unit filename="code/tools/font.h" />
 		<Unit filename="code/tools/key.cpp" />

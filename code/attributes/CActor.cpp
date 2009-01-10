@@ -93,24 +93,52 @@ void CActor::MoveOnInput()
 	switch(state)
 	{
 		case ACTOR_STATE_IDLE:
-						unsigned char * keyData;
-						keyData = SDL_GetKeyState(NULL);
-						if ( keyData[SDLK_UP]  )
+            int temp;
+			//keyData = SDL_GetKeyState(NULL);
+			temp = Control::pop_action();
+			switch (temp)
+			{
+                case ARROW_UP:
+                    state = ACTOR_STATE_MOVING;
+                    Cmotion.direction = ACTOR_DIRECTION_UP;
+                    dir = 0;
+                    Cmotion.distance = 0;
+                    Control::stop = true;
+                    break;
+				case ARROW_DOWN:
+                    state = ACTOR_STATE_MOVING;
+                    Cmotion.direction = ACTOR_DIRECTION_DOWN;
+                    dir = 2;
+                    Cmotion.distance = 0;
+                    Control::stop = true;
+                    break;
+				case ARROW_LEFT:
+                    state            = ACTOR_STATE_MOVING;
+                    Cmotion.direction = ACTOR_DIRECTION_LEFT;
+                    dir=3;
+                    Cmotion.distance  = 0;
+                    Control::stop = true;
+                    break;
+                case ARROW_RIGHT:
+                    state = ACTOR_STATE_MOVING;
+                    Cmotion.direction = ACTOR_DIRECTION_RIGHT;
+                    dir = 1;
+                    Cmotion.distance  = 0;
+                    Control::stop = true;
+                    break;
+                default:
+                    frame=0;
+
+			}
+						/*if ( keyData[SDLK_UP]  )
 						{
 							// && World->CollisionAt(GridX, GridY-1, WORLD_COLLISION_FROM_DOWN)==false) {
-							state            = ACTOR_STATE_MOVING;
-							Cmotion.direction = ACTOR_DIRECTION_UP;
-							dir=0;
-							Cmotion.distance  = 0;
 						}
 						else
 						{
 						if (keyData[SDLK_DOWN]  )
 						{// && World->CollisionAt(GridX, GridY+1, WORLD_COLLISION_FROM_UP)==false) {
-							state            = ACTOR_STATE_MOVING;
-							Cmotion.direction = ACTOR_DIRECTION_DOWN;
-							dir=2;
-							Cmotion.distance  = 0;
+
 						}
 						else
 						if ( keyData[SDLK_LEFT] )
@@ -123,16 +151,13 @@ void CActor::MoveOnInput()
 						else
 						if ( keyData[SDLK_RIGHT] )
 						{ //&& World->CollisionAt(GridX+1, GridY, WORLD_COLLISION_FROM_LEFT)==false) {
-							state            = ACTOR_STATE_MOVING;
-							Cmotion.direction = ACTOR_DIRECTION_RIGHT;
-							dir=1;
-							Cmotion.distance  = 0;
+
 						}
 						else
 						{
-							frame=0;
+
 						}
-						}
+						}*/
 						// 	    GridX = (x)>>4; GridY = (y)>>4;// Calculate Grid X and Grid Y
 		break;
 
@@ -160,6 +185,7 @@ void CActor::MoveOnInput()
 						if (Cmotion.distance == 16.0f)
 						{
 							state = ACTOR_STATE_IDLE;
+							Control::stop = false;
 						}
 		break;
 	}

@@ -10,13 +10,14 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #include "Menu_Easy.h"
+#include "../../code/tools/control.h"
 
-void Menu_Easy::init(Audio * theaudio, bool * run,int X,int Y) 
+void Menu_Easy::init(Audio * theaudio, bool * run,int X,int Y)
 {
 	myaudio=theaudio;
 	desided=false;
@@ -50,47 +51,98 @@ int Menu_Easy::getindexX()
 	return (indexX);
 }
 
-void Menu_Easy::updatekey() 
+void Menu_Easy::updatekey()
 {
 
-static unsigned char * keyData;
+//static unsigned char * keyData;
 static unsigned char Last_key;
-delay++;
+//delay++;
+
+int temp;
+
+temp = Control::pop_action();
 
 if (desided==false)
-	if(delay==4)
-	{
-		keyData = SDL_GetKeyState(NULL);
-		if ( keyData[SDLK_ESCAPE] )
+//	if(delay==4)
+//	{
+        switch (temp)
+        {
+            case DECISION:
+                Last_key=LMK_Z;
+                desided= true;
+                break;
+            case CANCEL:
+                break;
+            case ARROW_UP:
+                indexY--;
+                break;
+            case ARROW_DOWN:
+                indexY++;
+                break;
+            case ARROW_RIGHT:
+                indexX++;
+                break;
+            case ARROW_LEFT:
+                indexX--;
+                break;
+            case SHIFT:
+                break;
+            case EXIT:
+                *running = false;
+                break;
+            default:
+                break;
+        }
+		if (indexX<0)
 		{
-			* running = false;
+			indexX=maxindexX;
 		}
 
-		if ( keyData[SDLK_LEFT]  ) 
+		if (indexX>maxindexX)
+		{
+			indexX=0;
+		}
+
+		if (indexY<0)
+		{
+			indexY=maxindexY;
+		}
+
+		if (indexY>maxindexY)
+		{
+		indexY=0;
+		}
+		//keyData = SDL_GetKeyState(NULL);
+		/*if ( keyData[SDLK_ESCAPE] )
+		{
+			* running = false;
+		}*/
+
+		/*if ( keyData[SDLK_LEFT]  )
 		{
 			indexX--;
 			//(*myaudio).soundload("../Sound/Cursor1.wav");
 		}
 
-		if ( keyData[SDLK_RIGHT] ) 
+		if ( keyData[SDLK_RIGHT] )
 		{
 			indexX++;
   			// (*myaudio).soundload("../Sound/Cursor1.wav");
 		}
 
-		if ( keyData[SDLK_UP] ) 
+		if ( keyData[SDLK_UP] )
 		{
 			indexY--;
 			// (*myaudio).soundload("../Sound/Cursor1.wav");
 		}
 
-		if ( keyData[SDLK_DOWN]  ) 
+		if ( keyData[SDLK_DOWN]  )
 		{
 			indexY++;
 			// (*myaudio).soundload("../Sound/Cursor1.wav");
 		}
 
-		if (( keyData[LMK_Z]  )&&(Last_key!=LMK_Z)) 
+		if (( keyData[LMK_Z]  )&&(Last_key!=LMK_Z))
 		{
  			//  (*myaudio).soundload("../Sound/Decision2.wav");
 			Last_key=LMK_Z;
@@ -102,26 +154,8 @@ if (desided==false)
 			Last_key=0;
 		}
 
-		if (indexX<0)
-		{
-			indexX=maxindexX;
-		}
-		
-		if (indexX>maxindexX)
-		{
-			indexX=0;
-		}
 
-		if (indexY<0)
-		{
-			indexY=maxindexY;
-		}
-		
-		if (indexY>maxindexY)
-		{
-		indexY=0;
-		}
-		delay=0;
-	}
+		delay=0;*/
+//	}
 }
 

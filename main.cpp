@@ -47,6 +47,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.*/
 #include "code/sprites/chipset.h"
 #include "code/readers/map.h"
 
+#include "code/tools/control.h"
+
 #define SCREEN_SIZE_X 320
 #define SCREEN_SIZE_Y 240
 
@@ -215,7 +217,7 @@ int main(int argc, char** argv)
 
 	// ===[ ENTRY POINT ]===================================================
 
-	SDL_Event event;
+//	SDL_Event event;
 	titulo.init(& myaudio,& running,& TheScene,& team);
 
 	actual= & titulo;
@@ -226,7 +228,7 @@ int main(int argc, char** argv)
 	{
 		timer++;
 		// Check for events
-		while (SDL_PollEvent (&event))
+		/*while (SDL_PollEvent (&event))
 		{
 			switch (event.type)
 			{
@@ -251,7 +253,7 @@ int main(int argc, char** argv)
 				default:
 						break;
 			}
-		}
+		}*/
 		repxciclo = fps_sincronizar ();
 		// SDL_FillRect(Screen, NULL, 0x0);// Clear screen
 
@@ -263,6 +265,8 @@ int main(int argc, char** argv)
 		actual->update(Screen);
 
 		CambioScene(& myaudio, & actual);
+
+		Control::update_keys();
 
 		SDL_Flip(Screen); // Flip
 	}
