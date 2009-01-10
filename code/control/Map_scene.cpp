@@ -49,6 +49,7 @@ void Map_Scene::init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * Th
 	//(*myaudio).play(-1);
 	Control::set_delay(0);
 	Control::set_in_delay(0);
+	Control::in_map = true;
 
 }
 

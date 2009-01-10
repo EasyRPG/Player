@@ -38,6 +38,7 @@ class Control
     public:
 
         static bool stop;
+        static bool in_map;
 
         static int pop_action();
         static void update_keys();

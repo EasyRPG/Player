@@ -126,8 +126,8 @@ void CActor::MoveOnInput()
                     Cmotion.distance  = 0;
                     Control::stop = true;
                     break;
-                default:
-                    frame=0;
+                default: ;
+                    //frame=0;
 
 			}
 						/*if ( keyData[SDLK_UP]  )

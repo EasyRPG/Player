@@ -10,6 +10,8 @@ int Control::in_delay = 4;
 int Control::in_delay_tmp = 0;
 
 bool Control::stop = false;
+bool Control::in_map = false;
+
 
 int Control::pop_action()
 {
@@ -39,7 +41,7 @@ void Control::update_keys()
                 switch (event.key.keysym.sym)
                 {
                     case SDLK_UP:
-                        if (n_keys[ARROW_UP] == 0)
+                        if ((n_keys[ARROW_UP] == 0) && (events.empty()))
                         {
                             events.push_back(ARROW_UP);
                             n_keys[ARROW_UP]++;
@@ -47,35 +49,35 @@ void Control::update_keys()
 
                         break;
                     case SDLK_DOWN:
-                        if (n_keys[ARROW_DOWN] == 0)
+                        if ((n_keys[ARROW_DOWN] == 0) && (events.empty()))
                         {
                             events.push_back(ARROW_DOWN);
                             n_keys[ARROW_DOWN]++;
                         }
                         break;
                     case SDLK_RIGHT:
-                        if (n_keys[ARROW_RIGHT] == 0)
+                        if ((n_keys[ARROW_RIGHT] == 0) && (events.empty()))
                         {
                             events.push_back(ARROW_RIGHT);
                             n_keys[ARROW_RIGHT]++;
                         }
                         break;
                     case SDLK_LEFT:
-                        if (n_keys[ARROW_LEFT] == 0)
+                        if ((n_keys[ARROW_LEFT] == 0) && (events.empty()))
                         {
                             events.push_back(ARROW_LEFT);
                             n_keys[ARROW_LEFT]++;
                         }
                         break;
                     case SDLK_z:
-                        if (n_keys[DECISION] == 0)
+                        if ((n_keys[DECISION] == 0) && (events.empty()))
                         {
                             events.push_back(DECISION);
                             n_keys[DECISION]++;
                         }
                         break;
                     case SDLK_x:
-                        if (n_keys[CANCEL] == 0)
+                        if ((n_keys[CANCEL] == 0) && (events.empty()))
                         {
                             events.push_back(CANCEL);
                             n_keys[CANCEL]++;
@@ -83,7 +85,7 @@ void Control::update_keys()
                         break;
                     case SDLK_LSHIFT:
                     case SDLK_RSHIFT:
-                        if (n_keys[SHIFT] == 0)
+                        if ((n_keys[SHIFT] == 0) && (events.empty()))
                         {
                             events.push_back(SHIFT);
                             n_keys[SHIFT]++;
@@ -130,6 +132,7 @@ void Control::update_keys()
         }
     }
     int i;
+    if ((in_map) && !(events.empty())) return;
     for (i = 0; i < N_KEYS; i++)
     {
         if (n_keys[i] > delay)

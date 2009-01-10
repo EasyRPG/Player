@@ -3008,7 +3008,7 @@
 	<iostream>
 	<deque>
 
-1231615373 source:/home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/CActor.cpp
+1231627388 source:/home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/CActor.cpp
 	<SDL/SDL.h>
 	"../tools/math-sll.h"
 	"../sprites/Chara.h"
@@ -3044,7 +3044,7 @@
 1231617780 /home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/CActor.h
 	"../../code/tools/control.h"
 
-1231609314 /home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/control.h
+1231626684 /home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/control.h
 	"SDL.h"
 	<iostream>
 	<deque>
@@ -3248,7 +3248,7 @@
 	"../attributes/CActor.h"
 	"scene.h"
 
-1231609634 source:/home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Map_scene.cpp
+1231626684 source:/home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Map_scene.cpp
 	"Map_scene.h"
 
 1231616584 /home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Map_scene.h
@@ -3605,7 +3605,7 @@
 	<iostream>
 	"audio.h"
 
-1231609452 source:/home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/control.cpp
+1231628052 source:/home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/control.cpp
 	"control.h"
 
 1231616585 source:/home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/font.cpp
@@ -3653,4 +3653,19 @@
 	"code/sprites/chipset.h"
 	"code/readers/map.h"
 	"code/tools/control.h"
+
+1231617838 source:/home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/stevent.cpp
+	<stdlib.h>
+	<stdio.h>
+	<string>
+	"../tools/tools.h"
+	"stevent.h"
+
+1231617838 source:/home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/chipset.cpp
+	<stdlib.h>
+	<stdio.h>
+	<string>
+	"SDL.h"
+	"../tools/tools.h"
+	"chipset.h"
 

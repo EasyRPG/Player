@@ -2,10 +2,10 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
 	<File name="code/attributes/CActor.cpp" open="1" top="1" tabpos="6">
-		<Cursor position="3683" topLine="147" />
+		<Cursor position="2188" topLine="166" />
 	</File>
 	<File name="code/attributes/CActor.h" open="1" top="0" tabpos="7">
-		<Cursor position="879" topLine="0" />
+		<Cursor position="1446" topLine="11" />
 	</File>
 	<File name="code/attributes/Enemy.cpp" open="0" top="0" tabpos="9">
 		<Cursor position="0" topLine="0" />
@@ -38,7 +38,7 @@
 		<Cursor position="2033" topLine="66" />
 	</File>
 	<File name="code/control/Map_scene.cpp" open="1" top="0" tabpos="5">
-		<Cursor position="1721" topLine="137" />
+		<Cursor position="1721" topLine="32" />
 	</File>
 	<File name="code/control/Map_scene.h" open="0" top="0" tabpos="4">
 		<Cursor position="1933" topLine="61" />
@@ -115,8 +115,8 @@
 	<File name="code/readers/mapchunks.h" open="0" top="0" tabpos="6">
 		<Cursor position="2874" topLine="57" />
 	</File>
-	<File name="code/readers/stevent.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="86469" topLine="1918" />
+	<File name="code/readers/stevent.cpp" open="1" top="0" tabpos="8">
+		<Cursor position="86440" topLine="1917" />
 	</File>
 	<File name="code/sprites/Animacion.cpp" open="0" top="0" tabpos="28">
 		<Cursor position="0" topLine="0" />
@@ -127,11 +127,11 @@
 	<File name="code/sprites/Batler.cpp" open="0" top="0" tabpos="29">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="code/sprites/Chara.cpp" open="0" top="0" tabpos="30">
-		<Cursor position="0" topLine="0" />
+	<File name="code/sprites/Chara.cpp" open="1" top="0" tabpos="10">
+		<Cursor position="1343" topLine="37" />
 	</File>
-	<File name="code/sprites/Chara.h" open="0" top="0" tabpos="46">
-		<Cursor position="1143" topLine="27" />
+	<File name="code/sprites/Chara.h" open="1" top="0" tabpos="11">
+		<Cursor position="1143" topLine="35" />
 	</File>
 	<File name="code/sprites/Faceset.cpp" open="0" top="0" tabpos="31">
 		<Cursor position="0" topLine="0" />
@@ -145,8 +145,8 @@
 	<File name="code/sprites/Sistem.h" open="0" top="0" tabpos="44">
 		<Cursor position="1145" topLine="30" />
 	</File>
-	<File name="code/sprites/chipset.cpp" open="0" top="0" tabpos="4">
-		<Cursor position="5688" topLine="134" />
+	<File name="code/sprites/chipset.cpp" open="1" top="0" tabpos="9">
+		<Cursor position="3454" topLine="71" />
 	</File>
 	<File name="code/sprites/sprite.cpp" open="0" top="0" tabpos="2">
 		<Cursor position="0" topLine="78" />
@@ -185,6 +185,6 @@
 		<Cursor position="1152" topLine="11" />
 	</File>
 	<File name="main.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="5530" topLine="250" />
+		<Cursor position="5530" topLine="248" />
 	</File>
 </CodeBlocks_layout_file>
