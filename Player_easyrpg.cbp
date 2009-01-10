@@ -142,7 +142,6 @@
 		<Unit filename="code/sprites/Sistem.h" />
 		<Unit filename="code/sprites/chipset.cpp" />
 		<Unit filename="code/sprites/chipset.h" />
-		<Unit filename="code/sprites/map.h" />
 		<Unit filename="code/sprites/sprite.cpp" />
 		<Unit filename="code/sprites/sprite.h" />
 		<Unit filename="code/tools/CDeltaTime.cpp" />

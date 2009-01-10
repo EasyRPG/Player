@@ -34,6 +34,7 @@
     class Chipset
     {
      SDL_Surface * ChipsetSurface;   // Chipset's precalculated surface
+
      void RenderTile(SDL_Surface * Destiny, int x, int y, unsigned short Tile, int Frame);
 public:
      map_data * data;

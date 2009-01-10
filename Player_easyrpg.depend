@@ -1724,7 +1724,7 @@
 	"../tools/tools.h"
 	"chipset.h"
 
-1231386547 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/chipset.h
+1231564579 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/chipset.h
 	<stdlib.h>
 	<stdio.h>
 	<string>
@@ -2924,4 +2924,18 @@
 	<string>
 	<vector>
 	"stevent.h"
+
+1231542526 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/ldb.cpp
+	<stdlib.h>
+	<stdio.h>
+	<string>
+	<vector>
+	"../tools/tools.h"
+	"ldb.h"
+	"stevent.h"
+	<iostream>
+
+1231386380 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/ldbstr.cpp
+	"ldb.h"
+	<iostream>
 
