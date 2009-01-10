@@ -10,16 +10,17 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #ifndef CACTOR_H
 #define CACTOR_H
 
+#include "../../code/tools/control.h"
 struct mot
 {
-	sll distance; 
+	sll distance;
 	sll delta;
 	unsigned char direction;
 };
@@ -28,7 +29,7 @@ struct mot
 class CActor:public Chara {
 // Methods
 public:
-	void MoveOnInput(); 
+	void MoveOnInput();
 	int Min(int value, int max);
 	sll Minf(float value, float max);
 	int Clamp(int value, int min, int max);

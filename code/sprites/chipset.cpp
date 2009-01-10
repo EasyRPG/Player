@@ -83,7 +83,7 @@
    void Chipset::RenderTile(SDL_Surface * Destiny, int x, int y, unsigned short Tile, int Frame)
     {
 
-        static bool was_deph=false;
+//        static bool was_deph=false;
         if (Tile >= 0x2710)         // Upper layer tiles
         {
             Tile -= 0x2710;
