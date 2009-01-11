@@ -129,6 +129,7 @@ void Control::update_keys()
                         break;
                     default: ;
                 }
+
         }
     }
     int i;

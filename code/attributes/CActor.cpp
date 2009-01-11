@@ -86,6 +86,7 @@ void CActor::setposXY(int x,int y)
 
 void CActor::MoveOnInput()
 {
+static int tim=0;
 	if (flags & ACTOR_FLAGS_FREEZE)
 	{
 		return;
@@ -99,6 +100,7 @@ void CActor::MoveOnInput()
 			switch (temp)
 			{
                 case ARROW_UP:
+                    tim=0;
                     state = ACTOR_STATE_MOVING;
                     Cmotion.direction = ACTOR_DIRECTION_UP;
                     dir = 0;
@@ -106,6 +108,7 @@ void CActor::MoveOnInput()
                     Control::stop = true;
                     break;
 				case ARROW_DOWN:
+                    tim=0;
                     state = ACTOR_STATE_MOVING;
                     Cmotion.direction = ACTOR_DIRECTION_DOWN;
                     dir = 2;
@@ -113,6 +116,7 @@ void CActor::MoveOnInput()
                     Control::stop = true;
                     break;
 				case ARROW_LEFT:
+                    tim=0;
                     state            = ACTOR_STATE_MOVING;
                     Cmotion.direction = ACTOR_DIRECTION_LEFT;
                     dir=3;
@@ -120,14 +124,29 @@ void CActor::MoveOnInput()
                     Control::stop = true;
                     break;
                 case ARROW_RIGHT:
+                  tim=0;
                     state = ACTOR_STATE_MOVING;
                     Cmotion.direction = ACTOR_DIRECTION_RIGHT;
                     dir = 1;
                     Cmotion.distance  = 0;
                     Control::stop = true;
                     break;
-                default: ;
-                    //frame=0;
+                case -1:
+                if(tim==2)
+              {
+                  tim=0;
+                    frame_ori();
+
+                  }else
+                  {
+
+                  tim++;
+                      }
+                          break;
+                default:
+              /**/
+                     break;
+
 
 			}
 						/*if ( keyData[SDLK_UP]  )

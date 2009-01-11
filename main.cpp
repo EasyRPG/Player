@@ -260,13 +260,15 @@ int main(int argc, char** argv)
 
 		for (i = 0; i < repxciclo; i ++)
 		{
+		    Control::update_keys();
 			System.update(); //updates delta
-			actual->updatekey( );		}
+			actual->updatekey( );
+
+        }
 		actual->update(Screen);
 
 		CambioScene(& myaudio, & actual);
 
-		Control::update_keys();
 
 		SDL_Flip(Screen); // Flip
 	}
