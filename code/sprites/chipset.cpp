@@ -462,7 +462,6 @@
         if (DepthCombination&0x08)
         DrawSurface(Destiny, x+8, y+8, BaseSurface, SFrame+8, 64+(Depth*16)+8, 8, 8);
 
-
     }
 
     // =========================================================================
