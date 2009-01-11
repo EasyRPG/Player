@@ -19,7 +19,7 @@
 
 void Font::init_Font()//esto es asi porque no se me ocurre aun algo mejor
 {
-	Fname="../Fonts/BASKVILL.TTF";
+	Fname="../Fonts/VL-Gothic-Regular.ttf";
 	size=14;
 	fR=255;
 	fG=255;
