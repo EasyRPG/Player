@@ -31,7 +31,7 @@ void Skills_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheSce
 	int j;
 	j=(*myteam).select;
 	int k =(((*myteam).get_skill_size(j)-1)/2);
-	menu.init( theaudio, run, 1,k, 320, 180, 0, 60);
+	menu.init( theaudio, run, 1,k, 320, 180, 0, 60,"../System/system.png");
 	descripcion.init(320,30,0,0);
 	descripcion2.init(320,30,0,30);
 

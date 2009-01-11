@@ -29,11 +29,11 @@ void Main_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene
 	int i;
 	myteam=TheTeam;
 	myaudio=theaudio;
-	menu.init( theaudio, run, 0,5, 96, 125, 0, 0);
+	menu.init( theaudio, run, 0,5, 96, 125, 0, 0,"../System/system.png");
 	players.init(theaudio, run,0,((*myteam).get_size()-1),224,240,96,0,166,48);
 	players.init_curXY(55,5); //ya eran muchos comandos
 	gold.init(96,40,0,200);
-	menu_exit.init( theaudio, run, 0,2, 96, 67, 112, 86);
+	menu_exit.init( theaudio, run, 0,2, 96, 67, 112, 86,"../System/system.png");
 	str_Vector.push_back("Objetos ");
 	str_Vector.push_back("Técnicas ");
 	str_Vector.push_back("Equipamiento");

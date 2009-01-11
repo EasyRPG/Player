@@ -31,16 +31,40 @@ Title_Scene::Title_Scene()
 
 void Title_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
 {
+
+TheTeam->read_database();
+
+    std::string titles_string;
+    std::string music_string;
+    std::string system_string;
+    titles_string.append("../title/");
+    titles_string.append(TheTeam->data2.System_dat.Title_graphic);
+    titles_string.append(".png");
+
+    music_string.append("../Music/");
+    music_string.append(TheTeam->data2.System_dat.Title_music.Name_of_Music_Background);
+    music_string.append(".mid");
+
+system_string.append("../System/");
+system_string.append(TheTeam->data2.System_dat.System_graphic);
+system_string.append(".png");
+printf(" \n sistem %s",system_string.c_str());
+
+printf("lol");
+
+printf(" \n sistem %s",system_string.c_str());
+printf("lol");
+
 	myteam=TheTeam;
 	myaudio=theaudio;
-	(*myaudio).load("../Music/2003wingtoskies.mid");
+	(*myaudio).load(music_string.c_str());
 	title.x=0;
 	title.y=0;
-	title.setimg("../title/title2.png");
-	menu.init( myaudio, run, 0,2, 96, 67, 115, 115);
-	str_Vector.push_back("Nuevo ");
-	str_Vector.push_back("Cargar ");
-	str_Vector.push_back("Salir ");
+	title.setimg(titles_string.c_str());
+	menu.init( myaudio, run, 0,2, 116, 57, 160-(116/2), 160-( 57/2),(char *)system_string.c_str());
+	str_Vector.push_back(TheTeam->data2.Glosary.New_Game);
+	str_Vector.push_back(TheTeam->data2.Glosary.Load_Game);
+	str_Vector.push_back(TheTeam->data2.Glosary.Exit_to_Windows);
 	menu.setComands(& str_Vector);
 	running=  run;
 	NScene=TheScene;

@@ -31,14 +31,29 @@ GO_Scene:: GO_Scene()
 
 void GO_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
 {
+    std::string titles_string;
+    std::string music_string;
+
 	myteam=TheTeam;
 	(*myteam).clear_team();
 	(*myteam).clear_obj();
 	myaudio=theaudio;
-	(*myaudio).load("../Music/2003sorrow.mid");
+
+    titles_string.append("../title/");
+    titles_string.append(TheTeam->data2.System_dat.Game_Over_graphic);
+    titles_string.append(".png");
+
+    music_string.append("../Music/");
+    music_string.append(TheTeam->data2.System_dat.Game_Over_music.Name_of_Music_Background);
+    music_string.append(".mid");
+
+
+	(*myaudio).load(music_string.c_str());
 	title.x=0;
 	title.y=0;
-	title.setimg("../GameOver/gameover.png");
+
+	title.setimg(titles_string.c_str());
+
 	running=  run;
 	NScene=TheScene;
 }

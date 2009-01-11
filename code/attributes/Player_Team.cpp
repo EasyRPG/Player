@@ -10,11 +10,18 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #include "Player_Team.h"
+
+void Player_Team::read_database()
+{
+    LDB_reader my_ldb;
+    my_ldb.Load("RPG_RT.ldb",&data2);
+    my_ldb.ShowInformation(&data2);
+}
 
 void Player_Team::clear_team()
 {
@@ -48,9 +55,9 @@ void Player_Team::add_item(Item Myitem)
 	int the_id;
 	the_id=Myitem.id;
 	for (i=0;i<Items.size();i++)
-    	{ 
+    	{
 		if(the_id ==(Items.at(i)).id)
-		{		
+		{
 			break;
 		}
 	}
@@ -142,7 +149,7 @@ int Player_Team::get_num_items()
 	return (Items.size());
 }
 void Player_Team::erase_item(int the_item)
-{  
+{
 	vector<Item>::iterator the_iterator;
 	the_iterator=Items.begin();
 	int i;

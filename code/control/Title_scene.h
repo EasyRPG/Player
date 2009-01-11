@@ -49,6 +49,7 @@
 #include "../tools/math-sll.h"
 
 #include "../attributes/CActor.h"
+#include "../readers/ldb.h"
 
 #include "scene.h"
 

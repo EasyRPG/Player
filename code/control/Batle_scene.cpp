@@ -39,7 +39,7 @@ void Batle_scene::init(Audio *theaudio,bool  *run,unsigned char  *TheScene,Playe
 	update_window_stats();
 	//menu_os.init(theaudio,run,0,4,96,80,96,160);
 	//menu_os.visible=false;
-	menu.init(theaudio,run,0,4,96,80,0,160);
+	menu.init(theaudio,run,0,4,96,80,0,160,"../System/system.png");
 	str_Vector.push_back("Atacar");
 	str_Vector.push_back("Habilidades");
 	str_Vector.push_back("Objetos");
@@ -119,7 +119,7 @@ void Batle_scene::update_window_mosterselect()
 			k++;
 		}
 	}
-	moster_select.init(myaudio,the_run,0,k-1,96,80,0,160);
+	moster_select.init(myaudio,the_run,0,k-1,96,80,0,160,"../System/system.png");
 	moster_select.setComands(&str_Vector2);
 }
 

@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
@@ -26,12 +26,12 @@ Objects_Menu_Scene::Objects_Menu_Scene()
 */
 
 void Objects_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
-{    
+{
 
 	myteam=TheTeam;
 	myaudio=theaudio;
 	int k =(((*myteam).get_num_items()-1)/2);
-	menu.init( theaudio, run, 1,k, 320, 210, 0, 30);
+	menu.init( theaudio, run, 1,k, 320, 210, 0, 30,"../System/system.png");
 	descripcion.init(320,30,0,0);
 	int i=0,space=16,Size_of_Block=150;
 	char stringBuffer[255];
@@ -43,12 +43,12 @@ void Objects_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheSc
 	}
 
 	if(str_Vector.size()%2)//para que no truene si son nones
-	{ 
+	{
 		str_Vector.push_back( " " );
 	}
 
 	while(str_Vector.size()<2)//para que no truene si no hay nada
-	{ 
+	{
 		str_Vector.push_back( " " );
 	}
 	menu.setComands(& str_Vector);
@@ -58,7 +58,7 @@ void Objects_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheSc
 }
 
 void Objects_Menu_Scene::update(SDL_Surface* Screen)
-{ 
+{
 	//en los menus no se necesitnatantos refrescos
 	retardo++;
 	if(retardo==4)
@@ -70,11 +70,11 @@ void Objects_Menu_Scene::update(SDL_Surface* Screen)
 }
 
 void Objects_Menu_Scene::action()
-{ 
+{
 	(*myteam).select=menu.getindexY()*2+menu.getindexX();
 	if((*myteam).select <(*myteam).get_num_items())
 	{
-		* NScene=10; 
+		* NScene=10;
 	}
 	else
 	{
@@ -82,19 +82,19 @@ void Objects_Menu_Scene::action()
 	}
 }
 
-void Objects_Menu_Scene::updatekey() 
-{	
+void Objects_Menu_Scene::updatekey()
+{
 	menu.updatekey();
 	if(menu.desition())
 	action();
 	if (Key_press_and_realsed(LMK_X ))
       {
         // (*myaudio).soundload("../Sound/Cansel2.wav");
-        * NScene=4; 
+        * NScene=4;
 	}
 }
 
-void Objects_Menu_Scene::dispose() 
+void Objects_Menu_Scene::dispose()
 {
 	menu.dispose();
 	descripcion.dispose();

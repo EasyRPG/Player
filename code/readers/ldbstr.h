@@ -2,11 +2,11 @@
 #define LDBSTR_H
 #include <string>
 #include <vector>
-#include "stevent.h"  
+#include "stevent.h"
 struct stcSound_effect{
 std::string Name_of_Sound_effect;
-int Volume; 
-int Tempo; 
+int Volume;
+int Tempo;
 int Balance;
 void clear();void show();
 };
@@ -14,8 +14,8 @@ void clear();void show();
 struct stcMusic_Background{
 std::string Name_of_Music_Background;
 int Fade_in_time;
-int Volume; 
-int Tempo; 
+int Volume;
+int Tempo;
 int Balance;
 void clear();void show();
 };
@@ -37,7 +37,7 @@ int intStartlevel;// =0x07,
 int intMaxlevel;// =0x08,
 int intCrithit;// =0x09,
 int intHitchance;// =0x0A,
-std::string strFacegraphic;// =0x0F, 
+std::string strFacegraphic;// =0x0F,
 int intFaceindex;// =0x10,
 char blDualwield;// =0x15,
 char blFixedequipment;// =0x16,
@@ -58,13 +58,13 @@ int intEXPCorrection;// =0x2B,
 int intprofesion;// 0x39--2003
 int Animatedbattle;// 0x3E--2003
  //Startequip =0x33,arraglo de 16 bites con 5 datos
- 
+
 short sh_Weapon;//
 short sh_Shield;//
 short sh_Armor;//
 short sh_Head;//
 short sh_Accessory;//
- 
+
 std:: vector <Magicblock> skills; //Skills =0x3F,
 bool blRenameMagic;// =0x42,
 std::string strMagicname;// =0x43,
@@ -116,7 +116,7 @@ std::vector<char> vc_ch_Condeffects;//0x2A,
 int  intAttributeslength;//0x2B,
 std::vector<char> vc_ch_Attribeffects; //0x2C,
 
-char  blAffectresistance;//0x2D       
+char  blAffectresistance;//0x2D
 int intwhenusinganimation; //0x31 --2003
 //CBA data  //0x32
 void clear();
@@ -179,13 +179,13 @@ int Chancetochange;//0x43
 int Whenuseanimation;//0x45
 int ItemtoSkill;//0x47
 int EquitoVoc;//0x48
-//Vocation possible  1 byte one dimension array//0x49  
+//Vocation possible  1 byte one dimension array//0x49
 void clear();
 void show();
 };
-	
+
 struct stcEnemy
-{  
+{
   std::string strName;	// = 0x01,
   std::string strGraphicfile;	//= 0x02,
   int intHuealteration;	//= 0x03,
@@ -214,22 +214,22 @@ struct stcEnemy
 void show();
 };
 struct stcEnemy_Action
-{  		
- int intAction;//=0x01,	
+{
+ int intAction;//=0x01,
  int intAction_data;//	=0x02,
- int intSkill_ID;//=0x03,	
- int intMonster_ID;//=0x04,	
+ int intSkill_ID;//=0x03,
+ int intMonster_ID;//=0x04,
  int intCondition;//	=0x05,
- int intLower_limit;//=0x06,	
+ int intLower_limit;//=0x06,
  int intUpper_limit;//	=0x07,
  int intPriority;//=0x0D
  void clear();
-void show();	
+void show();
 };
-	
+
 
 struct stcEnemy_group_data
-{ 		
+{
 int	Enemy_ID;//=0x01,
 int	X_position;//=0x02,
 int	Y_position;//=0x03
@@ -238,17 +238,17 @@ void show();
 };
 
 struct stcEnemy_group_condition
-{ 		
+{
 int Condition_flags;//=0x01,
 int Switch_A;//=0x02,
 int Turn_number_A;//=0x06,
 int Lower_limit;//=0x0B,
 int Upper_limit;//=0x0C,
 void clear();
-void show();	
+void show();
 };
 struct stcEnemy_group_event_page
-{ 		
+{
 stcEnemy_group_condition conditions;//	Page_conditions=0x02,
 int	Event_length;//=0x0B,
  std:: vector <Event_comand> vcEvent_comand;//	Event=0x0C
@@ -259,7 +259,7 @@ void show();
 
 
 struct stcEnemy_group
-{   
+{
 std::string strName;// =0x01,
 std:: vector <stcEnemy_group_data> Enemy_data;//data=0x02,
 int intTerrainlength;		//=0x04,
@@ -270,7 +270,7 @@ void show();
 };
 
 struct stcTerrain
-{   
+{
 std::string strName;	//=0x01,
 int  intDamageontravel;	//=0x02,
 int  intEncounterate;	//=0x03,
@@ -286,7 +286,7 @@ void show();
 };
 
 struct stcAttribute
-{ 
+{
 std::string strName;//=0x01,
 int  intType;//=0x02,
 int  intA_damage;//=0x0B,
@@ -297,7 +297,7 @@ int  intE_damage;//=0x0F
 void clear();
 void show();
  };
- 
+
 struct stcState
 {
  std::string strName;//=0x01,
@@ -346,7 +346,7 @@ struct stcState
  void show();
 };
 struct stcAnimationTiming
-{	
+{
 int Frame;//=0x01,
 stcSound_effect	Sound_effect;//=0x02,
 int Flash_effect;//=0x03,
@@ -354,10 +354,10 @@ int Green_component;//=0x05,
 int Blue_component;//=0x06,
 int Flash_power;//=0x07
 void clear();
-void show();    
+void show();
 };
 struct stcAnimationCelldata
-{	
+{
 int Cell_source;//=0x02,
 int X_location;//=0x03,
 int Y_location;//=0x04,
@@ -368,14 +368,14 @@ int Blue_component;//=0x08,
 int Chroma_component;//=0x09,
 int Alpha;//=0x0A,
 void clear();
-void show(); 
+void show();
 };
 struct stcAnimationCell
-{	
- std:: vector <stcAnimationCelldata> Cell_data;   
- void clear();	
+{
+ std:: vector <stcAnimationCelldata> Cell_data;
+ void clear();
 };
-struct stcAnimated_battle 
+struct stcAnimated_battle
 {
 std::string strName;//=0x01,
 std::string strAnimation_file;//=0x02,
@@ -384,11 +384,11 @@ int intApply_to;//0x09,
 int  intY_coordinate_line;//=0x0A,
 std:: vector <stcAnimationCell>Framedata; //Framedata=0x0C
 void clear();
-void show(); 
+void show();
 };
-	
+
 struct stcChipSet
-{  
+{
 std::string strName;//=0x01,
 std::string strGraphic;//=0x02,
 std::vector<short> vc_sh_Lower_tile_terrain;// Lower_tile_terrain=0x03,
@@ -397,7 +397,7 @@ std::vector<char> vc_ch_Upper_tile_passable;// Upper_tile_passable=0x05,
 int Water_animation;//=0x0B,
 int Animation_speed;//=0x0C
 void clear();
-void show(); 
+void show();
 };
 struct stcGlosary{
 //todas son cadenas
@@ -521,11 +521,11 @@ std::string Exit_game_message;//0x94,
 std::string File_name;//0x97,
 std::string General_Yes;//0x98,
 std::string General_No;//0x99
-void show(); 
+void show();
 };
-struct stcBattle_test	
+struct stcBattle_test
 {
-int Hero_ID;	
+int Hero_ID;
 int Level;// 0x02
 int Weapon;// 0x0B
 int Shield;// 0x0C
@@ -533,10 +533,10 @@ int Armor;// 0x0D
 int Helmet;// 0x0E
 int Accessory;// 0x0F
  void clear();
- void show(); 
+ void show();
 };
-      
-struct stcSystem{  
+
+struct stcSystem{
 
 int intLDB_ID;//exclusivo 2003
 std::string Skiff_graphic;//0x0B,
@@ -582,7 +582,7 @@ int Battle_start_fadein;//0x40,
 int Battle_end_fadeout;//0x41,
 int Battle_end_fadein;//0x42,
 
-int Message_background;//=0x47,//nuevo	
+int Message_background;//=0x47,//nuevo
 int Font;//=0x47,//nuevo
 
 int Selected_condition;//0x51,
@@ -590,14 +590,14 @@ int Selected_hero;//0x52,
 std::string Battle_test_BG;//0x54,
 
 std::vector <stcBattle_test> vc_Battle_test; //0x55 //nuevo
-int Times_saved;//=0x5B,//nuevo    
+int Times_saved;//=0x5B,//nuevo
 int Show_frame;//=0x63,	// exclusivo 2003
-int In_battle_anim;//=0x65	// exclusivo 2003  
-void show(); 
-};	
- 
+int In_battle_anim;//=0x65	// exclusivo 2003
+void show();
+};
+
 struct stcEvent
-{   	
+{
  std::string strName;//=0x01,
  int intNameActivation_condition;//=0x0B,
  char blNameActivate_on_switch;//=0x0C,
@@ -605,43 +605,43 @@ struct stcEvent
  int intNameScript_length;//=0x15,
  std:: vector <Event_comand> vcEvent_comand; //Script=0x16
  void clear();
- void show(); 
+ void show();
 };
 
 //---------------------exclusivos del 2003
 struct stcCombatcommand//array bidimencional
-{ 
+{
      std::string strName;//=0x01,
-     int intUsage;//=0x02 
+     int intUsage;//=0x02
  void clear();
- void show(); 	   		 
+ void show();
 };
 
 struct stcCombatcommands//array bidimencional
-{ 
+{
 std:: vector <stcCombatcommand> vc_Combatcommand;
  void clear();
- void show(); 		 
+ void show();
 };
 struct stcFight_anim
-{   
-  std::string strName;//=0x01, 
-  std::string	strFilename;//=0x02, 
-  int intPosition;//=0x03,  
-  char blExtended_expanded;//=0x04,  	
+{
+  std::string strName;//=0x01,
+  std::string	strFilename;//=0x02,
+  int intPosition;//=0x03,
+  char blExtended_expanded;//=0x04,
   int intID_Expansion_animated_combat_ID;//=0x05
   void clear();
-  void show(); 
+  void show();
 };
 
 struct stcBattle_comand
-{      
-  std::string strName;// 	=0x01, 
-  int intMotion_attack;// 	=0x02, 
-  std::vector<stcFight_anim> vc_Animated_battle_Combat_Anime;//	=0x0A, //two diminsional arrays 
-  std::vector<stcFight_anim> vc_Animated_battle_Anime_combat_weapons;//=0x0B //two diminsional arrays 
+{
+  std::string strName;// 	=0x01,
+  int intMotion_attack;// 	=0x02,
+  std::vector<stcFight_anim> vc_Animated_battle_Combat_Anime;//	=0x0A, //two diminsional arrays
+  std::vector<stcFight_anim> vc_Animated_battle_Anime_combat_weapons;//=0x0B //two diminsional arrays
   void clear();
-  void show();    	   		 
+  void show();
 };
 
 
@@ -670,7 +670,7 @@ int Effectiveness_Attribute_number;// =0x49,
 std::vector<char> vc_ch_Attribeffects;  //Effectiveness_Attribute_data =0x4A,/1 byte one dimention array
 std::vector<int> vc_int_Combat_Command; //Combat_Command=0x50 4 bytes one dimention array
 void clear();
-void show(); 
+void show();
 };
 
 

@@ -30,6 +30,7 @@
 #include "item.h"
 #include "Enemy.h"
 #include "Player.h"
+#include "../readers/ldb.h"
 
 class Player_Team {
 
@@ -37,6 +38,9 @@ class Player_Team {
 	std:: vector <Item> Items;
 	int Gold;
 	public:
+
+    LDB_data data2;
+	void read_database();
 	std:: vector <Enemy> Enemys;
 	void clear_enemy();
 	void add_enemy(Enemy Myplayer);
