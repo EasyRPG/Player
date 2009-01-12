@@ -36,12 +36,9 @@ void Map_Scene::init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * Th
 	pre_chip.GenerateFromFile("../ChipSet/Basis.png");
 
     Map.Load("Map0001.lmu",&data);
-    chip.init(pre_chip.ChipsetSurface,&data);
-    LDB_reader my_ldb;
-    LDB_data data2;
-    my_ldb.Load("RPG_RT.ldb",&data2);
-    my_ldb.ShowInformation(&data2);
-	(* myaudio).load("../Music/Town.mid");
+    chip.init(pre_chip.ChipsetSurface,&data,&(TheTeam->data2.Tilesets[((unsigned int)(data.ChipsetID))-1]) );
+
+    (* myaudio).load("../Music/Town.mid");
 	NScene=TheScene;
 	moving=false;
 	to_move=0;

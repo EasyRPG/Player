@@ -26,6 +26,7 @@
     #include "SDL_image.h"
     #include "../tools/tools.h"
     #include "../readers/map.h"
+    #include "../readers/ldbstr.h"
 
     using namespace std;
 // =============================================================================
@@ -34,11 +35,16 @@
     class Chipset
     {
      SDL_Surface * ChipsetSurface;   // Chipset's precalculated surface
-
+     unsigned short * upper_colision_matrix;
+     unsigned short * lower_colision_matrix;
+     unsigned short colision_cal(unsigned short Tile);
+     void colision_base(int Layer,stcChipSet * title_colision);
      void RenderTile(SDL_Surface * Destiny, int x, int y, unsigned short Tile, int Frame);
 public:
      map_data * data;
-     void init(SDL_Surface * precalculated,map_data * m_data);
+     void Colition_cal(unsigned short Tile);
+
+     void init(SDL_Surface * precalculated,map_data * m_data,stcChipSet * title_colision);
      void Render(SDL_Surface * Destiny, int Layer, int CameraX, int CameraY);
 
     };

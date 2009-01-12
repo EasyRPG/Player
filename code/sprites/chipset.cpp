@@ -27,10 +27,16 @@
 // =============================================================================
 // *****************************************************************************
 
-    void Chipset::init(SDL_Surface * precalculated,map_data * m_data)
+    void Chipset::init(SDL_Surface * precalculated,map_data * m_data,stcChipSet * title_colision)
     {
         ChipsetSurface=precalculated;
         data=m_data;
+        upper_colision_matrix = new unsigned short[(data->MapHeight)*(data->MapWidth)];
+        lower_colision_matrix = new unsigned short[(data->MapHeight)*(data->MapWidth)];
+        //title_colision->show();
+        colision_base(0,title_colision);
+        colision_base(1,title_colision);
+
     }
 
     void Chipset::Render(SDL_Surface * Destiny, int Layer, int CameraX, int CameraY)
@@ -80,6 +86,7 @@
         }
     }
 
+
    void Chipset::RenderTile(SDL_Surface * Destiny, int x, int y, unsigned short Tile, int Frame)
     {
 
@@ -125,6 +132,61 @@
            }
 
         }
+    }
+
+    void Chipset::colision_base(int Layer,stcChipSet * title_colision)
+    {
+        int x, y, xStart, xEnd, yStart, yEnd;
+	    unsigned short * TilePointer;
+        xStart = 0;
+        yStart = 0;
+        xEnd   = data->MapWidth;
+        yEnd   = data->MapHeight;
+
+        switch(Layer)
+        {
+            case 0:
+                // Calculate initial pointer and step
+                TilePointer = &data->LowerLayer[0];
+                // Run through the whole map
+                for ( y=yStart; y<yEnd; y++ )
+                    for ( x = xStart; x < xEnd; x++, TilePointer++ )
+                        lower_colision_matrix[(x + (y*(data->MapWidth)))]=title_colision->vc_ch_Lower_tile_passable[colision_cal(*TilePointer)];
+                break;
+            case 1:
+                // Calculate initial pointer and step
+                TilePointer = &data->UpperLayer[0];
+                // Run through the whole map
+                for ( y=yStart; y<yEnd; y++)
+                    for ( x = xStart; x < xEnd; x++, TilePointer++ )
+                        upper_colision_matrix[(x + (y*(data->MapWidth)))]=title_colision->vc_ch_Upper_tile_passable[colision_cal(*TilePointer)];
+                break;
+        }
+    }
+
+
+
+   unsigned short Chipset::colision_cal(unsigned short Tile)
+    {
+        if (Tile >= 0x2710)         // Upper layer tiles
+        {
+            Tile -= 0x2710;
+        } else if (Tile >= 0x1388)  // Lower layer tiles
+        {
+            Tile -= 0x1388;
+            Tile += 18;
+        } else if (Tile >= 0x0FA0)  // Terrain tiles
+        {
+            Tile -= 0x0FA0;
+            Tile /= 50;
+            Tile += 6;
+        } else if (Tile >= 0x0BB8)  // Animated tiles
+        {
+            Tile =3+((Tile-0x0BB8)/50);
+        } else {                    // Water tiles
+            Tile = ((Tile/50)/20);
+        }
+    return(Tile);
     }
 
     // === Chipset structure ===================================================

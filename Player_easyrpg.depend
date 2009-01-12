@@ -18,7 +18,7 @@
 	"code/atributes/CActor.h"
 	"code/control/scene.h"
 
-1224259434 /usr/include/SDL/SDL.h
+1199508731 /usr/include/SDL/SDL.h
 	"SDL_main.h"
 	"SDL_stdinc.h"
 	"SDL_audio.h"
@@ -37,14 +37,14 @@
 	"begin_code.h"
 	"close_code.h"
 
-1224259434 /usr/include/SDL/SDL_main.h
+1199508731 /usr/include/SDL/SDL_main.h
 	"SDL_stdinc.h"
 	"begin_code.h"
 	"close_code.h"
 	"begin_code.h"
 	"close_code.h"
 
-1224259434 /usr/include/SDL/SDL_stdinc.h
+1199508731 /usr/include/SDL/SDL_stdinc.h
 	"SDL_config.h"
 	<sys/types.h>
 	<stdio.h>
@@ -66,21 +66,20 @@
 	<alloca.h>
 	<malloc.h>
 	<malloc.h>
-	<malloc.h>
 	<stdlib.h>
 	"close_code.h"
 
-1224259434 /usr/include/SDL/SDL_config.h
+1199508731 /usr/include/SDL/SDL_config.h
 	"SDL_platform.h"
 	<stdarg.h>
 
-1224259434 /usr/include/SDL/SDL_platform.h
+1199508731 /usr/include/SDL/SDL_platform.h
 
-1224259434 /usr/include/SDL/begin_code.h
+1199508731 /usr/include/SDL/begin_code.h
 
-1224259434 /usr/include/SDL/close_code.h
+1199508731 /usr/include/SDL/close_code.h
 
-1224259434 /usr/include/SDL/SDL_audio.h
+1199508731 /usr/include/SDL/SDL_audio.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_endian.h"
@@ -90,23 +89,23 @@
 	"begin_code.h"
 	"close_code.h"
 
-1224259434 /usr/include/SDL/SDL_error.h
+1199508731 /usr/include/SDL/SDL_error.h
 	"SDL_stdinc.h"
 	"begin_code.h"
 	"close_code.h"
 
-1224259434 /usr/include/SDL/SDL_endian.h
+1199508731 /usr/include/SDL/SDL_endian.h
 	"SDL_stdinc.h"
 	"begin_code.h"
 	"close_code.h"
 
-1224259434 /usr/include/SDL/SDL_mutex.h
+1199508731 /usr/include/SDL/SDL_mutex.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"begin_code.h"
 	"close_code.h"
 
-1224259434 /usr/include/SDL/SDL_thread.h
+1199508731 /usr/include/SDL/SDL_thread.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_mutex.h"
@@ -114,24 +113,24 @@
 	<process.h>
 	"close_code.h"
 
-1224259434 /usr/include/SDL/SDL_rwops.h
+1199508731 /usr/include/SDL/SDL_rwops.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"begin_code.h"
 	"close_code.h"
 
-1224259434 /usr/include/SDL/SDL_cdrom.h
+1199508731 /usr/include/SDL/SDL_cdrom.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"begin_code.h"
 	"close_code.h"
 
-1224259434 /usr/include/SDL/SDL_cpuinfo.h
+1199508731 /usr/include/SDL/SDL_cpuinfo.h
 	"SDL_stdinc.h"
 	"begin_code.h"
 	"close_code.h"
 
-1224259434 /usr/include/SDL/SDL_events.h
+1199508731 /usr/include/SDL/SDL_events.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_active.h"
@@ -142,58 +141,58 @@
 	"begin_code.h"
 	"close_code.h"
 
-1224259434 /usr/include/SDL/SDL_active.h
+1199508731 /usr/include/SDL/SDL_active.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"begin_code.h"
 	"close_code.h"
 
-1224259434 /usr/include/SDL/SDL_keyboard.h
+1199508731 /usr/include/SDL/SDL_keyboard.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_keysym.h"
 	"begin_code.h"
 	"close_code.h"
 
-1224259434 /usr/include/SDL/SDL_keysym.h
+1199508731 /usr/include/SDL/SDL_keysym.h
 
-1224259434 /usr/include/SDL/SDL_mouse.h
+1199508731 /usr/include/SDL/SDL_mouse.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_video.h"
 	"begin_code.h"
 	"close_code.h"
 
-1224259434 /usr/include/SDL/SDL_video.h
+1199508731 /usr/include/SDL/SDL_video.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"SDL_rwops.h"
 	"begin_code.h"
 	"close_code.h"
 
-1224259434 /usr/include/SDL/SDL_joystick.h
+1199508731 /usr/include/SDL/SDL_joystick.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"begin_code.h"
 	"close_code.h"
 
-1224259434 /usr/include/SDL/SDL_quit.h
+1199508731 /usr/include/SDL/SDL_quit.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 
-1224259434 /usr/include/SDL/SDL_loadso.h
-	"SDL_stdinc.h"
-	"SDL_error.h"
-	"begin_code.h"
-	"close_code.h"
-
-1224259434 /usr/include/SDL/SDL_timer.h
+1199508731 /usr/include/SDL/SDL_loadso.h
 	"SDL_stdinc.h"
 	"SDL_error.h"
 	"begin_code.h"
 	"close_code.h"
 
-1224259434 /usr/include/SDL/SDL_version.h
+1199508731 /usr/include/SDL/SDL_timer.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1199508731 /usr/include/SDL/SDL_version.h
 	"SDL_stdinc.h"
 	"begin_code.h"
 	"close_code.h"
@@ -610,13 +609,13 @@
 	<SDL/SDL_image.h>
 	"tools.h"
 
-1202250050 /usr/include/SDL/SDL_image.h
+1202785916 /usr/include/SDL/SDL_image.h
 	"SDL.h"
 	"SDL_version.h"
 	"begin_code.h"
 	"close_code.h"
 
-1223834885 /usr/include/SDL/SDL_mixer.h
+1212158050 /usr/include/SDL/SDL_mixer.h
 	"SDL_types.h"
 	"SDL_rwops.h"
 	"SDL_audio.h"
@@ -625,7 +624,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1224259434 /usr/include/SDL/SDL_types.h
+1199508731 /usr/include/SDL/SDL_types.h
 	"SDL_stdinc.h"
 
 1229882242 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblocks/Workspace/Player_easyrpg/code/atributes/CActor.cpp
@@ -1651,17 +1650,17 @@
 	"item.h"
 	"Enemy.h"
 
-1231633466 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/CActor.cpp
+1231707326 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/CActor.cpp
 	<SDL/SDL.h>
 	"../tools/math-sll.h"
 	"../sprites/Chara.h"
 	"CActor.h"
 	"../tools/CDeltaTime.h"
 
-1231629926 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/math-sll.h
+1231707324 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/math-sll.h
 	<math.h>
 
-1231629929 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/Chara.h
+1231707327 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/Chara.h
 	"SDL.h"
 	"SDL_rotozoom.h"
 	"../tools/tools.h"
@@ -1674,13 +1673,13 @@
 	<math.h>
 	"SDL.h"
 
-1231629926 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/tools.h
+1231707324 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/tools.h
 	<stdlib.h>
 	<stdio.h>
 	<string>
 	"SDL.h"
 
-1231629929 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/sprite.h
+1231707327 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/sprite.h
 	"SDL.h"
 	"SDL_rotozoom.h"
 	"../tools/tools.h"
@@ -1688,12 +1687,12 @@
 	<iostream>
 	<stdlib.h>
 
-1231629928 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/CActor.h
+1231707326 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/CActor.h
 	"../../code/tools/control.h"
 
-1231629926 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/CDeltaTime.h
+1231707324 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/CDeltaTime.h
 
-1231629928 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/Enemy.cpp
+1231707326 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/Enemy.cpp
 	<SDL/SDL.h>
 	<SDL/SDL_image.h>
 	<SDL/SDL_mixer.h>
@@ -1707,14 +1706,14 @@
 	"item.h"
 	"Enemy.h"
 
-1231629926 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/key.h
+1231707324 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/key.h
 
-1231629926 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/font.h
+1231707324 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/font.h
 	"SDL.h"
 	"SDL_ttf.h"
 	<iostream>
 
-1231629926 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/audio.h
+1231707324 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/audio.h
 	"SDL.h"
 	"SDL_mixer.h"
 
@@ -1726,7 +1725,7 @@
 	"../tools/tools.h"
 	"chipset.h"
 
-1231629929 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/chipset.h
+1231720774 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/chipset.h
 	<stdlib.h>
 	<stdio.h>
 	<string>
@@ -1734,11 +1733,12 @@
 	"SDL_image.h"
 	"../tools/tools.h"
 	"../readers/map.h"
+	"../readers/ldbstr.h"
 
-1231629928 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/skill.h
+1231707326 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/skill.h
 	"../sprites/Animacion.h"
 
-1231629929 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/Animacion.h
+1231707327 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/Animacion.h
 	"SDL.h"
 	"SDL_rotozoom.h"
 	"../tools/tools.h"
@@ -1747,12 +1747,12 @@
 	<stdlib.h>
 	"sprite.h"
 
-1231629928 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/item.h
+1231707326 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/item.h
 	"../sprites/Animacion.h"
 
-1231629928 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/Enemy.h
+1231707326 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/Enemy.h
 
-1231629928 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/Player.cpp
+1231707326 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/Player.cpp
 	<SDL/SDL.h>
 	<SDL/SDL_image.h>
 	<SDL/SDL_mixer.h>
@@ -1766,10 +1766,10 @@
 	"item.h"
 	"Enemy.h"
 
-1231695027 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/Player_Team.cpp
+1231708917 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/Player_Team.cpp
 	"Player_Team.h"
 
-1231695102 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/Player_Team.h
+1231707326 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/Player_Team.h
 	"SDL.h"
 	"SDL_image.h"
 	"SDL_mixer.h"
@@ -1785,11 +1785,11 @@
 	"Player.h"
 	"../readers/ldb.h"
 
-1231629928 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/Player.h
+1231707326 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/Player.h
 	"../sprites/Chara.h"
 	"../sprites/Faceset.h"
 
-1231629929 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/Faceset.h
+1231707327 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/Faceset.h
 	"SDL.h"
 	"SDL_rotozoom.h"
 	"../tools/tools.h"
@@ -1798,7 +1798,7 @@
 	<stdlib.h>
 	"sprite.h"
 
-1231629928 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/item.cpp
+1231707326 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/item.cpp
 	<SDL/SDL.h>
 	<SDL/SDL_image.h>
 	<SDL/SDL_mixer.h>
@@ -1810,7 +1810,7 @@
 	<string>
 	"item.h"
 
-1231629928 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/skill.cpp
+1231707326 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/skill.cpp
 	<SDL/SDL.h>
 	<SDL/SDL_image.h>
 	<SDL/SDL_mixer.h>
@@ -1821,10 +1821,10 @@
 	<string>
 	"skill.h"
 
-1231691403 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Batle_scene.cpp
+1231707323 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Batle_scene.cpp
 	"Batle_scene.h"
 
-1231629924 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Batle_scene.h
+1231707323 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Batle_scene.h
 	"SDL.h"
 	"SDL_image.h"
 	"SDL_mixer.h"
@@ -1845,18 +1845,18 @@
 	"../interface/Windows/Window_Player_Select.h"
 	"../interface/Windows/Window_Select.h"
 
-1231629924 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/scene.h
+1231707323 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/scene.h
 	"../tools/audio.h"
 	"../attributes/Player_Team.h"
 
-1231629925 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Windows/Window_Base.h
+1231707324 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Windows/Window_Base.h
 	"../../sprites/Sistem.h"
 	"../../tools/font.h"
 	"../../sprites/sprite.h"
 	<vector>
 	<string>
 
-1231629929 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/Sistem.h
+1231707327 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/Sistem.h
 	"SDL.h"
 	"SDL_rotozoom.h"
 	"../tools/tools.h"
@@ -1865,7 +1865,7 @@
 	<stdlib.h>
 	"sprite.h"
 
-1231629925 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Windows/Window_Player_Select.h
+1231707324 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Windows/Window_Player_Select.h
 	"../../sprites/Sistem.h"
 	"../Menu_Easy.h"
 	"../../sprites/Sistem.h"
@@ -1874,11 +1874,11 @@
 	<vector>
 	<string>
 
-1231629925 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Menu_Easy.h
+1231707324 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Menu_Easy.h
 	"../tools/audio.h"
 	"../tools/key.h"
 
-1231691301 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Windows/Window_Select.h
+1231707324 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Windows/Window_Select.h
 	"../../sprites/Sistem.h"
 	"../Menu_Easy.h"
 	"../../sprites/Sistem.h"
@@ -1887,10 +1887,10 @@
 	<vector>
 	<string>
 
-1231629924 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/GameOver_scene.cpp
+1231707323 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/GameOver_scene.cpp
 	"GameOver_scene.h"
 
-1231629924 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/GameOver_scene.h
+1231707323 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/GameOver_scene.h
 	"SDL.h"
 	"SDL_image.h"
 	"SDL_mixer.h"
@@ -1908,10 +1908,10 @@
 	"../attributes/CActor.h"
 	"scene.h"
 
-1231629924 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Map_scene.cpp
+1231709609 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Map_scene.cpp
 	"Map_scene.h"
 
-1231629924 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Map_scene.h
+1231707323 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Map_scene.h
 	"SDL.h"
 	"SDL_image.h"
 	"SDL_mixer.h"
@@ -1933,10 +1933,10 @@
 	"../attributes/CActor.h"
 	"scene.h"
 
-1231695134 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Title_scene.cpp
+1231707323 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Title_scene.cpp
 	"Title_scene.h"
 
-1231686535 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Title_scene.h
+1231707323 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Title_scene.h
 	"SDL.h"
 	"SDL_image.h"
 	"SDL_mixer.h"
@@ -1956,7 +1956,7 @@
 	"scene.h"
 	"../interface/Windows/Window_Select.h"
 
-1231629924 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/scene.cpp
+1231707323 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/scene.cpp
 	<SDL/SDL.h>
 	<SDL/SDL_image.h>
 	<SDL/SDL_mixer.h>
@@ -1974,10 +1974,10 @@
 	"../attributes/CActor.h"
 	"scene.h"
 
-1231691453 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Equip_Menu_scene.cpp
+1231707323 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Equip_Menu_scene.cpp
 	"Equip_Menu_scene.h"
 
-1231629925 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Equip_Menu_scene.h
+1231707323 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Equip_Menu_scene.h
 	"SDL.h"
 	"SDL_image.h"
 	"SDL_mixer.h"
@@ -1997,10 +1997,10 @@
 	"../Windows/Window_Base.h"
 	"../Windows/Window_Select.h"
 
-1231629925 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Item_use_scene.cpp
+1231707323 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Item_use_scene.cpp
 	"Item_use_scene.h"
 
-1231629925 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Item_use_scene.h
+1231707323 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Item_use_scene.h
 	"SDL.h"
 	"SDL_image.h"
 	"SDL_mixer.h"
@@ -2020,10 +2020,10 @@
 	"../Windows/Window_Base.h"
 	"../Windows/Window_Player_Select.h"
 
-1231691475 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Main_Menu_scene.cpp
+1231707323 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Main_Menu_scene.cpp
 	"Main_Menu_scene.h"
 
-1231629925 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Main_Menu_scene.h
+1231707323 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Main_Menu_scene.h
 	"SDL.h"
 	"SDL_image.h"
 	"SDL_mixer.h"
@@ -2044,10 +2044,10 @@
 	"../Windows/Window_Player_Select.h"
 	"../Windows/Window_Select.h"
 
-1231691484 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Objects_Menu_scene.cpp
+1231707323 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Objects_Menu_scene.cpp
 	"Objects_Menu_scene.h"
 
-1231629925 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Objects_Menu_scene.h
+1231707323 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Objects_Menu_scene.h
 	"SDL.h"
 	"SDL_image.h"
 	"SDL_mixer.h"
@@ -2067,10 +2067,10 @@
 	"../Windows/Window_Base.h"
 	"../Windows/Window_Select.h"
 
-1231629925 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Save_Load_Menu_scene.cpp
+1231707323 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Save_Load_Menu_scene.cpp
 	"Save_Load_Menu_scene.h"
 
-1231629925 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Save_Load_Menu_scene.h
+1231707323 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Save_Load_Menu_scene.h
 	"SDL.h"
 	"SDL_image.h"
 	"SDL_mixer.h"
@@ -2090,10 +2090,10 @@
 	"../Windows/Window_Base.h"
 	"../Windows/Window_Select.h"
 
-1231691492 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Skills_Menu_scene.cpp
+1231707323 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Skills_Menu_scene.cpp
 	"Skills_Menu_scene.h"
 
-1231629925 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Skills_Menu_scene.h
+1231707323 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Skills_Menu_scene.h
 	"SDL.h"
 	"SDL_image.h"
 	"SDL_mixer.h"
@@ -2113,10 +2113,10 @@
 	"../Windows/Window_Base.h"
 	"../Windows/Window_Select.h"
 
-1231629925 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Stats_Menu_scene.cpp
+1231707323 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Stats_Menu_scene.cpp
 	"Stats_Menu_scene.h"
 
-1231629925 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Stats_Menu_scene.h
+1231707323 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Control/Stats_Menu_scene.h
 	"SDL.h"
 	"SDL_image.h"
 	"SDL_mixer.h"
@@ -2135,35 +2135,35 @@
 	"../../control/scene.h"
 	"../Windows/Window_Base.h"
 
-1231629925 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Menu_Easy.cpp
+1231707324 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Menu_Easy.cpp
 	"Menu_Easy.h"
 	"../../code/tools/control.h"
 
-1231629925 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Windows/Window_Base.cpp
+1231707324 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Windows/Window_Base.cpp
 	"Window_Base.h"
 
-1231629925 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Windows/Window_Player_Select.cpp
+1231707324 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Windows/Window_Player_Select.cpp
 	"Window_Player_Select.h"
 
-1231691244 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Windows/Window_Select.cpp
+1231707324 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Windows/Window_Select.cpp
 	"Window_Select.h"
 
-1231629929 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/Animacion.cpp
+1231707327 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/Animacion.cpp
 	"Animacion.h"
 
-1231629929 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/Batler.cpp
+1231707327 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/Batler.cpp
 
-1231630536 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/Chara.cpp
+1231707327 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/Chara.cpp
 	"Chara.h"
 
-1231629929 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/Faceset.cpp
+1231707327 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/Faceset.cpp
 	"Faceset.h"
 
-1231629929 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/Sistem.cpp
+1231707327 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/Sistem.cpp
 	"Sistem.h"
 	"SDL_rotozoom.h"
 
-1231629929 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/chipset.cpp
+1231720898 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/chipset.cpp
 	<stdlib.h>
 	<stdio.h>
 	<string>
@@ -2179,10 +2179,10 @@
 	"../tools/tools.h"
 	"map.h"
 
-1231629929 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/sprite.cpp
+1231707327 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/sprite.cpp
 	"sprite.h"
 
-1231629926 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/CDeltaTime.cpp
+1231707324 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/CDeltaTime.cpp
 	<stdio.h>
 	"SDL.h"
 	"CDeltaTime.h"
@@ -2193,25 +2193,25 @@
 	<string.h>
 	"SDL_rotozoom.h"
 
-1231629926 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/Timer.cpp
+1231707324 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/Timer.cpp
 	<stdlib.h>
 	<stdio.h>
 	<SDL/SDL.h>
 	"Timer.h"
 
-1231629926 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/Timer.h
+1231707324 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/Timer.h
 
-1231629926 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/audio.cpp
+1231707324 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/audio.cpp
 	<iostream>
 	"audio.h"
 
-1231629926 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/font.cpp
+1231707324 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/font.cpp
 	"font.h"
 
-1231629926 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/key.cpp
+1231707324 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/key.cpp
 	<SDL/SDL.h>
 
-1231629926 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/tools.cpp
+1231707324 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/tools.cpp
 	<stdlib.h>
 	<stdio.h>
 	<string>
@@ -2219,7 +2219,7 @@
 	<SDL/SDL_image.h>
 	"tools.h"
 
-1231633199 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/main.cpp
+1231707328 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/main.cpp
 	"code/tools/tools.h"
 	"code/sprites/sprite.h"
 	"code/tools/key.h"
@@ -2849,16 +2849,16 @@
 	"code/readers/map.h"
 	"code/tools/control.h"
 
-1208893957 /usr/include/SDL/SDL_rotozoom.h
+1171723155 /usr/include/SDL/SDL_rotozoom.h
 	<math.h>
 	"SDL.h"
 
-1185194442 /usr/include/SDL/SDL_ttf.h
+1186441190 /usr/include/SDL/SDL_ttf.h
 	"SDL.h"
 	"begin_code.h"
 	"close_code.h"
 
-1231629928 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/map.h
+1231707325 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/map.h
 	<stdlib.h>
 	<stdio.h>
 	<string>
@@ -2868,42 +2868,42 @@
 	"strmap.h"
 	<vector>
 
-1231629928 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/eventchunks.h
+1231707325 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/eventchunks.h
 
-1231629928 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/mapchunks.h
+1231707325 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/mapchunks.h
 
-1231629928 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/strmap.h
+1231707325 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/strmap.h
 	<vector>
 	<string>
 	"stevent.h"
 
-1231629928 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/stevent.h
+1231707325 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/stevent.h
 	"../tools/tools.h"
 	<vector>
 	"eventchunks.h"
 
-1231629928 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/map.cpp
+1231707325 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/map.cpp
 	<stdlib.h>
 	<stdio.h>
 	<string>
 	"../tools/tools.h"
 	"map.h"
 
-1231629928 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/stevent.cpp
+1231707325 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/stevent.cpp
 	<stdlib.h>
 	<stdio.h>
 	<string>
 	"../tools/tools.h"
 	"stevent.h"
 
-1231629928 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/strmap.cpp
+1231707325 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/strmap.cpp
 	"strmap.h"
 
-1231629928 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/lmt.h
+1231707325 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/lmt.h
 	<string>
 	<vector>
 
-1231629928 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/lmt.cpp
+1231707325 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/lmt.cpp
 	<stdlib.h>
 	<stdio.h>
 	<string>
@@ -2912,15 +2912,15 @@
 	"../tools/tools.h"
 	"lmt.h"
 
-1231629928 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/ldb.h
+1231707325 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/ldb.h
 	<vector>
 	"ldbchunks.h"
 	"ldbstr.h"
 	"../tools/tools.h"
 
-1231629928 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/ldbchunks.h
+1231707325 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/ldbchunks.h
 
-1231688534 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/ldbstr.h
+1231707325 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/ldbstr.h
 	<string>
 	<vector>
 	"stevent.h"
@@ -3675,12 +3675,12 @@
 	"../tools/tools.h"
 	"chipset.h"
 
-1231631787 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/control.h
+1231707324 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/control.h
 	"SDL.h"
 	<iostream>
 	<deque>
 
-1231629928 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/ldb.cpp
+1231707325 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/ldb.cpp
 	<stdlib.h>
 	<stdio.h>
 	<string>
@@ -3690,11 +3690,11 @@
 	"stevent.h"
 	<iostream>
 
-1231629928 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/ldbstr.cpp
+1231710386 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/ldbstr.cpp
 	"ldb.h"
 	<iostream>
 
-1231631787 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/control.cpp
+1231707324 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/control.cpp
 	"control.h"
 
 1231602814 source:/home/fdelapena/programacion/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/Enemy.cpp

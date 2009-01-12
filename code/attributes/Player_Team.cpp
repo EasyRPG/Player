@@ -20,7 +20,7 @@ void Player_Team::read_database()
 {
     LDB_reader my_ldb;
     my_ldb.Load("RPG_RT.ldb",&data2);
-    my_ldb.ShowInformation(&data2);
+   // my_ldb.ShowInformation(&data2);
 }
 
 void Player_Team::clear_team()

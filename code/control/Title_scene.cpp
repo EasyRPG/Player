@@ -45,15 +45,9 @@ TheTeam->read_database();
     music_string.append(TheTeam->data2.System_dat.Title_music.Name_of_Music_Background);
     music_string.append(".mid");
 
-system_string.append("../System/");
-system_string.append(TheTeam->data2.System_dat.System_graphic);
-system_string.append(".png");
-printf(" \n sistem %s",system_string.c_str());
-
-printf("lol");
-
-printf(" \n sistem %s",system_string.c_str());
-printf("lol");
+    system_string.append("../System/");
+    system_string.append(TheTeam->data2.System_dat.System_graphic);
+    system_string.append(".png");
 
 	myteam=TheTeam;
 	myaudio=theaudio;

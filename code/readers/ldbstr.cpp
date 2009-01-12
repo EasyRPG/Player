@@ -2,8 +2,8 @@
 #include <iostream>
 void stcSound_effect::clear(){
 Name_of_Sound_effect="";
- Volume=100; 
- Tempo=100; 
+ Volume=100;
+ Tempo=100;
  Balance=50;
 }
 
@@ -16,9 +16,9 @@ printf(" \n Balance %d",Balance);
 
 void stcMusic_Background::clear(){
 Name_of_Music_Background="";
-Fade_in_time=100; 
- Volume=100;  
- Tempo=100; 
+Fade_in_time=100;
+ Volume=100;
+ Tempo=100;
  Balance=50;
 }
 
@@ -82,7 +82,7 @@ intCondlength=0;//=0x47,
 vc_ch_Condeffects.clear();//arraydeunbyte
 intAttriblength=0;//=0x49,
 vc_ch_Attribeffects.clear();//array de un byte
-vc_int_Combat_Command.clear();//Combat Comand // =0x50 //4 byte one byte dimension array of 6 
+vc_int_Combat_Command.clear();//Combat Comand // =0x50 //4 byte one byte dimension array of 6
 }
 
 void stcHero::show()
@@ -97,7 +97,7 @@ printf(" \n Startlevel %d",intStartlevel);
 printf(" \n Maxlevel %d",intMaxlevel);
 printf(" \n Crithit %d",intCrithit);
 printf(" \n Hitchance %d",intHitchance);
-printf(" \n Facegraphic %s",strFacegraphic.c_str()); 
+printf(" \n Facegraphic %s",strFacegraphic.c_str());
 printf(" \n intFaceindex %d",intFaceindex);
 printf(" \n blDualwield %d",intHitchance);
 printf(" \n blFixedequipment %d",blFixedequipment);
@@ -128,7 +128,7 @@ printf(" \n intCondlength %d",intCondlength);
 //vc_ch_Condeffects.clear();//arraydeunbyte
 printf(" \n intAttriblength %d",intAttriblength);
 //vc_ch_Attribeffects.clear();//array de un byte
-//vc_int_Combat_Command.clear();//Combat Comand // =0x50 //4 byte one byte dimension array of 6 
+//vc_int_Combat_Command.clear();//Combat Comand // =0x50 //4 byte one byte dimension array of 6
 }
 
 
@@ -167,7 +167,7 @@ vc_ch_Condeffects.clear();//0x2A,
 intAttributeslength=0;//0x2B,
 vc_ch_Attribeffects.clear(); //0x2C,
 
-blAffectresistance=0;//0x2D       
+blAffectresistance=0;//0x2D
 intwhenusinganimation=0; //0x31 --2003
 //CBA data  //0x32
 }
@@ -176,9 +176,9 @@ void stcSkill::show()
 {
 printf(" \n strName %s",strName.c_str());
 printf(" \n strDescription %s",strDescription.c_str());
-printf(" \n strtext %s",strtext.c_str());    
+printf(" \n strtext %s",strtext.c_str());
 printf(" \n strtextline %s",strtextline.c_str());
-printf(" \n intFailure %d",intFailure);    
+printf(" \n intFailure %d",intFailure);
 printf(" \n intSpelltype %d",intSpelltype);
 printf(" \n intMpconType %d",intMpconType);
 printf(" \n intConsumtion %d",intConsumtion);
@@ -323,26 +323,26 @@ printf(" \n EquitoVoc %d",EquitoVoc);
 }
 
 void stcEnemy_Action::clear()
-{  		
-  intAction=0;//=0x01,	
+{
+  intAction=0;//=0x01,
   intAction_data=0;//	=0x02,
-  intSkill_ID=0;//=0x03,	
-  intMonster_ID=0;//=0x04,	
+  intSkill_ID=0;//=0x03,
+  intMonster_ID=0;//=0x04,
   intCondition=0;//	=0x05,
-  intLower_limit=0;//=0x06,	
+  intLower_limit=0;//=0x06,
   intUpper_limit=0;//	=0x07,
   intPriority=0;//=0x0D
 }
 void stcEnemy_Action::show()
-{  		
+{
 printf(" \n intAction %d",intAction);
 printf(" \n intAction_data %d",intAction_data);
-printf(" \n intSkill_ID %d",intSkill_ID);	
+printf(" \n intSkill_ID %d",intSkill_ID);
 printf(" \n intMonster_ID %d",intMonster_ID);
 printf(" \n intCondition %d",intCondition);
 printf(" \n intLower_limit %d",intLower_limit);
 printf(" \n intUpper_limit %d",intUpper_limit);
-printf(" \n intPriority %d",intPriority); 
+printf(" \n intPriority %d",intPriority);
 }
 void stcEnemy::clear()
 {
@@ -375,7 +375,7 @@ void stcEnemy::show()
 {
 printf(" \n strName %s",strName.c_str());
 printf(" \n strGraphicfile %s",strGraphicfile.c_str());
-printf(" \n intHuealteration %d",intHuealteration); 
+printf(" \n intHuealteration %d",intHuealteration);
 printf(" \n intMaxHP %d",intMaxHP);
 printf(" \n intMaxMP %d",intMaxMP);
 printf(" \n intAttack %d",intAttack);
@@ -399,19 +399,19 @@ printf(" \n inyAttributeslength %d",inyAttributeslength);
 }
 
 void stcEnemy_group_data::clear()
-{ 		
+{
 	Enemy_ID=0;//=0x01,
 	X_position=0;//=0x02,
 	Y_position=0;//=0x03
 }
 void stcEnemy_group_data::show()
-{ 		
+{
 printf(" \n Enemy_ID %d",Enemy_ID);
 printf(" \n X_position %d",X_position);
 printf(" \n Y_position %d",Y_position);
 }
 void stcEnemy_group_condition::clear()
-{ 		
+{
     Condition_flags=0;//=0x01,
     Switch_A=0;//=0x02,
     Turn_number_A=0;//=0x06,
@@ -419,7 +419,7 @@ void stcEnemy_group_condition::clear()
 	Upper_limit=0;//=0x0C,
 }
 void stcEnemy_group_condition::show()
-{ 		
+{
 printf(" \n Condition_flags %d",Condition_flags);
 printf(" \n Switch_A %d",Switch_A);
 printf(" \n Turn_number_A %d",Turn_number_A);
@@ -427,7 +427,7 @@ printf(" \n Lower_limit %d",Lower_limit);
 printf(" \n Upper_limit %d",Upper_limit);
 }
 void stcEnemy_group_event_page::clear()
-{ 		
+{
     conditions.clear();//	Page_conditions=0x02,
 	Event_length=0;//=0x0B,
 //	Event=0x0C// como en eventos
@@ -476,7 +476,7 @@ printf(" \n blAirshipmayland %d",blAirshipmayland);
 printf(" \n intHeroopacity %d",intHeroopacity);
 }
 void stcAttribute::clear()
-{ 
+{
 strName="";//=0x01,
 intType=0;//=0x02,
 intA_damage=0;//=0x0B,
@@ -486,8 +486,8 @@ intD_damage=0;//e=0x0F,
 intE_damage=0;//=0x0F
 }
 void stcAttribute::show()
-{ 
-printf(" \n strName %s",strName.c_str()); 
+{
+printf(" \n strName %s",strName.c_str());
 printf(" \n intType %d",intType);
 printf(" \n intA_damage %d",intA_damage);
 printf(" \n intB_damage %d",intB_damage);
@@ -498,7 +498,7 @@ printf(" \n intE_damage %d",intE_damage);
 
 
 void stcState::clear()
-{  
+{
 strName="";//=0x01,
 intLength=0;//=0x02,
 intColor=0;//=0x03,
@@ -544,7 +544,7 @@ intMPmapsteps=0;//=0x44
 }
 
 void stcState::show()
-{  
+{
 printf(" \n strName %s",strName.c_str());
 printf(" \n intLength %d",intLength);
 printf(" \n intColor %d",intColor);
@@ -576,9 +576,9 @@ printf(" \n intmpdecreasetype %d",intmpdecreasetype);
 printf(" \n inthpdecreasetype %d",inthpdecreasetype);
 printf(" \n strAllyenterstate %s",strAllyenterstate.c_str());
 printf(" \n strEnemyentersstate %s",strEnemyentersstate.c_str());
-printf(" \n strAlreadyinstate %s",strAlreadyinstate.c_str()); 
-printf(" \n strAffectedbystate %s",strAffectedbystate.c_str()); 
-printf(" \n strStatusrecovered %s",strStatusrecovered.c_str()); 
+printf(" \n strAlreadyinstate %s",strAlreadyinstate.c_str());
+printf(" \n strAffectedbystate %s",strAffectedbystate.c_str());
+printf(" \n strStatusrecovered %s",strStatusrecovered.c_str());
 printf(" \n intHPloss %d",intHPloss);
 printf(" \n intHPlossvalue %d",intHPlossvalue);
 printf(" \n intHPmaploss %d",intHPmaploss);
@@ -591,7 +591,7 @@ printf(" \n intMPmapsteps %d",intMPmapsteps);
 
 
 void stcAnimationTiming::clear()
-{	
+{
 		Frame=0;//=0x01,
 		Sound_effect.clear();//=0x02,
 		Flash_effect=0;//=0x03,
@@ -601,7 +601,7 @@ void stcAnimationTiming::clear()
 }
 
 void stcAnimationTiming::show()
-{	
+{
 printf(" \n Frame %d",Frame);
 //		Sound_effect.clear();//=0x02,
 printf(" \n Flash_effect %d",Flash_effect);
@@ -611,7 +611,7 @@ printf(" \n Flash_power %d",Flash_power);
 }
 
 void stcAnimationCelldata::clear()
-{	
+{
 Cell_source=0;//=0x02,
 X_location=0;//=0x03,
 Y_location=0;//=0x04,
@@ -624,7 +624,7 @@ Alpha=0;//=0x0A,
 }
 
 void stcAnimationCelldata::show()
-{	
+{
 printf(" \n Cell_source %d",Cell_source);
 printf(" \n X_location %d",X_location);
 printf(" \n Y_location %d",Y_location);
@@ -653,7 +653,7 @@ void stcAnimated_battle::clear()
 void stcAnimated_battle::show()
 {
 printf(" \n strName %s",strName.c_str());
-printf(" \n strAnimation_file %s",strAnimation_file.c_str()); 
+printf(" \n strAnimation_file %s",strAnimation_file.c_str());
 //vecAnimationTiming.clear();//Timing_data=0x06,
 printf(" \n intApply_to %d",intApply_to);
 printf(" \n intY_coordinate_line %d",intY_coordinate_line);
@@ -672,9 +672,19 @@ void stcChipSet::clear()
 }
 void stcChipSet::show()
 {
+//int i;
 printf(" \n strName %s",strName.c_str());
 printf(" \n strGraphic %s",strGraphic.c_str());
-// vc_sh_Lower_tile_terrain.clear();// Lower_tile_terrain=0x03,
+
+/*for(i=0; i<vc_sh_Lower_tile_terrain.size() ;i++)
+printf(" \n terrain id title %d %d ",i, vc_sh_Lower_tile_terrain[i]);
+
+for(i=0; i<vc_ch_Lower_tile_passable.size() ;i++)
+printf(" \n Lower_tile_passable %d %d ",i, vc_ch_Lower_tile_passable[i]);
+
+for(i=0; i<vc_ch_Upper_tile_passable.size() ;i++)
+printf(" \n vc_ch_Upper_tile_passable %d %d ",i, vc_ch_Upper_tile_passable[i]);
+*/
 // vc_ch_Lower_tile_passable.clear();// Lower_tile_passable=0x04,
 // vc_ch_Upper_tile_passable.clear();// Upper_tile_passable=0x05,
 printf(" \n Water_animation %d",Water_animation);
@@ -685,138 +695,138 @@ void stcGlosary::show()
 {
 //todas son cadenas
 printf(" \n Enemy_encounter %s",Enemy_encounter.c_str());
-printf(" \n Headstart_attack %s",Headstart_attack.c_str()); 
-printf(" \n Escape_success %s",Escape_success.c_str());   
-printf(" \n Escape_failure %s",Escape_failure.c_str());      
-printf(" \n Battle_victory %s",Battle_victory.c_str());  
-printf(" \n Battle_defeat %s",Battle_defeat.c_str());    
-printf(" \n Experience_received %s",Experience_received.c_str()); 
-printf(" \n Money_recieved_A %s",Money_recieved_A.c_str());   
-printf(" \n Money_recieved_B %s",Money_recieved_B.c_str());  
-printf(" \n Item_recieved %s",Item_recieved.c_str());     
-printf(" \n Attack_message %s",Attack_message.c_str());     
-printf(" \n Ally_critical_hit %s",Ally_critical_hit.c_str());    
-printf(" \n Enemy_critical_hit %s",Enemy_critical_hit.c_str());     
-printf(" \n Defend_message %s",Defend_message.c_str());    
-printf(" \n Watch_message %s",Watch_message.c_str());    
-printf(" \n Gathering_energy %s",Gathering_energy.c_str());     
+printf(" \n Headstart_attack %s",Headstart_attack.c_str());
+printf(" \n Escape_success %s",Escape_success.c_str());
+printf(" \n Escape_failure %s",Escape_failure.c_str());
+printf(" \n Battle_victory %s",Battle_victory.c_str());
+printf(" \n Battle_defeat %s",Battle_defeat.c_str());
+printf(" \n Experience_received %s",Experience_received.c_str());
+printf(" \n Money_recieved_A %s",Money_recieved_A.c_str());
+printf(" \n Money_recieved_B %s",Money_recieved_B.c_str());
+printf(" \n Item_recieved %s",Item_recieved.c_str());
+printf(" \n Attack_message %s",Attack_message.c_str());
+printf(" \n Ally_critical_hit %s",Ally_critical_hit.c_str());
+printf(" \n Enemy_critical_hit %s",Enemy_critical_hit.c_str());
+printf(" \n Defend_message %s",Defend_message.c_str());
+printf(" \n Watch_message %s",Watch_message.c_str());
+printf(" \n Gathering_energy %s",Gathering_energy.c_str());
 printf(" \n Sacrificial_attack %s",Sacrificial_attack.c_str());
-printf(" \n Enemy_escape %s",Enemy_escape.c_str()); 
+printf(" \n Enemy_escape %s",Enemy_escape.c_str());
 printf(" \n Enemy_transform %s",Enemy_transform.c_str());
-printf(" \n Enemy_damaged %s",Enemy_damaged.c_str()); 
+printf(" \n Enemy_damaged %s",Enemy_damaged.c_str());
 printf(" \n Enemy_undamaged %s",Enemy_undamaged.c_str());
 printf(" \n Ally_damaged %s",Ally_damaged.c_str());
 printf(" \n Ally_undamaged %s",Ally_undamaged.c_str());
 printf(" \n Skill_failure_A %s",Skill_failure_A.c_str());
 printf(" \n Skill_failure_B %s",Skill_failure_B.c_str());
 printf(" \n Skill_failure_C %s",Skill_failure_C.c_str());
-printf(" \n Attack_dodged %s",Attack_dodged.c_str());  
-printf(" \n Item_use %s",Item_use.c_str());  
+printf(" \n Attack_dodged %s",Attack_dodged.c_str());
+printf(" \n Item_use %s",Item_use.c_str());
 printf(" \n Stat_recovery %s",Stat_recovery.c_str());
-printf(" \n Stat_increase %s",Stat_increase.c_str()); 
-printf(" \n Stat_decrease %s",Stat_decrease.c_str());      
-printf(" \n Ally_lost_via_absorb %s",Ally_lost_via_absorb.c_str()); 
+printf(" \n Stat_increase %s",Stat_increase.c_str());
+printf(" \n Stat_decrease %s",Stat_decrease.c_str());
+printf(" \n Ally_lost_via_absorb %s",Ally_lost_via_absorb.c_str());
 printf(" \n Enemy_lost_via_absorb %s",Enemy_lost_via_absorb.c_str());
-printf(" \n Resistance_increase %s",Resistance_increase.c_str()); 
+printf(" \n Resistance_increase %s",Resistance_increase.c_str());
 printf(" \n Resistance_decrease %s",Resistance_decrease.c_str());
 printf(" \n Level_up_message %s",Level_up_message.c_str());
-printf(" \n Skill_learned %s",Skill_learned.c_str()); 
+printf(" \n Skill_learned %s",Skill_learned.c_str());
 printf(" \n Shop_greeting %s",Shop_greeting.c_str());
-printf(" \n Shop_regreeting %s",Shop_regreeting.c_str());    
-printf(" \n Buy_message %s",Buy_message.c_str()); 
-printf(" \n Sell_message %s",Sell_message.c_str());      
-printf(" \n Leave_message %s", Leave_message.c_str());      
-printf(" \n Buying_message %s",Buying_message.c_str());     
-printf(" \n Quantity_to_buy %s",Quantity_to_buy.c_str()); 
-printf(" \n Purchase_end %s",Purchase_end.c_str());   
-printf(" \n Selling_message %s",Selling_message.c_str());  
-printf(" \n Quantity_to_sell %s",Quantity_to_sell.c_str());  
-printf(" \n Selling_end %s",Selling_end.c_str());      
-printf(" \n Shop_greeting_2 %s",Shop_greeting_2.c_str());    
-printf(" \n Shop_regreeting_2 %s",Shop_regreeting_2.c_str());   
-printf(" \n Buy_message_2 %s",Buy_message_2.c_str());    
-printf(" \n Sell_message_2 %s",Sell_message_2.c_str());   
-printf(" \n Leave_message_2 %s",Leave_message_2.c_str());    
-printf(" \n Buying_message_2 %s",Buying_message_2.c_str());  
-printf(" \n Quantity_to_buy_2 %s",Quantity_to_buy_2.c_str());     
-printf(" \n Purchase_end_2 %s",Purchase_end_2.c_str());    
-printf(" \n Selling_message_2 %s",Selling_message_2.c_str());    
-printf(" \n Quantity_to_sell_2 %s",Quantity_to_sell_2.c_str());    
-printf(" \n Selling_end_2 %s",Selling_end_2.c_str());     
-printf(" \n Shop_greeting_3 %s",Shop_greeting_3.c_str());      
-printf(" \n Shop_regreeting_3 %s",Shop_regreeting_3.c_str());     
-printf(" \n Buy_message_3 %s",Buy_message_3.c_str());   
-printf(" \n Sell_message_3 %s",Sell_message_3.c_str());     
-printf(" \n Leave_message_3 %s",Leave_message_3.c_str());    
-printf(" \n Buying_message_3 %s",Buying_message_3.c_str());    
-printf(" \n Quantity_to_buy_3 %s",Quantity_to_buy_3.c_str());     
-printf(" \n Purchase_end_3 %s",Purchase_end_3.c_str());    
-printf(" \n Selling_message_3 %s",Selling_message_3.c_str());     
-printf(" \n Quantity_to_sell_3 %s",Quantity_to_sell_3.c_str());     
-printf(" \n Selling_end_3 %s",Selling_end_3.c_str());   
-printf(" \n Inn_A_Greeting_A %s",Inn_A_Greeting_A.c_str());   
-printf(" \n Inn_A_Greeting_B %s",Inn_A_Greeting_B.c_str());     
-printf(" \n Inn_A_Greeting_C %s",Inn_A_Greeting_C.c_str()); 
-printf(" \n Inn_A_Accept %s",Inn_A_Accept.c_str());    
-printf(" \n Inn_A_Cancel %s",Inn_A_Cancel.c_str());     
-printf(" \n Inn_B_Greeting_A %s",Inn_B_Greeting_A.c_str());  
-printf(" \n Inn_B_Greeting_B %s",Inn_B_Greeting_B.c_str());   
-printf(" \n Inn_B_Greeting_C %s",Inn_B_Greeting_C.c_str());    
-printf(" \n Inn_B_Accept %s",Inn_B_Accept.c_str());  
-printf(" \n Inn_B_Cancel %s",Inn_B_Cancel.c_str());    
-printf(" \n Loose_items %s",Loose_items.c_str());      
-printf(" \n Equipped_items %s",Equipped_items.c_str());     
-printf(" \n Monetary_Unit %s",Monetary_Unit.c_str());   
-printf(" \n Combat_Command %s",Combat_Command.c_str());      
-printf(" \n Combat_Auto %s",Combat_Auto.c_str());     
-printf(" \n Combat_Run %s",Combat_Run.c_str());     
-printf(" \n Command_Attack %s",Command_Attack.c_str());       
-printf(" \n Command_Defend %s",Command_Defend.c_str());      
-printf(" \n Command_Item %s",Command_Item.c_str());   
-printf(" \n Command_Skill %s",Command_Skill.c_str());     
-printf(" \n Menu_Equipment %s",Menu_Equipment.c_str());     
-printf(" \n Menu_Save %s",Menu_Save.c_str());       
-printf(" \n Menu_Quit %s",Menu_Quit.c_str());     
-printf(" \n New_Game %s",New_Game.c_str());       
-printf(" \n Load_Game %s",Load_Game.c_str());      
-printf(" \n Exit_to_Windows %s",Exit_to_Windows.c_str());     
-printf(" \n Level %s",Level.c_str());      
-printf(" \n Health %s",Health.c_str());    
-printf(" \n Mana %s",Mana.c_str());     
-printf(" \n Normal_status %s",Normal_status.c_str());  
-printf(" \n Experience %s",Experience.c_str());     
-printf(" \n Level_short %s",Level_short.c_str());     
-printf(" \n Health_short %s",Health_short.c_str()); 
-printf(" \n Mana_short %s",Mana_short.c_str());    
-printf(" \n Mana_cost %s",Mana_cost.c_str());     
-printf(" \n Attack %s",Attack.c_str());       
-printf(" \n Defense %s",Defense.c_str());     
-printf(" \n Mind %s",Mind.c_str());    
-printf(" \n Agility %s",Agility.c_str());    
-printf(" \n Weapon %s",Weapon.c_str());  
-printf(" \n Shield %s",Shield.c_str());   
-printf(" \n Armor %s",Armor.c_str());      
-printf(" \n Helmet %s",Helmet.c_str());     
-printf(" \n Accessory %s",Accessory.c_str()); 
-printf(" \n Save_game_message %s",Save_game_message.c_str());     
-printf(" \n Load_game_message %s",Load_game_message.c_str());     
-printf(" \n Exit_game_message %s",Exit_game_message.c_str());  
-printf(" \n File_name %s",File_name.c_str());  
-printf(" \n General_Yes %s",General_Yes.c_str());  
-printf(" \n General_No %s",General_No.c_str());    
+printf(" \n Shop_regreeting %s",Shop_regreeting.c_str());
+printf(" \n Buy_message %s",Buy_message.c_str());
+printf(" \n Sell_message %s",Sell_message.c_str());
+printf(" \n Leave_message %s", Leave_message.c_str());
+printf(" \n Buying_message %s",Buying_message.c_str());
+printf(" \n Quantity_to_buy %s",Quantity_to_buy.c_str());
+printf(" \n Purchase_end %s",Purchase_end.c_str());
+printf(" \n Selling_message %s",Selling_message.c_str());
+printf(" \n Quantity_to_sell %s",Quantity_to_sell.c_str());
+printf(" \n Selling_end %s",Selling_end.c_str());
+printf(" \n Shop_greeting_2 %s",Shop_greeting_2.c_str());
+printf(" \n Shop_regreeting_2 %s",Shop_regreeting_2.c_str());
+printf(" \n Buy_message_2 %s",Buy_message_2.c_str());
+printf(" \n Sell_message_2 %s",Sell_message_2.c_str());
+printf(" \n Leave_message_2 %s",Leave_message_2.c_str());
+printf(" \n Buying_message_2 %s",Buying_message_2.c_str());
+printf(" \n Quantity_to_buy_2 %s",Quantity_to_buy_2.c_str());
+printf(" \n Purchase_end_2 %s",Purchase_end_2.c_str());
+printf(" \n Selling_message_2 %s",Selling_message_2.c_str());
+printf(" \n Quantity_to_sell_2 %s",Quantity_to_sell_2.c_str());
+printf(" \n Selling_end_2 %s",Selling_end_2.c_str());
+printf(" \n Shop_greeting_3 %s",Shop_greeting_3.c_str());
+printf(" \n Shop_regreeting_3 %s",Shop_regreeting_3.c_str());
+printf(" \n Buy_message_3 %s",Buy_message_3.c_str());
+printf(" \n Sell_message_3 %s",Sell_message_3.c_str());
+printf(" \n Leave_message_3 %s",Leave_message_3.c_str());
+printf(" \n Buying_message_3 %s",Buying_message_3.c_str());
+printf(" \n Quantity_to_buy_3 %s",Quantity_to_buy_3.c_str());
+printf(" \n Purchase_end_3 %s",Purchase_end_3.c_str());
+printf(" \n Selling_message_3 %s",Selling_message_3.c_str());
+printf(" \n Quantity_to_sell_3 %s",Quantity_to_sell_3.c_str());
+printf(" \n Selling_end_3 %s",Selling_end_3.c_str());
+printf(" \n Inn_A_Greeting_A %s",Inn_A_Greeting_A.c_str());
+printf(" \n Inn_A_Greeting_B %s",Inn_A_Greeting_B.c_str());
+printf(" \n Inn_A_Greeting_C %s",Inn_A_Greeting_C.c_str());
+printf(" \n Inn_A_Accept %s",Inn_A_Accept.c_str());
+printf(" \n Inn_A_Cancel %s",Inn_A_Cancel.c_str());
+printf(" \n Inn_B_Greeting_A %s",Inn_B_Greeting_A.c_str());
+printf(" \n Inn_B_Greeting_B %s",Inn_B_Greeting_B.c_str());
+printf(" \n Inn_B_Greeting_C %s",Inn_B_Greeting_C.c_str());
+printf(" \n Inn_B_Accept %s",Inn_B_Accept.c_str());
+printf(" \n Inn_B_Cancel %s",Inn_B_Cancel.c_str());
+printf(" \n Loose_items %s",Loose_items.c_str());
+printf(" \n Equipped_items %s",Equipped_items.c_str());
+printf(" \n Monetary_Unit %s",Monetary_Unit.c_str());
+printf(" \n Combat_Command %s",Combat_Command.c_str());
+printf(" \n Combat_Auto %s",Combat_Auto.c_str());
+printf(" \n Combat_Run %s",Combat_Run.c_str());
+printf(" \n Command_Attack %s",Command_Attack.c_str());
+printf(" \n Command_Defend %s",Command_Defend.c_str());
+printf(" \n Command_Item %s",Command_Item.c_str());
+printf(" \n Command_Skill %s",Command_Skill.c_str());
+printf(" \n Menu_Equipment %s",Menu_Equipment.c_str());
+printf(" \n Menu_Save %s",Menu_Save.c_str());
+printf(" \n Menu_Quit %s",Menu_Quit.c_str());
+printf(" \n New_Game %s",New_Game.c_str());
+printf(" \n Load_Game %s",Load_Game.c_str());
+printf(" \n Exit_to_Windows %s",Exit_to_Windows.c_str());
+printf(" \n Level %s",Level.c_str());
+printf(" \n Health %s",Health.c_str());
+printf(" \n Mana %s",Mana.c_str());
+printf(" \n Normal_status %s",Normal_status.c_str());
+printf(" \n Experience %s",Experience.c_str());
+printf(" \n Level_short %s",Level_short.c_str());
+printf(" \n Health_short %s",Health_short.c_str());
+printf(" \n Mana_short %s",Mana_short.c_str());
+printf(" \n Mana_cost %s",Mana_cost.c_str());
+printf(" \n Attack %s",Attack.c_str());
+printf(" \n Defense %s",Defense.c_str());
+printf(" \n Mind %s",Mind.c_str());
+printf(" \n Agility %s",Agility.c_str());
+printf(" \n Weapon %s",Weapon.c_str());
+printf(" \n Shield %s",Shield.c_str());
+printf(" \n Armor %s",Armor.c_str());
+printf(" \n Helmet %s",Helmet.c_str());
+printf(" \n Accessory %s",Accessory.c_str());
+printf(" \n Save_game_message %s",Save_game_message.c_str());
+printf(" \n Load_game_message %s",Load_game_message.c_str());
+printf(" \n Exit_game_message %s",Exit_game_message.c_str());
+printf(" \n File_name %s",File_name.c_str());
+printf(" \n General_Yes %s",General_Yes.c_str());
+printf(" \n General_No %s",General_No.c_str());
 }
-void stcSystem::show(){  
-printf(" \n Skiff_graphic %s",Skiff_graphic.c_str());  
-printf(" \n Boat_graphic %s",Boat_graphic.c_str()); 
-printf(" \n Airship_graphic %s",Airship_graphic.c_str()); 
-printf(" \n Skiff_index %d",Skiff_index);  
-printf(" \n Boat_index %d",Boat_index); 
-printf(" \n Airship_index %d",Airship_index); 
-printf(" \n Title_graphic %s",Title_graphic.c_str());  
-printf(" \n Game_Over_graphic %s",Game_Over_graphic.c_str()); 
+void stcSystem::show(){
+printf(" \n Skiff_graphic %s",Skiff_graphic.c_str());
+printf(" \n Boat_graphic %s",Boat_graphic.c_str());
+printf(" \n Airship_graphic %s",Airship_graphic.c_str());
+printf(" \n Skiff_index %d",Skiff_index);
+printf(" \n Boat_index %d",Boat_index);
+printf(" \n Airship_index %d",Airship_index);
+printf(" \n Title_graphic %s",Title_graphic.c_str());
+printf(" \n Game_Over_graphic %s",Game_Over_graphic.c_str());
 printf(" \n System_graphic %s",System_graphic.c_str());
 printf(" \n Heroes_in_starting %d",Heroes_in_starting);
-//std::vector<short> vc_sh_Starting_party;// Starting_party;//0x16,   
+//std::vector<short> vc_sh_Starting_party;// Starting_party;//0x16,
  Title_music.show();//0x1F,
  Battle_music.show();//0x20,
  Battle_end_music.show();//0x21,
@@ -841,32 +851,32 @@ printf(" \n Map_exit_transition %d",Map_exit_transition);
 printf(" \n Map_enter_transition %d",Map_enter_transition);
 printf(" \n Battle_start_fadeout %d",Battle_start_fadeout);
 printf(" \n Battle_start_fadein %d",Battle_start_fadein);
-printf(" \n Battle_end_fadeout %d",Battle_end_fadeout);  
-printf(" \n Battle_end_fadein %d",Battle_end_fadein); 
-//0x47 	//no identificados	
-//0x48	//no identificados	
+printf(" \n Battle_end_fadeout %d",Battle_end_fadeout);
+printf(" \n Battle_end_fadein %d",Battle_end_fadein);
+//0x47 	//no identificados
+//0x48	//no identificados
 printf(" \n Selected_condition %d",Selected_condition);
-printf(" \n Selected_hero %d",Selected_hero);      
+printf(" \n Selected_hero %d",Selected_hero);
 printf(" \n Battle_test_BG %s",Battle_test_BG.c_str());
 //std::string Battle_test_data;//0x55
-//0x5B //no identificados        
+//0x5B //no identificados
 
-}	
+}
 
-void stcBattle_test::show()	
+void stcBattle_test::show()
 {
-printf(" \n Hero_ID %d",Hero_ID); 
-printf(" \n Level %d",Level);  
-printf(" \n Weapin %d",Weapon);  
-printf(" \n Shield %d",Shield); 
+printf(" \n Hero_ID %d",Hero_ID);
+printf(" \n Level %d",Level);
+printf(" \n Weapin %d",Weapon);
+printf(" \n Shield %d",Shield);
 printf(" \n Armor %d",Armor);
 printf(" \n Helmet %d",Helmet);
 printf(" \n Accessory %d",Accessory);
 }
 
-void stcBattle_test::clear()	
+void stcBattle_test::clear()
 {
- Hero_ID=0;	
+ Hero_ID=0;
  Level=0;// 0x02
  Weapon=0;// 0x0B
  Shield=0;// 0x0C
@@ -877,7 +887,7 @@ void stcBattle_test::clear()
 
 
 void stcEvent::clear()
-{   	
+{
    strName="";//=0x01,
    intNameActivation_condition=0;//=0x0B,
    blNameActivate_on_switch=0;//=0x0C,
@@ -885,7 +895,7 @@ void stcEvent::clear()
    intNameScript_length=0;//=0x15,
 }
 void stcEvent::show()
-{   	
+{
 printf(" \n strName %s",strName.c_str());
 printf(" \n intNameActivation_condition %d",intNameActivation_condition);
 printf(" \n blNameActivate_on_switch %d",blNameActivate_on_switch);
@@ -894,12 +904,12 @@ printf(" \n intNameScript_length %d",intNameScript_length);
 }
 
 void stcCombatcommand::clear()
-{      
-  strName="";// 	=0x01, 
-  intUsage=0;// 	=0x02,    		 
+{
+  strName="";// 	=0x01,
+  intUsage=0;// 	=0x02,
 }
 void stcCombatcommand::show()
-{      
+{
 printf(" \n strName %s",strName.c_str());
 printf(" \n intUsage %d",intUsage);}
 
@@ -908,11 +918,11 @@ void stcCombatcommands::show()//array bidimencional
 i=vc_Combatcommand.size();
 for(j=0;j<i;j++)
   vc_Combatcommand[j].show();
-		 
+
 }
 void stcCombatcommands::clear()//array bidimencional
-{ 
- vc_Combatcommand.clear(); 		 
+{
+ vc_Combatcommand.clear();
 }
 
 
@@ -920,34 +930,34 @@ void stcCombatcommands::clear()//array bidimencional
 
 
 void stcBattle_comand::clear()
-{      
-  strName="";// 	=0x01, 
-  intMotion_attack=0;// 	=0x02, 
-  vc_Animated_battle_Combat_Anime.clear();//	=0x0A, //two diminsional arrays 
-  vc_Animated_battle_Anime_combat_weapons.clear();//=0x0B //two diminsional arrays  	   		 
+{
+  strName="";// 	=0x01,
+  intMotion_attack=0;// 	=0x02,
+  vc_Animated_battle_Combat_Anime.clear();//	=0x0A, //two diminsional arrays
+  vc_Animated_battle_Anime_combat_weapons.clear();//=0x0B //two diminsional arrays
 }
 void stcBattle_comand::show()
-{      
+{
 printf(" \n strName %s",strName.c_str());
 printf(" \n intMotion_attack %d",intMotion_attack);
-//  vc_Animated_battle_Combat_Anime.clear();//	=0x0A, //two diminsional arrays 
-//  vc_Animated_battle_Anime_combat_weapons.clear();//=0x0B //two diminsional arrays  	   		 
+//  vc_Animated_battle_Combat_Anime.clear();//	=0x0A, //two diminsional arrays
+//  vc_Animated_battle_Anime_combat_weapons.clear();//=0x0B //two diminsional arrays
 }
 
 void stcFight_anim::clear()
-{   
- strName="";//=0x01, 
- strFilename="";//=0x02, 
- intPosition=0;//=0x03,  
- blExtended_expanded=0;//=0x04,  	
+{
+ strName="";//=0x01,
+ strFilename="";//=0x02,
+ intPosition=0;//=0x03,
+ blExtended_expanded=0;//=0x04,
  intID_Expansion_animated_combat_ID=0;//=0x05
 }
 void stcFight_anim::show()
-{   
+{
 printf(" \n strName %s",strName.c_str());
 printf(" \n strFilename %s",strFilename.c_str());
 printf(" \n intPosition %d",intPosition);
-printf(" \n blExtended_expanded %d",blExtended_expanded); 	
+printf(" \n blExtended_expanded %d",blExtended_expanded);
 printf(" \n intID_Expansion_animated_combat_ID %d",intID_Expansion_animated_combat_ID);
 }
 
@@ -997,7 +1007,7 @@ printf(" \n Animated_battle %d",Animated_battle);
 //skills.clear(); //Special_skills_level=0x3F, misma estructura que heroe
 printf(" \n Effectiveness_state_number %d",Effectiveness_state_number);
 //vc_ch_Condeffects.clear(); //Effectiveness_state_data =0x48,  //1 byte one dimention array
-printf(" \n Effectiveness_Attribute_number %d",Effectiveness_Attribute_number); 
+printf(" \n Effectiveness_Attribute_number %d",Effectiveness_Attribute_number);
 //vc_ch_Attribeffects.clear();//Effectiveness_Attribute_data =0x4A,/1 byte one dimention array
 //vc_int_Combat_Command.clear();  //Combat_Command=0x50 4 bytes one dimention array
 }

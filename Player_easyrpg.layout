@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="code/attributes/CActor.cpp" open="1" top="1" tabpos="6">
+	<File name="code/attributes/CActor.cpp" open="1" top="0" tabpos="6">
 		<Cursor position="2053" topLine="48" />
 	</File>
 	<File name="code/attributes/CActor.h" open="1" top="0" tabpos="7">
@@ -25,8 +25,8 @@
 	<File name="code/attributes/skill.cpp" open="0" top="0" tabpos="13">
 		<Cursor position="1662" topLine="52" />
 	</File>
-	<File name="code/control/Batle_scene.cpp" open="0" top="0" tabpos="4">
-		<Cursor position="10014" topLine="414" />
+	<File name="code/control/Batle_scene.cpp" open="1" top="0" tabpos="12">
+		<Cursor position="3509" topLine="112" />
 	</File>
 	<File name="code/control/Batle_scene.h" open="0" top="0" tabpos="2">
 		<Cursor position="2437" topLine="114" />
@@ -52,23 +52,23 @@
 	<File name="code/control/scene.cpp" open="0" top="0" tabpos="3">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="code/interface/Control/Equip_Menu_scene.cpp" open="0" top="0" tabpos="17">
-		<Cursor position="8126" topLine="307" />
+	<File name="code/interface/Control/Equip_Menu_scene.cpp" open="1" top="0" tabpos="13">
+		<Cursor position="4138" topLine="108" />
 	</File>
 	<File name="code/interface/Control/Item_use_scene.cpp" open="0" top="0" tabpos="18">
 		<Cursor position="3192" topLine="106" />
 	</File>
-	<File name="code/interface/Control/Main_Menu_scene.cpp" open="0" top="0" tabpos="19">
-		<Cursor position="4282" topLine="171" />
+	<File name="code/interface/Control/Main_Menu_scene.cpp" open="1" top="0" tabpos="14">
+		<Cursor position="1307" topLine="26" />
 	</File>
-	<File name="code/interface/Control/Objects_Menu_scene.cpp" open="0" top="0" tabpos="20">
-		<Cursor position="0" topLine="0" />
+	<File name="code/interface/Control/Objects_Menu_scene.cpp" open="1" top="0" tabpos="15">
+		<Cursor position="1140" topLine="24" />
 	</File>
 	<File name="code/interface/Control/Save_Load_Menu_scene.cpp" open="0" top="0" tabpos="21">
 		<Cursor position="1691" topLine="50" />
 	</File>
-	<File name="code/interface/Control/Skills_Menu_scene.cpp" open="0" top="0" tabpos="22">
-		<Cursor position="2809" topLine="92" />
+	<File name="code/interface/Control/Skills_Menu_scene.cpp" open="1" top="0" tabpos="16">
+		<Cursor position="1161" topLine="24" />
 	</File>
 	<File name="code/interface/Control/Stats_Menu_scene.cpp" open="0" top="0" tabpos="23">
 		<Cursor position="3723" topLine="93" />
@@ -103,8 +103,8 @@
 	<File name="code/readers/ldbchunks.h" open="0" top="0" tabpos="5">
 		<Cursor position="717" topLine="12" />
 	</File>
-	<File name="code/readers/ldbstr.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="0" topLine="36" />
+	<File name="code/readers/ldbstr.cpp" open="1" top="1" tabpos="17">
+		<Cursor position="20675" topLine="669" />
 	</File>
 	<File name="code/readers/lmt.cpp" open="0" top="0" tabpos="3">
 		<Cursor position="854" topLine="21" />
