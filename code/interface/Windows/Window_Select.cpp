@@ -16,7 +16,7 @@
 
 #include "Window_Select.h"
 
-void Window_Select::init(Audio * theaudio, bool * run,int ComandX,int ComandY,int SizeX,int SizeY,int PosX,int PosY, char *SysIMg)
+void Window_Select::init(Audio * theaudio, bool * run,int ComandX,int ComandY,int SizeX,int SizeY,int PosX,int PosY, const char *SysIMg)
 {
 	menu.init( theaudio,run,ComandX,ComandY);
 	System.init_Sistem();
