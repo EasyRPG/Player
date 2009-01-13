@@ -138,6 +138,8 @@
 		<Unit filename="code/sprites/Chara.h" />
 		<Unit filename="code/sprites/Faceset.cpp" />
 		<Unit filename="code/sprites/Faceset.h" />
+		<Unit filename="code/sprites/Pre_Chipset.cpp" />
+		<Unit filename="code/sprites/Pre_Chipset.h" />
 		<Unit filename="code/sprites/Sistem.cpp" />
 		<Unit filename="code/sprites/Sistem.h" />
 		<Unit filename="code/sprites/chipset.cpp" />

@@ -48,18 +48,6 @@ public:
      void Render(SDL_Surface * Destiny, int Layer, int CameraX, int CameraY);
 
     };
-    class Pre_Chipset
-    {
-    private:
-        SDL_Surface * BaseSurface;      // Chipset's base surface!
-        void RenderWaterTile(SDL_Surface * Destiny, int x, int y, int Frame, int Border, int Water, int Combination);
-        void RenderDepthTile(SDL_Surface * Destiny, int x, int y, int Frame, int Depth, int DepthCombination);
-        void RenderTerrainTile(SDL_Surface * Destiny, int x, int y, int Terrain, int Combination);
-    public:
-        SDL_Surface * ChipsetSurface;   // Chipset's precalculated surface
-        bool GenerateFromSurface(SDL_Surface * Surface);
-        bool GenerateFromFile(string Filename);
-        void dispose();
-     };
+
 
 #endif

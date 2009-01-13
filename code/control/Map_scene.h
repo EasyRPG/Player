@@ -28,6 +28,8 @@
 
 #include "../sprites/sprite.h"
 #include "../sprites/chipset.h"
+#include "../sprites/Pre_Chipset.h"
+
 #include "../tools/key.h"
 
 #include "../tools/font.h"

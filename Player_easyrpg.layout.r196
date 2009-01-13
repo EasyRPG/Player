@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="code/attributes/CActor.cpp" open="0" top="0" tabpos="6">
+		<Cursor position="2561" topLine="94" />
+	</File>
+	<File name="code/attributes/CActor.h" open="0" top="0" tabpos="7">
+		<Cursor position="843" topLine="5" />
+	</File>
+	<File name="code/attributes/Enemy.cpp" open="0" top="0" tabpos="9">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="code/attributes/Player.cpp" open="0" top="0" tabpos="10">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="code/attributes/Player_Team.cpp" open="0" top="0" tabpos="11">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="code/attributes/Player_Team.h" open="0" top="0" tabpos="48">
+		<Cursor position="0" topLine="18" />
+	</File>
+	<File name="code/attributes/item.cpp" open="0" top="0" tabpos="12">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="code/attributes/skill.cpp" open="0" top="0" tabpos="13">
+		<Cursor position="1662" topLine="52" />
+	</File>
+	<File name="code/control/Batle_scene.cpp" open="0" top="0" tabpos="3">
+		<Cursor position="1330" topLine="28" />
+	</File>
+	<File name="code/control/Batle_scene.h" open="0" top="0" tabpos="2">
+		<Cursor position="2508" topLine="114" />
+	</File>
+	<File name="code/control/GameOver_scene.cpp" open="0" top="0" tabpos="14">
+		<Cursor position="1097" topLine="61" />
+	</File>
+	<File name="code/control/GameOver_scene.h" open="0" top="0" tabpos="1">
+		<Cursor position="2033" topLine="66" />
+	</File>
+	<File name="code/control/Map_scene.cpp" open="0" top="0" tabpos="5">
+		<Cursor position="1721" topLine="32" />
+	</File>
+	<File name="code/control/Map_scene.h" open="0" top="0" tabpos="4">
+		<Cursor position="1933" topLine="61" />
+	</File>
+	<File name="code/control/Title_scene.cpp" open="0" top="0" tabpos="4">
+		<Cursor position="6837" topLine="319" />
+	</File>
+	<File name="code/control/Title_scene.h" open="0" top="0" tabpos="0">
+		<Cursor position="1788" topLine="56" />
+	</File>
+	<File name="code/control/scene.cpp" open="0" top="0" tabpos="3">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="code/interface/Control/Equip_Menu_scene.cpp" open="0" top="0" tabpos="13">
+		<Cursor position="4138" topLine="108" />
+	</File>
+	<File name="code/interface/Control/Item_use_scene.cpp" open="0" top="0" tabpos="18">
+		<Cursor position="3192" topLine="106" />
+	</File>
+	<File name="code/interface/Control/Main_Menu_scene.cpp" open="0" top="0" tabpos="14">
+		<Cursor position="1307" topLine="26" />
+	</File>
+	<File name="code/interface/Control/Objects_Menu_scene.cpp" open="0" top="0" tabpos="15">
+		<Cursor position="1140" topLine="24" />
+	</File>
+	<File name="code/interface/Control/Save_Load_Menu_scene.cpp" open="0" top="0" tabpos="21">
+		<Cursor position="1691" topLine="50" />
+	</File>
+	<File name="code/interface/Control/Skills_Menu_scene.cpp" open="0" top="0" tabpos="16">
+		<Cursor position="1161" topLine="24" />
+	</File>
+	<File name="code/interface/Control/Stats_Menu_scene.cpp" open="0" top="0" tabpos="23">
+		<Cursor position="3723" topLine="93" />
+	</File>
+	<File name="code/interface/Menu_Easy.cpp" open="0" top="0" tabpos="4">
+		<Cursor position="808" topLine="3" />
+	</File>
+	<File name="code/interface/Menu_Easy.h" open="0" top="0" tabpos="0">
+		<Cursor position="1296" topLine="25" />
+	</File>
+	<File name="code/interface/Windows/Window_Base.cpp" open="0" top="0" tabpos="24">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="code/interface/Windows/Window_Player_Select.cpp" open="0" top="0" tabpos="25">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="code/interface/Windows/Window_Player_Select.h" open="0" top="0" tabpos="8">
+		<Cursor position="0" topLine="12" />
+	</File>
+	<File name="code/interface/Windows/Window_Select.cpp" open="0" top="0" tabpos="5">
+		<Cursor position="823" topLine="5" />
+	</File>
+	<File name="code/interface/Windows/Window_Select.h" open="0" top="0" tabpos="6">
+		<Cursor position="1789" topLine="40" />
+	</File>
+	<File name="code/readers/ldb.cpp" open="0" top="0" tabpos="2">
+		<Cursor position="91324" topLine="2448" />
+	</File>
+	<File name="code/readers/ldb.h" open="0" top="0" tabpos="3">
+		<Cursor position="1112" topLine="26" />
+	</File>
+	<File name="code/readers/ldbchunks.h" open="0" top="0" tabpos="5">
+		<Cursor position="717" topLine="12" />
+	</File>
+	<File name="code/readers/ldbstr.cpp" open="0" top="0" tabpos="17">
+		<Cursor position="20675" topLine="669" />
+	</File>
+	<File name="code/readers/lmt.cpp" open="0" top="0" tabpos="3">
+		<Cursor position="854" topLine="21" />
+	</File>
+	<File name="code/readers/map.cpp" open="0" top="0" tabpos="4">
+		<Cursor position="4336" topLine="66" />
+	</File>
+	<File name="code/readers/mapchunks.h" open="0" top="0" tabpos="6">
+		<Cursor position="2874" topLine="57" />
+	</File>
+	<File name="code/readers/stevent.cpp" open="0" top="0" tabpos="8">
+		<Cursor position="86440" topLine="1907" />
+	</File>
+	<File name="code/sprites/Animacion.cpp" open="0" top="0" tabpos="28">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="code/sprites/Animacion.h" open="0" top="0" tabpos="47">
+		<Cursor position="1157" topLine="27" />
+	</File>
+	<File name="code/sprites/Batler.cpp" open="0" top="0" tabpos="29">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="code/sprites/Chara.cpp" open="0" top="0" tabpos="10">
+		<Cursor position="1343" topLine="4" />
+	</File>
+	<File name="code/sprites/Chara.h" open="0" top="0" tabpos="11">
+		<Cursor position="1143" topLine="16" />
+	</File>
+	<File name="code/sprites/Faceset.cpp" open="0" top="0" tabpos="31">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="code/sprites/Faceset.h" open="0" top="0" tabpos="45">
+		<Cursor position="1145" topLine="24" />
+	</File>
+	<File name="code/sprites/Sistem.cpp" open="0" top="0" tabpos="32">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="code/sprites/Sistem.h" open="0" top="0" tabpos="44">
+		<Cursor position="1145" topLine="30" />
+	</File>
+	<File name="code/sprites/chipset.cpp" open="0" top="0" tabpos="9">
+		<Cursor position="3454" topLine="71" />
+	</File>
+	<File name="code/sprites/sprite.cpp" open="0" top="0" tabpos="2">
+		<Cursor position="0" topLine="78" />
+	</File>
+	<File name="code/sprites/sprite.h" open="0" top="0" tabpos="43">
+		<Cursor position="1129" topLine="24" />
+	</File>
+	<File name="code/tools/CDeltaTime.cpp" open="0" top="0" tabpos="2">
+		<Cursor position="0" topLine="32" />
+	</File>
+	<File name="code/tools/Timer.cpp" open="0" top="0" tabpos="37">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="code/tools/Timer.h" open="0" top="0" tabpos="0">
+		<Cursor position="1156" topLine="23" />
+	</File>
+	<File name="code/tools/audio.cpp" open="0" top="0" tabpos="3">
+		<Cursor position="1455" topLine="31" />
+	</File>
+	<File name="code/tools/audio.h" open="0" top="0" tabpos="3">
+		<Cursor position="1160" topLine="35" />
+	</File>
+	<File name="code/tools/control.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="146" topLine="0" />
+	</File>
+	<File name="code/tools/control.h" open="1" top="0" tabpos="2">
+		<Cursor position="71" topLine="0" />
+	</File>
+	<File name="code/tools/e_set.cpp" open="1" top="0" tabpos="5">
+		<Cursor position="106" topLine="0" />
+	</File>
+	<File name="code/tools/e_set.h" open="1" top="1" tabpos="4">
+		<Cursor position="106" topLine="0" />
+	</File>
+	<File name="code/tools/font.cpp" open="0" top="0" tabpos="39">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="code/tools/font.h" open="0" top="0" tabpos="49">
+		<Cursor position="902" topLine="13" />
+	</File>
+	<File name="code/tools/key.cpp" open="0" top="0" tabpos="40">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="code/tools/tools.cpp" open="0" top="0" tabpos="5">
+		<Cursor position="1152" topLine="11" />
+	</File>
+	<File name="main.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="1668" topLine="20" />
+	</File>
+</CodeBlocks_layout_file>
