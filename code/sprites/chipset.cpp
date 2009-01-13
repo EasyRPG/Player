@@ -205,7 +205,8 @@ bool Chipset::CollisionAt(int x, int y, unsigned short dir)
 //abajo 1 bit 1
 
             case 0://ACTOR_DIRECTION_UP
-
+                if(y==0)
+                    return(false);
                 if((id_lower>>3)&&(id_upper>>3))
                 {
                     plain_id=x + ((y-1)*(data->MapWidth));
@@ -220,6 +221,8 @@ bool Chipset::CollisionAt(int x, int y, unsigned short dir)
             break;
 
             case 1: //ACTOR_DIRECTION_DOWN
+                if((y+1)==data->MapHeight)
+                    return(false);
 
                 if((id_lower& (0x01))&&(id_upper& (0x01)))
                 {
@@ -234,9 +237,11 @@ bool Chipset::CollisionAt(int x, int y, unsigned short dir)
             break;
 
             case 2: //ACTOR_DIRECTION_LEFT
+                   if(x==0)
+                        return(false);
+
                 if(((id_lower>>1)& (0x01))&&((id_upper>>1)& (0x01)))
                 {
-
                     plain_id=x + (y*(data->MapWidth))-1;
                     id_upper=(upper_colision_matrix[plain_id]& (0x0F));
                     id_lower=(lower_colision_matrix[plain_id]& (0x0F));
@@ -248,6 +253,9 @@ bool Chipset::CollisionAt(int x, int y, unsigned short dir)
             break;
 
             case 3://ACTOR_DIRECTION_RIGHT
+                   if((x+1)==data->MapWidth)
+                        return(false);
+
                 if(((id_lower>>2)& (0x01))&&((id_upper>>2)& (0x01)))
                 {
                     plain_id=x + (y*(data->MapWidth))+1;
