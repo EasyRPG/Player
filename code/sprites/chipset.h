@@ -43,7 +43,7 @@
 public:
      map_data * data;
      void Colition_cal(unsigned short Tile);
-
+     bool CollisionAt(int x, int y, unsigned short dir);
      void init(SDL_Surface * precalculated,map_data * m_data,stcChipSet * title_colision);
      void Render(SDL_Surface * Destiny, int Layer, int CameraX, int CameraY);
 

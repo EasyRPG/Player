@@ -29,7 +29,6 @@ void Map_Scene::init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * Th
 	npc.setimg("../chara/Monster1.png");
 	Actor.init_Chara();
 	Actor.setimg("../chara/protagonist1.PNG");
-	Actor.setposXY(12,12);
 	npc.setx(120);
 	npc.sety(120);
 	// ===[ LOADING MAP DATA ]==============================================
@@ -37,6 +36,7 @@ void Map_Scene::init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * Th
 
     Map.Load("Map0001.lmu",&data);
     chip.init(pre_chip.ChipsetSurface,&data,&(TheTeam->data2.Tilesets[((unsigned int)(data.ChipsetID))-1]) );
+    Actor.setposXY(10,4,&chip);
 
     (* myaudio).load("../Music/Town.mid");
 	NScene=TheScene;

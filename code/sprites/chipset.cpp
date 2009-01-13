@@ -189,4 +189,77 @@
     return(Tile);
     }
 
+bool Chipset::CollisionAt(int x, int y, unsigned short dir)
+{
+    int plain_id=x + (y*(data->MapWidth));
+    //solo los primeros 4 bits
+    int id_upper=(upper_colision_matrix[plain_id]& (0x0F));
+    int id_lower=(lower_colision_matrix[plain_id]& (0x0F));
 
+        switch(dir)
+        {
+
+//arriba 4 bit 8
+//derecha 3 bit 4
+//izquierda 2 bit 2
+//abajo 1 bit 1
+
+            case 0://ACTOR_DIRECTION_UP
+
+                if((id_lower>>3)&&(id_upper>>3))
+                {
+                    plain_id=x + ((y-1)*(data->MapWidth));
+                    id_upper=(upper_colision_matrix[plain_id]& (0x0F));
+                    id_lower=(lower_colision_matrix[plain_id]& (0x0F));
+
+                    if((id_lower& (0x01))&&(id_upper& (0x01)))
+                        return(true);
+                }
+                return(false);
+
+            break;
+
+            case 1: //ACTOR_DIRECTION_DOWN
+
+                if((id_lower& (0x01))&&(id_upper& (0x01)))
+                {
+                    plain_id=x + ((y+1)*(data->MapWidth));
+                    id_upper=(upper_colision_matrix[plain_id]& (0x0F));
+                    id_lower=(lower_colision_matrix[plain_id]& (0x0F));
+
+                    if((id_lower>>3)&&(id_upper>>3))
+                        return(true);
+                }
+                return(false);
+            break;
+
+            case 2: //ACTOR_DIRECTION_LEFT
+                if(((id_lower>>1)& (0x01))&&((id_upper>>1)& (0x01)))
+                {
+
+                    plain_id=x + (y*(data->MapWidth))-1;
+                    id_upper=(upper_colision_matrix[plain_id]& (0x0F));
+                    id_lower=(lower_colision_matrix[plain_id]& (0x0F));
+
+                    if(((id_lower>>2)& (0x01))&&((id_upper>>2)& (0x01)))
+                        return(true);
+                }
+                return(false);
+            break;
+
+            case 3://ACTOR_DIRECTION_RIGHT
+                if(((id_lower>>2)& (0x01))&&((id_upper>>2)& (0x01)))
+                {
+                    plain_id=x + (y*(data->MapWidth))+1;
+                    id_upper=(upper_colision_matrix[plain_id]& (0x0F));
+                    id_lower=(lower_colision_matrix[plain_id]& (0x0F));
+
+                    if(((id_lower>>1)& (0x01))&&((id_upper>>1)& (0x01)))
+                        return(true);
+                }
+                return(false);
+            break;
+
+        }
+ return(false);
+}

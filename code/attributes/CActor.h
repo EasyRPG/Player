@@ -18,6 +18,9 @@
 #define CACTOR_H
 
 #include "../../code/tools/control.h"
+#include "../sprites/chipset.h"
+
+
 struct mot
 {
 	sll distance;
@@ -27,6 +30,8 @@ struct mot
 
 
 class CActor:public Chara {
+
+Chipset * World;
 // Methods
 public:
 	void MoveOnInput();
@@ -34,7 +39,7 @@ public:
 	sll Minf(float value, float max);
 	int Clamp(int value, int min, int max);
 	sll Clampf(float value, float min, float max);
-	void setposXY(int x,int y);
+    void setposXY(int x,int y,Chipset * the_World);
 	unsigned char  flags;
 	unsigned char state;
 	mot Cmotion;

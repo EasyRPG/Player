@@ -78,10 +78,16 @@ sll CActor::Clampf(float value, float min, float max)
     return ((value<min)? min:(value>=max)? max:value);
 }
 
-void CActor::setposXY(int x,int y)
+void CActor::setposXY(int x,int y,Chipset * the_World)
 {
+
+ GridX=x;///aparte de la X  y Y  tenemos la poscion con referencia bloques.
+GridY=y;
+    x=x*16 -(getw()/2)+8;
+    y=y*16 -(geth())+16;
     realX=(sll)x;
     realY=(sll)y;
+    World=the_World;
 }
 
 void CActor::MoveOnInput()
@@ -100,35 +106,50 @@ void CActor::MoveOnInput()
         {
         case ARROW_UP:
             tim=0;
+            dir = 0;
+        if(World->CollisionAt(GridX,GridY,ACTOR_DIRECTION_UP))
+         {  GridY--;
             state = ACTOR_STATE_MOVING;
             Cmotion.direction = ACTOR_DIRECTION_UP;
-            dir = 0;
             Cmotion.distance = 0;
             Control::stop = true;
+        }
             break;
         case ARROW_DOWN:
             tim=0;
+         dir = 2;
+        if(World->CollisionAt(GridX,GridY,ACTOR_DIRECTION_DOWN))
+        {
+            GridY++;
             state = ACTOR_STATE_MOVING;
             Cmotion.direction = ACTOR_DIRECTION_DOWN;
-            dir = 2;
             Cmotion.distance = 0;
             Control::stop = true;
+        }
             break;
         case ARROW_LEFT:
-            tim=0;
+           tim=0;
+           dir=3;
+        if(World->CollisionAt(GridX,GridY,ACTOR_DIRECTION_LEFT))
+        {
+            GridX--;
             state            = ACTOR_STATE_MOVING;
             Cmotion.direction = ACTOR_DIRECTION_LEFT;
-            dir=3;
             Cmotion.distance  = 0;
             Control::stop = true;
+        }
             break;
         case ARROW_RIGHT:
             tim=0;
+            dir = 1;
+        if(World->CollisionAt(GridX,GridY,ACTOR_DIRECTION_RIGHT))
+        {
+            GridX++;
             state = ACTOR_STATE_MOVING;
             Cmotion.direction = ACTOR_DIRECTION_RIGHT;
-            dir = 1;
             Cmotion.distance  = 0;
             Control::stop = true;
+        }
             break;
         case -1:
             if (tim==2)

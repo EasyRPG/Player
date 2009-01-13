@@ -1650,7 +1650,7 @@
 	"item.h"
 	"Enemy.h"
 
-1231806734 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/CActor.cpp
+1231819035 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/CActor.cpp
 	<SDL/SDL.h>
 	"../tools/math-sll.h"
 	"../sprites/Chara.h"
@@ -1687,8 +1687,9 @@
 	<iostream>
 	<stdlib.h>
 
-1231707326 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/CActor.h
+1231810778 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/CActor.h
 	"../../code/tools/control.h"
+	"../sprites/chipset.h"
 
 1231707324 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/CDeltaTime.h
 
@@ -1725,7 +1726,7 @@
 	"../tools/tools.h"
 	"chipset.h"
 
-1231807392 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/chipset.h
+1231810767 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/chipset.h
 	<stdlib.h>
 	<stdio.h>
 	<string>
@@ -1908,7 +1909,7 @@
 	"../attributes/CActor.h"
 	"scene.h"
 
-1231806734 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Map_scene.cpp
+1231818755 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Map_scene.cpp
 	"Map_scene.h"
 
 1231808483 /home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Map_scene.h
@@ -2164,7 +2165,7 @@
 	"Sistem.h"
 	"SDL_rotozoom.h"
 
-1231720898 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/chipset.cpp
+1231819947 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/chipset.cpp
 	<stdlib.h>
 	<stdio.h>
 	<string>
@@ -2220,7 +2221,7 @@
 	<SDL/SDL_image.h>
 	"tools.h"
 
-1231707328 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/main.cpp
+1231806734 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/main.cpp
 	"code/tools/tools.h"
 	"code/sprites/sprite.h"
 	"code/tools/key.h"
@@ -3700,7 +3701,7 @@
 	"ldb.h"
 	<iostream>
 
-1231767035 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/control.cpp
+1231806734 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/control.cpp
 	"control.h"
 
 1231602814 source:/home/fdelapena/programacion/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/Enemy.cpp
@@ -4335,4 +4336,10 @@
 	"../tools/tools.h"
 	"../readers/map.h"
 	"../readers/ldbstr.h"
+
+1231808588 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/sprites/Pre_Chipset.cpp
+	"Pre_Chipset.h"
+
+1231806734 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/e_set.cpp
+	"e_set.h"
 
