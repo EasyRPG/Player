@@ -25,7 +25,7 @@
 	<File name="code/attributes/skill.cpp" open="0" top="0" tabpos="13">
 		<Cursor position="1662" topLine="52" />
 	</File>
-	<File name="code/control/Batle_scene.cpp" open="1" top="1" tabpos="3">
+	<File name="code/control/Batle_scene.cpp" open="0" top="0" tabpos="3">
 		<Cursor position="1330" topLine="28" />
 	</File>
 	<File name="code/control/Batle_scene.h" open="0" top="0" tabpos="2">
@@ -88,10 +88,10 @@
 	<File name="code/interface/Windows/Window_Player_Select.h" open="0" top="0" tabpos="8">
 		<Cursor position="0" topLine="12" />
 	</File>
-	<File name="code/interface/Windows/Window_Select.cpp" open="1" top="0" tabpos="5">
+	<File name="code/interface/Windows/Window_Select.cpp" open="0" top="0" tabpos="5">
 		<Cursor position="823" topLine="5" />
 	</File>
-	<File name="code/interface/Windows/Window_Select.h" open="1" top="0" tabpos="6">
+	<File name="code/interface/Windows/Window_Select.h" open="0" top="0" tabpos="6">
 		<Cursor position="1789" topLine="40" />
 	</File>
 	<File name="code/readers/ldb.cpp" open="0" top="0" tabpos="2">
@@ -170,10 +170,16 @@
 		<Cursor position="1160" topLine="35" />
 	</File>
 	<File name="code/tools/control.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="417" topLine="10" />
+		<Cursor position="146" topLine="0" />
 	</File>
 	<File name="code/tools/control.h" open="1" top="0" tabpos="2">
-		<Cursor position="342" topLine="9" />
+		<Cursor position="71" topLine="0" />
+	</File>
+	<File name="code/tools/e_set.cpp" open="1" top="0" tabpos="5">
+		<Cursor position="106" topLine="0" />
+	</File>
+	<File name="code/tools/e_set.h" open="1" top="1" tabpos="4">
+		<Cursor position="106" topLine="0" />
 	</File>
 	<File name="code/tools/font.cpp" open="0" top="0" tabpos="39">
 		<Cursor position="0" topLine="0" />
@@ -187,7 +193,7 @@
 	<File name="code/tools/tools.cpp" open="0" top="0" tabpos="5">
 		<Cursor position="1152" topLine="11" />
 	</File>
-	<File name="main.cpp" open="1" top="0" tabpos="4">
-		<Cursor position="5530" topLine="35" />
+	<File name="main.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="1668" topLine="20" />
 	</File>
 </CodeBlocks_layout_file>

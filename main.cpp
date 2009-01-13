@@ -120,6 +120,7 @@ void CambioScene(Audio * myaudio, Scene** apuntador)
 		(**apuntador).dispose();
 		if(TheScene==0)
 		{
+		    Control::set_delay_default();
 			titulo.init( myaudio,& running,& TheScene,& team);
 			*apuntador=(& titulo);
 			LastScene=0;
@@ -132,54 +133,63 @@ void CambioScene(Audio * myaudio, Scene** apuntador)
 		}
 		if(TheScene==2)
 		{
+		    Control::set_delay_default();
 			batalla.init(myaudio,& running,& TheScene,& team);
 			*apuntador=& batalla;
 			LastScene=2;
 		}
 		if(TheScene==3)
 		{
+		    Control::set_delay_default();
 			fin.init(myaudio,& running,& TheScene,& team);
 			*apuntador=& fin;
 			LastScene=3;
 		}
 		if(TheScene==4)
 		{
+		    Control::set_delay_default();
 			Menu_Main.init(myaudio,& running,& TheScene,& team);
 			*apuntador=& Menu_Main;
 			LastScene=4;
 		}
 		if(TheScene==5)
 		{
+		    Control::set_delay_default();
 			Menu_Objects.init(myaudio,& running,& TheScene,& team);
 			*apuntador=& Menu_Objects;
 			LastScene=5;
 		}
 		if(TheScene==6)
 		{
+		    Control::set_delay_default();
 			Menu_Skills.init(myaudio,& running,& TheScene,& team);
 			*apuntador=& Menu_Skills;
 			LastScene=6;
 		}
 		if(TheScene==7)
 		{
+		    Control::set_delay_default();
 			Menu_Euip.init(myaudio,& running,& TheScene,& team);
 			*apuntador=& Menu_Euip;
 			LastScene=7;
 		}
 		if(TheScene==8)
 		{
+		    Control::set_delay_default();
 			Menu_Stats.init(myaudio,& running,& TheScene,& team);
 			*apuntador=& Menu_Stats;
 			LastScene=8;
 		}
 		if(TheScene==9)
 		{
+		    Control::set_delay_default();
 			Menu_Save_Load.init(myaudio,& running,& TheScene,& team);
 			*apuntador=& Menu_Save_Load;
 			LastScene=9;
 		}
 		if(TheScene==10)
 		{
+		    Control::set_delay_default();
 			Menu_item_use.init(myaudio,& running,& TheScene,& team);
 			*apuntador=& Menu_item_use;
 			LastScene=10;
@@ -192,6 +202,7 @@ void CambioScene(Audio * myaudio, Scene** apuntador)
 
 int main(int argc, char** argv)
 {
+    Control::set_keys();
 	Music myaudio;
 	int repxciclo,i;
 	// ===[ INITIALIZATION ]================================================

@@ -157,6 +157,12 @@
 		<Unit filename="code/tools/control.h">
 			<Option target="Debug" />
 		</Unit>
+		<Unit filename="code/tools/e_set.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="code/tools/e_set.h">
+			<Option target="Debug" />
+		</Unit>
 		<Unit filename="code/tools/font.cpp" />
 		<Unit filename="code/tools/font.h" />
 		<Unit filename="code/tools/key.cpp" />

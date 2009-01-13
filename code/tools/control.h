@@ -2,7 +2,7 @@
 #define _H_CONTROLC 1
 
 #include "SDL.h"
-//#include "e_set.h"
+#include "e_set.h"
 #include <iostream>
 #include <deque>
 
@@ -26,48 +26,14 @@ namespace Control
     int pop_action();
     void update_keys();
 
+    void set_keys();
+
+    void set_delay_default();
     void set_delay(int d);// {delay = d;}
     int get_delay();// {return delay;}
 
     void set_in_delay(int d);// {in_delay = d;}
     int get_in_delay();// {return in_delay;}
 }
-
-
-/*class Control
-{
-    private:
-
-        static SDL_Event event;
-
-        static std::deque<int> events;
-
-        static int n_keys[N_KEYS];
-
-        static int read_key();
-        static bool push_action(int);
-
-        static int delay;
-        static int in_delay;
-
-        static int in_delay_tmp;
-
-
-    public:
-
-        static bool stop;
-        static bool in_map;
-
-        static int pop_action();
-        static void update_keys();
-
-        static void set_delay(int d) {delay = d;}
-        static int get_delay() {return delay;}
-
-        static void set_in_delay(int d) {in_delay = d;}
-        static int get_in_delay() {return in_delay;}
-
-};*/
-
 
 #endif

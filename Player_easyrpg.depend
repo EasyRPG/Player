@@ -3014,7 +3014,7 @@
 	<iostream>
 	<deque>
 
-1231761655 source:/home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/CActor.cpp
+1231806124 source:/home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/CActor.cpp
 	<SDL/SDL.h>
 	"../tools/math-sll.h"
 	"../sprites/Chara.h"
@@ -3047,11 +3047,12 @@
 	<iostream>
 	<stdlib.h>
 
-1231762759 /home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/CActor.h
+1231806124 /home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/CActor.h
 	"../../code/tools/control.h"
 
-1231765959 /home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/control.h
+1231805180 /home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/control.h
 	"SDL.h"
+	"e_set.h"
 	<iostream>
 	<deque>
 
@@ -3255,7 +3256,7 @@
 	"../attributes/CActor.h"
 	"scene.h"
 
-1231761652 source:/home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Map_scene.cpp
+1231805876 source:/home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Map_scene.cpp
 	"Map_scene.h"
 
 1231761652 /home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/control/Map_scene.h
@@ -3543,7 +3544,7 @@
 1231761654 source:/home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Windows/Window_Player_Select.cpp
 	"Window_Player_Select.h"
 
-1231761654 source:/home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Windows/Window_Select.cpp
+1231766181 source:/home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/interface/Windows/Window_Select.cpp
 	"Window_Select.h"
 
 1231761655 source:/home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/readers/ldb.cpp
@@ -3614,7 +3615,7 @@
 	<iostream>
 	"audio.h"
 
-1231765326 source:/home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/control.cpp
+1231805180 source:/home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/control.cpp
 	"control.h"
 
 1231761654 source:/home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/font.cpp
@@ -3631,7 +3632,7 @@
 	<SDL/SDL_image.h>
 	"tools.h"
 
-1231761657 source:/home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/main.cpp
+1231805241 source:/home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/main.cpp
 	"code/tools/tools.h"
 	"code/sprites/sprite.h"
 	"code/tools/key.h"
@@ -4316,5 +4317,8 @@
 	<SDL/SDL_image.h>
 	"tools.h"
 
-1231688336 /home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/e_set.h
+1231802422 /home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/e_set.h
+
+1231798824 source:/home/paulo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/tools/e_set.cpp
+	"e_set.h"
 

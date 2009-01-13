@@ -43,7 +43,7 @@ void Map_Scene::init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * Th
 	moving=false;
 	to_move=0;
 	fuente.init_Font();
-	//(*myaudio).play(-1);
+	(*myaudio).play(-1);
 	Control::set_delay(0);
 	Control::set_in_delay(0);
 	Control::in_map = true;
@@ -95,7 +95,7 @@ void Map_Scene::updatekey() {
 	Scroll();
 	if (Key_press_and_realsed(LMK_X ))
 	{
-		(*myaudio).load("../Sound/Cursor1.wav");
+		//(*myaudio).load("../Sound/Cursor1.wav");
 		*NScene=4;
 	}
 }
