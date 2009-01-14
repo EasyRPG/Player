@@ -1650,7 +1650,7 @@
 	"item.h"
 	"Enemy.h"
 
-1231893903 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/CActor.cpp
+1231896598 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/code/attributes/CActor.cpp
 	<SDL/SDL.h>
 	"../tools/math-sll.h"
 	"../sprites/Chara.h"
@@ -2221,7 +2221,7 @@
 	<SDL/SDL_image.h>
 	"tools.h"
 
-1231806734 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/main.cpp
+1231895848 source:/home/lobo/easyrpg/branches/lobomon-branch/playercodeblock/Workspace/Player_easyrpg/main.cpp
 	"code/tools/tools.h"
 	"code/sprites/sprite.h"
 	"code/tools/key.h"

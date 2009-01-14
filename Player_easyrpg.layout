@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="code/attributes/CActor.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="4981" topLine="199" />
+	<File name="code/attributes/CActor.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="1905" topLine="196" />
 	</File>
 	<File name="code/attributes/CActor.h" open="0" top="0" tabpos="7">
 		<Cursor position="843" topLine="5" />
@@ -193,7 +193,7 @@
 	<File name="code/tools/tools.cpp" open="0" top="0" tabpos="5">
 		<Cursor position="1152" topLine="11" />
 	</File>
-	<File name="main.cpp" open="1" top="1" tabpos="2">
-		<Cursor position="2519" topLine="78" />
+	<File name="main.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="3127" topLine="286" />
 	</File>
 </CodeBlocks_layout_file>

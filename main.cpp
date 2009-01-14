@@ -96,7 +96,7 @@ int fps_sincronizar()
 	static unsigned int frames=0;
 	int tiempodesignado, tiempotrascurrido,framesideales, retraso;
 	frames++;
-	if(( update.get_ticks() > 1020 ) ||(frames==60))
+	if(( update.get_ticks() > 1000 ) ||(frames==60))
 	{
 		frames=0;
 		update.start();
@@ -104,7 +104,7 @@ int fps_sincronizar()
 	}
 	else
 	{
-        tiempodesignado=((1020- update.get_ticks())/(60-frames));
+        tiempodesignado=((1000- update.get_ticks())/(60-frames));
 		tiempotrascurrido=fps.get_ticks();
 		if(tiempotrascurrido < tiempodesignado)
 		{
@@ -281,7 +281,7 @@ int main(int argc, char** argv)
 						break;
 			}
 		}*/
-		repxciclo = fps_sincronizar ();
+        repxciclo = fps_sincronizar ();
 		// SDL_FillRect(Screen, NULL, 0x0);// Clear screen
 
 
@@ -296,7 +296,7 @@ int main(int argc, char** argv)
 
 		CambioScene(& myaudio, & actual);
 
-
+ //SDL_Delay(1000/60);
 		SDL_Flip(Screen); // Flip
         CalculateFPS();
 	}

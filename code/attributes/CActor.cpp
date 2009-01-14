@@ -204,26 +204,26 @@ void CActor::MoveOnInput()
     case ACTOR_STATE_MOVING:
         // Calculate how many pixels has the actor travelled  and how many's left
        // Cmotion.delta    =Clampf(ACTOR_SPEED_SLOW*System.deltaTime, 0, 16-Cmotion.distance); // Clampf(value, min, max)
-        Cmotion.distance++; //=Minf(Cmotion.distance+ACTOR_SPEED_SLOW*System.deltaTime, 16.0f);//Minf(distancia + movimiento, maximo )
+        Cmotion.distance+=2; //=Minf(Cmotion.distance+ACTOR_SPEED_SLOW*System.deltaTime, 16.0f);//Minf(distancia + movimiento, maximo )
         frameupdate();
         // Change position of character by adding the delta
         switch (Cmotion.direction)
         {
         case ACTOR_DIRECTION_UP:
-            realY=sllsub(realY, Cmotion.delta);
-            realY--;
+            //realY=sllsub(realY, Cmotion.delta);
+            realY-=2;
             break;
         case ACTOR_DIRECTION_DOWN:
-            realY=slladd(realY, Cmotion.delta);
-            realY++;
+            //realY=slladd(realY, Cmotion.delta);
+            realY+=2;
             break;
         case ACTOR_DIRECTION_LEFT:
-            realX=sllsub(realX, Cmotion.delta);
-            realX--;
+            //realX=sllsub(realX, Cmotion.delta);
+            realX-=2;
             break;
         case ACTOR_DIRECTION_RIGHT:
-            realX=slladd(realX, Cmotion.delta);
-            realX++;
+            //realX=slladd(realX, Cmotion.delta);
+            realX+=2;
             break;
         }
         if (Cmotion.distance == 16.0f)
