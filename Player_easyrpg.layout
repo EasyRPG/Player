@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="code/attributes/CActor.cpp" open="0" top="0" tabpos="6">
-		<Cursor position="2561" topLine="94" />
+	<File name="code/attributes/CActor.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="4981" topLine="199" />
 	</File>
 	<File name="code/attributes/CActor.h" open="0" top="0" tabpos="7">
 		<Cursor position="843" topLine="5" />
@@ -169,16 +169,16 @@
 	<File name="code/tools/audio.h" open="0" top="0" tabpos="3">
 		<Cursor position="1160" topLine="35" />
 	</File>
-	<File name="code/tools/control.cpp" open="1" top="0" tabpos="1">
+	<File name="code/tools/control.cpp" open="0" top="0" tabpos="1">
 		<Cursor position="146" topLine="0" />
 	</File>
-	<File name="code/tools/control.h" open="1" top="0" tabpos="2">
+	<File name="code/tools/control.h" open="0" top="0" tabpos="2">
 		<Cursor position="71" topLine="0" />
 	</File>
-	<File name="code/tools/e_set.cpp" open="1" top="0" tabpos="5">
+	<File name="code/tools/e_set.cpp" open="0" top="0" tabpos="5">
 		<Cursor position="106" topLine="0" />
 	</File>
-	<File name="code/tools/e_set.h" open="1" top="1" tabpos="4">
+	<File name="code/tools/e_set.h" open="0" top="0" tabpos="4">
 		<Cursor position="106" topLine="0" />
 	</File>
 	<File name="code/tools/font.cpp" open="0" top="0" tabpos="39">
@@ -193,7 +193,7 @@
 	<File name="code/tools/tools.cpp" open="0" top="0" tabpos="5">
 		<Cursor position="1152" topLine="11" />
 	</File>
-	<File name="main.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="1668" topLine="20" />
+	<File name="main.cpp" open="1" top="1" tabpos="2">
+		<Cursor position="2519" topLine="78" />
 	</File>
 </CodeBlocks_layout_file>

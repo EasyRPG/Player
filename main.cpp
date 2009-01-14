@@ -75,6 +75,22 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.*/
  Timer update;
  Timer fps;
 
+    void CalculateFPS()
+    {
+        char stringBuffer[255];
+        static unsigned long nextTicks = 0, fps = 0, frames = 0;
+        frames++;
+        if ( SDL_GetTicks() > nextTicks )
+        {
+            fps = frames;
+            frames = 0;
+            nextTicks = SDL_GetTicks() + 1000;
+
+            sprintf(stringBuffer, "Map test - FPS %lu", fps);
+            SDL_WM_SetCaption (stringBuffer, NULL);
+        }
+    }
+
 int fps_sincronizar()
 {
 	static unsigned int frames=0;
@@ -282,6 +298,7 @@ int main(int argc, char** argv)
 
 
 		SDL_Flip(Screen); // Flip
+        CalculateFPS();
 	}
 	SDL_Quit();
 	return false;
