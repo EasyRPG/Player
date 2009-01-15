@@ -176,6 +176,8 @@ namespace Control
                 ;
             }
         }
+
+        /* Key repeat */
         int i;
         if ((in_map) && !(events.empty())) return;
         for (i = 0; i < N_KEYS; i++)

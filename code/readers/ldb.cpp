@@ -19,6 +19,11 @@ bool  LDB_reader::Load(std::string Filename, LDB_data * data)
 	// Open map file to read
 	FILE * Stream;// apertura de archivo
 	Stream = fopen(Filename.c_str(), "rb");
+	if (Stream == NULL)
+	{
+	    std::cerr << "Couldn't find LDB database. Aborting" << std::endl;
+	    exit(1);
+	}
 	std::string Header = ReadString(Stream); // lectura de cabezera
 	if (Header != "LcfDataBase") // comparacion con cabezera del mapa
 	{ // si no concuerda imprime un error y finaliza

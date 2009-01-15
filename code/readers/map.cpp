@@ -4,7 +4,8 @@
 #include <stdio.h>
 #include <string>
 #include "../tools/tools.h"#include "stevent.h"
-#include "map.h"// =========================================================================
+#include "map.h"
+#include <iostream>// =========================================================================
 
 
 
@@ -430,6 +431,11 @@ std:: vector <stEventMap> map_reader::eventChunk(FILE * Stream)
 	// Open map file to read
 	    FILE * Stream;// apertura de archivo
         Stream = fopen(Filename.c_str(), "rb");
+        if (Stream == NULL)
+        {
+            std::cerr << "Couldn't find LMU map: " << Filename << std::endl;
+            exit(1);
+        }
         string Header = ReadString(Stream); // lectura de cabezera
         if (Header != "LcfMapUnit") // comparacion con cabezera del mapa
         {// si no concuerda imprime un error y finaliza
