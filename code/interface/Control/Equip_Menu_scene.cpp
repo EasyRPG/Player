@@ -28,10 +28,15 @@ void Equip_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScen
 	therun=run;
 	int j;
 	int item_tipe2;
-	menu.init( theaudio, run, 0,4, 190, 105, 130, 30,"../System/system.png");
-	Armas.init( theaudio, run, 1,0, 320, 105, 0, 135,"../System/system.png");
-	descripcion.init(320,30,0,0);
-	stats.init(130,105,0,30);
+    std::string system_string;
+    system_string.append("../System/");
+    system_string.append(myteam->data2.System_dat.System_graphic);
+    system_string.append(".png");
+
+	menu.init( theaudio, run, 0,4, 190, 105, 130, 30,(char *)system_string.c_str());
+	Armas.init( theaudio, run, 1,0, 320, 105, 0, 135,(char *)system_string.c_str());
+	descripcion.init(320,30,0,0,(char *)system_string.c_str());
+	stats.init(130,105,0,30,(char *)system_string.c_str());
 	int i=(*myteam).select;
 	int space=16,Size_of_Block=150;
 	char stringBuffer[255];

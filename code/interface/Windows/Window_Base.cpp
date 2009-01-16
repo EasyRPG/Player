@@ -10,16 +10,16 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #include "Window_Base.h"
 
-void Window_Base::init(int SizeX,int SizeY,int PosX,int PosY)
-{    
+void Window_Base::init(int SizeX,int SizeY,int PosX,int PosY,const char *SysIMg)
+{
 	System.init_Sistem();
-	System.setimg("../System/system.png");
+	System.setimg(SysIMg);
 	tapiz.set_surface(System.Exdraw(SizeX,SizeY));
 	tapiz.x=PosX;
 	tapiz.y=PosY;
@@ -32,7 +32,7 @@ void Window_Base::init(int SizeX,int SizeY,int PosX,int PosY)
 	visible=true;
 }
 void Window_Base::dispose()
-{    
+{
 	disposing=true;
 	System.dispose();
 	tapiz.dispose();
@@ -40,7 +40,7 @@ void Window_Base::dispose()
 	int i,tp;
 	tp=(V_Sprite).size();
 	for (i = 0; i < tp; i ++)
-	{	
+	{
 	(V_Sprite).pop_back();
 	}
 	tp=(Vtext_Sprite).size();

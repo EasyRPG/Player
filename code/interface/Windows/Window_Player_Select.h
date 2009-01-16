@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
@@ -26,7 +26,7 @@
 #include <string>
 
 
-class Window_Player_Select   
+class Window_Player_Select
 {
 protected:
 	Sistem System;
@@ -56,7 +56,7 @@ public:
 	bool desition();
 	void dispose();
 	void init_curXY(int x,int y);
-	void init(Audio * theaudio, bool * run,int ComandX,int ComandY,int SizeX,int SizeY,int PosX,int PosY,int curX,int curY);
+	void init(Audio * theaudio, bool * run,int ComandX,int ComandY,int SizeX,int SizeY,int PosX,int PosY,int curX,int curY,const char *SysIMg);
 	void draw(SDL_Surface* Screen);
 	void add_text(const char * ctext, int x, int y);
 	void add_sprite(Sprite * the_sprite, int x, int y);

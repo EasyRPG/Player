@@ -29,10 +29,15 @@ void Stats_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScen
 {
 	myteam=TheTeam;
 	myaudio=theaudio;
-	Status_vit.init(200,80,120,0);
-	Status.init(200,80,120,80);
-	Aramas.init(200,80,120,160);
-	Profesion.init(120,240,0,0);
+	   std::string system_string;
+    system_string.append("../System/");
+    system_string.append(myteam->data2.System_dat.System_graphic);
+    system_string.append(".png");
+
+	Status_vit.init(200,80,120,0,(char *)system_string.c_str());
+	Status.init(200,80,120,80,(char *)system_string.c_str());
+	Aramas.init(200,80,120,160,(char *)system_string.c_str());
+	Profesion.init(120,240,0,0,(char *)system_string.c_str());
 	int i=(*myteam).select;
 	int space=17;
 	char stringBuffer[255];

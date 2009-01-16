@@ -28,11 +28,16 @@ void Item_use_scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,
 	int i;
 	myteam=TheTeam;
 	myaudio=theaudio;
-	players.init(theaudio, run,0,((*myteam).get_size()-1),184,240,136,0,124,48);
+    std::string system_string;
+    system_string.append("../System/");
+    system_string.append(myteam->data2.System_dat.System_graphic);
+    system_string.append(".png");
+	players.init(theaudio, run,0,((*myteam).get_size()-1),184,240,136,0,124,48,(char *)system_string.c_str());
 	players.init_curXY(55,5); //ya eran muchos comandos
 	players.visible=true;
-	itemwin.init(136,30,0,0);
-	itemwin2.init(136,30,0,30);
+
+	itemwin.init(136,30,0,0,(char *)system_string.c_str());
+	itemwin2.init(136,30,0,30,(char *)system_string.c_str());
 
 	char stringBuffer[255];
 	i=(*myteam).select;
@@ -89,7 +94,12 @@ void Item_use_scene::action()
 	if((*(*myteam).get_NOI(i)) !=0)
 	{
 		itemwin2.dispose();
-		itemwin2.init(136,30,0,30);
+        std::string system_string;
+        system_string.append("../System/");
+        system_string.append(myteam->data2.System_dat.System_graphic);
+        system_string.append(".png");
+
+		itemwin2.init(136,30,0,30,(char *)system_string.c_str());
 		sprintf(stringBuffer, "Objetos prop.  %d", (*(*myteam).get_NOI(i)));
 		itemwin2.add_text(stringBuffer,5,5);
 		players.restarmenu();

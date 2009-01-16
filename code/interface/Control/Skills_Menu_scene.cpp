@@ -31,9 +31,14 @@ void Skills_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheSce
 	int j;
 	j=(*myteam).select;
 	int k =(((*myteam).get_skill_size(j)-1)/2);
-	menu.init( theaudio, run, 1,k, 320, 180, 0, 60,"../System/system.png");
-	descripcion.init(320,30,0,0);
-	descripcion2.init(320,30,0,30);
+   std::string system_string;
+    system_string.append("../System/");
+    system_string.append(myteam->data2.System_dat.System_graphic);
+    system_string.append(".png");
+
+	menu.init( theaudio, run, 1,k, 320, 180, 0, 60,(char *)system_string.c_str());
+	descripcion.init(320,30,0,0,(char *)system_string.c_str());
+	descripcion2.init(320,30,0,30,(char *)system_string.c_str());
 
 	int i;
 	int space=16,Size_of_Block=150;

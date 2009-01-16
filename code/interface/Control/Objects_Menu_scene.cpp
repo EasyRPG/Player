@@ -31,8 +31,12 @@ void Objects_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheSc
 	myteam=TheTeam;
 	myaudio=theaudio;
 	int k =(((*myteam).get_num_items()-1)/2);
-	menu.init( theaudio, run, 1,k, 320, 210, 0, 30,"../System/system.png");
-	descripcion.init(320,30,0,0);
+    std::string system_string;
+    system_string.append("../System/");
+    system_string.append(myteam->data2.System_dat.System_graphic);
+    system_string.append(".png");
+	menu.init( theaudio, run, 1,k, 320, 210, 0, 30,(char *)system_string.c_str());
+	descripcion.init(320,30,0,0,(char *)system_string.c_str());
 	int i=0,space=16,Size_of_Block=150;
 	char stringBuffer[255];
 	for(i=0;i<(*myteam).get_num_items();i++)

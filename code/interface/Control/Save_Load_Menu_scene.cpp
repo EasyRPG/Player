@@ -29,11 +29,16 @@ void Save_Load_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * The
 {
 	myteam=TheTeam;
 	myaudio=theaudio;
-	descripcion.init(320,30,0,0);
+   std::string system_string;
+    system_string.append("../System/");
+    system_string.append(myteam->data2.System_dat.System_graphic);
+    system_string.append(".png");
+
+	descripcion.init(320,30,0,0,(char *)system_string.c_str());
 	descripcion.add_text("¿Dónde deseas guardar la partida? ",10,5);
-	Save_pos_1.init(320,70,0,30);
-	Save_pos_2.init(320,70,0,100);
-	Save_pos_3.init(320,70,0,170);
+	Save_pos_1.init(320,70,0,30,(char *)system_string.c_str());
+	Save_pos_2.init(320,70,0,100,(char *)system_string.c_str());
+	Save_pos_3.init(320,70,0,170,(char *)system_string.c_str());
 	running=  run;
 	NScene=TheScene;
 	retardo=0;

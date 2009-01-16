@@ -16,11 +16,11 @@
 
 #include "Window_Player_Select.h"
 
-void Window_Player_Select::init(Audio*theaudio,bool *run,int ComandX,int ComandY,int SizeX,int SizeY,int PosX,int PosY,int curX,int curY)
+void Window_Player_Select::init(Audio*theaudio,bool *run,int ComandX,int ComandY,int SizeX,int SizeY,int PosX,int PosY,int curX,int curY, const char *SysIMg)
 {
 	menu.init(theaudio,run,ComandX,ComandY);
 	System.init_Sistem();
-	System.setimg("../System/system.png");
+	System.setimg(SysIMg);
 	tapiz.set_surface(System.Exdraw(SizeX,SizeY));
 	tapiz.x=PosX;
 	tapiz.y=PosY;

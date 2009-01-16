@@ -34,12 +34,18 @@ void Batle_scene::init(Audio *theaudio,bool  *run,unsigned char  *TheScene,Playe
 	title.x=0;
 	title.y=0;
 	title.setimg("../Backdrop/Grass.png");
-	Window_text.init(320,80,0,160);
+
+    std::string system_string;
+    system_string.append("../System/");
+    system_string.append(TheTeam->data2.System_dat.System_graphic);
+    system_string.append(".png");
+
+	Window_text.init(320,80,0,160,(char *)system_string.c_str());
 	Window_text.visible=false;
 	update_window_stats();
 	//menu_os.init(theaudio,run,0,4,96,80,96,160);
 	//menu_os.visible=false;
-	menu.init(theaudio,run,0,4,96,80,0,160,"../System/system.png");
+	menu.init(theaudio,run,0,4,96,80,0,160,(char *)system_string.c_str());
 	str_Vector.push_back("Atacar");
 	str_Vector.push_back("Habilidades");
 	str_Vector.push_back("Objetos");
@@ -65,7 +71,11 @@ void Batle_scene::init(Audio *theaudio,bool  *run,unsigned char  *TheScene,Playe
 
 void Batle_scene::update_window_stats()
 {
-	window.init(myaudio,the_run,0,3,224,80,96,160,214,16);
+    std::string system_string;
+    system_string.append("../System/");
+    system_string.append(myteam->data2.System_dat.System_graphic);
+    system_string.append(".png");
+	window.init(myaudio,the_run,0,3,224,80,96,160,214,16,(char *)system_string.c_str());
 	int i=0;
 	char stringBuffer[255];
 	for(i=0;i<(*myteam).get_size();i++)
@@ -88,7 +98,13 @@ void Batle_scene::windowtext_showdamange(bool  type,int  atak,int  ataked,int  d
 {
 	char stringBuffer[255];
 	sprintf(stringBuffer,"%dHPperdidos",damange);
-	Window_text.init(320,80,0,160);
+
+    std::string system_string;
+    system_string.append("../System/");
+    system_string.append(myteam->data2.System_dat.System_graphic);
+    system_string.append(".png");
+	Window_text.init(320,80,0,160,(char *)system_string.c_str());
+
 
 	if(type)//sisonlosplayers
 	{
