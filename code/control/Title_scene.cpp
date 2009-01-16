@@ -106,8 +106,8 @@ Alex.set_name("Alex");
 Chara Alexchara;
 Alexchara.init_Chara();
 
-Alexchara.setimg("../chara/protagonist1.PNG");
-Alex.set_chara(Alexchara);
+//Alexchara.setimg("../chara/protagonist1.PNG");
+//Alex.set_chara(Alexchara);
 
 Faceset AlexeFase;
 AlexeFase.setimg("../Faceset/Chara1.png");

@@ -18,6 +18,7 @@
 
 void Map_Scene::init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * TheScene,Player_Team * TheTeam)
 {
+
 	myteam=TheTeam;
 	myaudio=audio;
 	SCREEN_SIZE_X= SCREEN_X;
@@ -26,15 +27,35 @@ void Map_Scene::init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * Th
 	npc.init_Chara();
 	(*myteam).view.x = 0;
 	(*myteam).view.y = 0;
-	npc.setimg("../chara/Monster1.png");
-	Actor.init_Chara();
-	Actor.setimg("../chara/protagonist1.PNG");
-	npc.setx(120);
-	npc.sety(120);
+    std::string system_string;
+	system_string.append("../chara/");
+    system_string.append(TheTeam->data2.heros[0].strGraphicfile);
+    system_string.append(".png");
+    Actor.init_Chara();
+	Actor.setimg((char *)system_string.c_str());
+
 	// ===[ LOADING MAP DATA ]==============================================
-	pre_chip.GenerateFromFile("../ChipSet/Basis.png");
 
     Map.Load("Map0001.lmu",&data);
+    Map.ShowInformation(&data);
+
+
+    system_string.clear();
+    system_string.append("../chara/");
+    system_string.append(data.vcEvents[0].vcPage[0].CharsetName);
+    system_string.append(".png");
+    printf("qj %s",(char *)system_string.c_str());
+
+	npc.setimg((char *)system_string.c_str());
+    npc.setx(data.vcEvents[0].X_position*16);
+	npc.sety(data.vcEvents[0].Y_position*16);
+
+    system_string.clear();
+    system_string.append("../ChipSet/");
+    system_string.append(TheTeam->data2.Tilesets[((unsigned int)(data.ChipsetID))-1].strGraphic);
+    system_string.append(".png");
+    pre_chip.GenerateFromFile((char *)system_string.c_str());
+
     chip.init(pre_chip.ChipsetSurface,&data,&(TheTeam->data2.Tilesets[((unsigned int)(data.ChipsetID))-1]) );
     Actor.setposXY(10,4,&chip);
 
