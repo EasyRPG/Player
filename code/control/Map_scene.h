@@ -77,7 +77,7 @@ private:
 	Chipset chip;
 	map_reader Map;
 	map_data data;
-
+//agregar apuntador a vector de eventos
 	char stringBuffer[255];
 
 public:

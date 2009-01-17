@@ -121,8 +121,10 @@ void SetTransparent(SDL_Surface * ima)
     int maxColors = ima->format->palette->ncolors;
     for (int i = 1; i < maxColors; i ++)
     {
-        /* Workaround to set transparency only in index 0 */
+        /* Workaround to set transparency only in index 0*/
         color = & ima->format->palette->colors[i];
+
+
         if (colorkey.r == color->r && \
             colorkey.g == color->g && \
             colorkey.b == color->b)

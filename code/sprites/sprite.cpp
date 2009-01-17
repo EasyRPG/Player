@@ -80,14 +80,29 @@ int Sprite::getrows()
 
 void Sprite::setimg(const char* string)
 {
+    SDL_Color color;
+    Uint32 colorKey;
+
 	visible=true;
 	not_clean =true;
 	img = IMG_Load (string);
+
 	if (img == NULL)
 	{
 	std::cerr << "Error: Unable to open file: " << string <<  std::endl;
 	exit(1);
 	}
+
+	if ((img->format->BitsPerPixel)!=8)
+	{
+	std::cerr << "Error img have more than 8 bits of color: " << string <<  std::endl;
+	exit(1);
+	}
+	SetTransparent(img);
+    color = img->format->palette->colors[0];
+    colorKey = SDL_MapRGB(img->format, color.r, color.g, color.b);
+    SDL_SetColorKey(img, SDL_SRCCOLORKEY, colorKey);
+
 }
 
 void Sprite::set_surface(SDL_Surface * imag)
