@@ -32,7 +32,7 @@ void Map_Scene::init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * Th
     system_string.append(TheTeam->data2.heros[0].strGraphicfile);
     system_string.append(".png");
     Actor.init_Chara();
-	Actor.setimg((char *)system_string.c_str());
+	Actor.setimg((char *)system_string.c_str(),5);
 
 	// ===[ LOADING MAP DATA ]==============================================
 
@@ -46,7 +46,7 @@ void Map_Scene::init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * Th
     system_string.append(".png");
     printf("qj %s",(char *)system_string.c_str());
 
-	npc.setimg((char *)system_string.c_str());
+	npc.setimg((char *)system_string.c_str(),0);
     npc.setx(data.vcEvents[0].X_position*16);
 	npc.sety(data.vcEvents[0].Y_position*16);
 

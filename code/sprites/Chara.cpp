@@ -62,6 +62,50 @@ void Chara::frame_ori()
         	frame= 0;
 }
 
+void Chara::setimg(const char* string,int id)
+{// 72x128 real size
+    SDL_Surface * temp;
+    SDL_Surface * temp2;
+    SDL_Surface * temp3;
+
+    SDL_Color color;
+    Uint32 colorKey;
+
+	visible=true;
+	not_clean =true;
+	temp = IMG_Load (string);
+
+	if (temp == NULL)
+	{
+	std::cerr << "Error: Unable to open file: " << string <<  std::endl;
+	exit(1);
+	}
+
+	if ((temp->format->BitsPerPixel)!=8)
+	{
+	std::cerr << "Error img have more than 8 bits of color: " << string <<  std::endl;
+	exit(1);
+	}
+
+    color =temp->format->palette->colors[0];
+    colorKey = SDL_MapRGB(temp->format, color.r, color.g, color.b);
+
+    temp2=SDL_CreateRGBSurface(SDL_SWSURFACE,72, 128, 16,0,0,0,0);
+    temp3=SDL_ConvertSurface(temp2, temp->format,NULL);
+    SDL_FillRect(temp3, NULL, colorKey);
+
+
+    SDL_Rect fuente2 = {(72*(id%4)) ,(128*(id/4)),72,128};
+    SDL_Rect rect2 = {0,0, 0, 0};
+	SDL_BlitSurface (temp, & fuente2,temp3,&rect2);
+
+    SetTransparent( temp3 );
+    SDL_SetColorKey(temp3, SDL_SRCCOLORKEY, colorKey);
+
+    SDL_FreeSurface(temp);
+    SDL_FreeSurface(temp2);
+    img=temp3;
+}
 void Chara::drawc (SDL_Surface * screen)
 {
 	int realframe;

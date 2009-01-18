@@ -52,6 +52,8 @@ private:
 public:
     int dir;
     void init_Chara();
+     void setimg(const char* string,int id);
+
     void frame_ori();
     void frameupdate();
    	void drawc(SDL_Surface *screen);

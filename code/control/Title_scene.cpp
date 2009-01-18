@@ -218,7 +218,7 @@ Player Brian;
 
 Chara Brianchara;
 Brianchara.init_Chara();
-Brianchara.setimg("../chara/Chara4.png");
+Brianchara.setimg("../chara/Chara4.png",0);
 Brian.set_chara(Brianchara);
 Faceset BrianFase;
 BrianFase.setimg("../Faceset/Chara2.png");
@@ -251,7 +251,7 @@ Player Caro;
 
 Chara Carochara;
 Carochara.init_Chara();
-Carochara.setimg("../chara/Chara1.png");
+Carochara.setimg("../chara/Chara1.png",0);
 Caro.set_chara(Carochara);
 Faceset CaroFase;
 CaroFase.setimg("../Faceset/Chara1.png");
@@ -298,7 +298,7 @@ Player Enrique;
 
 Chara Enriquechara;
 Enriquechara.init_Chara();
-Enriquechara.setimg("../chara/Chara3.png");
+Enriquechara.setimg("../chara/Chara3.png",0);
 Enrique.set_chara(Enriquechara);
 Faceset EnriqueFase;
 EnriqueFase.setimg("../Faceset/Chara2.png");
