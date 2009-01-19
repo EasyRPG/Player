@@ -15,7 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #include "Menu_Easy.h"
-#include "../../code/tools/control.h"
+#include "../tools/control.h"
 
 void Menu_Easy::init(Audio * theaudio, bool * run,int X,int Y)
 {
