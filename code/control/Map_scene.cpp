@@ -40,8 +40,6 @@ void Map_Scene::init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * Th
 
 
 
-    Events=&data.vcEvents;
-    init_npc();
     system_string.clear();
     system_string.append("../ChipSet/");
     system_string.append(TheTeam->data2.Tilesets[((unsigned int)(data.ChipsetID))-1].strGraphic);
@@ -50,6 +48,9 @@ void Map_Scene::init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * Th
 
     chip.init(pre_chip.ChipsetSurface,&data,&(TheTeam->data2.Tilesets[((unsigned int)(data.ChipsetID))-1]) );
     Actor.setposXY(10,4,&chip);
+
+    Events=&data.vcEvents;
+    init_npc();
 
     (* myaudio).load("../Music/Town.mid");
 	NScene=TheScene;
@@ -70,6 +71,7 @@ void Map_Scene::init_npc()
     std::string system_string;
     Chara npc;
     npc.init_Chara();
+    SDL_Surface * temp2;
 
 for(i=0;i<Events->size();i++)
 {
@@ -79,12 +81,25 @@ for(i=0;i<Events->size();i++)
     system_string.append(".png");
     printf("qj %s",(char *)system_string.c_str());
 
+if(!system_string.compare("../chara/.png"))
+{
+ temp2=CreateSurface(24,32);
+ chip.RenderTile(temp2, 0,0,data.vcEvents[i].vcPage[0].CharsetID+0x2710,0);
+ npc.set_surface(temp2);
+ npc.dir=0;
+ npc.frame=1;
+
+}else
+{
+
 	npc.setimg((char *)system_string.c_str(),data.vcEvents[i].vcPage[0].CharsetID);
     npc.dir=data.vcEvents[i].vcPage[0].Facing_direction;
     npc.frame=data.vcEvents[i].vcPage[0].Animation_frame;
+}
     npc.setx(data.vcEvents[i].X_position*16);
 	npc.sety(data.vcEvents[i].Y_position*16);
     Charas_nps.push_back(npc);
+
 }
 }
 

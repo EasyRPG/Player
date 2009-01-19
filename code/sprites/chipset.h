@@ -39,12 +39,12 @@
      unsigned short * lower_colision_matrix;
      unsigned short colision_cal(unsigned short Tile);
      void colision_base(int Layer,stcChipSet * title_colision);
-     void RenderTile(SDL_Surface * Destiny, int x, int y, unsigned short Tile, int Frame);
 public:
      map_data * data;
      void Colition_cal(unsigned short Tile);
      bool CollisionAt(int x, int y, unsigned short dir);
      void init(SDL_Surface * precalculated,map_data * m_data,stcChipSet * title_colision);
+     void RenderTile(SDL_Surface * Destiny, int x, int y, unsigned short Tile, int Frame);
      void Render(SDL_Surface * Destiny, int Layer, int CameraX, int CameraY);
 
     };
