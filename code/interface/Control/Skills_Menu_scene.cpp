@@ -32,7 +32,7 @@ void Skills_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheSce
 	j=(*myteam).select;
 	int k =(((*myteam).get_skill_size(j)-1)/2);
    std::string system_string;
-    system_string.append("../System/");
+    system_string.append("System/");
     system_string.append(myteam->data2.System_dat.System_graphic);
     system_string.append(".png");
 
@@ -103,7 +103,8 @@ void Skills_Menu_Scene::updatekey()
 
 	if (Key_press_and_realsed(LMK_X ))
 	{
-		(*myaudio).load("../Sound/Cansel2.wav");* NScene=4;
+		myaudio->load("Sound/Cansel2.wav");
+		*NScene = 4;
 	}
 }
 

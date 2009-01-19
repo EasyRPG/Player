@@ -18,6 +18,7 @@
     #include <stdlib.h>
     #include <stdio.h>
     #include <string>
+    #include <iostream>
     #include <SDL/SDL.h>
     #include <SDL/SDL_image.h>
     #include "tools.h"
@@ -173,6 +174,11 @@ void SetTransparent(SDL_Surface * ima)
         Uint32 colorKey;
 
         dummySurface = IMG_Load(Filename.c_str());
+        if (dummySurface == NULL)
+        {
+        std::cerr << "Error: Unable to open file: " << Filename <<  std::endl;
+        exit(1);
+        }
         if (!dummySurface) return NULL;
 
         SetTransparent(dummySurface);

@@ -29,65 +29,66 @@ GO_Scene:: GO_Scene()
 }
 */
 
-void GO_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
+void GO_Scene::init(Audio *theaudio, bool *run, unsigned char *TheScene, Player_Team *TheTeam)
 {
     std::string titles_string;
     std::string music_string;
 
-	myteam=TheTeam;
-	(*myteam).clear_team();
-	(*myteam).clear_obj();
-	myaudio=theaudio;
+    myteam = TheTeam;
+    myteam->clear_team();
+    myteam->clear_obj();
+    myaudio = theaudio;
 
-    titles_string.append("../title/");
+    titles_string.append("GameOver/");
     titles_string.append(TheTeam->data2.System_dat.Game_Over_graphic);
     titles_string.append(".png");
 
-    music_string.append("../Music/");
+    music_string.append("Music/");
     music_string.append(TheTeam->data2.System_dat.Game_Over_music.Name_of_Music_Background);
     music_string.append(".mid");
 
 
-	(*myaudio).load(music_string.c_str());
-	title.x=0;
-	title.y=0;
+    myaudio->load(music_string.c_str());
+    title.x = 0;
+    title.y = 0;
 
-	title.setimg(titles_string.c_str());
+    title.setimg(titles_string.c_str());
 
-	running=  run;
-	NScene=TheScene;
+    running = run;
+    NScene = TheScene;
 }
 
-void GO_Scene::update(SDL_Surface* Screen)
+void GO_Scene::update(SDL_Surface *Screen)
 {
-	title.draw(Screen);
+    title.draw(Screen);
 }
 
 void GO_Scene::action()
 {
-	*NScene=0;
+    *NScene = 0;
 }
 
 void GO_Scene::updatekey()
 {
-	unsigned char * keyData;
-	static int delay=0;
-	delay++;
-	if(delay==40)
-	{
-		keyData = SDL_GetKeyState(NULL);
-		if ( keyData[SDLK_ESCAPE] )
-		{
-			* running = false;
-		}
-		if ( keyData[LMK_Z]  )
-		{
-			action();
-		}
-		delay=0;
-	}
+    unsigned char *keyData;
+    static int delay = 0;
+    delay++;
+    if (delay == 40)
+    {
+        keyData = SDL_GetKeyState(NULL);
+        if (keyData[SDLK_ESCAPE])
+        {
+            *running = false;
+        }
+        if ( keyData[LMK_Z]  )
+        {
+            action();
+        }
+        delay = 0;
+    }
 }
 
-void GO_Scene::dispose() {
-	title.dispose();
+void GO_Scene::dispose()
+{
+    title.dispose();
 }

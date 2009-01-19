@@ -29,7 +29,7 @@ void Equip_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScen
 	int j;
 	int item_tipe2;
     std::string system_string;
-    system_string.append("../System/");
+    system_string.append("System/");
     system_string.append(myteam->data2.System_dat.System_graphic);
     system_string.append(".png");
 
@@ -96,7 +96,7 @@ void Equip_Menu_Scene::update_1_menu()
 	int space=16;
 	//int Size_of_Block=150;
 	menu.dispose();
-	menu.init( myaudio, therun, 0,4, 190, 105, 130, 30,"../System/system.png");
+	menu.init( myaudio, therun, 0,4, 190, 105, 130, 30,"System/system.png");
 
 	str_Vector.push_back(( (*((*myteam).get_Weapon(i))).get_name()));
 	str_Vector.push_back(( (*((*myteam).get_Shield(i))).get_name()));
@@ -120,7 +120,7 @@ void Equip_Menu_Scene::update_2_menu()
 	int space=16,Size_of_Block=150;
 	Armas.dispose();
 
-	Armas.init( myaudio, therun, 1,0, 320, 105, 0, 135,"../System/system.png");
+	Armas.init( myaudio, therun, 1,0, 320, 105, 0, 135,"System/system.png");
 	int j=(*myteam).select;
 	unsigned char item_tipe2,item_tipe=4;
 
@@ -316,7 +316,8 @@ void Equip_Menu_Scene::updatekey()
 
 	if (Key_press_and_realsed(LMK_X ))
 	{
-		(*myaudio).load("../Sound/Cansel2.wav");* NScene=4;
+		myaudio->load("Sound/Cansel2.wav");
+		*NScene = 4;
 	}
 }
 

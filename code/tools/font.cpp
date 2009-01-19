@@ -19,8 +19,8 @@
 
 void Font::init_Font()//esto es asi porque no se me ocurre aun algo mejor
 {
-	Fname="../Fonts/VL-Gothic-Regular.ttf";
-	size=14;
+	Fname="Font/VL-Gothic-Regular.ttf";
+	size=12;
 	fR=255;
 	fG=255;
 	fB=255;

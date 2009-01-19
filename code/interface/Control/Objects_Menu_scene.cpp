@@ -32,7 +32,7 @@ void Objects_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheSc
 	myaudio=theaudio;
 	int k =(((*myteam).get_num_items()-1)/2);
     std::string system_string;
-    system_string.append("../System/");
+    system_string.append("System/");
     system_string.append(myteam->data2.System_dat.System_graphic);
     system_string.append(".png");
 	menu.init( theaudio, run, 1,k, 320, 210, 0, 30,(char *)system_string.c_str());
@@ -93,7 +93,7 @@ void Objects_Menu_Scene::updatekey()
 	action();
 	if (Key_press_and_realsed(LMK_X ))
       {
-        // (*myaudio).soundload("../Sound/Cansel2.wav");
+        // (*myaudio).soundload("Sound/Cansel2.wav");
         * NScene=4;
 	}
 }

@@ -29,7 +29,7 @@ void Item_use_scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,
 	myteam=TheTeam;
 	myaudio=theaudio;
     std::string system_string;
-    system_string.append("../System/");
+    system_string.append("System/");
     system_string.append(myteam->data2.System_dat.System_graphic);
     system_string.append(".png");
 	players.init(theaudio, run,0,((*myteam).get_size()-1),184,240,136,0,124,48,(char *)system_string.c_str());
@@ -95,7 +95,7 @@ void Item_use_scene::action()
 	{
 		itemwin2.dispose();
         std::string system_string;
-        system_string.append("../System/");
+        system_string.append("System/");
         system_string.append(myteam->data2.System_dat.System_graphic);
         system_string.append(".png");
 
@@ -122,7 +122,7 @@ void Item_use_scene::updatekey() {
 	}
 	if (Key_press_and_realsed(LMK_X ))//retorna alos objetos
 	{
-		(*myaudio).load("../Sound/Cansel2.wav");* NScene=5;
+		(*myaudio).load("Sound/Cansel2.wav");* NScene=5;
 	}
 }
 

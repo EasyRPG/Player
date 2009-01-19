@@ -121,30 +121,30 @@ if (desided==false)
 		/*if ( keyData[SDLK_LEFT]  )
 		{
 			indexX--;
-			//(*myaudio).soundload("../Sound/Cursor1.wav");
+			//(*myaudio).soundload("Sound/Cursor1.wav");
 		}
 
 		if ( keyData[SDLK_RIGHT] )
 		{
 			indexX++;
-  			// (*myaudio).soundload("../Sound/Cursor1.wav");
+  			// (*myaudio).soundload("Sound/Cursor1.wav");
 		}
 
 		if ( keyData[SDLK_UP] )
 		{
 			indexY--;
-			// (*myaudio).soundload("../Sound/Cursor1.wav");
+			// (*myaudio).soundload("Sound/Cursor1.wav");
 		}
 
 		if ( keyData[SDLK_DOWN]  )
 		{
 			indexY++;
-			// (*myaudio).soundload("../Sound/Cursor1.wav");
+			// (*myaudio).soundload("Sound/Cursor1.wav");
 		}
 
 		if (( keyData[LMK_Z]  )&&(Last_key!=LMK_Z))
 		{
- 			//  (*myaudio).soundload("../Sound/Decision2.wav");
+ 			//  (*myaudio).soundload("Sound/Decision2.wav");
 			Last_key=LMK_Z;
 			desided= true;
 		}
