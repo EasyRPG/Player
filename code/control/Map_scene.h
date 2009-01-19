@@ -67,7 +67,9 @@ private:
 	int SCREEN_SIZE_X, SCREEN_SIZE_Y;
 	CActor Actor;
 	Chara * player;
-	Chara npc;
+
+	std:: vector <Chara> Charas_nps;//agregar apuntador a vector de eventos
+
 	Faceset alexface;
 	Sprite red;
 	Font fuente;
@@ -77,7 +79,7 @@ private:
 	Chipset chip;
 	map_reader Map;
 	map_data data;
-//agregar apuntador a vector de eventos
+    std:: vector <stEventMap> * Events;//agregar apuntador a vector de eventos
 	char stringBuffer[255];
 
 public:
@@ -91,6 +93,8 @@ public:
 	void Scroll();
 	void updatekey();
 	void slow_move();
+	void init_npc();
+
 	void mapnpc();
 	void dispose();
 

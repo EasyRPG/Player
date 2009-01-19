@@ -24,7 +24,6 @@ void Map_Scene::init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * Th
 	SCREEN_SIZE_X= SCREEN_X;
 	SCREEN_SIZE_Y= SCREEN_Y;
 	player=((*myteam).get_chara(0));
-	npc.init_Chara();
 	(*myteam).view.x = 0;
 	(*myteam).view.y = 0;
     std::string system_string;
@@ -40,16 +39,9 @@ void Map_Scene::init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * Th
     Map.ShowInformation(&data);
 
 
-    system_string.clear();
-    system_string.append("../chara/");
-    system_string.append(data.vcEvents[0].vcPage[0].CharsetName);
-    system_string.append(".png");
-    printf("qj %s",(char *)system_string.c_str());
 
-	npc.setimg((char *)system_string.c_str(),0);
-    npc.setx(data.vcEvents[0].X_position*16);
-	npc.sety(data.vcEvents[0].Y_position*16);
-
+    Events=&data.vcEvents;
+    init_npc();
     system_string.clear();
     system_string.append("../ChipSet/");
     system_string.append(TheTeam->data2.Tilesets[((unsigned int)(data.ChipsetID))-1].strGraphic);
@@ -71,19 +63,54 @@ void Map_Scene::init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * Th
 
 }
 
+
+void Map_Scene::init_npc()
+{
+    int i;
+    std::string system_string;
+    Chara npc;
+    npc.init_Chara();
+
+for(i=0;i<Events->size();i++)
+{
+    system_string.clear();
+    system_string.append("../chara/");
+    system_string.append(data.vcEvents[i].vcPage[0].CharsetName);
+    system_string.append(".png");
+    printf("qj %s",(char *)system_string.c_str());
+
+	npc.setimg((char *)system_string.c_str(),data.vcEvents[i].vcPage[0].CharsetID);
+    npc.dir=data.vcEvents[i].vcPage[0].Facing_direction;
+    npc.frame=data.vcEvents[i].vcPage[0].Animation_frame;
+    npc.setx(data.vcEvents[i].X_position*16);
+	npc.sety(data.vcEvents[i].Y_position*16);
+    Charas_nps.push_back(npc);
+}
+}
+
+
+
 void Map_Scene::update(SDL_Surface* Screen)
 {
+//WE shuold use layers!!
 	// SDL_FillRect(Screen, NULL, 0x0);// Clear screen  inutil
-	chip.Render(Screen, 0, (*myteam).view.x, (*myteam).view.y); //dibuja mapa capa 1 con repecto a la vista
-	chip.Render(Screen, 1, (*myteam).view.x, (*myteam).view.y);//dibuja mapa capa 2 con repecto a la vista
+int i;
+chip.Render(Screen, 0, (*myteam).view.x, (*myteam).view.y); //dibuja mapa capa 1 con repecto a la vista
+chip.Render(Screen, 1, (*myteam).view.x, (*myteam).view.y);//dibuja mapa capa 2 con repecto a la vista
 
+Actor.drawc(Screen);
+for (i=0; i<Charas_nps.size();i++)
+{
+Charas_nps[i].addx(-(*myteam).view.x);
+Charas_nps[i].addy(-(*myteam).view.y);
+Charas_nps[i].drawc(Screen);
+}
 
-	Actor.drawc(Screen);
-	npc.addx(-(*myteam).view.x);
-	npc.addy(-(*myteam).view.y);
-	npc.drawc(Screen);
-	npc.addx(+(*myteam).view.x);
-	npc.addy(+(*myteam).view.y);
+for (i=0; i<Charas_nps.size();i++)
+{
+Charas_nps[i].addx(+(*myteam).view.x);
+Charas_nps[i].addy(+(*myteam).view.y);
+}
 
 }
 
@@ -126,6 +153,7 @@ void Map_Scene::mapnpc()
 {
 	static unsigned char * keyData;
 	keyData = SDL_GetKeyState(NULL);
+	/*
 	if ((Key_press_and_realsed(LMK_Z )) &&(npc.colision((*player))))
 	{
 		Enemy enemigo;
@@ -166,14 +194,17 @@ void Map_Scene::mapnpc()
 		(enemigo.Batler).y=60;
 		(*myteam).add_enemy(enemigo);
 		* NScene=2;
-	}
+	}*/
 }
 
 void Map_Scene::dispose() {
-
+    int i;
 	red.dispose();
 	//(*player).dispose();
-	npc.dispose();
+    for (i=0; i<Charas_nps.size();i++)
+    {
+        Charas_nps[i].dispose();
+    }
 	pre_chip.dispose();
 	alexface.dispose();
 	(*myaudio).stop();
