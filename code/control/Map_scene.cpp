@@ -112,11 +112,24 @@ unsigned int i;
 chip.Render(Screen, 0, (*myteam).view.x, (*myteam).view.y); //dibuja mapa capa 1 con repecto a la vista
 chip.Render(Screen, 1, (*myteam).view.x, (*myteam).view.y);//dibuja mapa capa 2 con repecto a la vista
 
-Actor.drawc(Screen);
 for (i=0; i<Charas_nps.size();i++)
 {
 Charas_nps[i].addx(-(*myteam).view.x);
 Charas_nps[i].addy(-(*myteam).view.y);
+if(data.vcEvents[i].vcPage[0].Event_height==0)
+Charas_nps[i].drawc(Screen);
+if((data.vcEvents[i].vcPage[0].Event_height==1)&&(Charas_nps[i].GridY<=Actor.GridY))
+Charas_nps[i].drawc(Screen);
+
+}
+Actor.drawc(Screen);
+
+for (i=0; i<Charas_nps.size();i++)
+{
+
+if(data.vcEvents[i].vcPage[0].Event_height==2)
+Charas_nps[i].drawc(Screen);
+if((data.vcEvents[i].vcPage[0].Event_height==1)&&(Charas_nps[i].GridY>Actor.GridY))
 Charas_nps[i].drawc(Screen);
 }
 
