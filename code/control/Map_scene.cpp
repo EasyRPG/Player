@@ -84,11 +84,10 @@ for(i=0;i<Events->size();i++)
 if(!system_string.compare("../chara/.png"))
 {
  temp2=CreateSurface(24,32);
- chip.RenderTile(temp2, 4,0,data.vcEvents[i].vcPage[0].CharsetID+0x2710,0);
+ chip.RenderTile(temp2, 4,+16,data.vcEvents[i].vcPage[0].CharsetID+0x2710,0);
  npc.set_surface(temp2);
  npc.dir=0;
  npc.frame=1;
-
 }else
 {
 
@@ -144,19 +143,19 @@ Charas_nps[i].addy(+(*myteam).view.y);
 
 void Map_Scene::Scroll() {
 
-	(*myteam).view.x= Actor.Clamp((int) sll2dbl(Actor.realX)+ 8 - (SCREEN_SIZE_X>>1),0, ((chip.data->MapWidth)<<4)-SCREEN_SIZE_X);
+	(*myteam).view.x= Actor.Clamp((int) sll2dbl(Actor.realX)+ 4 - (SCREEN_SIZE_X>>1),0, ((chip.data->MapWidth)<<4)-SCREEN_SIZE_X);
 	if(!Actor.outofarea)
 	{
 		Actor.x= (int)sll2dbl(Actor.realX)  -(*myteam).view.x;
 	}
 	else
 	{
-		Actor.x=(SCREEN_SIZE_X>>1)-8;
+		Actor.x=(SCREEN_SIZE_X>>1)-4;
 	}
 	(*myteam).view.y= Actor.Clamp((int) sll2dbl(Actor.realY) - (SCREEN_SIZE_Y>>1), 0, ((chip.data->MapHeight)<<4)-SCREEN_SIZE_Y);
 	if(!Actor.outofarea)
 	{
-		Actor.y=(int)sll2dbl(Actor.realY)-(*myteam).view.y;
+		Actor.y=(int)sll2dbl(Actor.realY)-(*myteam).view.y ;
 	}
 	else
 	{
