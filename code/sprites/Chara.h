@@ -48,12 +48,13 @@ class Chara: public Sprite {
 
 private:
     int animation[4][4];//up right down left XP
-
 public:
+    int GridX;
+    int GridY;
     int dir;
     void init_Chara();
-     void setimg(const char* string,int id);
-
+    void setimg(const char* string,int id);
+    void setposXY(int xi,int yi);
     void frame_ori();
     void frameupdate();
    	void drawc(SDL_Surface *screen);

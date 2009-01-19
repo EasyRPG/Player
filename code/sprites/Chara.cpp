@@ -45,6 +45,15 @@ Chara::init_Chara()
 	animation[3][3] = 11;
 }
 
+void Chara::setposXY(int xi,int yi)
+{
+
+    GridX=xi;///aparte de la X  y Y  tenemos la poscion con referencia bloques.
+    GridY=yi;
+    x=xi*16 -(24/2)+8;
+    y=yi*16 -(32)+16;
+
+}
 void Chara::frameupdate()
 {
 	static long delay=0;

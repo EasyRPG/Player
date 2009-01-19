@@ -67,7 +67,7 @@ void Map_Scene::init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * Th
 
 void Map_Scene::init_npc()
 {
-    int i;
+    unsigned int i;
     std::string system_string;
     Chara npc;
     npc.init_Chara();
@@ -84,7 +84,7 @@ for(i=0;i<Events->size();i++)
 if(!system_string.compare("../chara/.png"))
 {
  temp2=CreateSurface(24,32);
- chip.RenderTile(temp2, 0,0,data.vcEvents[i].vcPage[0].CharsetID+0x2710,0);
+ chip.RenderTile(temp2, 4,0,data.vcEvents[i].vcPage[0].CharsetID+0x2710,0);
  npc.set_surface(temp2);
  npc.dir=0;
  npc.frame=1;
@@ -96,8 +96,7 @@ if(!system_string.compare("../chara/.png"))
     npc.dir=data.vcEvents[i].vcPage[0].Facing_direction;
     npc.frame=data.vcEvents[i].vcPage[0].Animation_frame;
 }
-    npc.setx(data.vcEvents[i].X_position*16);
-	npc.sety(data.vcEvents[i].Y_position*16);
+    npc.setposXY(data.vcEvents[i].X_position,data.vcEvents[i].Y_position);
     Charas_nps.push_back(npc);
 
 }
@@ -109,7 +108,7 @@ void Map_Scene::update(SDL_Surface* Screen)
 {
 //WE shuold use layers!!
 	// SDL_FillRect(Screen, NULL, 0x0);// Clear screen  inutil
-int i;
+unsigned int i;
 chip.Render(Screen, 0, (*myteam).view.x, (*myteam).view.y); //dibuja mapa capa 1 con repecto a la vista
 chip.Render(Screen, 1, (*myteam).view.x, (*myteam).view.y);//dibuja mapa capa 2 con repecto a la vista
 
@@ -213,7 +212,7 @@ void Map_Scene::mapnpc()
 }
 
 void Map_Scene::dispose() {
-    int i;
+    unsigned int i;
 	red.dispose();
 	//(*player).dispose();
     for (i=0; i<Charas_nps.size();i++)
