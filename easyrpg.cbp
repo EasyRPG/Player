@@ -55,7 +55,10 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-Wall -Wextra" />
+			<Add option="-pedantic" />
+			<Add option="-Wall" />
+			<Add option="-ansi" />
+			<Add option="-Wextra" />
 			<Add option="`sdl-config --cflags`" />
 		</Compiler>
 		<Linker>
@@ -116,6 +119,7 @@
 		<Unit filename="src/interface/Windows/Window_Player_Select.h" />
 		<Unit filename="src/interface/Windows/Window_Select.cpp" />
 		<Unit filename="src/interface/Windows/Window_Select.h" />
+		<Unit filename="src/main.cpp" />
 		<Unit filename="src/readers/eventchunks.h" />
 		<Unit filename="src/readers/ldb.cpp" />
 		<Unit filename="src/readers/ldb.h" />
@@ -164,7 +168,6 @@
 		<Unit filename="src/tools/math-sll.h" />
 		<Unit filename="src/tools/tools.cpp" />
 		<Unit filename="src/tools/tools.h" />
-		<Unit filename="src/main.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

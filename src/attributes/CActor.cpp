@@ -91,7 +91,7 @@ void CActor::setposXY(int x,int y,Chipset * the_World,std:: vector <Chara> * Cha
 }
 bool CActor::npc_colision(int x, int y)
 {
-    int i;
+    unsigned int i;
     for (i = 0; i < NPC->size(); i++)
     {
         if(( (NPC->at(i)).GridX==x) &&((NPC->at(i)).GridY==y))
