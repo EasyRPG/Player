@@ -52,6 +52,7 @@ public:
     int GridX;
     int GridY;
     int dir;
+    int layer;
     void init_Chara();
     void setimg(const char* string,int id);
     void setposXY(int xi,int yi);

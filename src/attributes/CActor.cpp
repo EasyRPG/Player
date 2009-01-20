@@ -78,16 +78,27 @@ sll CActor::Clampf(float value, float min, float max)
     return ((value<min)? min:(value>=max)? max:value);
 }
 
-void CActor::setposXY(int x,int y,Chipset * the_World)
+void CActor::setposXY(int x,int y,Chipset * the_World,std:: vector <Chara> * Charas_nps)
 {
-
- GridX=x;///aparte de la X  y Y  tenemos la poscion con referencia bloques.
-GridY=y;
+    NPC=Charas_nps;
+    GridX=x;///aparte de la X  y Y  tenemos la poscion con referencia bloques.
+    GridY=y;
     x=x*16 -(getw()/2)+8;
     y=y*16 -(geth())+16;
     realX=(sll)x;
     realY=(sll)y;
     World=the_World;
+}
+bool CActor::npc_colision(int x, int y)
+{
+    int i;
+    for (i = 0; i < NPC->size(); i++)
+    {
+        if(( (NPC->at(i)).GridX==x) &&((NPC->at(i)).GridY==y))
+            if((NPC->at(i)).layer==1)
+                return(false);
+    }
+    return(true);
 }
 
 void CActor::MoveOnInput()
@@ -107,7 +118,7 @@ void CActor::MoveOnInput()
         case ARROW_UP:
             tim=0;
             dir = 0;
-        if(World->CollisionAt(GridX,GridY,ACTOR_DIRECTION_UP))
+        if(World->CollisionAt(GridX,GridY,ACTOR_DIRECTION_UP)&&npc_colision(GridX, GridY-1))
          {  GridY--;
             state = ACTOR_STATE_MOVING;
             Cmotion.direction = ACTOR_DIRECTION_UP;
@@ -118,7 +129,7 @@ void CActor::MoveOnInput()
         case ARROW_DOWN:
             tim=0;
          dir = 2;
-        if(World->CollisionAt(GridX,GridY,ACTOR_DIRECTION_DOWN))
+        if(World->CollisionAt(GridX,GridY,ACTOR_DIRECTION_DOWN)&&npc_colision(GridX, GridY+1))
         {
             GridY++;
             state = ACTOR_STATE_MOVING;
@@ -130,7 +141,7 @@ void CActor::MoveOnInput()
         case ARROW_LEFT:
            tim=0;
            dir=3;
-        if(World->CollisionAt(GridX,GridY,ACTOR_DIRECTION_LEFT))
+        if(World->CollisionAt(GridX,GridY,ACTOR_DIRECTION_LEFT)&&npc_colision(GridX-1, GridY))
         {
             GridX--;
             state            = ACTOR_STATE_MOVING;
@@ -142,7 +153,7 @@ void CActor::MoveOnInput()
         case ARROW_RIGHT:
             tim=0;
             dir = 1;
-        if(World->CollisionAt(GridX,GridY,ACTOR_DIRECTION_RIGHT))
+        if(World->CollisionAt(GridX,GridY,ACTOR_DIRECTION_RIGHT)&&npc_colision(GridX+1, GridY))
         {
             GridX++;
             state = ACTOR_STATE_MOVING;
@@ -170,35 +181,6 @@ void CActor::MoveOnInput()
 
 
         }
-        /*if ( keyData[SDLK_UP]  )
-        {
-        	// && World->CollisionAt(GridX, GridY-1, WORLD_COLLISION_FROM_DOWN)==false) {
-        }
-        else
-        {
-        if (keyData[SDLK_DOWN]  )
-        {// && World->CollisionAt(GridX, GridY+1, WORLD_COLLISION_FROM_UP)==false) {
-
-        }
-        else
-        if ( keyData[SDLK_LEFT] )
-        {// && World->CollisionAt(GridX-1, GridY, WORLD_COLLISION_FROM_RIGHT)==false) {
-        	state            = ACTOR_STATE_MOVING;
-        	Cmotion.direction = ACTOR_DIRECTION_LEFT;
-        	dir=3;
-        	Cmotion.distance  = 0;
-        }
-        else
-        if ( keyData[SDLK_RIGHT] )
-        { //&& World->CollisionAt(GridX+1, GridY, WORLD_COLLISION_FROM_LEFT)==false) {
-
-        }
-        else
-        {
-
-        }
-        }*/
-        // 	    GridX = (x)>>4; GridY = (y)>>4;// Calculate Grid X and Grid Y
         break;
 
     case ACTOR_STATE_MOVING:

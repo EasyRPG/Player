@@ -32,14 +32,17 @@ struct mot
 class CActor:public Chara {
 
 Chipset * World;
+std:: vector <Chara> * NPC;
+
 // Methods
 public:
 	void MoveOnInput();
+	bool npc_colision(int x, int y);
 	int Min(int value, int max);
 	sll Minf(float value, float max);
 	int Clamp(int value, int min, int max);
 	sll Clampf(float value, float min, float max);
-    void setposXY(int x,int y,Chipset * the_World);
+    void setposXY(int x,int y,Chipset * the_World,std:: vector <Chara> * Charas_nps);
 	unsigned char  flags;
 	unsigned char state;
 	mot Cmotion;

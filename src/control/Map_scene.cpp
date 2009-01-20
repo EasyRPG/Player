@@ -43,10 +43,11 @@ void Map_Scene::init(Audio *audio, int SCREEN_X, int SCREEN_Y, unsigned char *Th
     pre_chip.GenerateFromFile((char *) system_string.c_str());
 
     chip.init(pre_chip.ChipsetSurface, &data, &TheTeam->data2.Tilesets[(unsigned int) data.ChipsetID - 1] );
-    Actor.setposXY(10, 4, &chip);
 
     Events = &data.vcEvents;
     init_npc();
+   Actor.setposXY(10, 4, &chip,&Charas_nps);
+
 
     myaudio->load("Music/Town.mid");
     NScene = TheScene;
@@ -91,6 +92,7 @@ void Map_Scene::init_npc()
             npc.dir = data.vcEvents[i].vcPage[0].Facing_direction;
             npc.frame = data.vcEvents[i].vcPage[0].Animation_frame;
         }
+        npc.layer=data.vcEvents[i].vcPage[0].Event_height;
         npc.setposXY(data.vcEvents[i].X_position, data.vcEvents[i].Y_position);
         Charas_nps.push_back(npc);
 
@@ -112,9 +114,9 @@ void Map_Scene::update(SDL_Surface *Screen)
     {
         Charas_nps[i].addx(- myteam->view.x);
         Charas_nps[i].addy(- myteam->view.y);
-        if (data.vcEvents[i].vcPage[0].Event_height == 0)
+        if (Charas_nps[i].layer == 0)
             Charas_nps[i].drawc(Screen);
-        if ((data.vcEvents[i].vcPage[0].Event_height == 1) && (Charas_nps[i].GridY <= Actor.GridY))
+        if ((Charas_nps[i].layer == 1) && (Charas_nps[i].GridY <= Actor.GridY))
             Charas_nps[i].drawc(Screen);
     }
 
@@ -122,9 +124,9 @@ void Map_Scene::update(SDL_Surface *Screen)
 
     for (i = 0; i < Charas_nps.size(); i++)
     {
-        if (data.vcEvents[i].vcPage[0].Event_height == 2)
+        if (Charas_nps[i].layer == 2)
             Charas_nps[i].drawc(Screen);
-        if ((data.vcEvents[i].vcPage[0].Event_height == 1) && (Charas_nps[i].GridY > Actor.GridY))
+        if ((Charas_nps[i].layer== 1) && (Charas_nps[i].GridY > Actor.GridY))
             Charas_nps[i].drawc(Screen);
     }
 
@@ -230,6 +232,9 @@ void Map_Scene::dispose()
     {
         Charas_nps[i].dispose();
     }
+    Actor.dispose();
+
+    Charas_nps.clear();
     pre_chip.dispose();
     alexface.dispose();
     myaudio->stop();
