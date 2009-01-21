@@ -48,11 +48,14 @@ class Chara: public Sprite {
 
 private:
     int animation[4][4];//up right down left XP
+    int delay;
 public:
     int GridX;
     int GridY;
     int dir;
     int layer;
+    int anim_frec;
+    void rotationupdate();
     void init_Chara();
     void setimg(const char* string,int id);
     void setposXY(int xi,int yi);

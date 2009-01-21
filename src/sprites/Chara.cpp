@@ -24,9 +24,11 @@ Chara::init_Chara()
 	x = 12;
 	y = 12;
 	frame = 2;
+	delay=0;
 	dir = 0;
 	cols=3;
 	rows=4;
+	anim_frec=4;
 	animation[0][0] = 1;
 	animation[0][1] = 0;
 	animation[0][2] = 1;
@@ -54,11 +56,20 @@ void Chara::setposXY(int xi,int yi)
     y=yi*16 -(32)+16;
 
 }
+
+void Chara::rotationupdate()
+{
+	    delay++;
+        if(delay==(40/anim_frec))
+        {
+	        dir= (dir +1)%4;
+	        delay=0;
+        }
+}
 void Chara::frameupdate()
 {
-	static long delay=0;
-        delay++;
-        if(delay==10)
+	    delay++;
+        if(delay==(40/anim_frec))
         {
 	        frame= (frame +1)%4;
 	        delay=0;

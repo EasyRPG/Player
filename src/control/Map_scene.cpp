@@ -92,6 +92,7 @@ void Map_Scene::init_npc()
             npc.dir = data.vcEvents[i].vcPage[0].Facing_direction;
             npc.frame = data.vcEvents[i].vcPage[0].Animation_frame;
         }
+         npc.anim_frec=data.vcEvents[i].vcPage[0].Movement_speed;
         npc.layer=data.vcEvents[i].vcPage[0].Event_height;
         npc.setposXY(data.vcEvents[i].X_position, data.vcEvents[i].Y_position);
         Charas_nps.push_back(npc);
@@ -163,8 +164,17 @@ void Map_Scene::Scroll()
 
 void Map_Scene::updatekey()
 {
+    unsigned int i;
     Actor.MoveOnInput();
     Scroll();
+    for (i = 0; i < Events->size(); i++)
+    {
+    if((data.vcEvents[i].vcPage[0].Animation_type==1)||(data.vcEvents[i].vcPage[0].Animation_type==3))
+    Charas_nps[i].frameupdate();
+    if(data.vcEvents[i].vcPage[0].Animation_type==5)
+    Charas_nps[i].rotationupdate();
+    }
+
     if (Key_press_and_realsed(LMK_X))
     {
         //(*myaudio).load("Sound/Cursor1.wav");
