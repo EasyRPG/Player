@@ -220,6 +220,7 @@ int main()
         exit(1);//mod
     }
     atexit (SDL_Quit);
+    SDL_ShowCursor(SDL_DISABLE);
     myaudio.init();
     const SDL_VideoInfo *videoInfo = SDL_GetVideoInfo();
     unsigned  long flags = 0;
