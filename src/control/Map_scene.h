@@ -25,7 +25,7 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_mixer.h"
-
+#include <stdlib.h>
 #include "../sprites/sprite.h"
 #include "../sprites/chipset.h"
 #include "../sprites/Pre_Chipset.h"
@@ -60,6 +60,11 @@
 // =============================================================================
 // *****************************************************************************
 
+#define DIRECTION_UP      0x00
+#define DIRECTION_DOWN    0x01
+#define DIRECTION_LEFT    0x02
+#define DIRECTION_RIGHT   0x03
+
 class Map_Scene: public Scene {
 
 private:
@@ -89,7 +94,7 @@ public:
 	//~Map_Scene();		///destructor
 	void init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * TheScene,Player_Team * TheTeam);
 	void update(SDL_Surface* Screen);
-
+    int  get_dir(int i);
 	void Scroll();
 	void updatekey();
 	void slow_move();

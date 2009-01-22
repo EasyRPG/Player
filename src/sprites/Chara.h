@@ -40,7 +40,13 @@
 
 // =============================================================================
 // *****************************************************************************
+#define STATE_IDLE        0x00
+#define STATE_MOVING      0x01
 
+#define DIRECTION_UP      0x00
+#define DIRECTION_DOWN    0x01
+#define DIRECTION_LEFT    0x02
+#define DIRECTION_RIGHT   0x03
 
 
 
@@ -49,13 +55,19 @@ class Chara: public Sprite {
 private:
     int animation[4][4];//up right down left XP
     int delay;
+    int distance;
+
 public:
+    bool state;
+    bool nomalanimation;
     int GridX;
     int GridY;
     int dir;
+    int move_dir;
     int layer;
     int anim_frec;
     void rotationupdate();
+    bool move(int direction);
     void init_Chara();
     void setimg(const char* string,int id);
     void setposXY(int xi,int yi);

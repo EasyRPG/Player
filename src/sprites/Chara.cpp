@@ -29,6 +29,9 @@ Chara::init_Chara()
 	cols=3;
 	rows=4;
 	anim_frec=4;
+	state=true;
+	nomalanimation=true;
+	distance=0;
 	animation[0][0] = 1;
 	animation[0][1] = 0;
 	animation[0][2] = 1;
@@ -55,6 +58,66 @@ void Chara::setposXY(int xi,int yi)
     x=xi*16 -(24/2)+8;
     y=yi*16 -(32)+16;
 
+}
+
+
+bool Chara::move(int direction)
+{
+    if (state==STATE_MOVING)
+    {
+        // Calculate how many pixels has the actor travelled  and how many's left
+       // Cmotion.delta    =Clampf(ACTOR_SPEED_SLOW*System.deltaTime, 0, 16-Cmotion.distance); // Clampf(value, min, max)
+        distance+=2; //=Minf(Cmotion.distance+ACTOR_SPEED_SLOW*System.deltaTime, 16.0f);//Minf(distancia + movimiento, maximo )
+        //frameupdate();
+        // Change position of character by adding the delta
+        switch (direction)
+        {
+        case DIRECTION_UP:
+            y-=2;
+            if(nomalanimation)
+            dir=0;
+            break;
+        case DIRECTION_DOWN:
+            if(nomalanimation)
+            dir=2;
+            y+=2;
+            break;
+        case DIRECTION_LEFT:
+            if(nomalanimation)
+            dir=3;
+            x-=2;
+            break;
+        case DIRECTION_RIGHT:
+            if(nomalanimation)
+            dir=1;
+            x+=2;
+            break;
+        }
+        if (distance == 16)
+        {
+            state = STATE_IDLE;
+        switch (direction)
+        {
+        case DIRECTION_UP:
+            GridY-=1;
+            break;
+        case DIRECTION_DOWN:
+            GridY+=1;
+            break;
+        case DIRECTION_LEFT:
+            GridX-=1;
+            break;
+        case DIRECTION_RIGHT:
+            GridX+=1;
+            break;
+        }
+
+
+            distance =0;
+        }
+
+    }
+    return(state);
 }
 
 void Chara::rotationupdate()
