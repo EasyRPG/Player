@@ -25,10 +25,12 @@ Chara::init_Chara()
 	y = 12;
 	frame = 2;
 	delay=0;
+	speed_delay=0;
 	dir = 0;
 	cols=3;
 	rows=4;
 	anim_frec=4;
+	move_delay=0;
 	state=true;
 	nomalanimation=true;
 	distance=0;
@@ -63,59 +65,70 @@ void Chara::setposXY(int xi,int yi)
 
 bool Chara::move(int direction)
 {
+   int move_speed;
+
+   //if(anim_frec>3)
+   move_speed=(1+ anim_frec)/2;
+
+   if(move_speed==3)
+   move_speed=4;
+   //else
+   //move_speed= 2;
+
     if (state==STATE_MOVING)
     {
-        // Calculate how many pixels has the actor travelled  and how many's left
-       // Cmotion.delta    =Clampf(ACTOR_SPEED_SLOW*System.deltaTime, 0, 16-Cmotion.distance); // Clampf(value, min, max)
-        distance+=2; //=Minf(Cmotion.distance+ACTOR_SPEED_SLOW*System.deltaTime, 16.0f);//Minf(distancia + movimiento, maximo )
-        //frameupdate();
-        // Change position of character by adding the delta
-        switch (direction)
-        {
-        case DIRECTION_UP:
-            y-=2;
-            if(nomalanimation)
-            dir=0;
-            break;
-        case DIRECTION_DOWN:
-            if(nomalanimation)
-            dir=2;
-            y+=2;
-            break;
-        case DIRECTION_LEFT:
-            if(nomalanimation)
-            dir=3;
-            x-=2;
-            break;
-        case DIRECTION_RIGHT:
-            if(nomalanimation)
-            dir=1;
-            x+=2;
-            break;
+        speed_delay++;
+        if(speed_delay==(36/(anim_frec*anim_frec)))
+        {speed_delay=0;
+            // Calculate how many pixels has the actor travelled  and how many's left
+            // Cmotion.delta    =Clampf(ACTOR_SPEED_SLOW*System.deltaTime, 0, 16-Cmotion.distance); // Clampf(value, min, max)
+            distance+=move_speed; //=Minf(Cmotion.distance+ACTOR_SPEED_SLOW*System.deltaTime, 16.0f);//Minf(distancia + movimiento, maximo )
+            //frameupdate();
+            // Change position of character by adding the delta
+            switch (direction)
+            {
+            case DIRECTION_UP:
+                y-=move_speed;
+                if(nomalanimation)
+                dir=0;
+                break;
+            case DIRECTION_DOWN:
+                if(nomalanimation)
+                dir=2;
+                y+=move_speed;
+                break;
+            case DIRECTION_LEFT:
+                if(nomalanimation)
+                dir=3;
+                x-=move_speed;
+                break;
+            case DIRECTION_RIGHT:
+                if(nomalanimation)
+                dir=1;
+                x+=move_speed;
+                break;
+            }
+            if (distance == 16)
+            {
+                state = STATE_IDLE;
+                switch (direction)
+                {
+                case DIRECTION_UP:
+                    GridY-=1;
+                    break;
+                case DIRECTION_DOWN:
+                    GridY+=1;
+                    break;
+                case DIRECTION_LEFT:
+                    GridX-=1;
+                    break;
+                case DIRECTION_RIGHT:
+                    GridX+=1;
+                    break;
+                }
+                distance =0;
+            }
         }
-        if (distance == 16)
-        {
-            state = STATE_IDLE;
-        switch (direction)
-        {
-        case DIRECTION_UP:
-            GridY-=1;
-            break;
-        case DIRECTION_DOWN:
-            GridY+=1;
-            break;
-        case DIRECTION_LEFT:
-            GridX-=1;
-            break;
-        case DIRECTION_RIGHT:
-            GridX+=1;
-            break;
-        }
-
-
-            distance =0;
-        }
-
     }
     return(state);
 }
@@ -137,6 +150,22 @@ void Chara::frameupdate()
 	        frame= (frame +1)%4;
 	        delay=0;
         }
+}
+
+
+
+bool Chara::move_frec_check()
+{
+if(move_frec==8)
+           return(true);
+
+	    move_delay++;
+        if(move_delay==(512/(move_frec*move_frec*move_frec)))
+        {
+            move_delay=0;
+            return(true);
+        }
+        return(false);
 }
 
 void Chara::frame_ori()

@@ -55,7 +55,9 @@ class Chara: public Sprite {
 private:
     int animation[4][4];//up right down left XP
     int delay;
+    int move_delay;
     int distance;
+    int speed_delay;
 
 public:
     bool state;
@@ -66,6 +68,8 @@ public:
     int move_dir;
     int layer;
     int anim_frec;
+    int move_frec;
+    bool move_frec_check();
     void rotationupdate();
     bool move(int direction);
     void init_Chara();

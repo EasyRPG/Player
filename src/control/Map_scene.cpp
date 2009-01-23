@@ -92,6 +92,7 @@ void Map_Scene::init_npc()
             npc.dir = data.vcEvents[i].vcPage[0].Facing_direction;
             npc.frame = data.vcEvents[i].vcPage[0].Animation_frame;
         }
+        npc.move_frec=data.vcEvents[i].vcPage[0].Movement_frequency;
          npc.anim_frec=data.vcEvents[i].vcPage[0].Movement_speed;
         npc.layer=data.vcEvents[i].vcPage[0].Event_height;
         npc.setposXY(data.vcEvents[i].X_position, data.vcEvents[i].Y_position);
@@ -207,8 +208,11 @@ void Map_Scene::updatekey()
     {
     if(!Charas_nps[i].move(Charas_nps[i].move_dir))
     {
+        if( Charas_nps[i].move_frec_check())//till time to move
+        {
         Charas_nps[i].move_dir=get_dir(i);
         Charas_nps[i].state=true;
+        }
     }
     if((data.vcEvents[i].vcPage[0].Animation_type==1)||(data.vcEvents[i].vcPage[0].Animation_type==3))
     Charas_nps[i].frameupdate();
