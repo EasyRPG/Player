@@ -46,7 +46,7 @@ void Map_Scene::init(Audio *audio, int SCREEN_X, int SCREEN_Y, unsigned char *Th
 
     Events = &data.vcEvents;
     init_npc();
-   Actor.setposXY(10, 4, &chip,&Charas_nps);
+    Actor.setposXY(10, 4, &chip,&Charas_nps);
 
 
     myaudio->load("Music/Town.mid");
@@ -93,7 +93,7 @@ void Map_Scene::init_npc()
             npc.frame = data.vcEvents[i].vcPage[0].Animation_frame;
         }
         npc.move_frec=data.vcEvents[i].vcPage[0].Movement_frequency;
-         npc.anim_frec=data.vcEvents[i].vcPage[0].Movement_speed;
+        npc.anim_frec=data.vcEvents[i].vcPage[0].Movement_speed;
         npc.layer=data.vcEvents[i].vcPage[0].Event_height;
         npc.setposXY(data.vcEvents[i].X_position, data.vcEvents[i].Y_position);
         Charas_nps.push_back(npc);
@@ -165,38 +165,47 @@ void Map_Scene::Scroll()
 
 int Map_Scene::get_dir(int i)
 {
-    if(data.vcEvents[i].vcPage[0].Movement_type==0)//do not move
-    return(5);
-    if(data.vcEvents[i].vcPage[0].Movement_type==1)// random
-    return(rand()%4);
-    if(data.vcEvents[i].vcPage[0].Movement_type==2)// up down
-    { if(Charas_nps[i].move_dir==0x00)
-        if(chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_UP))
-        return(0x00);
-        else
-        return(0x01);
-      if(Charas_nps[i].move_dir==0x01)
-        if(chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_DOWN))
-        return(0x01);
-        else
-        return(0x00);
-    return(0x00);//default
-    }
-    if(data.vcEvents[i].vcPage[0].Movement_type==3)// left right
+    if (data.vcEvents[i].vcPage[0].Movement_type==0)//do not move
+        return(5);
+    if (data.vcEvents[i].vcPage[0].Movement_type==1)// random
+        return(rand()%4);
+    if (data.vcEvents[i].vcPage[0].Movement_type==2)// up down
     {
-     if(Charas_nps[i].move_dir==0x03)
-        if(chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_RIGHT))
-        return(0x03);
-        else
-        return(0x02);
-      if(Charas_nps[i].move_dir==0x02)
-        if(chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_LEFT))
-        return(0x02);
-        else
-        return(0x03);
-    return(0x02);//default
+        if (Charas_nps[i].move_dir==0x00)
+        {
+            if (chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_UP))
+                return(0x00);
+            else
+                return(0x01);
+        }
+        if (Charas_nps[i].move_dir==0x01)
+        {
+            if (chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_DOWN))
+                return(0x01);
+            else
+                return(0x00);
+        }
+        return(0x00);//default
     }
- return(5);
+    if (data.vcEvents[i].vcPage[0].Movement_type==3)// left right
+    {
+        if (Charas_nps[i].move_dir==0x03)
+        {
+            if (chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_RIGHT))
+                return(0x03);
+            else
+                return(0x02);
+        }
+        if (Charas_nps[i].move_dir==0x02)
+        {
+            if (chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_LEFT))
+                return(0x02);
+            else
+                return(0x03);
+        }
+        return(0x02);//default
+    }
+    return(5);
 }
 
 void Map_Scene::updatekey()
@@ -206,21 +215,21 @@ void Map_Scene::updatekey()
     Scroll();
     for (i = 0; i < Events->size(); i++)
     {
-    if(!Charas_nps[i].move(Charas_nps[i].move_dir))
-    {
-        if( Charas_nps[i].move_frec_check())//till time to move
+        if (!Charas_nps[i].move(Charas_nps[i].move_dir))
         {
-        Charas_nps[i].move_dir=get_dir(i);
-        Charas_nps[i].state=true;
+            if ( Charas_nps[i].move_frec_check())//till time to move
+            {
+                Charas_nps[i].move_dir=get_dir(i);
+                Charas_nps[i].state=true;
+            }
         }
-    }
-    if((data.vcEvents[i].vcPage[0].Animation_type==1)||(data.vcEvents[i].vcPage[0].Animation_type==3))
-    Charas_nps[i].frameupdate();
-    if(data.vcEvents[i].vcPage[0].Animation_type==5)
-    {
-      Charas_nps[i].nomalanimation=false;
-    Charas_nps[i].rotationupdate();
-    }
+        if ((data.vcEvents[i].vcPage[0].Animation_type==1)||(data.vcEvents[i].vcPage[0].Animation_type==3))
+            Charas_nps[i].frameupdate();
+        if (data.vcEvents[i].vcPage[0].Animation_type==5)
+        {
+            Charas_nps[i].nomalanimation=false;
+            Charas_nps[i].rotationupdate();
+        }
     }
 
     if (Key_press_and_realsed(LMK_X))

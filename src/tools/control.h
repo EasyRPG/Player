@@ -3,8 +3,8 @@
 
 #include "SDL.h"
 #include <bitset>
-#include <iostream>
 #include <deque>
+#include <iostream>
 
 #define DECISION 0
 #define CANCEL 1
