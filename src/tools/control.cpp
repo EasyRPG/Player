@@ -7,12 +7,12 @@ namespace Control
     std::deque<int> events;
 
     /* Posible Keyboard keys */
-    Set decision_set(352);
-    Set cancel_set(352);
-    Set up_set(352);
-    Set down_set(352);
-    Set right_set(352);
-    Set left_set(352);
+    std::bitset<352> decision_set;
+    std::bitset<352> cancel_set;
+    std::bitset<352> up_set;
+    std::bitset<352> down_set;
+    std::bitset<352> right_set;
+    std::bitset<352> left_set;
 
     int n_keys[N_KEYS] = {0,0,0,0,0,0,0,0};
 
@@ -26,25 +26,25 @@ namespace Control
 
     void set_keys()
     {
-        decision_set.insert(SDLK_z);
-        decision_set.insert(SDLK_SPACE);
-        decision_set.insert(SDLK_RETURN);
+        decision_set.set(SDLK_z);
+        decision_set.set(SDLK_SPACE);
+        decision_set.set(SDLK_RETURN);
 
-        cancel_set.insert(SDLK_x);
-        cancel_set.insert(SDLK_c);
-        cancel_set.insert(SDLK_v);
-        cancel_set.insert(SDLK_b);
-        cancel_set.insert(SDLK_n);
-        cancel_set.insert(SDLK_ESCAPE);
+        cancel_set.set(SDLK_x);
+        cancel_set.set(SDLK_c);
+        cancel_set.set(SDLK_v);
+        cancel_set.set(SDLK_b);
+        cancel_set.set(SDLK_n);
+        cancel_set.set(SDLK_ESCAPE);
 
-        up_set.insert(SDLK_UP);
-        up_set.insert(SDLK_k);
-        down_set.insert(SDLK_DOWN);
-        down_set.insert(SDLK_j);
-        right_set.insert(SDLK_RIGHT);
-        right_set.insert(SDLK_l);
-        left_set.insert(SDLK_LEFT);
-        left_set.insert(SDLK_h);
+        up_set.set(SDLK_UP);
+        up_set.set(SDLK_k);
+        down_set.set(SDLK_DOWN);
+        down_set.set(SDLK_j);
+        right_set.set(SDLK_RIGHT);
+        right_set.set(SDLK_l);
+        left_set.set(SDLK_LEFT);
+        left_set.set(SDLK_h);
     }
 
     void set_delay_default()
@@ -97,7 +97,7 @@ namespace Control
             switch (event.type)
             {
             case SDL_KEYDOWN:
-                if (decision_set.belongs(event.key.keysym.sym))
+                if (decision_set.test(event.key.keysym.sym))
                 {
                     if ((n_keys[DECISION] == 0) && (events.empty()))
                     {
@@ -106,7 +106,7 @@ namespace Control
                     }
                 }
                 else
-                    if (cancel_set.belongs(event.key.keysym.sym))
+                    if (cancel_set.test(event.key.keysym.sym))
                     {
                         if ((n_keys[CANCEL] == 0) && (events.empty()))
                         {
@@ -116,7 +116,7 @@ namespace Control
 
                     }
                     else
-                        if (up_set.belongs(event.key.keysym.sym))
+                        if (up_set.test(event.key.keysym.sym))
                         {
                             if ((n_keys[ARROW_UP] == 0) && (events.empty()))
                             {
@@ -126,7 +126,7 @@ namespace Control
 
                         }
                         else
-                            if (down_set.belongs(event.key.keysym.sym))
+                            if (down_set.test(event.key.keysym.sym))
                             {
                                 if ((n_keys[ARROW_DOWN] == 0) && (events.empty()))
                                 {
@@ -135,7 +135,7 @@ namespace Control
                                 }
                             }
                             else
-                                if (right_set.belongs(event.key.keysym.sym))
+                                if (right_set.test(event.key.keysym.sym))
                                 {
                                     if ((n_keys[ARROW_RIGHT] == 0) && (events.empty()))
                                     {
@@ -144,7 +144,7 @@ namespace Control
                                     }
                                 }
                                 else
-                                    if (left_set.belongs(event.key.keysym.sym))
+                                    if (left_set.test(event.key.keysym.sym))
                                     {
                                         if ((n_keys[ARROW_LEFT] == 0) && (events.empty()))
                                         {
@@ -154,22 +154,22 @@ namespace Control
                                     }
                 break;
             case SDL_KEYUP:
-                if (decision_set.belongs(event.key.keysym.sym))
+                if (decision_set.test(event.key.keysym.sym))
                     n_keys[DECISION] = 0;
                 else
-                    if (cancel_set.belongs(event.key.keysym.sym))
+                    if (cancel_set.test(event.key.keysym.sym))
                         n_keys[CANCEL] = 0;
                     else
-                        if (up_set.belongs(event.key.keysym.sym))
+                        if (up_set.test(event.key.keysym.sym))
                             n_keys[ARROW_UP] = 0;
                         else
-                            if (down_set.belongs(event.key.keysym.sym))
+                            if (down_set.test(event.key.keysym.sym))
                                 n_keys[ARROW_DOWN] = 0;
                             else
-                                if (right_set.belongs(event.key.keysym.sym))
+                                if (right_set.test(event.key.keysym.sym))
                                     n_keys[ARROW_RIGHT] = 0;
                                 else
-                                    if (left_set.belongs(event.key.keysym.sym))
+                                    if (left_set.test(event.key.keysym.sym))
                                         n_keys[ARROW_LEFT] = 0;
                 break;
             default:

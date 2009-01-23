@@ -2,7 +2,7 @@
 #define _H_CONTROLC 1
 
 #include "SDL.h"
-#include "e_set.h"
+#include <bitset>
 #include <iostream>
 #include <deque>
 
