@@ -159,8 +159,6 @@
 		<Unit filename="src/tools/audio.h" />
 		<Unit filename="src/tools/control.cpp" />
 		<Unit filename="src/tools/control.h" />
-		<Unit filename="src/tools/e_set.cpp" />
-		<Unit filename="src/tools/e_set.h" />
 		<Unit filename="src/tools/font.cpp" />
 		<Unit filename="src/tools/font.h" />
 		<Unit filename="src/tools/key.cpp" />

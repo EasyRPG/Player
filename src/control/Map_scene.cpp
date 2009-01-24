@@ -92,6 +92,9 @@ void Map_Scene::init_npc()
             npc.dir = data.vcEvents[i].vcPage[0].Facing_direction;
             npc.frame = data.vcEvents[i].vcPage[0].Animation_frame;
         }
+        npc.move_dir=data.vcEvents[i].vcPage[0].Movement_type;
+        if(npc.move_dir==2)
+        npc.move_dir=0;
         npc.move_frec=data.vcEvents[i].vcPage[0].Movement_frequency;
         npc.anim_frec=data.vcEvents[i].vcPage[0].Movement_speed;
         npc.layer=data.vcEvents[i].vcPage[0].Event_height;
@@ -163,47 +166,93 @@ void Map_Scene::Scroll()
     }
 }
 
+
+bool Map_Scene::npc_colision(int x, int y,int e)
+{
+    unsigned int i;
+    for (i = 0; i < Charas_nps.size(); i++)
+    {
+        if(i!=(unsigned)e)
+        if(( Charas_nps[i].GridX==x) &&(Charas_nps[i].GridY==y))
+            //if(Charas_nps[i].layer==1)
+                return(false);
+    }
+    if(( Actor.GridX==x) &&(Actor.GridY==y))
+        return(false);
+    return(true);
+}
 int Map_Scene::get_dir(int i)
 {
+    int temp,z;
     if (data.vcEvents[i].vcPage[0].Movement_type==0)//do not move
         return(5);
     if (data.vcEvents[i].vcPage[0].Movement_type==1)// random
-        return(rand()%4);
+    {
+        temp=rand()%4;
+        for(z=0;z<4;z++)
+        {
+        switch (temp)
+        {
+        case DIRECTION_UP:
+        if((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_UP))&&(npc_colision(Charas_nps[i].GridX, (Charas_nps[i].GridY-1),i)))
+            return(temp);
+             break;
+        case DIRECTION_DOWN:
+        if((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_DOWN))&&(npc_colision(Charas_nps[i].GridX, (Charas_nps[i].GridY+1),i)))
+            return(temp);
+             break;
+        case DIRECTION_LEFT:
+        if((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_LEFT))&&(npc_colision((Charas_nps[i].GridX-1), Charas_nps[i].GridY,i)))
+            return(temp);
+             break;
+        case DIRECTION_RIGHT:
+        if((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_RIGHT))&&(npc_colision((Charas_nps[i].GridX+1), Charas_nps[i].GridY,i)))
+            return(temp);
+             break;
+        }
+            temp=(temp+1)%4;
+        }
+        return(5);
+    }
     if (data.vcEvents[i].vcPage[0].Movement_type==2)// up down
     {
         if (Charas_nps[i].move_dir==0x00)
         {
-            if (chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_UP))
+            if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_UP))&&(npc_colision(Charas_nps[i].GridX, (Charas_nps[i].GridY-1),i)))
                 return(0x00);
             else
+            if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_DOWN))&&(npc_colision(Charas_nps[i].GridX, (Charas_nps[i].GridY+1),i)))
                 return(0x01);
         }
-        if (Charas_nps[i].move_dir==0x01)
+        else
         {
-            if (chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_DOWN))
+            if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_DOWN))&&(npc_colision(Charas_nps[i].GridX, (Charas_nps[i].GridY+1),i)))
                 return(0x01);
             else
+            if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_UP))&&(npc_colision(Charas_nps[i].GridX, (Charas_nps[i].GridY-1),i)))
                 return(0x00);
         }
-        return(0x00);//default
+        return(5);//default
     }
     if (data.vcEvents[i].vcPage[0].Movement_type==3)// left right
     {
         if (Charas_nps[i].move_dir==0x03)
         {
-            if (chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_RIGHT))
+            if((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_RIGHT))&&(npc_colision((Charas_nps[i].GridX+1), Charas_nps[i].GridY,i)))
                 return(0x03);
             else
+            if((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_LEFT))&&(npc_colision((Charas_nps[i].GridX-1), Charas_nps[i].GridY,i)))
                 return(0x02);
         }
-        if (Charas_nps[i].move_dir==0x02)
+        else
         {
-            if (chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_LEFT))
+            if((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_LEFT))&&(npc_colision((Charas_nps[i].GridX-1), Charas_nps[i].GridY,i)))
                 return(0x02);
             else
+            if((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_RIGHT))&&(npc_colision((Charas_nps[i].GridX+1), Charas_nps[i].GridY,i)))
                 return(0x03);
         }
-        return(0x02);//default
+        return(5);//default
     }
     return(5);
 }
@@ -220,6 +269,23 @@ void Map_Scene::updatekey()
             if ( Charas_nps[i].move_frec_check())//till time to move
             {
                 Charas_nps[i].move_dir=get_dir(i);
+
+               switch (Charas_nps[i].move_dir)
+                {
+                case DIRECTION_UP:
+                    Charas_nps[i].GridY-=1;
+                    break;
+                case DIRECTION_DOWN:
+                    Charas_nps[i].GridY+=1;
+                    break;
+                case DIRECTION_LEFT:
+                    Charas_nps[i].GridX-=1;
+                    break;
+                case DIRECTION_RIGHT:
+                    Charas_nps[i].GridX+=1;
+                    break;
+                }
+
                 Charas_nps[i].state=true;
             }
         }

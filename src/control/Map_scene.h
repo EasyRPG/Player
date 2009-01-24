@@ -86,7 +86,7 @@ private:
 	map_data data;
     std:: vector <stEventMap> * Events;//agregar apuntador a vector de eventos
 	char stringBuffer[255];
-
+    bool npc_colision(int x, int y,int e);
 public:
 
 

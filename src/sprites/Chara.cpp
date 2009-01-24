@@ -31,7 +31,7 @@ Chara::init_Chara()
 	rows=4;
 	anim_frec=4;
 	move_delay=0;
-	state=true;
+	state=false;
 	nomalanimation=true;
 	distance=0;
 	animation[0][0] = 1;
@@ -111,21 +111,6 @@ bool Chara::move(int direction)
             if (distance == 16)
             {
                 state = STATE_IDLE;
-                switch (direction)
-                {
-                case DIRECTION_UP:
-                    GridY-=1;
-                    break;
-                case DIRECTION_DOWN:
-                    GridY+=1;
-                    break;
-                case DIRECTION_LEFT:
-                    GridX-=1;
-                    break;
-                case DIRECTION_RIGHT:
-                    GridX+=1;
-                    break;
-                }
                 distance =0;
             }
         }
