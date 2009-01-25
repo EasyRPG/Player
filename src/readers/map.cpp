@@ -12,7 +12,7 @@
 
 stPageMovesEventMap map_reader::PageMovesChunk(FILE * Stream)//movimientos de la pagina
 {
-	 stPageMovesEventMap moves;
+        stPageMovesEventMap moves;
          moves.clear();
          unsigned char Void;
          tChunk ChunkInfo; // informacion del pedazo leido
@@ -76,10 +76,10 @@ stPageMovesEventMap map_reader::PageMovesChunk(FILE * Stream)//movimientos de la
                                 ChunkInfo.Length-=CountRead(-1);
                                 moves.vcMovement_commands.push_back(New_Graphic);
                                break;
-                                case CHUNK_MAP_END_OF_BLOCK:
-                               break;
                                default:
-                                My_Move_comand.Comand=Void;
+                                 My_Move_comand.Comand=Void;
+                                printf("\n original id %d",Void);
+                               // My_Move_comand.Comand=ReadCompressedIntegerCount(Stream);
                                 moves.vcMovement_commands.push_back(My_Move_comand);
                                break;
                               }
@@ -109,7 +109,8 @@ stPageMovesEventMap map_reader::PageMovesChunk(FILE * Stream)//movimientos de la
 }
 
 stPageConditionEventMap map_reader::conditionChunk(FILE * Stream)//una dimencion
-{        stPageConditionEventMap Conditions;
+{
+         stPageConditionEventMap Conditions;
          Conditions.clear();
          unsigned char Void;
          tChunk ChunkInfo; // informacion del pedazo leido
@@ -208,7 +209,7 @@ vector <stPageEventMap> map_reader::pageChunk(FILE * Stream)
                                Page.Movement_speed  = ReadCompressedInteger(Stream);
                                break;
                          case  CHUNK_Movement_block:
-                              PageMovesChunk(Stream);
+                              Page.vcPage_Moves=PageMovesChunk(Stream);
                               break;
 		                  case CHUNK_Script_header:
                                Page.Script_header  = ReadCompressedInteger(Stream);

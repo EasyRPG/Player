@@ -60,6 +60,7 @@ private:
     int speed_delay;
 
 public:
+    int actual_move;
     bool state;
     bool nomalanimation;
     int GridX;

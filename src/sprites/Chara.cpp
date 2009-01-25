@@ -21,6 +21,7 @@ void
 
 Chara::init_Chara()
 {
+    actual_move=0;
 	x = 12;
 	y = 12;
 	frame = 2;
@@ -29,7 +30,7 @@ Chara::init_Chara()
 	dir = 0;
 	cols=3;
 	rows=4;
-	anim_frec=4;
+	anim_frec=3;
 	move_delay=0;
 	state=false;
 	nomalanimation=true;
@@ -79,38 +80,46 @@ bool Chara::move(int direction)
     {
         speed_delay++;
         if(speed_delay==(36/(anim_frec*anim_frec)))
-        {speed_delay=0;
-            // Calculate how many pixels has the actor travelled  and how many's left
-            // Cmotion.delta    =Clampf(ACTOR_SPEED_SLOW*System.deltaTime, 0, 16-Cmotion.distance); // Clampf(value, min, max)
+        {
+            speed_delay=0;
             distance+=move_speed; //=Minf(Cmotion.distance+ACTOR_SPEED_SLOW*System.deltaTime, 16.0f);//Minf(distancia + movimiento, maximo )
-            //frameupdate();
-            // Change position of character by adding the delta
             switch (direction)
             {
             case DIRECTION_UP:
                 y-=move_speed;
                 if(nomalanimation)
-                dir=0;
+                {
+                    dir=0;
+                    frameupdate();
+                }
                 break;
             case DIRECTION_DOWN:
                 if(nomalanimation)
-                dir=2;
+                {dir=2;
+                   frameupdate();
+                }
                 y+=move_speed;
                 break;
             case DIRECTION_LEFT:
                 if(nomalanimation)
-                dir=3;
+                {dir=3;
+                   frameupdate();
+                }
                 x-=move_speed;
                 break;
             case DIRECTION_RIGHT:
                 if(nomalanimation)
-                dir=1;
+                {dir=1;
+                   frameupdate();
+                }
                 x+=move_speed;
                 break;
             }
             if (distance == 16)
             {
                 state = STATE_IDLE;
+                if(direction!=5)
+                    frame_ori();
                 distance =0;
             }
         }
@@ -130,7 +139,7 @@ void Chara::rotationupdate()
 void Chara::frameupdate()
 {
 	    delay++;
-        if(delay==(40/anim_frec))
+        if(delay==6)
         {
 	        frame= (frame +1)%4;
 	        delay=0;
