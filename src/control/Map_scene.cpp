@@ -37,7 +37,7 @@ void Map_Scene::load_map(int Map_id,int  X,int Y)
     system_string.append(myteam->data2.heros[0].strGraphicfile);
     system_string.append(".png");
     Actor.init_Chara();
-    Actor.setimg((char *)system_string.c_str(), 5);
+    Actor.setimg((char *)system_string.c_str(), myteam->data2.heros[0].intGraphicindex);
 
     system_string.clear();
     system_string.append("Map");

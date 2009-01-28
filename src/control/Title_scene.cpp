@@ -105,7 +105,8 @@ void Title_Scene::init_party()
 {
 
     //desde que aun no lemos el archivo simulamos
-    int i,id;
+    string system_string;
+    int i,id,start_level;
     stcHero * actual_hero;
     Player Alex;
     for(i=0;i< (myteam->data2.System_dat.Heroes_in_starting);i++)
@@ -114,31 +115,30 @@ void Title_Scene::init_party()
     actual_hero= &(myteam->data2.heros[id-1]);
 
     Alex.set_name(actual_hero->strName.c_str());
-printf("string %s",actual_hero->strName.c_str());
-    Chara Alexchara;
-    Alexchara.init_Chara();
-
-//Alexchara.setimg("CharSet/protagonist1.PNG");
-//Alex.set_chara(Alexchara);
+    Alex.set_job(actual_hero->strClass.c_str());
+    start_level=actual_hero->intStartlevel;
 
     Faceset AlexeFase;
-    AlexeFase.setimg("FaceSet/Chara1.png");
-    AlexeFase.init_Faceset(0, 0, 0);
+        system_string.clear();
+        system_string.append("FaceSet/");
+        system_string.append(actual_hero->strFacegraphic.c_str());
+        system_string.append(".png");
 
+    AlexeFase.setimg(system_string.c_str());
+    AlexeFase.init_Faceset(0, 0, actual_hero->intFaceindex);
     Alex.set_faceset(AlexeFase);
-    Alex.set_job("Soldado");
-    Alex.set_HP(48);
-    Alex.set_MaxHP(48);
-    Alex.set_MP(38);
-    Alex.set_MaxMP(38);
+    Alex.set_HP(actual_hero->vc_sh_Hp[start_level]);
+    Alex.set_MaxHP(actual_hero->vc_sh_Hp[start_level]);
+    Alex.set_MP(actual_hero->vc_sh_Mp[start_level]);
+    Alex.set_MaxMP(actual_hero->vc_sh_Mp[start_level]);
     Alex.set_Heal(0);
-    Alex.set_Attack(27);
-    Alex.set_Defense(21);
-    Alex.set_Speed(18);
-    Alex.set_Spirit(23);
-    Alex.set_Level(1);
+    Alex.set_Attack(actual_hero->vc_sh_Attack[start_level]);
+    Alex.set_Defense(actual_hero->vc_sh_Defense[start_level]);
+    Alex.set_Speed(actual_hero->vc_sh_Agility[start_level]);
+    Alex.set_Spirit(actual_hero->vc_sh_Mind[start_level]);
+    Alex.set_Level(start_level);
     Alex.set_Exp(0);
-    Alex.set_MaxExp(33);
+    Alex.set_MaxExp(actual_hero->intEXPBaseline);
 //las habilidades del alex que hueva.....
     Skill Veneno;
     Veneno.set_name("Veneno");
