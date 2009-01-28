@@ -78,9 +78,7 @@ stPageMovesEventMap map_reader::PageMovesChunk(FILE * Stream)//movimientos de la
                                break;
                                default:
                                  My_Move_comand.Comand=Void;
-                                printf("\n original id %d",Void);
-                               // My_Move_comand.Comand=ReadCompressedIntegerCount(Stream);
-                                moves.vcMovement_commands.push_back(My_Move_comand);
+                                 moves.vcMovement_commands.push_back(My_Move_comand);
                                break;
                               }
                              }while(ChunkInfo.Length);

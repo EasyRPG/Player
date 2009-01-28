@@ -87,6 +87,7 @@ vc_int_Combat_Command.clear();//Combat Comand // =0x50 //4 byte one byte dimensi
 
 void stcHero::show()
 {
+unsigned int i;
 printf(" \n Name %s",strName.c_str());
 //std::cout << "Name " << strName << std::endl;
 printf(" \n Class %s",strClass.c_str());
@@ -104,7 +105,8 @@ printf(" \n blFixedequipment %d",blFixedequipment);
 printf(" \n blAI %d",blAI);
 printf(" \n blHighdefense %d",blHighdefense);
 //Statisticscurves=0x1F,arraglode16bitescon5datos
-//vc_sh_Hp.clear();
+for(i=0;i<(vc_sh_Hp.size());i++)
+printf(" \n hero hp %d",vc_sh_Hp[i]);
 //vc_sh_Mp.clear();
 //vc_sh_Attack.clear();
 //vc_sh_Defense.clear();

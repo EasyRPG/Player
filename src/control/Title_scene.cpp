@@ -105,9 +105,16 @@ void Title_Scene::init_party()
 {
 
     //desde que aun no lemos el archivo simulamos
-
+    int i,id;
+    stcHero * actual_hero;
     Player Alex;
-    Alex.set_name("Alex");
+    for(i=0;i< (myteam->data2.System_dat.Heroes_in_starting);i++)
+    {
+    id=myteam->data2.System_dat.vc_sh_Starting_party[i];
+    actual_hero= &(myteam->data2.heros[id-1]);
+
+    Alex.set_name(actual_hero->strName.c_str());
+printf("string %s",actual_hero->strName.c_str());
     Chara Alexchara;
     Alexchara.init_Chara();
 
@@ -119,7 +126,6 @@ void Title_Scene::init_party()
     AlexeFase.init_Faceset(0, 0, 0);
 
     Alex.set_faceset(AlexeFase);
-    Alex.set_name("Alex");
     Alex.set_job("Soldado");
     Alex.set_HP(48);
     Alex.set_MaxHP(48);
@@ -216,119 +222,7 @@ void Title_Scene::init_party()
 
     myteam->add_player(Alex);
 
-
-
-    Player Brian;
-
-    Chara Brianchara;
-    Brianchara.init_Chara();
-    Brianchara.setimg("CharSet/Chara4.png", 0);
-    Brian.set_chara(Brianchara);
-    Faceset BrianFase;
-    BrianFase.setimg("FaceSet/Chara2.png");
-    BrianFase.init_Faceset(0, 0, 8);
-
-    Brian.set_faceset(BrianFase);
-    Brian.set_name("Brian");
-    Brian.set_job("Soldado");
-    Brian.set_HP(52);
-    Brian.set_MaxHP(52);
-    Brian.set_MP(0);
-    Brian.set_MaxMP(0);
-    Brian.set_Heal(0);
-    Brian.set_Attack(18);
-    Brian.set_Defense(21);
-    Brian.set_Speed(10);
-    Brian.set_Spirit(24);
-    Brian.set_Level(1);
-    Brian.set_Exp(0);
-    Brian.set_MaxExp(32);
-    Brian.set_Weapon(nuloarma);
-    Brian.set_Shield(nulo);
-    Brian.set_Armor(nulo);
-    Brian.set_Helmet(nulo);
-    Brian.set_Accessory(nulo);
-
-    myteam->add_player(Brian);
-
-
-    Player Caro;
-
-    Chara Carochara;
-    Carochara.init_Chara();
-    Carochara.setimg("CharSet/Chara1.png", 0);
-    Caro.set_chara(Carochara);
-    Faceset CaroFase;
-    CaroFase.setimg("FaceSet/Chara1.png");
-    CaroFase.init_Faceset(0, 0, 5);
-
-    Caro.set_faceset(CaroFase);
-    Caro.set_name("Carola");
-    Caro.set_job("Maga");
-    Caro.set_HP(36);
-    Caro.set_MaxHP(36);
-    Caro.set_MP(58);
-    Caro.set_MaxMP(58);
-    Caro.set_Heal(0);
-    Caro.set_Attack(18);
-    Caro.set_Defense(15);
-    Caro.set_Speed(29);
-    Caro.set_Spirit(22);
-    Caro.set_Level(1);
-    Caro.set_Exp(0);
-    Caro.set_MaxExp(31);
-
-    Item Baston;
-    Baston.set_name("Baston de madera");
-    Baston.set_NOI(1);
-    Baston.set_type(16);
-    Baston.id = 16;
-    Myanim.setimg("Battle/Holy.png");
-    Myanim.init_Anim(5, 2);
-
-
-    Baston.set_anim(Myanim);
-    Caro.set_Weapon(Baston);
-
-    Caro.set_Shield(nulo);
-    Caro.set_Armor(nulo);
-    Caro.set_Helmet(nulo);
-    Caro.set_Accessory(nulo);
-    myteam->add_player(Caro);
-
-
-
-    Player Enrique;
-
-    Chara Enriquechara;
-    Enriquechara.init_Chara();
-    Enriquechara.setimg("CharSet/Chara3.png", 0);
-    Enrique.set_chara(Enriquechara);
-    Faceset EnriqueFase;
-    EnriqueFase.setimg("FaceSet/Chara2.png");
-    EnriqueFase.init_Faceset(0, 0, 10);
-
-    Enrique.set_faceset(EnriqueFase);
-    Enrique.set_name("Enrique");
-    Enrique.set_job("Luchador");
-    Enrique.set_HP(59);
-    Enrique.set_MaxHP(59);
-    Enrique.set_MP(0);
-    Enrique.set_MaxMP(0);
-    Enrique.set_Heal(0);
-    Enrique.set_Attack(28);
-    Enrique.set_Defense(22);
-    Enrique.set_Speed(26);
-    Enrique.set_Spirit(16);
-    Enrique.set_Level(1);
-    Enrique.set_Exp(0);
-    Enrique.set_MaxExp(29);
-    Enrique.set_Weapon(nuloarma);
-    Enrique.set_Shield(nulo);
-    Enrique.set_Armor(nulo);
-    Enrique.set_Helmet(nulo);
-    Enrique.set_Accessory(nulo);
-    myteam->add_player(Enrique);
+    }
 
     myteam->set_Gold(100);
 

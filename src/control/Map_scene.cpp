@@ -54,10 +54,9 @@ if(Map_id<10)
 
     system_string.append(ss.str());
     system_string.append(".lmu");
-    printf("map %s",system_string.c_str());
     // ===[ LOADING MAP DATA ]==============================================
     Map.Load((char *)system_string.c_str(), &data);
-    Map.ShowInformation(&data);
+ //   Map.ShowInformation(&data);
 
     system_string.clear();
     system_string.append("ChipSet/");
@@ -96,8 +95,6 @@ void Map_Scene::init_npc()
         system_string.append("CharSet/");
         system_string.append(data.vcEvents[i].vcPage[0].CharsetName);
         system_string.append(".png");
-        printf("qj %s", (char *) system_string.c_str());
-
         if (!system_string.compare("CharSet/.png"))
         {
             temp2 = CreateSurface(24, 32);

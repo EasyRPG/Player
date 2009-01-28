@@ -1977,6 +1977,7 @@ ChunkInfo.ID=1;return(vc_Battle_test);
 stcSystem  LDB_reader::SystemChunk(FILE * Stream)//movimientos de la pagina
 {		 short dat;
 		 stcSystem System;
+		   System.Heroes_in_starting =1;//default
 			  do{
 				ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
 				if(ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
