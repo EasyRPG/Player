@@ -25,34 +25,54 @@ void Map_Scene::init(Audio *audio, int SCREEN_X, int SCREEN_Y, unsigned char *Th
     player = myteam->get_chara(0);
     myteam->view.x = 0;
     myteam->view.y = 0;
+    NScene = TheScene;
+    load_map(TheTeam->actual_map,TheTeam->actual_x_map,TheTeam->actual_y_map);
+
+}
+
+void Map_Scene::load_map(int Map_id,int  X,int Y)
+{
     std::string system_string;
     system_string.append("CharSet/");
-    system_string.append(TheTeam->data2.heros[0].strGraphicfile);
+    system_string.append(myteam->data2.heros[0].strGraphicfile);
     system_string.append(".png");
     Actor.init_Chara();
     Actor.setimg((char *)system_string.c_str(), 5);
 
+    system_string.clear();
+    system_string.append("Map");
+
+if(Map_id<1000)
+    system_string.append("0");
+if(Map_id<100)
+    system_string.append("0");
+if(Map_id<10)
+    system_string.append("0");
+
+    std::stringstream ss;
+    ss << Map_id;
+
+    system_string.append(ss.str());
+    system_string.append(".lmu");
+    printf("map %s",system_string.c_str());
     // ===[ LOADING MAP DATA ]==============================================
-    Map.Load("Map0001.lmu", &data);
+    Map.Load((char *)system_string.c_str(), &data);
     Map.ShowInformation(&data);
 
     system_string.clear();
     system_string.append("ChipSet/");
-    system_string.append(TheTeam->data2.Tilesets[(unsigned int) data.ChipsetID - 1].strGraphic);
+    system_string.append(myteam->data2.Tilesets[(unsigned int) data.ChipsetID - 1].strGraphic);
     system_string.append(".png");
     pre_chip.GenerateFromFile((char *) system_string.c_str());
 
-    chip.init(pre_chip.ChipsetSurface, &data, &TheTeam->data2.Tilesets[(unsigned int) data.ChipsetID - 1] );
+    chip.init(pre_chip.ChipsetSurface, &data, &myteam->data2.Tilesets[(unsigned int) data.ChipsetID - 1] );
 
     Events = &data.vcEvents;
     init_npc();
-    Actor.setposXY(10, 4, &chip,&Charas_nps);
+    Actor.setposXY(X, Y, &chip,&Charas_nps);
 
 
     myaudio->load("Music/Town.mid");
-    NScene = TheScene;
-    moving = false;
-    to_move = 0;
     fuente.init_Font();
     myaudio->play(-1);
     Control::set_delay(0);
@@ -493,8 +513,10 @@ void Map_Scene::dispose()
     {
         Charas_nps[i].dispose();
     }
-    Actor.dispose();
 
+    myteam->actual_x_map=Actor.GridX;
+    myteam->actual_y_map=Actor.GridY;
+    Actor.dispose();
     Charas_nps.clear();
     pre_chip.dispose();
     alexface.dispose();

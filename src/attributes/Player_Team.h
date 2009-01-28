@@ -31,6 +31,7 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "../readers/ldb.h"
+#include "../readers/lmt.h"
 
 class Player_Team {
 
@@ -39,7 +40,12 @@ class Player_Team {
 	int Gold;
 	public:
 
+    int actual_x_map;
+    int actual_y_map;
+    int actual_map;
+
     LDB_data data2;
+    lmt_data lmt;
 	void read_database();
 	std:: vector <Enemy> Enemys;
 	void clear_enemy();

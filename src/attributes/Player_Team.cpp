@@ -20,6 +20,9 @@ void Player_Team::read_database()
 {
     LDB_reader my_ldb;
     my_ldb.Load("RPG_RT.ldb",&data2);
+   lmt_reader my_lmt;
+   my_lmt.load("RPG_RT.lmt",&lmt);
+   my_lmt.print(&lmt);
    // my_ldb.ShowInformation(&data2);
 }
 

@@ -31,6 +31,9 @@ void Title_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Pla
 {
 
     TheTeam->read_database();
+    TheTeam->actual_map=TheTeam->lmt.party_map_id;
+    TheTeam->actual_x_map=TheTeam->lmt.party_x;
+    TheTeam->actual_y_map=TheTeam->lmt.party_y;
 
     std::string titles_string;
     std::string music_string;
@@ -100,7 +103,9 @@ void Title_Scene::action()
 
 void Title_Scene::init_party()
 {
+
     //desde que aun no lemos el archivo simulamos
+
     Player Alex;
     Alex.set_name("Alex");
     Chara Alexchara;
