@@ -38,6 +38,7 @@ std:: vector <Chara> * NPC;
 public:
 	void MoveOnInput();
 	bool npc_colision(int x, int y);
+    bool npc_subcolision(int id);
 	int Min(int value, int max);
 	sll Minf(float value, float max);
 	int Clamp(int value, int min, int max);

@@ -23,8 +23,6 @@ void Map_Scene::init(Audio *audio, int SCREEN_X, int SCREEN_Y, unsigned char *Th
     SCREEN_SIZE_X = SCREEN_X;
     SCREEN_SIZE_Y = SCREEN_Y;
     player = myteam->get_chara(0);
-    myteam->view.x = 0;
-    myteam->view.y = 0;
     NScene = TheScene;
     load_map(TheTeam->actual_map,TheTeam->actual_x_map,TheTeam->actual_y_map);
 
@@ -32,6 +30,9 @@ void Map_Scene::init(Audio *audio, int SCREEN_X, int SCREEN_Y, unsigned char *Th
 
 void Map_Scene::load_map(int Map_id,int  X,int Y)
 {
+    myteam->view.x = 0;
+    myteam->view.y = 0;
+
     std::string system_string;
     system_string.append("CharSet/");
     system_string.append(myteam->data2.heros[0].strGraphicfile);
@@ -448,6 +449,8 @@ void Map_Scene::updatekey()
         //(*myaudio).load("Sound/Cursor1.wav");
         *NScene = 4;
     }
+
+    mapnpc();
 }
 
 
@@ -456,6 +459,16 @@ void Map_Scene::mapnpc()
     static unsigned char *keyData;
 
     keyData = SDL_GetKeyState(NULL);
+    if ((Key_press_and_realsed(LMK_Z )) &&(Actor.npc_subcolision(0)))
+    {
+        dispose();
+        myteam->actual_map=1;
+        myteam->actual_x_map=20;
+        myteam->actual_y_map=20;
+
+        load_map(1,20,20);
+
+    }
     /*
     if ((Key_press_and_realsed(LMK_Z )) &&(npc.colision((*player))))
     {

@@ -168,7 +168,7 @@ for (j=0;j<(actual_hero->skills.size());j++)
 
     }
 
-/* on rm2k you can start with itesm
+/* on rm2k you can not start with item
     myteam->set_Gold(100);
     myteam->add_item(Espada2);
     myteam->add_item(pocion);

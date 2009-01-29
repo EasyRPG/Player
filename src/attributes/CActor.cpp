@@ -101,6 +101,33 @@ bool CActor::npc_colision(int x, int y)
     return(true);
 }
 
+bool CActor::npc_subcolision(int id)
+{
+    int x,y,direction;
+    direction=dir;
+    x=GridX;///aparte de la X  y Y  tenemos la poscion con referencia bloques.
+    y=GridY;
+
+    switch (direction)
+        {
+        case 0:
+        y--;
+            break;
+        case 2:
+        y++;
+            break;
+        case 3:
+        x--;
+            break;
+        case 1:
+        x++;
+            break;
+        }
+        if(( (NPC->at(id)).GridX==x) &&((NPC->at(id)).GridY==y))
+            if((NPC->at(id)).layer==1)
+                return(true);
+    return(false);
+}
 void CActor::MoveOnInput()
 {
     static int tim=0;
