@@ -30,7 +30,7 @@ void Stats_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScen
 	myteam=TheTeam;
 	myaudio=theaudio;
 	   std::string system_string;
-    system_string.append("../System/");
+    system_string.append("System/");
     system_string.append(myteam->data2.System_dat.System_graphic);
     system_string.append(".png");
 

@@ -46,6 +46,8 @@ std::vector <Magicblock>  LDB_reader::heroskillChunk(FILE * Stream)
 	while(datatoread>datareaded) //si no hay mas en el array
 	{
 		id= ReadCompressedInteger(Stream);//lectura de id 1 de array
+		skill.Spell_ID=1; //default
+
 		do
 		{
 			ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
@@ -2608,13 +2610,20 @@ void  LDB_reader::GetNextChunk(FILE * Stream, LDB_data * data)
 void  LDB_reader::ShowInformation(LDB_data * data)
 { // muestra de informacion del mapa
     int j,i;
+
     j=data->heros.size();
     for (i=0;i<j ;i++)
         data->heros[i].show();
+    /*
     j=data->Professions.size();
     for (i=0;i<j ;i++)
         data->Professions[i].show();
-    data->Glosary.show();
-    data->System_dat.show();
-    data->Combatcommands.show();
+    */
+    /*j=data->skill.size();
+    for (i=0;i<j ;i++)
+        data->skill[i].show();
+*/
+    //data->Glosary.show();
+    //data->System_dat.show();
+    //data->Combatcommands.show();
 }

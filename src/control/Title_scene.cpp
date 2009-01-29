@@ -106,7 +106,8 @@ void Title_Scene::init_party()
 
     //desde que aun no lemos el archivo simulamos
     string system_string;
-    int i,id,start_level;
+    int i,id,id_skill,start_level;
+    unsigned int j;
     stcHero * actual_hero;
     Player Alex;
     for(i=0;i< (myteam->data2.System_dat.Heroes_in_starting);i++)
@@ -119,10 +120,10 @@ void Title_Scene::init_party()
     start_level=actual_hero->intStartlevel;
 
     Faceset AlexeFase;
-        system_string.clear();
-        system_string.append("FaceSet/");
-        system_string.append(actual_hero->strFacegraphic.c_str());
-        system_string.append(".png");
+    system_string.clear();
+    system_string.append("FaceSet/");
+    system_string.append(actual_hero->strFacegraphic.c_str());
+    system_string.append(".png");
 
     AlexeFase.setimg(system_string.c_str());
     AlexeFase.init_Faceset(0, 0, actual_hero->intFaceindex);
@@ -140,115 +141,60 @@ void Title_Scene::init_party()
     Alex.set_Exp(0);
     Alex.set_MaxExp(actual_hero->intEXPBaseline);
 //las habilidades del alex que hueva.....
-    Skill Veneno;
-    Veneno.set_name("Veneno");
-    Veneno.set_damange(6);
+   Skill Veneno;
+Alex.Skills.clear();
+for (j=0;j<(actual_hero->skills.size());j++)
+{
+    id_skill=actual_hero->skills[j].Spell_ID-1;
+    Veneno.set_name(myteam->data2.skill[id_skill].strName.c_str());
+    Veneno.set_damange(myteam->data2.skill[id_skill].intBasevalue);
     Veneno.set_level_req(1);
-    Veneno.set_mp_price(10);
+    Veneno.set_mp_price(  myteam->data2.skill[id_skill].intCost);
     Alex.add_skill(Veneno);
-    Skill Paralisis;
-    Paralisis.set_name("Paralisis");
-    Paralisis.set_damange(5);
-    Paralisis.set_level_req(1);
-    Paralisis.set_mp_price(5);
-    Alex.add_skill(Paralisis);
+}
 
-    Item Espada;
-    Espada.set_name("Espada de hierro");
-    Espada.set_NOI(1);
-    Espada.set_type(4);
-    Espada.id = 15;
-
-    Animacion Myanim;
-    Myanim.setimg("Battle/Sword1.png");
-    Myanim.init_Anim(5, 2);
-
-
-    Espada.set_anim(Myanim);
-
-
-    Alex.set_Weapon(Espada);
-    Item Escudo;
-    Escudo.set_name("Escudo de madera");
-    Escudo.set_NOI(1);
-    Escudo.set_type(5);
-    Escudo.id = 16;
-    Item Aramadura;
-    Aramadura.set_name("Aramadura de cuero");
-    Aramadura.set_NOI(1);
-    Aramadura.set_type(6);
-    Aramadura.id = 17;
-
-    Item Casco;
-    Casco.set_name("Casco de cuero");
-    Casco.set_NOI(1);
-    Casco.set_type(7);
-    Casco.id = 18;
-
-    Item Talisman;
-    Talisman.set_name("Talisman");
-    Talisman.set_NOI(1);
-    Talisman.set_type(8);
-    Talisman.id = 19;
-
-
-    Alex.set_Shield(Escudo);
-    Alex.set_Armor(Aramadura);
-    Alex.set_Helmet(Casco);
-    Alex.set_Accessory(Talisman);
+    Alex.set_Weapon(load_item(actual_hero->sh_Weapon));
+    Alex.set_Shield(load_item(actual_hero->sh_Shield));
+    Alex.set_Armor(load_item(actual_hero->sh_Armor));
+    Alex.set_Helmet(load_item(actual_hero->sh_Head));
+    Alex.set_Accessory(load_item(actual_hero->sh_Accessory));
 
     Alex.set_Weapon_type(4);
     Alex.set_Shield_type(5);
     Alex.set_Armor_type(6);
     Alex.set_Helmet_type(7);
     Alex.set_Accessory_type(8);
-    Item nulo;
-    nulo.set_name(" ");
-    nulo.set_NOI(0);
-    nulo.set_type(0);
-    nulo.id = 0;
-
-    Item nuloarma;
-    nuloarma.set_name(" ");
-    nuloarma.set_NOI(0);
-    nuloarma.set_type(0);
-    nuloarma.id = 0;
-
-
-    Myanim.setimg("Battle/Hit.png");
-    Myanim.init_Anim(5, 3);
-
-    nuloarma.set_anim(Myanim);
-
     myteam->add_player(Alex);
 
     }
 
+/* on rm2k you can start with itesm
     myteam->set_Gold(100);
-
-    Item pocion;
-    pocion.set_name("Pocion");
-    pocion.set_NOI(10);
-    pocion.set_type(0);
-    pocion.id = 1;
-
-    Item Ether;
-    Ether.set_name("Ether");
-    Ether.set_NOI(5);
-    Ether.set_type(0);
-    Ether.id = 2;
-
-    Item Espada2;
-    Espada2.set_name("Espada de madera");
-    Espada2.set_NOI(1);
-    Espada2.set_type(4);
-    Espada2.id = 25;
-
     myteam->add_item(Espada2);
     myteam->add_item(pocion);
     myteam->add_item(Ether);
+*/
+}
+Item Title_Scene::load_item(int item_id)
+{
+Item X;
+if(item_id==0)
+{
+    X.set_name("");
+    X.set_NOI(1);
+    X.set_type(0);
+    X.id = 0;
 
 }
+else{
+    item_id--;
+    X.set_name(myteam->data2.items[item_id].Name.c_str());
+    X.set_NOI(1);
+    X.set_type(myteam->data2.items[item_id].Type);
+    X.id = 1;
+    }return(X);
+}
+
 void Title_Scene::updatekey()
 {
     menu.updatekey();
