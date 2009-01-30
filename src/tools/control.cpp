@@ -1,5 +1,35 @@
 #include "control.h"
 
+#ifdef PSP
+#define TRIANGLE 0
+#define CIRCLE 1
+#define CROSS 0
+#define SQUARE 3
+#define LTRIGGER 4
+#define RTRIGGER 5
+#define DOWN 6
+#define LEFT 7
+#define UP 8
+#define RIGHT 9
+#define SELECT 10
+#define START 11
+#define HOME 12
+#define HOLD 13
+
+#define B_DOWN SDL_JOYBUTTONDOWN
+#define B_UP SDL_JOYBUTTONUP
+
+#define REG jbutton.button
+
+#define QUANTITY 32
+
+#else
+#define B_DOWN SDL_KEYDOWN
+#define B_UP SDL_KEYUP
+#define REG key.keysym.sym
+#define QUANTITY 352
+#endif
+
 namespace Control
 {
 
@@ -7,25 +37,51 @@ namespace Control
     std::deque<int> events;
 
     /* Posible Keyboard keys */
-    std::bitset<352> decision_set;
-    std::bitset<352> cancel_set;
-    std::bitset<352> up_set;
-    std::bitset<352> down_set;
-    std::bitset<352> right_set;
-    std::bitset<352> left_set;
+    std::bitset<QUANTITY> decision_set;
+    std::bitset<QUANTITY> cancel_set;
+    std::bitset<QUANTITY> up_set;
+    std::bitset<QUANTITY> down_set;
+    std::bitset<QUANTITY> right_set;
+    std::bitset<QUANTITY> left_set;
 
     int n_keys[N_KEYS] = {0,0,0,0,0,0,0,0};
 
     bool stop = false;
     bool in_map = false;
 
+    #ifdef PSP
+    SDL_Joystick* joystick;
+    #endif
+
     int delay = 30;
     int in_delay = 4;
 
     int in_delay_tmp = 0;
 
+    void cleanup()
+    {
+        #ifdef PSP
+        SDL_JoystickClose(joystick);
+        #endif
+    }
+
     void set_keys()
     {
+        #ifdef PSP
+        SDL_JoystickEventState(SDL_ENABLE);
+        joystick = SDL_JoystickOpen(0);
+
+        decision_set.set(CROSS);
+        decision_set.set(SQUARE);
+
+        cancel_set.set(TRIANGLE);
+        cancel_set.set(CIRCLE);
+
+        up_set.set(UP);
+        down_set.set(DOWN);
+        right_set.set(RIGHT);
+        left_set.set(LEFT);
+        #else
         decision_set.set(SDLK_z);
         decision_set.set(SDLK_SPACE);
         decision_set.set(SDLK_RETURN);
@@ -45,6 +101,7 @@ namespace Control
         right_set.set(SDLK_l);
         left_set.set(SDLK_LEFT);
         left_set.set(SDLK_h);
+        #endif
     }
 
     void set_delay_default()
@@ -96,8 +153,8 @@ namespace Control
         {
             switch (event.type)
             {
-            case SDL_KEYDOWN:
-                if (decision_set.test(event.key.keysym.sym))
+            case B_DOWN:
+                if (decision_set.test(event.REG))
                 {
                     if ((n_keys[DECISION] == 0) && (events.empty()))
                     {
@@ -106,7 +163,7 @@ namespace Control
                     }
                 }
                 else
-                    if (cancel_set.test(event.key.keysym.sym))
+                    if (cancel_set.test(event.REG))
                     {
                         if ((n_keys[CANCEL] == 0) && (events.empty()))
                         {
@@ -116,7 +173,7 @@ namespace Control
 
                     }
                     else
-                        if (up_set.test(event.key.keysym.sym))
+                        if (up_set.test(event.REG))
                         {
                             if ((n_keys[ARROW_UP] == 0) && (events.empty()))
                             {
@@ -126,7 +183,7 @@ namespace Control
 
                         }
                         else
-                            if (down_set.test(event.key.keysym.sym))
+                            if (down_set.test(event.REG))
                             {
                                 if ((n_keys[ARROW_DOWN] == 0) && (events.empty()))
                                 {
@@ -135,7 +192,7 @@ namespace Control
                                 }
                             }
                             else
-                                if (right_set.test(event.key.keysym.sym))
+                                if (right_set.test(event.REG))
                                 {
                                     if ((n_keys[ARROW_RIGHT] == 0) && (events.empty()))
                                     {
@@ -144,7 +201,7 @@ namespace Control
                                     }
                                 }
                                 else
-                                    if (left_set.test(event.key.keysym.sym))
+                                    if (left_set.test(event.REG))
                                     {
                                         if ((n_keys[ARROW_LEFT] == 0) && (events.empty()))
                                         {
@@ -153,23 +210,23 @@ namespace Control
                                         }
                                     }
                 break;
-            case SDL_KEYUP:
-                if (decision_set.test(event.key.keysym.sym))
+            case B_UP:
+                if (decision_set.test(event.REG))
                     n_keys[DECISION] = 0;
                 else
-                    if (cancel_set.test(event.key.keysym.sym))
+                    if (cancel_set.test(event.REG))
                         n_keys[CANCEL] = 0;
                     else
-                        if (up_set.test(event.key.keysym.sym))
+                        if (up_set.test(event.REG))
                             n_keys[ARROW_UP] = 0;
                         else
-                            if (down_set.test(event.key.keysym.sym))
+                            if (down_set.test(event.REG))
                                 n_keys[ARROW_DOWN] = 0;
                             else
-                                if (right_set.test(event.key.keysym.sym))
+                                if (right_set.test(event.REG))
                                     n_keys[ARROW_RIGHT] = 0;
                                 else
-                                    if (left_set.test(event.key.keysym.sym))
+                                    if (left_set.test(event.REG))
                                         n_keys[ARROW_LEFT] = 0;
                 break;
             default:
@@ -197,131 +254,4 @@ namespace Control
             }
         }
     }
-
-    /*void update_keys()
-    {
-        if (stop) return;
-        while (SDL_PollEvent(&event))
-        {
-            switch (event.type)
-            {
-            case SDL_QUIT:
-                events.push_back(EXIT);
-                break;
-            case SDL_KEYDOWN:
-                switch (event.key.keysym.sym)
-                {
-                case SDLK_UP:
-                    if ((n_keys[ARROW_UP] == 0) && (events.empty()))
-                    {
-                        events.push_back(ARROW_UP);
-                        n_keys[ARROW_UP]++;
-                    }
-
-                    break;
-                case SDLK_DOWN:
-                    if ((n_keys[ARROW_DOWN] == 0) && (events.empty()))
-                    {
-                        events.push_back(ARROW_DOWN);
-                        n_keys[ARROW_DOWN]++;
-                    }
-                    break;
-                case SDLK_RIGHT:
-                    if ((n_keys[ARROW_RIGHT] == 0) && (events.empty()))
-                    {
-                        events.push_back(ARROW_RIGHT);
-                        n_keys[ARROW_RIGHT]++;
-                    }
-                    break;
-                case SDLK_LEFT:
-                    if ((n_keys[ARROW_LEFT] == 0) && (events.empty()))
-                    {
-                        events.push_back(ARROW_LEFT);
-                        n_keys[ARROW_LEFT]++;
-                    }
-                    break;
-                case SDLK_z:
-                    if ((n_keys[DECISION] == 0) && (events.empty()))
-                    {
-                        events.push_back(DECISION);
-                        n_keys[DECISION]++;
-                    }
-                    break;
-                case SDLK_x:
-                    if ((n_keys[CANCEL] == 0) && (events.empty()))
-                    {
-                        events.push_back(CANCEL);
-                        n_keys[CANCEL]++;
-                    }
-                    break;
-                case SDLK_LSHIFT:
-                case SDLK_RSHIFT:
-                    if ((n_keys[SHIFT] == 0) && (events.empty()))
-                    {
-                        events.push_back(SHIFT);
-                        n_keys[SHIFT]++;
-                    }
-                    break;
-                case SDLK_ESCAPE:
-                    events.push_back(EXIT);
-                    break;
-
-
-                default:
-                    break;
-
-
-                }
-                break;
-
-            case SDL_KEYUP:
-                switch (event.key.keysym.sym)
-                {
-                case SDLK_UP:
-                    n_keys[ARROW_UP] = 0;
-                    break;
-                case SDLK_DOWN:
-                    n_keys[ARROW_DOWN] = 0;
-                    break;
-                case SDLK_z:
-                    n_keys[DECISION] = 0;
-                    break;
-                case SDLK_x:
-                    n_keys[CANCEL] = 0;
-                    break;
-                case SDLK_LEFT:
-                    n_keys[ARROW_LEFT] = 0;
-                    break;
-                case SDLK_RIGHT:
-                    n_keys[ARROW_RIGHT] = 0;
-                    break;
-                case SDLK_LSHIFT:
-                case SDLK_RSHIFT:
-                    n_keys[SHIFT] = 0;
-                    break;
-                default:
-                    ;
-                }
-
-            }
-        }
-        int i;
-        if ((in_map) && !(events.empty())) return;
-        for (i = 0; i < N_KEYS; i++)
-        {
-            if (n_keys[i] > delay)
-            {
-                if (in_delay_tmp > in_delay)
-                {
-                    events.push_back(i);
-                    in_delay_tmp = 0;
-                }
-                else in_delay_tmp++;
-            }
-            else
-            {
-                if (n_keys[i] != 0) n_keys[i]++;
-            }
-        }
-    }*/
 }

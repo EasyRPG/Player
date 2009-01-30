@@ -34,6 +34,8 @@ namespace Control
 
     void set_in_delay(int d);// {in_delay = d;}
     int get_in_delay();// {return in_delay;}
+
+    void cleanup();
 }
 
 #endif

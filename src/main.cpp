@@ -215,7 +215,7 @@ int main()
     int repxciclo,i;
     // ===[ INITIALIZATION ]================================================
     // Start SDL
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK) < 0)
     {
         exit(1);//mod
     }
@@ -291,6 +291,8 @@ int main()
         SDL_Flip(Screen); // Flip
         CalculateFPS();
     }
+
+    Control::cleanup();
 
     SDL_Quit();
 
