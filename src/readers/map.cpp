@@ -9,6 +9,16 @@
 
 
 
+void map_data::clear_events()
+{
+    static int i,j,k;
+    for(i=0;i< vcEvents.size();i++)
+    for(j=0;j< vcEvents[i].vcPage.size();j++)
+    for(k=0;k< vcEvents[i].vcPage[j].vcEvent_comand.size();k++)
+    free(vcEvents[i].vcPage[j].vcEvent_comand[k]);
+    vcEvents.clear();
+}
+
 
 stPageMovesEventMap map_reader::PageMovesChunk(FILE * Stream)//movimientos de la pagina
 {

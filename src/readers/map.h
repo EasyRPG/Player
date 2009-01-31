@@ -85,7 +85,7 @@
         int gen_extra_c_Y;
         unsigned short * gen_chipset_ids;
         std:: vector <stEventMap> vcEvents;
-
+        void clear_events();
 
     };
 

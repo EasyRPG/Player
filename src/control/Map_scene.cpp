@@ -133,7 +133,7 @@ printf("data stuck %d",i);
 void Map_Scene::update(SDL_Surface *Screen)
 {
     //WE shuold use layers!!
-    // SDL_FillRect(Screen, NULL, 0x0);// Clear screen  inutil
+    SDL_FillRect(Screen, NULL, 0x0);// Clear screen  inutil
     unsigned int i;
 
     chip.Render(Screen, 0, myteam->view.x, myteam->view.y); //dibuja mapa capa 1 con repecto a la vista
@@ -540,7 +540,7 @@ void Map_Scene::dispose()
     {
         Charas_nps[i].dispose();
     }
-
+    data.clear_events();
     myteam->actual_x_map=Actor.GridX;
     myteam->actual_y_map=Actor.GridY;
     Actor.dispose();

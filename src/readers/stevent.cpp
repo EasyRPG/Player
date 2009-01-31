@@ -1394,19 +1394,25 @@ Event_comand * stEvent::EventcommandKey_input(int Command,int Depth,FILE * Strea
    comand->Directionals=ReadCompressedInteger(Stream);
    comand->Accept=ReadCompressedInteger(Stream);
    comand->Cancel=ReadCompressedInteger(Stream);
-   // 2000 5 datos  2003 14 datos
-   if(ChunkInfo.Length==14)
-   {
+   // unknown data
+   if(ChunkInfo.Length>5)
    ReadCompressedInteger(Stream);
+   if(ChunkInfo.Length>6)
    ReadCompressedInteger(Stream);
+   if(ChunkInfo.Length>7)
    ReadCompressedInteger(Stream);
+   if(ChunkInfo.Length>8)
    ReadCompressedInteger(Stream);
+   if(ChunkInfo.Length>9)
    ReadCompressedInteger(Stream);
+   if(ChunkInfo.Length>10)
    ReadCompressedInteger(Stream);
+   if(ChunkInfo.Length>11)
    ReadCompressedInteger(Stream);
+   if(ChunkInfo.Length>12)
    ReadCompressedInteger(Stream);
+   if(ChunkInfo.Length>13)
    ReadCompressedInteger(Stream);
-   }
    return (comand);
    }
 Event_comand * stEvent::EventcommandChange_tile(int Command,int Depth,FILE * Stream) {
