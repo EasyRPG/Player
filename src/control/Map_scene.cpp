@@ -455,17 +455,12 @@ void Map_Scene::updatekey()
 
 void Map_Scene::mapnpc()
 {
-    static unsigned char *keyData;
     unsigned int event_id;
     Event_comand * comand;
-    keyData = SDL_GetKeyState(NULL);
-bool press;
 
-if(Key_press_and_realsed(LMK_Z ))
-press=true;
 for(event_id=0;event_id< Charas_nps.size();event_id++)
 {
-    if (press &&(Actor.npc_subcolision(event_id)))
+    if (Actor.tried_to_talk &&(Actor.npc_subcolision(event_id)))
     {
         printf(" x %d",data.vcEvents[event_id].vcPage[0].vcEvent_comand.size());
         printf("total %d",data.vcEvents.size());
@@ -490,7 +485,7 @@ for(event_id=0;event_id< Charas_nps.size();event_id++)
     }
     }
 }
-press=false;
+Actor.tried_to_talk=false;
     /*
     if ((Key_press_and_realsed(LMK_Z )) &&(npc.colision((*player))))
     {

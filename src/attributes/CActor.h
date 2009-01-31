@@ -37,6 +37,7 @@ std:: vector <Chara> * NPC;
 
 // Methods
 public:
+    bool tried_to_talk;
 	void MoveOnInput();
 	bool npc_colision(int x, int y);
     bool npc_subcolision(int id);

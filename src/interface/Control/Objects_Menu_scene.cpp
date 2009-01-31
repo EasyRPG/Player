@@ -91,11 +91,15 @@ void Objects_Menu_Scene::updatekey()
 	menu.updatekey();
 	if(menu.desition())
 	action();
-	if (Key_press_and_realsed(LMK_X ))
-      {
-        // (*myaudio).soundload("Sound/Cansel2.wav");
-        * NScene=4;
-	}
+        int temp;
+        temp = Control::pop_action();
+        switch (temp)
+        {
+        case CANCEL:
+                    myaudio->load("Sound/Cansel2.wav");
+                    *NScene = 4;
+                    break;
+        }
 }
 
 void Objects_Menu_Scene::dispose()

@@ -70,21 +70,18 @@ void GO_Scene::action()
 
 void GO_Scene::updatekey()
 {
-    unsigned char *keyData;
     static int delay = 0;
     delay++;
     if (delay == 40)
     {
-        keyData = SDL_GetKeyState(NULL);
-        if (keyData[SDLK_ESCAPE])
+    int temp;
+        temp = Control::pop_action();
+        switch (temp)
         {
-            *running = false;
+        case DECISION:
+                    action();
+                    break;
         }
-        if ( keyData[LMK_Z]  )
-        {
-            action();
-        }
-        delay = 0;
     }
 }
 

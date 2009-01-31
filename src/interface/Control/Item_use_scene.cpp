@@ -120,11 +120,16 @@ void Item_use_scene::updatekey() {
 			action();
 		}
 	}
-	if (Key_press_and_realsed(LMK_X ))//retorna alos objetos
-	{
-		(*myaudio).load("Sound/Cansel2.wav");* NScene=5;
-	}
-}
+
+        int temp;
+        temp = Control::pop_action();
+        switch (temp)
+        {
+        case CANCEL:
+                    myaudio->load("Sound/Cansel2.wav");
+                    *NScene = 4;
+                    break;
+        }}
 
 void Item_use_scene::dispose()
 {

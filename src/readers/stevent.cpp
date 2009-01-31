@@ -644,9 +644,7 @@ Event_comand * stEvent::EventcommandTimer_manipulation(int Command,int Depth,FIL
   comand->Depth=Depth;
   printf("comand %d",Command);
   ChunkInfo.Length= ReadCompressedInteger(Stream); 	// longitud 00
-  printf("Length %d",ChunkInfo.Length);
   ChunkInfo.Length= ReadCompressedInteger(Stream); // longitud 06
-  printf("Length %d",ChunkInfo.Length);
 
                          //Set (1:start, 2:stop)
                           comand->Set= ReadCompressedInteger(Stream);
@@ -1231,9 +1229,7 @@ Event_comand * stEvent::EventcommandMove_Picture(int Command,int Depth,FILE * St
   comand = new Event_comand_Move_Picture();
    comand->Comand=Command;comand->Depth=Depth;
    ChunkInfo.Length= ReadCompressedInteger(Stream);
-   printf("Length  %d",ChunkInfo.Length );
    ChunkInfo.Length= ReadCompressedInteger(Stream);
-   printf("Length  %d",ChunkInfo.Length );
 
    comand->Picture_ID=ReadCompressedInteger(Stream);
    comand->By_Value=ReadCompressedInteger(Stream);
@@ -1273,13 +1269,9 @@ Event_comand * stEvent::EventcommandShow_Battle_Anim(int Command,int Depth,FILE 
   comand = new Event_comand_Show_Battle_Anim();
     comand->Comand=Command;comand->Depth=Depth;
    ChunkInfo.Length= ReadCompressedInteger(Stream);
-   printf("Length  %d",ChunkInfo.Length );
    ChunkInfo.Length= ReadCompressedInteger(Stream);
-   printf("Length  %d",ChunkInfo.Length );
    comand->Animation_ID=ReadCompressedInteger(Stream);
-   printf("Animation_ID  %d",comand->Animation_ID );
    comand->Target=ReadCompressedInteger(Stream);
-   printf("Target  %04X",comand->Target);
    comand->Wait=ReadCompressedInteger(Stream);
    printf("Wait  %04X",comand->Wait );
    comand->Full_screen=ReadCompressedInteger(Stream);

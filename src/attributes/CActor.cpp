@@ -193,6 +193,9 @@ void CActor::MoveOnInput()
         case CANCEL:
             *NScene = 4;
             break;
+        case DECISION:
+            tried_to_talk=true;
+            break;
         case -1:
             if (tim==2)
             {
