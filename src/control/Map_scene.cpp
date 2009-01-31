@@ -73,7 +73,7 @@ if(Map_id<10)
 
     Events = &data.vcEvents;
     init_npc();
-    Actor.setposXY(X, Y, &chip,&Charas_nps);
+    Actor.setposXY(X, Y, &chip,&Charas_nps,NScene);
 
 
     myaudio->load("Music/Town.mid");
@@ -449,13 +449,6 @@ void Map_Scene::updatekey()
             Charas_nps[i].rotationupdate();
         }
     }
-
-    if (Key_press_and_realsed(LMK_X))
-    {
-        //(*myaudio).load("Sound/Cursor1.wav");
-        *NScene = 4;
-    }
-
     mapnpc();
 }
 

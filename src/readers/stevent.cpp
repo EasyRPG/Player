@@ -1231,7 +1231,9 @@ Event_comand * stEvent::EventcommandMove_Picture(int Command,int Depth,FILE * St
   comand = new Event_comand_Move_Picture();
    comand->Comand=Command;comand->Depth=Depth;
    ChunkInfo.Length= ReadCompressedInteger(Stream);
+   printf("Length  %d",ChunkInfo.Length );
    ChunkInfo.Length= ReadCompressedInteger(Stream);
+   printf("Length  %d",ChunkInfo.Length );
 
    comand->Picture_ID=ReadCompressedInteger(Stream);
    comand->By_Value=ReadCompressedInteger(Stream);
@@ -1248,11 +1250,13 @@ Event_comand * stEvent::EventcommandMove_Picture(int Command,int Depth,FILE * St
    comand->Length=ReadCompressedInteger(Stream);
    comand->Wait=ReadCompressedInteger(Stream);
 
-   // 2000  datos 2003 17 datos
-  if(ChunkInfo.Length==17)
-{  ReadCompressedInteger(Stream);
+   // optional data
+  if(ChunkInfo.Length>14)
   ReadCompressedInteger(Stream);
-  ReadCompressedInteger(Stream);}
+  if(ChunkInfo.Length>15)
+  ReadCompressedInteger(Stream);
+  if(ChunkInfo.Length>16)
+  ReadCompressedInteger(Stream);
 
    return (comand); }
 Event_comand * stEvent::EventcommandErase_Picture(int Command,int Depth,FILE * Stream) {
@@ -1269,11 +1273,18 @@ Event_comand * stEvent::EventcommandShow_Battle_Anim(int Command,int Depth,FILE 
   comand = new Event_comand_Show_Battle_Anim();
     comand->Comand=Command;comand->Depth=Depth;
    ChunkInfo.Length= ReadCompressedInteger(Stream);
+   printf("Length  %d",ChunkInfo.Length );
    ChunkInfo.Length= ReadCompressedInteger(Stream);
+   printf("Length  %d",ChunkInfo.Length );
    comand->Animation_ID=ReadCompressedInteger(Stream);
+   printf("Animation_ID  %d",comand->Animation_ID );
    comand->Target=ReadCompressedInteger(Stream);
+   printf("Target  %04X",comand->Target);
    comand->Wait=ReadCompressedInteger(Stream);
+   printf("Wait  %04X",comand->Wait );
    comand->Full_screen=ReadCompressedInteger(Stream);
+   printf("Full_screen  %04X",comand->Full_screen );
+
    return (comand);
    }
 

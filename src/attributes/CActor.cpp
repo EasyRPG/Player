@@ -78,8 +78,9 @@ sll CActor::Clampf(float value, float min, float max)
     return ((value<min)? min:(value>=max)? max:value);
 }
 
-void CActor::setposXY(int x,int y,Chipset * the_World,std:: vector <Chara> * Charas_nps)
+void CActor::setposXY(int x,int y,Chipset * the_World,std:: vector <Chara> * Charas_nps,unsigned char *TheScene)
 {
+    NScene=TheScene;
     NPC=Charas_nps;
     GridX=x;///aparte de la X  y Y  tenemos la poscion con referencia bloques.
     GridY=y;
@@ -188,6 +189,9 @@ void CActor::MoveOnInput()
             Cmotion.distance  = 0;
             Control::stop = true;
         }
+            break;
+        case CANCEL:
+            *NScene = 4;
             break;
         case -1:
             if (tim==2)

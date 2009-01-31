@@ -31,6 +31,7 @@ struct mot
 
 class CActor:public Chara {
 
+unsigned char * NScene;
 Chipset * World;
 std:: vector <Chara> * NPC;
 
@@ -43,7 +44,7 @@ public:
 	sll Minf(float value, float max);
 	int Clamp(int value, int min, int max);
 	sll Clampf(float value, float min, float max);
-    void setposXY(int x,int y,Chipset * the_World,std:: vector <Chara> * Charas_nps);
+    void setposXY(int x,int y,Chipset * the_World,std:: vector <Chara> * Charas_nps,unsigned char *TheScene);
 	unsigned char  flags;
 	unsigned char state;
 	mot Cmotion;
