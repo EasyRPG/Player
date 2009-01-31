@@ -95,7 +95,7 @@ public:
 	//Map_Scene();		///constructor
 	//~Map_Scene();		///destructor
 	void init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * TheScene,Player_Team * TheTeam);
-    void load_map(int Map_id,int  X,int Y);
+    void load_map();
     void update(SDL_Surface* Screen);
     int  get_dir(int i);
 	void Scroll();

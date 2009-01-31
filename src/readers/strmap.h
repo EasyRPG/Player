@@ -77,7 +77,7 @@ using namespace std;
     int Movement_speed;//	0x25
     stPageMovesEventMap vcPage_Moves; //Movement block	0x29
     int Script_header;	//0x33
-    std:: vector <Event_comand> vcEvent_comand;   //Script code	0x34
+    std:: vector <Event_comand *> vcEvent_comand;   //Script code	0x34
     //metodos
     void clear();
     void show();

@@ -24,12 +24,16 @@ void Map_Scene::init(Audio *audio, int SCREEN_X, int SCREEN_Y, unsigned char *Th
     SCREEN_SIZE_Y = SCREEN_Y;
     player = myteam->get_chara(0);
     NScene = TheScene;
-    load_map(TheTeam->actual_map,TheTeam->actual_x_map,TheTeam->actual_y_map);
-
+    load_map();
 }
 
-void Map_Scene::load_map(int Map_id,int  X,int Y)
+void Map_Scene::load_map()
 {
+    int Map_id,  X, Y;
+    Map_id=  myteam->actual_map;
+    X= myteam->actual_x_map;
+    Y= myteam->actual_y_map;
+
     myteam->view.x = 0;
     myteam->view.y = 0;
 
@@ -57,7 +61,7 @@ if(Map_id<10)
     system_string.append(".lmu");
     // ===[ LOADING MAP DATA ]==============================================
     Map.Load((char *)system_string.c_str(), &data);
- //   Map.ShowInformation(&data);
+    Map.ShowInformation(&data);
 
     system_string.clear();
     system_string.append("ChipSet/");
@@ -457,18 +461,41 @@ void Map_Scene::updatekey()
 void Map_Scene::mapnpc()
 {
     static unsigned char *keyData;
-
+    unsigned int event_id;
+    Event_comand * comand;
     keyData = SDL_GetKeyState(NULL);
-    if ((Key_press_and_realsed(LMK_Z )) &&(Actor.npc_subcolision(0)))
+bool press;
+
+if(Key_press_and_realsed(LMK_Z ))
+press=true;
+for(event_id=0;event_id<data.vcEvents.size();event_id++)
+{
+    if (press &&(Actor.npc_subcolision(event_id)))
     {
+        printf(" x %d",data.vcEvents[event_id].vcPage[0].vcEvent_comand.size());
+        printf("total %d",data.vcEvents.size());
+
+    if(data.vcEvents[event_id].vcPage[0].vcEvent_comand.size()>0)
+    {
+        printf(" id %d",event_id);
+
+        comand= data.vcEvents[event_id].vcPage[0].vcEvent_comand[0];
+        printf("real comand %d id %d",comand->Comand,event_id);
+        if((comand->Comand)==0x2A3A)
+        {
+        Event_comand_Teleport_Party * command;
+        command= ( Event_comand_Teleport_Party *)comand;
         dispose();
-        myteam->actual_map=1;
-        myteam->actual_x_map=20;
-        myteam->actual_y_map=20;
+        myteam->actual_map=command->Map_ID;
+        myteam->actual_x_map=command->X;
+        myteam->actual_y_map=command->Y;
 
-        load_map(1,20,20);
-
+        load_map();
+        }
     }
+    }
+}
+press=false;
     /*
     if ((Key_press_and_realsed(LMK_Z )) &&(npc.colision((*player))))
     {

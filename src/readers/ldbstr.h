@@ -251,7 +251,7 @@ struct stcEnemy_group_event_page
 {
 stcEnemy_group_condition conditions;//	Page_conditions=0x02,
 int	Event_length;//=0x0B,
- std:: vector <Event_comand> vcEvent_comand;//	Event=0x0C
+ std:: vector <Event_comand *> vcEvent_comand;//	Event=0x0C
 void clear();
 void show();
 };
@@ -603,7 +603,7 @@ struct stcEvent
  char blNameActivate_on_switch;//=0x0C,
  int intNameSwitch_ID;//=0x0D,
  int intNameScript_length;//=0x15,
- std:: vector <Event_comand> vcEvent_comand; //Script=0x16
+ std:: vector <Event_comand *> vcEvent_comand; //Script=0x16
  void clear();
  void show();
 };

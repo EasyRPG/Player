@@ -101,7 +101,7 @@ bool CActor::npc_colision(int x, int y)
     return(true);
 }
 
-bool CActor::npc_subcolision(int id)
+bool CActor::npc_subcolision(int event_id)
 {
     int x,y,direction;
     direction=dir;
@@ -123,8 +123,8 @@ bool CActor::npc_subcolision(int id)
         x++;
             break;
         }
-        if(( (NPC->at(id)).GridX==x) &&((NPC->at(id)).GridY==y))
-            if((NPC->at(id)).layer==1)
+        if(( (NPC->at(event_id)).GridX==x) &&((NPC->at(event_id)).GridY==y))
+            if((NPC->at(event_id)).layer==1)
                 return(true);
     return(false);
 }

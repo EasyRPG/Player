@@ -99,7 +99,7 @@
       for (int j=0; j<i;j++)
       {   //printf("\n \nComand num %d \n",j+1);
         //  vcEvent_comand[j].show();
-        printf("\n Comand id %d ",vcEvent_comand[j].Comand);
+        printf("\n Comand id %d ",(*vcEvent_comand[j]).Comand);
       }
 
     }
