@@ -591,10 +591,10 @@ Event_comand * stEvent::EventcommandNumber_input(int Command,int Depth,FILE * St
   comand = new Event_comand_Number_input();
   comand->Comand=Command;
   comand->Depth=Depth;
-                          ChunkInfo.Length= ReadCompressedInteger(Stream); 	// longitud 00
-                          ChunkInfo.Length= ReadCompressedInteger(Stream); // longitud 02
-                          comand->Digits_to_input= ReadCompressedInteger(Stream);
-                          comand->variable_to_store=  ReadCompressedInteger(Stream);
+  ChunkInfo.Length= ReadCompressedInteger(Stream); 	// longitud 00
+  ChunkInfo.Length= ReadCompressedInteger(Stream); // longitud 0
+  comand->Digits_to_input= ReadCompressedInteger(Stream);
+  comand->variable_to_store=  ReadCompressedInteger(Stream);
   return (comand);
 }
 Event_comand * stEvent::EventcommandChange_switch(int Command,int Depth,FILE * Stream)
@@ -603,13 +603,19 @@ Event_comand * stEvent::EventcommandChange_switch(int Command,int Depth,FILE * S
   comand = new Event_comand_Change_switch();
   comand->Comand=Command;
   comand->Depth=Depth;
+  printf("Depth %d" ,Depth);
                           ChunkInfo.Length= ReadCompressedInteger(Stream); 	// longitud 00
                            ChunkInfo.Length= ReadCompressedInteger(Stream); // longitud 04
                          //Mode (single, range, indirect)
-                          comand->Mode= ReadCompressedInteger(Stream);
-                          comand->start_switch=  ReadCompressedInteger(Stream);
-                          comand->end_switch= ReadCompressedInteger(Stream);
-                          comand->toggle_option=  ReadCompressedInteger(Stream);
+  comand->Mode= ReadCompressedInteger(Stream);
+  printf("Mode %d" ,comand->Mode);
+  comand->start_switch=  ReadCompressedInteger(Stream);
+  printf("start_switch %d" ,comand->start_switch);
+  comand->end_switch= ReadCompressedInteger(Stream);
+  printf("end_switch %d" ,comand->end_switch);
+  comand->toggle_option=  ReadCompressedInteger(Stream);
+  printf("toggle_option %d" ,comand->toggle_option);
+
   return (comand);
 }
 Event_comand * stEvent::EventcommandChange_var(int Command,int Depth,FILE * Stream)
@@ -636,15 +642,26 @@ Event_comand * stEvent::EventcommandTimer_manipulation(int Command,int Depth,FIL
   comand = new Event_comand_Timer_manipulation();
   comand->Comand=Command;
   comand->Depth=Depth;
-                          ChunkInfo.Length= ReadCompressedInteger(Stream); 	// longitud 00
-                           ChunkInfo.Length= ReadCompressedInteger(Stream); // longitud 06
+  printf("comand %d",Command);
+  ChunkInfo.Length= ReadCompressedInteger(Stream); 	// longitud 00
+  printf("Length %d",ChunkInfo.Length);
+  ChunkInfo.Length= ReadCompressedInteger(Stream); // longitud 06
+  printf("Length %d",ChunkInfo.Length);
+
                          //Set (1:start, 2:stop)
                           comand->Set= ReadCompressedInteger(Stream);
+  printf("Set %d",comand->Set);
                           comand->By_Value=  ReadCompressedInteger(Stream);
+  printf("By_Value %d",comand->By_Value);
                           comand->Seconds= ReadCompressedInteger(Stream);
+  printf("Seconds %d",comand->Seconds);
                           comand->Display=  ReadCompressedInteger(Stream);
+  printf("Display %d",comand->Display);
                           comand->Runs_in_Battle=  ReadCompressedInteger(Stream);
+  printf("op_data1 %d",comand->op_data1);
+                      if(ChunkInfo.Length<5)
                           comand->op_data1=  ReadCompressedInteger(Stream);
+
   return (comand);
 }
  Event_comand * stEvent::EventcommandChange_cash_held(int Command,int Depth,FILE * Stream)

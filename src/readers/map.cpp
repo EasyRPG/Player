@@ -175,6 +175,8 @@ vector <stPageEventMap> map_reader::pageChunk(FILE * Stream)
                               break;
                           case CHUNK_Charset_to_use:
                               Page.CharsetName = ReadString(Stream, ChunkInfo.Length);
+                                 printf(" grafic %s",  Page.CharsetName.c_str());
+
                               break;
                           case CHUNK_Graphic_to_use:
                                Page.CharsetID = ReadCompressedInteger(Stream);
@@ -249,6 +251,7 @@ std:: vector <stEventMap> map_reader::eventChunk(FILE * Stream)
                          {
                           case CHUNK_EVENT_NAME:
                                Event.EventName = ReadString(Stream, ChunkInfo.Length);
+                               printf("Name %s", Event.EventName.c_str());
                                break;
                           case CHUNK_EVENT_X:
                                Event.X_position         = ReadCompressedInteger(Stream);

@@ -61,7 +61,7 @@ if(Map_id<10)
     system_string.append(".lmu");
     // ===[ LOADING MAP DATA ]==============================================
     Map.Load((char *)system_string.c_str(), &data);
-    Map.ShowInformation(&data);
+    //Map.ShowInformation(&data);
 
     system_string.clear();
     system_string.append("ChipSet/");
@@ -93,9 +93,11 @@ void Map_Scene::init_npc()
     Chara npc;
     npc.init_Chara();
     SDL_Surface *temp2;
+printf("data stuck %d",i);
 
     for (i = 0; i < Events->size(); i++)
     {
+        printf("data stuck %d",i);
         system_string.clear();
         system_string.append("CharSet/");
         system_string.append(data.vcEvents[i].vcPage[0].CharsetName);
@@ -412,7 +414,7 @@ void Map_Scene::updatekey()
     unsigned int i;
     Actor.MoveOnInput();
     Scroll();
-    for (i = 0; i < Events->size(); i++)
+    for (i = 0; i < Charas_nps.size(); i++)
     {
         if (!Charas_nps[i].move(Charas_nps[i].move_dir))
         {
@@ -468,7 +470,7 @@ bool press;
 
 if(Key_press_and_realsed(LMK_Z ))
 press=true;
-for(event_id=0;event_id<data.vcEvents.size();event_id++)
+for(event_id=0;event_id< Charas_nps.size();event_id++)
 {
     if (press &&(Actor.npc_subcolision(event_id)))
     {
