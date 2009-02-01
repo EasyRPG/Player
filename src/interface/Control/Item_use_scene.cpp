@@ -121,15 +121,13 @@ void Item_use_scene::updatekey() {
 		}
 	}
 
-        int temp;
-        temp = Control::pop_action();
-        switch (temp)
+
+        if(players.menu.cancel)
         {
-        case CANCEL:
                     myaudio->load("Sound/Cansel2.wav");
                     *NScene = 4;
-                    break;
-        }}
+        }
+    }
 
 void Item_use_scene::dispose()
 {

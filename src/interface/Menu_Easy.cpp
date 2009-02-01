@@ -25,6 +25,7 @@ void Menu_Easy::init(Audio * theaudio, bool * run,int X,int Y)
 	maxindexX=X;
 	delay=0;
 	running=  run;
+	cancel=false;
 }
 
 bool Menu_Easy::desition()
@@ -72,6 +73,7 @@ if (desided==false)
                 desided= true;
                 break;
             case CANCEL:
+                cancel=true;
                 break;
             case ARROW_UP:
                 indexY--;

@@ -33,7 +33,6 @@ protected:
 	Sprite tapiz;
 	Sprite cursor;
 	Font fuente;
-	Menu_Easy menu;
 	std:: vector <Sprite> Vtext_Sprite;
 	int pos_X,pos_Y;
 	int Size_X,Size_Y,Size_of_Block;
@@ -45,6 +44,8 @@ protected:
 	Sprite text;
 
 public:
+	Menu_Easy menu;
+
 	//Window_Player_Select();		///constructor
 	///~Window_Player_Select();		///destructor
 	bool visible;

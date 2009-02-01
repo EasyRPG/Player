@@ -101,14 +101,11 @@ void Skills_Menu_Scene::updatekey()
 		action();
 	}
 
-        int temp;
-        temp = Control::pop_action();
-        switch (temp)
+
+        if(menu.menu.cancel)
         {
-        case CANCEL:
                     myaudio->load("Sound/Cansel2.wav");
                     *NScene = 4;
-                    break;
         }
 
 }
