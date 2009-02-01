@@ -17,7 +17,7 @@
     // =========================================================================
     #include <stdlib.h>
     #include <stdio.h>
-    #include <string>
+    #include <string.h>
     #include <iostream>
     #include <SDL/SDL.h>
     #include <SDL/SDL_image.h>

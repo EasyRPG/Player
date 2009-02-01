@@ -93,11 +93,11 @@ void Map_Scene::init_npc()
     Chara npc;
     npc.init_Chara();
     SDL_Surface *temp2;
-printf("data stuck %d",i);
+//printf("data stuck %d",i);
 
     for (i = 0; i < Events->size(); i++)
     {
-        printf("data stuck %d",i);
+        //printf("data stuck %d",i);
         system_string.clear();
         system_string.append("CharSet/");
         system_string.append(data.vcEvents[i].vcPage[0].CharsetName);

@@ -82,8 +82,8 @@ void CalculateFPS()
         frames = 0;
         nextTicks = SDL_GetTicks() + 1000;
 
-        sprintf(stringBuffer, "Map test - FPS %lu", fps);
-        SDL_WM_SetCaption (stringBuffer, NULL);
+        printf("Map test - FPS %lu /n \n", fps);
+        //SDL_WM_SetCaption (stringBuffer, NULL);
     }
 }
 
@@ -208,11 +208,17 @@ void CambioScene(Audio *myaudio, Scene **apuntador)
     }
 }
 
-int main()
+#ifdef PSP
+extern "C"
+#endif
+int main(int argc, char *argv[])
 {
-    Control::set_keys();
+    #ifdef PSP
+    freopen("stdout", "w", stdout);
+    freopen("stderr", "w", stderr);
+    #endif
     Music myaudio;
-    int repxciclo,i;
+
     // ===[ INITIALIZATION ]================================================
     // Start SDL
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK) < 0)
@@ -225,15 +231,16 @@ int main()
     const SDL_VideoInfo *videoInfo = SDL_GetVideoInfo();
     unsigned  long flags = 0;
 
-    if (videoInfo->hw_available) flags |= SDL_HWSURFACE;
-    else flags |= SDL_SWSURFACE;
-    if (videoInfo->blit_hw) flags |= SDL_HWACCEL;
+    flags |= SDL_SWSURFACE;
+
     Screen = SDL_SetVideoMode(SCREEN_SIZE_X, SCREEN_SIZE_Y, 16, flags);
     if (Screen == NULL)
     {
         exit(2);
     }
     SDL_WM_SetCaption ("EasyRPG Player", NULL);
+
+    Control::set_keys();
 
     // ===[ ENTRY POINT ]===================================================
 
@@ -248,46 +255,15 @@ int main()
     {
         timer++;
         // Check for events
-        /*while (SDL_PollEvent (&event))
-        {
-        	switch (event.type)
-        	{
-        		case SDL_QUIT:
-        				running = false;
-        				break;
-        		case SDL_KEYDOWN:
-        				if( event.key.keysym.sym == SDLK_RETURN )
-        				{
-        					if(Fullscreen)
-        					{
-        						Screen = SDL_SetVideoMode( SCREEN_SIZE_X, SCREEN_SIZE_Y, 16, SDL_SWSURFACE | SDL_RESIZABLE);
-        						Fullscreen=false;
-        					}
-        					else
-        					{
-        						Screen = SDL_SetVideoMode( SCREEN_SIZE_X, SCREEN_SIZE_Y, 16, SDL_SWSURFACE | SDL_RESIZABLE | SDL_FULLSCREEN );
-        						Fullscreen=true;
-        					}
-        					break;
-        				}
-        		default:
-        				break;
-        	}
-        }*/
-        repxciclo = fps_sincronizar();
-        // SDL_FillRect(Screen, NULL, 0x0);// Clear screen
 
-        for (i = 0; i < repxciclo; i++)
-        {
             Control::update_keys();
             System.update(); //updates delta
             actual->updatekey();
-        }
+
         actual->update(Screen);
 
         CambioScene(&myaudio, &actual);
 
-//SDL_Delay(1000/60);
         SDL_Flip(Screen); // Flip
         CalculateFPS();
     }
@@ -296,5 +272,10 @@ int main()
 
     SDL_Quit();
 
-    return false;
+    #ifdef PSP
+    fclose(stdout);
+    fclose(stderr);
+    #endif
+
+    return 0;
 }

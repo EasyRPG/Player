@@ -1623,14 +1623,14 @@ std:: vector <Event_comand * > stEvent::EventcommandChunk(FILE * Stream)//instru
          std:: vector <Event_comand * > vcEvent_comand;
          data= ReadCompressedInteger(Stream); //de
          depth=ReadCompressedInteger(Stream); //profundidad
-         printf(" data %04X  ",data);
+         //printf(" data %04X  ",data);
          data =data;
 
          if(data!=0)
          {       while(data!=0)
                 {
 
-                    printf(" Main data %04X  ",data);
+      //              printf(" Main data %04X  ",data);
                          switch(data)// tipo de la primera dimencion
                          {
                      case Message:// llamar una funcion con el id que retorne un objeto comando

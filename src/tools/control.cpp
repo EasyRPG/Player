@@ -3,7 +3,7 @@
 #ifdef PSP
 #define TRIANGLE 0
 #define CIRCLE 1
-#define CROSS 0
+#define CROSS 2
 #define SQUARE 3
 #define LTRIGGER 4
 #define RTRIGGER 5

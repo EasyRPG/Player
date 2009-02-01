@@ -23,7 +23,7 @@ void Player_Team::read_database()
    lmt_reader my_lmt;
    my_lmt.load("RPG_RT.lmt",&lmt);
    //my_lmt.print(&lmt);
-    my_ldb.ShowInformation(&data2);
+ //   my_ldb.ShowInformation(&data2);
 }
 
 void Player_Team::clear_team()
