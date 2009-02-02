@@ -34,7 +34,7 @@ void Title_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Pla
     TheTeam->actual_map=TheTeam->lmt.party_map_id;
     TheTeam->actual_x_map=TheTeam->lmt.party_x;
     TheTeam->actual_y_map=TheTeam->lmt.party_y;
-
+    TheTeam->actual_dir=2;
     std::string titles_string;
     std::string music_string;
     std::string system_string;
@@ -84,11 +84,11 @@ void Title_Scene::update(SDL_Surface *Screen)
 
 void Title_Scene::action()
 {
-    static bool used = false;
+    //static bool used = false;
 
-    if (used == false)
-    {
-        used = true;
+    //if (used == false)
+    //{
+      //  used = true;
         if (menu.getindexY() == 2)
         {
             *running = false;
@@ -98,7 +98,7 @@ void Title_Scene::action()
             init_party();
             *NScene = 1;
         }
-    }
+    //}
 }
 
 void Title_Scene::init_party()
@@ -206,6 +206,7 @@ void Title_Scene::updatekey()
 void Title_Scene::dispose()
 {
     title.dispose();
+    menu.restarmenu();
     menu.dispose();
     myaudio->stop();
 }

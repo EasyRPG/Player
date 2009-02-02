@@ -29,10 +29,8 @@ void Map_Scene::init(Audio *audio, int SCREEN_X, int SCREEN_Y, unsigned char *Th
 
 void Map_Scene::load_map()
 {
-    int Map_id,  X, Y;
+    int Map_id;
     Map_id=  myteam->actual_map;
-    X= myteam->actual_x_map;
-    Y= myteam->actual_y_map;
 
     myteam->view.x = 0;
     myteam->view.y = 0;
@@ -73,8 +71,8 @@ if(Map_id<10)
 
     Events = &data.vcEvents;
     init_npc();
-    Actor.setposXY(X, Y, &chip,&Charas_nps,NScene);
-
+    Actor.setposXY(myteam->actual_x_map,myteam->actual_y_map, &chip,&Charas_nps,NScene,myteam);
+    Actor.set_dir(myteam->actual_dir);
 
     myaudio->load("Music/Town.mid");
     fuente.init_Font();
@@ -457,35 +455,21 @@ void Map_Scene::mapnpc()
 {
     unsigned int event_id;
     Event_comand * comand;
-
-for(event_id=0;event_id< Charas_nps.size();event_id++)
-{
-    if (Actor.tried_to_talk &&(Actor.npc_subcolision(event_id)))
+    for(event_id=0;event_id< Charas_nps.size();event_id++)
     {
-        printf(" x %d",data.vcEvents[event_id].vcPage[0].vcEvent_comand.size());
-        printf("total %d",data.vcEvents.size());
-
-    if(data.vcEvents[event_id].vcPage[0].vcEvent_comand.size()>0)
-    {
-        printf(" id %d",event_id);
-
-        comand= data.vcEvents[event_id].vcPage[0].vcEvent_comand[0];
-        printf("real comand %d id %d",comand->Comand,event_id);
-        if((comand->Comand)==0x2A3A)
+        if (Actor.tried_to_talk &&(Actor.npc_subcolision(event_id)))
         {
-        Event_comand_Teleport_Party * command;
-        command= ( Event_comand_Teleport_Party *)comand;
-        dispose();
-        myteam->actual_map=command->Map_ID;
-        myteam->actual_x_map=command->X;
-        myteam->actual_y_map=command->Y;
+            printf(" x %d",data.vcEvents[event_id].vcPage[0].vcEvent_comand.size());
+            printf("total %d",data.vcEvents.size());
 
-        load_map();
+            if(data.vcEvents[event_id].vcPage[0].vcEvent_comand.size()>0)
+            {
+            comand=data.vcEvents[event_id].vcPage[0].vcEvent_comand[0];
+            exec_comand(comand,event_id);
+            }
         }
     }
-    }
-}
-Actor.tried_to_talk=false;
+    Actor.tried_to_talk=false;
     /*
     if ((Key_press_and_realsed(LMK_Z )) &&(npc.colision((*player))))
     {
@@ -530,6 +514,53 @@ Actor.tried_to_talk=false;
     }*/
 }
 
+void Map_Scene::exec_comand(Event_comand * comand,int event_id)
+{
+
+        switch (comand->Comand)
+                {
+                case Teleport_Party:
+                    Event_comand_Teleport_Party * command;
+                    command= ( Event_comand_Teleport_Party *)comand;
+                    myteam->actual_map=command->Map_ID;
+                    myteam->actual_x_map=command->X;
+                   printf("id X %d",myteam->actual_x_map);
+                    myteam->actual_y_map=command->Y;
+                    printf("id Y %d",myteam->actual_y_map);
+                    dispose();
+                    load_map();
+                    break;
+
+                case Call_save_menu:
+                    myteam->actual_x_map=Actor.GridX;
+                    myteam->actual_y_map=Actor.GridY;
+                    myteam->actual_dir=Actor.get_dir();
+
+                    *NScene = 9;
+                    break;
+                case Call_system_menu:
+                    myteam->actual_x_map=Actor.GridX;
+                    myteam->actual_y_map=Actor.GridY;
+                    myteam->actual_dir=Actor.get_dir();
+                    *NScene = 4;
+                    break;
+                case Delete_event:
+                    Charas_nps[event_id].GridX= data.MapHeight;
+                    Charas_nps[event_id].GridY= data.MapWidth;
+                    Charas_nps[event_id].layer= 3;
+                    break;
+                case Game_over:
+                    *NScene = 3;
+                    break;
+                case Return_to_title_screen:
+                    *NScene = 0;
+                    break;
+
+
+                }
+
+}
+
 void Map_Scene::dispose()
 {
     unsigned int i;
@@ -541,8 +572,6 @@ void Map_Scene::dispose()
         Charas_nps[i].dispose();
     }
     data.clear_events();
-    myteam->actual_x_map=Actor.GridX;
-    myteam->actual_y_map=Actor.GridY;
     Actor.dispose();
     Charas_nps.clear();
     pre_chip.dispose();

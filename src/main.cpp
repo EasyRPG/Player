@@ -73,7 +73,6 @@ Timer fps;
 
 void CalculateFPS()
 {
-    char stringBuffer[255];
     static unsigned long nextTicks = 0, fps = 0, frames = 0;
     frames++;
     if ( SDL_GetTicks() > nextTicks )
@@ -218,7 +217,7 @@ int main(int argc, char *argv[])
     freopen("stderr", "w", stderr);
     #endif
     Music myaudio;
-
+    int repxciclo,i;
     // ===[ INITIALIZATION ]================================================
     // Start SDL
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK) < 0)
@@ -255,17 +254,21 @@ int main(int argc, char *argv[])
     {
         timer++;
         // Check for events
-
+       repxciclo = fps_sincronizar();
+        for (i = 0; i < repxciclo; i++)
+         {
             Control::update_keys();
             System.update(); //updates delta
             actual->updatekey();
-
+         }
         actual->update(Screen);
 
         CambioScene(&myaudio, &actual);
 
         SDL_Flip(Screen); // Flip
         CalculateFPS();
+        //SDL_Delay(100);
+
     }
 
     Control::cleanup();

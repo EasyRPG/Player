@@ -42,6 +42,7 @@ class Player_Team {
 
     int actual_x_map;
     int actual_y_map;
+    int actual_dir;
     int actual_map;
 
     LDB_data data2;

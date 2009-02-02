@@ -53,7 +53,7 @@ void GO_Scene::init(Audio *theaudio, bool *run, unsigned char *TheScene, Player_
     title.y = 0;
 
     title.setimg(titles_string.c_str());
-
+    myaudio->play(-1);
     running = run;
     NScene = TheScene;
 }
@@ -72,7 +72,7 @@ void GO_Scene::updatekey()
 {
     static int delay = 0;
     delay++;
-    if (delay == 40)
+    if (delay >40)
     {
     int temp;
         temp = Control::pop_action();
@@ -87,5 +87,9 @@ void GO_Scene::updatekey()
 
 void GO_Scene::dispose()
 {
+    myteam->clear_team();
+    myteam->clear_obj();
+
     title.dispose();
+    myaudio->stop();
 }

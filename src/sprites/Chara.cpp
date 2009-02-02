@@ -16,6 +16,11 @@
 
 
 #include "Chara.h"
+#ifdef PSP
+#define FRAME_UPDATE_DELEY      1
+#endif
+#define FRAME_UPDATE_DELEY      6
+
 
 void
 

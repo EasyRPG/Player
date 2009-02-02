@@ -130,7 +130,11 @@ void Main_Menu_Scene::action2()
 {
 	if(menu_exit.getindexY()==0)
 	{
-		* NScene=0;
+	    menu_exit.restarmenu();
+	    menu.restarmenu();
+		 myteam->clear_team();
+         myteam->clear_obj();
+		 * NScene=0;
 	}
 	if(menu_exit.getindexY()==1)
 	{
