@@ -35,6 +35,17 @@ void Title_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Pla
     TheTeam->actual_x_map=TheTeam->lmt.party_x;
     TheTeam->actual_y_map=TheTeam->lmt.party_y;
     TheTeam->actual_dir=2;
+
+    TheTeam->able_to_save=1;
+    TheTeam->able_to_menu=1;
+    TheTeam->able_to_escape=1;
+    TheTeam->able_to_teleport=1;
+    TheTeam->Encounter_rate=0;
+
+
+
+
+
     std::string titles_string;
     std::string music_string;
     std::string system_string;

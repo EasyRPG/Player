@@ -37,10 +37,10 @@ World->CollisionAt(GridX, GridY+1, WORLD_COLLISION_FROM_UP)
 
 #define ACTOR_FLAGS_FREEZE      0x01
 
-#ifdef PSP
-#define ACTOR_SPEED_SLOW        8
-#endif
-#define ACTOR_SPEED_SLOW        2
+//#ifdef PSP
+//#define ACTOR_SPEED_SLOW        8
+//#endif
+#define ACTOR_SPEED_SLOW        1
 
 void CActor::set_dir(int the_dir)
 {
@@ -165,7 +165,7 @@ void CActor::MoveOnInput()
             state = ACTOR_STATE_MOVING;
             Cmotion.direction = ACTOR_DIRECTION_UP;
             Cmotion.distance = 0;
-          //  Control::stop = true;
+            Control::stop = true;
         }
             break;
         case ARROW_DOWN:
@@ -177,7 +177,7 @@ void CActor::MoveOnInput()
             state = ACTOR_STATE_MOVING;
             Cmotion.direction = ACTOR_DIRECTION_DOWN;
             Cmotion.distance = 0;
-            //Control::stop = true;
+            Control::stop = true;
         }
             break;
         case ARROW_LEFT:
@@ -189,7 +189,7 @@ void CActor::MoveOnInput()
             state            = ACTOR_STATE_MOVING;
             Cmotion.direction = ACTOR_DIRECTION_LEFT;
             Cmotion.distance  = 0;
-            //Control::stop = true;
+            Control::stop = true;
         }
             break;
         case ARROW_RIGHT:
@@ -201,14 +201,17 @@ void CActor::MoveOnInput()
             state = ACTOR_STATE_MOVING;
             Cmotion.direction = ACTOR_DIRECTION_RIGHT;
             Cmotion.distance  = 0;
-           // Control::stop = true;
+            Control::stop = true;
         }
             break;
         case CANCEL:
+           if(myteam->able_to_menu)
+           {
             myteam->actual_x_map=GridX;
             myteam->actual_y_map=GridY;
             myteam->actual_dir=dir;
             *NScene = 4;
+            }
             break;
         case DECISION:
             tried_to_talk=true;
@@ -260,6 +263,7 @@ void CActor::MoveOnInput()
             break;
         }
 
+
         if (Cmotion.distance == (16.0f-ACTOR_SPEED_SLOW))
         {
            Control::stop = false;
@@ -267,9 +271,8 @@ void CActor::MoveOnInput()
 
         if (Cmotion.distance == 16.0f)
         {
+            Cmotion.distance=0;
             state = ACTOR_STATE_IDLE;
-            Control::stop = false;
-            MoveOnInput();
         }
         break;
     }

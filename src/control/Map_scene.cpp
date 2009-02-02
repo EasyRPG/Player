@@ -520,22 +520,50 @@ void Map_Scene::exec_comand(Event_comand * comand,int event_id)
         switch (comand->Comand)
                 {
                 case Teleport_Party:
-                    Event_comand_Teleport_Party * command;
-                    command= ( Event_comand_Teleport_Party *)comand;
-                    myteam->actual_map=command->Map_ID;
-                    myteam->actual_x_map=command->X;
-                   printf("id X %d",myteam->actual_x_map);
-                    myteam->actual_y_map=command->Y;
-                    printf("id Y %d",myteam->actual_y_map);
+                    Event_comand_Teleport_Party * command_Teleport_Party;
+                    command_Teleport_Party= ( Event_comand_Teleport_Party *)comand;
+                    myteam->actual_map=command_Teleport_Party->Map_ID;
+                    myteam->actual_x_map=command_Teleport_Party->X;
+                    myteam->actual_y_map=command_Teleport_Party->Y;
                     dispose();
                     load_map();
                     break;
+
+                case Enable_teleport:
+                    Event_comand_Enable_teleport * comand_Enable_teleport;
+                    comand_Enable_teleport= (Event_comand_Enable_teleport *) comand;
+                    myteam->able_to_teleport=comand_Enable_teleport->Enable;
+                    printf("Enable_teleport %d",comand_Enable_teleport->Enable);
+                    break;
+                case Enable_escape:
+                    Event_comand_Enable_escape * comand_Enable_escape;
+                    comand_Enable_escape= (Event_comand_Enable_escape *) comand;
+                    myteam->able_to_escape=comand_Enable_escape->Enable;
+                    printf("Enable_saving %d",comand_Enable_escape->Enable);
+                    break;
+                case Enable_saving:
+                    Event_comand_Enable_saving * comand_Enable_saving;
+                    comand_Enable_saving= (Event_comand_Enable_saving *) comand;
+                    myteam->able_to_save=comand_Enable_saving->Enable;
+                    printf("Enable_saving %d",comand_Enable_saving->Enable);
+                    break;
+                case Enable_system_menu:
+                    Event_comand_Enable_system_menu * comand_Enable_system_menu;
+                    comand_Enable_system_menu= (Event_comand_Enable_system_menu *) comand;
+                    myteam->able_to_menu=comand_Enable_system_menu->Enable;
+                    printf("Enable_system_menu %d",comand_Enable_system_menu->Enable);
+                    break;
+                case Change_encounter_rate:
+                    Event_comand_Change_encounter_rate * command_Change_encounter_rate;
+                    command_Change_encounter_rate= ( Event_comand_Change_encounter_rate *)comand;
+                    myteam->Encounter_rate=command_Change_encounter_rate->Encounter_rate;
+                    break;
+
 
                 case Call_save_menu:
                     myteam->actual_x_map=Actor.GridX;
                     myteam->actual_y_map=Actor.GridY;
                     myteam->actual_dir=Actor.get_dir();
-
                     *NScene = 9;
                     break;
                 case Call_system_menu:

@@ -45,6 +45,12 @@ class Player_Team {
     int actual_dir;
     int actual_map;
 
+    int able_to_save;
+    int able_to_menu;
+    int able_to_escape;
+    int able_to_teleport;
+    int Encounter_rate;
+
     LDB_data data2;
     lmt_data lmt;
 	void read_database();
