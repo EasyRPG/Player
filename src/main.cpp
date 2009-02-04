@@ -38,6 +38,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.*/
 #include "interface/Control/Save_Load_Menu_scene.h"
 #include "interface/Control/Skills_Menu_scene.h"
 #include "interface/Control/Stats_Menu_scene.h"
+#include "readers/iniparser.h"
 #include "readers/map.h"
 #include "attributes/CActor.h"
 #include "attributes/Enemy.h"
@@ -237,7 +238,8 @@ int main(int argc, char *argv[])
     {
         exit(2);
     }
-    SDL_WM_SetCaption ("EasyRPG Player", NULL);
+
+    SDL_WM_SetCaption (iniparser_getstring(iniparser_new("RPG_RT.ini"), "RPG_RT:GameTitle", "Untitled"), NULL);
 
     Control::set_keys();
 
