@@ -1,6 +1,7 @@
 #include "control.h"
 
 #ifdef PSP
+
 #define TRIANGLE 0
 #define CIRCLE 1
 #define CROSS 2
@@ -23,11 +24,48 @@
 
 #define QUANTITY 32
 
+
+#elif GP2X
+
+#define GP2X_BUTTON_UP 0
+#define GP2X_BUTTON_DOWN 4
+#define GP2X_BUTTON_LEFT 2
+#define GP2X_BUTTON_RIGHT 6
+#define GP2X_BUTTON_UPLEFT 1
+#define GP2X_BUTTON_UPRIGHT 7
+#define GP2X_BUTTON_DOWNLEFT 3
+#define GP2X_BUTTON_DOWNRIGHT 5
+#define GP2X_BUTTON_CLICK 18
+#define GP2X_BUTTON_A 12
+#define GP2X_BUTTON_B 13
+#define GP2X_BUTTON_X 14
+#define GP2X_BUTTON_Y 15
+#define GP2X_BUTTON_L 10
+#define GP2X_BUTTON_R 11
+#define GP2X_BUTTON_START 8
+#define GP2X_BUTTON_SELECT 9
+#define GP2X_BUTTON_VOLUP 16
+#define GP2X_BUTTON_VOLDOWN 17
+
+#define B_DOWN SDL_JOYBUTTONDOWN
+#define B_UP SDL_JOYBUTTONUP
+
+#define REG jbutton.button
+
+#define QUANTITY 32
+
+
 #else
+
+// TODO: What if Keyboard and Joystick are both connected? There is only one REG.
+
 #define B_DOWN SDL_KEYDOWN
 #define B_UP SDL_KEYUP
+
 #define REG key.keysym.sym
+
 #define QUANTITY 352
+
 #endif
 
 namespace Control
@@ -49,9 +87,7 @@ namespace Control
     bool stop = false;
     bool in_map = false;
 
-    #ifdef PSP
     SDL_Joystick* joystick;
-    #endif
 
     int delay = 30;
     int in_delay = 4;
@@ -60,16 +96,15 @@ namespace Control
 
     void cleanup()
     {
-        #ifdef PSP
         SDL_JoystickClose(joystick);
-        #endif
     }
 
     void set_keys()
     {
-        #ifdef PSP
         SDL_JoystickEventState(SDL_ENABLE);
         joystick = SDL_JoystickOpen(0);
+
+        #ifdef PSP
 
         decision_set.set(CROSS);
         decision_set.set(SQUARE);
@@ -81,7 +116,23 @@ namespace Control
         down_set.set(DOWN);
         right_set.set(RIGHT);
         left_set.set(LEFT);
+
+        #elif GP2X
+
+        decision_set.set(GP2X_BUTTON_X);
+        decision_set.set(GP2X_BUTTON_A);
+
+        cancel_set.set(GP2X_BUTTON_Y);
+        cancel_set.set(GP2X_BUTTON_B);
+
+        up_set.set(GP2X_BUTTON_UP);
+        down_set.set(GP2X_BUTTON_DOWN);
+        right_set.set(GP2X_BUTTON_RIGHT);
+        left_set.set(GP2X_BUTTON_LEFT);
+
+
         #else
+
         decision_set.set(SDLK_z);
         decision_set.set(SDLK_SPACE);
         decision_set.set(SDLK_RETURN);
@@ -101,6 +152,7 @@ namespace Control
         right_set.set(SDLK_l);
         left_set.set(SDLK_LEFT);
         left_set.set(SDLK_h);
+
         #endif
     }
 
