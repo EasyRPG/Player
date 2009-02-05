@@ -211,7 +211,8 @@ void CambioScene(Audio *myaudio, Scene **apuntador)
 #ifdef PSP
 extern "C"
 #endif
-int main(int argc, char *argv[])
+//int main(int argc, char *argv[])
+int main()
 {
     #ifdef PSP
     freopen("stdout", "w", stdout);
@@ -229,7 +230,7 @@ int main(int argc, char *argv[])
     atexit (SDL_Quit);
     SDL_ShowCursor(SDL_DISABLE);
     myaudio.init();
-    const SDL_VideoInfo *videoInfo = SDL_GetVideoInfo();
+//    const SDL_VideoInfo *videoInfo = SDL_GetVideoInfo();
     unsigned  long flags = 0;
 
     flags |= SDL_SWSURFACE;
