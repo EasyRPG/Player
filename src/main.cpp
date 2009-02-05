@@ -219,6 +219,7 @@ int main(int argc, char *argv[])
     #endif
     Music myaudio;
     int repxciclo,i;
+    dictionary *ini;
     // ===[ INITIALIZATION ]================================================
     // Start SDL
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK) < 0)
@@ -239,7 +240,9 @@ int main(int argc, char *argv[])
         exit(2);
     }
 
-    SDL_WM_SetCaption (iniparser_getstring(iniparser_new("RPG_RT.ini"), "RPG_RT:GameTitle", "Untitled"), NULL);
+    ini = iniparser_new("RPG_RT.ini");
+    SDL_WM_SetCaption (iniparser_getstring(ini, "RPG_RT:GameTitle", "Untitled"), NULL);
+    iniparser_free(ini);
 
     Control::set_keys();
 
