@@ -121,8 +121,9 @@
 		<Unit filename="interface/Windows/Window_Player_Select.h" />
 		<Unit filename="interface/Windows/Window_Select.cpp" />
 		<Unit filename="interface/Windows/Window_Select.h" />
+		<Unit filename="main.cpp" />
 		<Unit filename="readers/eventchunks.h" />
-		<Unit filename="readers/iniparser.c" />
+		<Unit filename="readers/iniparser.cpp" />
 		<Unit filename="readers/iniparser.h" />
 		<Unit filename="readers/ldb.cpp" />
 		<Unit filename="readers/ldb.h" />
@@ -169,7 +170,6 @@
 		<Unit filename="tools/math-sll.h" />
 		<Unit filename="tools/tools.cpp" />
 		<Unit filename="tools/tools.h" />
-		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
