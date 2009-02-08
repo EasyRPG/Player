@@ -70,40 +70,70 @@ void Window_Base::add_text(std::string ctext, int x, int y)
     std::stack<char> c_stack;
     char c_tmp;
 
-    SDL_Surface *text_tmp;// = CreateSurface(300, 12);
+    int color = 0;
+
+    SDL_Surface *text_tmp = CreateSurface(96, 12);
+    //SDL_Surface *text_tmp;
 
     for (i = 0; i < l; i++)
     {
         if (c_stack.empty())
         {
-            c_tmp = ctext[i];
-            switch (c_tmp)
+            switch (ctext[i])
             {
                 case '\\':
-                    c_stack.push(c_tmp);
+                    c_stack.push(ctext[i]);
                     break;
 
-                default:
-                    s_tmp.push_back(c_tmp);
+                default: ;
+                    //s_tmp.push_back(ctext[i]);
+                    fuente.blit_font(text_tmp, ctext[i], color, color, color, 255);
             }
         }
         else
         {
+            c_tmp = c_stack.top();
+
             c_stack.push(ctext[i]);
             switch (c_stack.top())
             {
-                case 'c':
+                case ']':
+                    if (!isdigit(c_tmp)) goto LABEL;
+                    else
+                    {
+                        color = c_tmp - '0';
+                    }
+                    break;
+                case '1': case '2': case '3':
+                case '4': case '5': case '6':
+                case '7': case '8': case '9':
+                case '0':
+                    if (c_tmp != '[') goto LABEL;
                     break;
 
-                case 's':
+                case '[':
+                    if (c_tmp != 'c')
+                    {
+                        goto LABEL;
+                    }
+                    break;
+
+                case 'c':
+                    if (c_tmp != '\\')
+                    {
+                        goto LABEL;
+                    }
+
                     break;
 
                 default:
+                LABEL:
+                    if (c_tmp != '\\') fuente.blit_font(text_tmp, ctext[i], color, color, color, 255);
                     while (!c_stack.empty()) c_stack.pop(); // Empty stack
             }
         }
     }
-    text_tmp = fuente.drawText(s_tmp.c_str());
+    //text_tmp = fuente.drawText(s_tmp.c_str());
 
 	text.set_surface(text_tmp);
 	Vtext_Sprite.push_back(text);

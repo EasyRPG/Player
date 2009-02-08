@@ -33,7 +33,7 @@ SDL_Surface* Font::drawText(char* string)
 	TTF_Font* font = TTF_OpenFont(Fname, size);
 	if (font == NULL)
 	{
-		std::cerr << "Error: Unable to open file: " << string << std::endl;
+		std::cerr << "Error: Unable to open file: " << Fname << std::endl;
 		exit(1);
 	}
 	SDL_Color foregroundColor = { fR, fG, fB, fU};
@@ -47,7 +47,7 @@ void Font::draw_temp_Text(SDL_Surface* screen,char* string, int x, int y)
 	TTF_Font* font = TTF_OpenFont(Fname, size);
 	if (font == NULL)
 	{
-		std::cerr << "Error: Unable to open file: " << string << std::endl;
+		std::cerr << "Error: Unable to open file: " << Fname << std::endl;
 		exit(1);
 	}
 	SDL_Color foregroundColor = { fR, fG, fB, fU };
@@ -63,7 +63,7 @@ SDL_Surface* Font::drawText(const char* string)
 	TTF_Font* font = TTF_OpenFont(Fname, size);
 	if (font == NULL)
 	{
-		std::cerr << "Error: Unable to open file: " << string << std::endl;
+		std::cerr << "Error: Unable to open file: " << Fname << std::endl;
 		exit(1);
 	}
 	SDL_Color foregroundColor = { fR, fG, fB, fU };
@@ -77,13 +77,30 @@ SDL_Surface* Font::drawText(char* string,int r, int b,int g, int u)
 	TTF_Font* font = TTF_OpenFont(Fname, size);
 	if (font == NULL)
 	{
-		std::cerr << "Error: Unable to open file: " << string << std::endl;
+		std::cerr << "Error: Unable to open file: " << Fname << std::endl;
 		exit(1);
 	}
 	SDL_Color foregroundColor = { r, g, b, u };
 	SDL_Surface* textSurface = TTF_RenderText_Blended(font, string,foregroundColor);
 	TTF_CloseFont(font);
 	return(textSurface);
+}
+
+void Font::blit_font(SDL_Surface *dst, const char src, int r, int g, int b, int u)
+{
+	TTF_Font* font = TTF_OpenFont(Fname, size);
+	if (font == NULL)
+	{
+		std::cerr << "Error: Unable to open file: " << Fname << std::endl;
+		exit(1);
+	}
+	SDL_Color foregroundColor = { r, g, b, u };
+	SDL_Surface* textSurface = TTF_RenderText_Blended(font, &src, foregroundColor);
+	//SDL_Rect textLocation = { , y, 0, 0 };
+	//printf("%c", src);
+	SDL_BlitSurface(textSurface, NULL, dst, NULL);
+	SDL_FreeSurface(textSurface);
+	TTF_CloseFont(font);
 }
 
 void Font::Quit()//esto es asi porque no se me ocurre aun algo mejor
