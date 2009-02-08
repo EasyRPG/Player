@@ -658,14 +658,14 @@ void iniparser_dump_ini(dictionary * d, FILE * f)
         for (i=0 ; i<d->size ; i++) {
             if (d->key[i]==NULL)
                 continue ;
-            fprintf(f, "%s = %s\n", d->key[i], d->val[i]);
+    //        fprintf(f, "%s = %s\n", d->key[i], d->val[i]);
         }
         return ;
     }
     for (i=0 ; i<nsec ; i++) {
         secname = iniparser_getsecname(d, i) ;
         seclen  = (int)strlen(secname);
-        fprintf(f, "\n[%s]\n", secname);
+  //      fprintf(f, "\n[%s]\n", secname);
         sprintf(keym, "%s:", secname);
         for (j=0 ; j<d->size ; j++) {
             if (d->key[j]==NULL)
@@ -678,7 +678,7 @@ void iniparser_dump_ini(dictionary * d, FILE * f)
             }
         }
     }
-    fprintf(f, "\n");
+    //fprintf(f, "\n");
     return ;
 }
 

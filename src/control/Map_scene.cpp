@@ -465,6 +465,8 @@ void Map_Scene::mapnpc()
             if(data.vcEvents[event_id].vcPage[0].vcEvent_comand.size()>0)
             {
             comand=data.vcEvents[event_id].vcPage[0].vcEvent_comand[0];
+            printf("id %d",comand->Comand);
+
             exec_comand(comand,event_id);
             }
         }
@@ -519,6 +521,166 @@ void Map_Scene::exec_comand(Event_comand * comand,int event_id)
 
         switch (comand->Comand)
                 {
+                case Message:
+                    Event_comand_Message * comand_Message;
+                    comand_Message= ( Event_comand_Message *)comand;
+                    printf("\n texto %s",comand_Message->Text.c_str());
+                break;
+                case Add_line_to_message:
+                    printf("Addline texto");
+                    Event_comand_Message * Add_line_to;
+                    Add_line_to= ( Event_comand_Message *)comand;
+                    printf("\n texto %s",Add_line_to->Text.c_str());
+                break;
+                case Message_options:// 0xCF08,
+                     Event_comand_Message_options * comand_Message_options;
+                     comand_Message_options = (Event_comand_Message_options *)comand;
+                break;
+                case Select_message_face:// 0xCF12,
+                     Event_comand_Select_face * comand_Select_face;
+                     comand_Select_face = (Event_comand_Select_face *)comand;
+                break;
+                case Show_choice:// 0xCF1C,
+                    Event_comand_Show_choice * comand_Show_choice;
+                    comand_Show_choice = (Event_comand_Show_choice *)comand;
+                break;
+                case Nested_block:// 0x0A
+                break;
+                case Show_choice_option:// 0x819D2C,
+                    Event_comand_Show_choice_option * comand_Show_choice_option;
+                    comand_Show_choice_option = (Event_comand_Show_choice_option *)comand;
+                break;
+                case End_Choice_block:// 0x819D2D,
+                break;
+                case Number_input:// 0xCF26,
+                    Event_comand_Number_input * comand_Number_input;
+                    comand_Number_input = (Event_comand_Number_input *)comand;
+
+                break;
+                case Change_switch:// 0xCF62,
+                    Event_comand_Change_switch * comand_Change_switch;
+                    comand_Change_switch = (Event_comand_Change_switch *)comand;
+                break;
+                case Change_var:// 0xCF6C,
+                    Event_comand_Change_var * comand_Change_var;
+                    comand_Change_var = (Event_comand_Change_var *)comand;
+                break;
+                case Timer_manipulation:// 0xCF76,
+                    Event_comand_Timer_manipulation * comand_Timer_manipulation;
+                    comand_Timer_manipulation = (Event_comand_Timer_manipulation *)comand;
+                break;
+                case Change_cash_held:// 0xD046,
+                    Event_comand_Change_cash_held * comand_Change_cash_held;
+                    comand_Change_cash_held = (Event_comand_Change_cash_held *)comand;
+                break;
+                case Change_inventory:// 0xD050,
+                    Event_comand_Change_inventory * comand_Change_inventory;
+                    comand_Change_inventory = (Event_comand_Change_inventory *)comand;
+                break;
+                case Change_party:// 0xD05A,
+                    Event_comand_Change_party * comand_Change_party;
+                    comand_Change_party = (Event_comand_Change_party *)comand;
+                break;
+                case Change_experience:// 0xD12A,
+                    Event_comand_Change_experience * comand_Change_experience;
+                    comand_Change_experience = (Event_comand_Change_experience *)comand;
+                break;
+                case Change_level:// 0xD134,
+                    Event_comand_Change_level * comand_Change_level;
+                    comand_Change_level = (Event_comand_Change_level *)comand;
+                break;
+                case Change_statistics:// 0xD13E,
+                    Event_comand_Change_statistics * comand_Change_statistics;
+                    comand_Change_statistics = (Event_comand_Change_statistics *)comand;
+                break;
+                case Learn_forget_skill:// 0xD148,
+                    Event_comand_Learn_forget_skill * comand_Learn_forget_skill;
+                    comand_Learn_forget_skill = (Event_comand_Learn_forget_skill *)comand;
+                break;
+                case Change_equipment:// 0xD152,
+                    Event_comand_Change_equipment * comand_Change_equipment;
+                    comand_Change_equipment = (Event_comand_Change_equipment *)comand;
+                break;
+                          case Change_HP:// 0xD15C,
+                            Event_comand_Change_HP * comand_Change_HP;
+                            comand_Change_HP = (Event_comand_Change_HP *)comand;
+                               break;
+                          case Change_MP:// 0xD166,
+                                Event_comand_Change_MP * comand_Change_MP;
+                                comand_Change_MP = (Event_comand_Change_MP *)comand;
+                               break;
+                          case Change_Status:// 0xD170,
+                                Event_comand_Change_Status * comand_Change_Status;
+                                comand_Change_Status = (Event_comand_Change_Status *)comand;
+                               break;
+                          case Full_Recovery:// 0xD17A,
+                                Event_comand_Full_Recovery * comand_Full_Recovery;
+                                comand_Full_Recovery = (Event_comand_Full_Recovery *)comand;
+                               break;
+                          case Inflict_Damage:// 0xD204,
+                                Event_comand_Inflict_Damage * comand_Inflict_Damage;
+                                comand_Inflict_Damage = (Event_comand_Inflict_Damage *)comand;
+                               break;
+                          case Change_Hero_Name:// 0xD272,
+
+                                break;
+                          case Change_Hero_Class:// 0xD27C,
+
+                                break;
+                          case Change_Hero_Graphic:// 0xD306,
+
+                              break;
+                          case Change_Hero_Face:// 0xD310,
+
+                                break;
+                          case Change_Vehicle:// 0xD31A,
+
+                               break;
+                          case Change_System_BGM:// 0xD324,
+
+                               break;
+                          case Change_System_SE:// 0xD32E,
+
+                                break;
+                          case Change_System_GFX:// 0xD338,
+
+                             break;
+                          case Change_Transition:// 0xD342,
+
+                               break;
+                          case Start_Combat:// 0xD356,
+
+                              break;
+
+                          case Call_Shop:// 0xD360,
+
+                                break;
+                          case Start_success_block:// 0x81A170,
+
+                               break;
+                          case Start_failure_block:// 0x81A171,
+
+                                break;
+                          case End_shop_block:// 0x81A172,
+
+                              break;
+
+                          case Call_Inn:// 0xD36A,
+
+
+                               break;
+                          case Start_success_block2:// 0x81A17A,
+
+                               break;
+                          case Start_failure_block2:// 0x81A17B,
+
+                                 break;
+                          case End_block:// 0x81A17C,
+
+                              break;
+                          case Enter_hero_name:// 0xD374,
+
+                               break;
                 case Teleport_Party:
                     Event_comand_Teleport_Party * command_Teleport_Party;
                     command_Teleport_Party= ( Event_comand_Teleport_Party *)comand;
@@ -528,18 +690,140 @@ void Map_Scene::exec_comand(Event_comand * comand,int event_id)
                     dispose();
                     load_map();
                     break;
+                          case Store_hero_location:// 0xD444,
 
+                               break;
+                          case Recall_to_location:// 0xD44E,
+
+                               break;
+                          case Ride_Dismount:// 0xD458	,
+
+                               break;
+                          case Teleport_Vehicle:// 0xD462,
+
+                               break;
+                          case Teleport_Event:// 0xD46C,
+
+                               break;
+                          case Swap_Event_Positions:// 0xD476,
+
+                               break;
+                          case Get_Terrain_ID:// 0xD51E,
+
+                               break;
+                          case Get_Event_ID:// 0xD528,
+
+                               break;
+                          case Erase_screen:// 0xD602,
+
+                               break;
+                          case Show_screen:// 0xD60C,
+
+                               break;
+                          case Set_screen_tone:// 0xD616,
+
+                               break;
+                          case Flash_screen:// 0xD620,
+
+                               break;
+                          case Shake_screen:// 0xD62A,
+
+                               break;
+                          case Pan_screen:// 0xD634,
+
+                               break;
+                          case Weather_Effects:// 0xD63E,
+
+                               break;
+                          case Show_Picture:// 0xD666,
+
+                               break;
+                         case Move_Picture:// 0xD670,
+
+                               break;
+                          case Erase_Picture:// 0xD67A,
+
+
+                               break;
+                          case Show_Battle_Anim :// 0xD74A,
+
+                               break;
+                          case Set_hero_opacity:// 0xD82E,
+
+                               break;
+                          case Flash_event:// 0xD838,
+
+                               break;
+                          case Move_event:// 0xD842,
+
+                               break;
+                          case Wait_until_moved:// 0xD84C,
+
+                               break;
+                          case Stop_all_movement:// 0xD856,
+
+                               break;
+                          case Wait:// 0xD912,
+
+                               break;
+                          case Play_BGM:// 0xD976,
+
+                               break;
+                          case Fade_out_BGM:// 0xDA00,
+
+                               break;
+                          case Memorize_BGM:// 0xDA0A,
+
+                               break;
+                          case Play_memorized:// 0xDA14,
+
+                               break;
+                          case Play_sound_effect:// 0xDA1E,
+
+                               break;
+                          case Play_movie:// 0xDA28,
+
+                               break;
+                          case Key_input:// 0xDA5A,
+
+                               break;
+                          case Change_tile_set:// 0xDB3E	,
+
+                               break;
+                          case Change_background:// 0xDB48,
+
+                               break;
+                case Change_encounter_rate:
+                    Event_comand_Change_encounter_rate * command_Change_encounter_rate;
+                    command_Change_encounter_rate= ( Event_comand_Change_encounter_rate *)comand;
+                    myteam->Encounter_rate=command_Change_encounter_rate->Encounter_rate;
+                    break;
+                          case Change_single_tile:// 0xDB66,
+
+                               break;
+                          case Set_teleport_location:// 0xDC22,
+
+                               break;
                 case Enable_teleport:
                     Event_comand_Enable_teleport * comand_Enable_teleport;
                     comand_Enable_teleport= (Event_comand_Enable_teleport *) comand;
                     myteam->able_to_teleport=comand_Enable_teleport->Enable;
                     printf("Enable_teleport %d",comand_Enable_teleport->Enable);
                     break;
+                          case Set_escape_location:// 0xDC36,
+
+                               break;
                 case Enable_escape:
                     Event_comand_Enable_escape * comand_Enable_escape;
                     comand_Enable_escape= (Event_comand_Enable_escape *) comand;
                     myteam->able_to_escape=comand_Enable_escape->Enable;
                     printf("Enable_saving %d",comand_Enable_escape->Enable);
+                    break;
+                case Call_save_menu:
+                    myteam->actual_x_map=Actor.GridX;
+                    myteam->actual_y_map=Actor.GridY;
+                    myteam->actual_dir=Actor.get_dir();
+                    *NScene = 9;
                     break;
                 case Enable_saving:
                     Event_comand_Enable_saving * comand_Enable_saving;
@@ -547,42 +831,66 @@ void Map_Scene::exec_comand(Event_comand * comand,int event_id)
                     myteam->able_to_save=comand_Enable_saving->Enable;
                     printf("Enable_saving %d",comand_Enable_saving->Enable);
                     break;
-                case Enable_system_menu:
-                    Event_comand_Enable_system_menu * comand_Enable_system_menu;
-                    comand_Enable_system_menu= (Event_comand_Enable_system_menu *) comand;
-                    myteam->able_to_menu=comand_Enable_system_menu->Enable;
-                    printf("Enable_system_menu %d",comand_Enable_system_menu->Enable);
-                    break;
-                case Change_encounter_rate:
-                    Event_comand_Change_encounter_rate * command_Change_encounter_rate;
-                    command_Change_encounter_rate= ( Event_comand_Change_encounter_rate *)comand;
-                    myteam->Encounter_rate=command_Change_encounter_rate->Encounter_rate;
-                    break;
-
-
-                case Call_save_menu:
-                    myteam->actual_x_map=Actor.GridX;
-                    myteam->actual_y_map=Actor.GridY;
-                    myteam->actual_dir=Actor.get_dir();
-                    *NScene = 9;
-                    break;
                 case Call_system_menu:
                     myteam->actual_x_map=Actor.GridX;
                     myteam->actual_y_map=Actor.GridY;
                     myteam->actual_dir=Actor.get_dir();
                     *NScene = 4;
                     break;
+                case Enable_system_menu:
+                    Event_comand_Enable_system_menu * comand_Enable_system_menu;
+                    comand_Enable_system_menu= (Event_comand_Enable_system_menu *) comand;
+                    myteam->able_to_menu=comand_Enable_system_menu->Enable;
+                    printf("Enable_system_menu %d",comand_Enable_system_menu->Enable);
+                    break;
+                          case Conditional:// 0xDD6A,
+
+                               break;
+                          case Else_case:// 0x81AB7A,
+
+                               break;
+                          case End_conditional:// 0x81AB7B,
+
+                               break;
+                          case Label:// 0xDE4E,
+
+                               break;
+                          case Go_to_label:// 0xDE58,
+
+                               break;
+                          case Start_loop:// 0xDF32,
+
+                               break;
+                          case End_loop:// 0x81AD42,
+
+                               break;
+                          case Break:// 0xDF3C,
+
+                               break;
+                          case Stop_all_events:// 0xE016,
+
+                               break;
                 case Delete_event:
                     Charas_nps[event_id].GridX= data.MapHeight;
                     Charas_nps[event_id].GridY= data.MapWidth;
                     Charas_nps[event_id].layer= 3;
                     break;
+                          case Call_event:// 0xE02A,
+
+                               break;
+                          case Comment:// 0xE07A,
+
+                               break;
+                          case Add_line_to_comment:// 0x81AF0A,
+
+                               break;
                 case Game_over:
                     *NScene = 3;
                     break;
                 case Return_to_title_screen:
                     *NScene = 0;
                     break;
+
 
 
                 }

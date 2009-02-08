@@ -82,7 +82,7 @@ void CalculateFPS()
         frames = 0;
         nextTicks = SDL_GetTicks() + 1000;
 
-        printf("Map test - FPS %lu /n \n", fps);
+//        printf("Map test - FPS %lu /n \n", fps);
         //SDL_WM_SetCaption (stringBuffer, NULL);
     }
 }
