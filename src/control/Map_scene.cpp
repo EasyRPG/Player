@@ -622,41 +622,51 @@ void Map_Scene::exec_comand(Event_comand * comand,int event_id)
                                 comand_Inflict_Damage = (Event_comand_Inflict_Damage *)comand;
                                break;
                           case Change_Hero_Name:// 0xD272,
-
+                                Event_comand_Change_Hero_Name * comand_Change_Hero_Name;
+                                comand_Change_Hero_Name = (Event_comand_Change_Hero_Name * )comand;
                                 break;
                           case Change_Hero_Class:// 0xD27C,
-
+                                Event_comand_Change_Hero_Class * comand_Change_Hero_Class;
+                                comand_Change_Hero_Class = (Event_comand_Change_Hero_Class *)comand;
                                 break;
                           case Change_Hero_Graphic:// 0xD306,
-
+                                Event_comand_Change_Hero_Graphic * comand_Change_Hero_Graphic;
+                                comand_Change_Hero_Graphic = (Event_comand_Change_Hero_Graphic *)comand;
                               break;
                           case Change_Hero_Face:// 0xD310,
-
+                                Event_comand_Change_Hero_Face * comand_Change_Hero_Face;
+                                comand_Change_Hero_Face = (Event_comand_Change_Hero_Face *)comand;
                                 break;
                           case Change_Vehicle:// 0xD31A,
-
+                                Event_comand_Change_Vehicle * comand_Change_Vehicle;
+                                comand_Change_Vehicle = (Event_comand_Change_Vehicle *)comand;
                                break;
                           case Change_System_BGM:// 0xD324,
-
+                                Event_comand_Change_System_BGM * comand_Change_System_BGM;
+                                comand_Change_System_BGM = (Event_comand_Change_System_BGM *)comand;
                                break;
                           case Change_System_SE:// 0xD32E,
-
+                                Event_comand_Change_System_SE * comand_Change_System_SE;
+                                comand_Change_System_SE = (Event_comand_Change_System_SE *)comand;
                                 break;
                           case Change_System_GFX:// 0xD338,
-
+                                Event_comand_Change_System_GFX * comand_Change_System_GFX;
+                                comand_Change_System_GFX= (Event_comand_Change_System_GFX *)comand;
                              break;
                           case Change_Transition:// 0xD342,
-
+                                Event_comand_Change_Transition * comand_Change_Transition;
+                                comand_Change_Transition = (Event_comand_Change_Transition *)comand;
                                break;
                           case Start_Combat:// 0xD356,
-
+                                Event_comand_Start_Combat * comand_Start_Combat;
+                                comand_Start_Combat = (Event_comand_Start_Combat*)comand;
                               break;
 
                           case Call_Shop:// 0xD360,
-
+                                Event_comand_Call_Shop * comand_Call_Shop;
+                                comand_Call_Shop = (Event_comand_Call_Shop*)comand;
                                 break;
                           case Start_success_block:// 0x81A170,
-
                                break;
                           case Start_failure_block:// 0x81A171,
 
@@ -666,8 +676,8 @@ void Map_Scene::exec_comand(Event_comand * comand,int event_id)
                               break;
 
                           case Call_Inn:// 0xD36A,
-
-
+                                Event_comand_Call_Inn * comand_Call_Inn;
+                                comand_Call_Inn = (Event_comand_Call_Inn*)comand;
                                break;
                           case Start_success_block2:// 0x81A17A,
 
@@ -679,7 +689,8 @@ void Map_Scene::exec_comand(Event_comand * comand,int event_id)
 
                               break;
                           case Enter_hero_name:// 0xD374,
-
+                                Event_comand_Enter_hero_name * comand_Enter_hero_name;
+                                comand_Enter_hero_name =(Event_comand_Enter_hero_name *)comand;
                                break;
                 case Teleport_Party:
                     Event_comand_Teleport_Party * command_Teleport_Party;
@@ -691,106 +702,154 @@ void Map_Scene::exec_comand(Event_comand * comand,int event_id)
                     load_map();
                     break;
                           case Store_hero_location:// 0xD444,
-
+                                Event_comand_Store_hero_location * comand_Store_hero_location;
+                                comand_Store_hero_location=(Event_comand_Store_hero_location *)comand;
                                break;
                           case Recall_to_location:// 0xD44E,
-
+                                Event_comand_Recall_to_location * comand_Recall_to_location;
+                                comand_Recall_to_location=(Event_comand_Recall_to_location *)comand;
                                break;
                           case Ride_Dismount:// 0xD458	,
-
                                break;
                           case Teleport_Vehicle:// 0xD462,
+                                Event_comand_Teleport_Vehicle * comand_Teleport_Vehicle;
+                                comand_Teleport_Vehicle=(Event_comand_Teleport_Vehicle *)comand;
 
                                break;
                           case Teleport_Event:// 0xD46C,
+                                Event_comand_Teleport_Event * comand_Teleport_Event;
+                                comand_Teleport_Event=(Event_comand_Teleport_Event *)comand;
 
                                break;
                           case Swap_Event_Positions:// 0xD476,
+                                Event_comand_Swap_Event_Positions * comand_Swap_Event_Positions;
+                                comand_Swap_Event_Positions=(Event_comand_Swap_Event_Positions *)comand;
 
                                break;
                           case Get_Terrain_ID:// 0xD51E,
+                                Event_comand_Get_Terrain_ID * comand_Get_Terrain_ID;
+                                comand_Get_Terrain_ID=(Event_comand_Get_Terrain_ID *)comand;
 
                                break;
                           case Get_Event_ID:// 0xD528,
+                                Event_comand_Get_Event_ID * comand_Get_Event_ID;
+                                comand_Get_Event_ID=(Event_comand_Get_Event_ID *)comand;
 
                                break;
                           case Erase_screen:// 0xD602,
+                                Event_comand_Erase_screen * comand_Erase_screen;
+                                comand_Erase_screen=(Event_comand_Erase_screen *)comand;
 
                                break;
                           case Show_screen:// 0xD60C,
+                                Event_comand_Show_screen * comand_Show_screen;
+                                comand_Show_screen=(Event_comand_Show_screen *)comand;
 
                                break;
                           case Set_screen_tone:// 0xD616,
+                                Event_comand_Set_screen_tone * comand_Set_screen_tone;
+                                comand_Set_screen_tone=(Event_comand_Set_screen_tone *)comand;
 
                                break;
                           case Flash_screen:// 0xD620,
+                                Event_comand_Flash_screen * comand_Flash_screen;
+                                comand_Flash_screen=(Event_comand_Flash_screen *)comand;
 
                                break;
                           case Shake_screen:// 0xD62A,
+                                Event_comand_Shake_screen * comand_Shake_screen;
+                                comand_Shake_screen=(Event_comand_Shake_screen *)comand;
 
                                break;
                           case Pan_screen:// 0xD634,
+                                Event_comand_Pan_screen * comand_Pan_screen;
+                                comand_Pan_screen=(Event_comand_Pan_screen *)comand;
 
                                break;
                           case Weather_Effects:// 0xD63E,
-
+                                Event_comand_Weather_Effects * comand_Weather_Effects;
+                                comand_Weather_Effects=(Event_comand_Weather_Effects *)comand;
                                break;
                           case Show_Picture:// 0xD666,
+                                Event_comand_Show_Picture * comand_Show_Picture;
+                                comand_Show_Picture=(Event_comand_Show_Picture *)comand;
 
                                break;
                          case Move_Picture:// 0xD670,
+                                Event_comand_Move_Picture * comand_Move_Picture;
+                                comand_Move_Picture=(Event_comand_Move_Picture *)comand;
 
                                break;
                           case Erase_Picture:// 0xD67A,
-
-
+                                Event_comand_Erase_Picture * comand_Erase_Picture;
+                                comand_Erase_Picture=(Event_comand_Erase_Picture *)comand;
                                break;
                           case Show_Battle_Anim :// 0xD74A,
-
+                                Event_comand_Show_Battle_Anim * comand_Show_Battle_Anim;
+                                comand_Show_Battle_Anim=(Event_comand_Show_Battle_Anim *)comand;
                                break;
                           case Set_hero_opacity:// 0xD82E,
+                                Event_comand_Set_hero_opacity * comand_Set_hero_opacity;
+                                comand_Set_hero_opacity=(Event_comand_Set_hero_opacity *)comand;
 
                                break;
                           case Flash_event:// 0xD838,
+                                Event_comand_Flash_event * comand_Flash_event;
+                                comand_Flash_event=(Event_comand_Flash_event *)comand;
 
                                break;
                           case Move_event:// 0xD842,
+                                Event_comand_Move_event * comand_Move_event;
+                                comand_Move_event=(Event_comand_Move_event *)comand;
 
                                break;
                           case Wait_until_moved:// 0xD84C,
-
                                break;
                           case Stop_all_movement:// 0xD856,
-
                                break;
                           case Wait:// 0xD912,
+                                Event_comand_Wait * comand_Wait;
+                                comand_Wait=(Event_comand_Wait *)comand;
 
                                break;
                           case Play_BGM:// 0xD976,
+                                Event_comand_Play_BGM * comand_Play_BGM;
+                                comand_Play_BGM=(Event_comand_Play_BGM *)comand;
 
                                break;
                           case Fade_out_BGM:// 0xDA00,
+                                Event_comand_Fade_out_BGM * comand_Fade_out_BGM;
+                                comand_Fade_out_BGM=(Event_comand_Fade_out_BGM *)comand;
 
                                break;
                           case Memorize_BGM:// 0xDA0A,
-
                                break;
                           case Play_memorized:// 0xDA14,
 
                                break;
                           case Play_sound_effect:// 0xDA1E,
 
+                                Event_comand_Play_SE * comand_Play_SE;
+                                comand_Play_SE=(Event_comand_Play_SE *)comand;
                                break;
                           case Play_movie:// 0xDA28,
 
+                                Event_comand_Play_movie * comand_Play_movie;
+                                comand_Play_movie=(Event_comand_Play_movie *)comand;
                                break;
                           case Key_input:// 0xDA5A,
+                                Event_comand_Key_input * comand_Key_input;
+                                comand_Key_input=(Event_comand_Key_input *)comand;
 
                                break;
                           case Change_tile_set:// 0xDB3E	,
+                                Event_comand_Change_tile * comand_Change_tile;
+                                comand_Change_tile=(Event_comand_Change_tile *)comand;
 
                                break;
                           case Change_background:// 0xDB48,
+                                Event_comand_Change_background * comand_Change_background;
+                                comand_Change_background=(Event_comand_Change_background *)comand;
 
                                break;
                 case Change_encounter_rate:
@@ -799,19 +858,22 @@ void Map_Scene::exec_comand(Event_comand * comand,int event_id)
                     myteam->Encounter_rate=command_Change_encounter_rate->Encounter_rate;
                     break;
                           case Change_single_tile:// 0xDB66,
-
+                    Event_comand_Change_single_tile * comand_Change_single_tile;
+                    comand_Change_single_tile=(Event_comand_Change_single_tile*)comand;
                                break;
                           case Set_teleport_location:// 0xDC22,
-
+                    Event_comand_Set_teleport_location * comand_Set_teleport_location;
+                    comand_Set_teleport_location = (Event_comand_Set_teleport_location*)comand;
                                break;
                 case Enable_teleport:
                     Event_comand_Enable_teleport * comand_Enable_teleport;
-                    comand_Enable_teleport= (Event_comand_Enable_teleport *) comand;
+                    comand_Enable_teleport= (Event_comand_Enable_teleport *)comand;
                     myteam->able_to_teleport=comand_Enable_teleport->Enable;
                     printf("Enable_teleport %d",comand_Enable_teleport->Enable);
                     break;
                           case Set_escape_location:// 0xDC36,
-
+                    Event_comand_Set_escape_location * comand_Set_escape_location;
+                    comand_Set_escape_location=(Event_comand_Set_escape_location *)comand;
                                break;
                 case Enable_escape:
                     Event_comand_Enable_escape * comand_Enable_escape;
@@ -844,7 +906,8 @@ void Map_Scene::exec_comand(Event_comand * comand,int event_id)
                     printf("Enable_system_menu %d",comand_Enable_system_menu->Enable);
                     break;
                           case Conditional:// 0xDD6A,
-
+                    Event_comand_Conditional * comand_Conditional;
+                    comand_Conditional= (Event_comand_Conditional *)comand;
                                break;
                           case Else_case:// 0x81AB7A,
 
@@ -853,10 +916,12 @@ void Map_Scene::exec_comand(Event_comand * comand,int event_id)
 
                                break;
                           case Label:// 0xDE4E,
-
+                    Event_comand_Label * comand_Label;
+                    comand_Label = (Event_comand_Label *)comand;
                                break;
                           case Go_to_label:// 0xDE58,
-
+                    Event_comand_Go_to_label * comand_Go_to_label;
+                    comand_Go_to_label = (Event_comand_Go_to_label *)comand;
                                break;
                           case Start_loop:// 0xDF32,
 
@@ -876,7 +941,8 @@ void Map_Scene::exec_comand(Event_comand * comand,int event_id)
                     Charas_nps[event_id].layer= 3;
                     break;
                           case Call_event:// 0xE02A,
-
+                    Event_comand_Call_event * comand_Call_event;
+                    comand_Call_event= (Event_comand_Call_event *)comand;
                                break;
                           case Comment:// 0xE07A,
 
