@@ -77,7 +77,7 @@ SDL_Surface * Sistem::Exdraw (int sizeX,int sizeY)
 	SDL_Surface * Eximg2;
 	double zoomX =((double)sizeX/32);
 	double zoomY = (((double)sizeY)/32);
-	Eximg =SDL_CreateRGBSurface(SDL_SWSURFACE,32, 32, 16,0, 0,0, 0);// IMG_Load ("System/system2.PNG");
+	Eximg =SDL_CreateRGBSurface(SDL_SWSURFACE,32, 32, 32,0, 0,0, 0);// IMG_Load ("System/system2.PNG");
 	SDL_Rect fuente = {0 , 0,32,32};
 	SDL_Rect rect = {0,0, 0, 0};
 	SDL_BlitSurface (img, &fuente,	Eximg, &rect);

@@ -50,11 +50,62 @@ void Window_Base::dispose()
 	}
 }
 
-void Window_Base::add_text(const char * ctext, int x, int y)
+/*void Window_Base::add_text(const char * ctext, int x, int y)
 {
 	text.x=pos_X+x;
 	text.y=pos_Y+y;
 	text.set_surface(fuente.drawText(ctext));
+	Vtext_Sprite.push_back(text);
+}*/
+
+void Window_Base::add_text(std::string ctext, int x, int y)
+{
+	text.x=pos_X+x;
+	text.y=pos_Y+y;
+
+	std::string s_tmp;
+    int l = ctext.length();
+    int i;
+
+    std::stack<char> c_stack;
+    char c_tmp;
+
+    SDL_Surface *text_tmp;// = CreateSurface(300, 12);
+
+    for (i = 0; i < l; i++)
+    {
+        if (c_stack.empty())
+        {
+            c_tmp = ctext[i];
+            switch (c_tmp)
+            {
+                case '\\':
+                    c_stack.push(c_tmp);
+                    break;
+
+                default:
+                    s_tmp.push_back(c_tmp);
+            }
+        }
+        else
+        {
+            c_stack.push(ctext[i]);
+            switch (c_stack.top())
+            {
+                case 'c':
+                    break;
+
+                case 's':
+                    break;
+
+                default:
+                    while (!c_stack.empty()) c_stack.pop(); // Empty stack
+            }
+        }
+    }
+    text_tmp = fuente.drawText(s_tmp.c_str());
+
+	text.set_surface(text_tmp);
 	Vtext_Sprite.push_back(text);
 }
 

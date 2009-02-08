@@ -22,6 +22,7 @@
 #include "../../sprites/sprite.h"
 #include <vector>
 #include <string>
+#include <stack>
 
 class Window_Base  {
 
@@ -45,7 +46,7 @@ public:
 	void dispose();
 	void init(int SizeX,int SizeY,int PosX,int PosY,const char *SysIMg);
 	void draw(SDL_Surface* Screen);
-	void add_text(const char * ctext, int x, int y);
+	void add_text(std::string ctext, int x, int y);
 	void add_sprite(Sprite * the_sprite, int x, int y);
 
 };
