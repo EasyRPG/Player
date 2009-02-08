@@ -13,6 +13,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-Wall" />
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
@@ -58,8 +59,6 @@
 		</Build>
 		<Compiler>
 			<Add option="-pedantic" />
-			<Add option="-Wall" />
-			<Add option="-ansi" />
 			<Add option="-Wextra" />
 			<Add option="`sdl-config --cflags`" />
 		</Compiler>

@@ -40,7 +40,7 @@ World->CollisionAt(GridX, GridY+1, WORLD_COLLISION_FROM_UP)
 //#ifdef PSP
 //#define ACTOR_SPEED_SLOW        8
 //#endif
-#define ACTOR_SPEED_SLOW        1
+#define ACTOR_SPEED_SLOW        4
 
 void CActor::set_dir(int the_dir)
 {

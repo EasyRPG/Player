@@ -44,6 +44,8 @@
 #include <vector>
 #include <string>
 
+#include "../interface/Windows/Window_Base.h"
+
 #include "../attributes/skill.h"
 
 #include "../attributes/item.h"
@@ -76,6 +78,8 @@ private:
 	Chara * player;
 
 	std:: vector <Chara> Charas_nps;//agregar apuntador a vector de eventos
+
+	Window_Base message_box;
 
 	Faceset alexface;
 	Sprite red;

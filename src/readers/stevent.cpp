@@ -2036,7 +2036,7 @@ std:: vector <Event_comand * > stEvent::EventcommandChunk(FILE * Stream)//instru
                         if(data!=0)
                          depth= ReadCompressedInteger(Stream); //profundidad
               }
-               printf("\n");
+               //printf("\n");
               // 3 bytes, tamaño estandar de instrucion
              ReadCompressedInteger(Stream); // final de cadena
              ReadCompressedInteger(Stream); // final de cadena
