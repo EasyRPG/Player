@@ -39,6 +39,8 @@ class Font
 
 		~Font();
 
+		SDL_Surface* create_font_surface(int w, int h);
+
 		SDL_Surface* drawText(char* string);
 		SDL_Surface* drawText(char* string,int r, int b,int g, int u);
 		SDL_Surface* drawText(const char* string);

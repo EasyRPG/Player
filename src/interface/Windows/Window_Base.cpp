@@ -72,8 +72,8 @@ void Window_Base::add_text(std::string ctext, int x, int y)
 
     int color = 0,color_R = 214,color_G = 255,color_B = 255, lost_space=0;
 
-    SDL_Surface *text_tmp = SDL_CreateRGBSurface(SDL_SRCCOLORKEY, 300, 15, 32, 0, 0, 0, 0);
-    SDL_SetColorKey(text_tmp, SDL_SRCCOLORKEY, SDL_MapRGB(text_tmp->format, 0, 0, 0));
+    SDL_Surface *text_tmp = fuente.create_font_surface(300, 15);
+    //SDL_SetColorKey(text_tmp, SDL_SRCCOLORKEY, SDL_MapRGB(text_tmp->format, 0, 0, 0));
     //SDL_Surface *text_tmp;
 
     for (i = 0; i < l; i++)
@@ -100,6 +100,7 @@ void Window_Base::add_text(std::string ctext, int x, int y)
             switch (c_stack.top())
             {
                 case ']':
+                    lost_space++;
                     if (!isdigit(c_tmp)) goto LABEL;
                     else
                     {

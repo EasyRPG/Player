@@ -24,7 +24,7 @@ void Font::init_TTF()
 
 void Font::init_Font()//esto es asi porque no se me ocurre aun algo mejor
 {
-	Fname="Font/VL-Gothic-Regular.ttf";
+	Fname="Font/VL-Gothic-Regular.ttf.ttf";
 	size=12;
 	fR=255;
 	fG=255;
@@ -37,6 +37,23 @@ void Font::init_Font()//esto es asi porque no se me ocurre aun algo mejor
 		std::cerr << "Error: Unable to open file: " << Fname << std::endl;
 		exit(1);
 	}
+}
+
+SDL_Surface* Font::create_font_surface(int w, int h)
+{
+    SDL_Surface* dummy = SDL_CreateRGBSurface(SDL_SRCALPHA, w, h, 32, 0, 0, 0, 0);
+	//SDL_Color foregroundColor = { fR, fG, fB, fU};
+	//SDL_Surface* font_dummy = TTF_RenderText_Blended(font, string,foregroundColor);
+	//SDL_Surface* real;
+
+	SDL_SetAlpha(dummy, SDL_SRCALPHA | SDL_RLEACCEL, 255);
+
+	//real = SDL_DisplayFormatAlpha(dummy);
+
+	//SDL_FreeSurface(dummy);
+
+	return dummy;
+
 }
 
 SDL_Surface* Font::drawText(char* string)
@@ -71,7 +88,7 @@ void Font::blit_font(SDL_Surface *dst, const char src, int r, int g, int b, int 
 	std::string s_tmp;
 	s_tmp.push_back(src);
 	SDL_Color foregroundColor = { r, g, b, u };
-	SDL_Surface* textSurface = TTF_RenderText_Solid(font, s_tmp.c_str(), foregroundColor);
+	SDL_Surface* textSurface = TTF_RenderText_Blended(font, s_tmp.c_str(), foregroundColor);
 	SDL_Rect textLocation = { x*(textSurface->w), y, (textSurface->w), textSurface->h };
 	//printf("%c", src);
 
