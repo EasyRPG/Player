@@ -24,7 +24,7 @@ void Font::init_TTF()
 
 void Font::init_Font()//esto es asi porque no se me ocurre aun algo mejor
 {
-	Fname="Font/VL-Gothic-Regular.ttf.ttf";
+	Fname="Font/VL-Gothic-Regular.ttf";
 	size=12;
 	fR=255;
 	fG=255;
@@ -41,19 +41,10 @@ void Font::init_Font()//esto es asi porque no se me ocurre aun algo mejor
 
 SDL_Surface* Font::create_font_surface(int w, int h)
 {
-    SDL_Surface* dummy = SDL_CreateRGBSurface(SDL_SRCALPHA, w, h, 32, 0, 0, 0, 0);
-	//SDL_Color foregroundColor = { fR, fG, fB, fU};
-	//SDL_Surface* font_dummy = TTF_RenderText_Blended(font, string,foregroundColor);
-	//SDL_Surface* real;
-
-	SDL_SetAlpha(dummy, SDL_SRCALPHA | SDL_RLEACCEL, 255);
-
-	//real = SDL_DisplayFormatAlpha(dummy);
-
-	//SDL_FreeSurface(dummy);
+    SDL_Surface* dummy = SDL_CreateRGBSurface(SDL_SRCALPHA, w, h, 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
+	SDL_SetAlpha(dummy, SDL_SRCALPHA | SDL_RLEACCEL, SDL_ALPHA_TRANSPARENT);
 
 	return dummy;
-
 }
 
 SDL_Surface* Font::drawText(char* string)
@@ -90,10 +81,8 @@ void Font::blit_font(SDL_Surface *dst, const char src, int r, int g, int b, int 
 	SDL_Color foregroundColor = { r, g, b, u };
 	SDL_Surface* textSurface = TTF_RenderText_Blended(font, s_tmp.c_str(), foregroundColor);
 	SDL_Rect textLocation = { x*(textSurface->w), y, (textSurface->w), textSurface->h };
-	//printf("%c", src);
 
-//	SDL_Rect fuente = {0,0, (textSurface->w/2), textSurface->h};
-//	SDL_BlitSurface(textSurface, &fuente, dst, &textLocation);
+    SDL_SetAlpha(textSurface, 0, 0xFF);
 	SDL_BlitSurface(textSurface, NULL, dst, &textLocation);
 
 	SDL_FreeSurface(textSurface);
