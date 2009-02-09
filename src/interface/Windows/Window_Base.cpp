@@ -72,7 +72,8 @@ void Window_Base::add_text(std::string ctext, int x, int y)
 
     int color = 0;
 
-    SDL_Surface *text_tmp = CreateSurface(96, 12);
+    SDL_Surface *text_tmp = SDL_CreateRGBSurface(SDL_SRCCOLORKEY, 300, 12, 32, 0, 0, 0, 0);
+    SDL_SetColorKey(text_tmp, SDL_SRCCOLORKEY, SDL_MapRGB(text_tmp->format, 0, 0, 0));
     //SDL_Surface *text_tmp;
 
     for (i = 0; i < l; i++)
@@ -87,7 +88,7 @@ void Window_Base::add_text(std::string ctext, int x, int y)
 
                 default: ;
                     //s_tmp.push_back(ctext[i]);
-                    fuente.blit_font(text_tmp, ctext[i], color, color, color, 255);
+                    fuente.blit_font(text_tmp, ctext[i], 255-color, 255-color, 255-color, 0, i, 0);
             }
         }
         else
@@ -128,7 +129,7 @@ void Window_Base::add_text(std::string ctext, int x, int y)
 
                 default:
                 LABEL:
-                    if (c_tmp != '\\') fuente.blit_font(text_tmp, ctext[i], color, color, color, 255);
+                    if (c_tmp != '\\') fuente.blit_font(text_tmp, ctext[i], 255-color, 255-color, 255-color, 0, i, 0);
                     while (!c_stack.empty()) c_stack.pop(); // Empty stack
             }
         }

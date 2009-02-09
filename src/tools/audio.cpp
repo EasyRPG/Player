@@ -86,11 +86,11 @@ bool Music::play(int loops)
         return false;
     }
 
-/*    if (Mix_PlayMusic(music, loops) < 0)
+    if (Mix_PlayMusic(music, loops) < 0)
     {
         std::cerr << "Error: " << Mix_GetError() << std::endl;
         return false;
-    }*/
+    }
 
     return true;
 }

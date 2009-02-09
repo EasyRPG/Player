@@ -86,19 +86,20 @@ SDL_Surface* Font::drawText(char* string,int r, int b,int g, int u)
 	return(textSurface);
 }
 
-void Font::blit_font(SDL_Surface *dst, const char src, int r, int g, int b, int u)
+void Font::blit_font(SDL_Surface *dst, const char src, int r, int g, int b, int u, int x, int y)
 {
 	TTF_Font* font = TTF_OpenFont(Fname, size);
+	const char s_tmp[] = {src};
 	if (font == NULL)
 	{
 		std::cerr << "Error: Unable to open file: " << Fname << std::endl;
 		exit(1);
 	}
 	SDL_Color foregroundColor = { r, g, b, u };
-	SDL_Surface* textSurface = TTF_RenderText_Blended(font, &src, foregroundColor);
-	//SDL_Rect textLocation = { , y, 0, 0 };
-	//printf("%c", src);
-	SDL_BlitSurface(textSurface, NULL, dst, NULL);
+	SDL_Surface* textSurface = TTF_RenderText_Blended(font, s_tmp, foregroundColor);
+	SDL_Rect textLocation = { x*textSurface->w, y, textSurface->w, textSurface->h };
+	//printf("%i\n", textSurface->w);
+	SDL_BlitSurface(textSurface, NULL, dst, &textLocation);
 	SDL_FreeSurface(textSurface);
 	TTF_CloseFont(font);
 }
