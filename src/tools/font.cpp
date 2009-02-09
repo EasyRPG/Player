@@ -97,9 +97,11 @@ void Font::blit_font(SDL_Surface *dst, const char src, int r, int g, int b, int 
 	}
 	SDL_Color foregroundColor = { r, g, b, u };
 	SDL_Surface* textSurface = TTF_RenderText_Blended(font, s_tmp, foregroundColor);
-	SDL_Rect textLocation = { x*textSurface->w, y, textSurface->w, textSurface->h };
+	SDL_Rect textLocation = { x*(textSurface->w/2), y, (textSurface->w/2), textSurface->h };
 	//printf("%i\n", textSurface->w);
-	SDL_BlitSurface(textSurface, NULL, dst, &textLocation);
+
+	SDL_Rect fuente = {0,0, (textSurface->w/2), textSurface->h};
+	SDL_BlitSurface(textSurface, &fuente, dst, &textLocation);
 	SDL_FreeSurface(textSurface);
 	TTF_CloseFont(font);
 }

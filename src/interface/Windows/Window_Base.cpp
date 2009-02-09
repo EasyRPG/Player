@@ -86,7 +86,7 @@ void Window_Base::add_text(std::string ctext, int x, int y)
                     c_stack.push(ctext[i]);
                     break;
 
-                default: ;
+                default:
                     //s_tmp.push_back(ctext[i]);
                     fuente.blit_font(text_tmp, ctext[i], 255-color, 255-color, 255-color, 0, i, 0);
             }
