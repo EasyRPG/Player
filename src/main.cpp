@@ -230,6 +230,9 @@ int main()
     atexit (SDL_Quit);
     SDL_ShowCursor(SDL_DISABLE);
     myaudio.init();
+
+    Font::init_TTF();
+
 //    const SDL_VideoInfo *videoInfo = SDL_GetVideoInfo();
     unsigned  long flags = 0;
 
@@ -279,6 +282,8 @@ int main()
 
     Control::cleanup();
 
+
+    Font::Quit();
     SDL_Quit();
 
     #ifdef PSP

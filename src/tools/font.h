@@ -26,18 +26,24 @@
 
 class Font
 {
-	protected:
+	private:
 		int fR,  fG,  fB,  fU; // fU = unused
 		const char * Fname;
+		TTF_Font *font;
 	public:
+
+        static void init_TTF();
+
 		int size;
 		void init_Font();
+
+		~Font();
+
 		SDL_Surface* drawText(char* string);
 		SDL_Surface* drawText(char* string,int r, int b,int g, int u);
 		SDL_Surface* drawText(const char* string);
 		void blit_font(SDL_Surface *dst, const char src, int r, int g, int b, int u, int x, int y);
-		void draw_temp_Text(SDL_Surface* screen,char* string, int x, int y);
-		void Quit();
+		static void Quit();
 };
 
 #endif

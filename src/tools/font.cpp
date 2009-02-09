@@ -17,6 +17,11 @@
 
 #include "font.h"
 
+void Font::init_TTF()
+{
+    TTF_Init();
+}
+
 void Font::init_Font()//esto es asi porque no se me ocurre aun algo mejor
 {
 	Fname="Font/VL-Gothic-Regular.ttf";
@@ -25,37 +30,20 @@ void Font::init_Font()//esto es asi porque no se me ocurre aun algo mejor
 	fG=255;
 	fB=255;
 	fU=0; //unused
-	TTF_Init();
+
+	font = TTF_OpenFont(Fname, size);
+	if (font == NULL)
+	{
+		std::cerr << "Error: Unable to open file: " << Fname << std::endl;
+		exit(1);
+	}
 }
 
 SDL_Surface* Font::drawText(char* string)
 {
-	TTF_Font* font = TTF_OpenFont(Fname, size);
-	if (font == NULL)
-	{
-		std::cerr << "Error: Unable to open file: " << Fname << std::endl;
-		exit(1);
-	}
 	SDL_Color foregroundColor = { fR, fG, fB, fU};
 	SDL_Surface* textSurface = TTF_RenderText_Blended(font, string,foregroundColor);
-	TTF_CloseFont(font);
 	return(textSurface);
-}
-
-void Font::draw_temp_Text(SDL_Surface* screen,char* string, int x, int y)
-{
-	TTF_Font* font = TTF_OpenFont(Fname, size);
-	if (font == NULL)
-	{
-		std::cerr << "Error: Unable to open file: " << Fname << std::endl;
-		exit(1);
-	}
-	SDL_Color foregroundColor = { fR, fG, fB, fU };
-	SDL_Surface* textSurface = TTF_RenderText_Blended(font, string,foregroundColor);
-	SDL_Rect textLocation = { x, y, 0, 0 };
-	SDL_BlitSurface(textSurface, NULL, screen, &textLocation);
-	SDL_FreeSurface(textSurface);
-	TTF_CloseFont(font);
 }
 
 SDL_Surface* Font::drawText(const char* string)
@@ -68,42 +56,35 @@ SDL_Surface* Font::drawText(const char* string)
 	}
 	SDL_Color foregroundColor = { fR, fG, fB, fU };
 	SDL_Surface* textSurface = TTF_RenderText_Blended(font, string,foregroundColor);
-	TTF_CloseFont(font);
 	return(textSurface);
 }
 
 SDL_Surface* Font::drawText(char* string,int r, int b,int g, int u)
 {
-	TTF_Font* font = TTF_OpenFont(Fname, size);
-	if (font == NULL)
-	{
-		std::cerr << "Error: Unable to open file: " << Fname << std::endl;
-		exit(1);
-	}
 	SDL_Color foregroundColor = { r, g, b, u };
 	SDL_Surface* textSurface = TTF_RenderText_Blended(font, string,foregroundColor);
-	TTF_CloseFont(font);
 	return(textSurface);
 }
 
 void Font::blit_font(SDL_Surface *dst, const char src, int r, int g, int b, int u, int x, int y)
 {
-	TTF_Font* font = TTF_OpenFont(Fname, size);
-	const char s_tmp[] = {src};
-	if (font == NULL)
-	{
-		std::cerr << "Error: Unable to open file: " << Fname << std::endl;
-		exit(1);
-	}
+	std::string s_tmp;
+	s_tmp.push_back(src);
 	SDL_Color foregroundColor = { r, g, b, u };
-	SDL_Surface* textSurface = TTF_RenderText_Blended(font, s_tmp, foregroundColor);
-	SDL_Rect textLocation = { x*(textSurface->w/2), y, (textSurface->w/2), textSurface->h };
-	//printf("%i\n", textSurface->w);
+	SDL_Surface* textSurface = TTF_RenderText_Solid(font, s_tmp.c_str(), foregroundColor);
+	SDL_Rect textLocation = { x*(textSurface->w), y, (textSurface->w), textSurface->h };
+	//printf("%c", src);
 
-	SDL_Rect fuente = {0,0, (textSurface->w/2), textSurface->h};
-	SDL_BlitSurface(textSurface, &fuente, dst, &textLocation);
+//	SDL_Rect fuente = {0,0, (textSurface->w/2), textSurface->h};
+//	SDL_BlitSurface(textSurface, &fuente, dst, &textLocation);
+	SDL_BlitSurface(textSurface, NULL, dst, &textLocation);
+
 	SDL_FreeSurface(textSurface);
-	TTF_CloseFont(font);
+}
+
+Font::~Font()
+{
+    TTF_CloseFont(font);
 }
 
 void Font::Quit()//esto es asi porque no se me ocurre aun algo mejor
