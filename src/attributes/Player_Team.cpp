@@ -26,6 +26,30 @@ void Player_Team::read_database()
  //   my_ldb.ShowInformation(&data2);
 }
 
+bool Player_Team::state_swich( int number)
+{
+int real_id, position;
+real_id = (number/8);
+position= (number%8);
+return( swich[real_id]& (1<<position));
+}
+
+void Player_Team::set_true_swich( int number)
+{
+int real_id, position;
+real_id = (number/8);
+position= (number%8);
+swich[real_id]=(swich[real_id]||(1<<position));
+}
+
+void Player_Team::set_false_swich( int number)
+{
+int real_id, position;
+real_id = (number/8);
+position= (number%8);
+swich[real_id]=(swich[real_id]&(!(1<<position)));
+}
+
 void Player_Team::clear_team()
 {
 	Players.clear();

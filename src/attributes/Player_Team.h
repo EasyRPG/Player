@@ -40,6 +40,13 @@ class Player_Team {
 	int Gold;
 	public:
 
+    bool state_swich( int number);
+    void set_true_swich( int number);
+    void set_false_swich( int number);
+
+	std:: vector <unsigned char> swich;
+	std:: vector <int> var;
+
     int actual_x_map;
     int actual_y_map;
     int actual_dir;
