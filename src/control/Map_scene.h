@@ -104,7 +104,7 @@ public:
     int  get_dir(int i);
 	void Scroll();
 	void updatekey();
-    void exec_comand(Event_comand * comand,int event_id);
+    int exec_comand(Event_comand * comand,int event_id, int comand_id);
 	void init_npc();
 
 	void mapnpc();

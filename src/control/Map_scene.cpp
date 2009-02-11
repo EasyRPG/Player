@@ -461,7 +461,7 @@ void Map_Scene::updatekey()
 
 void Map_Scene::mapnpc()
 {
-    unsigned int event_id;
+    unsigned int event_id,comand_id;
     Event_comand * comand;
     for (event_id=0;event_id< Charas_nps.size();event_id++)
     {
@@ -470,12 +470,12 @@ void Map_Scene::mapnpc()
             printf(" x %d",data.vcEvents[event_id].vcPage[0].vcEvent_comand.size());
             printf("total %d",data.vcEvents.size());
 
-            if (data.vcEvents[event_id].vcPage[0].vcEvent_comand.size()>0)
+            for(comand_id=0 ;comand_id<data.vcEvents[event_id].vcPage[0].vcEvent_comand.size(); comand_id++)
             {
-                comand=data.vcEvents[event_id].vcPage[0].vcEvent_comand[0];
+                comand=data.vcEvents[event_id].vcPage[0].vcEvent_comand[comand_id];
                 printf("id %d",comand->Comand);
 
-                exec_comand(comand,event_id);
+                comand_id =exec_comand(comand,event_id,comand_id);
             }
         }
     }
@@ -524,7 +524,7 @@ void Map_Scene::mapnpc()
     }*/
 }
 
-void Map_Scene::exec_comand(Event_comand * comand,int event_id)
+int Map_Scene::exec_comand(Event_comand * comand,int event_id, int comand_id)
 {
 
     switch (comand->Comand)
@@ -532,7 +532,6 @@ void Map_Scene::exec_comand(Event_comand * comand,int event_id)
     case Message:
         Event_comand_Message * comand_Message;
         comand_Message= ( Event_comand_Message *)comand;
-
         message_box.add_text(comand_Message->Text.c_str(), 0, 0);
         message_box.visible = true;
         //printf("\n texto %s",comand_Message->Text.c_str());
@@ -971,7 +970,7 @@ void Map_Scene::exec_comand(Event_comand * comand,int event_id)
 
 
     }
-
+return(comand_id);
 }
 
 void Map_Scene::dispose()
