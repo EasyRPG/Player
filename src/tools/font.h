@@ -44,7 +44,10 @@ class Font
 		SDL_Surface* drawText(char* string);
 		SDL_Surface* drawText(char* string,int r, int b,int g, int u);
 		SDL_Surface* drawText(const char* string);
-		void blit_font(SDL_Surface *dst, const char src, int r, int g, int b, int u, int x, int y);
+		void blit_font(SDL_Surface *dst, std::string *s, int x, int y);
+
+		void blit_background(SDL_Surface *dst, int n, SDL_Surface *back, int x);
+
 		static void Quit();
 };
 

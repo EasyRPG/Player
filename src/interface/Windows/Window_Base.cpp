@@ -64,191 +64,92 @@ void Window_Base::add_text(std::string ctext, int x, int y)
 	text.y=pos_Y+y;
 
 	std::string s_tmp;
+
     int l = ctext.length();
     int i;
 
-    std::stack<char> c_stack;
-    char c_tmp;
+    bool state_control = false;
+    Uint8 state = 0;
+    char type;
 
-    int color = 0,color_R = 214,color_G = 255,color_B = 255, lost_space=0;
+    std::bitset<255> type_set;
 
-    SDL_Surface *text_tmp = fuente.create_font_surface(300, 15);
-    //SDL_SetColorKey(text_tmp, SDL_SRCCOLORKEY, SDL_MapRGB(text_tmp->format, 0, 0, 0));
-    //SDL_Surface *text_tmp;
+    int n = 0;
+    int n_color = 0;
+
+    int lost_space=0;
+
+    SDL_Surface *text_tmp = fuente.create_font_surface(10*l, 15);
+
+    type_set.set('c');
+    type_set.set('s');
 
     for (i = 0; i < l; i++)
     {
-        if (c_stack.empty())
+        if (state_control)
         {
-            switch (ctext[i])
+            lost_space++;
+            switch (state)
             {
-                case '\\':
-                   lost_space++;
-                    c_stack.push(ctext[i]);
+                case 0:
+                    type = ctext[i];
+                    if (!type_set.test(type))
+                    {
+                        n = 0;
+                        state_control = false;
+                    }
+                    state++;
                     break;
+                case 1:
+                    if (ctext[i] != '[')
+                    {
+                        n = 0;
+                        state_control = false;
+                    }
+                    state++;
+                    break;
+                case 2:
+                    if (ctext[i] == ']')
+                    {
+                        switch (type)
+                        {
+                            case 'c':
+                                n_color = n;
+                                break;
 
-                default:
-                    //s_tmp.push_back(ctext[i]);
-                    fuente.blit_font(text_tmp, ctext[i], color_R, color_G, color_B, 0, (i-lost_space), 0);
+                            default:
+                                break;
+                        }
+                        n = 0;
+                        state_control = false;
+                    }
+                    else
+                    {
+                        /* Begin reading number */
+                        if (isdigit(ctext[i])) n = n*10 + (ctext[i] - '0'); //Improvised atoi :p
+                        else state_control = false;
+                    }
+                    break;
             }
         }
         else
         {
-            c_tmp = c_stack.top();
-
-            c_stack.push(ctext[i]);
-            switch (c_stack.top())
+            state = 0;
+            switch (ctext[i])
             {
-                case ']':
+                case '\\':
                     lost_space++;
-                    if (!isdigit(c_tmp)) goto LABEL;
-                    else
-                    {
-                        color = c_tmp - '0';
-
-                        switch (color)
-                        {
-
-                            case 0:
-                                color_R= 165;
-                                color_G= 211;
-                                color_B= 255;
-                            break;
-                            case 1:
-                                color_R= 82;
-                                color_G= 121;
-                                color_B= 206;
-                            break;
-                            case 2:
-                                color_R= 247;
-                                color_G= 186;
-                                color_B= 132;
-                            break;
-                            case 3:
-                                color_R= 123;
-                                color_G= 125;
-                                color_B= 132;
-                            break;
-                            case 4:
-                                color_R= 247;
-                                color_G= 223;
-                                color_B= 90;
-                            break;
-                            case 5:
-                                color_R= 206;
-                                color_G= 142;
-                                color_B= 140;
-                            break;
-                            case 6:
-                                color_R= 189;
-                                color_G= 170;
-                                color_B= 247;
-                            break;
-                            case 7:
-                                color_R= 231;
-                                color_G= 158;
-                                color_B= 231;
-                            break;
-                            case 8:
-                                color_R= 255;
-                                color_G= 195;
-                                color_B= 107;
-                            break;
-                            case 9:
-                                color_R= 165;
-                                color_G= 235;
-                                color_B= 123;
-                            break;
-                            case 10:
-                                color_R= 99;
-                                color_G= 166;
-                                color_B= 247;
-                            break;
-                            case 11:
-                                color_R= 239;
-                                color_G= 166;
-                                color_B= 165;
-                            break;
-                            case 12:
-                                color_R= 206;
-                                color_G= 235;
-                                color_B= 99;
-                            break;
-                            case 13:
-                                color_R= 214;
-                                color_G= 146;
-                                color_B= 247;
-                            break;
-                            case 14:
-                                color_R= 255;
-                                color_G= 182;
-                                color_B= 49;
-                            break;
-                            case 15:
-                                color_R= 148;
-                                color_G= 231;
-                                color_B= 181;
-                            break;
-                            case 16:
-                                color_R= 156;
-                                color_G= 125;
-                                color_B= 181;
-                            break;
-                            case 17:
-                                color_R= 90;
-                                color_G= 134;
-                                color_B= 165;
-                            break;
-                            case 18:
-                                color_R= 66;
-                                color_G= 158;
-                                color_B= 107;
-                            break;
-                            case 19:
-                                color_R= 181;
-                                color_G= 125;
-                                color_B= 66;
-                            break;
-
-
-
-                        }
-                    }
-                    break;
-                case '1': case '2': case '3':
-                case '4': case '5': case '6':
-                case '7': case '8': case '9':
-                case '0':
-                lost_space++;
-                    if (c_tmp != '[') goto LABEL;
-                    break;
-
-                case '[':
-                lost_space++;
-                    if (c_tmp != 'c')
-                    {
-                        goto LABEL;
-                    }
-                    break;
-
-                case 'c':
-                lost_space++;
-                    if (c_tmp != '\\')
-                    {
-                        goto LABEL;
-                    }
-
+                    state_control = true;
                     break;
 
                 default:
-                LABEL:
-                    if (c_tmp != '\\') fuente.blit_font(text_tmp, ctext[i], color_R, color_G, color_B, 0, (i-lost_space), 0);
-                    while (!c_stack.empty()) c_stack.pop(); // Empty stack
+                    fuente.blit_background(text_tmp, n_color, System.get_img(), i-lost_space);
+                    s_tmp.push_back(ctext[i]);
             }
         }
     }
-    //text_tmp = fuente.drawText(s_tmp.c_str());
-
+    fuente.blit_font(text_tmp, &s_tmp, i-lost_space, 0);
+    SDL_SetColorKey(text_tmp, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(text_tmp->format, 0,0,0));
 	text.set_surface(text_tmp);
 	Vtext_Sprite.push_back(text);
 }

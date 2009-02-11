@@ -22,7 +22,7 @@
 #include "../../sprites/sprite.h"
 #include <vector>
 #include <string>
-#include <stack>
+#include <bitset>
 
 class Window_Base  {
 

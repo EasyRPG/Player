@@ -69,6 +69,8 @@ class Sprite {
 	    void setrows(int irows);
 	    void addx(int c);
 
+	    SDL_Surface* get_img() { return img; }
+
 	    void addy(int c);
 	    void set_surface(SDL_Surface * imag);
 	    int getx();

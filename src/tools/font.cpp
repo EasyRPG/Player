@@ -41,8 +41,8 @@ void Font::init_Font()//esto es asi porque no se me ocurre aun algo mejor
 
 SDL_Surface* Font::create_font_surface(int w, int h)
 {
-    SDL_Surface* dummy = SDL_CreateRGBSurface(SDL_SRCALPHA, w, h, 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
-	SDL_SetAlpha(dummy, SDL_SRCALPHA | SDL_RLEACCEL, SDL_ALPHA_TRANSPARENT);
+    SDL_Surface* dummy = SDL_CreateRGBSurface(SDL_SRCCOLORKEY, w, h, 32, 0, 0, 0, SDL_ALPHA_OPAQUE);
+	//SDL_SetAlpha(dummy, SDL_SRCALPHA | SDL_RLEACCEL, SDL_ALPHA_TRANSPARENT);
 
 	return dummy;
 }
@@ -56,12 +56,6 @@ SDL_Surface* Font::drawText(char* string)
 
 SDL_Surface* Font::drawText(const char* string)
 {
-	TTF_Font* font = TTF_OpenFont(Fname, size);
-	if (font == NULL)
-	{
-		std::cerr << "Error: Unable to open file: " << Fname << std::endl;
-		exit(1);
-	}
 	SDL_Color foregroundColor = { fR, fG, fB, fU };
 	SDL_Surface* textSurface = TTF_RenderText_Blended(font, string,foregroundColor);
 	return(textSurface);
@@ -74,18 +68,29 @@ SDL_Surface* Font::drawText(char* string,int r, int b,int g, int u)
 	return(textSurface);
 }
 
-void Font::blit_font(SDL_Surface *dst, const char src, int r, int g, int b, int u, int x, int y)
+void Font::blit_font(SDL_Surface *dst, std::string *s_tmp, int x, int y)
 {
-	std::string s_tmp;
-	s_tmp.push_back(src);
-	SDL_Color foregroundColor = { r, g, b, u };
-	SDL_Surface* textSurface = TTF_RenderText_Blended(font, s_tmp.c_str(), foregroundColor);
-	SDL_Rect textLocation = { x*(textSurface->w), y, (textSurface->w), textSurface->h };
+    int y1 = x;
+    y1 = y;
+	SDL_Color foregroundColor = { 255, 255, 255, SDL_ALPHA_OPAQUE};
+	SDL_Surface* textSurface = TTF_RenderText_Solid(font, s_tmp->c_str(), foregroundColor);
 
-    SDL_SetAlpha(textSurface, 0, 0xFF);
-	SDL_BlitSurface(textSurface, NULL, dst, &textLocation);
+	SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, textSurface->w, 15, 32, 0,0,0,SDL_ALPHA_OPAQUE);
+
+    SDL_BlitSurface(textSurface, NULL, tmp, NULL);
+    SDL_SetColorKey(tmp, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(tmp->format, 255, 255, 255));
+	SDL_BlitSurface(tmp, NULL, dst, NULL);
 
 	SDL_FreeSurface(textSurface);
+	SDL_FreeSurface(tmp);
+}
+
+void Font::blit_background(SDL_Surface *dst, int n, SDL_Surface *back, int x)
+{
+    SDL_Rect clip_system = { 16*(n%10), 48+16*(n/10), 6, 16 };
+    SDL_Rect pos_x = { x*6, 0, 10, 16 };
+
+    SDL_BlitSurface(back, &clip_system, dst, &pos_x);
 }
 
 Font::~Font()
