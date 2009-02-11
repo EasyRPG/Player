@@ -534,7 +534,7 @@ int Map_Scene::exec_comand(Event_comand * comand,int event_id, int comand_id)
         comand_Message= ( Event_comand_Message *)comand;
         message_box.add_text(comand_Message->Text, 0, 0);
         message_box.visible = true;
-        //printf("\n texto %s",comand_Message->Text.c_str());
+
         break;
     case Add_line_to_message:
         printf("Addline texto");

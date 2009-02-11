@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define FONT_WIDTH 6
 
 class Font
 {
@@ -47,6 +48,7 @@ class Font
 		void blit_font(SDL_Surface *dst, std::string *s, int x, int y);
 
 		void blit_background(SDL_Surface *dst, int n, SDL_Surface *back, int x);
+        void blit_shadow(SDL_Surface *dst, SDL_Surface *back, int x);
 
 		static void Quit();
 };

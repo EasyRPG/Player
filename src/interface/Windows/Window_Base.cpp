@@ -30,6 +30,9 @@ void Window_Base::init(int SizeX,int SizeY,int PosX,int PosY,const char *SysIMg)
 	Size_Y=SizeY;
 	disposing=false;
 	visible=true;
+
+    type_set.set('c');
+    type_set.set('s');
 }
 void Window_Base::dispose()
 {
@@ -63,6 +66,9 @@ void Window_Base::add_text(std::string ctext, int x, int y)
 	text.x=pos_X+x;
 	text.y=pos_Y+y;
 
+	sha_text.x=pos_X+x+1;
+	sha_text.y=pos_Y+y+1;
+
 	std::string s_tmp;
 
     int l = ctext.length();
@@ -72,17 +78,14 @@ void Window_Base::add_text(std::string ctext, int x, int y)
     Uint8 state = 0;
     char type;
 
-    std::bitset<255> type_set;
 
     int n = 0;
     int n_color = 0;
 
     int lost_space=0;
 
-    SDL_Surface *text_tmp = fuente.create_font_surface(10*l, 15);
-
-    type_set.set('c');
-    type_set.set('s');
+    SDL_Surface *text_tmp = fuente.create_font_surface(FONT_WIDTH*l, 15);
+    SDL_Surface *shadow = fuente.create_font_surface(FONT_WIDTH*l, 15);
 
     for (i = 0; i < l; i++)
     {
@@ -130,6 +133,9 @@ void Window_Base::add_text(std::string ctext, int x, int y)
                         else state_control = false;
                     }
                     break;
+
+                default:
+                    break;
             }
         }
         else
@@ -144,14 +150,21 @@ void Window_Base::add_text(std::string ctext, int x, int y)
 
                 default:
                     fuente.blit_background(text_tmp, n_color, System.get_img(), i-lost_space);
+                    fuente.blit_shadow(shadow, System.get_img(), i-lost_space);
                     s_tmp.push_back(ctext[i]);
             }
         }
     }
     fuente.blit_font(text_tmp, &s_tmp, i-lost_space, 0);
+    fuente.blit_font(shadow, &s_tmp, i-lost_space, 0);
     SDL_SetColorKey(text_tmp, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(text_tmp->format, 0,0,0));
+    SDL_SetColorKey(shadow, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(text_tmp->format, 0,0,0));
 	text.set_surface(text_tmp);
+	sha_text.set_surface(shadow);
+
+	Vtext_Sprite.push_back(sha_text);
 	Vtext_Sprite.push_back(text);
+
 }
 
 void Window_Base::add_sprite(Sprite * the_sprite, int x, int y)
@@ -163,21 +176,21 @@ void Window_Base::add_sprite(Sprite * the_sprite, int x, int y)
 
 void Window_Base::draw(SDL_Surface* Screen)
 {
-	if(visible)
+	if (visible)
 	{
 		if(  !disposing  )
 		{
 			tapiz.draw(Screen);
 			unsigned int i;
-			for (i = 0; i < (Vtext_Sprite).size(); i ++)
+			for (i = 0; i < Vtext_Sprite.size(); i++)
 			{
-				((Vtext_Sprite).at(i)).draw(Screen);
+				Vtext_Sprite[i].draw(Screen);
 			}
-			Sprite * the_sprite;
-			for (i = 0; i < (V_Sprite).size(); i ++)
+			Sprite *the_sprite;
+			for (i = 0; i < V_Sprite.size(); i++)
 			{
-				the_sprite=(Sprite *)((V_Sprite).at(i));
-				(*the_sprite).draw(Screen);
+				the_sprite = (Sprite *) V_Sprite[i];
+				the_sprite->draw(Screen);
 			}
 		}
 	}

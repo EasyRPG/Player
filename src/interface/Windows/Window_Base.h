@@ -34,10 +34,12 @@ protected:
 	int Size_X,Size_Y;
 	std:: vector <Sprite> Vtext_Sprite;
 	std:: vector <int> V_Sprite;//appuntadores a sprites
-	Sprite text;
+	Sprite text, sha_text;
 	char stringBuffer[255];
 	int falla;
 	bool disposing;
+
+    std::bitset<255> type_set;
 
 public:
 	//Window_Base();		///constructor

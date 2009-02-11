@@ -87,8 +87,16 @@ void Font::blit_font(SDL_Surface *dst, std::string *s_tmp, int x, int y)
 
 void Font::blit_background(SDL_Surface *dst, int n, SDL_Surface *back, int x)
 {
-    SDL_Rect clip_system = { 16*(n%10), 48+16*(n/10), 6, 16 };
-    SDL_Rect pos_x = { x*6, 0, 10, 16 };
+    SDL_Rect clip_system = { 8+16*(n%10), 48+16*(n/10), FONT_WIDTH, 16 };
+    SDL_Rect pos_x = { x*FONT_WIDTH, 0, 10, 16 };
+
+    SDL_BlitSurface(back, &clip_system, dst, &pos_x);
+}
+
+void Font::blit_shadow(SDL_Surface *dst, SDL_Surface *back, int x)
+{
+    SDL_Rect clip_system = { 16, 32, FONT_WIDTH, 16 };
+    SDL_Rect pos_x = { x*FONT_WIDTH, 0, 10, 16 };
 
     SDL_BlitSurface(back, &clip_system, dst, &pos_x);
 }
