@@ -117,7 +117,7 @@ void Window_Base::add_text(std::string ctext, int x, int y)
                         switch (type)
                         {
                             case 'c':
-                                n_color = n;
+                                (n < 20) ? n_color = n : n_color = 0;
                                 break;
 
                             default:
