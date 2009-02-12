@@ -72,8 +72,21 @@ void Font::blit_font(SDL_Surface *dst, std::string *s_tmp, int x, int y)
 {
     int y1 = x;
     y1 = y;
+
+    if (s_tmp->size() <= 0)
+    {
+        printf("* Warning: Tried to blit an empty string\n");
+        return;
+    }
+
 	SDL_Color foregroundColor = { 255, 255, 255, SDL_ALPHA_OPAQUE};
 	SDL_Surface* textSurface = TTF_RenderText_Solid(font, s_tmp->c_str(), foregroundColor);
+
+	if (textSurface == NULL)
+	{
+	    printf("Could not render string: %s\n", TTF_GetError());
+	    exit(1);
+	}
 
 	SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, textSurface->w, 15, 32, 0,0,0,SDL_ALPHA_OPAQUE);
 

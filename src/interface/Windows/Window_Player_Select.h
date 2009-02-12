@@ -41,7 +41,7 @@ protected:
 	int Cur_pos_X,Cur_pos_Y;
 	int Moves_cursorY;
 	bool disposing;
-	Sprite text;
+	Sprite text, sha_text;
 
 public:
 	Menu_Easy menu;
@@ -59,7 +59,7 @@ public:
 	void init_curXY(int x,int y);
 	void init(Audio * theaudio, bool * run,int ComandX,int ComandY,int SizeX,int SizeY,int PosX,int PosY,int curX,int curY,const char *SysIMg);
 	void draw(SDL_Surface* Screen);
-	void add_text(const char * ctext, int x, int y);
+	void add_text(std::string ctext, int x, int y);
 	void add_sprite(Sprite * the_sprite, int x, int y);
 	void set_curY(int y);
 };

@@ -40,9 +40,10 @@ protected:
 	int Size_X,Size_Y,Size_of_Block;
 	int Comand_X,Comand_Y;
 	std:: vector <std::string> * My_vector;
-	std:: vector <Sprite> My_Sprite;
+	std:: vector <Sprite> command_sprites;
+	std:: vector <Sprite> sha_command_sprites;
 	bool disposing;
-	Sprite text;
+	Sprite text, sha_text;
 
 public:
     Menu_Easy menu;
@@ -58,7 +59,7 @@ public:
 	void dispose();
 	void init(Audio * theaudio, bool * run,int ComandX,int ComandY,int SizeX,int SizeY,int PosX,int PosY, const char *SysIMg);
 	void draw(SDL_Surface* Screen);
-	void add_text(const char * ctext, int x, int y);
+	void add_text(std::string ctext, int x, int y);
 	void set_posx_text(int x);
 	void setComands(std:: vector <std::string> * str_Vec);
 };

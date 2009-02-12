@@ -41,11 +41,41 @@ void Window_Select::init(Audio * theaudio, bool * run,int ComandX,int ComandY,in
 	on_use=true;
 }
 
-void Window_Select::add_text(const char * ctext, int x, int y)
+void Window_Select::add_text(std::string ctext, int x, int y)
 {
 	text.x=pos_X+x;
 	text.y=pos_Y+y;
-	text.set_surface(fuente.drawText(ctext));
+
+	sha_text.x=pos_X+x+1;
+	sha_text.y=pos_Y+y+1;
+
+	unsigned int l = ctext.size();
+
+	std::string s_tmp;
+
+    SDL_Surface *text_tmp = fuente.create_font_surface(FONT_WIDTH*l, 15);
+    SDL_Surface *shadow = fuente.create_font_surface(FONT_WIDTH*l, 15);
+
+    SDL_SetColorKey(text_tmp, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(text_tmp->format, 0,0,0));
+    SDL_SetColorKey(shadow, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(text_tmp->format, 0,0,0));
+
+	unsigned int i;
+	for (i = 0; i < l; i++)
+	{
+        fuente.blit_background(text_tmp, 0, System.get_img(), i);
+        fuente.blit_shadow(shadow, System.get_img(), i);
+        s_tmp.push_back(ctext[i]);
+	}
+
+    fuente.blit_font(text_tmp, &s_tmp, l, 0);
+    fuente.blit_font(shadow, &s_tmp, l, 0);
+    SDL_SetColorKey(text_tmp, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(text_tmp->format, 0,0,0));
+    SDL_SetColorKey(shadow, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(text_tmp->format, 0,0,0));
+
+	text.set_surface(text_tmp);
+	sha_text.set_surface(shadow);
+
+    Vtext_Sprite.push_back(sha_text);
 	Vtext_Sprite.push_back(text);
 }
 
@@ -63,10 +93,11 @@ void Window_Select::dispose()
 	{
 		(* My_vector).pop_back();
 	}
-	tp=(My_Sprite).size();
+	tp = command_sprites.size();
 	for (i = 0; i < tp; i ++)
 	{
-		(My_Sprite).pop_back();
+		command_sprites.pop_back();
+		sha_command_sprites.pop_back(); // They've got the same size
 	}
 	tp=(Vtext_Sprite).size();
 	for (i = 0; i < tp; i ++)
@@ -117,12 +148,39 @@ void Window_Select::setComands(vector <std::string> * str_Vec)
 {
 	My_vector=str_Vec;
 	unsigned int i;
-	std::string strd;
-	for (i = 0; i < (*My_vector).size(); i ++)
+	std::string ctext;
+	for (i = 0; i < My_vector->size(); i ++)
 	{
-		strd = (*My_vector).at(i);
-		text.set_surface(fuente.drawText(strd.c_str()));
-		My_Sprite.push_back(text);
+		ctext = (*My_vector)[i];
+
+        unsigned int l = ctext.size();
+
+        std::string s_tmp;
+
+        SDL_Surface *text_tmp = fuente.create_font_surface(FONT_WIDTH*l, 15);
+        SDL_Surface *shadow = fuente.create_font_surface(FONT_WIDTH*l, 15);
+
+        SDL_SetColorKey(text_tmp, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(text_tmp->format, 0,0,0));
+        SDL_SetColorKey(shadow, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(text_tmp->format, 0,0,0));
+
+        unsigned int i;
+        for (i = 0; i < l; i++)
+        {
+            fuente.blit_background(text_tmp, 0, System.get_img(), i);
+            fuente.blit_shadow(shadow, System.get_img(), i);
+            s_tmp.push_back(ctext[i]);
+        }
+
+        fuente.blit_font(text_tmp, &s_tmp, l, 0);
+        fuente.blit_font(shadow, &s_tmp, l, 0);
+        SDL_SetColorKey(text_tmp, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(text_tmp->format, 0,0,0));
+        SDL_SetColorKey(shadow, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(text_tmp->format, 0,0,0));
+
+        text.set_surface(text_tmp);
+        sha_text.set_surface(shadow);
+
+		command_sprites.push_back(text);
+		sha_command_sprites.push_back(sha_text);
 	}
 }
 
@@ -164,22 +222,28 @@ void Window_Select::draw(SDL_Surface* Screen)
 		cursor.draw(Screen);
 		for (j = offset; j <= ((Max_to_show+offset+1)*(Comand_X+1)-1); j ++)  //comandos
 		{
-			(My_Sprite.at(j)).x=pos_X+Init_text_X;
+			command_sprites[j].x=pos_X+Init_text_X;
+			sha_command_sprites[j].x = command_sprites[j].x+1;
 			if(Comand_X!=0)
 			{
-				(My_Sprite.at(j)).x= (My_Sprite.at(j)).x+((Size_of_Block+10)*((j)%(Comand_X+1)));
-				(My_Sprite.at(j)).y=((pos_Y+5)+((j-offset)/(Comand_X+1))*fuente.size);
+				command_sprites[j].x= command_sprites[j].x+((Size_of_Block+10)*((j)%(Comand_X+1)));
+				sha_command_sprites[j].x = command_sprites[j].x+1;
+				command_sprites[j].y=((pos_Y+5)+((j-offset)/(Comand_X+1))*fuente.size);
+                sha_command_sprites[j].y = command_sprites[j].y+1;
 			}
 			else
 			{
-				(My_Sprite.at(j)).y=((pos_Y+5)+((j-offset)*fuente.size));
+				command_sprites[j].y=((pos_Y+5)+((j-offset)*fuente.size));
+				sha_command_sprites[j].y = command_sprites[j].y+1;
 			}
-				(My_Sprite.at(j)).draw(Screen);
+                sha_command_sprites[j].draw(Screen);
+				command_sprites[j].draw(Screen);
+
 		}
 
-		for (i = 0; i < (Vtext_Sprite).size(); i ++) //textoadiconal
+		for (i = 0; i < Vtext_Sprite.size(); i++) //textoadiconal
 		{
-			((Vtext_Sprite).at(i)).draw(Screen);
+			Vtext_Sprite[i].draw(Screen);
 		}
 
 	}

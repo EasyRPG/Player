@@ -55,7 +55,7 @@ void Equip_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScen
 	menu.add_text("Otros",10,5+(4*space));
 	menu.setComands(& str_Vector);
 
-  	int item_tipe=(*( (*((*myteam).get_Weapon(i))).get_type()));
+  	int item_tipe= *myteam->get_Weapon(i)->get_type();
 
 	for(j=0;j<(*myteam).get_num_items();j++)
 	{

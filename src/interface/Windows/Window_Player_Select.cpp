@@ -53,12 +53,41 @@ void Window_Player_Select::set_curY(int y)
 {
 	Cur_pos_Y=y;
 }
-void Window_Player_Select::add_text(const char *ctext,int x,int y)
+void Window_Player_Select::add_text(std::string ctext,int x,int y)
 {
-
 	text.x=pos_X+x;
 	text.y=pos_Y+y;
-	text.set_surface(fuente.drawText(ctext));
+
+	sha_text.x=pos_X+x+1;
+	sha_text.y=pos_Y+y+1;
+
+	unsigned int l = ctext.size();
+
+	std::string s_tmp;
+
+    SDL_Surface *text_tmp = fuente.create_font_surface(FONT_WIDTH*l, 15);
+    SDL_Surface *shadow = fuente.create_font_surface(FONT_WIDTH*l, 15);
+
+    SDL_SetColorKey(text_tmp, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(text_tmp->format, 0,0,0));
+    SDL_SetColorKey(shadow, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(text_tmp->format, 0,0,0));
+
+	unsigned int i;
+	for (i = 0; i < l; i++)
+	{
+        fuente.blit_background(text_tmp, 0, System.get_img(), i);
+        fuente.blit_shadow(shadow, System.get_img(), i);
+        s_tmp.push_back(ctext[i]);
+	}
+
+    fuente.blit_font(text_tmp, &s_tmp, l, 0);
+    fuente.blit_font(shadow, &s_tmp, l, 0);
+    SDL_SetColorKey(text_tmp, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(text_tmp->format, 0,0,0));
+    SDL_SetColorKey(shadow, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(text_tmp->format, 0,0,0));
+
+	text.set_surface(text_tmp);
+	sha_text.set_surface(shadow);
+
+    Vtext_Sprite.push_back(sha_text);
 	Vtext_Sprite.push_back(text);
 
 }
