@@ -75,12 +75,12 @@ void Map_Scene::load_map()
     Actor.set_dir(myteam->actual_dir);
 
     myaudio->load("Music/Town.mid");
-    fuente.init_Font();
     myaudio->play(-1);
     Control::set_delay(0);
     Control::set_in_delay(0);
     Control::in_map = true;
     Ev_management.init(myaudio,NScene,myteam,Events,&Charas_nps,&Actor,&data,&chip);
+    Mov_management.init(&Charas_nps,&Actor,&data,&chip);
 }
 
 
@@ -191,224 +191,6 @@ void Map_Scene::Scroll()
 }
 
 
-bool Map_Scene::npc_colision(int x, int y,int e)
-{
-    unsigned int i;
-    for (i = 0; i < Charas_nps.size(); i++)
-    {
-        if (i!=(unsigned)e)
-            if (( Charas_nps[i].GridX==x) &&(Charas_nps[i].GridY==y))
-                //if(Charas_nps[i].layer==1)
-                return(false);
-    }
-    if (( Actor.GridX==x) &&(Actor.GridY==y))
-        return(false);
-    return(true);
-}
-int Map_Scene::get_dir(int i)
-{
-    int temp,z;
-    if (data.vcEvents[i].vcPage[0].Movement_type==0)//do not move
-        return(5);
-    if (data.vcEvents[i].vcPage[0].Movement_type==1)// random
-    {
-        temp=rand()%4;
-        for (z=0;z<4;z++)
-        {
-            switch (temp)
-            {
-            case DIRECTION_UP:
-                if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_UP))&&(npc_colision(Charas_nps[i].GridX, (Charas_nps[i].GridY-1),i)))
-                    return(temp);
-                break;
-            case DIRECTION_DOWN:
-                if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_DOWN))&&(npc_colision(Charas_nps[i].GridX, (Charas_nps[i].GridY+1),i)))
-                    return(temp);
-                break;
-            case DIRECTION_LEFT:
-                if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_LEFT))&&(npc_colision((Charas_nps[i].GridX-1), Charas_nps[i].GridY,i)))
-                    return(temp);
-                break;
-            case DIRECTION_RIGHT:
-                if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_RIGHT))&&(npc_colision((Charas_nps[i].GridX+1), Charas_nps[i].GridY,i)))
-                    return(temp);
-                break;
-            }
-            temp=(temp+1)%4;
-        }
-        return(5);
-    }
-    if (data.vcEvents[i].vcPage[0].Movement_type==2)// up down
-    {
-        if (Charas_nps[i].move_dir==0x00)
-        {
-            if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_UP))&&(npc_colision(Charas_nps[i].GridX, (Charas_nps[i].GridY-1),i)))
-                return(0x00);
-            else
-                if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_DOWN))&&(npc_colision(Charas_nps[i].GridX, (Charas_nps[i].GridY+1),i)))
-                    return(0x01);
-        }
-        else
-        {
-            if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_DOWN))&&(npc_colision(Charas_nps[i].GridX, (Charas_nps[i].GridY+1),i)))
-                return(0x01);
-            else
-                if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_UP))&&(npc_colision(Charas_nps[i].GridX, (Charas_nps[i].GridY-1),i)))
-                    return(0x00);
-        }
-        return(5);//default
-    }
-    if (data.vcEvents[i].vcPage[0].Movement_type==3)// left right
-    {
-        if (Charas_nps[i].move_dir==0x03)
-        {
-            if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_RIGHT))&&(npc_colision((Charas_nps[i].GridX+1), Charas_nps[i].GridY,i)))
-                return(0x03);
-            else
-                if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_LEFT))&&(npc_colision((Charas_nps[i].GridX-1), Charas_nps[i].GridY,i)))
-                    return(0x02);
-        }
-        else
-        {
-            if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_LEFT))&&(npc_colision((Charas_nps[i].GridX-1), Charas_nps[i].GridY,i)))
-                return(0x02);
-            else
-                if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_RIGHT))&&(npc_colision((Charas_nps[i].GridX+1), Charas_nps[i].GridY,i)))
-                    return(0x03);
-        }
-        return(5);//default
-    }
-
-    if (data.vcEvents[i].vcPage[0].Movement_type==4)// go to the hero
-    {
-        if (Charas_nps[i].GridX<Actor.GridX)
-        {
-            if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_RIGHT))&&(npc_colision((Charas_nps[i].GridX+1), Charas_nps[i].GridY,i)))
-                return(0x03);
-        }
-        if (Charas_nps[i].GridX>Actor.GridX)
-        {
-            if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_LEFT))&&(npc_colision((Charas_nps[i].GridX-1), Charas_nps[i].GridY,i)))
-                return(0x02);
-        }
-        if (Charas_nps[i].GridY<Actor.GridY)
-        {
-            if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_DOWN))&&(npc_colision(Charas_nps[i].GridX, (Charas_nps[i].GridY+1),i)))
-                return(0x01);
-        }
-        if (Charas_nps[i].GridY>Actor.GridY)
-        {
-            if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_UP))&&(npc_colision(Charas_nps[i].GridX, (Charas_nps[i].GridY-1),i)))
-                return(0x00);
-        }
-        temp=rand()%4;
-        for (z=0;z<4;z++)
-        {
-            switch (temp)
-            {
-            case DIRECTION_UP:
-                if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_UP))&&(npc_colision(Charas_nps[i].GridX, (Charas_nps[i].GridY-1),i)))
-                    return(temp);
-                break;
-            case DIRECTION_DOWN:
-                if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_DOWN))&&(npc_colision(Charas_nps[i].GridX, (Charas_nps[i].GridY+1),i)))
-                    return(temp);
-                break;
-            case DIRECTION_LEFT:
-                if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_LEFT))&&(npc_colision((Charas_nps[i].GridX-1), Charas_nps[i].GridY,i)))
-                    return(temp);
-                break;
-            case DIRECTION_RIGHT:
-                if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_RIGHT))&&(npc_colision((Charas_nps[i].GridX+1), Charas_nps[i].GridY,i)))
-                    return(temp);
-                break;
-            }
-            temp=(temp+1)%4;
-        }
-        return(5);
-    }
-
-
-
-    if (data.vcEvents[i].vcPage[0].Movement_type==5)// run frome the hero
-    {
-        if (Charas_nps[i].GridX<Actor.GridX)
-        {
-            if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_LEFT))&&(npc_colision((Charas_nps[i].GridX-1), Charas_nps[i].GridY,i)))
-                return(0x02);
-
-        }
-        if (Charas_nps[i].GridX>Actor.GridX)
-        {
-            if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_RIGHT))&&(npc_colision((Charas_nps[i].GridX+1), Charas_nps[i].GridY,i)))
-                return(0x03);
-        }
-        if (Charas_nps[i].GridY<Actor.GridY)
-        {
-            if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_UP))&&(npc_colision(Charas_nps[i].GridX, (Charas_nps[i].GridY-1),i)))
-                return(0x00);
-        }
-        if (Charas_nps[i].GridY>Actor.GridY)
-        {
-            if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_DOWN))&&(npc_colision(Charas_nps[i].GridX, (Charas_nps[i].GridY+1),i)))
-                return(0x01);
-        }
-        temp=rand()%4;
-        for (z=0;z<4;z++)
-        {
-            switch (temp)
-            {
-            case DIRECTION_UP:
-                if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_UP))&&(npc_colision(Charas_nps[i].GridX, (Charas_nps[i].GridY-1),i)))
-                    return(temp);
-                break;
-            case DIRECTION_DOWN:
-                if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_DOWN))&&(npc_colision(Charas_nps[i].GridX, (Charas_nps[i].GridY+1),i)))
-                    return(temp);
-                break;
-            case DIRECTION_LEFT:
-                if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_LEFT))&&(npc_colision((Charas_nps[i].GridX-1), Charas_nps[i].GridY,i)))
-                    return(temp);
-                break;
-            case DIRECTION_RIGHT:
-                if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_RIGHT))&&(npc_colision((Charas_nps[i].GridX+1), Charas_nps[i].GridY,i)))
-                    return(temp);
-                break;
-            }
-            temp=(temp+1)%4;
-        }
-        return(5);
-    }
-
-
-    if (data.vcEvents[i].vcPage[0].Movement_type==6)// use the stack
-    {
-        temp=data.vcEvents[i].vcPage[0].vcPage_Moves.vcMovement_commands[Charas_nps[i].actual_move].Comand;
-        Charas_nps[i].actual_move= ((Charas_nps[i].actual_move+1)%data.vcEvents[i].vcPage[0].vcPage_Moves.Movement_length);
-        switch (temp)
-        {
-        case 0:
-            if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_UP))&&(npc_colision(Charas_nps[i].GridX, (Charas_nps[i].GridY-1),i)))
-                return(DIRECTION_UP);
-            break;
-        case 2:
-            if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_DOWN))&&(npc_colision(Charas_nps[i].GridX, (Charas_nps[i].GridY+1),i)))
-                return(DIRECTION_DOWN);
-            break;
-        case 3:
-            if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_LEFT))&&(npc_colision((Charas_nps[i].GridX-1), Charas_nps[i].GridY,i)))
-                return(DIRECTION_LEFT);
-            break;
-        case 1:
-            if ((chip.CollisionAt(Charas_nps[i].GridX,Charas_nps[i].GridY,DIRECTION_RIGHT))&&(npc_colision((Charas_nps[i].GridX+1), Charas_nps[i].GridY,i)))
-                return(DIRECTION_RIGHT);
-            break;
-        }
-    }
-
-    return(5);
-}
-
 void Map_Scene::updatekey()
 {
     unsigned int i;
@@ -420,7 +202,7 @@ void Map_Scene::updatekey()
         {
             if ( Charas_nps[i].move_frec_check())//till time to move
             {
-                Charas_nps[i].move_dir=get_dir(i);
+                Charas_nps[i].move_dir= Mov_management.get_dir(i);
 
                 switch (Charas_nps[i].move_dir)
                 {
@@ -482,55 +264,10 @@ void Map_Scene::mapnpc()
         }
     }
 
-    /*
-    if ((Key_press_and_realsed(LMK_Z )) &&(npc.colision((*player))))
-    {
-    	Enemy enemigo;
-    	enemigo.set_HP(20);
-    	enemigo.set_MaxHP(20);
-    	enemigo.set_MP(200);
-    	enemigo.set_MaxMP(200);
-    	enemigo.set_Attack(12);
-    	enemigo.set_Defense(50);
-    	enemigo.set_Speed(25);
-    	enemigo.set_Spirit(20);
-    	(enemigo.Batler).setimg("Monster/Slime.png");
-    	(enemigo.Batler).setcols(1);
-    	(enemigo.Batler).setrows(1);
-    	(enemigo.Batler).x=140;
-    	(enemigo.Batler).y=100;
-    	enemigo.set_name("Limo");
-    	(*myteam).add_enemy(enemigo);
-    	enemigo.set_name("Murici");
-    	enemigo.set_HP(300);
-    	enemigo.set_MaxHP(30);
-    	(enemigo.Batler).setimg("Monster/Bat.png");
-    	(enemigo.Batler).x=80;
-    	(enemigo.Batler).y=100;
-    	(*myteam).add_enemy(enemigo);
-    	enemigo.set_HP(35);
-    	enemigo.set_MaxHP(35);
-    	enemigo.set_name("Araña");
-    	(enemigo.Batler).setimg("Monster/Spider.png");
-    	(enemigo.Batler).x=180;
-    	(enemigo.Batler).y=100;
-    	(*myteam).add_enemy(enemigo);
-    	enemigo.set_HP(20);
-    	enemigo.set_MaxHP(20);
-    	enemigo.set_name("Avispón");
-    	(enemigo.Batler).setimg("Monster/Bee.png");
-    	(enemigo.Batler).x=140;
-    	(enemigo.Batler).y=60;
-    	(*myteam).add_enemy(enemigo);
-    	* NScene=2;
-    }*/
 }
 void Map_Scene::dispose()
 {
     unsigned int i;
-
-    red.dispose();
-    //(*player).dispose();
     for (i = 0; i < Charas_nps.size(); i++)
     {
         Charas_nps[i].dispose();
@@ -539,6 +276,5 @@ void Map_Scene::dispose()
     Actor.dispose();
     Charas_nps.clear();
     pre_chip.dispose();
-    alexface.dispose();
     myaudio->stop();
 }

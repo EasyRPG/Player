@@ -49,11 +49,11 @@
 #include "../attributes/CActor.h"
 #include "scene.h"
 #include "Event_management.h"
+#include "Move_management.h"
 
 
 // =============================================================================
 // *****************************************************************************
-
 #define DIRECTION_UP      0x00
 #define DIRECTION_DOWN    0x01
 #define DIRECTION_LEFT    0x02
@@ -67,13 +67,9 @@ private:
 	CActor Actor;
 	Chara * player;
     E_management Ev_management;
+    Mv_management Mov_management;
 	std:: vector <Chara> Charas_nps;//agregar apuntador a vector de eventos
 
-	Window_Base message_box;
-
-	Faceset alexface;
-	Sprite red;
-	Font fuente;
 	bool moving;
 	int to_move;
 	Pre_Chipset pre_chip;
@@ -82,21 +78,15 @@ private:
 	map_data data;
     std:: vector <stEventMap> * Events;//agregar apuntador a vector de eventos
 	char stringBuffer[255];
-    bool npc_colision(int x, int y,int e);
 public:
-
-
 	//Map_Scene();		///constructor
 	//~Map_Scene();		///destructor
 	void init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * TheScene,Player_Team * TheTeam);
     void load_map();
     void update(SDL_Surface* Screen);
-    int  get_dir(int i);
 	void Scroll();
 	void updatekey();
-    int exec_comand(Event_comand * comand,int event_id, int comand_id);
 	void init_npc();
-
 	void mapnpc();
 	void dispose();
 

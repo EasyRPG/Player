@@ -174,6 +174,49 @@ int E_management::exec_comand(Event_comand * comand,int event_id, int comand_id)
     case Start_Combat:// 0xD356,
         Event_comand_Start_Combat * comand_Start_Combat;
         comand_Start_Combat = (Event_comand_Start_Combat*)comand;
+           /*
+    if ((Key_press_and_realsed(LMK_Z )) &&(npc.colision((*player))))
+    {
+    	Enemy enemigo;
+    	enemigo.set_HP(20);
+    	enemigo.set_MaxHP(20);
+    	enemigo.set_MP(200);
+    	enemigo.set_MaxMP(200);
+    	enemigo.set_Attack(12);
+    	enemigo.set_Defense(50);
+    	enemigo.set_Speed(25);
+    	enemigo.set_Spirit(20);
+    	(enemigo.Batler).setimg("Monster/Slime.png");
+    	(enemigo.Batler).setcols(1);
+    	(enemigo.Batler).setrows(1);
+    	(enemigo.Batler).x=140;
+    	(enemigo.Batler).y=100;
+    	enemigo.set_name("Limo");
+    	(*myteam).add_enemy(enemigo);
+    	enemigo.set_name("Murici");
+    	enemigo.set_HP(300);
+    	enemigo.set_MaxHP(30);
+    	(enemigo.Batler).setimg("Monster/Bat.png");
+    	(enemigo.Batler).x=80;
+    	(enemigo.Batler).y=100;
+    	(*myteam).add_enemy(enemigo);
+    	enemigo.set_HP(35);
+    	enemigo.set_MaxHP(35);
+    	enemigo.set_name("Araña");
+    	(enemigo.Batler).setimg("Monster/Spider.png");
+    	(enemigo.Batler).x=180;
+    	(enemigo.Batler).y=100;
+    	(*myteam).add_enemy(enemigo);
+    	enemigo.set_HP(20);
+    	enemigo.set_MaxHP(20);
+    	enemigo.set_name("Avispón");
+    	(enemigo.Batler).setimg("Monster/Bee.png");
+    	(enemigo.Batler).x=140;
+    	(enemigo.Batler).y=60;
+    	(*myteam).add_enemy(enemigo);
+    	* NScene=2;
+    }*/
+
         break;
 
     case Call_Shop:// 0xD360,
