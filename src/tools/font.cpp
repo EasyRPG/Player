@@ -24,7 +24,8 @@ void Font::init_TTF()
 
 void Font::init_Font()//esto es asi porque no se me ocurre aun algo mejor
 {
-	Fname="Font/VL-Gothic-Regular.ttf";
+	Fname="Font/RM2000.fon";
+
 	size=12;
 	fR=255;
 	fG=255;
@@ -75,7 +76,7 @@ void Font::blit_font(SDL_Surface *dst, std::string *s_tmp, int x, int y)
 
     if (s_tmp->size() <= 0)
     {
-        printf("* Warning: Tried to blit an empty string\n");
+        printf("* Warning: Tried to blit an empty string.\n");
         return;
     }
 
@@ -104,6 +105,7 @@ void Font::blit_background(SDL_Surface *dst, int n, SDL_Surface *back, int x)
     SDL_Rect pos_x = { x*FONT_WIDTH, 0, 10, 16 };
 
     SDL_BlitSurface(back, &clip_system, dst, &pos_x);
+    SDL_SetColorKey(dst, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(dst->format, 0,0,0));
 }
 
 void Font::blit_shadow(SDL_Surface *dst, SDL_Surface *back, int x)
@@ -112,6 +114,7 @@ void Font::blit_shadow(SDL_Surface *dst, SDL_Surface *back, int x)
     SDL_Rect pos_x = { x*FONT_WIDTH, 0, 10, 16 };
 
     SDL_BlitSurface(back, &clip_system, dst, &pos_x);
+    SDL_SetColorKey(dst, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(dst->format, 0,0,0));
 }
 
 Font::~Font()

@@ -157,8 +157,7 @@ void Window_Base::add_text(std::string ctext, int x, int y)
     }
     fuente.blit_font(text_tmp, &s_tmp, i-lost_space, 0);
     fuente.blit_font(shadow, &s_tmp, i-lost_space, 0);
-    SDL_SetColorKey(text_tmp, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(text_tmp->format, 0,0,0));
-    SDL_SetColorKey(shadow, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(text_tmp->format, 0,0,0));
+
 	text.set_surface(text_tmp);
 	sha_text.set_surface(shadow);
 
@@ -178,7 +177,7 @@ void Window_Base::draw(SDL_Surface* Screen)
 {
 	if (visible)
 	{
-		if(  !disposing  )
+		if (!disposing)
 		{
 			tapiz.draw(Screen);
 			unsigned int i;
