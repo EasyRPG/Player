@@ -211,8 +211,7 @@ void CambioScene(Audio *myaudio, Scene **apuntador)
 #ifdef PSP
 extern "C"
 #endif
-//int main(int argc, char *argv[])
-int main()
+int main(int argc, char *argv[])
 {
     #ifdef PSP
     freopen("stdout", "w", stdout);
