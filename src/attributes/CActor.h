@@ -50,6 +50,8 @@ public:
 	int Clamp(int value, int min, int max);
 	sll Clampf(float value, float min, float max);
     void setposXY(int x,int y,Chipset * the_World,std:: vector <Chara> * Charas_nps,unsigned char *TheScene, Player_Team *TheTeam);
+    void setposXY(int x,int y);
+
     unsigned char  flags;
 	unsigned char state;
 	mot Cmotion;

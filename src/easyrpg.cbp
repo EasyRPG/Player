@@ -90,6 +90,8 @@
 		<Unit filename="attributes/skill.h" />
 		<Unit filename="control/Batle_scene.cpp" />
 		<Unit filename="control/Batle_scene.h" />
+		<Unit filename="control/Event_management.cpp" />
+		<Unit filename="control/Event_management.h" />
 		<Unit filename="control/GameOver_scene.cpp" />
 		<Unit filename="control/GameOver_scene.h" />
 		<Unit filename="control/Map_scene.cpp" />

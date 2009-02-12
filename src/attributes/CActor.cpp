@@ -103,6 +103,16 @@ void CActor::setposXY(int x,int y,Chipset * the_World,std:: vector <Chara> * Cha
     realY=(sll)y;
     World=the_World;
 }
+
+void CActor::setposXY(int x,int y)
+{
+    GridX=x;///aparte de la X  y Y  tenemos la poscion con referencia bloques.
+    GridY=y;
+    x=x*16 -(getw()/2)+8;
+    y=y*16 -(geth())+16;
+    realX=(sll)x;
+    realY=(sll)y;
+}
 bool CActor::npc_colision(int x, int y)
 {
     unsigned int i;
@@ -214,7 +224,7 @@ void CActor::MoveOnInput()
             }
             break;
         case DECISION:
-            Control::set_delay_default();
+         //   Control::set_delay_default();
             tried_to_talk=true;
             break;
         case -1:

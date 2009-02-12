@@ -31,13 +31,9 @@
 #include "../sprites/sprite.h"
 #include "../sprites/chipset.h"
 #include "../sprites/Pre_Chipset.h"
-
 #include "../tools/key.h"
-
 #include "../tools/font.h"
-
 #include "../tools/audio.h"
-
 #include "../readers/map.h"
 #include "../readers/lmt.h"
 #include "../readers/ldb.h"
@@ -45,20 +41,14 @@
 #include <string>
 
 #include "../interface/Windows/Window_Base.h"
-
 #include "../attributes/skill.h"
-
 #include "../attributes/item.h"
-
 #include "../attributes/Enemy.h"
-
 #include "../attributes/Player.h"
-
 #include "../tools/math-sll.h"
-
 #include "../attributes/CActor.h"
-
 #include "scene.h"
+#include "Event_management.h"
 
 
 // =============================================================================
@@ -73,10 +63,10 @@ class Map_Scene: public Scene {
 
 private:
 
-	int SCREEN_SIZE_X, SCREEN_SIZE_Y;
+	int SCREEN_SIZE_X, SCREEN_SIZE_Y,actual_map;
 	CActor Actor;
 	Chara * player;
-
+    E_management Ev_management;
 	std:: vector <Chara> Charas_nps;//agregar apuntador a vector de eventos
 
 	Window_Base message_box;
