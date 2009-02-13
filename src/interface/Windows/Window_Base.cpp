@@ -76,7 +76,7 @@ void Window_Base::add_text(std::string ctext, int x, int y)
 
     bool state_control = false;
     Uint8 state = 0;
-    char type;
+    char type = 0;
 
 
     int n = 0;

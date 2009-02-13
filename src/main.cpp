@@ -217,6 +217,14 @@ int main(int argc, char *argv[])
     freopen("stdout", "w", stdout);
     freopen("stderr", "w", stderr);
     #endif
+    if (argc >= 2) //Dummy for now, avoiding "unused vars" warnings
+    {
+        for (int i = 0; i < argc; i++)
+        {
+            printf("Arg %d: %s\n", i, argv[i]);
+        }
+    }
+
     Music myaudio;
     int repxciclo,i;
     dictionary *ini;
