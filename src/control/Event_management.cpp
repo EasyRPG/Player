@@ -106,7 +106,8 @@ int E_management::exec_comand(Event_comand * comand,int event_id, E_state * coma
         //printf("Addline texto");
         Event_comand_Message * Add_line_to;
         Add_line_to= ( Event_comand_Message *)comand;
-        message_box->add_text(comand_Message->Text, 2);
+        message_box->add_text(Add_line_to->Text, 2);
+
         //printf("\n texto %s",Add_line_to->Text.c_str());
         break;
     case Message_options:// 0xCF08,
