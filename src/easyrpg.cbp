@@ -66,6 +66,8 @@
 		<Unit filename="control/Move_management.h" />
 		<Unit filename="control/Title_scene.cpp" />
 		<Unit filename="control/Title_scene.h" />
+		<Unit filename="control/events/message.cpp" />
+		<Unit filename="control/events/message.h" />
 		<Unit filename="control/scene.cpp" />
 		<Unit filename="control/scene.h" />
 		<Unit filename="interface/Control/Equip_Menu_scene.cpp" />
