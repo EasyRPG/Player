@@ -10,17 +10,11 @@ E_management::E_management()
     myteam = NULL;
     Events = NULL;//agregar apuntador a vector de eventos
     Charas_nps = NULL;
-    message_box = NULL;
     Actor = NULL;
     data = NULL;
     chip = NULL;
+    message_box = NULL;
 }
-
-E_management::~E_management()
-{
-    delete message_box;
-}
-
 
 void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * TheTeam,std:: vector <stEventMap> * TheEvents, std:: vector <Chara> * TheCharas_nps,CActor * TheActor, map_data * Thedata,Chipset * the_chip)
 {
@@ -36,6 +30,8 @@ void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * The
     system_string.append("System/");
     system_string.append(TheTeam->data2.System_dat.System_graphic);
     system_string.append(".png");
+
+    message_box = new CMessage(system_string);
 
     //message_box.init(320, 80, 0, 160, system_string.c_str());
     //message_box.visible = false;
@@ -101,17 +97,17 @@ int E_management::exec_comand(Event_comand * comand,int event_id, E_state * coma
         Event_comand_Message *comand_Message;
         comand_Message= ( Event_comand_Message *)comand;
 
-        message_box = new CMessage("System/System.png");
-        message_box->add_text(comand_Message->Text, 0);
+        message_box->add_text(comand_Message->Text, 1);
         CMessage::is_visible = true;
 
         break;
 
     case Add_line_to_message:
-        printf("Addline texto");
+        //printf("Addline texto");
         Event_comand_Message * Add_line_to;
         Add_line_to= ( Event_comand_Message *)comand;
-        printf("\n texto %s",Add_line_to->Text.c_str());
+        message_box->add_text(comand_Message->Text, 2);
+        //printf("\n texto %s",Add_line_to->Text.c_str());
         break;
     case Message_options:// 0xCF08,
         Event_comand_Message_options * comand_Message_options;

@@ -33,10 +33,8 @@ CMessage::CMessage(const std::string& sys)
 
 void CMessage::add_text(const std::string& ctext, int line)
 {
-    int foo;
-    foo = line;
 	text.x = pos_X+9;
-	text.y = pos_Y+9;
+	text.y = pos_Y+(9*line);
 
 	sha_text.x = text.x+1;
 	sha_text.y = text.y+1;

@@ -56,7 +56,6 @@ private:
 public:
 
     E_management();
-    ~E_management();
 
     void init(Audio * audio,unsigned char * TheScene,Player_Team * TheTeam,std:: vector <stEventMap> * TheEvents, std:: vector <Chara> * TheCharas_nps,CActor * TheActor,map_data * Thedata,Chipset * the_chip);
     int exec_comand(Event_comand * comand,int event_id, E_state * comand_id);
