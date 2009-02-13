@@ -25,8 +25,8 @@
 #include "../attributes/Player.h"
 #include "../tools/math-sll.h"
 #include "../attributes/CActor.h"
-#include "events/message.h"
 #include "scene.h"
+#include "events/message.h"
 
 struct E_state
 {
@@ -41,21 +41,22 @@ class E_management
 {
 
 private:
-    unsigned char * NScene;
-    bool * running;
+    unsigned char *NScene;
+    bool *running;
     bool use_keyboard;
     bool tried_to_talk;
-    Audio * myaudio;
-    Player_Team * myteam;
-    std:: vector <stEventMap> * Events;//agregar apuntador a vector de eventos
-    std:: vector <Chara> * Charas_nps;
-
-    Message *message_box;
-
+    Audio *myaudio;
+    Player_Team *myteam;
+    std:: vector <stEventMap> *Events;//agregar apuntador a vector de eventos
+    std:: vector <Chara> *Charas_nps;
+    CMessage *message_box;
     CActor *Actor;
     map_data *data;
     Chipset *chip;
 public:
+
+    E_management();
+    ~E_management();
 
     void init(Audio * audio,unsigned char * TheScene,Player_Team * TheTeam,std:: vector <stEventMap> * TheEvents, std:: vector <Chara> * TheCharas_nps,CActor * TheActor,map_data * Thedata,Chipset * the_chip);
     int exec_comand(Event_comand * comand,int event_id, E_state * comand_id);

@@ -2,7 +2,7 @@
 #define _H_MESSAGE 1
 #include "../../interface/Windows/Window_Base.h"
 
-/*enum m_pos
+enum m_pos
 {
     UP,
     CENTER,
@@ -15,17 +15,23 @@ typedef struct
     m_pos place;
     bool detect_hero;
 
-} message_options;*/
+} message_options;
 
-class Message: public Window_Base
+class CMessage: public Window_Base
 {
     private:
         std::bitset<255> type_set;
 
+        static message_options opt;
+
+
+
+
     public:
 
-        Message(int SizeX, int SizeY, int PosX, int PosY, const std::string& SysIMg);
+        static bool is_visible;
 
+        CMessage(const std::string& sys);
         void add_text(const std::string& ctext, int line);
 
 };

@@ -1,5 +1,26 @@
 #include "Event_management.h"
 
+E_management::E_management()
+{
+    NScene = NULL;
+    running = NULL;
+    use_keyboard = NULL;
+    tried_to_talk = NULL;
+    myaudio = NULL;
+    myteam = NULL;
+    Events = NULL;//agregar apuntador a vector de eventos
+    Charas_nps = NULL;
+    message_box = NULL;
+    Actor = NULL;
+    data = NULL;
+    chip = NULL;
+}
+
+E_management::~E_management()
+{
+    delete message_box;
+}
+
 
 void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * TheTeam,std:: vector <stEventMap> * TheEvents, std:: vector <Chara> * TheCharas_nps,CActor * TheActor, map_data * Thedata,Chipset * the_chip)
 {
@@ -25,7 +46,7 @@ void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * The
 
 void E_management::update(SDL_Surface *Screen)
 {
-    message_box.draw(Screen);
+    if (CMessage::is_visible) message_box->draw(Screen);
 }
 
 void E_management::updatekey()
@@ -59,7 +80,7 @@ void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id
         timer++;
         if ((tried_to_talk)&&(timer>30))
         {
-            message_box.visible = false;
+            message_box->visible = false;
             comand_id->id_exe_actual++;
             comand_id->id_actual_active=false;
             tried_to_talk=false;
@@ -79,10 +100,11 @@ int E_management::exec_comand(Event_comand * comand,int event_id, E_state * coma
     case Message:
         Event_comand_Message *comand_Message;
         comand_Message= ( Event_comand_Message *)comand;
-        //message_box.add_text(comand_Message->Text, 9, 9);
-        //message_box.visible = true;
 
-        message_box = new Message();
+        message_box = new CMessage("System/System.png");
+        message_box->add_text(comand_Message->Text, 0);
+        CMessage::is_visible = true;
+
         break;
 
     case Add_line_to_message:
@@ -564,3 +586,4 @@ int E_management::exec_comand(Event_comand * comand,int event_id, E_state * coma
     }
     return(comand_id->id_exe_actual);
 }
+

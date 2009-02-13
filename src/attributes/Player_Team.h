@@ -38,6 +38,7 @@ class Player_Team {
 	std:: vector <Player> Players;
 	std:: vector <Item> Items;
 	int Gold;
+
 	public:
 
     bool state_swich( int number);

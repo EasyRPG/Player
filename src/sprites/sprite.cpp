@@ -85,7 +85,7 @@ void Sprite::setimg(const std::string& string)
 
 	visible=true;
 	not_clean =true;
-	img = IMG_Load (string);
+	img = IMG_Load (string.c_str());
 
 	if (img == NULL)
 	{

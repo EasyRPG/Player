@@ -1,24 +1,37 @@
 #include "message.h"
-Message::Message(int SizeX, int SizeY, int PosX, int PosY, const std::string& SysIMg)
+message_options CMessage::opt =
 {
+    false,
+    DOWN,
+    false
+};
+
+bool CMessage::is_visible = false;
+
+CMessage::CMessage(const std::string& sys)
+{
+    const int SizeX = 320;
+    const int SizeY = 80;
+    const int PosX = 0;
+    const int PosY = 80 * opt.place;
 	System.init_Sistem();
-	System.setimg(SysIMg);
+	System.setimg(sys);
 	tapiz.set_surface(System.Exdraw(SizeX,SizeY));
-	tapiz.x=PosX;
-	tapiz.y=PosY;
+	tapiz.x = PosX;
+	tapiz.y = PosY;
 	fuente.init_Font();
-	pos_X=PosX;
-	pos_Y=PosY;
-	Size_X=SizeX;
-	Size_Y=SizeY;
-	disposing=false;
-	visible=true;
+	pos_X = PosX;
+	pos_Y = PosY;
+	Size_X = SizeX;
+	Size_Y = SizeY;
+	disposing = false;
+	visible = true;
 
     type_set.set('c');
     type_set.set('s');
 }
 
-void Message::add_text(const std::string& ctext, int line)
+void CMessage::add_text(const std::string& ctext, int line)
 {
     int foo;
     foo = line;
@@ -122,4 +135,5 @@ void Message::add_text(const std::string& ctext, int line)
 
 	Vtext_Sprite.push_back(sha_text);
 	Vtext_Sprite.push_back(text);
+
 }
