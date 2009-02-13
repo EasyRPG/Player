@@ -64,7 +64,7 @@ class Sprite {
 	    int x,y;
 	    void setx(int posx);
 	    void sety(int posy);
-	    void setimg(const char* string);
+	    void setimg(const std::string& string);
 	    void setcols(int icols);
 	    void setrows(int irows);
 	    void addx(int c);

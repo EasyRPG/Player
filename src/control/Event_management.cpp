@@ -3,49 +3,47 @@
 
 void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * TheTeam,std:: vector <stEventMap> * TheEvents, std:: vector <Chara> * TheCharas_nps,CActor * TheActor, map_data * Thedata,Chipset * the_chip)
 {
-     std::string system_string;
-    chip= the_chip;
-    NScene=TheScene;
-	myaudio=audio;
-    myteam =TheTeam;
-    Events=TheEvents;
-    Charas_nps=TheCharas_nps;
-    Actor= TheActor;
-    Thedata= data;
+    std::string system_string;
+    chip = the_chip;
+    NScene = TheScene;
+    myaudio = audio;
+    myteam = TheTeam;
+    Events = TheEvents;
+    Charas_nps = TheCharas_nps;
+    Actor = TheActor;
+    Thedata = data;
     system_string.append("System/");
     system_string.append(TheTeam->data2.System_dat.System_graphic);
     system_string.append(".png");
 
-    message_box.init(320, 80, 0, 160, system_string.c_str());
-    message_box.visible = false;
+    //message_box.init(320, 80, 0, 160, system_string.c_str());
+    //message_box.visible = false;
 
-    use_keyboard =false;
-    tried_to_talk=false;
+    use_keyboard = false;
+    tried_to_talk = false;
 }
 
 void E_management::update(SDL_Surface *Screen)
 {
- message_box.draw(Screen);
+    message_box.draw(Screen);
 }
 
 void E_management::updatekey()
 {
-    if(use_keyboard)
+    if (use_keyboard)
     {
         int temp;
         temp = Control::pop_action();
         switch (temp)
         {
         case DECISION:
-        tried_to_talk=true;
-        break;
+            tried_to_talk=true;
+            break;
         default:
-        tried_to_talk=false;
-        break;
-
+            tried_to_talk=false;
+            break;
         }
     }
-
 }
 
 
@@ -59,7 +57,7 @@ void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id
     case Message:
         use_keyboard=true;
         timer++;
-        if((tried_to_talk)&&(timer>30))
+        if ((tried_to_talk)&&(timer>30))
         {
             message_box.visible = false;
             comand_id->id_exe_actual++;
@@ -79,12 +77,14 @@ int E_management::exec_comand(Event_comand * comand,int event_id, E_state * coma
     switch (comand->Comand)
     {
     case Message:
-        Event_comand_Message * comand_Message;
+        Event_comand_Message *comand_Message;
         comand_Message= ( Event_comand_Message *)comand;
-        message_box.add_text(comand_Message->Text, 9, 9);
-        message_box.visible = true;
+        //message_box.add_text(comand_Message->Text, 9, 9);
+        //message_box.visible = true;
 
+        message_box = new Message();
         break;
+
     case Add_line_to_message:
         printf("Addline texto");
         Event_comand_Message * Add_line_to;
@@ -219,48 +219,48 @@ int E_management::exec_comand(Event_comand * comand,int event_id, E_state * coma
     case Start_Combat:// 0xD356,
         Event_comand_Start_Combat * comand_Start_Combat;
         comand_Start_Combat = (Event_comand_Start_Combat*)comand;
-           /*
-    if ((Key_press_and_realsed(LMK_Z )) &&(npc.colision((*player))))
-    {
-    	Enemy enemigo;
-    	enemigo.set_HP(20);
-    	enemigo.set_MaxHP(20);
-    	enemigo.set_MP(200);
-    	enemigo.set_MaxMP(200);
-    	enemigo.set_Attack(12);
-    	enemigo.set_Defense(50);
-    	enemigo.set_Speed(25);
-    	enemigo.set_Spirit(20);
-    	(enemigo.Batler).setimg("Monster/Slime.png");
-    	(enemigo.Batler).setcols(1);
-    	(enemigo.Batler).setrows(1);
-    	(enemigo.Batler).x=140;
-    	(enemigo.Batler).y=100;
-    	enemigo.set_name("Limo");
-    	(*myteam).add_enemy(enemigo);
-    	enemigo.set_name("Murici");
-    	enemigo.set_HP(300);
-    	enemigo.set_MaxHP(30);
-    	(enemigo.Batler).setimg("Monster/Bat.png");
-    	(enemigo.Batler).x=80;
-    	(enemigo.Batler).y=100;
-    	(*myteam).add_enemy(enemigo);
-    	enemigo.set_HP(35);
-    	enemigo.set_MaxHP(35);
-    	enemigo.set_name("Araña");
-    	(enemigo.Batler).setimg("Monster/Spider.png");
-    	(enemigo.Batler).x=180;
-    	(enemigo.Batler).y=100;
-    	(*myteam).add_enemy(enemigo);
-    	enemigo.set_HP(20);
-    	enemigo.set_MaxHP(20);
-    	enemigo.set_name("Avispón");
-    	(enemigo.Batler).setimg("Monster/Bee.png");
-    	(enemigo.Batler).x=140;
-    	(enemigo.Batler).y=60;
-    	(*myteam).add_enemy(enemigo);
-    	* NScene=2;
-    }*/
+        /*
+        if ((Key_press_and_realsed(LMK_Z )) &&(npc.colision((*player))))
+        {
+        Enemy enemigo;
+        enemigo.set_HP(20);
+        enemigo.set_MaxHP(20);
+        enemigo.set_MP(200);
+        enemigo.set_MaxMP(200);
+        enemigo.set_Attack(12);
+        enemigo.set_Defense(50);
+        enemigo.set_Speed(25);
+        enemigo.set_Spirit(20);
+        (enemigo.Batler).setimg("Monster/Slime.png");
+        (enemigo.Batler).setcols(1);
+        (enemigo.Batler).setrows(1);
+        (enemigo.Batler).x=140;
+        (enemigo.Batler).y=100;
+        enemigo.set_name("Limo");
+        (*myteam).add_enemy(enemigo);
+        enemigo.set_name("Murici");
+        enemigo.set_HP(300);
+        enemigo.set_MaxHP(30);
+        (enemigo.Batler).setimg("Monster/Bat.png");
+        (enemigo.Batler).x=80;
+        (enemigo.Batler).y=100;
+        (*myteam).add_enemy(enemigo);
+        enemigo.set_HP(35);
+        enemigo.set_MaxHP(35);
+        enemigo.set_name("Araña");
+        (enemigo.Batler).setimg("Monster/Spider.png");
+        (enemigo.Batler).x=180;
+        (enemigo.Batler).y=100;
+        (*myteam).add_enemy(enemigo);
+        enemigo.set_HP(20);
+        enemigo.set_MaxHP(20);
+        enemigo.set_name("Avispón");
+        (enemigo.Batler).setimg("Monster/Bee.png");
+        (enemigo.Batler).x=140;
+        (enemigo.Batler).y=60;
+        (*myteam).add_enemy(enemigo);
+        * NScene=2;
+        }*/
 
         break;
 
@@ -562,5 +562,5 @@ int E_management::exec_comand(Event_comand * comand,int event_id, E_state * coma
 
 
     }
-return(comand_id->id_exe_actual);
+    return(comand_id->id_exe_actual);
 }

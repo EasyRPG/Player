@@ -18,7 +18,7 @@
 
 void Window_Select::init(Audio * theaudio, bool * run,int ComandX,int ComandY,int SizeX,int SizeY,int PosX,int PosY, const char *SysIMg)
 {
-	menu.init( theaudio,run,ComandX,ComandY);
+	menu.init(theaudio,run,ComandX,ComandY);
 	System.init_Sistem();
 	System.setimg(SysIMg);
 	tapiz.set_surface(System.Exdraw(SizeX,SizeY));
@@ -81,7 +81,7 @@ void Window_Select::add_text(std::string ctext, int x, int y)
 
 void Window_Select::dispose()
 {
-	disposing=true;
+	disposing = true;
 	int i,tp;
 	System.dispose();
 	cursor.dispose();

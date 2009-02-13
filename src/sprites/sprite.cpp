@@ -78,7 +78,7 @@ int Sprite::getrows()
 	return rows;
 }
 
-void Sprite::setimg(const char* string)
+void Sprite::setimg(const std::string& string)
 {
     SDL_Color color;
     Uint32 colorKey;

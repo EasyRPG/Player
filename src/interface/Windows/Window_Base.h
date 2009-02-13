@@ -39,14 +39,14 @@ protected:
 	int falla;
 	bool disposing;
 
-    std::bitset<255> type_set;
+
 
 public:
 	//Window_Base();		///constructor
 	//~Window_Base();	///destructor
 	bool visible;
 	void dispose();
-	void init(int SizeX,int SizeY,int PosX,int PosY,const char *SysIMg);
+	void init(int SizeX, int SizeY, int PosX, int PosY, const std::string& SysIMg);
 	void draw(SDL_Surface* Screen);
 	void add_text(std::string ctext, int x, int y);
 	void add_sprite(Sprite * the_sprite, int x, int y);
