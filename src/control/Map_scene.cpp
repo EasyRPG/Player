@@ -196,7 +196,7 @@ void Map_Scene::updatekey()
 {
     unsigned int i;
     Ev_management.updatekey();
-    Actor.MoveOnInput();
+    Actor.MoveOnInput(running);
     Scroll();
     for (i = 0; i < Charas_nps.size(); i++)
     {

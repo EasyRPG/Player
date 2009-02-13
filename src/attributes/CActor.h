@@ -42,7 +42,7 @@ public:
     void set_dir(int the_dir);
     int get_dir();
     bool tried_to_talk;
-	void MoveOnInput();
+	void MoveOnInput(bool *running);
 	bool npc_colision(int x, int y);
     bool npc_subcolision(int id);
 	int Min(int value, int max);

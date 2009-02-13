@@ -152,7 +152,7 @@ bool CActor::npc_subcolision(int event_id)
                 return(true);
     return(false);
 }
-void CActor::MoveOnInput()
+void CActor::MoveOnInput(bool *running)
 {
     static int tim=0;
     if (flags & ACTOR_FLAGS_FREEZE)
@@ -226,6 +226,9 @@ void CActor::MoveOnInput()
         case DECISION:
          //   Control::set_delay_default();
             tried_to_talk=true;
+            break;
+        case EXIT:
+            *running = false;
             break;
         case -1:
             if (tim==2)

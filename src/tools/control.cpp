@@ -205,6 +205,9 @@ namespace Control
         {
             switch (event.type)
             {
+            case SDL_QUIT:
+                events.push_back(EXIT);
+                break;
             case B_DOWN:
                 if (decision_set.test(event.REG))
                 {
