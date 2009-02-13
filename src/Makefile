@@ -1,7 +1,7 @@
 SHELL = /bin/sh
 TARGET = ../easyrpg
 CC = g++
-SRCS =  attributes/*.cpp control/*.cpp interface/*.cpp interface/Control/*.cpp interface/Windows/*.cpp readers/*.cpp sprites/*.cpp tools/*.cpp *.cpp
+SRCS =  attributes/*.cpp control/*.cpp control/events/*.cpp interface/*.cpp interface/Control/*.cpp interface/Windows/*.cpp readers/*.cpp sprites/*.cpp tools/*.cpp *.cpp
 CFLAGS = -Os -s -Wall -Wextra -ansi -pedantic $(shell sdl-config --cflags)
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 
