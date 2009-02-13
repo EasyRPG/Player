@@ -77,6 +77,9 @@ private:
 	map_reader Map;
 	map_data data;
     std:: vector <stEventMap> * Events;//agregar apuntador a vector de eventos
+    std:: vector <E_state> Ev_state;//agregar apuntador a vector de eventos
+
+
 	char stringBuffer[255];
 public:
 	//Map_Scene();		///constructor

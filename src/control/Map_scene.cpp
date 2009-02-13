@@ -91,11 +91,13 @@ void Map_Scene::init_npc()
     Chara npc;
     npc.init_Chara();
     SDL_Surface *temp2;
-//printf("data stuck %d",i);
-
+    E_state original_state;
+    original_state.Event_Active=false;
+    original_state.id_exe_actual=0;
+    original_state.id_actual_active=false;
     for (i = 0; i < Events->size(); i++)
     {
-        //printf("data stuck %d",i);
+        Ev_state.push_back(original_state);
         system_string.clear();
         system_string.append("CharSet/");
         system_string.append(data.vcEvents[i].vcPage[0].CharsetName);
@@ -122,7 +124,6 @@ void Map_Scene::init_npc()
         npc.layer=data.vcEvents[i].vcPage[0].Event_height;
         npc.setposXY(data.vcEvents[i].X_position, data.vcEvents[i].Y_position);
         Charas_nps.push_back(npc);
-
     }
 }
 
@@ -194,6 +195,7 @@ void Map_Scene::Scroll()
 void Map_Scene::updatekey()
 {
     unsigned int i;
+    Ev_management.updatekey();
     Actor.MoveOnInput();
     Scroll();
     for (i = 0; i < Charas_nps.size(); i++)
@@ -241,16 +243,25 @@ void Map_Scene::mapnpc()
     Event_comand * comand;
     for (event_id=0;event_id< Charas_nps.size();event_id++)
     {
-        if (Actor.tried_to_talk &&(Actor.npc_subcolision(event_id)))
+        if (Actor.tried_to_talk &&(Actor.npc_subcolision(event_id))) //si cumple con su condicion de activacion
         {
-                printf(" x %d",data.vcEvents[event_id].vcPage[0].vcEvent_comand.size());
-                printf("total %d",data.vcEvents.size());
 
-                for(comand_id=0 ;comand_id<data.vcEvents[event_id].vcPage[0].vcEvent_comand.size(); comand_id++)
-                {
-                    comand=data.vcEvents[event_id].vcPage[0].vcEvent_comand[comand_id];
-                    printf("id %d",comand->Comand);
-                    comand_id =Ev_management.exec_comand(comand,event_id,comand_id);
+            if(!Ev_state[event_id].Event_Active) // si no esta activo
+            {
+                Ev_state[event_id].Event_Active=true; // activalo
+                Ev_state[event_id].id_exe_actual=0;
+                Ev_state[event_id].id_actual_active=false;
+            }
+            Actor.tried_to_talk=false;
+        }
+
+        if((!Ev_state[event_id].id_actual_active)&&(Ev_state[event_id].Event_Active))  //si el id actual no esta activa pero el evento  si
+        {
+            if(Ev_state[event_id].id_exe_actual< data.vcEvents[event_id].vcPage[0].vcEvent_comand.size())
+            {
+                comand=data.vcEvents[event_id].vcPage[0].vcEvent_comand[Ev_state[event_id].id_exe_actual];// lee el comando
+                Ev_state[event_id].id_actual_active=true;
+                comand_id =Ev_management.exec_comand(comand,event_id,&Ev_state[event_id]);// mandalo activar
                     if(actual_map!=myteam->actual_map)
                     {
                         dispose();
@@ -258,9 +269,18 @@ void Map_Scene::mapnpc()
                         break;
                         break;
                     }
-
-                }
-            Actor.tried_to_talk=false;
+            }
+            else
+            {
+                Ev_state[event_id].Event_Active=false;
+                Ev_state[event_id].id_exe_actual=0;
+                Ev_state[event_id].id_actual_active=false;
+            }
+        }
+        if((Ev_state[event_id].id_actual_active)&&(Ev_state[event_id].Event_Active))  //si el evento  esta activo
+        {
+            comand=data.vcEvents[event_id].vcPage[0].vcEvent_comand[Ev_state[event_id].id_exe_actual];// lee el comando
+            Ev_management.active_exec_comand(comand,&Ev_state[event_id]);
         }
     }
 

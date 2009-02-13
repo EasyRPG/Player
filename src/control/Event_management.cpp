@@ -19,7 +19,8 @@ void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * The
     message_box.init(320, 80, 0, 160, system_string.c_str());
     message_box.visible = false;
 
-
+    use_keyboard =false;
+    tried_to_talk=false;
 }
 
 void E_management::update(SDL_Surface *Screen)
@@ -27,8 +28,52 @@ void E_management::update(SDL_Surface *Screen)
  message_box.draw(Screen);
 }
 
+void E_management::updatekey()
+{
+    if(use_keyboard)
+    {
+        int temp;
+        temp = Control::pop_action();
+        switch (temp)
+        {
+        case DECISION:
+        tried_to_talk=true;
+        break;
+        default:
+        tried_to_talk=false;
+        break;
 
-int E_management::exec_comand(Event_comand * comand,int event_id, int comand_id)
+        }
+    }
+
+}
+
+
+void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id)
+{
+
+    static int timer=0;
+
+    switch (comand->Comand)
+    {
+    case Message:
+        use_keyboard=true;
+        timer++;
+        if((tried_to_talk)&&(timer>30))
+        {
+            message_box.visible = false;
+            comand_id->id_exe_actual++;
+            comand_id->id_actual_active=false;
+            tried_to_talk=false;
+            use_keyboard=false;
+            timer=0;
+        }
+        break;
+    }
+
+}
+
+int E_management::exec_comand(Event_comand * comand,int event_id, E_state * comand_id)
 {
 
     switch (comand->Comand)
@@ -517,5 +562,5 @@ int E_management::exec_comand(Event_comand * comand,int event_id, int comand_id)
 
 
     }
-return(comand_id);
+return(comand_id->id_exe_actual);
 }

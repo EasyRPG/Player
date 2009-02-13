@@ -27,11 +27,22 @@
 #include "../attributes/CActor.h"
 #include "scene.h"
 
+struct E_state
+{
+
+bool Event_Active;
+unsigned int id_exe_actual;
+bool id_actual_active;
+
+};
+
 class E_management{
 
 private:
     unsigned char * NScene;
 	bool * running;
+	bool use_keyboard;
+	bool tried_to_talk;
 	Audio * myaudio;
 	Player_Team * myteam;
     std:: vector <stEventMap> * Events;//agregar apuntador a vector de eventos
@@ -43,8 +54,10 @@ private:
 public:
 
     void init(Audio * audio,unsigned char * TheScene,Player_Team * TheTeam,std:: vector <stEventMap> * TheEvents, std:: vector <Chara> * TheCharas_nps,CActor * TheActor,map_data * Thedata,Chipset * the_chip);
-    int exec_comand(Event_comand * comand,int event_id, int comand_id);
+    int exec_comand(Event_comand * comand,int event_id, E_state * comand_id);
+    void active_exec_comand(Event_comand * comand, E_state * comand_id);
     void update(SDL_Surface *Screen);
+    void updatekey();
 
 };
 
