@@ -90,6 +90,7 @@ public:
 	void Scroll();
 	void updatekey();
 	void init_npc();
+	void active_event(int event_id);
 	void mapnpc();
 	void dispose();
 

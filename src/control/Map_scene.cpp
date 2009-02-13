@@ -236,24 +236,39 @@ void Map_Scene::updatekey()
     mapnpc();
 }
 
-
-void Map_Scene::mapnpc()
+void Map_Scene::active_event(int event_id)
 {
-    unsigned int event_id,comand_id;
-    Event_comand * comand;
-    for (event_id=0;event_id< Charas_nps.size();event_id++)
-    {
-        if (Actor.tried_to_talk &&(Actor.npc_subcolision(event_id))) //si cumple con su condicion de activacion
-        {
-
             if(!Ev_state[event_id].Event_Active) // si no esta activo
             {
                 Ev_state[event_id].Event_Active=true; // activalo
                 Ev_state[event_id].id_exe_actual=0;
                 Ev_state[event_id].id_actual_active=false;
             }
+}
+void Map_Scene::mapnpc()
+{
+    unsigned int event_id,comand_id;
+    Event_comand * comand;
+    for (event_id=0;event_id< Charas_nps.size();event_id++)
+    {
+//we need to define the active pages only there is just one for each event
+        if(data.vcEvents[event_id].vcPage[0].Activation_condition==0)
+        if (Actor.tried_to_talk &&(Actor.npc_subcolision(event_id))) //si cumple con su condicion de activacion
+        {
+            active_event(event_id);
             Actor.tried_to_talk=false;
         }
+        if((data.vcEvents[event_id].vcPage[0].Activation_condition==1)||(data.vcEvents[event_id].vcPage[0].Activation_condition==2))
+        if (Actor.npc_subcolision(event_id)) //si cumple con su condicion de activacion
+        {
+            active_event(event_id);
+        }
+        //if(data.vcEvents[event_id].vcPage[0].Activation_condition==4) //parallel process
+        //{
+          //  active_event(event_id);
+          //  Actor.tried_to_talk=false;
+        //}
+
 
         if((!Ev_state[event_id].id_actual_active)&&(Ev_state[event_id].Event_Active))  //si el id actual no esta activa pero el evento  si
         {
