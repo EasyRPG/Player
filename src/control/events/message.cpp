@@ -6,7 +6,7 @@ message_options CMessage::opt =
     false
 };
 
-bool CMessage::is_visible = false;
+//bool CMessage::is_visible = false;
 
 CMessage::CMessage(const std::string& sys)
 {
@@ -25,8 +25,7 @@ CMessage::CMessage(const std::string& sys)
 	Size_X = SizeX;
 	Size_Y = SizeY;
 	disposing = false;
-	visible = true;
-
+	visible = false;
     type_set.set('c');
     type_set.set('s');
 }
@@ -133,5 +132,7 @@ void CMessage::add_text(const std::string& ctext, int line)
 
 	Vtext_Sprite.push_back(sha_text);
 	Vtext_Sprite.push_back(text);
+text.dispose();
+sha_text.dispose();
 
 }

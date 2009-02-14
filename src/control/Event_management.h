@@ -34,6 +34,7 @@ struct E_state
     bool Event_Active;
     unsigned int id_exe_actual;
     bool id_actual_active;
+    unsigned int Active_page;
 
 };
 

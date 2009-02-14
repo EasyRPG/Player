@@ -29,7 +29,7 @@ class CMessage: public Window_Base
 
     public:
 
-        static bool is_visible;
+        bool is_visible;
 
         CMessage(const std::string& sys);
         void add_text(const std::string& ctext, int line);

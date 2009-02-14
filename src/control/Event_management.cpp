@@ -42,7 +42,10 @@ void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * The
 
 void E_management::update(SDL_Surface *Screen)
 {
-    if (CMessage::is_visible) message_box->draw(Screen);
+    if (message_box->visible)
+    {
+        message_box->draw(Screen);
+    }
 }
 
 void E_management::updatekey()
@@ -57,7 +60,7 @@ void E_management::updatekey()
             tried_to_talk=true;
             break;
         default:
-            tried_to_talk=false;
+           tried_to_talk=false;
             break;
         }
     }
@@ -96,9 +99,10 @@ int E_management::exec_comand(Event_comand * comand,int event_id, E_state * coma
     case Message:
         Event_comand_Message *comand_Message;
         comand_Message= ( Event_comand_Message *)comand;
+use_keyboard=true;
 
         message_box->add_text(comand_Message->Text, 1);
-        CMessage::is_visible = true;
+        message_box->visible = true;
 
         break;
 
@@ -322,7 +326,6 @@ int E_management::exec_comand(Event_comand * comand,int event_id, E_state * coma
         Actor->setposXY(myteam->actual_x_map,myteam->actual_y_map);
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
-
         break;
     case Store_hero_location:// 0xD444,
         Event_comand_Store_hero_location * comand_Store_hero_location;
