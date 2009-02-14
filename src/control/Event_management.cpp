@@ -320,6 +320,8 @@ int E_management::exec_comand(Event_comand * comand,int event_id, E_state * coma
         myteam->actual_x_map=command_Teleport_Party->X;
         myteam->actual_y_map=command_Teleport_Party->Y;
         Actor->setposXY(myteam->actual_x_map,myteam->actual_y_map);
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Store_hero_location:// 0xD444,
@@ -477,6 +479,9 @@ int E_management::exec_comand(Event_comand * comand,int event_id, E_state * coma
         Event_comand_Change_encounter_rate * command_Change_encounter_rate;
         command_Change_encounter_rate= ( Event_comand_Change_encounter_rate *)comand;
         myteam->Encounter_rate=command_Change_encounter_rate->Encounter_rate;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+
         break;
     case Change_single_tile:// 0xDB66,
         Event_comand_Change_single_tile * comand_Change_single_tile;
@@ -490,7 +495,8 @@ int E_management::exec_comand(Event_comand * comand,int event_id, E_state * coma
         Event_comand_Enable_teleport * comand_Enable_teleport;
         comand_Enable_teleport= (Event_comand_Enable_teleport *)comand;
         myteam->able_to_teleport=comand_Enable_teleport->Enable;
-        printf("Enable_teleport %d",comand_Enable_teleport->Enable);
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
         break;
     case Set_escape_location:// 0xDC36,
         Event_comand_Set_escape_location * comand_Set_escape_location;
@@ -500,31 +506,38 @@ int E_management::exec_comand(Event_comand * comand,int event_id, E_state * coma
         Event_comand_Enable_escape * comand_Enable_escape;
         comand_Enable_escape= (Event_comand_Enable_escape *) comand;
         myteam->able_to_escape=comand_Enable_escape->Enable;
-        printf("Enable_saving %d",comand_Enable_escape->Enable);
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
         break;
     case Call_save_menu:
         myteam->actual_x_map=Actor->GridX;
         myteam->actual_y_map=Actor->GridY;
         myteam->actual_dir=Actor->get_dir();
         *NScene = 9;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
         break;
     case Enable_saving:
         Event_comand_Enable_saving * comand_Enable_saving;
         comand_Enable_saving= (Event_comand_Enable_saving *) comand;
         myteam->able_to_save=comand_Enable_saving->Enable;
-        printf("Enable_saving %d",comand_Enable_saving->Enable);
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
         break;
     case Call_system_menu:
         myteam->actual_x_map=Actor->GridX;
         myteam->actual_y_map=Actor->GridY;
         myteam->actual_dir=Actor->get_dir();
         *NScene = 4;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
         break;
     case Enable_system_menu:
         Event_comand_Enable_system_menu * comand_Enable_system_menu;
         comand_Enable_system_menu= (Event_comand_Enable_system_menu *) comand;
         myteam->able_to_menu=comand_Enable_system_menu->Enable;
-        printf("Enable_system_menu %d",comand_Enable_system_menu->Enable);
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
         break;
     case Conditional:// 0xDD6A,
         Event_comand_Conditional * comand_Conditional;
@@ -560,6 +573,8 @@ int E_management::exec_comand(Event_comand * comand,int event_id, E_state * coma
         Charas_nps->at(event_id).GridX= data->MapHeight;
         Charas_nps->at(event_id).GridY= data->MapWidth;
         Charas_nps->at(event_id).layer= 3;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
         break;
     case Call_event:// 0xE02A,
         Event_comand_Call_event * comand_Call_event;
@@ -573,9 +588,13 @@ int E_management::exec_comand(Event_comand * comand,int event_id, E_state * coma
         break;
     case Game_over:
         *NScene = 3;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
         break;
     case Return_to_title_screen:
         *NScene = 0;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
         break;
 
 
