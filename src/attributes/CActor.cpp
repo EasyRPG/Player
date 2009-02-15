@@ -166,28 +166,9 @@ void CActor::MoveOnInput(bool *running)
         temp = Control::pop_LM();
         switch (temp)
         {
-        case CANCEL:
-
-           if(myteam->able_to_menu)
-           {
-            myteam->actual_x_map=GridX;
-            myteam->actual_y_map=GridY;
-            myteam->actual_dir=dir;
-            *NScene = 4;
-            }
-            break;
-
-      case DECISION:
-            //Control::set_delay_default();
-            tried_to_talk=true;
-            // Control::stop = true;
-            break;
-
         default:
             /**/
             break;
-
-
         }
 
         temp = Control::pop_action();
@@ -255,6 +236,23 @@ void CActor::MoveOnInput(bool *running)
                 tim++;
             }
             break;
+        case CANCEL:
+
+           if(myteam->able_to_menu)
+           {
+            myteam->actual_x_map=GridX;
+            myteam->actual_y_map=GridY;
+            myteam->actual_dir=dir;
+            *NScene = 4;
+            }
+            break;
+
+      case DECISION:
+            //Control::set_delay_default();
+            tried_to_talk=true;
+            // Control::stop = true;
+            break;
+
         default:
             /**/
             break;

@@ -53,7 +53,14 @@ void E_management::updatekey(bool *running)
     if (use_keyboard)
     {
         int temp;
-        temp = Control::pop_LM();
+         temp = Control::pop_LM();
+        switch (temp)
+        {
+        default:
+            /**/
+            break;
+        }
+        temp = Control::pop_action();
         switch (temp)
         {
         case DECISION:
@@ -68,7 +75,6 @@ void E_management::updatekey(bool *running)
             tried_to_talk=false;
             break;
         }
-     temp = Control::pop_action();//use less but keeps the chara on unable to move
 
 
     }

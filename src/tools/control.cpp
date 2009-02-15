@@ -84,7 +84,8 @@ namespace Control
     std::bitset<QUANTITY> left_set;
 
     int n_keys[N_KEYS] = {0,0,0,0,0,0,0,0};
-    int LM_keys[N_KEYS] = {0,0,0,0,0,0,0,0};
+    int LM_keys[N_KEYS] = {1,1,1,1,1,1,1,1};
+    //int LM_keys[N_KEYS] = {0,0,0,0,0,0,0,0};
 
     bool stop = false;
     bool in_map = false;
@@ -229,8 +230,12 @@ namespace Control
                 {
                     if ((n_keys[DECISION] == 0) && (events.empty()))
                     {
-                        events.push_back(DECISION);
-                        n_keys[DECISION]++;
+                        if(LM_keys[DECISION])
+                        {
+                            events.push_back(DECISION);
+                            n_keys[DECISION]++;
+                            LM_keys[DECISION]=0;
+                        }
                     }
                 }
                 else
@@ -238,8 +243,12 @@ namespace Control
                     {
                         if ((n_keys[CANCEL] == 0) && (events.empty()))
                         {
+                            if(LM_keys[CANCEL])
+                            {
                             events.push_back(CANCEL);
                             n_keys[CANCEL]++;
+                            LM_keys[CANCEL]=0;
+                            }
                         }
 
                     }
@@ -284,14 +293,22 @@ namespace Control
             case B_UP:
                 if (decision_set.test(event.REG))
                {
+                   if ((LM_keys[DECISION] == 0) && (LM_events.empty()))
+                   {
                     n_keys[DECISION] = 0;
                     LM_events.push_back(DECISION);
+                    LM_keys[DECISION]=1;
+                   }
                }
                 else
                     if (cancel_set.test(event.REG))
                     {
+                        if ((LM_keys[CANCEL] == 0) && (LM_events.empty()))
+                        {
                         n_keys[CANCEL] = 0;
                         LM_events.push_back(CANCEL);
+                        LM_keys[CANCEL]=1;
+                        }
                     }
                     else
                         if (up_set.test(event.REG))
@@ -324,6 +341,8 @@ namespace Control
         if ((in_map) && !(events.empty())) return;
         for (i = 0; i < N_KEYS; i++)
         {
+            if((i!=CANCEL)&&(i!=DECISION))
+           {
             if (n_keys[i] > delay)
             {
                 if (in_delay_tmp > in_delay)
@@ -336,6 +355,7 @@ namespace Control
             else
             {
                 if (n_keys[i] != 0) n_keys[i]++;
+            }
             }
         }
     }

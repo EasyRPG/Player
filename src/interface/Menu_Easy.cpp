@@ -65,12 +65,6 @@ if (desided==false)
         switch (temp)
         {
 
-           case DECISION:
-                desided= true;
-                break;
-            case CANCEL:
-                cancel=true;
-                break;
             default:
                 break;
         }
@@ -80,9 +74,12 @@ temp = Control::pop_action();
 if (desided==false)
         switch (temp)
         {
-            case DECISION:
+
+           case DECISION:
+                desided= true;
                 break;
             case CANCEL:
+                cancel=true;
                 break;
             case ARROW_UP:
                 indexY--;
