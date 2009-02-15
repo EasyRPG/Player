@@ -50,7 +50,7 @@ private:
     Player_Team *myteam;
     std:: vector <stEventMap> *Events;//agregar apuntador a vector de eventos
     std:: vector <Chara> *Charas_nps;
-    CMessage *message_box;
+    CMessage message_box;
     CActor *Actor;
     map_data *data;
     Chipset *chip;

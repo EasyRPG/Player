@@ -16,8 +16,9 @@
 
 #include "Map_scene.h"
 
-void Map_Scene::init(Audio *audio, int SCREEN_X, int SCREEN_Y, unsigned char *TheScene, Player_Team *TheTeam)
+void Map_Scene::init( bool * run,Audio *audio, int SCREEN_X, int SCREEN_Y, unsigned char *TheScene, Player_Team *TheTeam)
 {
+    running=run;
     myteam = TheTeam;
     myaudio = audio;
     SCREEN_SIZE_X = SCREEN_X;
@@ -265,20 +266,25 @@ void Map_Scene::mapnpc()
                 {
                 active_event(event_id);
                 }
-        //if(data.vcEvents[event_id].vcPage[0].Activation_condition==4) //parallel process
-        //{
-          //  active_event(event_id);
-          //  Actor.tried_to_talk=false;
-        //}
         }
 
 
-     //activar comandos
-        if((!Ev_state[event_id].id_actual_active)&&(Ev_state[event_id].Event_Active))  //si el id actual no esta activa pero el evento  si
-        {
-            if(Ev_state[event_id].id_exe_actual< data.vcEvents[event_id].vcPage[0].vcEvent_comand.size())
+            if((Ev_state[event_id].id_exe_actual< data.vcEvents[event_id].vcPage[0].vcEvent_comand.size())&&(Ev_state[event_id].Event_Active))
             {
                 comand=data.vcEvents[event_id].vcPage[0].vcEvent_comand[Ev_state[event_id].id_exe_actual];// lee el comando
+            }
+            else
+            {
+                Ev_state[event_id].Event_Active=false;
+                Ev_state[event_id].id_exe_actual=0;
+                Ev_state[event_id].id_actual_active=false;
+            }
+
+        if(Ev_state[event_id].Event_Active)
+        {
+     //activar comandos
+            if(!Ev_state[event_id].id_actual_active)  //si el id actual no esta activa pero el evento  si
+            {
                 Ev_state[event_id].id_actual_active=true;
                 comand_id =Ev_management.exec_comand(comand,event_id,&Ev_state[event_id]);// mandalo activar
                     if(actual_map!=myteam->actual_map)
@@ -289,26 +295,16 @@ void Map_Scene::mapnpc()
                         break;
                     }
             }
-            else
-            {
-                Ev_state[event_id].Event_Active=false;
-                Ev_state[event_id].id_exe_actual=0;
 
-                Ev_state[event_id].id_actual_active=false;
+    // ejecutar comandos
+            if(Ev_state[event_id].id_actual_active)  //si el evento  esta activo
+            {
+                Ev_management.active_exec_comand(comand,&Ev_state[event_id]);
             }
         }
 
-    // ejecutar comandos
-        if((Ev_state[event_id].id_actual_active)&&(Ev_state[event_id].Event_Active))  //si el evento  esta activo
-        {
-            comand=data.vcEvents[event_id].vcPage[0].vcEvent_comand[Ev_state[event_id].id_exe_actual];// lee el comando
-            Ev_management.active_exec_comand(comand,&Ev_state[event_id]);
-        }
-
-
     }
-        Actor.tried_to_talk=false;
-
+    Actor.tried_to_talk=false;
 
 
 }

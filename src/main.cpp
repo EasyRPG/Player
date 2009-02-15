@@ -138,7 +138,7 @@ void CambioScene(Audio *myaudio, Scene **apuntador)
         }
         if (TheScene == 1)
         {
-            mapas.init(myaudio, 320, 240, &TheScene, &team);
+            mapas.init(&running,myaudio, 320, 240, &TheScene, &team);
             *apuntador = &mapas;
             LastScene=1;
         }

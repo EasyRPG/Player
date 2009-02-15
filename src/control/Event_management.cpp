@@ -13,7 +13,6 @@ E_management::E_management()
     Actor = NULL;
     data = NULL;
     chip = NULL;
-    message_box = NULL;
 }
 
 void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * TheTeam,std:: vector <stEventMap> * TheEvents, std:: vector <Chara> * TheCharas_nps,CActor * TheActor, map_data * Thedata,Chipset * the_chip)
@@ -31,10 +30,8 @@ void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * The
     system_string.append(TheTeam->data2.System_dat.System_graphic);
     system_string.append(".png");
 
-    message_box = new CMessage(system_string);
 
-    //message_box.init(320, 80, 0, 160, system_string.c_str());
-    //message_box.visible = false;
+    message_box.init(system_string.c_str());
 
     use_keyboard = false;
     tried_to_talk = false;
@@ -42,9 +39,9 @@ void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * The
 
 void E_management::update(SDL_Surface *Screen)
 {
-    if (message_box->visible)
+    if (message_box.visible)
     {
-        message_box->draw(Screen);
+        message_box.draw(Screen);
     }
 }
 
@@ -74,18 +71,18 @@ void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id
 
     switch (comand->Comand)
     {
-    case Message:
+    case Message: Add_line_to_message:
         use_keyboard=true;
-        timer++;
-        if ((tried_to_talk)&&(timer>30))
+        if ((tried_to_talk)&&(timer<30))
         {
-            message_box->visible = false;
+            message_box.visible = false;
             comand_id->id_exe_actual++;
             comand_id->id_actual_active=false;
             tried_to_talk=false;
             use_keyboard=false;
-            timer=0;
         }
+        break;
+    default:
         break;
     }
 
@@ -99,20 +96,18 @@ int E_management::exec_comand(Event_comand * comand,int event_id, E_state * coma
     case Message:
         Event_comand_Message *comand_Message;
         comand_Message= ( Event_comand_Message *)comand;
-use_keyboard=true;
-
-        message_box->add_text(comand_Message->Text, 1);
-        message_box->visible = true;
+        use_keyboard=true;
+        message_box.add_text(comand_Message->Text, 1);
+        message_box.visible = true;
 
         break;
 
     case Add_line_to_message:
-        //printf("Addline texto");
+        use_keyboard=true;
         Event_comand_Message * Add_line_to;
         Add_line_to= ( Event_comand_Message *)comand;
-        message_box->add_text(Add_line_to->Text, 2);
-
-        //printf("\n texto %s",Add_line_to->Text.c_str());
+        message_box.add_text(Add_line_to->Text, 2);
+        message_box.visible = true;
         break;
     case Message_options:// 0xCF08,
         Event_comand_Message_options * comand_Message_options;

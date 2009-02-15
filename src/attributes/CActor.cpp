@@ -228,7 +228,7 @@ void CActor::MoveOnInput(bool *running)
             tried_to_talk=true;
             break;
         case EXIT:
-            *running = false;
+            (*running)=false;
             break;
         case -1:
             if (tim==2)

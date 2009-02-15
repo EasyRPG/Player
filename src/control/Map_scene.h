@@ -84,7 +84,7 @@ private:
 public:
 	//Map_Scene();		///constructor
 	//~Map_Scene();		///destructor
-	void init(Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * TheScene,Player_Team * TheTeam);
+	void init( bool * run,Audio * audio,int SCREEN_X, int SCREEN_Y,unsigned char * TheScene,Player_Team * TheTeam);
     void load_map();
     void update(SDL_Surface* Screen);
 	void Scroll();

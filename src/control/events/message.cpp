@@ -8,7 +8,7 @@ message_options CMessage::opt =
 
 //bool CMessage::is_visible = false;
 
-CMessage::CMessage(const std::string& sys)
+void CMessage::init(const std::string& sys)
 {
     const int SizeX = 320;
     const int SizeY = 80;
@@ -132,7 +132,7 @@ void CMessage::add_text(const std::string& ctext, int line)
 
 	Vtext_Sprite.push_back(sha_text);
 	Vtext_Sprite.push_back(text);
-text.dispose();
-sha_text.dispose();
+//text.dispose();
+//sha_text.dispose();
 
 }
