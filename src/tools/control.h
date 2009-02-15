@@ -22,7 +22,7 @@ namespace Control
 {
     extern bool stop;
     extern bool in_map;
-
+    int pop_LM();
     int pop_action();
     void update_keys();
 

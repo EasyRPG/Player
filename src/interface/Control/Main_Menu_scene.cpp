@@ -186,11 +186,13 @@ void Main_Menu_Scene::updatekey()
 			action();
 		}
 	}
-	if (Key_press_and_realsed(LMK_X))
-	{
-		myaudio->load("Sound/Cansel2.wav");
+
+       if(menu.menu.cancel)
+        {
+        myaudio->load("Sound/Cansel2.wav");
 		*NScene = 1;
-	}
+        }
+
 }
 void Main_Menu_Scene::dispose() {
 	menu.dispose();

@@ -75,7 +75,7 @@ void GO_Scene::updatekey()
     if (delay >40)
     {
     int temp;
-        temp = Control::pop_action();
+        temp = Control::pop_LM();
         switch (temp)
         {
         case DECISION:

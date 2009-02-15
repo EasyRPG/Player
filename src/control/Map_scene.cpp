@@ -118,8 +118,6 @@ void Map_Scene::init_npc()
             npc.frame = data.vcEvents[i].vcPage[0].Animation_frame;
         }
         npc.move_dir=data.vcEvents[i].vcPage[0].Movement_type;
-        if (npc.move_dir==2)
-            npc.move_dir=0;
         npc.move_frec=data.vcEvents[i].vcPage[0].Movement_frequency;
         npc.anim_frec=data.vcEvents[i].vcPage[0].Movement_speed;
         npc.layer=data.vcEvents[i].vcPage[0].Event_height;
@@ -247,7 +245,7 @@ void Map_Scene::mapnpc()
 {
 //we need to define the active pages only there is just one for each event
 
-    unsigned int event_id,comand_id;
+    unsigned int event_id;
     Event_comand * comand;
     for (event_id=0;event_id< Charas_nps.size();event_id++)
     {
@@ -318,6 +316,7 @@ void Map_Scene::dispose()
         Charas_nps[i].dispose();
     }
     Ev_state.clear();
+    Ev_management.dispose();
     data.clear_events();
     Actor.dispose();
     Charas_nps.clear();

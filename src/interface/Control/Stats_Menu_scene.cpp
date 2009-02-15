@@ -102,10 +102,17 @@ void Stats_Menu_Scene::update(SDL_Surface* Screen)
 
 void Stats_Menu_Scene::updatekey()
 {
-	if (Key_press_and_realsed(LMK_X ))
-	{
+int temp;
+        temp = Control::pop_LM();
+        switch (temp)
+        {
+        case CANCEL:
 		(*myaudio).load("../Sound/Cansel2.wav");* NScene=4;
-	}
+        break;
+        default:
+        break;
+
+        }
 }
 
 void Stats_Menu_Scene::dispose()

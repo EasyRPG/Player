@@ -73,6 +73,7 @@ namespace Control
 
     SDL_Event event;
     std::deque<int> events;
+    std::deque<int> LM_events;
 
     /* Posible Keyboard keys */
     std::bitset<QUANTITY> decision_set;
@@ -83,6 +84,7 @@ namespace Control
     std::bitset<QUANTITY> left_set;
 
     int n_keys[N_KEYS] = {0,0,0,0,0,0,0,0};
+    int LM_keys[N_KEYS] = {0,0,0,0,0,0,0,0};
 
     bool stop = false;
     bool in_map = false;
@@ -197,6 +199,20 @@ namespace Control
             return tmp;
         }
     }
+    int pop_LM()
+    {
+        if (LM_events.empty())
+        {
+            return -1;
+        }
+        else
+        {
+            int tmp;
+            tmp = LM_events.front();
+            LM_events.pop_front();
+            return tmp;
+        }
+    }
 
     void update_keys()
     {
@@ -267,22 +283,36 @@ namespace Control
                 break;
             case B_UP:
                 if (decision_set.test(event.REG))
+               {
                     n_keys[DECISION] = 0;
+                    LM_events.push_back(DECISION);
+               }
                 else
                     if (cancel_set.test(event.REG))
+                    {
                         n_keys[CANCEL] = 0;
+                        LM_events.push_back(CANCEL);
+                    }
                     else
                         if (up_set.test(event.REG))
+                        {
                             n_keys[ARROW_UP] = 0;
+                        }
                         else
                             if (down_set.test(event.REG))
+                            {
                                 n_keys[ARROW_DOWN] = 0;
+                            }
                             else
                                 if (right_set.test(event.REG))
+                                {
                                     n_keys[ARROW_RIGHT] = 0;
+                                }
                                 else
                                     if (left_set.test(event.REG))
+                                    {
                                         n_keys[ARROW_LEFT] = 0;
+                                    }
                 break;
             default:
                 ;

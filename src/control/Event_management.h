@@ -56,7 +56,7 @@ private:
 public:
 
     E_management();
-
+    void dispose();
     //static bool is_talking() { return tried_to_talk; }
 
     static bool tried_to_talk;

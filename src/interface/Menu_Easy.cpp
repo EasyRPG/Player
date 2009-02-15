@@ -56,24 +56,33 @@ void Menu_Easy::updatekey()
 {
 
 //static unsigned char * keyData;
-static unsigned char Last_key;
 //delay++;
 
 int temp;
 
-temp = Control::pop_action();
-
+temp = Control::pop_LM();
 if (desided==false)
-//	if(delay==4)
-//	{
         switch (temp)
         {
-            case DECISION:
-                Last_key=LMK_Z;
+
+           case DECISION:
                 desided= true;
                 break;
             case CANCEL:
                 cancel=true;
+                break;
+            default:
+                break;
+        }
+
+temp = Control::pop_action();
+
+if (desided==false)
+        switch (temp)
+        {
+            case DECISION:
+                break;
+            case CANCEL:
                 break;
             case ARROW_UP:
                 indexY--;

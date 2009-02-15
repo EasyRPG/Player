@@ -53,12 +53,13 @@ void E_management::updatekey(bool *running)
     if (use_keyboard)
     {
         int temp;
-        temp = Control::pop_action();
+        temp = Control::pop_LM();
         switch (temp)
         {
         case DECISION:
             tried_to_talk=true;
             break;
+
         case EXIT:
             (*running)=false;
             break;
@@ -67,6 +68,9 @@ void E_management::updatekey(bool *running)
             tried_to_talk=false;
             break;
         }
+     temp = Control::pop_action();//use less but keeps the chara on unable to move
+
+
     }
 }
 
@@ -99,8 +103,11 @@ void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id
     }
 
 }
-
-
+void E_management::dispose()
+{
+   delete message_box;
+   message_box=NULL;
+}
 
 void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int event_id, E_state * comand_id)
 {
