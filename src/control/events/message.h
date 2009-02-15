@@ -25,7 +25,7 @@ class CMessage: public Window_Base
         static message_options opt;
 
     public:
-
+        void clean();
         void init(const std::string& sys);
         void add_text(const std::string& ctext, int line);
 

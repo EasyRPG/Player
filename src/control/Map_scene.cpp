@@ -60,7 +60,7 @@ void Map_Scene::load_map()
     system_string.append(".lmu");
     // ===[ LOADING MAP DATA ]==============================================
     Map.Load((char *)system_string.c_str(), &data);
-    //Map.ShowInformation(&data);
+    Map.ShowInformation(&data);
 
     system_string.clear();
     system_string.append("ChipSet/");
@@ -269,22 +269,18 @@ void Map_Scene::mapnpc()
         }
 
 
-            if((Ev_state[event_id].id_exe_actual< data.vcEvents[event_id].vcPage[0].vcEvent_comand.size())&&(Ev_state[event_id].Event_Active))
-            {
-                comand=data.vcEvents[event_id].vcPage[0].vcEvent_comand[Ev_state[event_id].id_exe_actual];// lee el comando
-            }
-            else
-            {
-                Ev_state[event_id].Event_Active=false;
-                Ev_state[event_id].id_exe_actual=0;
-                Ev_state[event_id].id_actual_active=false;
-            }
+
 
         if(Ev_state[event_id].Event_Active)
         {
-     //activar comandos
-            if(!Ev_state[event_id].id_actual_active)  //si el id actual no esta activa pero el evento  si
+
+
+            if(Ev_state[event_id].id_exe_actual< data.vcEvents[event_id].vcPage[0].vcEvent_comand.size())
             {
+                comand=data.vcEvents[event_id].vcPage[0].vcEvent_comand[Ev_state[event_id].id_exe_actual];// lee el comando
+                //activar comandos
+                if(!Ev_state[event_id].id_actual_active)  //si el id actual no esta activa pero el evento  si
+                {
                 Ev_state[event_id].id_actual_active=true;
                 comand_id =Ev_management.exec_comand(comand,event_id,&Ev_state[event_id]);// mandalo activar
                     if(actual_map!=myteam->actual_map)
@@ -294,14 +290,22 @@ void Map_Scene::mapnpc()
                         break;
                         break;
                     }
-            }
+                }
 
-    // ejecutar comandos
-            if(Ev_state[event_id].id_actual_active)  //si el evento  esta activo
-            {
-                Ev_management.active_exec_comand(comand,&Ev_state[event_id]);
+                // ejecutar comandos
+                if(Ev_state[event_id].id_actual_active)  //si el evento  esta activo
+                {
+                    Ev_management.active_exec_comand(comand,&Ev_state[event_id]);
+                }
+
             }
-        }
+            else
+            {
+                Ev_state[event_id].Event_Active=false;
+                Ev_state[event_id].id_exe_actual=0;
+                Ev_state[event_id].id_actual_active=false;
+            }
+      }
 
     }
     Actor.tried_to_talk=false;

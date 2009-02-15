@@ -30,6 +30,18 @@ void CMessage::init(const std::string& sys)
     type_set.set('s');
 }
 
+void CMessage::clean()
+{
+int i,tp;
+	tp=(Vtext_Sprite).size();
+	for (i = 0; i < tp; i ++)
+	{
+	Vtext_Sprite[i].dispose();
+	}
+
+	Vtext_Sprite.clear();
+}
+
 void CMessage::add_text(const std::string& ctext, int line)
 {
 	text.x = pos_X+9;

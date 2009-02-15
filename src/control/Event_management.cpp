@@ -73,8 +73,11 @@ void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id
     {
     case Message: Add_line_to_message:
         use_keyboard=true;
-        if ((tried_to_talk)&&(timer<30))
+        timer++;
+
+        if ((tried_to_talk)&&(timer>30))
         {
+            timer=0;
             message_box.visible = false;
             comand_id->id_exe_actual++;
             comand_id->id_actual_active=false;
@@ -82,6 +85,20 @@ void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id
             use_keyboard=false;
         }
         break;
+        case  Add_line_to_message:
+        timer++;
+        use_keyboard=true;
+        if ((tried_to_talk)&&(timer>30))
+        {
+            timer=0;
+            message_box.visible = false;
+            comand_id->id_exe_actual++;
+            comand_id->id_actual_active=false;
+            tried_to_talk=false;
+            use_keyboard=false;
+        }
+        break;
+
     default:
         break;
     }
@@ -90,23 +107,26 @@ void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id
 
 int E_management::exec_comand(Event_comand * comand,int event_id, E_state * comand_id)
 {
-
+static int line=1;
     switch (comand->Comand)
     {
     case Message:
+        line=1;
+        message_box.clean();
         Event_comand_Message *comand_Message;
         comand_Message= ( Event_comand_Message *)comand;
         use_keyboard=true;
-        message_box.add_text(comand_Message->Text, 1);
+        message_box.add_text(comand_Message->Text, line);
         message_box.visible = true;
-
+        line++;
         break;
 
     case Add_line_to_message:
         use_keyboard=true;
         Event_comand_Message * Add_line_to;
         Add_line_to= ( Event_comand_Message *)comand;
-        message_box.add_text(Add_line_to->Text, 2);
+        message_box.add_text(Add_line_to->Text,line);
+        line++;
         message_box.visible = true;
         break;
     case Message_options:// 0xCF08,
