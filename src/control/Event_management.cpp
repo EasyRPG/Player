@@ -79,7 +79,7 @@ void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id
 
         /* Continue to the next command */
         timer++;
-        if (message_box->is_done()&&(timer>30) && message_box->next_command())
+        if (message_box->is_done()&&(timer>30) )
         {
             timer = 0;
             message_box->visible = false;

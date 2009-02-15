@@ -35,7 +35,7 @@ class CMessage: public Window_Base
         void idle();
         void add_text(const std::string& ctext, int line);
         bool is_done() { return done; }
-        bool next_command { return next; }
+//        bool next_command { return next; }
 
 };
 
