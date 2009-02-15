@@ -226,6 +226,7 @@ void CActor::MoveOnInput(bool *running)
         case DECISION:
             //Control::set_delay_default();
             tried_to_talk=true;
+//            Control::stop = true;
             break;
         case EXIT:
             (*running)=false;
@@ -235,11 +236,9 @@ void CActor::MoveOnInput(bool *running)
             {
                 tim=0;
                 frame_ori();
-
             }
             else
             {
-
                 tim++;
             }
             break;

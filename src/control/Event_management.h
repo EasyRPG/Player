@@ -45,18 +45,21 @@ private:
     unsigned char *NScene;
     bool *running;
     bool use_keyboard;
-    bool tried_to_talk;
     Audio *myaudio;
     Player_Team *myteam;
     std:: vector <stEventMap> *Events;//agregar apuntador a vector de eventos
     std:: vector <Chara> *Charas_nps;
-    CMessage message_box;
+    CMessage *message_box;
     CActor *Actor;
     map_data *data;
     Chipset *chip;
 public:
 
     E_management();
+
+    //static bool is_talking() { return tried_to_talk; }
+
+    static bool tried_to_talk;
 
     void init(Audio * audio,unsigned char * TheScene,Player_Team * TheTeam,std:: vector <stEventMap> * TheEvents, std:: vector <Chara> * TheCharas_nps,CActor * TheActor,map_data * Thedata,Chipset * the_chip);
     int exec_comand(Event_comand * comand,int event_id, E_state * comand_id);

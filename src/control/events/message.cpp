@@ -8,12 +8,14 @@ message_options CMessage::opt =
 
 //bool CMessage::is_visible = false;
 
-void CMessage::init(const std::string& sys)
+//void CMessage::init(const std::string& sys)
+CMessage::CMessage(const std::string& sys)
 {
     const int SizeX = 320;
     const int SizeY = 80;
     const int PosX = 0;
     const int PosY = 80 * opt.place;
+    done = false;
 	System.init_Sistem();
 	System.setimg(sys);
 	tapiz.set_surface(System.Exdraw(SizeX,SizeY));
@@ -26,14 +28,74 @@ void CMessage::init(const std::string& sys)
 	Size_Y = SizeY;
 	disposing = false;
 	visible = false;
+
+	blink = 0;
+	cursor = false;
+	next = false;
+
     type_set.set('c');
     type_set.set('s');
 }
 
-void CMessage::clean()
+void CMessage::draw(SDL_Surface *dst)
 {
-int i,tp;
-	tp=(Vtext_Sprite).size();
+    SDL_Rect clip =
+	{
+	    43,
+	    17,
+	    10,
+	     6
+    };
+    SDL_Rect pos =
+    {
+        155,
+        pos_Y+73,
+        10,
+         6
+    };
+
+	if (visible)
+	{
+		if (!disposing)
+		{
+			tapiz.draw(dst);
+			unsigned int i;
+			for (i = 0; i < Vtext_Sprite.size(); i++)
+			{
+				Vtext_Sprite[i].draw(dst);
+			}
+
+			for (i = 0; i < V_Sprite.size(); i++)
+			{
+				V_Sprite[i]->draw(dst);
+			}
+
+		}
+	}
+	if (blink >= 30)
+	{
+        if (cursor) SDL_BlitSurface(System.get_img(), &clip, dst, &pos);
+        blink++;
+	}
+    else
+    {
+        blink++;
+    }
+    if (blink >= 60) blink = 0;
+}
+
+void CMessage::idle()
+{
+
+
+
+}
+
+//void CMessage::clean()
+CMessage::~CMessage()
+{
+    int i, tp;
+	tp = Vtext_Sprite.size();
 	for (i = 0; i < tp; i ++)
 	{
 	Vtext_Sprite[i].dispose();
@@ -45,7 +107,7 @@ int i,tp;
 void CMessage::add_text(const std::string& ctext, int line)
 {
 	text.x = pos_X+9;
-	text.y = pos_Y+(9*line);
+	text.y = pos_Y+9+(15*line);
 
 	sha_text.x = text.x+1;
 	sha_text.y = text.y+1;
@@ -62,7 +124,6 @@ void CMessage::add_text(const std::string& ctext, int line)
 
     int n = 0;
     int n_color = 0;
-
     int lost_space=0;
 
     SDL_Surface *text_tmp = fuente.create_font_surface(FONT_WIDTH*l, 15);
@@ -144,6 +205,8 @@ void CMessage::add_text(const std::string& ctext, int line)
 
 	Vtext_Sprite.push_back(sha_text);
 	Vtext_Sprite.push_back(text);
+
+	cursor = true;
 //text.dispose();
 //sha_text.dispose();
 

@@ -33,7 +33,7 @@ protected:
 	int pos_X,pos_Y;
 	int Size_X,Size_Y;
 	std:: vector <Sprite> Vtext_Sprite;
-	std:: vector <int> V_Sprite;//appuntadores a sprites
+	std:: vector <Sprite*> V_Sprite;//appuntadores a sprites
 	Sprite text, sha_text;
 	char stringBuffer[255];
 	int falla;

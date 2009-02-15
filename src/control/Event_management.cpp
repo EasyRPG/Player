@@ -1,11 +1,12 @@
 #include "Event_management.h"
 
+bool E_management::tried_to_talk = false;
+
 E_management::E_management()
 {
     NScene = NULL;
     running = NULL;
     use_keyboard = NULL;
-    tried_to_talk = NULL;
     myaudio = NULL;
     myteam = NULL;
     Events = NULL;//agregar apuntador a vector de eventos
@@ -31,7 +32,9 @@ void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * The
     system_string.append(".png");
 
 
-    message_box.init(system_string.c_str());
+    //message_box.init(system_string.c_str());
+
+    message_box = new CMessage(system_string.c_str());
 
     use_keyboard = false;
     tried_to_talk = false;
@@ -39,9 +42,9 @@ void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * The
 
 void E_management::update(SDL_Surface *Screen)
 {
-    if (message_box.visible)
+    if (message_box->visible)
     {
-        message_box.draw(Screen);
+        message_box->draw(Screen);
     }
 }
 
@@ -57,7 +60,7 @@ void E_management::updatekey()
             tried_to_talk=true;
             break;
         default:
-           tried_to_talk=false;
+            tried_to_talk=false;
             break;
         }
     }
@@ -66,36 +69,24 @@ void E_management::updatekey()
 
 void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id)
 {
-
     static int timer=0;
 
     switch (comand->Comand)
     {
-    case Message: Add_line_to_message:
-        use_keyboard=true;
-        timer++;
+    case Message:
+    case Add_line_to_message:
+        use_keyboard = true;
 
-        if ((tried_to_talk)&&(timer>30))
-        {
-            timer=0;
-            message_box.visible = false;
-            comand_id->id_exe_actual++;
-            comand_id->id_actual_active=false;
-            tried_to_talk=false;
-            use_keyboard=false;
-        }
-        break;
-        case  Add_line_to_message:
+        /* Continue to the next command */
         timer++;
-        use_keyboard=true;
-        if ((tried_to_talk)&&(timer>30))
+        if (message_box->is_done()&&(timer>30) && message_box->next_command())
         {
-            timer=0;
-            message_box.visible = false;
+            timer = 0;
+            message_box->visible = false;
             comand_id->id_exe_actual++;
-            comand_id->id_actual_active=false;
-            tried_to_talk=false;
-            use_keyboard=false;
+            comand_id->id_actual_active = false;
+            tried_to_talk = false;
+            use_keyboard = false;
         }
         break;
 
@@ -107,17 +98,19 @@ void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id
 
 int E_management::exec_comand(Event_comand * comand,int event_id, E_state * comand_id)
 {
-static int line=1;
+    static int line = 0;
     switch (comand->Comand)
     {
     case Message:
-        line=1;
-        message_box.clean();
+        line = 0;
+        //message_box.clean();
+        //delete message_box;
         Event_comand_Message *comand_Message;
         comand_Message= ( Event_comand_Message *)comand;
         use_keyboard=true;
-        message_box.add_text(comand_Message->Text, line);
-        message_box.visible = true;
+        message_box->add_text(comand_Message->Text, line);
+        message_box->visible = true;
+        message_box->idle();
         line++;
         break;
 
@@ -125,10 +118,11 @@ static int line=1;
         use_keyboard=true;
         Event_comand_Message * Add_line_to;
         Add_line_to= ( Event_comand_Message *)comand;
-        message_box.add_text(Add_line_to->Text,line);
+        message_box->add_text(Add_line_to->Text,line);
         line++;
-        message_box.visible = true;
+        message_box->visible = true;
         break;
+
     case Message_options:// 0xCF08,
         Event_comand_Message_options * comand_Message_options;
         comand_Message_options = (Event_comand_Message_options *)comand;

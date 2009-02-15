@@ -20,14 +20,22 @@ typedef struct
 class CMessage: public Window_Base
 {
     private:
+        bool done, next;
+        int blink;
+        bool cursor;
         std::bitset<255> type_set;
-
         static message_options opt;
 
     public:
-        void clean();
-        void init(const std::string& sys);
+
+        CMessage(const std::string& sys);
+        ~CMessage();
+
+        void draw(SDL_Surface *dst);
+        void idle();
         void add_text(const std::string& ctext, int line);
+        bool is_done() { return done; }
+        bool next_command { return next; }
 
 };
 

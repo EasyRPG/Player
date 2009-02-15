@@ -101,7 +101,7 @@ void Window_Base::add_sprite(Sprite * the_sprite, int x, int y)
 {
 	(*the_sprite).x=pos_X+x;
 	(*the_sprite).y=pos_Y+y;
-	V_Sprite.push_back((int)the_sprite);
+	V_Sprite.push_back(the_sprite);
 }
 
 void Window_Base::draw(SDL_Surface* Screen)
