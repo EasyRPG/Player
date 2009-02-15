@@ -39,7 +39,34 @@ CMessage::CMessage(const std::string& sys)
 
 void CMessage::draw(SDL_Surface *dst)
 {
-    SDL_Rect clip =
+    unsigned int i;
+	if (visible)
+	{
+		if (!disposing)
+		{
+			tapiz.draw(dst);
+			for (i = 0; i < Vtext_Sprite.size(); i++)
+			{
+				Vtext_Sprite[i].draw(dst);
+			}
+
+			for (i = 0; i < V_Sprite.size(); i++)
+			{
+				V_Sprite[i]->draw(dst);
+			}
+            if(done)
+            draw_blink(dst);
+		}
+	}
+
+}
+
+
+
+void CMessage::draw_blink(SDL_Surface *dst)
+{
+
+   SDL_Rect clip =
 	{
 	    43,
 	    17,
@@ -54,24 +81,6 @@ void CMessage::draw(SDL_Surface *dst)
          6
     };
 
-	if (visible)
-	{
-		if (!disposing)
-		{
-			tapiz.draw(dst);
-			unsigned int i;
-			for (i = 0; i < Vtext_Sprite.size(); i++)
-			{
-				Vtext_Sprite[i].draw(dst);
-			}
-
-			for (i = 0; i < V_Sprite.size(); i++)
-			{
-				V_Sprite[i]->draw(dst);
-			}
-
-		}
-	}
 	if (blink >= 30)
 	{
         if (cursor) SDL_BlitSurface(System.get_img(), &clip, dst, &pos);
@@ -82,16 +91,26 @@ void CMessage::draw(SDL_Surface *dst)
         blink++;
     }
     if (blink >= 60) blink = 0;
+
 }
 
-void CMessage::idle()
+
+
+void CMessage::clean() //NO BORRAR clean no destruye el objeto, solo limpia el texto
 {
+    int i, tp;
+	tp = Vtext_Sprite.size();
+	for (i = 0; i < tp; i ++)
+	{
+	Vtext_Sprite[i].dispose();
+	}
 
-
-
+	Vtext_Sprite.clear();
 }
 
-//void CMessage::clean()
+
+
+
 CMessage::~CMessage()
 {
     int i, tp;
@@ -102,6 +121,7 @@ CMessage::~CMessage()
 	}
 
 	Vtext_Sprite.clear();
+    tapiz.dispose();
 }
 
 void CMessage::add_text(const std::string& ctext, int line)

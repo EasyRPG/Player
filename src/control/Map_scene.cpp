@@ -196,7 +196,7 @@ void Map_Scene::Scroll()
 void Map_Scene::updatekey()
 {
     unsigned int i;
-    Ev_management.updatekey();
+    Ev_management.updatekey(running);
     Actor.MoveOnInput(running);
     Scroll();
     for (i = 0; i < Charas_nps.size(); i++)
@@ -269,8 +269,6 @@ void Map_Scene::mapnpc()
         }
 
 
-
-
         if(Ev_state[event_id].Event_Active)
         {
 
@@ -282,7 +280,7 @@ void Map_Scene::mapnpc()
                 if(!Ev_state[event_id].id_actual_active)  //si el id actual no esta activa pero el evento  si
                 {
                 Ev_state[event_id].id_actual_active=true;
-                comand_id =Ev_management.exec_comand(comand,event_id,&Ev_state[event_id]);// mandalo activar
+                Ev_management.exec_comand(data.vcEvents[event_id].vcPage[0].vcEvent_comand,event_id,&Ev_state[event_id]);// mandalo activar
                     if(actual_map!=myteam->actual_map)
                     {
                         dispose();

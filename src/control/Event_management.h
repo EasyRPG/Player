@@ -62,11 +62,10 @@ public:
     static bool tried_to_talk;
 
     void init(Audio * audio,unsigned char * TheScene,Player_Team * TheTeam,std:: vector <stEventMap> * TheEvents, std:: vector <Chara> * TheCharas_nps,CActor * TheActor,map_data * Thedata,Chipset * the_chip);
-    int exec_comand(Event_comand * comand,int event_id, E_state * comand_id);
+    void exec_comand(std:: vector <Event_comand *> vcEvent_comand,int event_id, E_state * comand_id);
     void active_exec_comand(Event_comand * comand, E_state * comand_id);
     void update(SDL_Surface *Screen);
-    void updatekey();
-
+    void updatekey(bool *running);
 };
 
 

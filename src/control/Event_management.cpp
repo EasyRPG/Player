@@ -48,7 +48,7 @@ void E_management::update(SDL_Surface *Screen)
     }
 }
 
-void E_management::updatekey()
+void E_management::updatekey(bool *running)
 {
     if (use_keyboard)
     {
@@ -59,6 +59,10 @@ void E_management::updatekey()
         case DECISION:
             tried_to_talk=true;
             break;
+        case EXIT:
+            (*running)=false;
+            break;
+
         default:
             tried_to_talk=false;
             break;
@@ -79,7 +83,7 @@ void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id
 
         /* Continue to the next command */
         timer++;
-        if (message_box->is_done()&&(timer>30) )
+        if ((message_box->done&&(timer>30) )&&tried_to_talk)
         {
             timer = 0;
             message_box->visible = false;
@@ -96,21 +100,38 @@ void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id
 
 }
 
-int E_management::exec_comand(Event_comand * comand,int event_id, E_state * comand_id)
+
+
+void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int event_id, E_state * comand_id)
 {
+    Event_comand * comand,* Next_comand;
+    comand=vcEvent_comand[comand_id->id_exe_actual];// lee el comando
+    if(comand_id->id_exe_actual+1<vcEvent_comand.size())
+    Next_comand=vcEvent_comand[comand_id->id_exe_actual+1];// lee el comando
+    else
+    Next_comand=NULL;
+
     static int line = 0;
+
     switch (comand->Comand)
     {
     case Message:
         line = 0;
-        //message_box.clean();
-        //delete message_box;
+        message_box->clean();
         Event_comand_Message *comand_Message;
         comand_Message= ( Event_comand_Message *)comand;
         use_keyboard=true;
         message_box->add_text(comand_Message->Text, line);
         message_box->visible = true;
-        message_box->idle();
+        if((comand_id->id_exe_actual+1<vcEvent_comand.size())&&(Next_comand->Comand==Add_line_to_message))        //si hay otra linea  el comnado esta completo
+        {
+            comand_id->id_exe_actual++;
+            comand_id->id_actual_active = false;
+        }
+        else       // si no hay otra linea el mensaje es completo
+        message_box->done = true;
+
+
         line++;
         break;
 
@@ -121,6 +142,16 @@ int E_management::exec_comand(Event_comand * comand,int event_id, E_state * coma
         message_box->add_text(Add_line_to->Text,line);
         line++;
         message_box->visible = true;
+
+        if((comand_id->id_exe_actual+1<vcEvent_comand.size())&&(Next_comand->Comand==Add_line_to_message))        //si hay otra linea  el comnado esta completo
+        {
+            comand_id->id_exe_actual++;
+            comand_id->id_actual_active = false;
+        }
+        else       // si no hay otra linea el mensaje es completo
+        message_box->done = true;
+
+
         break;
 
     case Message_options:// 0xCF08,
@@ -612,6 +643,5 @@ int E_management::exec_comand(Event_comand * comand,int event_id, E_state * coma
 
 
     }
-    return(comand_id->id_exe_actual);
 }
 
