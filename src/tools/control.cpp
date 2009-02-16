@@ -339,10 +339,9 @@ namespace Control
         /* Key repeat */
         int i;
         if ((in_map) && !(events.empty())) return;
-        for (i = 0; i < N_KEYS; i++)
+        for (i = 2; i < N_KEYS; i++)
         {
-            if((i!=CANCEL)&&(i!=DECISION))
-           {
+
             if (n_keys[i] > delay)
             {
                 if (in_delay_tmp > in_delay)
@@ -356,7 +355,7 @@ namespace Control
             {
                 if (n_keys[i] != 0) n_keys[i]++;
             }
-            }
+
         }
     }
 }
