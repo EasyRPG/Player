@@ -29,6 +29,34 @@ void Player_Team::add_swich(unsigned char i)
 {
 	world_fase.push_back(i);
 }
+
+bool Player_Team::is_on_the_inventory(int id)
+{
+unsigned int i;
+for(i=0;i<Items.size();i++)
+{
+if(Items[i].id==id)
+{
+    return true;
+}
+}
+return false;
+}
+
+bool Player_Team::is_on_the_team(int id)
+{
+unsigned int i;
+for(i=0;i<Players.size();i++)
+{
+if(Players[i].id==id)
+{
+    return true;
+}
+}
+return false;
+}
+
+
 bool Player_Team::is_equal(int var,int number)
 {
 if(world_var[var-1]==number)

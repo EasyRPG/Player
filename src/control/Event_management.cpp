@@ -40,6 +40,13 @@ return false;
 
 if(((cond>>2)&1)&&(!myteam->is_equal(Page_conditions->Variable_ID,Page_conditions->Variable_value)))
 return false;
+
+if((((cond>>3)&1))&&(!myteam->is_on_the_inventory(Page_conditions->Item)))
+return false;
+
+if((((cond>>4)&1))&&(!myteam->is_on_the_team(Page_conditions->Hero)))
+return false;
+
 /*si el cuarto bit esta encendido y el objeto retorna false
 si el quinto bit esta encendido y el heroe retorna false
 si el sexto bit esta encendido y el temporalizadorno retorna false

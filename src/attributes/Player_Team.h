@@ -42,6 +42,8 @@ class Player_Team {
 	public:
 
     std:: vector <char> world_fase;
+    bool is_on_the_team(int id);
+    bool is_on_the_inventory(int id);
     bool is_equal(int var,int number);
     void add_swich(unsigned char i);
     bool state_swich( int number);

@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
@@ -57,7 +57,7 @@ protected:
 	unsigned char Accessory_type;
 
 public:
-
+    int id;
 	// Batler Battler;
 	std:: vector <Skill> Skills;
 
@@ -83,7 +83,7 @@ public:
 	void set_Armor_type(unsigned char The_Armor_type);
 	void set_Helmet_type(unsigned char The_Helmet_type);
 	void set_Accessory_type(unsigned char The_Accessory_type);
-	
+
 	void set_HP(int The_HP);
 	void set_MaxHP(int The_MaxHP);
 	void set_MP(int The_MP);
@@ -128,6 +128,6 @@ public:
 	int * get_skill_damange(int num);
 	int * get_skill_level_req(int num);
 	Animacion * get_skill_get_anim(int num);
-	
+
 };
 #endif

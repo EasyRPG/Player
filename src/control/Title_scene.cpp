@@ -130,7 +130,7 @@ void Title_Scene::init_party()
     {
     id=myteam->data2.System_dat.vc_sh_Starting_party[i];
     actual_hero= &(myteam->data2.heros[id-1]);
-
+    Alex.id=id;
     Alex.set_name(actual_hero->strName.c_str());
     Alex.set_job(actual_hero->strClass.c_str());
     start_level=actual_hero->intStartlevel;
@@ -183,7 +183,10 @@ for (j=0;j<(actual_hero->skills.size());j++)
     myteam->add_player(Alex);
 
     }
-
+   /* Item potion;
+    potion.set_name("Potion");
+    potion.id = 1;
+    myteam->add_item(potion);
 /* on rm2k you can not start with item
     myteam->set_Gold(100);
     myteam->add_item(Espada2);
