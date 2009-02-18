@@ -69,9 +69,11 @@ void Map_Scene::load_map()
     pre_chip.GenerateFromFile((char *) system_string.c_str());
 
     chip.init(pre_chip.ChipsetSurface, &data, &myteam->data2.Tilesets[(unsigned int) data.ChipsetID - 1] );
+    Ev_management.init(myaudio,NScene,myteam,Events,&Charas_nps,&Actor,&data,&chip);
 
     Events = &data.vcEvents;
     init_npc();
+
     Actor.setposXY(myteam->actual_x_map,myteam->actual_y_map, &chip,&Charas_nps,NScene,myteam);
     Actor.set_dir(myteam->actual_dir);
 
@@ -80,7 +82,6 @@ void Map_Scene::load_map()
     Control::set_delay(0);
     Control::set_in_delay(0);
     Control::in_map = true;
-    Ev_management.init(myaudio,NScene,myteam,Events,&Charas_nps,&Actor,&data,&chip);
     Mov_management.init(&Charas_nps,&Actor,&data,&chip);
 }
 
@@ -98,31 +99,53 @@ void Map_Scene::init_npc()
     original_state.id_actual_active=false;
     for (i = 0; i < Events->size(); i++)
     {
+        original_state.Active_page=Ev_management.Active_page(&data.vcEvents[i]);
+
         Ev_state.push_back(original_state);
-        system_string.clear();
-        system_string.append("CharSet/");
-        system_string.append(data.vcEvents[i].vcPage[0].CharsetName);
-        system_string.append(".png");
-        if (!system_string.compare("CharSet/.png"))
+
+        if(original_state.Active_page!=-1)
         {
-            temp2 = CreateSurface(24, 32);
-            chip.RenderTile(temp2, 4, 16, data.vcEvents[i].vcPage[0].CharsetID + 0x2710, 0);
-            npc.set_surface(temp2);
-            npc.dir = 0;
-            npc.frame = 1;
+            system_string.clear();
+            system_string.append("CharSet/");
+            system_string.append(data.vcEvents[i].vcPage[original_state.Active_page].CharsetName);
+            system_string.append(".png");
+            if (!system_string.compare("CharSet/.png"))
+            {
+                temp2 = CreateSurface(24, 32);
+                chip.RenderTile(temp2, 4, 16, data.vcEvents[i].vcPage[original_state.Active_page].CharsetID + 0x2710, 0);
+                npc.set_surface(temp2);
+                npc.dir = 0;
+                npc.frame = 1;
+            }
+            else
+            {
+                npc.setimg((char *) system_string.c_str(), data.vcEvents[i].vcPage[original_state.Active_page].CharsetID);
+                npc.dir = data.vcEvents[i].vcPage[original_state.Active_page].Facing_direction;
+                npc.frame = data.vcEvents[i].vcPage[original_state.Active_page].Animation_frame;
+            }
+                npc.move_dir=data.vcEvents[i].vcPage[original_state.Active_page].Movement_type;
+                npc.move_frec=data.vcEvents[i].vcPage[original_state.Active_page].Movement_frequency;
+                npc.anim_frec=data.vcEvents[i].vcPage[original_state.Active_page].Movement_speed;
+                npc.layer=data.vcEvents[i].vcPage[original_state.Active_page].Event_height;
+                npc.setposXY(data.vcEvents[i].X_position, data.vcEvents[i].Y_position);
+                Charas_nps.push_back(npc);
         }
         else
         {
-            npc.setimg((char *) system_string.c_str(), data.vcEvents[i].vcPage[0].CharsetID);
-            npc.dir = data.vcEvents[i].vcPage[0].Facing_direction;
-            npc.frame = data.vcEvents[i].vcPage[0].Animation_frame;
+                temp2 = CreateSurface(24, 32);
+                //chip.RenderTile(temp2, 4, 16,0x2711, 0);
+                npc.set_surface(temp2);
+
+                npc.dir = data.vcEvents[i].vcPage[0].Facing_direction;
+                npc.frame = data.vcEvents[i].vcPage[0].Animation_frame;
+                npc.move_dir=data.vcEvents[i].vcPage[0].Movement_type;
+                npc.move_frec=data.vcEvents[i].vcPage[0].Movement_frequency;
+                npc.anim_frec=data.vcEvents[i].vcPage[0].Movement_speed;
+                npc.layer=data.vcEvents[i].vcPage[0].Event_height;
+
+                npc.setposXY(data.vcEvents[i].X_position, data.vcEvents[i].Y_position);
+                Charas_nps.push_back(npc);
         }
-        npc.move_dir=data.vcEvents[i].vcPage[0].Movement_type;
-        npc.move_frec=data.vcEvents[i].vcPage[0].Movement_frequency;
-        npc.anim_frec=data.vcEvents[i].vcPage[0].Movement_speed;
-        npc.layer=data.vcEvents[i].vcPage[0].Event_height;
-        npc.setposXY(data.vcEvents[i].X_position, data.vcEvents[i].Y_position);
-        Charas_nps.push_back(npc);
     }
 }
 

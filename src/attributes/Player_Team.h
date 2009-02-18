@@ -34,19 +34,21 @@
 #include "../readers/lmt.h"
 
 class Player_Team {
-
+    private:
 	std:: vector <Player> Players;
 	std:: vector <Item> Items;
 	int Gold;
 
 	public:
 
+    std:: vector <char> world_fase;
+    bool is_equal(int var,int number);
+    void add_swich(unsigned char i);
     bool state_swich( int number);
     void set_true_swich( int number);
     void set_false_swich( int number);
 
-	std:: vector <unsigned char> swich;
-	std:: vector <int> var;
+	std:: vector <int> world_var;
 
     int actual_x_map;
     int actual_y_map;

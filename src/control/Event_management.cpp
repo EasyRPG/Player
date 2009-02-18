@@ -16,6 +16,38 @@ E_management::E_management()
     chip = NULL;
 }
 
+int E_management::Active_page(stEventMap * Event)
+{
+    int i;
+ for(i=(Event->vcPage.size()-1);i>=0;i--)
+{
+    if(is_Active(&(Event->vcPage[i].Page_conditions)))
+    return(i);
+}
+return(-1);
+}
+
+bool E_management::is_Active(stPageConditionEventMap * Page_conditions)//page conditions
+{
+int cond=Page_conditions->Conditions;
+if(cond==0)
+return true;
+if(((cond)&1)&&(!myteam->state_swich(Page_conditions->Switch_A_ID)))
+return false;
+
+if(((cond>>1)&1)&&(!myteam->state_swich(Page_conditions->Switch_B_ID)))
+return false;
+
+if(((cond>>2)&1)&&(!myteam->is_equal(Page_conditions->Variable_ID,Page_conditions->Variable_value)))
+return false;
+/*si el cuarto bit esta encendido y el objeto retorna false
+si el quinto bit esta encendido y el heroe retorna false
+si el sexto bit esta encendido y el temporalizadorno retorna false
+*/
+return true;
+
+}
+
 void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * TheTeam,std:: vector <stEventMap> * TheEvents, std:: vector <Chara> * TheCharas_nps,CActor * TheActor, map_data * Thedata,Chipset * the_chip)
 {
     std::string system_string;

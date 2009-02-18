@@ -25,13 +25,30 @@ void Player_Team::read_database()
    //my_lmt.print(&lmt);
  //   my_ldb.ShowInformation(&data2);
 }
+void Player_Team::add_swich(unsigned char i)
+{
+	world_fase.push_back(i);
+}
+bool Player_Team::is_equal(int var,int number)
+{
+if(world_var[var-1]==number)
+return true;
+return false;
+}
 
 bool Player_Team::state_swich( int number)
 {
-int real_id, position;
-real_id = (number/8);
+int unsigned real_id, position;
+unsigned char state,temp;
+number--;
+real_id =(unsigned int)(number/8);
 position= (number%8);
-return( swich[real_id]& (1<<position));
+if(real_id<world_fase.size())
+state=world_fase[real_id];
+else
+return(false);
+temp=(1<<position);
+return( state&temp );
 }
 
 void Player_Team::set_true_swich( int number)
@@ -39,7 +56,7 @@ void Player_Team::set_true_swich( int number)
 int real_id, position;
 real_id = (number/8);
 position= (number%8);
-swich[real_id]=(swich[real_id]||(1<<position));
+world_fase[real_id]=(world_fase[real_id]||(1<<position));
 }
 
 void Player_Team::set_false_swich( int number)
@@ -47,7 +64,7 @@ void Player_Team::set_false_swich( int number)
 int real_id, position;
 real_id = (number/8);
 position= (number%8);
-swich[real_id]=(swich[real_id]&(!(1<<position)));
+world_fase[real_id]=(world_fase[real_id]&(!(1<<position)));
 }
 
 void Player_Team::clear_team()

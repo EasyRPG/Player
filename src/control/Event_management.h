@@ -34,7 +34,7 @@ struct E_state
     bool Event_Active;
     unsigned int id_exe_actual;
     bool id_actual_active;
-    unsigned int Active_page;
+    int Active_page;
 
 };
 
@@ -53,8 +53,10 @@ private:
     CActor *Actor;
     map_data *data;
     Chipset *chip;
+    bool is_Active(stPageConditionEventMap * Page_conditions);//page conditions
+    bool state_swich( int number);
 public:
-
+    int Active_page(stEventMap * Event);
     E_management();
     void dispose();
     //static bool is_talking() { return tried_to_talk; }

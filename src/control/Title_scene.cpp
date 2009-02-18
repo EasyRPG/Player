@@ -30,8 +30,8 @@ Title_Scene::Title_Scene()
 void Title_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
 {
     unsigned int i =0;
-    unsigned char swich;
-    int var;
+     char swich=0;
+    int var=7;
     TheTeam->read_database();
     TheTeam->actual_map=TheTeam->lmt.party_map_id;
     TheTeam->actual_x_map=TheTeam->lmt.party_x;
@@ -44,10 +44,10 @@ void Title_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Pla
     TheTeam->able_to_teleport=1;
     TheTeam->Encounter_rate=0;
 
-    for( i=0; (i< (TheTeam->data2.Switch_Names.size()/8 +1));i++)
-    TheTeam->swich.push_back(swich);
+    for( i=0; (i< (TheTeam->data2.Switch_Names.size()/8));i++)
+    TheTeam->world_fase.push_back(swich);
     for( i=0; (i< TheTeam->data2.Switch_Names.size());i++)
-    TheTeam->var.push_back(var);
+    TheTeam->world_var.push_back(var);
 
 
 
