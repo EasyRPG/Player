@@ -16,6 +16,71 @@ E_management::E_management()
     chip = NULL;
 }
 
+void E_management::page_refresh()
+{
+    unsigned int i;
+    int current_page,old_page;
+    std::string system_string;
+    std::string * old_string;
+    std::string * new_string;
+    SDL_Surface *temp2;
+
+    for (i = 0; i < Events->size(); i++)
+    {
+        current_page=Active_page(&Events->at(i));
+        old_page=Ev_state->at(i).Active_page;
+        if(old_page!=current_page)// la pagina activa actual y si esta es diferente a la pagina activa anterior
+
+        if(current_page!=-1)
+        {
+            if(old_page!=-1)
+            old_string = &Events->at(i).vcPage[old_page].CharsetName;
+            new_string = &Events->at(i).vcPage[current_page].CharsetName;
+            if((old_page==-1)|| (!(new_string->compare(*old_string))))
+            {
+            system_string.clear();
+            system_string.append("CharSet/");
+            system_string.append(Events->at(i).vcPage[current_page].CharsetName);
+            system_string.append(".png");
+            if (!system_string.compare("CharSet/.png"))
+            {
+                temp2 = CreateSurface(24, 32);
+                chip->RenderTile(temp2, 4, 16, Events->at(i).vcPage[current_page].CharsetID + 0x2710, 0);
+                Charas_nps->at(i).dispose();
+                Charas_nps->at(i).set_surface(temp2);
+            }
+            else
+            {
+                Charas_nps->at(i).dispose();
+                Charas_nps->at(i).setimg((char *) system_string.c_str(), Events->at(i).vcPage[current_page].CharsetID);
+            }
+            }
+                Charas_nps->at(i).dir = Events->at(i).vcPage[current_page].Facing_direction;
+                Charas_nps->at(i).frame = Events->at(i).vcPage[current_page].Animation_frame;
+                Charas_nps->at(i).move_dir=Events->at(i).vcPage[current_page].Movement_type;
+                Charas_nps->at(i).move_frec=Events->at(i).vcPage[current_page].Movement_frequency;
+                Charas_nps->at(i).anim_frec=Events->at(i).vcPage[current_page].Movement_speed;
+                Charas_nps->at(i).layer=Events->at(i).vcPage[current_page].Event_height;
+                if(old_page==-1)//restart the position
+                Charas_nps->at(i).setposXY(Events->at(i).X_position, Events->at(i).Y_position);
+        }
+        else
+        {
+                temp2 = CreateSurface(24, 32);
+                Charas_nps->at(i).dispose();
+                Charas_nps->at(i).set_surface(temp2);
+                Charas_nps->at(i).dir = Events->at(i).vcPage[current_page].Facing_direction;
+                Charas_nps->at(i).frame = Events->at(i).vcPage[current_page].Animation_frame;
+                Charas_nps->at(i).move_dir=Events->at(i).vcPage[current_page].Movement_type;
+                Charas_nps->at(i).move_frec=Events->at(i).vcPage[current_page].Movement_frequency;
+                Charas_nps->at(i).anim_frec=Events->at(i).vcPage[current_page].Movement_speed;
+                Charas_nps->at(i).layer=Events->at(i).vcPage[current_page].Event_height;
+                Charas_nps->at(i).setposXY(Events->at(i).X_position, Events->at(i).Y_position);
+        }
+        Ev_state->at(i).Active_page=current_page;
+    }
+}
+
 int E_management::Active_page(stEventMap * Event)
 {
     int i;
@@ -55,8 +120,9 @@ return true;
 
 }
 
-void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * TheTeam,std:: vector <stEventMap> * TheEvents, std:: vector <Chara> * TheCharas_nps,CActor * TheActor, map_data * Thedata,Chipset * the_chip)
+void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * TheTeam,std:: vector <stEventMap> * TheEvents, std:: vector <Chara> * TheCharas_nps,CActor * TheActor, map_data * Thedata,Chipset * the_chip,std:: vector <E_state> *Evn_state)
 {
+    Ev_state=Evn_state;
     std::string system_string;
     chip = the_chip;
     NScene = TheScene;
@@ -234,6 +300,39 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Change_switch:// 0xCF62,
         Event_comand_Change_switch * comand_Change_switch;
         comand_Change_switch = (Event_comand_Change_switch *)comand;
+     int j;
+       if(comand_Change_switch->Mode<2)
+      {
+        for(j=comand_Change_switch->start_switch;j<=comand_Change_switch->end_switch;j++)
+        {
+            if(comand_Change_switch->toggle_option==0)
+                myteam->set_true_swich(j);
+            if(comand_Change_switch->toggle_option==1)
+                myteam->set_false_swich(j);
+            if(comand_Change_switch->toggle_option==2)
+                if(myteam->state_swich(j))
+                    myteam->set_false_swich(j);
+                else
+                    myteam->set_true_swich(j);
+        }
+      }
+      else
+      {
+            j=  myteam->world_var[comand_Change_switch->start_switch];
+            if(comand_Change_switch->toggle_option==0)
+                myteam->set_true_swich(j);
+            if(comand_Change_switch->toggle_option==1)
+                myteam->set_false_swich(j);
+            if(comand_Change_switch->toggle_option==2)
+                if(myteam->state_swich(j))
+                    myteam->set_false_swich(j);
+                else
+                    myteam->set_true_swich(j);
+
+        }
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
+        page_refresh();
         break;
     case Change_var:// 0xCF6C,
         Event_comand_Change_var * comand_Change_var;

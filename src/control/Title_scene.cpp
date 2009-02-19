@@ -31,7 +31,7 @@ void Title_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Pla
 {
     unsigned int i =0;
      char swich=0;
-    int var=7;
+    int var=0;
     TheTeam->read_database();
     TheTeam->actual_map=TheTeam->lmt.party_map_id;
     TheTeam->actual_x_map=TheTeam->lmt.party_x;
@@ -187,7 +187,7 @@ for (j=0;j<(actual_hero->skills.size());j++)
     potion.set_name("Potion");
     potion.id = 1;
     myteam->add_item(potion);
-/* on rm2k you can not start with item
+    on rm2k you can not start with item
     myteam->set_Gold(100);
     myteam->add_item(Espada2);
     myteam->add_item(pocion);

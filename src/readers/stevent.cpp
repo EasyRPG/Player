@@ -6,6 +6,9 @@
    void Event_comand_Simple:: show(){
    printf("\n Comand %d ",Comand);
    }
+ void Event_comand:: show(){
+   printf("\n Comand %d ",Comand);
+   }
 
   void Event_comand_Message:: show(){
   printf("\nText  %s\n", Text.c_str());

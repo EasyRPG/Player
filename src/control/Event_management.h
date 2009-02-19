@@ -48,6 +48,7 @@ private:
     Audio *myaudio;
     Player_Team *myteam;
     std:: vector <stEventMap> *Events;//agregar apuntador a vector de eventos
+    std:: vector <E_state> *Ev_state;//agregar apuntador a vector de eventos
     std:: vector <Chara> *Charas_nps;
     CMessage *message_box;
     CActor *Actor;
@@ -60,10 +61,11 @@ public:
     E_management();
     void dispose();
     //static bool is_talking() { return tried_to_talk; }
+    void page_refresh();
 
     static bool tried_to_talk;
 
-    void init(Audio * audio,unsigned char * TheScene,Player_Team * TheTeam,std:: vector <stEventMap> * TheEvents, std:: vector <Chara> * TheCharas_nps,CActor * TheActor,map_data * Thedata,Chipset * the_chip);
+    void init(Audio * audio,unsigned char * TheScene,Player_Team * TheTeam,std:: vector <stEventMap> * TheEvents, std:: vector <Chara> * TheCharas_nps,CActor * TheActor,map_data * Thedata,Chipset * the_chip,std:: vector <E_state> *Evn_state);
     void exec_comand(std:: vector <Event_comand *> vcEvent_comand,int event_id, E_state * comand_id);
     void active_exec_comand(Event_comand * comand, E_state * comand_id);
     void update(SDL_Surface *Screen);

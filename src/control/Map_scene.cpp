@@ -67,11 +67,10 @@ void Map_Scene::load_map()
     system_string.append(myteam->data2.Tilesets[(unsigned int) data.ChipsetID - 1].strGraphic);
     system_string.append(".png");
     pre_chip.GenerateFromFile((char *) system_string.c_str());
-
-    chip.init(pre_chip.ChipsetSurface, &data, &myteam->data2.Tilesets[(unsigned int) data.ChipsetID - 1] );
-    Ev_management.init(myaudio,NScene,myteam,Events,&Charas_nps,&Actor,&data,&chip);
-
     Events = &data.vcEvents;
+    chip.init(pre_chip.ChipsetSurface, &data, &myteam->data2.Tilesets[(unsigned int) data.ChipsetID - 1] );
+    Ev_management.init(myaudio,NScene,myteam,Events,&Charas_nps,&Actor,&data,&chip,&Ev_state);
+
     init_npc();
 
     Actor.setposXY(myteam->actual_x_map,myteam->actual_y_map, &chip,&Charas_nps,NScene,myteam);
@@ -147,8 +146,9 @@ void Map_Scene::init_npc()
                 Charas_nps.push_back(npc);
         }
     }
-}
+    Ev_management.init(myaudio,NScene,myteam,Events,&Charas_nps,&Actor,&data,&chip,&Ev_state);
 
+}
 
 
 void Map_Scene::update(SDL_Surface *Screen)
@@ -247,12 +247,15 @@ void Map_Scene::updatekey()
                 Charas_nps[i].state=true;
             }
         }
-        if (((data.vcEvents[i].vcPage[0].Animation_type==1)||(data.vcEvents[i].vcPage[0].Animation_type==3))&&data.vcEvents[i].vcPage[0].Movement_type==0)
+        if(Ev_state[i].Active_page!=-1)
+        {
+        if (((data.vcEvents[i].vcPage[0].Animation_type==1)||(data.vcEvents[i].vcPage[Ev_state[i].Active_page].Animation_type==3))&&data.vcEvents[i].vcPage[Ev_state[i].Active_page].Movement_type==0)
             Charas_nps[i].frameupdate();
-        if (data.vcEvents[i].vcPage[0].Animation_type==5)
+        if (data.vcEvents[i].vcPage[Ev_state[i].Active_page].Animation_type==5)
         {
             Charas_nps[i].nomalanimation=false;
             Charas_nps[i].rotationupdate();
+        }
         }
     }
     mapnpc();
@@ -272,17 +275,17 @@ void Map_Scene::mapnpc()
     Event_comand * comand;
     for (event_id=0;event_id< Charas_nps.size();event_id++)
     {
-
-   //activar eventos
+if(Ev_state[event_id].Active_page!=-1)
+  { //activar eventos
         if(!Ev_state[event_id].Event_Active)
         {
-            if(data.vcEvents[event_id].vcPage[0].Activation_condition==0)
+            if(data.vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].Activation_condition==0)
                 if((Actor.tried_to_talk &&(Actor.npc_subcolision(event_id)))) //si cumple con su condicion de activacion
                 {
                 active_event(event_id);
                 Actor.tried_to_talk=false;
                 }
-            if((data.vcEvents[event_id].vcPage[0].Activation_condition==1)||(data.vcEvents[event_id].vcPage[0].Activation_condition==2))
+            if((data.vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].Activation_condition==1)||(data.vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].Activation_condition==2))
                 if (Actor.npc_subcolision(event_id)) //si cumple con su condicion de activacion
                 {
                 active_event(event_id);
@@ -294,14 +297,14 @@ void Map_Scene::mapnpc()
         {
 
 
-            if(Ev_state[event_id].id_exe_actual< data.vcEvents[event_id].vcPage[0].vcEvent_comand.size())
+            if(Ev_state[event_id].id_exe_actual< data.vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].vcEvent_comand.size())
             {
-                comand=data.vcEvents[event_id].vcPage[0].vcEvent_comand[Ev_state[event_id].id_exe_actual];// lee el comando
+                comand=data.vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].vcEvent_comand[Ev_state[event_id].id_exe_actual];// lee el comando
                 //activar comandos
                 if(!Ev_state[event_id].id_actual_active)  //si el id actual no esta activa pero el evento  si
                 {
                 Ev_state[event_id].id_actual_active=true;
-                Ev_management.exec_comand(data.vcEvents[event_id].vcPage[0].vcEvent_comand,event_id,&Ev_state[event_id]);// mandalo activar
+                Ev_management.exec_comand(data.vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].vcEvent_comand,event_id,&Ev_state[event_id]);// mandalo activar
                     if(actual_map!=myteam->actual_map)
                     {
                         dispose();
@@ -325,7 +328,7 @@ void Map_Scene::mapnpc()
                 Ev_state[event_id].id_actual_active=false;
             }
       }
-
+  }
     }
     Actor.tried_to_talk=false;
 

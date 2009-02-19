@@ -10,7 +10,7 @@
   public:
    short Comand;
    int Depth;
-   //virtual void show();
+   void show();
     };
   class Event_comand_Simple: public Event_comand {
   public:

@@ -81,14 +81,16 @@ return( state&temp );
 
 void Player_Team::set_true_swich( int number)
 {
+number--;
 int real_id, position;
 real_id = (number/8);
 position= (number%8);
-world_fase[real_id]=(world_fase[real_id]||(1<<position));
+world_fase[real_id]=(world_fase[real_id]|(1<<(position)));
 }
 
 void Player_Team::set_false_swich( int number)
 {
+number--;
 int real_id, position;
 real_id = (number/8);
 position= (number%8);
