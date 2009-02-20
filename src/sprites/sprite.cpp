@@ -117,8 +117,8 @@ void Sprite::dispose()
         if(not_clean)
         {
 		SDL_FreeSurface(img);
-        	not_clean =false;
-	}
+        not_clean =false;
+        }
 }
 
 void Sprite::draw (SDL_Surface * screen)

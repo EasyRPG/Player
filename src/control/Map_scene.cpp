@@ -69,7 +69,7 @@ void Map_Scene::load_map()
     pre_chip.GenerateFromFile((char *) system_string.c_str());
     Events = &data.vcEvents;
     chip.init(pre_chip.ChipsetSurface, &data, &myteam->data2.Tilesets[(unsigned int) data.ChipsetID - 1] );
-    Ev_management.init(myaudio,NScene,myteam,Events,&Charas_nps,&Actor,&data,&chip,&Ev_state);
+    Ev_management.init(myaudio,NScene,myteam,Events,&Charas_nps,&Actor,&data,&chip,&Ev_state,&Mov_management);
 
     init_npc();
 
@@ -146,7 +146,7 @@ void Map_Scene::init_npc()
                 Charas_nps.push_back(npc);
         }
     }
-    Ev_management.init(myaudio,NScene,myteam,Events,&Charas_nps,&Actor,&data,&chip,&Ev_state);
+    Ev_management.init(myaudio,NScene,myteam,Events,&Charas_nps,&Actor,&data,&chip,&Ev_state,&Mov_management);
 
 }
 

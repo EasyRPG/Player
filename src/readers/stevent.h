@@ -61,10 +61,10 @@
 
   class Event_comand_Change_var: public Event_comand {
    public:
-    int Mode;
+    int Mode; //variable  grupo variable idque esta en variable
     int start_switch;
     int end_switch;
-    int operation;
+    int operation;//set +- * /
     int op_mode;
     int op_data1;
     int op_data2;

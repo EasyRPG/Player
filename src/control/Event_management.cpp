@@ -57,7 +57,7 @@ void E_management::page_refresh()
             }
                 Charas_nps->at(i).dir = Events->at(i).vcPage[current_page].Facing_direction;
                 Charas_nps->at(i).frame = Events->at(i).vcPage[current_page].Animation_frame;
-                Charas_nps->at(i).move_dir=Events->at(i).vcPage[current_page].Movement_type;
+                Charas_nps->at(i).move_dir= Mov_management->get_dir(Events->at(i).vcPage[current_page].Movement_type);
                 Charas_nps->at(i).move_frec=Events->at(i).vcPage[current_page].Movement_frequency;
                 Charas_nps->at(i).anim_frec=Events->at(i).vcPage[current_page].Movement_speed;
                 Charas_nps->at(i).layer=Events->at(i).vcPage[current_page].Event_height;
@@ -66,15 +66,16 @@ void E_management::page_refresh()
         }
         else
         {
+            //current_page =-1
                 temp2 = CreateSurface(24, 32);
                 Charas_nps->at(i).dispose();
                 Charas_nps->at(i).set_surface(temp2);
-                Charas_nps->at(i).dir = Events->at(i).vcPage[current_page].Facing_direction;
-                Charas_nps->at(i).frame = Events->at(i).vcPage[current_page].Animation_frame;
-                Charas_nps->at(i).move_dir=Events->at(i).vcPage[current_page].Movement_type;
-                Charas_nps->at(i).move_frec=Events->at(i).vcPage[current_page].Movement_frequency;
-                Charas_nps->at(i).anim_frec=Events->at(i).vcPage[current_page].Movement_speed;
-                Charas_nps->at(i).layer=Events->at(i).vcPage[current_page].Event_height;
+                Charas_nps->at(i).dir = 0;
+                Charas_nps->at(i).frame = 0;
+                Charas_nps->at(i).move_dir=5;
+                Charas_nps->at(i).move_frec=1;
+                Charas_nps->at(i).anim_frec=1;
+                Charas_nps->at(i).layer=3;
                 Charas_nps->at(i).setposXY(Events->at(i).X_position, Events->at(i).Y_position);
         }
         Ev_state->at(i).Active_page=current_page;
@@ -112,15 +113,13 @@ return false;
 if((((cond>>4)&1))&&(!myteam->is_on_the_team(Page_conditions->Hero)))
 return false;
 
-/*si el cuarto bit esta encendido y el objeto retorna false
-si el quinto bit esta encendido y el heroe retorna false
-si el sexto bit esta encendido y el temporalizadorno retorna false
+/*si el sexto bit esta encendido y el temporalizadorno retorna false
 */
 return true;
 
 }
 
-void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * TheTeam,std:: vector <stEventMap> * TheEvents, std:: vector <Chara> * TheCharas_nps,CActor * TheActor, map_data * Thedata,Chipset * the_chip,std:: vector <E_state> *Evn_state)
+void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * TheTeam,std:: vector <stEventMap> * TheEvents, std:: vector <Chara> * TheCharas_nps,CActor * TheActor, map_data * Thedata,Chipset * the_chip,std:: vector <E_state> *Evn_state,Mv_management * Move_management)
 {
     Ev_state=Evn_state;
     std::string system_string;
@@ -135,14 +134,10 @@ void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * The
     system_string.append("System/");
     system_string.append(TheTeam->data2.System_dat.System_graphic);
     system_string.append(".png");
-
-
-    //message_box.init(system_string.c_str());
-
     message_box = new CMessage(system_string.c_str());
-
     use_keyboard = false;
     tried_to_talk = false;
+    Mov_management=Move_management;
 }
 
 void E_management::update(SDL_Surface *Screen)
@@ -222,13 +217,13 @@ void E_management::dispose()
 
 void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int event_id, E_state * comand_id)
 {
+    int j,i;
     Event_comand * comand,* Next_comand;
     comand=vcEvent_comand[comand_id->id_exe_actual];// lee el comando
     if(comand_id->id_exe_actual+1<vcEvent_comand.size())
     Next_comand=vcEvent_comand[comand_id->id_exe_actual+1];// lee el comando
     else
     Next_comand=NULL;
-
     static int line = 0;
 
     switch (comand->Comand)
@@ -300,7 +295,6 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Change_switch:// 0xCF62,
         Event_comand_Change_switch * comand_Change_switch;
         comand_Change_switch = (Event_comand_Change_switch *)comand;
-     int j;
        if(comand_Change_switch->Mode<2)
       {
         for(j=comand_Change_switch->start_switch;j<=comand_Change_switch->end_switch;j++)
@@ -328,15 +322,104 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
                     myteam->set_false_swich(j);
                 else
                     myteam->set_true_swich(j);
-
         }
         comand_id->id_exe_actual++;
         comand_id->id_actual_active = false;
         page_refresh();
         break;
     case Change_var:// 0xCF6C,
-        Event_comand_Change_var * comand_Change_var;
-        comand_Change_var = (Event_comand_Change_var *)comand;
+            Event_comand_Change_var * comand_Change_var;
+            comand_Change_var = (Event_comand_Change_var *)comand;
+
+         switch(comand_Change_var->op_mode)
+            {
+            case 0:
+            i=comand_Change_var->op_data1;
+            printf("data to put %d",i);
+                break;
+            case 1:
+            i= myteam->world_var[comand_Change_var->op_data1];
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            default:
+                break;
+            }
+        if(comand_Change_var->Mode<2)
+      {
+
+        for(j=comand_Change_var->start_switch;j<=comand_Change_var->end_switch;j++)
+        {
+
+            switch(comand_Change_var->operation)
+            {
+            case 0:
+            myteam->world_var[j-1]=i;
+                break;
+            case 1:
+            myteam->world_var[j-1]+=i;
+            printf("variable usada %d",j);
+                break;
+            case 2:
+            myteam->world_var[j-1]-=i;
+                break;
+            case 3:
+            myteam->world_var[j-1]*=i;
+                break;
+            case 4:
+            myteam->world_var[j-1]/=i;
+                break;
+            case 5:
+            myteam->world_var[j-1]%=i;
+                break;
+            default:
+                break;
+
+            }
+
+
+         }
+      }
+      else
+      {
+            j=  myteam->world_var[comand_Change_var->start_switch];
+
+            switch(comand_Change_var->operation)
+            {
+            case 0:
+            myteam->world_var[j-1]=i;
+                break;
+            case 1:
+            myteam->world_var[j-1]+=i;
+                break;
+            case 2:
+            myteam->world_var[j-1]-=i;
+                break;
+            case 3:
+            myteam->world_var[j-1]*=i;
+                break;
+            case 4:
+            myteam->world_var[j-1]/=i;
+                break;
+            case 5:
+            myteam->world_var[j-1]%=i;
+                break;
+            default:
+                break;
+
+            }
+        }
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
+        page_refresh();
         break;
     case Timer_manipulation:// 0xCF76,
         Event_comand_Timer_manipulation * comand_Timer_manipulation;
