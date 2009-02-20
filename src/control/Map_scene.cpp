@@ -140,9 +140,8 @@ void Map_Scene::init_npc()
                 npc.move_dir=data.vcEvents[i].vcPage[0].Movement_type;
                 npc.move_frec=data.vcEvents[i].vcPage[0].Movement_frequency;
                 npc.anim_frec=data.vcEvents[i].vcPage[0].Movement_speed;
-                npc.layer=data.vcEvents[i].vcPage[0].Event_height;
-
-                npc.setposXY(data.vcEvents[i].X_position, data.vcEvents[i].Y_position);
+                npc.layer=3;
+                npc.setposXY(data.MapWidth,data.MapHeight);
                 Charas_nps.push_back(npc);
         }
     }

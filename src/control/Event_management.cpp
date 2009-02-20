@@ -76,7 +76,7 @@ void E_management::page_refresh()
                 Charas_nps->at(i).move_frec=1;
                 Charas_nps->at(i).anim_frec=1;
                 Charas_nps->at(i).layer=3;
-                Charas_nps->at(i).setposXY(Events->at(i).X_position, Events->at(i).Y_position);
+               // Charas_nps->at(i).setposXY(Events->at(i).X_position, Events->at(i).Y_position);
         }
         Ev_state->at(i).Active_page=current_page;
     }
