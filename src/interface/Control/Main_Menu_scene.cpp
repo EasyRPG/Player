@@ -58,7 +58,7 @@ void Main_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene
 
 	gold.add_text("Gold",5,5);
 	char stringBuffer[255];
-	sprintf(stringBuffer, "$ %d", (*(*myteam).get_Gold()));
+	sprintf(stringBuffer, "$ %d", ((*myteam).get_Gold()));
 	gold.add_text(stringBuffer,5,20);
 	int space=60;
 

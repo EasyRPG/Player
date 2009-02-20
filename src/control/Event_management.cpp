@@ -243,8 +243,6 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         }
         else       // si no hay otra linea el mensaje es completo
         message_box->done = true;
-
-
         line++;
         break;
 
@@ -263,8 +261,6 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         }
         else       // si no hay otra linea el mensaje es completo
         message_box->done = true;
-
-
         break;
 
     case Message_options:// 0xCF08,
@@ -428,6 +424,42 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Change_cash_held:// 0xD046,
         Event_comand_Change_cash_held * comand_Change_cash_held;
         comand_Change_cash_held = (Event_comand_Change_cash_held *)comand;
+        j=myteam->get_Gold();
+        if(comand_Change_cash_held->By_Value)
+        {
+         if(comand_Change_cash_held->Add)
+            {
+            j=j-myteam->world_var[comand_Change_cash_held->Amount-1];
+            if(j<0)
+            j=0;
+            myteam->set_Gold(j);
+            }
+            else
+            {
+            j=j+myteam->world_var[comand_Change_cash_held->Amount-1];
+            myteam->set_Gold(j);
+            }
+
+        }else
+        {
+            if(comand_Change_cash_held->Add)
+            {
+            j=j-comand_Change_cash_held->Amount;
+            if(j<0)
+            j=0;
+            myteam->set_Gold(j);
+            }
+            else
+            {
+            j=j+comand_Change_cash_held->Amount;
+            myteam->set_Gold(j);
+            }
+        }
+
+
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
+
         break;
     case Change_inventory:// 0xD050,
         Event_comand_Change_inventory * comand_Change_inventory;

@@ -76,7 +76,7 @@ class Player_Team {
 	void clear_obj();
 	void add_player(Player Myplayer);
 	void set_Gold(int The_Gold);
-	int* get_Gold();
+	int get_Gold();
 
 	Chara * get_chara(int num);
 	Faceset * get_faceset(int num);

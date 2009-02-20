@@ -63,9 +63,9 @@
    printf("\nop_data1 %d ",op_data1);
    }
    void Event_comand_Change_cash_held:: show(){
-   printf("\nDisplay %d ",Add);
-   printf("\nRuns_in_Battle %d ",By_Value);
-   printf("\nop_data1 %d ",Amount);
+   printf("\nAdd %d ",Add);
+   printf("\nBy_Value %d ",By_Value);
+   printf("\nAmount %d ",Amount);
    }
    void Event_comand_Change_inventory:: show(){
    printf("\nDisplay %d ",Add);

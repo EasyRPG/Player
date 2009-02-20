@@ -253,9 +253,9 @@ void Player_Team::set_Gold(int The_Gold)
 {
 	Gold=The_Gold;
 }
-int* Player_Team::get_Gold()
+int Player_Team::get_Gold()
 {
-	return (&Gold);
+	return (Gold);
 }
 int Player_Team::get_skill_size(int num)
 {
