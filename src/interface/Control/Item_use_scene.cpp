@@ -57,9 +57,9 @@ void Item_use_scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,
 		sprintf(stringBuffer, "Level %d ", ((*myteam).get_Level(i)));
 		players.add_text(stringBuffer,55,20+(i*space));
 		players.add_text("Normal",55,37+(i*space));
-		sprintf(stringBuffer, "Hp %d / %d", (*(*myteam).get_HP(i)), (*(*myteam).get_MaxHP(i)));
+		sprintf(stringBuffer, "Hp %d / %d", ((*myteam).get_HP(i)), ((*myteam).get_MaxHP(i)));
 		players.add_text(stringBuffer,110,20+(i*space));
-		sprintf(stringBuffer, "Mp %d / %d", (*(*myteam).get_MP(i)), (*(*myteam).get_MaxMP(i)));
+		sprintf(stringBuffer, "Mp %d / %d", ((*myteam).get_MP(i)), ((*myteam).get_MaxMP(i)));
 		players.add_text(stringBuffer,110,37+(i*space));
 	}
 	retardo =0;

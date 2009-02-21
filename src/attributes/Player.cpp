@@ -132,21 +132,21 @@ void Player::set_MaxMP(int The_MaxMP)
 	MaxMP=The_MaxMP;
 }
 
-int * Player::get_HP()
+int Player::get_HP()
 {
-	return (&HP);
+	return (HP);
 }
-int * Player::get_MaxHP()
+int Player::get_MaxHP()
 {
-	return (&MaxHP);
+	return (MaxHP);
 }
-int* Player::get_MP()
+int Player::get_MP()
 {
-	return (&MP);
+	return (MP);
 }
-int* Player::get_MaxMP()
+int Player::get_MaxMP()
 {
-	return (&MaxMP);
+	return (MaxMP);
 }
 
 void Player::set_Heal(int The_Heal)
@@ -182,26 +182,26 @@ void Player::set_MaxExp(int The_MaxExp)
 	MaxExp=The_MaxExp;
 }
 
-int * Player::get_Heal()
+int Player::get_Heal()
 {
-	return (&Heal);
+	return (Heal);
 }
-int * Player::get_Attack()
+int Player::get_Attack()
 {
-	return (&Attack);
+	return (Attack);
 }
-int* Player::get_Defense()
+int Player::get_Defense()
 {
-	return (&Defense);
+	return (Defense);
 }
-int* Player::get_Speed()
+int Player::get_Speed()
 {
-	return (&Speed);
+	return (Speed);
 }
 
-int * Player::get_Spirit()
+int Player::get_Spirit()
 {
-	return (&Spirit);
+	return (Spirit);
 }
 int Player::get_Level()
 {

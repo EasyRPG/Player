@@ -43,7 +43,7 @@ void Skills_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheSce
 	int i;
 	int space=16,Size_of_Block=150;
 	char stringBuffer[255];
-	sprintf(stringBuffer, " NV  %d  Normal  Hp %d / %d Mp %d / %d  ", ((*myteam).get_Level(j)), (*(*myteam).get_HP(j)), (*(*myteam).get_MaxHP(j)), (*(*myteam).get_MP(j)), (*(*myteam).get_MaxMP(j)));
+	sprintf(stringBuffer, " NV  %d  Normal  Hp %d / %d Mp %d / %d  ", ((*myteam).get_Level(j)), ((*myteam).get_HP(j)), ((*myteam).get_MaxHP(j)), ((*myteam).get_MP(j)), ((*myteam).get_MaxMP(j)));
 	descripcion2.add_text(((*myteam).get_name(j)),10,5);
 	descripcion2.add_text(stringBuffer,80,5);
 

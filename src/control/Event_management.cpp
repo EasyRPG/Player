@@ -553,11 +553,37 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         comand_id->id_exe_actual++;
         comand_id->id_actual_active = false;
 
-
         break;
     case Change_statistics:// 0xD13E,
         Event_comand_Change_statistics * comand_Change_statistics;
         comand_Change_statistics = (Event_comand_Change_statistics *)comand;
+
+
+        if(comand_Change_statistics->By_Count)
+            i=myteam->world_var[comand_Change_statistics->Count-1];
+        else
+            i=comand_Change_statistics->Count;
+
+        if(comand_Change_statistics->All==0)
+        {
+            for(j=0;j<myteam->Players.size();j++)
+            {
+            myteam->change_stats(comand_Change_statistics->Add,myteam->Players[j].id, i, comand_Change_statistics->Stat);
+            }
+        }
+        if(comand_Change_statistics->All==1)
+        {
+            myteam->change_stats(comand_Change_statistics->Add,comand_Change_statistics->Hero_ID, i, comand_Change_statistics->Stat);
+        }
+
+        if(comand_Change_statistics->All==2)
+        {
+            myteam->change_stats(comand_Change_statistics->Add,myteam->world_var[comand_Change_statistics->Hero_ID-1], i, comand_Change_statistics->Stat);
+        }
+
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
+
         break;
     case Learn_forget_skill:// 0xD148,
         Event_comand_Learn_forget_skill * comand_Learn_forget_skill;

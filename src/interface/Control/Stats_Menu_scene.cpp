@@ -41,20 +41,20 @@ void Stats_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScen
 	int i=(*myteam).select;
 	int space=17;
 	char stringBuffer[255];
-	sprintf(stringBuffer, "Hp %d / %d", (*(*myteam).get_HP(i)), (*(*myteam).get_MaxHP(i)));
+	sprintf(stringBuffer, "Hp %d / %d", ((*myteam).get_HP(i)), ((*myteam).get_MaxHP(i)));
 	Status_vit.add_text(stringBuffer,10,10);
-	sprintf(stringBuffer, "Mp %d / %d", (*(*myteam).get_MP(i)), (*(*myteam).get_MaxMP(i)));
+	sprintf(stringBuffer, "Mp %d / %d", ((*myteam).get_MP(i)), ((*myteam).get_MaxMP(i)));
 	Status_vit.add_text(stringBuffer,10,10+(1*space));
 	sprintf(stringBuffer, "Exp%d / %d", ((*myteam).get_Exp(i)), ((*myteam).get_MaxExp(i)));
 	Status_vit.add_text(stringBuffer,10,10+(2*space));
 
-	sprintf(stringBuffer, "Fuerza%d ", (*(*myteam).get_Attack(i)));
+	sprintf(stringBuffer, "Fuerza%d ", ((*myteam).get_Attack(i)));
 	Status.add_text(stringBuffer,10,5);
-	sprintf(stringBuffer, "Defenza%d ", (*(*myteam).get_Defense(i)));
+	sprintf(stringBuffer, "Defenza%d ", ((*myteam).get_Defense(i)));
 	Status.add_text(stringBuffer,10,5+(1*space));
-	sprintf(stringBuffer, "Intelecto %d ", (*(*myteam).get_Spirit(i)));
+	sprintf(stringBuffer, "Intelecto %d ", ((*myteam).get_Spirit(i)));
 	Status.add_text(stringBuffer,10,5+(2*space));
-	sprintf(stringBuffer, "Agilidad  %d ", (*(*myteam).get_Speed(i)));
+	sprintf(stringBuffer, "Agilidad  %d ", ((*myteam).get_Speed(i)));
 	Status.add_text(stringBuffer,10,5+(3*space));
 	space=40;
 

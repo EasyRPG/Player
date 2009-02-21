@@ -76,13 +76,13 @@ void Equip_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScen
 
 	stats.add_text(((*myteam).get_name(i)),10,5);
 
-	sprintf(stringBuffer, "Fuerza  %d ", (*(*myteam).get_Attack(i)));
+	sprintf(stringBuffer, "Fuerza  %d ", ((*myteam).get_Attack(i)));
 	stats.add_text(stringBuffer,10,5+(1*space));
-	sprintf(stringBuffer, "Defenza %d ", (*(*myteam).get_Defense(i)));
+	sprintf(stringBuffer, "Defenza %d ", ((*myteam).get_Defense(i)));
 	stats.add_text(stringBuffer,10,5+(2*space));
-	sprintf(stringBuffer, "Intelecto  %d ", (*(*myteam).get_Spirit(i)));
+	sprintf(stringBuffer, "Intelecto  %d ", ((*myteam).get_Spirit(i)));
 	stats.add_text(stringBuffer,10,5+(3*space));
-	sprintf(stringBuffer, "Agilidad%d ", (*(*myteam).get_Speed(i)));
+	sprintf(stringBuffer, "Agilidad%d ", ((*myteam).get_Speed(i)));
 	stats.add_text(stringBuffer,10,5+(4*space));
 	retardo=0;
 	running=  run;

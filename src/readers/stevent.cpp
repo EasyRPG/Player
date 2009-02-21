@@ -99,9 +99,9 @@
    printf("\nAll %d ",All);
    printf("\nHero_ID %d ",Hero_ID);
    printf("\nAdd %d ",Add);
+   printf("\nStat %d ",Stat);
    printf("\nBy_Count %d ",By_Count);
    printf("\nCount %d ",Count);
-
    }
    void Event_comand_Learn_forget_skill:: show(){
    printf("\nHero %d ",Hero);

@@ -103,15 +103,15 @@ public:
 	void set_chara(Chara thecharset);
 	void set_faceset(Faceset theFaceset);
 
-	int * get_HP();
-	int * get_MaxHP();
-	int * get_MP();
-	int * get_MaxMP();
-	int * get_Heal();
-	int * get_Attack();
-	int * get_Defense();
-	int * get_Speed();
-	int * get_Spirit();
+	int get_HP();
+	int get_MaxHP();
+	int get_MP();
+	int get_MaxMP();
+	int get_Heal();
+	int get_Attack();
+	int get_Defense();
+	int get_Speed();
+	int get_Spirit();
 	int get_Level();
 	int get_Exp();
 	int get_MaxExp();

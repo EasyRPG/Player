@@ -72,9 +72,9 @@ void Main_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene
 		players.add_text(stringBuffer,55,20+(i*space));
 		sprintf(stringBuffer, "Exp %d / %d", ((*myteam).get_Exp(i)), ((*myteam).get_MaxExp(i)));
 		players.add_text(stringBuffer,55,37+(i*space));
-		sprintf(stringBuffer, "Hp %d / %d", (*(*myteam).get_HP(i)), (*(*myteam).get_MaxHP(i)));
+		sprintf(stringBuffer, "Hp %d / %d", ((*myteam).get_HP(i)), ((*myteam).get_MaxHP(i)));
 		players.add_text(stringBuffer,150,20+(i*space));
-		sprintf(stringBuffer, "Mp %d / %d", (*(*myteam).get_MP(i)), (*(*myteam).get_MaxMP(i)));
+		sprintf(stringBuffer, "Mp %d / %d", ((*myteam).get_MP(i)), ((*myteam).get_MaxMP(i)));
 		players.add_text(stringBuffer,150,37+(i*space));
 	}
 	retardo =0;

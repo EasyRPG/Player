@@ -235,6 +235,99 @@ void Player_Team::change_level(int add_remove,int Hero_ID, int count)
     Players[j].set_MaxExp(get_xp_for_level(i,actual_hero->intEXPBaseline,actual_hero->intEXPAdditional,actual_hero->intEXPCorrection ));
 }
 
+
+void Player_Team::change_stats(int add_remove,int Hero_ID, int count,int type)
+{
+   unsigned int i,j;
+    if(!is_on_the_team(Hero_ID)) // si no esta retorna
+    return;
+
+    for(i=0;i<Players.size();i++)
+    {
+        if(Players[i].id==Hero_ID)
+        {
+            j=i;
+            break;
+        }
+    }
+
+if(type==0)//pv
+    if(add_remove)
+    {
+        i= Players[j].get_MaxHP();
+        Players[j].set_MaxHP(i-count);
+    }
+    else
+    {
+        i= Players[j].get_MaxHP();
+        Players[j].set_MaxHP(i+count);
+    }
+
+if(type==1)//pm
+    if(add_remove)
+    {
+        i= Players[j].get_MaxMP();
+        Players[j].set_MaxMP(i-count);
+    }
+    else
+    {
+        i= Players[j].get_MaxMP();
+        Players[j].set_MaxMP(i+count);
+    }
+
+if(type==2)//ataque
+    if(add_remove)
+    {
+        i= Players[j].get_Attack();
+        Players[j].set_Attack(i-count);
+    }
+    else
+    {
+        i= Players[j].get_Attack();
+        Players[j].set_Attack(i+count);
+    }
+
+
+if(type==3)//defensa
+    if(add_remove)
+    {
+        i= Players[j].get_Defense();
+        Players[j].set_Defense(i-count);
+    }
+    else
+    {
+        i= Players[j].get_Defense();
+        Players[j].set_Defense(i+count);
+    }
+
+
+if(type==4)//espiritu
+    if(add_remove)
+    {
+        i= Players[j].get_Spirit();
+        Players[j].set_Spirit(i-count);
+    }
+    else
+    {
+        i= Players[j].get_Spirit();
+        Players[j].set_Spirit(i+count);
+    }
+
+
+if(type==5)//agilidad
+    if(add_remove)
+    {
+        i= Players[j].get_Speed();
+        Players[j].set_Speed(i-count);
+    }
+    else
+    {
+        i= Players[j].get_Speed();
+        Players[j].set_Speed(i+count);
+    }
+
+}
+
 void Player_Team::change_exp(int add_remove,int Hero_ID, int count)
 {
    unsigned int i,j;
@@ -281,41 +374,41 @@ const char * Player_Team::get_job(int num)
 {
 	return (((Players.at(num))).get_job());
 }
-int * Player_Team::get_HP(int num)
+int Player_Team::get_HP(int num)
 {
 	return (((Players.at(num))).get_HP());
 }
-int * Player_Team::get_MaxHP(int num)
+int Player_Team::get_MaxHP(int num)
 {
 	return (((Players.at(num))).get_MaxHP());
 }
-int* Player_Team::get_MP(int num)
+int Player_Team::get_MP(int num)
 {
 	return (((Players.at(num))).get_MP());
 }
-int* Player_Team::get_MaxMP(int num)
+int Player_Team::get_MaxMP(int num)
 {
 	return (((Players.at(num))).get_MaxMP());
 }
 
-int * Player_Team::get_Heal(int num)
+int Player_Team::get_Heal(int num)
 {
 	return (((Players.at(num))).get_Heal());
 }
-int * Player_Team::get_Attack(int num)
+int Player_Team::get_Attack(int num)
 {
 	return (((Players.at(num))).get_Attack());
 }
-int* Player_Team::get_Defense(int num)
+int Player_Team::get_Defense(int num)
 {
 	return (((Players.at(num))).get_Defense());
 }
-int* Player_Team::get_Speed(int num)
+int Player_Team::get_Speed(int num)
 {
 	return (((Players.at(num))).get_Speed());
 }
 
-int * Player_Team::get_Spirit(int num)
+int Player_Team::get_Spirit(int num)
 {
 	return (((Players.at(num))).get_Spirit());
 }

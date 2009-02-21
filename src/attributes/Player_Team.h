@@ -56,6 +56,7 @@ class Player_Team {
     int get_xp_for_level(int Level,int star_exp, int addIncrease, int correction);
     void change_exp(int add_remove,int Hero_ID, int count);
     void change_level(int add_remove,int Hero_ID, int count);
+    void change_stats(int add_remove,int Hero_ID, int count,int type);
 
     int actual_x_map;
     int actual_y_map;
@@ -88,16 +89,16 @@ class Player_Team {
 	const char * get_name(int num);
 	const char * get_job(int num);
 
-	int * get_MP(int num);
-	int * get_MaxMP(int num);
-	int * get_HP(int num);
-	int * get_MaxHP(int num);
+	int get_MP(int num);
+	int get_MaxMP(int num);
+	int get_HP(int num);
+	int get_MaxHP(int num);
 
-	int * get_Heal(int num);
-	int * get_Attack(int num);
-	int * get_Defense(int num);
-	int * get_Speed(int num);
-	int * get_Spirit(int num);
+	int get_Heal(int num);
+	int get_Attack(int num);
+	int get_Defense(int num);
+	int get_Speed(int num);
+	int get_Spirit(int num);
 	int get_Level(int num);
 	int get_Exp(int num);
 	int get_MaxExp(int num);

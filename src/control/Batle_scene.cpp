@@ -80,10 +80,10 @@ void Batle_scene::update_window_stats()
 	char stringBuffer[255];
 	for(i=0;i<(*myteam).get_size();i++)
 	{
-		sprintf(stringBuffer,"Hp%d/%dMp%d",(*(*myteam).get_HP(i)),(*(*myteam).get_MaxHP(i)),(*(*myteam).get_MP(i)));
+		sprintf(stringBuffer,"Hp%d/%dMp%d",((*myteam).get_HP(i)),((*myteam).get_MaxHP(i)),((*myteam).get_MP(i)));
 		window.add_text(stringBuffer,110,5+(i*16));
 		window.add_text(((*myteam).get_name(i)),10,5+(i*16));
-		if((*(*myteam).get_HP(i))>0)
+		if(((*myteam).get_HP(i))>0)
 		{
 			window.add_text("Normal",60,5+(i*16));
 		}
@@ -187,7 +187,7 @@ void Batle_scene::lose()
 	int i,k=0;
 	for(i=0;i<(*myteam).get_size();i++)
 	{
-		if((*(*myteam).get_HP(i))==0)
+		if(((*myteam).get_HP(i))==0)
 		{
 			k++;
 		}
@@ -217,7 +217,7 @@ void Batle_scene::atack(SDL_Surface *Screen,int  nperso,int  enemy)
 	if((*((*myteam).get_Weapon_Anim(nperso))).endanim)//siterminaleatake
 	{
 		(*((*myteam).get_Weapon_Anim(nperso))).reset();
-		damange=(*((*myteam).get_Attack(nperso)));
+		damange=(((*myteam).get_Attack(nperso)));
 		(*(((*myteam).Enemys.at(enemy)).get_HP()))=(*(((*myteam).Enemys.at(enemy)).get_HP()))-damange;
 		Window_text.dispose();
 		windowtext_showdamange(true,nperso,enemy,damange);
@@ -283,7 +283,7 @@ void Batle_scene::atacked(int enemy)
 			int damange;
 			///////////////////////////////////////////eleciondeplayer
 			int k=(rand()%(*myteam).get_size());//eleccionalazar
-			while((*(*myteam).get_HP(k))==0)//siestamuertoelelgido
+			while(((*myteam).get_HP(k))==0)//siestamuertoelelgido
 			{
 				k++;//eligeotro
 				k=(k%(*myteam).get_size());
@@ -291,10 +291,10 @@ void Batle_scene::atacked(int enemy)
 			///////////////////////////////////////////////////////////////
 
 			damange=*(((*myteam).Enemys.at(enemy)).get_Attack());//calculodedaño
-			(*(*myteam).get_HP(k))=(*(*myteam).get_HP(k))-damange;
-			if((*(*myteam).get_HP(k))<0)
+			//(*myteam).set_HP((*myteam).get_HP(k)-damange);//need to be fixed
+			if(((*myteam).get_HP(k))<0)
 			{
-				(*(*myteam).get_HP(k))=0;
+//				((*myteam).get_HP(k))=0; // nedd to be fixed
 			}
 			//////////////////////////////////////////////////////////////////////////
 			lose();
