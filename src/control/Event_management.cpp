@@ -527,6 +527,33 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Change_level:// 0xD134,
         Event_comand_Change_level * comand_Change_level;
         comand_Change_level = (Event_comand_Change_level *)comand;
+
+        if(comand_Change_level->By_Count)
+            i=myteam->world_var[comand_Change_level->Count-1];
+        else
+            i=comand_Change_level->Count;
+
+        if(comand_Change_level->All==0)
+        {
+            for(j=0;j<myteam->Players.size();j++)
+            {
+            myteam->change_level(comand_Change_level->Add,myteam->Players[j].id, i);
+            }
+        }
+        if(comand_Change_level->All==1)
+        {
+            myteam->change_level(comand_Change_level->Add,comand_Change_level->Hero_ID, i);
+        }
+
+        if(comand_Change_level->All==2)
+        {
+            myteam->change_level(comand_Change_level->Add,myteam->world_var[comand_Change_level->Hero_ID-1],i);
+        }
+
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
+
+
         break;
     case Change_statistics:// 0xD13E,
         Event_comand_Change_statistics * comand_Change_statistics;

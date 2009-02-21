@@ -194,10 +194,50 @@ for(i=Level; i>0;i--)
 
 return((int)result);
 }
+void Player_Team::change_level(int add_remove,int Hero_ID, int count)
+{
+   unsigned int i,j;
+
+    if(!is_on_the_team(Hero_ID)) // si no esta retorna
+    return;
+
+    for(i=0;i<Players.size();i++)
+    {
+        if(Players[i].id==Hero_ID)
+        {
+            j=i;
+            break;
+        }
+    }
+    stcHero * actual_hero;
+    actual_hero= &(data2.heros[Hero_ID-1]);
+     i= Players[j].get_Level();
+
+    if(add_remove)
+    {
+        i-=count;
+    }
+    else
+    {
+        i+=count;
+    }
+    Players[j].set_HP(actual_hero->vc_sh_Hp[i]);
+    Players[j].set_MaxHP(actual_hero->vc_sh_Hp[i]);
+    Players[j].set_MP(actual_hero->vc_sh_Mp[i]);
+    Players[j].set_MaxMP(actual_hero->vc_sh_Mp[i]);
+    Players[j].set_Heal(0);
+    Players[j].set_Attack(actual_hero->vc_sh_Attack[i]);
+    Players[j].set_Defense(actual_hero->vc_sh_Defense[i]);
+    Players[j].set_Speed(actual_hero->vc_sh_Agility[i]);
+    Players[j].set_Spirit(actual_hero->vc_sh_Mind[i]);
+    Players[j].set_Level(i);
+    Players[j].set_Exp(get_xp_for_level(i-1,actual_hero->intEXPBaseline,actual_hero->intEXPAdditional,actual_hero->intEXPCorrection ));
+    Players[j].set_MaxExp(get_xp_for_level(i,actual_hero->intEXPBaseline,actual_hero->intEXPAdditional,actual_hero->intEXPCorrection ));
+}
 
 void Player_Team::change_exp(int add_remove,int Hero_ID, int count)
 {
-    int i,j;
+   unsigned int i,j;
 
     if(!is_on_the_team(Hero_ID)) // si no esta retorna
     return;
@@ -215,7 +255,7 @@ void Player_Team::change_exp(int add_remove,int Hero_ID, int count)
     if(add_remove)
     {
         i= Players[j].get_Exp();
-        Players[j].set_Exp(i+count);
+        Players[j].set_Exp(i-count);
     }
     else
     {

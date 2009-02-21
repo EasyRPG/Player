@@ -55,6 +55,8 @@ class Player_Team {
     void change_players(int remove_add,int id);
     int get_xp_for_level(int Level,int star_exp, int addIncrease, int correction);
     void change_exp(int add_remove,int Hero_ID, int count);
+    void change_level(int add_remove,int Hero_ID, int count);
+
     int actual_x_map;
     int actual_y_map;
     int actual_dir;
