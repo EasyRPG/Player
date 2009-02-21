@@ -120,7 +120,6 @@ void Title_Scene::action()
 void Title_Scene::init_party()
 {
 
-    //desde que aun no lemos el archivo simulamos
     string system_string;
     int i,id;
     stcHero * actual_hero;

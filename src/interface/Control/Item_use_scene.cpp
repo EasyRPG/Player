@@ -54,7 +54,7 @@ void Item_use_scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,
 		players.add_sprite(((*myteam).get_faceset(i)),5,5+(i*space));
 		players.add_text(((*myteam).get_name(i)),55,2+(i*space));
 
-		sprintf(stringBuffer, "Level %d ", (*(*myteam).get_Level(i)));
+		sprintf(stringBuffer, "Level %d ", ((*myteam).get_Level(i)));
 		players.add_text(stringBuffer,55,20+(i*space));
 		players.add_text("Normal",55,37+(i*space));
 		sprintf(stringBuffer, "Hp %d / %d", (*(*myteam).get_HP(i)), (*(*myteam).get_MaxHP(i)));

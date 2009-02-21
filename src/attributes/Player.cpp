@@ -203,17 +203,17 @@ int * Player::get_Spirit()
 {
 	return (&Spirit);
 }
-int * Player::get_Level()
+int Player::get_Level()
 {
-	return (&Level);
+	return (Level);
 }
-int* Player::get_Exp()
+int Player::get_Exp()
 {
-	return (&Exp);
+	return (Exp);
 }
-int* Player::get_MaxExp()
+int Player::get_MaxExp()
 {
-	return (&MaxExp);
+	return (MaxExp);
 }
 
 

@@ -173,6 +173,58 @@ int Player_Team::get_size()
 {
 	return (Players.size());
 }
+
+int Player_Team::get_xp_for_level(int Level,int star_exp, int addIncrease, int correction )
+{
+float exp_perlevel;
+float aditional;
+
+int i;
+int result =0;
+exp_perlevel= star_exp;
+
+ aditional = 1.5 +(addIncrease* 0.01);
+
+for(i=Level; i>0;i--)
+{
+        result= result+ correction + exp_perlevel;
+        exp_perlevel = exp_perlevel * aditional;
+        aditional = (((Level * 0.002) + 0.8) * (aditional - 1) +1);
+}
+
+return((int)result);
+}
+
+void Player_Team::change_exp(int add_remove,int Hero_ID, int count)
+{
+    int i,j;
+
+    if(!is_on_the_team(Hero_ID)) // si no esta retorna
+    return;
+
+    for(i=0;i<Players.size();i++)
+    {
+        if(Players[i].id==Hero_ID)
+        {
+            j=i;
+            break;
+        }
+    }
+
+
+    if(add_remove)
+    {
+        i= Players[j].get_Exp();
+        Players[j].set_Exp(i+count);
+    }
+    else
+    {
+        i= Players[j].get_Exp();
+        Players[j].set_Exp(i+count);
+    }
+
+}
+
 Chara * Player_Team::get_chara(int num)
 {
 	return (((Players.at(num))).get_chara());
@@ -227,15 +279,15 @@ int * Player_Team::get_Spirit(int num)
 {
 	return (((Players.at(num))).get_Spirit());
 }
-int * Player_Team::get_Level(int num)
+int Player_Team::get_Level(int num)
 {
 	return (((Players.at(num))).get_Level());
 }
-int* Player_Team::get_Exp(int num)
+int Player_Team::get_Exp(int num)
 {
 	return (((Players.at(num))).get_Exp());
 }
-int* Player_Team::get_MaxExp(int num)
+int Player_Team::get_MaxExp(int num)
 {
 	return (((Players.at(num))).get_MaxExp());
 }
@@ -298,8 +350,8 @@ Player Player_Team::get_hero(stcHero * actual_hero,int id)
     Alex.set_Speed(actual_hero->vc_sh_Agility[start_level]);
     Alex.set_Spirit(actual_hero->vc_sh_Mind[start_level]);
     Alex.set_Level(start_level);
-    Alex.set_Exp(0);
-    Alex.set_MaxExp(actual_hero->intEXPBaseline);
+    Alex.set_Exp(get_xp_for_level(start_level-1,actual_hero->intEXPBaseline,actual_hero->intEXPAdditional,actual_hero->intEXPCorrection ));
+    Alex.set_MaxExp(get_xp_for_level(start_level,actual_hero->intEXPBaseline,actual_hero->intEXPAdditional,actual_hero->intEXPCorrection ));
 //las habilidades del alex que hueva.....
    Skill Veneno;
 Alex.Skills.clear();

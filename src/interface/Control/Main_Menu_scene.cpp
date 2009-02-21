@@ -68,9 +68,9 @@ void Main_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene
 		players.add_text(((*myteam).get_name(i)),55,2+(i*space));
 		players.add_text(((*myteam).get_job(i)),150,2+(i*space));
 
-		sprintf(stringBuffer, "Level %d  Normal", (*(*myteam).get_Level(i)));
+		sprintf(stringBuffer, "Level %d  Normal", ((*myteam).get_Level(i)));
 		players.add_text(stringBuffer,55,20+(i*space));
-		sprintf(stringBuffer, "Exp %d / %d", (*(*myteam).get_Exp(i)), (*(*myteam).get_MaxExp(i)));
+		sprintf(stringBuffer, "Exp %d / %d", ((*myteam).get_Exp(i)), ((*myteam).get_MaxExp(i)));
 		players.add_text(stringBuffer,55,37+(i*space));
 		sprintf(stringBuffer, "Hp %d / %d", (*(*myteam).get_HP(i)), (*(*myteam).get_MaxHP(i)));
 		players.add_text(stringBuffer,150,20+(i*space));

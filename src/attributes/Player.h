@@ -112,9 +112,9 @@ public:
 	int * get_Defense();
 	int * get_Speed();
 	int * get_Spirit();
-	int * get_Level();
-	int * get_Exp();
-	int * get_MaxExp();
+	int get_Level();
+	int get_Exp();
+	int get_MaxExp();
 
 
 	Faceset * get_faceset();

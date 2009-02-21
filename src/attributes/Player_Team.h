@@ -35,11 +35,11 @@
 
 class Player_Team {
     private:
-	std:: vector <Player> Players;
 	std:: vector <Item> Items;
 	int Gold;
 
 	public:
+	std:: vector <Player> Players;
 
     std:: vector <char> world_fase;
     bool is_on_the_inventory(int id);
@@ -53,7 +53,8 @@ class Player_Team {
     bool is_on_the_team(int id);
     Player get_hero(stcHero * actual_hero, int id);
     void change_players(int remove_add,int id);
-
+    int get_xp_for_level(int Level,int star_exp, int addIncrease, int correction);
+    void change_exp(int add_remove,int Hero_ID, int count);
     int actual_x_map;
     int actual_y_map;
     int actual_dir;
@@ -95,9 +96,9 @@ class Player_Team {
 	int * get_Defense(int num);
 	int * get_Speed(int num);
 	int * get_Spirit(int num);
-	int * get_Level(int num);
-	int * get_Exp(int num);
-	int * get_MaxExp(int num);
+	int get_Level(int num);
+	int get_Exp(int num);
+	int get_MaxExp(int num);
 
 	void erase_item(int num);
 	Item get_item(int num);

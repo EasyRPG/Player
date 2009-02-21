@@ -497,6 +497,32 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Change_experience:// 0xD12A,
         Event_comand_Change_experience * comand_Change_experience;
         comand_Change_experience = (Event_comand_Change_experience *)comand;
+
+        if(comand_Change_experience->By_Count)
+            i=myteam->world_var[comand_Change_experience->Count-1];
+        else
+            i=comand_Change_experience->Count;
+
+        if(comand_Change_experience->All==0)
+        {
+            for(j=0;j<myteam->Players.size();j++)
+            {
+            myteam->change_exp(comand_Change_experience->Add,myteam->Players[j].id, i);
+            }
+        }
+        if(comand_Change_experience->All==1)
+        {
+            myteam->change_exp(comand_Change_experience->Add,comand_Change_experience->Hero_ID, i);
+        }
+
+        if(comand_Change_experience->All==2)
+        {
+            myteam->change_exp(comand_Change_experience->Add,myteam->world_var[comand_Change_experience->Hero_ID-1],i);
+        }
+
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
+
         break;
     case Change_level:// 0xD134,
         Event_comand_Change_level * comand_Change_level;

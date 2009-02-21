@@ -45,7 +45,7 @@ void Stats_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScen
 	Status_vit.add_text(stringBuffer,10,10);
 	sprintf(stringBuffer, "Mp %d / %d", (*(*myteam).get_MP(i)), (*(*myteam).get_MaxMP(i)));
 	Status_vit.add_text(stringBuffer,10,10+(1*space));
-	sprintf(stringBuffer, "Exp%d / %d", (*(*myteam).get_Exp(i)), (*(*myteam).get_MaxExp(i)));
+	sprintf(stringBuffer, "Exp%d / %d", ((*myteam).get_Exp(i)), ((*myteam).get_MaxExp(i)));
 	Status_vit.add_text(stringBuffer,10,10+(2*space));
 
 	sprintf(stringBuffer, "Fuerza%d ", (*(*myteam).get_Attack(i)));
@@ -66,7 +66,7 @@ void Stats_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScen
 	Profesion.add_text("Estado",10,30+(3*space));
 	Profesion.add_text("Normal",50,30+(3*space)+16);//falta el casteo del entero
 	Profesion.add_text("Nivel",10,30+(4*space));
-	sprintf(stringBuffer, "%d ", (*(*myteam).get_Level(i)));
+	sprintf(stringBuffer, "%d ", ((*myteam).get_Level(i)));
 
 	Profesion.add_text(stringBuffer,50,30+(4*space)+16);//falta el casteo del entero
 	space=14;
