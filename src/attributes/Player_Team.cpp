@@ -116,12 +116,34 @@ void Player_Team::add_enemy(Enemy Myplayer)
 
 void Player_Team::add_player(Player Myplayer)
 {
+    if(!is_on_the_team(Myplayer.id))
 	Players.push_back(Myplayer);
 }
 Item Player_Team::get_item(int num)
 {
 	return (Items.at(num));
 }
+
+Item Player_Team::load_item(int item_id)
+{
+Item X;
+if(item_id==0)
+{
+    X.set_name("");
+    X.set_NOI(1);
+    X.set_type(0);
+    X.id = 0;
+
+}
+else{
+    item_id--;
+    X.set_name(data2.items[item_id].Name.c_str());
+    X.set_NOI(1);
+    X.set_type(data2.items[item_id].Type);
+    X.id = 1;
+    }return(X);
+}
+
 void Player_Team::add_item(Item Myitem)
 {
 
@@ -222,6 +244,105 @@ int Player_Team::get_num_items()
 {
 	return (Items.size());
 }
+void Player_Team::change_players(int remove_add,int id)
+{
+unsigned int i;
+
+    if(remove_add)
+    {
+        for(i=0;i<Players.size();i++)
+        {
+            if(Players[i].id==id)
+            {
+                Players.erase(Players.begin()+i);
+            }
+        }
+    }
+    else
+    {
+        stcHero * actual_hero;
+        actual_hero= &(data2.heros[id-1]);
+        add_player(get_hero(actual_hero, id));
+    }
+}
+
+
+Player Player_Team::get_hero(stcHero * actual_hero,int id)
+{
+    int start_level,id_skill;
+    unsigned j;
+    string system_string;
+
+    Player Alex;
+    Alex.id=id;
+    Alex.set_name(actual_hero->strName.c_str());
+    Alex.set_job(actual_hero->strClass.c_str());
+    start_level=actual_hero->intStartlevel;
+
+    Faceset AlexeFase;
+    system_string.clear();
+    system_string.append("FaceSet/");
+    system_string.append(actual_hero->strFacegraphic.c_str());
+    system_string.append(".png");
+
+    AlexeFase.setimg(system_string.c_str());
+    AlexeFase.init_Faceset(0, 0, actual_hero->intFaceindex);
+    Alex.set_faceset(AlexeFase);
+    Alex.set_HP(actual_hero->vc_sh_Hp[start_level]);
+    Alex.set_MaxHP(actual_hero->vc_sh_Hp[start_level]);
+    Alex.set_MP(actual_hero->vc_sh_Mp[start_level]);
+    Alex.set_MaxMP(actual_hero->vc_sh_Mp[start_level]);
+    Alex.set_Heal(0);
+    Alex.set_Attack(actual_hero->vc_sh_Attack[start_level]);
+    Alex.set_Defense(actual_hero->vc_sh_Defense[start_level]);
+    Alex.set_Speed(actual_hero->vc_sh_Agility[start_level]);
+    Alex.set_Spirit(actual_hero->vc_sh_Mind[start_level]);
+    Alex.set_Level(start_level);
+    Alex.set_Exp(0);
+    Alex.set_MaxExp(actual_hero->intEXPBaseline);
+//las habilidades del alex que hueva.....
+   Skill Veneno;
+Alex.Skills.clear();
+for (j=0;j<(actual_hero->skills.size());j++)
+{
+    id_skill=actual_hero->skills[j].Spell_ID-1;
+    Veneno.set_name(data2.skill[id_skill].strName.c_str());
+    Veneno.set_damange(data2.skill[id_skill].intBasevalue);
+    Veneno.set_level_req(1);
+    Veneno.set_mp_price(data2.skill[id_skill].intCost);
+    Alex.add_skill(Veneno);
+}
+
+    Alex.set_Weapon(load_item(actual_hero->sh_Weapon));
+    Alex.set_Shield(load_item(actual_hero->sh_Shield));
+    Alex.set_Armor(load_item(actual_hero->sh_Armor));
+    Alex.set_Helmet(load_item(actual_hero->sh_Head));
+    Alex.set_Accessory(load_item(actual_hero->sh_Accessory));
+
+    Alex.set_Weapon_type(4);
+    Alex.set_Shield_type(5);
+    Alex.set_Armor_type(6);
+    Alex.set_Helmet_type(7);
+    Alex.set_Accessory_type(8);
+    return(Alex);
+}
+
+void Player_Team::change_objets(int remove_add,int item_id,int cout)
+{
+    Item X;
+    item_id--;
+    X.set_name(data2.items[item_id].Name.c_str());
+    X.set_NOI(cout);
+    X.set_type(data2.items[item_id].Type);
+    X.id = 1;
+
+    if(remove_add)
+        erase_item(item_id);
+    else
+        add_item(X);
+
+}
+
 void Player_Team::erase_item(int the_item)
 {
 	vector<Item>::iterator the_iterator;

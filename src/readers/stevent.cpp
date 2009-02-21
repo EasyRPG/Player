@@ -68,14 +68,14 @@
    printf("\nAmount %d ",Amount);
    }
    void Event_comand_Change_inventory:: show(){
-   printf("\nDisplay %d ",Add);
+   printf("\nAdd %d ",Add);
    printf("\nBy_ID %d ",By_ID);
    printf("\nItem_ID %d ",Item_ID);
    printf("\nBy_Count %d ",By_Count);
    printf("\nCount %d ",Count);
    }
    void Event_comand_Change_party:: show(){
-   printf("\nDisplay %d ",Add);
+   printf("\nAdd %d ",Add);
    printf("\nBy_ID %d ",By_ID);
    printf("\nHero_ID %d ",Hero_ID);
    }

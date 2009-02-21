@@ -77,7 +77,6 @@ public:
 
 	//Title_Scene();		///constructor
 	//~Title_Scene();		///destructor
-	Item load_item(int item_id);
 	void init(Audio * myaudio,  bool * run,unsigned char * TheScene,Player_Team * TheTeam);
 	void update(SDL_Surface* Screen);
 	void init_party();

@@ -122,65 +122,13 @@ void Title_Scene::init_party()
 
     //desde que aun no lemos el archivo simulamos
     string system_string;
-    int i,id,id_skill,start_level;
-    unsigned int j;
+    int i,id;
     stcHero * actual_hero;
-    Player Alex;
     for(i=0;i< (myteam->data2.System_dat.Heroes_in_starting);i++)
     {
     id=myteam->data2.System_dat.vc_sh_Starting_party[i];
     actual_hero= &(myteam->data2.heros[id-1]);
-    Alex.id=id;
-    Alex.set_name(actual_hero->strName.c_str());
-    Alex.set_job(actual_hero->strClass.c_str());
-    start_level=actual_hero->intStartlevel;
-
-    Faceset AlexeFase;
-    system_string.clear();
-    system_string.append("FaceSet/");
-    system_string.append(actual_hero->strFacegraphic.c_str());
-    system_string.append(".png");
-
-    AlexeFase.setimg(system_string.c_str());
-    AlexeFase.init_Faceset(0, 0, actual_hero->intFaceindex);
-    Alex.set_faceset(AlexeFase);
-    Alex.set_HP(actual_hero->vc_sh_Hp[start_level]);
-    Alex.set_MaxHP(actual_hero->vc_sh_Hp[start_level]);
-    Alex.set_MP(actual_hero->vc_sh_Mp[start_level]);
-    Alex.set_MaxMP(actual_hero->vc_sh_Mp[start_level]);
-    Alex.set_Heal(0);
-    Alex.set_Attack(actual_hero->vc_sh_Attack[start_level]);
-    Alex.set_Defense(actual_hero->vc_sh_Defense[start_level]);
-    Alex.set_Speed(actual_hero->vc_sh_Agility[start_level]);
-    Alex.set_Spirit(actual_hero->vc_sh_Mind[start_level]);
-    Alex.set_Level(start_level);
-    Alex.set_Exp(0);
-    Alex.set_MaxExp(actual_hero->intEXPBaseline);
-//las habilidades del alex que hueva.....
-   Skill Veneno;
-Alex.Skills.clear();
-for (j=0;j<(actual_hero->skills.size());j++)
-{
-    id_skill=actual_hero->skills[j].Spell_ID-1;
-    Veneno.set_name(myteam->data2.skill[id_skill].strName.c_str());
-    Veneno.set_damange(myteam->data2.skill[id_skill].intBasevalue);
-    Veneno.set_level_req(1);
-    Veneno.set_mp_price(  myteam->data2.skill[id_skill].intCost);
-    Alex.add_skill(Veneno);
-}
-
-    Alex.set_Weapon(load_item(actual_hero->sh_Weapon));
-    Alex.set_Shield(load_item(actual_hero->sh_Shield));
-    Alex.set_Armor(load_item(actual_hero->sh_Armor));
-    Alex.set_Helmet(load_item(actual_hero->sh_Head));
-    Alex.set_Accessory(load_item(actual_hero->sh_Accessory));
-
-    Alex.set_Weapon_type(4);
-    Alex.set_Shield_type(5);
-    Alex.set_Armor_type(6);
-    Alex.set_Helmet_type(7);
-    Alex.set_Accessory_type(8);
-    myteam->add_player(Alex);
+    myteam->add_player(myteam->get_hero(actual_hero, id));
 
     }
    /* Item potion;
@@ -193,25 +141,6 @@ for (j=0;j<(actual_hero->skills.size());j++)
     myteam->add_item(pocion);
     myteam->add_item(Ether);
 */
-}
-Item Title_Scene::load_item(int item_id)
-{
-Item X;
-if(item_id==0)
-{
-    X.set_name("");
-    X.set_NOI(1);
-    X.set_type(0);
-    X.id = 0;
-
-}
-else{
-    item_id--;
-    X.set_name(myteam->data2.items[item_id].Name.c_str());
-    X.set_NOI(1);
-    X.set_type(myteam->data2.items[item_id].Type);
-    X.id = 1;
-    }return(X);
 }
 
 void Title_Scene::updatekey()

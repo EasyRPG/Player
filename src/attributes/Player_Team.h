@@ -42,7 +42,6 @@ class Player_Team {
 	public:
 
     std:: vector <char> world_fase;
-    bool is_on_the_team(int id);
     bool is_on_the_inventory(int id);
     bool is_equal(int var,int number);
     void add_swich(unsigned char i);
@@ -51,6 +50,9 @@ class Player_Team {
     void set_false_swich( int number);
 
 	std:: vector <int> world_var;
+    bool is_on_the_team(int id);
+    Player get_hero(stcHero * actual_hero, int id);
+    void change_players(int remove_add,int id);
 
     int actual_x_map;
     int actual_y_map;
@@ -99,7 +101,10 @@ class Player_Team {
 
 	void erase_item(int num);
 	Item get_item(int num);
+	Item load_item(int item_id);
 	int get_num_items();
+	void change_objets(int remove_add,int item_id,int cout);
+
 	void add_item(Item Myitem);
 	int* get_NOI(int num);
 	unsigned char * get_type(int num);

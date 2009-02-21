@@ -464,10 +464,35 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Change_inventory:// 0xD050,
         Event_comand_Change_inventory * comand_Change_inventory;
         comand_Change_inventory = (Event_comand_Change_inventory *)comand;
+        if(comand_Change_inventory->By_ID)
+            i=myteam->world_var[comand_Change_inventory->Item_ID-1];
+        else
+            i=comand_Change_inventory->Item_ID;
+
+        if(comand_Change_inventory->By_Count)
+            j=myteam->world_var[comand_Change_inventory->Count-1];
+        else
+            j=comand_Change_inventory->Count;
+
+        myteam->change_objets(comand_Change_inventory->Add,i,j);
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
+
         break;
     case Change_party:// 0xD05A,
         Event_comand_Change_party * comand_Change_party;
         comand_Change_party = (Event_comand_Change_party *)comand;
+
+        if(comand_Change_party->By_ID)
+            i=myteam->world_var[comand_Change_party->Hero_ID-1];
+        else
+            i=comand_Change_party->Hero_ID;
+
+        myteam->change_players(comand_Change_party->Add,i);
+
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
+
         break;
     case Change_experience:// 0xD12A,
         Event_comand_Change_experience * comand_Change_experience;
