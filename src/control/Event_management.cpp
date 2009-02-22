@@ -588,6 +588,31 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Learn_forget_skill:// 0xD148,
         Event_comand_Learn_forget_skill * comand_Learn_forget_skill;
         comand_Learn_forget_skill = (Event_comand_Learn_forget_skill *)comand;
+
+        if(comand_Learn_forget_skill->By_Count)
+            i=myteam->world_var[comand_Learn_forget_skill->Count-1];
+        else
+            i=comand_Learn_forget_skill->Count;
+
+        if(comand_Learn_forget_skill->Hero==0)
+        {
+            for(j=0;j<myteam->Players.size();j++)
+            {
+            myteam->change_skills(comand_Learn_forget_skill->Learn,myteam->Players[j].id, i);
+            }
+        }
+        if(comand_Learn_forget_skill->Hero==1)
+        {
+            myteam->change_skills(comand_Learn_forget_skill->Learn,comand_Learn_forget_skill->Hero_ID, i);
+        }
+        if(comand_Learn_forget_skill->Hero==2)
+        {
+            myteam->change_skills(comand_Learn_forget_skill->Learn,myteam->world_var[comand_Learn_forget_skill->Hero_ID-1],i);
+        }
+
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
+
         break;
     case Change_equipment:// 0xD152,
         Event_comand_Change_equipment * comand_Change_equipment;

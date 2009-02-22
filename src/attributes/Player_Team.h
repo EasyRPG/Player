@@ -57,6 +57,8 @@ class Player_Team {
     void change_exp(int add_remove,int Hero_ID, int count);
     void change_level(int add_remove,int Hero_ID, int count);
     void change_stats(int add_remove,int Hero_ID, int count,int type);
+    void change_skills(int Learn,int Hero_id,int skill_id);
+    bool hero_has_skill(int hero_static_id,int id);
 
     int actual_x_map;
     int actual_y_map;

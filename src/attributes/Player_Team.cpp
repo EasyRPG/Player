@@ -451,6 +451,62 @@ unsigned int i;
     }
 }
 
+void Player_Team::change_skills(int Learn,int Hero_id,int skill_id)
+{
+    Skill Veneno;
+    unsigned int i,j;
+    if(!is_on_the_team(Hero_id)) // si no esta retorna
+    return;
+
+        for(i=0;i<Players.size();i++)
+        {
+            if(Players[i].id==Hero_id)
+            {
+              j=i;
+              break;
+            }
+        }
+
+    if(Learn)
+    {   //remove
+        //serch for it
+        for(i=0;i<Players[j].Skills.size();i++)
+        {
+            if(Players[j].Skills[i].id==(skill_id-1))
+            {
+                Players[j].Skills.erase(Players[j].Skills.begin()+i);
+              break;
+            }
+        }
+    }
+    else
+    {
+        if(!hero_has_skill(j,skill_id-1))
+        {
+            skill_id=skill_id-1;
+            Veneno.id=skill_id;
+            Veneno.set_name(data2.skill[skill_id].strName.c_str());
+            Veneno.set_damange(data2.skill[skill_id].intBasevalue);
+            Veneno.set_level_req(1);
+            Veneno.set_mp_price(data2.skill[skill_id].intCost);
+            Players[j].add_skill(Veneno);
+        }
+    }
+}
+
+bool Player_Team::hero_has_skill(int hero_static_id,int id)
+{
+    int i;
+    printf("dinero %d %d",hero_static_id,id);
+        for(i=0;i<Players[hero_static_id].Skills.size();i++)
+        {
+            if(Players[hero_static_id].Skills[i].id==id)
+            {
+                return(true);
+            }
+        }
+        return(false);
+}
 
 Player Player_Team::get_hero(stcHero * actual_hero,int id)
 {
@@ -491,6 +547,7 @@ Alex.Skills.clear();
 for (j=0;j<(actual_hero->skills.size());j++)
 {
     id_skill=actual_hero->skills[j].Spell_ID-1;
+    Veneno.id=id_skill;
     Veneno.set_name(data2.skill[id_skill].strName.c_str());
     Veneno.set_damange(data2.skill[id_skill].intBasevalue);
     Veneno.set_level_req(1);

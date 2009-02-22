@@ -10,7 +10,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
- 
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
@@ -29,7 +29,7 @@ protected:
 	int level_req;
 
 public:
-
+    int id;
 	void set_name(const char * name);
 	const char * get_name();
 	void set_anim(Animacion the_anim);
