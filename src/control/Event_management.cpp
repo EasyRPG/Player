@@ -862,10 +862,21 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Store_hero_location:// 0xD444,
         Event_comand_Store_hero_location * comand_Store_hero_location;
         comand_Store_hero_location=(Event_comand_Store_hero_location *)comand;
+        myteam->world_var[comand_Store_hero_location->Map_ID_Var-1]=myteam->actual_map;
+        myteam->world_var[comand_Store_hero_location->X_Var-1]=Actor->GridX;
+        myteam->world_var[comand_Store_hero_location->Y_Var-1]=Actor->GridY;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
         break;
     case Recall_to_location:// 0xD44E,
         Event_comand_Recall_to_location * comand_Recall_to_location;
         comand_Recall_to_location=(Event_comand_Recall_to_location *)comand;
+        myteam->actual_map=myteam->world_var[comand_Recall_to_location->Map_ID_Var-1];
+        myteam->actual_x_map=myteam->world_var[(comand_Recall_to_location->X_Var-1)];
+        myteam->actual_y_map=myteam->world_var[(comand_Recall_to_location->Y_Var-1)];
+        Actor->setposXY(myteam->actual_x_map,myteam->actual_y_map);
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
         break;
     case Ride_Dismount:// 0xD458	,
         break;
