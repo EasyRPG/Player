@@ -133,7 +133,6 @@ if(item_id==0)
     X.set_NOI(1);
     X.set_type(0);
     X.id = 0;
-
 }
 else{
     item_id--;
@@ -451,6 +450,68 @@ unsigned int i;
     }
 }
 
+void Player_Team::change_MP(int Add,int Hero_id,int count)
+{
+   int i;
+   unsigned int  j;
+
+    if(!is_on_the_team(Hero_id)) // si no esta retorna
+    return;
+
+    for(j=0;j<Players.size();j++)
+    {
+        if(Players[j].id==Hero_id)
+        {
+            break;
+        }
+    }
+    if(Add)
+    {
+        i= Players[j].get_MP()-count;
+        if(i<1)
+        i=0;
+        Players[j].set_MP(i);
+    }
+    else
+    {
+        i= Players[j].get_MP()+count;
+        if(i>Players[j].get_MaxMP())
+        i=Players[j].get_MaxMP();
+        Players[j].set_MP(i);
+    }
+}
+
+void Player_Team::change_HP(int Add,int Hero_id,int count)
+{
+   int i;
+   unsigned int  j;
+
+    if(!is_on_the_team(Hero_id)) // si no esta retorna
+    return;
+
+    for(j=0;j<Players.size();j++)
+    {
+        if(Players[j].id==Hero_id)
+        {
+            break;
+        }
+    }
+
+    if(Add)
+    {
+        i= Players[j].get_HP()-count;
+        if(i<1)
+        i=1;
+        Players[j].set_HP(i);
+    }
+    else
+    {
+        i= Players[j].get_HP()+count;
+        if(i>Players[j].get_MaxHP())
+        i=Players[j].get_MaxHP();
+        Players[j].set_HP(i);
+    }
+}
 void Player_Team::change_skills(int Learn,int Hero_id,int skill_id)
 {
     Skill Veneno;
@@ -496,7 +557,7 @@ void Player_Team::change_skills(int Learn,int Hero_id,int skill_id)
 
 bool Player_Team::hero_has_skill(int hero_static_id,int id)
 {
-    int i;
+    unsigned int i;
     printf("dinero %d %d",hero_static_id,id);
         for(i=0;i<Players[hero_static_id].Skills.size();i++)
         {

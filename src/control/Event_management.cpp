@@ -621,10 +621,61 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Change_HP:// 0xD15C,
         Event_comand_Change_HP * comand_Change_HP;
         comand_Change_HP = (Event_comand_Change_HP *)comand;
+
+        if(comand_Change_HP->By_Count)
+            i=myteam->world_var[comand_Change_HP->Count-1];
+        else
+            i=comand_Change_HP->Count;
+
+        if(comand_Change_HP->All==0)
+        {
+            for(j=0;j<myteam->Players.size();j++)
+            {
+            myteam->change_HP(comand_Change_HP->Add,myteam->Players[j].id, i);
+            }
+        }
+        if(comand_Change_HP->All==1)
+        {
+            myteam->change_HP(comand_Change_HP->Add,comand_Change_HP->Hero_ID, i);
+        }
+
+        if(comand_Change_HP->All==2)
+        {
+            myteam->change_HP(comand_Change_HP->Add,myteam->world_var[comand_Change_HP->Hero_ID-1],i);
+        }
+
+
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
+
         break;
     case Change_MP:// 0xD166,
         Event_comand_Change_MP * comand_Change_MP;
         comand_Change_MP = (Event_comand_Change_MP *)comand;
+        if(comand_Change_MP->By_Count)
+            i=myteam->world_var[comand_Change_MP->Count-1];
+        else
+            i=comand_Change_MP->Count;
+
+        if(comand_Change_MP->All==0)
+        {
+            for(j=0;j<myteam->Players.size();j++)
+            {
+            myteam->change_MP(comand_Change_MP->Add,myteam->Players[j].id, i);
+            }
+        }
+        if(comand_Change_MP->All==1)
+        {
+            myteam->change_MP(comand_Change_MP->Add,comand_Change_MP->Hero_ID, i);
+        }
+
+        if(comand_Change_MP->All==2)
+        {
+            myteam->change_MP(comand_Change_MP->Add,myteam->world_var[comand_Change_MP->Hero_ID-1],i);
+        }
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
+
         break;
     case Change_Status:// 0xD170,
         Event_comand_Change_Status * comand_Change_Status;
