@@ -257,6 +257,8 @@ std:: vector <stEventMap> map_reader::eventChunk(FILE * Stream)
          while(datatoread>datareaded) // si no hay mas en el array
          {
          id= ReadCompressedInteger(Stream);//lectura de id 1 de array
+         printf("event  real id %d\n",id);
+         Event.DB_id=id;
          do {
                          ChunkInfo.ID     = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
                          if(ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
@@ -265,7 +267,6 @@ std:: vector <stEventMap> map_reader::eventChunk(FILE * Stream)
                          {
                           case CHUNK_EVENT_NAME:
                                Event.EventName = ReadString(Stream, ChunkInfo.Length);
-  //                             printf("Name %s", Event.EventName.c_str());
                                break;
                           case CHUNK_EVENT_X:
                                Event.X_position         = ReadCompressedInteger(Stream);

@@ -888,11 +888,69 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Teleport_Event:// 0xD46C,
         Event_comand_Teleport_Event * comand_Teleport_Event;
         comand_Teleport_Event=(Event_comand_Teleport_Event *)comand;
+        for(i=0;i<Charas_nps->size();i++)
+        {
+            if(Charas_nps->at(i).id==comand_Teleport_Event->Event_ID)
+            {
+                j=i;
+                break;
+            }
+        }
+        if(j<Charas_nps->size())
+        {
+        if(comand_Teleport_Event->By_value)
+        {
+            Charas_nps->at(j).setposXY(myteam->world_var[comand_Teleport_Event->X-1],myteam->world_var[comand_Teleport_Event->Y-1]);
+        }else
+        {
+            Charas_nps->at(j).setposXY(comand_Teleport_Event->X,comand_Teleport_Event->Y);
+        }
+        }
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Swap_Event_Positions:// 0xD476,
         Event_comand_Swap_Event_Positions * comand_Swap_Event_Positions;
         comand_Swap_Event_Positions=(Event_comand_Swap_Event_Positions *)comand;
+        int x1,y1;
+        if(comand_Swap_Event_Positions->First_event!=10005)
+        for(i=0;i<Charas_nps->size();i++)
+        {
+            if(Charas_nps->at(i).id==comand_Swap_Event_Positions->First_event)
+            {
+                break;
+            }
+        }
+        if((i<Charas_nps->size())||(comand_Swap_Event_Positions->First_event==10005))
+        {
+        if(comand_Swap_Event_Positions->First_event==10005)
+        i=event_id;
+
+        x1=Charas_nps->at(i).GridX;
+        y1=Charas_nps->at(i).GridY;
+
+        if(comand_Swap_Event_Positions->Second_event!=10005)
+        for(j=0;j<Charas_nps->size();j++)
+        {
+            if(Charas_nps->at(j).id==comand_Swap_Event_Positions->Second_event)
+            {
+                break;
+            }
+        }
+
+        if((j<Charas_nps->size())||(comand_Swap_Event_Positions->Second_event==10005))
+        {
+        if(comand_Swap_Event_Positions->Second_event==10005)
+        j=event_id;
+
+        Charas_nps->at(i).setposXY(Charas_nps->at(j).GridX,Charas_nps->at(j).GridY);
+        Charas_nps->at(j).setposXY(x1,y1);
+        }
+        }
+
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Get_Terrain_ID:// 0xD51E,

@@ -121,7 +121,6 @@ void Map_Scene::init_npc()
                 npc.anim_frec=data.vcEvents[i].vcPage[original_state.Active_page].Movement_speed;
                 npc.layer=data.vcEvents[i].vcPage[original_state.Active_page].Event_height;
                 npc.setposXY(data.vcEvents[i].X_position, data.vcEvents[i].Y_position);
-                Charas_nps.push_back(npc);
         }
         else
         {
@@ -136,8 +135,10 @@ void Map_Scene::init_npc()
                 npc.anim_frec=data.vcEvents[i].vcPage[0].Movement_speed;
                 npc.layer=3;
                 npc.setposXY(data.MapWidth,data.MapHeight);
-                Charas_nps.push_back(npc);
         }
+                npc.id=data.vcEvents[i].DB_id;
+                Charas_nps.push_back(npc);
+
     }
     Ev_management.init(myaudio,NScene,myteam,Events,&Charas_nps,Actor,&data,&chip,&Ev_state,&Mov_management);
 

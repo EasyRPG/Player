@@ -598,6 +598,7 @@ void show();
 
 struct stcEvent
 {
+ int DB_id;
  std::string strName;//=0x01,
  int intNameActivation_condition;//=0x0B,
  char blNameActivate_on_switch;//=0x0C,

@@ -85,6 +85,7 @@ using namespace std;
 
     struct stEventMap//ya
     {
+    int DB_id;
     string EventName;
     int X_position;
     int Y_position;
