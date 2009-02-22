@@ -23,7 +23,7 @@ void Map_Scene::init( bool * run,Audio *audio, int SCREEN_X, int SCREEN_Y, unsig
     myaudio = audio;
     SCREEN_SIZE_X = SCREEN_X;
     SCREEN_SIZE_Y = SCREEN_Y;
-    player = myteam->get_chara(0);
+    Actor = myteam->get_chara(0);
     NScene = TheScene;
     load_map();
 }
@@ -35,13 +35,7 @@ void Map_Scene::load_map()
     actual_map=Map_id;
     myteam->view.x = 0;
     myteam->view.y = 0;
-
     std::string system_string;
-    system_string.append("CharSet/");
-    system_string.append(myteam->data2.heros[0].strGraphicfile);
-    system_string.append(".png");
-    Actor.init_Chara();
-    Actor.setimg((char *)system_string.c_str(), myteam->data2.heros[0].intGraphicindex);
 
     system_string.clear();
     system_string.append("Map");
@@ -69,19 +63,19 @@ void Map_Scene::load_map()
     pre_chip.GenerateFromFile((char *) system_string.c_str());
     Events = &data.vcEvents;
     chip.init(pre_chip.ChipsetSurface, &data, &myteam->data2.Tilesets[(unsigned int) data.ChipsetID - 1] );
-    Ev_management.init(myaudio,NScene,myteam,Events,&Charas_nps,&Actor,&data,&chip,&Ev_state,&Mov_management);
+    Ev_management.init(myaudio,NScene,myteam,Events,&Charas_nps,Actor,&data,&chip,&Ev_state,&Mov_management);
 
     init_npc();
 
-    Actor.setposXY(myteam->actual_x_map,myteam->actual_y_map, &chip,&Charas_nps,NScene,myteam);
-    Actor.set_dir(myteam->actual_dir);
+    Actor->setposXY(myteam->actual_x_map,myteam->actual_y_map, &chip,&Charas_nps,NScene);
+    Actor->set_dir(myteam->actual_dir);
 
     myaudio->load("Music/Town.mid");
     myaudio->play(-1);
     Control::set_delay(0);
     Control::set_in_delay(0);
     Control::in_map = true;
-    Mov_management.init(&Charas_nps,&Actor,&data,&chip);
+    Mov_management.init(&Charas_nps,Actor,&data,&chip);
 }
 
 
@@ -145,7 +139,7 @@ void Map_Scene::init_npc()
                 Charas_nps.push_back(npc);
         }
     }
-    Ev_management.init(myaudio,NScene,myteam,Events,&Charas_nps,&Actor,&data,&chip,&Ev_state,&Mov_management);
+    Ev_management.init(myaudio,NScene,myteam,Events,&Charas_nps,Actor,&data,&chip,&Ev_state,&Mov_management);
 
 }
 
@@ -165,17 +159,17 @@ void Map_Scene::update(SDL_Surface *Screen)
         Charas_nps[i].addy(- myteam->view.y);
         if (Charas_nps[i].layer == 0)
             Charas_nps[i].drawc(Screen);
-        if ((Charas_nps[i].layer == 1) && (Charas_nps[i].GridY <= Actor.GridY))
+        if ((Charas_nps[i].layer == 1) && (Charas_nps[i].GridY <= Actor->GridY))
             Charas_nps[i].drawc(Screen);
     }
 
-    Actor.drawc(Screen);
+    Actor->drawc(Screen);
 
     for (i = 0; i < Charas_nps.size(); i++)
     {
         if (Charas_nps[i].layer == 2)
             Charas_nps[i].drawc(Screen);
-        if ((Charas_nps[i].layer== 1) && (Charas_nps[i].GridY > Actor.GridY))
+        if ((Charas_nps[i].layer== 1) && (Charas_nps[i].GridY > Actor->GridY))
             Charas_nps[i].drawc(Screen);
     }
 
@@ -191,24 +185,24 @@ void Map_Scene::update(SDL_Surface *Screen)
 
 void Map_Scene::Scroll()
 {
-    myteam->view.x = Actor.Clamp((int) sll2dbl(Actor.realX) + 20 - (SCREEN_SIZE_X >> 1), 0, (chip.data->MapWidth << 4) - SCREEN_SIZE_X);
-    if (!Actor.outofarea)
+    myteam->view.x = Actor->Clamp((int) sll2dbl(Actor->realX) + 20 - (SCREEN_SIZE_X >> 1), 0, (chip.data->MapWidth << 4) - SCREEN_SIZE_X);
+    if (!Actor->outofarea)
     {
-        Actor.x = (int) sll2dbl(Actor.realX) - myteam->view.x;
+        Actor->x = (int) sll2dbl(Actor->realX) - myteam->view.x;
     }
     else
     {
-        Actor.x = (SCREEN_SIZE_X >> 1) - 20;
+        Actor->x = (SCREEN_SIZE_X >> 1) - 20;
     }
 
-    myteam->view.y= Actor.Clamp((int) sll2dbl(Actor.realY) + 24 - (SCREEN_SIZE_Y >> 1), 0, (chip.data->MapHeight << 4) - SCREEN_SIZE_Y);
-    if (!Actor.outofarea)
+    myteam->view.y= Actor->Clamp((int) sll2dbl(Actor->realY) + 24 - (SCREEN_SIZE_Y >> 1), 0, (chip.data->MapHeight << 4) - SCREEN_SIZE_Y);
+    if (!Actor->outofarea)
     {
-        Actor.y = (int) sll2dbl(Actor.realY) - myteam->view.y ;
+        Actor->y = (int) sll2dbl(Actor->realY) - myteam->view.y ;
     }
     else
     {
-        Actor.y = (SCREEN_SIZE_Y >> 1) - 24;
+        Actor->y = (SCREEN_SIZE_Y >> 1) - 24;
     }
 }
 
@@ -217,7 +211,7 @@ void Map_Scene::updatekey()
 {
     unsigned int i;
     Ev_management.updatekey(running);
-    Actor.MoveOnInput(running);
+    Actor->MoveOnInput(running);
     Scroll();
     for (i = 0; i < Charas_nps.size(); i++)
     {
@@ -258,6 +252,17 @@ void Map_Scene::updatekey()
         }
     }
     mapnpc();
+
+    if(Actor->tried_to_menu)
+    {       if(myteam->able_to_menu)
+           {
+            myteam->actual_x_map=Actor->GridX;
+            myteam->actual_y_map=Actor->GridY;
+            myteam->actual_dir=Actor->dir;
+            *NScene = 4;
+            }
+    Actor->tried_to_menu=false;
+    }
 }
 
 void Map_Scene::active_event(int event_id)
@@ -279,13 +284,13 @@ if(Ev_state[event_id].Active_page!=-1)
         if(!Ev_state[event_id].Event_Active)
         {
             if(data.vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].Activation_condition==0)
-                if((Actor.tried_to_talk &&(Actor.npc_subcolision(event_id)))) //si cumple con su condicion de activacion
+                if((Actor->tried_to_talk &&(Actor->npc_subcolision(event_id)))) //si cumple con su condicion de activacion
                 {
                 active_event(event_id);
-                Actor.tried_to_talk=false;
+                Actor->tried_to_talk=false;
                 }
             if((data.vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].Activation_condition==1)||(data.vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].Activation_condition==2))
-                if (Actor.npc_subcolision(event_id)) //si cumple con su condicion de activacion
+                if (Actor->npc_subcolision(event_id)) //si cumple con su condicion de activacion
                 {
                 active_event(event_id);
                 }
@@ -329,7 +334,7 @@ if(Ev_state[event_id].Active_page!=-1)
       }
   }
     }
-    Actor.tried_to_talk=false;
+    Actor->tried_to_talk=false;
 
 
 }
@@ -343,7 +348,6 @@ void Map_Scene::dispose()
     Ev_state.clear();
     Ev_management.dispose();
     data.clear_events();
-    Actor.dispose();
     Charas_nps.clear();
     pre_chip.dispose();
     myaudio->stop();

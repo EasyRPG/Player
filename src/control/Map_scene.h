@@ -64,7 +64,7 @@ class Map_Scene: public Scene {
 private:
 
 	int SCREEN_SIZE_X, SCREEN_SIZE_Y,actual_map;
-	CActor Actor;
+	CActor * Actor;
 	Chara * player;
     E_management Ev_management;
     Mv_management Mov_management;

@@ -90,9 +90,8 @@ sll CActor::Clampf(float value, float min, float max)
     return ((value<min)? min:(value>=max)? max:value);
 }
 
-void CActor::setposXY(int x,int y,Chipset * the_World,std:: vector <Chara> * Charas_nps,unsigned char *TheScene, Player_Team *TheTeam)
+void CActor::setposXY(int x,int y,Chipset * the_World,std:: vector <Chara> * Charas_nps,unsigned char *TheScene)
 {
-    myteam=TheTeam;
     NScene=TheScene;
     NPC=Charas_nps;
     GridX=x;///aparte de la X  y Y  tenemos la poscion con referencia bloques.
@@ -102,6 +101,10 @@ void CActor::setposXY(int x,int y,Chipset * the_World,std:: vector <Chara> * Cha
     realX=(sll)x;
     realY=(sll)y;
     World=the_World;
+    flags=0;
+    tried_to_talk=false;
+	tried_to_menu=false;
+	state=ACTOR_STATE_IDLE;
 }
 
 void CActor::setposXY(int x,int y)
@@ -237,14 +240,7 @@ void CActor::MoveOnInput(bool *running)
             }
             break;
         case CANCEL:
-
-           if(myteam->able_to_menu)
-           {
-            myteam->actual_x_map=GridX;
-            myteam->actual_y_map=GridY;
-            myteam->actual_dir=dir;
-            *NScene = 4;
-            }
+            tried_to_menu=true;
             break;
 
       case DECISION:

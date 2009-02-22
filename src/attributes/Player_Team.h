@@ -29,6 +29,7 @@
 #include "skill.h"
 #include "item.h"
 #include "Enemy.h"
+#include "CActor.h"
 #include "Player.h"
 #include "../readers/ldb.h"
 #include "../readers/lmt.h"
@@ -93,7 +94,7 @@ class Player_Team {
 	void set_Gold(int The_Gold);
 	int get_Gold();
 
-	Chara * get_chara(int num);
+	CActor * get_chara(int num);
 	Faceset * get_faceset(int num);
 	const char * get_name(int num);
 	const char * get_job(int num);

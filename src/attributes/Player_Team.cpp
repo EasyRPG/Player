@@ -419,7 +419,7 @@ void Player_Team::change_exp(int add_remove,int Hero_ID, int count)
 
 }
 
-Chara * Player_Team::get_chara(int num)
+CActor * Player_Team::get_chara(int num)
 {
 	return (((Players.at(num))).get_chara());
 }
@@ -667,10 +667,22 @@ Player Player_Team::get_hero(stcHero * actual_hero,int id)
     system_string.append("FaceSet/");
     system_string.append(actual_hero->strFacegraphic.c_str());
     system_string.append(".png");
-
     AlexeFase.setimg(system_string.c_str());
     AlexeFase.init_Faceset(0, 0, actual_hero->intFaceindex);
     Alex.set_faceset(AlexeFase);
+
+    CActor AlexChara;
+    system_string.clear();
+    system_string.append("CharSet/");
+    system_string.append(actual_hero->strGraphicfile);
+    system_string.append(".png");
+    AlexChara.init_Chara();
+    AlexChara.setimg((char *)system_string.c_str(),actual_hero->intGraphicindex);
+
+    Alex.set_chara(AlexChara);
+
+
+
     Alex.set_HP(actual_hero->vc_sh_Hp[start_level]);
     Alex.set_MaxHP(actual_hero->vc_sh_Hp[start_level]);
     Alex.set_MP(actual_hero->vc_sh_Mp[start_level]);

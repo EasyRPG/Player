@@ -241,11 +241,11 @@ Faceset * Player::get_faceset()
 {
 	return (& Face);
 }
-void Player::set_chara(Chara thecharset)
+void Player::set_chara(CActor thecharset)
 {
 	charset=thecharset;
 }
-Chara * Player::get_chara()
+CActor * Player::get_chara()
 {
 	return (& charset);
 }

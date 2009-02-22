@@ -17,8 +17,9 @@
 #ifndef PLAYER_H_
 #define PLAYER_H_
 
-#include "../sprites/Chara.h"
+#include "CActor.h"
 #include "../sprites/Faceset.h"
+
 
 typedef struct view
 {
@@ -56,7 +57,7 @@ protected:
 
 public:
     int id;
-	Chara charset;
+    CActor charset;
 	Faceset Face;
 
 	// Batler Battler;
@@ -101,7 +102,7 @@ public:
 
 	void set_name(const char * name);
 	void set_job(const char * name);
-	void set_chara(Chara thecharset);
+	void set_chara(CActor thecharset);
 	void set_faceset(Faceset theFaceset);
 
 	int get_HP();
@@ -119,7 +120,7 @@ public:
 
 
 	Faceset * get_faceset();
-	Chara   * get_chara();
+	CActor   * get_chara();
 	const char * get_name();
 	const char * get_job();
 	void add_skill(Skill Myskill);

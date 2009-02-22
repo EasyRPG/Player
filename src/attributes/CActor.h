@@ -19,8 +19,8 @@
 
 #include "../tools/control.h"
 #include "../sprites/chipset.h"
-#include "../attributes/Player_Team.h"
-
+#include "../sprites/Chara.h"
+#include "../tools/math-sll.h"
 
 struct mot
 {
@@ -35,13 +35,13 @@ class CActor:public Chara {
 unsigned char * NScene;
 Chipset * World;
 std:: vector <Chara> * NPC;
-Player_Team * myteam;
 
 // Methods
 public:
     void set_dir(int the_dir);
     int get_dir();
     bool tried_to_talk;
+	bool tried_to_menu;
 	void MoveOnInput(bool *running);
 	bool npc_colision(int x, int y);
     bool npc_subcolision(int id);
@@ -49,7 +49,7 @@ public:
 	sll Minf(float value, float max);
 	int Clamp(int value, int min, int max);
 	sll Clampf(float value, float min, float max);
-    void setposXY(int x,int y,Chipset * the_World,std:: vector <Chara> * Charas_nps,unsigned char *TheScene, Player_Team *TheTeam);
+    void setposXY(int x,int y,Chipset * the_World,std:: vector <Chara> * Charas_nps,unsigned char *TheScene);
     void setposXY(int x,int y);
 
     unsigned char  flags;
