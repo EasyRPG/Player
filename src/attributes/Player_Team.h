@@ -60,6 +60,11 @@ class Player_Team {
     void change_skills(int Learn,int Hero_id,int skill_id);
     void change_HP(int Add,int Hero_id,int count);
     void change_MP(int Add,int Hero_id,int count);
+    void Full_Recovery(int Hero_id);
+    void change_name(int Hero_ID,const char * name);
+    void change_class(int Hero_ID,const char * name);
+    void change_graphic(int Hero_ID,const char * name,int id);
+    void change_face(int Hero_ID,const char * name,int id);
     bool hero_has_skill(int hero_static_id,int id);
 
     int actual_x_map;

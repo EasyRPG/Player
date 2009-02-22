@@ -139,7 +139,6 @@
    printf("\nStatus_effect %d ",Status_effect);
    }
    void Event_comand_Full_Recovery:: show(){
-
    printf("\nAll %d ",All);
    printf("\nHero_ID %d ",Hero_ID);
    }
@@ -153,10 +152,9 @@
    printf("\nSave_damage_to_var %d ",Save_damage_to_var);
    printf("\nVar_ID %d ",Var_ID);
    }
-
    void Event_comand_Change_Hero_Name:: show(){
-  printf("\nNew_name  %s\n", New_name.c_str());
-   printf("\nHero_ID %d ",Hero_ID);
+    printf("\nNew_name  %s\n", New_name.c_str());
+    printf("\nHero_ID %d ",Hero_ID);
    }
    void Event_comand_Change_Hero_Class:: show(){
     printf("\n New_class  %s\n", strNew_class.c_str());

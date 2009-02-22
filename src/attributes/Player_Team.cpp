@@ -193,6 +193,68 @@ for(i=Level; i>0;i--)
 
 return((int)result);
 }
+
+void Player_Team::change_name(int Hero_ID,const char * name)
+{
+    unsigned i;
+    if(!is_on_the_team(Hero_ID)) // si no esta retorna
+    return;
+    for(i=0;i<Players.size();i++)
+    {
+        if(Players[i].id==Hero_ID)
+        {
+            break;
+        }
+    }
+    Players[i].set_name(name);
+}
+
+
+void Player_Team::change_face(int Hero_ID,const char * name,int id)
+{
+    unsigned i;
+    if(!is_on_the_team(Hero_ID)) // si no esta retorna
+    return;
+    for(i=0;i<Players.size();i++)
+    {
+        if(Players[i].id==Hero_ID)
+        {
+            break;
+        }
+    }
+    Players[i].Face.setimg(name);
+    Players[i].Face.init_Faceset(0,0,id);
+}
+void Player_Team::change_graphic(int Hero_ID,const char * name,int id)
+{
+    unsigned i;
+    if(!is_on_the_team(Hero_ID)) // si no esta retorna
+    return;
+    for(i=0;i<Players.size();i++)
+    {
+        if(Players[i].id==Hero_ID)
+        {
+            break;
+        }
+    }
+    Players[i].charset.setimg(name,id);
+}
+void Player_Team::change_class(int Hero_ID,const char * name)
+{
+    unsigned i;
+    if(!is_on_the_team(Hero_ID)) // si no esta retorna
+    return;
+    for(i=0;i<Players.size();i++)
+    {
+        if(Players[i].id==Hero_ID)
+        {
+            break;
+        }
+    }
+    Players[i].set_job(name);
+}
+
+
 void Player_Team::change_level(int add_remove,int Hero_ID, int count)
 {
    unsigned int i,j;
@@ -481,6 +543,25 @@ void Player_Team::change_MP(int Add,int Hero_id,int count)
     }
 }
 
+
+void Player_Team::Full_Recovery(int Hero_id)
+{
+   unsigned int  j;
+
+    if(!is_on_the_team(Hero_id)) // si no esta retorna
+    return;
+
+    for(j=0;j<Players.size();j++)
+    {
+        if(Players[j].id==Hero_id)
+        {
+            break;
+        }
+    }
+    Players[j].set_HP(Players[j].get_MaxHP());
+    Players[j].set_MP(Players[j].get_MaxMP());
+
+}
 void Player_Team::change_HP(int Add,int Hero_id,int count)
 {
    int i;

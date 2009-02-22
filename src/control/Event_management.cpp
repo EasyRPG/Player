@@ -218,6 +218,7 @@ void E_management::dispose()
 void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int event_id, E_state * comand_id)
 {
     int j,i;
+    string system_string;
     Event_comand * comand,* Next_comand;
     comand=vcEvent_comand[comand_id->id_exe_actual];// lee el comando
     if(comand_id->id_exe_actual+1<vcEvent_comand.size())
@@ -684,26 +685,68 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Full_Recovery:// 0xD17A,
         Event_comand_Full_Recovery * comand_Full_Recovery;
         comand_Full_Recovery = (Event_comand_Full_Recovery *)comand;
+
+        if(comand_Full_Recovery->All==0)
+        {
+            for(j=0;j<myteam->Players.size();j++)
+            {
+            myteam->Full_Recovery(myteam->Players[j].id);
+            }
+        }
+        if(comand_Full_Recovery->All==1)
+        {
+            myteam->Full_Recovery(comand_Full_Recovery->Hero_ID);
+        }
+
+        if(comand_Full_Recovery->All==2)
+        {
+            myteam->Full_Recovery(myteam->world_var[comand_Full_Recovery->Hero_ID-1]);
+        }
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
+
         break;
     case Inflict_Damage:// 0xD204,
         Event_comand_Inflict_Damage * comand_Inflict_Damage;
         comand_Inflict_Damage = (Event_comand_Inflict_Damage *)comand;
+
         break;
     case Change_Hero_Name:// 0xD272,
         Event_comand_Change_Hero_Name * comand_Change_Hero_Name;
         comand_Change_Hero_Name = (Event_comand_Change_Hero_Name * )comand;
+        myteam->change_name(comand_Change_Hero_Name->Hero_ID,comand_Change_Hero_Name->New_name.c_str());
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
         break;
     case Change_Hero_Class:// 0xD27C,
         Event_comand_Change_Hero_Class * comand_Change_Hero_Class;
         comand_Change_Hero_Class = (Event_comand_Change_Hero_Class *)comand;
+        myteam->change_class(comand_Change_Hero_Class->Hero_ID,comand_Change_Hero_Class->strNew_class.c_str());
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
         break;
     case Change_Hero_Graphic:// 0xD306,
         Event_comand_Change_Hero_Graphic * comand_Change_Hero_Graphic;
         comand_Change_Hero_Graphic = (Event_comand_Change_Hero_Graphic *)comand;
+        system_string.append("CharSet/");
+        system_string.append(comand_Change_Hero_Graphic->New_graphic.c_str());
+        system_string.append(".png");
+
+        myteam->change_graphic(comand_Change_Hero_Graphic->Hero_ID,system_string.c_str(),comand_Change_Hero_Graphic->Sprite_ID);
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
         break;
     case Change_Hero_Face:// 0xD310,
         Event_comand_Change_Hero_Face * comand_Change_Hero_Face;
         comand_Change_Hero_Face = (Event_comand_Change_Hero_Face *)comand;
+
+        system_string.append("FaceSet/");
+        system_string.append(comand_Change_Hero_Face->New_graphic.c_str());
+        system_string.append(".png");
+
+        myteam->change_face(comand_Change_Hero_Face->Hero_ID,system_string.c_str(),comand_Change_Hero_Face->Face_ID);
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
         break;
     case Change_Vehicle:// 0xD31A,
         Event_comand_Change_Vehicle * comand_Change_Vehicle;
@@ -720,6 +763,9 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Change_System_GFX:// 0xD338,
         Event_comand_Change_System_GFX * comand_Change_System_GFX;
         comand_Change_System_GFX= (Event_comand_Change_System_GFX *)comand;
+        myteam->data2.System_dat.System_graphic=comand_Change_System_GFX->New_graphic;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
         break;
     case Change_Transition:// 0xD342,
         Event_comand_Change_Transition * comand_Change_Transition;

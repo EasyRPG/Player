@@ -29,8 +29,6 @@ typedef struct view
 class Player {
 
 protected:
-	Chara charset;
-	Faceset Face;
 	int HP;
 	int MaxHP;
 	int MP;
@@ -58,6 +56,9 @@ protected:
 
 public:
     int id;
+	Chara charset;
+	Faceset Face;
+
 	// Batler Battler;
 	std:: vector <Skill> Skills;
 
