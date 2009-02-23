@@ -144,7 +144,7 @@ void Window_Player_Select::add_sprite(Sprite*the_sprite,int x,int y)
 {
 	(*the_sprite).x=pos_X+x;
 	(*the_sprite).y=pos_Y+y;
-	V_Sprite.push_back((int )the_sprite);
+	V_Sprite.push_back((long)the_sprite);
 }
 
 void Window_Player_Select::draw(SDL_Surface*Screen)
