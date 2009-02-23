@@ -69,6 +69,7 @@ private:
     E_management Ev_management;
     Mv_management Mov_management;
 	std:: vector <Chara> Charas_nps;//agregar apuntador a vector de eventos
+    Sprite Background1;
 
 	bool moving;
 	int to_move;

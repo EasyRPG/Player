@@ -203,6 +203,18 @@ void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id
             use_keyboard = false;
         }
         break;
+ case Wait:
+        Event_comand_Wait * comand_Wait;
+        comand_Wait=(Event_comand_Wait *)comand;
+        timer++;
+        if (timer>(comand_Wait->Length*10))
+        {
+            timer = 0;
+            comand_id->id_exe_actual++;
+            comand_id->id_actual_active = false;
+            use_keyboard = false;
+        }
+        break;
 
     default:
         break;
@@ -1035,8 +1047,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Stop_all_movement:// 0xD856,
         break;
     case Wait:// 0xD912,
-        Event_comand_Wait * comand_Wait;
-        comand_Wait=(Event_comand_Wait *)comand;
+         use_keyboard = true;
 
         break;
     case Play_BGM:// 0xD976,

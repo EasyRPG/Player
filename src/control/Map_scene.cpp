@@ -64,7 +64,13 @@ void Map_Scene::load_map()
     Events = &data.vcEvents;
     chip.init(pre_chip.ChipsetSurface, &data, &myteam->data2.Tilesets[(unsigned int) data.ChipsetID - 1] );
     Ev_management.init(myaudio,NScene,myteam,Events,&Charas_nps,Actor,&data,&chip,&Ev_state,&Mov_management);
-
+    system_string.clear();
+    system_string.append("Panorama/");
+    system_string.append(data.BackgroundName);
+    system_string.append(".png");
+    Background1.setimg((char *) system_string.c_str());
+    Background1.x= (-320);
+    Background1.y=(-240);
     init_npc();
 
     Actor->setposXY(myteam->actual_x_map,myteam->actual_y_map, &chip,&Charas_nps,NScene);
@@ -151,6 +157,21 @@ void Map_Scene::update(SDL_Surface *Screen)
     SDL_FillRect(Screen, NULL, 0x0);// Clear screen  inutil
     unsigned int i;
 
+    if(data.HorizontalAutoPan)
+    {
+    Background1.x+=data.HorizontalPanSpeed;
+    }
+    if(data.VerticalAutoPan)
+    {
+    Background1.y-=data.VerticalPanSpeed;
+    }
+
+if(Background1.x>(0))
+Background1.x= (-320);
+if(Background1.y<(0))
+Background1.y= (-240);
+
+    Background1.draw(Screen);
     chip.Render(Screen, 0, myteam->view.x, myteam->view.y); //dibuja mapa capa 1 con repecto a la vista
     chip.Render(Screen, 1, myteam->view.x, myteam->view.y);//dibuja mapa capa 2 con repecto a la vista
 
