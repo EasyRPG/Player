@@ -279,22 +279,40 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Message_options:// 0xCF08,
         Event_comand_Message_options * comand_Message_options;
         comand_Message_options = (Event_comand_Message_options *)comand;
+      comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+
         break;
     case Select_message_face:// 0xCF12,
         Event_comand_Select_face * comand_Select_face;
         comand_Select_face = (Event_comand_Select_face *)comand;
+      comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+
         break;
     case Show_choice:// 0xCF1C,
         Event_comand_Show_choice * comand_Show_choice;
         comand_Show_choice = (Event_comand_Show_choice *)comand;
+      comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+
         break;
     case Nested_block:// 0x0A
+      comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+
         break;
     case Show_choice_option:// 0x819D2C,
         Event_comand_Show_choice_option * comand_Show_choice_option;
         comand_Show_choice_option = (Event_comand_Show_choice_option *)comand;
+      comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+
         break;
     case End_Choice_block:// 0x819D2D,
+      comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+
         break;
     case Number_input:// 0xCF26,
         Event_comand_Number_input * comand_Number_input;
@@ -433,6 +451,9 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Timer_manipulation:// 0xCF76,
         Event_comand_Timer_manipulation * comand_Timer_manipulation;
         comand_Timer_manipulation = (Event_comand_Timer_manipulation *)comand;
+      comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+
         break;
     case Change_cash_held:// 0xD046,
         Event_comand_Change_cash_held * comand_Change_cash_held;
@@ -630,6 +651,9 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Change_equipment:// 0xD152,
         Event_comand_Change_equipment * comand_Change_equipment;
         comand_Change_equipment = (Event_comand_Change_equipment *)comand;
+      comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+
         break;
     case Change_HP:// 0xD15C,
         Event_comand_Change_HP * comand_Change_HP;
@@ -721,6 +745,8 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Inflict_Damage:// 0xD204,
         Event_comand_Inflict_Damage * comand_Inflict_Damage;
         comand_Inflict_Damage = (Event_comand_Inflict_Damage *)comand;
+      comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Change_Hero_Name:// 0xD272,
@@ -763,14 +789,23 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Change_Vehicle:// 0xD31A,
         Event_comand_Change_Vehicle * comand_Change_Vehicle;
         comand_Change_Vehicle = (Event_comand_Change_Vehicle *)comand;
+      comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+
         break;
     case Change_System_BGM:// 0xD324,
         Event_comand_Change_System_BGM * comand_Change_System_BGM;
         comand_Change_System_BGM = (Event_comand_Change_System_BGM *)comand;
+      comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+
         break;
     case Change_System_SE:// 0xD32E,
         Event_comand_Change_System_SE * comand_Change_System_SE;
         comand_Change_System_SE = (Event_comand_Change_System_SE *)comand;
+      comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+
         break;
     case Change_System_GFX:// 0xD338,
         Event_comand_Change_System_GFX * comand_Change_System_GFX;
@@ -782,6 +817,9 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Change_Transition:// 0xD342,
         Event_comand_Change_Transition * comand_Change_Transition;
         comand_Change_Transition = (Event_comand_Change_Transition *)comand;
+      comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+
         break;
     case Start_Combat:// 0xD356,
         Event_comand_Start_Combat * comand_Start_Combat;
@@ -828,6 +866,8 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         (*myteam).add_enemy(enemigo);
         * NScene=2;
         }*/
+      comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
 
@@ -968,83 +1008,121 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Get_Terrain_ID:// 0xD51E,
         Event_comand_Get_Terrain_ID * comand_Get_Terrain_ID;
         comand_Get_Terrain_ID=(Event_comand_Get_Terrain_ID *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Get_Event_ID:// 0xD528,
         Event_comand_Get_Event_ID * comand_Get_Event_ID;
         comand_Get_Event_ID=(Event_comand_Get_Event_ID *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Erase_screen:// 0xD602,
         Event_comand_Erase_screen * comand_Erase_screen;
         comand_Erase_screen=(Event_comand_Erase_screen *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Show_screen:// 0xD60C,
         Event_comand_Show_screen * comand_Show_screen;
         comand_Show_screen=(Event_comand_Show_screen *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Set_screen_tone:// 0xD616,
         Event_comand_Set_screen_tone * comand_Set_screen_tone;
         comand_Set_screen_tone=(Event_comand_Set_screen_tone *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Flash_screen:// 0xD620,
         Event_comand_Flash_screen * comand_Flash_screen;
         comand_Flash_screen=(Event_comand_Flash_screen *)comand;
 
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
         break;
     case Shake_screen:// 0xD62A,
         Event_comand_Shake_screen * comand_Shake_screen;
         comand_Shake_screen=(Event_comand_Shake_screen *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Pan_screen:// 0xD634,
         Event_comand_Pan_screen * comand_Pan_screen;
         comand_Pan_screen=(Event_comand_Pan_screen *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Weather_Effects:// 0xD63E,
         Event_comand_Weather_Effects * comand_Weather_Effects;
         comand_Weather_Effects=(Event_comand_Weather_Effects *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
         break;
     case Show_Picture:// 0xD666,
         Event_comand_Show_Picture * comand_Show_Picture;
         comand_Show_Picture=(Event_comand_Show_Picture *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Move_Picture:// 0xD670,
         Event_comand_Move_Picture * comand_Move_Picture;
         comand_Move_Picture=(Event_comand_Move_Picture *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Erase_Picture:// 0xD67A,
         Event_comand_Erase_Picture * comand_Erase_Picture;
         comand_Erase_Picture=(Event_comand_Erase_Picture *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
         break;
     case Show_Battle_Anim :// 0xD74A,
         Event_comand_Show_Battle_Anim * comand_Show_Battle_Anim;
         comand_Show_Battle_Anim=(Event_comand_Show_Battle_Anim *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
         break;
     case Set_hero_opacity:// 0xD82E,
         Event_comand_Set_hero_opacity * comand_Set_hero_opacity;
         comand_Set_hero_opacity=(Event_comand_Set_hero_opacity *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Flash_event:// 0xD838,
         Event_comand_Flash_event * comand_Flash_event;
         comand_Flash_event=(Event_comand_Flash_event *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Move_event:// 0xD842,
         Event_comand_Move_event * comand_Move_event;
         comand_Move_event=(Event_comand_Move_event *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Wait_until_moved:// 0xD84C,
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+
         break;
     case Stop_all_movement:// 0xD856,
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+
         break;
     case Wait:// 0xD912,
          use_keyboard = true;
@@ -1053,41 +1131,60 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Play_BGM:// 0xD976,
         Event_comand_Play_BGM * comand_Play_BGM;
         comand_Play_BGM=(Event_comand_Play_BGM *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Fade_out_BGM:// 0xDA00,
         Event_comand_Fade_out_BGM * comand_Fade_out_BGM;
         comand_Fade_out_BGM=(Event_comand_Fade_out_BGM *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Memorize_BGM:// 0xDA0A,
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+
         break;
     case Play_memorized:// 0xDA14,
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Play_sound_effect:// 0xDA1E,
-
         Event_comand_Play_SE * comand_Play_SE;
         comand_Play_SE=(Event_comand_Play_SE *)comand;
+                comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+
         break;
     case Play_movie:// 0xDA28,
-
         Event_comand_Play_movie * comand_Play_movie;
         comand_Play_movie=(Event_comand_Play_movie *)comand;
+                comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+
         break;
     case Key_input:// 0xDA5A,
         Event_comand_Key_input * comand_Key_input;
         comand_Key_input=(Event_comand_Key_input *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Change_tile_set:// 0xDB3E	,
         Event_comand_Change_tile * comand_Change_tile;
         comand_Change_tile=(Event_comand_Change_tile *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Change_background:// 0xDB48,
         Event_comand_Change_background * comand_Change_background;
         comand_Change_background=(Event_comand_Change_background *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Change_encounter_rate:
@@ -1096,15 +1193,19 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         myteam->Encounter_rate=command_Change_encounter_rate->Encounter_rate;
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
-
         break;
     case Change_single_tile:// 0xDB66,
         Event_comand_Change_single_tile * comand_Change_single_tile;
         comand_Change_single_tile=(Event_comand_Change_single_tile*)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+
         break;
     case Set_teleport_location:// 0xDC22,
         Event_comand_Set_teleport_location * comand_Set_teleport_location;
         comand_Set_teleport_location = (Event_comand_Set_teleport_location*)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
         break;
     case Enable_teleport:
         Event_comand_Enable_teleport * comand_Enable_teleport;
@@ -1116,6 +1217,8 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Set_escape_location:// 0xDC36,
         Event_comand_Set_escape_location * comand_Set_escape_location;
         comand_Set_escape_location=(Event_comand_Set_escape_location *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
         break;
     case Enable_escape:
         Event_comand_Enable_escape * comand_Enable_escape;
@@ -1157,11 +1260,18 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Conditional:// 0xDD6A,
         Event_comand_Conditional * comand_Conditional;
         comand_Conditional= (Event_comand_Conditional *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+
         break;
     case Else_case:// 0x81AB7A,
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case End_conditional:// 0x81AB7B,
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Label:// 0xDE4E,
@@ -1173,15 +1283,23 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         comand_Go_to_label = (Event_comand_Go_to_label *)comand;
         break;
     case Start_loop:// 0xDF32,
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case End_loop:// 0x81AD42,
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Break:// 0xDF3C,
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Stop_all_events:// 0xE016,
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Delete_event:
@@ -1196,9 +1314,13 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         comand_Call_event= (Event_comand_Call_event *)comand;
         break;
     case Comment:// 0xE07A,
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Add_line_to_comment:// 0x81AF0A,
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         break;
     case Game_over:

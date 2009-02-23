@@ -316,6 +316,11 @@ if(Ev_state[event_id].Active_page!=-1)
                 {
                 active_event(event_id);
                 }
+            if((data.vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].Activation_condition==3)||(data.vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].Activation_condition==4))
+                {
+                active_event(event_id);
+                }
+
         }
 
 
