@@ -121,6 +121,7 @@ return true;
 
 void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * TheTeam,std:: vector <stEventMap> * TheEvents, std:: vector <Chara> * TheCharas_nps,CActor * TheActor, map_data * Thedata,Chipset * the_chip,std:: vector <E_state> *Evn_state,Mv_management * Move_management)
 {
+    int i=0;
     Ev_state=Evn_state;
     std::string system_string;
     chip = the_chip;
@@ -138,14 +139,23 @@ void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * The
     use_keyboard = false;
     tried_to_talk = false;
     Mov_management=Move_management;
+    Sprite image;
+    image.visible=false;
+    for(i=0;i<50;i++)
+        images.push_back(image);
+
 }
 
 void E_management::update(SDL_Surface *Screen)
-{
+{int i;
     if (message_box->visible)
     {
         message_box->draw(Screen);
     }
+
+    for(i=0;i<50;i++)
+        images[i].draw(Screen);
+
 }
 
 void E_management::updatekey(bool *running)
@@ -817,7 +827,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Change_Transition:// 0xD342,
         Event_comand_Change_Transition * comand_Change_Transition;
         comand_Change_Transition = (Event_comand_Change_Transition *)comand;
-      comand_id->id_exe_actual++;
+        comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
 
         break;
@@ -866,7 +876,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         (*myteam).add_enemy(enemigo);
         * NScene=2;
         }*/
-      comand_id->id_exe_actual++;
+        comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
 
         break;
@@ -1070,6 +1080,33 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Show_Picture:// 0xD666,
         Event_comand_Show_Picture * comand_Show_Picture;
         comand_Show_Picture=(Event_comand_Show_Picture *)comand;
+
+        system_string.append("Picture/");
+        system_string.append(comand_Show_Picture->Image_file.c_str());
+        system_string.append(".png");
+
+        i= comand_Show_Picture->Picture_ID;
+
+        images[i-1].setimg(system_string.c_str());
+
+ images[i-1].setcols(1);
+ images[i-1].setrows(1);
+
+
+if(comand_Show_Picture->By_Value)
+{
+images[i-1].x=myteam->world_var[comand_Show_Picture->X]-(images[i-1].getw()/2);
+images[i-1].y=myteam->world_var[comand_Show_Picture->Y]-(images[i-1].geth()/2);
+}
+else
+{
+images[i-1].x=comand_Show_Picture->X-(images[i-1].getw()/2);
+images[i-1].y=comand_Show_Picture->Y-(images[i-1].geth()/2);
+}
+
+images[i-1].visible=true;
+
+
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
 
