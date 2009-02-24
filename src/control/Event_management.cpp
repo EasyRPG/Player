@@ -1165,7 +1165,13 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Play_sound_effect:// 0xDA1E,
         Event_comand_Play_SE * comand_Play_SE;
         comand_Play_SE=(Event_comand_Play_SE *)comand;
-                comand_id->id_exe_actual++;
+        system_string.clear();
+        system_string.append("Sound/");
+        system_string.append(comand_Play_SE->SE_name.c_str());
+        system_string.append(".wav");
+        myteam->Sound_Manager.load((char *)system_string.c_str());
+        myteam->Sound_Manager.play(0);
+        comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
 
         break;

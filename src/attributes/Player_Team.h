@@ -40,6 +40,7 @@ class Player_Team {
 	int Gold;
 
 	public:
+	Sound Sound_Manager;
 	std:: vector <Player> Players;
 
     std:: vector <char> world_fase;
