@@ -189,7 +189,7 @@ void Main_Menu_Scene::updatekey()
 
        if(menu.menu.cancel)
         {
-        myaudio->load("Sound/Cansel2.wav");
+       // myaudio->load("Sound/Cansel2.wav");
 		*NScene = 1;
         }
 

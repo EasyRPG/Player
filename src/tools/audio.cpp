@@ -1,3 +1,4 @@
+#include <string>
 #include <iostream>
 #include "audio.h"
 
@@ -68,6 +69,8 @@ bool Music::load(const char* musicf)
         music = Mix_LoadMUS(musicf);
      //   std::cerr << "Error: Cannot load: " << musicf << "  Music already loaded" << std::endl;
     }
+    actual_music.clear();
+    actual_music.append(musicf);
 
     if (music == NULL)
     {

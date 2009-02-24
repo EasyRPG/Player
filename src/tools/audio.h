@@ -1,5 +1,9 @@
 #ifndef AUDIO_H_
 #define AUDIO_H_
+#include <stdio.h>
+#include <sstream>
+#include <stdlib.h>
+#include <string>
 #include "SDL.h"
 #include "SDL_mixer.h"
 
@@ -18,6 +22,7 @@ class Audio
 
     public:
         static bool init();
+         std::string actual_music;
 
         virtual bool load(const char*) = 0;
         virtual bool play(int) = 0;
@@ -42,8 +47,7 @@ class Music: public Audio
 
         Music();
         ~Music();
-
-        bool load(const char* musicf);
+       bool load(const char* musicf);
         bool play(int loops); // -1 for infinite loops
         bool play(int loops, int ms); // Fade In in miliseconds
         void stop();

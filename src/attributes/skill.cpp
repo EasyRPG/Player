@@ -19,9 +19,9 @@
 #include <SDL/SDL_mixer.h>
 #include "../tools/key.h"
 #include "../tools/font.h"
-#include "../tools/audio.h"
-#include <vector>
 #include <string>
+//#include "../tools/audio.h"
+#include <vector>
 #include "skill.h"
 
 

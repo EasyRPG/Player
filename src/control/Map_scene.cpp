@@ -54,8 +54,20 @@ void Map_Scene::load_map()
     system_string.append(".lmu");
     // ===[ LOADING MAP DATA ]==============================================
     Map.Load((char *)system_string.c_str(), &data);
-    Map.ShowInformation(&data);
+    //Map.ShowInformation(&data);
+if(myteam->lmt.tree_list[Map_id].music==2)
+{
+    system_string.clear();
+    system_string.append("Music/");
+    system_string.append(myteam->lmt.tree_list[Map_id].music_file.name.c_str());
+    system_string.append(".mid");
 
+if(myaudio->actual_music.compare((char *)system_string.c_str()))
+{
+    myaudio->load((char *)system_string.c_str());
+    myaudio->play(-1);
+}
+}
     system_string.clear();
     system_string.append("ChipSet/");
     system_string.append(myteam->data2.Tilesets[(unsigned int) data.ChipsetID - 1].strGraphic);
@@ -64,6 +76,8 @@ void Map_Scene::load_map()
     Events = &data.vcEvents;
     chip.init(pre_chip.ChipsetSurface, &data, &myteam->data2.Tilesets[(unsigned int) data.ChipsetID - 1] );
     Ev_management.init(myaudio,NScene,myteam,Events,&Charas_nps,Actor,&data,&chip,&Ev_state,&Mov_management);
+    if(data.ParallaxBackground)
+    {
     system_string.clear();
     system_string.append("Panorama/");
     system_string.append(data.BackgroundName);
@@ -71,13 +85,12 @@ void Map_Scene::load_map()
     Background1.setimg((char *) system_string.c_str());
     Background1.x= (-320);
     Background1.y=(-240);
+    }
     init_npc();
 
     Actor->setposXY(myteam->actual_x_map,myteam->actual_y_map, &chip,&Charas_nps,NScene);
     Actor->set_dir(myteam->actual_dir);
 
-    myaudio->load("Music/Town.mid");
-    myaudio->play(-1);
     Control::set_delay(0);
     Control::set_in_delay(0);
     Control::in_map = true;
@@ -156,22 +169,19 @@ void Map_Scene::update(SDL_Surface *Screen)
     //WE shuold use layers!!
     SDL_FillRect(Screen, NULL, 0x0);// Clear screen  inutil
     unsigned int i;
-
+    if(data.ParallaxBackground)
+    {
     if(data.HorizontalAutoPan)
-    {
     Background1.x+=data.HorizontalPanSpeed;
-    }
     if(data.VerticalAutoPan)
-    {
     Background1.y-=data.VerticalPanSpeed;
-    }
 
-if(Background1.x>(0))
-Background1.x= (-320);
-if(Background1.y<(0))
-Background1.y= (-240);
-
+    if(Background1.x>(0))
+    Background1.x= (-320);
+    if(Background1.y<(0))
+    Background1.y= (-240);
     Background1.draw(Screen);
+    }
     chip.Render(Screen, 0, myteam->view.x, myteam->view.y); //dibuja mapa capa 1 con repecto a la vista
     chip.Render(Screen, 1, myteam->view.x, myteam->view.y);//dibuja mapa capa 2 con repecto a la vista
 
@@ -377,5 +387,4 @@ void Map_Scene::dispose()
     data.clear_events();
     Charas_nps.clear();
     pre_chip.dispose();
-    myaudio->stop();
 }

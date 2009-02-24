@@ -1131,6 +1131,16 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Play_BGM:// 0xD976,
         Event_comand_Play_BGM * comand_Play_BGM;
         comand_Play_BGM=(Event_comand_Play_BGM *)comand;
+        system_string.clear();
+        system_string.append("Music/");
+        system_string.append(comand_Play_BGM->BGM_name.c_str());
+        system_string.append(".mid");
+
+        if(myaudio->actual_music.compare((char *)system_string.c_str()))
+        {
+            myaudio->load((char *)system_string.c_str());
+            myaudio->play(-1);
+        }
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
 
