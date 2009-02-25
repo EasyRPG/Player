@@ -199,7 +199,7 @@ void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id
 {
     static int timer=0;
     static float Xmove,Ymove;
-    int i,x,y;
+    int i,j,x,y;
     switch (comand->Comand)
     {
     case Message:
@@ -263,6 +263,25 @@ void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id
         comand_id->id_actual_active=false;
         }
 
+        break;
+    case Call_event:// 0xE02A,
+        Event_comand_Call_event * comand_Call_event;
+        comand_Call_event= (Event_comand_Call_event *)comand;
+        if(comand_Call_event->Method==2)
+        {
+        i=myteam->world_var[comand_Call_event->Event_ID];
+        j=myteam->world_var[comand_Call_event->Event_page];
+        }
+        if(comand_Call_event->Method==1)
+        {
+        i=comand_Call_event->Event_ID;
+        j=comand_Call_event->Event_page;
+        }
+        if(Ev_state->at(i-1).Event_Active==false)
+        {
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+        }
         break;
 
     default:
@@ -1461,8 +1480,25 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Call_event:// 0xE02A,
         Event_comand_Call_event * comand_Call_event;
         comand_Call_event= (Event_comand_Call_event *)comand;
+        if(comand_Call_event->Method==0)//ignore
+        {
         comand_id->id_exe_actual++;
         comand_id->id_actual_active = false;
+        }
+        if(comand_Call_event->Method==2)
+        {
+        i=myteam->world_var[comand_Call_event->Event_ID];
+        j=myteam->world_var[comand_Call_event->Event_page];
+        }
+        if(comand_Call_event->Method==1)
+        {
+        i=comand_Call_event->Event_ID;
+        j=comand_Call_event->Event_page;
+        }
+        Ev_state->at(i-1).Event_Active=true;
+        Ev_state->at(i-1).id_exe_actual=0;
+        Ev_state->at(i-1).id_actual_active=false;
+        Ev_state->at(i-1).Active_page=(j-1);
 
         break;
     case Comment:// 0xE07A,
