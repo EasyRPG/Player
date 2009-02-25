@@ -141,6 +141,11 @@ void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * The
     Mov_management=Move_management;
     Sprite image;
     image.visible=false;
+    image.setcols(1);
+    image.setrows(1);
+    SDL_Surface *temp2;
+    temp2 = CreateSurface(1,1);
+    image.set_surface(temp2);
     for(i=0;i<50;i++)
         images.push_back(image);
 
@@ -148,14 +153,13 @@ void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * The
 
 void E_management::update(SDL_Surface *Screen)
 {int i;
+    for(i=0;i<50;i++)
+        images[i].draw(Screen);
+
     if (message_box->visible)
     {
         message_box->draw(Screen);
     }
-
-    for(i=0;i<50;i++)
-        images[i].draw(Screen);
-
 }
 
 void E_management::updatekey(bool *running)
@@ -194,7 +198,8 @@ void E_management::updatekey(bool *running)
 void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id)
 {
     static int timer=0;
-
+    static float Xmove,Ymove;
+    int i,x,y;
     switch (comand->Comand)
     {
     case Message:
@@ -225,6 +230,40 @@ void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id
             use_keyboard = false;
         }
         break;
+    case Move_Picture:// 0xD670,
+        Event_comand_Move_Picture * comand_Move_Picture;
+        comand_Move_Picture=(Event_comand_Move_Picture *)comand;
+        i=comand_Move_Picture->Picture_ID;
+        if(comand_Move_Picture->By_Value)
+        {
+        x=(myteam->world_var[comand_Move_Picture->X]-(images[i-1].getw()/2));
+        y=myteam->world_var[comand_Move_Picture->Y]-(images[i-1].geth()/2);
+        }
+        else
+        {
+        x=comand_Move_Picture->X-(images[i-1].getw()/2);
+        y=comand_Move_Picture->Y-(images[i-1].geth()/2);
+        }
+
+        if(timer==0)
+        {
+        timer=(comand_Move_Picture->Length);
+        Xmove=(x-images[i-1].x)/(comand_Move_Picture->Length);
+        Ymove=(y-images[i-1].y)/(comand_Move_Picture->Length);
+        }
+        images[i-1].x+=Xmove;
+        images[i-1].y+=Ymove;
+        timer--;
+        if(((x==images[i-1].x)&&(y==images[i-1].y))||(timer==0))
+        {
+        images[i-1].x=x;
+        images[i-1].y=y;
+        timer=0;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+        }
+
+        break;
 
     default:
         break;
@@ -233,8 +272,11 @@ void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id
 }
 void E_management::dispose()
 {
+   int i;
    delete message_box;
    message_box=NULL;
+
+images.clear();
 }
 
 void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int event_id, E_state * comand_id)
@@ -727,6 +769,9 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Change_Status:// 0xD170,
         Event_comand_Change_Status * comand_Change_Status;
         comand_Change_Status = (Event_comand_Change_Status *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
+
         break;
     case Full_Recovery:// 0xD17A,
         Event_comand_Full_Recovery * comand_Full_Recovery;
@@ -884,32 +929,54 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Call_Shop:// 0xD360,
         Event_comand_Call_Shop * comand_Call_Shop;
         comand_Call_Shop = (Event_comand_Call_Shop*)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
+
         break;
     case Start_success_block:// 0x81A170,
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
+
         break;
     case Start_failure_block:// 0x81A171,
+    comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
 
         break;
     case End_shop_block:// 0x81A172,
+    comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
 
         break;
 
     case Call_Inn:// 0xD36A,
         Event_comand_Call_Inn * comand_Call_Inn;
         comand_Call_Inn = (Event_comand_Call_Inn*)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
+
         break;
     case Start_success_block2:// 0x81A17A,
+    comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
 
         break;
     case Start_failure_block2:// 0x81A17B,
+    comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
 
         break;
     case End_block:// 0x81A17C,
+    comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
 
         break;
     case Enter_hero_name:// 0xD374,
         Event_comand_Enter_hero_name * comand_Enter_hero_name;
         comand_Enter_hero_name =(Event_comand_Enter_hero_name *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
+
         break;
     case Teleport_Party:
         Event_comand_Teleport_Party * command_Teleport_Party;
@@ -941,10 +1008,15 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         comand_id->id_actual_active=false;
         break;
     case Ride_Dismount:// 0xD458	,
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
+
         break;
     case Teleport_Vehicle:// 0xD462,
         Event_comand_Teleport_Vehicle * comand_Teleport_Vehicle;
         comand_Teleport_Vehicle=(Event_comand_Teleport_Vehicle *)comand;
+    comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
 
         break;
     case Teleport_Event:// 0xD46C,
@@ -1089,10 +1161,6 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
         images[i-1].setimg(system_string.c_str());
 
- images[i-1].setcols(1);
- images[i-1].setrows(1);
-
-
 if(comand_Show_Picture->By_Value)
 {
 images[i-1].x=myteam->world_var[comand_Show_Picture->X]-(images[i-1].getw()/2);
@@ -1114,13 +1182,29 @@ images[i-1].visible=true;
     case Move_Picture:// 0xD670,
         Event_comand_Move_Picture * comand_Move_Picture;
         comand_Move_Picture=(Event_comand_Move_Picture *)comand;
+        i=comand_Move_Picture->Picture_ID;
+        if(comand_Move_Picture->Length==0)
+        {
+        if(comand_Move_Picture->By_Value)
+        {
+        images[i-1].x=myteam->world_var[comand_Move_Picture->X]-(images[i-1].getw()/2);
+        images[i-1].y=myteam->world_var[comand_Show_Picture->Y]-(images[i-1].geth()/2);
+        }
+        else
+        {
+        images[i-1].x=comand_Move_Picture->X-(images[i-1].getw()/2);
+        images[i-1].y=comand_Move_Picture->Y-(images[i-1].geth()/2);
+        }
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
-
+        }
         break;
     case Erase_Picture:// 0xD67A,
         Event_comand_Erase_Picture * comand_Erase_Picture;
         comand_Erase_Picture=(Event_comand_Erase_Picture *)comand;
+        i=comand_Erase_Picture->Picture_ID;
+        images[i-1].visible=false;
+        images[i-1].dispose();
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
         break;
@@ -1330,10 +1414,16 @@ images[i-1].visible=true;
     case Label:// 0xDE4E,
         Event_comand_Label * comand_Label;
         comand_Label = (Event_comand_Label *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
+
         break;
     case Go_to_label:// 0xDE58,
         Event_comand_Go_to_label * comand_Go_to_label;
         comand_Go_to_label = (Event_comand_Go_to_label *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
+
         break;
     case Start_loop:// 0xDF32,
         comand_id->id_exe_actual++;
@@ -1365,6 +1455,9 @@ images[i-1].visible=true;
     case Call_event:// 0xE02A,
         Event_comand_Call_event * comand_Call_event;
         comand_Call_event= (Event_comand_Call_event *)comand;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active = false;
+
         break;
     case Comment:// 0xE07A,
         comand_id->id_exe_actual++;

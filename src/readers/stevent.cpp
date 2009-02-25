@@ -352,7 +352,7 @@
 
    }
    void Event_comand_Erase_Picture:: show(){
-   printf("\nOpacity %d ",Picture_ID);
+   printf("\nPicture_ID %d ",Picture_ID);
    }
    void Event_comand_Show_Battle_Anim:: show(){
    printf("\nAnimation_ID %d ",Animation_ID);
@@ -1232,16 +1232,19 @@ Event_comand * stEvent::EventcommandMove_Picture(int Command,int Depth,FILE * St
    comand->Chroma_diffuse=ReadCompressedInteger(Stream);
    comand->Effect=ReadCompressedInteger(Stream);
    comand->Power=ReadCompressedInteger(Stream);
-   comand->Length=ReadCompressedInteger(Stream);
-   comand->Wait=ReadCompressedInteger(Stream);
+   ReadCompressedInteger(Stream);//unknown data
+   ReadCompressedInteger(Stream);//unknown data
 
-   // optional data
+
+
   if(ChunkInfo.Length>14)
-  ReadCompressedInteger(Stream);
+  comand->Length=ReadCompressedInteger(Stream);
+
   if(ChunkInfo.Length>15)
-  ReadCompressedInteger(Stream);
+  comand->Wait=ReadCompressedInteger(Stream);
+
   if(ChunkInfo.Length>16)
-  ReadCompressedInteger(Stream);
+  comand->Wait=ReadCompressedInteger(Stream);
 
    return (comand); }
 Event_comand * stEvent::EventcommandErase_Picture(int Command,int Depth,FILE * Stream) {
