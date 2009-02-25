@@ -42,7 +42,7 @@ class Player_Team {
 	public:
 	Sound Sound_Manager;
 	std:: vector <Player> Players;
-
+    string memorized_BGM;
     std:: vector <char> world_fase;
     bool is_on_the_inventory(int id);
     bool is_equal(int var,int number);

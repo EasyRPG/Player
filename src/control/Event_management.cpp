@@ -272,11 +272,9 @@ void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id
 }
 void E_management::dispose()
 {
-   int i;
-   delete message_box;
-   message_box=NULL;
-
-images.clear();
+    delete message_box;
+    message_box=NULL;
+    images.clear();
 }
 
 void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int event_id, E_state * comand_id)
@@ -1015,7 +1013,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Teleport_Vehicle:// 0xD462,
         Event_comand_Teleport_Vehicle * comand_Teleport_Vehicle;
         comand_Teleport_Vehicle=(Event_comand_Teleport_Vehicle *)comand;
-    comand_id->id_exe_actual++;
+        comand_id->id_exe_actual++;
         comand_id->id_actual_active = false;
 
         break;
@@ -1161,18 +1159,18 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
         images[i-1].setimg(system_string.c_str());
 
-if(comand_Show_Picture->By_Value)
-{
-images[i-1].x=myteam->world_var[comand_Show_Picture->X]-(images[i-1].getw()/2);
-images[i-1].y=myteam->world_var[comand_Show_Picture->Y]-(images[i-1].geth()/2);
-}
-else
-{
-images[i-1].x=comand_Show_Picture->X-(images[i-1].getw()/2);
-images[i-1].y=comand_Show_Picture->Y-(images[i-1].geth()/2);
-}
+        if(comand_Show_Picture->By_Value)
+        {
+        images[i-1].x=myteam->world_var[comand_Show_Picture->X]-(images[i-1].getw()/2);
+        images[i-1].y=myteam->world_var[comand_Show_Picture->Y]-(images[i-1].geth()/2);
+        }
+        else
+        {
+        images[i-1].x=comand_Show_Picture->X-(images[i-1].getw()/2);
+        images[i-1].y=comand_Show_Picture->Y-(images[i-1].geth()/2);
+        }
 
-images[i-1].visible=true;
+        images[i-1].visible=true;
 
 
         comand_id->id_exe_actual++;
@@ -1274,11 +1272,19 @@ images[i-1].visible=true;
 
         break;
     case Memorize_BGM:// 0xDA0A,
+        myteam->memorized_BGM.clear();
+        myteam->memorized_BGM.append(myaudio->actual_music.c_str());
+
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
 
         break;
     case Play_memorized:// 0xDA14,
+        if(myaudio->actual_music.compare((char *)myteam->memorized_BGM.c_str()))
+        {
+            myaudio->load((char *)myteam->memorized_BGM.c_str());
+            myaudio->play(-1);
+        }
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
 
