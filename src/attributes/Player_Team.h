@@ -69,6 +69,11 @@ class Player_Team {
     void change_face(int Hero_ID,const char * name,int id);
     bool hero_has_skill(int hero_static_id,int id);
 
+    bool scroll_active;
+    bool scroll_writed;
+    int original_scroll_x;
+    int original_scroll_y;
+
     int actual_x_map;
     int actual_y_map;
     int actual_dir;

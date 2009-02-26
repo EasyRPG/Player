@@ -148,7 +148,7 @@ void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * The
     image.set_surface(temp2);
     for(i=0;i<50;i++)
         images.push_back(image);
-
+myteam->scroll_writed=false;
 }
 
 void E_management::update(SDL_Surface *Screen)
@@ -282,6 +282,97 @@ void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
         }
+        break;
+    case Pan_screen:// 0xD634,
+
+        Event_comand_Pan_screen * comand_Pan_screen;
+        comand_Pan_screen=(Event_comand_Pan_screen *)comand;
+        if(comand_Pan_screen->Speed==1)
+       x=1;
+        if(comand_Pan_screen->Speed==2)
+       x=2;
+        if(comand_Pan_screen->Speed==3)
+       x=3;
+        if(comand_Pan_screen->Speed==4)
+       x=4;
+        if(comand_Pan_screen->Speed==5)
+       x=8;
+        if(comand_Pan_screen->Speed==6)
+       x=16;
+
+       if(comand_Pan_screen->Type==2)
+       {
+       if(timer ==0)
+       {
+      if(!myteam->scroll_writed)
+       { myteam->original_scroll_x=myteam->view.x;
+        myteam->original_scroll_y=myteam->view.y;
+       myteam->scroll_writed=true;
+       }
+        Xmove=(comand_Pan_screen->Distance *16)/(x);// time
+       }
+       if(comand_Pan_screen->Direction==0)
+       myteam->view.y-=x;
+       if(comand_Pan_screen->Direction==1)
+       myteam->view.x+=x;
+       if(comand_Pan_screen->Direction==2)
+       myteam->view.y+=x;
+       if(comand_Pan_screen->Direction==3)
+        myteam->view.x-=x;
+       timer++;
+       if(Xmove==timer)
+        {
+        timer=0;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+        }
+       }
+
+       if((comand_Pan_screen->Type==3)&&myteam->scroll_writed)
+       {
+
+       if(timer ==0)
+       {
+       if(myteam->original_scroll_x>myteam->original_scroll_y)
+       {
+       if(myteam->original_scroll_x>myteam->view.x)
+        Xmove=(myteam->original_scroll_x-myteam->view.x)/(x);// time
+       else
+        Xmove=(myteam->view.x-myteam->original_scroll_x)/(x);// time
+       }
+       else
+       {
+        if(myteam->original_scroll_y>myteam->view.y)
+        Xmove=(myteam->original_scroll_y-myteam->view.y)/(x);// time
+        else
+        Xmove=(myteam->view.y-myteam->original_scroll_y)/(x);// time
+       }
+       }
+
+       if(myteam->view.y<myteam->original_scroll_y)
+       myteam->view.y+=x;
+       if(myteam->view.x<myteam->original_scroll_x)
+       myteam->view.x+=x;
+       if(myteam->view.y>myteam->original_scroll_y)
+       myteam->view.y-=x;
+       if(myteam->view.x>myteam->original_scroll_x)
+        myteam->view.x-=x;
+
+       timer++;
+
+        if(Xmove==timer)
+        {
+       myteam->scroll_writed=false;
+       myteam->scroll_active=true;
+        timer=0;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+        }
+
+       }
+
+
+
         break;
 
     default:
@@ -1154,11 +1245,27 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
         break;
     case Pan_screen:// 0xD634,
+
         Event_comand_Pan_screen * comand_Pan_screen;
         comand_Pan_screen=(Event_comand_Pan_screen *)comand;
+       if(comand_Pan_screen->Type==0)
+       {
+        myteam->scroll_active=false;
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
+       }
+       if(comand_Pan_screen->Type==1)
+       {
+        myteam->scroll_active=true;
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+       }
 
+       if(comand_Pan_screen->Type>1)
+       {
+        myteam->scroll_active=false;
+
+        }
         break;
     case Weather_Effects:// 0xD63E,
         Event_comand_Weather_Effects * comand_Weather_Effects;
@@ -1495,10 +1602,13 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         i=comand_Call_event->Event_ID;
         j=comand_Call_event->Event_page;
         }
+        if((comand_Call_event->Method==1)||(comand_Call_event->Method==2))
+        {
         Ev_state->at(i-1).Event_Active=true;
         Ev_state->at(i-1).id_exe_actual=0;
         Ev_state->at(i-1).id_actual_active=false;
         Ev_state->at(i-1).Active_page=(j-1);
+        }
 
         break;
     case Comment:// 0xE07A,

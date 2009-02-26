@@ -26,7 +26,10 @@ void Map_Scene::init( bool * run,Audio *audio, int SCREEN_X, int SCREEN_Y, unsig
     Actor = myteam->get_chara(0);
     NScene = TheScene;
     load_map();
+    myteam->scroll_active=true;
+
 }
+
 
 void Map_Scene::load_map()
 {
@@ -217,6 +220,7 @@ void Map_Scene::update(SDL_Surface *Screen)
 
 void Map_Scene::Scroll()
 {
+    if(myteam->scroll_active)
     myteam->view.x = Actor->Clamp((int) sll2dbl(Actor->realX) + 20 - (SCREEN_SIZE_X >> 1), 0, (chip.data->MapWidth << 4) - SCREEN_SIZE_X);
     if (!Actor->outofarea)
     {
@@ -226,7 +230,7 @@ void Map_Scene::Scroll()
     {
         Actor->x = (SCREEN_SIZE_X >> 1) - 20;
     }
-
+    if(myteam->scroll_active)
     myteam->view.y= Actor->Clamp((int) sll2dbl(Actor->realY) + 24 - (SCREEN_SIZE_Y >> 1), 0, (chip.data->MapHeight << 4) - SCREEN_SIZE_Y);
     if (!Actor->outofarea)
     {
