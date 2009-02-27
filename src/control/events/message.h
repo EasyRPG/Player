@@ -1,6 +1,9 @@
 #ifndef _H_MESSAGE
 #define _H_MESSAGE 1
 #include "../../interface/Windows/Window_Base.h"
+#include "../../attributes/Player_Team.h"
+
+extern Player_Team *myTeam; //hmm no estoy muy seguro...
 
 enum m_pos
 {

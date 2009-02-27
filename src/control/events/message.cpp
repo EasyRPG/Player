@@ -1,4 +1,7 @@
 #include "message.h"
+
+Player_Team *myTeam=NULL;
+
 message_options CMessage::opt =
 {
     false,
@@ -32,9 +35,9 @@ CMessage::CMessage(const std::string& sys)
 	blink = 0;
 	cursor = false;
 	next = false;
-
     type_set.set('c');
     type_set.set('s');
+    type_set.set('n');
 }
 
 void CMessage::draw(SDL_Surface *dst)
@@ -181,7 +184,13 @@ void CMessage::add_text(const std::string& ctext, int line)
                             case 'c':
                                 (n < 20) ? n_color = n : n_color = 0;
                                 break;
-
+                            case 'n':
+                                if(myTeam) {
+                                    fuente.blit_background(text_tmp, n_color, System.get_img(), i-lost_space);
+                                    fuente.blit_shadow(shadow, System.get_img(), i-lost_space);
+                                    s_tmp.append( myTeam->get_name(n) );
+                                }
+                                break;
                             default:
                                 break;
                         }

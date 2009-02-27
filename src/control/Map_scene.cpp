@@ -335,7 +335,6 @@ if(Ev_state[event_id].Active_page!=-1)
                 {
                 active_event(event_id);
                 }
-
         }
 
 
