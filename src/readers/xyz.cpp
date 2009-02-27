@@ -1,7 +1,5 @@
 #include <cstdio>
-#include <string>
 #include "zlib.h"
-#include "SDL.h"
 #include "xyz.h"
 
 SDL_Surface* load_XYZ(const std::string& filename)
