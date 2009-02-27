@@ -1,9 +1,10 @@
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <string>
 #include "zlib.h"
 #include "SDL.h"
+#include "xyz.h"
 
-int main()
+SDL_Surface* load_XYZ(const std::string& filename)
 {
     FILE *file;
     unsigned char *buffer;
@@ -17,15 +18,21 @@ int main()
     SDL_Palette *palette;
     int i;
     char *pixel;
-    
-    file = fopen("Basis.xyz", "rb");
+
+    file = fopen(filename.c_str(), "rb");
     if (file != NULL)
     {
-        buffer = new unsigned char[4];
-        fread(buffer, 1, 4, file);
-        if (!strcmp((const char *)buffer, "XYZ1"))
+        char* header;
+        header = new char[4];
+    	if (header == NULL)
+        {   
+            printf("Error XYZ Reader: No memory left");
+    	    return NULL;
+        }
+        fread(header, 1, 4, file);
+        if (!strcmp(header, "XYZ1"))
         {
-            delete buffer;
+            delete header;
             fread(&width, 1, 2, file);
             fread(&height, 1, 2, file);
             fseek(file, 0, SEEK_END);
@@ -34,11 +41,19 @@ int main()
             destSize = 768 + (width * height);
             destBuffer = new unsigned char[destSize];
             buffer = new unsigned char[size - 8];
+            if ((buffer == NULL) || (destBuffer == NULL))
+            {   
+                printf("Error XYZ Reader: No memory left");
+                return NULL;
+            }
             fread(buffer, 1, size - 8, file);
             fclose(file);
             zlibErrorValue = uncompress((Bytef*)destBuffer, &destSize, (Bytef*)buffer, (uLongf)(size - 8));
             delete buffer;
             surface = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 8, 0, 0, 0, 0);
+    
+            SDL_LockSurface(surface);
+
             palette = (surface->format)->palette;
             for (i = 0; i < 256; i++)
             {
@@ -51,22 +66,22 @@ int main()
             {
                 pixel[i] = destBuffer[i + 768];
             }
-            SDL_SaveBMP(surface, "Basis.bmp");
-            SDL_FreeSurface(surface);
+            delete destBuffer;
         }
         else
         {
-            perror("Error: Not a valid XYZ file.");
-            delete buffer;
+            perror("XYZ Reader Error: Not a valid XYZ file.");
+            delete header;
             fclose(file);
-            return 2;
+            return NULL;
         }
     }
     else
     {
-        perror("Error reading file.");
-        return 1;
+        perror("XYZ Reader: Error reading file.");
+        return NULL;
     }
-    return 0;
+    SDL_UnlockSurface(surface);
+    return surface;
 }
 
