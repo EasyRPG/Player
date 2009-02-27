@@ -40,7 +40,7 @@
 			<Add option="-fno-rtti" />
 		</Compiler>
 		<Linker>
-			<Add option="`sdl-config --libs` -lSDL_image -lSDL_mixer -lSDL_ttf -lSDL_gfx" />
+			<Add option="`sdl-config --libs` -lz -lSDL_image -lSDL_mixer -lSDL_ttf -lSDL_gfx" />
 		</Linker>
 		<Unit filename="attributes/CActor.cpp" />
 		<Unit filename="attributes/CActor.h" />
