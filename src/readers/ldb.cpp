@@ -2611,9 +2611,16 @@ void  LDB_reader::ShowInformation(LDB_data * data)
 { // muestra de informacion del mapa
     int j,i;
 
-    j=data->heros.size();
+
+
+    j=data->Animations.size();
+    for (i=0;i<j ;i++)
+        data->Animations[i].show();
+
+/*    j=data->heros.size();
     for (i=0;i<j ;i++)
         data->heros[i].show();
+    */
     /*
     j=data->Professions.size();
     for (i=0;i<j ;i++)

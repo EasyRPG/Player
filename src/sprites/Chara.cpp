@@ -35,10 +35,11 @@ Chara::init_Chara()
 	dir = 0;
 	cols=3;
 	rows=4;
-	anim_frec=3;
+	anim_frec=5;
 	move_delay=0;
 	state=false;
 	nomalanimation=true;
+	move_from_event=false;
 	distance=0;
 	animation[0][0] = 1;
 	animation[0][1] = 0;
@@ -72,19 +73,24 @@ void Chara::setposXY(int xi,int yi)
 bool Chara::move(int direction)
 {
    int move_speed;
+   if(anim_frec>2)
+   move_speed=1<<(anim_frec-3);
+else
+   move_speed=1;
 
-   //if(anim_frec>3)
-   move_speed=(1+ anim_frec)/2;
-
-   if(move_speed==3)
-   move_speed=4;
-   //else
-   //move_speed= 2;
-
+/* speed table
+Speed frec
+.25     1
+.5      2
+1       3
+2       4 normal
+4       5
+8       6
+*/
     if (state==STATE_MOVING)
     {
         speed_delay++;
-        if(speed_delay==(36/(anim_frec*anim_frec)))
+        if((((speed_delay==2)&&(anim_frec==2))||((speed_delay==4)&&(anim_frec==1)))||(anim_frec>2))
         {
             speed_delay=0;
             distance+=move_speed; //=Minf(Cmotion.distance+ACTOR_SPEED_SLOW*System.deltaTime, 16.0f);//Minf(distancia + movimiento, maximo )
@@ -144,7 +150,7 @@ void Chara::rotationupdate()
 void Chara::frameupdate()
 {
 	    delay++;
-        if(delay==6)
+        if(delay==FRAME_UPDATE_DELEY)
         {
 	        frame= (frame +1)%4;
 	        delay=0;

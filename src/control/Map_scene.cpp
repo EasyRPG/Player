@@ -251,6 +251,7 @@ void Map_Scene::updatekey()
     Scroll();
     for (i = 0; i < Charas_nps.size(); i++)
     {
+        if(!Charas_nps[i].move_from_event)
         if (!Charas_nps[i].move(Charas_nps[i].move_dir))
         {
             if ( Charas_nps[i].move_frec_check())//till time to move

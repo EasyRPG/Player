@@ -64,6 +64,7 @@ public:
     int actual_move;
     bool state;
     bool nomalanimation;
+    bool move_from_event;
     int GridX;
     int GridY;
     int dir;
