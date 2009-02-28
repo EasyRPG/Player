@@ -33,7 +33,7 @@ protected:
 	Sprite tapiz;
 	Sprite cursor;
 	Font fuente;
-
+    Sound_Manager * S_audio;
 	std:: vector <Sprite> Vtext_Sprite;
 	int pos_X,pos_Y;
 	int Init_text_X;
@@ -57,7 +57,7 @@ public:
 	void restarmenu();
 	bool desition();
 	void dispose();
-	void init(Audio * theaudio, bool * run,int ComandX,int ComandY,int SizeX,int SizeY,int PosX,int PosY, const char *SysIMg);
+	void init(Sound_Manager * theaudio, bool * run,int ComandX,int ComandY,int SizeX,int SizeY,int PosX,int PosY, const char *SysIMg);
 	void draw(SDL_Surface* Screen);
 	void add_text(std::string ctext, int x, int y);
 	void set_posx_text(int x);

@@ -17,7 +17,7 @@
 #include "Menu_Easy.h"
 #include "../tools/control.h"
 
-void Menu_Easy::init(Audio * theaudio, bool * run,int X,int Y)
+void Menu_Easy::init(Sound_Manager * theaudio, bool * run,int X,int Y)
 {
 	myaudio=theaudio;
 	desided=false;
@@ -54,10 +54,7 @@ int Menu_Easy::getindexX()
 
 void Menu_Easy::updatekey()
 {
-
-//static unsigned char * keyData;
-//delay++;
-
+int i;
 int temp;
 
 temp = Control::pop_LM();
@@ -77,20 +74,32 @@ if (desided==false)
 
            case DECISION:
                 desided= true;
+                i=myaudio->load_sound("Sound/Decision2.wav");
+                myaudio->play_sound(i);
                 break;
             case CANCEL:
+                i=myaudio->load_sound("Sound/Cancelar.wav");
+                myaudio->play_sound(i);
                 cancel=true;
                 break;
             case ARROW_UP:
+                i=myaudio->load_sound("Sound/Cursor1.wav");
+                myaudio->play_sound(i);
                 indexY--;
                 break;
             case ARROW_DOWN:
+                i=myaudio->load_sound("Sound/Cursor1.wav");
+                myaudio->play_sound(i);
                 indexY++;
                 break;
             case ARROW_RIGHT:
+                i=myaudio->load_sound("Sound/Cursor1.wav");
+                myaudio->play_sound(i);
                 indexX++;
                 break;
             case ARROW_LEFT:
+                i=myaudio->load_sound("Sound/Cursor1.wav");
+                myaudio->play_sound(i);
                 indexX--;
                 break;
             case SHIFT:
@@ -120,50 +129,5 @@ if (desided==false)
 		{
 		indexY=0;
 		}
-		//keyData = SDL_GetKeyState(NULL);
-		/*if ( keyData[SDLK_ESCAPE] )
-		{
-			* running = false;
-		}*/
-
-		/*if ( keyData[SDLK_LEFT]  )
-		{
-			indexX--;
-			//(*myaudio).soundload("Sound/Cursor1.wav");
-		}
-
-		if ( keyData[SDLK_RIGHT] )
-		{
-			indexX++;
-  			// (*myaudio).soundload("Sound/Cursor1.wav");
-		}
-
-		if ( keyData[SDLK_UP] )
-		{
-			indexY--;
-			// (*myaudio).soundload("Sound/Cursor1.wav");
-		}
-
-		if ( keyData[SDLK_DOWN]  )
-		{
-			indexY++;
-			// (*myaudio).soundload("Sound/Cursor1.wav");
-		}
-
-		if (( keyData[LMK_Z]  )&&(Last_key!=LMK_Z))
-		{
- 			//  (*myaudio).soundload("Sound/Decision2.wav");
-			Last_key=LMK_Z;
-			desided= true;
-		}
-
-		if ((!keyData[LMK_Z])&&(Last_key==LMK_Z))
-		{
-			Last_key=0;
-		}
-
-
-		delay=0;*/
-//	}
 }
 

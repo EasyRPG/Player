@@ -57,7 +57,7 @@ public:
 	bool desition();
 	void dispose();
 	void init_curXY(int x,int y);
-	void init(Audio * theaudio, bool * run,int ComandX,int ComandY,int SizeX,int SizeY,int PosX,int PosY,int curX,int curY,const char *SysIMg);
+	void init(Sound_Manager * theaudio, bool * run,int ComandX,int ComandY,int SizeX,int SizeY,int PosX,int PosY,int curX,int curY,const char *SysIMg);
 	void draw(SDL_Surface* Screen);
 	void add_text(std::string ctext, int x, int y);
 	void add_sprite(Sprite * the_sprite, int x, int y);

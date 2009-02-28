@@ -33,8 +33,8 @@ void Equip_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScen
     system_string.append(myteam->data2.System_dat.System_graphic);
     system_string.append(".png");
 
-	menu.init( theaudio, run, 0,4, 190, 105, 130, 30,(char *)system_string.c_str());
-	Armas.init( theaudio, run, 1,0, 320, 105, 0, 135,(char *)system_string.c_str());
+	menu.init( (&TheTeam->S_manager), run, 0,4, 190, 105, 130, 30,(char *)system_string.c_str());
+	Armas.init( (&TheTeam->S_manager), run, 1,0, 320, 105, 0, 135,(char *)system_string.c_str());
 	descripcion.init(320,30,0,0,(char *)system_string.c_str());
 	stats.init(130,105,0,30,(char *)system_string.c_str());
 	int i=(*myteam).select;
@@ -96,7 +96,7 @@ void Equip_Menu_Scene::update_1_menu()
 	int space=16;
 	//int Size_of_Block=150;
 	menu.dispose();
-	menu.init( myaudio, therun, 0,4, 190, 105, 130, 30,"System/System.png");
+	menu.init( (&myteam->S_manager), therun, 0,4, 190, 105, 130, 30,"System/System.png");
 
 	str_Vector.push_back(( (*((*myteam).get_Weapon(i))).get_name()));
 	str_Vector.push_back(( (*((*myteam).get_Shield(i))).get_name()));
@@ -120,7 +120,7 @@ void Equip_Menu_Scene::update_2_menu()
 	int space=16,Size_of_Block=150;
 	Armas.dispose();
 
-	Armas.init( myaudio, therun, 1,0, 320, 105, 0, 135,"System/System.png");
+	Armas.init((&myteam->S_manager), therun, 1,0, 320, 105, 0, 135,"System/System.png");
 	int j=(*myteam).select;
 	unsigned char item_tipe2,item_tipe=4;
 
@@ -316,7 +316,6 @@ void Equip_Menu_Scene::updatekey()
 
          if(menu.menu.cancel)
         {
-                    myaudio->load("Sound/Cansel2.wav");
                     *NScene = 4;
         }
 }

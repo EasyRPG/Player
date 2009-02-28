@@ -35,7 +35,7 @@ void Objects_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheSc
     system_string.append("System/");
     system_string.append(myteam->data2.System_dat.System_graphic);
     system_string.append(".png");
-	menu.init( theaudio, run, 1,k, 320, 210, 0, 30,(char *)system_string.c_str());
+	menu.init((&myteam->S_manager), run, 1,k, 320, 210, 0, 30,(char *)system_string.c_str());
 	descripcion.init(320,30,0,0,(char *)system_string.c_str());
 	int i=0,space=16,Size_of_Block=150;
 	char stringBuffer[255];
@@ -94,7 +94,6 @@ void Objects_Menu_Scene::updatekey()
 
         if(menu.menu.cancel)
         {
-                    myaudio->load("Sound/Cansel2.wav");
                     *NScene = 4;
         }
 }

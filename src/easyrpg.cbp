@@ -128,6 +128,8 @@
 		<Unit filename="sprites/sprite.h" />
 		<Unit filename="tools/CDeltaTime.cpp" />
 		<Unit filename="tools/CDeltaTime.h" />
+		<Unit filename="tools/Sound_Manager.cpp" />
+		<Unit filename="tools/Sound_Manager.h" />
 		<Unit filename="tools/Timer.cpp" />
 		<Unit filename="tools/Timer.h" />
 		<Unit filename="tools/audio.cpp" />

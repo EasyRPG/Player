@@ -72,7 +72,7 @@ void Title_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Pla
     title.x = 0;
     title.y = 0;
     title.setimg(titles_string.c_str());
-    menu.init( myaudio, run, 0,2, 116, 57, 160 - (116 / 2), 160 - (57 / 2), (char *) system_string.c_str());
+    menu.init( (&TheTeam->S_manager), run, 0,2, 116, 57, 160 - (116 / 2), 160 - (57 / 2), (char *) system_string.c_str());
     str_Vector.push_back(TheTeam->data2.Glosary.New_Game);
     str_Vector.push_back(TheTeam->data2.Glosary.Load_Game);
     str_Vector.push_back(TheTeam->data2.Glosary.Exit_to_Windows);

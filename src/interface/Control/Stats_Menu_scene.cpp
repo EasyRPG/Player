@@ -102,12 +102,14 @@ void Stats_Menu_Scene::update(SDL_Surface* Screen)
 
 void Stats_Menu_Scene::updatekey()
 {
-int temp;
-        temp = Control::pop_LM();
+        int temp,i;
+        temp = Control::pop_action();
         switch (temp)
         {
         case CANCEL:
-		(*myaudio).load("../Sound/Cansel2.wav");* NScene=4;
+        i=myteam->S_manager.load_sound("Sound/Cancelar.wav");
+        myteam->S_manager.play_sound(i);
+		* NScene=4;
         break;
         default:
         break;

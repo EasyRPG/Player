@@ -18,6 +18,7 @@
 #define MENU_EASY_H_
 
 #include "../tools/audio.h"
+#include "../tools/Sound_Manager.h"
 #include "../tools/key.h"
 
 typedef struct menucomand
@@ -32,7 +33,7 @@ class Menu_Easy {
 protected:
 	int indexX,indexY;
 	int maxindexY,maxindexX;
-	Audio * myaudio;
+	Sound_Manager * myaudio;
 	bool * running;
 	bool desided;
 	int delay;
@@ -46,7 +47,7 @@ public:
 	int getindexX();
 	void updatekey();
 	void restarmenu();
-	void init(Audio * theaudio, bool * run,int X,int Y);
+	void init(Sound_Manager * theaudio, bool * run,int X,int Y);
 };
 
 #endif
