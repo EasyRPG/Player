@@ -166,6 +166,7 @@ int Sound::nSounds = 0;
 
 Sound::Sound()
 {
+    actual_music="";
     actualChannel = 0;
     sound = NULL;
 }
@@ -182,6 +183,24 @@ Sound::~Sound()
 
 bool Sound::load(const char* soundf)
 {
+
+if(actual_music.compare(soundf))
+ {
+
+if(sound != NULL)
+{
+    nSounds--;
+    if (Mix_Playing(actualChannel))
+    {
+        std::cerr << "*** Warning: Playing sound freed. It should have been stopped before." << std::endl;
+    }
+    Mix_FreeChunk(sound);
+
+}
+
+    actual_music.clear();
+    actual_music.append(soundf);
+
     sound = Mix_LoadWAV(soundf);
     if (sound == NULL)
     {
@@ -196,7 +215,7 @@ bool Sound::load(const char* soundf)
     }
 
     actualChannel = nSounds;
-
+ }
     return true;
 }
 
@@ -219,6 +238,7 @@ bool Sound::play(int loops)
 
 bool Sound::play(int loops, int ms)
 {
+
     if (sound == NULL)
     {
         std::cerr << "Error: Cannot play music. Please load it first." << std::endl;

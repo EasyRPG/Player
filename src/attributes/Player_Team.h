@@ -24,6 +24,7 @@
 #include "../tools/key.h"
 #include "../tools/font.h"
 #include "../tools/audio.h"
+#include "../tools/Sound_Manager.h"
 #include <vector>
 #include <string>
 #include "skill.h"
@@ -40,7 +41,7 @@ class Player_Team {
 	int Gold;
 
 	public:
-	Sound Sound_Manager;
+	Sound_Manager S_manager;
 	std:: vector <Player> Players;
     string memorized_BGM;
     std:: vector <char> world_fase;

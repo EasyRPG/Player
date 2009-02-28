@@ -32,7 +32,6 @@ void Title_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Pla
     unsigned int i =0;
      char swich=0;
     int var=0;
-    TheTeam->Sound_Manager.init();
     TheTeam->read_database();
     TheTeam->actual_map=TheTeam->lmt.party_map_id;
     TheTeam->actual_x_map=TheTeam->lmt.party_x;
