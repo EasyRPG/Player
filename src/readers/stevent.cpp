@@ -378,9 +378,9 @@
    printf("\nFrequency %d ",Frequency);
    printf("\nRepeat_actions %d ",Repeat_actions);
    printf("\nIgnore_impossible %d ",Ignore_impossible);
-  i=Directions.size();
+  i=comand_moves.size();
   for ( j=0; j<i;j++)
-  printf("\nDirections, %d %d ",j,Directions[j]);
+  printf("\nDirections, %d %d ",j,comand_moves[j]->Comand);
    }
    void Event_comand_Wait:: show(){
     printf("\nLength %d ",Length);
@@ -1296,8 +1296,8 @@ Event_comand * stEvent::EventcommandFlash_event(int Command,int Depth,FILE * Str
    }
 Event_comand * stEvent::EventcommandMove_event(int Command,int Depth,FILE * Stream) {
    Event_comand_Move_event * comand;
-  comand = new Event_comand_Move_event();
-   int dat;
+   comand = new Event_comand_Move_event();
+   int dat,Length_string;
    comand->Comand=Command;comand->Depth=Depth;
    ChunkInfo.Length= ReadCompressedInteger(Stream);
    ChunkInfo.Length= ReadCompressedInteger(Stream);
@@ -1308,8 +1308,70 @@ Event_comand * stEvent::EventcommandMove_event(int Command,int Depth,FILE * Stre
    // minimo 4 comandos
    ChunkInfo.Length-=4;
    while(ChunkInfo.Length--)
-   {dat=ReadCompressedInteger(Stream);
-   comand->Directions.push_back(dat);}
+   {
+    dat=ReadCompressedInteger(Stream);
+        //el 32 activar fase
+        //el 33 desactivar fase
+        //el 34 es cambiar grafico
+        //el 35 es reproduccion de sonido
+    switch (dat)
+    {
+            case 32:
+                    Event_comand_Change_switch * comand_key4;
+                    comand_key4 = new Event_comand_Change_switch();
+                    comand_key4->Comand=dat;
+                    comand_key4->Mode=0;
+                    comand_key4->toggle_option=0;
+                    comand_key4->start_switch=ReadCompressedInteger(Stream);
+                    ChunkInfo.Length--;
+                    comand->comand_moves.push_back(comand_key4);
+
+                    break;
+            case 33:
+                    Event_comand_Change_switch * comand_key5;
+                    comand_key5 = new Event_comand_Change_switch();
+                    comand_key5->Comand=dat;
+                    comand_key5->Mode=0;
+                    comand_key5->toggle_option=1;
+                    comand_key5->start_switch=ReadCompressedInteger(Stream);
+                    ChunkInfo.Length--;
+                    comand->comand_moves.push_back(comand_key5);
+                    break;
+            case 34:
+                    Event_comand_Change_Hero_Graphic * comand_key1;
+                    comand_key1 = new Event_comand_Change_Hero_Graphic();
+                    comand_key1->Comand=dat;
+                    Length_string=ReadCompressedInteger(Stream);
+                    ChunkInfo.Length--;
+                    comand_key1->New_graphic =ReadString(Stream,Length_string);
+                    ChunkInfo.Length-=Length_string;
+                    comand_key1->Sprite_ID=ReadCompressedInteger(Stream);
+                    ChunkInfo.Length--;
+                    comand->comand_moves.push_back(comand_key1);
+            break;
+            case 35:
+                    Event_comand_Play_SE * comand_key2;
+                    comand_key2 = new Event_comand_Play_SE();
+                    comand_key2->Comand=dat;
+                    Length_string=ReadCompressedInteger(Stream);
+                    ChunkInfo.Length--;
+                    comand_key2->SE_name =ReadString(Stream,Length_string);
+                    ChunkInfo.Length-=Length_string;
+                    comand_key2->Volume=ReadCompressedInteger(Stream);
+                    comand_key2->Tempo=ReadCompressedInteger(Stream);
+                    comand_key2->Balance=ReadCompressedInteger(Stream);
+                    ChunkInfo.Length-=3;
+                    comand->comand_moves.push_back(comand_key2);
+            break;
+
+            default:
+                    Event_comand * comand_key3;
+                    comand_key3 = new Event_comand();
+                    comand_key3->Comand=dat;
+                    comand->comand_moves.push_back(comand_key3);
+            break;
+            }
+        }
    return (comand);
    }
 Event_comand * stEvent::EventcommandWait(int Command,int Depth,FILE * Stream) {

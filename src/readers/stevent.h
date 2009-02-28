@@ -436,8 +436,9 @@
    int Frequency;
    int Repeat_actions;
    int Ignore_impossible;
-  std:: vector <int> Directions;
-   void show(); };
+   std:: vector <Event_comand *> comand_moves;
+   void show();
+   };
    class Event_comand_Wait: public Event_comand {
    public:
    int Length;

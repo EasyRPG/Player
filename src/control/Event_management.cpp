@@ -380,11 +380,11 @@ void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id
 
 
 
-  if((comand_Move_event->Directions.size())>(timer))
+  if((comand_Move_event->comand_moves.size())>(timer))
   {
   if (!Charas_nps->at(i).move(Charas_nps->at(i).move_dir))//till time to move
   {
-    switch (comand_Move_event->Directions[timer])
+    switch (comand_Move_event->comand_moves[timer]->Comand)
         {
         case 0:
             if ((chip->CollisionAt(Charas_nps->at(i).GridX,Charas_nps->at(i).GridY,DIRECTION_UP))&&(Mov_management->npc_colision(Charas_nps->at(i).GridX, (Charas_nps->at(i).GridY-1),i)))
@@ -414,6 +414,26 @@ void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id
             Charas_nps->at(i).GridX+=1;
             }
             break;
+/*        case 8:
+
+            system_string.clear();
+            system_string.append("CharSet/");
+            //system_string.append(Events->at(i).vcPage[current_page].CharsetName);
+            system_string.append(".png");
+            if (!system_string.compare("CharSet/.png"))
+            {
+                temp2 = CreateSurface(24, 32);
+                chip->RenderTile(temp2, 4, 16, Events->at(i).vcPage[current_page].CharsetID + 0x2710, 0);
+                Charas_nps->at(i).dispose();
+                Charas_nps->at(i).set_surface(temp2);
+            }
+            else
+            {
+                Charas_nps->at(i).dispose();
+                Charas_nps->at(i).setimg((char *) system_string.c_str(), Events->at(i).vcPage[current_page].CharsetID);
+            }
+            break;
+*/
         }
   Charas_nps->at(i).state=true;
   timer++;
