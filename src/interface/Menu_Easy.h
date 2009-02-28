@@ -20,6 +20,7 @@
 #include "../tools/audio.h"
 #include "../tools/Sound_Manager.h"
 #include "../tools/key.h"
+#include "../attributes/Player_Team.h"
 
 typedef struct menucomand
 {
@@ -33,11 +34,13 @@ class Menu_Easy {
 protected:
 	int indexX,indexY;
 	int maxindexY,maxindexX;
-	Sound_Manager * myaudio;
+	Player_Team * Team;
 	bool * running;
 	bool desided;
 	int delay;
-
+    std::string system_Cursor;
+    std::string system_Accept;
+    std::string system_Cancel;
 public:
 	//Menu_Easy();		///constructor
 	//~Menu_Easy();		///destructor
@@ -47,7 +50,7 @@ public:
 	int getindexX();
 	void updatekey();
 	void restarmenu();
-	void init(Sound_Manager * theaudio, bool * run,int X,int Y);
+	void init(Player_Team * TheTeam, bool * run,int X,int Y);
 };
 
 #endif

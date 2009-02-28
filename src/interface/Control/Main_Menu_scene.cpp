@@ -36,11 +36,11 @@ void Main_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene
     system_string.append(TheTeam->data2.System_dat.System_graphic);
     system_string.append(".png");
 
-	menu.init((&myteam->S_manager), run, 0,5, 96, 125, 0, 0,(char *)system_string.c_str());
-	players.init((&myteam->S_manager), run,0,((*myteam).get_size()-1),224,240,96,0,166,48,(char *)system_string.c_str());
+	menu.init(myteam, run, 0,5, 96, 125, 0, 0,(char *)system_string.c_str());
+	players.init(myteam, run,0,((*myteam).get_size()-1),224,240,96,0,166,48,(char *)system_string.c_str());
 	players.init_curXY(55,5); //ya eran muchos comandos
 	gold.init(96,40,0,200,(char *)system_string.c_str());
-	menu_exit.init( (&myteam->S_manager), run, 0,2, 96, 67, 112, 86,(char *)system_string.c_str());
+	menu_exit.init(myteam, run, 0,2, 96, 67, 112, 86,(char *)system_string.c_str());
 	str_Vector.push_back("Objetos ");
 	str_Vector.push_back("Técnicas ");
 	str_Vector.push_back("Equipamiento");

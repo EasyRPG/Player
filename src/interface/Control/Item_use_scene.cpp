@@ -32,7 +32,7 @@ void Item_use_scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,
     system_string.append("System/");
     system_string.append(myteam->data2.System_dat.System_graphic);
     system_string.append(".png");
-	players.init((&myteam->S_manager), run,0,((*myteam).get_size()-1),184,240,136,0,124,48,(char *)system_string.c_str());
+	players.init(myteam, run,0,((*myteam).get_size()-1),184,240,136,0,124,48,(char *)system_string.c_str());
 	players.init_curXY(55,5); //ya eran muchos comandos
 	players.visible=true;
 

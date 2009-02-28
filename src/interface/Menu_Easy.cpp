@@ -17,15 +17,31 @@
 #include "Menu_Easy.h"
 #include "../tools/control.h"
 
-void Menu_Easy::init(Sound_Manager * theaudio, bool * run,int X,int Y)
+void Menu_Easy::init(Player_Team * TheTeam, bool * run,int X,int Y)
 {
-	myaudio=theaudio;
+	Team=TheTeam;
 	desided=false;
 	maxindexY=Y;
 	maxindexX=X;
 	delay=0;
 	running=  run;
 	cancel=false;
+
+	system_Cursor.clear();
+    system_Cursor.append("Sound/");
+    system_Cursor.append(Team->data2.System_dat.Cursor_SFX.Name_of_Sound_effect);
+    system_Cursor.append(".wav");
+
+	system_Accept.clear();
+    system_Accept.append("Sound/");
+    system_Accept.append(Team->data2.System_dat.Accept_SFX.Name_of_Sound_effect);
+    system_Accept.append(".wav");
+
+	system_Cancel.clear();
+    system_Cancel.append("Sound/");
+    system_Cancel.append(Team->data2.System_dat.Cancel_SFX.Name_of_Sound_effect);
+    system_Cancel.append(".wav");
+
 }
 
 bool Menu_Easy::desition()
@@ -56,7 +72,6 @@ void Menu_Easy::updatekey()
 {
 int i;
 int temp;
-
 temp = Control::pop_LM();
 if (desided==false)
         switch (temp)
@@ -74,32 +89,33 @@ if (desided==false)
 
            case DECISION:
                 desided= true;
-                i=myaudio->load_sound("Sound/Decision2.wav");
-                myaudio->play_sound(i);
+
+                i=Team->S_manager.load_sound(system_Accept.c_str());
+                Team->S_manager.play_sound(i);
                 break;
             case CANCEL:
-                i=myaudio->load_sound("Sound/Cancelar.wav");
-                myaudio->play_sound(i);
+                i=Team->S_manager.load_sound(system_Cancel.c_str());
+                Team->S_manager.play_sound(i);
                 cancel=true;
                 break;
             case ARROW_UP:
-                i=myaudio->load_sound("Sound/Cursor1.wav");
-                myaudio->play_sound(i);
+                i=Team->S_manager.load_sound(system_Cursor.c_str());
+                Team->S_manager.play_sound(i);
                 indexY--;
                 break;
             case ARROW_DOWN:
-                i=myaudio->load_sound("Sound/Cursor1.wav");
-                myaudio->play_sound(i);
+                i=Team->S_manager.load_sound(system_Cursor.c_str());
+                Team->S_manager.play_sound(i);
                 indexY++;
                 break;
             case ARROW_RIGHT:
-                i=myaudio->load_sound("Sound/Cursor1.wav");
-                myaudio->play_sound(i);
+                i=Team->S_manager.load_sound(system_Cursor.c_str());
+                Team->S_manager.play_sound(i);
                 indexX++;
                 break;
             case ARROW_LEFT:
-                i=myaudio->load_sound("Sound/Cursor1.wav");
-                myaudio->play_sound(i);
+                i=Team->S_manager.load_sound(system_Cursor.c_str());
+                Team->S_manager.play_sound(i);
                 indexX--;
                 break;
             case SHIFT:

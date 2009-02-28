@@ -16,9 +16,9 @@
 
 #include "Window_Player_Select.h"
 
-void Window_Player_Select::init(Sound_Manager*theaudio,bool *run,int ComandX,int ComandY,int SizeX,int SizeY,int PosX,int PosY,int curX,int curY, const char *SysIMg)
+void Window_Player_Select::init(Player_Team * myteam,bool *run,int ComandX,int ComandY,int SizeX,int SizeY,int PosX,int PosY,int curX,int curY, const char *SysIMg)
 {
-	menu.init(theaudio,run,ComandX,ComandY);
+	menu.init(myteam,run,ComandX,ComandY);
 	System.init_Sistem();
 	System.setimg(SysIMg);
 	tapiz.set_surface(System.Exdraw(SizeX,SizeY));

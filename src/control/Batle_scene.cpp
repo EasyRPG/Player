@@ -45,7 +45,7 @@ void Batle_scene::init(Audio *theaudio,bool  *run,unsigned char  *TheScene,Playe
 	update_window_stats();
 	//menu_os.init(theaudio,run,0,4,96,80,96,160);
 	//menu_os.visible=false;
-	menu.init((&TheTeam->S_manager),run,0,4,96,80,0,160,(char *)system_string.c_str());
+	menu.init(TheTeam,run,0,4,96,80,0,160,(char *)system_string.c_str());
 	str_Vector.push_back("Atacar");
 	str_Vector.push_back("Habilidades");
 	str_Vector.push_back("Objetos");
@@ -75,7 +75,7 @@ void Batle_scene::update_window_stats()
     system_string.append("../System/");
     system_string.append(myteam->data2.System_dat.System_graphic);
     system_string.append(".png");
-	window.init((&myteam->S_manager),the_run,0,3,224,80,96,160,214,16,(char *)system_string.c_str());
+	window.init(myteam,the_run,0,3,224,80,96,160,214,16,(char *)system_string.c_str());
 	int i=0;
 	char stringBuffer[255];
 	for(i=0;i<(*myteam).get_size();i++)
@@ -135,7 +135,7 @@ void Batle_scene::update_window_mosterselect()
 			k++;
 		}
 	}
-	moster_select.init((&myteam->S_manager),the_run,0,k-1,96,80,0,160,"../System/system.png");
+	moster_select.init(myteam,the_run,0,k-1,96,80,0,160,"../System/system.png");
 	moster_select.setComands(&str_Vector2);
 }
 

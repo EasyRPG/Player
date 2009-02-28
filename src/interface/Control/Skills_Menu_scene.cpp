@@ -36,7 +36,7 @@ void Skills_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheSce
     system_string.append(myteam->data2.System_dat.System_graphic);
     system_string.append(".png");
 
-	menu.init((&myteam->S_manager), run, 1,k, 320, 180, 0, 60,(char *)system_string.c_str());
+	menu.init(myteam, run, 1,k, 320, 180, 0, 60,(char *)system_string.c_str());
 	descripcion.init(320,30,0,0,(char *)system_string.c_str());
 	descripcion2.init(320,30,0,30,(char *)system_string.c_str());
 
