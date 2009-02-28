@@ -56,7 +56,7 @@ void E_management::page_refresh()
             }
             }
                 Charas_nps->at(i).dir = Events->at(i).vcPage[current_page].Facing_direction;
-                Charas_nps->at(i).frame = Events->at(i).vcPage[current_page].Animation_frame;
+                Charas_nps->at(i).frame = Events->at(i).vcPage[current_page].Animation_frame+1;
                 Charas_nps->at(i).move_dir= Mov_management->get_dir(Events->at(i).vcPage[current_page].Movement_type);
                 Charas_nps->at(i).move_frec=Events->at(i).vcPage[current_page].Movement_frequency;
                 Charas_nps->at(i).anim_frec=Events->at(i).vcPage[current_page].Movement_speed;

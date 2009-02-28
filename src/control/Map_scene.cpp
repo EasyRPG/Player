@@ -136,7 +136,8 @@ void Map_Scene::init_npc()
             {
                 npc.setimg((char *) system_string.c_str(), data.vcEvents[i].vcPage[original_state.Active_page].CharsetID);
                 npc.dir = data.vcEvents[i].vcPage[original_state.Active_page].Facing_direction;
-                npc.frame = data.vcEvents[i].vcPage[original_state.Active_page].Animation_frame;
+                npc.frame =data.vcEvents[i].vcPage[original_state.Active_page].Animation_frame + 1;
+
             }
                 npc.move_dir=data.vcEvents[i].vcPage[original_state.Active_page].Movement_type;
                 npc.move_frec=data.vcEvents[i].vcPage[original_state.Active_page].Movement_frequency;

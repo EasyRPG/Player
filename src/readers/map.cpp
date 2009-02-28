@@ -174,11 +174,12 @@ vector <stPageEventMap> map_reader::pageChunk(FILE * Stream)
          while(datatoread>datareaded) // si no hay mas en el array
          {
          id= ReadCompressedInteger(Stream);//lectura de id 1 de array
-             do
-              {
                         Page.Facing_direction =2;
                         Page.Movement_frequency =3;
                         Page.Movement_speed=1;
+
+             do
+              {
                         ChunkInfo.ID     = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
                          if(ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
                           ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
@@ -197,6 +198,9 @@ vector <stPageEventMap> map_reader::pageChunk(FILE * Stream)
                                break;
                           case CHUNK_Facing_direction:
                                Page.Facing_direction = ReadCompressedInteger(Stream);
+                               break;
+                          case CHUNK_Animation_frame:
+                                Page.Animation_frame = ReadCompressedInteger(Stream);
                                break;
                           case CHUNK_Transparency:
                                Page.Transparency  = ReadCompressedInteger(Stream);
