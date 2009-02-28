@@ -363,7 +363,7 @@ if(Ev_state[event_id].Active_page!=-1)
                 // ejecutar comandos
                 if(Ev_state[event_id].id_actual_active)  //si el evento  esta activo
                 {
-                    Ev_management.active_exec_comand(comand,&Ev_state[event_id]);
+                    Ev_management.active_exec_comand(comand,event_id,&Ev_state[event_id]);
                 }
 
             }

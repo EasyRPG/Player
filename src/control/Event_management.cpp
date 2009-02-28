@@ -195,7 +195,7 @@ void E_management::updatekey(bool *running)
 }
 
 
-void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id)
+void E_management::active_exec_comand(Event_comand * comand,int event_id, E_state * comand_id)
 {
     static int timer=0;
     static float Xmove,Ymove;
@@ -377,7 +377,12 @@ void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id
  case Move_event:// 0xD842,
         Event_comand_Move_event * comand_Move_event;
         comand_Move_event=(Event_comand_Move_event *)comand;
+
+   if(comand_Move_event->Target==10005)
+   i=event_id;
+   else
    i=comand_Move_event->Target-1;
+
    //Charas_nps->at(i).move_frec=comand_Move_event->Frequency;
 
 
@@ -393,32 +398,33 @@ void E_management::active_exec_comand(Event_comand * comand, E_state * comand_id
             {
             Charas_nps->at(i).move_dir=DIRECTION_UP;
             Charas_nps->at(i).GridY-=1;
-            }
             Charas_nps->at(i).state=true;
+            }
             break;
         case 2:
             if ((chip->CollisionAt(Charas_nps->at(i).GridX,Charas_nps->at(i).GridY,DIRECTION_DOWN))&&(Mov_management->npc_colision(Charas_nps->at(i).GridX, (Charas_nps->at(i).GridY+1),i)))
             {
             Charas_nps->at(i).move_dir=DIRECTION_DOWN;
             Charas_nps->at(i).GridY+=1;
-            }
             Charas_nps->at(i).state=true;
+            }
             break;
         case 3:
             if ((chip->CollisionAt(Charas_nps->at(i).GridX,Charas_nps->at(i).GridY,DIRECTION_LEFT))&&(Mov_management->npc_colision((Charas_nps->at(i).GridX-1), Charas_nps->at(i).GridY,i)))
              {
              Charas_nps->at(i).move_dir=DIRECTION_LEFT;
              Charas_nps->at(i).GridX-=1;
-             }
              Charas_nps->at(i).state=true;
+
+             }
             break;
         case 1:
             if ((chip->CollisionAt(Charas_nps->at(i).GridX,Charas_nps->at(i).GridY,DIRECTION_RIGHT))&&(Mov_management->npc_colision((Charas_nps->at(i).GridX+1), Charas_nps->at(i).GridY,i)))
             {
             Charas_nps->at(i).move_dir=DIRECTION_RIGHT;
             Charas_nps->at(i).GridX+=1;
-            }
             Charas_nps->at(i).state=true;
+            }
             break;
         case 34:
             Event_comand_Change_Hero_Graphic * comand_key1;
@@ -1424,7 +1430,11 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Move_event:// 0xD842,
         Event_comand_Move_event * comand_Move_event;
         comand_Move_event=(Event_comand_Move_event *)comand;
+        if(comand_Move_event->Target==10005)
+        i=event_id;
+        else
         i=comand_Move_event->Target-1;
+
         Charas_nps->at(i).move_from_event=true;
         break;
     case Wait_until_moved:// 0xD84C,
