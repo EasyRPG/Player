@@ -268,6 +268,15 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
         }
 
         break;
+    case Show_Battle_Anim :// 0xD74A,
+        if(On_map_anim.animation_ended)
+        {
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+        use_keyboard = false;
+        }
+        break;
+
     case Call_event:// 0xE02A,
         Event_comand_Call_event * comand_Call_event;
         comand_Call_event= (Event_comand_Call_event *)comand;
@@ -1425,10 +1434,19 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         comand_Show_Battle_Anim=(Event_comand_Show_Battle_Anim *)comand;
         i=comand_Show_Battle_Anim->Animation_ID-1;
         On_map_anim.init_Anim(&myteam->data2.Animations[i],&myteam->S_manager);
+        if(comand_Show_Battle_Anim->Full_screen)
+        {
         On_map_anim.center_X=160;
         On_map_anim.center_Y=120;
+        }
+        if(!comand_Show_Battle_Anim->Wait)
+        {
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
+        }else
+        {
+        use_keyboard = true;
+        }
         break;
     case Set_hero_opacity:// 0xD82E,
         Event_comand_Set_hero_opacity * comand_Set_hero_opacity;
