@@ -112,6 +112,8 @@
 		<Unit filename="readers/strmap.h" />
 		<Unit filename="sprites/Animacion.cpp" />
 		<Unit filename="sprites/Animacion.h" />
+		<Unit filename="sprites/Animation_Manager.cpp" />
+		<Unit filename="sprites/Animation_Manager.h" />
 		<Unit filename="sprites/Batler.cpp" />
 		<Unit filename="sprites/Chara.cpp" />
 		<Unit filename="sprites/Chara.h" />
