@@ -377,12 +377,14 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
  case Move_event:// 0xD842,
         Event_comand_Move_event * comand_Move_event;
         comand_Move_event=(Event_comand_Move_event *)comand;
-
-   if(comand_Move_event->Target==10005)
-   i=event_id;
-   else
-   i=comand_Move_event->Target-1;
-
+if(comand_Move_event->Target!=10001)
+ {
+        if(comand_Move_event->Target==10005)
+        i=event_id;
+        else
+        {
+            i=busque_real_id(comand_Move_event->Target);
+        }
    //Charas_nps->at(i).move_frec=comand_Move_event->Frequency;
 
 
@@ -394,7 +396,7 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
     switch (comand_Move_event->comand_moves[timer]->Comand)
         {
         case 0:
-            if ((chip->CollisionAt(Charas_nps->at(i).GridX,Charas_nps->at(i).GridY,DIRECTION_UP))&&(Mov_management->npc_colision(Charas_nps->at(i).GridX, (Charas_nps->at(i).GridY-1),i)))
+            if (((chip->CollisionAt(Charas_nps->at(i).GridX,Charas_nps->at(i).GridY,DIRECTION_UP))&&(Mov_management->npc_colision(Charas_nps->at(i).GridX, (Charas_nps->at(i).GridY-1),i)))||comand_Move_event->Ignore_impossible)
             {
             Charas_nps->at(i).move_dir=DIRECTION_UP;
             Charas_nps->at(i).GridY-=1;
@@ -402,7 +404,7 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
             }
             break;
         case 2:
-            if ((chip->CollisionAt(Charas_nps->at(i).GridX,Charas_nps->at(i).GridY,DIRECTION_DOWN))&&(Mov_management->npc_colision(Charas_nps->at(i).GridX, (Charas_nps->at(i).GridY+1),i)))
+            if (((chip->CollisionAt(Charas_nps->at(i).GridX,Charas_nps->at(i).GridY,DIRECTION_DOWN))&&(Mov_management->npc_colision(Charas_nps->at(i).GridX, (Charas_nps->at(i).GridY+1),i)))||comand_Move_event->Ignore_impossible)
             {
             Charas_nps->at(i).move_dir=DIRECTION_DOWN;
             Charas_nps->at(i).GridY+=1;
@@ -410,7 +412,7 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
             }
             break;
         case 3:
-            if ((chip->CollisionAt(Charas_nps->at(i).GridX,Charas_nps->at(i).GridY,DIRECTION_LEFT))&&(Mov_management->npc_colision((Charas_nps->at(i).GridX-1), Charas_nps->at(i).GridY,i)))
+            if (((chip->CollisionAt(Charas_nps->at(i).GridX,Charas_nps->at(i).GridY,DIRECTION_LEFT))&&(Mov_management->npc_colision((Charas_nps->at(i).GridX-1), Charas_nps->at(i).GridY,i)))||comand_Move_event->Ignore_impossible)
              {
              Charas_nps->at(i).move_dir=DIRECTION_LEFT;
              Charas_nps->at(i).GridX-=1;
@@ -419,7 +421,7 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
              }
             break;
         case 1:
-            if ((chip->CollisionAt(Charas_nps->at(i).GridX,Charas_nps->at(i).GridY,DIRECTION_RIGHT))&&(Mov_management->npc_colision((Charas_nps->at(i).GridX+1), Charas_nps->at(i).GridY,i)))
+            if (((chip->CollisionAt(Charas_nps->at(i).GridX,Charas_nps->at(i).GridY,DIRECTION_RIGHT))&&(Mov_management->npc_colision((Charas_nps->at(i).GridX+1), Charas_nps->at(i).GridY,i)))||comand_Move_event->Ignore_impossible)
             {
             Charas_nps->at(i).move_dir=DIRECTION_RIGHT;
             Charas_nps->at(i).GridX+=1;
@@ -447,7 +449,7 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
 }
-
+ }
         break;
 
     default:
@@ -460,6 +462,15 @@ void E_management::dispose()
     delete message_box;
     message_box=NULL;
     images.clear();
+}
+
+int E_management::busque_real_id(int id_to_serch)
+{
+    int i;
+    for(i=0;i<Charas_nps->size();i++)
+    if(Charas_nps->at(i).id==id_to_serch)
+        return(i);
+return(-1);
 }
 
 void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int event_id, E_state * comand_id)
@@ -1430,12 +1441,21 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Move_event:// 0xD842,
         Event_comand_Move_event * comand_Move_event;
         comand_Move_event=(Event_comand_Move_event *)comand;
+        cout<<"original"<<comand_Move_event->Target;
+        if(comand_Move_event->Target!=10001)
+        {
         if(comand_Move_event->Target==10005)
         i=event_id;
         else
-        i=comand_Move_event->Target-1;
-
+        {
+            i=busque_real_id(comand_Move_event->Target);
+        }
         Charas_nps->at(i).move_from_event=true;
+        }else
+        {
+        Actor->move_from_event=true;
+
+        }
         break;
     case Wait_until_moved:// 0xD84C,
         comand_id->id_exe_actual++;

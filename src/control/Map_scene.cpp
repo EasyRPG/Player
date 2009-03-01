@@ -80,14 +80,22 @@ if(myaudio->actual_music.compare((char *)system_string.c_str()))
     chip.init(pre_chip.ChipsetSurface, &data, &myteam->data2.Tilesets[(unsigned int) data.ChipsetID - 1] );
     Ev_management.init(myaudio,NScene,myteam,Events,&Charas_nps,Actor,&data,&chip,&Ev_state,&Mov_management);
     if(data.ParallaxBackground)
-    {
+    {cout<<"paralle back active";
     system_string.clear();
     system_string.append("Panorama/");
     system_string.append(data.BackgroundName);
     system_string.append(".png");
     Background1.setimg((char *) system_string.c_str());
+
+    if(data.HorizontalPan)
     Background1.x= (-320);
+    else
+    Background1.x= 0;
+
+    if(data.VerticalPan)
     Background1.y=(-240);
+    else
+    Background1.y=0;
     }
     init_npc();
 
@@ -173,19 +181,26 @@ void Map_Scene::update(SDL_Surface *Screen)
     //WE shuold use layers!!
     SDL_FillRect(Screen, NULL, 0x0);// Clear screen  inutil
     unsigned int i;
+
     if(data.ParallaxBackground)
     {
-    if(data.HorizontalAutoPan)
+    if((data.HorizontalAutoPan)&(data.HorizontalPan))
+    {
     Background1.x+=data.HorizontalPanSpeed;
-    if(data.VerticalAutoPan)
-    Background1.y-=data.VerticalPanSpeed;
-
     if(Background1.x>(0))
     Background1.x= (-320);
+    }
+    if((data.VerticalAutoPan)&(data.VerticalPan))
+    {
+    Background1.y-=data.VerticalPanSpeed;
     if(Background1.y<(0))
     Background1.y= (-240);
-    Background1.draw(Screen);
     }
+
+    Background1.draw(Screen);
+
+    }
+
     chip.Render(Screen, 0, myteam->view.x, myteam->view.y); //dibuja mapa capa 1 con repecto a la vista
     chip.Render(Screen, 1, myteam->view.x, myteam->view.y);//dibuja mapa capa 2 con repecto a la vista
 

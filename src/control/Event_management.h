@@ -69,7 +69,7 @@ public:
     void page_refresh();
 
     static bool tried_to_talk;
-
+    int busque_real_id(int id_to_serch);
     void init(Audio * audio,unsigned char * TheScene,Player_Team * TheTeam,std:: vector <stEventMap> * TheEvents, std:: vector <Chara> * TheCharas_nps,CActor * TheActor,map_data * Thedata,Chipset * the_chip,std:: vector <E_state> *Evn_state,Mv_management * Move_management);
     void exec_comand(std:: vector <Event_comand *> vcEvent_comand,int event_id, E_state * comand_id);
     void active_exec_comand(Event_comand * comand,int event_id, E_state * comand_id);
