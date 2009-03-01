@@ -112,6 +112,15 @@ void Sprite::set_surface(SDL_Surface * imag)
 	img=imag;
 }
 
+Sprite::Sprite()
+{
+not_clean=false;
+}
+Sprite::~Sprite()
+{
+//dispose();
+}
+
 void Sprite::dispose()
 {
         if(not_clean)

@@ -605,7 +605,7 @@ void stcAnimationTiming::clear()
 void stcAnimationTiming::show()
 {
 printf(" \n Frame %d",Frame);
-//		Sound_effect.clear();//=0x02,
+Sound_effect.show();//=0x02,
 printf(" \n Flash_effect %d",Flash_effect);
 printf(" \n Green_component %d",Green_component);
 printf(" \n Blue_component %d",Blue_component);
@@ -654,11 +654,24 @@ void stcAnimated_battle::clear()
 }
 void stcAnimated_battle::show()
 {
+unsigned int i,j;
 printf(" \n strName %s",strName.c_str());
 printf(" \n strAnimation_file %s",strAnimation_file.c_str());
 //vecAnimationTiming.clear();//Timing_data=0x06,
+for(i=0;i<vecAnimationTiming.size();i++)
+vecAnimationTiming[i].show();
 printf(" \n intApply_to %d",intApply_to);
 printf(" \n intY_coordinate_line %d",intY_coordinate_line);
+printf("\n");
+for(i=0;i<Framedata.size();i++)
+{
+    for(j=0;j<Framedata[i].Cell_data.size();j++)
+    {
+    Framedata[i].Cell_data[j].show();
+    }
+printf("\n");
+
+}
  //Framedata=0x0C
 }
 

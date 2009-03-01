@@ -152,10 +152,12 @@ myteam->scroll_writed=false;
 }
 
 void E_management::update(SDL_Surface *Screen)
-{int i;
+{
+    int i;
     for(i=0;i<50;i++)
         images[i].draw(Screen);
 
+    On_map_anim.draw(Screen);
     if (message_box->visible)
     {
         message_box->draw(Screen);
@@ -1421,6 +1423,10 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Show_Battle_Anim :// 0xD74A,
         Event_comand_Show_Battle_Anim * comand_Show_Battle_Anim;
         comand_Show_Battle_Anim=(Event_comand_Show_Battle_Anim *)comand;
+        i=comand_Show_Battle_Anim->Animation_ID-1;
+        On_map_anim.init_Anim(&myteam->data2.Animations[i],&myteam->S_manager);
+        On_map_anim.center_X=160;
+        On_map_anim.center_Y=120;
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
         break;

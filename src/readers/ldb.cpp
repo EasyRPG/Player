@@ -1191,6 +1191,7 @@ std:: vector <stcAnimationTiming>  LDB_reader:: AnimationTimingChunk(FILE * Stre
 		 while(datatoread>datareaded) // si no hay mas en el array
 		 {
 		 id= ReadCompressedInteger(Stream);//lectura de id 1 de array
+		 AnimationTiming.clear();
 		 do{
 		    ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
 		    if(ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
@@ -1203,17 +1204,18 @@ std:: vector <stcAnimationTiming>  LDB_reader:: AnimationTimingChunk(FILE * Stre
 			case Sound_effect://0x02,
 			AnimationTiming.Sound_effect = soundChunk(Stream);
 			     break;
+
 			case Flash_effect://0x03,
-				AnimationTiming.Frame=ReadCompressedInteger(Stream);
+				AnimationTiming.Flash_effect=ReadCompressedInteger(Stream);
 				break;
 			case Green_component://0x05,
-				AnimationTiming.Frame=ReadCompressedInteger(Stream);
+				AnimationTiming.Green_component=ReadCompressedInteger(Stream);
 				break;
 			case Blue_component://0x06,
-				AnimationTiming.Frame=ReadCompressedInteger(Stream);
+				AnimationTiming.Blue_component=ReadCompressedInteger(Stream);
 				break;
 			case Flash_power://0x07
-				AnimationTiming.Frame=ReadCompressedInteger(Stream);
+				AnimationTiming.Flash_power=ReadCompressedInteger(Stream);
 				break;
 			case CHUNK_LDB_END_OF_BLOCK:
 			     break;
@@ -1239,8 +1241,10 @@ std:: vector <stcAnimationCelldata>  LDB_reader:: AnimationCelldataChunk(FILE * 
 		 while(datatoread>datareaded) // si no hay mas en el array
 		 {
 		 id= ReadCompressedInteger(Stream);//lectura de id 1 de array
+		 Celldata.clear();
+
 		 do{
-			   ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
+               ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
 			   if(ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
 			   ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
 						 switch(ChunkInfo.ID)// tipo de la primera dimencion

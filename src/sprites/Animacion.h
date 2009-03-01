@@ -20,24 +20,13 @@
 // *****************************************************************************
 // =============================================================================
 
-
-
-
-
 #include "SDL.h"
-
 #include "SDL_rotozoom.h"
-
 #include "../tools/tools.h"
-
 #include "SDL_image.h"
-
 #include <iostream>
-
 #include <stdlib.h>
-
 #include "sprite.h"
-
 
 // =============================================================================
 // *****************************************************************************
@@ -52,7 +41,7 @@ private:
 public:
     bool endanim;
     void reset();
-    void init_Anim(int the_cols,int the_rows);
+    void init_Anim();
     void frameupdate();
     void draw(SDL_Surface *screen);
 };

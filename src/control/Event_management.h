@@ -8,6 +8,7 @@
 #include <sstream>
 #include <stdlib.h>
 #include "../sprites/sprite.h"
+#include "../sprites/Animation_Manager.h"
 #include "../sprites/chipset.h"
 #include "../sprites/Pre_Chipset.h"
 #include "../tools/key.h"
@@ -53,7 +54,7 @@ private:
     std:: vector <E_state> *Ev_state;//agregar apuntador a vector de eventos
     std:: vector <Chara> *Charas_nps;
     std:: vector <Sprite> images;
-
+    Animacion_Manager On_map_anim;
     CMessage *message_box;
     Mv_management * Mov_management;
     CActor *Actor;

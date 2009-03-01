@@ -59,6 +59,8 @@ class Sprite {
 
 	public:
 
+        Sprite();
+        ~Sprite();
 	    bool visible;
 	    int frame;
 	    int x,y;
