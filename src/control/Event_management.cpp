@@ -1434,6 +1434,24 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         comand_Show_Battle_Anim=(Event_comand_Show_Battle_Anim *)comand;
         i=comand_Show_Battle_Anim->Animation_ID-1;
         On_map_anim.init_Anim(&myteam->data2.Animations[i],&myteam->S_manager);
+        if(comand_Show_Battle_Anim->Target<10000)
+        {
+        j= busque_real_id(comand_Show_Battle_Anim->Target);
+        On_map_anim.center_X=   Charas_nps->at(j).x+16;
+        On_map_anim.center_Y=   Charas_nps->at(j).y+12;
+        }
+        if(comand_Show_Battle_Anim->Target==10001)
+        {
+        On_map_anim.center_X=   Actor->x+16;
+        On_map_anim.center_Y=   Actor->y+12;
+        }
+        if(comand_Show_Battle_Anim->Target==10005)
+        {
+        On_map_anim.center_X=   Charas_nps->at(event_id).x+16;
+        On_map_anim.center_Y=   Charas_nps->at(event_id).y+12;
+        }
+
+
         if(comand_Show_Battle_Anim->Full_screen)
         {
         On_map_anim.center_X=160;
