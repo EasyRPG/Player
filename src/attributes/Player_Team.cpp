@@ -312,81 +312,89 @@ void Player_Team::change_stats(int add_remove,int Hero_ID, int count,int type)
         }
     }
 
-if(type==0)//pv
-    if(add_remove)
+    if(type==0)//pv
     {
-        i= Players[j].get_MaxHP();
-        Players[j].set_MaxHP(i-count);
-    }
-    else
-    {
-        i= Players[j].get_MaxHP();
-        Players[j].set_MaxHP(i+count);
-    }
-
-if(type==1)//pm
-    if(add_remove)
-    {
-        i= Players[j].get_MaxMP();
-        Players[j].set_MaxMP(i-count);
-    }
-    else
-    {
-        i= Players[j].get_MaxMP();
-        Players[j].set_MaxMP(i+count);
+        if(add_remove)
+        {
+            i= Players[j].get_MaxHP();
+            Players[j].set_MaxHP(i-count);
+        }
+        else
+        {
+            i= Players[j].get_MaxHP();
+            Players[j].set_MaxHP(i+count);
+        }
     }
 
-if(type==2)//ataque
-    if(add_remove)
+    if(type==1)//pm
     {
-        i= Players[j].get_Attack();
-        Players[j].set_Attack(i-count);
-    }
-    else
-    {
-        i= Players[j].get_Attack();
-        Players[j].set_Attack(i+count);
-    }
-
-
-if(type==3)//defensa
-    if(add_remove)
-    {
-        i= Players[j].get_Defense();
-        Players[j].set_Defense(i-count);
-    }
-    else
-    {
-        i= Players[j].get_Defense();
-        Players[j].set_Defense(i+count);
+        if(add_remove)
+        {
+            i= Players[j].get_MaxMP();
+            Players[j].set_MaxMP(i-count);
+        }
+        else
+        {
+            i= Players[j].get_MaxMP();
+            Players[j].set_MaxMP(i+count);
+        }
     }
 
-
-if(type==4)//espiritu
-    if(add_remove)
+    if(type==2)//ataque
     {
-        i= Players[j].get_Spirit();
-        Players[j].set_Spirit(i-count);
-    }
-    else
-    {
-        i= Players[j].get_Spirit();
-        Players[j].set_Spirit(i+count);
-    }
-
-
-if(type==5)//agilidad
-    if(add_remove)
-    {
-        i= Players[j].get_Speed();
-        Players[j].set_Speed(i-count);
-    }
-    else
-    {
-        i= Players[j].get_Speed();
-        Players[j].set_Speed(i+count);
+        if(add_remove)
+        {
+            i= Players[j].get_Attack();
+            Players[j].set_Attack(i-count);
+        }
+        else
+        {
+            i= Players[j].get_Attack();
+            Players[j].set_Attack(i+count);
+        }
     }
 
+    if(type==3)//defensa
+    {
+       if(add_remove)
+        {
+            i= Players[j].get_Defense();
+            Players[j].set_Defense(i-count);
+        }
+        else
+        {
+            i= Players[j].get_Defense();
+            Players[j].set_Defense(i+count);
+        }
+    }
+
+    if(type==4)//espiritu
+    {
+        if(add_remove)
+        {
+            i= Players[j].get_Spirit();
+            Players[j].set_Spirit(i-count);
+        }
+        else
+        {
+            i= Players[j].get_Spirit();
+            Players[j].set_Spirit(i+count);
+        }
+    }
+
+    if(type==5)//agilidad
+    {
+        if(add_remove)
+        {
+            i= Players[j].get_Speed();
+            Players[j].set_Speed(i-count);
+        }
+        else
+        {
+            i= Players[j].get_Speed();
+            Players[j].set_Speed(i+count);
+        }
+    }
 }
 
 void Player_Team::change_exp(int add_remove,int Hero_ID, int count)
