@@ -547,6 +547,7 @@
     int By_Count;
     int Count;
     int Music;
+    string Name_data;
    void show(); };
  class Event_comand_Label: public Event_comand {
     public:

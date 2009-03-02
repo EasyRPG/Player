@@ -469,10 +469,12 @@
    }
  void Event_comand_Conditional:: show(){
     // por confirmar
-    printf("\nSwich %d ",Swich);
-    printf("\nHero_ID %d ",Hero_ID);
-    printf("\nTempo %d ",Tempo);
-    printf("\nBy_Count %d ",By_Count);
+    printf("\nName %s ",Name_data.c_str());// type of operation
+
+    printf("\nSwich %d ",Swich);// type of operation
+    printf("\nHero_ID %d ",Hero_ID);//more lique a second data
+    printf("\nTempo %d ",Tempo);// 0 for active 1  for unactive onthe fases
+    printf("\nBy_Count %d ",By_Count);// id for de var
     printf("\nCount %d ",Count);
     printf("\nMusic %d ",Music);
    }
@@ -1573,11 +1575,20 @@ Event_comand * stEvent::EventcommandEnable_system_menu(int Command,int Depth,FIL
     return (comand);
     }
 Event_comand * stEvent::EventcommandConditional(int Command,int Depth,FILE * Stream) {
+    int size_string;
     Event_comand_Conditional * comand;
-  comand = new Event_comand_Conditional();
+    comand = new Event_comand_Conditional();
     comand->Comand=Command;comand->Depth=Depth;
+    size_string= ReadCompressedInteger(Stream);
+    printf("men ,%d",size_string);
+    if(size_string>0)
+    {
+    comand->Name_data.clear();
+    comand->Name_data.append(ReadString(Stream,size_string));
+    }
+    else
     ChunkInfo.Length= ReadCompressedInteger(Stream);
-    ChunkInfo.Length= ReadCompressedInteger(Stream);
+
     comand->Swich=ReadCompressedInteger(Stream);
     comand->Hero_ID=ReadCompressedInteger(Stream);
     comand->Tempo=ReadCompressedInteger(Stream);
