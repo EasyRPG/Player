@@ -68,15 +68,15 @@ private:
 	Chara * player;
     E_management Ev_management;
     Mv_management Mov_management;
-	std:: vector <Chara> Charas_nps;//agregar apuntador a vector de eventos
-    Sprite Background1;
+	std:: vector <Chara> * Charas_nps;//agregar apuntador a vector de eventos
+    Sprite * Background;
 
 	bool moving;
 	int to_move;
-	Pre_Chipset pre_chip;
-	Chipset chip;
+	Pre_Chipset * pre_chip;
+	Chipset  * chip;
 	map_reader Map;
-	map_data data;
+	map_data * data;
     std:: vector <stEventMap> * Events;//agregar apuntador a vector de eventos
     std:: vector <E_state> Ev_state;//agregar apuntador a vector de eventos
 

@@ -25,87 +25,104 @@ void Map_Scene::init( bool * run,Audio *audio, int SCREEN_X, int SCREEN_Y, unsig
     SCREEN_SIZE_Y = SCREEN_Y;
     Actor = myteam->get_chara(0);
     NScene = TheScene;
+    Charas_nps= &(myteam->GCharas_nps);
+    pre_chip=&(myteam->Gpre_chip);
+    chip=&(myteam->Gchip);
+    data=&(myteam->Gdata);
+    Background= &(myteam->MBackground);
+
     load_map();
     myteam->scroll_active=true;
-
 }
 
 
 void Map_Scene::load_map()
 {
-    int Map_id;
-    Map_id=  myteam->actual_map;
-    actual_map=Map_id;
-    myteam->view.x = 0;
-    myteam->view.y = 0;
-    std::string system_string;
+    static int Map_id=-1;
+    if(Map_id!=myteam->actual_map)
+    {
 
-    system_string.clear();
-    system_string.append("Map");
+    Ev_state.clear();
+    Ev_management.dispose();
+    data->clear_events();
+    //Charas_nps->clear();
+    pre_chip->dispose();
 
-    if (Map_id<1000)
-        system_string.append("0");
-    if (Map_id<100)
-        system_string.append("0");
-    if (Map_id<10)
-        system_string.append("0");
+        Map_id=  myteam->actual_map;
+        actual_map=Map_id;
+        myteam->view.x = 0;
+        myteam->view.y = 0;
+        std::string system_string;
+        system_string.clear();
+        system_string.append("Map");
 
-    std::stringstream ss;
-    ss << Map_id;
+        if (Map_id<1000)
+            system_string.append("0");
+        if (Map_id<100)
+            system_string.append("0");
+        if (Map_id<10)
+            system_string.append("0");
 
-    system_string.append(ss.str());
-    system_string.append(".lmu");
-    // ===[ LOADING MAP DATA ]==============================================
-    Map.Load((char *)system_string.c_str(), &data);
-    Map.ShowInformation(&data);
-if(myteam->lmt.tree_list[Map_id].music==2)
-{
-    system_string.clear();
-    system_string.append("Music/");
-    system_string.append(myteam->lmt.tree_list[Map_id].music_file.name.c_str());
-    system_string.append(".mid");
+        std::stringstream ss;
+        ss << Map_id;
 
-if(myaudio->actual_music.compare((char *)system_string.c_str()))
-{
-    myaudio->load((char *)system_string.c_str());
-    myaudio->play(-1);
-}
-}
-    system_string.clear();
-    system_string.append("ChipSet/");
-    system_string.append(myteam->data2.Tilesets[(unsigned int) data.ChipsetID - 1].strGraphic);
-    system_string.append(".png");
-    pre_chip.GenerateFromFile((char *) system_string.c_str());
-    Events = &data.vcEvents;
-    chip.init(pre_chip.ChipsetSurface, &data, &myteam->data2.Tilesets[(unsigned int) data.ChipsetID - 1] );
-    Ev_management.init(myaudio,NScene,myteam,Events,&Charas_nps,Actor,&data,&chip,&Ev_state,&Mov_management);
-    if(data.ParallaxBackground)
-    {cout<<"paralle back active";
-    system_string.clear();
-    system_string.append("Panorama/");
-    system_string.append(data.BackgroundName);
-    system_string.append(".png");
-    Background1.setimg((char *) system_string.c_str());
+        system_string.append(ss.str());
+        system_string.append(".lmu");
+        // ===[ LOADING MAP DATA ]==============================================
+        Map.Load((char *)system_string.c_str(), data);
+        Map.ShowInformation(data);
+        if(myteam->lmt.tree_list[Map_id].music==2)
+        {
+            system_string.clear();
+            system_string.append("Music/");
+            system_string.append(myteam->lmt.tree_list[Map_id].music_file.name.c_str());
+            system_string.append(".mid");
 
-    if(data.HorizontalPan)
-    Background1.x= (-320);
-    else
-    Background1.x= 0;
+            if(myaudio->actual_music.compare((char *)system_string.c_str()))
+            {
+                myaudio->load((char *)system_string.c_str());
+                myaudio->play(-1);
+            }
+        }
+        system_string.clear();
+        system_string.append("ChipSet/");
+        system_string.append(myteam->data2.Tilesets[(unsigned int) data->ChipsetID - 1].strGraphic);
+        system_string.append(".png");
+        pre_chip->GenerateFromFile((char *) system_string.c_str());
+        Events = &data->vcEvents;
+        chip->init(pre_chip->ChipsetSurface, data, &myteam->data2.Tilesets[(unsigned int) data->ChipsetID - 1] );
+        Ev_management.init(myaudio,NScene,myteam,Events,Charas_nps,Actor,data,chip,&Ev_state,&Mov_management);
+        if(data->ParallaxBackground)
+        {
+            system_string.clear();
+            system_string.append("Panorama/");
+            system_string.append(data->BackgroundName);
+            system_string.append(".png");
+            Background->dispose();
+            Background->setimg((char *) system_string.c_str());
 
-    if(data.VerticalPan)
-    Background1.y=(-240);
-    else
-    Background1.y=0;
+            if(data->HorizontalPan)
+                Background->x= (-320);
+            else
+                Background->x= 0;
+
+            if(data->VerticalPan)
+                Background->y=(-240);
+            else
+            Background->y=0;
+        }
+        init_npc();
+
+        Actor->setposXY(myteam->actual_x_map,myteam->actual_y_map, chip,Charas_nps,NScene);
+        Actor->set_dir(myteam->actual_dir);
+
+        Mov_management.init(Charas_nps,Actor,data,chip);
     }
-    init_npc();
-
-    Actor->setposXY(myteam->actual_x_map,myteam->actual_y_map, &chip,&Charas_nps,NScene);
-    Actor->set_dir(myteam->actual_dir);
 
     Control::set_delay(0);
     Control::set_in_delay(0);
     Control::in_map = true;
-    Mov_management.init(&Charas_nps,Actor,&data,&chip);
+
 }
 
 
@@ -120,9 +137,12 @@ void Map_Scene::init_npc()
     original_state.Event_Active=false;
     original_state.id_exe_actual=0;
     original_state.id_actual_active=false;
+    Charas_nps->clear();
+    Ev_state.clear();
+
     for (i = 0; i < Events->size(); i++)
     {
-        original_state.Active_page=Ev_management.Active_page(&data.vcEvents[i]);
+        original_state.Active_page=Ev_management.Active_page(&data->vcEvents[i]);
 
         Ev_state.push_back(original_state);
 
@@ -130,28 +150,28 @@ void Map_Scene::init_npc()
         {
             system_string.clear();
             system_string.append("CharSet/");
-            system_string.append(data.vcEvents[i].vcPage[original_state.Active_page].CharsetName);
+            system_string.append(data->vcEvents[i].vcPage[original_state.Active_page].CharsetName);
             system_string.append(".png");
             if (!system_string.compare("CharSet/.png"))
             {
                 temp2 = CreateSurface(24, 32);
-                chip.RenderTile(temp2, 4, 16, data.vcEvents[i].vcPage[original_state.Active_page].CharsetID + 0x2710, 0);
+                chip->RenderTile(temp2, 4, 16, data->vcEvents[i].vcPage[original_state.Active_page].CharsetID + 0x2710, 0);
                 npc.set_surface(temp2);
                 npc.dir = 0;
                 npc.frame = 1;
             }
             else
             {
-                npc.setimg((char *) system_string.c_str(), data.vcEvents[i].vcPage[original_state.Active_page].CharsetID);
-                npc.dir = data.vcEvents[i].vcPage[original_state.Active_page].Facing_direction;
-                npc.frame =data.vcEvents[i].vcPage[original_state.Active_page].Animation_frame + 1;
+                npc.setimg((char *) system_string.c_str(), data->vcEvents[i].vcPage[original_state.Active_page].CharsetID);
+                npc.dir = data->vcEvents[i].vcPage[original_state.Active_page].Facing_direction;
+                npc.frame =data->vcEvents[i].vcPage[original_state.Active_page].Animation_frame + 1;
 
             }
-                npc.move_dir=data.vcEvents[i].vcPage[original_state.Active_page].Movement_type;
-                npc.move_frec=data.vcEvents[i].vcPage[original_state.Active_page].Movement_frequency;
-                npc.anim_frec=data.vcEvents[i].vcPage[original_state.Active_page].Movement_speed;
-                npc.layer=data.vcEvents[i].vcPage[original_state.Active_page].Event_height;
-                npc.setposXY(data.vcEvents[i].X_position, data.vcEvents[i].Y_position);
+                npc.move_dir=data->vcEvents[i].vcPage[original_state.Active_page].Movement_type;
+                npc.move_frec=data->vcEvents[i].vcPage[original_state.Active_page].Movement_frequency;
+                npc.anim_frec=data->vcEvents[i].vcPage[original_state.Active_page].Movement_speed;
+                npc.layer=data->vcEvents[i].vcPage[original_state.Active_page].Event_height;
+                npc.setposXY(data->vcEvents[i].X_position, data->vcEvents[i].Y_position);
         }
         else
         {
@@ -159,19 +179,19 @@ void Map_Scene::init_npc()
                 //chip.RenderTile(temp2, 4, 16,0x2711, 0);
                 npc.set_surface(temp2);
 
-                npc.dir = data.vcEvents[i].vcPage[0].Facing_direction;
-                npc.frame = data.vcEvents[i].vcPage[0].Animation_frame;
-                npc.move_dir=data.vcEvents[i].vcPage[0].Movement_type;
-                npc.move_frec=data.vcEvents[i].vcPage[0].Movement_frequency;
-                npc.anim_frec=data.vcEvents[i].vcPage[0].Movement_speed;
+                npc.dir = data->vcEvents[i].vcPage[0].Facing_direction;
+                npc.frame = data->vcEvents[i].vcPage[0].Animation_frame;
+                npc.move_dir=data->vcEvents[i].vcPage[0].Movement_type;
+                npc.move_frec=data->vcEvents[i].vcPage[0].Movement_frequency;
+                npc.anim_frec=data->vcEvents[i].vcPage[0].Movement_speed;
                 npc.layer=3;
-                npc.setposXY(data.MapWidth,data.MapHeight);
+                npc.setposXY(data->MapWidth,data->MapHeight);
         }
-                npc.id=data.vcEvents[i].DB_id;
-                Charas_nps.push_back(npc);
+                npc.id=data->vcEvents[i].DB_id;
+                Charas_nps->push_back(npc);
 
     }
-    Ev_management.init(myaudio,NScene,myteam,Events,&Charas_nps,Actor,&data,&chip,&Ev_state,&Mov_management);
+    Ev_management.init(myaudio,NScene,myteam,Events,Charas_nps,Actor,data,chip,&Ev_state,&Mov_management);
 
 }
 
@@ -182,52 +202,52 @@ void Map_Scene::update(SDL_Surface *Screen)
     SDL_FillRect(Screen, NULL, 0x0);// Clear screen  inutil
     unsigned int i;
 
-    if(data.ParallaxBackground)
+    if(data->ParallaxBackground)
     {
-    if((data.HorizontalAutoPan)&(data.HorizontalPan))
+    if((data->HorizontalAutoPan)&(data->HorizontalPan))
     {
-    Background1.x+=data.HorizontalPanSpeed;
-    if(Background1.x>(0))
-    Background1.x= (-320);
+    Background->x+=data->HorizontalPanSpeed;
+    if(Background->x>(0))
+    Background->x= (-320);
     }
-    if((data.VerticalAutoPan)&(data.VerticalPan))
+    if((data->VerticalAutoPan)&(data->VerticalPan))
     {
-    Background1.y-=data.VerticalPanSpeed;
-    if(Background1.y<(0))
-    Background1.y= (-240);
-    }
-
-    Background1.draw(Screen);
-
+    Background->y-=data->VerticalPanSpeed;
+    if(Background->y<(0))
+    Background->y= (-240);
     }
 
-    chip.Render(Screen, 0, myteam->view.x, myteam->view.y); //dibuja mapa capa 1 con repecto a la vista
-    chip.Render(Screen, 1, myteam->view.x, myteam->view.y);//dibuja mapa capa 2 con repecto a la vista
+    Background->draw(Screen);
 
-    for (i = 0; i < Charas_nps.size(); i++)
+    }
+
+    chip->Render(Screen, 0, myteam->view.x, myteam->view.y); //dibuja mapa capa 1 con repecto a la vista
+    chip->Render(Screen, 1, myteam->view.x, myteam->view.y);//dibuja mapa capa 2 con repecto a la vista
+
+    for (i = 0; i < Charas_nps->size(); i++)
     {
-        Charas_nps[i].addx(- myteam->view.x);
-        Charas_nps[i].addy(- myteam->view.y);
-        if (Charas_nps[i].layer == 0)
-            Charas_nps[i].drawc(Screen);
-        if ((Charas_nps[i].layer == 1) && (Charas_nps[i].GridY <= Actor->GridY))
-            Charas_nps[i].drawc(Screen);
+        Charas_nps->at(i).addx(- myteam->view.x);
+        Charas_nps->at(i).addy(- myteam->view.y);
+        if (Charas_nps->at(i).layer == 0)
+            Charas_nps->at(i).drawc(Screen);
+        if ((Charas_nps->at(i).layer == 1) && (Charas_nps->at(i).GridY <= Actor->GridY))
+            Charas_nps->at(i).drawc(Screen);
     }
 
     Actor->drawc(Screen);
 
-    for (i = 0; i < Charas_nps.size(); i++)
+    for (i = 0; i < Charas_nps->size(); i++)
     {
-        if (Charas_nps[i].layer == 2)
-            Charas_nps[i].drawc(Screen);
-        if ((Charas_nps[i].layer== 1) && (Charas_nps[i].GridY > Actor->GridY))
-            Charas_nps[i].drawc(Screen);
+        if (Charas_nps->at(i).layer == 2)
+            Charas_nps->at(i).drawc(Screen);
+        if ((Charas_nps->at(i).layer== 1) && (Charas_nps->at(i).GridY > Actor->GridY))
+            Charas_nps->at(i).drawc(Screen);
     }
 
-    for (i = 0; i < Charas_nps.size(); i++)
+    for (i = 0; i < Charas_nps->size(); i++)
     {
-        Charas_nps[i].addx(+ myteam->view.x);
-        Charas_nps[i].addy(+ myteam->view.y);
+        Charas_nps->at(i).addx(+ myteam->view.x);
+        Charas_nps->at(i).addy(+ myteam->view.y);
     }
 
     Ev_management.update(Screen);
@@ -237,7 +257,7 @@ void Map_Scene::update(SDL_Surface *Screen)
 void Map_Scene::Scroll()
 {
     if(myteam->scroll_active)
-    myteam->view.x = Actor->Clamp((int) sll2dbl(Actor->realX) + 20 - (SCREEN_SIZE_X >> 1), 0, (chip.data->MapWidth << 4) - SCREEN_SIZE_X);
+    myteam->view.x = Actor->Clamp((int) sll2dbl(Actor->realX) + 20 - (SCREEN_SIZE_X >> 1), 0, (chip->data->MapWidth << 4) - SCREEN_SIZE_X);
     if (!Actor->outofarea)
     {
         Actor->x = (int) sll2dbl(Actor->realX) - myteam->view.x;
@@ -247,7 +267,7 @@ void Map_Scene::Scroll()
         Actor->x = (SCREEN_SIZE_X >> 1) - 20;
     }
     if(myteam->scroll_active)
-    myteam->view.y= Actor->Clamp((int) sll2dbl(Actor->realY) + 24 - (SCREEN_SIZE_Y >> 1), 0, (chip.data->MapHeight << 4) - SCREEN_SIZE_Y);
+    myteam->view.y= Actor->Clamp((int) sll2dbl(Actor->realY) + 24 - (SCREEN_SIZE_Y >> 1), 0, (chip->data->MapHeight << 4) - SCREEN_SIZE_Y);
     if (!Actor->outofarea)
     {
         Actor->y = (int) sll2dbl(Actor->realY) - myteam->view.y ;
@@ -265,42 +285,42 @@ void Map_Scene::updatekey()
     Ev_management.updatekey(running);
     Actor->MoveOnInput(running);
     Scroll();
-    for (i = 0; i < Charas_nps.size(); i++)
+    for (i = 0; i < Charas_nps->size(); i++)
     {
-        if(!Charas_nps[i].move_from_event)
-        if (!Charas_nps[i].move(Charas_nps[i].move_dir))
+        if(!Charas_nps->at(i).move_from_event)
+        if (!Charas_nps->at(i).move(Charas_nps->at(i).move_dir))
         {
-            if ( Charas_nps[i].move_frec_check())//till time to move
+            if ( Charas_nps->at(i).move_frec_check())//till time to move
             {
-                Charas_nps[i].move_dir= Mov_management.get_dir(i);
+                Charas_nps->at(i).move_dir= Mov_management.get_dir(i);
 
-                switch (Charas_nps[i].move_dir)
+                switch (Charas_nps->at(i).move_dir)
                 {
                 case DIRECTION_UP:
-                    Charas_nps[i].GridY-=1;
+                    Charas_nps->at(i).GridY-=1;
                     break;
                 case DIRECTION_DOWN:
-                    Charas_nps[i].GridY+=1;
+                    Charas_nps->at(i).GridY+=1;
                     break;
                 case DIRECTION_LEFT:
-                    Charas_nps[i].GridX-=1;
+                    Charas_nps->at(i).GridX-=1;
                     break;
                 case DIRECTION_RIGHT:
-                    Charas_nps[i].GridX+=1;
+                    Charas_nps->at(i).GridX+=1;
                     break;
                 }
 
-                Charas_nps[i].state=true;
+                Charas_nps->at(i).state=true;
             }
         }
         if(Ev_state[i].Active_page!=-1)
         {
-        if (((data.vcEvents[i].vcPage[0].Animation_type==1)||(data.vcEvents[i].vcPage[Ev_state[i].Active_page].Animation_type==3))&&data.vcEvents[i].vcPage[Ev_state[i].Active_page].Movement_type==0)
-            Charas_nps[i].frameupdate();
-        if (data.vcEvents[i].vcPage[Ev_state[i].Active_page].Animation_type==5)
+        if (((data->vcEvents[i].vcPage[0].Animation_type==1)||(data->vcEvents[i].vcPage[Ev_state[i].Active_page].Animation_type==3))&&data->vcEvents[i].vcPage[Ev_state[i].Active_page].Movement_type==0)
+            Charas_nps->at(i).frameupdate();
+        if (data->vcEvents[i].vcPage[Ev_state[i].Active_page].Animation_type==5)
         {
-            Charas_nps[i].nomalanimation=false;
-            Charas_nps[i].rotationupdate();
+            Charas_nps->at(i).nomalanimation=false;
+            Charas_nps->at(i).rotationupdate();
         }
         }
     }
@@ -330,24 +350,24 @@ void Map_Scene::mapnpc()
 
     unsigned int event_id;
     Event_comand * comand;
-    for (event_id=0;event_id< Charas_nps.size();event_id++)
+    for (event_id=0;event_id< Charas_nps->size();event_id++)
     {
 if(Ev_state[event_id].Active_page!=-1)
   { //activar eventos
         if(!Ev_state[event_id].Event_Active)
         {
-            if(data.vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].Activation_condition==0)
+            if(data->vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].Activation_condition==0)
                 if((Actor->tried_to_talk &&(Actor->npc_subcolision(event_id)))) //si cumple con su condicion de activacion
                 {
                 active_event(event_id);
                 Actor->tried_to_talk=false;
                 }
-            if((data.vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].Activation_condition==1)||(data.vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].Activation_condition==2))
+            if((data->vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].Activation_condition==1)||(data->vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].Activation_condition==2))
                 if (Actor->npc_subcolision(event_id)) //si cumple con su condicion de activacion
                 {
                 active_event(event_id);
                 }
-            if((data.vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].Activation_condition==3)||(data.vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].Activation_condition==4))
+            if((data->vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].Activation_condition==3)||(data->vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].Activation_condition==4))
                 {
                 active_event(event_id);
                 }
@@ -358,14 +378,14 @@ if(Ev_state[event_id].Active_page!=-1)
         {
 
 
-            if(Ev_state[event_id].id_exe_actual< data.vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].vcEvent_comand.size())
+            if(Ev_state[event_id].id_exe_actual< data->vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].vcEvent_comand.size())
             {
-                comand=data.vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].vcEvent_comand[Ev_state[event_id].id_exe_actual];// lee el comando
+                comand=data->vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].vcEvent_comand[Ev_state[event_id].id_exe_actual];// lee el comando
                 //activar comandos
                 if(!Ev_state[event_id].id_actual_active)  //si el id actual no esta activa pero el evento  si
                 {
                 Ev_state[event_id].id_actual_active=true;
-                Ev_management.exec_comand(data.vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].vcEvent_comand,event_id,&Ev_state[event_id]);// mandalo activar
+                Ev_management.exec_comand(data->vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].vcEvent_comand,event_id,&Ev_state[event_id]);// mandalo activar
                     if(actual_map!=myteam->actual_map)
                     {
                         dispose();
@@ -398,13 +418,8 @@ if(Ev_state[event_id].Active_page!=-1)
 void Map_Scene::dispose()
 {
     unsigned int i;
-    for (i = 0; i < Charas_nps.size(); i++)
-    {
-        Charas_nps[i].dispose();
-    }
-    Ev_state.clear();
-    Ev_management.dispose();
-    data.clear_events();
-    Charas_nps.clear();
-    pre_chip.dispose();
+    //for (i = 0; i < Charas_nps->size(); i++)
+    //{
+      //  Charas_nps->at(i).dispose();
+    //}
 }

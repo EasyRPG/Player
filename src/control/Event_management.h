@@ -60,6 +60,7 @@ private:
     CActor *Actor;
     map_data *data;
     Chipset *chip;
+    Pre_Chipset * pre_chip;
     bool is_Active(stPageConditionEventMap * Page_conditions);//page conditions
     bool state_swich( int number);
 public:

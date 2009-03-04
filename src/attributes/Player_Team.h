@@ -34,6 +34,8 @@
 #include "Player.h"
 #include "../readers/ldb.h"
 #include "../readers/lmt.h"
+#include "../sprites/chipset.h"
+#include "../sprites/Pre_Chipset.h"
 
 class Player_Team {
     private:
@@ -41,7 +43,14 @@ class Player_Team {
 	int Gold;
 
 	public:
+
 	Sound_Manager S_manager;
+	std:: vector <Chara> GCharas_nps;
+    Pre_Chipset Gpre_chip;
+	Chipset Gchip;
+    map_data Gdata;
+    Sprite MBackground;
+
 	std:: vector <Player> Players;
     string memorized_BGM;
     std:: vector <char> world_fase;
@@ -83,6 +92,15 @@ class Player_Team {
     int able_to_save;
     int able_to_menu;
     int able_to_escape;
+
+    int ecape_x_map;
+    int ecape_y_map;
+    int escape_map;
+    bool ecape_active_fase;
+    int ecape_num_fase;
+    bool ecape_use_default;
+
+
     int able_to_teleport;
     int Encounter_rate;
 

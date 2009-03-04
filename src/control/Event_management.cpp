@@ -124,14 +124,16 @@ void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * The
     int i=0;
     Ev_state=Evn_state;
     std::string system_string;
-    chip = the_chip;
+    myteam = TheTeam;
+    pre_chip=&(myteam->Gpre_chip);
+    chip=&(myteam->Gchip);
+    data = &(myteam->Gdata);
     NScene = TheScene;
     myaudio = audio;
-    myteam = TheTeam;
     Events = TheEvents;
     Charas_nps = TheCharas_nps;
     Actor = TheActor;
-    Thedata = data;
+
     system_string.append("System/");
     system_string.append(TheTeam->data2.System_dat.System_graphic);
     system_string.append(".png");
@@ -1585,6 +1587,14 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Change_tile_set:// 0xDB3E	,
         Event_comand_Change_tile * comand_Change_tile;
         comand_Change_tile=(Event_comand_Change_tile *)comand;
+
+        system_string.clear();
+        system_string.append("ChipSet/");
+        system_string.append(myteam->data2.Tilesets[(unsigned int) comand_Change_tile->New_tile - 1].strGraphic);
+        system_string.append(".png");
+        pre_chip->GenerateFromFile((char *) system_string.c_str());
+        chip->init(pre_chip->ChipsetSurface,data, &myteam->data2.Tilesets[(unsigned int) comand_Change_tile->New_tile - 1] );
+
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
 
@@ -1592,6 +1602,29 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Change_background:// 0xDB48,
         Event_comand_Change_background * comand_Change_background;
         comand_Change_background=(Event_comand_Change_background *)comand;
+            system_string.clear();
+            system_string.append("Panorama/");
+            system_string.append(comand_Change_background->Parallax_BG);
+            system_string.append(".png");
+            myteam->MBackground.dispose();
+            myteam->MBackground.setimg((char *) system_string.c_str());
+            data->ParallaxBackground=true;
+            data->HorizontalPan=comand_Change_background->X_pan;             //si hay mobimiento orisontal
+            data->HorizontalAutoPan=comand_Change_background->X_auto_pan;         // si es automatico
+            data->HorizontalPanSpeed= comand_Change_background->X_pan_speed;      // la velocidad del movimiento
+            data->VerticalPan=comand_Change_background->Y_pan;               //si hay movimiento vertical
+            data->VerticalAutoPan=comand_Change_background->Y_auto_pan;           // si es automatico
+            data->VerticalPanSpeed=comand_Change_background->Y_pan_speed;// la velocidad del movimiento
+
+            if(data->HorizontalPan)
+                myteam->MBackground.x= (-320);
+            else
+                myteam->MBackground.x= 0;
+
+            if(data->VerticalPan)
+                myteam->MBackground.y=(-240);
+            else
+            myteam->MBackground.y=0;
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
 
@@ -1626,6 +1659,12 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Set_escape_location:// 0xDC36,
         Event_comand_Set_escape_location * comand_Set_escape_location;
         comand_Set_escape_location=(Event_comand_Set_escape_location *)comand;
+        myteam->escape_map= comand_Set_escape_location->Map_ID;
+        myteam->ecape_x_map=comand_Set_escape_location->X;
+        myteam->ecape_y_map=comand_Set_escape_location->Y;
+        myteam->ecape_active_fase=comand_Set_escape_location->Switch;
+        myteam->ecape_num_fase=comand_Set_escape_location->Switch_ID;
+        myteam->ecape_use_default=false;
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
         break;
