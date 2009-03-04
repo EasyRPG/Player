@@ -248,7 +248,7 @@ int main(int argc, char *argv[])
 
     flags |= SDL_SWSURFACE;
 
-    Screen = SDL_SetVideoMode(SCREEN_SIZE_X, SCREEN_SIZE_Y, 16, flags);
+    Screen = SDL_SetVideoMode(SCREEN_SIZE_X, SCREEN_SIZE_Y,16, flags);
     if (Screen == NULL)
     {
         exit(2);

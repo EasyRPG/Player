@@ -150,7 +150,12 @@ void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * The
     image.set_surface(temp2);
     for(i=0;i<50;i++)
         images.push_back(image);
-myteam->scroll_writed=false;
+    myteam->scroll_writed=false;
+
+X.visible=false;
+/*
+
+*/
 }
 
 void E_management::update(SDL_Surface *Screen)
@@ -164,6 +169,9 @@ void E_management::update(SDL_Surface *Screen)
     {
         message_box->draw(Screen);
     }
+
+X.draw(Screen);
+//
 }
 
 void E_management::updatekey(bool *running)
@@ -1325,6 +1333,14 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Set_screen_tone:// 0xD616,
         Event_comand_Set_screen_tone * comand_Set_screen_tone;
         comand_Set_screen_tone=(Event_comand_Set_screen_tone *)comand;
+        SDL_Surface *temp2;
+        temp2 = CreateSurface(320,240);
+        SDL_FillRect(temp2, NULL, SDL_MapRGBA(temp2->format,  comand_Set_screen_tone->Red_diffuse, comand_Set_screen_tone->Green_diffuse,comand_Set_screen_tone->Blue_diffuse,255));
+        SDL_SetAlpha(temp2, SDL_SRCALPHA,comand_Set_screen_tone->Chroma_diffuse);
+        X.set_surface(temp2);
+        X.x=0;
+        X.y=0;
+        X.visible=true;
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
 

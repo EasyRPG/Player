@@ -55,6 +55,8 @@ private:
     std:: vector <Chara> *Charas_nps;
     std:: vector <Sprite> images;
     Animacion_Manager On_map_anim;
+
+    Sprite X;
     CMessage *message_box;
     Mv_management * Mov_management;
     CActor *Actor;
