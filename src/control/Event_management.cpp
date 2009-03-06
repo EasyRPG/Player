@@ -146,11 +146,13 @@ void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * The
     image.visible=false;
     image.setcols(1);
     image.setrows(1);
-    SDL_Surface *temp2;
-    temp2 = CreateSurface(1,1);
-    image.set_surface(temp2);
-    for(i=0;i<50;i++)
+     for(i=0;i<50;i++)
+    {
+        SDL_Surface *temp2;
+        temp2 = CreateSurface(1,1);
+        image.set_surface(temp2);
         images.push_back(image);
+    }
     myteam->scroll_writed=false;
 
 X.visible=false;
@@ -1417,7 +1419,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         }
 
         images[i-1].visible=true;
-        images[i-1].SetAlpha(255 -(comand_Show_Picture->Opacity*2));
+        images[i-1].SetAlpha(255 -(comand_Show_Picture->Opacity*2.55));
         images[i-1].ModRGB(comand_Show_Picture->Red_diffuse-100, comand_Show_Picture->Green_diffuse-100,comand_Show_Picture->Blue_diffuse-100);
 
         comand_id->id_exe_actual++;
@@ -1428,10 +1430,10 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         Event_comand_Move_Picture * comand_Move_Picture;
         comand_Move_Picture=(Event_comand_Move_Picture *)comand;
 
-        images[i-1].SetAlpha(255 -(comand_Show_Picture->Opacity*2));
+        i=comand_Move_Picture->Picture_ID;
+        images[i-1].SetAlpha(255 -(comand_Show_Picture->Opacity*2.55));
         images[i-1].ModRGB(comand_Show_Picture->Red_diffuse-100, comand_Show_Picture->Green_diffuse-100,comand_Show_Picture->Blue_diffuse-100);
 
-        i=comand_Move_Picture->Picture_ID;
         if(comand_Move_Picture->Length==0)
         {
         if(comand_Move_Picture->By_Value)

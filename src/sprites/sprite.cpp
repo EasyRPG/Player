@@ -124,7 +124,7 @@ Sprite::~Sprite()
 //dispose();
 }
 
-void Sprite::SetAlpha(int alpha)
+void Sprite::SetAlpha(unsigned char alpha)
 {
 SDL_SetAlpha(img, SDL_SRCALPHA,alpha);
 }

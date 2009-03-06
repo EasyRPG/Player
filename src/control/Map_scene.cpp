@@ -117,6 +117,8 @@ void Map_Scene::load_map()
         Actor->set_dir(myteam->actual_dir);
 
         Mov_management.init(Charas_nps,Actor,data,chip);
+        myteam->scroll_active=true;
+        Scroll();
     }
 
     Control::set_delay(0);

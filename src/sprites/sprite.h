@@ -66,7 +66,7 @@ class Sprite {
 
 	    int frame;
 	    int x,y;
-        void SetAlpha(int alpha);
+        void SetAlpha(unsigned char alpha);
         void ModRGB(int red,int green,int blue);
 	    void setx(int posx);
 	    void sety(int posy);
