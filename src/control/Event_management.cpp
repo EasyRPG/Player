@@ -138,6 +138,7 @@ void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * The
     system_string.append(TheTeam->data2.System_dat.System_graphic);
     system_string.append(".png");
     message_box = new CMessage(system_string.c_str());
+
     use_keyboard = false;
     tried_to_talk = false;
     Mov_management=Move_management;
@@ -1336,8 +1337,9 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         SDL_Surface *temp2;
         temp2 = CreateSurface(320,240);
         SDL_FillRect(temp2, NULL, SDL_MapRGBA(temp2->format,  comand_Set_screen_tone->Red_diffuse, comand_Set_screen_tone->Green_diffuse,comand_Set_screen_tone->Blue_diffuse,255));
-        SDL_SetAlpha(temp2, SDL_SRCALPHA,comand_Set_screen_tone->Chroma_diffuse);
         X.set_surface(temp2);
+        X.SetAlpha(comand_Set_screen_tone->Chroma_diffuse);
+       // X.ModRGB( comand_Set_screen_tone->Red_diffuse, comand_Set_screen_tone->Green_diffuse,comand_Set_screen_tone->Blue_diffuse);
         X.x=0;
         X.y=0;
         X.visible=true;
@@ -1412,7 +1414,8 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         }
 
         images[i-1].visible=true;
-
+        images[i-1].SetAlpha(comand_Show_Picture->Chroma_diffuse);
+        images[i-1].ModRGB( comand_Show_Picture->Red_diffuse, comand_Show_Picture->Green_diffuse,comand_Show_Picture->Blue_diffuse);
 
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
@@ -1421,6 +1424,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Move_Picture:// 0xD670,
         Event_comand_Move_Picture * comand_Move_Picture;
         comand_Move_Picture=(Event_comand_Move_Picture *)comand;
+
         i=comand_Move_Picture->Picture_ID;
         if(comand_Move_Picture->Length==0)
         {

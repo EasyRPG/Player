@@ -68,7 +68,6 @@ void CMessage::draw(SDL_Surface *dst)
 
 void CMessage::draw_blink(SDL_Surface *dst)
 {
-
    SDL_Rect clip =
 	{
 	    43,
@@ -83,7 +82,6 @@ void CMessage::draw_blink(SDL_Surface *dst)
         10,
          6
     };
-
 	if (blink >= 30)
 	{
         if (cursor) SDL_BlitSurface(System.get_img(), &clip, dst, &pos);
@@ -94,10 +92,7 @@ void CMessage::draw_blink(SDL_Surface *dst)
         blink++;
     }
     if (blink >= 60) blink = 0;
-
 }
-
-
 
 void CMessage::clean() //NO BORRAR clean no destruye el objeto, solo limpia el texto
 {
@@ -107,12 +102,8 @@ void CMessage::clean() //NO BORRAR clean no destruye el objeto, solo limpia el t
 	{
 	Vtext_Sprite[i].dispose();
 	}
-
 	Vtext_Sprite.clear();
 }
-
-
-
 
 CMessage::~CMessage()
 {
@@ -131,24 +122,17 @@ void CMessage::add_text(const std::string& ctext, int line)
 {
 	text.x = pos_X+9;
 	text.y = pos_Y+9+(15*line);
-
 	sha_text.x = text.x+1;
 	sha_text.y = text.y+1;
-
 	std::string s_tmp;
-
     int l = ctext.length();
     int i;
-
     bool state_control = false;
     Uint8 state = 0;
     char type = 0;
-
-
     int n = 0;
     int n_color = 0;
     int lost_space=0;
-
     SDL_Surface *text_tmp = fuente.create_font_surface(FONT_WIDTH*l, 15);
     SDL_Surface *shadow = fuente.create_font_surface(FONT_WIDTH*l, 15);
 

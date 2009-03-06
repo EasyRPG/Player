@@ -88,6 +88,7 @@
 		<Unit filename="interface/Menu_Easy.h" />
 		<Unit filename="interface/Windows/Window_Base.cpp" />
 		<Unit filename="interface/Windows/Window_Base.h" />
+		<Unit filename="interface/Windows/Window_Name.h" />
 		<Unit filename="interface/Windows/Window_Player_Select.cpp" />
 		<Unit filename="interface/Windows/Window_Player_Select.h" />
 		<Unit filename="interface/Windows/Window_Select.cpp" />

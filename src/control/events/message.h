@@ -17,7 +17,6 @@ typedef struct
     bool transparent;
     m_pos place;
     bool detect_hero;
-
 } message_options;
 
 class CMessage: public Window_Base
@@ -28,19 +27,16 @@ class CMessage: public Window_Base
         bool cursor;
         std::bitset<255> type_set;
         static message_options opt;
+        void draw_blink(SDL_Surface *dst);
 
     public:
         bool done;
         CMessage(const std::string& sys);
         ~CMessage();
-
         void draw(SDL_Surface *dst);
-        void draw_blink(SDL_Surface *dst);
         void add_text(const std::string& ctext, int line);
         bool is_done() { return done; }
         void clean();
-//        bool next_command { return next; }
-
 };
 
 #endif

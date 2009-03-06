@@ -64,6 +64,8 @@ class Sprite {
 	    bool visible;
 	    int frame;
 	    int x,y;
+        void SetAlpha(int alpha);
+        void ModRGB(int red,int green,int blue);
 	    void setx(int posx);
 	    void sety(int posy);
 	    void setimg(const std::string& string);

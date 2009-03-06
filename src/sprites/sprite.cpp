@@ -121,6 +121,61 @@ Sprite::~Sprite()
 //dispose();
 }
 
+void Sprite::SetAlpha(int alpha)
+{
+SDL_SetAlpha(img, SDL_SRCALPHA,alpha);
+}
+
+void Sprite::ModRGB(int red,int green,int blue)
+{
+
+    if ((img->format->BitsPerPixel)==8)
+	{
+    SDL_Color * color;
+    int maxColors = img->format->palette->ncolors;
+    for (int i = 1; i < maxColors; i ++)
+    {
+        color = & img->format->palette->colors[i];
+
+	color->r+=red;
+	color->g+=green;
+	color->b+=blue;
+
+            if (color->r > 255)
+                color->r= 255;
+	    if (color->g > 255)
+                color->g= 255;
+            if (color->b > 255)
+                color->b= 255;
+
+            if (color->r < 0)
+                color->r= 0;
+	    if (color->g < 0)
+                color->g= 0;
+            if (color->b < 0)
+                color->b= 0;
+
+    }
+	SetTransparent(img);
+	}else
+	{
+
+        SDL_Color color;
+        for(int x = 0; x < img->w; x++)
+        for(int y = 0; y < img->h; y++)
+        {
+            //here the negative color is calculated!
+     //       color.r = 255 - img->format->[x][y].r;
+     //       color.g = 255 - img[x][y].g;
+     //       color.b = 255 - img[x][y].b;
+             //(x, y, color);
+        }
+
+
+    }
+}
+
+
 void Sprite::dispose()
 {
         if(not_clean)

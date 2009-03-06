@@ -114,6 +114,37 @@
         return String;
     }
 
+
+void ModRGB(SDL_Surface * img, int red,int green,int blue)
+{
+    SDL_Color * color;
+    int maxColors = img->format->palette->ncolors;
+    for (int i = 1; i < maxColors; i ++)
+    {
+        color = & img->format->palette->colors[i];
+
+	color->r+=red;
+	color->g+=green;
+	color->b+=blue;
+
+            if (color->r > 255)
+                color->r= 255;
+	    if (color->g > 255)
+                color->g= 255;
+            if (color->b > 255)
+                color->b= 255;
+
+            if (color->r < 0)
+                color->r= 0;
+	    if (color->g < 0)
+                color->g= 0;
+            if (color->b < 0)
+                color->b= 0;
+
+    }
+	SetTransparent(img);
+}
+
 void SetTransparent(SDL_Surface * ima)
 {
     /* rm2k uses palette index 0 for transparent color instead of colorkey */
