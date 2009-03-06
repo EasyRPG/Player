@@ -62,6 +62,8 @@ class Sprite {
         Sprite();
         ~Sprite();
 	    bool visible;
+	    bool trasparent_color;
+
 	    int frame;
 	    int x,y;
         void SetAlpha(int alpha);

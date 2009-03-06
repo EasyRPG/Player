@@ -71,6 +71,7 @@ void Title_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Pla
     myaudio->load(music_string.c_str());
     title.x = 0;
     title.y = 0;
+    title.trasparent_color=false;
     title.setimg(titles_string.c_str());
     menu.init(TheTeam, run, 0,2, 116, 57, 160 - (116 / 2), 160 - (57 / 2), (char *) system_string.c_str());
     str_Vector.push_back(TheTeam->data2.Glosary.New_Game);

@@ -98,11 +98,13 @@ void Sprite::setimg(const std::string& string)
 	std::cerr << "Error img have more than 8 bits of color: " << string <<  std::endl;
 	exit(1);
 	}
+if(trasparent_color)
+{
 	SetTransparent(img);
     color = img->format->palette->colors[0];
     colorKey = SDL_MapRGB(img->format, color.r, color.g, color.b);
     SDL_SetColorKey(img, SDL_SRCCOLORKEY, colorKey);
-
+}
 }
 
 void Sprite::set_surface(SDL_Surface * imag)
@@ -115,6 +117,7 @@ void Sprite::set_surface(SDL_Surface * imag)
 Sprite::Sprite()
 {
 not_clean=false;
+trasparent_color=true;
 }
 Sprite::~Sprite()
 {
@@ -156,21 +159,22 @@ void Sprite::ModRGB(int red,int green,int blue)
                 color->b= 0;
 
     }
+    if(trasparent_color)
 	SetTransparent(img);
 	}else
 	{
-
+/*
         SDL_Color color;
         for(int x = 0; x < img->w; x++)
         for(int y = 0; y < img->h; y++)
         {
             //here the negative color is calculated!
-     //       color.r = 255 - img->format->[x][y].r;
-     //       color.g = 255 - img[x][y].g;
-     //       color.b = 255 - img[x][y].b;
+           color.r = 255 - img->format->[x][y].r;
+           color.g = 255 - img[x][y].g;
+           color.b = 255 - img[x][y].b;
              //(x, y, color);
         }
-
+*/
 
     }
 }

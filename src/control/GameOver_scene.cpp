@@ -51,7 +51,7 @@ void GO_Scene::init(Audio *theaudio, bool *run, unsigned char *TheScene, Player_
     myaudio->load(music_string.c_str());
     title.x = 0;
     title.y = 0;
-
+    title.trasparent_color=false;
     title.setimg(titles_string.c_str());
     myaudio->play(-1);
     running = run;

@@ -1337,6 +1337,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         SDL_Surface *temp2;
         temp2 = CreateSurface(320,240);
         SDL_FillRect(temp2, NULL, SDL_MapRGBA(temp2->format,  comand_Set_screen_tone->Red_diffuse, comand_Set_screen_tone->Green_diffuse,comand_Set_screen_tone->Blue_diffuse,255));
+        X.dispose();
         X.set_surface(temp2);
         X.SetAlpha(comand_Set_screen_tone->Chroma_diffuse);
        // X.ModRGB( comand_Set_screen_tone->Red_diffuse, comand_Set_screen_tone->Green_diffuse,comand_Set_screen_tone->Blue_diffuse);
@@ -1400,6 +1401,8 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
         i= comand_Show_Picture->Picture_ID;
 
+        images[i-1].trasparent_color=comand_Show_Picture->Use_color_key;
+        images[i-1].dispose();
         images[i-1].setimg(system_string.c_str());
 
         if(comand_Show_Picture->By_Value)
@@ -1414,8 +1417,8 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         }
 
         images[i-1].visible=true;
-        images[i-1].SetAlpha(comand_Show_Picture->Chroma_diffuse);
-        images[i-1].ModRGB( comand_Show_Picture->Red_diffuse, comand_Show_Picture->Green_diffuse,comand_Show_Picture->Blue_diffuse);
+        images[i-1].SetAlpha(255 -(comand_Show_Picture->Opacity*2));
+        images[i-1].ModRGB(comand_Show_Picture->Red_diffuse-100, comand_Show_Picture->Green_diffuse-100,comand_Show_Picture->Blue_diffuse-100);
 
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
@@ -1424,6 +1427,9 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Move_Picture:// 0xD670,
         Event_comand_Move_Picture * comand_Move_Picture;
         comand_Move_Picture=(Event_comand_Move_Picture *)comand;
+
+        images[i-1].SetAlpha(255 -(comand_Show_Picture->Opacity*2));
+        images[i-1].ModRGB(comand_Show_Picture->Red_diffuse-100, comand_Show_Picture->Green_diffuse-100,comand_Show_Picture->Blue_diffuse-100);
 
         i=comand_Move_Picture->Picture_ID;
         if(comand_Move_Picture->Length==0)
