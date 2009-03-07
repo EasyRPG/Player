@@ -75,6 +75,7 @@ void Skills_Menu_Scene::update(SDL_Surface* Screen)
 		menu.draw(Screen);
 		descripcion.draw(Screen);
 		descripcion2.draw(Screen);
+		 myteam->screen_got_refresh=true;
 	}
 	retardo++;
 	if(retardo==5)
@@ -82,6 +83,7 @@ void Skills_Menu_Scene::update(SDL_Surface* Screen)
 		menu.draw(Screen);
 		descripcion.draw(Screen);
 		retardo=1;
+		 myteam->screen_got_refresh=true;
 	}
 }
 

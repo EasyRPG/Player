@@ -39,9 +39,9 @@ void Map_Scene::init( bool * run,Audio *audio, int SCREEN_X, int SCREEN_Y, unsig
 void Map_Scene::load_map()
 {
     static int Map_id=-1;
-    if(Map_id!=myteam->actual_map)
+    if((Map_id!=myteam->actual_map)||(myteam->from_title))
     {
-
+    myteam->from_title=false;
     Ev_state.clear();
     Ev_management.dispose();
     data->clear_events();

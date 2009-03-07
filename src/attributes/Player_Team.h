@@ -81,6 +81,8 @@ class Player_Team {
 
     bool scroll_active;
     bool scroll_writed;
+    bool from_title;
+
     int original_scroll_x;
     int original_scroll_y;
 

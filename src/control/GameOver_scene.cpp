@@ -56,11 +56,14 @@ void GO_Scene::init(Audio *theaudio, bool *run, unsigned char *TheScene, Player_
     myaudio->play(-1);
     running = run;
     NScene = TheScene;
+    Control::pop_action();
+    Control::pop_LM();
 }
 
 void GO_Scene::update(SDL_Surface *Screen)
 {
     title.draw(Screen);
+     myteam->screen_got_refresh=true;
 }
 
 void GO_Scene::action()
@@ -70,19 +73,29 @@ void GO_Scene::action()
 
 void GO_Scene::updatekey()
 {
+
+    int temp;
+
     static int delay = 0;
     delay++;
-    if (delay >40)
-    {
-    int temp;
-        temp = Control::pop_LM();
+
+        temp =  Control::pop_action();
         switch (temp)
         {
         case DECISION:
-                    action();
+                    if (delay >300)
+                    {
+                        action();
+                    }
                     break;
         }
-    }
+        temp = Control::pop_LM();
+        switch (temp)
+        {
+            default:
+                break;
+        }
+
 }
 
 void GO_Scene::dispose()

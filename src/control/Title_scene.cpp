@@ -43,7 +43,11 @@ void Title_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Pla
     TheTeam->able_to_escape=1;
     TheTeam->able_to_teleport=1;
     TheTeam->Encounter_rate=0;
-
+    TheTeam->world_fase.clear();
+    TheTeam->world_var.clear();
+    TheTeam->clear_team();
+    TheTeam->clear_obj();
+    TheTeam->from_title=true;
     for( i=0; (i< (TheTeam->data2.Switch_Names.size()/8));i++)
     TheTeam->world_fase.push_back(swich);
     for( i=0; (i< TheTeam->data2.Switch_Names.size());i++)

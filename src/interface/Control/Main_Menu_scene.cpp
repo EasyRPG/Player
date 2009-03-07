@@ -98,6 +98,8 @@ void Main_Menu_Scene::update(SDL_Surface* Screen)
 		menu.draw(Screen);
 		menu_exit.draw(Screen);
 		retardo=1;
+        myteam->screen_got_refresh=true;
+
 	}
 }
 

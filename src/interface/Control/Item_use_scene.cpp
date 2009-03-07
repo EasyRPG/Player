@@ -73,6 +73,7 @@ void Item_use_scene::update(SDL_Surface* Screen)
 		itemwin.draw(Screen);
 		players.draw(Screen);
 		itemwin2.draw(Screen);
+		 myteam->screen_got_refresh=true;
 	}
 	retardo++;
 	if(retardo==5)
@@ -81,6 +82,7 @@ void Item_use_scene::update(SDL_Surface* Screen)
 		players.draw(Screen);
 		itemwin2.draw(Screen);
 		retardo=1;
+		 myteam->screen_got_refresh=true;
 	}
 }
 

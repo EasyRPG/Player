@@ -54,6 +54,7 @@ void Save_Load_Menu_Scene::update(SDL_Surface* Screen)
 		Save_pos_3.draw(Screen);
 		descripcion.draw(Screen);
 		retardo=0;
+		 myteam->screen_got_refresh=true;
 	}
 }
 

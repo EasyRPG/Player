@@ -70,6 +70,7 @@ void Objects_Menu_Scene::update(SDL_Surface* Screen)
 		menu.draw(Screen);
 		descripcion.draw(Screen);
 		retardo=0;
+		 myteam->screen_got_refresh=true;
 	}
 }
 

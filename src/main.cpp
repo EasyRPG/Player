@@ -48,7 +48,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.*/
 
 #define SCREEN_SIZE_X 320
 #define SCREEN_SIZE_Y 240
-//#define SCREEN_SIZE_2X
+#define SCREEN_SIZE_2X
 bool running = true;
 unsigned char TheScene = 0;
 Mix_Music *musica;
@@ -230,7 +230,8 @@ void blitVirtualSurface(SDL_Surface * source, SDL_Surface * destination)
     offset.y = 0;
   }
 
-  SDL_Surface * temp = zoomSurface(source, scaleFactor, scaleFactor, 0);
+  SDL_Surface * temp = zoomSurface(source, scaleFactor, scaleFactor, 1);
+  SDL_FillRect(destination, NULL, 0x0);// Clear screen  inutil
   SDL_BlitSurface(temp, NULL, destination, &offset);
   	SDL_FreeSurface(temp);
   team.screen_got_refresh=false;
@@ -266,6 +267,7 @@ int main(int argc, char *argv[])
     {
         exit(1);//mod
     }
+
     atexit (SDL_Quit);
     SDL_ShowCursor(SDL_DISABLE);
     myaudio.init();
@@ -276,7 +278,11 @@ int main(int argc, char *argv[])
     unsigned  long flags = 0;
 
     flags |= SDL_SWSURFACE;
+
+
     #ifdef SCREEN_SIZE_2X
+    flags |= SDL_FULLSCREEN;
+
     ScreenZ = SDL_SetVideoMode(SCREEN_SIZE_X*2, SCREEN_SIZE_Y*2,16, flags);
     Screen=  CreateSurface(SCREEN_SIZE_X,SCREEN_SIZE_Y);
     #else

@@ -97,6 +97,7 @@ void Stats_Menu_Scene::update(SDL_Surface* Screen)
 		Profesion.draw(Screen);
 		Aramas.draw(Screen);
 		retardo++;
+		 myteam->screen_got_refresh=true;
 	}
 }
 
