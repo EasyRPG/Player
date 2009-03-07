@@ -109,6 +109,43 @@ void Player_Team::clear_enemy()
 {
 	Enemys.clear();
 }
+void Player_Team::load_group(int id)
+{
+    unsigned int i;
+    int moster_id;
+    clear_enemy();
+   id--;
+   cout<<" data "<<id<<endl;
+    for(i=0;i<data2.mosterpartys[id].Enemy_data.size();i++)
+    {
+        moster_id=data2.mosterpartys[id].Enemy_data[i].Enemy_ID-1;
+        cout<<" mid "<<moster_id<<endl;
+
+        Enemy enemigo;
+        enemigo.set_HP(data2.mosters[moster_id].intMaxHP);
+        enemigo.set_MaxHP(data2.mosters[moster_id].intMaxHP);
+        enemigo.set_MP(data2.mosters[moster_id].intMaxMP);
+        enemigo.set_MaxMP(data2.mosters[moster_id].intMaxMP);
+        enemigo.set_Attack(data2.mosters[moster_id].intAttack);
+        enemigo.set_Defense(data2.mosters[moster_id].intDefense);
+        enemigo.set_Speed(data2.mosters[moster_id].intSpeed);
+        enemigo.set_Spirit(data2.mosters[moster_id].intMind);
+        std::string system_string;
+        system_string.clear();
+        system_string.append("Monster/");
+        system_string.append(data2.mosters[moster_id].strGraphicfile);
+        system_string.append(".png");
+        (enemigo.Batler).setimg(system_string.c_str());
+        (enemigo.Batler).setcols(1);
+        (enemigo.Batler).setrows(1);
+        (enemigo.Batler).x=data2.mosterpartys[id].Enemy_data[i].X_position;
+        (enemigo.Batler).y=data2.mosterpartys[id].Enemy_data[i].Y_position;
+        enemigo.set_name(data2.mosters[moster_id].strName.c_str());
+        add_enemy(enemigo);
+    }
+
+}
+
 void Player_Team::add_enemy(Enemy Myplayer)
 {
 	Enemys.push_back(Myplayer);
@@ -447,6 +484,12 @@ int Player_Team::get_HP(int num)
 {
 	return (((Players.at(num))).get_HP());
 }
+
+void Player_Team::set_HP(int num,int hp)
+{
+	return (((Players.at(num))).set_HP(hp));
+}
+
 int Player_Team::get_MaxHP(int num)
 {
 	return (((Players.at(num))).get_MaxHP());
@@ -717,7 +760,19 @@ for (j=0;j<(actual_hero->skills.size());j++)
     Alex.add_skill(Veneno);
 }
 
-    Alex.set_Weapon(load_item(actual_hero->sh_Weapon));
+
+Item X;
+Animacion the_anim;
+the_anim.setimg("Battle/hit.png");
+the_anim.init_Anim();
+
+    X.set_name(data2.items[actual_hero->sh_Weapon].Name.c_str());
+    X.set_NOI(1);
+   X.set_anim( the_anim);
+    X.set_type(data2.items[actual_hero->sh_Weapon].Type);
+    X.id = 1;
+
+    Alex.set_Weapon(X);
     Alex.set_Shield(load_item(actual_hero->sh_Shield));
     Alex.set_Armor(load_item(actual_hero->sh_Armor));
     Alex.set_Helmet(load_item(actual_hero->sh_Head));

@@ -765,6 +765,7 @@ std::vector <stcEnemy_group_data> vecPartyMonster;
 		 while(datatoread>datareaded) // si no hay mas en el array
 		 {
 		 id= ReadCompressedInteger(Stream);//lectura de id 1 de array
+		  Monster.Enemy_ID =1;//default
 		  do{
 			  ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
 			  if(ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud

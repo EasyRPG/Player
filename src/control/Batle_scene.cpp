@@ -30,13 +30,14 @@ void Batle_scene::init(Audio *theaudio,bool  *run,unsigned char  *TheScene,Playe
 	myteam=TheTeam;
 	myaudio=theaudio;
 	the_run=run;
-	(*myaudio).load("../Music/Battle2.mid");
+	(*myaudio).load("Music/Battle2.mid");
+	myaudio->play(-1);
 	title.x=0;
 	title.y=0;
-	title.setimg("../Backdrop/Grass.png");
+	title.setimg("Backdrop/Grass.png");
 
     std::string system_string;
-    system_string.append("../System/");
+    system_string.append("System/");
     system_string.append(TheTeam->data2.System_dat.System_graphic);
     system_string.append(".png");
 
@@ -72,7 +73,7 @@ void Batle_scene::init(Audio *theaudio,bool  *run,unsigned char  *TheScene,Playe
 void Batle_scene::update_window_stats()
 {
     std::string system_string;
-    system_string.append("../System/");
+    system_string.append("System/");
     system_string.append(myteam->data2.System_dat.System_graphic);
     system_string.append(".png");
 	window.init(myteam,the_run,0,3,224,80,96,160,214,16,(char *)system_string.c_str());
@@ -100,7 +101,7 @@ void Batle_scene::windowtext_showdamange(bool  type,int  atak,int  ataked,int  d
 	sprintf(stringBuffer,"%dHPperdidos",damange);
 
     std::string system_string;
-    system_string.append("../System/");
+    system_string.append("System/");
     system_string.append(myteam->data2.System_dat.System_graphic);
     system_string.append(".png");
 	Window_text.init(320,80,0,160,(char *)system_string.c_str());
@@ -135,7 +136,7 @@ void Batle_scene::update_window_mosterselect()
 			k++;
 		}
 	}
-	moster_select.init(myteam,the_run,0,k-1,96,80,0,160,"../System/system.png");
+	moster_select.init(myteam,the_run,0,k-1,96,80,0,160,"System/System.png");
 	moster_select.setComands(&str_Vector2);
 }
 
@@ -176,7 +177,7 @@ void Batle_scene::win()
 			k++;
 		}
 	}
-	if(k==(*myteam).get_size())//sitodoslosenemigosmuetros
+	if(k==((*myteam).Enemys).size())//sitodoslosenemigosmuetros
 	{
 		*NScene=1;//salalmapa
 	}
@@ -291,10 +292,10 @@ void Batle_scene::atacked(int enemy)
 			///////////////////////////////////////////////////////////////
 
 			damange=*(((*myteam).Enemys.at(enemy)).get_Attack());//calculodedaño
-			//(*myteam).set_HP((*myteam).get_HP(k)-damange);//need to be fixed
+			(*myteam).set_HP(k,((*myteam).get_HP(k)-damange));//need to be fixed
 			if(((*myteam).get_HP(k))<0)
 			{
-//				((*myteam).get_HP(k))=0; // nedd to be fixed
+			    ((*myteam).set_HP(k,0)); // nedd to be fixed
 			}
 			//////////////////////////////////////////////////////////////////////////
 			lose();

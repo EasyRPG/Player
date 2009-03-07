@@ -110,6 +110,8 @@ class Player_Team {
 	std:: vector <Enemy> Enemys;
 	void clear_enemy();
 	void add_enemy(Enemy Myplayer);
+	void load_group(int id);
+
 	View view;
 	int select;
 	int get_size();
@@ -127,6 +129,7 @@ class Player_Team {
 	int get_MP(int num);
 	int get_MaxMP(int num);
 	int get_HP(int num);
+	void set_HP(int num,int hp);
 	int get_MaxHP(int num);
 
 	int get_Heal(int num);
