@@ -92,11 +92,12 @@ void Title_Scene::update(SDL_Surface *Screen)
         menu.draw(Screen);
     }
     retardo++;
-    //if(retardo==5)
-    //{
+    if(retardo==5)
+    {
     menu.draw(Screen);
-    //retardo=1;
-    //}
+    retardo=1;
+    myteam->screen_got_refresh=true;
+    }
 }
 
 void Title_Scene::action()

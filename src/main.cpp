@@ -48,11 +48,12 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.*/
 
 #define SCREEN_SIZE_X 320
 #define SCREEN_SIZE_Y 240
-
+//#define SCREEN_SIZE_2X
 bool running = true;
 unsigned char TheScene = 0;
 Mix_Music *musica;
 SDL_Surface *Screen;
+SDL_Surface *ScreenZ;
 unsigned char speed = 4, timer = 0;
 Scene *actual;
 Map_Scene mapas;
@@ -208,6 +209,34 @@ void CambioScene(Audio *myaudio, Scene **apuntador)
     }
 }
 
+
+void blitVirtualSurface(SDL_Surface * source, SDL_Surface * destination)
+{
+  float scaleFactor;
+  SDL_Rect offset;
+
+  if ((float(source->w) / source->h) > (float(destination->w) / destination->h))
+  {
+    // letterbox; compute vertical offset
+    scaleFactor = float(destination->w) / source->w;
+    offset.x = 0;
+    offset.y = int((float(destination->h) - (scaleFactor * source->h)) / 2 + 0.5f);
+  }
+  else
+  {
+    // pillarbox; compute horizontal offset
+    scaleFactor = 2;//float(destination->h) / source->h;
+    offset.x = 0;//int((float(destination->w) - (scaleFactor * source->w)) / 2 + 0.5f);
+    offset.y = 0;
+  }
+
+  SDL_Surface * temp = zoomSurface(source, scaleFactor, scaleFactor, 0);
+  SDL_BlitSurface(temp, NULL, destination, &offset);
+  	SDL_FreeSurface(temp);
+  team.screen_got_refresh=false;
+}
+
+
 #ifdef PSP
 extern "C"
 #endif
@@ -247,8 +276,14 @@ int main(int argc, char *argv[])
     unsigned  long flags = 0;
 
     flags |= SDL_SWSURFACE;
-
+    #ifdef SCREEN_SIZE_2X
+    ScreenZ = SDL_SetVideoMode(SCREEN_SIZE_X*2, SCREEN_SIZE_Y*2,16, flags);
+    Screen=  CreateSurface(SCREEN_SIZE_X,SCREEN_SIZE_Y);
+    #else
     Screen = SDL_SetVideoMode(SCREEN_SIZE_X, SCREEN_SIZE_Y,16, flags);
+    #endif
+
+
     if (Screen == NULL)
     {
         exit(2);
@@ -282,10 +317,21 @@ int main(int argc, char *argv[])
          }
         actual->update(Screen);
 
-        CambioScene(&myaudio, &actual);
 
-        SDL_Flip(Screen); // Flip
-        CalculateFPS();
+            #ifdef SCREEN_SIZE_2X
+
+      if(team.screen_got_refresh)
+        blitVirtualSurface(Screen, ScreenZ);
+        SDL_Flip(ScreenZ); // Flip
+
+    #else
+          SDL_Flip(Screen); // Flip
+
+   #endif
+
+
+        CambioScene(&myaudio, &actual);
+       CalculateFPS();
         //SDL_Delay(100);
 
     }

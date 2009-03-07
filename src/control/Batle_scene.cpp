@@ -163,6 +163,7 @@ void Batle_scene::update(SDL_Surface *Screen)
 	{
 		atacked(moster_in_turn);
 	}
+myteam->screen_got_refresh=true;
 }
 
 void Batle_scene::win()

@@ -97,6 +97,8 @@ class Player_Team {
     int ecape_y_map;
     int escape_map;
     bool ecape_active_fase;
+    bool screen_got_refresh;
+
     int ecape_num_fase;
     bool ecape_use_default;
 

@@ -253,6 +253,8 @@ void Map_Scene::update(SDL_Surface *Screen)
     }
 
     Ev_management.update(Screen);
+      myteam->screen_got_refresh=true;
+
 }
 
 
