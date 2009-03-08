@@ -30,9 +30,11 @@ void Map_Scene::init( bool * run,Audio *audio, int SCREEN_X, int SCREEN_Y, unsig
     chip=&(myteam->Gchip);
     data=&(myteam->Gdata);
     Background= &(myteam->MBackground);
-
+    Ev_state= &(myteam->GEv_state);
     load_map();
     myteam->scroll_active=true;
+    Ev_management.init(myaudio,NScene,myteam,Events,Actor,&Mov_management);
+    Mov_management.init(myteam);
 }
 
 
@@ -41,9 +43,13 @@ void Map_Scene::load_map()
     static int Map_id=-1;
     if((Map_id!=myteam->actual_map)||(myteam->from_title))
     {
-    myteam->from_title=false;
-    Ev_state.clear();
+    if(!myteam->from_title)
+    {
     Ev_management.dispose();
+    }
+    myteam->from_title=false;
+    Ev_state->clear();
+
     data->clear_events();
     //Charas_nps->clear();
     pre_chip->dispose();
@@ -91,7 +97,7 @@ void Map_Scene::load_map()
         pre_chip->GenerateFromFile((char *) system_string.c_str());
         Events = &data->vcEvents;
         chip->init(pre_chip->ChipsetSurface, data, &myteam->data2.Tilesets[(unsigned int) data->ChipsetID - 1] );
-        Ev_management.init(myaudio,NScene,myteam,Events,Charas_nps,Actor,data,chip,&Ev_state,&Mov_management);
+        Ev_management.init(myaudio,NScene,myteam,Events,Actor,&Mov_management);
         if(data->ParallaxBackground)
         {
             system_string.clear();
@@ -116,7 +122,7 @@ void Map_Scene::load_map()
         Actor->setposXY(myteam->actual_x_map,myteam->actual_y_map, chip,Charas_nps,NScene);
         Actor->set_dir(myteam->actual_dir);
 
-        Mov_management.init(Charas_nps,Actor,data,chip);
+        Mov_management.init(myteam);
         myteam->scroll_active=true;
         Scroll();
     }
@@ -140,13 +146,13 @@ void Map_Scene::init_npc()
     original_state.id_exe_actual=0;
     original_state.id_actual_active=false;
     Charas_nps->clear();
-    Ev_state.clear();
+    Ev_state->clear();
 
     for (i = 0; i < Events->size(); i++)
     {
         original_state.Active_page=Ev_management.Active_page(&data->vcEvents[i]);
 
-        Ev_state.push_back(original_state);
+        Ev_state->push_back(original_state);
 
         if(original_state.Active_page!=-1)
         {
@@ -193,7 +199,7 @@ void Map_Scene::init_npc()
                 Charas_nps->push_back(npc);
 
     }
-    Ev_management.init(myaudio,NScene,myteam,Events,Charas_nps,Actor,data,chip,&Ev_state,&Mov_management);
+     Ev_management.init(myaudio,NScene,myteam,Events,Actor,&Mov_management);
 
 }
 
@@ -317,11 +323,11 @@ void Map_Scene::updatekey()
                 Charas_nps->at(i).state=true;
             }
         }
-        if(Ev_state[i].Active_page!=-1)
+        if(Ev_state->at(i).Active_page!=-1)
         {
-        if (((data->vcEvents[i].vcPage[0].Animation_type==1)||(data->vcEvents[i].vcPage[Ev_state[i].Active_page].Animation_type==3))&&data->vcEvents[i].vcPage[Ev_state[i].Active_page].Movement_type==0)
+        if (((data->vcEvents[i].vcPage[0].Animation_type==1)||(data->vcEvents[i].vcPage[Ev_state->at(i).Active_page].Animation_type==3))&&data->vcEvents[i].vcPage[Ev_state->at(i).Active_page].Movement_type==0)
             Charas_nps->at(i).frameupdate();
-        if (data->vcEvents[i].vcPage[Ev_state[i].Active_page].Animation_type==5)
+        if (data->vcEvents[i].vcPage[Ev_state->at(i).Active_page].Animation_type==5)
         {
             Charas_nps->at(i).nomalanimation=false;
             Charas_nps->at(i).rotationupdate();
@@ -344,9 +350,9 @@ void Map_Scene::updatekey()
 
 void Map_Scene::active_event(int event_id)
 {
-                Ev_state[event_id].Event_Active=true; // activalo
-                Ev_state[event_id].id_exe_actual=0;
-                Ev_state[event_id].id_actual_active=false;
+                Ev_state->at(event_id).Event_Active=true; // activalo
+                Ev_state->at(event_id).id_exe_actual=0;
+                Ev_state->at(event_id).id_actual_active=false;
 }
 void Map_Scene::mapnpc()
 {
@@ -356,40 +362,40 @@ void Map_Scene::mapnpc()
     Event_comand * comand;
     for (event_id=0;event_id< Charas_nps->size();event_id++)
     {
-if(Ev_state[event_id].Active_page!=-1)
+if(Ev_state->at(event_id).Active_page!=-1)
   { //activar eventos
-        if(!Ev_state[event_id].Event_Active)
+        if(!Ev_state->at(event_id).Event_Active)
         {
-            if(data->vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].Activation_condition==0)
+            if(data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].Activation_condition==0)
                 if((Actor->tried_to_talk &&(Actor->npc_subcolision(event_id)))) //si cumple con su condicion de activacion
                 {
                 active_event(event_id);
                 Actor->tried_to_talk=false;
                 }
-            if((data->vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].Activation_condition==1)||(data->vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].Activation_condition==2))
+            if((data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].Activation_condition==1)||(data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].Activation_condition==2))
                 if (Actor->npc_subcolision(event_id)) //si cumple con su condicion de activacion
                 {
                 active_event(event_id);
                 }
-            if((data->vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].Activation_condition==3)||(data->vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].Activation_condition==4))
+            if((data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].Activation_condition==3)||(data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].Activation_condition==4))
                 {
                 active_event(event_id);
                 }
         }
 
 
-        if(Ev_state[event_id].Event_Active)
+        if(Ev_state->at(event_id).Event_Active)
         {
 
 
-            if(Ev_state[event_id].id_exe_actual< data->vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].vcEvent_comand.size())
+            if(Ev_state->at(event_id).id_exe_actual< data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].vcEvent_comand.size())
             {
-                comand=data->vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].vcEvent_comand[Ev_state[event_id].id_exe_actual];// lee el comando
+                comand=data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].vcEvent_comand[Ev_state->at(event_id).id_exe_actual];// lee el comando
                 //activar comandos
-                if(!Ev_state[event_id].id_actual_active)  //si el id actual no esta activa pero el evento  si
+                if(!Ev_state->at(event_id).id_actual_active)  //si el id actual no esta activa pero el evento  si
                 {
-                Ev_state[event_id].id_actual_active=true;
-                Ev_management.exec_comand(data->vcEvents[event_id].vcPage[Ev_state[event_id].Active_page].vcEvent_comand,event_id,&Ev_state[event_id]);// mandalo activar
+                Ev_state->at(event_id).id_actual_active=true;
+                Ev_management.exec_comand(data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].vcEvent_comand,event_id,&Ev_state->at(event_id));// mandalo activar
                     if(actual_map!=myteam->actual_map)
                     {
                         dispose();
@@ -400,17 +406,17 @@ if(Ev_state[event_id].Active_page!=-1)
                 }
 
                 // ejecutar comandos
-                if(Ev_state[event_id].id_actual_active)  //si el evento  esta activo
+                if(Ev_state->at(event_id).id_actual_active)  //si el evento  esta activo
                 {
-                    Ev_management.active_exec_comand(comand,event_id,&Ev_state[event_id]);
+                    Ev_management.active_exec_comand(comand,event_id,&Ev_state->at(event_id));
                 }
 
             }
             else
             {
-                Ev_state[event_id].Event_Active=false;
-                Ev_state[event_id].id_exe_actual=0;
-                Ev_state[event_id].id_actual_active=false;
+                Ev_state->at(event_id).Event_Active=false;
+                Ev_state->at(event_id).id_exe_actual=0;
+                Ev_state->at(event_id).id_actual_active=false;
             }
       }
   }
@@ -422,6 +428,7 @@ if(Ev_state[event_id].Active_page!=-1)
 void Map_Scene::dispose()
 {
     unsigned int i;
+
     //for (i = 0; i < Charas_nps->size(); i++)
     //{
       //  Charas_nps->at(i).dispose();

@@ -37,6 +37,16 @@
 #include "../sprites/chipset.h"
 #include "../sprites/Pre_Chipset.h"
 
+struct E_state
+{
+
+    bool Event_Active;
+    unsigned int id_exe_actual;
+    bool id_actual_active;
+    int Active_page;
+
+};
+
 class Player_Team {
     private:
 	std:: vector <Item> Items;
@@ -49,6 +59,7 @@ class Player_Team {
     Pre_Chipset Gpre_chip;
 	Chipset Gchip;
     map_data Gdata;
+    std:: vector <E_state> GEv_state;
     Sprite MBackground;
 
 	std:: vector <Player> Players;

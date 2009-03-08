@@ -1,11 +1,11 @@
 #include "Move_management.h"
 
-void  Mv_management::init(std:: vector <Chara> * TheCharas_nps,CActor * TheActor,map_data * Thedata,Chipset * the_chip)
+void  Mv_management::init(Player_Team * TheTeam)
 {
-	Charas_nps=TheCharas_nps;//agregar apuntador a vector de eventos
-	Actor=TheActor;
-	chip=the_chip;
-	data=Thedata;
+	Charas_nps=&(TheTeam->GCharas_nps);//agregar apuntador a vector de eventos
+	Actor=TheTeam->get_chara(0);
+	chip=&(TheTeam->Gchip);
+	data=&(TheTeam->Gdata);
 }
 
 

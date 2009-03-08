@@ -119,10 +119,10 @@ return true;
 
 }
 
-void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * TheTeam,std:: vector <stEventMap> * TheEvents, std:: vector <Chara> * TheCharas_nps,CActor * TheActor, map_data * Thedata,Chipset * the_chip,std:: vector <E_state> *Evn_state,Mv_management * Move_management)
+void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * TheTeam,std:: vector <stEventMap> * TheEvents,CActor * TheActor,Mv_management * Move_management)
 {
     int i=0;
-    Ev_state=Evn_state;
+    Ev_state=&(myteam->GEv_state);
     std::string system_string;
     myteam = TheTeam;
     pre_chip=&(myteam->Gpre_chip);
@@ -131,7 +131,7 @@ void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * The
     NScene = TheScene;
     myaudio = audio;
     Events = TheEvents;
-    Charas_nps = TheCharas_nps;
+    Charas_nps = &(myteam->GCharas_nps);
     Actor = TheActor;
 
     system_string.append("System/");
@@ -483,9 +483,16 @@ if(comand_Move_event->Target!=10001)
 }
 void E_management::dispose()
 {
+    if(message_box!=NULL)
+   {
     delete message_box;
     message_box=NULL;
+   }
+   delete &On_map_anim;
+   X.dispose();
+   delete &X;
     images.clear();
+delete &images;
 }
 
 int E_management::busque_real_id(int id_to_serch)

@@ -198,7 +198,11 @@ void Main_Menu_Scene::updatekey()
 }
 void Main_Menu_Scene::dispose() {
 	menu.dispose();
+	//delete &menu;
 	players.dispose();
+	//delete &players;
 	gold.dispose();
+	//delete &gold;
 	menu_exit.dispose();
+	//delete &menu_exit;
 }

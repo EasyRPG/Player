@@ -55,7 +55,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.*/
 #define SCREEN_SIZE_Y 240
 #endif
 
-//#define SCREEN_SIZE_2X
+#define SCREEN_SIZE_2X
 bool running = true;
 unsigned char TheScene = 0;
 Mix_Music *musica;
@@ -63,18 +63,18 @@ SDL_Surface *Screen;
 SDL_Surface *ScreenZ;
 unsigned char speed = 4, timer = 0;
 Scene *actual;
-Map_Scene mapas;
-Title_Scene titulo;
-GO_Scene fin;
-Save_Load_Menu_Scene Menu_Save_Load;
-Equip_Menu_Scene Menu_Euip;
-Main_Menu_Scene Menu_Main;
-Objects_Menu_Scene Menu_Objects;
-Stats_Menu_Scene Menu_Stats;
-Skills_Menu_Scene Menu_Skills;
-Item_use_scene Menu_item_use;
-Batle_scene batalla;
-Player_Team team;
+Map_Scene * mapas;
+Title_Scene * titulo;
+GO_Scene * fin;
+Save_Load_Menu_Scene * Menu_Save_Load;
+Equip_Menu_Scene * Menu_Euip;
+Main_Menu_Scene * Menu_Main;
+Objects_Menu_Scene * Menu_Objects;
+Stats_Menu_Scene * Menu_Stats;
+Skills_Menu_Scene * Menu_Skills;
+Item_use_scene * Menu_item_use;
+Batle_scene * batalla;
+Player_Team  team;
 CDeltaTime System(60);
 bool Fullscreen;
 Timer update;
@@ -90,7 +90,7 @@ void CalculateFPS()
         frames = 0;
         nextTicks = SDL_GetTicks() + 1000;
 
-//        printf("Map test - FPS %lu /n \n", fps);
+        printf("Map test - FPS %lu /n \n", fps);
         //SDL_WM_SetCaption (stringBuffer, NULL);
     }
 }
@@ -137,80 +137,92 @@ void CambioScene(Audio *myaudio, Scene **apuntador)
     if (TheScene != LastScene)
     {
         (*apuntador)->dispose();
+        delete (*apuntador);
         if (TheScene == 0)
         {
             Control::set_delay_default();
-            titulo.init(myaudio, &running, &TheScene, &team);
-            *apuntador = &titulo;
+            titulo = new Title_Scene();
+            titulo->init(myaudio, &running, &TheScene, &team);
+            *apuntador = titulo;
             LastScene = 0;
         }
         if (TheScene == 1)
         {
-            mapas.init(&running,myaudio, 320, 240, &TheScene, &team);
-            *apuntador = &mapas;
+            mapas = new Map_Scene();
+            mapas->init(&running,myaudio, 320, 240, &TheScene, &team);
+            *apuntador = mapas;
             LastScene=1;
         }
         if (TheScene==2)
         {
             Control::set_delay_default();
-            batalla.init(myaudio, &running, &TheScene, &team);
-            *apuntador = &batalla;
+            batalla=new Batle_scene();
+            batalla->init(myaudio, &running, &TheScene, &team);
+            *apuntador = batalla;
             LastScene = 2;
         }
         if (TheScene == 3)
         {
             Control::set_delay_default();
-            fin.init(myaudio, &running, &TheScene, &team);
-            *apuntador = &fin;
+            fin= new GO_Scene();
+            fin->init(myaudio, &running, &TheScene, &team);
+            *apuntador = fin;
             LastScene = 3;
         }
         if (TheScene == 4)
         {
             Control::set_delay_default();
-            Menu_Main.init(myaudio, &running, &TheScene, &team);
-            *apuntador = &Menu_Main;
+            Menu_Main=new Main_Menu_Scene();
+            Menu_Main->init(myaudio, &running, &TheScene, &team);
+            *apuntador = Menu_Main;
             LastScene = 4;
         }
         if (TheScene == 5)
         {
             Control::set_delay_default();
-            Menu_Objects.init(myaudio, &running, &TheScene, &team);
-            *apuntador = &Menu_Objects;
+            Menu_Objects= new Objects_Menu_Scene();
+            Menu_Objects->init(myaudio, &running, &TheScene, &team);
+            *apuntador = Menu_Objects;
             LastScene = 5;
         }
         if (TheScene == 6)
         {
             Control::set_delay_default();
-            Menu_Skills.init(myaudio, &running, &TheScene, &team);
-            *apuntador = &Menu_Skills;
+            Menu_Skills=new Skills_Menu_Scene();
+            Menu_Skills->init(myaudio, &running, &TheScene, &team);
+            *apuntador = Menu_Skills;
             LastScene = 6;
         }
         if (TheScene == 7)
         {
             Control::set_delay_default();
-            Menu_Euip.init(myaudio, &running, &TheScene, &team);
-            *apuntador= &Menu_Euip;
+            Menu_Euip = new Equip_Menu_Scene();
+            Menu_Euip->init(myaudio, &running, &TheScene, &team);
+            *apuntador= Menu_Euip;
             LastScene = 7;
         }
         if (TheScene == 8)
         {
             Control::set_delay_default();
-            Menu_Stats.init(myaudio, &running, &TheScene, &team);
-            *apuntador = &Menu_Stats;
+            Menu_Stats= new Stats_Menu_Scene();
+            Menu_Stats->init(myaudio, &running, &TheScene, &team);
+            *apuntador = Menu_Stats;
             LastScene = 8;
         }
         if (TheScene == 9)
         {
             Control::set_delay_default();
-            Menu_Save_Load.init(myaudio, &running, &TheScene, &team);
-            *apuntador = &Menu_Save_Load;
+            Menu_Save_Load=new Save_Load_Menu_Scene();
+            Menu_Save_Load->init(myaudio, &running, &TheScene, &team);
+            *apuntador = Menu_Save_Load;
             LastScene = 9;
         }
         if (TheScene == 10)
         {
             Control::set_delay_default();
-            Menu_item_use.init(myaudio, &running, &TheScene, &team);
-            *apuntador = &Menu_item_use;
+            Menu_item_use=new Item_use_scene();
+            Menu_item_use->init(myaudio, &running, &TheScene, &team);
+            *apuntador = Menu_item_use;
             LastScene = 10;
         }
     }
@@ -222,25 +234,26 @@ void blitVirtualSurface(SDL_Surface * source, SDL_Surface * destination)
   float scaleFactor;
   SDL_Rect offset;
 
-  if ((float(source->w) / source->h) > (float(destination->w) / destination->h))
-  {
-    // letterbox; compute vertical offset
-    scaleFactor = float(destination->w) / source->w;
-    offset.x = 0;
-    offset.y = int((float(destination->h) - (scaleFactor * source->h)) / 2 + 0.5f);
-  }
-  else
-  {
     // pillarbox; compute horizontal offset
     scaleFactor = 2;//float(destination->h) / source->h;
     offset.x = 0;//int((float(destination->w) - (scaleFactor * source->w)) / 2 + 0.5f);
     offset.y = 0;
-  }
+ SDL_Surface * temp;
 
-  SDL_Surface * temp = zoomSurface(source, scaleFactor, scaleFactor, 1);
+#ifdef PSP
+temp = source;
+offset.x = 80;//int((float(destination->w) - (scaleFactor * source->w)) / 2 + 0.5f);
+offset.y = 16;
+#else
+temp = zoomSurface(source, scaleFactor, scaleFactor, 1);
+#endif
+
   SDL_FillRect(destination, NULL, 0x0);// Clear screen  inutil
   SDL_BlitSurface(temp, NULL, destination, &offset);
-  	SDL_FreeSurface(temp);
+#ifndef PSP
+   	SDL_FreeSurface(temp);
+#endif
+
   team.screen_got_refresh=false;
 }
 
@@ -255,7 +268,7 @@ int main(int argc, char *argv[])
     freopen("stderr", "w", stderr);
     #endif
 
-    myTeam = &team;
+//    myTeam = &team;
 
     if (argc >= 2) //Dummy for now, avoiding "unused vars" warnings
     {
@@ -288,10 +301,22 @@ int main(int argc, char *argv[])
 
 
     #ifdef SCREEN_SIZE_2X
-    flags |= SDL_FULLSCREEN;
 
+
+
+    #ifdef PSP
+    flags |= SDL_FULLSCREEN;
+    ScreenZ = SDL_SetVideoMode(SCREEN_SIZE_X, SCREEN_SIZE_Y,16, flags);
+    Screen=  CreateSurface(320,240);
+
+    #else
+    flags |= SDL_FULLSCREEN;
     ScreenZ = SDL_SetVideoMode(SCREEN_SIZE_X*2, SCREEN_SIZE_Y*2,16, flags);
     Screen=  CreateSurface(SCREEN_SIZE_X,SCREEN_SIZE_Y);
+
+    #endif
+
+
     #else
     Screen = SDL_SetVideoMode(SCREEN_SIZE_X, SCREEN_SIZE_Y,16, flags);
     #endif
@@ -311,9 +336,10 @@ int main(int argc, char *argv[])
     // ===[ ENTRY POINT ]===================================================
 
 //	SDL_Event event;
-    titulo.init(&myaudio, &running, &TheScene, &team);
+    titulo=new Title_Scene();
+    titulo->init(&myaudio, &running, &TheScene, &team);
 
-    actual = &titulo;
+    actual = titulo;
     update.start();
     fps.start();
 

@@ -25,8 +25,7 @@
 #include "../attributes/Player.h"
 #include "../tools/math-sll.h"
 #include "../attributes/CActor.h"
-#include "scene.h"
-
+#include "../attributes/Player_Team.h"
 
 #define DIRECTION_UP      0x00
 #define DIRECTION_DOWN    0x01
@@ -45,7 +44,7 @@ private:
 
 public:
 
-    void init(std:: vector <Chara> * TheCharas_nps,CActor * TheActor,map_data * Thedata,Chipset * the_chip);
+    void init(Player_Team * TheTeam);
     bool npc_colision(int x, int y,int e);
     int get_dir(int i);
     int custom(int i);
