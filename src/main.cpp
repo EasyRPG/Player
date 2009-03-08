@@ -46,9 +46,16 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.*/
 #include "attributes/Player.h"
 #include "attributes/skill.h"
 
+
+#ifdef PSP
+#define SCREEN_SIZE_X 480
+#define SCREEN_SIZE_Y 272
+#else
 #define SCREEN_SIZE_X 320
 #define SCREEN_SIZE_Y 240
-#define SCREEN_SIZE_2X
+#endif
+
+//#define SCREEN_SIZE_2X
 bool running = true;
 unsigned char TheScene = 0;
 Mix_Music *musica;
