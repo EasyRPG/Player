@@ -36,16 +36,18 @@ void Window_Base::dispose()
 	disposing=true;
 	System.dispose();
 	tapiz.dispose();
-	text.dispose();
+	//text.dispose();//limpiado desde el array Zhek!!!
 	int i,tp;
 	tp=(V_Sprite).size();
 	for (i = 0; i < tp; i ++)
 	{
+
 	(V_Sprite).pop_back();
 	}
 	tp=(Vtext_Sprite).size();
 	for (i = 0; i < tp; i ++)
 	{
+    Vtext_Sprite[tp-(i+1)].dispose();
 	(Vtext_Sprite).pop_back();
 	}
 }

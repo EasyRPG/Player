@@ -121,6 +121,8 @@ return true;
 
 void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * TheTeam,std:: vector <stEventMap> * TheEvents,CActor * TheActor,Mv_management * Move_management)
 {
+ static bool imginit=false;
+
     int i=0;
     Ev_state=&(myteam->GEv_state);
     std::string system_string;
@@ -134,24 +136,20 @@ void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * The
     Charas_nps = &(myteam->GCharas_nps);
     Actor = TheActor;
 
-    system_string.append("System/");
-    system_string.append(TheTeam->data2.System_dat.System_graphic);
-    system_string.append(".png");
-    message_box = new CMessage(system_string.c_str());
-
     use_keyboard = false;
     tried_to_talk = false;
     Mov_management=Move_management;
-    Sprite image;
-    image.visible=false;
-    image.setcols(1);
-    image.setrows(1);
-     for(i=0;i<50;i++)
+
+          imginit=true;
+         system_string.append("System/");
+    system_string.append(TheTeam->data2.System_dat.System_graphic);
+    system_string.append(".png");
+   // message_box = new CMessage(system_string.c_str());
+  for(i=0;i<50;i++)
     {
-        SDL_Surface *temp2;
-        temp2 = CreateSurface(1,1);
-        image.set_surface(temp2);
-        images.push_back(image);
+    Sprite image;
+    images.push_back(image);
+    images[i].visible=false;
     }
     myteam->scroll_writed=false;
 
@@ -164,14 +162,15 @@ X.visible=false;
 void E_management::update(SDL_Surface *Screen)
 {
     int i;
-    for(i=0;i<50;i++)
+    for(i=0;i<images.size();i++)
         images[i].draw(Screen);
 
     On_map_anim.draw(Screen);
-    if (message_box->visible)
-    {
-        message_box->draw(Screen);
-    }
+    //if(message_box!=NULL)
+    //if (message_box->visible)
+    //{
+      //  message_box->draw(Screen);
+    //}
 
 X.draw(Screen);
 //
@@ -482,17 +481,19 @@ if(comand_Move_event->Target!=10001)
 
 }
 void E_management::dispose()
-{
-    if(message_box!=NULL)
-   {
-    delete message_box;
-    message_box=NULL;
-   }
-   delete &On_map_anim;
+{int i;
+ //   if(message_box!=NULL)
+  // {
+    // message_box->dispose();//Zhek te mato si quitas esto esta claro!!!
+   //delete message_box;
+   // message_box=NULL;
+   //}
    X.dispose();
-   delete &X;
-    images.clear();
-delete &images;
+ for(i=0;i<images.size();i++)
+ {images[i].dispose();
+     }
+  images.clear();
+
 }
 
 int E_management::busque_real_id(int id_to_serch)

@@ -55,7 +55,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.*/
 #define SCREEN_SIZE_Y 240
 #endif
 
-#define SCREEN_SIZE_2X
+//#define SCREEN_SIZE_2X
 bool running = true;
 unsigned char TheScene = 0;
 Mix_Music *musica;

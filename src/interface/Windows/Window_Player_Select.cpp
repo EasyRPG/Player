@@ -107,6 +107,7 @@ void Window_Player_Select::dispose()
 	tp=(Vtext_Sprite).size();
 	for(i=0;i<tp;i++)
 	{
+        Vtext_Sprite[tp-(i+1)].dispose();
 		(Vtext_Sprite).pop_back();
 	}
 	restarmenu();

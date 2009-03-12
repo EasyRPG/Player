@@ -96,12 +96,16 @@ void Window_Select::dispose()
 	tp = command_sprites.size();
 	for (i = 0; i < tp; i ++)
 	{
+	   command_sprites[tp-(i+1)].dispose();
+	   sha_command_sprites[tp-(i+1)].dispose();
+
 		command_sprites.pop_back();
 		sha_command_sprites.pop_back(); // They've got the same size
 	}
 	tp=(Vtext_Sprite).size();
 	for (i = 0; i < tp; i ++)
 	{
+	    Vtext_Sprite[tp-(i+1)].dispose();
 		(Vtext_Sprite).pop_back();
 	}
 }

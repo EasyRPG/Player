@@ -32,7 +32,6 @@ protected:
 	Sistem System;
 	Sprite tapiz;
 	Sprite cursor;
-	Font fuente;
 	std:: vector <Sprite> Vtext_Sprite;
 	int pos_X,pos_Y;
 	int Size_X,Size_Y,Size_of_Block;

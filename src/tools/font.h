@@ -30,7 +30,7 @@ class Font
 	private:
 		int fR,  fG,  fB,  fU; // fU = unused
 		const char * Fname;
-		TTF_Font *font;
+		TTF_Font *font_ptr;
 	public:
 
         static void init_TTF();
@@ -52,5 +52,6 @@ class Font
 
 		static void Quit();
 };
+static Font fuente;
 
 #endif

@@ -29,7 +29,6 @@ class Window_Base  {
 protected:
 	Sistem System;
 	Sprite tapiz;
-	Font fuente;
 	int pos_X,pos_Y;
 	int Size_X,Size_Y;
 	std:: vector <Sprite> Vtext_Sprite;

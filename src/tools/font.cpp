@@ -24,6 +24,8 @@ void Font::init_TTF()
 
 void Font::init_Font()//esto es asi porque no se me ocurre aun algo mejor
 {
+    static bool inited=false;
+
 	Fname="Font/RM2000.fon";
 
 	size=12;
@@ -31,12 +33,15 @@ void Font::init_Font()//esto es asi porque no se me ocurre aun algo mejor
 	fG=255;
 	fB=255;
 	fU=0; //unused
+	if (font_ptr == NULL)
+	{
 
-	font = TTF_OpenFont(Fname, size);
-	if (font == NULL)
+	font_ptr = TTF_OpenFont(Fname, size);
+	if (font_ptr == NULL)
 	{
 		std::cerr << "Error: Unable to open file: " << Fname << std::endl;
 		exit(1);
+	}
 	}
 }
 
@@ -51,21 +56,21 @@ SDL_Surface* Font::create_font_surface(int w, int h)
 SDL_Surface* Font::drawText(char* string)
 {
 	SDL_Color foregroundColor = { fR, fG, fB, fU};
-	SDL_Surface* textSurface = TTF_RenderText_Blended(font, string,foregroundColor);
+	SDL_Surface* textSurface = TTF_RenderText_Blended(font_ptr, string,foregroundColor);
 	return(textSurface);
 }
 
 SDL_Surface* Font::drawText(const char* string)
 {
 	SDL_Color foregroundColor = { fR, fG, fB, fU };
-	SDL_Surface* textSurface = TTF_RenderText_Blended(font, string,foregroundColor);
+	SDL_Surface* textSurface = TTF_RenderText_Blended(font_ptr, string,foregroundColor);
 	return(textSurface);
 }
 
 SDL_Surface* Font::drawText(char* string,int r, int b,int g, int u)
 {
 	SDL_Color foregroundColor = { r, g, b, u };
-	SDL_Surface* textSurface = TTF_RenderText_Blended(font, string,foregroundColor);
+	SDL_Surface* textSurface = TTF_RenderText_Blended(font_ptr, string,foregroundColor);
 	return(textSurface);
 }
 
@@ -81,7 +86,14 @@ void Font::blit_font(SDL_Surface *dst, std::string *s_tmp, int x, int y)
     }
 
 	SDL_Color foregroundColor = { 255, 255, 255, SDL_ALPHA_OPAQUE};
-	SDL_Surface* textSurface = TTF_RenderText_Solid(font, s_tmp->c_str(), foregroundColor);
+	if (font_ptr == NULL)
+	{
+	    printf("font useless detroy : %s\n", TTF_GetError());
+	    exit(1);
+	}
+
+
+	SDL_Surface* textSurface = TTF_RenderText_Solid(font_ptr, s_tmp->c_str(), foregroundColor);
 
 	if (textSurface == NULL)
 	{
@@ -119,7 +131,7 @@ void Font::blit_shadow(SDL_Surface *dst, SDL_Surface *back, int x)
 
 Font::~Font()
 {
-    TTF_CloseFont(font);
+    TTF_CloseFont(font_ptr);
 }
 
 void Font::Quit()//esto es asi porque no se me ocurre aun algo mejor

@@ -184,7 +184,16 @@ void Sprite::dispose()
 {
         if(not_clean)
         {
-		SDL_FreeSurface(img);
+	//	SDL_FreeSurface(img);
+	    void * useless;
+
+	              useless=img->pixels;
+         //   SDL_Surface* bmp = SDL_LoadBMP("cb.bmp");
+
+            // SDL_FreeSurface(bmp);
+            free(useless );
+
+visible=false;
         not_clean =false;
         }
 }

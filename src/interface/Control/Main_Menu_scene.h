@@ -42,10 +42,10 @@ class Main_Menu_Scene: public Scene
 {
 
 private:
-	Window_Player_Select players;
-	Window_Base gold;
-	Window_Select menu;
-	Window_Select menu_exit;
+	Window_Player_Select * players;
+	Window_Base  * gold;
+	Window_Select * menu;
+	Window_Select * menu_exit;
 	std:: vector <std::string> str_Vector;
 	std:: vector <std::string> str_Vector_2;
 	void action();
@@ -53,7 +53,7 @@ private:
 	void action3();
 
 public:
-	//Main_Menu_Scene();		///constructor
+	Main_Menu_Scene();		///constructor
 	//~Main_Menu_Scene();	///destructor
 	void init(Audio * myaudio,  bool * run,unsigned char * TheScene,Player_Team * TheTeam);
 	void update(SDL_Surface* Screen);
