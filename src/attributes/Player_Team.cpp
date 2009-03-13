@@ -294,7 +294,7 @@ void Player_Team::change_class(int Hero_ID,const char * name)
 
 void Player_Team::change_level(int add_remove,int Hero_ID, int count)
 {
-   unsigned int i,j;
+   unsigned int i,j=0;
 
     if(!is_on_the_team(Hero_ID)) // si no esta retorna
     return;
@@ -336,7 +336,7 @@ void Player_Team::change_level(int add_remove,int Hero_ID, int count)
 
 void Player_Team::change_stats(int add_remove,int Hero_ID, int count,int type)
 {
-   unsigned int i,j;
+   unsigned int i,j=0;
     if(!is_on_the_team(Hero_ID)) // si no esta retorna
     return;
 
@@ -436,7 +436,7 @@ void Player_Team::change_stats(int add_remove,int Hero_ID, int count,int type)
 
 void Player_Team::change_exp(int add_remove,int Hero_ID, int count)
 {
-   unsigned int i,j;
+   unsigned int i,j=0;
 
     if(!is_on_the_team(Hero_ID)) // si no esta retorna
     return;
@@ -647,7 +647,7 @@ void Player_Team::change_HP(int Add,int Hero_id,int count)
 void Player_Team::change_skills(int Learn,int Hero_id,int skill_id)
 {
     Skill Veneno;
-    unsigned int i,j;
+    unsigned int i,j=0;
     if(!is_on_the_team(Hero_id)) // si no esta retorna
     return;
 

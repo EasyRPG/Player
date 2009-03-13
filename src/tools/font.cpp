@@ -24,7 +24,7 @@ void Font::init_TTF()
 
 void Font::init_Font()//esto es asi porque no se me ocurre aun algo mejor
 {
-    static bool inited=false;
+    //static bool inited=false;
 
 	Fname="Font/RM2000.fon";
 

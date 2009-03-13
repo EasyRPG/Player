@@ -21,7 +21,7 @@ Sound_Manager::~Sound_Manager()
 
 int Sound_Manager::load_sound(const char* soundf)
  {
-    int i;
+    unsigned int i;
  for(i=0;i<sound_array.size();i++)
       {
             if(!sound_array[i]->actual_music.compare(soundf))

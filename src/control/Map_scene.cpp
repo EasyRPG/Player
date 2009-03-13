@@ -427,7 +427,7 @@ if(Ev_state->at(event_id).Active_page!=-1)
 }
 void Map_Scene::dispose()
 {
-    unsigned int i;
+    //unsigned int i;
 
     //for (i = 0; i < Charas_nps->size(); i++)
     //{

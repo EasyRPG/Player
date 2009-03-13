@@ -347,7 +347,7 @@ struct stcState
 };
 struct stcAnimationTiming
 {
-int Frame;//=0x01,
+unsigned int Frame;//=0x01,
 stcSound_effect	Sound_effect;//=0x02,
 int Flash_effect;//=0x03,
 int Green_component;//=0x05,

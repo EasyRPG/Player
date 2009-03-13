@@ -19,7 +19,7 @@ class Animacion_Manager{
 
 private:
     Animacion anim;
-    int actual_frame;
+    unsigned int actual_frame;
     short delay;
     stcAnimated_battle * Animation_data;
     Sound_Manager * sound_sys;

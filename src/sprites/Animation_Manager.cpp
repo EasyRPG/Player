@@ -38,7 +38,8 @@ void Animacion_Manager::frameupdate()
 
 void Animacion_Manager::check_sound()
 {
-    int i,j;
+    unsigned int i;
+    int j;
 
 for(i=0;i<Animation_data->vecAnimationTiming.size();i++)
     if(Animation_data->vecAnimationTiming[i].Frame==actual_frame)

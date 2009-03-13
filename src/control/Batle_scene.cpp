@@ -169,7 +169,7 @@ myteam->screen_got_refresh=true;
 void Batle_scene::win()
 {
 	unsigned int i;
-	int k=0;
+	unsigned int k=0;
 	for(i=0;i<((*myteam).Enemys).size();i++)
 	{
 		if((*((*myteam).Enemys.at(i)).get_HP())==0)//cambiarporarreglo
