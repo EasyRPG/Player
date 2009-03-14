@@ -137,7 +137,82 @@ void CambioScene(Audio *myaudio, Scene **apuntador)
     if (TheScene != LastScene)
     {
         (*apuntador)->dispose();
-        delete (*apuntador);
+      //  delete (*apuntador);
+
+
+        if (LastScene == 0)
+        {
+         Title_Scene * ptrdst0;
+         ptrdst0=(Title_Scene*) (*apuntador);
+         delete(ptrdst0);
+        }
+        if (LastScene == 1)
+        {
+         Map_Scene * ptrdst1;
+         ptrdst1=(Map_Scene*) (*apuntador);
+         delete(ptrdst1);
+        }
+         if (LastScene == 2)
+        {
+         Batle_scene * ptrdst2;
+         ptrdst2=(Batle_scene*) (*apuntador);
+         delete(ptrdst2);
+        }
+         if (LastScene == 3)
+        {
+         GO_Scene * ptrdst3;
+         ptrdst3=(GO_Scene*) (*apuntador);
+         delete(ptrdst3);
+        }
+        if (LastScene == 4)
+        {
+         Main_Menu_Scene * ptrdst4;
+         ptrdst4=(Main_Menu_Scene*) (*apuntador);
+         delete(ptrdst4);
+        }
+
+        if (LastScene == 5)
+        {
+         Objects_Menu_Scene * ptrdst5;
+         ptrdst5=(Objects_Menu_Scene*) (*apuntador);
+         delete(ptrdst5);
+        }
+
+        if (LastScene == 6)
+        {
+         Skills_Menu_Scene * ptrdst6;
+         ptrdst6=(Skills_Menu_Scene*) (*apuntador);
+         delete(ptrdst6);
+        }
+
+        if (LastScene == 7)
+        {
+         Equip_Menu_Scene * ptrdst7;
+         ptrdst7=(Equip_Menu_Scene*) (*apuntador);
+         delete(ptrdst7);
+        }
+
+        if (LastScene == 8)
+        {
+         Stats_Menu_Scene * ptrdst8;
+         ptrdst8=(Stats_Menu_Scene*) (*apuntador);
+         delete(ptrdst8);
+        }
+
+        if (LastScene == 9)
+        {
+         Save_Load_Menu_Scene * ptrdst9;
+         ptrdst9=(Save_Load_Menu_Scene*) (*apuntador);
+         delete(ptrdst9);
+        }
+
+        if (LastScene == 10)
+        {
+         Item_use_scene * ptrdst10;
+         ptrdst10=(Item_use_scene*) (*apuntador);
+         delete(ptrdst10);
+        }
+
         if (TheScene == 0)
         {
             Control::set_delay_default();
