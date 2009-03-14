@@ -16,6 +16,7 @@
 
 #include "Map_scene.h"
 
+
 void Map_Scene::init( bool * run,Audio *audio, int SCREEN_X, int SCREEN_Y, unsigned char *TheScene, Player_Team *TheTeam)
 {
     running=run;
@@ -49,9 +50,7 @@ void Map_Scene::load_map()
     }
     myteam->from_title=false;
     Ev_state->clear();
-
     data->clear_events();
-    //Charas_nps->clear();
     pre_chip->dispose();
 
         Map_id=  myteam->actual_map;
@@ -146,6 +145,10 @@ void Map_Scene::init_npc()
     original_state.id_exe_actual=0;
     original_state.id_actual_active=false;
     Charas_nps->clear();
+
+        for(i=0;i<Charas_nps->size();i++)
+	 Charas_nps->at(i).dispose();
+
     Ev_state->clear();
 
     for (i = 0; i < Events->size(); i++)
