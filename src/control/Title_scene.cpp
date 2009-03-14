@@ -73,10 +73,10 @@ void Title_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Pla
     myteam = TheTeam;
     myaudio = theaudio;
     myaudio->load(music_string.c_str());
-    title.x = 0;
-    title.y = 0;
-    title.trasparent_color=false;
-    title.setimg(titles_string.c_str());
+    myteam->MBackground.x = 0;
+    myteam->MBackground.y = 0;
+    myteam->MBackground.trasparent_color=false;
+    myteam->MBackground.setimg(titles_string.c_str());
     menu.init(TheTeam, run, 0,2, 116, 57, 160 - (116 / 2), 160 - (57 / 2), (char *) system_string.c_str());
     str_Vector.push_back(TheTeam->data2.Glosary.New_Game);
     str_Vector.push_back(TheTeam->data2.Glosary.Load_Game);
@@ -92,7 +92,7 @@ void Title_Scene::update(SDL_Surface *Screen)
 {
     if (retardo == 0)
     {
-        title.draw(Screen);
+        myteam->MBackground.draw(Screen);
         menu.draw(Screen);
     }
     retardo++;
@@ -158,7 +158,7 @@ void Title_Scene::updatekey()
 }
 void Title_Scene::dispose()
 {
-    title.dispose();
+    myteam->MBackground.dispose();
     menu.restarmenu();
     menu.dispose();
     myaudio->stop();

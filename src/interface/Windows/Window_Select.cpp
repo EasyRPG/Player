@@ -16,6 +16,11 @@
 
 #include "Window_Select.h"
 
+Window_Select::Window_Select()
+{
+My_vector=NULL;
+}
+
 void Window_Select::init(Player_Team * myteam, bool * run,int ComandX,int ComandY,int SizeX,int SizeY,int PosX,int PosY, const char *SysIMg)
 {
     menu.init(myteam,run,ComandX,ComandY);
@@ -88,11 +93,15 @@ void Window_Select::dispose()
 	tapiz.dispose();
 	//   text.dispose();
 
-	tp=(* My_vector).size();
-	for (i = 0; i < tp; i ++)
-	{
+    if(My_vector!=NULL)
+    {
+        tp=(* My_vector).size();
+        for (i = 0; i < tp; i ++)
+        {
 		(* My_vector).pop_back();
-	}
+        }
+    }
+
 	tp = command_sprites.size();
 	for (i = 0; i < tp; i ++)
 	{
@@ -102,6 +111,8 @@ void Window_Select::dispose()
 		command_sprites.pop_back();
 		sha_command_sprites.pop_back(); // They've got the same size
 	}
+	command_sprites.clear();
+	sha_command_sprites.clear();
 	tp=(Vtext_Sprite).size();
 	for (i = 0; i < tp; i ++)
 	{

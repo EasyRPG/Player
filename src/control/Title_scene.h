@@ -67,13 +67,11 @@ class Title_Scene: public Scene {
 
 private:
 
-	Sprite title;
 	Window_Select menu;
 	std:: vector <std::string> str_Vector;
 	void action();
 
 public:
-
 
 	//Title_Scene();		///constructor
 	//~Title_Scene();		///destructor

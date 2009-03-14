@@ -32,9 +32,9 @@ void Batle_scene::init(Audio *theaudio,bool  *run,unsigned char  *TheScene,Playe
 	the_run=run;
 	(*myaudio).load("Music/Battle2.mid");
 	myaudio->play(-1);
-	title.x=0;
-	title.y=0;
-	title.setimg("Backdrop/Grass.png");
+	myteam->MBackground.x=0;
+	myteam->MBackground.y=0;
+	myteam->MBackground.setimg("Backdrop/Grass.png");
 
     std::string system_string;
     system_string.append("System/");
@@ -76,6 +76,7 @@ void Batle_scene::update_window_stats()
     system_string.append("System/");
     system_string.append(myteam->data2.System_dat.System_graphic);
     system_string.append(".png");
+    window.dispose();
 	window.init(myteam,the_run,0,3,224,80,96,160,214,16,(char *)system_string.c_str());
 	int i=0;
 	char stringBuffer[255];
@@ -104,20 +105,21 @@ void Batle_scene::windowtext_showdamange(bool  type,int  atak,int  ataked,int  d
     system_string.append("System/");
     system_string.append(myteam->data2.System_dat.System_graphic);
     system_string.append(".png");
+    Window_text.dispose();
 	Window_text.init(320,80,0,160,(char *)system_string.c_str());
 
 
 	if(type)//sisonlosplayers
 	{
 		Window_text.add_text(((*myteam).get_name(atak)),5,5);//nombreheroe
-		Window_text.add_text("atacaalenemigo",70,5);
+		Window_text.add_text(" ataca al enemigo ",70,5);
 		Window_text.add_text((((*myteam).Enemys.at(ataked)).get_name()),5,25);//nombremoustruo
 		Window_text.add_text(stringBuffer,70,25);
 	}
 	else
 	{
 		Window_text.add_text((((*myteam).Enemys.at(atak)).get_name()),5,5);//nombremoustruo
-		Window_text.add_text("ataca",70,5);
+		Window_text.add_text(" ataca ",70,5);
 		Window_text.add_text(((*myteam).get_name(ataked)),5,25);//nombreheroe
 		Window_text.add_text(stringBuffer,70,25);
 	}
@@ -125,6 +127,7 @@ void Batle_scene::windowtext_showdamange(bool  type,int  atak,int  ataked,int  d
 
 void Batle_scene::update_window_mosterselect()
 {
+    static bool inited=false;
 	int i,j,k=0;
 	j=(*myteam).Enemys.size();
 
@@ -136,8 +139,14 @@ void Batle_scene::update_window_mosterselect()
 			k++;
 		}
 	}
+	if(inited)
+	{
+	moster_select.dispose();
+	}
 	moster_select.init(myteam,the_run,0,k-1,96,80,0,160,"System/System.png");
 	moster_select.setComands(&str_Vector2);
+    inited=true;
+
 }
 
 
@@ -146,7 +155,7 @@ void Batle_scene::update(SDL_Surface *Screen)
 	int i,j;
 	SDL_FillRect(Screen,NULL,0x0);//Clearscreen
 	j=(*myteam).Enemys.size();
-	title.draw(Screen);
+	myteam->MBackground.draw(Screen);
 	window.draw(Screen);
 	menu.draw(Screen);
 	moster_select.draw(Screen);
@@ -179,7 +188,7 @@ void Batle_scene::win()
 		}
 	}
 	if(k==((*myteam).Enemys).size())//sitodoslosenemigosmuetros
-	{
+	{//idealmente state igual a win2, das exp y dinero conforme a los m
 		*NScene=1;//salalmapa
 	}
 }
@@ -245,7 +254,7 @@ void Batle_scene::atack(SDL_Surface *Screen,int  nperso,int  enemy)
 void Batle_scene::atacked(int enemy)
 {
 	int i,j;
-	static int posxt=title.x,flag=0,timer=0,moves=0;
+	static int posxt=myteam->MBackground.x,flag=0,timer=0,moves=0;
 	static bool finish=false;
 	if((((*myteam).Enemys.at(enemy)).Batler).visible)//siestavivoelenemigo
 	{
@@ -255,7 +264,7 @@ void Batle_scene::atacked(int enemy)
 			flag++;timer=0;
 			if(flag%2)
 			{
-				title.x=posxt+20;
+				myteam->MBackground.x=posxt+20;
 				j=(*myteam).Enemys.size();
 				for(i=0;i<j;i++)
 				{
@@ -267,7 +276,7 @@ void Batle_scene::atacked(int enemy)
 				flag=0;
 				moves++;
 				timer=0;
-				title.x=posxt-20;
+				myteam->MBackground.x=posxt-20;
 				j=(*myteam).Enemys.size();
 				for(i=0;i<j;i++)
 				{
@@ -280,7 +289,7 @@ void Batle_scene::atacked(int enemy)
 			moves=11;
 			flag=0;
 			timer=10;
-			title.x=posxt;/////////////////////////restauradodeposiciones
+			myteam->MBackground.x=posxt;/////////////////////////restauradodeposiciones
 			j=(*myteam).Enemys.size();
 			int damange;
 			///////////////////////////////////////////eleciondeplayer
@@ -441,9 +450,12 @@ void Batle_scene::updatekey()
 
 void Batle_scene::dispose()
 {
-	title.dispose();
+	myteam->MBackground.dispose();
 	window.dispose();
+    Window_text.dispose();
+    //menu_os.dispose();
+	moster_select.dispose();
+	menu.dispose();
 	(*myteam).clear_enemy();
 	(*myaudio).stop();
-	menu.dispose();
 }

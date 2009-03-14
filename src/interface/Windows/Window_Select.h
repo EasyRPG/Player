@@ -45,7 +45,8 @@ protected:
 
 public:
     Menu_Easy menu;
-	//Window_Select();		///constructor
+
+	Window_Select();		///constructor
 	//~Window_Select();		///destructor
 	bool visible;
 	bool on_use;

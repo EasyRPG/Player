@@ -18,12 +18,17 @@
 
 void Player_Team::read_database()
 {
+    static bool inited=false;
+
+   if(!inited)//just one time
+   {
     LDB_reader my_ldb;
     my_ldb.Load("RPG_RT.ldb",&data2);
-   lmt_reader my_lmt;
-   my_lmt.load("RPG_RT.lmt",&lmt);
+    lmt_reader my_lmt;
+    my_lmt.load("RPG_RT.lmt",&lmt);
+   }
   // my_lmt.print(&lmt);
-   my_ldb.ShowInformation(&data2);
+   //my_ldb.ShowInformation(&data2);
 }
 void Player_Team::add_swich(unsigned char i)
 {
@@ -99,6 +104,13 @@ world_fase[real_id]=(world_fase[real_id]&(!(1<<position)));
 
 void Player_Team::clear_team()
 {
+    unsigned int i;
+    for(i=0;i<Players.size();i++)
+    {
+    Players[i].charset.dispose();
+    Players[i].Face.dispose();
+    ((get_Weapon(i))->get_anim())->dispose();//las armas no debrian tener anim, solo un id
+    }
 	Players.clear();
 }
 void Player_Team::clear_obj()
@@ -106,7 +118,9 @@ void Player_Team::clear_obj()
 	Items.clear();
 }
 void Player_Team::clear_enemy()
-{
+{ unsigned int i;
+    for(i=0;i<Enemys.size();i++)
+    Enemys[i].Batler.dispose();
 	Enemys.clear();
 }
 void Player_Team::load_group(int id)

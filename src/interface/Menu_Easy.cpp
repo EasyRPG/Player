@@ -26,6 +26,8 @@ void Menu_Easy::init(Player_Team * TheTeam, bool * run,int X,int Y)
 	delay=0;
 	running=  run;
 	cancel=false;
+    indexX=0;
+    indexY=0;
 
 	system_Cursor.clear();
     system_Cursor.append("Sound/");

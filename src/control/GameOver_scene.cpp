@@ -49,10 +49,10 @@ void GO_Scene::init(Audio *theaudio, bool *run, unsigned char *TheScene, Player_
 
 
     myaudio->load(music_string.c_str());
-    title.x = 0;
-    title.y = 0;
-    title.trasparent_color=false;
-    title.setimg(titles_string.c_str());
+    myteam->MBackground.x = 0;
+    myteam->MBackground.y = 0;
+    myteam->MBackground.trasparent_color=false;
+    myteam->MBackground.setimg(titles_string.c_str());
     myaudio->play(-1);
     running = run;
     NScene = TheScene;
@@ -62,7 +62,7 @@ void GO_Scene::init(Audio *theaudio, bool *run, unsigned char *TheScene, Player_
 
 void GO_Scene::update(SDL_Surface *Screen)
 {
-    title.draw(Screen);
+    myteam->MBackground.draw(Screen);
      myteam->screen_got_refresh=true;
 }
 
@@ -100,9 +100,14 @@ void GO_Scene::updatekey()
 
 void GO_Scene::dispose()
 {
+   unsigned int i=0;
     myteam->clear_team();
     myteam->clear_obj();
-
-    title.dispose();
+    for(i=0;i<myteam->GCharas_nps.size();i++)
+	 myteam->GCharas_nps[i].dispose();
+    myteam->GCharas_nps.clear();
+    myteam->Gpre_chip.dispose();
+    myteam->GEv_state.clear();
+    myteam->MBackground.dispose();
     myaudio->stop();
 }

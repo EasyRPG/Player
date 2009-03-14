@@ -63,7 +63,6 @@ class GO_Scene: public Scene {
 
 private:
 
-	Sprite title;
 	void action();
 
 public:
