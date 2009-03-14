@@ -212,7 +212,7 @@ void E_management::updatekey(bool *running)
 
 void E_management::active_exec_comand(Event_comand * comand,int event_id, E_state * comand_id)
 {
-    static int timer=0;
+    static unsigned int timer=0;
     static float Xmove,Ymove;
     int i=0,j,x,y;
     std::string system_string;
@@ -499,7 +499,7 @@ void E_management::dispose()
 
 int E_management::busque_real_id(int id_to_serch)
 {
-    int i;
+    unsigned int i;
     for(i=0;i<Charas_nps->size();i++)
     if(Charas_nps->at(i).id==id_to_serch)
         return(i);
@@ -509,6 +509,7 @@ return(-1);
 void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int event_id, E_state * comand_id)
 {
     int j=0,i=0;
+    unsigned int l=0,k=0;
     string system_string;
     Event_comand * comand,* Next_comand;
     comand=vcEvent_comand[comand_id->id_exe_actual];// lee el comando
@@ -822,9 +823,9 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
         if(comand_Change_experience->All==0)
         {
-            for(j=0;j<myteam->Players.size();j++)
+            for(k=0;k<myteam->Players.size();k++)
             {
-            myteam->change_exp(comand_Change_experience->Add,myteam->Players[j].id, i);
+            myteam->change_exp(comand_Change_experience->Add,myteam->Players[k].id, i);
             }
         }
         if(comand_Change_experience->All==1)
@@ -852,9 +853,9 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
         if(comand_Change_level->All==0)
         {
-            for(j=0;j<myteam->Players.size();j++)
+            for(k=0;k<myteam->Players.size();k++)
             {
-            myteam->change_level(comand_Change_level->Add,myteam->Players[j].id, i);
+            myteam->change_level(comand_Change_level->Add,myteam->Players[k].id, i);
             }
         }
         if(comand_Change_level->All==1)
@@ -883,9 +884,9 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
         if(comand_Change_statistics->All==0)
         {
-            for(j=0;j<myteam->Players.size();j++)
+            for(k=0;k<myteam->Players.size();k++)
             {
-            myteam->change_stats(comand_Change_statistics->Add,myteam->Players[j].id, i, comand_Change_statistics->Stat);
+            myteam->change_stats(comand_Change_statistics->Add,myteam->Players[k].id, i, comand_Change_statistics->Stat);
             }
         }
         if(comand_Change_statistics->All==1)
@@ -913,9 +914,9 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
         if(comand_Learn_forget_skill->Hero==0)
         {
-            for(j=0;j<myteam->Players.size();j++)
+            for(k=0;k<myteam->Players.size();k++)
             {
-            myteam->change_skills(comand_Learn_forget_skill->Learn,myteam->Players[j].id, i);
+            myteam->change_skills(comand_Learn_forget_skill->Learn,myteam->Players[k].id, i);
             }
         }
         if(comand_Learn_forget_skill->Hero==1)
@@ -949,9 +950,9 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
         if(comand_Change_HP->All==0)
         {
-            for(j=0;j<myteam->Players.size();j++)
+            for(k=0;k<myteam->Players.size();k++)
             {
-            myteam->change_HP(comand_Change_HP->Add,myteam->Players[j].id, i);
+            myteam->change_HP(comand_Change_HP->Add,myteam->Players[k].id, i);
             }
         }
         if(comand_Change_HP->All==1)
@@ -979,9 +980,9 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
         if(comand_Change_MP->All==0)
         {
-            for(j=0;j<myteam->Players.size();j++)
+            for(k=0;k<myteam->Players.size();k++)
             {
-            myteam->change_MP(comand_Change_MP->Add,myteam->Players[j].id, i);
+            myteam->change_MP(comand_Change_MP->Add,myteam->Players[k].id, i);
             }
         }
         if(comand_Change_MP->All==1)
@@ -1010,9 +1011,9 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
         if(comand_Full_Recovery->All==0)
         {
-            for(j=0;j<myteam->Players.size();j++)
+            for(k=0;k<myteam->Players.size();k++)
             {
-            myteam->Full_Recovery(myteam->Players[j].id);
+            myteam->Full_Recovery(myteam->Players[k].id);
             }
         }
         if(comand_Full_Recovery->All==1)
@@ -1221,22 +1222,22 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Teleport_Event:// 0xD46C,
         Event_comand_Teleport_Event * comand_Teleport_Event;
         comand_Teleport_Event=(Event_comand_Teleport_Event *)comand;
-        for(i=0;i<Charas_nps->size();i++)
+        for(l=0;l<Charas_nps->size();l++)
         {
-            if(Charas_nps->at(i).id==comand_Teleport_Event->Event_ID)
+            if(Charas_nps->at(l).id==comand_Teleport_Event->Event_ID)
             {
-                j=i;
+                k=l;
                 break;
             }
         }
-        if(j<Charas_nps->size())
+        if(k<Charas_nps->size())
         {
         if(comand_Teleport_Event->By_value)
         {
-            Charas_nps->at(j).setposXY(myteam->world_var[comand_Teleport_Event->X-1],myteam->world_var[comand_Teleport_Event->Y-1]);
+            Charas_nps->at(k).setposXY(myteam->world_var[comand_Teleport_Event->X-1],myteam->world_var[comand_Teleport_Event->Y-1]);
         }else
         {
-            Charas_nps->at(j).setposXY(comand_Teleport_Event->X,comand_Teleport_Event->Y);
+            Charas_nps->at(k).setposXY(comand_Teleport_Event->X,comand_Teleport_Event->Y);
         }
         }
         comand_id->id_exe_actual++;
@@ -1248,37 +1249,37 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         comand_Swap_Event_Positions=(Event_comand_Swap_Event_Positions *)comand;
         int x1,y1;
         if(comand_Swap_Event_Positions->First_event!=10005)
-        for(i=0;i<Charas_nps->size();i++)
+        for(l=0;l<Charas_nps->size();l++)
         {
-            if(Charas_nps->at(i).id==comand_Swap_Event_Positions->First_event)
+            if(Charas_nps->at(l).id==comand_Swap_Event_Positions->First_event)
             {
                 break;
             }
         }
-        if((i<Charas_nps->size())||(comand_Swap_Event_Positions->First_event==10005))
+        if((l<Charas_nps->size())||(comand_Swap_Event_Positions->First_event==10005))
         {
         if(comand_Swap_Event_Positions->First_event==10005)
-        i=event_id;
+        l=event_id;
 
-        x1=Charas_nps->at(i).GridX;
-        y1=Charas_nps->at(i).GridY;
+        x1=Charas_nps->at(l).GridX;
+        y1=Charas_nps->at(l).GridY;
 
         if(comand_Swap_Event_Positions->Second_event!=10005)
-        for(j=0;j<Charas_nps->size();j++)
+        for(k=0;k<Charas_nps->size();k++)
         {
-            if(Charas_nps->at(j).id==comand_Swap_Event_Positions->Second_event)
+            if(Charas_nps->at(k).id==comand_Swap_Event_Positions->Second_event)
             {
                 break;
             }
         }
 
-        if((j<Charas_nps->size())||(comand_Swap_Event_Positions->Second_event==10005))
+        if((k<Charas_nps->size())||(comand_Swap_Event_Positions->Second_event==10005))
         {
         if(comand_Swap_Event_Positions->Second_event==10005)
-        j=event_id;
+        k=event_id;
 
-        Charas_nps->at(i).setposXY(Charas_nps->at(j).GridX,Charas_nps->at(j).GridY);
-        Charas_nps->at(j).setposXY(x1,y1);
+        Charas_nps->at(l).setposXY(Charas_nps->at(j).GridX,Charas_nps->at(j).GridY);
+        Charas_nps->at(k).setposXY(x1,y1);
         }
         }
 
@@ -1412,15 +1413,15 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         comand_Move_Picture=(Event_comand_Move_Picture *)comand;
 
         i=comand_Move_Picture->Picture_ID;
-        images[i-1].SetAlpha(255 -(comand_Show_Picture->Opacity*2.55));
-        images[i-1].ModRGB(comand_Show_Picture->Red_diffuse-100, comand_Show_Picture->Green_diffuse-100,comand_Show_Picture->Blue_diffuse-100);
+        images[i-1].SetAlpha(255 -(comand_Move_Picture->Opacity*2.55));
+        images[i-1].ModRGB(comand_Move_Picture->Red_diffuse-100, comand_Move_Picture->Green_diffuse-100,comand_Move_Picture->Blue_diffuse-100);
 
         if(comand_Move_Picture->Length==0)
         {
         if(comand_Move_Picture->By_Value)
         {
         images[i-1].x=myteam->world_var[comand_Move_Picture->X]-(images[i-1].getw()/2);
-        images[i-1].y=myteam->world_var[comand_Show_Picture->Y]-(images[i-1].geth()/2);
+        images[i-1].y=myteam->world_var[comand_Move_Picture->Y]-(images[i-1].geth()/2);
         }
         else
         {

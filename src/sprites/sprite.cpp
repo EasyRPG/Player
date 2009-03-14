@@ -143,7 +143,7 @@ void Sprite::ModRGB(int red,int green,int blue)
 	color->r+=red;
 	color->g+=green;
 	color->b+=blue;
-
+/*
             if (color->r > 255)
                 color->r= 255;
 	    if (color->g > 255)
@@ -157,7 +157,7 @@ void Sprite::ModRGB(int red,int green,int blue)
                 color->g= 0;
             if (color->b < 0)
                 color->b= 0;
-
+*/
     }
     if(trasparent_color)
 	SetTransparent(img);

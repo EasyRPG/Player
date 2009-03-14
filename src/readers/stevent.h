@@ -441,7 +441,7 @@
    };
    class Event_comand_Wait: public Event_comand {
    public:
-   int Length;
+   unsigned int Length;
    void show(); };
    class Event_comand_Play_BGM: public Event_comand {
    public:
