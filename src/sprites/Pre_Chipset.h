@@ -23,7 +23,10 @@
         void RenderWaterTile(SDL_Surface * Destiny, int x, int y, int Frame, int Border, int Water, int Combination);
         void RenderDepthTile(SDL_Surface * Destiny, int x, int y, int Frame, int Depth, int DepthCombination);
         void RenderTerrainTile(SDL_Surface * Destiny, int x, int y, int Terrain, int Combination);
+        bool clear_BaseSurface;
+        bool clear_ChipsetSurface;
     public:
+        Pre_Chipset();
         SDL_Surface * ChipsetSurface;   // Chipset's precalculated surface
         bool GenerateFromSurface(SDL_Surface * Surface);
         bool GenerateFromFile(string Filename);

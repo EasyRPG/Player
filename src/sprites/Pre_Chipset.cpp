@@ -1,11 +1,24 @@
   #include "Pre_Chipset.h"
 
+Pre_Chipset::Pre_Chipset()
+{
+        clear_BaseSurface=true;
+        clear_ChipsetSurface=true;
+        BaseSurface=NULL;
+        ChipsetSurface=NULL;
+}
 
    bool Pre_Chipset::GenerateFromSurface(SDL_Surface * Surface)
     {
         // Set base surface, used for generating the tileset
         BaseSurface     = Surface;
         ChipsetSurface  = CreateSurface(32*16, 45*16);
+
+        if(BaseSurface!=NULL)
+            clear_BaseSurface=false;
+
+        if(ChipsetSurface!=NULL)
+            clear_ChipsetSurface=false;
 
         int CurrentTile = 0;
 
@@ -56,8 +69,16 @@
     }
     void Pre_Chipset::dispose()
     {
-         SDL_FreeSurface(BaseSurface);
-         SDL_FreeSurface(ChipsetSurface);
+        if(!clear_BaseSurface)
+        {
+        SDL_FreeSurface(BaseSurface);
+        clear_BaseSurface=true;
+        }
+        if(!clear_ChipsetSurface)
+        {
+        SDL_FreeSurface(ChipsetSurface);
+        clear_ChipsetSurface=true;
+        }
     }
 
     void Pre_Chipset::RenderWaterTile(SDL_Surface * Destiny, int x, int y, int Frame, int Border, int Water, int Combination)
