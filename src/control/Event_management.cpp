@@ -1405,7 +1405,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         images[i-1].visible=true;
         images[i-1].SetAlpha(255 -(comand_Show_Picture->Opacity*2.55));
         images[i-1].ModRGB(comand_Show_Picture->Red_diffuse-100, comand_Show_Picture->Green_diffuse-100,comand_Show_Picture->Blue_diffuse-100);
-
+        images[i-1].zoom=comand_Show_Picture->Magnification;
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
 
