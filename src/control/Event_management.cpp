@@ -1,5 +1,4 @@
-#include "Event_management.h"
-
+#include "General_data.h"
 bool E_management::tried_to_talk = false;
 
 E_management::E_management()

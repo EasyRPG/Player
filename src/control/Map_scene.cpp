@@ -32,10 +32,10 @@ void Map_Scene::init( bool * run,Audio *audio, int SCREEN_X, int SCREEN_Y, unsig
     data=&(myteam->Gdata);
     Background= &(myteam->MBackground);
     Ev_state= &(myteam->GEv_state);
-//    Ev_management= &(myteam->GEv_management);
+    Ev_management= &(myteam->GEv_management);
     load_map();
     myteam->scroll_active=true;
-    Ev_management.init(myaudio,NScene,myteam,Events,Actor,&Mov_management);
+    Ev_management->init(myaudio,NScene,myteam,Events,Actor,&Mov_management);
     Mov_management.init(myteam);
 }
 
@@ -47,7 +47,7 @@ void Map_Scene::load_map()
     {
     if(!myteam->from_title)
     {
-    Ev_management.dispose();
+    Ev_management->dispose();
     }
     myteam->from_title=false;
     Ev_state->clear();
@@ -97,7 +97,7 @@ void Map_Scene::load_map()
         pre_chip->GenerateFromFile((char *) system_string.c_str());
         Events = &data->vcEvents;
         chip->init(pre_chip->ChipsetSurface, data, &myteam->data2.Tilesets[(unsigned int) data->ChipsetID - 1] );
-        Ev_management.init(myaudio,NScene,myteam,Events,Actor,&Mov_management);
+        Ev_management->init(myaudio,NScene,myteam,Events,Actor,&Mov_management);
         if(data->ParallaxBackground)
         {
             system_string.clear();
@@ -154,7 +154,7 @@ void Map_Scene::init_npc()
 
     for (i = 0; i < Events->size(); i++)
     {
-        original_state.Active_page=Ev_management.Active_page(&data->vcEvents[i]);
+        original_state.Active_page=Ev_management->Active_page(&data->vcEvents[i]);
 
         Ev_state->push_back(original_state);
 
@@ -203,7 +203,7 @@ void Map_Scene::init_npc()
                 Charas_nps->push_back(npc);
 
     }
-     Ev_management.init(myaudio,NScene,myteam,Events,Actor,&Mov_management);
+     Ev_management->init(myaudio,NScene,myteam,Events,Actor,&Mov_management);
 
 }
 
@@ -262,7 +262,7 @@ void Map_Scene::update(SDL_Surface *Screen)
         Charas_nps->at(i).addy(+ myteam->view.y);
     }
 
-    Ev_management.update(Screen);
+    Ev_management->update(Screen);
       myteam->screen_got_refresh=true;
 
 }
@@ -296,7 +296,7 @@ void Map_Scene::Scroll()
 void Map_Scene::updatekey()
 {
     unsigned int i;
-    Ev_management.updatekey(running);
+    Ev_management->updatekey(running);
     Actor->MoveOnInput(running);
     Scroll();
     for (i = 0; i < Charas_nps->size(); i++)
@@ -349,7 +349,6 @@ void Map_Scene::updatekey()
             myteam->actual_y_map=Actor->GridY;
             myteam->actual_dir=Actor->dir;
             *NScene = 4;
-            //*NScene = 0;
         }
     Actor->tried_to_menu=false;
     }
@@ -402,7 +401,7 @@ if(Ev_state->at(event_id).Active_page!=-1)
                 if(!Ev_state->at(event_id).id_actual_active)  //si el id actual no esta activa pero el evento  si
                 {
                 Ev_state->at(event_id).id_actual_active=true;
-                Ev_management.exec_comand(data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].vcEvent_comand,event_id,&Ev_state->at(event_id));// mandalo activar
+                Ev_management->exec_comand(data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].vcEvent_comand,event_id,&Ev_state->at(event_id));// mandalo activar
                     if(actual_map!=myteam->actual_map)
                     {
                         dispose();
@@ -415,7 +414,7 @@ if(Ev_state->at(event_id).Active_page!=-1)
                 // ejecutar comandos
                 if(Ev_state->at(event_id).id_actual_active)  //si el evento  esta activo
                 {
-                    Ev_management.active_exec_comand(comand,event_id,&Ev_state->at(event_id));
+                    Ev_management->active_exec_comand(comand,event_id,&Ev_state->at(event_id));
                 }
 
             }

@@ -1,25 +1,35 @@
-
-#ifndef GENERAL_DATA_H_
-#define GENERAL_DATA_H_
+#ifndef EVENT_MANAGEMENT_H_
+#define EVENT_MANAGEMENT_H_
 
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_mixer.h"
+#include <stdio.h>
+#include <sstream>
+#include <stdlib.h>
+#include "../sprites/sprite.h"
+#include "../sprites/Animation_Manager.h"
+#include "../sprites/chipset.h"
+#include "../sprites/Pre_Chipset.h"
+#include "../tools/key.h"
 #include "../tools/font.h"
 #include "../tools/audio.h"
-#include "../tools/Sound_Manager.h"
+#include "../readers/map.h"
+#include "../readers/lmt.h"
+#include "../readers/ldb.h"
 #include <vector>
 #include <string>
+#include "../interface/Windows/Window_Base.h"
 #include "../attributes/skill.h"
 #include "../attributes/item.h"
 #include "../attributes/Enemy.h"
 #include "../attributes/Player_Team.h"
-
-#include "../readers/ldb.h"
-#include "../readers/lmt.h"
-#include "../sprites/chipset.h"
-#include "../sprites/Chara.h"
-#include "../sprites/Pre_Chipset.h"
+#include "../tools/math-sll.h"
+#include "../attributes/CActor.h"
+#include "events/message.h"
+#include "Move_management.h"
+#include "Event_management.h"
+class E_management;
 
 class General_data {
     private:
@@ -33,7 +43,7 @@ class General_data {
     Pre_Chipset Gpre_chip;
 	Chipset Gchip;
     map_data Gdata;
-    //E_management GEv_management;
+    E_management GEv_management;
     std:: vector <E_state> GEv_state;
     Sprite MBackground;
     string memorized_BGM;
@@ -99,5 +109,6 @@ class General_data {
 	Animacion * get_item_anim(int num);
 
 };
+
 
 #endif

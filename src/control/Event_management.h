@@ -1,5 +1,7 @@
-#ifndef EVENT_MANAGEMENT_H_
-#define EVENT_MANAGEMENT_H_
+
+#ifndef GENERAL_DATA_H_
+#define GENERAL_DATA_H_
+
 
 #include "SDL.h"
 #include "SDL_image.h"
@@ -27,8 +29,10 @@
 #include "../tools/math-sll.h"
 #include "../attributes/CActor.h"
 #include "events/message.h"
-#include "Move_management.h"
-#include "General_data.h"
+
+class General_data;
+class Mv_management;
+
 
 class E_management
 {
@@ -69,6 +73,7 @@ public:
     void update(SDL_Surface *Screen);
     void updatekey(bool *running);
 };
+#include "General_data.h"
 
 
 #endif

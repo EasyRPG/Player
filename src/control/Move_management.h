@@ -16,6 +16,8 @@
 #define DIRECTION_LEFT    0x02
 #define DIRECTION_RIGHT   0x03
 
+class General_data;// a promise to the compiler that eventually supply a complete definition of that class.
+
 class Mv_management{
 
 private:

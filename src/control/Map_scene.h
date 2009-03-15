@@ -66,7 +66,7 @@ private:
 	int SCREEN_SIZE_X, SCREEN_SIZE_Y,actual_map;
 	CActor * Actor;
 	Chara * player;
-    E_management Ev_management;
+    E_management * Ev_management;
     Mv_management Mov_management;
 	std:: vector <Chara> * Charas_nps;//agregar apuntador a vector de eventos
     Sprite * Background;
