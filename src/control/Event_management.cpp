@@ -121,8 +121,6 @@ return true;
 
 void E_management::init(Audio * audio,unsigned char * TheScene,General_data * TheTeam,std:: vector <stEventMap> * TheEvents,CActor * TheActor,Mv_management * Move_management)
 {
- static bool imginit=false;
-
     int i=0;
     Ev_state=&(myteam->GEv_state);
     std::string system_string;
@@ -140,23 +138,18 @@ void E_management::init(Audio * audio,unsigned char * TheScene,General_data * Th
     tried_to_talk = false;
     Mov_management=Move_management;
 
-          imginit=true;
-         system_string.append("System/");
+    system_string.append("System/");
     system_string.append(TheTeam->data2.System_dat.System_graphic);
     system_string.append(".png");
-   // message_box = new CMessage(system_string.c_str());
-  for(i=0;i<50;i++)
+    message_box = new CMessage(system_string.c_str());
+    for(i=0;i<50;i++)
     {
     Sprite image;
     images.push_back(image);
     images[i].visible=false;
     }
     myteam->scroll_writed=false;
-
-X.visible=false;
-/*
-
-*/
+    X.visible=false;
 }
 
 void E_management::update(SDL_Surface *Screen)
@@ -166,14 +159,12 @@ void E_management::update(SDL_Surface *Screen)
         images[i].draw(Screen);
 
     On_map_anim.draw(Screen);
-    //if(message_box!=NULL)
-    //if (message_box->visible)
-    //{
-      //  message_box->draw(Screen);
-    //}
+    if (message_box->visible)
+    {
+        message_box->draw(Screen);
+    }
+    X.draw(Screen);
 
-X.draw(Screen);
-//
 }
 
 void E_management::updatekey(bool *running)
@@ -252,13 +243,13 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
         i=comand_Move_Picture->Picture_ID;
         if(comand_Move_Picture->By_Value)
         {
-        x=(myteam->world_var[comand_Move_Picture->X]-(images[i-1].getw()/2));
-        y=myteam->world_var[comand_Move_Picture->Y]-(images[i-1].geth()/2);
+        x=myteam->world_var[comand_Move_Picture->X];
+        y=myteam->world_var[comand_Move_Picture->Y];
         }
         else
         {
-        x=comand_Move_Picture->X-(images[i-1].getw()/2);
-        y=comand_Move_Picture->Y-(images[i-1].geth()/2);
+        x=comand_Move_Picture->X;
+        y=comand_Move_Picture->Y;
         }
 
         if(timer==0)
@@ -1386,20 +1377,21 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         system_string.append(".png");
 
         i= comand_Show_Picture->Picture_ID;
-
+        images[i-1].center_active=true;
         images[i-1].trasparent_color=comand_Show_Picture->Use_color_key;
         images[i-1].dispose();
         images[i-1].setimg(system_string.c_str());
-
+        images[i-1].rotate_active=comand_Show_Picture->Effect;
+        images[i-1].rotate_frec=comand_Show_Picture->Power;
         if(comand_Show_Picture->By_Value)
         {
-        images[i-1].x=myteam->world_var[comand_Show_Picture->X]-(images[i-1].getw()/2);
-        images[i-1].y=myteam->world_var[comand_Show_Picture->Y]-(images[i-1].geth()/2);
+        images[i-1].x=myteam->world_var[comand_Show_Picture->X];
+        images[i-1].y=myteam->world_var[comand_Show_Picture->Y];
         }
         else
         {
-        images[i-1].x=comand_Show_Picture->X-(images[i-1].getw()/2);
-        images[i-1].y=comand_Show_Picture->Y-(images[i-1].geth()/2);
+        images[i-1].x=comand_Show_Picture->X;
+        images[i-1].y=comand_Show_Picture->Y;
         }
 
         images[i-1].visible=true;
@@ -1417,18 +1409,19 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         i=comand_Move_Picture->Picture_ID;
         images[i-1].SetAlpha(255 -(comand_Move_Picture->Opacity*2.55));
         images[i-1].ModRGB(comand_Move_Picture->Red_diffuse-100, comand_Move_Picture->Green_diffuse-100,comand_Move_Picture->Blue_diffuse-100);
+        images[i-1].center_active=true;
         if(comand_Move_Picture->Length==0)
         {
         images[i-1].zoom=comand_Move_Picture->Magnification;
         if(comand_Move_Picture->By_Value)
         {
-        images[i-1].x=myteam->world_var[comand_Move_Picture->X]-(images[i-1].getw()/2);
-        images[i-1].y=myteam->world_var[comand_Move_Picture->Y]-(images[i-1].geth()/2);
+        images[i-1].x=myteam->world_var[comand_Move_Picture->X];
+        images[i-1].y=myteam->world_var[comand_Move_Picture->Y];
         }
         else
         {
-        images[i-1].x=comand_Move_Picture->X-(images[i-1].getw()/2);
-        images[i-1].y=comand_Move_Picture->Y-(images[i-1].geth()/2);
+        images[i-1].x=comand_Move_Picture->X;
+        images[i-1].y=comand_Move_Picture->Y;
         }
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;

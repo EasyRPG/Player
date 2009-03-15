@@ -56,6 +56,10 @@ class Sprite {
 	    int frame;
 	    int x,y;
 	    int zoom;
+	    int angle;
+	    bool center_active;
+	    bool rotate_active;
+	    int rotate_frec;
         void SetAlpha(unsigned char alpha);
         void ModRGB(int red,int green,int blue);
 	    void setx(int posx);

@@ -601,13 +601,9 @@ for (j=0;j<(actual_hero->skills.size());j++)
 
 
     Item X;
-    Animacion the_anim;
-    the_anim.setimg("Battle/hit.png");
-    the_anim.init_Anim();
 
     X.set_name(data2->items[actual_hero->sh_Weapon].Name.c_str());
     X.set_NOI(1);
-    X.set_anim( the_anim);
     X.set_type(data2->items[actual_hero->sh_Weapon].Type);
     X.id = 1;
 
@@ -615,7 +611,6 @@ for (j=0;j<(actual_hero->skills.size());j++)
 
     X.set_name(data2->items[actual_hero->sh_Shield].Name.c_str());
     X.set_NOI(1);
-    X.set_anim( the_anim);
     X.set_type(data2->items[actual_hero->sh_Shield].Type);
     X.id = 1;
 
@@ -623,7 +618,6 @@ for (j=0;j<(actual_hero->skills.size());j++)
 
     X.set_name(data2->items[actual_hero->sh_Armor].Name.c_str());
     X.set_NOI(1);
-    X.set_anim( the_anim);
     X.set_type(data2->items[actual_hero->sh_Armor].Type);
     X.id = 1;
 
@@ -632,7 +626,6 @@ for (j=0;j<(actual_hero->skills.size());j++)
 
     X.set_name(data2->items[actual_hero->sh_Head].Name.c_str());
     X.set_NOI(1);
-    X.set_anim( the_anim);
     X.set_type(data2->items[actual_hero->sh_Head].Type);
     X.id = 1;
 
@@ -640,7 +633,6 @@ for (j=0;j<(actual_hero->skills.size());j++)
 
     X.set_name(data2->items[actual_hero->sh_Accessory].Name.c_str());
     X.set_NOI(1);
-    X.set_anim( the_anim);
     X.set_type(data2->items[actual_hero->sh_Accessory].Type);
     X.id = 1;
 

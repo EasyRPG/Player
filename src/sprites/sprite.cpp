@@ -119,6 +119,12 @@ Sprite::Sprite()
 not_clean=false;
 trasparent_color=true;
 zoom=100;
+angle=0;
+cols=1;
+rows=1;
+rotate_active=false;
+center_active=false;
+
 }
 Sprite::~Sprite()
 {
@@ -195,16 +201,17 @@ void Sprite::dispose()
             // SDL_FreeSurface(bmp);
             free(useless );
 */
-visible=false;
         not_clean =false;
         }
+        visible=false;
+        angle=0;
 }
 
 void Sprite::draw (SDL_Surface * screen)
 {
 	if(visible)
 	{
-        if(zoom==100)
+        if((!center_active)&&(!rotate_active))
         {
             SDL_Rect rect = {x, y, 0, 0};
             SDL_BlitSurface (img, NULL,	screen, &rect);
@@ -214,10 +221,22 @@ void Sprite::draw (SDL_Surface * screen)
             SDL_Surface * temp;
             float scaleFactor;
             scaleFactor=(float)zoom/100;
-            temp=zoomSurface(img, scaleFactor, scaleFactor, 0);
+            if(img!=NULL)
+            {
+            temp=rotozoomSurface(img, angle, scaleFactor, 0);
+            }
+
+            if(rotate_active)
+            {
+                angle+=rotate_frec;
+                angle%=360;
+            }
+            if(temp!=NULL)
+            {
             SDL_Rect rect = {x-(temp->w/2), y-(temp->h/2), 0, 0};
             SDL_BlitSurface(temp, NULL,	screen, &rect);
             SDL_FreeSurface(temp);
+            }
         }
 
 	}
