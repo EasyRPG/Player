@@ -74,7 +74,7 @@ Stats_Menu_Scene * Menu_Stats;
 Skills_Menu_Scene * Menu_Skills;
 Item_use_scene * Menu_item_use;
 Batle_scene * batalla;
-Player_Team  team;
+General_data team;
 CDeltaTime System(60);
 bool Fullscreen;
 Timer update;

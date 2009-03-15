@@ -7,25 +7,9 @@
 #include <stdio.h>
 #include <sstream>
 #include <stdlib.h>
-#include "../sprites/sprite.h"
-#include "../sprites/chipset.h"
-#include "../sprites/Pre_Chipset.h"
-#include "../tools/key.h"
-#include "../tools/font.h"
-#include "../tools/audio.h"
-#include "../readers/map.h"
-#include "../readers/lmt.h"
-#include "../readers/ldb.h"
 #include <vector>
 #include <string>
-#include "../interface/Windows/Window_Base.h"
-#include "../attributes/skill.h"
-#include "../attributes/item.h"
-#include "../attributes/Enemy.h"
-#include "../attributes/Player.h"
-#include "../tools/math-sll.h"
-#include "../attributes/CActor.h"
-#include "../attributes/Player_Team.h"
+#include "General_data.h"
 
 #define DIRECTION_UP      0x00
 #define DIRECTION_DOWN    0x01
@@ -44,7 +28,7 @@ private:
 
 public:
 
-    void init(Player_Team * TheTeam);
+    void init(General_data * TheTeam);
     bool npc_colision(int x, int y,int e);
     int get_dir(int i);
     int custom(int i);

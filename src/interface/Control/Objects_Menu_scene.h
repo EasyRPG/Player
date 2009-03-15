@@ -48,7 +48,7 @@ private:
 public:
 	//Objects_Menu_Scene();		///constructor
 	//~Objects_Menu_Scene();		///destructor
-	void init(Audio * myaudio,  bool * run,unsigned char * TheScene,Player_Team * TheTeam);
+	void init(Audio * myaudio,  bool * run,unsigned char * TheScene,General_data * TheTeam);
 	void update(SDL_Surface* Screen);
 	void updatekey();
 	void dispose();

@@ -20,7 +20,7 @@
 #include "../tools/audio.h"
 #include "../tools/Sound_Manager.h"
 #include "../tools/key.h"
-#include "../attributes/Player_Team.h"
+#include "../control/General_data.h"
 
 typedef struct menucomand
 {
@@ -34,7 +34,7 @@ class Menu_Easy {
 protected:
 	int indexX,indexY;
 	int maxindexY,maxindexX;
-	Player_Team * Team;
+	General_data * Team;
 	bool * running;
 	bool desided;
 	int delay;
@@ -50,7 +50,7 @@ public:
 	int getindexX();
 	void updatekey();
 	void restarmenu();
-	void init(Player_Team * TheTeam, bool * run,int X,int Y);
+	void init(General_data * TheTeam, bool * run,int X,int Y);
 };
 
 #endif

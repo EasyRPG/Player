@@ -25,7 +25,7 @@ Save_Load_Menu_Scene:: Save_Load_Menu_Scene()
 }
 */
 
-void Save_Load_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
+void Save_Load_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,General_data * TheTeam)
 {
 	myteam=TheTeam;
 	myaudio=theaudio;

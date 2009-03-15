@@ -48,31 +48,10 @@ struct E_state
 };
 
 class Player_Team {
-    private:
-	std:: vector <Item> Items;
-	int Gold;
 
-	public:
-
-	Sound_Manager S_manager;
-	std:: vector <Chara> GCharas_nps;
-    Pre_Chipset Gpre_chip;
-	Chipset Gchip;
-    map_data Gdata;
-    std:: vector <E_state> GEv_state;
-    Sprite MBackground;
-
+public:
 	std:: vector <Player> Players;
-    string memorized_BGM;
-    std:: vector <char> world_fase;
-    bool is_on_the_inventory(int id);
-    bool is_equal(int var,int number);
-    void add_swich(unsigned char i);
-    bool state_swich( int number);
-    void set_true_swich( int number);
-    void set_false_swich( int number);
-
-	std:: vector <int> world_var;
+   LDB_data * data2;
     bool is_on_the_team(int id);
     Player get_hero(stcHero * actual_hero, int id);
     void change_players(int remove_add,int id);
@@ -90,51 +69,10 @@ class Player_Team {
     void change_face(int Hero_ID,const char * name,int id);
     bool hero_has_skill(int hero_static_id,int id);
 
-    bool scroll_active;
-    bool scroll_writed;
-    bool from_title;
-
-    int original_scroll_x;
-    int original_scroll_y;
-
-    int actual_x_map;
-    int actual_y_map;
-    int actual_dir;
-    int actual_map;
-
-    int able_to_save;
-    int able_to_menu;
-    int able_to_escape;
-
-    int ecape_x_map;
-    int ecape_y_map;
-    int escape_map;
-    bool ecape_active_fase;
-    bool screen_got_refresh;
-
-    int ecape_num_fase;
-    bool ecape_use_default;
-
-
-    int able_to_teleport;
-    int Encounter_rate;
-
-    LDB_data data2;
-    lmt_data lmt;
-	void read_database();
-	std:: vector <Enemy> Enemys;
-	void clear_enemy();
-	void add_enemy(Enemy Myplayer);
-	void load_group(int id);
-
-	View view;
-	int select;
 	int get_size();
 	void clear_team();
 	void clear_obj();
 	void add_player(Player Myplayer);
-	void set_Gold(int The_Gold);
-	int get_Gold();
 
 	CActor * get_chara(int num);
 	Faceset * get_faceset(int num);
@@ -156,17 +94,6 @@ class Player_Team {
 	int get_Exp(int num);
 	int get_MaxExp(int num);
 
-	void erase_item(int num);
-	Item get_item(int num);
-	Item load_item(int item_id);
-	int get_num_items();
-	void change_objets(int remove_add,int item_id,int cout);
-
-	void add_item(Item Myitem);
-	int* get_NOI(int num);
-	unsigned char * get_type(int num);
-	const char * get_item_name(int num);
-	Animacion * get_item_anim(int num);
 
 	int get_skill_size(int num);
 	const char * get_skill_name(int nump,int num);

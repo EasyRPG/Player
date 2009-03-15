@@ -56,7 +56,7 @@ public:
 	void restarmenu();
 	bool desition();
 	void dispose();
-	void init(Player_Team * myteam, bool * run,int ComandX,int ComandY,int SizeX,int SizeY,int PosX,int PosY, const char *SysIMg);
+	void init(General_data * myteam, bool * run,int ComandX,int ComandY,int SizeX,int SizeY,int PosX,int PosY, const char *SysIMg);
 	void draw(SDL_Surface* Screen);
 	void add_text(std::string ctext, int x, int y);
 	void set_posx_text(int x);

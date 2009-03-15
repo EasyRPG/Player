@@ -29,13 +29,13 @@ GO_Scene:: GO_Scene()
 }
 */
 
-void GO_Scene::init(Audio *theaudio, bool *run, unsigned char *TheScene, Player_Team *TheTeam)
+void GO_Scene::init(Audio *theaudio, bool *run, unsigned char *TheScene, General_data *TheTeam)
 {
     std::string titles_string;
     std::string music_string;
 
     myteam = TheTeam;
-    myteam->clear_team();
+    myteam->Players.clear_team();
     myteam->clear_obj();
     myaudio = theaudio;
 
@@ -101,7 +101,7 @@ void GO_Scene::updatekey()
 void GO_Scene::dispose()
 {
    unsigned int i=0;
-    myteam->clear_team();
+    myteam->Players.clear_team();
     myteam->clear_obj();
     for(i=0;i<myteam->GCharas_nps.size();i++)
 	 myteam->GCharas_nps[i].dispose();

@@ -52,7 +52,7 @@ private:
 public:
 	//Euip_Menu_Scene(); 	///constructor
 	//~Euip_Menu_Scene();		///destructor
-	void init(Audio * myaudio,  bool * run,unsigned char * TheScene,Player_Team * TheTeam);
+	void init(Audio * myaudio,  bool * run,unsigned char * TheScene,General_data * TheTeam);
 	void update(SDL_Surface* Screen);
 	void updatekey();
 	void update_1_menu();

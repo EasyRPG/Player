@@ -16,7 +16,7 @@
 
 #include "Window_Player_Select.h"
 
-void Window_Player_Select::init(Player_Team * myteam,bool *run,int ComandX,int ComandY,int SizeX,int SizeY,int PosX,int PosY,int curX,int curY, const char *SysIMg)
+void Window_Player_Select::init(General_data * myteam,bool *run,int ComandX,int ComandY,int SizeX,int SizeY,int PosX,int PosY,int curX,int curY, const char *SysIMg)
 {
 	menu.init(myteam,run,ComandX,ComandY);
 	System.init_Sistem();

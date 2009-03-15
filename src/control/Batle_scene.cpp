@@ -24,7 +24,7 @@ Batle_scene::Batle_scene()
 }
 */
 
-void Batle_scene::init(Audio *theaudio,bool  *run,unsigned char  *TheScene,Player_Team *TheTeam)
+void Batle_scene::init(Audio *theaudio,bool  *run,unsigned char  *TheScene,General_data *TheTeam)
 {
 
 	myteam=TheTeam;
@@ -57,7 +57,7 @@ void Batle_scene::init(Audio *theaudio,bool  *run,unsigned char  *TheScene,Playe
 	NScene=TheScene;
 	MC comando;
 	int i;
-	for(i=0;i<(*myteam).get_size();i++)//tantoscomandoscomojugadores.
+	for(i=0;i<(*myteam).Players.get_size();i++)//tantoscomandoscomojugadores.
 	{
 		Comands.push_back(comando);
 	}
@@ -80,12 +80,12 @@ void Batle_scene::update_window_stats()
 	window.init(myteam,the_run,0,3,224,80,96,160,214,16,(char *)system_string.c_str());
 	int i=0;
 	char stringBuffer[255];
-	for(i=0;i<(*myteam).get_size();i++)
+	for(i=0;i<(*myteam).Players.get_size();i++)
 	{
-		sprintf(stringBuffer,"Hp%d/%dMp%d",((*myteam).get_HP(i)),((*myteam).get_MaxHP(i)),((*myteam).get_MP(i)));
+		sprintf(stringBuffer,"Hp%d/%dMp%d",((*myteam).Players.get_HP(i)),((*myteam).Players.get_MaxHP(i)),((*myteam).Players.get_MP(i)));
 		window.add_text(stringBuffer,110,5+(i*16));
-		window.add_text(((*myteam).get_name(i)),10,5+(i*16));
-		if(((*myteam).get_HP(i))>0)
+		window.add_text(((*myteam).Players.get_name(i)),10,5+(i*16));
+		if(((*myteam).Players.get_HP(i))>0)
 		{
 			window.add_text("Normal",60,5+(i*16));
 		}
@@ -111,7 +111,7 @@ void Batle_scene::windowtext_showdamange(bool  type,int  atak,int  ataked,int  d
 
 	if(type)//sisonlosplayers
 	{
-		Window_text.add_text(((*myteam).get_name(atak)),5,5);//nombreheroe
+		Window_text.add_text(((*myteam).Players.get_name(atak)),5,5);//nombreheroe
 		Window_text.add_text(" ataca al enemigo ",70,5);
 		Window_text.add_text((((*myteam).Enemys.at(ataked)).get_name()),5,25);//nombremoustruo
 		Window_text.add_text(stringBuffer,70,25);
@@ -120,7 +120,7 @@ void Batle_scene::windowtext_showdamange(bool  type,int  atak,int  ataked,int  d
 	{
 		Window_text.add_text((((*myteam).Enemys.at(atak)).get_name()),5,5);//nombremoustruo
 		Window_text.add_text(" ataca ",70,5);
-		Window_text.add_text(((*myteam).get_name(ataked)),5,25);//nombreheroe
+		Window_text.add_text(((*myteam).Players.get_name(ataked)),5,25);//nombreheroe
 		Window_text.add_text(stringBuffer,70,25);
 	}
 }
@@ -196,14 +196,14 @@ void Batle_scene::win()
 void Batle_scene::lose()
 {
 	int i,k=0;
-	for(i=0;i<(*myteam).get_size();i++)
+	for(i=0;i<(*myteam).Players.get_size();i++)
 	{
-		if(((*myteam).get_HP(i))==0)
+		if(((*myteam).Players.get_HP(i))==0)
 		{
 			k++;
 		}
 	}
-	if(k==(*myteam).get_size())//sitodoslosheroesmuetros
+	if(k==(*myteam).Players.get_size())//sitodoslosheroesmuetros
 	{
 		*NScene=3;//gameover
 	}
@@ -221,14 +221,14 @@ void Batle_scene::atack(SDL_Surface *Screen,int  nperso,int  enemy)
 		enemy=(enemy%((*myteam).Enemys).size());
 	}
 
-	(*((*myteam).get_Weapon_Anim(nperso))).x=(((*myteam).Enemys.at(enemy)).Batler).x-((((*myteam).Enemys.at(enemy)).Batler).getw())/2;
-	(*((*myteam).get_Weapon_Anim(nperso))).y=(((*myteam).Enemys.at(enemy)).Batler).y-((((*myteam).Enemys.at(enemy)).Batler).geth())/2;
-	(*((*myteam).get_Weapon_Anim(nperso))).draw(Screen);
+	(*((*myteam).Players.get_Weapon_Anim(nperso))).x=(((*myteam).Enemys.at(enemy)).Batler).x-((((*myteam).Enemys.at(enemy)).Batler).getw())/2;
+	(*((*myteam).Players.get_Weapon_Anim(nperso))).y=(((*myteam).Enemys.at(enemy)).Batler).y-((((*myteam).Enemys.at(enemy)).Batler).geth())/2;
+	(*((*myteam).Players.get_Weapon_Anim(nperso))).draw(Screen);
 
-	if((*((*myteam).get_Weapon_Anim(nperso))).endanim)//siterminaleatake
+	if((*((*myteam).Players.get_Weapon_Anim(nperso))).endanim)//siterminaleatake
 	{
-		(*((*myteam).get_Weapon_Anim(nperso))).reset();
-		damange=(((*myteam).get_Attack(nperso)));
+		(*((*myteam).Players.get_Weapon_Anim(nperso))).reset();
+		damange=(((*myteam).Players.get_Attack(nperso)));
 		(*(((*myteam).Enemys.at(enemy)).get_HP()))=(*(((*myteam).Enemys.at(enemy)).get_HP()))-damange;
 		Window_text.dispose();
 		windowtext_showdamange(true,nperso,enemy,damange);
@@ -236,7 +236,7 @@ void Batle_scene::atack(SDL_Surface *Screen,int  nperso,int  enemy)
 		{
 			(*(((*myteam).Enemys.at(enemy)).get_HP()))=0;
 		}
-		if((turnosp+1)<(*myteam).get_size())
+		if((turnosp+1)<(*myteam).Players.get_size())
 		{
 			player_in_turn++;//deveriaserunatabla
 			turnosp++;
@@ -293,19 +293,19 @@ void Batle_scene::atacked(int enemy)
 			j=(*myteam).Enemys.size();
 			int damange;
 			///////////////////////////////////////////eleciondeplayer
-			int k=(rand()%(*myteam).get_size());//eleccionalazar
-			while(((*myteam).get_HP(k))==0)//siestamuertoelelgido
+			int k=(rand()%(*myteam).Players.get_size());//eleccionalazar
+			while(((*myteam).Players.get_HP(k))==0)//siestamuertoelelgido
 			{
 				k++;//eligeotro
-				k=(k%(*myteam).get_size());
+				k=(k%(*myteam).Players.get_size());
 			}
 			///////////////////////////////////////////////////////////////
 
 			damange=*(((*myteam).Enemys.at(enemy)).get_Attack());//calculodedaño
-			(*myteam).set_HP(k,((*myteam).get_HP(k)-damange));//need to be fixed
-			if(((*myteam).get_HP(k))<0)
+			(*myteam).Players.set_HP(k,((*myteam).Players.get_HP(k)-damange));//need to be fixed
+			if(((*myteam).Players.get_HP(k))<0)
 			{
-			    ((*myteam).set_HP(k,0)); // nedd to be fixed
+			    ((*myteam).Players.set_HP(k,0)); // nedd to be fixed
 			}
 			//////////////////////////////////////////////////////////////////////////
 			lose();
@@ -384,7 +384,7 @@ void Batle_scene::action_mosterselect()
 		menu.visible=true;
 		}
 	}
-	if(Nmenu_used==(*myteam).get_size())//yatodoseligieron
+	if(Nmenu_used==(*myteam).Players.get_size())//yatodoseligieron
 	{
 		state=1;
 		menu.visible=false;
@@ -422,7 +422,7 @@ void Batle_scene::action()
 
 void Batle_scene::updatekey()
 {
-	if(Nmenu_used<(*myteam).get_size())//siaunnohanelegidotodos
+	if(Nmenu_used<(*myteam).Players.get_size())//siaunnohanelegidotodos
 	{
 		if(moster_select.visible)
 		{

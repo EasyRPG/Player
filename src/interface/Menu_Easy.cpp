@@ -17,7 +17,7 @@
 #include "Menu_Easy.h"
 #include "../tools/control.h"
 
-void Menu_Easy::init(Player_Team * TheTeam, bool * run,int X,int Y)
+void Menu_Easy::init(General_data * TheTeam, bool * run,int X,int Y)
 {
 	Team=TheTeam;
 	desided=false;

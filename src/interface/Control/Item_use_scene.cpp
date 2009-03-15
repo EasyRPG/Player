@@ -23,7 +23,7 @@ Item_use_scene::Item_use_scene()
 {
 }
 */
-void Item_use_scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
+void Item_use_scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,General_data * TheTeam)
 {
 	int i;
 	myteam=TheTeam;
@@ -32,7 +32,7 @@ void Item_use_scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,
     system_string.append("System/");
     system_string.append(myteam->data2.System_dat.System_graphic);
     system_string.append(".png");
-	players.init(myteam, run,0,((*myteam).get_size()-1),184,240,136,0,124,48,(char *)system_string.c_str());
+	players.init(myteam, run,0,((*myteam).Players.get_size()-1),184,240,136,0,124,48,(char *)system_string.c_str());
 	players.init_curXY(55,5); //ya eran muchos comandos
 	players.visible=true;
 
@@ -49,17 +49,17 @@ void Item_use_scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,
 
 	int space=60;
 
-	for(i=0;i<(*myteam).get_size();i++)
+	for(i=0;i<(*myteam).Players.get_size();i++)
 	{
-		players.add_sprite(((*myteam).get_faceset(i)),5,5+(i*space));
-		players.add_text(((*myteam).get_name(i)),55,2+(i*space));
+		players.add_sprite(((*myteam).Players.get_faceset(i)),5,5+(i*space));
+		players.add_text(((*myteam).Players.get_name(i)),55,2+(i*space));
 
-		sprintf(stringBuffer, "Level %d ", ((*myteam).get_Level(i)));
+		sprintf(stringBuffer, "Level %d ", ((*myteam).Players.get_Level(i)));
 		players.add_text(stringBuffer,55,20+(i*space));
 		players.add_text("Normal",55,37+(i*space));
-		sprintf(stringBuffer, "Hp %d / %d", ((*myteam).get_HP(i)), ((*myteam).get_MaxHP(i)));
+		sprintf(stringBuffer, "Hp %d / %d", ((*myteam).Players.get_HP(i)), ((*myteam).Players.get_MaxHP(i)));
 		players.add_text(stringBuffer,110,20+(i*space));
-		sprintf(stringBuffer, "Mp %d / %d", ((*myteam).get_MP(i)), ((*myteam).get_MaxMP(i)));
+		sprintf(stringBuffer, "Mp %d / %d", ((*myteam).Players.get_MP(i)), ((*myteam).Players.get_MaxMP(i)));
 		players.add_text(stringBuffer,110,37+(i*space));
 	}
 	retardo =0;

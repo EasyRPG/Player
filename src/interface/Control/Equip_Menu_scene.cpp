@@ -21,7 +21,7 @@
 Equip_Menu_Scene:: Euip_Menu_Scene()
 {
 }*/
-void Equip_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
+void Equip_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,General_data * TheTeam)
 {
 	myteam=TheTeam;
 	myaudio=theaudio;
@@ -41,11 +41,11 @@ void Equip_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScen
 	int space=16,Size_of_Block=150;
 	char stringBuffer[255];
 
-	str_Vector.push_back(( (*((*myteam).get_Weapon(i))).get_name()));
-	str_Vector.push_back(( (*((*myteam).get_Shield(i))).get_name()));
-	str_Vector.push_back(( (*((*myteam).get_Armor(i))).get_name()));
-	str_Vector.push_back(( (*((*myteam).get_Helmet(i))).get_name()));
-	str_Vector.push_back(( (*((*myteam).get_Accessory(i))).get_name()));
+	str_Vector.push_back(( (*((*myteam).Players.get_Weapon(i))).get_name()));
+	str_Vector.push_back(( (*((*myteam).Players.get_Shield(i))).get_name()));
+	str_Vector.push_back(( (*((*myteam).Players.get_Armor(i))).get_name()));
+	str_Vector.push_back(( (*((*myteam).Players.get_Helmet(i))).get_name()));
+	str_Vector.push_back(( (*((*myteam).Players.get_Accessory(i))).get_name()));
 	menu.set_posx_text(90);
 
 	menu.add_text("Arma",10,5);
@@ -55,7 +55,7 @@ void Equip_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScen
 	menu.add_text("Otros",10,5+(4*space));
 	menu.setComands(& str_Vector);
 
-  	int item_tipe= *myteam->get_Weapon(i)->get_type();
+  	int item_tipe= *myteam->Players.get_Weapon(i)->get_type();
 
 	for(j=0;j<(*myteam).get_num_items();j++)
 	{
@@ -74,15 +74,15 @@ void Equip_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScen
 	Armas.on_use=false;
 	space=17;
 
-	stats.add_text(((*myteam).get_name(i)),10,5);
+	stats.add_text(((*myteam).Players.get_name(i)),10,5);
 
-	sprintf(stringBuffer, "Fuerza  %d ", ((*myteam).get_Attack(i)));
+	sprintf(stringBuffer, "Fuerza  %d ", ((*myteam).Players.get_Attack(i)));
 	stats.add_text(stringBuffer,10,5+(1*space));
-	sprintf(stringBuffer, "Defenza %d ", ((*myteam).get_Defense(i)));
+	sprintf(stringBuffer, "Defenza %d ", ((*myteam).Players.get_Defense(i)));
 	stats.add_text(stringBuffer,10,5+(2*space));
-	sprintf(stringBuffer, "Intelecto  %d ", ((*myteam).get_Spirit(i)));
+	sprintf(stringBuffer, "Intelecto  %d ", ((*myteam).Players.get_Spirit(i)));
 	stats.add_text(stringBuffer,10,5+(3*space));
-	sprintf(stringBuffer, "Agilidad%d ", ((*myteam).get_Speed(i)));
+	sprintf(stringBuffer, "Agilidad%d ", ((*myteam).Players.get_Speed(i)));
 	stats.add_text(stringBuffer,10,5+(4*space));
 	retardo=0;
 	running=  run;
@@ -98,11 +98,11 @@ void Equip_Menu_Scene::update_1_menu()
 	menu.dispose();
 	menu.init(myteam, therun, 0,4, 190, 105, 130, 30,"System/System.png");
 
-	str_Vector.push_back(( (*((*myteam).get_Weapon(i))).get_name()));
-	str_Vector.push_back(( (*((*myteam).get_Shield(i))).get_name()));
-	str_Vector.push_back(( (*((*myteam).get_Armor(i))).get_name()));
-	str_Vector.push_back(( (*((*myteam).get_Helmet(i))).get_name()));
-	str_Vector.push_back(( (*((*myteam).get_Accessory(i))).get_name()));
+	str_Vector.push_back(( (*((*myteam).Players.get_Weapon(i))).get_name()));
+	str_Vector.push_back(( (*((*myteam).Players.get_Shield(i))).get_name()));
+	str_Vector.push_back(( (*((*myteam).Players.get_Armor(i))).get_name()));
+	str_Vector.push_back(( (*((*myteam).Players.get_Helmet(i))).get_name()));
+	str_Vector.push_back(( (*((*myteam).Players.get_Accessory(i))).get_name()));
 	menu.set_posx_text(90);
 
 	menu.add_text("Arma",10,5);
@@ -126,23 +126,23 @@ void Equip_Menu_Scene::update_2_menu()
 
 	if (i==0)
 	{
-		item_tipe= (*((*myteam).get_Weapon_type(j)));
+		item_tipe= (*((*myteam).Players.get_Weapon_type(j)));
 	}
 	if (i==1)
 	{
-		item_tipe= (*((*myteam).get_Shield_type(j)));
+		item_tipe= (*((*myteam).Players.get_Shield_type(j)));
 	}
 	if (i==2)
 	{
-		item_tipe= (*((*myteam).get_Armor_type(j)));
+		item_tipe= (*((*myteam).Players.get_Armor_type(j)));
 	}
 	if (i==3)
 	{
-		item_tipe= (*((*myteam).get_Helmet_type(j)));
+		item_tipe= (*((*myteam).Players.get_Helmet_type(j)));
 	}
 	if (i==4)
 	{
-		item_tipe= (*((*myteam).get_Accessory_type(j)));
+		item_tipe= (*((*myteam).Players.get_Accessory_type(j)));
 	}
 	for(j=0;j<(*myteam).get_num_items();j++)
 	{
@@ -194,27 +194,27 @@ void Equip_Menu_Scene::action2()
 	std::string strd;
 	const char * cadena;
 	int k=0,j;
-	if(((*((*myteam).get_Weapon(i))).id)!=0)// si el objeto del heroe no es vacio
+	if(((*((*myteam).Players.get_Weapon(i))).id)!=0)// si el objeto del heroe no es vacio
 	{
 		if(menu.getindexY()==0)
 		{
-			(*myteam).add_item((*((*myteam).get_Weapon(i))));
+			(*myteam).add_item((*((*myteam).Players.get_Weapon(i))));
 		}
 		if(menu.getindexY()==1)
 		{
-			(*myteam).add_item((*((*myteam).get_Shield(i))));
+			(*myteam).add_item((*((*myteam).Players.get_Shield(i))));
 		}
 		if(menu.getindexY()==2)
 		{
-			(*myteam).add_item((*((*myteam).get_Armor(i))));
+			(*myteam).add_item((*((*myteam).Players.get_Armor(i))));
 		}
 		if(menu.getindexY()==3)
 		{
-			(*myteam).add_item((*((*myteam).get_Helmet(i))));
+			(*myteam).add_item((*((*myteam).Players.get_Helmet(i))));
 		}
 		if(menu.getindexY()==4)
 		{
-			(*myteam).add_item((*((*myteam).get_Accessory(i))));
+			(*myteam).add_item((*((*myteam).Players.get_Accessory(i))));
 		}
 	}//agregalo a la lista de objetos
 
@@ -239,46 +239,46 @@ void Equip_Menu_Scene::action2()
 		nulo.id=0;
 		if(menu.getindexY()==0)
 		{
-			(*myteam).set_Weapon(i ,nulo);
+			(*myteam).Players.set_Weapon(i ,nulo);
 		}
 		if(menu.getindexY()==1)
 		{
-			(*myteam).set_Shield(i ,nulo);
+			(*myteam).Players.set_Shield(i ,nulo);
 		}
 		if(menu.getindexY()==2)
 		{
-			(*myteam).set_Armor(i ,nulo);
+			(*myteam).Players.set_Armor(i ,nulo);
 		}
 		if(menu.getindexY()==3)
 		{
-			(*myteam).set_Helmet(i ,nulo);
+			(*myteam).Players.set_Helmet(i ,nulo);
 		}
 		if(menu.getindexY()==4)
 		{
-			(*myteam).set_Accessory(i ,nulo);
+			(*myteam).Players.set_Accessory(i ,nulo);
 		}
 	}
 	else
 	{
 		if(menu.getindexY()==0)
 		{
-			(*myteam).set_Weapon(i ,(*myteam).get_item(j)  );
+			(*myteam).Players.set_Weapon(i ,(*myteam).get_item(j)  );
 		}
 		if(menu.getindexY()==1)
 		{
-			(*myteam).set_Shield(i ,(*myteam).get_item(j)  );
+			(*myteam).Players.set_Shield(i ,(*myteam).get_item(j)  );
 		}
 		if(menu.getindexY()==2)
 		{
-			(*myteam).set_Armor(i ,(*myteam).get_item(j)  );
+			(*myteam).Players.set_Armor(i ,(*myteam).get_item(j)  );
 		}
 		if(menu.getindexY()==3)
 		{
-			(*myteam).set_Helmet(i ,(*myteam).get_item(j)  );
+			(*myteam).Players.set_Helmet(i ,(*myteam).get_item(j)  );
 		}
 		if(menu.getindexY()==4)
 		{
-			(*myteam).set_Accessory(i ,(*myteam).get_item(j)  );
+			(*myteam).Players.set_Accessory(i ,(*myteam).get_item(j)  );
 		}
 		(*(*myteam).get_NOI(j))=(*(*myteam).get_NOI(j))-1;
 		if((*(*myteam).get_NOI(j))==0)

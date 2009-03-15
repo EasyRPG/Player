@@ -111,7 +111,7 @@ return false;
 if((((cond>>3)&1))&&(!myteam->is_on_the_inventory(Page_conditions->Item)))
 return false;
 
-if((((cond>>4)&1))&&(!myteam->is_on_the_team(Page_conditions->Hero)))
+if((((cond>>4)&1))&&(!myteam->Players.is_on_the_team(Page_conditions->Hero)))
 return false;
 
 /*si el sexto bit esta encendido y el temporalizadorno retorna false
@@ -120,7 +120,7 @@ return true;
 
 }
 
-void E_management::init(Audio * audio,unsigned char * TheScene,Player_Team * TheTeam,std:: vector <stEventMap> * TheEvents,CActor * TheActor,Mv_management * Move_management)
+void E_management::init(Audio * audio,unsigned char * TheScene,General_data * TheTeam,std:: vector <stEventMap> * TheEvents,CActor * TheActor,Mv_management * Move_management)
 {
  static bool imginit=false;
 
@@ -806,7 +806,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         else
             i=comand_Change_party->Hero_ID;
 
-        myteam->change_players(comand_Change_party->Add,i);
+        myteam->Players.change_players(comand_Change_party->Add,i);
 
         comand_id->id_exe_actual++;
         comand_id->id_actual_active = false;
@@ -823,19 +823,19 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
         if(comand_Change_experience->All==0)
         {
-            for(k=0;k<myteam->Players.size();k++)
+            for(k=0;k<myteam->Players.get_size();k++)
             {
-            myteam->change_exp(comand_Change_experience->Add,myteam->Players[k].id, i);
+            myteam->Players.change_exp(comand_Change_experience->Add,myteam->Players.Players[k].id, i);
             }
         }
         if(comand_Change_experience->All==1)
         {
-            myteam->change_exp(comand_Change_experience->Add,comand_Change_experience->Hero_ID, i);
+            myteam->Players.change_exp(comand_Change_experience->Add,comand_Change_experience->Hero_ID, i);
         }
 
         if(comand_Change_experience->All==2)
         {
-            myteam->change_exp(comand_Change_experience->Add,myteam->world_var[comand_Change_experience->Hero_ID-1],i);
+            myteam->Players.change_exp(comand_Change_experience->Add,myteam->world_var[comand_Change_experience->Hero_ID-1],i);
         }
 
         comand_id->id_exe_actual++;
@@ -853,19 +853,19 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
         if(comand_Change_level->All==0)
         {
-            for(k=0;k<myteam->Players.size();k++)
+            for(k=0;k<myteam->Players.get_size();k++)
             {
-            myteam->change_level(comand_Change_level->Add,myteam->Players[k].id, i);
+            myteam->Players.change_level(comand_Change_level->Add,myteam->Players.Players[k].id, i);
             }
         }
         if(comand_Change_level->All==1)
         {
-            myteam->change_level(comand_Change_level->Add,comand_Change_level->Hero_ID, i);
+            myteam->Players.change_level(comand_Change_level->Add,comand_Change_level->Hero_ID, i);
         }
 
         if(comand_Change_level->All==2)
         {
-            myteam->change_level(comand_Change_level->Add,myteam->world_var[comand_Change_level->Hero_ID-1],i);
+            myteam->Players.change_level(comand_Change_level->Add,myteam->world_var[comand_Change_level->Hero_ID-1],i);
         }
 
         comand_id->id_exe_actual++;
@@ -884,19 +884,19 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
         if(comand_Change_statistics->All==0)
         {
-            for(k=0;k<myteam->Players.size();k++)
+            for(k=0;k<myteam->Players.Players.size();k++)
             {
-            myteam->change_stats(comand_Change_statistics->Add,myteam->Players[k].id, i, comand_Change_statistics->Stat);
+            myteam->Players.change_stats(comand_Change_statistics->Add,myteam->Players.Players[k].id, i, comand_Change_statistics->Stat);
             }
         }
         if(comand_Change_statistics->All==1)
         {
-            myteam->change_stats(comand_Change_statistics->Add,comand_Change_statistics->Hero_ID, i, comand_Change_statistics->Stat);
+            myteam->Players.change_stats(comand_Change_statistics->Add,comand_Change_statistics->Hero_ID, i, comand_Change_statistics->Stat);
         }
 
         if(comand_Change_statistics->All==2)
         {
-            myteam->change_stats(comand_Change_statistics->Add,myteam->world_var[comand_Change_statistics->Hero_ID-1], i, comand_Change_statistics->Stat);
+            myteam->Players.change_stats(comand_Change_statistics->Add,myteam->world_var[comand_Change_statistics->Hero_ID-1], i, comand_Change_statistics->Stat);
         }
 
         comand_id->id_exe_actual++;
@@ -914,18 +914,18 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
         if(comand_Learn_forget_skill->Hero==0)
         {
-            for(k=0;k<myteam->Players.size();k++)
+            for(k=0;k<myteam->Players.Players.size();k++)
             {
-            myteam->change_skills(comand_Learn_forget_skill->Learn,myteam->Players[k].id, i);
+            myteam->Players.change_skills(comand_Learn_forget_skill->Learn,myteam->Players.Players[k].id, i);
             }
         }
         if(comand_Learn_forget_skill->Hero==1)
         {
-            myteam->change_skills(comand_Learn_forget_skill->Learn,comand_Learn_forget_skill->Hero_ID, i);
+            myteam->Players.change_skills(comand_Learn_forget_skill->Learn,comand_Learn_forget_skill->Hero_ID, i);
         }
         if(comand_Learn_forget_skill->Hero==2)
         {
-            myteam->change_skills(comand_Learn_forget_skill->Learn,myteam->world_var[comand_Learn_forget_skill->Hero_ID-1],i);
+            myteam->Players.change_skills(comand_Learn_forget_skill->Learn,myteam->world_var[comand_Learn_forget_skill->Hero_ID-1],i);
         }
 
         comand_id->id_exe_actual++;
@@ -950,19 +950,19 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
         if(comand_Change_HP->All==0)
         {
-            for(k=0;k<myteam->Players.size();k++)
+            for(k=0;k<myteam->Players.Players.size();k++)
             {
-            myteam->change_HP(comand_Change_HP->Add,myteam->Players[k].id, i);
+            myteam->Players.change_HP(comand_Change_HP->Add,myteam->Players.Players[k].id, i);
             }
         }
         if(comand_Change_HP->All==1)
         {
-            myteam->change_HP(comand_Change_HP->Add,comand_Change_HP->Hero_ID, i);
+            myteam->Players.change_HP(comand_Change_HP->Add,comand_Change_HP->Hero_ID, i);
         }
 
         if(comand_Change_HP->All==2)
         {
-            myteam->change_HP(comand_Change_HP->Add,myteam->world_var[comand_Change_HP->Hero_ID-1],i);
+            myteam->Players.change_HP(comand_Change_HP->Add,myteam->world_var[comand_Change_HP->Hero_ID-1],i);
         }
 
 
@@ -980,19 +980,19 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
         if(comand_Change_MP->All==0)
         {
-            for(k=0;k<myteam->Players.size();k++)
+            for(k=0;k<myteam->Players.Players.size();k++)
             {
-            myteam->change_MP(comand_Change_MP->Add,myteam->Players[k].id, i);
+            myteam->Players.change_MP(comand_Change_MP->Add,myteam->Players.Players[k].id, i);
             }
         }
         if(comand_Change_MP->All==1)
         {
-            myteam->change_MP(comand_Change_MP->Add,comand_Change_MP->Hero_ID, i);
+            myteam->Players.change_MP(comand_Change_MP->Add,comand_Change_MP->Hero_ID, i);
         }
 
         if(comand_Change_MP->All==2)
         {
-            myteam->change_MP(comand_Change_MP->Add,myteam->world_var[comand_Change_MP->Hero_ID-1],i);
+            myteam->Players.change_MP(comand_Change_MP->Add,myteam->world_var[comand_Change_MP->Hero_ID-1],i);
         }
         comand_id->id_exe_actual++;
         comand_id->id_actual_active = false;
@@ -1011,19 +1011,19 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
         if(comand_Full_Recovery->All==0)
         {
-            for(k=0;k<myteam->Players.size();k++)
+            for(k=0;k<myteam->Players.Players.size();k++)
             {
-            myteam->Full_Recovery(myteam->Players[k].id);
+            myteam->Players.Full_Recovery(myteam->Players.Players[k].id);
             }
         }
         if(comand_Full_Recovery->All==1)
         {
-            myteam->Full_Recovery(comand_Full_Recovery->Hero_ID);
+            myteam->Players.Full_Recovery(comand_Full_Recovery->Hero_ID);
         }
 
         if(comand_Full_Recovery->All==2)
         {
-            myteam->Full_Recovery(myteam->world_var[comand_Full_Recovery->Hero_ID-1]);
+            myteam->Players.Full_Recovery(myteam->world_var[comand_Full_Recovery->Hero_ID-1]);
         }
         comand_id->id_exe_actual++;
         comand_id->id_actual_active = false;
@@ -1039,14 +1039,14 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Change_Hero_Name:// 0xD272,
         Event_comand_Change_Hero_Name * comand_Change_Hero_Name;
         comand_Change_Hero_Name = (Event_comand_Change_Hero_Name * )comand;
-        myteam->change_name(comand_Change_Hero_Name->Hero_ID,comand_Change_Hero_Name->New_name.c_str());
+        myteam->Players.change_name(comand_Change_Hero_Name->Hero_ID,comand_Change_Hero_Name->New_name.c_str());
         comand_id->id_exe_actual++;
         comand_id->id_actual_active = false;
         break;
     case Change_Hero_Class:// 0xD27C,
         Event_comand_Change_Hero_Class * comand_Change_Hero_Class;
         comand_Change_Hero_Class = (Event_comand_Change_Hero_Class *)comand;
-        myteam->change_class(comand_Change_Hero_Class->Hero_ID,comand_Change_Hero_Class->strNew_class.c_str());
+        myteam->Players.change_class(comand_Change_Hero_Class->Hero_ID,comand_Change_Hero_Class->strNew_class.c_str());
         comand_id->id_exe_actual++;
         comand_id->id_actual_active = false;
         break;
@@ -1057,7 +1057,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         system_string.append(comand_Change_Hero_Graphic->New_graphic.c_str());
         system_string.append(".png");
 
-        myteam->change_graphic(comand_Change_Hero_Graphic->Hero_ID,system_string.c_str(),comand_Change_Hero_Graphic->Sprite_ID);
+        myteam->Players.change_graphic(comand_Change_Hero_Graphic->Hero_ID,system_string.c_str(),comand_Change_Hero_Graphic->Sprite_ID);
         comand_id->id_exe_actual++;
         comand_id->id_actual_active = false;
         break;
@@ -1069,7 +1069,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         system_string.append(comand_Change_Hero_Face->New_graphic.c_str());
         system_string.append(".png");
 
-        myteam->change_face(comand_Change_Hero_Face->Hero_ID,system_string.c_str(),comand_Change_Hero_Face->Face_ID);
+        myteam->Players.change_face(comand_Change_Hero_Face->Hero_ID,system_string.c_str(),comand_Change_Hero_Face->Face_ID);
         comand_id->id_exe_actual++;
         comand_id->id_actual_active = false;
         break;

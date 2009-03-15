@@ -25,20 +25,11 @@
 #include "SDL_image.h"
 #include "SDL_mixer.h"
 
-#include "../sprites/sprite.h"
-#include "../tools/key.h"
-#include "../tools/font.h"
-#include "../tools/audio.h"
+#include "General_data.h"
 
 #include <vector>
 #include <string>
 
-#include "../attributes/skill.h"
-#include "../attributes/item.h"
-#include "../attributes/Enemy.h"
-#include "../attributes/Player.h"
-#include "../tools/math-sll.h"
-#include "../attributes/CActor.h"
 #include "scene.h"
 #include "../interface/Windows/Window_Base.h"
 #include "../interface/Windows/Window_Player_Select.h"
@@ -74,7 +65,7 @@ public:
 
 	//Batle_scene();		///constructor
 	//~Batle_scene();		///destructor
-	void init(Audio * myaudio,  bool * run,unsigned char * TheScene,Player_Team * TheTeam);
+	void init(Audio * myaudio,  bool * run,unsigned char * TheScene,General_data * TheTeam);
 	void update(SDL_Surface* Screen);
 	void updatekey();
 	void atack(SDL_Surface* Screen,int nperso,int enemy);

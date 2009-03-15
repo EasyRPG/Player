@@ -30,7 +30,7 @@ Main_Menu_Scene::Main_Menu_Scene()
 }
 
 
-void Main_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
+void Main_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,General_data * TheTeam)
 {
 	int i;
 	myteam=TheTeam;
@@ -47,7 +47,7 @@ void Main_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene
     system_string.append(".png");
 
 	menu->init(myteam, run, 0,5, 96, 125, 0, 0,(char *)system_string.c_str());
-	players->init(myteam, run,0,((*myteam).get_size()-1),224,240,96,0,166,48,(char *)system_string.c_str());
+	players->init(myteam, run,0,((*myteam).Players.get_size()-1),224,240,96,0,166,48,(char *)system_string.c_str());
 	players->init_curXY(55,5); //ya eran muchos comandos
 	gold->init(96,40,0,200,(char *)system_string.c_str());
 	menu_exit->init(myteam, run, 0,2, 96, 67, 112, 86,(char *)system_string.c_str());
@@ -72,19 +72,19 @@ void Main_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene
 	gold->add_text(stringBuffer,5,20);
 	int space=60;
 
-	for(i=0;i<(*myteam).get_size();i++)
+	for(i=0;i<(*myteam).Players.get_size();i++)
 	{
-		players->add_sprite(((*myteam).get_faceset(i)),5,5+(i*space));
-		players->add_text(((*myteam).get_name(i)),55,2+(i*space));
-		players->add_text(((*myteam).get_job(i)),150,2+(i*space));
+		players->add_sprite(((*myteam).Players.get_faceset(i)),5,5+(i*space));
+		players->add_text(((*myteam).Players.get_name(i)),55,2+(i*space));
+		players->add_text(((*myteam).Players.get_job(i)),150,2+(i*space));
 
-		sprintf(stringBuffer, "Level %d  Normal", ((*myteam).get_Level(i)));
+		sprintf(stringBuffer, "Level %d  Normal", ((*myteam).Players.get_Level(i)));
 		players->add_text(stringBuffer,55,20+(i*space));
-		sprintf(stringBuffer, "Exp %d / %d", ((*myteam).get_Exp(i)), ((*myteam).get_MaxExp(i)));
+		sprintf(stringBuffer, "Exp %d / %d", ((*myteam).Players.get_Exp(i)), ((*myteam).Players.get_MaxExp(i)));
 		players->add_text(stringBuffer,55,37+(i*space));
-		sprintf(stringBuffer, "Hp %d / %d", ((*myteam).get_HP(i)), ((*myteam).get_MaxHP(i)));
+		sprintf(stringBuffer, "Hp %d / %d", ((*myteam).Players.get_HP(i)), ((*myteam).Players.get_MaxHP(i)));
 		players->add_text(stringBuffer,150,20+(i*space));
-		sprintf(stringBuffer, "Mp %d / %d", ((*myteam).get_MP(i)), ((*myteam).get_MaxMP(i)));
+		sprintf(stringBuffer, "Mp %d / %d", ((*myteam).Players.get_MP(i)), ((*myteam).Players.get_MaxMP(i)));
 		players->add_text(stringBuffer,150,37+(i*space));
 	}
 	retardo =0;
@@ -144,7 +144,7 @@ void Main_Menu_Scene::action2()
 	{
 	    menu_exit->restarmenu();
 	    menu->restarmenu();
-		 myteam->clear_team();
+		 myteam->Players.clear_team();
          myteam->clear_obj();
 		 * NScene=0;
 	}

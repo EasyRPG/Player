@@ -27,7 +27,7 @@ Title_Scene::Title_Scene()
 }
 */
 
-void Title_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
+void Title_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,General_data * TheTeam)
 {
     unsigned int i =0;
      char swich=0;
@@ -45,7 +45,7 @@ void Title_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Pla
     TheTeam->Encounter_rate=0;
     TheTeam->world_fase.clear();
     TheTeam->world_var.clear();
-    TheTeam->clear_team();
+    TheTeam->Players.clear_team();
     TheTeam->clear_obj();
     TheTeam->from_title=true;
     for( i=0; (i< (TheTeam->data2.Switch_Names.size()/8));i++)
@@ -133,7 +133,7 @@ void Title_Scene::init_party()
     {
     id=myteam->data2.System_dat.vc_sh_Starting_party[i];
     actual_hero= &(myteam->data2.heros[id-1]);
-    myteam->add_player(myteam->get_hero(actual_hero, id));
+    myteam->Players.add_player(myteam->Players.get_hero(actual_hero, id));
 
     }
    /* Item potion;
@@ -162,4 +162,5 @@ void Title_Scene::dispose()
     menu.restarmenu();
     menu.dispose();
     myaudio->stop();
+    str_Vector.clear();
 }

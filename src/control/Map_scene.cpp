@@ -17,14 +17,14 @@
 #include "Map_scene.h"
 
 
-void Map_Scene::init( bool * run,Audio *audio, int SCREEN_X, int SCREEN_Y, unsigned char *TheScene, Player_Team *TheTeam)
+void Map_Scene::init( bool * run,Audio *audio, int SCREEN_X, int SCREEN_Y, unsigned char *TheScene, General_data *TheTeam)
 {
     running=run;
     myteam = TheTeam;
     myaudio = audio;
     SCREEN_SIZE_X = SCREEN_X;
     SCREEN_SIZE_Y = SCREEN_Y;
-    Actor = myteam->get_chara(0);
+    Actor = myteam->Players.get_chara(0);
     NScene = TheScene;
     Charas_nps= &(myteam->GCharas_nps);
     pre_chip=&(myteam->Gpre_chip);
@@ -32,6 +32,7 @@ void Map_Scene::init( bool * run,Audio *audio, int SCREEN_X, int SCREEN_Y, unsig
     data=&(myteam->Gdata);
     Background= &(myteam->MBackground);
     Ev_state= &(myteam->GEv_state);
+//    Ev_management= &(myteam->GEv_management);
     load_map();
     myteam->scroll_active=true;
     Ev_management.init(myaudio,NScene,myteam,Events,Actor,&Mov_management);
@@ -340,13 +341,16 @@ void Map_Scene::updatekey()
     mapnpc();
 
     if(Actor->tried_to_menu)
-    {       if(myteam->able_to_menu)
-           {
+    {
+
+        if(myteam->able_to_menu)
+        {
             myteam->actual_x_map=Actor->GridX;
             myteam->actual_y_map=Actor->GridY;
             myteam->actual_dir=Actor->dir;
             *NScene = 4;
-            }
+            //*NScene = 0;
+        }
     Actor->tried_to_menu=false;
     }
 }

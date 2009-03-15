@@ -25,7 +25,7 @@ Objects_Menu_Scene::Objects_Menu_Scene()
 }
 */
 
-void Objects_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
+void Objects_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,General_data * TheTeam)
 {
 
 	myteam=TheTeam;

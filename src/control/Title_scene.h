@@ -75,7 +75,7 @@ public:
 
 	//Title_Scene();		///constructor
 	//~Title_Scene();		///destructor
-	void init(Audio * myaudio,  bool * run,unsigned char * TheScene,Player_Team * TheTeam);
+	void init(Audio * myaudio,  bool * run,unsigned char * TheScene,General_data * TheTeam);
 	void update(SDL_Surface* Screen);
 	void init_party();
 	void updatekey();

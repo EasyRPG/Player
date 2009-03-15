@@ -16,37 +16,7 @@
 
 #include "Player_Team.h"
 
-void Player_Team::read_database()
-{
-    static bool inited=false;
 
-   if(!inited)//just one time
-   {
-    LDB_reader my_ldb;
-    my_ldb.Load("RPG_RT.ldb",&data2);
-    lmt_reader my_lmt;
-    my_lmt.load("RPG_RT.lmt",&lmt);
-   }
-  // my_lmt.print(&lmt);
-   //my_ldb.ShowInformation(&data2);
-}
-void Player_Team::add_swich(unsigned char i)
-{
-	world_fase.push_back(i);
-}
-
-bool Player_Team::is_on_the_inventory(int id)
-{
-unsigned int i;
-for(i=0;i<Items.size();i++)
-{
-if(Items[i].id==id)
-{
-    return true;
-}
-}
-return false;
-}
 
 bool Player_Team::is_on_the_team(int id)
 {
@@ -61,47 +31,6 @@ if(Players[i].id==id)
 return false;
 }
 
-
-bool Player_Team::is_equal(int var,int number)
-{
-if(world_var[var-1]==number)
-return true;
-return false;
-}
-
-bool Player_Team::state_swich( int number)
-{
-int unsigned real_id, position;
-unsigned char state,temp;
-number--;
-real_id =(unsigned int)(number/8);
-position= (number%8);
-if(real_id<world_fase.size())
-state=world_fase[real_id];
-else
-return(false);
-temp=(1<<position);
-return( state&temp );
-}
-
-void Player_Team::set_true_swich( int number)
-{
-number--;
-int real_id, position;
-real_id = (number/8);
-position= (number%8);
-world_fase[real_id]=(world_fase[real_id]|(1<<(position)));
-}
-
-void Player_Team::set_false_swich( int number)
-{
-number--;
-int real_id, position;
-real_id = (number/8);
-position= (number%8);
-world_fase[real_id]=(world_fase[real_id]&(!(1<<position)));
-}
-
 void Player_Team::clear_team()
 {
     unsigned int i;
@@ -113,111 +42,11 @@ void Player_Team::clear_team()
     }
 	Players.clear();
 }
-void Player_Team::clear_obj()
-{
-	Items.clear();
-}
-void Player_Team::clear_enemy()
-{ unsigned int i;
-    for(i=0;i<Enemys.size();i++)
-    Enemys[i].Batler.dispose();
-	Enemys.clear();
-}
-void Player_Team::load_group(int id)
-{
-    unsigned int i;
-    int moster_id;
-    clear_enemy();
-   id--;
-   cout<<" data "<<id<<endl;
-    for(i=0;i<data2.mosterpartys[id].Enemy_data.size();i++)
-    {
-        moster_id=data2.mosterpartys[id].Enemy_data[i].Enemy_ID-1;
-        cout<<" mid "<<moster_id<<endl;
-
-        Enemy enemigo;
-        enemigo.set_HP(data2.mosters[moster_id].intMaxHP);
-        enemigo.set_MaxHP(data2.mosters[moster_id].intMaxHP);
-        enemigo.set_MP(data2.mosters[moster_id].intMaxMP);
-        enemigo.set_MaxMP(data2.mosters[moster_id].intMaxMP);
-        enemigo.set_Attack(data2.mosters[moster_id].intAttack);
-        enemigo.set_Defense(data2.mosters[moster_id].intDefense);
-        enemigo.set_Speed(data2.mosters[moster_id].intSpeed);
-        enemigo.set_Spirit(data2.mosters[moster_id].intMind);
-        std::string system_string;
-        system_string.clear();
-        system_string.append("Monster/");
-        system_string.append(data2.mosters[moster_id].strGraphicfile);
-        system_string.append(".png");
-        (enemigo.Batler).setimg(system_string.c_str());
-        (enemigo.Batler).setcols(1);
-        (enemigo.Batler).setrows(1);
-        (enemigo.Batler).x=data2.mosterpartys[id].Enemy_data[i].X_position;
-        (enemigo.Batler).y=data2.mosterpartys[id].Enemy_data[i].Y_position;
-        enemigo.set_name(data2.mosters[moster_id].strName.c_str());
-        add_enemy(enemigo);
-    }
-
-}
-
-void Player_Team::add_enemy(Enemy Myplayer)
-{
-	Enemys.push_back(Myplayer);
-}
-
 void Player_Team::add_player(Player Myplayer)
 {
     if(!is_on_the_team(Myplayer.id))
 	Players.push_back(Myplayer);
 }
-Item Player_Team::get_item(int num)
-{
-	return (Items.at(num));
-}
-
-Item Player_Team::load_item(int item_id)
-{
-Item X;
-if(item_id==0)
-{
-    X.set_name("");
-    X.set_NOI(1);
-    X.set_type(0);
-    X.id = 0;
-}
-else{
-    item_id--;
-    X.set_name(data2.items[item_id].Name.c_str());
-    X.set_NOI(1);
-    X.set_type(data2.items[item_id].Type);
-    X.id = 1;
-    }return(X);
-}
-
-void Player_Team::add_item(Item Myitem)
-{
-
-	unsigned int i;
-	int the_id;
-	the_id=Myitem.id;
-	for (i=0;i<Items.size();i++)
-    	{
-		if(the_id ==(Items.at(i)).id)
-		{
-			break;
-		}
-	}
-	if (i<Items.size())//lo encontro
-	{
-		*((Items.at(i)).get_NOI())= *((Items.at(i)).get_NOI())+*Myitem.get_NOI();
-    	}
-	else
-	{
-	Items.push_back(Myitem);
-	}
-}
-
-
 
 int Player_Team::get_size()
 {
@@ -322,7 +151,7 @@ void Player_Team::change_level(int add_remove,int Hero_ID, int count)
         }
     }
     stcHero * actual_hero;
-    actual_hero= &(data2.heros[Hero_ID-1]);
+    actual_hero= &(data2->heros[Hero_ID-1]);
      i= Players[j].get_Level();
 
     if(add_remove)
@@ -551,10 +380,6 @@ int Player_Team::get_MaxExp(int num)
 	return (((Players.at(num))).get_MaxExp());
 }
 
-int Player_Team::get_num_items()
-{
-	return (Items.size());
-}
 void Player_Team::change_players(int remove_add,int id)
 {
 unsigned int i;
@@ -572,7 +397,7 @@ unsigned int i;
     else
     {
         stcHero * actual_hero;
-        actual_hero= &(data2.heros[id-1]);
+        actual_hero= &(data2->heros[id-1]);
         add_player(get_hero(actual_hero, id));
     }
 }
@@ -692,10 +517,10 @@ void Player_Team::change_skills(int Learn,int Hero_id,int skill_id)
         {
             skill_id=skill_id-1;
             Veneno.id=skill_id;
-            Veneno.set_name(data2.skill[skill_id].strName.c_str());
-            Veneno.set_damange(data2.skill[skill_id].intBasevalue);
+            Veneno.set_name(data2->skill[skill_id].strName.c_str());
+            Veneno.set_damange(data2->skill[skill_id].intBasevalue);
             Veneno.set_level_req(1);
-            Veneno.set_mp_price(data2.skill[skill_id].intCost);
+            Veneno.set_mp_price(data2->skill[skill_id].intCost);
             Players[j].add_skill(Veneno);
         }
     }
@@ -767,30 +592,60 @@ for (j=0;j<(actual_hero->skills.size());j++)
 {
     id_skill=actual_hero->skills[j].Spell_ID-1;
     Veneno.id=id_skill;
-    Veneno.set_name(data2.skill[id_skill].strName.c_str());
-    Veneno.set_damange(data2.skill[id_skill].intBasevalue);
+    Veneno.set_name(data2->skill[id_skill].strName.c_str());
+    Veneno.set_damange(data2->skill[id_skill].intBasevalue);
     Veneno.set_level_req(1);
-    Veneno.set_mp_price(data2.skill[id_skill].intCost);
+    Veneno.set_mp_price(data2->skill[id_skill].intCost);
     Alex.add_skill(Veneno);
 }
 
 
-Item X;
-Animacion the_anim;
-the_anim.setimg("Battle/hit.png");
-the_anim.init_Anim();
+    Item X;
+    Animacion the_anim;
+    the_anim.setimg("Battle/hit.png");
+    the_anim.init_Anim();
 
-    X.set_name(data2.items[actual_hero->sh_Weapon].Name.c_str());
+    X.set_name(data2->items[actual_hero->sh_Weapon].Name.c_str());
     X.set_NOI(1);
-   X.set_anim( the_anim);
-    X.set_type(data2.items[actual_hero->sh_Weapon].Type);
+    X.set_anim( the_anim);
+    X.set_type(data2->items[actual_hero->sh_Weapon].Type);
     X.id = 1;
 
     Alex.set_Weapon(X);
-    Alex.set_Shield(load_item(actual_hero->sh_Shield));
-    Alex.set_Armor(load_item(actual_hero->sh_Armor));
-    Alex.set_Helmet(load_item(actual_hero->sh_Head));
-    Alex.set_Accessory(load_item(actual_hero->sh_Accessory));
+
+    X.set_name(data2->items[actual_hero->sh_Shield].Name.c_str());
+    X.set_NOI(1);
+    X.set_anim( the_anim);
+    X.set_type(data2->items[actual_hero->sh_Shield].Type);
+    X.id = 1;
+
+    Alex.set_Shield(X);
+
+    X.set_name(data2->items[actual_hero->sh_Armor].Name.c_str());
+    X.set_NOI(1);
+    X.set_anim( the_anim);
+    X.set_type(data2->items[actual_hero->sh_Armor].Type);
+    X.id = 1;
+
+
+    Alex.set_Armor(X);
+
+    X.set_name(data2->items[actual_hero->sh_Head].Name.c_str());
+    X.set_NOI(1);
+    X.set_anim( the_anim);
+    X.set_type(data2->items[actual_hero->sh_Head].Type);
+    X.id = 1;
+
+    Alex.set_Helmet(X);
+
+    X.set_name(data2->items[actual_hero->sh_Accessory].Name.c_str());
+    X.set_NOI(1);
+    X.set_anim( the_anim);
+    X.set_type(data2->items[actual_hero->sh_Accessory].Type);
+    X.id = 1;
+
+
+    Alex.set_Accessory(X);
 
     Alex.set_Weapon_type(4);
     Alex.set_Shield_type(5);
@@ -800,57 +655,6 @@ the_anim.init_Anim();
     return(Alex);
 }
 
-void Player_Team::change_objets(int remove_add,int item_id,int cout)
-{
-    Item X;
-    item_id--;
-    X.set_name(data2.items[item_id].Name.c_str());
-    X.set_NOI(cout);
-    X.set_type(data2.items[item_id].Type);
-    X.id = 1;
-
-    if(remove_add)
-        erase_item(item_id);
-    else
-        add_item(X);
-
-}
-
-void Player_Team::erase_item(int the_item)
-{
-	vector<Item>::iterator the_iterator;
-	the_iterator=Items.begin();
-	int i;
-	for(i=0;i<the_item;i++)
-	{
-		the_iterator++;
-	}
-	Items.erase( the_iterator);
-}
-int* Player_Team::get_NOI(int num)
-{
-	return (((Items.at(num))).get_NOI());
-}
-unsigned char * Player_Team::get_type(int num)
-{
-	return (((Items.at(num))).get_type());
-}
-const char * Player_Team::get_item_name(int num)
-{
-	return (((Items.at(num))).get_name());
-}
-Animacion * Player_Team::get_item_anim(int num)
-{
-	return (((Items.at(num))).get_anim());
-}
-void Player_Team::set_Gold(int The_Gold)
-{
-	Gold=The_Gold;
-}
-int Player_Team::get_Gold()
-{
-	return (Gold);
-}
 int Player_Team::get_skill_size(int num)
 {
 	return (((Players.at(num))).get_skill_size());

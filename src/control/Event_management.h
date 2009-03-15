@@ -28,7 +28,7 @@
 #include "../attributes/CActor.h"
 #include "events/message.h"
 #include "Move_management.h"
-
+#include "General_data.h"
 
 class E_management
 {
@@ -38,7 +38,7 @@ private:
     bool *running;
     bool use_keyboard;
     Audio *myaudio;
-    Player_Team *myteam;
+    General_data *myteam;
     std:: vector <stEventMap> *Events;//agregar apuntador a vector de eventos
     std:: vector <E_state> *Ev_state;//agregar apuntador a vector de eventos
     std:: vector <Chara> *Charas_nps;
@@ -63,7 +63,7 @@ public:
 
     static bool tried_to_talk;
     int busque_real_id(int id_to_serch);
-    void init(Audio * audio,unsigned char * TheScene,Player_Team * TheTeam,std:: vector <stEventMap> * TheEvents,CActor * TheActor,Mv_management * Move_management);
+    void init(Audio * audio,unsigned char * TheScene,General_data * TheTeam,std:: vector <stEventMap> * TheEvents,CActor * TheActor,Mv_management * Move_management);
     void exec_comand(std:: vector <Event_comand *> vcEvent_comand,int event_id, E_state * comand_id);
     void active_exec_comand(Event_comand * comand,int event_id, E_state * comand_id);
     void update(SDL_Surface *Screen);

@@ -24,13 +24,13 @@ Skills_Menu_Scene:: Skills_Menu_Scene()
 }
 */
 
-void Skills_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Player_Team * TheTeam)
+void Skills_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,General_data * TheTeam)
 {
 	myteam=TheTeam;
 	myaudio=theaudio;
 	int j;
 	j=(*myteam).select;
-	int k =(((*myteam).get_skill_size(j)-1)/2);
+	int k =(((*myteam).Players.get_skill_size(j)-1)/2);
    std::string system_string;
     system_string.append("System/");
     system_string.append(myteam->data2.System_dat.System_graphic);
@@ -43,14 +43,14 @@ void Skills_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheSce
 	int i;
 	int space=16,Size_of_Block=150;
 	char stringBuffer[255];
-	sprintf(stringBuffer, " NV  %d  Normal  Hp %d / %d Mp %d / %d  ", ((*myteam).get_Level(j)), ((*myteam).get_HP(j)), ((*myteam).get_MaxHP(j)), ((*myteam).get_MP(j)), ((*myteam).get_MaxMP(j)));
-	descripcion2.add_text(((*myteam).get_name(j)),10,5);
+	sprintf(stringBuffer, " NV  %d  Normal  Hp %d / %d Mp %d / %d  ", ((*myteam).Players.get_Level(j)), ((*myteam).Players.get_HP(j)), ((*myteam).Players.get_MaxHP(j)), ((*myteam).Players.get_MP(j)), ((*myteam).Players.get_MaxMP(j)));
+	descripcion2.add_text(((*myteam).Players.get_name(j)),10,5);
 	descripcion2.add_text(stringBuffer,80,5);
 
-	for(i=0;i<(*myteam).get_skill_size(j);i++)
+	for(i=0;i<(*myteam).Players.get_skill_size(j);i++)
 	{
-		str_Vector.push_back( (const char *) ((*myteam).get_skill_name(j,i)) );
-		sprintf(stringBuffer, "%d ", (*((*myteam).get_skill_mp_price(j,i))));
+		str_Vector.push_back( (const char *) ((*myteam).Players.get_skill_name(j,i)) );
+		sprintf(stringBuffer, "%d ", (*((*myteam).Players.get_skill_mp_price(j,i))));
 		menu.add_text(stringBuffer,Size_of_Block-10+((Size_of_Block+10)*((i)%(2))),5+((i/2)*space));
 	}
 	if(str_Vector.size()%2)//para que no truene si son nones
