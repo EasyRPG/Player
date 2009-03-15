@@ -25,11 +25,15 @@ Save_Load_Menu_Scene:: Save_Load_Menu_Scene()
 }
 */
 
-void Save_Load_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,General_data * TheTeam)
+void Save_Load_Menu_Scene::init(General_data * TheTeam)
 {
 	myteam=TheTeam;
-	myaudio=theaudio;
-   std::string system_string;
+
+    myaudio=&(TheTeam->musica);
+	running=&TheTeam->running;
+	NScene=&TheTeam->TheScene;
+
+	std::string system_string;
     system_string.append("System/");
     system_string.append(myteam->data2.System_dat.System_graphic);
     system_string.append(".png");
@@ -39,8 +43,6 @@ void Save_Load_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * The
 	Save_pos_1.init(320,70,0,30,(char *)system_string.c_str());
 	Save_pos_2.init(320,70,0,100,(char *)system_string.c_str());
 	Save_pos_3.init(320,70,0,170,(char *)system_string.c_str());
-	running=  run;
-	NScene=TheScene;
 	retardo=0;
 }
 

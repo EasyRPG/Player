@@ -212,7 +212,7 @@ void E_management::updatekey(bool *running)
 void E_management::active_exec_comand(Event_comand * comand,int event_id, E_state * comand_id)
 {
     static unsigned int timer=0;
-    static float Xmove,Ymove;
+    static float Xmove,Ymove,Zoomer;
     int i=0,j,x,y;
     std::string system_string;
 
@@ -266,14 +266,17 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
         timer=(comand_Move_Picture->Length);
         Xmove=(x-images[i-1].x)/(comand_Move_Picture->Length);
         Ymove=(y-images[i-1].y)/(comand_Move_Picture->Length);
+        Zoomer=(comand_Move_Picture->Magnification-images[i-1].zoom) /(comand_Move_Picture->Length);
         }
         images[i-1].x+=Xmove;
         images[i-1].y+=Ymove;
+        images[i-1].zoom+=Zoomer;
         timer--;
-        if(((x==images[i-1].x)&&(y==images[i-1].y))||(timer==0))
+        if((((x==images[i-1].x)&&(y==images[i-1].y))&&(images[i-1].zoom==comand_Move_Picture->Magnification))||(timer==0))
         {
         images[i-1].x=x;
         images[i-1].y=y;
+        images[i-1].zoom=comand_Move_Picture->Magnification;
         timer=0;
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
@@ -1414,9 +1417,9 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         i=comand_Move_Picture->Picture_ID;
         images[i-1].SetAlpha(255 -(comand_Move_Picture->Opacity*2.55));
         images[i-1].ModRGB(comand_Move_Picture->Red_diffuse-100, comand_Move_Picture->Green_diffuse-100,comand_Move_Picture->Blue_diffuse-100);
-
         if(comand_Move_Picture->Length==0)
         {
+        images[i-1].zoom=comand_Move_Picture->Magnification;
         if(comand_Move_Picture->By_Value)
         {
         images[i-1].x=myteam->world_var[comand_Move_Picture->X]-(images[i-1].getw()/2);

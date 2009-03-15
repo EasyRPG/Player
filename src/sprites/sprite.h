@@ -18,18 +18,12 @@
 #ifndef SPRITE_H_
 #define SPRITE_H_
 
-
 // *****************************************************************************
-// =============================================================================
-
-
+// =============================================================================
 
 #include "SDL.h"
-
 #include "SDL_rotozoom.h"
-
 #include "../tools/tools.h"
-
 #include "SDL_image.h"
 
 #include <iostream>
@@ -37,12 +31,8 @@
 //
 #define pi2 6.28318
 
-
 // =============================================================================
 // *****************************************************************************
-
-
-
 
 /*
 Sprite es la clase en la que se basan una gran parte del apartado gráfico y animaciones
@@ -63,9 +53,9 @@ class Sprite {
         ~Sprite();
 	    bool visible;
 	    bool trasparent_color;
-
 	    int frame;
 	    int x,y;
+	    int zoom;
         void SetAlpha(unsigned char alpha);
         void ModRGB(int red,int green,int blue);
 	    void setx(int posx);

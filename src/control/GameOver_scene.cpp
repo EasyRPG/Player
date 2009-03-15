@@ -29,7 +29,7 @@ GO_Scene:: GO_Scene()
 }
 */
 
-void GO_Scene::init(Audio *theaudio, bool *run, unsigned char *TheScene, General_data *TheTeam)
+void GO_Scene::init(General_data *TheTeam)
 {
     std::string titles_string;
     std::string music_string;
@@ -37,7 +37,9 @@ void GO_Scene::init(Audio *theaudio, bool *run, unsigned char *TheScene, General
     myteam = TheTeam;
     myteam->Players.clear_team();
     myteam->clear_obj();
-    myaudio = theaudio;
+    myaudio=&(TheTeam->musica);
+	running=&TheTeam->running;
+	NScene=&TheTeam->TheScene;
 
     titles_string.append("GameOver/");
     titles_string.append(TheTeam->data2.System_dat.Game_Over_graphic);
@@ -54,8 +56,6 @@ void GO_Scene::init(Audio *theaudio, bool *run, unsigned char *TheScene, General
     myteam->MBackground.trasparent_color=false;
     myteam->MBackground.setimg(titles_string.c_str());
     myaudio->play(-1);
-    running = run;
-    NScene = TheScene;
     Control::pop_action();
     Control::pop_LM();
 }

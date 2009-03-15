@@ -1,5 +1,10 @@
 #include "Event_management.h"
 
+General_data::General_data()
+{
+    running = true;
+    TheScene = 0;
+}
 
 void General_data::read_database()
 {

@@ -17,15 +17,16 @@
 #include "Map_scene.h"
 
 
-void Map_Scene::init( bool * run,Audio *audio, int SCREEN_X, int SCREEN_Y, unsigned char *TheScene, General_data *TheTeam)
+void Map_Scene::init( int SCREEN_X, int SCREEN_Y,General_data *TheTeam)
 {
-    running=run;
     myteam = TheTeam;
-    myaudio = audio;
     SCREEN_SIZE_X = SCREEN_X;
     SCREEN_SIZE_Y = SCREEN_Y;
+    myaudio=&(TheTeam->musica);
+	running=&TheTeam->running;
+	NScene=&TheTeam->TheScene;
+
     Actor = myteam->Players.get_chara(0);
-    NScene = TheScene;
     Charas_nps= &(myteam->GCharas_nps);
     pre_chip=&(myteam->Gpre_chip);
     chip=&(myteam->Gchip);

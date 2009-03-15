@@ -25,17 +25,21 @@ Objects_Menu_Scene::Objects_Menu_Scene()
 }
 */
 
-void Objects_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,General_data * TheTeam)
+void Objects_Menu_Scene::init(General_data * TheTeam)
 {
 
 	myteam=TheTeam;
-	myaudio=theaudio;
+
+    myaudio=&(TheTeam->musica);
+	running=&TheTeam->running;
+	NScene=&TheTeam->TheScene;
+
 	int k =(((*myteam).get_num_items()-1)/2);
     std::string system_string;
     system_string.append("System/");
     system_string.append(myteam->data2.System_dat.System_graphic);
     system_string.append(".png");
-	menu.init(myteam, run, 1,k, 320, 210, 0, 30,(char *)system_string.c_str());
+	menu.init(myteam, running, 1,k, 320, 210, 0, 30,(char *)system_string.c_str());
 	descripcion.init(320,30,0,0,(char *)system_string.c_str());
 	int i=0,space=16,Size_of_Block=150;
 	char stringBuffer[255];
@@ -56,8 +60,6 @@ void Objects_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheSc
 		str_Vector.push_back( " " );
 	}
 	menu.setComands(& str_Vector);
-	running=  run;
-	NScene=TheScene;
 	retardo=0;
 }
 

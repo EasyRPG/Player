@@ -21,11 +21,14 @@
 Equip_Menu_Scene:: Euip_Menu_Scene()
 {
 }*/
-void Equip_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,General_data * TheTeam)
+void Equip_Menu_Scene::init(General_data * TheTeam)
 {
 	myteam=TheTeam;
-	myaudio=theaudio;
-	therun=run;
+
+	myaudio=&(TheTeam->musica);
+	running=&TheTeam->running;
+	NScene=&TheTeam->TheScene;
+
 	int j;
 	int item_tipe2;
     std::string system_string;
@@ -33,8 +36,8 @@ void Equip_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScen
     system_string.append(myteam->data2.System_dat.System_graphic);
     system_string.append(".png");
 
-	menu.init(TheTeam, run, 0,4, 190, 105, 130, 30,(char *)system_string.c_str());
-	Armas.init(TheTeam, run, 1,0, 320, 105, 0, 135,(char *)system_string.c_str());
+	menu.init(TheTeam, running, 0,4, 190, 105, 130, 30,(char *)system_string.c_str());
+	Armas.init(TheTeam, running, 1,0, 320, 105, 0, 135,(char *)system_string.c_str());
 	descripcion.init(320,30,0,0,(char *)system_string.c_str());
 	stats.init(130,105,0,30,(char *)system_string.c_str());
 	int i=(*myteam).select;
@@ -85,8 +88,6 @@ void Equip_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScen
 	sprintf(stringBuffer, "Agilidad%d ", ((*myteam).Players.get_Speed(i)));
 	stats.add_text(stringBuffer,10,5+(4*space));
 	retardo=0;
-	running=  run;
-	NScene=TheScene;
 
 }
 

@@ -25,10 +25,14 @@ Stats_Menu_Scene:: Stats_Menu_Scene()
 }
 */
 
-void Stats_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,General_data * TheTeam)
+void Stats_Menu_Scene::init(General_data * TheTeam)
 {
 	myteam=TheTeam;
-	myaudio=theaudio;
+
+    myaudio=&(TheTeam->musica);
+	running=&TheTeam->running;
+	NScene=&TheTeam->TheScene;
+
 	   std::string system_string;
     system_string.append("System/");
     system_string.append(myteam->data2.System_dat.System_graphic);
@@ -83,9 +87,6 @@ void Stats_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScen
 	Aramas.add_text("Otros",10,5+(4*space));
 
 	retardo=0;
-	running=  run;
-	NScene=TheScene;
-
 }
 
 void Stats_Menu_Scene::update(SDL_Surface* Screen)

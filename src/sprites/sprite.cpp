@@ -118,6 +118,7 @@ Sprite::Sprite()
 {
 not_clean=false;
 trasparent_color=true;
+zoom=100;
 }
 Sprite::~Sprite()
 {
@@ -182,9 +183,10 @@ void Sprite::ModRGB(int red,int green,int blue)
 
 void Sprite::dispose()
 {
+        zoom=100;
         if(not_clean)
         {
-		SDL_FreeSurface(img);
+        SDL_FreeSurface(img);
 	/*    void * useless;
 
 	              useless=img->pixels;
@@ -202,8 +204,22 @@ void Sprite::draw (SDL_Surface * screen)
 {
 	if(visible)
 	{
-	SDL_Rect rect = {x, y, 0, 0};
-	SDL_BlitSurface (img, NULL,	screen, &rect);
+        if(zoom==100)
+        {
+            SDL_Rect rect = {x, y, 0, 0};
+            SDL_BlitSurface (img, NULL,	screen, &rect);
+        }
+        else
+        {
+            SDL_Surface * temp;
+            float scaleFactor;
+            scaleFactor=(float)zoom/100;
+            temp=zoomSurface(img, scaleFactor, scaleFactor, 0);
+            SDL_Rect rect = {x-(temp->w/2), y-(temp->h/2), 0, 0};
+            SDL_BlitSurface(temp, NULL,	screen, &rect);
+            SDL_FreeSurface(temp);
+        }
+
 	}
 }
 

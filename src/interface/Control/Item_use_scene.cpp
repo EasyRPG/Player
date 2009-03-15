@@ -23,16 +23,20 @@ Item_use_scene::Item_use_scene()
 {
 }
 */
-void Item_use_scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,General_data * TheTeam)
+void Item_use_scene::init(General_data * TheTeam)
 {
 	int i;
 	myteam=TheTeam;
-	myaudio=theaudio;
+
+	myaudio=&(TheTeam->musica);
+	running=&TheTeam->running;
+	NScene=&TheTeam->TheScene;
+
     std::string system_string;
     system_string.append("System/");
     system_string.append(myteam->data2.System_dat.System_graphic);
     system_string.append(".png");
-	players.init(myteam, run,0,((*myteam).Players.get_size()-1),184,240,136,0,124,48,(char *)system_string.c_str());
+	players.init(myteam, running,0,((*myteam).Players.get_size()-1),184,240,136,0,124,48,(char *)system_string.c_str());
 	players.init_curXY(55,5); //ya eran muchos comandos
 	players.visible=true;
 
@@ -44,8 +48,6 @@ void Item_use_scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,
 	itemwin.add_text(((*myteam).get_item_name(i)) ,5,5);
 	sprintf(stringBuffer, "Objetos prop.  %d", (*(*myteam).get_NOI(i)));
 	itemwin2.add_text(stringBuffer,5,5);
-	running=  run;
-	NScene=TheScene;
 
 	int space=60;
 

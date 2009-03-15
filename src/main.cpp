@@ -56,13 +56,11 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.*/
 #endif
 
 //#define SCREEN_SIZE_2X
-bool running = true;
-unsigned char TheScene = 0;
-Mix_Music *musica;
+Scene *actual;
+
 SDL_Surface *Screen;
 SDL_Surface *ScreenZ;
 unsigned char speed = 4, timer = 0;
-Scene *actual;
 Map_Scene * mapas;
 Title_Scene * titulo;
 GO_Scene * fin;
@@ -131,10 +129,10 @@ int fps_sincronizar()
     return 1;
 }
 
-void CambioScene(Audio *myaudio, Scene **apuntador)
+void CambioScene(Scene **apuntador)
 {
     unsigned static char LastScene = 0;
-    if (TheScene != LastScene)
+    if (team.TheScene != LastScene)
     {
         (*apuntador)->dispose();
       //  delete (*apuntador);
@@ -213,90 +211,90 @@ void CambioScene(Audio *myaudio, Scene **apuntador)
          delete(ptrdst10);
         }
 
-        if (TheScene == 0)
+        if ( team.TheScene == 0)
         {
             Control::set_delay_default();
             titulo = new Title_Scene();
-            titulo->init(myaudio, &running, &TheScene, &team);
+            titulo->init( &team);
             *apuntador = titulo;
             LastScene = 0;
         }
-        if (TheScene == 1)
+        if (team.TheScene == 1)
         {
             mapas = new Map_Scene();
-            mapas->init(&running,myaudio, 320, 240, &TheScene, &team);
+            mapas->init(320, 240, &team);
             *apuntador = mapas;
             LastScene=1;
         }
-        if (TheScene==2)
+        if (team.TheScene==2)
         {
             Control::set_delay_default();
             batalla=new Batle_scene();
-            batalla->init(myaudio, &running, &TheScene, &team);
+            batalla->init( &team);
             *apuntador = batalla;
             LastScene = 2;
         }
-        if (TheScene == 3)
+        if (team.TheScene == 3)
         {
             Control::set_delay_default();
             fin= new GO_Scene();
-            fin->init(myaudio, &running, &TheScene, &team);
+            fin->init(&team);
             *apuntador = fin;
             LastScene = 3;
         }
-        if (TheScene == 4)
+        if (team.TheScene == 4)
         {
             Control::set_delay_default();
             Menu_Main=new Main_Menu_Scene();
-            Menu_Main->init(myaudio, &running, &TheScene, &team);
+            Menu_Main->init(&team);
             *apuntador = Menu_Main;
             LastScene = 4;
         }
-        if (TheScene == 5)
+        if (team.TheScene == 5)
         {
             Control::set_delay_default();
             Menu_Objects= new Objects_Menu_Scene();
-            Menu_Objects->init(myaudio, &running, &TheScene, &team);
+            Menu_Objects->init(&team);
             *apuntador = Menu_Objects;
             LastScene = 5;
         }
-        if (TheScene == 6)
+        if (team.TheScene == 6)
         {
             Control::set_delay_default();
             Menu_Skills=new Skills_Menu_Scene();
-            Menu_Skills->init(myaudio, &running, &TheScene, &team);
+            Menu_Skills->init(&team);
             *apuntador = Menu_Skills;
             LastScene = 6;
         }
-        if (TheScene == 7)
+        if (team.TheScene == 7)
         {
             Control::set_delay_default();
             Menu_Euip = new Equip_Menu_Scene();
-            Menu_Euip->init(myaudio, &running, &TheScene, &team);
+            Menu_Euip->init(&team);
             *apuntador= Menu_Euip;
             LastScene = 7;
         }
-        if (TheScene == 8)
+        if (team.TheScene == 8)
         {
             Control::set_delay_default();
             Menu_Stats= new Stats_Menu_Scene();
-            Menu_Stats->init(myaudio, &running, &TheScene, &team);
+            Menu_Stats->init(&team);
             *apuntador = Menu_Stats;
             LastScene = 8;
         }
-        if (TheScene == 9)
+        if (team.TheScene == 9)
         {
             Control::set_delay_default();
             Menu_Save_Load=new Save_Load_Menu_Scene();
-            Menu_Save_Load->init(myaudio, &running, &TheScene, &team);
+            Menu_Save_Load->init(&team);
             *apuntador = Menu_Save_Load;
             LastScene = 9;
         }
-        if (TheScene == 10)
+        if (team.TheScene == 10)
         {
             Control::set_delay_default();
             Menu_item_use=new Item_use_scene();
-            Menu_item_use->init(myaudio, &running, &TheScene, &team);
+            Menu_item_use->init(&team);
             *apuntador = Menu_item_use;
             LastScene = 10;
         }
@@ -313,7 +311,7 @@ void blitVirtualSurface(SDL_Surface * source, SDL_Surface * destination)
     scaleFactor = 2;//float(destination->h) / source->h;
     offset.x = 0;//int((float(destination->w) - (scaleFactor * source->w)) / 2 + 0.5f);
     offset.y = 0;
- SDL_Surface * temp;
+    SDL_Surface * temp;
 
 #ifdef PSP
 temp = source;
@@ -412,13 +410,13 @@ int main(int argc, char *argv[])
 
 //	SDL_Event event;
     titulo=new Title_Scene();
-    titulo->init(&myaudio, &running, &TheScene, &team);
+    titulo->init(&team);
 
     actual = titulo;
     update.start();
     fps.start();
 
-    while (running)
+    while (team.running)
     {
         timer++;
         // Check for events
@@ -432,20 +430,18 @@ int main(int argc, char *argv[])
         actual->update(Screen);
 
 
-            #ifdef SCREEN_SIZE_2X
+    #ifdef SCREEN_SIZE_2X
 
       if(team.screen_got_refresh)
         blitVirtualSurface(Screen, ScreenZ);
         SDL_Flip(ScreenZ); // Flip
-
     #else
-          SDL_Flip(Screen); // Flip
+      SDL_Flip(Screen); // Flip
+    #endif
 
-   #endif
 
-
-        CambioScene(&myaudio, &actual);
-       CalculateFPS();
+    CambioScene(&actual);
+    CalculateFPS();
         //SDL_Delay(100);
 
     }

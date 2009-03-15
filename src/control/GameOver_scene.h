@@ -70,7 +70,7 @@ public:
 
 	//GO_Scene();		///constructor
 	//~GO_Scene();		///destructor
-	void init(Audio * theaudio, bool * run,unsigned char * TheScene,General_data * TheTeam);
+	void init(General_data * TheTeam);
 	void update(SDL_Surface* Screen);
 	void updatekey();
 	void dispose();

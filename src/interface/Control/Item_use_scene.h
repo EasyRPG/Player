@@ -48,7 +48,7 @@ private:
 public:
 	//Item_use_scene();		///constructor
 	//~Item_use_scene();		///destructor
-	void init(Audio * myaudio,  bool * run,unsigned char * TheScene,General_data * TheTeam);
+	void init(General_data * TheTeam);
 	void update(SDL_Surface* Screen);
 	void updatekey();
 	void dispose();

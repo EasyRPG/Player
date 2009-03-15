@@ -44,9 +44,7 @@
 class Batle_scene: public Scene {
 
 private:
-
-	bool * the_run;
-	int state;
+    int state;
 	int Nmenu_used;
 	int turnosp;
 	int player_in_turn;
@@ -60,12 +58,13 @@ private:
 	std:: vector <std::string> str_Vector2;
 	std:: vector <MC> Comands;
 	void action();
+    E_management * Ev_management;
 
 public:
 
 	//Batle_scene();		///constructor
 	//~Batle_scene();		///destructor
-	void init(Audio * myaudio,  bool * run,unsigned char * TheScene,General_data * TheTeam);
+	void init(General_data * TheTeam);
 	void update(SDL_Surface* Screen);
 	void updatekey();
 	void atack(SDL_Surface* Screen,int nperso,int enemy);

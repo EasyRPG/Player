@@ -47,7 +47,6 @@ private:
     std:: vector <E_state> *Ev_state;//agregar apuntador a vector de eventos
     std:: vector <Chara> *Charas_nps;
     std:: vector <Sprite> images;
-    Animacion_Manager On_map_anim;
 
     Sprite X;
     CMessage *message_box;
@@ -59,6 +58,8 @@ private:
     bool is_Active(stPageConditionEventMap * Page_conditions);//page conditions
     bool state_swich( int number);
 public:
+    Animacion_Manager On_map_anim;
+
     int Active_page(stEventMap * Event);
     E_management();
     void dispose();

@@ -1226,14 +1226,14 @@ Event_comand * stEvent::EventcommandMove_Picture(int Command,int Depth,FILE * St
    comand->By_Value=ReadCompressedInteger(Stream);
    comand->X=ReadCompressedInteger(Stream);
    comand->Y=ReadCompressedInteger(Stream);
-   comand->Magnification=ReadCompressedInteger(Stream);
    comand->Opacity=ReadCompressedInteger(Stream);
+   comand->Magnification=ReadCompressedInteger(Stream);
+   comand->Effect=ReadCompressedInteger(Stream);
+   comand->Power=ReadCompressedInteger(Stream);
    comand->Red_diffuse=ReadCompressedInteger(Stream);
    comand->Green_diffuse=ReadCompressedInteger(Stream);
    comand->Blue_diffuse=ReadCompressedInteger(Stream);
    comand->Chroma_diffuse=ReadCompressedInteger(Stream);
-   comand->Effect=ReadCompressedInteger(Stream);
-   comand->Power=ReadCompressedInteger(Stream);
    ReadCompressedInteger(Stream);//unknown data
    ReadCompressedInteger(Stream);//unknown data
 

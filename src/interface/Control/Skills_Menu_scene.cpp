@@ -24,10 +24,14 @@ Skills_Menu_Scene:: Skills_Menu_Scene()
 }
 */
 
-void Skills_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,General_data * TheTeam)
+void Skills_Menu_Scene::init(General_data * TheTeam)
 {
 	myteam=TheTeam;
-	myaudio=theaudio;
+
+    myaudio=&(TheTeam->musica);
+	running=&TheTeam->running;
+	NScene=&TheTeam->TheScene;
+
 	int j;
 	j=(*myteam).select;
 	int k =(((*myteam).Players.get_skill_size(j)-1)/2);
@@ -36,7 +40,7 @@ void Skills_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheSce
     system_string.append(myteam->data2.System_dat.System_graphic);
     system_string.append(".png");
 
-	menu.init(myteam, run, 1,k, 320, 180, 0, 60,(char *)system_string.c_str());
+	menu.init(myteam, running, 1,k, 320, 180, 0, 60,(char *)system_string.c_str());
 	descripcion.init(320,30,0,0,(char *)system_string.c_str());
 	descripcion2.init(320,30,0,30,(char *)system_string.c_str());
 
@@ -63,8 +67,6 @@ void Skills_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheSce
 		str_Vector.push_back( " " );
 	}
 	menu.setComands(& str_Vector);
-	running=  run;
-	NScene=TheScene;
 	retardo=0;
 }
 

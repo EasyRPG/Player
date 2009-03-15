@@ -37,6 +37,12 @@ class General_data {
 	int Gold;
 
 	public:
+
+    General_data();
+	bool running;
+    unsigned char TheScene;
+    Music musica;
+
     Player_Team Players;
 	Sound_Manager S_manager;
 	std:: vector <Chara> GCharas_nps;

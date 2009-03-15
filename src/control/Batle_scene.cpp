@@ -24,13 +24,15 @@ Batle_scene::Batle_scene()
 }
 */
 
-void Batle_scene::init(Audio *theaudio,bool  *run,unsigned char  *TheScene,General_data *TheTeam)
+void Batle_scene::init(General_data *TheTeam)
 {
 
 	myteam=TheTeam;
-	myaudio=theaudio;
-	the_run=run;
-	(*myaudio).load("Music/Battle2.mid");
+	myaudio=&(TheTeam->musica);
+	running=&TheTeam->running;
+	NScene=&TheTeam->TheScene;
+    Ev_management= &(myteam->GEv_management);
+    (*myaudio).load("Music/Battle2.mid");
 	myaudio->play(-1);
 	myteam->MBackground.x=0;
 	myteam->MBackground.y=0;
@@ -46,15 +48,13 @@ void Batle_scene::init(Audio *theaudio,bool  *run,unsigned char  *TheScene,Gener
 	update_window_stats();
 	//menu_os.init(theaudio,run,0,4,96,80,96,160);
 	//menu_os.visible=false;
-	menu.init(TheTeam,run,0,4,96,80,0,160,(char *)system_string.c_str());
+	menu.init(TheTeam,running,0,4,96,80,0,160,(char *)system_string.c_str());
 	str_Vector.push_back("Atacar");
 	str_Vector.push_back("Habilidades");
 	str_Vector.push_back("Objetos");
 	str_Vector.push_back("Defender");
 	str_Vector.push_back("Huir");
 	menu.setComands(&str_Vector);
-	running=run;
-	NScene=TheScene;
 	MC comando;
 	int i;
 	for(i=0;i<(*myteam).Players.get_size();i++)//tantoscomandoscomojugadores.
@@ -77,7 +77,7 @@ void Batle_scene::update_window_stats()
     system_string.append(myteam->data2.System_dat.System_graphic);
     system_string.append(".png");
     window.dispose();
-	window.init(myteam,the_run,0,3,224,80,96,160,214,16,(char *)system_string.c_str());
+	window.init(myteam,running,0,3,224,80,96,160,214,16,(char *)system_string.c_str());
 	int i=0;
 	char stringBuffer[255];
 	for(i=0;i<(*myteam).Players.get_size();i++)
@@ -143,7 +143,7 @@ void Batle_scene::update_window_mosterselect()
 	{
 	moster_select.dispose();
 	}
-	moster_select.init(myteam,the_run,0,k-1,96,80,0,160,"System/System.png");
+	moster_select.init(myteam,running,0,k-1,96,80,0,160,"System/System.png");
 	moster_select.setComands(&str_Vector2);
     inited=true;
 
@@ -172,6 +172,7 @@ void Batle_scene::update(SDL_Surface *Screen)
 	{
 		atacked(moster_in_turn);
 	}
+    Ev_management->update(Screen);
 myteam->screen_got_refresh=true;
 }
 
@@ -214,6 +215,7 @@ void Batle_scene::lose()
 
 void Batle_scene::atack(SDL_Surface *Screen,int  nperso,int  enemy)
 {
+    static bool state_anim=false;
 	int damange;
 	while((*(((*myteam).Enemys.at(enemy)).get_HP()))==0)//siestamuertoelelgido
 	{
@@ -221,17 +223,27 @@ void Batle_scene::atack(SDL_Surface *Screen,int  nperso,int  enemy)
 		enemy=(enemy%((*myteam).Enemys).size());
 	}
 
-	(*((*myteam).Players.get_Weapon_Anim(nperso))).x=(((*myteam).Enemys.at(enemy)).Batler).x-((((*myteam).Enemys.at(enemy)).Batler).getw())/2;
-	(*((*myteam).Players.get_Weapon_Anim(nperso))).y=(((*myteam).Enemys.at(enemy)).Batler).y-((((*myteam).Enemys.at(enemy)).Batler).geth())/2;
-	(*((*myteam).Players.get_Weapon_Anim(nperso))).draw(Screen);
-
-	if((*((*myteam).Players.get_Weapon_Anim(nperso))).endanim)//siterminaleatake
+    if(!state_anim)
 	{
-		(*((*myteam).Players.get_Weapon_Anim(nperso))).reset();
+	Ev_management->On_map_anim.init_Anim(&myteam->data2.Animations[0],&myteam->S_manager);
+    Ev_management->On_map_anim.center_X= (((*myteam).Enemys.at(enemy)).Batler).x+((((*myteam).Enemys.at(enemy)).Batler).getw())/2;
+    Ev_management->On_map_anim.center_Y= (((*myteam).Enemys.at(enemy)).Batler).y+((((*myteam).Enemys.at(enemy)).Batler).geth())/2;
+	state_anim=true;
+	}
+
+//	(*((*myteam).Players.get_Weapon_Anim(nperso))).x=(((*myteam).Enemys.at(enemy)).Batler).x-((((*myteam).Enemys.at(enemy)).Batler).getw())/2;
+//	(*((*myteam).Players.get_Weapon_Anim(nperso))).y=(((*myteam).Enemys.at(enemy)).Batler).y-((((*myteam).Enemys.at(enemy)).Batler).geth())/2;
+//	(*((*myteam).Players.get_Weapon_Anim(nperso))).draw(Screen);
+
+	if(Ev_management->On_map_anim.animation_ended)//siterminaleatake
+	{
+	//	(*((*myteam).Players.get_Weapon_Anim(nperso))).reset();
+		state_anim=false;
 		damange=(((*myteam).Players.get_Attack(nperso)));
 		(*(((*myteam).Enemys.at(enemy)).get_HP()))=(*(((*myteam).Enemys.at(enemy)).get_HP()))-damange;
 		Window_text.dispose();
 		windowtext_showdamange(true,nperso,enemy,damange);
+
 		if((*(((*myteam).Enemys.at(enemy)).get_HP()))<0)
 		{
 			(*(((*myteam).Enemys.at(enemy)).get_HP()))=0;
@@ -247,7 +259,6 @@ void Batle_scene::atack(SDL_Surface *Screen,int  nperso,int  enemy)
 			win();
 			state=2;
 		}//lestocaalosmoustruos
-
 	}
 }
 

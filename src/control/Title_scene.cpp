@@ -27,7 +27,7 @@ Title_Scene::Title_Scene()
 }
 */
 
-void Title_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,General_data * TheTeam)
+void Title_Scene::init(General_data * TheTeam)
 {
     unsigned int i =0;
      char swich=0;
@@ -71,19 +71,21 @@ void Title_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,Gen
     system_string.append(".png");
 
     myteam = TheTeam;
-    myaudio = theaudio;
+    myaudio=&(TheTeam->musica);
+	running=&TheTeam->running;
+	NScene=&TheTeam->TheScene;
+
     myaudio->load(music_string.c_str());
     myteam->MBackground.x = 0;
     myteam->MBackground.y = 0;
     myteam->MBackground.trasparent_color=false;
     myteam->MBackground.setimg(titles_string.c_str());
-    menu.init(TheTeam, run, 0,2, 116, 57, 160 - (116 / 2), 160 - (57 / 2), (char *) system_string.c_str());
+
+    menu.init(TheTeam,&TheTeam->running, 0,2, 116, 57, 160 - (116 / 2), 160 - (57 / 2), (char *) system_string.c_str());
     str_Vector.push_back(TheTeam->data2.Glosary.New_Game);
     str_Vector.push_back(TheTeam->data2.Glosary.Load_Game);
     str_Vector.push_back(TheTeam->data2.Glosary.Exit_to_Windows);
     menu.setComands(&str_Vector);
-    running = run;
-    NScene = TheScene;
     retardo = 0;
     myaudio->play(-1);
 }

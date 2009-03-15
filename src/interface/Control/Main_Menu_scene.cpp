@@ -30,11 +30,14 @@ Main_Menu_Scene::Main_Menu_Scene()
 }
 
 
-void Main_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene,General_data * TheTeam)
+void Main_Menu_Scene::init(General_data * TheTeam)
 {
 	int i;
 	myteam=TheTeam;
-	myaudio=theaudio;
+
+	myaudio=&(TheTeam->musica);
+	running=&TheTeam->running;
+	NScene=&TheTeam->TheScene;
 
     players=new Window_Player_Select();
 	gold=new Window_Base();
@@ -46,11 +49,11 @@ void Main_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene
     system_string.append(TheTeam->data2.System_dat.System_graphic);
     system_string.append(".png");
 
-	menu->init(myteam, run, 0,5, 96, 125, 0, 0,(char *)system_string.c_str());
-	players->init(myteam, run,0,((*myteam).Players.get_size()-1),224,240,96,0,166,48,(char *)system_string.c_str());
+	menu->init(myteam, running, 0,5, 96, 125, 0, 0,(char *)system_string.c_str());
+	players->init(myteam,  running,0,((*myteam).Players.get_size()-1),224,240,96,0,166,48,(char *)system_string.c_str());
 	players->init_curXY(55,5); //ya eran muchos comandos
 	gold->init(96,40,0,200,(char *)system_string.c_str());
-	menu_exit->init(myteam, run, 0,2, 96, 67, 112, 86,(char *)system_string.c_str());
+	menu_exit->init(myteam,  running, 0,2, 96, 67, 112, 86,(char *)system_string.c_str());
 	str_Vector.push_back("Objetos ");
 	str_Vector.push_back("Técnicas ");
 	str_Vector.push_back("Equipamiento");
@@ -63,8 +66,6 @@ void Main_Menu_Scene::init(Audio * theaudio, bool * run,unsigned char * TheScene
 	str_Vector_2.push_back("Cancelar");
 	menu_exit->setComands(& str_Vector_2);
 	menu_exit->visible=false;
-	running=  run;
-	NScene=TheScene;
 
 	gold->add_text("Gold",5,5);
 	char stringBuffer[255];
