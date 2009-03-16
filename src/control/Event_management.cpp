@@ -159,11 +159,11 @@ void E_management::update(SDL_Surface *Screen)
         images[i].draw(Screen);
 
     On_map_anim.draw(Screen);
-/*    if (message_box->visible)
+    if (message_box->visible)
     {
         message_box->draw(Screen);
     }
-*/    X.draw(Screen);
+    X.draw(Screen);
 
 }
 
