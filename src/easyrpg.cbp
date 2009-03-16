@@ -13,6 +13,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-Os" />
 					<Add option="-g" />
 				</Compiler>
 			</Target>
@@ -31,6 +32,7 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-Os" />
 			<Add option="-pedantic" />
 			<Add option="-Wall" />
 			<Add option="-ansi" />
@@ -41,6 +43,7 @@
 		</Compiler>
 		<Linker>
 			<Add option="`sdl-config --libs` -lz -lSDL_image -lSDL_mixer -lSDL_ttf -lSDL_gfx" />
+			<Add option="-Os" />
 		</Linker>
 		<Unit filename="attributes/CActor.cpp" />
 		<Unit filename="attributes/CActor.h" />
