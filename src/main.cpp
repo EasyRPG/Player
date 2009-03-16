@@ -88,7 +88,7 @@ void CalculateFPS()
         frames = 0;
         nextTicks = SDL_GetTicks() + 1000;
 
-        printf("Map test - FPS %lu /n \n", fps);
+       // printf("Map test - FPS %lu /n \n", fps);
         //SDL_WM_SetCaption (stringBuffer, NULL);
     }
 }
@@ -313,21 +313,20 @@ void blitVirtualSurface(SDL_Surface * source, SDL_Surface * destination)
     offset.y = 0;
     SDL_Surface * temp;
 
-#ifdef PSP
-temp = source;
-offset.x = 80;//int((float(destination->w) - (scaleFactor * source->w)) / 2 + 0.5f);
-offset.y = 16;
-#else
-temp = zoomSurface(source, scaleFactor, scaleFactor, 1);
-#endif
+    #ifdef PSP
+    temp = source;
+    offset.x = 80;//int((float(destination->w) - (scaleFactor * source->w)) / 2 + 0.5f);
+    offset.y = 16;
+    #else
+    temp = zoomSurface(source, scaleFactor, scaleFactor, 1);
+    #endif
 
-  SDL_FillRect(destination, NULL, 0x0);// Clear screen  inutil
-  SDL_BlitSurface(temp, NULL, destination, &offset);
-#ifndef PSP
-   	SDL_FreeSurface(temp);
-#endif
-
-  team.screen_got_refresh=false;
+    SDL_FillRect(destination, NULL, 0x0);// Clear screen  inutil
+    SDL_BlitSurface(temp, NULL, destination, &offset);
+    #ifndef PSP
+        SDL_FreeSurface(temp);
+    #endif
+    team.screen_got_refresh=false;
 }
 
 
@@ -340,8 +339,6 @@ int main(int argc, char *argv[])
     freopen("stdout", "w", stdout);
     freopen("stderr", "w", stderr);
     #endif
-
-//    myTeam = &team;
 
     if (argc >= 2) //Dummy for now, avoiding "unused vars" warnings
     {
@@ -374,26 +371,18 @@ int main(int argc, char *argv[])
 
 
     #ifdef SCREEN_SIZE_2X
-
-
-
-    #ifdef PSP
-    flags |= SDL_FULLSCREEN;
-    ScreenZ = SDL_SetVideoMode(SCREEN_SIZE_X, SCREEN_SIZE_Y,16, flags);
-    Screen=  CreateSurface(320,240);
-
+        #ifdef PSP
+            flags |= SDL_FULLSCREEN;
+            ScreenZ = SDL_SetVideoMode(SCREEN_SIZE_X, SCREEN_SIZE_Y,16, flags);
+            Screen=  CreateSurface(320,240);
+        #else
+            flags |= SDL_FULLSCREEN;
+            ScreenZ = SDL_SetVideoMode(SCREEN_SIZE_X*2, SCREEN_SIZE_Y*2,16, flags);
+            Screen=  CreateSurface(SCREEN_SIZE_X,SCREEN_SIZE_Y);
+        #endif
     #else
-    flags |= SDL_FULLSCREEN;
-    ScreenZ = SDL_SetVideoMode(SCREEN_SIZE_X*2, SCREEN_SIZE_Y*2,16, flags);
-    Screen=  CreateSurface(SCREEN_SIZE_X,SCREEN_SIZE_Y);
-
+        Screen = SDL_SetVideoMode(SCREEN_SIZE_X, SCREEN_SIZE_Y,16, flags);
     #endif
-
-
-    #else
-    Screen = SDL_SetVideoMode(SCREEN_SIZE_X, SCREEN_SIZE_Y,16, flags);
-    #endif
-
 
     if (Screen == NULL)
     {
@@ -408,7 +397,6 @@ int main(int argc, char *argv[])
 
     // ===[ ENTRY POINT ]===================================================
 
-//	SDL_Event event;
     titulo=new Title_Scene();
     titulo->init(&team);
 
@@ -429,32 +417,26 @@ int main(int argc, char *argv[])
          }
         actual->update(Screen);
 
-
     #ifdef SCREEN_SIZE_2X
-
       if(team.screen_got_refresh)
         blitVirtualSurface(Screen, ScreenZ);
         SDL_Flip(ScreenZ); // Flip
     #else
-      SDL_Flip(Screen); // Flip
+        SDL_Flip(Screen); // Flip
     #endif
-
 
     CambioScene(&actual);
     CalculateFPS();
-        //SDL_Delay(100);
-
+    //SDL_Delay(100);
     }
 
     Control::cleanup();
-
-
     Font::Quit();
     SDL_Quit();
 
     #ifdef PSP
-    fclose(stdout);
-    fclose(stderr);
+        fclose(stdout);
+        fclose(stderr);
     #endif
 
     return 0;

@@ -51,6 +51,7 @@ class General_data {
     map_data Gdata;
     E_management GEv_management;
     std:: vector <E_state> GEv_state;
+    std:: vector <E_state> GEvc_state;
     Sprite MBackground;
     string memorized_BGM;
     std:: vector <char> world_fase;

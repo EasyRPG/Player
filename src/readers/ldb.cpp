@@ -1456,16 +1456,16 @@ std:: vector <stcEvent>  LDB_reader:: EventChunk(FILE * Stream)
 					     Event.strName = ReadString(Stream, ChunkInfo.Length);
 					     break;
 					case Common_EventChunk_NameActivation_condition://0x0B,
-					     Event.intNameActivation_condition = ReadCompressedInteger(Stream);
+					     Event.intActivation_condition = ReadCompressedInteger(Stream);
 					     break;
 					case Common_EventChunk_NameActivate_on_switch://0x0C,
-					     Event.blNameActivate_on_switch = ReadCompressedInteger(Stream);
+					     Event.blActivate_on_switch = ReadCompressedInteger(Stream);
 					     break;
 					case Common_EventChunk_NameSwitch_ID://0x0D,
-					     Event.intNameSwitch_ID = ReadCompressedInteger(Stream);
+					     Event.intSwitch_ID = ReadCompressedInteger(Stream);
 					     break;
 					case Common_EventChunk_NameScript_length://0x15,
-					     Event.intNameScript_length = ReadCompressedInteger(Stream);
+					     Event.intScript_length = ReadCompressedInteger(Stream);
 					     break;
 					case Common_EventChunk_NameScript://0x16
 				             Event.vcEvent_comand =  Event_parser.EventcommandChunk(Stream);
@@ -2618,11 +2618,17 @@ void  LDB_reader::ShowInformation(LDB_data * data)
 
 
 
+
+    j=data->Event.size();
+    for (i=0;i<j ;i++)
+        data->Event[i].show();
+
+/*
     j=data->Animations.size();
     for (i=0;i<j ;i++)
         data->Animations[i].show();
 
-/*    j=data->heros.size();
+    j=data->heros.size();
     for (i=0;i<j ;i++)
         data->heros[i].show();
     */

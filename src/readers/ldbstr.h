@@ -600,10 +600,10 @@ struct stcEvent
 {
  int DB_id;
  std::string strName;//=0x01,
- int intNameActivation_condition;//=0x0B,
- char blNameActivate_on_switch;//=0x0C,
- int intNameSwitch_ID;//=0x0D,
- int intNameScript_length;//=0x15,
+ int intActivation_condition;//=0x0B,
+ char blActivate_on_switch;//=0x0C,
+ int intSwitch_ID;//=0x0D,
+ int intScript_length;//=0x15,
  std:: vector <Event_comand *> vcEvent_comand; //Script=0x16
  void clear();
  void show();

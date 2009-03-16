@@ -33,6 +33,7 @@ void Map_Scene::init( int SCREEN_X, int SCREEN_Y,General_data *TheTeam)
     data=&(myteam->Gdata);
     Background= &(myteam->MBackground);
     Ev_state= &(myteam->GEv_state);
+    Evc_state= &(myteam->GEvc_state);
     Ev_management= &(myteam->GEv_management);
     load_map();
     myteam->scroll_active=true;
@@ -77,7 +78,7 @@ void Map_Scene::load_map()
         system_string.append(".lmu");
         // ===[ LOADING MAP DATA ]==============================================
         Map.Load((char *)system_string.c_str(), data);
-        Map.ShowInformation(data);
+        //Map.ShowInformation(data);
         if(myteam->lmt.tree_list[Map_id].music==2)
         {
             system_string.clear();
@@ -363,72 +364,120 @@ void Map_Scene::active_event(int event_id)
 }
 void Map_Scene::mapnpc()
 {
-//we need to define the active pages only there is just one for each event
-
     unsigned int event_id;
     Event_comand * comand;
-    for (event_id=0;event_id< Charas_nps->size();event_id++)
+
+    for (event_id=0;event_id< Charas_nps->size();event_id++)//eventos de mapa
     {
-if(Ev_state->at(event_id).Active_page!=-1)
-  { //activar eventos
-        if(!Ev_state->at(event_id).Event_Active)
+        if(Ev_state->at(event_id).Active_page!=-1)
         {
-            if(data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].Activation_condition==0)
-                if((Actor->tried_to_talk &&(Actor->npc_subcolision(event_id)))) //si cumple con su condicion de activacion
-                {
-                active_event(event_id);
-                Actor->tried_to_talk=false;
-                }
-            if((data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].Activation_condition==1)||(data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].Activation_condition==2))
-                if (Actor->npc_subcolision(event_id)) //si cumple con su condicion de activacion
-                {
-                active_event(event_id);
-                }
-            if((data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].Activation_condition==3)||(data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].Activation_condition==4))
-                {
-                active_event(event_id);
-                }
-        }
-
-
-        if(Ev_state->at(event_id).Event_Active)
-        {
-
-
-            if(Ev_state->at(event_id).id_exe_actual< data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].vcEvent_comand.size())
+            if(!Ev_state->at(event_id).Event_Active)//activar eventos
             {
-                comand=data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].vcEvent_comand[Ev_state->at(event_id).id_exe_actual];// lee el comando
-                //activar comandos
-                if(!Ev_state->at(event_id).id_actual_active)  //si el id actual no esta activa pero el evento  si
-                {
-                Ev_state->at(event_id).id_actual_active=true;
-                Ev_management->exec_comand(data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].vcEvent_comand,event_id,&Ev_state->at(event_id));// mandalo activar
-                    if(actual_map!=myteam->actual_map)
+                if(data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].Activation_condition==0)
+                    if((Actor->tried_to_talk &&(Actor->npc_subcolision(event_id)))) //si cumple con su condicion de activacion
                     {
-                        dispose();
-                        load_map();
-                        break;
-                        break;
+                    active_event(event_id);
+                    Actor->tried_to_talk=false;
+                    }
+                if((data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].Activation_condition==1)||(data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].Activation_condition==2))
+                    if (Actor->npc_subcolision(event_id)) //si cumple con su condicion de activacion
+                    {
+                    active_event(event_id);
+                    }
+                if((data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].Activation_condition==3)||(data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].Activation_condition==4))
+                {
+                    active_event(event_id);
+                }
+            }
+
+
+            if(Ev_state->at(event_id).Event_Active)// si el evento esta activo
+            {
+                if(Ev_state->at(event_id).id_exe_actual< data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].vcEvent_comand.size())
+                {
+                    comand=data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].vcEvent_comand[Ev_state->at(event_id).id_exe_actual];// lee el comando
+                    //activar comandos
+                    if(!Ev_state->at(event_id).id_actual_active)  //si el id actual no esta activa pero el evento  si
+                    {
+                    Ev_state->at(event_id).id_actual_active=true;
+                    Ev_management->exec_comand(data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].vcEvent_comand,event_id,&Ev_state->at(event_id));// mandalo activar
+                        if(actual_map!=myteam->actual_map)
+                        {
+                            dispose();
+                            load_map();
+                            break;
+                            break;
+                        }
+                    }
+                    if(Ev_state->at(event_id).id_actual_active)// ejecutar comandos
+                    {
+                        Ev_management->active_exec_comand(comand,event_id,&Ev_state->at(event_id));
                     }
                 }
-
-                // ejecutar comandos
-                if(Ev_state->at(event_id).id_actual_active)  //si el evento  esta activo
+                else
                 {
-                    Ev_management->active_exec_comand(comand,event_id,&Ev_state->at(event_id));
+                    Ev_state->at(event_id).Event_Active=false;
+                    Ev_state->at(event_id).id_exe_actual=0;
+                    Ev_state->at(event_id).id_actual_active=false;
                 }
-
             }
-            else
-            {
-                Ev_state->at(event_id).Event_Active=false;
-                Ev_state->at(event_id).id_exe_actual=0;
-                Ev_state->at(event_id).id_actual_active=false;
-            }
-      }
-  }
+        }
     }
     Actor->tried_to_talk=false;
+
+    for (event_id=0;event_id< myteam->data2.Event.size();event_id++)//eventos de ldb
+    {
+//si el id de activacion es 3 o 4 el evento deve ser activado
+// ademas que si usa una fase de activacion esta deve estar activa
+            if(!Evc_state->at(event_id).Event_Active)//si el evento no esta activo
+            {
+                //pero cumple con las condiciones de activacion
+                if((myteam->data2.Event[event_id].intActivation_condition==3)||(myteam->data2.Event[event_id].intActivation_condition==4))
+                {
+                    if((!myteam->data2.Event[event_id].blActivate_on_switch)||(myteam->state_swich(myteam->data2.Event[event_id].intSwitch_ID-1)))
+                    {
+                        Evc_state->at(event_id).Event_Active=true; // activalo
+                        Evc_state->at(event_id).id_exe_actual=0;
+                        Evc_state->at(event_id).id_actual_active=false;
+                    }
+                }
+            }
+
+
+            if(Evc_state->at(event_id).Event_Active)// si el evento esta activo
+            {//si aun no se ejecuta todos
+                if(Evc_state->at(event_id).id_exe_actual< myteam->data2.Event[event_id].vcEvent_comand.size())
+                {
+                    comand=myteam->data2.Event[event_id].vcEvent_comand[Ev_state->at(event_id).id_exe_actual];
+                    //activar comandos
+                    if(!Evc_state->at(event_id).id_actual_active)  //si el id actual no esta activa pero el evento  si
+                    {
+                    Evc_state->at(event_id).id_actual_active=true;
+                    Ev_management->exec_comand(myteam->data2.Event[event_id].vcEvent_comand,event_id,&Evc_state->at(event_id));// mandalo activar
+                        if(actual_map!=myteam->actual_map)//para teleport
+                        {
+                            dispose();
+                            load_map();
+                            break;
+                            break;
+                        }
+                    }
+                    if(Evc_state->at(event_id).id_actual_active)// ejecutar comandos
+                    {
+                        Ev_management->active_exec_comand(comand,event_id,&Evc_state->at(event_id));
+                    }
+                }
+                else
+                {
+                    Evc_state->at(event_id).Event_Active=false;
+                    Evc_state->at(event_id).id_exe_actual=0;
+                    Evc_state->at(event_id).id_actual_active=false;
+                }
+            }
+
+
+
+    }
 
 
 }

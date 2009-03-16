@@ -79,7 +79,7 @@ private:
 	map_data * data;
     std:: vector <stEventMap> * Events;//agregar apuntador a vector de eventos
     std:: vector <E_state> * Ev_state;//agregar apuntador a vector de eventos
-
+    std:: vector <E_state> * Evc_state;//agregar apuntador a vector de eventos
 
 	char stringBuffer[255];
 public:

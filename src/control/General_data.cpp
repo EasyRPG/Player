@@ -16,10 +16,19 @@ void General_data::read_database()
     my_ldb.Load("RPG_RT.ldb",&data2);
     Players.data2=&data2;
     lmt_reader my_lmt;
+
+    E_state original_state;
+    original_state.Event_Active=false;
+    original_state.id_exe_actual=0;
+    original_state.id_actual_active=false;
+    for(unsigned int i=0; i<data2.Event.size();i++)
+        GEvc_state.push_back(original_state);
+
     my_lmt.load("RPG_RT.lmt",&lmt);
+    my_ldb.ShowInformation(&data2);
+
    }
   // my_lmt.print(&lmt);
-   //my_ldb.ShowInformation(&data2);
 }
 void General_data::add_swich(unsigned char i)
 {
