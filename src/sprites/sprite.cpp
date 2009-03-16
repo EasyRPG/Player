@@ -218,7 +218,7 @@ void Sprite::draw (SDL_Surface * screen)
         }
         else
         {
-            SDL_Surface * temp;
+            SDL_Surface * temp = NULL;
             float scaleFactor;
             scaleFactor=(float)zoom/100;
             if(img!=NULL)

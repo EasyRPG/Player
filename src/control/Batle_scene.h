@@ -67,7 +67,8 @@ public:
 	void init(General_data * TheTeam);
 	void update(SDL_Surface* Screen);
 	void updatekey();
-	void atack(SDL_Surface* Screen,int nperso,int enemy);
+	//void atack(SDL_Surface* Screen,int nperso,int enemy);
+	void atack(int nperso,int enemy);
 	void update_window_stats();
 	void update_window_mosterselect();
 	void action_mosterselect();

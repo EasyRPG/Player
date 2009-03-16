@@ -159,11 +159,11 @@ void E_management::update(SDL_Surface *Screen)
         images[i].draw(Screen);
 
     On_map_anim.draw(Screen);
-    if (message_box->visible)
+/*    if (message_box->visible)
     {
         message_box->draw(Screen);
     }
-    X.draw(Screen);
+*/    X.draw(Screen);
 
 }
 
@@ -816,9 +816,9 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
         if(comand_Change_experience->All==0)
         {
-            for(k=0;k<myteam->Players.get_size();k++)
+            for(j=0;j<myteam->Players.get_size();j++)
             {
-            myteam->Players.change_exp(comand_Change_experience->Add,myteam->Players.Players[k].id, i);
+            myteam->Players.change_exp(comand_Change_experience->Add,myteam->Players.Players[j].id, i);
             }
         }
         if(comand_Change_experience->All==1)
@@ -846,9 +846,9 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
         if(comand_Change_level->All==0)
         {
-            for(k=0;k<myteam->Players.get_size();k++)
+            for(j=0;j<myteam->Players.get_size();j++)
             {
-            myteam->Players.change_level(comand_Change_level->Add,myteam->Players.Players[k].id, i);
+            myteam->Players.change_level(comand_Change_level->Add,myteam->Players.Players[j].id, i);
             }
         }
         if(comand_Change_level->All==1)

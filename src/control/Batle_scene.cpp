@@ -166,7 +166,8 @@ void Batle_scene::update(SDL_Surface *Screen)
 	}
 	if(state==1)//siletocaalosheroes
 	{
-		atack(Screen,player_in_turn,Comands.at(player_in_turn).selected_moster);
+		//atack(Screen,player_in_turn,Comands.at(player_in_turn).selected_moster);
+		atack(player_in_turn,Comands.at(player_in_turn).selected_moster);
 	}
 	if(state==2)//siletocaalosmoustruos
 	{
@@ -213,7 +214,8 @@ void Batle_scene::lose()
 
 
 
-void Batle_scene::atack(SDL_Surface *Screen,int  nperso,int  enemy)
+//void Batle_scene::atack(SDL_Surface *Screen,int  nperso,int  enemy)
+void Batle_scene::atack(int  nperso,int  enemy)
 {
     static bool state_anim=false;
 	int damange;
