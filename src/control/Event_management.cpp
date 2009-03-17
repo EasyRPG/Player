@@ -1730,12 +1730,48 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Conditional:// 0xDD6A,
         Event_comand_Conditional * comand_Conditional;
         comand_Conditional= (Event_comand_Conditional *)comand;
-        comand_id->id_exe_actual++;
-        comand_id->id_actual_active=false;
+        if(comand_Conditional->type_of_conditional==0)//fase
+        {
+        i=comand_Conditional->ID-1;
+        if((myteam->state_swich(i))^(comand_Conditional->Op_code))
+        {
+                comand_id->id_exe_actual++;
+                comand_id->id_actual_active=false;
+        }else
+        {
+                if(comand_Conditional->Exeption)
+                {
+                    while(comand->Comand!=Else_case)//after the else
+                    {
+                        comand_id->id_exe_actual++;
+                        comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
+                    }
+                    comand_id->id_exe_actual++;
+                    comand_id->id_actual_active=false;
+                }
+                else
+                {
+                    while(comand->Comand!=End_conditional)//after the End_conditional
+                    {
+                        comand_id->id_exe_actual++;
+                        comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
+                    }
+                    comand_id->id_actual_active=false;
+                }
+
+        }
+
+        }
+
 
         break;
     case Else_case:// 0x81AB7A,
+
+       while(comand->Comand!=End_conditional)
+       {
         comand_id->id_exe_actual++;
+       comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
+       }
         comand_id->id_actual_active=false;
 
         break;

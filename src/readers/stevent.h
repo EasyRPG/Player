@@ -541,12 +541,12 @@
    void show(); };
  class Event_comand_Conditional: public Event_comand {
    public:// por confirmar
-    int Swich;
-    int Hero_ID;
-    int Tempo;
-    int By_Count;
+    int type_of_conditional;
+    int ID;
+    int Op_code;
+    int ID_2;
     int Count;
-    int Music;
+    int Exeption;
     string Name_data;
    void show(); };
  class Event_comand_Label: public Event_comand {
