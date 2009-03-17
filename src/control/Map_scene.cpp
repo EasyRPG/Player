@@ -448,7 +448,7 @@ void Map_Scene::mapnpc()
             {//si aun no se ejecuta todos
                 if(Evc_state->at(event_id).id_exe_actual< myteam->data2.Event[event_id].vcEvent_comand.size())
                 {
-                    comand=myteam->data2.Event[event_id].vcEvent_comand[Ev_state->at(event_id).id_exe_actual];
+                    comand=myteam->data2.Event[event_id].vcEvent_comand[Evc_state->at(event_id).id_exe_actual];
                     //activar comandos
                     if(!Evc_state->at(event_id).id_actual_active)  //si el id actual no esta activa pero el evento  si
                     {

@@ -124,7 +124,7 @@ cols=1;
 rows=1;
 rotate_active=false;
 center_active=false;
-
+img=NULL;
 }
 Sprite::~Sprite()
 {
@@ -133,10 +133,13 @@ Sprite::~Sprite()
 
 void Sprite::SetAlpha(unsigned char alpha)
 {
+if(img!=NULL)
 SDL_SetAlpha(img, SDL_SRCALPHA,alpha);
 }
 
 void Sprite::ModRGB(int red,int green,int blue)
+{
+if(img!=NULL)
 {
 
     if ((img->format->BitsPerPixel)==8)
@@ -184,6 +187,7 @@ void Sprite::ModRGB(int red,int green,int blue)
 */
 
     }
+}
 }
 
 
