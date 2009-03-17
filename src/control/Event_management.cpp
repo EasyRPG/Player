@@ -133,6 +133,7 @@ void E_management::init(Audio * audio,unsigned char * TheScene,General_data * Th
     Events = TheEvents;
     Charas_nps = &(myteam->GCharas_nps);
     Actor = TheActor;
+    Evc_state= &(myteam->GEvc_state);
 
     use_keyboard = false;
     tried_to_talk = false;
@@ -286,6 +287,19 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
     case Call_event:// 0xE02A,
         Event_comand_Call_event * comand_Call_event;
         comand_Call_event= (Event_comand_Call_event *)comand;
+
+
+
+        if(comand_Call_event->Method==0)
+        {
+            i=comand_Call_event->Event_ID;
+            if(Evc_state->at(i-1).Event_Active==false)
+            {
+                comand_id->id_exe_actual++;
+                comand_id->id_actual_active=false;
+            }
+        }
+
         if(comand_Call_event->Method==2)
         {
         i=myteam->world_var[comand_Call_event->Event_ID];
@@ -296,11 +310,14 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
         i=comand_Call_event->Event_ID;
         j=comand_Call_event->Event_page;
         }
+        if((comand_Call_event->Method==1)||(comand_Call_event->Method==2))
         if(Ev_state->at(i-1).Event_Active==false)
         {
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
         }
+
+
         break;
     case Pan_screen:// 0xD634,
 
@@ -1773,8 +1790,11 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         comand_Call_event= (Event_comand_Call_event *)comand;
         if(comand_Call_event->Method==0)//ignore
         {
-        comand_id->id_exe_actual++;
-        comand_id->id_actual_active = false;
+        i=comand_Call_event->Event_ID;
+        Evc_state->at(i-1).Event_Active=true;
+        Evc_state->at(i-1).id_exe_actual=0;
+        Evc_state->at(i-1).id_actual_active=false;
+
         }
         if(comand_Call_event->Method==2)
         {

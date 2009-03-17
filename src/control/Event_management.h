@@ -45,6 +45,7 @@ private:
     General_data *myteam;
     std:: vector <stEventMap> *Events;//agregar apuntador a vector de eventos
     std:: vector <E_state> *Ev_state;//agregar apuntador a vector de eventos
+    std:: vector <E_state> *Evc_state;//agregar apuntador a vector de eventos
     std:: vector <Chara> *Charas_nps;
     std:: vector <Sprite> images;
 
