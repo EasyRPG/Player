@@ -311,6 +311,7 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
         j=comand_Call_event->Event_page;
         }
         if((comand_Call_event->Method==1)||(comand_Call_event->Method==2))
+        if(i<Ev_state->size())
         if(Ev_state->at(i-1).Event_Active==false)
         {
         comand_id->id_exe_actual++;
@@ -1936,8 +1937,15 @@ bool compresult=false;
 
         break;
     case Break:// 0xDF3C,
+        j= comand_id->id_exe_actual++;
 
-       while(comand->Comand!=End_loop)// to the end loop
+            if(comand_id->Active_page== -2)
+                i=myteam->data2.Event[event_id].vcEvent_comand.size();
+            else
+                i=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand.size();
+
+
+       while((comand->Comand!=End_loop)&&(comand_id->id_exe_actual<i))// to the end loop
        {
         comand_id->id_exe_actual++;
         if(comand_id->Active_page== -2)
@@ -1945,6 +1953,10 @@ bool compresult=false;
         else
             comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
         }
+        if(comand_id->id_exe_actual<i)
+        comand_id->id_exe_actual=j;
+
+
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
 
@@ -1984,10 +1996,13 @@ bool compresult=false;
         }
         if((comand_Call_event->Method==1)||(comand_Call_event->Method==2))
         {
-        Ev_state->at(i-1).Event_Active=true;
-        Ev_state->at(i-1).id_exe_actual=0;
-        Ev_state->at(i-1).id_actual_active=false;
-        Ev_state->at(i-1).Active_page=(j-1);
+            if(i<Ev_state->size())
+            {
+                Ev_state->at(i-1).Event_Active=true;
+                Ev_state->at(i-1).id_exe_actual=0;
+                Ev_state->at(i-1).id_actual_active=false;
+                Ev_state->at(i-1).Active_page=(j-1);
+            }
         }
 
         break;
