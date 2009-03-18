@@ -1764,6 +1764,80 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         }
 
 
+if(comand_Conditional->type_of_conditional==1)//var
+        {
+            i=myteam->world_var[comand_Conditional->ID-1];
+            if(comand_Conditional->Op_code)
+                j=myteam->world_var[comand_Conditional->ID_2];
+            else
+                j=comand_Conditional->ID_2;
+bool compresult=false;
+
+
+        switch(comand_Conditional->Count)
+        {
+        case 0:
+                if(i==j)
+                    compresult=true;
+                break;
+        case 1:
+                if(i>=j)
+                    compresult=true;
+                break;
+        case 2:
+                if(i<=j)
+                    compresult=true;
+                break;
+        case 3:
+                if(i>j)
+                    compresult=true;
+                break;
+        case 4:
+                if(i<j)
+                    compresult=true;
+                break;
+        case 5:
+                if(i!=j)
+                    compresult=true;
+                break;
+
+        default:
+                break;
+        }
+
+
+        if(compresult)
+        {
+
+                comand_id->id_exe_actual++;
+                comand_id->id_actual_active=false;
+        }else
+        {
+                if(comand_Conditional->Exeption)
+                {
+                    while(comand->Comand!=Else_case)//after the else
+                    {
+                        comand_id->id_exe_actual++;
+                        comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
+                    }
+                    comand_id->id_exe_actual++;
+                    comand_id->id_actual_active=false;
+                }
+                else
+                {
+                    while(comand->Comand!=End_conditional)//after the End_conditional
+                    {
+                        comand_id->id_exe_actual++;
+                        comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
+                    }
+                    comand_id->id_actual_active=false;
+                }
+        }
+
+
+        }
+
+
         break;
     case Else_case:// 0x81AB7A,
 
