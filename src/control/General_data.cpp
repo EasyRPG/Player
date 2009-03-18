@@ -21,6 +21,8 @@ void General_data::read_database()
     original_state.Event_Active=false;
     original_state.id_exe_actual=0;
     original_state.id_actual_active=false;
+    original_state.Active_page= -2;//common event
+
     for(unsigned int i=0; i<data2.Event.size();i++)
         GEvc_state.push_back(original_state);
 

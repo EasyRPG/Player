@@ -1744,6 +1744,9 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
                     while(comand->Comand!=Else_case)//after the else
                     {
                         comand_id->id_exe_actual++;
+                        if(comand_id->Active_page== -2)
+                        comand=myteam->data2.Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
+                        else
                         comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
                     }
                     comand_id->id_exe_actual++;
@@ -1754,6 +1757,9 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
                     while(comand->Comand!=End_conditional)//after the End_conditional
                     {
                         comand_id->id_exe_actual++;
+                        if(comand_id->Active_page== -2)
+                        comand=myteam->data2.Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
+                        else
                         comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
                     }
                     comand_id->id_actual_active=false;
@@ -1818,6 +1824,9 @@ bool compresult=false;
                     while(comand->Comand!=Else_case)//after the else
                     {
                         comand_id->id_exe_actual++;
+                        if(comand_id->Active_page== -2)
+                        comand=myteam->data2.Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
+                        else
                         comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
                     }
                     comand_id->id_exe_actual++;
@@ -1828,6 +1837,9 @@ bool compresult=false;
                     while(comand->Comand!=End_conditional)//after the End_conditional
                     {
                         comand_id->id_exe_actual++;
+                        if(comand_id->Active_page== -2)
+                        comand=myteam->data2.Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
+                        else
                         comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
                     }
                     comand_id->id_actual_active=false;
