@@ -1856,8 +1856,11 @@ bool compresult=false;
        while(comand->Comand!=End_conditional)
        {
         comand_id->id_exe_actual++;
-       comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
-       }
+        if(comand_id->Active_page== -2)
+            comand=myteam->data2.Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
+        else
+            comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
+        }
         comand_id->id_actual_active=false;
 
         break;
@@ -1876,8 +1879,37 @@ bool compresult=false;
     case Go_to_label:// 0xDE58,
         Event_comand_Go_to_label * comand_Go_to_label;
         comand_Go_to_label = (Event_comand_Go_to_label *)comand;
-        comand_id->id_exe_actual++;
-        comand_id->id_actual_active = false;
+
+        Event_comand_Label * comand_Label2;
+
+        j=comand_id->id_exe_actual;
+
+            if(comand_id->Active_page== -2)
+                i=myteam->data2.Event[event_id].vcEvent_comand.size();
+            else
+                i=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand.size();
+
+        comand_id->id_exe_actual=0;
+       while(comand_id->id_exe_actual<i)
+       {
+            if(comand_id->Active_page== -2)
+                comand=myteam->data2.Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
+            else
+                comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
+
+            if(comand->Comand==Label)
+            {
+                comand_Label2 = (Event_comand_Label *)comand;
+                if(comand_Label2->Label_id==comand_Go_to_label->Label_id)
+                    break;
+            }
+            comand_id->id_exe_actual++;
+       }
+
+     if(comand_id->id_exe_actual<i)
+        comand_id->id_exe_actual=j+1;
+
+        comand_id->id_actual_active=false;
 
         break;
     case Start_loop:// 0xDF32,
@@ -1886,11 +1918,33 @@ bool compresult=false;
 
         break;
     case End_loop:// 0x81AD42,
-        comand_id->id_exe_actual++;
+        i=1;
+       while((comand->Comand!=Start_loop)&&(i==0))// back to the star loop
+       {
+        comand_id->id_exe_actual--;
+        if(comand_id->Active_page== -2)
+            comand=myteam->data2.Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
+        else
+            comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
+        if(comand->Comand==Start_loop)
+        i--;
+        if(comand->Comand==End_loop)
+        i++;
+
+        }
         comand_id->id_actual_active=false;
 
         break;
     case Break:// 0xDF3C,
+
+       while(comand->Comand!=End_loop)// to the end loop
+       {
+        comand_id->id_exe_actual++;
+        if(comand_id->Active_page== -2)
+            comand=myteam->data2.Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
+        else
+            comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
+        }
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
 
