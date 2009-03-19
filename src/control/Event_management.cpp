@@ -1,5 +1,10 @@
 #include "General_data.h"
 bool E_management::tried_to_talk = false;
+bool E_management::tried_to_cancel = false;
+bool E_management::tried_to_up = false;
+bool E_management::tried_to_down = false;
+bool E_management::tried_to_left = false;
+bool E_management::tried_to_right = false;
 
 E_management::E_management()
 {
@@ -156,14 +161,15 @@ void E_management::init(Audio * audio,unsigned char * TheScene,General_data * Th
 void E_management::update(SDL_Surface *Screen)
 {
     unsigned int i;
+      if (message_box->visible)
+    {
+        message_box->draw(Screen);
+    }
     for(i=0;i<images.size();i++)
         images[i].draw(Screen);
 
     On_map_anim.draw(Screen);
-    if (message_box->visible)
-    {
-        message_box->draw(Screen);
-    }
+
     X.draw(Screen);
 
 }
@@ -185,6 +191,21 @@ void E_management::updatekey(bool *running)
         {
         case DECISION:
             tried_to_talk=true;
+            break;
+        case CANCEL:
+            tried_to_cancel=true;
+            break;
+        case ARROW_UP:
+            tried_to_up=true;
+            break;
+        case ARROW_LEFT:
+            tried_to_left=true;
+            break;
+        case ARROW_DOWN:
+            tried_to_down=true;
+            break;
+        case ARROW_RIGHT:
+            tried_to_right=true;
             break;
 
         case EXIT:
@@ -224,6 +245,70 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
             comand_id->id_actual_active = false;
             tried_to_talk = false;
             use_keyboard = false;
+        }
+        break;
+
+    case Key_input:// 0xDA5A,
+        Event_comand_Key_input * comand_Key_input;
+        comand_Key_input=(Event_comand_Key_input *)comand;
+
+        cout<<"lo /n";
+        if((comand_Key_input->Accept)&&tried_to_talk)
+        {
+            use_keyboard=false;
+            myteam->world_var[comand_Key_input->Variable_to_store-1]=5;
+            comand_id->id_exe_actual++;
+            comand_id->id_actual_active = false;
+            tried_to_talk=false;
+         break;
+        }
+        if((comand_Key_input->Cancel)&&tried_to_cancel)
+        {
+            use_keyboard=false;
+            myteam->world_var[comand_Key_input->Variable_to_store-1]=6;
+            comand_id->id_exe_actual++;
+            comand_id->id_actual_active = false;
+            tried_to_cancel=false;
+         break;
+        }
+        if((comand_Key_input->Directionals)&&tried_to_up)
+        {
+            use_keyboard=false;
+            myteam->world_var[comand_Key_input->Variable_to_store-1]=4;
+            comand_id->id_exe_actual++;
+            comand_id->id_actual_active = false;
+            tried_to_up=false;
+         break;
+        }
+
+        if((comand_Key_input->Directionals)&&tried_to_left)
+        {
+            use_keyboard=false;
+            myteam->world_var[comand_Key_input->Variable_to_store-1]=2;
+            comand_id->id_exe_actual++;
+            comand_id->id_actual_active = false;
+            tried_to_left=false;
+         break;
+        }
+
+        if((comand_Key_input->Directionals)&&tried_to_right)
+        {
+            use_keyboard=false;
+            myteam->world_var[comand_Key_input->Variable_to_store-1]=3;
+            comand_id->id_exe_actual++;
+            comand_id->id_actual_active = false;
+            tried_to_right=false;
+         break;
+        }
+
+        if((comand_Key_input->Directionals)&&tried_to_down)
+        {
+            use_keyboard=false;
+            myteam->world_var[comand_Key_input->Variable_to_store-1]=1;
+            comand_id->id_exe_actual++;
+            comand_id->id_actual_active = false;
+            tried_to_down=false;
+        break;
         }
         break;
  case Wait:
@@ -1603,9 +1688,8 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Key_input:// 0xDA5A,
         Event_comand_Key_input * comand_Key_input;
         comand_Key_input=(Event_comand_Key_input *)comand;
-        comand_id->id_exe_actual++;
-        comand_id->id_actual_active=false;
-
+         use_keyboard=true;
+        cout<<"key\n";
         break;
     case Change_tile_set:// 0xDB3E	,
         Event_comand_Change_tile * comand_Change_tile;
@@ -1916,11 +2000,11 @@ bool compresult=false;
     case Start_loop:// 0xDF32,
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
-
+cout<<"loop \n";
         break;
     case End_loop:// 0x81AD42,
         i=1;
-       while((comand->Comand!=Start_loop)&&(i==0))// back to the star loop
+       while((comand->Comand!=Start_loop)&&(i!=0))// back to the star loop
        {
         comand_id->id_exe_actual--;
         if(comand_id->Active_page== -2)
@@ -1953,7 +2037,7 @@ bool compresult=false;
         else
             comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
         }
-        if(comand_id->id_exe_actual<i)
+        if(comand_id->id_exe_actual>=i)
         comand_id->id_exe_actual=j;
 
 

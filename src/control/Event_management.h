@@ -68,6 +68,12 @@ public:
     void page_refresh();
 
     static bool tried_to_talk;
+    static bool tried_to_cancel;
+    static bool tried_to_up;
+    static bool tried_to_down;
+    static bool tried_to_left;
+    static bool tried_to_right;
+
     int busque_real_id(int id_to_serch);
     void init(Audio * audio,unsigned char * TheScene,General_data * TheTeam,std:: vector <stEventMap> * TheEvents,CActor * TheActor,Mv_management * Move_management);
     void exec_comand(std:: vector <Event_comand *> vcEvent_comand,int event_id, E_state * comand_id);

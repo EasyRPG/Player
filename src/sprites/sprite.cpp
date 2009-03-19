@@ -133,13 +133,13 @@ Sprite::~Sprite()
 
 void Sprite::SetAlpha(unsigned char alpha)
 {
-if(img!=NULL)
+if((img!=NULL)&&(not_clean))
 SDL_SetAlpha(img, SDL_SRCALPHA,alpha);
 }
 
 void Sprite::ModRGB(int red,int green,int blue)
 {
-if(img!=NULL)
+if((img!=NULL)&&(not_clean))
 {
 
     if ((img->format->BitsPerPixel)==8)
