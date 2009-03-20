@@ -48,7 +48,7 @@ private:
     std:: vector <E_state> *Evc_state;//agregar apuntador a vector de eventos
     std:: vector <Chara> *Charas_nps;
     std:: vector <Sprite> images;
-
+    E_state Es_Save_state;
     Sprite X;
     CMessage *message_box;
     Mv_management * Mov_management;

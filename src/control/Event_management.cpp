@@ -161,15 +161,15 @@ void E_management::init(Audio * audio,unsigned char * TheScene,General_data * Th
 void E_management::update(SDL_Surface *Screen)
 {
     unsigned int i;
-      if (message_box->visible)
-    {
-        message_box->draw(Screen);
-    }
+
     for(i=0;i<images.size();i++)
         images[i].draw(Screen);
 
     On_map_anim.draw(Screen);
-
+      if (message_box->visible)
+    {
+        message_box->draw(Screen);
+    }
     X.draw(Screen);
 
 }
@@ -373,8 +373,6 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
         Event_comand_Call_event * comand_Call_event;
         comand_Call_event= (Event_comand_Call_event *)comand;
 
-
-
         if(comand_Call_event->Method==0)
         {
             i=comand_Call_event->Event_ID;
@@ -396,13 +394,20 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
         j=comand_Call_event->Event_page;
         }
         if((comand_Call_event->Method==1)||(comand_Call_event->Method==2))
+        {
+            if(i==10005)
+        {
+        i=event_id;
+        *comand_id=Es_Save_state;
+        }
+
         if(i<Ev_state->size())
         if(Ev_state->at(i-1).Event_Active==false)
         {
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
         }
-
+        }
 
         break;
     case Pan_screen:// 0xD634,
@@ -662,9 +667,8 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Select_message_face:// 0xCF12,
         Event_comand_Select_face * comand_Select_face;
         comand_Select_face = (Event_comand_Select_face *)comand;
-      comand_id->id_exe_actual++;
+        comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
-
         break;
     case Show_choice:// 0xCF1C,
         Event_comand_Show_choice * comand_Show_choice;
@@ -748,8 +752,10 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
             i= myteam->world_var[comand_Change_var->op_data1];
                 break;
             case 2:
+            i= myteam->world_var[myteam->world_var[comand_Change_var->op_data1]];
                 break;
             case 3:
+            i=  (rand()%(comand_Change_var->op_data2-comand_Change_var->op_data1))+comand_Change_var->op_data1;
                 break;
             case 4:
                 break;
@@ -2080,6 +2086,11 @@ cout<<"loop \n";
         }
         if((comand_Call_event->Method==1)||(comand_Call_event->Method==2))
         {
+        if(i==10005)
+        {
+        i=event_id+1;
+        Es_Save_state= *comand_id;
+        }
             if(i<Ev_state->size())
             {
                 Ev_state->at(i-1).Event_Active=true;
@@ -2087,6 +2098,7 @@ cout<<"loop \n";
                 Ev_state->at(i-1).id_actual_active=false;
                 Ev_state->at(i-1).Active_page=(j-1);
             }
+
         }
 
         break;

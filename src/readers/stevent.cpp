@@ -966,19 +966,32 @@ Event_comand * stEvent::EventcommandStart_Combat(int Command,int Depth,FILE * St
 Event_comand * stEvent::EventcommandCall_Shop(int Command,int Depth,FILE * Stream) {
    Event_comand_Call_Shop * comand;
   comand = new Event_comand_Call_Shop();
-   int itemasnum,dat;
+   int itemasnum,data;
+  string name;
    comand->Comand=Command;comand->Depth=Depth;
-   ChunkInfo.Length= ReadCompressedInteger(Stream);
-   ChunkInfo.Length= ReadCompressedInteger(Stream);
+
+   ChunkInfo.Length= ReadCompressedInteger(Stream); //primera longitud
+                           name = ReadString(Stream, ChunkInfo.Length);
+                          printf(name.c_str());
+                            ChunkInfo.Length= ReadCompressedInteger(Stream); //segunda longitud
+
 
    comand->Style=ReadCompressedInteger(Stream);
+   ChunkInfo.Length--;
    comand->Message_style=ReadCompressedInteger(Stream);
+   ChunkInfo.Length--;
    comand->Handler_on_purchase=ReadCompressedInteger(Stream);
+   ChunkInfo.Length--;
    itemasnum=ReadCompressedInteger(Stream);//0x00
-   while(itemasnum--)
-   {dat=ReadCompressedInteger(Stream);
-   comand->Item_IDs.push_back(dat);}
-   return (comand);
+  ChunkInfo.Length--;
+
+    while(ChunkInfo.Length--)//seguro longitud
+    {
+        data= ReadCompressedInteger(Stream);
+        comand->Item_IDs.push_back(data);
+    }
+
+return (comand);
    }
 Event_comand * stEvent::EventcommandCall_Inn(int Command,int Depth,FILE * Stream) {
    Event_comand_Call_Inn * comand;
@@ -1580,7 +1593,7 @@ Event_comand * stEvent::EventcommandConditional(int Command,int Depth,FILE * Str
     comand = new Event_comand_Conditional();
     comand->Comand=Command;comand->Depth=Depth;
     size_string= ReadCompressedInteger(Stream);
-    printf("men ,%d",size_string);
+   // printf("men ,%d",size_string);
     if(size_string>0)
     {
     comand->Name_data.clear();
@@ -1814,7 +1827,8 @@ std:: vector <Event_comand * > stEvent::EventcommandChunk(FILE * Stream)//instru
                                break;
 
                           case Call_Shop:// 0xD360,
-                               vcEvent_comand.push_back(EventcommandCall_Shop(data,depth,Stream));
+                                vcEvent_comand.push_back(EventcommandCall_Shop(data,depth,Stream));
+ //instruccion estandar
 
                                break;
                           case Start_success_block:// 0x81A170,
@@ -2106,7 +2120,10 @@ std:: vector <Event_comand * > stEvent::EventcommandChunk(FILE * Stream)//instru
                             ChunkInfo.Length= ReadCompressedInteger(Stream); //segunda longitud
                             while(ChunkInfo.Length--)//seguro longitud
                             {data= ReadCompressedInteger(Stream);
-                             printf("lol %d ",data);}
+                              printf("X  %d ",data);
+                             printf(" %c ",data);
+
+                             }
                            break;
                           }
                           data     = ReadCompressedInteger(Stream);  // lectura de tipo del pedazo

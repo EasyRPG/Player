@@ -161,15 +161,23 @@ void Chara::frameupdate()
 
 bool Chara::move_frec_check()
 {
+        if(move_frec==0)
+        {move_frec=1;}
+        if(move_frec>8)
+        {move_frec=8;}
+
 if(move_frec==8)
            return(true);
 
 	    move_delay++;
+
+   if(move_frec!=0)
         if(move_delay==(512/(move_frec*move_frec*move_frec)))
         {
             move_delay=0;
             return(true);
         }
+
         return(false);
 }
 

@@ -27,7 +27,7 @@ void General_data::read_database()
         GEvc_state.push_back(original_state);
 
     my_lmt.load("RPG_RT.lmt",&lmt);
-    my_ldb.ShowInformation(&data2);
+  //  my_ldb.ShowInformation(&data2);
 
    }
   // my_lmt.print(&lmt);
