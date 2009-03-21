@@ -395,9 +395,9 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
         }
         if((comand_Call_event->Method==1)||(comand_Call_event->Method==2))
         {
-            if(i==10005)
+        if(i==10005)
         {
-        i=event_id;
+        i=event_id+1;
         *comand_id=Es_Save_state;
         }
 
@@ -2089,6 +2089,7 @@ cout<<"loop \n";
         if(i==10005)
         {
         i=event_id+1;
+        printf("lol %d %d\n",i,j);//stack dinamico needed
         Es_Save_state= *comand_id;
         }
             if(i<Ev_state->size())

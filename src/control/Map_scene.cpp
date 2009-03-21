@@ -78,7 +78,7 @@ void Map_Scene::load_map()
         system_string.append(".lmu");
         // ===[ LOADING MAP DATA ]==============================================
         Map.Load((char *)system_string.c_str(), data);
-   //     Map.ShowInformation(data);
+        Map.ShowInformation(data);
         if(myteam->lmt.tree_list[Map_id].music==2)
         {
             system_string.clear();
@@ -409,6 +409,8 @@ void Map_Scene::mapnpc()
                             break;
                         }
                     }
+                    comand=data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].vcEvent_comand[Ev_state->at(event_id).id_exe_actual];// lee el comando
+
                     if(Ev_state->at(event_id).id_actual_active)// ejecutar comandos
                     {
                         Ev_management->active_exec_comand(comand,event_id,&Ev_state->at(event_id));

@@ -37,11 +37,11 @@ bool  LDB_reader::Load(std::string Filename, LDB_data * data)
 	return true;
 }
 
-std::vector <Magicblock>  LDB_reader::heroskillChunk(FILE * Stream)
+std::vector <Magicblock> LDB_reader::heroskillChunk(FILE * Stream)
 {
 	int id,datatoread=0,datareaded=0;
 	Magicblock skill;
-	std::vector <Magicblock> vecSkills;
+	static std::vector <Magicblock> vecSkills;
 	datatoread = ReadCompressedInteger(Stream); //numero de datos
 	while(datatoread>datareaded) //si no hay mas en el array
 	{
@@ -77,12 +77,12 @@ std::vector <Magicblock>  LDB_reader::heroskillChunk(FILE * Stream)
 }
 
 
-std::vector <stcHero>  LDB_reader::heroChunk(FILE * Stream)
+std::vector <stcHero> & LDB_reader::heroChunk(FILE * Stream)
 {
 		 int id,datatoread=0,datareaded=0,comands=0;
 		 int levels;
 		 short dat;
-		 std:: vector <stcHero> vecHero;
+         static std:: vector <stcHero> vecHero;
 		 stcHero hero;
 		 hero.clear();
 		 datatoread=ReadCompressedInteger(Stream);//numero de datos
@@ -291,10 +291,10 @@ do
  return(stcSound);
 }
 
-std:: vector <stcSkill>  LDB_reader::skillChunk(FILE * Stream)
+std:: vector <stcSkill> & LDB_reader::skillChunk(FILE * Stream)
 {
 		 int id,datatoread=0,datareaded=0;
-		 std:: vector <stcSkill> vecSkill;
+		 static std:: vector <stcSkill> vecSkill;
 		 stcSkill skill;
 		 datatoread=ReadCompressedInteger(Stream);//numero de datos
 
@@ -420,11 +420,11 @@ std:: vector <stcSkill>  LDB_reader::skillChunk(FILE * Stream)
 		  }
 		  return(vecSkill);
 }
-std:: vector <stcItem>  LDB_reader::itemChunk(FILE * Stream)
+std:: vector <stcItem> & LDB_reader::itemChunk(FILE * Stream)
 {
 		 int id,datatoread=0,datareaded=0;
 		 std::string name;
-		 std::vector <stcItem> vecItem;
+		 static std::vector <stcItem> vecItem;
 		 stcItem Item;
 		 datatoread=ReadCompressedInteger(Stream);
 		 while(datatoread>datareaded)
@@ -648,10 +648,10 @@ std::vector <stcEnemy_Action> vecActions;
 		  return(vecActions);
 }
 
-std:: vector <stcEnemy>  LDB_reader::mosterChunk(FILE * Stream)
+std:: vector <stcEnemy> & LDB_reader::mosterChunk(FILE * Stream)
 {
 		 int id,datatoread=0,datareaded=0;
-		 std:: vector <stcEnemy> vecEnemy;
+		 static std:: vector <stcEnemy> vecEnemy;
 		 stcEnemy Enemy;
 		 datatoread=ReadCompressedInteger(Stream);//numero de datos
 		 //printf("Numero de datos -> %d\n", datatoread);
@@ -890,10 +890,10 @@ std:: vector <stcEnemy_group_event_page>  LDB_reader::MonsterPartyevent_pageChun
 
 
 
-std:: vector <stcEnemy_group>  LDB_reader::mosterpartyChunk(FILE * Stream)
+std:: vector <stcEnemy_group> & LDB_reader::mosterpartyChunk(FILE * Stream)
 {
 		 int id,datatoread=0,datareaded=0;
-		 std:: vector <stcEnemy_group> vecEnemy_group;
+		 static std:: vector <stcEnemy_group> vecEnemy_group;
 		 stcEnemy_group Enemy_group;
 		 datatoread=ReadCompressedInteger(Stream);//numero de datos
 		 while(datatoread>datareaded) // si no hay mas en el array
@@ -937,11 +937,11 @@ std:: vector <stcEnemy_group>  LDB_reader::mosterpartyChunk(FILE * Stream)
 		  return(vecEnemy_group);
 }
 
-std:: vector <stcTerrain>  LDB_reader:: TerrainChunk(FILE * Stream)
+std:: vector <stcTerrain> & LDB_reader:: TerrainChunk(FILE * Stream)
 {
 		 int id,datatoread=0,datareaded=0;
 		 std::string name;
-		 std::vector <stcTerrain> vecTerrain;
+		 static std::vector <stcTerrain> vecTerrain;
 		 stcTerrain Terrain;
 		 datatoread=ReadCompressedInteger(Stream);//numero de datos
 		 while(datatoread>datareaded) // si no hay mas en el array
@@ -994,11 +994,11 @@ std:: vector <stcTerrain>  LDB_reader:: TerrainChunk(FILE * Stream)
 		  return(vecTerrain);
 }
 
-std:: vector <stcAttribute>  LDB_reader:: AttributeChunk(FILE * Stream)
+std:: vector <stcAttribute> & LDB_reader:: AttributeChunk(FILE * Stream)
 {
 		 int id,datatoread=0,datareaded=0;
 		 std::string name;
-		 std::vector <stcAttribute> vecAttribute;
+		 static std::vector <stcAttribute> vecAttribute;
 		 stcAttribute Attribute;
 		 datatoread=ReadCompressedInteger(Stream);//numero de datos
 		 while(datatoread>datareaded) // si no hay mas en el array
@@ -1047,11 +1047,11 @@ std:: vector <stcAttribute>  LDB_reader:: AttributeChunk(FILE * Stream)
 		  return(vecAttribute);
 }
 
-std:: vector <stcState>  LDB_reader:: StatesChunk(FILE * Stream)
+std:: vector <stcState> & LDB_reader:: StatesChunk(FILE * Stream)
 {
 		 int id,datatoread=0,datareaded=0;
 		 std::string name;
-		 std:: vector <stcState> vecState;
+		 static std:: vector <stcState> vecState;
 		 stcState State;
 		 datatoread=ReadCompressedInteger(Stream);//numero de datos
 		 while(datatoread>datareaded) // si no hay mas en el array
@@ -1326,11 +1326,11 @@ std:: vector <stcAnimationCell>  LDB_reader:: FramedataChunk(FILE * Stream)
 		  return(vecAnimationCell);
 }
 
-std:: vector <stcAnimated_battle>  LDB_reader:: AnimationChunk(FILE * Stream)
+std:: vector <stcAnimated_battle> & LDB_reader:: AnimationChunk(FILE * Stream)
 {
 		 int id,datatoread=0,datareaded=0;
 		 stcAnimated_battle Animated_battle;
-		 std:: vector <stcAnimated_battle> vecAnimated_battle;
+		 static std:: vector <stcAnimated_battle> vecAnimated_battle;
 		 datatoread=ReadCompressedInteger(Stream);//numero de datos
 		 while(datatoread>datareaded) // si no hay mas en el array
 		 {
@@ -1372,12 +1372,12 @@ std:: vector <stcAnimated_battle>  LDB_reader:: AnimationChunk(FILE * Stream)
 		  }
 		  return(vecAnimated_battle);
 }
-std:: vector <stcChipSet>  LDB_reader:: TilesetChunk(FILE * Stream)
+std:: vector <stcChipSet> & LDB_reader:: TilesetChunk(FILE * Stream)
 {
 		 int id,datatoread=0,datareaded=0;
 		 short dat=0;
 		 stcChipSet ChipSet;
-		 std:: vector <stcChipSet> vecChipset;
+		 static std:: vector <stcChipSet> vecChipset;
 		 datatoread=ReadCompressedInteger(Stream);//numero de datos
 		 while(datatoread>datareaded) // si no hay mas en el array
 		 {
@@ -1435,10 +1435,10 @@ std:: vector <stcChipSet>  LDB_reader:: TilesetChunk(FILE * Stream)
 		  return(vecChipset);
 }
 
-std:: vector <stcEvent>  LDB_reader:: EventChunk(FILE * Stream)
+std:: vector <stcEvent> & LDB_reader:: EventChunk(FILE * Stream)
 {
 		 int id,datatoread=0,datareaded=0;
-		 std::vector <stcEvent> vecEvent;
+		 static std::vector <stcEvent> vecEvent;
 		 stcEvent Event;
                  stEvent Event_parser;
 		 Event.clear();
