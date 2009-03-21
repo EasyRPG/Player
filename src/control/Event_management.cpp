@@ -323,6 +323,12 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
             use_keyboard = false;
         }
         break;
+   case Call_event:// 0xE02A,
+                  comand_id->id_exe_actual++;
+                comand_id->id_actual_active=false;
+        break;
+
+
     case Move_Picture:// 0xD670,
         Event_comand_Move_Picture * comand_Move_Picture;
         comand_Move_Picture=(Event_comand_Move_Picture *)comand;
@@ -2034,10 +2040,8 @@ cout<<"loop \n";
         x.Event_Active=true;
         x.id_exe_actual=0;
         x.id_actual_active=false;
-        x.Active_page=-2;
+        x.Active_page= -2;
         comand_id->Recall_states.push_back(x);
-        comand_id->id_exe_actual++;
-        comand_id->id_actual_active=false;
 
         }
         if(comand_Call_event->Method==2)
@@ -2067,9 +2071,6 @@ cout<<"loop \n";
                 x.id_actual_active=false;
                 x.Active_page=(j-1);
                 comand_id->Recall_states.push_back(x);
-        comand_id->id_exe_actual++;
-        comand_id->id_actual_active=false;
-
         }
 
         }
