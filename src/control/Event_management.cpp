@@ -368,48 +368,6 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
         use_keyboard = false;
         }
         break;
-
-    case Call_event:// 0xE02A,
-        Event_comand_Call_event * comand_Call_event;
-        comand_Call_event= (Event_comand_Call_event *)comand;
-
-        if(comand_Call_event->Method==0)
-        {
-            i=comand_Call_event->Event_ID;
-            if(Evc_state->at(i-1).Event_Active==false)
-            {
-                comand_id->id_exe_actual++;
-                comand_id->id_actual_active=false;
-            }
-        }
-
-        if(comand_Call_event->Method==2)
-        {
-        i=myteam->world_var[comand_Call_event->Event_ID];
-        j=myteam->world_var[comand_Call_event->Event_page];
-        }
-        if(comand_Call_event->Method==1)
-        {
-        i=comand_Call_event->Event_ID;
-        j=comand_Call_event->Event_page;
-        }
-        if((comand_Call_event->Method==1)||(comand_Call_event->Method==2))
-        {
-        if(i==10005)
-        {
-        i=event_id+1;
-        *comand_id=Es_Save_state;
-        }
-
-        if(i<Ev_state->size())
-        if(Ev_state->at(i-1).Event_Active==false)
-        {
-        comand_id->id_exe_actual++;
-        comand_id->id_actual_active=false;
-        }
-        }
-
-        break;
     case Pan_screen:// 0xD634,
 
         Event_comand_Pan_screen * comand_Pan_screen;
@@ -2066,12 +2024,20 @@ cout<<"loop \n";
     case Call_event:// 0xE02A,
         Event_comand_Call_event * comand_Call_event;
         comand_Call_event= (Event_comand_Call_event *)comand;
+
         if(comand_Call_event->Method==0)//ignore
         {
         i=comand_Call_event->Event_ID;
-        Evc_state->at(i-1).Event_Active=true;
-        Evc_state->at(i-1).id_exe_actual=0;
-        Evc_state->at(i-1).id_actual_active=false;
+        E_state x;
+
+        x.event_id=i-1;
+        x.Event_Active=true;
+        x.id_exe_actual=0;
+        x.id_actual_active=false;
+        x.Active_page=-2;
+        comand_id->Recall_states.push_back(x);
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
 
         }
         if(comand_Call_event->Method==2)
@@ -2086,19 +2052,25 @@ cout<<"loop \n";
         }
         if((comand_Call_event->Method==1)||(comand_Call_event->Method==2))
         {
+
         if(i==10005)
         {
         i=event_id+1;
-        printf("lol %d %d\n",i,j);//stack dinamico needed
-        Es_Save_state= *comand_id;
         }
-            if(i<Ev_state->size())
-            {
-                Ev_state->at(i-1).Event_Active=true;
-                Ev_state->at(i-1).id_exe_actual=0;
-                Ev_state->at(i-1).id_actual_active=false;
-                Ev_state->at(i-1).Active_page=(j-1);
-            }
+
+        if(i<(Ev_state->size()+1))
+        {
+                E_state x;
+                x.event_id=i-1;
+                x.Event_Active=true;
+                x.id_exe_actual=0;
+                x.id_actual_active=false;
+                x.Active_page=(j-1);
+                comand_id->Recall_states.push_back(x);
+        comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+
+        }
 
         }
 

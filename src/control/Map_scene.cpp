@@ -393,14 +393,22 @@ void Map_Scene::mapnpc()
 
             if(Ev_state->at(event_id).Event_Active)// si el evento esta activo
             {
+                if(Ev_state->at(event_id).Recall_states.size()==0)
+                {
                 if(Ev_state->at(event_id).id_exe_actual< data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].vcEvent_comand.size())
                 {
                     comand=data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].vcEvent_comand[Ev_state->at(event_id).id_exe_actual];// lee el comando
                     //activar comandos
                     if(!Ev_state->at(event_id).id_actual_active)  //si el id actual no esta activa pero el evento  si
                     {
+
                     Ev_state->at(event_id).id_actual_active=true;
                     Ev_management->exec_comand(data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].vcEvent_comand,event_id,&Ev_state->at(event_id));// mandalo activar
+
+                    if(Ev_state->at(event_id).Recall_states.size()>0)
+                    {
+                       event_call_event(event_id);
+                    }
                         if(actual_map!=myteam->actual_map)
                         {
                             dispose();
@@ -409,8 +417,7 @@ void Map_Scene::mapnpc()
                             break;
                         }
                     }
-                    comand=data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].vcEvent_comand[Ev_state->at(event_id).id_exe_actual];// lee el comando
-
+                    if(Ev_state->at(event_id).Recall_states.size()==0)
                     if(Ev_state->at(event_id).id_actual_active)// ejecutar comandos
                     {
                         Ev_management->active_exec_comand(comand,event_id,&Ev_state->at(event_id));
@@ -422,7 +429,12 @@ void Map_Scene::mapnpc()
                     Ev_state->at(event_id).id_exe_actual=0;
                     Ev_state->at(event_id).id_actual_active=false;
                 }
+            }else
+            {
+                event_call_event(event_id);
             }
+            }
+
         }
     }
     Actor->tried_to_talk=false;
@@ -456,6 +468,8 @@ void Map_Scene::mapnpc()
                     {
                     Evc_state->at(event_id).id_actual_active=true;
                     Ev_management->exec_comand(myteam->data2.Event[event_id].vcEvent_comand,event_id,&Evc_state->at(event_id));// mandalo activar
+
+
                         if(actual_map!=myteam->actual_map)//para teleport
                         {
                             dispose();
@@ -483,6 +497,55 @@ void Map_Scene::mapnpc()
 
 
 }
+
+int Map_Scene::event_call_event(int event_id)
+{
+                Event_comand * comand;
+                printf("fail\n");
+                int i =Ev_state->at(event_id).Recall_states.size()-1;
+                int id_to_call=Ev_state->at(event_id).Recall_states[i].event_id;
+                int page_to_call=Ev_state->at(event_id).Recall_states[i].Active_page;
+                int exe_to_call=Ev_state->at(event_id).Recall_states[i].id_exe_actual;
+                int original_size=Ev_state->at(event_id).Recall_states.size();
+                printf(" %d %d %d\n",id_to_call,page_to_call,exe_to_call);
+
+
+
+                if(exe_to_call< data->vcEvents[id_to_call].vcPage[page_to_call].vcEvent_comand.size())
+                {
+
+                    comand=data->vcEvents[id_to_call].vcPage[page_to_call].vcEvent_comand[exe_to_call];// lee el comando
+                    //activar comandos
+                    if(!Ev_state->at(event_id).Recall_states[i].id_actual_active)  //si el id actual no esta activa pero el evento  si
+                    {
+                    Ev_state->at(event_id).Recall_states[i].id_actual_active=true;
+                    Ev_management->exec_comand(data->vcEvents[id_to_call].vcPage[page_to_call].vcEvent_comand,id_to_call,&Ev_state->at(event_id).Recall_states[i]);// mandalo activar
+
+                    if( original_size<Ev_state->at(event_id).Recall_states.size())
+                        event_call_event(event_id);
+
+                        if(actual_map!=myteam->actual_map)
+                        {
+                            dispose();
+                            load_map();
+                 return(1);
+                        }
+                    }
+
+                    if(Ev_state->at(event_id).Recall_states[i].id_actual_active)// ejecutar comandos
+                    {
+                printf("fail\n");
+
+                        Ev_management->active_exec_comand(comand,id_to_call,&Ev_state->at(event_id).Recall_states[i]);
+                    }
+                }
+                else
+                {
+                Ev_state->at(event_id).Recall_states.pop_back();
+                }
+    return(0);
+}
+
 void Map_Scene::dispose()
 {
     //unsigned int i;

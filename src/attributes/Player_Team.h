@@ -39,12 +39,12 @@
 
 struct E_state
 {
-
     bool Event_Active;
+    unsigned int event_id;
     unsigned int id_exe_actual;
     bool id_actual_active;
     int Active_page;
-
+    std:: vector <E_state> Recall_states;
 };
 
 class Player_Team {
