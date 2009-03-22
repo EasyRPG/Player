@@ -214,7 +214,7 @@ void Map_Scene::update(SDL_Surface *Screen)
 {
     //WE shuold use layers!!
     SDL_FillRect(Screen, NULL, 0x0);// Clear screen  inutil
-    unsigned int i;
+    unsigned int i,j;
 
     if(data->ParallaxBackground)
     {
@@ -238,26 +238,37 @@ void Map_Scene::update(SDL_Surface *Screen)
     chip->Render(Screen, 0, myteam->view.x, myteam->view.y); //dibuja mapa capa 1 con repecto a la vista
     chip->Render(Screen, 1, myteam->view.x, myteam->view.y);//dibuja mapa capa 2 con repecto a la vista
 
+    for (j = 0; j < data->MapHeight; j++)
+    {
     for (i = 0; i < Charas_nps->size(); i++)
     {
+        if(Charas_nps->at(i).GridY==j)
+        {
         Charas_nps->at(i).addx(- myteam->view.x);
         Charas_nps->at(i).addy(- myteam->view.y);
         if (Charas_nps->at(i).layer == 0)
             Charas_nps->at(i).drawc(Screen);
         if ((Charas_nps->at(i).layer == 1) && (Charas_nps->at(i).GridY <= Actor->GridY))
             Charas_nps->at(i).drawc(Screen);
+        }
     }
-
+    }
     Actor->drawc(Screen);
 
+    for (j = 0; j < data->MapHeight; j++)
+    {
     for (i = 0; i < Charas_nps->size(); i++)
     {
+        if(Charas_nps->at(i).GridY==j)
+        {
+
         if (Charas_nps->at(i).layer == 2)
             Charas_nps->at(i).drawc(Screen);
         if ((Charas_nps->at(i).layer== 1) && (Charas_nps->at(i).GridY > Actor->GridY))
             Charas_nps->at(i).drawc(Screen);
+        }
     }
-
+    }
     for (i = 0; i < Charas_nps->size(); i++)
     {
         Charas_nps->at(i).addx(+ myteam->view.x);

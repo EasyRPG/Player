@@ -816,6 +816,39 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
                     }
                 }
                 break;
+            case 7:// sprites cord
+
+                    switch(comand_Change_var->op_data2)
+                    {
+                           case 0:
+                                i= myteam->get_Gold();
+                                break;
+                            case 1:
+                                i= myteam->get_Gold();
+                                break;
+                            case 2:
+                                i= myteam->Players.Players.size();
+                                break;
+                            case 3:
+                                i= myteam->get_Gold();
+                                break;
+                            case 4:
+                                i= myteam->get_Gold();
+                                break;
+                            case 5:
+                                i= myteam->get_Gold();
+                                break;
+                            case 6:
+                                i= myteam->get_Gold();
+                                break;
+                            case 7:
+                                i= myteam->get_Gold();
+                                break;
+
+                    }
+
+                break;
+
             default:
                 break;
             }
@@ -1543,6 +1576,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         images[i-1].trasparent_color=comand_Show_Picture->Use_color_key;
         images[i-1].dispose();
         images[i-1].setimg(system_string.c_str());
+        if(comand_Show_Picture->Effect==1)//si el efecto es rotacion
         images[i-1].rotate_active=comand_Show_Picture->Effect;
         images[i-1].rotate_frec=comand_Show_Picture->Power;
         if(comand_Show_Picture->By_Value)
