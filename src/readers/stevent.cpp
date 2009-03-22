@@ -1827,7 +1827,7 @@ std:: vector <Event_comand * > stEvent::EventcommandChunk(FILE * Stream)//instru
                                break;
 
                           case Call_Shop:// 0xD360,
-                                vcEvent_comand.push_back(EventcommandCall_Shop(data,depth,Stream));
+                               vcEvent_comand.push_back(EventcommandCall_Shop(data,depth,Stream));
  //instruccion estandar
 
                                break;

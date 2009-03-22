@@ -710,7 +710,6 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
             {
             case 0:
             i=comand_Change_var->op_data1;
-            printf("data to put %d",i);
                 break;
             case 1:
             i= myteam->world_var[comand_Change_var->op_data1];
@@ -719,8 +718,17 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
             i= myteam->world_var[myteam->world_var[comand_Change_var->op_data1]];
                 break;
             case 3:
-            i=  (rand()%(comand_Change_var->op_data2-comand_Change_var->op_data1))+comand_Change_var->op_data1;
-                break;
+            printf("opdata 1 %d opdata 2 %d  \n",comand_Change_var->op_data2,comand_Change_var->op_data1);
+          //
+          if((comand_Change_var->op_data2-comand_Change_var->op_data1)>0)
+          i=  (rand()%(comand_Change_var->op_data2-comand_Change_var->op_data1))+comand_Change_var->op_data1;
+         else
+            if((comand_Change_var->op_data1-comand_Change_var->op_data2)>0)
+            i=  (rand()%(comand_Change_var->op_data1-comand_Change_var->op_data2))+comand_Change_var->op_data2;
+            else
+            i=  comand_Change_var->op_data2;
+
+            break;
             case 4:
                 break;
             case 5:
