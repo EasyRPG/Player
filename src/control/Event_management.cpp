@@ -717,23 +717,20 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
             case 2:
             i= myteam->world_var[myteam->world_var[comand_Change_var->op_data1]];
                 break;
-            case 3:
-            printf("opdata 1 %d opdata 2 %d  \n",comand_Change_var->op_data2,comand_Change_var->op_data1);
-          //
-          if((comand_Change_var->op_data2-comand_Change_var->op_data1)>0)
-          i=  (rand()%(comand_Change_var->op_data2-comand_Change_var->op_data1))+comand_Change_var->op_data1;
-         else
-            if((comand_Change_var->op_data1-comand_Change_var->op_data2)>0)
-            i=  (rand()%(comand_Change_var->op_data1-comand_Change_var->op_data2))+comand_Change_var->op_data2;
-            else
-            i=  comand_Change_var->op_data2;
-
-            break;
-            case 4:
+            case 3://random
+                if((comand_Change_var->op_data2-comand_Change_var->op_data1)>0)
+                    i=  (rand()%(comand_Change_var->op_data2-comand_Change_var->op_data1))+comand_Change_var->op_data1;
+                else
+                if((comand_Change_var->op_data1-comand_Change_var->op_data2)>0)
+                    i=  (rand()%(comand_Change_var->op_data1-comand_Change_var->op_data2))+comand_Change_var->op_data2;
+                else
+                    i=  comand_Change_var->op_data2;
                 break;
-            case 5:
+            case 4:// objets
                 break;
-            case 6:
+            case 5://hero stats
+                break;
+            case 6:// sprites cord
                 break;
             default:
                 break;
