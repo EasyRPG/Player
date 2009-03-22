@@ -31,6 +31,19 @@ if(Players[i].id==id)
 return false;
 }
 
+int Player_Team::get_player_real_id(int id)
+{
+unsigned int i;
+for(i=0;i<Players.size();i++)
+{
+if(Players[i].id==id)
+{
+    return i;
+}
+}
+return (-1);
+}
+
 void Player_Team::clear_team()
 {
     unsigned int i;

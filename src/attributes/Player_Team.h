@@ -53,6 +53,7 @@ public:
 	std:: vector <Player> Players;
    LDB_data * data2;
     bool is_on_the_team(int id);
+    int get_player_real_id(int id);
     Player get_hero(stcHero * actual_hero, int id);
     void change_players(int remove_add,int id);
     int get_xp_for_level(int Level,int star_exp, int addIncrease, int correction);

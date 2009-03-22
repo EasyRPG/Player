@@ -50,9 +50,22 @@ if(Items[i].id==id)
 return false;
 }
 
+int General_data::number_on_the_inventory(int id)
+{
+unsigned int i;
+for(i=0;i<Items.size();i++)
+{
+if(Items[i].id==id)
+{
+    return Items[i].NOI;
+}
+}
+return 0;
+}
+
 bool General_data::is_equal(int var,int number)
 {
-if(world_var[var-1]==number)
+if(world_var[var-1]>=number)
 return true;
 return false;
 }

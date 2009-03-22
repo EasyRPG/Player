@@ -252,7 +252,6 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
         Event_comand_Key_input * comand_Key_input;
         comand_Key_input=(Event_comand_Key_input *)comand;
 
-        cout<<"lo /n";
         if((comand_Key_input->Accept)&&tried_to_talk)
         {
             use_keyboard=false;
@@ -727,10 +726,95 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
                     i=  comand_Change_var->op_data2;
                 break;
             case 4:// objets
+                if(comand_Change_var->op_data2==0)
+                    i=  myteam->number_on_the_inventory(comand_Change_var->op_data1);
+
+
                 break;
             case 5://hero stats
+                j=myteam->Players.get_player_real_id(comand_Change_var->op_data1);
+                if(j!=-1)
+                {
+                 switch(comand_Change_var->op_data2)
+                    {
+                        case 0:
+                                i=  myteam->Players.get_Level(j);
+                                break;
+                        case 1:
+                                i=  myteam->Players.get_Exp(j);
+                                break;
+                        case 2:
+                                i=  myteam->Players.get_HP(j);
+                                break;
+                        case 3:
+                                i=  myteam->Players.get_MP(j);
+                                break;
+                        case 4:
+                                i=  myteam->Players.get_MaxHP(j);
+                                break;
+                        case 5:
+                                i=  myteam->Players.get_MaxMP(j);
+                                break;
+                        case 6:
+                                i=  myteam->Players.get_Attack(j);
+                                break;
+                        case 7:
+                                i=  myteam->Players.get_Defense(j);
+                                break;
+                        case 8:
+                                i=  myteam->Players.get_Spirit(j);
+                                break;
+                        case 9:
+                                i=  myteam->Players.get_Speed(j);
+                                break;
+                        case 10:
+                                i=  (myteam->Players.get_Weapon(j))->id;
+                                break;
+                        case 11:
+                                i=  (myteam->Players.get_Shield(j))->id;
+                                break;
+                        case 12:
+                                i=  (myteam->Players.get_Armor(j))->id;
+                                break;
+                        case 13:
+                                i=  (myteam->Players.get_Helmet(j))->id;
+                                break;
+                        case 14:
+                                i=  (myteam->Players.get_Accessory(j))->id;
+                                break;
+                        default:
+                        break;
+                    }
+                }
                 break;
             case 6:// sprites cord
+                if(comand_Change_var->op_data1<10000)
+                {
+
+                    switch(comand_Change_var->op_data2)
+                    {
+                        case 0:
+                                i=  Charas_nps->at(comand_Change_var->op_data1-1).id;
+                                break;
+                        case 1:
+                                i=  Charas_nps->at(comand_Change_var->op_data1-1).GridX;
+                                break;
+                        case 2:
+                                i=  Charas_nps->at(comand_Change_var->op_data1-1).GridY;
+                                break;
+                        case 3:
+                                i=  Charas_nps->at(comand_Change_var->op_data1-1).dir;
+                                break;
+                        case 4:
+                                i=  Charas_nps->at(comand_Change_var->op_data1-1).x;
+                                break;
+                        case 5:
+                                i=  Charas_nps->at(comand_Change_var->op_data1-1).y;
+                                break;
+                        default:
+                        break;
+                    }
+                }
                 break;
             default:
                 break;
@@ -1463,8 +1547,8 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         images[i-1].rotate_frec=comand_Show_Picture->Power;
         if(comand_Show_Picture->By_Value)
         {
-        images[i-1].x=myteam->world_var[comand_Show_Picture->X];
-        images[i-1].y=myteam->world_var[comand_Show_Picture->Y];
+        images[i-1].x=myteam->world_var[comand_Show_Picture->X-1];
+        images[i-1].y=myteam->world_var[comand_Show_Picture->Y-1];
         }
         else
         {
