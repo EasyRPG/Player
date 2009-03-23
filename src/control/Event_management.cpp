@@ -66,7 +66,20 @@ void E_management::page_refresh()
                 Charas_nps->at(i).anim_frec=Events->at(i).vcPage[current_page].Movement_speed;
                 Charas_nps->at(i).layer=Events->at(i).vcPage[current_page].Event_height;
                 if(old_page==-1)//restart the position
-                Charas_nps->at(i).setposXY(Events->at(i).X_position, Events->at(i).Y_position);
+                {Charas_nps->at(i).setposXY(Events->at(i).X_position, Events->at(i).Y_position);
+                }else
+                {
+                    if(Ev_state->at(i).Event_Active)// si el evento estaba activo
+                    {
+                    E_state x;
+                    x.event_id=i;
+                    x.Event_Active=Ev_state->at(i).Event_Active;
+                    x.id_exe_actual=Ev_state->at(i).id_exe_actual;
+                    x.id_actual_active=false;
+                    x.Active_page= Ev_state->at(i).Active_page;
+                    Ev_state->at(i).Recall_states.push_back(x);
+                    }
+                }
             }
             else
             {
@@ -82,8 +95,10 @@ void E_management::page_refresh()
                     Charas_nps->at(i).layer=3;
                    // Charas_nps->at(i).setposXY(Events->at(i).X_position, Events->at(i).Y_position);
             }
+
+            Ev_state->at(i).Active_page=current_page;
         }
-        Ev_state->at(i).Active_page=current_page;
+
     }
 }
 
@@ -234,7 +249,6 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
     case Message:
     case Add_line_to_message:
         use_keyboard = true;
-
         /* Continue to the next command */
         timer++;
         if ((message_box->done&&(timer>30) )&&tried_to_talk)

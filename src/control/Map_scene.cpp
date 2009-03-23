@@ -378,6 +378,48 @@ void Map_Scene::mapnpc()
     unsigned int event_id;
     Event_comand * comand;
 
+                if(myteam->before_telepor.Event_Active)// si nos teleportamos
+                {
+                if(myteam->before_telepor.Recall_states.size()==0)
+                {
+                if(myteam->before_telepor.id_exe_actual< myteam->comand_before_telepor.size())
+                {
+                    comand=myteam->comand_before_telepor[myteam->before_telepor.id_exe_actual];// lee el comando
+                    //activar comandos
+                    if(!myteam->before_telepor.id_actual_active)  //si el id actual no esta activa pero el evento  si
+                    {
+
+                    myteam->before_telepor.id_actual_active=true;
+                    Ev_management->exec_comand(myteam->comand_before_telepor,1,&myteam->before_telepor);// mandalo activar
+
+                    if(myteam->before_telepor.Recall_states.size()>0)
+                    {
+                       event_call_event(1,true);
+                    }
+                        if(actual_map!=myteam->actual_map)
+                        {
+                            dispose();
+                            load_map();
+                        }
+                    }
+                    if(myteam->before_telepor.Recall_states.size()==0)
+                    if(myteam->before_telepor.id_actual_active)// ejecutar comandos
+                    {
+                        Ev_management->active_exec_comand(comand,1,&myteam->before_telepor);
+                    }
+                }
+                else
+                {
+                    myteam->before_telepor.Event_Active=false;
+                    myteam->before_telepor.id_exe_actual=0;
+                    myteam->before_telepor.id_actual_active=false;
+                }
+            }else
+            {
+                event_call_event(1,true);
+            }
+            }
+
     for (event_id=0;event_id< Charas_nps->size();event_id++)//eventos de mapa
     {
         if(Ev_state->at(event_id).Active_page!=-1)
@@ -422,6 +464,8 @@ void Map_Scene::mapnpc()
                     }
                         if(actual_map!=myteam->actual_map)
                         {
+                            myteam->before_telepor=Ev_state->at(event_id);
+                            myteam->copy_to_before_telepor(data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].vcEvent_comand);
                             dispose();
                             load_map();
                             break;
@@ -550,7 +594,6 @@ int Map_Scene::event_call_event(int event_id, bool caller)
 
                     if(exe_to_call< data->vcEvents[id_to_call].vcPage[page_to_call].vcEvent_comand.size())
                     {
-
                         comand=data->vcEvents[id_to_call].vcPage[page_to_call].vcEvent_comand[exe_to_call];// lee el comando
                         //activar comandos
                         if(!my_state->Recall_states[i].id_actual_active)  //si el id actual no esta activa pero el evento  si

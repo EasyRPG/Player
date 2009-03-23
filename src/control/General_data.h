@@ -52,7 +52,9 @@ class General_data {
     E_management GEv_management;
     std:: vector <E_state> GEv_state;
     std:: vector <E_state> GEvc_state;
-
+    E_state before_telepor;
+    std:: vector <Event_comand *> comand_before_telepor; //Script=0x16
+    void copy_to_before_telepor(std:: vector <Event_comand *> comands);
 
     Sprite MBackground;
     string memorized_BGM;
