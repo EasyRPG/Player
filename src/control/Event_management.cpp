@@ -2129,7 +2129,7 @@ cout<<"loop \n";
         break;
     case Break:// 0xDF3C,
         j= comand_id->id_exe_actual++;
-
+printf("page %d \n",comand_id->Active_page);
             if(comand_id->Active_page== -2)
                 i=myteam->data2.Event[event_id].vcEvent_comand.size();
             else
@@ -2138,11 +2138,11 @@ cout<<"loop \n";
 
        while((comand->Comand!=End_loop)&&(comand_id->id_exe_actual<i))// to the end loop
        {
-        comand_id->id_exe_actual++;
         if(comand_id->Active_page== -2)
             comand=myteam->data2.Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
         else
             comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
+        comand_id->id_exe_actual++;
         }
         if(comand_id->id_exe_actual>=i)
         comand_id->id_exe_actual=j;
@@ -2158,11 +2158,15 @@ cout<<"loop \n";
 
         break;
     case Delete_event:
+    if(comand_id->Active_page!=-2)
+       {
         Charas_nps->at(event_id).GridX= data->MapHeight;
         Charas_nps->at(event_id).GridY= data->MapWidth;
         Charas_nps->at(event_id).layer= 3;
+       }
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
+
         break;
     case Call_event:// 0xE02A,
         Event_comand_Call_event * comand_Call_event;
