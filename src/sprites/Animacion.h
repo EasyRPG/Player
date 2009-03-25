@@ -37,8 +37,13 @@ class Animacion: public Sprite {
 private:
     int maxframe;
     short delay;
-
 public:
+    unsigned char alpha;
+    int red;
+    int green;
+    int blue;
+
+
     bool endanim;
     void reset();
     void init_Anim();

@@ -153,21 +153,6 @@ if((img!=NULL)&&(not_clean))
 	color->r+=red;
 	color->g+=green;
 	color->b+=blue;
-/*
-            if (color->r > 255)
-                color->r= 255;
-	    if (color->g > 255)
-                color->g= 255;
-            if (color->b > 255)
-                color->b= 255;
-
-            if (color->r < 0)
-                color->r= 0;
-	    if (color->g < 0)
-                color->g= 0;
-            if (color->b < 0)
-                color->b= 0;
-*/
     }
     if(trasparent_color)
 	SetTransparent(img);

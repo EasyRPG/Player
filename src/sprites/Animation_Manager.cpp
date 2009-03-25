@@ -64,8 +64,13 @@ void Animacion_Manager::draw (SDL_Surface * screen)
         for(i=0;i<j;i++)
         {
             anim.frame=Animation_data->Framedata[actual_frame].Cell_data[i].Cell_source;
-            anim.x=Animation_data->Framedata[actual_frame].Cell_data[i].X_location+center_X-48;
-            anim.y=Animation_data->Framedata[actual_frame].Cell_data[i].Y_location+center_Y-48;
+            anim.x=Animation_data->Framedata[actual_frame].Cell_data[i].X_location+center_X;//-48;
+            anim.y=Animation_data->Framedata[actual_frame].Cell_data[i].Y_location+center_Y;//-48;
+            anim.zoom=Animation_data->Framedata[actual_frame].Cell_data[i].Magnification;
+            anim.alpha=255 -(Animation_data->Framedata[actual_frame].Cell_data[i].Alpha*2.55);
+            anim.red=(Animation_data->Framedata[actual_frame].Cell_data[i].Red_component-100)*2.55;//=0x06,
+            anim.green=(Animation_data->Framedata[actual_frame].Cell_data[i].Green_component-100)*2.55;//=0x07,
+            anim.blue=(Animation_data->Framedata[actual_frame].Cell_data[i].Blue_component-100)*2.55;//=0x08,
             anim.draw(screen);
         }
 
