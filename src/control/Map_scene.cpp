@@ -385,7 +385,7 @@ void Map_Scene::mapnpc()
                 if(myteam->before_telepor.id_exe_actual< myteam->comand_before_telepor.size())
                 {
                     comand=myteam->comand_before_telepor[myteam->before_telepor.id_exe_actual];// lee el comando
-                    //activar comandos
+                   //activar comandos
                     if(!myteam->before_telepor.id_actual_active)  //si el id actual no esta activa pero el evento  si
                     {
 
@@ -451,6 +451,7 @@ void Map_Scene::mapnpc()
                 if(Ev_state->at(event_id).id_exe_actual< data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].vcEvent_comand.size())
                 {
                     comand=data->vcEvents[event_id].vcPage[Ev_state->at(event_id).Active_page].vcEvent_comand[Ev_state->at(event_id).id_exe_actual];// lee el comando
+                   printf("desde evento id del comand %d \n",comand->Comand);
                     //activar comandos
                     if(!Ev_state->at(event_id).id_actual_active)  //si el id actual no esta activa pero el evento  si
                     {
@@ -519,6 +520,8 @@ void Map_Scene::mapnpc()
                 {
                     if(Evc_state->at(event_id).id_exe_actual< myteam->data2.Event[event_id].vcEvent_comand.size())
                     {
+                   printf("desde comon comands id del comand %d \n",comand->Comand);
+
                         comand=myteam->data2.Event[event_id].vcEvent_comand[Evc_state->at(event_id).id_exe_actual];
                         //activar comandos
                         if(!Evc_state->at(event_id).id_actual_active)  //si el id actual no esta activa pero el evento  si
@@ -595,6 +598,9 @@ int Map_Scene::event_call_event(int event_id, bool caller)
                     if(exe_to_call< data->vcEvents[id_to_call].vcPage[page_to_call].vcEvent_comand.size())
                     {
                         comand=data->vcEvents[id_to_call].vcPage[page_to_call].vcEvent_comand[exe_to_call];// lee el comando
+
+                   printf("desde  call event comands id del comand %d \n",comand->Comand);
+
                         //activar comandos
                         if(!my_state->Recall_states[i].id_actual_active)  //si el id actual no esta activa pero el evento  si
                         {
@@ -633,6 +639,9 @@ int Map_Scene::event_call_event(int event_id, bool caller)
                 if(exe_to_call< myteam->data2.Event[id_to_call].vcEvent_comand.size())
                 {
                     comand=myteam->data2.Event[id_to_call].vcEvent_comand[exe_to_call];
+
+                   printf("desde  call comon comands id del comand %d \n",comand->Comand);
+
                     //activar comandos
                     if(!my_state->Recall_states[i].id_actual_active)  //si el id actual no esta activa pero el evento  si
                     {

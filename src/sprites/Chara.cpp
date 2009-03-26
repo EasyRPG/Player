@@ -233,11 +233,17 @@ void Chara::setimg(const char* string,int id)
 }
 void Chara::drawc (SDL_Surface * screen)
 {
+	if(not_clean)
+	{
 	int realframe;
 	int w = 24;//getw();
 	int h =32;//geth();
 	realframe=animation [dir][frame];
+	if(cols!=0)
+	{
 	SDL_Rect fuente = {(realframe%cols)* w,(realframe/cols) * h, w, h};
 	SDL_Rect rect = {x, y, 0, 0};
 	SDL_BlitSurface (img, & fuente,	screen, &rect);
+	}
+	}
 }

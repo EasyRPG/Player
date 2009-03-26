@@ -44,6 +44,7 @@ struct E_state
     unsigned int id_exe_actual;
     bool id_actual_active;
     int Active_page;
+    int timer;
     std:: vector <E_state> Recall_states;
 };
 

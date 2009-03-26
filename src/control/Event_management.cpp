@@ -345,6 +345,8 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
     case Move_Picture:// 0xD670,
         Event_comand_Move_Picture * comand_Move_Picture;
         comand_Move_Picture=(Event_comand_Move_Picture *)comand;
+         comand_Move_Picture->show();
+
         i=comand_Move_Picture->Picture_ID;
         if(comand_Move_Picture->By_Value)
         {
@@ -357,9 +359,9 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
         y=comand_Move_Picture->Y;
         }
 
-        if(timer==0)
+        if(comand_id->timer==0)
         {
-        timer=(comand_Move_Picture->Length);
+        comand_id->timer=(comand_Move_Picture->Length)+1;
         Xmove=(x-images[i-1].x)/(comand_Move_Picture->Length);
         Ymove=(y-images[i-1].y)/(comand_Move_Picture->Length);
         Zoomer=(comand_Move_Picture->Magnification-images[i-1].zoom) /(comand_Move_Picture->Length);
@@ -367,13 +369,13 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
         images[i-1].x+=Xmove;
         images[i-1].y+=Ymove;
         images[i-1].zoom+=Zoomer;
-        timer--;
-        if((((x==images[i-1].x)&&(y==images[i-1].y))&&(images[i-1].zoom==comand_Move_Picture->Magnification))||(timer==0))
+        comand_id->timer--;
+        if((((x==images[i-1].x)&&(y==images[i-1].y))&&(images[i-1].zoom==comand_Move_Picture->Magnification))||(comand_id->timer==1))
         {
         images[i-1].x=x;
         images[i-1].y=y;
         images[i-1].zoom=comand_Move_Picture->Magnification;
-        timer=0;
+        comand_id->timer=0;
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
         }
@@ -896,6 +898,8 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
             myteam->world_var[j-1]*=i;
                 break;
             case 4:
+
+            if(i!=0)
             myteam->world_var[j-1]/=i;
                 break;
             case 5:
@@ -1623,7 +1627,9 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Move_Picture:// 0xD670,
         Event_comand_Move_Picture * comand_Move_Picture;
         comand_Move_Picture=(Event_comand_Move_Picture *)comand;
-
+        comand_Move_Picture->show();
+        printf("lol \n");
+        comand_id->timer=0;
         i=comand_Move_Picture->Picture_ID;
         images[i-1].SetAlpha(255 -(comand_Move_Picture->Opacity*2.55));
         images[i-1].ModRGB(comand_Move_Picture->Red_diffuse-100, comand_Move_Picture->Green_diffuse-100,comand_Move_Picture->Blue_diffuse-100);
