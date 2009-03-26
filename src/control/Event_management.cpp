@@ -540,6 +540,9 @@ if(comand_Move_event->Target!=10001)
             Charas_nps->at(i).dispose();
             Charas_nps->at(i).setimg((char *) system_string.c_str(),comand_key1->Sprite_ID);
             break;
+        default:
+
+            break;
 
         }
   timer++;
@@ -551,7 +554,12 @@ if(comand_Move_event->Target!=10001)
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
 }
- }
+ }else
+ {
+             comand_id->id_exe_actual++;
+        comand_id->id_actual_active=false;
+
+     }
         break;
 
     default:
