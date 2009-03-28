@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeLite_Project Name="player">
+  <VirtualDirectory Name="control">
+    <VirtualDirectory Name="events">
+      <File Name="control/events/message.cpp"/>
+      <File Name="control/events/message.h"/>
+    </VirtualDirectory>
+    <File Name="control/GameOver_scene.h"/>
+    <File Name="control/Title_scene.cpp"/>
+    <File Name="control/Move_management.h"/>
+    <File Name="control/scene.h"/>
+    <File Name="control/Batle_scene.cpp"/>
+    <File Name="control/Title_scene.h"/>
+    <File Name="control/Event_management.cpp"/>
+    <File Name="control/General_data.h"/>
+    <File Name="control/Event_management.h"/>
+    <File Name="control/General_data.cpp"/>
+    <File Name="control/Batle_scene.h"/>
+    <File Name="control/Map_scene.cpp"/>
+    <File Name="control/GameOver_scene.cpp"/>
+    <File Name="control/scene.cpp"/>
+    <File Name="control/Map_scene.h"/>
+    <File Name="control/Move_management.cpp"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="interface">
+    <VirtualDirectory Name="Windows">
+      <File Name="interface/Windows/Window_Player_Select.h"/>
+      <File Name="interface/Windows/Window_Base.h"/>
+      <File Name="interface/Windows/Window_Base.cpp"/>
+      <File Name="interface/Windows/Window_Select.h"/>
+      <File Name="interface/Windows/Window_Player_Select.cpp"/>
+      <File Name="interface/Windows/Window_Select.cpp"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="Control">
+      <File Name="interface/Control/Skills_Menu_scene.cpp"/>
+      <File Name="interface/Control/Save_Load_Menu_scene.cpp"/>
+      <File Name="interface/Control/Objects_Menu_scene.cpp"/>
+      <File Name="interface/Control/Item_use_scene.h"/>
+      <File Name="interface/Control/Save_Load_Menu_scene.h"/>
+      <File Name="interface/Control/Stats_Menu_scene.cpp"/>
+      <File Name="interface/Control/Equip_Menu_scene.h"/>
+      <File Name="interface/Control/Skills_Menu_scene.h"/>
+      <File Name="interface/Control/Main_Menu_scene.h"/>
+      <File Name="interface/Control/Item_use_scene.cpp"/>
+      <File Name="interface/Control/Main_Menu_scene.cpp"/>
+      <File Name="interface/Control/Equip_Menu_scene.cpp"/>
+      <File Name="interface/Control/Stats_Menu_scene.h"/>
+      <File Name="interface/Control/Objects_Menu_scene.h"/>
+    </VirtualDirectory>
+    <File Name="interface/Menu_Easy.cpp"/>
+    <File Name="interface/Menu_Easy.h"/>
+  </VirtualDirectory>
+  <Dependencies/>
+  <Settings Type="Executable">
+    <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger">
+      <General OutputFile="$(IntermediateDirectory)/easyrpg" IntermediateDirectory=".." Command="./easyrpg" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)"/>
+      <Compiler Required="yes" Options="-g;$(shell sdl-config --cflags)"/>
+      <Linker Required="yes" Options="-O2;-lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image $(shell sdl-config --libs);"/>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <CleanCommand/>
+        <BuildCommand/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger">
+      <General OutputFile="$(IntermediateDirectory)/easyrpg" IntermediateDirectory=".." Command="./easyrpg" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)"/>
+      <Compiler Required="yes" Options=";$(shell sdl-config --cflags)"/>
+      <Linker Required="yes" Options="-O2;-lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image $(shell sdl-config --libs);"/>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <CleanCommand/>
+        <BuildCommand/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+    </Configuration>
+  </Settings>
+  <VirtualDirectory Name="src">
+    <File Name="main.cpp"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="readers">
+    <File Name="readers/ldb.cpp"/>
+    <File Name="readers/ldb.h"/>
+    <File Name="readers/strmap.cpp"/>
+    <File Name="readers/eventchunks.h"/>
+    <File Name="readers/xyz.h"/>
+    <File Name="readers/ldbstr.cpp"/>
+    <File Name="readers/lmt.cpp"/>
+    <File Name="readers/lmt.h"/>
+    <File Name="readers/mapchunks.h"/>
+    <File Name="readers/xyz.cpp"/>
+    <File Name="readers/map.cpp"/>
+    <File Name="readers/ldbstr.h"/>
+    <File Name="readers/iniparser.cpp"/>
+    <File Name="readers/map.h"/>
+    <File Name="readers/iniparser.h"/>
+    <File Name="readers/stevent.h"/>
+    <File Name="readers/ldbchunks.h"/>
+    <File Name="readers/stevent.cpp"/>
+    <File Name="readers/strmap.h"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="tools">
+    <File Name="tools/Timer.h"/>
+    <File Name="tools/Sound_Manager.cpp"/>
+    <File Name="tools/font.cpp"/>
+    <File Name="tools/CDeltaTime.h"/>
+    <File Name="tools/Timer.cpp"/>
+    <File Name="tools/CDeltaTime.cpp"/>
+    <File Name="tools/key.cpp"/>
+    <File Name="tools/tools.h"/>
+    <File Name="tools/Sound_Manager.h"/>
+    <File Name="tools/tools.cpp"/>
+    <File Name="tools/key.h"/>
+    <File Name="tools/audio.cpp"/>
+    <File Name="tools/font.h"/>
+    <File Name="tools/control.h"/>
+    <File Name="tools/math-sll.h"/>
+    <File Name="tools/audio.h"/>
+    <File Name="tools/control.cpp"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="sprites">
+    <File Name="sprites/Animacion.h"/>
+    <File Name="sprites/Batler.cpp"/>
+    <File Name="sprites/Chara.cpp"/>
+    <File Name="sprites/chipset.cpp"/>
+    <File Name="sprites/Faceset.h"/>
+    <File Name="sprites/sprite.cpp"/>
+    <File Name="sprites/Chara.h"/>
+    <File Name="sprites/Sistem.h"/>
+    <File Name="sprites/Animacion.cpp"/>
+    <File Name="sprites/Faceset.cpp"/>
+    <File Name="sprites/Pre_Chipset.h"/>
+    <File Name="sprites/sprite.h"/>
+    <File Name="sprites/Animation_Manager.cpp"/>
+    <File Name="sprites/Pre_Chipset.cpp"/>
+    <File Name="sprites/chipset.h"/>
+    <File Name="sprites/Sistem.cpp"/>
+    <File Name="sprites/Animation_Manager.h"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="attributes">
+    <File Name="attributes/skill.cpp"/>
+    <File Name="attributes/item.h"/>
+    <File Name="attributes/Player_Team.h"/>
+    <File Name="attributes/Enemy.cpp"/>
+    <File Name="attributes/skill.h"/>
+    <File Name="attributes/item.cpp"/>
+    <File Name="attributes/CActor.h"/>
+    <File Name="attributes/Enemy.h"/>
+    <File Name="attributes/Player.cpp"/>
+    <File Name="attributes/Player_Team.cpp"/>
+    <File Name="attributes/Player.h"/>
+    <File Name="attributes/CActor.cpp"/>
+  </VirtualDirectory>
+  <Dependencies Name="Debug"/>
+  <Dependencies Name="Release"/>
+</CodeLite_Project>
