@@ -163,11 +163,11 @@ void E_management::init(Audio * audio,unsigned char * TheScene,General_data * Th
     system_string.append(TheTeam->data2.System_dat.System_graphic);
     system_string.append(".png");
     message_box = new CMessage(system_string.c_str());
-    for(i=0;i<50;i++)
+    for(i=0; i < 50; i++)
     {
-    Sprite image;
-    images.push_back(image);
-    images[i].visible=false;
+        Sprite image;
+        images.push_back(image);
+        images[i].visible=false;
     }
     myteam->scroll_writed=false;
     X.visible=false;
@@ -646,8 +646,23 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
     case Message_options:// 0xCF08,
         Event_comand_Message_options * comand_Message_options;
-        comand_Message_options = (Event_comand_Message_options *)comand;
-      comand_id->id_exe_actual++;
+        comand_Message_options = (Event_comand_Message_options*) comand;
+        CMessage::set_transparency(comand_Message_options->Transparency);
+        switch (comand_Message_options->Position)
+        {
+            case 0:
+                CMessage::set_position(UP);
+                break;
+            case 1:
+                CMessage::set_position(CENTER);
+                break;
+            case 2:
+                CMessage::set_position(DOWN);
+                break;
+            default:
+                std::cerr << "*** Warning: Possibly corrupted LMU" << std::endl;
+        }
+        comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
 
         break;

@@ -1,6 +1,6 @@
 #include "message.h"
 
-Player_Team *myTeam=NULL;
+Player_Team *myTeam = NULL;
 
 message_options CMessage::opt =
 {
@@ -17,7 +17,7 @@ CMessage::CMessage(const std::string& sys)
     const int SizeX = 320;
     const int SizeY = 80;
     const int PosX = 0;
-    const int PosY = 80 * opt.place;
+    const int PosY = 160;
     done = false;
 	System.init_Sistem();
 	System.setimg(sys);
@@ -26,14 +26,14 @@ CMessage::CMessage(const std::string& sys)
 	tapiz.y = PosY;
 	fuente.init_Font();
 	pos_X = PosX;
-	pos_Y = PosY;
+	pos_Y = PosY * opt.place;
 	Size_X = SizeX;
 	Size_Y = SizeY;
 	disposing = false;
 	visible = false;
 
 	blink = 0;
-	cursor = false;
+	cursor_visible = false;
 	next = false;
     type_set.set('c');
     type_set.set('s');
@@ -47,7 +47,8 @@ void CMessage::draw(SDL_Surface *dst)
 	{
 		if (!disposing)
 		{
-			tapiz.draw(dst);
+            tapiz.y = pos_Y;
+            if (!opt.transparent) tapiz.draw(dst);
 			for (i = 0; i < Vtext_Sprite.size(); i++)
 			{
 				Vtext_Sprite[i].draw(dst);
@@ -61,7 +62,6 @@ void CMessage::draw(SDL_Surface *dst)
             draw_blink(dst);
 		}
 	}
-
 }
 
 
@@ -84,7 +84,7 @@ void CMessage::draw_blink(SDL_Surface *dst)
     };
 	if (blink >= 30)
 	{
-        if (cursor) SDL_BlitSurface(System.get_img(), &clip, dst, &pos);
+        if (cursor_visible) SDL_BlitSurface(System.get_img(), &clip, dst, &pos);
         blink++;
 	}
     else
@@ -103,6 +103,7 @@ void CMessage::clean() //NO BORRAR clean no destruye el objeto, solo limpia el t
 	Vtext_Sprite[i].dispose();
 	}
 	Vtext_Sprite.clear();
+    pos_Y = 80 * opt.place;
 }
 
 CMessage::~CMessage()
@@ -111,7 +112,7 @@ CMessage::~CMessage()
 	tp = Vtext_Sprite.size();
 	for (i = 0; i < tp; i ++)
 	{
-	Vtext_Sprite[i].dispose();
+        Vtext_Sprite[i].dispose();
 	}
 
 	Vtext_Sprite.clear();
@@ -132,7 +133,7 @@ void CMessage::add_text(const std::string& ctext, int line)
     char type = 0;
     int n = 0;
     int n_color = 0;
-    int lost_space=0;
+    int lost_space = 0;
     SDL_Surface *text_tmp = fuente.create_font_surface(FONT_WIDTH*l, 15);
     SDL_Surface *shadow = fuente.create_font_surface(FONT_WIDTH*l, 15);
 
@@ -219,8 +220,5 @@ void CMessage::add_text(const std::string& ctext, int line)
 	Vtext_Sprite.push_back(sha_text);
 	Vtext_Sprite.push_back(text);
 
-	cursor = true;
-//text.dispose();
-//sha_text.dispose();
-
+	cursor_visible = true;
 }

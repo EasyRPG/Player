@@ -6,9 +6,9 @@
 
 enum m_pos
 {
-    UP,
-    CENTER,
-    DOWN
+    UP = 0,
+    CENTER = 1,
+    DOWN = 2
 };
 
 typedef struct
@@ -23,7 +23,7 @@ class CMessage: public Window_Base
     private:
         bool next;
         int blink;
-        bool cursor;
+        bool cursor_visible;
         std::bitset<255> type_set;
         static message_options opt;
         void draw_blink(SDL_Surface *dst);
@@ -36,6 +36,10 @@ class CMessage: public Window_Base
         void add_text(const std::string& ctext, int line);
         bool is_done() { return done; }
         void clean();
+        
+        static void set_transparency(bool b) { opt.transparent = b; }
+        static void set_position(m_pos p) { opt.place = p; }
+        static void set_detect_hero(bool b) { opt.detect_hero = b; }
 };
 
 #endif

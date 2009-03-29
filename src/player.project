@@ -159,6 +159,6 @@
     <File Name="attributes/Player.h"/>
     <File Name="attributes/CActor.cpp"/>
   </VirtualDirectory>
-  <Dependencies Name="Debug"/>
   <Dependencies Name="Release"/>
+  <Dependencies Name="Debug"/>
 </CodeLite_Project>
