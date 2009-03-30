@@ -265,6 +265,7 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
     case Key_input:// 0xDA5A,
         Event_comand_Key_input * comand_Key_input;
         comand_Key_input=(Event_comand_Key_input *)comand;
+        use_keyboard=true;
 
         if((comand_Key_input->Accept)&&tried_to_talk)
         {
@@ -333,7 +334,7 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
             timer = 0;
             comand_id->id_exe_actual++;
             comand_id->id_actual_active = false;
-            use_keyboard = false;
+            //use_keyboard = false;
         }
         break;
    case Call_event:// 0xE02A,
@@ -577,12 +578,13 @@ void E_management::dispose()
    //delete message_box;
    // message_box=NULL;
    //}
+   /*
    X.dispose();
  for(i=0;i<images.size();i++)
  {images[i].dispose();
      }
   images.clear();
-
+*/
 }
 
 int E_management::busque_real_id(int id_to_serch)
@@ -1756,7 +1758,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
         break;
     case Wait:// 0xD912,
-         use_keyboard = true;
+        // use_keyboard = true;
 
         break;
     case Play_BGM:// 0xD976,

@@ -80,10 +80,12 @@ private:
     std:: vector <stEventMap> * Events;//agregar apuntador a vector de eventos
     std:: vector <E_state> * Ev_state;//agregar apuntador a vector de eventos
     std:: vector <E_state> * Evc_state;//agregar apuntador a vector de eventos
+    bool common_autoprocess;
+    bool event_autoprocess;
 
 	char stringBuffer[255];
 public:
-	//Map_Scene();		///constructor
+	Map_Scene();		///constructor
 	//~Map_Scene();		///destructor
 	void init( int SCREEN_X, int SCREEN_Y,General_data * TheTeam);
     void load_map();
@@ -91,11 +93,17 @@ public:
 	void Scroll();
 	void updatekey();
 	void init_npc();
-	int event_call_event(int event_id, bool caller);
-	void active_event(int event_id);
-	void mapnpc();
-	void dispose();
+	int  event_call_event(int event_id, bool caller);
+	void active_event(int event_id,bool type);
+    void unactive_event(int event_id,bool type);
+    void telepor_state_machine();
+    void NPC_state_machine();
+    int event_active_exe(unsigned int event_id);
+    void Common_events_state_machine();
+    int common_event_active_exe(unsigned int event_id);
 
+    void mapnpc();
+	void dispose();
 };
 
 
