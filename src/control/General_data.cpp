@@ -6,6 +6,11 @@ General_data::General_data()
     TheScene = 0;
     
     ldbdata = new LDB_data();
+    if (ldbdata == NULL)
+    {
+        std::cerr << "No memory left allocating LDB data." << std::endl;
+        exit(-1);
+    }
 
     before_telepor.Event_Active=false;
     before_telepor.id_exe_actual=0;
@@ -16,7 +21,7 @@ General_data::General_data()
 
 General_data::~General_data()
 {
-    std::cout << "Destructor general data" << std::endl;
+    //std::cout << "Destructor general data" << std::endl;
     delete ldbdata;
 }
 
@@ -426,9 +431,9 @@ if(item_id==0)
 }
 else{
     item_id--;
-    X.set_name(ldbdata->items[item_id].Name.c_str());
+    X.set_name(ldbdata->items->at(item_id)->Name.c_str());
     X.set_NOI(1);
-    X.set_type(ldbdata->items[item_id].Type);
+    X.set_type(ldbdata->items->at(item_id)->Type);
     X.id = 1;
     }return(X);
 }
@@ -465,9 +470,9 @@ void General_data::change_objets(int remove_add,int item_id,int cout)
 {
     Item X;
     item_id--;
-    X.set_name(ldbdata->items[item_id].Name.c_str());
+    X.set_name(ldbdata->items->at(item_id)->Name.c_str());
     X.set_NOI(cout);
-    X.set_type(ldbdata->items[item_id].Type);
+    X.set_type(ldbdata->items->at(item_id)->Type);
     X.id = 1;
 
     if(remove_add)

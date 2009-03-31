@@ -83,7 +83,9 @@ void Map_Scene::load_map()
         system_string.append(".lmu");
         // ===[ LOADING MAP DATA ]==============================================
         Map.Load((char *)system_string.c_str(), data);
+        #ifdef M_DEBUG
         Map.ShowInformation(data);
+        #endif
         if(myteam->lmt.tree_list[Map_id].music==2)
         {
             system_string.clear();

@@ -346,8 +346,11 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
     case Move_Picture:// 0xD670,
         Event_comand_Move_Picture * comand_Move_Picture;
         comand_Move_Picture=(Event_comand_Move_Picture *)comand;
-         comand_Move_Picture->show();
-
+        
+        #ifdef M_DEBUG
+        comand_Move_Picture->show();
+        #endif
+        
         i=comand_Move_Picture->Picture_ID;
         if(comand_Move_Picture->By_Value)
         {
@@ -1644,8 +1647,10 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Move_Picture:// 0xD670,
         Event_comand_Move_Picture * comand_Move_Picture;
         comand_Move_Picture=(Event_comand_Move_Picture *)comand;
+        #ifdef M_DEBUG
         comand_Move_Picture->show();
         printf("lol \n");
+        #endif
         comand_id->timer=0;
         i=comand_Move_Picture->Picture_ID;
         images[i-1].SetAlpha(255 -(comand_Move_Picture->Opacity*2.55));

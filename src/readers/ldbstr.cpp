@@ -134,7 +134,7 @@ printf(" \n intAttriblength %d",intAttriblength);
 }
 
 
-void stcSkill::clear()
+void stcSkill::set_defaults()
 {
 strName="";//0x01,
 strDescription="";//0x02,
@@ -214,7 +214,7 @@ printf(" \n intwhenusinganimation %d",intwhenusinganimation);
 //CBA data  //0x32
 }
 
-void stcItem::clear()
+void stcItem::set_defaults()
 {
 Name="";//0x01,
 Description="";//0x02,

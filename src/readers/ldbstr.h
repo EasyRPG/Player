@@ -119,7 +119,7 @@ std::vector<char> vc_ch_Attribeffects; //0x2C,
 char  blAffectresistance;//0x2D
 int intwhenusinganimation; //0x31 --2003
 //CBA data  //0x32
-void clear();
+void set_defaults();
 void show();
 };
 
@@ -180,7 +180,7 @@ int Whenuseanimation;//0x45
 int ItemtoSkill;//0x47
 int EquitoVoc;//0x48
 //Vocation possible  1 byte one dimension array//0x49
-void clear();
+void set_defaults();
 void show();
 };
 

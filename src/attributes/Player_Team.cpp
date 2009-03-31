@@ -530,10 +530,10 @@ void Player_Team::change_skills(int Learn,int Hero_id,int skill_id)
         {
             skill_id=skill_id-1;
             Veneno.id=skill_id;
-            Veneno.set_name(data2->skill[skill_id].strName.c_str());
-            Veneno.set_damange(data2->skill[skill_id].intBasevalue);
+            Veneno.set_name(data2->skill->at(skill_id)->strName.c_str());
+            Veneno.set_damange(data2->skill->at(skill_id)->intBasevalue);
             Veneno.set_level_req(1);
-            Veneno.set_mp_price(data2->skill[skill_id].intCost);
+            Veneno.set_mp_price(data2->skill->at(skill_id)->intCost);
             Players[j].add_skill(Veneno);
         }
     }
@@ -605,48 +605,48 @@ for (j=0;j<(actual_hero->skills.size());j++)
 {
     id_skill=actual_hero->skills[j].Spell_ID-1;
     Veneno.id=id_skill;
-    Veneno.set_name(data2->skill[id_skill].strName.c_str());
-    Veneno.set_damange(data2->skill[id_skill].intBasevalue);
+    Veneno.set_name(data2->skill->at(id_skill)->strName.c_str());
+    Veneno.set_damange(data2->skill->at(id_skill)->intBasevalue);
     Veneno.set_level_req(1);
-    Veneno.set_mp_price(data2->skill[id_skill].intCost);
+    Veneno.set_mp_price(data2->skill->at(id_skill)->intCost);
     Alex.add_skill(Veneno);
 }
 
 
     Item X;
 
-    X.set_name(data2->items[actual_hero->sh_Weapon].Name.c_str());
+    X.set_name(data2->items->at(actual_hero->sh_Weapon)->Name.c_str());
     X.set_NOI(1);
-    X.set_type(data2->items[actual_hero->sh_Weapon].Type);
+    X.set_type(data2->items->at(actual_hero->sh_Weapon)->Type);
     X.id = 1;
 
     Alex.set_Weapon(X);
 
-    X.set_name(data2->items[actual_hero->sh_Shield].Name.c_str());
+    X.set_name(data2->items->at(actual_hero->sh_Shield)->Name.c_str());
     X.set_NOI(1);
-    X.set_type(data2->items[actual_hero->sh_Shield].Type);
+    X.set_type(data2->items->at(actual_hero->sh_Shield)->Type);
     X.id = 1;
 
     Alex.set_Shield(X);
 
-    X.set_name(data2->items[actual_hero->sh_Armor].Name.c_str());
+    X.set_name(data2->items->at(actual_hero->sh_Armor)->Name.c_str());
     X.set_NOI(1);
-    X.set_type(data2->items[actual_hero->sh_Armor].Type);
+    X.set_type(data2->items->at(actual_hero->sh_Armor)->Type);
     X.id = 1;
 
 
     Alex.set_Armor(X);
 
-    X.set_name(data2->items[actual_hero->sh_Head].Name.c_str());
+    X.set_name(data2->items->at(actual_hero->sh_Head)->Name.c_str());
     X.set_NOI(1);
-    X.set_type(data2->items[actual_hero->sh_Head].Type);
+    X.set_type(data2->items->at(actual_hero->sh_Head)->Type);
     X.id = 1;
 
     Alex.set_Helmet(X);
 
-    X.set_name(data2->items[actual_hero->sh_Accessory].Name.c_str());
+    X.set_name(data2->items->at(actual_hero->sh_Accessory)->Name.c_str());
     X.set_NOI(1);
-    X.set_type(data2->items[actual_hero->sh_Accessory].Type);
+    X.set_type(data2->items->at(actual_hero->sh_Accessory)->Type);
     X.id = 1;
 
 

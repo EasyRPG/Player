@@ -1,40 +1,10 @@
-
 #ifndef LDB_H
 #define LDB_H
 
 #include <vector>
 #include "ldbchunks.h"
-#include "ldbstr.h"
 #include "../tools/tools.h"
-
-class LDB_data
-{
-    
-public:
-
-    LDB_data();
-    ~LDB_data();
-    
-    std::vector<stcHero*> *heros;
-    
-    std:: vector <stcSkill> skill;
-    std:: vector <stcItem> items;
-    std:: vector <stcEnemy> mosters;
-    std:: vector <stcEnemy_group> mosterpartys;
-    std:: vector <stcTerrain> Terrains;
-    std:: vector <stcAttribute> Attributes;
-    std:: vector <stcState> States;
-    std:: vector <stcAnimated_battle> Animations;
-    std:: vector <stcChipSet> Tilesets;
-    stcGlosary Glosary;
-    stcSystem System_dat;
-    stcCombatcommands Combatcommands;
-    std:: vector <stcEvent> Event;
-    std:: vector <std::string> Switch_Names;
-    std:: vector <std::string> Variable_Names;
-    std:: vector <stcProfetion> Professions;
-    std:: vector <stcBattle_comand> Fightanims;
-};
+#include "ldb_data.h"
 
 class LDB_reader
 {
@@ -52,8 +22,8 @@ private:
     std:: vector <Magicblock> heroskillChunk(FILE * Stream);
     std:: vector <stcHero*> * heroChunk(FILE * Stream);//lectura de pedasos del heroe
     stcSound_effect soundChunk(FILE * Stream);
-    std:: vector <stcSkill> & skillChunk(FILE * Stream);//lectura de pedasos del habilidades
-    std:: vector <stcItem> & itemChunk(FILE * Stream);//lectura de pedasos del objetos
+    std:: vector <stcSkill*> * skillChunk(FILE * Stream);//lectura de pedasos del habilidades
+    std:: vector <stcItem*> * itemChunk(FILE * Stream);//lectura de pedasos del objetos
     std:: vector <stcEnemy_Action> mosteractionChunk(FILE * Stream);
     std:: vector <stcEnemy> & mosterChunk(FILE * Stream);// lectura de monstruos
 
