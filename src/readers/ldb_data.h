@@ -15,11 +15,11 @@ public:
     
     std:: vector <stcSkill*> *skill;
     std:: vector <stcItem*> *items;
-    std:: vector <stcEnemy> mosters;
-    std:: vector <stcEnemy_group> mosterpartys;
-    std:: vector <stcTerrain> Terrains;
-    std:: vector <stcAttribute> Attributes;
-    std:: vector <stcState> States;
+    std:: vector <stcEnemy*> *monsters;
+    std:: vector <stcEnemy_group*> *monsterpartys;
+    std:: vector <stcTerrain*> *terrains;
+    std:: vector <stcAttribute*> *attributes;
+    std:: vector <stcState*> *states;
     std:: vector <stcAnimated_battle> Animations;
     std:: vector <stcChipSet> Tilesets;
     stcGlosary Glosary;

@@ -4,6 +4,12 @@ LDB_data::LDB_data()
 {
     heros = NULL;
     skill = NULL;
+    items = NULL;
+    monsters = NULL;
+    monsterpartys = NULL;
+    terrains = NULL;
+    attributes = NULL; 
+    states = NULL;
 }
 
 LDB_data::~LDB_data()
@@ -39,5 +45,54 @@ LDB_data::~LDB_data()
         }
         delete items;
     }
+
+    if (monsters != NULL)
+    {
+        l = monsters->size();
+        for (i = 0; i < l; i++)
+        {
+            delete monsters->at(i);
+        }
+        delete monsters;
+    }
     
+    if (monsterpartys != NULL)
+    {
+        l = monsterpartys->size();
+        for (i = 0; i < l; i++)
+        {
+            delete monsterpartys->at(i);
+        }
+        delete monsterpartys;
+    }    
+    
+    if (terrains != NULL)
+    {
+        l = terrains->size();
+        for (i = 0; i < l; i++)
+        {
+            delete terrains->at(i);
+        }
+        delete terrains;        
+    }
+    
+    if (attributes != NULL)
+    {
+        l = attributes->size();
+        for (i = 0; i < l; i++)
+        {
+            delete attributes->at(i);
+        }
+        delete attributes;        
+    }
+    
+    if (states != NULL)
+    {
+        l = states->size();
+        for (i = 0; i < l; i++)
+        {
+            delete states->at(i);
+        }
+        delete states;        
+    }
 }

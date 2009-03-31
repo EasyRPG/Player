@@ -378,31 +378,31 @@ void General_data::load_group(int id)
     clear_enemy();
    id--;
    cout<<" data "<<id<<endl;
-    for(i=0;i<ldbdata->mosterpartys[id].Enemy_data.size();i++)
+    for(i=0;i<ldbdata->monsterpartys->at(id)->Enemy_data.size();i++)
     {
-        moster_id=ldbdata->mosterpartys[id].Enemy_data[i].Enemy_ID-1;
+        moster_id=ldbdata->monsterpartys->at(id)->Enemy_data[i].Enemy_ID-1;
         cout<<" mid "<<moster_id<<endl;
 
         Enemy enemigo;
-        enemigo.set_HP(ldbdata->mosters[moster_id].intMaxHP);
-        enemigo.set_MaxHP(ldbdata->mosters[moster_id].intMaxHP);
-        enemigo.set_MP(ldbdata->mosters[moster_id].intMaxMP);
-        enemigo.set_MaxMP(ldbdata->mosters[moster_id].intMaxMP);
-        enemigo.set_Attack(ldbdata->mosters[moster_id].intAttack);
-        enemigo.set_Defense(ldbdata->mosters[moster_id].intDefense);
-        enemigo.set_Speed(ldbdata->mosters[moster_id].intSpeed);
-        enemigo.set_Spirit(ldbdata->mosters[moster_id].intMind);
+        enemigo.set_HP(ldbdata->monsters->at(moster_id)->intMaxHP);
+        enemigo.set_MaxHP(ldbdata->monsters->at(moster_id)->intMaxHP);
+        enemigo.set_MP(ldbdata->monsters->at(moster_id)->intMaxMP);
+        enemigo.set_MaxMP(ldbdata->monsters->at(moster_id)->intMaxMP);
+        enemigo.set_Attack(ldbdata->monsters->at(moster_id)->intAttack);
+        enemigo.set_Defense(ldbdata->monsters->at(moster_id)->intDefense);
+        enemigo.set_Speed(ldbdata->monsters->at(moster_id)->intSpeed);
+        enemigo.set_Spirit(ldbdata->monsters->at(moster_id)->intMind);
         std::string system_string;
         system_string.clear();
         system_string.append("Monster/");
-        system_string.append(ldbdata->mosters[moster_id].strGraphicfile);
+        system_string.append(ldbdata->monsters->at(moster_id)->strGraphicfile);
         system_string.append(".png");
         (enemigo.Batler).setimg(system_string.c_str());
         (enemigo.Batler).setcols(1);
         (enemigo.Batler).setrows(1);
-        (enemigo.Batler).x=ldbdata->mosterpartys[id].Enemy_data[i].X_position;
-        (enemigo.Batler).y=ldbdata->mosterpartys[id].Enemy_data[i].Y_position;
-        enemigo.set_name(ldbdata->mosters[moster_id].strName.c_str());
+        (enemigo.Batler).x=ldbdata->monsterpartys->at(id)->Enemy_data[i].X_position;
+        (enemigo.Batler).y=ldbdata->monsterpartys->at(id)->Enemy_data[i].Y_position;
+        enemigo.set_name(ldbdata->monsters->at(moster_id)->strName.c_str());
         add_enemy(enemigo);
     }
 

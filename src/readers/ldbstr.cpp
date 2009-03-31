@@ -346,7 +346,7 @@ printf(" \n intLower_limit %d",intLower_limit);
 printf(" \n intUpper_limit %d",intUpper_limit);
 printf(" \n intPriority %d",intPriority);
 }
-void stcEnemy::clear()
+void stcEnemy::set_defaults()
 {
    strName="";	// = 0x01,
    strGraphicfile="";	//= 0x02,
@@ -435,7 +435,7 @@ void stcEnemy_group_event_page::clear()
 //	Event=0x0C// como en eventos
 }
 
-void stcEnemy_group::clear()
+void stcEnemy_group::set_defaults()
 {
  strName="";// =0x01,
  Enemy_data.clear();//data=0x02,
@@ -477,7 +477,7 @@ printf(" \n blAirshipmaypass %d",blAirshipmaypass);
 printf(" \n blAirshipmayland %d",blAirshipmayland);
 printf(" \n intHeroopacity %d",intHeroopacity);
 }
-void stcAttribute::clear()
+void stcAttribute::set_defaults()
 {
 strName="";//=0x01,
 intType=0;//=0x02,
@@ -499,7 +499,7 @@ printf(" \n intE_damage %d",intE_damage);
 }
 
 
-void stcState::clear()
+void stcState::set_defaults()
 {
 strName="";//=0x01,
 intLength=0;//=0x02,

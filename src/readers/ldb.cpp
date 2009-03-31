@@ -303,12 +303,16 @@ std:: vector <stcSkill*> * LDB_reader::skillChunk(FILE * Stream)
 
     while (datatoread>datareaded) 
     { // si no hay mas en el array
+        skill = new stcSkill();
+        skill->set_defaults();
+        if (skill == NULL)
+        {
+            std::cerr << "No memory left." << std::endl;
+            exit(-1);
+        }
         id= ReadCompressedInteger(Stream);//lectura de id 1 de array
         do 
         {
-            skill = new stcSkill();
-            skill->set_defaults();
-            
             ChunkInfo.ID = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
             if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
                 ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
@@ -444,18 +448,16 @@ std:: vector <stcItem*> * LDB_reader::itemChunk(FILE * Stream)
     datatoread=ReadCompressedInteger(Stream);
     while (datatoread>datareaded) 
     {
+        item = new stcItem();
+        if (item == NULL)
+        {
+            std::cerr << "No memory left." << std::endl;
+            exit(-1);
+        }
+        item->set_defaults();
         id= ReadCompressedInteger(Stream);//lectura de id 1 de array
         do 
-        {
-            item = new stcItem();
-            if (item == NULL)
-            {
-                std::cerr << "No memory left." << std::endl;
-                exit(-1);
-            }
-            
-            item->set_defaults();
-            
+        {            
             ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
             if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
                 ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
@@ -673,91 +675,109 @@ std:: vector <stcEnemy_Action>  LDB_reader::mosteractionChunk(FILE * Stream)
     return(vecActions);
 }
 
-std:: vector <stcEnemy> & LDB_reader::mosterChunk(FILE * Stream)
+std:: vector <stcEnemy*> * LDB_reader::mosterChunk(FILE * Stream)
 {
     int id,datatoread=0,datareaded=0;
-    static std:: vector <stcEnemy> vecEnemy;
-    stcEnemy Enemy;
+    std:: vector <stcEnemy*> *vecEnemy;
+    
+    vecEnemy = new std::vector<stcEnemy*>();
+    if (vecEnemy == NULL)
+    {
+        std::cerr << "No memory left." << std::endl;
+        exit(-1);
+    }
+    stcEnemy *enemy;
+    
+    
     datatoread=ReadCompressedInteger(Stream);//numero de datos
     //printf("Numero de datos -> %d\n", datatoread);
-    while (datatoread>datareaded) { // si no hay mas en el array
+    while (datatoread>datareaded) 
+    { // si no hay mas en el array
+        enemy = new stcEnemy();
+        if (enemy == NULL)
+        {
+            std::cerr << "No memory left." << std::endl;
+            exit(-1);
+        }
+        enemy->set_defaults();
         id= ReadCompressedInteger(Stream);//lectura de id 1 de array
-        do {
-            ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
+        do 
+        {            
+            ChunkInfo.ID = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
             //printf("%x\n", ChunkInfo.ID);
             if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
                 ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
             switch (ChunkInfo.ID) { // tipo de la primera dimencion
             case MonsterChunk_Name:
-                Enemy.strName = ReadString(Stream, ChunkInfo.Length);
+                enemy->strName = ReadString(Stream, ChunkInfo.Length);
                 break;
             case MonsterChunk_Graphicfile:
-                Enemy.strGraphicfile = ReadString(Stream, ChunkInfo.Length);
+                enemy->strGraphicfile = ReadString(Stream, ChunkInfo.Length);
                 break;
             case MonsterChunk_Huealteration://0x03,
-                Enemy.intHuealteration = ReadCompressedInteger(Stream);
+                enemy->intHuealteration = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_MaxHP://0x04,
-                Enemy.intMaxHP = ReadCompressedInteger(Stream);
+                enemy->intMaxHP = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_MaxMP://0x05,
-                Enemy.intMaxMP = ReadCompressedInteger(Stream);
+                enemy->intMaxMP = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_Attack://0x06,
-                Enemy.intAttack = ReadCompressedInteger(Stream);
+                enemy->intAttack = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_Defense://0x07,
-                Enemy.intDefense = ReadCompressedInteger(Stream);
+                enemy->intDefense = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_Mind://0x08,
-                Enemy.intMind = ReadCompressedInteger(Stream);
+                enemy->intMind = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_Speed://0x09,
-                Enemy.intSpeed = ReadCompressedInteger(Stream);
+                enemy->intSpeed = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_Translucentgraphic://0x0A,
-                Enemy.blTranslucentgraphic = ReadCompressedInteger(Stream);
+                enemy->blTranslucentgraphic = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_Experience://0x0B,
-                Enemy.intExperience = ReadCompressedInteger(Stream);
+                enemy->intExperience = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_Gold://0x0C,
-                Enemy.intGold = ReadCompressedInteger(Stream);
+                enemy->intGold = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_SpoilsitemID://0x0D,
-                Enemy.intSpoilsitemID = ReadCompressedInteger(Stream);
+                enemy->intSpoilsitemID = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_Spoilschance://0x0E,
-                Enemy.intSpoilschance = ReadCompressedInteger(Stream);
+                enemy->intSpoilschance = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_Canusecriticalhits://0x15,
-                Enemy.blCanusecriticalhits = ReadCompressedInteger(Stream);
+                enemy->blCanusecriticalhits = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_Criticalhitchance://0x16,
-                Enemy.intCriticalhitchance = ReadCompressedInteger(Stream);
+                enemy->intCriticalhitchance = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_Usuallymiss://0x1A,
-                Enemy.blUsuallymiss = ReadCompressedInteger(Stream);
+                enemy->blUsuallymiss = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_Airborne://0x1C,
-                Enemy.blAirborne = ReadCompressedInteger(Stream);
+                enemy->blAirborne = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_Conditionslength://0x1F,
-                Enemy.intConditionslength = ReadCompressedInteger(Stream);
+                enemy->intConditionslength = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_Conditionseffects://0x20,
                 while (ChunkInfo.Length--) {
                     fread(&Void, sizeof(char), 1, Stream);
-                    Enemy.vc_ch_Condeffects.push_back(Void);
+                    enemy->vc_ch_Condeffects.push_back(Void);
                 }
                 break;
             case MonsterChunk_Attributeslength://0x21,
-                Enemy.inyAttributeslength = ReadCompressedInteger(Stream);
+                enemy->inyAttributeslength = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_Attributeseffect://0x22,
                 while (ChunkInfo.Length--) {
                     fread(&Void, sizeof(char), 1, Stream);
-                    Enemy.vc_ch_Attribeffects.push_back(Void);
+                    enemy->vc_ch_Attribeffects.push_back(Void);
                 }
                 break;
             case MonsterChunk_Actionslist://0x2A
@@ -772,8 +792,8 @@ std:: vector <stcEnemy> & LDB_reader::mosterChunk(FILE * Stream)
             }
         } while (ChunkInfo.ID!=0);
         datareaded++;
-        vecEnemy.push_back(Enemy);
-        Enemy.clear();
+        vecEnemy->push_back(enemy);
+        //enemy.clear();
     }
     //stop = true;
     return(vecEnemy);
@@ -907,36 +927,53 @@ std:: vector <stcEnemy_group_event_page>  LDB_reader::MonsterPartyevent_pageChun
 
 
 
-std:: vector <stcEnemy_group> & LDB_reader::mosterpartyChunk(FILE * Stream)
+std:: vector <stcEnemy_group*> * LDB_reader::mosterpartyChunk(FILE * Stream)
 {
     int id,datatoread=0,datareaded=0;
-    static std:: vector <stcEnemy_group> vecEnemy_group;
-    stcEnemy_group Enemy_group;
+    std:: vector <stcEnemy_group*> *vecEnemy_group;
+    
+    vecEnemy_group = new std:: vector <stcEnemy_group*>();
+    if (vecEnemy_group == NULL)
+    {
+        std::cerr << "No memory left." << std::endl;
+        exit(-1);
+    }
+    
+    stcEnemy_group *enemy_group;
     datatoread=ReadCompressedInteger(Stream);//numero de datos
-    while (datatoread>datareaded) { // si no hay mas en el array
+    while (datatoread>datareaded) 
+    { // si no hay mas en el array
+        enemy_group = new stcEnemy_group();
+        if (enemy_group == NULL)
+        {
+            std::cerr << "No memory left." << std::endl;
+            exit(-1);
+        }
+        enemy_group->set_defaults();
         id= ReadCompressedInteger(Stream);//lectura de id 1 de array
-        do {
+        do 
+        {
             ChunkInfo.ID	 = ReadCompressedInteger(Stream);
             if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
                 ChunkInfo.Length = ReadCompressedInteger(Stream);
             switch (ChunkInfo.ID) { // tipo de la primera dimencion
             case MonsterPartyChunk_Name:
-                Enemy_group.strName = ReadString(Stream, ChunkInfo.Length);
+                enemy_group->strName = ReadString(Stream, ChunkInfo.Length);
                 break;
             case MonsterPartyChunk_Monsterdata://0x02,
-                Enemy_group.Enemy_data =MonsterPartyMonsterChunk(Stream);
+                enemy_group->Enemy_data =MonsterPartyMonsterChunk(Stream);
                 break;
             case MonsterPartyChunk_Terrainlength://0x04,
-                Enemy_group.intTerrainlength = ReadCompressedInteger(Stream);
+                enemy_group->intTerrainlength = ReadCompressedInteger(Stream);
                 break;
             case MonsterPartyChunk_Terraindata://0x05,
                 while (ChunkInfo.Length--) {
                     fread(&Void, sizeof(char), 1, Stream);
-                    Enemy_group.vc_ch_Terraindata.push_back(Void);
+                    enemy_group->vc_ch_Terraindata.push_back(Void);
                 }
                 break;
             case MonsterPartyChunk_eventpages://0x0B
-                Enemy_group.vecPartyMonsterevent=MonsterPartyevent_pageChunk(Stream);
+                enemy_group->vecPartyMonsterevent=MonsterPartyevent_pageChunk(Stream);
                 break;
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
@@ -946,52 +983,68 @@ std:: vector <stcEnemy_group> & LDB_reader::mosterpartyChunk(FILE * Stream)
             }
         } while (ChunkInfo.ID!=0);
         datareaded++;
-        vecEnemy_group.push_back(Enemy_group);
-        Enemy_group.clear();
+        vecEnemy_group->push_back(enemy_group);
+       // Enemy_group.clear();
     }
     return(vecEnemy_group);
 }
 
-std:: vector <stcTerrain> & LDB_reader:: TerrainChunk(FILE * Stream)
+std:: vector <stcTerrain*> * LDB_reader:: terrainChunk(FILE * Stream)
 {
     int id,datatoread=0,datareaded=0;
     std::string name;
-    static std::vector <stcTerrain> vecTerrain;
-    stcTerrain Terrain;
+    std::vector <stcTerrain*> *vecTerrain;
+    stcTerrain *terrain;
+    
+    vecTerrain = new std::vector <stcTerrain*>();
+    if (vecTerrain == NULL)
+    {
+        std::cerr << "No memory left." << std::endl;
+        exit(-1);
+    }
+
     datatoread=ReadCompressedInteger(Stream);//numero de datos
-    while (datatoread>datareaded) { // si no hay mas en el array
+    while (datatoread>datareaded) 
+    { // si no hay mas en el array
+        terrain = new stcTerrain();
+        if (terrain == NULL)
+        {
+            std::cerr << "No memory left." << std::endl;
+            exit(-1);
+        }   
         id= ReadCompressedInteger(Stream);//lectura de id 1 de array
-        do {
+        do 
+        {
             ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
             if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
                 ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
             switch (ChunkInfo.ID) { // tipo de la primera dimencion
             case TerrainChunk_Name:
-                Terrain.strName = ReadString(Stream, ChunkInfo.Length);
+                terrain->strName = ReadString(Stream, ChunkInfo.Length);
                 break;
             case TerrainChunk_Damageontravel://0x02,
-                Terrain.intDamageontravel = ReadCompressedInteger(Stream);
+                terrain->intDamageontravel = ReadCompressedInteger(Stream);
                 break;
             case TerrainChunk_Encounterate://0x03,
-                Terrain.intEncounterate = ReadCompressedInteger(Stream);
+                terrain->intEncounterate = ReadCompressedInteger(Stream);
                 break;
             case TerrainChunk_Battlebackground://0x04,
-                Terrain.strBattlebackground = ReadString(Stream, ChunkInfo.Length);
+                terrain->strBattlebackground = ReadString(Stream, ChunkInfo.Length);
                 break;
             case TerrainChunk_Skiffmaypass://0x05,
-                Terrain.blSkiffmaypass = ReadCompressedInteger(Stream);
+                terrain->blSkiffmaypass = ReadCompressedInteger(Stream);
                 break;
             case TerrainChunk_Boatmaypass://0x06,
-                Terrain.blBoatmaypass = ReadCompressedInteger(Stream);
+                terrain->blBoatmaypass = ReadCompressedInteger(Stream);
                 break;
             case TerrainChunk_Airshipmaypass://0x07,
-                Terrain.blAirshipmaypass = ReadCompressedInteger(Stream);
+                terrain->blAirshipmaypass = ReadCompressedInteger(Stream);
                 break;
             case TerrainChunk_Airshipmayland://0x09,
-                Terrain.blAirshipmayland = ReadCompressedInteger(Stream);
+                terrain->blAirshipmayland = ReadCompressedInteger(Stream);
                 break;
             case TerrainChunk_Heroopacity://0x0B
-                Terrain.intHeroopacity = ReadCompressedInteger(Stream);
+                terrain->intHeroopacity = ReadCompressedInteger(Stream);
                 break;
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
@@ -1001,46 +1054,63 @@ std:: vector <stcTerrain> & LDB_reader:: TerrainChunk(FILE * Stream)
             }
         } while (ChunkInfo.ID!=0);
         datareaded++;
-        vecTerrain.push_back(Terrain);
-        Terrain.clear();
+        vecTerrain->push_back(terrain);
+        //Terrain.clear();
     }
-    return(vecTerrain);
+    return vecTerrain;
 }
 
-std:: vector <stcAttribute> & LDB_reader:: AttributeChunk(FILE * Stream)
+std:: vector <stcAttribute*> * LDB_reader:: attributeChunk(FILE * Stream)
 {
     int id,datatoread=0,datareaded=0;
     std::string name;
-    static std::vector <stcAttribute> vecAttribute;
-    stcAttribute Attribute;
+    std::vector <stcAttribute*> *vecAttribute;
+    vecAttribute = new std::vector <stcAttribute*>();
+    if (vecAttribute == NULL)
+    {
+        std::cerr << "No memory left." << std::endl;
+        exit(-1);
+    }
+
+    stcAttribute *attribute;
     datatoread=ReadCompressedInteger(Stream);//numero de datos
-    while (datatoread>datareaded) { // si no hay mas en el array
+    while (datatoread>datareaded) 
+    { // si no hay mas en el array
+        attribute = new stcAttribute();
+        if (attribute == NULL)
+        {
+            std::cerr << "No memory left." << std::endl;
+            exit(-1);
+        }
+        attribute->set_defaults();
+        
         id= ReadCompressedInteger(Stream);//lectura de id 1 de array
-        do {
-            ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
+        do 
+        {
+            ChunkInfo.ID = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
             if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
                 ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
             switch (ChunkInfo.ID) { // tipo de la primera dimencion
             case AttributeChunk_Name:
-                Attribute.strName = ReadString(Stream, ChunkInfo.Length);
+                attribute->strName = ReadString(Stream, ChunkInfo.Length);
                 break;
             case AttributeChunk_Type://0x02,
-                Attribute.intType = ReadCompressedInteger(Stream);
+                attribute->intType = ReadCompressedInteger(Stream);
                 break;
             case AttributeChunk_A_damage://0x0B,
-                Attribute.intA_damage = ReadCompressedInteger(Stream);
+                attribute->intA_damage = ReadCompressedInteger(Stream);
                 break;
             case AttributeChunk_B_damage://0x0C,
-                Attribute.intB_damage = ReadCompressedInteger(Stream);
+                attribute->intB_damage = ReadCompressedInteger(Stream);
                 break;
             case AttributeChunk_C_damage://0x0F,
-                Attribute.intC_damage = ReadCompressedInteger(Stream);
+                attribute->intC_damage = ReadCompressedInteger(Stream);
                 break;
             case AttributeChunk_D_damage://0x0F,
-                Attribute.intD_damage = ReadCompressedInteger(Stream);
+                attribute->intD_damage = ReadCompressedInteger(Stream);
                 break;
             case AttributeChunk_E_damage://0x0F
-                Attribute.intE_damage = ReadCompressedInteger(Stream);
+                attribute->intE_damage = ReadCompressedInteger(Stream);
                 break;
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
@@ -1052,20 +1122,35 @@ std:: vector <stcAttribute> & LDB_reader:: AttributeChunk(FILE * Stream)
 
         } while (ChunkInfo.ID!=0);
         datareaded++;
-        vecAttribute.push_back(Attribute);
-        Attribute.clear();
+        vecAttribute->push_back(attribute);
+        //attribute->clear();
     }
-    return(vecAttribute);
+    return vecAttribute;
 }
 
-std:: vector <stcState> & LDB_reader:: StatesChunk(FILE * Stream)
+std:: vector <stcState*> * LDB_reader:: statesChunk(FILE * Stream)
 {
     int id,datatoread=0,datareaded=0;
     std::string name;
-    static std:: vector <stcState> vecState;
-    stcState State;
+    std:: vector <stcState*> *vecState;
+    stcState *state;
+    
+    vecState = new std:: vector <stcState*>();
+    if (vecState == NULL)
+    {
+        std::cerr << "No memory left." << std::endl;
+        exit(-1);
+    }
     datatoread=ReadCompressedInteger(Stream);//numero de datos
-    while (datatoread>datareaded) { // si no hay mas en el array
+    while (datatoread>datareaded) 
+    { // si no hay mas en el array
+        state = new stcState();
+        if (state == NULL)
+        {
+            std::cerr << "No memory left." << std::endl;
+            exit(-1);
+        }
+        state->set_defaults();
         id= ReadCompressedInteger(Stream);//lectura de id 1 de array
         do {
             ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
@@ -1073,109 +1158,109 @@ std:: vector <stcState> & LDB_reader:: StatesChunk(FILE * Stream)
                 ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
             switch (ChunkInfo.ID) { // tipo de la primera dimencion
             case StatesChunk_Name:
-                State.strName = ReadString(Stream, ChunkInfo.Length);
+                state->strName = ReadString(Stream, ChunkInfo.Length);
                 break;
             case StatesChunk_Length://0x02,
-                State.intLength = ReadCompressedInteger(Stream);
+                state->intLength = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_Color://0x03,
-                State.intColor = ReadCompressedInteger(Stream);
+                state->intColor = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_Priority://0x04,
-                State.intPriority = ReadCompressedInteger(Stream);
+                state->intPriority = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_Limitation://0x05,
-                State.intLimitation = ReadCompressedInteger(Stream);
+                state->intLimitation = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_A_chance://0x0B,
-                State.intA_chance = ReadCompressedInteger(Stream);
+                state->intA_chance = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_B_chance://0x0C,
-                State.intB_chance = ReadCompressedInteger(Stream);
+                state->intB_chance = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_C_chance://0x0D,
-                State.intC_chance = ReadCompressedInteger(Stream);
+                state->intC_chance = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_D_chance://0x0E,
-                State.intD_chance = ReadCompressedInteger(Stream);
+                state->intD_chance = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_E_chance://0x0F,
-                State.intE_chance = ReadCompressedInteger(Stream);
+                state->intE_chance = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_Turnsforhealing://0x15,
-                State.intTurnsforhealing = ReadCompressedInteger(Stream);
+                state->intTurnsforhealing = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_Healperturn://0x16,
-                State.intHealperturn = ReadCompressedInteger(Stream);
+                state->intHealperturn = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_Healonshock://0x17,
-                State.intHealonshock = ReadCompressedInteger(Stream);
+                state->intHealonshock = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_HalveAttack://0x1F,
-                State.blHalveAttack = ReadCompressedInteger(Stream);
+                state->blHalveAttack = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_HalveDefense://0x20,
-                State.blHalveDefense = ReadCompressedInteger(Stream);
+                state->blHalveDefense = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_HalveMind://0x21,
-                State.blHalveMind = ReadCompressedInteger(Stream);
+                state->blHalveMind = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_HalveAgility://0x22,
-                State.blHalveAgility = ReadCompressedInteger(Stream);
+                state->blHalveAgility = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_Hitratechange://0x23,
-                State.intHitratechange = ReadCompressedInteger(Stream);
+                state->intHitratechange = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_Preventskilluse://0x29,
-                State.blPrevent_skill_use = ReadCompressedInteger(Stream);
+                state->blPrevent_skill_use = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_Minimumskilllevel://0x2A,
-                State.intMinimum_skill_level = ReadCompressedInteger(Stream);
+                state->intMinimum_skill_level = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_Preventmagicuse://0x2B,
-                State.blPreventmagicuse = ReadCompressedInteger(Stream);
+                state->blPreventmagicuse = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_Minimummindlevel://0x2C,
-                State.intMinimummindlevel = ReadCompressedInteger(Stream);
+                state->intMinimummindlevel = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_Allyenterstate://0x33,
-                State.strAllyenterstate = ReadString(Stream, ChunkInfo.Length);
+                state->strAllyenterstate = ReadString(Stream, ChunkInfo.Length);
                 break;
             case StatesChunk_Enemyentersstate://0x34,
-                State.strEnemyentersstate = ReadString(Stream, ChunkInfo.Length);
+                state->strEnemyentersstate = ReadString(Stream, ChunkInfo.Length);
                 break;
             case StatesChunk_Alreadyinstate://0x35,
-                State.strAlreadyinstate = ReadString(Stream, ChunkInfo.Length);
+                state->strAlreadyinstate = ReadString(Stream, ChunkInfo.Length);
                 break;
             case StatesChunk_Affectedbystate://0x36,
-                State.strAffectedbystate = ReadString(Stream, ChunkInfo.Length);
+                state->strAffectedbystate = ReadString(Stream, ChunkInfo.Length);
                 break;
             case StatesChunk_Statusrecovered://0x37,
-                State.strStatusrecovered = ReadString(Stream, ChunkInfo.Length);
+                state->strStatusrecovered = ReadString(Stream, ChunkInfo.Length);
                 break;
             case StatesChunk_HPloss://0x3D,
-                State.intHPloss = ReadCompressedInteger(Stream);
+                state->intHPloss = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_HPlossvalue://0x3E,
-                State.intHPlossvalue = ReadCompressedInteger(Stream);
+                state->intHPlossvalue = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_HPmaploss://0x3F,
-                State.intHPmaploss = ReadCompressedInteger(Stream);
+                state->intHPmaploss = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_HPmapsteps://0x40,
-                State.intHPmapsteps = ReadCompressedInteger(Stream);
+                state->intHPmapsteps = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_MPloss://0x41,
-                State.intMPloss = ReadCompressedInteger(Stream);
+                state->intMPloss = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_MPlossvalue://0x42,
-                State.intMPlossvalue = ReadCompressedInteger(Stream);
+                state->intMPlossvalue = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_MPmaploss://0x43,
-                State.intMPmaploss = ReadCompressedInteger(Stream);
+                state->intMPmaploss = ReadCompressedInteger(Stream);
                 break;
             case StatesChunk_MPmapsteps://0x44
-                State.intMPmapsteps = ReadCompressedInteger(Stream);
+                state->intMPmapsteps = ReadCompressedInteger(Stream);
                 break;
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
@@ -1186,10 +1271,10 @@ std:: vector <stcState> & LDB_reader:: StatesChunk(FILE * Stream)
             }
         } while (ChunkInfo.ID!=0);
         datareaded++;
-        vecState.push_back(State);
-        State.clear();
+        vecState->push_back(state);
+        //state->clear();
     }
-    return(vecState);
+    return vecState;
 }
 
 std:: vector <stcAnimationTiming>  LDB_reader:: AnimationTimingChunk(FILE * Stream)
@@ -2504,19 +2589,19 @@ void  LDB_reader::GetNextChunk(FILE * Stream, LDB_data * data)
                 data->items=itemChunk(Stream);
                 break;
             case CHUNK_Monster:
-                data->mosters= mosterChunk(Stream);
+                data->monsters= mosterChunk(Stream);
                 break;
             case CHUNK_MonsterP:
-                data->mosterpartys=mosterpartyChunk(Stream);
+                data->monsterpartys=mosterpartyChunk(Stream);
                 break;
             case CHUNK_Terrain:
-                data->Terrains=TerrainChunk(Stream);
+                data->terrains=terrainChunk(Stream);
                 break;
             case CHUNK_Attribute:
-                data->Attributes=AttributeChunk(Stream);
+                data->attributes = attributeChunk(Stream);
                 break;
             case CHUNK_States:
-                data->States=StatesChunk(Stream);
+                data->states=statesChunk(Stream);
                 break;
             case CHUNK_Animation:
                 data->Animations=AnimationChunk(Stream);

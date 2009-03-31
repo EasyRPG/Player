@@ -25,16 +25,16 @@ private:
     std:: vector <stcSkill*> * skillChunk(FILE * Stream);//lectura de pedasos del habilidades
     std:: vector <stcItem*> * itemChunk(FILE * Stream);//lectura de pedasos del objetos
     std:: vector <stcEnemy_Action> mosteractionChunk(FILE * Stream);
-    std:: vector <stcEnemy> & mosterChunk(FILE * Stream);// lectura de monstruos
+    std:: vector <stcEnemy*> * mosterChunk(FILE * Stream);// lectura de monstruos
 
     std:: vector <stcEnemy_group_data>  MonsterPartyMonsterChunk(FILE * Stream);
     stcEnemy_group_condition MonsterPartyEventconditionChunk(FILE * Stream);
     std:: vector <stcEnemy_group_event_page> MonsterPartyevent_pageChunk(FILE * Stream);
 
-    std:: vector <stcEnemy_group> & mosterpartyChunk(FILE * Stream);//lectura de party de monster
-    std:: vector <stcTerrain> & TerrainChunk(FILE * Stream);// informacion de los terrenos
-    std:: vector <stcAttribute> & AttributeChunk(FILE * Stream);// atributos
-    std:: vector <stcState> & StatesChunk(FILE * Stream);//estados
+    std:: vector <stcEnemy_group*> * mosterpartyChunk(FILE * Stream);//lectura de party de monster
+    std:: vector <stcTerrain*> * terrainChunk(FILE * Stream);// informacion de los terrenos
+    std:: vector <stcAttribute*> * attributeChunk(FILE * Stream);// atributos
+    std:: vector <stcState*> * statesChunk(FILE * Stream);//estados
 
     std:: vector <stcAnimationTiming> AnimationTimingChunk(FILE * Stream);
     std:: vector <stcAnimationCell> FramedataChunk(FILE * Stream);

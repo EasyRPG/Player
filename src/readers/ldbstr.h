@@ -210,7 +210,7 @@ struct stcEnemy
  std::vector<char> vc_ch_Attribeffects; // 0x22, arreglo de un byte //una dimencion
 
   //Actionslist= 0x2A
-  void clear();
+  void set_defaults();
 void show();
 };
 struct stcEnemy_Action
@@ -265,7 +265,7 @@ std:: vector <stcEnemy_group_data> Enemy_data;//data=0x02,
 int intTerrainlength;		//=0x04,
 std::vector<char> vc_ch_Terraindata; //=0x05,
 std::vector <stcEnemy_group_event_page> vecPartyMonsterevent;//eventpages=0x0B
-void clear();
+void set_defaults();
 void show();
 };
 
@@ -294,7 +294,7 @@ int  intB_damage;//=0x0C,
 int  intC_damage;//=0x0F,
 int  intD_damage;//e=0x0F,
 int  intE_damage;//=0x0F
-void clear();
+void set_defaults();
 void show();
  };
 
@@ -342,7 +342,7 @@ struct stcState
  int  intMPlossvalue;//=0x42,
  int  intMPmaploss;//=0x43,
  int  intMPmapsteps;//=0x44
- void clear();
+ void set_defaults();
  void show();
 };
 struct stcAnimationTiming
