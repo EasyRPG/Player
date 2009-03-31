@@ -34,7 +34,7 @@ void Item_use_scene::init(General_data * TheTeam)
 
     std::string system_string;
     system_string.append("System/");
-    system_string.append(myteam->data2.System_dat.System_graphic);
+    system_string.append(myteam->ldbdata->System_dat.System_graphic);
     system_string.append(".png");
 	players.init(myteam, running,0,((*myteam).Players.get_size()-1),184,240,136,0,124,48,(char *)system_string.c_str());
 	players.init_curXY(55,5); //ya eran muchos comandos
@@ -100,7 +100,7 @@ void Item_use_scene::action()
 		itemwin2.dispose();
         std::string system_string;
         system_string.append("System/");
-        system_string.append(myteam->data2.System_dat.System_graphic);
+        system_string.append(myteam->ldbdata->System_dat.System_graphic);
         system_string.append(".png");
 
 		itemwin2.init(136,30,0,30,(char *)system_string.c_str());

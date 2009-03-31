@@ -408,13 +408,13 @@ int main(int argc, char *argv[])
     {
         timer++;
         // Check for events
-       repxciclo = fps_sincronizar();
+        repxciclo = fps_sincronizar();
         for (i = 0; i < repxciclo; i++)
-         {
+        {
             Control::update_keys();
             System.update(); //updates delta
             actual->updatekey();
-         }
+        }
         actual->update(Screen);
 
     #ifdef SCREEN_SIZE_2X

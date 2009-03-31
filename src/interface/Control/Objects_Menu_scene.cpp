@@ -37,7 +37,7 @@ void Objects_Menu_Scene::init(General_data * TheTeam)
 	int k =(((*myteam).get_num_items()-1)/2);
     std::string system_string;
     system_string.append("System/");
-    system_string.append(myteam->data2.System_dat.System_graphic);
+    system_string.append(myteam->ldbdata->System_dat.System_graphic);
     system_string.append(".png");
 	menu.init(myteam, running, 1,k, 320, 210, 0, 30,(char *)system_string.c_str());
 	descripcion.init(320,30,0,0,(char *)system_string.c_str());

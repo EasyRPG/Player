@@ -164,7 +164,7 @@ void Player_Team::change_level(int add_remove,int Hero_ID, int count)
         }
     }
     stcHero * actual_hero;
-    actual_hero= &(data2->heros[Hero_ID-1]);
+    actual_hero= data2->heros->at(Hero_ID-1);
      i= Players[j].get_Level();
 
     if(add_remove)
@@ -410,7 +410,7 @@ unsigned int i;
     else
     {
         stcHero * actual_hero;
-        actual_hero= &(data2->heros[id-1]);
+        actual_hero= data2->heros->at(id-1);
         add_player(get_hero(actual_hero, id));
     }
 }

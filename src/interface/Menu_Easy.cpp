@@ -31,17 +31,17 @@ void Menu_Easy::init(General_data * TheTeam, bool * run,int X,int Y)
 
 	system_Cursor.clear();
     system_Cursor.append("Sound/");
-    system_Cursor.append(Team->data2.System_dat.Cursor_SFX.Name_of_Sound_effect);
+    system_Cursor.append(Team->ldbdata->System_dat.Cursor_SFX.Name_of_Sound_effect);
     system_Cursor.append(".wav");
 
 	system_Accept.clear();
     system_Accept.append("Sound/");
-    system_Accept.append(Team->data2.System_dat.Accept_SFX.Name_of_Sound_effect);
+    system_Accept.append(Team->ldbdata->System_dat.Accept_SFX.Name_of_Sound_effect);
     system_Accept.append(".wav");
 
 	system_Cancel.clear();
     system_Cancel.append("Sound/");
-    system_Cancel.append(Team->data2.System_dat.Cancel_SFX.Name_of_Sound_effect);
+    system_Cancel.append(Team->ldbdata->System_dat.Cancel_SFX.Name_of_Sound_effect);
     system_Cancel.append(".wav");
 
 }

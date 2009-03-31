@@ -4,12 +4,20 @@ General_data::General_data()
 {
     running = true;
     TheScene = 0;
+    
+    ldbdata = new LDB_data();
 
     before_telepor.Event_Active=false;
     before_telepor.id_exe_actual=0;
     before_telepor.id_actual_active=false;
     before_telepor.Active_page= -2;//common event
 
+}
+
+General_data::~General_data()
+{
+    std::cout << "Destructor general data" << std::endl;
+    delete ldbdata;
 }
 
 void General_data::copy_to_before_telepor(std:: vector <Event_comand *> comands)
@@ -259,8 +267,8 @@ void General_data::read_database()
    if(!inited)//just one time
    {
     LDB_reader my_ldb;
-    my_ldb.Load("RPG_RT.ldb",&data2);
-    Players.data2=&data2;
+    my_ldb.Load("RPG_RT.ldb", ldbdata);
+    Players.data2 = ldbdata;
     lmt_reader my_lmt;
 
     E_state original_state;
@@ -269,11 +277,11 @@ void General_data::read_database()
     original_state.id_actual_active=false;
     original_state.Active_page= -2;//common event
 
-    for(unsigned int i=0; i<data2.Event.size();i++)
+    for(unsigned int i=0; i<ldbdata->Event.size();i++)
         GEvc_state.push_back(original_state);
 
     my_lmt.load("RPG_RT.lmt",&lmt);
-  //  my_ldb.ShowInformation(&data2);
+  //  my_ldb.ShowInformation(&ldbdata);
 
    }
   // my_lmt.print(&lmt);
@@ -365,31 +373,31 @@ void General_data::load_group(int id)
     clear_enemy();
    id--;
    cout<<" data "<<id<<endl;
-    for(i=0;i<data2.mosterpartys[id].Enemy_data.size();i++)
+    for(i=0;i<ldbdata->mosterpartys[id].Enemy_data.size();i++)
     {
-        moster_id=data2.mosterpartys[id].Enemy_data[i].Enemy_ID-1;
+        moster_id=ldbdata->mosterpartys[id].Enemy_data[i].Enemy_ID-1;
         cout<<" mid "<<moster_id<<endl;
 
         Enemy enemigo;
-        enemigo.set_HP(data2.mosters[moster_id].intMaxHP);
-        enemigo.set_MaxHP(data2.mosters[moster_id].intMaxHP);
-        enemigo.set_MP(data2.mosters[moster_id].intMaxMP);
-        enemigo.set_MaxMP(data2.mosters[moster_id].intMaxMP);
-        enemigo.set_Attack(data2.mosters[moster_id].intAttack);
-        enemigo.set_Defense(data2.mosters[moster_id].intDefense);
-        enemigo.set_Speed(data2.mosters[moster_id].intSpeed);
-        enemigo.set_Spirit(data2.mosters[moster_id].intMind);
+        enemigo.set_HP(ldbdata->mosters[moster_id].intMaxHP);
+        enemigo.set_MaxHP(ldbdata->mosters[moster_id].intMaxHP);
+        enemigo.set_MP(ldbdata->mosters[moster_id].intMaxMP);
+        enemigo.set_MaxMP(ldbdata->mosters[moster_id].intMaxMP);
+        enemigo.set_Attack(ldbdata->mosters[moster_id].intAttack);
+        enemigo.set_Defense(ldbdata->mosters[moster_id].intDefense);
+        enemigo.set_Speed(ldbdata->mosters[moster_id].intSpeed);
+        enemigo.set_Spirit(ldbdata->mosters[moster_id].intMind);
         std::string system_string;
         system_string.clear();
         system_string.append("Monster/");
-        system_string.append(data2.mosters[moster_id].strGraphicfile);
+        system_string.append(ldbdata->mosters[moster_id].strGraphicfile);
         system_string.append(".png");
         (enemigo.Batler).setimg(system_string.c_str());
         (enemigo.Batler).setcols(1);
         (enemigo.Batler).setrows(1);
-        (enemigo.Batler).x=data2.mosterpartys[id].Enemy_data[i].X_position;
-        (enemigo.Batler).y=data2.mosterpartys[id].Enemy_data[i].Y_position;
-        enemigo.set_name(data2.mosters[moster_id].strName.c_str());
+        (enemigo.Batler).x=ldbdata->mosterpartys[id].Enemy_data[i].X_position;
+        (enemigo.Batler).y=ldbdata->mosterpartys[id].Enemy_data[i].Y_position;
+        enemigo.set_name(ldbdata->mosters[moster_id].strName.c_str());
         add_enemy(enemigo);
     }
 
@@ -418,9 +426,9 @@ if(item_id==0)
 }
 else{
     item_id--;
-    X.set_name(data2.items[item_id].Name.c_str());
+    X.set_name(ldbdata->items[item_id].Name.c_str());
     X.set_NOI(1);
-    X.set_type(data2.items[item_id].Type);
+    X.set_type(ldbdata->items[item_id].Type);
     X.id = 1;
     }return(X);
 }
@@ -457,9 +465,9 @@ void General_data::change_objets(int remove_add,int item_id,int cout)
 {
     Item X;
     item_id--;
-    X.set_name(data2.items[item_id].Name.c_str());
+    X.set_name(ldbdata->items[item_id].Name.c_str());
     X.set_NOI(cout);
-    X.set_type(data2.items[item_id].Type);
+    X.set_type(ldbdata->items[item_id].Type);
     X.id = 1;
 
     if(remove_add)

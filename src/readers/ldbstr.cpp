@@ -40,7 +40,7 @@ void Magicblock::show()
  printf(" \n Level %d",Level);//=0x01,
  printf(" \n Spell_ID %d",Spell_ID);//=0x02
 }
-void stcHero::clear()
+void stcHero::set_defaults()
 {
 strName="";//=0x01,
 strClass="";//=0x02,

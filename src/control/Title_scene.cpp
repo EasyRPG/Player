@@ -48,9 +48,9 @@ void Title_Scene::init(General_data * TheTeam)
     TheTeam->Players.clear_team();
     TheTeam->clear_obj();
     TheTeam->from_title=true;
-    for( i=0; (i< (TheTeam->data2.Switch_Names.size()/8));i++)
+    for( i=0; (i< (TheTeam->ldbdata->Switch_Names.size()/8));i++)
     TheTeam->world_fase.push_back(swich);
-    for( i=0; (i< TheTeam->data2.Switch_Names.size());i++)
+    for( i=0; (i< TheTeam->ldbdata->Switch_Names.size());i++)
     TheTeam->world_var.push_back(var);
 
 
@@ -59,15 +59,15 @@ void Title_Scene::init(General_data * TheTeam)
     std::string music_string;
     std::string system_string;
     titles_string.append("Title/");
-    titles_string.append(TheTeam->data2.System_dat.Title_graphic);
+    titles_string.append(TheTeam->ldbdata->System_dat.Title_graphic);
     titles_string.append(".png");
 
     music_string.append("Music/");
-    music_string.append(TheTeam->data2.System_dat.Title_music.Name_of_Music_Background);
+    music_string.append(TheTeam->ldbdata->System_dat.Title_music.Name_of_Music_Background);
     music_string.append(".mid");
 
     system_string.append("System/");
-    system_string.append(TheTeam->data2.System_dat.System_graphic);
+    system_string.append(TheTeam->ldbdata->System_dat.System_graphic);
     system_string.append(".png");
 
     myteam = TheTeam;
@@ -82,9 +82,9 @@ void Title_Scene::init(General_data * TheTeam)
     myteam->MBackground.setimg(titles_string.c_str());
 
     menu.init(TheTeam,&TheTeam->running, 0,2, 116, 57, 160 - (116 / 2), 160 - (57 / 2), (char *) system_string.c_str());
-    str_Vector.push_back(TheTeam->data2.Glosary.New_Game);
-    str_Vector.push_back(TheTeam->data2.Glosary.Load_Game);
-    str_Vector.push_back(TheTeam->data2.Glosary.Exit_to_Windows);
+    str_Vector.push_back(TheTeam->ldbdata->Glosary.New_Game);
+    str_Vector.push_back(TheTeam->ldbdata->Glosary.Load_Game);
+    str_Vector.push_back(TheTeam->ldbdata->Glosary.Exit_to_Windows);
     menu.setComands(&str_Vector);
     retardo = 0;
     myaudio->play(-1);
@@ -130,13 +130,12 @@ void Title_Scene::init_party()
 
     string system_string;
     int i,id;
-    stcHero * actual_hero;
-    for(i=0;i< (myteam->data2.System_dat.Heroes_in_starting);i++)
+    stcHero *actual_hero;
+    for(i=0;i< (myteam->ldbdata->System_dat.Heroes_in_starting);i++)
     {
-    id=myteam->data2.System_dat.vc_sh_Starting_party[i];
-    actual_hero= &(myteam->data2.heros[id-1]);
-    myteam->Players.add_player(myteam->Players.get_hero(actual_hero, id));
-
+        id=myteam->ldbdata->System_dat.vc_sh_Starting_party[i];
+        actual_hero = myteam->ldbdata->heros->at(id-1);
+        myteam->Players.add_player(myteam->Players.get_hero(actual_hero, id));
     }
    /* Item potion;
     potion.set_name("Potion");

@@ -31,23 +31,25 @@
 #include "Event_management.h"
 class E_management;
 
-class General_data {
-    private:
-	std:: vector <Item> Items;
-	int Gold;
+class General_data
+{
+private:
+    std:: vector <Item> Items;
+    int Gold;
 
-	public:
+public:
 
     General_data();
-	bool running;
+    ~General_data();
+    bool running;
     unsigned char TheScene;
     Music musica;
 
     Player_Team Players;
-	Sound_Manager S_manager;
-	std:: vector <Chara> GCharas_nps;
+    Sound_Manager S_manager;
+    std:: vector <Chara> GCharas_nps;
     Pre_Chipset Gpre_chip;
-	Chipset Gchip;
+    Chipset Gchip;
     map_data Gdata;
     E_management GEv_management;
     std:: vector <E_state> GEv_state;
@@ -68,7 +70,7 @@ class General_data {
     void set_true_swich( int number);
     void set_false_swich( int number);
 
-	std:: vector <int> world_var;
+    std:: vector <int> world_var;
 
 
     bool scroll_active;
@@ -97,29 +99,29 @@ class General_data {
     int able_to_teleport;
     int Encounter_rate;
 
-    LDB_data data2;
+    LDB_data *ldbdata;
     lmt_data lmt;
-	void read_database();
-	std:: vector <Enemy> Enemys;
-	void clear_enemy();
-	void add_enemy(Enemy Myplayer);
-	void load_group(int id);
+    void read_database();
+    std:: vector <Enemy> Enemys;
+    void clear_enemy();
+    void add_enemy(Enemy Myplayer);
+    void load_group(int id);
 
-	View view;
-	int select;
-	void set_Gold(int The_Gold);
-	int get_Gold();
-	void erase_item(int num);
-	Item get_item(int num);
-	Item load_item(int item_id);
-	int get_num_items();
-	void change_objets(int remove_add,int item_id,int cout);
+    View view;
+    int select;
+    void set_Gold(int The_Gold);
+    int get_Gold();
+    void erase_item(int num);
+    Item get_item(int num);
+    Item load_item(int item_id);
+    int get_num_items();
+    void change_objets(int remove_add,int item_id,int cout);
     void clear_obj();
-	void add_item(Item Myitem);
-	int* get_NOI(int num);
-	unsigned char * get_type(int num);
-	const char * get_item_name(int num);
-	Animacion * get_item_anim(int num);
+    void add_item(Item Myitem);
+    int* get_NOI(int num);
+    unsigned char * get_type(int num);
+    const char * get_item_name(int num);
+    Animacion * get_item_anim(int num);
 
 };
 

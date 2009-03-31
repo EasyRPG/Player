@@ -46,7 +46,7 @@ void Main_Menu_Scene::init(General_data * TheTeam)
 
     std::string system_string;
     system_string.append("System/");
-    system_string.append(TheTeam->data2.System_dat.System_graphic);
+    system_string.append(TheTeam->ldbdata->System_dat.System_graphic);
     system_string.append(".png");
 
 	menu->init(myteam, running, 0,5, 96, 125, 0, 0,(char *)system_string.c_str());
@@ -55,7 +55,7 @@ void Main_Menu_Scene::init(General_data * TheTeam)
 	gold->init(96,40,0,200,(char *)system_string.c_str());
 	menu_exit->init(myteam,  running, 0,2, 96, 67, 112, 86,(char *)system_string.c_str());
 	str_Vector.push_back("Objetos ");
-	str_Vector.push_back("Técnicas ");
+	str_Vector.push_back("TÃ©cnicas ");
 	str_Vector.push_back("Equipamiento");
 	str_Vector.push_back("Estados");
 	str_Vector.push_back("Guardar");

@@ -33,7 +33,7 @@ void Equip_Menu_Scene::init(General_data * TheTeam)
 	int item_tipe2;
     std::string system_string;
     system_string.append("System/");
-    system_string.append(myteam->data2.System_dat.System_graphic);
+    system_string.append(myteam->ldbdata->System_dat.System_graphic);
     system_string.append(".png");
 
 	menu.init(TheTeam, running, 0,4, 190, 105, 130, 30,(char *)system_string.c_str());

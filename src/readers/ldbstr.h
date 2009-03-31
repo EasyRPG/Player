@@ -75,7 +75,7 @@ int intAttriblength;// =0x49,
 //array de un byte
 std::vector<char> vc_ch_Attribeffects;
 std::vector<int> vc_int_Combat_Command; //Combat_Command=0x50 4 bytes one dimention array//Combat Comand // =0x50 //4 byte one byte dimension array of 6 elements
-void clear();
+void set_defaults();
 void show();
 };
 

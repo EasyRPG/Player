@@ -99,11 +99,11 @@ void Map_Scene::load_map()
         }
         system_string.clear();
         system_string.append("ChipSet/");
-        system_string.append(myteam->data2.Tilesets[(unsigned int) data->ChipsetID - 1].strGraphic);
+        system_string.append(myteam->ldbdata->Tilesets[(unsigned int) data->ChipsetID - 1].strGraphic);
         system_string.append(".png");
         pre_chip->GenerateFromFile((char *) system_string.c_str());
         Events = &data->vcEvents;
-        chip->init(pre_chip->ChipsetSurface, data, &myteam->data2.Tilesets[(unsigned int) data->ChipsetID - 1] );
+        chip->init(pre_chip->ChipsetSurface, data, &myteam->ldbdata->Tilesets[(unsigned int) data->ChipsetID - 1] );
         Ev_management->init(myaudio,NScene,myteam,Events,Actor,&Mov_management);
         if(data->ParallaxBackground)
         {
@@ -565,17 +565,17 @@ void Map_Scene::Common_events_state_machine()
 
     if(!common_autoprocess)
     {
-        for (event_id=0;event_id< myteam->data2.Event.size();event_id++)//eventos de ldb
+        for (event_id=0;event_id< myteam->ldbdata->Event.size();event_id++)//eventos de ldb
         {
             if(!Evc_state->at(event_id).Event_Active)//si el evento no esta activo
             {
-                if((myteam->data2.Event[event_id].intActivation_condition==3)||(myteam->data2.Event[event_id].intActivation_condition==4))
+                if((myteam->ldbdata->Event[event_id].intActivation_condition==3)||(myteam->ldbdata->Event[event_id].intActivation_condition==4))
                 {
-                    if((!myteam->data2.Event[event_id].blActivate_on_switch)||(myteam->state_swich(myteam->data2.Event[event_id].intSwitch_ID-1)))
+                    if((!myteam->ldbdata->Event[event_id].blActivate_on_switch)||(myteam->state_swich(myteam->ldbdata->Event[event_id].intSwitch_ID-1)))
                     {
                         if(!common_autoprocess)
                         active_event(event_id,false);
-                        if(myteam->data2.Event[event_id].intActivation_condition==3)
+                        if(myteam->ldbdata->Event[event_id].intActivation_condition==3)
                         {
                             common_autoprocess=true;
                             break;
@@ -587,7 +587,7 @@ void Map_Scene::Common_events_state_machine()
     }
     if(!common_autoprocess)
     {
-        for (event_id=0;event_id< myteam->data2.Event.size();event_id++)//eventos de ldb
+        for (event_id=0;event_id< myteam->ldbdata->Event.size();event_id++)//eventos de ldb
         {
             if(Evc_state->at(event_id).Event_Active)// si el evento esta activo
             {//si aun no se ejecuta todos
@@ -608,15 +608,15 @@ int Map_Scene::common_event_active_exe(unsigned int event_id)
 
     if(Evc_state->at(event_id).Recall_states.size()==0)
     {
-        if(Evc_state->at(event_id).id_exe_actual< myteam->data2.Event[event_id].vcEvent_comand.size())
+        if(Evc_state->at(event_id).id_exe_actual< myteam->ldbdata->Event[event_id].vcEvent_comand.size())
         {
-            comand=myteam->data2.Event[event_id].vcEvent_comand[Evc_state->at(event_id).id_exe_actual];
+            comand=myteam->ldbdata->Event[event_id].vcEvent_comand[Evc_state->at(event_id).id_exe_actual];
             printf("desde comon comands id del comand %d \n",comand->Comand);
 
             if(!Evc_state->at(event_id).id_actual_active)  //si el id actual no esta activa pero el evento  si
             {
                 Evc_state->at(event_id).id_actual_active=true;
-                Ev_management->exec_comand(myteam->data2.Event[event_id].vcEvent_comand,event_id,&Evc_state->at(event_id));// mandalo activar
+                Ev_management->exec_comand(myteam->ldbdata->Event[event_id].vcEvent_comand,event_id,&Evc_state->at(event_id));// mandalo activar
                 if(Evc_state->at(event_id).Recall_states.size()!=0)
                 {
                     event_call_event(event_id,false);
@@ -722,15 +722,15 @@ int Map_Scene::event_call_event(int event_id, bool caller)
     }
     else
     {
-        if(exe_to_call< myteam->data2.Event[id_to_call].vcEvent_comand.size())
+        if(exe_to_call< myteam->ldbdata->Event[id_to_call].vcEvent_comand.size())
         {
-            comand=myteam->data2.Event[id_to_call].vcEvent_comand[exe_to_call];
+            comand=myteam->ldbdata->Event[id_to_call].vcEvent_comand[exe_to_call];
             printf("desde  call comon comands id del comand %d \n",comand->Comand);
                     //activar comandos
             if(!my_state->Recall_states[i].id_actual_active)  //si el id actual no esta activa pero el evento  si
             {
                 my_state->Recall_states[i].id_actual_active=true;
-                Ev_management->exec_comand(myteam->data2.Event[id_to_call].vcEvent_comand,id_to_call,&my_state->Recall_states[i]);// mandalo activar
+                Ev_management->exec_comand(myteam->ldbdata->Event[id_to_call].vcEvent_comand,id_to_call,&my_state->Recall_states[i]);// mandalo activar
                 if(my_state->Recall_states[i].Recall_states.size()!=0)//if they call event on the other event
                 {
                     E_state temp;

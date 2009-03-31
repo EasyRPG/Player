@@ -42,11 +42,11 @@ void GO_Scene::init(General_data *TheTeam)
 	NScene=&TheTeam->TheScene;
 
     titles_string.append("GameOver/");
-    titles_string.append(TheTeam->data2.System_dat.Game_Over_graphic);
+    titles_string.append(TheTeam->ldbdata->System_dat.Game_Over_graphic);
     titles_string.append(".png");
 
     music_string.append("Music/");
-    music_string.append(TheTeam->data2.System_dat.Game_Over_music.Name_of_Music_Background);
+    music_string.append(TheTeam->ldbdata->System_dat.Game_Over_music.Name_of_Music_Background);
     music_string.append(".mid");
 
 

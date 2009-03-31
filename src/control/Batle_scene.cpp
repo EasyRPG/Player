@@ -40,7 +40,7 @@ void Batle_scene::init(General_data *TheTeam)
 
     std::string system_string;
     system_string.append("System/");
-    system_string.append(TheTeam->data2.System_dat.System_graphic);
+    system_string.append(TheTeam->ldbdata->System_dat.System_graphic);
     system_string.append(".png");
 
 	Window_text.init(320,80,0,160,(char *)system_string.c_str());
@@ -74,7 +74,7 @@ void Batle_scene::update_window_stats()
 {
     std::string system_string;
     system_string.append("System/");
-    system_string.append(myteam->data2.System_dat.System_graphic);
+    system_string.append(myteam->ldbdata->System_dat.System_graphic);
     system_string.append(".png");
     window.dispose();
 	window.init(myteam,running,0,3,224,80,96,160,214,16,(char *)system_string.c_str());
@@ -103,7 +103,7 @@ void Batle_scene::windowtext_showdamange(bool  type,int  atak,int  ataked,int  d
 
     std::string system_string;
     system_string.append("System/");
-    system_string.append(myteam->data2.System_dat.System_graphic);
+    system_string.append(myteam->ldbdata->System_dat.System_graphic);
     system_string.append(".png");
     Window_text.dispose();
 	Window_text.init(320,80,0,160,(char *)system_string.c_str());
@@ -227,7 +227,7 @@ void Batle_scene::atack(int  nperso,int  enemy)
 
     if(!state_anim)
 	{
-	Ev_management->On_map_anim.init_Anim(&myteam->data2.Animations[0],&myteam->S_manager);
+	Ev_management->On_map_anim.init_Anim(&myteam->ldbdata->Animations[0],&myteam->S_manager);
     Ev_management->On_map_anim.center_X= (((*myteam).Enemys.at(enemy)).Batler).x+((((*myteam).Enemys.at(enemy)).Batler).getw())/2;
     Ev_management->On_map_anim.center_Y= (((*myteam).Enemys.at(enemy)).Batler).y+((((*myteam).Enemys.at(enemy)).Batler).geth())/2;
 	state_anim=true;
@@ -314,7 +314,7 @@ void Batle_scene::atacked(int enemy)
 			}
 			///////////////////////////////////////////////////////////////
 
-			damange=*(((*myteam).Enemys.at(enemy)).get_Attack());//calculodedaño
+			damange=*(((*myteam).Enemys.at(enemy)).get_Attack());//calculodedaÃ±o
 			(*myteam).Players.set_HP(k,((*myteam).Players.get_HP(k)-damange));//need to be fixed
 			if(((*myteam).Players.get_HP(k))<0)
 			{

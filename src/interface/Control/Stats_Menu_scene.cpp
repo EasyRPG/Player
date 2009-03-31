@@ -35,7 +35,7 @@ void Stats_Menu_Scene::init(General_data * TheTeam)
 
 	   std::string system_string;
     system_string.append("System/");
-    system_string.append(myteam->data2.System_dat.System_graphic);
+    system_string.append(myteam->ldbdata->System_dat.System_graphic);
     system_string.append(".png");
 
 	Status_vit.init(200,80,120,0,(char *)system_string.c_str());
@@ -65,7 +65,7 @@ void Stats_Menu_Scene::init(General_data * TheTeam)
 	Profesion.add_sprite(((*myteam).Players.get_faceset(i)),10,10);
 	Profesion.add_text("Nombre",10,30+(1*space));
 	Profesion.add_text(((*myteam).Players.get_name(i)),50,30+(1*space)+16);
-	Profesion.add_text("Profesión",10,30+(2*space));
+	Profesion.add_text("ProfesiÃ³n",10,30+(2*space));
 	Profesion.add_text(((*myteam).Players.get_job(i)),50,30+(2*space)+16);
 	Profesion.add_text("Estado",10,30+(3*space));
 	Profesion.add_text("Normal",50,30+(3*space)+16);//falta el casteo del entero

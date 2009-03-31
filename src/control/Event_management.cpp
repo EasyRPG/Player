@@ -160,7 +160,7 @@ void E_management::init(Audio * audio,unsigned char * TheScene,General_data * Th
     Mov_management=Move_management;
 
     system_string.append("System/");
-    system_string.append(TheTeam->data2.System_dat.System_graphic);
+    system_string.append(TheTeam->ldbdata->System_dat.System_graphic);
     system_string.append(".png");
     message_box = new CMessage(system_string.c_str());
     for(i=0; i < 50; i++)
@@ -1328,7 +1328,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Change_System_GFX:// 0xD338,
         Event_comand_Change_System_GFX * comand_Change_System_GFX;
         comand_Change_System_GFX= (Event_comand_Change_System_GFX *)comand;
-        myteam->data2.System_dat.System_graphic=comand_Change_System_GFX->New_graphic;
+        myteam->ldbdata->System_dat.System_graphic=comand_Change_System_GFX->New_graphic;
         comand_id->id_exe_actual++;
         comand_id->id_actual_active = false;
         break;
@@ -1681,7 +1681,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         Event_comand_Show_Battle_Anim * comand_Show_Battle_Anim;
         comand_Show_Battle_Anim=(Event_comand_Show_Battle_Anim *)comand;
         i=comand_Show_Battle_Anim->Animation_ID-1;
-        On_map_anim.init_Anim(&myteam->data2.Animations[i],&myteam->S_manager);
+        On_map_anim.init_Anim(&myteam->ldbdata->Animations[i],&myteam->S_manager);
         if(comand_Show_Battle_Anim->Target<10000)
         {
         j= busque_real_id(comand_Show_Battle_Anim->Target);
@@ -1835,10 +1835,10 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
         system_string.clear();
         system_string.append("ChipSet/");
-        system_string.append(myteam->data2.Tilesets[(unsigned int) comand_Change_tile->New_tile - 1].strGraphic);
+        system_string.append(myteam->ldbdata->Tilesets[(unsigned int) comand_Change_tile->New_tile - 1].strGraphic);
         system_string.append(".png");
         pre_chip->GenerateFromFile((char *) system_string.c_str());
-        chip->init(pre_chip->ChipsetSurface,data, &myteam->data2.Tilesets[(unsigned int) comand_Change_tile->New_tile - 1] );
+        chip->init(pre_chip->ChipsetSurface,data, &myteam->ldbdata->Tilesets[(unsigned int) comand_Change_tile->New_tile - 1] );
 
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
@@ -1968,7 +1968,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
                     {
                         comand_id->id_exe_actual++;
                         if(comand_id->Active_page== -2)
-                        comand=myteam->data2.Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
+                        comand=myteam->ldbdata->Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
                         else
                         comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
                     }
@@ -1981,7 +1981,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
                     {
                         comand_id->id_exe_actual++;
                         if(comand_id->Active_page== -2)
-                        comand=myteam->data2.Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
+                        comand=myteam->ldbdata->Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
                         else
                         comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
                     }
@@ -2048,7 +2048,7 @@ bool compresult=false;
                     {
                         comand_id->id_exe_actual++;
                         if(comand_id->Active_page== -2)
-                        comand=myteam->data2.Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
+                        comand=myteam->ldbdata->Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
                         else
                         comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
                     }
@@ -2061,7 +2061,7 @@ bool compresult=false;
                     {
                         comand_id->id_exe_actual++;
                         if(comand_id->Active_page== -2)
-                        comand=myteam->data2.Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
+                        comand=myteam->ldbdata->Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
                         else
                         comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
                     }
@@ -2080,7 +2080,7 @@ bool compresult=false;
        {
         comand_id->id_exe_actual++;
         if(comand_id->Active_page== -2)
-            comand=myteam->data2.Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
+            comand=myteam->ldbdata->Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
         else
             comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
         }
@@ -2108,7 +2108,7 @@ bool compresult=false;
         j=comand_id->id_exe_actual;
 
             if(comand_id->Active_page== -2)
-                i=myteam->data2.Event[event_id].vcEvent_comand.size();
+                i=myteam->ldbdata->Event[event_id].vcEvent_comand.size();
             else
                 i=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand.size();
 
@@ -2116,7 +2116,7 @@ bool compresult=false;
        while(comand_id->id_exe_actual<i)
        {
             if(comand_id->Active_page== -2)
-                comand=myteam->data2.Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
+                comand=myteam->ldbdata->Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
             else
                 comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
 
@@ -2146,7 +2146,7 @@ cout<<"loop \n";
        {
         comand_id->id_exe_actual--;
         if(comand_id->Active_page== -2)
-            comand=myteam->data2.Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
+            comand=myteam->ldbdata->Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
         else
             comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
         if(comand->Comand==Start_loop)
@@ -2162,7 +2162,7 @@ cout<<"loop \n";
         j= comand_id->id_exe_actual++;
 printf("page %d \n",comand_id->Active_page);
             if(comand_id->Active_page== -2)
-                i=myteam->data2.Event[event_id].vcEvent_comand.size();
+                i=myteam->ldbdata->Event[event_id].vcEvent_comand.size();
             else
                 i=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand.size();
 
@@ -2170,7 +2170,7 @@ printf("page %d \n",comand_id->Active_page);
        while((comand->Comand!=End_loop)&&(comand_id->id_exe_actual<i))// to the end loop
        {
         if(comand_id->Active_page== -2)
-            comand=myteam->data2.Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
+            comand=myteam->ldbdata->Event[event_id].vcEvent_comand[comand_id->id_exe_actual];
         else
             comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
         comand_id->id_exe_actual++;
