@@ -383,7 +383,7 @@ std::vector <stcAnimationTiming> vecAnimationTiming; //Timing_data=0x06,
 int intApply_to;//0x09,
 int  intY_coordinate_line;//=0x0A,
 std:: vector <stcAnimationCell>Framedata; //Framedata=0x0C
-void clear();
+void set_defaults();
 void show();
 };
 

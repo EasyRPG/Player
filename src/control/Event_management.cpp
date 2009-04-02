@@ -1686,7 +1686,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         Event_comand_Show_Battle_Anim * comand_Show_Battle_Anim;
         comand_Show_Battle_Anim=(Event_comand_Show_Battle_Anim *)comand;
         i=comand_Show_Battle_Anim->Animation_ID-1;
-        On_map_anim.init_Anim(&myteam->ldbdata->Animations[i],&myteam->S_manager);
+        On_map_anim.init_Anim(myteam->ldbdata->animations->at(i),&myteam->S_manager);
         if(comand_Show_Battle_Anim->Target<10000)
         {
         j= busque_real_id(comand_Show_Battle_Anim->Target);

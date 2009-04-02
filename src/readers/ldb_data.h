@@ -20,7 +20,7 @@ public:
     std:: vector <stcTerrain*> *terrains;
     std:: vector <stcAttribute*> *attributes;
     std:: vector <stcState*> *states;
-    std:: vector <stcAnimated_battle> Animations;
+    std:: vector <stcAnimated_battle*> *animations;
     std:: vector <stcChipSet> Tilesets;
     stcGlosary Glosary;
     stcSystem System_dat;

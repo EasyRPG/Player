@@ -1414,36 +1414,51 @@ std:: vector <stcAnimationCell>  LDB_reader:: FramedataChunk(FILE * Stream)
     return(vecAnimationCell);
 }
 
-std:: vector <stcAnimated_battle> & LDB_reader:: AnimationChunk(FILE * Stream)
+std:: vector <stcAnimated_battle*> * LDB_reader:: animationChunk(FILE * Stream)
 {
     int id,datatoread=0,datareaded=0;
-    stcAnimated_battle Animated_battle;
-    static std:: vector <stcAnimated_battle> vecAnimated_battle;
+    stcAnimated_battle *animated_battle;
+    std::vector<stcAnimated_battle*> *vecAnimated_battle;
+    vecAnimated_battle = new std::vector<stcAnimated_battle*>();
+    if (vecAnimated_battle == NULL)
+    {
+        std::cerr << "No memory left." << std::endl;
+        exit(-1);
+    }
     datatoread=ReadCompressedInteger(Stream);//numero de datos
-    while (datatoread>datareaded) { // si no hay mas en el array
+    while (datatoread>datareaded) 
+    { // si no hay mas en el array
+        animated_battle = new stcAnimated_battle();
+        if (animated_battle == NULL)
+        {
+            std::cerr << "No memory left." << std::endl;
+            exit(-1);
+        }
+        animated_battle->set_defaults();
         id= ReadCompressedInteger(Stream);//lectura de id 1 de array
-        do {
+        do 
+        {
             ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
             if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
                 ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
             switch (ChunkInfo.ID) { // tipo de la primera dimencion
             case AnimationChunk_Name:
-                Animated_battle.strName = ReadString(Stream, ChunkInfo.Length);
+                animated_battle->strName = ReadString(Stream, ChunkInfo.Length);
                 break;
             case AnimationChunk_Animation_file://=0x02,
-                Animated_battle.strAnimation_file = ReadString(Stream, ChunkInfo.Length);
+                animated_battle->strAnimation_file = ReadString(Stream, ChunkInfo.Length);
                 break;
             case AnimationChunk_Timing_data://=0x06,
-                Animated_battle.vecAnimationTiming= AnimationTimingChunk(Stream);
+                animated_battle->vecAnimationTiming= AnimationTimingChunk(Stream);
                 break;
             case AnimationChunk_Apply_to://=0x09,
-                Animated_battle.intApply_to = ReadCompressedInteger(Stream);
+                animated_battle->intApply_to = ReadCompressedInteger(Stream);
                 break;
             case AnimationChunk_Y_coordinate_line://=0x0A,
-                Animated_battle.intY_coordinate_line = ReadCompressedInteger(Stream);
+                animated_battle->intY_coordinate_line = ReadCompressedInteger(Stream);
                 break;
             case AnimationChunk_Framedata://=0x0C
-                Animated_battle.Framedata= FramedataChunk(Stream);
+                animated_battle->Framedata= FramedataChunk(Stream);
                 break;
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
@@ -1453,8 +1468,8 @@ std:: vector <stcAnimated_battle> & LDB_reader:: AnimationChunk(FILE * Stream)
             }
         } while (ChunkInfo.ID!=0);
         datareaded++;
-        vecAnimated_battle.push_back(Animated_battle);
-        Animated_battle.clear();
+        vecAnimated_battle->push_back(animated_battle);
+        //Animated_battle.clear();
     }
     return(vecAnimated_battle);
 }
@@ -2604,7 +2619,7 @@ void  LDB_reader::GetNextChunk(FILE * Stream, LDB_data * data)
                 data->states=statesChunk(Stream);
                 break;
             case CHUNK_Animation:
-                data->Animations=AnimationChunk(Stream);
+                data->animations = animationChunk(Stream);
                 break;
             case CHUNK_Tileset:
                 data->Tilesets=TilesetChunk(Stream);

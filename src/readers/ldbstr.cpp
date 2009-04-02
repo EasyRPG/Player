@@ -643,7 +643,7 @@ void stcAnimationCell::clear()
 	Cell_data.clear();
 }
 
-void stcAnimated_battle::clear()
+void stcAnimated_battle::set_defaults()
 {
  strName="";//=0x01,
  strAnimation_file="";//=0x02,

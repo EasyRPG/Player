@@ -227,7 +227,7 @@ void Batle_scene::atack(int  nperso,int  enemy)
 
     if(!state_anim)
 	{
-	Ev_management->On_map_anim.init_Anim(&myteam->ldbdata->Animations[0],&myteam->S_manager);
+	Ev_management->On_map_anim.init_Anim(myteam->ldbdata->animations->at(0),&myteam->S_manager);
     Ev_management->On_map_anim.center_X= (((*myteam).Enemys.at(enemy)).Batler).x+((((*myteam).Enemys.at(enemy)).Batler).getw())/2;
     Ev_management->On_map_anim.center_Y= (((*myteam).Enemys.at(enemy)).Batler).y+((((*myteam).Enemys.at(enemy)).Batler).geth())/2;
 	state_anim=true;

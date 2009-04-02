@@ -40,7 +40,7 @@ private:
     std:: vector <stcAnimationCell> FramedataChunk(FILE * Stream);
     std:: vector <stcAnimationCelldata> AnimationCelldataChunk(FILE * Stream);
 
-    std:: vector <stcAnimated_battle> & AnimationChunk(FILE * Stream);// animacion
+    std:: vector <stcAnimated_battle*> * animationChunk(FILE * Stream);// animacion
     std:: vector <stcChipSet>  & TilesetChunk(FILE * Stream);// titles
     stcGlosary StringChunk(FILE * Stream);
     stcMusic_Background musicChunk(FILE * Stream);
