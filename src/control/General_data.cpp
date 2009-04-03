@@ -1,10 +1,10 @@
-#include "Event_management.h"
+#include "General_data.h"
 
 General_data::General_data()
 {
     running = true;
     TheScene = 0;
-    
+
     ldbdata = new LDB_data();
     if (ldbdata == NULL)
     {
