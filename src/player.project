@@ -130,10 +130,10 @@
   </VirtualDirectory>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g;$(shell sdl-config --cflags)" Required="yes"/>
+      <Compiler Options="$(shell sdl-config --cflags);-g;" Required="yes"/>
       <Linker Options="-O2;-lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image $(shell sdl-config --libs);" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="$(IntermediateDirectory)/easyrpg" IntermediateDirectory=".." Command="./easyrpg" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="../easyrpg" IntermediateDirectory="../.obj/Debug" Command="./easyrpg" CommandArguments="" WorkingDirectory=".." PauseExecWhenProcTerminates="yes"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -155,10 +155,10 @@
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options=";$(shell sdl-config --cflags)" Required="yes"/>
+      <Compiler Options=";$(shell sdl-config --cflags);" Required="yes"/>
       <Linker Options="-O2;-lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image $(shell sdl-config --libs);" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="$(IntermediateDirectory)/easyrpg" IntermediateDirectory=".." Command="./easyrpg" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="../easyrpg" IntermediateDirectory="../.obj/Release" Command="./easyrpg" CommandArguments="" WorkingDirectory=".." PauseExecWhenProcTerminates="yes"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -189,6 +189,7 @@
       <ResourceCompiler Options=""/>
     </GlobalSettings>
   </Settings>
-  <Dependencies Name="Release"/>
   <Dependencies Name="Debug"/>
+  <Dependencies Name="Release"/>
+  <Dependencies Name="Release"/>
 </CodeLite_Project>
