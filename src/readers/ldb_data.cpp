@@ -10,6 +10,15 @@ LDB_data::LDB_data()
     terrains = NULL;
     attributes = NULL; 
     states = NULL;
+    tilesets = NULL;
+    Glosary = NULL;
+    System_dat = NULL;
+    Combatcommands = NULL;
+    Event = NULL;
+    Switch_Names = NULL;
+    Variable_Names = NULL;
+    Professions = NULL;
+    Fightanims = NULL;
 }
 
 LDB_data::~LDB_data()
@@ -95,4 +104,53 @@ LDB_data::~LDB_data()
         }
         delete states;        
     }
+    
+    if (tilesets != NULL)
+    {
+        l = tilesets->size();
+        for (i = 0; i < l; i++)
+        {
+            delete tilesets->at(i);
+        }
+        delete tilesets;        
+    }
+    
+    if (Glosary != NULL) delete Glosary;
+    if (System_dat != NULL) delete System_dat;
+    if (Combatcommands != NULL) delete Combatcommands;
+    
+    if (Event != NULL)
+    {
+        l = Event->size();
+        for (i = 0; i < l; i++)
+        {
+            delete Event->at(i);
+        }
+        delete Event;        
+    }
+    
+    if (Switch_Names != NULL) delete Switch_Names;
+    if (Variable_Names != NULL) delete Variable_Names;
+    
+    if (Professions != NULL)
+    {
+        l = Professions->size();
+        for (i = 0; i < l; i++)
+        {
+            delete Professions->at(i);
+        }
+        delete Professions;        
+    }
+    
+    if (Fightanims != NULL)
+    {
+        l = Fightanims->size();
+        for (i = 0; i < l; i++)
+        {
+            delete Fightanims->at(i);
+        }
+        delete Fightanims;        
+    }
+    
+    
 }

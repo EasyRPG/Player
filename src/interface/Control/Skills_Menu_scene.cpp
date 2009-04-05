@@ -37,7 +37,7 @@ void Skills_Menu_Scene::init(General_data * TheTeam)
 	int k =(((*myteam).Players.get_skill_size(j)-1)/2);
    std::string system_string;
     system_string.append("System/");
-    system_string.append(myteam->ldbdata->System_dat.System_graphic);
+    system_string.append(myteam->ldbdata->System_dat->System_graphic);
     system_string.append(".png");
 
 	menu.init(myteam, running, 1,k, 320, 180, 0, 60,(char *)system_string.c_str());

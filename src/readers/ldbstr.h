@@ -8,7 +8,7 @@ std::string Name_of_Sound_effect;
 int Volume;
 int Tempo;
 int Balance;
-void clear();void show();
+void set_defaults();void show();
 };
 
 struct stcMusic_Background{
@@ -17,14 +17,14 @@ int Fade_in_time;
 int Volume;
 int Tempo;
 int Balance;
-void clear();void show();
+void set_defaults();void show();
 };
 
 struct Magicblock
 {
 int Level;//=0x01,
 int Spell_ID;//=0x02
-void clear();void show();
+void set_defaults();void show();
 };
 struct stcHero
 {
@@ -223,7 +223,7 @@ struct stcEnemy_Action
  int intLower_limit;//=0x06,
  int intUpper_limit;//	=0x07,
  int intPriority;//=0x0D
- void clear();
+ void set_defaults();
 void show();
 };
 
@@ -233,7 +233,7 @@ struct stcEnemy_group_data
 int	Enemy_ID;//=0x01,
 int	X_position;//=0x02,
 int	Y_position;//=0x03
-void clear();
+void set_defaults();
 void show();
 };
 
@@ -244,7 +244,7 @@ int Switch_A;//=0x02,
 int Turn_number_A;//=0x06,
 int Lower_limit;//=0x0B,
 int Upper_limit;//=0x0C,
-void clear();
+void set_defaults();
 void show();
 };
 struct stcEnemy_group_event_page
@@ -252,7 +252,7 @@ struct stcEnemy_group_event_page
 stcEnemy_group_condition conditions;//	Page_conditions=0x02,
 int	Event_length;//=0x0B,
  std:: vector <Event_comand *> vcEvent_comand;//	Event=0x0C
-void clear();
+void set_defaults();
 void show();
 };
 
@@ -281,7 +281,7 @@ char  blAirshipmaypass;	//=0x07,
 char  blAirshipmayland;	//=0x09,
 int  intHeroopacity;	//=0x0B
 ///------ 2003 info por confirmar
-void clear();
+void set_defaults();
 void show();
 };
 
@@ -353,7 +353,7 @@ int Flash_effect;//=0x03,
 int Green_component;//=0x05,
 int Blue_component;//=0x06,
 int Flash_power;//=0x07
-void clear();
+void set_defaults();
 void show();
 };
 struct stcAnimationCelldata
@@ -367,13 +367,13 @@ int Green_component;//=0x07,
 int Blue_component;//=0x08,
 int Chroma_component;//=0x09,
 int Alpha;//=0x0A,
-void clear();
+void set_defaults();
 void show();
 };
 struct stcAnimationCell
 {
  std:: vector <stcAnimationCelldata> Cell_data;
- void clear();
+ void set_defaults();
 };
 struct stcAnimated_battle
 {
@@ -396,7 +396,7 @@ std::vector<char> vc_ch_Lower_tile_passable;// Lower_tile_passable=0x04,
 std::vector<char> vc_ch_Upper_tile_passable;// Upper_tile_passable=0x05,
 int Water_animation;//=0x0B,
 int Animation_speed;//=0x0C
-void clear();
+void set_defaults();
 void show();
 };
 struct stcGlosary{
@@ -532,7 +532,7 @@ int Shield;// 0x0C
 int Armor;// 0x0D
 int Helmet;// 0x0E
 int Accessory;// 0x0F
- void clear();
+ void set_defaults();
  void show();
 };
 
@@ -605,7 +605,7 @@ struct stcEvent
  int intSwitch_ID;//=0x0D,
  int intScript_length;//=0x15,
  std:: vector <Event_comand *> vcEvent_comand; //Script=0x16
- void clear();
+ void set_defaults();
  void show();
 };
 
@@ -614,14 +614,14 @@ struct stcCombatcommand//array bidimencional
 {
      std::string strName;//=0x01,
      int intUsage;//=0x02
- void clear();
+ void set_defaults();
  void show();
 };
 
 struct stcCombatcommands//array bidimencional
 {
 std:: vector <stcCombatcommand> vc_Combatcommand;
- void clear();
+ void set_defaults();
  void show();
 };
 struct stcFight_anim
@@ -631,7 +631,7 @@ struct stcFight_anim
   int intPosition;//=0x03,
   char blExtended_expanded;//=0x04,
   int intID_Expansion_animated_combat_ID;//=0x05
-  void clear();
+  void set_defaults();
   void show();
 };
 
@@ -641,7 +641,7 @@ struct stcBattle_comand
   int intMotion_attack;// 	=0x02,
   std::vector<stcFight_anim> vc_Animated_battle_Combat_Anime;//	=0x0A, //two diminsional arrays
   std::vector<stcFight_anim> vc_Animated_battle_Anime_combat_weapons;//=0x0B //two diminsional arrays
-  void clear();
+  void set_defaults();
   void show();
 };
 
@@ -670,7 +670,7 @@ std::vector<char> vc_ch_Condeffects; //Effectiveness_state_data =0x48,  //1 byte
 int Effectiveness_Attribute_number;// =0x49,
 std::vector<char> vc_ch_Attribeffects;  //Effectiveness_Attribute_data =0x4A,/1 byte one dimention array
 std::vector<int> vc_int_Combat_Command; //Combat_Command=0x50 4 bytes one dimention array
-void clear();
+void set_defaults();
 void show();
 };
 

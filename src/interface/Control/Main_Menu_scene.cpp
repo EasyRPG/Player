@@ -46,7 +46,7 @@ void Main_Menu_Scene::init(General_data * TheTeam)
 
     std::string system_string;
     system_string.append("System/");
-    system_string.append(TheTeam->ldbdata->System_dat.System_graphic);
+    system_string.append(TheTeam->ldbdata->System_dat->System_graphic);
     system_string.append(".png");
 
 	menu->init(myteam, running, 0,5, 96, 125, 0, 0,(char *)system_string.c_str());

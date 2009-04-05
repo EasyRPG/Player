@@ -35,7 +35,7 @@ void Save_Load_Menu_Scene::init(General_data * TheTeam)
 
 	std::string system_string;
     system_string.append("System/");
-    system_string.append(myteam->ldbdata->System_dat.System_graphic);
+    system_string.append(myteam->ldbdata->System_dat->System_graphic);
     system_string.append(".png");
 
 	descripcion.init(320,30,0,0,(char *)system_string.c_str());

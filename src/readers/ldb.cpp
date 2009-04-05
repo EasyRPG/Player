@@ -65,7 +65,7 @@ std::vector <Magicblock> LDB_reader::heroskillChunk(FILE * Stream)
             }
         } while (ChunkInfo.ID!=0);
         vecSkills.push_back(skill);
-        skill.clear();
+        skill.set_defaults();
         datareaded++;
     }
     ChunkInfo.ID=1;
@@ -256,7 +256,7 @@ std::vector <stcHero*> * LDB_reader::heroChunk(FILE * Stream)
 stcSound_effect  LDB_reader::soundChunk(FILE * Stream)// confusion masica != sonido
 {
     stcSound_effect  stcSound;
-    stcSound.clear();
+    stcSound.set_defaults();
     do {
         ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
         if (ChunkInfo.ID!=0)
@@ -623,42 +623,57 @@ std:: vector <stcItem*> * LDB_reader::itemChunk(FILE * Stream)
     return(vecItem);
 }
 
-std:: vector <stcEnemy_Action>  LDB_reader::mosteractionChunk(FILE * Stream)
+std:: vector <stcEnemy_Action*> * LDB_reader::mosteractionChunk(FILE * Stream)
 {
     int id,datatoread=0,datareaded=0;
-    stcEnemy_Action Action;
-    std::vector <stcEnemy_Action> vecActions;
+    stcEnemy_Action *Action;
+    std::vector <stcEnemy_Action*> *vecActions;
+    vecActions = new std::vector <stcEnemy_Action*>();
+    if (vecActions == NULL)
+    {
+        std::cerr << "No memory left." << std::endl;
+        exit(-1);
+    }
     datatoread=ReadCompressedInteger(Stream);//numero de datos
-    while (datatoread>datareaded) { // si no hay mas en el array
+    while (datatoread>datareaded) 
+    { // si no hay mas en el array
+        Action = new stcEnemy_Action();
+        if (Action == NULL)
+        {
+            std::cerr << "No memory left." << std::endl;
+            exit(-1);
+        }
+        Action->set_defaults();
         id= ReadCompressedInteger(Stream);//lectura de id 1 de array
-        do {
+        do 
+        {
             ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
             if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
                 ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
             switch (ChunkInfo.ID) { // tipo de la primera dimencion
             case	MonsterActionsChunk_Action:
-                Action.intAction = ReadCompressedInteger(Stream);
+                Action->intAction = ReadCompressedInteger(Stream);
                 break;
             case MagicblockChunk_Spell_ID:
-                Action.intAction_data = ReadCompressedInteger(Stream);
+                Action->intAction_data = ReadCompressedInteger(Stream);
                 break;
             case MonsterActionsChunk_Skill_ID:
-                Action.intSkill_ID = ReadCompressedInteger(Stream);
+                Action->intSkill_ID = ReadCompressedInteger(Stream);
                 break;
             case MonsterActionsChunk_Monster_ID:
-                Action.intMonster_ID = ReadCompressedInteger(Stream);
+                Action->intMonster_ID = ReadCompressedInteger(Stream);
                 break;
             case MonsterActionsChunk_Condition:
-                Action.intCondition = ReadCompressedInteger(Stream);
+                Action->intCondition = ReadCompressedInteger(Stream);
                 break;
             case MonsterActionsChunk_Lower_limit:
-                Action.intLower_limit = ReadCompressedInteger(Stream);
+                Action->intLower_limit = ReadCompressedInteger(Stream);
                 break;
             case MonsterActionsChunk_Upper_limit:
-                Action.intUpper_limit = ReadCompressedInteger(Stream);
+                Action->intUpper_limit = ReadCompressedInteger(Stream);
                 break;
             case MonsterActionsChunk_Priority:
-                Action.intPriority = ReadCompressedInteger(Stream);
+                Action->intPriority = ReadCompressedInteger(Stream);
                 break;
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
@@ -667,8 +682,8 @@ std:: vector <stcEnemy_Action>  LDB_reader::mosteractionChunk(FILE * Stream)
                 break;
             }
         } while (ChunkInfo.ID!=0);
-        vecActions.push_back(Action);
-        Action.clear();
+        vecActions->push_back(Action);
+        //Action->clear();
         datareaded++;
     }
     ChunkInfo.ID	 =1;
@@ -830,7 +845,7 @@ std:: vector <stcEnemy_group_data>  LDB_reader::MonsterPartyMonsterChunk(FILE * 
             }
         } while (ChunkInfo.ID!=0);
         vecPartyMonster.push_back(Monster);
-        Monster.clear();
+        Monster.set_defaults();
         datareaded++;
     }
     ChunkInfo.ID	 =1;
@@ -844,7 +859,7 @@ stcEnemy_group_condition   LDB_reader::MonsterPartyEventconditionChunk(FILE * St
 {
     stcEnemy_group_condition  stcCondition;
     short dat;
-    stcCondition.clear();
+    stcCondition.set_defaults();
     do {
         ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
         if (ChunkInfo.ID!=0)
@@ -918,7 +933,7 @@ std:: vector <stcEnemy_group_event_page>  LDB_reader::MonsterPartyevent_pageChun
             }
         } while (ChunkInfo.ID!=0);
         vecPartyMonsterevent.push_back(Monsterevent);
-        Monsterevent.clear();
+        Monsterevent.set_defaults();
         datareaded++;
     }
     ChunkInfo.ID	 =1;
@@ -1285,7 +1300,7 @@ std:: vector <stcAnimationTiming>  LDB_reader:: AnimationTimingChunk(FILE * Stre
     datatoread=ReadCompressedInteger(Stream);//numero de datos
     while (datatoread>datareaded) { // si no hay mas en el array
         id= ReadCompressedInteger(Stream);//lectura de id 1 de array
-        AnimationTiming.clear();
+        AnimationTiming.set_defaults();
         do {
             ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
             if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
@@ -1319,7 +1334,7 @@ std:: vector <stcAnimationTiming>  LDB_reader:: AnimationTimingChunk(FILE * Stre
         } while (ChunkInfo.ID!=0);
         datareaded++;
         vecAnimationTiming.push_back(AnimationTiming);
-        AnimationTiming.clear();
+        AnimationTiming.set_defaults();
     }
     ChunkInfo.ID=1;
     return(vecAnimationTiming);
@@ -1333,7 +1348,7 @@ std:: vector <stcAnimationCelldata>  LDB_reader:: AnimationCelldataChunk(FILE * 
     datatoread=ReadCompressedInteger(Stream);//numero de datos
     while (datatoread>datareaded) { // si no hay mas en el array
         id= ReadCompressedInteger(Stream);//lectura de id 1 de array
-        Celldata.clear();
+        Celldata.set_defaults();
 
         do {
             ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
@@ -1377,7 +1392,7 @@ std:: vector <stcAnimationCelldata>  LDB_reader:: AnimationCelldataChunk(FILE * 
         } while (ChunkInfo.ID!=0);
         datareaded++;
         vecCelldata.push_back(Celldata);
-        Celldata.clear();
+        Celldata.set_defaults();
     }
     ChunkInfo.ID=1;
     return(vecCelldata);
@@ -1408,7 +1423,7 @@ std:: vector <stcAnimationCell>  LDB_reader:: FramedataChunk(FILE * Stream)
         } while (ChunkInfo.ID!=0);
         datareaded++;
         vecAnimationCell.push_back(AnimationCell);
-        AnimationCell.clear();
+        AnimationCell.set_defaults();
     }
     ChunkInfo.ID=1;
     return(vecAnimationCell);
@@ -1473,14 +1488,28 @@ std:: vector <stcAnimated_battle*> * LDB_reader:: animationChunk(FILE * Stream)
     }
     return(vecAnimated_battle);
 }
-std:: vector <stcChipSet> & LDB_reader:: TilesetChunk(FILE * Stream)
+std:: vector <stcChipSet*> * LDB_reader:: tilesetChunk(FILE * Stream)
 {
     int id,datatoread=0,datareaded=0;
     short dat=0;
-    stcChipSet ChipSet;
-    static std:: vector <stcChipSet> vecChipset;
+    stcChipSet *ChipSet;
+    std:: vector <stcChipSet*> *vecChipset;
+    vecChipset = new std:: vector <stcChipSet*>();
+    if (vecChipset == NULL)
+    {
+        std::cerr << "No memory left." << std::endl;
+        exit(-1);
+    }
     datatoread=ReadCompressedInteger(Stream);//numero de datos
-    while (datatoread>datareaded) { // si no hay mas en el array
+    while (datatoread>datareaded) 
+    { // si no hay mas en el array
+        ChipSet = new stcChipSet();
+        if (ChipSet == NULL)
+        {
+            std::cerr << "No memory left." << std::endl;
+            exit(-1);
+        }
+        ChipSet->set_defaults();
         id= ReadCompressedInteger(Stream);//lectura de id 1 de array
         do {
             ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
@@ -1488,35 +1517,35 @@ std:: vector <stcChipSet> & LDB_reader:: TilesetChunk(FILE * Stream)
                 ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
             switch (ChunkInfo.ID) { // tipo de la primera dimencion
             case TilesetChunk_Name:
-                ChipSet.strName = ReadString(Stream, ChunkInfo.Length);
+                ChipSet->strName = ReadString(Stream, ChunkInfo.Length);
                 break;
             case TilesetChunk_Graphic://0x02,
-                ChipSet.strGraphic = ReadString(Stream, ChunkInfo.Length);
+                ChipSet->strGraphic = ReadString(Stream, ChunkInfo.Length);
                 break;
             case TilesetChunk_Lower_tile_terrain://0x03,
                 while (ChunkInfo.Length--) {
                     fread(&dat, sizeof(short), 1, Stream);
-                    ChipSet.vc_sh_Lower_tile_terrain.push_back(dat);
+                    ChipSet->vc_sh_Lower_tile_terrain.push_back(dat);
                     ChunkInfo.Length--;
                 }
                 break;
             case TilesetChunk_Lower_tile_passable://0x04,
                 while (ChunkInfo.Length--) {
                     fread(&Void, sizeof(char), 1, Stream);
-                    ChipSet.vc_ch_Lower_tile_passable.push_back(Void);
+                    ChipSet->vc_ch_Lower_tile_passable.push_back(Void);
                 }
                 break;
             case TilesetChunk_Upper_tile_passable://0x05,
                 while (ChunkInfo.Length--) {
                     fread(&Void, sizeof(char), 1, Stream);
-                    ChipSet.vc_ch_Upper_tile_passable.push_back(Void);
+                    ChipSet->vc_ch_Upper_tile_passable.push_back(Void);
                 }
                 break;
             case TilesetChunk_Water_animation://0x0B,
-                ChipSet.Water_animation = ReadCompressedInteger(Stream);
+                ChipSet->Water_animation = ReadCompressedInteger(Stream);
                 break;
             case TilesetChunk_Animation_speed://0x0C
-                ChipSet.Animation_speed = ReadCompressedInteger(Stream);
+                ChipSet->Animation_speed = ReadCompressedInteger(Stream);
                 break;
 
             case CHUNK_LDB_END_OF_BLOCK:
@@ -1528,44 +1557,59 @@ std:: vector <stcChipSet> & LDB_reader:: TilesetChunk(FILE * Stream)
             }
         } while (ChunkInfo.ID!=0);
         datareaded++;
-        vecChipset.push_back(ChipSet);
-        ChipSet.clear();
+        vecChipset->push_back(ChipSet);
+        //ChipSet->clear();
     }
     return(vecChipset);
 }
 
-std:: vector <stcEvent> & LDB_reader:: EventChunk(FILE * Stream)
+std:: vector <stcEvent*> * LDB_reader:: EventChunk(FILE * Stream)
 {
     int id,datatoread=0,datareaded=0;
-    static std::vector <stcEvent> vecEvent;
-    stcEvent Event;
+    std::vector <stcEvent*> *vecEvent;
+    vecEvent = new std::vector <stcEvent*>();
+    if (vecEvent == NULL)
+    {
+        std::cerr << "No memory left." << std::endl;
+        exit(-1);
+    }
+    stcEvent *Event;
     stEvent Event_parser;
-    Event.clear();
+    
     datatoread=ReadCompressedInteger(Stream);//numero de datos
-    while (datatoread>datareaded) { // si no hay mas en el array
+    while (datatoread>datareaded) 
+    { // si no hay mas en el array
+        Event = new stcEvent();
+        if (Event == NULL)
+        {
+            std::cerr << "No memory left." << std::endl;
+            exit(-1);
+        }
+        Event->set_defaults();
         id= ReadCompressedInteger(Stream);//lectura de id 1 de array
-        do {
+        do 
+        {
             ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
             if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
                 ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
             switch (ChunkInfo.ID) { // tipo de la primera dimencion
             case Common_EventChunk_Name:
-                Event.strName = ReadString(Stream, ChunkInfo.Length);
+                Event->strName = ReadString(Stream, ChunkInfo.Length);
                 break;
             case Common_EventChunk_NameActivation_condition://0x0B,
-                Event.intActivation_condition = ReadCompressedInteger(Stream);
+                Event->intActivation_condition = ReadCompressedInteger(Stream);
                 break;
             case Common_EventChunk_NameActivate_on_switch://0x0C,
-                Event.blActivate_on_switch = ReadCompressedInteger(Stream);
+                Event->blActivate_on_switch = ReadCompressedInteger(Stream);
                 break;
             case Common_EventChunk_NameSwitch_ID://0x0D,
-                Event.intSwitch_ID = ReadCompressedInteger(Stream);
+                Event->intSwitch_ID = ReadCompressedInteger(Stream);
                 break;
             case Common_EventChunk_NameScript_length://0x15,
-                Event.intScript_length = ReadCompressedInteger(Stream);
+                Event->intScript_length = ReadCompressedInteger(Stream);
                 break;
             case Common_EventChunk_NameScript://0x16
-                Event.vcEvent_comand =  Event_parser.EventcommandChunk(Stream);
+                Event->vcEvent_comand =  Event_parser.EventcommandChunk(Stream);
                 break;
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
@@ -1576,380 +1620,386 @@ std:: vector <stcEvent> & LDB_reader:: EventChunk(FILE * Stream)
             }
         } while (ChunkInfo.ID!=0);
         datareaded++;
-        vecEvent.push_back(Event);
-        Event.clear();
+        vecEvent->push_back(Event);
+        //Event->clear();
     }
     return(vecEvent);
 }
 
-stcGlosary  LDB_reader::StringChunk(FILE * Stream)//movimientos de la pagina
+stcGlosary* LDB_reader::stringChunk(FILE * Stream)//movimientos de la pagina
 {
-    stcGlosary Glosary;
+    stcGlosary *Glosary;
+    Glosary = new stcGlosary();
+    if (Glosary == NULL)
+    {
+        std::cerr << "No memory left." << std::endl;
+        exit(-1);
+    }
     do {
         ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
         if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
             ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
         switch (ChunkInfo.ID) { // tipo de la primera dimencion
         case  Enemy_encounter://0x01,
-            Glosary.Enemy_encounter = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Enemy_encounter = ReadString(Stream, ChunkInfo.Length);
             break;
         case Headstart_attack://0x02,
-            Glosary.Headstart_attack = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Headstart_attack = ReadString(Stream, ChunkInfo.Length);
             break;
         case Escape_success://0x03,
-            Glosary.Escape_success = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Escape_success = ReadString(Stream, ChunkInfo.Length);
             break;
         case Escape_failure://0x04,
-            Glosary.Escape_failure = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Escape_failure = ReadString(Stream, ChunkInfo.Length);
             break;
         case Battle_victory://0x05,
-            Glosary.Battle_victory = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Battle_victory = ReadString(Stream, ChunkInfo.Length);
             break;
         case Battle_defeat://0x06,
-            Glosary.Battle_defeat = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Battle_defeat = ReadString(Stream, ChunkInfo.Length);
             break;
         case Experience_received://0x07,
-            Glosary.Experience_received = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Experience_received = ReadString(Stream, ChunkInfo.Length);
             break;
         case Money_recieved_A://0x08,
-            Glosary.Money_recieved_A = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Money_recieved_A = ReadString(Stream, ChunkInfo.Length);
             break;
         case Money_recieved_B://0x09,
-            Glosary.Money_recieved_B = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Money_recieved_B = ReadString(Stream, ChunkInfo.Length);
             break;
         case Item_recieved://0x0A,
-            Glosary.Item_recieved = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Item_recieved = ReadString(Stream, ChunkInfo.Length);
             break;
         case Attack_message://0x0B,
-            Glosary.Attack_message = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Attack_message = ReadString(Stream, ChunkInfo.Length);
             break;
         case Ally_critical_hit://0x0C,
-            Glosary.Ally_critical_hit = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Ally_critical_hit = ReadString(Stream, ChunkInfo.Length);
             break;
         case Enemy_critical_hit://0x0D,
-            Glosary.Enemy_critical_hit = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Enemy_critical_hit = ReadString(Stream, ChunkInfo.Length);
             break;
         case Defend_message://0x0E,
-            Glosary.Defend_message = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Defend_message = ReadString(Stream, ChunkInfo.Length);
             break;
         case Watch_message://0x0F,
-            Glosary.Watch_message = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Watch_message = ReadString(Stream, ChunkInfo.Length);
             break;
         case Gathering_energy://0x10,
-            Glosary.Gathering_energy = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Gathering_energy = ReadString(Stream, ChunkInfo.Length);
             break;
         case Sacrificial_attack://0x11,
-            Glosary.Sacrificial_attack = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Sacrificial_attack = ReadString(Stream, ChunkInfo.Length);
             break;
         case Enemy_escape://0x12,
-            Glosary.Enemy_escape = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Enemy_escape = ReadString(Stream, ChunkInfo.Length);
             break;
         case Enemy_transform://0x13,
-            Glosary.Enemy_transform = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Enemy_transform = ReadString(Stream, ChunkInfo.Length);
             break;
         case Enemy_damaged://0x14,
-            Glosary.Enemy_damaged = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Enemy_damaged = ReadString(Stream, ChunkInfo.Length);
             break;
         case Enemy_undamaged://0x15,
-            Glosary.Enemy_undamaged = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Enemy_undamaged = ReadString(Stream, ChunkInfo.Length);
             break;
         case Ally_damaged://0x16,
-            Glosary.Ally_damaged = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Ally_damaged = ReadString(Stream, ChunkInfo.Length);
             break;
         case Ally_undamaged://0x17,
-            Glosary.Ally_undamaged = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Ally_undamaged = ReadString(Stream, ChunkInfo.Length);
             break;
         case Skill_failure_A://0x18,
-            Glosary.Skill_failure_A = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Skill_failure_A = ReadString(Stream, ChunkInfo.Length);
             break;
         case Skill_failure_B://0x19,
-            Glosary.Skill_failure_B = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Skill_failure_B = ReadString(Stream, ChunkInfo.Length);
             break;
         case Skill_failure_C://0x1A,
-            Glosary.Skill_failure_C = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Skill_failure_C = ReadString(Stream, ChunkInfo.Length);
             break;
         case Attack_dodged://0x1B,
-            Glosary.Attack_dodged = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Attack_dodged = ReadString(Stream, ChunkInfo.Length);
             break;
         case Item_use://0x1C,
-            Glosary.Item_use = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Item_use = ReadString(Stream, ChunkInfo.Length);
             break;
         case Stat_recovery://0x1D,
-            Glosary.Stat_recovery = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Stat_recovery = ReadString(Stream, ChunkInfo.Length);
             break;
         case Stat_increase://0x1E,
-            Glosary.Stat_increase = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Stat_increase = ReadString(Stream, ChunkInfo.Length);
             break;
         case Stat_decrease://0x1F,
-            Glosary.Stat_decrease = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Stat_decrease = ReadString(Stream, ChunkInfo.Length);
             break;
         case Ally_lost_via_absorb://0x20,
-            Glosary.Ally_lost_via_absorb = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Ally_lost_via_absorb = ReadString(Stream, ChunkInfo.Length);
             break;
         case Enemy_lost_via_absorb://0x21,
-            Glosary.Enemy_lost_via_absorb = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Enemy_lost_via_absorb = ReadString(Stream, ChunkInfo.Length);
             break;
         case Resistance_increase://0x22,
-            Glosary.Resistance_increase = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Resistance_increase = ReadString(Stream, ChunkInfo.Length);
             break;
         case Resistance_decrease://0x23,
-            Glosary.Resistance_decrease = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Resistance_decrease = ReadString(Stream, ChunkInfo.Length);
             break;
         case Level_up_message://0x24,
-            Glosary.Level_up_message = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Level_up_message = ReadString(Stream, ChunkInfo.Length);
             break;
         case Skill_learned://0x25,
-            Glosary.Skill_learned = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Skill_learned = ReadString(Stream, ChunkInfo.Length);
             break;
         case Shop_greeting ://0x29,
-            Glosary.Shop_greeting = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Shop_greeting = ReadString(Stream, ChunkInfo.Length);
             break;
         case Shop_regreeting ://0x2A,
-            Glosary.Shop_regreeting = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Shop_regreeting = ReadString(Stream, ChunkInfo.Length);
             break;
         case Buy_message ://0x2B,
-            Glosary.Buy_message = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Buy_message = ReadString(Stream, ChunkInfo.Length);
             break;
         case Sell_message ://0x2C,
-            Glosary.Sell_message = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Sell_message = ReadString(Stream, ChunkInfo.Length);
             break;
         case Leave_message ://0x2D,
-            Glosary.Leave_message = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Leave_message = ReadString(Stream, ChunkInfo.Length);
             break;
         case Buying_message ://0x2E,
-            Glosary.Buying_message = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Buying_message = ReadString(Stream, ChunkInfo.Length);
             break;
         case Quantity_to_buy ://0x2F,
-            Glosary.Quantity_to_buy = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Quantity_to_buy = ReadString(Stream, ChunkInfo.Length);
             break;
         case Purchase_end ://0x30,
-            Glosary.Purchase_end = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Purchase_end = ReadString(Stream, ChunkInfo.Length);
             break;
         case Selling_message ://0x31,
-            Glosary.Selling_message = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Selling_message = ReadString(Stream, ChunkInfo.Length);
             break;
         case Quantity_to_sell ://0x32,
-            Glosary.Quantity_to_sell = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Quantity_to_sell = ReadString(Stream, ChunkInfo.Length);
             break;
         case Selling_end ://0x33,
-            Glosary.Selling_end = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Selling_end = ReadString(Stream, ChunkInfo.Length);
             break;
         case Shop_greeting_2 ://0x36,
-            Glosary.Shop_greeting_2 = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Shop_greeting_2 = ReadString(Stream, ChunkInfo.Length);
             break;
         case Shop_regreeting_2 ://0x37,
-            Glosary.Shop_regreeting_2 = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Shop_regreeting_2 = ReadString(Stream, ChunkInfo.Length);
             break;
         case Buy_message_2 ://0x38,
-            Glosary.Buy_message_2 = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Buy_message_2 = ReadString(Stream, ChunkInfo.Length);
             break;
         case Sell_message_2 ://0x39,
-            Glosary.Sell_message_2 = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Sell_message_2 = ReadString(Stream, ChunkInfo.Length);
             break;
         case Leave_message_2 ://0x3A,
-            Glosary.Leave_message_2 = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Leave_message_2 = ReadString(Stream, ChunkInfo.Length);
             break;
         case Buying_message_2 ://0x3B,
-            Glosary.Buying_message_2 = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Buying_message_2 = ReadString(Stream, ChunkInfo.Length);
             break;
         case Quantity_to_buy_2 ://0x3C,
-            Glosary.Quantity_to_buy_2 = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Quantity_to_buy_2 = ReadString(Stream, ChunkInfo.Length);
             break;
         case Purchase_end_2 ://0x3D,
-            Glosary.Purchase_end_2 = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Purchase_end_2 = ReadString(Stream, ChunkInfo.Length);
             break;
         case Selling_message_2 ://0x3E,
-            Glosary.Selling_message_2 = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Selling_message_2 = ReadString(Stream, ChunkInfo.Length);
             break;
         case Quantity_to_sell_2 ://0x3F,
-            Glosary.Quantity_to_sell_2 = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Quantity_to_sell_2 = ReadString(Stream, ChunkInfo.Length);
             break;
         case Selling_end_2 ://0x40,
-            Glosary.Selling_end_2 = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Selling_end_2 = ReadString(Stream, ChunkInfo.Length);
             break;
         case Shop_greeting_3 ://0x43,
-            Glosary.Shop_greeting_3 = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Shop_greeting_3 = ReadString(Stream, ChunkInfo.Length);
             break;
         case Shop_regreeting_3 ://0x44,
-            Glosary.Shop_regreeting_3 = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Shop_regreeting_3 = ReadString(Stream, ChunkInfo.Length);
             break;
         case Buy_message_3 ://0x45,
-            Glosary.Buy_message_3 = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Buy_message_3 = ReadString(Stream, ChunkInfo.Length);
             break;
         case Sell_message_3 ://0x46,
-            Glosary.Sell_message_3 = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Sell_message_3 = ReadString(Stream, ChunkInfo.Length);
             break;
         case Leave_message_3 ://0x47,
-            Glosary.Leave_message_3 = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Leave_message_3 = ReadString(Stream, ChunkInfo.Length);
             break;
         case Buying_message_3 ://0x48,
-            Glosary.Buying_message_3 = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Buying_message_3 = ReadString(Stream, ChunkInfo.Length);
             break;
         case Quantity_to_buy_3 ://0x49,
-            Glosary.Quantity_to_buy_3 = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Quantity_to_buy_3 = ReadString(Stream, ChunkInfo.Length);
             break;
         case Purchase_end_3 ://0x4A,
-            Glosary.Purchase_end_3 = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Purchase_end_3 = ReadString(Stream, ChunkInfo.Length);
             break;
         case Selling_message_3 ://0x4B,
-            Glosary.Selling_message_3 = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Selling_message_3 = ReadString(Stream, ChunkInfo.Length);
             break;
         case Quantity_to_sell_3 ://0x4C,
-            Glosary.Quantity_to_sell_3 = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Quantity_to_sell_3 = ReadString(Stream, ChunkInfo.Length);
             break;
         case Selling_end_3 ://0x4D,
-            Glosary.Selling_end_3 = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Selling_end_3 = ReadString(Stream, ChunkInfo.Length);
             break;
         case Inn_A_Greeting_A://0x50,
-            Glosary.Inn_A_Greeting_A = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Inn_A_Greeting_A = ReadString(Stream, ChunkInfo.Length);
             break;
         case Inn_A_Greeting_B://0x51,
-            Glosary.Inn_A_Greeting_B = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Inn_A_Greeting_B = ReadString(Stream, ChunkInfo.Length);
             break;
         case Inn_A_Greeting_C://0x52,
-            Glosary.Inn_A_Greeting_C = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Inn_A_Greeting_C = ReadString(Stream, ChunkInfo.Length);
             break;
         case Inn_A_Accept://0x53,
-            Glosary.Inn_A_Accept = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Inn_A_Accept = ReadString(Stream, ChunkInfo.Length);
             break;
         case Inn_A_Cancel://0x54,
-            Glosary.Inn_A_Cancel = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Inn_A_Cancel = ReadString(Stream, ChunkInfo.Length);
             break;
         case Inn_B_Greeting_A://0x55,
-            Glosary.Inn_B_Greeting_A = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Inn_B_Greeting_A = ReadString(Stream, ChunkInfo.Length);
             break;
         case Inn_B_Greeting_B://0x56,
-            Glosary.Inn_B_Greeting_B = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Inn_B_Greeting_B = ReadString(Stream, ChunkInfo.Length);
             break;
         case Inn_B_Greeting_C://0x57,
-            Glosary.Inn_B_Greeting_C = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Inn_B_Greeting_C = ReadString(Stream, ChunkInfo.Length);
             break;
         case Inn_B_Accept://0x58,
-            Glosary.Inn_B_Accept = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Inn_B_Accept = ReadString(Stream, ChunkInfo.Length);
             break;
         case Inn_B_Cancel://0x59,
-            Glosary.Inn_B_Cancel = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Inn_B_Cancel = ReadString(Stream, ChunkInfo.Length);
             break;
         case Loose_items://0x5C,
-            Glosary.Loose_items = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Loose_items = ReadString(Stream, ChunkInfo.Length);
             break;
         case Equipped_items://0x5D,
-            Glosary.Equipped_items = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Equipped_items = ReadString(Stream, ChunkInfo.Length);
             break;
         case Monetary_Unit://0x5F,
-            Glosary.Monetary_Unit = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Monetary_Unit = ReadString(Stream, ChunkInfo.Length);
             break;
         case Combat_Command://0x65,
-            Glosary.Combat_Command = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Combat_Command = ReadString(Stream, ChunkInfo.Length);
             break;
         case Combat_Auto://0x66,
-            Glosary.Combat_Auto = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Combat_Auto = ReadString(Stream, ChunkInfo.Length);
             break;
         case Combat_Run://0x67,
-            Glosary.Combat_Run = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Combat_Run = ReadString(Stream, ChunkInfo.Length);
             break;
         case Command_Attack://0x68,
-            Glosary.Command_Attack = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Command_Attack = ReadString(Stream, ChunkInfo.Length);
             break;
         case Command_Defend://0x69,
-            Glosary.Command_Defend = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Command_Defend = ReadString(Stream, ChunkInfo.Length);
             break;
         case Command_Item://0x6A,
-            Glosary.Command_Item = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Command_Item = ReadString(Stream, ChunkInfo.Length);
             break;
         case Command_Skill://0x6B,
-            Glosary.Command_Skill = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Command_Skill = ReadString(Stream, ChunkInfo.Length);
             break;
         case Menu_Equipment://0x6C,
-            Glosary.Menu_Equipment = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Menu_Equipment = ReadString(Stream, ChunkInfo.Length);
             break;
         case Menu_Save://0x6E,
-            Glosary.Menu_Save = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Menu_Save = ReadString(Stream, ChunkInfo.Length);
             break;
         case Menu_Quit://0x70,
-            Glosary.Menu_Quit = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Menu_Quit = ReadString(Stream, ChunkInfo.Length);
 
             break;
         case New_Game://0x72,
-            Glosary.New_Game = ReadString(Stream, ChunkInfo.Length);
+            Glosary->New_Game = ReadString(Stream, ChunkInfo.Length);
             break;
         case Load_Game://0x73,
-            Glosary.Load_Game = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Load_Game = ReadString(Stream, ChunkInfo.Length);
             break;
         case Exit_to_Windows://0x75,
-            Glosary.Exit_to_Windows = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Exit_to_Windows = ReadString(Stream, ChunkInfo.Length);
             break;
         case Level://0x7B,
-            Glosary.Level = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Level = ReadString(Stream, ChunkInfo.Length);
             break;
         case Health://0x7C,
-            Glosary.Health = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Health = ReadString(Stream, ChunkInfo.Length);
             break;
         case Mana://0x7D,
-            Glosary.Mana = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Mana = ReadString(Stream, ChunkInfo.Length);
             break;
         case Normal_status://0x7E,
-            Glosary.Normal_status = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Normal_status = ReadString(Stream, ChunkInfo.Length);
             break;
         case Experience ://0x7F,//(short)
-            Glosary.Experience = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Experience = ReadString(Stream, ChunkInfo.Length);
             break;
         case Level_short ://0x80,//(short)
-            Glosary.Level_short = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Level_short = ReadString(Stream, ChunkInfo.Length);
             break;
         case Health_short ://0x81,//(short)
-            Glosary.Health_short = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Health_short = ReadString(Stream, ChunkInfo.Length);
             break;
         case Mana_short ://0x82,//(short)
-            Glosary.Mana_short = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Mana_short = ReadString(Stream, ChunkInfo.Length);
             break;
         case Mana_cost://0x83,
-            Glosary.Mana_cost = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Mana_cost = ReadString(Stream, ChunkInfo.Length);
             break;
         case Attack://0x84,
-            Glosary.Attack = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Attack = ReadString(Stream, ChunkInfo.Length);
             break;
         case Defense://0x85,
-            Glosary.Defense = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Defense = ReadString(Stream, ChunkInfo.Length);
             break;
         case Mind://0x86,
-            Glosary.Mind = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Mind = ReadString(Stream, ChunkInfo.Length);
             break;
         case Agility://0x87,
-            Glosary.Agility = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Agility = ReadString(Stream, ChunkInfo.Length);
             break;
         case Weapon://0x88,
-            Glosary.Weapon = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Weapon = ReadString(Stream, ChunkInfo.Length);
             break;
         case Shield://0x89,
-            Glosary.Shield = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Shield = ReadString(Stream, ChunkInfo.Length);
             break;
         case Armor://0x8A,
-            Glosary.Armor = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Armor = ReadString(Stream, ChunkInfo.Length);
             break;
         case Helmet://0x8B,
-            Glosary.Helmet = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Helmet = ReadString(Stream, ChunkInfo.Length);
             break;
         case Accessory://0x8C,
-            Glosary.Accessory = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Accessory = ReadString(Stream, ChunkInfo.Length);
             break;
         case Save_game_message://0x92,
-            Glosary.Save_game_message = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Save_game_message = ReadString(Stream, ChunkInfo.Length);
             break;
         case Load_game_message://0x93,
-            Glosary.Load_game_message = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Load_game_message = ReadString(Stream, ChunkInfo.Length);
             break;
         case Exit_game_message://0x94,
-            Glosary.Exit_game_message = ReadString(Stream, ChunkInfo.Length);
+            Glosary->Exit_game_message = ReadString(Stream, ChunkInfo.Length);
             break;
         case File_name://0x97,
-            Glosary.File_name = ReadString(Stream, ChunkInfo.Length);
+            Glosary->File_name = ReadString(Stream, ChunkInfo.Length);
             break;
         case General_Yes://0x98,
-            Glosary.General_Yes = ReadString(Stream, ChunkInfo.Length);
+            Glosary->General_Yes = ReadString(Stream, ChunkInfo.Length);
             break;
         case General_No://0x99
-            Glosary.General_No = ReadString(Stream, ChunkInfo.Length);
+            Glosary->General_No = ReadString(Stream, ChunkInfo.Length);
             break;
         case CHUNK_LDB_END_OF_BLOCK:
             break;
@@ -1967,7 +2017,7 @@ stcGlosary  LDB_reader::StringChunk(FILE * Stream)//movimientos de la pagina
 stcMusic_Background   LDB_reader::musicChunk(FILE * Stream)
 {
     stcMusic_Background  stcMusic;
-    stcMusic.clear();
+    stcMusic.set_defaults();
     do {
         ChunkInfo.ID     = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
         if (ChunkInfo.ID!=0)
@@ -2004,7 +2054,7 @@ std::vector <stcBattle_test>   LDB_reader::Batletest(FILE * Stream)
     int id,datatoread=0,datareaded=0;
     std::vector <stcBattle_test> vc_Battle_test;
     stcBattle_test Battle_test;
-    Battle_test.clear();
+    Battle_test.set_defaults();
     datatoread=ReadCompressedInteger(Stream);//numero de datos
     while (datatoread>datareaded) { // si no hay mas en el array
         id= ReadCompressedInteger(Stream);//lectura de id 1 de array
@@ -2063,179 +2113,185 @@ std::vector <stcBattle_test>   LDB_reader::Batletest(FILE * Stream)
         } while (ChunkInfo.ID!=0);
         datareaded++;
         vc_Battle_test.push_back(Battle_test);
-        Battle_test.clear();
+        Battle_test.set_defaults();
     }
     ChunkInfo.ID=1;
     return(vc_Battle_test);
 }
 
-stcSystem  LDB_reader::SystemChunk(FILE * Stream)//movimientos de la pagina
+stcSystem* LDB_reader::systemChunk(FILE * Stream)//movimientos de la pagina
 {
     short dat;
-    stcSystem System;
-    System.Heroes_in_starting =1;//default
+    stcSystem *System;
+    System = new stcSystem();
+    if (System == NULL)
+    {
+        std::cerr << "No memory left." << std::endl;
+        exit(-1);
+    }
+    System->Heroes_in_starting =1;//default
     do {
         ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
         if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
             ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
         switch (ChunkInfo.ID) { // tipo de la primera dimencion
         case LDB_ID://0x0A,
-            System.intLDB_ID = ReadCompressedInteger(Stream);
+            System->intLDB_ID = ReadCompressedInteger(Stream);
             break;
         case Skiff_graphic://0x0B,
-            System.Skiff_graphic = ReadString(Stream, ChunkInfo.Length);
+            System->Skiff_graphic = ReadString(Stream, ChunkInfo.Length);
             break;
         case Boat_graphic://0x0C,
-            System.Boat_graphic = ReadString(Stream, ChunkInfo.Length);
+            System->Boat_graphic = ReadString(Stream, ChunkInfo.Length);
             break;
         case Airship_graphic://0x0D,
-            System.Airship_graphic = ReadString(Stream, ChunkInfo.Length);
+            System->Airship_graphic = ReadString(Stream, ChunkInfo.Length);
             break;
         case Skiff_index://0x0E,
-            System.Skiff_index = ReadCompressedInteger(Stream);
+            System->Skiff_index = ReadCompressedInteger(Stream);
             break;
         case Boat_index://0x0F,
-            System.Boat_index = ReadCompressedInteger(Stream);
+            System->Boat_index = ReadCompressedInteger(Stream);
             break;
         case Airship_index://0x10,
-            System.Airship_index = ReadCompressedInteger(Stream);
+            System->Airship_index = ReadCompressedInteger(Stream);
             break;
         case Title_graphic://0x11,
-            System.Title_graphic = ReadString(Stream, ChunkInfo.Length);
+            System->Title_graphic = ReadString(Stream, ChunkInfo.Length);
             break;
         case Game_Over_graphic://0x12,
-            System.Game_Over_graphic = ReadString(Stream, ChunkInfo.Length);
+            System->Game_Over_graphic = ReadString(Stream, ChunkInfo.Length);
             break;
         case System_graphic://0x13,
-            System.System_graphic = ReadString(Stream, ChunkInfo.Length);
+            System->System_graphic = ReadString(Stream, ChunkInfo.Length);
             break;
         case System_graphic_2://0x14,
-            System.System_graphic_2 = ReadString(Stream, ChunkInfo.Length);
+            System->System_graphic_2 = ReadString(Stream, ChunkInfo.Length);
             break;
         case Heroes_in_starting://0x15,
-            System.Heroes_in_starting = ReadCompressedInteger(Stream);
+            System->Heroes_in_starting = ReadCompressedInteger(Stream);
             break;
         case Starting_party://0x16,
             while (ChunkInfo.Length--) {
                 fread(&dat, sizeof(short), 1, Stream);
-                System.vc_sh_Starting_party.push_back(dat);
+                System->vc_sh_Starting_party.push_back(dat);
                 ChunkInfo.Length--;
             }
             break;
         case Num_Comadns_order://0x1A,
-            System.intNum_Comadns_order = ReadCompressedInteger(Stream);
+            System->intNum_Comadns_order = ReadCompressedInteger(Stream);
             break;
         case Comadns_order://0x1B,
             while (ChunkInfo.Length--) {
                 fread(&dat, sizeof(short), 1, Stream);
-                System.vc_sh_Comadns_order.push_back(dat);
+                System->vc_sh_Comadns_order.push_back(dat);
                 ChunkInfo.Length--;
             }
             break;
         case Title_music://0x1F,
-            System.Title_music=musicChunk(Stream);//0x1F,
+            System->Title_music=musicChunk(Stream);//0x1F,
             break;
         case Battle_music://0x20,
-            System.Battle_music=musicChunk(Stream);//0x20,
+            System->Battle_music=musicChunk(Stream);//0x20,
             break;
         case Battle_end_music://0x21,
-            System.Battle_end_music=musicChunk(Stream);//0x21,
+            System->Battle_end_music=musicChunk(Stream);//0x21,
             break;
         case Inn_music://0x21,
-            System.Inn_music=musicChunk(Stream);//0x22,
+            System->Inn_music=musicChunk(Stream);//0x22,
             break;
         case Skiff_music://0x21,
-            System.Skiff_music=musicChunk(Stream);//0x23,
+            System->Skiff_music=musicChunk(Stream);//0x23,
             break;
         case Boat_music://0x21,
-            System.Boat_music=musicChunk(Stream);//0x24,
+            System->Boat_music=musicChunk(Stream);//0x24,
             break;
         case Airship_music://0x21,
-            System.Airship_music=musicChunk(Stream);//0x25,
+            System->Airship_music=musicChunk(Stream);//0x25,
             break;
         case Game_Over_music://0x21,
-            System.Game_Over_music=musicChunk(Stream);//0x26,
+            System->Game_Over_music=musicChunk(Stream);//0x26,
             break;
         case Cursor_SFX://0x21,
-            System.Cursor_SFX=soundChunk(Stream);//0x29,
+            System->Cursor_SFX=soundChunk(Stream);//0x29,
             break;
         case Accept_SFX://0x21,
-            System.Accept_SFX=soundChunk(Stream);//0x2A,
+            System->Accept_SFX=soundChunk(Stream);//0x2A,
             break;
         case Cancel_SFX://0x21,
-            System.Cancel_SFX=soundChunk(Stream);//0x2B,
+            System->Cancel_SFX=soundChunk(Stream);//0x2B,
             break;
         case Illegal_SFX://0x21,
-            System.Illegal_SFX=soundChunk(Stream);//0x2C,
+            System->Illegal_SFX=soundChunk(Stream);//0x2C,
             break;
         case Battle_SFX://0x21,
-            System.Battle_SFX=soundChunk(Stream);//0x2D,
+            System->Battle_SFX=soundChunk(Stream);//0x2D,
             break;
         case Escape_SFX://0x21,
-            System.Escape_SFX=soundChunk(Stream);//0x2E,
+            System->Escape_SFX=soundChunk(Stream);//0x2E,
             break;
         case Enemy_attack_SFX://0x21,
-            System.Enemy_attack_SFX=soundChunk(Stream);//0x2F,
+            System->Enemy_attack_SFX=soundChunk(Stream);//0x2F,
             break;
         case Enemy_damaged_SFX://0x21,
-            System.Enemy_damaged_SFX=soundChunk(Stream);//0x30,
+            System->Enemy_damaged_SFX=soundChunk(Stream);//0x30,
             break;
         case Ally_damaged_SFX://0x21,
-            System.Ally_damaged_SFX=soundChunk(Stream);//0x31,
+            System->Ally_damaged_SFX=soundChunk(Stream);//0x31,
             break;
         case Evasion_SFX://0x21,
-            System.Evasion_SFX=soundChunk(Stream);//0x32,
+            System->Evasion_SFX=soundChunk(Stream);//0x32,
             break;
         case Enemy_dead_SFX://0x21,
-            System.Enemy_dead_SFX=soundChunk(Stream);//0x33,
+            System->Enemy_dead_SFX=soundChunk(Stream);//0x33,
             break;
         case Item_use_SFX://0x21,
-            System.Item_use_SFX=soundChunk(Stream);//0x34,
+            System->Item_use_SFX=soundChunk(Stream);//0x34,
             break;
         case Map_exit_transition://0x3D,
-            System.Map_exit_transition = ReadCompressedInteger(Stream);
+            System->Map_exit_transition = ReadCompressedInteger(Stream);
             break;
         case Map_enter_transition://0x3E,
-            System.Map_enter_transition = ReadCompressedInteger(Stream);
+            System->Map_enter_transition = ReadCompressedInteger(Stream);
             break;
         case Battle_start_fadeout://0x3F,
-            System.Battle_start_fadeout = ReadCompressedInteger(Stream);
+            System->Battle_start_fadeout = ReadCompressedInteger(Stream);
             break;
         case Battle_start_fadein://0x40,
-            System.Battle_start_fadein = ReadCompressedInteger(Stream);
+            System->Battle_start_fadein = ReadCompressedInteger(Stream);
             break;
         case Battle_end_fadeout://0x41,
-            System.Battle_end_fadeout = ReadCompressedInteger(Stream);
+            System->Battle_end_fadeout = ReadCompressedInteger(Stream);
             break;
         case Battle_end_fadein://0x42,
-            System.Battle_end_fadein = ReadCompressedInteger(Stream);
+            System->Battle_end_fadein = ReadCompressedInteger(Stream);
             break;
         case Message_background://0x47,
-            System.Message_background = ReadCompressedInteger(Stream);
+            System->Message_background = ReadCompressedInteger(Stream);
             break;
         case Font_id://0x48,
-            System.Font = ReadCompressedInteger(Stream);
+            System->Font = ReadCompressedInteger(Stream);
             break;
         case Selected_condition://0x51,
-            System.Selected_condition = ReadCompressedInteger(Stream);
+            System->Selected_condition = ReadCompressedInteger(Stream);
             break;
         case Selected_hero://0x52,
-            System.Selected_hero = ReadCompressedInteger(Stream);
+            System->Selected_hero = ReadCompressedInteger(Stream);
             break;
         case Battle_test_BG://0x54,
-            System.Battle_test_BG = ReadString(Stream, ChunkInfo.Length);
+            System->Battle_test_BG = ReadString(Stream, ChunkInfo.Length);
             break;
         case Battle_test_data://0x55
-            System.vc_Battle_test=Batletest(Stream);
+            System->vc_Battle_test=Batletest(Stream);
             break;
         case Times_saved://0x41,
-            System.Times_saved = ReadCompressedInteger(Stream);
+            System->Times_saved = ReadCompressedInteger(Stream);
             break;
         case Show_frame://0x42,
-            System.Show_frame = ReadCompressedInteger(Stream);
+            System->Show_frame = ReadCompressedInteger(Stream);
             break;
         case In_battle_anim://0x47,
-            System.In_battle_anim = ReadCompressedInteger(Stream);
+            System->In_battle_anim = ReadCompressedInteger(Stream);
             break;
         case CHUNK_LDB_END_OF_BLOCK:
             break;
@@ -2246,28 +2302,36 @@ stcSystem  LDB_reader::SystemChunk(FILE * Stream)//movimientos de la pagina
     } while (ChunkInfo.ID!=0);
     return(System);
 }
-std:: vector <std::string>  LDB_reader::Switch_VariableChunk(FILE * Stream)//simplemente un vector de string
+std:: vector <std::string> * LDB_reader::Switch_VariableChunk(FILE * Stream)//simplemente un vector de string
 {
     int id,datatoread=0,datareaded=0;
     std::string name;
-    std:: vector <std::string> names;
+    std:: vector <std::string> *names;
+    names = new std:: vector <std::string>();
+    if (names == NULL)
+    {
+        std::cerr << "No memory left." << std::endl;
+        exit(-1);
+    }
     datatoread=ReadCompressedInteger(Stream);//numero de datos
-    while (datatoread>datareaded) { // si no hay mas en el array
+    while (datatoread>datareaded) 
+    { // si no hay mas en el array
         id= ReadCompressedInteger(Stream);//lectura de id 1 de array
-        do {
+        do 
+        {
             ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
             if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
                 ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
 
             if ((id>datareaded)&&(ChunkInfo.ID==0)) {
-                names.push_back("");
+                names->push_back("");
                 datareaded++;
             }
 
             switch (ChunkInfo.ID) { // tipo de la primera dimencion
             case 0x01:// nombres de los swiches
                 name = ReadString(Stream, ChunkInfo.Length);
-                names.push_back(name);
+                names->push_back(name);
                 datareaded++;
                 break;
             case CHUNK_LDB_END_OF_BLOCK:
@@ -2287,7 +2351,7 @@ std:: vector <stcCombatcommand>  LDB_reader:: Comand_Chunk2(FILE * Stream)
 {
     int id,datatoread=0,datareaded=0;
     stcCombatcommand Combatcommand;
-    Combatcommand.clear();
+    Combatcommand.set_defaults();
     std:: vector <stcCombatcommand> vc_Combatcommand;
     datatoread=ReadCompressedInteger(Stream);//numero de datos
     while (datatoread>datareaded) { // si no hay mas en el array
@@ -2314,16 +2378,22 @@ std:: vector <stcCombatcommand>  LDB_reader:: Comand_Chunk2(FILE * Stream)
             }
         } while (ChunkInfo.ID!=0);
         vc_Combatcommand.push_back(Combatcommand);
-        Combatcommand.clear();
+        Combatcommand.set_defaults();
         datareaded++;
     }
     ChunkInfo.ID	 = 1;//no afectar el otro ciclo
     return(vc_Combatcommand);
 }
-stcCombatcommands  LDB_reader:: Comand_Chunk(FILE * Stream)//todo leido
+stcCombatcommands * LDB_reader:: Comand_Chunk(FILE * Stream)//todo leido
 {
-    stcCombatcommands Combatcommands;
-    Combatcommands.clear();
+    stcCombatcommands *Combatcommands;
+    Combatcommands = new stcCombatcommands();
+    if (Combatcommands == NULL)
+    {
+        std::cerr << "No memory left." << std::endl;
+        exit(-1);
+    }
+    Combatcommands->set_defaults();
     do {
 
         ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
@@ -2347,7 +2417,7 @@ stcCombatcommands  LDB_reader:: Comand_Chunk(FILE * Stream)//todo leido
             }
             break;
         case 0x0A:
-            Combatcommands.vc_Combatcommand=Comand_Chunk2(Stream);
+            Combatcommands->vc_Combatcommand=Comand_Chunk2(Stream);
             break;
         case 0x14://entero
             while (ChunkInfo.Length--) {
@@ -2372,113 +2442,128 @@ stcCombatcommands  LDB_reader:: Comand_Chunk(FILE * Stream)//todo leido
 
 
 
-std:: vector <stcProfetion>   LDB_reader:: Profession_Chunk(FILE * Stream)
+std:: vector <stcProfetion*>  *LDB_reader:: Profession_Chunk(FILE * Stream)
 {
     int id,datatoread=0,datareaded=0,levels=0,comands=0;
     short dat;
-    std::vector <stcProfetion> vecProfetion;
-    stcProfetion Profetion;
-    Profetion.clear();
+    std::vector <stcProfetion*> *vecProfetion;
+    vecProfetion = new std::vector <stcProfetion*>();
+    if (vecProfetion == NULL)
+    {
+        std::cerr << "No memory left." << std::endl;
+        exit(-1);
+    }
+    stcProfetion *Profetion;
+    //Profetion.clear();
     datatoread=ReadCompressedInteger(Stream);//numero de datos
-    while (datatoread>datareaded) { // si no hay mas en el array
+    while (datatoread>datareaded) 
+    { // si no hay mas en el array
+        Profetion = new stcProfetion();
+        if (Profetion == NULL)
+        {
+            std::cerr << "No memory left." << std::endl;
+            exit(-1);
+        }        
+        Profetion->set_defaults();
         id= ReadCompressedInteger(Stream);//lectura de id 1 de array
-        do {
+        do 
+        {
             ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
             //printf("\n ID %d",  ChunkInfo.ID);
             if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
                 ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
             switch (ChunkInfo.ID) { // tipo de la primera dimencion
             case Profetion_Name://0x01,
-                Profetion.strName = ReadString(Stream, ChunkInfo.Length);
+                Profetion->strName = ReadString(Stream, ChunkInfo.Length);
                 break;
             case  Profetion_TwoWeapon://0x15,
-                Profetion.TwoWeapon = ReadCompressedInteger(Stream);
+                Profetion->TwoWeapon = ReadCompressedInteger(Stream);
                 break;
             case  Profetion_fixed_equipment ://0x16,
-                Profetion.fixed_equipment = ReadCompressedInteger(Stream);
+                Profetion->fixed_equipment = ReadCompressedInteger(Stream);
                 break;
             case  Profetion_AI_forced_action ://0x17,
-                Profetion.AI_forced_action = ReadCompressedInteger(Stream);
+                Profetion->AI_forced_action = ReadCompressedInteger(Stream);
                 break;
             case  Profetion_strong_defense ://0x18,
-                Profetion.strong_defense = ReadCompressedInteger(Stream);
+                Profetion->strong_defense = ReadCompressedInteger(Stream);
                 break;
             case  Profetion_Each_level ://0x1F,
                 levels=ChunkInfo.Length/6;
                 while (levels--) {
                     fread(&dat, sizeof(short), 1, Stream);
-                    Profetion.vc_sh_Hp.push_back(dat);
+                    Profetion->vc_sh_Hp.push_back(dat);
                     levels--;
                 }
                 levels=ChunkInfo.Length/6;
                 while (levels--) {
                     fread(&dat, sizeof(short), 1, Stream);
-                    Profetion.vc_sh_Mp.push_back(dat);
+                    Profetion->vc_sh_Mp.push_back(dat);
                     levels--;
                 }
                 levels=ChunkInfo.Length/6;
                 while (levels--) {
                     fread(&dat, sizeof(short), 1, Stream);
-                    Profetion.vc_sh_Attack.push_back(dat);
+                    Profetion->vc_sh_Attack.push_back(dat);
                     levels--;
                 }
                 levels=ChunkInfo.Length/6;
                 while (levels--) {
                     fread(&dat, sizeof(short), 1, Stream);
-                    Profetion.vc_sh_Defense.push_back(dat);
+                    Profetion->vc_sh_Defense.push_back(dat);
                     levels--;
                 }
                 levels=ChunkInfo.Length/6;
                 while (levels--) {
                     fread(&dat, sizeof(short), 1, Stream);
-                    Profetion.vc_sh_Mind.push_back(dat);
+                    Profetion->vc_sh_Mind.push_back(dat);
                     levels--;
                 }
                 levels=ChunkInfo.Length/6;
                 while (levels--) {
                     fread(&dat, sizeof(short), 1, Stream);
-                    Profetion.vc_sh_Agility.push_back(dat);
+                    Profetion->vc_sh_Agility.push_back(dat);
                     levels--;
                 }
                 break;
             case  Profetion_Experience_curve_basic_values ://0x29,
-                Profetion.Experience_curve_basic_values = ReadCompressedInteger(Stream);
+                Profetion->Experience_curve_basic_values = ReadCompressedInteger(Stream);
                 break;
             case  Profetion_Experience_curve_increase_degree ://0x2A,
-                Profetion.Experience_curve_increase_degree = ReadCompressedInteger(Stream);
+                Profetion->Experience_curve_increase_degree = ReadCompressedInteger(Stream);
                 break;
             case  Profetion_Experience_curve_correction_value://0x2B,
-                Profetion.Experience_curve_correction_value = ReadCompressedInteger(Stream);
+                Profetion->Experience_curve_correction_value = ReadCompressedInteger(Stream);
                 break;
             case  Profetion_Animated_battle	://0x3E,
-                Profetion.Animated_battle = ReadCompressedInteger(Stream);
+                Profetion->Animated_battle = ReadCompressedInteger(Stream);
                 break;
             case  Profetion_Special_skills_level://0x3F,
-                Profetion.skills=heroskillChunk(Stream);
+                Profetion->skills=heroskillChunk(Stream);
                 break;
             case  Profetion_Effectiveness_state_number ://0x47,
-                Profetion.Effectiveness_state_number = ReadCompressedInteger(Stream);
+                Profetion->Effectiveness_state_number = ReadCompressedInteger(Stream);
                 break;
             case Profetion_Effectiveness_state_data:
                 while (ChunkInfo.Length--) {
                     fread(&Void, sizeof(char), 1, Stream);
-                    Profetion.vc_ch_Condeffects.push_back(Void);
+                    Profetion->vc_ch_Condeffects.push_back(Void);
                 }
                 break;
 
             case  Profetion_Effectiveness_Attribute_number ://0x49,
-                Profetion.Effectiveness_Attribute_number = ReadCompressedInteger(Stream);
+                Profetion->Effectiveness_Attribute_number = ReadCompressedInteger(Stream);
                 break;
             case Profetion_Effectiveness_Attribute_data://0x4A,
                 while (ChunkInfo.Length--) {
                     fread(&Void, sizeof(char), 1, Stream);
-                    Profetion.vc_ch_Attribeffects.push_back(Void);
+                    Profetion->vc_ch_Attribeffects.push_back(Void);
                 }
                 break;
             case Profetion_Combat_Command://0x50
                 while (ChunkInfo.Length--) { //4 chars
                     fread(&comands, sizeof(int), 1, Stream);
-                    Profetion.vc_int_Combat_Command.push_back(comands);
+                    Profetion->vc_int_Combat_Command.push_back(comands);
                     ChunkInfo.Length-=3;
                 }
                 break;
@@ -2491,8 +2576,8 @@ std:: vector <stcProfetion>   LDB_reader:: Profession_Chunk(FILE * Stream)
             }
         } while (ChunkInfo.ID!=0);
         datareaded++;
-        vecProfetion.push_back(Profetion);
-        Profetion.clear();
+        vecProfetion->push_back(Profetion);
+        //Profetion.clear();
     }
     return(vecProfetion);
 }
@@ -2534,30 +2619,46 @@ std:: vector <stcFight_anim>  LDB_reader:: Fightanim_Chunk2(FILE * Stream)
         } while (ChunkInfo.ID!=0);
         datareaded++;
         vecFight_anim.push_back(Fight_anim);
-        Fight_anim.clear();
+        Fight_anim.set_defaults();
     }
     ChunkInfo.ID=1;
     return(vecFight_anim);
 }
-std:: vector <stcBattle_comand>  LDB_reader:: Fightanim_Chunk(FILE * Stream)
+std:: vector <stcBattle_comand*> * LDB_reader:: Fightanim_Chunk(FILE * Stream)
 {
     int id,datatoread=0,datareaded=0;
-    std::vector <stcBattle_comand> vecFight_anim;
-    stcBattle_comand Fight_anim;
+    std::vector <stcBattle_comand*> *vecFight_anim;
+    stcBattle_comand *Fight_anim;
+    
+    vecFight_anim = new std::vector <stcBattle_comand*>();
+    if (vecFight_anim == NULL)
+    {
+        std::cerr << "No memory left." << std::endl;
+        exit(-1);
+    }
     datatoread=ReadCompressedInteger(Stream);//numero de datos
-    while (datatoread>datareaded) { // si no hay mas en el array
+    while (datatoread>datareaded) 
+    { // si no hay mas en el array
+        Fight_anim = new stcBattle_comand();
+        if (Fight_anim == NULL)
+        {
+            std::cerr << "No memory left." << std::endl;
+            exit(-1);
+        }
+        Fight_anim->set_defaults();
         id= ReadCompressedInteger(Stream);//lectura de id 1 de array
-        do {
+        do 
+        {
             ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
             //printf("%d ",ChunkInfo.ID);
             if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
                 ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
             switch (ChunkInfo.ID) { // tipo de la primera dimencion
             case Animated_battle_Name:// nombres de los swiches
-                Fight_anim.strName = ReadString(Stream, ChunkInfo.Length);
+                Fight_anim->strName = ReadString(Stream, ChunkInfo.Length);
                 break;
             case Animated_battle_Motion_attack:
-                Fight_anim.intMotion_attack=ReadCompressedInteger(Stream);
+                Fight_anim->intMotion_attack=ReadCompressedInteger(Stream);
                 break;
 
             case Animated_battle_Combat_Anime:
@@ -2575,8 +2676,8 @@ std:: vector <stcBattle_comand>  LDB_reader:: Fightanim_Chunk(FILE * Stream)
             }
         } while (ChunkInfo.ID!=0);
         datareaded++;
-        vecFight_anim.push_back(Fight_anim);
-        Fight_anim.clear();
+        vecFight_anim->push_back(Fight_anim);
+        
     }
     return(vecFight_anim);
 }
@@ -2601,43 +2702,43 @@ void  LDB_reader::GetNextChunk(FILE * Stream, LDB_data * data)
                 data->skill= skillChunk(Stream);
                 break;
             case CHUNK_Item_data:
-                data->items=itemChunk(Stream);
+                data->items = itemChunk(Stream);
                 break;
             case CHUNK_Monster:
-                data->monsters= mosterChunk(Stream);
+                data->monsters = mosterChunk(Stream);
                 break;
             case CHUNK_MonsterP:
-                data->monsterpartys=mosterpartyChunk(Stream);
+                data->monsterpartys = mosterpartyChunk(Stream);
                 break;
             case CHUNK_Terrain:
-                data->terrains=terrainChunk(Stream);
+                data->terrains = terrainChunk(Stream);
                 break;
             case CHUNK_Attribute:
                 data->attributes = attributeChunk(Stream);
                 break;
             case CHUNK_States:
-                data->states=statesChunk(Stream);
+                data->states = statesChunk(Stream);
                 break;
             case CHUNK_Animation:
                 data->animations = animationChunk(Stream);
                 break;
             case CHUNK_Tileset:
-                data->Tilesets=TilesetChunk(Stream);
+                data->tilesets = tilesetChunk(Stream);
                 break;
             case CHUNK_String:
-                data->Glosary=StringChunk(Stream);
+                data->Glosary = stringChunk(Stream);
                 break;
             case CHUNK_System:
-                data->System_dat=SystemChunk(Stream);
+                data->System_dat = systemChunk(Stream);
                 break;
             case CHUNK_Event:
-                data->Event=EventChunk(Stream);
+                data->Event = EventChunk(Stream);
                 break;
             case CHUNK_Switch:
-                data->Switch_Names= Switch_VariableChunk(Stream);
+                data->Switch_Names = Switch_VariableChunk(Stream);
                 break;
             case CHUNK_Variable:
-                data->Variable_Names =Switch_VariableChunk(Stream);
+                data->Variable_Names = Switch_VariableChunk(Stream);
                 break;
             case CHUNK_Event1://no existe
                 while (ChunkInfo.Length--) {
@@ -2691,9 +2792,9 @@ void  LDB_reader::ShowInformation(LDB_data * data)
     int j,i;
 
 
-    j=data->Event.size();
+    j=data->Event->size();
     for (i=0;i<j ;i++)
-        data->Event[i].show();
+        data->Event->at(i)->show();
 
     /*
         j=data->Animations.size();

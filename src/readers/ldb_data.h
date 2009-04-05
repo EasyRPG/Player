@@ -21,15 +21,15 @@ public:
     std:: vector <stcAttribute*> *attributes;
     std:: vector <stcState*> *states;
     std:: vector <stcAnimated_battle*> *animations;
-    std:: vector <stcChipSet> Tilesets;
-    stcGlosary Glosary;
-    stcSystem System_dat;
-    stcCombatcommands Combatcommands;
-    std:: vector <stcEvent> Event;
-    std:: vector <std::string> Switch_Names;
-    std:: vector <std::string> Variable_Names;
-    std:: vector <stcProfetion> Professions;
-    std:: vector <stcBattle_comand> Fightanims;
+    std:: vector <stcChipSet*> *tilesets;
+    stcGlosary *Glosary;
+    stcSystem *System_dat;
+    stcCombatcommands *Combatcommands;
+    std:: vector <stcEvent*> *Event;
+    std:: vector <std::string> *Switch_Names;
+    std:: vector <std::string> *Variable_Names;
+    std:: vector <stcProfetion*> *Professions;
+    std:: vector <stcBattle_comand*> *Fightanims;
 };
 
 #endif

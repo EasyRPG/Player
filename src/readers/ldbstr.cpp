@@ -1,6 +1,6 @@
 #include "ldb.h"
 #include <iostream>
-void stcSound_effect::clear(){
+void stcSound_effect::set_defaults(){
 Name_of_Sound_effect="";
  Volume=100;
  Tempo=100;
@@ -14,7 +14,7 @@ printf(" \n Tempo %d",Tempo);
 printf(" \n Balance %d",Balance);
 }
 
-void stcMusic_Background::clear(){
+void stcMusic_Background::set_defaults(){
 Name_of_Music_Background="";
 Fade_in_time=100;
  Volume=100;
@@ -30,7 +30,7 @@ printf(" \n Tempo %d",Tempo);
 printf(" \n Balance %d",Balance);
 }
 
-void Magicblock::clear()
+void Magicblock::set_defaults()
 {
  Level=0;//=0x01,
  Spell_ID=0;//=0x02
@@ -107,11 +107,11 @@ printf(" \n blHighdefense %d",blHighdefense);
 //Statisticscurves=0x1F,arraglode16bitescon5datos
 for(i=0;i<(vc_sh_Hp.size());i++)
 printf(" \n hero hp %d",vc_sh_Hp[i]);
-//vc_sh_Mp.clear();
-//vc_sh_Attack.clear();
-//vc_sh_Defense.clear();
-//vc_sh_Mind.clear();
-//vc_sh_Agility.clear();
+//vc_sh_Mp.set_defaults();
+//vc_sh_Attack.set_defaults();
+//vc_sh_Defense.set_defaults();
+//vc_sh_Mind.set_defaults();
+//vc_sh_Agility.set_defaults();
 printf(" \n intEXPBaseline %d",intEXPBaseline);
 printf(" \n intEXPAdditional %d",intEXPAdditional);
 printf(" \n intEXPCorrection %d",intEXPCorrection);
@@ -123,14 +123,14 @@ printf(" \n sh_Shield %d",sh_Shield);
 printf(" \n sh_Armor %d",sh_Armor);
 printf(" \n sh_Head %d",sh_Head);
 printf(" \n sh_Accessory %d",sh_Accessory);
-//skills.clear();//Skills=0x3F,
+//skills.set_defaults();//Skills=0x3F,
 printf(" \n blRenameMagic %d",blRenameMagic);
 strMagicname="";//=0x43,
 printf(" \n intCondlength %d",intCondlength);
-//vc_ch_Condeffects.clear();//arraydeunbyte
+//vc_ch_Condeffects.set_defaults();//arraydeunbyte
 printf(" \n intAttriblength %d",intAttriblength);
-//vc_ch_Attribeffects.clear();//array de un byte
-//vc_int_Combat_Command.clear();//Combat Comand // =0x50 //4 byte one byte dimension array of 6
+//vc_ch_Attribeffects.set_defaults();//array de un byte
+//vc_int_Combat_Command.set_defaults();//Combat Comand // =0x50 //4 byte one byte dimension array of 6
 }
 
 
@@ -205,9 +205,9 @@ printf(" \n blAffectAgility %d",blAffectAgility);
 printf(" \n blAbsorbdamage %d",blAbsorbdamage);
 printf(" \n blIgnoredefense %d",blIgnoredefense);
 printf(" \n intConditionslength %d",intConditionslength);
-//vc_ch_Condeffects.clear();//0x2A,
+//vc_ch_Condeffects.set_defaults();//0x2A,
 printf(" \n intAttributeslength %d",intAttributeslength);
-//vc_ch_Attribeffects.clear(); //0x2C,
+//vc_ch_Attribeffects.set_defaults(); //0x2C,
 
 printf(" \n blAffectresistance %d",blAffectresistance);
 printf(" \n intwhenusinganimation %d",intwhenusinganimation);
@@ -313,18 +313,18 @@ printf(" \n Switchtoturnon %d",Switchtoturnon);
 printf(" \n Useonfield %d",Useonfield);
 printf(" \n Useinbattle %d",Useinbattle);
 printf(" \n Heroeslength %d",Heroeslength);
-//vc_ch_Heroescanuse.clear();
+//vc_ch_Heroescanuse.set_defaults();
 printf(" \n Conditionslength %d",Conditionslength);
-//vc_ch_Condeffects.clear();
+//vc_ch_Condeffects.set_defaults();
 printf(" \n Attributeslength %d",Attributeslength);
-//vc_ch_Attribeffects.clear();
+//vc_ch_Attribeffects.set_defaults();
 printf(" \n Chancetochange %d",Chancetochange);
 printf(" \n Whenuseanimation %d",Whenuseanimation);
 printf(" \n ItemtoSkill %d",ItemtoSkill);
 printf(" \n EquitoVoc %d",EquitoVoc);
 }
 
-void stcEnemy_Action::clear()
+void stcEnemy_Action::set_defaults()
 {
   intAction=0;//=0x01,
   intAction_data=0;//	=0x02,
@@ -394,13 +394,13 @@ printf(" \n intCriticalhitchance %d",intCriticalhitchance);
 printf(" \n blUsuallymiss %d",blUsuallymiss);
 printf(" \n blAirborne %d",blAirborne);
 printf(" \n intConditionslength %d",intConditionslength);
-//  vc_ch_Condeffects.clear(); //= 0x20, arreglo de un byte //una dimencion
+//  vc_ch_Condeffects.set_defaults(); //= 0x20, arreglo de un byte //una dimencion
 printf(" \n inyAttributeslength %d",inyAttributeslength);
-//  vc_ch_Attribeffects.clear();//= 0x22, arreglo de un byte //una dimencion
+//  vc_ch_Attribeffects.set_defaults();//= 0x22, arreglo de un byte //una dimencion
   //Actionslist= 0x2A
 }
 
-void stcEnemy_group_data::clear()
+void stcEnemy_group_data::set_defaults()
 {
 	Enemy_ID=0;//=0x01,
 	X_position=0;//=0x02,
@@ -412,7 +412,7 @@ printf(" \n Enemy_ID %d",Enemy_ID);
 printf(" \n X_position %d",X_position);
 printf(" \n Y_position %d",Y_position);
 }
-void stcEnemy_group_condition::clear()
+void stcEnemy_group_condition::set_defaults()
 {
     Condition_flags=0;//=0x01,
     Switch_A=0;//=0x02,
@@ -428,9 +428,9 @@ printf(" \n Turn_number_A %d",Turn_number_A);
 printf(" \n Lower_limit %d",Lower_limit);
 printf(" \n Upper_limit %d",Upper_limit);
 }
-void stcEnemy_group_event_page::clear()
+void stcEnemy_group_event_page::set_defaults()
 {
-    conditions.clear();//	Page_conditions=0x02,
+    conditions.set_defaults();//	Page_conditions=0x02,
 	Event_length=0;//=0x0B,
 //	Event=0x0C// como en eventos
 }
@@ -446,14 +446,14 @@ void stcEnemy_group::set_defaults()
 void stcEnemy_group::show()
 {
 printf(" \n strName %s",strName.c_str());
-// Enemy_data.clear();//data=0x02,
+// Enemy_data.set_defaults();//data=0x02,
 printf(" \n intTerrainlength %d",intTerrainlength);
-//vc_ch_Terraindata.clear();		//=0x05,
-// vecPartyMonsterevent.clear();
+//vc_ch_Terraindata.set_defaults();		//=0x05,
+// vecPartyMonsterevent.set_defaults();
 }
 
 
-void stcTerrain::clear()
+void stcTerrain::set_defaults()
 {
 strName="";	//=0x01,
 intDamageontravel=0;	//=0x02,
@@ -592,10 +592,10 @@ printf(" \n intMPmapsteps %d",intMPmapsteps);
 }
 
 
-void stcAnimationTiming::clear()
+void stcAnimationTiming::set_defaults()
 {
 		Frame=0;//=0x01,
-		Sound_effect.clear();//=0x02,
+		Sound_effect.set_defaults();//=0x02,
 		Flash_effect=0;//=0x03,
 		Green_component=0;//=0x05,
 		Blue_component=0;//=0x06,
@@ -612,7 +612,7 @@ printf(" \n Blue_component %d",Blue_component);
 printf(" \n Flash_power %d",Flash_power);
 }
 
-void stcAnimationCelldata::clear()
+void stcAnimationCelldata::set_defaults()
 {
 Cell_source=0;//=0x02,
 X_location=0;//=0x03,
@@ -638,7 +638,7 @@ printf(" \n Chroma_component %d",Chroma_component);
 printf(" \n Alpha %d",Alpha);
 }
 
-void stcAnimationCell::clear()
+void stcAnimationCell::set_defaults()
 {
 	Cell_data.clear();
 }
@@ -657,7 +657,7 @@ void stcAnimated_battle::show()
 unsigned int i,j;
 printf(" \n strName %s",strName.c_str());
 printf(" \n strAnimation_file %s",strAnimation_file.c_str());
-//vecAnimationTiming.clear();//Timing_data=0x06,
+//vecAnimationTiming.set_defaults();//Timing_data=0x06,
 for(i=0;i<vecAnimationTiming.size();i++)
 vecAnimationTiming[i].show();
 printf(" \n intApply_to %d",intApply_to);
@@ -675,7 +675,7 @@ printf("\n");
  //Framedata=0x0C
 }
 
-void stcChipSet::clear()
+void stcChipSet::set_defaults()
 {
  strName="";//=0x01,
  strGraphic="";//=0x02,
@@ -700,8 +700,8 @@ printf(" \n Lower_tile_passable %d %d ",i, vc_ch_Lower_tile_passable[i]);
 for(i=0; i<vc_ch_Upper_tile_passable.size() ;i++)
 printf(" \n vc_ch_Upper_tile_passable %d %d ",i, vc_ch_Upper_tile_passable[i]);
 */
-// vc_ch_Lower_tile_passable.clear();// Lower_tile_passable=0x04,
-// vc_ch_Upper_tile_passable.clear();// Upper_tile_passable=0x05,
+// vc_ch_Lower_tile_passable.set_defaults();// Lower_tile_passable=0x04,
+// vc_ch_Upper_tile_passable.set_defaults();// Upper_tile_passable=0x05,
 printf(" \n Water_animation %d",Water_animation);
 printf(" \n Animation_speed %d",Animation_speed);
 }
@@ -889,7 +889,7 @@ printf(" \n Helmet %d",Helmet);
 printf(" \n Accessory %d",Accessory);
 }
 
-void stcBattle_test::clear()
+void stcBattle_test::set_defaults()
 {
  Hero_ID=0;
  Level=0;// 0x02
@@ -901,7 +901,7 @@ void stcBattle_test::clear()
 }
 
 
-void stcEvent::clear()
+void stcEvent::set_defaults()
 {
    strName="";//=0x01,
    intActivation_condition=0;//=0x0B,
@@ -1296,7 +1296,7 @@ Event_comand * comand;
 
 }
 
-void stcCombatcommand::clear()
+void stcCombatcommand::set_defaults()
 {
   strName="";// 	=0x01,
   intUsage=0;// 	=0x02,
@@ -1313,7 +1313,7 @@ for(j=0;j<i;j++)
   vc_Combatcommand[j].show();
 
 }
-void stcCombatcommands::clear()//array bidimencional
+void stcCombatcommands::set_defaults()//array bidimencional
 {
  vc_Combatcommand.clear();
 }
@@ -1322,7 +1322,7 @@ void stcCombatcommands::clear()//array bidimencional
 
 
 
-void stcBattle_comand::clear()
+void stcBattle_comand::set_defaults()
 {
   strName="";// 	=0x01,
   intMotion_attack=0;// 	=0x02,
@@ -1333,11 +1333,11 @@ void stcBattle_comand::show()
 {
 printf(" \n strName %s",strName.c_str());
 printf(" \n intMotion_attack %d",intMotion_attack);
-//  vc_Animated_battle_Combat_Anime.clear();//	=0x0A, //two diminsional arrays
-//  vc_Animated_battle_Anime_combat_weapons.clear();//=0x0B //two diminsional arrays
+//  vc_Animated_battle_Combat_Anime.set_defaults();//	=0x0A, //two diminsional arrays
+//  vc_Animated_battle_Anime_combat_weapons.set_defaults();//=0x0B //two diminsional arrays
 }
 
-void stcFight_anim::clear()
+void stcFight_anim::set_defaults()
 {
  strName="";//=0x01,
  strFilename="";//=0x02,
@@ -1355,7 +1355,7 @@ printf(" \n intID_Expansion_animated_combat_ID %d",intID_Expansion_animated_comb
 }
 
 
-void stcProfetion::clear()
+void stcProfetion::set_defaults()
 {
 strName="";// =0x01,
 TwoWeapon=0;//=0x15,
@@ -1387,21 +1387,21 @@ printf(" \n TwoWeapon %d",TwoWeapon);
 printf(" \n fixed_equipment %d",fixed_equipment);
 printf(" \n AI_forced_action %d",AI_forced_action);
 printf(" \n strong_defense %d",strong_defense);
-// vc_sh_Hp.clear();
-// vc_sh_Mp.clear();
-// vc_sh_Attack.clear();
-// vc_sh_Defense.clear();
-// vc_sh_Mind.clear();
-// vc_sh_Agility.clear();
+// vc_sh_Hp.set_defaults();
+// vc_sh_Mp.set_defaults();
+// vc_sh_Attack.set_defaults();
+// vc_sh_Defense.set_defaults();
+// vc_sh_Mind.set_defaults();
+// vc_sh_Agility.set_defaults();
 printf(" \n Experience_curve_basic_values %d",Experience_curve_basic_values);
 printf(" \n Experience_curve_increase_degree %d",Experience_curve_increase_degree);
 printf(" \n Experience_curve_correction_value %d",Experience_curve_correction_value);
 printf(" \n Animated_battle %d",Animated_battle);
-//skills.clear(); //Special_skills_level=0x3F, misma estructura que heroe
+//skills.set_defaults(); //Special_skills_level=0x3F, misma estructura que heroe
 printf(" \n Effectiveness_state_number %d",Effectiveness_state_number);
-//vc_ch_Condeffects.clear(); //Effectiveness_state_data =0x48,  //1 byte one dimention array
+//vc_ch_Condeffects.set_defaults(); //Effectiveness_state_data =0x48,  //1 byte one dimention array
 printf(" \n Effectiveness_Attribute_number %d",Effectiveness_Attribute_number);
-//vc_ch_Attribeffects.clear();//Effectiveness_Attribute_data =0x4A,/1 byte one dimention array
-//vc_int_Combat_Command.clear();  //Combat_Command=0x50 4 bytes one dimention array
+//vc_ch_Attribeffects.set_defaults();//Effectiveness_Attribute_data =0x4A,/1 byte one dimention array
+//vc_int_Combat_Command.set_defaults();  //Combat_Command=0x50 4 bytes one dimention array
 }
 

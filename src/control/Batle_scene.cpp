@@ -40,7 +40,7 @@ void Batle_scene::init(General_data *TheTeam)
 
     std::string system_string;
     system_string.append("System/");
-    system_string.append(TheTeam->ldbdata->System_dat.System_graphic);
+    system_string.append(TheTeam->ldbdata->System_dat->System_graphic);
     system_string.append(".png");
 
 	Window_text.init(320,80,0,160,(char *)system_string.c_str());
@@ -74,7 +74,7 @@ void Batle_scene::update_window_stats()
 {
     std::string system_string;
     system_string.append("System/");
-    system_string.append(myteam->ldbdata->System_dat.System_graphic);
+    system_string.append(myteam->ldbdata->System_dat->System_graphic);
     system_string.append(".png");
     window.dispose();
 	window.init(myteam,running,0,3,224,80,96,160,214,16,(char *)system_string.c_str());
@@ -103,7 +103,7 @@ void Batle_scene::windowtext_showdamange(bool  type,int  atak,int  ataked,int  d
 
     std::string system_string;
     system_string.append("System/");
-    system_string.append(myteam->ldbdata->System_dat.System_graphic);
+    system_string.append(myteam->ldbdata->System_dat->System_graphic);
     system_string.append(".png");
     Window_text.dispose();
 	Window_text.init(320,80,0,160,(char *)system_string.c_str());

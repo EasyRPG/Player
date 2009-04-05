@@ -24,7 +24,7 @@ private:
     stcSound_effect soundChunk(FILE * Stream);
     std:: vector <stcSkill*> * skillChunk(FILE * Stream);//lectura de pedasos del habilidades
     std:: vector <stcItem*> * itemChunk(FILE * Stream);//lectura de pedasos del objetos
-    std:: vector <stcEnemy_Action> mosteractionChunk(FILE * Stream);
+    std:: vector <stcEnemy_Action*> *mosteractionChunk(FILE * Stream);
     std:: vector <stcEnemy*> * mosterChunk(FILE * Stream);// lectura de monstruos
 
     std:: vector <stcEnemy_group_data>  MonsterPartyMonsterChunk(FILE * Stream);
@@ -41,18 +41,18 @@ private:
     std:: vector <stcAnimationCelldata> AnimationCelldataChunk(FILE * Stream);
 
     std:: vector <stcAnimated_battle*> * animationChunk(FILE * Stream);// animacion
-    std:: vector <stcChipSet>  & TilesetChunk(FILE * Stream);// titles
-    stcGlosary StringChunk(FILE * Stream);
+    std:: vector <stcChipSet*>  *tilesetChunk(FILE * Stream);// titles
+    stcGlosary* stringChunk(FILE * Stream);
     stcMusic_Background musicChunk(FILE * Stream);
     std::vector <stcBattle_test> Batletest(FILE * Stream);
-    stcSystem SystemChunk(FILE * Stream);
-    std:: vector <stcEvent> & EventChunk(FILE * Stream);// eventos
-    std:: vector <std::string> Switch_VariableChunk(FILE * Stream);// nombres de variables y swiches
+    stcSystem *systemChunk(FILE * Stream);
+    std:: vector <stcEvent*> * EventChunk(FILE * Stream);// eventos
+    std:: vector <std::string> *Switch_VariableChunk(FILE * Stream);// nombres de variables y swiches
     std:: vector <stcCombatcommand> Comand_Chunk2(FILE * Stream);// comandos de combate
-    stcCombatcommands Comand_Chunk(FILE * Stream);
-    std:: vector <stcProfetion> Profession_Chunk(FILE * Stream);
+    stcCombatcommands *Comand_Chunk(FILE * Stream);
+    std:: vector <stcProfetion*> *Profession_Chunk(FILE * Stream);
     std:: vector <stcFight_anim> Fightanim_Chunk2(FILE * Stream);
-    std:: vector <stcBattle_comand> Fightanim_Chunk(FILE * Stream);
+    std:: vector <stcBattle_comand*> *Fightanim_Chunk(FILE * Stream);
 
 };
 

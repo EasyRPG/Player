@@ -282,7 +282,7 @@ void General_data::read_database()
     original_state.id_actual_active=false;
     original_state.Active_page= -2;//common event
 
-    for(unsigned int i=0; i<ldbdata->Event.size();i++)
+    for(unsigned int i=0; i<ldbdata->Event->size();i++)
         GEvc_state.push_back(original_state);
 
     my_lmt.load("RPG_RT.lmt",&lmt);
