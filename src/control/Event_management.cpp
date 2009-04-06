@@ -1955,143 +1955,150 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
         break;
-    case Conditional:// 0xDD6A,
+		
+		    case Conditional:// 0xDD6A,
         Event_comand_Conditional * comand_Conditional;
         comand_Conditional= (Event_comand_Conditional *)comand;
+        bool compresult;
+        comand_Conditional->show();
+        compresult=false;
+
+
         if(comand_Conditional->type_of_conditional==0)//fase
         {
-        i=comand_Conditional->ID-1;
-        if((myteam->state_swich(i))^(comand_Conditional->Op_code))
-        {
-                comand_id->id_exe_actual++;
-                comand_id->id_actual_active=false;
-        }else
-        {
-                if(comand_Conditional->Exeption)
-                {
-                    while(comand->Comand!=Else_case)//after the else
-                    {
-                        comand_id->id_exe_actual++;
-                        if(comand_id->Active_page== -2)
-                        comand=myteam->ldbdata->Event->at(event_id)->vcEvent_comand[comand_id->id_exe_actual];
-                        else
-                        comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
-                    }
-                    comand_id->id_exe_actual++;
-                    comand_id->id_actual_active=false;
-                }
-                else
-                {
-                    while(comand->Comand!=End_conditional)//after the End_conditional
-                    {
-                        comand_id->id_exe_actual++;
-                        if(comand_id->Active_page== -2)
-                        comand=myteam->ldbdata->Event->at(event_id)->vcEvent_comand[comand_id->id_exe_actual];
-                        else
-                        comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
-                    }
-                    comand_id->id_actual_active=false;
-                }
+            i=comand_Conditional->ID-1;
+            if((myteam->state_swich(i))^(comand_Conditional->Op_code))
+            {
+                compresult=true;
+            }
 
-        }
+		}
 
-        }
-
-
-if(comand_Conditional->type_of_conditional==1)//var
+        if(comand_Conditional->type_of_conditional==1)//var
         {
             i=myteam->world_var[comand_Conditional->ID-1];
             if(comand_Conditional->Op_code)
                 j=myteam->world_var[comand_Conditional->ID_2];
             else
                 j=comand_Conditional->ID_2;
-bool compresult=false;
 
+            switch(comand_Conditional->Count)
+            {
+                case 0:
+                    if(i==j)
+                        compresult=true;
+                    break;
+                case 1:
+                    if(i>=j)
+                        compresult=true;
+                    break;
+                case 2:
+                    if(i<=j)
+                        compresult=true;
+                    break;
+                case 3:
+                    if(i>j)
+                        compresult=true;
+                    break;
+                case 4:
+                    if(i<j)
+                        compresult=true;
+                    break;
+                case 5:
+                    if(i!=j)
+                        compresult=true;
+                    break;
+                default:
+                    break;
+            }
 
-        switch(comand_Conditional->Count)
-        {
-        case 0:
-                if(i==j)
-                    compresult=true;
-                break;
-        case 1:
-                if(i>=j)
-                    compresult=true;
-                break;
-        case 2:
-                if(i<=j)
-                    compresult=true;
-                break;
-        case 3:
-                if(i>j)
-                    compresult=true;
-                break;
-        case 4:
-                if(i<j)
-                    compresult=true;
-                break;
-        case 5:
-                if(i!=j)
-                    compresult=true;
-                break;
-
-        default:
-                break;
         }
 
-
-        if(compresult)
-        {
-
+            if(compresult)
+            {
                 comand_id->id_exe_actual++;
                 comand_id->id_actual_active=false;
-        }else
-        {
+            }
+            else
+            {
+                i=1;
                 if(comand_Conditional->Exeption)
                 {
-                    while(comand->Comand!=Else_case)//after the else
+                    while((comand->Comand!=Else_case)&&(i!=0))//after the else
                     {
                         comand_id->id_exe_actual++;
                         if(comand_id->Active_page== -2)
                         comand=myteam->ldbdata->Event->at(event_id)->vcEvent_comand[comand_id->id_exe_actual];
                         else
                         comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
+                        if(comand->Comand==Else_case)
+                            i--;
+                        if(comand->Comand==End_conditional)
+                            i--;
+                        if(comand->Comand==Conditional)
+                        {
+                            i++;
+                            Event_comand_Conditional * comand_Conditional2;
+                            comand_Conditional2= (Event_comand_Conditional *)comand;
+                            if(comand_Conditional2->Exeption)
+                            i++;
+                        }
                     }
                     comand_id->id_exe_actual++;
                     comand_id->id_actual_active=false;
                 }
                 else
                 {
-                    while(comand->Comand!=End_conditional)//after the End_conditional
+                    while((comand->Comand!=End_conditional)&&(i!=0))//after the End_conditional
                     {
                         comand_id->id_exe_actual++;
                         if(comand_id->Active_page== -2)
                         comand=myteam->ldbdata->Event->at(event_id)->vcEvent_comand[comand_id->id_exe_actual];
                         else
                         comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
+                        if(comand->Comand==Else_case)
+                            i--;
+                        if(comand->Comand==End_conditional)
+                            i--;
+                        if(comand->Comand==Conditional)
+                        {
+                            i++;
+                            Event_comand_Conditional * comand_Conditional2;
+                            comand_Conditional2= (Event_comand_Conditional *)comand;
+                            if(comand_Conditional2->Exeption)
+                            i++;
+                        }
                     }
                     comand_id->id_actual_active=false;
                 }
-        }
-
-
-        }
-
+            }
 
         break;
     case Else_case:// 0x81AB7A,
-
-       while(comand->Comand!=End_conditional)
+        i=1;
+       while((comand->Comand!=End_conditional)&&(i!=0))
        {
-        comand_id->id_exe_actual++;
-        if(comand_id->Active_page== -2)
-            comand=myteam->ldbdata->Event->at(event_id)->vcEvent_comand[comand_id->id_exe_actual];
-        else
-            comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
-        }
+            comand_id->id_exe_actual++;
+            if(comand_id->Active_page== -2)
+				comand=myteam->ldbdata->Event->at(event_id)->vcEvent_comand[comand_id->id_exe_actual];
+            else
+                comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
+            if(comand->Comand==End_conditional)
+                i--;
+            if(comand->Comand==Else_case)
+                i--;
+            if(comand->Comand==Conditional)
+            {
+                i++;
+                Event_comand_Conditional * comand_Conditional3;
+                comand_Conditional3= (Event_comand_Conditional *)comand;
+                if(comand_Conditional3->Exeption)
+                i++;
+            }
+		}
         comand_id->id_actual_active=false;
-
         break;
+
     case End_conditional:// 0x81AB7B,
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
