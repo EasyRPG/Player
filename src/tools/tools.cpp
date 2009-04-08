@@ -18,6 +18,8 @@
     #include <stdlib.h>
     #include <stdio.h>
     #include <string.h>
+    #include <dirent.h>
+    #include <ctype.h>
     #include <iostream>
     #include <SDL/SDL.h>
     #include <SDL/SDL_image.h>
@@ -240,3 +242,54 @@ void SetTransparent(SDL_Surface * ima)
 
         return Return;
     }
+
+/* Converts a string s into upper-case string dest. Need of <ctype.h> */
+/* Warning : you must malloc "dest" ! */
+void s_toupper(char *dest, char *s)
+{
+    int i;
+
+    for (i=0;i<=strlen(s);i++)
+    {
+        dest[i]=(char)toupper((int)s[i]);
+    }
+}
+
+/* gives "filename" that exists in "directory" with CASE INSENSITIVE TEST*/
+/* in : "file", "directory". out :"return-name" (must be malloc'd) */
+/* return : 1 if filename exists (CASE INSENSITIVE), 0 if not */
+int case_insensitive_exist(char *return_name, char *directory, char *file)
+{
+    int exist = 0;
+    struct dirent *d_ent; /* need of <dirent.h> */
+    DIR *dp;
+
+    /* open directory*/
+    dp=opendir(directory);
+    if (dp)
+    {
+        char upper_d_name[256];
+        char upper_file[256];
+        /* list directory */
+        while (d_ent=readdir(dp))
+        {   /* compare case-insensitive */
+            s_toupper(upper_d_name,d_ent->d_name);
+            s_toupper(upper_file, file);
+            if (!strcmp(upper_d_name,upper_file))
+            {
+                exist=1;
+                break;
+            }
+        }
+    }
+    if (exist)
+    {
+        strcpy (return_name,d_ent->d_name);
+        return 1;
+    }
+    else
+    {
+        strcpy(return_name,file);
+        return 0;
+    }
+}

@@ -53,4 +53,8 @@
     SDL_Surface * GrabFromSurface(SDL_Surface * Source, int sX, int sY, int sW, int sH);
     void DrawSurface(SDL_Surface * Destiny, int dX, int dY, SDL_Surface * Source, int sX=0, int sY=0, int sW=-1, int sH=-1);
 
+    // --- Miscellaneous functions ---------------------------------------------
+    void s_toupper(char *dest, char *s);
+    int case_insensitive_exist(char *return_name, char *directory, char *file);
+
 #endif
