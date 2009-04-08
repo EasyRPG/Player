@@ -47,19 +47,6 @@
     string ReadString(FILE * FileStream, unsigned char Lenght);
 
     // --- Surface Tools -------------------------------------------------------
-    struct Color
-    {
-        unsigned char r, g, b;
-        // ---------------------------------------------------------------------
-        Color()                       { r=g=b=0; }
-        Color(int nr, int ng, int nb) { r=nr;g=ng;b=nb;}
-
-        unsigned long GetColorFromFormat(SDL_PixelFormat * fmt)
-        {
-            return SDL_MapRGB(fmt, r, g, b);
-        }
-    };
-
     void SetTransparent(SDL_Surface * ima);
     SDL_Surface * CreateSurface(int Width, int Height);
     SDL_Surface * LoadSurface(string Filename);
