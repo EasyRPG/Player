@@ -241,7 +241,8 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
 {
     static unsigned int timer=0;
     static float Xmove,Ymove,Zoomer;
-    int i=0,j,x,y;
+    int i=0;
+    int x,y;
     std::string system_string;
 
     switch (comand->Comand)
@@ -574,7 +575,7 @@ if(comand_Move_event->Target!=10001)
 
 }
 void E_management::dispose()
-{unsigned int i;
+{//unsigned int i;
  //   if(message_box!=NULL)
   // {
     // message_box->dispose();//Zhek te mato si quitas esto esta claro!!!
@@ -2120,12 +2121,12 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         j=comand_id->id_exe_actual;
 
             if(comand_id->Active_page== -2)
-                i=myteam->ldbdata->Event->at(event_id)->vcEvent_comand.size();
+                k=myteam->ldbdata->Event->at(event_id)->vcEvent_comand.size();
             else
-                i=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand.size();
+                k=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand.size();
 
         comand_id->id_exe_actual=0;
-       while(comand_id->id_exe_actual<i)
+       while(comand_id->id_exe_actual<k)
        {
             if(comand_id->Active_page== -2)
                 comand=myteam->ldbdata->Event->at(event_id)->vcEvent_comand[comand_id->id_exe_actual];
@@ -2141,7 +2142,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
             comand_id->id_exe_actual++;
        }
 
-     if(comand_id->id_exe_actual<i)
+     if(comand_id->id_exe_actual<k)
         comand_id->id_exe_actual=j+1;
 
         comand_id->id_actual_active=false;
@@ -2174,12 +2175,12 @@ cout<<"loop \n";
         j= comand_id->id_exe_actual++;
 printf("page %d \n",comand_id->Active_page);
             if(comand_id->Active_page== -2)
-                i=myteam->ldbdata->Event->at(event_id)->vcEvent_comand.size();
+                k=myteam->ldbdata->Event->at(event_id)->vcEvent_comand.size();
             else
-                i=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand.size();
+                k=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand.size();
 
 
-       while((comand->Comand!=End_loop)&&(comand_id->id_exe_actual<i))// to the end loop
+       while((comand->Comand!=End_loop)&&(comand_id->id_exe_actual<k))// to the end loop
        {
         if(comand_id->Active_page== -2)
             comand=myteam->ldbdata->Event->at(event_id)->vcEvent_comand[comand_id->id_exe_actual];
@@ -2187,7 +2188,7 @@ printf("page %d \n",comand_id->Active_page);
             comand=data->vcEvents[event_id].vcPage[comand_id->Active_page].vcEvent_comand[comand_id->id_exe_actual];
         comand_id->id_exe_actual++;
         }
-        if(comand_id->id_exe_actual>=i)
+        if(comand_id->id_exe_actual>=k)
         comand_id->id_exe_actual=j;
 
 
@@ -2217,7 +2218,7 @@ printf("page %d \n",comand_id->Active_page);
 
         if(comand_Call_event->Method==0)//ignore
         {
-        i=comand_Call_event->Event_ID;
+        k=comand_Call_event->Event_ID;
         E_state x;
 
         x.event_id=i-1;
@@ -2230,26 +2231,26 @@ printf("page %d \n",comand_id->Active_page);
         }
         if(comand_Call_event->Method==2)
         {
-        i=myteam->world_var[comand_Call_event->Event_ID];
+        k=myteam->world_var[comand_Call_event->Event_ID];
         j=myteam->world_var[comand_Call_event->Event_page];
         }
         if(comand_Call_event->Method==1)
         {
-        i=comand_Call_event->Event_ID;
+        k=comand_Call_event->Event_ID;
         j=comand_Call_event->Event_page;
         }
         if((comand_Call_event->Method==1)||(comand_Call_event->Method==2))
         {
 
-        if(i==10005)
+        if(k==10005)
         {
-        i=event_id+1;
+        k=event_id+1;
         }
 
-        if(i<(Ev_state->size()+1))
+        if(k<(Ev_state->size()+1))
         {
                 E_state x;
-                x.event_id=i-1;
+                x.event_id=k-1;
                 x.Event_Active=true;
                 x.id_exe_actual=0;
                 x.id_actual_active=false;

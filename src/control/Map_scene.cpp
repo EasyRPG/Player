@@ -663,7 +663,8 @@ void Map_Scene::mapnpc()
 int Map_Scene::event_call_event(int event_id, bool caller)
 {
     Event_comand * comand;
-    int i,id_to_call,page_to_call,exe_to_call,original_size;
+    int i,id_to_call,page_to_call,original_size;
+    unsigned int exe_to_call;
     E_state * my_state;
     if(caller)
     {

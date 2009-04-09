@@ -247,7 +247,7 @@ void SetTransparent(SDL_Surface * ima)
 /* Warning : you must malloc "dest" ! */
 void s_toupper(char *dest, char *s)
 {
-    int i;
+    unsigned int i;
 
     for (i=0;i<=strlen(s);i++)
     {
@@ -271,7 +271,7 @@ int case_insensitive_exist(char *return_name, char *directory, char *file)
         char upper_d_name[256];
         char upper_file[256];
         /* list directory */
-        while (d_ent=readdir(dp))
+        while ((d_ent=readdir(dp)))
         {   /* compare case-insensitive */
             s_toupper(upper_d_name,d_ent->d_name);
             s_toupper(upper_file, file);

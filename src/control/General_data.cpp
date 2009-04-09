@@ -31,7 +31,7 @@ unsigned int i;
 unsigned int size;
 
 comand_before_telepor.clear();
-Event_comand * comand;
+//Event_comand * comand;
 
 
 for(i=0; i<comands.size();i++)
