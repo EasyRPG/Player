@@ -88,33 +88,21 @@ void Map_Scene::load_map()
         #endif
         if(myteam->lmt.tree_list[Map_id].music==2)
         {
-            system_string.clear();
-            system_string.append("Music/");
-            system_string.append(myteam->lmt.tree_list[Map_id].music_file.name.c_str());
-            system_string.append(".mid");
-
-            if(myaudio->actual_music.compare((char *)system_string.c_str()))
+            if(myaudio->actual_music.compare((char *)case_insensitive_and_format_msc_exist("Music/",(char *)myteam->lmt.tree_list[Map_id].music_file.name.c_str())))
             {
                 myaudio->load((char *)system_string.c_str());
                 myaudio->play(-1);
             }
         }
-        system_string.clear();
-        system_string.append("ChipSet/");
-        system_string.append(myteam->ldbdata->tilesets->at((unsigned int) data->ChipsetID - 1)->strGraphic);
-        system_string.append(".png");
-        pre_chip->GenerateFromFile((char *) system_string.c_str());
+
+        pre_chip->GenerateFromFile((char *)case_insensitive_and_format_img_exist("ChipSet/",(char *)myteam->ldbdata->tilesets->at((unsigned int) data->ChipsetID - 1)->strGraphic.c_str()));
         Events = &data->vcEvents;
         chip->init(pre_chip->ChipsetSurface, data, myteam->ldbdata->tilesets->at((unsigned int) data->ChipsetID - 1) );
         Ev_management->init(myaudio,NScene,myteam,Events,Actor,&Mov_management);
         if(data->ParallaxBackground)
         {
-            system_string.clear();
-            system_string.append("Panorama/");
-            system_string.append(data->BackgroundName);
-            system_string.append(".png");
             Background->dispose();
-            Background->setimg((char *) system_string.c_str());
+            Background->setimg((char *)case_insensitive_and_format_img_exist("Panorama/",(char *) data->BackgroundName.c_str()));
 
             if(data->HorizontalPan)
                 Background->x= (-320);

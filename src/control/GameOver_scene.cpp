@@ -41,20 +41,12 @@ void GO_Scene::init(General_data *TheTeam)
 	running=&TheTeam->running;
 	NScene=&TheTeam->TheScene;
 
-    titles_string.append("GameOver/");
-    titles_string.append(TheTeam->ldbdata->System_dat->Game_Over_graphic);
-    titles_string.append(".png");
 
-    music_string.append("Music/");
-    music_string.append(TheTeam->ldbdata->System_dat->Game_Over_music.Name_of_Music_Background);
-    music_string.append(".mid");
-
-
-    myaudio->load(music_string.c_str());
+    myaudio->load(case_insensitive_and_format_msc_exist("Music/",(char *) TheTeam->ldbdata->System_dat->Game_Over_music.Name_of_Music_Background.c_str()));
     myteam->MBackground.x = 0;
     myteam->MBackground.y = 0;
     myteam->MBackground.trasparent_color=false;
-    myteam->MBackground.setimg(titles_string.c_str());
+    myteam->MBackground.setimg(case_insensitive_and_format_img_exist("GameOver/",(char *) TheTeam->ldbdata->System_dat->Game_Over_graphic.c_str()));
     myaudio->play(-1);
     Control::pop_action();
     Control::pop_LM();
