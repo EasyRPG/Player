@@ -158,11 +158,8 @@ void E_management::init(Audio * audio,unsigned char * TheScene,General_data * Th
     use_keyboard = false;
     tried_to_talk = false;
     Mov_management=Move_management;
-
-    system_string.append("System/");
-    system_string.append(TheTeam->ldbdata->System_dat->System_graphic);
-    system_string.append(".png");
-    message_box = new CMessage(system_string.c_str());
+	
+	message_box = new CMessage(case_insensitive_and_format_img_exist("System/",(char *) TheTeam->ldbdata->System_dat->System_graphic.c_str()));
     for(i=0; i < 50; i++)
     {
         Sprite image;
@@ -1288,11 +1285,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Change_Hero_Graphic:// 0xD306,
         Event_comand_Change_Hero_Graphic * comand_Change_Hero_Graphic;
         comand_Change_Hero_Graphic = (Event_comand_Change_Hero_Graphic *)comand;
-        system_string.append("CharSet/");
-        system_string.append(comand_Change_Hero_Graphic->New_graphic.c_str());
-        system_string.append(".png");
-
-        myteam->Players.change_graphic(comand_Change_Hero_Graphic->Hero_ID,system_string.c_str(),comand_Change_Hero_Graphic->Sprite_ID);
+        myteam->Players.change_graphic(comand_Change_Hero_Graphic->Hero_ID,case_insensitive_and_format_img_exist("CharSet/",(char *) comand_Change_Hero_Graphic->New_graphic.c_str()),comand_Change_Hero_Graphic->Sprite_ID);
         comand_id->id_exe_actual++;
         comand_id->id_actual_active = false;
         break;
@@ -1300,11 +1293,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         Event_comand_Change_Hero_Face * comand_Change_Hero_Face;
         comand_Change_Hero_Face = (Event_comand_Change_Hero_Face *)comand;
 
-        system_string.append("FaceSet/");
-        system_string.append(comand_Change_Hero_Face->New_graphic.c_str());
-        system_string.append(".png");
-
-        myteam->Players.change_face(comand_Change_Hero_Face->Hero_ID,system_string.c_str(),comand_Change_Hero_Face->Face_ID);
+        myteam->Players.change_face(comand_Change_Hero_Face->Hero_ID,case_insensitive_and_format_img_exist("FaceSet/",(char *)comand_Change_Hero_Face->New_graphic.c_str()),comand_Change_Hero_Face->Face_ID);
         comand_id->id_exe_actual++;
         comand_id->id_actual_active = false;
         break;
@@ -1614,15 +1603,11 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         Event_comand_Show_Picture * comand_Show_Picture;
         comand_Show_Picture=(Event_comand_Show_Picture *)comand;
 
-        system_string.append("Picture/");
-        system_string.append(comand_Show_Picture->Image_file.c_str());
-        system_string.append(".png");
-
         i= comand_Show_Picture->Picture_ID;
         images[i-1].center_active=true;
         images[i-1].trasparent_color=comand_Show_Picture->Use_color_key;
         images[i-1].dispose();
-        images[i-1].setimg(system_string.c_str());
+        images[i-1].setimg(case_insensitive_and_format_img_exist("Picture/",(char *) comand_Show_Picture->Image_file.c_str()));
         if(comand_Show_Picture->Effect==1)//si el efecto es rotacion
         images[i-1].rotate_active=comand_Show_Picture->Effect;
         images[i-1].rotate_frec=comand_Show_Picture->Power;
@@ -1770,14 +1755,10 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Play_BGM:// 0xD976,
         Event_comand_Play_BGM * comand_Play_BGM;
         comand_Play_BGM=(Event_comand_Play_BGM *)comand;
-        system_string.clear();
-        system_string.append("Music/");
-        system_string.append(comand_Play_BGM->BGM_name.c_str());
-        system_string.append(".mid");
-
-        if(myaudio->actual_music.compare((char *)system_string.c_str()))
+  
+        if(myaudio->actual_music.compare((char *)case_insensitive_and_format_msc_exist("Music/",(char *)comand_Play_BGM->BGM_name.c_str())))
         {
-            myaudio->load((char *)system_string.c_str());
+            myaudio->load((char *)case_insensitive_and_format_msc_exist("Music/",(char *)comand_Play_BGM->BGM_name.c_str()));
             myaudio->play(-1);
         }
         comand_id->id_exe_actual++;
@@ -1812,11 +1793,8 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Play_sound_effect:// 0xDA1E,
         Event_comand_Play_SE * comand_Play_SE;
         comand_Play_SE=(Event_comand_Play_SE *)comand;
-        system_string.clear();
-        system_string.append("Sound/");
-        system_string.append(comand_Play_SE->SE_name.c_str());
-        system_string.append(".wav");
-        i=myteam->S_manager.load_sound((char *)system_string.c_str());
+
+		i=myteam->S_manager.load_sound((char *)case_insensitive_and_format_msc_exist("Sound/",(char *)comand_Play_SE->SE_name.c_str()));
         myteam->S_manager.play_sound(i);
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
@@ -1839,11 +1817,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         Event_comand_Change_tile * comand_Change_tile;
         comand_Change_tile=(Event_comand_Change_tile *)comand;
 
-        system_string.clear();
-        system_string.append("ChipSet/");
-        system_string.append(myteam->ldbdata->tilesets->at((unsigned int) comand_Change_tile->New_tile - 1)->strGraphic);
-        system_string.append(".png");
-        pre_chip->GenerateFromFile((char *) system_string.c_str());
+		pre_chip->GenerateFromFile((char *)case_insensitive_and_format_img_exist("ChipSet/",(char *) myteam->ldbdata->tilesets->at((unsigned int) comand_Change_tile->New_tile - 1)->strGraphic.c_str()));
         chip->init(pre_chip->ChipsetSurface,data, myteam->ldbdata->tilesets->at((unsigned int) comand_Change_tile->New_tile - 1) );
 
         comand_id->id_exe_actual++;
@@ -1853,12 +1827,9 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Change_background:// 0xDB48,
         Event_comand_Change_background * comand_Change_background;
         comand_Change_background=(Event_comand_Change_background *)comand;
-            system_string.clear();
-            system_string.append("Panorama/");
-            system_string.append(comand_Change_background->Parallax_BG);
-            system_string.append(".png");
-            myteam->MBackground.dispose();
-            myteam->MBackground.setimg((char *) system_string.c_str());
+
+			myteam->MBackground.dispose();
+            myteam->MBackground.setimg((char *)case_insensitive_and_format_img_exist("Panorama/",(char *) comand_Change_background->Parallax_BG.c_str()));
             data->ParallaxBackground=true;
             data->HorizontalPan=comand_Change_background->X_pan;             //si hay mobimiento orisontal
             data->HorizontalAutoPan=comand_Change_background->X_auto_pan;         // si es automatico

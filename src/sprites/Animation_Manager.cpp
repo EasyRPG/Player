@@ -13,12 +13,9 @@ void Animacion_Manager::init_Anim(stcAnimated_battle * Animation_ldb,Sound_Manag
 {
     sound_sys=sound_m;
     Animation_data=Animation_ldb;
-    system_string.clear();
-    system_string.append("Battle/");
-    system_string.append(Animation_ldb->strAnimation_file.c_str());
-    system_string.append(".png");
-    anim.dispose();
-    anim.setimg(system_string.c_str());
+	
+	anim.dispose();
+    anim.setimg(case_insensitive_and_format_img_exist("Battle/",(char *) Animation_ldb->strAnimation_file.c_str()));
     anim.init_Anim();
     animation_ended=false;
     actual_frame=0;

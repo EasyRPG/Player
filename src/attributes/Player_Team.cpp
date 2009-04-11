@@ -566,21 +566,16 @@ Player Player_Team::get_hero(stcHero * actual_hero,int id)
     start_level=actual_hero->intStartlevel;
 
     Faceset AlexeFase;
-    system_string.clear();
-    system_string.append("FaceSet/");
-    system_string.append(actual_hero->strFacegraphic.c_str());
-    system_string.append(".png");
-    AlexeFase.setimg(system_string.c_str());
+
+    AlexeFase.setimg(case_insensitive_and_format_img_exist("FaceSet/",(char *) actual_hero->strFacegraphic.c_str()));
     AlexeFase.init_Faceset(0, 0, actual_hero->intFaceindex);
     Alex.set_faceset(AlexeFase);
 
     CActor AlexChara;
-    system_string.clear();
-    system_string.append("CharSet/");
-    system_string.append(actual_hero->strGraphicfile);
-    system_string.append(".png");
+
+
     AlexChara.init_Chara();
-    AlexChara.setimg((char *)system_string.c_str(),actual_hero->intGraphicindex);
+    AlexChara.setimg((char *) case_insensitive_and_format_img_exist("CharSet/",(char *) actual_hero->strGraphicfile.c_str()),actual_hero->intGraphicindex);
 
     Alex.set_chara(AlexChara);
 
