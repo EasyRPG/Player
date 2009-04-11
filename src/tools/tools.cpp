@@ -292,7 +292,8 @@ char * case_insensitive_and_format_msc_exist(char *directory, char *file)
 char * case_insensitive_and_format_img_exist(char *directory, char *file)
 {		
 		char * return_name;
-		std::string img_string;
+		static std::string img_string;
+		img_string.clear();
 		img_string.append(file);
 		img_string.append(".png");
 		if(case_insensitive_exist(&return_name, directory, (char*) img_string.c_str()))
