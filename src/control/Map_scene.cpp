@@ -90,7 +90,7 @@ void Map_Scene::load_map()
         {
             if(myaudio->actual_music.compare((char *)case_insensitive_and_format_msc_exist("Music/",(char *)myteam->lmt.tree_list[Map_id].music_file.name.c_str())))
             {
-                myaudio->load((char *)system_string.c_str());
+                myaudio->load((char *)case_insensitive_and_format_msc_exist("Music/",(char *)myteam->lmt.tree_list[Map_id].music_file.name.c_str()));
                 myaudio->play(-1);
             }
         }
@@ -158,10 +158,9 @@ void Map_Scene::init_npc()
         if(original_state.Active_page!=-1)
         {
             system_string.clear();
-            system_string.append("CharSet/");
-            system_string.append(data->vcEvents[i].vcPage[original_state.Active_page].CharsetName);
-            system_string.append(".png");
-            if (!system_string.compare("CharSet/.png"))
+			system_string.append(case_insensitive_and_format_img_exist("CharSet/",(char *) data->vcEvents[i].vcPage[original_state.Active_page].CharsetName.c_str()));
+            
+			if (!system_string.compare(""))
             {
                 temp2 = CreateSurface(24, 32);
                 chip->RenderTile(temp2, 4, 16, data->vcEvents[i].vcPage[original_state.Active_page].CharsetID + 0x2710, 0);

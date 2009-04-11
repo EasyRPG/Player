@@ -28,25 +28,22 @@ void E_management::page_refresh()
     std::string * old_string = NULL;
     std::string * new_string;
     SDL_Surface *temp2;
-
     for (i = 0; i < Events->size(); i++)
     {
         current_page=Active_page(&Events->at(i));
         old_page=Ev_state->at(i).Active_page;
         if(old_page!=current_page)// la pagina activa actual y si esta es diferente a la pagina activa anterior
         {
-            if(current_page!=-1)
+			if(current_page!=-1)
             {
                 if(old_page!=-1)
                 old_string = &Events->at(i).vcPage[old_page].CharsetName;
                 new_string = &Events->at(i).vcPage[current_page].CharsetName;
-                if((old_page==-1)|| (!(new_string->compare(*old_string))))
-                {
-                    system_string.clear();
-                    system_string.append("CharSet/");
-                    system_string.append(Events->at(i).vcPage[current_page].CharsetName);
-                    system_string.append(".png");
-                    if (!system_string.compare("CharSet/.png"))
+            
+					system_string.clear();
+					system_string.append(case_insensitive_and_format_img_exist("CharSet/",(char *)new_string->c_str()));
+            
+				   if (!system_string.compare(""))
                     {
                         temp2 = CreateSurface(24, 32);
                         chip->RenderTile(temp2, 4, 16, Events->at(i).vcPage[current_page].CharsetID + 0x2710, 0);
@@ -58,7 +55,7 @@ void E_management::page_refresh()
                         Charas_nps->at(i).dispose();
                         Charas_nps->at(i).setimg((char *) system_string.c_str(), Events->at(i).vcPage[current_page].CharsetID);
                     }
-                }
+                
                 Charas_nps->at(i).dir = Events->at(i).vcPage[current_page].Facing_direction;
                 Charas_nps->at(i).frame = Events->at(i).vcPage[current_page].Animation_frame+1;
                 Charas_nps->at(i).move_dir= Mov_management->get_dir(Events->at(i).vcPage[current_page].Movement_type);
