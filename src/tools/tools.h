@@ -55,6 +55,8 @@
 
     // --- Miscellaneous functions ---------------------------------------------
     void s_toupper(char *dest, char *s);
-    int case_insensitive_exist(char **return_name, char *directory, char *file);
+	char * case_insensitive_and_format_img_exist( char *directory, char *file);
+	char * case_insensitive_and_format_msc_exist(char *directory, char *file);
+	int case_insensitive_exist(char **return_name, char *directory, char *file);
 
 #endif

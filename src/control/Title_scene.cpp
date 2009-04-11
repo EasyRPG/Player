@@ -52,20 +52,8 @@ void Title_Scene::init(General_data * TheTeam)
     TheTeam->world_fase.push_back(swich);
     for( i=0; (i< TheTeam->ldbdata->Switch_Names->size());i++)
     TheTeam->world_var.push_back(var);
-
-
-
-    std::string titles_string;
-    std::string music_string;
-    std::string system_string;
-    titles_string.append("Title/");
-    titles_string.append(TheTeam->ldbdata->System_dat->Title_graphic);
-    titles_string.append(".png");
-
-    music_string.append("Music/");
-    music_string.append(TheTeam->ldbdata->System_dat->Title_music.Name_of_Music_Background);
-    music_string.append(".mid");
-
+	string system_string;
+	string music_string;
     system_string.append("System/");
     system_string.append(TheTeam->ldbdata->System_dat->System_graphic);
     system_string.append(".png");
@@ -75,11 +63,13 @@ void Title_Scene::init(General_data * TheTeam)
 	running=&TheTeam->running;
 	NScene=&TheTeam->TheScene;
 
-    myaudio->load(music_string.c_str());
+//    music_string.append(case_insensitive_and_format_msc_exist("Music/",(char *)  TheTeam->ldbdata->System_dat->Title_music.Name_of_Music_Background.c_str()));
+
+    myaudio->load(case_insensitive_and_format_msc_exist("Music/",(char *)  TheTeam->ldbdata->System_dat->Title_music.Name_of_Music_Background.c_str()));
     myteam->MBackground.x = 0;
     myteam->MBackground.y = 0;
     myteam->MBackground.trasparent_color=false;
-    myteam->MBackground.setimg(titles_string.c_str());
+	myteam->MBackground.setimg(case_insensitive_and_format_img_exist("Title/",(char *) TheTeam->ldbdata->System_dat->Title_graphic.c_str()));
 
     menu.init(TheTeam,&TheTeam->running, 0,2, 116, 57, 160 - (116 / 2), 160 - (57 / 2), (char *) system_string.c_str());
     str_Vector.push_back(TheTeam->ldbdata->Glosary->New_Game);

@@ -254,6 +254,76 @@ void s_toupper(char *dest, char *s)
         dest[i]=(char)toupper((int)s[i]);
     }
 }
+char * case_insensitive_and_format_msc_exist(char *directory, char *file)
+{
+		char * return_name;
+		std::string img_string;
+		img_string.append(file);
+		img_string.append(".wav");
+		if(case_insensitive_exist(&return_name, directory, (char*) img_string.c_str()))
+		{
+			img_string.clear();
+			img_string.append(directory);
+			img_string.append(return_name);
+			return ((char*)img_string.c_str());
+		}
+		img_string.clear();
+		img_string.append(file);
+		img_string.append(".mid");		
+		if(case_insensitive_exist(&return_name, directory,(char*) img_string.c_str()))
+		{
+			img_string.clear();
+			img_string.append(directory);
+			img_string.append(return_name);
+			return ((char*)img_string.c_str());
+		}
+		img_string.clear();
+		img_string.append(file);
+		img_string.append(".mp3");		
+		if(case_insensitive_exist(&return_name, directory,(char*) img_string.c_str()))
+		{
+			img_string.clear();
+			img_string.append(directory);
+			img_string.append(return_name);
+			return ((char*)img_string.c_str());
+		}
+        return file;	
+}
+char * case_insensitive_and_format_img_exist(char *directory, char *file)
+{		
+		char * return_name;
+		std::string img_string;
+		img_string.append(file);
+		img_string.append(".png");
+		if(case_insensitive_exist(&return_name, directory, (char*) img_string.c_str()))
+		{
+			img_string.clear();
+			img_string.append(directory);
+			img_string.append(return_name);
+			return ((char*)img_string.c_str());
+		}
+		img_string.clear();
+		img_string.append(file);
+		img_string.append(".bmp");		
+		if(case_insensitive_exist(&return_name, directory,(char*) img_string.c_str()))
+		{
+			img_string.clear();
+			img_string.append(directory);
+			img_string.append(return_name);
+			return ((char*)img_string.c_str());
+		}
+		img_string.clear();
+		img_string.append(file);
+		img_string.append(".xyz");
+		if(case_insensitive_exist(&return_name, directory,(char*) img_string.c_str()))
+		{
+			img_string.clear();
+			img_string.append(directory);
+			img_string.append(return_name);
+			return ((char*)img_string.c_str());
+		}
+        return file;
+}
 
 /* gives "filename" that exists in "directory" with CASE INSENSITIVE TEST*/
 /* in : "file", "directory". out :"return-name" (must be malloc'd) */
@@ -289,8 +359,6 @@ int case_insensitive_exist(char **return_name, char *directory, char *file)
     }
     else
     {
-        (*return_name) = new  char (strlen(file));
-        strcpy(*return_name,file);
         return 0;
     }
 
