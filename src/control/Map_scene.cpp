@@ -40,7 +40,8 @@ void Map_Scene::init( int SCREEN_X, int SCREEN_Y,General_data *TheTeam)
     Ev_state= &(myteam->GEv_state);
     Evc_state= &(myteam->GEvc_state);
     Ev_management= &(myteam->GEv_management);
-    load_map();
+	Dinamic_state= &(myteam->GDinamic_state);
+	load_map();
     myteam->scroll_active=true;
     Ev_management->init(myaudio,NScene,myteam,Events,Actor,&Mov_management);
     Mov_management.init(myteam);
@@ -391,6 +392,26 @@ void Map_Scene::unactive_event(int event_id,bool type)
             }
 }
 
+void Map_Scene::dinamic_state_machine()
+{
+    Event_comand * comand;
+	static unsigned int event_id;
+	for (event_id=0;event_id< myteam->comand_dinamic.size();event_id++)//eventos de mapa
+    {
+			comand=myteam->comand_dinamic[event_id];// lee el comando
+                   //activar comandos
+			if(Dinamic_state->at(event_id).id_actual_active)// ejecutar comandos
+			{
+				Ev_management->active_exec_comand(comand,1,&Dinamic_state->at(event_id));
+			}
+            else
+            {		
+				Dinamic_state->erase ( Dinamic_state->begin()+event_id);
+				myteam->comand_dinamic.erase ( myteam->comand_dinamic.begin()+event_id);
+            }
+    }
+}
+
 void Map_Scene::telepor_state_machine()
 {
     Event_comand * comand;
@@ -642,6 +663,7 @@ int Map_Scene::common_event_active_exe(unsigned int event_id)
 
 void Map_Scene::mapnpc()
 {
+	dinamic_state_machine();
     telepor_state_machine();
     NPC_state_machine();
     Common_events_state_machine();

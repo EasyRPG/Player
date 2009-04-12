@@ -58,6 +58,9 @@ public:
     std:: vector <Event_comand *> comand_before_telepor; //Script=0x16
     void copy_to_before_telepor(std:: vector <Event_comand *> comands);
 
+	std:: vector <Event_comand *> comand_dinamic;
+	std:: vector <E_state> GDinamic_state;
+    
     Sprite MBackground;
     string memorized_BGM;
     std:: vector <char> world_fase;

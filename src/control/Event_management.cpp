@@ -145,6 +145,8 @@ void E_management::init(Audio * audio,unsigned char * TheScene,General_data * Th
     pre_chip=&(myteam->Gpre_chip);
     chip=&(myteam->Gchip);
     data = &(myteam->Gdata);
+	Dinamic_state = &(myteam->GDinamic_state);
+	
     NScene = TheScene;
     myaudio = audio;
     Events = TheEvents;
@@ -339,45 +341,47 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
 
 
     case Move_Picture:// 0xD670,
-        Event_comand_Move_Picture * comand_Move_Picture;
+		Event_comand_Move_Picture * comand_Move_Picture;
         comand_Move_Picture=(Event_comand_Move_Picture *)comand;
         
-        #ifdef M_DEBUG
+     //   #ifdef M_DEBUG
         comand_Move_Picture->show();
-        #endif
+       // #endif
         
         i=comand_Move_Picture->Picture_ID;
         if(comand_Move_Picture->By_Value)
         {
-        x=myteam->world_var[comand_Move_Picture->X];
-        y=myteam->world_var[comand_Move_Picture->Y];
+			comand_id->stack_ints[0]=myteam->world_var[comand_Move_Picture->X];
+			comand_id->stack_ints[1]=myteam->world_var[comand_Move_Picture->Y];
         }
         else
         {
-        x=comand_Move_Picture->X;
-        y=comand_Move_Picture->Y;
+			comand_id->stack_ints[0]=comand_Move_Picture->X;
+			comand_id->stack_ints[1]=comand_Move_Picture->Y;
         }
 
         if(comand_id->timer==0)
         {
         comand_id->timer=(comand_Move_Picture->Length)+1;
-        Xmove=(x-images[i-1].x)/(comand_Move_Picture->Length);
-        Ymove=(y-images[i-1].y)/(comand_Move_Picture->Length);
-        Zoomer=(comand_Move_Picture->Magnification-images[i-1].zoom) /(comand_Move_Picture->Length);
+        comand_id->stack_floats[0] =(comand_id->stack_ints[0]-images[i-1].x)/(comand_Move_Picture->Length);
+        comand_id->stack_floats[1]=(comand_id->stack_ints[1]-images[i-1].y)/(comand_Move_Picture->Length);
+        comand_id->stack_floats[2]=(comand_Move_Picture->Magnification-images[i-1].zoom) /(comand_Move_Picture->Length);
         }
-        images[i-1].x+=Xmove;
-        images[i-1].y+=Ymove;
-        images[i-1].zoom+=Zoomer;
+        images[i-1].x+=comand_id->stack_floats[0];
+        images[i-1].y+=comand_id->stack_floats[1];
+        images[i-1].zoom+=comand_id->stack_floats[2];
         comand_id->timer--;
-        if((((x==images[i-1].x)&&(y==images[i-1].y))&&(images[i-1].zoom==comand_Move_Picture->Magnification))||(comand_id->timer==1))
+        if((((comand_id->stack_ints[0]==images[i-1].x)&&(comand_id->stack_ints[1]==images[i-1].y))&&(images[i-1].zoom==comand_Move_Picture->Magnification))||(comand_id->timer==1))
         {
-        images[i-1].x=x;
-        images[i-1].y=y;
+        images[i-1].x=comand_id->stack_ints[0];
+        images[i-1].y=comand_id->stack_ints[1];
         images[i-1].zoom=comand_Move_Picture->Magnification;
         comand_id->timer=0;
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
-        }
+        comand_id->stack_ints.clear();
+		comand_id->stack_floats.clear();
+		}
 
         break;
     case Show_Battle_Anim :// 0xD74A,
@@ -1628,33 +1632,70 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 
         break;
     case Move_Picture:// 0xD670,
-        Event_comand_Move_Picture * comand_Move_Picture;
+        float x;
+		int y;
+			
+		Event_comand_Move_Picture * comand_Move_Picture;
         comand_Move_Picture=(Event_comand_Move_Picture *)comand;
         #ifdef M_DEBUG
         comand_Move_Picture->show();
-        printf("lol \n");
         #endif
         comand_id->timer=0;
         i=comand_Move_Picture->Picture_ID;
         images[i-1].SetAlpha(255 -(comand_Move_Picture->Opacity*2.55));
         images[i-1].ModRGB(comand_Move_Picture->Red_diffuse-100, comand_Move_Picture->Green_diffuse-100,comand_Move_Picture->Blue_diffuse-100);
         images[i-1].center_active=true;
-        if(comand_Move_Picture->Length==0)
+        if(comand_Move_Picture->Wait==0)
         {
-        images[i-1].zoom=comand_Move_Picture->Magnification;
-        if(comand_Move_Picture->By_Value)
+			cout<<"entro"<<endl;
+			myteam->comand_dinamic.push_back(comand_Move_Picture);
+			E_state original_state;
+			original_state.Event_Active=true;
+			original_state.id_exe_actual=0;
+			original_state.id_actual_active=true;
+			original_state.Active_page= -2;//common event
+			original_state.timer=0;
+			original_state.stack_floats.push_back(x);
+			original_state.stack_floats.push_back(x);
+			original_state.stack_floats.push_back(x);
+		
+			original_state.stack_ints.push_back(y);
+			original_state.stack_ints.push_back(y);
+		
+			Dinamic_state->push_back(original_state);
+		
+			comand_id->id_exe_actual++;
+			comand_id->id_actual_active=false;
+		
+		
+		}
+		
+		if(comand_Move_Picture->Length==0)
         {
-        images[i-1].x=myteam->world_var[comand_Move_Picture->X];
-        images[i-1].y=myteam->world_var[comand_Move_Picture->Y];
+			images[i-1].zoom=comand_Move_Picture->Magnification;
+			if(comand_Move_Picture->By_Value)
+			{
+				images[i-1].x=myteam->world_var[comand_Move_Picture->X];
+				images[i-1].y=myteam->world_var[comand_Move_Picture->Y];
+			}
+			else
+			{
+				images[i-1].x=comand_Move_Picture->X;
+				images[i-1].y=comand_Move_Picture->Y;
+			}
+			comand_id->id_exe_actual++;
+			comand_id->id_actual_active=false;
         }
-        else
-        {
-        images[i-1].x=comand_Move_Picture->X;
-        images[i-1].y=comand_Move_Picture->Y;
-        }
-        comand_id->id_exe_actual++;
-        comand_id->id_actual_active=false;
-        }
+		else
+		{
+			comand_id->stack_floats.push_back(x);
+			comand_id->stack_floats.push_back(x);
+			comand_id->stack_floats.push_back(x);
+		
+			comand_id->stack_ints.push_back(y);
+			comand_id->stack_ints.push_back(y);
+		
+		}
         break;
     case Erase_Picture:// 0xD67A,
         Event_comand_Erase_Picture * comand_Erase_Picture;

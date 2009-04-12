@@ -80,7 +80,9 @@ private:
     std:: vector <stEventMap> * Events;//agregar apuntador a vector de eventos
     std:: vector <E_state> * Ev_state;//agregar apuntador a vector de eventos
     std:: vector <E_state> * Evc_state;//agregar apuntador a vector de eventos
-    bool common_autoprocess;
+    std:: vector <E_state> * Dinamic_state;//agregar apuntador a vector de eventos
+   
+	bool common_autoprocess;
     bool event_autoprocess;
 
 	char stringBuffer[255];
@@ -101,7 +103,7 @@ public:
     int event_active_exe(unsigned int event_id);
     void Common_events_state_machine();
     int common_event_active_exe(unsigned int event_id);
-
+	void dinamic_state_machine();
     void mapnpc();
 	void dispose();
 };

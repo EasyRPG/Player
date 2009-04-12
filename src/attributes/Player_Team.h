@@ -46,6 +46,10 @@ struct E_state
     int Active_page;
     int timer;
     std:: vector <E_state> Recall_states;
+	std:: vector <float> stack_floats;
+	std:: vector <int> stack_ints;
+
+ 
 };
 
 class Player_Team {
