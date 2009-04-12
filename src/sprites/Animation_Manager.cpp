@@ -13,9 +13,9 @@ void Animacion_Manager::init_Anim(stcAnimated_battle * Animation_ldb,Sound_Manag
 {
     sound_sys=sound_m;
     Animation_data=Animation_ldb;
-	
+
 	anim.dispose();
-    anim.setimg(case_insensitive_and_format_img_exist("Battle/",(char *) Animation_ldb->strAnimation_file.c_str()));
+    anim.setimg(case_insensitive_and_format_img_exist("Battle/",Animation_ldb->strAnimation_file));
     anim.init_Anim();
     animation_ended=false;
     actual_frame=0;

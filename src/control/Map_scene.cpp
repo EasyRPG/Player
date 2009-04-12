@@ -89,21 +89,21 @@ void Map_Scene::load_map()
         #endif
         if(myteam->lmt.tree_list[Map_id].music==2)
         {
-            if(myaudio->actual_music.compare((char *)case_insensitive_and_format_msc_exist("Music/",(char *)myteam->lmt.tree_list[Map_id].music_file.name.c_str())))
+            if(myaudio->actual_music.compare(case_insensitive_and_format_msc_exist("Music/",myteam->lmt.tree_list[Map_id].music_file.name)))
             {
-                myaudio->load((char *)case_insensitive_and_format_msc_exist("Music/",(char *)myteam->lmt.tree_list[Map_id].music_file.name.c_str()));
+                myaudio->load(case_insensitive_and_format_msc_exist("Music/",myteam->lmt.tree_list[Map_id].music_file.name));
                 myaudio->play(-1);
             }
         }
 
-        pre_chip->GenerateFromFile((char *)case_insensitive_and_format_img_exist("ChipSet/",(char *)myteam->ldbdata->tilesets->at((unsigned int) data->ChipsetID - 1)->strGraphic.c_str()));
+        pre_chip->GenerateFromFile(case_insensitive_and_format_img_exist("ChipSet/",myteam->ldbdata->tilesets->at((unsigned int) data->ChipsetID - 1)->strGraphic));
         Events = &data->vcEvents;
         chip->init(pre_chip->ChipsetSurface, data, myteam->ldbdata->tilesets->at((unsigned int) data->ChipsetID - 1) );
         Ev_management->init(myaudio,NScene,myteam,Events,Actor,&Mov_management);
         if(data->ParallaxBackground)
         {
             Background->dispose();
-            Background->setimg((char *)case_insensitive_and_format_img_exist("Panorama/",(char *) data->BackgroundName.c_str()));
+            Background->setimg(case_insensitive_and_format_img_exist("Panorama/",data->BackgroundName));
 
             if(data->HorizontalPan)
                 Background->x= (-320);
@@ -159,8 +159,8 @@ void Map_Scene::init_npc()
         if(original_state.Active_page!=-1)
         {
             system_string.clear();
-			system_string.append(case_insensitive_and_format_img_exist("CharSet/",(char *) data->vcEvents[i].vcPage[original_state.Active_page].CharsetName.c_str()));
-            
+			system_string.append(case_insensitive_and_format_img_exist("CharSet/",data->vcEvents[i].vcPage[original_state.Active_page].CharsetName));
+
 			if (!system_string.compare(""))
             {
                 temp2 = CreateSurface(24, 32);
@@ -273,7 +273,7 @@ void Map_Scene::update(SDL_Surface *Screen)
 
     Ev_management->update(Screen);
       myteam->screen_got_refresh=true;
-
+mapnpc();
 }
 
 
@@ -347,7 +347,7 @@ void Map_Scene::updatekey()
         }
         }
     }
-    mapnpc();
+
 
     if(Actor->tried_to_menu)
     {
@@ -405,7 +405,7 @@ void Map_Scene::dinamic_state_machine()
 				Ev_management->active_exec_comand(comand,1,&Dinamic_state->at(event_id));
 			}
             else
-            {		
+            {
 				Dinamic_state->erase ( Dinamic_state->begin()+event_id);
 				myteam->comand_dinamic.erase ( myteam->comand_dinamic.begin()+event_id);
             }

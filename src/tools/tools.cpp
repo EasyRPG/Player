@@ -254,82 +254,70 @@ void s_toupper(char *dest, char *s)
         dest[i]=(char)toupper((int)s[i]);
     }
 }
-char * case_insensitive_and_format_msc_exist(char *directory, char *file)
+char * case_insensitive_and_format_msc_exist(char *directory, string & file)
 {
 		char * return_name;
-		std::string img_string;
-		img_string.append(file);
-		img_string.append(".wav");
-		if(case_insensitive_exist(&return_name, directory, (char*) img_string.c_str()))
-		{
-			img_string.clear();
-			img_string.append(directory);
-			img_string.append(return_name);
-			return ((char*)img_string.c_str());
-		}
+		static std::string img_string;
+		static std::string file_ext;
 		img_string.clear();
-		img_string.append(file);
-		img_string.append(".mid");		
-		if(case_insensitive_exist(&return_name, directory,(char*) img_string.c_str()))
-		{
-			img_string.clear();
-			img_string.append(directory);
-			img_string.append(return_name);
-			return ((char*)img_string.c_str());
-		}
 		img_string.clear();
-		img_string.append(file);
-		img_string.append(".mp3");		
-		if(case_insensitive_exist(&return_name, directory,(char*) img_string.c_str()))
+		file_ext.append(file);
+		file_ext.append(".wav");
+		if(case_insensitive_exist(img_string, directory, (char*) file_ext.c_str()))
 		{
-			img_string.clear();
-			img_string.append(directory);
-			img_string.append(return_name);
 			return ((char*)img_string.c_str());
 		}
-        return file;	
+		file_ext.clear();
+		file_ext.append(file);
+		file_ext.append(".mid");
+		if(case_insensitive_exist(img_string, directory,(char*) file_ext.c_str()))
+		{
+			return ((char*)img_string.c_str());
+		}
+		file_ext.clear();
+		file_ext.append(file);
+		file_ext.append(".mp3");
+		if(case_insensitive_exist(img_string, directory,(char*) file_ext.c_str()))
+		{
+			return ((char*)img_string.c_str());
+		}
+        return ((char*)file.c_str());
 }
-char * case_insensitive_and_format_img_exist(char *directory, char *file)
-{		
+char * case_insensitive_and_format_img_exist(char *directory, string & file)
+{
 		char * return_name;
 		static std::string img_string;
+		static std::string file_ext;
 		img_string.clear();
-		img_string.append(file);
-		img_string.append(".png");
-		if(case_insensitive_exist(&return_name, directory, (char*) img_string.c_str()))
+
+		file_ext.clear();
+		file_ext.append(file);
+		file_ext.append(".png");
+		if(case_insensitive_exist(img_string, directory, (char*) file_ext.c_str()))
 		{
-			img_string.clear();
-			img_string.append(directory);
-			img_string.append(return_name);
 			return ((char*)img_string.c_str());
 		}
-		img_string.clear();
-		img_string.append(file);
-		img_string.append(".bmp");		
-		if(case_insensitive_exist(&return_name, directory,(char*) img_string.c_str()))
+		file_ext.clear();
+		file_ext.append(file);
+		file_ext.append(".bmp");
+		if(case_insensitive_exist(img_string, directory,(char*) file_ext.c_str()))
 		{
-			img_string.clear();
-			img_string.append(directory);
-			img_string.append(return_name);
 			return ((char*)img_string.c_str());
 		}
-		img_string.clear();
-		img_string.append(file);
-		img_string.append(".xyz");
-		if(case_insensitive_exist(&return_name, directory,(char*) img_string.c_str()))
+		file_ext.clear();
+		file_ext.append(file);
+		file_ext.append(".xyz");
+		if(case_insensitive_exist(img_string, directory,(char*) file_ext.c_str()))
 		{
-			img_string.clear();
-			img_string.append(directory);
-			img_string.append(return_name);
 			return ((char*)img_string.c_str());
 		}
-        return file;
+        return ((char*)file.c_str());
 }
 
 /* gives "filename" that exists in "directory" with CASE INSENSITIVE TEST*/
 /* in : "file", "directory". out :"return-name" (must be malloc'd) */
 /* return : 1 if filename exists (CASE INSENSITIVE), 0 if not */
-int case_insensitive_exist(char **return_name, char *directory, char *file)
+int case_insensitive_exist( string & dir_file, char *directory, char *file)
 {
     int exist = 0;
     struct dirent *d_ent;
@@ -354,9 +342,9 @@ int case_insensitive_exist(char **return_name, char *directory, char *file)
     }
     if (exist)
     {
-        (*return_name) = new  char (strlen(d_ent->d_name));
-        strcpy (*return_name,d_ent->d_name);
-        return 1;
+        dir_file.append(directory);
+        dir_file.append(d_ent->d_name);
+		return 1;
     }
     else
     {

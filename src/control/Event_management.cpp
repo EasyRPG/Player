@@ -39,10 +39,10 @@ void E_management::page_refresh()
                 if(old_page!=-1)
                 old_string = &Events->at(i).vcPage[old_page].CharsetName;
                 new_string = &Events->at(i).vcPage[current_page].CharsetName;
-            
+
 					system_string.clear();
-					system_string.append(case_insensitive_and_format_img_exist("CharSet/",(char *)new_string->c_str()));
-            
+					system_string.append(case_insensitive_and_format_img_exist("CharSet/",*new_string));
+
 				   if (!system_string.compare(""))
                     {
                         temp2 = CreateSurface(24, 32);
@@ -55,7 +55,7 @@ void E_management::page_refresh()
                         Charas_nps->at(i).dispose();
                         Charas_nps->at(i).setimg((char *) system_string.c_str(), Events->at(i).vcPage[current_page].CharsetID);
                     }
-                
+
                 Charas_nps->at(i).dir = Events->at(i).vcPage[current_page].Facing_direction;
                 Charas_nps->at(i).frame = Events->at(i).vcPage[current_page].Animation_frame+1;
                 Charas_nps->at(i).move_dir= Mov_management->get_dir(Events->at(i).vcPage[current_page].Movement_type);
@@ -146,7 +146,7 @@ void E_management::init(Audio * audio,unsigned char * TheScene,General_data * Th
     chip=&(myteam->Gchip);
     data = &(myteam->Gdata);
 	Dinamic_state = &(myteam->GDinamic_state);
-	
+
     NScene = TheScene;
     myaudio = audio;
     Events = TheEvents;
@@ -157,8 +157,8 @@ void E_management::init(Audio * audio,unsigned char * TheScene,General_data * Th
     use_keyboard = false;
     tried_to_talk = false;
     Mov_management=Move_management;
-	
-	message_box = new CMessage(case_insensitive_and_format_img_exist("System/",(char *) TheTeam->ldbdata->System_dat->System_graphic.c_str()));
+
+	message_box = new CMessage(case_insensitive_and_format_img_exist("System/",TheTeam->ldbdata->System_dat->System_graphic));
     for(i=0; i < 50; i++)
     {
         Sprite image;
@@ -343,11 +343,11 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
     case Move_Picture:// 0xD670,
 		Event_comand_Move_Picture * comand_Move_Picture;
         comand_Move_Picture=(Event_comand_Move_Picture *)comand;
-        
+
      //   #ifdef M_DEBUG
         comand_Move_Picture->show();
        // #endif
-        
+
         i=comand_Move_Picture->Picture_ID;
         if(comand_Move_Picture->By_Value)
         {
@@ -362,10 +362,10 @@ void E_management::active_exec_comand(Event_comand * comand,int event_id, E_stat
 
         if(comand_id->timer==0)
         {
-        comand_id->timer=(comand_Move_Picture->Length)+1;
-        comand_id->stack_floats[0] =(comand_id->stack_ints[0]-images[i-1].x)/(comand_Move_Picture->Length);
-        comand_id->stack_floats[1]=(comand_id->stack_ints[1]-images[i-1].y)/(comand_Move_Picture->Length);
-        comand_id->stack_floats[2]=(comand_Move_Picture->Magnification-images[i-1].zoom) /(comand_Move_Picture->Length);
+        comand_id->timer=(comand_Move_Picture->Length)*3+1;
+        comand_id->stack_floats[0] =(comand_id->stack_ints[0]-images[i-1].x)/((comand_Move_Picture->Length)*3);
+        comand_id->stack_floats[1]=(comand_id->stack_ints[1]-images[i-1].y)/((comand_Move_Picture->Length)*3);
+        comand_id->stack_floats[2]=(comand_Move_Picture->Magnification-images[i-1].zoom) /((comand_Move_Picture->Length)*2);
         }
         images[i-1].x+=comand_id->stack_floats[0];
         images[i-1].y+=comand_id->stack_floats[1];
@@ -1286,15 +1286,14 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Change_Hero_Graphic:// 0xD306,
         Event_comand_Change_Hero_Graphic * comand_Change_Hero_Graphic;
         comand_Change_Hero_Graphic = (Event_comand_Change_Hero_Graphic *)comand;
-        myteam->Players.change_graphic(comand_Change_Hero_Graphic->Hero_ID,case_insensitive_and_format_img_exist("CharSet/",(char *) comand_Change_Hero_Graphic->New_graphic.c_str()),comand_Change_Hero_Graphic->Sprite_ID);
+        myteam->Players.change_graphic(comand_Change_Hero_Graphic->Hero_ID,case_insensitive_and_format_img_exist("CharSet/",comand_Change_Hero_Graphic->New_graphic),comand_Change_Hero_Graphic->Sprite_ID);
         comand_id->id_exe_actual++;
         comand_id->id_actual_active = false;
         break;
     case Change_Hero_Face:// 0xD310,
         Event_comand_Change_Hero_Face * comand_Change_Hero_Face;
         comand_Change_Hero_Face = (Event_comand_Change_Hero_Face *)comand;
-
-        myteam->Players.change_face(comand_Change_Hero_Face->Hero_ID,case_insensitive_and_format_img_exist("FaceSet/",(char *)comand_Change_Hero_Face->New_graphic.c_str()),comand_Change_Hero_Face->Face_ID);
+        myteam->Players.change_face(comand_Change_Hero_Face->Hero_ID,case_insensitive_and_format_img_exist("FaceSet/",comand_Change_Hero_Face->New_graphic),comand_Change_Hero_Face->Face_ID);
         comand_id->id_exe_actual++;
         comand_id->id_actual_active = false;
         break;
@@ -1608,7 +1607,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         images[i-1].center_active=true;
         images[i-1].trasparent_color=comand_Show_Picture->Use_color_key;
         images[i-1].dispose();
-        images[i-1].setimg(case_insensitive_and_format_img_exist("Picture/",(char *) comand_Show_Picture->Image_file.c_str()));
+        images[i-1].setimg(case_insensitive_and_format_img_exist("Picture/",comand_Show_Picture->Image_file));
         if(comand_Show_Picture->Effect==1)//si el efecto es rotacion
         images[i-1].rotate_active=comand_Show_Picture->Effect;
         images[i-1].rotate_frec=comand_Show_Picture->Power;
@@ -1634,7 +1633,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Move_Picture:// 0xD670,
         float x;
 		int y;
-			
+
 		Event_comand_Move_Picture * comand_Move_Picture;
         comand_Move_Picture=(Event_comand_Move_Picture *)comand;
         #ifdef M_DEBUG
@@ -1658,18 +1657,18 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 			original_state.stack_floats.push_back(x);
 			original_state.stack_floats.push_back(x);
 			original_state.stack_floats.push_back(x);
-		
+
 			original_state.stack_ints.push_back(y);
 			original_state.stack_ints.push_back(y);
-		
+
 			Dinamic_state->push_back(original_state);
-		
+
 			comand_id->id_exe_actual++;
 			comand_id->id_actual_active=false;
-		
-		
+
+
 		}
-		
+
 		if(comand_Move_Picture->Length==0)
         {
 			images[i-1].zoom=comand_Move_Picture->Magnification;
@@ -1691,10 +1690,10 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
 			comand_id->stack_floats.push_back(x);
 			comand_id->stack_floats.push_back(x);
 			comand_id->stack_floats.push_back(x);
-		
+
 			comand_id->stack_ints.push_back(y);
 			comand_id->stack_ints.push_back(y);
-		
+
 		}
         break;
     case Erase_Picture:// 0xD67A,
@@ -1793,10 +1792,10 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
     case Play_BGM:// 0xD976,
         Event_comand_Play_BGM * comand_Play_BGM;
         comand_Play_BGM=(Event_comand_Play_BGM *)comand;
-  
-        if(myaudio->actual_music.compare((char *)case_insensitive_and_format_msc_exist("Music/",(char *)comand_Play_BGM->BGM_name.c_str())))
+
+        if(myaudio->actual_music.compare(case_insensitive_and_format_msc_exist("Music/",comand_Play_BGM->BGM_name)))
         {
-            myaudio->load((char *)case_insensitive_and_format_msc_exist("Music/",(char *)comand_Play_BGM->BGM_name.c_str()));
+            myaudio->load(case_insensitive_and_format_msc_exist("Music/",comand_Play_BGM->BGM_name));
             myaudio->play(-1);
         }
         comand_id->id_exe_actual++;
@@ -1832,7 +1831,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         Event_comand_Play_SE * comand_Play_SE;
         comand_Play_SE=(Event_comand_Play_SE *)comand;
 
-		i=myteam->S_manager.load_sound((char *)case_insensitive_and_format_msc_exist("Sound/",(char *)comand_Play_SE->SE_name.c_str()));
+		i=myteam->S_manager.load_sound(case_insensitive_and_format_msc_exist("Sound/",comand_Play_SE->SE_name));
         myteam->S_manager.play_sound(i);
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
@@ -1855,7 +1854,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         Event_comand_Change_tile * comand_Change_tile;
         comand_Change_tile=(Event_comand_Change_tile *)comand;
 
-		pre_chip->GenerateFromFile((char *)case_insensitive_and_format_img_exist("ChipSet/",(char *) myteam->ldbdata->tilesets->at((unsigned int) comand_Change_tile->New_tile - 1)->strGraphic.c_str()));
+		pre_chip->GenerateFromFile((char *)case_insensitive_and_format_img_exist("ChipSet/",myteam->ldbdata->tilesets->at((unsigned int) comand_Change_tile->New_tile - 1)->strGraphic));
         chip->init(pre_chip->ChipsetSurface,data, myteam->ldbdata->tilesets->at((unsigned int) comand_Change_tile->New_tile - 1) );
 
         comand_id->id_exe_actual++;
@@ -1867,7 +1866,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         comand_Change_background=(Event_comand_Change_background *)comand;
 
 			myteam->MBackground.dispose();
-            myteam->MBackground.setimg((char *)case_insensitive_and_format_img_exist("Panorama/",(char *) comand_Change_background->Parallax_BG.c_str()));
+            myteam->MBackground.setimg(case_insensitive_and_format_img_exist("Panorama/",comand_Change_background->Parallax_BG));
             data->ParallaxBackground=true;
             data->HorizontalPan=comand_Change_background->X_pan;             //si hay mobimiento orisontal
             data->HorizontalAutoPan=comand_Change_background->X_auto_pan;         // si es automatico
@@ -1965,7 +1964,7 @@ void E_management::exec_comand(std:: vector <Event_comand *> vcEvent_comand,int 
         comand_id->id_exe_actual++;
         comand_id->id_actual_active=false;
         break;
-		
+
 		    case Conditional:// 0xDD6A,
         Event_comand_Conditional * comand_Conditional;
         comand_Conditional= (Event_comand_Conditional *)comand;
