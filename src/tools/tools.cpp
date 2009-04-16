@@ -256,7 +256,7 @@ void s_toupper(char *dest, char *s)
 }
 char * case_insensitive_and_format_msc_exist(char *directory, string & file)
 {
-		char * return_name;
+//		char * return_name;
 		static std::string img_string;
 		static std::string file_ext;
 		img_string.clear();
@@ -285,7 +285,7 @@ char * case_insensitive_and_format_msc_exist(char *directory, string & file)
 }
 char * case_insensitive_and_format_img_exist(char *directory, string & file)
 {
-		char * return_name;
+//		char * return_name;
 		static std::string img_string;
 		static std::string file_ext;
 		img_string.clear();

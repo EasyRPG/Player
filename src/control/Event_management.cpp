@@ -236,9 +236,12 @@ void E_management::updatekey(bool *running)
 void E_management::active_exec_comand(Event_comand * comand,int event_id, E_state * comand_id)
 {
     static unsigned int timer=0;
-    static float Xmove,Ymove,Zoomer;
+    static float Xmove;
+//    static float Ymove;
+//    static float Zoomer;
     int i=0;
-    int x,y;
+    int x;
+//    int y;
     std::string system_string;
 
     switch (comand->Comand)
