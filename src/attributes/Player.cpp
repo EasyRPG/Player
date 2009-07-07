@@ -14,9 +14,9 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
-#include <SDL/SDL_mixer.h>
+#include "SDL.h"
+#include "SDL_image.h"
+#include "SDL_mixer.h"
 #include "../sprites/sprite.h"
 #include "../tools/key.h"
 #include "../tools/font.h"
@@ -25,7 +25,8 @@
 #include <string>
 #include "skill.h"
 #include "item.h"
-#include "Enemy.h"#include "Player.h"
+#include "Enemy.h"
+#include "Player.h"
 
 
 
@@ -75,7 +76,8 @@ void Player::set_Accessory(Item The_Accessory)
 }
 
 unsigned char* Player::get_Weapon_type()
-{
+{
+
 	return (&Weapon_type);
 }
 unsigned char* Player::get_Shield_type()

@@ -1,10 +1,10 @@
 #ifndef STRMAP_H
 #define STRMAP_H
 
-using namespace std;
 #include <vector>
 #include <string>
 #include "stevent.h"
+using namespace std;
 
     class Move_comand {//uso de clase por necesidad de herencia
     public:

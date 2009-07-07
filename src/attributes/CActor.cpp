@@ -15,7 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 //extern CWorld  * World; //cuando exista
-#include <SDL/SDL.h>
+#include "SDL.h"
 #include "../tools/math-sll.h"
 #include "../sprites/Chara.h"
 #include "CActor.h"

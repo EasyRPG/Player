@@ -1,4 +1,4 @@
-#include <SDL/SDL.h>
+#include "SDL.h"
 
 bool Key_press_and_realsed( unsigned char key )
 {

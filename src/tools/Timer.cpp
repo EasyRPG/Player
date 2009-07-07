@@ -16,7 +16,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <SDL/SDL.h>
+#include "SDL.h"
 #include "Timer.h"
 
 Timer::Timer()
