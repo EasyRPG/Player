@@ -18,9 +18,7 @@
     #include <stdlib.h>
     #include <stdio.h>
     #include <string.h>
-#ifdef __UNIX__
     #include <dirent.h>
-#endif
     #include <ctype.h>
     #include <iostream>
     #include "SDL.h"
@@ -244,7 +242,7 @@ void SetTransparent(SDL_Surface * ima)
 
         return Return;
     }
-#ifdef __UNIX__
+
 /* Converts a string s into upper-case string dest. Need of <ctype.h> */
 /* Warning : you must malloc "dest" ! */
 void s_toupper(char *dest, char *s)
@@ -355,4 +353,3 @@ int case_insensitive_exist( string & dir_file, char *directory, char *file)
     }
 
 }
-#endif

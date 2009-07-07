@@ -39,7 +39,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;C:\Bibliotecas\zlib123-dll\include&quot;;&quot;C:\Bibliotecas\SDL_ttf-2.0.9\include&quot;;&quot;C:\Bibliotecas\SDL_mixer-1.2.8\include&quot;;&quot;C:\Bibliotecas\SDL_gfx-2.0.19&quot;;&quot;C:\Bibliotecas\SDL_image-1.2.7\include&quot;;&quot;C:\Bibliotecas\SDL-devel-1.2.13-VC8\SDL-1.2.13\include&quot;"
+				AdditionalIncludeDirectories="&quot;C:\EasyPlayer\player\dependencies\zlib123-dll\include&quot;;&quot;C:\EasyPlayer\player\dependencies\SDL-devel-1.2.13-VC8\SDL-1.2.13\include&quot;;&quot;C:\EasyPlayer\player\dependencies\SDL_ttf-2.0.9\include&quot;;&quot;C:\EasyPlayer\player\dependencies\SDL_mixer-1.2.8\include&quot;;&quot;C:\EasyPlayer\player\dependencies\SDL_image-1.2.7\include&quot;;&quot;C:\EasyPlayer\player\dependencies\SDL_gfx-2.0.19&quot;;C:\EasyPlayer\player\dependencies\dirent\include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -60,9 +60,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="SDL.lib SDLmain.lib SDL_image.lib SDL_mixer.lib SDL_ttf.lib zdll.lib SDL_gfx.lib"
+				AdditionalDependencies="SDL.lib SDLmain.lib SDL_image.lib SDL_mixer.lib SDL_ttf.lib dirent.lib zdll.lib SDL_gfx.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="C:\EasyPlayer\player\Debug;&quot;C:\Bibliotecas\SDL_mixer-1.2.8\lib&quot;;&quot;C:\Bibliotecas\SDL_ttf-2.0.9\lib&quot;;&quot;C:\Bibliotecas\SDL_image-1.2.7\lib&quot;;&quot;C:\Bibliotecas\SDL_gfx-2.0.19\VisualC\Debug&quot;;&quot;C:\Bibliotecas\zlib123-dll\lib&quot;;&quot;C:\Bibliotecas\SDL-devel-1.2.13-VC8\SDL-1.2.13\lib&quot;"
+				AdditionalLibraryDirectories="&quot;C:\EasyPlayer\player\dependencies\zlib123-dll\lib&quot;;&quot;C:\EasyPlayer\player\dependencies\SDL-devel-1.2.13-VC8\SDL-1.2.13\lib&quot;;&quot;C:\EasyPlayer\player\dependencies\SDL_ttf-2.0.9\lib&quot;;&quot;C:\EasyPlayer\player\dependencies\SDL_image-1.2.7\lib&quot;;&quot;C:\EasyPlayer\player\dependencies\SDL_mixer-1.2.8\lib&quot;;&quot;C:\EasyPlayer\player\dependencies\SDL_gfx-2.0.19\VisualC\Debug&quot;;C:\EasyPlayer\player\dependencies\dirent\lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"

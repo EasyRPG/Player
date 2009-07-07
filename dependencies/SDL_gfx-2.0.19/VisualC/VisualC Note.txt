@@ -1,0 +1,11 @@
+The project provided is a VisualC 8 vcproj file.
+You should be able to load this project in VC7 or VC9 by editing in a text editor and replacing:
+Version="8.00"
+with:
+Version="7.00"
+or
+Version="9.00"
+
+YMMV
+
+-Sweetlilmre
