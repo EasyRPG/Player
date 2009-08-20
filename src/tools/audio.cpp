@@ -4,10 +4,10 @@
 
 bool Audio::wasInit = false;
 
-const int Audio::AUDIO_RATE = MIX_DEFAULT_FREQUENCY; // 22050
+const int Audio::AUDIO_RATE = 44100;
 const Uint16 Audio::AUDIO_FORMAT = MIX_DEFAULT_FORMAT; // AUDIO_S16SYS
 const int Audio::AUDIO_CHANNELS = 2; // 1.- mono  2.- stereo
-const int Audio::AUDIO_BUFFER = 4096; // default
+const int Audio::AUDIO_BUFFER = 512;
 
 bool Audio::init()
 {
