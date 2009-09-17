@@ -44,6 +44,21 @@ extern "C" {
 /* strlib.c following */
 
 #define ASCIILINESZ 1024
+
+/*-------------------------------------------------------------------------*/
+/**
+  @brief    Duplicate a string.
+  @param    s   String to duplicate.
+ */
+/*--------------------------------------------------------------------------*/
+char *strdup (const char *s) {
+    char *d = (char *)(malloc (strlen (s) + 1));
+    if (d == NULL) return NULL;
+    strcpy (d,s);
+    return d;
+}
+
+
 /*-------------------------------------------------------------------------*/
 /**
   @brief    Convert a string to lowercase.
