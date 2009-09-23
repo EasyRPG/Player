@@ -51,13 +51,14 @@ extern "C" {
   @param    s   String to duplicate.
  */
 /*--------------------------------------------------------------------------*/
+#ifdef WIN32
 char *strdup (const char *s) {
     char *d = (char *)(malloc (strlen (s) + 1));
     if (d == NULL) return NULL;
     strcpy (d,s);
     return d;
 }
-
+#endif
 
 /*-------------------------------------------------------------------------*/
 /**
