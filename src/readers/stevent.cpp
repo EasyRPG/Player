@@ -972,7 +972,7 @@ Event_comand * stEvent::EventcommandCall_Shop(int Command,int Depth,FILE * Strea
 
    ChunkInfo.Length= ReadCompressedInteger(Stream); //primera longitud
                            name = ReadString(Stream, ChunkInfo.Length);
-                          printf(name.c_str());
+                          printf("%s", name.c_str());
                             ChunkInfo.Length= ReadCompressedInteger(Stream); //segunda longitud
 
 
@@ -1074,7 +1074,8 @@ Event_comand * stEvent::EventcommandTeleport_Vehicle(int Command,int Depth,FILE 
 Event_comand * stEvent::EventcommandTeleport_Event(int Command,int Depth,FILE * Stream) {
    Event_comand_Teleport_Event * comand;
   comand = new Event_comand_Teleport_Event();
-   comand->Comand=Command;comand->Depth=Depth;
+   comand->Comand=Command;
+   comand->Depth=Depth;
    ChunkInfo.Length= ReadCompressedInteger(Stream);
    ChunkInfo.Length= ReadCompressedInteger(Stream);
    comand->Event_ID=ReadCompressedInteger(Stream);
@@ -1084,7 +1085,8 @@ Event_comand * stEvent::EventcommandTeleport_Event(int Command,int Depth,FILE * 
    // 2000 4 datos
    if(ChunkInfo.Length==5)
     ReadCompressedInteger(Stream);
-      return (comand); }
+      return (comand);
+      }
 Event_comand * stEvent::EventcommandSwap_Event_Positions(int Command,int Depth,FILE * Stream) {
    Event_comand_Swap_Event_Positions * comand;
   comand = new Event_comand_Swap_Event_Positions();
@@ -2131,7 +2133,7 @@ std:: vector <Event_comand * > stEvent::EventcommandChunk(FILE * Stream)//instru
                          depth= ReadCompressedInteger(Stream); //profundidad
               }
                //printf("\n");
-              // 3 bytes, tamaño estandar de instrucion
+              // 3 bytes, tamaÃ±o estandar de instrucion
              ReadCompressedInteger(Stream); // final de cadena
              ReadCompressedInteger(Stream); // final de cadena
              ReadCompressedInteger(Stream); // final de cadena

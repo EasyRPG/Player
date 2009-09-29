@@ -83,11 +83,9 @@
     <File Name="tools/CDeltaTime.h"/>
     <File Name="tools/Timer.cpp"/>
     <File Name="tools/CDeltaTime.cpp"/>
-    <File Name="tools/key.cpp"/>
     <File Name="tools/tools.h"/>
     <File Name="tools/Sound_Manager.h"/>
     <File Name="tools/tools.cpp"/>
-    <File Name="tools/key.h"/>
     <File Name="tools/audio.cpp"/>
     <File Name="tools/font.h"/>
     <File Name="tools/control.h"/>

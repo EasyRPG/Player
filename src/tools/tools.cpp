@@ -254,7 +254,7 @@ void s_toupper(char *dest, char *s)
         dest[i]=(char)toupper((int)s[i]);
     }
 }
-char * case_insensitive_and_format_msc_exist(char *directory, string & file)
+char * case_insensitive_and_format_msc_exist(const char *directory, string & file)
 {
 //		char * return_name;
 		static std::string img_string;
@@ -283,7 +283,7 @@ char * case_insensitive_and_format_msc_exist(char *directory, string & file)
 		}
         return ((char*)file.c_str());
 }
-char * case_insensitive_and_format_img_exist(char *directory, string & file)
+char * case_insensitive_and_format_img_exist(const char *directory, string & file)
 {
 //		char * return_name;
 		static std::string img_string;
@@ -318,7 +318,7 @@ char * case_insensitive_and_format_img_exist(char *directory, string & file)
 /* in : "file", "directory". out :"return-name" (must be malloc'd) */
 /* return : 1 if filename exists (CASE INSENSITIVE), 0 if not */
 
-int case_insensitive_exist( string & dir_file, char *directory, char *file)
+int case_insensitive_exist( string & dir_file, const char *directory, char *file)
 {
     int exist = 0;
     struct dirent *d_ent;
