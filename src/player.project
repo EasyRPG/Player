@@ -92,6 +92,8 @@
     <File Name="tools/math-sll.h"/>
     <File Name="tools/audio.h"/>
     <File Name="tools/control.cpp"/>
+    <File Name="tools/key.cpp"/>
+    <File Name="tools/key.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="sprites">
     <File Name="sprites/Animacion.h"/>
