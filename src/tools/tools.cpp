@@ -38,7 +38,8 @@
             Value <<= 7;
 
             // Get byte's value
-            fread(&Temporal, sizeof(char), 1, FileStream);
+            bool return_value;
+            return_value = fread(&Temporal, sizeof(char), 1, FileStream);
 
             // Check if it's a BER integer
             Value |= Temporal&0x7F;
@@ -66,7 +67,8 @@
                 Value <<= 7;
 
                 // Get byte's value
-                fread(&Temporal, sizeof(char), 1, FileStream);
+                bool return_value;
+                return_value = fread(&Temporal, sizeof(char), 1, FileStream);
                 sizeread++;
                 // Check if it's a BER integer
                 Value |= Temporal&0x7F;
@@ -84,13 +86,14 @@
         string        String;
 
         // Read string lenght's
-        fread(&Length, sizeof(char), 1, FileStream);
+        bool return_value;
+        return_value = fread(&Length, sizeof(char), 1, FileStream);
         if (Length == 0) return string("");
 
         // Allocate string buffer
         Characters = new char[Length+1];
         memset(Characters, 0, Length+1);
-        fread(Characters, sizeof(char), Length, FileStream);
+        return_value = fread(Characters, sizeof(char), Length, FileStream);
 
         // Get string and free characters buffer
         String = string(Characters);
@@ -107,7 +110,8 @@
         // Allocate string buffer
         Characters = new char[Length+1];
         memset(Characters, 0, Length+1);
-        fread(Characters, sizeof(char), Length, FileStream);
+        bool return_value;
+        return_value = fread(Characters, sizeof(char), Length, FileStream);
 
         // Get string and free characters buffer
         String = string(Characters);

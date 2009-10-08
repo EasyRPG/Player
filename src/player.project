@@ -128,12 +128,10 @@
     <File Name="attributes/Player.h"/>
     <File Name="attributes/CActor.cpp"/>
   </VirtualDirectory>
-  <Dependencies Name="Release"/>
-  <Dependencies Name="Release"/>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="$(shell sdl-config --cflags);-g;" Required="yes"/>
-      <Linker Options="-O2;-lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image $(shell sdl-config --libs);" Required="yes"/>
+      <Compiler Options="-g -fno-rtti -fno-exceptions $(shell sdl-config --cflags)" Required="yes"/>
+      <Linker Options="-O2 -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image $(shell sdl-config --libs)" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../easyrpg" IntermediateDirectory="../.obj/Debug" Command="./easyrpg" CommandArguments="" WorkingDirectory=".." PauseExecWhenProcTerminates="yes"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -157,8 +155,8 @@
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options=";$(shell sdl-config --cflags);" Required="yes"/>
-      <Linker Options="-O2;-lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image $(shell sdl-config --libs);" Required="yes"/>
+      <Compiler Options="-Os -s -fno-rtti -fno-exceptions $(shell sdl-config --cflags);" Required="yes"/>
+      <Linker Options="-O2 -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image $(shell sdl-config --libs)" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../easyrpg" IntermediateDirectory="../.obj/Release" Command="./easyrpg" CommandArguments="" WorkingDirectory=".." PauseExecWhenProcTerminates="yes"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -192,4 +190,5 @@
     </GlobalSettings>
   </Settings>
   <Dependencies Name="Debug"/>
+  <Dependencies Name="Release"/>
 </CodeLite_Project>

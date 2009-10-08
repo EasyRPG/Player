@@ -60,7 +60,11 @@ std::vector <Magicblock> LDB_reader::heroskillChunk(FILE * Stream)
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
             default:
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--)
+                {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
                 break;
             }
         } while (ChunkInfo.ID!=0);
@@ -145,42 +149,48 @@ std::vector <stcHero*> * LDB_reader::heroChunk(FILE * Stream)
 
                 levels=ChunkInfo.Length/6;
                 while (levels > 0) {
-                    fread(&dat, 2, 1, Stream);
+                    bool return_value;
+                    return_value = fread(&dat, 2, 1, Stream);
                     hero_data->vc_sh_Hp.push_back(dat);
                     levels-=2;
                 }
 
                 levels=ChunkInfo.Length/6;
                 while (levels > 0) {
-                    fread(&dat, 2, 1, Stream);
+                    bool return_value;
+                    return_value = fread(&dat, 2, 1, Stream);
                     hero_data->vc_sh_Mp.push_back(dat);
                     levels-=2;
                 }
 
                 levels=ChunkInfo.Length/6;
                 while (levels > 0) {
-                    fread(&dat, 2, 1, Stream);
+                    bool return_value;
+                    return_value = fread(&dat, 2, 1, Stream);
                     hero_data->vc_sh_Attack.push_back(dat);
                     levels-=2;
                 }
 
                 levels=ChunkInfo.Length/6;
                 while (levels > 0) {
-                    fread(&dat, 2, 1, Stream);
+                    bool return_value;
+                    return_value = fread(&dat, 2, 1, Stream);
                     hero_data->vc_sh_Defense.push_back(dat);
                     levels-=2;
                 }
 
                 levels=ChunkInfo.Length/6;
                 while (levels > 0) {
-                    fread(&dat, 2, 1, Stream);
+                    bool return_value;
+                    return_value = fread(&dat, 2, 1, Stream);
                     hero_data->vc_sh_Mind.push_back(dat);
                     levels-=2;
                 }
 
                 levels=ChunkInfo.Length/6;
                 while (levels > 0) {
-                    fread(&dat, 2, 1, Stream);
+                    bool return_value;
+                    return_value = fread(&dat, 2, 1, Stream);
                     hero_data->vc_sh_Agility.push_back(dat);
                     levels-=2;
                 }
@@ -195,15 +205,16 @@ std::vector <stcHero*> * LDB_reader::heroChunk(FILE * Stream)
                 hero_data->intEXPCorrection = ReadCompressedInteger(Stream);
                 break;
             case CHUNK_Startequip:
-                fread(&dat, sizeof(short), 1, Stream);
+                bool return_value;
+                return_value = fread(&dat, 2, 1, Stream);
                 hero_data->sh_Weapon = dat;
-                fread(&dat, sizeof(short), 1, Stream);
+                return_value = fread(&dat, 2, 1, Stream);
                 hero_data->sh_Shield = dat;
-                fread(&dat, sizeof(short), 1, Stream);
+                return_value = fread(&dat, 2, 1, Stream);
                 hero_data->sh_Armor = dat;
-                fread(&dat, sizeof(short), 1, Stream);
+                return_value = fread(&dat, 2, 1, Stream);
                 hero_data->sh_Head = dat;
-                fread(&dat, sizeof(short), 1, Stream);
+                return_value = fread(&dat, 2, 1, Stream);
                 hero_data->sh_Accessory = dat;
                 break;
             case CHUNK_Skills:
@@ -220,7 +231,8 @@ std::vector <stcHero*> * LDB_reader::heroChunk(FILE * Stream)
                 break;
             case CHUNK_Condeffects:
                 while (ChunkInfo.Length--) {
-                    fread(&Void, sizeof(char), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
                     hero_data->vc_ch_Condeffects.push_back(Void);
                 }
                 break;
@@ -229,13 +241,15 @@ std::vector <stcHero*> * LDB_reader::heroChunk(FILE * Stream)
                 break;
             case CHUNK_Attribeffects:
                 while (ChunkInfo.Length--) {
-                    fread(&Void, sizeof(char), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
                     hero_data->vc_ch_Attribeffects.push_back(Void);
                 }
                 break;
             case CHUNK_Combat_Command://0x50
                 while (ChunkInfo.Length--) { //4 chars
-                    fread(&comands, sizeof(int), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&comands, 4, 1, Stream);
                     hero_data->vc_int_Combat_Command.push_back(comands);
                     ChunkInfo.Length-=3;
                 }
@@ -243,7 +257,10 @@ std::vector <stcHero*> * LDB_reader::heroChunk(FILE * Stream)
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
             default:
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--) {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
                 break;
             }
         } while (ChunkInfo.ID!=0);
@@ -278,7 +295,10 @@ stcSound_effect  LDB_reader::soundChunk(FILE * Stream)// confusion masica != son
         case 0x00:
             break;
         default:
-            while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+            while (ChunkInfo.Length--) {
+                bool return_value;
+                return_value = fread(&Void, 1, 1, Stream);
+            }
             break;
         }
     } while (ChunkInfo.ID!=0);
@@ -400,7 +420,8 @@ std:: vector <stcSkill*> * LDB_reader::skillChunk(FILE * Stream)
                 break;
             case SkillChunk_Changecondition:
                 while (ChunkInfo.Length--) {
-                    fread(&Void, sizeof(char), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
                     skill->vc_ch_Condeffects.push_back(Void);
                 }
                 break;
@@ -409,7 +430,8 @@ std:: vector <stcSkill*> * LDB_reader::skillChunk(FILE * Stream)
                 break;
             case SkillChunk_Attackattribute:
                 while (ChunkInfo.Length--) {
-                    fread(&Void, sizeof(char), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
                     skill->vc_ch_Attribeffects.push_back(Void);
                 }
                 break;
@@ -419,7 +441,11 @@ std:: vector <stcSkill*> * LDB_reader::skillChunk(FILE * Stream)
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
             default:
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--)
+                {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
                 break;
             }
         } while (ChunkInfo.ID!=0);
@@ -584,7 +610,8 @@ std:: vector <stcItem*> * LDB_reader::itemChunk(FILE * Stream)
                 break;
             case ItemChunk_Heroescanuse:
                 while (ChunkInfo.Length--) {
-                    fread(&Void, sizeof(char), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
                     item->vc_ch_Heroescanuse.push_back(Void);
                 }
                 break;
@@ -593,7 +620,8 @@ std:: vector <stcItem*> * LDB_reader::itemChunk(FILE * Stream)
                 break;
             case ItemChunk_Conditionchanges:
                 while (ChunkInfo.Length--) {
-                    fread(&Void, sizeof(char), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
                     item->vc_ch_Condeffects.push_back(Void);
                 }
                 break;
@@ -602,7 +630,8 @@ std:: vector <stcItem*> * LDB_reader::itemChunk(FILE * Stream)
                 break;
             case ItemChunk_Attributes:
                 while (ChunkInfo.Length--) {
-                    fread(&Void, sizeof(char), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
                     item->vc_ch_Attribeffects.push_back(Void);
                 }
                 break;
@@ -612,7 +641,11 @@ std:: vector <stcItem*> * LDB_reader::itemChunk(FILE * Stream)
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
             default:
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--)
+                {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
                 break;
             }
         } while (ChunkInfo.ID!=0);
@@ -678,7 +711,10 @@ std:: vector <stcEnemy_Action*> * LDB_reader::mosteractionChunk(FILE * Stream)
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
             default:
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--) {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);   
+                }
                 break;
             }
         } while (ChunkInfo.ID!=0);
@@ -782,7 +818,8 @@ std:: vector <stcEnemy*> * LDB_reader::mosterChunk(FILE * Stream)
                 break;
             case MonsterChunk_Conditionseffects://0x20,
                 while (ChunkInfo.Length--) {
-                    fread(&Void, sizeof(char), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
                     enemy->vc_ch_Condeffects.push_back(Void);
                 }
                 break;
@@ -791,7 +828,8 @@ std:: vector <stcEnemy*> * LDB_reader::mosterChunk(FILE * Stream)
                 break;
             case MonsterChunk_Attributeseffect://0x22,
                 while (ChunkInfo.Length--) {
-                    fread(&Void, sizeof(char), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
                     enemy->vc_ch_Attribeffects.push_back(Void);
                 }
                 break;
@@ -802,7 +840,10 @@ std:: vector <stcEnemy*> * LDB_reader::mosterChunk(FILE * Stream)
                 break;
             default:
                 // saltate un pedazo del tamaño de la longitud
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--) {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);   
+                }
                 break;
             }
         } while (ChunkInfo.ID!=0);
@@ -840,7 +881,10 @@ std:: vector <stcEnemy_group_data>  LDB_reader::MonsterPartyMonsterChunk(FILE * 
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
             default:
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--) {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
                 break;
             }
         } while (ChunkInfo.ID!=0);
@@ -868,7 +912,7 @@ stcEnemy_group_condition   LDB_reader::MonsterPartyEventconditionChunk(FILE * St
         switch (ChunkInfo.ID) { // segun el tipo
         case Condition_flags:// en el 2003 se usan 2 chars
             if (ChunkInfo.Length==2)
-                stcCondition.Condition_flags =fread(&dat, sizeof(short), 1, Stream);
+                stcCondition.Condition_flags =fread(&dat, 2, 1, Stream);
             else
                 stcCondition.Condition_flags = ReadCompressedInteger(Stream);
             break;
@@ -887,7 +931,10 @@ stcEnemy_group_condition   LDB_reader::MonsterPartyEventconditionChunk(FILE * St
         case CHUNK_LDB_END_OF_BLOCK:
             break;
         default:
-            while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+            while (ChunkInfo.Length--) {
+                bool return_value;
+                return_value = fread(&Void, 1, 1, Stream);
+            }
             break;
         }
     } while (ChunkInfo.ID!=0);
@@ -919,7 +966,7 @@ std:: vector <stcEnemy_group_event_page>  LDB_reader::MonsterPartyevent_pageChun
             case Event_Monster:
                 /*printf("\n Monster event ");
                 while(ChunkInfo.Length--)
-                  { fread(&Void, sizeof(char), 1, Stream);
+                  { fread(&Void, 1, 1, Stream);
                   printf(" %d",Void);
                 }*/
 
@@ -928,7 +975,10 @@ std:: vector <stcEnemy_group_event_page>  LDB_reader::MonsterPartyevent_pageChun
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
             default:
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--) {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
                 break;
             }
         } while (ChunkInfo.ID!=0);
@@ -983,7 +1033,8 @@ std:: vector <stcEnemy_group*> * LDB_reader::mosterpartyChunk(FILE * Stream)
                 break;
             case MonsterPartyChunk_Terraindata://0x05,
                 while (ChunkInfo.Length--) {
-                    fread(&Void, sizeof(char), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
                     enemy_group->vc_ch_Terraindata.push_back(Void);
                 }
                 break;
@@ -993,7 +1044,11 @@ std:: vector <stcEnemy_group*> * LDB_reader::mosterpartyChunk(FILE * Stream)
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
             default:
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--) {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
+                
                 break;
             }
         } while (ChunkInfo.ID!=0);
@@ -1064,7 +1119,10 @@ std:: vector <stcTerrain*> * LDB_reader:: terrainChunk(FILE * Stream)
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
             default:
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--) {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
                 break;
             }
         } while (ChunkInfo.ID!=0);
@@ -1131,7 +1189,10 @@ std:: vector <stcAttribute*> * LDB_reader:: attributeChunk(FILE * Stream)
                 break;
             default:
                 // saltate un pedazo del tamaño de la longitud
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--) {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
                 break;
             }
 
@@ -1281,7 +1342,10 @@ std:: vector <stcState*> * LDB_reader:: statesChunk(FILE * Stream)
                 break;
             default:
                 // saltate un pedazo del tamaño de la longitud
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--) {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
                 break;
             }
         } while (ChunkInfo.ID!=0);
@@ -1328,7 +1392,10 @@ std:: vector <stcAnimationTiming>  LDB_reader:: AnimationTimingChunk(FILE * Stre
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
             default:
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--) {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
                 break;
             }
         } while (ChunkInfo.ID!=0);
@@ -1386,7 +1453,10 @@ std:: vector <stcAnimationCelldata>  LDB_reader:: AnimationCelldataChunk(FILE * 
                 break;
             default:
                 // saltate un pedazo del tamaño de la longitud
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--) {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
                 break;
             }
         } while (ChunkInfo.ID!=0);
@@ -1417,7 +1487,10 @@ std:: vector <stcAnimationCell>  LDB_reader:: FramedataChunk(FILE * Stream)
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
             default:
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--) {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
                 break;
             }
         } while (ChunkInfo.ID!=0);
@@ -1478,7 +1551,10 @@ std:: vector <stcAnimated_battle*> * LDB_reader:: animationChunk(FILE * Stream)
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
             default:
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--) {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
                 break;
             }
         } while (ChunkInfo.ID!=0);
@@ -1524,20 +1600,23 @@ std:: vector <stcChipSet*> * LDB_reader:: tilesetChunk(FILE * Stream)
                 break;
             case TilesetChunk_Lower_tile_terrain://0x03,
                 while (ChunkInfo.Length--) {
-                    fread(&dat, sizeof(short), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&dat, 2, 1, Stream);
                     ChipSet->vc_sh_Lower_tile_terrain.push_back(dat);
                     ChunkInfo.Length--;
                 }
                 break;
             case TilesetChunk_Lower_tile_passable://0x04,
                 while (ChunkInfo.Length--) {
-                    fread(&Void, sizeof(char), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
                     ChipSet->vc_ch_Lower_tile_passable.push_back(Void);
                 }
                 break;
             case TilesetChunk_Upper_tile_passable://0x05,
                 while (ChunkInfo.Length--) {
-                    fread(&Void, sizeof(char), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
                     ChipSet->vc_ch_Upper_tile_passable.push_back(Void);
                 }
                 break;
@@ -1552,7 +1631,10 @@ std:: vector <stcChipSet*> * LDB_reader:: tilesetChunk(FILE * Stream)
                 break;
             default:
                 // saltate un pedazo del tamaño de la longitud
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--) {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
                 break;
             }
         } while (ChunkInfo.ID!=0);
@@ -1615,7 +1697,10 @@ std:: vector <stcEvent*> * LDB_reader:: EventChunk(FILE * Stream)
                 break;
             default:
                 // saltate un pedazo del tamaño de la longitud
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--) {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
                 break;
             }
         } while (ChunkInfo.ID!=0);
@@ -2004,7 +2089,10 @@ stcGlosary* LDB_reader::stringChunk(FILE * Stream)//movimientos de la pagina
         case CHUNK_LDB_END_OF_BLOCK:
             break;
         default:
-            while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+            while (ChunkInfo.Length--) {
+                bool return_value;
+                return_value = fread(&Void, 1, 1, Stream);
+            }
             break;
         }
     } while (ChunkInfo.ID!=0);
@@ -2042,7 +2130,10 @@ stcMusic_Background   LDB_reader::musicChunk(FILE * Stream)
         case 0x00:
             break;
         default:
-            while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+            while (ChunkInfo.Length--) {
+                bool return_value;
+                return_value = fread(&Void, 1, 1, Stream);
+            }
             break;
         }
     } while (ChunkInfo.ID!=0);
@@ -2074,29 +2165,33 @@ std::vector <stcBattle_test>   LDB_reader::Batletest(FILE * Stream)
                 break;
             case Battle_test_Chunks_Weapon:
                 if (ChunkInfo.Length==4) {
-                    fread(&Void, sizeof(char), 1, Stream);
-                    fread(&Void, sizeof(char), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                    return_value = fread(&Void, 1, 1, Stream);
                 }
                 Battle_test.Weapon = ReadCompressedInteger(Stream);
                 break;
             case Battle_test_Chunks_Shield:
                 if (ChunkInfo.Length==4) {
-                    fread(&Void, sizeof(char), 1, Stream);
-                    fread(&Void, sizeof(char), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                    return_value = fread(&Void, 1, 1, Stream);
                 }
                 Battle_test.Shield = ReadCompressedInteger(Stream);
                 break;
             case Battle_test_Chunks_Armor:
                 if (ChunkInfo.Length==4) {
-                    fread(&Void, sizeof(char), 1, Stream);
-                    fread(&Void, sizeof(char), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                    return_value = fread(&Void, 1, 1, Stream);
                 }
                 Battle_test.Armor = ReadCompressedInteger(Stream);
                 break;
             case Battle_test_Chunks_Helmet:
                 if (ChunkInfo.Length==4) {
-                    fread(&Void, sizeof(char), 1, Stream);
-                    fread(&Void, sizeof(char), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                    return_value = fread(&Void, 1, 1, Stream);
                 }
                 Battle_test.Helmet = ReadCompressedInteger(Stream);
                 break;
@@ -2107,7 +2202,10 @@ std::vector <stcBattle_test>   LDB_reader::Batletest(FILE * Stream)
                 break;
             default:
                 while (ChunkInfo.Length--)
-                    fread(&Void, sizeof(char), 1, Stream);
+                {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
                 break;
             }
         } while (ChunkInfo.ID!=0);
@@ -2173,7 +2271,8 @@ stcSystem* LDB_reader::systemChunk(FILE * Stream)//movimientos de la pagina
             break;
         case Starting_party://0x16,
             while (ChunkInfo.Length--) {
-                fread(&dat, sizeof(short), 1, Stream);
+                bool return_value;
+                return_value = fread(&dat, 2, 1, Stream);
                 System->vc_sh_Starting_party.push_back(dat);
                 ChunkInfo.Length--;
             }
@@ -2183,7 +2282,8 @@ stcSystem* LDB_reader::systemChunk(FILE * Stream)//movimientos de la pagina
             break;
         case Comadns_order://0x1B,
             while (ChunkInfo.Length--) {
-                fread(&dat, sizeof(short), 1, Stream);
+                bool return_value;
+                return_value = fread(&dat, 2, 1, Stream);
                 System->vc_sh_Comadns_order.push_back(dat);
                 ChunkInfo.Length--;
             }
@@ -2296,7 +2396,10 @@ stcSystem* LDB_reader::systemChunk(FILE * Stream)//movimientos de la pagina
         case CHUNK_LDB_END_OF_BLOCK:
             break;
         default:
-            while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+            while (ChunkInfo.Length--) {
+                bool return_value;
+                return_value = fread(&Void, 1, 1, Stream);
+            }
             break;
         }
     } while (ChunkInfo.ID!=0);
@@ -2338,7 +2441,10 @@ std:: vector <std::string> * LDB_reader::Switch_VariableChunk(FILE * Stream)//si
                 break;
             default:
                 // saltate un pedazo del tamaño de la longitud
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--) {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
                 break;
             }
         } while (ChunkInfo.ID!=0);
@@ -2373,7 +2479,10 @@ std:: vector <stcCombatcommand>  LDB_reader:: Comand_Chunk2(FILE * Stream)
                 break;
             default:
                 // saltate un pedazo del tamaño de la longitud
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--) {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
                 break;
             }
         } while (ChunkInfo.ID!=0);
@@ -2403,17 +2512,20 @@ stcCombatcommands * LDB_reader:: Comand_Chunk(FILE * Stream)//todo leido
         switch (ChunkInfo.ID) { // tipo de la primera dimencion
         case 0x02://entero
             while (ChunkInfo.Length--) {
-                fread(&Void, sizeof(char), 1, Stream);
+                bool return_value;
+                return_value = fread(&Void, 1, 1, Stream);
             }
             break;
         case 0x07://entero
             while (ChunkInfo.Length--) {
-                fread(&Void, sizeof(char), 1, Stream);
+                bool return_value;
+                return_value = fread(&Void, 1, 1, Stream);
             }
             break;
         case 0x09://entero
             while (ChunkInfo.Length--) {
-                fread(&Void, sizeof(char), 1, Stream);
+                bool return_value;
+                return_value = fread(&Void, 1, 1, Stream);
             }
             break;
         case 0x0A:
@@ -2421,19 +2533,24 @@ stcCombatcommands * LDB_reader:: Comand_Chunk(FILE * Stream)//todo leido
             break;
         case 0x14://entero
             while (ChunkInfo.Length--) {
-                fread(&Void, sizeof(char), 1, Stream);
+                bool return_value;
+                return_value = fread(&Void, 1, 1, Stream);
             }
             break;
         case 0x18://entero
             while (ChunkInfo.Length--) {
-                fread(&Void, sizeof(char), 1, Stream);
+                bool return_value;
+                return_value = fread(&Void, 1, 1, Stream);
             }
             break;
         case CHUNK_LDB_END_OF_BLOCK:
             break;
         default:
             // saltate un pedazo del tamaño de la longitud
-            while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+            while (ChunkInfo.Length--) {
+                bool return_value;
+                return_value = fread(&Void, 1, 1, Stream);
+            }
             break;
         }
     } while (ChunkInfo.ID!=0);
@@ -2491,37 +2608,43 @@ std:: vector <stcProfetion*>  *LDB_reader:: Profession_Chunk(FILE * Stream)
             case  Profetion_Each_level ://0x1F,
                 levels=ChunkInfo.Length/6;
                 while (levels--) {
-                    fread(&dat, sizeof(short), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&dat, 2, 1, Stream);
                     Profetion->vc_sh_Hp.push_back(dat);
                     levels--;
                 }
                 levels=ChunkInfo.Length/6;
                 while (levels--) {
-                    fread(&dat, sizeof(short), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&dat, 2, 1, Stream);
                     Profetion->vc_sh_Mp.push_back(dat);
                     levels--;
                 }
                 levels=ChunkInfo.Length/6;
                 while (levels--) {
-                    fread(&dat, sizeof(short), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&dat, 2, 1, Stream);
                     Profetion->vc_sh_Attack.push_back(dat);
                     levels--;
                 }
                 levels=ChunkInfo.Length/6;
                 while (levels--) {
-                    fread(&dat, sizeof(short), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&dat, 2, 1, Stream);
                     Profetion->vc_sh_Defense.push_back(dat);
                     levels--;
                 }
                 levels=ChunkInfo.Length/6;
                 while (levels--) {
-                    fread(&dat, sizeof(short), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&dat, 2, 1, Stream);
                     Profetion->vc_sh_Mind.push_back(dat);
                     levels--;
                 }
                 levels=ChunkInfo.Length/6;
                 while (levels--) {
-                    fread(&dat, sizeof(short), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&dat, 2, 1, Stream);
                     Profetion->vc_sh_Agility.push_back(dat);
                     levels--;
                 }
@@ -2546,7 +2669,8 @@ std:: vector <stcProfetion*>  *LDB_reader:: Profession_Chunk(FILE * Stream)
                 break;
             case Profetion_Effectiveness_state_data:
                 while (ChunkInfo.Length--) {
-                    fread(&Void, sizeof(char), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
                     Profetion->vc_ch_Condeffects.push_back(Void);
                 }
                 break;
@@ -2556,13 +2680,15 @@ std:: vector <stcProfetion*>  *LDB_reader:: Profession_Chunk(FILE * Stream)
                 break;
             case Profetion_Effectiveness_Attribute_data://0x4A,
                 while (ChunkInfo.Length--) {
-                    fread(&Void, sizeof(char), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
                     Profetion->vc_ch_Attribeffects.push_back(Void);
                 }
                 break;
             case Profetion_Combat_Command://0x50
                 while (ChunkInfo.Length--) { //4 chars
-                    fread(&comands, sizeof(int), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&comands, 4, 1, Stream);
                     Profetion->vc_int_Combat_Command.push_back(comands);
                     ChunkInfo.Length-=3;
                 }
@@ -2571,7 +2697,10 @@ std:: vector <stcProfetion*>  *LDB_reader:: Profession_Chunk(FILE * Stream)
                 break;
             default:
                 // saltate un pedazo del tamaño de la longitud
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--) {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
                 break;
             }
         } while (ChunkInfo.ID!=0);
@@ -2613,7 +2742,10 @@ std:: vector <stcFight_anim>  LDB_reader:: Fightanim_Chunk2(FILE * Stream)
                 break;
             default:
                 // saltate un pedazo del tamaño de la longitud
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--) {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
                 break;
             }
         } while (ChunkInfo.ID!=0);
@@ -2671,7 +2803,11 @@ std:: vector <stcBattle_comand*> * LDB_reader:: Fightanim_Chunk(FILE * Stream)
                 break;
             default:
                 // saltate un pedazo del tamaño de la longitud
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--) 
+                {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
                 break;
             }
         } while (ChunkInfo.ID!=0);
@@ -2742,20 +2878,23 @@ void  LDB_reader::GetNextChunk(FILE * Stream, LDB_data * data)
                 break;
             case CHUNK_Event1://no existe
                 while (ChunkInfo.Length--) {
-                    fread(&Void, sizeof(char), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
                     printf("%d",Void);
                 }
 
                 break;
             case CHUNK_Event2://no existe
                 while (ChunkInfo.Length--) {
-                    fread(&Void, sizeof(char), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
                     printf("%d",Void);
                 }
                 break;
             case CHUNK_Event3://no existe
                 while (ChunkInfo.Length--) {
-                    fread(&Void, sizeof(char), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
                     printf("%d",Void);
                 }
                 break;
@@ -2768,7 +2907,8 @@ void  LDB_reader::GetNextChunk(FILE * Stream, LDB_data * data)
             case CHUNK_Profession2://no existe
 
                 while (ChunkInfo.Length--) {
-                    fread(&Void, sizeof(char), 1, Stream);
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
                     printf("%d ",Void);
                 }
                 break;
@@ -2779,7 +2919,10 @@ void  LDB_reader::GetNextChunk(FILE * Stream, LDB_data * data)
                 break;
             default:
                 // saltate un pedazo del tamaño de la longitud
-                while (ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                while (ChunkInfo.Length--) {
+                    bool return_value;
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
                 break;
             }
 

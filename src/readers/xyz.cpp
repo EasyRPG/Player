@@ -27,12 +27,13 @@ SDL_Surface* load_XYZ(const std::string& filename)
             printf("Error XYZ Reader: No memory left");
     	    return NULL;
         }
-        fread(header, 1, 4, file);
+        bool return_value;
+        return_value = fread(header, 1, 4, file);
         if (!strcmp(header, "XYZ1"))
         {
             delete header;
-            fread(&width, 1, 2, file);
-            fread(&height, 1, 2, file);
+            return_value = fread(&width, 1, 2, file);
+            return_value = fread(&height, 1, 2, file);
             fseek(file, 0, SEEK_END);
             size = ftell(file);
             fseek(file, 8, SEEK_SET);
@@ -44,7 +45,7 @@ SDL_Surface* load_XYZ(const std::string& filename)
                 printf("Error XYZ Reader: No memory left");
                 return NULL;
             }
-            fread(buffer, 1, size - 8, file);
+            return_value = fread(buffer, 1, size - 8, file);
             fclose(file);
             zlibErrorValue = uncompress((Bytef*)destBuffer, &destSize, (Bytef*)buffer, (uLongf)(size - 8));
             delete buffer;

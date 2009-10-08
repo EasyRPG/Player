@@ -33,7 +33,7 @@ stPageMovesEventMap map_reader::PageMovesChunk(FILE * Stream)//movimientos de la
          Move_comand_Switch comand_Switch;
          Move_comand My_Move_comand;
          ChunkInfo.ID     = ReadCompressedInteger(Stream); //id 1 de array
-         ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
+         ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaÃ±o
          while(ChunkInfo.ID!=0)
               {
                          switch(ChunkInfo.ID)// tipo de la primera dimencion
@@ -47,7 +47,8 @@ stPageMovesEventMap map_reader::PageMovesChunk(FILE * Stream)//movimientos de la
 
                              if(ChunkInfo.Length)//si no es 00
                             { ChunkInfo.Length--;
-                              fread(&Void, sizeof(char), 1, Stream);}
+                              bool return_value;
+                              return_value = fread(&Void, 1, 1, Stream);}
                               else
                               Void=0;
                              switch(Void)// tipo de la primera dimencion
@@ -105,13 +106,16 @@ stPageMovesEventMap map_reader::PageMovesChunk(FILE * Stream)//movimientos de la
                           case CHUNK_MAP_END_OF_BLOCK:
                                break;
                           default:
-                               // saltate un pedazo del tamaño de la longitud
-                               while(ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                               // saltate un pedazo del tamaÃ±o de la longitud
+                               while(ChunkInfo.Length--) {
+                                   bool return_value;
+                                   return_value = fread(&Void, 1, 1, Stream);
+                               }
                                break;
                           }
                           ChunkInfo.ID     = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
                           if(ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
-                          ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
+                          ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaÃ±o
               }
               return(moves);
 }
@@ -123,7 +127,7 @@ stPageConditionEventMap map_reader::conditionChunk(FILE * Stream)//una dimencion
          unsigned char Void;
          tChunk ChunkInfo; // informacion del pedazo leido
          ChunkInfo.ID     = ReadCompressedInteger(Stream); //id 1 de array
-         ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
+         ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaÃ±o
          while(ChunkInfo.ID!=0)
          {
                          switch(ChunkInfo.ID)// tipo de la primera dimencion
@@ -155,12 +159,15 @@ stPageConditionEventMap map_reader::conditionChunk(FILE * Stream)//una dimencion
                           case CHUNK_MAP_END_OF_BLOCK:
                                break;
                           default:
-                               while(ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                               while(ChunkInfo.Length--) {
+                                   bool return_value;
+                                   return_value = fread(&Void, 1, 1, Stream);
+                               }
                                break;
                           }
                           ChunkInfo.ID     = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
                           if(ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
-                          ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
+                          ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaÃ±o
          }
     return (Conditions);
 }
@@ -178,7 +185,7 @@ vector <stPageEventMap> map_reader::pageChunk(FILE * Stream)
               {
                         ChunkInfo.ID     = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
                          if(ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
-                          ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
+                          ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaÃ±o
                          switch(ChunkInfo.ID)// tipo de la primera dimencion
                          {
                          case CHUNK_Page_conditions:
@@ -234,7 +241,10 @@ vector <stPageEventMap> map_reader::pageChunk(FILE * Stream)
                           case CHUNK_MAP_END_OF_BLOCK:
                                break;
                           default:
-                                while(ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                                while(ChunkInfo.Length--) {
+                                    bool return_value;
+                                    return_value = fread(&Void, 1, 1, Stream);
+                                }
                                break;
                           }
                 } while(ChunkInfo.ID!=0);
@@ -261,7 +271,7 @@ std:: vector <stEventMap> map_reader::eventChunk(FILE * Stream)
          do {
                          ChunkInfo.ID     = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
                          if(ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
-                              ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
+                              ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaÃ±o
                          switch(ChunkInfo.ID)// tipo de la primera dimencion
                          {
                           case CHUNK_EVENT_NAME:
@@ -279,7 +289,10 @@ std:: vector <stEventMap> map_reader::eventChunk(FILE * Stream)
                           case CHUNK_MAP_END_OF_BLOCK:
                                break;
                           default:
-                                while(ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                                while(ChunkInfo.Length--) {
+                                    bool return_value;
+                                    return_value = fread(&Void, 1, 1, Stream);
+                                }
                                break;
                           }
            }while(ChunkInfo.ID!=0);
@@ -299,7 +312,7 @@ std:: vector <stEventMap> map_reader::eventChunk(FILE * Stream)
         while(!feof(Stream))
         {
             ChunkInfo.ID     = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
-            ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
+            ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaÃ±o
 
             switch(ChunkInfo.ID)// segun el tipo
             {
@@ -379,48 +392,49 @@ std:: vector <stEventMap> map_reader::eventChunk(FILE * Stream)
                 case CHUNK_MAP_GEN_FLOOR_C: //0x32    usar suelo c
                     data->gen_use_floor_c = ReadCompressedInteger(Stream);
                     break;
-                case CHUNK_MAP_GEN_EXTRA_B: //0x32   usar añadidos b
+                case CHUNK_MAP_GEN_EXTRA_B: //0x32   usar aÃ±adidos b
                     data->gen_use_extra_b = ReadCompressedInteger(Stream);
                     break;
-                case CHUNK_MAP_GEN_EXTRA_C: //0x32  usar añadidos c
+                case CHUNK_MAP_GEN_EXTRA_C: //0x32  usar aÃ±adidos c
                     data->gen_use_extra_c = ReadCompressedInteger(Stream);
                     break;
-               case CHUNK_MAP_GEN_X_POS: //0x3C  9 datos estandar  4 bytes X techo, pared_inferior,pared_superior, suelo_a , suelo_b, suelo_c, añadidos_a,añadidos_b,añadidos_c
-                     fread(&data->gen_roof_X, sizeof(int), 1, Stream);
-                     fread(&data->gen_down_wall_X, sizeof(int), 1, Stream);
-                     fread(&data->gen_upper_wall_X, sizeof(int), 1, Stream);
-                     fread(&data->gen_floor_a_X, sizeof(int), 1, Stream);
-                     fread(&data->gen_floor_b_X, sizeof(int), 1, Stream);
-                     fread(&data->gen_floor_c_X, sizeof(int), 1, Stream);
-                     fread(&data->gen_extra_a_X, sizeof(int), 1, Stream);
-                     fread(&data->gen_extra_b_X, sizeof(int), 1, Stream);
-                     fread(&data->gen_extra_c_X, sizeof(int), 1, Stream);
+               case CHUNK_MAP_GEN_X_POS: //0x3C  9 datos estandar  4 bytes X techo, pared_inferior,pared_superior, suelo_a , suelo_b, suelo_c, aÃ±adidos_a,aÃ±adidos_b,aÃ±adidos_c
+                     bool return_value;
+                     return_value = fread(&data->gen_roof_X, 4, 1, Stream);
+                     return_value = fread(&data->gen_down_wall_X, 4, 1, Stream);
+                     return_value = fread(&data->gen_upper_wall_X, 4, 1, Stream);
+                     return_value = fread(&data->gen_floor_a_X, 4, 1, Stream);
+                     return_value = fread(&data->gen_floor_b_X, 4, 1, Stream);
+                     return_value = fread(&data->gen_floor_c_X, 4, 1, Stream);
+                     return_value = fread(&data->gen_extra_a_X, 4, 1, Stream);
+                     return_value = fread(&data->gen_extra_b_X, 4, 1, Stream);
+                     return_value = fread(&data->gen_extra_c_X, 4, 1, Stream);
                          break;
-                case CHUNK_MAP_GEN_Y_POS: //0x3D  datos estandar  4 bytes  Y techo, pared_inferior,pared_superior, suelo_a , suelo_b, suelo_c, añadidos_a,añadidos_b,añadidos_c
-                     fread(&data->gen_roof_Y, sizeof(int), 1, Stream);
-                     fread(&data->gen_down_wall_Y, sizeof(int), 1, Stream);
-                     fread(&data->gen_upper_wall_Y, sizeof(int), 1, Stream);
-                     fread(&data->gen_floor_a_Y, sizeof(int), 1, Stream);
-                     fread(&data->gen_floor_b_Y, sizeof(int), 1, Stream);
-                     fread(&data->gen_floor_c_Y, sizeof(int), 1, Stream);
-                     fread(&data->gen_extra_a_Y, sizeof(int), 1, Stream);
-                     fread(&data->gen_extra_b_Y, sizeof(int), 1, Stream);
-                     fread(&data->gen_extra_c_Y, sizeof(int), 1, Stream);
+                case CHUNK_MAP_GEN_Y_POS: //0x3D  datos estandar  4 bytes  Y techo, pared_inferior,pared_superior, suelo_a , suelo_b, suelo_c, aÃ±adidos_a,aÃ±adidos_b,aÃ±adidos_c
+                     return_value = fread(&data->gen_roof_Y, 4, 1, Stream);
+                     return_value = fread(&data->gen_down_wall_Y, 4, 1, Stream);
+                     return_value = fread(&data->gen_upper_wall_Y, 4, 1, Stream);
+                     return_value = fread(&data->gen_floor_a_Y, 4, 1, Stream);
+                     return_value = fread(&data->gen_floor_b_Y, 4, 1, Stream);
+                     return_value = fread(&data->gen_floor_c_Y, 4, 1, Stream);
+                     return_value = fread(&data->gen_extra_a_Y, 4, 1, Stream);
+                     return_value = fread(&data->gen_extra_b_Y, 4, 1, Stream);
+                     return_value = fread(&data->gen_extra_c_Y, 4, 1, Stream);
                     break;
                 case CHUNK_MAP_GEN_CHIPSETS_IDS: //0x3E   //2bytes por dato, id de cada chipset, mismo formato que en layers
                    data->gen_chipset_ids = new unsigned short[ChunkInfo.Length>>1];
-                    fread(data->gen_chipset_ids, sizeof(char), ChunkInfo.Length, Stream);
+                    return_value = fread(data->gen_chipset_ids, sizeof(char), ChunkInfo.Length, Stream);
                     break;
                 case CHUNK_MAP_LOWER_LAYER:
                     // Allocate lower map layer
                     data->LowerLayer = new unsigned short[ChunkInfo.Length>>1];
-                    fread(data->LowerLayer, sizeof(char), ChunkInfo.Length, Stream);
+                    return_value = fread(data->LowerLayer, sizeof(char), ChunkInfo.Length, Stream);
                     break;
 
                 case CHUNK_MAP_UPPER_LAYER:
                     // Allocate upper map layer
                     data->UpperLayer = new unsigned short[ChunkInfo.Length>>1];
-                    fread(data->UpperLayer, sizeof(char), ChunkInfo.Length, Stream);
+                    return_value = fread(data->UpperLayer, sizeof(char), ChunkInfo.Length, Stream);
                     break;
                 case CHUNK_MAP_EVENTS_LAYER:
                   data->vcEvents= eventChunk(Stream);
@@ -435,8 +449,10 @@ std:: vector <stEventMap> map_reader::eventChunk(FILE * Stream)
 
 
                 default:
-                    // saltate un pedazo del tamaño de la longitud
-                    while(ChunkInfo.Length--) fread(&Void, sizeof(char), 1, Stream);
+                    // saltate un pedazo del tamaÃ±o de la longitud
+                    while(ChunkInfo.Length--) {
+                        return_value = fread(&Void, sizeof(char), 1, Stream);
+                    }
                     break;
             }
         }

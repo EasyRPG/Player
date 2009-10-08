@@ -123,7 +123,8 @@ bool lmt_reader::load(std::string filename,lmt_data * data)
             // skip unknown vehicle_chunk_id case
             for (int i = 1 ; i > vehicle_chunk_size; i++)
             {
-                fread(&dummy, 1, 1, file);
+                bool return_value;
+                return_value = fread(&dummy, 1, 1, file);
                 printf("Byte read: %d\n", dummy);
             }
             break;
@@ -248,7 +249,8 @@ void lmt_reader::read_tree(FILE *file,lmt_data * data)
                     // skip unknown node_chunk_id case
                     while (node_chunk_size--)
                     {
-                        fread(&dummy, 1, 1, file);
+                        bool return_value;
+                        return_value = fread(&dummy, 1, 1, file);
                         printf("Byte read: %d\n", dummy);
                     }
                     break;
@@ -289,10 +291,11 @@ void lmt_reader::read_tree(FILE *file,lmt_data * data)
             node.encounter_steps = ReadCompressedInteger(file);
             break;
         case 51: //0x33 Area data
-            fread(&node.area_start_x, 4, 1, file);
-            fread(&node.area_start_y, 4, 1, file);
-            fread(&node.area_end_x, 4, 1, file);
-            fread(&node.area_end_y, 4, 1, file);
+            bool return_value;
+            return_value = fread(&node.area_start_x, 4, 1, file);
+            return_value = fread(&node.area_start_y, 4, 1, file);
+            return_value = fread(&node.area_end_x, 4, 1, file);
+            return_value = fread(&node.area_end_y, 4, 1, file);
             data->tree_list.push_back(node);
             break;
         case 0: //0x00 End of block
@@ -304,7 +307,8 @@ void lmt_reader::read_tree(FILE *file,lmt_data * data)
             // skip unknown node_chunk_id case
             while (node_chunk_size--)
             {
-                fread(&dummy, 1, 1, file);
+                bool return_value;
+                return_value = fread(&dummy, 1, 1, file);
                 printf("Byte read: %d\n", dummy);
             }
             break;

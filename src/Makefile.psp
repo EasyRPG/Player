@@ -22,4 +22,4 @@ LIBS += -lstdc++ -lSDL_ttf -lfreetype -lSDL_gfx -lSDL_mixer -lvorbisidec -lSDL_i
 include $(PSPSDK)/lib/build.mak
 	
 my-clean:
-	rm -rf $(TARGET) $(TARGET)% tetris-pc
+	rm -rf $(TARGET) $(TARGET)% easyrpg
