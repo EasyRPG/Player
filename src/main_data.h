@@ -52,7 +52,7 @@ namespace Main_Data {
 	
 	// Database Data (ldb)
 	std::vector<Actor*> data_actors;
-    Data_Skills *data_skills;
+    std::vector<Skill*> data_skills;
     Data_Objects *data_objects;
     Data_Enemies *data_enemies;
     Data_Troops *data_troops;

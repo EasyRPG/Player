@@ -7,11 +7,12 @@
 #include <string>
 
 namespace LDB_reader {
-    bool load(std::string Filename);
+    bool load(std::string& Filename);
     void heroskillChunk(FILE * Stream, Actor* hero);
-    void heroChunk(FILE * Stream)
+    void heroChunk(FILE * Stream);
+    void skillChunk(FILE * Stream);
+    void GetNextChunk(FILE * Stream);
+    void soundChunk(FILE * Stream, Skill* sk);
 }
-
-
 
 #endif

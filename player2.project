@@ -180,6 +180,8 @@
       <File Name="src\Database\ldb_reader.cpp"/>
       <File Name="src\Database\ldb_reader.h"/>
       <File Name="src\Database\ldbchunks.h"/>
+      <File Name="src\Database\skill.cpp"/>
+      <File Name="src\Database\skill.h"/>
     </VirtualDirectory>
   </VirtualDirectory>
   <Dependencies Name="Debug MingW"/>
