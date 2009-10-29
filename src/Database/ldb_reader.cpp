@@ -1,6 +1,6 @@
 #include "ldb_reader.h"
 
-bool LDB_reader::Load(std::string Filename)
+bool LDB_reader::load(std::string& Filename)
 {
     // Open map file to read
     FILE * Stream;// apertura de archivo
@@ -421,6 +421,194 @@ void LDB_reader::skillChunk(FILE * Stream)
     }
 }
 
+void LDB_reader::itemChunk(FILE * Stream)
+{
+    int id,datatoread=0,datareaded=0;
+    Item *item;
+    datatoread=ReadCompressedInteger(Stream);
+    while (datatoread>datareaded) 
+    {
+        item = new Item();
+        if (item == NULL)
+        {
+            std::cerr << "No memory left." << std::endl;
+            exit(1);
+        }
+        item->id = ReadCompressedInteger(Stream);//lectura de id 1 de array
+        do 
+        {            
+            ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
+            if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
+                ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
+            switch (ChunkInfo.ID) { // tipo de la primera dimencion
+            case ItemChunk_Name:
+                item->name = ReadString(Stream, ChunkInfo.Length);
+                break;
+            case ItemChunk_Description:
+                item->description = ReadString(Stream, ChunkInfo.Length);
+                break;
+            case ItemChunk_Type:
+                item->type = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Cost:
+                item->price = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Uses:
+                item->n_uses = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Attack:
+                item->atk_change = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Defense:
+                item->pdef_change = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Mind:
+                item->int_change = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Speed:
+                item->agi_change = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Equip:
+                item->both_hands = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_MPcost:
+                item->mp_cost = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Chancetohit:
+                item->hit = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Criticalhit:
+                item->crit_hit = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Battleanimation:
+                item->animation_id = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Preemptiveattack:
+                item->preventive = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Doubleattack:
+                item->double_attack = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Attackallenemies:
+                item->attack_all = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Ignoreevasion:
+                item->ignore_evasion = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Preventcriticalhits:
+                item->prevent_crits = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Raiseevasion:
+                item->raise_evasion = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_MPusecutinhalf:
+                item->half_mp = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Noterraindamage:
+                item->no_terrain_dmg = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Healsparty:
+                item->heals_party = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_HPrecovery ://0x20,
+                item->recover_hp_rate = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_HPrecoveryvalue://0x21,
+                item->recover_hp = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_MPrecovery://0x22,
+                item->recover_mp_rate = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_MPrecoveryvalue://0x23,
+                item->recover_mp = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Useonfieldonly://0x25,
+                item->field_only = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Onlyondeadheros://0x26,
+                item->dead_only = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_MaxHPmodify://0x29,
+                item->max_hp_mod = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_MaxMPmodify://0x2A,
+                item->max_mp_mod = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Attackmodify://0x2B,
+                item->str_mod = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Defensemodify://0x2C,
+                item->pdef_mod = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Mindmodify://0x2D,
+                item->int_mod = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Speedmodify://0x2E,
+                item->agi_mod = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Usagemessage://0x33,
+                item->use_msg = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Switchtoturnon://0x37,
+                item->switch_on = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Useonfield://0x39,
+                item->use_on_field = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Useinbattle://0x3A,
+                item->use_in_battle = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Heroeslength://0x3D,
+                int trash;
+                trash = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Heroescanuse:
+                bool return_value;
+                while (ChunkInfo.Length--) {
+                    return_value = fread(&Void, 1, 1, Stream);
+                    item->heros_can_use.push_back(Void);
+                }
+                break;
+            case ItemChunk_Conditionslength://0x3F,
+                int trash;
+                trash = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Conditionchanges:
+                bool return_value;
+                while (ChunkInfo.Length--) {
+                    return_value = fread(&Void, 1, 1, Stream);
+                    item->conditions.push_back(Void);
+                }
+                break;
+            case ItemChunk_Attributeslength://0x41,
+                int trash;
+                trash = ReadCompressedInteger(Stream);
+                break;
+            case ItemChunk_Attributes:
+                bool return_value;
+                while (ChunkInfo.Length--) {
+                    return_value = fread(&Void, 1, 1, Stream);
+                    item->attributes.push_back(Void);
+                }
+                break;
+            case ItemChunk_Chancetochange://0x43
+                item->chance_cond = ReadCompressedInteger(Stream);
+                break;
+            case CHUNK_LDB_END_OF_BLOCK:
+                break;
+            default:
+                bool return_value;
+                while (ChunkInfo.Length--) {
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
+                break;
+            }
+        } while (ChunkInfo.ID!=0);
+        datareaded++;
+        Main_Data::data_objects.push_back(item);
+    }
+}
+
 void LDB_reader::GetNextChunk(FILE * Stream)
 {
     unsigned char Void;
@@ -436,10 +624,10 @@ void LDB_reader::GetNextChunk(FILE * Stream)
                 heroChunk(Stream);
                 break;
             case CHUNK_Skill:
-                data->skill= skillChunk(Stream);
+                skillChunk(Stream);
                 break;
             case CHUNK_Item_data:
-                data->items = itemChunk(Stream);
+                itemChunk(Stream);
                 break;
             case CHUNK_Monster:
                 data->monsters = mosterChunk(Stream);

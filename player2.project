@@ -182,6 +182,8 @@
       <File Name="src\Database\ldbchunks.h"/>
       <File Name="src\Database\skill.cpp"/>
       <File Name="src\Database\skill.h"/>
+      <File Name="src\Database\item.cpp"/>
+      <File Name="src\Database\item.h"/>
     </VirtualDirectory>
   </VirtualDirectory>
   <Dependencies Name="Debug MingW"/>

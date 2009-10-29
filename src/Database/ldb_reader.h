@@ -4,6 +4,8 @@
 #include "ldbchunks.h"
 #include "actor.h"
 #include "../main_data.h"
+#include "item.h"
+#include "skill.h"
 #include <string>
 
 namespace LDB_reader {
@@ -13,6 +15,7 @@ namespace LDB_reader {
     void skillChunk(FILE * Stream);
     void GetNextChunk(FILE * Stream);
     void soundChunk(FILE * Stream, Skill* sk);
+    void itemChunk(FILE * Stream)
 }
 
 #endif
