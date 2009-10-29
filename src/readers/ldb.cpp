@@ -896,9 +896,6 @@ std:: vector <stcEnemy_group_data>  LDB_reader::MonsterPartyMonsterChunk(FILE * 
     return(vecPartyMonster);
 }
 
-
-
-
 stcEnemy_group_condition   LDB_reader::MonsterPartyEventconditionChunk(FILE * Stream)
 {
     stcEnemy_group_condition  stcCondition;
@@ -941,7 +938,6 @@ stcEnemy_group_condition   LDB_reader::MonsterPartyEventconditionChunk(FILE * St
     ChunkInfo.ID=1;
     return(stcCondition);
 }
-
 
 std:: vector <stcEnemy_group_event_page>  LDB_reader::MonsterPartyevent_pageChunk(FILE * Stream)
 {
@@ -989,8 +985,6 @@ std:: vector <stcEnemy_group_event_page>  LDB_reader::MonsterPartyevent_pageChun
     ChunkInfo.ID	 =1;
     return(vecPartyMonsterevent);
 }
-
-
 
 std:: vector <stcEnemy_group*> * LDB_reader::mosterpartyChunk(FILE * Stream)
 {
@@ -2099,9 +2093,6 @@ stcGlosary* LDB_reader::stringChunk(FILE * Stream)//movimientos de la pagina
     return(Glosary);
 }
 
-
-
-
 stcMusic_Background   LDB_reader::musicChunk(FILE * Stream)
 {
     stcMusic_Background  stcMusic;
@@ -2557,8 +2548,6 @@ stcCombatcommands * LDB_reader:: Comand_Chunk(FILE * Stream)//todo leido
     return(Combatcommands);
 }
 
-
-
 std:: vector <stcProfetion*>  *LDB_reader:: Profession_Chunk(FILE * Stream)
 {
     int id,datatoread=0,datareaded=0,levels=0,comands=0;
@@ -2817,7 +2806,6 @@ std:: vector <stcBattle_comand*> * LDB_reader:: Fightanim_Chunk(FILE * Stream)
     }
     return(vecFight_anim);
 }
-
 
 void  LDB_reader::GetNextChunk(FILE * Stream, LDB_data * data)
 {
