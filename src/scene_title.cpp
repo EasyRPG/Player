@@ -17,7 +17,7 @@ Scene_Title::~Scene_Title()
 
 void Scene_Title::main_function()
 {	
-	/* TODO: Read Database */
+	// Load Database
 	LDB_reader::load("RPG_RT.ldb");
     
 	// Create Game System

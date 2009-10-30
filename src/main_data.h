@@ -16,21 +16,21 @@
 #include "game_troop.h"
 #include "game_map.h"
 #include "game_player.h"
-#include "data_actors.h"
-#include "data_skills.h"
-#include "data_objects.h"
-#include "data_enemies.h"
-#include "data_troops.h"
-#include "data_attributes.h"
-#include "data_states.h"
-#include "data_animations.h"
-#include "data_terrains.h"
-#include "data_chipsets.h"
-#include "data_glossary.h"
-#include "data_system.h"
-#include "data_common_events.h"
-#include "data_maps.h"
-#include "data_areas.h"
+#include "rpg_actor.h"
+#include "rpg_skill.h"
+#include "rpg_object.h"
+#include "rpg_enemy.h"
+#include "rpg_troop.h"
+#include "rpg_attribute.h"
+#include "rpg_state.h"
+#include "rpg_animation.h"
+#include "rpg_terrain.h"
+#include "rpg_chipset.h"
+#include "rpg_glossary.h"
+#include "rpg_system.h"
+#include "rpg_common_event.h"
+#include "rpg_map.h"
+#include "rpg_area.h"
 
 namespace Main_Data {
 
@@ -38,7 +38,7 @@ namespace Main_Data {
 	Scene *scene;
 	std::string scene_type;
 	
-	// Dynamic Game Data (lmu)
+	// Dynamic Game Data
 	Game_System *game_system;
 	Game_Temp *game_temp;
     Game_Switches *game_switches;
@@ -51,22 +51,22 @@ namespace Main_Data {
     Game_Player *game_player;
 	
 	// Database Data (ldb)
-	std::vector<Actor*> data_actors;
-    std::vector<Skill*> data_skills;
-    std::vector<Item*> data_objects;
-    std::vector<Enemy*> data_enemies;
-    Data_Troops *data_troops;
-	Data_Attributes *data_attributes;
-    Data_States *data_states;
-    Data_Animations *data_animations;
-	Data_Terrains *data_terrains;
-    Data_ChipSets *data_chipsets;
-	Data_Glossary *data_words;
-    Data_System *data_system;
-	Data_Common_Events *data_common_events;
+	std::vector<RPG::Actor*> data_actors;
+    std::vector<RPG::Skill*> data_skills;
+    std::vector<RPG::Item*> data_objects;
+    std::vector<RPG::Enemy*> data_enemies;
+    std::vector<RPG::Troop*> data_troops;
+	std::vector<RPG::Attribute*> data_attributes;
+    std::vector<RPG::State*> data_states;
+    std::vector<RPG::Animation*> data_animations;
+	std::vector<RPG::Terrain*> data_terrains;
+    std::vector<RPG::ChipSet*> data_chipsets;
+	std::vector<RPG::Common_Event*> data_common_events;
+	RPG::Glossary* data_words;
+    RPG::System* data_system;
 	
-	// Maps and Areas Data
-	Data_Maps *data_maps;
-	Data_Areas *data_areas;
+	// Maps and Areas Data (lmu)
+	std::vector<RPG::Map> *data_maps;
+	std::vector<RPG::Area> *data_areas;
 };
 #endif // __main_data__
