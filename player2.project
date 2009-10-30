@@ -9,6 +9,7 @@
     
     
     
+    
     ]]>
     </Plugin>
   </Plugins>
@@ -188,6 +189,8 @@
       <File Name="src\Database\enemy.cpp"/>
       <File Name="src\Database\e_action.h"/>
       <File Name="src\Database\e_action.cpp"/>
+      <File Name="src\troop.cpp"/>
+      <File Name="src\troop.h"/>
     </VirtualDirectory>
   </VirtualDirectory>
   <Dependencies Name="Debug MingW"/>
