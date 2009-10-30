@@ -6,6 +6,7 @@
 #include "../main_data.h"
 #include "item.h"
 #include "skill.h"
+#include "enemy.h"
 #include <string>
 
 namespace LDB_reader {
@@ -15,7 +16,9 @@ namespace LDB_reader {
     void skillChunk(FILE * Stream);
     void GetNextChunk(FILE * Stream);
     void soundChunk(FILE * Stream, Skill* sk);
-    void itemChunk(FILE * Stream)
+    void itemChunk(FILE * Stream);
+    void mosteractionChunk(FILE * Stream, Enemy* e);
+    void mosterChunk(FILE * Stream);
 }
 
 #endif

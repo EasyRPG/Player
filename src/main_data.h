@@ -54,7 +54,7 @@ namespace Main_Data {
 	std::vector<Actor*> data_actors;
     std::vector<Skill*> data_skills;
     std::vector<Item*> data_objects;
-    Data_Enemies *data_enemies;
+    std::vector<Enemy*> data_enemies;
     Data_Troops *data_troops;
 	Data_Attributes *data_attributes;
     Data_States *data_states;

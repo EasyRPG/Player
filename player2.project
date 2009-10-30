@@ -184,6 +184,10 @@
       <File Name="src\Database\skill.h"/>
       <File Name="src\Database\item.cpp"/>
       <File Name="src\Database\item.h"/>
+      <File Name="src\Database\enemy.h"/>
+      <File Name="src\Database\enemy.cpp"/>
+      <File Name="src\Database\e_action.h"/>
+      <File Name="src\Database\e_action.cpp"/>
     </VirtualDirectory>
   </VirtualDirectory>
   <Dependencies Name="Debug MingW"/>
