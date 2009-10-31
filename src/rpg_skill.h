@@ -1,6 +1,6 @@
 #ifndef __rpg_skill__
 #define __rpg_skill__
-
+/*
 namespace RPG {
 	class Skill {
 
@@ -47,5 +47,5 @@ namespace RPG {
 		bool occasion_field;
 		bool occasion_battle;
 	};
-}
+}*/
 #endif // __rpg_skill__

@@ -1,5 +1,9 @@
 #ifndef __troop__
 #define __troop__
+#include <string>
+#include <vector>
+
+namespace RPG {
 
 typedef struct {
     int enemy_id;
@@ -20,7 +24,7 @@ typedef struct {
 typedef struct {
     Condition condition;
     char span; //0, 1, 2
-    std::vector<EventCommand*> list;
+//    std::vector<EventCommand*> list;
 } Page;
 
 
@@ -35,5 +39,7 @@ class Troop {
         std::vector<Page> pages;
         
 };
+
+}
 
 #endif

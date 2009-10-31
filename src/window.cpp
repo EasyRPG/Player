@@ -5,7 +5,7 @@ Window::Window()
 {
 	disposed = false;
 	id = count;
-	Graphics::add_window(count, *this);
+//	Graphics::add_window(count, *this);
 	count++;
 	
 	stretch = true;
@@ -29,7 +29,7 @@ Window::Window(Viewport *iviewport)
 {
 	disposed = false;
 	id = count;
-	Graphics::add_window(count, *this);
+//	Graphics::add_window(count, *this);
 	count++;
 	
 	viewport = iviewport;
@@ -52,7 +52,7 @@ Window::Window(Viewport *iviewport)
 
 Window::~Window()
 {
-	Graphics::remove_window(id);
+//	Graphics::remove_window(id);
 }
 
 int Window::count = 0;
@@ -77,90 +77,90 @@ void Window::draw(SDL_Surface *screen)
 
 }
 
-Viewport* get_viewport()
+Viewport* Window::get_viewport()
 {
 	return viewport;
 }
 
-Bitmap* get_windowskin()
+Bitmap* Window::get_windowskin()
 {
 	return windowskin;
 }
 
-Bitmap* get_contents()
+Bitmap* Window::get_contents()
 {
 	return contents;
 }
 
-bool get_stretch()
+bool Window::get_stretch()
 {
 	return stretch;
 }
 
-Rect get_cursor_rect()
+Rect* Window::get_cursor_rect()
 {
 	return cursor_rect;
 }
 
-bool get_active()
+bool Window::get_active()
 {
 	return active;
 }
 
-bool get_visible()
+bool Window::get_visible()
 {
 	return visible;
 }
 
-bool get_pause()
+bool Window::get_pause()
 {
 	return pause;
 }
 
-int get_x()
+int Window::get_x()
 {
 	return x;
 }
 
-int get_y()
+int Window::get_y()
 {
 	return y;
 }
 
-int get_width()
+int Window::get_width()
 {
 	return width;
 }
 
-int get_height()
+int Window::get_height()
 {
 	return height;
 }
 
-int get_z()
+int Window::get_z()
 {
 	return z;
 }
 
-int get_ox()
+int Window::get_ox()
 {
 	return ox;
 }
 
-int get_oy(){
+int Window::get_oy(){
 	return oy;
 }
 
-int get_opacity()
+int Window::get_opacity()
 {
 	return opacity;
 }
 
-int get_back_opacity(){
+int Window::get_back_opacity(){
 	return back_opacity;
 }
 
-int get_contents_opacity()
+int Window::get_contents_opacity()
 {
 	return contents_opacity;
 }
@@ -185,7 +185,7 @@ void Window::set_stretch(bool nstretch)
 	stretch = nstretch;
 }
 
-void Window::set_cursor_rect(Rect ncursor_rect)
+void Window::set_cursor_rect(Rect* ncursor_rect)
 {
 	cursor_rect = ncursor_rect;
 }
@@ -222,7 +222,7 @@ void Window::set_width(int nwidth)
 
 void Window::set_height(int nheihgt)
 {
-	heihgt = nheihgt;
+	height = nheihgt;
 }
 
 void Window::set_z(int nz)
@@ -258,12 +258,12 @@ void Window::set_contents_opacity(int ncontents_opacity)
 void Window::add_window(int id, Window *window)
 {
 	windows[id] = window;
-	ZObj zobj((*window).get_z(), id, TYPE_WINDOW, frame_count);
+	ZObj zobj((*window).get_z(), id, TYPE_WINDOW, Graphics::get_frame_count());
 	ZObj::zlist.push_back(zobj);
 }
 
 void Window::remove_window(int id)
 {
 	windows.erase(id);
-	ZObj::zlist.remove_if(remove_zobj_id(id));
+//	ZObj::zlist.remove_if(remove_zobj_id(id));
 }

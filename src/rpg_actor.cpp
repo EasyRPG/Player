@@ -1,4 +1,4 @@
-#include "rpg_actor.h"
+/*#include "rpg_actor.h"
 
 namespace RPG {
 	Actor::Actor()
@@ -9,3 +9,4 @@ namespace RPG {
 	{
 	}
 }
+*/

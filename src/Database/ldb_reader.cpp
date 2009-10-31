@@ -1,6 +1,6 @@
 #include "ldb_reader.h"
 
-bool LDB_reader::load(std::string& Filename)
+bool LDB_reader::load(const std::string& Filename)
 {
     // Open map file to read
     FILE * Stream;// apertura de archivo
@@ -51,7 +51,7 @@ void LDB_reader::soundChunk(FILE * Stream, Skill* sk)// confusion masica != soni
             break;
         }
     } while (ChunkInfo.ID!=0);
-    sk->sound = stdSound;
+    sk->sound = stcSound;
     ChunkInfo.ID=1;
 }
 
@@ -123,7 +123,7 @@ void LDB_reader::heroChunk(FILE * Stream)
 
                 break;
             case CHUNK_Graphicindex:
-                hero_data->graphic_index = (ReadCompressedInteger(Stream);
+                hero_data->graphic_index = ReadCompressedInteger(Stream);
                 break;
             case CHUNK_Transparent:
                 hero_data->transparent = (ReadCompressedInteger(Stream)) ? true : false;
@@ -147,7 +147,7 @@ void LDB_reader::heroChunk(FILE * Stream)
                 hero_data->face_index = ReadCompressedInteger(Stream);
                 break;
             case CHUNK_Dualwield:
-                hero_data->double_weapon = (ReadCompressedInteger(Stream)) ? true : false;
+                hero_data->dual_weapon = (ReadCompressedInteger(Stream)) ? true : false;
                 break;
             case CHUNK_Fixedequipment:
                 hero_data->lock_equipment = (ReadCompressedInteger(Stream)) ? true : false;
@@ -159,7 +159,6 @@ void LDB_reader::heroChunk(FILE * Stream)
                 hero_data->high_defense = (ReadCompressedInteger(Stream)) ? true : false;
                 break;
             case CHUNK_Statisticscurves:
-                bool return_value;
                 levels=ChunkInfo.Length/6;
                 while (levels > 0) {
                     return_value = fread(&dat, 2, 1, Stream);
@@ -212,7 +211,7 @@ void LDB_reader::heroChunk(FILE * Stream)
                 hero_data->exp_correction = ReadCompressedInteger(Stream);
                 break;
             case CHUNK_Startequip:
-                bool return_value;
+                
                 return_value = fread(&dat, 2, 1, Stream);
                 hero_data->weapon_id = dat;
                 return_value = fread(&dat, 2, 1, Stream);
@@ -228,36 +227,32 @@ void LDB_reader::heroChunk(FILE * Stream)
                 heroskillChunk(Stream, hero_data);
                 break;
             case CHUNK_RenameMagic:
-                hero_data->rename_skill = ReadCompressedInteger(Stream);
+                hero_data->skill_rename = ReadCompressedInteger(Stream);
                 break;
             case CHUNK_Magicname:
                 hero_data->skill_name = ReadString(Stream, ChunkInfo.Length);
                 break;
             /* TODO: Save those last blocks */
             case CHUNK_Condlength:
-                int trash;
+                
                 trash = ReadCompressedInteger(Stream);
                 break;
             case CHUNK_Condeffects:
-                bool return_value;
                 while (ChunkInfo.Length--) {
                     return_value = fread(&Void, 1, 1, Stream);
-                    hero_data->vc_ch_Condeffects.push_back(Void);
+                    hero_data->combat_command.push_back(Void);
                 }
                 break;
             case CHUNK_Attriblength:
-                int trash;
                 trash = ReadCompressedInteger(Stream);
                 break;
             case CHUNK_Attribeffects:
-                bool return_value;
                 while (ChunkInfo.Length--) {
                     return_value = fread(&Void, 1, 1, Stream);
                     hero_data->attribute_effects.push_back(Void);
                 }
                 break;
             case CHUNK_Combat_Command://0x50
-                bool return_value;
                 while (ChunkInfo.Length--) { //4 chars
                     return_value = fread(&comands, 4, 1, Stream);
                     hero_data->combat_command.push_back(comands);
@@ -267,7 +262,6 @@ void LDB_reader::heroChunk(FILE * Stream)
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
             default:
-                bool return_value;
                 while (ChunkInfo.Length--) {
                     return_value = fread(&Void, 1, 1, Stream);
                 }
@@ -380,22 +374,18 @@ void LDB_reader::skillChunk(FILE * Stream)
                 skill->ignore_def = ReadCompressedInteger(Stream);
                 break;
             case SkillChunk_Conditionslength:
-                int trash;
                 trash = ReadCompressedInteger(Stream);
                 break;
             case SkillChunk_Changecondition:
-                bool return_value;
                 while (ChunkInfo.Length--) {
                     return_value = fread(&Void, 1, 1, Stream);
                     skill->change_condition.push_back(Void);
                 }
                 break;
             case SkillChunk_Attributeslength:
-                int trash;
                 trash = ReadCompressedInteger(Stream);
                 break;
             case SkillChunk_Attackattribute:
-                bool return_value;
                 while (ChunkInfo.Length--) {
                     return_value = fread(&Void, 1, 1, Stream);
                     skill->attributes.push_back(Void);
@@ -416,7 +406,7 @@ void LDB_reader::skillChunk(FILE * Stream)
             }
         } while (ChunkInfo.ID!=0);
         
-        Main_Data::data_skills->push_back(skill);
+        Main_Data::data_skills.push_back(skill);
         datareaded++;
     }
 }
@@ -559,33 +549,27 @@ void LDB_reader::itemChunk(FILE * Stream)
                 item->use_in_battle = ReadCompressedInteger(Stream);
                 break;
             case ItemChunk_Heroeslength://0x3D,
-                int trash;
                 trash = ReadCompressedInteger(Stream);
                 break;
             case ItemChunk_Heroescanuse:
-                bool return_value;
                 while (ChunkInfo.Length--) {
                     return_value = fread(&Void, 1, 1, Stream);
                     item->heros_can_use.push_back(Void);
                 }
                 break;
             case ItemChunk_Conditionslength://0x3F,
-                int trash;
                 trash = ReadCompressedInteger(Stream);
                 break;
             case ItemChunk_Conditionchanges:
-                bool return_value;
                 while (ChunkInfo.Length--) {
                     return_value = fread(&Void, 1, 1, Stream);
                     item->conditions.push_back(Void);
                 }
                 break;
             case ItemChunk_Attributeslength://0x41,
-                int trash;
                 trash = ReadCompressedInteger(Stream);
                 break;
             case ItemChunk_Attributes:
-                bool return_value;
                 while (ChunkInfo.Length--) {
                     return_value = fread(&Void, 1, 1, Stream);
                     item->attributes.push_back(Void);
@@ -597,7 +581,6 @@ void LDB_reader::itemChunk(FILE * Stream)
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
             default:
-                bool return_value;
                 while (ChunkInfo.Length--) {
                     return_value = fread(&Void, 1, 1, Stream);
                 }
@@ -616,7 +599,7 @@ void LDB_reader::mosteractionChunk(FILE * Stream, Enemy* e)
     datatoread=ReadCompressedInteger(Stream);//numero de datos
     while (datatoread>datareaded) 
     { // si no hay mas en el array
-        action = new action();
+        action = new E_Action();
         if (action == NULL)
         {
             std::cerr << "No memory left." << std::endl;
@@ -636,7 +619,7 @@ void LDB_reader::mosteractionChunk(FILE * Stream, Enemy* e)
                 action->basic = ReadCompressedInteger(Stream);
                 break;
             case MonsterActionsChunk_Skill_ID:
-                Action->skill_id = ReadCompressedInteger(Stream);
+                action->skill_id = ReadCompressedInteger(Stream);
                 break;
             case MonsterActionsChunk_Monster_ID:
                 action->monster_id = ReadCompressedInteger(Stream);
@@ -747,29 +730,25 @@ void LDB_reader::mosterChunk(FILE * Stream)
                 enemy->flying = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_Conditionslength://0x1F,
-                int trash;
                 trash = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_Conditionseffects://0x20,
-                bool return_value;
                 while (ChunkInfo.Length--) {
                     return_value = fread(&Void, 1, 1, Stream);
                     enemy->conditions.push_back(Void);
                 }
                 break;
             case MonsterChunk_Attributeslength://0x21,
-                int trash;
                 trash = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_Attributeseffect://0x22,
-                bool return_value;
                 while (ChunkInfo.Length--) {
                     return_value = fread(&Void, 1, 1, Stream);
                     enemy->attributes.push_back(Void);
                 }
                 break;
             case MonsterChunk_Actionslist://0x2A
-                mosteractionChunk(Stream);
+                mosteractionChunk(Stream, enemy);
                 break;
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
@@ -966,7 +945,7 @@ void LDB_reader::GetNextChunk(FILE * Stream)
     unsigned char Void;
     tChunk ChunkInfo; // informacion del pedazo leido
     // Loop while we haven't reached the end of the file
-    while (!feof(Stream) && (!stop)) {
+    while (!feof(Stream)) {
         ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
         ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
         if (ChunkInfo.Length>0)
@@ -982,12 +961,12 @@ void LDB_reader::GetNextChunk(FILE * Stream)
                 itemChunk(Stream);
                 break;
             case CHUNK_Monster:
-                data->monsters = mosterChunk(Stream);
+                mosterChunk(Stream);
                 break;
             case CHUNK_MonsterP:
-                data->monsterpartys = mosterpartyChunk(Stream);
+                mosterpartyChunk(Stream);
                 break;
-            case CHUNK_Terrain:
+            /*case CHUNK_Terrain:
                 data->terrains = terrainChunk(Stream);
                 break;
             case CHUNK_Attribute:
@@ -1057,7 +1036,7 @@ void LDB_reader::GetNextChunk(FILE * Stream)
                 data->Fightanims=Fightanim_Chunk(Stream);
                 break;
             case CHUNK_LDB_END_OF_BLOCK:
-                break;
+                break;*/
             default:
                 // saltate un pedazo del tamaño de la longitud
                 while (ChunkInfo.Length--) {

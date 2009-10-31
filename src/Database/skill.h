@@ -1,15 +1,16 @@
 #ifndef __skill__
 #define __skill__
-
+#include <string>
+#include <vector>
 /* TODO: Move this struct to somewhere else */
 typedef struct {
-    std::string name = "";
-    int volume = 100;
-    int tempo = 0;
-    int balance = 0;
+    std::string name;
+    int volume;
+    int tempo;
+    int balance;
 } sound_effect;
 /* ---------------------------------------- */
-
+namespace RPG {
 class Skill {
     
     public:
@@ -29,7 +30,7 @@ class Skill {
         int animation1_id;
         int animation2_id;
         sound_effect sound;
-        AudioFile menu_se;
+//        AudioFile menu_se;
         bool field_usg;
         bool combat_usg;
         bool affect_hp;
@@ -65,5 +66,6 @@ class Skill {
     
 };
 
+}
 
 #endif

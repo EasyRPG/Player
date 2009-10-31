@@ -7,7 +7,7 @@
 #include "bitmap.h"
 #include "rect.h"
 #include "table.h"
-
+class Viewport;
 class Tilemap {
 
 public:
@@ -23,16 +23,16 @@ public:
 
 	Viewport* get_viewport();
 	Bitmap* get_tileset();
-	Table get_map_data();
-	Table get_properties();
+	Table* get_map_data();
+	Table* get_properties();
 	bool get_visible();
 	int get_ox();
 	int get_oy();
 	
 	void get_viewport(Viewport* nviewport);
 	void get_tileset(Bitmap* nbitmap);
-	void get_map_data(Table nmap_data);
-	void get_properties(Table nproperties);
+	void get_map_data(Table* nmap_data);
+	void get_properties(Table* nproperties);
 	void get_visible(bool nvisible);
 	void get_ox(int nox);
 	void get_oy(int noy);
@@ -44,8 +44,8 @@ public:
 private:
 	Viewport* viewport;
 	Bitmap* tileset;
-	Table map_data;
-	Table properties;
+	Table* map_data;
+	Table* properties;
 	bool visible;
 	int ox;
 	int oy;

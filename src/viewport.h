@@ -6,6 +6,7 @@
 #include "rect.h"
 #include "color.h"
 #include "tone.h"
+#include "graphics.h"
 
 class Viewport {
 
@@ -21,34 +22,34 @@ public:
 
 	void draw(SDL_Surface *screen);
 	
-	Rect get_rect();
+	Rect* get_rect();
 	bool get_visible();
 	int get_z();
 	int get_ox();
 	int get_oy();
-	Color get_color();
-	Tone get_tone();
+	Color* get_color();
+	Tone* get_tone();
 	
-	void set_rect(Rect nrect);
+	void set_rect(Rect* nrect);
 	void set_visible(bool nvisible);
 	void set_z(int nz);
 	void set_ox(int nox);
 	void set_oy(int noy);
-	void set_color(Color ncolor);
-	void set_tone(Tone ntone);
+	void set_color(Color* ncolor);
+	void set_tone(Tone* ntone);
 	
 	static std::map<int, Viewport*> viewports;
 	static void add_viewport(int id, Viewport* viewport);
 	static void remove_viewport(int id);
 	
 private:
-	Rect rect;
+	Rect* rect;
 	bool visible;
 	int z;
 	int ox;
 	int oy;
-	Color color;
-	Tone tone;
+	Color* color;
+	Tone* tone;
 
 	bool disposed;
 	

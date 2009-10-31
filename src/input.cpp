@@ -15,7 +15,7 @@ bool Input::is_pressed(int key)
 	
 }
 
-bool Input::is_trigered(int key)
+bool Input::is_triggered(int key)
 {
 	
 }

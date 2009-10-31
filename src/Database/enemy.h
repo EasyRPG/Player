@@ -1,7 +1,10 @@
 #ifndef __enemy__
 #define __enemy__
 #include "e_action.h"
+#include <string>
+#include <vector>
 
+namespace RPG {
 class Enemy {
     public:
         Enemy();
@@ -9,7 +12,7 @@ class Enemy {
         int id;
         std::string name;
         std::string battler_name;
-        std::string battler_hue;
+        int battler_hue;
         int maxhp;
         int maxmp;
         int str;
@@ -30,4 +33,5 @@ class Enemy {
         std::vector<E_Action*> actions;
 };
 
+}
 #endif

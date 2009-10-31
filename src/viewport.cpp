@@ -5,7 +5,7 @@ Viewport::Viewport(int ix, int iy, int iwidth, int iheight)
 {
 	disposed = false;
 	id = count;
-	Graphics::add_viewport(count, this);
+//	Graphics::add_viewport(count, this);
 	count++;
 	
 	rect = new Rect(ix, iy, iwidth, iheight);
@@ -21,10 +21,10 @@ Viewport::Viewport(Rect *irect)
 {
 	disposed = false;
 	id = count;
-	Graphics::add_viewport(count, this);
+//	Graphics::add_viewport(count, this);
 	count++;
 	
-	viewport = viewport;
+//	viewport = viewport;
 	rect = irect;
 	visible = true;
 	z = 0;
@@ -36,7 +36,7 @@ Viewport::Viewport(Rect *irect)
 
 Viewport::~Viewport()
 {
-	Graphics::remove_viewport(id);
+//	Graphics::remove_viewport(id);
 }
 
 int Viewport::count = 0;
@@ -66,7 +66,7 @@ void Viewport::draw(SDL_Surface *screen)
 
 }
 
-Rect Viewport::get_rect()
+Rect* Viewport::get_rect()
 {
 	return rect;
 }
@@ -91,17 +91,17 @@ int Viewport::get_oy()
 	return oy;
 }
 
-Color Viewport::get_color()
+Color* Viewport::get_color()
 {
 	return color;
 }
 
-Tone Viewport::get_tone()
+Tone* Viewport::get_tone()
 {
 	return tone;
 }
 
-void Viewport::set_rect(Rect nrect)
+void Viewport::set_rect(Rect* nrect)
 {
 	rect = nrect;
 }
@@ -126,12 +126,12 @@ void Viewport::set_oy(int noy)
 	oy = noy;
 }
 
-void Viewport::set_color(Color ncolor)
+void Viewport::set_color(Color* ncolor)
 {
 	color = ncolor;
 }
 
-void Viewport::set_tone(Tone ntone)
+void Viewport::set_tone(Tone* ntone)
 {
 	tone = ntone;
 }
@@ -146,5 +146,5 @@ void Viewport::add_viewport(int id, Viewport *viewport)
 void Viewport::remove_viewport(int id)
 {
 	viewports.erase(id);
-	ZObj::zlist.remove_if(remove_zobj_id(id));
+//	ZObj::zlist.remove_if(remove_zobj_id(id));
 }

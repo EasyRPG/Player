@@ -7,11 +7,20 @@
 #include "item.h"
 #include "skill.h"
 #include "enemy.h"
-#include "troop.h"
+#include "../troop.h"
 #include <string>
+#include <iostream>
+#include "../tools.h"
+#include "../ldb_data.h"
+
+using namespace RPG;
 
 namespace LDB_reader {
-    bool load(std::string& Filename);
+    unsigned char Void;
+    tChunk ChunkInfo; // informacion del pedazo leido
+    bool return_value;
+    int trash;
+    bool load(const std::string& Filename);
     void heroskillChunk(FILE * Stream, Actor* hero);
     void heroChunk(FILE * Stream);
     void skillChunk(FILE * Stream);

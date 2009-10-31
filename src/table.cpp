@@ -1,26 +1,26 @@
 #include "table.h"
 
-Table(int ixsize)
+Table::Table(int ixsize)
 {
 	resize(ixsize);
 }
 
-Table(int ixsize, int iysize)
+Table::Table(int ixsize, int iysize)
 {
 	resize(ixsize, iysize);
 }
 
-Table(int ixsize, int iysize, int izsize)
+Table::Table(int ixsize, int iysize, int izsize)
 {
 	resize(ixsize, iysize, izsize);
 }
 
-~Table()
+Table::~Table()
 {
 	
 }
 
-void resize(int nxsize)
+void Table::resize(int nxsize)
 {
 	xsize = nxsize;
 	ysize = 0;
@@ -28,7 +28,7 @@ void resize(int nxsize)
 	values.resize(xsize);
 }
 
-void resize(int nxsize, int nysize)
+void Table::resize(int nxsize, int nysize)
 {
 	xsize = nxsize;
 	ysize = nysize;
@@ -36,7 +36,7 @@ void resize(int nxsize, int nysize)
 	values.resize(xsize * ysize);
 }
 
-void resize(int nxsize, int nysize, int nzsize)
+void Table::resize(int nxsize, int nysize, int nzsize)
 {
 	xsize = nxsize;
 	ysize = nysize;
@@ -44,32 +44,32 @@ void resize(int nxsize, int nysize, int nzsize)
 	values.resize(xsize * ysize * zsize);
 }
 
-int get_xsize()
+int Table::get_xsize()
 {
 	return xsize;
 }
 
-int get_ysize()
+int Table::get_ysize()
 {
 	return ysize;
 }
 
-int get_zsize()
+int Table::get_zsize()
 {
 	return zsize;
 }
 
-int get_val(int x)
+int Table::get_val(int x)
 {
 	return values[x];
 }
 
-int get_val(int x, int y)
+int Table::get_val(int x, int y)
 {
 	return values[x + y * xsize];
 }
 
-int get_val(int x, int y, int z)
+int Table::get_val(int x, int y, int z)
 {
 	return values[x + y * xsize + z * xsize * ysize];
 }

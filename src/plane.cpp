@@ -229,5 +229,5 @@ void Plane::add_plane(int id, Plane *plane)
 void Plane::remove_plane(int id)
 {
 	planes.erase(id);
-	ZObj::zlist.remove_if(remove_zobj_id(id));
+//	ZObj::zlist.remove_if(remove_zobj_id(id));
 }

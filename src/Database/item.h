@@ -1,5 +1,9 @@
 #ifndef __item__
 #define __item__
+#include <string>
+#include <vector>
+
+namespace RPG {
 
 typedef enum {
     COMMON = 0,
@@ -22,7 +26,8 @@ class Item {
         int id;
         std::string name;
         std::string description;
-        item_type type;
+        //item_type type;
+        int type;
         int price;
         char n_uses;
         int atk_change;
@@ -32,7 +37,8 @@ class Item {
         bool both_hands;
         int mp_cost;
         char hit;
-        int animation_hit;
+        int crit_hit;
+        int animation_id;
         bool preventive;
         bool double_attack;
         bool attack_all;
@@ -66,5 +72,6 @@ class Item {
     
 
 };
+}
 
 #endif

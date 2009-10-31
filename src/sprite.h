@@ -8,12 +8,13 @@
 #include "rect.h"
 #include "color.h"
 #include "tone.h"
-
+#include "graphics.h"
+class Viewport;
 class Sprite {
 	
 public:
 	Sprite();
-	Sprite(Viewport *iviewport);
+	Sprite(Viewport* iviewport);
 	~Sprite();
 	
 	void dispose();
@@ -25,7 +26,7 @@ public:
 
 	Viewport* get_viewport();
 	Bitmap* get_bitmap();
-	Rect get_src_rect();
+	Rect* get_src_rect();
 	bool get_visible();
 	int get_x();
 	int get_y();
@@ -40,12 +41,12 @@ public:
 	int get_bush_depth();
 	int get_opacity();
 	int get_blend_type();
-	Color get_color();
-	Tone get_tone();
+	Color* get_color();
+	Tone* get_tone();
 	
 	void set_viewport(Viewport* nviewport);
 	void set_bitmap(Bitmap* nbitmap);
-	void set_src_rect(Rect nsrc_rect);
+	void set_src_rect(Rect* nsrc_rect);
 	void set_visible(bool nvisible);
 	void set_x(int nx);
 	void set_y(int ny);
@@ -60,8 +61,8 @@ public:
 	void set_bush_depth(int nbush_depth);
 	void set_opacity(int nopacity);
 	void set_blend_type(int nblend_type);
-	void set_color(Color ncolor);
-	void set_tone(Tone ntone);
+	void set_color(Color* ncolor);
+	void set_tone(Tone* ntone);
 	
 	static std::map<int, Sprite*> sprites;
 	static void add_sprite(int id, Sprite* sprite);
@@ -70,7 +71,7 @@ public:
 private:
 	Viewport *viewport;
 	Bitmap *bitmap;
-	Rect src_rect;
+	Rect *src_rect;
 	bool visible;
 	int x;
 	int y;
@@ -85,8 +86,8 @@ private:
 	int bush_depth;
 	int opacity;
 	int blend_type;
-	Color color;
-	Tone tone;
+	Color *color;
+	Tone *tone;
 	
 	bool disposed;
 	

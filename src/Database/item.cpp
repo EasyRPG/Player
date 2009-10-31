@@ -1,11 +1,11 @@
 #include "item.h"
 
-Item::Item() {
+RPG::Item::Item() {
     id = 0;
     name = "";
     description = "";
     type = COMMON;
-    prince = 0;
+    price = 0;
     n_uses = 1;
     atk_change = 0;
     pdef_change = 0;

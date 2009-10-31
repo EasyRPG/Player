@@ -1,6 +1,6 @@
 #include "enemy.h"
 
-Enemy::Enemy() {
+RPG::Enemy::Enemy() {
     id = 0;
     name = "";
     battler_name = "";

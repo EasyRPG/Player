@@ -1,6 +1,6 @@
 #include "troop.h"
 
-Troop:Troop() {
+RPG::Troop::Troop() {
     id = 0;
     name = "";
 }

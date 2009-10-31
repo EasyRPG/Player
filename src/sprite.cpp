@@ -57,7 +57,7 @@ Sprite::Sprite(Viewport *iviewport)
 
 Sprite::~Sprite()
 {
-	Graphics::remove_sprite(id);
+//	Graphics::remove_sprite(id);
 }
 
 int Sprite::count = 0;
@@ -87,10 +87,10 @@ void Sprite::draw(SDL_Surface *screen)
 		SDL_Rect dstrect;
 		dstrect.x = x;
 		dstrect.y = y; 
-		if(SDL_BlitSurface(bitmap, src_rect.get_sdlrect(), screen, &dstrect) == -1)
+		/*if(SDL_BlitSurface(bitmap, &src_rect.get_sdlrect(), screen, &dstrect) == -1)
 		{
 			// Error
-		}
+		}*/
 }
 
 Viewport* Sprite::get_viewport()
@@ -103,7 +103,7 @@ Bitmap* Sprite::get_bitmap()
 	return bitmap;
 }
 
-Rect Sprite::get_src_rect()
+Rect* Sprite::get_src_rect()
 {
 	return src_rect;
 }
@@ -177,12 +177,12 @@ int Sprite::get_blend_type()
 	return blend_type;
 }
 
-Color Sprite::get_color()
+Color* Sprite::get_color()
 {
 	return color;
 }
 
-Tone Sprite::get_tone()
+Tone* Sprite::get_tone()
 {
 	return tone;
 }
@@ -198,7 +198,7 @@ void Sprite::set_bitmap(Bitmap* nbitmap)
 	bitmap = nbitmap;
 }
 
-void Sprite::set_src_rect(Rect nsrc_rect)
+void Sprite::set_src_rect(Rect* nsrc_rect)
 {
 	src_rect = nsrc_rect;
 }
@@ -220,7 +220,7 @@ void Sprite::set_y(int ny)
 
 void Sprite::set_z(int nz)
 {
-	y = ny;
+	z = nz;
 }
 
 void Sprite::set_ox(int nox)
@@ -243,17 +243,17 @@ void Sprite::set_zoom_y(int nzoom_y)
 	zoom_y = nzoom_y;
 }
 
-void Sprite::set_angle(int angle)
+void Sprite::set_angle(int nangle)
 {
 	angle = nangle;
 }
 
-void Sprite::set_mirror_x(bool mirror_x)
+void Sprite::set_mirror_x(bool nmirror_x)
 {
 	mirror_x = nmirror_x;
 }
 
-void Sprite::set_mirror_y(bool mirror_y)
+void Sprite::set_mirror_y(bool nmirror_y)
 {
 	mirror_y = nmirror_y;
 }
@@ -273,12 +273,12 @@ void Sprite::set_blend_type(int nblend_type)
 	blend_type = nblend_type;
 }
 
-void Sprite::set_color(Color ncolor)
+void Sprite::set_color(Color* ncolor)
 {
 	color = ncolor;
 }
 
-void Sprite::set_tone(Tone ntone)
+void Sprite::set_tone(Tone* ntone)
 {
 	tone = ntone;
 }
@@ -293,5 +293,5 @@ void Sprite::add_sprite(int id, Sprite *sprite)
 void Sprite::remove_sprite(int id)
 {
 	sprites.erase(id);
-	ZObj::zlist.remove_if(remove_zobj_id(id));
+//	ZObj::zlist.remove_if(remove_zobj_id(id));
 }

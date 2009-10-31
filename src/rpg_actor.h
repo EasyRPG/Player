@@ -1,5 +1,8 @@
+/*
 #ifndef __rpg_actor__
 #define __rpg_actor__
+
+#include <vector>
 
 namespace RPG {
 	class Actor {
@@ -39,7 +42,7 @@ namespace RPG {
 		int armor_id;
 		int head_id;
 		int accessory_id;
-		std::vector <learning> skills;
+//		std::vector <learning> skills;
 		bool rename_skill;
 		std::string skill_name;
 		int condition_size;
@@ -50,3 +53,4 @@ namespace RPG {
 	};
 }
 #endif // __rpg_actor__
+*/

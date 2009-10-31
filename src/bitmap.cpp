@@ -81,7 +81,7 @@ void Bitmap::fill_rect(int x, int y, int width, int height, Color *color)
 
 void Bitmap::fill_rect(Rect *rect, Color *color)
 {
-	SDL_FillRect(bitmap, &rect->get_sdlrect(), (*color).get_uint32());
+	//SDL_FillRect(bitmap, &rect->get_sdlrect(), (*color).get_uint32());
 }
 
 void Bitmap::clear()

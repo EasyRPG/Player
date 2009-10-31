@@ -16,9 +16,14 @@
 #include "game_troop.h"
 #include "game_map.h"
 #include "game_player.h"
-#include "rpg_actor.h"
-#include "rpg_skill.h"
-#include "rpg_object.h"
+#include "Database/actor.h"
+#include "Database/skill.h"
+#include "Database/item.h"
+#include "Database/enemy.h"
+#include "troop.h"
+//#include "rpg_actor.h"
+//#include "rpg_skill.h"
+/*#include "rpg_object.h"
 #include "rpg_enemy.h"
 #include "rpg_troop.h"
 #include "rpg_attribute.h"
@@ -30,7 +35,7 @@
 #include "rpg_system.h"
 #include "rpg_common_event.h"
 #include "rpg_map.h"
-#include "rpg_area.h"
+#include "rpg_area.h"*/
 
 namespace Main_Data {
 
@@ -56,7 +61,7 @@ namespace Main_Data {
     std::vector<RPG::Item*> data_objects;
     std::vector<RPG::Enemy*> data_enemies;
     std::vector<RPG::Troop*> data_troops;
-	std::vector<RPG::Attribute*> data_attributes;
+	/*std::vector<RPG::Attribute*> data_attributes;
     std::vector<RPG::State*> data_states;
     std::vector<RPG::Animation*> data_animations;
 	std::vector<RPG::Terrain*> data_terrains;
@@ -67,6 +72,6 @@ namespace Main_Data {
 	
 	// Maps and Areas Data (lmu)
 	std::vector<RPG::Map> *data_maps;
-	std::vector<RPG::Area> *data_areas;
+	std::vector<RPG::Area> *data_areas;*/
 };
 #endif // __main_data__

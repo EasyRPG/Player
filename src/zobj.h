@@ -34,11 +34,11 @@ private:
 	int type;
 	int creation;
 };
-
+/* Non compillable func. FIXME
 struct remove_zobj_id : public std::binary_function<ZObj, ZObj, bool> {
     remove_zobj_id(int val) : id(val) {}
     bool operator () (ZObj &obj) const {return obj.get_id() == id;}
     int id;
-};
+}; */
 
 #endif // __zobj__

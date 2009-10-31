@@ -1,4 +1,5 @@
 #include "scene_title.h"
+#include "Database/ldb_reader.h"
 
 #include <string>
 #include "main_data.h"
@@ -24,25 +25,25 @@ void Scene_Title::main_function()
 	Main_Data::game_system = new Game_System();
 	
 	// Load Title Graphic
-	Bitmap title_bmp(Main_Data::data_system.title_name);
+/*	Bitmap title_bmp(Main_Data::data_system.title_name); */
 	
 	// Create Background Sprite
 	Sprite background();
 	
 	// Create Options Window
 	std::string options[3];
-	options[0] = Main_Data::data_system.glossary.new_game;
+/*	options[0] = Main_Data::data_system.glossary.new_game;
 	options[1] = Main_Data::data_system.glossary.load_game;
-	options[2] = Main_Data::data_system.glossary.exit_game;
-	Window_Command command_window;
-	command_window = new Window_Command(116, &options);
+	options[2] = Main_Data::data_system.glossary.exit_game;*/
+//	Window_Command command_window;
+//	command_window = new Window_Command(116, &options);
 	
 	/* TODO: Disable Load Game if required */
 	
 	/* TODO: Set index to Load Game if required */
 	
 	// Play music
-	Main_Data::game_system.bgm_play(Main_Data::data_system.title_music);
+//	Main_Data::game_system.bgm_play(Main_Data::data_system.title_music);
 	
 	Graphics::transition();
 	
@@ -54,15 +55,16 @@ void Scene_Title::main_function()
 	}
 	
 	// Dispose graphical objects
-	title_bmp.dispose();
-	background.dispose();
-	command_window.dispose();
+//	title_bmp.dispose();
+//	background.dispose();
+//	command_window.dispose();
 }
 
 void Scene_Title::update()
 {
-	command_window.update();
-	if(Input::is_triggered(SDL_ENTER) || Input::is_triggered(SDL_Z))
+//	command_window.update();
+/* Will get some code frome control.cpp */
+/*	if(Input::is_triggered(SDL_ENTER) || Input::is_triggered(SDL_Z))
 	{
 		switch(command_window.index)
 		{
@@ -76,7 +78,7 @@ void Scene_Title::update()
 				command_shutdown();
 				break;
 		}
-	}
+	}*/
 }
 
 void Scene_Title::command_new_game()
@@ -92,7 +94,7 @@ void Scene_Title::command_continue()
 void Scene_Title::command_shutdown()
 {
 	// Play decision SE
-    Main_Data::game_system.se_play(Main_Data::data_system.decision_sound);
+//    Main_Data::game_system.se_play(Main_Data::data_system.decision_sound);
     // Fade out Music
     Audio::bgm_fade(800);
     // Shutdown

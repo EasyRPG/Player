@@ -28,7 +28,7 @@ Tilemap::Tilemap(Viewport *iviewport)
 
 Tilemap::~Tilemap()
 {
-	Graphics::remove_tilemap(id);
+//	Graphics::remove_tilemap(id);
 }
 
 int Tilemap::count = 0;
@@ -63,12 +63,12 @@ Bitmap* Tilemap::get_tileset()
 	return tileset;
 }
 
-Table Tilemap::get_map_data()
+Table* Tilemap::get_map_data()
 {
 	return map_data;
 }
 
-Table Tilemap::get_properties()
+Table* Tilemap::get_properties()
 {
 	return properties;
 }
@@ -95,15 +95,15 @@ void Tilemap::get_viewport(Viewport* nviewport)
 
 void Tilemap::get_tileset(Bitmap* nbitmap)
 {
-	bitmap = nbitmap;
+//	bitmap = nbitmap;
 }
 
-void Tilemap::get_map_data(Table nmap_data)
+void Tilemap::get_map_data(Table* nmap_data)
 {
 	map_data = nmap_data;
 }
 
-void Tilemap::get_properties(Table nproperties)
+void Tilemap::get_properties(Table* nproperties)
 {
 	properties = nproperties;
 }
@@ -126,12 +126,12 @@ void Tilemap::get_oy(int noy)
 void Tilemap::add_tilemap(int id, Tilemap *tilemap)
 {
 	tilemaps[id] = tilemap;
-	ZObj zobj(0, id, TYPE_TILEMAP, frame_count);
-	ZObj::zlist.push_back(zobj);
+	//ZObj zobj(0, id, TYPE_TILEMAP, frame_count);
+//	ZObj::zlist.push_back(zobj);
 }
 
 void Tilemap::remove_tilemap(int id)
 {
 	tilemaps.erase(id);
-	ZObj::zlist.remove_if(remove_zobj_id(id));
+//	ZObj::zlist.remove_if(remove_zobj_id(id));
 }

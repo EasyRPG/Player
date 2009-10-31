@@ -1,6 +1,6 @@
 #include "actor.h"
 
-Actor::Actor() {
+RPG::Actor::Actor() {
    // register int i;
     id = 0;
     name = "";
@@ -28,7 +28,7 @@ Actor::Actor() {
         parameters[4][i] = 50+i*5;
         parameters[5][i] = 50+i*5;
     }*/
-    double_weapon = false;
+    dual_weapon = false;
     lock_equipment = false;
     ia_control = false;
     high_defense = false;

@@ -1,12 +1,14 @@
 #ifndef __actor__
 #define __actor__
 #include <string>
+#include <vector>
 
 typedef struct {
     int level;
     int skill_id;
 } skill_block;
 
+namespace RPG {
 class Actor {
     public:
         Actor();
@@ -37,7 +39,7 @@ class Actor {
         bool high_defense;
         int exp_base_line;
         int exp_additional;
-        int exp_correction:
+        int exp_correction;
         short weapon_id;
         short armor1_id; // Shield
         short armor2_id; //Helmet
@@ -56,4 +58,5 @@ class Actor {
     
 };
 
+}
 #endif

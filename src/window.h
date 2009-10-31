@@ -11,7 +11,7 @@ class Window {
 
 public:
 	Window();
-	Window(Viewport iviewport);
+	Window(Viewport* iviewport);
 	~Window();
 	
 	void dispose();
@@ -24,7 +24,7 @@ public:
 	Bitmap* get_windowskin();
 	Bitmap* get_contents();
 	bool get_stretch();
-	Rect get_cursor_rect();
+	Rect* get_cursor_rect();
 	bool get_active();
 	bool get_visible();
 	bool get_pause();
@@ -43,7 +43,7 @@ public:
 	void set_windowskin(Bitmap* nwindowskin);
 	void set_contents(Bitmap* ncontents);
 	void set_stretch(bool nstretch);
-	void set_cursor_rect(Rect ncursor_rect);
+	void set_cursor_rect(Rect* ncursor_rect);
 	void set_active(bool nactive);
 	void set_visible(bool nvisible);
 	void set_pause(bool npause);
@@ -67,7 +67,7 @@ private:
 	Bitmap* windowskin;
 	Bitmap* contents;
 	bool stretch;
-	Rect cursor_rect;
+	Rect* cursor_rect;
 	bool active;
 	bool visible;
 	bool pause;

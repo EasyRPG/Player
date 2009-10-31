@@ -6,16 +6,17 @@
 class Color {
 
 public:
+    Color();
 	Color(int r, int g, int b);
 	Color(int r, int g, int b, int a);
 	~Color();
 
 	Uint32 get_uint32();
 	
-	int get_r();
-	int get_g();
-	int get_b();
-	int get_a();
+	int get_r() const;
+	int get_g() const;
+	int get_b() const;
+	int get_a() const;
 	
 	void set_r(int r);
 	void set_g(int g);

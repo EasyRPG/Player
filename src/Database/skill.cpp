@@ -1,6 +1,6 @@
 #include "skill.h"
 
-Skill::Skill() {
+RPG::Skill::Skill() {
     id = 0;
     name = "";
     icon_name = "";
@@ -14,9 +14,9 @@ Skill::Skill() {
     occasion = 1;
     animation1_id = 0;
     animation2_id = 0;
-    menu_se = NULL; // FIXME: Should allocate some memory
-    field_usage = false;
-    combat_usage = false;
+//    menu_se = NULL; // FIXME: Should allocate some memory
+//    field_usage = false;
+//    combat_usage = false;
     affect_hp = true;
     affect_mp = false;
     affect_str = false;
