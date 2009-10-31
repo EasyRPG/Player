@@ -1,5 +1,5 @@
 #include "scene_title.h"
-#include "Database/ldb_reader.h"
+#include "ldb_reader.h"
 
 #include <string>
 #include "main_data.h"

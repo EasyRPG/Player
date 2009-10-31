@@ -46,24 +46,21 @@ LibPath := "$(LibraryPathSwitch)."
 
 Objects=$(IntermediateDirectory)/audio$(ObjectSuffix) $(IntermediateDirectory)/bitmap$(ObjectSuffix) $(IntermediateDirectory)/color$(ObjectSuffix) $(IntermediateDirectory)/font$(ObjectSuffix) $(IntermediateDirectory)/game_actors$(ObjectSuffix) $(IntermediateDirectory)/game_map$(ObjectSuffix) $(IntermediateDirectory)/game_party$(ObjectSuffix) $(IntermediateDirectory)/game_player$(ObjectSuffix) $(IntermediateDirectory)/game_screen$(ObjectSuffix) $(IntermediateDirectory)/game_switches$(ObjectSuffix) \
 	$(IntermediateDirectory)/game_system$(ObjectSuffix) $(IntermediateDirectory)/game_temp$(ObjectSuffix) $(IntermediateDirectory)/game_troop$(ObjectSuffix) $(IntermediateDirectory)/game_variables$(ObjectSuffix) $(IntermediateDirectory)/graphics$(ObjectSuffix) $(IntermediateDirectory)/input$(ObjectSuffix) $(IntermediateDirectory)/main$(ObjectSuffix) $(IntermediateDirectory)/plane$(ObjectSuffix) $(IntermediateDirectory)/rect$(ObjectSuffix) $(IntermediateDirectory)/scene_title$(ObjectSuffix) \
-	$(IntermediateDirectory)/sprite$(ObjectSuffix) $(IntermediateDirectory)/table$(ObjectSuffix) $(IntermediateDirectory)/tilemap$(ObjectSuffix) $(IntermediateDirectory)/tone$(ObjectSuffix) $(IntermediateDirectory)/viewport$(ObjectSuffix) $(IntermediateDirectory)/window$(ObjectSuffix) $(IntermediateDirectory)/zobj$(ObjectSuffix) $(IntermediateDirectory)/rpg_actor$(ObjectSuffix) $(IntermediateDirectory)/rpg_skill$(ObjectSuffix) $(IntermediateDirectory)/RPG$(ObjectSuffix) \
-	$(IntermediateDirectory)/actor$(ObjectSuffix) $(IntermediateDirectory)/ldb_reader$(ObjectSuffix) $(IntermediateDirectory)/skill$(ObjectSuffix) $(IntermediateDirectory)/item$(ObjectSuffix) $(IntermediateDirectory)/enemy$(ObjectSuffix) $(IntermediateDirectory)/e_action$(ObjectSuffix) $(IntermediateDirectory)/troop$(ObjectSuffix) $(IntermediateDirectory)/tools$(ObjectSuffix) $(IntermediateDirectory)/ldb_data$(ObjectSuffix) $(IntermediateDirectory)/ldbstr$(ObjectSuffix) \
-	$(IntermediateDirectory)/stevent$(ObjectSuffix) 
+	$(IntermediateDirectory)/sprite$(ObjectSuffix) $(IntermediateDirectory)/table$(ObjectSuffix) $(IntermediateDirectory)/tilemap$(ObjectSuffix) $(IntermediateDirectory)/tone$(ObjectSuffix) $(IntermediateDirectory)/viewport$(ObjectSuffix) $(IntermediateDirectory)/window$(ObjectSuffix) $(IntermediateDirectory)/zobj$(ObjectSuffix) $(IntermediateDirectory)/rpg_actor$(ObjectSuffix) $(IntermediateDirectory)/rpg_skill$(ObjectSuffix) $(IntermediateDirectory)/tools$(ObjectSuffix) \
+	$(IntermediateDirectory)/ldb_data$(ObjectSuffix) $(IntermediateDirectory)/ldbstr$(ObjectSuffix) $(IntermediateDirectory)/stevent$(ObjectSuffix) $(IntermediateDirectory)/actor$(ObjectSuffix) $(IntermediateDirectory)/enemy$(ObjectSuffix) $(IntermediateDirectory)/e_action$(ObjectSuffix) $(IntermediateDirectory)/item$(ObjectSuffix) $(IntermediateDirectory)/ldb_reader$(ObjectSuffix) $(IntermediateDirectory)/RPG$(ObjectSuffix) $(IntermediateDirectory)/skill$(ObjectSuffix) \
+	$(IntermediateDirectory)/troop$(ObjectSuffix) 
 
 ##
 ## Main Build Tragets 
 ##
 all: $(OutputFile)
 
-$(OutputFile): makeDirStep PrePreBuild $(Objects)
+$(OutputFile): makeDirStep  $(Objects)
 	@makedir $(@D)
 	$(LinkerName) $(OutputSwitch)$(OutputFile) $(Objects) $(LibPath) $(Libs) $(LinkOptions)
 
 makeDirStep:
 	@makedir "./Debug"
-PrePreBuild: 
-
-
 
 PreBuild:
 
@@ -274,62 +271,6 @@ $(IntermediateDirectory)/rpg_skill$(DependSuffix): src/rpg_skill.cpp
 	@makedir "./Debug"
 	@$(CompilerName) $(CmpOptions) $(IncludePath) -MT$(IntermediateDirectory)/rpg_skill$(ObjectSuffix) -MF$(IntermediateDirectory)/rpg_skill$(DependSuffix) -MM "C:/easyrpg/player2/src/rpg_skill.cpp"
 
-$(IntermediateDirectory)/RPG$(ObjectSuffix): src/Database/RPG.cpp $(IntermediateDirectory)/RPG$(DependSuffix)
-	@makedir "./Debug"
-	$(CompilerName) $(SourceSwitch) "C:/easyrpg/player2/src/Database/RPG.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/RPG$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/RPG$(DependSuffix): src/Database/RPG.cpp
-	@makedir "./Debug"
-	@$(CompilerName) $(CmpOptions) $(IncludePath) -MT$(IntermediateDirectory)/RPG$(ObjectSuffix) -MF$(IntermediateDirectory)/RPG$(DependSuffix) -MM "C:/easyrpg/player2/src/Database/RPG.cpp"
-
-$(IntermediateDirectory)/actor$(ObjectSuffix): src/Database/actor.cpp $(IntermediateDirectory)/actor$(DependSuffix)
-	@makedir "./Debug"
-	$(CompilerName) $(SourceSwitch) "C:/easyrpg/player2/src/Database/actor.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/actor$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/actor$(DependSuffix): src/Database/actor.cpp
-	@makedir "./Debug"
-	@$(CompilerName) $(CmpOptions) $(IncludePath) -MT$(IntermediateDirectory)/actor$(ObjectSuffix) -MF$(IntermediateDirectory)/actor$(DependSuffix) -MM "C:/easyrpg/player2/src/Database/actor.cpp"
-
-$(IntermediateDirectory)/ldb_reader$(ObjectSuffix): src/Database/ldb_reader.cpp $(IntermediateDirectory)/ldb_reader$(DependSuffix)
-	@makedir "./Debug"
-	$(CompilerName) $(SourceSwitch) "C:/easyrpg/player2/src/Database/ldb_reader.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/ldb_reader$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/ldb_reader$(DependSuffix): src/Database/ldb_reader.cpp
-	@makedir "./Debug"
-	@$(CompilerName) $(CmpOptions) $(IncludePath) -MT$(IntermediateDirectory)/ldb_reader$(ObjectSuffix) -MF$(IntermediateDirectory)/ldb_reader$(DependSuffix) -MM "C:/easyrpg/player2/src/Database/ldb_reader.cpp"
-
-$(IntermediateDirectory)/skill$(ObjectSuffix): src/Database/skill.cpp $(IntermediateDirectory)/skill$(DependSuffix)
-	@makedir "./Debug"
-	$(CompilerName) $(SourceSwitch) "C:/easyrpg/player2/src/Database/skill.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/skill$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/skill$(DependSuffix): src/Database/skill.cpp
-	@makedir "./Debug"
-	@$(CompilerName) $(CmpOptions) $(IncludePath) -MT$(IntermediateDirectory)/skill$(ObjectSuffix) -MF$(IntermediateDirectory)/skill$(DependSuffix) -MM "C:/easyrpg/player2/src/Database/skill.cpp"
-
-$(IntermediateDirectory)/item$(ObjectSuffix): src/Database/item.cpp $(IntermediateDirectory)/item$(DependSuffix)
-	@makedir "./Debug"
-	$(CompilerName) $(SourceSwitch) "C:/easyrpg/player2/src/Database/item.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/item$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/item$(DependSuffix): src/Database/item.cpp
-	@makedir "./Debug"
-	@$(CompilerName) $(CmpOptions) $(IncludePath) -MT$(IntermediateDirectory)/item$(ObjectSuffix) -MF$(IntermediateDirectory)/item$(DependSuffix) -MM "C:/easyrpg/player2/src/Database/item.cpp"
-
-$(IntermediateDirectory)/enemy$(ObjectSuffix): src/Database/enemy.cpp $(IntermediateDirectory)/enemy$(DependSuffix)
-	@makedir "./Debug"
-	$(CompilerName) $(SourceSwitch) "C:/easyrpg/player2/src/Database/enemy.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/enemy$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/enemy$(DependSuffix): src/Database/enemy.cpp
-	@makedir "./Debug"
-	@$(CompilerName) $(CmpOptions) $(IncludePath) -MT$(IntermediateDirectory)/enemy$(ObjectSuffix) -MF$(IntermediateDirectory)/enemy$(DependSuffix) -MM "C:/easyrpg/player2/src/Database/enemy.cpp"
-
-$(IntermediateDirectory)/e_action$(ObjectSuffix): src/Database/e_action.cpp $(IntermediateDirectory)/e_action$(DependSuffix)
-	@makedir "./Debug"
-	$(CompilerName) $(SourceSwitch) "C:/easyrpg/player2/src/Database/e_action.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/e_action$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/e_action$(DependSuffix): src/Database/e_action.cpp
-	@makedir "./Debug"
-	@$(CompilerName) $(CmpOptions) $(IncludePath) -MT$(IntermediateDirectory)/e_action$(ObjectSuffix) -MF$(IntermediateDirectory)/e_action$(DependSuffix) -MM "C:/easyrpg/player2/src/Database/e_action.cpp"
-
-$(IntermediateDirectory)/troop$(ObjectSuffix): src/troop.cpp $(IntermediateDirectory)/troop$(DependSuffix)
-	@makedir "./Debug"
-	$(CompilerName) $(SourceSwitch) "C:/easyrpg/player2/src/troop.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/troop$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/troop$(DependSuffix): src/troop.cpp
-	@makedir "./Debug"
-	@$(CompilerName) $(CmpOptions) $(IncludePath) -MT$(IntermediateDirectory)/troop$(ObjectSuffix) -MF$(IntermediateDirectory)/troop$(DependSuffix) -MM "C:/easyrpg/player2/src/troop.cpp"
-
 $(IntermediateDirectory)/tools$(ObjectSuffix): src/tools.cpp $(IntermediateDirectory)/tools$(DependSuffix)
 	@makedir "./Debug"
 	$(CompilerName) $(SourceSwitch) "C:/easyrpg/player2/src/tools.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/tools$(ObjectSuffix) $(IncludePath)
@@ -357,6 +298,62 @@ $(IntermediateDirectory)/stevent$(ObjectSuffix): src/stevent.cpp $(IntermediateD
 $(IntermediateDirectory)/stevent$(DependSuffix): src/stevent.cpp
 	@makedir "./Debug"
 	@$(CompilerName) $(CmpOptions) $(IncludePath) -MT$(IntermediateDirectory)/stevent$(ObjectSuffix) -MF$(IntermediateDirectory)/stevent$(DependSuffix) -MM "C:/easyrpg/player2/src/stevent.cpp"
+
+$(IntermediateDirectory)/actor$(ObjectSuffix): src/actor.cpp $(IntermediateDirectory)/actor$(DependSuffix)
+	@makedir "./Debug"
+	$(CompilerName) $(SourceSwitch) "C:/easyrpg/player2/src/actor.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/actor$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/actor$(DependSuffix): src/actor.cpp
+	@makedir "./Debug"
+	@$(CompilerName) $(CmpOptions) $(IncludePath) -MT$(IntermediateDirectory)/actor$(ObjectSuffix) -MF$(IntermediateDirectory)/actor$(DependSuffix) -MM "C:/easyrpg/player2/src/actor.cpp"
+
+$(IntermediateDirectory)/enemy$(ObjectSuffix): src/enemy.cpp $(IntermediateDirectory)/enemy$(DependSuffix)
+	@makedir "./Debug"
+	$(CompilerName) $(SourceSwitch) "C:/easyrpg/player2/src/enemy.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/enemy$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/enemy$(DependSuffix): src/enemy.cpp
+	@makedir "./Debug"
+	@$(CompilerName) $(CmpOptions) $(IncludePath) -MT$(IntermediateDirectory)/enemy$(ObjectSuffix) -MF$(IntermediateDirectory)/enemy$(DependSuffix) -MM "C:/easyrpg/player2/src/enemy.cpp"
+
+$(IntermediateDirectory)/e_action$(ObjectSuffix): src/e_action.cpp $(IntermediateDirectory)/e_action$(DependSuffix)
+	@makedir "./Debug"
+	$(CompilerName) $(SourceSwitch) "C:/easyrpg/player2/src/e_action.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/e_action$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/e_action$(DependSuffix): src/e_action.cpp
+	@makedir "./Debug"
+	@$(CompilerName) $(CmpOptions) $(IncludePath) -MT$(IntermediateDirectory)/e_action$(ObjectSuffix) -MF$(IntermediateDirectory)/e_action$(DependSuffix) -MM "C:/easyrpg/player2/src/e_action.cpp"
+
+$(IntermediateDirectory)/item$(ObjectSuffix): src/item.cpp $(IntermediateDirectory)/item$(DependSuffix)
+	@makedir "./Debug"
+	$(CompilerName) $(SourceSwitch) "C:/easyrpg/player2/src/item.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/item$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/item$(DependSuffix): src/item.cpp
+	@makedir "./Debug"
+	@$(CompilerName) $(CmpOptions) $(IncludePath) -MT$(IntermediateDirectory)/item$(ObjectSuffix) -MF$(IntermediateDirectory)/item$(DependSuffix) -MM "C:/easyrpg/player2/src/item.cpp"
+
+$(IntermediateDirectory)/ldb_reader$(ObjectSuffix): src/ldb_reader.cpp $(IntermediateDirectory)/ldb_reader$(DependSuffix)
+	@makedir "./Debug"
+	$(CompilerName) $(SourceSwitch) "C:/easyrpg/player2/src/ldb_reader.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/ldb_reader$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/ldb_reader$(DependSuffix): src/ldb_reader.cpp
+	@makedir "./Debug"
+	@$(CompilerName) $(CmpOptions) $(IncludePath) -MT$(IntermediateDirectory)/ldb_reader$(ObjectSuffix) -MF$(IntermediateDirectory)/ldb_reader$(DependSuffix) -MM "C:/easyrpg/player2/src/ldb_reader.cpp"
+
+$(IntermediateDirectory)/RPG$(ObjectSuffix): src/RPG.cpp $(IntermediateDirectory)/RPG$(DependSuffix)
+	@makedir "./Debug"
+	$(CompilerName) $(SourceSwitch) "C:/easyrpg/player2/src/RPG.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/RPG$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/RPG$(DependSuffix): src/RPG.cpp
+	@makedir "./Debug"
+	@$(CompilerName) $(CmpOptions) $(IncludePath) -MT$(IntermediateDirectory)/RPG$(ObjectSuffix) -MF$(IntermediateDirectory)/RPG$(DependSuffix) -MM "C:/easyrpg/player2/src/RPG.cpp"
+
+$(IntermediateDirectory)/skill$(ObjectSuffix): src/skill.cpp $(IntermediateDirectory)/skill$(DependSuffix)
+	@makedir "./Debug"
+	$(CompilerName) $(SourceSwitch) "C:/easyrpg/player2/src/skill.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/skill$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/skill$(DependSuffix): src/skill.cpp
+	@makedir "./Debug"
+	@$(CompilerName) $(CmpOptions) $(IncludePath) -MT$(IntermediateDirectory)/skill$(ObjectSuffix) -MF$(IntermediateDirectory)/skill$(DependSuffix) -MM "C:/easyrpg/player2/src/skill.cpp"
+
+$(IntermediateDirectory)/troop$(ObjectSuffix): src/troop.cpp $(IntermediateDirectory)/troop$(DependSuffix)
+	@makedir "./Debug"
+	$(CompilerName) $(SourceSwitch) "C:/easyrpg/player2/src/troop.cpp" $(CmpOptions) $(ObjectSwitch)$(IntermediateDirectory)/troop$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/troop$(DependSuffix): src/troop.cpp
+	@makedir "./Debug"
+	@$(CompilerName) $(CmpOptions) $(IncludePath) -MT$(IntermediateDirectory)/troop$(ObjectSuffix) -MF$(IntermediateDirectory)/troop$(DependSuffix) -MM "C:/easyrpg/player2/src/troop.cpp"
 
 ##
 ## Clean
@@ -449,30 +446,6 @@ clean:
 	$(RM) $(IntermediateDirectory)/rpg_skill$(ObjectSuffix)
 	$(RM) $(IntermediateDirectory)/rpg_skill$(DependSuffix)
 	$(RM) $(IntermediateDirectory)/rpg_skill$(PreprocessSuffix)
-	$(RM) $(IntermediateDirectory)/RPG$(ObjectSuffix)
-	$(RM) $(IntermediateDirectory)/RPG$(DependSuffix)
-	$(RM) $(IntermediateDirectory)/RPG$(PreprocessSuffix)
-	$(RM) $(IntermediateDirectory)/actor$(ObjectSuffix)
-	$(RM) $(IntermediateDirectory)/actor$(DependSuffix)
-	$(RM) $(IntermediateDirectory)/actor$(PreprocessSuffix)
-	$(RM) $(IntermediateDirectory)/ldb_reader$(ObjectSuffix)
-	$(RM) $(IntermediateDirectory)/ldb_reader$(DependSuffix)
-	$(RM) $(IntermediateDirectory)/ldb_reader$(PreprocessSuffix)
-	$(RM) $(IntermediateDirectory)/skill$(ObjectSuffix)
-	$(RM) $(IntermediateDirectory)/skill$(DependSuffix)
-	$(RM) $(IntermediateDirectory)/skill$(PreprocessSuffix)
-	$(RM) $(IntermediateDirectory)/item$(ObjectSuffix)
-	$(RM) $(IntermediateDirectory)/item$(DependSuffix)
-	$(RM) $(IntermediateDirectory)/item$(PreprocessSuffix)
-	$(RM) $(IntermediateDirectory)/enemy$(ObjectSuffix)
-	$(RM) $(IntermediateDirectory)/enemy$(DependSuffix)
-	$(RM) $(IntermediateDirectory)/enemy$(PreprocessSuffix)
-	$(RM) $(IntermediateDirectory)/e_action$(ObjectSuffix)
-	$(RM) $(IntermediateDirectory)/e_action$(DependSuffix)
-	$(RM) $(IntermediateDirectory)/e_action$(PreprocessSuffix)
-	$(RM) $(IntermediateDirectory)/troop$(ObjectSuffix)
-	$(RM) $(IntermediateDirectory)/troop$(DependSuffix)
-	$(RM) $(IntermediateDirectory)/troop$(PreprocessSuffix)
 	$(RM) $(IntermediateDirectory)/tools$(ObjectSuffix)
 	$(RM) $(IntermediateDirectory)/tools$(DependSuffix)
 	$(RM) $(IntermediateDirectory)/tools$(PreprocessSuffix)
@@ -485,6 +458,30 @@ clean:
 	$(RM) $(IntermediateDirectory)/stevent$(ObjectSuffix)
 	$(RM) $(IntermediateDirectory)/stevent$(DependSuffix)
 	$(RM) $(IntermediateDirectory)/stevent$(PreprocessSuffix)
+	$(RM) $(IntermediateDirectory)/actor$(ObjectSuffix)
+	$(RM) $(IntermediateDirectory)/actor$(DependSuffix)
+	$(RM) $(IntermediateDirectory)/actor$(PreprocessSuffix)
+	$(RM) $(IntermediateDirectory)/enemy$(ObjectSuffix)
+	$(RM) $(IntermediateDirectory)/enemy$(DependSuffix)
+	$(RM) $(IntermediateDirectory)/enemy$(PreprocessSuffix)
+	$(RM) $(IntermediateDirectory)/e_action$(ObjectSuffix)
+	$(RM) $(IntermediateDirectory)/e_action$(DependSuffix)
+	$(RM) $(IntermediateDirectory)/e_action$(PreprocessSuffix)
+	$(RM) $(IntermediateDirectory)/item$(ObjectSuffix)
+	$(RM) $(IntermediateDirectory)/item$(DependSuffix)
+	$(RM) $(IntermediateDirectory)/item$(PreprocessSuffix)
+	$(RM) $(IntermediateDirectory)/ldb_reader$(ObjectSuffix)
+	$(RM) $(IntermediateDirectory)/ldb_reader$(DependSuffix)
+	$(RM) $(IntermediateDirectory)/ldb_reader$(PreprocessSuffix)
+	$(RM) $(IntermediateDirectory)/RPG$(ObjectSuffix)
+	$(RM) $(IntermediateDirectory)/RPG$(DependSuffix)
+	$(RM) $(IntermediateDirectory)/RPG$(PreprocessSuffix)
+	$(RM) $(IntermediateDirectory)/skill$(ObjectSuffix)
+	$(RM) $(IntermediateDirectory)/skill$(DependSuffix)
+	$(RM) $(IntermediateDirectory)/skill$(PreprocessSuffix)
+	$(RM) $(IntermediateDirectory)/troop$(ObjectSuffix)
+	$(RM) $(IntermediateDirectory)/troop$(DependSuffix)
+	$(RM) $(IntermediateDirectory)/troop$(PreprocessSuffix)
 	$(RM) $(OutputFile)
 	$(RM) $(OutputFile).exe
 

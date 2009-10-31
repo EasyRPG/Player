@@ -3,15 +3,15 @@
 
 #include "ldbchunks.h"
 #include "actor.h"
-#include "../main_data.h"
+#include "main_data.h"
 #include "item.h"
 #include "skill.h"
 #include "enemy.h"
-#include "../troop.h"
+#include "troop.h"
 #include <string>
 #include <iostream>
-#include "../tools.h"
-#include "../ldb_data.h"
+#include "tools.h"
+#include "ldb_data.h"
 
 using namespace RPG;
 

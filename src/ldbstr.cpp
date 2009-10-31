@@ -1,4 +1,4 @@
-#include "Database/ldb_reader.h"
+#include "ldb_reader.h"
 #include <iostream>
 void stcSound_effect::set_defaults(){
 Name_of_Sound_effect="";
