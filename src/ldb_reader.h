@@ -11,10 +11,6 @@
 using namespace RPG;
 
 namespace LDB_reader {
-    extern unsigned char Void;
-    extern tChunk ChunkInfo; // informacion del pedazo leido
-    extern bool return_value;
-    extern int trash;
     bool load(const std::string& Filename);
     void heroskillChunk(FILE * Stream, Actor* hero);
     void heroChunk(FILE * Stream);
@@ -28,6 +24,7 @@ namespace LDB_reader {
     void MonsterPartyEventconditionChunk(FILE * Stream, Page* pgs);
     void MonsterPartyevent_pageChunk(FILE * Stream, Troop *trp);
     void mosterpartyChunk(FILE * Stream);
+    void terrainChunk(FILE * Stream);
     
 }
 

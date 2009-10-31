@@ -20,15 +20,12 @@
 #include "rpg_item.h"
 #include "rpg_enemy.h"
 #include "rpg_troop.h"
-//#include "rpg_actor.h"
-//#include "rpg_skill.h"
-/*#include "rpg_object.h"
 #include "rpg_enemy.h"
-#include "rpg_troop.h"
+#include "rpg_terrain.h"
+/*
 #include "rpg_attribute.h"
 #include "rpg_state.h"
 #include "rpg_animation.h"
-#include "rpg_terrain.h"
 #include "rpg_chipset.h"
 #include "rpg_glossary.h"
 #include "rpg_system.h"
@@ -60,10 +57,10 @@ namespace Main_Data {
     extern std::vector<RPG::Item*> data_objects;
     extern std::vector<RPG::Enemy*> data_enemies;
     extern std::vector<RPG::Troop*> data_troops;
+    std::vector<RPG::Terrain*> data_terrains;
 	/*std::vector<RPG::Attribute*> data_attributes;
     std::vector<RPG::State*> data_states;
     std::vector<RPG::Animation*> data_animations;
-	std::vector<RPG::Terrain*> data_terrains;
     std::vector<RPG::ChipSet*> data_chipsets;
 	std::vector<RPG::Common_Event*> data_common_events;
 	RPG::Glossary* data_words;
