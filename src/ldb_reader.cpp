@@ -1,5 +1,12 @@
 #include "ldb_reader.h"
 
+namespace LDB_reader {
+    unsigned char Void;
+    tChunk ChunkInfo; // informacion del pedazo leido
+    bool return_value;
+    int trash;
+}
+
 bool LDB_reader::load(const std::string& Filename)
 {
     // Open map file to read
