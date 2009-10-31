@@ -1,51 +1,71 @@
-#ifndef __rpg_skill__
-#define __rpg_skill__
-/*
+#ifndef __skill__
+#define __skill__
+#include <string>
+#include <vector>
+/* TODO: Move this struct to somewhere else */
+typedef struct {
+    std::string name;
+    int volume;
+    int tempo;
+    int balance;
+} sound_effect;
+/* ---------------------------------------- */
 namespace RPG {
-	class Skill {
+class Skill {
+    
+    public:
+        Skill();
+        
+        int id;
+        std::string name;
+        std::string icon_name;
+        std::string description;
+        std::string text;
+        std::string text2;
+        int failure_msg;
+        int spell_type;
+        int switch_on;
+        char scope;
+        char occasion;
+        int animation1_id;
+        int animation2_id;
+        sound_effect sound;
+//        AudioFile menu_se;
+        bool field_usg;
+        bool combat_usg;
+        bool affect_hp;
+        bool affect_mp;
+        bool affect_str;
+        bool affect_pdef;
+        //bool affect_mdef; Not available in rm 2k/2k3
+        bool affect_int;
+        bool affect_agi;
+        bool affect_resistance;
+        bool absorb_dmg;
+        bool ignore_def;
+        int common_event_id;
+        int sp_cost;
+        int power,
+            atk_f,
+            eva_f,
+            str_f,
+            dex_f,
+            agi_f,
+            int_f,
+            hit,
+            pdef_f,
+            mdef_f,
+            variance;
+        std::vector<char> change_condition;
+        std::vector<char> attributes;
+        /*std::vector<int> element_set,
+                         plus_state_set,
+                         minus_state_set;*/
+        
+        
+    
+};
 
-	public:
-		Skill();
-		~Skill();
+}
 
-		int id;
-		std::string  name;
-		int type;
-		int mp_cost;
-		std::string description;
-		
-		// type == Normal
-		int scope;
-		int animation_id;
-		std::string using_message1;
-		std::string using_message2;
-		int failure_message;
-		int pdef_f;
-		int mdef_f;
-		int variance
-		int power;
-		int hit;
-		bool affect_hp;
-		bool affect_mp;
-		bool affect_attack;
-		bool affect_defense;
-		bool affect_spirit;
-		bool affect_agility;
-		bool absorb_damage;
-		bool ignore_defense;
-		int condition_size;
-		std::vector<char> condition_effects;
-		int attribute_size;
-		std::vector<char> attribute_effects;
-		bool affect_attr_defence;
-
-		// type == Teleport/Escape
-		RPG::Sound  sound_effect;
-		
-		// type == Switch
-		int switch_id;
-		bool occasion_field;
-		bool occasion_battle;
-	};
-}*/
-#endif // __rpg_skill__
+#endif
