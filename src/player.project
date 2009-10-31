@@ -241,6 +241,6 @@
   </Settings>
   <Dependencies Name="Win32 Debug"/>
   <Dependencies Name="Win32 Release"/>
-  <Dependencies Name="Debug"/>
   <Dependencies Name="Release"/>
+  <Dependencies Name="Debug"/>
 </CodeLite_Project>
