@@ -8,6 +8,8 @@
 #include "tools.h"
 #include "ldb_data.h"
 
+using namespace RPG;
+
 namespace LDB_reader {
     bool load(const std::string& Filename);
     void heroskillChunk(FILE * Stream, Actor* hero);

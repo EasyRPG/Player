@@ -1,5 +1,6 @@
-#ifndef __attribute__
-#define __attribute__
+#ifndef _h_attribute__
+#define _h_attribute__
+#include <string>
 
 namespace RPG {
 
