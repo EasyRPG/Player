@@ -2,7 +2,6 @@
 #include "ldb_reader.h"
 
 #include <string>
-#include "main_data.h"
 #include "graphics.h"
 #include "input.h"
 #include "audio.h"
