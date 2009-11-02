@@ -30,7 +30,7 @@ void Scene_Title::main_function()
 	Sprite background();
 	
 	// Create Options Window
-	std::string options[3];
+//	std::string options[3];
 /*	options[0] = Main_Data::data_system.glossary.new_game;
 	options[1] = Main_Data::data_system.glossary.load_game;
 	options[2] = Main_Data::data_system.glossary.exit_game;*/

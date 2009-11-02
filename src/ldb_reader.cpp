@@ -103,7 +103,7 @@ void LDB_reader::heroskillChunk(FILE * Stream, Actor* hero)
 
 void LDB_reader::heroChunk(FILE * Stream)
 {
-    int id,datatoread=0,datareaded=0,comands=0;
+    int datatoread=0,datareaded=0;
     int levels;
     short dat;
     Actor *hero_data;
@@ -287,7 +287,7 @@ void LDB_reader::heroChunk(FILE * Stream)
 
 void LDB_reader::skillChunk(FILE * Stream)
 {
-    int id,datatoread=0,datareaded=0;
+    int datatoread=0,datareaded=0;
     Skill *skill;
     datatoread=ReadCompressedInteger(Stream);//numero de datos
 
@@ -425,7 +425,7 @@ void LDB_reader::skillChunk(FILE * Stream)
 
 void LDB_reader::itemChunk(FILE * Stream)
 {
-    int id,datatoread=0,datareaded=0;
+    int datatoread=0,datareaded=0;
     Item *item;
     datatoread=ReadCompressedInteger(Stream);
     while (datatoread>datareaded) 
@@ -606,7 +606,7 @@ void LDB_reader::itemChunk(FILE * Stream)
 
 void LDB_reader::mosteractionChunk(FILE * Stream, Enemy* e)
 {
-    int id,datatoread=0,datareaded=0;
+    int datatoread=0,datareaded=0;
     E_Action *action;
     datatoread=ReadCompressedInteger(Stream);//numero de datos
     while (datatoread>datareaded) 
@@ -666,7 +666,7 @@ void LDB_reader::mosteractionChunk(FILE * Stream, Enemy* e)
 
 void LDB_reader::mosterChunk(FILE * Stream)
 {
-    int id,datatoread=0,datareaded=0;    
+    int datatoread=0,datareaded=0;    
 
     Enemy *enemy;
     datatoread=ReadCompressedInteger(Stream);//numero de datos
@@ -860,7 +860,6 @@ void LDB_reader::MonsterPartyevent_pageChunk(FILE * Stream, Troop *trp)
 {
     int id,datatoread=0,datareaded=0;
     Page Monsterevent;
-    stEvent Event_parser;
     datatoread=ReadCompressedInteger(Stream);//numero de datos
     while (datatoread>datareaded) { // si no hay mas en el array
         id= ReadCompressedInteger(Stream);//lectura de id 1 de array
@@ -898,7 +897,7 @@ void LDB_reader::MonsterPartyevent_pageChunk(FILE * Stream, Troop *trp)
 
 void LDB_reader::mosterpartyChunk(FILE * Stream)
 {
-    int id,datatoread=0,datareaded=0;    
+    int datatoread=0,datareaded=0;    
     Troop *enemy_group;
     datatoread=ReadCompressedInteger(Stream);//numero de datos
     while (datatoread>datareaded) 
@@ -954,7 +953,7 @@ void LDB_reader::mosterpartyChunk(FILE * Stream)
 
 void LDB_reader::terrainChunk(FILE * Stream)
 {
-    int id,datatoread=0,datareaded=0;
+    int datatoread=0,datareaded=0;
     std::string name;
     Terrain *terrain;
     datatoread=ReadCompressedInteger(Stream);//numero de datos
@@ -1016,7 +1015,7 @@ void LDB_reader::terrainChunk(FILE * Stream)
 
 void LDB_reader::attributeChunk(FILE * Stream)
 {
-    int id,datatoread=0,datareaded=0;
+    int datatoread=0,datareaded=0;
 
     Attribute *attribute;
     datatoread=ReadCompressedInteger(Stream);//numero de datos

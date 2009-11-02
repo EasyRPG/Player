@@ -31,6 +31,7 @@ Tone::~Tone()
 
 Uint32 Tone::get_uint32() {
 	//return SDL_MapRGBA(Graphics::get_pixelformat(), red, green, blue, gray);
+    return 0;
 }
 
 int Tone::get_r()

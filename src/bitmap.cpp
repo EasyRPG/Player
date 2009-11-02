@@ -140,7 +140,7 @@ void Bitmap::draw_text(Rect* rect, std::string str, int align)
 
 int Bitmap::text_size(std::string str)
 {
-	
+	return 0;
 }
 
 Font* Bitmap::get_font()

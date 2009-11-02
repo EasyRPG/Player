@@ -27,9 +27,7 @@ RPG::Skill::Skill() {
 	absorb_damage = false;
 	ignore_defense = false;
 	condition_size = 0;
-	condition_effects.clear();
 	attribute_size = 0;
-	attribute_effects.clear();
 	affect_attr_defence = false;
 
 	// type == Teleport/Escape

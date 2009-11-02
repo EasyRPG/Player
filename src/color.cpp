@@ -30,6 +30,7 @@ Color::~Color()
 
 Uint32 Color::get_uint32() {
 	//return SDL_MapRGBA(Graphics::get_pixelformat(), red, green, blue, alpha);
+    return 0;
 }
 
 int Color::get_r() const

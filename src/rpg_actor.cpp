@@ -2,9 +2,9 @@
 
 RPG::Actor::Actor() {
 	id = 0;
-	std::string name = "";
-	std::string title = "";
-	std::string character_name = "";
+	name = "";
+	title = "";
+	character_name = "";
 	character_index = 0;
 	transparent = false;
 	initial_level = 1;
@@ -34,11 +34,8 @@ RPG::Actor::Actor() {
 	armor_id = 0;
 	head_id = 0;
 	accessory_id = 0;
-	std::vector<Learning> skills;
 	condition_size = 0;
-	condition_effects.clear();
 	attribute_size = 0;
-	attribute_effects.clear();
 	
 	rename_skill = false; // 2000
 	skill_name = ""; // 2000

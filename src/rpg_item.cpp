@@ -6,14 +6,11 @@ RPG::Item::Item() {
 	description = "";
 	type = COMMON;
 	price = 0;
-	actor_set.clear();
 	uses = 1;
 	atk_points = 0;
 	pdef_points = 0;
 	int_points = 0;
 	agi_points = 0;
-	attribute_set.clear();
-	state_set.clear();
 	state_chance = 0;
 	two_handed = false;
 	sp_cost = 0;
