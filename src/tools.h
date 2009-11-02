@@ -22,7 +22,6 @@
     #include <stdio.h>
     #include <string>
     #include "SDL.h"
-    using namespace std;
     // =========================================================================
 
     // --- Chunk structure -----------------------------------------------------
@@ -43,20 +42,20 @@
     unsigned long ReadCompressedInteger(FILE * FileStream);
     unsigned long ReadCompressedIntegerCount(FILE * FileStream);
     int CountRead(int data);
-    string ReadString(FILE * FileStream);
-    string ReadString(FILE * FileStream, unsigned char Lenght);
+    std::string ReadString(FILE * FileStream);
+    std::string ReadString(FILE * FileStream, unsigned char Lenght);
 
     // --- Surface Tools -------------------------------------------------------
     void SetTransparent(SDL_Surface * ima);
     SDL_Surface * CreateSurface(int Width, int Height);
-    SDL_Surface * LoadSurface(string Filename);
+    SDL_Surface * LoadSurface(std::string Filename);
     SDL_Surface * GrabFromSurface(SDL_Surface * Source, int sX, int sY, int sW, int sH);
     void DrawSurface(SDL_Surface * Destiny, int dX, int dY, SDL_Surface * Source, int sX=0, int sY=0, int sW=-1, int sH=-1);
 
     // --- Miscellaneous functions ---------------------------------------------
     void s_toupper(char *dest, char *s);
-	char * case_insensitive_and_format_img_exist(const char *directory, string & file);
-	char * case_insensitive_and_format_msc_exist(const char *directory,string & file);
-	int case_insensitive_exist( string & dir_file, const char *directory, char *file);
+	char * case_insensitive_and_format_img_exist(const char *directory, std::string & file);
+	char * case_insensitive_and_format_msc_exist(const char *directory, std::string & file);
+	int case_insensitive_exist( std::string & dir_file, const char *directory, char *file);
 
 #endif

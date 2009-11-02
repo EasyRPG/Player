@@ -59,16 +59,26 @@
       <File Name="rpg_troop.h"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Reader">
-      <File Name="eventchunks.h"/>
-      <File Name="ldb_data.cpp"/>
-      <File Name="ldb_data.h"/>
-      <File Name="ldb_reader.cpp"/>
-      <File Name="ldb_reader.h"/>
-      <File Name="ldbchunks.h"/>
-      <File Name="ldbstr.cpp"/>
-      <File Name="ldbstr.h"/>
-      <File Name="stevent.cpp"/>
-      <File Name="stevent.h"/>
+      <VirtualDirectory Name="LDB">
+        <File Name="eventchunks.h"/>
+        <File Name="ldb_actor.cpp"/>
+        <File Name="ldb_attribute.cpp"/>
+        <File Name="ldb_data.cpp"/>
+        <File Name="ldb_data.h"/>
+        <File Name="ldb_enemy.cpp"/>
+        <File Name="ldb_item.cpp"/>
+        <File Name="ldb_reader.cpp"/>
+        <File Name="ldb_reader.h"/>
+        <File Name="ldb_skill.cpp"/>
+        <File Name="ldb_state.cpp"/>
+        <File Name="ldb_terrain.cpp"/>
+        <File Name="ldb_troop.cpp"/>
+        <File Name="ldbchunks.h"/>
+        <File Name="ldbstr.cpp"/>
+        <File Name="ldbstr.h"/>
+        <File Name="stevent.cpp"/>
+        <File Name="stevent.h"/>
+      </VirtualDirectory>
     </VirtualDirectory>
     <VirtualDirectory Name="Multimedia">
       <File Name="audio.cpp"/>
