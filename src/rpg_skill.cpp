@@ -2,42 +2,41 @@
 
 RPG::Skill::Skill() {
     id = 0;
-    name = "";
-    icon_name = "";
-    description = "";
-    text = "";
-    text2 = "";
-    failure_msg = 0;
-    spell_type = 0;
-    switch_on = 0;
-    scope = 0;
-    occasion = 1;
-    animation1_id = 0;
-    animation2_id = 0;
-//    menu_se = NULL; // FIXME: Should allocate some memory
-//    field_usage = false;
-//    combat_usage = false;
-    affect_hp = true;
-    affect_mp = false;
-    affect_str = false;
-    affect_pdef = false;
-    //affect_mdef = false; Not available in rm 2k/2k3
-    affect_int = false;
-    affect_agi = false;
-    affect_resistance = false;
-    absorb_dmg = false;
-    ignore_def = false;
-    common_event_id = 0; 
-    sp_cost = 0;
-    power = 0;
-    atk_f = 0;
-    eva_f = 0;
-    str_f = 0;
-    dex_f = 0;
-    agi_f = 0;
-    int_f = 3;
-    hit = 100;
-    pdef_f = 0;
-    mdef_f = 100;
-    variance = 4;   
+	name = "";
+	type = 0;
+	sp_cost = 0;
+	description = "";
+	
+	// type == Normal
+	scope = 0;
+	animation_id = 0;
+	using_message1 = "";
+	using_message2 = "";
+	failure_message = 0;
+	pdef_f = 0;
+	mdef_f = 0;
+	variance = 0;
+	power = 0;
+	hit = 0;
+	affect_hp = false;
+	affect_sp = false;
+	affect_attack = false;
+	affect_defense = false;
+	affect_spirit = false;
+	affect_agility = false;
+	absorb_damage = false;
+	ignore_defense = false;
+	condition_size = 0;
+	condition_effects.clear();
+	attribute_size = 0;
+	attribute_effects.clear();
+	affect_attr_defence = false;
+
+	// type == Teleport/Escape
+	sound_effect = new RPG::Sound();
+	
+	// type == Switch
+	switch_id = 1;
+	occasion_field = false;
+	occasion_battle = false;
 }

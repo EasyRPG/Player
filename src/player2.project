@@ -5,106 +5,15 @@
       <![CDATA[00030001N0005Debug0000000000000001N0011Debug MingW0000000000000001N0007Release000000000000
     
     
+    
+    
+    
+    
     ]]>
     </Plugin>
   </Plugins>
   <Description/>
   <Dependencies/>
-  <VirtualDirectory Name="src">
-    <File Name="audio.cpp"/>
-    <File Name="audio.h"/>
-    <File Name="bitmap.cpp"/>
-    <File Name="bitmap.h"/>
-    <File Name="color.cpp"/>
-    <File Name="color.h"/>
-    <File Name="defines.h"/>
-    <File Name="font.cpp"/>
-    <File Name="font.h"/>
-    <File Name="game_actors.cpp"/>
-    <File Name="game_actors.h"/>
-    <File Name="game_map.cpp"/>
-    <File Name="game_map.h"/>
-    <File Name="game_party.cpp"/>
-    <File Name="game_party.h"/>
-    <File Name="game_player.cpp"/>
-    <File Name="game_player.h"/>
-    <File Name="game_screen.cpp"/>
-    <File Name="game_screen.h"/>
-    <File Name="game_switches.cpp"/>
-    <File Name="game_switches.h"/>
-    <File Name="game_system.cpp"/>
-    <File Name="game_system.h"/>
-    <File Name="game_temp.cpp"/>
-    <File Name="game_temp.h"/>
-    <File Name="game_troop.cpp"/>
-    <File Name="game_troop.h"/>
-    <File Name="game_variables.cpp"/>
-    <File Name="game_variables.h"/>
-    <File Name="graphics.cpp"/>
-    <File Name="graphics.h"/>
-    <File Name="input.cpp"/>
-    <File Name="input.h"/>
-    <File Name="main.cpp"/>
-    <File Name="main_data.h"/>
-    <File Name="plane.cpp"/>
-    <File Name="plane.h"/>
-    <File Name="rect.cpp"/>
-    <File Name="rect.h"/>
-    <File Name="scene.h"/>
-    <File Name="scene_title.cpp"/>
-    <File Name="scene_title.h"/>
-    <File Name="sprite.cpp"/>
-    <File Name="sprite.h"/>
-    <File Name="table.cpp"/>
-    <File Name="table.h"/>
-    <File Name="tilemap.cpp"/>
-    <File Name="tilemap.h"/>
-    <File Name="tone.cpp"/>
-    <File Name="tone.h"/>
-    <File Name="viewport.cpp"/>
-    <File Name="viewport.h"/>
-    <File Name="window.cpp"/>
-    <File Name="window.h"/>
-    <File Name="zobj.cpp"/>
-    <File Name="zobj.h"/>
-    <File Name="tools.cpp"/>
-    <File Name="tools.h"/>
-    <File Name="ldb_data.cpp"/>
-    <File Name="ldb_data.h"/>
-    <File Name="ldbstr.cpp"/>
-    <File Name="ldbstr.h"/>
-    <File Name="stevent.h"/>
-    <File Name="stevent.cpp"/>
-    <File Name="eventchunks.h"/>
-    <File Name="ldbchunks.h"/>
-    <File Name="ldb_reader.cpp"/>
-    <File Name="ldb_reader.h"/>
-    <File Name="RPG.cpp"/>
-    <File Name="RPG.h"/>
-    <File Name="main_data.cpp"/>
-    <File Name="rpg_actor.cpp.bak"/>
-    <File Name="rpg_actor.h.bak"/>
-    <File Name="rpg_skill.cpp.bak"/>
-    <File Name="rpg_skill.h.bak"/>
-    <File Name="rpg_actor.cpp"/>
-    <File Name="rpg_actor.h"/>
-    <File Name="rpg_skill.cpp"/>
-    <File Name="rpg_skill.h"/>
-    <File Name="rpg_item.cpp"/>
-    <File Name="rpg_item.h"/>
-    <File Name="rpg_enemy.cpp"/>
-    <File Name="rpg_enemy.h"/>
-    <File Name="rpg_e_action.cpp"/>
-    <File Name="rpg_e_action.h"/>
-    <File Name="rpg_troop.cpp"/>
-    <File Name="rpg_troop.h"/>
-    <File Name="rpg_terrain.cpp"/>
-    <File Name="rpg_terrain.h"/>
-    <File Name="rpg_attribute.cpp"/>
-    <File Name="rpg_attribute.h"/>
-    <File Name="rpg_state.cpp"/>
-    <File Name="rpg_state.h"/>
-  </VirtualDirectory>
   <Dependencies Name="Release"/>
   <Dependencies Name="Debug MingW"/>
   <Settings Type="Executable">
@@ -210,4 +119,104 @@
     </GlobalSettings>
   </Settings>
   <Dependencies Name="Debug"/>
+  <VirtualDirectory Name="src">
+    <VirtualDirectory Name="Game">
+      <File Name="game_actors.cpp"/>
+      <File Name="game_actors.h"/>
+      <File Name="game_map.cpp"/>
+      <File Name="game_map.h"/>
+      <File Name="game_party.cpp"/>
+      <File Name="game_party.h"/>
+      <File Name="game_player.cpp"/>
+      <File Name="game_player.h"/>
+      <File Name="game_screen.cpp"/>
+      <File Name="game_screen.h"/>
+      <File Name="game_switches.cpp"/>
+      <File Name="game_switches.h"/>
+      <File Name="game_system.cpp"/>
+      <File Name="game_system.h"/>
+      <File Name="game_temp.cpp"/>
+      <File Name="game_temp.h"/>
+      <File Name="game_troop.cpp"/>
+      <File Name="game_troop.h"/>
+      <File Name="game_variables.cpp"/>
+      <File Name="game_variables.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="RPG">
+      <File Name="rpg_actor.cpp"/>
+      <File Name="rpg_actor.cpp.bak"/>
+      <File Name="rpg_actor.h"/>
+      <File Name="rpg_actor.h.bak"/>
+      <File Name="rpg_attribute.cpp"/>
+      <File Name="rpg_attribute.h"/>
+      <File Name="rpg_e_action.cpp"/>
+      <File Name="rpg_e_action.h"/>
+      <File Name="rpg_enemy.cpp"/>
+      <File Name="rpg_enemy.h"/>
+      <File Name="rpg_item.cpp"/>
+      <File Name="rpg_item.h"/>
+      <File Name="rpg_skill.cpp"/>
+      <File Name="rpg_skill.cpp.bak"/>
+      <File Name="rpg_skill.h"/>
+      <File Name="rpg_skill.h.bak"/>
+      <File Name="rpg_sound.cpp"/>
+      <File Name="rpg_sound.h"/>
+      <File Name="rpg_state.cpp"/>
+      <File Name="rpg_state.h"/>
+      <File Name="rpg_terrain.cpp"/>
+      <File Name="rpg_terrain.h"/>
+      <File Name="rpg_troop.cpp"/>
+      <File Name="rpg_troop.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="Reader">
+      <File Name="eventchunks.h"/>
+      <File Name="ldb_data.cpp"/>
+      <File Name="ldb_data.h"/>
+      <File Name="ldb_reader.cpp"/>
+      <File Name="ldb_reader.h"/>
+      <File Name="ldbchunks.h"/>
+      <File Name="ldbstr.cpp"/>
+      <File Name="ldbstr.h"/>
+      <File Name="stevent.cpp"/>
+      <File Name="stevent.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="Multimedia">
+      <File Name="audio.cpp"/>
+      <File Name="audio.h"/>
+      <File Name="bitmap.cpp"/>
+      <File Name="bitmap.h"/>
+      <File Name="color.cpp"/>
+      <File Name="color.h"/>
+      <File Name="font.cpp"/>
+      <File Name="font.h"/>
+      <File Name="graphics.cpp"/>
+      <File Name="graphics.h"/>
+      <File Name="input.cpp"/>
+      <File Name="input.h"/>
+      <File Name="plane.cpp"/>
+      <File Name="plane.h"/>
+      <File Name="rect.cpp"/>
+      <File Name="rect.h"/>
+      <File Name="sprite.cpp"/>
+      <File Name="sprite.h"/>
+      <File Name="table.cpp"/>
+      <File Name="table.h"/>
+      <File Name="tilemap.cpp"/>
+      <File Name="tilemap.h"/>
+      <File Name="tone.cpp"/>
+      <File Name="tone.h"/>
+      <File Name="viewport.cpp"/>
+      <File Name="viewport.h"/>
+      <File Name="window.cpp"/>
+      <File Name="window.h"/>
+      <File Name="zobj.cpp"/>
+      <File Name="zobj.h"/>
+    </VirtualDirectory>
+    <File Name="defines.h"/>
+    <File Name="main.cpp"/>
+    <File Name="main_data.cpp"/>
+    <File Name="main_data.h"/>
+    <File Name="tools.cpp"/>
+    <File Name="tools.h"/>
+  </VirtualDirectory>
 </CodeLite_Project>

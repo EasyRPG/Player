@@ -3,9 +3,9 @@
 
 class Scene {
 public:
-	virtual ~Scene();
+	virtual ~Scene() {};
 
-	virtual void main();
+	virtual void main_function();
 };
 
 #endif // __scene__

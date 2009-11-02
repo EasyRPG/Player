@@ -26,51 +26,57 @@ class Item {
         int id;
         std::string name;
         std::string description;
-        //item_type type;
         int type;
         int price;
-        char n_uses;
-        int atk_change;
-        int pdef_change;
-        int int_change;
-        int agi_change;
-        bool both_hands;
-        int mp_cost;
+		std::vector<char> actor_set;
+		int uses; // Consumables
+
+		// Equipable		
+		int atk_points;
+        int pdef_points;
+        int int_points;
+        int agi_points;
+        std::vector<char> attribute_set;
+		std::vector<char> state_set;
+        char state_chance;
+				
+		// Weapon
+		bool two_handed;
+		int sp_cost;
         char hit;
-        int crit_hit;
+        int critical_hit;
         int animation_id;
-        bool preventive;
-        bool double_attack;
+        bool preemptive;
+        bool dual_attack;
         bool attack_all;
         bool ignore_evasion;
-        bool prevent_crits;
+		
+		// Shield Armor Head Other
+		bool prevent_critical;
         bool raise_evasion;
-        bool half_mp;
-        bool no_terrain_dmg;
-        bool heals_party;
+		bool half_sp_cost;
+		bool no_terrain_damage;
+		
+		// Medicine
+		bool entire_party;
         int recover_hp;
         char recover_hp_rate;
-        int recover_mp;
-        char recover_mp_rate;
-        bool field_only;
-        bool dead_only;
-        int max_hp_mod;
-        int max_mp_mod;
-        int str_mod;
-        int pdef_mod;
-        int int_mod;
-        int agi_mod;
-        bool use_msg;
-        int switch_on;
-        bool use_on_field;
-        bool use_in_battle;
-        std::vector<char> heros_can_use;
-        std::vector<char> conditions;
-        std::vector<char> attributes;
-        char chance_cond;
-        
-    
-
+        int recover_sp;
+        char recover_sp_rate;
+        bool ocassion_field; // Switch
+        bool ko_only;
+		
+        // Book - Unique
+        int skill_id;
+		bool using_messsage;
+		
+        // Material (See also Equipable points)
+        int max_hp_points;
+        int max_sp_points;
+		
+		// Switch
+		int switch_id;
+        bool ocassion_battle;
 };
 }
 

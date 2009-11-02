@@ -5,10 +5,10 @@ RPG::Terrain::Terrain() {
     name = "";
     damage = 0;
     encounter_rate = 0;
-    battle_bkg_name = "";
-    skiff_may_pass = false;
-    boat_may_pass = false;
-    airship_may_pass = true;
-    airship_may_land = true;
-    hero_opacity = 0;
+    battle_background = "";
+    ship_pass = false;
+    boat_pass = false;
+    airship_pass = true;
+    airship_land = true;
+    chara_opacity = 0;
 }

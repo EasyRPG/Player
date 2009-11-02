@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 	// Main loop
 	while(Main_Data::scene_type != "")
 	{
-		Main_Data::scene->main();
+		Main_Data::scene->main_function();
 	}
 	
 	// Quit SDL
