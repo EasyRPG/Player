@@ -39,6 +39,7 @@ Viewport::~Viewport()
 //	Graphics::remove_viewport(id);
 }
 
+std::map<int, Viewport*> Viewport::viewports;
 int Viewport::count = 0;
 
 void Viewport::dispose()
@@ -140,7 +141,7 @@ void Viewport::add_viewport(int id, Viewport *viewport)
 {
 	viewports[id] = viewport;
 	ZObj zobj((*viewport).get_z(), id, TYPE_VIEWPORT, 0);
-	ZObj::zlist.push_back(zobj);
+	Graphics::zlist.push_back(zobj);
 }
 
 void Viewport::remove_viewport(int id)

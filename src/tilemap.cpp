@@ -31,6 +31,7 @@ Tilemap::~Tilemap()
 //	Graphics::remove_tilemap(id);
 }
 
+std::map<int, Tilemap*> Tilemap::tilemaps;
 int Tilemap::count = 0;
 
 void Tilemap::dispose()

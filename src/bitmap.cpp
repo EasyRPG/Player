@@ -21,6 +21,7 @@ Bitmap::~Bitmap()
 	remove_bitmap(id);
 }
 
+std::map<int, Bitmap*> Bitmap::bitmaps;
 int Bitmap::count = 0;
 
 void Bitmap::dispose()

@@ -51,6 +51,7 @@ Plane::~Plane()
 	remove_plane(id);
 }
 
+std::map<int, Plane*> Plane::planes;
 int Plane::count = 0;
 
 void Plane::dispose()
@@ -223,7 +224,7 @@ void Plane::add_plane(int id, Plane *plane)
 {
 	planes[id] = plane;
 	ZObj zobj((*plane).get_z(), id, TYPE_PLANE, 0);
-	ZObj::zlist.push_back(zobj);
+	Graphics::zlist.push_back(zobj);
 }
 
 void Plane::remove_plane(int id)

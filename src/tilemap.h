@@ -7,7 +7,7 @@
 #include "bitmap.h"
 #include "rect.h"
 #include "table.h"
-class Viewport;
+
 class Tilemap {
 
 public:

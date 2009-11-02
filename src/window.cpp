@@ -55,6 +55,7 @@ Window::~Window()
 //	Graphics::remove_window(id);
 }
 
+std::map<int, Window*> Window::windows;
 int Window::count = 0;
 
 void Window::dispose()
@@ -259,7 +260,7 @@ void Window::add_window(int id, Window *window)
 {
 	windows[id] = window;
 	ZObj zobj((*window).get_z(), id, TYPE_WINDOW, Graphics::get_frame_count());
-	ZObj::zlist.push_back(zobj);
+	Graphics::zlist.push_back(zobj);
 }
 
 void Window::remove_window(int id)

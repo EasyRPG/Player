@@ -60,6 +60,7 @@ Sprite::~Sprite()
 //	Graphics::remove_sprite(id);
 }
 
+std::map<int, Sprite*> Sprite::sprites;
 int Sprite::count = 0;
 
 void Sprite::dispose()
@@ -287,7 +288,7 @@ void Sprite::add_sprite(int id, Sprite *sprite)
 {
 	sprites[id] = sprite;
 	ZObj zobj((*sprite).get_z(), id, TYPE_SPRITE, 0);
-	ZObj::zlist.push_back(zobj);
+	Graphics::zlist.push_back(zobj);
 }
 
 void Sprite::remove_sprite(int id)

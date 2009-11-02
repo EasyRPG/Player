@@ -1,8 +1,6 @@
 #ifndef __zobj__
 #define __zobj__
 
-#include <list>
-
 #define TYPE_VIEWPORT 0
 #define TYPE_SPRITE 1
 #define TYPE_PLANE 2
@@ -24,10 +22,6 @@ public:
 	void set_id(int nid);
 	void set_type(int ntype);
 	void set_creation(int ncreation);
-	
-	static std::list<ZObj> zlist;
-	static std::list<ZObj>::iterator zlist_it;
-	
 private:
 	int z;
 	int id;
