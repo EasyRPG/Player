@@ -45,13 +45,16 @@ extern "C" {
 /* ---- Prototypes */
 
 #ifdef WIN32
-#ifdef BUILD_DLL
-#define DLLINTERFACE __declspec(dllexport)
-#else
-#define DLLINTERFACE __declspec(dllimport)
+#  ifdef DLL_EXPORT
+#    define SDL_ROTOZOOM_SCOPE __declspec(dllexport)
+#  else
+#    ifdef LIBSDL_GFX_DLL_IMPORT
+#      define SDL_ROTOZOOM_SCOPE __declspec(dllimport)
+#    endif
+#  endif
 #endif
-#else
-#define DLLINTERFACE
+#ifndef SDL_ROTOZOOM_SCOPE
+#  define SDL_ROTOZOOM_SCOPE extern
 #endif
 
 /* 
@@ -65,17 +68,17 @@ extern "C" {
 
 */
 
-    DLLINTERFACE SDL_Surface *rotozoomSurface(SDL_Surface * src, double angle, double zoom, int smooth);
+    SDL_ROTOZOOM_SCOPE SDL_Surface *rotozoomSurface(SDL_Surface * src, double angle, double zoom, int smooth);
 
-    DLLINTERFACE SDL_Surface *rotozoomSurfaceXY
+    SDL_ROTOZOOM_SCOPE SDL_Surface *rotozoomSurfaceXY
     (SDL_Surface * src, double angle, double zoomx, double zoomy, int smooth);
 
 /* Returns the size of the target surface for a rotozoomSurface() call */
 
-    DLLINTERFACE void rotozoomSurfaceSize(int width, int height, double angle, double zoom, int *dstwidth,
+    SDL_ROTOZOOM_SCOPE void rotozoomSurfaceSize(int width, int height, double angle, double zoom, int *dstwidth,
 					  int *dstheight);
 
-    DLLINTERFACE void rotozoomSurfaceSizeXY
+    SDL_ROTOZOOM_SCOPE void rotozoomSurfaceSizeXY
     (int width, int height, double angle, double zoomx, double zoomy, 
      int *dstwidth, int *dstheight);
 
@@ -90,11 +93,11 @@ extern "C" {
 
 */
 
-    DLLINTERFACE SDL_Surface *zoomSurface(SDL_Surface * src, double zoomx, double zoomy, int smooth);
+    SDL_ROTOZOOM_SCOPE SDL_Surface *zoomSurface(SDL_Surface * src, double zoomx, double zoomy, int smooth);
 
 /* Returns the size of the target surface for a zoomSurface() call */
 
-    DLLINTERFACE void zoomSurfaceSize(int width, int height, double zoomx, double zoomy, int *dstwidth, int *dstheight);
+    SDL_ROTOZOOM_SCOPE void zoomSurfaceSize(int width, int height, double zoomx, double zoomy, int *dstwidth, int *dstheight);
 
 
 /* 
@@ -107,7 +110,7 @@ extern "C" {
     or 32bit RGBA/ABGR it will be converted into a 32bit RGBA format on the fly.
 */     
     
-    DLLINTERFACE SDL_Surface *shrinkSurface(SDL_Surface * src, int factorx, int factory);
+    SDL_ROTOZOOM_SCOPE SDL_Surface *shrinkSurface(SDL_Surface * src, int factorx, int factory);
 
 /* 
 
@@ -115,7 +118,7 @@ extern "C" {
     
 */
 
-    DLLINTERFACE SDL_Surface* rotateSurface90Degrees(SDL_Surface* pSurf, int numClockwiseTurns);
+    SDL_ROTOZOOM_SCOPE SDL_Surface* rotateSurface90Degrees(SDL_Surface* pSurf, int numClockwiseTurns);
 
 /* Ends C function definitions when using C++ */
 #ifdef __cplusplus

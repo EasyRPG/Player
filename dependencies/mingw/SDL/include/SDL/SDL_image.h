@@ -1,6 +1,6 @@
 /*
     SDL_image:  An example image loading library for use with SDL
-    Copyright (C) 1997-2006 Sam Lantinga
+    Copyright (C) 1997-2009 Sam Lantinga
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -38,7 +38,7 @@ extern "C" {
 */
 #define SDL_IMAGE_MAJOR_VERSION	1
 #define SDL_IMAGE_MINOR_VERSION	2
-#define SDL_IMAGE_PATCHLEVEL	7
+#define SDL_IMAGE_PATCHLEVEL	8
 
 /* This macro can be used to fill a version structure with the compile-time
  * version of the SDL_image library.
@@ -55,6 +55,20 @@ extern "C" {
    use the SDL_IMAGE_VERSION() macro.
  */
 extern DECLSPEC const SDL_version * SDLCALL IMG_Linked_Version(void);
+
+typedef enum
+{
+    IMG_INIT_JPG = 0x00000001,
+    IMG_INIT_PNG = 0x00000002,
+    IMG_INIT_TIF = 0x00000004
+} IMG_InitFlags;
+
+/* Loads dynamic libraries and prepares them for use.  Flags should be
+   one or more flags from IMG_InitFlags OR'd together */
+extern DECLSPEC int SDLCALL IMG_Init(int flags);
+
+/* Unloads libraries loaded with IMG_Init */
+extern DECLSPEC void SDLCALL IMG_Quit();
 
 /* Load an image from an SDL data source.
    The 'type' may be one of: "BMP", "GIF", "PNG", etc.
@@ -75,6 +89,8 @@ extern DECLSPEC SDL_Surface * SDLCALL IMG_Load_RW(SDL_RWops *src, int freesrc);
 extern DECLSPEC int SDLCALL IMG_InvertAlpha(int on);
 
 /* Functions to detect a file type, given a seekable source */
+extern DECLSPEC int SDLCALL IMG_isICO(SDL_RWops *src);
+extern DECLSPEC int SDLCALL IMG_isCUR(SDL_RWops *src);
 extern DECLSPEC int SDLCALL IMG_isBMP(SDL_RWops *src);
 extern DECLSPEC int SDLCALL IMG_isGIF(SDL_RWops *src);
 extern DECLSPEC int SDLCALL IMG_isJPG(SDL_RWops *src);
@@ -88,6 +104,8 @@ extern DECLSPEC int SDLCALL IMG_isXPM(SDL_RWops *src);
 extern DECLSPEC int SDLCALL IMG_isXV(SDL_RWops *src);
 
 /* Individual loading functions */
+extern DECLSPEC SDL_Surface * SDLCALL IMG_LoadICO_RW(SDL_RWops *src);
+extern DECLSPEC SDL_Surface * SDLCALL IMG_LoadCUR_RW(SDL_RWops *src);
 extern DECLSPEC SDL_Surface * SDLCALL IMG_LoadBMP_RW(SDL_RWops *src);
 extern DECLSPEC SDL_Surface * SDLCALL IMG_LoadGIF_RW(SDL_RWops *src);
 extern DECLSPEC SDL_Surface * SDLCALL IMG_LoadJPG_RW(SDL_RWops *src);

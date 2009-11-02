@@ -39,21 +39,24 @@ extern "C" {
 /* --------- Function prototypes */
 
 #ifdef WIN32
-#ifdef BUILD_DLL
-#define DLLINTERFACE __declspec(dllexport)
-#else
-#define DLLINTERFACE __declspec(dllimport)
+#  ifdef DLL_EXPORT
+#    define SDL_FRAMERATE_SCOPE __declspec(dllexport)
+#  else
+#    ifdef LIBSDL_GFX_DLL_IMPORT
+#      define SDL_FRAMERATE_SCOPE __declspec(dllimport)
+#    endif
+#  endif
 #endif
-#else
-#define DLLINTERFACE
+#ifndef SDL_FRAMERATE_SCOPE
+#  define SDL_FRAMERATE_SCOPE extern
 #endif
 
 /* Functions return 0 or value for sucess and -1 for error */
 
-    DLLINTERFACE void SDL_initFramerate(FPSmanager * manager);
-    DLLINTERFACE int SDL_setFramerate(FPSmanager * manager, int rate);
-    DLLINTERFACE int SDL_getFramerate(FPSmanager * manager);
-    DLLINTERFACE void SDL_framerateDelay(FPSmanager * manager);
+    SDL_FRAMERATE_SCOPE void SDL_initFramerate(FPSmanager * manager);
+    SDL_FRAMERATE_SCOPE int SDL_setFramerate(FPSmanager * manager, int rate);
+    SDL_FRAMERATE_SCOPE int SDL_getFramerate(FPSmanager * manager);
+    SDL_FRAMERATE_SCOPE void SDL_framerateDelay(FPSmanager * manager);
 
 /* --- */
 

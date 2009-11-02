@@ -23,19 +23,22 @@ extern    "C" {
 /* -------- Prototypes */
 
 #ifdef WIN32
-#ifdef BUILD_DLL
-#define DLLINTERFACE __declspec(dllexport)
-#else
-#define DLLINTERFACE __declspec(dllimport)
+#  ifdef DLL_EXPORT
+#    define SDL_GFXBLITFUNC_SCOPE __declspec(dllexport)
+#  else
+#    ifdef LIBSDL_GFX_DLL_IMPORT
+#      define SDL_GFXBLITFUNC_SCOPE __declspec(dllimport)
+#    endif
+#  endif
 #endif
-#else
-#define DLLINTERFACE
+#ifndef SDL_GFXBLITFUNC_SCOPE
+#  define SDL_GFXBLITFUNC_SCOPE extern
 #endif
 
 
-DLLINTERFACE int  SDL_gfxBlitRGBA(SDL_Surface * src, SDL_Rect * srcrect, SDL_Surface * dst, SDL_Rect * dstrect);
+SDL_GFXBLITFUNC_SCOPE int  SDL_gfxBlitRGBA(SDL_Surface * src, SDL_Rect * srcrect, SDL_Surface * dst, SDL_Rect * dstrect);
 
-DLLINTERFACE  int SDL_gfxSetAlpha(SDL_Surface * src, Uint8 a);
+SDL_GFXBLITFUNC_SCOPE  int SDL_gfxSetAlpha(SDL_Surface * src, Uint8 a);
 
 
 /* -------- Macros */
