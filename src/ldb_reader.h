@@ -26,6 +26,7 @@ namespace LDB_reader {
     void mosterpartyChunk(FILE * Stream);
     void terrainChunk(FILE * Stream);
     void attributeChunk(FILE * Stream);
+    void statesChunk(FILE * Stream);
 }
 
 #endif

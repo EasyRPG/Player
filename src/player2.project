@@ -4,6 +4,7 @@
     <Plugin Name="qmake">
       <![CDATA[00030001N0005Debug0000000000000001N0011Debug MingW0000000000000001N0007Release000000000000
     
+    
     ]]>
     </Plugin>
   </Plugins>
@@ -101,6 +102,8 @@
     <File Name="rpg_terrain.h"/>
     <File Name="rpg_attribute.cpp"/>
     <File Name="rpg_attribute.h"/>
+    <File Name="rpg_state.cpp"/>
+    <File Name="rpg_state.h"/>
   </VirtualDirectory>
   <Dependencies Name="Release"/>
   <Dependencies Name="Debug MingW"/>

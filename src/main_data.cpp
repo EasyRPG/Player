@@ -25,8 +25,8 @@ namespace Main_Data {
     std::vector<RPG::Troop*> data_troops;
     std::vector<RPG::Terrain*> data_terrains;
     std::vector<RPG::Attribute*> data_attributes;
-	/*std::vector<RPG::Attribute*> data_attributes;
     std::vector<RPG::State*> data_states;
+	/*std::vector<RPG::Attribute*> data_attributes;
     std::vector<RPG::Animation*> data_animations;
     std::vector<RPG::ChipSet*> data_chipsets;
 	std::vector<RPG::Common_Event*> data_common_events;
