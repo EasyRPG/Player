@@ -65,7 +65,7 @@ void LDB_reader::GetNextChunk(FILE * Stream)
                 statesChunk(Stream);
                 break;
             case CHUNK_System:
-                data->System_dat = systemChunk(Stream);
+                systemChunk(Stream);
                 break;
             /*case CHUNK_Animation:
                 data->animations = animationChunk(Stream);

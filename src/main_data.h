@@ -24,14 +24,13 @@
 #include "rpg_terrain.h"
 #include "rpg_attribute.h"
 #include "rpg_state.h"
-/*
-#include "rpg_animation.h"
-#include "rpg_chipset.h"
-#include "rpg_glossary.h"
+//#include "rpg_animation.h"
+//#include "rpg_chipset.h"
+//#include "rpg_glossary.h"
 #include "rpg_system.h"
-#include "rpg_common_event.h"
-#include "rpg_map.h"
-#include "rpg_area.h"*/
+//#include "rpg_common_event.h"
+//#include "rpg_map.h"
+//#include "rpg_area.h"
 
 namespace Main_Data {
 
@@ -60,15 +59,14 @@ namespace Main_Data {
     extern std::vector<RPG::Terrain*> data_terrains;
 	extern std::vector<RPG::Attribute*> data_attributes;
     extern std::vector<RPG::State*> data_states;
-    /*
-    std::vector<RPG::Animation*> data_animations;
-    std::vector<RPG::ChipSet*> data_chipsets;
-	std::vector<RPG::Common_Event*> data_common_events;
-	RPG::Glossary* data_words;
-    RPG::System* data_system;
+    //std::vector<RPG::Animation*> data_animations;
+    //std::vector<RPG::ChipSet*> data_chipsets;
+	//std::vector<RPG::Common_Event*> data_common_events;
+	//RPG::Glossary* data_words;
+    extern RPG::System* data_system;
 	
 	// Maps and Areas Data (lmu)
-	std::vector<RPG::Map> *data_maps;
-	std::vector<RPG::Area> *data_areas;*/
+	//std::vector<RPG::Map> *data_maps;
+	//std::vector<RPG::Area> *data_areas;
 }
 #endif // __main_data__

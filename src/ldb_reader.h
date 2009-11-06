@@ -14,7 +14,6 @@ namespace LDB_reader {
     void itemChunk(FILE * Stream);
     void heroskillChunk(FILE * Stream, RPG::Actor* hero);
     void heroChunk(FILE * Stream);
-    void soundChunk(FILE * Stream, RPG::Skill* sk);
     void skillChunk(FILE * Stream);
     void statesChunk(FILE * Stream);
     void terrainChunk(FILE * Stream);
@@ -25,7 +24,11 @@ namespace LDB_reader {
     void attributeChunk(FILE * Stream);
     void mosteractionChunk(FILE * Stream, RPG::Enemy* e);
     void mosterChunk(FILE * Stream);
+	
+	void systemChunk(FILE * Stream);
     
+	void soundChunk(FILE * Stream, RPG::Sound* sound);
+	void musicChunk(FILE * Stream, RPG::Music* music);
 }
 
 #endif

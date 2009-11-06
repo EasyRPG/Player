@@ -7,40 +7,6 @@ namespace {
     int trash;
 }
 
-void LDB_reader::soundChunk(FILE * Stream, RPG::Skill* sk)// confusion masica != sonido
-{
-    RPG::Sound stcSound;
-    do {
-        ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
-        if (ChunkInfo.ID!=0)
-            ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
-
-        switch (ChunkInfo.ID) { // segun el tipo
-        case 0x01:
-            stcSound.name	 = ReadString(Stream, ChunkInfo.Length);
-            break;
-        case 0x03:
-            stcSound.volume	 = ReadCompressedInteger(Stream);
-            break;
-        case 0x04:
-            stcSound.tempo	 = ReadCompressedInteger(Stream);
-            break;
-        case 0x05:
-            stcSound.balance	 = ReadCompressedInteger(Stream);
-            break;
-        case 0x00:
-            break;
-        default:
-            while (ChunkInfo.Length--) {
-                return_value = fread(&Void, 1, 1, Stream);
-            }
-            break;
-        }
-    } while (ChunkInfo.ID!=0);
-    sk->sound_effect = &stcSound;
-    ChunkInfo.ID=1;
-}
-
 void LDB_reader::skillChunk(FILE * Stream)
 {
     int datatoread=0,datareaded=0;
@@ -93,7 +59,7 @@ void LDB_reader::skillChunk(FILE * Stream)
                 skill->animation1_id = ReadCompressedInteger(Stream);
                 break;*/
             case SkillChunk_Soundeffect:
-                soundChunk(Stream, skill);
+                soundChunk(Stream, skill->sound_effect);
                 break;
             case SkillChunk_Fieldusage:
                 skill->occasion_field = ReadCompressedInteger(Stream);

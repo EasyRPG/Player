@@ -3,6 +3,7 @@
   <Plugins>
     <Plugin Name="qmake">
       <![CDATA[00030001N0005Debug0000000000000001N0011Debug MingW0000000000000001N0007Release000000000000
+    
     ]]>
     </Plugin>
   </Plugins>
@@ -78,7 +79,8 @@
         <File Name="stevent.cpp"/>
         <File Name="stevent.h"/>
         <File Name="ldb_system.cpp"/>
-        <File Name="ldb_system.h"/>
+        <File Name="ldb_sound.cpp"/>
+        <File Name="ldb_music.cpp"/>
       </VirtualDirectory>
     </VirtualDirectory>
     <VirtualDirectory Name="Multimedia">
