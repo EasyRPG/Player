@@ -239,8 +239,8 @@
       </AdditionalRules>
     </Configuration>
   </Settings>
+  <Dependencies Name="Debug"/>
+  <Dependencies Name="Release"/>
   <Dependencies Name="Win32 Debug"/>
   <Dependencies Name="Win32 Release"/>
-  <Dependencies Name="Release"/>
-  <Dependencies Name="Debug"/>
 </CodeLite_Project>
