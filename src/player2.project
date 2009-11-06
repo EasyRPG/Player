@@ -55,6 +55,8 @@
       <File Name="rpg_terrain.h"/>
       <File Name="rpg_troop.cpp"/>
       <File Name="rpg_troop.h"/>
+      <File Name="rpg_system.cpp"/>
+      <File Name="rpg_system.h"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Reader">
       <VirtualDirectory Name="LDB">
@@ -76,6 +78,8 @@
         <File Name="ldbstr.h"/>
         <File Name="stevent.cpp"/>
         <File Name="stevent.h"/>
+        <File Name="ldb_system.cpp"/>
+        <File Name="ldb_system.h"/>
       </VirtualDirectory>
     </VirtualDirectory>
     <VirtualDirectory Name="Multimedia">
