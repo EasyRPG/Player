@@ -35,19 +35,19 @@ void LDB_reader::attributeChunk(FILE * Stream)
                 attribute->type = ReadCompressedInteger(Stream);
                 break;
             case AttributeChunk_A_damage://0x0B,
-                attribute->A_damage = ReadCompressedInteger(Stream);
+                attribute->a_rate = ReadCompressedInteger(Stream);
                 break;
             case AttributeChunk_B_damage://0x0C,
-                attribute->B_damage = ReadCompressedInteger(Stream);
+                attribute->b_rate = ReadCompressedInteger(Stream);
                 break;
             case AttributeChunk_C_damage://0x0F,
-                attribute->C_damage = ReadCompressedInteger(Stream);
+                attribute->c_rate = ReadCompressedInteger(Stream);
                 break;
             case AttributeChunk_D_damage://0x0F,
-                attribute->D_damage = ReadCompressedInteger(Stream);
+                attribute->d_rate = ReadCompressedInteger(Stream);
                 break;
             case AttributeChunk_E_damage://0x0F
-                attribute->E_damage = ReadCompressedInteger(Stream);
+                attribute->e_rate = ReadCompressedInteger(Stream);
                 break;
             case CHUNK_LDB_END_OF_BLOCK:
                 break;

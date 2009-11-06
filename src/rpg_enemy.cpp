@@ -16,8 +16,8 @@ RPG::Enemy::Enemy() {
     gold = 0;
     item_id = 0;
     treasure_prob = 0;
-    crit_hits = false;
-    crit_hits_chance = 0;
+    critical_hit = false;
+    critical_hit_chance = 0;
     miss = false;
-    flying = false;    
+    levitate = false;    
 }

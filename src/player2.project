@@ -2,7 +2,8 @@
 <CodeLite_Project Name="player2" InternalType="Console">
   <Plugins>
     <Plugin Name="qmake">
-      <![CDATA[00030001N0005Debug0000000000000001N0011Debug MingW0000000000000001N0007Release000000000000]]>
+      <![CDATA[00030001N0005Debug0000000000000001N0011Debug MingW0000000000000001N0007Release000000000000
+    ]]>
     </Plugin>
   </Plugins>
   <Description/>
@@ -32,9 +33,7 @@
     </VirtualDirectory>
     <VirtualDirectory Name="RPG">
       <File Name="rpg_actor.cpp"/>
-      <File Name="rpg_actor.cpp.bak"/>
       <File Name="rpg_actor.h"/>
-      <File Name="rpg_actor.h.bak"/>
       <File Name="rpg_attribute.cpp"/>
       <File Name="rpg_attribute.h"/>
       <File Name="rpg_e_action.cpp"/>
@@ -44,9 +43,7 @@
       <File Name="rpg_item.cpp"/>
       <File Name="rpg_item.h"/>
       <File Name="rpg_skill.cpp"/>
-      <File Name="rpg_skill.cpp.bak"/>
       <File Name="rpg_skill.h"/>
-      <File Name="rpg_skill.h.bak"/>
       <File Name="rpg_sound.cpp"/>
       <File Name="rpg_sound.h"/>
       <File Name="rpg_state.cpp"/>
@@ -57,6 +54,8 @@
       <File Name="rpg_troop.h"/>
       <File Name="rpg_system.cpp"/>
       <File Name="rpg_system.h"/>
+      <File Name="rpg_music.cpp"/>
+      <File Name="rpg_music.h"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Reader">
       <VirtualDirectory Name="LDB">
@@ -142,25 +141,23 @@
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
-        <PostConnectCommands></PostConnectCommands>
-        <StartupCommands></StartupCommands>
+        <PostConnectCommands/>
+        <StartupCommands/>
       </Debugger>
       <PreBuild/>
       <PostBuild/>
       <CustomBuild Enabled="no">
-        <CleanCommand></CleanCommand>
-        <BuildCommand></BuildCommand>
-        <PreprocessFileCommand></PreprocessFileCommand>
-        <SingleFileCommand></SingleFileCommand>
-        <MakefileGenerationCommand></MakefileGenerationCommand>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
         <ThirdPartyToolName>None</ThirdPartyToolName>
-        <WorkingDirectory></WorkingDirectory>
+        <WorkingDirectory/>
       </CustomBuild>
       <AdditionalRules>
-        <CustomPostBuild></CustomPostBuild>
-        <CustomPreBuild>
-
-</CustomPreBuild>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Debug MingW" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
@@ -176,25 +173,23 @@
       <ResourceCompiler Options="" Required="yes"/>
       <General OutputFile="../bin/DebugMingw" IntermediateDirectory="../obj/DebugMingw" Command="../bin/DebugMingw" CommandArguments="" WorkingDirectory="../bin/DebugMingw" PauseExecWhenProcTerminates="yes"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
-        <PostConnectCommands></PostConnectCommands>
-        <StartupCommands></StartupCommands>
+        <PostConnectCommands/>
+        <StartupCommands/>
       </Debugger>
       <PreBuild/>
       <PostBuild/>
       <CustomBuild Enabled="no">
-        <CleanCommand></CleanCommand>
-        <BuildCommand></BuildCommand>
-        <PreprocessFileCommand></PreprocessFileCommand>
-        <SingleFileCommand></SingleFileCommand>
-        <MakefileGenerationCommand></MakefileGenerationCommand>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
         <ThirdPartyToolName>None</ThirdPartyToolName>
-        <WorkingDirectory></WorkingDirectory>
+        <WorkingDirectory/>
       </CustomBuild>
       <AdditionalRules>
-        <CustomPostBuild></CustomPostBuild>
-        <CustomPreBuild>
-
-</CustomPreBuild>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
@@ -205,23 +200,23 @@
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Release" Command="./$(ProjectName)" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
-        <PostConnectCommands></PostConnectCommands>
-        <StartupCommands></StartupCommands>
+        <PostConnectCommands/>
+        <StartupCommands/>
       </Debugger>
       <PreBuild/>
       <PostBuild/>
       <CustomBuild Enabled="no">
-        <CleanCommand></CleanCommand>
-        <BuildCommand></BuildCommand>
-        <PreprocessFileCommand></PreprocessFileCommand>
-        <SingleFileCommand></SingleFileCommand>
-        <MakefileGenerationCommand></MakefileGenerationCommand>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
         <ThirdPartyToolName>None</ThirdPartyToolName>
-        <WorkingDirectory></WorkingDirectory>
+        <WorkingDirectory/>
       </CustomBuild>
       <AdditionalRules>
-        <CustomPostBuild></CustomPostBuild>
-        <CustomPreBuild></CustomPreBuild>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
       </AdditionalRules>
     </Configuration>
     <GlobalSettings>

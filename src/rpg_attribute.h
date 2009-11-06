@@ -11,11 +11,11 @@ class Attribute {
         int id;
         std::string name;
         int type;
-        int A_damage;
-        int B_damage;
-        int C_damage;
-        int D_damage;
-        int E_damage;
+        int a_rate;
+        int b_rate;
+        int c_rate;
+        int d_rate;
+        int e_rate;
 };
     
 }

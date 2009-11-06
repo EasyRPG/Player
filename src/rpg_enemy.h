@@ -24,12 +24,12 @@ class Enemy {
         int gold;
         int item_id;
         char treasure_prob;
-        bool crit_hits;
-        char crit_hits_chance;
+        bool critical_hit;
+        char critical_hit_chance;
         bool miss;
-        bool flying;
-        std::vector<char> conditions;
-        std::vector<char> attributes;
+        bool levitate;
+        std::vector<char> state_ranks;
+        std::vector<char> attribute_ranks;
         std::vector<E_Action*> actions;
 };
 

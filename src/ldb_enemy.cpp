@@ -133,16 +133,16 @@ void LDB_reader::mosterChunk(FILE * Stream)
                 enemy->treasure_prob = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_Canusecriticalhits://0x15,
-                enemy->crit_hits = ReadCompressedInteger(Stream);
+                enemy->critical_hit = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_Criticalhitchance://0x16,
-                enemy->crit_hits_chance = ReadCompressedInteger(Stream);
+                enemy->critical_hit_chance = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_Usuallymiss://0x1A,
                 enemy->miss = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_Airborne://0x1C,
-                enemy->flying = ReadCompressedInteger(Stream);
+                enemy->levitate = ReadCompressedInteger(Stream);
                 break;
             case MonsterChunk_Conditionslength://0x1F,
                 trash = ReadCompressedInteger(Stream);
@@ -150,7 +150,7 @@ void LDB_reader::mosterChunk(FILE * Stream)
             case MonsterChunk_Conditionseffects://0x20,
                 while (ChunkInfo.Length--) {
                     return_value = fread(&Void, 1, 1, Stream);
-                    enemy->conditions.push_back(Void);
+                    enemy->state_ranks.push_back(Void);
                 }
                 break;
             case MonsterChunk_Attributeslength://0x21,
@@ -159,7 +159,7 @@ void LDB_reader::mosterChunk(FILE * Stream)
             case MonsterChunk_Attributeseffect://0x22,
                 while (ChunkInfo.Length--) {
                     return_value = fread(&Void, 1, 1, Stream);
-                    enemy->attributes.push_back(Void);
+                    enemy->attribute_ranks.push_back(Void);
                 }
                 break;
             case MonsterChunk_Actionslist://0x2A

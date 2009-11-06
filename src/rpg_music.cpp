@@ -1,6 +1,6 @@
-#include "rpg_sound.h"
+#include "rpg_music.h"
 
-RPG::Sound::Sound()
+RPG::Music::Music()
 {
 	name = "";
     volume = 100;
@@ -8,7 +8,7 @@ RPG::Sound::Sound()
     balance = 0;
 }
 
-RPG::Sound::Sound(std::string n, int v, int t, int b)
+RPG::Music::Music(std::string n, int v, int t, int b)
 {
 	name = n;
     volume = v;
