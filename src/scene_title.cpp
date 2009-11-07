@@ -24,18 +24,20 @@ void Scene_Title::main_function()
 	Main_Data::game_system = new Game_System();
 	
 	// Load Title Graphic
-/*	Bitmap title_bmp(Main_Data::data_system.title_name); */
+	Bitmap* title_bmp;
+	title_bmp = new Bitmap("Title/Title2.png");//(Main_Data::data_system->title_name);
 	
 	// Create Background Sprite
-	Sprite background();
+	Sprite* background;
+	background = new Sprite();
 	
 	// Create Options Window
 //	std::string options[3];
 /*	options[0] = Main_Data::data_system.glossary.new_game;
 	options[1] = Main_Data::data_system.glossary.load_game;
 	options[2] = Main_Data::data_system.glossary.exit_game;*/
-//	Window_Command command_window;
-//	command_window = new Window_Command(116, &options);
+	//	command_window = new Window_Command(116, &options);
+	command_window = new Window_Base(0, 0, 120, 120);
 	
 	/* TODO: Disable Load Game if required */
 	
@@ -54,14 +56,14 @@ void Scene_Title::main_function()
 	}
 	
 	// Dispose graphical objects
-//	title_bmp.dispose();
-//	background.dispose();
-//	command_window.dispose();
+	title_bmp->dispose();
+	background->dispose();
+	command_window->dispose();
 }
 
 void Scene_Title::update()
 {
-//	command_window.update();
+	command_window->update();
 /* Will get some code frome control.cpp */
 /*	if(Input::is_triggered(SDL_ENTER) || Input::is_triggered(SDL_Z))
 	{

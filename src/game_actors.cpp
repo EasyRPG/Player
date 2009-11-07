@@ -6,4 +6,3 @@ Game_Actors::Game_Actors()
 Game_Actors::~Game_Actors()
 {
 }
-

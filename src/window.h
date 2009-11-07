@@ -62,7 +62,11 @@ public:
 	static void add_window(int id, Window* window);
 	static void remove_window(int id);
 
-private:
+	void refresh();
+
+	SDL_Surface* background;
+	bool needs_refresh;
+
 	Viewport* viewport;
 	Bitmap* windowskin;
 	Bitmap* contents;

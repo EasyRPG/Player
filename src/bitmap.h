@@ -44,11 +44,12 @@ public:
 	static void add_bitmap(int id, Bitmap* bitmap);
 	static void remove_bitmap(int id);
 	
+	SDL_Surface *surface;
+	
 private:
 	Font *font;
 
 	bool disposed;
-	SDL_Surface *bitmap;
 	
 	int id;
 	static int count;

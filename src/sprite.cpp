@@ -88,10 +88,10 @@ void Sprite::draw(SDL_Surface *screen)
 		SDL_Rect dstrect;
 		dstrect.x = x;
 		dstrect.y = y; 
-		/*if(SDL_BlitSurface(bitmap, &src_rect.get_sdlrect(), screen, &dstrect) == -1)
+		if(SDL_BlitSurface(bitmap->surface, &src_rect->get_sdlrect(), screen, &dstrect) == -1)
 		{
 			// Error
-		}*/
+		}
 }
 
 Viewport* Sprite::get_viewport()

@@ -3,7 +3,6 @@
   <Plugins>
     <Plugin Name="qmake">
       <![CDATA[00030001N0005Debug0000000000000001N0011Debug MingW0000000000000001N0007Release000000000000
-    
     ]]>
     </Plugin>
   </Plugins>
@@ -31,6 +30,10 @@
       <File Name="game_troop.h"/>
       <File Name="game_variables.cpp"/>
       <File Name="game_variables.h"/>
+      <File Name="game_actor.cpp"/>
+      <File Name="game_actor.h"/>
+      <File Name="game_battler.cpp"/>
+      <File Name="game_battler.h"/>
     </VirtualDirectory>
     <VirtualDirectory Name="RPG">
       <File Name="rpg_actor.cpp"/>
@@ -126,12 +129,18 @@
       <File Name="scene_title.cpp"/>
       <File Name="scene_title.h"/>
     </VirtualDirectory>
+    <VirtualDirectory Name="Window">
+      <File Name="window_base.h"/>
+      <File Name="window_base.cpp"/>
+      <File Name="window_command.h"/>
+      <File Name="window_command.cpp"/>
+    </VirtualDirectory>
   </VirtualDirectory>
   <Dependencies Name="Debug"/>
   <Dependencies Name="Release"/>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g;-Wall" Required="yes">
+      <Compiler Options="-g;-pedantic;-Wall;-Wextra" Required="yes">
         <IncludePath Value=".."/>
         <IncludePath Value="../dependencies/mingw/SDL/include/SDL/"/>
         <IncludePath Value="dependencies/mingw/zlib/include"/>
@@ -173,7 +182,7 @@
         <LibraryPath Value="../dependencies/mingw/zlib/lib"/>
       </Linker>
       <ResourceCompiler Options="" Required="yes"/>
-      <General OutputFile="../bin/DebugMingw" IntermediateDirectory="../obj/DebugMingw" Command="../bin/DebugMingw" CommandArguments="" WorkingDirectory="../bin/DebugMingw" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="../bin/Player.exe" IntermediateDirectory="../obj/DebugMingw" Command="../bin/Player.exe" CommandArguments="" WorkingDirectory="../bin/" PauseExecWhenProcTerminates="yes"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>

@@ -1,8 +1,12 @@
 #include "window.h"
 #include "zobj.h"
+#include "SDL_rotozoom.h"
 
 Window::Window()
 {
+	background = NULL;
+	needs_refresh = false;
+	
 	disposed = false;
 	id = count;
 //	Graphics::add_window(count, *this);
@@ -75,7 +79,130 @@ void Window::update()
 
 void Window::draw(SDL_Surface *screen)
 {
+	if(needs_refresh) {
+		refresh();
+		needs_refresh = false;
+	}
+	
+	SDL_Rect dstrect;
 
+    dstrect.x = x;
+    dstrect.y = y;
+    SDL_BlitSurface(background, NULL, screen, &dstrect);
+}
+
+void Window::refresh()
+{
+	if(background != NULL) {
+		SDL_FreeSurface(background);
+	}
+	SDL_Rect srcrect;
+	SDL_Rect dstrect;
+	SDL_Surface* temp;
+	SDL_Surface* temp2;
+	
+	background = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, SCREEN_BPP, rmask, gmask, bmask, amask);
+	
+	// Back
+	temp = SDL_CreateRGBSurface(SDL_SWSURFACE, 32, 32, SCREEN_BPP, rmask, gmask, bmask, amask);
+	
+	srcrect.x = 0;
+	srcrect.y = 0;
+	srcrect.w = 32;
+	srcrect.h = 32;
+	
+	SDL_BlitSurface(windowskin->surface, &srcrect, temp, NULL);
+	
+	temp2 = zoomSurface(temp, ((double)width) / 32, ((double)height) / 32, 0);
+	
+	SDL_BlitSurface(temp2, NULL, background, NULL);
+	
+	SDL_FreeSurface(temp);
+	SDL_FreeSurface(temp2);
+	
+	// Corners
+	srcrect.x = 32;
+	srcrect.w = 8;
+	srcrect.h = 8;
+	dstrect.x = 0;
+	dstrect.y = 0;
+	SDL_BlitSurface(windowskin->surface, &srcrect, background, &dstrect);
+	
+	srcrect.x = 64 - 8;
+	dstrect.x = width - 8;
+	SDL_BlitSurface(windowskin->surface, &srcrect, background, &dstrect);
+	
+	srcrect.y = 32 - 8;
+	dstrect.y = height - 8;
+	SDL_BlitSurface(windowskin->surface, &srcrect, background, &dstrect);
+	
+	srcrect.x = 32;
+	dstrect.x = 0;
+	SDL_BlitSurface(windowskin->surface, &srcrect, background, &dstrect);
+	
+	// Border Up
+	temp = SDL_CreateRGBSurface(SDL_SWSURFACE, 16, 8, SCREEN_BPP, rmask, gmask, bmask, amask);
+	srcrect.x = 32 + 8;
+	srcrect.y = 0;
+	srcrect.w = 16;
+	srcrect.h = 8;
+	SDL_BlitSurface(windowskin->surface, &srcrect, temp, NULL);
+	temp2 = zoomSurface(temp, ((double)width - 16) / 16, 1, 0);
+	dstrect.x = 8;
+	dstrect.y = 0;
+	dstrect.w = width - 16;
+	dstrect.h = 8;
+	SDL_BlitSurface(temp2, NULL, background, &dstrect);
+	SDL_FreeSurface(temp);
+	SDL_FreeSurface(temp2);
+	
+	// Border Down
+	temp = SDL_CreateRGBSurface(SDL_SWSURFACE, 16, 8, SCREEN_BPP, rmask, gmask, bmask, amask);
+	srcrect.x = 32 + 8;
+	srcrect.y = 32 - 8;
+	srcrect.w = 16;
+	srcrect.h = 8;
+	SDL_BlitSurface(windowskin->surface, &srcrect, temp, NULL);
+	temp2 = zoomSurface(temp, ((double)width - 16) / 16, 1, 0);
+	dstrect.x = 8;
+	dstrect.y = height - 8;
+	dstrect.w = width - 16;
+	dstrect.h = 8;
+	SDL_BlitSurface(temp2, NULL, background, &dstrect);
+	SDL_FreeSurface(temp);
+	SDL_FreeSurface(temp2);
+	
+	// Border Left
+	temp = SDL_CreateRGBSurface(SDL_SWSURFACE, 8, 16, SCREEN_BPP, rmask, gmask, bmask, amask);
+	srcrect.x = 32;
+	srcrect.y = 8;
+	srcrect.w = 8;
+	srcrect.h = 16;
+	SDL_BlitSurface(windowskin->surface, &srcrect, temp, NULL);
+	temp2 = zoomSurface(temp, 1, ((double)height - 16) / 16, 0);
+	dstrect.x = 0;
+	dstrect.y = 8;
+	dstrect.w = 8;
+	dstrect.h = height - 16;
+	SDL_BlitSurface(temp2, NULL, background, &dstrect);
+	SDL_FreeSurface(temp);
+	SDL_FreeSurface(temp2);
+	
+	// Border Right
+	temp = SDL_CreateRGBSurface(SDL_SWSURFACE, 8, 16, SCREEN_BPP, rmask, gmask, bmask, amask);
+	srcrect.x = 64 - 8;
+	srcrect.y = 8;
+	srcrect.w = 8;
+	srcrect.h = 16;
+	SDL_BlitSurface(windowskin->surface, &srcrect, temp, NULL);
+	temp2 = zoomSurface(temp, 1, ((double)height - 16) / 16, 0);
+	dstrect.x = width - 8;
+	dstrect.y = 8;
+	dstrect.w = 8;
+	dstrect.h = height - 16;
+	SDL_BlitSurface(temp2, NULL, background, &dstrect);
+	SDL_FreeSurface(temp);
+	SDL_FreeSurface(temp2);
 }
 
 Viewport* Window::get_viewport()
@@ -174,6 +301,7 @@ void Window::set_viewport(Viewport* nviewport)
 void Window::set_windowskin(Bitmap* nwindowskin)
 {
 	windowskin = nwindowskin;
+	needs_refresh = true;
 }
 
 void Window::set_contents(Bitmap* ncontents)
@@ -184,6 +312,7 @@ void Window::set_contents(Bitmap* ncontents)
 void Window::set_stretch(bool nstretch)
 {
 	stretch = nstretch;
+	needs_refresh = true;
 }
 
 void Window::set_cursor_rect(Rect* ncursor_rect)
@@ -219,11 +348,13 @@ void Window::set_y(int ny)
 void Window::set_width(int nwidth)
 {
 	width = nwidth;
+	needs_refresh = true;
 }
 
 void Window::set_height(int nheihgt)
 {
 	height = nheihgt;
+	needs_refresh = true;
 }
 
 void Window::set_z(int nz)

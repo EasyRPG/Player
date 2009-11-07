@@ -17,14 +17,14 @@ RPG::Actor::Actor() {
 	fix_equipment = false;
 	auto_battle = false;
 	super_guard = false;
-	for (int i = 1; i <= final_level; ++i) {
+	/*for (int i = 1; i <= final_level; ++i) {
 		parameter_maxhp[i] = 500 + i * 50;
 		parameter_maxsp[i] = 500 + i * 50;
 		parameter_attack[i] = 50 + i * 5;
 		parameter_defense[i] = 50 + i * 5;
 		parameter_spirit[i] = 50 + i * 5;
 		parameter_agility[i] = 50 + i * 5;
-	}
+	}*/
 	exp_base = 10;
 	exp_inflation = 50;
 	exp_correction = 0;

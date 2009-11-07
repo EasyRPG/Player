@@ -10,6 +10,8 @@
 #include "game_switches.h"
 #include "game_variables.h"
 #include "game_screen.h"
+#include "game_battler.h"
+#include "game_actor.h"
 #include "game_actors.h"
 #include "game_party.h"
 #include "game_troop.h"
@@ -39,16 +41,16 @@ namespace Main_Data {
 	extern std::string scene_type;
 	
 	// Dynamic Game Data
-	extern Game_System *game_system;
-	extern Game_Temp *game_temp;
-    extern Game_Switches *game_switches;
-    extern Game_Variables *game_variables;
-    extern Game_Screen *game_screen;
-    extern Game_Actors *game_actors;
-    extern Game_Party *game_party;
-    extern Game_Troop *game_troop;
-    extern Game_Map *game_map;
-    extern Game_Player *game_player;
+	extern Game_System* game_system;
+	extern Game_Temp* game_temp;
+    extern Game_Switches* game_switches;
+    extern Game_Variables* game_variables;
+    extern Game_Screen* game_screen;
+    extern Game_Actors* game_actors;
+    extern Game_Party* game_party;
+    extern Game_Troop* game_troop;
+    extern Game_Map* game_map;
+    extern Game_Player* game_player;
 	
 	// Database Data (ldb)
 	extern std::vector<RPG::Actor*> data_actors;
