@@ -48,7 +48,7 @@ void Window_Base::draw_actor_level(Game_Actor* actor, int cx, int cy) {
 	
 }
 std::string Window_Base::make_battler_state_text(Game_Battler* battler, int width, bool need_normal) {
-	
+	return "";
 }
 void Window_Base::draw_actor_state(Game_Actor* actor, int cx, int cy) {
 	draw_actor_state(actor, x, y, 120); // 120 is from RMXP, maybe need to be adjusted

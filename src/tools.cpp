@@ -18,7 +18,11 @@
     #include <stdlib.h>
     #include <stdio.h>
     #include <string.h>
-    #include <dirent.h>
+    
+#ifdef UNIX
+	#include <dirent.h>
+#endif
+
     #include <ctype.h>
     #include <iostream>
     #include "SDL.h"
@@ -258,6 +262,7 @@ void s_toupper(char *dest, char *s)
         dest[i]=(char)toupper((int)s[i]);
     }
 }
+#ifdef UNIX
 char * case_insensitive_and_format_msc_exist(const char *directory, string & file)
 {
 //		char * return_name;
@@ -357,3 +362,4 @@ int case_insensitive_exist( string & dir_file, const char *directory, char *file
     }
 
 }
+#endif
