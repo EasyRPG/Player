@@ -1,5 +1,5 @@
 #include "bitmap.h"
-#include "SDL_Image.h"
+#include "SDL_image.h"
 
 Bitmap::Bitmap(int width, int height)
 {

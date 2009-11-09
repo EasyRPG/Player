@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CodeLite_Project Name="player2" InternalType="Console">
+<CodeLite_Project Name="player2">
   <Plugins>
     <Plugin Name="qmake">
-      <![CDATA[00030001N0005Debug0000000000000001N0011Debug MingW0000000000000001N0007Release000000000000
-    ]]>
+      <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
     </Plugin>
   </Plugins>
-  <Description/>
-  <Dependencies/>
   <VirtualDirectory Name="src">
     <VirtualDirectory Name="Game">
       <File Name="game_actors.cpp"/>
@@ -136,39 +133,34 @@
       <File Name="window_command.cpp"/>
     </VirtualDirectory>
   </VirtualDirectory>
-  <Dependencies Name="Debug"/>
   <Dependencies Name="Release"/>
+  <Dependencies Name="Debug MingW"/>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g;-pedantic;-Wall;-Wextra" Required="yes">
-        <IncludePath Value=".."/>
-        <IncludePath Value="../dependencies/mingw/SDL/include/SDL/"/>
-        <IncludePath Value="dependencies/mingw/zlib/include"/>
-      </Compiler>
-      <Linker Options="-lSDLmain -lSDL -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image" Required="yes">
-        <LibraryPath Value="../dependencies/mingw/SDL/lib"/>
-        <LibraryPath Value="../dependencies/mingw/zlib/lib"/>
-      </Linker>
+      <Compiler Options="-g -fno-rtti -fno-exceptions $(shell sdl-config --cflags)" Required="yes"/>
+      <Linker Options="-O2 -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image $(shell sdl-config --libs)" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="../bin/testgame/easyrpg" IntermediateDirectory="../.obj/Debug" Command="./easyrpg" CommandArguments="" WorkingDirectory="../bin/testgame" PauseExecWhenProcTerminates="yes"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
-        <PostConnectCommands/>
-        <StartupCommands/>
+        <PostConnectCommands></PostConnectCommands>
+        <StartupCommands></StartupCommands>
       </Debugger>
       <PreBuild/>
       <PostBuild/>
       <CustomBuild Enabled="no">
-        <CleanCommand/>
-        <BuildCommand/>
-        <PreprocessFileCommand/>
-        <SingleFileCommand/>
-        <MakefileGenerationCommand/>
+        <CleanCommand></CleanCommand>
+        <BuildCommand></BuildCommand>
+        <PreprocessFileCommand></PreprocessFileCommand>
+        <SingleFileCommand></SingleFileCommand>
+        <MakefileGenerationCommand></MakefileGenerationCommand>
         <ThirdPartyToolName>None</ThirdPartyToolName>
-        <WorkingDirectory/>
+        <WorkingDirectory></WorkingDirectory>
       </CustomBuild>
       <AdditionalRules>
-        <CustomPostBuild/>
-        <CustomPreBuild/>
+        <CustomPostBuild></CustomPostBuild>
+        <CustomPreBuild>
+
+</CustomPreBuild>
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Debug MingW" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
@@ -184,50 +176,50 @@
       <ResourceCompiler Options="" Required="yes"/>
       <General OutputFile="../bin/Player.exe" IntermediateDirectory="../obj/DebugMingw" Command="../bin/Player.exe" CommandArguments="" WorkingDirectory="../bin/" PauseExecWhenProcTerminates="yes"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
-        <PostConnectCommands/>
-        <StartupCommands/>
+        <PostConnectCommands></PostConnectCommands>
+        <StartupCommands></StartupCommands>
       </Debugger>
       <PreBuild/>
       <PostBuild/>
       <CustomBuild Enabled="no">
-        <CleanCommand/>
-        <BuildCommand/>
-        <PreprocessFileCommand/>
-        <SingleFileCommand/>
-        <MakefileGenerationCommand/>
+        <CleanCommand></CleanCommand>
+        <BuildCommand></BuildCommand>
+        <PreprocessFileCommand></PreprocessFileCommand>
+        <SingleFileCommand></SingleFileCommand>
+        <MakefileGenerationCommand></MakefileGenerationCommand>
         <ThirdPartyToolName>None</ThirdPartyToolName>
-        <WorkingDirectory/>
+        <WorkingDirectory></WorkingDirectory>
       </CustomBuild>
       <AdditionalRules>
-        <CustomPostBuild/>
-        <CustomPreBuild/>
+        <CustomPostBuild></CustomPostBuild>
+        <CustomPreBuild></CustomPreBuild>
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="" Required="yes">
-        <IncludePath Value="."/>
-      </Compiler>
-      <Linker Options="-O2" Required="yes"/>
+      <Compiler Options="-Os -s -fno-rtti -fno-exceptions $(shell sdl-config --cflags)" Required="yes"/>
+      <Linker Options="-O2 -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image $(shell sdl-config --libs)" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Release" Command="./$(ProjectName)" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="../bin/testgame/easyrpg" IntermediateDirectory="../.obj/Release" Command="./easyrpg" CommandArguments="" WorkingDirectory="../bin/testgame" PauseExecWhenProcTerminates="yes"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
-        <PostConnectCommands/>
-        <StartupCommands/>
+        <PostConnectCommands></PostConnectCommands>
+        <StartupCommands></StartupCommands>
       </Debugger>
       <PreBuild/>
       <PostBuild/>
       <CustomBuild Enabled="no">
-        <CleanCommand/>
-        <BuildCommand/>
-        <PreprocessFileCommand/>
-        <SingleFileCommand/>
-        <MakefileGenerationCommand/>
+        <CleanCommand></CleanCommand>
+        <BuildCommand></BuildCommand>
+        <PreprocessFileCommand></PreprocessFileCommand>
+        <SingleFileCommand></SingleFileCommand>
+        <MakefileGenerationCommand></MakefileGenerationCommand>
         <ThirdPartyToolName>None</ThirdPartyToolName>
-        <WorkingDirectory/>
+        <WorkingDirectory></WorkingDirectory>
       </CustomBuild>
       <AdditionalRules>
-        <CustomPostBuild/>
-        <CustomPreBuild/>
+        <CustomPostBuild></CustomPostBuild>
+        <CustomPreBuild>
+
+</CustomPreBuild>
       </AdditionalRules>
     </Configuration>
     <GlobalSettings>
@@ -240,5 +232,5 @@
       <ResourceCompiler Options=""/>
     </GlobalSettings>
   </Settings>
-  <Dependencies Name="Debug MingW"/>
+  <Dependencies Name="Debug"/>
 </CodeLite_Project>
