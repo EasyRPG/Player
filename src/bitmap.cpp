@@ -14,14 +14,18 @@ Bitmap::Bitmap(int width, int height)
 Bitmap::Bitmap(std::string filename)
 {
 	SDL_Surface* temp = NULL;
+	
 	temp = IMG_Load(filename.c_str());
 	if(temp == NULL) {
 		// Error
 		SDL_FreeSurface(temp);
 	}
-	surface = SDL_DisplayFormat(temp);
-	SDL_FreeSurface(temp);
-	disposed = false;
+	else
+	{
+		surface = SDL_DisplayFormat(temp);
+		SDL_FreeSurface(temp);
+		disposed = false;
+	}
 }
 
 Bitmap::~Bitmap()

@@ -1,4 +1,5 @@
 #include "ldb_reader.h"
+#include "rpg_sound.h"
 
 namespace {
     unsigned char Void;

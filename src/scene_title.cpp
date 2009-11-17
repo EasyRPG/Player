@@ -5,6 +5,8 @@
 #include "graphics.h"
 #include "input.h"
 #include "audio.h"
+#include "game_system.h"
+#include "bitmap.h"
 
 Scene_Title::Scene_Title()
 {
