@@ -2,6 +2,7 @@
 #define __main_data__
 
 #include <string>
+#include <vector>
 
 #include "scene.h"
 #include "game_system.h"

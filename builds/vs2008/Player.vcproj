@@ -18,7 +18,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\bin\vs2008"
+			OutputDirectory="..\..\bin\vs2008\debug"
 			IntermediateDirectory="..\..\obj\DebugVS2008"
 			ConfigurationType="1"
 			CharacterSet="1"
@@ -41,14 +41,15 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\dependencies\vs2008\SDL\include"
+				AdditionalIncludeDirectories="$(EASYDEV)\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				BufferSecurityCheck="false"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -61,9 +62,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="SDL.lib SDLmain.lib SDL_image.lib SDL_ttf.lib SDL_mixer.lib SDL_gfx.lib"
+				AdditionalDependencies="dxguid.lib winmm.lib SDL.lib SDLmain.lib zlibd.lib SDL_image.lib libpngd.lib freetype2311_D.lib SDL_ttf.lib SDL_gfx.lib timidity.lib native_midi.lib smpeg.lib SDL_mixer.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\..\dependencies\vs2008\SDL\lib"
+				AdditionalLibraryDirectories="$(EASYDEV)\lib\debug"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -93,8 +94,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="..\..\bin\vs2008\release"
+			IntermediateDirectory="..\..\obj\ReleaseVS2008"
 			ConfigurationType="1"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
@@ -117,13 +118,17 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				EnableIntrinsicFunctions="true"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
+				InlineFunctionExpansion="1"
+				EnableIntrinsicFunctions="false"
+				AdditionalIncludeDirectories="$(EASYDEV)\include"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_HAS_EXCEPTIONS=0"
 				RuntimeLibrary="2"
+				BufferSecurityCheck="false"
 				EnableFunctionLevelLinking="true"
+				EnableEnhancedInstructionSet="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				DebugInformationFormat="3"
+				DebugInformationFormat="0"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -136,8 +141,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="msvcrt.lib dxguid.lib winmm.lib SDL.lib SDLmain.lib zlib.lib SDL_image.lib libpng.lib freetype2311.lib SDL_ttf.lib SDL_gfx.lib timidity.lib native_midi.lib smpeg.lib SDL_mixer.lib"
 				LinkIncremental="1"
-				GenerateDebugInformation="true"
+				AdditionalLibraryDirectories="$(EASYDEV)\lib\release"
+				GenerateManifest="false"
+				IgnoreAllDefaultLibraries="true"
+				IgnoreDefaultLibraryNames=""
+				GenerateDebugInformation="false"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
