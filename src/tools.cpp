@@ -262,6 +262,47 @@ void s_toupper(char *dest, char *s)
         dest[i]=(char)toupper((int)s[i]);
     }
 }
+
+void _fatal_error(const char *perr) 
+{
+#ifdef WIN32
+    MessageBox(NULL, perr, "Error", MB_OK);
+#else
+    fprintf(stdout, "%s\n", perr);
+#endif
+
+}
+
+#ifdef WIN32
+int get_file_extension(string& fname)
+{
+    string ext(".png");
+    string ftotal(fname + ext);
+    FILE *f;
+    int ret = PNG;
+
+    f = fopen(ftotal.c_str(), "rb");
+    if (f == NULL) {
+        ret = BMP;
+        ext = ".bmp";
+        ftotal = fname + ext;
+        f = fopen(ftotal.c_str(), "rb");
+        if (f == NULL) {
+            ret = XYZ;
+            ext = ".xyz";
+            ftotal = fname + ext;
+            f = fopen(ftotal.c_str(), "rb");
+            if (f = NULL) {
+                return -1;
+            }
+        }
+    }
+    fclose(f);
+    fname += ext;
+    return ret;
+}
+#endif
+
 #ifdef UNIX
 char * case_insensitive_and_format_msc_exist(const char *directory, string & file)
 {
@@ -363,3 +404,85 @@ int case_insensitive_exist( string & dir_file, const char *directory, char *file
 
 }
 #endif
+
+SDL_Surface* load_XYZ(const std::string& filename)
+{
+    FILE *file;
+    unsigned char *buffer;
+    unsigned char *destBuffer;
+    unsigned int size;
+    uLongf destSize;
+    unsigned short width;
+    unsigned short height;
+    int zlibErrorValue;
+    SDL_Surface *surface;
+    SDL_Palette *palette;
+    int i;
+    char *pixel;
+
+    file = fopen(filename.c_str(), "rb");
+    if (file != NULL)
+    {
+        char* header;
+        header = new char[4];
+    	if (header == NULL)
+        {   
+            SDL_SetError("Error XYZ Reader: No memory left");
+    	    return NULL;
+        }
+        bool return_value;
+        return_value = fread(header, 1, 4, file);
+        if (!strcmp(header, "XYZ1"))
+        {
+            delete header;
+            return_value = fread(&width, 1, 2, file);
+            return_value = fread(&height, 1, 2, file);
+            fseek(file, 0, SEEK_END);
+            size = ftell(file);
+            fseek(file, 8, SEEK_SET);
+            destSize = 768 + (width * height);
+            destBuffer = new unsigned char[destSize];
+            buffer = new unsigned char[size - 8];
+            if ((buffer == NULL) || (destBuffer == NULL))
+            {   
+                SDL_SetError("Error XYZ Reader: No memory left");
+                return NULL;
+            }
+            return_value = fread(buffer, 1, size - 8, file);
+            fclose(file);
+            zlibErrorValue = uncompress((Bytef*)destBuffer, &destSize, (Bytef*)buffer, (uLongf)(size - 8));
+            delete buffer;
+            surface = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 8, 0, 0, 0, 0);
+    
+            SDL_LockSurface(surface);
+
+            palette = (surface->format)->palette;
+            for (i = 0; i < 256; i++)
+            {
+                palette->colors[i].r = destBuffer[i * 3];
+                palette->colors[i].g = destBuffer[i * 3 + 1];
+                palette->colors[i].b = destBuffer[i * 3 + 2];
+            }
+            pixel = (char*)surface->pixels;
+            for (i = 0; i < (width * height); i++)
+            {
+                pixel[i] = destBuffer[i + 768];
+            }
+            delete destBuffer;
+        }
+        else
+        {
+            SDL_SetError("XYZ Reader Error: Not a valid XYZ file.");
+            delete header;
+            fclose(file);
+            return NULL;
+        }
+    }
+    else
+    {
+        SDL_SetError("XYZ Reader: Error reading file.");
+        return NULL;
+    }
+    SDL_UnlockSurface(surface);
+    return surface;
+}

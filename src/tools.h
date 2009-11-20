@@ -17,13 +17,21 @@
 #ifndef TOOLS_H
 #define TOOLS_H
 
+#define PNG 0
+#define BMP 1
+#define XYZ 2
+
     // =========================================================================
     #include <stdlib.h>
     #include <stdio.h>
     #include <string>
     #include "SDL.h"
     // =========================================================================
+#ifdef WIN32 
+    #include <windows.h>
+#endif
 
+    #include "zlib.h"
     // --- Chunk structure -----------------------------------------------------
     struct tChunk
     {
@@ -51,11 +59,15 @@
     SDL_Surface * LoadSurface(std::string Filename);
     SDL_Surface * GrabFromSurface(SDL_Surface * Source, int sX, int sY, int sW, int sH);
     void DrawSurface(SDL_Surface * Destiny, int dX, int dY, SDL_Surface * Source, int sX=0, int sY=0, int sW=-1, int sH=-1);
+    SDL_Surface* load_XYZ(const std::string& filename);
 
     // --- Miscellaneous functions ---------------------------------------------
     void s_toupper(char *dest, char *s);
+    int get_file_extension(std::string& fname);
 	char * case_insensitive_and_format_img_exist(const char *directory, std::string & file);
 	char * case_insensitive_and_format_msc_exist(const char *directory, std::string & file);
 	int case_insensitive_exist( std::string & dir_file, const char *directory, char *file);
+    void _fatal_error(const char *perr);
+    
 
 #endif

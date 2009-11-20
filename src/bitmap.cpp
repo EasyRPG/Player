@@ -1,5 +1,6 @@
 #include "bitmap.h"
 #include "SDL_image.h"
+#include "tools.h"
 
 Bitmap::Bitmap(int width, int height)
 {
@@ -14,16 +15,31 @@ Bitmap::Bitmap(int width, int height)
 Bitmap::Bitmap(std::string& filename)
 {
 	SDL_Surface* temp = NULL;
-    std::string ftemp(filename + ".png"); // TODO
-
-	temp = IMG_Load(ftemp.c_str()); 
-	if(temp == NULL) {
-        std::string s(SDL_GetError());
+    std::string serr;
+    
 #ifdef WIN32
-        MessageBox(NULL, (LPCSTR)s.c_str(), (LPCSTR)"Opening file error", MB_ICONERROR);
-#else
-        std::cerr << s << std::endl;
+    int file_ext;
+    file_ext = get_file_extension(filename);
+    switch (file_ext) {
+        case PNG:
+        case BMP:
+            temp = IMG_Load(filename.c_str());
+            break;
+        case XYZ:
+            temp = load_XYZ(filename);
+        default:
+            serr = "Couldn't open ";
+            serr += filename;
+            _fatal_error(serr.c_str());
+    }
+#elif 
+    // TODO Implement file extension guessing for non WIN32 systems
+    filename.append(".png");
 #endif
+ 
+	if(temp == NULL) {
+        std::string s(IMG_GetError());
+        _fatal_error(s.c_str());
 	}
 	else
 	{
