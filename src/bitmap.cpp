@@ -11,14 +11,19 @@ Bitmap::Bitmap(int width, int height)
 	count++;
 }
 
-Bitmap::Bitmap(std::string filename)
+Bitmap::Bitmap(std::string& filename)
 {
 	SDL_Surface* temp = NULL;
-	
-	temp = IMG_Load(filename.c_str());
+    std::string ftemp(filename + ".png"); // TODO
+
+	temp = IMG_Load(ftemp.c_str()); 
 	if(temp == NULL) {
-		// Error
-		SDL_FreeSurface(temp);
+        std::string s(SDL_GetError());
+#ifdef WIN32
+        MessageBox(NULL, (LPCSTR)s.c_str(), (LPCSTR)"Opening file error", MB_ICONERROR);
+#else
+        std::cerr << s << std::endl;
+#endif
 	}
 	else
 	{

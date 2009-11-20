@@ -4,6 +4,8 @@
 #include "scene.h"
 #include "window_base.h" // Change for Window_Command when done
 
+#define LDB_DATABASE "RPG_RT.ldb"
+
 class Scene_Title: public Scene {
 
 public:

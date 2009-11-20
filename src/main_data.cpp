@@ -3,7 +3,7 @@
 namespace Main_Data {
     // Scene Data
 	Scene *scene;
-	std::string scene_type;
+    unsigned char scene_type;
 	
 	// Dynamic Game Data
 	Game_System *game_system;

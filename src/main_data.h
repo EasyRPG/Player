@@ -39,7 +39,7 @@ namespace Main_Data {
 
 	// Scene Data
 	extern Scene *scene;
-	extern std::string scene_type;
+	extern unsigned char scene_type;
 	
 	// Dynamic Game Data
 	extern Game_System* game_system;

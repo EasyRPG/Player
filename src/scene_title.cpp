@@ -10,7 +10,7 @@
 
 Scene_Title::Scene_Title()
 {
-	Main_Data::scene_type = "Scene_Title";
+	Main_Data::scene_type = SCENE_TITLE;
 }
 
 Scene_Title::~Scene_Title()
@@ -20,14 +20,15 @@ Scene_Title::~Scene_Title()
 void Scene_Title::main_function()
 {	
 	// Load Database
-	LDB_reader::load("RPG_RT.ldb");
+	LDB_reader::load(LDB_DATABASE);
     
 	// Create Game System
 	Main_Data::game_system = new Game_System();
 	
 	// Load Title Graphic
 	Bitmap* title_bmp;
-	title_bmp = new Bitmap("Title/Title2.png");//(Main_Data::data_system->title_name);
+    std::string tfile("Title/" + Main_Data::data_system->title_name);
+	title_bmp = new Bitmap(tfile);
 	
 	// Create Background Sprite
 	Sprite* background;
@@ -51,7 +52,7 @@ void Scene_Title::main_function()
 	Graphics::transition();
 	
 	// Scene loop
-	while(Main_Data::scene_type == "Scene_Title") {
+	while(Main_Data::scene_type == SCENE_TITLE) {
 		Graphics::update();
 		Input::update();
 		update();
@@ -101,5 +102,5 @@ void Scene_Title::command_shutdown()
     // Fade out Music
     Audio::bgm_fade(800);
     // Shutdown
-    Main_Data::scene_type = "";
+    Main_Data::scene_type = SCENE_TITLE;
 }

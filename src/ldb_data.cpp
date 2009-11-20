@@ -24,10 +24,11 @@ LDB_data::LDB_data()
 LDB_data::~LDB_data()
 {
     int i;
-    int l = heros->size();
+    int l = 0;
     
     if (heros != NULL) 
     {
+        l = heros->size();
         for (i = 0; i < l; i++)
         {
             delete heros->at(i);
@@ -150,7 +151,5 @@ LDB_data::~LDB_data()
             delete Fightanims->at(i);
         }
         delete Fightanims;        
-    }
-    
-    
+    }    
 }

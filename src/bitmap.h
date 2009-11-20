@@ -9,11 +9,15 @@
 #include "color.h"
 #include "font.h"
 
+#ifdef WIN32 
+    #include <windows.h>
+#endif
+
 class Bitmap {
 
 public:
 	Bitmap(int width, int height);
-	Bitmap(std::string filename);
+	Bitmap(std::string& filename);
 	~Bitmap();
 	
 	void dispose();
