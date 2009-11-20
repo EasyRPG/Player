@@ -19,7 +19,7 @@ Bitmap::Bitmap(std::string& filename)
     
 #ifdef WIN32
     int file_ext;
-    file_ext = get_file_extension(filename);
+    file_ext = get_img_extension(filename);
     switch (file_ext) {
         case PNG:
         case BMP:
@@ -27,6 +27,7 @@ Bitmap::Bitmap(std::string& filename)
             break;
         case XYZ:
             temp = load_XYZ(filename);
+            break;
         default:
             serr = "Couldn't open ";
             serr += filename;

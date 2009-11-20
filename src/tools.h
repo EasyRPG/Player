@@ -63,7 +63,7 @@
 
     // --- Miscellaneous functions ---------------------------------------------
     void s_toupper(char *dest, char *s);
-    int get_file_extension(std::string& fname);
+    int get_img_extension(std::string& fname);
 	char * case_insensitive_and_format_img_exist(const char *directory, std::string & file);
 	char * case_insensitive_and_format_msc_exist(const char *directory, std::string & file);
 	int case_insensitive_exist( std::string & dir_file, const char *directory, char *file);

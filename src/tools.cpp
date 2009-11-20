@@ -268,23 +268,22 @@ void _fatal_error(const char *perr)
 #ifdef WIN32
     MessageBox(NULL, perr, "Error", MB_OK);
 #else
-    fprintf(stdout, "%s\n", perr);
+    fprintf(stderr, "%s\n", perr);
 #endif
-
 }
 
 #ifdef WIN32
-int get_file_extension(string& fname)
+int get_img_extension(string& fname)
 {
-    string ext(".png");
+    string ext(".bmp");
     string ftotal(fname + ext);
     FILE *f;
-    int ret = PNG;
+    int ret = BMP;
 
     f = fopen(ftotal.c_str(), "rb");
     if (f == NULL) {
-        ret = BMP;
-        ext = ".bmp";
+        ret = PNG;
+        ext = ".png";
         ftotal = fname + ext;
         f = fopen(ftotal.c_str(), "rb");
         if (f == NULL) {
