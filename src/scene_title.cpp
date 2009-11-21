@@ -27,7 +27,7 @@ void Scene_Title::main_function()
 	
 	// Load Title Graphic
 	Bitmap* title_bmp;
-    std::string tfile("Title/" + Main_Data::data_system->title_name);
+    std::string tfile(F_TITLE + Main_Data::data_system->title_name);
 	title_bmp = new Bitmap(tfile);
 	
 	// Create Background Sprite

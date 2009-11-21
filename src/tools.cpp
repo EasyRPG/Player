@@ -291,7 +291,7 @@ int get_img_extension(string& fname)
             ext = ".xyz";
             ftotal = fname + ext;
             f = fopen(ftotal.c_str(), "rb");
-            if (f = NULL) {
+            if (f == NULL) {
                 return -1;
             }
         }

@@ -35,6 +35,21 @@
 //#include "rpg_map.h"
 //#include "rpg_area.h"
 
+#define F_BACKDROP "Backdrop/"
+#define F_BATTLE "Battle/"
+#define F_CHARSET "CharSet/"
+#define F_CHIPSET "ChipSet/"
+#define F_FACESET "FaceSet/"
+#define F_GAMEOVER "GameOver/"
+#define F_MONSTER "Monster/"
+#define F_MOVIE "Movie/"
+#define F_MUSIC "Music/"
+#define F_PANORAMA "Panorama/"
+#define F_PICTURE "Picture/"
+#define F_SOUND "Sound/"
+#define F_SYSTEM "System/"
+#define F_TITLE "Title/"
+
 namespace Main_Data {
 
 	// Scene Data

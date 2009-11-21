@@ -2,30 +2,31 @@
 #define __audio__
 
 #include <string>
+#include "tools.h"
+#include "SDL_mixer.h"
 
-class Audio {
+namespace Audio {
 
-public:
-	static void initialize();
+	bool initialize();
 
-	static void bgm_play(std::string filename);
-	static void bgm_play(std::string filename, int volume);
-	static void bgm_play(std::string filename, int volume, int pitch);
-	static void bgm_stop();
-	static void bgm_fade(int time);
-	static void bgs_play(std::string filename);
-	static void bgs_play(std::string filename, int volume);
-	static void bgs_play(std::string filename, int volume, int pitch);
-	static void bgs_stop();
-	static void bgs_fade(int time);
-	static void me_play(std::string filename);
-	static void me_play(std::string filename, int volume);
-	static void me_play(std::string filename, int volume, int pitch);
-	static void me_stop();
-	static void me_fade(int time);
-	static void se_play(std::string filename);
-	static void se_play(std::string filename, int volume);
-	static void se_play(std::string filename, int volume, int pitch);
-	static void se_stop();
+	void bgm_play(std::string filename);
+	void bgm_play(std::string filename, int volume);
+	void bgm_play(std::string filename, int volume, int pitch);
+	void bgm_stop();
+	void bgm_fade(int time);
+	void bgs_play(std::string filename);
+	void bgs_play(std::string filename, int volume);
+	void bgs_play(std::string filename, int volume, int pitch);
+	void bgs_stop();
+	void bgs_fade(int time);
+	void me_play(std::string filename);
+	void me_play(std::string filename, int volume);
+	void me_play(std::string filename, int volume, int pitch);
+	void me_stop();
+	void me_fade(int time);
+	void se_play(std::string filename);
+	void se_play(std::string filename, int volume);
+	void se_play(std::string filename, int volume, int pitch);
+	void se_stop();
 };
 #endif // __audio__

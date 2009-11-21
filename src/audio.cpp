@@ -1,8 +1,28 @@
 #include "audio.h"
 
-void Audio::initialize()
+bool Audio::initialize()
 {
-	
+    if (!(SDL_WasInit(SDL_INIT_AUDIO) & SDL_INIT_AUDIO)) {
+        if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
+            _fatal_error(SDL_GetError());
+            return false;
+        }
+    }
+
+    int flags = 0;    
+    flags = Mix_Init(MIX_INIT_MP3 | MIX_INIT_OGG);
+
+    if ( !(flags & MIX_INIT_MP3) ) {
+        _fatal_error(Mix_GetError());
+        return false;
+    }
+
+    if ( !(flags & MIX_INIT_OGG) ) {
+        _fatal_error(Mix_GetError());
+        return false;
+    }
+
+    return true;
 }
 
 void Audio::bgm_play(std::string filename)
