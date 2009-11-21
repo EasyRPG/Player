@@ -7,7 +7,7 @@ namespace {
     int trash;
 }
 
-void LDB_reader::heroskillChunk(FILE * Stream, RPG::Actor* hero)
+void LDB_reader::heroskillChunk(FILE * Stream, RPG::Actor*& hero)
 {
     int id,datatoread=0,datareaded=0;
     RPG::Learning skill;

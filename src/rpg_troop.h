@@ -35,8 +35,8 @@ class Troop {
         int id;
         std::string name;
         std::vector<char> terrain_data;
-        std::vector<Member> members;
-        std::vector<Page> pages;
+        std::vector<Member*> members;
+        std::vector<Page*> pages;
         
 };
 

@@ -8,7 +8,7 @@ namespace {
     int trash;
 }
 
-void LDB_reader::musicChunk(FILE * Stream, RPG::Music* music)
+void LDB_reader::musicChunk(FILE * Stream, RPG::Music*& music)
 {
     music = new RPG::Music();
     do {

@@ -7,13 +7,18 @@ namespace {
     int trash;
 }
 
-void LDB_reader::MonsterPartyMonsterChunk(FILE * Stream, RPG::Troop *trp)
+void LDB_reader::MonsterPartyMonsterChunk(FILE * Stream, RPG::Troop*& trp)
 {
     int id,datatoread=0,datareaded=0;
-    RPG::Member *monster = new RPG::Member();
     datatoread=ReadCompressedInteger(Stream);//numero de datos
     while (datatoread>datareaded) { // si no hay mas en el array
         id= ReadCompressedInteger(Stream);//lectura de id 1 de array
+
+        RPG::Member* monster = new RPG::Member();
+        monster->enemy_id = 1;
+        monster->x = 0;
+        monster->y = 0;
+
         do {
             ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
             if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
@@ -38,57 +43,64 @@ void LDB_reader::MonsterPartyMonsterChunk(FILE * Stream, RPG::Troop *trp)
                 break;
             }
         } while (ChunkInfo.ID!=0);
-        trp->members.push_back(*monster);
-        delete monster;
+        trp->members.push_back(monster);
         datareaded++;
     }
     ChunkInfo.ID	 =1;
 }
 
-void LDB_reader::MonsterPartyEventconditionChunk(FILE * Stream, RPG::Page* pgs)
+void LDB_reader::MonsterPartyEventconditionChunk(FILE * Stream, RPG::Page*& pgs)
 {
+    int id,datatoread=0,datareaded=0;
+    pgs = new RPG::Page();
     short dat;
-    do {
-        ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
-        if (ChunkInfo.ID!=0)
-            ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
+    //datatoread = ReadCompressedInteger(Stream); //numero de datos
+    //while (datatoread>datareaded) { //si no hay mas en el array
+        id= ReadCompressedInteger(Stream);//lectura de id 1 de array
+        do {
+            ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
+            if (ChunkInfo.ID!=0)
+                ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
 
-        switch (ChunkInfo.ID) { // segun el tipo
-        case Condition_flags:// en el 2003 se usan 2 chars
-            if (ChunkInfo.Length==2)
-                pgs->condition.flags = fread(&dat, 2, 1, Stream);
-            else
-                pgs->condition.flags = ReadCompressedInteger(Stream);
-            break;
-        case Switch_A:
-            pgs->condition.switch_a	 = ReadCompressedInteger(Stream);
-            break;
-        case Turn_number_A:
-            pgs->condition.turn_number_a	 = ReadCompressedInteger(Stream);
-            break;
-        case Lower_limit:
-            pgs->condition.lower_limit	 = ReadCompressedInteger(Stream);
-            break;
-        case Upper_limit:
-            pgs->condition.upper_limit	 = ReadCompressedInteger(Stream);
-            break;
-        case CHUNK_LDB_END_OF_BLOCK:
-            break;
-        default:
-            bool return_value;
-            while (ChunkInfo.Length--) {
-                return_value = fread(&Void, 1, 1, Stream);
+            switch (ChunkInfo.ID) { // segun el tipo
+            case Condition_flags:// en el 2003 se usan 2 chars
+                if (ChunkInfo.Length==2)
+                    pgs->condition.flags = fread(&dat, 2, 1, Stream);
+                else
+                    pgs->condition.flags = ReadCompressedInteger(Stream);
+                break;
+            case Switch_A:
+                pgs->condition.switch_a	 = ReadCompressedInteger(Stream);
+                break;
+            case Turn_number_A:
+                pgs->condition.turn_number_a	 = ReadCompressedInteger(Stream);
+                break;
+            case Lower_limit:
+                pgs->condition.lower_limit	 = ReadCompressedInteger(Stream);
+                break;
+            case Upper_limit:
+                pgs->condition.upper_limit	 = ReadCompressedInteger(Stream);
+                break;
+            case CHUNK_LDB_END_OF_BLOCK:
+                break;
+            default:
+                bool return_value;
+                while (ChunkInfo.Length--) {
+                    return_value = fread(&Void, 1, 1, Stream);
+                }
+                break;
             }
-            break;
-        }
-    } while (ChunkInfo.ID!=0);
+        } while (ChunkInfo.ID!=0);
+   //     datareaded++;
+        //pgs->condition.
+  //  }
     ChunkInfo.ID=1;
 }
 
-void LDB_reader::MonsterPartyevent_pageChunk(FILE * Stream, RPG::Troop *trp)
+void LDB_reader::MonsterPartyevent_pageChunk(FILE * Stream, RPG::Troop*& trp)
 {
     int id,datatoread=0,datareaded=0;
-    RPG::Page Monsterevent;
+    RPG::Page *Monsterevent;
     datatoread=ReadCompressedInteger(Stream);//numero de datos
     while (datatoread>datareaded) { // si no hay mas en el array
         id= ReadCompressedInteger(Stream);//lectura de id 1 de array
@@ -98,16 +110,16 @@ void LDB_reader::MonsterPartyevent_pageChunk(FILE * Stream, RPG::Troop *trp)
                 ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
             switch (ChunkInfo.ID) { // tipo de la primera dimencion
             case Page_conditions:
-                MonsterPartyEventconditionChunk(Stream, &Monsterevent);
+                MonsterPartyEventconditionChunk(Stream, Monsterevent);
                 break;
             case Event_length:
                 int trash;
                 trash = ReadCompressedInteger(Stream);
                 break;
-            case Event_Monster:
+            //case Event_Monster:
              /* TODO: Events */
                 //Monsterevent.vcEvent_comand =  Event_parser.EventcommandChunk(Stream);
-                break;
+             //   break;
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
             default:
@@ -165,6 +177,9 @@ void LDB_reader::mosterpartyChunk(FILE * Stream)
                 MonsterPartyevent_pageChunk(Stream, enemy_group);
                 break;
             case CHUNK_LDB_END_OF_BLOCK:
+                /* FIXME 2 bytes left. We may be missing something o_O */
+                ReadCompressedInteger(Stream);
+                ReadCompressedInteger(Stream);
                 break;
             default:
                 while (ChunkInfo.Length--) {
@@ -175,7 +190,7 @@ void LDB_reader::mosterpartyChunk(FILE * Stream)
                 break;
             }
         } while (ChunkInfo.ID!=0);
-        datareaded++;
         Main_Data::data_troops.push_back(enemy_group);
+        datareaded++;
     }
 }

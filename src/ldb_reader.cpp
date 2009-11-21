@@ -52,9 +52,9 @@ void LDB_reader::GetNextChunk(FILE * Stream)
             case CHUNK_Monster:
                 mosterChunk(Stream);
                 break;
-            /*case CHUNK_MonsterP:
+            case CHUNK_MonsterP:
                 mosterpartyChunk(Stream);
-                break;*/
+                break;
             case CHUNK_Terrain:
                 terrainChunk(Stream);
                 break;

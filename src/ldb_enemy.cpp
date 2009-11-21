@@ -7,7 +7,7 @@ namespace {
     int trash;
 }
 
-void LDB_reader::mosteractionChunk(FILE * Stream, RPG::Enemy* e)
+void LDB_reader::mosteractionChunk(FILE * Stream, RPG::Enemy*& e)
 {
     int datatoread=0,datareaded=0;
     E_Action *action;
