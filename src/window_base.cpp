@@ -2,7 +2,7 @@
 
 Window_Base::Window_Base(int ix, int iy, int iwidth, int iheight) {
 	windowskin_name = Main_Data::game_system->get_windowskin_name();
-    windowskin = new Bitmap(windowskin_name); //RPG::Cache.windowskin(windowskin_name);
+//    windowskin = new Bitmap(windowskin_name); //RPG::Cache.windowskin(windowskin_name);
     x = ix;
 	y = iy;
 	width = iwidth;

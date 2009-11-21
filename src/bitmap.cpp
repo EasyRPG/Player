@@ -30,8 +30,9 @@ Bitmap::Bitmap(std::string& filename)
             break;
         default:
             serr = "Couldn't open ";
-            serr += filename;
+            serr.append(filename);
             _fatal_error(serr.c_str());
+            return;
     }
 #elif 
     // TODO Implement file extension guessing for non WIN32 systems
