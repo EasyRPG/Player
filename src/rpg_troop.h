@@ -31,6 +31,7 @@ typedef struct {
 class Troop {
     public:
         Troop();
+        ~Troop();
         
         int id;
         std::string name;

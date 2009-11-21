@@ -56,7 +56,7 @@ void LDB_reader::MonsterPartyEventconditionChunk(FILE * Stream, RPG::Page*& pgs)
     short dat;
     //datatoread = ReadCompressedInteger(Stream); //numero de datos
     //while (datatoread>datareaded) { //si no hay mas en el array
-        id= ReadCompressedInteger(Stream);//lectura de id 1 de array
+   //     id= ReadCompressedInteger(Stream);//lectura de id 1 de array
         do {
             ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
             if (ChunkInfo.ID!=0)
@@ -177,9 +177,6 @@ void LDB_reader::mosterpartyChunk(FILE * Stream)
                 MonsterPartyevent_pageChunk(Stream, enemy_group);
                 break;
             case CHUNK_LDB_END_OF_BLOCK:
-                /* FIXME 2 bytes left. We may be missing something o_O */
-                ReadCompressedInteger(Stream);
-                ReadCompressedInteger(Stream);
                 break;
             default:
                 while (ChunkInfo.Length--) {
