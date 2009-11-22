@@ -19,7 +19,7 @@ namespace Input {
 
     bool is_pressed(int key)
     {
-	    return (actual_action == key);
+	    return ((actual_action == key) && (actual_action == previous_action));
     }
 
     bool is_triggered(int key)

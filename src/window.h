@@ -71,7 +71,7 @@ public:
 	Bitmap* windowskin;
 	Bitmap* contents;
 	bool stretch;
-	Rect* cursor_rect;
+	Rect cursor_rect;
 	bool active;
 	bool visible;
 	bool pause;

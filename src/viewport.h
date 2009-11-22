@@ -43,7 +43,7 @@ public:
 	static void remove_viewport(int id);
 	
 private:
-	Rect* rect;
+	Rect rect;
 	bool visible;
 	int z;
 	int ox;

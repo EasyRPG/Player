@@ -46,7 +46,7 @@ namespace Graphics {
 	// Update Graphics
 	void update()
 	{
-		SDL_FillRect(screen, &screen->clip_rect, 0); 
+		SDL_FillRect(screen, NULL, 0); 
 		
 		zlist.sort(compare_zobj);
 		
@@ -81,6 +81,7 @@ namespace Graphics {
 					break;
 			}
 		}
+        SDL_Flip(screen);
         // Regulate FPS
         SDL_framerateDelay(&fps_manager);
 	}

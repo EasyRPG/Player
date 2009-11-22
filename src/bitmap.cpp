@@ -84,7 +84,13 @@ int Bitmap::height()
 
 Rect* Bitmap::rect()
 {
-	return new Rect(0, 0, surface->w, surface->h);
+    Rect *r;
+    r = new Rect;
+    r->x = 0;
+    r->y = 0;
+    r->w = 0;
+    r->h = 0;
+	return r;
 }
 
 void Bitmap::blt(int x, int y, Bitmap *src_bitmap, Rect *src_rect)

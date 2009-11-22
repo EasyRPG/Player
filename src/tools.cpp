@@ -266,7 +266,7 @@ void s_toupper(char *dest, char *s)
 void _fatal_error(const char *perr) 
 {
 #ifdef WIN32
-    MessageBox(NULL, perr, "Error", MB_OK);
+    MessageBox(NULL, perr, "Error", MB_OK | MB_ICONERROR);
 #else
     fprintf(stderr, "%s\n", perr);
 #endif

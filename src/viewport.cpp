@@ -8,7 +8,11 @@ Viewport::Viewport(int ix, int iy, int iwidth, int iheight)
 //	Graphics::add_viewport(count, this);
 	count++;
 	
-	rect = new Rect(ix, iy, iwidth, iheight);
+    rect.x = ix;
+    rect.y = iy;
+    rect.w = iwidth;
+    rect.h = iheight;
+
 	visible = true;
 	z = 0;
 	ox = 0;
@@ -25,7 +29,11 @@ Viewport::Viewport(Rect *irect)
 	count++;
 	
 //	viewport = viewport;
-	rect = irect;
+	rect.x = irect->x;
+    rect.y = irect->y;
+    rect.w = irect->w;
+    rect.h = irect->h;
+
 	visible = true;
 	z = 0;
 	ox = 0;
@@ -69,7 +77,7 @@ void Viewport::draw(SDL_Surface *screen)
 
 Rect* Viewport::get_rect()
 {
-	return rect;
+	return &rect;
 }
 
 bool Viewport::get_visible()
@@ -104,7 +112,10 @@ Tone* Viewport::get_tone()
 
 void Viewport::set_rect(Rect* nrect)
 {
-	rect = nrect;
+	rect.x = nrect->x;
+    rect.y = nrect->y;
+    rect.w = nrect->w;
+    rect.h = nrect->h;
 }
 
 void Viewport::set_visible(bool nvisible)

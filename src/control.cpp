@@ -158,8 +158,10 @@ namespace Control
 
     void set_delay_default()
     {
-        delay = 30;
-        in_delay = 4;
+        //delay = 30
+        //in_delay = 4
+        delay = 0;
+        in_delay = 0;
 
     }
 

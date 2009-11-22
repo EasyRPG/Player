@@ -8,7 +8,11 @@ Plane::Plane()
 	add_plane(count, this);
 	count++;
 	
-	src_rect = new Rect(0, 0, 0, 0);
+	src_rect.x = 0;
+    src_rect.y = 0;
+    src_rect.w = 0;
+    src_rect.h = 0;
+
 	visible = true;
 	x = 0;
 	y = 0;
@@ -31,7 +35,10 @@ Plane::Plane(Viewport *iviewport)
 	count++;
 	
 	viewport = iviewport;
-	src_rect = new Rect(0, 0, 0, 0);
+	src_rect.x = 0;
+    src_rect.y = 0;
+    src_rect.w = 0;
+    src_rect.h = 0;
 	visible = true;
 	x = 0;
 	y = 0;
@@ -82,7 +89,7 @@ Bitmap* Plane::get_bitmap()
 
 Rect *Plane::get_src_rect()
 {
-	return src_rect;
+	return &src_rect;
 }
 
 bool Plane::get_visible()
@@ -157,7 +164,10 @@ void Plane::set_bitmap(Bitmap* nbitmap)
 
 void Plane::set_src_rect(Rect* nsrc_rect)
 {
-	src_rect = nsrc_rect;
+	src_rect.x = nsrc_rect->x;
+    src_rect.y = nsrc_rect->y;
+    src_rect.w = nsrc_rect->w;
+    src_rect.h = nsrc_rect->h;
 }
 
 void Plane::set_visible(bool nvisible)

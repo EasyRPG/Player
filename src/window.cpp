@@ -13,7 +13,10 @@ Window::Window()
 	count++;
 	
 	stretch = true;
-	cursor_rect = new Rect(0, 0, 0, 0);
+	cursor_rect.x = 0;
+    cursor_rect.y = 0;
+    cursor_rect.w = 0;
+    cursor_rect.h = 0;
 	active = true;
 	visible = true;
 	pause = false;
@@ -38,7 +41,10 @@ Window::Window(Viewport *iviewport)
 	
 	viewport = iviewport;
 	stretch = true;
-	cursor_rect = new Rect(0, 0, 0, 0);
+	cursor_rect.x = 0;
+    cursor_rect.y = 0;
+    cursor_rect.w = 0;
+    cursor_rect.h = 0;
 	active = true;
 	visible = true;
 	pause = false;
@@ -227,7 +233,7 @@ bool Window::get_stretch()
 
 Rect* Window::get_cursor_rect()
 {
-	return cursor_rect;
+	return &cursor_rect;
 }
 
 bool Window::get_active()
@@ -317,7 +323,10 @@ void Window::set_stretch(bool nstretch)
 
 void Window::set_cursor_rect(Rect* ncursor_rect)
 {
-	cursor_rect = ncursor_rect;
+	cursor_rect.x = ncursor_rect->x;
+    cursor_rect.y = ncursor_rect->y;
+    cursor_rect.w = ncursor_rect->w;
+    cursor_rect.h = ncursor_rect->h;
 }
 
 void Window::set_active(bool nactive)

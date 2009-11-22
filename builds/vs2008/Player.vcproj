@@ -618,10 +618,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\rect.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\src\rect.h"
 					>
 				</File>

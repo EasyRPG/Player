@@ -14,7 +14,7 @@ bool LDB_reader::load(const std::string& Filename)
     FILE * Stream;// apertura de archivo
     Stream = fopen(Filename.c_str(), "rb");
     if (Stream == NULL) {
-        std::cerr << "Couldn't find LDB database. Aborting" << std::endl;
+        _fatal_error("Couldn't find LDB database");
         exit(1);
     }
     std::string Header = ReadString(Stream); // lectura de cabezera

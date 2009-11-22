@@ -5,10 +5,15 @@ Sprite::Sprite()
 {
 	disposed = false;
 	id = count;
-	add_sprite(count, this);
-	count++;
+
+    bitmap = NULL;
+    viewport = NULL;
 	
-	src_rect = new Rect(0, 0, 0, 0);
+	src_rect.x = 0;
+    src_rect.y = 0;
+    src_rect.w = 0;
+    src_rect.h = 0;
+
 	visible = true;
 	x = 0;
 	y = 0;
@@ -25,6 +30,9 @@ Sprite::Sprite()
 	blend_type = 0;
 	color = new Color(0, 0, 0);
 	tone = new Tone(0, 0, 0);
+
+    add_sprite(count, this);
+    count++;
 	
 }
 
@@ -32,11 +40,16 @@ Sprite::Sprite(Viewport *iviewport)
 {
 	disposed = false;
 	id = count;
-	add_sprite(count, this);
-	count++;
+
+    bitmap = NULL;
 	
 	viewport = iviewport;
-	src_rect = new Rect(0, 0, 0, 0);
+
+    src_rect.x = 0;
+    src_rect.y = 0;
+    src_rect.w = 0;
+    src_rect.h = 0;
+
 	visible = true;
 	x = 0;
 	y = 0;
@@ -53,6 +66,9 @@ Sprite::Sprite(Viewport *iviewport)
 	blend_type = 0;
 	color = new Color(0, 0, 0);
 	tone = new Tone(0, 0, 0);
+
+    add_sprite(count, this);
+    count++;
 }
 
 Sprite::~Sprite()
@@ -85,13 +101,19 @@ void Sprite::update()
 
 void Sprite::draw(SDL_Surface *screen)
 {
-		SDL_Rect dstrect;
-		dstrect.x = x;
-		dstrect.y = y; 
-		if(SDL_BlitSurface(bitmap->surface, &src_rect->get_sdlrect(), screen, &dstrect) == -1)
-		{
-			// Error
-		}
+    if (bitmap == NULL)
+        return;
+    
+    SDL_Rect dstrect;
+	dstrect.x = x;
+	dstrect.y = y; 
+    dstrect.w = bitmap->width();
+    dstrect.h = bitmap->height();
+	
+    if(SDL_BlitSurface(bitmap->surface, &src_rect, screen, &dstrect) < 0)
+	{
+		_fatal_error(SDL_GetError());
+	}
 }
 
 Viewport* Sprite::get_viewport()
@@ -106,7 +128,7 @@ Bitmap* Sprite::get_bitmap()
 
 Rect* Sprite::get_src_rect()
 {
-	return src_rect;
+	return &src_rect;
 }
 
 bool Sprite::get_visible()
@@ -197,11 +219,17 @@ void Sprite::set_viewport(Viewport* nviewport)
 void Sprite::set_bitmap(Bitmap* nbitmap)
 {
 	bitmap = nbitmap;
+    src_rect.w = bitmap->width();
+    src_rect.h = bitmap->height();
+
 }
 
 void Sprite::set_src_rect(Rect* nsrc_rect)
 {
-	src_rect = nsrc_rect;
+	src_rect.x = nsrc_rect->x;
+    src_rect.y = nsrc_rect->y;
+    src_rect.w = nsrc_rect->w;
+    src_rect.h = nsrc_rect->h;
 }
 
 void Sprite::set_visible(bool nvisible)
@@ -287,7 +315,7 @@ void Sprite::set_tone(Tone* ntone)
 void Sprite::add_sprite(int id, Sprite *sprite)
 {
 	sprites[id] = sprite;
-	ZObj zobj((*sprite).get_z(), id, TYPE_SPRITE, 0);
+	ZObj zobj(sprite->get_z(), TYPE_SPRITE, id, 0);
 	Graphics::zlist.push_back(zobj);
 }
 

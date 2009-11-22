@@ -9,6 +9,8 @@
 #include "color.h"
 #include "tone.h"
 #include "graphics.h"
+#include "tools.h"
+
 class Viewport;
 class Sprite {
 	
@@ -71,7 +73,7 @@ public:
 private:
 	Viewport *viewport;
 	Bitmap *bitmap;
-	Rect *src_rect;
+	Rect src_rect;
 	bool visible;
 	int x;
 	int y;

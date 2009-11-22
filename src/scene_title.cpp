@@ -33,6 +33,7 @@ void Scene_Title::main_function()
 	// Create Background Sprite
 	Sprite* background;
 	background = new Sprite();
+    background->set_bitmap(title_bmp);
 	
 	// Create Options Window
 //	std::string options[3];
