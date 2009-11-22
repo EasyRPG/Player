@@ -37,6 +37,7 @@ Bitmap::Bitmap(std::string& filename)
 #else
     // TODO Implement file extension guessing for non WIN32 systems
     filename.append(".png");
+    temp = IMG_Load(filename.c_str());
 #endif
  
 	if(temp == NULL) {
@@ -88,8 +89,8 @@ Rect* Bitmap::rect()
     r = new Rect;
     r->x = 0;
     r->y = 0;
-    r->w = 0;
-    r->h = 0;
+    r->w = surface->w;
+    r->h = surface->h;
 	return r;
 }
 

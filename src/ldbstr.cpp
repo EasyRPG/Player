@@ -1304,7 +1304,8 @@ void stcCombatcommand::set_defaults()
 void stcCombatcommand::show()
 {
 printf(" \n strName %s",strName.c_str());
-printf(" \n intUsage %d",intUsage);}
+printf(" \n intUsage %d",intUsage);
+}
 
 void stcCombatcommands::show()//array bidimencional
 { int j,i;

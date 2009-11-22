@@ -28,5 +28,5 @@ namespace Audio {
 	void se_play(std::string filename, int volume);
 	void se_play(std::string filename, int volume, int pitch);
 	void se_stop();
-};
+}
 #endif // __audio__
