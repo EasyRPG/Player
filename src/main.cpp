@@ -3,6 +3,7 @@
 
 #include "main_data.h"
 #include "graphics.h"
+#include "input.h"
 #include "scene_title.h"
 
 int main(int argc, char **argv)
@@ -21,6 +22,8 @@ int main(int argc, char **argv)
 	
 	// Start Graphics
 	Graphics::initialize();
+
+    Input::initialize();
 	
 	// Create Scene Title
 	Main_Data::scene = new Scene_Title();

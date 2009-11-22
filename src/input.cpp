@@ -1,41 +1,50 @@
 #include "input.h"
 
-void Input::initialize()
-{
-	
-}
+namespace Input {
+    int actual_action = -1;
+    int previous_action = -1;
 
-void Input::update()
-{
-	
-}
+    void initialize()
+    {
+        Control::set_keys();
+        Control::set_delay_default();
+    }
 
-bool Input::is_pressed(int key)
-{
-	return false;
-}
+    void update()
+    {
+        previous_action = actual_action;
+        Control::update_keys();
+        actual_action = Control::pop_action();
+    }
 
-bool Input::is_triggered(int key)
-{
-	return false;
-}
+    bool is_pressed(int key)
+    {
+	    return (actual_action == key);
+    }
 
-bool Input::is_repeated(int key)
-{
-	return false;
-}
+    bool is_triggered(int key)
+    {
+	    return (actual_action == key);
+    }
 
-bool Input::is_released(int key)
-{
-	return false;
-}
+    bool is_repeated(int key)
+    {
+	    return false;
+    }
 
-int Input::dir4()
-{
-	return 0;
-}
+    bool is_released(int key)
+    {
+	    return (actual_action != key);
+    }
 
-int Input::dir8()
-{
-	return 0;
+    int dir4()
+    {
+	    return 0;
+    }
+
+    int dir8()
+    {
+	    return 0;
+    }
+
 }

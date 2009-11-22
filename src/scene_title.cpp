@@ -61,12 +61,16 @@ void Scene_Title::main_function()
 	// Dispose graphical objects
 	title_bmp->dispose();
 	background->dispose();
-	command_window->dispose();
+//	command_window->dispose();
 }
 
 void Scene_Title::update()
 {
 	command_window->update();
+    if (Input::is_triggered(Control::EXIT))
+        // On [x] mouse button press, exit immediately
+        Main_Data::scene_type = SCENE_NULL;
+
 /* Will get some code frome control.cpp */
 /*	if(Input::is_triggered(SDL_ENTER) || Input::is_triggered(SDL_Z))
 	{
@@ -102,5 +106,5 @@ void Scene_Title::command_shutdown()
     // Fade out Music
     Audio::bgm_fade(800);
     // Shutdown
-    Main_Data::scene_type = SCENE_TITLE;
+    Main_Data::scene_type = SCENE_NULL;
 }

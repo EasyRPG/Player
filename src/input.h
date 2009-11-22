@@ -1,18 +1,22 @@
 #ifndef __input__
 #define __input__
 
-class Input {
+#include "control.h"
 
-public:
-	static void initialize();
+namespace Input {
 
-	static void update();
+    extern int actual_action;
+    extern int previous_action;
+
+	void initialize();
+
+	void update();
 	
-	static bool is_pressed(int key);
-	static bool is_triggered(int key);
-	static bool is_repeated(int key);
-	static bool is_released(int key);
-	static int dir4();
-	static int dir8();
-};
+	bool is_pressed(int key);
+	bool is_triggered(int key);
+	bool is_repeated(int key);
+	bool is_released(int key);
+	int dir4();
+	int dir8();
+}
 #endif // __input__
