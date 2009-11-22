@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 	Main_Data::scene = new Scene_Title();
 	
 	// Main loop
-	while(Main_Data::scene_type != SCENE_NULL)
+	while (Main_Data::scene_type != SCENE_NULL)
 	{
 		Main_Data::scene->main_function();
 	}

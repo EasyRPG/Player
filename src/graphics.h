@@ -4,6 +4,7 @@
 #include <string>
 #include <list>
 #include "SDL.h"
+#include "SDL_framerate.h"
 #include "viewport.h"
 #include "bitmap.h"
 #include "sprite.h"
@@ -25,10 +26,10 @@ namespace Graphics {
 	int get_frame_count();
 	void set_frame_rate(int fr);
 	void set_frame_count(int fc);
+
+    extern FPSmanager fps_manager;
 	
 	extern SDL_Surface *screen;
-	extern int frame_rate;
-	extern int frame_count;
 	
 	extern std::list<ZObj> zlist;
 	extern std::list<ZObj>::iterator zlist_it;

@@ -15,22 +15,26 @@ bool compare_zobj(ZObj &first, ZObj &second) {
 
 namespace Graphics {
 	SDL_Surface *screen;
-	int frame_rate;
-	int frame_count;
+
 	std::list<ZObj> zlist;
 	std::list<ZObj>::iterator zlist_it;
+
+    FPSmanager fps_manager;
 	
 	// Initialize Graphics
 	void initialize()
 	{
 		// Create screen
 		screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE);
+
+        SDL_initFramerate(&fps_manager);
 		
 		// Set default frame rate
-		frame_rate = 60;
+		const unsigned int frame_rate = 40;
+        SDL_setFramerate(&fps_manager, frame_rate);
 		
 		// Set frame count to zero
-		frame_count = 0;
+		// Already done by SDL_initFramerate()
 	}
 
 	// Dispose Graphics resources
@@ -43,8 +47,6 @@ namespace Graphics {
 	void update()
 	{
 		SDL_FillRect(screen, &screen->clip_rect, 0); 
-		
-		frame_count += 1;
 		
 		zlist.sort(compare_zobj);
 		
@@ -79,6 +81,8 @@ namespace Graphics {
 					break;
 			}
 		}
+        // Regulate FPS
+        SDL_framerateDelay(&fps_manager);
 	}
 
 	void transition()
@@ -103,21 +107,21 @@ namespace Graphics {
 
 	int get_frame_rate()
 	{
-		return frame_rate;
+		return fps_manager.rate;
 	}
 
 	int get_frame_count()
 	{
-		return frame_count;
+		return fps_manager.framecount;
 	}
 
 	void set_frame_rate(int fr)
 	{
-		frame_rate = fr;
+		SDL_setFramerate(&fps_manager, fr);
 	}
 
 	void set_frame_count(int fc)
 	{
-		frame_count = fc;
+		fps_manager.framecount = fc;
 	}
 }

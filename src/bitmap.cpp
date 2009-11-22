@@ -34,7 +34,7 @@ Bitmap::Bitmap(std::string& filename)
             _fatal_error(serr.c_str());
             return;
     }
-#elif 
+#else
     // TODO Implement file extension guessing for non WIN32 systems
     filename.append(".png");
 #endif
