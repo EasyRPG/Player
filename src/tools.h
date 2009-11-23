@@ -20,6 +20,9 @@
 #define PNG 0
 #define BMP 1
 #define XYZ 2
+#define MID 3
+#define WAV 4
+#define MP3 5
 
     // =========================================================================
     #include <stdlib.h>
@@ -63,10 +66,14 @@
 
     // --- Miscellaneous functions ---------------------------------------------
     void s_toupper(char *dest, char *s);
+#ifdef WIN32
     int get_img_extension(std::string& fname);
-	char * case_insensitive_and_format_img_exist(const char *directory, std::string & file);
+    int get_mus_extension(std::string& fname);
+#else
+    char * case_insensitive_and_format_img_exist(const char *directory, std::string & file);
 	char * case_insensitive_and_format_msc_exist(const char *directory, std::string & file);
 	int case_insensitive_exist( std::string & dir_file, const char *directory, char *file);
+#endif
     void _fatal_error(const char *perr);
     
 

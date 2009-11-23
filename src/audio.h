@@ -9,7 +9,7 @@ namespace Audio {
 
 	bool initialize();
 
-	void bgm_play(std::string filename);
+	Mix_Music* bgm_play(std::string filename);
 	void bgm_play(std::string filename, int volume);
 	void bgm_play(std::string filename, int volume, int pitch);
 	void bgm_stop();

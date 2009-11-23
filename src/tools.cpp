@@ -300,6 +300,34 @@ int get_img_extension(string& fname)
     fname += ext;
     return ret;
 }
+
+int get_mus_extension(string& fname)
+{
+    string ext(".mid");
+    string ftotal(fname + ext);
+    FILE *f;
+    int ret = MID;
+
+    f = fopen(ftotal.c_str(), "rb");
+    if (f == NULL) {
+        ret = WAV;
+        ext = ".wav";
+        ftotal = fname + ext;
+        f = fopen(ftotal.c_str(), "rb");
+        if (f == NULL) {
+            ret = MP3;
+            ext = ".mp3";
+            ftotal = fname + ext;
+            f = fopen(ftotal.c_str(), "rb");
+            if (f == NULL) {
+                return -1;
+            }
+        }
+    }
+    fclose(f);
+    fname += ext;
+    return ret;
+}
 #endif
 
 #ifdef UNIX

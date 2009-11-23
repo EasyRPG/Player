@@ -48,8 +48,10 @@ void Scene_Title::main_function()
 	/* TODO: Set index to Load Game if required */
 	
 	// Play music
-//	Main_Data::game_system.bgm_play(Main_Data::data_system.title_music);
-	
+	//Main_Data::game_system.bgm_play(Main_Data::data_system.title_music);
+    std::string smus(F_MUSIC + Main_Data::data_system->title_music->name);
+    Audio::bgm_play(smus);
+
 	Graphics::transition();
 	
 	// Scene loop

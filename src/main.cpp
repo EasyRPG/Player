@@ -4,6 +4,7 @@
 #include "main_data.h"
 #include "graphics.h"
 #include "input.h"
+#include "audio.h"
 #include "scene_title.h"
 
 int main(int argc, char **argv)
@@ -24,6 +25,10 @@ int main(int argc, char **argv)
 	Graphics::initialize();
 
     Input::initialize();
+
+    if (!Audio::initialize()) {
+        _fatal_error("Couldn't initialise audio!");
+    }
 	
 	// Create Scene Title
 	Main_Data::scene = new Scene_Title();

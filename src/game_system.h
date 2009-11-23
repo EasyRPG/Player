@@ -20,5 +20,6 @@ public:
 	~Game_System();
 
 	std::string get_windowskin_name();
+
 };
 #endif // __game_system__

@@ -7,7 +7,7 @@
 	#define SCREEN_WIDTH 320
 	#define SCREEN_HEIGHT 240
 #endif
-#define SCREEN_BPP 32
+#define SCREEN_BPP 16
 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
 	#define rmask 0xff000000

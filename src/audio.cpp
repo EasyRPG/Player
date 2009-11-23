@@ -1,5 +1,9 @@
 ﻿#include "audio.h"
 
+namespace {
+    Mix_Music *bgm = NULL;
+}
+
 bool Audio::initialize()
 {
     if (!(SDL_WasInit(SDL_INIT_AUDIO) & SDL_INIT_AUDIO)) {
@@ -9,15 +13,15 @@ bool Audio::initialize()
         }
     }
 
-    int flags = 0;    
-    flags = Mix_Init(MIX_INIT_MP3 | MIX_INIT_OGG);
-
-    if ( !(flags & MIX_INIT_MP3) ) {
+    if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096) < 0) {
         _fatal_error(Mix_GetError());
         return false;
     }
 
-    if ( !(flags & MIX_INIT_OGG) ) {
+    int flags = 0;    
+    flags = Mix_Init(MIX_INIT_MP3);
+
+    if ( !(flags & MIX_INIT_MP3) ) {
         _fatal_error(Mix_GetError());
         return false;
     }
@@ -25,9 +29,43 @@ bool Audio::initialize()
     return true;
 }
 
-void Audio::bgm_play(std::string filename)
+/* Loads filename in memory and plays it. Returns NULL on errors. */
+Mix_Music* Audio::bgm_play(std::string filename)
 {
-	
+    std::string serr;
+    int ret = 0;
+#ifdef WIN32
+    int file_ext;
+    file_ext = get_mus_extension(filename);
+    switch (file_ext) {
+        case MID:
+        case WAV:
+        case MP3:
+            bgm = Mix_LoadMUS(filename.c_str());
+            break;
+        default:
+            serr = "Couldn't open ";
+            serr.append(filename);
+            _fatal_error(serr.c_str());
+            return NULL;
+    }
+#else
+    // TODO Implement file extension guessing for non WIN32 systems
+    filename.append(".mid");
+    bgm = Mix_LoadMUS(filename.c_str());
+#endif
+
+    if (bgm == NULL) {
+        _fatal_error(Mix_GetError());
+        return NULL;
+    } else {
+        ret = Mix_PlayMusic(bgm, -1);
+        if (ret < 0) {
+            _fatal_error(Mix_GetError());
+            return NULL;
+        }
+    }
+    return bgm;    
 }
 
 void Audio::bgm_play(std::string filename, int volume)
