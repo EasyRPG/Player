@@ -3,7 +3,6 @@
 
 #include <map>
 #include <string>
-#include "defines.h"
 #include "SDL.h"
 #include "rect.h"
 #include "color.h"

@@ -50,6 +50,7 @@
 				UsePrecompiledHeader="0"
 				WarningLevel="4"
 				DebugInformationFormat="3"
+				DisableSpecificWarnings="4244;4800"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -182,10 +183,6 @@
 		<Filter
 			Name="src"
 			>
-			<File
-				RelativePath="..\..\src\defines.h"
-				>
-			</File>
 			<File
 				RelativePath="..\..\src\main.cpp"
 				>
