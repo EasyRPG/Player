@@ -378,6 +378,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\ldb_glossary.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\ldb_item.cpp"
 					>
 				</File>
@@ -475,6 +479,14 @@
 				</File>
 				<File
 					RelativePath="..\..\src\rpg_enemy.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_glossary.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_glossary.h"
 					>
 				</File>
 				<File

@@ -72,11 +72,11 @@ void LDB_reader::GetNextChunk(FILE * Stream)
                 break;
             case CHUNK_Tileset:
                 data->tilesets = tilesetChunk(Stream);
-                break;
+                break;*/
             case CHUNK_String:
-                data->Glosary = stringChunk(Stream);
+                stringChunk(Stream);
                 break;
-            case CHUNK_Event:
+            /*case CHUNK_Event:
                 data->Event = EventChunk(Stream);
                 break;
             case CHUNK_Switch:

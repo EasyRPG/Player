@@ -2,16 +2,12 @@
 
 RPG::Actor::Actor() {
 	id = 0;
-	name = "";
-	title = "";
-	character_name = "";
 	character_index = 0;
 	transparent = false;
 	initial_level = 1;
 	final_level = 50;
 	critical_hit = false;
 	critical_hit_chance = 0;
-	face_name = "";
 	face_index = 0;
 	two_swords_style = false;
 	fix_equipment = false;

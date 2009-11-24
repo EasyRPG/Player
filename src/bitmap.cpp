@@ -1,10 +1,11 @@
 #include "bitmap.h"
 #include "SDL_image.h"
 #include "tools.h"
+#include "graphics.h"
 
 Bitmap::Bitmap(int width, int height)
 {
-	surface = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, SCREEN_BPP, rmask, gmask, bmask, amask);
+    surface = Graphics::get_empty_real_surface(width, height);
 	disposed = false;
 	
 	id = count;

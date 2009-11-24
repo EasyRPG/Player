@@ -107,10 +107,10 @@ void Window::refresh()
 	SDL_Surface* temp;
 	SDL_Surface* temp2;
 	
-	background = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, SCREEN_BPP, rmask, gmask, bmask, amask);
+    background = Graphics::get_empty_dummy_surface(width, height);
 	
 	// Back
-	temp = SDL_CreateRGBSurface(SDL_SWSURFACE, 32, 32, SCREEN_BPP, rmask, gmask, bmask, amask);
+	temp = Graphics::get_empty_dummy_surface(32, 32);
 	
 	srcrect.x = 0;
 	srcrect.y = 0;
@@ -147,7 +147,7 @@ void Window::refresh()
 	SDL_BlitSurface(windowskin->surface, &srcrect, background, &dstrect);
 	
 	// Border Up
-	temp = SDL_CreateRGBSurface(SDL_SWSURFACE, 16, 8, SCREEN_BPP, rmask, gmask, bmask, amask);
+    temp = Graphics::get_empty_dummy_surface(16, 8);
 	srcrect.x = 32 + 8;
 	srcrect.y = 0;
 	srcrect.w = 16;
@@ -163,7 +163,7 @@ void Window::refresh()
 	SDL_FreeSurface(temp2);
 	
 	// Border Down
-	temp = SDL_CreateRGBSurface(SDL_SWSURFACE, 16, 8, SCREEN_BPP, rmask, gmask, bmask, amask);
+	temp = Graphics::get_empty_dummy_surface(16, 8);
 	srcrect.x = 32 + 8;
 	srcrect.y = 32 - 8;
 	srcrect.w = 16;
@@ -179,7 +179,7 @@ void Window::refresh()
 	SDL_FreeSurface(temp2);
 	
 	// Border Left
-	temp = SDL_CreateRGBSurface(SDL_SWSURFACE, 8, 16, SCREEN_BPP, rmask, gmask, bmask, amask);
+	temp = Graphics::get_empty_dummy_surface(8, 16);
 	srcrect.x = 32;
 	srcrect.y = 8;
 	srcrect.w = 8;
@@ -195,7 +195,7 @@ void Window::refresh()
 	SDL_FreeSurface(temp2);
 	
 	// Border Right
-	temp = SDL_CreateRGBSurface(SDL_SWSURFACE, 8, 16, SCREEN_BPP, rmask, gmask, bmask, amask);
+	temp = Graphics::get_empty_dummy_surface(8, 16);
 	srcrect.x = 64 - 8;
 	srcrect.y = 8;
 	srcrect.w = 8;

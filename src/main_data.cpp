@@ -29,7 +29,7 @@ namespace Main_Data {
 	//std::vector<RPG::Animation*> data_animations;
     //std::vector<RPG::ChipSet*> data_chipsets;
 	//std::vector<RPG::Common_Event*> data_common_events;
-	//RPG::Glossary* data_words;
+	RPG::Glossary* data_words;
     RPG::System* data_system;
 	
 	// Maps and Areas Data (lmu)

@@ -13,6 +13,13 @@ bool compare_zobj(ZObj &first, ZObj &second) {
             return false;
 }
 
+namespace {
+    int width = SCREEN_WIDTH;
+    int height = SCREEN_HEIGHT;
+    int bpp = SCREEN_BPP;
+    Uint32 flags = 0;
+}
+
 namespace Graphics {
 	SDL_Surface *screen;
 
@@ -25,7 +32,9 @@ namespace Graphics {
 	void initialize()
 	{
 		// Create screen
-		screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE);
+        flags |= SDL_SWSURFACE;
+
+		screen = SDL_SetVideoMode(width, height, bpp, flags);
 
         SDL_initFramerate(&fps_manager);
 		
@@ -125,4 +134,44 @@ namespace Graphics {
 	{
 		fps_manager.framecount = fc;
 	}
+
+    /* We can blit safely on these surfaces */
+    SDL_Surface* get_empty_dummy_surface(int w, int h) {
+        
+        SDL_Surface* dummy;
+
+        dummy = SDL_CreateRGBSurface(SDL_SWSURFACE, w, h, bpp, rmask, gmask, bmask, amask);
+        if (dummy == NULL) {
+            std::string serr("Internal error: Out of memory?\n");
+            serr.append(SDL_GetError());
+            _fatal_error(serr.c_str());
+            exit(1);
+        }
+
+        return dummy;
+    }
+
+    /* We may need to lock these surfaces to blit. Could be slow!! */
+    SDL_Surface* get_empty_real_surface(int w, int h) {
+        
+        SDL_Surface *ret_surface, *dummy;
+
+        dummy = SDL_CreateRGBSurface(flags, w, h, bpp, rmask, gmask, bmask, amask);
+        if (dummy == NULL) {
+            std::string serr("Internal error: Out of memory?\n");
+            serr.append(SDL_GetError());
+            exit(1);
+        }
+        
+        ret_surface = SDL_DisplayFormat(dummy);
+        if (ret_surface == NULL) {
+            std::string serr("Internal error: Out of memory?\n");
+            serr.append(SDL_GetError());
+            exit(1);
+        }
+
+        SDL_FreeSurface(dummy);
+
+        return ret_surface;
+    }
 }

@@ -29,7 +29,7 @@
 #include "rpg_state.h"
 //#include "rpg_animation.h"
 //#include "rpg_chipset.h"
-//#include "rpg_glossary.h"
+#include "rpg_glossary.h"
 #include "rpg_system.h"
 //#include "rpg_common_event.h"
 //#include "rpg_map.h"
@@ -80,7 +80,7 @@ namespace Main_Data {
     //std::vector<RPG::Animation*> data_animations;
     //std::vector<RPG::ChipSet*> data_chipsets;
 	//std::vector<RPG::Common_Event*> data_common_events;
-	//RPG::Glossary* data_words;
+	extern RPG::Glossary* data_words;
     extern RPG::System* data_system;
 	
 	// Maps and Areas Data (lmu)

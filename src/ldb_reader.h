@@ -24,6 +24,7 @@ namespace LDB_reader {
     void attributeChunk(FILE * Stream);
     void mosteractionChunk(FILE * Stream, RPG::Enemy*& e);
     void mosterChunk(FILE * Stream);
+    void stringChunk(FILE * Stream);
 	
 	void systemChunk(FILE * Stream);
     
