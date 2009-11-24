@@ -1,5 +1,5 @@
-#ifndef __audio__
-#define __audio__
+#ifndef __h_audio__
+#define __h_audio__
 
 #include <string>
 #include "tools.h"

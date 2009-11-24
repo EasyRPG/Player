@@ -31,6 +31,12 @@ namespace Graphics {
 	// Initialize Graphics
 	void initialize()
 	{
+        if (!(SDL_WasInit(SDL_INIT_VIDEO) & SDL_INIT_VIDEO)) {
+            if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0) {
+                _fatal_error(SDL_GetError());
+                
+            }
+        }
 		// Create screen
         flags |= SDL_SWSURFACE;
 
@@ -160,6 +166,7 @@ namespace Graphics {
         if (dummy == NULL) {
             std::string serr("Internal error: Out of memory?\n");
             serr.append(SDL_GetError());
+            _fatal_error(serr.c_str());
             exit(1);
         }
         
@@ -167,6 +174,7 @@ namespace Graphics {
         if (ret_surface == NULL) {
             std::string serr("Internal error: Out of memory?\n");
             serr.append(SDL_GetError());
+            _fatal_error(serr.c_str());
             exit(1);
         }
 

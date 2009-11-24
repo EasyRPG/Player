@@ -113,6 +113,7 @@ void Sprite::draw(SDL_Surface *screen)
     if(SDL_BlitSurface(bitmap->surface, &src_rect, screen, &dstrect) < 0)
 	{
 		_fatal_error(SDL_GetError());
+        abort();
 	}
 }
 

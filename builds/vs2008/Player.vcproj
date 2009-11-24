@@ -196,6 +196,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\player.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\player.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\tools.cpp"
 				>
 			</File>

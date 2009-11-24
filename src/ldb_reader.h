@@ -1,6 +1,7 @@
 #ifndef _H_LDBREADER_
 #define _H_LDBREADER_
 
+#include "player.h"
 #include "ldbchunks.h"
 #include "main_data.h"
 #include <string>

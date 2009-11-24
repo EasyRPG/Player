@@ -1,3 +1,6 @@
+#ifndef _H_WINDOW_BASE_
+#define _H_WINDOW_BASE_
+
 #include <string>
 #include "window.h"
 #include "main_data.h"
@@ -26,3 +29,5 @@ class Window_Base : public Window {
 		
 		std::string windowskin_name;
 };
+
+#endif

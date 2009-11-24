@@ -82,6 +82,8 @@ namespace Main_Data {
 	//std::vector<RPG::Common_Event*> data_common_events;
 	extern RPG::Glossary* data_words;
     extern RPG::System* data_system;
+
+    void cleanup();
 	
 	// Maps and Areas Data (lmu)
 	//std::vector<RPG::Map> *data_maps;
