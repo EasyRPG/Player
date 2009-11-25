@@ -9,14 +9,15 @@
 #include "input.h"
 #include "audio.h"
 #include "scene_title.h"
+#include "log.h"
 
 class Player {
-public: 
+public:
     Player(int _argc, char *_argv[]);
     ~Player();
 
     void do_play();
-    
+
 private:
     int argc;
     char **argv;

@@ -1,16 +1,23 @@
 DEBUG = -g
 SDL_CFLAGS = `sdl-config --cflags` $(DEBUG)
 SDL_LDFLAGS = `sdl-config --libs`
-LDFLAGS = -lSDL_image -lSDL_gfx $(SDL_LDFLAGS) $(DEBUG)
+LDFLAGS = -lSDL_image -lSDL_gfx -lSDL_mixer $(SDL_LDFLAGS) $(DEBUG)
 
-all: main.o graphics.o scene_title.o main_data.o zobj.o sprite.o plane.o window.o tilemap.o audio.o window_base.o game_system.o bitmap.o input.o tone.o color.o rect.o viewport.o ldb_reader.o ldb_actor.o tools.o rpg_actor.o ldb_system.o ldb_sound.o rpg_sound.o ldb_music.o rpg_music.o rpg_system.o ldb_skill.o rpg_skill.o ldb_item.o rpg_item.o ldb_state.o rpg_state.o ldb_attribute.o rpg_attribute.o ldb_terrain.o rpg_terrain.o ldb_enemy.o rpg_enemy.o rpg_e_action.o
-	g++ main.o graphics.o scene_title.o main_data.o zobj.o sprite.o plane.o window.o tilemap.o audio.o window_base.o game_system.o bitmap.o input.o tone.o color.o rect.o viewport.o ldb_reader.o ldb_actor.o tools.o rpg_actor.o ldb_system.o ldb_sound.o rpg_sound.o ldb_music.o rpg_music.o rpg_system.o ldb_skill.o rpg_skill.o ldb_item.o rpg_item.o ldb_state.o rpg_state.o ldb_attribute.o rpg_attribute.o ldb_terrain.o rpg_terrain.o ldb_enemy.o rpg_enemy.o rpg_e_action.o -o easyrpg $(LDFLAGS)
+quickly:
+	g++ -c *.cpp  -c $(SDL_CFLAGS)
+	g++ *.o -o easyrpg $(LDFLAGS)
+
+all: main.o log.o graphics.o scene_title.o main_data.o zobj.o sprite.o plane.o window.o tilemap.o audio.o window_base.o game_system.o bitmap.o input.o tone.o color.o rect.o viewport.o ldb_reader.o ldb_actor.o tools.o rpg_actor.o ldb_system.o ldb_sound.o rpg_sound.o ldb_music.o rpg_music.o rpg_system.o ldb_skill.o rpg_skill.o ldb_item.o rpg_item.o ldb_state.o rpg_state.o ldb_attribute.o rpg_attribute.o ldb_terrain.o rpg_terrain.o ldb_enemy.o rpg_enemy.o rpg_e_action.o
+	g++ main.o log.o graphics.o scene_title.o main_data.o zobj.o sprite.o plane.o window.o tilemap.o audio.o window_base.o game_system.o bitmap.o input.o tone.o color.o rect.o viewport.o ldb_reader.o ldb_actor.o tools.o rpg_actor.o ldb_system.o ldb_sound.o rpg_sound.o ldb_music.o rpg_music.o rpg_system.o ldb_skill.o rpg_skill.o ldb_item.o rpg_item.o ldb_state.o rpg_state.o ldb_attribute.o rpg_attribute.o ldb_terrain.o rpg_terrain.o ldb_enemy.o rpg_enemy.o rpg_e_action.o -o easyrpg $(LDFLAGS)
 
 clean:
 	rm *.o easyrpg
 
 main.o:
 	g++ main.cpp -c $(SDL_CFLAGS)
+	
+log.o: log.h
+	g++ log.cpp -c
 
 graphics.o: graphics.h
 	g++ graphics.cpp -c $(SDL_CFLAGS)

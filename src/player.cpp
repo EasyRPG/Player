@@ -11,16 +11,18 @@ Player::Player(int _argc, char *_argv[]) {
 #ifdef _DEBUG
     flags |= SDL_INIT_NOPARACHUTE;
 #endif
-    
+
 	// Initialize SDL
 	if (SDL_Init(flags) < 0)
     {
         // Error
+		log(ERROR_LEVEL_ERROR, "Init error:");
+		log(ERROR_LEVEL_ERROR, SDL_GetError());
     }
 
 	// Disable Mouse Cursor
 	SDL_ShowCursor(SDL_DISABLE);
-	
+
 	// Start Graphics
 	Graphics::initialize();
 
@@ -34,17 +36,17 @@ Player::Player(int _argc, char *_argv[]) {
 }
 
 
-Player::~Player() {	
+Player::~Player() {
     Main_Data::cleanup();
 	// Quit SDL
 	SDL_Quit();
 }
 
 void Player::do_play() {
-	
+
 	// Create Scene Title
 	Main_Data::scene = new Scene_Title();
-	
+
 	// Main loop
 	while (Main_Data::scene_type != SCENE_NULL)
 	{
