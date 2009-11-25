@@ -17,8 +17,8 @@ bool Audio::initialize()
         _fatal_error(Mix_GetError());
         return false;
     }
-#if (SDL_MIXER_MAJOR_VERSION > 1) || (((SDL_MIXER_MAJOR_VERSION == 1 ) &&
-	(SDL_MIXER_MINOR_VERSION > 2)) || ((SDL_MIXER_MINOR_VERSION == 2) &&
+#if (SDL_MIXER_MAJOR_VERSION > 1) || (((SDL_MIXER_MAJOR_VERSION == 1 ) && \
+	(SDL_MIXER_MINOR_VERSION > 2)) || ((SDL_MIXER_MINOR_VERSION == 2) && \
 	(SDL_MIXER_PATCHLEVEL >= 10)))
     int flags = 0;
     flags = Mix_Init(MIX_INIT_MP3);
