@@ -140,6 +140,8 @@
     </VirtualDirectory>
     <File Name="player.cpp"/>
     <File Name="player.h"/>
+    <File Name="log.cpp"/>
+    <File Name="log.h"/>
   </VirtualDirectory>
   <Dependencies Name="Release"/>
   <Dependencies Name="Debug MingW"/>
