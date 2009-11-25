@@ -1,4 +1,4 @@
-﻿#include "main_data.h"
+#include "main_data.h"
 
 namespace Main_Data {
     // Scene Data
