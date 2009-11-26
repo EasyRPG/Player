@@ -1,5 +1,5 @@
 DEBUG = -g
-SDL_CFLAGS = `sdl-config --cflags` $(DEBUG) -Wall -Wextra -ansi -pedantic -fno-rtti -fno-exceptions
+SDL_CFLAGS = `sdl-config --cflags` $(DEBUG) -Wall -Wextra -ansi -pedantic -fno-rtti -fno-exceptions -Wno-unused
 SDL_LDFLAGS = `sdl-config --libs`
 LDFLAGS = -lSDL_image -lSDL_gfx -lSDL_mixer $(SDL_LDFLAGS) $(DEBUG)
 
