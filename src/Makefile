@@ -1,5 +1,5 @@
 DEBUG = -g
-SDL_CFLAGS = `sdl-config --cflags` $(DEBUG)
+SDL_CFLAGS = `sdl-config --cflags` $(DEBUG) -Wall -Wextra -ansi -pedantic -fno-rtti -fno-exceptions
 SDL_LDFLAGS = `sdl-config --libs`
 LDFLAGS = -lSDL_image -lSDL_gfx -lSDL_mixer $(SDL_LDFLAGS) $(DEBUG)
 
@@ -138,3 +138,4 @@ rpg_enemy.o: rpg_enemy.h
 
 rpg_e_action.o: rpg_e_action.h
 	g++ rpg_e_action.cpp -c $(SDL_CFLAGS)
+

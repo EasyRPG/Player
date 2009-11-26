@@ -21,11 +21,11 @@ int setLog(int errorLevel)
 		return 1;
 	}
 
-	log(VERBOSITY_WARNING, " set unknow error level");
+	log(VERBOSITY_WARNING, " set unknown error level");
 	return 0;
 }
 
-int log(int errorLevel, char *error)
+int log(int errorLevel, const char *error)
 {
 	struct tm *tm;
 	time_t t;

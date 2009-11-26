@@ -31,6 +31,6 @@ enum
 extern int verbosityLevel;
 
 int setLog(int errorLevel);
-int log(int errorLevel, char *error);
+int log(int errorLevel, const char *error);
 
 #endif /* LOG_H_ */
