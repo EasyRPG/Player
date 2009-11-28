@@ -15,12 +15,7 @@ void LDB_reader::attributeChunk(FILE * Stream)
     datatoread=ReadCompressedInteger(Stream);//numero de datos
     while (datatoread>datareaded) 
     { // si no hay mas en el array
-        attribute = new RPG::Attribute();
-        if (attribute == NULL) {
-            std::cerr << "No memory left." << std::endl;
-            exit(1);
-        }
-        
+        attribute = new RPG::Attribute();        
         attribute->id= ReadCompressedInteger(Stream);//lectura de id 1 de array
         do 
         {

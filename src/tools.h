@@ -25,8 +25,8 @@
 #define MP3 5
 
     // =========================================================================
-    #include <stdlib.h>
-    #include <stdio.h>
+    #include <cstdlib>
+    #include <cstdio>
     #include <string>
     #include "SDL.h"
     // =========================================================================
@@ -75,6 +75,7 @@
 	int case_insensitive_exist( std::string & dir_file, const char *directory, char *file);
 #endif
     void _fatal_error(const char *perr);
+    void _bad_alloc();
     
 
 #endif

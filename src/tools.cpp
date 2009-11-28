@@ -15,15 +15,15 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
     // =========================================================================
-    #include <stdlib.h>
-    #include <stdio.h>
-    #include <string.h>
+    #include <cstdlib>
+    #include <cstdio>
+    #include <cstring>
     
 #ifdef UNIX
 	#include <dirent.h>
 #endif
 
-    #include <ctype.h>
+    #include <cctype>
     #include <iostream>
     #include "SDL.h"
 //    #include "SDL_image.h"
@@ -452,16 +452,11 @@ SDL_Surface* load_XYZ(const std::string& filename)
     {
         char* header;
         header = new char[4];
-    	if (header == NULL)
-        {   
-            SDL_SetError("Error XYZ Reader: No memory left");
-    	    return NULL;
-        }
         bool return_value;
         return_value = fread(header, 1, 4, file);
         if (!strcmp(header, "XYZ1"))
         {
-            delete header;
+            delete[] header;
             return_value = fread(&width, 1, 2, file);
             return_value = fread(&height, 1, 2, file);
             fseek(file, 0, SEEK_END);
@@ -470,15 +465,10 @@ SDL_Surface* load_XYZ(const std::string& filename)
             destSize = 768 + (width * height);
             destBuffer = new unsigned char[destSize];
             buffer = new unsigned char[size - 8];
-            if ((buffer == NULL) || (destBuffer == NULL))
-            {   
-                SDL_SetError("Error XYZ Reader: No memory left");
-                return NULL;
-            }
             return_value = fread(buffer, 1, size - 8, file);
             fclose(file);
             zlibErrorValue = uncompress((Bytef*)destBuffer, &destSize, (Bytef*)buffer, (uLongf)(size - 8));
-            delete buffer;
+            delete[] buffer;
             surface = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 8, 0, 0, 0, 0);
     
             SDL_LockSurface(surface);
@@ -495,12 +485,12 @@ SDL_Surface* load_XYZ(const std::string& filename)
             {
                 pixel[i] = destBuffer[i + 768];
             }
-            delete destBuffer;
+            delete[] destBuffer;
         }
         else
         {
             SDL_SetError("XYZ Reader Error: Not a valid XYZ file.");
-            delete header;
+            delete[] header;
             fclose(file);
             return NULL;
         }
@@ -512,4 +502,9 @@ SDL_Surface* load_XYZ(const std::string& filename)
     }
     SDL_UnlockSurface(surface);
     return surface;
+}
+
+void _bad_alloc() {
+    _fatal_error("Out of memory!");
+    exit(1);
 }

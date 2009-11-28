@@ -34,7 +34,7 @@ namespace Graphics {
         if (!(SDL_WasInit(SDL_INIT_VIDEO) & SDL_INIT_VIDEO)) {
             if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0) {
                 _fatal_error(SDL_GetError());
-                
+                exit(EXIT_FAILURE);
             }
         }
 		// Create screen
@@ -47,6 +47,9 @@ namespace Graphics {
 		// Set default frame rate
 		const unsigned int frame_rate = 40;
         SDL_setFramerate(&fps_manager, frame_rate);
+
+        // Disable Mouse Cursor
+	    SDL_ShowCursor(SDL_DISABLE);
 		
 		// Set frame count to zero
 		// Already done by SDL_initFramerate()

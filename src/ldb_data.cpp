@@ -116,9 +116,9 @@ LDB_data::~LDB_data()
         delete tilesets;        
     }
     
-    if (Glosary != NULL) delete Glosary;
-    if (System_dat != NULL) delete System_dat;
-    if (Combatcommands != NULL) delete Combatcommands;
+    delete Glosary;
+    delete System_dat;
+    delete Combatcommands;
     
     if (Event != NULL)
     {
@@ -130,8 +130,8 @@ LDB_data::~LDB_data()
         delete Event;        
     }
     
-    if (Switch_Names != NULL) delete Switch_Names;
-    if (Variable_Names != NULL) delete Variable_Names;
+    delete Switch_Names;
+    delete Variable_Names;
     
     if (Professions != NULL)
     {

@@ -2,11 +2,13 @@
 #include "ldb_reader.h"
 
 #include <string>
+#include <vector>
 #include "graphics.h"
 #include "input.h"
 #include "audio.h"
 #include "game_system.h"
 #include "bitmap.h"
+#include "window_command.h"
 
 Scene_Title::Scene_Title()
 {
@@ -36,12 +38,12 @@ void Scene_Title::main_function()
     background->set_bitmap(title_bmp);
 	
 	// Create Options Window
-//	std::string options[3];
-/*	options[0] = Main_Data::data_system.glossary.new_game;
-	options[1] = Main_Data::data_system.glossary.load_game;
-	options[2] = Main_Data::data_system.glossary.exit_game;*/
-	//	command_window = new Window_Command(116, &options);
-	command_window = new Window_Base(0, 0, 120, 120);
+    std::vector<std::string> options;
+    options.push_back(Main_Data::data_words->new_game);
+	options.push_back(Main_Data::data_words->load_game);
+	options.push_back(Main_Data::data_words->exit_game);
+    /* TODO */
+	//command_window = new Window_Command(116, options);
 	
 	/* TODO: Disable Load Game if required */
 	

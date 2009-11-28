@@ -64,6 +64,7 @@ public:
 
 	void refresh();
 
+protected:
 	SDL_Surface* background;
 	bool needs_refresh;
 

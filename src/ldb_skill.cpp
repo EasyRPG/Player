@@ -16,10 +16,6 @@ void LDB_reader::skillChunk(FILE * Stream)
     while (datatoread>datareaded) 
     { // si no hay mas en el array
         skill = new RPG::Skill();
-        if (skill == NULL) {
-            std::cerr << "No memory left." << std::endl;
-            exit(1);
-        }
         skill->id = ReadCompressedInteger(Stream);//lectura de id 1 de array
         do 
         {

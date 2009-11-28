@@ -8,8 +8,8 @@ namespace RPG {
 class Glossary
 {
 public:
-    Glossary(void);
-    ~Glossary(void);
+    Glossary();
+    ~Glossary();
 
     std::string enemy_encounter;
     std::string headstart_attack;

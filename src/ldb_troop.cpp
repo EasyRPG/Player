@@ -52,9 +52,6 @@ void LDB_reader::MonsterPartyMonsterChunk(FILE * Stream, RPG::Troop*& trp)
 void LDB_reader::MonsterPartyEventconditionChunk(FILE * Stream, RPG::Page*& pgs)
 {
     pgs = new RPG::Page();
-    if (pgs == NULL) {
-
-    }
     short dat;
     //datatoread = ReadCompressedInteger(Stream); //numero de datos
     //while (datatoread>datareaded) { //si no hay mas en el array
@@ -146,11 +143,6 @@ void LDB_reader::mosterpartyChunk(FILE * Stream)
     while (datatoread>datareaded) 
     { // si no hay mas en el array
         enemy_group = new RPG::Troop();
-        if (enemy_group == NULL)
-        {
-            std::cerr << "No memory left." << std::endl;
-            exit(1);
-        }
         enemy_group->id= ReadCompressedInteger(Stream);//lectura de id 1 de array
         do 
         {

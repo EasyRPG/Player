@@ -99,9 +99,9 @@ void Window::draw(SDL_Surface *screen)
 
 void Window::refresh()
 {
-	if(background != NULL) {
-		SDL_FreeSurface(background);
-	}
+    /* Are we sure we want to do this ? */
+    SDL_FreeSurface(background);
+
 	SDL_Rect srcrect;
 	SDL_Rect dstrect;
 	SDL_Surface* temp;

@@ -15,12 +15,7 @@ void LDB_reader::terrainChunk(FILE * Stream)
     datatoread=ReadCompressedInteger(Stream);//numero de datos
     while (datatoread>datareaded) 
     { // si no hay mas en el array
-        terrain = new RPG::Terrain();
-        if (terrain == NULL)
-        {
-            std::cerr << "No memory left." << std::endl;
-            exit(1);
-        }   
+        terrain = new RPG::Terrain();  
         terrain->id= ReadCompressedInteger(Stream);//lectura de id 1 de array
         do 
         {

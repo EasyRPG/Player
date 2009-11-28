@@ -26,25 +26,25 @@ public:
 
 	void draw(SDL_Surface *screen);
 
-	Viewport* get_viewport();
-	Bitmap* get_bitmap();
+	Viewport* get_viewport() const;
+	Bitmap* get_bitmap() const;
 	Rect* get_src_rect();
-	bool get_visible();
-	int get_x();
-	int get_y();
-	int get_z();
-	int get_ox();
-	int get_oy();
-	int get_zoom_x();
-	int get_zoom_y();
-	int get_angle();
-	bool get_mirror_x();
-	bool get_mirror_y();
-	int get_bush_depth();
-	int get_opacity();
-	int get_blend_type();
-	Color* get_color();
-	Tone* get_tone();
+	bool get_visible() const;
+	int get_x() const;
+	int get_y() const;
+	int get_z() const;
+	int get_ox() const;
+	int get_oy() const;
+	int get_zoom_x() const;
+	int get_zoom_y() const;
+	int get_angle() const;
+	bool get_mirror_x() const;
+	bool get_mirror_y() const;
+	int get_bush_depth() const;
+	int get_opacity() const;
+	int get_blend_type() const;
+	Color* get_color() const;
+	Tone* get_tone() const;
 	
 	void set_viewport(Viewport* nviewport);
 	void set_bitmap(Bitmap* nbitmap);

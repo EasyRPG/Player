@@ -113,16 +113,16 @@ void Sprite::draw(SDL_Surface *screen)
     if(SDL_BlitSurface(bitmap->surface, &src_rect, screen, &dstrect) < 0)
 	{
 		_fatal_error(SDL_GetError());
-        abort();
+        exit(EXIT_FAILURE);
 	}
 }
 
-Viewport* Sprite::get_viewport()
+Viewport* Sprite::get_viewport() const
 {
 	return viewport;
 }
 
-Bitmap* Sprite::get_bitmap()
+Bitmap* Sprite::get_bitmap() const
 {
 	return bitmap;
 }
@@ -132,81 +132,82 @@ Rect* Sprite::get_src_rect()
 	return &src_rect;
 }
 
-bool Sprite::get_visible()
+bool Sprite::get_visible() const 
 {
 	return visible;
 }
 
-int Sprite::get_x()
+int Sprite::get_x() const
 {
 	return x;
 }
 
-int Sprite::get_y()
+int Sprite::get_y() const 
 {
 	return y;
 }
 
-int Sprite::get_z()
+int Sprite::get_z() const 
 {
 	return z;
 }
 
-int Sprite::get_ox(){
+int Sprite::get_ox() const
+{
 	return ox;
 }
 
-int Sprite::get_oy()
+int Sprite::get_oy() const
 {
 	return oy;
 }
 
-int Sprite::get_zoom_x()
+int Sprite::get_zoom_x() const
 {
 	return zoom_x;
 }
 
-int Sprite::get_zoom_y()
+int Sprite::get_zoom_y() const
 {
 	return zoom_y;
 }
 
-int Sprite::get_angle()
+int Sprite::get_angle() const
 {
 	return angle;
 }
 
-bool Sprite::get_mirror_x()
+bool Sprite::get_mirror_x() const
 {
 	return mirror_x;
 }
 
-bool Sprite::get_mirror_y()
+bool Sprite::get_mirror_y() const
 {
 	return mirror_y;
 }
 
-int Sprite::get_bush_depth()
+int Sprite::get_bush_depth() const
 {
 	return bush_depth;
 }
 
-int Sprite::get_opacity()
+int Sprite::get_opacity() const
 {
 	return opacity;
 }
 
-int Sprite::get_blend_type()
+int Sprite::get_blend_type() const
 {
 	return blend_type;
 }
 
-Color* Sprite::get_color()
+Color* Sprite::get_color() const
 {
 	return color;
 }
 
-Tone* Sprite::get_tone()
+Tone* Sprite::get_tone() const
 {
 	return tone;
 }

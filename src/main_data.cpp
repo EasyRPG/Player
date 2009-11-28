@@ -40,41 +40,32 @@ namespace Main_Data {
     void cleanup() {
         int s = 0, i;
 
-        if (game_system != NULL)
-            delete game_system;
+        
+        delete game_system;
 
-        if (game_temp != NULL)
-            delete game_temp;
+        delete game_temp;
 
-        if (game_switches != NULL) 
-            delete game_switches;
+        delete game_switches;
 
-        if (game_variables != NULL)
-            delete game_variables;
+        delete game_variables;
 
-        if (game_screen != NULL)
-            delete game_screen;
+        delete game_screen;
 
-        if (game_actors != NULL)
-            delete game_actors;
+        delete game_actors;
 
-        if (game_party != NULL)
-            delete game_party;
+        delete game_party;
 
-        if (game_troop != NULL)
-            delete game_troop;
+        delete game_troop;
 
-        if (game_map != NULL)
-            delete game_map;
+        delete game_map;
 
-        if (game_player != NULL)
-            delete game_player;
+        delete game_player;
 
         s = data_actors.size();
         for (i = 0; i < s; ++i) {
             delete data_actors[i];
         }
-        /* Get rid of the pointers that point to nowhere safe */
+        /* Get rid of pointers that point to nowhere safe */
         data_actors.clear();
 
         s = data_skills.size();
@@ -119,10 +110,8 @@ namespace Main_Data {
         }
         data_states.clear();
 
-        if (data_words != NULL)
-            delete data_words;
+        delete data_words;
 
-        if (data_system != NULL)
-            delete data_system;
+        delete data_system;
     }
 }

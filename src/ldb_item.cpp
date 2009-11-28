@@ -15,11 +15,6 @@ void LDB_reader::itemChunk(FILE * Stream)
     while (datatoread>datareaded) 
     {
         item = new RPG::Item();
-        if (item == NULL)
-        {
-            std::cerr << "No memory left." << std::endl;
-            exit(1);
-        }
         item->id = ReadCompressedInteger(Stream);//lectura de id 1 de array
         do 
         {            

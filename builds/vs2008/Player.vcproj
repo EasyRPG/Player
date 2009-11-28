@@ -128,7 +128,7 @@
 				EnableFunctionLevelLinking="true"
 				EnableEnhancedInstructionSet="2"
 				UsePrecompiledHeader="0"
-				WarningLevel="3"
+				WarningLevel="1"
 				DebugInformationFormat="0"
 			/>
 			<Tool
@@ -183,6 +183,14 @@
 		<Filter
 			Name="src"
 			>
+			<File
+				RelativePath="..\..\src\log.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\log.h"
+				>
+			</File>
 			<File
 				RelativePath="..\..\src\main.cpp"
 				>
@@ -338,6 +346,14 @@
 					RelativePath="..\..\src\window_command.h"
 					>
 				</File>
+				<File
+					RelativePath="..\..\src\window_selectable.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\window_selectable.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Scene"
@@ -468,6 +484,10 @@
 				</File>
 				<File
 					RelativePath="..\..\src\rpg_attribute.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_cache.h"
 					>
 				</File>
 				<File

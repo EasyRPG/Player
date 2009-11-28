@@ -1,7 +1,7 @@
 #include "log.h"
-#include <stdio.h>
-#include <time.h>
-#include <string.h>
+#include <cstdio>
+#include <ctime>
+#include <cstring>
 
 int verbosityLevel = VERBOSITY_ALL;
 const char *stringVerbosityLevel[VERBOSITY_LEVELS] =

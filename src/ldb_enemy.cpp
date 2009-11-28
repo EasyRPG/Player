@@ -15,11 +15,6 @@ void LDB_reader::mosteractionChunk(FILE * Stream, RPG::Enemy*& e)
     while (datatoread>datareaded) 
     { // si no hay mas en el array
         action = new E_Action();
-        if (action == NULL)
-        {
-            std::cerr << "No memory left." << std::endl;
-            exit(1);
-        }
         action->id= ReadCompressedInteger(Stream);//lectura de id 1 de array
         do 
         {
@@ -77,11 +72,6 @@ void LDB_reader::mosterChunk(FILE * Stream)
     while (datatoread>datareaded) 
     { // si no hay mas en el array
         enemy = new RPG::Enemy();
-        if (enemy == NULL)
-        {
-            std::cerr << "No memory left." << std::endl;
-            exit(1);
-        }
         enemy->id = ReadCompressedInteger(Stream);//lectura de id 1 de array
         do 
         {            

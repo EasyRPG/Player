@@ -16,10 +16,6 @@ void LDB_reader::statesChunk(FILE * Stream)
     while (datatoread>datareaded) 
     { // si no hay mas en el array
         state = new RPG::State();
-        if (state == NULL) {
-            std::cerr << "No memory left." << std::endl;
-            exit(1);
-        }
         state->id= ReadCompressedInteger(Stream);//lectura de id 1 de array
         do {
             ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
