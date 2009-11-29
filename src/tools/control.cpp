@@ -55,6 +55,28 @@
 #define QUANTITY 32
 
 
+#elif PANDORA
+
+#define PND_RIGHTBUTTON 0
+#define PND_LOWBUTTON 1
+#define PND_TOPBUTTON 2
+#define PND_LEFTBUTTON 3
+#define PND_L 4
+#define PND_R 5
+#define PND_L2 6 // (not supported)
+#define PND_R2 7 // (not supported)
+#define PND_SELECT 8
+#define PND_START 9
+#define PND_PANDORA 10
+
+#define B_DOWN SDL_JOYBUTTONDOWN
+#define B_UP SDL_JOYBUTTONUP
+
+#define REG jbutton.button
+
+#define QUANTITY 32
+
+
 #else
 
 // TODO: What if Keyboard and Joystick are both connected? There is only one REG.
@@ -132,6 +154,19 @@ namespace Control
         down_set.set(GP2X_BUTTON_DOWN);
         right_set.set(GP2X_BUTTON_RIGHT);
         left_set.set(GP2X_BUTTON_LEFT);
+
+        #elif PANDORA
+
+        decision_set.set(PND_RIGHTBUTTON);
+        decision_set.set(PND_LOWBUTTON);
+
+        cancel_set.set(PND_TOPBUTTON);
+        cancel_set.set(PND_LEFTBUTTON);
+
+        up_set.set(SDLK_UP);
+        down_set.set(SDLK_DOWN);
+        right_set.set(SDLK_RIGHT);
+        left_set.set(SDLK_LEFT);
 
 
         #else
