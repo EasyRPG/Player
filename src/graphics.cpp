@@ -170,7 +170,7 @@ namespace Graphics {
             std::string serr("Internal error: Out of memory?\n");
             serr.append(SDL_GetError());
             _fatal_error(serr.c_str());
-            exit(1);
+            exit(EXIT_FAILURE);
         }
         
         ret_surface = SDL_DisplayFormat(dummy);
@@ -178,7 +178,7 @@ namespace Graphics {
             std::string serr("Internal error: Out of memory?\n");
             serr.append(SDL_GetError());
             _fatal_error(serr.c_str());
-            exit(1);
+            exit(EXIT_FAILURE);
         }
 
         SDL_FreeSurface(dummy);

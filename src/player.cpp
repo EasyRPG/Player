@@ -1,10 +1,12 @@
 #include "player.h"
 
-Player::Player(int _argc, char *_argv[]) {
+Player::Player() {
 
-    /* Get rid of the warnings */
-    argc = _argc;
-    argv = _argv;
+    setLog(VERBOSITY_ALL);
+
+    /* Defining this handler we avoid checking NULL for new
+       allocs in the heap */
+    std::set_new_handler(_bad_alloc);
 
     int flags = SDL_INIT_TIMER;
 
@@ -31,8 +33,6 @@ Player::Player(int _argc, char *_argv[]) {
     if (!Audio::initialize()) {
         _fatal_error("Couldn't initialise audio!");
     }
-
-
 }
 
 
@@ -52,5 +52,9 @@ void Player::do_play() {
 	{
 		Main_Data::scene->main_function();
 	}
+}
 
+void Player::set_args(int _argc, char *_argv[]) {
+    argc = _argc;
+    argv = _argv;
 }

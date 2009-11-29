@@ -3,17 +3,15 @@
 #include "tools.h"
 #include "graphics.h"
 
-Bitmap::Bitmap(int width, int height)
+Bitmap::Bitmap(int width, int height):
+      id(-1),
+      disposed(false)
 {
     surface = Graphics::get_empty_real_surface(width, height);
-	disposed = false;
-	
-	id = count;
-	add_bitmap(id, this);
-	count++;
 }
 
-Bitmap::Bitmap(std::string& filename)
+Bitmap::Bitmap(std::string& filename, int _id):
+      disposed(false)
 {
 	SDL_Surface* temp = NULL;
     std::string serr;
@@ -33,6 +31,7 @@ Bitmap::Bitmap(std::string& filename)
             serr = "Couldn't open ";
             serr.append(filename);
             _fatal_error(serr.c_str());
+            zombie = true;
             return;
     }
 #else
@@ -41,25 +40,28 @@ Bitmap::Bitmap(std::string& filename)
     temp = IMG_Load(filename.c_str());
 #endif
  
-	if(temp == NULL) {
+	if (temp == NULL) {
         std::string s(IMG_GetError());
         _fatal_error(s.c_str());
+        zombie = true;
+        return;
 	}
 	else
 	{
 		surface = SDL_DisplayFormat(temp);
 		SDL_FreeSurface(temp);
-		disposed = false;
 	}
+    
+    id = _id;
+    zombie = false;
 }
 
 Bitmap::~Bitmap()
 {
-	remove_bitmap(id);
+//	remove_bitmap(id);
 }
 
-std::map<int, Bitmap*> Bitmap::bitmaps;
-int Bitmap::count = 0;
+//int Bitmap::count = 0;
 
 void Bitmap::dispose()
 {
@@ -69,17 +71,17 @@ void Bitmap::dispose()
 	}
 }
 
-bool Bitmap::is_disposed()
+bool Bitmap::is_disposed() const
 {
 	return disposed;
 }
 
-int Bitmap::width()
+int Bitmap::width() const
 {
 	return surface->w;
 }
 
-int Bitmap::height()
+int Bitmap::height() const
 {
 	return surface->h;
 }
@@ -198,12 +200,12 @@ void Bitmap::set_font(Font* nfont)
 	font = nfont;
 }
 
-void Bitmap::add_bitmap(int id, Bitmap* bitmap)
+/*void Bitmap::add_bitmap(int id, Bitmap* bitmap)
 {
 	bitmaps[id] = bitmap;
-}
+}*/
 
-void Bitmap::remove_bitmap(int id)
+/*void Bitmap::remove_bitmap(int id)
 {
 	bitmaps.erase(id);
-}
+}*/

@@ -73,7 +73,7 @@ void Window::dispose()
 	disposed = true;
 }
 
-bool Window::is_disposed()
+bool Window::is_disposed() const
 {
 	return disposed;
 }

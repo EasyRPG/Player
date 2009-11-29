@@ -10,13 +10,18 @@
 class ZObj {
 
 public:
-	ZObj(int iz, int itype, int iid, int icreation);
-	~ZObj();
+    ZObj(int iz, int itype, int iid, int icreation):
+      z(iz),
+      id(iid),
+      type(itype),
+      creation(icreation) {}
+
+      ~ZObj() {}
 	
-	int get_z();
-	int get_id();
-	int get_type();
-	int get_creation();
+	int get_z() const;
+	int get_id() const;
+	int get_type() const;
+	int get_creation() const;
 	
 	void set_z(int nz);
 	void set_id(int nid);

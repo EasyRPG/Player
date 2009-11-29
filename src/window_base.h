@@ -4,6 +4,7 @@
 #include <string>
 #include "window.h"
 #include "main_data.h"
+#include "rpg_cache.h"
 
 class Window_Base : public Window {
 	public :
@@ -27,7 +28,7 @@ class Window_Base : public Window {
 		void draw_actor_parameter(Game_Actor* actor, int cx, int cy, int type);
 		void draw_item_name(RPG::Item* item, int cx, int cy);
 		
-		std::string windowskin_name;
+		int windowskin_id;
 };
 
 #endif

@@ -9,10 +9,30 @@
 #include "game_system.h"
 #include "bitmap.h"
 #include "window_command.h"
+#include "rpg_cache.h"
 
 Scene_Title::Scene_Title()
 {
+    int id;
 	Main_Data::scene_type = SCENE_TITLE;
+
+	/* Load Database */
+	LDB_reader::load(LDB_DATABASE);
+
+	/* Create Game System */
+	Main_Data::game_system = new Game_System();
+
+    /* Build RPG::Cache object */
+    id = RPG::Cache.load_graphic(Main_Data::data_system->title_name, CCache::TITLE);
+    if (id >= 0)
+        Main_Data::game_system->set_title_id(id);
+
+    id = RPG::Cache.load_graphic(Main_Data::data_system->windowskin_name, CCache::SYSTEM);
+    if (id >= 0)
+        Main_Data::game_system->set_windowskin_id(id);
+    
+
+	
 }
 
 Scene_Title::~Scene_Title()
@@ -21,21 +41,11 @@ Scene_Title::~Scene_Title()
 
 void Scene_Title::main_function()
 {	
-	// Load Database
-	LDB_reader::load(LDB_DATABASE);
-    
-	// Create Game System
-	Main_Data::game_system = new Game_System();
-	
 	// Load Title Graphic
-	Bitmap* title_bmp;
-    std::string tfile(F_TITLE + Main_Data::data_system->title_name);
-	title_bmp = new Bitmap(tfile);
-	
-	// Create Background Sprite
-	Sprite* background;
-	background = new Sprite();
-    background->set_bitmap(title_bmp);
+	Sprite* title = new Sprite();
+    title->set_bitmap(
+        RPG::Cache.title(Main_Data::game_system->get_title_id())
+    );
 	
 	// Create Options Window
     std::vector<std::string> options;
@@ -43,7 +53,7 @@ void Scene_Title::main_function()
 	options.push_back(Main_Data::data_words->load_game);
 	options.push_back(Main_Data::data_words->exit_game);
     /* TODO */
-	//command_window = new Window_Command(116, options);
+	command_window = new Window_Command(116, options);
 	
 	/* TODO: Disable Load Game if required */
 	
@@ -64,8 +74,8 @@ void Scene_Title::main_function()
 	}
 	
 	// Dispose graphical objects
-	title_bmp->dispose();
-	background->dispose();
+//	title_bmp->dispose();
+//	background->dispose();
 //	command_window->dispose();
 }
 

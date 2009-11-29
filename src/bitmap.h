@@ -1,7 +1,7 @@
 #ifndef __bitmap__
 #define __bitmap__
 
-#include <map>
+#include <vector>
 #include <string>
 #include "SDL.h"
 #include "rect.h"
@@ -11,14 +11,16 @@
 class Bitmap {
 
 public:
-	Bitmap(int width, int height);
-	Bitmap(std::string& filename);
+    Bitmap(int width, int height);
+
+	Bitmap(std::string& filename, int _id);
+
 	~Bitmap();
 	
 	void dispose();
-	bool is_disposed(); 
-	int width();
-	int height();
+	bool is_disposed() const; 
+	int width() const;
+	int height() const;
 	Rect *rect();
 	void blt(int x, int y, Bitmap *src_bitmap, Rect *src_rect);
 	void blt(int x, int y, Bitmap *src_bitmap, Rect *src_rect, int opacity);
@@ -39,18 +41,18 @@ public:
 	Font *get_font();
 	void set_font(Font *nfont);
 	
-	static std::map<int, Bitmap*> bitmaps;
-	static void add_bitmap(int id, Bitmap* bitmap);
-	static void remove_bitmap(int id);
-	
 	SDL_Surface *surface;
+
+    bool is_zombie() { return zombie; }
 	
 private:
 	Font *font;
 
 	bool disposed;
+
+    /* If the constructor fails, zombie will be TRUE */
+    bool zombie;
 	
 	int id;
-	static int count;
 };
 #endif // __bitmap__

@@ -15,7 +15,7 @@ public:
 	~Window();
 	
 	void dispose();
-	bool is_disposed();
+	bool is_disposed() const;
 	void update();
 
 	void draw(SDL_Surface *screen);

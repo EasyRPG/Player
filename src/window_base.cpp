@@ -1,8 +1,9 @@
 #include "window_base.h"
 
-Window_Base::Window_Base(int ix, int iy, int iwidth, int iheight) {
-	windowskin_name = Main_Data::game_system->get_windowskin_name();
-    windowskin = new Bitmap(windowskin_name); //RPG::Cache.windowskin(windowskin_name);
+Window_Base::Window_Base(int ix, int iy, int iwidth, int iheight) 
+{
+	windowskin_id = Main_Data::game_system->get_windowskin_id();
+    windowskin = RPG::Cache.windowskin(windowskin_id);
     x = ix;
 	y = iy;
 	width = iwidth;
@@ -10,11 +11,13 @@ Window_Base::Window_Base(int ix, int iy, int iwidth, int iheight) {
     z = 100;
 	needs_refresh = true;
 }
-Window_Base::~Window_Base() {
+Window_Base::~Window_Base() 
+{
 	
 }
 
-void Window_Base::dispose() {
+void Window_Base::dispose() 
+{
 	Window::dispose();
 	if(contents != NULL) {
       contents->dispose();

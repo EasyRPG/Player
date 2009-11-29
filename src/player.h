@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "SDL.h"
 
+#include <new>
 #include "main_data.h"
 #include "graphics.h"
 #include "input.h"
@@ -13,10 +14,11 @@
 
 class Player {
 public:
-    Player(int _argc, char *_argv[]);
+    Player();
     ~Player();
 
     void do_play();
+    void set_args(int _argc, char **_argv);
 
 private:
     int argc;

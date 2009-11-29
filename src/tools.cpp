@@ -506,5 +506,5 @@ SDL_Surface* load_XYZ(const std::string& filename)
 
 void _bad_alloc() {
     _fatal_error("Out of memory!");
-    exit(1);
+    exit(EXIT_FAILURE);
 }

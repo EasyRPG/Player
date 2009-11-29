@@ -1,32 +1,21 @@
 #include "zobj.h"
 
-ZObj::ZObj(int iz, int itype, int iid, int icreation) {
-	z = iz;
-	type = itype;
-	id = iid;
-	creation = icreation;
-}
-
-ZObj::~ZObj()
-{
-}
-
-int ZObj::get_z()
+int ZObj::get_z() const
 {
 	return z;
 }
 
-int ZObj::get_id()
+int ZObj::get_id() const
 {
 	return id;
 }
 
-int ZObj::get_type()
+int ZObj::get_type() const
 {
 	return type;
 }
 
-int ZObj::get_creation()
+int ZObj::get_creation() const
 {
 	return creation;
 }

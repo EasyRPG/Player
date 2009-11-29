@@ -5,6 +5,10 @@
 
 class Game_System {
 
+private:
+    int windowskin_id;
+    int title_id;
+
 public:
     int timer;
     bool timer_working;
@@ -15,11 +19,15 @@ public:
     int message_frame;
     int save_count;
     int magic_number;
-
-	Game_System();
+    
+    Game_System();
 	~Game_System();
 
-	std::string get_windowskin_name();
+	int get_windowskin_id() const;
+    void set_windowskin_id(int id);
+
+    void set_title_id(int id);
+    int get_title_id() const;
 
 };
 #endif // __game_system__
