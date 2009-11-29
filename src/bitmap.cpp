@@ -4,8 +4,8 @@
 #include "graphics.h"
 
 Bitmap::Bitmap(int width, int height):
-      id(-1),
-      disposed(false)
+      disposed(false),
+      id(-1)
 {
     surface = Graphics::get_empty_real_surface(width, height);
 }
