@@ -7,6 +7,8 @@
 #define TYPE_WINDOW 3
 #define TYPE_TILEMAP 4
 
+#include <list>
+
 class ZObj {
 
 public:
@@ -27,6 +29,8 @@ public:
 	void set_id(int nid);
 	void set_type(int ntype);
 	void set_creation(int ncreation);
+
+    static std::list<ZObj> zlist;
 private:
 	int z;
 	int id;

@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <string>
-#include "SDL.h"
 #include "rect.h"
 #include "color.h"
 #include "font.h"

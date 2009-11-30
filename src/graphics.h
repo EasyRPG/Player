@@ -2,16 +2,15 @@
 #define __graphics__
 
 #include <string>
-#include <list>
 #include "SDL.h"
 #include "SDL_framerate.h"
-#include "viewport.h"
 #include "bitmap.h"
-#include "sprite.h"
 #include "tilemap.h"
 #include "window.h"
 #include "plane.h"
 #include "zobj.h"
+#include "tools.h"
+#include "sprite.h"
 
 #ifdef PSP
 	#define SCREEN_WIDTH 480
@@ -55,7 +54,6 @@ namespace Graphics {
 	
 	extern SDL_Surface *screen;
 	
-	extern std::list<ZObj> zlist;
 	extern std::list<ZObj>::iterator zlist_it;
 }
 #endif // __graphics__

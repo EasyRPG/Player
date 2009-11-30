@@ -2,11 +2,9 @@
 #define __viewport__
 
 #include <map>
-#include "SDL.h"
 #include "rect.h"
 #include "color.h"
 #include "tone.h"
-#include "graphics.h"
 
 class Viewport {
 

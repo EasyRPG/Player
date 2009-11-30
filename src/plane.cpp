@@ -234,7 +234,7 @@ void Plane::add_plane(int id, Plane *plane)
 {
 	planes[id] = plane;
 	ZObj zobj((*plane).get_z(), id, TYPE_PLANE, 0);
-	Graphics::zlist.push_back(zobj);
+	ZObj::zlist.push_back(zobj);
 }
 
 void Plane::remove_plane(int id)

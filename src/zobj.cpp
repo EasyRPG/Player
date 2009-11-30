@@ -1,5 +1,7 @@
 #include "zobj.h"
 
+std::list<ZObj> ZObj::zlist;
+
 int ZObj::get_z() const
 {
 	return z;

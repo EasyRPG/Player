@@ -10,8 +10,11 @@ protected:
     int index;
 
 public:
-    Window_Selectable(int x, int y, int width, int height) 
-        :Window_Base(x, y, width, height) {}
+    Window_Selectable(int x, int y, int width, int height):
+      Window_Base(x, y, width, height),
+        item_max(1), 
+        column_max(1),
+        index(-1) {}
 
     ~Window_Selectable() {}
 

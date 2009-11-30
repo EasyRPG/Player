@@ -2,10 +2,8 @@
 #define __tilemap__
 
 #include <map>
-#include "SDL.h"
 #include "viewport.h"
 #include "bitmap.h"
-#include "rect.h"
 #include "table.h"
 
 class Viewport;

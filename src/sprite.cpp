@@ -318,7 +318,7 @@ void Sprite::add_sprite(int id, Sprite *sprite)
 {
 	sprites[id] = sprite;
 	ZObj zobj(sprite->get_z(), TYPE_SPRITE, id, 0);
-	Graphics::zlist.push_back(zobj);
+	ZObj::zlist.push_back(zobj);
 }
 
 void Sprite::remove_sprite(int id)

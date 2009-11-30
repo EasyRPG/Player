@@ -1,16 +1,18 @@
 #include "window_base.h"
 
-Window_Base::Window_Base(int ix, int iy, int iwidth, int iheight) 
+Window_Base::Window_Base(int ix, int iy, int iwidth, int iheight)
 {
 	windowskin_id = Main_Data::game_system->get_windowskin_id();
     windowskin = RPG::Cache.windowskin(windowskin_id);
+
     x = ix;
-	y = iy;
-	width = iwidth;
-	height = iheight;
+    y = iy;
+    width = iwidth;
+    height = iheight;
     z = 100;
-	needs_refresh = true;
+    needs_refresh = true;
 }
+
 Window_Base::~Window_Base() 
 {
 	

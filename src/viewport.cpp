@@ -1,4 +1,5 @@
 #include "viewport.h"
+#include "graphics.h"
 #include "zobj.h"
 
 Viewport::Viewport(int ix, int iy, int iwidth, int iheight)
@@ -152,7 +153,7 @@ void Viewport::add_viewport(int id, Viewport *viewport)
 {
 	viewports[id] = viewport;
 	ZObj zobj((*viewport).get_z(), id, TYPE_VIEWPORT, 0);
-	Graphics::zlist.push_back(zobj);
+	ZObj::zlist.push_back(zobj);
 }
 
 void Viewport::remove_viewport(int id)

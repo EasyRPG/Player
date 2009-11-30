@@ -4,12 +4,12 @@
 #include <map>
 #include "bitmap.h"
 #include "rect.h"
-#include "color.h"
 #include "tone.h"
-#include "graphics.h"
 #include "tools.h"
 
 class Viewport;
+class Color;
+
 class Sprite {
 	
 public:

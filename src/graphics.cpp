@@ -23,7 +23,6 @@ namespace {
 namespace Graphics {
 	SDL_Surface *screen;
 
-	std::list<ZObj> zlist;
 	std::list<ZObj>::iterator zlist_it;
 
     FPSmanager fps_manager;
@@ -66,9 +65,9 @@ namespace Graphics {
 	{
 		SDL_FillRect(screen, NULL, 0); 
 		
-		zlist.sort(compare_zobj);
+        ZObj::zlist.sort(compare_zobj);
 		
-		for(zlist_it = zlist.begin(); zlist_it != zlist.end(); zlist_it++) {
+		for(zlist_it = ZObj::zlist.begin(); zlist_it != ZObj::zlist.end(); zlist_it++) {
 			switch(zlist_it->get_type())
 			{
 				case TYPE_VIEWPORT:
@@ -86,12 +85,12 @@ namespace Graphics {
 						Plane::planes[zlist_it->get_id()]->draw(screen);
 					}
 					break;
-				case TYPE_WINDOW:
+				/*case TYPE_WINDOW:
 					// Yeah Windows 7 Rulez!!!!!!!!!!!
 					if (Window::windows.count(zlist_it->get_id()) == 1) {
 						Window::windows[zlist_it->get_id()]->draw(screen);
 					}
-					break;
+					break;*/
 				case TYPE_TILEMAP:
 					if (Tilemap::tilemaps.count(zlist_it->get_id()) == 1) {
 						Tilemap::tilemaps[zlist_it->get_id()]->draw(screen);
@@ -149,12 +148,16 @@ namespace Graphics {
         
         SDL_Surface* dummy;
 
-        dummy = SDL_CreateRGBSurface(SDL_SWSURFACE, w, h, bpp, rmask, gmask, bmask, amask);
+        /* 
+           So we use 32 bit surfaces for zooming so we gain a little
+           bit of speed. :)
+        */
+        dummy = SDL_CreateRGBSurface(SDL_SWSURFACE, w, h, 32, rmask, gmask, bmask, amask);
         if (dummy == NULL) {
             std::string serr("Internal error: Out of memory?\n");
             serr.append(SDL_GetError());
             _fatal_error(serr.c_str());
-            exit(1);
+            exit(EXIT_FAILURE);
         }
 
         return dummy;
@@ -184,5 +187,10 @@ namespace Graphics {
         SDL_FreeSurface(dummy);
 
         return ret_surface;
+    }
+
+    void draw(Window *w) {
+        
+
     }
 }

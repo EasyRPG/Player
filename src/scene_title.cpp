@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "graphics.h"
+#include "sprite.h"
 #include "input.h"
 #include "audio.h"
 #include "game_system.h"

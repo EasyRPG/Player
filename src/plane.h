@@ -2,12 +2,13 @@
 #define __plane__
 
 #include <map>
-#include "SDL.h"
-#include "viewport.h"
+#include "graphics.h"
 #include "bitmap.h"
 #include "rect.h"
 #include "color.h"
 #include "tone.h"
+
+class Viewport;
 
 class Plane {
 

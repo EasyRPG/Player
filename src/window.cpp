@@ -2,34 +2,32 @@
 #include "zobj.h"
 #include "SDL_rotozoom.h"
 
-Window::Window()
+Window::Window():
+    needs_refresh(false),
+    disposed(false),
+    id(count),
+    stretch(true),
+    active(true),
+    visible(true),
+    pause(false),
+    x(0),
+    y(0),
+    width(0),
+    height(0),
+    z(0),
+    ox(0),
+    oy(0),
+    opacity(255),
+    back_opacity(255),
+    contents_opacity(255),
+    windowskin(NULL),
+    contents(NULL)
 {
-	background = NULL;
-	needs_refresh = false;
-	
-	disposed = false;
-	id = count;
-//	Graphics::add_window(count, *this);
-	count++;
-	
-	stretch = true;
-	cursor_rect.x = 0;
+    cursor_rect.x = 0;
     cursor_rect.y = 0;
     cursor_rect.w = 0;
     cursor_rect.h = 0;
-	active = true;
-	visible = true;
-	pause = false;
-	x = 0;
-	y = 0;
-	width = 0;
-	height = 0;
-	z = 0;
-	ox = 0;
-	oy = 0;
-	opacity = 255;
-	back_opacity = 255;
-	contents_opacity = 255;
+	count++;
 }
 
 Window::Window(Viewport *iviewport)
@@ -39,7 +37,7 @@ Window::Window(Viewport *iviewport)
 //	Graphics::add_window(count, *this);
 	count++;
 	
-	viewport = iviewport;
+	_viewport = iviewport;
 	stretch = true;
 	cursor_rect.x = 0;
     cursor_rect.y = 0;
@@ -65,7 +63,7 @@ Window::~Window()
 //	Graphics::remove_window(id);
 }
 
-std::map<int, Window*> Window::windows;
+/*std::map<int, Window*> Window::windows;*/
 int Window::count = 0;
 
 void Window::dispose()
@@ -83,7 +81,7 @@ void Window::update()
 	
 }
 
-void Window::draw(SDL_Surface *screen)
+/*void Window::draw(SDL_Surface *screen)
 {
 	if(needs_refresh) {
 		refresh();
@@ -95,10 +93,34 @@ void Window::draw(SDL_Surface *screen)
     dstrect.x = x;
     dstrect.y = y;
     SDL_BlitSurface(background, NULL, screen, &dstrect);
-}
+}*/
+/*
+bool Window::make_window() {
+    
+    if (windowskin == NULL)
+        return false;
+
+    SDL_Surface *back;
+    SDL_Surface *tmp;
+    SDL_Rect rect = {0, 0, 32, 32};
+
+    tmp = Graphics::get_empty_dummy_surface(32, 32);
+
+    SDL_BlitSurface(windowskin->surface, &rect, tmp, NULL);
+
+    back = zoomSurface(tmp, 2.5, 2.5, 0);
+
+
+    contents
+
+    Graphics::draw(this);    
+    
+
+}*/
 
 void Window::refresh()
 {
+    SDL_Surface* background;
     /* Are we sure we want to do this ? */
     SDL_FreeSurface(background);
 
@@ -106,6 +128,7 @@ void Window::refresh()
 	SDL_Rect dstrect;
 	SDL_Surface* temp;
 	SDL_Surface* temp2;
+    
 	
     background = Graphics::get_empty_dummy_surface(width, height);
 	
@@ -211,196 +234,16 @@ void Window::refresh()
 	SDL_FreeSurface(temp2);
 }
 
-Viewport* Window::get_viewport()
+Viewport* Window::viewport()
 {
-	return viewport;
+	return _viewport;
 }
-
-Bitmap* Window::get_windowskin()
-{
-	return windowskin;
-}
-
-Bitmap* Window::get_contents()
-{
-	return contents;
-}
-
-bool Window::get_stretch()
-{
-	return stretch;
-}
-
-Rect* Window::get_cursor_rect()
-{
-	return &cursor_rect;
-}
-
-bool Window::get_active()
-{
-	return active;
-}
-
-bool Window::get_visible()
-{
-	return visible;
-}
-
-bool Window::get_pause()
-{
-	return pause;
-}
-
-int Window::get_x()
-{
-	return x;
-}
-
-int Window::get_y()
-{
-	return y;
-}
-
-int Window::get_width()
-{
-	return width;
-}
-
-int Window::get_height()
-{
-	return height;
-}
-
-int Window::get_z()
-{
-	return z;
-}
-
-int Window::get_ox()
-{
-	return ox;
-}
-
-int Window::get_oy(){
-	return oy;
-}
-
-int Window::get_opacity()
-{
-	return opacity;
-}
-
-int Window::get_back_opacity(){
-	return back_opacity;
-}
-
-int Window::get_contents_opacity()
-{
-	return contents_opacity;
-}
-
-void Window::set_viewport(Viewport* nviewport)
-{
-	viewport = nviewport;
-}
-
-void Window::set_windowskin(Bitmap* nwindowskin)
-{
-	windowskin = nwindowskin;
-	needs_refresh = true;
-}
-
-void Window::set_contents(Bitmap* ncontents)
-{
-	contents = ncontents;
-}
-
-void Window::set_stretch(bool nstretch)
-{
-	stretch = nstretch;
-	needs_refresh = true;
-}
-
-void Window::set_cursor_rect(Rect* ncursor_rect)
-{
-	cursor_rect.x = ncursor_rect->x;
-    cursor_rect.y = ncursor_rect->y;
-    cursor_rect.w = ncursor_rect->w;
-    cursor_rect.h = ncursor_rect->h;
-}
-
-void Window::set_active(bool nactive)
-{
-	active = nactive;
-}
-
-void Window::set_visible(bool nvisible)
-{
-	visible = nvisible;
-}
-
-void Window::set_pause(bool npause)
-{
-	pause = npause;
-}
-
-void Window::set_x(int nx)
-{
-	x = nx;
-}
-
-void Window::set_y(int ny)
-{
-	y = ny;
-}
-
-void Window::set_width(int nwidth)
-{
-	width = nwidth;
-	needs_refresh = true;
-}
-
-void Window::set_height(int nheihgt)
-{
-	height = nheihgt;
-	needs_refresh = true;
-}
-
-void Window::set_z(int nz)
-{
-	z = nz;
-}
-
-void Window::set_ox(int nox)
-{
-	ox = nox;
-}
-
-void Window::set_oy(int noy)
-{
-	oy = noy;
-}
-
-void Window::set_opacity(int nopacity)
-{
-	opacity = nopacity;
-}
-
-void Window::set_back_opacity(int nback_opacity)
-{
-	back_opacity = nback_opacity;
-}
-
-void Window::set_contents_opacity(int ncontents_opacity)
-{
-	contents_opacity = ncontents_opacity;
-}
-
+/*
 void Window::add_window(int id, Window *window)
 {
 	windows[id] = window;
 	ZObj zobj((*window).get_z(), id, TYPE_WINDOW, Graphics::get_frame_count());
-	Graphics::zlist.push_back(zobj);
+	ZObj::zlist.push_back(zobj);
 }
 
 void Window::remove_window(int id)
@@ -408,3 +251,4 @@ void Window::remove_window(int id)
 	windows.erase(id);
 //	ZObj::zlist.remove_if(remove_zobj_id(id));
 }
+*/

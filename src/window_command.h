@@ -6,8 +6,7 @@
 
 class Window_Command: public Window_Selectable {
 public:
-    Window_Command(int width, std::vector<std::string> opt)
-        :Window_Selectable(0, 0, width, opt.size() * 32 + 32) {}
+    Window_Command(int width, std::vector<std::string> opt);
 
     ~Window_Command();
 
