@@ -66,7 +66,6 @@
     </VirtualDirectory>
     <VirtualDirectory Name="Reader">
       <VirtualDirectory Name="LDB">
-        <File Name="eventchunks.h"/>
         <File Name="ldb_actor.cpp"/>
         <File Name="ldb_attribute.cpp"/>
         <File Name="ldb_data.cpp"/>
@@ -82,14 +81,15 @@
         <File Name="ldbchunks.h"/>
         <File Name="ldbstr.cpp"/>
         <File Name="ldbstr.h"/>
-        <File Name="stevent.cpp"/>
-        <File Name="stevent.h"/>
         <File Name="ldb_system.cpp"/>
         <File Name="ldb_sound.cpp"/>
         <File Name="ldb_music.cpp"/>
         <File Name="ldb_glossary.cpp"/>
         <File Name="ldb_system.h"/>
       </VirtualDirectory>
+      <File Name="eventchunks.h"/>
+      <File Name="stevent.cpp"/>
+      <File Name="stevent.h"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Multimedia">
       <File Name="audio.cpp"/>
@@ -124,11 +124,6 @@
       <File Name="control.cpp"/>
       <File Name="control.h"/>
     </VirtualDirectory>
-    <File Name="main.cpp"/>
-    <File Name="main_data.cpp"/>
-    <File Name="main_data.h"/>
-    <File Name="tools.cpp"/>
-    <File Name="tools.h"/>
     <VirtualDirectory Name="Scene">
       <File Name="scene.h"/>
       <File Name="scene_title.cpp"/>
@@ -142,13 +137,20 @@
       <File Name="window_selectable.cpp"/>
       <File Name="window_selectable.h"/>
     </VirtualDirectory>
+    <File Name="main.cpp"/>
+    <File Name="main_data.cpp"/>
+    <File Name="main_data.h"/>
+    <File Name="tools.cpp"/>
+    <File Name="tools.h"/>
     <File Name="player.cpp"/>
     <File Name="player.h"/>
     <File Name="log.cpp"/>
     <File Name="log.h"/>
   </VirtualDirectory>
+  <Dependencies Name="Debug"/>
   <Dependencies Name="Release"/>
-  <Dependencies Name="Debug MingW"/>
+  <Dependencies Name="Win32 Debug"/>
+  <Dependencies Name="Win32 Release"/>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g -fno-rtti -fno-exceptions $(shell sdl-config --cflags) -Wall -Wextra -ansi -pedantic -Wno-unused" Required="yes" PreCompiledHeader=""/>
@@ -175,18 +177,11 @@
         <CustomPreBuild/>
       </AdditionalRules>
     </Configuration>
-    <Configuration Name="Debug MingW" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g;-Wall" Required="yes" PreCompiledHeader="">
-        <IncludePath Value="."/>
-        <IncludePath Value="../dependencies/mingw/SDL/include/SDL/"/>
-        <IncludePath Value="../dependencies/mingw/zlib/include"/>
-      </Compiler>
-      <Linker Options="-mwindows -lmingw32 -lSDLmain -lSDL -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image" Required="yes">
-        <LibraryPath Value="../dependencies/mingw/SDL/lib"/>
-        <LibraryPath Value="../dependencies/mingw/zlib/lib"/>
-      </Linker>
-      <ResourceCompiler Options="" Required="yes"/>
-      <General OutputFile="../bin/Player.exe" IntermediateDirectory="../obj/DebugMingw" Command="../bin/Player.exe" CommandArguments="" WorkingDirectory="../bin/" PauseExecWhenProcTerminates="yes"/>
+    <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-O3 -s -fno-rtti -fno-exceptions $(shell sdl-config --cflags) -Wall -Wextra -ansi -pedantic" Required="yes" PreCompiledHeader=""/>
+      <Linker Options="-O2 -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs)" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="../bin/testgame/easyrpg" IntermediateDirectory="../.obj/Release" Command="./easyrpg" CommandArguments="" WorkingDirectory="../bin/testgame" PauseExecWhenProcTerminates="yes"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -207,11 +202,38 @@
         <CustomPreBuild/>
       </AdditionalRules>
     </Configuration>
-    <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+    <Configuration Name="Win32 Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g -fno-rtti -fno-exceptions $(shell sdl-config --cflags) -Wall -Wextra -ansi -pedantic -Wno-unused" Required="yes" PreCompiledHeader=""/>
+      <Linker Options="-O2 -mwindows -lmingw32 -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs)" Required="yes">
+      </Linker>
+      <ResourceCompiler Options="" Required="yes"/>
+      <General OutputFile="../bin/testgame/easyrpg.exe" IntermediateDirectory="../.obj/Debug" Command="./easyrpg.exe" CommandArguments="" WorkingDirectory="../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="Win32 Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-O3 -s -fno-rtti -fno-exceptions $(shell sdl-config --cflags) -Wall -Wextra -ansi -pedantic" Required="yes" PreCompiledHeader=""/>
-      <Linker Options="-O2 -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image $(shell sdl-config --libs)" Required="yes"/>
-      <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="../bin/testgame/easyrpg" IntermediateDirectory="../.obj/Release" Command="./easyrpg" CommandArguments="" WorkingDirectory="../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Linker Options="-O2 -mwindows -lmingw32 -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs)" Required="yes">
+      </Linker>
+      <ResourceCompiler Options="" Required="yes"/>
+      <General OutputFile="../bin/testgame/easyrpg.exe" IntermediateDirectory="../.obj/Release" Command="./easyrpg.exe" CommandArguments="" WorkingDirectory="../bin/testgame" PauseExecWhenProcTerminates="yes"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -238,5 +260,4 @@
       <ResourceCompiler Options=""/>
     </GlobalSettings>
   </Settings>
-  <Dependencies Name="Debug"/>
 </CodeLite_Project>

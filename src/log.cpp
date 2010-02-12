@@ -3,6 +3,15 @@
 #include <ctime>
 #include <cstring>
 
+#ifdef WIN32
+#include <windows.h>
+
+SDL_SysWMinfo wmInfo;
+SDL_VERSION(&wmInfo.version);
+SDL_GetWMInfo(&wmInfo);
+HWND hWnd = wmInfo.window;
+#endif
+
 int verbosityLevel = VERBOSITY_ALL;
 const char *stringVerbosityLevel[VERBOSITY_LEVELS] =
 {
@@ -34,30 +43,30 @@ int log(int errorLevel, const char *error)
 	char *strTime = asctime(tm);
 	*(strchr(strTime, '\n')) = '\0';
 
+#ifndef WIN32
 	FILE* streamLog = NULL;
-
+	
 	switch (errorLevel)
 	{
-		case ERROR_LEVEL_NONE:
-			streamLog = stderr;
-			break;
 		case ERROR_LEVEL_INFO:
 			streamLog = stdout;
 			break;
+		case ERROR_LEVEL_NONE:
 		case ERROR_LEVEL_WARNING:
-			streamLog = stderr;
-			break;
 		case ERROR_LEVEL_ERROR:
-			streamLog = stderr;
-			break;
 		case ERROR_LEVEL_ALL:
 			streamLog = stderr;
 			break;
 	}
+#endif
 
 	if (verbosityLevel >= errorLevel)
 	{
+#ifndef WIN32
 		fprintf(streamLog, "%s: %s %s\n", strTime, stringVerbosityLevel[errorLevel], error);
+#else
+		MessageBox(hWnd, error, "Error", MB_ICONERROR);
+#endif
 		return 1;
 	}
 

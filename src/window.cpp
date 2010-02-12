@@ -3,9 +3,8 @@
 #include "SDL_rotozoom.h"
 
 Window::Window():
-    needs_refresh(false),
-    disposed(false),
-    id(count),
+    windowskin(NULL),
+    contents(NULL),
     stretch(true),
     active(true),
     visible(true),
@@ -20,8 +19,9 @@ Window::Window():
     opacity(255),
     back_opacity(255),
     contents_opacity(255),
-    windowskin(NULL),
-    contents(NULL)
+    disposed(false),
+    needs_refresh(false),
+    id(count)
 {
     cursor_rect.x = 0;
     cursor_rect.y = 0;
@@ -81,7 +81,8 @@ void Window::update()
 	
 }
 
-/*void Window::draw(SDL_Surface *screen)
+/*
+void Window::draw(SDL_Surface *screen)
 {
 	if(needs_refresh) {
 		refresh();
@@ -93,8 +94,8 @@ void Window::update()
     dstrect.x = x;
     dstrect.y = y;
     SDL_BlitSurface(background, NULL, screen, &dstrect);
-}*/
-/*
+}
+
 bool Window::make_window() {
     
     if (windowskin == NULL)
@@ -116,12 +117,11 @@ bool Window::make_window() {
     Graphics::draw(this);    
     
 
-}*/
+}
 
 void Window::refresh()
 {
     SDL_Surface* background;
-    /* Are we sure we want to do this ? */
     SDL_FreeSurface(background);
 
 	SDL_Rect srcrect;
@@ -233,6 +233,7 @@ void Window::refresh()
 	SDL_FreeSurface(temp);
 	SDL_FreeSurface(temp2);
 }
+*/
 
 Viewport* Window::viewport()
 {
