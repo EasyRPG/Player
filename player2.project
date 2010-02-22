@@ -145,6 +145,10 @@
   <File Name="src/player.h"/>
   <File Name="src/log.cpp"/>
   <File Name="src/log.h"/>
+  <Dependencies Name="Release"/>
+  <Dependencies Name="Win32 Release"/>
+  <Dependencies Name="Debug"/>
+  <Dependencies Name="Win32 Debug"/>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g -fno-rtti -fno-exceptions $(shell sdl-config --cflags) -Wall -Wextra -ansi -pedantic -Wno-unused" Required="yes" PreCompiledHeader=""/>
@@ -199,8 +203,8 @@
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Win32 Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g -fno-rtti -fno-exceptions $(shell sdl-config --cflags) -Wall -Wextra -ansi -pedantic -Wno-unused" Required="yes" PreCompiledHeader=""/>
-      <Linker Options="-O2 -mwindows -lmingw32 -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs)" Required="yes"/>
+      <Compiler Options="-g -fno-rtti -fno-exceptions -I/usr/local/include/SDL -D_GNU_SOURCE=1 -Dmain=SDL_main -Wall -Wextra -ansi -pedantic -Wno-unused -U__STRICT_ANSI__" Required="yes" PreCompiledHeader=""/>
+      <Linker Options="-O3 -L/usr/local/lib -lmingw32 -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image -lz -lSDLmain -lSDL -mwindows" Required="yes"/>
       <ResourceCompiler Options="" Required="yes"/>
       <General OutputFile="bin/testgame/easyrpg.exe" IntermediateDirectory=".obj/Debug" Command="./easyrpg.exe" CommandArguments="" WorkingDirectory="bin/testgame" PauseExecWhenProcTerminates="yes"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -256,8 +260,4 @@
       <ResourceCompiler Options=""/>
     </GlobalSettings>
   </Settings>
-  <Dependencies Name="Release"/>
-  <Dependencies Name="Win32 Debug"/>
-  <Dependencies Name="Win32 Release"/>
-  <Dependencies Name="Debug"/>
 </CodeLite_Project>
