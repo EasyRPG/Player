@@ -132,7 +132,6 @@
     <File Name="src/attributes/CActor.cpp"/>
   </VirtualDirectory>
   <Dependencies Name="Release"/>
-  <Dependencies Name="Win32 Debug"/>
   <Dependencies Name="Win32 Release"/>
   <Dependencies Name="Debug"/>
   <Settings Type="Executable">
@@ -246,4 +245,5 @@
       <ResourceCompiler Options=""/>
     </GlobalSettings>
   </Settings>
+  <Dependencies Name="Win32 Debug"/>
 </CodeLite_Project>
