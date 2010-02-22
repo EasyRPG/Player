@@ -24,17 +24,17 @@
 #define WAV 4
 #define MP3 5
 
-    // =========================================================================
-    #include <cstdlib>
-    #include <cstdio>
-    #include <string>
-    #include "SDL.h"
-    // =========================================================================
+
+#include <cstdlib>
+#include <cstdio>
+#include <string>
+#include "SDL.h"
+#include "zlib.h"
+
 #ifdef WIN32 
-    #include <windows.h>
+#include <windows.h>
 #endif
 
-    #include "zlib.h"
     // --- Chunk structure -----------------------------------------------------
     struct tChunk
     {
@@ -69,12 +69,12 @@
 #ifdef WIN32
     int get_img_extension(std::string& fname);
     int get_mus_extension(std::string& fname);
+    void _fatal_error(const char *perr);
 #else
     char * case_insensitive_and_format_img_exist(const char *directory, std::string & file);
 	char * case_insensitive_and_format_msc_exist(const char *directory, std::string & file);
 	int case_insensitive_exist( std::string & dir_file, const char *directory, char *file);
 #endif
-    void _fatal_error(const char *perr);
     void _bad_alloc();
     
 

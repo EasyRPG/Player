@@ -14,22 +14,14 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
-    // =========================================================================
-    #include <cstdlib>
-    #include <cstdio>
-    #include <cstring>
-    
-#ifdef UNIX
-	#include <dirent.h>
-#endif
+#include "tools.h"
 
-    #include <cctype>
-    #include <iostream>
-    #include "SDL.h"
-//    #include "SDL_image.h"
-    #include "tools.h"
-    using namespace std;
-    // =========================================================================
+#include <cctype>
+#include <iostream>
+
+#ifdef UNIX
+#include <dirent.h>
+#endif
 
     unsigned long ReadCompressedInteger(FILE * FileStream)
     {
@@ -83,16 +75,16 @@
         }
 
 
-    string ReadString(FILE * FileStream)
+    std::string ReadString(FILE * FileStream)
     {
         unsigned char Length;
         char        * Characters;
-        string        String;
+        std::string        String;
 
         // Read string lenght's
         bool return_value;
         return_value = fread(&Length, sizeof(char), 1, FileStream);
-        if (Length == 0) return string("");
+        if (Length == 0) return std::string("");
 
         // Allocate string buffer
         Characters = new char[Length+1];
@@ -100,16 +92,16 @@
         return_value = fread(Characters, sizeof(char), Length, FileStream);
 
         // Get string and free characters buffer
-        String = string(Characters);
+        String = std::string(Characters);
         delete Characters;
 
         return String;
     }
 
-    string ReadString(FILE * FileStream, unsigned char Length)
+    std::string ReadString(FILE * FileStream, unsigned char Length)
     {
         char        * Characters;
-        string        String;
+        std::string        String;
 
         // Allocate string buffer
         Characters = new char[Length+1];
@@ -118,7 +110,7 @@
         return_value = fread(Characters, sizeof(char), Length, FileStream);
 
         // Get string and free characters buffer
-        String = string(Characters);
+        String = std::string(Characters);
         delete Characters;
 
         return String;
@@ -194,7 +186,7 @@ void SetTransparent(SDL_Surface * ima)
 
     }
 
-    SDL_Surface * LoadSurface(string Filename)
+    SDL_Surface * LoadSurface(std::string Filename)
     {
         SDL_Surface * dummySurface = NULL;
         SDL_Surface * realSurface = NULL;
@@ -265,18 +257,19 @@ void s_toupper(char *dest, char *s)
 
 void _fatal_error(const char *perr) 
 {
+	
 #ifdef WIN32
-    MessageBox(NULL, perr, "Error", MB_OK | MB_ICONERROR);
+    MessageBox(NULL, perr, "Error", MB_ICONERROR);
 #else
     fprintf(stderr, "%s\n", perr);
 #endif
 }
 
 #ifdef WIN32
-int get_img_extension(string& fname)
+int get_img_extension(std::string& fname)
 {
-    string ext(".bmp");
-    string ftotal(fname + ext);
+    std::string ext(".bmp");
+    std::string ftotal(fname + ext);
     FILE *f;
     int ret = BMP;
 
@@ -301,10 +294,10 @@ int get_img_extension(string& fname)
     return ret;
 }
 
-int get_mus_extension(string& fname)
+int get_mus_extension(std::string& fname)
 {
-    string ext(".mid");
-    string ftotal(fname + ext);
+    std::string ext(".mid");
+    std::string ftotal(fname + ext);
     FILE *f;
     int ret = MID;
 
