@@ -84,17 +84,17 @@ int log(int errorLevel, const char *error)
 		[alert runModal];
 #endif
 #ifdef GTK
-		GtkWidget *error;
+		GtkWidget *werror;
 		
 		gtk_init(NULL, NULL);
-		error = gtk_message_dialog_new(NULL,
+		werror = gtk_message_dialog_new(NULL,
 			GTK_DIALOG_DESTROY_WITH_PARENT,
 			GTK_MESSAGE_ERROR,
 			GTK_BUTTONS_CLOSE,
-			"Error message");
-		gtk_window_set_title(GTK_WINDOW(error), "Error title");
-		gtk_dialog_run(GTK_DIALOG(error));
-		gtk_widget_destroy(error);
+			"%s",error);
+		gtk_window_set_title(GTK_WINDOW(werror), "Error");
+		gtk_dialog_run(GTK_DIALOG(werror));
+		gtk_widget_destroy(werror);
 
 #endif
 		return 1;
