@@ -146,11 +146,12 @@
   <File Name="src/log.cpp"/>
   <File Name="src/log.h"/>
   <Dependencies Name="Release"/>
-  <Dependencies Name="Debug"/>
+  <Dependencies Name="Win32 Release"/>
+  <Dependencies Name="Win32 Debug"/>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g -fno-rtti -fno-exceptions $(shell sdl-config --cflags) -Wall -Wextra -ansi -pedantic -Wno-unused" Required="yes" PreCompiledHeader=""/>
-      <Linker Options="-O2 -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs)" Required="yes"/>
+      <Compiler Options="-g -fno-rtti -fno-exceptions $(shell sdl-config --cflags) $(shell pkg-config --cflags gtk+-2.0) -DGTK -Wall -Wextra -ansi -pedantic -Wno-unused" Required="yes" PreCompiledHeader=""/>
+      <Linker Options="-O2 -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs) $(shell pkg-config --libs gtk+-2.0)" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="bin/testgame/easyrpg" IntermediateDirectory=".obj/Debug" Command="./easyrpg" CommandArguments="" WorkingDirectory="bin/testgame" PauseExecWhenProcTerminates="yes"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -175,8 +176,8 @@
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O3 -s -fno-rtti -fno-exceptions $(shell sdl-config --cflags) -Wall -Wextra -ansi -pedantic" Required="yes" PreCompiledHeader=""/>
-      <Linker Options="-O2 -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs)" Required="yes"/>
+      <Compiler Options="-O3 -s -fno-rtti -fno-exceptions $(shell sdl-config --cflags) $(shell pkg-config --cflags gtk+-2.0) -DGTK -Wall -Wextra -ansi -pedantic" Required="yes" PreCompiledHeader=""/>
+      <Linker Options="-O2 -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs) $(shell pkg-config --libs gtk+-2.0)" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="bin/testgame/easyrpg" IntermediateDirectory=".obj/Release" Command="./easyrpg" CommandArguments="" WorkingDirectory="bin/testgame" PauseExecWhenProcTerminates="yes"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -258,6 +259,5 @@
       <ResourceCompiler Options=""/>
     </GlobalSettings>
   </Settings>
-  <Dependencies Name="Win32 Release"/>
-  <Dependencies Name="Win32 Debug"/>
+  <Dependencies Name="Debug"/>
 </CodeLite_Project>

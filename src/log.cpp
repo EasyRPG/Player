@@ -15,6 +15,10 @@ HWND hWnd = wmInfo.window;
 #include <Cocoa/Cocoa.h>
 #endif
 
+#ifdef GTK
+#include <gtk/gtk.h>
+#endif
+
 int verbosityLevel = VERBOSITY_ALL;
 const char *stringVerbosityLevel[VERBOSITY_LEVELS] =
 {
@@ -46,7 +50,6 @@ int log(int errorLevel, const char *error)
 	char *strTime = asctime(tm);
 	*(strchr(strTime, '\n')) = '\0';
 
-#ifndef WIN32
 	FILE* streamLog = NULL;
 	
 	switch (errorLevel)
@@ -61,13 +64,10 @@ int log(int errorLevel, const char *error)
 			streamLog = stderr;
 			break;
 	}
-#endif
 
 	if (verbosityLevel >= errorLevel)
 	{
-#if !defined WIN32 && !defined __APPLE__
 		fprintf(streamLog, "%s: %s %s\n", strTime, stringVerbosityLevel[errorLevel], error);
-#endif
 #ifdef WIN32
 		MessageBox(hWnd, error, "Error", MB_ICONERROR);
 #endif
@@ -82,6 +82,20 @@ int log(int errorLevel, const char *error)
 			otherButton:nil
 			informativeTextWithFormat:nsMessage];
 		[alert runModal];
+#endif
+#ifdef GTK
+		GtkWidget *error;
+		
+		gtk_init(NULL, NULL);
+		error = gtk_message_dialog_new(NULL,
+			GTK_DIALOG_DESTROY_WITH_PARENT,
+			GTK_MESSAGE_ERROR,
+			GTK_BUTTONS_CLOSE,
+			"Error message");
+		gtk_window_set_title(GTK_WINDOW(error), "Error title");
+		gtk_dialog_run(GTK_DIALOG(error));
+		gtk_widget_destroy(error);
+
 #endif
 		return 1;
 	}
