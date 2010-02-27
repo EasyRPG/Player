@@ -5,10 +5,6 @@
 
 #ifdef WIN32
 #include <windows.h>
-SDL_SysWMinfo wmInfo;
-SDL_VERSION(&wmInfo.version);
-SDL_GetWMInfo(&wmInfo);
-HWND hWnd = wmInfo.window;
 #endif
 
 #ifdef __APPLE__
@@ -69,7 +65,7 @@ int log(int errorLevel, const char *error)
 	{
 		fprintf(streamLog, "%s: %s %s\n", strTime, stringVerbosityLevel[errorLevel], error);
 #ifdef WIN32
-		MessageBox(hWnd, error, "Error", MB_ICONERROR);
+		MessageBox(NULL, error, "Error", MB_ICONERROR | MB_TASKMODAL);
 #endif
 #ifdef __APPLE__
 		//Objective-Crap(TM) needed for Cocoa's NSAlert. Yeah, 64-bit OSX doesn't have Carbon anymore.
