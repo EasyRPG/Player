@@ -1,255 +1,469 @@
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////
+/// Headers
+////////////////////////////////////////////////////////////
+#include <math.h>
 #include "window.h"
-#include "zobj.h"
-#include "SDL_rotozoom.h"
+#include "player.h"
+#include "graphics.h"
+#include "rect.h"
 
-Window::Window():
-    windowskin(NULL),
-    contents(NULL),
-    stretch(true),
-    active(true),
-    visible(true),
-    pause(false),
-    x(0),
-    y(0),
-    width(0),
-    height(0),
-    z(0),
-    ox(0),
-    oy(0),
-    opacity(255),
-    back_opacity(255),
-    contents_opacity(255),
-    disposed(false),
-    needs_refresh(false),
-    id(count)
-{
-    cursor_rect.x = 0;
-    cursor_rect.y = 0;
-    cursor_rect.w = 0;
-    cursor_rect.h = 0;
-	count++;
+////////////////////////////////////////////////////////////
+/// Defines
+////////////////////////////////////////////////////////////
+#define max(a, b)    (((a) > (b)) ? (a) : (b))
+#define min(a, b)    (((a) < (b)) ? (a) : (b))
+
+////////////////////////////////////////////////////////////
+/// Constructor
+////////////////////////////////////////////////////////////
+Window::Window() {
+    windowskin = NULL;
+    contents = NULL;
+    stretch = true;
+    cursor_rect = Rect(0, 0, 0, 0);
+    active = true;
+    visible = true;
+    pause = false;
+    x = 0;
+    y = 0;
+    width = 0;
+    height = 0;
+    z = 0;
+    ox = 0;
+    oy = 0;
+    opacity = 255;
+    back_opacity = 255;
+    contents_opacity = 255;
+
+    background = NULL;
+    frame = NULL;
+    cursor1 = NULL;
+    cursor2 = NULL;
+    cursor_frame = false;
+    pause_frame = false;
+
+    _id = Graphics::id++;
+    Graphics::drawable_list.push_back(this);
+    Graphics::drawable_list.sort(Graphics::SortDrawable);
 }
 
-Window::Window(Viewport *iviewport)
-{
-	disposed = false;
-	id = count;
-//	Graphics::add_window(count, *this);
-	count++;
-	
-	_viewport = iviewport;
-	stretch = true;
-	cursor_rect.x = 0;
-    cursor_rect.y = 0;
-    cursor_rect.w = 0;
-    cursor_rect.h = 0;
-	active = true;
-	visible = true;
-	pause = false;
-	x = 0;
-	y = 0;
-	width = 0;
-	height = 0;
-	z = 0;
-	ox = 0;
-	oy = 0;
-	opacity = 255;
-	back_opacity = 255;
-	contents_opacity = 255;
+////////////////////////////////////////////////////////////
+/// Destructor
+////////////////////////////////////////////////////////////
+Window::~Window() {
+    Graphics::RemoveDrawable(_id);
+    delete background;
+    delete frame;
+    delete cursor1;
+    delete cursor2;
 }
 
-Window::~Window()
-{
-//	Graphics::remove_window(id);
-}
-
-/*std::map<int, Window*> Window::windows;*/
-int Window::count = 0;
-
-void Window::dispose()
-{
-	disposed = true;
-}
-
-bool Window::is_disposed() const
-{
-	return disposed;
-}
-
-void Window::update()
-{
-	
-}
-
-/*
-void Window::draw(SDL_Surface *screen)
-{
-	if(needs_refresh) {
-		refresh();
-		needs_refresh = false;
-	}
-	
-	SDL_Rect dstrect;
-
-    dstrect.x = x;
-    dstrect.y = y;
-    SDL_BlitSurface(background, NULL, screen, &dstrect);
-}
-
-bool Window::make_window() {
+////////////////////////////////////////////////////////////
+/// Draw
+////////////////////////////////////////////////////////////
+void Window::Draw() {
+    if (!visible) return;
+    if (width <= 0 || height <= 0) return;
+    if (x < -width || x > Player::GetWidth() || y < -height || y > Player::GetHeight()) return;
     
-    if (windowskin == NULL)
-        return false;
+    if (windowskin != NULL) {
+        if (width > 4 && height > 4 && (back_opacity * opacity / 255 > 0)) {
+            if (background_needs_refresh) RefreshBackground();
 
-    SDL_Surface *back;
-    SDL_Surface *tmp;
-    SDL_Rect rect = {0, 0, 32, 32};
+            background->BlitScreen(x + 2, y + 2, back_opacity * opacity / 255);
+        }
+        if (width > 0 && height > 0 && opacity > 0) {
+            if (frame_needs_refresh) RefreshFrame();
 
-    tmp = Graphics::get_empty_dummy_surface(32, 32);
+            frame->BlitScreen(x, y, opacity);
+        }
 
-    SDL_BlitSurface(windowskin->surface, &rect, tmp, NULL);
+        if (width > 16 && height > 16 && cursor_rect.width > 4 && cursor_rect.height > 4) {
+            if (cursor_needs_refresh) RefreshCursor();
 
-    back = zoomSurface(tmp, 2.5, 2.5, 0);
+            Rect src_rect(-min(cursor_rect.x + 8, 0),
+                          -min(cursor_rect.y + 8, 0),
+                          min(cursor_rect.width, width - 8 - cursor_rect.x),
+                          min(cursor_rect.height, height - 8 - cursor_rect.y));
+            if (cursor_frame) {
+                cursor1->BlitScreen(x + 8 + cursor_rect.x, y + 8 + cursor_rect.y, src_rect);
+            }
+            else {
+                cursor2->BlitScreen(x + 8 + cursor_rect.x, y + 8 + cursor_rect.y, src_rect);
+            }
+        }
+    }
 
-
-    contents
-
-    Graphics::draw(this);    
+    if (contents != NULL) {
+        if (width > 16 && height > 16 && -ox < width - 16 && -oy < height - 16 && contents_opacity > 0) {
+            Rect src_rect(-min(-ox, 0), -min(-oy, 0), min(width - 16, width - 16 + ox), min(height - 16, height - 16 + oy));
+            contents->BlitScreen(max(x + 8, x + 8 - ox), max(y + 8, y + 8 - oy), src_rect, contents_opacity);
+        }
+    }
     
-
+    if (pause && pause_frame) {
+        Rect src_rect(40, 16, 16, 8);
+        windowskin->BlitScreen(x + width / 2 - 4, y + height - 8, src_rect);
+    }
 }
 
-void Window::refresh()
-{
-    SDL_Surface* background;
-    SDL_FreeSurface(background);
+////////////////////////////////////////////////////////////
+/// Refresh Background
+////////////////////////////////////////////////////////////
+void Window::RefreshBackground() {
+    background_needs_refresh = false;
 
-	SDL_Rect srcrect;
-	SDL_Rect dstrect;
-	SDL_Surface* temp;
-	SDL_Surface* temp2;
+    delete background;
+
+    if (stretch) {
+        Rect src_rect(0, 0, 16, 16);
+        Rect dst_rect(0, 0, width - 4, height - 4);
+        background = new Bitmap(width - 4, height - 4);
+        background->StretchBlit(dst_rect, windowskin, src_rect, 255);
+    }
+    else {
+        background = new Bitmap(width - 4, height - 4);
+        int tilesx = (int)(ceil(background->GetWidth() / 16.0));
+        int tilesy = (int)(ceil(background->GetHeight() / 16.0));
+        Rect src_rect(0, 0, 16, 16);
+        for (int i = 0; i < tilesx; i++) {
+            for (int j = 0; j < tilesy; j++) {
+                background->Blit(i * 16, j * 16, windowskin, src_rect, 255);
+            }
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////
+/// Refresh Frame
+////////////////////////////////////////////////////////////
+void Window::RefreshFrame() {
+    frame_needs_refresh = false;
+
+    delete frame;
+
+    frame = new Bitmap(width, height);
+
+    Rect src_rect;
     
-	
-    background = Graphics::get_empty_dummy_surface(width, height);
-	
-	// Back
-	temp = Graphics::get_empty_dummy_surface(32, 32);
-	
-	srcrect.x = 0;
-	srcrect.y = 0;
-	srcrect.w = 32;
-	srcrect.h = 32;
-	
-	SDL_BlitSurface(windowskin->surface, &srcrect, temp, NULL);
-	
-	temp2 = zoomSurface(temp, ((double)width) / 32, ((double)height) / 32, 0);
-	
-	SDL_BlitSurface(temp2, NULL, background, NULL);
-	
-	SDL_FreeSurface(temp);
-	SDL_FreeSurface(temp2);
-	
-	// Corners
-	srcrect.x = 32;
-	srcrect.w = 8;
-	srcrect.h = 8;
-	dstrect.x = 0;
-	dstrect.y = 0;
-	SDL_BlitSurface(windowskin->surface, &srcrect, background, &dstrect);
-	
-	srcrect.x = 64 - 8;
-	dstrect.x = width - 8;
-	SDL_BlitSurface(windowskin->surface, &srcrect, background, &dstrect);
-	
-	srcrect.y = 32 - 8;
-	dstrect.y = height - 8;
-	SDL_BlitSurface(windowskin->surface, &srcrect, background, &dstrect);
-	
-	srcrect.x = 32;
-	dstrect.x = 0;
-	SDL_BlitSurface(windowskin->surface, &srcrect, background, &dstrect);
-	
-	// Border Up
-    temp = Graphics::get_empty_dummy_surface(16, 8);
-	srcrect.x = 32 + 8;
-	srcrect.y = 0;
-	srcrect.w = 16;
-	srcrect.h = 8;
-	SDL_BlitSurface(windowskin->surface, &srcrect, temp, NULL);
-	temp2 = zoomSurface(temp, ((double)width - 16) / 16, 1, 0);
-	dstrect.x = 8;
-	dstrect.y = 0;
-	dstrect.w = width - 16;
-	dstrect.h = 8;
-	SDL_BlitSurface(temp2, NULL, background, &dstrect);
-	SDL_FreeSurface(temp);
-	SDL_FreeSurface(temp2);
-	
-	// Border Down
-	temp = Graphics::get_empty_dummy_surface(16, 8);
-	srcrect.x = 32 + 8;
-	srcrect.y = 32 - 8;
-	srcrect.w = 16;
-	srcrect.h = 8;
-	SDL_BlitSurface(windowskin->surface, &srcrect, temp, NULL);
-	temp2 = zoomSurface(temp, ((double)width - 16) / 16, 1, 0);
-	dstrect.x = 8;
-	dstrect.y = height - 8;
-	dstrect.w = width - 16;
-	dstrect.h = 8;
-	SDL_BlitSurface(temp2, NULL, background, &dstrect);
-	SDL_FreeSurface(temp);
-	SDL_FreeSurface(temp2);
-	
-	// Border Left
-	temp = Graphics::get_empty_dummy_surface(8, 16);
-	srcrect.x = 32;
-	srcrect.y = 8;
-	srcrect.w = 8;
-	srcrect.h = 16;
-	SDL_BlitSurface(windowskin->surface, &srcrect, temp, NULL);
-	temp2 = zoomSurface(temp, 1, ((double)height - 16) / 16, 0);
-	dstrect.x = 0;
-	dstrect.y = 8;
-	dstrect.w = 8;
-	dstrect.h = height - 16;
-	SDL_BlitSurface(temp2, NULL, background, &dstrect);
-	SDL_FreeSurface(temp);
-	SDL_FreeSurface(temp2);
-	
-	// Border Right
-	temp = Graphics::get_empty_dummy_surface(8, 16);
-	srcrect.x = 64 - 8;
-	srcrect.y = 8;
-	srcrect.w = 8;
-	srcrect.h = 16;
-	SDL_BlitSurface(windowskin->surface, &srcrect, temp, NULL);
-	temp2 = zoomSurface(temp, 1, ((double)height - 16) / 16, 0);
-	dstrect.x = width - 8;
-	dstrect.y = 8;
-	dstrect.w = 8;
-	dstrect.h = height - 16;
-	SDL_BlitSurface(temp2, NULL, background, &dstrect);
-	SDL_FreeSurface(temp);
-	SDL_FreeSurface(temp2);
-}
-*/
+    // Draw Corners
+    src_rect.x = 32;
+    src_rect.y = 0;
+    src_rect.width = 8;
+    src_rect.height = 8;
+    frame->Blit(0, 0, windowskin, src_rect, 255);
+    
+    src_rect.x = 64 - 8;
+    frame->Blit(width - 8, 0, windowskin, src_rect, 255);
+    
+    src_rect.y = 64 - 8;
+    frame->Blit(width - 8, height - 8, windowskin, src_rect, 255);
+    
+    src_rect.x = 32;
+    frame->Blit(0, height - 8, windowskin, src_rect, 255);
 
-Viewport* Window::viewport()
-{
-	return _viewport;
-}
-/*
-void Window::add_window(int id, Window *window)
-{
-	windows[id] = window;
-	ZObj zobj((*window).get_z(), id, TYPE_WINDOW, Graphics::get_frame_count());
-	ZObj::zlist.push_back(zobj);
+    Rect dst_rect;
+
+    // Border Up
+    src_rect.x = 32 + 8;
+    src_rect.y = 0;
+    src_rect.width = 16;
+    src_rect.height = 8;
+    dst_rect.x = 8;
+    dst_rect.y = 0;
+    dst_rect.width = max(width - 16, 1);
+    dst_rect.height = 8;
+    frame->StretchBlit(dst_rect, windowskin, src_rect, 255);
+    
+    // Border Down
+    src_rect.y = 64 - 8;
+    dst_rect.y = height - 8;
+    frame->StretchBlit(dst_rect, windowskin, src_rect, 255);
+    
+    // Border Left
+    src_rect.x = 32;
+    src_rect.y = 8;
+    src_rect.width = 8;
+    src_rect.height = 16;
+    dst_rect.x = 0;
+    dst_rect.y = 8;
+    dst_rect.width = 8;
+    dst_rect.height = max(height - 16, 1);
+    frame->StretchBlit(dst_rect, windowskin, src_rect, 255);
+    
+    // Border Right
+    src_rect.x = 64 - 8;
+    dst_rect.x = width - 8;
+    frame->StretchBlit(dst_rect, windowskin, src_rect, 255);
 }
 
-void Window::remove_window(int id)
-{
-	windows.erase(id);
-//	ZObj::zlist.remove_if(remove_zobj_id(id));
+////////////////////////////////////////////////////////////
+/// Refresh Cursor
+////////////////////////////////////////////////////////////
+void Window::RefreshCursor() {
+    delete cursor1;
+    cursor1 = new Bitmap(cursor_rect.width, cursor_rect.height);
+
+    // Background
+    Rect src_rect(66, 2, 28, 28);
+    Rect dst_rect(2, 2, cursor_rect.width - 4, cursor_rect.height - 4);
+    cursor1->StretchBlit(dst_rect, windowskin, src_rect, 255);
+
+    // Corners
+    src_rect.x = 64;
+    src_rect.y = 0;
+    src_rect.width = 2;
+    src_rect.height = 2;
+    cursor1->Blit(0, 0, windowskin, src_rect, 255);
+    src_rect.x = 96 - 2;
+    cursor1->Blit(cursor_rect.width - 2, 0, windowskin, src_rect, 255);
+    src_rect.y = 32 - 2;
+    cursor1->Blit(cursor_rect.width - 2, cursor_rect.height - 2, windowskin, src_rect, 255);
+    src_rect.x = 32;
+    cursor1->Blit(0, cursor_rect.height - 2, windowskin, src_rect, 255);
+
+    // Border Up
+    src_rect.x = 32 + 2;
+    src_rect.y = 0;
+    src_rect.width = 28;
+    src_rect.height = 2;
+    dst_rect.x = 2;
+    dst_rect.y = 0;
+    dst_rect.width = cursor_rect.width - 4;
+    dst_rect.height = 2;
+    cursor1->StretchBlit(dst_rect, windowskin, src_rect, 255);
+
+    // Border Down
+    src_rect.y = 32 - 2;
+    dst_rect.y = cursor_rect.height - 2;
+    cursor1->StretchBlit(dst_rect, windowskin, src_rect, 255);
+
+    // Border Left
+    src_rect.x = 32;
+    src_rect.y = 32 + 2;
+    src_rect.width = 2;
+    src_rect.height = 28;
+    dst_rect.x = 0;
+    dst_rect.y = 2;
+    dst_rect.width = 2;
+    dst_rect.height = cursor_rect.height - 4;
+    cursor1->StretchBlit(dst_rect, windowskin, src_rect, 255);
+    
+    // Border Right
+    src_rect.x = 96 - 2;
+    dst_rect.x = cursor_rect.width - 2;
+    cursor1->StretchBlit(dst_rect, windowskin, src_rect, 255);
+
+
+    delete cursor2;
+    cursor2 = new Bitmap(cursor_rect.width, cursor_rect.height);
+
+    // Background
+    src_rect.x = 98;
+    src_rect.y = 2;
+    src_rect.width = 28;
+    src_rect.height = 28;
+    dst_rect.x = 2;
+    dst_rect.y = 2;
+    dst_rect.width = cursor_rect.width - 4;
+    dst_rect.height = cursor_rect.height - 4;
+    cursor2->StretchBlit(dst_rect, windowskin, src_rect, 255);
+
+    // Corners
+    src_rect.x = 96;
+    src_rect.y = 0;
+    src_rect.width = 2;
+    src_rect.height = 2;
+    cursor2->Blit(0, 0, windowskin, src_rect, 255);
+    src_rect.x = 128 - 2;
+    cursor2->Blit(cursor_rect.width - 2, 0, windowskin, src_rect, 255);
+    src_rect.y = 32 - 2;
+    cursor2->Blit(cursor_rect.width - 2, cursor_rect.height - 2, windowskin, src_rect, 255);
+    src_rect.x = 32;
+    cursor2->Blit(0, cursor_rect.height - 2, windowskin, src_rect, 255);
+
+    // Border Up
+    src_rect.x = 64 + 2;
+    src_rect.y = 0;
+    src_rect.width = 28;
+    src_rect.height = 2;
+    dst_rect.x = 2;
+    dst_rect.y = 0;
+    dst_rect.width = cursor_rect.width - 4;
+    dst_rect.height = 2;
+    cursor2->StretchBlit(dst_rect, windowskin, src_rect, 255);
+
+    // Border Down
+    src_rect.y = 32 - 2;
+    dst_rect.y = cursor_rect.height - 2;
+    cursor2->StretchBlit(dst_rect, windowskin, src_rect, 255);
+
+    // Border Left
+    src_rect.x = 64;
+    src_rect.y = 32 + 2;
+    src_rect.width = 2;
+    src_rect.height = 28;
+    dst_rect.x = 0;
+    dst_rect.y = 2;
+    dst_rect.width = 2;
+    dst_rect.height = cursor_rect.height - 4;
+    cursor2->StretchBlit(dst_rect, windowskin, src_rect, 255);
+    
+    // Border Right
+    src_rect.x = 128 - 2;
+    dst_rect.x = cursor_rect.width - 2;
+    cursor2->StretchBlit(dst_rect, windowskin, src_rect, 255);
 }
-*/
+
+////////////////////////////////////////////////////////////
+/// Update
+////////////////////////////////////////////////////////////
+void Window::Update() {
+    if (active) {
+        cursor_frame = !cursor_frame;
+        if (pause) pause_frame = !pause_frame;
+    }
+}
+
+////////////////////////////////////////////////////////////
+/// Properties
+////////////////////////////////////////////////////////////
+Bitmap* Window::GetWindowskin() {
+    return windowskin;
+}
+void Window::SetWindowskin(Bitmap* nwindowskin) {
+    background_needs_refresh = true;
+    frame_needs_refresh = true;
+    cursor_needs_refresh = true;
+    windowskin = nwindowskin;
+}
+Bitmap* Window::GetContents() {
+    return contents;
+}
+void Window::SetContents(Bitmap* ncontents) {
+    contents = ncontents;
+}
+bool Window::GetStretch() {
+    return stretch;
+}
+void Window::SetStretch(bool nstretch) {
+    if (stretch != nstretch) background_needs_refresh = true;
+    stretch = nstretch;
+}
+Rect Window::GetCursorRect() {
+    return cursor_rect;
+}
+void Window::SetCursorRect(Rect ncursor_rect) {
+    cursor_rect = ncursor_rect;
+}
+bool Window::GetActive() {
+    return active;
+}
+void Window::SetActive(bool nactive) {
+    active = nactive;
+}
+bool Window::GetVisible() {
+    return visible;
+}
+void Window::SetVisible(bool nvisible) {
+    visible = nvisible;
+}
+bool Window::GetPause() {
+    return pause;
+}
+void Window::SetPause(bool npause) {
+    pause = npause;
+}
+int Window::GetX() {
+    return x;
+}
+void Window::SetX(int nx) {
+    x = nx;
+}
+int Window::GetY() {
+    return y;
+}
+void Window::SetY(int ny) {
+    y = ny;
+}
+int Window::GetWidth() {
+    return width;
+}
+void Window::SetWidth(int nwidth) {
+    if (width != nwidth) {
+        background_needs_refresh = true;
+        frame_needs_refresh = true;
+    }
+    width = nwidth;
+}
+int Window::GetHeight() {
+    return height;
+}
+void Window::SetHeight(int nheight) {
+    if (height != nheight) {
+        background_needs_refresh = true;
+        frame_needs_refresh = true;
+    }
+    height = nheight;
+}
+int Window::GetZ() {
+    return z;
+}
+void Window::SetZ(int nz) {
+    if (z != nz) Graphics::drawable_list.sort(Graphics::SortDrawable);
+    z = nz;
+}
+int Window::GetOx() {
+    return ox;
+}
+void Window::SetOx(int nox) {
+    ox = nox;
+}
+int Window::GetOy() {
+    return oy;
+}
+void Window::SetOy(int noy) {
+    oy = noy;
+}
+int Window::GetOpacity() {
+    return opacity;
+}
+void Window::SetOpacity(int nopacity) {
+    opacity = nopacity;
+}
+int Window::GetBackOpacity() {
+    return back_opacity;
+}
+void Window::SetBackOpacity(int nback_opacity) {
+    back_opacity = nback_opacity;
+}
+int Window::GetContentsOpacity() {
+    return contents_opacity;
+}
+void Window::SetContentsOpacity(int ncontents_opacity) {
+    contents_opacity = ncontents_opacity;
+}
+
+////////////////////////////////////////////////////////////
+/// Get id
+////////////////////////////////////////////////////////////
+unsigned long Window::GetId() {
+    return _id;
+}

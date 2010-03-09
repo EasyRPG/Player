@@ -4,8 +4,8 @@
 class Game_Map {
 
 public:
-	Game_Map();
-	~Game_Map();
+    Game_Map();
+    ~Game_Map();
 
 };
 #endif // __game_map__

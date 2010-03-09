@@ -1,40 +1,72 @@
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////
+/// Headers
+////////////////////////////////////////////////////////////
 #include "game_system.h"
-Game_System::Game_System():
-    windowskin_id(0),
-    title_id(0),
-    timer(0),
-    timer_working(false),
-    save_disabled(false),
-    menu_disabled(false),
-    encounter_disabled(false),
-    message_position(2),
-    message_frame(0),
-    save_count(0),
-    magic_number(0)
-{
+#include "audio.h"
+#include "graphics.h"
+#include "main_data.h"
+
+////////////////////////////////////////////////////////////
+/// Cosntructor
+////////////////////////////////////////////////////////////
+Game_System::Game_System() {
 
 }
 
-Game_System::~Game_System()
-{
+////////////////////////////////////////////////////////////
+/// Destructor
+////////////////////////////////////////////////////////////
+Game_System::~Game_System() {
 }
 
-int Game_System::get_title_id() const 
-{
-	return title_id;
+////////////////////////////////////////////////////////////
+/// Audio helpers
+////////////////////////////////////////////////////////////
+void Game_System::BgmPlay(RPG::Music* bgm) {
+    //@playing_bgm = bgm
+    if (bgm != NULL && bgm->name != "") {
+        Audio::BGM_Play("Music\\" + bgm->name, bgm->volume, bgm->tempo);
+    }
+    else {
+        Audio::BGM_Stop();
+    }
+    Graphics::FrameReset();
+}
+void Game_System::SePlay(RPG::Sound* se) {
+    if (se != NULL && se->name != "") {
+        Audio::SE_Play("Sound\\" + se->name, se->volume, se->tempo);
+    }
 }
 
-void Game_System::set_title_id(int id) 
-{
-	title_id = id;
+////////////////////////////////////////////////////////////
+/// Properties
+////////////////////////////////////////////////////////////
+std::string Game_System::GetSystemName() {
+    if (system_name == "") {
+        return Main_Data::data_system->windowskin_name;
+    }
+    else {
+        return system_name;
+    }
 }
 
-int Game_System::get_windowskin_id() const 
-{
-	return windowskin_id;
-}
-
-void Game_System::set_windowskin_id(int id) 
-{
-	windowskin_id = id;
+void Game_System::SetSystemName(std::string nsystem_name) {
+    system_name = nsystem_name;
 }

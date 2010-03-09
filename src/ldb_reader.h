@@ -26,11 +26,11 @@ namespace LDB_reader {
     void mosteractionChunk(FILE * Stream, RPG::Enemy*& e);
     void mosterChunk(FILE * Stream);
     void stringChunk(FILE * Stream);
-	
-	void systemChunk(FILE * Stream);
     
-	void soundChunk(FILE * Stream, RPG::Sound*& sound);
-	void musicChunk(FILE * Stream, RPG::Music*& music);
+    void systemChunk(FILE * Stream);
+    
+    void soundChunk(FILE * Stream, RPG::Sound*& sound);
+    void musicChunk(FILE * Stream, RPG::Music*& music);
 }
 
 #endif

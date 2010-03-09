@@ -20,11 +20,11 @@ void LDB_reader::MonsterPartyMonsterChunk(FILE * Stream, RPG::Troop*& trp)
         monster->y = 0;
 
         do {
-            ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
+            ChunkInfo.ID     = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
             if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
                 ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
             switch (ChunkInfo.ID) { // tipo de la primera dimencion
-            case	Monster_ID:
+            case    Monster_ID:
                 monster->enemy_id = ReadCompressedInteger(Stream);
                 break;
             case X_position:
@@ -46,7 +46,7 @@ void LDB_reader::MonsterPartyMonsterChunk(FILE * Stream, RPG::Troop*& trp)
         trp->members.push_back(monster);
         datareaded++;
     }
-    ChunkInfo.ID	 =1;
+    ChunkInfo.ID     =1;
 }
 
 void LDB_reader::MonsterPartyEventconditionChunk(FILE * Stream, RPG::Page*& pgs)
@@ -57,7 +57,7 @@ void LDB_reader::MonsterPartyEventconditionChunk(FILE * Stream, RPG::Page*& pgs)
     //while (datatoread>datareaded) { //si no hay mas en el array
    //     id= ReadCompressedInteger(Stream);//lectura de id 1 de array
         do {
-            ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
+            ChunkInfo.ID     = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
             if (ChunkInfo.ID!=0)
                 ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
 
@@ -69,16 +69,16 @@ void LDB_reader::MonsterPartyEventconditionChunk(FILE * Stream, RPG::Page*& pgs)
                     pgs->condition.flags = ReadCompressedInteger(Stream);
                 break;
             case Switch_A:
-                pgs->condition.switch_a	 = ReadCompressedInteger(Stream);
+                pgs->condition.switch_a     = ReadCompressedInteger(Stream);
                 break;
             case Turn_number_A:
-                pgs->condition.turn_number_a	 = ReadCompressedInteger(Stream);
+                pgs->condition.turn_number_a     = ReadCompressedInteger(Stream);
                 break;
             case Lower_limit:
-                pgs->condition.lower_limit	 = ReadCompressedInteger(Stream);
+                pgs->condition.lower_limit     = ReadCompressedInteger(Stream);
                 break;
             case Upper_limit:
-                pgs->condition.upper_limit	 = ReadCompressedInteger(Stream);
+                pgs->condition.upper_limit     = ReadCompressedInteger(Stream);
                 break;
             case CHUNK_LDB_END_OF_BLOCK:
                 break;
@@ -104,7 +104,7 @@ void LDB_reader::MonsterPartyevent_pageChunk(FILE * Stream, RPG::Troop*& trp)
     while (datatoread>datareaded) { // si no hay mas en el array
         id= ReadCompressedInteger(Stream);//lectura de id 1 de array
         do {
-            ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
+            ChunkInfo.ID     = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
             if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
                 ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
             switch (ChunkInfo.ID) { // tipo de la primera dimencion
@@ -132,7 +132,7 @@ void LDB_reader::MonsterPartyevent_pageChunk(FILE * Stream, RPG::Troop*& trp)
         trp->pages.push_back(Monsterevent);
         datareaded++;
     }
-    ChunkInfo.ID	 =1;
+    ChunkInfo.ID     =1;
 }
 
 void LDB_reader::mosterpartyChunk(FILE * Stream)
@@ -146,7 +146,7 @@ void LDB_reader::mosterpartyChunk(FILE * Stream)
         enemy_group->id= ReadCompressedInteger(Stream);//lectura de id 1 de array
         do 
         {
-            ChunkInfo.ID	 = ReadCompressedInteger(Stream);
+            ChunkInfo.ID     = ReadCompressedInteger(Stream);
             if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
                 ChunkInfo.Length = ReadCompressedInteger(Stream);
             switch (ChunkInfo.ID) { // tipo de la primera dimencion

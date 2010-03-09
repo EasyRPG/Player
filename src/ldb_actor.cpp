@@ -17,7 +17,7 @@ void LDB_reader::heroskillChunk(FILE * Stream, RPG::Actor*& hero)
         skill.skill_id=1; //default
 
         do {
-            ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
+            ChunkInfo.ID     = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
             if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
                 ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
             switch (ChunkInfo.ID) { // tipo de la primera dimencion
@@ -202,8 +202,8 @@ void LDB_reader::heroChunk(FILE * Stream)
                     hero_data->attribute_effects.push_back(Void);
                 }
                 break;
-				
-			// What is this?
+                
+            // What is this?
             /*case CHUNK_Combat_Command://0x50
                 while (ChunkInfo.Length--) { //4 chars
                     return_value = fread(&comands, 4, 1, Stream);

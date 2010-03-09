@@ -42,8 +42,8 @@
 
         union
         {
-        	unsigned long Length;
-        	unsigned long NumEvents;
+            unsigned long Length;
+            unsigned long NumEvents;
         };
 
         unsigned long BytesRead;
@@ -71,8 +71,8 @@
     int get_mus_extension(std::string& fname);
 #else
     char * case_insensitive_and_format_img_exist(const char *directory, std::string & file);
-	char * case_insensitive_and_format_msc_exist(const char *directory, std::string & file);
-	int case_insensitive_exist( std::string & dir_file, const char *directory, char *file);
+    char * case_insensitive_and_format_msc_exist(const char *directory, std::string & file);
+    int case_insensitive_exist( std::string & dir_file, const char *directory, char *file);
 #endif
     void _fatal_error(const char *perr);
     void _bad_alloc();

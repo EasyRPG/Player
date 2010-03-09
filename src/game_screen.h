@@ -4,8 +4,8 @@
 class Game_Screen {
 
 public:
-	Game_Screen();
-	~Game_Screen();
+    Game_Screen();
+    ~Game_Screen();
 
 };
 #endif // __game_screen__

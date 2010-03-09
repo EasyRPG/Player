@@ -1,24 +1,45 @@
-#ifndef __scene_title__
-#define __scene_title__
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
 
+#ifndef _SCENE_TITLE_H_
+#define _SCENE_TITLE_H_
+
+////////////////////////////////////////////////////////////
+/// Headers
+////////////////////////////////////////////////////////////
 #include "scene.h"
-#include "window_base.h" // Change for Window_Command when done
+#include "window_command.h"
 
-#define LDB_DATABASE "RPG_RT.ldb"
-
+////////////////////////////////////////////////////////////
+/// Scene Title class
+////////////////////////////////////////////////////////////
 class Scene_Title: public Scene {
-
 public:
-	Scene_Title();
-	~Scene_Title();
+    Scene_Title();
+    ~Scene_Title();
 
-	void main_function();
-	void update();
-	void command_new_game();
-	void command_continue();
-	void command_shutdown();
-	
-	//Window_Command command_window;
-	Window_Base* command_window;
+    void MainFunction();
+    void Update();
+    void CommandNewGame();
+    void CommandContinue();
+    void CommandShutdown();
+    
+    Window_Command* command_window;
 };
-#endif // __scene_title__
+
+#endif
+

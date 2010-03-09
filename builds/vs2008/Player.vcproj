@@ -18,10 +18,10 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\bin\vs2008\debug"
-			IntermediateDirectory="..\..\obj\DebugVS2008"
+			OutputDirectory="..\..\bin\testgame"
+			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="2"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="$(EASYDEV)\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
+				PreprocessorDefinitions="MSVC;WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				ExceptionHandling="1"
 				BasicRuntimeChecks="3"
@@ -183,16 +183,8 @@
 	</References>
 	<Files>
 		<Filter
-			Name="src"
+			Name="Source Files"
 			>
-			<File
-				RelativePath="..\..\src\log.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\log.h"
-				>
-			</File>
 			<File
 				RelativePath="..\..\src\main.cpp"
 				>
@@ -206,6 +198,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\options.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\player.cpp"
 				>
 			</File>
@@ -213,166 +209,6 @@
 				RelativePath="..\..\src\player.h"
 				>
 			</File>
-			<File
-				RelativePath="..\..\src\tools.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\tools.h"
-				>
-			</File>
-			<Filter
-				Name="Game"
-				>
-				<File
-					RelativePath="..\..\src\game_actor.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\game_actor.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\game_actors.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\game_actors.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\game_battler.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\game_battler.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\game_map.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\game_map.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\game_party.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\game_party.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\game_player.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\game_player.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\game_screen.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\game_screen.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\game_switches.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\game_switches.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\game_system.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\game_system.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\game_temp.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\game_temp.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\game_troop.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\game_troop.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\game_variables.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\game_variables.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Window"
-				>
-				<File
-					RelativePath="..\..\src\window.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\window.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\window_base.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\window_base.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\window_command.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\window_command.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\window_selectable.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\window_selectable.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Scene"
-				>
-				<File
-					RelativePath="..\..\src\scene.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\scene_title.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\scene_title.h"
-					>
-				</File>
-			</Filter>
 			<Filter
 				Name="Reader"
 				>
@@ -489,14 +325,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\rpg_cache.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\rpg_cache.h"
-					>
-				</File>
-				<File
 					RelativePath="..\..\src\rpg_e_action.cpp"
 					>
 				</File>
@@ -596,122 +424,346 @@
 			<Filter
 				Name="Multimedia"
 				>
+				<Filter
+					Name="audio"
+					>
+					<File
+						RelativePath="..\..\src\audio.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\audio.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="graphics"
+					>
+					<File
+						RelativePath="..\..\src\bitmap.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\bitmap.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\color.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\color.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\drawable.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\font.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\font.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\graphics.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\graphics.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\hslrgb.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\hslrgb.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\plane.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\plane.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\rect.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\rect.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\sprite.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\sprite.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\tilemap.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\tilemap.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\tilemap_layer.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\tilemap_layer.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\tone.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\tone.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\window.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\window.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="input"
+					>
+					<File
+						RelativePath="..\..\src\input.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\input.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\input_buttons.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\input_buttons_os.cpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="Tools"
+				>
 				<File
-					RelativePath="..\..\src\audio.cpp"
+					RelativePath="..\..\src\filefinder.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\audio.h"
+					RelativePath="..\..\src\msgbox.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\bitmap.cpp"
+					RelativePath="..\..\src\output.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\bitmap.h"
+					RelativePath="..\..\src\output.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\color.cpp"
+					RelativePath="..\..\src\tools.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\color.h"
+					RelativePath="..\..\src\tools.h"
+					>
+				</File>
+				<Filter
+					Name="win"
+					>
+					<File
+						RelativePath="..\..\src\filefinder_win.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\msgbox_win.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\registry_win.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\registry_win.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="Engine"
+				>
+				<File
+					RelativePath="..\..\src\cache.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\control.cpp"
+					RelativePath="..\..\src\cache.h"
 					>
 				</File>
-				<File
-					RelativePath="..\..\src\control.h"
+				<Filter
+					Name="Window"
 					>
-				</File>
-				<File
-					RelativePath="..\..\src\font.cpp"
+					<File
+						RelativePath="..\..\src\window_base.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\window_base.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\window_command.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\window_command.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\window_selectable.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\window_selectable.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Scene"
 					>
-				</File>
-				<File
-					RelativePath="..\..\src\font.h"
+					<File
+						RelativePath="..\..\src\scene.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\scene_title.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\scene_title.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Game"
 					>
-				</File>
-				<File
-					RelativePath="..\..\src\graphics.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\graphics.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\input.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\input.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\plane.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\plane.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\rect.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\sprite.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\sprite.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\table.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\table.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\tilemap.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\tilemap.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\tone.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\tone.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\viewport.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\viewport.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\zobj.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\zobj.h"
-					>
-				</File>
+					<File
+						RelativePath="..\..\src\game_actor.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_actor.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_actors.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_actors.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_battler.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_battler.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_map.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_map.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_party.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_party.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_player.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_player.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_screen.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_screen.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_switches.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_switches.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_system.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_system.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_temp.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_temp.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_troop.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_troop.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_variables.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_variables.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 	</Files>

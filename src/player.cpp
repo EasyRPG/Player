@@ -1,60 +1,189 @@
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////
+/// Headers
+////////////////////////////////////////////////////////////
 #include "player.h"
+#include "options.h"
+#include "output.h"
+#include "audio.h"
+#include "graphics.h"
+#include "input.h"
+#include "cache.h"
+#include "main_data.h"
+#include "scene_title.h"
 
-Player::Player() {
+////////////////////////////////////////////////////////////
+/// Global Variables
+////////////////////////////////////////////////////////////
+namespace Player {
+    SDL_Surface* main_window;
+    bool focus;
+    //bool alt_pressing;
+    bool fullscreen;
+    bool zoom;
+}
 
-    setLog(VERBOSITY_ALL);
-
-    /* Defining this handler we avoid checking NULL for new
-       allocs in the heap */
-    std::set_new_handler(_bad_alloc);
-
-    int flags = SDL_INIT_TIMER;
-
+////////////////////////////////////////////////////////////
+/// Initialize
+////////////////////////////////////////////////////////////
+void Player::Init() {
+    int flags = SDL_INIT_VIDEO | SDL_INIT_TIMER;
 #ifdef _DEBUG
     flags |= SDL_INIT_NOPARACHUTE;
 #endif
+    if ((SDL_Init(flags) < 0)) { 
+        Output::Error("EasyRPG Player couldn't initialize SDL.\n%s\n", SDL_GetError());
+    }
+    atexit(SDL_Quit);
 
-	// Initialize SDL
-	if (SDL_Init(flags) < 0)
-    {
-        // Error
-		log(ERROR_LEVEL_ERROR, "Init error:");
-		log(ERROR_LEVEL_ERROR, SDL_GetError());
+    main_window = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_HWSURFACE);
+    if (!main_window) {
+        Output::Error("EasyRPG Player couldn't initialize %dx%dx%d video mode.\n%s\n", SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_GetError());
     }
 
-	// Disable Mouse Cursor
-	SDL_ShowCursor(SDL_DISABLE);
+    SDL_ShowCursor(SDL_DISABLE);
+    
+    SDL_WM_SetCaption(GAME_TITLE, NULL);
 
-	// Start Graphics
-	Graphics::initialize();
+    focus = true;
+    //alt_pressing = false;
+    fullscreen = false;
+    zoom = false;
+}
 
-    Input::initialize();
+////////////////////////////////////////////////////////////
+/// Run
+////////////////////////////////////////////////////////////
+void Player::Run() {
 
-    if (!Audio::initialize()) {
-        _fatal_error("Couldn't initialise audio!");
+    // Create Scene Title
+    Main_Data::scene = new Scene_Title();
+
+    // Main loop
+    while (Main_Data::scene_type != SCENE_NULL) {
+        Main_Data::scene->MainFunction();
     }
 }
 
+////////////////////////////////////////////////////////////
+/// Update
+////////////////////////////////////////////////////////////
+void Player::Update() {
+    SDL_Event evnt;
 
-Player::~Player() {
-    Main_Data::cleanup();
-	// Quit SDL
-	SDL_Quit();
+    while (true) {
+        bool result = SDL_PollEvent(&evnt);
+        if (evnt.type == SDL_QUIT) {
+            Exit();
+            exit(0);
+        }
+        else if (evnt.type == SDL_KEYDOWN) {
+            /*if (evnt.key.keysym == SDLK_LALT || evnt.key.keysym == SDLK_RALT) {
+                alt_pressing = true;
+            }
+            else if (evnt.key.keysym == SDLK_RETURN && alt_pressing) {
+                ToggleFullscreen();
+            }*/
+            switch (evnt.key.keysym.sym) {
+                case SDLK_F4:
+                    ToggleZoom();
+                    break;
+                case SDLK_F5:
+                    ToggleFullscreen();
+                    break;
+                case SDLK_F12:
+                    Main_Data::scene = new Scene_Title();
+                    Cache::Clear();
+            }
+        }
+        /*else if (evnt.type == SDL_KEYUP) {
+            if (evnt.key.keysym == SDLK_LALT || evnt.key.keysym == SDLK_RALT) {
+                alt_pressing = false;
+            }
+        }*/
+        else if (PAUSE_GAME_WHEN_FOCUS_LOST && evnt.type == SDL_ACTIVEEVENT) {
+            if (evnt.active.type == SDL_APPACTIVE) {
+                if (evnt.active.gain && !focus) {
+                    focus = true;
+                    Graphics::TimerContinue();
+                    if (PAUSE_AUDIO_WHEN_FOCUS_LOST) {
+                        //Audio::Continue();
+                    }
+                }
+                else if (!evnt.active.gain && focus) {
+                    focus = false;
+                    Input::ClearKeys();
+                    Graphics::TimerWait();
+                    if (PAUSE_AUDIO_WHEN_FOCUS_LOST) {
+                        //Audio::Pause();
+                    }
+                }
+            }
+        }
+
+        if (!result && !(PAUSE_GAME_WHEN_FOCUS_LOST && !focus)) {
+            break;
+        }
+    }
 }
 
-void Player::do_play() {
-
-	// Create Scene Title
-	Main_Data::scene = new Scene_Title();
-
-	// Main loop
-	while (Main_Data::scene_type != SCENE_NULL)
-	{
-		Main_Data::scene->main_function();
-	}
+////////////////////////////////////////////////////////////
+/// Exit
+////////////////////////////////////////////////////////////
+void Player::Exit() {
+    Main_Data::Cleanup();
+    SDL_Quit();
 }
 
-void Player::set_args(int _argc, char *_argv[]) {
-    argc = _argc;
-    argv = _argv;
+////////////////////////////////////////////////////////////
+/// Switch fullscreen
+////////////////////////////////////////////////////////////
+void Player::ToggleFullscreen() {
+    Uint32 flags = main_window->flags;
+    SDL_FreeSurface(main_window);
+    main_window = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, flags ^ SDL_FULLSCREEN);
+    if (main_window == NULL) {
+        main_window = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, flags);
+    }
+    else {
+        fullscreen = !fullscreen;
+    }
 }
+
+////////////////////////////////////////////////////////////
+/// Switch zoom
+////////////////////////////////////////////////////////////
+void Player::ToggleZoom() {
+    // TODO
+}
+
+////////////////////////////////////////////////////////////
+/// Get window width
+////////////////////////////////////////////////////////////
+int Player::GetWidth() {
+    return main_window->w;
+}
+
+////////////////////////////////////////////////////////////
+/// Get window height
+////////////////////////////////////////////////////////////
+int Player::GetHeight() {
+    return main_window->h;
+}
+

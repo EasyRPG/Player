@@ -327,12 +327,12 @@ printf(" \n EquitoVoc %d",EquitoVoc);
 void stcEnemy_Action::set_defaults()
 {
   intAction=0;//=0x01,
-  intAction_data=0;//	=0x02,
+  intAction_data=0;//    =0x02,
   intSkill_ID=0;//=0x03,
   intMonster_ID=0;//=0x04,
-  intCondition=0;//	=0x05,
+  intCondition=0;//    =0x05,
   intLower_limit=0;//=0x06,
-  intUpper_limit=0;//	=0x07,
+  intUpper_limit=0;//    =0x07,
   intPriority=0;//=0x0D
 }
 void stcEnemy_Action::show()
@@ -348,25 +348,25 @@ printf(" \n intPriority %d",intPriority);
 }
 void stcEnemy::set_defaults()
 {
-   strName="";	// = 0x01,
-   strGraphicfile="";	//= 0x02,
-  intHuealteration=0;	//= 0x03,
-  intMaxHP=0;	//= 0x04,
-  intMaxMP=0;	//= 0x05,
-  intAttack=0;	//= 0x06,
-  intDefense=0;	//= 0x07,
-  intMind=0;	//= 0x08,
-  intSpeed=0;	//= 0x09,
-  blTranslucentgraphic=0;	//= 0x0A,
-  intExperience=0;	//= 0x0B,
-  intGold=0;	//= 0x0C,
-  intSpoilsitemID=0;	//= 0x0D,
-  intSpoilschance=0;	//= 0x0E,
-  blCanusecriticalhits=0;	//= 0x15,
-  intCriticalhitchance=0;	//= 0x16,
-  blUsuallymiss=0;	//= 0x1A,
-  blAirborne=0;	//= 0x1C,
-  intConditionslength=0;	//= 0x1F,
+   strName="";    // = 0x01,
+   strGraphicfile="";    //= 0x02,
+  intHuealteration=0;    //= 0x03,
+  intMaxHP=0;    //= 0x04,
+  intMaxMP=0;    //= 0x05,
+  intAttack=0;    //= 0x06,
+  intDefense=0;    //= 0x07,
+  intMind=0;    //= 0x08,
+  intSpeed=0;    //= 0x09,
+  blTranslucentgraphic=0;    //= 0x0A,
+  intExperience=0;    //= 0x0B,
+  intGold=0;    //= 0x0C,
+  intSpoilsitemID=0;    //= 0x0D,
+  intSpoilschance=0;    //= 0x0E,
+  blCanusecriticalhits=0;    //= 0x15,
+  intCriticalhitchance=0;    //= 0x16,
+  blUsuallymiss=0;    //= 0x1A,
+  blAirborne=0;    //= 0x1C,
+  intConditionslength=0;    //= 0x1F,
   vc_ch_Condeffects.clear(); //= 0x20, arreglo de un byte //una dimencion
   inyAttributeslength=0;//= 0x21,
   vc_ch_Attribeffects.clear();//= 0x22, arreglo de un byte //una dimencion
@@ -402,9 +402,9 @@ printf(" \n inyAttributeslength %d",inyAttributeslength);
 
 void stcEnemy_group_data::set_defaults()
 {
-	Enemy_ID=0;//=0x01,
-	X_position=0;//=0x02,
-	Y_position=0;//=0x03
+    Enemy_ID=0;//=0x01,
+    X_position=0;//=0x02,
+    Y_position=0;//=0x03
 }
 void stcEnemy_group_data::show()
 {
@@ -417,8 +417,8 @@ void stcEnemy_group_condition::set_defaults()
     Condition_flags=0;//=0x01,
     Switch_A=0;//=0x02,
     Turn_number_A=0;//=0x06,
-	Lower_limit=0;//=0x0B,
-	Upper_limit=0;//=0x0C,
+    Lower_limit=0;//=0x0B,
+    Upper_limit=0;//=0x0C,
 }
 void stcEnemy_group_condition::show()
 {
@@ -430,17 +430,17 @@ printf(" \n Upper_limit %d",Upper_limit);
 }
 void stcEnemy_group_event_page::set_defaults()
 {
-    conditions.set_defaults();//	Page_conditions=0x02,
-	Event_length=0;//=0x0B,
-//	Event=0x0C// como en eventos
+    conditions.set_defaults();//    Page_conditions=0x02,
+    Event_length=0;//=0x0B,
+//    Event=0x0C// como en eventos
 }
 
 void stcEnemy_group::set_defaults()
 {
  strName="";// =0x01,
  Enemy_data.clear();//data=0x02,
- intTerrainlength=0;		//=0x04,
- vc_ch_Terraindata.clear();		//=0x05,
+ intTerrainlength=0;        //=0x04,
+ vc_ch_Terraindata.clear();        //=0x05,
  vecPartyMonsterevent.clear();
 }
 void stcEnemy_group::show()
@@ -448,22 +448,22 @@ void stcEnemy_group::show()
 printf(" \n strName %s",strName.c_str());
 // Enemy_data.set_defaults();//data=0x02,
 printf(" \n intTerrainlength %d",intTerrainlength);
-//vc_ch_Terraindata.set_defaults();		//=0x05,
+//vc_ch_Terraindata.set_defaults();        //=0x05,
 // vecPartyMonsterevent.set_defaults();
 }
 
 
 void stcTerrain::set_defaults()
 {
-strName="";	//=0x01,
-intDamageontravel=0;	//=0x02,
-intEncounterate=0;	//=0x03,
-strBattlebackground="";	//=0x04,
-blSkiffmaypass=0;	//=0x05,
-blBoatmaypass=0;	//=0x06,
-blAirshipmaypass=0;	//=0x07,
-blAirshipmayland=0;	//=0x09,
-intHeroopacity=0;	//=0x0B
+strName="";    //=0x01,
+intDamageontravel=0;    //=0x02,
+intEncounterate=0;    //=0x03,
+strBattlebackground="";    //=0x04,
+blSkiffmaypass=0;    //=0x05,
+blBoatmaypass=0;    //=0x06,
+blAirshipmaypass=0;    //=0x07,
+blAirshipmayland=0;    //=0x09,
+intHeroopacity=0;    //=0x0B
 }
 void stcTerrain::show()
 {
@@ -594,12 +594,12 @@ printf(" \n intMPmapsteps %d",intMPmapsteps);
 
 void stcAnimationTiming::set_defaults()
 {
-		Frame=0;//=0x01,
-		Sound_effect.set_defaults();//=0x02,
-		Flash_effect=0;//=0x03,
-		Green_component=0;//=0x05,
-		Blue_component=0;//=0x06,
-		Flash_power=0;//=0x07
+        Frame=0;//=0x01,
+        Sound_effect.set_defaults();//=0x02,
+        Flash_effect=0;//=0x03,
+        Green_component=0;//=0x05,
+        Blue_component=0;//=0x06,
+        Flash_power=0;//=0x07
 }
 
 void stcAnimationTiming::show()
@@ -640,7 +640,7 @@ printf(" \n Alpha %d",Alpha);
 
 void stcAnimationCell::set_defaults()
 {
-	Cell_data.clear();
+    Cell_data.clear();
 }
 
 void stcAnimated_battle::set_defaults()
@@ -868,8 +868,8 @@ printf(" \n Battle_start_fadeout %d",Battle_start_fadeout);
 printf(" \n Battle_start_fadein %d",Battle_start_fadein);
 printf(" \n Battle_end_fadeout %d",Battle_end_fadeout);
 printf(" \n Battle_end_fadein %d",Battle_end_fadein);
-//0x47 	//no identificados
-//0x48	//no identificados
+//0x47     //no identificados
+//0x48    //no identificados
 printf(" \n Selected_condition %d",Selected_condition);
 printf(" \n Selected_hero %d",Selected_hero);
 printf(" \n Battle_test_BG %s",Battle_test_BG.c_str());
@@ -1237,7 +1237,7 @@ Event_comand * comand;
         comand_Key_input=(Event_comand_Key_input *)comand;
         comand_Key_input->show();
         break;
-    case Change_tile_set:// 0xDB3E	,
+    case Change_tile_set:// 0xDB3E    ,
         Event_comand_Change_tile * comand_Change_tile;
         comand_Change_tile=(Event_comand_Change_tile *)comand;
         comand_Change_tile->show();
@@ -1298,8 +1298,8 @@ Event_comand * comand;
 
 void stcCombatcommand::set_defaults()
 {
-  strName="";// 	=0x01,
-  intUsage=0;// 	=0x02,
+  strName="";//     =0x01,
+  intUsage=0;//     =0x02,
 }
 void stcCombatcommand::show()
 {
@@ -1325,16 +1325,16 @@ void stcCombatcommands::set_defaults()//array bidimencional
 
 void stcBattle_comand::set_defaults()
 {
-  strName="";// 	=0x01,
-  intMotion_attack=0;// 	=0x02,
-  vc_Animated_battle_Combat_Anime.clear();//	=0x0A, //two diminsional arrays
+  strName="";//     =0x01,
+  intMotion_attack=0;//     =0x02,
+  vc_Animated_battle_Combat_Anime.clear();//    =0x0A, //two diminsional arrays
   vc_Animated_battle_Anime_combat_weapons.clear();//=0x0B //two diminsional arrays
 }
 void stcBattle_comand::show()
 {
 printf(" \n strName %s",strName.c_str());
 printf(" \n intMotion_attack %d",intMotion_attack);
-//  vc_Animated_battle_Combat_Anime.set_defaults();//	=0x0A, //two diminsional arrays
+//  vc_Animated_battle_Combat_Anime.set_defaults();//    =0x0A, //two diminsional arrays
 //  vc_Animated_battle_Anime_combat_weapons.set_defaults();//=0x0B //two diminsional arrays
 }
 
@@ -1373,7 +1373,7 @@ vc_sh_Agility.clear();
 Experience_curve_basic_values=0;// =0x29,
 Experience_curve_increase_degree=0;// =0x2A,
 Experience_curve_correction_value=0;//=0x2B,
-Animated_battle=0;//	=0x3E,
+Animated_battle=0;//    =0x3E,
 skills.clear(); //Special_skills_level=0x3F, misma estructura que heroe
 Effectiveness_state_number=0;// =0x47,
 vc_ch_Condeffects.clear(); //Effectiveness_state_data =0x48,  //1 byte one dimention array

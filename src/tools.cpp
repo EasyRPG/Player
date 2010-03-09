@@ -117,7 +117,7 @@
     }
 
 
-void ModRGB(SDL_Surface * img, int red,int green,int blue)
+/*void ModRGB(SDL_Surface * img, int red,int green,int blue)
 {
     SDL_Color * color;
     int maxColors = img->format->palette->ncolors;
@@ -125,24 +125,24 @@ void ModRGB(SDL_Surface * img, int red,int green,int blue)
     {
         color = & img->format->palette->colors[i];
 
-	color->r+=red;
-	color->g+=green;
-	color->b+=blue;
+    color->r+=red;
+    color->g+=green;
+    color->b+=blue;
 
 
     }
-	SetTransparent(img);
+    SetTransparent(img);
 }
 
 void SetTransparent(SDL_Surface * ima)
 {
-    /* rm2k uses palette index 0 for transparent color instead of colorkey */
+    // rm2k uses palette index 0 for transparent color instead of colorkey /
     SDL_Color colorkey = ima->format->palette->colors[0];
     SDL_Color * color;
     int maxColors = ima->format->palette->ncolors;
     for (int i = 1; i < maxColors; i ++)
     {
-        /* Workaround to set transparency only in index 0*/
+        // Workaround to set transparency only in index 0
         color = & ima->format->palette->colors[i];
 
 
@@ -155,7 +155,7 @@ void SetTransparent(SDL_Surface * ima)
             else
                 color->b += 8;
         }
-    } /* Thanks to Hugo Ruscitti (www.losersjuegos.com.ar) for this fix */
+    } // Thanks to Hugo Ruscitti (www.losersjuegos.com.ar) for this fix
 }
 
     SDL_Surface * CreateSurface(int Width, int Height)
@@ -243,8 +243,8 @@ void SetTransparent(SDL_Surface * ima)
         return Return;
     }
 
-/* Converts a string s into upper-case string dest. Need of <ctype.h> */
-/* Warning : you must malloc "dest" ! */
+// Converts a string s into upper-case string dest. Need of <ctype.h>
+// Warning : you must malloc "dest" !
 void s_toupper(char *dest, char *s)
 {
     unsigned int i;
@@ -257,7 +257,7 @@ void s_toupper(char *dest, char *s)
 
 void _fatal_error(const char *perr) 
 {
-	
+    
 #ifdef WIN32
     MessageBox(NULL, perr, "Error", MB_ICONERROR);
 #else
@@ -326,67 +326,67 @@ int get_mus_extension(std::string& fname)
 #ifdef UNIX
 char * case_insensitive_and_format_msc_exist(const char *directory, string & file)
 {
-//		char * return_name;
-		static std::string img_string;
-		static std::string file_ext;
-		img_string.clear();
-		img_string.clear();
-		file_ext.append(file);
-		file_ext.append(".wav");
-		if(case_insensitive_exist(img_string, directory, (char*) file_ext.c_str()))
-		{
-			return ((char*)img_string.c_str());
-		}
-		file_ext.clear();
-		file_ext.append(file);
-		file_ext.append(".mid");
-		if(case_insensitive_exist(img_string, directory,(char*) file_ext.c_str()))
-		{
-			return ((char*)img_string.c_str());
-		}
-		file_ext.clear();
-		file_ext.append(file);
-		file_ext.append(".mp3");
-		if(case_insensitive_exist(img_string, directory,(char*) file_ext.c_str()))
-		{
-			return ((char*)img_string.c_str());
-		}
+//        char * return_name;
+        static std::string img_string;
+        static std::string file_ext;
+        img_string.clear();
+        img_string.clear();
+        file_ext.append(file);
+        file_ext.append(".wav");
+        if(case_insensitive_exist(img_string, directory, (char*) file_ext.c_str()))
+        {
+            return ((char*)img_string.c_str());
+        }
+        file_ext.clear();
+        file_ext.append(file);
+        file_ext.append(".mid");
+        if(case_insensitive_exist(img_string, directory,(char*) file_ext.c_str()))
+        {
+            return ((char*)img_string.c_str());
+        }
+        file_ext.clear();
+        file_ext.append(file);
+        file_ext.append(".mp3");
+        if(case_insensitive_exist(img_string, directory,(char*) file_ext.c_str()))
+        {
+            return ((char*)img_string.c_str());
+        }
         return ((char*)file.c_str());
 }
 char * case_insensitive_and_format_img_exist(const char *directory, string & file)
 {
-//		char * return_name;
-		static std::string img_string;
-		static std::string file_ext;
-		img_string.clear();
+//        char * return_name;
+        static std::string img_string;
+        static std::string file_ext;
+        img_string.clear();
 
-		file_ext.clear();
-		file_ext.append(file);
-		file_ext.append(".png");
-		if(case_insensitive_exist(img_string, directory, (char*) file_ext.c_str()))
-		{
-			return ((char*)img_string.c_str());
-		}
-		file_ext.clear();
-		file_ext.append(file);
-		file_ext.append(".bmp");
-		if(case_insensitive_exist(img_string, directory,(char*) file_ext.c_str()))
-		{
-			return ((char*)img_string.c_str());
-		}
-		file_ext.clear();
-		file_ext.append(file);
-		file_ext.append(".xyz");
-		if(case_insensitive_exist(img_string, directory,(char*) file_ext.c_str()))
-		{
-			return ((char*)img_string.c_str());
-		}
+        file_ext.clear();
+        file_ext.append(file);
+        file_ext.append(".png");
+        if(case_insensitive_exist(img_string, directory, (char*) file_ext.c_str()))
+        {
+            return ((char*)img_string.c_str());
+        }
+        file_ext.clear();
+        file_ext.append(file);
+        file_ext.append(".bmp");
+        if(case_insensitive_exist(img_string, directory,(char*) file_ext.c_str()))
+        {
+            return ((char*)img_string.c_str());
+        }
+        file_ext.clear();
+        file_ext.append(file);
+        file_ext.append(".xyz");
+        if(case_insensitive_exist(img_string, directory,(char*) file_ext.c_str()))
+        {
+            return ((char*)img_string.c_str());
+        }
         return ((char*)file.c_str());
 }
 
-/* gives "filename" that exists in "directory" with CASE INSENSITIVE TEST*/
-/* in : "file", "directory". out :"return-name" (must be malloc'd) */
-/* return : 1 if filename exists (CASE INSENSITIVE), 0 if not */
+// gives "filename" that exists in "directory" with CASE INSENSITIVE TEST
+// in : "file", "directory". out :"return-name" (must be malloc'd)
+// return : 1 if filename exists (CASE INSENSITIVE), 0 if not
 
 int case_insensitive_exist( string & dir_file, const char *directory, char *file)
 {
@@ -394,7 +394,7 @@ int case_insensitive_exist( string & dir_file, const char *directory, char *file
     struct dirent *d_ent;
     DIR *dp;
 
-    /* open directory*/
+    // open directory
     dp=opendir(directory);
     if (dp)
     {
@@ -415,7 +415,7 @@ int case_insensitive_exist( string & dir_file, const char *directory, char *file
     {
         dir_file.append(directory);
         dir_file.append(d_ent->d_name);
-		return 1;
+        return 1;
     }
     else
     {
@@ -424,6 +424,7 @@ int case_insensitive_exist( string & dir_file, const char *directory, char *file
 
 }
 #endif
+
 
 SDL_Surface* load_XYZ(const std::string& filename)
 {
@@ -501,3 +502,4 @@ void _bad_alloc() {
     _fatal_error("Out of memory!");
     exit(EXIT_FAILURE);
 }
+*/

@@ -18,7 +18,7 @@ void LDB_reader::itemChunk(FILE * Stream)
         item->id = ReadCompressedInteger(Stream);//lectura de id 1 de array
         do 
         {            
-            ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
+            ChunkInfo.ID     = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
             if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
                 ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
             switch (ChunkInfo.ID) { // tipo de la primera dimencion

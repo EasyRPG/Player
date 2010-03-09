@@ -1,244 +1,180 @@
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////
+/// Headers
+////////////////////////////////////////////////////////////
+#include <math.h>
 #include "plane.h"
-#include "zobj.h"
+#include "graphics.h"
+#include "rect.h"
+#include "player.h"
 
-Plane::Plane()
-{
-	disposed = false;
-	id = count;
-	add_plane(count, this);
-	count++;
-	
-	src_rect.x = 0;
-    src_rect.y = 0;
-    src_rect.w = 0;
-    src_rect.h = 0;
+////////////////////////////////////////////////////////////
+/// Constructor
+////////////////////////////////////////////////////////////
+Plane::Plane() {
+    bitmap = NULL;
+    visible = true;
+    z = 0;
+    ox = 0;
+    oy = 0;
+    zoom_x = 1.0;
+    zoom_y = 1.0;
+    opacity = 255;
+    blend_type = 0;
+    color = Color();
+    tone = Tone();
 
-	visible = true;
-	x = 0;
-	y = 0;
-	z = 0;
-	ox = 0;
-	oy = 0;
-	zoom_x = 100;
-	zoom_y = 100;
-	opacity = 255;
-	blend_type = 0;
-	color = new Color(0, 0, 0);
-	tone = new Tone(0, 0, 0);
+    plane = NULL;
+
+    _id = Graphics::id++;
+    Graphics::drawable_list.push_back(this);
+    Graphics::drawable_list.sort(Graphics::SortDrawable);
 }
 
-Plane::Plane(Viewport *iviewport)
-{
-	disposed = false;
-	id = count;
-	add_plane(count, this);
-	count++;
-	
-	viewport = iviewport;
-	src_rect.x = 0;
-    src_rect.y = 0;
-    src_rect.w = 0;
-    src_rect.h = 0;
-	visible = true;
-	x = 0;
-	y = 0;
-	z = 0;
-	ox = 0;
-	oy = 0;
-	zoom_x = 100;
-	zoom_y = 100;
-	opacity = 255;
-	blend_type = 0;
-	color = new Color(0, 0, 0);
-	tone = new Tone(0, 0, 0);
+////////////////////////////////////////////////////////////
+/// Destructor
+////////////////////////////////////////////////////////////
+Plane::~Plane() {
+    Graphics::RemoveDrawable(_id);
+    delete plane;
 }
 
-Plane::~Plane()
-{
-	remove_plane(id);
+////////////////////////////////////////////////////////////
+/// Draw
+////////////////////////////////////////////////////////////
+void Plane::Draw() {
+    if (!visible) return;
+    if (opacity <= 0) return;
+    if (zoom_x <= 0 || zoom_y <= 0) return;
+    if (!bitmap) return;
+
+    Refresh();
+
+    double bmpw = bitmap->GetWidth() * zoom_x;
+    double bmph = bitmap->GetHeight() * zoom_y;
+    double tilesx = ceil(Player::GetWidth() / bmpw);
+    double tilesy = ceil(Player::GetHeight() / bmph);
+    int screen_ox = ox % Player::GetWidth();
+    int screen_oy = oy % Player::GetHeight();
+    for (double i = 0; i < tilesx; i++) {
+        for (double j = 0; j < tilesy; j++) {
+            plane->BlitScreen(i * bmpw - screen_ox, j * bmph - screen_oy);
+        }
+    }
 }
 
-std::map<int, Plane*> Plane::planes;
-int Plane::count = 0;
+////////////////////////////////////////////////////////////
+/// Refresh
+////////////////////////////////////////////////////////////
+void Plane::Refresh() {
+    if (!needs_refresh) return;
 
-void Plane::dispose()
-{
-	disposed = true;
+    needs_refresh = false;
+
+    delete plane;
+    
+    plane = new Bitmap(bitmap, bitmap->GetRect());
+        
+    plane->ToneChange(tone);
+    plane->OpacityChange(opacity, 0);
+    plane->Zoom(zoom_x, zoom_y);
 }
 
-bool Plane::is_disposed()
-{
-	return disposed;
+////////////////////////////////////////////////////////////
+/// Properties
+////////////////////////////////////////////////////////////
+Bitmap* Plane::GetBitmap() {
+    return bitmap;
+}
+void Plane::SetBitmap(Bitmap* nbitmap) {
+    needs_refresh = true;
+    bitmap = nbitmap;
+}
+bool Plane::GetVisible() {
+    return visible;
+}
+void Plane::SetVisible(bool nvisible) {
+    visible = nvisible;
+}
+int Plane::GetZ() {
+    return z;
+}
+void Plane::SetZ(int nz) {
+    if (z != nz) Graphics::drawable_list.sort(Graphics::SortDrawable);
+    z = nz;
+}
+int Plane::GetOx() {
+    return ox;
+}
+void Plane::SetOx(int nox) {
+    ox = nox;
+}
+int Plane::GetOy() {
+    return oy;
+}
+void Plane::SetOy(int noy) {
+    oy = noy;
+}
+float Plane::GetZoomX() {
+    return zoom_x;
+}
+void Plane::SetZoomX(float nzoom_x) {
+    if (zoom_x != nzoom_x) needs_refresh = true;
+    zoom_x = nzoom_x;
+}
+float Plane::GetZoomY() {
+    return zoom_y;
+}
+void Plane::SetZoomY(float nzoom_y) {
+    if (zoom_y != nzoom_y) needs_refresh = true;
+    zoom_y = nzoom_y;
+}
+int Plane::GetOpacity() {
+    return opacity;
+}
+void Plane::SetOpacity(int nopacity) {
+    if (opacity != nopacity) needs_refresh = true;
+    opacity = nopacity;
+}
+int Plane::GetBlendType() {
+    return blend_type;
+}
+void Plane::SetBlendType(int nblend_type) {
+    blend_type = nblend_type;
+}
+Color Plane::GetColor() {
+    return color;
+}
+void Plane::SetColor(Color ncolor) {
+    color = ncolor;
+}
+Tone Plane::GetTone() {
+    return tone;
+}
+void Plane::SetTone(Tone ntone) {
+    if (tone != ntone) needs_refresh = true;
+    tone = ntone;
 }
 
-
-void Plane::draw(SDL_Surface *screen)
-{
-
-}
-
-Viewport* Plane::get_viewport()
-{
-	return viewport;
-}
-
-Bitmap* Plane::get_bitmap()
-{
-	return bitmap;
-}
-
-Rect *Plane::get_src_rect()
-{
-	return &src_rect;
-}
-
-bool Plane::get_visible()
-{
-	return visible;
-}
-
-int Plane::get_x()
-{
-	return x;
-}
-
-int Plane::get_y()
-{
-	return y;
-}
-
-int Plane::get_z()
-{
-	return z;
-}
-
-int Plane::get_ox(){
-	return ox;
-}
-
-int Plane::get_oy()
-{
-	return oy;
-}
-
-int Plane::get_zoom_x()
-{
-	return zoom_x;
-}
-
-int Plane::get_zoom_y()
-{
-	return zoom_y;
-}
-
-int Plane::get_opacity()
-{
-	return opacity;
-}
-
-int Plane::get_blend_type()
-{
-	return blend_type;
-}
-
-Color *Plane::get_color()
-{
-	return color;
-}
-
-Tone *Plane::get_tone()
-{
-	return tone;
-}
-
-
-void Plane::set_viewport(Viewport* nviewport)
-{
-	viewport = nviewport;
-}
-
-void Plane::set_bitmap(Bitmap* nbitmap)
-{
-	bitmap = nbitmap;
-}
-
-void Plane::set_src_rect(Rect* nsrc_rect)
-{
-	src_rect.x = nsrc_rect->x;
-    src_rect.y = nsrc_rect->y;
-    src_rect.w = nsrc_rect->w;
-    src_rect.h = nsrc_rect->h;
-}
-
-void Plane::set_visible(bool nvisible)
-{
-	visible = nvisible;
-}
-
-void Plane::set_x(int nx)
-{
-	x = nx;
-}
-
-void Plane::set_y(int ny)
-{
-	y = ny;
-}
-
-void Plane::set_z(int nz)
-{
-	y = nz;
-}
-
-void Plane::set_ox(int nox)
-{
-	ox = nox;
-}
-
-void Plane::set_oy(int noy)
-{
-	oy = noy;
-}
-
-void Plane::set_zoom_x(int nzoom_x)
-{
-	zoom_x = nzoom_x;
-}
-
-void Plane::set_zoom_y(int nzoom_y)
-{
-	zoom_y = nzoom_y;
-}
-
-void Plane::set_opacity(int nopacity)
-{
-	opacity = nopacity;
-}
-
-void Plane::set_blend_type(int nblend_type)
-{
-	blend_type = nblend_type;
-}
-
-void Plane::set_color(Color* ncolor)
-{
-	color = ncolor;
-}
-
-void Plane::set_tone(Tone* ntone)
-{
-	tone = ntone;
-}
-
-void Plane::add_plane(int id, Plane *plane)
-{
-	planes[id] = plane;
-	ZObj zobj((*plane).get_z(), id, TYPE_PLANE, 0);
-	ZObj::zlist.push_back(zobj);
-}
-
-void Plane::remove_plane(int id)
-{
-	planes.erase(id);
-//	ZObj::zlist.remove_if(remove_zobj_id(id));
+////////////////////////////////////////////////////////////
+/// Get id
+////////////////////////////////////////////////////////////
+unsigned long Plane::GetId() {
+    return _id;
 }

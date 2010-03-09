@@ -18,11 +18,11 @@ void LDB_reader::mosteractionChunk(FILE * Stream, RPG::Enemy*& e)
         action->id= ReadCompressedInteger(Stream);//lectura de id 1 de array
         do 
         {
-            ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
+            ChunkInfo.ID     = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
             if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
                 ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
             switch (ChunkInfo.ID) { // tipo de la primera dimencion
-            case	MonsterActionsChunk_Action:
+            case    MonsterActionsChunk_Action:
                 action->kind = ReadCompressedInteger(Stream);
                 break;
             case MagicblockChunk_Spell_ID:
@@ -59,7 +59,7 @@ void LDB_reader::mosteractionChunk(FILE * Stream, RPG::Enemy*& e)
         e->actions.push_back(action);
         datareaded++;
     }
-    ChunkInfo.ID	 =1;
+    ChunkInfo.ID     =1;
 }
 
 void LDB_reader::mosterChunk(FILE * Stream)

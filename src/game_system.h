@@ -1,33 +1,46 @@
-#ifndef __game_system__
-#define __game_system__
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
 
+#ifndef _GAME_SYSTEM_H_
+#define _GAME_SYSTEM_H_
+
+////////////////////////////////////////////////////////////
+/// Headers
+////////////////////////////////////////////////////////////
 #include <string>
+#include "rpg_music.h"
+#include "rpg_sound.h"
 
+////////////////////////////////////////////////////////////
+/// Game System class
+////////////////////////////////////////////////////////////
 class Game_System {
+public:
+    Game_System();
+    ~Game_System();
+
+    void BgmPlay(RPG::Music* bmg);
+    void SePlay(RPG::Sound* se);
+
+    std::string GetSystemName();
+    void SetSystemName(std::string nsystem_name);
 
 private:
-    int windowskin_id;
-    int title_id;
-
-public:
-    int timer;
-    bool timer_working;
-    bool save_disabled;
-    bool menu_disabled;
-    bool encounter_disabled;
-    int message_position;
-    int message_frame;
-    int save_count;
-    int magic_number;
-    
-    Game_System();
-	~Game_System();
-
-	int get_windowskin_id() const;
-    void set_windowskin_id(int id);
-
-    void set_title_id(int id);
-    int get_title_id() const;
-
+    std::string system_name;
 };
-#endif // __game_system__
+
+#endif

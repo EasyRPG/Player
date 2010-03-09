@@ -50,7 +50,7 @@ void LDB_reader::skillChunk(FILE * Stream)
             case SkillChunk_Switch:
                 skill->switch_id = ReadCompressedInteger(Stream);
                 break;
-			// What is this?
+            // What is this?
             /*case SkillChunk_Battleanimation:
                 skill->animation1_id = ReadCompressedInteger(Stream);
                 break;*/
@@ -120,7 +120,7 @@ void LDB_reader::skillChunk(FILE * Stream)
                     skill->attribute_effects.push_back(Void);
                 }
                 break;
-			// What is this?
+            // What is this?
             /*case SkillChunk_Affectresistance:
                 skill->affect_resistance = ReadCompressedInteger(Stream);
                 break;*/

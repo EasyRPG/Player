@@ -1,32 +1,49 @@
-#ifndef __color__
-#define __color__
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
 
+#ifndef _COLOR_H_
+#define _COLOR_H_
+
+////////////////////////////////////////////////////////////
+/// Headers
+////////////////////////////////////////////////////////////
 #include "SDL.h"
 
+////////////////////////////////////////////////////////////
+/// Color class
+////////////////////////////////////////////////////////////
 class Color {
-
 public:
     Color();
-	Color(int r, int g, int b);
-	Color(int r, int g, int b, int a);
-	~Color();
+    Color(int ired, int igreen, int iblue, int ialpha);
+    Color(Uint32 color, SDL_PixelFormat* format);
+    ~Color();
 
-	Uint32 get_uint32();
-	
-	int get_r() const;
-	int get_g() const;
-	int get_b() const;
-	int get_a() const;
-	
-	void set_r(int r);
-	void set_g(int g);
-	void set_b(int b);
-	void set_a(int a);
-	
-private:
-	int red;
-	int green;
-	int blue;
-	int alpha;
+    bool operator!=(const Color& other) const;
+
+    void Set(int nred, int ngreen, int nblue, int nalpha);
+
+    int red;
+    int green;
+    int blue;
+    int alpha;
+
+    Uint32 GetUint32(SDL_PixelFormat* format);
+    SDL_Color Get();
 };
-#endif // __color__
+
+#endif

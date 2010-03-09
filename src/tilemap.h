@@ -1,57 +1,58 @@
-#ifndef __tilemap__
-#define __tilemap__
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
 
-#include <map>
-#include "viewport.h"
+#ifndef _TILEMAP_H_
+#define _TILEMAP_H_
+
+////////////////////////////////////////////////////////////
+/// Headers
+////////////////////////////////////////////////////////////
+#include <vector>
+#include "tilemap_layer.h"
 #include "bitmap.h"
-#include "table.h"
 
-class Viewport;
+////////////////////////////////////////////////////////////
+/// Tilemap class
+////////////////////////////////////////////////////////////
 class Tilemap {
-
 public:
-	Tilemap();
-	Tilemap(Viewport *iviewport);
-	~Tilemap();
-	
-	void dispose();
-	bool is_disposed();
-	void update();
+    Tilemap();
+    ~Tilemap();
 
-	void draw(SDL_Surface *screen);
+    Bitmap* GetChipset();
+    void SetChipset(Bitmap* nchipset);
+    std::vector< std::vector<int> > GetMapData();
+    void SetMapData(std::vector< std::vector<int> > nmap_data);
+    bool GetVisible();
+    void SetVisible(bool nvisible);
+    int GetOx();
+    void SetOx(int nox);
+    int GetOy();
+    void SetOy(int noy);
 
-	Viewport* get_viewport();
-	Bitmap* get_tileset();
-	Table* get_map_data();
-	Table* get_properties();
-	bool get_visible();
-	int get_ox();
-	int get_oy();
-	
-	void get_viewport(Viewport* nviewport);
-	void get_tileset(Bitmap* nbitmap);
-	void get_map_data(Table* nmap_data);
-	void get_properties(Table* nproperties);
-	void get_visible(bool nvisible);
-	void get_ox(int nox);
-	void get_oy(int noy);
-	
-	static std::map<int, Tilemap*> tilemaps;
-	static void add_tilemap(int id, Tilemap* tilemap);
-	static void remove_tilemap(int id);
-	
 private:
-	Viewport* viewport;
-	Bitmap* tileset;
-	Table* map_data;
-	Table* properties;
-	bool visible;
-	int ox;
-	int oy;
-	
-	bool disposed;
-	
-	int id;
-	static int count;
+    Bitmap* chipset;
+    std::vector< std::vector<int> > map_data;
+    bool visible;
+    int ox;
+    int oy;
+
+    TilemapLayer* layer_down;
+    TilemapLayer* layer_up;
 };
-#endif // __tilemap__
+
+#endif

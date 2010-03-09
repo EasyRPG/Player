@@ -1,57 +1,87 @@
-#ifndef __bitmap__
-#define __bitmap__
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
 
-#include <vector>
+#ifndef _BITMAP_H_
+#define _BITMAP_H_
+
+////////////////////////////////////////////////////////////
+/// Headers
+////////////////////////////////////////////////////////////
 #include <string>
+#include "SDL.h"
 #include "rect.h"
 #include "color.h"
+#include "tone.h"
 #include "font.h"
 
+////////////////////////////////////////////////////////////
+/// Bitmap class
+////////////////////////////////////////////////////////////
 class Bitmap {
-
 public:
     Bitmap(int width, int height);
+    Bitmap(std::string filename);
+    Bitmap(Bitmap* source, Rect src_rect);
+    ~Bitmap();
 
-	Bitmap(std::string& filename, int _id);
+    void BlitScreen(int x, int y);
+    void BlitScreen(int x, int y, int opacity);
+    void BlitScreen(int x, int y, Rect src_rect, int opacity = 255);
+    
+    int GetWidth();
+    int GetHeight();
+    void Blit(int x, int y, Bitmap* source, Rect src_rect, int opacity);
+    void StretchBlit(Rect dst_rect, Bitmap* src_bitmap, Rect src_rect, int opacity);
+    void FillRect(Rect rect, Color color);
+    void Clear();
+    void Clear(Color color);
+    Color GetPixel(int x, int y);
+    void SetPixel(int x, int y, Color color);
+    void HueChange(double hue);
+    void SatChange(double saturation);
+    void LumChange(double luminance);
+    void HSLChange(double h, double s, double l);
+    void HSLChange(double h, double s, double l, Rect rect);
+    void TextDraw(Rect rect, std::string text, int align);
+    Rect GetTextSize(std::string text);
+    void GradientFillRect(Rect rect, Color color1, Color color2, bool vertical);
+    void ClearRect(Rect rect);
+    void Blur();
+    void RadialBlur(int angle, int division);
 
-	~Bitmap();
-	
-	void dispose();
-	bool is_disposed() const; 
-	int width() const;
-	int height() const;
-	Rect *rect();
-	void blt(int x, int y, Bitmap *src_bitmap, Rect *src_rect);
-	void blt(int x, int y, Bitmap *src_bitmap, Rect *src_rect, int opacity);
-	void stretch_blt(Rect *dest_rect, Bitmap *src_bitmap, Rect *src_rect);
-	void stretch_blt(Rect *dest_rect, Bitmap *src_bitmap, Rect *src_rect, int opacity);
-	void fill_rect(int x, int y, int width, int height, Color *color);
-	void fill_rect(Rect *rect, Color *color);
-	void clear();
-	Color get_pixel(int x, int y);
-	void set_pixel(int x, int y, Color *color);
-	void hue_change(int hue);
-	void draw_text(int x, int y, int width, int height, std::string str);
-	void draw_text(int x, int y, int width, int height, std::string str, int align);
-	void draw_text(Rect *rect, std::string str);
-	void draw_text(Rect *rect, std::string str, int align);
-	int text_size(std::string str);
-	
-	Font *get_font();
-	void set_font(Font *nfont);
-	
-	SDL_Surface *surface;
+    void ToneChange(Tone tone);
+    void OpacityChange(int opacity, int bush_depth = 0);
+    void Flip(bool flipx, bool flipy);
+    void Zoom(double zoom_x, double zoom_y);
+    Bitmap* Resample(int scalew, int scaleh, Rect src_rect);
+    void Rotate(double angle);
+    void Flash(Color color, int frame, int duration);
+    
+    Rect GetRect();
+    Font GetFont();
+    void SetFont(Font nfont);
 
-    bool is_zombie() { return zombie; }
-	
+protected:
+    SDL_Surface* bitmap;
+
 private:
-	Font *font;
+    static int MaskGetByte(Uint32 mask);
 
-	bool disposed;
-
-    /* If the constructor fails, zombie will be TRUE */
-    bool zombie;
-	
-	int id;
+    Font font;
 };
-#endif // __bitmap__
+
+#endif

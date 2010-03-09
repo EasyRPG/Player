@@ -13,7 +13,7 @@ void LDB_reader::systemChunk(FILE * Stream)//movimientos de la pagina
     short dat;
     Main_Data::data_system = new RPG::System();
     do {
-        ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
+        ChunkInfo.ID     = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
         if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
             ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
         switch (ChunkInfo.ID) { // tipo de la primera dimencion

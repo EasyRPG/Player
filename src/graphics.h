@@ -1,59 +1,63 @@
-#ifndef __graphics__
-#define __graphics__
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
 
+#ifndef _GRAPHICS_H_
+#define _GRAPHICS_H_
+
+////////////////////////////////////////////////////////////
+/// Headers
+////////////////////////////////////////////////////////////
 #include <string>
+#include <list>
 #include "SDL.h"
-#include "SDL_framerate.h"
 #include "bitmap.h"
-#include "tilemap.h"
-#include "window.h"
-#include "plane.h"
-#include "zobj.h"
-#include "tools.h"
-#include "sprite.h"
+#include "drawable.h"
 
-#ifdef PSP
-	#define SCREEN_WIDTH 480
-	#define SCREEN_HEIGHT 272
-#else
-	#define SCREEN_WIDTH 320
-	#define SCREEN_HEIGHT 240
-#endif
-#define SCREEN_BPP 16
-
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-	#define rmask 0xff000000
-	#define gmask 0x00ff0000
-	#define bmask 0x0000ff00
-	#define amask 0x000000ff
-#else
-	#define rmask 0x000000ff
-	#define gmask 0x0000ff00
-	#define bmask 0x00ff0000
-	#define amask 0xff000000
-#endif
-
+////////////////////////////////////////////////////////////
+/// Graphics namespace
+////////////////////////////////////////////////////////////
 namespace Graphics {
-	void initialize();
-	void dispose();
-	void update();
-	void transition();
-	void transition(int duration);
-	void transition(int duration, std::string filename);
-	void transition(int duration, std::string filename, int vague);
+    void Init();
+    void TimerWait();
+    void TimerContinue();
+    void Update();
+    void DrawFrame();
+    void Freeze();
+    void Transition(int type, int time);
+    void FrameReset();
+    void Wait(int duration);
+    Bitmap* SnapToBitmap();
+    int GetFrameCount();
+    void SetFrameCount(int nframecount);
 
-	int get_frame_rate();
-	int get_frame_count();
-	void set_frame_rate(int fr);
-	void set_frame_count(int fc);
+    bool SortDrawable(Drawable* &first, Drawable* &second);
+    void RemoveDrawable(unsigned long id);
 
-    SDL_Surface* get_empty_dummy_surface(int w, int h);
-    SDL_Surface* get_empty_real_surface(int w, int h);
+    extern int fps;
+    extern int framerate;
+    extern int framecount;
+    extern double framerate_interval;
+    extern unsigned long id;
+    extern unsigned long last_tics;
+    extern unsigned long last_tics_wait;
+    extern unsigned long next_tics_fps;
 
-    extern FPSmanager fps_manager;
-	
-	extern SDL_Surface *screen;
-	
-	extern std::list<ZObj>::iterator zlist_it;
-}
-#endif // __graphics__
+    extern std::list<Drawable*> drawable_list;
+    extern std::list<Drawable*>::iterator it_drawable_list;
+};
+
+#endif

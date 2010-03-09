@@ -1,75 +1,60 @@
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////
+/// Headers
+////////////////////////////////////////////////////////////
 #include "tone.h"
 
-Tone::Tone()
-{
-	red = 0;
-	green = 0;
-	blue = 0;
-	gray = 0;
+////////////////////////////////////////////////////////////
+/// Constructor
+////////////////////////////////////////////////////////////
+Tone::Tone() {
+    red = 0;
+    green = 0;
+    blue = 0;
+    gray = 0;
+}
+Tone::Tone(int ired, int igreen, int iblue, int igray) {
+    red = ired;
+    green = igreen;
+    blue = iblue;
+    gray = igray;
 }
 
-Tone::Tone(int r, int g, int b)
-{
-	red = r;
-	green = g;
-	blue = b;
-	gray = 0;
+////////////////////////////////////////////////////////////
+/// Destructor
+////////////////////////////////////////////////////////////
+Tone::~Tone() {
 }
 
-
-Tone::Tone(int r, int g, int b, int g2)
-{
-	red = r;
-	green = g;
-	blue = b;
-	gray = g2;
+////////////////////////////////////////////////////////////
+/// != operator
+////////////////////////////////////////////////////////////
+bool Tone::operator!=(const Tone &other) const {
+    return red != other.red || green != other.green || blue != other.blue || gray != other.gray;
 }
 
-Tone::~Tone()
-{
-}
-
-Uint32 Tone::get_uint32() {
-	//return SDL_MapRGBA(Graphics::get_pixelformat(), red, green, blue, gray);
-    return 0;
-}
-
-int Tone::get_r()
-{
-	return red;
-}
-
-int Tone::get_g()
-{
-	return green;
-}
-
-int Tone::get_b()
-{
-	return blue;
-}
-
-int Tone::get_gray ()
-{
-	return gray ;
-}
-
-void Tone::set_r(int r)
-{
-	red = r;
-}
-
-void Tone::set_g(int g)
-{
-	green = g;
-}
-
-void Tone::set_b(int b)
-{
-	blue = b;
-}
-
-void Tone::set_gray(int g)
-{
-	gray = g;
+////////////////////////////////////////////////////////////
+/// Set
+////////////////////////////////////////////////////////////
+void Tone::Set(int nred, int ngreen, int nblue, int ngray) {
+    red = nred;
+    green = ngreen;
+    blue = nblue;
+    gray = ngray;
 }

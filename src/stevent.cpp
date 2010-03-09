@@ -528,7 +528,7 @@ Event_comand * stEvent::EventcommandMessageoptionsChunk(int Command,int Depth,FI
    Message_options= new Event_comand_Message_options();
    Message_options->Comand=Command;
    Message_options->Depth=Depth;
-   ChunkInfo.Length= ReadCompressedInteger(Stream); 	// longitud 00
+   ChunkInfo.Length= ReadCompressedInteger(Stream);     // longitud 00
    ChunkInfo.Length= ReadCompressedInteger(Stream); // longitud 04
    Message_options->Transparency= ReadCompressedInteger(Stream);
    Message_options->Position=  ReadCompressedInteger(Stream);
@@ -559,8 +559,8 @@ Event_comand * stEvent::EventcommandShowchoiceChunk(int Command,int Depth,FILE *
    choice = new Event_comand_Show_choice();
    choice->Depth=Depth;
    choice->Comand=Command;
-   ChunkInfo.Length= ReadCompressedInteger(Stream); 	//longitud de cadena
-   choice->Text = ReadString(Stream, ChunkInfo.Length);	// opcion /opcion/opcion
+   ChunkInfo.Length= ReadCompressedInteger(Stream);     //longitud de cadena
+   choice->Text = ReadString(Stream, ChunkInfo.Length);    // opcion /opcion/opcion
    ChunkInfo.Length= ReadCompressedInteger(Stream); //longitud 01
    choice->Cancel_option=  ReadCompressedInteger(Stream);
    return (choice);
@@ -581,8 +581,8 @@ Event_comand * stEvent::EventcommandShow_choice_option(int Command,int Depth,FIL
   comand = new Event_comand_Show_choice_option();
   comand->Comand=Command;
   comand->Depth=Depth;
-  ChunkInfo.Length= ReadCompressedInteger(Stream); 	//longitud de cadena
-  comand->Text = ReadString(Stream, ChunkInfo.Length);	// choice
+  ChunkInfo.Length= ReadCompressedInteger(Stream);     //longitud de cadena
+  comand->Text = ReadString(Stream, ChunkInfo.Length);    // choice
   ChunkInfo.Length= ReadCompressedInteger(Stream); //longitud 01
   //Choice number (zero offset)
   comand->Choice_number=  ReadCompressedInteger(Stream);
@@ -594,7 +594,7 @@ Event_comand * stEvent::EventcommandNumber_input(int Command,int Depth,FILE * St
   comand = new Event_comand_Number_input();
   comand->Comand=Command;
   comand->Depth=Depth;
-  ChunkInfo.Length= ReadCompressedInteger(Stream); 	// longitud 00
+  ChunkInfo.Length= ReadCompressedInteger(Stream);     // longitud 00
   ChunkInfo.Length= ReadCompressedInteger(Stream); // longitud 0
   comand->Digits_to_input= ReadCompressedInteger(Stream);
   comand->variable_to_store=  ReadCompressedInteger(Stream);
@@ -606,7 +606,7 @@ Event_comand * stEvent::EventcommandChange_switch(int Command,int Depth,FILE * S
   comand = new Event_comand_Change_switch();
   comand->Comand=Command;
   comand->Depth=Depth;
-                          ChunkInfo.Length= ReadCompressedInteger(Stream); 	// longitud 00
+                          ChunkInfo.Length= ReadCompressedInteger(Stream);     // longitud 00
                            ChunkInfo.Length= ReadCompressedInteger(Stream); // longitud 04
                          //Mode (single, range, indirect)
   comand->Mode= ReadCompressedInteger(Stream);
@@ -622,7 +622,7 @@ Event_comand * stEvent::EventcommandChange_var(int Command,int Depth,FILE * Stre
   comand = new Event_comand_Change_var();
   comand->Comand=Command;
   comand->Depth=Depth;
-                             ChunkInfo.Length= ReadCompressedInteger(Stream); 	// longitud 00
+                             ChunkInfo.Length= ReadCompressedInteger(Stream);     // longitud 00
                            ChunkInfo.Length= ReadCompressedInteger(Stream); // longitud 07
                          //Mode (single, range, indirect)
                           comand->Mode= ReadCompressedInteger(Stream);
@@ -640,7 +640,7 @@ Event_comand * stEvent::EventcommandTimer_manipulation(int Command,int Depth,FIL
   comand = new Event_comand_Timer_manipulation();
   comand->Comand=Command;
   comand->Depth=Depth;
-  ChunkInfo.Length= ReadCompressedInteger(Stream); 	// longitud 00
+  ChunkInfo.Length= ReadCompressedInteger(Stream);     // longitud 00
   ChunkInfo.Length= ReadCompressedInteger(Stream); // longitud 06
 
                          //Set (1:start, 2:stop)
@@ -660,7 +660,7 @@ Event_comand * stEvent::EventcommandTimer_manipulation(int Command,int Depth,FIL
   comand = new Event_comand_Change_cash_held();
   comand->Comand=Command;
   comand->Depth=Depth;
-                         ChunkInfo.Length= ReadCompressedInteger(Stream); 	// longitud 00
+                         ChunkInfo.Length= ReadCompressedInteger(Stream);     // longitud 00
                            ChunkInfo.Length= ReadCompressedInteger(Stream); // longitud 06
                           comand->Add= ReadCompressedInteger(Stream);
                           comand->By_Value=  ReadCompressedInteger(Stream);
@@ -703,7 +703,7 @@ Event_comand * stEvent::EventcommandTimer_manipulation(int Command,int Depth,FIL
   comand = new Event_comand_Change_experience();
   comand->Comand=Command;
   comand->Depth=Depth;
-                          ChunkInfo.Length= ReadCompressedInteger(Stream); 	// longitud 00
+                          ChunkInfo.Length= ReadCompressedInteger(Stream);     // longitud 00
                            ChunkInfo.Length= ReadCompressedInteger(Stream); // longitud 07
                           comand->All= ReadCompressedInteger(Stream);
                           comand->Hero_ID=  ReadCompressedInteger(Stream);
@@ -719,7 +719,7 @@ Event_comand * stEvent::EventcommandTimer_manipulation(int Command,int Depth,FIL
   comand = new Event_comand_Change_level();
 comand->Comand=Command;
   comand->Depth=Depth;
-                         ChunkInfo.Length= ReadCompressedInteger(Stream); 	// longitud 00
+                         ChunkInfo.Length= ReadCompressedInteger(Stream);     // longitud 00
                            ChunkInfo.Length= ReadCompressedInteger(Stream); // longitud 07
                           comand->All= ReadCompressedInteger(Stream);
                           comand->Hero_ID=  ReadCompressedInteger(Stream);
@@ -734,7 +734,7 @@ comand->Comand=Command;
   Event_comand_Change_statistics * comand;
   comand = new Event_comand_Change_statistics();
   comand->Comand=Command;comand->Depth=Depth;
-                          ChunkInfo.Length= ReadCompressedInteger(Stream); 	// longitud 00
+                          ChunkInfo.Length= ReadCompressedInteger(Stream);     // longitud 00
                            ChunkInfo.Length= ReadCompressedInteger(Stream); // longitud 07
                           comand->All= ReadCompressedInteger(Stream);
                           comand->Hero_ID=  ReadCompressedInteger(Stream);
@@ -750,7 +750,7 @@ comand->Comand=Command;
   comand = new Event_comand_Learn_forget_skill();
   comand->Comand=Command;
   comand->Depth=Depth;
-                          ChunkInfo.Length= ReadCompressedInteger(Stream); 	// longitud 00
+                          ChunkInfo.Length= ReadCompressedInteger(Stream);     // longitud 00
                            ChunkInfo.Length= ReadCompressedInteger(Stream); // longitud 07
                           comand->Hero= ReadCompressedInteger(Stream);
                           comand->Hero_ID=  ReadCompressedInteger(Stream);
@@ -1866,7 +1866,7 @@ std:: vector <Event_comand * > stEvent::EventcommandChunk(FILE * Stream)//instru
                                vcEvent_comand.push_back(EventcommandEnter_hero_name(data,depth,Stream));
 
                                break;
-                          case Teleport_Party:// 0xD34A	,
+                          case Teleport_Party:// 0xD34A    ,
                                vcEvent_comand.push_back(EventcommandTeleport_Party(data,depth,Stream));
                               break;
                           case Store_hero_location:// 0xD444,
@@ -1877,7 +1877,7 @@ std:: vector <Event_comand * > stEvent::EventcommandChunk(FILE * Stream)//instru
                                vcEvent_comand.push_back(EventcommandRecall_to_location(data,depth,Stream));
 
                                break;
-                          case Ride_Dismount:// 0xD458	,
+                          case Ride_Dismount:// 0xD458    ,
                                vcEvent_comand.push_back(EventcommandSimpleEvent_comand(data,depth,Stream));
 
                                break;
@@ -1996,7 +1996,7 @@ std:: vector <Event_comand * > stEvent::EventcommandChunk(FILE * Stream)//instru
                                vcEvent_comand.push_back(EventcommandKey_input(data,depth,Stream));
 
                                break;
-                          case Change_tile_set:// 0xDB3E	,
+                          case Change_tile_set:// 0xDB3E    ,
                                vcEvent_comand.push_back(EventcommandChange_tile(data,depth,Stream));
 
                                break;
@@ -2141,6 +2141,6 @@ std:: vector <Event_comand * > stEvent::EventcommandChunk(FILE * Stream)//instru
         else{
               ReadCompressedInteger(Stream); // final de cadena
          ReadCompressedInteger(Stream); // final de cadena
-	}
+    }
 return(vcEvent_comand);
 }

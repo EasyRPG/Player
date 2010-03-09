@@ -1,126 +1,160 @@
-#include "scene_title.h"
-#include "ldb_reader.h"
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////
+/// Headers
+////////////////////////////////////////////////////////////
 #include <string>
 #include <vector>
+#include <iostream>
+#include <fstream>
+#include "scene_title.h"
+#include "options.h"
+#include "main_data.h"
+#include "player.h"
 #include "graphics.h"
-#include "sprite.h"
-#include "input.h"
 #include "audio.h"
-#include "game_system.h"
+#include "input.h"
 #include "bitmap.h"
+#include "sprite.h"
+#include "ldb_reader.h"
+#include "cache.h"
 #include "window_command.h"
-#include "rpg_cache.h"
 
-Scene_Title::Scene_Title()
-{
-    int id;
-	Main_Data::scene_type = SCENE_TITLE;
+////////////////////////////////////////////////////////////
+/// Constructor
+////////////////////////////////////////////////////////////
+Scene_Title::Scene_Title() {
+    Main_Data::scene_type = SCENE_TITLE;
+}
 
-	/* Load Database */
-	LDB_reader::load(LDB_DATABASE);
+////////////////////////////////////////////////////////////
+/// Destructor
+////////////////////////////////////////////////////////////
+Scene_Title::~Scene_Title() {
+}
 
-	/* Create Game System */
-	Main_Data::game_system = new Game_System();
+////////////////////////////////////////////////////////////
+/// Main
+////////////////////////////////////////////////////////////
+void Scene_Title::MainFunction() {    
+    // Load Database
+    LDB_reader::load(DATABASE_NAME);
 
-    /* Build RPG::Cache object */
-    id = RPG::Cache.load_graphic(Main_Data::data_system->title_name, CCache::TITLE);
-    if (id >= 0)
-        Main_Data::game_system->set_title_id(id);
+    // Create Game System
+    Main_Data::game_system = new Game_System();
 
-    id = RPG::Cache.load_graphic(Main_Data::data_system->windowskin_name, CCache::SYSTEM);
-    if (id >= 0)
-        Main_Data::game_system->set_windowskin_id(id);
+    // Load Title Graphic
+    Sprite* title = new Sprite();
+    title->SetBitmap(Cache::Title(Main_Data::data_system->title_name));
     
-
-	
-}
-
-Scene_Title::~Scene_Title()
-{
-}
-
-void Scene_Title::main_function()
-{	
-	// Load Title Graphic
-	Sprite* title = new Sprite();
-    title->set_bitmap(
-        RPG::Cache.title(Main_Data::game_system->get_title_id())
-    );
-	
-	// Create Options Window
+    // Create Options Window
     std::vector<std::string> options;
     options.push_back(Main_Data::data_words->new_game);
-	options.push_back(Main_Data::data_words->load_game);
-	options.push_back(Main_Data::data_words->exit_game);
-    /* TODO */
-	command_window = new Window_Command(116, options);
-	
-	/* TODO: Disable Load Game if required */
-	
-	/* TODO: Set index to Load Game if required */
-	
-	// Play music
-	//Main_Data::game_system.bgm_play(Main_Data::data_system.title_music);
-    std::string smus(F_MUSIC + Main_Data::data_system->title_music->name);
-    Audio::bgm_play(smus);
+    options.push_back(Main_Data::data_words->load_game);
+    options.push_back(Main_Data::data_words->exit_game);
 
-	Graphics::transition();
-	
-	// Scene loop
-	while(Main_Data::scene_type == SCENE_TITLE) {
-		Graphics::update();
-		Input::update();
-		update();
-	}
-	
-	// Dispose graphical objects
-//	title_bmp->dispose();
-//	background->dispose();
-//	command_window->dispose();
+    command_window = new Window_Command(116, options);
+    command_window->SetX(160 - command_window->GetWidth() / 2);
+    command_window->SetY(224 - command_window->GetHeight());
+
+    // Enable load game if available
+    bool continue_enabled = false;
+    for (int i = 0; i < 15; i++) {
+        char name[11];
+        sprintf(name, "Save%2d.lsd", i);
+        std::ifstream file(name);
+        if (file.is_open()) {
+            continue_enabled = true;
+            file.close();
+            break;
+        }
+    }
+    if (continue_enabled) {
+        command_window->SetIndex(1);
+    }
+    else {
+        command_window->DisableItem(1);
+    }
+    
+    // Play music
+    Main_Data::game_system->BgmPlay(Main_Data::data_system->title_music);
+
+    // Screen transition
+    //Graphics::transition();
+    
+    // Scene loop
+    while (Main_Data::scene_type == SCENE_TITLE) {
+        Player::Update();
+        Graphics::Update();
+        Input::Update();
+        Update();
+    }
+    
+    // Delete graphical objects
+    delete command_window;
+    delete title;
 }
 
-void Scene_Title::update()
-{
-	command_window->update();
-    if (Input::is_triggered(Control::EXIT))
-        // On [x] mouse button press, exit immediately
-        Main_Data::scene_type = SCENE_NULL;
+////////////////////////////////////////////////////////////
+/// Update
+////////////////////////////////////////////////////////////
+void Scene_Title::Update() {
+    command_window->Update();
 
-/* Will get some code frome control.cpp */
-/*	if(Input::is_triggered(SDL_ENTER) || Input::is_triggered(SDL_Z))
-	{
-		switch(command_window.index)
-		{
-			case 0: // New Game
-				command_new_game();
-				break;
-			case 1:  // Load Game
-				command_continue();
-				break;
-			case 2:  // Exit Game
-				command_shutdown();
-				break;
-		}
-	}*/
+    if (Input::IsTriggered(Input::DECISION)) {
+        switch(command_window->GetIndex()) {
+            case 0: // New Game
+                CommandNewGame();
+                break;
+            case 1:  // Load Game
+                CommandContinue();
+                break;
+            case 2:  // Exit Game
+                CommandShutdown();
+        }
+    }
 }
 
-void Scene_Title::command_new_game()
-{
-	
+////////////////////////////////////////////////////////////
+/// Constructor
+////////////////////////////////////////////////////////////
+void Scene_Title::CommandNewGame() {
+    
 }
 
-void Scene_Title::command_continue()
-{
-	
+////////////////////////////////////////////////////////////
+/// Constructor
+////////////////////////////////////////////////////////////
+void Scene_Title::CommandContinue() {
+    // Play decision SE
+    Main_Data::game_system->SePlay(Main_Data::data_system->decision_se);
+    // Change scene
+    //Main_Data::scene = new Scene_Load();
 }
 
-void Scene_Title::command_shutdown()
-{
-	// Play decision SE
-//    Main_Data::game_system.se_play(Main_Data::data_system.decision_sound);
+////////////////////////////////////////////////////////////
+/// Constructor
+////////////////////////////////////////////////////////////
+void Scene_Title::CommandShutdown() {
+    // Play decision SE
+    Main_Data::game_system->SePlay(Main_Data::data_system->decision_se);
     // Fade out Music
-    Audio::bgm_fade(800);
+    Audio::BGS_Fade(800);
     // Shutdown
     Main_Data::scene_type = SCENE_NULL;
 }

@@ -186,25 +186,25 @@ void show();
 
 struct stcEnemy
 {
-  std::string strName;	// = 0x01,
-  std::string strGraphicfile;	//= 0x02,
-  int intHuealteration;	//= 0x03,
-  int intMaxHP;	//= 0x04,
-  int intMaxMP;	//= 0x05,
-  int intAttack;	//= 0x06,
-  int intDefense;	//= 0x07,
-  int intMind;	//= 0x08,
-  int intSpeed;	//= 0x09,
-  char blTranslucentgraphic;	//= 0x0A,
-  int intExperience;	//= 0x0B,
-  int intGold;	//= 0x0C,
-  int intSpoilsitemID;	//= 0x0D,
-  int intSpoilschance;	//= 0x0E,
-  char blCanusecriticalhits;	//= 0x15,
-  int intCriticalhitchance;	//= 0x16,
-  char blUsuallymiss;	//= 0x1A,
-  char blAirborne;	//= 0x1C,
-  int intConditionslength;	//= 0x1F,
+  std::string strName;    // = 0x01,
+  std::string strGraphicfile;    //= 0x02,
+  int intHuealteration;    //= 0x03,
+  int intMaxHP;    //= 0x04,
+  int intMaxMP;    //= 0x05,
+  int intAttack;    //= 0x06,
+  int intDefense;    //= 0x07,
+  int intMind;    //= 0x08,
+  int intSpeed;    //= 0x09,
+  char blTranslucentgraphic;    //= 0x0A,
+  int intExperience;    //= 0x0B,
+  int intGold;    //= 0x0C,
+  int intSpoilsitemID;    //= 0x0D,
+  int intSpoilschance;    //= 0x0E,
+  char blCanusecriticalhits;    //= 0x15,
+  int intCriticalhitchance;    //= 0x16,
+  char blUsuallymiss;    //= 0x1A,
+  char blAirborne;    //= 0x1C,
+  int intConditionslength;    //= 0x1F,
     std::vector<char> vc_ch_Condeffects;//0x20, arreglo de un byte //una dimencion
   int inyAttributeslength;//= 0x21,
  std::vector<char> vc_ch_Attribeffects; // 0x22, arreglo de un byte //una dimencion
@@ -216,12 +216,12 @@ void show();
 struct stcEnemy_Action
 {
  int intAction;//=0x01,
- int intAction_data;//	=0x02,
+ int intAction_data;//    =0x02,
  int intSkill_ID;//=0x03,
  int intMonster_ID;//=0x04,
- int intCondition;//	=0x05,
+ int intCondition;//    =0x05,
  int intLower_limit;//=0x06,
- int intUpper_limit;//	=0x07,
+ int intUpper_limit;//    =0x07,
  int intPriority;//=0x0D
  void set_defaults();
 void show();
@@ -230,9 +230,9 @@ void show();
 
 struct stcEnemy_group_data
 {
-int	Enemy_ID;//=0x01,
-int	X_position;//=0x02,
-int	Y_position;//=0x03
+int    Enemy_ID;//=0x01,
+int    X_position;//=0x02,
+int    Y_position;//=0x03
 void set_defaults();
 void show();
 };
@@ -249,9 +249,9 @@ void show();
 };
 struct stcEnemy_group_event_page
 {
-stcEnemy_group_condition conditions;//	Page_conditions=0x02,
-int	Event_length;//=0x0B,
- std:: vector <Event_comand *> vcEvent_comand;//	Event=0x0C
+stcEnemy_group_condition conditions;//    Page_conditions=0x02,
+int    Event_length;//=0x0B,
+ std:: vector <Event_comand *> vcEvent_comand;//    Event=0x0C
 void set_defaults();
 void show();
 };
@@ -262,7 +262,7 @@ struct stcEnemy_group
 {
 std::string strName;// =0x01,
 std:: vector <stcEnemy_group_data> Enemy_data;//data=0x02,
-int intTerrainlength;		//=0x04,
+int intTerrainlength;        //=0x04,
 std::vector<char> vc_ch_Terraindata; //=0x05,
 std::vector <stcEnemy_group_event_page> vecPartyMonsterevent;//eventpages=0x0B
 void set_defaults();
@@ -271,15 +271,15 @@ void show();
 
 struct stcTerrain
 {
-std::string strName;	//=0x01,
-int  intDamageontravel;	//=0x02,
-int  intEncounterate;	//=0x03,
-std::string strBattlebackground;	//=0x04,
-char  blSkiffmaypass;	//=0x05,
-char  blBoatmaypass;	//=0x06,
-char  blAirshipmaypass;	//=0x07,
-char  blAirshipmayland;	//=0x09,
-int  intHeroopacity;	//=0x0B
+std::string strName;    //=0x01,
+int  intDamageontravel;    //=0x02,
+int  intEncounterate;    //=0x03,
+std::string strBattlebackground;    //=0x04,
+char  blSkiffmaypass;    //=0x05,
+char  blBoatmaypass;    //=0x06,
+char  blAirshipmaypass;    //=0x07,
+char  blAirshipmayland;    //=0x09,
+int  intHeroopacity;    //=0x0B
 ///------ 2003 info por confirmar
 void set_defaults();
 void show();
@@ -348,7 +348,7 @@ struct stcState
 struct stcAnimationTiming
 {
 unsigned int Frame;//=0x01,
-stcSound_effect	Sound_effect;//=0x02,
+stcSound_effect    Sound_effect;//=0x02,
 int Flash_effect;//=0x03,
 int Green_component;//=0x05,
 int Blue_component;//=0x06,
@@ -591,8 +591,8 @@ std::string Battle_test_BG;//0x54,
 
 std::vector <stcBattle_test> vc_Battle_test; //0x55 //nuevo
 int Times_saved;//=0x5B,//nuevo
-int Show_frame;//=0x63,	// exclusivo 2003
-int In_battle_anim;//=0x65	// exclusivo 2003
+int Show_frame;//=0x63,    // exclusivo 2003
+int In_battle_anim;//=0x65    // exclusivo 2003
 void show();
 };
 
@@ -627,7 +627,7 @@ std:: vector <stcCombatcommand> vc_Combatcommand;
 struct stcFight_anim
 {
   std::string strName;//=0x01,
-  std::string	strFilename;//=0x02,
+  std::string    strFilename;//=0x02,
   int intPosition;//=0x03,
   char blExtended_expanded;//=0x04,
   int intID_Expansion_animated_combat_ID;//=0x05
@@ -637,9 +637,9 @@ struct stcFight_anim
 
 struct stcBattle_comand
 {
-  std::string strName;// 	=0x01,
-  int intMotion_attack;// 	=0x02,
-  std::vector<stcFight_anim> vc_Animated_battle_Combat_Anime;//	=0x0A, //two diminsional arrays
+  std::string strName;//     =0x01,
+  int intMotion_attack;//     =0x02,
+  std::vector<stcFight_anim> vc_Animated_battle_Combat_Anime;//    =0x0A, //two diminsional arrays
   std::vector<stcFight_anim> vc_Animated_battle_Anime_combat_weapons;//=0x0B //two diminsional arrays
   void set_defaults();
   void show();
@@ -663,8 +663,8 @@ std::vector<short> vc_sh_Agility;
 int Experience_curve_basic_values;// =0x29,
 int Experience_curve_increase_degree;// =0x2A,
 int Experience_curve_correction_value;//=0x2B,
-int Animated_battle;//	=0x3E,
-std:: vector <Magicblock> skills; //Skills =0x3F,	 //Special_skills_level=0x3F, misma estructura que heroe
+int Animated_battle;//    =0x3E,
+std:: vector <Magicblock> skills; //Skills =0x3F,     //Special_skills_level=0x3F, misma estructura que heroe
 int Effectiveness_state_number;// =0x47,
 std::vector<char> vc_ch_Condeffects; //Effectiveness_state_data =0x48,  //1 byte one dimention array
 int Effectiveness_Attribute_number;// =0x49,

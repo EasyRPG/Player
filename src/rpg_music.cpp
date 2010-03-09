@@ -2,7 +2,7 @@
 
 RPG::Music::Music()
 {
-	name = "";
+    name = "";
     volume = 100;
     tempo = 100;
     balance = 0;
@@ -10,7 +10,7 @@ RPG::Music::Music()
 
 RPG::Music::Music(std::string n, int v, int t, int b)
 {
-	name = n;
+    name = n;
     volume = v;
     tempo = t;
     balance = b;

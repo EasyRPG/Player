@@ -1,5 +1,6 @@
 #include "ldb_reader.h"
 #include "rpg_sound.h"
+#include "output.h"
 
 namespace {
     unsigned char Void;
@@ -14,14 +15,13 @@ bool LDB_reader::load(const std::string& Filename)
     FILE * Stream;// apertura de archivo
     Stream = fopen(Filename.c_str(), "rb");
     if (Stream == NULL) {
-        _fatal_error("Couldn't find LDB database");
+        Output::Error("Couldn't find LDB database");
         exit(1);
     }
     std::string Header = ReadString(Stream); // lectura de cabezera
     if (Header != "LcfDataBase") // comparacion con cabezera del mapa
     { // si no concuerda imprime un error y finaliza
-        printf("Reading error: File is not a valid RPG2000 database\n");
-        fclose(Stream);
+        Output::Error("Reading error: File is not a valid RPG2000 database\n");
         return false;
     }
     GetNextChunk(Stream);
@@ -35,7 +35,7 @@ void LDB_reader::GetNextChunk(FILE * Stream)
     tChunk ChunkInfo; // informacion del pedazo leido
     // Loop while we haven't reached the end of the file
     while (!feof(Stream)) {
-        ChunkInfo.ID	 = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
+        ChunkInfo.ID     = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
         ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
         if (ChunkInfo.Length>0)
             switch (ChunkInfo.ID) { // segun el tipo

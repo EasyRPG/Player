@@ -1,1 +1,138 @@
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////
+/// Headers
+////////////////////////////////////////////////////////////
+#include "window_selectable.h"
+#include "input.h"
+
+////////////////////////////////////////////////////////////
+/// Constructor
+////////////////////////////////////////////////////////////
+Window_Selectable::Window_Selectable(int ix, int iy, int iwidth, int iheight) : 
+    Window_Base(ix, iy, iwidth, iheight)
+{
+
+    item_max = 1;
+    column_max = 1;
+    index = -1;
+}
+
+////////////////////////////////////////////////////////////
+/// Destructor
+////////////////////////////////////////////////////////////
+Window_Selectable::~Window_Selectable() {
+}
+
+////////////////////////////////////////////////////////////
+/// Properties
+////////////////////////////////////////////////////////////
+int Window_Selectable::GetIndex() {
+    return index;
+}
+void Window_Selectable::SetIndex(int nindex) {
+    index = nindex;
+    /*if (active && help_window != NULL) {
+        update_help
+    }*/
+    UpdateCursorRect();
+}
+int Window_Selectable::GetRowMax() {
+    return (item_max + column_max - 1) / column_max;
+}
+int Window_Selectable::GetTopRow() {
+    return oy / 16;
+}
+void Window_Selectable::SetTopRow(int row) {
+    if (row < 0) row = 0;
+    if (row > GetRowMax() - 1) row = GetRowMax() - 1;
+    SetOy(row * 32);
+}
+int Window_Selectable::GetPageRowMax() {
+    return (height - 16) / 16;
+}
+int Window_Selectable::GetPageItemMax() {
+    return GetPageRowMax() * column_max;
+}
+/*Window_Help* Window_Selectable::GetHelpWindow() {
+    return window_help;
+}
+void Window_Selectable::SetHelpWindow(Window_Help* nhelp_window) {
+    help_window = nhelp_window;
+    if self.active and help_window != nil
+      update_help
+    }
+}*/
+
+////////////////////////////////////////////////////////////
+/// Update Cursor Rect
+////////////////////////////////////////////////////////////
+void Window_Selectable::UpdateCursorRect() {
+    if (index < 0) {
+      SetCursorRect(Rect());
+      return;
+    }
+    int row = index / column_max;
+    if (row < GetTopRow()) {
+        SetTopRow(row);
+    }
+    else if (row > GetTopRow() + (GetPageRowMax() - 1)) {
+        SetTopRow(row - (GetPageRowMax() - 1));
+    }
+    int cursor_width = width / column_max - 16;
+    int x = index % column_max * (cursor_width + 16);
+    int y = index / column_max * 16 - oy;
+    SetCursorRect(Rect(x, y, cursor_width, 16));
+}
+
+////////////////////////////////////////////////////////////
+/// Updte
+////////////////////////////////////////////////////////////
+void Window_Selectable::Update() {
+    Window_Base::Update();
+    if (active && item_max > 0 && index >= 0) {
+        if (Input::IsRepeated(Input::DOWN)) {
+            if ((column_max == 1 && Input::IsTriggered(Input::DOWN)) || index < item_max - column_max) {
+                Main_Data::game_system->SePlay(Main_Data::data_system->cursor_se);
+                index = (index + column_max) % item_max;
+            }
+        }
+        if (Input::IsRepeated(Input::UP)) {
+            if ((column_max == 1 && Input::IsTriggered(Input::UP)) || index >= column_max) {
+                Main_Data::game_system->SePlay(Main_Data::data_system->cursor_se);
+                index = (index - column_max + item_max) % item_max;
+            }
+        }
+        if (Input::IsRepeated(Input::RIGHT)) {
+            if (column_max >= 2 && index < item_max - 1) {
+                Main_Data::game_system->SePlay(Main_Data::data_system->cursor_se);
+                index += 1;
+            }
+        }
+        if (Input::IsRepeated(Input::LEFT)) {
+            if (column_max >= 2 && index > 0) {
+                Main_Data::game_system->SePlay(Main_Data::data_system->cursor_se);
+                index -= 1;
+            }
+        }
+    }
+    /*if self.active and help_window != nil
+      update_help
+    }*/
+    UpdateCursorRect();
+}

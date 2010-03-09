@@ -1,32 +1,40 @@
-#ifndef __tone__
-#define __tone__
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
 
-#include "SDL.h"
+#ifndef _TONE_H_
+#define _TONE_H_
 
+////////////////////////////////////////////////////////////
+/// Tone class
+////////////////////////////////////////////////////////////
 class Tone {
-
 public:
-	Tone();
-	Tone(int r, int g, int b);
-	Tone(int r, int g, int b, int g2);
-	~Tone();
-	
-	Uint32 get_uint32();
+    Tone();
+    Tone(int ired, int igreen, int iblue, int igray);
+    ~Tone();
 
-	int get_r();
-	int get_g();
-	int get_b();
-	int get_gray();
-	
-	void set_r(int r);
-	void set_g(int g);
-	void set_b(int b);
-	void set_gray(int g);
-	
-protected:
-	int red;
-	int green;
-	int blue;
-	int gray;
+    bool operator!=(const Tone& other) const;
+
+    void Set(int nred, int ngreen, int nblue, int ngray);
+
+    int red;
+    int green;
+    int blue;
+    int gray;
 };
-#endif // __tone__
+
+#endif

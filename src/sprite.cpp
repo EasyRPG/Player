@@ -1,328 +1,286 @@
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////
+/// Headers
+////////////////////////////////////////////////////////////
+#include <string>
 #include "sprite.h"
-#include "zobj.h"
+#include "player.h"
+#include "graphics.h"
 
-Sprite::Sprite()
-{
-	disposed = false;
-	id = count;
+////////////////////////////////////////////////////////////
+/// Defines
+////////////////////////////////////////////////////////////
+#define max(a, b)    (((a) > (b)) ? (a) : (b))
+#define min(a, b)    (((a) < (b)) ? (a) : (b))
 
+////////////////////////////////////////////////////////////
+/// Constructor
+////////////////////////////////////////////////////////////
+Sprite::Sprite() {
     bitmap = NULL;
-    viewport = NULL;
-	
-	src_rect.x = 0;
-    src_rect.y = 0;
-    src_rect.w = 0;
-    src_rect.h = 0;
+    src_rect = Rect();
+    visible = true;
+    x = 0;
+    y = 0;
+    z = 0;
+    ox = 0;
+    oy = 0;
+    zoom_x = 1.0;
+    zoom_y = 1.0;
+    angle = 0.0;
+    flipx = false;
+    flipy = false;
+    bush_depth = 0;
+    opacity = 255;
+    blend_type = 0;
+    color = Color();
+    tone = Tone();
 
-	visible = true;
-	x = 0;
-	y = 0;
-	z = 0;
-	ox = 0;
-	oy = 0;
-	zoom_x = 100;
-	zoom_y = 100;
-	angle = 0;
-	mirror_x = false;
-	mirror_y = false;
-	bush_depth = 0;
-	opacity = 255;
-	blend_type = 0;
-	color = new Color(0, 0, 0);
-	tone = new Tone(0, 0, 0);
+    sprite = NULL;
+    flash_duration = 0;
 
-    add_sprite(count, this);
-    count++;
-	
+    _id = Graphics::id++;
+    Graphics::drawable_list.push_back(this);
+    Graphics::drawable_list.sort(Graphics::SortDrawable);
 }
 
-Sprite::Sprite(Viewport *iviewport)
-{
-	disposed = false;
-	id = count;
-
-    bitmap = NULL;
-	
-	viewport = iviewport;
-
-    src_rect.x = 0;
-    src_rect.y = 0;
-    src_rect.w = 0;
-    src_rect.h = 0;
-
-	visible = true;
-	x = 0;
-	y = 0;
-	z = 0;
-	ox = 0;
-	oy = 0;
-	zoom_x = 100;
-	zoom_y = 100;
-	angle = 0;
-	mirror_x = false;
-	mirror_y = false;
-	bush_depth = 0;
-	opacity = 255;
-	blend_type = 0;
-	color = new Color(0, 0, 0);
-	tone = new Tone(0, 0, 0);
-
-    add_sprite(count, this);
-    count++;
+////////////////////////////////////////////////////////////
+/// Destructor
+////////////////////////////////////////////////////////////
+Sprite::~Sprite() {
+    Graphics::RemoveDrawable(_id);
+    delete sprite;
 }
 
-Sprite::~Sprite()
-{
-//	Graphics::remove_sprite(id);
-}
-
-std::map<int, Sprite*> Sprite::sprites;
-int Sprite::count = 0;
-
-void Sprite::dispose()
-{
-	disposed = true;
-}
-
-bool Sprite::is_disposed()
-{
-	return disposed;
-}
-
-void Sprite::flash(Color *flash_color, int duration)
-{
-	
-}
-
-void Sprite::update()
-{
-	
-}
-
-void Sprite::draw(SDL_Surface *screen)
-{
-    if (bitmap == NULL)
-        return;
+////////////////////////////////////////////////////////////
+/// Draw
+////////////////////////////////////////////////////////////
+void Sprite::Draw() {
+    if (!visible) return;
+    if (GetWidth() <= 0 || GetHeight() <= 0) return;
+    if (x < -GetWidth() || x > Player::GetWidth() || y < -GetHeight() || y > Player::GetHeight()) return;
+    if (zoom_x <= 0 || zoom_y <= 0) return;
+    if (opacity <= 0) return;
+    if (!bitmap) return;
     
-    SDL_Rect dstrect;
-	dstrect.x = x;
-	dstrect.y = y; 
-    dstrect.w = bitmap->width();
-    dstrect.h = bitmap->height();
-	
-    if(SDL_BlitSurface(bitmap->surface, &src_rect, screen, &dstrect) < 0)
-	{
-		_fatal_error(SDL_GetError());
-        exit(EXIT_FAILURE);
-	}
+    Refresh();
+    
+    sprite->BlitScreen(x - ox, y - oy);
 }
 
-Viewport* Sprite::get_viewport() const
-{
-	return viewport;
+////////////////////////////////////////////////////////////
+/// Refresh
+////////////////////////////////////////////////////////////
+void Sprite::Refresh() {
+    if (!needs_refresh) return;
+
+    needs_refresh = false;
+
+    delete sprite;
+    
+    sprite = new Bitmap(bitmap, src_rect);
+        
+    sprite->ToneChange(tone);
+    sprite->OpacityChange(opacity, bush_depth);
+    sprite->Flip(flipx, flipy);
+    sprite->Zoom(zoom_x, zoom_y);
+    sprite->Rotate(angle);
+
+    if (flash_duration > 0) {
+        sprite->Flash(flash_color, flash_frame, flash_duration);
+    }
 }
 
-Bitmap* Sprite::get_bitmap() const
-{
-	return bitmap;
+////////////////////////////////////////////////////////////
+/// Get Width
+////////////////////////////////////////////////////////////
+int Sprite::GetWidth() {
+    return src_rect.width;
 }
 
-Rect* Sprite::get_src_rect()
-{
-	return &src_rect;
+////////////////////////////////////////////////////////////
+/// Get Height
+////////////////////////////////////////////////////////////
+int Sprite::GetHeight() {
+    return src_rect.height;
 }
 
-bool Sprite::get_visible() const 
-{
-	return visible;
+////////////////////////////////////////////////////////////
+/// Update
+////////////////////////////////////////////////////////////
+void Sprite::Update() {
+    if (flash_duration != 0) {
+        flash_frame += 1;
+        if (flash_duration == flash_frame) {
+            flash_duration = 0;
+        }
+        needs_refresh = true;
+    }
 }
 
-int Sprite::get_x() const
-{
-	return x;
+////////////////////////////////////////////////////////////
+/// Flash
+////////////////////////////////////////////////////////////
+void Sprite::Flash(int duration){
+    flash_color = Color(0, 0, 0, 0);
+    flash_duration = duration;
+    flash_frame = 0;
+}
+void Sprite::Flash(Color color, int duration){
+    flash_color = color;
+    flash_duration = duration;
+    flash_frame = 0;
 }
 
-int Sprite::get_y() const 
-{
-	return y;
+////////////////////////////////////////////////////////////
+/// Properties
+////////////////////////////////////////////////////////////
+Bitmap* Sprite::GetBitmap() {
+    return bitmap;
+}
+void Sprite::SetBitmap(Bitmap* nbitmap) {
+    bitmap = nbitmap;
+    if (!bitmap) {
+        src_rect = Rect();
+    }
+    else {
+        src_rect = bitmap->GetRect();
+    }
+    needs_refresh = true;
+}
+Rect Sprite::GetSrcRect() {
+    return src_rect;
+}
+void Sprite::SetSrcRect(Rect nsrc_rect) {
+    if (src_rect != nsrc_rect) needs_refresh = true;
+    src_rect = nsrc_rect;
+}
+bool Sprite::GetVisible() {
+    return visible;
+}
+void Sprite::SetVisible(bool nvisible) {
+    visible = nvisible;
+}
+int Sprite::GetX() {
+    return x;
+}
+void Sprite::SetX(int nx) {
+    x = nx;
+}
+int Sprite::GetY() {
+    return y;
+}
+void Sprite::SetY(int ny) {
+    y = ny;
+}
+int Sprite::GetZ() {
+    return z;
+}
+void Sprite::SetZ(int nz) {
+    if (z != nz) Graphics::drawable_list.sort(Graphics::SortDrawable);
+    z = nz;
+}
+int Sprite::GetOx() {
+    return ox;
+}
+void Sprite::SetOx(int nox) {
+    //if (ox != nox) needs_refresh = true;
+    ox = nox;
+}
+int Sprite::GetOy() {
+    return oy;
+}
+void Sprite::SetOy(int noy) {
+    //if (oy != noy) needs_refresh = true;
+    oy = noy;
+}
+double Sprite::GetZoomX() {
+    return zoom_x;
+}
+void Sprite::SetZoomX(double nzoom_x) {
+    if (zoom_x != nzoom_x) needs_refresh = true;
+    zoom_x = nzoom_x;
+}
+double Sprite::GetZoomY() {
+    return zoom_y;
+}
+void Sprite::SetZoomY(double nzoom_y) {
+    if (zoom_y != nzoom_y) needs_refresh = true;
+    zoom_y = nzoom_y;
+}
+double Sprite::GetAngle() {
+    return angle;
+}
+void Sprite::SetAngle(double nangle) {
+    if (angle != nangle) needs_refresh = true;
+    angle = nangle;
+}
+bool Sprite::GetFlipX() {
+    return flipx;
+}
+void Sprite::SetFlipX(bool nflipx) {
+    if (flipx != nflipx) needs_refresh = true;
+    flipx = nflipx;
+}
+bool Sprite::GetFlipY() {
+    return flipy;
+}
+void Sprite::SetFlipY(bool nflipy) {
+    if (flipy != nflipy) needs_refresh = true;
+    flipy = nflipy;
+}
+int Sprite::GetBushDepth() {
+    return bush_depth;
+}
+void Sprite::SetBushDepth(int nbush_depth) {
+    if (bush_depth != nbush_depth) needs_refresh = true;
+    bush_depth = nbush_depth;
+}
+int Sprite::GetOpacity() {
+    return opacity;
+}
+void Sprite::SetOpacity(int nopacity) {
+    opacity = nopacity;
+}
+int Sprite::GetBlendType() {
+    return blend_type;
+}
+void Sprite::SetBlendType(int nblend_type) {
+    blend_type = nblend_type;
+}
+Color Sprite::GetColor() {
+    return color;
+}
+void Sprite::SetColor(Color ncolor) {
+    color = ncolor;
+}
+Tone Sprite::GetTone() {
+    return tone;
+}
+void Sprite::SetTone(Tone ntone) {
+    if (tone != ntone) needs_refresh = true;
+    tone = ntone;
 }
 
-int Sprite::get_z() const 
-{
-	return z;
-}
-
-int Sprite::get_ox() const
-{
-	return ox;
-}
-
-int Sprite::get_oy() const
-{
-	return oy;
-}
-
-int Sprite::get_zoom_x() const
-{
-	return zoom_x;
-}
-
-int Sprite::get_zoom_y() const
-{
-	return zoom_y;
-}
-
-int Sprite::get_angle() const
-{
-	return angle;
-}
-
-bool Sprite::get_mirror_x() const
-{
-	return mirror_x;
-}
-
-bool Sprite::get_mirror_y() const
-{
-	return mirror_y;
-}
-
-int Sprite::get_bush_depth() const
-{
-	return bush_depth;
-}
-
-int Sprite::get_opacity() const
-{
-	return opacity;
-}
-
-int Sprite::get_blend_type() const
-{
-	return blend_type;
-}
-
-Color* Sprite::get_color() const
-{
-	return color;
-}
-
-Tone* Sprite::get_tone() const
-{
-	return tone;
-}
-
-
-void Sprite::set_viewport(Viewport* nviewport)
-{
-	viewport = nviewport;
-}
-
-void Sprite::set_bitmap(Bitmap* nbitmap)
-{
-	bitmap = nbitmap;
-    src_rect.w = bitmap->width();
-    src_rect.h = bitmap->height();
-
-}
-
-void Sprite::set_src_rect(Rect* nsrc_rect)
-{
-	src_rect.x = nsrc_rect->x;
-    src_rect.y = nsrc_rect->y;
-    src_rect.w = nsrc_rect->w;
-    src_rect.h = nsrc_rect->h;
-}
-
-void Sprite::set_visible(bool nvisible)
-{
-	visible = nvisible;
-}
-
-void Sprite::set_x(int nx)
-{
-	x = nx;
-}
-
-void Sprite::set_y(int ny)
-{
-	y = ny;
-}
-
-void Sprite::set_z(int nz)
-{
-	z = nz;
-}
-
-void Sprite::set_ox(int nox)
-{
-	ox = nox;
-}
-
-void Sprite::set_oy(int noy)
-{
-	oy = noy;
-}
-
-void Sprite::set_zoom_x(int nzoom_x)
-{
-	zoom_x = nzoom_x;
-}
-
-void Sprite::set_zoom_y(int nzoom_y)
-{
-	zoom_y = nzoom_y;
-}
-
-void Sprite::set_angle(int nangle)
-{
-	angle = nangle;
-}
-
-void Sprite::set_mirror_x(bool nmirror_x)
-{
-	mirror_x = nmirror_x;
-}
-
-void Sprite::set_mirror_y(bool nmirror_y)
-{
-	mirror_y = nmirror_y;
-}
-
-void Sprite::set_bush_depth(int nbush_depth)
-{
-	bush_depth = nbush_depth;
-}
-
-void Sprite::set_opacity(int nopacity)
-{
-	opacity = nopacity;
-}
-
-void Sprite::set_blend_type(int nblend_type)
-{
-	blend_type = nblend_type;
-}
-
-void Sprite::set_color(Color* ncolor)
-{
-	color = ncolor;
-}
-
-void Sprite::set_tone(Tone* ntone)
-{
-	tone = ntone;
-}
-
-void Sprite::add_sprite(int id, Sprite *sprite)
-{
-	sprites[id] = sprite;
-	ZObj zobj(sprite->get_z(), TYPE_SPRITE, id, 0);
-	ZObj::zlist.push_back(zobj);
-}
-
-void Sprite::remove_sprite(int id)
-{
-	sprites.erase(id);
-//	ZObj::zlist.remove_if(remove_zobj_id(id));
+////////////////////////////////////////////////////////////
+/// Get id
+////////////////////////////////////////////////////////////
+unsigned long Sprite::GetId() {
+    return _id;
 }
