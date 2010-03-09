@@ -26,10 +26,10 @@
 /// Static Variables
 ////////////////////////////////////////////////////////////
 std::string Font::default_name = "Arial";
-int Font::default_size = 18;
+int Font::default_size = 12;
 bool Font::default_bold = false;
 bool Font::default_italic = false;
-Color Font::default_color(0, 0, 0, 0);
+Color Font::default_color(255, 255, 255, 255);
 
 ////////////////////////////////////////////////////////////
 /// Constructor

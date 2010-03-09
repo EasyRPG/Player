@@ -104,8 +104,8 @@ private:
     bool background_needs_refresh;
     bool frame_needs_refresh;
     bool cursor_needs_refresh;
-    bool cursor_frame;
-    bool pause_frame;
+    int cursor_frame;
+    int pause_frame;
 };
 
 #endif

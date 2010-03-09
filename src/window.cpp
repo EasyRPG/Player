@@ -56,8 +56,8 @@ Window::Window() {
     frame = NULL;
     cursor1 = NULL;
     cursor2 = NULL;
-    cursor_frame = false;
-    pause_frame = false;
+    cursor_frame = 0;
+    pause_frame = 0;
 
     _id = Graphics::id++;
     Graphics::drawable_list.push_back(this);
@@ -102,7 +102,7 @@ void Window::Draw() {
                           -min(cursor_rect.y + 8, 0),
                           min(cursor_rect.width, width - 8 - cursor_rect.x),
                           min(cursor_rect.height, height - 8 - cursor_rect.y));
-            if (cursor_frame) {
+            if (cursor_frame < 16) {
                 cursor1->BlitScreen(x + 8 + cursor_rect.x, y + 8 + cursor_rect.y, src_rect);
             }
             else {
@@ -118,7 +118,7 @@ void Window::Draw() {
         }
     }
     
-    if (pause && pause_frame) {
+    if (pause && pause_frame > 16) {
         Rect src_rect(40, 16, 16, 8);
         windowskin->BlitScreen(x + width / 2 - 4, y + height - 8, src_rect);
     }
@@ -173,7 +173,7 @@ void Window::RefreshFrame() {
     src_rect.x = 64 - 8;
     frame->Blit(width - 8, 0, windowskin, src_rect, 255);
     
-    src_rect.y = 64 - 8;
+    src_rect.y = 32 - 8;
     frame->Blit(width - 8, height - 8, windowskin, src_rect, 255);
     
     src_rect.x = 32;
@@ -193,7 +193,7 @@ void Window::RefreshFrame() {
     frame->StretchBlit(dst_rect, windowskin, src_rect, 255);
     
     // Border Down
-    src_rect.y = 64 - 8;
+    src_rect.y = 32 - 8;
     dst_rect.y = height - 8;
     frame->StretchBlit(dst_rect, windowskin, src_rect, 255);
     
@@ -236,11 +236,11 @@ void Window::RefreshCursor() {
     cursor1->Blit(cursor_rect.width - 2, 0, windowskin, src_rect, 255);
     src_rect.y = 32 - 2;
     cursor1->Blit(cursor_rect.width - 2, cursor_rect.height - 2, windowskin, src_rect, 255);
-    src_rect.x = 32;
+    src_rect.x = 64;
     cursor1->Blit(0, cursor_rect.height - 2, windowskin, src_rect, 255);
 
     // Border Up
-    src_rect.x = 32 + 2;
+    src_rect.x = 64 + 2;
     src_rect.y = 0;
     src_rect.width = 28;
     src_rect.height = 2;
@@ -256,8 +256,8 @@ void Window::RefreshCursor() {
     cursor1->StretchBlit(dst_rect, windowskin, src_rect, 255);
 
     // Border Left
-    src_rect.x = 32;
-    src_rect.y = 32 + 2;
+    src_rect.x = 64;
+    src_rect.y = 2;
     src_rect.width = 2;
     src_rect.height = 28;
     dst_rect.x = 0;
@@ -296,11 +296,11 @@ void Window::RefreshCursor() {
     cursor2->Blit(cursor_rect.width - 2, 0, windowskin, src_rect, 255);
     src_rect.y = 32 - 2;
     cursor2->Blit(cursor_rect.width - 2, cursor_rect.height - 2, windowskin, src_rect, 255);
-    src_rect.x = 32;
+    src_rect.x = 96;
     cursor2->Blit(0, cursor_rect.height - 2, windowskin, src_rect, 255);
 
     // Border Up
-    src_rect.x = 64 + 2;
+    src_rect.x = 96 + 2;
     src_rect.y = 0;
     src_rect.width = 28;
     src_rect.height = 2;
@@ -316,8 +316,8 @@ void Window::RefreshCursor() {
     cursor2->StretchBlit(dst_rect, windowskin, src_rect, 255);
 
     // Border Left
-    src_rect.x = 64;
-    src_rect.y = 32 + 2;
+    src_rect.x = 96;
+    src_rect.y = 2;
     src_rect.width = 2;
     src_rect.height = 28;
     dst_rect.x = 0;
@@ -337,8 +337,12 @@ void Window::RefreshCursor() {
 ////////////////////////////////////////////////////////////
 void Window::Update() {
     if (active) {
-        cursor_frame = !cursor_frame;
-        if (pause) pause_frame = !pause_frame;
+        cursor_frame += 1;
+        if (cursor_frame > 32) cursor_frame = 0;
+        if (pause) {
+            pause_frame += 1;
+            if (cursor_frame > 32) pause_frame = 0;
+        }
     }
 }
 

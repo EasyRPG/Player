@@ -63,6 +63,7 @@ public:
     void Blur();
     void RadialBlur(int angle, int division);
 
+    void SetTransparent(Color col);
     void ToneChange(Tone tone);
     void OpacityChange(int opacity, int bush_depth = 0);
     void Flip(bool flipx, bool flipy);

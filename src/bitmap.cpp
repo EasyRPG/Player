@@ -63,9 +63,19 @@ Bitmap::Bitmap(std::string filename) {
     if (temp == NULL) {
         Output::Error("Couldn't load %s image.\n%s\n", filename.c_str(), IMG_GetError());
     }
+    Color col(0, 0, 0, 0);
+    if (temp->format->BitsPerPixel == 8) {
+        SDL_Color colorkey = temp->format->palette->colors[0];
+        col.red = colorkey.r;
+        col.green = colorkey.g;
+        col.blue = colorkey.b;
+    }
     bitmap = SDL_DisplayFormatAlpha(temp);
     if (bitmap == NULL) {
         Output::Error("Couldn't optimize %s image.\n%s\n", filename.c_str(), SDL_GetError());
+    }
+    if (temp->format->BitsPerPixel == 8) {
+        SetTransparent(col);
     }
     SDL_FreeSurface(temp);
 }
@@ -437,6 +447,30 @@ void Bitmap::RadialBlur(int angle, int division) {
 }
 
 ////////////////////////////////////////////////////////////
+/// Set Transparent
+////////////////////////////////////////////////////////////
+void Bitmap::SetTransparent(Color col) {
+    SDL_LockSurface(bitmap);
+
+    Uint8 *pixels = (Uint8*)bitmap->pixels;
+
+    const int rbyte = MaskGetByte(bitmap->format->Rmask);
+    const int gbyte = MaskGetByte(bitmap->format->Gmask);
+    const int bbyte = MaskGetByte(bitmap->format->Bmask);
+    const int abyte = MaskGetByte(bitmap->format->Amask);
+    for (int i = 0; i < GetHeight(); i++) {
+        for (int j = 0; j < GetWidth(); j++) {
+            Uint8 *pixel = pixels;
+            if (pixel[rbyte] == col.red && pixel[gbyte] == col.green && pixel[bbyte] == col.blue) {
+                pixel[abyte] = 0;
+            }
+            pixels += 4;
+        }
+    }
+    SDL_UnlockSurface(bitmap);
+}
+
+////////////////////////////////////////////////////////////
 /// Tone change
 ////////////////////////////////////////////////////////////
 void Bitmap::ToneChange(Tone tone) {
@@ -444,7 +478,7 @@ void Bitmap::ToneChange(Tone tone) {
 
     SDL_LockSurface(bitmap);
 
-    Uint8 *pixels = (Uint8 *)bitmap->pixels;
+    Uint8 *pixels = (Uint8*)bitmap->pixels;
     
     const int rbyte = MaskGetByte(bitmap->format->Rmask);
     const int gbyte = MaskGetByte(bitmap->format->Gmask);
@@ -487,7 +521,7 @@ void Bitmap::OpacityChange(int opacity, int bush_depth) {
 
     SDL_LockSurface(bitmap);
     
-    Uint8 *pixels = (Uint8 *)bitmap->pixels;
+    Uint8 *pixels = (Uint8*)bitmap->pixels;
     
     int start_bush = max(GetHeight() - bush_depth, 0);
 
