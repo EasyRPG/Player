@@ -108,25 +108,25 @@ void Window_Selectable::Update() {
     if (active && item_max > 0 && index >= 0) {
         if (Input::IsRepeated(Input::DOWN)) {
             if ((column_max == 1 && Input::IsTriggered(Input::DOWN)) || index < item_max - column_max) {
-                Main_Data::game_system->SePlay(Main_Data::data_system->cursor_se);
+                Main_Data::game_system->SePlay(Main_Data::data_system.cursor_se);
                 index = (index + column_max) % item_max;
             }
         }
         if (Input::IsRepeated(Input::UP)) {
             if ((column_max == 1 && Input::IsTriggered(Input::UP)) || index >= column_max) {
-                Main_Data::game_system->SePlay(Main_Data::data_system->cursor_se);
+                Main_Data::game_system->SePlay(Main_Data::data_system.cursor_se);
                 index = (index - column_max + item_max) % item_max;
             }
         }
         if (Input::IsRepeated(Input::RIGHT)) {
             if (column_max >= 2 && index < item_max - 1) {
-                Main_Data::game_system->SePlay(Main_Data::data_system->cursor_se);
+                Main_Data::game_system->SePlay(Main_Data::data_system.cursor_se);
                 index += 1;
             }
         }
         if (Input::IsRepeated(Input::LEFT)) {
             if (column_max >= 2 && index > 0) {
-                Main_Data::game_system->SePlay(Main_Data::data_system->cursor_se);
+                Main_Data::game_system->SePlay(Main_Data::data_system.cursor_se);
                 index -= 1;
             }
         }

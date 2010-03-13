@@ -1,172 +1,121 @@
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////
+/// Headers
+////////////////////////////////////////////////////////////
 #include "ldb_reader.h"
+#include "ldb_chunks.h"
+#include "reader.h"
 
-namespace {
-    unsigned char Void;
-    tChunk ChunkInfo; // informacion del pedazo leido
-    bool return_value;
-    int trash;
-}
+////////////////////////////////////////////////////////////
+/// Read Enemy
+////////////////////////////////////////////////////////////
+RPG::Enemy LDB_Reader::ReadEnemy(FILE* stream) {
+    RPG::Enemy enemy;
+    enemy.ID = Reader::CInteger(stream);
 
-void LDB_reader::mosteractionChunk(FILE * Stream, RPG::Enemy*& e)
-{
-    int datatoread=0,datareaded=0;
-    E_Action *action;
-    datatoread=ReadCompressedInteger(Stream);//numero de datos
-    while (datatoread>datareaded) 
-    { // si no hay mas en el array
-        action = new E_Action();
-        action->id= ReadCompressedInteger(Stream);//lectura de id 1 de array
-        do 
-        {
-            ChunkInfo.ID     = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
-            if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
-                ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
-            switch (ChunkInfo.ID) { // tipo de la primera dimencion
-            case    MonsterActionsChunk_Action:
-                action->kind = ReadCompressedInteger(Stream);
-                break;
-            case MagicblockChunk_Spell_ID:
-                action->basic = ReadCompressedInteger(Stream);
-                break;
-            case MonsterActionsChunk_Skill_ID:
-                action->skill_id = ReadCompressedInteger(Stream);
-                break;
-            case MonsterActionsChunk_Monster_ID:
-                action->monster_id = ReadCompressedInteger(Stream);
-                break;
-            case MonsterActionsChunk_Condition:
-                action->condition = ReadCompressedInteger(Stream);
-                break;
-            case MonsterActionsChunk_Lower_limit:
-                action->lower_limit = ReadCompressedInteger(Stream);
-                break;
-            case MonsterActionsChunk_Upper_limit:
-                action->upper_limit = ReadCompressedInteger(Stream);
-                break;
-            case MonsterActionsChunk_Priority:
-                action->priority = ReadCompressedInteger(Stream);
-                break;
-            case CHUNK_LDB_END_OF_BLOCK:
-                break;
-            default:
-                bool return_value;
-                while (ChunkInfo.Length--) {
-                    return_value = fread(&Void, 1, 1, Stream);   
-                }
-                break;
+    Reader::Chunk chunk_info;
+    do {
+        chunk_info.ID = Reader::CInteger(stream);
+        if (chunk_info.ID == ChunkData::END) {
+            break;
+        }
+        else {
+            chunk_info.length = Reader::CInteger(stream);
+            if (chunk_info.length == 0) continue;
+        }
+        switch (chunk_info.ID) {
+        case ChunkData::END:
+            break;
+        case ChunkEnemy::name:
+            enemy.name = Reader::String(stream, chunk_info.length);
+            break;
+        case ChunkEnemy::battler_name:
+            enemy.battler_name = Reader::String(stream, chunk_info.length);
+            break;
+        case ChunkEnemy::battler_hue:
+            enemy.battler_hue = Reader::CInteger(stream);
+            break;
+        case ChunkEnemy::max_hp:
+            enemy.max_hp = Reader::CInteger(stream);
+            break;
+        case ChunkEnemy::max_sp:
+            enemy.max_sp = Reader::CInteger(stream);
+            break;
+        case ChunkEnemy::attack:
+            enemy.attack = Reader::CInteger(stream);
+            break;
+        case ChunkEnemy::defense:
+            enemy.defense = Reader::CInteger(stream);
+            break;
+        case ChunkEnemy::spirit:
+            enemy.spirit = Reader::CInteger(stream);
+            break;
+        case ChunkEnemy::agility:
+            enemy.agility = Reader::CInteger(stream);
+            break;
+        case ChunkEnemy::transparent:
+            enemy.transparent = Reader::Flag(stream);
+            break;
+        case ChunkEnemy::exp:
+            enemy.exp = Reader::CInteger(stream);
+            break;
+        case ChunkEnemy::gold:
+            enemy.gold = Reader::CInteger(stream);
+            break;
+        case ChunkEnemy::drop_id:
+            enemy.drop_id = Reader::CInteger(stream);
+            break;
+        case ChunkEnemy::drop_prob:
+            enemy.drop_prob = Reader::CInteger(stream);
+            break;
+        case ChunkEnemy::critical_hit:
+            enemy.critical_hit = Reader::Flag(stream);
+            break;
+        case ChunkEnemy::critical_hit_chance:
+            enemy.critical_hit_chance = Reader::CInteger(stream);
+            break;
+        case ChunkEnemy::miss:
+            enemy.miss = Reader::Flag(stream);
+            break;
+        case ChunkEnemy::levitate:
+            enemy.levitate = Reader::Flag(stream);
+            break;
+        case ChunkEnemy::state_ranks_size:
+            Reader::CInteger(stream);
+            break;
+        case ChunkEnemy::state_ranks:
+            enemy.state_ranks = Reader::ArrayUint8(stream, chunk_info.length);
+            break;
+        case ChunkEnemy::attribute_ranks_size:
+            Reader::CInteger(stream);
+            break;
+        case ChunkEnemy::attribute_ranks:
+            enemy.attribute_ranks = Reader::ArrayUint8(stream, chunk_info.length);
+            break;
+        case ChunkEnemy::actions:
+            for (int i = Reader::CInteger(stream); i > 0; i--) {
+                enemy.actions.push_back(ReadEnemyAction(stream));
             }
-        } while (ChunkInfo.ID!=0);
-        e->actions.push_back(action);
-        datareaded++;
-    }
-    ChunkInfo.ID     =1;
-}
-
-void LDB_reader::mosterChunk(FILE * Stream)
-{
-    int datatoread=0,datareaded=0;    
-
-    RPG::Enemy *enemy;
-    datatoread=ReadCompressedInteger(Stream);//numero de datos
-    //printf("Numero de datos -> %d\n", datatoread);
-    while (datatoread>datareaded) 
-    { // si no hay mas en el array
-        enemy = new RPG::Enemy();
-        enemy->id = ReadCompressedInteger(Stream);//lectura de id 1 de array
-        do 
-        {            
-            ChunkInfo.ID = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
-            //printf("%x\n", ChunkInfo.ID);
-            if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
-                ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
-            switch (ChunkInfo.ID) { // tipo de la primera dimencion
-            case MonsterChunk_Name:
-                enemy->name = ReadString(Stream, ChunkInfo.Length);
-                break;
-            case MonsterChunk_Graphicfile:
-                enemy->battler_name = ReadString(Stream, ChunkInfo.Length);
-                break;
-            case MonsterChunk_Huealteration://0x03,
-                enemy->battler_hue = ReadCompressedInteger(Stream);
-                break;
-            case MonsterChunk_MaxHP://0x04,
-                enemy->maxhp = ReadCompressedInteger(Stream);
-                break;
-            case MonsterChunk_MaxMP://0x05,
-                enemy->maxmp = ReadCompressedInteger(Stream);
-                break;
-            case MonsterChunk_Attack://0x06,
-                enemy->str = ReadCompressedInteger(Stream);
-                break;
-            case MonsterChunk_Defense://0x07,
-                enemy->pdef = ReadCompressedInteger(Stream);
-                break;
-            case MonsterChunk_Mind://0x08,
-                enemy->iint = ReadCompressedInteger(Stream);
-                break;
-            case MonsterChunk_Speed://0x09,
-                enemy->agi = ReadCompressedInteger(Stream);
-                break;
-            case MonsterChunk_Translucentgraphic://0x0A,
-                enemy->transparent = ReadCompressedInteger(Stream);
-                break;
-            case MonsterChunk_Experience://0x0B,
-                enemy->exp = ReadCompressedInteger(Stream);
-                break;
-            case MonsterChunk_Gold://0x0C,
-                enemy->gold = ReadCompressedInteger(Stream);
-                break;
-            case MonsterChunk_SpoilsitemID://0x0D,
-                enemy->item_id = ReadCompressedInteger(Stream);
-                break;
-            case MonsterChunk_Spoilschance://0x0E,
-                enemy->treasure_prob = ReadCompressedInteger(Stream);
-                break;
-            case MonsterChunk_Canusecriticalhits://0x15,
-                enemy->critical_hit = ReadCompressedInteger(Stream);
-                break;
-            case MonsterChunk_Criticalhitchance://0x16,
-                enemy->critical_hit_chance = ReadCompressedInteger(Stream);
-                break;
-            case MonsterChunk_Usuallymiss://0x1A,
-                enemy->miss = ReadCompressedInteger(Stream);
-                break;
-            case MonsterChunk_Airborne://0x1C,
-                enemy->levitate = ReadCompressedInteger(Stream);
-                break;
-            case MonsterChunk_Conditionslength://0x1F,
-                trash = ReadCompressedInteger(Stream);
-                break;
-            case MonsterChunk_Conditionseffects://0x20,
-                while (ChunkInfo.Length--) {
-                    return_value = fread(&Void, 1, 1, Stream);
-                    enemy->state_ranks.push_back(Void);
-                }
-                break;
-            case MonsterChunk_Attributeslength://0x21,
-                trash = ReadCompressedInteger(Stream);
-                break;
-            case MonsterChunk_Attributeseffect://0x22,
-                while (ChunkInfo.Length--) {
-                    return_value = fread(&Void, 1, 1, Stream);
-                    enemy->attribute_ranks.push_back(Void);
-                }
-                break;
-            case MonsterChunk_Actionslist://0x2A
-                mosteractionChunk(Stream, enemy);
-                break;
-            case CHUNK_LDB_END_OF_BLOCK:
-                break;
-            default:
-                // saltate un pedazo del tamaño de la longitud
-                bool return_value;
-                while (ChunkInfo.Length--) {
-                    return_value = fread(&Void, 1, 1, Stream);   
-                }
-                break;
-            }
-        } while (ChunkInfo.ID!=0);
-        datareaded++;
-        Main_Data::data_enemies.push_back(enemy);
-    }
+            break;
+        default:
+            fseek(stream, chunk_info.length, SEEK_CUR);
+        }
+    } while(chunk_info.ID != ChunkData::END);
+    return enemy;
 }

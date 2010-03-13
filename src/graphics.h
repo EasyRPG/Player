@@ -45,13 +45,13 @@ namespace Graphics {
     void SetFrameCount(int nframecount);
 
     bool SortDrawable(Drawable* &first, Drawable* &second);
-    void RemoveDrawable(unsigned long id);
+    void RemoveDrawable(unsigned long ID);
 
     extern int fps;
     extern int framerate;
     extern int framecount;
     extern double framerate_interval;
-    extern unsigned long id;
+    extern unsigned long ID;
     extern unsigned long last_tics;
     extern unsigned long last_tics_wait;
     extern unsigned long next_tics_fps;

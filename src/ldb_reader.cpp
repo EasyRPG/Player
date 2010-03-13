@@ -1,138 +1,147 @@
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////
+/// Headers
+////////////////////////////////////////////////////////////
 #include "ldb_reader.h"
-#include "rpg_sound.h"
+#include "ldb_chunks.h"
+#include "reader.h"
 #include "output.h"
 
-namespace {
-    unsigned char Void;
-    tChunk ChunkInfo; // informacion del pedazo leido
-    bool return_value;
-    int trash;
+////////////////////////////////////////////////////////////
+/// Load Database
+////////////////////////////////////////////////////////////
+void LDB_Reader::Load(const std::string& filename) {
+    FILE* stream;
+    stream = fopen(filename.c_str(), "rb");
+    if (!stream) {
+        Output::Error("Couldn't find %s database file.\n", filename);
+    }
+    std::string header = Reader::String(stream, Reader::CInteger(stream));
+    if (header != "LcfDataBase") {
+        Output::Error("%s is not a valid RPG2000 database.\n", filename);
+    }
+    LoadChunks(stream);
+    fclose(stream);
 }
 
-bool LDB_reader::load(const std::string& Filename) 
-{
-    // Open map file to read
-    FILE * Stream;// apertura de archivo
-    Stream = fopen(Filename.c_str(), "rb");
-    if (Stream == NULL) {
-        Output::Error("Couldn't find LDB database");
-        exit(1);
-    }
-    std::string Header = ReadString(Stream); // lectura de cabezera
-    if (Header != "LcfDataBase") // comparacion con cabezera del mapa
-    { // si no concuerda imprime un error y finaliza
-        Output::Error("Reading error: File is not a valid RPG2000 database\n");
-        return false;
-    }
-    GetNextChunk(Stream);
-    fclose(Stream);
-    return true;
-}
+////////////////////////////////////////////////////////////
+/// Load data chunks
+////////////////////////////////////////////////////////////
+void LDB_Reader::LoadChunks(FILE* stream) {
+    Reader::Chunk chunk_info;
 
-void LDB_reader::GetNextChunk(FILE * Stream)
-{
-    unsigned char Void;
-    tChunk ChunkInfo; // informacion del pedazo leido
-    // Loop while we haven't reached the end of the file
-    while (!feof(Stream)) {
-        ChunkInfo.ID     = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
-        ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
-        if (ChunkInfo.Length>0)
-            switch (ChunkInfo.ID) { // segun el tipo
-
-            case CHUNK_Hero_data:
-                heroChunk(Stream);
-                break;
-            case CHUNK_Skill:
-                skillChunk(Stream);
-                break;
-            case CHUNK_Item_data:
-                itemChunk(Stream);
-                break;
-            case CHUNK_Monster:
-                mosterChunk(Stream);
-                break;
-            case CHUNK_MonsterP:
-                mosterpartyChunk(Stream);
-                break;
-            case CHUNK_Terrain:
-                terrainChunk(Stream);
-                break;
-            case CHUNK_Attribute:
-                attributeChunk(Stream);
-                break;
-            case CHUNK_States:
-                statesChunk(Stream);
-                break;
-            case CHUNK_System:
-                systemChunk(Stream);
-                break;
-            /*case CHUNK_Animation:
-                data->animations = animationChunk(Stream);
-                break;
-            case CHUNK_Tileset:
-                data->tilesets = tilesetChunk(Stream);
-                break;*/
-            case CHUNK_String:
-                stringChunk(Stream);
-                break;
-            /*case CHUNK_Event:
-                data->Event = EventChunk(Stream);
-                break;
-            case CHUNK_Switch:
-                data->Switch_Names = Switch_VariableChunk(Stream);
-                break;
-            case CHUNK_Variable:
-                data->Variable_Names = Switch_VariableChunk(Stream);
-                break;
-            case CHUNK_Event1://no existe
-                while (ChunkInfo.Length--) {
-                    bool return_value;
-                    return_value = fread(&Void, 1, 1, Stream);
-                    printf("%d",Void);
-                }
-
-                break;
-            case CHUNK_Event2://no existe
-                while (ChunkInfo.Length--) {
-                    bool return_value;
-                    return_value = fread(&Void, 1, 1, Stream);
-                    printf("%d",Void);
-                }
-                break;
-            case CHUNK_Event3://no existe
-                while (ChunkInfo.Length--) {
-                    bool return_value;
-                    return_value = fread(&Void, 1, 1, Stream);
-                    printf("%d",Void);
-                }
-                break;
-            case CHUNK_Comand:
-                data->Combatcommands=Comand_Chunk(Stream);
-                break;
-            case CHUNK_Profession:
-                data->Professions=Profession_Chunk(Stream);
-                break;
-            case CHUNK_Profession2://no existe
-
-                while (ChunkInfo.Length--) {
-                    bool return_value;
-                    return_value = fread(&Void, 1, 1, Stream);
-                    printf("%d ",Void);
-                }
-                break;
-            case CHUNK_Fightanim:
-                data->Fightanims=Fightanim_Chunk(Stream);
-                break;
-            case CHUNK_LDB_END_OF_BLOCK:
-                break;*/
-            default:
-                // saltate un pedazo del tamaño de la longitud
-                while (ChunkInfo.Length--) {
-                    return_value = fread(&Void, 1, 1, Stream);
-                }
-                break;
+    while (!feof(stream)) {
+        chunk_info.ID = Reader::CInteger(stream);
+        if (chunk_info.ID == ChunkData::END) {
+            break;
+        }
+        else {
+            chunk_info.length = Reader::CInteger(stream);
+            if (chunk_info.length == 0) continue;
+        }
+        switch (chunk_info.ID) {
+        case ChunkData::Actor:
+            for (int i = Reader::CInteger(stream); i > 0; i--) {
+                Main_Data::data_actors.push_back(ReadActor(stream));
             }
-
+            break;
+        case ChunkData::Skill:
+            for (int i = Reader::CInteger(stream); i > 0; i--) {
+                Main_Data::data_skills.push_back(ReadSkill(stream));
+            }
+            break;
+        case ChunkData::Item:
+            for (int i = Reader::CInteger(stream); i > 0; i--) {
+                Main_Data::data_items.push_back(ReadItem(stream));
+            }
+            break;
+        case ChunkData::Enemy:
+            for (int i = Reader::CInteger(stream); i > 0; i--) {
+                Main_Data::data_enemies.push_back(ReadEnemy(stream));
+            }
+            break;
+        case ChunkData::Troop:
+            for (int i = Reader::CInteger(stream); i > 0; i--) {
+                Main_Data::data_troops.push_back(ReadTroop(stream));
+            }
+            break;
+        case ChunkData::Terrain:
+            for (int i = Reader::CInteger(stream); i > 0; i--) {
+                Main_Data::data_terrains.push_back(ReadTerrain(stream));
+            }
+            break;
+        case ChunkData::Attribute:
+            for (int i = Reader::CInteger(stream); i > 0; i--) {
+                Main_Data::data_attributes.push_back(ReadAttribute(stream));
+            }
+            break;
+        case ChunkData::State:
+            for (int i = Reader::CInteger(stream); i > 0; i--) {
+                Main_Data::data_states.push_back(ReadState(stream));
+            }
+            break;
+        case ChunkData::System:
+            Main_Data::data_system = ReadSystem(stream);
+            break;
+        case ChunkData::Animation:
+            for (int i = Reader::CInteger(stream); i > 0; i--) {
+                Main_Data::data_animations.push_back(ReadAnimation(stream));
+            }
+            break;
+        case ChunkData::Chipset:
+            for (int i = Reader::CInteger(stream); i > 0; i--) {
+                Main_Data::data_chipsets.push_back(ReadChipset(stream));
+            }
+            break;
+        case ChunkData::Terms:
+            Main_Data::data_terms = ReadTerms(stream);
+            break;
+        case ChunkData::CommonEvent:
+            for (int i = Reader::CInteger(stream); i > 0; i--) {
+                Main_Data::data_commonevents.push_back(ReadCommonEvent(stream));
+            }
+            break;
+        case ChunkData::Switches:
+            Main_Data::data_switches = ReadSwitches(stream);
+            break;
+        case ChunkData::Variables:
+            Main_Data::data_variables = ReadVariables(stream);
+            break;
+        case ChunkData::BattleCommand:
+            for (int i = Reader::CInteger(stream); i > 0; i--) {
+                Main_Data::data_battlecommands.push_back(ReadBattleCommand(stream));
+            }
+            break;
+        case ChunkData::Class:
+            for (int i = Reader::CInteger(stream); i > 0; i--) {
+                Main_Data::data_classes.push_back(ReadClass(stream));
+            }
+            break;
+        case ChunkData::BattlerAnimation:
+           for (int i = Reader::CInteger(stream); i > 0; i--) {
+                Main_Data::data_battleranimations.push_back(ReadBattlerAnimation(stream));
+            }
+            break;
+        case ChunkData::END:
+            break;
+        default:
+            fseek(stream, chunk_info.length, SEEK_CUR);
+        }
     }
 }

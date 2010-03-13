@@ -84,7 +84,7 @@ public:
     unsigned long GetId();
 
 private:
-    unsigned long _id;
+    unsigned long ID;
     Bitmap* bitmap;
     Rect src_rect;
     bool visible;

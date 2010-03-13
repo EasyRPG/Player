@@ -33,8 +33,8 @@ public:
     Game_System();
     ~Game_System();
 
-    void BgmPlay(RPG::Music* bmg);
-    void SePlay(RPG::Sound* se);
+    void BgmPlay(RPG::Music bmg);
+    void SePlay(RPG::Sound se);
 
     std::string GetSystemName();
     void SetSystemName(std::string nsystem_name);

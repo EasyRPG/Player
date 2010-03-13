@@ -73,7 +73,7 @@ public:
     unsigned long GetId();
 
 protected:
-    unsigned long _id;
+    unsigned long ID;
     Bitmap* windowskin;
     Bitmap* contents;
     bool stretch;

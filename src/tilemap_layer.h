@@ -57,7 +57,7 @@ private:
     int ox;
     int oy;
 
-    unsigned long id;
+    unsigned long ID;
     int layer;
 
     std::vector< std::vector<Sprite*> > sprites;

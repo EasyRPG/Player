@@ -1,23 +1,46 @@
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////
+/// Headers
+////////////////////////////////////////////////////////////
 #include "rpg_skill.h"
 
+////////////////////////////////////////////////////////////
+/// Constructor
+////////////////////////////////////////////////////////////
 RPG::Skill::Skill() {
-    id = 0;
+    ID = 0;
     name = "";
     type = 0;
+    sp_type = 0;
     sp_cost = 0;
+    sp_percent = 1;
     description = "";
-    
-    // type == Normal
     scope = 0;
     animation_id = 0;
     using_message1 = "";
     using_message2 = "";
     failure_message = 0;
     pdef_f = 0;
-    mdef_f = 0;
-    variance = 0;
+    mdef_f = 3;
+    variance = 4;
     power = 0;
-    hit = 0;
+    hit = 100;
     affect_hp = false;
     affect_sp = false;
     affect_attack = false;
@@ -26,15 +49,10 @@ RPG::Skill::Skill() {
     affect_agility = false;
     absorb_damage = false;
     ignore_defense = false;
-    condition_size = 0;
-    attribute_size = 0;
+    state_effect = false;
     affect_attr_defence = false;
-
-    // type == Teleport/Escape
-    sound_effect = new RPG::Sound();
-    
-    // type == Switch
+    battler_animation = 1;
     switch_id = 1;
-    occasion_field = false;
+    occasion_field = true;
     occasion_battle = false;
 }

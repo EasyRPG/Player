@@ -1,3 +1,4 @@
+/*
 #include "ldb_reader.h"
 #include <iostream>
 void stcSound_effect::set_defaults(){
@@ -691,15 +692,15 @@ void stcChipSet::show()
 printf(" \n strName %s",strName.c_str());
 printf(" \n strGraphic %s",strGraphic.c_str());
 
-/*for(i=0; i<vc_sh_Lower_tile_terrain.size() ;i++)
-printf(" \n terrain id title %d %d ",i, vc_sh_Lower_tile_terrain[i]);
+//for(i=0; i<vc_sh_Lower_tile_terrain.size() ;i++)
+//printf(" \n terrain id title %d %d ",i, vc_sh_Lower_tile_terrain[i]);
 
-for(i=0; i<vc_ch_Lower_tile_passable.size() ;i++)
-printf(" \n Lower_tile_passable %d %d ",i, vc_ch_Lower_tile_passable[i]);
+//for(i=0; i<vc_ch_Lower_tile_passable.size() ;i++)
+//printf(" \n Lower_tile_passable %d %d ",i, vc_ch_Lower_tile_passable[i]);
 
-for(i=0; i<vc_ch_Upper_tile_passable.size() ;i++)
-printf(" \n vc_ch_Upper_tile_passable %d %d ",i, vc_ch_Upper_tile_passable[i]);
-*/
+//for(i=0; i<vc_ch_Upper_tile_passable.size() ;i++)
+//printf(" \n vc_ch_Upper_tile_passable %d %d ",i, vc_ch_Upper_tile_passable[i]);
+
 // vc_ch_Lower_tile_passable.set_defaults();// Lower_tile_passable=0x04,
 // vc_ch_Upper_tile_passable.set_defaults();// Upper_tile_passable=0x05,
 printf(" \n Water_animation %d",Water_animation);
@@ -1406,3 +1407,4 @@ printf(" \n Effectiveness_Attribute_number %d",Effectiveness_Attribute_number);
 //vc_int_Combat_Command.set_defaults();  //Combat_Command=0x50 4 bytes one dimention array
 }
 
+*/

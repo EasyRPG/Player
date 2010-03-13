@@ -43,15 +43,20 @@
 #include "rpg_item.h"
 #include "rpg_enemy.h"
 #include "rpg_troop.h"
-#include "rpg_enemy.h"
-#include "rpg_terrain.h"
 #include "rpg_attribute.h"
 #include "rpg_state.h"
-//#include "rpg_animation.h"
-//#include "rpg_chipset.h"
-#include "rpg_glossary.h"
+#include "rpg_terrain.h"
+#include "rpg_animation.h"
+#include "rpg_chipset.h"
+#include "rpg_terms.h"
 #include "rpg_system.h"
-//#include "rpg_common_event.h"
+#include "rpg_commonevent.h"
+#include "rpg_class.h"
+#include "rpg_battlecommand.h"
+#include "rpg_battleranimation.h"
+#include "rpg_sound.h"
+#include "rpg_music.h"
+#include "rpg_eventcommand.h"
 //#include "rpg_map.h"
 //#include "rpg_area.h"
 
@@ -76,23 +81,28 @@ namespace Main_Data {
     extern Game_Player* game_player;
     
     // Database Data (ldb)
-    extern std::vector<RPG::Actor*> data_actors;
-    extern std::vector<RPG::Skill*> data_skills;
-    extern std::vector<RPG::Item*> data_objects;
-    extern std::vector<RPG::Enemy*> data_enemies;
-    extern std::vector<RPG::Troop*> data_troops;
-    extern std::vector<RPG::Terrain*> data_terrains;
-    extern std::vector<RPG::Attribute*> data_attributes;
-    extern std::vector<RPG::State*> data_states;
-    //extern std::vector<RPG::Animation*> data_animations;
-    //extern std::vector<RPG::ChipSet*> data_chipsets;
-    //extern std::vector<RPG::Common_Event*> data_common_events;
-    extern RPG::Glossary* data_words;
-    extern RPG::System* data_system;
+    extern std::vector<RPG::Actor> data_actors;
+    extern std::vector<RPG::Skill> data_skills;
+    extern std::vector<RPG::Item> data_items;
+    extern std::vector<RPG::Enemy> data_enemies;
+    extern std::vector<RPG::Troop> data_troops;
+    extern std::vector<RPG::Terrain> data_terrains;
+    extern std::vector<RPG::Attribute> data_attributes;
+    extern std::vector<RPG::State> data_states;
+    extern std::vector<RPG::Animation> data_animations;
+    extern std::vector<RPG::Chipset> data_chipsets;
+    extern std::vector<RPG::CommonEvent> data_commonevents;
+    extern std::vector<RPG::BattleCommand> data_battlecommands;
+    extern std::vector<RPG::Class> data_classes;
+    extern std::vector<RPG::BattlerAnimation> data_battleranimations;
+    extern RPG::Terms data_terms;
+    extern RPG::System data_system;
+    extern std::vector<std::string> data_switches;
+    extern std::vector<std::string> data_variables;
 
     // Maps and Areas Data (lmu)
-    //extern std::vector<RPG::Map> *data_maps;
-    //extern std::vector<RPG::Area> *data_areas;
+    //extern std::vector<RPG::Map> data_maps;
+    //extern std::vector<RPG::Area> data_areas;
 
     void Cleanup();
 }

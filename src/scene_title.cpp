@@ -53,20 +53,20 @@ Scene_Title::~Scene_Title() {
 ////////////////////////////////////////////////////////////
 void Scene_Title::MainFunction() {    
     // Load Database
-    LDB_reader::load(DATABASE_NAME);
+    LDB_Reader::Load(DATABASE_NAME);
 
     // Create Game System
     Main_Data::game_system = new Game_System();
 
     // Load Title Graphic
     Sprite* title = new Sprite();
-    title->SetBitmap(Cache::Title(Main_Data::data_system->title_name));
+    title->SetBitmap(Cache::Title(Main_Data::data_system.title_name));
     
     // Create Options Window
     std::vector<std::string> options;
-    options.push_back(Main_Data::data_words->new_game);
-    options.push_back(Main_Data::data_words->load_game);
-    options.push_back(Main_Data::data_words->exit_game);
+    options.push_back(Main_Data::data_terms.new_game);
+    options.push_back(Main_Data::data_terms.load_game);
+    options.push_back(Main_Data::data_terms.exit_game);
 
     command_window = new Window_Command(116, options);
     command_window->SetX(160 - command_window->GetWidth() / 2);
@@ -92,7 +92,7 @@ void Scene_Title::MainFunction() {
     }
     
     // Play music
-    Main_Data::game_system->BgmPlay(Main_Data::data_system->title_music);
+    Main_Data::game_system->BgmPlay(Main_Data::data_system.title_music);
 
     // Screen transition
     //Graphics::transition();
@@ -142,7 +142,7 @@ void Scene_Title::CommandNewGame() {
 ////////////////////////////////////////////////////////////
 void Scene_Title::CommandContinue() {
     // Play decision SE
-    Main_Data::game_system->SePlay(Main_Data::data_system->decision_se);
+    Main_Data::game_system->SePlay(Main_Data::data_system.decision_se);
     // Change scene
     //Main_Data::scene = new Scene_Load();
 }
@@ -152,7 +152,7 @@ void Scene_Title::CommandContinue() {
 ////////////////////////////////////////////////////////////
 void Scene_Title::CommandShutdown() {
     // Play decision SE
-    Main_Data::game_system->SePlay(Main_Data::data_system->decision_se);
+    Main_Data::game_system->SePlay(Main_Data::data_system.decision_se);
     // Fade out Music
     Audio::BGS_Fade(800);
     // Shutdown

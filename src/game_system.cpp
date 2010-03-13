@@ -39,19 +39,19 @@ Game_System::~Game_System() {
 ////////////////////////////////////////////////////////////
 /// Audio helpers
 ////////////////////////////////////////////////////////////
-void Game_System::BgmPlay(RPG::Music* bgm) {
+void Game_System::BgmPlay(RPG::Music bgm) {
     //@playing_bgm = bgm
-    if (bgm != NULL && bgm->name != "") {
-        Audio::BGM_Play("Music\\" + bgm->name, bgm->volume, bgm->tempo);
+    if ( bgm.name != "") {
+        Audio::BGM_Play("Music\\" + bgm.name, bgm.volume, bgm.tempo);
     }
     else {
         Audio::BGM_Stop();
     }
     Graphics::FrameReset();
 }
-void Game_System::SePlay(RPG::Sound* se) {
-    if (se != NULL && se->name != "") {
-        Audio::SE_Play("Sound\\" + se->name, se->volume, se->tempo);
+void Game_System::SePlay(RPG::Sound se) {
+    if (se.name != "") {
+        Audio::SE_Play("Sound\\" + se.name, se.volume, se.tempo);
     }
 }
 
@@ -60,7 +60,7 @@ void Game_System::SePlay(RPG::Sound* se) {
 ////////////////////////////////////////////////////////////
 std::string Game_System::GetSystemName() {
     if (system_name == "") {
-        return Main_Data::data_system->windowskin_name;
+        return Main_Data::data_system.system_name;
     }
     else {
         return system_name;

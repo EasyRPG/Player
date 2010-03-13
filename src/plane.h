@@ -62,7 +62,7 @@ public:
     unsigned long GetId();
 
 private:
-    unsigned long _id;
+    unsigned long ID;
     Bitmap* bitmap;
     bool visible;
     int z;

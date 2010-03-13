@@ -1,4 +1,4 @@
-#ifndef LDBSTR_H
+/*#ifndef LDBSTR_H
 #define LDBSTR_H
 #include <string>
 #include <vector>
@@ -677,3 +677,4 @@ void show();
 
 
 #endif
+*/

@@ -1,61 +1,71 @@
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////
+/// Headers
+////////////////////////////////////////////////////////////
 #include "ldb_reader.h"
+#include "ldb_chunks.h"
+#include "reader.h"
 
-namespace {
-    unsigned char Void;
-    tChunk ChunkInfo; // informacion del pedazo leido
-    bool return_value;
-    int trash;
-}
+////////////////////////////////////////////////////////////
+/// Read Attribute
+////////////////////////////////////////////////////////////
+RPG::Attribute LDB_Reader::ReadAttribute(FILE* stream) {
+    RPG::Attribute attribute;
+    attribute.ID = Reader::CInteger(stream);
 
-void LDB_reader::attributeChunk(FILE * Stream)
-{
-    int datatoread=0,datareaded=0;
-
-    RPG::Attribute *attribute;
-    datatoread=ReadCompressedInteger(Stream);//numero de datos
-    while (datatoread>datareaded) 
-    { // si no hay mas en el array
-        attribute = new RPG::Attribute();        
-        attribute->id= ReadCompressedInteger(Stream);//lectura de id 1 de array
-        do 
-        {
-            ChunkInfo.ID = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
-            if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
-                ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
-            switch (ChunkInfo.ID) { // tipo de la primera dimencion
-            case AttributeChunk_Name:
-                attribute->name = ReadString(Stream, ChunkInfo.Length);
-                break;
-            case AttributeChunk_Type://0x02,
-                attribute->type = ReadCompressedInteger(Stream);
-                break;
-            case AttributeChunk_A_damage://0x0B,
-                attribute->a_rate = ReadCompressedInteger(Stream);
-                break;
-            case AttributeChunk_B_damage://0x0C,
-                attribute->b_rate = ReadCompressedInteger(Stream);
-                break;
-            case AttributeChunk_C_damage://0x0F,
-                attribute->c_rate = ReadCompressedInteger(Stream);
-                break;
-            case AttributeChunk_D_damage://0x0F,
-                attribute->d_rate = ReadCompressedInteger(Stream);
-                break;
-            case AttributeChunk_E_damage://0x0F
-                attribute->e_rate = ReadCompressedInteger(Stream);
-                break;
-            case CHUNK_LDB_END_OF_BLOCK:
-                break;
-            default:
-                // saltate un pedazo del tamaño de la longitud
-                while (ChunkInfo.Length--) {
-                    return_value = fread(&Void, 1, 1, Stream);
-                }
-                break;
-            }
-
-        } while (ChunkInfo.ID!=0);
-        datareaded++;
-        Main_Data::data_attributes.push_back(attribute);
-    }
+    Reader::Chunk chunk_info;
+    do {
+        chunk_info.ID = Reader::CInteger(stream);
+        if (chunk_info.ID == ChunkData::END) {
+            break;
+        }
+        else {
+            chunk_info.length = Reader::CInteger(stream);
+            if (chunk_info.length == 0) continue;
+        }
+        switch (chunk_info.ID) {
+        case ChunkData::END:
+            break;
+        case ChunkAttribute::name:
+            attribute.name = Reader::String(stream, chunk_info.length);
+            break;
+        case ChunkAttribute::type:
+            attribute.type = Reader::CInteger(stream);
+            break;
+        case ChunkAttribute::a_rate:
+            attribute.a_rate = Reader::CInteger(stream);
+            break;
+        case ChunkAttribute::b_rate:
+            attribute.b_rate = Reader::CInteger(stream);
+            break;
+        case ChunkAttribute::c_rate:
+            attribute.c_rate = Reader::CInteger(stream);
+            break;
+        case ChunkAttribute::d_rate:
+            attribute.d_rate = Reader::CInteger(stream);
+            break;
+        case ChunkAttribute::e_rate:
+            attribute.e_rate = Reader::CInteger(stream);
+            break;
+        default:
+            fseek(stream, chunk_info.length, SEEK_CUR);
+        }
+    } while(chunk_info.ID != ChunkData::END);
+    return attribute;
 }

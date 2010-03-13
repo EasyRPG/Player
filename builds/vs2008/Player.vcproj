@@ -213,97 +213,177 @@
 				Name="Reader"
 				>
 				<File
-					RelativePath="..\..\src\eventchunks.h"
+					RelativePath="..\..\src\reader.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\ldb_actor.cpp"
+					RelativePath="..\..\src\reader.h"
 					>
 				</File>
-				<File
-					RelativePath="..\..\src\ldb_attribute.cpp"
+				<Filter
+					Name="LDB"
 					>
-				</File>
-				<File
-					RelativePath="..\..\src\ldb_data.cpp"
+					<File
+						RelativePath="..\..\src\ldb_actor.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_animation.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_animationcelldata.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_animationframe.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_animationtiming.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_attribute.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_battlecommand.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_battleranimation.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_battleranimationextension.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_chipset.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_chunks.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_class.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_commonevent.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_enemy.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_enemyaction.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_item.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_learning.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_music.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_reader.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_reader.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_skill.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_sound.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_state.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_switches.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_system.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_terms.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_terrain.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_testbattler.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_troop.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_troopmember.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_trooppage.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_trooppagecondition.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldb_variables.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldbstr.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ldbstr.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="LMU"
 					>
-				</File>
-				<File
-					RelativePath="..\..\src\ldb_data.h"
+				</Filter>
+				<Filter
+					Name="Events"
 					>
-				</File>
-				<File
-					RelativePath="..\..\src\ldb_enemy.cpp"
+					<File
+						RelativePath="..\..\src\event_reader.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\event_reader.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="LSD"
 					>
-				</File>
-				<File
-					RelativePath="..\..\src\ldb_glossary.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\ldb_item.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\ldb_music.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\ldb_reader.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\ldb_reader.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\ldb_skill.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\ldb_sound.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\ldb_state.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\ldb_system.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\ldb_system.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\ldb_terrain.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\ldb_troop.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\ldbchunks.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\ldbstr.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\ldbstr.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\stevent.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\stevent.h"
-					>
-				</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="RPG"
@@ -317,6 +397,38 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\rpg_animation.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_animation.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_animationcelldata.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_animationcelldata.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_animationframe.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_animationframe.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_animationtiming.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_animationtiming.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\rpg_attribute.cpp"
 					>
 				</File>
@@ -325,11 +437,51 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\rpg_e_action.cpp"
+					RelativePath="..\..\src\rpg_battlecommand.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\rpg_e_action.h"
+					RelativePath="..\..\src\rpg_battlecommand.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_battleranimation.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_battleranimation.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_battleranimationextension.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_battleranimationextension.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_chipset.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_chipset.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_class.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_class.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_commonevent.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_commonevent.h"
 					>
 				</File>
 				<File
@@ -341,11 +493,19 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\rpg_glossary.cpp"
+					RelativePath="..\..\src\rpg_enemyaction.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\rpg_glossary.h"
+					RelativePath="..\..\src\rpg_enemyaction.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_eventcommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_eventcommand.h"
 					>
 				</File>
 				<File
@@ -354,6 +514,14 @@
 				</File>
 				<File
 					RelativePath="..\..\src\rpg_item.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_learning.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_learning.h"
 					>
 				</File>
 				<File
@@ -397,6 +565,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\rpg_terms.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_terms.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\rpg_terrain.cpp"
 					>
 				</File>
@@ -418,6 +594,30 @@
 				</File>
 				<File
 					RelativePath="..\..\src\rpg_troop.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_troopmember.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_troopmember.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_trooppage.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_trooppage.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_trooppagecondition.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_trooppagecondition.h"
 					>
 				</File>
 			</Filter>
@@ -765,6 +965,14 @@
 					</File>
 				</Filter>
 			</Filter>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			>
+			<File
+				RelativePath="..\..\resources\icon\icon.rc"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

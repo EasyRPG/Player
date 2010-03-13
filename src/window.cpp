@@ -59,7 +59,7 @@ Window::Window() {
     cursor_frame = 0;
     pause_frame = 0;
 
-    _id = Graphics::id++;
+    ID = Graphics::ID++;
     Graphics::drawable_list.push_back(this);
     Graphics::drawable_list.sort(Graphics::SortDrawable);
 }
@@ -68,7 +68,7 @@ Window::Window() {
 /// Destructor
 ////////////////////////////////////////////////////////////
 Window::~Window() {
-    Graphics::RemoveDrawable(_id);
+    Graphics::RemoveDrawable(ID);
     delete background;
     delete frame;
     delete cursor1;
@@ -469,5 +469,5 @@ void Window::SetContentsOpacity(int ncontents_opacity) {
 /// Get id
 ////////////////////////////////////////////////////////////
 unsigned long Window::GetId() {
-    return _id;
+    return ID;
 }

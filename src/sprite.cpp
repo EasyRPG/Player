@@ -55,7 +55,7 @@ Sprite::Sprite() {
     sprite = NULL;
     flash_duration = 0;
 
-    _id = Graphics::id++;
+    ID = Graphics::ID++;
     Graphics::drawable_list.push_back(this);
     Graphics::drawable_list.sort(Graphics::SortDrawable);
 }
@@ -64,7 +64,7 @@ Sprite::Sprite() {
 /// Destructor
 ////////////////////////////////////////////////////////////
 Sprite::~Sprite() {
-    Graphics::RemoveDrawable(_id);
+    Graphics::RemoveDrawable(ID);
     delete sprite;
 }
 
@@ -282,5 +282,5 @@ void Sprite::SetTone(Tone ntone) {
 /// Get id
 ////////////////////////////////////////////////////////////
 unsigned long Sprite::GetId() {
-    return _id;
+    return ID;
 }

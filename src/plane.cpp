@@ -42,7 +42,7 @@ Plane::Plane() {
 
     plane = NULL;
 
-    _id = Graphics::id++;
+    ID = Graphics::ID++;
     Graphics::drawable_list.push_back(this);
     Graphics::drawable_list.sort(Graphics::SortDrawable);
 }
@@ -51,7 +51,7 @@ Plane::Plane() {
 /// Destructor
 ////////////////////////////////////////////////////////////
 Plane::~Plane() {
-    Graphics::RemoveDrawable(_id);
+    Graphics::RemoveDrawable(ID);
     delete plane;
 }
 
@@ -176,5 +176,5 @@ void Plane::SetTone(Tone ntone) {
 /// Get id
 ////////////////////////////////////////////////////////////
 unsigned long Plane::GetId() {
-    return _id;
+    return ID;
 }

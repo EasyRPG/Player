@@ -1,184 +1,206 @@
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////
+/// Headers
+////////////////////////////////////////////////////////////
 #include "ldb_reader.h"
+#include "ldb_chunks.h"
+#include "reader.h"
 
-namespace {
-    unsigned char Void;
-    tChunk ChunkInfo; // informacion del pedazo leido
-    bool return_value;
-    int trash;
-}
+////////////////////////////////////////////////////////////
+/// Read Item
+////////////////////////////////////////////////////////////
+RPG::Item LDB_Reader::ReadItem(FILE* stream) {
+    RPG::Item item;
+    item.ID = Reader::CInteger(stream);
 
-void LDB_reader::itemChunk(FILE * Stream)
-{
-    int datatoread=0,datareaded=0;
-    RPG::Item *item;
-    datatoread=ReadCompressedInteger(Stream);
-    while (datatoread>datareaded) 
-    {
-        item = new RPG::Item();
-        item->id = ReadCompressedInteger(Stream);//lectura de id 1 de array
-        do 
-        {            
-            ChunkInfo.ID     = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
-            if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
-                ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
-            switch (ChunkInfo.ID) { // tipo de la primera dimencion
-            case ItemChunk_Name:
-                item->name = ReadString(Stream, ChunkInfo.Length);
-                break;
-            case ItemChunk_Description:
-                item->description = ReadString(Stream, ChunkInfo.Length);
-                break;
-            case ItemChunk_Type:
-                item->type = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Cost:
-                item->price = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Uses:
-                item->uses = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Attack:
-                item->atk_points = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Defense:
-                item->pdef_points = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Mind:
-                item->int_points = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Speed:
-                item->agi_points = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Equip:
-                item->two_handed = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_MPcost:
-                item->sp_cost = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Chancetohit:
-                item->hit = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Criticalhit:
-                item->critical_hit = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Battleanimation:
-                item->animation_id = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Preemptiveattack:
-                item->preemptive = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Doubleattack:
-                item->dual_attack = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Attackallenemies:
-                item->attack_all = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Ignoreevasion:
-                item->ignore_evasion = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Preventcriticalhits:
-                item->prevent_critical = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Raiseevasion:
-                item->raise_evasion = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_MPusecutinhalf:
-                item->half_sp_cost = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Noterraindamage:
-                item->no_terrain_damage = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Healsparty:
-                item->entire_party = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_HPrecovery ://0x20,
-                item->recover_hp_rate = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_HPrecoveryvalue://0x21,
-                item->recover_hp = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_MPrecovery://0x22,
-                item->recover_sp_rate = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_MPrecoveryvalue://0x23,
-                item->recover_sp = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Useonfieldonly://0x25,
-                item->ocassion_field = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Onlyondeadheros://0x26,
-                item->ko_only = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_MaxHPmodify://0x29,
-                item->max_hp_points = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_MaxMPmodify://0x2A,
-                item->max_sp_points = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Attackmodify://0x2B,
-                item->atk_points = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Defensemodify://0x2C,
-                item->pdef_points = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Mindmodify://0x2D,
-                item->int_points = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Speedmodify://0x2E,
-                item->agi_points = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Usagemessage://0x33,
-                item->using_messsage = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Switchtoturnon://0x37,
-                item->switch_id = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Useonfield://0x39,
-                item->ocassion_field = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Useinbattle://0x3A,
-                item->ocassion_battle = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Heroeslength://0x3D,
-                trash = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Heroescanuse:
-                while (ChunkInfo.Length--) {
-                    return_value = fread(&Void, 1, 1, Stream);
-                    item->actor_set.push_back(Void);
-                }
-                break;
-            case ItemChunk_Conditionslength://0x3F,
-                trash = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Conditionchanges:
-                while (ChunkInfo.Length--) {
-                    return_value = fread(&Void, 1, 1, Stream);
-                    item->state_set.push_back(Void);
-                }
-                break;
-            case ItemChunk_Attributeslength://0x41,
-                trash = ReadCompressedInteger(Stream);
-                break;
-            case ItemChunk_Attributes:
-                while (ChunkInfo.Length--) {
-                    return_value = fread(&Void, 1, 1, Stream);
-                    item->attribute_set.push_back(Void);
-                }
-                break;
-            case ItemChunk_Chancetochange://0x43
-                item->state_chance = ReadCompressedInteger(Stream);
-                break;
-            case CHUNK_LDB_END_OF_BLOCK:
-                break;
-            default:
-                while (ChunkInfo.Length--) {
-                    return_value = fread(&Void, 1, 1, Stream);
-                }
-                break;
-            }
-        } while (ChunkInfo.ID!=0);
-        datareaded++;
-        Main_Data::data_objects.push_back(item);
-    }
+    Reader::Chunk chunk_info;
+    do {
+        chunk_info.ID = Reader::CInteger(stream);
+        if (chunk_info.ID == ChunkData::END) {
+            break;
+        }
+        else {
+            chunk_info.length = Reader::CInteger(stream);
+            if (chunk_info.length == 0) continue;
+        }
+        switch (chunk_info.ID) {
+        case ChunkData::END:
+            break;
+        case ChunkItem::name:
+            item.name = Reader::String(stream, chunk_info.length);
+            break;
+        case ChunkItem::description:
+            item.description = Reader::String(stream, chunk_info.length);
+            break;
+        case ChunkItem::type:
+            item.type = Reader::CInteger(stream);
+            break;
+        case ChunkItem::price:
+            item.price = Reader::CInteger(stream);
+            break;
+        case ChunkItem::uses:
+            item.uses = Reader::CInteger(stream);
+            break;
+        case ChunkItem::atk_points1:
+            item.atk_points = Reader::CInteger(stream);
+            break;
+        case ChunkItem::def_points1:
+            item.def_points = Reader::CInteger(stream);
+            break;
+        case ChunkItem::spi_points1:
+            item.spi_points = Reader::CInteger(stream);
+            break;
+        case ChunkItem::agi_points1:
+            item.agi_points = Reader::CInteger(stream);
+            break;
+        case ChunkItem::two_handed:
+            item.two_handed = Reader::Flag(stream);
+            break;
+        case ChunkItem::sp_cost:
+            item.sp_cost = Reader::CInteger(stream);
+            break;
+        case ChunkItem::hit:
+            item.hit = Reader::CInteger(stream);
+            break;
+        case ChunkItem::critical_hit:
+            item.critical_hit = Reader::CInteger(stream);
+            break;
+        case ChunkItem::animation_id:
+            item.animation_id = Reader::CInteger(stream);
+            break;
+        case ChunkItem::preemptive:
+            item.preemptive = Reader::Flag(stream);
+            break;
+        case ChunkItem::dual_attack:
+            item.dual_attack = Reader::Flag(stream);
+            break;
+        case ChunkItem::attack_all:
+            item.attack_all = Reader::Flag(stream);
+            break;
+        case ChunkItem::ignore_evasion:
+            item.ignore_evasion = Reader::Flag(stream);
+            break;
+        case ChunkItem::prevent_critical:
+            item.prevent_critical = Reader::Flag(stream);
+            break;
+        case ChunkItem::raise_evasion:
+            item.raise_evasion = Reader::Flag(stream);
+            break;
+        case ChunkItem::half_sp_cost:
+            item.half_sp_cost = Reader::Flag(stream);
+            break;
+        case ChunkItem::no_terrain_damage:
+            item.no_terrain_damage = Reader::Flag(stream);
+            break;
+        case ChunkItem::cursed:
+            item.cursed = Reader::Flag(stream);
+            break;
+        case ChunkItem::entire_party:
+            item.entire_party = Reader::Flag(stream);
+            break;
+        case ChunkItem::recover_hp:
+            item.recover_hp = Reader::CInteger(stream);
+            break;
+        case ChunkItem::recover_hp_rate:
+            item.recover_hp_rate = Reader::CInteger(stream);
+            break;
+        case ChunkItem::recover_sp:
+            item.recover_sp = Reader::CInteger(stream);
+            break;
+        case ChunkItem::recover_sp_rate:
+            item.recover_sp_rate = Reader::CInteger(stream);
+            break;
+        case ChunkItem::ocassion_field1:
+            item.ocassion_field = Reader::Flag(stream);
+            break;
+        case ChunkItem::ko_only:
+            item.ko_only = Reader::Flag(stream);
+            break;
+        case ChunkItem::max_hp_points:
+            item.max_hp_points = Reader::CInteger(stream);
+            break;
+        case ChunkItem::max_sp_points:
+            item.max_sp_points = Reader::CInteger(stream);
+            break;
+        case ChunkItem::atk_points2:
+            item.atk_points = Reader::CInteger(stream);
+            break;
+        case ChunkItem::def_points2:
+            item.def_points = Reader::CInteger(stream);
+            break;
+        case ChunkItem::spi_points2:
+            item.spi_points = Reader::CInteger(stream);
+            break;
+        case ChunkItem::agi_points2:
+            item.agi_points = Reader::CInteger(stream);
+            break;
+        case ChunkItem::using_messsage:
+            item.using_messsage = Reader::CInteger(stream);
+            break;
+        case ChunkItem::skill_id:
+            item.skill_id = Reader::CInteger(stream);
+            break;
+        case ChunkItem::switch_id:
+            item.switch_id = Reader::CInteger(stream);
+            break;
+        case ChunkItem::ocassion_field2:
+            item.ocassion_field = Reader::Flag(stream);
+            break;
+        case ChunkItem::ocassion_battle:
+            item.ocassion_battle = Reader::Flag(stream);
+            break;
+        case ChunkItem::actor_set_size:
+            Reader::CInteger(stream);
+            break;
+        case ChunkItem::actor_set:
+            item.actor_set = Reader::ArrayFlag(stream, chunk_info.length);
+            break;
+        case ChunkItem::state_set_size:
+            Reader::CInteger(stream);
+            break;
+        case ChunkItem::state_set:
+            item.state_set = Reader::ArrayFlag(stream, chunk_info.length);
+            break;
+        case ChunkItem::attribute_set_size:
+            Reader::CInteger(stream);
+            break;
+        case ChunkItem::attribute_set:
+            item.attribute_set = Reader::ArrayFlag(stream, chunk_info.length);
+            break;
+        case ChunkItem::state_chance:
+            item.state_chance = Reader::CInteger(stream);
+            break;
+        case ChunkItem::weapon_animation:
+            item.weapon_animation = Reader::CInteger(stream);
+            break;
+        case ChunkItem::use_skill:
+            item.use_skill = Reader::Flag(stream);
+            break;
+        case ChunkItem::class_set_size:
+            Reader::CInteger(stream);
+            break;
+        case ChunkItem::class_set:
+            item.class_set = Reader::ArrayFlag(stream, chunk_info.length);
+            break;
+        default:
+            fseek(stream, chunk_info.length, SEEK_CUR);
+        }
+    } while(chunk_info.ID != ChunkData::END);
+    return item;
 }

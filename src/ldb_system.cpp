@@ -1,190 +1,201 @@
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////
+/// Headers
+////////////////////////////////////////////////////////////
 #include "ldb_reader.h"
-#include "rpg_system.h"
+#include "ldb_chunks.h"
+#include "reader.h"
 
-namespace {
-    unsigned char Void;
-    tChunk ChunkInfo; // informacion del pedazo leido
-    bool return_value;
-    int trash;
-}
+////////////////////////////////////////////////////////////
+/// Read System
+////////////////////////////////////////////////////////////
+RPG::System LDB_Reader::ReadSystem(FILE* stream) {
+    RPG::System system;
 
-void LDB_reader::systemChunk(FILE * Stream)//movimientos de la pagina
-{
-    short dat;
-    Main_Data::data_system = new RPG::System();
+    Reader::Chunk chunk_info;
     do {
-        ChunkInfo.ID     = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
-        if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
-            ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
-        switch (ChunkInfo.ID) { // tipo de la primera dimencion
-        /*case LDB_ID://0x0A,
-            Main_Data::data_system->intLDB_ID = ReadCompressedInteger(Stream);
-            break;*/
-        case Skiff_graphic://0x0B,
-            Main_Data::data_system->boat_name = ReadString(Stream, ChunkInfo.Length);
-            break;
-        case Boat_graphic://0x0C,
-            Main_Data::data_system->ship_name = ReadString(Stream, ChunkInfo.Length);
-            break;
-        case Airship_graphic://0x0D,
-            Main_Data::data_system->airship_name = ReadString(Stream, ChunkInfo.Length);
-            break;
-        case Skiff_index://0x0E,
-            Main_Data::data_system->boat_index = ReadCompressedInteger(Stream);
-            break;
-        case Boat_index://0x0F,
-            Main_Data::data_system->ship_index = ReadCompressedInteger(Stream);
-            break;
-        case Airship_index://0x10,
-            Main_Data::data_system->airship_index = ReadCompressedInteger(Stream);
-            break;
-        case Title_graphic://0x11,
-            Main_Data::data_system->title_name = ReadString(Stream, ChunkInfo.Length);
-            break;
-        case Game_Over_graphic://0x12,
-            Main_Data::data_system->gameover_name = ReadString(Stream, ChunkInfo.Length);
-            break;
-        case System_graphic://0x13,
-            Main_Data::data_system->windowskin_name = ReadString(Stream, ChunkInfo.Length);
-            break;
-        case System_graphic_2://0x14,
-            Main_Data::data_system->windowskin2_name = ReadString(Stream, ChunkInfo.Length);
-            break;
-        /*case Heroes_in_starting://0x15,
-            Main_Data::data_system->Heroes_in_starting = ReadCompressedInteger(Stream);
-            break;*/
-        case Starting_party://0x16,
-            while (ChunkInfo.Length--) {
-                bool return_value;
-                return_value = fread(&dat, 2, 1, Stream);
-                Main_Data::data_system->party_members.push_back(dat);
-                ChunkInfo.Length--;
-            }
-            break;
-        /*case Num_Comadns_order://0x1A,
-            Main_Data::data_system->intNum_Comadns_order = ReadCompressedInteger(Stream);
-            break;
-        case Comadns_order://0x1B,
-            while (ChunkInfo.Length--) {
-                bool return_value;
-                return_value = fread(&dat, 2, 1, Stream);
-                System->vc_sh_Comadns_order.push_back(dat);
-                ChunkInfo.Length--;
-            }
-            break;*/
-        case Title_music://0x1F,
-            musicChunk(Stream, Main_Data::data_system->title_music);//0x1F,
-            break;
-        case Battle_music://0x20,
-            musicChunk(Stream, Main_Data::data_system->battle_music);//0x20,
-            break;
-        case Battle_end_music://0x21,
-            musicChunk(Stream, Main_Data::data_system->battle_end_music);//0x21,
-            break;
-        case Inn_music://0x21,
-            musicChunk(Stream, Main_Data::data_system->inn_music);//0x22,
-            break;
-        case Skiff_music://0x21,
-            musicChunk(Stream, Main_Data::data_system->boat_music);//0x23,
-            break;
-        case Boat_music://0x21,
-            musicChunk(Stream, Main_Data::data_system->ship_music);//0x24,
-            break;
-        case Airship_music://0x21,
-            musicChunk(Stream, Main_Data::data_system->airship_music);//0x25,
-            break;
-        case Game_Over_music://0x21,
-            musicChunk(Stream, Main_Data::data_system->gameover_music);//0x26,
-            break;
-        case Cursor_SFX://0x21,
-            soundChunk(Stream, Main_Data::data_system->cursor_se);//0x29,
-            break;
-        case Accept_SFX://0x21,
-            soundChunk(Stream, Main_Data::data_system->decision_se);//0x2A,
-            break;
-        case Cancel_SFX://0x21,
-            soundChunk(Stream, Main_Data::data_system->cancel_se);//0x2B,
-            break;
-        case Illegal_SFX://0x21,
-            soundChunk(Stream, Main_Data::data_system->buzzer_se);//0x2C,
-            break;
-        case Battle_SFX://0x21,
-            soundChunk(Stream, Main_Data::data_system->battle_start_se);//0x2D,
-            break;
-        case Escape_SFX://0x21,
-            soundChunk(Stream, Main_Data::data_system->escape_se);//0x2E,
-            break;
-        case Enemy_attack_SFX://0x21,
-            soundChunk(Stream, Main_Data::data_system->enemy_attack_se);//0x2F,
-            break;
-        case Enemy_damaged_SFX://0x21,
-            soundChunk(Stream, Main_Data::data_system->enemy_damaged_se);//0x30,
-            break;
-        case Ally_damaged_SFX://0x21,
-            soundChunk(Stream, Main_Data::data_system->actor_damaged_se);//0x31,
-            break;
-        case Evasion_SFX://0x21,
-            soundChunk(Stream, Main_Data::data_system->evasion_se);//0x32,
-            break;
-        case Enemy_dead_SFX://0x21,
-            soundChunk(Stream, Main_Data::data_system->enemy_collapse_se);//0x33,
-            break;
-        case Item_use_SFX://0x21,
-            soundChunk(Stream, Main_Data::data_system->item_use_se);//0x34,
-            break;
-        case Map_exit_transition://0x3D,
-            Main_Data::data_system->map_exit_transition = ReadCompressedInteger(Stream);
-            break;
-        case Map_enter_transition://0x3E,
-            Main_Data::data_system->map_enter_transition = ReadCompressedInteger(Stream);
-            break;
-        case Battle_start_fadeout://0x3F,
-            Main_Data::data_system->battle_start_fadeout = ReadCompressedInteger(Stream);
-            break;
-        case Battle_start_fadein://0x40,
-            Main_Data::data_system->battle_start_fadein = ReadCompressedInteger(Stream);
-            break;
-        case Battle_end_fadeout://0x41,
-            Main_Data::data_system->battle_end_fadeout = ReadCompressedInteger(Stream);
-            break;
-        case Battle_end_fadein://0x42,
-            Main_Data::data_system->battle_end_fadein = ReadCompressedInteger(Stream);
-            break;
-        /*case Message_background://0x47,
-            Main_Data::data_system->Message_background = ReadCompressedInteger(Stream);
-            break;
-        case Font_id://0x48,
-            Main_Data::data_system->Font = ReadCompressedInteger(Stream);
-            break;
-        case Selected_condition://0x51,
-            Main_Data::data_system->Selected_condition = ReadCompressedInteger(Stream);
-            break;
-        case Selected_hero://0x52,
-            Main_Data::data_system->Selected_hero = ReadCompressedInteger(Stream);
-            break;*/
-        case Battle_test_BG://0x54,
-            Main_Data::data_system->battleback_name = ReadString(Stream, ChunkInfo.Length);
-            break;
-        /*case Battle_test_data://0x55
-            Main_Data::data_system->test_battlers=Batletest(Stream);
-            break;*/
-        /*case Times_saved://0x41,
-            Main_Data::data_system->Times_saved = ReadCompressedInteger(Stream);
-            break;
-        case Show_frame://0x42,
-            Main_Data::data_system->Show_frame = ReadCompressedInteger(Stream);
-            break;
-        case In_battle_anim://0x47,
-            Main_Data::data_system->In_battle_anim = ReadCompressedInteger(Stream);
-            break;*/
-        case CHUNK_LDB_END_OF_BLOCK:
-            break;
-        default:
-            while (ChunkInfo.Length--) {
-                bool return_value;
-                return_value = fread(&Void, 1, 1, Stream);
-            }
+        chunk_info.ID = Reader::CInteger(stream);
+        if (chunk_info.ID == ChunkData::END) {
             break;
         }
-    } while (ChunkInfo.ID!=0);
+        else {
+            chunk_info.length = Reader::CInteger(stream);
+            if (chunk_info.length == 0) continue;
+        }
+        switch (chunk_info.ID) {
+        case ChunkData::END:
+            break;
+        case ChunkSystem::ldb_id:
+            system.ldb_id = Reader::CInteger(stream);
+            break;
+        case ChunkSystem::boat_name:
+            system.boat_name = Reader::String(stream, chunk_info.length);
+            break;
+        case ChunkSystem::ship_name:
+            system.ship_name = Reader::String(stream, chunk_info.length);
+            break;
+        case ChunkSystem::airship_name:
+            system.airship_name = Reader::String(stream, chunk_info.length);
+            break;
+        case ChunkSystem::boat_index:
+            system.boat_index = Reader::CInteger(stream);
+            break;
+        case ChunkSystem::ship_index:
+            system.ship_index = Reader::CInteger(stream);
+            break;
+        case ChunkSystem::airship_index:
+            system.airship_index = Reader::CInteger(stream);
+            break;
+        case ChunkSystem::title_name:
+            system.title_name = Reader::String(stream, chunk_info.length);
+            break;
+        case ChunkSystem::gameover_name:
+            system.gameover_name = Reader::String(stream, chunk_info.length);
+            break;
+        case ChunkSystem::system_name:
+            system.system_name = Reader::String(stream, chunk_info.length);
+            break;
+        case ChunkSystem::system2_name:
+            system.system2_name = Reader::String(stream, chunk_info.length);
+            break;
+        case ChunkSystem::party_size:
+            Reader::CInteger(stream);
+            break;
+        case ChunkSystem::party:
+            system.party = Reader::ArrayShort(stream, chunk_info.length);
+            break;
+        case ChunkSystem::menu_commands_size:
+            Reader::CInteger(stream);
+            break;
+        case ChunkSystem::menu_commands:
+            system.menu_commands = Reader::ArrayShort(stream, chunk_info.length);
+            break;
+        case ChunkSystem::title_music:
+            system.title_music = ReadMusic(stream);
+            break;
+        case ChunkSystem::battle_music:
+            system.battle_music = ReadMusic(stream);
+            break;
+        case ChunkSystem::battle_end_music:
+            system.battle_end_music = ReadMusic(stream);
+            break;
+        case ChunkSystem::inn_music:
+            system.inn_music = ReadMusic(stream);
+            break;
+        case ChunkSystem::boat_music:
+            system.boat_music = ReadMusic(stream);
+            break;
+        case ChunkSystem::ship_music:
+            system.ship_music = ReadMusic(stream);
+            break;
+        case ChunkSystem::airship_music:
+            system.airship_music = ReadMusic(stream);
+            break;
+        case ChunkSystem::gameover_music:
+            system.gameover_music = ReadMusic(stream);
+            break;
+        case ChunkSystem::cursor_se:
+            system.cursor_se = ReadSound(stream);
+            break;
+        case ChunkSystem::decision_se:
+            system.decision_se = ReadSound(stream);
+            break;
+        case ChunkSystem::cancel_se:
+            system.cancel_se = ReadSound(stream);
+            break;
+        case ChunkSystem::buzzer_se:
+            system.buzzer_se = ReadSound(stream);
+            break;
+        case ChunkSystem::battle_se:
+            system.battle_se = ReadSound(stream);
+            break;
+        case ChunkSystem::escape_se:
+            system.escape_se = ReadSound(stream);
+            break;
+        case ChunkSystem::enemy_attack_se:
+            system.enemy_attack_se = ReadSound(stream);
+            break;
+        case ChunkSystem::enemy_damaged_se:
+            system.enemy_damaged_se = ReadSound(stream);
+            break;
+        case ChunkSystem::actor_damaged_se:
+            system.actor_damaged_se = ReadSound(stream);
+            break;
+        case ChunkSystem::dodge_se:
+            system.dodge_se = ReadSound(stream);
+            break;
+        case ChunkSystem::enemy_death_se:
+            system.enemy_death_se = ReadSound(stream);
+            break;
+        case ChunkSystem::item_se:
+            system.item_se = ReadSound(stream);
+            break;
+        case ChunkSystem::transition_out:
+            system.transition_out = Reader::CInteger(stream);
+            break;
+        case ChunkSystem::transition_in:
+            system.transition_in = Reader::CInteger(stream);
+            break;
+        case ChunkSystem::battle_start_fadeout:
+            system.battle_start_fadeout = Reader::CInteger(stream);
+            break;
+        case ChunkSystem::battle_start_fadein:
+            system.battle_start_fadein = Reader::CInteger(stream);
+            break;
+        case ChunkSystem::battle_end_fadeout:
+            system.battle_end_fadeout = Reader::CInteger(stream);
+            break;
+        case ChunkSystem::battle_end_fadein:
+            system.battle_end_fadein = Reader::CInteger(stream);
+            break;
+        case ChunkSystem::message_stretch:
+            system.message_stretch = Reader::CInteger(stream);
+            break;
+        case ChunkSystem::font_id:
+            system.font_id = Reader::CInteger(stream);
+            break;
+        case ChunkSystem::selected_condition:
+            system.selected_condition = Reader::CInteger(stream);
+            break;
+        case ChunkSystem::selected_hero:
+            system.selected_hero = Reader::CInteger(stream);
+            break;
+        case ChunkSystem::battletest_background:
+            system.battletest_background = Reader::String(stream, chunk_info.length);
+            break;
+        case ChunkSystem::battletest_data:
+            for (int i = Reader::CInteger(stream); i > 0; i--) {
+                system.battletest_data.push_back(ReadTestBattler(stream));
+            }
+            break;
+        case ChunkSystem::saved_times:
+            system.saved_times = Reader::CInteger(stream);
+            break;
+        case ChunkSystem::show_frame:
+            system.show_frame = Reader::Flag(stream);
+            break;
+        case ChunkSystem::invert_animations:
+            system.invert_animations = Reader::Flag(stream);
+            break;
+        default:
+            fseek(stream, chunk_info.length, SEEK_CUR);
+        }
+    } while(chunk_info.ID != ChunkData::END);
+    return system;
 }

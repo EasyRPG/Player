@@ -1,57 +1,101 @@
-#ifndef _H_STATE_
-#define _H_STATE_
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
+
+#ifndef _RPG_STATE_H_
+#define _RPG_STATE_H_
+
+////////////////////////////////////////////////////////////
+/// Headers
+////////////////////////////////////////////////////////////
 #include <string>
 
+////////////////////////////////////////////////////////////
+/// RPG::State class
+////////////////////////////////////////////////////////////
 namespace RPG {
-
-class State {
+    class State {
     public:
+        enum Type {
+            Type_battle = 0,
+            Type_map = 1
+        };
+        enum Restriction {
+            Restriction_normal = 0,
+            Restriction_do_nothing = 1,
+            Restriction_attack_enemy = 2,
+            Restriction_attack_ally = 3
+        };
+        enum AffectType {
+            AffectType_nothing = 0,
+            AffectType_doble = 1,
+            AffectType_half = 2
+        };
+        enum ChangeType {
+            ChangeType_nothing = 0,
+            ChangeType_plus = 1,
+            ChangeType_minus = 2
+        };
+
         State();
         
-        int id;
+        int ID;
         std::string name;
-        bool battle_only;
+        int type;
         int color;
         int priority;
-        int restriction; //Sets restrictions (0: none, 1: can't use magic, 2: always attack enemies, 3: always attack allies, 4: can't move).
-        int A_chance;
-        int B_chance;
-        int C_chance;
-        int D_chance;
-        int E_chance;
+        int restriction;
+        int a_rate;
+        int b_rate;
+        int c_rate;
+        int d_rate;
+        int e_rate;
         int hold_turn;
         int auto_release_prob;
-        int shock_release_prob;
-        int type_change; //0: reducir a la mitad 1: doble 2: No cambiar
-        bool atk_mod;
-        bool pdef_mod;
-        bool int_mod;
-        bool agi_mod;
-        int rate_change;
-        bool prevent_skill_use;
-        int min_skill_lvl;
-        bool prevent_magic_use;
-        int min_magic_lvl;
-        std::string ally_enter_state;
-        std::string enemy_enter_state;
-        std::string already_in_state;
-        std::string affected_by_state;
-        std::string status_recovered;
-        int hp_loss;
-        int hp_loss_value;
-        int hp_map_loss;
-        int hp_map_steps;
-        int mp_loss;
-        int mp_loss_value;
-        int mp_map_loss;
-        int mp_map_steps;
-        
-        
-        
-        
-        
+        int release_by_damage;
+        int affect_type;
+        bool affect_attack;
+        bool affect_defense;
+        bool affect_spirit;
+        bool affect_agility;
+        int reduce_hit_ratio;
+        bool avoid_attacks;
+        bool reflect_magic;
+        bool cursed;
+        int battler_animation_id;
+        bool restrict_skill;
+        int restrict_skill_level;
+        bool restrict_magic;
+        int restrict_magic_level;
+        int hp_change_type;
+        int sp_change_type;
+        std::string message_actor;
+        std::string message_enemy;
+        std::string message_already;
+        std::string message_affected;
+        std::string message_recovery;
+        int hp_change_max;
+        int hp_change_val;
+        int hp_change_map_val;
+        int hp_change_map_steps;
+        int sp_change_max;
+        int sp_change_val;
+        int sp_change_map_val;
+        int sp_change_map_steps;
+    };
 };
-    
-}
 
-#endif 
+#endif

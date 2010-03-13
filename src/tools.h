@@ -14,7 +14,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
-#ifndef TOOLS_H
+/*#ifndef TOOLS_H
 #define TOOLS_H
 
 #define PNG 0
@@ -79,3 +79,4 @@
     
 
 #endif
+*/

@@ -1,3 +1,5 @@
+/*
+
 #ifndef EVENTST_H
 #define EVENTST_H
 
@@ -679,3 +681,5 @@
         std:: vector <Event_comand * > EventcommandChunk(FILE * Stream);//instrucciones de pagina de evento
 };
 #endif
+
+*/

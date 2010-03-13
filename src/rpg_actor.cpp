@@ -1,41 +1,74 @@
-#include "rpg_actor.h"
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////
+/// Headers
+////////////////////////////////////////////////////////////
+#include "rpg_actor.h"
+#include "options.h"
+
+////////////////////////////////////////////////////////////
+/// Constructor
+////////////////////////////////////////////////////////////
 RPG::Actor::Actor() {
-    id = 0;
+    ID = 0;
+    name = "";
+    title = "";
+    character_name = "";
     character_index = 0;
     transparent = false;
     initial_level = 1;
-    final_level = 50;
-    critical_hit = false;
-    critical_hit_chance = 0;
+    final_level = RPGMAKER == RPG2K ? 50 : 99;
+    critical_hit = true;
+    critical_hit_chance = 30;
     face_index = 0;
     two_swords_style = false;
     fix_equipment = false;
     auto_battle = false;
     super_guard = false;
-    /*for (int i = 1; i <= final_level; ++i) {
-        parameter_maxhp[i] = 500 + i * 50;
-        parameter_maxsp[i] = 500 + i * 50;
-        parameter_attack[i] = 50 + i * 5;
-        parameter_defense[i] = 50 + i * 5;
-        parameter_spirit[i] = 50 + i * 5;
-        parameter_agility[i] = 50 + i * 5;
-    }*/
-    exp_base = 10;
-    exp_inflation = 50;
+    parameter_maxhp.resize(final_level + 1);
+    parameter_maxsp.resize(final_level + 1);
+    parameter_attack.resize(final_level + 1);
+    parameter_defense.resize(final_level + 1);
+    parameter_spirit.resize(final_level + 1);
+    parameter_agility.resize(final_level + 1);
+    for (int i = 0; i <= final_level; i++) {
+        parameter_maxhp[i] = 1;
+        parameter_maxsp[i] = 0;
+        parameter_attack[i] = 1;
+        parameter_defense[i] = 1;
+        parameter_spirit[i] = 1;
+        parameter_agility[i] = 1;
+    }
+    exp_base = RPGMAKER == RPG2K ? 30 : 300;
+    exp_inflation = RPGMAKER == RPG2K ? 30 : 300;
     exp_correction = 0;
     unarmed_animation = 0;
     weapon_id = 0;
     shield_id = 0;
     armor_id = 0;
-    head_id = 0;
+    helmet_id = 0;
     accessory_id = 0;
-    condition_size = 0;
-    attribute_size = 0;
     
-    rename_skill = false; // 2000
-    skill_name = ""; // 2000
+    // RPG Maker 2000
+    rename_skill = false;
+    skill_name = "";
     
-    class_id = 0; // 2003
-    battler_animation = 1; // 2003
+    // RPG Maker 2003
+    class_id = 0;
+    battler_animation = 1;
 }

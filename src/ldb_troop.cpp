@@ -1,187 +1,69 @@
+//////////////////////////////////////////////////////////////////////////////////
+/// This file is part of EasyRPG Player.
+/// 
+/// EasyRPG Player is free software: you can redistribute it and/or modify
+/// it under the terms of the GNU General Public License as published by
+/// the Free Software Foundation, either version 3 of the License, or
+/// (at your option) any later version.
+/// 
+/// EasyRPG Player is distributed in the hope that it will be useful,
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/// GNU General Public License for more details.
+/// 
+/// You should have received a copy of the GNU General Public License
+/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////
+/// Headers
+////////////////////////////////////////////////////////////
 #include "ldb_reader.h"
+#include "ldb_chunks.h"
+#include "reader.h"
 
-namespace {
-    unsigned char Void;
-    tChunk ChunkInfo; // informacion del pedazo leido
-    bool return_value;
-    int trash;
-}
+////////////////////////////////////////////////////////////
+/// Read Troop
+////////////////////////////////////////////////////////////
+RPG::Troop LDB_Reader::ReadTroop(FILE* stream) {
+    RPG::Troop troop;
+    troop.ID = Reader::CInteger(stream);
 
-void LDB_reader::MonsterPartyMonsterChunk(FILE * Stream, RPG::Troop*& trp)
-{
-    int id,datatoread=0,datareaded=0;
-    datatoread=ReadCompressedInteger(Stream);//numero de datos
-    while (datatoread>datareaded) { // si no hay mas en el array
-        id= ReadCompressedInteger(Stream);//lectura de id 1 de array
-
-        RPG::Member* monster = new RPG::Member();
-        monster->enemy_id = 1;
-        monster->x = 0;
-        monster->y = 0;
-
-        do {
-            ChunkInfo.ID     = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
-            if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
-                ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
-            switch (ChunkInfo.ID) { // tipo de la primera dimencion
-            case    Monster_ID:
-                monster->enemy_id = ReadCompressedInteger(Stream);
-                break;
-            case X_position:
-                monster->x = ReadCompressedInteger(Stream);
-                break;
-            case Y_position:
-                monster->y = ReadCompressedInteger(Stream);
-                break;
-            case CHUNK_LDB_END_OF_BLOCK:
-                break;
-            default:
-                bool return_value;
-                while (ChunkInfo.Length--) {
-                    return_value = fread(&Void, 1, 1, Stream);
-                }
-                break;
+    Reader::Chunk chunk_info;
+    do {
+        chunk_info.ID = Reader::CInteger(stream);
+        if (chunk_info.ID == ChunkData::END) {
+            break;
+        }
+        else {
+            chunk_info.length = Reader::CInteger(stream);
+            if (chunk_info.length == 0) continue;
+        }
+        switch (chunk_info.ID) {
+        case ChunkData::END:
+            break;
+        case ChunkTroop::name:
+            troop.name = Reader::String(stream, chunk_info.length);
+            break;
+        case ChunkTroop::members:
+            for (int i = Reader::CInteger(stream); i > 0; i--) {
+                troop.members.push_back(ReadTroopMember(stream));
             }
-        } while (ChunkInfo.ID!=0);
-        trp->members.push_back(monster);
-        datareaded++;
-    }
-    ChunkInfo.ID     =1;
-}
-
-void LDB_reader::MonsterPartyEventconditionChunk(FILE * Stream, RPG::Page*& pgs)
-{
-    pgs = new RPG::Page();
-    short dat;
-    //datatoread = ReadCompressedInteger(Stream); //numero de datos
-    //while (datatoread>datareaded) { //si no hay mas en el array
-   //     id= ReadCompressedInteger(Stream);//lectura de id 1 de array
-        do {
-            ChunkInfo.ID     = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
-            if (ChunkInfo.ID!=0)
-                ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
-
-            switch (ChunkInfo.ID) { // segun el tipo
-            case Condition_flags:// en el 2003 se usan 2 chars
-                if (ChunkInfo.Length==2)
-                    pgs->condition.flags = fread(&dat, 2, 1, Stream);
-                else
-                    pgs->condition.flags = ReadCompressedInteger(Stream);
-                break;
-            case Switch_A:
-                pgs->condition.switch_a     = ReadCompressedInteger(Stream);
-                break;
-            case Turn_number_A:
-                pgs->condition.turn_number_a     = ReadCompressedInteger(Stream);
-                break;
-            case Lower_limit:
-                pgs->condition.lower_limit     = ReadCompressedInteger(Stream);
-                break;
-            case Upper_limit:
-                pgs->condition.upper_limit     = ReadCompressedInteger(Stream);
-                break;
-            case CHUNK_LDB_END_OF_BLOCK:
-                break;
-            default:
-                bool return_value;
-                while (ChunkInfo.Length--) {
-                    return_value = fread(&Void, 1, 1, Stream);
-                }
-                break;
+            break;
+        case ChunkTroop::terrain_set_size:
+            Reader::CInteger(stream);
+            break;
+        case ChunkTroop::terrain_set:
+            troop.terrain_set = Reader::ArrayFlag(stream, chunk_info.length);
+            break;
+        case ChunkTroop::pages:
+            for (int i = Reader::CInteger(stream); i > 0; i--) {
+                troop.pages.push_back(ReadTroopPage(stream));
             }
-        } while (ChunkInfo.ID!=0);
-   //     datareaded++;
-        //pgs->condition.
-  //  }
-    ChunkInfo.ID=1;
-}
-
-void LDB_reader::MonsterPartyevent_pageChunk(FILE * Stream, RPG::Troop*& trp)
-{
-    int id,datatoread=0,datareaded=0;
-    RPG::Page *Monsterevent;
-    datatoread=ReadCompressedInteger(Stream);//numero de datos
-    while (datatoread>datareaded) { // si no hay mas en el array
-        id= ReadCompressedInteger(Stream);//lectura de id 1 de array
-        do {
-            ChunkInfo.ID     = ReadCompressedInteger(Stream); // lectura de tipo del pedazo
-            if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
-                ChunkInfo.Length = ReadCompressedInteger(Stream); // lectura de su tamaño
-            switch (ChunkInfo.ID) { // tipo de la primera dimencion
-            case Page_conditions:
-                MonsterPartyEventconditionChunk(Stream, Monsterevent);
-                break;
-            case Event_length:
-                int trash;
-                trash = ReadCompressedInteger(Stream);
-                break;
-            //case Event_Monster:
-             /* TODO: Events */
-                //Monsterevent.vcEvent_comand =  Event_parser.EventcommandChunk(Stream);
-             //   break;
-            case CHUNK_LDB_END_OF_BLOCK:
-                break;
-            default:
-                bool return_value;
-                while (ChunkInfo.Length--) {
-                    return_value = fread(&Void, 1, 1, Stream);
-                }
-                break;
-            }
-        } while (ChunkInfo.ID!=0);
-        trp->pages.push_back(Monsterevent);
-        datareaded++;
-    }
-    ChunkInfo.ID     =1;
-}
-
-void LDB_reader::mosterpartyChunk(FILE * Stream)
-{
-    int datatoread=0,datareaded=0;    
-    RPG::Troop *enemy_group;
-    datatoread=ReadCompressedInteger(Stream);//numero de datos
-    while (datatoread>datareaded) 
-    { // si no hay mas en el array
-        enemy_group = new RPG::Troop();
-        enemy_group->id= ReadCompressedInteger(Stream);//lectura de id 1 de array
-        do 
-        {
-            ChunkInfo.ID     = ReadCompressedInteger(Stream);
-            if (ChunkInfo.ID!=0)// si es fin de bloque no leas la longitud
-                ChunkInfo.Length = ReadCompressedInteger(Stream);
-            switch (ChunkInfo.ID) { // tipo de la primera dimencion
-            case MonsterPartyChunk_Name:
-                enemy_group->name = ReadString(Stream, ChunkInfo.Length);
-                break;
-            case MonsterPartyChunk_Monsterdata://0x02,
-                MonsterPartyMonsterChunk(Stream, enemy_group);
-                break;
-            case MonsterPartyChunk_Terrainlength://0x04,
-                int trash;
-                trash = ReadCompressedInteger(Stream);
-                break;
-            case MonsterPartyChunk_Terraindata://0x05,
-                bool return_value;
-                while (ChunkInfo.Length--) {
-                    return_value = fread(&Void, 1, 1, Stream);
-                    enemy_group->terrain_data.push_back(Void);
-                }
-                break;
-            case MonsterPartyChunk_eventpages://0x0B
-                MonsterPartyevent_pageChunk(Stream, enemy_group);
-                break;
-            case CHUNK_LDB_END_OF_BLOCK:
-                break;
-            default:
-                while (ChunkInfo.Length--) {
-                    bool return_value;
-                    return_value = fread(&Void, 1, 1, Stream);
-                }
-                
-                break;
-            }
-        } while (ChunkInfo.ID!=0);
-        Main_Data::data_troops.push_back(enemy_group);
-        datareaded++;
-    }
+            break;
+        default:
+            fseek(stream, chunk_info.length, SEEK_CUR);
+        }
+    } while(chunk_info.ID != ChunkData::END);
+    return troop;
 }

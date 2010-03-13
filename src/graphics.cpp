@@ -33,7 +33,7 @@ namespace Graphics {
     int framerate;
     int framecount;
     double framerate_interval;
-    unsigned long id;
+    unsigned long ID;
     unsigned long last_tics;
     unsigned long last_tics_wait;
     unsigned long next_tics_fps;
@@ -49,7 +49,7 @@ void Graphics::Init() {
     fps = 0;
     framerate = 60;
     framecount = 0;
-    id = 0;
+    ID = 0;
     framerate_interval = 1000.0 / DEFAULT_FPS;
     last_tics = SDL_GetTicks() + (long)framerate_interval;
     next_tics_fps = last_tics + 1000;
@@ -193,10 +193,10 @@ bool Graphics::SortDrawable(Drawable* &first, Drawable* &second) {
 /// Remove Drawable
 ////////////////////////////////////////////////////////////
 struct remove_drawable_id : public std::binary_function<Drawable*, Drawable*, bool> {
-    remove_drawable_id(unsigned long val) : id(val) {}
-    bool operator () (Drawable* &obj) const {return obj->GetId() == id;}
-    unsigned long id;
+    remove_drawable_id(unsigned long val) : ID(val) {}
+    bool operator () (Drawable* &obj) const {return obj->GetId() == ID;}
+    unsigned long ID;
 };
-void Graphics::RemoveDrawable(unsigned long id) {
-    drawable_list.remove_if(remove_drawable_id(id));
+void Graphics::RemoveDrawable(unsigned long ID) {
+    drawable_list.remove_if(remove_drawable_id(ID));
 }

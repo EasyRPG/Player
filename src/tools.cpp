@@ -14,7 +14,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
-#include "tools.h"
+/*#include "tools.h"
 
 #include <cctype>
 #include <iostream>
@@ -23,8 +23,7 @@
 #include <dirent.h>
 #endif
 
-    unsigned long ReadCompressedInteger(FILE * FileStream)
-    {
+    unsigned long ReadCompressedInteger(FILE * FileStream)  {
         unsigned long Value = 0;
         unsigned char Temporal = 0;
 
@@ -114,7 +113,7 @@
         delete Characters;
 
         return String;
-    }
+    }*/
 
 
 /*void ModRGB(SDL_Surface * img, int red,int green,int blue)

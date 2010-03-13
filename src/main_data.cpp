@@ -29,31 +29,36 @@ namespace Main_Data {
     unsigned char scene_type;
     
     // Dynamic Game Data
-    Game_System *game_system = NULL;
-    Game_Temp *game_temp = NULL;
-    Game_Switches *game_switches = NULL;
-    Game_Variables *game_variables = NULL;
-    Game_Screen *game_screen = NULL;
-    Game_Actors *game_actors = NULL;
-    Game_Party *game_party = NULL;
-    Game_Troop *game_troop = NULL;
-    Game_Map *game_map = NULL;
-    Game_Player *game_player = NULL;
+    Game_System* game_system = NULL;
+    Game_Temp* game_temp = NULL;
+    Game_Switches* game_switches = NULL;
+    Game_Variables* game_variables = NULL;
+    Game_Screen* game_screen = NULL;
+    Game_Actors* game_actors = NULL;
+    Game_Party* game_party = NULL;
+    Game_Troop* game_troop = NULL;
+    Game_Map* game_map = NULL;
+    Game_Player* game_player = NULL;
     
     // Database Data (ldb)
-    std::vector<RPG::Actor*> data_actors;
-    std::vector<RPG::Skill*> data_skills;
-    std::vector<RPG::Item*> data_objects;
-    std::vector<RPG::Enemy*> data_enemies;
-    std::vector<RPG::Troop*> data_troops;
-    std::vector<RPG::Terrain*> data_terrains;
-    std::vector<RPG::Attribute*> data_attributes;
-    std::vector<RPG::State*> data_states;
-    //std::vector<RPG::Animation*> data_animations;
-    //std::vector<RPG::ChipSet*> data_chipsets;
-    //std::vector<RPG::Common_Event*> data_common_events;
-    RPG::Glossary* data_words = NULL;
-    RPG::System* data_system = NULL;
+    std::vector<RPG::Actor> data_actors;
+    std::vector<RPG::Skill> data_skills;
+    std::vector<RPG::Item> data_items;
+    std::vector<RPG::Enemy> data_enemies;
+    std::vector<RPG::Troop> data_troops;
+    std::vector<RPG::Terrain> data_terrains;
+    std::vector<RPG::Attribute> data_attributes;
+    std::vector<RPG::State> data_states;
+    std::vector<RPG::Animation> data_animations;
+    std::vector<RPG::Chipset> data_chipsets;
+    std::vector<RPG::CommonEvent> data_commonevents;
+    std::vector<RPG::BattleCommand> data_battlecommands;
+    std::vector<RPG::Class> data_classes;
+    std::vector<RPG::BattlerAnimation> data_battleranimations;
+    RPG::Terms data_terms;
+    RPG::System data_system;
+    std::vector<std::string> data_switches;
+    std::vector<std::string> data_variables;
     
     // Maps and Areas Data (lmu)
     //std::vector<RPG::Map> *data_maps;
@@ -61,6 +66,7 @@ namespace Main_Data {
 }
 
 void Main_Data::Cleanup() {
+    if (scene != NULL) delete scene;
     delete game_system;
     delete game_temp;
     delete game_switches;
@@ -71,31 +77,4 @@ void Main_Data::Cleanup() {
     delete game_troop;
     delete game_map;
     delete game_player;
-
-    for (unsigned int i = 0; i < data_actors.size(); i++) delete data_actors[i];
-    data_actors.clear(); // Get rid of pointers that point to nowhere safe
-
-    for (unsigned int i = 0; i < data_skills.size(); i++) delete data_skills[i];
-    data_skills.clear();
-
-    for (unsigned int i = 0; i < data_objects.size(); i++) delete data_objects[i];
-    data_objects.clear();
-
-    for (unsigned int i = 0; i < data_enemies.size(); i++) delete data_enemies[i];
-    data_enemies.clear();
-
-    for (unsigned int i = 0; i < data_troops.size(); i++) delete data_troops[i];
-    data_troops.clear();
-
-    for (unsigned int i = 0; i < data_terrains.size(); i++) delete data_terrains[i];
-    data_terrains.clear();
-
-    for (unsigned int i = 0; i < data_attributes.size(); i++) delete data_attributes[i];
-    data_attributes.clear();
-
-    for (unsigned int i = 0; i < data_states.size(); i++) delete data_states[i];
-    data_states.clear();
-
-    delete data_words;
-    delete data_system;
 }
