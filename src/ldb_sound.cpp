@@ -29,7 +29,7 @@ RPG::Sound LDB_Reader::ReadSound(FILE* stream) {
     RPG::Sound sound;
  
     Reader::Chunk chunk_info;
-    do {
+    while (!feof(stream)) {
         chunk_info.ID = Reader::CInteger(stream);
         if (chunk_info.ID == ChunkData::END) {
             break;
@@ -39,8 +39,6 @@ RPG::Sound LDB_Reader::ReadSound(FILE* stream) {
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
-        case ChunkData::END:
-            break;
         case ChunkSound::name:
             sound.name = Reader::String(stream, chunk_info.length);
             break;
@@ -56,6 +54,6 @@ RPG::Sound LDB_Reader::ReadSound(FILE* stream) {
         default:
             fseek(stream, chunk_info.length, SEEK_CUR);
         }
-    } while(chunk_info.ID != ChunkData::END);
+    }
     return sound;
 }

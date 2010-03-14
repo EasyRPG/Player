@@ -30,7 +30,7 @@ RPG::AnimationFrame LDB_Reader::ReadAnimationFrame(FILE* stream) {
     Reader::CInteger(stream);
 
     Reader::Chunk chunk_info;
-    do {
+    while (!feof(stream)) {
         chunk_info.ID = Reader::CInteger(stream);
         if (chunk_info.ID == ChunkData::END) {
             break;
@@ -40,8 +40,6 @@ RPG::AnimationFrame LDB_Reader::ReadAnimationFrame(FILE* stream) {
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
-        case ChunkData::END:
-            break;
         case ChunkAnimationFrame::cells:
             for (int i = Reader::CInteger(stream); i > 0; i--) {
                 frame.cells.push_back(ReadAnimationCellData(stream));
@@ -50,6 +48,6 @@ RPG::AnimationFrame LDB_Reader::ReadAnimationFrame(FILE* stream) {
         default:
             fseek(stream, chunk_info.length, SEEK_CUR);
         }
-    } while(chunk_info.ID != ChunkData::END);
+    }
     return frame;
 }

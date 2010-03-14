@@ -30,7 +30,7 @@ RPG::TroopPageCondition LDB_Reader::ReadTroopPageCondition(FILE* stream) {
     unsigned char bitflag;
 
     Reader::Chunk chunk_info;
-    do {
+    while (!feof(stream)) {
         chunk_info.ID = Reader::CInteger(stream);
         if (chunk_info.ID == ChunkData::END) {
             break;
@@ -40,8 +40,6 @@ RPG::TroopPageCondition LDB_Reader::ReadTroopPageCondition(FILE* stream) {
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
-        case ChunkData::END:
-            break;
         case ChunkTroopPageCondition::condition_flags:
             bitflag = Reader::BitFlag(stream);
             condition.switch_a = (bitflag & 0x01) > 0;
@@ -127,6 +125,6 @@ RPG::TroopPageCondition LDB_Reader::ReadTroopPageCondition(FILE* stream) {
         default:
             fseek(stream, chunk_info.length, SEEK_CUR);
         }
-    } while(chunk_info.ID != ChunkData::END);
+    }
     return condition;
 }

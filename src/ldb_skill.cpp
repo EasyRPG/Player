@@ -30,7 +30,7 @@ RPG::Skill LDB_Reader::ReadSkill(FILE* stream) {
     skill.ID = Reader::CInteger(stream);
 
     Reader::Chunk chunk_info;
-    do {
+    while (!feof(stream)) {
         chunk_info.ID = Reader::CInteger(stream);
         if (chunk_info.ID == ChunkData::END) {
             break;
@@ -40,8 +40,6 @@ RPG::Skill LDB_Reader::ReadSkill(FILE* stream) {
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
-        case ChunkData::END:
-            break;
         case ChunkSkill::name:
             skill.name = Reader::String(stream, chunk_info.length);
             break;
@@ -151,6 +149,6 @@ RPG::Skill LDB_Reader::ReadSkill(FILE* stream) {
         default:
             fseek(stream, chunk_info.length, SEEK_CUR);
         }
-    } while(chunk_info.ID != ChunkData::END);
+    }
     return skill;
 }

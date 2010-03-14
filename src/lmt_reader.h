@@ -15,31 +15,24 @@
 /// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////////////////
 
-#ifndef _SCENE_TITLE_H_
-#define _SCENE_TITLE_H_
+#ifndef _LMT_READER_H_
+#define _LMT_READER_H_
 
 ////////////////////////////////////////////////////////////
 /// Headers
 ////////////////////////////////////////////////////////////
-#include "scene.h"
-#include "window_command.h"
+#include <string>
+#include <iostream>
+#include "main_data.h"
 
 ////////////////////////////////////////////////////////////
-/// Scene Title class
+/// LMT Reader namespace
 ////////////////////////////////////////////////////////////
-class Scene_Title: public Scene {
-public:
-    Scene_Title();
-    ~Scene_Title();
-
-    void MainFunction();
-    void Update();
-    void CommandNewGame();
-    void CommandContinue();
-    void CommandShutdown();
-    
-    Window_Command* command_window;
+namespace LMT_Reader {
+    void Load(const std::string &filename);
+    void ReadTreeMap(FILE* stream);
+    RPG::MapInfo ReadMapInfo(FILE* stream);
+    RPG::Encounter ReadEncounter(FILE* stream);
 };
 
 #endif
-

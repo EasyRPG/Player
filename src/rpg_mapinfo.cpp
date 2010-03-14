@@ -15,31 +15,25 @@
 /// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////////////////
 
-#ifndef _SCENE_TITLE_H_
-#define _SCENE_TITLE_H_
-
 ////////////////////////////////////////////////////////////
 /// Headers
 ////////////////////////////////////////////////////////////
-#include "scene.h"
-#include "window_command.h"
+#include "rpg_mapinfo.h"
 
 ////////////////////////////////////////////////////////////
-/// Scene Title class
+/// Constructor
 ////////////////////////////////////////////////////////////
-class Scene_Title: public Scene {
-public:
-    Scene_Title();
-    ~Scene_Title();
-
-    void MainFunction();
-    void Update();
-    void CommandNewGame();
-    void CommandContinue();
-    void CommandShutdown();
-    
-    Window_Command* command_window;
-};
-
-#endif
-
+RPG::MapInfo::MapInfo() {
+    ID = 0;
+    name = "";
+    parent_map = 0;
+    type = 1;
+    music_type = 0;
+    music.name = "(OFF)";
+    background_type = 0;
+    background_name = "";
+    teleport = 0;
+    escape = 0;
+    save = 0;
+    encounter_steps = 25;
+}

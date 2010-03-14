@@ -32,6 +32,7 @@
 #include "bitmap.h"
 #include "sprite.h"
 #include "ldb_reader.h"
+#include "lmt_reader.h"
 #include "cache.h"
 #include "window_command.h"
 
@@ -54,6 +55,7 @@ Scene_Title::~Scene_Title() {
 void Scene_Title::MainFunction() {    
     // Load Database
     LDB_Reader::Load(DATABASE_NAME);
+    LMT_Reader::Load(TREEMAP_NAME);
 
     // Create Game System
     Main_Data::game_system = new Game_System();

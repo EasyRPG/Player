@@ -41,7 +41,7 @@ std::vector<std::string> LDB_Reader::ReadVariables(FILE* stream) {
         switch (chunk_info.ID) {
         case ChunkData::END:
             break;
-        case 0x01:
+        case ChunkVariable::name:
             variables[pos] = Reader::String(stream, chunk_info.length);
             break;
         default:

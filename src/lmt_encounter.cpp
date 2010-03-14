@@ -18,15 +18,15 @@
 ////////////////////////////////////////////////////////////
 /// Headers
 ////////////////////////////////////////////////////////////
-#include "ldb_reader.h"
-#include "ldb_chunks.h"
+#include "lmt_reader.h"
+#include "lmt_chunks.h"
 #include "reader.h"
 
 ////////////////////////////////////////////////////////////
-/// Read BattlerAnimationExtension
+/// Read Encounter
 ////////////////////////////////////////////////////////////
-RPG::BattlerAnimationExtension LDB_Reader::ReadBattlerAnimationExtension(FILE* stream) {
-    RPG::BattlerAnimationExtension extension;
+RPG::Encounter LMT_Reader::ReadEncounter(FILE* stream) {
+    RPG::Encounter encounter;
     Reader::CInteger(stream);
 
     Reader::Chunk chunk_info;
@@ -40,24 +40,12 @@ RPG::BattlerAnimationExtension LDB_Reader::ReadBattlerAnimationExtension(FILE* s
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
-        case ChunkBattlerAnimationExtension::name:
-            extension.name = Reader::String(stream, chunk_info.length);
-            break;
-        case ChunkBattlerAnimationExtension::battler_name:
-            extension.battler_name = Reader::String(stream, chunk_info.length);
-            break;
-        case ChunkBattlerAnimationExtension::battler_index:
-            extension.battler_index = Reader::CInteger(stream);
-            break;
-        case ChunkBattlerAnimationExtension::animation_type:
-            extension.animation_type = Reader::CInteger(stream);
-            break;
-        case ChunkBattlerAnimationExtension::animation_id:
-            extension.animation_id = Reader::CInteger(stream);
+        case ChunkEncounter::ID:
+            encounter.ID = Reader::CInteger(stream);
             break;
         default:
             fseek(stream, chunk_info.length, SEEK_CUR);
         }
     }
-    return extension;
+    return encounter;
 }

@@ -30,7 +30,7 @@ RPG::Learning LDB_Reader::ReadLearning(FILE* stream) {
     Reader::CInteger(stream);
 
     Reader::Chunk chunk_info;
-    do {
+    while (!feof(stream)) {
         chunk_info.ID = Reader::CInteger(stream);
         if (chunk_info.ID == ChunkData::END) {
             break;
@@ -40,8 +40,6 @@ RPG::Learning LDB_Reader::ReadLearning(FILE* stream) {
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
-        case ChunkData::END:
-            break;
         case ChunkLearning::level:
             learning.level = Reader::CInteger(stream);
             break;
@@ -51,6 +49,6 @@ RPG::Learning LDB_Reader::ReadLearning(FILE* stream) {
         default:
             fseek(stream, chunk_info.length, SEEK_CUR);
         }
-    } while(chunk_info.ID != ChunkData::END);
+    }
     return learning;
 }

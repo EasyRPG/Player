@@ -29,7 +29,7 @@ RPG::System LDB_Reader::ReadSystem(FILE* stream) {
     RPG::System system;
 
     Reader::Chunk chunk_info;
-    do {
+    while (!feof(stream)) {
         chunk_info.ID = Reader::CInteger(stream);
         if (chunk_info.ID == ChunkData::END) {
             break;
@@ -39,8 +39,6 @@ RPG::System LDB_Reader::ReadSystem(FILE* stream) {
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
-        case ChunkData::END:
-            break;
         case ChunkSystem::ldb_id:
             system.ldb_id = Reader::CInteger(stream);
             break;
@@ -196,6 +194,6 @@ RPG::System LDB_Reader::ReadSystem(FILE* stream) {
         default:
             fseek(stream, chunk_info.length, SEEK_CUR);
         }
-    } while(chunk_info.ID != ChunkData::END);
+    } 
     return system;
 }

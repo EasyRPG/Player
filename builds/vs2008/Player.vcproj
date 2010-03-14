@@ -355,18 +355,18 @@
 						RelativePath="..\..\src\ldb_variables.cpp"
 						>
 					</File>
-					<File
-						RelativePath="..\..\src\ldbstr.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\src\ldbstr.h"
-						>
-					</File>
 				</Filter>
 				<Filter
 					Name="LMU"
 					>
+					<File
+						RelativePath="..\..\src\lmu_reader.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\lmu_reader.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="Events"
@@ -383,6 +383,30 @@
 				<Filter
 					Name="LSD"
 					>
+				</Filter>
+				<Filter
+					Name="LMT"
+					>
+					<File
+						RelativePath="..\..\src\lmt_chunks.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\lmt_encounter.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\lmt_mapinfo.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\lmt_reader.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\lmt_reader.h"
+						>
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
@@ -485,6 +509,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\rpg_encounter.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_encounter.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\rpg_enemy.cpp"
 					>
 				</File>
@@ -522,6 +554,14 @@
 				</File>
 				<File
 					RelativePath="..\..\src\rpg_learning.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_mapinfo.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_mapinfo.h"
 					>
 				</File>
 				<File
@@ -586,6 +626,14 @@
 				</File>
 				<File
 					RelativePath="..\..\src\rpg_testbattler.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_treemap.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_treemap.h"
 					>
 				</File>
 				<File
@@ -778,14 +826,6 @@
 				</File>
 				<File
 					RelativePath="..\..\src\output.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\tools.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\tools.h"
 					>
 				</File>
 				<Filter

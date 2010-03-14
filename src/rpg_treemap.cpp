@@ -15,31 +15,26 @@
 /// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////////////////
 
-#ifndef _SCENE_TITLE_H_
-#define _SCENE_TITLE_H_
-
 ////////////////////////////////////////////////////////////
 /// Headers
 ////////////////////////////////////////////////////////////
-#include "scene.h"
-#include "window_command.h"
+#include "rpg_treemap.h"
 
 ////////////////////////////////////////////////////////////
-/// Scene Title class
+/// Constructor
 ////////////////////////////////////////////////////////////
-class Scene_Title: public Scene {
-public:
-    Scene_Title();
-    ~Scene_Title();
-
-    void MainFunction();
-    void Update();
-    void CommandNewGame();
-    void CommandContinue();
-    void CommandShutdown();
-    
-    Window_Command* command_window;
-};
-
-#endif
-
+RPG::TreeMap::TreeMap() {
+    active_node = 0;
+    start_map_id = 0;
+    start_x = 0;
+    start_y = 0;
+    boat_map_id = 0;
+    boat_x = 0;
+    boat_y = 0;
+    ship_map_id = 0;
+    ship_x = 0;
+    ship_y = 0;
+    airship_map_id = 0;
+    airship_x = 0;
+    airship_y = 0;
+}

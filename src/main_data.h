@@ -56,7 +56,10 @@
 #include "rpg_battleranimation.h"
 #include "rpg_sound.h"
 #include "rpg_music.h"
+
 #include "rpg_eventcommand.h"
+
+#include "rpg_treemap.h"
 //#include "rpg_map.h"
 //#include "rpg_area.h"
 
@@ -99,6 +102,9 @@ namespace Main_Data {
     extern RPG::System data_system;
     extern std::vector<std::string> data_switches;
     extern std::vector<std::string> data_variables;
+
+    // TreeMap (lmt)
+    extern RPG::TreeMap data_treemap;
 
     // Maps and Areas Data (lmu)
     //extern std::vector<RPG::Map> data_maps;

@@ -676,6 +676,7 @@ namespace LDB_Reader {
     namespace ChunkMusic {
         enum ChunkMusic {
             name    = 0x01, // String
+            fadein  = 0x02, // Integer
             volume  = 0x03, // Integer
             tempo   = 0x04, // Integer
             balance = 0x05  // Integer
@@ -687,6 +688,16 @@ namespace LDB_Reader {
             volume  = 0x03, // Integer
             tempo   = 0x04, // Integer
             balance = 0x05  // Integer
+        };
+    };
+    namespace ChunkSwitch {
+        enum ChunkSwitch {
+            name    = 0x01 // String
+        };
+    };
+    namespace ChunkVariable {
+        enum ChunkVariable {
+            name    = 0x01 // String
         };
     };
 };

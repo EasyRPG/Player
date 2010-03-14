@@ -32,6 +32,7 @@ namespace RPG {
         Music();
         
         std::string name;
+        int fadein;
         int volume;
         int tempo;
         int balance;

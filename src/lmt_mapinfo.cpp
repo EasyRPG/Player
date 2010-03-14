@@ -18,16 +18,17 @@
 ////////////////////////////////////////////////////////////
 /// Headers
 ////////////////////////////////////////////////////////////
+#include "lmt_reader.h"
+#include "lmt_chunks.h"
 #include "ldb_reader.h"
-#include "ldb_chunks.h"
 #include "reader.h"
 
 ////////////////////////////////////////////////////////////
-/// Read EnemyAction
+/// Read MapInfo
 ////////////////////////////////////////////////////////////
-RPG::EnemyAction LDB_Reader::ReadEnemyAction(FILE* stream) {
-    RPG::EnemyAction enemyaction;
-    Reader::CInteger(stream);
+RPG::MapInfo LMT_Reader::ReadMapInfo(FILE* stream) {
+    RPG::MapInfo mapinfo;
+    mapinfo.ID = Reader::CInteger(stream);
 
     Reader::Chunk chunk_info;
     while (!feof(stream)) {
@@ -40,48 +41,53 @@ RPG::EnemyAction LDB_Reader::ReadEnemyAction(FILE* stream) {
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
-        case ChunkEnemyAction::kind:
-            enemyaction.kind = Reader::CInteger(stream);
+        case ChunkMapInfo::name:
+            mapinfo.name = Reader::String(stream, chunk_info.length);
             break;
-        case ChunkEnemyAction::basic:
-            enemyaction.basic = Reader::CInteger(stream);
+        case ChunkMapInfo::parent_map:
+            mapinfo.parent_map = Reader::CInteger(stream);
             break;
-        case ChunkEnemyAction::skill_id:
-            enemyaction.skill_id = Reader::CInteger(stream);
+        case ChunkMapInfo::type:
+            mapinfo.type = Reader::CInteger(stream);
             break;
-        case ChunkEnemyAction::enemy_id:
-            enemyaction.enemy_id = Reader::CInteger(stream);
+        case ChunkMapInfo::music_type:
+            mapinfo.music_type = Reader::CInteger(stream);
             break;
-        case ChunkEnemyAction::condition_type:
-            enemyaction.condition_type = Reader::CInteger(stream);
+        case ChunkMapInfo::music_name:
+            mapinfo.music = LDB_Reader::ReadMusic(stream);
             break;
-        case ChunkEnemyAction::condition_param1:
-            enemyaction.condition_param1 = Reader::CInteger(stream);
+        case ChunkMapInfo::background_type:
+            mapinfo.background_type = Reader::CInteger(stream);
             break;
-        case ChunkEnemyAction::condition_param2:
-            enemyaction.condition_param2 = Reader::CInteger(stream);
+        case ChunkMapInfo::background_name:
+            mapinfo.background_name = Reader::String(stream, chunk_info.length);
             break;
-        case ChunkEnemyAction::switch_id:
-            enemyaction.switch_id = Reader::CInteger(stream);
+        case ChunkMapInfo::teleport:
+            mapinfo.teleport = Reader::CInteger(stream);
             break;
-        case ChunkEnemyAction::switch_on:
-            enemyaction.switch_on = Reader::Flag(stream);
+        case ChunkMapInfo::escape:
+            mapinfo.escape = Reader::CInteger(stream);
             break;
-        case ChunkEnemyAction::switch_on_id:
-            enemyaction.switch_on_id = Reader::CInteger(stream);
+        case ChunkMapInfo::save:
+            mapinfo.save = Reader::CInteger(stream);
             break;
-        case ChunkEnemyAction::switch_off:
-            enemyaction.switch_off = Reader::Flag(stream);
+        case ChunkMapInfo::encounters:
+            for (int i = Reader::CInteger(stream); i > 0; i--) {
+                mapinfo.encounters.push_back(ReadEncounter(stream));
+            }
             break;
-        case ChunkEnemyAction::switch_off_id:
-            enemyaction.switch_off_id = Reader::CInteger(stream);
+        case ChunkMapInfo::encounter_steps:
+            mapinfo.encounter_steps = Reader::CInteger(stream);
             break;
-        case ChunkEnemyAction::rating:
-            enemyaction.rating = Reader::CInteger(stream);
+        case ChunkMapInfo::area_rect:
+            mapinfo.area_rect.x = Reader::Uint32(stream);
+            mapinfo.area_rect.y = Reader::Uint32(stream);
+            mapinfo.area_rect.width = Reader::Uint32(stream) - mapinfo.area_rect.x;
+            mapinfo.area_rect.height = Reader::Uint32(stream) - mapinfo.area_rect.y;
             break;
         default:
             fseek(stream, chunk_info.length, SEEK_CUR);
         }
     }
-    return enemyaction;
+    return mapinfo;
 }

@@ -30,7 +30,7 @@ RPG::Item LDB_Reader::ReadItem(FILE* stream) {
     item.ID = Reader::CInteger(stream);
 
     Reader::Chunk chunk_info;
-    do {
+    while (!feof(stream)) {
         chunk_info.ID = Reader::CInteger(stream);
         if (chunk_info.ID == ChunkData::END) {
             break;
@@ -40,8 +40,6 @@ RPG::Item LDB_Reader::ReadItem(FILE* stream) {
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
-        case ChunkData::END:
-            break;
         case ChunkItem::name:
             item.name = Reader::String(stream, chunk_info.length);
             break;
@@ -201,6 +199,6 @@ RPG::Item LDB_Reader::ReadItem(FILE* stream) {
         default:
             fseek(stream, chunk_info.length, SEEK_CUR);
         }
-    } while(chunk_info.ID != ChunkData::END);
+    }
     return item;
 }

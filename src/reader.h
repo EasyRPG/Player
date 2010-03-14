@@ -35,6 +35,7 @@ namespace Reader {
     };
     unsigned long CInteger(FILE* stream);
     short Short(FILE* stream);
+    long Uint32(FILE* stream);
     bool Flag(FILE* stream);
     unsigned char BitFlag(FILE* stream);
     std::string String(FILE* stream, int lenght);

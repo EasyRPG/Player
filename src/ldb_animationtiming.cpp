@@ -40,8 +40,6 @@ RPG::AnimationTiming LDB_Reader::ReadAnimationTiming(FILE* stream) {
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
-        case ChunkData::END:
-            break;
         case ChunkAnimationTiming::frame:
             timing.frame = Reader::CInteger(stream);
             break;

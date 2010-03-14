@@ -29,7 +29,7 @@ RPG::Music LDB_Reader::ReadMusic(FILE* stream) {
     RPG::Music music;
 
     Reader::Chunk chunk_info;
-    do {
+    while (!feof(stream)) {
         chunk_info.ID = Reader::CInteger(stream);
         if (chunk_info.ID == ChunkData::END) {
             break;
@@ -39,10 +39,11 @@ RPG::Music LDB_Reader::ReadMusic(FILE* stream) {
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
-        case ChunkData::END:
-            break;
         case ChunkMusic::name:
             music.name = Reader::String(stream, chunk_info.length);
+            break;
+        case ChunkMusic::fadein:
+            music.fadein = Reader::CInteger(stream);
             break;
         case ChunkMusic::volume:
             music.volume = Reader::CInteger(stream);
@@ -56,6 +57,6 @@ RPG::Music LDB_Reader::ReadMusic(FILE* stream) {
         default:
             fseek(stream, chunk_info.length, SEEK_CUR);
         }
-    } while(chunk_info.ID != ChunkData::END);
+    }
     return music;
 }

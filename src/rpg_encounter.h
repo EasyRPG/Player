@@ -15,31 +15,19 @@
 /// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////////////////
 
-#ifndef _SCENE_TITLE_H_
-#define _SCENE_TITLE_H_
+#ifndef _RPG_ENCOUNTER_H_
+#define _RPG_ENCOUNTER_H_
 
 ////////////////////////////////////////////////////////////
-/// Headers
+/// RPG::Encounter class
 ////////////////////////////////////////////////////////////
-#include "scene.h"
-#include "window_command.h"
-
-////////////////////////////////////////////////////////////
-/// Scene Title class
-////////////////////////////////////////////////////////////
-class Scene_Title: public Scene {
-public:
-    Scene_Title();
-    ~Scene_Title();
-
-    void MainFunction();
-    void Update();
-    void CommandNewGame();
-    void CommandContinue();
-    void CommandShutdown();
-    
-    Window_Command* command_window;
+namespace RPG {
+    class Encounter {
+    public:
+        Encounter();
+        
+        int ID;
+    };
 };
 
 #endif
-

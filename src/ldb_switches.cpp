@@ -23,7 +23,7 @@
 #include "reader.h"
 
 ////////////////////////////////////////////////////////////
-/// Read Variables
+/// Read Switches
 ////////////////////////////////////////////////////////////
 std::vector<std::string> LDB_Reader::ReadSwitches(FILE* stream) {
     std::vector<std::string> switches;
@@ -41,7 +41,7 @@ std::vector<std::string> LDB_Reader::ReadSwitches(FILE* stream) {
         switch (chunk_info.ID) {
         case ChunkData::END:
             break;
-        case 0x01:
+        case ChunkSwitch::name:
             switches[pos] = Reader::String(stream, chunk_info.length);
             break;
         default:

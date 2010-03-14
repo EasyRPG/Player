@@ -96,9 +96,6 @@ void LDB_Reader::LoadChunks(FILE* stream) {
                 Main_Data::data_states.push_back(ReadState(stream));
             }
             break;
-        case ChunkData::System:
-            Main_Data::data_system = ReadSystem(stream);
-            break;
         case ChunkData::Animation:
             for (int i = Reader::CInteger(stream); i > 0; i--) {
                 Main_Data::data_animations.push_back(ReadAnimation(stream));
@@ -112,16 +109,19 @@ void LDB_Reader::LoadChunks(FILE* stream) {
         case ChunkData::Terms:
             Main_Data::data_terms = ReadTerms(stream);
             break;
-        case ChunkData::CommonEvent:
-            for (int i = Reader::CInteger(stream); i > 0; i--) {
-                Main_Data::data_commonevents.push_back(ReadCommonEvent(stream));
-            }
+        case ChunkData::System:
+            Main_Data::data_system = ReadSystem(stream);
             break;
         case ChunkData::Switches:
             Main_Data::data_switches = ReadSwitches(stream);
             break;
         case ChunkData::Variables:
             Main_Data::data_variables = ReadVariables(stream);
+            break;
+        case ChunkData::CommonEvent:
+            for (int i = Reader::CInteger(stream); i > 0; i--) {
+                Main_Data::data_commonevents.push_back(ReadCommonEvent(stream));
+            }
             break;
         case ChunkData::BattleCommand:
             for (int i = Reader::CInteger(stream); i > 0; i--) {
@@ -137,8 +137,6 @@ void LDB_Reader::LoadChunks(FILE* stream) {
            for (int i = Reader::CInteger(stream); i > 0; i--) {
                 Main_Data::data_battleranimations.push_back(ReadBattlerAnimation(stream));
             }
-            break;
-        case ChunkData::END:
             break;
         default:
             fseek(stream, chunk_info.length, SEEK_CUR);

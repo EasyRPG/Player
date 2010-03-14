@@ -59,6 +59,9 @@ namespace Main_Data {
     RPG::System data_system;
     std::vector<std::string> data_switches;
     std::vector<std::string> data_variables;
+
+    // TreeMap (lmt)
+    RPG::TreeMap data_treemap;
     
     // Maps and Areas Data (lmu)
     //std::vector<RPG::Map> *data_maps;

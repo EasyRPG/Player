@@ -30,7 +30,7 @@ RPG::BattlerAnimation LDB_Reader::ReadBattlerAnimation(FILE* stream) {
     battler_animation.ID = Reader::CInteger(stream);
 
     Reader::Chunk chunk_info;
-    do {
+    while (!feof(stream)) {
         chunk_info.ID = Reader::CInteger(stream);
         if (chunk_info.ID == ChunkData::END) {
             break;
@@ -40,8 +40,6 @@ RPG::BattlerAnimation LDB_Reader::ReadBattlerAnimation(FILE* stream) {
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
-        case ChunkData::END:
-            break;
         case ChunkBattlerAnimation::name:
             battler_animation.name = Reader::String(stream, chunk_info.length);
             break;
@@ -61,6 +59,6 @@ RPG::BattlerAnimation LDB_Reader::ReadBattlerAnimation(FILE* stream) {
         default:
             fseek(stream, chunk_info.length, SEEK_CUR);
         }
-    } while(chunk_info.ID != ChunkData::END);
+    }
     return battler_animation;
 }
