@@ -77,6 +77,28 @@
 #define QUANTITY 32
 
 
+#elif DINGOO
+
+#define DINGOO_BUTTON_UP	273
+#define DINGOO_BUTTON_DOWN	274
+#define DINGOO_BUTTON_LEFT	276 
+#define DINGOO_BUTTON_RIGHT	275 
+#define DINGOO_BUTTON_R	 	8
+#define DINGOO_BUTTON_L	 	9
+#define DINGOO_BUTTON_A	 	306
+#define DINGOO_BUTTON_B	 	308
+#define DINGOO_BUTTON_X	 	32
+#define DINGOO_BUTTON_Y	 	304
+#define DINGOO_BUTTON_SELECT	27
+#define DINGOO_BUTTON_START	13
+
+#define B_DOWN SDL_KEYDOWN
+#define B_UP SDL_KEYUP
+
+#define REG key.keysym.sym
+
+#define QUANTITY 352
+
 #else
 
 // TODO: What if Keyboard and Joystick are both connected? There is only one REG.
@@ -168,6 +190,20 @@ namespace Control
         right_set.set(SDLK_RIGHT);
         left_set.set(SDLK_LEFT);
 
+	#elif DINGOO
+	
+        decision_set.set(DINGOO_BUTTON_X);
+        decision_set.set(DINGOO_BUTTON_A);
+	decision_set.set(DINGOO_BUTTON_START);
+
+        cancel_set.set(DINGOO_BUTTON_Y);
+        cancel_set.set(DINGOO_BUTTON_B);
+	cancel_set.set(DINGOO_BUTTON_SELECT);
+
+        up_set.set(DINGOO_BUTTON_UP);
+        down_set.set(DINGOO_BUTTON_DOWN);
+        right_set.set(DINGOO_BUTTON_RIGHT);
+        left_set.set(DINGOO_BUTTON_LEFT);
 
         #else
 
