@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeLite_Project Name="player2">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00060001N0005Debug0000000000000001N0012Dingux-Debug0000000000000001N0014Dingux-Release0000000000000001N0007Release0000000000000001N0011Win32 Debug0000000000000001N0013Win32 Release000000000000]]>
+    </Plugin>
+  </Plugins>
+  <VirtualDirectory Name="Game">
+    <File Name="../../src/game_actors.cpp"/>
+    <File Name="../../src/game_actors.h"/>
+    <File Name="../../src/game_map.cpp"/>
+    <File Name="../../src/game_map.h"/>
+    <File Name="../../src/game_party.cpp"/>
+    <File Name="../../src/game_party.h"/>
+    <File Name="../../src/game_player.cpp"/>
+    <File Name="../../src/game_player.h"/>
+    <File Name="../../src/game_screen.cpp"/>
+    <File Name="../../src/game_screen.h"/>
+    <File Name="../../src/game_switches.cpp"/>
+    <File Name="../../src/game_switches.h"/>
+    <File Name="../../src/game_system.cpp"/>
+    <File Name="../../src/game_system.h"/>
+    <File Name="../../src/game_temp.cpp"/>
+    <File Name="../../src/game_temp.h"/>
+    <File Name="../../src/game_troop.cpp"/>
+    <File Name="../../src/game_troop.h"/>
+    <File Name="../../src/game_variables.cpp"/>
+    <File Name="../../src/game_variables.h"/>
+    <File Name="../../src/game_actor.cpp"/>
+    <File Name="../../src/game_actor.h"/>
+    <File Name="../../src/game_battler.cpp"/>
+    <File Name="../../src/game_battler.h"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="RPG">
+    <File Name="../../src/rpg_actor.cpp"/>
+    <File Name="../../src/rpg_actor.h"/>
+    <File Name="../../src/rpg_attribute.cpp"/>
+    <File Name="../../src/rpg_attribute.h"/>
+    <File Name="../../src/rpg_enemy.cpp"/>
+    <File Name="../../src/rpg_enemy.h"/>
+    <File Name="../../src/rpg_item.cpp"/>
+    <File Name="../../src/rpg_item.h"/>
+    <File Name="../../src/rpg_skill.cpp"/>
+    <File Name="../../src/rpg_skill.h"/>
+    <File Name="../../src/rpg_sound.cpp"/>
+    <File Name="../../src/rpg_sound.h"/>
+    <File Name="../../src/rpg_state.cpp"/>
+    <File Name="../../src/rpg_state.h"/>
+    <File Name="../../src/rpg_terrain.cpp"/>
+    <File Name="../../src/rpg_terrain.h"/>
+    <File Name="../../src/rpg_troop.cpp"/>
+    <File Name="../../src/rpg_troop.h"/>
+    <File Name="../../src/rpg_system.cpp"/>
+    <File Name="../../src/rpg_system.h"/>
+    <File Name="../../src/rpg_music.cpp"/>
+    <File Name="../../src/rpg_music.h"/>
+    <File Name="../../src/rpg_testbattler.cpp"/>
+    <File Name="../../src/rpg_testbattler.h"/>
+    <File Name="../../src/rpg_cache.cpp"/>
+    <File Name="../../src/rpg_cache.h"/>
+    <File Name="../../src/rpg_animation.cpp"/>
+    <File Name="../../src/rpg_animation.h"/>
+    <File Name="../../src/rpg_animationcelldata.cpp"/>
+    <File Name="../../src/rpg_animationcelldata.h"/>
+    <File Name="../../src/rpg_animationframe.cpp"/>
+    <File Name="../../src/rpg_animationframe.h"/>
+    <File Name="../../src/rpg_animationtiming.cpp"/>
+    <File Name="../../src/rpg_animationtiming.h"/>
+    <File Name="../../src/rpg_battlecommand.cpp"/>
+    <File Name="../../src/rpg_battlecommand.h"/>
+    <File Name="../../src/rpg_battleranimation.cpp"/>
+    <File Name="../../src/rpg_battleranimation.h"/>
+    <File Name="../../src/rpg_battleranimationextension.cpp"/>
+    <File Name="../../src/rpg_battleranimationextension.h"/>
+    <File Name="../../src/rpg_chipset.cpp"/>
+    <File Name="../../src/rpg_chipset.h"/>
+    <File Name="../../src/rpg_class.cpp"/>
+    <File Name="../../src/rpg_class.h"/>
+    <File Name="../../src/rpg_commonevent.cpp"/>
+    <File Name="../../src/rpg_commonevent.h"/>
+    <File Name="../../src/rpg_encounter.cpp"/>
+    <File Name="../../src/rpg_encounter.h"/>
+    <File Name="../../src/rpg_enemyaction.cpp"/>
+    <File Name="../../src/rpg_enemyaction.h"/>
+    <File Name="../../src/rpg_eventcommand.cpp"/>
+    <File Name="../../src/rpg_eventcommand.h"/>
+    <File Name="../../src/rpg_learning.cpp"/>
+    <File Name="../../src/rpg_learning.h"/>
+    <File Name="../../src/rpg_mapinfo.cpp"/>
+    <File Name="../../src/rpg_mapinfo.h"/>
+    <File Name="../../src/rpg_terms.h"/>
+    <File Name="../../src/rpg_terms.cpp"/>
+    <File Name="../../src/rpg_trooppagecondition.cpp"/>
+    <File Name="../../src/rpg_trooppage.h"/>
+    <File Name="../../src/rpg_treemap.cpp"/>
+    <File Name="../../src/rpg_troopmember.cpp"/>
+    <File Name="../../src/rpg_troopmember.h"/>
+    <File Name="../../src/rpg_trooppagecondition.h"/>
+    <File Name="../../src/rpg_trooppage.cpp"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="Reader">
+    <VirtualDirectory Name="LDB">
+      <File Name="../../src/ldb_actor.cpp"/>
+      <File Name="../../src/ldb_attribute.cpp"/>
+      <File Name="../../src/ldb_enemy.cpp"/>
+      <File Name="../../src/ldb_item.cpp"/>
+      <File Name="../../src/ldb_reader.cpp"/>
+      <File Name="../../src/ldb_reader.h"/>
+      <File Name="../../src/ldb_skill.cpp"/>
+      <File Name="../../src/ldb_state.cpp"/>
+      <File Name="../../src/ldb_terrain.cpp"/>
+      <File Name="../../src/ldb_troop.cpp"/>
+      <File Name="../../src/ldbchunks.h"/>
+      <File Name="../../src/ldbstr.cpp"/>
+      <File Name="../../src/ldbstr.h"/>
+      <File Name="../../src/ldb_system.cpp"/>
+      <File Name="../../src/ldb_sound.cpp"/>
+      <File Name="../../src/ldb_music.cpp"/>
+      <File Name="../../src/ldb_system.h"/>
+      <File Name="../../src/ldb_animation.cpp"/>
+      <File Name="../../src/ldb_animationcelldata.cpp"/>
+      <File Name="../../src/ldb_animationframe.cpp"/>
+      <File Name="../../src/ldb_animationtiming.cpp"/>
+      <File Name="../../src/ldb_battlecommand.cpp"/>
+      <File Name="../../src/ldb_battleranimation.cpp"/>
+      <File Name="../../src/ldb_battleranimationextension.cpp"/>
+      <File Name="../../src/ldb_chipset.cpp"/>
+      <File Name="../../src/ldb_chunks.h"/>
+      <File Name="../../src/ldb_class.cpp"/>
+      <File Name="../../src/ldb_commonevent.cpp"/>
+      <File Name="../../src/ldb_enemyaction.cpp"/>
+      <File Name="../../src/ldb_learning.cpp"/>
+      <File Name="../../src/ldb_switches.cpp"/>
+      <File Name="../../src/ldb_terms.cpp"/>
+      <File Name="../../src/ldb_testbattler.cpp"/>
+      <File Name="../../src/ldb_troopmember.cpp"/>
+      <File Name="../../src/ldb_trooppage.cpp"/>
+      <File Name="../../src/ldb_trooppagecondition.cpp"/>
+      <File Name="../../src/ldb_variables.cpp"/>
+    </VirtualDirectory>
+    <File Name="../../src/eventchunks.h"/>
+    <File Name="../../src/stevent.cpp"/>
+    <File Name="../../src/stevent.h"/>
+    <File Name="../../src/reader.cpp"/>
+    <File Name="../../src/reader.h"/>
+    <File Name="../../src/event_reader.cpp"/>
+    <File Name="../../src/event_reader.h"/>
+    <VirtualDirectory Name="LMT">
+      <File Name="../../src/lmt_chunks.h"/>
+      <File Name="../../src/lmt_encounter.cpp"/>
+      <File Name="../../src/lmt_mapinfo.cpp"/>
+      <File Name="../../src/lmt_reader.cpp"/>
+      <File Name="../../src/lmt_reader.h"/>
+      <File Name="../../src/lmu_reader.cpp"/>
+      <File Name="../../src/lmu_reader.h"/>
+    </VirtualDirectory>
+  </VirtualDirectory>
+  <VirtualDirectory Name="Multimedia">
+    <File Name="../../src/audio.cpp"/>
+    <File Name="../../src/audio.h"/>
+    <File Name="../../src/bitmap.cpp"/>
+    <File Name="../../src/bitmap.h"/>
+    <File Name="../../src/color.cpp"/>
+    <File Name="../../src/color.h"/>
+    <File Name="../../src/font.cpp"/>
+    <File Name="../../src/font.h"/>
+    <File Name="../../src/graphics.cpp"/>
+    <File Name="../../src/graphics.h"/>
+    <File Name="../../src/input.cpp"/>
+    <File Name="../../src/input.h"/>
+    <File Name="../../src/plane.cpp"/>
+    <File Name="../../src/plane.h"/>
+    <File Name="../../src/rect.h"/>
+    <File Name="../../src/sprite.cpp"/>
+    <File Name="../../src/sprite.h"/>
+    <File Name="../../src/tilemap.cpp"/>
+    <File Name="../../src/tilemap.h"/>
+    <File Name="../../src/tone.cpp"/>
+    <File Name="../../src/tone.h"/>
+    <File Name="../../src/viewport.cpp"/>
+    <File Name="../../src/viewport.h"/>
+    <File Name="../../src/rect.cpp"/>
+    <File Name="../../src/hslrgb.cpp"/>
+    <File Name="../../src/hslrgb.h"/>
+    <File Name="../../src/output.cpp"/>
+    <File Name="../../src/output.h"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="Scene">
+    <File Name="../../src/scene.h"/>
+    <File Name="../../src/scene_title.cpp"/>
+    <File Name="../../src/scene_title.h"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="Window">
+    <File Name="../../src/window_base.h"/>
+    <File Name="../../src/window_base.cpp"/>
+    <File Name="../../src/window_command.h"/>
+    <File Name="../../src/window_command.cpp"/>
+    <File Name="../../src/window_selectable.cpp"/>
+    <File Name="../../src/window_selectable.h"/>
+    <File Name="../../src/window.cpp"/>
+    <File Name="../../src/window.h"/>
+  </VirtualDirectory>
+  <File Name="../../src/main.cpp"/>
+  <File Name="../../src/main_data.cpp"/>
+  <File Name="../../src/main_data.h"/>
+  <File Name="../../src/tools.cpp"/>
+  <File Name="../../src/tools.h"/>
+  <File Name="../../src/player.cpp"/>
+  <File Name="../../src/player.h"/>
+  <File Name="../../src/msgbox.h"/>
+  <File Name="../../src/msgbox_win.cpp"/>
+  <File Name="../../src/registry_win.cpp"/>
+  <File Name="../../src/filefinder_win.cpp"/>
+  <File Name="../../src/input_buttons.h"/>
+  <File Name="../../src/msgbox_cocoa.cpp"/>
+  <File Name="../../src/filefinder_unix.cpp"/>
+  <File Name="../../src/msgbox_gtk.cpp"/>
+  <File Name="../../src/cache.cpp"/>
+  <File Name="../../src/cache.h"/>
+  <File Name="../../src/input_buttons_os.cpp"/>
+  <File Name="../../src/drawable.h"/>
+  <File Name="../../src/registry_win.h"/>
+  <File Name="../../src/options.h"/>
+  <File Name="../../src/tilemap_layer.h"/>
+  <File Name="../../src/tilemap_layer.cpp"/>
+  <File Name="../../src/filefinder.h"/>
+  <Dependencies Name="Win32 Debug"/>
+  <Dependencies Name="Debug"/>
+  <Dependencies Name="Release"/>
+  <Dependencies Name="Win32 Release"/>
+  <Settings Type="Executable">
+    <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g -fno-rtti -fno-exceptions $(shell sdl-config --cflags) -DUNIX -D_DEBUG -Wall -Wextra -ansi -pedantic -Wno-unused" Required="yes" PreCompiledHeader=""/>
+      <Linker Options="-O2 -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs) " Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="../../bin/testgame/easyrpg" IntermediateDirectory=".obj/Debug" Command="./easyrpg" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="Dingux-Debug" CompilerType="mipsel-linux" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g -fno-rtti -fno-exceptions $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --cflags)  -DDINGOO -D_DEBUG -Wall -Wextra  -pedantic -Wno-unused" Required="yes" PreCompiledHeader=""/>
+      <Linker Options="-O2 -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image -lz $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --libs) " Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="../../bin/testgame/easyrpg.dge" IntermediateDirectory=".obj/Debug" Command="./easyrpg.dge" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="Dingux-Release" CompilerType="mipsel-linux" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-O3 -s -fno-rtti -fno-exceptions $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --cflags) -DDINGOO -ansi " Required="yes" PreCompiledHeader=""/>
+      <Linker Options="-lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image -lz $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --libs)" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="../../bin/testgame/easyrpg.dge" IntermediateDirectory=".obj/Release" Command="./easyrpg.dge" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-O3 -s -fno-rtti -fno-exceptions $(shell sdl-config --cflags) -Wall -Wextra -ansi -pedantic -DUNIX" Required="yes" PreCompiledHeader=""/>
+      <Linker Options="-O2 -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs)" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="../../bin/testgame/easyrpg" IntermediateDirectory=".obj/Release" Command="./easyrpg" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="Win32 Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g -fno-rtti -fno-exceptions -I/usr/local/include/SDL -D_GNU_SOURCE=1 -Dmain=SDL_main -Wall -Wextra -ansi -pedantic -Wno-unused -U__STRICT_ANSI__ -DWIN32" Required="yes" PreCompiledHeader=""/>
+      <Linker Options="-O2 -L/usr/local/lib -mwindows -lmingw32 -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image -lz -lSDLmain -lSDL" Required="yes"/>
+      <ResourceCompiler Options="" Required="yes"/>
+      <General OutputFile="../../bin/testgame/easyrpg.exe" IntermediateDirectory=".obj/Debug" Command="./easyrpg.exe" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="Win32 Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-O3 -s -fno-rtti -fno-exceptions -I/usr/local/include/SDL -D_GNU_SOURCE=1 -Dmain=SDL_main -Wall -Wextra -ansi -pedantic  -U__STRICT_ANSI__ -DWIN32" Required="yes" PreCompiledHeader=""/>
+      <Linker Options="-O2 -mwindows -lmingw32 -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image -lz -lSDLmain -lSDL" Required="yes"/>
+      <ResourceCompiler Options="" Required="yes"/>
+      <General OutputFile="../../bin/testgame/easyrpg.exe" IntermediateDirectory=".obj/Release" Command="./easyrpg.exe" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+    </Configuration>
+    <GlobalSettings>
+      <Compiler Options=""/>
+      <Linker Options=""/>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
+  </Settings>
+  <Dependencies Name="Dingux-Release"/>
+</CodeLite_Project>
