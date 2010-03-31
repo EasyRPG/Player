@@ -15,9 +15,9 @@
 /// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////////////////
 
-#ifndef WIN32
-    #error This build doesn't target windows platforms
-#endif
+#ifdef WIN32
+    
+
 
 #ifndef _REGISTRY_H_
 #define _REGISTRY_H_
@@ -36,4 +36,5 @@ namespace Registry {
     int ReadBinValue(HKEY hkey, std::string key, std::string val, unsigned char* bin);
 };
 
+#endif
 #endif

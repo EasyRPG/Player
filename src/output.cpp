@@ -21,7 +21,9 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
-#include <conio.h>
+#ifdef WIN32
+	#include <conio.h>
+#endif
 #include <stdarg.h>
 #include "output.h"
 #include "options.h"
@@ -54,7 +56,7 @@ void Output::ErrorStr(std::string err){
         #ifdef MSVC
             _getch();
         #else
-            getch();
+            getchar();
         #endif
     }
     else if (OUTPUT_TYPE == OUTPUT_FILE) {

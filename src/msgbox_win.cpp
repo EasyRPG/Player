@@ -15,9 +15,9 @@
 /// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////////////////
 
-#ifndef WIN32
-    #error This build doesn't target windows platforms
-#endif
+#ifdef WIN32
+    
+
 
 ////////////////////////////////////////////////////////////
 /// Headers
@@ -65,3 +65,4 @@ void MsgBox::Error(std::string msg, std::string title) {
 void MsgBox::Warning(std::string msg, std::string title) {
     MessageBox(NULL, s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK | MB_ICONEXCLAMATION);
 }
+#endif

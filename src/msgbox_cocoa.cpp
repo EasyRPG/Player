@@ -15,9 +15,9 @@
 /// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////////////////
 
-#ifndef COCOA
-    #error This build doesn't support cocoa
-#endif
+#ifdef COCOA
+    
+
 
 ////////////////////////////////////////////////////////////
 /// Headers
@@ -71,3 +71,4 @@ void MsgBox::Warning(std::string msg, std::string title) {
         informativeTextWithFormat:nsMessage];
     [alert runModal];
 }
+#endif

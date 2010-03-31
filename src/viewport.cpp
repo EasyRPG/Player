@@ -1,6 +1,7 @@
 #include "viewport.h"
 #include "graphics.h"
-#include "zobj.h"
+//TODO create zobj.h
+//#include "zobj.h"
 
 Viewport::Viewport(int ix, int iy, int iwidth, int iheight)
 {
@@ -11,15 +12,15 @@ Viewport::Viewport(int ix, int iy, int iwidth, int iheight)
     
     rect.x = ix;
     rect.y = iy;
-    rect.w = iwidth;
-    rect.h = iheight;
+    rect.width = iwidth;
+    rect.height = iheight;
 
     visible = true;
     z = 0;
     ox = 0;
     oy = 0;
-    color = new Color(0, 0, 0);
-    tone = new Tone(0, 0, 0);
+    color = new Color(0, 0, 0, 0);
+    tone = new Tone(0, 0, 0, 0);
 }
 
 Viewport::Viewport(Rect *irect)
@@ -32,15 +33,15 @@ Viewport::Viewport(Rect *irect)
 //    viewport = viewport;
     rect.x = irect->x;
     rect.y = irect->y;
-    rect.w = irect->w;
-    rect.h = irect->h;
+    rect.width = irect->width;
+    rect.height = irect->height;
 
     visible = true;
     z = 0;
     ox = 0;
     oy = 0;
-    color = new Color(0, 0, 0);
-    tone = new Tone(0, 0, 0);
+    color = new Color(0, 0, 0, 0);
+    tone = new Tone(0, 0, 0, 0);
 }
 
 Viewport::~Viewport()
@@ -115,8 +116,8 @@ void Viewport::set_rect(Rect* nrect)
 {
     rect.x = nrect->x;
     rect.y = nrect->y;
-    rect.w = nrect->w;
-    rect.h = nrect->h;
+    rect.width = nrect->width;
+    rect.height = nrect->height;
 }
 
 void Viewport::set_visible(bool nvisible)
@@ -152,8 +153,11 @@ void Viewport::set_tone(Tone* ntone)
 void Viewport::add_viewport(int id, Viewport *viewport)
 {
     viewports[id] = viewport;
+	//TODO implements ZObj
+	/*
     ZObj zobj((*viewport).get_z(), id, TYPE_VIEWPORT, 0);
     ZObj::zlist.push_back(zobj);
+	*/
 }
 
 void Viewport::remove_viewport(int id)

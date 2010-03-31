@@ -15,9 +15,9 @@
 /// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////////////////
 
-#ifndef UNIX
-    #error This build doesn't target unix platforms
-#endif
+#if UNIX || DINGOO
+    
+
 
 ////////////////////////////////////////////////////////////
 /// Headers
@@ -25,7 +25,9 @@
 #include <iostream>
 #include <fstream>
 #include <ctype.h>
-#include "filedinder.h"
+#include <string.h>
+#include <dirent.h>
+#include "filefinder.h"
 
 ////////////////////////////////////////////////////////////
 /// Global Variables
@@ -33,6 +35,7 @@
 namespace FileFinder {
     std::string fonts_path;
     std::string rtp_path;
+	std::string rtp_paths[3];
 }
 
 ////////////////////////////////////////////////////////////
@@ -48,7 +51,7 @@ void FileFinder::Init() {
 /// To upper
 ////////////////////////////////////////////////////////////
 static std::string str_toupper(std::string str) {
-    string new_str = "";
+    std::string new_str = "";
 
     for (unsigned int i = 0; i <= str.length(); i++) {
         new_str += (char)toupper((int)str[i]);
@@ -56,7 +59,7 @@ static std::string str_toupper(std::string str) {
     return new_str;
 }
 static std::string str_toupper(char* str) {
-    string new_str = "";
+    std::string new_str = "";
 
     for (unsigned int i = 0; i <= strlen(str); i++) {
         new_str += (char)toupper((int)str[i]);
@@ -67,31 +70,17 @@ static std::string str_toupper(char* str) {
 ////////////////////////////////////////////////////////////
 /// Check if file exists
 ////////////////////////////////////////////////////////////
-static std::string fexists(std::string filename) {
-    std::string path = "";
-    
-    int pos = filename.find_last_of("/\\");
-    std::string directory = filename.substr(0, pos);
-    std::string name = str_toupper(filename.substr(pos + 1));
-    
-    if (directory.lenght() == 0) {
-        directory = ".\\";
-    }
+static bool fexists(std::string filename) {
+	
+	FILE *tempFile;
 
-    DIR* dir = opendir(directory);
-    if (dir) {
-        std::string file;
-        dirent* d_ent;
-        while (d_ent = readdir(dir)) {
-            file = str_toupper(d_ent->d_name);
-            if (file.compare(name)) {
-                path += directory;
-                path += file;
-                break;
-            }
-        }
-    }
-    return path;
+    if(tempFile = fopen(filename.c_str(), "r"))
+	{
+		fclose(tempFile);
+		return true;
+	}
+	return false;
+	
 }
 
 ////////////////////////////////////////////////////////////
@@ -99,8 +88,8 @@ static std::string fexists(std::string filename) {
 ////////////////////////////////////////////////////////////
 std::string slasher(std::string str) {
 	for(unsigned int i = 0; i < str.length(); i++) {
-		if (str[i] == '/') {
-			str[i] = '\\';
+		if (str[i] == '\\') {
+			str[i] = '/';
 		}
 	}
 	return str;
@@ -110,6 +99,7 @@ std::string slasher(std::string str) {
 /// Find image
 ////////////////////////////////////////////////////////////
 std::string FileFinder::FindImage(std::string name) {
+	
 	name = slasher(name);
 	std::string path = name;
 	if (fexists(path)) return path;
@@ -137,6 +127,7 @@ std::string FileFinder::FindImage(std::string name) {
 			if (fexists(path)) return path;
 		}
 	}
+
 	return "";
 }
 
@@ -195,3 +186,5 @@ std::string FileFinder::FindFont(std::string name) {
 
 	return "";
 }
+
+#endif

@@ -15,9 +15,8 @@
 /// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GTK
-    #error This build doesn't support GTK
-#endif
+#ifdef GTK
+    
 
 ////////////////////////////////////////////////////////////
 /// Headers
@@ -74,3 +73,4 @@ void MsgBox::Warning(std::string msg, std::string title) {
     gtk_dialog_run(GTK_DIALOG(werror));
     gtk_widget_destroy(werror);
 }
+#endif

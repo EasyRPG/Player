@@ -63,14 +63,16 @@ int CCache::load_graphic(const std::string& filename, res_type type)
     }
 
     Bitmap* btmp;
-    btmp = new Bitmap(name, id);
+    btmp = new Bitmap(name);
     
     /* Check if the constructor actually failed */
+	//TODO Implements is_zombie()
+	/*
     if (btmp->is_zombie()) {
         delete btmp;
         return -1;
     }
-
+	*/
     switch (type) {
         case BACKDROP:
             break;

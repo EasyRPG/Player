@@ -17,7 +17,9 @@
 
 #ifndef WIN32
 #ifndef UNIX
-    #error This build doesn't target an os
+#ifndef DINGOO
+    #error "This build doesn't target an os"
+#endif
 #endif
 #endif
 

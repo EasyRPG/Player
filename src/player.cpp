@@ -43,7 +43,12 @@ namespace Player {
 /// Initialize
 ////////////////////////////////////////////////////////////
 void Player::Init() {
-    int flags = SDL_INIT_VIDEO | SDL_INIT_TIMER;
+    Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_TIMER;
+#ifdef DINGOO
+	Uint32 videoFlags = SDL_SWSURFACE;
+#else
+	int videoFlags = SDL_HWSURFACE;
+#endif
 #ifdef _DEBUG
     flags |= SDL_INIT_NOPARACHUTE;
 #endif
@@ -52,7 +57,7 @@ void Player::Init() {
     }
     atexit(SDL_Quit);
 
-    main_window = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_HWSURFACE);
+    main_window = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, BPP, videoFlags);
     if (!main_window) {
         Output::Error("EasyRPG Player couldn't initialize %dx%dx%d video mode.\n%s\n", SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_GetError());
     }
@@ -155,6 +160,10 @@ void Player::Exit() {
 /// Switch fullscreen
 ////////////////////////////////////////////////////////////
 void Player::ToggleFullscreen() {
+	#ifdef DINGOO
+		fullscreen = false;
+		return;
+	#endif
     Uint32 flags = main_window->flags;
     SDL_FreeSurface(main_window);
     main_window = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, flags ^ SDL_FULLSCREEN);

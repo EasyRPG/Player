@@ -15,9 +15,9 @@
 /// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////////////////
 
-#ifndef WIN32
-    #error This build doesn't target windows platforms
-#endif
+#ifdef WIN32
+    
+
 
 ////////////////////////////////////////////////////////////
 /// Headers
@@ -184,3 +184,4 @@ std::string FileFinder::FindFont(std::string name) {
 
     return "";
 }
+#endif

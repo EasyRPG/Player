@@ -15,9 +15,9 @@
 /// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////////////////
 
-#ifndef WIN32
-    #error This build doesn't target windows platforms
-#endif
+#ifdef WIN32
+
+
 
 ////////////////////////////////////////////////////////////
 /// Headers
@@ -103,3 +103,4 @@ int Registry::ReadBinValue(HKEY hkey, std::string key, std::string val, unsigned
 
     return size;
 }
+#endif

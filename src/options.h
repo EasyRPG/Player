@@ -41,6 +41,9 @@
 /// SCREEN_WIDTH SCREEN_HEIGHT
 ///   Screen default width and height.
 ///
+/// BPP
+///   Screen bits per pixel
+///
 /// ALLOW_FULLSCREEN_TOGGLE
 ///   Allows user to change fullscreen state.
 ///
@@ -54,6 +57,11 @@
 #define GAME_TITLE "EasyRPG Player"
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 240
+#ifdef DINGOO
+	#define BPP	16
+#else
+	#define BPP 32
+#endif
 #define ALLOW_FULLSCREEN_TOGGLE true
 #define RUN_FULLSCREEN false
 #define PAUSE_GAME_WHEN_FOCUS_LOST true
@@ -95,7 +103,11 @@
 /// OUTPUT_FILE
 ///   Name of the file for output.
 ////////////////////////////////////////////////////////////
-#define OUTPUT_TYPE OUTPUT_MSGBOX
+#if DINGOO || UNIX
+	#define OUTPUT_TYPE OUTPUT_FILE
+#else
+	#define OUTPUT_TYPE OUTPUT_MSGBOX
+#endif
 #define OUTPUT_FILENAME "log.txt"
 
 #endif

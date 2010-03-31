@@ -24,6 +24,8 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <string.h>
+#include <stdio.h>
 
 ////////////////////////////////////////////////////////////
 /// Reader namespace
