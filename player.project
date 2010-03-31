@@ -131,9 +131,6 @@
     <File Name="src/attributes/Player.h"/>
     <File Name="src/attributes/CActor.cpp"/>
   </VirtualDirectory>
-  <Dependencies Name="Release"/>
-  <Dependencies Name="Win32 Release"/>
-  <Dependencies Name="Debug"/>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g $(shell sdl-config --cflags)" Required="yes" PreCompiledHeader=""/>
@@ -245,5 +242,8 @@
       <ResourceCompiler Options=""/>
     </GlobalSettings>
   </Settings>
+  <Dependencies Name="Debug"/>
+  <Dependencies Name="Release"/>
   <Dependencies Name="Win32 Debug"/>
+  <Dependencies Name="Win32 Release"/>
 </CodeLite_Project>
