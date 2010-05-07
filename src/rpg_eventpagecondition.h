@@ -15,27 +15,31 @@
 /// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////////////////
 
-#ifndef _LMU_READER_H_
-#define _LMU_READER_H_
+#ifndef _RPG_EVENTPAGECONDITION_H_
+#define _RPG_EVENTPAGECONDITION_H_
 
 ////////////////////////////////////////////////////////////
-/// Headers
+/// RPG::EventPageCondition class
 ////////////////////////////////////////////////////////////
-#include <string>
-#include <iostream>
-#include "main_data.h"
-
-////////////////////////////////////////////////////////////
-/// LMU Reader namespace
-////////////////////////////////////////////////////////////
-namespace LMU_Reader {
-    RPG::Map LoadMap(const std::string &filename);
-    RPG::Map ReadMapData(FILE* stream);
-    RPG::Event ReadEvent(FILE* stream);
-    RPG::EventPage ReadEventPage(FILE* stream);
-    RPG::EventPageCondition ReadEventPageCondition(FILE* stream);
-    RPG::MoveRoute ReadMoveRoute(FILE* stream);
-    RPG::MoveCommand ReadMoveCommand(FILE* stream);
+namespace RPG {
+    class EventPageCondition {
+    public:
+        EventPageCondition();
+        
+        bool switch_a;
+        bool switch_b;
+        bool variable;
+        bool item;
+        bool actor;
+        bool timer;
+        int switch_a_id;
+        int switch_b_id;
+        int variable_id;
+        int variable_value;
+        int item_id;
+        int actor_id;
+        int timer_sec;
+    };
 };
 
 #endif

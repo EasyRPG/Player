@@ -15,27 +15,26 @@
 /// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////////////////
 
-#ifndef _LMU_READER_H_
-#define _LMU_READER_H_
-
 ////////////////////////////////////////////////////////////
 /// Headers
 ////////////////////////////////////////////////////////////
-#include <string>
-#include <iostream>
-#include "main_data.h"
+#include "rpg_eventpage.h"
 
 ////////////////////////////////////////////////////////////
-/// LMU Reader namespace
+/// Constructor
 ////////////////////////////////////////////////////////////
-namespace LMU_Reader {
-    RPG::Map LoadMap(const std::string &filename);
-    RPG::Map ReadMapData(FILE* stream);
-    RPG::Event ReadEvent(FILE* stream);
-    RPG::EventPage ReadEventPage(FILE* stream);
-    RPG::EventPageCondition ReadEventPageCondition(FILE* stream);
-    RPG::MoveRoute ReadMoveRoute(FILE* stream);
-    RPG::MoveCommand ReadMoveCommand(FILE* stream);
-};
-
-#endif
+RPG::EventPage::EventPage() {
+    ID = 0;
+    character_name = "";
+    tile_id = 0;
+    character_dir = 2;
+    character_pattern = 1;
+    translucent = false;
+    move_type = 1;
+    move_frequency = 3;
+    trigger = 0;
+    priority_type = 0;
+    overlap = false;
+    animation_type = 0;
+    move_speed = 3;
+}

@@ -360,6 +360,30 @@
 					Name="LMU"
 					>
 					<File
+						RelativePath="..\..\src\lmu_chunks.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\lmu_event.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\lmu_eventpage.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\lmu_eventpagecondition.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\lmu_movecommand.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\lmu_moveroute.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\..\src\lmu_reader.cpp"
 						>
 					</File>
@@ -533,11 +557,35 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\rpg_event.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_event.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\rpg_eventcommand.cpp"
 					>
 				</File>
 				<File
 					RelativePath="..\..\src\rpg_eventcommand.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_eventpage.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_eventpage.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_eventpagecondition.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_eventpagecondition.h"
 					>
 				</File>
 				<File
@@ -557,11 +605,35 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\rpg_map.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_map.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\rpg_mapinfo.cpp"
 					>
 				</File>
 				<File
 					RelativePath="..\..\src\rpg_mapinfo.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_movecommand.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_movecommand.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_moveroute.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\rpg_moveroute.h"
 					>
 				</File>
 				<File

@@ -15,27 +15,39 @@
 /// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////////////////
 
-#ifndef _LMU_READER_H_
-#define _LMU_READER_H_
-
 ////////////////////////////////////////////////////////////
 /// Headers
 ////////////////////////////////////////////////////////////
-#include <string>
-#include <iostream>
-#include "main_data.h"
+#include "rpg_map.h"
 
 ////////////////////////////////////////////////////////////
-/// LMU Reader namespace
+/// Constructor
 ////////////////////////////////////////////////////////////
-namespace LMU_Reader {
-    RPG::Map LoadMap(const std::string &filename);
-    RPG::Map ReadMapData(FILE* stream);
-    RPG::Event ReadEvent(FILE* stream);
-    RPG::EventPage ReadEventPage(FILE* stream);
-    RPG::EventPageCondition ReadEventPageCondition(FILE* stream);
-    RPG::MoveRoute ReadMoveRoute(FILE* stream);
-    RPG::MoveCommand ReadMoveCommand(FILE* stream);
-};
+RPG::Map::Map() {
+    ID = 0;
+    chipset_id = 1;
+    width = 20;
+    height = 15;
+    scroll_type = 0;
+    parallax_flag = false;
+    parallax_name = "";
+    parallax_loop_x = false;
+    parallax_loop_y = false;
+    parallax_auto_loop_x = false;
+    parallax_sx = 0;
+    parallax_auto_loop_y = false;
+    parallax_sy = 0;
+    save_times = 0;
 
-#endif
+    generator_flag = false;
+    generator_mode = 0;
+    generator_tiles = 0;
+    generator_width = 20;
+    generator_height = 15;
+    generator_surround = false;
+    generator_upper_wall = false;
+    generator_floor_b = false;
+    generator_floor_c = false;
+    generator_extra_b = false;
+    generator_extra_c = false;
+}

@@ -15,27 +15,43 @@
 /// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////////////////
 
-#ifndef _LMU_READER_H_
-#define _LMU_READER_H_
+#ifndef _RPG_EVENTPAGE_H_
+#define _RPG_EVENTPAGE_H_
 
 ////////////////////////////////////////////////////////////
 /// Headers
 ////////////////////////////////////////////////////////////
 #include <string>
-#include <iostream>
-#include "main_data.h"
+#include <vector>
+#include "rpg_eventpagecondition.h"
+#include "rpg_eventcommand.h"
+#include "rpg_moveroute.h"
 
 ////////////////////////////////////////////////////////////
-/// LMU Reader namespace
+/// RPG::EventPage class
 ////////////////////////////////////////////////////////////
-namespace LMU_Reader {
-    RPG::Map LoadMap(const std::string &filename);
-    RPG::Map ReadMapData(FILE* stream);
-    RPG::Event ReadEvent(FILE* stream);
-    RPG::EventPage ReadEventPage(FILE* stream);
-    RPG::EventPageCondition ReadEventPageCondition(FILE* stream);
-    RPG::MoveRoute ReadMoveRoute(FILE* stream);
-    RPG::MoveCommand ReadMoveCommand(FILE* stream);
+namespace RPG {
+    class EventPage {
+    public:
+        EventPage();
+        
+        int ID;
+        RPG::EventPageCondition condition;
+        std::string character_name;
+        int tile_id;
+        int character_dir;
+        int character_pattern;
+        bool translucent;
+        int move_type;
+        int move_frequency;
+        int trigger;
+        int priority_type;
+        bool overlap;
+        int animation_type;
+        int move_speed;
+        RPG::MoveRoute move_route;
+        std::vector<RPG::EventCommand> event_commands;
+    };
 };
 
 #endif

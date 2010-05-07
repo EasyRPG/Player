@@ -60,7 +60,7 @@
 #include "rpg_eventcommand.h"
 
 #include "rpg_treemap.h"
-//#include "rpg_map.h"
+#include "rpg_map.h"
 //#include "rpg_area.h"
 
 ////////////////////////////////////////////////////////////
@@ -107,7 +107,7 @@ namespace Main_Data {
     extern RPG::TreeMap data_treemap;
 
     // Maps and Areas Data (lmu)
-    //extern std::vector<RPG::Map> data_maps;
+    extern std::vector<RPG::Map> data_maps;
     //extern std::vector<RPG::Area> data_areas;
 
     void Cleanup();
