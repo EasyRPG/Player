@@ -78,8 +78,8 @@ void Graphics::TimerContinue() {
 /// Update
 ////////////////////////////////////////////////////////////
 void Graphics::Update() {
-    static long tics;
-    static long frames = 0;
+    static unsigned long tics;
+    static unsigned long frames = 0;
     static double waitframes = 0;
     static double cyclesleftover;
 
@@ -88,7 +88,7 @@ void Graphics::Update() {
         return;
     }
     tics = SDL_GetTicks();
-    if ((tics - last_tics) >= (long)framerate_interval || (framerate_interval - tics + last_tics) < 10) {
+    if ((tics - last_tics) >= (unsigned long)framerate_interval || (framerate_interval - tics + last_tics) < 10) {
         cyclesleftover = waitframes;
         waitframes = (double)(tics - last_tics) / framerate_interval - cyclesleftover;
         //last_tics += (tics - last_tics) - cyclesleftover;

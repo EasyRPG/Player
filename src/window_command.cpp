@@ -46,7 +46,7 @@ Window_Command::~Window_Command() {
 void Window_Command::Refresh() {
     contents->Clear();
     for (int i = 0; i < item_max; i++) {
-      DrawItem(i, Color(255, 255, 255, 255));
+        DrawItem(i, Color(255, 255, 255, 255));
     }
 }
 
@@ -54,7 +54,7 @@ void Window_Command::Refresh() {
 /// Draw Item
 ////////////////////////////////////////////////////////////
 void Window_Command::DrawItem(int i, Color color){
-    contents->GetFont().color = color;
+    contents->GetFont()->color = color;
     Rect rect(4, 16 * i, contents->GetWidth() - 8, 16);
     contents->FillRect(rect, Color(0, 0, 0, 0));
     contents->TextDraw(rect, commands[i], 0);

@@ -73,7 +73,7 @@ public:
     void Flash(Color color, int frame, int duration);
     
     Rect GetRect();
-    Font GetFont();
+    Font* GetFont();
     void SetFont(Font nfont);
 
 protected:

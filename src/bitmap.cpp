@@ -764,8 +764,8 @@ Rect Bitmap::GetRect() {
     Rect rect(0, 0, GetWidth(), GetHeight());
     return rect;
 }
-Font Bitmap::GetFont() {
-    return font;
+Font* Bitmap::GetFont() {
+    return &font;
 }
 void Bitmap::SetFont(Font nfont) {
     font = nfont;
