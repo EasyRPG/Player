@@ -1,0 +1,304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{BDAFF2D9-EC6B-4D53-8857-3F1064252322}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>EasyRPG</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\..\bin\testgame\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\..\bin\testgame\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>MSVC;WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(EASYDEV)\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(EASYDEV)\lib\release</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dxguid.lib;winmm.lib;SDL.lib;SDLmain.lib;zlib.lib;SDL_image.lib;libpng.lib;freetype2311.lib;SDL_ttf.lib;SDL_gfx.lib;timidity.lib;native_midi.lib;smpeg.lib;SDL_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>MSVC;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(EASYDEV)\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(EASYDEV)\lib\release</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dxguid.lib;winmm.lib;SDL.lib;SDLmain.lib;zlib.lib;SDL_image.lib;libpng.lib;freetype2311.lib;SDL_ttf.lib;SDL_gfx.lib;timidity.lib;native_midi.lib;smpeg.lib;SDL_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\resources\icon\icon.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\audio.cpp" />
+    <ClCompile Include="..\..\src\bitmap.cpp" />
+    <ClCompile Include="..\..\src\cache.cpp" />
+    <ClCompile Include="..\..\src\color.cpp" />
+    <ClCompile Include="..\..\src\event_reader.cpp" />
+    <ClCompile Include="..\..\src\filefinder_win.cpp" />
+    <ClCompile Include="..\..\src\font.cpp" />
+    <ClCompile Include="..\..\src\game_actor.cpp" />
+    <ClCompile Include="..\..\src\game_actors.cpp" />
+    <ClCompile Include="..\..\src\game_battler.cpp" />
+    <ClCompile Include="..\..\src\game_map.cpp" />
+    <ClCompile Include="..\..\src\game_party.cpp" />
+    <ClCompile Include="..\..\src\game_player.cpp" />
+    <ClCompile Include="..\..\src\game_screen.cpp" />
+    <ClCompile Include="..\..\src\game_switches.cpp" />
+    <ClCompile Include="..\..\src\game_system.cpp" />
+    <ClCompile Include="..\..\src\game_temp.cpp" />
+    <ClCompile Include="..\..\src\game_troop.cpp" />
+    <ClCompile Include="..\..\src\game_variables.cpp" />
+    <ClCompile Include="..\..\src\graphics.cpp" />
+    <ClCompile Include="..\..\src\hslrgb.cpp" />
+    <ClCompile Include="..\..\src\input.cpp" />
+    <ClCompile Include="..\..\src\input_buttons_os.cpp" />
+    <ClCompile Include="..\..\src\ldb_actor.cpp" />
+    <ClCompile Include="..\..\src\ldb_animation.cpp" />
+    <ClCompile Include="..\..\src\ldb_animationcelldata.cpp" />
+    <ClCompile Include="..\..\src\ldb_animationframe.cpp" />
+    <ClCompile Include="..\..\src\ldb_animationtiming.cpp" />
+    <ClCompile Include="..\..\src\ldb_attribute.cpp" />
+    <ClCompile Include="..\..\src\ldb_battlecommand.cpp" />
+    <ClCompile Include="..\..\src\ldb_battleranimation.cpp" />
+    <ClCompile Include="..\..\src\ldb_battleranimationextension.cpp" />
+    <ClCompile Include="..\..\src\ldb_chipset.cpp" />
+    <ClCompile Include="..\..\src\ldb_class.cpp" />
+    <ClCompile Include="..\..\src\ldb_commonevent.cpp" />
+    <ClCompile Include="..\..\src\ldb_enemy.cpp" />
+    <ClCompile Include="..\..\src\ldb_enemyaction.cpp" />
+    <ClCompile Include="..\..\src\ldb_item.cpp" />
+    <ClCompile Include="..\..\src\ldb_learning.cpp" />
+    <ClCompile Include="..\..\src\ldb_music.cpp" />
+    <ClCompile Include="..\..\src\ldb_reader.cpp" />
+    <ClCompile Include="..\..\src\ldb_skill.cpp" />
+    <ClCompile Include="..\..\src\ldb_sound.cpp" />
+    <ClCompile Include="..\..\src\ldb_state.cpp" />
+    <ClCompile Include="..\..\src\ldb_switches.cpp" />
+    <ClCompile Include="..\..\src\ldb_system.cpp" />
+    <ClCompile Include="..\..\src\ldb_terms.cpp" />
+    <ClCompile Include="..\..\src\ldb_terrain.cpp" />
+    <ClCompile Include="..\..\src\ldb_testbattler.cpp" />
+    <ClCompile Include="..\..\src\ldb_troop.cpp" />
+    <ClCompile Include="..\..\src\ldb_troopmember.cpp" />
+    <ClCompile Include="..\..\src\ldb_trooppage.cpp" />
+    <ClCompile Include="..\..\src\ldb_trooppagecondition.cpp" />
+    <ClCompile Include="..\..\src\ldb_variables.cpp" />
+    <ClCompile Include="..\..\src\lmt_encounter.cpp" />
+    <ClCompile Include="..\..\src\lmt_mapinfo.cpp" />
+    <ClCompile Include="..\..\src\lmt_reader.cpp" />
+    <ClCompile Include="..\..\src\lmu_event.cpp" />
+    <ClCompile Include="..\..\src\lmu_eventpage.cpp" />
+    <ClCompile Include="..\..\src\lmu_eventpagecondition.cpp" />
+    <ClCompile Include="..\..\src\lmu_movecommand.cpp" />
+    <ClCompile Include="..\..\src\lmu_moveroute.cpp" />
+    <ClCompile Include="..\..\src\lmu_reader.cpp" />
+    <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="..\..\src\main_data.cpp" />
+    <ClCompile Include="..\..\src\msgbox_win.cpp" />
+    <ClCompile Include="..\..\src\output.cpp" />
+    <ClCompile Include="..\..\src\plane.cpp" />
+    <ClCompile Include="..\..\src\player.cpp" />
+    <ClCompile Include="..\..\src\reader.cpp" />
+    <ClCompile Include="..\..\src\rect.cpp" />
+    <ClCompile Include="..\..\src\registry_win.cpp" />
+    <ClCompile Include="..\..\src\rpg_actor.cpp" />
+    <ClCompile Include="..\..\src\rpg_animation.cpp" />
+    <ClCompile Include="..\..\src\rpg_animationcelldata.cpp" />
+    <ClCompile Include="..\..\src\rpg_animationframe.cpp" />
+    <ClCompile Include="..\..\src\rpg_animationtiming.cpp" />
+    <ClCompile Include="..\..\src\rpg_attribute.cpp" />
+    <ClCompile Include="..\..\src\rpg_battlecommand.cpp" />
+    <ClCompile Include="..\..\src\rpg_battleranimation.cpp" />
+    <ClCompile Include="..\..\src\rpg_battleranimationextension.cpp" />
+    <ClCompile Include="..\..\src\rpg_cache.cpp" />
+    <ClCompile Include="..\..\src\rpg_chipset.cpp" />
+    <ClCompile Include="..\..\src\rpg_class.cpp" />
+    <ClCompile Include="..\..\src\rpg_commonevent.cpp" />
+    <ClCompile Include="..\..\src\rpg_encounter.cpp" />
+    <ClCompile Include="..\..\src\rpg_enemy.cpp" />
+    <ClCompile Include="..\..\src\rpg_enemyaction.cpp" />
+    <ClCompile Include="..\..\src\rpg_event.cpp" />
+    <ClCompile Include="..\..\src\rpg_eventcommand.cpp" />
+    <ClCompile Include="..\..\src\rpg_eventpage.cpp" />
+    <ClCompile Include="..\..\src\rpg_eventpagecondition.cpp" />
+    <ClCompile Include="..\..\src\rpg_item.cpp" />
+    <ClCompile Include="..\..\src\rpg_learning.cpp" />
+    <ClCompile Include="..\..\src\rpg_map.cpp" />
+    <ClCompile Include="..\..\src\rpg_mapinfo.cpp" />
+    <ClCompile Include="..\..\src\rpg_movecommand.cpp" />
+    <ClCompile Include="..\..\src\rpg_moveroute.cpp" />
+    <ClCompile Include="..\..\src\rpg_music.cpp" />
+    <ClCompile Include="..\..\src\rpg_skill.cpp" />
+    <ClCompile Include="..\..\src\rpg_sound.cpp" />
+    <ClCompile Include="..\..\src\rpg_state.cpp" />
+    <ClCompile Include="..\..\src\rpg_system.cpp" />
+    <ClCompile Include="..\..\src\rpg_terms.cpp" />
+    <ClCompile Include="..\..\src\rpg_terrain.cpp" />
+    <ClCompile Include="..\..\src\rpg_testbattler.cpp" />
+    <ClCompile Include="..\..\src\rpg_treemap.cpp" />
+    <ClCompile Include="..\..\src\rpg_troop.cpp" />
+    <ClCompile Include="..\..\src\rpg_troopmember.cpp" />
+    <ClCompile Include="..\..\src\rpg_trooppage.cpp" />
+    <ClCompile Include="..\..\src\rpg_trooppagecondition.cpp" />
+    <ClCompile Include="..\..\src\scene_title.cpp" />
+    <ClCompile Include="..\..\src\sprite.cpp" />
+    <ClCompile Include="..\..\src\tilemap.cpp" />
+    <ClCompile Include="..\..\src\tilemap_layer.cpp" />
+    <ClCompile Include="..\..\src\tone.cpp" />
+    <ClCompile Include="..\..\src\viewport.cpp" />
+    <ClCompile Include="..\..\src\window.cpp" />
+    <ClCompile Include="..\..\src\window_base.cpp" />
+    <ClCompile Include="..\..\src\window_command.cpp" />
+    <ClCompile Include="..\..\src\window_selectable.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\audio.h" />
+    <ClInclude Include="..\..\src\bitmap.h" />
+    <ClInclude Include="..\..\src\cache.h" />
+    <ClInclude Include="..\..\src\color.h" />
+    <ClInclude Include="..\..\src\drawable.h" />
+    <ClInclude Include="..\..\src\event_reader.h" />
+    <ClInclude Include="..\..\src\filefinder.h" />
+    <ClInclude Include="..\..\src\font.h" />
+    <ClInclude Include="..\..\src\game_actor.h" />
+    <ClInclude Include="..\..\src\game_actors.h" />
+    <ClInclude Include="..\..\src\game_battler.h" />
+    <ClInclude Include="..\..\src\game_map.h" />
+    <ClInclude Include="..\..\src\game_party.h" />
+    <ClInclude Include="..\..\src\game_player.h" />
+    <ClInclude Include="..\..\src\game_screen.h" />
+    <ClInclude Include="..\..\src\game_switches.h" />
+    <ClInclude Include="..\..\src\game_system.h" />
+    <ClInclude Include="..\..\src\game_temp.h" />
+    <ClInclude Include="..\..\src\game_troop.h" />
+    <ClInclude Include="..\..\src\game_variables.h" />
+    <ClInclude Include="..\..\src\graphics.h" />
+    <ClInclude Include="..\..\src\hslrgb.h" />
+    <ClInclude Include="..\..\src\input.h" />
+    <ClInclude Include="..\..\src\input_buttons.h" />
+    <ClInclude Include="..\..\src\ldb_chunks.h" />
+    <ClInclude Include="..\..\src\ldb_reader.h" />
+    <ClInclude Include="..\..\src\lmt_chunks.h" />
+    <ClInclude Include="..\..\src\lmt_reader.h" />
+    <ClInclude Include="..\..\src\lmu_chunks.h" />
+    <ClInclude Include="..\..\src\lmu_reader.h" />
+    <ClInclude Include="..\..\src\main_data.h" />
+    <ClInclude Include="..\..\src\msgbox.h" />
+    <ClInclude Include="..\..\src\options.h" />
+    <ClInclude Include="..\..\src\output.h" />
+    <ClInclude Include="..\..\src\plane.h" />
+    <ClInclude Include="..\..\src\player.h" />
+    <ClInclude Include="..\..\src\reader.h" />
+    <ClInclude Include="..\..\src\rect.h" />
+    <ClInclude Include="..\..\src\registry_win.h" />
+    <ClInclude Include="..\..\src\rpg_actor.h" />
+    <ClInclude Include="..\..\src\rpg_animation.h" />
+    <ClInclude Include="..\..\src\rpg_animationcelldata.h" />
+    <ClInclude Include="..\..\src\rpg_animationframe.h" />
+    <ClInclude Include="..\..\src\rpg_animationtiming.h" />
+    <ClInclude Include="..\..\src\rpg_attribute.h" />
+    <ClInclude Include="..\..\src\rpg_battlecommand.h" />
+    <ClInclude Include="..\..\src\rpg_battleranimation.h" />
+    <ClInclude Include="..\..\src\rpg_battleranimationextension.h" />
+    <ClInclude Include="..\..\src\rpg_cache.h" />
+    <ClInclude Include="..\..\src\rpg_chipset.h" />
+    <ClInclude Include="..\..\src\rpg_class.h" />
+    <ClInclude Include="..\..\src\rpg_commonevent.h" />
+    <ClInclude Include="..\..\src\rpg_encounter.h" />
+    <ClInclude Include="..\..\src\rpg_enemy.h" />
+    <ClInclude Include="..\..\src\rpg_enemyaction.h" />
+    <ClInclude Include="..\..\src\rpg_event.h" />
+    <ClInclude Include="..\..\src\rpg_eventcommand.h" />
+    <ClInclude Include="..\..\src\rpg_eventpage.h" />
+    <ClInclude Include="..\..\src\rpg_eventpagecondition.h" />
+    <ClInclude Include="..\..\src\rpg_item.h" />
+    <ClInclude Include="..\..\src\rpg_learning.h" />
+    <ClInclude Include="..\..\src\rpg_map.h" />
+    <ClInclude Include="..\..\src\rpg_mapinfo.h" />
+    <ClInclude Include="..\..\src\rpg_movecommand.h" />
+    <ClInclude Include="..\..\src\rpg_moveroute.h" />
+    <ClInclude Include="..\..\src\rpg_music.h" />
+    <ClInclude Include="..\..\src\rpg_skill.h" />
+    <ClInclude Include="..\..\src\rpg_sound.h" />
+    <ClInclude Include="..\..\src\rpg_state.h" />
+    <ClInclude Include="..\..\src\rpg_system.h" />
+    <ClInclude Include="..\..\src\rpg_terms.h" />
+    <ClInclude Include="..\..\src\rpg_terrain.h" />
+    <ClInclude Include="..\..\src\rpg_testbattler.h" />
+    <ClInclude Include="..\..\src\rpg_treemap.h" />
+    <ClInclude Include="..\..\src\rpg_troop.h" />
+    <ClInclude Include="..\..\src\rpg_troopmember.h" />
+    <ClInclude Include="..\..\src\rpg_trooppage.h" />
+    <ClInclude Include="..\..\src\rpg_trooppagecondition.h" />
+    <ClInclude Include="..\..\src\scene.h" />
+    <ClInclude Include="..\..\src\scene_title.h" />
+    <ClInclude Include="..\..\src\sprite.h" />
+    <ClInclude Include="..\..\src\tilemap.h" />
+    <ClInclude Include="..\..\src\tilemap_layer.h" />
+    <ClInclude Include="..\..\src\tone.h" />
+    <ClInclude Include="..\..\src\viewport.h" />
+    <ClInclude Include="..\..\src\window.h" />
+    <ClInclude Include="..\..\src\window_base.h" />
+    <ClInclude Include="..\..\src\window_command.h" />
+    <ClInclude Include="..\..\src\window_selectable.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
