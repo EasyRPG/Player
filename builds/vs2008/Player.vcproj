@@ -97,8 +97,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\bin\vs2008\release"
-			IntermediateDirectory="..\..\obj\ReleaseVS2008"
+			OutputDirectory="..\..\bin\testgame"
+			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -745,7 +745,7 @@
 				Name="Multimedia"
 				>
 				<Filter
-					Name="audio"
+					Name="Audio"
 					>
 					<File
 						RelativePath="..\..\src\audio.cpp"
@@ -757,7 +757,7 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="graphics"
+					Name="Graphics"
 					>
 					<File
 						RelativePath="..\..\src\bitmap.cpp"
@@ -861,7 +861,7 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="input"
+					Name="Input"
 					>
 					<File
 						RelativePath="..\..\src\input.cpp"
