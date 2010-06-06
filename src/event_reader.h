@@ -30,6 +30,6 @@
 ////////////////////////////////////////////////////////////
 namespace Event_Reader {
     RPG::EventCommand ReadEventCommand(FILE* stream);
-};
+}
 
 #endif

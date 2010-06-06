@@ -34,6 +34,6 @@ namespace RPG {
         
         std::vector<AnimationCellData> cells;
     };
-};
+}
 
 #endif

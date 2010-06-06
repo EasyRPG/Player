@@ -42,6 +42,6 @@ namespace Player {
     //extern bool alt_pressing;
     extern bool fullscreen;
     extern bool zoom;
-};
+}
 
 #endif

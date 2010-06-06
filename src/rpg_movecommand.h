@@ -37,6 +37,6 @@ namespace RPG {
         int parameter_b;
         int parameter_c;
     };
-};
+}
 
 #endif

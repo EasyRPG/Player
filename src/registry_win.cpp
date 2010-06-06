@@ -17,8 +17,6 @@
 
 #ifdef WIN32
 
-
-
 ////////////////////////////////////////////////////////////
 /// Headers
 ////////////////////////////////////////////////////////////
@@ -103,4 +101,5 @@ int Registry::ReadBinValue(HKEY hkey, std::string key, std::string val, unsigned
 
     return size;
 }
+
 #endif

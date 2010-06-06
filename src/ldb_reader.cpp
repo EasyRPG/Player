@@ -30,11 +30,11 @@ void LDB_Reader::Load(const std::string& filename) {
     FILE* stream;
     stream = fopen(filename.c_str(), "rb");
     if (!stream) {
-        Output::Error("Couldn't find %s database file.\n", filename);
+        Output::Error("Couldn't find %s database file.\n", filename.c_str());
     }
     std::string header = Reader::String(stream, Reader::CInteger(stream));
     if (header != "LcfDataBase") {
-        Output::Error("%s is not a valid RPG2000 database.\n", filename);
+        Output::Error("%s is not a valid RPG2000 database.\n", filename.c_str());
     }
     LoadChunks(stream);
     fclose(stream);

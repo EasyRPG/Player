@@ -30,11 +30,11 @@ RPG::Map LMU_Reader::LoadMap(const std::string& filename) {
     FILE* stream;
     stream = fopen(filename.c_str(), "rb");
     if (!stream) {
-        Output::Error("Couldn't find %s map tree file.\n", filename);
+        Output::Error("Couldn't find %s map tree file.\n", filename.c_str());
     }
     std::string header = Reader::String(stream, Reader::CInteger(stream));
     if (header != "LcfMapUnit") {
-        Output::Error("%s is not a valid RPG2000 map.\n", filename);
+        Output::Error("%s is not a valid RPG2000 map.\n", filename.c_str());
     }
     RPG::Map map = ReadMapData(stream);
     fclose(stream);

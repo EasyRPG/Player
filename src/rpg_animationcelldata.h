@@ -37,6 +37,6 @@ namespace RPG {
         int tone_gray;
         int opacity;
      };
-};
+}
 
 #endif

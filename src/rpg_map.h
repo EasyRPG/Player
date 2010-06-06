@@ -66,6 +66,6 @@ namespace RPG {
         std::vector<unsigned long> generator_y;
         std::vector<short> generator_tile_ids;
     };
-};
+}
 
 #endif

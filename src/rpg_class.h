@@ -54,6 +54,6 @@ namespace RPG {
         std::vector<unsigned char> attribute_ranks;
         std::vector<unsigned long> battle_commands;
     };
-};
+}
 
 #endif

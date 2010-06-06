@@ -28,6 +28,6 @@ namespace RPG {
         
         int ID;
     };
-};
+}
 
 #endif

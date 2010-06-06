@@ -33,6 +33,6 @@ namespace LMT_Reader {
     void ReadTreeMap(FILE* stream);
     RPG::MapInfo ReadMapInfo(FILE* stream);
     RPG::Encounter ReadEncounter(FILE* stream);
-};
+}
 
 #endif

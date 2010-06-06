@@ -45,6 +45,6 @@ namespace Reader {
     std::vector<unsigned char> ArrayUint8(FILE* stream, int lenght);
     std::vector<unsigned long> ArrayUint32(FILE* stream, int lenght);
     std::vector<bool> ArrayFlag(FILE* stream, int lenght);
-};
+}
 
 #endif

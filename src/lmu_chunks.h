@@ -26,7 +26,7 @@ namespace LMU_Reader {
         enum ChunkData {
             END = 0x00 // End of chunk
         };
-    };
+    }
 
     namespace ChunkMap {
         enum ChunkMap {
@@ -61,7 +61,7 @@ namespace LMU_Reader {
             generator_y             = 0x3D, // Uint32 x 9
             generator_tile_ids      = 0x3E  // Array - Short
         };
-    };
+    }
     namespace ChunkEvent {
         enum ChunkEvent {
             name    = 0x01, // String
@@ -70,7 +70,7 @@ namespace LMU_Reader {
             //???   = 0x04, // ???
             pages   = 0x05  // Array - RPG::EventPage
         };
-    };
+    }
     namespace ChunkEventPage {
         enum ChunkEventPage {
             condition           = 0x02, // RPG::EventPageCondition
@@ -90,7 +90,7 @@ namespace LMU_Reader {
             event_commands_size = 0x33, // Integer
             event_commands      = 0x34  // Array - RPG::EventCommand
         };
-    };
+    }
     namespace ChunkEventPageCondition {
         enum ChunkEventPageCondition {
             condition_flags = 0x01, // Bitflag
@@ -102,7 +102,7 @@ namespace LMU_Reader {
             actor_id        = 0x07, // Integer
             timer_sec       = 0x08  // Integer
         };
-    };
+    }
     namespace ChunkMoveRoute {
         enum ChunkMoveRoute {
             move_commands_size  = 0x0B, // Integer
@@ -110,7 +110,7 @@ namespace LMU_Reader {
             repeat              = 0x15, // Flag
             skippable           = 0x16  // Flag
         };
-    };
+    }
     namespace ChunkMoveCommand {
         enum ChunkMoveCommand {
             switch_on       = 0x20,
@@ -118,7 +118,7 @@ namespace LMU_Reader {
             change_graphic  = 0x22,
             play_sound      = 0x23
         };
-    };
-};
+    }
+}
 
 #endif

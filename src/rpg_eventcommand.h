@@ -37,6 +37,6 @@ namespace RPG {
         std::string string;
         std::vector<int> parameters;
     };
-};
+}
 
 #endif

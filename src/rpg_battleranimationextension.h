@@ -37,6 +37,6 @@ namespace RPG {
         int animation_type;
         int animation_id;
     };
-};
+}
 
 #endif

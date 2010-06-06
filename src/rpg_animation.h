@@ -52,6 +52,6 @@ namespace RPG {
         int position;
         std::vector<RPG::AnimationFrame> frames;
     };
-};
+}
 
 #endif

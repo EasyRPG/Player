@@ -30,11 +30,11 @@ void LMT_Reader::Load(const std::string& filename) {
     FILE* stream;
     stream = fopen(filename.c_str(), "rb");
     if (!stream) {
-        Output::Error("Couldn't find %s map tree file.\n", filename);
+        Output::Error("Couldn't find %s map tree file.\n", filename.c_str());
     }
     std::string header = Reader::String(stream, Reader::CInteger(stream));
     if (header != "LcfMapTree") {
-        Output::Error("%s is not a valid RPG2000 map tree.\n", filename);
+        Output::Error("%s is not a valid RPG2000 map tree.\n", filename.c_str());
     }
     ReadTreeMap(stream);
     fclose(stream);

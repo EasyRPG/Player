@@ -36,6 +36,6 @@ namespace RPG {
         TroopPageCondition condition;
         std::vector<EventCommand> event_commands;
     };
-};
+}
 
 #endif

@@ -92,6 +92,6 @@ namespace RPG {
         bool occasion_field;
         bool occasion_battle;
     };
-};
+}
 
 #endif

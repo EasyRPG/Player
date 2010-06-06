@@ -63,6 +63,6 @@ namespace LDB_Reader {
     RPG::Class ReadClass(FILE* stream);
     RPG::BattlerAnimation ReadBattlerAnimation(FILE* stream);
     RPG::BattlerAnimationExtension ReadBattlerAnimationExtension(FILE* stream);
-};
+}
 
 #endif

@@ -29,6 +29,6 @@ namespace RPG {
         int level;
         int skill_id;
     };
-};
+}
 
 #endif

@@ -44,6 +44,6 @@ namespace Input {
     extern int dir8;
     extern int start_repeat_time;
     extern int repeat_time;
-};
+}
 
 #endif

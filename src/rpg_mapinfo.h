@@ -50,6 +50,6 @@ namespace RPG {
         int encounter_steps;
         Rect area_rect;
     };
-};
+}
 
 #endif

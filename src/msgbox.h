@@ -30,6 +30,6 @@ namespace MsgBox {
     void OK(std::string msg, std::string title);
     void Error(std::string msg, std::string title);
     void Warning(std::string msg, std::string title);
-};
+}
 
 #endif

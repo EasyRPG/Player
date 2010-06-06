@@ -37,6 +37,6 @@ namespace RPG {
         int tempo;
         int balance;
     };
-};
+}
 
 #endif

@@ -69,6 +69,6 @@ namespace RPG {
         int grid_b;
         int grid_c;
     };
-};
+}
 
 #endif

@@ -105,6 +105,6 @@ namespace RPG {
         int switch_id;
         bool ocassion_battle;
     };
-};
+}
 
 #endif

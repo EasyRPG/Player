@@ -46,6 +46,6 @@ namespace RPG {
         int switch_id;
         std::vector<EventCommand> event_commands;
     };
-};
+}
 
 #endif

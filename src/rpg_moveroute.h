@@ -36,6 +36,6 @@ namespace RPG {
         bool repeat;
         bool skippable;
     };
-};
+}
 
 #endif

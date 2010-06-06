@@ -96,6 +96,6 @@ namespace RPG {
         int sp_change_map_val;
         int sp_change_map_steps;
     };
-};
+}
 
 #endif

@@ -41,6 +41,6 @@ namespace RPG {
         int animation_type;
         int animation_speed;
     };
-};
+}
 
 #endif

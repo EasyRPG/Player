@@ -48,6 +48,6 @@ namespace RPG {
         int airship_x;
         int airship_y;
     };
-};
+}
 
 #endif

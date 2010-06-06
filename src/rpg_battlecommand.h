@@ -45,6 +45,6 @@ namespace RPG {
         std::string name;
         int type;
     };
-};
+}
 
 #endif

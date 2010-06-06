@@ -52,6 +52,6 @@ namespace Audio {
     extern bool me_stopped_bgm;
     extern std::map<int, Mix_Chunk*> sounds;
     extern std::map<int, Mix_Chunk*>::iterator it_sounds;
-};
+}
 
 #endif

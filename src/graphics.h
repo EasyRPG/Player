@@ -58,6 +58,6 @@ namespace Graphics {
 
     extern std::list<Drawable*> drawable_list;
     extern std::list<Drawable*>::iterator it_drawable_list;
-};
+}
 
 #endif

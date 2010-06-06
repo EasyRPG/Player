@@ -34,6 +34,6 @@ namespace Output {
     void WarningStr(std::string warn);
     void Error(char* fmt, ...);
     void ErrorStr(std::string err);
-};
+}
 
 #endif

@@ -51,6 +51,6 @@ namespace RPG {
         int flash_power;
         int screen_shake;
     };
-};
+}
 
 #endif

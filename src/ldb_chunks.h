@@ -50,7 +50,7 @@ namespace LDB_Reader {
             
             END              = 0x00  // End of chunk
         };
-    };
+    }
     namespace ChunkActor {
         enum ChunkActor {
             name                    = 0x01, // String
@@ -85,13 +85,13 @@ namespace LDB_Reader {
             attribute_ranks         = 0x4A, // Array - Short
             battle_commands         = 0x50  // Array - RPG::BattleCommand - RPG2003
         };
-    };
+    }
     namespace ChunkLearning {
         enum ChunkLearning {
             level       = 0x01, // Integer
             skill_id    = 0x02  // Integer
         };
-    };
+    }
     namespace ChunkSkill {
         enum ChunkSkill {
             name                = 0x01, // String
@@ -131,7 +131,7 @@ namespace LDB_Reader {
             battler_animation   = 0x31, // Integer - RPG2003
             cba_data            = 0x32  // ? - RPG2003
         };
-    };
+    }
     namespace ChunkItem {
         enum ChunkItem {
             name                = 0x01, // String
@@ -185,9 +185,9 @@ namespace LDB_Reader {
             weapon_animation    = 0x45, // Integer - RPG2003
             use_skill           = 0x47, // Flag - RPG2003
             class_set_size      = 0x48, // Integer - RPG2003
-            class_set           = 0x49, // Array - Flag - RPG2003
+            class_set           = 0x49  // Array - Flag - RPG2003
         };
-    };
+    }
     namespace ChunkEnemy {
         enum ChunkEnemy {
             name                 = 0x01, // String
@@ -214,7 +214,7 @@ namespace LDB_Reader {
             attribute_ranks      = 0x22, // Array - Short
             actions              = 0x2A  // Array - RPG::EnemyAction
         };
-    };
+    }
     namespace ChunkEnemyAction {
         enum ChunkEnemyAction {
             kind                = 0x01, // Integer
@@ -231,7 +231,7 @@ namespace LDB_Reader {
             switch_off_id       = 0x0C, // Integer
             rating              = 0x0D  // Integer
         };
-    };
+    }
     namespace ChunkTroop {
         enum ChunkTroop {
             name             = 0x01, // String
@@ -240,7 +240,7 @@ namespace LDB_Reader {
             terrain_set      = 0x05, // Array - Flag
             pages            = 0x0B  // Array - RPG::TroopPage
         };
-    };
+    }
     namespace ChunkTroopMember {
         enum ChunkTroopMember {
             ID      = 0x01, // Integer
@@ -248,14 +248,14 @@ namespace LDB_Reader {
             y       = 0x03, // Integer
             middle  = 0x04  // Flag
         };
-    };
+    }
     namespace ChunkTroopPage {
         enum ChunkTroopPage {
             condition           = 0x02, // RPG::TroopPageCondition
             event_commands_size = 0x0B, // Integer
             event_commands      = 0x0C  // Array - RPG::EventCommand
         };
-    };
+    }
     namespace ChunkTroopPageCondition { // TODO - Get RPG2003 unknown chunks id
         enum ChunkTroopPageCondition {
             condition_flags   = 0x01, // Bitflag - x 2 if RPG2003
@@ -282,7 +282,7 @@ namespace LDB_Reader {
             //command_actor_id  = 0x??, // Integer - RPG2003
             //command_id        = 0x??  // Integer - RPG2003
         };
-    };
+    }
     namespace ChunkTerrain { // TODO - Get RPG2003 unknown chunks id
         enum ChunkTerrain { 
             name                        = 0x01, // String
@@ -313,12 +313,12 @@ namespace LDB_Reader {
             special_back_enemies        = 0x2A, // Integer - RPG2003
             special_lateral_party       = 0x2B, // Integer - RPG2003
             special_lateral_enemies     = 0x2C, // Integer - RPG2003
-            grid_location               = 0x2D, // Integer - RPG2003
+            grid_location               = 0x2D  // Integer - RPG2003
             //grid_a                      = 0x??, // Integer - RPG2003
             //grid_b                      = 0x??, // Integer - RPG2003
             //grid_c                      = 0x??  // Integer - RPG2003
         };
-    };
+    }
     namespace ChunkAttribute {
         enum ChunkAttribute {
             name    = 0x01, // String
@@ -329,7 +329,7 @@ namespace LDB_Reader {
             d_rate  = 0x0E, // Integer
             e_rate  = 0x0F  // Integer
         };
-    };
+    }
     namespace ChunkState {
         enum ChunkState {
             name                    = 0x01, // String
@@ -375,7 +375,7 @@ namespace LDB_Reader {
             sp_change_map_val       = 0x43, // Integer
             sp_change_map_steps     = 0x44  // Integer
         };
-    };
+    }
     namespace ChunkAnimation {
         enum ChunkAnimation {
             name            = 0x01, // String
@@ -385,7 +385,7 @@ namespace LDB_Reader {
             position        = 0x0A, // Integer
             frames          = 0x0C  // Array - RPG::AnimationFrames
         };
-    };
+    }
     namespace ChunkAnimationTiming {
         enum ChunkAnimationTiming {
             frame       = 0x01, // Integer
@@ -397,12 +397,12 @@ namespace LDB_Reader {
             flash_power = 0x07  // Integer
             //screen_shake = 0x?? // Integer - RPG2003 - TODO: Get chunk id
         };
-    };
+    }
     namespace ChunkAnimationFrame {
         enum ChunkAnimationFrame {
             cells = 0x01 // Array - RPG::AnimationCellData
         };
-    };
+    }
     namespace ChunkAnimationCellData {
         enum ChunkAnimationCellData {
             //priority    = 0x01, // Integer - TODO: Needs confirmation
@@ -416,7 +416,7 @@ namespace LDB_Reader {
             tone_gray   = 0x09, // Integer
             opacity     = 0x0A  // Integer
         };
-    };
+    }
     namespace ChunkChipset {
         enum ChunkChipset {
             name                = 0x01, // String
@@ -427,7 +427,7 @@ namespace LDB_Reader {
             animation_type      = 0x0B, // Integer
             animation_speed     = 0x0C  // Integer
         };
-    };
+    }
     namespace ChunkTerms {
         enum ChunkTerms {
             encounter           = 0x01, // String
@@ -551,7 +551,7 @@ namespace LDB_Reader {
             yes                 = 0x98, // String
             no                  = 0x99  // String
         };
-    };
+    }
     namespace ChunkCommonEvent {
         enum ChunkCommonEvent {
             name                = 0x01, // String
@@ -561,7 +561,7 @@ namespace LDB_Reader {
             event_commands_size = 0x15, // Integer
             event_commands      = 0x16  // Array - RPG::EventCommand
         };
-    };
+    }
     namespace ChunkSystem {
         enum ChunkSystem {
             ldb_id                  = 0x0A, // Integer - RPG2003
@@ -618,7 +618,7 @@ namespace LDB_Reader {
             show_frame              = 0x63, // Flag - RPG2003
             invert_animations       = 0x65  // Flag - RPG2003
         };
-    };
+    }
     namespace ChunkTestBattler {
         enum ChunkTestBattler {
             ID              = 0x01, // Integer
@@ -629,13 +629,13 @@ namespace LDB_Reader {
             helmet_id       = 0x0E, // Integer
             accessory_id    = 0x0F  // Integer
         };
-    };
+    }
     namespace ChunkBattleCommand {
         enum ChunkBattleCommand {
             name = 0x01, // String
             type = 0x02  // Integer
         };
-    };
+    }
     namespace ChunkBattlerAnimation {
         enum ChunkBattlerAnimation {
             name        = 0x01, // String
@@ -643,7 +643,7 @@ namespace LDB_Reader {
             base_data   = 0x0A, // Array - RPG::BattlerAnimationExtension
             weapon_data = 0x0B  // Array - RPG::BattlerAnimationExtension
         };
-    };
+    }
     namespace ChunkBattlerAnimationExtension {
         enum ChunkBattlerAnimationExtension {
             name            = 0x01, // String
@@ -652,7 +652,7 @@ namespace LDB_Reader {
             animation_type  = 0x04, // Integer
             animation_id    = 0x05  // Integer
         };
-    };
+    }
     namespace ChunkClass {
         enum ChunkClass {
             name                  = 0x01, // String
@@ -672,7 +672,7 @@ namespace LDB_Reader {
             attribute_ranks       = 0x4A, // Array - Short
             battle_commands       = 0x50  // Array - Uint32
         };
-    };
+    }
     namespace ChunkMusic {
         enum ChunkMusic {
             name    = 0x01, // String
@@ -681,7 +681,7 @@ namespace LDB_Reader {
             tempo   = 0x04, // Integer
             balance = 0x05  // Integer
         };
-    };
+    }
     namespace ChunkSound {
         enum ChunkSound {
             name    = 0x01, // String
@@ -689,17 +689,17 @@ namespace LDB_Reader {
             tempo   = 0x04, // Integer
             balance = 0x05  // Integer
         };
-    };
+    }
     namespace ChunkSwitch {
         enum ChunkSwitch {
             name    = 0x01 // String
         };
-    };
+    }
     namespace ChunkVariable {
         enum ChunkVariable {
             name    = 0x01 // String
         };
-    };
-};
+    }
+}
 
 #endif

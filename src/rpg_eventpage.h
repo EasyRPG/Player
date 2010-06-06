@@ -52,6 +52,6 @@ namespace RPG {
         RPG::MoveRoute move_route;
         std::vector<RPG::EventCommand> event_commands;
     };
-};
+}
 
 #endif

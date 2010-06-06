@@ -45,6 +45,6 @@ namespace RPG {
         std::vector<BattlerAnimationExtension> base_data;
         std::vector<BattlerAnimationExtension> weapon_data;
     };
-};
+}
 
 #endif

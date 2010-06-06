@@ -61,6 +61,6 @@ namespace RPG {
         int command_actor_id;
         int command_id;
     };
-};
+}
 
 #endif

@@ -39,6 +39,6 @@ namespace RPG {
         int y;
         std::vector<RPG::EventPage> pages;
     };
-};
+}
 
 #endif

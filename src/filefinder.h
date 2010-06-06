@@ -31,4 +31,4 @@ namespace FileFinder {
 
     extern std::string fonts_path;
     extern std::string rtp_path;
-};
+}

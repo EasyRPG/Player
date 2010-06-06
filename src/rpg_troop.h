@@ -40,6 +40,6 @@ namespace RPG {
         std::vector<bool> terrain_set;
         std::vector<TroopPage> pages;
     };
-};
+}
 
 #endif

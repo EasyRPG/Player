@@ -31,6 +31,6 @@ namespace RPG {
         int y;
         bool middle;
     };
-};
+}
 
 #endif

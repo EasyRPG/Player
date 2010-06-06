@@ -26,7 +26,7 @@ namespace LMT_Reader {
         enum ChunkData {
             END = 0x00 // End of chunk
         };
-    };
+    }
 
     namespace ChunkTreeMap {
         enum ChunkTreeMap {
@@ -43,7 +43,7 @@ namespace LMT_Reader {
             airship_x       = 0x20, // Integer
             airship_y       = 0x21  // Integer
         };
-    };
+    }
     namespace ChunkMapInfo {
         enum ChunkMapInfo {
             name            = 0x01, // String
@@ -60,14 +60,14 @@ namespace LMT_Reader {
             save            = 0x21, // Flag
             encounters      = 0x29, // Array - RPG::Encounter
             encounter_steps = 0x2C, // Integer
-            area_rect       = 0x33, // Uint32 x 4
+            area_rect       = 0x33  // Uint32 x 4
         };
-    };
+    }
     namespace ChunkEncounter {
         enum ChunkEncounter {
             ID = 0x01 // Integer
         };
-    };
-};
+    }
+}
 
 #endif

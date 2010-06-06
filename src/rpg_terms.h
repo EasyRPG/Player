@@ -152,6 +152,6 @@ namespace RPG {
         std::string yes;
         std::string no;
     };
-};
+}
 
 #endif

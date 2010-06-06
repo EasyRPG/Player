@@ -16,8 +16,6 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 #ifdef COCOA
-    
-
 
 ////////////////////////////////////////////////////////////
 /// Headers
@@ -71,4 +69,5 @@ void MsgBox::Warning(std::string msg, std::string title) {
         informativeTextWithFormat:nsMessage];
     [alert runModal];
 }
+
 #endif

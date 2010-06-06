@@ -36,6 +36,6 @@ namespace LMU_Reader {
     RPG::EventPageCondition ReadEventPageCondition(FILE* stream);
     RPG::MoveRoute ReadMoveRoute(FILE* stream);
     RPG::MoveCommand ReadMoveCommand(FILE* stream);
-};
+}
 
 #endif

@@ -115,6 +115,9 @@ void Player::Update() {
                 case SDLK_F12:
                     Main_Data::scene = new Scene_Title();
                     Cache::Clear();
+					break;
+				default:
+					break;
             }
         }
         /*else if (evnt.type == SDL_KEYUP) {

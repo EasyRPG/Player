@@ -56,6 +56,6 @@ namespace RPG {
         std::vector<unsigned char> attribute_ranks;
         std::vector<EnemyAction> actions;
     };
-};
+}
 
 #endif

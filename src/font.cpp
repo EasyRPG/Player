@@ -73,7 +73,7 @@ TTF_Font* Font::GetTTF() {
         std::string path = FileFinder::FindFont(name);
         TTF_Font* ttf_font = TTF_OpenFont(path.c_str(), size);
         if (!ttf_font) {
-            Output::Error("Couldn't open font %s size %d.\n%s\n", name, size, TTF_GetError());
+            Output::Error("Couldn't open font %s size %d.\n%s\n", name.c_str(), size, TTF_GetError());
         }
         fonts[name][size] = ttf_font;
         return ttf_font;

@@ -51,6 +51,6 @@ namespace Cache {
 
     extern std::map<std::string, Bitmap*> cache;
     extern std::map<std::string, std::map<int, Bitmap*> > cache_tiles;
-};
+}
 
 #endif

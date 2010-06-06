@@ -34,6 +34,6 @@ namespace RPG {
         int helmet_id;
         int accessory_id;
     };
-};
+}
 
 #endif

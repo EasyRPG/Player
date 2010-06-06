@@ -57,6 +57,6 @@ namespace Input {
 
     extern std::vector< std::vector<int> > buttons;
     extern std::vector< std::vector<int> > dirkeys;
-};
+}
 
 #endif

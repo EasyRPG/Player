@@ -40,6 +40,6 @@ namespace RPG {
         int actor_id;
         int timer_sec;
     };
-};
+}
 
 #endif

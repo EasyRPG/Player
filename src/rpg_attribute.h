@@ -45,6 +45,6 @@ namespace RPG {
         int d_rate;
         int e_rate;
     };
-};
+}
 
 #endif

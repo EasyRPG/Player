@@ -36,7 +36,7 @@ namespace RPG {
             Basic_observe = 3,
             Basic_charge = 4,
             Basic_autodestruction = 5,
-            Basic_nothing = 6,
+            Basic_nothing = 6
         };
         enum ConditionType {
             ConditionType_always = 0,
@@ -65,6 +65,6 @@ namespace RPG {
         int switch_off_id;
         int rating;
     };
-};
+}
 
 #endif

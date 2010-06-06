@@ -84,6 +84,6 @@ namespace RPG {
         bool show_frame;
         bool invert_animations;
     };
-};
+}
 
 #endif

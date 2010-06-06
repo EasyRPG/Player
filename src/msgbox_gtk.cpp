@@ -16,7 +16,6 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 #ifdef GTK
-    
 
 ////////////////////////////////////////////////////////////
 /// Headers
@@ -73,4 +72,5 @@ void MsgBox::Warning(std::string msg, std::string title) {
     gtk_dialog_run(GTK_DIALOG(werror));
     gtk_widget_destroy(werror);
 }
+
 #endif
