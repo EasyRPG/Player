@@ -64,16 +64,16 @@ RPG::Class LDB_Reader::ReadClass(FILE* stream) {
             _class.parameter_agility = Reader::ArrayShort(stream, chunk_info.length / 6);
             break;
         case ChunkClass::exp_base:
-            _class.name = Reader::CInteger(stream);
+            _class.exp_base = Reader::CInteger(stream);
             break;
         case ChunkClass::exp_inflation:
-            _class.name = Reader::CInteger(stream);
+            _class.exp_inflation = Reader::CInteger(stream);
             break;
         case ChunkClass::exp_correction:
-            _class.name = Reader::CInteger(stream);
+            _class.exp_correction = Reader::CInteger(stream);
             break;
         case ChunkClass::unarmed_animation:
-            _class.name = Reader::CInteger(stream);
+            _class.unarmed_animation = Reader::CInteger(stream);
             break;
         case ChunkClass::skills:
             for (int i = Reader::CInteger(stream); i > 0; i--) {

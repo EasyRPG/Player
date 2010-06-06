@@ -182,7 +182,7 @@ RPG::Item LDB_Reader::ReadItem(FILE* stream) {
             item.attribute_set = Reader::ArrayFlag(stream, chunk_info.length);
             break;
         case ChunkItem::state_chance:
-            item.state_chance = Reader::CInteger(stream);
+            item.state_chance = Reader::Flag(stream);
             break;
         case ChunkItem::weapon_animation:
             item.weapon_animation = Reader::CInteger(stream);

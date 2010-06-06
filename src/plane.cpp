@@ -74,7 +74,7 @@ void Plane::Draw() {
     int screen_oy = oy % Player::GetHeight();
     for (double i = 0; i < tilesx; i++) {
         for (double j = 0; j < tilesy; j++) {
-            plane->BlitScreen(i * bmpw - screen_ox, j * bmph - screen_oy);
+            plane->BlitScreen((int)(i * bmpw - screen_ox), (int)(j * bmph - screen_oy));
         }
     }
 }
@@ -131,14 +131,14 @@ int Plane::GetOy() {
 void Plane::SetOy(int noy) {
     oy = noy;
 }
-float Plane::GetZoomX() {
+double Plane::GetZoomX() {
     return zoom_x;
 }
 void Plane::SetZoomX(float nzoom_x) {
     if (zoom_x != nzoom_x) needs_refresh = true;
     zoom_x = nzoom_x;
 }
-float Plane::GetZoomY() {
+double Plane::GetZoomY() {
     return zoom_y;
 }
 void Plane::SetZoomY(float nzoom_y) {

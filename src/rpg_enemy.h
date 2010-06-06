@@ -47,9 +47,9 @@ namespace RPG {
         int exp;
         int gold;
         int drop_id;
-        char drop_prob;
+        int drop_prob;
         bool critical_hit;
-        char critical_hit_chance;
+        int critical_hit_chance;
         bool miss;
         bool levitate;
         std::vector<unsigned char> state_ranks;

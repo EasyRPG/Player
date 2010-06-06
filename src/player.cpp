@@ -93,7 +93,7 @@ void Player::Update() {
     SDL_Event evnt;
 
     while (true) {
-        bool result = SDL_PollEvent(&evnt);
+        int result = SDL_PollEvent(&evnt);
         if (evnt.type == SDL_QUIT) {
             Exit();
             exit(0);

@@ -32,7 +32,7 @@
 ////////////////////////////////////////////////////////////
 namespace Reader {
     struct Chunk {
-        unsigned char ID;
+        unsigned long ID;
         unsigned long length;
     };
     unsigned long CInteger(FILE* stream);

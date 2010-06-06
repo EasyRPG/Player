@@ -46,9 +46,9 @@ public:
     void SetOx(int nox);
     int GetOy();
     void SetOy(int noy);
-    float GetZoomX();
+    double GetZoomX();
     void SetZoomX(float nzoom_x);
-    float GetZoomY();
+    double GetZoomY();
     void SetZoomY(float nzoom_y);
     int GetOpacity();
     void SetOpacity(int nopacity);
