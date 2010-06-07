@@ -58,6 +58,9 @@
     <Filter Include="Source Files\Engine\Scene">
       <UniqueIdentifier>{471f2aa7-c5b4-4984-8b95-be49986b2b79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Engine\Sprite">
+      <UniqueIdentifier>{d6d5baa3-bfb3-42fb-9d14-d6146b6072ec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\resources\icon\icon.rc">
@@ -434,6 +437,9 @@
     <ClCompile Include="..\..\src\window_message.cpp">
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\spriteset_map.cpp">
+      <Filter>Source Files\Engine\Sprite</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cache.h">
@@ -708,6 +714,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\window_message.h">
       <Filter>Source Files\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spriteset_map.h">
+      <Filter>Source Files\Engine\Sprite</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

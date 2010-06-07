@@ -201,6 +201,7 @@
     <ClCompile Include="..\..\src\scene_map.cpp" />
     <ClCompile Include="..\..\src\scene_title.cpp" />
     <ClCompile Include="..\..\src\sprite.cpp" />
+    <ClCompile Include="..\..\src\spriteset_map.cpp" />
     <ClCompile Include="..\..\src\tilemap.cpp" />
     <ClCompile Include="..\..\src\tilemap_layer.cpp" />
     <ClCompile Include="..\..\src\tone.cpp" />
@@ -294,6 +295,7 @@
     <ClInclude Include="..\..\src\scene_map.h" />
     <ClInclude Include="..\..\src\scene_title.h" />
     <ClInclude Include="..\..\src\sprite.h" />
+    <ClInclude Include="..\..\src\spriteset_map.h" />
     <ClInclude Include="..\..\src\tilemap.h" />
     <ClInclude Include="..\..\src\tilemap_layer.h" />
     <ClInclude Include="..\..\src\tone.h" />
