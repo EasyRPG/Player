@@ -38,8 +38,8 @@ public:
 
     Bitmap* GetChipset();
     void SetChipset(Bitmap* nchipset);
-    std::vector< std::vector<int> > GetMapData();
-    void SetMapData(std::vector< std::vector<int> > nmap_data);
+    std::vector<short> GetMapData();
+    void SetMapData(std::vector<short> nmap_data);
     bool GetVisible();
     void SetVisible(bool nvisible);
     int GetOx();
@@ -52,7 +52,7 @@ public:
 
 private:
     Bitmap* chipset;
-    std::vector< std::vector<int> > map_data;
+    std::vector<short> map_data;
     bool visible;
     int ox;
     int oy;

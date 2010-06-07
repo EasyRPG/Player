@@ -81,10 +81,10 @@ Bitmap* TilemapLayer::GetChipset() {
 void TilemapLayer::SetChipset(Bitmap* nchipset) {
     chipset = nchipset;
 }
-std::vector< std::vector<int> > TilemapLayer::GetMapData() {
+std::vector<short> TilemapLayer::GetMapData() {
     return map_data;
 }
-void TilemapLayer::SetMapData(std::vector< std::vector<int> > nmap_data) {
+void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
     map_data = nmap_data;
 }
 bool TilemapLayer::GetVisible() {

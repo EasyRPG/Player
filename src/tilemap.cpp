@@ -52,13 +52,19 @@ void Tilemap::SetChipset(Bitmap* nchipset) {
     layer_down->SetChipset(nchipset);
     layer_up->SetChipset(nchipset);
 }
-std::vector< std::vector<int> > Tilemap::GetMapData() {
-    return map_data;
+std::vector<short> Tilemap::GetMapDataDown() {
+    return map_data_down;
 }
-void Tilemap::SetMapData(std::vector< std::vector<int> > nmap_data) {
-    map_data = nmap_data;
-    layer_down->SetMapData(nmap_data);
-    layer_up->SetMapData(nmap_data);
+std::vector<short> Tilemap::GetMapDataUp() {
+    return map_data_up;
+}
+void Tilemap::SetMapDataDown(std::vector<short> down) {
+    map_data_down = down;
+    layer_down->SetMapData(down);
+}
+void Tilemap::SetMapDataUp(std::vector<short> up) {
+    map_data_up = up;
+    layer_up->SetMapData(up);
 }
 bool Tilemap::GetVisible() {
     return visible;
