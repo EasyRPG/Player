@@ -55,7 +55,7 @@ void Game_Map::Setup(int _id) {
 	sprintf(file, "Map%04d.lmu", map_id);
     map = LMU_Reader::LoadMap(file);
 
-	RPG::Chipset chipset = Main_Data::data_chipsets[map.chipset_id];
+	RPG::Chipset chipset = Main_Data::data_chipsets[map.chipset_id - 1];
 	chipset_name = chipset.chipset_name;
 	passages_down = chipset.passable_data_lower;
 	passages_up = chipset.passable_data_lower;

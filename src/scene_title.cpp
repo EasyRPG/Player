@@ -23,6 +23,7 @@
 #include <iostream>
 #include <fstream>
 #include "scene_title.h"
+#include "scene_map.h"
 #include "options.h"
 #include "main_data.h"
 #include "player.h"
@@ -133,14 +134,33 @@ void Scene_Title::Update() {
 }
 
 ////////////////////////////////////////////////////////////
-/// Constructor
+/// CommandNewGame
 ////////////////////////////////////////////////////////////
 void Scene_Title::CommandNewGame() {
-    
+	Main_Data::game_system->SePlay(Main_Data::data_system.decision_se);
+	Audio::BGM_Stop();
+    Graphics::framecount= 0;
+    Main_Data::game_temp = new Game_Temp();
+    Main_Data::game_system = new Game_System();
+    Main_Data::game_switches = new Game_Switches();
+    Main_Data::game_variables = new Game_Variables();
+    Main_Data::game_screen = new Game_Screen();
+    Main_Data::game_actors = new Game_Actors();
+    Main_Data::game_party = new Game_Party();
+    Main_Data::game_troop = new Game_Troop();
+    Main_Data::game_map = new Game_Map();
+    Main_Data::game_player = new Game_Player();
+    //Main_Data::game_party->SetupStartingMembers();
+	Main_Data::game_map->Setup(Main_Data::data_treemap.start_map_id);
+    //Main_Data::game_player->moveto(Main_Data::data_treemap.start_x, Main_Data::data_treemap.start_y);
+    //Main_Data::game_player->Refresh();
+    Main_Data::game_map->Autoplay();
+    Main_Data::game_map->Update();
+    Main_Data::scene = new Scene_Map();
 }
 
 ////////////////////////////////////////////////////////////
-/// Constructor
+/// CommandContinue
 ////////////////////////////////////////////////////////////
 void Scene_Title::CommandContinue() {
     // Play decision SE
@@ -150,7 +170,7 @@ void Scene_Title::CommandContinue() {
 }
 
 ////////////////////////////////////////////////////////////
-/// Constructor
+/// CommandShutdown
 ////////////////////////////////////////////////////////////
 void Scene_Title::CommandShutdown() {
     // Play decision SE

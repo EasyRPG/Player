@@ -22,7 +22,7 @@
 /// Headers
 ////////////////////////////////////////////////////////////
 #include "scene.h"
-#include "spriteset.h"
+#include "spriteset_map.h"
 #include "window_message.h"
 
 ////////////////////////////////////////////////////////////
@@ -43,7 +43,7 @@ public:
 	void CallDebug();
 	void TransferPlayer();
     
-	Spriteset* spriteset;
+	Spriteset_Map* spriteset;
     Window_Message* message_window;
 };
 

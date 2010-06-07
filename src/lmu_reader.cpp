@@ -46,7 +46,7 @@ RPG::Map LMU_Reader::LoadMap(const std::string& filename) {
 ////////////////////////////////////////////////////////////
 RPG::Map LMU_Reader::ReadMapData(FILE* stream) {
     RPG::Map map;
-    Reader::CInteger(stream);
+    //Reader::CInteger(stream);
 
     Reader::Chunk chunk_info;
     while (!feof(stream)) {
@@ -101,11 +101,11 @@ RPG::Map LMU_Reader::ReadMapData(FILE* stream) {
         case ChunkMap::upper_layer:
             map.upper_layer = Reader::ArrayShort(stream, chunk_info.length);
             break;
-        case ChunkMap::events:
+        /*case ChunkMap::events: // It's reading bad, FIXME
             for (int i = Reader::CInteger(stream); i > 0; i--) {
                 map.events.push_back(ReadEvent(stream));
             }
-            break;
+            break;*/
         case ChunkMap::save_times:
             map.save_times = Reader::CInteger(stream);
             break;

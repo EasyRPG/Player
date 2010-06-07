@@ -27,6 +27,7 @@
 ////////////////////////////////////////////////////////////
 RPG::MoveRoute LMU_Reader::ReadMoveRoute(FILE* stream) {
     RPG::MoveRoute moveroute;
+	Reader::CInteger(stream);
 
     Reader::Chunk chunk_info;
     while (!feof(stream)) {

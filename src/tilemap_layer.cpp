@@ -35,7 +35,10 @@ TilemapLayer::TilemapLayer(int ilayer) {
     int lines = (int)(Player::GetWidth() / 16.0f + 1.5);
     int columns = (int)(Player::GetHeight() / 16.0f + 1.5);
 
+	sprites.resize(lines);
+
     for (int i = 0; i < lines; i++) {
+		sprites[i].resize(columns);
         for (int j = 0; j < columns; j++) {
             Sprite* sprite = new Sprite();
             sprite->SetX(i * 16);
