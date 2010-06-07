@@ -52,7 +52,7 @@ std::string Registry::ReadStrValue(HKEY hkey, std::string key, std::string val) 
 #else
     std::string wkey  = key;
 #endif
-    if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, wkey.c_str(), NULL, KEY_QUERY_VALUE, &key_handle)) {
+    if (RegOpenKeyEx(hkey, wkey.c_str(), NULL, KEY_QUERY_VALUE, &key_handle)) {
         return "";
     }
 #if MSVC
