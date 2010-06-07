@@ -41,9 +41,15 @@ namespace FileFinder {
 void FileFinder::Init() {
     if (RPGMAKER == RPG2K) {
         rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\ASCII\\RPG2000", "RuntimePackagePath");
+		if (rtp_path == "") {
+			rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\ASCII\\RPG2000", "RuntimePackagePath");
+		}
     }
     else if (RPGMAKER == RPG2K3) {
         rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\Enterbrain\\RPG2003", "RuntimePackagePath");
+		if (rtp_path == "") {
+			rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\Enterbrain\\RPG2003", "RuntimePackagePath");
+		}
     }
 
     fonts_path = "";
