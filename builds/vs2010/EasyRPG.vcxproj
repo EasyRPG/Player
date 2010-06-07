@@ -198,6 +198,7 @@
     <ClCompile Include="..\..\src\rpg_troopmember.cpp" />
     <ClCompile Include="..\..\src\rpg_trooppage.cpp" />
     <ClCompile Include="..\..\src\rpg_trooppagecondition.cpp" />
+    <ClCompile Include="..\..\src\scene_map.cpp" />
     <ClCompile Include="..\..\src\scene_title.cpp" />
     <ClCompile Include="..\..\src\sprite.cpp" />
     <ClCompile Include="..\..\src\tilemap.cpp" />
@@ -207,6 +208,7 @@
     <ClCompile Include="..\..\src\window.cpp" />
     <ClCompile Include="..\..\src\window_base.cpp" />
     <ClCompile Include="..\..\src\window_command.cpp" />
+    <ClCompile Include="..\..\src\window_message.cpp" />
     <ClCompile Include="..\..\src\window_selectable.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -289,6 +291,7 @@
     <ClInclude Include="..\..\src\rpg_trooppage.h" />
     <ClInclude Include="..\..\src\rpg_trooppagecondition.h" />
     <ClInclude Include="..\..\src\scene.h" />
+    <ClInclude Include="..\..\src\scene_map.h" />
     <ClInclude Include="..\..\src\scene_title.h" />
     <ClInclude Include="..\..\src\sprite.h" />
     <ClInclude Include="..\..\src\tilemap.h" />
@@ -298,6 +301,7 @@
     <ClInclude Include="..\..\src\window.h" />
     <ClInclude Include="..\..\src\window_base.h" />
     <ClInclude Include="..\..\src\window_command.h" />
+    <ClInclude Include="..\..\src\window_message.h" />
     <ClInclude Include="..\..\src\window_selectable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

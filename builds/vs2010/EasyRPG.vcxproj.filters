@@ -428,6 +428,12 @@
     <ClCompile Include="..\..\src\window.cpp">
       <Filter>Source Files\Multimedia\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\scene_map.cpp">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\window_message.cpp">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cache.h">
@@ -696,6 +702,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\window.h">
       <Filter>Source Files\Multimedia\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene_map.h">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\window_message.h">
+      <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
