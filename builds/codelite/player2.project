@@ -45,6 +45,8 @@
         <File Name="../../src/scene.h"/>
         <File Name="../../src/scene_title.cpp"/>
         <File Name="../../src/scene_title.h"/>
+        <File Name="../../src/scene_map.cpp"/>
+        <File Name="../../src/scene_map.h"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Window">
         <File Name="../../src/window_base.cpp"/>
@@ -53,6 +55,8 @@
         <File Name="../../src/window_command.h"/>
         <File Name="../../src/window_selectable.cpp"/>
         <File Name="../../src/window_selectable.h"/>
+        <File Name="../../src/window_message.h"/>
+        <File Name="../../src/window_message.cpp"/>
       </VirtualDirectory>
     </VirtualDirectory>
     <VirtualDirectory Name="Reader">
@@ -149,6 +153,8 @@
         <File Name="../../src/viewport.h"/>
         <File Name="../../src/window.cpp"/>
         <File Name="../../src/window.h"/>
+        <File Name="../../src/spriteset_map.h"/>
+        <File Name="../../src/spriteset_map.cpp"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Input">
         <File Name="../../src/input.cpp"/>
