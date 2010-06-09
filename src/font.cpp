@@ -25,7 +25,7 @@
 ////////////////////////////////////////////////////////////
 /// Static Variables
 ////////////////////////////////////////////////////////////
-std::string Font::default_name = "Arial";
+std::string Font::default_name = "Font/DejaVuLGCSansMono";
 int Font::default_size = 12;
 bool Font::default_bold = false;
 bool Font::default_italic = false;
