@@ -78,7 +78,7 @@ std::string Reader::String(FILE* stream, int lenght) {
     memset(chars, 0, lenght + 1);
     fread(chars, sizeof(char), lenght, stream);
     std::string str = std::string(chars, lenght);
-    delete chars;
+    delete [] chars;
     return str;
 }
 
