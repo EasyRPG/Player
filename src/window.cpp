@@ -54,14 +54,15 @@ Window::Window() {
 
     background = NULL;
     frame = NULL;
-    cursor1 = NULL;
-    cursor2 = NULL;
     cursor_frame = 0;
     pause_frame = 0;
 
     ID = Graphics::ID++;
     Graphics::drawable_list.push_back(this);
     Graphics::drawable_list.sort(Graphics::SortDrawable);
+	
+	cursor1 = new Bitmap(cursor_rect.width, cursor_rect.height);
+	cursor2 = new Bitmap(cursor_rect.width, cursor_rect.height);
 }
 
 ////////////////////////////////////////////////////////////
