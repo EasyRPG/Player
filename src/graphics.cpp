@@ -24,6 +24,7 @@
 #include "player.h"
 #include "drawable.h"
 #include "SDL_ttf.h"
+#include "SDL_rotozoom.h"
 
 ////////////////////////////////////////////////////////////
 /// Global Variables
@@ -34,9 +35,9 @@ namespace Graphics {
     int framecount;
     double framerate_interval;
     unsigned long ID;
-    unsigned long last_tics;
-    unsigned long last_tics_wait;
-    unsigned long next_tics_fps;
+    unsigned long last_ticks;
+    unsigned long last_ticks_wait;
+    unsigned long next_ticks_fps;
 
     std::list<Drawable*> drawable_list;
     std::list<Drawable*>::iterator it_drawable_list;
@@ -47,12 +48,12 @@ namespace Graphics {
 ////////////////////////////////////////////////////////////
 void Graphics::Init() {
     fps = 0;
-    framerate = 60;
+    framerate = DEFAULT_FPS;
     framecount = 0;
     ID = 0;
     framerate_interval = 1000.0 / DEFAULT_FPS;
-    last_tics = SDL_GetTicks() + (long)framerate_interval;
-    next_tics_fps = last_tics + 1000;
+    last_ticks = SDL_GetTicks() + (long)framerate_interval;
+    next_ticks_fps = last_ticks + 1000;
 
     if (TTF_Init() == -1) {
         Output::Error("Couldn't initialize SDL_ttf library.\n%s\n", TTF_GetError());
@@ -63,22 +64,22 @@ void Graphics::Init() {
 /// Timer Wait
 ////////////////////////////////////////////////////////////
 void Graphics::TimerWait(){
-    last_tics_wait = SDL_GetTicks();
+    last_ticks_wait = SDL_GetTicks();
 }
 
 ////////////////////////////////////////////////////////////
 /// Timer Continue
 ////////////////////////////////////////////////////////////
 void Graphics::TimerContinue() {
-    last_tics += SDL_GetTicks() - last_tics_wait;
-    next_tics_fps += SDL_GetTicks() - last_tics_wait;
+    last_ticks += SDL_GetTicks() - last_ticks_wait;
+    next_ticks_fps += SDL_GetTicks() - last_ticks_wait;
 }
 
 ////////////////////////////////////////////////////////////
 /// Update
 ////////////////////////////////////////////////////////////
 void Graphics::Update() {
-    static unsigned long tics;
+    static unsigned long ticks;
     static unsigned long frames = 0;
     static double waitframes = 0;
     static double cyclesleftover;
@@ -87,33 +88,34 @@ void Graphics::Update() {
         waitframes -= 1;
         return;
     }
-    tics = SDL_GetTicks();
-    if ((tics - last_tics) >= (unsigned long)framerate_interval || (framerate_interval - tics + last_tics) < 10) {
+    ticks = SDL_GetTicks();
+
+                                                                 // FIXME: This code reduces speed of zoomed windows a lot
+    if ((ticks - last_ticks) >= (unsigned long)framerate_interval /*|| (framerate_interval - ticks + last_ticks) < 10*/) {
         cyclesleftover = waitframes;
-        waitframes = (double)(tics - last_tics) / framerate_interval - cyclesleftover;
-        //last_tics += (tics - last_tics) - cyclesleftover;
-        last_tics = tics;
+        waitframes = (double)(ticks - last_ticks) / framerate_interval - cyclesleftover;
+
+        last_ticks += (ticks - last_ticks) - (unsigned long)cyclesleftover;
+        last_ticks = ticks;
+
         DrawFrame();
-        
-        framecount++;
-        frames++;
-        
-        if (tics >= next_tics_fps) {
-            next_tics_fps += 1000;
+
+        ++framecount;
+        ++frames;
+
+        if (ticks >= next_ticks_fps) {
+            next_ticks_fps += 1000;
             fps = frames;
             frames = 0;
             
             char title[255];
-#ifdef MSVC
-            sprintf_s(title, 255, "%s - %d FPS", GAME_TITLE, fps);
-#else
             sprintf(title, "%s - %d FPS", GAME_TITLE, fps);
-#endif
+
             SDL_WM_SetCaption(title, NULL);
         }
     }
     else {
-        SDL_Delay((long)(framerate_interval) - (tics - last_tics));
+        SDL_Delay((long)(framerate_interval) - (ticks - last_ticks));
     }
 }
 
@@ -123,12 +125,22 @@ void Graphics::Update() {
 void Graphics::DrawFrame() {
     SDL_FillRect(Player::main_window, &Player::main_window->clip_rect, DEFAULT_BACKCOLOR);
 
-    for (it_drawable_list = drawable_list.begin(); it_drawable_list != drawable_list.end(); it_drawable_list++) {
+    for (it_drawable_list = drawable_list.begin(); it_drawable_list != drawable_list.end(); ++it_drawable_list) {
         (*it_drawable_list)->Draw();
     }
-    
-    if (SDL_Flip(Player::main_window) == -1) {
-        Output::Error("Couldn't update screen.\n%s\n", SDL_GetError());
+
+    if (Player::zoom)
+    {   // 2x Zoom - Bit slow, but works
+        SDL_Surface* videoSurface = SDL_GetVideoSurface();
+        SDL_Surface* zoomed_window = rotozoomSurface(Player::main_window, 0, 2, 0);
+        SDL_BlitSurface(zoomed_window, NULL, videoSurface, NULL);
+        SDL_FreeSurface(zoomed_window);
+        SDL_Flip(videoSurface);
+    }
+    else {
+        if (SDL_Flip(Player::main_window) == -1) {
+            Output::Error("Couldn't update screen.\n%s\n", SDL_GetError());
+        }
     }
 }
 
@@ -150,7 +162,7 @@ void Graphics::Transition(int type, int time) {
 /// Reset frames
 ////////////////////////////////////////////////////////////
 void Graphics::FrameReset() {
-    last_tics = SDL_GetTicks();
+    last_ticks = SDL_GetTicks();
 }
 
 ////////////////////////////////////////////////////////////

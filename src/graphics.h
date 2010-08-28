@@ -52,9 +52,9 @@ namespace Graphics {
     extern int framecount;
     extern double framerate_interval;
     extern unsigned long ID;
-    extern unsigned long last_tics;
-    extern unsigned long last_tics_wait;
-    extern unsigned long next_tics_fps;
+    extern unsigned long last_ticks;
+    extern unsigned long last_ticks_wait;
+    extern unsigned long next_ticks_fps;
 
     extern std::list<Drawable*> drawable_list;
     extern std::list<Drawable*>::iterator it_drawable_list;

@@ -164,9 +164,13 @@ void Player::Exit() {
 ////////////////////////////////////////////////////////////
 void Player::ToggleFullscreen() {
 	#ifdef DINGOO
-		fullscreen = false;
-		return;
+        fullscreen = false;
+        return;
 	#endif
+
+    if (zoom) {
+        ToggleZoom();
+    }
     Uint32 flags = main_window->flags;
     SDL_FreeSurface(main_window);
     main_window = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, flags ^ SDL_FULLSCREEN);
@@ -182,7 +186,25 @@ void Player::ToggleFullscreen() {
 /// Switch zoom
 ////////////////////////////////////////////////////////////
 void Player::ToggleZoom() {
-    // TODO
+	#ifdef DINGOO
+        zoom = false;
+        return;
+	#endif
+    if (fullscreen) {
+        ToggleFullscreen();
+    }
+    Uint32 flags = main_window->flags;
+
+    if (!zoom) {
+        main_window = SDL_ConvertSurface(main_window, main_window->format, main_window->flags);
+        SDL_SetVideoMode(SCREEN_WIDTH*2, SCREEN_HEIGHT*2, 32, flags);
+    }
+    else {
+        SDL_FreeSurface(main_window);
+        main_window = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, flags);
+    }
+
+    zoom = !zoom;
 }
 
 ////////////////////////////////////////////////////////////
