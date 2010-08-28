@@ -77,7 +77,7 @@
 /// DATABASE_NAME
 ///   Database filename.
 ////////////////////////////////////////////////////////////
-#define INI_NAME ".\\RPG_RT.ini"
+#define INI_NAME "./RPG_RT.ini"
 #define READ_INI_GAME_TITLE true
 #define DATABASE_NAME "RPG_RT.ldb"
 #define TREEMAP_NAME "RPG_RT.lmt"

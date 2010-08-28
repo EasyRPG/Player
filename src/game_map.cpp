@@ -265,7 +265,7 @@ void Game_Map::StartFogOpacityChange(int opacity, int duration) {
 	fog_opacity_target = opacity * 1.0;
 	fog_opacity_duration = duration;
 	if (fog_opacity_duration == 0) {
-		fog_opacity = fog_opacity_target;
+		fog_opacity = (int)fog_opacity_target;
 	}
 }
 

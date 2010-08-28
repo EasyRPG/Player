@@ -68,7 +68,7 @@ void FileFinder::Init() {
         }
         fonts_path += "\\Fonts\\";
     }
-    delete dir;
+    delete[] dir;
 }
 
 ////////////////////////////////////////////////////////////
