@@ -382,8 +382,9 @@
         <Preprocessor Value="WIN32"/>
         <Preprocessor Value="_DEBUG"/>
         <Preprocessor Value="_WINDOWS"/>
+        <Preprocessor Value="MINGW"/>
       </Compiler>
-      <Linker Options="-lSDL;-lSDL_gfx;-lSDL_image;-lSDL_mixer;-lSDL_ttf;-lSDLmain;-lz" Required="yes">
+      <Linker Options="-mwindows;-lmingw32;-lSDLmain;-lSDL;-lSDL_gfx;-lSDL_image;-lSDL_mixer;-lSDL_ttf;-lz" Required="yes">
         <LibraryPath Value="$(EASYDEV_MINGW)/lib"/>
       </Linker>
       <ResourceCompiler Options="" Required="yes"/>
@@ -415,8 +416,9 @@
         <Preprocessor Value="WIN32"/>
         <Preprocessor Value="NDEBUG"/>
         <Preprocessor Value="_WINDOWS"/>
+        <Preprocessor Value="MINGW"/>
       </Compiler>
-      <Linker Options="-lSDL;-lSDL_gfx;-lSDL_image;-lSDL_mixer;-lSDL_ttf;-lSDLmain;-lz" Required="yes">
+      <Linker Options="-mwindows;-lmingw32;-lSDLmain;-lSDL;-lSDL_gfx;-lSDL_image;-lSDL_mixer;-lSDL_ttf;-lz" Required="yes">
         <LibraryPath Value="$(EASYDEV_MINGW)/lib"/>
       </Linker>
       <ResourceCompiler Options="" Required="yes"/>
