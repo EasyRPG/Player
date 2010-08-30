@@ -48,52 +48,52 @@ Bitmap* Cache::LoadBitmap(std::string folder_name, std::string filename) {
 /// Quick loads
 ////////////////////////////////////////////////////////////
 Bitmap* Cache::Backdrop(std::string filename) {
-    return LoadBitmap("Bacdrop\\", filename);
+    return LoadBitmap("Backdrop/", filename);
 }
 Bitmap* Cache::Battle(std::string filename) {
-    return LoadBitmap("Battle\\", filename);
+    return LoadBitmap("Battle/", filename);
 }
 Bitmap* Cache::Battle2(std::string filename) {
-    return LoadBitmap("Battle2\\", filename);
+    return LoadBitmap("Battle2/", filename);
 }
 Bitmap* Cache::BattleCharset(std::string filename) {
-    return LoadBitmap("BattleCharSet\\", filename);
+    return LoadBitmap("BattleCharSet/", filename);
 }
 Bitmap* Cache::BattleWeapon(std::string filename) {
-    return LoadBitmap("BattleWeapon\\", filename);
+    return LoadBitmap("BattleWeapon/", filename);
 }
 Bitmap* Cache::Charset(std::string filename) {
-    return LoadBitmap("CharSet\\", filename);
+    return LoadBitmap("CharSet/", filename);
 }
 Bitmap* Cache::Faceset(std::string filename) {
-    return LoadBitmap("FaceSet\\", filename);
+    return LoadBitmap("FaceSet/", filename);
 }
 Bitmap* Cache::Frame(std::string filename) {
-    return LoadBitmap("Frame\\", filename);
+    return LoadBitmap("Frame/", filename);
 }
 Bitmap* Cache::Gameover(std::string filename) {
-    return LoadBitmap("GameOver\\", filename);
+    return LoadBitmap("GameOver/", filename);
 }
 Bitmap* Cache::Monster(std::string filename) {
-    return LoadBitmap("Monster\\", filename);
+    return LoadBitmap("Monster/", filename);
 }
 Bitmap* Cache::Panorama(std::string filename) {
-    return LoadBitmap("Panorama\\", filename);
+    return LoadBitmap("Panorama/", filename);
 }
 Bitmap* Cache::Picture(std::string filename) {
-    return LoadBitmap("Picture\\", filename);
+    return LoadBitmap("Picture/", filename);
 }
 Bitmap* Cache::Chipset(std::string filename) {
-    return LoadBitmap("ChipSet\\", filename);
+    return LoadBitmap("ChipSet/", filename);
 }
 Bitmap* Cache::Title(std::string filename) {
-    return LoadBitmap("Title\\", filename);
+    return LoadBitmap("Title/", filename);
 }
 Bitmap* Cache::System(std::string filename) {
-    return LoadBitmap("System\\", filename);
+    return LoadBitmap("System/", filename);
 }
 Bitmap* Cache::System2(std::string filename) {
-    return LoadBitmap("System2\\", filename);
+    return LoadBitmap("System2/", filename);
 }
 
 ////////////////////////////////////////////////////////////

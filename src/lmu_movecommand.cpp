@@ -41,11 +41,14 @@ RPG::MoveCommand LMU_Reader::ReadMoveCommand(Reader& stream) {
         switch (chunk_info.ID) {
         case ChunkMoveCommand::switch_on:
             movecommand.parameter_a = stream.Read32(Reader::CompressedInteger);
+            break;
         case ChunkMoveCommand::switch_off:
             movecommand.parameter_a = stream.Read32(Reader::CompressedInteger);
+            break;
         case ChunkMoveCommand::change_graphic:
             movecommand.parameter_string = stream.ReadString(stream.Read32(Reader::CompressedInteger));
             movecommand.parameter_a = stream.Read32(Reader::CompressedInteger);
+            break;
         case ChunkMoveCommand::play_sound:
             movecommand.parameter_string = stream.ReadString(stream.Read32(Reader::CompressedInteger));
             movecommand.parameter_a = stream.Read32(Reader::CompressedInteger);

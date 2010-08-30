@@ -99,11 +99,11 @@ RPG::Map LMU_Reader::ReadMapData(Reader& stream) {
         case ChunkMap::upper_layer:
             stream.Read16(map.upper_layer, chunk_info.length);
             break;
-        /*case ChunkMap::events: // It's reading bad, FIXME
+        case ChunkMap::events:
             for (int i = stream.Read32(Reader::CompressedInteger); i > 0; i--) {
                 map.events.push_back(ReadEvent(stream));
             }
-            break;*/
+            break;
         case ChunkMap::save_times:
             map.save_times = stream.Read32(Reader::CompressedInteger);
             break;

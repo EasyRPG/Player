@@ -38,24 +38,8 @@
 #endif
 
 ////////////////////////////////////////////////////////////
-/// Reader namespace
+/// Reader class
 ////////////////////////////////////////////////////////////
-/*namespace Reader {
-    struct Chunk {
-        unsigned long ID;
-        unsigned long length;
-    };
-    unsigned long CInteger(FILE* stream);
-    short Short(FILE* stream);
-    long Uint32(FILE* stream);
-    bool Flag(FILE* stream);
-    unsigned char BitFlag(FILE* stream);
-    std::string String(FILE* stream, int lenght);
-    std::vector<short> ArrayShort(FILE* stream, int lenght);
-    std::vector<unsigned char> ArrayUint8(FILE* stream, int lenght);
-    std::vector<unsigned long> ArrayUint32(FILE* stream, int lenght);
-    std::vector<bool> ArrayFlag(FILE* stream, int lenght);
-}*/
 class Reader {
 public:
     Reader(char* filename);
@@ -92,16 +76,7 @@ public:
     bool IsOk() const;
     bool Eof() const;
     void Seek(size_t pos, SeekMode = FromStart);
-    /*unsigned long CInteger(FILE* stream);
-    short Short(FILE* stream);
-    long Uint32(FILE* stream);
-    bool Flag(FILE* stream);
-    unsigned char BitFlag(FILE* stream);
-    std::string String(FILE* stream, int length);
-    std::vector<short> ArrayShort(FILE* stream, int length);
-    std::vector<unsigned char> ArrayUint8(FILE* stream, int length);
-    std::vector<unsigned long> ArrayUint32(FILE* stream, int length);
-    std::vector<bool> ArrayFlag(FILE* stream, int length);*/
+    bool Ungetch(uint8_t ch);
 
 private:
     FILE* stream;
