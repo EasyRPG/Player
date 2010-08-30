@@ -369,7 +369,8 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
     TTF_SetFontStyle(ttf_font, style);
 
     SDL_Surface* text_surface;
-    if (!(text_surface = TTF_RenderUTF8_Blended(ttf_font, text.c_str(), font.color.Get()))) {
+	text_surface = TTF_RenderUTF8_Blended(ttf_font, text.c_str(), font.color.Get());
+    if (!text_surface) {
         Output::Error("Couldn't draw text %s with Font %n size %d.\n%s\n", text.c_str(), font.name.c_str(), font.size, TTF_GetError());
     }
     
