@@ -25,26 +25,26 @@
 ////////////////////////////////////////////////////////////
 /// Read Encounter
 ////////////////////////////////////////////////////////////
-RPG::Encounter LMT_Reader::ReadEncounter(FILE* stream) {
+RPG::Encounter LMT_Reader::ReadEncounter(Reader& stream) {
     RPG::Encounter encounter;
-    Reader::CInteger(stream);
+    stream.Read32(Reader::CompressedInteger);
 
     Reader::Chunk chunk_info;
-    while (!feof(stream)) {
-        chunk_info.ID = Reader::CInteger(stream);
+    while (!stream.Eof()) {
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         case ChunkEncounter::ID:
-            encounter.ID = Reader::CInteger(stream);
+            encounter.ID = stream.Read32(Reader::CompressedInteger);
             break;
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
     return encounter;

@@ -25,38 +25,38 @@
 ////////////////////////////////////////////////////////////
 /// Read BattlerAnimationExtension
 ////////////////////////////////////////////////////////////
-RPG::BattlerAnimationExtension LDB_Reader::ReadBattlerAnimationExtension(FILE* stream) {
+RPG::BattlerAnimationExtension LDB_Reader::ReadBattlerAnimationExtension(Reader& stream) {
     RPG::BattlerAnimationExtension extension;
-    Reader::CInteger(stream);
+    stream.Read32(Reader::CompressedInteger);
 
     Reader::Chunk chunk_info;
-    while (!feof(stream)) {
-        chunk_info.ID = Reader::CInteger(stream);
+    while (!stream.Eof()) {
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         case ChunkBattlerAnimationExtension::name:
-            extension.name = Reader::String(stream, chunk_info.length);
+            extension.name = stream.ReadString(chunk_info.length);
             break;
         case ChunkBattlerAnimationExtension::battler_name:
-            extension.battler_name = Reader::String(stream, chunk_info.length);
+            extension.battler_name = stream.ReadString(chunk_info.length);
             break;
         case ChunkBattlerAnimationExtension::battler_index:
-            extension.battler_index = Reader::CInteger(stream);
+            extension.battler_index = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkBattlerAnimationExtension::animation_type:
-            extension.animation_type = Reader::CInteger(stream);
+            extension.animation_type = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkBattlerAnimationExtension::animation_id:
-            extension.animation_id = Reader::CInteger(stream);
+            extension.animation_id = stream.Read32(Reader::CompressedInteger);
             break;
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
     return extension;

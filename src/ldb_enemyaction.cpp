@@ -25,62 +25,62 @@
 ////////////////////////////////////////////////////////////
 /// Read EnemyAction
 ////////////////////////////////////////////////////////////
-RPG::EnemyAction LDB_Reader::ReadEnemyAction(FILE* stream) {
+RPG::EnemyAction LDB_Reader::ReadEnemyAction(Reader& stream) {
     RPG::EnemyAction enemyaction;
-    Reader::CInteger(stream);
+    stream.Read32(Reader::CompressedInteger);
 
     Reader::Chunk chunk_info;
-    while (!feof(stream)) {
-        chunk_info.ID = Reader::CInteger(stream);
+    while (!stream.Eof()) {
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         case ChunkEnemyAction::kind:
-            enemyaction.kind = Reader::CInteger(stream);
+            enemyaction.kind = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkEnemyAction::basic:
-            enemyaction.basic = Reader::CInteger(stream);
+            enemyaction.basic = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkEnemyAction::skill_id:
-            enemyaction.skill_id = Reader::CInteger(stream);
+            enemyaction.skill_id = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkEnemyAction::enemy_id:
-            enemyaction.enemy_id = Reader::CInteger(stream);
+            enemyaction.enemy_id = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkEnemyAction::condition_type:
-            enemyaction.condition_type = Reader::CInteger(stream);
+            enemyaction.condition_type = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkEnemyAction::condition_param1:
-            enemyaction.condition_param1 = Reader::CInteger(stream);
+            enemyaction.condition_param1 = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkEnemyAction::condition_param2:
-            enemyaction.condition_param2 = Reader::CInteger(stream);
+            enemyaction.condition_param2 = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkEnemyAction::switch_id:
-            enemyaction.switch_id = Reader::CInteger(stream);
+            enemyaction.switch_id = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkEnemyAction::switch_on:
-            enemyaction.switch_on = Reader::Flag(stream);
+            enemyaction.switch_on = stream.ReadBool();
             break;
         case ChunkEnemyAction::switch_on_id:
-            enemyaction.switch_on_id = Reader::CInteger(stream);
+            enemyaction.switch_on_id = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkEnemyAction::switch_off:
-            enemyaction.switch_off = Reader::Flag(stream);
+            enemyaction.switch_off = stream.ReadBool();
             break;
         case ChunkEnemyAction::switch_off_id:
-            enemyaction.switch_off_id = Reader::CInteger(stream);
+            enemyaction.switch_off_id = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkEnemyAction::rating:
-            enemyaction.rating = Reader::CInteger(stream);
+            enemyaction.rating = stream.Read32(Reader::CompressedInteger);
             break;
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
     return enemyaction;

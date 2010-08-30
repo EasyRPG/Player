@@ -52,7 +52,7 @@ namespace RPG {
         std::vector<Learning> skills;
         std::vector<unsigned char> state_ranks;
         std::vector<unsigned char> attribute_ranks;
-        std::vector<unsigned long> battle_commands;
+        std::vector<unsigned int> battle_commands;
     };
 }
 

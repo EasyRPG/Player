@@ -25,78 +25,78 @@
 ////////////////////////////////////////////////////////////
 /// Read Class
 ////////////////////////////////////////////////////////////
-RPG::Class LDB_Reader::ReadClass(FILE* stream) {
+RPG::Class LDB_Reader::ReadClass(Reader& stream) {
     RPG::Class _class;
-    _class.ID = Reader::CInteger(stream);
+    _class.ID = stream.Read32(Reader::CompressedInteger);
 
     Reader::Chunk chunk_info;
-    while (!feof(stream)) {
-        chunk_info.ID = Reader::CInteger(stream);
+    while (!stream.Eof()) {
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         case ChunkClass::name:
-            _class.name = Reader::String(stream, chunk_info.length);
+            _class.name = stream.ReadString(chunk_info.length);
             break;
         case ChunkClass::two_swords_style:
-            _class.name = Reader::Flag(stream);
+            _class.name = stream.ReadBool();
             break;
         case ChunkClass::fix_equipment:
-            _class.name = Reader::Flag(stream);
+            _class.name = stream.ReadBool();
             break;
         case ChunkClass::auto_battle:
-            _class.name = Reader::Flag(stream);
+            _class.name = stream.ReadBool();
             break;
         case ChunkClass::super_guard:
-            _class.name = Reader::Flag(stream);
+            _class.name = stream.ReadBool();
             break;
         case ChunkClass::parameters:
-            _class.parameter_maxhp = Reader::ArrayShort(stream, chunk_info.length / 6);
-            _class.parameter_maxsp = Reader::ArrayShort(stream, chunk_info.length / 6);
-            _class.parameter_attack = Reader::ArrayShort(stream, chunk_info.length / 6);
-            _class.parameter_defense = Reader::ArrayShort(stream, chunk_info.length / 6);
-            _class.parameter_spirit = Reader::ArrayShort(stream, chunk_info.length / 6);
-            _class.parameter_agility = Reader::ArrayShort(stream, chunk_info.length / 6);
+            stream.Read16(_class.parameter_maxhp, chunk_info.length / 6);
+            stream.Read16(_class.parameter_maxsp, chunk_info.length / 6);
+            stream.Read16(_class.parameter_attack, chunk_info.length / 6);
+            stream.Read16(_class.parameter_defense, chunk_info.length / 6);
+            stream.Read16(_class.parameter_spirit, chunk_info.length / 6);
+            stream.Read16(_class.parameter_agility, chunk_info.length / 6);
             break;
         case ChunkClass::exp_base:
-            _class.exp_base = Reader::CInteger(stream);
+            _class.exp_base = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkClass::exp_inflation:
-            _class.exp_inflation = Reader::CInteger(stream);
+            _class.exp_inflation = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkClass::exp_correction:
-            _class.exp_correction = Reader::CInteger(stream);
+            _class.exp_correction = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkClass::unarmed_animation:
-            _class.unarmed_animation = Reader::CInteger(stream);
+            _class.unarmed_animation = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkClass::skills:
-            for (int i = Reader::CInteger(stream); i > 0; i--) {
+            for (int i = stream.Read32(Reader::CompressedInteger); i > 0; i--) {
                 _class.skills.push_back(ReadLearning(stream));
             }
             break;
         case ChunkClass::state_ranks_size:
-            Reader::CInteger(stream);
+            stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkClass::state_ranks:
-            _class.state_ranks = Reader::ArrayUint8(stream, chunk_info.length);
+            stream.Read8(_class.state_ranks, chunk_info.length);
             break;
         case ChunkClass::attribute_ranks_size:
-            Reader::CInteger(stream);
+            stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkClass::attribute_ranks:
-            _class.attribute_ranks = Reader::ArrayUint8(stream, chunk_info.length);
+            stream.Read8(_class.attribute_ranks, chunk_info.length);
             break;
         case ChunkClass::battle_commands:
-            _class.battle_commands = Reader::ArrayUint32(stream, chunk_info.length);
+            stream.Read32(_class.battle_commands, chunk_info.length);
             break;
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
     return _class;

@@ -26,11 +26,21 @@
 #include <iostream>
 #include <string.h>
 #include <stdio.h>
+#include <assert.h>
+#ifndef _MSC_VER
+    #include <stdint.h>
+#else
+    typedef unsigned char  uint8_t;
+    typedef   signed short  int16_t;
+    typedef unsigned short uint16_t;
+    typedef   signed int    int32_t;
+    typedef unsigned int   uint32_t;
+#endif
 
 ////////////////////////////////////////////////////////////
 /// Reader namespace
 ////////////////////////////////////////////////////////////
-namespace Reader {
+/*namespace Reader {
     struct Chunk {
         unsigned long ID;
         unsigned long length;
@@ -45,6 +55,56 @@ namespace Reader {
     std::vector<unsigned char> ArrayUint8(FILE* stream, int lenght);
     std::vector<unsigned long> ArrayUint32(FILE* stream, int lenght);
     std::vector<bool> ArrayFlag(FILE* stream, int lenght);
-}
+}*/
+class Reader {
+public:
+    Reader(char* filename);
+    Reader(std::string filename);
+    ~Reader();
+
+    struct Chunk {
+        uint32_t ID;
+        uint32_t length;
+    };
+
+    enum IntegerType
+    {
+        CompressedInteger,
+        NormalInteger
+    };
+
+    enum SeekMode
+    {
+        FromStart,
+        FromEnd,
+        FromCurrent
+    };
+
+    bool     ReadBool();
+    uint8_t  Read8();
+    int16_t  Read16();
+    int32_t  Read32(IntegerType type);
+    void ReadBool(std::vector<bool>& buffer, size_t size);
+    void Read8(std::vector<uint8_t>& buffer, size_t size);
+    void Read16(std::vector<int16_t>& buffer, size_t size);
+    void Read32(std::vector<uint32_t>& buffer, size_t size);
+    std::string ReadString(size_t size);
+    bool IsOk() const;
+    bool Eof() const;
+    void Seek(size_t pos, SeekMode = FromStart);
+    /*unsigned long CInteger(FILE* stream);
+    short Short(FILE* stream);
+    long Uint32(FILE* stream);
+    bool Flag(FILE* stream);
+    unsigned char BitFlag(FILE* stream);
+    std::string String(FILE* stream, int length);
+    std::vector<short> ArrayShort(FILE* stream, int length);
+    std::vector<unsigned char> ArrayUint8(FILE* stream, int length);
+    std::vector<unsigned long> ArrayUint32(FILE* stream, int length);
+    std::vector<bool> ArrayFlag(FILE* stream, int length);*/
+
+private:
+    FILE* stream;
+};
 
 #endif

@@ -26,43 +26,43 @@
 ////////////////////////////////////////////////////////////
 /// Read CommonEvent
 ////////////////////////////////////////////////////////////
-RPG::CommonEvent LDB_Reader::ReadCommonEvent(FILE* stream) {
+RPG::CommonEvent LDB_Reader::ReadCommonEvent(Reader& stream) {
     RPG::CommonEvent commonevent;
-    commonevent.ID = Reader::CInteger(stream);
+    commonevent.ID = stream.Read32(Reader::CompressedInteger);
 
     Reader::Chunk chunk_info;
-    while (!feof(stream)) {
-        chunk_info.ID = Reader::CInteger(stream);
+    while (!stream.Eof()) {
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         case ChunkCommonEvent::name:
-            commonevent.name = Reader::String(stream, chunk_info.length);
+            commonevent.name = stream.ReadString(chunk_info.length);
             break;
         case ChunkCommonEvent::trigger:
-            commonevent.trigger = Reader::CInteger(stream);
+            commonevent.trigger = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkCommonEvent::switch_flag:
-            commonevent.switch_flag = Reader::Flag(stream);
+            commonevent.switch_flag = stream.ReadBool();
             break;
         case ChunkCommonEvent::switch_id:
-            commonevent.switch_id = Reader::CInteger(stream);
+            commonevent.switch_id = stream.Read32(Reader::CompressedInteger);
             break;
         /*case ChunkCommonEvent::event_commands_size:
-            commonevent.event_commands.resize(Reader::CInteger(stream));
+            commonevent.event_commands.resize(stream.Read32(Reader::CompressedInteger));
             break;
         case ChunkCommonEvent::event_commands:
-            for (unsigned int i = 0; i < Reader::CInteger(stream); i++) {
+            for (unsigned int i = 0; i < stream.Read32(Reader::CompressedInteger); i++) {
                 commonevent.event_commands[i] = Event_Reader::ReadEventCommand(stream);
             }
             break;*/
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
     return commonevent;

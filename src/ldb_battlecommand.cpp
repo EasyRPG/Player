@@ -25,29 +25,29 @@
 ////////////////////////////////////////////////////////////
 /// Read BattleCommand
 ////////////////////////////////////////////////////////////
-RPG::BattleCommand LDB_Reader::ReadBattleCommand(FILE* stream) {
+RPG::BattleCommand LDB_Reader::ReadBattleCommand(Reader& stream) {
     RPG::BattleCommand battle_command;
-    battle_command.ID = Reader::CInteger(stream);
+    battle_command.ID = stream.Read32(Reader::CompressedInteger);
 
     Reader::Chunk chunk_info;
-    while (!feof(stream)) {
-        chunk_info.ID = Reader::CInteger(stream);
+    while (!stream.Eof()) {
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         case ChunkBattleCommand::name:
-            battle_command.name = Reader::String(stream, chunk_info.length);
+            battle_command.name = stream.ReadString(chunk_info.length);
             break;
         case ChunkBattleCommand::type:
-            battle_command.type = Reader::CInteger(stream);
+            battle_command.type = stream.Read32(Reader::CompressedInteger);
             break;
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
     return battle_command;

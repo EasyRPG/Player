@@ -24,45 +24,46 @@
 #include <string>
 #include <iostream>
 #include "main_data.h"
+#include "reader.h"
 
 ////////////////////////////////////////////////////////////
 /// LDB Reader namespace
 ////////////////////////////////////////////////////////////
 namespace LDB_Reader {
     void Load(const std::string &filename);
-    void LoadChunks(FILE* stream);
-    RPG::Actor ReadActor(FILE* stream);
-    RPG::Learning ReadLearning(FILE* stream);
-    RPG::Skill ReadSkill(FILE* stream);
-    RPG::Item ReadItem(FILE* stream);
-    RPG::Enemy ReadEnemy(FILE* stream);
-    RPG::EnemyAction ReadEnemyAction(FILE* stream);
-    RPG::Troop ReadTroop(FILE* stream);
-    RPG::TroopMember ReadTroopMember(FILE* stream);
-    RPG::TroopPage ReadTroopPage(FILE* stream);
-    RPG::TroopPageCondition ReadTroopPageCondition(FILE* stream);
-    RPG::Attribute ReadAttribute(FILE* stream);
-    RPG::State ReadState(FILE* stream);
-    RPG::Terrain ReadTerrain(FILE* stream);
-    RPG::Chipset ReadChipset(FILE* stream);
-    RPG::Animation ReadAnimation(FILE* stream);
-    RPG::AnimationTiming ReadAnimationTiming(FILE* stream);
-    RPG::AnimationFrame ReadAnimationFrame(FILE* stream);
-    RPG::AnimationCellData ReadAnimationCellData(FILE* stream);
-    RPG::Terms ReadTerms(FILE* stream);
-    RPG::System ReadSystem(FILE* stream);
-    RPG::CommonEvent ReadCommonEvent(FILE* stream);
-    RPG::Sound ReadSound(FILE* stream);
-    RPG::Music ReadMusic(FILE* stream);
-    std::vector<std::string> ReadVariables(FILE* stream);
-    std::vector<std::string> ReadSwitches(FILE* stream);
-    RPG::TestBattler ReadTestBattler(FILE* stream);
+    void LoadChunks(Reader& stream);
+    RPG::Actor ReadActor(Reader& stream);
+    RPG::Learning ReadLearning(Reader& stream);
+    RPG::Skill ReadSkill(Reader& stream);
+    RPG::Item ReadItem(Reader& stream);
+    RPG::Enemy ReadEnemy(Reader& stream);
+    RPG::EnemyAction ReadEnemyAction(Reader& stream);
+    RPG::Troop ReadTroop(Reader& stream);
+    RPG::TroopMember ReadTroopMember(Reader& stream);
+    RPG::TroopPage ReadTroopPage(Reader& stream);
+    RPG::TroopPageCondition ReadTroopPageCondition(Reader& stream);
+    RPG::Attribute ReadAttribute(Reader& stream);
+    RPG::State ReadState(Reader& stream);
+    RPG::Terrain ReadTerrain(Reader& stream);
+    RPG::Chipset ReadChipset(Reader& stream);
+    RPG::Animation ReadAnimation(Reader& stream);
+    RPG::AnimationTiming ReadAnimationTiming(Reader& stream);
+    RPG::AnimationFrame ReadAnimationFrame(Reader& stream);
+    RPG::AnimationCellData ReadAnimationCellData(Reader& stream);
+    RPG::Terms ReadTerms(Reader& stream);
+    RPG::System ReadSystem(Reader& stream);
+    RPG::CommonEvent ReadCommonEvent(Reader& stream);
+    RPG::Sound ReadSound(Reader& stream);
+    RPG::Music ReadMusic(Reader& stream);
+    std::vector<std::string> ReadVariables(Reader& stream);
+    std::vector<std::string> ReadSwitches(Reader& stream);
+    RPG::TestBattler ReadTestBattler(Reader& stream);
 
     // 2003
-    RPG::BattleCommand ReadBattleCommand(FILE* stream);
-    RPG::Class ReadClass(FILE* stream);
-    RPG::BattlerAnimation ReadBattlerAnimation(FILE* stream);
-    RPG::BattlerAnimationExtension ReadBattlerAnimationExtension(FILE* stream);
+    RPG::BattleCommand ReadBattleCommand(Reader& stream);
+    RPG::Class ReadClass(Reader& stream);
+    RPG::BattlerAnimation ReadBattlerAnimation(Reader& stream);
+    RPG::BattlerAnimationExtension ReadBattlerAnimationExtension(Reader& stream);
 }
 
 #endif

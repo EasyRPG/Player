@@ -25,34 +25,34 @@
 ////////////////////////////////////////////////////////////
 /// Read Move Route
 ////////////////////////////////////////////////////////////
-RPG::MoveRoute LMU_Reader::ReadMoveRoute(FILE* stream) {
+RPG::MoveRoute LMU_Reader::ReadMoveRoute(Reader& stream) {
     RPG::MoveRoute moveroute;
-	Reader::CInteger(stream);
+	stream.Read32(Reader::CompressedInteger);
 
     Reader::Chunk chunk_info;
-    while (!feof(stream)) {
-        chunk_info.ID = Reader::CInteger(stream);
+    while (!stream.Eof()) {
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         case ChunkMoveRoute::move_commands:
-            for (int i = Reader::CInteger(stream); i > 0; i--) {
+            for (int i = stream.Read32(Reader::CompressedInteger); i > 0; i--) {
                 moveroute.move_commands.push_back(ReadMoveCommand(stream));
             }
             break;
         case ChunkMoveRoute::skippable:
-            moveroute.skippable = Reader::Flag(stream);
+            moveroute.skippable = stream.ReadBool();
             break;
         case ChunkMoveRoute::repeat:
-            moveroute.repeat = Reader::Flag(stream);
+            moveroute.repeat = stream.ReadBool();
             break;
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
     return moveroute;

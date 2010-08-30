@@ -24,12 +24,13 @@
 #include <string>
 #include <iostream>
 #include "main_data.h"
+#include "reader.h"
 
 ////////////////////////////////////////////////////////////
 /// Event Reader namespace
 ////////////////////////////////////////////////////////////
 namespace Event_Reader {
-    RPG::EventCommand ReadEventCommand(FILE* stream);
+    RPG::EventCommand ReadEventCommand(Reader& stream);
 }
 
 #endif

@@ -74,7 +74,7 @@ namespace RPG {
         // RPG Maker 2003
         int class_id;
         int battler_animation;
-        std::vector<unsigned long> battle_commands;
+        std::vector<unsigned int> battle_commands;
     };
 }
 

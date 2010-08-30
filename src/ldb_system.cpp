@@ -25,64 +25,64 @@
 ////////////////////////////////////////////////////////////
 /// Read System
 ////////////////////////////////////////////////////////////
-RPG::System LDB_Reader::ReadSystem(FILE* stream) {
+RPG::System LDB_Reader::ReadSystem(Reader& stream) {
     RPG::System system;
 
     Reader::Chunk chunk_info;
-    while (!feof(stream)) {
-        chunk_info.ID = Reader::CInteger(stream);
+    while (!stream.Eof()) {
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         case ChunkSystem::ldb_id:
-            system.ldb_id = Reader::CInteger(stream);
+            system.ldb_id = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSystem::boat_name:
-            system.boat_name = Reader::String(stream, chunk_info.length);
+            system.boat_name = stream.ReadString(chunk_info.length);
             break;
         case ChunkSystem::ship_name:
-            system.ship_name = Reader::String(stream, chunk_info.length);
+            system.ship_name = stream.ReadString(chunk_info.length);
             break;
         case ChunkSystem::airship_name:
-            system.airship_name = Reader::String(stream, chunk_info.length);
+            system.airship_name = stream.ReadString(chunk_info.length);
             break;
         case ChunkSystem::boat_index:
-            system.boat_index = Reader::CInteger(stream);
+            system.boat_index = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSystem::ship_index:
-            system.ship_index = Reader::CInteger(stream);
+            system.ship_index = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSystem::airship_index:
-            system.airship_index = Reader::CInteger(stream);
+            system.airship_index = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSystem::title_name:
-            system.title_name = Reader::String(stream, chunk_info.length);
+            system.title_name = stream.ReadString(chunk_info.length);
             break;
         case ChunkSystem::gameover_name:
-            system.gameover_name = Reader::String(stream, chunk_info.length);
+            system.gameover_name = stream.ReadString(chunk_info.length);
             break;
         case ChunkSystem::system_name:
-            system.system_name = Reader::String(stream, chunk_info.length);
+            system.system_name = stream.ReadString(chunk_info.length);
             break;
         case ChunkSystem::system2_name:
-            system.system2_name = Reader::String(stream, chunk_info.length);
+            system.system2_name = stream.ReadString(chunk_info.length);
             break;
         case ChunkSystem::party_size:
-            Reader::CInteger(stream);
+            stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSystem::party:
-            system.party = Reader::ArrayShort(stream, chunk_info.length);
+            stream.Read16(system.party, chunk_info.length);
             break;
         case ChunkSystem::menu_commands_size:
-            Reader::CInteger(stream);
+            stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSystem::menu_commands:
-            system.menu_commands = Reader::ArrayShort(stream, chunk_info.length);
+            stream.Read16(system.menu_commands, chunk_info.length);
             break;
         case ChunkSystem::title_music:
             system.title_music = ReadMusic(stream);
@@ -145,54 +145,54 @@ RPG::System LDB_Reader::ReadSystem(FILE* stream) {
             system.item_se = ReadSound(stream);
             break;
         case ChunkSystem::transition_out:
-            system.transition_out = Reader::CInteger(stream);
+            system.transition_out = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSystem::transition_in:
-            system.transition_in = Reader::CInteger(stream);
+            system.transition_in = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSystem::battle_start_fadeout:
-            system.battle_start_fadeout = Reader::CInteger(stream);
+            system.battle_start_fadeout = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSystem::battle_start_fadein:
-            system.battle_start_fadein = Reader::CInteger(stream);
+            system.battle_start_fadein = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSystem::battle_end_fadeout:
-            system.battle_end_fadeout = Reader::CInteger(stream);
+            system.battle_end_fadeout = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSystem::battle_end_fadein:
-            system.battle_end_fadein = Reader::CInteger(stream);
+            system.battle_end_fadein = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSystem::message_stretch:
-            system.message_stretch = Reader::CInteger(stream);
+            system.message_stretch = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSystem::font_id:
-            system.font_id = Reader::CInteger(stream);
+            system.font_id = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSystem::selected_condition:
-            system.selected_condition = Reader::CInteger(stream);
+            system.selected_condition = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSystem::selected_hero:
-            system.selected_hero = Reader::CInteger(stream);
+            system.selected_hero = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSystem::battletest_background:
-            system.battletest_background = Reader::String(stream, chunk_info.length);
+            system.battletest_background = stream.ReadString(chunk_info.length);
             break;
         case ChunkSystem::battletest_data:
-            for (int i = Reader::CInteger(stream); i > 0; i--) {
+            for (int i = stream.Read32(Reader::CompressedInteger); i > 0; i--) {
                 system.battletest_data.push_back(ReadTestBattler(stream));
             }
             break;
         case ChunkSystem::saved_times:
-            system.saved_times = Reader::CInteger(stream);
+            system.saved_times = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSystem::show_frame:
-            system.show_frame = Reader::Flag(stream);
+            system.show_frame = stream.ReadBool();
             break;
         case ChunkSystem::invert_animations:
-            system.invert_animations = Reader::Flag(stream);
+            system.invert_animations = stream.ReadBool();
             break;
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     } 
     return system;

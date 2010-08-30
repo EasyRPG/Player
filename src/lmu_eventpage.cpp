@@ -26,18 +26,18 @@
 ////////////////////////////////////////////////////////////
 /// Read Event Page
 ////////////////////////////////////////////////////////////
-RPG::EventPage LMU_Reader::ReadEventPage(FILE* stream) {
+RPG::EventPage LMU_Reader::ReadEventPage(Reader& stream) {
     RPG::EventPage eventpage;
-    Reader::CInteger(stream);
+    stream.Read32(Reader::CompressedInteger);
 
     Reader::Chunk chunk_info;
-    while (!feof(stream)) {
-        chunk_info.ID = Reader::CInteger(stream);
+    while (!stream.Eof()) {
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
@@ -45,51 +45,51 @@ RPG::EventPage LMU_Reader::ReadEventPage(FILE* stream) {
             eventpage.condition = ReadEventPageCondition(stream);
             break;
         case ChunkEventPage::character_name:
-            eventpage.character_name = Reader::String(stream, chunk_info.length);
+            eventpage.character_name = stream.ReadString(chunk_info.length);
             break;
         case ChunkEventPage::tile_id:
-            eventpage.tile_id = Reader::CInteger(stream);
+            eventpage.tile_id = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkEventPage::character_dir:
-            eventpage.character_dir = Reader::CInteger(stream);
+            eventpage.character_dir = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkEventPage::character_pattern:
-            eventpage.character_pattern = Reader::CInteger(stream);
+            eventpage.character_pattern = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkEventPage::translucent:
-            eventpage.translucent = Reader::Flag(stream);
+            eventpage.translucent = stream.ReadBool();
             break;
         case ChunkEventPage::move_type:
-            eventpage.move_type = Reader::CInteger(stream);
+            eventpage.move_type = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkEventPage::move_frequency:
-            eventpage.move_frequency = Reader::CInteger(stream);
+            eventpage.move_frequency = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkEventPage::trigger:
-            eventpage.trigger = Reader::CInteger(stream);
+            eventpage.trigger = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkEventPage::priority_type:
-            eventpage.priority_type = Reader::CInteger(stream);
+            eventpage.priority_type = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkEventPage::overlap:
-            eventpage.overlap = Reader::Flag(stream);
+            eventpage.overlap = stream.ReadBool();
             break;
         case ChunkEventPage::animation_type:
-            eventpage.animation_type = Reader::CInteger(stream);
+            eventpage.animation_type = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkEventPage::move_speed:
-            eventpage.move_speed = Reader::CInteger(stream);
+            eventpage.move_speed = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkEventPage::move_route:
             eventpage.move_route = ReadMoveRoute(stream);
             break;
         case ChunkEventPage::event_commands:
-            for (int i = Reader::CInteger(stream); i > 0; i--) {
+            for (int i = stream.Read32(Reader::CompressedInteger); i > 0; i--) {
                 eventpage.event_commands.push_back(Event_Reader::ReadEventCommand(stream));
             }
             break;
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
     return eventpage;

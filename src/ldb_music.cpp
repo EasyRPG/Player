@@ -25,37 +25,37 @@
 ////////////////////////////////////////////////////////////
 /// Read Music
 ////////////////////////////////////////////////////////////
-RPG::Music LDB_Reader::ReadMusic(FILE* stream) {
+RPG::Music LDB_Reader::ReadMusic(Reader& stream) {
     RPG::Music music;
 
     Reader::Chunk chunk_info;
-    while (!feof(stream)) {
-        chunk_info.ID = Reader::CInteger(stream);
+    while (!stream.Eof()) {
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         case ChunkMusic::name:
-            music.name = Reader::String(stream, chunk_info.length);
+            music.name = stream.ReadString(chunk_info.length);
             break;
         case ChunkMusic::fadein:
-            music.fadein = Reader::CInteger(stream);
+            music.fadein = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkMusic::volume:
-            music.volume = Reader::CInteger(stream);
+            music.volume = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkMusic::tempo:
-            music.tempo = Reader::CInteger(stream);
+            music.tempo = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkMusic::balance:
-            music.balance = Reader::CInteger(stream);
+            music.balance = stream.Read32(Reader::CompressedInteger);
             break;
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
     return music;

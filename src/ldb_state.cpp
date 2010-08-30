@@ -25,149 +25,149 @@
 ////////////////////////////////////////////////////////////
 /// Read State
 ////////////////////////////////////////////////////////////
-RPG::State LDB_Reader::ReadState(FILE* stream) {
+RPG::State LDB_Reader::ReadState(Reader& stream) {
     RPG::State state;
-    state.ID = Reader::CInteger(stream);
+    state.ID = stream.Read32(Reader::CompressedInteger);
 
     Reader::Chunk chunk_info;
-    while (!feof(stream)) {
-        chunk_info.ID = Reader::CInteger(stream);
+    while (!stream.Eof()) {
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         case ChunkState::name:
-            state.name = Reader::String(stream, chunk_info.length);
+            state.name = stream.ReadString(chunk_info.length);
             break;
         case ChunkState::type:
-            state.type = Reader::CInteger(stream);
+            state.type = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::color:
-            state.color = Reader::CInteger(stream);
+            state.color = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::priority:
-            state.priority = Reader::CInteger(stream);
+            state.priority = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::restriction:
-            state.restriction = Reader::CInteger(stream);
+            state.restriction = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::a_rate:
-            state.a_rate = Reader::CInteger(stream);
+            state.a_rate = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::b_rate:
-            state.b_rate = Reader::CInteger(stream);
+            state.b_rate = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::c_rate:
-            state.c_rate = Reader::CInteger(stream);
+            state.c_rate = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::d_rate:
-            state.d_rate = Reader::CInteger(stream);
+            state.d_rate = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::e_rate:
-            state.e_rate = Reader::CInteger(stream);
+            state.e_rate = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::hold_turn:
-            state.hold_turn = Reader::CInteger(stream);
+            state.hold_turn = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::auto_release_prob:
-            state.auto_release_prob = Reader::CInteger(stream);
+            state.auto_release_prob = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::release_by_damage:
-            state.release_by_damage = Reader::CInteger(stream);
+            state.release_by_damage = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::affect_type:
-            state.affect_type = Reader::Flag(stream);
+            state.affect_type = stream.ReadBool();
             break;
         case ChunkState::affect_attack:
-            state.affect_attack = Reader::Flag(stream);
+            state.affect_attack = stream.ReadBool();
             break;
         case ChunkState::affect_defense:
-            state.affect_defense = Reader::Flag(stream);
+            state.affect_defense = stream.ReadBool();
             break;
         case ChunkState::affect_spirit:
-            state.affect_spirit = Reader::Flag(stream);
+            state.affect_spirit = stream.ReadBool();
             break;
         case ChunkState::affect_agility:
-            state.affect_agility = Reader::Flag(stream);
+            state.affect_agility = stream.ReadBool();
             break;
         case ChunkState::reduce_hit_ratio:
-            state.reduce_hit_ratio = Reader::CInteger(stream);
+            state.reduce_hit_ratio = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::avoid_attacks:
-            state.avoid_attacks = Reader::Flag(stream);
+            state.avoid_attacks = stream.ReadBool();
             break;
         case ChunkState::reflect_magic:
-            state.reflect_magic = Reader::Flag(stream);
+            state.reflect_magic = stream.ReadBool();
             break;
         case ChunkState::cursed:
-            state.cursed = Reader::Flag(stream);
+            state.cursed = stream.ReadBool();
             break;
         case ChunkState::battler_animation_id:
-            state.battler_animation_id = Reader::CInteger(stream);
+            state.battler_animation_id = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::restrict_skill:
-            state.restrict_skill = Reader::Flag(stream);
+            state.restrict_skill = stream.ReadBool();
             break;
         case ChunkState::restrict_skill_level:
-            state.restrict_skill_level = Reader::CInteger(stream);
+            state.restrict_skill_level = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::restrict_magic:
-            state.restrict_magic = Reader::Flag(stream);
+            state.restrict_magic = stream.ReadBool();
             break;
         case ChunkState::restrict_magic_level:
-            state.restrict_magic_level = Reader::CInteger(stream);
+            state.restrict_magic_level = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::hp_change_type:
-            state.hp_change_type = Reader::CInteger(stream);
+            state.hp_change_type = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::sp_change_type:
-            state.sp_change_type = Reader::CInteger(stream);
+            state.sp_change_type = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::message_actor:
-            state.message_actor = Reader::String(stream, chunk_info.length);
+            state.message_actor = stream.ReadString(chunk_info.length);
             break;
         case ChunkState::message_enemy:
-            state.message_enemy = Reader::String(stream, chunk_info.length);
+            state.message_enemy = stream.ReadString(chunk_info.length);
             break;
         case ChunkState::message_already:
-            state.message_already = Reader::String(stream, chunk_info.length);
+            state.message_already = stream.ReadString(chunk_info.length);
             break;
         case ChunkState::message_affected:
-            state.message_affected = Reader::String(stream, chunk_info.length);
+            state.message_affected = stream.ReadString(chunk_info.length);
             break;
         case ChunkState::message_recovery:
-            state.message_recovery = Reader::String(stream, chunk_info.length);
+            state.message_recovery = stream.ReadString(chunk_info.length);
             break;
         case ChunkState::hp_change_max:
-            state.hp_change_max = Reader::CInteger(stream);
+            state.hp_change_max = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::hp_change_val:
-            state.hp_change_val = Reader::CInteger(stream);
+            state.hp_change_val = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::hp_change_map_val:
-            state.hp_change_map_val = Reader::CInteger(stream);
+            state.hp_change_map_val = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::hp_change_map_steps:
-            state.hp_change_map_steps = Reader::CInteger(stream);
+            state.hp_change_map_steps = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::sp_change_max:
-            state.sp_change_max = Reader::CInteger(stream);
+            state.sp_change_max = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::sp_change_val:
-            state.sp_change_val = Reader::CInteger(stream);
+            state.sp_change_val = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::sp_change_map_val:
-            state.sp_change_map_val = Reader::CInteger(stream);
+            state.sp_change_map_val = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkState::sp_change_map_steps:
-            state.sp_change_map_steps = Reader::CInteger(stream);
+            state.sp_change_map_steps = stream.Read32(Reader::CompressedInteger);
             break;
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
     return state;

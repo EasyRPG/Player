@@ -25,39 +25,39 @@
 ////////////////////////////////////////////////////////////
 /// Read BattlerAnimation
 ////////////////////////////////////////////////////////////
-RPG::BattlerAnimation LDB_Reader::ReadBattlerAnimation(FILE* stream) {
+RPG::BattlerAnimation LDB_Reader::ReadBattlerAnimation(Reader& stream) {
     RPG::BattlerAnimation battler_animation;
-    battler_animation.ID = Reader::CInteger(stream);
+    battler_animation.ID = stream.Read32(Reader::CompressedInteger);
 
     Reader::Chunk chunk_info;
-    while (!feof(stream)) {
-        chunk_info.ID = Reader::CInteger(stream);
+    while (!stream.Eof()) {
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         case ChunkBattlerAnimation::name:
-            battler_animation.name = Reader::String(stream, chunk_info.length);
+            battler_animation.name = stream.ReadString(chunk_info.length);
             break;
         case ChunkBattlerAnimation::speed:
-            battler_animation.speed = Reader::CInteger(stream);
+            battler_animation.speed = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkBattlerAnimation::base_data:
-            for (int i = Reader::CInteger(stream); i > 0; i--) {
+            for (int i = stream.Read32(Reader::CompressedInteger); i > 0; i--) {
                 battler_animation.base_data.push_back(ReadBattlerAnimationExtension(stream));
             }
             break;
         case ChunkBattlerAnimation::weapon_data:
-            for (int i = Reader::CInteger(stream); i > 0; i--) {
+            for (int i = stream.Read32(Reader::CompressedInteger); i > 0; i--) {
                 battler_animation.weapon_data.push_back(ReadBattlerAnimationExtension(stream));
             }
             break;
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
     return battler_animation;

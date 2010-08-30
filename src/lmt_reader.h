@@ -24,15 +24,16 @@
 #include <string>
 #include <iostream>
 #include "main_data.h"
+#include "reader.h"
 
 ////////////////////////////////////////////////////////////
 /// LMT Reader namespace
 ////////////////////////////////////////////////////////////
 namespace LMT_Reader {
     void Load(const std::string &filename);
-    void ReadTreeMap(FILE* stream);
-    RPG::MapInfo ReadMapInfo(FILE* stream);
-    RPG::Encounter ReadEncounter(FILE* stream);
+    void ReadTreeMap(Reader& stream);
+    RPG::MapInfo ReadMapInfo(Reader& stream);
+    RPG::Encounter ReadEncounter(Reader& stream);
 }
 
 #endif

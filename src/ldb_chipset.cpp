@@ -25,44 +25,44 @@
 ////////////////////////////////////////////////////////////
 /// Read Chipset
 ////////////////////////////////////////////////////////////
-RPG::Chipset LDB_Reader::ReadChipset(FILE* stream) {
+RPG::Chipset LDB_Reader::ReadChipset(Reader& stream) {
     RPG::Chipset chipset;
-    chipset.ID = Reader::CInteger(stream);
+    chipset.ID = stream.Read32(Reader::CompressedInteger);
 
     Reader::Chunk chunk_info;
-    while (!feof(stream)) {
-        chunk_info.ID = Reader::CInteger(stream);
+    while (!stream.Eof()) {
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         case ChunkChipset::name:
-            chipset.name = Reader::String(stream, chunk_info.length);
+            chipset.name = stream.ReadString(chunk_info.length);
             break;
         case ChunkChipset::chipset_name:
-            chipset.chipset_name = Reader::String(stream, chunk_info.length);
+            chipset.chipset_name = stream.ReadString(chunk_info.length);
             break;
         case ChunkChipset::terrain_data:
-            chipset.terrain_data = Reader::ArrayShort(stream, chunk_info.length);
+            stream.Read16(chipset.terrain_data, chunk_info.length);
             break;
         case ChunkChipset::passable_data_lower:
-            chipset.passable_data_lower = Reader::ArrayUint8(stream, chunk_info.length);
+            stream.Read8(chipset.passable_data_lower, chunk_info.length);
             break;
         case ChunkChipset::passable_data_upper:
-            chipset.passable_data_upper = Reader::ArrayUint8(stream, chunk_info.length);
+            stream.Read8(chipset.passable_data_upper, chunk_info.length);
             break;
         case ChunkChipset::animation_type:
-            chipset.animation_type = Reader::CInteger(stream);
+            chipset.animation_type = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkChipset::animation_speed:
-            chipset.animation_speed = Reader::CInteger(stream);
+            chipset.animation_speed = stream.Read32(Reader::CompressedInteger);
             break;
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
     return chipset;

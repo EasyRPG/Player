@@ -27,87 +27,85 @@
 /// Load Map Tree
 ////////////////////////////////////////////////////////////
 void LMT_Reader::Load(const std::string& filename) {
-    FILE* stream;
-    stream = fopen(filename.c_str(), "rb");
-    if (!stream) {
+    Reader reader(filename);
+    if (!reader.IsOk()) {
         Output::Error("Couldn't find %s map tree file.\n", filename.c_str());
     }
-    std::string header = Reader::String(stream, Reader::CInteger(stream));
+    std::string header = reader.ReadString(reader.Read32(Reader::CompressedInteger));
     if (header != "LcfMapTree") {
         Output::Error("%s is not a valid RPG2000 map tree.\n", filename.c_str());
     }
-    ReadTreeMap(stream);
-    fclose(stream);
+    ReadTreeMap(reader);
 }
 
 ////////////////////////////////////////////////////////////
 /// Read Tree Map
 ////////////////////////////////////////////////////////////
-void LMT_Reader::ReadTreeMap(FILE* stream) {
+void LMT_Reader::ReadTreeMap(Reader& stream) {
     // Array - RPG::MapInfo
-    Main_Data::data_treemap.maps.resize(Reader::CInteger(stream) + 1);
+    Main_Data::data_treemap.maps.resize(stream.Read32(Reader::CompressedInteger) + 1);
     for (unsigned int i = 1; i < Main_Data::data_treemap.maps.size(); i++) {
         Main_Data::data_treemap.maps[i] = ReadMapInfo(stream);
     }
 
     // Array - Integer
-    for (int i = Reader::CInteger(stream); i > 0; i--) {
-        Main_Data::data_treemap.tree_order.push_back(Reader::CInteger(stream));
+    for (int i = stream.Read32(Reader::CompressedInteger); i > 0; i--) {
+        Main_Data::data_treemap.tree_order.push_back(stream.Read32(Reader::CompressedInteger));
     }
 
     // Integer
-    Main_Data::data_treemap.active_node = Reader::CInteger(stream);
+    Main_Data::data_treemap.active_node = stream.Read32(Reader::CompressedInteger);
 
     // RPG::TreeMap
     Reader::Chunk chunk_info;
-    while (!feof(stream)) {
-        chunk_info.ID = Reader::CInteger(stream);
+    while (!stream.Eof()) {
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         case ChunkTreeMap::start_map_id:
-            Main_Data::data_treemap.start_map_id = Reader::CInteger(stream);
+            Main_Data::data_treemap.start_map_id = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkTreeMap::start_x:
-            Main_Data::data_treemap.start_x = Reader::CInteger(stream);
+            Main_Data::data_treemap.start_x = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkTreeMap::start_y:
-            Main_Data::data_treemap.start_y = Reader::CInteger(stream);
+            Main_Data::data_treemap.start_y = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkTreeMap::boat_map_id:
-            Main_Data::data_treemap.boat_map_id = Reader::CInteger(stream);
+            Main_Data::data_treemap.boat_map_id = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkTreeMap::boat_x:
-            Main_Data::data_treemap.boat_x = Reader::CInteger(stream);
+            Main_Data::data_treemap.boat_x = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkTreeMap::boat_y:
-            Main_Data::data_treemap.boat_y = Reader::CInteger(stream);
+            Main_Data::data_treemap.boat_y = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkTreeMap::ship_map_id:
-            Main_Data::data_treemap.ship_map_id = Reader::CInteger(stream);
+            Main_Data::data_treemap.ship_map_id = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkTreeMap::ship_x:
-            Main_Data::data_treemap.ship_x = Reader::CInteger(stream);
+            Main_Data::data_treemap.ship_x = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkTreeMap::ship_y:
-            Main_Data::data_treemap.ship_y = Reader::CInteger(stream);
+            Main_Data::data_treemap.ship_y = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkTreeMap::airship_map_id:
-            Main_Data::data_treemap.airship_map_id = Reader::CInteger(stream);
+            Main_Data::data_treemap.airship_map_id = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkTreeMap::airship_x:
-            Main_Data::data_treemap.airship_x = Reader::CInteger(stream);
+            Main_Data::data_treemap.airship_x = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkTreeMap::airship_y:
-            Main_Data::data_treemap.airship_y = Reader::CInteger(stream);
+            Main_Data::data_treemap.airship_y = stream.Read32(Reader::CompressedInteger);
             break;
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
 }

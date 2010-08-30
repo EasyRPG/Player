@@ -25,179 +25,179 @@
 ////////////////////////////////////////////////////////////
 /// Read Item
 ////////////////////////////////////////////////////////////
-RPG::Item LDB_Reader::ReadItem(FILE* stream) {
+RPG::Item LDB_Reader::ReadItem(Reader& stream) {
     RPG::Item item;
-    item.ID = Reader::CInteger(stream);
+    item.ID = stream.Read32(Reader::CompressedInteger);
 
     Reader::Chunk chunk_info;
-    while (!feof(stream)) {
-        chunk_info.ID = Reader::CInteger(stream);
+    while (!stream.Eof()) {
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         case ChunkItem::name:
-            item.name = Reader::String(stream, chunk_info.length);
+            item.name = stream.ReadString(chunk_info.length);
             break;
         case ChunkItem::description:
-            item.description = Reader::String(stream, chunk_info.length);
+            item.description = stream.ReadString(chunk_info.length);
             break;
         case ChunkItem::type:
-            item.type = Reader::CInteger(stream);
+            item.type = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::price:
-            item.price = Reader::CInteger(stream);
+            item.price = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::uses:
-            item.uses = Reader::CInteger(stream);
+            item.uses = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::atk_points1:
-            item.atk_points = Reader::CInteger(stream);
+            item.atk_points = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::def_points1:
-            item.def_points = Reader::CInteger(stream);
+            item.def_points = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::spi_points1:
-            item.spi_points = Reader::CInteger(stream);
+            item.spi_points = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::agi_points1:
-            item.agi_points = Reader::CInteger(stream);
+            item.agi_points = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::two_handed:
-            item.two_handed = Reader::Flag(stream);
+            item.two_handed = stream.ReadBool();
             break;
         case ChunkItem::sp_cost:
-            item.sp_cost = Reader::CInteger(stream);
+            item.sp_cost = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::hit:
-            item.hit = Reader::CInteger(stream);
+            item.hit = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::critical_hit:
-            item.critical_hit = Reader::CInteger(stream);
+            item.critical_hit = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::animation_id:
-            item.animation_id = Reader::CInteger(stream);
+            item.animation_id = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::preemptive:
-            item.preemptive = Reader::Flag(stream);
+            item.preemptive = stream.ReadBool();
             break;
         case ChunkItem::dual_attack:
-            item.dual_attack = Reader::Flag(stream);
+            item.dual_attack = stream.ReadBool();
             break;
         case ChunkItem::attack_all:
-            item.attack_all = Reader::Flag(stream);
+            item.attack_all = stream.ReadBool();
             break;
         case ChunkItem::ignore_evasion:
-            item.ignore_evasion = Reader::Flag(stream);
+            item.ignore_evasion = stream.ReadBool();
             break;
         case ChunkItem::prevent_critical:
-            item.prevent_critical = Reader::Flag(stream);
+            item.prevent_critical = stream.ReadBool();
             break;
         case ChunkItem::raise_evasion:
-            item.raise_evasion = Reader::Flag(stream);
+            item.raise_evasion = stream.ReadBool();
             break;
         case ChunkItem::half_sp_cost:
-            item.half_sp_cost = Reader::Flag(stream);
+            item.half_sp_cost = stream.ReadBool();
             break;
         case ChunkItem::no_terrain_damage:
-            item.no_terrain_damage = Reader::Flag(stream);
+            item.no_terrain_damage = stream.ReadBool();
             break;
         case ChunkItem::cursed:
-            item.cursed = Reader::Flag(stream);
+            item.cursed = stream.ReadBool();
             break;
         case ChunkItem::entire_party:
-            item.entire_party = Reader::Flag(stream);
+            item.entire_party = stream.ReadBool();
             break;
         case ChunkItem::recover_hp:
-            item.recover_hp = Reader::CInteger(stream);
+            item.recover_hp = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::recover_hp_rate:
-            item.recover_hp_rate = Reader::CInteger(stream);
+            item.recover_hp_rate = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::recover_sp:
-            item.recover_sp = Reader::CInteger(stream);
+            item.recover_sp = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::recover_sp_rate:
-            item.recover_sp_rate = Reader::CInteger(stream);
+            item.recover_sp_rate = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::ocassion_field1:
-            item.ocassion_field = Reader::Flag(stream);
+            item.ocassion_field = stream.ReadBool();
             break;
         case ChunkItem::ko_only:
-            item.ko_only = Reader::Flag(stream);
+            item.ko_only = stream.ReadBool();
             break;
         case ChunkItem::max_hp_points:
-            item.max_hp_points = Reader::CInteger(stream);
+            item.max_hp_points = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::max_sp_points:
-            item.max_sp_points = Reader::CInteger(stream);
+            item.max_sp_points = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::atk_points2:
-            item.atk_points = Reader::CInteger(stream);
+            item.atk_points = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::def_points2:
-            item.def_points = Reader::CInteger(stream);
+            item.def_points = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::spi_points2:
-            item.spi_points = Reader::CInteger(stream);
+            item.spi_points = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::agi_points2:
-            item.agi_points = Reader::CInteger(stream);
+            item.agi_points = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::using_messsage:
-            item.using_messsage = Reader::CInteger(stream);
+            item.using_messsage = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::skill_id:
-            item.skill_id = Reader::CInteger(stream);
+            item.skill_id = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::switch_id:
-            item.switch_id = Reader::CInteger(stream);
+            item.switch_id = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::ocassion_field2:
-            item.ocassion_field = Reader::Flag(stream);
+            item.ocassion_field = stream.ReadBool();
             break;
         case ChunkItem::ocassion_battle:
-            item.ocassion_battle = Reader::Flag(stream);
+            item.ocassion_battle = stream.ReadBool();
             break;
         case ChunkItem::actor_set_size:
-            Reader::CInteger(stream);
+            stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::actor_set:
-            item.actor_set = Reader::ArrayFlag(stream, chunk_info.length);
+            stream.ReadBool(item.actor_set, chunk_info.length);
             break;
         case ChunkItem::state_set_size:
-            Reader::CInteger(stream);
+            stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::state_set:
-            item.state_set = Reader::ArrayFlag(stream, chunk_info.length);
+            stream.ReadBool(item.state_set, chunk_info.length);
             break;
         case ChunkItem::attribute_set_size:
-            Reader::CInteger(stream);
+            stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::attribute_set:
-            item.attribute_set = Reader::ArrayFlag(stream, chunk_info.length);
+            stream.ReadBool(item.attribute_set, chunk_info.length);
             break;
         case ChunkItem::state_chance:
-            item.state_chance = Reader::Flag(stream);
+            item.state_chance = stream.ReadBool();
             break;
         case ChunkItem::weapon_animation:
-            item.weapon_animation = Reader::CInteger(stream);
+            item.weapon_animation = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::use_skill:
-            item.use_skill = Reader::Flag(stream);
+            item.use_skill = stream.ReadBool();
             break;
         case ChunkItem::class_set_size:
-            Reader::CInteger(stream);
+            stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkItem::class_set:
-            item.class_set = Reader::ArrayFlag(stream, chunk_info.length);
+            stream.ReadBool(item.class_set, chunk_info.length);
             break;
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
     return item;

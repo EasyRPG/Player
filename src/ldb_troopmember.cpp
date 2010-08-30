@@ -25,35 +25,35 @@
 ////////////////////////////////////////////////////////////
 /// Read TroopMember
 ////////////////////////////////////////////////////////////
-RPG::TroopMember LDB_Reader::ReadTroopMember(FILE* stream) {
+RPG::TroopMember LDB_Reader::ReadTroopMember(Reader& stream) {
     RPG::TroopMember member;
-    Reader::CInteger(stream);
+    stream.Read32(Reader::CompressedInteger);
 
     Reader::Chunk chunk_info;
-    while (!feof(stream)) {
-        chunk_info.ID = Reader::CInteger(stream);
+    while (!stream.Eof()) {
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         case ChunkTroopMember::ID:
-            member.ID = Reader::CInteger(stream);
+            member.ID = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkTroopMember::x:
-            member.x = Reader::CInteger(stream);
+            member.x = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkTroopMember::y:
-            member.y = Reader::CInteger(stream);
+            member.y = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkTroopMember::middle:
-            member.middle = Reader::Flag(stream);
+            member.middle = stream.ReadBool();
             break;
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
     return member;

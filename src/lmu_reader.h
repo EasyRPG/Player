@@ -24,18 +24,19 @@
 #include <string>
 #include <iostream>
 #include "main_data.h"
+#include "reader.h"
 
 ////////////////////////////////////////////////////////////
 /// LMU Reader namespace
 ////////////////////////////////////////////////////////////
 namespace LMU_Reader {
     RPG::Map LoadMap(const std::string &filename);
-    RPG::Map ReadMapData(FILE* stream);
-    RPG::Event ReadEvent(FILE* stream);
-    RPG::EventPage ReadEventPage(FILE* stream);
-    RPG::EventPageCondition ReadEventPageCondition(FILE* stream);
-    RPG::MoveRoute ReadMoveRoute(FILE* stream);
-    RPG::MoveCommand ReadMoveCommand(FILE* stream);
+    RPG::Map ReadMapData(Reader& stream);
+    RPG::Event ReadEvent(Reader& stream);
+    RPG::EventPage ReadEventPage(Reader& stream);
+    RPG::EventPageCondition ReadEventPageCondition(Reader& stream);
+    RPG::MoveRoute ReadMoveRoute(Reader& stream);
+    RPG::MoveCommand ReadMoveCommand(Reader& stream);
 }
 
 #endif

@@ -62,8 +62,8 @@ namespace RPG {
         bool generator_floor_c;
         bool generator_extra_b;
         bool generator_extra_c;
-        std::vector<unsigned long> generator_x;
-        std::vector<unsigned long> generator_y;
+        std::vector<unsigned int> generator_x;
+        std::vector<unsigned int> generator_y;
         std::vector<short> generator_tile_ids;
     };
 }

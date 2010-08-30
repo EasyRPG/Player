@@ -25,45 +25,45 @@
 ////////////////////////////////////////////////////////////
 /// Read Animation
 ////////////////////////////////////////////////////////////
-RPG::Animation LDB_Reader::ReadAnimation(FILE* stream) {
+RPG::Animation LDB_Reader::ReadAnimation(Reader& stream) {
     RPG::Animation animation;
-    animation.ID = Reader::CInteger(stream);
+    animation.ID = stream.Read32(Reader::CompressedInteger);
 
     Reader::Chunk chunk_info;
-    while (!feof(stream)) {
-        chunk_info.ID = Reader::CInteger(stream);
+    while (!stream.Eof()) {
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         case ChunkAnimation::name:
-            animation.name = Reader::String(stream, chunk_info.length);
+            animation.name = stream.ReadString(chunk_info.length);
             break;
         case ChunkAnimation::animation_name:
-            animation.animation_name = Reader::String(stream, chunk_info.length);
+            animation.animation_name = stream.ReadString(chunk_info.length);
             break;
         case ChunkAnimation::timings:
-            for (int i = Reader::CInteger(stream); i > 0; i--) {
+            for (int i = stream.Read32(Reader::CompressedInteger); i > 0; i--) {
                 animation.timings.push_back(ReadAnimationTiming(stream));
             }
             break;
         case ChunkAnimation::scope:
-            animation.scope = Reader::CInteger(stream);
+            animation.scope = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkAnimation::position:
-            animation.position = Reader::CInteger(stream);
+            animation.position = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkAnimation::frames:
-            for (int i = Reader::CInteger(stream); i > 0; i--) {
+            for (int i = stream.Read32(Reader::CompressedInteger); i > 0; i--) {
                 animation.frames.push_back(ReadAnimationFrame(stream));
             }
             break;
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
     return animation;

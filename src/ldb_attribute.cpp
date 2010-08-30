@@ -25,44 +25,44 @@
 ////////////////////////////////////////////////////////////
 /// Read Attribute
 ////////////////////////////////////////////////////////////
-RPG::Attribute LDB_Reader::ReadAttribute(FILE* stream) {
+RPG::Attribute LDB_Reader::ReadAttribute(Reader& stream) {
     RPG::Attribute attribute;
-    attribute.ID = Reader::CInteger(stream);
+    attribute.ID = stream.Read32(Reader::CompressedInteger);
 
     Reader::Chunk chunk_info;
-    while (!feof(stream)) {
-        chunk_info.ID = Reader::CInteger(stream);
+    while (!stream.Eof()) {
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         case ChunkAttribute::name:
-            attribute.name = Reader::String(stream, chunk_info.length);
+            attribute.name = stream.ReadString(chunk_info.length);
             break;
         case ChunkAttribute::type:
-            attribute.type = Reader::CInteger(stream);
+            attribute.type = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkAttribute::a_rate:
-            attribute.a_rate = Reader::CInteger(stream);
+            attribute.a_rate = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkAttribute::b_rate:
-            attribute.b_rate = Reader::CInteger(stream);
+            attribute.b_rate = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkAttribute::c_rate:
-            attribute.c_rate = Reader::CInteger(stream);
+            attribute.c_rate = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkAttribute::d_rate:
-            attribute.d_rate = Reader::CInteger(stream);
+            attribute.d_rate = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkAttribute::e_rate:
-            attribute.e_rate = Reader::CInteger(stream);
+            attribute.e_rate = stream.Read32(Reader::CompressedInteger);
             break;
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
     return attribute;

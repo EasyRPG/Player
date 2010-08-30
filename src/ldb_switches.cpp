@@ -25,27 +25,27 @@
 ////////////////////////////////////////////////////////////
 /// Read Switches
 ////////////////////////////////////////////////////////////
-std::vector<std::string> LDB_Reader::ReadSwitches(FILE* stream) {
+std::vector<std::string> LDB_Reader::ReadSwitches(Reader& stream) {
     std::vector<std::string> switches;
-    switches.resize(Reader::CInteger(stream) + 1);
+    switches.resize(stream.Read32(Reader::CompressedInteger) + 1);
 
     int pos;
     Reader::Chunk chunk_info;
     for (int i = switches.size(); i > 0; i--) {
-        pos = Reader::CInteger(stream);
-        chunk_info.ID = Reader::CInteger(stream);
+        pos = stream.Read32(Reader::CompressedInteger);
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID != ChunkData::END) {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         case ChunkData::END:
             break;
         case ChunkSwitch::name:
-            switches[pos] = Reader::String(stream, chunk_info.length);
+            switches[pos] = stream.ReadString(chunk_info.length);
             break;
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
     return switches;

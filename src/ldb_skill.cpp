@@ -25,129 +25,129 @@
 ////////////////////////////////////////////////////////////
 /// Read Skill
 ////////////////////////////////////////////////////////////
-RPG::Skill LDB_Reader::ReadSkill(FILE* stream) {
+RPG::Skill LDB_Reader::ReadSkill(Reader& stream) {
     RPG::Skill skill;
-    skill.ID = Reader::CInteger(stream);
+    skill.ID = stream.Read32(Reader::CompressedInteger);
 
     Reader::Chunk chunk_info;
-    while (!feof(stream)) {
-        chunk_info.ID = Reader::CInteger(stream);
+    while (!stream.Eof()) {
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         case ChunkSkill::name:
-            skill.name = Reader::String(stream, chunk_info.length);
+            skill.name = stream.ReadString(chunk_info.length);
             break;
         case ChunkSkill::description:
-            skill.description = Reader::String(stream, chunk_info.length);
+            skill.description = stream.ReadString(chunk_info.length);
             break;
         case ChunkSkill::using_message1:
-            skill.using_message1 = Reader::String(stream, chunk_info.length);
+            skill.using_message1 = stream.ReadString(chunk_info.length);
             break;
         case ChunkSkill::using_message2:
-            skill.using_message2 = Reader::String(stream, chunk_info.length);
+            skill.using_message2 = stream.ReadString(chunk_info.length);
             break;
         case ChunkSkill::failure_message:
-            skill.failure_message = Reader::CInteger(stream);
+            skill.failure_message = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSkill::type:
-            skill.type = Reader::CInteger(stream);
+            skill.type = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSkill::sp_type:
-            skill.sp_type = Reader::CInteger(stream);
+            skill.sp_type = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSkill::sp_percent:
-            skill.sp_percent = Reader::CInteger(stream);
+            skill.sp_percent = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSkill::sp_cost:
-            skill.sp_cost = Reader::CInteger(stream);
+            skill.sp_cost = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSkill::scope:
-            skill.scope = Reader::CInteger(stream);
+            skill.scope = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSkill::switch_id:
-            skill.switch_id = Reader::CInteger(stream);
+            skill.switch_id = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSkill::animation_id:
-            skill.animation_id = Reader::CInteger(stream);
+            skill.animation_id = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSkill::sound_effect:
             skill.sound_effect = ReadSound(stream);
             break;
         case ChunkSkill::occasion_field:
-            skill.occasion_field = Reader::Flag(stream);
+            skill.occasion_field = stream.ReadBool();
             break;
         case ChunkSkill::occasion_battle:
-            skill.occasion_battle = Reader::Flag(stream);
+            skill.occasion_battle = stream.ReadBool();
             break;
         case ChunkSkill::state_effect:
-            skill.state_effect = Reader::Flag(stream);
+            skill.state_effect = stream.ReadBool();
             break;
         case ChunkSkill::pdef_f:
-            skill.pdef_f = Reader::CInteger(stream);
+            skill.pdef_f = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSkill::mdef_f:
-            skill.mdef_f = Reader::CInteger(stream);
+            skill.mdef_f = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSkill::variance:
-            skill.variance = Reader::CInteger(stream);
+            skill.variance = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSkill::power:
-            skill.power = Reader::CInteger(stream);
+            skill.power = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSkill::hit:
-            skill.hit = Reader::CInteger(stream);
+            skill.hit = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSkill::affect_hp:
-            skill.affect_hp = Reader::Flag(stream);
+            skill.affect_hp = stream.ReadBool();
             break;
         case ChunkSkill::affect_sp:
-            skill.affect_sp = Reader::Flag(stream);
+            skill.affect_sp = stream.ReadBool();
             break;
         case ChunkSkill::affect_attack:
-            skill.affect_attack = Reader::Flag(stream);
+            skill.affect_attack = stream.ReadBool();
             break;
         case ChunkSkill::affect_defense:
-            skill.affect_defense = Reader::Flag(stream);
+            skill.affect_defense = stream.ReadBool();
             break;
         case ChunkSkill::affect_spirit:
-            skill.affect_spirit = Reader::Flag(stream);
+            skill.affect_spirit = stream.ReadBool();
             break;
         case ChunkSkill::affect_agility:
-            skill.affect_agility = Reader::Flag(stream);
+            skill.affect_agility = stream.ReadBool();
             break;
         case ChunkSkill::absorb_damage:
-            skill.absorb_damage = Reader::Flag(stream);
+            skill.absorb_damage = stream.ReadBool();
             break;
         case ChunkSkill::ignore_defense:
-            skill.ignore_defense = Reader::Flag(stream);
+            skill.ignore_defense = stream.ReadBool();
             break;
         case ChunkSkill::state_size:
-            Reader::CInteger(stream);
+            stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSkill::state_effects:
-            skill.state_effects = Reader::ArrayFlag(stream, chunk_info.length);
+            stream.ReadBool(skill.state_effects, chunk_info.length);
             break;
         case ChunkSkill::attribute_size:
-            Reader::CInteger(stream);
+            stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSkill::attribute_effects:
-            skill.attribute_effects = Reader::ArrayFlag(stream, chunk_info.length);
+            stream.ReadBool(skill.attribute_effects, chunk_info.length);
             break;
         case ChunkSkill::affect_attr_defence:
-            skill.affect_attr_defence = Reader::Flag(stream);
+            skill.affect_attr_defence = stream.ReadBool();
             break;
         case ChunkSkill::battler_animation:
-            skill.battler_animation = Reader::CInteger(stream);
+            skill.battler_animation = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkSkill::cba_data:
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
     return skill;

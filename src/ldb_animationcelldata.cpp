@@ -25,53 +25,53 @@
 ////////////////////////////////////////////////////////////
 /// Read AnimationCellData
 ////////////////////////////////////////////////////////////
-RPG::AnimationCellData LDB_Reader::ReadAnimationCellData(FILE* stream) {
+RPG::AnimationCellData LDB_Reader::ReadAnimationCellData(Reader& stream) {
     RPG::AnimationCellData celldata;
-    Reader::CInteger(stream);
+    stream.Read32(Reader::CompressedInteger);
 
     Reader::Chunk chunk_info;
-    while (!feof(stream)) {
-        chunk_info.ID = Reader::CInteger(stream);
+    while (!stream.Eof()) {
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         /*case ChunkAnimationCellData::priority:
-            celldata.priority = Reader::CInteger(stream);
+            celldata.priority = stream.Read32(Reader::CompressedInteger);
             break;*/
         case ChunkAnimationCellData::ID:
-            celldata.ID = Reader::CInteger(stream);
+            celldata.ID = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkAnimationCellData::x:
-            celldata.x = Reader::CInteger(stream);
+            celldata.x = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkAnimationCellData::y:
-            celldata.y = Reader::CInteger(stream);
+            celldata.y = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkAnimationCellData::zoom:
-            celldata.zoom = Reader::CInteger(stream);
+            celldata.zoom = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkAnimationCellData::tone_red:
-            celldata.tone_red = Reader::CInteger(stream);
+            celldata.tone_red = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkAnimationCellData::tone_green:
-            celldata.tone_green = Reader::CInteger(stream);
+            celldata.tone_green = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkAnimationCellData::tone_blue:
-            celldata.tone_blue = Reader::CInteger(stream);
+            celldata.tone_blue = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkAnimationCellData::tone_gray:
-            celldata.tone_gray = Reader::CInteger(stream);
+            celldata.tone_gray = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkAnimationCellData::opacity:
-            celldata.opacity = Reader::CInteger(stream);
+            celldata.opacity = stream.Read32(Reader::CompressedInteger);
             break;
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
     return celldata;

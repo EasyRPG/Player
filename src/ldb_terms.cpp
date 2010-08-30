@@ -25,382 +25,382 @@
 ////////////////////////////////////////////////////////////
 /// Read Terms
 ////////////////////////////////////////////////////////////
-RPG::Terms LDB_Reader::ReadTerms(FILE* stream) {
+RPG::Terms LDB_Reader::ReadTerms(Reader& stream) {
     RPG::Terms terms;
 
     Reader::Chunk chunk_info;
-    while (!feof(stream)) {
-        chunk_info.ID = Reader::CInteger(stream);
+    while (!stream.Eof()) {
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         case ChunkTerms::encounter:
-            terms.encounter = Reader::String(stream, chunk_info.length);
+            terms.encounter = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::special_combat:
-            terms.special_combat = Reader::String(stream, chunk_info.length);
+            terms.special_combat = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::escape_success:
-            terms.escape_success = Reader::String(stream, chunk_info.length);
+            terms.escape_success = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::escape_failure:
-            terms.escape_failure = Reader::String(stream, chunk_info.length);
+            terms.escape_failure = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::victory:
-            terms.victory = Reader::String(stream, chunk_info.length);
+            terms.victory = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::defeat:
-            terms.defeat = Reader::String(stream, chunk_info.length);
+            terms.defeat = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::exp_received:
-            terms.exp_received = Reader::String(stream, chunk_info.length);
+            terms.exp_received = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::gold_recieved_a:
-            terms.gold_recieved_a = Reader::String(stream, chunk_info.length);
+            terms.gold_recieved_a = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::gold_recieved_b:
-            terms.gold_recieved_b = Reader::String(stream, chunk_info.length);
+            terms.gold_recieved_b = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::item_recieved:
-            terms.item_recieved = Reader::String(stream, chunk_info.length);
+            terms.item_recieved = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::attacking:
-            terms.attacking = Reader::String(stream, chunk_info.length);
+            terms.attacking = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::actor_critical:
-            terms.actor_critical = Reader::String(stream, chunk_info.length);
+            terms.actor_critical = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::enemy_critical:
-            terms.enemy_critical = Reader::String(stream, chunk_info.length);
+            terms.enemy_critical = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::defending:
-            terms.defending = Reader::String(stream, chunk_info.length);
+            terms.defending = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::observing:
-            terms.observing = Reader::String(stream, chunk_info.length);
+            terms.observing = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::focus:
-            terms.focus = Reader::String(stream, chunk_info.length);
+            terms.focus = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::autodestruction:
-            terms.autodestruction = Reader::String(stream, chunk_info.length);
+            terms.autodestruction = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::enemy_escape:
-            terms.enemy_escape = Reader::String(stream, chunk_info.length);
+            terms.enemy_escape = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::enemy_transform:
-            terms.enemy_transform = Reader::String(stream, chunk_info.length);
+            terms.enemy_transform = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::enemy_damaged:
-            terms.enemy_damaged = Reader::String(stream, chunk_info.length);
+            terms.enemy_damaged = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::enemy_undamaged:
-            terms.enemy_undamaged = Reader::String(stream, chunk_info.length);
+            terms.enemy_undamaged = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::actor_damaged:
-            terms.actor_damaged = Reader::String(stream, chunk_info.length);
+            terms.actor_damaged = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::actor_undamaged:
-            terms.actor_undamaged = Reader::String(stream, chunk_info.length);
+            terms.actor_undamaged = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::skill_failure_a:
-            terms.skill_failure_a = Reader::String(stream, chunk_info.length);
+            terms.skill_failure_a = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::skill_failure_b:
-            terms.skill_failure_b = Reader::String(stream, chunk_info.length);
+            terms.skill_failure_b = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::skill_failure_c:
-            terms.skill_failure_c = Reader::String(stream, chunk_info.length);
+            terms.skill_failure_c = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::dodge:
-            terms.dodge = Reader::String(stream, chunk_info.length);
+            terms.dodge = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::use_item:
-            terms.use_item = Reader::String(stream, chunk_info.length);
+            terms.use_item = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::hp_recovery:
-            terms.hp_recovery = Reader::String(stream, chunk_info.length);
+            terms.hp_recovery = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::parameter_increase:
-            terms.parameter_increase = Reader::String(stream, chunk_info.length);
+            terms.parameter_increase = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::parameter_decrease:
-            terms.parameter_decrease = Reader::String(stream, chunk_info.length);
+            terms.parameter_decrease = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::actor_hp_absorbed:
-            terms.actor_hp_absorbed = Reader::String(stream, chunk_info.length);
+            terms.actor_hp_absorbed = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::enemy_hp_absorbed:
-            terms.enemy_hp_absorbed = Reader::String(stream, chunk_info.length);
+            terms.enemy_hp_absorbed = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::resistance_increase:
-            terms.resistance_increase = Reader::String(stream, chunk_info.length);
+            terms.resistance_increase = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::resistance_decrease:
-            terms.resistance_decrease = Reader::String(stream, chunk_info.length);
+            terms.resistance_decrease = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::level_up:
-            terms.level_up = Reader::String(stream, chunk_info.length);
+            terms.level_up = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::skill_learned:
-            terms.skill_learned = Reader::String(stream, chunk_info.length);
+            terms.skill_learned = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_greeting1:
-            terms.shop_greeting1 = Reader::String(stream, chunk_info.length);
+            terms.shop_greeting1 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_regreeting1:
-            terms.shop_regreeting1 = Reader::String(stream, chunk_info.length);
+            terms.shop_regreeting1 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_buy1:
-            terms.shop_buy1 = Reader::String(stream, chunk_info.length);
+            terms.shop_buy1 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_sell1:
-            terms.shop_sell1 = Reader::String(stream, chunk_info.length);
+            terms.shop_sell1 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_leave1:
-            terms.shop_leave1 = Reader::String(stream, chunk_info.length);
+            terms.shop_leave1 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_buy_select1:
-            terms.shop_buy_select1 = Reader::String(stream, chunk_info.length);
+            terms.shop_buy_select1 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_buy_number1:
-            terms.shop_buy_number1 = Reader::String(stream, chunk_info.length);
+            terms.shop_buy_number1 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_purchased1:
-            terms.shop_purchased1 = Reader::String(stream, chunk_info.length);
+            terms.shop_purchased1 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_sell_select1:
-            terms.shop_sell_select1 = Reader::String(stream, chunk_info.length);
+            terms.shop_sell_select1 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_sell_number1:
-            terms.shop_sell_number1 = Reader::String(stream, chunk_info.length);
+            terms.shop_sell_number1 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_sold1:
-            terms.shop_sold1 = Reader::String(stream, chunk_info.length);
+            terms.shop_sold1 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_greeting2:
-            terms.shop_greeting2 = Reader::String(stream, chunk_info.length);
+            terms.shop_greeting2 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_regreeting2:
-            terms.shop_regreeting2 = Reader::String(stream, chunk_info.length);
+            terms.shop_regreeting2 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_buy2:
-            terms.shop_buy2 = Reader::String(stream, chunk_info.length);
+            terms.shop_buy2 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_sell2:
-            terms.shop_sell2 = Reader::String(stream, chunk_info.length);
+            terms.shop_sell2 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_leave2:
-            terms.shop_leave2 = Reader::String(stream, chunk_info.length);
+            terms.shop_leave2 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_buy_select2:
-            terms.shop_buy_select2 = Reader::String(stream, chunk_info.length);
+            terms.shop_buy_select2 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_buy_number2:
-            terms.shop_buy_number2 = Reader::String(stream, chunk_info.length);
+            terms.shop_buy_number2 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_purchased2:
-            terms.shop_purchased2 = Reader::String(stream, chunk_info.length);
+            terms.shop_purchased2 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_sell_select2:
-            terms.shop_sell_select2 = Reader::String(stream, chunk_info.length);
+            terms.shop_sell_select2 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_sell_number2:
-            terms.shop_sell_number2 = Reader::String(stream, chunk_info.length);
+            terms.shop_sell_number2 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_sold2:
-            terms.shop_sold2 = Reader::String(stream, chunk_info.length);
+            terms.shop_sold2 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_greeting3:
-            terms.shop_greeting3 = Reader::String(stream, chunk_info.length);
+            terms.shop_greeting3 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_regreeting3:
-            terms.shop_regreeting3 = Reader::String(stream, chunk_info.length);
+            terms.shop_regreeting3 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_buy3:
-            terms.shop_buy3 = Reader::String(stream, chunk_info.length);
+            terms.shop_buy3 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_sell3:
-            terms.shop_sell3 = Reader::String(stream, chunk_info.length);
+            terms.shop_sell3 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_leave3:
-            terms.shop_leave3 = Reader::String(stream, chunk_info.length);
+            terms.shop_leave3 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_buy_select3:
-            terms.shop_buy_select3 = Reader::String(stream, chunk_info.length);
+            terms.shop_buy_select3 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_buy_number3:
-            terms.shop_buy_number3 = Reader::String(stream, chunk_info.length);
+            terms.shop_buy_number3 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_purchased3:
-            terms.shop_purchased3 = Reader::String(stream, chunk_info.length);
+            terms.shop_purchased3 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_sell_select3:
-            terms.shop_sell_select3 = Reader::String(stream, chunk_info.length);
+            terms.shop_sell_select3 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_sell_number3:
-            terms.shop_sell_number3 = Reader::String(stream, chunk_info.length);
+            terms.shop_sell_number3 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shop_sold3:
-            terms.shop_sold3 = Reader::String(stream, chunk_info.length);
+            terms.shop_sold3 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::inn_a_greeting_1:
-            terms.inn_a_greeting_1 = Reader::String(stream, chunk_info.length);
+            terms.inn_a_greeting_1 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::inn_a_greeting_2:
-            terms.inn_a_greeting_2 = Reader::String(stream, chunk_info.length);
+            terms.inn_a_greeting_2 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::inn_a_greeting_3:
-            terms.inn_a_greeting_3 = Reader::String(stream, chunk_info.length);
+            terms.inn_a_greeting_3 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::inn_a_accept:
-            terms.inn_a_accept = Reader::String(stream, chunk_info.length);
+            terms.inn_a_accept = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::inn_a_cancel:
-            terms.inn_a_cancel = Reader::String(stream, chunk_info.length);
+            terms.inn_a_cancel = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::inn_b_greeting_1:
-            terms.inn_b_greeting_1 = Reader::String(stream, chunk_info.length);
+            terms.inn_b_greeting_1 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::inn_b_greeting_2:
-            terms.inn_b_greeting_2 = Reader::String(stream, chunk_info.length);
+            terms.inn_b_greeting_2 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::inn_b_greeting_3:
-            terms.inn_b_greeting_3 = Reader::String(stream, chunk_info.length);
+            terms.inn_b_greeting_3 = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::inn_b_accept:
-            terms.inn_b_accept = Reader::String(stream, chunk_info.length);
+            terms.inn_b_accept = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::inn_b_cancel:
-            terms.inn_b_cancel = Reader::String(stream, chunk_info.length);
+            terms.inn_b_cancel = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::possessed_items:
-            terms.possessed_items = Reader::String(stream, chunk_info.length);
+            terms.possessed_items = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::equipped_items:
-            terms.equipped_items = Reader::String(stream, chunk_info.length);
+            terms.equipped_items = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::gold:
-            terms.gold = Reader::String(stream, chunk_info.length);
+            terms.gold = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::battle_fight:
-            terms.battle_fight = Reader::String(stream, chunk_info.length);
+            terms.battle_fight = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::battle_auto:
-            terms.battle_auto = Reader::String(stream, chunk_info.length);
+            terms.battle_auto = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::battle_escape:
-            terms.battle_escape = Reader::String(stream, chunk_info.length);
+            terms.battle_escape = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::command_attack:
-            terms.command_attack = Reader::String(stream, chunk_info.length);
+            terms.command_attack = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::command_defend:
-            terms.command_defend = Reader::String(stream, chunk_info.length);
+            terms.command_defend = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::command_item:
-            terms.command_item = Reader::String(stream, chunk_info.length);
+            terms.command_item = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::command_skill:
-            terms.command_skill = Reader::String(stream, chunk_info.length);
+            terms.command_skill = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::menu_equipment:
-            terms.menu_equipment = Reader::String(stream, chunk_info.length);
+            terms.menu_equipment = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::menu_save:
-            terms.menu_save = Reader::String(stream, chunk_info.length);
+            terms.menu_save = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::menu_quit:
-            terms.menu_quit = Reader::String(stream, chunk_info.length);
+            terms.menu_quit = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::new_game:
-            terms.new_game = Reader::String(stream, chunk_info.length);
+            terms.new_game = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::load_game:
-            terms.load_game = Reader::String(stream, chunk_info.length);
+            terms.load_game = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::exit_game:
-            terms.exit_game = Reader::String(stream, chunk_info.length);
+            terms.exit_game = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::level:
-            terms.level = Reader::String(stream, chunk_info.length);
+            terms.level = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::health_points:
-            terms.health_points = Reader::String(stream, chunk_info.length);
+            terms.health_points = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::spirit_points:
-            terms.spirit_points = Reader::String(stream, chunk_info.length);
+            terms.spirit_points = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::normal_status:
-            terms.normal_status = Reader::String(stream, chunk_info.length);
+            terms.normal_status = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::exp_short:
-            terms.exp_short = Reader::String(stream, chunk_info.length);
+            terms.exp_short = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::lvl_short:
-            terms.lvl_short = Reader::String(stream, chunk_info.length);
+            terms.lvl_short = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::hp_short:
-            terms.hp_short = Reader::String(stream, chunk_info.length);
+            terms.hp_short = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::sp_short:
-            terms.sp_short = Reader::String(stream, chunk_info.length);
+            terms.sp_short = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::sp_cost:
-            terms.sp_cost = Reader::String(stream, chunk_info.length);
+            terms.sp_cost = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::attack:
-            terms.attack = Reader::String(stream, chunk_info.length);
+            terms.attack = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::defense:
-            terms.defense = Reader::String(stream, chunk_info.length);
+            terms.defense = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::spirit:
-            terms.spirit = Reader::String(stream, chunk_info.length);
+            terms.spirit = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::agility:
-            terms.agility = Reader::String(stream, chunk_info.length);
+            terms.agility = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::weapon:
-            terms.weapon = Reader::String(stream, chunk_info.length);
+            terms.weapon = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::shield:
-            terms.shield = Reader::String(stream, chunk_info.length);
+            terms.shield = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::armor:
-            terms.armor = Reader::String(stream, chunk_info.length);
+            terms.armor = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::helmet:
-            terms.helmet = Reader::String(stream, chunk_info.length);
+            terms.helmet = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::accessory:
-            terms.accessory = Reader::String(stream, chunk_info.length);
+            terms.accessory = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::save_game_message:
-            terms.save_game_message = Reader::String(stream, chunk_info.length);
+            terms.save_game_message = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::load_game_message:
-            terms.load_game_message = Reader::String(stream, chunk_info.length);
+            terms.load_game_message = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::exit_game_message:
-            terms.exit_game_message = Reader::String(stream, chunk_info.length);
+            terms.exit_game_message = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::file:
-            terms.file = Reader::String(stream, chunk_info.length);
+            terms.file = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::yes:
-            terms.yes = Reader::String(stream, chunk_info.length);
+            terms.yes = stream.ReadString(chunk_info.length);
             break;
         case ChunkTerms::no:
-            terms.no = Reader::String(stream, chunk_info.length);
+            terms.no = stream.ReadString(chunk_info.length);
             break;
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
     return terms;

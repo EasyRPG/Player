@@ -25,47 +25,47 @@
 ////////////////////////////////////////////////////////////
 /// Read AnimationTiming
 ////////////////////////////////////////////////////////////
-RPG::AnimationTiming LDB_Reader::ReadAnimationTiming(FILE* stream) {
+RPG::AnimationTiming LDB_Reader::ReadAnimationTiming(Reader& stream) {
     RPG::AnimationTiming timing;
-    Reader::CInteger(stream);
+    stream.Read32(Reader::CompressedInteger);
 
     Reader::Chunk chunk_info;
     do {
-        chunk_info.ID = Reader::CInteger(stream);
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         case ChunkAnimationTiming::frame:
-            timing.frame = Reader::CInteger(stream);
+            timing.frame = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkAnimationTiming::se:
             timing.se = ReadSound(stream);
             break;
         case ChunkAnimationTiming::flash_scope:
-            timing.flash_scope = Reader::CInteger(stream);
+            timing.flash_scope = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkAnimationTiming::flash_red:
-            timing.flash_red = Reader::CInteger(stream);
+            timing.flash_red = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkAnimationTiming::flash_green:
-            timing.flash_green = Reader::CInteger(stream);
+            timing.flash_green = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkAnimationTiming::flash_blue:
-            timing.flash_blue = Reader::CInteger(stream);
+            timing.flash_blue = stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkAnimationTiming::flash_power:
-            timing.flash_power = Reader::CInteger(stream);
+            timing.flash_power = stream.Read32(Reader::CompressedInteger);
             break;
         /*case ChunkAnimationTiming::screen_shake:
-            timing.screen_shake = Reader::CInteger(stream);
+            timing.screen_shake = stream.Read32(Reader::CompressedInteger);
             break;*/
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     } while(chunk_info.ID != ChunkData::END);
     return timing;

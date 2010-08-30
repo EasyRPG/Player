@@ -26,28 +26,28 @@
 ////////////////////////////////////////////////////////////
 /// Read TroopPage
 ////////////////////////////////////////////////////////////
-RPG::TroopPage LDB_Reader::ReadTroopPage(FILE* stream) {
+RPG::TroopPage LDB_Reader::ReadTroopPage(Reader& stream) {
     RPG::TroopPage page;
-    Reader::CInteger(stream);
+    stream.Read32(Reader::CompressedInteger);
 
     Reader::Chunk chunk_info;
-    while (!feof(stream)) {
-        chunk_info.ID = Reader::CInteger(stream);
+    while (!stream.Eof()) {
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         case ChunkTroopPage::condition:
-            for (int i = Reader::CInteger(stream); i > 0; i--) {
+            for (int i = stream.Read32(Reader::CompressedInteger); i > 0; i--) {
                 page.condition = ReadTroopPageCondition(stream);
             }
             break;
         /*case ChunkTroopPage::event_commands_size:
-            page.event_commands.resize(Reader::CInteger(stream));
+            page.event_commands.resize(stream.Read32(Reader::CompressedInteger));
             break;
         case ChunkTroopPage::event_commands:
             for (unsigned int i = 0; i < page.event_commands.size(); i++) {
@@ -55,7 +55,7 @@ RPG::TroopPage LDB_Reader::ReadTroopPage(FILE* stream) {
             }
             break;*/
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
     return page;

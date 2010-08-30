@@ -25,42 +25,42 @@
 ////////////////////////////////////////////////////////////
 /// Read Troop
 ////////////////////////////////////////////////////////////
-RPG::Troop LDB_Reader::ReadTroop(FILE* stream) {
+RPG::Troop LDB_Reader::ReadTroop(Reader& stream) {
     RPG::Troop troop;
-    troop.ID = Reader::CInteger(stream);
+    troop.ID = stream.Read32(Reader::CompressedInteger);
 
     Reader::Chunk chunk_info;
-    while (!feof(stream)) {
-        chunk_info.ID = Reader::CInteger(stream);
+    while (!stream.Eof()) {
+        chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
         }
         else {
-            chunk_info.length = Reader::CInteger(stream);
+            chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
         switch (chunk_info.ID) {
         case ChunkTroop::name:
-            troop.name = Reader::String(stream, chunk_info.length);
+            troop.name = stream.ReadString(chunk_info.length);
             break;
         case ChunkTroop::members:
-            for (int i = Reader::CInteger(stream); i > 0; i--) {
+            for (int i = stream.Read32(Reader::CompressedInteger); i > 0; i--) {
                 troop.members.push_back(ReadTroopMember(stream));
             }
             break;
         case ChunkTroop::terrain_set_size:
-            Reader::CInteger(stream);
+            stream.Read32(Reader::CompressedInteger);
             break;
         case ChunkTroop::terrain_set:
-            troop.terrain_set = Reader::ArrayFlag(stream, chunk_info.length);
+            stream.ReadBool(troop.terrain_set, chunk_info.length);
             break;
         case ChunkTroop::pages:
-            for (int i = Reader::CInteger(stream); i > 0; i--) {
+            for (int i = stream.Read32(Reader::CompressedInteger); i > 0; i--) {
                 troop.pages.push_back(ReadTroopPage(stream));
             }
             break;
         default:
-            fseek(stream, chunk_info.length, SEEK_CUR);
+            stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
     return troop;
