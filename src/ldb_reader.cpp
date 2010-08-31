@@ -139,7 +139,6 @@ void LDB_Reader::LoadChunks(Reader& stream) {
                 break;
             default:
                 stream.Seek(chunk_info.length, Reader::FromCurrent);
-               //stream.Seek(chunk_info.length, Reader::FromCurrent);
         }
     }
 }

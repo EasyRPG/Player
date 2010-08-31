@@ -32,7 +32,11 @@ RPG::Actor::Actor() {
     character_index = 0;
     transparent = false;
     initial_level = 1;
-    final_level = RPGMAKER == RPG2K ? 50 : 99;
+    #if RPGMAKER == RPG2K
+    final_level = 50;
+    #else
+    final_level = 99;
+    #endif
     critical_hit = true;
     critical_hit_chance = 30;
     face_index = 0;
@@ -54,8 +58,13 @@ RPG::Actor::Actor() {
         parameter_spirit[i] = 1;
         parameter_agility[i] = 1;
     }
-    exp_base = RPGMAKER == RPG2K ? 30 : 300;
-    exp_inflation = RPGMAKER == RPG2K ? 30 : 300;
+    #if RPGMAKER == RPG2K
+    exp_base = 30;
+    exp_inflation =30;
+    #else
+    exp_base = 300;
+    exp_inflation = 300;
+    #endif
     exp_correction = 0;
     unarmed_animation = 0;
     weapon_id = 0;

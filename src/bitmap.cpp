@@ -63,21 +63,24 @@ Bitmap::Bitmap(std::string filename) {
     if (temp == NULL) {
         Output::Error("Couldn't load %s image.\n%s\n", filename.c_str(), IMG_GetError());
     }
-    Color col(0, 0, 0, 0);
-    if (temp->format->BitsPerPixel == 8) {
-        SDL_Color colorkey = temp->format->palette->colors[0];
-        col.red = colorkey.r;
-        col.green = colorkey.g;
-        col.blue = colorkey.b;
+    else
+    {
+        Color col(0, 0, 0, 0);
+        if (temp->format->BitsPerPixel == 8) {
+            SDL_Color colorkey = temp->format->palette->colors[0];
+            col.red = colorkey.r;
+            col.green = colorkey.g;
+            col.blue = colorkey.b;
+        }
+        bitmap = SDL_DisplayFormatAlpha(temp);
+        if (bitmap == NULL) {
+            Output::Error("Couldn't optimize %s image.\n%s\n", filename.c_str(), SDL_GetError());
+        }
+        if (temp->format->BitsPerPixel == 8) {
+            SetTransparent(col);
+        }
+        SDL_FreeSurface(temp);
     }
-    bitmap = SDL_DisplayFormatAlpha(temp);
-    if (bitmap == NULL) {
-        Output::Error("Couldn't optimize %s image.\n%s\n", filename.c_str(), SDL_GetError());
-    }
-    if (temp->format->BitsPerPixel == 8) {
-        SetTransparent(col);
-    }
-    SDL_FreeSurface(temp);
 }
 Bitmap::Bitmap(Bitmap* source, Rect src_rect) {
     SDL_Surface* temp;

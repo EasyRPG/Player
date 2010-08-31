@@ -31,8 +31,13 @@ RPG::Class::Class() {
     fix_equipment = false;
     auto_battle = false;
     super_guard = false;
-    exp_base = RPGMAKER == RPG2K ? 30 : 300;
-    exp_inflation = RPGMAKER == RPG2K ? 30 : 300;
+    #if RPGMAKER == RPG2K
+    exp_base = 30;
+    exp_inflation =30;
+    #else
+    exp_base = 300;
+    exp_inflation = 300;
+    #endif
     exp_correction = 0;
     unarmed_animation = 0;
 }
