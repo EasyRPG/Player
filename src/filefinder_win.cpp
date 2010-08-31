@@ -23,6 +23,8 @@
 #include <iostream>
 #include <fstream>
 #include <windows.h>
+#include <shlobj.h>
+#include <io.h>
 #include "filefinder.h"
 #include "options.h"
 #include "registry_win.h"
@@ -53,31 +55,29 @@ void FileFinder::Init() {
         #error Set RPGMAKER to RPG2K or RPG2K3
     #endif
 
-    fonts_path = "";
-#if MSVC
-    wchar_t* dir = new wchar_t[256];
-#else
-    char* dir  = new char[256];
-#endif
-    int n = GetWindowsDirectory(dir, 256);
-    if (n > 0) {
-        char* str = (char*)dir;
-        for(unsigned int i = 0; i < n * sizeof(dir[0]); i++) {
-            if (str[i] != '\0' ) {
-                fonts_path += str[i];
-            }
-        }
-        fonts_path += "\\Fonts\\";
+    // Retrieve the Path of the Font Directory
+    TCHAR path[MAX_PATH];
+
+    if (SHGetFolderPath(NULL, CSIDL_FONTS, NULL, SHGFP_TYPE_CURRENT, path) != S_OK)
+    {
+        fonts_path = "";
+    } else {
+        char fpath[MAX_PATH];
+        #ifdef UNICODE
+        WideCharToMultiByte(CP_ACP, WC_NO_BEST_FIT_CHARS | WC_COMPOSITECHECK, path, MAX_PATH, fpath, MAX_PATH, NULL, NULL);
+        #endif
+
+        fonts_path = std::string(fpath);
+        fonts_path += "\\";
     }
-    delete[] dir;
 }
 
 ////////////////////////////////////////////////////////////
 /// Check if file exists
 ////////////////////////////////////////////////////////////
 static bool fexists(std::string filename) {
-    std::ifstream file(filename.c_str());
-    return file.is_open();
+    // Checks if a file exists and is readable
+    return (_access(filename.c_str(), 4) == 0);
 }
 
 ////////////////////////////////////////////////////////////
