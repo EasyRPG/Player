@@ -97,8 +97,7 @@ void Player::Update() {
         if (evnt.type == SDL_QUIT) {
             Exit();
             exit(0);
-        }
-        else if (evnt.type == SDL_KEYDOWN) {
+        } else if (evnt.type == SDL_KEYDOWN) {
             /*if (evnt.key.keysym == SDLK_LALT || evnt.key.keysym == SDLK_RALT) {
                 alt_pressing = true;
             }
@@ -107,10 +106,10 @@ void Player::Update() {
             }*/
             switch (evnt.key.keysym.sym) {
                 case SDLK_F4:
-                    ToggleZoom();
+                    ToggleFullscreen();
                     break;
                 case SDLK_F5:
-                    ToggleFullscreen();
+                    ToggleZoom();
                     break;
                 case SDLK_F12:
                     Main_Data::scene = new Scene_Title();
@@ -133,8 +132,7 @@ void Player::Update() {
                     if (PAUSE_AUDIO_WHEN_FOCUS_LOST) {
                         //Audio::Continue();
                     }
-                }
-                else if (!evnt.active.gain && focus) {
+                } else if (!evnt.active.gain && focus) {
                     focus = false;
                     Input::ClearKeys();
                     Graphics::TimerWait();
@@ -198,8 +196,7 @@ void Player::ToggleZoom() {
     if (!zoom) {
         main_window = SDL_ConvertSurface(main_window, main_window->format, main_window->flags);
         SDL_SetVideoMode(SCREEN_WIDTH*2, SCREEN_HEIGHT*2, 32, flags);
-    }
-    else {
+    } else {
         SDL_FreeSurface(main_window);
         main_window = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, flags);
     }
