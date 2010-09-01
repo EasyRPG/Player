@@ -83,8 +83,16 @@ void Input::InitButtons() {
     buttons[PERIOD].push_back(SDLK_KP_PERIOD);
 
     dirkeys.resize(10);
-    dirkeys[2].push_back(DOWN);
-    dirkeys[4].push_back(LEFT);
-    dirkeys[6].push_back(RIGHT);
-    dirkeys[8].push_back(UP);
+    buttons[2].push_back(SDLK_DOWN);
+    buttons[2].push_back(SDLK_j);
+    buttons[2].push_back(SDLK_KP2);
+    buttons[4].push_back(SDLK_LEFT);
+    buttons[4].push_back(SDLK_h);
+    buttons[4].push_back(SDLK_KP4);
+    buttons[6].push_back(SDLK_RIGHT);
+    buttons[6].push_back(SDLK_l);
+    buttons[6].push_back(SDLK_KP6);
+	buttons[8].push_back(SDLK_UP);
+    buttons[8].push_back(SDLK_k);
+    buttons[8].push_back(SDLK_KP8);
 }

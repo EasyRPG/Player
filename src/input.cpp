@@ -92,14 +92,14 @@ void Input::Update() {
     }
 	
     int dirpress[10];
-    for(int i = 1; i < 10; i++) {
+    for (int i = 1; i < 10; i++) {
         dirpress[i] = 0;
         if(i != 5) {
-            int presstime;
+            int max_presstime;
             for (unsigned int e = 0; e < dirkeys[i].size(); e++) {
-                presstime = press_time[dirkeys[i][e]];
-                if(presstime > dirpress[i]) {
-                    dirpress[i] = presstime;
+                max_presstime = press_time[dirkeys[i][e]];
+                if (max_presstime > dirpress[i]) {
+                    dirpress[i] = max_presstime;
                 }
             }
         }
