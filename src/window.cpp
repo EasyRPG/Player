@@ -219,6 +219,8 @@ void Window::RefreshFrame() {
 /// Refresh Cursor
 ////////////////////////////////////////////////////////////
 void Window::RefreshCursor() {
+	cursor_needs_refresh = false;
+	
     delete cursor1;
     cursor1 = new Bitmap(cursor_rect.width, cursor_rect.height);
 
@@ -376,6 +378,7 @@ Rect Window::GetCursorRect() {
     return cursor_rect;
 }
 void Window::SetCursorRect(Rect ncursor_rect) {
+	if (cursor_rect != ncursor_rect) cursor_needs_refresh = true;
     cursor_rect = ncursor_rect;
 }
 bool Window::GetActive() {

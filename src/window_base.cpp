@@ -26,7 +26,7 @@
 ////////////////////////////////////////////////////////////
 Window_Base::Window_Base(int ix, int iy, int iwidth, int iheight) {
     windowskin_name = Main_Data::game_system->GetSystemName();
-    windowskin = Cache::System(windowskin_name);
+    SetWindowskin(Cache::System(windowskin_name));
 
     SetX(ix);
     SetY(iy);
@@ -48,7 +48,7 @@ void Window_Base::Update() {
     Window::Update();
     if (Main_Data::game_system->GetSystemName() != windowskin_name) {
         windowskin_name = Main_Data::game_system->GetSystemName();
-        windowskin = Cache::System(windowskin_name);
+        SetWindowskin(Cache::System(windowskin_name));
     }
 }
 
