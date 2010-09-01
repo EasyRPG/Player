@@ -45,6 +45,17 @@ void Output::Error(char* fmt, ...) {
 
     va_end(args);
 }
+void Output::Error(const char* fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+
+    char str[256];
+    vsprintf(str, fmt, args);
+
+    Output::ErrorStr((std::string)str);
+
+    va_end(args);
+}
 void Output::ErrorStr(std::string err){
     #if OUTPUT_TYPE == OUTPUT_CONSOLE
         std::cout << err << std::endl;
@@ -70,6 +81,18 @@ void Output::ErrorStr(std::string err){
 /// Output Warning
 ////////////////////////////////////////////////////////////
 void Output::Warning(char* fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+
+    char str[256];
+
+    vsprintf(str, fmt, args);
+
+    Output::WarningStr((std::string)str);
+
+    va_end(args);
+}
+void Output::Warning(const char* fmt, ...) {
     va_list args;
     va_start(args, fmt);
 
@@ -111,7 +134,18 @@ void Output::Post(char* fmt, ...) {
 
     va_end(args);
 }
+void Output::Post(const char* fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
 
+    char str[256];
+
+    vsprintf(str, fmt, args);
+
+    Output::PostStr((std::string)str);
+
+    va_end(args);
+}
 void Output::PostStr(std::string msg) {
     #if OUTPUT_TYPE == OUTPUT_CONSOLE
         std::cout << msg << std::endl;

@@ -71,9 +71,8 @@ static std::string str_toupper(char* str) {
 static bool fexists(std::string filename) {
 	
 	FILE *tempFile;
-
-    if(tempFile = fopen(filename.c_str(), "r"))
-	{
+	tempFile = fopen(filename.c_str(), "r");
+    if (tempFile) {
 		fclose(tempFile);
 		return true;
 	}

@@ -48,13 +48,11 @@ void LDB_Reader::LoadChunks(Reader& stream) {
         chunk_info.ID = stream.Read32(Reader::CompressedInteger);
         if (chunk_info.ID == ChunkData::END) {
             break;
-        }
-        else {
+        } else {
             chunk_info.length = stream.Read32(Reader::CompressedInteger);
             if (chunk_info.length == 0) continue;
         }
-        switch (chunk_info.ID)
-        {
+        switch (chunk_info.ID) {
             case ChunkData::Actor:
                 for (int i = stream.Read32(Reader::CompressedInteger); i > 0; i--) {
                     Main_Data::data_actors.push_back(ReadActor(stream));

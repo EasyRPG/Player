@@ -47,18 +47,20 @@ public:
     ~Reader();
 
     struct Chunk {
+		Chunk() {
+			ID = 0;
+			length = 0;
+		}
         uint32_t ID;
         uint32_t length;
     };
 
-    enum IntegerType
-    {
+    enum IntegerType {
         CompressedInteger,
         NormalInteger
     };
 
-    enum SeekMode
-    {
+    enum SeekMode {
         FromStart,
         FromEnd,
         FromCurrent

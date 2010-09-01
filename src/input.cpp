@@ -63,9 +63,11 @@ void Input::Init() {
 ////////////////////////////////////////////////////////////
 void Input::Update() {
     Uint8 *keystates = SDL_GetKeyState(NULL); 
-    for (unsigned int i = 0; i < buttons.size(); ++i) {
-        bool pressed = false;
-        for (unsigned int e = 0; e < buttons[i].size(); e++) {
+	unsigned int i, e;
+	bool pressed;
+    for (i = 0; i < buttons.size(); ++i) {
+        pressed = false;
+        for (e = 0; e < buttons[i].size(); e++) {
             if (keystates[(SDLKey)buttons[i][e]]) {
                 pressed = true;
                 break;
@@ -74,8 +76,7 @@ void Input::Update() {
         if (pressed) {
             press_time[i] += 1;
             released[i] = false;
-        }
-        else {
+        } else {
             released[i] = press_time[i] > 0;
             press_time[i] = 0;
         }
@@ -84,12 +85,12 @@ void Input::Update() {
             repeated[i] = press_time[i] == 1 || 
                           (press_time[i] >= start_repeat_time &&
                            press_time[i] % repeat_time == 0);
-        }
-        else {
+        } else {
             triggered[i] = false;
             repeated[i] = false;
         }
     }
+	
     int dirpress[10];
     for(int i = 1; i < 10; i++) {
         dirpress[i] = 0;
@@ -104,10 +105,10 @@ void Input::Update() {
         }
     }
 
-    dirpress[1]    += (dirpress[2] > 0 && dirpress[4] > 0) ? dirpress[2] + dirpress[4] : 0;
-    dirpress[3]    += (dirpress[2] > 0 && dirpress[6] > 0) ? dirpress[2] + dirpress[6] : 0;
-    dirpress[7]    += (dirpress[8] > 0 && dirpress[4] > 0) ? dirpress[8] + dirpress[4] : 0;
-    dirpress[9]    += (dirpress[8] > 0 && dirpress[6] > 0) ? dirpress[8] + dirpress[6] : 0;
+    dirpress[1] += (dirpress[2] > 0 && dirpress[4] > 0) ? dirpress[2] + dirpress[4] : 0;
+    dirpress[3] += (dirpress[2] > 0 && dirpress[6] > 0) ? dirpress[2] + dirpress[6] : 0;
+    dirpress[7] += (dirpress[8] > 0 && dirpress[4] > 0) ? dirpress[8] + dirpress[4] : 0;
+    dirpress[9] += (dirpress[8] > 0 && dirpress[6] > 0) ? dirpress[8] + dirpress[6] : 0;
 
     dir4 = 0;
     dir8 = 0;
@@ -125,14 +126,11 @@ void Input::Update() {
         dir8 = dir4;
         if (dirpress[9] > 0) {
             dir8 = 9;
-        }
-        else if (dirpress[7] > 0) {
+        } else if (dirpress[7] > 0) {
             dir8 = 7;
-        }
-        else if (dirpress[3] > 0) {
+        } else if (dirpress[3] > 0) {
             dir8 = 3;
-        }
-        else if (dirpress[1] > 0) {
+        } else if (dirpress[1] > 0) {
             dir8 = 1;
         }
     }

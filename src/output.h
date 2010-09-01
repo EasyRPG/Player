@@ -28,11 +28,14 @@
 ////////////////////////////////////////////////////////////
 namespace Output {
     void Post(char* fmt, ...);
+	void Post(const char* fmt, ...);
     void PostStr(std::string msg);
     void PostFile(std::string msg);
     void Warning(char* fmt, ...);
+	void Warning(const char* fmt, ...);
     void WarningStr(std::string warn);
     void Error(char* fmt, ...);
+	void Error(const char* fmt, ...);
     void ErrorStr(std::string err);
 }
 
