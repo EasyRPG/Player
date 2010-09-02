@@ -30,6 +30,7 @@ int Font::default_size = 12;
 bool Font::default_bold = false;
 bool Font::default_italic = false;
 Color Font::default_color(255, 255, 255, 255);
+std::map<std::string, std::map<int, TTF_Font*> > Font::fonts;
 
 ////////////////////////////////////////////////////////////
 /// Constructor
@@ -65,7 +66,7 @@ Font::~Font() {
 ////////////////////////////////////////////////////////////
 /// Get TTF_Font*
 ////////////////////////////////////////////////////////////
-TTF_Font* Font::GetTTF() {
+TTF_Font* Font::GetTTF() const {
 	if (fonts.count(name) > 0 && fonts[name].count(size) > 0) {
 		return fonts[name][size];
 	} else {

@@ -36,9 +36,9 @@ public:
 
 	void Set(int nx, int ny, int nwidth, int nheight);
 
-	SDL_Rect Get();
+	SDL_Rect Get() const;
 	void Adjust(int awidth, int aheight);
-	bool IsOutOfBounds(int awidth, int aheight);
+	bool IsOutOfBounds(int awidth, int aheight) const;
 
 	int x;
 	int y;

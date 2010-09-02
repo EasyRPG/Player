@@ -78,31 +78,31 @@ void TilemapLayer::Draw() {
 ////////////////////////////////////////////////////////////
 /// Properties
 ////////////////////////////////////////////////////////////
-Bitmap* TilemapLayer::GetChipset() {
+Bitmap* TilemapLayer::GetChipset() const {
 	return chipset;
 }
 void TilemapLayer::SetChipset(Bitmap* nchipset) {
 	chipset = nchipset;
 }
-std::vector<short> TilemapLayer::GetMapData() {
+std::vector<short> TilemapLayer::GetMapData() const {
 	return map_data;
 }
 void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 	map_data = nmap_data;
 }
-bool TilemapLayer::GetVisible() {
+bool TilemapLayer::GetVisible() const {
 	return visible;
 }
 void TilemapLayer::SetVisible(bool nvisible) {
 	visible = nvisible;
 }
-int TilemapLayer::GetOx() {
+int TilemapLayer::GetOx() const {
 	return ox;
 }
 void TilemapLayer::SetOx(int nox) {
 	ox = nox;
 }
-int TilemapLayer::GetOy() {
+int TilemapLayer::GetOy() const {
 	return oy;
 }
 void TilemapLayer::SetOy(int noy) {
@@ -112,13 +112,13 @@ void TilemapLayer::SetOy(int noy) {
 ////////////////////////////////////////////////////////////
 /// Get z
 ////////////////////////////////////////////////////////////
-int TilemapLayer::GetZ() {
+int TilemapLayer::GetZ() const {
 	return 0;
 }
 
 ////////////////////////////////////////////////////////////
 /// Get id
 ////////////////////////////////////////////////////////////
-unsigned long TilemapLayer::GetId() {
+unsigned long TilemapLayer::GetId() const {
 	return 0;
 }

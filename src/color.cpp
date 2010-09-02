@@ -70,14 +70,14 @@ void Color::Set(int nred, int ngreen, int nblue, int nalpha) {
 ////////////////////////////////////////////////////////////
 /// Get Uint32
 ////////////////////////////////////////////////////////////
-Uint32 Color::GetUint32(SDL_PixelFormat* format) {
+Uint32 Color::GetUint32(SDL_PixelFormat* format) const {
 	return SDL_MapRGBA(format, (Uint8)red, (Uint8)green, (Uint8)blue, (Uint8)alpha);
 }
 
 ////////////////////////////////////////////////////////////
 /// Get SDL_Color
 ////////////////////////////////////////////////////////////
-SDL_Color Color::Get() {
+SDL_Color Color::Get() const {
 	SDL_Color color = {red, green, blue, alpha};
 	return color;
 }

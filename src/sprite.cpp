@@ -110,14 +110,14 @@ void Sprite::Refresh() {
 ////////////////////////////////////////////////////////////
 /// Get Width
 ////////////////////////////////////////////////////////////
-int Sprite::GetWidth() {
+int Sprite::GetWidth() const {
 	return src_rect.width;
 }
 
 ////////////////////////////////////////////////////////////
 /// Get Height
 ////////////////////////////////////////////////////////////
-int Sprite::GetHeight() {
+int Sprite::GetHeight() const {
 	return src_rect.height;
 }
 
@@ -151,7 +151,7 @@ void Sprite::Flash(Color color, int duration){
 ////////////////////////////////////////////////////////////
 /// Properties
 ////////////////////////////////////////////////////////////
-Bitmap* Sprite::GetBitmap() {
+Bitmap* Sprite::GetBitmap() const {
 	return bitmap;
 }
 void Sprite::SetBitmap(Bitmap* nbitmap) {
@@ -163,113 +163,113 @@ void Sprite::SetBitmap(Bitmap* nbitmap) {
 	}
 	needs_refresh = true;
 }
-Rect Sprite::GetSrcRect() {
+Rect Sprite::GetSrcRect() const {
 	return src_rect;
 }
 void Sprite::SetSrcRect(Rect nsrc_rect) {
 	if (src_rect != nsrc_rect) needs_refresh = true;
 	src_rect = nsrc_rect;
 }
-bool Sprite::GetVisible() {
+bool Sprite::GetVisible() const {
 	return visible;
 }
 void Sprite::SetVisible(bool nvisible) {
 	visible = nvisible;
 }
-int Sprite::GetX() {
+int Sprite::GetX() const {
 	return x;
 }
 void Sprite::SetX(int nx) {
 	x = nx;
 }
-int Sprite::GetY() {
+int Sprite::GetY() const {
 	return y;
 }
 void Sprite::SetY(int ny) {
 	y = ny;
 }
-int Sprite::GetZ() {
+int Sprite::GetZ() const {
 	return z;
 }
 void Sprite::SetZ(int nz) {
 	if (z != nz) Graphics::drawable_list.sort(Graphics::SortDrawable);
 	z = nz;
 }
-int Sprite::GetOx() {
+int Sprite::GetOx() const {
 	return ox;
 }
 void Sprite::SetOx(int nox) {
 	//if (ox != nox) needs_refresh = true;
 	ox = nox;
 }
-int Sprite::GetOy() {
+int Sprite::GetOy() const {
 	return oy;
 }
 void Sprite::SetOy(int noy) {
 	//if (oy != noy) needs_refresh = true;
 	oy = noy;
 }
-double Sprite::GetZoomX() {
+double Sprite::GetZoomX() const {
 	return zoom_x;
 }
 void Sprite::SetZoomX(double nzoom_x) {
 	if (zoom_x != nzoom_x) needs_refresh = true;
 	zoom_x = nzoom_x;
 }
-double Sprite::GetZoomY() {
+double Sprite::GetZoomY() const {
 	return zoom_y;
 }
 void Sprite::SetZoomY(double nzoom_y) {
 	if (zoom_y != nzoom_y) needs_refresh = true;
 	zoom_y = nzoom_y;
 }
-double Sprite::GetAngle() {
+double Sprite::GetAngle() const {
 	return angle;
 }
 void Sprite::SetAngle(double nangle) {
 	if (angle != nangle) needs_refresh = true;
 	angle = nangle;
 }
-bool Sprite::GetFlipX() {
+bool Sprite::GetFlipX() const {
 	return flipx;
 }
 void Sprite::SetFlipX(bool nflipx) {
 	if (flipx != nflipx) needs_refresh = true;
 	flipx = nflipx;
 }
-bool Sprite::GetFlipY() {
+bool Sprite::GetFlipY() const {
 	return flipy;
 }
 void Sprite::SetFlipY(bool nflipy) {
 	if (flipy != nflipy) needs_refresh = true;
 	flipy = nflipy;
 }
-int Sprite::GetBushDepth() {
+int Sprite::GetBushDepth() const {
 	return bush_depth;
 }
 void Sprite::SetBushDepth(int nbush_depth) {
 	if (bush_depth != nbush_depth) needs_refresh = true;
 	bush_depth = nbush_depth;
 }
-int Sprite::GetOpacity() {
+int Sprite::GetOpacity() const {
 	return opacity;
 }
 void Sprite::SetOpacity(int nopacity) {
 	opacity = nopacity;
 }
-int Sprite::GetBlendType() {
+int Sprite::GetBlendType() const {
 	return blend_type;
 }
 void Sprite::SetBlendType(int nblend_type) {
 	blend_type = nblend_type;
 }
-Color Sprite::GetColor() {
+Color Sprite::GetColor() const {
 	return color;
 }
 void Sprite::SetColor(Color ncolor) {
 	color = ncolor;
 }
-Tone Sprite::GetTone() {
+Tone Sprite::GetTone() const {
 	return tone;
 }
 void Sprite::SetTone(Tone ntone) {
@@ -280,6 +280,6 @@ void Sprite::SetTone(Tone ntone) {
 ////////////////////////////////////////////////////////////
 /// Get id
 ////////////////////////////////////////////////////////////
-unsigned long Sprite::GetId() {
+unsigned long Sprite::GetId() const {
 	return ID;
 }

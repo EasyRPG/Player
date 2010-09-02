@@ -42,8 +42,8 @@ public:
 	int blue;
 	int alpha;
 
-	Uint32 GetUint32(SDL_PixelFormat* format);
-	SDL_Color Get();
+	Uint32 GetUint32(SDL_PixelFormat* format) const;
+	SDL_Color Get() const;
 };
 
 #endif

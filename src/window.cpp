@@ -350,7 +350,7 @@ void Window::Update() {
 ////////////////////////////////////////////////////////////
 /// Properties
 ////////////////////////////////////////////////////////////
-Bitmap* Window::GetWindowskin() {
+Bitmap* Window::GetWindowskin() const {
 	return windowskin;
 }
 void Window::SetWindowskin(Bitmap* nwindowskin) {
@@ -359,57 +359,57 @@ void Window::SetWindowskin(Bitmap* nwindowskin) {
 	cursor_needs_refresh = true;
 	windowskin = nwindowskin;
 }
-Bitmap* Window::GetContents() {
+Bitmap* Window::GetContents() const {
 	return contents;
 }
 void Window::SetContents(Bitmap* ncontents) {
 	contents = ncontents;
 }
-bool Window::GetStretch() {
+bool Window::GetStretch() const {
 	return stretch;
 }
 void Window::SetStretch(bool nstretch) {
 	if (stretch != nstretch) background_needs_refresh = true;
 	stretch = nstretch;
 }
-Rect Window::GetCursorRect() {
+Rect Window::GetCursorRect() const {
 	return cursor_rect;
 }
 void Window::SetCursorRect(Rect ncursor_rect) {
 	if (cursor_rect != ncursor_rect) cursor_needs_refresh = true;
 	cursor_rect = ncursor_rect;
 }
-bool Window::GetActive() {
+bool Window::GetActive() const {
 	return active;
 }
 void Window::SetActive(bool nactive) {
 	active = nactive;
 }
-bool Window::GetVisible() {
+bool Window::GetVisible() const {
 	return visible;
 }
 void Window::SetVisible(bool nvisible) {
 	visible = nvisible;
 }
-bool Window::GetPause() {
+bool Window::GetPause() const {
 	return pause;
 }
 void Window::SetPause(bool npause) {
 	pause = npause;
 }
-int Window::GetX() {
+int Window::GetX() const {
 	return x;
 }
 void Window::SetX(int nx) {
 	x = nx;
 }
-int Window::GetY() {
+int Window::GetY() const {
 	return y;
 }
 void Window::SetY(int ny) {
 	y = ny;
 }
-int Window::GetWidth() {
+int Window::GetWidth() const {
 	return width;
 }
 void Window::SetWidth(int nwidth) {
@@ -419,7 +419,7 @@ void Window::SetWidth(int nwidth) {
 	}
 	width = nwidth;
 }
-int Window::GetHeight() {
+int Window::GetHeight() const {
 	return height;
 }
 void Window::SetHeight(int nheight) {
@@ -429,38 +429,38 @@ void Window::SetHeight(int nheight) {
 	}
 	height = nheight;
 }
-int Window::GetZ() {
+int Window::GetZ() const {
 	return z;
 }
 void Window::SetZ(int nz) {
 	if (z != nz) Graphics::drawable_list.sort(Graphics::SortDrawable);
 	z = nz;
 }
-int Window::GetOx() {
+int Window::GetOx() const {
 	return ox;
 }
 void Window::SetOx(int nox) {
 	ox = nox;
 }
-int Window::GetOy() {
+int Window::GetOy() const {
 	return oy;
 }
 void Window::SetOy(int noy) {
 	oy = noy;
 }
-int Window::GetOpacity() {
+int Window::GetOpacity() const {
 	return opacity;
 }
 void Window::SetOpacity(int nopacity) {
 	opacity = nopacity;
 }
-int Window::GetBackOpacity() {
+int Window::GetBackOpacity() const {
 	return back_opacity;
 }
 void Window::SetBackOpacity(int nback_opacity) {
 	back_opacity = nback_opacity;
 }
-int Window::GetContentsOpacity() {
+int Window::GetContentsOpacity() const {
 	return contents_opacity;
 }
 void Window::SetContentsOpacity(int ncontents_opacity) {
@@ -470,6 +470,6 @@ void Window::SetContentsOpacity(int ncontents_opacity) {
 ////////////////////////////////////////////////////////////
 /// Get id
 ////////////////////////////////////////////////////////////
-unsigned long Window::GetId() {
+unsigned long Window::GetId() const {
 	return ID;
 }

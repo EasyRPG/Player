@@ -41,47 +41,47 @@ public:
 	void Flash(Color color, int duration);
 	void Update();
 
-	int GetWidth();
-	int GetHeight();
+	int GetWidth() const;
+	int GetHeight() const;
 
-	Bitmap* GetBitmap();
+	Bitmap* GetBitmap() const;
 	void SetBitmap(Bitmap* nbitmap);
-	Rect GetSrcRect();
+	Rect GetSrcRect() const;
 	void SetSrcRect(Rect nsrc_rect);
-	bool GetVisible();
+	bool GetVisible() const;
 	void SetVisible(bool nvisible);
-	int GetX();
+	int GetX() const;
 	void SetX(int nx);
-	int GetY();
+	int GetY() const;
 	void SetY(int ny);
-	int GetZ();
+	int GetZ() const;
 	void SetZ(int nz);
-	int GetOx();
+	int GetOx() const;
 	void SetOx(int nox);
-	int GetOy();
+	int GetOy() const;
 	void SetOy(int noy);
-	double GetZoomX();
+	double GetZoomX() const;
 	void SetZoomX(double nzoom_x);
-	double GetZoomY();
+	double GetZoomY() const;
 	void SetZoomY(double nzoom_y);
-	double GetAngle();
+	double GetAngle() const;
 	void SetAngle(double nangle);
-	bool GetFlipX();
+	bool GetFlipX() const;
 	void SetFlipX(bool nflipx);
-	bool GetFlipY();
+	bool GetFlipY() const;
 	void SetFlipY(bool nflipy);
-	int GetBushDepth();
+	int GetBushDepth() const;
 	void SetBushDepth(int nbush_depth);
-	int GetOpacity();
+	int GetOpacity() const;
 	void SetOpacity(int nopacity);
-	int GetBlendType();
+	int GetBlendType() const;
 	void SetBlendType(int nblend_type);
-	Color GetColor();
+	Color GetColor() const;
 	void SetColor(Color ncolor);
-	Tone GetTone();
+	Tone GetTone() const;
 	void SetTone(Tone ntone);
 
-	unsigned long GetId();
+	unsigned long GetId() const;
 
 private:
 	unsigned long ID;

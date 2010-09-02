@@ -36,7 +36,7 @@ public:
 	Font(std::string name, int size);
 	~Font();
 
-	TTF_Font* GetTTF();
+	TTF_Font* GetTTF() const;
 	
 	std::string name;
 	int size;
@@ -53,7 +53,7 @@ public:
 	static bool Exists(std::string name);
 	
 private:
-	std::map<std::string, std::map<int, TTF_Font*> > fonts;
+	static std::map<std::string, std::map<int, TTF_Font*> > fonts;
 };
 
 #endif

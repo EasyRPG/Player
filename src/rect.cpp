@@ -62,7 +62,7 @@ void Rect::Set(int nx, int ny, int nwidth, int nheight) {
 ////////////////////////////////////////////////////////////
 /// Get rect
 ////////////////////////////////////////////////////////////
-SDL_Rect Rect::Get() {
+SDL_Rect Rect::Get() const {
 	SDL_Rect rect = {x, y, width, height};
 	return rect;
 }
@@ -88,7 +88,7 @@ void Rect::Adjust(int awidth, int aheight) {
 ////////////////////////////////////////////////////////////
 /// Adjust Rect
 ////////////////////////////////////////////////////////////
-bool Rect::IsOutOfBounds(int awidth, int aheight) {
+bool Rect::IsOutOfBounds(int awidth, int aheight) const {
 	if (width <= 0 || height <= 0) return true;
 	if (x >= awidth || y >= aheight) return true;
 	if (x + width <= 0 || y + height <= 0) return true;

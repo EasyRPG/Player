@@ -36,19 +36,19 @@ public:
 
 	void Draw();
 
-	Bitmap* GetChipset();
+	Bitmap* GetChipset() const;
 	void SetChipset(Bitmap* nchipset);
-	std::vector<short> GetMapData();
+	std::vector<short> GetMapData() const;
 	void SetMapData(std::vector<short> nmap_data);
-	bool GetVisible();
+	bool GetVisible() const;
 	void SetVisible(bool nvisible);
-	int GetOx();
+	int GetOx() const;
 	void SetOx(int nox);
-	int GetOy();
+	int GetOy() const;
 	void SetOy(int noy);
 
-	int GetZ();
-	unsigned long GetId();
+	int GetZ() const;
+	unsigned long GetId() const;
 
 private:
 	Bitmap* chipset;

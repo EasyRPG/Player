@@ -99,72 +99,72 @@ void Plane::Refresh() {
 ////////////////////////////////////////////////////////////
 /// Properties
 ////////////////////////////////////////////////////////////
-Bitmap* Plane::GetBitmap() {
+Bitmap* Plane::GetBitmap() const {
 	return bitmap;
 }
 void Plane::SetBitmap(Bitmap* nbitmap) {
 	needs_refresh = true;
 	bitmap = nbitmap;
 }
-bool Plane::GetVisible() {
+bool Plane::GetVisible() const {
 	return visible;
 }
 void Plane::SetVisible(bool nvisible) {
 	visible = nvisible;
 }
-int Plane::GetZ() {
+int Plane::GetZ() const {
 	return z;
 }
 void Plane::SetZ(int nz) {
 	if (z != nz) Graphics::drawable_list.sort(Graphics::SortDrawable);
 	z = nz;
 }
-int Plane::GetOx() {
+int Plane::GetOx() const {
 	return ox;
 }
 void Plane::SetOx(int nox) {
 	ox = nox;
 }
-int Plane::GetOy() {
+int Plane::GetOy() const {
 	return oy;
 }
 void Plane::SetOy(int noy) {
 	oy = noy;
 }
-double Plane::GetZoomX() {
+double Plane::GetZoomX() const {
 	return zoom_x;
 }
 void Plane::SetZoomX(float nzoom_x) {
 	if (zoom_x != nzoom_x) needs_refresh = true;
 	zoom_x = nzoom_x;
 }
-double Plane::GetZoomY() {
+double Plane::GetZoomY() const {
 	return zoom_y;
 }
 void Plane::SetZoomY(float nzoom_y) {
 	if (zoom_y != nzoom_y) needs_refresh = true;
 	zoom_y = nzoom_y;
 }
-int Plane::GetOpacity() {
+int Plane::GetOpacity() const {
 	return opacity;
 }
 void Plane::SetOpacity(int nopacity) {
 	if (opacity != nopacity) needs_refresh = true;
 	opacity = nopacity;
 }
-int Plane::GetBlendType() {
+int Plane::GetBlendType() const {
 	return blend_type;
 }
 void Plane::SetBlendType(int nblend_type) {
 	blend_type = nblend_type;
 }
-Color Plane::GetColor() {
+Color Plane::GetColor() const {
 	return color;
 }
 void Plane::SetColor(Color ncolor) {
 	color = ncolor;
 }
-Tone Plane::GetTone() {
+Tone Plane::GetTone() const {
 	return tone;
 }
 void Plane::SetTone(Tone ntone) {
@@ -175,6 +175,6 @@ void Plane::SetTone(Tone ntone) {
 ////////////////////////////////////////////////////////////
 /// Get id
 ////////////////////////////////////////////////////////////
-unsigned long Plane::GetId() {
+unsigned long Plane::GetId() const {
 	return ID;
 }

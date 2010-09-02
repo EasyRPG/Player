@@ -36,30 +36,30 @@ public:
 
 	void Draw();
 
-	Bitmap* GetBitmap();
+	Bitmap* GetBitmap() const;
 	void SetBitmap(Bitmap* nbitmap);
-	bool GetVisible();
+	bool GetVisible() const;
 	void SetVisible(bool nvisible);
-	int GetZ();
+	int GetZ() const;
 	void SetZ(int nz);
-	int GetOx();
+	int GetOx() const;
 	void SetOx(int nox);
-	int GetOy();
+	int GetOy() const;
 	void SetOy(int noy);
-	double GetZoomX();
+	double GetZoomX() const;
 	void SetZoomX(float nzoom_x);
-	double GetZoomY();
+	double GetZoomY() const;
 	void SetZoomY(float nzoom_y);
-	int GetOpacity();
+	int GetOpacity() const;
 	void SetOpacity(int nopacity);
-	int GetBlendType();
+	int GetBlendType() const;
 	void SetBlendType(int nblend_type);
-	Color GetColor();
+	Color GetColor() const;
 	void SetColor(Color ncolor);
-	Tone GetTone();
+	Tone GetTone() const;
 	void SetTone(Tone ntone);
 
-	unsigned long GetId();
+	unsigned long GetId() const;
 
 private:
 	unsigned long ID;

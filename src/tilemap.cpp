@@ -44,7 +44,7 @@ Tilemap::~Tilemap() {
 ////////////////////////////////////////////////////////////
 /// Properties
 ////////////////////////////////////////////////////////////
-Bitmap* Tilemap::GetChipset() {
+Bitmap* Tilemap::GetChipset() const {
 	return chipset;
 }
 void Tilemap::SetChipset(Bitmap* nchipset) {
@@ -52,10 +52,10 @@ void Tilemap::SetChipset(Bitmap* nchipset) {
 	layer_down->SetChipset(nchipset);
 	layer_up->SetChipset(nchipset);
 }
-std::vector<short> Tilemap::GetMapDataDown() {
+std::vector<short> Tilemap::GetMapDataDown() const {
 	return map_data_down;
 }
-std::vector<short> Tilemap::GetMapDataUp() {
+std::vector<short> Tilemap::GetMapDataUp() const {
 	return map_data_up;
 }
 void Tilemap::SetMapDataDown(std::vector<short> down) {
@@ -66,7 +66,7 @@ void Tilemap::SetMapDataUp(std::vector<short> up) {
 	map_data_up = up;
 	layer_up->SetMapData(up);
 }
-bool Tilemap::GetVisible() {
+bool Tilemap::GetVisible() const {
 	return visible;
 }
 void Tilemap::SetVisible(bool nvisible) {
@@ -74,7 +74,7 @@ void Tilemap::SetVisible(bool nvisible) {
 	layer_down->SetVisible(nvisible);
 	layer_up->SetVisible(nvisible);
 }
-int Tilemap::GetOx() {
+int Tilemap::GetOx() const {
 	return ox;
 }
 void Tilemap::SetOx(int nox) {
@@ -82,7 +82,7 @@ void Tilemap::SetOx(int nox) {
 	layer_down->SetOx(nox);
 	layer_up->SetOx(nox);
 }
-int Tilemap::GetOy() {
+int Tilemap::GetOy() const {
 	return oy;
 }
 void Tilemap::SetOy(int noy) {

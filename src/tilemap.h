@@ -33,17 +33,17 @@ public:
 	Tilemap();
 	~Tilemap();
 
-	Bitmap* GetChipset();
+	Bitmap* GetChipset() const;
 	void SetChipset(Bitmap* nchipset);
-	std::vector<short> GetMapDataDown();
-	std::vector<short> GetMapDataUp();
+	std::vector<short> GetMapDataDown() const;
+	std::vector<short> GetMapDataUp() const;
 	void SetMapDataDown(std::vector<short> down);
 	void SetMapDataUp(std::vector<short> up);
-	bool GetVisible();
+	bool GetVisible() const;
 	void SetVisible(bool nvisible);
-	int GetOx();
+	int GetOx() const;
 	void SetOx(int nox);
-	int GetOy();
+	int GetOy() const;
 	void SetOy(int noy);
 
 private:

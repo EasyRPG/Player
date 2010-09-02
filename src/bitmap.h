@@ -42,8 +42,8 @@ public:
 	void BlitScreen(int x, int y, int opacity);
 	void BlitScreen(int x, int y, Rect src_rect, int opacity = 255);
 	
-	int GetWidth();
-	int GetHeight();
+	int GetWidth() const;
+	int GetHeight() const;
 	void Blit(int x, int y, Bitmap* source, Rect src_rect, int opacity);
 	void StretchBlit(Rect dst_rect, Bitmap* src_bitmap, Rect src_rect, int opacity);
 	void FillRect(Rect rect, Color color);
@@ -72,7 +72,7 @@ public:
 	void Rotate(double angle);
 	void Flash(Color color, int frame, int duration);
 	
-	Rect GetRect();
+	Rect GetRect() const;
 	Font* GetFont();
 	void SetFont(Font nfont);
 
