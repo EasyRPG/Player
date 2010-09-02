@@ -25,7 +25,10 @@
 #include <ctype.h>
 #include <string.h>
 #include <dirent.h>
+#include <unistd.h>
+#include <errno.h>
 #include "filefinder.h"
+#include "output.h"
 
 ////////////////////////////////////////////////////////////
 /// Global Variables
@@ -68,16 +71,53 @@ static std::string str_toupper(char* str) {
 ////////////////////////////////////////////////////////////
 /// Check if file exists
 ////////////////////////////////////////////////////////////
-static bool fexists(std::string filename) {
-	
-	FILE *tempFile;
-	tempFile = fopen(filename.c_str(), "r");
-	if (tempFile) {
-		fclose(tempFile);
+static bool fexists(std::string& filename) {
+	// Check if file exists and is readable
+	// At first the case sensitive version
+	if (access(filename.c_str(), R_OK) == 0) {
 		return true;
 	}
+
+	// File not found, doing case insensitive search
+	// Extract the directory out of the filename
+	size_t dirpos = filename.rfind('/');
+	std::string dirname;
+	std::string file;
+	if (dirpos == std::string::npos) { // No / found, assume . as dir
+		dirname = std::string(".");
+		file = filename;
+	} else {
+		dirname = filename.substr(0, dirpos+1);
+		file = filename.substr(dirpos+1);
+	}
+	//printf("dir: %s", dirname.c_str());
+	//printf("\nfile: %s\n", file.c_str());
+
+	DIR* dir = opendir(dirname.c_str());
+	if (dir == NULL) {
+		Output::Error("Error opening dir %s: %s", dirname.c_str(),
+						strerror(errno));
+	}
+
+	struct dirent* dirent;
+
+	while ((dirent = readdir(dir)) != NULL)	{
+		if (strcasecmp(file.c_str(), dirent->d_name) == 0) {
+			// File found, now check if its readable
+			if (dirname == ".") {
+				filename = dirent->d_name;
+			} else {
+				filename = dirname + dirent->d_name;
+			}
+			//printf("Returning %s\n", filename.c_str());
+			closedir(dir);
+			return (access(filename.c_str(), R_OK) == 0);
+		}
+	}
+
+	// No luck :(	
+	closedir(dir);
 	return false;
-	
 }
 
 ////////////////////////////////////////////////////////////

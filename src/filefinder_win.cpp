@@ -76,8 +76,7 @@ void FileFinder::Init() {
 /// Check if file exists
 ////////////////////////////////////////////////////////////
 static bool fexists(std::string filename) {
-	std::ifstream file(filename.c_str());
-	return file.is_open();
+	return (_access(filename.c_str(), 4) == 0);
 }
 
 ////////////////////////////////////////////////////////////
