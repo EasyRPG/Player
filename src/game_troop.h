@@ -4,8 +4,8 @@
 class Game_Troop {
 
 public:
-    Game_Troop();
-    ~Game_Troop();
+	Game_Troop();
+	~Game_Troop();
 
 };
 #endif // __game_troop__

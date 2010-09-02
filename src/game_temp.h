@@ -4,8 +4,8 @@
 class Game_Temp {
 
 public:
-    Game_Temp();
-    ~Game_Temp();
+	Game_Temp();
+	~Game_Temp();
 
 };
 #endif // __game_temp__

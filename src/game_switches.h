@@ -4,8 +4,8 @@
 class Game_Switches {
 
 public:
-    Game_Switches();
-    ~Game_Switches();
+	Game_Switches();
+	~Game_Switches();
 
 };
 #endif // __game_switches__

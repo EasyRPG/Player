@@ -513,14 +513,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\rpg_cache.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\rpg_cache.h"
-					>
-				</File>
-				<File
 					RelativePath="..\..\src\rpg_chipset.cpp"
 					>
 				</File>

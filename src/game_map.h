@@ -1,25 +1,25 @@
-//////////////////////////////////////////////////////////////////////////////////
-/// This file is part of EasyRPG Player.
-/// 
-/// EasyRPG Player is free software: you can redistribute it and/or modify
-/// it under the terms of the GNU General Public License as published by
-/// the Free Software Foundation, either version 3 of the License, or
-/// (at your option) any later version.
-/// 
-/// EasyRPG Player is distributed in the hope that it will be useful,
-/// but WITHOUT ANY WARRANTY; without even the implied warranty of
-/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-/// GNU General Public License for more details.
-/// 
-/// You should have received a copy of the GNU General Public License
-/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
-//////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+// This file is part of EasyRPG Player.
+// 
+// EasyRPG Player is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// EasyRPG Player is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+/////////////////////////////////////////////////////////////////////////////
 
 #ifndef _GAME_MAP_H_
 #define _GAME_MAP_H_
 
 ////////////////////////////////////////////////////////////
-/// Headers
+// Headers
 ////////////////////////////////////////////////////////////
 #include <vector>
 #include <string>
@@ -31,8 +31,8 @@
 ////////////////////////////////////////////////////////////
 class Game_Map {
 public:
-    Game_Map();
-    ~Game_Map();
+	Game_Map();
+	~Game_Map();
 
 	void Setup(int _id);
 	int GetMapId();
@@ -58,8 +58,8 @@ public:
 	bool IsScrolling();
 	void StartFogToneChange(Tone tone, int duration);
 	void StartFogOpacityChange(int opacity, int duration);
-    void Update();
-    
+	void Update();
+	
 	std::string chipset_name;
 	int animation_speed;
 	int animation_type;
@@ -88,8 +88,8 @@ protected:
 	RPG::Map map;
 	int map_id;
 	int scroll_direction;
-    int scroll_rest;
-    int scroll_speed;
+	int scroll_rest;
+	int scroll_speed;
 	Tone fog_tone_target;
 	int fog_tone_duration;
 	double fog_opacity_target;

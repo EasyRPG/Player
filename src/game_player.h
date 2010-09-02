@@ -4,8 +4,8 @@
 class Game_Player {
 
 public:
-    Game_Player();
-    ~Game_Player();
+	Game_Player();
+	~Game_Player();
 
 };
 #endif // __game_player__

@@ -4,8 +4,8 @@
 class Game_Actors {
 
 public:
-    Game_Actors();
-    ~Game_Actors();
+	Game_Actors();
+	~Game_Actors();
 
 };
 #endif // __game_actors__

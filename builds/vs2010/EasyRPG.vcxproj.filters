@@ -281,9 +281,6 @@
     <ClCompile Include="..\..\src\rpg_battleranimationextension.cpp">
       <Filter>Source Files\RPG</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\rpg_cache.cpp">
-      <Filter>Source Files\RPG</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\rpg_chipset.cpp">
       <Filter>Source Files\RPG</Filter>
     </ClCompile>
@@ -554,9 +551,6 @@
       <Filter>Source Files\RPG</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\rpg_battleranimationextension.h">
-      <Filter>Source Files\RPG</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\rpg_cache.h">
       <Filter>Source Files\RPG</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\rpg_chipset.h">

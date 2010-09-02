@@ -1,24 +1,24 @@
-//////////////////////////////////////////////////////////////////////////////////
-/// This file is part of EasyRPG Player.
-/// 
-/// EasyRPG Player is free software: you can redistribute it and/or modify
-/// it under the terms of the GNU General Public License as published by
-/// the Free Software Foundation, either version 3 of the License, or
-/// (at your option) any later version.
-/// 
-/// EasyRPG Player is distributed in the hope that it will be useful,
-/// but WITHOUT ANY WARRANTY; without even the implied warranty of
-/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-/// GNU General Public License for more details.
-/// 
-/// You should have received a copy of the GNU General Public License
-/// along with EasyRPG Player.  If not, see <http://www.gnu.org/licenses/>.
-//////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+// This file is part of EasyRPG Player.
+// 
+// EasyRPG Player is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// EasyRPG Player is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+/////////////////////////////////////////////////////////////////////////////
 
 #if UNIX || DINGOO
 
 ////////////////////////////////////////////////////////////
-/// Headers
+// Headers
 ////////////////////////////////////////////////////////////
 #include <iostream>
 #include <fstream>
@@ -31,8 +31,8 @@
 /// Global Variables
 ////////////////////////////////////////////////////////////
 namespace FileFinder {
-    std::string fonts_path;
-    std::string rtp_path;
+	std::string fonts_path;
+	std::string rtp_path;
 	std::string rtp_paths[3];
 }
 
@@ -40,7 +40,7 @@ namespace FileFinder {
 /// Initialize
 ////////////////////////////////////////////////////////////
 void FileFinder::Init() {
-    // TODO find default paths
+	// TODO find default paths
 	rtp_path = "";
 	fonts_path = "";
 }
@@ -49,20 +49,20 @@ void FileFinder::Init() {
 /// To upper
 ////////////////////////////////////////////////////////////
 static std::string str_toupper(std::string str) {
-    std::string new_str = "";
+	std::string new_str = "";
 
-    for (unsigned int i = 0; i <= str.length(); i++) {
-        new_str += (char)toupper((int)str[i]);
-    }
-    return new_str;
+	for (unsigned int i = 0; i <= str.length(); i++) {
+		new_str += (char)toupper((int)str[i]);
+	}
+	return new_str;
 }
 static std::string str_toupper(char* str) {
-    std::string new_str = "";
+	std::string new_str = "";
 
-    for (unsigned int i = 0; i <= strlen(str); i++) {
-        new_str += (char)toupper((int)str[i]);
-    }
-    return new_str;
+	for (unsigned int i = 0; i <= strlen(str); i++) {
+		new_str += (char)toupper((int)str[i]);
+	}
+	return new_str;
 }
 
 ////////////////////////////////////////////////////////////
@@ -72,7 +72,7 @@ static bool fexists(std::string filename) {
 	
 	FILE *tempFile;
 	tempFile = fopen(filename.c_str(), "r");
-    if (tempFile) {
+	if (tempFile) {
 		fclose(tempFile);
 		return true;
 	}
@@ -106,7 +106,7 @@ std::string FileFinder::FindImage(std::string name) {
 	if (fexists(path)) return path;
 	path = name; path += ".png";
 	if (fexists(path)) return path;
-    path = name; path += ".xyz";
+	path = name; path += ".xyz";
 	if (fexists(path)) return path;
 	for (int i = 0; i < 3; i++) {
 		if (rtp_paths[i] != "") {
@@ -120,7 +120,7 @@ std::string FileFinder::FindImage(std::string name) {
 			if (fexists(path)) return path;
 			path = rtp_path; path += ".png";
 			if (fexists(path)) return path;
-            path = rtp_path; path += ".xyz";
+			path = rtp_path; path += ".xyz";
 			if (fexists(path)) return path;
 		}
 	}

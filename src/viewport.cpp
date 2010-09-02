@@ -5,48 +5,48 @@
 
 Viewport::Viewport(int ix, int iy, int iwidth, int iheight)
 {
-    disposed = false;
-    id = count;
-//    Graphics::add_viewport(count, this);
-    count++;
-    
-    rect.x = ix;
-    rect.y = iy;
-    rect.width = iwidth;
-    rect.height = iheight;
+	disposed = false;
+	id = count;
+//	Graphics::add_viewport(count, this);
+	count++;
+	
+	rect.x = ix;
+	rect.y = iy;
+	rect.width = iwidth;
+	rect.height = iheight;
 
-    visible = true;
-    z = 0;
-    ox = 0;
-    oy = 0;
-    color = new Color(0, 0, 0, 0);
-    tone = new Tone(0, 0, 0, 0);
+	visible = true;
+	z = 0;
+	ox = 0;
+	oy = 0;
+	color = new Color(0, 0, 0, 0);
+	tone = new Tone(0, 0, 0, 0);
 }
 
 Viewport::Viewport(Rect *irect)
 {
-    disposed = false;
-    id = count;
-//    Graphics::add_viewport(count, this);
-    count++;
-    
-//    viewport = viewport;
-    rect.x = irect->x;
-    rect.y = irect->y;
-    rect.width = irect->width;
-    rect.height = irect->height;
+	disposed = false;
+	id = count;
+//	Graphics::add_viewport(count, this);
+	count++;
+	
+//	viewport = viewport;
+	rect.x = irect->x;
+	rect.y = irect->y;
+	rect.width = irect->width;
+	rect.height = irect->height;
 
-    visible = true;
-    z = 0;
-    ox = 0;
-    oy = 0;
-    color = new Color(0, 0, 0, 0);
-    tone = new Tone(0, 0, 0, 0);
+	visible = true;
+	z = 0;
+	ox = 0;
+	oy = 0;
+	color = new Color(0, 0, 0, 0);
+	tone = new Tone(0, 0, 0, 0);
 }
 
 Viewport::~Viewport()
 {
-//    Graphics::remove_viewport(id);
+//	Graphics::remove_viewport(id);
 }
 
 std::map<int, Viewport*> Viewport::viewports;
@@ -54,22 +54,22 @@ int Viewport::count = 0;
 
 void Viewport::dispose()
 {
-    disposed = true;
+	disposed = true;
 }
 
 bool Viewport::is_disposed()
 {
-    return disposed;
+	return disposed;
 }
 
 void Viewport::flash(Color *flash_color, int duration)
 {
-    
+	
 }
 
 void Viewport::update()
 {
-    
+	
 }
 
 void Viewport::draw(SDL_Surface *screen)
@@ -79,89 +79,89 @@ void Viewport::draw(SDL_Surface *screen)
 
 Rect* Viewport::get_rect()
 {
-    return &rect;
+	return &rect;
 }
 
 bool Viewport::get_visible()
 {
-    return visible;
+	return visible;
 }
 
 int Viewport::get_z()
 {
-    return z;
+	return z;
 }
 
 int Viewport::get_ox()
 {
-    return ox;
+	return ox;
 }
 
 int Viewport::get_oy()
 {
-    return oy;
+	return oy;
 }
 
 Color* Viewport::get_color()
 {
-    return color;
+	return color;
 }
 
 Tone* Viewport::get_tone()
 {
-    return tone;
+	return tone;
 }
 
 void Viewport::set_rect(Rect* nrect)
 {
-    rect.x = nrect->x;
-    rect.y = nrect->y;
-    rect.width = nrect->width;
-    rect.height = nrect->height;
+	rect.x = nrect->x;
+	rect.y = nrect->y;
+	rect.width = nrect->width;
+	rect.height = nrect->height;
 }
 
 void Viewport::set_visible(bool nvisible)
 {
-    visible = nvisible;
+	visible = nvisible;
 }
 
 void Viewport::set_z(int nz)
 {
-    z = nz;
+	z = nz;
 }
 
 void Viewport::set_ox(int nox)
 {
-    ox = nox;
+	ox = nox;
 }
 
 void Viewport::set_oy(int noy)
 {
-    oy = noy;
+	oy = noy;
 }
 
 void Viewport::set_color(Color* ncolor)
 {
-    color = ncolor;
+	color = ncolor;
 }
 
 void Viewport::set_tone(Tone* ntone)
 {
-    tone = ntone;
+	tone = ntone;
 }
 
 void Viewport::add_viewport(int id, Viewport *viewport)
 {
-    viewports[id] = viewport;
+	viewports[id] = viewport;
 	//TODO implements ZObj
 	/*
-    ZObj zobj((*viewport).get_z(), id, TYPE_VIEWPORT, 0);
-    ZObj::zlist.push_back(zobj);
+	ZObj zobj((*viewport).get_z(), id, TYPE_VIEWPORT, 0);
+	ZObj::zlist.push_back(zobj);
 	*/
 }
 
 void Viewport::remove_viewport(int id)
 {
-    viewports.erase(id);
-//    ZObj::zlist.remove_if(remove_zobj_id(id));
+	viewports.erase(id);
+//	ZObj::zlist.remove_if(remove_zobj_id(id));
 }
