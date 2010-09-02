@@ -149,8 +149,6 @@
         <File Name="../../src/tilemap_layer.h"/>
         <File Name="../../src/tone.cpp"/>
         <File Name="../../src/tone.h"/>
-        <File Name="../../src/viewport.cpp"/>
-        <File Name="../../src/viewport.h"/>
         <File Name="../../src/window.cpp"/>
         <File Name="../../src/window.h"/>
         <File Name="../../src/spriteset_map.h"/>
@@ -182,8 +180,6 @@
       <File Name="../../src/rpg_battleranimation.h"/>
       <File Name="../../src/rpg_battleranimationextension.cpp"/>
       <File Name="../../src/rpg_battleranimationextension.h"/>
-      <File Name="../../src/rpg_cache.cpp"/>
-      <File Name="../../src/rpg_cache.h"/>
       <File Name="../../src/rpg_chipset.cpp"/>
       <File Name="../../src/rpg_chipset.h"/>
       <File Name="../../src/rpg_class.cpp"/>

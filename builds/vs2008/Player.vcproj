@@ -856,14 +856,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\src\viewport.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\src\viewport.h"
-						>
-					</File>
-					<File
 						RelativePath="..\..\src\window.cpp"
 						>
 					</File>

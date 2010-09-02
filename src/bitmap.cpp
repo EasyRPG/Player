@@ -270,7 +270,7 @@ void Bitmap::Clear(Color color) {
 Color Bitmap::GetPixel(int x, int y) {
 	if (x < 0 || y < 0) return Color(0, 0, 0, 0);
 	if (x >= GetWidth() || y > GetHeight()) return Color(0, 0, 0, 0);
-	Uint32 *pixels = (Uint32*)bitmap->pixels;
+	Uint32* pixels = (Uint32*)bitmap->pixels;
 	return Color(pixels[(y * GetWidth()) + x], bitmap->format);
 }
 
@@ -280,7 +280,7 @@ Color Bitmap::GetPixel(int x, int y) {
 void Bitmap::SetPixel(int x, int y, Color color) {
 	if (x < 0 || y < 0) return;
 	if (x >= GetWidth() || y > GetHeight()) return;
-	Uint32 *pixels = (Uint32*)bitmap->pixels;
+	Uint32* pixels = (Uint32*)bitmap->pixels;
 	pixels[(y * GetWidth()) + x] = color.GetUint32(bitmap->format);
 }
 
@@ -288,7 +288,7 @@ void Bitmap::SetPixel(int x, int y, Color color) {
 /// Hue change
 ////////////////////////////////////////////////////////////
 void Bitmap::HueChange(double hue) {
-	Uint32 *pixels = (Uint32*)bitmap->pixels;
+	Uint32* pixels = (Uint32*)bitmap->pixels;
 	
 	for (int y = 0; y < GetHeight(); y++) {
 		for (int x = 0; x < GetWidth(); x++) {
@@ -302,7 +302,7 @@ void Bitmap::HueChange(double hue) {
 /// Saturation change
 ////////////////////////////////////////////////////////////
 void Bitmap::SatChange(double saturation) {
-	Uint32 *pixels = (Uint32*)bitmap->pixels;
+	Uint32* pixels = (Uint32*)bitmap->pixels;
 	for (int y = 0; y < GetHeight(); y++) {
 		for (int x = 0; x < GetWidth(); x++) {
 			Color color(pixels[(y * GetWidth()) + x], bitmap->format);
@@ -315,7 +315,7 @@ void Bitmap::SatChange(double saturation) {
 /// Luminance change
 ////////////////////////////////////////////////////////////
 void Bitmap::LumChange(double luminance) {
-	Uint32 *pixels = (Uint32*)bitmap->pixels;
+	Uint32* pixels = (Uint32*)bitmap->pixels;
 	for (int y = 0; y < GetHeight(); y++) {
 		for (int x = 0; x < GetWidth(); x++) {
 			Color color(pixels[(y * GetWidth()) + x], bitmap->format);
@@ -328,7 +328,7 @@ void Bitmap::LumChange(double luminance) {
 /// HSL change
 ////////////////////////////////////////////////////////////
 void Bitmap::HSLChange(double h, double s, double l) {
-	Uint32 *pixels = (Uint32*)bitmap->pixels;
+	Uint32* pixels = (Uint32*)bitmap->pixels;
 	for (int y = 0; y < GetHeight(); y++) {
 		for (int x = 0; x < GetWidth(); x++) {
 			Color color(pixels[(y * GetWidth()) + x], bitmap->format);
@@ -338,7 +338,7 @@ void Bitmap::HSLChange(double h, double s, double l) {
 	}
 }
 void Bitmap::HSLChange(double h, double s, double l, Rect rect) {
-	Uint32 *pixels = (Uint32*)bitmap->pixels;
+	Uint32* pixels = (Uint32*)bitmap->pixels;
 
 	if (GetWidth() == 0 || GetHeight() == 0) return;
 
@@ -450,7 +450,7 @@ void Bitmap::RadialBlur(int angle, int division) {
 void Bitmap::SetTransparent(Color col) {
 	SDL_LockSurface(bitmap);
 
-	Uint8 *pixels = (Uint8*)bitmap->pixels;
+	Uint8* pixels = (Uint8*)bitmap->pixels;
 
 	const int rbyte = MaskGetByte(bitmap->format->Rmask);
 	const int gbyte = MaskGetByte(bitmap->format->Gmask);
@@ -458,7 +458,7 @@ void Bitmap::SetTransparent(Color col) {
 	const int abyte = MaskGetByte(bitmap->format->Amask);
 	for (int i = 0; i < GetHeight(); i++) {
 		for (int j = 0; j < GetWidth(); j++) {
-			Uint8 *pixel = pixels;
+			Uint8* pixel = pixels;
 			if (pixel[rbyte] == col.red && pixel[gbyte] == col.green && pixel[bbyte] == col.blue) {
 				pixel[abyte] = 0;
 			}
@@ -476,7 +476,7 @@ void Bitmap::ToneChange(Tone tone) {
 
 	SDL_LockSurface(bitmap);
 
-	Uint8 *pixels = (Uint8*)bitmap->pixels;
+	Uint8* pixels = (Uint8*)bitmap->pixels;
 	
 	const int rbyte = MaskGetByte(bitmap->format->Rmask);
 	const int gbyte = MaskGetByte(bitmap->format->Gmask);
@@ -485,7 +485,7 @@ void Bitmap::ToneChange(Tone tone) {
 	if (tone.gray == 0) {
 		for (int i = 0; i < GetHeight(); i++) {
 			for (int j = 0; j < GetWidth(); j++) {
-				Uint8 *pixel = pixels;
+				Uint8* pixel = pixels;
 				pixel[rbyte] = (Uint8)max(min(pixel[rbyte] + tone.red, 255), 0);
 				pixel[gbyte] = (Uint8)max(min(pixel[gbyte] + tone.green, 255), 0);
 				pixel[bbyte] = (Uint8)max(min(pixel[bbyte] + tone.blue, 255), 0);
@@ -497,7 +497,7 @@ void Bitmap::ToneChange(Tone tone) {
 		double gray;
 		for (int i = 0; i < GetHeight(); i++) {
 			for (int j = 0; j < GetWidth(); j++) {
-				Uint8 *pixel = pixels;
+				Uint8* pixel = pixels;
 				
 				gray = pixel[rbyte] * 0.299 + pixel[gbyte] * 0.587 + pixel[bbyte] * 0.114;
 				pixel[rbyte] = (Uint8)max(min((pixel[rbyte] - gray) * factor + gray + tone.red + 0.5, 255), 0);
@@ -518,7 +518,7 @@ void Bitmap::OpacityChange(int opacity, int bush_depth) {
 
 	SDL_LockSurface(bitmap);
 	
-	Uint8 *pixels = (Uint8*)bitmap->pixels;
+	Uint8* pixels = (Uint8*)bitmap->pixels;
 	
 	int start_bush = max(GetHeight() - bush_depth, 0);
 
@@ -527,14 +527,14 @@ void Bitmap::OpacityChange(int opacity, int bush_depth) {
 	if (opacity < 255) {
 		for (int i = 0; i < start_bush; i++) {
 			for (int j = 0; j < GetWidth(); j++) {
-				Uint8 *pixel = pixels;
+				Uint8* pixel = pixels;
 				pixel[abyte] = pixel[abyte] * opacity / 255;
 				pixels += 4;
 			}
 		}
 		for (int i = start_bush; i< GetHeight(); i++) {
 			for (int j = 0; j < GetWidth(); j++) {
-				Uint8 *pixel = pixels;
+				Uint8* pixel = pixels;
 				pixel[abyte] = (pixel[abyte] / 2) * opacity / 255;
 				pixels += 4;
 			}
@@ -543,7 +543,7 @@ void Bitmap::OpacityChange(int opacity, int bush_depth) {
 		pixels += start_bush * GetWidth() * 4;
 		for (int i = start_bush; i < GetHeight(); i++) {
 			for (int j = 0; j < GetWidth(); j++) {
-				Uint8 *pixel = pixels;
+				Uint8* pixel = pixels;
 				pixel[abyte] = pixel[abyte] / 2;
 				pixels += 4;
 			}

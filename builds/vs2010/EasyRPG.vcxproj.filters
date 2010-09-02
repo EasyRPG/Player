@@ -422,9 +422,6 @@
     <ClCompile Include="..\..\src\tone.cpp">
       <Filter>Source Files\Multimedia\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\viewport.cpp">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\window.cpp">
       <Filter>Source Files\Multimedia\Graphics</Filter>
     </ClCompile>
@@ -695,9 +692,6 @@
       <Filter>Source Files\Multimedia\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\tone.h">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\viewport.h">
       <Filter>Source Files\Multimedia\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\window.h">

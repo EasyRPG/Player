@@ -221,7 +221,6 @@
     <ClCompile Include="..\..\src\tilemap.cpp" />
     <ClCompile Include="..\..\src\tilemap_layer.cpp" />
     <ClCompile Include="..\..\src\tone.cpp" />
-    <ClCompile Include="..\..\src\viewport.cpp" />
     <ClCompile Include="..\..\src\window.cpp" />
     <ClCompile Include="..\..\src\window_base.cpp" />
     <ClCompile Include="..\..\src\window_command.cpp" />
@@ -314,7 +313,6 @@
     <ClInclude Include="..\..\src\tilemap.h" />
     <ClInclude Include="..\..\src\tilemap_layer.h" />
     <ClInclude Include="..\..\src\tone.h" />
-    <ClInclude Include="..\..\src\viewport.h" />
     <ClInclude Include="..\..\src\window.h" />
     <ClInclude Include="..\..\src\window_base.h" />
     <ClInclude Include="..\..\src\window_command.h" />

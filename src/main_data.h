@@ -68,7 +68,7 @@
 ////////////////////////////////////////////////////////////
 namespace Main_Data {
 	// Scene Data
-	extern Scene *scene;
+	extern Scene* scene;
 	extern unsigned char scene_type;
 	
 	// Dynamic Game Data

@@ -25,7 +25,7 @@
 ////////////////////////////////////////////////////////////
 namespace Main_Data {
 	// Scene Data
-	Scene *scene = NULL;
+	Scene* scene = NULL;
 	unsigned char scene_type;
 	
 	// Dynamic Game Data
@@ -64,8 +64,8 @@ namespace Main_Data {
 	RPG::TreeMap data_treemap;
 	
 	// Maps and Areas Data (lmu)
-	//std::vector<RPG::Map> *data_maps;
-	//std::vector<RPG::Area> *data_areas;
+	//std::vector<RPG::Map>* data_maps;
+	//std::vector<RPG::Area>* data_areas;
 }
 
 void Main_Data::Cleanup() {
