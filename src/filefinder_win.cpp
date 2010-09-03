@@ -29,6 +29,11 @@
 #include "options.h"
 #include "registry_win.h"
 
+// MinGW shlobj.h does not define this
+#ifndef SHGFP_TYPE_CURRENT
+#define SHGFP_TYPE_CURRENT 0
+#endif
+
 ////////////////////////////////////////////////////////////
 /// Global Variables
 ////////////////////////////////////////////////////////////
@@ -58,8 +63,7 @@ void FileFinder::Init() {
 	// Retrieve the Path of the Font Directory
 	TCHAR path[MAX_PATH];
 
-	if (SHGetFolderPath(NULL, CSIDL_FONTS, NULL, SHGFP_TYPE_CURRENT, path) != S_OK)
-	{
+	if (SHGetFolderPath(NULL, CSIDL_FONTS, NULL, SHGFP_TYPE_CURRENT, path) != S_OK)	{
 		fonts_path = "";
 	} else {
 		char fpath[MAX_PATH];
