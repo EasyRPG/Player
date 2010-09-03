@@ -70,14 +70,25 @@ namespace Main_Data {
 
 void Main_Data::Cleanup() {
 	if (scene != NULL) delete scene;
-	delete game_system;
-	delete game_temp;
-	delete game_switches;
-	delete game_variables;
-	delete game_screen;
-	delete game_actors;
-	delete game_party;
-	delete game_troop;
-	delete game_map;
-	delete game_player;
+	if (game_system != NULL) delete game_system;
+	if (game_temp != NULL) delete game_temp;
+	if (game_switches != NULL) delete game_switches;
+	if (game_variables != NULL) delete game_variables;
+	if (game_screen != NULL) delete game_screen;
+	if (game_actors != NULL) delete game_actors;
+	if (game_party != NULL) delete game_party;
+	if (game_troop != NULL) delete game_troop;
+	if (game_map != NULL) delete game_map;
+	if (game_player != NULL) delete game_player;
+	scene = NULL;
+	game_system = NULL;
+	game_temp = NULL;
+	game_switches = NULL;
+	game_variables = NULL;
+	game_screen = NULL;
+	game_actors = NULL;
+	game_party = NULL;
+	game_troop = NULL;
+	game_map = NULL;
+	game_player = NULL;
 }

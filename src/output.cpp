@@ -71,6 +71,7 @@ void Output::ErrorStr(std::string err){
 		MsgBox::Error(err, GAME_TITLE);
 	#endif
 	Player::Exit();
+	exit(-1);
 }
 
 ////////////////////////////////////////////////////////////
