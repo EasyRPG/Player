@@ -41,16 +41,17 @@ Game_System::~Game_System() {
 ////////////////////////////////////////////////////////////
 void Game_System::BgmPlay(RPG::Music bgm) {
 	//@playing_bgm = bgm
-	if ( bgm.name != "") {
-		Audio::BGM_Play("Music\\" + bgm.name, bgm.volume, bgm.tempo);
+	// RPG Maker Hack: (OFF) means play nothing
+	if ( bgm.name != "" && bgm.name != "(OFF)") {
+		Audio::BGM_Play("Music/" + bgm.name, bgm.volume, bgm.tempo);
 	} else {
 		Audio::BGM_Stop();
 	}
 	Graphics::FrameReset();
 }
 void Game_System::SePlay(RPG::Sound se) {
-	if (se.name != "") {
-		Audio::SE_Play("Sound\\" + se.name, se.volume, se.tempo);
+	if (se.name != "" && se.name != "(OFF)") {
+		Audio::SE_Play("Sound/" + se.name, se.volume, se.tempo);
 	}
 }
 
