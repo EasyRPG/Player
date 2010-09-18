@@ -40,12 +40,18 @@ public:
 	void SetChipset(Bitmap* nchipset);
 	std::vector<short> GetMapData() const;
 	void SetMapData(std::vector<short> nmap_data);
+	std::vector<unsigned char> GetPassable() const;
+	void SetPassable(std::vector<unsigned char> npassable);
 	bool GetVisible() const;
 	void SetVisible(bool nvisible);
 	int GetOx() const;
 	void SetOx(int nox);
 	int GetOy() const;
 	void SetOy(int noy);
+	int GetWidth() const;
+	void SetWidth(int nwidth);
+	int GetHeight() const;
+	void SetHeight(int nheight);
 
 	int GetZ() const;
 	unsigned long GetId() const;
@@ -53,15 +59,24 @@ public:
 private:
 	Bitmap* chipset;
 	std::vector<short> map_data;
+	std::vector<unsigned char> passable;
 	bool visible;
 	int ox;
 	int oy;
+	int width;
+	int height;
 
 	unsigned long ID;
 	int layer;
 
-	std::vector< std::vector<Sprite*> > sprites;
+	std::vector<std::vector<Sprite*> > sprites;
 	std::vector<Bitmap*> autotiles;
+
+	struct TileData {
+		int id;
+		int z;
+	};
+	std::vector<std::vector<TileData> > data_cache;
 };
 
 #endif

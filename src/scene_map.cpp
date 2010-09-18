@@ -55,7 +55,7 @@ Scene_Map::~Scene_Map() {
 ////////////////////////////////////////////////////////////
 void Scene_Map::MainFunction() {	
 	spriteset = new Spriteset_Map();
-	message_window = new Window_Message();
+	//message_window = new Window_Message();
 
 	//Graphics::Transition();
 
@@ -69,12 +69,12 @@ void Scene_Map::MainFunction() {
 	
 	// Delete objects
 	delete spriteset;
-	delete message_window;
+	//delete message_window;
 }
 
 ////////////////////////////////////////////////////////////
 /// Update
 ////////////////////////////////////////////////////////////
 void Scene_Map::Update() {
-
+	spriteset->Update();
 }

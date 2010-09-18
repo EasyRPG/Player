@@ -36,24 +36,27 @@ public:
 	Bitmap* GetChipset() const;
 	void SetChipset(Bitmap* nchipset);
 	std::vector<short> GetMapDataDown() const;
-	std::vector<short> GetMapDataUp() const;
 	void SetMapDataDown(std::vector<short> down);
+	std::vector<short> GetMapDataUp() const;
 	void SetMapDataUp(std::vector<short> up);
+	std::vector<unsigned char> GetPassableUp() const;
+	void SetPassableUp(std::vector<unsigned char> up);
+	std::vector<unsigned char> GetPassableDown() const;
+	void SetPassableDown(std::vector<unsigned char> down);
+	std::vector<short> GetProperties() const;
+	void SetProperties(std::vector<short> nproperties);
 	bool GetVisible() const;
 	void SetVisible(bool nvisible);
 	int GetOx() const;
 	void SetOx(int nox);
 	int GetOy() const;
 	void SetOy(int noy);
+	int GetWidth() const;
+	void SetWidth(int nwidth);
+	int GetHeight() const;
+	void SetHeight(int nheight);
 
 private:
-	Bitmap* chipset;
-	std::vector<short> map_data_down;
-	std::vector<short> map_data_up;
-	bool visible;
-	int ox;
-	int oy;
-
 	TilemapLayer* layer_down;
 	TilemapLayer* layer_up;
 };

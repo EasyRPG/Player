@@ -27,7 +27,11 @@
 ////////////////////////////////////////////////////////////
 Spriteset_Map::Spriteset_Map() {
 	tilemap = new Tilemap();
+	tilemap->SetWidth(Main_Data::game_map->GetWidth());
+	tilemap->SetHeight(Main_Data::game_map->GetHeight());
 	tilemap->SetChipset(Cache::Chipset(Main_Data::game_map->chipset_name));
+	tilemap->SetPassableDown(Main_Data::game_map->passages_down);
+	tilemap->SetPassableUp(Main_Data::game_map->passages_up);
 	tilemap->SetMapDataDown(Main_Data::game_map->GetMapDataDown());
 	tilemap->SetMapDataUp(Main_Data::game_map->GetMapDataUp());
 	panorama = new Plane();

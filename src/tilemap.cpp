@@ -24,11 +24,6 @@
 /// Constructor
 ////////////////////////////////////////////////////////////
 Tilemap::Tilemap() {
-	chipset = NULL;
-	visible = true;
-	ox = 0;
-	oy = 0;
-	
 	layer_down = new TilemapLayer(0);
 	layer_up = new TilemapLayer(1);
 }
@@ -45,48 +40,68 @@ Tilemap::~Tilemap() {
 /// Properties
 ////////////////////////////////////////////////////////////
 Bitmap* Tilemap::GetChipset() const {
-	return chipset;
+	return layer_down->GetChipset();
 }
 void Tilemap::SetChipset(Bitmap* nchipset) {
-	chipset = nchipset;
 	layer_down->SetChipset(nchipset);
 	layer_up->SetChipset(nchipset);
 }
 std::vector<short> Tilemap::GetMapDataDown() const {
-	return map_data_down;
-}
-std::vector<short> Tilemap::GetMapDataUp() const {
-	return map_data_up;
+	return layer_down->GetMapData();
 }
 void Tilemap::SetMapDataDown(std::vector<short> down) {
-	map_data_down = down;
 	layer_down->SetMapData(down);
 }
+std::vector<short> Tilemap::GetMapDataUp() const {
+	return layer_up->GetMapData();
+}
 void Tilemap::SetMapDataUp(std::vector<short> up) {
-	map_data_up = up;
 	layer_up->SetMapData(up);
 }
+std::vector<unsigned char> Tilemap::GetPassableDown() const {
+	return layer_down->GetPassable();
+}
+void Tilemap::SetPassableDown(std::vector<unsigned char> down) {
+	layer_down->SetPassable(down);
+}
+std::vector<unsigned char> Tilemap::GetPassableUp() const {
+	return layer_up->GetPassable();
+}
+void Tilemap::SetPassableUp(std::vector<unsigned char> up) {
+	layer_up->SetPassable(up);
+}
 bool Tilemap::GetVisible() const {
-	return visible;
+	return layer_down->GetVisible();
 }
 void Tilemap::SetVisible(bool nvisible) {
-	visible = nvisible;
 	layer_down->SetVisible(nvisible);
 	layer_up->SetVisible(nvisible);
 }
 int Tilemap::GetOx() const {
-	return ox;
+	return layer_down->GetOx();
 }
 void Tilemap::SetOx(int nox) {
-	ox = nox;
 	layer_down->SetOx(nox);
 	layer_up->SetOx(nox);
 }
 int Tilemap::GetOy() const {
-	return oy;
+	return layer_down->GetOy();
 }
 void Tilemap::SetOy(int noy) {
-	oy = noy;
 	layer_down->SetOy(noy);
 	layer_up->SetOy(noy);
+}
+int Tilemap::GetWidth() const {
+	return layer_down->GetWidth();
+}
+void Tilemap::SetWidth(int nwidth) {
+	layer_down->SetWidth(nwidth);
+	layer_up->SetWidth(nwidth);
+}
+int Tilemap::GetHeight() const {
+	return layer_down->GetHeight();
+}
+void Tilemap::SetHeight(int nheight) {
+	layer_down->SetHeight(nheight);
+	layer_up->SetHeight(nheight);
 }
