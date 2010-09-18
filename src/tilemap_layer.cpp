@@ -137,8 +137,8 @@ Bitmap* TilemapLayer::GetChipset() const {
 }
 void TilemapLayer::SetChipset(Bitmap* nchipset) {
 	if (chipset != nchipset) {
-		for (int i = 0; i < sprites.size(); i++) {
-			for (int j = 0; j < sprites[i].size(); j++) {
+		for (unsigned int i = 0; i < sprites.size(); i++) {
+			for (unsigned int j = 0; j < sprites[i].size(); j++) {
 				sprites[i][j]->SetBitmap(nchipset);
 			}
 		}
@@ -185,8 +185,8 @@ bool TilemapLayer::GetVisible() const {
 }
 void TilemapLayer::SetVisible(bool nvisible) {
 	if (visible != nvisible) {
-		for (int i = 0; i < sprites.size(); i++) {
-			for (int j = 0; j < sprites[i].size(); j++) {
+		for (unsigned int i = 0; i < sprites.size(); i++) {
+			for (unsigned int j = 0; j < sprites[i].size(); j++) {
 				sprites[i][j]->SetVisible(nvisible);
 			}
 		}
