@@ -32,7 +32,7 @@ public:
 	Window();
 	~Window();
 
-	void Draw();
+	void Draw(int z_order);
 
 	void Update();
 	Bitmap* GetWindowskin() const;

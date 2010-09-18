@@ -434,6 +434,9 @@
     <ClCompile Include="..\..\src\spriteset_map.cpp">
       <Filter>Source Files\Engine\Sprite</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\zobj.cpp">
+      <Filter>Source Files\Multimedia\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cache.h">
@@ -705,6 +708,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\spriteset_map.h">
       <Filter>Source Files\Engine\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\zobj.h">
+      <Filter>Source Files\Multimedia\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

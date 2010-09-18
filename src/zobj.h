@@ -15,21 +15,26 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _DRAWABLE_H_
-#define _DRAWABLE_H_
+#ifndef _ZOBJ_H_
+#define _ZOBJ_H_
 
-////////////////////////////////////////////////////////////
-/// Drawable virtual
-////////////////////////////////////////////////////////////
-class Drawable {
+///////////////////////////////////////////////////////////
+/// ZObj class
+///////////////////////////////////////////////////////////
+class ZObj {
 public:
-	virtual ~Drawable() {};
+	ZObj(long iz, unsigned long icreation, unsigned long iid);
+	~ZObj();
 
-	virtual void Draw(int z_order) = 0;
+	void SetZ(long n);
+	long GetZ() const ;
+	unsigned long GetCreation() const ;
+	unsigned long GetId() const ;
 
-	virtual unsigned long GetId() const = 0;
-
-	virtual int GetZ() const = 0;
+private:
+	long z;
+	unsigned long creation;
+	unsigned long ID;
 };
 
 #endif

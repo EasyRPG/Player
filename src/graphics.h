@@ -26,6 +26,7 @@
 #include "SDL.h"
 #include "bitmap.h"
 #include "drawable.h"
+#include "zobj.h"
 
 ////////////////////////////////////////////////////////////
 /// Graphics namespace
@@ -44,20 +45,30 @@ namespace Graphics {
 	int GetFrameCount();
 	void SetFrameCount(int nframecount);
 
-	bool SortDrawable(Drawable* &first, Drawable* &second);
+	void RegisterDrawable(unsigned long ID, Drawable* drawable);
 	void RemoveDrawable(unsigned long ID);
+
+	bool SortZObj(ZObj &first, ZObj &second);
+	void RegisterZObj(long z, unsigned long ID);
+	void RegisterZObj(long z, unsigned long ID, bool multiz);
+	void RemoveZObj(unsigned long ID);
+	void UpdateZObj(unsigned long ID, long z);
 
 	extern int fps;
 	extern int framerate;
 	extern int framecount;
 	extern double framerate_interval;
+	extern unsigned long creation;
 	extern unsigned long ID;
 	extern unsigned long last_ticks;
 	extern unsigned long last_ticks_wait;
 	extern unsigned long next_ticks_fps;
 
-	extern std::list<Drawable*> drawable_list;
-	extern std::list<Drawable*>::iterator it_drawable_list;
+	extern std::map<unsigned long, Drawable*> drawable_map;
+	extern std::map<unsigned long, Drawable*>::iterator it_drawable_map;
+
+	extern std::list<ZObj> zlist;
+	extern std::list<ZObj>::iterator it_zlist;
 }
 
 #endif

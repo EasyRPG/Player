@@ -34,7 +34,7 @@ public:
 	Plane();
 	~Plane();
 
-	void Draw();
+	void Draw(int z_order);
 
 	Bitmap* GetBitmap() const;
 	void SetBitmap(Bitmap* nbitmap);

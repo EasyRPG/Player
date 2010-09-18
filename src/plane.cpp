@@ -43,14 +43,15 @@ Plane::Plane() {
 	plane = NULL;
 
 	ID = Graphics::ID++;
-	Graphics::drawable_list.push_back(this);
-	Graphics::drawable_list.sort(Graphics::SortDrawable);
+	Graphics::RegisterZObj(0, ID);
+	Graphics::RegisterDrawable(ID, this);
 }
 
 ////////////////////////////////////////////////////////////
 /// Destructor
 ////////////////////////////////////////////////////////////
 Plane::~Plane() {
+	Graphics::RemoveZObj(ID);
 	Graphics::RemoveDrawable(ID);
 	delete plane;
 }
@@ -58,7 +59,7 @@ Plane::~Plane() {
 ////////////////////////////////////////////////////////////
 /// Draw
 ////////////////////////////////////////////////////////////
-void Plane::Draw() {
+void Plane::Draw(int z_order) {
 	if (!visible) return;
 	if (opacity <= 0) return;
 	if (zoom_x <= 0 || zoom_y <= 0) return;
@@ -116,7 +117,7 @@ int Plane::GetZ() const {
 	return z;
 }
 void Plane::SetZ(int nz) {
-	if (z != nz) Graphics::drawable_list.sort(Graphics::SortDrawable);
+	if (z != nz) Graphics::UpdateZObj(ID, nz);
 	z = nz;
 }
 int Plane::GetOx() const {

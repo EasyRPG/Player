@@ -153,6 +153,8 @@
         <File Name="../../src/window.h"/>
         <File Name="../../src/spriteset_map.h"/>
         <File Name="../../src/spriteset_map.cpp"/>
+        <File Name="../../src/zobj.cpp"/>
+        <File Name="../../src/zobj.h"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Input">
         <File Name="../../src/input.cpp"/>

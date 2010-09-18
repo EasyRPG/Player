@@ -226,6 +226,7 @@
     <ClCompile Include="..\..\src\window_command.cpp" />
     <ClCompile Include="..\..\src\window_message.cpp" />
     <ClCompile Include="..\..\src\window_selectable.cpp" />
+    <ClCompile Include="..\..\src\zobj.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\audio.h" />
@@ -318,6 +319,7 @@
     <ClInclude Include="..\..\src\window_command.h" />
     <ClInclude Include="..\..\src\window_message.h" />
     <ClInclude Include="..\..\src\window_selectable.h" />
+    <ClInclude Include="..\..\src\zobj.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

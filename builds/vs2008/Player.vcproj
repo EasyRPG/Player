@@ -863,6 +863,14 @@
 						RelativePath="..\..\src\window.h"
 						>
 					</File>
+					<File
+						RelativePath="..\..\src\zobj.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\zobj.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="Input"

@@ -35,7 +35,7 @@ public:
 	Sprite();
 	~Sprite();
 	
-	void Draw();
+	void Draw(int z_order);
 
 	void Flash(int duration);
 	void Flash(Color color, int duration);

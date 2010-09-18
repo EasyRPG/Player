@@ -34,7 +34,7 @@ public:
 	TilemapLayer(int ilayer);
 	~TilemapLayer();
 
-	void Draw();
+	void Draw(int z_order);
 
 	Bitmap* GetChipset() const;
 	void SetChipset(Bitmap* nchipset);
@@ -69,7 +69,6 @@ private:
 	unsigned long ID;
 	int layer;
 
-	std::vector<std::vector<Sprite*> > sprites;
 	std::vector<Bitmap*> autotiles;
 
 	struct TileData {

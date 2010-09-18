@@ -58,8 +58,8 @@ Window::Window() {
 	pause_frame = 0;
 
 	ID = Graphics::ID++;
-	Graphics::drawable_list.push_back(this);
-	Graphics::drawable_list.sort(Graphics::SortDrawable);
+	Graphics::RegisterZObj(0, ID);
+	Graphics::RegisterDrawable(ID, this);
 	
 	cursor1 = new Bitmap(cursor_rect.width, cursor_rect.height);
 	cursor2 = new Bitmap(cursor_rect.width, cursor_rect.height);
@@ -69,6 +69,7 @@ Window::Window() {
 /// Destructor
 ////////////////////////////////////////////////////////////
 Window::~Window() {
+	Graphics::RemoveZObj(ID);
 	Graphics::RemoveDrawable(ID);
 	delete background;
 	delete frame;
@@ -79,7 +80,7 @@ Window::~Window() {
 ////////////////////////////////////////////////////////////
 /// Draw
 ////////////////////////////////////////////////////////////
-void Window::Draw() {
+void Window::Draw(int z_order) {
 	if (!visible) return;
 	if (width <= 0 || height <= 0) return;
 	if (x < -width || x > Player::GetWidth() || y < -height || y > Player::GetHeight()) return;
@@ -433,7 +434,7 @@ int Window::GetZ() const {
 	return z;
 }
 void Window::SetZ(int nz) {
-	if (z != nz) Graphics::drawable_list.sort(Graphics::SortDrawable);
+	if (z != nz) Graphics::UpdateZObj(ID, nz);
 	z = nz;
 }
 int Window::GetOx() const {

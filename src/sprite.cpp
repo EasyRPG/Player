@@ -56,14 +56,15 @@ Sprite::Sprite() {
 	flash_duration = 0;
 
 	ID = Graphics::ID++;
-	Graphics::drawable_list.push_back(this);
-	Graphics::drawable_list.sort(Graphics::SortDrawable);
+	Graphics::RegisterZObj(0, ID);
+	Graphics::RegisterDrawable(ID, this);
 }
 
 ////////////////////////////////////////////////////////////
 /// Destructor
 ////////////////////////////////////////////////////////////
 Sprite::~Sprite() {
+	Graphics::RemoveZObj(ID);
 	Graphics::RemoveDrawable(ID);
 	delete sprite;
 }
@@ -71,7 +72,7 @@ Sprite::~Sprite() {
 ////////////////////////////////////////////////////////////
 /// Draw
 ////////////////////////////////////////////////////////////
-void Sprite::Draw() {
+void Sprite::Draw(int z_order) {
 	if (!visible) return;
 	if (GetWidth() <= 0 || GetHeight() <= 0) return;
 	if (x < -GetWidth() || x > Player::GetWidth() || y < -GetHeight() || y > Player::GetHeight()) return;
@@ -192,7 +193,7 @@ int Sprite::GetZ() const {
 	return z;
 }
 void Sprite::SetZ(int nz) {
-	if (z != nz) Graphics::drawable_list.sort(Graphics::SortDrawable);
+	if (z != nz) Graphics::UpdateZObj(ID, nz);
 	z = nz;
 }
 int Sprite::GetOx() const {

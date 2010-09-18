@@ -27,29 +27,33 @@
 #include "SDL_rotozoom.h"
 
 ////////////////////////////////////////////////////////////
-/// Global Variables
+// Global Variables
 ////////////////////////////////////////////////////////////
 namespace Graphics {
 	int fps;
 	int framerate;
 	int framecount;
 	double framerate_interval;
+	unsigned long creation;
 	unsigned long ID;
 	unsigned long last_ticks;
 	unsigned long last_ticks_wait;
 	unsigned long next_ticks_fps;
 
-	std::list<Drawable*> drawable_list;
-	std::list<Drawable*>::iterator it_drawable_list;
+	std::map<unsigned long, Drawable*> drawable_map;
+	std::map<unsigned long, Drawable*>::iterator it_drawable_map;
+	std::list<ZObj> zlist;
+	std::list<ZObj>::iterator it_zlist;
 }
 
 ////////////////////////////////////////////////////////////
-/// Initialize
+// Initialize
 ////////////////////////////////////////////////////////////
 void Graphics::Init() {
 	fps = 0;
 	framerate = DEFAULT_FPS;
 	framecount = 0;
+	creation = 0;
 	ID = 0;
 	framerate_interval = 1000.0 / DEFAULT_FPS;
 	last_ticks = SDL_GetTicks() + (long)framerate_interval;
@@ -61,14 +65,14 @@ void Graphics::Init() {
 }
 
 ////////////////////////////////////////////////////////////
-/// Timer Wait
+// Timer Wait
 ////////////////////////////////////////////////////////////
 void Graphics::TimerWait(){
 	last_ticks_wait = SDL_GetTicks();
 }
 
 ////////////////////////////////////////////////////////////
-/// Timer Continue
+// Timer Continue
 ////////////////////////////////////////////////////////////
 void Graphics::TimerContinue() {
 	last_ticks += SDL_GetTicks() - last_ticks_wait;
@@ -76,7 +80,7 @@ void Graphics::TimerContinue() {
 }
 
 ////////////////////////////////////////////////////////////
-/// Update
+// Update
 ////////////////////////////////////////////////////////////
 void Graphics::Update() {
 	static unsigned long ticks;
@@ -119,13 +123,13 @@ void Graphics::Update() {
 }
 
 ////////////////////////////////////////////////////////////
-/// Draw Frame
+// Draw Frame
 ////////////////////////////////////////////////////////////
 void Graphics::DrawFrame() {
 	SDL_FillRect(Player::main_window, &Player::main_window->clip_rect, DEFAULT_BACKCOLOR);
 
-	for (it_drawable_list = drawable_list.begin(); it_drawable_list != drawable_list.end(); ++it_drawable_list) {
-		(*it_drawable_list)->Draw();
+	for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
+		drawable_map[it_zlist->GetId()]->Draw(it_zlist->GetZ());
 	}
 
 	// 2x Zoom - Bit slow, but works
@@ -143,28 +147,28 @@ void Graphics::DrawFrame() {
 }
 
 ////////////////////////////////////////////////////////////
-/// Freeze screen
+// Freeze screen
 ////////////////////////////////////////////////////////////
 void Graphics::Freeze() {
 	// TODO
 }
 
 ////////////////////////////////////////////////////////////
-/// Transition
+// Transition
 ////////////////////////////////////////////////////////////
 void Graphics::Transition(int type, int time) {
 	// TODO
 }
 
 ////////////////////////////////////////////////////////////
-/// Reset frames
+// Reset frames
 ////////////////////////////////////////////////////////////
 void Graphics::FrameReset() {
 	last_ticks = SDL_GetTicks();
 }
 
 ////////////////////////////////////////////////////////////
-/// Wait frames
+// Wait frames
 ////////////////////////////////////////////////////////////
 void Graphics::Wait(int duration) {
 	for (int i = duration; i > 0; i--) {
@@ -173,7 +177,7 @@ void Graphics::Wait(int duration) {
 }
 
 ////////////////////////////////////////////////////////////
-/// Snap screen to bitmap
+// Snap screen to bitmap
 ////////////////////////////////////////////////////////////
 Bitmap* Graphics::SnapToBitmap() {
 	// TODO
@@ -181,7 +185,7 @@ Bitmap* Graphics::SnapToBitmap() {
 }
 
 ////////////////////////////////////////////////////////////
-/// Properties
+// Properties
 ////////////////////////////////////////////////////////////
 int Graphics::GetFrameCount() {
 	return framecount;
@@ -190,23 +194,67 @@ void Graphics::SetFrameCount(int nframecount) {
 	framecount = nframecount;
 }
 
-////////////////////////////////////////////////////////////
-/// Sort Drawable
-////////////////////////////////////////////////////////////
-bool Graphics::SortDrawable(Drawable* &first, Drawable* &second) {
-	if (first->GetZ() < second->GetZ()) return true;
-	else if (first->GetZ() > second->GetZ()) return false;
-	return first->GetId() < second->GetId();
+///////////////////////////////////////////////////////////
+// Register Drawable
+///////////////////////////////////////////////////////////
+void Graphics::RegisterDrawable(unsigned long ID, Drawable* drawable) {
+	drawable_map[ID] = drawable;
 }
 
-////////////////////////////////////////////////////////////
-/// Remove Drawable
-////////////////////////////////////////////////////////////
-struct remove_drawable_id : public std::binary_function<Drawable*, Drawable*, bool> {
-	remove_drawable_id(unsigned long val) : ID(val) {}
-	bool operator () (Drawable* &obj) const {return obj->GetId() == ID;}
+///////////////////////////////////////////////////////////
+// Remove Drawable
+///////////////////////////////////////////////////////////
+void Graphics::RemoveDrawable(unsigned long ID) {
+	std::map<unsigned long, Drawable*>::iterator it = Graphics::drawable_map.find(ID);
+	drawable_map.erase(it);
+}
+
+///////////////////////////////////////////////////////////
+// Sort ZObj
+///////////////////////////////////////////////////////////
+bool Graphics::SortZObj(ZObj &first, ZObj &second) {
+	if (first.GetZ() < second.GetZ()) return true;
+	else if (first.GetZ() > second.GetZ()) return false;
+	else return first.GetCreation() < second.GetCreation();
+}
+
+///////////////////////////////////////////////////////////
+// Register ZObj
+///////////////////////////////////////////////////////////
+void Graphics::RegisterZObj(long z, unsigned long ID) {
+	creation += 1;
+	ZObj zobj(z, creation, ID);
+
+	zlist.push_back(zobj);
+	zlist.sort(SortZObj);
+}
+void Graphics::RegisterZObj(long z, unsigned long ID, bool multiz) {
+	ZObj zobj(z, 999999, ID);
+	zlist.push_back(zobj);
+	zlist.sort(SortZObj);
+}
+
+///////////////////////////////////////////////////////////
+// Remove ZObj
+///////////////////////////////////////////////////////////
+struct remove_zobj_id : public std::binary_function<ZObj, ZObj, bool> {
+	remove_zobj_id(unsigned long val) : ID(val) {}
+	bool operator () (ZObj &obj) const {return obj.GetId() == ID;}
 	unsigned long ID;
 };
-void Graphics::RemoveDrawable(unsigned long ID) {
-	drawable_list.remove_if(remove_drawable_id(ID));
+void Graphics::RemoveZObj(unsigned long ID) {
+	zlist.remove_if (remove_zobj_id(ID));
+}
+
+///////////////////////////////////////////////////////////
+// Update ZObj Z
+///////////////////////////////////////////////////////////
+void Graphics::UpdateZObj(unsigned long ID, long z) {
+	for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
+		if (it_zlist->GetId() == ID) {
+			it_zlist->SetZ(z);
+			break;
+		}
+	}
+	zlist.sort(SortZObj);
 }
