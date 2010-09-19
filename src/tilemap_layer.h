@@ -69,10 +69,14 @@ private:
 	unsigned long ID;
 	int layer;
 
-	std::vector<Bitmap*> autotiles;
+	Bitmap* GenerateAutotileAB(short ID);
+	Bitmap* GenerateAutotileC(short ID);
+	Bitmap* GenerateAutotileD(short ID);
+
+	std::map<short, Bitmap*> autotiles;
 
 	struct TileData {
-		int id;
+		int ID;
 		int z;
 	};
 	std::vector<std::vector<TileData> > data_cache;
