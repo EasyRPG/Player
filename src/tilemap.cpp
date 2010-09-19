@@ -21,7 +21,7 @@
 #include "tilemap.h"
 
 ////////////////////////////////////////////////////////////
-/// Constructor
+// Constructor
 ////////////////////////////////////////////////////////////
 Tilemap::Tilemap() {
 	layer_down = new TilemapLayer(0);
@@ -29,7 +29,7 @@ Tilemap::Tilemap() {
 }
 
 ////////////////////////////////////////////////////////////
-/// Destructor
+// Destructor
 ////////////////////////////////////////////////////////////
 Tilemap::~Tilemap() {
 	delete layer_down;
@@ -37,7 +37,14 @@ Tilemap::~Tilemap() {
 }
 
 ////////////////////////////////////////////////////////////
-/// Properties
+// Update
+////////////////////////////////////////////////////////////
+void Tilemap::Update() {
+	layer_down->Update();
+}
+
+////////////////////////////////////////////////////////////
+// Properties
 ////////////////////////////////////////////////////////////
 Bitmap* Tilemap::GetChipset() const {
 	return layer_down->GetChipset();
@@ -104,4 +111,16 @@ int Tilemap::GetHeight() const {
 void Tilemap::SetHeight(int nheight) {
 	layer_down->SetHeight(nheight);
 	layer_up->SetHeight(nheight);
+}
+int Tilemap::GetAnimationSpeed() const {
+	return layer_down->GetAnimationSpeed();
+}
+void Tilemap::SetAnimationSpeed(int speed) {
+	layer_down->SetAnimationSpeed(speed);
+}
+int Tilemap::GetAnimationType() const {
+	return layer_down->GetAnimationType();
+}
+void Tilemap::SetAnimationType(int type) {
+	layer_down->SetAnimationType(type);
 }

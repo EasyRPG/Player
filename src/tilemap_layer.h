@@ -36,6 +36,8 @@ public:
 
 	void Draw(int z_order);
 
+	void Update();
+
 	Bitmap* GetChipset() const;
 	void SetChipset(Bitmap* nchipset);
 	std::vector<short> GetMapData() const;
@@ -52,6 +54,10 @@ public:
 	void SetWidth(int nwidth);
 	int GetHeight() const;
 	void SetHeight(int nheight);
+	int GetAnimationSpeed() const;
+	void SetAnimationSpeed(int speed);
+	int GetAnimationType() const;
+	void SetAnimationType(int type);
 
 	int GetZ() const;
 	unsigned long GetId() const;
@@ -65,15 +71,19 @@ private:
 	int oy;
 	int width;
 	int height;
+	int animation_frame;
+	int animation_step_ab;
+	int animation_step_c;
+	int animation_speed;
+	int animation_type;
 
 	unsigned long ID;
 	int layer;
 
-	Bitmap* GenerateAutotileAB(short ID);
-	Bitmap* GenerateAutotileC(short ID);
+	Bitmap* GenerateAutotileAB(short ID, short animID);
 	Bitmap* GenerateAutotileD(short ID);
 
-	std::map<short, Bitmap*> autotiles;
+	std::map<int, Bitmap*> autotiles;
 
 	struct TileData {
 		int ID;

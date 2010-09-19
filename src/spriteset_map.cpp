@@ -74,5 +74,5 @@ Spriteset_Map::~Spriteset_Map() {
 /// Update
 ////////////////////////////////////////////////////////////
 void Spriteset_Map::Update() {
-	
+	tilemap->Update();
 }

@@ -33,6 +33,8 @@ public:
 	Tilemap();
 	~Tilemap();
 
+	void Update();
+
 	Bitmap* GetChipset() const;
 	void SetChipset(Bitmap* nchipset);
 	std::vector<short> GetMapDataDown() const;
@@ -55,6 +57,10 @@ public:
 	void SetWidth(int nwidth);
 	int GetHeight() const;
 	void SetHeight(int nheight);
+	int GetAnimationSpeed() const;
+	void SetAnimationSpeed(int speed);
+	int GetAnimationType() const;
+	void SetAnimationType(int type);
 
 private:
 	TilemapLayer* layer_down;
