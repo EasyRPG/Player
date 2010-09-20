@@ -133,12 +133,23 @@ void TilemapLayer::Draw(int z_order) {
 	int tiles_x = (int)ceil(Player::GetWidth() / 16.0);
 	int tiles_y = (int)ceil(Player::GetHeight() / 16.0);
 
+	// If ox or oy are not equal to the tile size draw the next tile too
+	// to prevent black (empty) tiles at the borders
+	if (ox % 16 != 0) {
+		++tiles_x;
+	}
+	if (oy % 16 != 0) {
+		++tiles_y;
+	}
+
 	for (int x = 0; x < tiles_x; x++) {
 		for (int y = 0; y < tiles_y; y++) {
 
 			// Get the real maps tile coordinates
 			int map_x = ox / 16 + x;
 			int map_y = oy / 16 + y;
+			int map_draw_x = x * 16 - ox % 16;
+			int map_draw_y = y * 16 - oy % 16;
 
 			// Get the tile data
 			TileData tile = data_cache[map_x][map_y];
@@ -167,7 +178,7 @@ void TilemapLayer::Draw(int z_order) {
 						}
 
 						// Draw the tile
-						chipset->BlitScreen(map_x * 16, map_y * 16, rect);
+						chipset->BlitScreen(map_draw_x, map_draw_y, rect);
 					} else if (tile.ID >= BLOCK_C && tile.ID < BLOCK_D) {
 						// If Block C
 
@@ -180,7 +191,7 @@ void TilemapLayer::Draw(int z_order) {
 						rect.y = 64 + animation_step_c * 16;
 
 						// Draw the tile
-						chipset->BlitScreen(map_x * 16, map_y * 16, rect);
+						chipset->BlitScreen(map_draw_x, map_draw_y, rect);
 					} else if (tile.ID < BLOCK_C) {
 						// If Blocks A1, A2, B
 
@@ -192,12 +203,12 @@ void TilemapLayer::Draw(int z_order) {
 							autotile_id += 30000;
 
 						// Draw the tile from autile cache
-						autotiles[autotile_id]->BlitScreen(map_x * 16, map_y * 16);
+						autotiles[autotile_id]->BlitScreen(map_draw_x, map_draw_y);
 					} else {
 						// If blocks D1-D12
 
 						// Draw the tile from autile cache
-						autotiles[tile.ID]->BlitScreen(map_x * 16, map_y * 16);
+						autotiles[tile.ID]->BlitScreen(map_draw_x, map_draw_y);
 					}
 				} else {
 					// If upper layer
@@ -220,7 +231,7 @@ void TilemapLayer::Draw(int z_order) {
 						}
 						
 						// Draw the tile
-						chipset->BlitScreen(map_x * 16, map_y * 16, rect);
+						chipset->BlitScreen(map_draw_x, map_draw_y, rect);
 					}
 				}
 			}
