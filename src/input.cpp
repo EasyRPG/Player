@@ -54,7 +54,7 @@ void Input::Init() {
 	repeated.resize(buttons.size(), false);
 	released.resize(buttons.size(), false);
 
-	start_repeat_time = 20;
+	start_repeat_time = 60;
 	repeat_time = 10;
 }
 
