@@ -25,19 +25,6 @@
 #include <vector>
 
 #include "scene.h"
-#include "game_system.h"
-#include "game_temp.h"
-#include "game_system.h"
-#include "game_switches.h"
-#include "game_variables.h"
-#include "game_screen.h"
-#include "game_battler.h"
-#include "game_actor.h"
-#include "game_actors.h"
-#include "game_party.h"
-#include "game_troop.h"
-#include "game_map.h"
-#include "game_player.h"
 #include "rpg_actor.h"
 #include "rpg_skill.h"
 #include "rpg_item.h"
@@ -66,6 +53,18 @@
 ////////////////////////////////////////////////////////////
 /// Main Data namespace
 ////////////////////////////////////////////////////////////
+class Game_Actors;
+class Game_Battler;
+class Game_Map;
+class Game_Party;
+class Game_Player;
+class Game_Screen;
+class Game_Switches;
+class Game_System;
+class Game_Temp;
+class Game_Troop;
+class Game_Variables;
+
 namespace Main_Data {
 	// Scene Data
 	extern Scene* scene;

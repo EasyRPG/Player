@@ -18,23 +18,33 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <fstream>
+#include <iostream>
 #include <string>
 #include <vector>
-#include <iostream>
-#include <fstream>
 #include "scene_title.h"
-#include "scene_map.h"
-#include "options.h"
-#include "main_data.h"
-#include "player.h"
-#include "graphics.h"
 #include "audio.h"
-#include "input.h"
 #include "bitmap.h"
-#include "sprite.h"
+#include "cache.h"
+#include "game_actors.h"
+#include "game_map.h"
+#include "game_party.h"
+#include "game_player.h"
+#include "game_screen.h"
+#include "game_switches.h"
+#include "game_system.h"
+#include "game_temp.h"
+#include "game_troop.h"
+#include "game_variables.h"
+#include "graphics.h"
+#include "input.h"
 #include "ldb_reader.h"
 #include "lmt_reader.h"
-#include "cache.h"
+#include "main_data.h"
+#include "options.h"
+#include "player.h"
+#include "scene_map.h"
+#include "sprite.h"
 #include "window_command.h"
 
 ////////////////////////////////////////////////////////////

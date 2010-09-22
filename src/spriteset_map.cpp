@@ -19,8 +19,9 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "spriteset_map.h"
-#include "main_data.h"
 #include "cache.h"
+#include "game_map.h"
+#include "main_data.h"
 
 ////////////////////////////////////////////////////////////
 /// Constructor
@@ -74,5 +75,7 @@ Spriteset_Map::~Spriteset_Map() {
 /// Update
 ////////////////////////////////////////////////////////////
 void Spriteset_Map::Update() {
+	tilemap->SetOx(Main_Data::game_map->display_x);
+	tilemap->SetOy(Main_Data::game_map->display_y);
 	tilemap->Update();
 }
