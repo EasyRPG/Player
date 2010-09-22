@@ -40,7 +40,7 @@ Game_Actors::~Game_Actors()
 ////////////////////////////////////////////////////////////
 Game_Actor* Game_Actors::operator [] (int actorId) {
 	// Invalid Index (LDB has less actors)
-	if (actorId < 0 || (unsigned)actorId >= data.size() || actorId > 5000) {
+	if (actorId <= 0 || (unsigned)actorId >= data.size() || actorId > 5000) {
 		return NULL;
 	}
 	// Index valid but actor never used before -> create it

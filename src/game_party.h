@@ -21,6 +21,9 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <vector>
+#include "game_actor.h"
+#include "main_data.h"
 
 ////////////////////////////////////////////////////////////
 /// Game_Party class
@@ -31,5 +34,10 @@ public:
 	Game_Party();
 	~Game_Party();
 
+	void SetupStartingMembers();
+
+	int gold;
+	int steps;
+	std::vector<Game_Actor*> actors;
 };
 #endif // _GAME_PARTY_H_

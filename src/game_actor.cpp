@@ -41,5 +41,7 @@ Game_Actor::~Game_Actor()
 void Game_Actor::Setup(int actorId)
 {
 	// Stub
-	name = Main_Data::data_actors[actorId].name;
+
+	// ActorId starts with 1 but arrayindex with 0
+	name = Main_Data::data_actors[actorId-1].name;
 }

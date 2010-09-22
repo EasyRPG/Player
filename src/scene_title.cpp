@@ -159,7 +159,7 @@ void Scene_Title::CommandNewGame() {
 	Main_Data::game_troop = new Game_Troop();
 	Main_Data::game_map = new Game_Map();
 	Main_Data::game_player = new Game_Player();
-	//Main_Data::game_party->SetupStartingMembers();
+	Main_Data::game_party->SetupStartingMembers();
 	Main_Data::game_map->Setup(Main_Data::data_treemap.start_map_id);
 	//Main_Data::game_player->moveto(Main_Data::data_treemap.start_x, Main_Data::data_treemap.start_y);
 	//Main_Data::game_player->Refresh();
