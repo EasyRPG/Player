@@ -19,6 +19,17 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "main_data.h"
+#include "game_actors.h"
+#include "game_battler.h"
+#include "game_map.h"
+#include "game_party.h"
+#include "game_player.h"
+#include "game_screen.h"
+#include "game_switches.h"
+#include "game_system.h"
+#include "game_temp.h"
+#include "game_troop.h"
+#include "game_variables.h"
 
 ////////////////////////////////////////////////////////////
 /// Global Variables
