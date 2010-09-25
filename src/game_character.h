@@ -19,25 +19,39 @@
 #define _GAME_CHARACTER_H_
 
 ////////////////////////////////////////////////////////////
-// Headers
-////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////
-/// Game_Character class
+/// Game_Character class.
 ////////////////////////////////////////////////////////////
 class Game_Character {
-
 public:
 	Game_Character();
-	~Game_Character();
+	virtual ~Game_Character();
 
-	void MoveTo(int x, int y);
+	virtual bool IsMoving();
+	virtual bool IsPassable(int x, int y, int d);
+
+	virtual void MoveTo(int x, int y);
+
+	virtual int GetScreenX();
+	virtual int GetScreenY();
+	virtual int GetScreenZ();
+	virtual int GetScreenZ(int height);
+
+	virtual void Update();
+	virtual void UpdateMove();
+
+	virtual void MoveDown();
+	virtual void MoveLeft();
+	virtual void MoveRight();
+	virtual void MoveUp();
 
 	int x;
 	int y;
 	int real_x;
 	int real_y;
+	int move_speed;
+
+private:
 	int prelock_direction;
 };
 
-#endif // _GAME_ACTOR_H_
+#endif

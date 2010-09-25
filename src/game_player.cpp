@@ -18,51 +18,52 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <cmath>
 #include "game_player.h"
 #include "game_map.h"
 #include "input.h"
 #include "main_data.h"
 #include "player.h"
 
+////////////////////////////////////////////////////////////
+// Macros
+////////////////////////////////////////////////////////////
 #define min(a, b)	(((a) < (b)) ? (a) : (b))
 #define max(a, b)	(((a) > (b)) ? (a) : (b))
 
 ////////////////////////////////////////////////////////////
-/// Constructor
+// Constructor
 ////////////////////////////////////////////////////////////
-Game_Player::Game_Player() : Game_Character() {
+Game_Player::Game_Player() {
 }
 
 ////////////////////////////////////////////////////////////
-/// Destructor
+// Destructor
 ////////////////////////////////////////////////////////////
 Game_Player::~Game_Player() {
 }
 
 ////////////////////////////////////////////////////////////
-/// Is Passable
+// Is Passable
 ////////////////////////////////////////////////////////////
-bool Game_Player::IsPassable(int x, int y, int d)
-{
+bool Game_Player::IsPassable(int x, int y, int d) {
 	return true;
 }
 
 ////////////////////////////////////////////////////////////
-/// Center
+// Center
 ////////////////////////////////////////////////////////////
 void Game_Player::Center(int x, int y) {
-	// *16 is the tilemap size
-	int max_x = (Main_Data::game_map->GetWidth() - Main_Data::game_map->GetWidth() / 16) * 16;
-    int max_y = (Main_Data::game_map->GetHeight() - Main_Data::game_map->GetHeight() / 16) * 16;
-	int center_x = (int)ceil(Player::GetWidth()  / 16.0 / 2.0);
-	int center_y = (int)ceil(Player::GetHeight() / 16.0 / 2.0);
-    Main_Data::game_map->display_x = max(0, min((x - center_x) * 16 + 16, max_x));
-    Main_Data::game_map->display_y = max(0, min((y - center_y) * 16 + 16, max_y));
+	int center_x = (Player::GetWidth() / 2 - 16) * 8;
+	int center_y = (Player::GetHeight() / 2 - 8) * 8;
+
+	int max_x = (Main_Data::game_map->GetWidth() - Player::GetWidth() / 16) * 128;
+    int max_y = (Main_Data::game_map->GetHeight() - Player::GetHeight() / 16) * 128;
+    Main_Data::game_map->display_x = max(0, min((x * 128 - center_x), max_x));
+    Main_Data::game_map->display_y = max(0, min((y * 128 - center_y), max_y));
 }
 
 ////////////////////////////////////////////////////////////
-/// MoveTo
+// MoveTo
 ////////////////////////////////////////////////////////////
 void Game_Player::MoveTo(int x, int y) {
 	Game_Character::MoveTo(x, y);
@@ -71,8 +72,60 @@ void Game_Player::MoveTo(int x, int y) {
 }
 
 ////////////////////////////////////////////////////////////
-/// Update
+// Update
 ////////////////////////////////////////////////////////////
 void Game_Player::Update() {
+	bool last_moving = IsMoving();
 
+	if (!(IsMoving() /*|| Main_Data::game_system->map_interpreter.IsRunning() ||
+		move_route_forcing || Main_Data::game_temp->message_window_showing*/)) {
+		switch (Input::dir4) {
+			case 2:
+				MoveDown();
+				break;
+			case 4:
+				MoveLeft();
+				break;
+			case 6:
+				MoveRight();
+				break;
+			case 8:
+				MoveUp();
+		}
+	}
+
+	int last_real_x = real_x;
+	int last_real_y = real_y;
+
+	Game_Character::Update();
+	
+	int center_x = (Player::GetWidth() / 2 - 16) * 8;
+	int center_y = (Player::GetHeight() / 2 - 8) * 8;
+
+	if (real_y > last_real_y && real_y - Main_Data::game_map->display_y > center_y)
+		Main_Data::game_map->ScrollDown(real_y - last_real_y);
+
+	if (real_x < last_real_x && real_x - Main_Data::game_map->display_x < center_x)
+		Main_Data::game_map->ScrollLeft(last_real_x - real_x);
+
+	if (real_x > last_real_x && real_x - Main_Data::game_map->display_x > center_x)
+		Main_Data::game_map->ScrollRight(real_x - last_real_x);
+
+	if (real_y < last_real_y && real_y - Main_Data::game_map->display_y < center_y)
+		Main_Data::game_map->ScrollUp(last_real_y - real_y);
+
+	/*if (!IsMoving()) {
+		if (last_moving) {
+			bool result = check_event_trigger_here(1, 2);
+			#ifndef DEBUG
+			if (!result && Input.press?(Input::CTRL)) {
+				if (encounter_count > 0) encounter_count -= 1;
+			}
+			#endif
+		}
+		if Input.trigger?(Input::C)
+			check_event_trigger_here([0])
+			check_event_trigger_there([0,1,2])
+		end
+	}*/
 }

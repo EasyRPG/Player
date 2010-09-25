@@ -146,10 +146,12 @@ void TilemapLayer::Draw(int z_order) {
 		for (int y = 0; y < tiles_y; y++) {
 
 			// Get the real maps tile coordinates
-			int map_x = ox / 16 + x;
-			int map_y = oy / 16 + y;
+			unsigned int map_x = ox / 16 + x;
+			unsigned int map_y = oy / 16 + y;
 			int map_draw_x = x * 16 - ox % 16;
 			int map_draw_y = y * 16 - oy % 16;
+
+			if (data_cache.size() - 1 < map_x || data_cache[map_x].size() - 1 < map_y) continue;
 
 			// Get the tile data
 			TileData tile = data_cache[map_x][map_y];

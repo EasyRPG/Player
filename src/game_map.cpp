@@ -22,6 +22,12 @@
 #include "lmu_reader.h"
 
 ////////////////////////////////////////////////////////////
+// Macros
+////////////////////////////////////////////////////////////
+#define min(a, b)	(((a) < (b)) ? (a) : (b))
+#define max(a, b)	(((a) > (b)) ? (a) : (b))
+
+////////////////////////////////////////////////////////////
 /// Constructor
 ////////////////////////////////////////////////////////////
 Game_Map::Game_Map() {
@@ -160,28 +166,28 @@ void Game_Map::Refresh() {
 /// Scroll Down
 ////////////////////////////////////////////////////////////
 void Game_Map::ScrollDown(int distance) {
-
+	display_y = min(display_y + distance, (map.height - 15) * 128);
 }
 
 ////////////////////////////////////////////////////////////
 /// Scroll Left
 ////////////////////////////////////////////////////////////
 void Game_Map::ScrollLeft(int distance) {
-
+	display_x = max(display_x - distance, 0);
 }
 
 ////////////////////////////////////////////////////////////
 /// Scroll Right
 ////////////////////////////////////////////////////////////
 void Game_Map::ScrollRight(int distance) {
-
+	display_x = min(display_x + distance, (map.width - 20) * 128);
 }
 
 ////////////////////////////////////////////////////////////
 /// Scroll Up
 ////////////////////////////////////////////////////////////
 void Game_Map::ScrollUp(int distance) {
-
+	display_y = max(display_y - distance, 0);
 }
 
 ////////////////////////////////////////////////////////////
@@ -273,5 +279,48 @@ void Game_Map::StartFogOpacityChange(int opacity, int duration) {
 /// Update
 ////////////////////////////////////////////////////////////
 void Game_Map::Update() {
+	if (need_refresh) Refresh();
+	if (scroll_rest > 0) {
+		int distance = 2 ^ scroll_speed;
+		switch (scroll_direction) {
+			case 2:
+				ScrollDown(distance);
+				break;
+			case 4:
+				ScrollLeft(distance);
+				break;
+			case 6:
+				ScrollRight(distance);
+				break;
+			case 8:
+				ScrollUp(distance);
+				break;
+		}
+		scroll_rest -= distance;
+	}
 	
+	/*for (int i = 0; i < events.size(); i++) {
+		Main_Data::game_map->events[i].Update();
+	}
+
+	for (int i = 0; i < common_events.size(); i++) {
+		common_events[i].Update();
+	}
+
+	fog_ox -= fog_sx / 8.0;
+	fog_oy -= fog_sy / 8.0;
+	if (fog_tone_duration >= 1) {
+		int d = fog_tone_duration;
+		Tone target = fog_tone_target;
+		fog_tone.red = (fog_tone.red * (d - 1) + target.red) / d;
+		fog_tone.green = (fog_tone.green * (d - 1) + target.green) / d;
+		fog_tone.blue = (fog_tone.blue * (d - 1) + target.blue) / d;
+		fog_tone.gray = (fog_tone.gray * (d - 1) + target.gray) / d;
+		fog_tone_duration -= 1;
+	}
+	if (fog_opacity_duration >= 1)
+		int d = fog_opacity_duration;
+		fog_opacity = (fog_opacity * (d - 1) + fog_opacity_target) / d;
+		fog_opacity_duration -= 1;
+	}*/
 }

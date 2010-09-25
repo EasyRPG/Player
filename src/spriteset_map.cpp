@@ -75,7 +75,7 @@ Spriteset_Map::~Spriteset_Map() {
 /// Update
 ////////////////////////////////////////////////////////////
 void Spriteset_Map::Update() {
-	tilemap->SetOx(Main_Data::game_map->display_x);
-	tilemap->SetOy(Main_Data::game_map->display_y);
+	tilemap->SetOx(Main_Data::game_map->display_x / 8);
+	tilemap->SetOy(Main_Data::game_map->display_y / 8);
 	tilemap->Update();
 }

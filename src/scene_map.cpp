@@ -18,24 +18,14 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <string>
-#include <vector>
-#include <iostream>
-#include <fstream>
-#include "scene_title.h"
 #include "scene_map.h"
-#include "options.h"
 #include "main_data.h"
+#include "game_map.h"
+#include "game_player.h"
 #include "player.h"
 #include "graphics.h"
 #include "audio.h"
 #include "input.h"
-#include "bitmap.h"
-#include "sprite.h"
-#include "ldb_reader.h"
-#include "lmt_reader.h"
-#include "cache.h"
-#include "window_command.h"
 
 ////////////////////////////////////////////////////////////
 /// Constructor
@@ -76,5 +66,7 @@ void Scene_Map::MainFunction() {
 /// Update
 ////////////////////////////////////////////////////////////
 void Scene_Map::Update() {
+	Main_Data::game_map->Update();
+	Main_Data::game_player->Update();
 	spriteset->Update();
 }

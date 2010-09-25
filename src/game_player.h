@@ -27,16 +27,14 @@
 /// Game Player class
 ////////////////////////////////////////////////////////////
 class Game_Player : public Game_Character {
-
 public:
 	Game_Player();
-	~Game_Player();
+	virtual ~Game_Player();
 
-	bool IsPassable(int x, int y, int d);
-	void Center(int x, int y);
-	void MoveTo(int x, int y);
-	void Update();
-
+	virtual bool IsPassable(int x, int y, int d);
+	virtual void Center(int x, int y);
+	virtual void MoveTo(int x, int y);
+	virtual void Update();
 };
 
-#endif // _GAME_PLAYER_H_
+#endif
