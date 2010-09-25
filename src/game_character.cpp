@@ -51,7 +51,7 @@ Game_Character::~Game_Character() {
 // IsMoving
 ////////////////////////////////////////////////////////////
 bool Game_Character::IsMoving() {
-    return (real_x != x * 128 || real_y != y * 128);
+	return (real_x != x * 128 || real_y != y * 128);
 }
 
 ////////////////////////////////////////////////////////////
@@ -95,10 +95,10 @@ bool Game_Character::IsPassable(int x, int y, int d) {
 ////////////////////////////////////////////////////////////
 void Game_Character::MoveTo(int x, int y) {
 	this->x = x % Main_Data::game_map->GetWidth();
-    this->y = y % Main_Data::game_map->GetHeight();
-    real_x = x * 128;
-    real_y = y * 128;
-    prelock_direction = 0;
+	this->y = y % Main_Data::game_map->GetHeight();
+	real_x = x * 128;
+	real_y = y * 128;
+	prelock_direction = 0;
 }
 
 ////////////////////////////////////////////////////////////

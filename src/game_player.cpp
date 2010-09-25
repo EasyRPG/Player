@@ -57,9 +57,9 @@ void Game_Player::Center(int x, int y) {
 	int center_y = (Player::GetHeight() / 2 - 8) * 8;
 
 	int max_x = (Main_Data::game_map->GetWidth() - Player::GetWidth() / 16) * 128;
-    int max_y = (Main_Data::game_map->GetHeight() - Player::GetHeight() / 16) * 128;
-    Main_Data::game_map->display_x = max(0, min((x * 128 - center_x), max_x));
-    Main_Data::game_map->display_y = max(0, min((y * 128 - center_y), max_y));
+	int max_y = (Main_Data::game_map->GetHeight() - Player::GetHeight() / 16) * 128;
+	Main_Data::game_map->display_x = max(0, min((x * 128 - center_x), max_x));
+	Main_Data::game_map->display_y = max(0, min((y * 128 - center_y), max_y));
 }
 
 ////////////////////////////////////////////////////////////
