@@ -18,6 +18,7 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <cmath>
 #include "game_player.h"
 #include "game_map.h"
 #include "input.h"
@@ -54,10 +55,10 @@ void Game_Player::Center(int x, int y) {
 	// *16 is the tilemap size
 	int max_x = (Main_Data::game_map->GetWidth() - Main_Data::game_map->GetWidth() / 16) * 16;
     int max_y = (Main_Data::game_map->GetHeight() - Main_Data::game_map->GetHeight() / 16) * 16;
-	int center_x = (Player::GetWidth() / 2);
-	int center_y = (Player::GetHeight() / 2);
-    Main_Data::game_map->display_x = max(0, min(x * 16 - center_x, max_x));
-    Main_Data::game_map->display_y = max(0, min(y * 16 - center_y, max_y));
+	int center_x = (int)ceil(Player::GetWidth()  / 16.0 / 2.0);
+	int center_y = (int)ceil(Player::GetHeight() / 16.0 / 2.0);
+    Main_Data::game_map->display_x = max(0, min((x - center_x) * 16 + 16, max_x));
+    Main_Data::game_map->display_y = max(0, min((y - center_y) * 16 + 16, max_y));
 }
 
 ////////////////////////////////////////////////////////////
