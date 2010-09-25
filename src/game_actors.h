@@ -33,7 +33,7 @@ public:
 	Game_Actors();
 	~Game_Actors();
 
-	Game_Actor* operator [] (int actorId);
+	Game_Actor* GetActor(int actorId);
 
 private:
 	std::vector<Game_Actor*> data;

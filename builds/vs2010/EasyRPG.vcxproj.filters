@@ -437,6 +437,9 @@
     <ClCompile Include="..\..\src\zobj.cpp">
       <Filter>Source Files\Multimedia\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\game_character.cpp">
+      <Filter>Source Files\Engine\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cache.h">
@@ -711,6 +714,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\zobj.h">
       <Filter>Source Files\Multimedia\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game_character.h">
+      <Filter>Source Files\Engine\Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

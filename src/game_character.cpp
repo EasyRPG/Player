@@ -18,42 +18,37 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "game_party.h"
-#include "game_actors.h"
-#include "output.h"
+#include "game_character.h"
+#include "game_map.h"
+#include "main_data.h"
 
 ////////////////////////////////////////////////////////////
 /// Constructor
 ////////////////////////////////////////////////////////////
-Game_Party::Game_Party()
+Game_Character::Game_Character()
 {
-	gold = 0;
-	steps = 0;
+	int x = 0;
+	int y = 0;
+	int real_x = 0;
+	int real_y = 0;
+	int prelock_direction = 0;
 }
 
 ////////////////////////////////////////////////////////////
 /// Destructor
 ////////////////////////////////////////////////////////////
-Game_Party::~Game_Party()
+Game_Character::~Game_Character()
 {
 }
 
 ////////////////////////////////////////////////////////////
-/// SetupStartingMembers
+/// MoveTo
 ////////////////////////////////////////////////////////////
-void Game_Party::SetupStartingMembers() {
-	actors.clear();
-	for (unsigned i = 0; i < Main_Data::data_system.party.size(); ++i) {
-		Game_Actor* actor = 
-			Main_Data::game_actors->GetActor(Main_Data::data_system.party[i]);
-
-		if (actor == NULL) {
-			Output::Warning(
-				"Invalid actor (Id: %d) in initial party at index %d.",
-				Main_Data::data_system.party[i], i);
-		}
-		else {
-			actors.push_back(actor);
-		}
-	}
+void Game_Character::MoveTo(int x, int y)
+{
+	x = x % Main_Data::game_map->GetWidth();
+    y = y % Main_Data::game_map->GetHeight();
+    real_x = x * 128;
+    real_y = y * 128;
+    prelock_direction = 0;
 }

@@ -19,16 +19,24 @@
 #define _GAME_PLAYER_H_
 
 ////////////////////////////////////////////////////////////
+// Headers
+////////////////////////////////////////////////////////////
+#include "game_character.h"
+
+////////////////////////////////////////////////////////////
 /// Game Player class
 ////////////////////////////////////////////////////////////
-class Game_Player {
+class Game_Player : public Game_Character {
 
 public:
 	Game_Player();
 	~Game_Player();
 
 	bool IsPassable(int x, int y, int d);
+	void Center(int x, int y);
+	void MoveTo(int x, int y);
 	void Update();
+
 };
 
 #endif // _GAME_PLAYER_H_

@@ -38,4 +38,5 @@ public:
 
 	std::string name;
 };
+
 #endif // _GAME_ACTOR_H_

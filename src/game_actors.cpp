@@ -38,7 +38,7 @@ Game_Actors::~Game_Actors()
 ////////////////////////////////////////////////////////////
 /// Subscript []-operator
 ////////////////////////////////////////////////////////////
-Game_Actor* Game_Actors::operator [] (int actorId) {
+Game_Actor* Game_Actors::GetActor(int actorId) {
 	// Invalid Index (LDB has less actors)
 	if (actorId <= 0 || (unsigned)actorId >= data.size() || actorId > 5000) {
 		return NULL;

@@ -161,7 +161,7 @@ void Scene_Title::CommandNewGame() {
 	Main_Data::game_player = new Game_Player();
 	Main_Data::game_party->SetupStartingMembers();
 	Main_Data::game_map->Setup(Main_Data::data_treemap.start_map_id);
-	//Main_Data::game_player->moveto(Main_Data::data_treemap.start_x, Main_Data::data_treemap.start_y);
+	Main_Data::game_player->MoveTo(Main_Data::data_treemap.start_x, Main_Data::data_treemap.start_y);
 	//Main_Data::game_player->Refresh();
 	Main_Data::game_map->Autoplay();
 	Main_Data::game_map->Update();

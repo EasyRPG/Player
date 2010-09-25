@@ -15,45 +15,29 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _GAME_CHARACTER_H_
+#define _GAME_CHARACTER_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "game_party.h"
-#include "game_actors.h"
-#include "output.h"
 
 ////////////////////////////////////////////////////////////
-/// Constructor
+/// Game_Character class
 ////////////////////////////////////////////////////////////
-Game_Party::Game_Party()
-{
-	gold = 0;
-	steps = 0;
-}
+class Game_Character {
 
-////////////////////////////////////////////////////////////
-/// Destructor
-////////////////////////////////////////////////////////////
-Game_Party::~Game_Party()
-{
-}
+public:
+	Game_Character();
+	~Game_Character();
 
-////////////////////////////////////////////////////////////
-/// SetupStartingMembers
-////////////////////////////////////////////////////////////
-void Game_Party::SetupStartingMembers() {
-	actors.clear();
-	for (unsigned i = 0; i < Main_Data::data_system.party.size(); ++i) {
-		Game_Actor* actor = 
-			Main_Data::game_actors->GetActor(Main_Data::data_system.party[i]);
+	void MoveTo(int x, int y);
 
-		if (actor == NULL) {
-			Output::Warning(
-				"Invalid actor (Id: %d) in initial party at index %d.",
-				Main_Data::data_system.party[i], i);
-		}
-		else {
-			actors.push_back(actor);
-		}
-	}
-}
+	int x;
+	int y;
+	int real_x;
+	int real_y;
+	int prelock_direction;
+};
+
+#endif // _GAME_ACTOR_H_
