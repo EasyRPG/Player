@@ -126,7 +126,7 @@
     <ClCompile Include="..\..\src\game_variables.cpp" />
     <ClCompile Include="..\..\src\graphics.cpp" />
     <ClCompile Include="..\..\src\hslrgb.cpp" />
-    <ClCompile Include="..\..\src\ini.cpp" />
+    <ClCompile Include="..\..\src\ini.c" />
     <ClCompile Include="..\..\src\inireader.cpp" />
     <ClCompile Include="..\..\src\input.cpp" />
     <ClCompile Include="..\..\src\input_buttons_os.cpp" />
