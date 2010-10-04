@@ -69,7 +69,7 @@ string INIReader::MakeKey(string section, string name)
 {
     string key = section + "." + name;
     // Convert to lower case to make lookups case-insensitive
-    for (int i = 0; i < key.length(); i++)
+    for (unsigned int i = 0; i < key.length(); i++)
         key[i] = tolower(key[i]);
     return key;
 }
