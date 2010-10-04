@@ -57,9 +57,10 @@ void Player::Init() {
 	}
 	atexit(SDL_Quit);
 
-	main_window = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, BPP, videoFlags);
+	zoom = true;
+	main_window = SDL_SetVideoMode(SCREEN_WIDTH*2, SCREEN_HEIGHT*2, BPP, videoFlags);
 	if (!main_window) {
-		Output::Error("EasyRPG Player couldn't initialize %dx%dx%d video mode.\n%s\n", SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_GetError());
+		Output::Error("EasyRPG Player couldn't initialize %dx%dx%d video mode.\n%s\n", SCREEN_WIDTH*2, SCREEN_HEIGHT*2, BPP, SDL_GetError());
 	}
 
 	SDL_ShowCursor(SDL_DISABLE);
@@ -69,7 +70,6 @@ void Player::Init() {
 	focus = true;
 	//alt_pressing = false;
 	fullscreen = false;
-	zoom = false;
 }
 
 ////////////////////////////////////////////////////////////
@@ -163,14 +163,17 @@ void Player::ToggleFullscreen() {
 		return;
 	#endif
 
-	if (zoom) {
-		ToggleZoom();
-	}
 	Uint32 flags = main_window->flags;
 	SDL_FreeSurface(main_window);
-	main_window = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, flags ^ SDL_FULLSCREEN);
+	main_window = SDL_SetVideoMode(SCREEN_WIDTH*2, SCREEN_HEIGHT*2, 32, flags ^ SDL_FULLSCREEN);
 	if (main_window == NULL) {
-		main_window = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, flags);
+		if (!zoom) {
+			main_window = SDL_ConvertSurface(main_window, main_window->format, main_window->flags);
+			SDL_SetVideoMode(SCREEN_WIDTH*2, SCREEN_HEIGHT*2, 32, flags);
+		} else {
+			SDL_FreeSurface(main_window);
+			main_window = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, flags);
+		}
 	} else {
 		fullscreen = !fullscreen;
 	}

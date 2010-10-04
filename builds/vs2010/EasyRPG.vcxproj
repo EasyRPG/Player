@@ -126,6 +126,8 @@
     <ClCompile Include="..\..\src\game_variables.cpp" />
     <ClCompile Include="..\..\src\graphics.cpp" />
     <ClCompile Include="..\..\src\hslrgb.cpp" />
+    <ClCompile Include="..\..\src\ini.cpp" />
+    <ClCompile Include="..\..\src\inireader.cpp" />
     <ClCompile Include="..\..\src\input.cpp" />
     <ClCompile Include="..\..\src\input_buttons_os.cpp" />
     <ClCompile Include="..\..\src\ldb_actor.cpp" />
@@ -253,6 +255,8 @@
     <ClInclude Include="..\..\src\game_variables.h" />
     <ClInclude Include="..\..\src\graphics.h" />
     <ClInclude Include="..\..\src\hslrgb.h" />
+    <ClInclude Include="..\..\src\ini.h" />
+    <ClInclude Include="..\..\src\inireader.h" />
     <ClInclude Include="..\..\src\input.h" />
     <ClInclude Include="..\..\src\input_buttons.h" />
     <ClInclude Include="..\..\src\ldb_chunks.h" />

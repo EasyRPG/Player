@@ -436,6 +436,26 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="INI"
+					>
+					<File
+						RelativePath="..\..\src\ini.c"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\ini.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\inireader.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\inireader.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="RPG"

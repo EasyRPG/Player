@@ -118,6 +118,12 @@
         <File Name="../../src/lmu_reader.cpp"/>
         <File Name="../../src/lmu_reader.h"/>
       </VirtualDirectory>
+      <VirtualDirectory Name="INI">
+        <File Name="../../src/ini.c"/>
+        <File Name="../../src/ini.h"/>
+        <File Name="../../src/inireader.cpp"/>
+        <File Name="../../src/inireader.h"/>
+      </VirtualDirectory>
       <VirtualDirectory Name="LSD"/>
       <File Name="../../src/reader.cpp"/>
       <File Name="../../src/reader.h"/>

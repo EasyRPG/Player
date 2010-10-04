@@ -40,6 +40,9 @@
     <Filter Include="Source Files\Reader\LSD">
       <UniqueIdentifier>{5b2e0f23-8524-4a3e-9de5-f87e19c1dd84}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Reader\INI">
+      <UniqueIdentifier>{5925b3f7-097e-4189-8428-0b61fbbe993a}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\Multimedia\Audio">
       <UniqueIdentifier>{978babb7-a33f-499d-a3be-c4d4a5a3a25d}</UniqueIdentifier>
     </Filter>
@@ -250,6 +253,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\lmu_reader.cpp">
       <Filter>Source Files\Reader\LMU</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ini.c">
+      <Filter>Source Files\Reader\INI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\inireader.cpp">
+      <Filter>Source Files\Reader\INI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\reader.cpp">
       <Filter>Source Files\Reader</Filter>
@@ -525,6 +534,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\lmu_chunks.h">
       <Filter>Source Files\Reader\LMU</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ini.h">
+      <Filter>Source Files\Reader\INI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\inireader.h">
+      <Filter>Source Files\Reader\INI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\reader.h">
       <Filter>Source Files\Reader</Filter>
