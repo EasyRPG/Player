@@ -94,6 +94,11 @@ void Player::Update() {
 
 	while (true) {
 		int result = SDL_PollEvent(&evnt);
+
+		if (!result && !(PAUSE_GAME_WHEN_FOCUS_LOST && !focus)) {
+			break;
+		}
+
 		if (evnt.type == SDL_QUIT) {
 			Exit();
 			exit(0);
@@ -138,10 +143,6 @@ void Player::Update() {
 					}
 				}
 			}
-		}
-
-		if (!result && !(PAUSE_GAME_WHEN_FOCUS_LOST && !focus)) {
-			break;
 		}
 	}
 }
