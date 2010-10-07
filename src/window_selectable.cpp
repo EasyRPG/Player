@@ -43,7 +43,7 @@ Window_Selectable::~Window_Selectable() {
 ////////////////////////////////////////////////////////////
 /// Properties
 ////////////////////////////////////////////////////////////
-int Window_Selectable::GetIndex() {
+int Window_Selectable::GetIndex() const {
 	return index;
 }
 void Window_Selectable::SetIndex(int nindex) {
@@ -53,10 +53,10 @@ void Window_Selectable::SetIndex(int nindex) {
 	}*/
 	UpdateCursorRect();
 }
-int Window_Selectable::GetRowMax() {
+int Window_Selectable::GetRowMax() const {
 	return (item_max + column_max - 1) / column_max;
 }
-int Window_Selectable::GetTopRow() {
+int Window_Selectable::GetTopRow() const {
 	return oy / 16;
 }
 void Window_Selectable::SetTopRow(int row) {
@@ -64,7 +64,7 @@ void Window_Selectable::SetTopRow(int row) {
 	if (row > GetRowMax() - 1) row = GetRowMax() - 1;
 	SetOy(row * 32);
 }
-int Window_Selectable::GetPageRowMax() {
+int Window_Selectable::GetPageRowMax() const {
 	return (height - 16) / 16;
 }
 int Window_Selectable::GetPageItemMax() {

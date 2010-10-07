@@ -52,6 +52,7 @@
 ////////////////////////////////////////////////////////////
 Scene_Title::Scene_Title() {
 	Main_Data::scene_type = SCENE_TITLE;
+	command_window = NULL;
 }
 
 ////////////////////////////////////////////////////////////
@@ -80,8 +81,9 @@ void Scene_Title::MainFunction() {
 	options.push_back(Main_Data::data_terms.new_game);
 	options.push_back(Main_Data::data_terms.load_game);
 	options.push_back(Main_Data::data_terms.exit_game);
-
-	command_window = new Window_Command(116, options);
+	
+	// TODO: Calculate window width from max text length from options
+	command_window = new Window_Command(60, options);
 	command_window->SetX(160 - command_window->GetWidth() / 2);
 	command_window->SetY(224 - command_window->GetHeight());
 

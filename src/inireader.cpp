@@ -44,7 +44,7 @@ INIReader::INIReader(string filename)
     _error = ini_parse(filename.c_str(), ValueHandler, this);
 }
 
-int INIReader::ParseError()
+int INIReader::ParseError() const
 {
     return _error;
 }

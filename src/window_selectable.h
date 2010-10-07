@@ -32,12 +32,12 @@ public:
 	Window_Selectable(int ix, int iy, int iwidth, int iheight);
 	~Window_Selectable();
 
-	int GetIndex();
+	int GetIndex() const;
 	void SetIndex(int nindex);
-	int GetRowMax();
-	int GetTopRow();
+	int GetRowMax() const;
+	int GetTopRow() const;
 	void SetTopRow(int row);
-	int GetPageRowMax();
+	int GetPageRowMax() const;
 	int GetPageItemMax();
 	//Window_Help* GetHelpWindow();
 	//void SetHelpWindow(Window_Help* nhelp_window);

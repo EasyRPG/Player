@@ -44,6 +44,14 @@ Game_Map::Game_Map() {
 	map_id = 0;
 	display_x = 0;
 	display_y = 0;
+	fog_opacity_duration = 0;
+	fog_opacity_target = 0;
+	fog_tone_duration = 0;
+	animation_speed = 0;
+	animation_type = 0;
+	scroll_direction = 0;
+	scroll_rest = 0;
+	scroll_speed = 0;
 }
 
 ////////////////////////////////////////////////////////////
@@ -94,21 +102,21 @@ void Game_Map::Setup(int _id) {
 ////////////////////////////////////////////////////////////
 /// Get Map Id
 ////////////////////////////////////////////////////////////
-int Game_Map::GetMapId() {
+int Game_Map::GetMapId() const {
 	return map_id;
 }
 
 ////////////////////////////////////////////////////////////
 /// Get Width
 ////////////////////////////////////////////////////////////
-int Game_Map::GetWidth() {
+int Game_Map::GetWidth() const {
 	return map.width;
 }
 
 ////////////////////////////////////////////////////////////
 /// Get Height
 ////////////////////////////////////////////////////////////
-int Game_Map::GetHeight() {
+int Game_Map::GetHeight() const {
 	return map.height;
 }
 

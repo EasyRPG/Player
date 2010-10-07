@@ -38,7 +38,6 @@ struct ColorHSL {
 ColorHSL RGB2HSL(Color col) {
 	ColorHSL ncol;
 	double vmin, vmax, delta;
-	double dr, dg, db;
 	double r, g, b;
 	r = col.red / 255.0;
 	g = col.green / 255.0;
@@ -51,6 +50,7 @@ ColorHSL RGB2HSL(Color col) {
 		ncol.h = 0;
 		ncol.s = 0;
 	} else {
+		double dr, dg, db;
 		if (ncol.l < 0.5) {
 			ncol.s = delta / (vmax + vmin);
 		} else {
@@ -87,12 +87,12 @@ double Hue_2_RGB(double v1, double v2, double vH) {
 ////////////////////////////////////////////////////////////
 Color HSL2RGB(ColorHSL col) {
 	Color ncol(0, 0, 0, 0);
-	double v1, v2;
 	if (col.s == 0) {
 		ncol.red = (unsigned char)(col.l * 255);
 		ncol.green = (unsigned char)(col.l * 255);
 		ncol.blue = (unsigned char)(col.l * 255);
 	} else {
+		double v1, v2;
 		if (col.l < 0.5) {
 			v2 = col.l * (1 + col.s);
 		} else {

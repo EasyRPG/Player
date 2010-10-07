@@ -75,7 +75,7 @@ void Game_Player::MoveTo(int x, int y) {
 // Update
 ////////////////////////////////////////////////////////////
 void Game_Player::Update() {
-	bool last_moving = IsMoving();
+//	bool last_moving = IsMoving();
 
 	if (!(IsMoving() /*|| Main_Data::game_system->map_interpreter.IsRunning() ||
 		move_route_forcing || Main_Data::game_temp->message_window_showing*/)) {

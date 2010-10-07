@@ -35,9 +35,9 @@ public:
 	~Game_Map();
 
 	void Setup(int _id);
-	int GetMapId();
-	int GetWidth();
-	int GetHeight();
+	int GetMapId() const;
+	int GetWidth() const;
+	int GetHeight() const;
 	std::vector<int> GetEncounterList();
 	int GetEncounterStep();
 	std::vector<short> GetMapDataDown();

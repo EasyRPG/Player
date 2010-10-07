@@ -43,15 +43,15 @@ Font::Font() {
 	color = default_color;
 }
 Font::Font(std::string name) {
-	name = name;
+	this->name = name;
 	size = default_size;
 	bold = default_bold;
 	italic = default_italic;
 	color = default_color;
 }
 Font::Font(std::string name, int size) {
-	name = name;
-	size = size;
+	this->name = name;
+	this->size = size;
 	bold = default_bold;
 	italic = default_italic;
 	color = default_color;

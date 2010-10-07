@@ -36,7 +36,7 @@ public:
 	void BgmPlay(RPG::Music bmg);
 	void SePlay(RPG::Sound se);
 
-	std::string GetSystemName();
+	std::string GetSystemName() const;
 	void SetSystemName(std::string nsystem_name);
 
 private:

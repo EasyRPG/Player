@@ -24,6 +24,7 @@
 /// Constructor
 ////////////////////////////////////////////////////////////
 RPG::MoveCommand::MoveCommand() {
+	command_id = 0;
 	parameter_string = "";
 	parameter_a = 0;
 	parameter_b = 0;

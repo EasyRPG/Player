@@ -58,7 +58,7 @@ void Game_System::SePlay(RPG::Sound se) {
 ////////////////////////////////////////////////////////////
 /// Properties
 ////////////////////////////////////////////////////////////
-std::string Game_System::GetSystemName() {
+std::string Game_System::GetSystemName() const {
 	if (system_name == "") {
 		return Main_Data::data_system.system_name;
 	} else {
