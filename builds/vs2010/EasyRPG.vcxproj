@@ -218,6 +218,7 @@
     <ClCompile Include="..\..\src\rpg_trooppage.cpp" />
     <ClCompile Include="..\..\src\rpg_trooppagecondition.cpp" />
     <ClCompile Include="..\..\src\scene_map.cpp" />
+    <ClCompile Include="..\..\src\scene_menu.cpp" />
     <ClCompile Include="..\..\src\scene_title.cpp" />
     <ClCompile Include="..\..\src\sprite.cpp" />
     <ClCompile Include="..\..\src\spriteset_map.cpp" />
@@ -227,8 +228,10 @@
     <ClCompile Include="..\..\src\window.cpp" />
     <ClCompile Include="..\..\src\window_base.cpp" />
     <ClCompile Include="..\..\src\window_command.cpp" />
+    <ClCompile Include="..\..\src\window_gold.cpp" />
     <ClCompile Include="..\..\src\window_message.cpp" />
     <ClCompile Include="..\..\src\window_selectable.cpp" />
+    <ClCompile Include="..\..\src\window_status.cpp" />
     <ClCompile Include="..\..\src\zobj.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -314,6 +317,7 @@
     <ClInclude Include="..\..\src\rpg_trooppagecondition.h" />
     <ClInclude Include="..\..\src\scene.h" />
     <ClInclude Include="..\..\src\scene_map.h" />
+    <ClInclude Include="..\..\src\scene_menu.h" />
     <ClInclude Include="..\..\src\scene_title.h" />
     <ClInclude Include="..\..\src\sprite.h" />
     <ClInclude Include="..\..\src\spriteset_map.h" />
@@ -323,8 +327,10 @@
     <ClInclude Include="..\..\src\window.h" />
     <ClInclude Include="..\..\src\window_base.h" />
     <ClInclude Include="..\..\src\window_command.h" />
+    <ClInclude Include="..\..\src\window_gold.h" />
     <ClInclude Include="..\..\src\window_message.h" />
     <ClInclude Include="..\..\src\window_selectable.h" />
+    <ClInclude Include="..\..\src\window_status.h" />
     <ClInclude Include="..\..\src\zobj.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

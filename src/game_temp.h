@@ -7,5 +7,8 @@ public:
 	Game_Temp();
 	~Game_Temp();
 
+	bool menu_calling;
+	bool menu_beep;
+
 };
 #endif // __game_temp__

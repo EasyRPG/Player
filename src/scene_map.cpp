@@ -19,9 +19,14 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "scene_map.h"
+#include "scene_menu.h"
+#include "scene_title.h"
 #include "main_data.h"
 #include "game_map.h"
 #include "game_player.h"
+#include "game_system.h"
+#include "game_temp.h"
+#include "rpg_system.h"
 #include "player.h"
 #include "graphics.h"
 #include "audio.h"
@@ -72,4 +77,60 @@ void Scene_Map::Update() {
 	Main_Data::game_map->Update();
 	Main_Data::game_player->Update();
 	spriteset->Update();
+
+	// ESC-Menu calling
+	if (Input::IsTriggered(Input::CANCEL))
+	{
+		//unless $game_system.map_interpreter.running? or
+			//$game_system.menu_disabled
+
+		Main_Data::game_temp->menu_calling = true;
+		Main_Data::game_temp->menu_beep = true;
+	}
+
+	if (!Main_Data::game_player->IsMoving())
+	{
+		if (Main_Data::game_temp->menu_calling)
+			CallMenu();
+	}
 }
+
+////////////////////////////////////////////////////////////
+/// Menu Calling Stuff
+////////////////////////////////////////////////////////////
+void Scene_Map::CallBattle() {
+
+}
+
+void Scene_Map::CallShop() {
+
+}
+
+void Scene_Map::CallName() {
+
+}
+
+////////////////////////////////////////////////////////////
+/// ESC-Menu Call
+////////////////////////////////////////////////////////////
+void Scene_Map::CallMenu() {
+	Main_Data::game_temp->menu_calling = false;
+
+	if (Main_Data::game_temp->menu_beep) {
+		Main_Data::game_system->SePlay(Main_Data::data_system.decision_se);
+		Main_Data::game_temp->menu_beep = false;
+	}
+
+	// TODO: Main_Data::game_player->Straighten();
+
+	Main_Data::scene = new Scene_Menu();
+}
+
+void Scene_Map::CallSave() {
+
+}
+
+void Scene_Map::CallDebug() {
+
+}
+

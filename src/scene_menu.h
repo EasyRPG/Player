@@ -15,34 +15,31 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _GAME_SYSTEM_H_
-#define _GAME_SYSTEM_H_
+#ifndef _SCENE_MENU_H_
+#define _SCENE_MENU_H_
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <string>
-#include "rpg_music.h"
-#include "rpg_sound.h"
+#include "scene.h"
+#include "window_command.h"
 
 ////////////////////////////////////////////////////////////
-/// Game System class
+/// Scene Menu class
 ////////////////////////////////////////////////////////////
-class Game_System {
+class Scene_Menu : public Scene {
 public:
-	Game_System();
-	~Game_System();
+	Scene_Menu(int menu_index = 0);
+	~Scene_Menu();
 
-	void BgmPlay(RPG::Music bmg);
-	void SePlay(RPG::Sound se);
-
-	std::string GetSystemName() const;
-	void SetSystemName(std::string nsystem_name);
-
-	bool save_disabled;
+	void MainFunction();
+	void Update();
+	void UpdateCommand();
+	void UpdateStatus();
 
 private:
-	std::string system_name;
+	int menu_index;
+	Window_Command* command_window;
 };
 
 #endif

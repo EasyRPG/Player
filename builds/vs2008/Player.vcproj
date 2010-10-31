@@ -984,6 +984,14 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\src\window_gold.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\window_gold.h"
+						>
+					</File>
+					<File
 						RelativePath="..\..\src\window_message.cpp"
 						>
 					</File>
@@ -997,6 +1005,14 @@
 					</File>
 					<File
 						RelativePath="..\..\src\window_selectable.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\window_status.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\window_status.h"
 						>
 					</File>
 				</Filter>
@@ -1013,6 +1029,14 @@
 					</File>
 					<File
 						RelativePath="..\..\src\scene_map.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\scene_menu.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\scene_menu.h"
 						>
 					</File>
 					<File

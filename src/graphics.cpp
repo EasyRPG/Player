@@ -111,7 +111,7 @@ void Graphics::Update() {
 			next_ticks_fps += 1000;
 			fps = frames;
 			frames = 0;
-			
+
 			char title[255];
 			sprintf(title, "%s - %d FPS", GAME_TITLE, fps);
 

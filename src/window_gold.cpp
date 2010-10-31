@@ -15,34 +15,19 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _GAME_SYSTEM_H_
-#define _GAME_SYSTEM_H_
-
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <string>
-#include "rpg_music.h"
-#include "rpg_sound.h"
+#include "window_gold.h"
 
 ////////////////////////////////////////////////////////////
-/// Game System class
+/// Constructor
 ////////////////////////////////////////////////////////////
-class Game_System {
-public:
-	Game_System();
-	~Game_System();
+Window_Gold::Window_Gold() : Window_Base(0, 0, 160, 64) {
+}
 
-	void BgmPlay(RPG::Music bmg);
-	void SePlay(RPG::Sound se);
-
-	std::string GetSystemName() const;
-	void SetSystemName(std::string nsystem_name);
-
-	bool save_disabled;
-
-private:
-	std::string system_name;
-};
-
-#endif
+////////////////////////////////////////////////////////////
+/// Destructor
+////////////////////////////////////////////////////////////
+Window_Gold::~Window_Gold() {
+}
