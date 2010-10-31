@@ -72,6 +72,7 @@ Window::~Window() {
 	Graphics::RemoveZObj(ID);
 	Graphics::RemoveDrawable(ID);
 	delete background;
+	delete contents;
 	delete frame;
 	delete cursor1;
 	delete cursor2;

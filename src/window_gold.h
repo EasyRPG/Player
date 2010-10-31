@@ -30,6 +30,7 @@ class Window_Gold :	public Window_Base {
 public:
 	Window_Gold();
 	~Window_Gold();
+	void Refresh();
 };
 
 #endif

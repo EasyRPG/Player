@@ -25,8 +25,6 @@
 #include "input.h"
 #include "player.h"
 #include "scene_map.h"
-#include "window_gold.h"
-#include "window_status.h"
 
 ////////////////////////////////////////////////////////////
 /// Constructor
@@ -70,18 +68,16 @@ void Scene_Menu::MainFunction() {
 		command_window->DisableItem(3);
 	}
 
-	// ToDo: Gold Window
+	// Gold Window
+	gold_window = new Window_Gold();
+	gold_window->SetX(0);
+	gold_window->SetY(208);
 
-/*  # Make gold window
-    @gold_window = Window_Gold.new
-    @gold_window.x = 0
-    @gold_window.y = 416*/
-
-	// ToDo: Status Window
-/*    # Make status window
-    @status_window = Window_MenuStatus.new
-    @status_window.x = 160
-    @status_window.y = 0*/
+	// Status Window
+	status_window = new Window_Status();
+	status_window->SetX(88);
+	status_window->SetY(0);
+	status_window->SetActive(false);
 
 	//Graphics::transition();
 
@@ -93,6 +89,8 @@ void Scene_Menu::MainFunction() {
 	}
 
 	delete command_window;
+	delete gold_window;
+	delete status_window;
 }
 
 ////////////////////////////////////////////////////////////
@@ -100,13 +98,13 @@ void Scene_Menu::MainFunction() {
 ////////////////////////////////////////////////////////////
 void Scene_Menu::Update() {
 	command_window->Update();
-	//gold_window->Update();
-	//status_window->Update();
+	gold_window->Update();
+	status_window->Update();
 
 	if (command_window->GetActive())
 		UpdateCommand();
-	/*else if (status_window->GetActive())
-		UpdateStatus();*/
+	else if (status_window->GetActive())
+		UpdateStatus();
 }
 
 
