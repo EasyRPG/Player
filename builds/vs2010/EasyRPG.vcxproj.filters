@@ -455,7 +455,7 @@
     <ClCompile Include="..\..\src\window_gold.cpp">
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\window_status.cpp">
+    <ClCompile Include="..\..\src\window_menustatus.cpp">
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
   </ItemGroup>
@@ -748,7 +748,7 @@
     <ClInclude Include="..\..\src\window_gold.h">
       <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\window_status.h">
+    <ClInclude Include="..\..\src\window_menustatus.h">
       <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
   </ItemGroup>

@@ -63,8 +63,8 @@
         <File Name="../../src/window_selectable.h"/>
         <File Name="../../src/window_message.h"/>
         <File Name="../../src/window_message.cpp"/>
-        <File Name="../../src/window_status.cpp"/>
-        <File Name="../../src/window_status.h"/>	
+        <File Name="../../src/window_menustatus.cpp"/>
+        <File Name="../../src/window_menustatus.h"/>	
       </VirtualDirectory>
     </VirtualDirectory>
     <VirtualDirectory Name="Reader">

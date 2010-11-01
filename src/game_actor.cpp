@@ -19,6 +19,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "game_actor.h"
+#include "cache.h"
 
 ////////////////////////////////////////////////////////////
 /// Constructor
@@ -33,6 +34,7 @@ Game_Actor::Game_Actor(int actorId)
 ////////////////////////////////////////////////////////////
 Game_Actor::~Game_Actor()
 {
+	delete face;
 }
 
 ////////////////////////////////////////////////////////////
@@ -44,4 +46,10 @@ void Game_Actor::Setup(int actorId)
 
 	// ActorId starts with 1 but arrayindex with 0
 	name = Main_Data::data_actors[actorId-1].name;
+
+	// Get the Faceset Graphic
+	Bitmap* faceset = Cache::Faceset(Main_Data::data_actors[actorId-1].face_name);
+	int face_index = Main_Data::data_actors[actorId-1].face_index;
+	face = new Bitmap(48, 48);
+	face->Blit(0, 0, faceset, Rect((face_index % 4) * 48, face_index/4 * 48, 48, 48), 255);
 }

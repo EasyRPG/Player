@@ -231,7 +231,7 @@
     <ClCompile Include="..\..\src\window_gold.cpp" />
     <ClCompile Include="..\..\src\window_message.cpp" />
     <ClCompile Include="..\..\src\window_selectable.cpp" />
-    <ClCompile Include="..\..\src\window_status.cpp" />
+    <ClCompile Include="..\..\src\window_menustatus.cpp" />
     <ClCompile Include="..\..\src\zobj.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -330,7 +330,7 @@
     <ClInclude Include="..\..\src\window_gold.h" />
     <ClInclude Include="..\..\src\window_message.h" />
     <ClInclude Include="..\..\src\window_selectable.h" />
-    <ClInclude Include="..\..\src\window_status.h" />
+    <ClInclude Include="..\..\src\window_menustatus.h" />
     <ClInclude Include="..\..\src\zobj.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

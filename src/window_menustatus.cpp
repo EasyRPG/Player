@@ -15,21 +15,37 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _WINDOW_STATUS_H_
-#define _WINDOW_STATUS_H_
-
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "window_base.h"
+#include "window_menustatus.h"
+#include "game_party.h"
 
 ////////////////////////////////////////////////////////////
-/// Window Status Class
+/// Constructor
 ////////////////////////////////////////////////////////////
-class Window_Status : public Window_Base {
-public:
-	Window_Status();
-	~Window_Status();
-};
+Window_MenuStatus::Window_MenuStatus() : Window_Base(0, 0, 232, 240) {
+	contents = new Bitmap(width - 16, height - 16);
+	Refresh();
+}
 
-#endif
+////////////////////////////////////////////////////////////
+/// Destructor
+////////////////////////////////////////////////////////////
+Window_MenuStatus::~Window_MenuStatus() {
+}
+
+////////////////////////////////////////////////////////////
+/// Refresh
+////////////////////////////////////////////////////////////
+void Window_MenuStatus::Refresh() {
+	int offset = 0;
+	for (unsigned i = 0; i < Main_Data::game_party->actors.size(); ++i)
+	{
+		DrawActorGraphic(Main_Data::game_party->actors[i], 0, i*48 + offset);
+
+		// (48 + 8, 4)
+		DrawActorName(Main_Data::game_party->actors[i], 48 + 8, i*48 + 4 + offset);
+		offset += 10;
+	}
+}

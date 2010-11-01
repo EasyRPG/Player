@@ -1008,11 +1008,11 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\src\window_status.cpp"
+						RelativePath="..\..\src\window_menustatus.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\src\window_status.h"
+						RelativePath="..\..\src\window_menustatus.h"
 						>
 					</File>
 				</Filter>

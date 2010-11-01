@@ -74,10 +74,10 @@ void Scene_Menu::MainFunction() {
 	gold_window->SetY(208);
 
 	// Status Window
-	status_window = new Window_Status();
-	status_window->SetX(88);
-	status_window->SetY(0);
-	status_window->SetActive(false);
+	menustatus_window = new Window_MenuStatus();
+	menustatus_window->SetX(88);
+	menustatus_window->SetY(0);
+	menustatus_window->SetActive(false);
 
 	//Graphics::transition();
 
@@ -90,7 +90,7 @@ void Scene_Menu::MainFunction() {
 
 	delete command_window;
 	delete gold_window;
-	delete status_window;
+	delete menustatus_window;
 }
 
 ////////////////////////////////////////////////////////////
@@ -99,11 +99,11 @@ void Scene_Menu::MainFunction() {
 void Scene_Menu::Update() {
 	command_window->Update();
 	gold_window->Update();
-	status_window->Update();
+	menustatus_window->Update();
 
 	if (command_window->GetActive())
 		UpdateCommand();
-	else if (status_window->GetActive())
+	else if (menustatus_window->GetActive())
 		UpdateStatus();
 }
 

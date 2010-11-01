@@ -22,8 +22,9 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <string>
-#include "main_data.h"
+#include "bitmap.h"
 #include "game_battler.h"
+#include "main_data.h"
 
 ////////////////////////////////////////////////////////////
 /// Game_Actor class
@@ -37,6 +38,7 @@ public:
 	void Setup(int actorId);
 
 	std::string name;
+	Bitmap* face;
 };
 
 #endif // _GAME_ACTOR_H_

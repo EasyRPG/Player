@@ -24,7 +24,7 @@
 #include "scene.h"
 #include "window_command.h"
 #include "window_gold.h"
-#include "window_status.h"
+#include "window_menustatus.h"
 
 ////////////////////////////////////////////////////////////
 /// Scene Menu class
@@ -43,7 +43,7 @@ private:
 	int menu_index;
 	Window_Command* command_window;
 	Window_Gold* gold_window;
-	Window_Status* status_window;
+	Window_MenuStatus* menustatus_window;
 };
 
 #endif

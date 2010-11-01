@@ -57,10 +57,13 @@ void Window_Base::Update() {
 /// Draw helpers
 ////////////////////////////////////////////////////////////
 void Window_Base::DrawActorGraphic(Game_Actor* actor, int cx, int cy) {
-	
+	Bitmap* face = actor->face;
+	contents->Blit(cx, cy, face, Rect(0, 0, 48, 48), 255);
 }
+
 void Window_Base::DrawActorName(Game_Actor* actor, int cx, int cy) {
-	
+	Rect rect(cx, cy, 32, 16);
+	contents->TextDraw(rect, actor->name, 0);
 }
 void Window_Base::DrawActorTitle(Game_Actor* actor, int cx, int cy) {
 	
@@ -81,13 +84,13 @@ void Window_Base::DrawActorExp(Game_Actor* actor, int cx, int cy) {
 	
 }
 void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy) {
-	DrawActorHp(actor, x, y, 144); // 144 is from RMXP, maybe need to be adjusted
+	//DrawActorHp(actor, x, y, 144); // 144 is from RMXP, maybe need to be adjusted
 }
 void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy, int width) {
 	
 }
 void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy) {
-	DrawActorSp(actor, x, y, 144); // 144 is from RMXP, maybe need to be adjusted
+	//DrawActorSp(actor, x, y, 144); // 144 is from RMXP, maybe need to be adjusted
 }
 void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy, int width) {
 	
