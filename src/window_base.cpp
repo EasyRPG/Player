@@ -75,7 +75,7 @@ void Window_Base::DrawActorLevel(Game_Actor* actor, int cx, int cy) {
 	
 }
 void Window_Base::DrawActorState(Game_Actor* actor, int cx, int cy) {
-	DrawActorState(actor, x, y, 120); // 120 is from RMXP, maybe need to be adjusted
+	//DrawActorState(actor, x, y, 120); // 120 is from RMXP, maybe need to be adjusted
 }
 void Window_Base::DrawActorState(Game_Actor* actor, int cx, int cy, int width) {
 	
