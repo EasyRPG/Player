@@ -24,6 +24,7 @@
 #include "graphics.h"
 #include "hslrgb.h"
 #include "main_data.h"
+#include "options.h"
 #include "output.h"
 #include "player.h"
 #include "SDL_image.h"
@@ -361,6 +362,11 @@ void Bitmap::HSLChange(double h, double s, double l, Rect rect) {
 void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 	if (text.length() == 0) return;
 	if (rect.IsOutOfBounds(GetWidth(), GetHeight())) return;
+
+	const int rbyte = MaskGetByte(bitmap->format->Rmask);
+	const int gbyte = MaskGetByte(bitmap->format->Gmask);
+	const int bbyte = MaskGetByte(bitmap->format->Bmask);
+	const int abyte = MaskGetByte(bitmap->format->Amask);
 	
 	TTF_Font* ttf_font = font.GetTTF();
 	int style = 0;
@@ -370,11 +376,23 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 
 	SDL_Surface* text_surface;
 
+#if FONT_HINTING == 0
+	text_surface = TTF_RenderUTF8_Solid(ttf_font, text.c_str(), font.color.Get());
+#else
 	text_surface = TTF_RenderUTF8_Blended(ttf_font, text.c_str(), font.color.Get());
+#endif
 
 	if (!text_surface) {
 		Output::Error("Couldn't draw text %s with Font %n size %d.\n%s\n", text.c_str(), font.name.c_str(), font.size, TTF_GetError());
 	}
+
+#if FONT_HINTING == 0
+	// Convert to 32bit surface and get the colorkey in an endianess-neutral way
+	SDL_Surface* text_surface32 = SDL_ConvertSurface(text_surface, bitmap->format, text_surface->flags);
+	Uint32 colorkey = *(Uint32*)text_surface->format->palette->colors | (0xFF << abyte*8);
+	SDL_FreeSurface(text_surface);
+	text_surface = text_surface32;
+#endif
 
 	Bitmap* text_bmp = new Bitmap(1, 1);
 	SDL_FreeSurface(text_bmp->bitmap);
@@ -400,37 +418,62 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 		}
 	}
 
+	// Surface for drop Shadow (HARDCODED to black)
+	Bitmap* text_bmp_shadow = new Bitmap(1, 1);
+	SDL_FreeSurface(text_bmp_shadow->bitmap);
+	SDL_Surface* text_shadow = SDL_ConvertSurface(text_bmp->bitmap, text_bmp->bitmap->format, text_bmp->bitmap->flags);
+	text_bmp_shadow->bitmap = text_shadow;
+
 	// Experimental Color Blending
 	// Looks strange with font smoothing
 	SDL_LockSurface(text_bmp->bitmap);
+	SDL_LockSurface(text_bmp_shadow->bitmap);
 	Uint8* pixels = (Uint8*)text_bmp->bitmap->pixels;
+	Uint8* shadow_pixels = (Uint8*)text_shadow->pixels;
 
 	// HARDCODED: Should be changed to the correct color value later!
 	//            Currently always the first one is used!
 	Bitmap* system = Cache::System(Main_Data::data_system.system_name);
 
-	const int rbyte = MaskGetByte(bitmap->format->Rmask);
-	const int gbyte = MaskGetByte(bitmap->format->Gmask);
-	const int bbyte = MaskGetByte(bitmap->format->Bmask);
-	const int abyte = MaskGetByte(bitmap->format->Amask);
+	for (int i = 0; i < text_bmp->bitmap->h; ++i) {
+		for (int j = 0; j < text_bmp->bitmap->w; ++j, pixels+=4, shadow_pixels+=4) {
+			Color drawColor = system->GetPixel((j%7) + 1, 52+i+1);
+			
+			// HACK: Only works for half size glypths
+			// Skip every 7th row, this one is always empty?
+			if (j % 7 == 0) {
+				pixels[abyte] = 0;
+				shadow_pixels[abyte] = 0;
+				continue;
+			}
 
-	for (int i = 0; i < text_surface->h; ++i) {
-		for (int j = 0; j < text_surface->w; ++j) {
-			Color drawColor = system->GetPixel(j%7, 51+i);
-			Uint8* pixel = pixels;
+#if FONT_HINTING == 0
+			// Make everything matching the colorkey transparent
+			if (*(Uint32*)pixels == colorkey) {
+				pixels[abyte] = 0;
+				shadow_pixels[abyte] = 0;
+				continue;
+			}
+#endif
 
-			pixel[rbyte] = drawColor.red;
-			pixel[gbyte] = drawColor.green;
-			pixel[bbyte] = drawColor.blue;
+			pixels[rbyte] = drawColor.red;
+			pixels[gbyte] = drawColor.green;
+			pixels[bbyte] = drawColor.blue;
 
-			pixels += 4;
+			shadow_pixels[rbyte] = 0;
+			shadow_pixels[bbyte] = 0;
+			shadow_pixels[gbyte] = 0;
 		}
 	}
+	SDL_UnlockSurface(text_bmp_shadow->bitmap);
 	SDL_UnlockSurface(text_bmp->bitmap);
 	// End of Color blending
 
+	Blit(x+1, y+1, text_bmp_shadow, src_rect, font.color.alpha);
 	Blit(x, y, text_bmp, src_rect, font.color.alpha);
+
 	delete text_bmp;
+	delete text_bmp_shadow;
 }
 
 ////////////////////////////////////////////////////////////
