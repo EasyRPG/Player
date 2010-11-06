@@ -96,7 +96,7 @@
 /// FONT_HINTING
 ///		Enables or disables font hinting
 ////////////////////////////////////////////////////////////
-#define FONT_HINTING 1
+#define FONT_HINTING 0
 
 ////////////////////////////////////////////////////////////
 /// OUTPUT_TYPE
@@ -106,7 +106,7 @@
 ///		OUTPUT_MSGBOX - create pop up message box
 ///		OUTPUT_SCREEN - write to screen
 ///
-/// OUTPUT_FILE
+/// OUTPUT_FILENAME
 ///		Name of the file for output.
 ////////////////////////////////////////////////////////////
 #if DINGOO || UNIX

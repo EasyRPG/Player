@@ -374,25 +374,95 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 	if (font.italic) style |= TTF_STYLE_ITALIC;
 	TTF_SetFontStyle(ttf_font, style);
 
-	SDL_Surface* text_surface;
+
+	SDL_Surface* text_surface; // Complete text
+	SDL_Surface* char_surface; // Single char
+	SDL_Surface* char_shadow; // Drop shadow of char
+
+	// Create a new RGB Surface in an endian-neutral way
+	text_surface = SDL_CreateRGBSurface(bitmap->flags, text.size()*6, 12, 32, (0xFF << rbyte*8), (0xFF << gbyte*8), (0xFF << bbyte*8), (0xFF << abyte*8));
 
 #if FONT_HINTING == 0
-	text_surface = TTF_RenderUTF8_Solid(ttf_font, text.c_str(), font.color.Get());
+	Uint32 colorkey = 0;
+#endif
+
+	char text2[2]; text2[1] = '\0';
+
+	// This loops always renders a single char, color blends it and then puts
+	// it onto the text_surface
+	for (unsigned c = 0; c < text.size(); ++c) {
+		text2[0] = text[c];
+
+#if FONT_HINTING == 0
+		// Render a single char
+		char_surface = TTF_RenderUTF8_Solid(ttf_font, text2, font.color.Get());
+		char_shadow  = TTF_RenderUTF8_Solid(ttf_font, text2, Color().Get());
 #else
-	text_surface = TTF_RenderUTF8_Blended(ttf_font, text.c_str(), font.color.Get());
+		char_surface = TTF_RenderUTF8_Blended(ttf_font, text2, font.color.Get());
+		char_shadow = TTF_RenderUTF8_Blended(ttf_font, text2, Color().Get());
 #endif
 
-	if (!text_surface) {
-		Output::Error("Couldn't draw text %s with Font %n size %d.\n%s\n", text.c_str(), font.name.c_str(), font.size, TTF_GetError());
-	}
+		if (!char_surface || !char_shadow) {
+			Output::Error("Couldn't draw text %s with Font %n size %d.\n%s\n", text.c_str(), font.name.c_str(), font.size, TTF_GetError());
+		}
 
 #if FONT_HINTING == 0
-	// Convert to 32bit surface and get the colorkey in an endianess-neutral way
-	SDL_Surface* text_surface32 = SDL_ConvertSurface(text_surface, bitmap->format, text_surface->flags);
-	Uint32 colorkey = *(Uint32*)text_surface->format->palette->colors | (0xFF << abyte*8);
-	SDL_FreeSurface(text_surface);
-	text_surface = text_surface32;
+		// Retrieve the color key once
+		if (c == 0) {
+			colorkey = *(Uint32*)char_surface->format->palette->colors | (0xFF << abyte*8);
+		}
+		// Convert to RGBA
+		SDL_Surface* char_surface32 = SDL_ConvertSurface(char_surface, bitmap->format, char_surface->flags);
+		SDL_Surface* char_shadow32 = SDL_ConvertSurface(char_shadow, bitmap->format, char_shadow->flags);
+		SDL_FreeSurface(char_surface);
+		SDL_FreeSurface(char_shadow);
+		char_surface = char_surface32;
+		char_shadow = char_shadow32;
 #endif
+
+		// Set corrent alpha flags otherwise alpha is ignored during blitting
+		SDL_SetAlpha(char_surface, 0, 0);
+		SDL_SetAlpha(char_shadow, 0, 0);
+
+		// Experimental Color Blending
+		SDL_LockSurface(char_surface);
+		SDL_LockSurface(char_shadow);
+		Uint8* pixels = (Uint8*)char_surface->pixels;
+		Uint8* shadow_pixels = (Uint8*)char_shadow->pixels;
+
+		// HARDCODED: Should be changed to the correct color value later!
+		//            Currently always the first one is used!
+		Bitmap* system = Cache::System(Main_Data::data_system.system_name);
+
+		for (int i = 0; i < char_surface->h; ++i) {
+			for (int j = 0; j < char_surface->w; ++j, pixels+=4, shadow_pixels+=4) {
+				Color drawColor = system->GetPixel((j%12) + 1, 52+i+1);
+
+#if FONT_HINTING == 0
+				// Make everything matching the colorkey transparent
+				if (*(Uint32*)pixels == colorkey) {
+					pixels[abyte] = 0;
+					shadow_pixels[abyte] = 0;
+					continue;
+				}
+#endif
+
+				pixels[rbyte] = drawColor.red;
+				pixels[gbyte] = drawColor.green;
+				pixels[bbyte] = drawColor.blue;
+			}
+		}
+		SDL_UnlockSurface(char_surface);
+		SDL_UnlockSurface(char_shadow);
+		// End of Color blending
+
+		// HARDCODED: Always half size glyph
+		SDL_BlitSurface(char_shadow, NULL, text_surface, &Rect(c*6 + 1, 1, 6, 12).Get());
+		SDL_BlitSurface(char_surface, NULL, text_surface, &Rect(c*6, 0, 6, 12).Get());
+
+		SDL_FreeSurface(char_surface);
+		SDL_FreeSurface(char_shadow);
+	}
 
 	Bitmap* text_bmp = new Bitmap(1, 1);
 	SDL_FreeSurface(text_bmp->bitmap);
@@ -418,62 +488,9 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 		}
 	}
 
-	// Surface for drop Shadow (HARDCODED to black)
-	Bitmap* text_bmp_shadow = new Bitmap(1, 1);
-	SDL_FreeSurface(text_bmp_shadow->bitmap);
-	SDL_Surface* text_shadow = SDL_ConvertSurface(text_bmp->bitmap, text_bmp->bitmap->format, text_bmp->bitmap->flags);
-	text_bmp_shadow->bitmap = text_shadow;
-
-	// Experimental Color Blending
-	// Looks strange with font smoothing
-	SDL_LockSurface(text_bmp->bitmap);
-	SDL_LockSurface(text_bmp_shadow->bitmap);
-	Uint8* pixels = (Uint8*)text_bmp->bitmap->pixels;
-	Uint8* shadow_pixels = (Uint8*)text_shadow->pixels;
-
-	// HARDCODED: Should be changed to the correct color value later!
-	//            Currently always the first one is used!
-	Bitmap* system = Cache::System(Main_Data::data_system.system_name);
-
-	for (int i = 0; i < text_bmp->bitmap->h; ++i) {
-		for (int j = 0; j < text_bmp->bitmap->w; ++j, pixels+=4, shadow_pixels+=4) {
-			Color drawColor = system->GetPixel((j%7) + 1, 52+i+1);
-			
-			// HACK: Only works for half size glypths
-			// Skip every 7th row, this one is always empty?
-			if (j % 7 == 0) {
-				pixels[abyte] = 0;
-				shadow_pixels[abyte] = 0;
-				continue;
-			}
-
-#if FONT_HINTING == 0
-			// Make everything matching the colorkey transparent
-			if (*(Uint32*)pixels == colorkey) {
-				pixels[abyte] = 0;
-				shadow_pixels[abyte] = 0;
-				continue;
-			}
-#endif
-
-			pixels[rbyte] = drawColor.red;
-			pixels[gbyte] = drawColor.green;
-			pixels[bbyte] = drawColor.blue;
-
-			shadow_pixels[rbyte] = 0;
-			shadow_pixels[bbyte] = 0;
-			shadow_pixels[gbyte] = 0;
-		}
-	}
-	SDL_UnlockSurface(text_bmp_shadow->bitmap);
-	SDL_UnlockSurface(text_bmp->bitmap);
-	// End of Color blending
-
-	Blit(x+1, y+1, text_bmp_shadow, src_rect, font.color.alpha);
 	Blit(x, y, text_bmp, src_rect, font.color.alpha);
 
 	delete text_bmp;
-	delete text_bmp_shadow;
 }
 
 ////////////////////////////////////////////////////////////
