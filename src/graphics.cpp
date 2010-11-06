@@ -131,117 +131,29 @@ void Graphics::DrawFrame() {
 		drawable_map[it_zlist->GetId()]->Draw(it_zlist->GetZ());
 	}
 
-	// 2x Zoom - Bit slow, but works
-	// Update (11/6/10) SPG library gives a faster zoomer, not having to allocate surfaces each time ;)
 	if (Player::zoom) {
-		SDL_Surface* videoSurface = SDL_GetVideoSurface();
-		// SDL_Rect r = SPG_TransformX(Player::main_window, videoSurface, 0.0, 2.0, 2.0, 160, 120, 320, 240, SPG_NONE);
+		// TODO: Resize zoom code for BPP != 4 (and  maybe zoom != x2)
+		SDL_Surface* surface = Player::main_window;
 		register int i, j;
-		int bpp = Player::main_window->format->BytesPerPixel;
-		//bpp == videoSurface->format->BytesPerPixel;
-		if (SDL_MUSTLOCK(videoSurface) != 0)
-		{
-			if (SDL_LockSurface(videoSurface) < 0)
-			{
-				fprintf(stderr, "screen locking failed\n");
-				return;
+		SDL_LockSurface(surface);
+		int w = Player::GetWidth();
+		int zoom_w = surface->w;
+		int zoom_h = surface->h;
+		int pitch = surface->pitch / 4;
+		Uint32* src = (Uint32*) surface->pixels + pitch * Player::GetHeight();
+		Uint32* dst = (Uint32*) surface->pixels + pitch * (zoom_h - 1);
+		for (j = zoom_h - 1; j >= 0; j--) {
+			for (i = w - 1; i >= 0 ; i--) {
+				dst[i * 2] = src[i];
+				dst[i * 2 + 1] = src[i];
 			}
+			dst -= pitch;
+			if (j % 2 != 0)  src -= pitch;
 		}
-		switch (bpp)
-		{
-		case 2:
-		{
-			int tpitch = videoSurface->pitch / 2;
-			int spitch = Player::main_window->pitch / 2;
-			/* :COMMENT: 051223.15: pitch is always in bytes
-			* However, incrementing is done in sizeof(Uint16)
-			* and sizeof(Uint16) is two bytes. */
-			Uint16* tp = (Uint16*) videoSurface->pixels;
-			Uint16* sp = (Uint16*) Player::main_window->pixels;
-			const int wd = ((videoSurface->w / 2) < (Player::main_window->w))
-				? (videoSurface->w / 2) : (Player::main_window->w);
-			const int hg = ((videoSurface->h) < (Player::main_window->w))
-				? (videoSurface->h) : (Player::main_window->w);
-			for (j = 0; j < hg; ++j)
-			{
-				for (i = 0; i < wd; ++i)
-				{
-					tp[i*2] = sp[i];
-					tp[i*2 + 1] = sp[i];
-				}
-				tp += tpitch;
-				if (j % 2 != 0)  sp += spitch;
-			}
-			break;
-		}
-		case 3:
-		{
-			/* :COMMENT: 051223.18: This case has only been tested on
-			*                      little-endian machine. */
-			int tpitch = videoSurface->pitch;
-			int spitch = Player::main_window->pitch;
-			const int wd = ((videoSurface->w / 2) < (Player::main_window->w))
-				? (videoSurface->w / 2) : (Player::main_window->w);
-			const int hg = ((videoSurface->h) < (Player::main_window->w))
-				? (videoSurface->h) : (Player::main_window->w);
-			Uint8* tp = (Uint8*) videoSurface->pixels;
-			Uint8* sp = (Uint8*) Player::main_window->pixels;
-			for (j = 0; j < hg; ++j)
-			{
-				for (i = 0; i < 3 * wd; i += 3)
-				{
-					int i2 = i * 2;
-					tp[i2 + 0] = sp[i];
-					tp[i2 + 1] = sp[i + 1];
-					tp[i2 + 2] = sp[i + 2];
-					tp[i2 + 3] = sp[i];
-					tp[i2 + 4] = sp[i + 1];
-					tp[i2 + 5] = sp[i + 2];
-				}
-				tp += tpitch;
-				if (j % 2 != 0)  sp += spitch;
-			}
-			break;
-		}
-		case 4:
-		{
-			int tpitch = videoSurface->pitch / 4;
-			int spitch = Player::main_window->pitch / 4;
-			/* :COMMENT: 051223.15: pitch is always in bytes
-			* However, incrementing is done in sizeof(Uint32)
-			* and sizeof(Uint32) is four bytes. */
-			Uint32* tp = (Uint32*) videoSurface->pixels;
-			Uint32* sp = (Uint32*) Player::main_window->pixels;
-			const int wd = ((videoSurface->w / 2) < (Player::main_window->w))
-				? (videoSurface->w / 2) : (Player::main_window->w);
-			const int hg = ((videoSurface->h) < (Player::main_window->w))
-				? (videoSurface->h) : (Player::main_window->w);
-			for (j = 0; j < hg; ++j)
-			{
-				for (i = 0; i < wd; ++i)
-				{
-					tp[i*2] = sp[i];
-					tp[i*2 + 1] = sp[i];
-				}
-				tp += tpitch;
-				if (j % 2 != 0)  sp += spitch;
-			}
-			break;
-		}
-		default:
-		/* :COMMENT: 051223.17: This should never happen. */
-		fprintf(stderr, "Unknown bitdepth.\n");
-		break;
-    }
-	if (SDL_MUSTLOCK(videoSurface) != 0)
-	{
-		SDL_UnlockSurface(videoSurface);
-	}
-	SDL_Flip(videoSurface);
+		SDL_UnlockSurface(surface);
+		SDL_Flip(surface);
 	} else {
-		if (SDL_Flip(Player::main_window) == -1) {
-			Output::Error("Couldn't update screen.\n%s\n", SDL_GetError());
-		}
+		SDL_Flip(Player::main_window);
 	}
 }
 

@@ -34,15 +34,29 @@
 namespace Player {
 	SDL_Surface* main_window;
 	bool focus;
-	//bool alt_pressing;
+	bool alt_pressing;
 	bool fullscreen;
 	bool zoom;
+	int width;
+	int height;
+
+	bool last_fullscreen;
+	bool last_zoom;
+	int last_width;
+	int last_height;
 }
 
 ////////////////////////////////////////////////////////////
 /// Initialize
 ////////////////////////////////////////////////////////////
 void Player::Init() {
+	focus = true;
+	alt_pressing = false;
+	zoom = true;
+	fullscreen = false;
+	width = SCREEN_WIDTH;
+	height = SCREEN_HEIGHT;
+
 	Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_TIMER;
 #ifdef DINGOO
 	Uint32 videoFlags = SDL_SWSURFACE;
@@ -55,26 +69,12 @@ void Player::Init() {
 	if ((SDL_Init(flags) < 0)) { 
 		Output::Error("EasyRPG Player couldn't initialize SDL.\n%s\n", SDL_GetError());
 	}
-	atexit(SDL_Quit);
 
-	zoom = true;
-
-	main_window = SDL_SetVideoMode(SCREEN_WIDTH*2, SCREEN_HEIGHT*2, BPP, videoFlags);
-	if (!main_window) {
-		Output::Error("EasyRPG Player couldn't initialize %dx%dx%d video mode.\n%s\n", SCREEN_WIDTH*2, SCREEN_HEIGHT*2, BPP, SDL_GetError());
-	}
-
-	SDL_Surface* main_window2 = SDL_ConvertSurface(main_window, main_window->format, main_window->flags);
-	SDL_FreeSurface(main_window);
-	main_window = main_window2;
+	RefreshVideoMode();
 
 	SDL_ShowCursor(SDL_DISABLE);
 	
 	SDL_WM_SetCaption(GAME_TITLE, NULL);
-
-	focus = true;
-	//alt_pressing = false;
-	fullscreen = false;
 }
 
 ////////////////////////////////////////////////////////////
@@ -111,14 +111,20 @@ void Player::Update() {
 			/*if (evnt.key.keysym == SDLK_LALT || evnt.key.keysym == SDLK_RALT) {
 				alt_pressing = true;
 			} else if (evnt.key.keysym == SDLK_RETURN && alt_pressing) {
+			} StartVideoModeChange();
 				ToggleFullscreen();
+				EndVideoModeChange();
 			}*/
 			switch (evnt.key.keysym.sym) {
 			case SDLK_F4:
+				StartVideoModeChange();
 				ToggleFullscreen();
+				EndVideoModeChange();
 				break;
 			case SDLK_F5:
+				StartVideoModeChange();
 				ToggleZoom();
+				EndVideoModeChange();
 				break;
 			case SDLK_F12:
 				Main_Data::scene = new Scene_Title();
@@ -166,27 +172,9 @@ void Player::Exit() {
 void Player::ToggleFullscreen() {
 	#ifdef DINGOO
 		fullscreen = false;
-		return;
-	#endif
-
-	Uint32 flags = main_window->flags;
-	SDL_FreeSurface(main_window);
-	main_window = SDL_SetVideoMode(SCREEN_WIDTH*2, SCREEN_HEIGHT*2, 32, flags ^ SDL_FULLSCREEN);
-	if (main_window == NULL) {
-		if (!zoom) {
-			main_window = SDL_ConvertSurface(main_window, main_window->format, main_window->flags);
-			SDL_SetVideoMode(SCREEN_WIDTH*2, SCREEN_HEIGHT*2, 32, flags);
-		} else {
-			SDL_FreeSurface(main_window);
-			main_window = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, flags);
-		}
-	} else {
+	#else
 		fullscreen = !fullscreen;
-
-		SDL_Surface* main_window2 = SDL_ConvertSurface(main_window, main_window->format, main_window->flags);
-		SDL_FreeSurface(main_window);
-		main_window = main_window2;
-	}
+	#endif
 }
 
 ////////////////////////////////////////////////////////////
@@ -195,38 +183,82 @@ void Player::ToggleFullscreen() {
 void Player::ToggleZoom() {
 	#ifdef DINGOO
 		zoom = false;
-		return;
+	#else
+		zoom = !zoom;
 	#endif
-	if (fullscreen) {
-		ToggleFullscreen();
-	}
-	Uint32 flags = main_window->flags;
+}
 
-	if (!zoom) {
-		SDL_Surface* tmp = main_window;
-		main_window = SDL_ConvertSurface(main_window, main_window->format, main_window->flags);
-		SDL_FreeSurface(tmp); // Do not like memory leaks D:
-		SDL_SetVideoMode(SCREEN_WIDTH*2, SCREEN_HEIGHT*2, 32, flags);
-	} else {
-		SDL_Surface* tmp = main_window;
-		main_window = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, flags);
-		SDL_FreeSurface(tmp);
+////////////////////////////////////////////////////////////
+/// Switch zoom
+////////////////////////////////////////////////////////////
+void Player::SetScreenSize(int width, int height) {
+	Player::width = width;
+	Player::height = height;
+}
+
+////////////////////////////////////////////////////////////
+/// StartVideoModeChange
+////////////////////////////////////////////////////////////
+void Player::StartVideoModeChange() {
+	last_fullscreen = fullscreen;
+	last_zoom = zoom;
+	last_width = width;
+	last_height = height;
+}
+
+////////////////////////////////////////////////////////////
+/// EndVideoModeChange
+////////////////////////////////////////////////////////////
+void Player::EndVideoModeChange() {
+	if (last_fullscreen != fullscreen || last_zoom != zoom ||
+		last_width != width || last_height != height) {
+
+		if (!RefreshVideoMode()) {
+			fullscreen = last_fullscreen;
+			zoom = last_zoom;
+			width = last_width;
+			height = last_height;
+			if (!RefreshVideoMode()) {
+				Output::Error("Couldn't set video mode.\n%s\n", SDL_GetError());
+			}
+		}
+	}
+}
+
+////////////////////////////////////////////////////////////
+/// Refresh Video Mode
+////////////////////////////////////////////////////////////
+bool Player::RefreshVideoMode() {
+#ifdef DINGOO
+	Uint32 flags = SDL_SWSURFACE;
+#else
+	Uint32 flags = SDL_HWSURFACE;
+#endif
+	if (fullscreen)
+		flags |= SDL_FULLSCREEN;
+
+	int video_width = width;
+	int video_height = height;
+
+	if (zoom) {
+		video_width *= 2;
+		video_height *= 2;
 	}
 
-	zoom = !zoom;
+	main_window  = SDL_SetVideoMode(video_width, video_height, BPP, flags);
+	return main_window != NULL;
 }
 
 ////////////////////////////////////////////////////////////
 /// Get window width
 ////////////////////////////////////////////////////////////
 int Player::GetWidth() {
-	return main_window->w;
+	return width;
 }
 
 ////////////////////////////////////////////////////////////
 /// Get window height
 ////////////////////////////////////////////////////////////
 int Player::GetHeight() {
-	return main_window->h;
+	return height;
 }
-

@@ -32,16 +32,29 @@ namespace Player {
 	void Update();
 	void Exit();
 
+	void StartVideoModeChange();
+	void EndVideoModeChange();
+	bool RefreshVideoMode();
+
 	void ToggleFullscreen();
 	void ToggleZoom();
+	void SetScreenSize(int width, int height);
+
 	int GetWidth();
 	int GetHeight();
 
 	extern SDL_Surface* main_window;
 	extern bool focus;
-	//extern bool alt_pressing;
+	extern bool alt_pressing;
 	extern bool fullscreen;
 	extern bool zoom;
+	extern int width;
+	extern int height;
+
+	extern bool last_fullscreen;
+	extern bool last_zoom;
+	extern int last_width;
+	extern int last_height;
 }
 
 #endif
