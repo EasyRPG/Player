@@ -374,7 +374,6 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 	if (font.italic) style |= TTF_STYLE_ITALIC;
 	TTF_SetFontStyle(ttf_font, style);
 
-
 	SDL_Surface* text_surface; // Complete text
 	SDL_Surface* char_surface; // Single char
 	SDL_Surface* char_shadow; // Drop shadow of char
@@ -390,23 +389,58 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 
 	// Load the system file for the shadow and text color
 	Bitmap* system = Cache::System(Main_Data::data_system.system_name);
+	// Load the exfont-file
+	Bitmap* exfont = Cache::LoadBitmap("", "exfont");
 
 	// Get the Shadow color
 	Color shadowColor = system->GetPixel(16, 32);
+
+	// Where to draw the next glyph (x pos)
+	int next_glyph_pos = 0;
+
+	// The current char is an exfont/full size glyph
+	bool is_full_glyph = false;
 
 	// This loops always renders a single char, color blends it and then puts
 	// it onto the text_surface
 	for (unsigned c = 0; c < text.size(); ++c) {
 		text2[0] = text[c];
 
+		// EXFONT-Detection: Check for A-Z or a-z behind the $
+		if (text[c] == '$' && c != text.size() - 1 &&
+			((text[c+1] >= 'a' && text[c+1] <= 'z') || (text[c+1] >= 'A' && text[c+1] <= 'Z')))
+		{
+			int exfont_value;
+			// The two Bottom rows
+			if ((text[c+1] >= 'a' && text[c+1] <= 'z')) {
+				exfont_value = 26 + text[c+1] - 'a';
+			}
+			else {
+				exfont_value = text[c+1]-'A';
+			}
+			is_full_glyph = true;
+
 #if FONT_SMOOTHING == 0
-		// Render a single char
-		char_surface = TTF_RenderUTF8_Solid(ttf_font, text2, Color(255, 255, 255, 255).Get());
-		char_shadow  = TTF_RenderUTF8_Solid(ttf_font, text2, shadowColor.Get());
+			char_surface = SDL_CreateRGBSurface(exfont->bitmap->flags, 12, 12, 8, (0xFF << rbyte*8), (0xFF << gbyte*8), (0xFF << bbyte*8), (0xFF << abyte*8));
 #else
-		char_surface = TTF_RenderUTF8_Blended(ttf_font, text2, font.color.Get());
-		char_shadow = TTF_RenderUTF8_Blended(ttf_font, text2, shadowColor.Get());
+			char_surface = SDL_CreateRGBSurface(exfont->bitmap->flags, 12, 12, 32, (0xFF << rbyte*8), (0xFF << gbyte*8), (0xFF << bbyte*8), (0xFF << abyte*8));
 #endif
+			char_shadow = SDL_ConvertSurface(char_surface, char_surface->format, char_surface->flags);
+			SDL_BlitSurface(exfont->bitmap, &Rect((exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12).Get(), char_surface, NULL);
+			SDL_BlitSurface(exfont->bitmap, &Rect((exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12).Get(), char_shadow, NULL);
+		}
+		else
+		{
+			// No EXFONT, draw normal text
+#if FONT_SMOOTHING == 0
+			// Render a single char
+			char_surface = TTF_RenderUTF8_Solid(ttf_font, text2, Color(255, 255, 255, 255).Get());
+			char_shadow  = TTF_RenderUTF8_Solid(ttf_font, text2, shadowColor.Get());
+#else
+			char_surface = TTF_RenderUTF8_Blended(ttf_font, text2, Color(255, 255, 255, 255).Get());
+			char_shadow = TTF_RenderUTF8_Blended(ttf_font, text2, shadowColor.Get());
+#endif
+		}
 
 		if (!char_surface || !char_shadow) {
 			Output::Error("Couldn't draw text %s with Font %n size %d.\n%s\n", text.c_str(), font.name.c_str(), font.size, TTF_GetError());
@@ -440,8 +474,8 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 		int color_row = 0; // First or second row
 		int color_index = font.color;
 		if (font.color > 9 && font.color < 20) {
-				color_row = 1;
-				color_index = font.color / 10;
+			color_row = 1;
+			color_index = font.color / 10;
 		}
 
 		for (int i = 0; i < char_surface->h; ++i) {
@@ -455,12 +489,11 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 #if FONT_SMOOTHING == 0
 				// Make everything matching the colorkey transparent
 				if (*(Uint32*)pixels == colorkey) {
-					pixels[abyte] = 0;
-					shadow_pixels[abyte] = 0;
+					pixels[abyte] = SDL_ALPHA_TRANSPARENT;
+					shadow_pixels[abyte] = SDL_ALPHA_TRANSPARENT;
 					continue;
 				}
 #endif
-
 				pixels[rbyte] = drawColor.red;
 				pixels[gbyte] = drawColor.green;
 				pixels[bbyte] = drawColor.blue;
@@ -470,26 +503,34 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 		SDL_UnlockSurface(char_shadow);
 		// End of Color blending
 
-		// HARDCODED: Always half size glyph
-		SDL_BlitSurface(char_shadow, NULL, text_surface, &Rect(c*6 + 1, 1, 6, 12).Get());
-		SDL_BlitSurface(char_surface, NULL, text_surface, &Rect(c*6, 0, 6, 12).Get());
+		SDL_BlitSurface(char_shadow, NULL, text_surface, &Rect(next_glyph_pos + 1, 1, is_full_glyph?12:6, 12).Get());
+		SDL_BlitSurface(char_surface, NULL, text_surface, &Rect(next_glyph_pos, 0, is_full_glyph?12:6, 12).Get());
 
 		SDL_FreeSurface(char_surface);
 		SDL_FreeSurface(char_shadow);
+
+		if (is_full_glyph) {
+			next_glyph_pos += 6;
+			is_full_glyph = false;
+			++c;
+		}
+		next_glyph_pos += 6;
 	}
 
 	Bitmap* text_bmp = new Bitmap(1, 1);
 	SDL_FreeSurface(text_bmp->bitmap);
 	text_bmp->bitmap = text_surface;
 
-	if (text_bmp->GetWidth() > rect.width) {
+	// This function compresses the text if there is not enough place
+	// Not used in RPG2k, only in RPGXp
+	/*if (text_bmp->GetWidth() > rect.width) {
 		int stretch = (int)(text_bmp->GetWidth() * 0.4);
 		if (rect.width > stretch) stretch = rect.width;
 		Rect resample_rect(0, 0, text_bmp->GetWidth(), text_bmp->GetHeight());
 		Bitmap* resampled = text_bmp->Resample(stretch, text_bmp->GetHeight(), resample_rect);
 		delete text_bmp;
 		text_bmp = resampled;
-	}
+	}*/
 	Rect src_rect(0, 0, rect.width, rect.height);
 	int y = rect.y;
 	if (rect.height > text_bmp->GetHeight()) y += ((rect.height - text_bmp->GetHeight()) / 2);
