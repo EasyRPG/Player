@@ -19,13 +19,11 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "graphics.h"
+#include "drawable.h"
 #include "options.h"
-#include "sprig.h"
 #include "output.h"
 #include "player.h"
-#include "drawable.h"
 #include "SDL_ttf.h"
-#include "SDL_rotozoom.h"
 
 ////////////////////////////////////////////////////////////
 // Global Variables
@@ -134,13 +132,13 @@ void Graphics::DrawFrame() {
 	}
 
 	// 2x Zoom - Bit slow, but works
-    // Update (11/6/10) SPG library gives a faster zoomer, not having to allocate surfaces each time ;)
+	// Update (11/6/10) SPG library gives a faster zoomer, not having to allocate surfaces each time ;)
 	if (Player::zoom) {
-        SDL_Surface* videoSurface = SDL_GetVideoSurface();
-//        SDL_Rect r = SPG_TransformX(Player::main_window, videoSurface, 0.0, 2.0, 2.0, 160, 120, 320, 240, SPG_NONE);
+		SDL_Surface* videoSurface = SDL_GetVideoSurface();
+		// SDL_Rect r = SPG_TransformX(Player::main_window, videoSurface, 0.0, 2.0, 2.0, 160, 120, 320, 240, SPG_NONE);
 		register int i, j;
 		int bpp = Player::main_window->format->BytesPerPixel;
-		bpp == videoSurface->format->BytesPerPixel;
+		//bpp == videoSurface->format->BytesPerPixel;
 		if (SDL_MUSTLOCK(videoSurface) != 0)
 		{
 			if (SDL_LockSurface(videoSurface) < 0)

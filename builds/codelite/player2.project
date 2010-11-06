@@ -291,7 +291,7 @@
     </GlobalSettings>
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g -fno-rtti -fno-exceptions $(shell sdl-config --cflags) -DUNIX -D_DEBUG -Wall -Wextra -ansi -pedantic -Wno-unused" Required="yes" PreCompiledHeader=""/>
-      <Linker Options="-O2 -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs) " Required="yes"/>
+      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs) " Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/easyrpg" IntermediateDirectory=".obj/Debug" Command="./easyrpg" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -317,7 +317,7 @@
     </Configuration>
     <Configuration Name="Dingux-Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g -fno-rtti -fno-exceptions $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --cflags)  -DDINGOO -D_DEBUG -Wall -Wextra  -pedantic -Wno-unused" Required="yes" PreCompiledHeader=""/>
-      <Linker Options="-O2 -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image -lz $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --libs) " Required="yes"/>
+      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --libs) " Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/easyrpg.dge" IntermediateDirectory=".obj/Debug" Command="./easyrpg.dge" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -343,7 +343,7 @@
     </Configuration>
     <Configuration Name="Dingux-Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-O3 -s -fno-rtti -fno-exceptions $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --cflags) -DDINGOO -ansi " Required="yes" PreCompiledHeader=""/>
-      <Linker Options="-lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image -lz $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --libs)" Required="yes"/>
+      <Linker Options="-lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --libs)" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/easyrpg.dge" IntermediateDirectory=".obj/Release" Command="./easyrpg.dge" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -369,7 +369,7 @@
     </Configuration>
     <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-O3 -s -fno-rtti -fno-exceptions $(shell sdl-config --cflags) -Wall -Wextra -ansi -pedantic -DUNIX" Required="yes" PreCompiledHeader=""/>
-      <Linker Options="-O2 -lSDL_mixer -lSDL_gfx -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs)" Required="yes"/>
+      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs)" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/easyrpg" IntermediateDirectory=".obj/Release" Command="./easyrpg" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
@@ -401,7 +401,7 @@
         <Preprocessor Value="_WINDOWS"/>
         <Preprocessor Value="MINGW"/>
       </Compiler>
-      <Linker Options="-mwindows;-lmingw32;-lSDLmain;-lSDL;-lSDL_gfx;-lSDL_image;-lSDL_mixer;-lSDL_ttf;-lz" Required="yes">
+      <Linker Options="-mwindows;-lmingw32;-lSDLmain;-lSDL;-lSDL_image;-lSDL_mixer;-lSDL_ttf;-lz" Required="yes">
         <LibraryPath Value="$(EASYDEV_MINGW)/lib"/>
       </Linker>
       <ResourceCompiler Options="" Required="yes"/>
@@ -435,7 +435,7 @@
         <Preprocessor Value="_WINDOWS"/>
         <Preprocessor Value="MINGW"/>
       </Compiler>
-      <Linker Options="-mwindows;-lmingw32;-lSDLmain;-lSDL;-lSDL_gfx;-lSDL_image;-lSDL_mixer;-lSDL_ttf;-lz" Required="yes">
+      <Linker Options="-mwindows;-lmingw32;-lSDLmain;-lSDL;-lSDL_image;-lSDL_mixer;-lSDL_ttf;-lz" Required="yes">
         <LibraryPath Value="$(EASYDEV_MINGW)/lib"/>
       </Linker>
       <ResourceCompiler Options="" Required="yes"/>

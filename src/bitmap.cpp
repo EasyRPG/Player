@@ -382,7 +382,7 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 	// Create a new RGB Surface in an endian-neutral way
 	text_surface = SDL_CreateRGBSurface(bitmap->flags, text.size()*6, 12, 32, (0xFF << rbyte*8), (0xFF << gbyte*8), (0xFF << bbyte*8), (0xFF << abyte*8));
 
-#if FONT_HINTING == 0
+#if FONT_SMOOTHING == 0
 	Uint32 colorkey = 0;
 #endif
 
@@ -393,7 +393,7 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 	for (unsigned c = 0; c < text.size(); ++c) {
 		text2[0] = text[c];
 
-#if FONT_HINTING == 0
+#if FONT_SMOOTHING == 0
 		// Render a single char
 		char_surface = TTF_RenderUTF8_Solid(ttf_font, text2, font.color.Get());
 		char_shadow  = TTF_RenderUTF8_Solid(ttf_font, text2, Color().Get());
@@ -406,7 +406,7 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 			Output::Error("Couldn't draw text %s with Font %n size %d.\n%s\n", text.c_str(), font.name.c_str(), font.size, TTF_GetError());
 		}
 
-#if FONT_HINTING == 0
+#if FONT_SMOOTHING == 0
 		// Retrieve the color key once
 		if (c == 0) {
 			colorkey = *(Uint32*)char_surface->format->palette->colors | (0xFF << abyte*8);
@@ -438,7 +438,7 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 			for (int j = 0; j < char_surface->w; ++j, pixels+=4, shadow_pixels+=4) {
 				Color drawColor = system->GetPixel((j%12) + 1, 52+i+1);
 
-#if FONT_HINTING == 0
+#if FONT_SMOOTHING == 0
 				// Make everything matching the colorkey transparent
 				if (*(Uint32*)pixels == colorkey) {
 					pixels[abyte] = 0;
