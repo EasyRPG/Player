@@ -69,6 +69,7 @@ namespace Graphics {
 
 	extern std::list<ZObj> zlist;
 	extern std::list<ZObj>::iterator it_zlist;
+
 }
 
 #endif

@@ -20,6 +20,7 @@
 ////////////////////////////////////////////////////////////
 #include "graphics.h"
 #include "options.h"
+#include "sprig.h"
 #include "output.h"
 #include "player.h"
 #include "drawable.h"
@@ -133,12 +134,11 @@ void Graphics::DrawFrame() {
 	}
 
 	// 2x Zoom - Bit slow, but works
+    // Update (11/6/10) SPG library gives a faster zoomer, not having to allocate surfaces each time ;)
 	if (Player::zoom) {
-		SDL_Surface* videoSurface = SDL_GetVideoSurface();
-		SDL_Surface* zoomed_window = rotozoomSurface(Player::main_window, 0, 2, 0);
-		SDL_BlitSurface(zoomed_window, NULL, videoSurface, NULL);
-		SDL_FreeSurface(zoomed_window);
-		SDL_Flip(videoSurface);
+        SDL_Surface* videoSurface = SDL_GetVideoSurface();
+        SDL_Rect r = SPG_TransformX(Player::main_window, videoSurface, 0.0, 2.0, 2.0, 160, 120, 320, 240, SPG_NONE);
+        SDL_Flip(videoSurface);
 	} else {
 		if (SDL_Flip(Player::main_window) == -1) {
 			Output::Error("Couldn't update screen.\n%s\n", SDL_GetError());

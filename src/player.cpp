@@ -58,10 +58,14 @@ void Player::Init() {
 	atexit(SDL_Quit);
 
 	zoom = true;
+    
 	main_window = SDL_SetVideoMode(SCREEN_WIDTH*2, SCREEN_HEIGHT*2, BPP, videoFlags);
 	if (!main_window) {
 		Output::Error("EasyRPG Player couldn't initialize %dx%dx%d video mode.\n%s\n", SCREEN_WIDTH*2, SCREEN_HEIGHT*2, BPP, SDL_GetError());
 	}
+
+    // FIXME: mem leak?
+    main_window = SDL_ConvertSurface(main_window, main_window->format, main_window->flags);
 
 	SDL_ShowCursor(SDL_DISABLE);
 	
@@ -177,6 +181,9 @@ void Player::ToggleFullscreen() {
 		}
 	} else {
 		fullscreen = !fullscreen;
+
+        // FIXME: mem leak?
+        main_window = SDL_ConvertSurface(main_window, main_window->format, main_window->flags);
 	}
 }
 
@@ -194,11 +201,14 @@ void Player::ToggleZoom() {
 	Uint32 flags = main_window->flags;
 
 	if (!zoom) {
+        SDL_Surface* tmp = main_window;
 		main_window = SDL_ConvertSurface(main_window, main_window->format, main_window->flags);
+        SDL_FreeSurface(tmp); // Do not like memory leaks D:
 		SDL_SetVideoMode(SCREEN_WIDTH*2, SCREEN_HEIGHT*2, 32, flags);
 	} else {
-		SDL_FreeSurface(main_window);
+        SDL_Surface* tmp = main_window;
 		main_window = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, flags);
+        SDL_FreeSurface(tmp);
 	}
 
 	zoom = !zoom;
