@@ -29,7 +29,7 @@ std::string Font::default_name = "Font/DejaVuLGCSansMono";
 int Font::default_size = 9;
 bool Font::default_bold = false;
 bool Font::default_italic = false;
-Color Font::default_color(255, 255, 255, 255);
+int Font::default_color = 0;
 std::map<std::string, std::map<int, TTF_Font*> > Font::fonts;
 
 ////////////////////////////////////////////////////////////

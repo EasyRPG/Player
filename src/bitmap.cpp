@@ -388,6 +388,12 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 
 	char text2[2]; text2[1] = '\0';
 
+	// Load the system file for the shadow and text color
+	Bitmap* system = Cache::System(Main_Data::data_system.system_name);
+
+	// Get the Shadow color
+	Color shadowColor = system->GetPixel(16, 32);
+
 	// This loops always renders a single char, color blends it and then puts
 	// it onto the text_surface
 	for (unsigned c = 0; c < text.size(); ++c) {
@@ -395,11 +401,11 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 
 #if FONT_SMOOTHING == 0
 		// Render a single char
-		char_surface = TTF_RenderUTF8_Solid(ttf_font, text2, font.color.Get());
-		char_shadow  = TTF_RenderUTF8_Solid(ttf_font, text2, Color().Get());
+		char_surface = TTF_RenderUTF8_Solid(ttf_font, text2, Color(255, 255, 255, 255).Get());
+		char_shadow  = TTF_RenderUTF8_Solid(ttf_font, text2, shadowColor.Get());
 #else
 		char_surface = TTF_RenderUTF8_Blended(ttf_font, text2, font.color.Get());
-		char_shadow = TTF_RenderUTF8_Blended(ttf_font, text2, Color().Get());
+		char_shadow = TTF_RenderUTF8_Blended(ttf_font, text2, shadowColor.Get());
 #endif
 
 		if (!char_surface || !char_shadow) {
@@ -424,19 +430,27 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 		SDL_SetAlpha(char_surface, 0, 0);
 		SDL_SetAlpha(char_shadow, 0, 0);
 
-		// Experimental Color Blending
+		// Color Blending
 		SDL_LockSurface(char_surface);
 		SDL_LockSurface(char_shadow);
 		Uint8* pixels = (Uint8*)char_surface->pixels;
 		Uint8* shadow_pixels = (Uint8*)char_shadow->pixels;
 
-		// HARDCODED: Should be changed to the correct color value later!
-		//            Currently always the first one is used!
-		Bitmap* system = Cache::System(Main_Data::data_system.system_name);
+		// Get the correct color from the system file
+		int color_row = 0; // First or second row
+		int color_index = font.color;
+		if (font.color > 9 && font.color < 20) {
+				color_row = 1;
+				color_index = font.color / 10;
+		}
 
 		for (int i = 0; i < char_surface->h; ++i) {
+			int y = 52 + i + 1 + (color_row == 1?17:0);
+
 			for (int j = 0; j < char_surface->w; ++j, pixels+=4, shadow_pixels+=4) {
-				Color drawColor = system->GetPixel((j%12) + 1, 52+i+1);
+				int x = j + 1 + 16*color_index;
+				
+				Color drawColor = system->GetPixel(x, y);
 
 #if FONT_SMOOTHING == 0
 				// Make everything matching the colorkey transparent
@@ -488,7 +502,7 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 		}
 	}
 
-	Blit(x, y, text_bmp, src_rect, font.color.alpha);
+	Blit(x, y, text_bmp, src_rect, SDL_ALPHA_OPAQUE/*font.color.alpha*/);
 
 	delete text_bmp;
 }

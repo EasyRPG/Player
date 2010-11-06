@@ -42,13 +42,13 @@ public:
 	int size;
 	bool bold;
 	bool italic;
-	Color color;
+	int color;
 	
 	static std::string default_name;
 	static int default_size;
 	static bool default_bold;
 	static bool default_italic;
-	static Color default_color;
+	static int default_color;
 	
 	static bool Exists(std::string name);
 	

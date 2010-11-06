@@ -33,7 +33,7 @@ public:
 	~Window_Command();
 
 	void Refresh();
-	void DrawItem(int i, Color color);
+	void DrawItem(int i, int color);
 	void DisableItem(int i);
 
 protected:

@@ -27,6 +27,7 @@
 /// Color class
 ////////////////////////////////////////////////////////////
 class Color {
+
 public:
 	Color();
 	Color(int ired, int igreen, int iblue, int ialpha);
@@ -36,6 +37,11 @@ public:
 	bool operator!=(const Color& other) const;
 
 	void Set(int nred, int ngreen, int nblue, int nalpha);
+
+	enum ColorTypes {
+		Default = 0,
+		Disabled = 3
+	};
 
 	int red;
 	int green;

@@ -19,6 +19,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "window_command.h"
+#include "color.h"
 
 ////////////////////////////////////////////////////////////
 /// Constructor
@@ -46,14 +47,14 @@ Window_Command::~Window_Command() {
 void Window_Command::Refresh() {
 	contents->Clear();
 	for (int i = 0; i < item_max; i++) {
-		DrawItem(i, Color(255, 255, 255, 255));
+		DrawItem(i, Color::Default);
 	}
 }
 
 ////////////////////////////////////////////////////////////
 /// Draw Item
 ////////////////////////////////////////////////////////////
-void Window_Command::DrawItem(int i, Color color){
+void Window_Command::DrawItem(int i, int color){
 	contents->GetFont()->color = color;
 	Rect rect(4, 16 * i, contents->GetWidth() - 8, 16);
 	contents->FillRect(rect, Color(0, 0, 0, 0));
@@ -64,5 +65,5 @@ void Window_Command::DrawItem(int i, Color color){
 /// Disable Item
 ////////////////////////////////////////////////////////////
 void Window_Command::DisableItem(int i) {
-	DrawItem(i, Color(192, 192, 192, 255));
+	DrawItem(i, Color::Disabled);
 }
