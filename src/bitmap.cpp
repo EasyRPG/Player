@@ -29,6 +29,7 @@
 #include "player.h"
 #include "SDL_image.h"
 #include "SDL_ttf.h"
+#include "exfont.xpm"
 
 ////////////////////////////////////////////////////////////
 /// Defines
@@ -390,7 +391,7 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 	// Load the system file for the shadow and text color
 	Bitmap* system = Cache::System(Main_Data::data_system.system_name);
 	// Load the exfont-file
-	Bitmap* exfont = Cache::LoadBitmap("", "exfont");
+	SDL_Surface* exfont = IMG_ReadXPMFromArray(exfont_xpm);
 
 	// Get the Shadow color
 	Color shadowColor = system->GetPixel(16, 32);
@@ -421,13 +422,13 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 			is_full_glyph = true;
 
 #if FONT_SMOOTHING == 0
-			char_surface = SDL_CreateRGBSurface(exfont->bitmap->flags, 12, 12, 8, (0xFF << rbyte*8), (0xFF << gbyte*8), (0xFF << bbyte*8), (0xFF << abyte*8));
+			char_surface = SDL_CreateRGBSurface(exfont->flags, 12, 12, 8, (0xFF << rbyte*8), (0xFF << gbyte*8), (0xFF << bbyte*8), (0xFF << abyte*8));
 #else
-			char_surface = SDL_CreateRGBSurface(exfont->bitmap->flags, 12, 12, 32, (0xFF << rbyte*8), (0xFF << gbyte*8), (0xFF << bbyte*8), (0xFF << abyte*8));
+			char_surface = SDL_CreateRGBSurface(exfont->flags, 12, 12, 32, (0xFF << rbyte*8), (0xFF << gbyte*8), (0xFF << bbyte*8), (0xFF << abyte*8));
 #endif
 			char_shadow = SDL_ConvertSurface(char_surface, char_surface->format, char_surface->flags);
-			SDL_BlitSurface(exfont->bitmap, &Rect((exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12).Get(), char_surface, NULL);
-			SDL_BlitSurface(exfont->bitmap, &Rect((exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12).Get(), char_shadow, NULL);
+			SDL_BlitSurface(exfont, &Rect((exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12).Get(), char_surface, NULL);
+			SDL_BlitSurface(exfont, &Rect((exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12).Get(), char_shadow, NULL);
 		}
 		else
 		{
