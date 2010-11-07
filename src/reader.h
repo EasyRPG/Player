@@ -26,7 +26,9 @@
 #include <iostream>
 #include <string.h>
 #include <stdio.h>
+#ifndef NDEBUG
 #include <assert.h>
+#endif
 #ifndef _MSC_VER
 	#include <stdint.h>
 #else
@@ -43,7 +45,7 @@
 class Reader {
 public:
 	Reader(char* filename);
-	Reader(std::string filename);
+	Reader(const std::string& filename);
 	~Reader();
 
 	struct Chunk {

@@ -122,7 +122,9 @@ void Bitmap::BlitScreen(int x, int y, Rect src_rect, int opacity) {
 	if (opacity >= 255) {
 		SDL_Rect offset = {x, y, 0, 0};
 		SDL_Rect src_rect_sdl = src_rect.Get();
-		SDL_BlitSurface(bitmap, &src_rect_sdl, Player::main_window, &offset);
+		if (SDL_BlitSurface(bitmap, &src_rect_sdl, Player::main_window, &offset) < 0) {
+			Output::Error("Bitmap.cpp BlitScreen(): Could not blit surface.", SDL_GetError());
+		}
 	} else if (opacity > 0) {
 		src_rect.Adjust(GetWidth(), GetHeight());
 		if (src_rect.IsOutOfBounds(GetWidth(), GetHeight())) return;

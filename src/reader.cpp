@@ -30,7 +30,7 @@ Reader::Reader(char* filename) {
 ////////////////////////////////////////////////////////////
 /// Constructor. Opens the file specified by filename.
 ////////////////////////////////////////////////////////////
-Reader::Reader(std::string filename) {
+Reader::Reader(const std::string& filename) {
 	stream = fopen(filename.c_str(), "rb");
 }
 
@@ -53,7 +53,11 @@ bool Reader::ReadBool() {
 ////////////////////////////////////////////////////////////
 uint8_t Reader::Read8() {
 	uint8_t val = 0;
+#ifndef NDEBUG
 	assert(fread(&val, 1, 1, stream) == 1);
+#else
+	fread(&val, 1, 1, stream);
+#endif
 	return val;
 }
 
@@ -62,7 +66,11 @@ uint8_t Reader::Read8() {
 ////////////////////////////////////////////////////////////
 int16_t Reader::Read16() {
 	int16_t val = 0;
+#ifndef NDEBUG
 	assert(fread(&val, 2, 1, stream) == 1);
+#else
+	fread(&val, 2, 1, stream);
+#endif
 	return val;
 }
 
@@ -75,7 +83,11 @@ int32_t Reader::Read32(IntegerType type) {
 
 	switch (type) {
 	case Reader::NormalInteger:
+#ifndef NDEBUG
 		assert(fread(&value, 4, 1, stream) == 1);
+#else
+		fread(&value, 4, 1, stream);
+#endif
 		return value;
 	case Reader::CompressedInteger:
 		do {
@@ -87,7 +99,9 @@ int32_t Reader::Read32(IntegerType type) {
 
 		return value;
 	default:
+#ifndef NDEBUG
 		assert(false && "Invalid IntegerType in Read32");
+#endif
 		return 0;
 	}
 }
@@ -98,7 +112,11 @@ int32_t Reader::Read32(IntegerType type) {
 void Reader::ReadBool(std::vector<bool> &buffer, size_t size) {
 	uint8_t val = 0;
 	for (unsigned i = 0; i < size; ++i) {
+#ifndef NDEBUG
 		assert(fread(&val, 1, 1, stream) == 1);
+#else
+		fread(&val, 1, 1, stream);
+#endif
 		buffer.push_back(val > 0);
 	}
 }
@@ -109,7 +127,11 @@ void Reader::ReadBool(std::vector<bool> &buffer, size_t size) {
 void Reader::Read8(std::vector<uint8_t> &buffer, size_t size) {
 	uint8_t val;
 	for (unsigned int i = 0; i < size; ++i) {
+#ifndef NDEBUG
 		assert(fread(&val, 1, 1, stream) == 1);
+#else
+		fread(&val, 1, 1, stream);
+#endif
 		buffer.push_back(val);
 	}
 }
@@ -121,7 +143,11 @@ void Reader::Read16(std::vector<int16_t> &buffer, size_t size) {
 	int16_t val;
 	size_t items = size / 2;
 	for (unsigned int i = 0; i < items; ++i) {
+#ifndef NDEBUG
 		assert(fread(&val, 2, 1, stream) == 1);
+#else
+		fread(&val, 2, 1, stream);
+#endif
 		buffer.push_back(val);
 	}
 }
@@ -133,7 +159,11 @@ void Reader::Read32(std::vector<uint32_t> &buffer, size_t size) {
 	uint32_t val;
 	size_t items = size / 4;
 	for (unsigned int i = 0; i < items; ++i) {
+#ifndef NDEBUG
 		assert(fread(&val, 4, 1, stream) == 1);
+#else
+		fread(&val, 4, 1, stream);
+#endif
 		buffer.push_back(val);
 	}
 }
@@ -144,7 +174,11 @@ void Reader::Read32(std::vector<uint32_t> &buffer, size_t size) {
 std::string Reader::ReadString(size_t size) {
 	char* chars = new char[size + 1];
 	chars[size] = '\0';
+#ifndef NDEBUG
 	assert(fread(chars, 1, size, stream) == size);
+#else
+	fread(chars, 1, size, stream);
+#endif
 	std::string str = std::string(chars, size);
 	delete [] chars;
 	return str;
@@ -179,7 +213,11 @@ void Reader::Seek(size_t pos, SeekMode mode) {
 		fseek(stream, pos, SEEK_END);
 		break;
 	default:
+#ifndef NDEBUG
 		assert(false && "Invalid SeekMode");
+#else
+		;
+#endif
 	}
 }
 
