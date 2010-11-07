@@ -33,8 +33,7 @@ void LDB_Reader::Load(const std::string& filename) {
 	}
 	std::string header = reader.ReadString(reader.Read32(Reader::CompressedInteger));
 	if (header != "LcfDataBase") {
-		//Output::Error("%s is not a valid RPG2000 database.\n", filename.c_str());
-		Output::Error("%s is not a valid RPG2000 database.\n", header.c_str());
+		Output::Error("%s is not a valid RPG2000 database.\n", filename.c_str());
 	}
 	LoadChunks(reader);
 }
