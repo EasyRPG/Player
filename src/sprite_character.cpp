@@ -18,36 +18,17 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "game_actors.h"
+#include "sprite_character.h"
 
 ////////////////////////////////////////////////////////////
-/// Constructor
+/// Cosntructor
 ////////////////////////////////////////////////////////////
-Game_Actors::Game_Actors()
-{
-	// Actors start with index 1
-	data.resize(Main_Data::data_actors.size()+1);
+Sprite_Character::Sprite_Character() {
+
 }
 
 ////////////////////////////////////////////////////////////
 /// Destructor
 ////////////////////////////////////////////////////////////
-Game_Actors::~Game_Actors()
-{
-}
-
-////////////////////////////////////////////////////////////
-/// Subscript []-operator
-////////////////////////////////////////////////////////////
-Game_Actor* Game_Actors::GetActor(int actorId) {
-	// Invalid Index (LDB has less actors)
-	if (actorId <= 0 || (unsigned)actorId >= data.size() || actorId > 5000) {
-		return NULL;
-	}
-	// Index valid but actor never used before -> create it
-	else if (data[actorId] == 0) {
-		data[actorId] = new Game_Actor(actorId);
-	}
-
-	return data[actorId];
+Sprite_Character::~Sprite_Character() {
 }

@@ -165,6 +165,8 @@
         <File Name="../../src/tone.h"/>
         <File Name="../../src/window.cpp"/>
         <File Name="../../src/window.h"/>
+        <File Name="../../src/sprite_character.h"/>
+        <File Name="../../src/sprite_character.cpp"/>
         <File Name="../../src/spriteset_map.h"/>
         <File Name="../../src/spriteset_map.cpp"/>
         <File Name="../../src/zobj.cpp"/>

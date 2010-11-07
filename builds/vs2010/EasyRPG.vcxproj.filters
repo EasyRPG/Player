@@ -458,6 +458,9 @@
     <ClCompile Include="..\..\src\window_menustatus.cpp">
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\sprite_character.cpp">
+      <Filter>Source Files\Engine\Sprite</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cache.h">
@@ -750,6 +753,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\window_menustatus.h">
       <Filter>Source Files\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sprite_character.h">
+      <Filter>Source Files\Engine\Sprite</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

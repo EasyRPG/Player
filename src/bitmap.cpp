@@ -123,7 +123,7 @@ void Bitmap::BlitScreen(int x, int y, Rect src_rect, int opacity) {
 		SDL_Rect offset = {x, y, 0, 0};
 		SDL_Rect src_rect_sdl = src_rect.Get();
 		if (SDL_BlitSurface(bitmap, &src_rect_sdl, Player::main_window, &offset) < 0) {
-			Output::Error("Bitmap.cpp BlitScreen(): Could not blit surface.", SDL_GetError());
+			Output::Error("Bitmap.cpp BlitScreen(): Could not blit surface:\n%s", SDL_GetError());
 		}
 	} else if (opacity > 0) {
 		src_rect.Adjust(GetWidth(), GetHeight());
@@ -429,8 +429,10 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 			char_surface = SDL_CreateRGBSurface(exfont->flags, 12, 12, 32, (0xFF << rbyte*8), (0xFF << gbyte*8), (0xFF << bbyte*8), (0xFF << abyte*8));
 #endif
 			char_shadow = SDL_ConvertSurface(char_surface, char_surface->format, char_surface->flags);
-			SDL_BlitSurface(exfont, &Rect((exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12).Get(), char_surface, NULL);
-			SDL_BlitSurface(exfont, &Rect((exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12).Get(), char_shadow, NULL);
+			SDL_Rect rect = Rect((exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12).Get();
+			SDL_BlitSurface(exfont, &rect, char_surface, NULL);
+			rect = Rect((exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12).Get();
+			SDL_BlitSurface(exfont, &rect, char_shadow, NULL);
 		}
 		else
 		{
@@ -506,15 +508,23 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 		SDL_UnlockSurface(char_shadow);
 		// End of Color blending
 
-		SDL_BlitSurface(char_shadow, NULL, text_surface, &Rect(next_glyph_pos + 1, 1, is_full_glyph?12:6, 12).Get());
-		SDL_BlitSurface(char_surface, NULL, text_surface, &Rect(next_glyph_pos, 0, is_full_glyph?12:6, 12).Get());
+		// Blit the char and drop shadow on the text surface
+		SDL_Rect rect = Rect(next_glyph_pos + 1, 1, is_full_glyph?12:6, 12).Get();
+		SDL_BlitSurface(char_shadow, NULL, text_surface, &rect);
+		rect = Rect(next_glyph_pos, 0, is_full_glyph?12:6, 12).Get();
+		SDL_BlitSurface(char_surface, NULL, text_surface, &rect);
 
 		SDL_FreeSurface(char_surface);
 		SDL_FreeSurface(char_shadow);
 
+		// If it's a full size glyph add the size of a half-size glypth twice
 		if (is_full_glyph) {
 			next_glyph_pos += 6;
 			is_full_glyph = false;
+			// Skip the next character
+			// Note that this is useful for exfont only!
+			// If there should be ever support for normal Full-Glyphs this will
+			// cause problems
 			++c;
 		}
 		next_glyph_pos += 6;
@@ -538,6 +548,8 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 	int y = rect.y;
 	if (rect.height > text_bmp->GetHeight()) y += ((rect.height - text_bmp->GetHeight()) / 2);
 	int x = rect.x;
+
+	// Alignment code
 	if (rect.width > text_bmp->GetWidth()) {
 		if (align == 1) {
 			x += (rect.width - text_bmp->GetWidth()) / 2;

@@ -1160,6 +1160,14 @@
 					Name="Sprite"
 					>
 					<File
+						RelativePath="..\..\src\sprite_character.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\sprite_character.h"
+						>
+					</File>
+					<File
 						RelativePath="..\..\src\spriteset_map.cpp"
 						>
 					</File>

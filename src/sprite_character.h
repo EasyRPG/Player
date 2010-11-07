@@ -15,39 +15,24 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _SPRITE_CHARACTER_H_
+#define _SPRITE_CHARACTER_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "game_actors.h"
+#include "game_character.h"
 
 ////////////////////////////////////////////////////////////
-/// Constructor
+/// Game System class
 ////////////////////////////////////////////////////////////
-Game_Actors::Game_Actors()
-{
-	// Actors start with index 1
-	data.resize(Main_Data::data_actors.size()+1);
-}
+class Sprite_Character {
+public:
+	Sprite_Character();
+	~Sprite_Character();
 
-////////////////////////////////////////////////////////////
-/// Destructor
-////////////////////////////////////////////////////////////
-Game_Actors::~Game_Actors()
-{
-}
+private:
 
-////////////////////////////////////////////////////////////
-/// Subscript []-operator
-////////////////////////////////////////////////////////////
-Game_Actor* Game_Actors::GetActor(int actorId) {
-	// Invalid Index (LDB has less actors)
-	if (actorId <= 0 || (unsigned)actorId >= data.size() || actorId > 5000) {
-		return NULL;
-	}
-	// Index valid but actor never used before -> create it
-	else if (data[actorId] == 0) {
-		data[actorId] = new Game_Actor(actorId);
-	}
+};
 
-	return data[actorId];
-}
+#endif
