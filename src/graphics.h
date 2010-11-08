@@ -33,6 +33,7 @@
 ////////////////////////////////////////////////////////////
 namespace Graphics {
 	void Init();
+	void Quit();
 	void TimerWait();
 	void TimerContinue();
 	void Update();
@@ -58,6 +59,7 @@ namespace Graphics {
 	//////////////////////////////////
 	enum TransitionType {
 		FadeIn,
+		FadeOut,
 		NoTransition
 	};
 

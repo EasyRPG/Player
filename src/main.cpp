@@ -36,5 +36,7 @@ int main(int argc, char* argv[]) {
 
 	Player::Run();
 
+	Graphics::Quit();
+
 	return EXIT_SUCCESS;
 }

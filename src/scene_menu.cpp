@@ -79,7 +79,7 @@ void Scene_Menu::MainFunction() {
 	menustatus_window->SetY(0);
 	menustatus_window->SetActive(false);
 
-	Graphics::Transition(Graphics::FadeIn, 30, false);
+	Graphics::Transition(Graphics::FadeIn, 10, false);
 
 	while (Main_Data::scene_type == SCENE_MENU) {
 		Player::Update();
@@ -87,6 +87,13 @@ void Scene_Menu::MainFunction() {
 		Input::Update();
 		Update();
 	}
+
+	Graphics::Transition(Graphics::FadeOut, 10, false);
+
+	// Wait for the transition to finish
+	do {
+		Graphics::Update();
+	} while (Graphics::is_in_transition_yet);
 
 	delete command_window;
 	delete gold_window;

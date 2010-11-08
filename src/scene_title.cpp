@@ -121,7 +121,7 @@ void Scene_Title::MainFunction() {
 		Input::Update();
 		Update();
 	}
-	
+
 	// Delete graphical objects
 	delete command_window;
 	delete title;

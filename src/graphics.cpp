@@ -46,6 +46,7 @@ namespace Graphics {
 	bool wait_for_transition;
 	TransitionType actual_transition;
 	SDL_Surface* fake_background;
+	SDL_Surface* blank_screen;
 
 	std::map<unsigned long, Drawable*> drawable_map;
 	std::map<unsigned long, Drawable*>::iterator it_drawable_map;
@@ -70,6 +71,9 @@ void Graphics::Init() {
 	transition_current_frame = 0;
 	transition_increment = 0;
 	actual_transition = NoTransition;
+	fake_background = NULL;
+	blank_screen = SDL_ConvertSurface(Player::main_window, Player::main_window->format, Player::main_window->flags);
+	SDL_FillRect(blank_screen, NULL, 0);
 
 	is_in_transition_yet = false;
 	wait_for_transition = false;
@@ -77,6 +81,10 @@ void Graphics::Init() {
 	if (TTF_Init() == -1) {
 		Output::Error("Couldn't initialize SDL_ttf library.\n%s\n", TTF_GetError());
 	}
+}
+
+void Graphics::Quit() {
+	SDL_FreeSurface(blank_screen);
 }
 
 ////////////////////////////////////////////////////////////
@@ -151,11 +159,18 @@ void Graphics::DoTransition() {
 				////////
 				break;
 
+			case FadeOut:
+				SDL_SetAlpha(blank_screen, SDL_SRCALPHA, Graphics::transition_current_frame*transition_increment);
+				SDL_BlitSurface(blank_screen, NULL, Player::main_window, NULL);
+				break;
+
 			default:
 				break;
 		}
 		transition_current_frame++;
 	} else {
+		if (actual_transition == FadeOut)
+			SDL_BlitSurface(blank_screen, NULL, Player::main_window, NULL);
 		is_in_transition_yet = false;
 	}
 }
@@ -164,6 +179,7 @@ void Graphics::DoTransition() {
 // Draw Frame
 ////////////////////////////////////////////////////////////
 void Graphics::DrawFrame() {
+
 	SDL_FillRect(Player::main_window, &Player::main_window->clip_rect, DEFAULT_BACKCOLOR);
 	DrawableType type;
 	for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
