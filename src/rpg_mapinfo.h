@@ -15,28 +15,41 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _RPG_MAPINFO_H_
+#define _RPG_MAPINFO_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <string>
+#include <vector>
+#include "rect.h"
+#include "rpg_encounter.h"
+#include "rpg_music.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// RPG::MapInfo class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+namespace RPG {
+	class MapInfo {
+	public:
+		MapInfo();
+		
+		int ID;
+		std::string name;
+		int parent_map;
+		int type;
+		int music_type;
+		Music music;
+		int background_type;
+		std::string background_name;
+		int teleport;
+		int escape;
+		int save;
+		std::vector<Encounter> encounters;
+		int encounter_steps;
+		Rect area_rect;
+	};
 }
+
+#endif

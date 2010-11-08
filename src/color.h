@@ -15,28 +15,41 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _COLOR_H_
+#define _COLOR_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "SDL.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Color class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+class Color {
 
-	Player::Run();
+public:
+	Color();
+	Color(int ired, int igreen, int iblue, int ialpha);
+	Color(Uint32 color, SDL_PixelFormat* format);
+	~Color();
 
-	Graphics::Quit();
+	bool operator!=(const Color& other) const;
 
-	return EXIT_SUCCESS;
-}
+	void Set(int nred, int ngreen, int nblue, int nalpha);
+
+	enum ColorTypes {
+		Default = 0,
+		Disabled = 3
+	};
+
+	int red;
+	int green;
+	int blue;
+	int alpha;
+
+	Uint32 GetUint32(SDL_PixelFormat* format) const;
+	SDL_Color Get() const;
+};
+
+#endif

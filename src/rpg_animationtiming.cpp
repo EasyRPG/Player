@@ -18,25 +18,17 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "rpg_animationtiming.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Constructor
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+RPG::AnimationTiming::AnimationTiming() {
+	frame = 0;
+	flash_scope = 0;
+	flash_red = 31;
+	flash_green = 31;
+	flash_blue = 31;
+	flash_power = 31;
+	screen_shake = 0;
 }

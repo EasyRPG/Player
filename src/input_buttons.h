@@ -15,28 +15,48 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _INPUT_BUTTONS_H_
+#define _INPUT_BUTTONS_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <vector>
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Input namespace
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+namespace Input {
+	enum InputButton {
+		UP = 0,
+		DOWN,
+		LEFT,
+		RIGHT,
+		DECISION,
+		CANCEL,
+		SHIFT,
+		N0,
+		N1,
+		N2,
+		N3,
+		N4,
+		N5,
+		N6,
+		N7,
+		N8,
+		N9,
+		PLUS,
+		MINUS,
+		MULTIPLY,
+		DIVIDE,
+		PERIOD,
+		Count
+	};
 
-	Player::Run();
+	void InitButtons();
 
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+	extern std::vector< std::vector<int> > buttons;
+	extern std::vector< std::vector<int> > dirkeys;
 }
+
+#endif

@@ -18,25 +18,42 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "game_party.h"
+#include "game_actors.h"
+#include "output.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Constructor
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+Game_Party::Game_Party()
+{
+	gold = 0;
+	steps = 0;
+}
 
-	Player::Run();
+////////////////////////////////////////////////////////////
+/// Destructor
+////////////////////////////////////////////////////////////
+Game_Party::~Game_Party()
+{
+}
 
-	Graphics::Quit();
+////////////////////////////////////////////////////////////
+/// SetupStartingMembers
+////////////////////////////////////////////////////////////
+void Game_Party::SetupStartingMembers() {
+	actors.clear();
+	for (unsigned i = 0; i < Main_Data::data_system.party.size(); ++i) {
+		Game_Actor* actor = 
+			Main_Data::game_actors->GetActor(Main_Data::data_system.party[i]);
 
-	return EXIT_SUCCESS;
+		if (actor == NULL) {
+			Output::Warning(
+				"Invalid actor (Id: %d) in initial party at index %d.",
+				Main_Data::data_system.party[i], i);
+		}
+		else {
+			actors.push_back(actor);
+		}
+	}
 }

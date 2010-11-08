@@ -18,25 +18,23 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "rpg_treemap.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Constructor
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+RPG::TreeMap::TreeMap() {
+	active_node = 0;
+	start_map_id = 0;
+	start_x = 0;
+	start_y = 0;
+	boat_map_id = 0;
+	boat_x = 0;
+	boat_y = 0;
+	ship_map_id = 0;
+	ship_x = 0;
+	ship_y = 0;
+	airship_map_id = 0;
+	airship_x = 0;
+	airship_y = 0;
 }

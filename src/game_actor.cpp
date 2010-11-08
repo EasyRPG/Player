@@ -18,25 +18,38 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "game_actor.h"
+#include "cache.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Constructor
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+Game_Actor::Game_Actor(int actorId)
+{
+	Setup(actorId);
+}
 
-	Player::Run();
+////////////////////////////////////////////////////////////
+/// Destructor
+////////////////////////////////////////////////////////////
+Game_Actor::~Game_Actor()
+{
+	delete face;
+}
 
-	Graphics::Quit();
+////////////////////////////////////////////////////////////
+/// Setup
+////////////////////////////////////////////////////////////
+void Game_Actor::Setup(int actorId)
+{
+	// Stub
 
-	return EXIT_SUCCESS;
+	// ActorId starts with 1 but arrayindex with 0
+	name = Main_Data::data_actors[actorId-1].name;
+
+	// Get the Faceset Graphic
+	Bitmap* faceset = Cache::Faceset(Main_Data::data_actors[actorId-1].face_name);
+	int face_index = Main_Data::data_actors[actorId-1].face_index;
+	face = new Bitmap(48, 48);
+	face->Blit(0, 0, faceset, Rect((face_index % 4) * 48, face_index/4 * 48, 48, 48), 255);
 }

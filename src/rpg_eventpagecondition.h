@@ -15,28 +15,31 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
-// Headers
-////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#ifndef _RPG_EVENTPAGECONDITION_H_
+#define _RPG_EVENTPAGECONDITION_H_
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// RPG::EventPageCondition class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+namespace RPG {
+	class EventPageCondition {
+	public:
+		EventPageCondition();
+		
+		bool switch_a;
+		bool switch_b;
+		bool variable;
+		bool item;
+		bool actor;
+		bool timer;
+		int switch_a_id;
+		int switch_b_id;
+		int variable_id;
+		int variable_value;
+		int item_id;
+		int actor_id;
+		int timer_sec;
+	};
 }
+
+#endif

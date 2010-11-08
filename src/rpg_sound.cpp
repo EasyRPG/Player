@@ -18,25 +18,14 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "rpg_sound.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Constructor
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+RPG::Sound::Sound() {
+	name = "";
+	volume = 100;
+	tempo = 100;
+	balance = 50;
 }

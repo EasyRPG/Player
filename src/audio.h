@@ -15,28 +15,43 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _AUDIO_H_
+#define _AUDIO_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <string>
+#include <map>
+#include "SDL.h"
+#include "SDL_mixer.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Audio namespace
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+namespace Audio {
+	void Init();
+	void BGM_Play(std::string file, int volume, int pitch);
+	void BGM_Stop();
+	void BGM_Fade(int fade);
+	void BGS_Play(std::string file, int volume, int pitch);
+	void BGS_Stop();
+	void BGS_Fade(int fade);
+	void ME_Play(std::string file, int volume, int pitch);
+	void ME_Stop();
+	void ME_Fade(int fade);
+	void SE_Play(std::string file, int volume, int pitch);
+	void SE_Stop();
+	
+	extern Mix_Music* bgm;
+	extern int bgm_volume;
+	extern Mix_Chunk* bgs;
+	extern int bgs_channel;
+	extern Mix_Chunk* me;
+	extern int me_channel;
+	extern bool me_stopped_bgm;
+	extern std::map<int, Mix_Chunk*> sounds;
+	extern std::map<int, Mix_Chunk*>::iterator it_sounds;
 }
+
+#endif

@@ -15,28 +15,42 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _WINDOW_SELECTABLE_H_
+#define _WINDOW_SELECTABLE_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "window_base.h"
+//#include "window_help.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Window Selectable class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+class Window_Selectable: public Window_Base {
+public:
+	Window_Selectable(int ix, int iy, int iwidth, int iheight);
+	~Window_Selectable();
 
-	Player::Run();
+	int GetIndex() const;
+	void SetIndex(int nindex);
+	int GetRowMax() const;
+	int GetTopRow() const;
+	void SetTopRow(int row);
+	int GetPageRowMax() const;
+	int GetPageItemMax();
+	//Window_Help* GetHelpWindow();
+	//void SetHelpWindow(Window_Help* nhelp_window);
+	void UpdateCursorRect();
+	void Update();
 
-	Graphics::Quit();
+	//virtual void UpdateHelp() = 0;
 
-	return EXIT_SUCCESS;
-}
+protected:
+	int item_max;
+	int column_max;
+	int index;
+	//Window_Help* window_help;
+};
+
+#endif

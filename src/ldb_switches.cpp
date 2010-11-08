@@ -18,25 +18,35 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "ldb_reader.h"
+#include "ldb_chunks.h"
+#include "reader.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Read Switches
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+std::vector<std::string> LDB_Reader::ReadSwitches(Reader& stream) {
+	std::vector<std::string> switches;
+	switches.resize(stream.Read32(Reader::CompressedInteger) + 1);
 
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+	int pos;
+	Reader::Chunk chunk_info;
+	for (int i = switches.size(); i > 0; i--) {
+		pos = stream.Read32(Reader::CompressedInteger);
+		chunk_info.ID = stream.Read32(Reader::CompressedInteger);
+		if (chunk_info.ID != ChunkData::END) {
+			chunk_info.length = stream.Read32(Reader::CompressedInteger);
+			if (chunk_info.length == 0) continue;
+		}
+		switch (chunk_info.ID) {
+		case ChunkData::END:
+			break;
+		case ChunkSwitch::name:
+			switches[pos] = stream.ReadString(chunk_info.length);
+			break;
+		default:
+			stream.Seek(chunk_info.length, Reader::FromCurrent);
+		}
+	}
+	return switches;
 }

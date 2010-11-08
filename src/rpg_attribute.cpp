@@ -18,25 +18,18 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "rpg_attribute.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Constructor
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+RPG::Attribute::Attribute() {
+	ID = 0;
+	name = "";
+	type = 0;
+	a_rate = 300;
+	b_rate = 200;
+	c_rate = 100;
+	d_rate = 50;
+	e_rate = 0;
 }

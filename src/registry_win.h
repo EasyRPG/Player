@@ -15,28 +15,25 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifdef WIN32
+
+#ifndef _REGISTRY_H_
+#define _REGISTRY_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <string>
+#include <windows.h>
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Registry namespace
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+namespace Registry {
+	std::string ReadStrValue(HKEY hkey, std::string key, std::string val);
+	int ReadBinValue(HKEY hkey, std::string key, std::string val, unsigned char* bin);
 }
+
+#endif
+
+#endif

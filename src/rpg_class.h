@@ -15,28 +15,45 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _RPG_CLASS_H_
+#define _RPG_CLASS_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <string>
+#include <vector>
+#include "rpg_learning.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// RPG::Class class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+namespace RPG {
+	class Class {
+	public:
+		Class();
+		
+		int ID;
+		std::string name;
+		bool two_swords_style;
+		bool fix_equipment;
+		bool auto_battle;
+		bool super_guard;
+		std::vector<short> parameter_maxhp;
+		std::vector<short> parameter_maxsp;
+		std::vector<short> parameter_attack;
+		std::vector<short> parameter_defense;
+		std::vector<short> parameter_spirit;
+		std::vector<short> parameter_agility;
+		int exp_base;
+		int exp_inflation;
+		int exp_correction;
+		int unarmed_animation;
+		std::vector<Learning> skills;
+		std::vector<unsigned char> state_ranks;
+		std::vector<unsigned char> attribute_ranks;
+		std::vector<unsigned int> battle_commands;
+	};
 }
+
+#endif

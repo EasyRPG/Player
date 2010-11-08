@@ -15,28 +15,37 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _WINDOW_MESSAGE_H_
+#define _WINDOW_MESSAGE_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "window_selectable.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Window Message Class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+class Window_Message: public Window_Selectable {
+public:
+	Window_Message();
+	~Window_Message();
 
-	Player::Run();
+	void TerminateMessage();
+	void Refresh();
+	void ResetWindow();
+	void Update();
+	void UpdateCursorRect();
 
-	Graphics::Quit();
+protected:
+	bool fade_in;
+	bool fade_out;
+	bool contents_showing;
+	int cursor_width;
+	//Window_InputNumber* input_number_window; // TODO: Implement Window_InputNumber
+	//Window_Gold* gold_window; // TODO: Implement Window_Gold
+};
 
-	return EXIT_SUCCESS;
-}
+
+
+#endif

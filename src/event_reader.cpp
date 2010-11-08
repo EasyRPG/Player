@@ -18,25 +18,21 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "event_reader.h"
+#include "reader.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Read EventCommand
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+RPG::EventCommand Event_Reader::ReadEventCommand(Reader& stream) {
+	RPG::EventCommand event_command;
+	event_command.code = stream.Read32(Reader::CompressedInteger);
+	if (event_command.code != 0) {
+		event_command.indent = stream.Read32(Reader::CompressedInteger);
+		event_command.string = stream.ReadString(stream.Read32(Reader::CompressedInteger));
+		for (int i = stream.Read32(Reader::CompressedInteger); i > 0; i--) {
+			event_command.parameters.push_back(stream.Read32(Reader::CompressedInteger));
+		}
+	}
+	return event_command;
 }

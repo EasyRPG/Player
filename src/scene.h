@@ -15,28 +15,38 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
-// Headers
-////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#ifndef _SCENE_H_
+#define _SCENE_H_
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Scene types
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+#define SCENE_NULL 0
+#define SCENE_TITLE 1
+#define SCENE_MAP 2
+#define SCENE_MENU 3
+#define SCENE_ITEM 4
+#define SCENE_SKILL 5
+#define SCENE_EQUIP 6
+#define SCENE_STATUS 7
+#define SCENE_FILE 8
+#define SCENE_SAVE 9
+#define SCENE_LOAD 10
+#define SCENE_END 11
+#define SCENE_BATTLE 12
+#define SCENE_SHOP 13
+#define SCENE_NAME 14
+#define SCENE_GAMEOVER 15
+#define SCENE_DEBUG 16
 
-	Player::Run();
+////////////////////////////////////////////////////////////
+/// Scene virtual class
+////////////////////////////////////////////////////////////
+class Scene {
+public:
+	virtual ~Scene() {};
 
-	Graphics::Quit();
+	virtual void MainFunction() =0;
+};
 
-	return EXIT_SUCCESS;
-}
+#endif

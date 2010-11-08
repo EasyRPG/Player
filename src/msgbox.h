@@ -15,28 +15,21 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _MSGBOX_H_
+#define _MSGBOX_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <string>
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Message Box namespace
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+namespace MsgBox {
+	void OK(std::string msg, std::string title);
+	void Error(std::string msg, std::string title);
+	void Warning(std::string msg, std::string title);
 }
+
+#endif

@@ -18,25 +18,20 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "rpg_animationcelldata.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Constructor
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+RPG::AnimationCellData::AnimationCellData() {
+	priority = 1;
+	ID = 1;
+	x = 0;
+	y = 0;
+	zoom = 100;
+	tone_red = 0;
+	tone_green = 0;
+	tone_blue = 0;
+	tone_gray = 0;
+	opacity = 0;
 }

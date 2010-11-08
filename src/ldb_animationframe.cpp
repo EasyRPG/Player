@@ -18,25 +18,35 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "ldb_reader.h"
+#include "ldb_chunks.h"
+#include "reader.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Read AnimationFrame
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+RPG::AnimationFrame LDB_Reader::ReadAnimationFrame(Reader& stream) {
+	RPG::AnimationFrame frame;
+	stream.Read32(Reader::CompressedInteger);
 
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+	Reader::Chunk chunk_info;
+	while (!stream.Eof()) {
+		chunk_info.ID = stream.Read32(Reader::CompressedInteger);
+		if (chunk_info.ID == ChunkData::END) {
+			break;
+		} else {
+			chunk_info.length = stream.Read32(Reader::CompressedInteger);
+			if (chunk_info.length == 0) continue;
+		}
+		switch (chunk_info.ID) {
+		case ChunkAnimationFrame::cells:
+			for (int i = stream.Read32(Reader::CompressedInteger); i > 0; i--) {
+				frame.cells.push_back(ReadAnimationCellData(stream));
+			}
+			break;
+		default:
+			stream.Seek(chunk_info.length, Reader::FromCurrent);
+		}
+	}
+	return frame;
 }

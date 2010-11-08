@@ -18,25 +18,41 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "lmu_reader.h"
+#include "lmu_chunks.h"
+#include "reader.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Read Move Route
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+RPG::MoveRoute LMU_Reader::ReadMoveRoute(Reader& stream) {
+	RPG::MoveRoute moveroute;
 
-	Player::Run();
+	Reader::Chunk chunk_info;
+	while (!stream.Eof()) {
+		chunk_info.ID = stream.Read32(Reader::CompressedInteger);
+		if (chunk_info.ID == ChunkData::END) {
+			break;
+		} else {
+			chunk_info.length = stream.Read32(Reader::CompressedInteger);
+			if (chunk_info.length == 0) continue;
+		}
 
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+		switch (chunk_info.ID) {
+		case ChunkMoveRoute::move_commands:
+			for (int i = stream.Read32(Reader::CompressedInteger); i > 0; i--) {
+				moveroute.move_commands.push_back(ReadMoveCommand(stream));
+			}
+			break;
+		case ChunkMoveRoute::skippable:
+			moveroute.skippable = stream.ReadBool();
+			break;
+		case ChunkMoveRoute::repeat:
+			moveroute.repeat = stream.ReadBool();
+			break;
+		default:
+			stream.Seek(chunk_info.length, Reader::FromCurrent);
+		}
+	}
+	return moveroute;
 }

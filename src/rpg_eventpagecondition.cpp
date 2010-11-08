@@ -18,25 +18,23 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "rpg_eventpagecondition.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Constructor
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+RPG::EventPageCondition::EventPageCondition() {
+	switch_a = false;
+	switch_b = false;
+	variable = false;
+	item = false;
+	actor = false;
+	timer = false;
+	switch_a_id = 1;
+	switch_b_id = 1;
+	variable_id = 1;
+	variable_value = 0;
+	item_id = 1;
+	actor_id = 1;
+	timer_sec = 0;
 }

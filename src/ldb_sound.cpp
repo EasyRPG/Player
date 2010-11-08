@@ -18,25 +18,41 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "ldb_reader.h"
+#include "ldb_chunks.h"
+#include "reader.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Read Music
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+RPG::Sound LDB_Reader::ReadSound(Reader& stream) {
+	RPG::Sound sound;
+ 
+	Reader::Chunk chunk_info;
+	while (!stream.Eof()) {
+		chunk_info.ID = stream.Read32(Reader::CompressedInteger);
+		if (chunk_info.ID == ChunkData::END) {
+			break;
+		} else {
+			chunk_info.length = stream.Read32(Reader::CompressedInteger);
+			if (chunk_info.length == 0) continue;
+		}
+		switch (chunk_info.ID) {
+		case ChunkSound::name:
+			sound.name = stream.ReadString(chunk_info.length);
+			break;
+		case ChunkSound::volume:
+			sound.volume = stream.Read32(Reader::CompressedInteger);
+			break;
+		case ChunkSound::tempo:
+			sound.tempo = stream.Read32(Reader::CompressedInteger);
+			break;
+		case ChunkSound::balance:
+			sound.balance = stream.Read32(Reader::CompressedInteger);
+			break;
+		default:
+			stream.Seek(chunk_info.length, Reader::FromCurrent);
+		}
+	}
+	return sound;
 }

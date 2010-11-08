@@ -15,28 +15,43 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
-// Headers
-////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#ifndef _GAME_CHARACTER_H_
+#define _GAME_CHARACTER_H_
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Game_Character class.
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+class Game_Character {
+public:
+	Game_Character();
+	virtual ~Game_Character();
 
-	Player::Run();
+	virtual bool IsMoving();
+	virtual bool IsPassable(int x, int y, int d);
 
-	Graphics::Quit();
+	virtual void MoveTo(int x, int y);
 
-	return EXIT_SUCCESS;
-}
+	virtual int GetScreenX();
+	virtual int GetScreenY();
+	virtual int GetScreenZ();
+	virtual int GetScreenZ(int height);
+
+	virtual void Update();
+	virtual void UpdateMove();
+
+	virtual void MoveDown();
+	virtual void MoveLeft();
+	virtual void MoveRight();
+	virtual void MoveUp();
+
+	int x;
+	int y;
+	int real_x;
+	int real_y;
+	int move_speed;
+
+private:
+	int prelock_direction;
+};
+
+#endif

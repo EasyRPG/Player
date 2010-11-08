@@ -18,25 +18,17 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <string>
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// FileFinder namespace
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+namespace FileFinder {
+	void Init();
+	std::string FindImage(std::string name);
+	std::string FindMusic(std::string name);
+	std::string FindFont(std::string name);
 
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+	extern std::string fonts_path;
+	extern std::string rtp_path;
 }

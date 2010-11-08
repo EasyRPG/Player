@@ -15,28 +15,22 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _WINDOW_MENUSTATUS_H_
+#define _WINDOW_MENUSTATUS_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "window_base.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Window MenuStatus Class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+class Window_MenuStatus : public Window_Base {
+public:
+	Window_MenuStatus();
+	~Window_MenuStatus();
+	void Refresh();
+};
 
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
-}
+#endif

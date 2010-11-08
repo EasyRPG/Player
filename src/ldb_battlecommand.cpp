@@ -18,25 +18,36 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "ldb_reader.h"
+#include "ldb_chunks.h"
+#include "reader.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Read BattleCommand
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+RPG::BattleCommand LDB_Reader::ReadBattleCommand(Reader& stream) {
+	RPG::BattleCommand battle_command;
+	battle_command.ID = stream.Read32(Reader::CompressedInteger);
 
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+	Reader::Chunk chunk_info;
+	while (!stream.Eof()) {
+		chunk_info.ID = stream.Read32(Reader::CompressedInteger);
+		if (chunk_info.ID == ChunkData::END) {
+			break;
+		} else {
+			chunk_info.length = stream.Read32(Reader::CompressedInteger);
+			if (chunk_info.length == 0) continue;
+		}
+		switch (chunk_info.ID) {
+		case ChunkBattleCommand::name:
+			battle_command.name = stream.ReadString(chunk_info.length);
+			break;
+		case ChunkBattleCommand::type:
+			battle_command.type = stream.Read32(Reader::CompressedInteger);
+			break;
+		default:
+			stream.Seek(chunk_info.length, Reader::FromCurrent);
+		}
+	}
+	return battle_command;
 }

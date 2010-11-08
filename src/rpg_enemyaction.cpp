@@ -18,25 +18,23 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "rpg_enemyaction.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Constructor
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+RPG::EnemyAction::EnemyAction() {
+	kind = 0;
+	basic = 1;
+	skill_id = 1;
+	enemy_id = 1;
+	condition_type = 0;
+	condition_param1 = 0;
+	condition_param2 = 0;
+	switch_id = 1;
+	switch_on = false;
+	switch_on_id = 1;
+	switch_off = false;
+	switch_off_id = 1;
+	rating = 50;
 }

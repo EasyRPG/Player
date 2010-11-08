@@ -15,28 +15,21 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _GAME_BATTLER_H_
+#define _GAME_BATTLER_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Game_Battler class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+class Game_Battler {
 
-	Player::Run();
+public:
+	Game_Battler();
+	~Game_Battler();
 
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
-}
+};
+#endif // _GAME_BATTLER_H_

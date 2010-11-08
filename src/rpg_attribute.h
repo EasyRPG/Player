@@ -15,28 +15,36 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _RPG_ATTRIBUTE_H_
+#define _RPG_ATTRIBUTE_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <string>
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// RPG::Attribute class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+namespace RPG {
+	class Attribute {
+	public:
+		enum Type {
+			Type_physical = 0,
+			Type_magical = 1
+		};
 
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+		Attribute();
+		
+		int ID;
+		std::string name;
+		int type;
+		int a_rate;
+		int b_rate;
+		int c_rate;
+		int d_rate;
+		int e_rate;
+	};
 }
+
+#endif

@@ -15,28 +15,31 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _RPG_TROOP_H_
+#define _RPG_TROOP_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <string>
+#include <vector>
+#include "rpg_troopmember.h"
+#include "rpg_trooppage.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// RPG::Troop class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+namespace RPG {
+	class Troop {
+	public:
+		Troop();
+		
+		int ID;
+		std::string name;
+		std::vector<TroopMember> members;
+		std::vector<bool> terrain_set;
+		std::vector<TroopPage> pages;
+	};
 }
+
+#endif

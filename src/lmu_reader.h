@@ -15,28 +15,28 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _LMU_READER_H_
+#define _LMU_READER_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <string>
+#include <iostream>
+#include "main_data.h"
+#include "reader.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// LMU Reader namespace
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+namespace LMU_Reader {
+	RPG::Map LoadMap(const std::string &filename);
+	RPG::Map ReadMapData(Reader& stream);
+	RPG::Event ReadEvent(Reader& stream);
+	RPG::EventPage ReadEventPage(Reader& stream);
+	RPG::EventPageCondition ReadEventPageCondition(Reader& stream);
+	RPG::MoveRoute ReadMoveRoute(Reader& stream);
+	RPG::MoveCommand ReadMoveCommand(Reader& stream);
 }
+
+#endif

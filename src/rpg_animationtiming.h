@@ -15,28 +15,42 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _RPG_ANIMATIONTIMING_H_
+#define _RPG_ANIMATIONTIMING_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "rpg_sound.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// RPG::AnimationTiming class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+namespace RPG {
+	class AnimationTiming {
+	public:
+		enum FlashScope {
+			FlashScope_nothing = 0,
+			FlashScope_target = 1,
+			FlashScope_screen = 2
+		};
+		enum ScreenShake {
+			ScreenShake_nothing = 0,
+			ScreenShake_target = 1,
+			ScreenShake_screen = 2
+		};
 
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+		AnimationTiming();
+		
+		int frame;
+		Sound se;
+		int flash_scope;
+		int flash_red;
+		int flash_green;
+		int flash_blue;
+		int flash_power;
+		int screen_shake;
+	};
 }
+
+#endif

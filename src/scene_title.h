@@ -15,28 +15,31 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _SCENE_TITLE_H_
+#define _SCENE_TITLE_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "scene.h"
+#include "window_command.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Scene Title class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+class Scene_Title: public Scene {
+public:
+	Scene_Title();
+	~Scene_Title();
 
-	Player::Run();
+	void MainFunction();
+	void Update();
+	void CommandNewGame();
+	void CommandContinue();
+	void CommandShutdown();
+	
+	Window_Command* command_window;
+};
 
-	Graphics::Quit();
+#endif
 
-	return EXIT_SUCCESS;
-}

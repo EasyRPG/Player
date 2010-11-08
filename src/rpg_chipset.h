@@ -15,28 +15,32 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _RPG_CHIPSET_H_
+#define _RPG_CHIPSET_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <string>
+#include <vector>
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// RPG::Chipset class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+namespace RPG {
+	class Chipset {
+	public:
+		Chipset();
+		
+		int ID;
+		std::string name;
+		std::string chipset_name;
+		std::vector<short> terrain_data;
+		std::vector<unsigned char> passable_data_lower;
+		std::vector<unsigned char> passable_data_upper;
+		int animation_type;
+		int animation_speed;
+	};
 }
+
+#endif

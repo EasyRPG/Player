@@ -18,25 +18,43 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "rpg_trooppagecondition.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Constructor
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+RPG::TroopPageCondition::TroopPageCondition() {
+	switch_a = false;
+	switch_b = false;
+	variable = false;
+	turn = false;
+	fatigue = false;
+	enemy_hp = false;
+	actor_hp = false;
+	switch_a_id = 1;
+	switch_b_id = 1;
+	variable_id = 1;
+	variable_value = 0;
+	turn_a = 0;
+	turn_b = 0;
+	fatigue_min = 0;
+	fatigue_max = 100;
+	enemy_id = 1;
+	enemy_hp_min = 0;
+	enemy_hp_max = 100;
+	actor_id = 1;
+	actor_hp_min = 0;
+	actor_hp_max = 100;
 
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+	turn_enemy = false;
+	turn_actor = false;
+	command_actor = false;
+	turn_enemy_id = 1;
+	turn_enemy_a = 0;
+	turn_enemy_b = 0;
+	turn_actor_id = 1;
+	turn_actor_a = 0;
+	turn_actor_b = 0;
+	command_actor_id = 1;
+	command_id = 1;
 }

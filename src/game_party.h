@@ -15,28 +15,29 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _GAME_PARTY_H_
+#define _GAME_PARTY_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <vector>
+#include "game_actor.h"
+#include "main_data.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Game_Party class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+class Game_Party {
 
-	Player::Run();
+public:
+	Game_Party();
+	~Game_Party();
 
-	Graphics::Quit();
+	void SetupStartingMembers();
 
-	return EXIT_SUCCESS;
-}
+	int gold;
+	int steps;
+	std::vector<Game_Actor*> actors;
+};
+#endif // _GAME_PARTY_H_

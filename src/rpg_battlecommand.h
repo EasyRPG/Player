@@ -15,28 +15,36 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _RPG_BATTLECOMMAND_H_
+#define _RPG_BATTLECOMMAND_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <string>
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// RPG::BattleCommand class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+namespace RPG {
+	class BattleCommand {
+	public:
+		enum Type {
+			Type_attack = 0,
+			Type_skill = 1,
+			Type_subskill = 2,
+			Type_defense = 3,
+			Type_item = 4,
+			Type_escape = 5,
+			Type_special = 6
+		};
 
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+		BattleCommand();
+		
+		int ID;
+		std::string name;
+		int type;
+	};
 }
+
+#endif

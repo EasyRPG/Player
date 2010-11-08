@@ -18,25 +18,36 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "ldb_reader.h"
+#include "ldb_chunks.h"
+#include "reader.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Read Learning
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+RPG::Learning LDB_Reader::ReadLearning(Reader& stream) {
+	RPG::Learning learning;
+	stream.Read32(Reader::CompressedInteger);
 
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+	Reader::Chunk chunk_info;
+	while (!stream.Eof()) {
+		chunk_info.ID = stream.Read32(Reader::CompressedInteger);
+		if (chunk_info.ID == ChunkData::END) {
+			break;
+		} else {
+			chunk_info.length = stream.Read32(Reader::CompressedInteger);
+			if (chunk_info.length == 0) continue;
+		}
+		switch (chunk_info.ID) {
+		case ChunkLearning::level:
+			learning.level = stream.Read32(Reader::CompressedInteger);
+			break;
+		case ChunkLearning::skill_id:
+			learning.skill_id = stream.Read32(Reader::CompressedInteger);
+			break;
+		default:
+			stream.Seek(chunk_info.length, Reader::FromCurrent);
+		}
+	}
+	return learning;
 }

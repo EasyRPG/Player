@@ -15,28 +15,35 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _RECT_H_
+#define _RECT_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "SDL.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Rect class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+class Rect {
+public:
+	Rect();
+	Rect(int ix, int iy, int iwidth, int iheight);
+	~Rect();
+	
+	bool operator!=(const Rect& other) const;
 
-	Player::Run();
+	void Set(int nx, int ny, int nwidth, int nheight);
 
-	Graphics::Quit();
+	SDL_Rect Get() const;
+	void Adjust(int awidth, int aheight);
+	bool IsOutOfBounds(int awidth, int aheight) const;
 
-	return EXIT_SUCCESS;
-}
+	int x;
+	int y;
+	int width;
+	int height;
+};
+
+#endif

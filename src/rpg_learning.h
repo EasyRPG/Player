@@ -15,28 +15,20 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
-// Headers
-////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#ifndef _RPG_LEARNING_H_
+#define _RPG_LEARNING_H_
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// RPG::Learning class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+namespace RPG {
+	class Learning {
+	public:
+		Learning();
+		
+		int level;
+		int skill_id;
+	};
 }
+
+#endif

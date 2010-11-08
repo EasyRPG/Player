@@ -15,28 +15,39 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _RPG_TREEMAP_H_
+#define _RPG_TREEMAP_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <vector>
+#include "rpg_mapinfo.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// RPG::TreeMap class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+namespace RPG {
+	class TreeMap {
+	public:
+		TreeMap();
+		
+		std::vector<MapInfo> maps;
+		std::vector<int> tree_order;
+		int active_node;
+		int start_map_id;
+		int start_x;
+		int start_y;
+		int boat_map_id;
+		int boat_x;
+		int boat_y;
+		int ship_map_id;
+		int ship_x;
+		int ship_y;
+		int airship_map_id;
+		int airship_x;
+		int airship_y;
+	};
 }
+
+#endif

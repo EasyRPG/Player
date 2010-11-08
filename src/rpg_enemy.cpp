@@ -18,25 +18,29 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "rpg_enemy.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Constructor
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+RPG::Enemy::Enemy() {
+	ID = 0;
+	name = "";
+	battler_name = "";
+	battler_hue = 0;
+	max_hp = 10;
+	max_sp = 10;
+	attack = 10;
+	defense = 10;
+	spirit = 10;
+	agility = 10;
+	transparent = false;
+	exp = 0;
+	gold = 0;
+	drop_id = 0;
+	drop_prob = 100;
+	critical_hit = false;
+	critical_hit_chance = 30;
+	miss = false;
+	levitate = false;
 }

@@ -15,28 +15,33 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _SPRITESET_MAP_H_
+#define _SPRITESET_MAP_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "tilemap.h"
+#include "plane.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Spriteset_Map class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+class Spriteset_Map {
+public:
+	Spriteset_Map();
+	~Spriteset_Map();
 
-	Player::Run();
+	void Update();
+	
+protected:
+	Tilemap* tilemap;
+	Plane* panorama;
+	Plane* fog;
+	/*std::vector<Sprite_Character*> character_sprites;
+	std::vector<Sprite_Picture*> picture_sprites;
+	Weather* weather;
+	Sprite_Timer* timer_sprite;*/
+};
 
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
-}
+#endif

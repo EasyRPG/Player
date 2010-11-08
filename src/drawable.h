@@ -15,28 +15,32 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
-// Headers
-////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#ifndef _DRAWABLE_H_
+#define _DRAWABLE_H_
+
+// What kind of drawable is the current one?
+enum DrawableType {
+	WINDOW,
+	TILEMAP,
+	SPRITE,
+	PLANE,
+	DEFAULT
+};
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Drawable virtual
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+class Drawable {
+public:
+	virtual ~Drawable() {};
 
-	Player::Run();
+	virtual void Draw(int z_order) = 0;
 
-	Graphics::Quit();
+	virtual unsigned long GetId() const = 0;
 
-	return EXIT_SUCCESS;
-}
+	virtual int GetZ() const = 0;
+
+	virtual DrawableType GetType() const = 0;
+};
+
+#endif

@@ -18,25 +18,35 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "ldb_reader.h"
+#include "ldb_chunks.h"
+#include "reader.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Read Variables
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+std::vector<std::string> LDB_Reader::ReadVariables(Reader& stream) {
+	std::vector<std::string> variables;
+	variables.resize(stream.Read32(Reader::CompressedInteger));
 
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+	int pos;
+	Reader::Chunk chunk_info;
+	for (int i = variables.size(); i > 0; i--) {
+		pos = stream.Read32(Reader::CompressedInteger);
+		chunk_info.ID = stream.Read32(Reader::CompressedInteger);
+		if (chunk_info.ID != ChunkData::END) {
+			chunk_info.length = stream.Read32(Reader::CompressedInteger);
+			if (chunk_info.length == 0) continue;
+		}
+		switch (chunk_info.ID) {
+		case ChunkData::END:
+			break;
+		case ChunkVariable::name:
+			variables[pos] = stream.ReadString(chunk_info.length);
+			break;
+		default:
+			stream.Seek(chunk_info.length, Reader::FromCurrent);
+		}
+	}
+	return variables;
 }

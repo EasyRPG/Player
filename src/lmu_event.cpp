@@ -18,25 +18,44 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "lmu_reader.h"
+#include "lmu_chunks.h"
+#include "reader.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Read Event
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+RPG::Event LMU_Reader::ReadEvent(Reader& stream) {
+	RPG::Event evnt;
+	evnt.ID = stream.Read32(Reader::CompressedInteger);
 
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+	Reader::Chunk chunk_info;
+	while (!stream.Eof()) {
+		chunk_info.ID = stream.Read32(Reader::CompressedInteger);
+		if (chunk_info.ID == ChunkData::END) {
+			break;
+		} else {
+			chunk_info.length = stream.Read32(Reader::CompressedInteger);
+			if (chunk_info.length == 0) continue;
+		}
+		switch (chunk_info.ID) {
+		case ChunkEvent::name:
+			evnt.name = stream.ReadString(chunk_info.length);
+			break;
+		case ChunkEvent::x:
+			evnt.x = stream.Read32(Reader::CompressedInteger);
+			break;
+		case ChunkEvent::y:
+			evnt.y = stream.Read32(Reader::CompressedInteger);
+			break;
+		case ChunkEvent::pages:
+			for (int i = stream.Read32(Reader::CompressedInteger); i > 0; i--) {
+				evnt.pages.push_back(ReadEventPage(stream));
+			}
+			break;
+		default:
+			stream.Seek(chunk_info.length, Reader::FromCurrent);
+		}
+	}
+	return evnt;
 }

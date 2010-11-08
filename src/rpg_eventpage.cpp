@@ -18,25 +18,23 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "rpg_eventpage.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Constructor
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+RPG::EventPage::EventPage() {
+	ID = 0;
+	character_name = "";
+	tile_id = 0;
+	character_dir = 2;
+	character_pattern = 1;
+	translucent = false;
+	move_type = 1;
+	move_frequency = 3;
+	trigger = 0;
+	priority_type = 0;
+	overlap = false;
+	animation_type = 0;
+	move_speed = 3;
 }

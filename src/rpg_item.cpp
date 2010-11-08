@@ -18,25 +18,50 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "rpg_item.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Constructor
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+RPG::Item::Item() {
+	ID = 0;
+	name = "";
+	description = "";
+	type = 0;
+	price = 0;
+	uses = 1;
+	atk_points = 0;
+	def_points = 0;
+	spi_points = 0;
+	agi_points = 0;
+	state_chance = 0;
+	cursed = false;
+	two_handed = false;
+	sp_cost = 0;
+	hit = 90;
+	critical_hit = 0;
+	animation_id = 1;
+	preemptive = false;
+	dual_attack = false;
+	attack_all = false;
+	ignore_evasion = false;
+	weapon_animation = 1;
+	use_skill = false;
+	prevent_critical = false;
+	raise_evasion = false;
+	half_sp_cost = false;
+	no_terrain_damage = false;
+	entire_party = false;
+	recover_hp = 0;
+	recover_hp_rate = 0;
+	recover_sp = 0;
+	recover_sp_rate = 0;
+	ocassion_field = false;
+	ko_only = false;
+	skill_id = 1;
+	using_messsage = 0;
+	max_hp_points = 0;
+	max_sp_points = 0;
+	switch_id = 1;
+	ocassion_battle = false;
 }

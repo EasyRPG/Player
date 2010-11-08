@@ -15,28 +15,27 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _RPG_TROOPPAGE_H_
+#define _RPG_TROOPPAGE_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <vector>
+#include "rpg_trooppagecondition.h"
+#include "rpg_eventcommand.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// RPG::TroopPage class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+namespace RPG {
+	class TroopPage {
+	public:
+		TroopPage();
+		
+		TroopPageCondition condition;
+		std::vector<EventCommand> event_commands;
+	};
 }
+
+#endif

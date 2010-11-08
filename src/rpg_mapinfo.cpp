@@ -18,25 +18,22 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "rpg_mapinfo.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Constructor
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+RPG::MapInfo::MapInfo() {
+	ID = 0;
+	name = "";
+	parent_map = 0;
+	type = 1;
+	music_type = 0;
+	music.name = "(OFF)";
+	background_type = 0;
+	background_name = "";
+	teleport = 0;
+	escape = 0;
+	save = 0;
+	encounter_steps = 25;
 }

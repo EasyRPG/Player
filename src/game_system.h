@@ -15,28 +15,34 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _GAME_SYSTEM_H_
+#define _GAME_SYSTEM_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <string>
+#include "rpg_music.h"
+#include "rpg_sound.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Game System class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+class Game_System {
+public:
+	Game_System();
+	~Game_System();
 
-	Player::Run();
+	void BgmPlay(RPG::Music bmg);
+	void SePlay(RPG::Sound se);
 
-	Graphics::Quit();
+	std::string GetSystemName() const;
+	void SetSystemName(std::string nsystem_name);
 
-	return EXIT_SUCCESS;
-}
+	bool save_disabled;
+
+private:
+	std::string system_name;
+};
+
+#endif

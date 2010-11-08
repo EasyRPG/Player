@@ -18,25 +18,26 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "rpg_class.h"
+#include "options.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Constructor
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+RPG::Class::Class() {
+	ID = 0;
+	name = "";
+	two_swords_style = false;
+	fix_equipment = false;
+	auto_battle = false;
+	super_guard = false;
+	#if RPGMAKER == RPG2K
+	exp_base = 30;
+	exp_inflation =30;
+	#else
+	exp_base = 300;
+	exp_inflation = 300;
+	#endif
+	exp_correction = 0;
+	unarmed_animation = 0;
 }

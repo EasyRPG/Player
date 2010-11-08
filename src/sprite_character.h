@@ -15,28 +15,24 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _SPRITE_CHARACTER_H_
+#define _SPRITE_CHARACTER_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "game_character.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Game System class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+class Sprite_Character {
+public:
+	Sprite_Character();
+	~Sprite_Character();
 
-	Player::Run();
+private:
 
-	Graphics::Quit();
+};
 
-	return EXIT_SUCCESS;
-}
+#endif

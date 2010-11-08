@@ -18,25 +18,35 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <sstream>
+#include "window_gold.h"
+#include "game_party.h"
+#include "main_data.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Constructor
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+Window_Gold::Window_Gold() : Window_Base(0, 0, 88, 32) {
+	contents = new Bitmap(width-16, height-16);
 
-	Player::Run();
+	Refresh();
+}
 
-	Graphics::Quit();
+////////////////////////////////////////////////////////////
+/// Destructor
+////////////////////////////////////////////////////////////
+Window_Gold::~Window_Gold() {
+}
 
-	return EXIT_SUCCESS;
+////////////////////////////////////////////////////////////
+/// Refresh
+////////////////////////////////////////////////////////////
+void Window_Gold::Refresh() {
+	contents->Clear();
+	Rect rect(0, 0, contents->GetWidth(), 16);
+	std::stringstream gold;
+	gold << Main_Data::game_party->gold;
+	gold << Main_Data::data_terms.gold;
+	
+	contents->TextDraw(rect, gold.str(), 2);
 }

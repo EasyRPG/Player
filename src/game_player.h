@@ -15,28 +15,26 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _GAME_PLAYER_H_
+#define _GAME_PLAYER_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "game_character.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Game Player class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+class Game_Player : public Game_Character {
+public:
+	Game_Player();
+	virtual ~Game_Player();
 
-	Player::Run();
+	virtual bool IsPassable(int x, int y, int d);
+	virtual void Center(int x, int y);
+	virtual void MoveTo(int x, int y);
+	virtual void Update();
+};
 
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
-}
+#endif

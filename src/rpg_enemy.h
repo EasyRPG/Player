@@ -15,28 +15,47 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _RPG_ENEMY_H_
+#define _RPG_ENEMY_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <string>
+#include <vector>
+#include "rpg_enemyaction.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// RPG::Enemy class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+namespace RPG {
+	class Enemy {
+	public:
+		Enemy();
+		
+		int ID;
+		std::string name;
+		std::string battler_name;
+		int battler_hue;
+		int max_hp;
+		int max_sp;
+		int attack;
+		int defense;
+		int spirit;
+		int agility;
+		bool transparent;
+		int exp;
+		int gold;
+		int drop_id;
+		int drop_prob;
+		bool critical_hit;
+		int critical_hit_chance;
+		bool miss;
+		bool levitate;
+		std::vector<unsigned char> state_ranks;
+		std::vector<unsigned char> attribute_ranks;
+		std::vector<EnemyAction> actions;
+	};
 }
+
+#endif

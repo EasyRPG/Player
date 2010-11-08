@@ -15,28 +15,43 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _RPG_EVENTPAGE_H_
+#define _RPG_EVENTPAGE_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <string>
+#include <vector>
+#include "rpg_eventpagecondition.h"
+#include "rpg_eventcommand.h"
+#include "rpg_moveroute.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// RPG::EventPage class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+namespace RPG {
+	class EventPage {
+	public:
+		EventPage();
+		
+		int ID;
+		RPG::EventPageCondition condition;
+		std::string character_name;
+		int tile_id;
+		int character_dir;
+		int character_pattern;
+		bool translucent;
+		int move_type;
+		int move_frequency;
+		int trigger;
+		int priority_type;
+		bool overlap;
+		int animation_type;
+		int move_speed;
+		RPG::MoveRoute move_route;
+		std::vector<RPG::EventCommand> event_commands;
+	};
 }
+
+#endif

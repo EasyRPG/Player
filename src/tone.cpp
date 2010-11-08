@@ -18,25 +18,43 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "tone.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Constructor
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+Tone::Tone() {
+	red = 0;
+	green = 0;
+	blue = 0;
+	gray = 0;
+}
+Tone::Tone(int ired, int igreen, int iblue, int igray) {
+	red = ired;
+	green = igreen;
+	blue = iblue;
+	gray = igray;
+}
 
-	Player::Run();
+////////////////////////////////////////////////////////////
+/// Destructor
+////////////////////////////////////////////////////////////
+Tone::~Tone() {
+}
 
-	Graphics::Quit();
+////////////////////////////////////////////////////////////
+/// != operator
+////////////////////////////////////////////////////////////
+bool Tone::operator!=(const Tone &other) const {
+	return red != other.red || green != other.green || blue != other.blue || gray != other.gray;
+}
 
-	return EXIT_SUCCESS;
+////////////////////////////////////////////////////////////
+/// Set
+////////////////////////////////////////////////////////////
+void Tone::Set(int nred, int ngreen, int nblue, int ngray) {
+	red = nred;
+	green = ngreen;
+	blue = nblue;
+	gray = ngray;
 }

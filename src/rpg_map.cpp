@@ -18,25 +18,36 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "rpg_map.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Constructor
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+RPG::Map::Map() {
+	ID = 0;
+	chipset_id = 1;
+	width = 20;
+	height = 15;
+	scroll_type = 0;
+	parallax_flag = false;
+	parallax_name = "";
+	parallax_loop_x = false;
+	parallax_loop_y = false;
+	parallax_auto_loop_x = false;
+	parallax_sx = 0;
+	parallax_auto_loop_y = false;
+	parallax_sy = 0;
+	save_times = 0;
 
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+	generator_flag = false;
+	generator_mode = 0;
+	generator_tiles = 0;
+	generator_width = 20;
+	generator_height = 15;
+	generator_surround = false;
+	generator_upper_wall = false;
+	generator_floor_b = false;
+	generator_floor_c = false;
+	generator_extra_b = false;
+	generator_extra_c = false;
 }

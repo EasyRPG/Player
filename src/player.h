@@ -15,28 +15,46 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _PLAYER_H_
+#define _PLAYER_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "SDL.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Player namespace
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+namespace Player {
+	void Init();
+	void Run();
+	void Update();
+	void Exit();
 
-	Player::Run();
+	void StartVideoModeChange();
+	void EndVideoModeChange();
+	bool RefreshVideoMode();
 
-	Graphics::Quit();
+	void ToggleFullscreen();
+	void ToggleZoom();
+	void SetScreenSize(int width, int height);
 
-	return EXIT_SUCCESS;
+	int GetWidth();
+	int GetHeight();
+
+	extern SDL_Surface* main_window;
+	extern bool focus;
+	extern bool alt_pressing;
+	extern bool fullscreen;
+	extern bool zoom;
+	extern int width;
+	extern int height;
+
+	extern bool last_fullscreen;
+	extern bool last_zoom;
+	extern int last_width;
+	extern int last_height;
 }
+
+#endif

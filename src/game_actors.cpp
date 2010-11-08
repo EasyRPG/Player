@@ -18,25 +18,36 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "game_actors.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Constructor
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+Game_Actors::Game_Actors()
+{
+	// Actors start with index 1
+	data.resize(Main_Data::data_actors.size()+1);
+}
 
-	Player::Run();
+////////////////////////////////////////////////////////////
+/// Destructor
+////////////////////////////////////////////////////////////
+Game_Actors::~Game_Actors()
+{
+}
 
-	Graphics::Quit();
+////////////////////////////////////////////////////////////
+/// Subscript []-operator
+////////////////////////////////////////////////////////////
+Game_Actor* Game_Actors::GetActor(int actorId) {
+	// Invalid Index (LDB has less actors)
+	if (actorId <= 0 || (unsigned)actorId >= data.size() || actorId > 5000) {
+		return NULL;
+	}
+	// Index valid but actor never used before -> create it
+	else if (data[actorId] == 0) {
+		data[actorId] = new Game_Actor(actorId);
+	}
 
-	return EXIT_SUCCESS;
+	return data[actorId];
 }

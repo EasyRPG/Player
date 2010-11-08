@@ -15,28 +15,31 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _WINDOW_COMMAND_H_
+#define _WINDOW_COMMAND_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <vector>
+#include "window_selectable.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Window Command Class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+class Window_Command: public Window_Selectable {
+public:
+	Window_Command(int width, std::vector<std::string> icommands);
+	~Window_Command();
 
-	Player::Run();
+	void Refresh();
+	void DrawItem(int i, int color);
+	void DisableItem(int i);
 
-	Graphics::Quit();
+protected:
+	std::vector<std::string> commands;
+};
 
-	return EXIT_SUCCESS;
-}
+
+
+#endif

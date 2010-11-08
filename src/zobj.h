@@ -15,28 +15,26 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
-// Headers
-////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#ifndef _ZOBJ_H_
+#define _ZOBJ_H_
 
-////////////////////////////////////////////////////////////
-/// Main
-////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+///////////////////////////////////////////////////////////
+/// ZObj class
+///////////////////////////////////////////////////////////
+class ZObj {
+public:
+	ZObj(long iz, unsigned long icreation, unsigned long iid);
+	~ZObj();
 
-	Player::Run();
+	void SetZ(long n);
+	long GetZ() const ;
+	unsigned long GetCreation() const ;
+	unsigned long GetId() const ;
 
-	Graphics::Quit();
+private:
+	long z;
+	unsigned long creation;
+	unsigned long ID;
+};
 
-	return EXIT_SUCCESS;
-}
+#endif

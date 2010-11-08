@@ -15,28 +15,45 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _FONT_H_
+#define _FONT_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <string>
+#include <map>
+#include "SDL_ttf.h"
+#include "color.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Font class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+class Font {
+public:
+	Font();
+	Font(std::string name);
+	Font(std::string name, int size);
+	~Font();
 
-	Player::Run();
+	TTF_Font* GetTTF() const;
+	
+	std::string name;
+	int size;
+	bool bold;
+	bool italic;
+	int color;
+	
+	static std::string default_name;
+	static int default_size;
+	static bool default_bold;
+	static bool default_italic;
+	static int default_color;
+	
+	static bool Exists(std::string name);
+	
+private:
+	static std::map<std::string, std::map<int, TTF_Font*> > fonts;
+};
 
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
-}
+#endif

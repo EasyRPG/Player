@@ -18,25 +18,34 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "window_menustatus.h"
+#include "game_party.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Constructor
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+Window_MenuStatus::Window_MenuStatus() : Window_Base(0, 0, 232, 240) {
+	contents = new Bitmap(width - 16, height - 16);
+	Refresh();
+}
 
-	Player::Run();
+////////////////////////////////////////////////////////////
+/// Destructor
+////////////////////////////////////////////////////////////
+Window_MenuStatus::~Window_MenuStatus() {
+}
 
-	Graphics::Quit();
+////////////////////////////////////////////////////////////
+/// Refresh
+////////////////////////////////////////////////////////////
+void Window_MenuStatus::Refresh() {
+	int offset = 0;
+	for (unsigned i = 0; i < Main_Data::game_party->actors.size(); ++i)
+	{
+		DrawActorGraphic(Main_Data::game_party->actors[i], 0, i*48 + offset);
 
-	return EXIT_SUCCESS;
+		// (48 + 8, 4)
+		DrawActorName(Main_Data::game_party->actors[i], 48 + 8, i*48 + 4 + offset);
+		offset += 10;
+	}
 }

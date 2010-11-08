@@ -15,28 +15,26 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
-// Headers
-////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#ifndef _TONE_H_
+#define _TONE_H_
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Tone class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+class Tone {
+public:
+	Tone();
+	Tone(int ired, int igreen, int iblue, int igray);
+	~Tone();
 
-	Player::Run();
+	bool operator!=(const Tone& other) const;
 
-	Graphics::Quit();
+	void Set(int nred, int ngreen, int nblue, int ngray);
 
-	return EXIT_SUCCESS;
-}
+	int red;
+	int green;
+	int blue;
+	int gray;
+};
+
+#endif

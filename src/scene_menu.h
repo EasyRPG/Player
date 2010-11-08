@@ -15,28 +15,35 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _SCENE_MENU_H_
+#define _SCENE_MENU_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "scene.h"
+#include "window_command.h"
+#include "window_gold.h"
+#include "window_menustatus.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Scene Menu class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+class Scene_Menu : public Scene {
+public:
+	Scene_Menu(int menu_index = 0);
+	~Scene_Menu();
 
-	Player::Run();
+	void MainFunction();
+	void Update();
+	void UpdateCommand();
+	void UpdateStatus();
 
-	Graphics::Quit();
+private:
+	int menu_index;
+	Window_Command* command_window;
+	Window_Gold* gold_window;
+	Window_MenuStatus* menustatus_window;
+};
 
-	return EXIT_SUCCESS;
-}
+#endif

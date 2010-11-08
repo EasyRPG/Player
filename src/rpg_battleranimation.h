@@ -15,28 +15,36 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _RPG_BATTLERANIMATION_H_
+#define _RPG_BATTLERANIMATION_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <string>
+#include <vector>
+#include "rpg_battleranimationextension.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// RPG::BattlerAnimation class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+namespace RPG {
+	class BattlerAnimation {
+	public:
+		enum Speed {
+			Speed_slow = 0,
+			Speed_normal = 8,
+			Speed_fast = 14
+		};
 
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+		BattlerAnimation();
+		
+		int ID;
+		std::string name;
+		int speed;
+		std::vector<BattlerAnimationExtension> base_data;
+		std::vector<BattlerAnimationExtension> weapon_data;
+	};
 }
+
+#endif

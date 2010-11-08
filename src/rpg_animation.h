@@ -15,28 +15,43 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _RPG_ANIMATION_H_
+#define _RPG_ANIMATION_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <string>
+#include <vector>
+#include "rpg_animationtiming.h"
+#include "rpg_animationframe.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// RPG::Animation class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+namespace RPG {
+	class Animation {
+	public:
+		enum Scope {
+			Scope_target = 0,
+			Scope_screen = 1
+		};
+		enum Position {
+			Position_up = 0,
+			Position_middle = 1,
+			Position_down = 2
+		};
 
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+		Animation();
+		
+		int ID;
+		std::string name;
+		std::string animation_name;
+		std::vector<RPG::AnimationTiming> timings;
+		int scope;
+		int position;
+		std::vector<RPG::AnimationFrame> frames;
+	};
 }
+
+#endif

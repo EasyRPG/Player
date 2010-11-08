@@ -15,28 +15,28 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _OUTPUT_H_
+#define _OUTPUT_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <string>
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Output Namespace
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
-
-	Player::Run();
-
-	Graphics::Quit();
-
-	return EXIT_SUCCESS;
+namespace Output {
+	void Post(char* fmt, ...);
+	void Post(const char* fmt, ...);
+	void PostStr(std::string msg);
+	void PostFile(std::string msg);
+	void Warning(char* fmt, ...);
+	void Warning(const char* fmt, ...);
+	void WarningStr(std::string warn);
+	void Error(char* fmt, ...);
+	void Error(const char* fmt, ...);
+	void ErrorStr(std::string err);
 }
+
+#endif

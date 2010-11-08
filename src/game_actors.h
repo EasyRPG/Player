@@ -15,28 +15,27 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _GAME_ACTORS_H_
+#define _GAME_ACTORS_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include <vector>
+#include "game_actor.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Game_Actors class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+class Game_Actors {
 
-	Player::Run();
+public:
+	Game_Actors();
+	~Game_Actors();
 
-	Graphics::Quit();
+	Game_Actor* GetActor(int actorId);
 
-	return EXIT_SUCCESS;
-}
+private:
+	std::vector<Game_Actor*> data;
+};
+#endif // _GAME_ACTORS_H_

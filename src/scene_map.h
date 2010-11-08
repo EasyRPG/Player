@@ -15,28 +15,37 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _SCENE_MAP_H_
+#define _SCENE_MAP_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
+#include "scene.h"
+#include "spriteset_map.h"
+#include "window_message.h"
 
 ////////////////////////////////////////////////////////////
-/// Main
+/// Scene Map class
 ////////////////////////////////////////////////////////////
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init();
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+class Scene_Map: public Scene {
+public:
+	Scene_Map();
+	~Scene_Map();
 
-	Player::Run();
+	void MainFunction();
+	void Update();
+	void CallBattle();
+	void CallShop();
+	void CallName();
+	void CallMenu();
+	void CallSave();
+	void CallDebug();
+	void TransferPlayer();
+	
+	Spriteset_Map* spriteset;
+	Window_Message* message_window;
+};
 
-	Graphics::Quit();
+#endif
 
-	return EXIT_SUCCESS;
-}
