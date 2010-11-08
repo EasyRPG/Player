@@ -69,6 +69,7 @@ public:
 	void SetBackOpacity(int nback_opacity);
 	int GetContentsOpacity() const;
 	void SetContentsOpacity(int ncontents_opacity);
+	void SetAnimation(int frames);
 
 	unsigned long GetId() const;
 
@@ -95,6 +96,8 @@ protected:
 private:
 	Bitmap* background;
 	Bitmap* frame;
+	Bitmap* border_up;
+	Bitmap* border_down;
 	Bitmap* cursor1;
 	Bitmap* cursor2;
 
@@ -106,6 +109,9 @@ private:
 	bool cursor_needs_refresh;
 	int cursor_frame;
 	int pause_frame;
+	int animation_increment;
+	int animation_frames;
+	int animation_acc;
 };
 
 #endif

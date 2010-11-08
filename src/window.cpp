@@ -54,8 +54,11 @@ Window::Window() {
 
 	background = NULL;
 	frame = NULL;
+	border_up = NULL;
+	border_down = NULL;
 	cursor_frame = 0;
 	pause_frame = 0;
+	animation_frames = 0;
 
 	ID = Graphics::ID++;
 	Graphics::RegisterZObj(0, ID);
@@ -77,6 +80,16 @@ Window::~Window() {
 	delete cursor1;
 	delete cursor2;
 }
+////////////////////////////////////////////////////////////
+/// Set Animation
+////////////////////////////////////////////////////////////
+void Window::SetAnimation(int frames) {
+	animation_frames = frames;
+	animation_acc = 0;
+	// TODO: This increment is suppossed to be: Height / frames
+	// but I don't know how to get the Height at this point
+	animation_increment = 1;
+}
 
 ////////////////////////////////////////////////////////////
 /// Draw
@@ -86,16 +99,34 @@ void Window::Draw(int z_order) {
 	if (width <= 0 || height <= 0) return;
 	if (x < -width || x > Player::GetWidth() || y < -height || y > Player::GetHeight()) return;
 	
+	Rect src_rect;
+
 	if (windowskin != NULL) {
 		if (width > 4 && height > 4 && (back_opacity * opacity / 255 > 0)) {
 			if (background_needs_refresh) RefreshBackground();
 
-			background->BlitScreen(x + 2, y + 2, back_opacity * opacity / 255);
+			if (animation_frames > 0) {
+				int bHeight = background->GetHeight();
+				src_rect.Set(0, (bHeight/2)-animation_acc, background->GetWidth(), animation_acc*2);
+				background->BlitScreen(x + 2, (bHeight/2)-animation_acc+y + 2, src_rect, back_opacity * opacity / 255);
+			} else {
+				background->BlitScreen(x + 2, y + 2, back_opacity * opacity / 255);	
+			}
 		}
 		if (width > 0 && height > 0 && opacity > 0) {
 			if (frame_needs_refresh) RefreshFrame();
-
-			frame->BlitScreen(x, y, opacity);
+			
+			if (animation_frames > 0) {
+				int fHeight = frame->GetHeight();
+				src_rect.Set(0, (fHeight/2)-animation_acc, frame->GetWidth(), animation_acc*2);
+				frame->BlitScreen(x, (fHeight/2)-animation_acc+y, src_rect, opacity);
+				if (animation_acc > 8) {
+					border_down->BlitScreen(x, (fHeight/2)+animation_acc+y-8, opacity);
+					border_up->BlitScreen(x, (fHeight/2)-animation_acc+y, opacity);
+				}
+			} else {
+				frame->BlitScreen(x, y, opacity);
+			}
 		}
 
 		if (width > 16 && height > 16 && cursor_rect.width > 4 && cursor_rect.height > 4) {
@@ -106,9 +137,9 @@ void Window::Draw(int z_order) {
 				min(cursor_rect.width, width - 8 - cursor_rect.x),
 				min(cursor_rect.height, height - 8 - cursor_rect.y));
 			if (cursor_frame < 16) {
-				cursor1->BlitScreen(x + 8 + cursor_rect.x, y + 8 + cursor_rect.y, src_rect);
+				if (animation_frames <= 0) cursor1->BlitScreen(x + 8 + cursor_rect.x, y + 8 + cursor_rect.y, src_rect);
 			} else {
-				cursor2->BlitScreen(x + 8 + cursor_rect.x, y + 8 + cursor_rect.y, src_rect);
+				if (animation_frames <= 0) cursor2->BlitScreen(x + 8 + cursor_rect.x, y + 8 + cursor_rect.y, src_rect);
 			}
 		}
 	}
@@ -116,13 +147,19 @@ void Window::Draw(int z_order) {
 	if (contents != NULL) {
 		if (width > 16 && height > 16 && -ox < width - 16 && -oy < height - 16 && contents_opacity > 0) {
 			Rect src_rect(-min(-ox, 0), -min(-oy, 0), min(width - 16, width - 16 + ox), min(height - 16, height - 16 + oy));
-			contents->BlitScreen(max(x + 8, x + 8 - ox), max(y + 8, y + 8 - oy), src_rect, contents_opacity);
+			if (animation_frames <= 0) 
+				contents->BlitScreen(max(x + 8, x + 8 - ox), max(y + 8, y + 8 - oy), src_rect, contents_opacity);
 		}
 	}
 	
 	if (pause && pause_frame > 16) {
 		Rect src_rect(40, 16, 16, 8);
-		windowskin->BlitScreen(x + width / 2 - 4, y + height - 8, src_rect);
+		if (animation_frames <= 0) windowskin->BlitScreen(x + width / 2 - 4, y + height - 8, src_rect);
+	}
+	
+	if (animation_frames > 0) {
+		animation_frames -= animation_increment;
+		animation_acc += animation_increment;
 	}
 }
 
@@ -159,8 +196,12 @@ void Window::RefreshFrame() {
 	frame_needs_refresh = false;
 
 	delete frame;
+	delete border_up;
+	delete border_down;
 
 	frame = new Bitmap(width, height);
+	border_up = new Bitmap(width, 8);
+	border_down = new Bitmap(width, 8);
 
 	Rect src_rect;
 	
@@ -170,15 +211,19 @@ void Window::RefreshFrame() {
 	src_rect.width = 8;
 	src_rect.height = 8;
 	frame->Blit(0, 0, windowskin, src_rect, 255);
+	border_up->Blit(0, 0, windowskin, src_rect, 255);
 	
 	src_rect.x = 64 - 8;
 	frame->Blit(width - 8, 0, windowskin, src_rect, 255);
-	
+	border_up->Blit(width - 8, 0, windowskin, src_rect, 255);
+
 	src_rect.y = 32 - 8;
 	frame->Blit(width - 8, height - 8, windowskin, src_rect, 255);
+	border_down->Blit(width - 8, 0, windowskin, src_rect, 255);
 	
 	src_rect.x = 32;
 	frame->Blit(0, height - 8, windowskin, src_rect, 255);
+	border_down->Blit(0, 0, windowskin, src_rect, 255);
 
 	Rect dst_rect;
 
@@ -192,11 +237,14 @@ void Window::RefreshFrame() {
 	dst_rect.width = max(width - 16, 1);
 	dst_rect.height = 8;
 	frame->StretchBlit(dst_rect, windowskin, src_rect, 255);
+	border_up->StretchBlit(dst_rect, windowskin, src_rect, 255);
 	
 	// Border Down
 	src_rect.y = 32 - 8;
 	dst_rect.y = height - 8;
 	frame->StretchBlit(dst_rect, windowskin, src_rect, 255);
+	dst_rect.y = 0;
+	border_down->StretchBlit(dst_rect, windowskin, src_rect, 255);
 	
 	// Border Left
 	src_rect.x = 32;

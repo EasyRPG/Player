@@ -87,6 +87,9 @@ void Scene_Title::MainFunction() {
 	command_window->SetX(160 - command_window->GetWidth() / 2);
 	command_window->SetY(224 - command_window->GetHeight());
 
+	// Set the number of frames for the opening animation to last
+	command_window->SetAnimation(32);
+
 	// Enable load game if available
 	bool continue_enabled = false;
 	for (int i = 0; i < 15; i++) {
@@ -110,7 +113,7 @@ void Scene_Title::MainFunction() {
 
 	// Screen transition
 	//Graphics::transition();
-	
+
 	// Scene loop
 	while (Main_Data::scene_type == SCENE_TITLE) {
 		Player::Update();
