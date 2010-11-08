@@ -61,7 +61,7 @@ namespace Graphics {
 		NoTransition
 	};
 
-	void Transition(TransitionType type, int time);
+	void Transition(TransitionType type, int time, bool wait);
 	void DoTransition();
 
 	extern TransitionType actual_transition;

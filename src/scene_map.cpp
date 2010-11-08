@@ -55,7 +55,7 @@ void Scene_Map::MainFunction() {
 	spriteset = new Spriteset_Map();
 	//message_window = new Window_Message();
 
-	//Graphics::Transition();
+	Graphics::Transition(Graphics::FadeIn, 30, true);
 
 	// Scene loop
 	while (Main_Data::scene_type == SCENE_MAP) {

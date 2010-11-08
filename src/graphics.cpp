@@ -43,6 +43,7 @@ namespace Graphics {
 	int transition_current_frame;
 	int transition_increment;
 	bool is_in_transition_yet;
+	bool wait_for_transition;
 	TransitionType actual_transition;
 	SDL_Surface* fake_background;
 
@@ -71,6 +72,7 @@ void Graphics::Init() {
 	actual_transition = NoTransition;
 
 	is_in_transition_yet = false;
+	wait_for_transition = false;
 
 	if (TTF_Init() == -1) {
 		Output::Error("Couldn't initialize SDL_ttf library.\n%s\n", TTF_GetError());
@@ -166,7 +168,8 @@ void Graphics::DrawFrame() {
 	DrawableType type;
 	for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
 		type = drawable_map[it_zlist->GetId()]->GetType();
-		if ((!is_in_transition_yet) || (type != WINDOW)) // Make sure not to draw Windows until transition's finished
+		if (( (!is_in_transition_yet) || (type != WINDOW) ) 
+			|| (!wait_for_transition))   // Make sure not to draw Windows until transition's finished
 			drawable_map[it_zlist->GetId()]->Draw(it_zlist->GetZ());
 	}
 
@@ -208,13 +211,15 @@ void Graphics::Freeze() {
 ////////////////////////////////////////////////////////////
 // Transition
 ////////////////////////////////////////////////////////////
-void Graphics::Transition(TransitionType type, int time) {
+void Graphics::Transition(TransitionType type, int time, bool wait) {
 	if (time > 255) time = 255;
 	if (time == 0) time = 1;
 	transition_frames = time;
 	transition_increment = 255/time;
+	transition_current_frame = 0;
 	is_in_transition_yet = true;
 	actual_transition = type;
+	wait_for_transition = wait;
 }
 
 ////////////////////////////////////////////////////////////

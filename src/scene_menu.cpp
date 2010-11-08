@@ -79,7 +79,7 @@ void Scene_Menu::MainFunction() {
 	menustatus_window->SetY(0);
 	menustatus_window->SetActive(false);
 
-	//Graphics::transition();
+	Graphics::Transition(Graphics::FadeIn, 30, false);
 
 	while (Main_Data::scene_type == SCENE_MENU) {
 		Player::Update();

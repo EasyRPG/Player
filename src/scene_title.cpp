@@ -112,7 +112,7 @@ void Scene_Title::MainFunction() {
 	Main_Data::game_system->BgmPlay(Main_Data::data_system.title_music);
 
 	// Screen transition
-	Graphics::Transition(Graphics::FadeIn, 30);
+	Graphics::Transition(Graphics::FadeIn, 30, true);
 
 	// Scene loop
 	while (Main_Data::scene_type == SCENE_TITLE) {
