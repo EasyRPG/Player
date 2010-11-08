@@ -2,12 +2,14 @@
 <CodeLite_Project Name="player2">
   <Plugins>
     <Plugin Name="qmake">
-      <![CDATA[00060001N0005Debug0000000000000001N0012Dingux-Debug0000000000000001N0014Dingux-Release0000000000000001N0007Release0000000000000001N0011Win32 Debug0000000000000001N0013Win32 Release000000000000]]>
+      <![CDATA[00100001N0005Debug0000000000000001N0012Dingux-Debug0000000000000001N0014Dingux-Release0000000000000001N0010GTK+ Debug0000000000000001N0012GTK+ Release0000000000000001N0007Release0000000000000001N0010UNIX Debug0000000000000001N0012UNIX Release0000000000000001N0011Win32 Debug0000000000000001N0013Win32 Release000000000000]]>
     </Plugin>
   </Plugins>
+  <Dependencies Name="UNIX Debug"/>
+  <Dependencies Name="UNIX Release"/>
+  <Dependencies Name="GTK+ Debug"/>
+  <Dependencies Name="GTK+ Release"/>
   <Dependencies Name="Win32 Debug"/>
-  <Dependencies Name="Debug"/>
-  <Dependencies Name="Release"/>
   <Dependencies Name="Win32 Release"/>
   <Dependencies Name="Dingux-Release"/>
   <VirtualDirectory Name="Resource Files"/>
@@ -22,8 +24,8 @@
         <File Name="../../src/game_actors.h"/>
         <File Name="../../src/game_battler.cpp"/>
         <File Name="../../src/game_battler.h"/>
-		<File Name="../../src/game_character.cpp"/>
-		<File Name="../../src/game_character.h"/>
+        <File Name="../../src/game_character.cpp"/>
+        <File Name="../../src/game_character.h"/>
         <File Name="../../src/game_map.cpp"/>
         <File Name="../../src/game_map.h"/>
         <File Name="../../src/game_party.cpp"/>
@@ -50,7 +52,7 @@
         <File Name="../../src/scene_map.cpp"/>
         <File Name="../../src/scene_map.h"/>
         <File Name="../../src/scene_menu.cpp"/>
-        <File Name="../../src/scene_menu.h"/>		
+        <File Name="../../src/scene_menu.h"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Window">
         <File Name="../../src/window_base.cpp"/>
@@ -64,7 +66,7 @@
         <File Name="../../src/window_message.h"/>
         <File Name="../../src/window_message.cpp"/>
         <File Name="../../src/window_menustatus.cpp"/>
-        <File Name="../../src/window_menustatus.h"/>	
+        <File Name="../../src/window_menustatus.h"/>
       </VirtualDirectory>
     </VirtualDirectory>
     <VirtualDirectory Name="Reader">
@@ -286,42 +288,12 @@
     <File Name="../../src/player.h"/>
   </VirtualDirectory>
   <Settings Type="Executable">
-    <GlobalSettings>
-      <Compiler Options=""/>
-      <Linker Options=""/>
-      <ResourceCompiler Options=""/>
-    </GlobalSettings>
-    <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g -fno-rtti -fno-exceptions $(shell sdl-config --cflags) -DUNIX -D_DEBUG -Wall -Wextra -ansi -pedantic -Wno-unused" Required="yes" PreCompiledHeader=""/>
-      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs) " Required="yes"/>
-      <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="../../bin/testgame/easyrpg" IntermediateDirectory=".obj/Debug" Command="./easyrpg" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
-      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
-        <PostConnectCommands/>
-        <StartupCommands/>
-      </Debugger>
-      <PreBuild/>
-      <PostBuild/>
-      <CustomBuild Enabled="no">
-        <RebuildCommand/>
-        <CleanCommand/>
-        <BuildCommand/>
-        <PreprocessFileCommand/>
-        <SingleFileCommand/>
-        <MakefileGenerationCommand/>
-        <ThirdPartyToolName>None</ThirdPartyToolName>
-        <WorkingDirectory/>
-      </CustomBuild>
-      <AdditionalRules>
-        <CustomPostBuild/>
-        <CustomPreBuild/>
-      </AdditionalRules>
-    </Configuration>
     <Configuration Name="Dingux-Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g -fno-rtti -fno-exceptions $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --cflags)  -DDINGOO -D_DEBUG -Wall -Wextra  -pedantic -Wno-unused" Required="yes" PreCompiledHeader=""/>
       <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --libs) " Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/easyrpg.dge" IntermediateDirectory=".obj/Debug" Command="./easyrpg.dge" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -348,6 +320,7 @@
       <Linker Options="-lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --libs)" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/easyrpg.dge" IntermediateDirectory=".obj/Release" Command="./easyrpg.dge" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -369,11 +342,93 @@
         <CustomPreBuild/>
       </AdditionalRules>
     </Configuration>
-    <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+    <Configuration Name="GTK+ Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g -fno-rtti -fno-exceptions $(shell sdl-config --cflags) $(shell pkg-config --cflags gtk+-2.0) -DUNIX -DGTK -D_DEBUG -Wall -Wextra -ansi -pedantic -Wno-unused" Required="yes" PreCompiledHeader=""/>
+      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs) $(shell pkg-config --libs gtk+-2.0)" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="../../bin/testgame/easyrpg" IntermediateDirectory=".obj/Debug" Command="./easyrpg" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="GTK+ Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-O3 -s -fno-rtti -fno-exceptions $(shell sdl-config --cflags) $(shell pkg-config --cflags gtk+-2.0) -Wall -Wextra -ansi -pedantic -DUNIX -DGTK" Required="yes" PreCompiledHeader=""/>
+      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs) $(shell pkg-config --libs gtk+-2.0)" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="../../bin/testgame/easyrpg" IntermediateDirectory=".obj/Release" Command="./easyrpg" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="UNIX Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g -fno-rtti -fno-exceptions $(shell sdl-config --cflags) -DUNIX -D_DEBUG -Wall -Wextra -ansi -pedantic -Wno-unused" Required="yes" PreCompiledHeader=""/>
+      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs) " Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="../../bin/testgame/easyrpg" IntermediateDirectory=".obj/Debug" Command="./easyrpg" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="UNIX Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-O3 -s -fno-rtti -fno-exceptions $(shell sdl-config --cflags) -Wall -Wextra -ansi -pedantic -DUNIX" Required="yes" PreCompiledHeader=""/>
       <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs)" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/easyrpg" IntermediateDirectory=".obj/Release" Command="./easyrpg" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -408,6 +463,7 @@
       </Linker>
       <ResourceCompiler Options="" Required="yes"/>
       <General OutputFile="../../bin/testgame/Player.exe" IntermediateDirectory=".obj/Debug" Command="./Player.exe" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -442,6 +498,7 @@
       </Linker>
       <ResourceCompiler Options="" Required="yes"/>
       <General OutputFile="../../bin/testgame/Player.exe" IntermediateDirectory=".obj/Release" Command="./Player.exe" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -463,5 +520,10 @@
         <CustomPreBuild/>
       </AdditionalRules>
     </Configuration>
+    <GlobalSettings>
+      <Compiler Options=""/>
+      <Linker Options=""/>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
   </Settings>
 </CodeLite_Project>

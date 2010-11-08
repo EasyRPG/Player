@@ -109,7 +109,7 @@
 /// OUTPUT_FILENAME
 ///		Name of the file for output.
 ////////////////////////////////////////////////////////////
-#if DINGOO || UNIX
+#if defined(DINGOO) || defined(UNIX) && !defined(GTK)
 	#define OUTPUT_TYPE OUTPUT_FILE
 #else
 	#define OUTPUT_TYPE OUTPUT_MSGBOX
