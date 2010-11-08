@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CodeLite_Project Name="player">
-  <Plugins>
-    <Plugin Name="qmake">
-      <![CDATA[00100001N0005Debug0000000000000001N0012Dingux-Debug0000000000000001N0014Dingux-Release0000000000000001N0010GTK+ Debug0000000000000001N0012GTK+ Release0000000000000001N0007Release0000000000000001N0010UNIX Debug0000000000000001N0012UNIX Release0000000000000001N0011Win32 Debug0000000000000001N0013Win32 Release000000000000]]>
-    </Plugin>
-  </Plugins>
-  <Dependencies Name="UNIX Debug"/>
-  <Dependencies Name="UNIX Release"/>
+<CodeLite_Project Name="Player">
   <Dependencies Name="GTK+ Debug"/>
   <Dependencies Name="GTK+ Release"/>
   <Dependencies Name="Win32 Debug"/>
   <Dependencies Name="Win32 Release"/>
+  <Dependencies Name="Dingux-Debug"/>
   <Dependencies Name="Dingux-Release"/>
+  <Dependencies Name="UNIX Debug"/>
+  <Dependencies Name="UNIX Release"/>
   <VirtualDirectory Name="Resource Files"/>
   <VirtualDirectory Name="Source Files">
     <VirtualDirectory Name="Engine">
