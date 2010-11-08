@@ -17,6 +17,10 @@
     <VirtualDirectory Name="Engine">
       <File Name="../../src/cache.cpp"/>
       <File Name="../../src/cache.h"/>
+	  <VirtualDirectory Name="Interpreter">
+	    <File Name="../../interpreter.cpp"/>
+		<File Name="../../interpreter.h"/>
+	  </VirtualDirectory>
       <VirtualDirectory Name="Game">
         <File Name="../../src/game_actor.cpp"/>
         <File Name="../../src/game_actor.h"/>

@@ -130,6 +130,7 @@
     <ClCompile Include="..\..\src\inireader.cpp" />
     <ClCompile Include="..\..\src\input.cpp" />
     <ClCompile Include="..\..\src\input_buttons_os.cpp" />
+	<ClCompile Include="..\..\src\interpreter.cpp" />
     <ClCompile Include="..\..\src\ldb_actor.cpp" />
     <ClCompile Include="..\..\src\ldb_animation.cpp" />
     <ClCompile Include="..\..\src\ldb_animationcelldata.cpp" />
@@ -262,6 +263,7 @@
     <ClInclude Include="..\..\src\ini.h" />
     <ClInclude Include="..\..\src\inireader.h" />
     <ClInclude Include="..\..\src\input.h" />
+	<ClInclude Include="..\..\src\interpreter.h" />
     <ClInclude Include="..\..\src\input_buttons.h" />
     <ClInclude Include="..\..\src\ldb_chunks.h" />
     <ClInclude Include="..\..\src\ldb_reader.h" />

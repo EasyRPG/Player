@@ -1176,6 +1176,18 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="Interpreter"
+					>
+					<File
+						RelativePath="..\..\src\interpreter.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\interpreter.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
