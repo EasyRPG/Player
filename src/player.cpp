@@ -59,9 +59,9 @@ void Player::Init() {
 
 	Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_TIMER;
 #ifdef DINGOO
-	Uint32 videoFlags = SDL_SWSURFACE;
+	flags |= SDL_SWSURFACE;
 #else
-	Uint32 videoFlags = SDL_HWSURFACE;
+	flags |= SDL_HWSURFACE;
 #endif
 #ifdef DEBUG
 	flags |= SDL_INIT_NOPARACHUTE;
