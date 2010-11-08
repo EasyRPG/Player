@@ -61,6 +61,7 @@ public:
 
 	int GetZ() const;
 	unsigned long GetId() const;
+	DrawableType GetType() const;
 
 private:
 	Bitmap* chipset;
@@ -78,6 +79,7 @@ private:
 	int animation_type;
 
 	unsigned long ID;
+	DrawableType type;
 	int layer;
 
 	Bitmap* GenerateAutotileAB(short ID, short animID);

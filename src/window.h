@@ -72,8 +72,10 @@ public:
 	void SetAnimation(int frames);
 
 	unsigned long GetId() const;
+	DrawableType GetType() const;
 
 protected:
+	DrawableType type;
 	unsigned long ID;
 	Bitmap* windowskin;
 	Bitmap* contents;

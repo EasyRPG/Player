@@ -18,6 +18,15 @@
 #ifndef _DRAWABLE_H_
 #define _DRAWABLE_H_
 
+// What kind of drawable is the current one?
+enum DrawableType {
+	WINDOW,
+	TILEMAP,
+	SPRITE,
+	PLANE,
+	DEFAULT
+};
+
 ////////////////////////////////////////////////////////////
 /// Drawable virtual
 ////////////////////////////////////////////////////////////
@@ -30,6 +39,8 @@ public:
 	virtual unsigned long GetId() const = 0;
 
 	virtual int GetZ() const = 0;
+
+	virtual DrawableType GetType() const = 0;
 };
 
 #endif

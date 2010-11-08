@@ -42,6 +42,7 @@ Plane::Plane() {
 
 	plane = NULL;
 
+	type = PLANE;
 	ID = Graphics::ID++;
 	Graphics::RegisterZObj(0, ID);
 	Graphics::RegisterDrawable(ID, this);
@@ -178,4 +179,8 @@ void Plane::SetTone(Tone ntone) {
 ////////////////////////////////////////////////////////////
 unsigned long Plane::GetId() const {
 	return ID;
+}
+
+DrawableType Plane::GetType() const {
+	return type;
 }

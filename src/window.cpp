@@ -63,6 +63,8 @@ Window::Window() {
 	ID = Graphics::ID++;
 	Graphics::RegisterZObj(0, ID);
 	Graphics::RegisterDrawable(ID, this);
+
+	type = WINDOW;
 	
 	cursor1 = new Bitmap(cursor_rect.width, cursor_rect.height);
 	cursor2 = new Bitmap(cursor_rect.width, cursor_rect.height);
@@ -88,7 +90,7 @@ void Window::SetAnimation(int frames) {
 	animation_acc = 0;
 	// TODO: This increment is suppossed to be: Height / frames
 	// but I don't know how to get the Height at this point
-	animation_increment = 1;
+	animation_increment = 2;
 }
 
 ////////////////////////////////////////////////////////////
@@ -523,3 +525,9 @@ void Window::SetContentsOpacity(int ncontents_opacity) {
 unsigned long Window::GetId() const {
 	return ID;
 }
+
+
+DrawableType Window::GetType() const {
+	return type;
+}
+

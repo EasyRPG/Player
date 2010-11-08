@@ -38,7 +38,6 @@ namespace Graphics {
 	void Update();
 	void DrawFrame();
 	void Freeze();
-	void Transition(int type, int time);
 	void FrameReset();
 	void Wait(int duration);
 	Bitmap* SnapToBitmap();
@@ -53,6 +52,30 @@ namespace Graphics {
 	void RegisterZObj(long z, unsigned long ID, bool multiz);
 	void RemoveZObj(unsigned long ID);
 	void UpdateZObj(unsigned long ID, long z);
+
+	//////////////////////////////////
+	/// Screen Transition Variables
+	//////////////////////////////////
+	enum TransitionType {
+		FadeIn,
+		NoTransition
+	};
+
+	void Transition(TransitionType type, int time);
+	void DoTransition();
+
+	extern TransitionType actual_transition;
+
+	extern SDL_Surface* fake_background;
+
+	extern int transition_frames;
+	extern int transition_current_frame;
+	extern int transition_increment;
+
+	extern bool is_in_transition_yet;
+
+	//////////////////////////////////
+	//////////////////////////////////
 
 	extern int fps;
 	extern int framerate;

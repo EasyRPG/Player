@@ -60,8 +60,10 @@ public:
 	void SetTone(Tone ntone);
 
 	unsigned long GetId() const;
+	DrawableType GetType() const;
 
 private:
+	DrawableType type;
 	unsigned long ID;
 	Bitmap* bitmap;
 	bool visible;

@@ -55,6 +55,7 @@ Sprite::Sprite() {
 	sprite = NULL;
 	flash_duration = 0;
 
+	type = SPRITE;
 	ID = Graphics::ID++;
 	Graphics::RegisterZObj(0, ID);
 	Graphics::RegisterDrawable(ID, this);
@@ -283,4 +284,8 @@ void Sprite::SetTone(Tone ntone) {
 ////////////////////////////////////////////////////////////
 unsigned long Sprite::GetId() const {
 	return ID;
+}
+
+DrawableType Sprite::GetType() const {
+	return type;
 }

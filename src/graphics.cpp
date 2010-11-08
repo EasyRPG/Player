@@ -39,6 +39,13 @@ namespace Graphics {
 	unsigned long last_ticks_wait;
 	unsigned long next_ticks_fps;
 
+	int transition_frames;
+	int transition_current_frame;
+	int transition_increment;
+	bool is_in_transition_yet;
+	TransitionType actual_transition;
+	SDL_Surface* fake_background;
+
 	std::map<unsigned long, Drawable*> drawable_map;
 	std::map<unsigned long, Drawable*>::iterator it_drawable_map;
 	std::list<ZObj> zlist;
@@ -57,6 +64,13 @@ void Graphics::Init() {
 	framerate_interval = 1000.0 / DEFAULT_FPS;
 	last_ticks = SDL_GetTicks() + (long)framerate_interval;
 	next_ticks_fps = last_ticks + 1000;
+
+	transition_frames = 0;
+	transition_current_frame = 0;
+	transition_increment = 0;
+	actual_transition = NoTransition;
+
+	is_in_transition_yet = false;
 
 	if (TTF_Init() == -1) {
 		Output::Error("Couldn't initialize SDL_ttf library.\n%s\n", TTF_GetError());
@@ -121,15 +135,42 @@ void Graphics::Update() {
 	}
 }
 
+void Graphics::DoTransition() {
+
+	if (transition_current_frame <= transition_frames) {
+		switch (actual_transition) {
+			case FadeIn:
+				// Pretty damn slow . May need to be optimised.
+				fake_background = SDL_ConvertSurface(Player::main_window, Player::main_window->format, Player::main_window->flags);
+				SDL_FillRect(Player::main_window, NULL, 0);
+				SDL_SetAlpha(fake_background, SDL_SRCALPHA, transition_current_frame*transition_increment);
+				SDL_BlitSurface(fake_background, NULL, Player::main_window, NULL);
+				SDL_FreeSurface(fake_background);
+				////////
+				break;
+
+			default:
+				break;
+		}
+		transition_current_frame++;
+	} else {
+		is_in_transition_yet = false;
+	}
+}
+
 ////////////////////////////////////////////////////////////
 // Draw Frame
 ////////////////////////////////////////////////////////////
 void Graphics::DrawFrame() {
 	SDL_FillRect(Player::main_window, &Player::main_window->clip_rect, DEFAULT_BACKCOLOR);
-
+	DrawableType type;
 	for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
-		drawable_map[it_zlist->GetId()]->Draw(it_zlist->GetZ());
+		type = drawable_map[it_zlist->GetId()]->GetType();
+		if ((!is_in_transition_yet) || (type != WINDOW)) // Make sure not to draw Windows until transition's finished
+			drawable_map[it_zlist->GetId()]->Draw(it_zlist->GetZ());
 	}
+
+	if (is_in_transition_yet) DoTransition();
 
 	if (Player::zoom) {
 		// TODO: Resize zoom code for BPP != 4 (and  maybe zoom != x2)
@@ -167,8 +208,13 @@ void Graphics::Freeze() {
 ////////////////////////////////////////////////////////////
 // Transition
 ////////////////////////////////////////////////////////////
-void Graphics::Transition(int type, int time) {
-	// TODO
+void Graphics::Transition(TransitionType type, int time) {
+	if (time > 255) time = 255;
+	if (time == 0) time = 1;
+	transition_frames = time;
+	transition_increment = 255/time;
+	is_in_transition_yet = true;
+	actual_transition = type;
 }
 
 ////////////////////////////////////////////////////////////

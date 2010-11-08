@@ -108,6 +108,7 @@ TilemapLayer::TilemapLayer(int ilayer) {
 
 	layer = ilayer;
 
+	type = TILEMAP;
 	ID = Graphics::ID++;
 	Graphics::RegisterZObj(0, ID, true);
 	Graphics::RegisterZObj(16, ID, true);
@@ -543,4 +544,8 @@ int TilemapLayer::GetZ() const {
 ////////////////////////////////////////////////////////////
 unsigned long TilemapLayer::GetId() const {
 	return ID;
+}
+
+DrawableType TilemapLayer::GetType() const {
+	return type;
 }
