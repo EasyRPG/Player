@@ -92,7 +92,7 @@ void Player::Run() {
 void Player::Update() {
 	SDL_Event evnt;
 
-	while (true) {
+	for (;;) {
 		int result = SDL_PollEvent(&evnt);
 
 		if (!result && !(PAUSE_GAME_WHEN_FOCUS_LOST && !focus)) {
@@ -103,15 +103,15 @@ void Player::Update() {
 			Exit();
 			exit(0);
 		} else if (evnt.type == SDL_KEYDOWN) {
-			/*if (evnt.key.keysym == SDLK_LALT || evnt.key.keysym == SDLK_RALT) {
-				alt_pressing = true;
-			} else if (evnt.key.keysym == SDLK_RETURN && alt_pressing) {
-			} StartVideoModeChange();
-				ToggleFullscreen();
-				EndVideoModeChange();
-			}*/
 			switch (evnt.key.keysym.sym) {
 			case SDLK_F4:
+#ifdef _WIN32
+				if (evnt.key.keysym.mod == KMOD_LALT ||
+					evnt.key.keysym.mod == KMOD_RALT) {
+					Exit();
+					exit(0);
+				}
+#endif
 				StartVideoModeChange();
 				ToggleFullscreen();
 				EndVideoModeChange();
@@ -125,31 +125,37 @@ void Player::Update() {
 				Main_Data::scene = new Scene_Title();
 				Cache::Clear();
 				break;
+			case SDLK_RETURN:
+				if (evnt.key.keysym.mod == KMOD_LALT ||
+					evnt.key.keysym.mod == KMOD_RALT) {
+					StartVideoModeChange();
+					ToggleFullscreen();
+					EndVideoModeChange();
+				}
 			default:
 				break;
 			}
-		} /*else if (evnt.type == SDL_KEYUP) {
-			if (evnt.key.keysym == SDLK_LALT || evnt.key.keysym == SDLK_RALT) {
-				alt_pressing = false;
-			}
-		}*/	else if (PAUSE_GAME_WHEN_FOCUS_LOST && evnt.type == SDL_ACTIVEEVENT) {
+		}
+#ifdef PAUSE_GAME_WHEN_FOCUS_LOST
+		else if (evnt.type == SDL_ACTIVEEVENT) {
 			if (evnt.active.type == SDL_APPACTIVE) {
 				if (evnt.active.gain && !focus) {
 					focus = true;
 					Graphics::TimerContinue();
-					if (PAUSE_AUDIO_WHEN_FOCUS_LOST) {
-						//Audio::Continue();
-					}
+#ifdef PAUSE_AUDIO_WHEN_FOCUS_LOST
+					//Audio::Continue();
+#endif
 				} else if (!evnt.active.gain && focus) {
 					focus = false;
 					Input::ClearKeys();
 					Graphics::TimerWait();
-					if (PAUSE_AUDIO_WHEN_FOCUS_LOST) {
-						//Audio::Pause();
-					}
+#ifdef PAUSE_AUDIO_WHEN_FOCUS_LOST
+					//Audio::Pause();
+#endif
 				}
 			}
 		}
+#endif
 	}
 }
 
