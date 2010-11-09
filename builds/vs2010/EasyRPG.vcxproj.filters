@@ -452,7 +452,7 @@
     <ClCompile Include="..\..\src\game_character.cpp">
       <Filter>Source Files\Engine\Game</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\game_commonevents.cpp">
+    <ClCompile Include="..\..\src\game_commonevent.cpp">
       <Filter>Source Files\Engine\Game</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\scene_menu.cpp">
@@ -754,7 +754,7 @@
     <ClInclude Include="..\..\src\game_character.h">
       <Filter>Source Files\Engine\Game</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\game_commonevents.h">
+    <ClInclude Include="..\..\src\game_commonevent.h">
       <Filter>Source Files\Engine\Game</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\scene_menu.h">
