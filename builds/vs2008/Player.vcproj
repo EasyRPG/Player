@@ -40,10 +40,11 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="$(EASYDEV_MSVC)\include"
-				PreprocessorDefinitions="MSVC;WIN32;DEBUG"
-				MinimalRebuild="true"
+				PreprocessorDefinitions="MSVC;WIN32;DEBUG;_DEBUG"
+				MinimalRebuild="false"
 				ExceptionHandling="1"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -1081,6 +1082,14 @@
 					</File>
 					<File
 						RelativePath="..\..\src\game_character.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_commonevent.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_commonevent.h"
 						>
 					</File>
 					<File

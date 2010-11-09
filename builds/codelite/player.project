@@ -16,6 +16,8 @@
       <File Name="../../src/game_battler.h"/>
       <File Name="../../src/game_character.cpp"/>
       <File Name="../../src/game_character.h"/>
+      <File Name="../../src/game_commonevents.cpp"/>
+      <File Name="../../src/game_commonevents.h"/>
       <File Name="../../src/game_map.cpp"/>
       <File Name="../../src/game_map.h"/>
       <File Name="../../src/game_party.cpp"/>

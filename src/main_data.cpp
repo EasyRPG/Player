@@ -90,7 +90,7 @@ void Main_Data::Cleanup() {
 	delete game_party;
 	delete game_troop;
 	delete game_map;
-	if (game_player != NULL) delete game_player;
+	delete game_player;
 	scene = NULL;
 	game_system = NULL;
 	game_temp = NULL;

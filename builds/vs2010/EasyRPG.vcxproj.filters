@@ -452,6 +452,9 @@
     <ClCompile Include="..\..\src\game_character.cpp">
       <Filter>Source Files\Engine\Game</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\game_commonevents.cpp">
+      <Filter>Source Files\Engine\Game</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\scene_menu.cpp">
       <Filter>Source Files\Engine\Scene</Filter>
     </ClCompile>
@@ -749,6 +752,9 @@
       <Filter>Source Files\Multimedia\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\game_character.h">
+      <Filter>Source Files\Engine\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game_commonevents.h">
       <Filter>Source Files\Engine\Game</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\scene_menu.h">

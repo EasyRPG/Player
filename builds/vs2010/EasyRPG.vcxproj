@@ -115,6 +115,7 @@
     <ClCompile Include="..\..\src\game_actors.cpp" />
     <ClCompile Include="..\..\src\game_battler.cpp" />
     <ClCompile Include="..\..\src\game_character.cpp" />
+	<ClCompile Include="..\..\src\game_commonevents.cpp" />
     <ClCompile Include="..\..\src\game_map.cpp" />
     <ClCompile Include="..\..\src\game_party.cpp" />
     <ClCompile Include="..\..\src\game_player.cpp" />
@@ -249,6 +250,7 @@
     <ClInclude Include="..\..\src\game_actors.h" />
     <ClInclude Include="..\..\src\game_battler.h" />
     <ClInclude Include="..\..\src\game_character.h" />
+	<ClInclude Include="..\..\src\game_commonevents.h" />
     <ClInclude Include="..\..\src\game_map.h" />
     <ClInclude Include="..\..\src\game_party.h" />
     <ClInclude Include="..\..\src\game_player.h" />
