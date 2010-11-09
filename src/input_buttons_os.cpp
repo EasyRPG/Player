@@ -15,7 +15,7 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef WIN32
+#ifndef _WIN32
 #ifndef UNIX
 #ifndef DINGOO
 	#error "This build doesn't target an os"

@@ -446,7 +446,6 @@
     <Configuration Name="Win32 Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g -fno-rtti -fno-exceptions -D_GNU_SOURCE=1 -Dmain=SDL_main -Wall -Wextra -ansi -pedantic -Wno-unused -U__STRICT_ANSI__ -Wno-write-strings" Required="yes" PreCompiledHeader="">
         <IncludePath Value="$(EASYDEV_MINGW)/include"/>
-        <Preprocessor Value="WIN32"/>
         <Preprocessor Value="_DEBUG"/>
         <Preprocessor Value="_WINDOWS"/>
         <Preprocessor Value="MINGW"/>
@@ -481,7 +480,6 @@
     <Configuration Name="Win32 Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-O3 -s -fno-rtti -fno-exceptions -D_GNU_SOURCE=1 -Dmain=SDL_main -Wall -Wextra -ansi -pedantic  -U__STRICT_ANSI__" Required="yes" PreCompiledHeader="">
         <IncludePath Value="$(EASYDEV_MINGW)/include"/>
-        <Preprocessor Value="WIN32"/>
         <Preprocessor Value="NDEBUG"/>
         <Preprocessor Value="_WINDOWS"/>
         <Preprocessor Value="MINGW"/>

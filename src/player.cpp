@@ -95,7 +95,11 @@ void Player::Update() {
 	for (;;) {
 		int result = SDL_PollEvent(&evnt);
 
-		if (!result && !(PAUSE_GAME_WHEN_FOCUS_LOST && !focus)) {
+#ifndef PAUSE_GAME_WHEN_FOCUS_LOST
+		if (!result) {
+#else
+		if (!result && focus) {
+#endif
 			break;
 		}
 
@@ -106,8 +110,8 @@ void Player::Update() {
 			switch (evnt.key.keysym.sym) {
 			case SDLK_F4:
 #ifdef _WIN32
-				if (evnt.key.keysym.mod == KMOD_LALT ||
-					evnt.key.keysym.mod == KMOD_RALT) {
+				// Close Program on LeftAlt+F4
+				if (evnt.key.keysym.mod == KMOD_LALT) {
 					Exit();
 					exit(0);
 				}
@@ -126,8 +130,9 @@ void Player::Update() {
 				Cache::Clear();
 				break;
 			case SDLK_RETURN:
+				// Fullscreen on Alt+Enter
 				if (evnt.key.keysym.mod == KMOD_LALT ||
-					evnt.key.keysym.mod == KMOD_RALT) {
+					(evnt.key.keysym.mod | KMOD_RALT)) {
 					StartVideoModeChange();
 					ToggleFullscreen();
 					EndVideoModeChange();

@@ -15,7 +15,7 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifdef WIN32
+#ifdef _WIN32
 
 #ifndef _REGISTRY_H_
 #define _REGISTRY_H_

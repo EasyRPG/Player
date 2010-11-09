@@ -21,7 +21,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
-#ifdef WIN32
+#ifdef _WIN32
 	#include <conio.h>
 #endif
 #include <stdarg.h>
