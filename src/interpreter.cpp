@@ -94,7 +94,7 @@ void Interpreter::Update() {
 				break;
 			}
 				
-			int i;
+			unsigned int i;
 			Game_Event* g_event;
 			for (i = 0; i < Main_Data::game_map->events.size(); i++) {
 				g_event = Main_Data::game_map->events[i];

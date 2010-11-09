@@ -9,7 +9,7 @@ public:
 	Game_Switches();
 	~Game_Switches();
 
-	bool operator[] (int switch_id){
+	bool operator[] (unsigned int switch_id){
 		if ( switch_id >= data.size() ) {
 			return data[switch_id];
 		} else {
