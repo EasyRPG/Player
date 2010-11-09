@@ -25,6 +25,7 @@
 #include <string>
 #include "tone.h"
 #include "rpg_map.h"
+#include "game_event.h"
 
 ////////////////////////////////////////////////////////////
 /// Game_Map class
@@ -79,7 +80,7 @@ public:
 	std::vector<unsigned char> passages_down;
 	std::vector<unsigned char> passages_up;
 	std::vector<short> terrain_tags;
-	//std::vector<Game_Event*> events; // TODO: Implement Game_Event
+	std::vector<Game_Event*> events; // TODO: Implement Game_Event
 	int fog_ox;
 	int fog_oy;
 	Tone fog_tone;

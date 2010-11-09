@@ -50,6 +50,8 @@ public:
 	int real_y;
 	int move_speed;
 
+	bool move_route_forcing;
+
 private:
 	int prelock_direction;
 };

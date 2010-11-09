@@ -1093,6 +1093,14 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\src\game_event.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_event.h"
+						>
+					</File>
+					<File
 						RelativePath="..\..\src\game_map.cpp"
 						>
 					</File>
