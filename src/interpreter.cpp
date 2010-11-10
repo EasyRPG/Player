@@ -36,6 +36,27 @@
 #define min(a, b)	(((a) < (b)) ? (a) : (b))
 #define max(a, b)	(((a) >= (b)) ? (a) : (b))
 
+////////////////////////////////////////////////////////////
+/// Enumeration of codes
+////////////////////////////////////////////////////////////
+enum CommandCodes {
+	SHOW_MESSAGE       = 10110,
+	SHOW_MESSAGE_2     = 20110,
+	MESSAGE_OPTIONS    = 10120,
+	SHOW_FACE_GRAPHIC  = 10130,
+	SHOW_CHOICE        = 10140,
+	SHOW_CHOICE_OPTION = 20140,
+	SHOW_CHOICE_END    = 20141,
+	CONTROL_VARS       = 10220,
+	CONTROL_SWITCHES   = 10210,
+	INPUT_NUMBER       = 10150
+};
+
+enum Sizes {
+	MAXSIZE = 9999999,
+	MINSIZE = -9999999
+};
+
 Interpreter::Interpreter(int _depth, bool _main_flag)
 {
 	depth = _depth;
@@ -244,10 +265,10 @@ bool Interpreter::ExecuteCommand() {
 	
 	switch (list[index].code) {
 
-		case 10110: return CommandShowMessage();
-		case 10120: return CommandMessageOptions();
-		case 10130: return CommandShowFaceGraphic();
-		case 10140: return CommandSelectOption();
+		case SHOW_MESSAGE: return CommandShowMessage();
+		case MESSAGE_OPTIONS: return CommandMessageOptions();
+		case SHOW_FACE_GRAPHIC: return CommandShowFaceGraphic();
+		case SHOW_CHOICE: return CommandSelectOption();
 
 	} */
 	return true;
@@ -307,14 +328,14 @@ std::vector<std::string> Interpreter::GetStrings() {
 	unsigned int index_temp = index+2;
 	std::vector<std::string> s_choices;
 	while ( index_temp < list.size() ) {
-		if ( (list[index_temp].code == 20140) && (list[index_temp].indent == current_indent) ) {
+		if ( (list[index_temp].code == SHOW_CHOICE_OPTION) && (list[index_temp].indent == current_indent) ) {
 			// Choice found
 			s_choices.push_back(list[index_temp].string);
 		}
 		// If found end of show choice command
-		if ( ( (list[index_temp].code == 20141) && (list[index_temp].indent == current_indent) ) ||
+		if ( ( (list[index_temp].code == SHOW_CHOICE_END) && (list[index_temp].indent == current_indent) ) ||
 			// Or found Cancel branch
-			( (list[index_temp].code == 20140) && (list[index_temp].indent == current_indent) &&
+			( (list[index_temp].code == SHOW_CHOICE_OPTION) && (list[index_temp].indent == current_indent) &&
 			(list[index_temp].string == "") ) ) {
 			
 			break;
@@ -328,7 +349,7 @@ std::vector<std::string> Interpreter::GetStrings() {
 ////////////////////////////////////////////////////////////
 /// Command Show Message
 ////////////////////////////////////////////////////////////
-bool Interpreter::CommandShowMessage() { // Code 10110
+bool Interpreter::CommandShowMessage() { // Code SHOW_MESSAGE
 	// If there's a text already, return immediately
 	if (!Main_Data::game_temp->message_text.empty()) {
 		return false;
@@ -343,14 +364,14 @@ bool Interpreter::CommandShowMessage() { // Code 10110
 
 	for (;;) {
 		// If next event command is the following parts of the message
-		if ( (index < list.size()) && (list[index+1].code == 20110) )  {
+		if ( (index < list.size()) && (list[index+1].code == SHOW_MESSAGE_2) )  {
 			// Add second (another) line
 			Main_Data::game_temp->message_text += list[index+1].string + "\n";
 			line_count++;
 		} else {
 			// If next event command is show choices
 			std::vector<std::string> s_choices;
-			if ( (index < list.size()) && (list[index+1].code == 10140) ) {
+			if ( (index < list.size()) && (list[index+1].code == SHOW_CHOICE) ) {
 				s_choices = GetStrings();
 				// If choices fit on screen
 				if (s_choices.size() < (4 - line_count)) {
@@ -361,7 +382,7 @@ bool Interpreter::CommandShowMessage() { // Code 10110
 				}
 			} else {
 				// If next event command is input number
-				if ((index < list.size()) && (list[index+1].code == 10150) ) {
+				if ((index < list.size()) && (list[index+1].code == INPUT_NUMBER) ) {
 					// If input number fits on screen 
 					if (line_count < 4) {
 						index++;
@@ -397,7 +418,7 @@ void Interpreter::SetupChoices(const std::vector<std::string>& choices) {
 ////////////////////////////////////////////////////////////
 /// Command Show choices
 ////////////////////////////////////////////////////////////
-bool Interpreter::CommandShowChoices() { // Code 10140
+bool Interpreter::CommandShowChoices() { // Code SHOW_CHOICE
 	if (!Main_Data::game_temp->message_text.empty()) {
 		return false;
 	}
@@ -416,7 +437,7 @@ bool Interpreter::CommandShowChoices() { // Code 10140
 ////////////////////////////////////////////////////////////
 /// Command control switches
 ////////////////////////////////////////////////////////////
-bool Interpreter::CommandControlSwitches() { // Code 10210
+bool Interpreter::CommandControlSwitches() { // Code CONTROL_SWITCHES
 	int i;
 	switch (list[index].parameters[0]) {
 		case 0:
@@ -447,7 +468,7 @@ bool Interpreter::CommandControlSwitches() { // Code 10210
 ////////////////////////////////////////////////////////////
 /// Command control vars
 ////////////////////////////////////////////////////////////
-bool Interpreter::CommandControlVariables() { // Code 10220
+bool Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 	int i, value = 0;
 	Game_Actor* actor;
 
@@ -562,7 +583,7 @@ bool Interpreter::CommandControlVariables() { // Code 10220
 			}
 			break;
 		case 6:
-			// Characters
+			// TODO Characters
 			break;
 		case 7:
 			// More
@@ -683,11 +704,11 @@ bool Interpreter::CommandControlVariables() { // Code 10220
 						(*Main_Data::game_variables)[list[index].parameters[1]] %= value;
 					}
 			}
-			if ((*Main_Data::game_variables)[list[index].parameters[1]] > 9999999) {
-				(*Main_Data::game_variables)[list[index].parameters[1]] = 9999999;
+			if ((*Main_Data::game_variables)[list[index].parameters[1]] > MAXSIZE) {
+				(*Main_Data::game_variables)[list[index].parameters[1]] = MAXSIZE;
 			}
-			if ((*Main_Data::game_variables)[list[index].parameters[1]] < -99999999) {
-				(*Main_Data::game_variables)[list[index].parameters[1]] = -99999999;
+			if ((*Main_Data::game_variables)[list[index].parameters[1]] < MINSIZE) {
+				(*Main_Data::game_variables)[list[index].parameters[1]] = MINSIZE;
 			}
 	}
 	Main_Data::game_map->need_refresh = true;
