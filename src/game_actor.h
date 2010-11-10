@@ -39,6 +39,15 @@ public:
 
 	std::string name;
 	Bitmap* face;
+
+	int weapon_id;
+	int armor1_id;
+	int armor2_id;
+	int armor3_id;
+	int armor4_id;
+
+	int level;
+	int exp;
 };
 
 #endif // _GAME_ACTOR_H_

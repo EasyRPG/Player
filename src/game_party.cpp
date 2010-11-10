@@ -57,3 +57,17 @@ void Game_Party::SetupStartingMembers() {
 		}
 	}
 }
+
+////////////////////////////////////////////////////////////
+/// Item Number
+////////////////////////////////////////////////////////////
+int Game_Party::ItemNumber(int item_id) {
+	std::map<int, int>::iterator it;
+	it = items.find(item_id);
+
+	if (it != items.end()) {
+		return it->second;
+	}
+	
+	return 0;
+}

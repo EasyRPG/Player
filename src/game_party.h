@@ -22,6 +22,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <vector>
+#include <map>
 #include "game_actor.h"
 #include "main_data.h"
 
@@ -36,8 +37,18 @@ public:
 
 	void SetupStartingMembers();
 
+	int ItemNumber(int item_id);
+
+	int battle_count;
+	int win_count;
+	int defeat_count;
+	int run_count;
+
 	int gold;
 	int steps;
 	std::vector<Game_Actor*> actors;
+
+	// Map item ID with the quantity
+	std::map<int, int> items;
 };
 #endif // _GAME_PARTY_H_

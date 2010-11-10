@@ -31,5 +31,8 @@ public:
 	Game_Battler();
 	~Game_Battler();
 
+	int hp;
+	int mp;
+
 };
 #endif // _GAME_BATTLER_H_

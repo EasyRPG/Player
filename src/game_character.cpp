@@ -264,3 +264,9 @@ void Game_Character::MoveUp() {
 		check_event_trigger_touch(x, y - 1);
 	}*/
 }
+
+
+void Game_Character::Lock() {
+	//TODO
+
+}

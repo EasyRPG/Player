@@ -10,11 +10,15 @@ public:
 	~Game_Switches();
 
 	bool operator[] (unsigned int switch_id){
-		if ( switch_id >= data.size() ) {
-			return data[switch_id];
-		} else {
-			return false;
-		}
+		return data[switch_id];
+	}
+
+	void SetAt(unsigned int switch_id, bool value) {
+		data[switch_id] = value;
+	}
+
+	void ToggleAt(unsigned int switch_id) {
+		data[switch_id] = !data[switch_id];
 	}
 private:
 	std::vector<bool> data;

@@ -41,6 +41,8 @@ public:
 
 	bool save_disabled;
 
+	unsigned int save_count;
+
 private:
 	std::string system_name;
 };

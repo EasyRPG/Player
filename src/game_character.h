@@ -39,11 +39,15 @@ public:
 	virtual void Update();
 	virtual void UpdateMove();
 
-	virtual void MoveDown();
-	virtual void MoveLeft();
-	virtual void MoveRight();
-	virtual void MoveUp();
+	void MoveDown();
+	void MoveLeft();
+	void MoveRight();
+	void MoveUp();
 
+	void Lock();
+
+
+	int id;
 	int x;
 	int y;
 	int real_x;
@@ -54,6 +58,7 @@ public:
 
 private:
 	int prelock_direction;
+	bool locked;
 };
 
 #endif

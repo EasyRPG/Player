@@ -50,7 +50,8 @@ namespace Input {
 		MULTIPLY,
 		DIVIDE,
 		PERIOD,
-		Count
+		Count,
+		NOBUTTON
 	};
 
 	void InitButtons();
