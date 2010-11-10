@@ -46,6 +46,8 @@ Scene_Map::Scene_Map() {
 /// Destructor
 ////////////////////////////////////////////////////////////
 Scene_Map::~Scene_Map() {
+	delete spriteset;
+	//delete message_window;
 }
 
 ////////////////////////////////////////////////////////////
@@ -71,10 +73,8 @@ void Scene_Map::MainFunction() {
 	do {
 		Graphics::Update();
 	} while (Graphics::is_in_transition_yet);
-	
-	// Delete objects
-	delete spriteset;
-	//delete message_window;
+
+	Main_Data::old_scene = this;
 }
 
 ////////////////////////////////////////////////////////////
@@ -89,7 +89,7 @@ void Scene_Map::Update() {
 	if (Input::IsTriggered(Input::CANCEL))
 	{
 		//unless $game_system.map_interpreter.running? or
-			//$game_system.menu_disabled
+		//$game_system.menu_disabled
 
 		Main_Data::game_temp->menu_calling = true;
 		Main_Data::game_temp->menu_beep = true;

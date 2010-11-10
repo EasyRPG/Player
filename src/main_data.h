@@ -68,6 +68,7 @@ class Game_Variables;
 namespace Main_Data {
 	// Scene Data
 	extern Scene* scene;
+	extern Scene* old_scene;
 	extern unsigned char scene_type;
 	
 	// Dynamic Game Data

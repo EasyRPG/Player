@@ -64,7 +64,12 @@ Scene_Title::~Scene_Title() {
 ////////////////////////////////////////////////////////////
 /// Main
 ////////////////////////////////////////////////////////////
-void Scene_Title::MainFunction() {	
+void Scene_Title::MainFunction() {
+	// Clear the cache when the game returns to title screen
+	// e.g. by pressing F12
+	if (Main_Data::old_scene != NULL)
+		Cache::Clear();
+
 	// Load Database
 	LDB_Reader::Load(DATABASE_NAME);
 	LMT_Reader::Load(TREEMAP_NAME);
@@ -125,6 +130,8 @@ void Scene_Title::MainFunction() {
 	// Delete graphical objects
 	delete command_window;
 	delete title;
+
+	Main_Data::old_scene = this;
 }
 
 ////////////////////////////////////////////////////////////

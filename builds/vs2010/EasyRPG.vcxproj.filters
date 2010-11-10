@@ -455,9 +455,6 @@
     <ClCompile Include="..\..\src\game_commonevent.cpp">
       <Filter>Source Files\Engine\Game</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\game_event.cpp">
-      <Filter>Source Files\Engine\Game</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\scene_menu.cpp">
       <Filter>Source Files\Engine\Scene</Filter>
     </ClCompile>
@@ -777,6 +774,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\interpreter.h">
       <Filter>Source Files\Engine\Interpreter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game_event.cpp">
+      <Filter>Source Files\Engine\Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

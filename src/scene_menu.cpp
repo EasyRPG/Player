@@ -39,6 +39,9 @@ Scene_Menu::Scene_Menu(int menu_index) {
 /// Destructor
 ////////////////////////////////////////////////////////////
 Scene_Menu::~Scene_Menu() {
+	delete command_window;
+	delete gold_window;
+	delete menustatus_window;
 }
 
 ////////////////////////////////////////////////////////////
@@ -95,9 +98,7 @@ void Scene_Menu::MainFunction() {
 		Graphics::Update();
 	} while (Graphics::is_in_transition_yet);
 
-	delete command_window;
-	delete gold_window;
-	delete menustatus_window;
+	Main_Data::old_scene = this;
 }
 
 ////////////////////////////////////////////////////////////

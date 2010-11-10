@@ -37,6 +37,7 @@
 namespace Main_Data {
 	// Scene Data
 	Scene* scene = NULL;
+	Scene* old_scene = NULL;
 	unsigned char scene_type;
 	
 	// Dynamic Game Data
