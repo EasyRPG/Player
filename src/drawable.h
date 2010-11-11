@@ -32,7 +32,7 @@ enum DrawableType {
 ////////////////////////////////////////////////////////////
 class Drawable {
 public:
-	virtual ~Drawable() {};
+	//virtual ~Drawable() {};
 
 	virtual void Draw(int z_order) = 0;
 

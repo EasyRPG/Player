@@ -112,8 +112,8 @@ Bitmap* Cache::Tile(std::string filename, int tile_id) {
 ////////////////////////////////////////////////////////////
 void Cache::Clear() {
 	std::map<std::string, Bitmap*>::iterator it_cache;
-	for (it_cache = cache.begin(); it_cache != cache.end(); it_cache++) {
-		delete it_cache->second;
+	for (it_cache = cache.begin(); it_cache != cache.end(); ) {
+		delete (*it_cache++).second;
 	}
 	cache.clear();
 	// TODO Why is this clean up commented out?

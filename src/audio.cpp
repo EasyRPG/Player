@@ -62,8 +62,8 @@ void Audio::Init() {
 
 void Audio::Quit() {
 	std::map<int, Mix_Chunk*>::iterator i;
-	for (i = sounds.begin(); i != sounds.end(); i++) {
-		delete i->second;
+	for (i = sounds.begin(); i != sounds.end(); ) {
+		delete (*i++).second;
 	}
 }
 

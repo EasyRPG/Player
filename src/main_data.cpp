@@ -88,7 +88,7 @@ void Main_Data::Cleanup() {
 	delete game_variables;
 	delete game_screen;
 	delete game_actors;
-	delete Main_Data::game_party;
+	delete game_party;
 	delete game_troop;
 	delete game_map;
 	delete game_player;
