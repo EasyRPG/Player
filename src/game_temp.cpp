@@ -1,5 +1,5 @@
 #include "game_temp.h"
-#define NULL 0
+
 Game_Temp::Game_Temp()
 {
 	menu_calling = false;

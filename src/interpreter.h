@@ -59,7 +59,7 @@ private:
 
 	int button_input_variable_id;
 	unsigned int index;
-	unsigned int map_id;
+	int map_id;
 	unsigned int event_id;
 	int wait_count;
 
