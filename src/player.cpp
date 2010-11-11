@@ -114,7 +114,7 @@ void Player::Update() {
 				if (!(evnt.key.keysym.mod & KMOD_RALT)) {
 #ifdef _WIN32
 					// Close Program on LeftAlt+F4
-					if (evnt.key.keysym.mod == KMOD_LALT) {
+					if (evnt.key.keysym.mod & KMOD_LALT) {
 						Exit();
 						exit(0);
 					}
@@ -139,13 +139,15 @@ void Player::Update() {
 				Main_Data::scene = new Scene_Title();
 				break;
 			case SDLK_RETURN:
+			case SDLK_KP_ENTER:
 				// Fullscreen on Alt+Enter
-				if (evnt.key.keysym.mod == KMOD_LALT ||
+				if (evnt.key.keysym.mod & KMOD_LALT ||
 					(evnt.key.keysym.mod & KMOD_RALT)) {
 					StartVideoModeChange();
 					ToggleFullscreen();
 					EndVideoModeChange();
 				}
+				break;
 			default:
 				break;
 			}

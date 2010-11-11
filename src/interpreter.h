@@ -19,6 +19,7 @@
 #define _H_INTERPRETER
 
 #include <map>
+#include <string>
 #include <vector>
 
 class Game_Character;

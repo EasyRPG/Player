@@ -81,6 +81,8 @@ Window::~Window() {
 	delete frame;
 	delete cursor1;
 	delete cursor2;
+	delete border_up;
+	delete border_down;
 }
 ////////////////////////////////////////////////////////////
 /// Set Animation
