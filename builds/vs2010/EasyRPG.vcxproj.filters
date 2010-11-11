@@ -69,7 +69,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\..\resources\icon\icon.rc">
+    <ResourceCompile Include="..\..\resources\player.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

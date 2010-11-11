@@ -1211,7 +1211,7 @@
 			Name="Resource Files"
 			>
 			<File
-				RelativePath="..\..\resources\icon\icon.rc"
+				RelativePath="..\..\resources\player.rc"
 				>
 			</File>
 		</Filter>
