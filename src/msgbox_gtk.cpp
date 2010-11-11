@@ -35,8 +35,7 @@ void MsgBox::OK(std::string msg, std::string title) {
 	GdkWindow* parent_window;
 
 	//Must leave full screen before gtk dialog show
-	if (Player::fullscreen)
-	{
+	if (Player::fullscreen) {
 		Player::StartVideoModeChange();
 		Player::ToggleFullscreen();
 		Player::EndVideoModeChange();
@@ -70,8 +69,7 @@ void MsgBox::Error(std::string msg, std::string title) {
 	GdkWindow* parent_window;
 
 	//Must leave full screen before gtk dialog show
-	if (Player::fullscreen)
-	{
+	if (Player::fullscreen)	{
 		Player::StartVideoModeChange();
 		Player::ToggleFullscreen();
 		Player::EndVideoModeChange();
@@ -105,8 +103,7 @@ void MsgBox::Warning(std::string msg, std::string title) {
 	GdkWindow* parent_window;
 
 	//Must leave full screen before gtk dialog show
-	if (Player::fullscreen)
-	{
+	if (Player::fullscreen) {
 		Player::StartVideoModeChange();
 		Player::ToggleFullscreen();
 		Player::EndVideoModeChange();
