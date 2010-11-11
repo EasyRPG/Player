@@ -120,8 +120,13 @@ TilemapLayer::TilemapLayer(int ilayer) {
 // Destructor
 ////////////////////////////////////////////////////////////
 TilemapLayer::~TilemapLayer() {
+	std::map<int, Bitmap*>::iterator i;
 	Graphics::RemoveZObj(ID);
 	Graphics::RemoveDrawable(ID);
+
+	for (i = autotiles.begin(); i != autotiles.end(); i++) {
+		delete i->second;
+	}
 }
 
 ////////////////////////////////////////////////////////////

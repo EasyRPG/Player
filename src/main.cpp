@@ -37,6 +37,7 @@ int main(int argc, char* argv[]) {
 	Player::Run();
 
 	Graphics::Quit();
+	Audio::Quit();
 
 	return EXIT_SUCCESS;
 }

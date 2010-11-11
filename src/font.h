@@ -53,6 +53,7 @@ public:
 	static bool Exists(std::string name);
 	
 private:
+	// TODO Where's the clean up for this?
 	static std::map<std::string, std::map<int, TTF_Font*> > fonts;
 };
 

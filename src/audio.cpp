@@ -60,6 +60,13 @@ void Audio::Init() {
 	me_stopped_bgm = false;
 }
 
+void Audio::Quit() {
+	std::map<int, Mix_Chunk*>::iterator i;
+	for (i = sounds.begin(); i != sounds.end(); i++) {
+		delete i->second;
+	}
+}
+
 ////////////////////////////////////////////////////////////
 /// BGM play
 ////////////////////////////////////////////////////////////

@@ -46,6 +46,10 @@ public:
 
 	int gold;
 	int steps;
+
+	// Active actors
+	// Pointers here are already handled by Game_Actors class!
+	// Do not delete contents from this class
 	std::vector<Game_Actor*> actors;
 
 	// Map item ID with the quantity

@@ -20,7 +20,12 @@
 
 #include <map>
 #include <vector>
-#include "rpg_eventcommand.h"
+
+class Game_Character;
+
+namespace RPG {
+	class EventCommand;
+}
 
 ////////////////////////////////////////////////////////////
 /// Interpreter class
@@ -40,6 +45,7 @@ public:
 	bool ExecuteCommand();
 	void InputButton();
 	void SetupChoices(const std::vector<std::string>& choices);
+	Game_Character* GetCharacter(int character_id);
 
 	bool CommandShowMessage();
 	bool CommandShowChoices();

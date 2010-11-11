@@ -1,5 +1,6 @@
 #include "game_commonevent.h"
 #include "game_switches.h"
+#include "interpreter.h"
 #include "main_data.h"
 
 Game_CommonEvent::Game_CommonEvent(int _common_event_id) {

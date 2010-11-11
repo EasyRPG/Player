@@ -178,6 +178,8 @@ void Player::Update() {
 ////////////////////////////////////////////////////////////
 void Player::Exit() {
 	Main_Data::Cleanup();
+	Graphics::Quit();
+	Audio::Quit();
 	SDL_Quit();
 }
 

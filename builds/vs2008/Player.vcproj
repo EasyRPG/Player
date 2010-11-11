@@ -43,7 +43,7 @@
 				AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="$(EASYDEV_MSVC)\include"
-				PreprocessorDefinitions="MSVC;WIN32;DEBUG;_DEBUG"
+				PreprocessorDefinitions="MSVC;DEBUG;_DEBUG"
 				MinimalRebuild="false"
 				ExceptionHandling="1"
 				BasicRuntimeChecks="3"

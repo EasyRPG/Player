@@ -84,6 +84,10 @@ void Graphics::Init() {
 }
 
 void Graphics::Quit() {
+	std::map<unsigned long, Drawable*>::iterator i;
+	for (i = drawable_map.begin(); i != drawable_map.end(); i++) {
+		delete i->second;
+	}
 	SDL_FreeSurface(blank_screen);
 }
 

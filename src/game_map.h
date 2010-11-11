@@ -25,7 +25,8 @@
 #include <string>
 #include "tone.h"
 #include "rpg_map.h"
-#include "game_event.h"
+
+class Game_Event;
 
 ////////////////////////////////////////////////////////////
 /// Game_Map class

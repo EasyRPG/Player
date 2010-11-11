@@ -19,8 +19,8 @@
 #include "output.h"
 #include "input.h"
 #include "game_map.h"
-#include "game_player.h"
 #include "game_event.h"
+#include "game_player.h"
 #include "game_temp.h"
 #include "game_switches.h"
 #include "game_variables.h"
@@ -56,6 +56,19 @@ enum Sizes {
 	MAXSIZE = 9999999,
 	MINSIZE = -9999999
 };
+
+enum CharsID {
+	PLAYER     = 10001,
+	BOAT       = 10002,
+	SHIP       = 10003,
+	AIRSHIP    = 10004,
+	THIS_EVENT = 10005
+};
+
+////////////////////////////////////////////////////////////
+/// Forward declarations
+///////////////////////////////////////////////////////////
+class Game_Event;
 
 Interpreter::Interpreter(int _depth, bool _main_flag)
 {
@@ -142,18 +155,18 @@ void Interpreter::Update() {
 
 			// If child interpreter still exists
 			if (child_interpreter != NULL) {
-				break;
+				return;
 			}
 		}
 
 		if (message_waiting) {
-			break;
+			return;
 		}
 
 		// If waiting for a move to end
 		if (move_route_waiting) {
 			if (Main_Data::game_player->move_route_forcing) {
-				break;
+				return;
 			}
 				
 			unsigned int i;
@@ -170,16 +183,16 @@ void Interpreter::Update() {
 
 		if (button_input_variable_id > 0) {
 			InputButton();
-			break;
+			return;
 		}
 
 		if (wait_count > 0) {
 			wait_count--;
-			break;
+			return;
 		}
 
 		if (Main_Data::game_temp->forcing_battler != NULL) {
-			break;
+			return;
 		}
 
 		if (Main_Data::game_temp->battle_calling ||
@@ -189,7 +202,7 @@ void Interpreter::Update() {
 			Main_Data::game_temp->save_calling ||
 			Main_Data::game_temp->gameover) {
 			
-			break;
+			return;
 		}
 
 		if (list.empty()) {
@@ -198,12 +211,12 @@ void Interpreter::Update() {
 			}
 
 			if (list.empty()) {
-				break;
+				return;
 			}
 		}
 
 		if (!ExecuteCommand()) {
-			break;
+			return;
 		}
 
 		index++;
@@ -665,11 +678,11 @@ bool Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 							(*Main_Data::game_variables)[i] %= value;
 						}
 				}
-				if ((*Main_Data::game_variables)[i] > 9999999) {
-					(*Main_Data::game_variables)[i] = 9999999;
+				if ((*Main_Data::game_variables)[i] > MAXSIZE) {
+					(*Main_Data::game_variables)[i] = MAXSIZE;
 				}
-				if ((*Main_Data::game_variables)[i] < -99999999) {
-					(*Main_Data::game_variables)[i] = -99999999;
+				if ((*Main_Data::game_variables)[i] < MINSIZE) {
+					(*Main_Data::game_variables)[i] = MINSIZE;
 				}
 			}
 			break;
@@ -713,4 +726,31 @@ bool Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 	}
 	Main_Data::game_map->need_refresh = true;
 	return true;
+}
+
+Game_Character* Interpreter::GetCharacter(int character_id) {
+
+	switch (character_id) {
+		case PLAYER: 
+			// Player/Hero
+			return Main_Data::game_player;
+		case BOAT: 
+			// TODO Boat
+			break;
+		case SHIP:
+			// TODO Ship
+			break;
+		case AIRSHIP:
+			// TODO Airship
+			break;
+		case THIS_EVENT:
+			// This event
+
+			//return (
+			break;
+		default:
+			// Other events
+			break;
+	}
+	return NULL;
 }

@@ -31,6 +31,7 @@
 ////////////////////////////////////////////////////////////
 namespace Audio {
 	void Init();
+	void Quit();
 	void BGM_Play(std::string file, int volume, int pitch);
 	void BGM_Stop();
 	void BGM_Fade(int fade);
