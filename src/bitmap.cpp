@@ -121,7 +121,7 @@ void Bitmap::BlitScreen(int x, int y, Rect src_rect, int opacity) {
 	
 	if (opacity >= 255) {
 		SDL_Rect offset = {x, y, 0, 0};
-		SDL_Rect src_rect_sdl = src_rect.Get();
+		SDL_Rect src_rect_sdl = {src_rect.x, src_rect.y, src_rect.width, src_rect.height};
 		if (SDL_BlitSurface(bitmap, &src_rect_sdl, Player::main_window, &offset) < 0) {
 			Output::Error("Bitmap.cpp BlitScreen(): Could not blit surface:\n%s", SDL_GetError());
 		}
@@ -256,7 +256,7 @@ void Bitmap::FillRect(Rect rect, Color color) {
 	rect.Adjust(GetWidth(), GetHeight());
 	if (rect.IsOutOfBounds(GetWidth(), GetHeight())) return;
 	
-	SDL_Rect rect_sdl = rect.Get();
+	SDL_Rect rect_sdl = {rect.x, rect.y, rect.width, rect.height};
 	SDL_FillRect(bitmap, &rect_sdl, color.GetUint32(bitmap->format));
 }
 
@@ -429,9 +429,8 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 			char_surface = SDL_CreateRGBSurface(exfont->flags, 12, 12, 32, (0xFF << rbyte*8), (0xFF << gbyte*8), (0xFF << bbyte*8), (0xFF << abyte*8));
 #endif
 			char_shadow = SDL_ConvertSurface(char_surface, char_surface->format, char_surface->flags);
-			SDL_Rect rect = Rect((exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12).Get();
+			SDL_Rect rect = {(exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12};
 			SDL_BlitSurface(exfont, &rect, char_surface, NULL);
-			rect = Rect((exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12).Get();
 			SDL_BlitSurface(exfont, &rect, char_shadow, NULL);
 		}
 		else
@@ -509,9 +508,10 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 		// End of Color blending
 
 		// Blit the char and drop shadow on the text surface
-		SDL_Rect rect = Rect(next_glyph_pos + 1, 1, is_full_glyph?12:6, 12).Get();
+		SDL_Rect rect = {next_glyph_pos + 1, 1, is_full_glyph ? 12 : 6, 12};
 		SDL_BlitSurface(char_shadow, NULL, text_surface, &rect);
-		rect = Rect(next_glyph_pos, 0, is_full_glyph?12:6, 12).Get();
+		rect.x = next_glyph_pos;
+		rect.y = 0;
 		SDL_BlitSurface(char_surface, NULL, text_surface, &rect);
 
 		SDL_FreeSurface(char_surface);

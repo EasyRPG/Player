@@ -21,56 +21,42 @@
 #include "rect.h"
 
 ////////////////////////////////////////////////////////////
-/// Constructor
-////////////////////////////////////////////////////////////
-Rect::Rect() {
-	x = 0;
-	y = 0;
-	width = 0;
-	height = 0;
+Rect::Rect() :
+	x(0),
+	y(0),
+	width(0),
+	height(0) {
 }
-Rect::Rect(int ix, int iy, int iwidth, int iheight) {
-	x = ix;
-	y = iy;
-	width = iwidth;
-	height = iheight;
+
+Rect::Rect(int x, int y, int width, int height) :
+	x(x),
+	y(y),
+	width(width),
+	height(height) {
 }
 
 ////////////////////////////////////////////////////////////
-/// Destructor
-////////////////////////////////////////////////////////////
-Rect::~Rect() {
+bool Rect::operator==(const Rect &other) const {
+	return	x == other.x && y == other.y &&
+			width == other.width && height == other.height;
 }
 
-////////////////////////////////////////////////////////////
-/// != operator
 ////////////////////////////////////////////////////////////
 bool Rect::operator!=(const Rect &other) const {
-	return x != other.x || y != other.y || width != other.width || height != other.height;
+	return	x != other.x || y != other.y ||
+			width != other.width || height != other.height;
 }
 
 ////////////////////////////////////////////////////////////
-/// Set rect values
-////////////////////////////////////////////////////////////
-void Rect::Set(int nx, int ny, int nwidth, int nheight) {
-	x = nx;
-	y = ny;
-	width = nwidth;
-	height = nheight;
+void Rect::Set(int new_x, int new_y, int new_width, int new_height) {
+	x = new_x;
+	y = new_y;
+	width = new_width;
+	height = new_height;
 }
 
 ////////////////////////////////////////////////////////////
-/// Get rect
-////////////////////////////////////////////////////////////
-SDL_Rect Rect::Get() const {
-	SDL_Rect rect = {x, y, width, height};
-	return rect;
-}
-
-////////////////////////////////////////////////////////////
-/// Adjust Rect
-////////////////////////////////////////////////////////////
-void Rect::Adjust(int awidth, int aheight) {
+void Rect::Adjust(int max_width, int max_height) {
 	if (x < 0) {
 		width += x;
 		x = 0;
@@ -79,18 +65,16 @@ void Rect::Adjust(int awidth, int aheight) {
 		height += y;
 		y = 0;
 	}
-	if (x < awidth && y < aheight) {
-		if (awidth < x + width) width = awidth - x;
-		if (aheight < y + height) height = aheight - y;
+	if (x < max_width && y < max_height) {
+		if (max_width < x + width) width = max_width - x;
+		if (max_height < y + height) height = max_height - y;
 	}
 }
 
 ////////////////////////////////////////////////////////////
-/// Adjust Rect
-////////////////////////////////////////////////////////////
-bool Rect::IsOutOfBounds(int awidth, int aheight) const {
+bool Rect::IsOutOfBounds(int max_width, int max_height) const {
 	if (width <= 0 || height <= 0) return true;
-	if (x >= awidth || y >= aheight) return true;
+	if (x >= max_width || y >= max_height) return true;
 	if (x + width <= 0 || y + height <= 0) return true;
 	return false;
 }
