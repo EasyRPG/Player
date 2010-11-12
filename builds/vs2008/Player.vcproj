@@ -933,6 +933,10 @@
 					RelativePath="..\..\src\output.h"
 					>
 				</File>
+				<File
+					RelativePath="..\..\src\util_macro.h"
+					>
+				</File>
 				<Filter
 					Name="win"
 					>

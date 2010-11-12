@@ -52,6 +52,8 @@ public:
 	bool CommandShowChoices();
 	bool CommandControlSwitches();
 	bool CommandControlVariables();
+	bool CommandChangeGold();
+	bool CommandChangeItems();
 
 private:
 	int depth;
@@ -77,6 +79,8 @@ private:
 
 	// Helper function
 	std::vector<std::string> GetStrings();
+
+	int OperateValue(int operation, int operand_type, int operand);
 };
 
 #endif

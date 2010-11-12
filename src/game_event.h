@@ -37,6 +37,10 @@ public:
 
 	bool starting;
 	int trigger;
+
+	// Map ID where this event is in
+	int map_id;
+
 	std::vector<RPG::EventCommand> list;
 };
 

@@ -30,12 +30,11 @@
 #include "SDL_image.h"
 #include "SDL_ttf.h"
 #include "exfont.xpm"
+#include "util_macro.h"
 
 ////////////////////////////////////////////////////////////
 /// Defines
 ////////////////////////////////////////////////////////////
-#define min(a, b)	(((a) < (b)) ? (a) : (b))
-#define max(a, b)	(((a) > (b)) ? (a) : (b))
 
 #define rmask 0xff000000
 #define gmask 0x00ff0000

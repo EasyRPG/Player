@@ -677,6 +677,9 @@
     <ClInclude Include="..\..\src\filefinder.h">
       <Filter>Source Files\Tools</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\util_macro.h">
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\msgbox.h">
       <Filter>Source Files\Tools</Filter>
     </ClInclude>

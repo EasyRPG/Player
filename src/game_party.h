@@ -39,6 +39,9 @@ public:
 
 	int ItemNumber(int item_id);
 
+	void GainGold(int value);
+	void GainItem(int item_id, int n);
+
 	int battle_count;
 	int win_count;
 	int defeat_count;

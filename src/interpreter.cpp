@@ -28,13 +28,8 @@
 #include "game_actors.h"
 #include "game_system.h"
 #include "graphics.h"
+#include "util_macro.h"
 #include "main_data.h"
-
-////////////////////////////////////////////////////////////
-// Macros
-////////////////////////////////////////////////////////////
-#define min(a, b)	(((a) < (b)) ? (a) : (b))
-#define max(a, b)	(((a) >= (b)) ? (a) : (b))
 
 ////////////////////////////////////////////////////////////
 /// Enumeration of codes
@@ -49,7 +44,9 @@ enum CommandCodes {
 	SHOW_CHOICE_END		= 20141,
 	CONTROL_VARS		= 10220,
 	CONTROL_SWITCHES	= 10210,
-	INPUT_NUMBER		= 10150
+	INPUT_NUMBER		= 10150,
+	CHANGE_GOLD         = 10310,
+	CHANGE_ITEMS        = 10320
 };
 
 enum Sizes {
@@ -484,6 +481,7 @@ bool Interpreter::CommandControlSwitches() { // Code CONTROL_SWITCHES
 bool Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 	int i, value = 0;
 	Game_Actor* actor;
+	Game_Character* character;
 
 	switch (list[index].parameters[0]) {
 		case 0:
@@ -596,7 +594,38 @@ bool Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 			}
 			break;
 		case 6:
-			// TODO Characters
+			// Characters
+			if (list[index].parameters[7] != 0){
+				character = GetCharacter(list[index].parameters[6]);
+			} else {
+				// Special case for Player Map ID
+				character = NULL;
+				value = Main_Data::game_map->GetMapId();
+			}
+			// Other cases
+			if (character != NULL) {
+				switch (list[index].parameters[7]) {
+					case 1:
+						// X Coordinate
+						value = character->x;
+						break;
+					case 2:
+						// Y Coordinate
+						value = character->y;
+						break;
+					case 3:
+						// TODO Orientation
+						//value = character->
+						break;
+					case 4:
+						// Screen X
+						value = character->GetScreenX();
+						break;
+					case 5:
+						// Screen Y
+						value = character->GetScreenY();
+				}
+			}
 			break;
 		case 7:
 			// More
@@ -728,6 +757,9 @@ bool Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 	return true;
 }
 
+////////////////////////////////////////////////////////////
+/// Get Character
+////////////////////////////////////////////////////////////
 Game_Character* Interpreter::GetCharacter(int character_id) {
 
 	switch (character_id) {
@@ -745,12 +777,78 @@ Game_Character* Interpreter::GetCharacter(int character_id) {
 			break;
 		case THIS_EVENT:
 			// This event
-
-			//return (
+			return (Main_Data::game_map->events.empty()) ? NULL : Main_Data::game_map->events[event_id];
 			break;
 		default:
 			// Other events
+			return (Main_Data::game_map->events.empty()) ? NULL : Main_Data::game_map->events[character_id];
 			break;
 	}
 	return NULL;
 }
+
+////////////////////////////////////////////////////////////
+/// Change Gold
+////////////////////////////////////////////////////////////
+bool Interpreter::CommandChangeGold() { // Code 10310
+	int value;
+	value = OperateValue(
+		list[index].parameters[0], 
+		list[index].parameters[1],
+		list[index].parameters[2]
+	);
+
+	Main_Data::game_party->GainGold(value);
+
+	// Continue
+	return true;
+}
+
+////////////////////////////////////////////////////////////
+/// Change Items
+////////////////////////////////////////////////////////////
+bool Interpreter::CommandChangeItems() { // Code 10320
+	int value;
+	value = OperateValue(
+		list[index].parameters[0],
+		list[index].parameters[3],
+		list[index].parameters[4]
+	);
+
+	if (list[index].parameters[1] == 0) {
+		// Item by const number
+		Main_Data::game_party->GainItem(list[index].parameters[2], value);
+	} else {
+		// Item by variable
+		Main_Data::game_party->GainItem(
+			(*Main_Data::game_variables)[list[index].parameters[2]],
+			value
+		);
+	}
+	// Continue
+	return true;
+}
+
+////////////////////////////////////////////////////////////
+/// * Calculate Operated Value
+///     operation    : operation (increase: 0, decrease: 1)
+///     operand_type : operand type (0: invariable, 1: variable)
+///     operand      : operand (number or var ID)
+////////////////////////////////////////////////////////////
+int Interpreter::OperateValue(int operation, int operand_type, int operand) {
+	int value = 0;
+
+	if (operand_type == 0) {
+		value = operand;
+	} else {
+		value = (*Main_Data::game_variables)[operand];
+	}
+
+	// Reverse sign of value if operation is substract
+	if (operation == 1) {
+		value = -value;
+	}
+
+	return value;
+}
+

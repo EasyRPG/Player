@@ -258,6 +258,7 @@
     <File Name="../../src/msgbox.h"/>
     <File Name="../../src/output.cpp"/>
     <File Name="../../src/output.h"/>
+    <File Name="../../src/util_macro.h"/>
     <VirtualDirectory Name="GTK">
       <File Name="../../src/msgbox_gtk.cpp"/>
     </VirtualDirectory>

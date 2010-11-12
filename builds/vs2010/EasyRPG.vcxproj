@@ -332,6 +332,7 @@
     <ClInclude Include="..\..\src\tilemap.h" />
     <ClInclude Include="..\..\src\tilemap_layer.h" />
     <ClInclude Include="..\..\src\tone.h" />
+    <ClInclude Include="..\..\src\util_macro.h" />
     <ClInclude Include="..\..\src\window.h" />
     <ClInclude Include="..\..\src\window_base.h" />
     <ClInclude Include="..\..\src\window_command.h" />

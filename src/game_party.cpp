@@ -21,6 +21,7 @@
 #include "game_party.h"
 #include "game_actors.h"
 #include "output.h"
+#include "util_macro.h"
 
 ////////////////////////////////////////////////////////////
 /// Constructor
@@ -68,4 +69,21 @@ int Game_Party::ItemNumber(int item_id) {
 	}
 	
 	return 0;
+}
+
+
+////////////////////////////////////////////////////////////
+/// Gain Gold
+////////////////////////////////////////////////////////////
+void Game_Party::GainGold(int n) {
+	int a = gold + n;
+	gold = min(max(a, 0), 9999999);
+}
+
+void Game_Party::GainItem(int item_id, int n) {
+	int a;
+	if (item_id > 0) {
+		a = ItemNumber(item_id);
+		items[item_id] = min(max(a + n, 0), 99);
+	}
 }
