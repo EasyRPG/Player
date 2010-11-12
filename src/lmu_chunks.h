@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////
 // This file is part of EasyRPG Player.
-// 
+//
 // EasyRPG Player is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // EasyRPG Player is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
@@ -57,7 +57,7 @@ namespace LMU_Reader {
 			generator_floor_c		= 0x36, // Flag
 			generator_extra_b		= 0x37, // Flag
 			generator_extra_c		= 0x38, // Flag
-			generator_x				= 0x3C, // Uint32 x 9 
+			generator_x				= 0x3C, // Uint32 x 9
 			generator_y				= 0x3D, // Uint32 x 9
 			generator_tile_ids		= 0x3E	// Array - Short
 		};

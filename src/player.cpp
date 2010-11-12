@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////
 // This file is part of EasyRPG Player.
-// 
+//
 // EasyRPG Player is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // EasyRPG Player is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
@@ -61,7 +61,7 @@ void Player::Init() {
 #ifdef DEBUG
 	flags |= SDL_INIT_NOPARACHUTE;
 #endif
-	if ((SDL_Init(flags) < 0)) { 
+	if ((SDL_Init(flags) < 0)) {
 		Output::Error("EasyRPG Player couldn't initialize SDL.\n%s\n", SDL_GetError());
 	}
 
@@ -264,7 +264,7 @@ bool Player::RefreshVideoMode() {
 		video_height *= 2;
 	}
 
-	main_window  = SDL_SetVideoMode(video_width, video_height, BPP, flags);
+	main_window = SDL_SetVideoMode(video_width, video_height, BPP, flags);
 	return main_window != NULL;
 }
 

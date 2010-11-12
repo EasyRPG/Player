@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////
 // This file is part of EasyRPG Player.
-// 
+//
 // EasyRPG Player is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // EasyRPG Player is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
@@ -190,7 +190,7 @@ void Bitmap::Blit(int x, int y, Bitmap* src_bitmap, Rect src_rect, int opacity) 
 		x = 0;
 	}
 	if (y < 0) {
-		height += y; 
+		height += y;
 		y = 0;
 	}
 	if (x + width > GetWidth()) width = GetWidth() - x;
@@ -411,14 +411,12 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 
 		// EXFONT-Detection: Check for A-Z or a-z behind the $
 		if (text[c] == '$' && c != text.size() - 1 &&
-			((text[c+1] >= 'a' && text[c+1] <= 'z') || (text[c+1] >= 'A' && text[c+1] <= 'Z')))
-		{
+			((text[c+1] >= 'a' && text[c+1] <= 'z') || (text[c+1] >= 'A' && text[c+1] <= 'Z'))) {
 			int exfont_value;
 			// The two Bottom rows
 			if ((text[c+1] >= 'a' && text[c+1] <= 'z')) {
 				exfont_value = 26 + text[c+1] - 'a';
-			}
-			else {
+			} else {
 				exfont_value = text[c+1]-'A';
 			}
 			is_full_glyph = true;
@@ -432,14 +430,12 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 			SDL_Rect rect = {(exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12};
 			SDL_BlitSurface(exfont, &rect, char_surface, NULL);
 			SDL_BlitSurface(exfont, &rect, char_shadow, NULL);
-		}
-		else
-		{
+		} else {
 			// No EXFONT, draw normal text
 #if FONT_SMOOTHING == 0
 			// Render a single char
 			char_surface = TTF_RenderUTF8_Solid(ttf_font, text2, Color(255, 255, 255, 255).Get());
-			char_shadow  = TTF_RenderUTF8_Solid(ttf_font, text2, shadowColor.Get());
+			char_shadow = TTF_RenderUTF8_Solid(ttf_font, text2, shadowColor.Get());
 #else
 			char_surface = TTF_RenderUTF8_Blended(ttf_font, text2, Color(255, 255, 255, 255).Get());
 			char_shadow = TTF_RenderUTF8_Blended(ttf_font, text2, shadowColor.Get());
@@ -861,10 +857,10 @@ void Bitmap::Rotate(double angle) {
 
 	SDL_LockSurface(bitmap);
 	
-	float radians = (2 * 3.14159265 * angle) / 360; 
+	float radians = (2 * 3.14159265 * angle) / 360;
 
-	float cosine = (float)cos(radians); 
-	float sine = (float)sin(radians); 
+	float cosine = (float)cos(radians);
+	float sine = (float)sin(radians);
 
 	float p1x = -GetHeight() * sine;
 	float p1y = GetHeight() * cosine;
@@ -873,12 +869,12 @@ void Bitmap::Rotate(double angle) {
 	float p3x = GetWidth() * cosine;
 	float p3y = GetWidth() * sine;
 
-	float minx = min(0, min(p1x, min(p2x, p3x))); 
-	float miny = min(0, min(p1y, min(p2y, p3y))); 
-	float maxx = max(p1x, max(p2x, p3x)); 
-	float maxy = max(p1y, max(p2y, p3y)); 
+	float minx = min(0, min(p1x, min(p2x, p3x)));
+	float miny = min(0, min(p1y, min(p2y, p3y)));
+	float maxx = max(p1x, max(p2x, p3x));
+	float maxy = max(p1y, max(p2y, p3y));
 
-	int nwidth = (int)ceil(fabs(maxx)-minx); 
+	int nwidth = (int)ceil(fabs(maxx)-minx);
 	int nheight = (int)ceil(fabs(maxy)-miny);
 	
 	SDL_Surface* nbitmap = SDL_CreateRGBASurface(nwidth, nheight);

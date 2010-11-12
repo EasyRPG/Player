@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////
 // This file is part of EasyRPG Player.
-// 
+//
 // EasyRPG Player is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // EasyRPG Player is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
@@ -188,15 +188,15 @@ void Graphics::DrawFrame() {
 	DrawableType type;
 	for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
 		type = drawable_map[it_zlist->GetId()]->GetType();
-		if (( (!is_in_transition_yet) || (type != WINDOW) ) 
-			|| (!wait_for_transition))   // Make sure not to draw Windows until transition's finished
+		if (( (!is_in_transition_yet) || (type != WINDOW) )
+			|| (!wait_for_transition)) // Make sure not to draw Windows until transition's finished
 			drawable_map[it_zlist->GetId()]->Draw(it_zlist->GetZ());
 	}
 
 	if (is_in_transition_yet) DoTransition();
 
 	if (Player::zoom) {
-		// TODO: Resize zoom code for BPP != 4 (and  maybe zoom != x2)
+		// TODO: Resize zoom code for BPP != 4 (and maybe zoom != x2)
 		SDL_Surface* surface = Player::main_window;
 		register int i, j;
 		SDL_LockSurface(surface);
@@ -212,7 +212,7 @@ void Graphics::DrawFrame() {
 				dst[i * 2 + 1] = src[i];
 			}
 			dst -= pitch;
-			if (j % 2 != 0)  src -= pitch;
+			if (j % 2 != 0) src -= pitch;
 		}
 		SDL_UnlockSurface(surface);
 		SDL_Flip(surface);

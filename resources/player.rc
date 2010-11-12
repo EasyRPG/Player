@@ -6,23 +6,23 @@ FILEVERSION 0,0,0,0
 PRODUCTVERSION 0,0,0,0
 FILETYPE VFT_APP
 {
-  BLOCK "StringFileInfo"
-	 {
-		 BLOCK "000004E4"
-		 {
-			 VALUE "Comments", "http://easyrpg.sourceforge.net/"
-			 VALUE "CompanyName", "EasyRPG Project"
-			 VALUE "FileVersion", "0.0.0.0"
-			 VALUE "FileDescription", "EasyRPG Player"
-			 VALUE "InternalName", "player"
-			 VALUE "LegalCopyright", "2005-2010 EasyRPG Project"
-			 VALUE "OriginalFilename", "Player.exe"
-			 VALUE "ProductName", "EasyRPG"
-			 VALUE "ProductVersion", "0.0.0.0"
-		 }
-	 }
-  BLOCK "VarFileInfo"
-	 {
-		 VALUE "Translation", 0x0000, 1252
-	 }
+	BLOCK "StringFileInfo"
+	{
+		BLOCK "000004E4"
+		{
+			VALUE "Comments", "http://easyrpg.sourceforge.net/"
+			VALUE "CompanyName", "EasyRPG Project"
+			VALUE "FileVersion", "0.0.0.0"
+			VALUE "FileDescription", "EasyRPG Player"
+			VALUE "InternalName", "player"
+			VALUE "LegalCopyright", "2005-2010 EasyRPG Project"
+			VALUE "OriginalFilename", "Player.exe"
+			VALUE "ProductName", "EasyRPG"
+			VALUE "ProductVersion", "0.0.0.0"
+		}
+	}
+	BLOCK "VarFileInfo"
+	{
+		VALUE "Translation", 0x0000, 1252
+	}
 }

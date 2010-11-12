@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////
 // This file is part of EasyRPG Player.
-// 
+//
 // EasyRPG Player is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // EasyRPG Player is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
@@ -40,16 +40,16 @@
 /// Enumeration of codes
 ////////////////////////////////////////////////////////////
 enum CommandCodes {
-	SHOW_MESSAGE       = 10110,
-	SHOW_MESSAGE_2     = 20110,
-	MESSAGE_OPTIONS    = 10120,
-	SHOW_FACE_GRAPHIC  = 10130,
-	SHOW_CHOICE        = 10140,
-	SHOW_CHOICE_OPTION = 20140,
-	SHOW_CHOICE_END    = 20141,
-	CONTROL_VARS       = 10220,
-	CONTROL_SWITCHES   = 10210,
-	INPUT_NUMBER       = 10150
+	SHOW_MESSAGE		= 10110,
+	SHOW_MESSAGE_2		= 20110,
+	MESSAGE_OPTIONS		= 10120,
+	SHOW_FACE_GRAPHIC	= 10130,
+	SHOW_CHOICE			= 10140,
+	SHOW_CHOICE_OPTION	= 20140,
+	SHOW_CHOICE_END		= 20141,
+	CONTROL_VARS		= 10220,
+	CONTROL_SWITCHES	= 10210,
+	INPUT_NUMBER		= 10150
 };
 
 enum Sizes {
@@ -58,11 +58,11 @@ enum Sizes {
 };
 
 enum CharsID {
-	PLAYER     = 10001,
-	BOAT       = 10002,
-	SHIP       = 10003,
-	AIRSHIP    = 10004,
-	THIS_EVENT = 10005
+	PLAYER		= 10001,
+	BOAT		= 10002,
+	SHIP		= 10003,
+	AIRSHIP		= 10004,
+	THIS_EVENT	= 10005
 };
 
 ////////////////////////////////////////////////////////////
@@ -90,13 +90,13 @@ Interpreter::~Interpreter()
 /// Clear
 ////////////////////////////////////////////////////////////
 void Interpreter::Clear() {
-    map_id = 0;                   //    # map ID when starting up
-    event_id = 0;                 //    # event ID
-    message_waiting = false;      //    # waiting for message to end
-    move_route_waiting = false;   //    # waiting for move completion
-    button_input_variable_id = 0; //    # button input variable ID
-    wait_count = 0;               //    # wait count
-    child_interpreter = NULL;     //    # child interpreter for common events, etc
+	map_id = 0;						// map ID when starting up
+	event_id = 0;					// event ID
+	message_waiting = false;		// waiting for message to end
+	move_route_waiting = false;		// waiting for move completion
+	button_input_variable_id = 0;	// button input variable ID
+	wait_count = 0;					// wait count
+	child_interpreter = NULL;		// child interpreter for common events, etc
 	branch.clear();
 }
 
@@ -377,7 +377,7 @@ bool Interpreter::CommandShowMessage() { // Code SHOW_MESSAGE
 
 	for (;;) {
 		// If next event command is the following parts of the message
-		if ( (index < list.size()) && (list[index+1].code == SHOW_MESSAGE_2) )  {
+		if ( (index < list.size()) && (list[index+1].code == SHOW_MESSAGE_2) ) {
 			// Add second (another) line
 			Main_Data::game_temp->message_text += list[index+1].string + "\n";
 			line_count++;
@@ -396,7 +396,7 @@ bool Interpreter::CommandShowMessage() { // Code SHOW_MESSAGE
 			} else {
 				// If next event command is input number
 				if ((index < list.size()) && (list[index+1].code == INPUT_NUMBER) ) {
-					// If input number fits on screen 
+					// If input number fits on screen
 					if (line_count < 4) {
 						index++;
 						Main_Data::game_temp->num_input_start = line_count;
@@ -472,7 +472,7 @@ bool Interpreter::CommandControlSwitches() { // Code CONTROL_SWITCHES
 				Main_Data::game_switches->ToggleAt(list[index].parameters[2]);
 			}
 			break;
-		default: 
+		default:
 			return false;
 	}
 	return true;
@@ -516,7 +516,7 @@ bool Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 					// Number of heroes that have the item equipped
 					std::vector<Game_Actor*>::iterator j;
 					for (j = Main_Data::game_party->actors.begin(); j != Main_Data::game_party->actors.end(); j++) {
-						if ( ((*j)->weapon_id == list[index].parameters[6]) || 
+						if ( ((*j)->weapon_id == list[index].parameters[6]) ||
 							((*j)->armor1_id == list[index].parameters[6]) ||
 							((*j)->armor2_id == list[index].parameters[6]) ||
 							((*j)->armor3_id == list[index].parameters[6]) ||
@@ -540,11 +540,11 @@ bool Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 						// Experience
 						value = actor->exp;
 						break;
-					case 2: 
+					case 2:
 						// Current HP
 						value = actor->hp;
 						break;
-					case 3: 
+					case 3:
 						// Current MP
 						value = actor->mp;
 						break;
@@ -557,7 +557,7 @@ bool Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 						value = Main_Data::data_actors[list[index].parameters[6]].parameter_maxsp[actor->level-1];
 						break;
 					case 6:
-						// Attack 
+						// Attack
 						value = Main_Data::data_actors[list[index].parameters[6]].parameter_attack[actor->level-1];
 						break;
 					case 7:
@@ -731,10 +731,10 @@ bool Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 Game_Character* Interpreter::GetCharacter(int character_id) {
 
 	switch (character_id) {
-		case PLAYER: 
+		case PLAYER:
 			// Player/Hero
 			return Main_Data::game_player;
-		case BOAT: 
+		case BOAT:
 			// TODO Boat
 			break;
 		case SHIP:

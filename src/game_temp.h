@@ -27,16 +27,16 @@ public:
 	
 	/* Number of lines before the start
 	of selection options.
-	+----------------------------------+
-	|  Hi, hero, What's your name?     |
-	|- Alex                            |
-	|- Brian                           |
-	|- Carol                           |
-	+----------------------------------+
+	+-----------------------------------+
+	|	Hi, hero, What's your name?		|
+	|- Alex								|
+	|- Brian							|
+	|- Carol							|
+	+-----------------------------------+
 	In this case, choice_start would be 1.
 	Same with num_input_start.
 	*/
-	int choice_start; 
+	int choice_start;
 	int num_input_start;
 
 	// Number of choices
