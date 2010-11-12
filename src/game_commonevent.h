@@ -29,7 +29,7 @@ namespace RPG {
 	class EventCommand;
 }
 
-class Interpreter;
+class Game_Interpreter;
 
 class Game_CommonEvent
 {
@@ -49,7 +49,7 @@ private:
 
 	int common_event_id;
 
-	Interpreter* interpreter; // Interpreter for parallel procceses
+	Game_Interpreter* interpreter; // Interpreter for parallel procceses
 };
 
 #endif

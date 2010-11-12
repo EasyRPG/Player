@@ -15,30 +15,27 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef __game_temp__
-#define __game_temp__
+#include "game_message.h"
 
-#include <string>
-#include "game_battler.h"
+Game_Message::Game_Message():
+	visible(false)
+{
+	Clear();
+}
 
-class Game_Temp {
+void Game_Message::Clear() {
+	texts.clear();
+	face_name.clear();
+	face_index = 0;
+	background = 0;
+	position = 2;
+	choice_start = 99;
+	choice_max = 0;
+	choice_cancel_type = 0;
+	num_input_variable_id = 0;
+	num_input_digits_max = 0;
+}
 
-public:
-	Game_Temp();
-	~Game_Temp();
-
-	bool menu_calling;
-	bool menu_beep;
-
-	Game_Battler* forcing_battler;
-
-	bool battle_calling;
-	bool shop_calling;
-	bool name_calling;
-	bool save_calling;
-	bool gameover;
-
-	int common_event_id;
-
-};
-#endif // __game_temp__
+bool Game_Message::Busy() {
+	return (texts.size() > 0);
+}

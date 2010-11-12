@@ -29,13 +29,13 @@ namespace RPG {
 }
 
 ////////////////////////////////////////////////////////////
-/// Interpreter class
+/// Game_Interpreter class
 ////////////////////////////////////////////////////////////
-class Interpreter
+class Game_Interpreter
 {
 public:
-	Interpreter(int _depth = 0, bool _main_flag = false);
-	~Interpreter();
+	Game_Interpreter(int _depth = 0, bool _main_flag = false);
+	~Game_Interpreter();
 
 	void Clear();
 	void Setup(std::vector<RPG::EventCommand> _list, int _event_id);
@@ -46,14 +46,6 @@ public:
 	bool ExecuteCommand();
 	void InputButton();
 	void SetupChoices(const std::vector<std::string>& choices);
-	Game_Character* GetCharacter(int character_id);
-
-	bool CommandShowMessage();
-	bool CommandShowChoices();
-	bool CommandControlSwitches();
-	bool CommandControlVariables();
-	bool CommandChangeGold();
-	bool CommandChangeItems();
 
 private:
 	int depth;
@@ -72,7 +64,7 @@ private:
 	unsigned int event_id;
 	int wait_count;
 
-	Interpreter* child_interpreter;
+	Game_Interpreter* child_interpreter;
 
 	std::vector<RPG::EventCommand> list;
 	std::map<int, bool> branch;
@@ -81,6 +73,16 @@ private:
 	std::vector<std::string> GetStrings();
 
 	int OperateValue(int operation, int operand_type, int operand);
+	Game_Character* GetCharacter(int character_id);
+
+	bool CommandShowMessage();
+	bool CommandShowChoices();
+	bool CommandChangeFaceGraphic();
+	bool CommandInputNumber();
+	bool CommandControlSwitches();
+	bool CommandControlVariables();
+	bool CommandChangeGold();
+	bool CommandChangeItems();
 };
 
 #endif

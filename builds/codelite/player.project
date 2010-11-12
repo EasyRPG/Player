@@ -3,10 +3,6 @@
   <VirtualDirectory Name="Engine">
     <File Name="../../src/cache.cpp"/>
     <File Name="../../src/cache.h"/>
-    <VirtualDirectory Name="Interpreter">
-      <File Name="../../src/interpreter.cpp"/>
-      <File Name="../../src/interpreter.h"/>
-    </VirtualDirectory>
     <VirtualDirectory Name="Game">
       <File Name="../../src/game_actor.cpp"/>
       <File Name="../../src/game_actor.h"/>
@@ -20,8 +16,12 @@
       <File Name="../../src/game_commonevent.h"/>
       <File Name="../../src/game_event.cpp"/>
       <File Name="../../src/game_event.h"/>
+      <File Name="../../src/game_interpreter.cpp"/>
+      <File Name="../../src/game_interpreter.h"/>
       <File Name="../../src/game_map.cpp"/>
       <File Name="../../src/game_map.h"/>
+      <File Name="../../src/game_message.cpp"/>
+      <File Name="../../src/game_message.h"/>
       <File Name="../../src/game_party.cpp"/>
       <File Name="../../src/game_party.h"/>
       <File Name="../../src/game_player.cpp"/>

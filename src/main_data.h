@@ -64,6 +64,7 @@ class Game_System;
 class Game_Temp;
 class Game_Troop;
 class Game_Variables;
+class Game_Message;
 
 namespace Main_Data {
 	// Scene Data
@@ -82,6 +83,7 @@ namespace Main_Data {
 	extern Game_Troop* game_troop;
 	extern Game_Map* game_map;
 	extern Game_Player* game_player;
+	extern Game_Message* game_message;
 	
 	// Database Data (ldb)
 	extern std::vector<RPG::Actor> data_actors;

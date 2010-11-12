@@ -1,6 +1,6 @@
 #include "game_commonevent.h"
 #include "game_switches.h"
-#include "interpreter.h"
+#include "game_interpreter.h"
 #include "main_data.h"
 
 Game_CommonEvent::Game_CommonEvent(int _common_event_id) {
@@ -31,7 +31,7 @@ std::vector<RPG::EventCommand> Game_CommonEvent::List() {
 void Game_CommonEvent::Refresh() {
 	if ( (Trigger() == 2) && ( (*Main_Data::game_switches)[SwitchId()] ) ) {
 		if (interpreter == NULL) {
-			interpreter = new Interpreter();
+			interpreter = new Game_Interpreter();
 		}
 	} else {
 		delete interpreter;

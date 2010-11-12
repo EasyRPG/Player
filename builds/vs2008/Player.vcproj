@@ -1105,11 +1105,27 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\src\game_interpreter.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_interpreter.h"
+						>
+					</File>
+					<File
 						RelativePath="..\..\src\game_map.cpp"
 						>
 					</File>
 					<File
 						RelativePath="..\..\src\game_map.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_message.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\game_message.h"
 						>
 					</File>
 					<File
@@ -1194,18 +1210,6 @@
 					</File>
 					<File
 						RelativePath="..\..\src\spriteset_map.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Interpreter"
-					>
-					<File
-						RelativePath="..\..\src\interpreter.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\src\interpreter.h"
 						>
 					</File>
 				</Filter>

@@ -30,6 +30,7 @@
 #include "game_temp.h"
 #include "game_troop.h"
 #include "game_variables.h"
+#include "game_message.h"
 
 ////////////////////////////////////////////////////////////
 /// Global Variables
@@ -51,6 +52,7 @@ namespace Main_Data {
 	Game_Troop* game_troop = NULL;
 	Game_Map* game_map = NULL;
 	Game_Player* game_player = NULL;
+	Game_Message* game_message = NULL;
 	
 	// Database Data (ldb)
 	std::vector<RPG::Actor> data_actors;

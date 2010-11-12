@@ -15,51 +15,57 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _GAME_CHARACTER_H_
-#define _GAME_CHARACTER_H_
+#ifndef _H_GAMEMESSAGE
+#define _H_GAMEMESSAGE
 
-////////////////////////////////////////////////////////////
-/// Game_Character class.
-////////////////////////////////////////////////////////////
-class Game_Character {
+#include <vector>
+#include <string>
+
+class Game_Message {
+
 public:
-	Game_Character();
-	virtual ~Game_Character();
 
-	virtual bool IsMoving();
-	virtual bool IsPassable(int x, int y, int d);
+	static const int MAX_LINE = 4;
 
-	virtual void MoveTo(int x, int y);
+	Game_Message();
+	~Game_Message();
 
-	virtual int GetScreenX();
-	virtual int GetScreenY();
-	virtual int GetScreenZ();
-	virtual int GetScreenZ(int height);
+	void Clear();
 
-	virtual void Update();
-	virtual void UpdateMove();
+	bool Busy();
 
-	void MoveDown();
-	void MoveLeft();
-	void MoveRight();
-	void MoveUp();
+	std::vector<std::string> texts;
+	std::string face_name;
+	int face_index;
+	int background;
 
-	void Lock();
+	/* Number of lines before the start
+	of selection options.
+	+-----------------------------------+
+	|	Hi, hero, What's your name?		|
+	|- Alex								|
+	|- Brian							|
+	|- Carol							|
+	+-----------------------------------+
+	In this case, choice_start would be 1.
+	Same with num_input_start.
+	*/
+	int choice_start;
+	int num_input_start;
 
+	// Number of choices
+	int choice_max;
 
-	int id;
-	int x;
-	int y;
-	int real_x;
-	int real_y;
-	int move_speed;
-	int direction;
+	// Option to choose if cancel
+	int choice_cancel_type;
 
-	bool move_route_forcing;
+	int num_input_variable_id;
+	int num_input_digits_max;
 
-private:
-	int prelock_direction;
-	bool locked;
+	int position;
+
+	bool visible;
+
 };
 
 #endif

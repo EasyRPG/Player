@@ -64,9 +64,6 @@
     <Filter Include="Source Files\Engine\Sprite">
       <UniqueIdentifier>{d6d5baa3-bfb3-42fb-9d14-d6146b6072ec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Engine\Interpreter">
-      <UniqueIdentifier>{27a85b9b-ebe1-46ca-8a25-1e12281636b9}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\cache.cpp">
@@ -82,6 +79,9 @@
       <Filter>Source Files\Engine\Game</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\game_map.cpp">
+      <Filter>Source Files\Engine\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game_message.cpp">
       <Filter>Source Files\Engine\Game</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\game_party.cpp">
@@ -462,8 +462,8 @@
     <ClCompile Include="..\..\src\sprite_character.cpp">
       <Filter>Source Files\Engine\Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\interpreter.cpp">
-      <Filter>Source Files\Engine\Interpreter</Filter>
+    <ClCompile Include="..\..\src\game_interpreter.cpp">
+      <Filter>Source Files\Engine\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -480,6 +480,9 @@
       <Filter>Source Files\Engine\Game</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\game_map.h">
+      <Filter>Source Files\Engine\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game_message.h">
       <Filter>Source Files\Engine\Game</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\game_party.h">
@@ -770,8 +773,8 @@
     <ClInclude Include="..\..\src\sprite_character.h">
       <Filter>Source Files\Engine\Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\interpreter.h">
-      <Filter>Source Files\Engine\Interpreter</Filter>
+    <ClInclude Include="..\..\src\game_interpreter.h">
+      <Filter>Source Files\Engine\Game</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\game_event.cpp">
       <Filter>Source Files\Engine\Game</Filter>

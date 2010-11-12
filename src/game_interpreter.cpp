@@ -15,7 +15,7 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#include "interpreter.h"
+#include "game_interpreter.h"
 #include "output.h"
 #include "input.h"
 #include "game_map.h"
@@ -27,6 +27,7 @@
 #include "game_party.h"
 #include "game_actors.h"
 #include "game_system.h"
+#include "game_message.h"
 #include "graphics.h"
 #include "util_macro.h"
 #include "main_data.h"
@@ -39,6 +40,7 @@ enum CommandCodes {
 	SHOW_MESSAGE_2		= 20110,
 	MESSAGE_OPTIONS		= 10120,
 	SHOW_FACE_GRAPHIC	= 10130,
+	CHANGE_FACE_GRAPHIC = 10130,
 	SHOW_CHOICE			= 10140,
 	SHOW_CHOICE_OPTION	= 20140,
 	SHOW_CHOICE_END		= 20141,
@@ -67,7 +69,7 @@ enum CharsID {
 ///////////////////////////////////////////////////////////
 class Game_Event;
 
-Interpreter::Interpreter(int _depth, bool _main_flag)
+Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag)
 {
 	depth = _depth;
 	main_flag = _main_flag;
@@ -79,14 +81,14 @@ Interpreter::Interpreter(int _depth, bool _main_flag)
 	Clear();
 }
 
-Interpreter::~Interpreter()
+Game_Interpreter::~Game_Interpreter()
 {
 }
 
 ////////////////////////////////////////////////////////////
 /// Clear
 ////////////////////////////////////////////////////////////
-void Interpreter::Clear() {
+void Game_Interpreter::Clear() {
 	map_id = 0;						// map ID when starting up
 	event_id = 0;					// event ID
 	message_waiting = false;		// waiting for message to end
@@ -100,14 +102,14 @@ void Interpreter::Clear() {
 ////////////////////////////////////////////////////////////
 /// Is Interpreter Running
 ////////////////////////////////////////////////////////////
-bool Interpreter::IsRunning() {
+bool Game_Interpreter::IsRunning() {
 	return list.empty();
 }
 
 ////////////////////////////////////////////////////////////
 /// Setup
 ////////////////////////////////////////////////////////////
-void Interpreter::Setup(std::vector<RPG::EventCommand> _list, int _event_id) {
+void Game_Interpreter::Setup(std::vector<RPG::EventCommand> _list, int _event_id) {
 
 	Clear();
 
@@ -122,7 +124,7 @@ void Interpreter::Setup(std::vector<RPG::EventCommand> _list, int _event_id) {
 ////////////////////////////////////////////////////////////
 /// Update
 ////////////////////////////////////////////////////////////
-void Interpreter::Update() {
+void Game_Interpreter::Update() {
 
 	loop_count = 0;
 
@@ -223,7 +225,7 @@ void Interpreter::Update() {
 ////////////////////////////////////////////////////////////
 /// Setup Starting Event
 ////////////////////////////////////////////////////////////
-void Interpreter::SetupStartingEvent() {
+void Game_Interpreter::SetupStartingEvent() {
 
 	if (Main_Data::game_map->need_refresh) {
 		Main_Data::game_map->Refresh();
@@ -266,7 +268,7 @@ void Interpreter::SetupStartingEvent() {
 ////////////////////////////////////////////////////////////
 /// Execute Command
 ////////////////////////////////////////////////////////////
-bool Interpreter::ExecuteCommand() {
+bool Game_Interpreter::ExecuteCommand() {
 	/*
 	if (index >= list.size() - 1) {
 		//CommandEnd();
@@ -287,7 +289,7 @@ bool Interpreter::ExecuteCommand() {
 ////////////////////////////////////////////////////////////
 /// Input Button
 ////////////////////////////////////////////////////////////
-void Interpreter::InputButton() {
+void Game_Interpreter::InputButton() {
 	Input::InputButton n = Input::NOBUTTON;
 	
 	if (Input::IsTriggered(Input::UP)) {
@@ -332,8 +334,8 @@ void Interpreter::InputButton() {
 /// This is just a helper (private) method
 /// to avoid repeating code
 /////////////////////////////////////////////
-std::vector<std::string> Interpreter::GetStrings() {
-	/* Let's find the choices */
+std::vector<std::string> Game_Interpreter::GetStrings() {
+	// Let's find the choices
 	int current_indent = list[index+1].indent;
 	unsigned int index_temp = index+2;
 	std::vector<std::string> s_choices;
@@ -359,9 +361,9 @@ std::vector<std::string> Interpreter::GetStrings() {
 ////////////////////////////////////////////////////////////
 /// Command Show Message
 ////////////////////////////////////////////////////////////
-bool Interpreter::CommandShowMessage() { // Code SHOW_MESSAGE
+bool Game_Interpreter::CommandShowMessage() { // Code SHOW_MESSAGE
 	// If there's a text already, return immediately
-	if (!Main_Data::game_temp->message_text.empty()) {
+	if (!Main_Data::game_message->texts.empty()) {
 		return false;
 	}
 	unsigned int line_count = 0;
@@ -369,15 +371,15 @@ bool Interpreter::CommandShowMessage() { // Code SHOW_MESSAGE
 	message_waiting = true;
 
 	// Set first line
-	Main_Data::game_temp->message_text = list[index].string + "\n";
+	Main_Data::game_message->texts[line_count] = list[index].string;
 	line_count++;
 
 	for (;;) {
 		// If next event command is the following parts of the message
 		if ( (index < list.size()) && (list[index+1].code == SHOW_MESSAGE_2) ) {
 			// Add second (another) line
-			Main_Data::game_temp->message_text += list[index+1].string + "\n";
 			line_count++;
+			Main_Data::game_message->texts[line_count] += list[index+1].string;
 		} else {
 			// If next event command is show choices
 			std::vector<std::string> s_choices;
@@ -386,8 +388,8 @@ bool Interpreter::CommandShowMessage() { // Code SHOW_MESSAGE
 				// If choices fit on screen
 				if (s_choices.size() < (4 - line_count)) {
 					index++;
-					Main_Data::game_temp->choice_start = line_count;
-					Main_Data::game_temp->choice_cancel_type = list[index].parameters[0];
+					Main_Data::game_message->choice_start = line_count;
+					Main_Data::game_message->choice_cancel_type = list[index].parameters[0];
 					SetupChoices(s_choices);
 				}
 			} else {
@@ -396,9 +398,9 @@ bool Interpreter::CommandShowMessage() { // Code SHOW_MESSAGE
 					// If input number fits on screen
 					if (line_count < 4) {
 						index++;
-						Main_Data::game_temp->num_input_start = line_count;
-						Main_Data::game_temp->num_input_digits_max = list[index].parameters[0];
-						Main_Data::game_temp->num_input_variable_id = list[index].parameters[1];
+						Main_Data::game_message->num_input_start = line_count;
+						Main_Data::game_message->num_input_digits_max = list[index].parameters[0];
+						Main_Data::game_message->num_input_variable_id = list[index].parameters[1];
 					}
 				}
 			}
@@ -411,13 +413,13 @@ bool Interpreter::CommandShowMessage() { // Code SHOW_MESSAGE
 ////////////////////////////////////////////////////////////
 /// Setup Choices
 ////////////////////////////////////////////////////////////
-void Interpreter::SetupChoices(const std::vector<std::string>& choices) {
-	Main_Data::game_temp->choice_max = choices.size();
+void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices) {
+	Main_Data::game_message->choice_max = choices.size();
 
 	// Set choices to message text
 	unsigned int i;
 	for (i = 0; i < choices.size(); i++) {
-		Main_Data::game_temp->message_text += choices[i] + "\n";
+		Main_Data::game_message->texts.push_back(choices[i]);
 	}
 
 	/* Set callback stuff */
@@ -428,17 +430,17 @@ void Interpreter::SetupChoices(const std::vector<std::string>& choices) {
 ////////////////////////////////////////////////////////////
 /// Command Show choices
 ////////////////////////////////////////////////////////////
-bool Interpreter::CommandShowChoices() { // Code SHOW_CHOICE
-	if (!Main_Data::game_temp->message_text.empty()) {
+bool Game_Interpreter::CommandShowChoices() { // Code SHOW_CHOICE
+	if (!Main_Data::game_message->texts.empty()) {
 		return false;
 	}
 
 	message_waiting = true;
 
 	// Choices setup
-	Main_Data::game_temp->message_text.clear();
-	Main_Data::game_temp->choice_start = 0;
-	Main_Data::game_temp->choice_cancel_type = list[index].parameters[0];
+	Main_Data::game_message->texts.clear();
+	Main_Data::game_message->choice_start = 0;
+	Main_Data::game_message->choice_cancel_type = list[index].parameters[0];
 	SetupChoices(GetStrings());
 
 	return true;
@@ -447,7 +449,7 @@ bool Interpreter::CommandShowChoices() { // Code SHOW_CHOICE
 ////////////////////////////////////////////////////////////
 /// Command control switches
 ////////////////////////////////////////////////////////////
-bool Interpreter::CommandControlSwitches() { // Code CONTROL_SWITCHES
+bool Game_Interpreter::CommandControlSwitches() { // Code CONTROL_SWITCHES
 	int i;
 	switch (list[index].parameters[0]) {
 		case 0:
@@ -478,7 +480,7 @@ bool Interpreter::CommandControlSwitches() { // Code CONTROL_SWITCHES
 ////////////////////////////////////////////////////////////
 /// Command control vars
 ////////////////////////////////////////////////////////////
-bool Interpreter::CommandControlVariables() { // Code CONTROL_VARS
+bool Game_Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 	int i, value = 0;
 	Game_Actor* actor;
 	Game_Character* character;
@@ -615,7 +617,8 @@ bool Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 						break;
 					case 3:
 						// TODO Orientation
-						//value = character->
+						// Needs testing
+						value = character->direction;
 						break;
 					case 4:
 						// Screen X
@@ -758,9 +761,32 @@ bool Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 }
 
 ////////////////////////////////////////////////////////////
+/// * Calculate Operated Value
+///     operation    : operation (increase: 0, decrease: 1)
+///     operand_type : operand type (0: invariable, 1: variable)
+///     operand      : operand (number or var ID)
+////////////////////////////////////////////////////////////
+int Game_Interpreter::OperateValue(int operation, int operand_type, int operand) {
+	int value = 0;
+
+	if (operand_type == 0) {
+		value = operand;
+	} else {
+		value = (*Main_Data::game_variables)[operand];
+	}
+
+	// Reverse sign of value if operation is substract
+	if (operation == 1) {
+		value = -value;
+	}
+
+	return value;
+}
+
+////////////////////////////////////////////////////////////
 /// Get Character
 ////////////////////////////////////////////////////////////
-Game_Character* Interpreter::GetCharacter(int character_id) {
+Game_Character* Game_Interpreter::GetCharacter(int character_id) {
 
 	switch (character_id) {
 		case PLAYER:
@@ -790,7 +816,7 @@ Game_Character* Interpreter::GetCharacter(int character_id) {
 ////////////////////////////////////////////////////////////
 /// Change Gold
 ////////////////////////////////////////////////////////////
-bool Interpreter::CommandChangeGold() { // Code 10310
+bool Game_Interpreter::CommandChangeGold() { // Code 10310
 	int value;
 	value = OperateValue(
 		list[index].parameters[0], 
@@ -807,7 +833,7 @@ bool Interpreter::CommandChangeGold() { // Code 10310
 ////////////////////////////////////////////////////////////
 /// Change Items
 ////////////////////////////////////////////////////////////
-bool Interpreter::CommandChangeItems() { // Code 10320
+bool Game_Interpreter::CommandChangeItems() { // Code 10320
 	int value;
 	value = OperateValue(
 		list[index].parameters[0],
@@ -830,25 +856,25 @@ bool Interpreter::CommandChangeItems() { // Code 10320
 }
 
 ////////////////////////////////////////////////////////////
-/// * Calculate Operated Value
-///     operation    : operation (increase: 0, decrease: 1)
-///     operand_type : operand type (0: invariable, 1: variable)
-///     operand      : operand (number or var ID)
+/// Input Number
 ////////////////////////////////////////////////////////////
-int Interpreter::OperateValue(int operation, int operand_type, int operand) {
-	int value = 0;
-
-	if (operand_type == 0) {
-		value = operand;
-	} else {
-		value = (*Main_Data::game_variables)[operand];
+bool Game_Interpreter::CommandInputNumber() {
+	if (!Main_Data::game_message->texts.empty()) {
+		return false;
 	}
 
-	// Reverse sign of value if operation is substract
-	if (operation == 1) {
-		value = -value;
-	}
+	message_waiting = true;
 
-	return value;
+	Main_Data::game_message->texts.clear();
+	Main_Data::game_message->num_input_start = 0;
+	Main_Data::game_message->num_input_variable_id = list[index].parameters[1];
+	Main_Data::game_message->num_input_digits_max = list[index].parameters[0];
+	
+	// Continue
+	return true;
 }
 
+bool Game_Interpreter::CommandChangeFaceGraphic() { // Code 10130
+	
+	return true;
+}
