@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CodeLite_Project Name="Player">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00070001N0014Dingux-Release0000000000000001N0010GTK+ Debug0000000000000001N0012GTK+ Release0000000000000001N0010UNIX Debug0000000000000001N0012UNIX Release0000000000000001N0011Win32 Debug0000000000000001N0013Win32 Release000000000000]]>
+    </Plugin>
+  </Plugins>
   <VirtualDirectory Name="Engine">
     <File Name="../../src/cache.cpp"/>
     <File Name="../../src/cache.h"/>
@@ -281,7 +286,13 @@
   <File Name="../../src/options.h"/>
   <File Name="../../src/player.cpp"/>
   <File Name="../../src/player.h"/>
+  <File Name="../../resources/player.rc"/>
   <Settings Type="Executable">
+    <GlobalSettings>
+      <Compiler Options=""/>
+      <Linker Options=""/>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
     <Configuration Name="Dingux-Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g -fno-rtti -fno-exceptions $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --cflags)  -DDINGOO -D_DEBUG -Wall -Wextra  -pedantic -Wno-unused" Required="yes" PreCompiledHeader=""/>
       <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --libs) " Required="yes"/>
@@ -512,10 +523,5 @@
         <CustomPreBuild/>
       </AdditionalRules>
     </Configuration>
-    <GlobalSettings>
-      <Compiler Options=""/>
-      <Linker Options=""/>
-      <ResourceCompiler Options=""/>
-    </GlobalSettings>
   </Settings>
 </CodeLite_Project>
