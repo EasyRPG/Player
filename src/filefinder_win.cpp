@@ -60,7 +60,7 @@ void FileFinder::Init() {
 		#error Set RPGMAKER to RPG2K or RPG2K3
 	#endif
 
-	if (rtp_path[rtp_path.length()-1] != '\\' && rtp_path[rtp_path.length()-1] != '/')
+	if (rtp_path != "" && rtp_path[rtp_path.length()-1] != '\\' && rtp_path[rtp_path.length()-1] != '/')
 		rtp_path += '\\';
 
 	// Retrieve the Path of the Font Directory

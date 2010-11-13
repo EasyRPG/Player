@@ -21,7 +21,29 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "msgbox.h"
+#include "SDL_syswm.h"
 #include <windows.h>
+#include <Commctrl.h>
+
+////////////////////////////////////////////////////////////
+// Add Manifest depending on architecture
+////////////////////////////////////////////////////////////
+#ifdef _MSC_VER
+	#if defined _M_IX86
+	#pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"")
+	#elif defined _M_X64
+	#pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='amd64' publicKeyToken='6595b64144ccf1df' language='*'\"")
+	#else
+	#pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+	#endif
+#endif
+
+////////////////////////////////////////////////////////////
+// Function prototype for TaskDialog.
+// Without this we have to link against comctl32.lib and
+// this makes the program incompatible with WinXP.
+////////////////////////////////////////////////////////////
+typedef HRESULT (WINAPI *TaskDialogFunc)(HWND, HINSTANCE, PCWSTR, PCWSTR, PCWSTR, TASKDIALOG_COMMON_BUTTON_FLAGS, PCWSTR, int);
 
 ////////////////////////////////////////////////////////////
 /// MSVC Unicode std::string to LPCWSTR
@@ -44,24 +66,79 @@ static std::string s2ws(const std::string& s) {
 #endif
 
 ////////////////////////////////////////////////////////////
+/// Detects the Windows version during runtime.
+/// Vista (and later) have version 6 and higher.
+////////////////////////////////////////////////////////////
+int GetWindowsVersion() {
+    OSVERSIONINFO osvi;
+    osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+    GetVersionEx(&osvi);
+
+	return osvi.dwMajorVersion;
+}
+
+////////////////////////////////////////////////////////////
+/// Gets the HWND of the SDL-Window.
+////////////////////////////////////////////////////////////
+HWND GetHwnd()
+{
+	SDL_SysWMinfo wmi;
+	SDL_VERSION(&wmi.version);
+
+	if(!SDL_GetWMInfo(&wmi)) return NULL;
+
+	return wmi.window;
+}
+
+////////////////////////////////////////////////////////////
 /// Default Message Box with OK button
 ////////////////////////////////////////////////////////////
 void MsgBox::OK(std::string msg, std::string title) {
-	MessageBox(NULL, s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK);
+	if (GetWindowsVersion() >= 6) {
+		TaskDialogFunc TheTaskDialogFunc;
+		HINSTANCE hInstLibrary = LoadLibrary(L"comctl32.dll");
+		TheTaskDialogFunc = (TaskDialogFunc)GetProcAddress(hInstLibrary, "TaskDialog");
+		if (TheTaskDialogFunc != NULL) {
+			TheTaskDialogFunc(GetHwnd(), NULL, s2ws(title).c_str(), s2ws(msg).c_str(), NULL, TDCBF_OK_BUTTON, TD_INFORMATION_ICON, NULL);
+		}
+		FreeLibrary(hInstLibrary);
+	} else {
+		MessageBox(GetHwnd(), s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK);
+	}
 }
 
 ////////////////////////////////////////////////////////////
 /// Error Message Box
 ////////////////////////////////////////////////////////////
 void MsgBox::Error(std::string msg, std::string title) {
-	MessageBox(NULL, s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK | MB_ICONERROR);
+	if (GetWindowsVersion() >= 6) {
+		TaskDialogFunc TheTaskDialogFunc;
+		HINSTANCE hInstLibrary = LoadLibrary(L"comctl32.dll");
+		TheTaskDialogFunc = (TaskDialogFunc)GetProcAddress(hInstLibrary, "TaskDialog");
+		if (TheTaskDialogFunc != NULL) {
+			TheTaskDialogFunc(GetHwnd(), NULL, s2ws(title).c_str(), s2ws(msg).c_str(), NULL, TDCBF_OK_BUTTON, TD_ERROR_ICON, NULL);
+		}
+		FreeLibrary(hInstLibrary);
+	} else {
+		MessageBox(GetHwnd(), s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK | MB_ICONERROR);
+	}
 }
 
 ////////////////////////////////////////////////////////////
 /// Warning Message Box
 ////////////////////////////////////////////////////////////
 void MsgBox::Warning(std::string msg, std::string title) {
-	MessageBox(NULL, s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK | MB_ICONEXCLAMATION);
+	if (GetWindowsVersion() >= 6) {
+		TaskDialogFunc TheTaskDialogFunc;
+		HINSTANCE hInstLibrary = LoadLibrary(L"comctl32.dll");
+		TheTaskDialogFunc = (TaskDialogFunc)GetProcAddress(hInstLibrary, "TaskDialog");
+		if (TheTaskDialogFunc != NULL) {
+			TheTaskDialogFunc(GetHwnd(), NULL, s2ws(title).c_str(), s2ws(msg).c_str(), NULL, TDCBF_OK_BUTTON, TD_WARNING_ICON, NULL);
+		}
+		FreeLibrary(hInstLibrary);
+	} else {
+		MessageBox(GetHwnd(), s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK | MB_ICONEXCLAMATION);
+	}
 }
 
 #endif
