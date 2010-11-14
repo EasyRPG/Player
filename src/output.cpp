@@ -24,7 +24,7 @@
 #ifdef _WIN32
 	#include <conio.h>
 #endif
-#include <stdarg.h>
+#include <cstdarg>
 #include "output.h"
 #include "options.h"
 #include "player.h"

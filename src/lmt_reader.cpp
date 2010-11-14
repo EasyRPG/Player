@@ -28,12 +28,12 @@
 bool LMT_Reader::Load(const std::string& filename) {
 	Reader reader(filename);
 	if (!reader.IsOk()) {
-		Reader::SetError("Couldn't find " + filename + " map tree file.\n");
+		Reader::SetError("Couldn't find %s map tree file.\n", filename.c_str());
 		return false;
 	}
 	std::string header = reader.ReadString(reader.Read32(Reader::CompressedInteger));
 	if (header != "LcfMapTree") {
-		Reader::SetError(filename + " is not a valid RPG2000 map tree.\n");
+		Reader::SetError("%s is not a valid RPG2000 map tree.\n", filename.c_str());
 		return false;
 	}
 	ReadTreeMap(reader);

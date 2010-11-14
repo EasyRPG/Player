@@ -28,12 +28,12 @@
 bool LDB_Reader::Load(const std::string& filename) {
 	Reader reader(filename);
 	if (!reader.IsOk()) {
-		Reader::SetError("Couldn't find " + filename + " database file.\n");
+		Reader::SetError("Couldn't find %s database file.\n", filename.c_str());
 		return false;
 	}
 	std::string header = reader.ReadString(reader.Read32(Reader::CompressedInteger));
 	if (header != "LcfDataBase") {
-		Reader::SetError(filename + " is not a valid RPG2000 database.\n");
+		Reader::SetError("%s is not a valid RPG2000 database.\n", filename.c_str());
 		return false;
 	}
 	LoadChunks(reader);

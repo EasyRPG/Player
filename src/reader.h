@@ -49,7 +49,7 @@ public:
 	~Reader();
 
 	static const std::string& GetError();
-	static void SetError(const std::string& str);
+	static void SetError(const char* fmt, ...);
 
 	struct Chunk {
 		Chunk() {
