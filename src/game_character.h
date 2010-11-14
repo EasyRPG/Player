@@ -18,6 +18,8 @@
 #ifndef _GAME_CHARACTER_H_
 #define _GAME_CHARACTER_H_
 
+#include <string>
+
 ////////////////////////////////////////////////////////////
 /// Game_Character class.
 ////////////////////////////////////////////////////////////
@@ -46,6 +48,8 @@ public:
 
 	void Lock();
 
+	std::string character_name;
+	int character_hue;
 
 	int id;
 	int x;
@@ -53,7 +57,17 @@ public:
 	int real_x;
 	int real_y;
 	int move_speed;
+
+	//////////////
+	//looking to:
+	//	left -> 4
+	//	up   -> 8
+	//	down -> 2
+	//	right-> 6
 	int direction;
+
+	int opacity;
+	int blend_type;
 
 	bool move_route_forcing;
 

@@ -21,6 +21,7 @@
 #include "game_actor.h"
 #include "main_data.h"
 #include "cache.h"
+#include <algorithm>
 
 ////////////////////////////////////////////////////////////
 /// Constructor
@@ -53,4 +54,8 @@ void Game_Actor::Setup(int actorId)
 	int face_index = Main_Data::data_actors[actorId-1].face_index;
 	face = new Bitmap(48, 48);
 	face->Blit(0, 0, faceset, Rect((face_index % 4) * 48, face_index/4 * 48, 48, 48), 255);
+}
+
+bool Game_Actor::SkillLearn(int skill_id) {
+	return (std::find(skills.begin(), skills.end(), skill_id) != skills.end());
 }

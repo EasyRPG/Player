@@ -21,21 +21,23 @@
 #include "ldb_reader.h"
 #include "ldb_chunks.h"
 #include "reader.h"
-#include "output.h"
 
 ////////////////////////////////////////////////////////////
 /// Load Database
 ////////////////////////////////////////////////////////////
-void LDB_Reader::Load(const std::string& filename) {
+bool LDB_Reader::Load(const std::string& filename) {
 	Reader reader(filename);
 	if (!reader.IsOk()) {
-		Output::Error("Couldn't find %s database file.\n", filename.c_str());
+		Reader::SetError("Couldn't find " + filename + " database file.\n");
+		return false;
 	}
 	std::string header = reader.ReadString(reader.Read32(Reader::CompressedInteger));
 	if (header != "LcfDataBase") {
-		Output::Error("%s is not a valid RPG2000 database.\n", filename.c_str());
+		Reader::SetError(filename + " is not a valid RPG2000 database.\n");
+		return false;
 	}
 	LoadChunks(reader);
+	return true;
 }
 
 ////////////////////////////////////////////////////////////

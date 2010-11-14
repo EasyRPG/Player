@@ -87,7 +87,7 @@ public:
 	Tone fog_tone;
 
 protected:
-	RPG::Map map;
+	RPG::Map* map;
 	int map_id;
 	int scroll_direction;
 	int scroll_rest;

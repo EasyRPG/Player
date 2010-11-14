@@ -40,12 +40,14 @@
 #include "input.h"
 #include "ldb_reader.h"
 #include "lmt_reader.h"
+#include "reader.h"
 #include "main_data.h"
 #include "options.h"
 #include "player.h"
 #include "scene_map.h"
 #include "sprite.h"
 #include "window_command.h"
+#include "output.h"
 
 ////////////////////////////////////////////////////////////
 /// Constructor
@@ -71,8 +73,12 @@ void Scene_Title::MainFunction() {
 		Cache::Clear();
 
 	// Load Database
-	LDB_Reader::Load(DATABASE_NAME);
-	LMT_Reader::Load(TREEMAP_NAME);
+	if (!LDB_Reader::Load(DATABASE_NAME)) {
+		Output::ErrorStr(Reader::GetError());
+	}
+	if (!LMT_Reader::Load(TREEMAP_NAME)) {
+		Output::ErrorStr(Reader::GetError());
+	}
 
 	// Create Game System
 	Main_Data::game_system = new Game_System();

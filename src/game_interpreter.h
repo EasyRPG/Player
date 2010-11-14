@@ -83,6 +83,9 @@ private:
 	bool CommandControlVariables();
 	bool CommandChangeGold();
 	bool CommandChangeItems();
+	bool CommandChangePartyMember();
+	bool CommandConditionalBranch();
+	bool CommandSkip();
 };
 
 #endif

@@ -42,6 +42,11 @@ public:
 	void GainGold(int value);
 	void GainItem(int item_id, int n);
 
+	void AddActor(int actor_id);
+	void RemoveActor(int actor_id);
+
+	bool IsActorInParty(Game_Actor* actor);
+
 	int battle_count;
 	int win_count;
 	int defeat_count;

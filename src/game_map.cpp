@@ -21,6 +21,7 @@
 #include "game_map.h"
 #include "lmu_reader.h"
 #include "game_event.h"
+#include "output.h"
 #include "util_macro.h"
 
 ////////////////////////////////////////////////////////////
@@ -58,6 +59,7 @@ Game_Map::~Game_Map() {
 	for (i = 0; i < events.size(); i++) {
 		delete events[i];
 	}
+	delete map;
 }
 
 ////////////////////////////////////////////////////////////
@@ -67,9 +69,13 @@ void Game_Map::Setup(int _id) {
 	map_id = _id;
 	char file[12];
 	sprintf(file, "Map%04d.lmu", map_id);
-	map = LMU_Reader::LoadMap(file);
 
-	RPG::Chipset chipset = Main_Data::data_chipsets[map.chipset_id - 1];
+	map = LMU_Reader::LoadMap(file);
+	if (map == NULL) {
+		Output::ErrorStr(Reader::GetError());
+	}
+
+	RPG::Chipset chipset = Main_Data::data_chipsets[map->chipset_id - 1];
 	chipset_name = chipset.chipset_name;
 	passages_down = chipset.passable_data_lower;
 	passages_up = chipset.passable_data_lower;
@@ -110,14 +116,14 @@ int Game_Map::GetMapId() const {
 /// Get Width
 ////////////////////////////////////////////////////////////
 int Game_Map::GetWidth() const {
-	return map.width;
+	return map->width;
 }
 
 ////////////////////////////////////////////////////////////
 /// Get Height
 ////////////////////////////////////////////////////////////
 int Game_Map::GetHeight() const {
-	return map.height;
+	return map->height;
 }
 
 ////////////////////////////////////////////////////////////
@@ -138,14 +144,14 @@ int Game_Map::GetEncounterStep() {
 /// Get Map Data Down
 ////////////////////////////////////////////////////////////
 std::vector<short> Game_Map::GetMapDataDown() {
-	return map.lower_layer;
+	return map->lower_layer;
 }
 
 ////////////////////////////////////////////////////////////
 /// Get Map Data Up
 ////////////////////////////////////////////////////////////
 std::vector<short> Game_Map::GetMapDataUp() {
-	return map.upper_layer;
+	return map->upper_layer;
 }
 
 ////////////////////////////////////////////////////////////
@@ -174,7 +180,7 @@ void Game_Map::Refresh() {
 /// Scroll Down
 ////////////////////////////////////////////////////////////
 void Game_Map::ScrollDown(int distance) {
-	display_y = min(display_y + distance, (map.height - 15) * 128);
+	display_y = min(display_y + distance, (map->height - 15) * 128);
 }
 
 ////////////////////////////////////////////////////////////
@@ -188,7 +194,7 @@ void Game_Map::ScrollLeft(int distance) {
 /// Scroll Right
 ////////////////////////////////////////////////////////////
 void Game_Map::ScrollRight(int distance) {
-	display_x = min(display_x + distance, (map.width - 20) * 128);
+	display_x = min(display_x + distance, (map->width - 20) * 128);
 }
 
 ////////////////////////////////////////////////////////////

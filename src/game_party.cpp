@@ -18,8 +18,10 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <algorithm>
 #include "game_party.h"
 #include "game_actors.h"
+#include "game_player.h"
 #include "output.h"
 #include "util_macro.h"
 
@@ -86,4 +88,25 @@ void Game_Party::GainItem(int item_id, int n) {
 		a = ItemNumber(item_id);
 		items[item_id] = min(max(a + n, 0), 99);
 	}
+}
+
+void Game_Party::AddActor(int actor_id) {
+	Game_Actor* actor;
+
+	actor = Main_Data::game_actors->GetActor(actor_id);
+
+	// If the party has less than 4 members and this actor is not in the party
+	if ( (actors.size() < 4) && (!IsActorInParty(actor)) ) {
+		actors.push_back(actor);
+		Main_Data::game_player->Refresh();
+	}
+}
+
+void Game_Party::RemoveActor(int actor_id) {
+	actors.erase(std::find(actors.begin(), actors.end(), Main_Data::game_actors->GetActor(actor_id)));
+	Main_Data::game_player->Refresh();
+}
+
+bool Game_Party::IsActorInParty(Game_Actor* actor) {	
+	return ( std::find(actors.begin(), actors.end(), actor) != actors.end() );
 }

@@ -22,6 +22,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <string>
+#include <vector>
 #include "game_battler.h"
 
 class Bitmap;
@@ -37,7 +38,11 @@ public:
 
 	void Setup(int actorId);
 
+	bool SkillLearn(int skill_id);
+
 	std::string name;
+	std::string character_name;
+	int character_hue;
 	Bitmap* face;
 
 	int weapon_id;
@@ -48,6 +53,9 @@ public:
 
 	int level;
 	int exp;
+
+	// ID of skills this actor can learn
+	std::vector<int> skills;
 };
 
 #endif // _GAME_ACTOR_H_

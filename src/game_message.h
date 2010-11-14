@@ -37,6 +37,9 @@ public:
 	std::vector<std::string> texts;
 	std::string face_name;
 	int face_index;
+	bool face_flipped;
+	bool face_left_position;
+
 	int background;
 
 	/* Number of lines before the start

@@ -30,8 +30,9 @@
 /// LDB Reader namespace
 ////////////////////////////////////////////////////////////
 namespace LDB_Reader {
-	void Load(const std::string &filename);
+	bool Load(const std::string &filename);
 	void LoadChunks(Reader& stream);
+
 	RPG::Actor ReadActor(Reader& stream);
 	RPG::Learning ReadLearning(Reader& stream);
 	RPG::Skill ReadSkill(Reader& stream);

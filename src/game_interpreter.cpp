@@ -48,7 +48,8 @@ enum CommandCodes {
 	CONTROL_SWITCHES	= 10210,
 	INPUT_NUMBER		= 10150,
 	CHANGE_GOLD         = 10310,
-	CHANGE_ITEMS        = 10320
+	CHANGE_ITEMS        = 10320,
+	CONDITIONAL_BRANCH  = 12010
 };
 
 enum Sizes {
@@ -874,7 +875,218 @@ bool Game_Interpreter::CommandInputNumber() {
 	return true;
 }
 
+////////////////////////////////////////////////////////////
+/// Change Face Graphic
+////////////////////////////////////////////////////////////
 bool Game_Interpreter::CommandChangeFaceGraphic() { // Code 10130
-	
+	Main_Data::game_message->face_name = list[index].string;
+	Main_Data::game_message->face_index = list[index].parameters[0];
+	Main_Data::game_message->face_left_position = (list[index].parameters[1] == 0);
+	Main_Data::game_message->face_flipped = (list[index].parameters[2] == 0);
 	return true;
+}
+
+////////////////////////////////////////////////////////////
+/// Change Party Member
+////////////////////////////////////////////////////////////
+bool Game_Interpreter::CommandChangePartyMember() { // Code 10330
+	Game_Actor* actor;
+	int id;
+
+	if (list[index].parameters[2] == 0) {
+		id = list[index].parameters[2];
+	} else {
+		id = (*Main_Data::game_variables)[list[index].parameters[2]];
+	}
+
+	actor = Main_Data::game_actors->GetActor(id);
+
+	if (actor != NULL) {
+
+		if (list[index].parameters[0] == 0) {
+			// Add members
+			Main_Data::game_party->AddActor(id);
+
+		} else {
+			// Remove members
+			Main_Data::game_party->RemoveActor(id);
+		}
+	}
+
+	return true;
+}
+
+////////////////////////////////////////////////////////////
+/// Conditional Branch
+////////////////////////////////////////////////////////////
+bool Game_Interpreter::CommandConditionalBranch() { // Code 12010
+	bool result = false;
+	int value1, value2;
+	Game_Actor* actor;
+	Game_Character* character;
+
+	switch (list[index].parameters[0]) {
+		case 0:
+			// Switch
+			result = ( (*Main_Data::game_switches)[list[index].parameters[1]] == (list[index].parameters[2] == 0) );
+			break;
+		case 1:
+			// Variable
+			value1 = (*Main_Data::game_variables)[list[index].parameters[1]];
+			if (list[index].parameters[2] == 0) {
+				value2 = list[index].parameters[3];
+			} else {
+				value2 = (*Main_Data::game_variables)[list[index].parameters[3]];
+			}
+			switch (list[index].parameters[4]) {
+				case 0:
+					// Equal to
+					result = (value1 == value2);
+					break;
+				case 1:
+					// Greater than or equal
+					result = (value1 >= value2);
+					break;
+				case 2:
+					// Less than or equal
+					result = (value1 <= value2);
+					break;
+				case 3:
+					// Greater than
+					result = (value1 > value2);
+					break;
+				case 4:
+					// Less than
+					result = (value1 < value2);
+					break;
+				case 5:
+					// Different
+					result = (value1 != value2);
+					break;
+			}
+			break;
+		case 2:
+			// TODO Timer
+			break;
+		case 3:
+			// Gold
+			if (list[index].parameters[2] == 0) {
+				// Greater than or equal
+				result = (Main_Data::game_party->gold >= list[index].parameters[1]);
+			} else {
+				// Less than or equal
+				result = (Main_Data::game_party->gold >= list[index].parameters[1]);
+			}
+			break;
+		case 4:
+			// Item
+			result = (Main_Data::game_party->ItemNumber(list[index].parameters[1]) > 0);
+			break;
+		case 5:
+			// Hero
+			actor = Main_Data::game_actors->GetActor(list[index].parameters[1]);
+			switch (list[index].parameters[2]) {
+				case 0:
+					// Is actor in party
+					result = Main_Data::game_party->IsActorInParty(actor);
+					break;
+				case 1:
+					// Name
+					result = (actor->name ==  list[index].string);
+					break;
+				case 2:
+					// Higher or equal level
+					result = (actor->level >= list[index].parameters[3]);
+					break;
+				case 3:
+					// Higher or equal HP
+					result = (actor->hp >= list[index].parameters[3]);
+					break;
+				case 4:
+					// Can learn skill
+					result = (actor->SkillLearn(list[index].parameters[3]));
+					break;
+				case 5:
+					// Equipped object
+					result = ( 
+						(actor->armor1_id == list[index].parameters[3]) ||
+						(actor->armor2_id == list[index].parameters[3]) ||
+						(actor->armor3_id == list[index].parameters[3]) ||
+						(actor->armor4_id == list[index].parameters[3]) ||
+						(actor->weapon_id == list[index].parameters[3])
+					);
+					break;
+				case 6:
+					// Has state
+					result = (actor->State(list[index].parameters[3]));
+					break;
+				default:
+					;
+			}
+			break;
+		case 6:
+			// Orientation of char
+			character = GetCharacter(list[index].parameters[3]);
+			if (character != NULL) {
+				switch (list[index].parameters[2]) {
+					case 0:
+						// Up 8
+						result = (character->direction == 8);
+						break;
+					case 1:
+						// Right 6
+						result = (character->direction == 6);
+						break;
+					case 2:
+						// Down 2
+						result = (character->direction == 2);
+						break;
+					case 3:
+						// Left 4
+						result = (character->direction == 4);
+						break;
+				}
+			}
+			break;
+		case 7:
+			// TODO On vehicle
+			break;
+		case 8:
+			// TODO Key decision initiated this event
+			break;
+		case 9:
+			// TODO BGM Playing
+			break;
+		case 10:
+			// TODO Something with timer RM2003 specific
+			break;
+	}
+
+	// Store result in branch
+	branch[list[index].indent] = result;
+
+	if (result) {
+		branch.erase(list[index].indent);
+		return true;
+	}
+
+	return CommandSkip();
+}
+
+////////////////////////////////////////////////////////////
+/// Skip Command
+////////////////////////////////////////////////////////////
+bool Game_Interpreter::CommandSkip() {
+	int indent = list[index].indent;
+
+	for (;;) {
+		// If next event command is at the same level as indent
+		if ( (index < list.size()) && (list[index+1].indent == indent) ) {
+			// Continue
+			return true;
+		}
+		// Advance index
+		index++;
+	}
+
 }

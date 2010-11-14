@@ -19,7 +19,9 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "game_player.h"
+#include "game_actor.h"
 #include "game_map.h"
+#include "game_party.h"
 #include "input.h"
 #include "main_data.h"
 #include "player.h"
@@ -145,4 +147,22 @@ void Game_Player::Update() {
 			check_event_trigger_there([0,1,2])
 		end
 	}*/
+}
+
+void Game_Player::Refresh() {
+	Game_Actor* actor;
+
+	if (Main_Data::game_party->actors.empty()) {
+		character_name.clear();
+		character_hue = 0;
+		return;
+	}
+
+	actor = Main_Data::game_party->actors[0];
+
+	character_name = actor->character_name;
+	character_hue = actor->character_hue;
+
+	opacity = 255;
+	blend_type = 0;
 }

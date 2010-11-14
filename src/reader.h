@@ -48,6 +48,9 @@ public:
 	Reader(const std::string& filename);
 	~Reader();
 
+	static const std::string& GetError();
+	static void SetError(const std::string& str);
+
 	struct Chunk {
 		Chunk() {
 			ID = 0;
@@ -84,6 +87,7 @@ public:
 
 private:
 	FILE* stream;
+	static std::string error_str;
 };
 
 #endif

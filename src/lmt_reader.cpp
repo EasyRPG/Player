@@ -21,21 +21,23 @@
 #include "lmt_reader.h"
 #include "lmt_chunks.h"
 #include "reader.h"
-#include "output.h"
 
 ////////////////////////////////////////////////////////////
 /// Load Map Tree
 ////////////////////////////////////////////////////////////
-void LMT_Reader::Load(const std::string& filename) {
+bool LMT_Reader::Load(const std::string& filename) {
 	Reader reader(filename);
 	if (!reader.IsOk()) {
-		Output::Error("Couldn't find %s map tree file.\n", filename.c_str());
+		Reader::SetError("Couldn't find " + filename + " map tree file.\n");
+		return false;
 	}
 	std::string header = reader.ReadString(reader.Read32(Reader::CompressedInteger));
 	if (header != "LcfMapTree") {
-		Output::Error("%s is not a valid RPG2000 map tree.\n", filename.c_str());
+		Reader::SetError(filename + " is not a valid RPG2000 map tree.\n");
+		return false;
 	}
 	ReadTreeMap(reader);
+	return true;
 }
 
 ////////////////////////////////////////////////////////////

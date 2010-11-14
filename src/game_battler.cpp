@@ -19,6 +19,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "game_battler.h"
+#include <algorithm>
 
 ////////////////////////////////////////////////////////////
 /// Constructor
@@ -32,4 +33,9 @@ Game_Battler::Game_Battler()
 ////////////////////////////////////////////////////////////
 Game_Battler::~Game_Battler()
 {
+}
+
+
+bool Game_Battler::State(int state_id) {
+	return (std::find(states.begin(), states.end(), state_id) != states.end());
 }

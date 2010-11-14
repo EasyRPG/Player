@@ -30,8 +30,8 @@
 /// LMU Reader namespace
 ////////////////////////////////////////////////////////////
 namespace LMU_Reader {
-	RPG::Map LoadMap(const std::string &filename);
-	RPG::Map ReadMapData(Reader& stream);
+	RPG::Map* LoadMap(const std::string &filename);
+	RPG::Map* ReadMapData(Reader& stream);
 	RPG::Event ReadEvent(Reader& stream);
 	RPG::EventPage ReadEventPage(Reader& stream);
 	RPG::EventPageCondition ReadEventPageCondition(Reader& stream);
