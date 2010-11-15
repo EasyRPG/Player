@@ -47,11 +47,15 @@ static std::string fonts_path;
 static bool FileExists(std::string filename) {
 	return _access(filename.c_str(), 4) == 0;
 }
-static std::string MakePath(std::string str) {
+static std::string MakePath(std::string str, bool ending_slash = false) {
 	for (std::size_t i = 0; i < str.length(); i++) {
 		if (str[i] == '/')
 			str[i] = '\\';
 	}
+
+	if (ending_slash && str[str.length() - 1] != '\\')
+		str += '\\';
+
 	return str;
 }
 static std::string FindFile(std::string name, const std::string exts[]) {
@@ -77,23 +81,16 @@ std::string GetFontsPath() {
 	if (init) {
 		return fonts_path;
 	} else {
-		#ifdef MSVC
-			wchar_t* dir = new wchar_t[256];
-		#else
-			char* dir = new char[256];
-		#endif
+		// Retrieve the Path of the Font Directory
+		TCHAR path[MAX_PATH];
 
-		int n = GetWindowsDirectory(dir, 256);
-		if (n > 0) {
-			char* str = (char*)dir;
-			for (unsigned int i = 0; i < n * sizeof(dir[0]); i++) {
-				if (str[i] != '\0' ) {
-					fonts_path += str[i];
-				}
-			}
-			fonts_path += "\\Fonts\\";
+		if (SHGetFolderPath(NULL, CSIDL_FONTS, NULL, SHGFP_TYPE_CURRENT, path) == S_OK)	{
+			char fpath[MAX_PATH];
+#ifdef UNICODE
+			WideCharToMultiByte(CP_ACP, WC_NO_BEST_FIT_CHARS | WC_COMPOSITECHECK, path, MAX_PATH, fpath, MAX_PATH, NULL, NULL);
+#endif
+			fonts_path = MakePath(fpath, true);
 		}
-		delete dir;
 
 		init = true;
 
@@ -137,22 +134,7 @@ void FileFinder::Init() {
 	#endif
 
 	if (!rtp_path.empty())
-		search_paths.push_back(MakePath(rtp_path));
-
-	// Retrieve the Path of the Font Directory
-	TCHAR path[MAX_PATH];
-
-	if (SHGetFolderPath(NULL, CSIDL_FONTS, NULL, SHGFP_TYPE_CURRENT, path) != S_OK)	{
-		fonts_path = "";
-	} else {
-		char fpath[MAX_PATH];
-		#ifdef UNICODE
-		WideCharToMultiByte(CP_ACP, WC_NO_BEST_FIT_CHARS | WC_COMPOSITECHECK, path, MAX_PATH, fpath, MAX_PATH, NULL, NULL);
-		#endif
-
-		fonts_path = std::string(fpath);
-		fonts_path += "\\";
-	}
+		search_paths.push_back(MakePath(rtp_path, true));
 }
 
 ////////////////////////////////////////////////////////////
