@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="Player"
 	ProjectGUID="{4D37E7C4-84A2-48E5-8B2C-51614E80D640}"
 	RootNamespace="Player"
@@ -43,7 +43,7 @@
 				AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="$(EASYDEV_MSVC)\include"
-				PreprocessorDefinitions="MSVC;DEBUG;_DEBUG"
+				PreprocessorDefinitions="USE_SDL;MSVC;"
 				MinimalRebuild="false"
 				ExceptionHandling="1"
 				BasicRuntimeChecks="3"
@@ -128,7 +128,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="$(EASYDEV_MSVC)\include"
-				PreprocessorDefinitions="MSVC;WIN32;NDEBUG;"
+				PreprocessorDefinitions="USE_SDL;MSVC;"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="false"
 				EnableFunctionLevelLinking="true"
@@ -212,6 +212,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\player.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\system.h"
 				>
 			</File>
 			<Filter

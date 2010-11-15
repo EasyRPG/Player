@@ -53,7 +53,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>MSVC;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>MSVC;USE_SDL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(EASYDEV_MSVC)\include</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>
       </MultiProcessorCompilation>
@@ -79,7 +79,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>MSVC;_CRT_SECURE_NO_DEPRECATE%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>MSVC;USE_SDL;_CRT_SECURE_NO_DEPRECATE%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(EASYDEV_MSVC)\include</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>
       </MultiProcessorCompilation>
@@ -115,8 +115,8 @@
     <ClCompile Include="..\..\src\game_actors.cpp" />
     <ClCompile Include="..\..\src\game_battler.cpp" />
     <ClCompile Include="..\..\src\game_character.cpp" />
-	<ClCompile Include="..\..\src\game_commonevent.cpp" />
-	<ClInclude Include="..\..\src\game_event.cpp" />
+    <ClCompile Include="..\..\src\game_commonevent.cpp" />
+    <ClInclude Include="..\..\src\game_event.cpp" />
     <ClCompile Include="..\..\src\game_map.cpp" />
     <ClCompile Include="..\..\src\game_message.cpp" />
     <ClCompile Include="..\..\src\game_party.cpp" />
@@ -133,7 +133,7 @@
     <ClCompile Include="..\..\src\inireader.cpp" />
     <ClCompile Include="..\..\src\input.cpp" />
     <ClCompile Include="..\..\src\input_buttons_os.cpp" />
-	<ClCompile Include="..\..\src\game_interpreter.cpp" />
+    <ClCompile Include="..\..\src\game_interpreter.cpp" />
     <ClCompile Include="..\..\src\ldb_actor.cpp" />
     <ClCompile Include="..\..\src\ldb_animation.cpp" />
     <ClCompile Include="..\..\src\ldb_animationcelldata.cpp" />
@@ -252,8 +252,8 @@
     <ClInclude Include="..\..\src\game_actors.h" />
     <ClInclude Include="..\..\src\game_battler.h" />
     <ClInclude Include="..\..\src\game_character.h" />
-	<ClInclude Include="..\..\src\game_commonevent.h" />
-	<ClInclude Include="..\..\src\game_event.h" />
+    <ClInclude Include="..\..\src\game_commonevent.h" />
+    <ClInclude Include="..\..\src\game_event.h" />
     <ClInclude Include="..\..\src\game_map.h" />
     <ClInclude Include="..\..\src\game_message.h" />
     <ClInclude Include="..\..\src\game_party.h" />
@@ -269,7 +269,7 @@
     <ClInclude Include="..\..\src\ini.h" />
     <ClInclude Include="..\..\src\inireader.h" />
     <ClInclude Include="..\..\src\input.h" />
-	<ClInclude Include="..\..\src\game_interpreter.h" />
+    <ClInclude Include="..\..\src\game_interpreter.h" />
     <ClInclude Include="..\..\src\input_buttons.h" />
     <ClInclude Include="..\..\src\ldb_chunks.h" />
     <ClInclude Include="..\..\src\ldb_reader.h" />
@@ -331,6 +331,7 @@
     <ClInclude Include="..\..\src\sprite.h" />
     <ClInclude Include="..\..\src\spriteset_map.h" />
     <ClInclude Include="..\..\src\sprite_character.h" />
+    <ClInclude Include="..\..\src\system.h" />
     <ClInclude Include="..\..\src\tilemap.h" />
     <ClInclude Include="..\..\src\tilemap_layer.h" />
     <ClInclude Include="..\..\src\tone.h" />

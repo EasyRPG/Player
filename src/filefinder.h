@@ -19,16 +19,100 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <string>
+#include "system.h"
 
 ////////////////////////////////////////////////////////////
-/// FileFinder namespace
+/// FileFinder contains helper methods for finding case
+/// insensitive files paths.
 ////////////////////////////////////////////////////////////
 namespace FileFinder {
+	////////////////////////////////////////////////////////
+	/// Initialize FileFinder.
+	////////////////////////////////////////////////////////
 	void Init();
+
+	///////////////////////////////////////////////////////
+	/// Find an image file.
+	/// @param name : the image path and name
+	///////////////////////////////////////////////////////
 	std::string FindImage(std::string name);
+
+	///////////////////////////////////////////////////////
+	/// Find a music file.
+	/// @param name : the music path and name
+	///////////////////////////////////////////////////////
 	std::string FindMusic(std::string name);
+
+	///////////////////////////////////////////////////////
+	/// Find a sound file.
+	/// @param name : the sound path and name
+	///////////////////////////////////////////////////////
+	std::string FindSound(std::string name);
+
+	///////////////////////////////////////////////////////
+	/// Find a font file.
+	/// @param name : the font name
+	///////////////////////////////////////////////////////
 	std::string FindFont(std::string name);
 
-	extern std::string fonts_path;
-	extern std::string rtp_path;
+	/// Available image extension types
+	const std::string IMG_TYPES[] = {
+#ifdef HAVE_BMP
+		".bmp",
+#endif
+#ifdef HAVE_GIF
+		".gif",
+#endif
+#ifdef HAVE_JPG
+		".jpg",
+		".jpeg",
+#endif
+#ifdef HAVE_PNG
+		".png",
+#endif
+#ifdef HAVE_XYZ
+		".xyz",
+#endif
+		""
+	};
+
+	/// Available audio music extension types
+	const std::string MUSIC_TYPES[] = {
+#ifdef HAVE_WAV
+		".wav",
+#endif
+#ifdef HAVE_MID
+		".mid",
+		".midi",
+#endif
+#ifdef HAVE_OGG
+		".ogg",
+#endif
+#ifdef HAVE_MP3
+		".mp3",
+#endif
+		""
+	};
+
+	/// Available audio music extension types
+	const std::string SOUND_TYPES[] = {
+#ifdef HAVE_WAV
+		".wav",
+#endif
+#ifdef HAVE_OGG
+		".ogg",
+#endif
+#ifdef HAVE_MP3
+		".mp3",
+#endif
+		""
+	};
+
+	/// Available fonts types
+	const std::string FONTS_TYPES[] = {
+#ifdef HAVE_TTF
+		".ttf",
+#endif
+		""
+	};
 }

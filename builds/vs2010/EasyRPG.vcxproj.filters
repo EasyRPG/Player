@@ -779,6 +779,9 @@
     <ClInclude Include="..\..\src\game_event.cpp">
       <Filter>Source Files\Engine\Game</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\system.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\resources\player.rc">

@@ -25,6 +25,7 @@
 #include <windows.h>
 #include <shlobj.h>
 #include <io.h>
+#include <vector>
 #include "filefinder.h"
 #include "options.h"
 #include "registry_win.h"
@@ -35,33 +36,108 @@
 #endif
 
 ////////////////////////////////////////////////////////////
-/// Global Variables
+// Helper Variables
 ////////////////////////////////////////////////////////////
-namespace FileFinder {
-	std::string fonts_path;
-	std::string rtp_path;
+static std::vector<std::string> search_paths;
+static std::string fonts_path;
+
+////////////////////////////////////////////////////////////
+// Helper Methods
+////////////////////////////////////////////////////////////
+static bool FileExists(std::string filename) {
+	return _access(filename.c_str(), 4) == 0;
+}
+static std::string MakePath(std::string str) {
+	for (std::size_t i = 0; i < str.length(); i++) {
+		if (str[i] == '/')
+			str[i] = '\\';
+	}
+	return str;
+}
+static std::string FindFile(std::string name, const std::string exts[]) {
+	name = MakePath(name);
+
+	for (std::size_t i = 0; i < search_paths.size(); i++) {
+		std::string path = MakePath(search_paths[i]) + name;
+		const std::string* pexts = exts;
+		while(const std::string* ext = pexts++) {
+			if (ext->empty()) break;
+
+			if (FileExists(name + *ext))
+				return name + *ext;
+		}
+	}
+
+	return "";
+}
+std::string GetFontsPath() {
+	static std::string fonts_path = "";
+	static bool init = false;
+
+	if (init) {
+		return fonts_path;
+	} else {
+		#ifdef MSVC
+			wchar_t* dir = new wchar_t[256];
+		#else
+			char* dir = new char[256];
+		#endif
+
+		int n = GetWindowsDirectory(dir, 256);
+		if (n > 0) {
+			char* str = (char*)dir;
+			for (unsigned int i = 0; i < n * sizeof(dir[0]); i++) {
+				if (str[i] != '\0' ) {
+					fonts_path += str[i];
+				}
+			}
+			fonts_path += "\\Fonts\\";
+		}
+		delete dir;
+
+		init = true;
+
+		return fonts_path;
+	}
+}
+std::string GetFontFilename(std::string name) {
+	std::string real_name = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts", name + " (TrueType)");
+	if (real_name.length() > 0) {
+		if (FileExists(real_name))
+			return real_name;
+		if (FileExists(GetFontsPath() + real_name))
+			return GetFontsPath() + real_name;
+	}
+
+	real_name = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\Microsoft\\Windows\\CurrentVersion\\Fonts", name + " (TrueType)");
+	if (real_name.length() > 0) {
+		if (FileExists(real_name))
+			return real_name;
+		if (FileExists(GetFontsPath() + real_name))
+			return GetFontsPath() + real_name;
+	}
+	
+	return name;
 }
 
 ////////////////////////////////////////////////////////////
-/// Initialize
-////////////////////////////////////////////////////////////
 void FileFinder::Init() {
+	std::string rtp_path;
+
 	#if RPGMAKER == RPG2K
 		rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\ASCII\\RPG2000", "RuntimePackagePath");
-		if (rtp_path == "") {
+		if (rtp_path.empty())
 			rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\ASCII\\RPG2000", "RuntimePackagePath");
-		}
 	#elif RPGMAKER == RPG2K3
 		rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\Enterbrain\\RPG2003", "RuntimePackagePath");
-		if (rtp_path == "") {
+		if (rtp_path.empty())
 			rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\Enterbrain\\RPG2003", "RuntimePackagePath");
-		}
 	#else
 		#error Set RPGMAKER to RPG2K or RPG2K3
 	#endif
 
-	if (rtp_path != "" && rtp_path[rtp_path.length()-1] != '\\' && rtp_path[rtp_path.length()-1] != '/')
-		rtp_path += '\\';
+	if (!rtp_path.empty())
+		search_paths.push_back(MakePath(rtp_path));
 
 	// Retrieve the Path of the Font Directory
 	TCHAR path[MAX_PATH];
@@ -80,117 +156,46 @@ void FileFinder::Init() {
 }
 
 ////////////////////////////////////////////////////////////
-/// Check if file exists
-////////////////////////////////////////////////////////////
-static bool fexists(std::string filename) {
-	return (_access(filename.c_str(), 4) == 0);
-}
-
-////////////////////////////////////////////////////////////
-/// Make path
-////////////////////////////////////////////////////////////
-static std::string slasher(std::string str) {
-	for (unsigned int i = 0; i < str.length(); i++) {
-		if (str[i] == '/') {
-			str[i] = '\\';
-		}
-	}
-	return str;
-}
-
-////////////////////////////////////////////////////////////
-/// Find image
-////////////////////////////////////////////////////////////
 std::string FileFinder::FindImage(std::string name) {
-	name = slasher(name);
-	std::string path = name;
-	if (fexists(path)) return path;
-	path = name; path += ".bmp";
-	if (fexists(path)) return path;
-	path = name; path += ".gif";
-	if (fexists(path)) return path;
-	path = name; path += ".png";
-	if (fexists(path)) return path;
-	path = name; path += ".xyz";
-	if (fexists(path)) return path;
-	if (rtp_path != "") {
-		std::string srtp_path = slasher(rtp_path);
-		srtp_path += name;
-		path = srtp_path;
-		if (fexists(path)) return path;
-		path = srtp_path; path += ".bmp";
-		if (fexists(path)) return path;
-		path = srtp_path; path += ".gif";
-		if (fexists(path)) return path;
-		path = srtp_path; path += ".png";
-		if (fexists(path)) return path;
-		path = srtp_path; path += ".xyz";
-		if (fexists(path)) return path;
-	}
-	return "";
+	return FindFile(name, IMG_TYPES);
 }
 
-////////////////////////////////////////////////////////////
-/// Find music
 ////////////////////////////////////////////////////////////
 std::string FileFinder::FindMusic(std::string name) {
-	name = slasher(name);
-	std::string path = name;
-	if (fexists(path)) return path;
-	path = name; path += ".wav";
-	if (fexists(path)) return path;
-	path = name; path += ".mid";
-	if (fexists(path)) return path;
-	path = name; path += ".midi";
-	if (fexists(path)) return path;
-	path = name; path += ".ogg";
-	if (fexists(path)) return path;
-	path = name; path += ".mp3";
-	if (fexists(path)) return path;
-	if (rtp_path != "") {
-		std::string srtp_path = slasher(rtp_path);
-		srtp_path += name;
-		path = srtp_path;
-		if (fexists(path)) return path;
-		path = srtp_path; path += ".wav";
-		if (fexists(path)) return path;
-		path = srtp_path; path += ".mid";
-		if (fexists(path)) return path;
-		path = srtp_path; path += ".midi";
-		if (fexists(path)) return path;
-		path = srtp_path; path += ".ogg";
-		if (fexists(path)) return path;
-		path = srtp_path; path += ".mp3";
-		if (fexists(path)) return path;
-	}
-	return "";
+	return FindFile(name, MUSIC_TYPES);
 }
 
 ////////////////////////////////////////////////////////////
-/// Find font
+std::string FileFinder::FindSound(std::string name) {
+	return FindFile(name, SOUND_TYPES);
+}
+
 ////////////////////////////////////////////////////////////
 std::string FileFinder::FindFont(std::string name) {
-	name = slasher(name);
-	std::string path = name;
-	if (fexists(path)) return path;
-	path = name; path += ".ttf";
-	if (fexists(path)) return path;
+	name = MakePath(name);
 
-	std::string real_name;
-	real_name = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts", name + " (TrueType)");
-	if (real_name.length() > 0) {
-		path = real_name;
-		if (fexists(path)) return path;
-		path = fonts_path; path += real_name;
-		if (fexists(path)) return path;
+	std::string path = FindFile(name, FONTS_TYPES);
+
+	if (!path.empty()) {
+		return path;
 	}
 
-	real_name = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\Microsoft\\Windows\\CurrentVersion\\Fonts", name + " (TrueType)");
-	if (real_name.length() > 0) {
-		path = real_name;
-		if (fexists(path)) return path;
-		path = fonts_path; path += real_name;
-		if (fexists(path)) return path;
+	std::string folder_path = "";
+	std::string filename = name;
+
+	size_t separator_pos = path.rfind('\\');
+	if (separator_pos != std::string::npos) {
+		folder_path = path.substr(0, separator_pos);
+		filename = path.substr(separator_pos, path.length() - separator_pos);
+	}
+
+	std::string font_filename = GetFontFilename(filename);
+	if (font_filename.length() > 0) {
+		if (FileExists(folder_path + font_filename))
+			return folder_path +  font_filename;
+
+		if (FileExists(fonts_path + font_filename))
+			return fonts_path + font_filename;
 	}
 
 	return "";
