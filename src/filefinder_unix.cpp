@@ -49,26 +49,6 @@ void FileFinder::Init() {
 }
 
 ////////////////////////////////////////////////////////////
-/// To upper
-////////////////////////////////////////////////////////////
-static std::string str_toupper(std::string str) {
-	std::string new_str = "";
-
-	for (unsigned int i = 0; i <= str.length(); i++) {
-		new_str += (char)toupper((int)str[i]);
-	}
-	return new_str;
-}
-static std::string str_toupper(char* str) {
-	std::string new_str = "";
-
-	for (unsigned int i = 0; i <= strlen(str); i++) {
-		new_str += (char)toupper((int)str[i]);
-	}
-	return new_str;
-}
-
-////////////////////////////////////////////////////////////
 /// Check if file exists
 ////////////////////////////////////////////////////////////
 static bool fexists(std::string& filename) {
