@@ -53,7 +53,7 @@ static std::string MakePath(std::string str, bool ending_slash = false) {
 			str[i] = '\\';
 	}
 
-	if (ending_slash && str[str.length() - 1] != '\\')
+	if (ending_slash && !str.empty() && str[str.length() - 1] != '\\')
 		str += '\\';
 
 	return str;
@@ -119,14 +119,14 @@ std::string GetFontFilename(std::string name) {
 
 ////////////////////////////////////////////////////////////
 void FileFinder::Init() {
-	std::string rtp_path;
+	 search_paths.push_back("");
 
 	#if RPGMAKER == RPG2K
-		rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\ASCII\\RPG2000", "RuntimePackagePath");
+		std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\ASCII\\RPG2000", "RuntimePackagePath");
 		if (rtp_path.empty())
 			rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\ASCII\\RPG2000", "RuntimePackagePath");
 	#elif RPGMAKER == RPG2K3
-		rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\Enterbrain\\RPG2003", "RuntimePackagePath");
+		std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\Enterbrain\\RPG2003", "RuntimePackagePath");
 		if (rtp_path.empty())
 			rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\Enterbrain\\RPG2003", "RuntimePackagePath");
 	#else
