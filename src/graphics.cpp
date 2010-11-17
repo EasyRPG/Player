@@ -202,7 +202,6 @@ void Graphics::DrawFrame() {
 		register int i, j;
 		SDL_LockSurface(surface);
 		int w = Player::GetWidth();
-		int zoom_w = surface->w;
 		int zoom_h = surface->h;
 		int pitch = surface->pitch / 4;
 		Uint32* src = (Uint32*) surface->pixels + pitch * Player::GetHeight();
