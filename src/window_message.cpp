@@ -42,7 +42,7 @@ Window_Message::Window_Message() :
 ////////////////////////////////////////////////////////////
 Window_Message::~Window_Message() {
 	TerminateMessage();
-	//Main_Data::game_temp->message_window_showing = false;
+	//Game_Temp::message_window_showing = false;
 	/*if (input_number_window != NULL) {
 		input_number_window.dispose
 	}*/

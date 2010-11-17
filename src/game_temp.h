@@ -15,30 +15,40 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef __game_temp__
-#define __game_temp__
+#ifndef _GAME_TEMP_H_
+#define _GAME_TEMP_H_
 
+////////////////////////////////////////////////////////////
+// Headers
+////////////////////////////////////////////////////////////
 #include <string>
 #include "game_battler.h"
 
+////////////////////////////////////////////////////////////
+/// Game Temp static class
+////////////////////////////////////////////////////////////
 class Game_Temp {
-
 public:
+	////////////////////////////////////////////////////////
+	/// Initialize Game Temp.
+	////////////////////////////////////////////////////////
+	static void Init();
+
+	static bool menu_calling;
+	static bool menu_beep;
+
+	static Game_Battler* forcing_battler;
+
+	static bool battle_calling;
+	static bool shop_calling;
+	static bool name_calling;
+	static bool save_calling;
+	static bool gameover;
+
+	static int common_event_id;
+
+private:
 	Game_Temp();
-	~Game_Temp();
-
-	bool menu_calling;
-	bool menu_beep;
-
-	Game_Battler* forcing_battler;
-
-	bool battle_calling;
-	bool shop_calling;
-	bool name_calling;
-	bool save_calling;
-	bool gameover;
-
-	int common_event_id;
-
 };
-#endif // __game_temp__
+
+#endif

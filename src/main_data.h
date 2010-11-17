@@ -60,8 +60,6 @@ class Game_Party;
 class Game_Player;
 class Game_Screen;
 class Game_Switches;
-class Game_System;
-class Game_Temp;
 class Game_Troop;
 class Game_Variables;
 class Game_Message;
@@ -73,7 +71,6 @@ namespace Main_Data {
 	extern unsigned char scene_type;
 	
 	// Dynamic Game Data
-	extern Game_Temp* game_temp;
 	extern Game_Switches* game_switches;
 	extern Game_Variables* game_variables;
 	extern Game_Screen* game_screen;

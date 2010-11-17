@@ -97,7 +97,7 @@ void Game_Player::Update() {
 //	bool last_moving = IsMoving();
 
 	if (!(IsMoving() /*|| Game_System::map_interpreter.IsRunning() ||
-		move_route_forcing || Main_Data::game_temp->message_window_showing*/)) {
+		move_route_forcing || Game_Temp::message_window_showing*/)) {
 		switch (Input::dir4) {
 			case 2:
 				MoveDown();

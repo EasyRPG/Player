@@ -191,16 +191,16 @@ void Game_Interpreter::Update() {
 			return;
 		}
 
-		if (Main_Data::game_temp->forcing_battler != NULL) {
+		if (Game_Temp::forcing_battler != NULL) {
 			return;
 		}
 
-		if (Main_Data::game_temp->battle_calling ||
-			Main_Data::game_temp->shop_calling ||
-			Main_Data::game_temp->name_calling ||
-			Main_Data::game_temp->menu_calling ||
-			Main_Data::game_temp->save_calling ||
-			Main_Data::game_temp->gameover) {
+		if (Game_Temp::battle_calling ||
+			Game_Temp::shop_calling ||
+			Game_Temp::name_calling ||
+			Game_Temp::menu_calling ||
+			Game_Temp::save_calling ||
+			Game_Temp::gameover) {
 			
 			return;
 		}
@@ -232,9 +232,9 @@ void Game_Interpreter::SetupStartingEvent() {
 		Main_Data::game_map->Refresh();
 	}
 
-	if (Main_Data::game_temp->common_event_id > 0) {
-		Setup(Main_Data::data_commonevents[Main_Data::game_temp->common_event_id].event_commands, 0);
-		Main_Data::game_temp->common_event_id = 0;
+	if (Game_Temp::common_event_id > 0) {
+		Setup(Main_Data::data_commonevents[Game_Temp::common_event_id].event_commands, 0);
+		Game_Temp::common_event_id = 0;
 		return;
 	}
 	

@@ -167,7 +167,7 @@ void Scene_Title::CommandNewGame() {
 	Game_System::SePlay(Main_Data::data_system.decision_se);
 	Audio::BGM_Stop();
 	Graphics::framecount= 0;
-	Main_Data::game_temp = new Game_Temp();
+	Game_Temp::Init();
 	Main_Data::game_switches = new Game_Switches();
 	Main_Data::game_variables = new Game_Variables();
 	Main_Data::game_screen = new Game_Screen();

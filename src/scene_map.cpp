@@ -91,13 +91,13 @@ void Scene_Map::Update() {
 		//unless $game_system.map_interpreter.running? or
 		//$game_system.menu_disabled
 
-		Main_Data::game_temp->menu_calling = true;
-		Main_Data::game_temp->menu_beep = true;
+		Game_Temp::menu_calling = true;
+		Game_Temp::menu_beep = true;
 	}
 
 	if (!Main_Data::game_player->IsMoving())
 	{
-		if (Main_Data::game_temp->menu_calling)
+		if (Game_Temp::menu_calling)
 			CallMenu();
 	}
 }
@@ -121,11 +121,11 @@ void Scene_Map::CallName() {
 /// ESC-Menu Call
 ////////////////////////////////////////////////////////////
 void Scene_Map::CallMenu() {
-	Main_Data::game_temp->menu_calling = false;
+	Game_Temp::menu_calling = false;
 
-	if (Main_Data::game_temp->menu_beep) {
+	if (Game_Temp::menu_beep) {
 		Game_System::SePlay(Main_Data::data_system.decision_se);
-		Main_Data::game_temp->menu_beep = false;
+		Game_Temp::menu_beep = false;
 	}
 
 	// TODO: Main_Data::game_player->Straighten();
