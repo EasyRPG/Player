@@ -41,18 +41,20 @@ RPG::TroopPage LDB_Reader::ReadTroopPage(Reader& stream) {
 		}
 		switch (chunk_info.ID) {
 		case ChunkTroopPage::condition:
-			for (int i = stream.Read32(Reader::CompressedInteger); i > 0; i--) {
-				page.condition = ReadTroopPageCondition(stream);
-			}
-			break;
-		/*case ChunkTroopPage::event_commands_size:
-			page.event_commands.resize(stream.Read32(Reader::CompressedInteger));
+			page.condition = ReadTroopPageCondition(stream);
 			break;
 		case ChunkTroopPage::event_commands:
-			for (unsigned int i = 0; i < page.event_commands.size(); i++) {
-				page.event_commands[i] = Event_Reader::ReadEventCommand(stream);
+			for (;;)
+			{
+				char ch = stream.Read8();
+				if (ch == 0) {
+					stream.Seek(3, Reader::FromCurrent);
+					break;
+				}
+				stream.Ungetch(ch);
+				page.event_commands.push_back(Event_Reader::ReadEventCommand(stream));
 			}
-			break;*/
+			break;
 		default:
 			stream.Seek(chunk_info.length, Reader::FromCurrent);
 		}

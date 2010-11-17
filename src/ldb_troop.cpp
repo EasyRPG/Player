@@ -47,9 +47,6 @@ RPG::Troop LDB_Reader::ReadTroop(Reader& stream) {
 				troop.members.push_back(ReadTroopMember(stream));
 			}
 			break;
-		case ChunkTroop::terrain_set_size:
-			stream.Read32(Reader::CompressedInteger);
-			break;
 		case ChunkTroop::terrain_set:
 			stream.ReadBool(troop.terrain_set, chunk_info.length);
 			break;
