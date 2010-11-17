@@ -62,13 +62,13 @@ static std::string FindFile(std::string name, const std::string exts[]) {
 	name = MakePath(name);
 
 	for (std::size_t i = 0; i < search_paths.size(); i++) {
-		std::string path = MakePath(search_paths[i]) + name;
+		std::string path = search_paths[i] + name;
 		const std::string* pexts = exts;
 		while(const std::string* ext = pexts++) {
 			if (ext->empty()) break;
 
-			if (FileExists(name + *ext))
-				return name + *ext;
+			if (FileExists(path + *ext))
+				return path + *ext;
 		}
 	}
 
@@ -172,7 +172,7 @@ std::string FileFinder::FindFont(std::string name) {
 	}
 
 	std::string font_filename = GetFontFilename(filename);
-	if (font_filename.length() > 0) {
+	if (!font_filename.empty()) {
 		if (FileExists(folder_path + font_filename))
 			return folder_path +  font_filename;
 
@@ -181,6 +181,29 @@ std::string FileFinder::FindFont(std::string name) {
 	}
 
 	return "";
+}
+
+////////////////////////////////////////////////////////////
+std::string FileFinder::DefaultFont() {
+	static std::string default_font = "";
+	static bool init = false;
+
+	if (!init) {
+		std::string fonts[] = DEFAULT_FONTS;
+
+		const std::string* pfont = fonts;
+		while(const std::string* font = pfont++) {
+			if (font->empty()) break;
+
+			default_font = FindFont(*font);
+
+			if (!default_font.empty()) break;
+		}
+
+		init = true;
+	}
+	
+	return default_font;
 }
 
 #endif

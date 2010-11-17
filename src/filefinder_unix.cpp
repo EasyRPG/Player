@@ -204,4 +204,10 @@ std::string FileFinder::FindFont(std::string name) {
 	return "";
 }
 
+////////////////////////////////////////////////////////////
+std::string FileFinder::DefaultFont() {
+	// TODO
+	return "";
+}
+
 #endif

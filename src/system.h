@@ -15,6 +15,9 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _SYSTEM_H_
+#define _SYSTEM_H_
+
 #ifdef USE_OPENGL
 	#define HAVE_BMP
 	#define HAVE_GIF
@@ -49,3 +52,9 @@
 #endif
 
 #define HAVE_XYZ
+
+#ifdef _WIN32
+	#define DEFAULT_FONTS { "Font/DejaVuLGCSansMono.ttf", "Lucida Console", "MS Sans Serif", "" }
+#endif
+
+#endif
