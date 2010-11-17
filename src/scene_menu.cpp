@@ -67,7 +67,7 @@ void Scene_Menu::MainFunction() {
 	}
 
 	// If save is forbidden disable this item
-	if (Main_Data::game_system->save_disabled) {
+	if (Game_System::save_disabled) {
 		command_window->DisableItem(3);
 	}
 
@@ -121,7 +121,7 @@ void Scene_Menu::Update() {
 ////////////////////////////////////////////////////////////
 void Scene_Menu::UpdateCommand() {
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Main_Data::game_system->SePlay(Main_Data::data_system.cancel_se);
+		Game_System::SePlay(Main_Data::data_system.cancel_se);
 		Main_Data::scene = new Scene_Map();
 	}
 }

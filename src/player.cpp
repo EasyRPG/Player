@@ -77,7 +77,7 @@ void Player::Init() {
 ////////////////////////////////////////////////////////////
 void Player::Run() {
 	Main_Data::scene = new Scene_Title();
-	Output::Error("asdasdasd");
+	
 	// Main loop
 	while (Main_Data::scene_type != SCENE_NULL) {
 		Main_Data::scene->MainFunction();

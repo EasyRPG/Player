@@ -24,48 +24,44 @@
 #include "main_data.h"
 
 ////////////////////////////////////////////////////////////
-/// Cosntructor
+bool Game_System::save_disabled;
+unsigned int Game_System::save_count;
+std::string Game_System::system_name;
+
 ////////////////////////////////////////////////////////////
-Game_System::Game_System() {
+void Game_System::Init() {
 	save_disabled = false;
+	save_count = 0;
 }
 
-////////////////////////////////////////////////////////////
-/// Destructor
-////////////////////////////////////////////////////////////
-Game_System::~Game_System() {
-}
-
-////////////////////////////////////////////////////////////
-/// Audio helpers
 ////////////////////////////////////////////////////////////
 void Game_System::BgmPlay(RPG::Music bgm) {
 	//@playing_bgm = bgm
 	// RPG Maker Hack: (OFF) means play nothing
-	if ( bgm.name != "" && bgm.name != "(OFF)") {
+	if (!bgm.name.empty() && bgm.name != "(OFF)") {
 		Audio::BGM_Play("Music/" + bgm.name, bgm.volume, bgm.tempo);
 	} else {
 		Audio::BGM_Stop();
 	}
 	Graphics::FrameReset();
 }
+
+////////////////////////////////////////////////////////////
 void Game_System::SePlay(RPG::Sound se) {
-	if (se.name != "" && se.name != "(OFF)") {
+	if (!se.name.empty() && se.name != "(OFF)") {
 		Audio::SE_Play("Sound/" + se.name, se.volume, se.tempo);
 	}
 }
 
 ////////////////////////////////////////////////////////////
-/// Properties
-////////////////////////////////////////////////////////////
-std::string Game_System::GetSystemName() const {
-	if (system_name == "") {
+std::string Game_System::GetSystemName() {
+	if (system_name.empty()) {
 		return Main_Data::data_system.system_name;
 	} else {
 		return system_name;
 	}
 }
 
-void Game_System::SetSystemName(std::string nsystem_name) {
-	system_name = nsystem_name;
+void Game_System::SetSystemName(std::string system_name) {
+	Game_System::system_name = system_name;
 }

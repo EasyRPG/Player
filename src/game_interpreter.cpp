@@ -647,7 +647,7 @@ bool Game_Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 					break;
 				case 3:
 					// Number of saves
-					value = Main_Data::game_system->save_count;
+					value = Game_System::save_count;
 					break;
 				case 4:
 					// Number of battles

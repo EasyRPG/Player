@@ -81,7 +81,7 @@ void Scene_Title::MainFunction() {
 	}
 
 	// Create Game System
-	Main_Data::game_system = new Game_System();
+	Game_System::Init();
 
 	// Load Title Graphic
 	Sprite* title = new Sprite();
@@ -120,7 +120,7 @@ void Scene_Title::MainFunction() {
 	}
 	
 	// Play music
-	Main_Data::game_system->BgmPlay(Main_Data::data_system.title_music);
+	Game_System::BgmPlay(Main_Data::data_system.title_music);
 
 	// Screen transition
 	Graphics::Transition(Graphics::FadeIn, 30, true);
@@ -164,11 +164,10 @@ void Scene_Title::Update() {
 /// CommandNewGame
 ////////////////////////////////////////////////////////////
 void Scene_Title::CommandNewGame() {
-	Main_Data::game_system->SePlay(Main_Data::data_system.decision_se);
+	Game_System::SePlay(Main_Data::data_system.decision_se);
 	Audio::BGM_Stop();
 	Graphics::framecount= 0;
 	Main_Data::game_temp = new Game_Temp();
-	Main_Data::game_system = new Game_System();
 	Main_Data::game_switches = new Game_Switches();
 	Main_Data::game_variables = new Game_Variables();
 	Main_Data::game_screen = new Game_Screen();
@@ -191,7 +190,7 @@ void Scene_Title::CommandNewGame() {
 ////////////////////////////////////////////////////////////
 void Scene_Title::CommandContinue() {
 	// Play decision SE
-	Main_Data::game_system->SePlay(Main_Data::data_system.decision_se);
+	Game_System::SePlay(Main_Data::data_system.decision_se);
 	// Change scene
 	//Main_Data::scene = new Scene_Load();
 }
@@ -201,7 +200,7 @@ void Scene_Title::CommandContinue() {
 ////////////////////////////////////////////////////////////
 void Scene_Title::CommandShutdown() {
 	// Play decision SE
-	Main_Data::game_system->SePlay(Main_Data::data_system.decision_se);
+	Game_System::SePlay(Main_Data::data_system.decision_se);
 	// Fade out Music
 	Audio::BGS_Fade(800);
 	// Shutdown

@@ -26,7 +26,6 @@
 #include "game_player.h"
 #include "game_screen.h"
 #include "game_switches.h"
-#include "game_system.h"
 #include "game_temp.h"
 #include "game_troop.h"
 #include "game_variables.h"
@@ -42,7 +41,6 @@ namespace Main_Data {
 	unsigned char scene_type;
 	
 	// Dynamic Game Data
-	Game_System* game_system = NULL;
 	Game_Temp* game_temp = NULL;
 	Game_Switches* game_switches = NULL;
 	Game_Variables* game_variables = NULL;
@@ -84,7 +82,6 @@ namespace Main_Data {
 
 void Main_Data::Cleanup() {
 	delete scene;
-	delete game_system;
 	delete game_temp;
 	delete game_switches;
 	delete game_variables;
@@ -95,7 +92,6 @@ void Main_Data::Cleanup() {
 	delete game_map;
 	delete game_player;
 	scene = NULL;
-	game_system = NULL;
 	game_temp = NULL;
 	game_switches = NULL;
 	game_variables = NULL;

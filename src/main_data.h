@@ -73,7 +73,6 @@ namespace Main_Data {
 	extern unsigned char scene_type;
 	
 	// Dynamic Game Data
-	extern Game_System* game_system;
 	extern Game_Temp* game_temp;
 	extern Game_Switches* game_switches;
 	extern Game_Variables* game_variables;
