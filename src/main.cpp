@@ -24,9 +24,6 @@
 #include "input.h"
 #include "audio.h"
 
-////////////////////////////////////////////////////////////
-/// Main
-////////////////////////////////////////////////////////////
 int main(int argc, char* argv[]) {
 	FileFinder::Init();
 	Player::Init();
@@ -35,9 +32,6 @@ int main(int argc, char* argv[]) {
 	Audio::Init();
 
 	Player::Run();
-
-	Graphics::Quit();
-	Audio::Quit();
-
+	
 	return EXIT_SUCCESS;
 }

@@ -76,15 +76,15 @@ void Player::Init() {
 /// Run
 ////////////////////////////////////////////////////////////
 void Player::Run() {
-
-	// Create Scene Title
 	Main_Data::scene = new Scene_Title();
-
+	Output::Error("asdasdasd");
 	// Main loop
 	while (Main_Data::scene_type != SCENE_NULL) {
 		Main_Data::scene->MainFunction();
 		delete Main_Data::old_scene;
 	}
+
+	Player::Exit();
 }
 
 ////////////////////////////////////////////////////////////
@@ -106,7 +106,7 @@ void Player::Update() {
 
 		if (evnt.type == SDL_QUIT) {
 			Exit();
-			exit(0);
+			exit(EXIT_SUCCESS);
 		} else if (evnt.type == SDL_KEYDOWN) {
 			switch (evnt.key.keysym.sym) {
 			case SDLK_F4:
@@ -116,7 +116,7 @@ void Player::Update() {
 					// Close Program on LeftAlt+F4
 					if (evnt.key.keysym.mod & KMOD_LALT) {
 						Exit();
-						exit(0);
+						exit(EXIT_SUCCESS);
 					}
 #endif
 					// Otherwise F4 toogles fullscreen

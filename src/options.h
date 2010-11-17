@@ -28,31 +28,31 @@
 #define OUTPUT_SCREEN	4
 
 ////////////////////////////////////////////////////////////
-/// RPGMAKER
-///		Defines RPG Maker compability, RPG2K for RPG Maker 2000
-///		and RPG2K3 for RPG Maker 2003.
+// RPGMAKER
+//		Defines RPG Maker compability, RPG2K for RPG Maker 2000
+//		and RPG2K3 for RPG Maker 2003.
 ////////////////////////////////////////////////////////////
 #define RPGMAKER RPG2K
 
 ////////////////////////////////////////////////////////////
-/// GAME_TITLE
-///		Window title to show.
-///
-/// SCREEN_WIDTH SCREEN_HEIGHT
-///		Screen default width and height.
-///
-/// BPP
-///		Screen bits per pixel
-///
-/// ALLOW_FULLSCREEN_TOGGLE
-///		Allows user to change fullscreen state.
-///
-/// RUN_FULLSCREEN
-///		Run game in fullscreen mode.
-///
-/// PAUSE_GAME_WHEN_FOCUS_LOST PAUSE_AUDIO_WHEN_FOCUS_LOST
-///		Pause the game process and/or audio when the player window
-///		looses its focus.
+// GAME_TITLE
+//		Window title to show.
+//
+// SCREEN_WIDTH SCREEN_HEIGHT
+//		Screen default width and height.
+//
+// BPP
+//		Screen bits per pixel
+//
+// ALLOW_FULLSCREEN_TOGGLE
+//		Allows user to change fullscreen state.
+//
+// RUN_FULLSCREEN
+//		Run game in fullscreen mode.
+//
+// PAUSE_GAME_WHEN_FOCUS_LOST PAUSE_AUDIO_WHEN_FOCUS_LOST
+//		Pause the game process and/or audio when the player window
+//		looses its focus.
 ////////////////////////////////////////////////////////////
 #define GAME_TITLE "EasyRPG Player"
 #define SCREEN_WIDTH 320
@@ -68,14 +68,14 @@
 #define PAUSE_AUDIO_WHEN_FOCUS_LOST true
 
 ////////////////////////////////////////////////////////////
-/// INI_NAME
-///		INI configuration filename.
-///
-/// READ_INI_GAME_TITLE
-///		Read game title from ini file.
-///
-/// DATABASE_NAME
-///		Database filename.
+// INI_NAME
+//		INI configuration filename.
+//
+// READ_INI_GAME_TITLE
+//		Read game title from ini file.
+//
+// DATABASE_NAME
+//		Database filename.
 ////////////////////////////////////////////////////////////
 #define INI_NAME "RPG_RT.ini"
 #define READ_INI_GAME_TITLE true
@@ -83,31 +83,31 @@
 #define TREEMAP_NAME "RPG_RT.lmt"
 
 ////////////////////////////////////////////////////////////
-/// DEFAULT_FPS
-///		Default fps rate.
-///
-/// DEFAULT_BACKCOLOR
-///		Default back color for the player window.
+// DEFAULT_FPS
+//		Default fps rate.
+//
+// DEFAULT_BACKCOLOR
+//		Default back color for the player window.
 ////////////////////////////////////////////////////////////
 #define DEFAULT_FPS 60
 #define DEFAULT_BACKCOLOR 0xFF000000
 
 ////////////////////////////////////////////////////////////
-/// FONT_SMOOTHING
-///		Enables or disables font smoothing
+// FONT_SMOOTHING
+//		Enables or disables font smoothing
 ////////////////////////////////////////////////////////////
 #define FONT_SMOOTHING 0
 
 ////////////////////////////////////////////////////////////
-/// OUTPUT_TYPE
-///		OUTPUT_NONE - no output
-///		OUTPUT_CONSOLE - print to console
-///		OUTPUT_FILE - write to file
-///		OUTPUT_MSGBOX - create pop up message box
-///		OUTPUT_SCREEN - write to screen
-///
-/// OUTPUT_FILENAME
-///		Name of the file for output.
+// OUTPUT_TYPE
+//		OUTPUT_NONE - no output
+//		OUTPUT_CONSOLE - print to console
+//		OUTPUT_FILE - write to file
+//		OUTPUT_MSGBOX - create pop up message box
+//		OUTPUT_SCREEN - write to screen
+//
+// OUTPUT_FILENAME
+//		Name of the file for output.
 ////////////////////////////////////////////////////////////
 #if defined(DINGOO) || defined(UNIX) && !defined(GTK)
 	#define OUTPUT_TYPE OUTPUT_FILE

@@ -21,9 +21,6 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
-#ifdef _WIN32
-	#include <conio.h>
-#endif
 #include <cstdarg>
 #include "output.h"
 #include "options.h"
@@ -31,8 +28,6 @@
 #include "msgbox.h"
 #include "graphics.h"
 
-////////////////////////////////////////////////////////////
-/// Output Error
 ////////////////////////////////////////////////////////////
 void Output::Error(char* fmt, ...) {
 	va_list args;
@@ -61,7 +56,7 @@ void Output::ErrorStr(std::string err){
 		std::cout << err << std::endl;
 		std::cout << std::endl;
 		std::cout << "EasyRPG Player will close now. Press any key..." << std::endl;
-		getchar();
+		std::cin.get();
 	#elif OUTPUT_TYPE == OUTPUT_FILE
 		std::ofstream file;
 		file.open(OUTPUT_FILENAME, std::ios::out | std::ios::app);
@@ -71,11 +66,9 @@ void Output::ErrorStr(std::string err){
 		MsgBox::Error(err, GAME_TITLE);
 	#endif
 	Player::Exit();
-	exit(-1);
+	exit(EXIT_FAILURE);
 }
 
-////////////////////////////////////////////////////////////
-/// Output Warning
 ////////////////////////////////////////////////////////////
 void Output::Warning(char* fmt, ...) {
 	va_list args;
@@ -116,8 +109,6 @@ void Output::WarningStr(std::string warn) {
 	#endif
 }
 
-////////////////////////////////////////////////////////////
-/// Output Post message
 ////////////////////////////////////////////////////////////
 void Output::Post(char* fmt, ...) {
 	va_list args;
