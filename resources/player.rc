@@ -1,7 +1,7 @@
 A ICON "player.ico"
-//#ifndef _MSC_VER
-//1 24 "player.xml"
-//#endif
+#if defined(__MINGW32__) || defined(__CYGWIN__)
+1 24 "player.xml"
+#endif
 1 VERSIONINFO
 FILEVERSION 0,0,0,0
 PRODUCTVERSION 0,0,0,0
