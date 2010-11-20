@@ -26,10 +26,10 @@
 /// Constructor
 ////////////////////////////////////////////////////////////
 Window_Selectable::Window_Selectable(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight) {
-	item_max = 1;
-	column_max = 1;
-	index = -1;
+	Window_Base(ix, iy, iwidth, iheight),
+	item_max(1),
+	column_max(1),
+	index(-1) {
 }
 
 ////////////////////////////////////////////////////////////

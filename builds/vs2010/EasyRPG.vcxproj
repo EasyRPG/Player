@@ -20,12 +20,14 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -41,6 +43,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>..\..\bin\testgame\</OutDir>
     <TargetName>PlayerD</TargetName>
+    <SourcePath>C:\Users\Paulo\Desktop\SDL-1.2.14\SDL-1.2.14\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -53,23 +56,26 @@
       </PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>MSVC;USE_SDL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(EASYDEV_MSVC)\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>MSVC;USE_SDL;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\readers\include;$(EASYDEV_MSVC)\include</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>
       </MultiProcessorCompilation>
       <DisableSpecificWarnings>4996;4100</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MinimalRebuild>true</MinimalRebuild>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(EASYDEV_MSVC)\lib\debug</AdditionalLibraryDirectories>
-      <AdditionalDependencies>dxguid.lib;winmm.lib;SDL.lib;SDLmain.lib;zlib.lib;SDL_image.lib;libpng.lib;freetype.lib;SDL_ttf.lib;libogg.lib;libvorbis.lib;libvorbisfile.lib;native_midi.lib;smpeg.lib;SDL_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>MSVCRT.lib</IgnoreSpecificDefaultLibraries>
+      <AdditionalLibraryDirectories>$(EASYDEV_MSVC)\lib\debug;..\..\..\readers\lib\debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>readers.lib;dxguid.lib;winmm.lib;SDL.lib;SDLmain.lib;zlib.lib;SDL_image.lib;libpng.lib;freetype.lib;SDL_ttf.lib;SDL_gfx.lib;libogg.lib;libvorbis.lib;libvorbisfile.lib;native_midi.lib;smpeg.lib;SDL_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
+      <Profile>false</Profile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -81,7 +87,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>MSVC;USE_SDL;_CRT_SECURE_NO_DEPRECATE%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(EASYDEV_MSVC)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\readers\include;$(EASYDEV_MSVC)\include</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>
       </MultiProcessorCompilation>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
@@ -90,14 +96,15 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(EASYDEV_MSVC)\lib\release</AdditionalLibraryDirectories>
-      <AdditionalDependencies>dxguid.lib;winmm.lib;SDL.lib;SDLmain.lib;zlib.lib;SDL_image.lib;libpng.lib;freetype.lib;SDL_ttf.lib;libogg.lib;libvorbis.lib;libvorbisfile.lib;native_midi.lib;smpeg.lib;SDL_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(EASYDEV_MSVC)\lib\release;..\..\..\readers\lib\release</AdditionalLibraryDirectories>
+      <AdditionalDependencies>readers.lib;dxguid.lib;winmm.lib;SDL.lib;SDLmain.lib;zlib.lib;SDL_image.lib;libpng.lib;freetype.lib;SDL_ttf.lib;SDL_gfx.lib;libogg.lib;libvorbis.lib;libvorbisfile.lib;native_midi.lib;smpeg.lib;SDL_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>
@@ -110,7 +117,6 @@
     <ClCompile Include="..\..\src\bitmap.cpp" />
     <ClCompile Include="..\..\src\cache.cpp" />
     <ClCompile Include="..\..\src\color.cpp" />
-    <ClCompile Include="..\..\src\event_reader.cpp" />
     <ClCompile Include="..\..\src\filefinder_win.cpp" />
     <ClCompile Include="..\..\src\font.cpp" />
     <ClCompile Include="..\..\src\game_actor.cpp" />
@@ -129,58 +135,15 @@
     <ClCompile Include="..\..\src\game_troop.cpp" />
     <ClCompile Include="..\..\src\graphics.cpp" />
     <ClCompile Include="..\..\src\hslrgb.cpp" />
-    <ClCompile Include="..\..\src\ini.c" />
-    <ClCompile Include="..\..\src\inireader.cpp" />
     <ClCompile Include="..\..\src\input.cpp" />
     <ClCompile Include="..\..\src\input_buttons_os.cpp" />
     <ClCompile Include="..\..\src\game_interpreter.cpp" />
-    <ClCompile Include="..\..\src\ldb_actor.cpp" />
-    <ClCompile Include="..\..\src\ldb_animation.cpp" />
-    <ClCompile Include="..\..\src\ldb_animationcelldata.cpp" />
-    <ClCompile Include="..\..\src\ldb_animationframe.cpp" />
-    <ClCompile Include="..\..\src\ldb_animationtiming.cpp" />
-    <ClCompile Include="..\..\src\ldb_attribute.cpp" />
-    <ClCompile Include="..\..\src\ldb_battlecommand.cpp" />
-    <ClCompile Include="..\..\src\ldb_battleranimation.cpp" />
-    <ClCompile Include="..\..\src\ldb_battleranimationextension.cpp" />
-    <ClCompile Include="..\..\src\ldb_chipset.cpp" />
-    <ClCompile Include="..\..\src\ldb_class.cpp" />
-    <ClCompile Include="..\..\src\ldb_commonevent.cpp" />
-    <ClCompile Include="..\..\src\ldb_enemy.cpp" />
-    <ClCompile Include="..\..\src\ldb_enemyaction.cpp" />
-    <ClCompile Include="..\..\src\ldb_item.cpp" />
-    <ClCompile Include="..\..\src\ldb_learning.cpp" />
-    <ClCompile Include="..\..\src\ldb_music.cpp" />
-    <ClCompile Include="..\..\src\ldb_reader.cpp" />
-    <ClCompile Include="..\..\src\ldb_skill.cpp" />
-    <ClCompile Include="..\..\src\ldb_sound.cpp" />
-    <ClCompile Include="..\..\src\ldb_state.cpp" />
-    <ClCompile Include="..\..\src\ldb_switches.cpp" />
-    <ClCompile Include="..\..\src\ldb_system.cpp" />
-    <ClCompile Include="..\..\src\ldb_terms.cpp" />
-    <ClCompile Include="..\..\src\ldb_terrain.cpp" />
-    <ClCompile Include="..\..\src\ldb_testbattler.cpp" />
-    <ClCompile Include="..\..\src\ldb_troop.cpp" />
-    <ClCompile Include="..\..\src\ldb_troopmember.cpp" />
-    <ClCompile Include="..\..\src\ldb_trooppage.cpp" />
-    <ClCompile Include="..\..\src\ldb_trooppagecondition.cpp" />
-    <ClCompile Include="..\..\src\ldb_variables.cpp" />
-    <ClCompile Include="..\..\src\lmt_encounter.cpp" />
-    <ClCompile Include="..\..\src\lmt_mapinfo.cpp" />
-    <ClCompile Include="..\..\src\lmt_reader.cpp" />
-    <ClCompile Include="..\..\src\lmu_event.cpp" />
-    <ClCompile Include="..\..\src\lmu_eventpage.cpp" />
-    <ClCompile Include="..\..\src\lmu_eventpagecondition.cpp" />
-    <ClCompile Include="..\..\src\lmu_movecommand.cpp" />
-    <ClCompile Include="..\..\src\lmu_moveroute.cpp" />
-    <ClCompile Include="..\..\src\lmu_reader.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\main_data.cpp" />
     <ClCompile Include="..\..\src\msgbox_win.cpp" />
     <ClCompile Include="..\..\src\output.cpp" />
     <ClCompile Include="..\..\src\plane.cpp" />
     <ClCompile Include="..\..\src\player.cpp" />
-    <ClCompile Include="..\..\src\reader.cpp" />
     <ClCompile Include="..\..\src\rect.cpp" />
     <ClCompile Include="..\..\src\registry_win.cpp" />
     <ClCompile Include="..\..\src\rpg_actor.cpp" />
@@ -245,7 +208,6 @@
     <ClInclude Include="..\..\src\cache.h" />
     <ClInclude Include="..\..\src\color.h" />
     <ClInclude Include="..\..\src\drawable.h" />
-    <ClInclude Include="..\..\src\event_reader.h" />
     <ClInclude Include="..\..\src\filefinder.h" />
     <ClInclude Include="..\..\src\font.h" />
     <ClInclude Include="..\..\src\game_actor.h" />
@@ -266,24 +228,15 @@
     <ClInclude Include="..\..\src\game_variables.h" />
     <ClInclude Include="..\..\src\graphics.h" />
     <ClInclude Include="..\..\src\hslrgb.h" />
-    <ClInclude Include="..\..\src\ini.h" />
-    <ClInclude Include="..\..\src\inireader.h" />
     <ClInclude Include="..\..\src\input.h" />
     <ClInclude Include="..\..\src\game_interpreter.h" />
     <ClInclude Include="..\..\src\input_buttons.h" />
-    <ClInclude Include="..\..\src\ldb_chunks.h" />
-    <ClInclude Include="..\..\src\ldb_reader.h" />
-    <ClInclude Include="..\..\src\lmt_chunks.h" />
-    <ClInclude Include="..\..\src\lmt_reader.h" />
-    <ClInclude Include="..\..\src\lmu_chunks.h" />
-    <ClInclude Include="..\..\src\lmu_reader.h" />
     <ClInclude Include="..\..\src\main_data.h" />
     <ClInclude Include="..\..\src\msgbox.h" />
     <ClInclude Include="..\..\src\options.h" />
     <ClInclude Include="..\..\src\output.h" />
     <ClInclude Include="..\..\src\plane.h" />
     <ClInclude Include="..\..\src\player.h" />
-    <ClInclude Include="..\..\src\reader.h" />
     <ClInclude Include="..\..\src\rect.h" />
     <ClInclude Include="..\..\src\registry_win.h" />
     <ClInclude Include="..\..\src\rpg_actor.h" />

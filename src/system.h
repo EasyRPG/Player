@@ -31,6 +31,7 @@
 	#endif
 	#define USE_SDL_MIXER
 	#define USE_SDL_TTF
+	//#define USE_ALPHA
 #endif
 
 #ifdef USE_SDL_IMAGE

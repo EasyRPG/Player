@@ -19,6 +19,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "window_menustatus.h"
+#include "graphics.h"
 #include "game_party.h"
 
 ////////////////////////////////////////////////////////////
@@ -39,6 +40,15 @@ Window_MenuStatus::~Window_MenuStatus() {
 /// Refresh
 ////////////////////////////////////////////////////////////
 void Window_MenuStatus::Refresh() {
+	
+	Rect rect(0, 0, contents->GetWidth(), contents->GetHeight());
+	contents->FillofColor(rect, windowskin->GetColorKey());
+	contents->SetColorKey(windowskin->GetColorKey());
+
+	Color c = windowskin->GetPixel(0, 32);
+	Graphics::SetDefaultBackcolor(c.Get());
+	
+
 	int offset = 0;
 	for (unsigned i = 0; i < Main_Data::game_party->actors.size(); ++i)
 	{

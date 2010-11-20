@@ -118,7 +118,7 @@ void Scene_Title::MainFunction() {
 	} else {
 		command_window->DisableItem(1);
 	}
-	
+
 	// Play music
 	Game_System::BgmPlay(Main_Data::data_system.title_music);
 
@@ -177,7 +177,7 @@ void Scene_Title::CommandNewGame() {
 	Main_Data::game_party->SetupStartingMembers();
 	Game_Map::Setup(Main_Data::data_treemap.start_map_id);
 	Main_Data::game_player->MoveTo(Main_Data::data_treemap.start_x, Main_Data::data_treemap.start_y);
-	//Main_Data::game_player->Refresh();
+	Main_Data::game_player->Refresh();
 	Game_Map::Autoplay();
 	Game_Map::Update();
 	Main_Data::scene = new Scene_Map();

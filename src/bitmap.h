@@ -34,7 +34,7 @@
 class Bitmap {
 public:
 	Bitmap(int width, int height);
-	Bitmap(std::string filename);
+	Bitmap(std::string filename, bool transparent);
 	Bitmap(Bitmap* source, Rect src_rect);
 	~Bitmap();
 
@@ -44,9 +44,23 @@ public:
 	
 	int GetWidth() const;
 	int GetHeight() const;
+
+	Uint32 GetColorKey() const;
+	void SetColorKey(Uint32 color);
+
+	void RemoveColorDuplicates(SDL_Surface* src, SDL_Color* src_color);
+
+	void SetClipRect(const Rect& clip_rect);
+	void ClearClipRect();
+
+	void TileBlitX(const Rect& src_rect, Bitmap* src, const Rect& dst_rect);
+	void TileBlitY(const Rect& src_rect, Bitmap* src, const Rect& dst_rect);
+
 	void Blit(int x, int y, Bitmap* source, Rect src_rect, int opacity);
+	void StretchBlit(Bitmap* src, Rect& src_rect);
 	void StretchBlit(Rect dst_rect, Bitmap* src_bitmap, Rect src_rect, int opacity);
 	void FillRect(Rect rect, Color color);
+	void FillofColor(Rect& rect, Uint32 color);
 	void Clear();
 	void Clear(Color color);
 	Color GetPixel(int x, int y);

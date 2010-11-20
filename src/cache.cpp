@@ -21,16 +21,18 @@
 #include "cache.h"
 
 ////////////////////////////////////////////////////////////
-static std::map<std::string, Bitmap*> cache;
-static std::map<std::string, std::map<int, Bitmap*> > cache_tiles;
+namespace {
+	std::map<std::string, Bitmap*> cache;
+	std::map<std::string, std::map<int, Bitmap*> > cache_tiles;
+}
 
 ////////////////////////////////////////////////////////////
-Bitmap* Cache::LoadBitmap(std::string folder_name, std::string filename) {
+Bitmap* Cache::LoadBitmap(std::string folder_name, std::string filename, bool transparent) {
 	std::string path = folder_name + filename;
 
 	if (cache.count(path) == 0) {
 		if (!filename.empty())
-			cache[path] = new Bitmap(path);
+			cache[path] = new Bitmap(path, transparent);
 		else
 			cache[path] = new Bitmap(16, 16);
 	}
@@ -40,52 +42,52 @@ Bitmap* Cache::LoadBitmap(std::string folder_name, std::string filename) {
 
 ////////////////////////////////////////////////////////////
 Bitmap* Cache::Backdrop(std::string filename) {
-	return LoadBitmap("Backdrop/", filename);
+	return LoadBitmap("Backdrop/", filename, false);
 }
 Bitmap* Cache::Battle(std::string filename) {
-	return LoadBitmap("Battle/", filename);
+	return LoadBitmap("Battle/", filename, true);
 }
 Bitmap* Cache::Battle2(std::string filename) {
-	return LoadBitmap("Battle2/", filename);
+	return LoadBitmap("Battle2/", filename, true);
 }
 Bitmap* Cache::BattleCharset(std::string filename) {
-	return LoadBitmap("BattleCharSet/", filename);
+	return LoadBitmap("BattleCharSet/", filename, true);
 }
 Bitmap* Cache::BattleWeapon(std::string filename) {
-	return LoadBitmap("BattleWeapon/", filename);
+	return LoadBitmap("BattleWeapon/", filename, true);
 }
 Bitmap* Cache::Charset(std::string filename) {
-	return LoadBitmap("CharSet/", filename);
+	return LoadBitmap("CharSet/", filename, true);
 }
 Bitmap* Cache::Faceset(std::string filename) {
-	return LoadBitmap("FaceSet/", filename);
+	return LoadBitmap("FaceSet/", filename, true);
 }
 Bitmap* Cache::Frame(std::string filename) {
-	return LoadBitmap("Frame/", filename);
+	return LoadBitmap("Frame/", filename, true);
 }
 Bitmap* Cache::Gameover(std::string filename) {
-	return LoadBitmap("GameOver/", filename);
+	return LoadBitmap("GameOver/", filename, false);
 }
 Bitmap* Cache::Monster(std::string filename) {
-	return LoadBitmap("Monster/", filename);
+	return LoadBitmap("Monster/", filename, true);
 }
 Bitmap* Cache::Panorama(std::string filename) {
-	return LoadBitmap("Panorama/", filename);
+	return LoadBitmap("Panorama/", filename, false);
 }
 Bitmap* Cache::Picture(std::string filename) {
-	return LoadBitmap("Picture/", filename);
+	return LoadBitmap("Picture/", filename, true);
 }
 Bitmap* Cache::Chipset(std::string filename) {
-	return LoadBitmap("ChipSet/", filename);
+	return LoadBitmap("ChipSet/", filename, true);
 }
 Bitmap* Cache::Title(std::string filename) {
-	return LoadBitmap("Title/", filename);
+	return LoadBitmap("Title/", filename, false);
 }
 Bitmap* Cache::System(std::string filename) {
-	return LoadBitmap("System/", filename);
+	return LoadBitmap("System/", filename, true);
 }
 Bitmap* Cache::System2(std::string filename) {
-	return LoadBitmap("System2/", filename);
+	return LoadBitmap("System2/", filename, true);
 }
 
 ////////////////////////////////////////////////////////////

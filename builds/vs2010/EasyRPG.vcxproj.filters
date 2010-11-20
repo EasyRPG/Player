@@ -13,9 +13,6 @@
     <Filter Include="Source Files\Multimedia">
       <UniqueIdentifier>{6223dc7f-cae6-4c4a-98f7-72511f6d5c67}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Reader">
-      <UniqueIdentifier>{e9d5d22a-e712-4570-8457-ee1787c1cb01}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\RPG">
       <UniqueIdentifier>{98031b52-2013-4f7f-953c-1ecd19a0aaf0}</UniqueIdentifier>
     </Filter>
@@ -24,24 +21,6 @@
     </Filter>
     <Filter Include="Source Files\Tools\win">
       <UniqueIdentifier>{60d055a3-9b00-4bae-99f6-e827231bf43c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Reader\Events">
-      <UniqueIdentifier>{b6a4b0d2-6b06-4f64-b55b-4ada15c7dcad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Reader\LDB">
-      <UniqueIdentifier>{6a983c52-0aa5-4ea3-9014-f39ff4dc47b6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Reader\LMT">
-      <UniqueIdentifier>{29796ec8-f438-44fe-b7ac-a38515f8c115}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Reader\LMU">
-      <UniqueIdentifier>{bf497a51-152c-45c0-8b7a-8d9ccd49c21d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Reader\LSD">
-      <UniqueIdentifier>{5b2e0f23-8524-4a3e-9de5-f87e19c1dd84}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Reader\INI">
-      <UniqueIdentifier>{5925b3f7-097e-4189-8428-0b61fbbe993a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Multimedia\Audio">
       <UniqueIdentifier>{978babb7-a33f-499d-a3be-c4d4a5a3a25d}</UniqueIdentifier>
@@ -122,138 +101,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\input_buttons_os.cpp">
       <Filter>Source Files\Multimedia\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\event_reader.cpp">
-      <Filter>Source Files\Reader\Events</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_actor.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_animation.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_animationcelldata.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_animationframe.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_animationtiming.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_attribute.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_battlecommand.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_battleranimation.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_battleranimationextension.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_chipset.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_class.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_commonevent.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_enemy.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_enemyaction.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_item.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_learning.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_music.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_reader.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_skill.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_sound.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_state.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_switches.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_system.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_terms.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_terrain.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_testbattler.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_troop.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_troopmember.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_trooppage.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_trooppagecondition.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ldb_variables.cpp">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lmt_encounter.cpp">
-      <Filter>Source Files\Reader\LMT</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lmt_mapinfo.cpp">
-      <Filter>Source Files\Reader\LMT</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lmt_reader.cpp">
-      <Filter>Source Files\Reader\LMT</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lmu_event.cpp">
-      <Filter>Source Files\Reader\LMU</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lmu_eventpage.cpp">
-      <Filter>Source Files\Reader\LMU</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lmu_eventpagecondition.cpp">
-      <Filter>Source Files\Reader\LMU</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lmu_movecommand.cpp">
-      <Filter>Source Files\Reader\LMU</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lmu_moveroute.cpp">
-      <Filter>Source Files\Reader\LMU</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lmu_reader.cpp">
-      <Filter>Source Files\Reader\LMU</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ini.c">
-      <Filter>Source Files\Reader\INI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\inireader.cpp">
-      <Filter>Source Files\Reader\INI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\reader.cpp">
-      <Filter>Source Files\Reader</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\rpg_actor.cpp">
       <Filter>Source Files\RPG</Filter>
@@ -529,36 +376,6 @@
     </ClInclude>
     <ClInclude Include="..\..\src\input_buttons.h">
       <Filter>Source Files\Multimedia\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\event_reader.h">
-      <Filter>Source Files\Reader\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\ldb_chunks.h">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\ldb_reader.h">
-      <Filter>Source Files\Reader\LDB</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\lmt_chunks.h">
-      <Filter>Source Files\Reader\LMT</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\lmt_reader.h">
-      <Filter>Source Files\Reader\LMT</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\lmu_reader.h">
-      <Filter>Source Files\Reader\LMU</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\lmu_chunks.h">
-      <Filter>Source Files\Reader\LMU</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\ini.h">
-      <Filter>Source Files\Reader\INI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\inireader.h">
-      <Filter>Source Files\Reader\INI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\reader.h">
-      <Filter>Source Files\Reader</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\rpg_actor.h">
       <Filter>Source Files\RPG</Filter>

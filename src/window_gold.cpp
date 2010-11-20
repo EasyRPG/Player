@@ -48,5 +48,7 @@ void Window_Gold::Refresh() {
 	gold << Main_Data::game_party->gold;
 	gold << Main_Data::data_terms.gold;
 	
+	contents->FillofColor(rect, windowskin->GetColorKey());
+	contents->SetColorKey(windowskin->GetColorKey());
 	contents->TextDraw(rect, gold.str(), 2);
 }

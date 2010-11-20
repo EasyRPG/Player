@@ -30,23 +30,23 @@ class Color {
 
 public:
 	Color();
-	Color(int ired, int igreen, int iblue, int ialpha);
+	Color(Uint8 ired, Uint8 igreen, Uint8 iblue, Uint8 ialpha);
 	Color(Uint32 color, SDL_PixelFormat* format);
 	~Color();
 
 	bool operator!=(const Color& other) const;
 
-	void Set(int nred, int ngreen, int nblue, int nalpha);
+	void Set(Uint8 nred, Uint8 ngreen, Uint8 nblue, Uint8 nalpha);
 
 	enum ColorTypes {
 		Default = 0,
 		Disabled = 3
 	};
 
-	int red;
-	int green;
-	int blue;
-	int alpha;
+	Uint8 red;
+	Uint8 green;
+	Uint8 blue;
+	Uint8 alpha;
 
 	Uint32 GetUint32(SDL_PixelFormat* format) const;
 	SDL_Color Get() const;

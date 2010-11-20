@@ -29,34 +29,56 @@
 #include "player.h"
 #include "SDL_image.h"
 #include "SDL_ttf.h"
+#include "SDL_rotozoom.h"
 #include "exfont.xpm"
 #include "util_macro.h"
+#include "system.h"
+#include <cmath>
 
 ////////////////////////////////////////////////////////////
 /// Defines
 ////////////////////////////////////////////////////////////
 
-#define rmask 0xff000000
-#define gmask 0x00ff0000
-#define bmask 0x0000ff00
-#define amask 0x000000ff
+// Format ARGB (which is the one used by SDL internally)
+#if SDL_BYTEORDER == SDL_LIL_ENDIAN
+    const unsigned int rmask = 0x0000FF00;
+    const unsigned int gmask = 0x00FF0000;
+    const unsigned int bmask = 0xFF000000;
+    const unsigned int amask = 0x000000FF;
+#else
+    const unsigned int rmask = 0x00FF0000;
+    const unsigned int gmask = 0x0000FF00;
+    const unsigned int bmask = 0x000000FF;
+    const unsigned int amask = 0xFF000000;
+#endif
+
 
 ////////////////////////////////////////////////////////////
 /// Constructors
 ////////////////////////////////////////////////////////////
 Bitmap::Bitmap(int width, int height) {
 	SDL_Surface* temp;
-	temp = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA, width, height, 32, rmask, gmask, bmask, amask);
+#ifdef USE_ALPHA
+	temp = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, rmask, gmask, bmask, amask);
+#else
+	// Create 32 bit (for now) surface with SRC_COLORKEY
+	temp = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCCOLORKEY, width, height, 32, rmask, gmask, bmask, amask);
+#endif
 	if (temp == NULL) {
 		Output::Error("Couldn't create %dx%d image.\n%s\n", width, height, SDL_GetError());
 	}
+#ifdef USE_ALPHA
 	bitmap = SDL_DisplayFormatAlpha(temp);
+#else
+	// Don't need alpha here
+	bitmap = SDL_DisplayFormat(temp);
+#endif
 	if (bitmap == NULL) {
 		Output::Error("Couldn't optimize %dx%d image.\n%s\n", width, height, SDL_GetError());
 	}
 	SDL_FreeSurface(temp);
 }
-Bitmap::Bitmap(std::string filename) {
+Bitmap::Bitmap(std::string filename, bool transparent) {
 	std::string path = FileFinder::FindImage(filename);
 	if (path == "") {
 		Output::Error("No such file or directory - %s", filename.c_str());
@@ -67,33 +89,85 @@ Bitmap::Bitmap(std::string filename) {
 		Output::Error("Couldn't load %s image.\n%s\n", filename.c_str(), IMG_GetError());
 	}
 	Color col(0, 0, 0, 0);
-	if (temp->format->BitsPerPixel == 8) {
+	if ((temp->format->BitsPerPixel == 8) && (transparent)) {
+		// The first color of the palette will be the key color
+		// if needed.
 		SDL_Color colorkey = temp->format->palette->colors[0];
 		col.red = colorkey.r;
 		col.green = colorkey.g;
 		col.blue = colorkey.b;
+#ifndef USE_ALPHA
+		// Remove color duplicates from palette
+		// This hack is needed to emulate RPG_RT behaviour
+		RemoveColorDuplicates(temp, &colorkey);
+		// Set color key
+		SDL_SetColorKey(temp, SDL_SRCCOLORKEY, SDL_MapRGB(temp->format, col.red, col.green, col.blue));
+#endif
 	}
+#ifdef USE_ALPHA
 	bitmap = SDL_DisplayFormatAlpha(temp);
+#else
+	// Don't need alpha
+	bitmap = SDL_DisplayFormat(temp);
+#endif
 	if (bitmap == NULL) {
 		Output::Error("Couldn't optimize %s image.\n%s\n", filename.c_str(), SDL_GetError());
 	}
+#ifdef USE_ALPHA
 	if (temp->format->BitsPerPixel == 8) {
-		SetTransparent(col);
+		SetTransparent(col);	
 	}
+#endif
 	SDL_FreeSurface(temp);
 }
 Bitmap::Bitmap(Bitmap* source, Rect src_rect) {
 	SDL_Surface* temp;
-	temp = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA, src_rect.width, src_rect.height, 32, rmask, gmask, bmask, amask);
+#ifdef USE_ALPHA
+	temp = SDL_CreateRGBSurface(SDL_SWSURFACE, src_rect.width, src_rect.height, 32, rmask, gmask, bmask, amask);
+#else
+	temp = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCCOLORKEY, src_rect.width, src_rect.height, 32, rmask, gmask, bmask, amask);
+#endif
 	if (temp == NULL) {
 		Output::Error("Couldn't create %dx%d image.\n%s\n", src_rect.width, src_rect.height, SDL_GetError());
 	}
+#ifdef USE_ALPHA
 	bitmap = SDL_DisplayFormatAlpha(temp);
+#else
+	bitmap = SDL_DisplayFormat(temp);
+#endif
 	if (bitmap == NULL) {
 		Output::Error("Couldn't optimize %dx%d image.\n%s\n", src_rect.width, src_rect.height, SDL_GetError());
 	}
 	SDL_FreeSurface(temp);
 	Blit(0, 0, source, src_rect, 255);
+}
+
+void Bitmap::RemoveColorDuplicates(SDL_Surface* src, SDL_Color* src_color) {
+	// Iterate through the palete to remove all color duplicates except
+	// for the first ocurrence.
+	int n_colors = src->format->palette->ncolors;
+	SDL_Color* colors = src->format->palette->colors;
+
+	bool color_was_found = false;
+
+	for (int i = 0; i < n_colors; i++) {
+		if (color_was_found) {
+			if ( (colors[i].r == src_color->r) &&
+				(colors[i].g == src_color->g) &&
+				(colors[i].b == src_color->b) 
+				) {
+					(colors[i].b != 255) ? colors[i].b++ : colors[i].b--;
+			}
+
+		} else {
+			if ( (colors[i].r == src_color->r) &&
+				(colors[i].g == src_color->g) &&
+				(colors[i].b == src_color->b) 
+				) {
+					color_was_found = true;
+			}
+		}
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -117,7 +191,13 @@ void Bitmap::BlitScreen(int x, int y, int opacity) {
 void Bitmap::BlitScreen(int x, int y, Rect src_rect, int opacity) {
 	if (GetWidth() == 0 || GetHeight() == 0) return;
 	if (x >= Player::GetWidth() || y >= Player::GetHeight()) return;
-	
+#ifndef USE_ALPHA
+	SDL_Rect src_r = { src_rect.x, src_rect.y, src_rect.width, src_rect.height };
+	SDL_Rect dst_r = {x, y, 0, 0};
+
+	// Regular blit here...
+	SDL_BlitSurface(bitmap, &src_r, Player::main_window, &dst_r);
+#else	
 	if (opacity >= 255) {
 		SDL_Rect offset = {x, y, 0, 0};
 		SDL_Rect src_rect_sdl = {src_rect.x, src_rect.y, src_rect.width, src_rect.height};
@@ -154,6 +234,7 @@ void Bitmap::BlitScreen(int x, int y, Rect src_rect, int opacity) {
 		SDL_UnlockSurface(Player::main_window);
 		SDL_UnlockSurface(bitmap);
 	}
+#endif
 }
 
 ////////////////////////////////////////////////////////////
@@ -181,7 +262,13 @@ void Bitmap::Blit(int x, int y, Bitmap* src_bitmap, Rect src_rect, int opacity) 
 	
 	src_rect.Adjust(src_bitmap->GetWidth(), src_bitmap->GetHeight());
 	if (src_rect.IsOutOfBounds(src_bitmap->GetWidth(), src_bitmap->GetHeight())) return;
-	
+#ifndef USE_ALPHA
+	SDL_Rect src_r = {src_rect.x, src_rect.y, src_rect.width, src_rect.height };
+	SDL_Rect dst_r = {x, y, 0, 0};
+
+	// Again regular blit...
+	SDL_BlitSurface(source, &src_r, bitmap, &dst_r);
+#else
 	int width = src_rect.width;
 	int height = src_rect.height;
 	if (x < 0) {
@@ -229,6 +316,34 @@ void Bitmap::Blit(int x, int y, Bitmap* src_bitmap, Rect src_rect, int opacity) 
 	
 	SDL_UnlockSurface(source);
 	SDL_UnlockSurface(bitmap);
+#endif
+}
+
+// This method stretches `src` (according to `src_rect`)
+// to the dimensions of `bitmap` and then blits the result
+// to it. This is pretty much used for things like 
+// message backgrounds. This is also the method that 
+// old player used to do this.
+void Bitmap::StretchBlit(Bitmap* src, Rect& src_rect) {
+	SDL_Surface* tmp = NULL;
+	Bitmap* tmp2 = NULL;
+
+	double zoom_x_factor = bitmap->w / (double) src_rect.width;
+	double zoom_y_factor = bitmap->h / (double) src_rect.height;
+
+	tmp2 = new Bitmap(src_rect.width, src_rect.height);
+	
+	tmp2->Blit(0, 0, src, src_rect, 255);
+
+	tmp = zoomSurface(tmp2->bitmap, zoom_x_factor, zoom_y_factor, 0);
+	if (tmp == NULL) {
+		Output::Error("Error when resizing\n");
+	}
+
+	SDL_BlitSurface(tmp, NULL, bitmap, NULL);
+
+	delete tmp;
+	delete tmp2;
 }
 
 ////////////////////////////////////////////////////////////
@@ -240,12 +355,79 @@ void Bitmap::StretchBlit(Rect dst_rect, Bitmap* src_bitmap, Rect src_rect, int o
 	} else {
 		src_rect.Adjust(src_bitmap->GetWidth(), src_bitmap->GetHeight());
 		if (src_rect.IsOutOfBounds(src_bitmap->GetWidth(), src_bitmap->GetHeight())) return;
-
 		Bitmap* resampled = src_bitmap->Resample(dst_rect.width, dst_rect.height, src_rect);
 		Rect rect(0, 0, dst_rect.width, dst_rect.height);
 		Blit(dst_rect.x, dst_rect.y, resampled, rect, opacity);
 		delete resampled;
 	}
+}
+
+// Tile src onto `bitmap` horizontally. This method calculates
+// how many blits are neccessary in order to fill up `bitmap`
+// horizontally.
+void Bitmap::TileBlitX(const Rect& src_rect, Bitmap* src, const Rect& dst_rect) {
+	SDL_Rect sdl_src_rect = { src_rect.x, src_rect.y, src_rect.width, src_rect.height };
+	SDL_Rect sdl_dst_rect = { dst_rect.x, dst_rect.y, dst_rect.width, dst_rect.height };
+
+	int n_blits;
+	if ( (src_rect.width >= bitmap->w ) || (src_rect.width == 0) ) {
+		n_blits = 1; 
+	} else {
+		n_blits = (int) ceil((float)bitmap->w / (float)src_rect.width);
+	}
+
+	for (int i = 0; i < n_blits; i++) {
+		sdl_dst_rect.x = i*sdl_src_rect.w;
+		SDL_BlitSurface(src->bitmap, &sdl_src_rect, bitmap, &sdl_dst_rect);
+	}
+}
+
+// Same as TileBlitX() but tiles vertically.
+void Bitmap::TileBlitY(const Rect& src_rect, Bitmap* src, const Rect& dst_rect) {
+	SDL_Rect sdl_src_rect = { src_rect.x, src_rect.y, src_rect.width, src_rect.height };
+	SDL_Rect sdl_dst_rect = { dst_rect.x, dst_rect.y, dst_rect.width, dst_rect.height };
+
+	int n_blits;
+	if ( (src_rect.height >= bitmap->h ) || (src_rect.height == 0) ) {
+		n_blits = 1; 
+	} else {
+		n_blits = (int) ceil((float)bitmap->h / (float)src_rect.height);
+	}
+
+	for (int i = 0; i < n_blits; i++) {
+		sdl_dst_rect.y = i*sdl_src_rect.h;
+		SDL_BlitSurface(src->bitmap, &sdl_src_rect, bitmap, &sdl_dst_rect);
+	}
+}
+
+// Sets the clipping rect for `bitmap` surface
+void Bitmap::SetClipRect(const Rect& clip_rect) {
+	SDL_Rect rect = {clip_rect.x, clip_rect.y, clip_rect.width, clip_rect.height };
+	SDL_SetClipRect(bitmap, &rect);
+}
+
+// Clears the clipping rect for `bitmap` surface
+void Bitmap::ClearClipRect() {
+	SDL_SetClipRect(bitmap, NULL);
+}
+
+// Get the current colorkey for `bitmap`
+Uint32 Bitmap::GetColorKey() const {
+	return bitmap->format->colorkey;
+}
+
+// Set `color` as color key for `bitmap`
+void Bitmap::SetColorKey(Uint32 color) {
+	SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, color);
+}
+
+// Fills `bitmap` with the given Uint32 `color`
+void Bitmap::FillofColor(Rect& rect, Uint32 color) {
+	rect.Adjust(GetWidth(), GetHeight());
+	if (rect.IsOutOfBounds(GetWidth(), GetHeight())) return;
+	
+	SDL_Rect rect_sdl = {rect.x, rect.y, rect.width, rect.height};
+	SDL_FillRect(bitmap, &rect_sdl, color);
 }
 
 ////////////////////////////////////////////////////////////
@@ -275,7 +457,11 @@ void Bitmap::Clear(Color color) {
 Color Bitmap::GetPixel(int x, int y) {
 	if (x < 0 || y < 0) return Color(0, 0, 0, 0);
 	if (x >= GetWidth() || y > GetHeight()) return Color(0, 0, 0, 0);
+	if SDL_MUSTLOCK(bitmap)
+		SDL_LockSurface(bitmap);
 	Uint32* pixels = (Uint32*)bitmap->pixels;
+	if SDL_MUSTLOCK(bitmap)
+		SDL_UnlockSurface(bitmap);
 	return Color(pixels[(y * GetWidth()) + x], bitmap->format);
 }
 
@@ -285,8 +471,12 @@ Color Bitmap::GetPixel(int x, int y) {
 void Bitmap::SetPixel(int x, int y, Color color) {
 	if (x < 0 || y < 0) return;
 	if (x >= GetWidth() || y > GetHeight()) return;
+	if (SDL_MUSTLOCK(bitmap))
+		SDL_LockSurface(bitmap);
 	Uint32* pixels = (Uint32*)bitmap->pixels;
 	pixels[(y * GetWidth()) + x] = color.GetUint32(bitmap->format);
+	if (SDL_MUSTLOCK(bitmap))
+		SDL_UnlockSurface(bitmap);
 }
 
 ////////////////////////////////////////////////////////////
@@ -365,10 +555,12 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 	if (text.length() == 0) return;
 	if (rect.IsOutOfBounds(GetWidth(), GetHeight())) return;
 
+#ifdef USE_ALPHA
 	const int rbyte = MaskGetByte(bitmap->format->Rmask);
 	const int gbyte = MaskGetByte(bitmap->format->Gmask);
 	const int bbyte = MaskGetByte(bitmap->format->Bmask);
 	const int abyte = MaskGetByte(bitmap->format->Amask);
+#endif
 	
 	TTF_Font* ttf_font = font.GetTTF();
 	int style = 0;
@@ -377,13 +569,24 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 	TTF_SetFontStyle(ttf_font, style);
 
 	SDL_Surface* text_surface; // Complete text
+#ifndef USE_ALPHA
+	SDL_Surface* text_surface_aux;
+	SDL_Surface* mask;
+#endif
 	SDL_Surface* char_surface; // Single char
 	SDL_Surface* char_shadow; // Drop shadow of char
 
 	// Create a new RGB Surface in an endian-neutral way
+#ifdef USE_ALPHA
 	text_surface = SDL_CreateRGBSurface(bitmap->flags, text.size()*6, 12, 32, (0xFF << rbyte*8), (0xFF << gbyte*8), (0xFF << bbyte*8), (0xFF << abyte*8));
+#else
+	text_surface = SDL_CreateRGBSurface(bitmap->flags | SDL_SRCCOLORKEY, text.size()*6, TTF_FontHeight(ttf_font), 32, 0, 0, 0, 0);
 
-#if FONT_SMOOTHING == 0
+	text_surface_aux = SDL_CreateRGBSurface(bitmap->flags | SDL_SRCCOLORKEY, text.size()*6, TTF_FontHeight(ttf_font), 32, 0, 0, 0, 0);
+	SDL_Color color = { 255, 255, 255, 0 };
+#endif
+
+#if FONT_SMOOTHING == 0 && defined(USE_ALPHA)
 	Uint32 colorkey = 0;
 #endif
 
@@ -421,31 +624,168 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 			is_full_glyph = true;
 
 #if FONT_SMOOTHING == 0
+	#ifdef USE_ALPHA
 			char_surface = SDL_CreateRGBSurface(exfont->flags, 12, 12, 8, (0xFF << rbyte*8), (0xFF << gbyte*8), (0xFF << bbyte*8), (0xFF << abyte*8));
+	#else
+			char_surface = SDL_CreateRGBSurface(exfont->flags | SDL_SRCCOLORKEY, 12, 12, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0);
+			char_shadow = SDL_CreateRGBSurface(exfont->flags | SDL_SRCCOLORKEY, 12, 12, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0);
+			// Create a completely black surface. This will be the base color of mask.
+			mask = SDL_CreateRGBSurface(SDL_SRCCOLORKEY, 12, 12, 32, 0, 0, 0, 0);
+	#endif
 #else
 			char_surface = SDL_CreateRGBSurface(exfont->flags, 12, 12, 32, (0xFF << rbyte*8), (0xFF << gbyte*8), (0xFF << bbyte*8), (0xFF << abyte*8));
 #endif
+#ifndef USE_ALPHA
+			// Get color region from system graphic
+			SDL_Rect clip_system = { 8+16*(font.color%10), 4+48+16*(font.color/10), 6, 12 };
+			// Define position of glyph
+			SDL_Rect rect = {next_glyph_pos, 0, 0, 0};
+			// Define position of glyph shadow
+			SDL_Rect shadow_r = {next_glyph_pos+1, 1, 0, 0};
+			SDL_Rect char_r = { 0, 0, 0, 0 };
+
+			// Get exfont from graphic
+			SDL_Rect rect_exfont = {(exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12};
+
+			// Blit white exfont on black mask
+			SDL_BlitSurface(exfont, &rect_exfont, mask, NULL);
+
+			// Make white transparent
+			SDL_SetColorKey(mask, SDL_SRCCOLORKEY, SDL_MapRGB(mask->format, 255, 255, 255));
+
+			// Blit color background
+			SDL_BlitSurface(system->bitmap, &clip_system, char_surface, &char_r);
+			char_r.x += 6;
+			// Blit color background again (6 pixels width each)
+			SDL_BlitSurface(system->bitmap, &clip_system, char_surface, &char_r);
+
+			// Blit black mask onto color background
+			SDL_BlitSurface(mask, NULL, char_surface, NULL);
+
+			// Make black color transparent for the magic!
+			SDL_SetColorKey(char_surface, SDL_SRCCOLORKEY, SDL_MapRGB(char_surface->format, 0, 0, 0));
+
+			// Get SDL_Color from shadow color
+			SDL_Color c_tmp = shadowColor.Get();
+			// If shadow is pure black, add 1 to blue channel
+			// so it doesn't become transparent
+			if ( (c_tmp.r == 0) &&
+				(c_tmp.g == 0) &&
+				(c_tmp.b == 0) ) 
+			{
+				c_tmp.b++;
+			}
+			// Paint char shadow surface of shadow color
+			SDL_FillRect(char_shadow, NULL, SDL_MapRGB(char_shadow->format, c_tmp.r, c_tmp.g, c_tmp.b));
+
+			// Clear color key for mask
+			SDL_SetColorKey(mask, 0, 0);
+
+			// Paint black color mask (aka reset it)
+			SDL_FillRect(mask, NULL, 0);
+
+			// Paste white exfont onto mask
+			SDL_BlitSurface(exfont, &rect_exfont, mask, NULL);
+
+			// Make white transparent
+			SDL_SetColorKey(mask, SDL_SRCCOLORKEY, SDL_MapRGB(char_surface->format, 255, 255, 255));
+
+			// Paste mask onto char_shadow
+			SDL_BlitSurface(mask, NULL, char_shadow, NULL);
+
+			// Make black color key for magic!
+			SDL_SetColorKey(mask, SDL_SRCCOLORKEY, SDL_MapRGB(char_surface->format, 0, 0, 0));
+
+			// Finally, blit shadow first, and then char onto the text_surface
+			SDL_BlitSurface(char_shadow, NULL, text_surface, &shadow_r);
+			SDL_BlitSurface(char_surface, NULL, text_surface, &rect);
+
+			// Done
+			delete mask;
+			delete char_surface;
+			delete char_shadow;
+#else
 			char_shadow = SDL_ConvertSurface(char_surface, char_surface->format, char_surface->flags);
 			SDL_Rect rect = {(exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12};
 			SDL_BlitSurface(exfont, &rect, char_surface, NULL);
 			SDL_BlitSurface(exfont, &rect, char_shadow, NULL);
+#endif
 		} else {
 			// No EXFONT, draw normal text
 #if FONT_SMOOTHING == 0
 			// Render a single char
+	#ifdef USE_ALPHA
 			char_surface = TTF_RenderUTF8_Solid(ttf_font, text2, Color(255, 255, 255, 255).Get());
 			char_shadow = TTF_RenderUTF8_Solid(ttf_font, text2, shadowColor.Get());
+	#else
+			char_surface = TTF_RenderUTF8_Solid(ttf_font, text2, color);
+			// If shadow is pure black, add 1 to blue channel
+			// so it doesn't become transparent
+			SDL_Color c_tmp = shadowColor.Get();
+			if ( (c_tmp.r == 0) &&
+				(c_tmp.g == 0) &&
+				(c_tmp.b == 0) ) 
+			{
+				shadowColor.blue++;
+			}
+			char_shadow = TTF_RenderUTF8_Solid(ttf_font, text2, shadowColor.Get());
+	#endif
 #else
 			char_surface = TTF_RenderUTF8_Blended(ttf_font, text2, Color(255, 255, 255, 255).Get());
 			char_shadow = TTF_RenderUTF8_Blended(ttf_font, text2, shadowColor.Get());
 #endif
+
+#ifndef USE_ALPHA
+			// Create a black mask
+			mask = SDL_CreateRGBSurface(SDL_SRCCOLORKEY, char_surface->w, char_surface->h, 32, 0, 0, 0, 0);
+
+			// Paste white text onto mask
+			SDL_BlitSurface(char_surface, NULL, mask, NULL);
+
+			// Make white transparente to create the actual mask
+			SDL_SetColorKey(mask, SDL_SRCCOLORKEY, SDL_MapRGB(mask->format, 255, 255, 255));
+
+			// Get color region from system graphic
+			SDL_Rect clip_system = { 8+16*(font.color%10), 4+48+16*(font.color/10), char_surface->w, char_surface->h };
+			
+			// Define position of glyph
+			SDL_Rect rect = {next_glyph_pos, 0, 0, 0};
+
+			// Blit color background
+			SDL_BlitSurface(system->bitmap, &clip_system, text_surface_aux, &rect);
+
+			// Blit mask onto background
+			SDL_BlitSurface(mask, NULL, text_surface_aux, &rect);
+
+			// Make black transparent for the magic!
+			SDL_SetColorKey(text_surface_aux, SDL_SRCCOLORKEY, SDL_MapRGB(text_surface_aux->format, 0,0,0));
+			SDL_SetColorKey(text_surface, SDL_SRCCOLORKEY, SDL_MapRGB(text_surface->format, 0,0,0));
+
+			// Define text shadow position
+			SDL_Rect dst = { next_glyph_pos+1, 1, 0, 0 };
+
+			// Blit first shadow and then text
+			SDL_BlitSurface(char_shadow, NULL, text_surface, &dst);
+			SDL_BlitSurface(text_surface_aux, NULL, text_surface, NULL);
+
+			// Done
+			delete mask;
+			delete char_surface;
+			delete char_shadow;
+#endif
 		}
 
-		if (!char_surface || !char_shadow) {
+		if (!char_surface //|| !char_shadow
+			) {
 			Output::Error("Couldn't draw text %s with Font %n size %d.\n%s\n", text.c_str(), font.name.c_str(), font.size, TTF_GetError());
 		}
+/*
+#ifdef USE_ALPHA
+		SDL_Rect rect = {next_glyph_pos + 1, 1, is_full_glyph ? 12 : 6, 12};
+#endif*/
 
-#if FONT_SMOOTHING == 0
+#if FONT_SMOOTHING == 0 && defined(USE_ALPHA)
+		
 		// Retrieve the color key once
 		if (c == 0) {
 			colorkey = *(Uint32*)char_surface->format->palette->colors | (0xFF << abyte*8);
@@ -459,6 +799,7 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 		char_shadow = char_shadow32;
 #endif
 
+#ifdef USE_ALPHA
 		// Set corrent alpha flags otherwise alpha is ignored during blitting
 		SDL_SetAlpha(char_surface, 0, 0);
 		SDL_SetAlpha(char_shadow, 0, 0);
@@ -511,7 +852,7 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 
 		SDL_FreeSurface(char_surface);
 		SDL_FreeSurface(char_shadow);
-
+#endif
 		// If it's a full size glyph add the size of a half-size glypth twice
 		if (is_full_glyph) {
 			next_glyph_pos += 6;
@@ -522,9 +863,9 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 			// cause problems
 			++c;
 		}
-		next_glyph_pos += 6;
+		next_glyph_pos += 6;	
 	}
-
+	
 	Bitmap* text_bmp = new Bitmap(1, 1);
 	SDL_FreeSurface(text_bmp->bitmap);
 	text_bmp->bitmap = text_surface;
@@ -539,12 +880,14 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 		delete text_bmp;
 		text_bmp = resampled;
 	}*/
+	
 	Rect src_rect(0, 0, rect.width, rect.height);
 	int y = rect.y;
 	if (rect.height > text_bmp->GetHeight()) y += ((rect.height - text_bmp->GetHeight()) / 2);
 	int x = rect.x;
-
-	// Alignment code
+	
+	/*
+	// Alignment code (RMXP only)
 	if (rect.width > text_bmp->GetWidth()) {
 		if (align == 1) {
 			x += (rect.width - text_bmp->GetWidth()) / 2;
@@ -552,10 +895,14 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 			x += rect.width - text_bmp->GetWidth();
 		}
 	}
+	*/
 
 	Blit(x, y, text_bmp, src_rect, SDL_ALPHA_OPAQUE/*font.color.alpha*/);
 
 	delete text_bmp;
+#ifndef USE_ALPHA
+	delete text_surface_aux;
+#endif
 }
 
 ////////////////////////////////////////////////////////////

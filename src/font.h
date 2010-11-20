@@ -44,11 +44,11 @@ public:
 	bool italic;
 	int color;
 	
-	static std::string default_name;
-	static int default_size;
-	static bool default_bold;
-	static bool default_italic;
-	static int default_color;
+	static const std::string default_name;
+	static const int default_size;
+	static const bool default_bold;
+	static const bool default_italic;
+	static const int default_color;
 	
 	static bool Exists(std::string name);
 	

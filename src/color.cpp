@@ -29,7 +29,7 @@ Color::Color() {
 	blue = 0;
 	alpha = 255;
 }
-Color::Color(int ired, int igreen, int iblue, int ialpha) {
+Color::Color(Uint8 ired, Uint8 igreen, Uint8 iblue, Uint8 ialpha) {
 	red = ired;
 	green = igreen;
 	blue = iblue;
@@ -60,7 +60,7 @@ bool Color::operator!=(const Color &other) const {
 ////////////////////////////////////////////////////////////
 /// Set
 ////////////////////////////////////////////////////////////
-void Color::Set(int nred, int ngreen, int nblue, int nalpha) {
+void Color::Set(Uint8 nred, Uint8 ngreen, Uint8 nblue, Uint8 nalpha) {
 	red = nred;
 	green = ngreen;
 	blue = nblue;

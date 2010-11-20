@@ -44,6 +44,7 @@ namespace Graphics {
 	Bitmap* SnapToBitmap();
 	int GetFrameCount();
 	void SetFrameCount(int nframecount);
+	void SetDefaultBackcolor(const SDL_Color& color);
 
 	void RegisterDrawable(unsigned long ID, Drawable* drawable);
 	void RemoveDrawable(unsigned long ID);
@@ -88,6 +89,8 @@ namespace Graphics {
 	extern unsigned long last_ticks;
 	extern unsigned long last_ticks_wait;
 	extern unsigned long next_ticks_fps;
+
+	extern Uint32 default_backcolor;
 
 	extern std::map<unsigned long, Drawable*> drawable_map;
 	extern std::map<unsigned long, Drawable*>::iterator it_drawable_map;

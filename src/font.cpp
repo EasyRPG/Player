@@ -25,23 +25,24 @@
 ////////////////////////////////////////////////////////////
 /// Static Variables
 ////////////////////////////////////////////////////////////
-std::string Font::default_name = "Font/DejaVuLGCSansMono";
-int Font::default_size = 9;
-bool Font::default_bold = false;
-bool Font::default_italic = false;
-int Font::default_color = 0;
+const std::string Font::default_name = "Font/DejaVuLGCSansMono";
+const int Font::default_size = 9;
+const bool Font::default_bold = false;
+const bool Font::default_italic = false;
+const int Font::default_color = 0;
 std::map<std::string, std::map<int, TTF_Font*> > Font::fonts;
 
 ////////////////////////////////////////////////////////////
 /// Constructor
 ////////////////////////////////////////////////////////////
-Font::Font() {
-	name = default_name;
-	size = default_size;
-	bold = default_bold;
-	italic = default_italic;
-	color = default_color;
+Font::Font():
+	name(default_name),
+	size(default_size),
+	bold(default_bold),
+	italic(default_italic),
+	color(default_color) {
 }
+
 Font::Font(std::string name) {
 	this->name = name;
 	size = default_size;

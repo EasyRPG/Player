@@ -30,7 +30,7 @@
 ////////////////////////////////////////////////////////////
 class Game_Switches_Class {
 public:
-	char& operator[](int switch_id) {
+	std::vector<bool>::reference operator[](int switch_id) {
 		if ((size_t)switch_id < Main_Data::data_switches.size())
 			Output::Error("Switch index %d is invalid.", switch_id);
 
@@ -41,7 +41,7 @@ public:
 	}
 
 private:
-	std::vector<char> data;
+	std::vector<bool> data;
 };
 
 // Global variable

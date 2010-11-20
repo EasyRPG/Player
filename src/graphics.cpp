@@ -48,6 +48,8 @@ namespace Graphics {
 	SDL_Surface* fake_background;
 	SDL_Surface* blank_screen;
 
+	Uint32 default_backcolor;
+
 	std::map<unsigned long, Drawable*> drawable_map;
 	std::map<unsigned long, Drawable*>::iterator it_drawable_map;
 	std::list<ZObj> zlist;
@@ -81,6 +83,8 @@ void Graphics::Init() {
 	if (TTF_Init() == -1) {
 		Output::Error("Couldn't initialize SDL_ttf library.\n%s\n", TTF_GetError());
 	}
+
+	default_backcolor = 0;
 }
 
 void Graphics::Quit() {
@@ -185,7 +189,7 @@ void Graphics::DoTransition() {
 ////////////////////////////////////////////////////////////
 void Graphics::DrawFrame() {
 
-	SDL_FillRect(Player::main_window, &Player::main_window->clip_rect, DEFAULT_BACKCOLOR);
+	SDL_FillRect(Player::main_window, &Player::main_window->clip_rect, default_backcolor);
 	DrawableType type;
 	for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
 		type = drawable_map[it_zlist->GetId()]->GetType();
@@ -199,15 +203,15 @@ void Graphics::DrawFrame() {
 	if (Player::zoom) {
 		// TODO: Resize zoom code for BPP != 4 (and maybe zoom != x2)
 		SDL_Surface* surface = Player::main_window;
-		register int i, j;
+
 		SDL_LockSurface(surface);
 		int w = Player::GetWidth();
 		int zoom_h = surface->h;
 		int pitch = surface->pitch / 4;
 		Uint32* src = (Uint32*) surface->pixels + pitch * Player::GetHeight();
 		Uint32* dst = (Uint32*) surface->pixels + pitch * (zoom_h - 1);
-		for (j = zoom_h - 1; j >= 0; j--) {
-			for (i = w - 1; i >= 0 ; i--) {
+		for (register int j = zoom_h - 1; j >= 0; j--) {
+			for (register int i = w - 1; i >= 0 ; i--) {
 				dst[i * 2] = src[i];
 				dst[i * 2 + 1] = src[i];
 			}
@@ -240,6 +244,10 @@ void Graphics::Transition(TransitionType type, int time, bool wait) {
 	is_in_transition_yet = true;
 	actual_transition = type;
 	wait_for_transition = wait;
+}
+
+void Graphics::SetDefaultBackcolor(const SDL_Color& color) {
+	default_backcolor = SDL_MapRGB(Player::main_window->format, color.r, color.g, color.b);
 }
 
 ////////////////////////////////////////////////////////////

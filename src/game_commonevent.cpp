@@ -31,8 +31,7 @@ Game_CommonEvent::Game_CommonEvent(int common_event_id) :
 
 ////////////////////////////////////////////////////////////
 Game_CommonEvent::~Game_CommonEvent() {
-	if (interpreter)
-		delete interpreter;
+	delete interpreter;
 }
 
 ////////////////////////////////////////////////////////////
@@ -41,7 +40,7 @@ void Game_CommonEvent::Refresh() {
 		if (interpreter == NULL) {
 			interpreter = new Game_Interpreter();
 		}
-	} else if (interpreter) {
+	} else {
 		delete interpreter;
 		interpreter = NULL;
 	}

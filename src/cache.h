@@ -29,7 +29,7 @@
 /// Cache namespace
 ////////////////////////////////////////////////////////////
 namespace Cache {
-	Bitmap* LoadBitmap(std::string folder_name, std::string filename);
+	Bitmap* LoadBitmap(std::string folder_name, std::string filename, bool transparent);
 	Bitmap* Backdrop(std::string filename);
 	Bitmap* Battle(std::string filename);
 	Bitmap* Battle2(std::string filename);

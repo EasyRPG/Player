@@ -25,25 +25,27 @@
 #include "util_macro.h"
 
 ////////////////////////////////////////////////////////////
-static std::string chipset_name;
-static std::string battleback_name;
-static std::string panorama_name;
-static int panorama_type;
-static int panorama_speed;
-static int display_x;
-static int display_y;
-static bool need_refresh;
+namespace {
+	std::string chipset_name;
+	std::string battleback_name;
+	std::string panorama_name;
+	int panorama_type;
+	int panorama_speed;
+	int display_x;
+	int display_y;
+	bool need_refresh;
 
-static std::vector<unsigned char> passages_down;
-static std::vector<unsigned char> passages_up;
-static std::vector<short> terrain_tags;
-static std::vector<Game_Event*> events;
+	std::vector<unsigned char> passages_down;
+	std::vector<unsigned char> passages_up;
+	std::vector<short> terrain_tags;
+	std::vector<Game_Event*> events;
 
-static RPG::Map* map;
-static int map_id;
-static int scroll_direction;
-static int scroll_rest;
-static int scroll_speed;
+	RPG::Map* map;
+	int map_id;
+	int scroll_direction;
+	int scroll_rest;
+	int scroll_speed;
+}
 
 ////////////////////////////////////////////////////////////
 void Game_Map::Init() {
@@ -67,10 +69,8 @@ void Game_Map::Dispose() {
 	}
 	events.clear();
 
-	if (map) {
-		delete map;
-		map = NULL;
-	}
+	delete map;
+	map = NULL;
 }
 
 ////////////////////////////////////////////////////////////
