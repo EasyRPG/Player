@@ -194,6 +194,7 @@ void Player::ToggleFullscreen() {
 	#else
 		fullscreen = !fullscreen;
 	#endif
+		Graphics::fps_showing = !Graphics::fps_showing;
 }
 
 ////////////////////////////////////////////////////////////

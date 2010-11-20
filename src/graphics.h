@@ -55,6 +55,8 @@ namespace Graphics {
 	void RemoveZObj(unsigned long ID);
 	void UpdateZObj(unsigned long ID, long z);
 
+	void PrintFPS();
+
 	//////////////////////////////////
 	/// Screen Transition Variables
 	//////////////////////////////////
@@ -91,6 +93,9 @@ namespace Graphics {
 	extern unsigned long next_ticks_fps;
 
 	extern Uint32 default_backcolor;
+
+	extern Font font;
+	extern bool fps_showing;
 
 	extern std::map<unsigned long, Drawable*> drawable_map;
 	extern std::map<unsigned long, Drawable*>::iterator it_drawable_map;

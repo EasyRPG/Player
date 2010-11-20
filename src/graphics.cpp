@@ -24,6 +24,7 @@
 #include "output.h"
 #include "player.h"
 #include "SDL_ttf.h"
+#include <sstream>
 
 ////////////////////////////////////////////////////////////
 // Global Variables
@@ -49,6 +50,10 @@ namespace Graphics {
 	SDL_Surface* blank_screen;
 
 	Uint32 default_backcolor;
+
+	Font font(8);
+
+	bool fps_showing;
 
 	std::map<unsigned long, Drawable*> drawable_map;
 	std::map<unsigned long, Drawable*>::iterator it_drawable_map;
@@ -85,6 +90,8 @@ void Graphics::Init() {
 	}
 
 	default_backcolor = 0;
+
+	fps_showing = false;
 }
 
 void Graphics::Quit() {
@@ -184,6 +191,16 @@ void Graphics::DoTransition() {
 	}
 }
 
+void Graphics::PrintFPS() {
+	std::stringstream text;
+	SDL_Color fg_color = { 255, 255, 255, 0 };
+	SDL_Surface* text_surface;
+	text << "FPS: " << fps;
+	text_surface = TTF_RenderText_Solid(font.GetTTF(), text.str().c_str(), fg_color);
+	SDL_BlitSurface(text_surface, NULL, Player::main_window, NULL);
+	SDL_FreeSurface(text_surface);
+}
+
 ////////////////////////////////////////////////////////////
 // Draw Frame
 ////////////////////////////////////////////////////////////
@@ -198,7 +215,11 @@ void Graphics::DrawFrame() {
 			drawable_map[it_zlist->GetId()]->Draw(it_zlist->GetZ());
 	}
 
-	if (is_in_transition_yet) DoTransition();
+	if (is_in_transition_yet) 
+		DoTransition();
+
+	if (fps_showing) 
+		PrintFPS();
 
 	if (Player::zoom) {
 		// TODO: Resize zoom code for BPP != 4 (and maybe zoom != x2)

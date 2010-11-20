@@ -43,19 +43,28 @@ Font::Font():
 	color(default_color) {
 }
 
-Font::Font(std::string name) {
-	this->name = name;
-	size = default_size;
-	bold = default_bold;
-	italic = default_italic;
-	color = default_color;
+Font::Font(int _size):
+	name(default_name),
+	size(_size),
+	bold(default_bold),
+	italic(default_italic),
+	color(default_color) {
+
 }
-Font::Font(std::string name, int size) {
-	this->name = name;
-	this->size = size;
-	bold = default_bold;
-	italic = default_italic;
-	color = default_color;
+
+Font::Font(std::string _name):
+	name(_name),
+	size(default_size),
+	bold(default_bold),
+	italic(default_italic),
+	color(default_color) {
+}
+Font::Font(std::string _name, int _size):
+	name(_name),
+	size(_size),
+	bold(default_bold),
+	italic(default_italic),
+	color(default_color) {
 }
 
 ////////////////////////////////////////////////////////////

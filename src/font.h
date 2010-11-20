@@ -32,8 +32,9 @@
 class Font {
 public:
 	Font();
-	Font(std::string name);
-	Font(std::string name, int size);
+	Font(std::string _name);
+	Font(int _size);
+	Font(std::string _name, int _size);
 	~Font();
 
 	TTF_Font* GetTTF() const;

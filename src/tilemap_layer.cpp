@@ -124,8 +124,8 @@ TilemapLayer::~TilemapLayer() {
 	Graphics::RemoveZObj(ID);
 	Graphics::RemoveDrawable(ID);
 
-	for (i = autotiles.begin(); i != autotiles.end();) {
-		delete (*i++).second;
+	for (i = autotiles.begin(); i != autotiles.end(); i++) {
+		delete i->second;
 	}
 }
 

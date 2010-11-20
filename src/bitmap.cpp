@@ -342,7 +342,7 @@ void Bitmap::StretchBlit(Bitmap* src, Rect& src_rect) {
 
 	SDL_BlitSurface(tmp, NULL, bitmap, NULL);
 
-	delete tmp;
+	SDL_FreeSurface(tmp);
 	delete tmp2;
 }
 
@@ -701,9 +701,9 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 			SDL_BlitSurface(char_surface, NULL, text_surface, &rect);
 
 			// Done
-			delete mask;
-			delete char_surface;
-			delete char_shadow;
+			SDL_FreeSurface(mask);
+			SDL_FreeSurface(char_surface);
+			SDL_FreeSurface(char_shadow);
 #else
 			char_shadow = SDL_ConvertSurface(char_surface, char_surface->format, char_surface->flags);
 			SDL_Rect rect = {(exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12};
@@ -769,9 +769,9 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 			SDL_BlitSurface(text_surface_aux, NULL, text_surface, NULL);
 
 			// Done
-			delete mask;
-			delete char_surface;
-			delete char_shadow;
+			SDL_FreeSurface(mask);
+			SDL_FreeSurface(char_surface);
+			SDL_FreeSurface(char_shadow);
 #endif
 		}
 
@@ -901,7 +901,7 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 
 	delete text_bmp;
 #ifndef USE_ALPHA
-	delete text_surface_aux;
+	SDL_FreeSurface(text_surface_aux);
 #endif
 }
 
