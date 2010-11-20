@@ -22,20 +22,10 @@
 #include <algorithm>
 
 ////////////////////////////////////////////////////////////
-/// Constructor
-////////////////////////////////////////////////////////////
-Game_Battler::Game_Battler()
-{
+Game_Battler::Game_Battler() {
 }
 
 ////////////////////////////////////////////////////////////
-/// Destructor
-////////////////////////////////////////////////////////////
-Game_Battler::~Game_Battler()
-{
-}
-
-
-bool Game_Battler::State(int state_id) {
+bool Game_Battler::HasState(int state_id) const {
 	return (std::find(states.begin(), states.end(), state_id) != states.end());
 }

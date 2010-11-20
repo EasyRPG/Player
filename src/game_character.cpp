@@ -24,8 +24,6 @@
 #include "util_macro.h"
 
 ////////////////////////////////////////////////////////////
-// Constructor
-////////////////////////////////////////////////////////////
 Game_Character::Game_Character() {
 	x = 0;
 	y = 0;
@@ -37,35 +35,25 @@ Game_Character::Game_Character() {
 }
 
 ////////////////////////////////////////////////////////////
-// Destructor
-////////////////////////////////////////////////////////////
-Game_Character::~Game_Character() {
+bool Game_Character::IsMoving() const {
+	return real_x != x * 128 || real_y != y * 128;
 }
 
 ////////////////////////////////////////////////////////////
-// IsMoving
-////////////////////////////////////////////////////////////
-bool Game_Character::IsMoving() {
-	return (real_x != x * 128 || real_y != y * 128);
-}
-
-////////////////////////////////////////////////////////////
-// IsPassable
-////////////////////////////////////////////////////////////
-bool Game_Character::IsPassable(int x, int y, int d) {
+bool Game_Character::IsPassable(int x, int y, int d) const {
 	/*int new_x = x + (d == 6 ? 1 : d == 4 ? -1 : 0);
 	int new_y = y + (d == 2 ? 1 : d == 8 ? -1 : 0);
 
-	if (!Main_Data::game_map->IsValid(new_x, new_y)) return false;
+	if (!Game_Map::IsValid(new_x, new_y)) return false;
 
 	if (through) return true;
 
-	if (!Main_Data::game_map->IsPassable(x, y, d, this)) return false;
+	if (!Game_Map::IsPassable(x, y, d, this)) return false;
 	
-	if (!Main_Data::game_map->IsPassable(new_x, new_y, 10 - d)) return false;
+	if (!Game_Map::IsPassable(new_x, new_y, 10 - d)) return false;
 	
-	for (int i = 0; i < Main_Data::game_map->events.size(); i++) {
-		Game_Event* evnt = Main_Data::game_map->events[i];
+	for (int i = 0; i < Game_Map::events.size(); i++) {
+		Game_Event* evnt = Game_Map::events[i];
 		if (evnt.x == new_x && evnt.y == new_y) {
 			if (!evnt.through) {
 				if (id != Main_Data::game_player.id)
@@ -86,28 +74,22 @@ bool Game_Character::IsPassable(int x, int y, int d) {
 }
 
 ////////////////////////////////////////////////////////////
-// MoveTo
-////////////////////////////////////////////////////////////
 void Game_Character::MoveTo(int x, int y) {
-	this->x = x % Main_Data::game_map->GetWidth();
-	this->y = y % Main_Data::game_map->GetHeight();
+	this->x = x % Game_Map::GetWidth();
+	this->y = y % Game_Map::GetHeight();
 	real_x = x * 128;
 	real_y = y * 128;
 	prelock_direction = 0;
 }
 
 ////////////////////////////////////////////////////////////
-// GetScreenX
-////////////////////////////////////////////////////////////
-int Game_Character::GetScreenX() {
-	return (real_x - Main_Data::game_map->display_x + 3) / 4 + 16;
+int Game_Character::GetScreenX() const {
+	return (real_x - Game_Map::GetDisplayX() + 3) / 4 + 16;
 }
 
 ////////////////////////////////////////////////////////////
-// GetScreenY
-////////////////////////////////////////////////////////////
-int Game_Character::GetScreenY() {
-	int y = (real_y - Main_Data::game_map->display_y + 3) / 4 + 32;
+int Game_Character::GetScreenY() const {
+	int y = (real_y - Game_Map::GetDisplayY() + 3) / 4 + 32;
 
 	/*int n;
 	if (jump_count >= jump_peak)
@@ -119,24 +101,20 @@ int Game_Character::GetScreenY() {
 }
 
 ////////////////////////////////////////////////////////////
-// GetScreenZ
-////////////////////////////////////////////////////////////
-int Game_Character::GetScreenZ() {
+int Game_Character::GetScreenZ() const {
 	return GetScreenZ(0);
 }
-int Game_Character::GetScreenZ(int height) {
+int Game_Character::GetScreenZ(int height) const {
 	/*if (always_on_top) return 999;*/
 	
-	int z = (real_y - Main_Data::game_map->display_y + 3) / 4 + 32;
+	int z = (real_y - Game_Map::GetDisplayY() + 3) / 4 + 32;
 
 	/*if (tile_id > 0)
-		return z + Main_Data::game_map->priorities[tile_id] * 16
+		return z + Game_Map::priorities[tile_id] * 16
 	else*/
 		return z + ((height > 16) ? 15 : 0);
 }
 
-////////////////////////////////////////////////////////////
-// Update
 ////////////////////////////////////////////////////////////
 void Game_Character::Update() {
 	/*if (IsJumping())
@@ -179,8 +157,6 @@ void Game_Character::Update() {
 }
 
 ////////////////////////////////////////////////////////////
-// UpdateMove
-////////////////////////////////////////////////////////////
 void Game_Character::UpdateMove() {
 	int distance = 2 ^ move_speed;
 	if (y * 128 > real_y)
@@ -202,8 +178,6 @@ void Game_Character::UpdateMove() {
 }
 
 ////////////////////////////////////////////////////////////
-// UpdateMove
-////////////////////////////////////////////////////////////
 void Game_Character::MoveDown() {
 	//if (turn_enabled) TurnDown();
 
@@ -216,8 +190,6 @@ void Game_Character::MoveDown() {
 	}*/
 }
 
-////////////////////////////////////////////////////////////
-// UpdateMove
 ////////////////////////////////////////////////////////////
 void Game_Character::MoveLeft() {
 	//if (turn_enabled) TurnLeft();
@@ -232,8 +204,6 @@ void Game_Character::MoveLeft() {
 }
 
 ////////////////////////////////////////////////////////////
-// UpdateMove
-////////////////////////////////////////////////////////////
 void Game_Character::MoveRight() {
 	//if (turn_enabled) TurnRight();
 
@@ -247,8 +217,6 @@ void Game_Character::MoveRight() {
 }
 
 ////////////////////////////////////////////////////////////
-// UpdateMove
-////////////////////////////////////////////////////////////
 void Game_Character::MoveUp() {
 	//if (turn_enabled) TurnUp();
 	if (IsPassable(x, y, 8)) {
@@ -260,8 +228,59 @@ void Game_Character::MoveUp() {
 	}*/
 }
 
-
+////////////////////////////////////////////////////////////
 void Game_Character::Lock() {
 	//TODO
+}
 
+////////////////////////////////////////////////////////////
+int Game_Character::GetX() const {
+	return x;
+}
+
+int Game_Character::GetY() const {
+	return y;
+}
+
+int Game_Character::GetTileId() const {
+	return tile_id;
+}
+
+std::string Game_Character::GetCharacterName() const {
+	return character_name;
+}
+
+int Game_Character::GetCharacterIndex() const {
+	return character_index;
+}
+
+int Game_Character::GetRealX() const {
+	return real_x;
+}
+
+int Game_Character::GetRealY() const {
+	return real_y;
+}
+
+int Game_Character::GetDirection() const {
+	return direction;
+}
+
+int Game_Character::GetPattern() const {
+	return pattern;
+}
+
+bool Game_Character::GetMoveRouteForcing() const {
+	return move_route_forcing;
+}
+
+bool Game_Character::GetThrough() const {
+	return through;
+}
+
+int Game_Character::GetAnimationId() const {
+	return animation_id;
+}
+void Game_Character::SetAnimationId(int new_animation_id) {
+	animation_id = new_animation_id;
 }

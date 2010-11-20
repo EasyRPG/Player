@@ -25,37 +25,90 @@
 #include <vector>
 #include "game_battler.h"
 
-class Bitmap;
-
 ////////////////////////////////////////////////////////////
 /// Game_Actor class
 ////////////////////////////////////////////////////////////
 class Game_Actor : public Game_Battler {
-
 public:
-	Game_Actor(int actorId);
-	~Game_Actor();
+	////////////////////////////////////////////////////////
+	/// Constructor.
+	/// @param actor_id : database actor id
+	////////////////////////////////////////////////////////
+	Game_Actor(int actor_id);
 
-	void Setup(int actorId);
+	////////////////////////////////////////////////////////
+	/// Setups the game actor with the database actor.
+	/// This is automatically called in the constructor.
+	/// @param actor_id : database actor id
+	////////////////////////////////////////////////////////
+	void Setup(int actor_id);
 
-	bool SkillLearn(int skill_id);
+	////////////////////////////////////////////////////////
+	/// Get if skill_id has already learned a skill.
+	/// @param skill_id : database skill id
+	/// @return whether the actor has the skill
+	////////////////////////////////////////////////////////
+	bool HasSkill(int skill_id) const;
 
+	////////////////////////////////////////////////////////
+	/// Learn a new skill.
+	/// @param skill_id : database skill id
+	////////////////////////////////////////////////////////
+	void LearnSkill(int skill_id);
+
+	/// @return name.
+	std::string GetName() const;
+
+	/// @return character graphic filename.
+	std::string GetCharacterName() const;
+
+	/// @return character graphic index.
+	int GetCharacterIndex() const;
+
+	/// @return face graphic filename.
+	std::string GetFaceName() const;
+
+	/// @return face graphic index.
+	int GetFaceIndex() const;
+
+	/// @return equipped weapon id
+	int GetWeaponId() const;
+
+	/// @return equipped shield id
+	int GetShieldId() const;
+
+	/// @return equipped armor id
+	int GetArmorId() const;
+
+	/// @return equipped helmet id
+	int GetHelmetId() const;
+
+	/// @return equipped accessory id
+	int GetAccessoryId() const;
+
+	/// @return current level.
+	int GetLevel() const;
+
+	/// @return current experience points.
+	int GetExp() const;
+
+	/// @return learned skills list.
+	std::vector<int> GetSkills() const;
+
+private:
 	std::string name;
 	std::string character_name;
-	int character_hue;
-	Bitmap* face;
-
+	int character_index;
+	std::string face_name;
+	int face_index;
 	int weapon_id;
-	int armor1_id;
-	int armor2_id;
-	int armor3_id;
-	int armor4_id;
-
+	int shield_id;
+	int armor_id;
+	int helmet_id;
+	int accessory_id;
 	int level;
 	int exp;
-
-	// ID of skills this actor can learn
 	std::vector<int> skills;
 };
 
-#endif // _GAME_ACTOR_H_
+#endif

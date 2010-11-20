@@ -24,9 +24,12 @@
 #include "main_data.h"
 
 ////////////////////////////////////////////////////////////
-bool Game_System::save_disabled;
-unsigned int Game_System::save_count;
-std::string Game_System::system_name;
+namespace Game_System {
+	bool save_disabled;
+	unsigned int save_count;
+}
+
+static std::string system_name;
 
 ////////////////////////////////////////////////////////////
 void Game_System::Init() {
@@ -62,6 +65,7 @@ std::string Game_System::GetSystemName() {
 	}
 }
 
-void Game_System::SetSystemName(std::string system_name) {
-	Game_System::system_name = system_name;
+////////////////////////////////////////////////////////////
+void Game_System::SetSystemName(std::string new_system_name) {
+	system_name = new_system_name;
 }

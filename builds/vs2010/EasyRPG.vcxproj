@@ -57,7 +57,7 @@
       <AdditionalIncludeDirectories>$(EASYDEV_MSVC)\include</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>
       </MultiProcessorCompilation>
-      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4996;4100</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -118,17 +118,15 @@
     <ClCompile Include="..\..\src\game_battler.cpp" />
     <ClCompile Include="..\..\src\game_character.cpp" />
     <ClCompile Include="..\..\src\game_commonevent.cpp" />
-    <ClInclude Include="..\..\src\game_event.cpp" />
+    <ClCompile Include="..\..\src\game_event.cpp" />
     <ClCompile Include="..\..\src\game_map.cpp" />
     <ClCompile Include="..\..\src\game_message.cpp" />
     <ClCompile Include="..\..\src\game_party.cpp" />
     <ClCompile Include="..\..\src\game_player.cpp" />
     <ClCompile Include="..\..\src\game_screen.cpp" />
-    <ClCompile Include="..\..\src\game_switches.cpp" />
     <ClCompile Include="..\..\src\game_system.cpp" />
     <ClCompile Include="..\..\src\game_temp.cpp" />
     <ClCompile Include="..\..\src\game_troop.cpp" />
-    <ClCompile Include="..\..\src\game_variables.cpp" />
     <ClCompile Include="..\..\src\graphics.cpp" />
     <ClCompile Include="..\..\src\hslrgb.cpp" />
     <ClCompile Include="..\..\src\ini.c" />

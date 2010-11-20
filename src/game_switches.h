@@ -15,30 +15,36 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef __game_switches__
-#define __game_switches__
+#ifndef _GAME_SWITCHES_H_
+#define _GAME_SWITCHES_H_
 
+////////////////////////////////////////////////////////////
+// Headers
+////////////////////////////////////////////////////////////
 #include <vector>
+#include "main_data.h"
+#include "output.h"
 
-class Game_Switches {
-
+////////////////////////////////////////////////////////////
+/// Game_Switches class
+////////////////////////////////////////////////////////////
+class Game_Switches_Class {
 public:
-	Game_Switches();
-	~Game_Switches();
+	char& operator[](int switch_id) {
+		if ((size_t)switch_id < Main_Data::data_switches.size())
+			Output::Error("Switch index %d is invalid.", switch_id);
 
-	bool operator[] (unsigned int switch_id){
+		if ((size_t)switch_id > data.size())
+			data.resize(switch_id, false);
+
 		return data[switch_id];
 	}
 
-	void SetAt(unsigned int switch_id, bool value) {
-		data[switch_id] = value;
-	}
-
-	void ToggleAt(unsigned int switch_id) {
-		data[switch_id] = !data[switch_id];
-	}
 private:
-	std::vector<bool> data;
-
+	std::vector<char> data;
 };
-#endif // __game_switches__
+
+// Global variable
+extern Game_Switches_Class Game_Switches;
+
+#endif

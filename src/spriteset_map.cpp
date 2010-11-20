@@ -28,18 +28,18 @@
 ////////////////////////////////////////////////////////////
 Spriteset_Map::Spriteset_Map() {
 	tilemap = new Tilemap();
-	tilemap->SetWidth(Main_Data::game_map->GetWidth());
-	tilemap->SetHeight(Main_Data::game_map->GetHeight());
-	tilemap->SetChipset(Cache::Chipset(Main_Data::game_map->chipset_name));
-	tilemap->SetPassableDown(Main_Data::game_map->passages_down);
-	tilemap->SetPassableUp(Main_Data::game_map->passages_up);
-	tilemap->SetMapDataDown(Main_Data::game_map->GetMapDataDown());
-	tilemap->SetMapDataUp(Main_Data::game_map->GetMapDataUp());
+	tilemap->SetWidth(Game_Map::GetWidth());
+	tilemap->SetHeight(Game_Map::GetHeight());
+	tilemap->SetChipset(Cache::Chipset(Game_Map::GetChipsetName()));
+	tilemap->SetPassableDown(Game_Map::GetPassagesDown());
+	tilemap->SetPassableUp(Game_Map::GetPassagesUp());
+	tilemap->SetMapDataDown(Game_Map::GetMapDataDown());
+	tilemap->SetMapDataUp(Game_Map::GetMapDataUp());
 	panorama = new Plane();
 	panorama->SetZ(-1000);
 	fog = new Plane();
 	fog->SetZ(3000);
-	/*for (int i = 0; i < Main_Data::game_map->events.size; i++) {
+	/*for (int i = 0; i < Game_Map::events.size; i++) {
 		Sprite_Character* sprite = new Sprite_Character();
 		character_sprites.push(sprite);
 	}
@@ -75,7 +75,7 @@ Spriteset_Map::~Spriteset_Map() {
 /// Update
 ////////////////////////////////////////////////////////////
 void Spriteset_Map::Update() {
-	tilemap->SetOx(Main_Data::game_map->display_x / 8);
-	tilemap->SetOy(Main_Data::game_map->display_y / 8);
+	tilemap->SetOx(Game_Map::GetDisplayX() / 8);
+	tilemap->SetOy(Game_Map::GetDisplayY() / 8);
 	tilemap->Update();
 }

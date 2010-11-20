@@ -18,6 +18,9 @@
 #ifndef _GAME_CHARACTER_H_
 #define _GAME_CHARACTER_H_
 
+////////////////////////////////////////////////////////////
+// Headers
+////////////////////////////////////////////////////////////
 #include <string>
 
 ////////////////////////////////////////////////////////////
@@ -25,53 +28,139 @@
 ////////////////////////////////////////////////////////////
 class Game_Character {
 public:
+	////////////////////////////////////////////////////////
+	/// Constructor.
+	////////////////////////////////////////////////////////
 	Game_Character();
-	virtual ~Game_Character();
 
-	virtual bool IsMoving();
-	virtual bool IsPassable(int x, int y, int d);
+	////////////////////////////////////////////////////////
+	/// Destructor.
+	////////////////////////////////////////////////////////
+	virtual ~Game_Character() {}
 
+	////////////////////////////////////////////////////////
+	/// Get if character is moving.
+	/// @return whether the character is moving
+	////////////////////////////////////////////////////////
+	virtual bool IsMoving() const;
+
+	////////////////////////////////////////////////////////
+	/// Get if character the character can walk in a tile
+	/// with a specific direction.
+	/// @param x : tile x
+	/// @param y : tile y
+	/// @param d : character direction
+	/// @return whether the character can walk through
+	////////////////////////////////////////////////////////
+	virtual bool IsPassable(int x, int y, int d) const;
+
+	////////////////////////////////////////////////////////
+	/// Moves the character to a new tile.
+	/// @param x : tile x
+	/// @param y : tile y
+	////////////////////////////////////////////////////////
 	virtual void MoveTo(int x, int y);
 
-	virtual int GetScreenX();
-	virtual int GetScreenY();
-	virtual int GetScreenZ();
-	virtual int GetScreenZ(int height);
-
+	////////////////////////////////////////////////////////
+	/// Updates character state and actions.
+	////////////////////////////////////////////////////////
 	virtual void Update();
-	virtual void UpdateMove();
 
+	////////////////////////////////////////////////////////
+	/// Move the character down.
+	////////////////////////////////////////////////////////
 	void MoveDown();
+
+	////////////////////////////////////////////////////////
+	/// Move the character left.
+	////////////////////////////////////////////////////////
 	void MoveLeft();
+
+	////////////////////////////////////////////////////////
+	/// Move the character right.
+	////////////////////////////////////////////////////////
 	void MoveRight();
+
+	////////////////////////////////////////////////////////
+	/// Move the character up.
+	////////////////////////////////////////////////////////
 	void MoveUp();
 
+	////////////////////////////////////////////////////////
+	/// Locks character direction.
+	////////////////////////////////////////////////////////
 	void Lock();
 
-	std::string character_name;
-	int character_hue;
+	/// @return screen x coordinate in pixels
+	virtual int GetScreenX() const;
 
-	int id;
+	/// @return screen y coordinate in pixels
+	virtual int GetScreenY() const;
+
+	/// @return screen z coordinate in pixels
+	virtual int GetScreenZ() const;
+
+	/// @param height : character height
+	/// @return screen z coordinate in pixels
+	virtual int GetScreenZ(int height) const;
+
+	/// @return x position
+	int GetX() const;
+
+	/// @return y position
+	int GetY() const;
+
+	/// @return tile graphic id
+	int GetTileId() const;
+
+	/// @return character graphic filename
+	std::string GetCharacterName() const;
+
+	/// @return character graphic index
+	int GetCharacterIndex() const;
+
+	/// @return real x
+	int GetRealX() const;
+
+	/// @return real y
+	int GetRealY() const;
+
+	/// @return facing direction
+	int GetDirection() const;
+
+	/// @return pattern
+	int GetPattern() const;
+
+	/// @return move route forcing flag
+	bool GetMoveRouteForcing() const;
+
+	/// @return through flag
+	bool GetThrough() const;
+
+	/// @return animation id
+	int GetAnimationId() const;
+
+	/// @param animation_id : new animation id
+	void SetAnimationId(int animation_id);
+
+protected:
+	virtual void UpdateMove();
+
 	int x;
 	int y;
+	int tile_id;
+	std::string character_name;
+	int character_index;
 	int real_x;
 	int real_y;
-	int move_speed;
-
-	//////////////
-	//looking to:
-	//	left -> 4
-	//	up   -> 8
-	//	down -> 2
-	//	right-> 6
 	int direction;
-
-	int opacity;
-	int blend_type;
-
+	int pattern;
 	bool move_route_forcing;
-
-private:
+	bool through;
+	int animation_id;
+	
+	int move_speed;
+	int move_frequency;
 	int prelock_direction;
 	bool locked;
 };

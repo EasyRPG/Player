@@ -57,13 +57,22 @@ void Window_Base::Update() {
 /// Draw helpers
 ////////////////////////////////////////////////////////////
 void Window_Base::DrawActorGraphic(Game_Actor* actor, int cx, int cy) {
-	Bitmap* face = actor->face;
-	contents->Blit(cx, cy, face, Rect(0, 0, 48, 48), 255);
+	Bitmap* faceset = Cache::Faceset(actor->GetFaceName());
+	int face_index = actor->GetFaceIndex();
+
+	Rect dst_rect(
+		(face_index % 4) * 48,
+		face_index / 4 * 48,
+		48,
+		48
+	);
+
+	contents->Blit(cx, cy, faceset, dst_rect, 255);
 }
 
 void Window_Base::DrawActorName(Game_Actor* actor, int cx, int cy) {
 	Rect rect(cx, cy, 32, 16);
-	contents->TextDraw(rect, actor->name, 0);
+	contents->TextDraw(rect, actor->GetName(), 0);
 }
 void Window_Base::DrawActorTitle(Game_Actor* actor, int cx, int cy) {
 	

@@ -93,9 +93,6 @@
     <ClCompile Include="..\..\src\game_screen.cpp">
       <Filter>Source Files\Engine\Game</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\game_switches.cpp">
-      <Filter>Source Files\Engine\Game</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\game_system.cpp">
       <Filter>Source Files\Engine\Game</Filter>
     </ClCompile>
@@ -103,9 +100,6 @@
       <Filter>Source Files\Engine\Game</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\game_troop.cpp">
-      <Filter>Source Files\Engine\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game_variables.cpp">
       <Filter>Source Files\Engine\Game</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\scene_title.cpp">
@@ -465,6 +459,9 @@
     <ClCompile Include="..\..\src\game_interpreter.cpp">
       <Filter>Source Files\Engine\Game</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\game_event.cpp">
+      <Filter>Source Files\Engine\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cache.h">
@@ -758,9 +755,6 @@
     <ClInclude Include="..\..\src\game_commonevent.h">
       <Filter>Source Files\Engine\Game</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\game_event.h">
-      <Filter>Source Files\Engine\Game</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\scene_menu.h">
       <Filter>Source Files\Engine\Scene</Filter>
     </ClInclude>
@@ -776,11 +770,11 @@
     <ClInclude Include="..\..\src\game_interpreter.h">
       <Filter>Source Files\Engine\Game</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\game_event.cpp">
-      <Filter>Source Files\Engine\Game</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\system.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game_event.h">
+      <Filter>Source Files\Engine\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

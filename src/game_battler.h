@@ -27,17 +27,33 @@
 /// Game_Battler class
 ////////////////////////////////////////////////////////////
 class Game_Battler {
-
 public:
+	////////////////////////////////////////////////////////
+	/// Constructor.
+	////////////////////////////////////////////////////////
 	Game_Battler();
-	~Game_Battler();
 
-	bool State(int state_id);
+	////////////////////////////////////////////////////////
+	/// Get if battler has a state.
+	/// @param state_id : database state id
+	/// @return whether the battler has the state
+	////////////////////////////////////////////////////////
+	bool HasState(int state_id) const;
 
+protected:
+	std::string battler_name;
 	int hp;
-	int mp;
-
+	int sp;
 	std::vector<int> states;
-
+	bool hidden;
+	bool immortal;
+	bool damage_pop;
+	int damage;
+	bool critical;
+	int animation_id;
+	bool animation_hit;
+	bool white_flash;
+	bool blink;
 };
-#endif // _GAME_BATTLER_H_
+
+#endif

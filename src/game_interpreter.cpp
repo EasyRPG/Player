@@ -68,8 +68,6 @@ enum CharsID {
 ////////////////////////////////////////////////////////////
 /// Forward declarations
 ///////////////////////////////////////////////////////////
-class Game_Event;
-
 Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag)
 {
 	depth = _depth;
@@ -114,7 +112,7 @@ void Game_Interpreter::Setup(std::vector<RPG::EventCommand> _list, int _event_id
 
 	Clear();
 
-	map_id = Main_Data::game_map->GetMapId();
+	map_id = Game_Map::GetMapId();
 	event_id = _event_id;
 	list = _list;
 	index = 0;
@@ -139,7 +137,7 @@ void Game_Interpreter::Update() {
 
 		/* If map is different than event startup time
 		set event_id to 0 */
-		if (Main_Data::game_map->GetMapId() != map_id) {
+		if (Game_Map::GetMapId() != map_id) {
 			event_id = 0;
 		}
 		
@@ -165,16 +163,15 @@ void Game_Interpreter::Update() {
 
 		// If waiting for a move to end
 		if (move_route_waiting) {
-			if (Main_Data::game_player->move_route_forcing) {
+			if (Main_Data::game_player->GetMoveRouteForcing()) {
 				return;
 			}
 				
-			unsigned int i;
 			Game_Event* g_event;
-			for (i = 0; i < Main_Data::game_map->events.size(); i++) {
-				g_event = Main_Data::game_map->events[i];
+			for (size_t i = 0; i < Game_Map::GetEvents().size(); i++) {
+				g_event = Game_Map::GetEvents()[i];
 
-				if (g_event->move_route_forcing) {
+				if (g_event->GetMoveRouteForcing()) {
 					return;
 				}
 			}
@@ -228,8 +225,8 @@ void Game_Interpreter::Update() {
 ////////////////////////////////////////////////////////////
 void Game_Interpreter::SetupStartingEvent() {
 
-	if (Main_Data::game_map->need_refresh) {
-		Main_Data::game_map->Refresh();
+	if (Game_Map::GetNeedRefresh()) {
+		Game_Map::Refresh();
 	}
 
 	if (Game_Temp::common_event_id > 0) {
@@ -238,28 +235,27 @@ void Game_Interpreter::SetupStartingEvent() {
 		return;
 	}
 	
-	unsigned int i;
-	Game_Event* g_event;
-	for (i = 0; i < Main_Data::game_map->events.size(); i++) {
-		g_event = Main_Data::game_map->events[i];
+	Game_Event* _event;
+	for (size_t i = 0; i < Game_Map::GetEvents().size(); i++) {
+		_event = Game_Map::GetEvents()[i];
 		
-		if (g_event->starting) {
-			if (g_event->trigger < 3) {
-				g_event->ClearStarting();
-				g_event->Lock();
+		if (_event->GetStarting()) {
+			if (_event->GetTrigger() < 3) {
+				_event->ClearStarting();
+				_event->Lock();
 			}
-			Setup(g_event->list, g_event->id);
+			Setup(_event->GetList(), _event->GetId());
 			return;
 		}
 	}
 
 	RPG::CommonEvent* common_event;
-	for (i = 0; i < Main_Data::data_commonevents.size(); i++) {
+	for (size_t i = 0; i < Main_Data::data_commonevents.size(); i++) {
 		common_event = &Main_Data::data_commonevents[i];
 
 		// If trigger is auto run, and condition switch is ON
 		if ( (common_event->trigger == 1) &&
-			(*Main_Data::game_switches)[common_event->switch_id]) {
+			Game_Switches[common_event->switch_id]) {
 			Setup(common_event->event_commands, 0);
 			return;
 		}
@@ -324,8 +320,8 @@ void Game_Interpreter::InputButton() {
 	// If a button was pressed
 	if (n != Input::NOBUTTON) {
 		// Set variable
-		(*Main_Data::game_variables)[button_input_variable_id] = n;
-		Main_Data::game_map->need_refresh = true;
+		Game_Variables[button_input_variable_id] = n;
+		Game_Map::SetNeedRefresh(true);
 		button_input_variable_id = 0;
 	}
 }
@@ -458,18 +454,18 @@ bool Game_Interpreter::CommandControlSwitches() { // Code CONTROL_SWITCHES
 			// Single and switch range
 			for (i = list[index].parameters[1]; i <= list[index].parameters[2]; i++) {
 				if (list[index].parameters[3] != 2) {
-					Main_Data::game_switches->SetAt(i, list[index].parameters[3] == 0);
+					Game_Switches[i] = list[index].parameters[3] == 0;
 				} else {
-					Main_Data::game_switches->ToggleAt(i);
+					Game_Switches[i] = !Game_Switches[i];
 				}
 			}
 			break;
 		case 2:
 			// Switch from variable
 			if (list[index].parameters[3] != 2) {
-				Main_Data::game_switches->SetAt(list[index].parameters[2], list[index].parameters[3] == 0);
+				Game_Switches[list[index].parameters[2]] = list[index].parameters[3] == 0;
 			} else {
-				Main_Data::game_switches->ToggleAt(list[index].parameters[2]);
+				Game_Switches[list[index].parameters[2]] = !Game_Switches[list[index].parameters[2]];
 			}
 			break;
 		default:
@@ -493,11 +489,11 @@ bool Game_Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 			break;
 		case 1:
 			// Var A ops B
-			value = (*Main_Data::game_variables)[list[index].parameters[5]];
+			value = Game_Variables[list[index].parameters[5]];
 			break;
 		case 2:
 			// Number of var A ops B
-			value = (*Main_Data::game_variables)[(*Main_Data::game_variables)[list[index].parameters[5]]];
+			value = Game_Variables[Game_Variables[list[index].parameters[5]]];
 			break;
 		case 3:
 			// Random between range
@@ -517,11 +513,11 @@ bool Game_Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 					// Number of heroes that have the item equipped
 					std::vector<Game_Actor*>::iterator j;
 					for (j = Main_Data::game_party->actors.begin(); j != Main_Data::game_party->actors.end(); j++) {
-						if ( ((*j)->weapon_id == list[index].parameters[6]) ||
-							((*j)->armor1_id == list[index].parameters[6]) ||
-							((*j)->armor2_id == list[index].parameters[6]) ||
-							((*j)->armor3_id == list[index].parameters[6]) ||
-							((*j)->armor4_id == list[index].parameters[6]) ) {
+						if ( ((*j)->GetWeaponId() == list[index].parameters[6]) ||
+							((*j)->GetShieldId() == list[index].parameters[6]) ||
+							((*j)->GetArmorId() == list[index].parameters[6]) ||
+							((*j)->GetHelmetId() == list[index].parameters[6]) ||
+							((*j)->GetAccessoryId() == list[index].parameters[6]) ) {
 								value++;
 						}
 					}
@@ -530,68 +526,68 @@ bool Game_Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 			break;
 		case 5:
 			// Hero
-			actor = Main_Data::game_actors->GetActor(list[index].parameters[6]);
+			actor = Game_Actors::GetActor(list[index].parameters[6]);
 			if (actor != NULL) {
 				switch (list[index].parameters[7]) {
 					case 0:
 						// Level
-						value = actor->level;
+						value = actor->GetLevel();
 						break;
 					case 1:
 						// Experience
-						value = actor->exp;
+						value = actor->GetExp();
 						break;
 					case 2:
 						// Current HP
-						value = actor->hp;
+						//value = actor->hp;
 						break;
 					case 3:
 						// Current MP
-						value = actor->mp;
+						//value = actor->mp;
 						break;
 					case 4:
 						// Max HP
-						value = Main_Data::data_actors[list[index].parameters[6]].parameter_maxhp[actor->level-1];
+						value = Main_Data::data_actors[list[index].parameters[6]].parameter_maxhp[actor->GetLevel() - 1];
 						break;
 					case 5:
 						// Max MP
-						value = Main_Data::data_actors[list[index].parameters[6]].parameter_maxsp[actor->level-1];
+						value = Main_Data::data_actors[list[index].parameters[6]].parameter_maxsp[actor->GetLevel() - 1];
 						break;
 					case 6:
 						// Attack
-						value = Main_Data::data_actors[list[index].parameters[6]].parameter_attack[actor->level-1];
+						value = Main_Data::data_actors[list[index].parameters[6]].parameter_attack[actor->GetLevel() - 1];
 						break;
 					case 7:
 						// Defense
-						value = Main_Data::data_actors[list[index].parameters[6]].parameter_defense[actor->level-1];
+						value = Main_Data::data_actors[list[index].parameters[6]].parameter_defense[actor->GetLevel() - 1];
 						break;
 					case 8:
 						// Intelligence
-						value = Main_Data::data_actors[list[index].parameters[6]].parameter_spirit[actor->level-1];
+						value = Main_Data::data_actors[list[index].parameters[6]].parameter_spirit[actor->GetLevel() - 1];
 						break;
 					case 9:
 						// Agility
-						value = Main_Data::data_actors[list[index].parameters[6]].parameter_agility[actor->level-1];
+						value = Main_Data::data_actors[list[index].parameters[6]].parameter_agility[actor->GetLevel() - 1];
 						break;
 					case 10:
 						// Weapon ID
-						value = actor->weapon_id;
+						value = actor->GetWeaponId();
 						break;
 					case 11:
 						// Shield ID
-						value = actor->armor1_id;
+						value = actor->GetShieldId();
 						break;
 					case 12:
 						// Armor ID
-						value = actor->armor2_id;
+						value = actor->GetArmorId();
 						break;
 					case 13:
 						// Helmet ID
-						value = actor->armor3_id;
+						value = actor->GetHelmetId();
 						break;
 					case 14:
 						// Accesory ID
-						value = actor->armor4_id;
+						value = actor->GetAccessoryId();
 						break;
 				}
 			}
@@ -603,23 +599,23 @@ bool Game_Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 			} else {
 				// Special case for Player Map ID
 				character = NULL;
-				value = Main_Data::game_map->GetMapId();
+				value = Game_Map::GetMapId();
 			}
 			// Other cases
 			if (character != NULL) {
 				switch (list[index].parameters[7]) {
 					case 1:
 						// X Coordinate
-						value = character->x;
+						value = character->GetX();
 						break;
 					case 2:
 						// Y Coordinate
-						value = character->y;
+						value = character->GetY();
 						break;
 					case 3:
 						// TODO Orientation
 						// Needs testing
-						value = character->direction;
+						value = character->GetDirection();
 						break;
 					case 4:
 						// Screen X
@@ -685,37 +681,37 @@ bool Game_Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 				switch (list[index].parameters[3]) {
 					case 0:
 						// Assignement
-						(*Main_Data::game_variables)[i] = value;
+						Game_Variables[i] = value;
 						break;
 					case 1:
 						// Addition
-						(*Main_Data::game_variables)[i] += value;
+						Game_Variables[i] += value;
 						break;
 					case 2:
 						// Subtraction
-						(*Main_Data::game_variables)[i] -= value;
+						Game_Variables[i] -= value;
 						break;
 					case 3:
 						// Multiplication
-						(*Main_Data::game_variables)[i] *= value;
+						Game_Variables[i] *= value;
 						break;
 					case 4:
 						// Division
 						if (value != 0) {
-							(*Main_Data::game_variables)[i] /= value;
+							Game_Variables[i] /= value;
 						}
 						break;
 					case 5:
 						// Module
 						if (value != 0) {
-							(*Main_Data::game_variables)[i] %= value;
+							Game_Variables[i] %= value;
 						}
 				}
-				if ((*Main_Data::game_variables)[i] > MAXSIZE) {
-					(*Main_Data::game_variables)[i] = MAXSIZE;
+				if (Game_Variables[i] > MAXSIZE) {
+					Game_Variables[i] = MAXSIZE;
 				}
-				if ((*Main_Data::game_variables)[i] < MINSIZE) {
-					(*Main_Data::game_variables)[i] = MINSIZE;
+				if (Game_Variables[i] < MINSIZE) {
+					Game_Variables[i] = MINSIZE;
 				}
 			}
 			break;
@@ -724,40 +720,40 @@ bool Game_Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 			switch (list[index].parameters[3]) {
 				case 0:
 					// Assignement
-					(*Main_Data::game_variables)[list[index].parameters[1]] = value;
+					Game_Variables[list[index].parameters[1]] = value;
 					break;
 				case 1:
 					// Addition
-					(*Main_Data::game_variables)[list[index].parameters[1]] += value;
+					Game_Variables[list[index].parameters[1]] += value;
 					break;
 				case 2:
 					// Subtraction
-					(*Main_Data::game_variables)[list[index].parameters[1]] -= value;
+					Game_Variables[list[index].parameters[1]] -= value;
 					break;
 				case 3:
 					// Multiplication
-					(*Main_Data::game_variables)[list[index].parameters[1]] *= value;
+					Game_Variables[list[index].parameters[1]] *= value;
 					break;
 				case 4:
 					// Division
 					if (value != 0) {
-						(*Main_Data::game_variables)[list[index].parameters[1]] /= value;
+						Game_Variables[list[index].parameters[1]] /= value;
 					}
 					break;
 				case 5:
 					// Module
 					if (value != 0) {
-						(*Main_Data::game_variables)[list[index].parameters[1]] %= value;
+						Game_Variables[list[index].parameters[1]] %= value;
 					}
 			}
-			if ((*Main_Data::game_variables)[list[index].parameters[1]] > MAXSIZE) {
-				(*Main_Data::game_variables)[list[index].parameters[1]] = MAXSIZE;
+			if (Game_Variables[list[index].parameters[1]] > MAXSIZE) {
+				Game_Variables[list[index].parameters[1]] = MAXSIZE;
 			}
-			if ((*Main_Data::game_variables)[list[index].parameters[1]] < MINSIZE) {
-				(*Main_Data::game_variables)[list[index].parameters[1]] = MINSIZE;
+			if (Game_Variables[list[index].parameters[1]] < MINSIZE) {
+				Game_Variables[list[index].parameters[1]] = MINSIZE;
 			}
 	}
-	Main_Data::game_map->need_refresh = true;
+	Game_Map::SetNeedRefresh(true);
 	return true;
 }
 
@@ -773,7 +769,7 @@ int Game_Interpreter::OperateValue(int operation, int operand_type, int operand)
 	if (operand_type == 0) {
 		value = operand;
 	} else {
-		value = (*Main_Data::game_variables)[operand];
+		value = Game_Variables[operand];
 	}
 
 	// Reverse sign of value if operation is substract
@@ -804,11 +800,11 @@ Game_Character* Game_Interpreter::GetCharacter(int character_id) {
 			break;
 		case THIS_EVENT:
 			// This event
-			return (Main_Data::game_map->events.empty()) ? NULL : Main_Data::game_map->events[event_id];
+			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents()[event_id];
 			break;
 		default:
 			// Other events
-			return (Main_Data::game_map->events.empty()) ? NULL : Main_Data::game_map->events[character_id];
+			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents()[character_id];
 			break;
 	}
 	return NULL;
@@ -848,7 +844,7 @@ bool Game_Interpreter::CommandChangeItems() { // Code 10320
 	} else {
 		// Item by variable
 		Main_Data::game_party->GainItem(
-			(*Main_Data::game_variables)[list[index].parameters[2]],
+			Game_Variables[list[index].parameters[2]],
 			value
 		);
 	}
@@ -896,10 +892,10 @@ bool Game_Interpreter::CommandChangePartyMember() { // Code 10330
 	if (list[index].parameters[2] == 0) {
 		id = list[index].parameters[2];
 	} else {
-		id = (*Main_Data::game_variables)[list[index].parameters[2]];
+		id = Game_Variables[list[index].parameters[2]];
 	}
 
-	actor = Main_Data::game_actors->GetActor(id);
+	actor = Game_Actors::GetActor(id);
 
 	if (actor != NULL) {
 
@@ -928,15 +924,15 @@ bool Game_Interpreter::CommandConditionalBranch() { // Code 12010
 	switch (list[index].parameters[0]) {
 		case 0:
 			// Switch
-			result = ( (*Main_Data::game_switches)[list[index].parameters[1]] == (list[index].parameters[2] == 0) );
+			result = Game_Switches[list[index].parameters[1]] == (list[index].parameters[2] == 0);
 			break;
 		case 1:
 			// Variable
-			value1 = (*Main_Data::game_variables)[list[index].parameters[1]];
+			value1 = Game_Variables[list[index].parameters[1]];
 			if (list[index].parameters[2] == 0) {
 				value2 = list[index].parameters[3];
 			} else {
-				value2 = (*Main_Data::game_variables)[list[index].parameters[3]];
+				value2 = Game_Variables[list[index].parameters[3]];
 			}
 			switch (list[index].parameters[4]) {
 				case 0:
@@ -984,7 +980,7 @@ bool Game_Interpreter::CommandConditionalBranch() { // Code 12010
 			break;
 		case 5:
 			// Hero
-			actor = Main_Data::game_actors->GetActor(list[index].parameters[1]);
+			actor = Game_Actors::GetActor(list[index].parameters[1]);
 			switch (list[index].parameters[2]) {
 				case 0:
 					// Is actor in party
@@ -992,33 +988,33 @@ bool Game_Interpreter::CommandConditionalBranch() { // Code 12010
 					break;
 				case 1:
 					// Name
-					result = (actor->name ==  list[index].string);
+					result = (actor->GetName() ==  list[index].string);
 					break;
 				case 2:
 					// Higher or equal level
-					result = (actor->level >= list[index].parameters[3]);
+					result = (actor->GetLevel() >= list[index].parameters[3]);
 					break;
 				case 3:
 					// Higher or equal HP
-					result = (actor->hp >= list[index].parameters[3]);
+					//result = (actor->hp >= list[index].parameters[3]);
 					break;
 				case 4:
 					// Can learn skill
-					result = (actor->SkillLearn(list[index].parameters[3]));
+					result = (actor->HasSkill(list[index].parameters[3]));
 					break;
 				case 5:
 					// Equipped object
 					result = ( 
-						(actor->armor1_id == list[index].parameters[3]) ||
-						(actor->armor2_id == list[index].parameters[3]) ||
-						(actor->armor3_id == list[index].parameters[3]) ||
-						(actor->armor4_id == list[index].parameters[3]) ||
-						(actor->weapon_id == list[index].parameters[3])
+						(actor->GetShieldId() == list[index].parameters[3]) ||
+						(actor->GetArmorId() == list[index].parameters[3]) ||
+						(actor->GetHelmetId() == list[index].parameters[3]) ||
+						(actor->GetAccessoryId() == list[index].parameters[3]) ||
+						(actor->GetWeaponId() == list[index].parameters[3])
 					);
 					break;
 				case 6:
 					// Has state
-					result = (actor->State(list[index].parameters[3]));
+					result = (actor->HasState(list[index].parameters[3]));
 					break;
 				default:
 					;
@@ -1031,19 +1027,19 @@ bool Game_Interpreter::CommandConditionalBranch() { // Code 12010
 				switch (list[index].parameters[2]) {
 					case 0:
 						// Up 8
-						result = (character->direction == 8);
+						result = (character->GetDirection() == 8);
 						break;
 					case 1:
 						// Right 6
-						result = (character->direction == 6);
+						result = (character->GetDirection() == 6);
 						break;
 					case 2:
 						// Down 2
-						result = (character->direction == 2);
+						result = (character->GetDirection() == 2);
 						break;
 					case 3:
 						// Left 4
-						result = (character->direction == 4);
+						result = (character->GetDirection() == 4);
 						break;
 				}
 			}

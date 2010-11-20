@@ -18,44 +18,92 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <algorithm>
 #include "game_actor.h"
 #include "main_data.h"
-#include "cache.h"
-#include <algorithm>
 
 ////////////////////////////////////////////////////////////
-/// Constructor
-////////////////////////////////////////////////////////////
-Game_Actor::Game_Actor(int actorId)
-{
-	Setup(actorId);
+Game_Actor::Game_Actor(int actor_id) {
+	Setup(actor_id);
 }
 
 ////////////////////////////////////////////////////////////
-/// Destructor
-////////////////////////////////////////////////////////////
-Game_Actor::~Game_Actor()
-{
-	delete face;
+void Game_Actor::Setup(int actor_id) {
+	name = Main_Data::data_actors[actor_id - 1].name;
+	character_name = Main_Data::data_actors[actor_id - 1].character_name;
+	character_index = Main_Data::data_actors[actor_id - 1].character_index;
+	face_name = Main_Data::data_actors[actor_id - 1].face_name;
+	face_index = Main_Data::data_actors[actor_id - 1].face_index;
+	weapon_id = Main_Data::data_actors[actor_id - 1].weapon_id;
+	shield_id = Main_Data::data_actors[actor_id - 1].shield_id;
+	armor_id = Main_Data::data_actors[actor_id - 1].armor_id;
+	helmet_id = Main_Data::data_actors[actor_id - 1].helmet_id;
+	accessory_id = Main_Data::data_actors[actor_id - 1].accessory_id;
+	level = Main_Data::data_actors[actor_id - 1].initial_level;
 }
 
 ////////////////////////////////////////////////////////////
-/// Setup
-////////////////////////////////////////////////////////////
-void Game_Actor::Setup(int actorId)
-{
-	// Stub
-
-	// ActorId starts with 1 but arrayindex with 0
-	name = Main_Data::data_actors[actorId-1].name;
-
-	// Get the Faceset Graphic
-	Bitmap* faceset = Cache::Faceset(Main_Data::data_actors[actorId-1].face_name);
-	int face_index = Main_Data::data_actors[actorId-1].face_index;
-	face = new Bitmap(48, 48);
-	face->Blit(0, 0, faceset, Rect((face_index % 4) * 48, face_index/4 * 48, 48, 48), 255);
+bool Game_Actor::HasSkill(int skill_id) const {
+	return std::find(skills.begin(), skills.end(), skill_id) != skills.end();
 }
 
-bool Game_Actor::SkillLearn(int skill_id) {
-	return (std::find(skills.begin(), skills.end(), skill_id) != skills.end());
+////////////////////////////////////////////////////////////
+void Game_Actor::LearnSkill(int skill_id) {
+	if (skill_id > 0 && !HasSkill(skill_id)) {
+		skills.push_back(skill_id);
+		std::sort(skills.begin(), skills.end());
+	}
+}
+
+////////////////////////////////////////////////////////////
+std::string Game_Actor::GetName() const {
+	return name;
+}
+
+std::string Game_Actor::GetCharacterName() const {
+	return character_name;
+}
+
+int Game_Actor::GetCharacterIndex() const {
+	return character_index;
+}
+
+std::string Game_Actor::GetFaceName() const {
+	return face_name;
+}
+
+int Game_Actor::GetFaceIndex() const {
+	return face_index;
+}
+
+int Game_Actor::GetWeaponId() const {
+	return weapon_id;
+}
+
+int Game_Actor::GetShieldId() const {
+	return shield_id;
+}
+
+int Game_Actor::GetArmorId() const {
+	return armor_id;
+}
+
+int Game_Actor::GetHelmetId() const {
+	return helmet_id;
+}
+
+int Game_Actor::GetAccessoryId() const {
+	return accessory_id;
+}
+
+int Game_Actor::GetLevel() const {
+	return level;
+}
+
+int Game_Actor::GetExp() const {
+	return exp;
+}
+
+std::vector<int> Game_Actor::GetSkills() const {
+	return skills;
 }

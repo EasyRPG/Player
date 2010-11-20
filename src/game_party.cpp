@@ -45,9 +45,9 @@ Game_Party::~Game_Party() {
 ////////////////////////////////////////////////////////////
 void Game_Party::SetupStartingMembers() {
 	actors.clear();
-	for (unsigned i = 0; i < Main_Data::data_system.party.size(); ++i) {
+	for (size_t i = 0; i < Main_Data::data_system.party.size(); ++i) {
 		Game_Actor* actor;
-		actor = Main_Data::game_actors->GetActor(Main_Data::data_system.party[i]);
+		actor = Game_Actors::GetActor(Main_Data::data_system.party[i]);
 
 		if (actor == NULL) {
 			Output::Warning(
@@ -93,7 +93,7 @@ void Game_Party::GainItem(int item_id, int n) {
 void Game_Party::AddActor(int actor_id) {
 	Game_Actor* actor;
 
-	actor = Main_Data::game_actors->GetActor(actor_id);
+	actor = Game_Actors::GetActor(actor_id);
 
 	// If the party has less than 4 members and this actor is not in the party
 	if ( (actors.size() < 4) && (!IsActorInParty(actor)) ) {
@@ -103,7 +103,7 @@ void Game_Party::AddActor(int actor_id) {
 }
 
 void Game_Party::RemoveActor(int actor_id) {
-	actors.erase(std::find(actors.begin(), actors.end(), Main_Data::game_actors->GetActor(actor_id)));
+	actors.erase(std::find(actors.begin(), actors.end(), Game_Actors::GetActor(actor_id)));
 	Main_Data::game_player->Refresh();
 }
 

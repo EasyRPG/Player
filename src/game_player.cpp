@@ -65,7 +65,7 @@ bool Game_Player::IsPassable(int x, int y, int d) {
 	}
 #endif
 
-	return Main_Data::game_map->IsValid(new_x, new_y);
+	return Game_Map::IsValid(new_x, new_y);
 }
 
 ////////////////////////////////////////////////////////////
@@ -75,10 +75,10 @@ void Game_Player::Center(int x, int y) {
 	int center_x = (Player::GetWidth() / 2 - 16) * 8;
 	int center_y = (Player::GetHeight() / 2 - 8) * 8;
 
-	int max_x = (Main_Data::game_map->GetWidth() - Player::GetWidth() / 16) * 128;
-	int max_y = (Main_Data::game_map->GetHeight() - Player::GetHeight() / 16) * 128;
-	Main_Data::game_map->display_x = max(0, min((x * 128 - center_x), max_x));
-	Main_Data::game_map->display_y = max(0, min((y * 128 - center_y), max_y));
+	int max_x = (Game_Map::GetWidth() - Player::GetWidth() / 16) * 128;
+	int max_y = (Game_Map::GetHeight() - Player::GetHeight() / 16) * 128;
+	Game_Map::SetDisplayX(max(0, min((x * 128 - center_x), max_x)));
+	Game_Map::SetDisplayY(max(0, min((y * 128 - center_y), max_y)));
 }
 
 ////////////////////////////////////////////////////////////
@@ -121,17 +121,17 @@ void Game_Player::Update() {
 	int center_x = (Player::GetWidth() / 2 - 16) * 8;
 	int center_y = (Player::GetHeight() / 2 - 8) * 8;
 
-	if (real_y > last_real_y && real_y - Main_Data::game_map->display_y > center_y)
-		Main_Data::game_map->ScrollDown(real_y - last_real_y);
+	if (real_y > last_real_y && real_y - Game_Map::GetDisplayY() > center_y)
+		Game_Map::ScrollDown(real_y - last_real_y);
 
-	if (real_x < last_real_x && real_x - Main_Data::game_map->display_x < center_x)
-		Main_Data::game_map->ScrollLeft(last_real_x - real_x);
+	if (real_x < last_real_x && real_x - Game_Map::GetDisplayX() < center_x)
+		Game_Map::ScrollLeft(last_real_x - real_x);
 
-	if (real_x > last_real_x && real_x - Main_Data::game_map->display_x > center_x)
-		Main_Data::game_map->ScrollRight(real_x - last_real_x);
+	if (real_x > last_real_x && real_x - Game_Map::GetDisplayX() > center_x)
+		Game_Map::ScrollRight(real_x - last_real_x);
 
-	if (real_y < last_real_y && real_y - Main_Data::game_map->display_y < center_y)
-		Main_Data::game_map->ScrollUp(last_real_y - real_y);
+	if (real_y < last_real_y && real_y - Game_Map::GetDisplayY() < center_y)
+		Game_Map::ScrollUp(last_real_y - real_y);
 
 	/*if (!IsMoving()) {
 		if (last_moving) {
@@ -154,15 +154,10 @@ void Game_Player::Refresh() {
 
 	if (Main_Data::game_party->actors.empty()) {
 		character_name.clear();
-		character_hue = 0;
 		return;
 	}
 
 	actor = Main_Data::game_party->actors[0];
 
-	character_name = actor->character_name;
-	character_hue = actor->character_hue;
-
-	opacity = 255;
-	blend_type = 0;
+	character_name = actor->GetName();
 }

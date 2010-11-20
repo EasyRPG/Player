@@ -48,9 +48,6 @@ namespace Cache {
 	Bitmap* System2(std::string filename);
 	Bitmap* Tile(std::string filename, int tile_id);
 	void Clear();
-
-	extern std::map<std::string, Bitmap*> cache;
-	extern std::map<std::string, std::map<int, Bitmap*> > cache_tiles;
 }
 
 #endif

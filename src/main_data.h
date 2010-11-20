@@ -53,15 +53,10 @@
 ////////////////////////////////////////////////////////////
 /// Main Data namespace
 ////////////////////////////////////////////////////////////
-class Game_Actors;
-class Game_Battler;
-class Game_Map;
 class Game_Party;
 class Game_Player;
 class Game_Screen;
-class Game_Switches;
 class Game_Troop;
-class Game_Variables;
 class Game_Message;
 
 namespace Main_Data {
@@ -71,13 +66,10 @@ namespace Main_Data {
 	extern unsigned char scene_type;
 	
 	// Dynamic Game Data
-	extern Game_Switches* game_switches;
-	extern Game_Variables* game_variables;
 	extern Game_Screen* game_screen;
-	extern Game_Actors* game_actors;
 	extern Game_Party* game_party;
+	extern Game_Player* game_player;
 	extern Game_Troop* game_troop;
-	extern Game_Map* game_map;
 	extern Game_Player* game_player;
 	extern Game_Message* game_message;
 	

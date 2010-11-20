@@ -168,20 +168,18 @@ void Scene_Title::CommandNewGame() {
 	Audio::BGM_Stop();
 	Graphics::framecount= 0;
 	Game_Temp::Init();
-	Main_Data::game_switches = new Game_Switches();
-	Main_Data::game_variables = new Game_Variables();
 	Main_Data::game_screen = new Game_Screen();
-	Main_Data::game_actors = new Game_Actors();
+	Game_Actors::Init();
 	Main_Data::game_party = new Game_Party();
 	Main_Data::game_troop = new Game_Troop();
-	Main_Data::game_map = new Game_Map();
+	Game_Map::Init();
 	Main_Data::game_player = new Game_Player();
 	Main_Data::game_party->SetupStartingMembers();
-	Main_Data::game_map->Setup(Main_Data::data_treemap.start_map_id);
+	Game_Map::Setup(Main_Data::data_treemap.start_map_id);
 	Main_Data::game_player->MoveTo(Main_Data::data_treemap.start_x, Main_Data::data_treemap.start_y);
 	//Main_Data::game_player->Refresh();
-	Main_Data::game_map->Autoplay();
-	Main_Data::game_map->Update();
+	Game_Map::Autoplay();
+	Game_Map::Update();
 	Main_Data::scene = new Scene_Map();
 }
 

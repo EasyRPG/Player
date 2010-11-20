@@ -21,12 +21,8 @@
 #include <map>
 #include <string>
 #include <vector>
-
-class Game_Character;
-
-namespace RPG {
-	class EventCommand;
-}
+#include "game_character.h"
+#include "rpg_eventcommand.h"
 
 ////////////////////////////////////////////////////////////
 /// Game_Interpreter class

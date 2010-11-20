@@ -21,30 +21,23 @@
 #include "cache.h"
 
 ////////////////////////////////////////////////////////////
-/// Global Variables
-////////////////////////////////////////////////////////////
-namespace Cache {
-	std::map<std::string, Bitmap*> cache;
-	std::map<std::string, std::map<int, Bitmap*> > cache_tiles;
-}
+static std::map<std::string, Bitmap*> cache;
+static std::map<std::string, std::map<int, Bitmap*> > cache_tiles;
 
-////////////////////////////////////////////////////////////
-/// Load Bitmap
 ////////////////////////////////////////////////////////////
 Bitmap* Cache::LoadBitmap(std::string folder_name, std::string filename) {
 	std::string path = folder_name + filename;
+
 	if (cache.count(path) == 0) {
-		if (filename != "") {
+		if (!filename.empty())
 			cache[path] = new Bitmap(path);
-		} else {
+		else
 			cache[path] = new Bitmap(16, 16);
-		}
 	}
+
 	return cache[path];
 }
 
-////////////////////////////////////////////////////////////
-/// Quick loads
 ////////////////////////////////////////////////////////////
 Bitmap* Cache::Backdrop(std::string filename) {
 	return LoadBitmap("Backdrop/", filename);
@@ -96,8 +89,6 @@ Bitmap* Cache::System2(std::string filename) {
 }
 
 ////////////////////////////////////////////////////////////
-/// Load tile
-////////////////////////////////////////////////////////////
 Bitmap* Cache::Tile(std::string filename, int tile_id) {
 	if (cache_tiles.count(filename) == 0 || cache_tiles[filename].count(tile_id) == 0) {
 		Bitmap* bmp = new Bitmap(16, 16);
@@ -107,8 +98,6 @@ Bitmap* Cache::Tile(std::string filename, int tile_id) {
 	return cache_tiles[filename][tile_id];
 }
 
-////////////////////////////////////////////////////////////
-/// Clear
 ////////////////////////////////////////////////////////////
 void Cache::Clear() {
 	std::map<std::string, Bitmap*>::iterator it_cache;

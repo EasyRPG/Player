@@ -15,41 +15,60 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _H_GAMECOMMONEVENT
-#define _H_GAMECOMMONEVENT
+#ifndef _GAME_COMMONEVENT_H_
+#define _GAME_COMMONEVENT_H_
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
 #include <string>
 #include <vector>
+#include "game_interpreter.h"
+#include "rpg_commonevent.h"
 
-namespace RPG {
-	class CommonEvent;
-	class EventCommand;
-}
-
-class Game_Interpreter;
-
-class Game_CommonEvent
-{
+////////////////////////////////////////////////////////////
+/// Game_CommonEvent class
+////////////////////////////////////////////////////////////
+class Game_CommonEvent {
 public:
-	Game_CommonEvent(int _common_event_id);
+	////////////////////////////////////////////////////////
+	/// Constructor.
+	/// @param common_event_id : database common event id
+	////////////////////////////////////////////////////////
+	Game_CommonEvent(int common_event_id);
+
+	////////////////////////////////////////////////////////
+	/// Destructor.
+	////////////////////////////////////////////////////////
 	~Game_CommonEvent();
 
-	std::string Name();
-	int Trigger();
-	int SwitchId();
-	std::vector<RPG::EventCommand> List();
-
+	////////////////////////////////////////////////////////
+	/// Refreshes the common event.
+	////////////////////////////////////////////////////////
 	void Refresh();
+
+	////////////////////////////////////////////////////////
+	/// Updates common event interpreter.
+	////////////////////////////////////////////////////////
 	void Update();
 
-private:
+	/// @return event name
+	std::string GetName() const;
 
+	/// @return trigger condition
+	int GetTrigger() const;
+
+	/// @return trigger switch id
+	int GetSwitchId() const;
+
+	/// @return event commands list
+	std::vector<RPG::EventCommand> GetList() const;
+
+private:
 	int common_event_id;
 
-	Game_Interpreter* interpreter; // Interpreter for parallel procceses
+	// Interpreter for parallel common events
+	Game_Interpreter* interpreter;
 };
 
 #endif

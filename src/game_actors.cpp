@@ -18,38 +18,38 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <vector>
 #include "game_actors.h"
 #include "main_data.h"
+#include "output.h"
 
 ////////////////////////////////////////////////////////////
-/// Constructor
+static std::vector<Game_Actor*> data;
+
 ////////////////////////////////////////////////////////////
-Game_Actors::Game_Actors()
-{
-	// Actors start with index 1
-	data.resize(Main_Data::data_actors.size()+1);
+void Game_Actors::Init() {
+	data.resize(Main_Data::data_actors.size() + 1);
 }
 
 ////////////////////////////////////////////////////////////
-/// Destructor
-////////////////////////////////////////////////////////////
-Game_Actors::~Game_Actors() {
-	unsigned int i;
-	for (i = 0; i < data.size(); i++) {
+void Game_Actors::Dispose() {
+	for (size_t i = 0; i < data.size(); i++) {
 		delete data[i];
 	}
+	data.clear();
 }
 
 ////////////////////////////////////////////////////////////
-/// Subscript []-operator
-////////////////////////////////////////////////////////////
-Game_Actor* Game_Actors::GetActor(int actorId) {
-	// Invalid Index (LDB has less actors)
-	if (actorId <= 0 || (unsigned)actorId >= data.size() || actorId > 5000) {
-		return NULL;
-	} else if (data[actorId] == 0) {
-		data[actorId] = new Game_Actor(actorId);
-	}
+Game_Actor* Game_Actors::GetActor(int actor_id) {
+	if (!ActorExists(actor_id))
+		Output::Error("Actor id %d is invalid.", actor_id);
+	else if (!data[actor_id])
+		data[actor_id] = new Game_Actor(actor_id);
 
-	return data[actorId];
+	return data[actor_id];
+}
+
+////////////////////////////////////////////////////////////
+bool Game_Actors::ActorExists(int actor_id) {
+	return actor_id > 0 || (size_t)actor_id < data.size();
 }

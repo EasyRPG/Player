@@ -26,49 +26,43 @@
 #include "rpg_sound.h"
 
 ////////////////////////////////////////////////////////////
-/// Game System static class
+/// Game System namespace
 ////////////////////////////////////////////////////////////
-class Game_System {
-public:
+namespace Game_System {
 	////////////////////////////////////////////////////////
 	/// Initialize Game System.
 	////////////////////////////////////////////////////////
-	static void Init();
+	void Init();
 
 	////////////////////////////////////////////////////////
 	/// Play a Music.
 	/// @param bgm : music data.
 	////////////////////////////////////////////////////////
-	static void BgmPlay(RPG::Music bmg);
+	void BgmPlay(RPG::Music bmg);
 
 	////////////////////////////////////////////////////////
 	/// Play a Sound.
 	/// @param se : sound data.
 	////////////////////////////////////////////////////////
-	static void SePlay(RPG::Sound se);
+	void SePlay(RPG::Sound se);
 
 	////////////////////////////////////////////////////////
 	/// Get system graphic name.
 	/// @return system graphic filename
 	////////////////////////////////////////////////////////
-	static std::string GetSystemName();
+	std::string GetSystemName();
 
 	////////////////////////////////////////////////////////
 	/// Set the system graphic.
 	/// @param system_name : new system name
 	////////////////////////////////////////////////////////
-	static void SetSystemName(std::string system_name);
+	void SetSystemName(std::string system_name);
 
 	/// Menu saving option disabled flag.
-	static bool save_disabled;
+	extern bool save_disabled;
 
 	/// Numbers of saves.
-	static unsigned int save_count;
-
-private:
-	Game_System();
-
-	static std::string system_name;
+	extern unsigned int save_count;
 };
 
 #endif

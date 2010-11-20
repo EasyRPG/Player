@@ -19,20 +19,20 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "main_data.h"
-#include "game_actors.h"
-#include "game_battler.h"
-#include "game_map.h"
 #include "game_party.h"
 #include "game_player.h"
 #include "game_screen.h"
-#include "game_switches.h"
 #include "game_troop.h"
-#include "game_variables.h"
 #include "game_message.h"
+#include "game_variables.h"
+#include "game_switches.h"
 
 ////////////////////////////////////////////////////////////
 /// Global Variables
 ////////////////////////////////////////////////////////////
+Game_Variables_Class Game_Variables;
+Game_Switches_Class Game_Switches;
+
 namespace Main_Data {
 	// Scene Data
 	Scene* scene = NULL;
@@ -40,14 +40,10 @@ namespace Main_Data {
 	unsigned char scene_type;
 	
 	// Dynamic Game Data
-	Game_Switches* game_switches = NULL;
-	Game_Variables* game_variables = NULL;
 	Game_Screen* game_screen = NULL;
-	Game_Actors* game_actors = NULL;
+	Game_Player* game_player = NULL;
 	Game_Party* game_party = NULL;
 	Game_Troop* game_troop = NULL;
-	Game_Map* game_map = NULL;
-	Game_Player* game_player = NULL;
 	Game_Message* game_message = NULL;
 	
 	// Database Data (ldb)
@@ -80,21 +76,13 @@ namespace Main_Data {
 
 void Main_Data::Cleanup() {
 	delete scene;
-	delete game_switches;
-	delete game_variables;
 	delete game_screen;
-	delete game_actors;
 	delete game_party;
 	delete game_troop;
-	delete game_map;
 	delete game_player;
 	scene = NULL;
-	game_switches = NULL;
-	game_variables = NULL;
 	game_screen = NULL;
-	game_actors = NULL;
 	game_party = NULL;
 	game_troop = NULL;
-	game_map = NULL;
 	game_player = NULL;
 }

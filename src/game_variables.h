@@ -15,23 +15,36 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef __game_variables__
-#define __game_variables__
+#ifndef _GAME_VARIABLES_H_
+#define _GAME_VARIABLES_H_
 
+////////////////////////////////////////////////////////////
+// Headers
+////////////////////////////////////////////////////////////
 #include <vector>
+#include "main_data.h"
+#include "output.h"
 
-class Game_Variables {
-
+////////////////////////////////////////////////////////////
+/// Game_Variables class
+////////////////////////////////////////////////////////////
+class Game_Variables_Class {
 public:
-	Game_Variables();
-	~Game_Variables();
+	int& operator[] (int variable_id) {
+		if ((size_t)variable_id < Main_Data::data_variables.size())
+			Output::Error("Variable index %d is invalid.", variable_id);
 
-	int& operator[] (int switch_id){
-		return data[switch_id];
+		if ((size_t)variable_id > data.size())
+			data.resize(variable_id, 0);
+
+		return data[variable_id];
 	}
 
 private:
 	std::vector<int> data;
-
 };
-#endif // __game_variables__
+
+// Global variable
+extern Game_Variables_Class Game_Variables;
+
+#endif

@@ -20,50 +20,59 @@
 ////////////////////////////////////////////////////////////
 #include "game_map.h"
 #include "lmu_reader.h"
-#include "game_event.h"
+#include "main_data.h"
 #include "output.h"
 #include "util_macro.h"
 
 ////////////////////////////////////////////////////////////
-/// Constructor
+static std::string chipset_name;
+static std::string battleback_name;
+static std::string panorama_name;
+static int panorama_type;
+static int panorama_speed;
+static int display_x;
+static int display_y;
+static bool need_refresh;
+
+static std::vector<unsigned char> passages_down;
+static std::vector<unsigned char> passages_up;
+static std::vector<short> terrain_tags;
+static std::vector<Game_Event*> events;
+
+static RPG::Map* map;
+static int map_id;
+static int scroll_direction;
+static int scroll_rest;
+static int scroll_speed;
+
 ////////////////////////////////////////////////////////////
-Game_Map::Game_Map() {
-	panorama_hue = 0;
-	fog_hue = 0;
-	fog_opacity = 0;
-	fog_blend_type = 0;
-	fog_zoom = 0.0;
-	fog_sx = 0;
-	fog_sy = 0;
-	need_refresh = false;
-	fog_ox = 0;
-	fog_oy = 0;
-	map_id = 0;
+void Game_Map::Init() {
+	panorama_type = 0;
+	panorama_speed = 0;
 	display_x = 0;
 	display_y = 0;
-	fog_opacity_duration = 0;
-	fog_opacity_target = 0;
-	fog_tone_duration = 0;
-	animation_speed = 0;
-	animation_type = 0;
+	need_refresh = false;
+	
+	map = NULL;
+	map_id = 0;
 	scroll_direction = 0;
 	scroll_rest = 0;
 	scroll_speed = 0;
 }
 
 ////////////////////////////////////////////////////////////
-/// Destructor
-////////////////////////////////////////////////////////////
-Game_Map::~Game_Map() {
-	unsigned int i;
-	for (i = 0; i < events.size(); i++) {
+void Game_Map::Dispose() {
+	for (size_t i = 0; i < events.size(); i++) {
 		delete events[i];
 	}
-	delete map;
+	events.clear();
+
+	if (map) {
+		delete map;
+		map = NULL;
+	}
 }
 
-////////////////////////////////////////////////////////////
-/// Setup
 ////////////////////////////////////////////////////////////
 void Game_Map::Setup(int _id) {
 	map_id = _id;
@@ -80,8 +89,8 @@ void Game_Map::Setup(int _id) {
 	passages_down = chipset.passable_data_lower;
 	passages_up = chipset.passable_data_lower;
 	terrain_tags = chipset.terrain_data;
-	animation_speed = chipset.animation_speed;
-	animation_type = chipset.animation_type;
+	panorama_speed = chipset.animation_speed;
+	panorama_type = chipset.animation_type;
 	display_x = 0;
 	display_y = 0;
 	need_refresh = false;
@@ -93,76 +102,15 @@ void Game_Map::Setup(int _id) {
 	for i in 1...$data_common_events.size
 		@common_events[i] = Game_CommonEvent.new(i)
 	end*/
-	fog_ox = 0;
-	fog_oy = 0;
-	fog_tone = Tone(0, 0, 0, 0);
-	fog_tone_target = Tone(0, 0, 0, 0);
-	fog_tone_duration = 0;
-	fog_opacity_duration = 0;
-	fog_opacity_target = 0;
 	scroll_direction = 2;
 	scroll_rest = 0;
 	scroll_speed = 4;
 }
 
 ////////////////////////////////////////////////////////////
-/// Get Map Id
-////////////////////////////////////////////////////////////
-int Game_Map::GetMapId() const {
-	return map_id;
-}
-
-////////////////////////////////////////////////////////////
-/// Get Width
-////////////////////////////////////////////////////////////
-int Game_Map::GetWidth() const {
-	return map->width;
-}
-
-////////////////////////////////////////////////////////////
-/// Get Height
-////////////////////////////////////////////////////////////
-int Game_Map::GetHeight() const {
-	return map->height;
-}
-
-////////////////////////////////////////////////////////////
-/// Get Encounter List
-////////////////////////////////////////////////////////////
-std::vector<int> Game_Map::GetEncounterList() {
-	return std::vector<int>();
-}
-
-////////////////////////////////////////////////////////////
-/// Get Encounter Step
-////////////////////////////////////////////////////////////
-int Game_Map::GetEncounterStep() {
-	return 0;
-}
-
-////////////////////////////////////////////////////////////
-/// Get Map Data Down
-////////////////////////////////////////////////////////////
-std::vector<short> Game_Map::GetMapDataDown() {
-	return map->lower_layer;
-}
-
-////////////////////////////////////////////////////////////
-/// Get Map Data Up
-////////////////////////////////////////////////////////////
-std::vector<short> Game_Map::GetMapDataUp() {
-	return map->upper_layer;
-}
-
-////////////////////////////////////////////////////////////
-/// Autoplay
-////////////////////////////////////////////////////////////
 void Game_Map::Autoplay() {
-
 }
 
-////////////////////////////////////////////////////////////
-/// Refresh
 ////////////////////////////////////////////////////////////
 void Game_Map::Refresh() {
 	/*if (map_id > 0) {
@@ -177,70 +125,50 @@ void Game_Map::Refresh() {
 }
 
 ////////////////////////////////////////////////////////////
-/// Scroll Down
-////////////////////////////////////////////////////////////
 void Game_Map::ScrollDown(int distance) {
 	display_y = min(display_y + distance, (map->height - 15) * 128);
 }
 
-////////////////////////////////////////////////////////////
-/// Scroll Left
 ////////////////////////////////////////////////////////////
 void Game_Map::ScrollLeft(int distance) {
 	display_x = max(display_x - distance, 0);
 }
 
 ////////////////////////////////////////////////////////////
-/// Scroll Right
-////////////////////////////////////////////////////////////
 void Game_Map::ScrollRight(int distance) {
 	display_x = min(display_x + distance, (map->width - 20) * 128);
 }
 
-////////////////////////////////////////////////////////////
-/// Scroll Up
 ////////////////////////////////////////////////////////////
 void Game_Map::ScrollUp(int distance) {
 	display_y = max(display_y - distance, 0);
 }
 
 ////////////////////////////////////////////////////////////
-/// Is Valid
-////////////////////////////////////////////////////////////
 bool Game_Map::IsValid(int x, int y) {
 	return (x >= 0 && x < GetWidth() && y >= 0 && y < GetHeight());
 }
 
 ////////////////////////////////////////////////////////////
-/// Is Passable
-////////////////////////////////////////////////////////////
-/*bool Game_Map::IsPassable(int x, int y, int d, Game_Event* self_event = NULL) {
+bool Game_Map::IsPassable(int x, int y, int d, Game_Event* self_event) {
+	return true;
+}
 
-}*/
-
-////////////////////////////////////////////////////////////
-/// Is Bush
 ////////////////////////////////////////////////////////////
 bool Game_Map::IsBush(int x, int y) {
 	return false;
 }
 
 ////////////////////////////////////////////////////////////
-/// Is Counter
-////////////////////////////////////////////////////////////
 bool Game_Map::IsCounter(int x, int y) {
 	return false;
 }
 
 ////////////////////////////////////////////////////////////
-/// Get Terrain Tag
-////////////////////////////////////////////////////////////
 int Game_Map::GetTerrainTag(int x, int y) {
 	return 0;
 }
 
-////////////////////////////////////////////////////////////
-/// Check Event
 ////////////////////////////////////////////////////////////
 int Game_Map::CheckEvent(int x, int y) {
 	/*for (int i = 0; i < events.size(); i++) {
@@ -252,8 +180,6 @@ int Game_Map::CheckEvent(int x, int y) {
 }
 
 ////////////////////////////////////////////////////////////
-/// Start Scroll
-////////////////////////////////////////////////////////////
 void Game_Map::StartScroll(int direction, int distance, int speed) {
 	scroll_direction = direction;
 	scroll_rest = distance * 128;
@@ -261,36 +187,10 @@ void Game_Map::StartScroll(int direction, int distance, int speed) {
 }
 
 ////////////////////////////////////////////////////////////
-/// Is Scrolling
-////////////////////////////////////////////////////////////
 bool Game_Map::IsScrolling() {
 	return scroll_rest > 0;
 }
 
-////////////////////////////////////////////////////////////
-/// Start Fog Tone Change
-////////////////////////////////////////////////////////////
-void Game_Map::StartFogToneChange(Tone tone, int duration) {
-	fog_tone_target = Tone(tone);
-	fog_tone_duration = duration;
-	if (fog_tone_duration == 0) {
-		fog_tone = Tone(tone);
-	}
-}
-
-////////////////////////////////////////////////////////////
-/// Start Fog Opacity Change
-////////////////////////////////////////////////////////////
-void Game_Map::StartFogOpacityChange(int opacity, int duration) {
-	fog_opacity_target = opacity * 1.0;
-	fog_opacity_duration = duration;
-	if (fog_opacity_duration == 0) {
-		fog_opacity = (int)fog_opacity_target;
-	}
-}
-
-////////////////////////////////////////////////////////////
-/// Update
 ////////////////////////////////////////////////////////////
 void Game_Map::Update() {
 	if (need_refresh) Refresh();
@@ -314,27 +214,113 @@ void Game_Map::Update() {
 	}
 	
 	/*for (int i = 0; i < events.size(); i++) {
-		Main_Data::game_map->events[i].Update();
+		Game_Map::events[i].Update();
 	}
 
 	for (int i = 0; i < common_events.size(); i++) {
 		common_events[i].Update();
-	}
-
-	fog_ox -= fog_sx / 8.0;
-	fog_oy -= fog_sy / 8.0;
-	if (fog_tone_duration >= 1) {
-		int d = fog_tone_duration;
-		Tone target = fog_tone_target;
-		fog_tone.red = (fog_tone.red * (d - 1) + target.red) / d;
-		fog_tone.green = (fog_tone.green * (d - 1) + target.green) / d;
-		fog_tone.blue = (fog_tone.blue * (d - 1) + target.blue) / d;
-		fog_tone.gray = (fog_tone.gray * (d - 1) + target.gray) / d;
-		fog_tone_duration -= 1;
-	}
-	if (fog_opacity_duration >= 1)
-		int d = fog_opacity_duration;
-		fog_opacity = (fog_opacity * (d - 1) + fog_opacity_target) / d;
-		fog_opacity_duration -= 1;
 	}*/
+}
+
+////////////////////////////////////////////////////////////
+int Game_Map::GetMapId() {
+	return map_id;
+}
+
+int Game_Map::GetWidth() {
+	return map->width;
+}
+
+int Game_Map::GetHeight() {
+	return map->height;
+}
+
+std::vector<RPG::Encounter> Game_Map::GetEncounterList() {
+	return Main_Data::data_treemap.maps[map_id].encounters;
+}
+
+int Game_Map::GetEncounterStep() {
+	return Main_Data::data_treemap.maps[map_id].encounter_steps;
+}
+
+std::vector<short> Game_Map::GetMapDataDown() {
+	return map->lower_layer;
+}
+
+std::vector<short> Game_Map::GetMapDataUp() {
+	return map->upper_layer;
+}
+
+////////////////////////////////////////////////////////////
+std::string Game_Map::GetChipsetName() {
+	return chipset_name;
+}
+void Game_Map::SetChipsetName(std::string new_chipset_name) {
+	chipset_name = new_chipset_name;
+}
+
+std::string Game_Map::GetBattlebackName() {
+	return battleback_name;
+}
+void Game_Map::SetBattlebackName(std::string new_battleback_name) {
+	battleback_name = new_battleback_name;
+}
+
+std::string Game_Map::GetPanoramaName() {
+	return panorama_name;
+}
+void Game_Map::SetPanoramaName(std::string new_panorama_name) {
+	panorama_name = new_panorama_name;
+}
+
+int Game_Map::GetPanoramaType() {
+	return panorama_type;
+}
+void Game_Map::SetPanoramaType(int new_panorama_type) {
+	panorama_type = new_panorama_type;
+}
+
+int Game_Map::GetPanoramaSpeed() {
+	return panorama_speed;
+}
+void Game_Map::SetPanoramaSpeed(int new_panorama_speed) {
+	panorama_speed = new_panorama_speed;
+}
+
+int Game_Map::GetDisplayX() {
+	return display_x;
+}
+void Game_Map::SetDisplayX(int new_display_x) {
+	display_x = new_display_x;
+}
+
+int Game_Map::GetDisplayY() {
+	return display_y;
+}
+void Game_Map::SetDisplayY(int new_display_y) {
+	display_y = new_display_y;
+}
+
+bool Game_Map::GetNeedRefresh() {
+	return need_refresh;
+}
+void Game_Map::SetNeedRefresh(bool new_need_refresh) {
+	need_refresh = new_need_refresh;
+}
+
+////////////////////////////////////////////////////////////
+std::vector<unsigned char> Game_Map::GetPassagesDown() {
+	return Main_Data::data_chipsets[map->chipset_id].passable_data_lower;
+}
+
+std::vector<unsigned char> Game_Map::GetPassagesUp() {
+	return Main_Data::data_chipsets[map->chipset_id].passable_data_upper;
+}
+
+std::vector<short> Game_Map::GetTerrainTags() {
+	return Main_Data::data_chipsets[map->chipset_id].terrain_data;
+}
+
+std::vector<Game_Event*> Game_Map::GetEvents() {
+	return events;
 }

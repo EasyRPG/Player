@@ -33,7 +33,6 @@
       <File Name="../../src/game_player.h"/>
       <File Name="../../src/game_screen.cpp"/>
       <File Name="../../src/game_screen.h"/>
-      <File Name="../../src/game_switches.cpp"/>
       <File Name="../../src/game_switches.h"/>
       <File Name="../../src/game_system.cpp"/>
       <File Name="../../src/game_system.h"/>
@@ -41,7 +40,6 @@
       <File Name="../../src/game_temp.h"/>
       <File Name="../../src/game_troop.cpp"/>
       <File Name="../../src/game_troop.h"/>
-      <File Name="../../src/game_variables.cpp"/>
       <File Name="../../src/game_variables.h"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Scene">

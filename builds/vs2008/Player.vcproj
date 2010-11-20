@@ -1157,10 +1157,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\src\game_switches.cpp"
-						>
-					</File>
-					<File
 						RelativePath="..\..\src\game_switches.h"
 						>
 					</File>
@@ -1186,10 +1182,6 @@
 					</File>
 					<File
 						RelativePath="..\..\src\game_troop.h"
-						>
-					</File>
-					<File
-						RelativePath="..\..\src\game_variables.cpp"
 						>
 					</File>
 					<File

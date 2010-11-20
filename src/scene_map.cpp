@@ -81,7 +81,7 @@ void Scene_Map::MainFunction() {
 /// Update
 ////////////////////////////////////////////////////////////
 void Scene_Map::Update() {
-	Main_Data::game_map->Update();
+	Game_Map::Update();
 	Main_Data::game_player->Update();
 	spriteset->Update();
 
