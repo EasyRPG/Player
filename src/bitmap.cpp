@@ -593,7 +593,7 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 	char text2[2]; text2[1] = '\0';
 
 	// Load the system file for the shadow and text color
-	Bitmap* system = Cache::System(Main_Data::data_system.system_name);
+	Bitmap* system = Cache::System(Data::system.system_name);
 	// Load the exfont-file
 	SDL_Surface* exfont = IMG_ReadXPMFromArray(const_cast<char**>(exfont_xpm));
 

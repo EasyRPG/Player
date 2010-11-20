@@ -230,7 +230,7 @@ void Game_Interpreter::SetupStartingEvent() {
 	}
 
 	if (Game_Temp::common_event_id > 0) {
-		Setup(Main_Data::data_commonevents[Game_Temp::common_event_id].event_commands, 0);
+		Setup(Data::commonevents[Game_Temp::common_event_id].event_commands, 0);
 		Game_Temp::common_event_id = 0;
 		return;
 	}
@@ -250,8 +250,8 @@ void Game_Interpreter::SetupStartingEvent() {
 	}
 
 	RPG::CommonEvent* common_event;
-	for (size_t i = 0; i < Main_Data::data_commonevents.size(); i++) {
-		common_event = &Main_Data::data_commonevents[i];
+	for (size_t i = 0; i < Data::commonevents.size(); i++) {
+		common_event = &Data::commonevents[i];
 
 		// If trigger is auto run, and condition switch is ON
 		if ( (common_event->trigger == 1) &&
@@ -547,27 +547,27 @@ bool Game_Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 						break;
 					case 4:
 						// Max HP
-						value = Main_Data::data_actors[list[index].parameters[6]].parameter_maxhp[actor->GetLevel() - 1];
+						value = Data::actors[list[index].parameters[6]].parameter_maxhp[actor->GetLevel() - 1];
 						break;
 					case 5:
 						// Max MP
-						value = Main_Data::data_actors[list[index].parameters[6]].parameter_maxsp[actor->GetLevel() - 1];
+						value = Data::actors[list[index].parameters[6]].parameter_maxsp[actor->GetLevel() - 1];
 						break;
 					case 6:
 						// Attack
-						value = Main_Data::data_actors[list[index].parameters[6]].parameter_attack[actor->GetLevel() - 1];
+						value = Data::actors[list[index].parameters[6]].parameter_attack[actor->GetLevel() - 1];
 						break;
 					case 7:
 						// Defense
-						value = Main_Data::data_actors[list[index].parameters[6]].parameter_defense[actor->GetLevel() - 1];
+						value = Data::actors[list[index].parameters[6]].parameter_defense[actor->GetLevel() - 1];
 						break;
 					case 8:
 						// Intelligence
-						value = Main_Data::data_actors[list[index].parameters[6]].parameter_spirit[actor->GetLevel() - 1];
+						value = Data::actors[list[index].parameters[6]].parameter_spirit[actor->GetLevel() - 1];
 						break;
 					case 9:
 						// Agility
-						value = Main_Data::data_actors[list[index].parameters[6]].parameter_agility[actor->GetLevel() - 1];
+						value = Data::actors[list[index].parameters[6]].parameter_agility[actor->GetLevel() - 1];
 						break;
 					case 10:
 						// Weapon ID

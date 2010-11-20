@@ -29,17 +29,17 @@ Game_Actor::Game_Actor(int actor_id) {
 
 ////////////////////////////////////////////////////////////
 void Game_Actor::Setup(int actor_id) {
-	name = Main_Data::data_actors[actor_id - 1].name;
-	character_name = Main_Data::data_actors[actor_id - 1].character_name;
-	character_index = Main_Data::data_actors[actor_id - 1].character_index;
-	face_name = Main_Data::data_actors[actor_id - 1].face_name;
-	face_index = Main_Data::data_actors[actor_id - 1].face_index;
-	weapon_id = Main_Data::data_actors[actor_id - 1].weapon_id;
-	shield_id = Main_Data::data_actors[actor_id - 1].shield_id;
-	armor_id = Main_Data::data_actors[actor_id - 1].armor_id;
-	helmet_id = Main_Data::data_actors[actor_id - 1].helmet_id;
-	accessory_id = Main_Data::data_actors[actor_id - 1].accessory_id;
-	level = Main_Data::data_actors[actor_id - 1].initial_level;
+	name = Data::actors[actor_id - 1].name;
+	character_name = Data::actors[actor_id - 1].character_name;
+	character_index = Data::actors[actor_id - 1].character_index;
+	face_name = Data::actors[actor_id - 1].face_name;
+	face_index = Data::actors[actor_id - 1].face_index;
+	weapon_id = Data::actors[actor_id - 1].weapon_id;
+	shield_id = Data::actors[actor_id - 1].shield_id;
+	armor_id = Data::actors[actor_id - 1].armor_id;
+	helmet_id = Data::actors[actor_id - 1].helmet_id;
+	accessory_id = Data::actors[actor_id - 1].accessory_id;
+	level = Data::actors[actor_id - 1].initial_level;
 }
 
 ////////////////////////////////////////////////////////////

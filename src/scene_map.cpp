@@ -124,7 +124,7 @@ void Scene_Map::CallMenu() {
 	Game_Temp::menu_calling = false;
 
 	if (Game_Temp::menu_beep) {
-		Game_System::SePlay(Main_Data::data_system.decision_se);
+		Game_System::SePlay(Data::system.decision_se);
 		Game_Temp::menu_beep = false;
 	}
 

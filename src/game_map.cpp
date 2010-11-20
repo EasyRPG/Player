@@ -84,7 +84,7 @@ void Game_Map::Setup(int _id) {
 		Output::ErrorStr(Reader::GetError());
 	}
 
-	RPG::Chipset chipset = Main_Data::data_chipsets[map->chipset_id - 1];
+	RPG::Chipset chipset = Data::chipsets[map->chipset_id - 1];
 	chipset_name = chipset.chipset_name;
 	passages_down = chipset.passable_data_lower;
 	passages_up = chipset.passable_data_lower;
@@ -236,11 +236,11 @@ int Game_Map::GetHeight() {
 }
 
 std::vector<RPG::Encounter> Game_Map::GetEncounterList() {
-	return Main_Data::data_treemap.maps[map_id].encounters;
+	return Data::treemap.maps[map_id].encounters;
 }
 
 int Game_Map::GetEncounterStep() {
-	return Main_Data::data_treemap.maps[map_id].encounter_steps;
+	return Data::treemap.maps[map_id].encounter_steps;
 }
 
 std::vector<short> Game_Map::GetMapDataDown() {
@@ -310,15 +310,15 @@ void Game_Map::SetNeedRefresh(bool new_need_refresh) {
 
 ////////////////////////////////////////////////////////////
 std::vector<unsigned char> Game_Map::GetPassagesDown() {
-	return Main_Data::data_chipsets[map->chipset_id].passable_data_lower;
+	return Data::chipsets[map->chipset_id].passable_data_lower;
 }
 
 std::vector<unsigned char> Game_Map::GetPassagesUp() {
-	return Main_Data::data_chipsets[map->chipset_id].passable_data_upper;
+	return Data::chipsets[map->chipset_id].passable_data_upper;
 }
 
 std::vector<short> Game_Map::GetTerrainTags() {
-	return Main_Data::data_chipsets[map->chipset_id].terrain_data;
+	return Data::chipsets[map->chipset_id].terrain_data;
 }
 
 std::vector<Game_Event*> Game_Map::GetEvents() {

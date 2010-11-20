@@ -23,4 +23,3 @@ Game_Screen::Game_Screen()
 Game_Screen::~Game_Screen()
 {
 }
-

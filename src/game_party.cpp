@@ -45,14 +45,14 @@ Game_Party::~Game_Party() {
 ////////////////////////////////////////////////////////////
 void Game_Party::SetupStartingMembers() {
 	actors.clear();
-	for (size_t i = 0; i < Main_Data::data_system.party.size(); ++i) {
+	for (size_t i = 0; i < Data::system.party.size(); ++i) {
 		Game_Actor* actor;
-		actor = Game_Actors::GetActor(Main_Data::data_system.party[i]);
+		actor = Game_Actors::GetActor(Data::system.party[i]);
 
 		if (actor == NULL) {
 			Output::Warning(
 				"Invalid actor (Id: %d) in initial party at index %d.",
-				Main_Data::data_system.party[i], i);
+				Data::system.party[i], i);
 		} else {
 			actors.push_back(actor);
 		}

@@ -31,7 +31,7 @@
 class Game_Variables_Class {
 public:
 	int& operator[] (int variable_id) {
-		if ((size_t)variable_id < Main_Data::data_variables.size())
+		if ((size_t)variable_id < Data::variables.size())
 			Output::Error("Variable index %d is invalid.", variable_id);
 
 		if ((size_t)variable_id > data.size())

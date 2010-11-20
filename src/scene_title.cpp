@@ -85,13 +85,13 @@ void Scene_Title::MainFunction() {
 
 	// Load Title Graphic
 	Sprite* title = new Sprite();
-	title->SetBitmap(Cache::Title(Main_Data::data_system.title_name));
+	title->SetBitmap(Cache::Title(Data::system.title_name));
 	
 	// Create Options Window
 	std::vector<std::string> options;
-	options.push_back(Main_Data::data_terms.new_game);
-	options.push_back(Main_Data::data_terms.load_game);
-	options.push_back(Main_Data::data_terms.exit_game);
+	options.push_back(Data::terms.new_game);
+	options.push_back(Data::terms.load_game);
+	options.push_back(Data::terms.exit_game);
 	
 	// TODO: Calculate window width from max text length from options
 	command_window = new Window_Command(60, options);
@@ -120,7 +120,7 @@ void Scene_Title::MainFunction() {
 	}
 
 	// Play music
-	Game_System::BgmPlay(Main_Data::data_system.title_music);
+	Game_System::BgmPlay(Data::system.title_music);
 
 	// Screen transition
 	Graphics::Transition(Graphics::FadeIn, 30, true);
@@ -164,7 +164,7 @@ void Scene_Title::Update() {
 /// CommandNewGame
 ////////////////////////////////////////////////////////////
 void Scene_Title::CommandNewGame() {
-	Game_System::SePlay(Main_Data::data_system.decision_se);
+	Game_System::SePlay(Data::system.decision_se);
 	Audio::BGM_Stop();
 	Graphics::framecount= 0;
 	Game_Temp::Init();
@@ -175,8 +175,8 @@ void Scene_Title::CommandNewGame() {
 	Game_Map::Init();
 	Main_Data::game_player = new Game_Player();
 	Main_Data::game_party->SetupStartingMembers();
-	Game_Map::Setup(Main_Data::data_treemap.start_map_id);
-	Main_Data::game_player->MoveTo(Main_Data::data_treemap.start_x, Main_Data::data_treemap.start_y);
+	Game_Map::Setup(Data::treemap.start_map_id);
+	Main_Data::game_player->MoveTo(Data::treemap.start_x, Data::treemap.start_y);
 	Main_Data::game_player->Refresh();
 	Game_Map::Autoplay();
 	Game_Map::Update();
@@ -188,7 +188,7 @@ void Scene_Title::CommandNewGame() {
 ////////////////////////////////////////////////////////////
 void Scene_Title::CommandContinue() {
 	// Play decision SE
-	Game_System::SePlay(Main_Data::data_system.decision_se);
+	Game_System::SePlay(Data::system.decision_se);
 	// Change scene
 	//Main_Data::scene = new Scene_Load();
 }
@@ -198,7 +198,7 @@ void Scene_Title::CommandContinue() {
 ////////////////////////////////////////////////////////////
 void Scene_Title::CommandShutdown() {
 	// Play decision SE
-	Game_System::SePlay(Main_Data::data_system.decision_se);
+	Game_System::SePlay(Data::system.decision_se);
 	// Fade out Music
 	Audio::BGS_Fade(800);
 	// Shutdown

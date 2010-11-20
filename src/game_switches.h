@@ -31,7 +31,7 @@
 class Game_Switches_Class {
 public:
 	std::vector<bool>::reference operator[](int switch_id) {
-		if ((size_t)switch_id < Main_Data::data_switches.size())
+		if ((size_t)switch_id < Data::switches.size())
 			Output::Error("Switch index %d is invalid.", switch_id);
 
 		if ((size_t)switch_id > data.size())

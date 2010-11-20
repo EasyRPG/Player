@@ -69,7 +69,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(EASYDEV_MSVC)\lib\debug;..\..\..\readers\lib\debug</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(EASYDEV_MSVC)\lib\debug;..\..\..\readers\builds\vs2010\debug</AdditionalLibraryDirectories>
       <AdditionalDependencies>readers.lib;dxguid.lib;winmm.lib;SDL.lib;SDLmain.lib;zlib.lib;SDL_image.lib;libpng.lib;freetype.lib;SDL_ttf.lib;SDL_gfx.lib;libogg.lib;libvorbis.lib;libvorbisfile.lib;native_midi.lib;smpeg.lib;SDL_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
@@ -103,7 +103,7 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(EASYDEV_MSVC)\lib\release;..\..\..\readers\lib\release</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(EASYDEV_MSVC)\lib\release;..\..\..\readers\builds\vs2010\release</AdditionalLibraryDirectories>
       <AdditionalDependencies>readers.lib;dxguid.lib;winmm.lib;SDL.lib;SDLmain.lib;zlib.lib;SDL_image.lib;libpng.lib;freetype.lib;SDL_ttf.lib;SDL_gfx.lib;libogg.lib;libvorbis.lib;libvorbisfile.lib;native_midi.lib;smpeg.lib;SDL_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
@@ -146,44 +146,6 @@
     <ClCompile Include="..\..\src\player.cpp" />
     <ClCompile Include="..\..\src\rect.cpp" />
     <ClCompile Include="..\..\src\registry_win.cpp" />
-    <ClCompile Include="..\..\src\rpg_actor.cpp" />
-    <ClCompile Include="..\..\src\rpg_animation.cpp" />
-    <ClCompile Include="..\..\src\rpg_animationcelldata.cpp" />
-    <ClCompile Include="..\..\src\rpg_animationframe.cpp" />
-    <ClCompile Include="..\..\src\rpg_animationtiming.cpp" />
-    <ClCompile Include="..\..\src\rpg_attribute.cpp" />
-    <ClCompile Include="..\..\src\rpg_battlecommand.cpp" />
-    <ClCompile Include="..\..\src\rpg_battleranimation.cpp" />
-    <ClCompile Include="..\..\src\rpg_battleranimationextension.cpp" />
-    <ClCompile Include="..\..\src\rpg_chipset.cpp" />
-    <ClCompile Include="..\..\src\rpg_class.cpp" />
-    <ClCompile Include="..\..\src\rpg_commonevent.cpp" />
-    <ClCompile Include="..\..\src\rpg_encounter.cpp" />
-    <ClCompile Include="..\..\src\rpg_enemy.cpp" />
-    <ClCompile Include="..\..\src\rpg_enemyaction.cpp" />
-    <ClCompile Include="..\..\src\rpg_event.cpp" />
-    <ClCompile Include="..\..\src\rpg_eventcommand.cpp" />
-    <ClCompile Include="..\..\src\rpg_eventpage.cpp" />
-    <ClCompile Include="..\..\src\rpg_eventpagecondition.cpp" />
-    <ClCompile Include="..\..\src\rpg_item.cpp" />
-    <ClCompile Include="..\..\src\rpg_learning.cpp" />
-    <ClCompile Include="..\..\src\rpg_map.cpp" />
-    <ClCompile Include="..\..\src\rpg_mapinfo.cpp" />
-    <ClCompile Include="..\..\src\rpg_movecommand.cpp" />
-    <ClCompile Include="..\..\src\rpg_moveroute.cpp" />
-    <ClCompile Include="..\..\src\rpg_music.cpp" />
-    <ClCompile Include="..\..\src\rpg_skill.cpp" />
-    <ClCompile Include="..\..\src\rpg_sound.cpp" />
-    <ClCompile Include="..\..\src\rpg_state.cpp" />
-    <ClCompile Include="..\..\src\rpg_system.cpp" />
-    <ClCompile Include="..\..\src\rpg_terms.cpp" />
-    <ClCompile Include="..\..\src\rpg_terrain.cpp" />
-    <ClCompile Include="..\..\src\rpg_testbattler.cpp" />
-    <ClCompile Include="..\..\src\rpg_treemap.cpp" />
-    <ClCompile Include="..\..\src\rpg_troop.cpp" />
-    <ClCompile Include="..\..\src\rpg_troopmember.cpp" />
-    <ClCompile Include="..\..\src\rpg_trooppage.cpp" />
-    <ClCompile Include="..\..\src\rpg_trooppagecondition.cpp" />
     <ClCompile Include="..\..\src\scene_map.cpp" />
     <ClCompile Include="..\..\src\scene_menu.cpp" />
     <ClCompile Include="..\..\src\scene_title.cpp" />
@@ -239,44 +201,6 @@
     <ClInclude Include="..\..\src\player.h" />
     <ClInclude Include="..\..\src\rect.h" />
     <ClInclude Include="..\..\src\registry_win.h" />
-    <ClInclude Include="..\..\src\rpg_actor.h" />
-    <ClInclude Include="..\..\src\rpg_animation.h" />
-    <ClInclude Include="..\..\src\rpg_animationcelldata.h" />
-    <ClInclude Include="..\..\src\rpg_animationframe.h" />
-    <ClInclude Include="..\..\src\rpg_animationtiming.h" />
-    <ClInclude Include="..\..\src\rpg_attribute.h" />
-    <ClInclude Include="..\..\src\rpg_battlecommand.h" />
-    <ClInclude Include="..\..\src\rpg_battleranimation.h" />
-    <ClInclude Include="..\..\src\rpg_battleranimationextension.h" />
-    <ClInclude Include="..\..\src\rpg_chipset.h" />
-    <ClInclude Include="..\..\src\rpg_class.h" />
-    <ClInclude Include="..\..\src\rpg_commonevent.h" />
-    <ClInclude Include="..\..\src\rpg_encounter.h" />
-    <ClInclude Include="..\..\src\rpg_enemy.h" />
-    <ClInclude Include="..\..\src\rpg_enemyaction.h" />
-    <ClInclude Include="..\..\src\rpg_event.h" />
-    <ClInclude Include="..\..\src\rpg_eventcommand.h" />
-    <ClInclude Include="..\..\src\rpg_eventpage.h" />
-    <ClInclude Include="..\..\src\rpg_eventpagecondition.h" />
-    <ClInclude Include="..\..\src\rpg_item.h" />
-    <ClInclude Include="..\..\src\rpg_learning.h" />
-    <ClInclude Include="..\..\src\rpg_map.h" />
-    <ClInclude Include="..\..\src\rpg_mapinfo.h" />
-    <ClInclude Include="..\..\src\rpg_movecommand.h" />
-    <ClInclude Include="..\..\src\rpg_moveroute.h" />
-    <ClInclude Include="..\..\src\rpg_music.h" />
-    <ClInclude Include="..\..\src\rpg_skill.h" />
-    <ClInclude Include="..\..\src\rpg_sound.h" />
-    <ClInclude Include="..\..\src\rpg_state.h" />
-    <ClInclude Include="..\..\src\rpg_system.h" />
-    <ClInclude Include="..\..\src\rpg_terms.h" />
-    <ClInclude Include="..\..\src\rpg_terrain.h" />
-    <ClInclude Include="..\..\src\rpg_testbattler.h" />
-    <ClInclude Include="..\..\src\rpg_treemap.h" />
-    <ClInclude Include="..\..\src\rpg_troop.h" />
-    <ClInclude Include="..\..\src\rpg_troopmember.h" />
-    <ClInclude Include="..\..\src\rpg_trooppage.h" />
-    <ClInclude Include="..\..\src\rpg_trooppagecondition.h" />
     <ClInclude Include="..\..\src\scene.h" />
     <ClInclude Include="..\..\src\scene_map.h" />
     <ClInclude Include="..\..\src\scene_menu.h" />

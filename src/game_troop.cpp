@@ -23,4 +23,3 @@ Game_Troop::Game_Troop()
 Game_Troop::~Game_Troop()
 {
 }
-

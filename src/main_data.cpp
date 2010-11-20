@@ -45,33 +45,6 @@ namespace Main_Data {
 	Game_Party* game_party = NULL;
 	Game_Troop* game_troop = NULL;
 	Game_Message* game_message = NULL;
-	
-	// Database Data (ldb)
-	std::vector<RPG::Actor> data_actors;
-	std::vector<RPG::Skill> data_skills;
-	std::vector<RPG::Item> data_items;
-	std::vector<RPG::Enemy> data_enemies;
-	std::vector<RPG::Troop> data_troops;
-	std::vector<RPG::Terrain> data_terrains;
-	std::vector<RPG::Attribute> data_attributes;
-	std::vector<RPG::State> data_states;
-	std::vector<RPG::Animation> data_animations;
-	std::vector<RPG::Chipset> data_chipsets;
-	std::vector<RPG::CommonEvent> data_commonevents;
-	std::vector<RPG::BattleCommand> data_battlecommands;
-	std::vector<RPG::Class> data_classes;
-	std::vector<RPG::BattlerAnimation> data_battleranimations;
-	RPG::Terms data_terms;
-	RPG::System data_system;
-	std::vector<std::string> data_switches;
-	std::vector<std::string> data_variables;
-
-	// TreeMap (lmt)
-	RPG::TreeMap data_treemap;
-	
-	// Maps and Areas Data (lmu)
-	//std::vector<RPG::Map>* data_maps;
-	//std::vector<RPG::Area>* data_areas;
 }
 
 void Main_Data::Cleanup() {

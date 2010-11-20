@@ -50,11 +50,11 @@ Scene_Menu::~Scene_Menu() {
 void Scene_Menu::MainFunction() {
 	// Create Options Window
 	std::vector<std::string> options;
-	options.push_back(Main_Data::data_terms.command_item);
-	options.push_back(Main_Data::data_terms.command_skill);
-	options.push_back(Main_Data::data_terms.menu_equipment);
-	options.push_back(Main_Data::data_terms.menu_save);
-	options.push_back(Main_Data::data_terms.menu_quit);
+	options.push_back(Data::terms.command_item);
+	options.push_back(Data::terms.command_skill);
+	options.push_back(Data::terms.menu_equipment);
+	options.push_back(Data::terms.menu_save);
+	options.push_back(Data::terms.menu_quit);
 
 	command_window = new Window_Command(88, options);
 	command_window->SetIndex(menu_index);
@@ -121,7 +121,7 @@ void Scene_Menu::Update() {
 ////////////////////////////////////////////////////////////
 void Scene_Menu::UpdateCommand() {
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Main_Data::data_system.cancel_se);
+		Game_System::SePlay(Data::system.cancel_se);
 		Main_Data::scene = new Scene_Map();
 	}
 }

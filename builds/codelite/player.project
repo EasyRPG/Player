@@ -66,73 +66,6 @@
       <File Name="../../src/window_menustatus.h"/>
     </VirtualDirectory>
   </VirtualDirectory>
-  <VirtualDirectory Name="Reader">
-    <VirtualDirectory Name="Events">
-      <File Name="../../src/event_reader.cpp"/>
-      <File Name="../../src/event_reader.h"/>
-    </VirtualDirectory>
-    <VirtualDirectory Name="LDB">
-      <File Name="../../src/ldb_actor.cpp"/>
-      <File Name="../../src/ldb_animation.cpp"/>
-      <File Name="../../src/ldb_animationcelldata.cpp"/>
-      <File Name="../../src/ldb_animationframe.cpp"/>
-      <File Name="../../src/ldb_animationtiming.cpp"/>
-      <File Name="../../src/ldb_attribute.cpp"/>
-      <File Name="../../src/ldb_battlecommand.cpp"/>
-      <File Name="../../src/ldb_battleranimation.cpp"/>
-      <File Name="../../src/ldb_battleranimationextension.cpp"/>
-      <File Name="../../src/ldb_chipset.cpp"/>
-      <File Name="../../src/ldb_chunks.h"/>
-      <File Name="../../src/ldb_class.cpp"/>
-      <File Name="../../src/ldb_commonevent.cpp"/>
-      <File Name="../../src/ldb_enemy.cpp"/>
-      <File Name="../../src/ldb_enemyaction.cpp"/>
-      <File Name="../../src/ldb_item.cpp"/>
-      <File Name="../../src/ldb_learning.cpp"/>
-      <File Name="../../src/ldb_music.cpp"/>
-      <File Name="../../src/ldb_reader.cpp"/>
-      <File Name="../../src/ldb_reader.h"/>
-      <File Name="../../src/ldb_skill.cpp"/>
-      <File Name="../../src/ldb_sound.cpp"/>
-      <File Name="../../src/ldb_state.cpp"/>
-      <File Name="../../src/ldb_switches.cpp"/>
-      <File Name="../../src/ldb_system.cpp"/>
-      <File Name="../../src/ldb_terms.cpp"/>
-      <File Name="../../src/ldb_terrain.cpp"/>
-      <File Name="../../src/ldb_testbattler.cpp"/>
-      <File Name="../../src/ldb_troop.cpp"/>
-      <File Name="../../src/ldb_troopmember.cpp"/>
-      <File Name="../../src/ldb_trooppage.cpp"/>
-      <File Name="../../src/ldb_trooppagecondition.cpp"/>
-      <File Name="../../src/ldb_variables.cpp"/>
-    </VirtualDirectory>
-    <VirtualDirectory Name="LMT">
-      <File Name="../../src/lmt_chunks.h"/>
-      <File Name="../../src/lmt_encounter.cpp"/>
-      <File Name="../../src/lmt_mapinfo.cpp"/>
-      <File Name="../../src/lmt_reader.cpp"/>
-      <File Name="../../src/lmt_reader.h"/>
-    </VirtualDirectory>
-    <VirtualDirectory Name="LMU">
-      <File Name="../../src/lmu_chunks.h"/>
-      <File Name="../../src/lmu_event.cpp"/>
-      <File Name="../../src/lmu_eventpage.cpp"/>
-      <File Name="../../src/lmu_eventpagecondition.cpp"/>
-      <File Name="../../src/lmu_movecommand.cpp"/>
-      <File Name="../../src/lmu_moveroute.cpp"/>
-      <File Name="../../src/lmu_reader.cpp"/>
-      <File Name="../../src/lmu_reader.h"/>
-    </VirtualDirectory>
-    <VirtualDirectory Name="INI">
-      <File Name="../../src/ini.c"/>
-      <File Name="../../src/ini.h"/>
-      <File Name="../../src/inireader.cpp"/>
-      <File Name="../../src/inireader.h"/>
-    </VirtualDirectory>
-    <VirtualDirectory Name="LSD"/>
-    <File Name="../../src/reader.cpp"/>
-    <File Name="../../src/reader.h"/>
-  </VirtualDirectory>
   <VirtualDirectory Name="Multimedia">
     <VirtualDirectory Name="Audio">
       <File Name="../../src/audio.cpp"/>
@@ -178,84 +111,6 @@
       <File Name="../../src/input_buttons_os.cpp"/>
     </VirtualDirectory>
   </VirtualDirectory>
-  <VirtualDirectory Name="RPG">
-    <File Name="../../src/rpg_actor.cpp"/>
-    <File Name="../../src/rpg_actor.h"/>
-    <File Name="../../src/rpg_animation.cpp"/>
-    <File Name="../../src/rpg_animation.h"/>
-    <File Name="../../src/rpg_animationcelldata.cpp"/>
-    <File Name="../../src/rpg_animationcelldata.h"/>
-    <File Name="../../src/rpg_animationframe.cpp"/>
-    <File Name="../../src/rpg_animationframe.h"/>
-    <File Name="../../src/rpg_animationtiming.cpp"/>
-    <File Name="../../src/rpg_animationtiming.h"/>
-    <File Name="../../src/rpg_attribute.cpp"/>
-    <File Name="../../src/rpg_attribute.h"/>
-    <File Name="../../src/rpg_battlecommand.cpp"/>
-    <File Name="../../src/rpg_battlecommand.h"/>
-    <File Name="../../src/rpg_battleranimation.cpp"/>
-    <File Name="../../src/rpg_battleranimation.h"/>
-    <File Name="../../src/rpg_battleranimationextension.cpp"/>
-    <File Name="../../src/rpg_battleranimationextension.h"/>
-    <File Name="../../src/rpg_chipset.cpp"/>
-    <File Name="../../src/rpg_chipset.h"/>
-    <File Name="../../src/rpg_class.cpp"/>
-    <File Name="../../src/rpg_class.h"/>
-    <File Name="../../src/rpg_commonevent.cpp"/>
-    <File Name="../../src/rpg_commonevent.h"/>
-    <File Name="../../src/rpg_encounter.cpp"/>
-    <File Name="../../src/rpg_encounter.h"/>
-    <File Name="../../src/rpg_enemy.cpp"/>
-    <File Name="../../src/rpg_enemy.h"/>
-    <File Name="../../src/rpg_enemyaction.cpp"/>
-    <File Name="../../src/rpg_enemyaction.h"/>
-    <File Name="../../src/rpg_event.cpp"/>
-    <File Name="../../src/rpg_event.h"/>
-    <File Name="../../src/rpg_eventcommand.cpp"/>
-    <File Name="../../src/rpg_eventcommand.h"/>
-    <File Name="../../src/rpg_eventpage.cpp"/>
-    <File Name="../../src/rpg_eventpage.h"/>
-    <File Name="../../src/rpg_eventpagecondition.cpp"/>
-    <File Name="../../src/rpg_eventpagecondition.h"/>
-    <File Name="../../src/rpg_item.cpp"/>
-    <File Name="../../src/rpg_item.h"/>
-    <File Name="../../src/rpg_learning.cpp"/>
-    <File Name="../../src/rpg_learning.h"/>
-    <File Name="../../src/rpg_map.cpp"/>
-    <File Name="../../src/rpg_map.h"/>
-    <File Name="../../src/rpg_mapinfo.cpp"/>
-    <File Name="../../src/rpg_mapinfo.h"/>
-    <File Name="../../src/rpg_movecommand.cpp"/>
-    <File Name="../../src/rpg_movecommand.h"/>
-    <File Name="../../src/rpg_moveroute.cpp"/>
-    <File Name="../../src/rpg_moveroute.h"/>
-    <File Name="../../src/rpg_music.cpp"/>
-    <File Name="../../src/rpg_music.h"/>
-    <File Name="../../src/rpg_skill.cpp"/>
-    <File Name="../../src/rpg_skill.h"/>
-    <File Name="../../src/rpg_sound.cpp"/>
-    <File Name="../../src/rpg_sound.h"/>
-    <File Name="../../src/rpg_state.cpp"/>
-    <File Name="../../src/rpg_state.h"/>
-    <File Name="../../src/rpg_system.cpp"/>
-    <File Name="../../src/rpg_system.h"/>
-    <File Name="../../src/rpg_terms.cpp"/>
-    <File Name="../../src/rpg_terms.h"/>
-    <File Name="../../src/rpg_terrain.cpp"/>
-    <File Name="../../src/rpg_terrain.h"/>
-    <File Name="../../src/rpg_testbattler.cpp"/>
-    <File Name="../../src/rpg_testbattler.h"/>
-    <File Name="../../src/rpg_treemap.cpp"/>
-    <File Name="../../src/rpg_treemap.h"/>
-    <File Name="../../src/rpg_troop.cpp"/>
-    <File Name="../../src/rpg_troop.h"/>
-    <File Name="../../src/rpg_troopmember.cpp"/>
-    <File Name="../../src/rpg_troopmember.h"/>
-    <File Name="../../src/rpg_trooppage.cpp"/>
-    <File Name="../../src/rpg_trooppage.h"/>
-    <File Name="../../src/rpg_trooppagecondition.cpp"/>
-    <File Name="../../src/rpg_trooppagecondition.h"/>
-  </VirtualDirectory>
   <VirtualDirectory Name="Tools">
     <File Name="../../src/filefinder.h"/>
     <File Name="../../src/msgbox.h"/>
@@ -293,6 +148,7 @@
       <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --libs) " Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/easyrpg.dge" IntermediateDirectory=".obj/Debug" Command="./easyrpg.dge" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -321,6 +177,7 @@
       <Linker Options="-lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --libs)" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/easyrpg.dge" IntermediateDirectory=".obj/Release" Command="./easyrpg.dge" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -343,12 +200,13 @@
       </AdditionalRules>
     </Configuration>
     <Configuration Name="GTK+ Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g -fno-rtti -fno-exceptions $(shell sdl-config --cflags) $(shell pkg-config --cflags gtk+-2.0) -DUNIX -DGTK -D_DEBUG -Wall -Wextra -ansi -pedantic -Wno-unused" Required="yes" PreCompiledHeader="">
+      <Compiler Options="" Required="yes" PreCompiledHeader="">
         <Preprocessor Value="USE_SDL"/>
       </Compiler>
-      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs) $(shell pkg-config --libs gtk+-2.0)" Required="yes"/>
+      <Linker Options="" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="../../bin/testgame/easyrpg" IntermediateDirectory=".obj/Debug" Command="./easyrpg" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="" IntermediateDirectory="" Command="" CommandArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -377,6 +235,7 @@
       <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs) $(shell pkg-config --libs gtk+-2.0)" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/easyrpg" IntermediateDirectory=".obj/Release" Command="./easyrpg" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -405,6 +264,7 @@
       <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs) " Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/easyrpg" IntermediateDirectory=".obj/Debug" Command="./easyrpg" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -433,6 +293,7 @@
       <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs)" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/easyrpg" IntermediateDirectory=".obj/Release" Command="./easyrpg" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -459,11 +320,13 @@
         <IncludePath Value="$(EASYDEV_MINGW)/include"/>
         <Preprocessor Value="USE_SDL"/>
       </Compiler>
-      <Linker Options="-mwindows;-lmingw32;-lSDLmain;-lSDL;-lSDL_image;-lSDL_mixer;-lSDL_ttf;-lz" Required="yes">
+      <Linker Options="-mwindows;-lmingw32;-lreaders;-lSDLmain;-lSDL;-lSDL_image;-lSDL_mixer;-lSDL_ttf;-lz;-lSDL_gfx" Required="yes">
         <LibraryPath Value="$(EASYDEV_MINGW)/lib"/>
+        <LibraryPath Value="../../../readers/builds/codelite/debug"/>
       </Linker>
       <ResourceCompiler Options="" Required="yes"/>
       <General OutputFile="../../bin/testgame/Player.exe" IntermediateDirectory=".obj/Debug" Command="./Player.exe" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -490,11 +353,13 @@
         <IncludePath Value="$(EASYDEV_MINGW)/include"/>
         <Preprocessor Value="USE_SDL"/>
       </Compiler>
-      <Linker Options="-mwindows;-lmingw32;-lSDLmain;-lSDL;-lSDL_image;-lSDL_mixer;-lSDL_ttf;-lz" Required="yes">
+      <Linker Options="-mwindows;-lmingw32;-lreaders;-lSDLmain;-lSDL;-lSDL_image;-lSDL_mixer;-lSDL_ttf;-lz;-lSDL_gfx" Required="yes">
         <LibraryPath Value="$(EASYDEV_MINGW)/lib"/>
+        <LibraryPath Value="../../../readers/builds/codelite/release"/>
       </Linker>
       <ResourceCompiler Options="" Required="yes"/>
       <General OutputFile="../../bin/testgame/Player.exe" IntermediateDirectory=".obj/Release" Command="./Player.exe" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -517,7 +382,9 @@
       </AdditionalRules>
     </Configuration>
     <GlobalSettings>
-      <Compiler Options=""/>
+      <Compiler Options="">
+        <IncludePath Value="../../../readers/include"/>
+      </Compiler>
       <Linker Options=""/>
       <ResourceCompiler Options=""/>
     </GlobalSettings>
