@@ -52,6 +52,7 @@ void Scene_Menu::MainFunction() {
 	// If there are no actors in the party disable Skills and Equipment
 	// RPG2k does not do this, but crashes if you try to access these menus
 	if (Game_Party::GetActors().empty()) {
+		command_window->DisableItem(0);
 		command_window->DisableItem(1);
 		command_window->DisableItem(2);
 	}

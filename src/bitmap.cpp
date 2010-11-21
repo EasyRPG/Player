@@ -729,6 +729,10 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 				shadowColor.blue++;
 			}
 			char_shadow = TTF_RenderUTF8_Solid(ttf_font, text2, shadowColor.Get());
+
+			if (!char_surface || !char_shadow) {
+				Output::Error("Couldn't draw text %s with Font %n size %d.\n%s\n", text.c_str(), font.name.c_str(),			font.size, TTF_GetError());
+			}
 	#endif
 #else
 			char_surface = TTF_RenderUTF8_Blended(ttf_font, text2, Color(255, 255, 255, 255).Get());
@@ -772,11 +776,6 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 			SDL_FreeSurface(mask);
 			SDL_FreeSurface(char_surface);
 			SDL_FreeSurface(char_shadow);
-		}
-
-		if (!char_surface //|| !char_shadow
-			) {
-			Output::Error("Couldn't draw text %s with Font %n size %d.\n%s\n", text.c_str(), font.name.c_str(), font.size, TTF_GetError());
 		}
 /*
 #ifdef USE_ALPHA

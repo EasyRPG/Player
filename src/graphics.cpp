@@ -40,18 +40,12 @@ namespace Graphics {
 	unsigned long last_ticks_wait;
 	unsigned long next_ticks_fps;
 
-	int transition_frames;
-	int transition_current_frame;
-	int transition_increment;
 	bool is_in_transition_yet;
-	bool wait_for_transition;
+	bool frozen;
+
 	TransitionType actual_transition;
-	SDL_Surface* fake_background;
-	SDL_Surface* blank_screen;
 
 	Uint32 default_backcolor;
-
-	Font font(8);
 
 	bool fps_showing;
 
@@ -59,6 +53,18 @@ namespace Graphics {
 	std::map<unsigned long, Drawable*>::iterator it_drawable_map;
 	std::list<ZObj> zlist;
 	std::list<ZObj>::iterator it_zlist;
+}
+
+namespace {
+	bool prepare_transition;
+	bool skip_draw;
+	int transition_frames;
+	int transition_current_frame;
+	int transition_increment;
+	bool wait_for_transition;
+	SDL_Surface* fake_screen;
+	SDL_Surface* blank_screen;
+	Font font(8);
 }
 
 ////////////////////////////////////////////////////////////
@@ -78,12 +84,15 @@ void Graphics::Init() {
 	transition_current_frame = 0;
 	transition_increment = 0;
 	actual_transition = NoTransition;
-	fake_background = NULL;
+	fake_screen = NULL;
 	blank_screen = SDL_ConvertSurface(Player::main_window, Player::main_window->format, Player::main_window->flags);
 	SDL_FillRect(blank_screen, NULL, 0);
 
 	is_in_transition_yet = false;
 	wait_for_transition = false;
+	prepare_transition = false;
+	frozen = false;
+	skip_draw = false;
 
 	if (TTF_Init() == -1) {
 		Output::Error("Couldn't initialize SDL_ttf library.\n%s\n", TTF_GetError());
@@ -143,6 +152,14 @@ void Graphics::Update() {
 
 		DrawFrame();
 
+		if ( (prepare_transition) && (!frozen) ) {
+			// Get into actual transition
+			is_in_transition_yet = true;
+			
+			// Freeze screen
+			Freeze();
+		}
+
 		++framecount;
 		++frames;
 
@@ -162,22 +179,22 @@ void Graphics::Update() {
 }
 
 void Graphics::DoTransition() {
-
+	// Preparation is done
+	prepare_transition = false;
 	if (transition_current_frame <= transition_frames) {
 		switch (actual_transition) {
 			case FadeIn:
-				// Pretty damn slow . May need to be optimised.
-				fake_background = SDL_ConvertSurface(Player::main_window, Player::main_window->format, Player::main_window->flags);
 				SDL_FillRect(Player::main_window, NULL, 0);
-				SDL_SetAlpha(fake_background, SDL_SRCALPHA, transition_current_frame*transition_increment);
-				SDL_BlitSurface(fake_background, NULL, Player::main_window, NULL);
-				SDL_FreeSurface(fake_background);
+				SDL_SetAlpha(fake_screen, SDL_SRCALPHA, transition_current_frame*transition_increment);
+				SDL_BlitSurface(fake_screen, NULL, Player::main_window, NULL);
 				////////
 				break;
 
 			case FadeOut:
-				SDL_SetAlpha(blank_screen, SDL_SRCALPHA, Graphics::transition_current_frame*transition_increment);
-				SDL_BlitSurface(blank_screen, NULL, Player::main_window, NULL);
+				SDL_SetAlpha(blank_screen, SDL_SRCALPHA, transition_current_frame*transition_increment);
+				SDL_BlitSurface(blank_screen, NULL, fake_screen, NULL);
+				SDL_BlitSurface(fake_screen, NULL, Player::main_window, NULL);
+
 				break;
 
 			default:
@@ -185,8 +202,19 @@ void Graphics::DoTransition() {
 		}
 		transition_current_frame++;
 	} else {
-		if (actual_transition == FadeOut)
-			SDL_BlitSurface(blank_screen, NULL, Player::main_window, NULL);
+		if (actual_transition == FadeOut) {
+			// Little hack to skip drawing next frame
+			// when changing scenes
+			skip_draw = true;
+		}
+		if (frozen) {
+			// Free fake_screen
+			SDL_FreeSurface(fake_screen);
+			fake_screen = NULL;
+			// Unfreeze...
+			frozen = false;
+		}
+		// Transition is over
 		is_in_transition_yet = false;
 	}
 }
@@ -205,27 +233,38 @@ void Graphics::PrintFPS() {
 // Draw Frame
 ////////////////////////////////////////////////////////////
 void Graphics::DrawFrame() {
-
-	SDL_FillRect(Player::main_window, &Player::main_window->clip_rect, default_backcolor);
-	DrawableType type;
-	for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
-		type = drawable_map[it_zlist->GetId()]->GetType();
-		if (( (!is_in_transition_yet) || (type != WINDOW) )
-			|| (!wait_for_transition)) // Make sure not to draw Windows until transition's finished
-			drawable_map[it_zlist->GetId()]->Draw(it_zlist->GetZ());
+	if (is_in_transition_yet) {
+		DoTransition();
 	}
 
-	if (is_in_transition_yet) 
-		DoTransition();
+	if ( (!frozen) && (!skip_draw) ) {
+		SDL_FillRect(Player::main_window, &Player::main_window->clip_rect, default_backcolor);
+		DrawableType type;
+		for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
+			type = drawable_map[it_zlist->GetId()]->GetType();
+			if (( (!is_in_transition_yet) || (type != WINDOW) )
+				|| (!wait_for_transition)) // Make sure not to draw Windows until transition's finished
+				drawable_map[it_zlist->GetId()]->Draw(it_zlist->GetZ());
+		}
+	}
+	skip_draw = false;
 
+	// If we are preparing for transition
+	// we're done here
+	if (prepare_transition) {
+		return;
+	}
+
+	// Print FPS if needed
 	if (fps_showing) 
 		PrintFPS();
 
 	if (Player::zoom) {
 		// TODO: Resize zoom code for BPP != 4 (and maybe zoom != x2)
 		SDL_Surface* surface = Player::main_window;
-
-		SDL_LockSurface(surface);
+		
+		if (SDL_MUSTLOCK(surface))
+			SDL_LockSurface(surface);
 		int w = Player::GetWidth();
 		int zoom_h = surface->h;
 		int pitch = surface->pitch / 4;
@@ -239,7 +278,8 @@ void Graphics::DrawFrame() {
 			dst -= pitch;
 			if (j % 2 != 0) src -= pitch;
 		}
-		SDL_UnlockSurface(surface);
+		if (SDL_MUSTLOCK(surface))
+			SDL_UnlockSurface(surface);
 		SDL_Flip(surface);
 	} else {
 		SDL_Flip(Player::main_window);
@@ -251,6 +291,10 @@ void Graphics::DrawFrame() {
 ////////////////////////////////////////////////////////////
 void Graphics::Freeze() {
 	// TODO
+	// Make a copy of current screen
+	fake_screen = SDL_DisplayFormat(Player::main_window);
+	// Screen is frozen now
+	frozen = true;
 }
 
 ////////////////////////////////////////////////////////////
@@ -262,7 +306,7 @@ void Graphics::Transition(TransitionType type, int time, bool wait) {
 	transition_frames = time;
 	transition_increment = 255/time;
 	transition_current_frame = 0;
-	is_in_transition_yet = true;
+	prepare_transition = true;
 	actual_transition = type;
 	wait_for_transition = wait;
 }

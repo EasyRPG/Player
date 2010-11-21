@@ -71,13 +71,8 @@ namespace Graphics {
 
 	extern TransitionType actual_transition;
 
-	extern SDL_Surface* fake_background;
-
-	extern int transition_frames;
-	extern int transition_current_frame;
-	extern int transition_increment;
-
 	extern bool is_in_transition_yet;
+	extern bool frozen;
 
 	//////////////////////////////////
 	//////////////////////////////////
@@ -94,7 +89,6 @@ namespace Graphics {
 
 	extern Uint32 default_backcolor;
 
-	extern Font font;
 	extern bool fps_showing;
 
 	extern std::map<unsigned long, Drawable*> drawable_map;
