@@ -76,12 +76,12 @@ void Player::Init() {
 /// Run
 ////////////////////////////////////////////////////////////
 void Player::Run() {
-	Main_Data::scene = new Scene_Title();
+	Scene::instance = new Scene_Title();
 	
 	// Main loop
-	while (Main_Data::scene_type != SCENE_NULL) {
-		Main_Data::scene->MainFunction();
-		delete Main_Data::old_scene;
+	while (Scene::type != SceneType::Null) {
+		Scene::instance->MainFunction();
+		delete Scene::old_instance;
 	}
 
 	Player::Exit();
@@ -135,8 +135,7 @@ void Player::Update() {
 				// FIXME: There is a huge memory leak here because
 				// the new button in the title scene allocates lots of new
 				// objects without freeing the old ones
-				Main_Data::scene_type = SCENE_TITLE;
-				Main_Data::scene = new Scene_Title();
+				Scene::instance = new Scene_Title();
 				break;
 			case SDLK_RETURN:
 			case SDLK_KP_ENTER:

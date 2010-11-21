@@ -477,6 +477,10 @@
 					Name="Scene"
 					>
 					<File
+						RelativePath="..\..\src\scene.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\..\src\scene.h"
 						>
 					</File>

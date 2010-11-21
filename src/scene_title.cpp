@@ -52,15 +52,9 @@
 ////////////////////////////////////////////////////////////
 /// Constructor
 ////////////////////////////////////////////////////////////
-Scene_Title::Scene_Title() {
-	Main_Data::scene_type = SCENE_TITLE;
-	command_window = NULL;
-}
-
-////////////////////////////////////////////////////////////
-/// Destructor
-////////////////////////////////////////////////////////////
-Scene_Title::~Scene_Title() {
+Scene_Title::Scene_Title() :
+	command_window(NULL) {
+	type = SceneType::Title;
 }
 
 ////////////////////////////////////////////////////////////
@@ -69,10 +63,11 @@ Scene_Title::~Scene_Title() {
 void Scene_Title::MainFunction() {
 	// Clear the cache when the game returns to title screen
 	// e.g. by pressing F12
-	if (Main_Data::old_scene != NULL)
-		Cache::Clear();
+	Cache::Clear();
 
 	// Load Database
+	Data::Clear();
+
 	if (!LDB_Reader::Load(DATABASE_NAME)) {
 		Output::ErrorStr(Reader::GetError());
 	}
@@ -126,7 +121,7 @@ void Scene_Title::MainFunction() {
 	Graphics::Transition(Graphics::FadeIn, 30, true);
 
 	// Scene loop
-	while (Main_Data::scene_type == SCENE_TITLE) {
+	while (Scene::instance == this) {
 		Player::Update();
 		Graphics::Update();
 		Input::Update();
@@ -137,7 +132,7 @@ void Scene_Title::MainFunction() {
 	delete command_window;
 	delete title;
 
-	Main_Data::old_scene = this;
+	Scene::old_instance = this;
 }
 
 ////////////////////////////////////////////////////////////
@@ -170,17 +165,17 @@ void Scene_Title::CommandNewGame() {
 	Game_Temp::Init();
 	Main_Data::game_screen = new Game_Screen();
 	Game_Actors::Init();
-	Main_Data::game_party = new Game_Party();
+	Game_Party::Init();
 	Main_Data::game_troop = new Game_Troop();
 	Game_Map::Init();
 	Main_Data::game_player = new Game_Player();
-	Main_Data::game_party->SetupStartingMembers();
+	Game_Party::SetupStartingMembers();
 	Game_Map::Setup(Data::treemap.start_map_id);
 	Main_Data::game_player->MoveTo(Data::treemap.start_x, Data::treemap.start_y);
 	Main_Data::game_player->Refresh();
 	Game_Map::Autoplay();
 	Game_Map::Update();
-	Main_Data::scene = new Scene_Map();
+	Scene::instance = new Scene_Map();
 }
 
 ////////////////////////////////////////////////////////////
@@ -197,10 +192,8 @@ void Scene_Title::CommandContinue() {
 /// CommandShutdown
 ////////////////////////////////////////////////////////////
 void Scene_Title::CommandShutdown() {
-	// Play decision SE
 	Game_System::SePlay(Data::system.decision_se);
-	// Fade out Music
 	Audio::BGS_Fade(800);
-	// Shutdown
-	Main_Data::scene_type = SCENE_NULL;
+	type = SceneType::Null;
+	instance = NULL;
 }

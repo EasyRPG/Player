@@ -700,16 +700,16 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 			SDL_BlitSurface(char_shadow, NULL, text_surface, &shadow_r);
 			SDL_BlitSurface(char_surface, NULL, text_surface, &rect);
 
-			// Done
-			SDL_FreeSurface(mask);
-			SDL_FreeSurface(char_surface);
-			SDL_FreeSurface(char_shadow);
 #else
 			char_shadow = SDL_ConvertSurface(char_surface, char_surface->format, char_surface->flags);
 			SDL_Rect rect = {(exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12};
 			SDL_BlitSurface(exfont, &rect, char_surface, NULL);
 			SDL_BlitSurface(exfont, &rect, char_shadow, NULL);
 #endif
+			// Done
+			SDL_FreeSurface(mask);
+			SDL_FreeSurface(char_surface);
+			SDL_FreeSurface(char_shadow);
 		} else {
 			// No EXFONT, draw normal text
 #if FONT_SMOOTHING == 0
@@ -767,12 +767,11 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 			// Blit first shadow and then text
 			SDL_BlitSurface(char_shadow, NULL, text_surface, &dst);
 			SDL_BlitSurface(text_surface_aux, NULL, text_surface, NULL);
-
+#endif
 			// Done
 			SDL_FreeSurface(mask);
 			SDL_FreeSurface(char_surface);
 			SDL_FreeSurface(char_shadow);
-#endif
 		}
 
 		if (!char_surface //|| !char_shadow
@@ -903,6 +902,7 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 #ifndef USE_ALPHA
 	SDL_FreeSurface(text_surface_aux);
 #endif
+	SDL_FreeSurface(exfont); // FIXME : Exfont should be cached
 }
 
 ////////////////////////////////////////////////////////////

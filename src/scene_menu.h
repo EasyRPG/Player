@@ -32,7 +32,6 @@
 class Scene_Menu : public Scene {
 public:
 	Scene_Menu(int menu_index = 0);
-	~Scene_Menu();
 
 	void MainFunction();
 	void Update();

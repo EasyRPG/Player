@@ -29,19 +29,9 @@
 ////////////////////////////////////////////////////////////
 /// Constructor
 ////////////////////////////////////////////////////////////
-Scene_Menu::Scene_Menu(int menu_index) {
-	this->menu_index = menu_index;
-
-	Main_Data::scene_type = SCENE_MENU;
-}
-
-////////////////////////////////////////////////////////////
-/// Destructor
-////////////////////////////////////////////////////////////
-Scene_Menu::~Scene_Menu() {
-	delete command_window;
-	delete gold_window;
-	delete menustatus_window;
+Scene_Menu::Scene_Menu(int menu_index) :
+	menu_index(menu_index) {
+	type = SceneType::Menu;
 }
 
 ////////////////////////////////////////////////////////////
@@ -61,7 +51,7 @@ void Scene_Menu::MainFunction() {
 
 	// If there are no actors in the party disable Skills and Equipment
 	// RPG2k does not do this, but crashes if you try to access these menus
-	if (Main_Data::game_party->actors.size() == 0) {
+	if (Game_Party::GetActors().empty()) {
 		command_window->DisableItem(1);
 		command_window->DisableItem(2);
 	}
@@ -84,7 +74,7 @@ void Scene_Menu::MainFunction() {
 
 	Graphics::Transition(Graphics::FadeIn, 10, false);
 
-	while (Main_Data::scene_type == SCENE_MENU) {
+	while (type == SceneType::Menu) {
 		Player::Update();
 		Graphics::Update();
 		Input::Update();
@@ -93,12 +83,16 @@ void Scene_Menu::MainFunction() {
 
 	Graphics::Transition(Graphics::FadeOut, 10, false);
 
-	// Wait for the transition to finish
+	// Wait for the transition to finish // FIXME
 	do {
 		Graphics::Update();
 	} while (Graphics::is_in_transition_yet);
 
-	Main_Data::old_scene = this;
+	delete command_window;
+	delete gold_window;
+	delete menustatus_window;
+
+	Scene::old_instance = this;
 }
 
 ////////////////////////////////////////////////////////////
@@ -122,7 +116,7 @@ void Scene_Menu::Update() {
 void Scene_Menu::UpdateCommand() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Data::system.cancel_se);
-		Main_Data::scene = new Scene_Map();
+		Scene::instance = new Scene_Map();
 	}
 }
 

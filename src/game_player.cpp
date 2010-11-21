@@ -152,12 +152,12 @@ void Game_Player::Update() {
 void Game_Player::Refresh() {
 	Game_Actor* actor;
 
-	if (Main_Data::game_party->actors.empty()) {
+	if (Game_Party::GetActors().empty()) {
 		character_name.clear();
 		return;
 	}
 
-	actor = Main_Data::game_party->actors[0];
+	actor = Game_Party::GetActors()[0];
 
 	character_name = actor->GetName();
 }

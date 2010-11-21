@@ -34,28 +34,18 @@ Game_Variables_Class Game_Variables;
 Game_Switches_Class Game_Switches;
 
 namespace Main_Data {
-	// Scene Data
-	Scene* scene = NULL;
-	Scene* old_scene = NULL;
-	unsigned char scene_type;
-	
 	// Dynamic Game Data
 	Game_Screen* game_screen = NULL;
 	Game_Player* game_player = NULL;
-	Game_Party* game_party = NULL;
 	Game_Troop* game_troop = NULL;
 	Game_Message* game_message = NULL;
 }
 
 void Main_Data::Cleanup() {
-	delete scene;
 	delete game_screen;
-	delete game_party;
 	delete game_troop;
 	delete game_player;
-	scene = NULL;
 	game_screen = NULL;
-	game_party = NULL;
 	game_troop = NULL;
 	game_player = NULL;
 }

@@ -146,6 +146,7 @@
     <ClCompile Include="..\..\src\player.cpp" />
     <ClCompile Include="..\..\src\rect.cpp" />
     <ClCompile Include="..\..\src\registry_win.cpp" />
+    <ClCompile Include="..\..\src\scene.cpp" />
     <ClCompile Include="..\..\src\scene_map.cpp" />
     <ClCompile Include="..\..\src\scene_menu.cpp" />
     <ClCompile Include="..\..\src\scene_title.cpp" />

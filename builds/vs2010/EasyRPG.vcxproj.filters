@@ -192,6 +192,9 @@
     <ClCompile Include="..\..\src\game_event.cpp">
       <Filter>Source Files\Engine\Game</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\scene.cpp">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cache.h">

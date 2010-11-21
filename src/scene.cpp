@@ -18,37 +18,9 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <sstream>
-#include "window_gold.h"
-#include "game_party.h"
-#include "main_data.h"
+#include "scene.h"
 
 ////////////////////////////////////////////////////////////
-/// Constructor
-////////////////////////////////////////////////////////////
-Window_Gold::Window_Gold() : Window_Base(0, 0, 88, 32) {
-	contents = new Bitmap(width-16, height-16);
-
-	Refresh();
-}
-
-////////////////////////////////////////////////////////////
-/// Destructor
-////////////////////////////////////////////////////////////
-Window_Gold::~Window_Gold() {
-}
-
-////////////////////////////////////////////////////////////
-/// Refresh
-////////////////////////////////////////////////////////////
-void Window_Gold::Refresh() {
-	contents->Clear();
-	Rect rect(0, 0, contents->GetWidth(), 16);
-	std::stringstream gold;
-	gold << Game_Party::GetGold();
-	gold << Data::terms.gold;
-	
-	contents->FillofColor(rect, windowskin->GetColorKey());
-	contents->SetColorKey(windowskin->GetColorKey());
-	contents->TextDraw(rect, gold.str(), 2);
-}
+Scene* Scene::instance;
+SceneType Scene::type;
+Scene* Scene::old_instance;

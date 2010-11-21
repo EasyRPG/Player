@@ -35,19 +35,10 @@
 ////////////////////////////////////////////////////////////
 /// Constructor
 ////////////////////////////////////////////////////////////
-Scene_Map::Scene_Map() {
-	message_window = NULL;
-	spriteset = NULL;
-	
-	Main_Data::scene_type = SCENE_MAP;
-}
-
-////////////////////////////////////////////////////////////
-/// Destructor
-////////////////////////////////////////////////////////////
-Scene_Map::~Scene_Map() {
-	delete spriteset;
-	//delete message_window;
+Scene_Map::Scene_Map() : 
+	message_window(NULL),
+	spriteset(NULL) {
+	type = SceneType::Map;
 }
 
 ////////////////////////////////////////////////////////////
@@ -60,7 +51,7 @@ void Scene_Map::MainFunction() {
 	Graphics::Transition(Graphics::FadeIn, 10, true);
 
 	// Scene loop
-	while (Main_Data::scene_type == SCENE_MAP) {
+	while (type == SceneType::Map) {
 		Player::Update();
 		Graphics::Update();
 		Input::Update();
@@ -69,12 +60,14 @@ void Scene_Map::MainFunction() {
 
 	Graphics::Transition(Graphics::FadeOut, 10, false);
 
-	// Wait for the transition to finish
+	// Wait for the transition to finish // FIXME
 	do {
 		Graphics::Update();
 	} while (Graphics::is_in_transition_yet);
 
-	Main_Data::old_scene = this;
+	delete spriteset;
+
+	Scene::old_instance = this;
 }
 
 ////////////////////////////////////////////////////////////
@@ -130,7 +123,7 @@ void Scene_Map::CallMenu() {
 
 	// TODO: Main_Data::game_player->Straighten();
 
-	Main_Data::scene = new Scene_Menu();
+	Scene::instance = new Scene_Menu();
 }
 
 void Scene_Map::CallSave() {

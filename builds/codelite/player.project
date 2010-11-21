@@ -50,6 +50,7 @@
       <File Name="../../src/scene_map.h"/>
       <File Name="../../src/scene_menu.cpp"/>
       <File Name="../../src/scene_menu.h"/>
+      <File Name="../../src/scene.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Window">
       <File Name="../../src/window_base.cpp"/>
@@ -64,6 +65,12 @@
       <File Name="../../src/window_message.cpp"/>
       <File Name="../../src/window_menustatus.cpp"/>
       <File Name="../../src/window_menustatus.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="Sprite">
+      <File Name="../../src/sprite_character.cpp"/>
+      <File Name="../../src/sprite_character.h"/>
+      <File Name="../../src/spriteset_map.cpp"/>
+      <File Name="../../src/spriteset_map.h"/>
     </VirtualDirectory>
   </VirtualDirectory>
   <VirtualDirectory Name="Multimedia">
@@ -97,10 +104,6 @@
       <File Name="../../src/tone.h"/>
       <File Name="../../src/window.cpp"/>
       <File Name="../../src/window.h"/>
-      <File Name="../../src/sprite_character.h"/>
-      <File Name="../../src/sprite_character.cpp"/>
-      <File Name="../../src/spriteset_map.h"/>
-      <File Name="../../src/spriteset_map.cpp"/>
       <File Name="../../src/zobj.cpp"/>
       <File Name="../../src/zobj.h"/>
     </VirtualDirectory>

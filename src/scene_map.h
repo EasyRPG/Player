@@ -31,7 +31,6 @@
 class Scene_Map: public Scene {
 public:
 	Scene_Map();
-	~Scene_Map();
 
 	void MainFunction();
 	void Update();

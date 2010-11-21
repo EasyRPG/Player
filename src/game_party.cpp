@@ -26,41 +26,45 @@
 #include "util_macro.h"
 
 ////////////////////////////////////////////////////////////
-/// Constructor
+namespace {
+	int gold;
+	int steps;
+	std::vector<Game_Actor*> actors;
+	std::map<int, int> items;
+
+	int battle_count;
+	int win_count;
+	int defeat_count;
+	int run_count;
+}
+
 ////////////////////////////////////////////////////////////
-Game_Party::Game_Party() {
+void Game_Party::Init() {
 	gold = 0;
 	steps = 0;
+	actors.clear();
+	items.clear();
+
+	battle_count = 0;
+	win_count = 0;
+	defeat_count = 0;
+	run_count = 0;
 }
 
-////////////////////////////////////////////////////////////
-/// Destructor
-////////////////////////////////////////////////////////////
-Game_Party::~Game_Party() {
-
-}
-
-////////////////////////////////////////////////////////////
-/// SetupStartingMembers
 ////////////////////////////////////////////////////////////
 void Game_Party::SetupStartingMembers() {
 	actors.clear();
 	for (size_t i = 0; i < Data::system.party.size(); ++i) {
-		Game_Actor* actor;
-		actor = Game_Actors::GetActor(Data::system.party[i]);
+		Game_Actor* actor = Game_Actors::GetActor(Data::system.party[i]);
 
 		if (actor == NULL) {
-			Output::Warning(
-				"Invalid actor (Id: %d) in initial party at index %d.",
-				Data::system.party[i], i);
+			Output::Error("Invalid actor (Id: %d) in initial party at index %d.", Data::system.party[i], i);
 		} else {
 			actors.push_back(actor);
 		}
 	}
 }
 
-////////////////////////////////////////////////////////////
-/// Item Number
 ////////////////////////////////////////////////////////////
 int Game_Party::ItemNumber(int item_id) {
 	std::map<int, int>::iterator it;
@@ -75,13 +79,12 @@ int Game_Party::ItemNumber(int item_id) {
 
 
 ////////////////////////////////////////////////////////////
-/// Gain Gold
-////////////////////////////////////////////////////////////
 void Game_Party::GainGold(int n) {
 	int a = gold + n;
 	gold = min(max(a, 0), 9999999);
 }
 
+////////////////////////////////////////////////////////////
 void Game_Party::GainItem(int item_id, int n) {
 	int a;
 	if (item_id > 0) {
@@ -90,6 +93,7 @@ void Game_Party::GainItem(int item_id, int n) {
 	}
 }
 
+////////////////////////////////////////////////////////////
 void Game_Party::AddActor(int actor_id) {
 	Game_Actor* actor;
 
@@ -102,11 +106,42 @@ void Game_Party::AddActor(int actor_id) {
 	}
 }
 
+////////////////////////////////////////////////////////////
 void Game_Party::RemoveActor(int actor_id) {
 	actors.erase(std::find(actors.begin(), actors.end(), Game_Actors::GetActor(actor_id)));
 	Main_Data::game_player->Refresh();
 }
 
+////////////////////////////////////////////////////////////
 bool Game_Party::IsActorInParty(Game_Actor* actor) {	
 	return ( std::find(actors.begin(), actors.end(), actor) != actors.end() );
+}
+
+////////////////////////////////////////////////////////////
+int Game_Party::GetGold() {
+	return gold;
+}
+
+int Game_Party::GetSteps() {
+	return steps;
+}
+
+std::vector<Game_Actor*>& Game_Party::GetActors() {
+	return actors;
+}
+
+int Game_Party::GetBattleCount() {
+	return battle_count;
+}
+
+int Game_Party::GetWinCount() {
+	return win_count;
+}
+
+int Game_Party::GetDefeatCount() {
+	return defeat_count;
+}
+
+int Game_Party::GetRunCount() {
+	return run_count;
 }

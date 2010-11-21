@@ -50,12 +50,12 @@ void Window_MenuStatus::Refresh() {
 	
 
 	int offset = 0;
-	for (unsigned i = 0; i < Main_Data::game_party->actors.size(); ++i)
+	for (size_t i = 0; i < Game_Party::GetActors().size(); ++i)
 	{
-		DrawActorGraphic(Main_Data::game_party->actors[i], 0, i*48 + offset);
+		DrawActorGraphic(Game_Party::GetActors()[i], 0, i*48 + offset);
 
 		// (48 + 8, 4)
-		DrawActorName(Main_Data::game_party->actors[i], 48 + 8, i*48 + 4 + offset);
+		DrawActorName(Game_Party::GetActors()[i], 48 + 8, i*48 + 4 + offset);
 		offset += 10;
 	}
 }

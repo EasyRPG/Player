@@ -18,35 +18,50 @@
 #ifndef _SCENE_H_
 #define _SCENE_H_
 
-////////////////////////////////////////////////////////////
 /// Scene types
-////////////////////////////////////////////////////////////
-#define SCENE_NULL 0
-#define SCENE_TITLE 1
-#define SCENE_MAP 2
-#define SCENE_MENU 3
-#define SCENE_ITEM 4
-#define SCENE_SKILL 5
-#define SCENE_EQUIP 6
-#define SCENE_STATUS 7
-#define SCENE_FILE 8
-#define SCENE_SAVE 9
-#define SCENE_LOAD 10
-#define SCENE_END 11
-#define SCENE_BATTLE 12
-#define SCENE_SHOP 13
-#define SCENE_NAME 14
-#define SCENE_GAMEOVER 15
-#define SCENE_DEBUG 16
+enum SceneType {
+	Null,
+	Title,
+	Map,
+	Menu,
+	Item,
+	Skill,
+	Equip,
+	Status,
+	File,
+	Save,
+	Load,
+	End,
+	Battle,
+	Shop,
+	Name,
+	Gameover,
+	Debug
+};
 
 ////////////////////////////////////////////////////////////
 /// Scene virtual class
 ////////////////////////////////////////////////////////////
 class Scene {
 public:
+	////////////////////////////////////////////////////////
+	/// Destructor.
+	////////////////////////////////////////////////////////
 	virtual ~Scene() {};
 
+	////////////////////////////////////////////////////////
+	/// Scene entry point.
+	////////////////////////////////////////////////////////
 	virtual void MainFunction() =0;
+
+	/// Current scene.
+	static Scene* instance;
+
+	/// Current scene type.
+	static SceneType type;
+
+	/// Old scene, temporary save for deleting.
+	static Scene* old_instance;
 };
 
 #endif
