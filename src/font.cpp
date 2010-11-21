@@ -25,7 +25,7 @@
 ////////////////////////////////////////////////////////////
 /// Static Variables
 ////////////////////////////////////////////////////////////
-const std::string Font::default_name = "Font/DejaVuLGCSansMono";
+const std::string Font::default_name = FileFinder::DefaultFont();
 const int Font::default_size = 9;
 const bool Font::default_bold = false;
 const bool Font::default_italic = false;
@@ -81,7 +81,6 @@ TTF_Font* Font::GetTTF() const {
 		return fonts[name][size];
 	} else {
 		std::string path = FileFinder::FindFont(name);
-		if (path.empty()) path = FileFinder::DefaultFont();
 		TTF_Font* ttf_font = TTF_OpenFont(path.c_str(), size);
 		if (!ttf_font) {
 			Output::Error("Couldn't open font %s size %d.\n%s\n", name.c_str(), size, TTF_GetError());
