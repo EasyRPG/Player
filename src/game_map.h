@@ -160,33 +160,33 @@ namespace Game_Map {
 	int GetHeight();
 
 	/// @return battle encounters list
-	std::vector<RPG::Encounter> GetEncounterList();
+	std::vector<RPG::Encounter>& GetEncounterList();
 
 	/// @return battle encounter left steps
 	int GetEncounterStep();
 
 	/// @return lower layer map data
-	std::vector<short> GetMapDataDown();
+	std::vector<short>& GetMapDataDown();
 
 	/// @return upper layer map data
-	std::vector<short> GetMapDataUp();
+	std::vector<short>& GetMapDataUp();
 
 	/// @return chipset filename
-	std::string GetChipsetName();
+	std::string& GetChipsetName();
 
 	/// Set the chipset name
 	/// @param chipset_name : new chipset name
 	void SetChipsetName(std::string chipset_name);
 
 	/// @return battleback filename
-	std::string GetBattlebackName();
+	std::string& GetBattlebackName();
 
 	/// Set the battleback name
 	/// @param battleback_name : new battleback name
 	void SetBattlebackName(std::string battleback_name);
 
 	/// @return panorama filename
-	std::string GetPanoramaName();
+	std::string& GetPanoramaName();
 
 	/// Set the panorama name
 	/// @param panorama_name : new panorama name
@@ -228,16 +228,16 @@ namespace Game_Map {
 	void SetNeedRefresh(bool need_refresh);
 
 	/// @return lower passages list
-	std::vector<unsigned char> GetPassagesDown();
+	std::vector<unsigned char>& GetPassagesDown();
 
 	/// @return upper passages list
-	std::vector<unsigned char> GetPassagesUp();
+	std::vector<unsigned char>& GetPassagesUp();
 
 	/// @return terrain tags list
-	std::vector<short> GetTerrainTags();
+	std::vector<short>& GetTerrainTags();
 
 	/// @return events list
-	std::vector<Game_Event*> GetEvents();
+	std::vector<Game_Event*>& GetEvents();
 };
 
 #endif

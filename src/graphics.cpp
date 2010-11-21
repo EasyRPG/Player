@@ -85,7 +85,7 @@ void Graphics::Init() {
 	transition_increment = 0;
 	actual_transition = NoTransition;
 	fake_screen = NULL;
-	blank_screen = SDL_ConvertSurface(Player::main_window, Player::main_window->format, Player::main_window->flags);
+	blank_screen = SDL_DisplayFormat(Player::main_surface);
 	SDL_FillRect(blank_screen, NULL, 0);
 
 	is_in_transition_yet = false;
@@ -184,16 +184,16 @@ void Graphics::DoTransition() {
 	if (transition_current_frame <= transition_frames) {
 		switch (actual_transition) {
 			case FadeIn:
-				SDL_FillRect(Player::main_window, NULL, 0);
+				SDL_FillRect(Player::main_surface, NULL, 0);
 				SDL_SetAlpha(fake_screen, SDL_SRCALPHA, transition_current_frame*transition_increment);
-				SDL_BlitSurface(fake_screen, NULL, Player::main_window, NULL);
+				SDL_BlitSurface(fake_screen, NULL, Player::main_surface, NULL);
 				////////
 				break;
 
 			case FadeOut:
 				SDL_SetAlpha(blank_screen, SDL_SRCALPHA, transition_current_frame*transition_increment);
 				SDL_BlitSurface(blank_screen, NULL, fake_screen, NULL);
-				SDL_BlitSurface(fake_screen, NULL, Player::main_window, NULL);
+				SDL_BlitSurface(fake_screen, NULL, Player::main_surface, NULL);
 
 				break;
 
@@ -219,13 +219,54 @@ void Graphics::DoTransition() {
 	}
 }
 
+void Graphics::zoom2X(SDL_Surface* src, SDL_Surface* dst) {
+	int h, w, t, t2, w2, m = 0, m2 = 0;
+
+	if (SDL_MUSTLOCK(src))
+		SDL_LockSurface(src);
+
+	if (SDL_MUSTLOCK(dst))
+		SDL_LockSurface(dst);
+
+	Uint32* src_pixels = (Uint32*) src->pixels;
+	Uint32* dst_pixels = (Uint32*) dst->pixels;
+
+	Uint32 pixel;
+
+	h = src->h;
+	w = src->w;
+
+	w2 = dst->w;
+
+	t = (src->pitch / src->format->BytesPerPixel) - w;
+	t2 = (dst->pitch / dst->format->BytesPerPixel) - w2;
+
+	for (register int i = 0, i2 = 0; i < h; i++, i2 += 2) {
+		for (register int j = 0, j2 = 0; j < w; j++, j2 += 2) {
+			pixel = src_pixels[i*w+j+m];
+			dst_pixels[i2*w2+j2+m2] = pixel;
+			dst_pixels[i2*w2+j2+m2+1] = pixel;
+			dst_pixels[(i2+1)*w2+j2+m2] = pixel;
+			dst_pixels[(i2+1)*w2+j2+m2+1] = pixel;
+		}
+		m = t*i;
+		m2 = t2*i2;
+	}
+
+	if (SDL_MUSTLOCK(src))
+		SDL_UnlockSurface(src);
+
+	if (SDL_MUSTLOCK(dst))
+		SDL_UnlockSurface(dst);
+}
+
 void Graphics::PrintFPS() {
 	std::stringstream text;
 	SDL_Color fg_color = { 255, 255, 255, 0 };
 	SDL_Surface* text_surface;
 	text << "FPS: " << fps;
 	text_surface = TTF_RenderText_Solid(font.GetTTF(), text.str().c_str(), fg_color);
-	SDL_BlitSurface(text_surface, NULL, Player::main_window, NULL);
+	SDL_BlitSurface(text_surface, NULL, Player::main_surface, NULL);
 	SDL_FreeSurface(text_surface);
 }
 
@@ -238,7 +279,7 @@ void Graphics::DrawFrame() {
 	}
 
 	if ( (!frozen) && (!skip_draw) ) {
-		SDL_FillRect(Player::main_window, &Player::main_window->clip_rect, default_backcolor);
+		SDL_FillRect(Player::main_surface, &Player::main_surface->clip_rect, default_backcolor);
 		DrawableType type;
 		for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
 			type = drawable_map[it_zlist->GetId()]->GetType();
@@ -260,30 +301,9 @@ void Graphics::DrawFrame() {
 		PrintFPS();
 
 	if (Player::zoom) {
-		// TODO: Resize zoom code for BPP != 4 (and maybe zoom != x2)
-		SDL_Surface* surface = Player::main_window;
-		
-		if (SDL_MUSTLOCK(surface))
-			SDL_LockSurface(surface);
-		int w = Player::GetWidth();
-		int zoom_h = surface->h;
-		int pitch = surface->pitch / 4;
-		Uint32* src = (Uint32*) surface->pixels + pitch * Player::GetHeight();
-		Uint32* dst = (Uint32*) surface->pixels + pitch * (zoom_h - 1);
-		for (register int j = zoom_h - 1; j >= 0; j--) {
-			for (register int i = w - 1; i >= 0 ; i--) {
-				dst[i * 2] = src[i];
-				dst[i * 2 + 1] = src[i];
-			}
-			dst -= pitch;
-			if (j % 2 != 0) src -= pitch;
-		}
-		if (SDL_MUSTLOCK(surface))
-			SDL_UnlockSurface(surface);
-		SDL_Flip(surface);
-	} else {
-		SDL_Flip(Player::main_window);
+		zoom2X(Player::main_surface, Player::main_window);
 	}
+	SDL_UpdateRect(Player::main_window, 0, 0, 0, 0);
 }
 
 ////////////////////////////////////////////////////////////
@@ -292,7 +312,7 @@ void Graphics::DrawFrame() {
 void Graphics::Freeze() {
 	// TODO
 	// Make a copy of current screen
-	fake_screen = SDL_DisplayFormat(Player::main_window);
+	fake_screen = SDL_DisplayFormat(Player::main_surface);
 	// Screen is frozen now
 	frozen = true;
 }
@@ -312,7 +332,7 @@ void Graphics::Transition(TransitionType type, int time, bool wait) {
 }
 
 void Graphics::SetDefaultBackcolor(const SDL_Color& color) {
-	default_backcolor = SDL_MapRGB(Player::main_window->format, color.r, color.g, color.b);
+	default_backcolor = SDL_MapRGB(Player::main_surface->format, color.r, color.g, color.b);
 }
 
 ////////////////////////////////////////////////////////////

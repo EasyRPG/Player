@@ -33,6 +33,8 @@
 ////////////////////////////////////////////////////////////
 namespace Player {
 	SDL_Surface* main_window;
+	// Everything will be blit here
+	SDL_Surface* main_surface;
 	bool focus;
 	bool alt_pressing;
 	bool fullscreen;
@@ -80,8 +82,8 @@ void Player::Run() {
 	
 	// Main loop
 	while (Scene::type != SceneType::Null) {
-		Scene::instance->MainFunction();
 		delete Scene::old_instance;
+		Scene::instance->MainFunction();		
 	}
 
 	Player::Exit();
@@ -178,6 +180,7 @@ void Player::Update() {
 /// Exit
 ////////////////////////////////////////////////////////////
 void Player::Exit() {
+	SDL_FreeSurface(main_surface);
 	Main_Data::Cleanup();
 	Graphics::Quit();
 	Audio::Quit();
@@ -260,11 +263,21 @@ bool Player::RefreshVideoMode() {
 	int video_height = height;
 
 	if (zoom) {
+		main_surface = SDL_CreateRGBSurface(SDL_SWSURFACE, video_width, video_height, BPP, 0, 0, 0, 0);
 		video_width *= 2;
 		video_height *= 2;
 	}
 
 	main_window = SDL_SetVideoMode(video_width, video_height, BPP, flags);
+
+	if (!zoom) {
+		// Free resources 
+		SDL_FreeSurface(main_surface);
+
+		// Write directly to main_window
+		main_surface = main_window;
+	}
+
 	return main_window != NULL;
 }
 

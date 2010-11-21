@@ -235,7 +235,7 @@ int Game_Map::GetHeight() {
 	return map->height;
 }
 
-std::vector<RPG::Encounter> Game_Map::GetEncounterList() {
+std::vector<RPG::Encounter>& Game_Map::GetEncounterList() {
 	return Data::treemap.maps[map_id].encounters;
 }
 
@@ -243,30 +243,30 @@ int Game_Map::GetEncounterStep() {
 	return Data::treemap.maps[map_id].encounter_steps;
 }
 
-std::vector<short> Game_Map::GetMapDataDown() {
+std::vector<short>& Game_Map::GetMapDataDown() {
 	return map->lower_layer;
 }
 
-std::vector<short> Game_Map::GetMapDataUp() {
+std::vector<short>& Game_Map::GetMapDataUp() {
 	return map->upper_layer;
 }
 
 ////////////////////////////////////////////////////////////
-std::string Game_Map::GetChipsetName() {
+std::string& Game_Map::GetChipsetName() {
 	return chipset_name;
 }
 void Game_Map::SetChipsetName(std::string new_chipset_name) {
 	chipset_name = new_chipset_name;
 }
 
-std::string Game_Map::GetBattlebackName() {
+std::string& Game_Map::GetBattlebackName() {
 	return battleback_name;
 }
 void Game_Map::SetBattlebackName(std::string new_battleback_name) {
 	battleback_name = new_battleback_name;
 }
 
-std::string Game_Map::GetPanoramaName() {
+std::string& Game_Map::GetPanoramaName() {
 	return panorama_name;
 }
 void Game_Map::SetPanoramaName(std::string new_panorama_name) {
@@ -309,18 +309,18 @@ void Game_Map::SetNeedRefresh(bool new_need_refresh) {
 }
 
 ////////////////////////////////////////////////////////////
-std::vector<unsigned char> Game_Map::GetPassagesDown() {
+std::vector<unsigned char>& Game_Map::GetPassagesDown() {
 	return Data::chipsets[map->chipset_id].passable_data_lower;
 }
 
-std::vector<unsigned char> Game_Map::GetPassagesUp() {
+std::vector<unsigned char>& Game_Map::GetPassagesUp() {
 	return Data::chipsets[map->chipset_id].passable_data_upper;
 }
 
-std::vector<short> Game_Map::GetTerrainTags() {
+std::vector<short>& Game_Map::GetTerrainTags() {
 	return Data::chipsets[map->chipset_id].terrain_data;
 }
 
-std::vector<Game_Event*> Game_Map::GetEvents() {
+std::vector<Game_Event*>& Game_Map::GetEvents() {
 	return events;
 }

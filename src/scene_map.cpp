@@ -60,11 +60,6 @@ void Scene_Map::MainFunction() {
 
 	Graphics::Transition(Graphics::FadeOut, 10, false);
 
-	// Wait for the transition to finish // FIXME
-	do {
-		Graphics::Update();
-	} while (Graphics::is_in_transition_yet);
-
 	delete spriteset;
 
 	Scene::old_instance = this;

@@ -69,6 +69,8 @@ namespace Graphics {
 	void Transition(TransitionType type, int time, bool wait);
 	void DoTransition();
 
+	void zoom2X(SDL_Surface* src, SDL_Surface* dst);
+
 	extern TransitionType actual_transition;
 
 	extern bool is_in_transition_yet;

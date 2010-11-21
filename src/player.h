@@ -44,6 +44,7 @@ namespace Player {
 	int GetHeight();
 
 	extern SDL_Surface* main_window;
+	extern SDL_Surface* main_surface;
 	extern bool focus;
 	extern bool alt_pressing;
 	extern bool fullscreen;

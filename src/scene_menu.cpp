@@ -84,11 +84,6 @@ void Scene_Menu::MainFunction() {
 
 	Graphics::Transition(Graphics::FadeOut, 10, false);
 
-	// Wait for the transition to finish // FIXME
-	do {
-		Graphics::Update();
-	} while (Graphics::is_in_transition_yet);
-
 	delete command_window;
 	delete gold_window;
 	delete menustatus_window;
