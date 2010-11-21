@@ -443,17 +443,17 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 				tile.z = 0;
 
 				// Check if passable data was set
-				if (passable.size() > 0) {
+				if (!passable.empty()) {
 					if (tile.ID >= BLOCK_E && tile.ID < BLOCK_E + BLOCK_E_TILES) {
 						// If tile is from block E
 
 						// Check if the over property is set
-						if (passable[18 + tile.ID - BLOCK_E] & (1 << 4)) tile.z = 16;
+						if (passable[tile.ID - BLOCK_E] & (1 << 4)) tile.z = 16;
 					} else if (tile.ID >= BLOCK_F && tile.ID < BLOCK_F + BLOCK_F_TILES) {
 						// If tile is from block F
 
 						// Check if the over property is set
-						if (passable[18 + tile.ID - BLOCK_F] & (1 << 4)) tile.z = 32;
+						if (passable[tile.ID - BLOCK_F] & (1 << 4)) tile.z = 32;
 					}
 				}
 				data_cache[x][y] = tile;

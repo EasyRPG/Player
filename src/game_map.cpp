@@ -310,15 +310,15 @@ void Game_Map::SetNeedRefresh(bool new_need_refresh) {
 
 ////////////////////////////////////////////////////////////
 std::vector<unsigned char>& Game_Map::GetPassagesDown() {
-	return Data::chipsets[map->chipset_id].passable_data_lower;
+	return Data::chipsets[map->chipset_id - 1].passable_data_lower;
 }
 
 std::vector<unsigned char>& Game_Map::GetPassagesUp() {
-	return Data::chipsets[map->chipset_id].passable_data_upper;
+	return Data::chipsets[map->chipset_id - 1].passable_data_upper;
 }
 
 std::vector<short>& Game_Map::GetTerrainTags() {
-	return Data::chipsets[map->chipset_id].terrain_data;
+	return Data::chipsets[map->chipset_id - 1].terrain_data;
 }
 
 std::vector<Game_Event*>& Game_Map::GetEvents() {
