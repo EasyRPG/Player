@@ -207,7 +207,7 @@ std::string FileFinder::FindFont(std::string name) {
 ////////////////////////////////////////////////////////////
 std::string FileFinder::DefaultFont() {
 	// TODO
-	return "";
+	return "Font/DejaVuLGCSansMono";
 }
 
 #endif
