@@ -48,6 +48,10 @@ namespace Player {
 	int last_height;
 }
 
+namespace {
+		int IgnoreNonFocusEvents(const SDL_Event* e);
+}
+
 ////////////////////////////////////////////////////////////
 /// Initialize
 ////////////////////////////////////////////////////////////
@@ -106,74 +110,99 @@ void Player::Update() {
 			break;
 		}
 
-		if (evnt.type == SDL_QUIT) {
-			Exit();
-			exit(EXIT_SUCCESS);
-		} else if (evnt.type == SDL_KEYDOWN) {
-			switch (evnt.key.keysym.sym) {
-			case SDLK_F4:
-				// AltGr+F4 does nothing
-				if (!(evnt.key.keysym.mod & KMOD_RALT)) {
-#ifdef _WIN32
-					// Close Program on LeftAlt+F4
-					if (evnt.key.keysym.mod & KMOD_LALT) {
-						Exit();
-						exit(EXIT_SUCCESS);
-					}
-#endif
-					// Otherwise F4 toogles fullscreen
-					StartVideoModeChange();
-					ToggleFullscreen();
-					EndVideoModeChange();
+		switch (evnt.type) {
+			case SDL_QUIT:
+				Exit();
+				exit(EXIT_SUCCESS);
+				break;
+			case SDL_KEYDOWN:
+				switch (evnt.key.keysym.sym) {
+					case SDLK_F4:
+						// AltGr+F4 does nothing
+						if (!(evnt.key.keysym.mod & KMOD_RALT)) {
+							#ifdef _WIN32
+							// Close Program on LeftAlt+F4
+							if (evnt.key.keysym.mod & KMOD_LALT) {
+								Exit();
+								exit(EXIT_SUCCESS);
+							}
+							#endif
+							// Otherwise F4 toogles fullscreen
+							StartVideoModeChange();
+							ToggleFullscreen();
+							EndVideoModeChange();
+						}
+						break;
+					case SDLK_F5:
+						// F5 for Zoom
+						StartVideoModeChange();
+						ToggleZoom();
+						EndVideoModeChange();
+						break;
+					case SDLK_F12:
+						// FIXME: There is a huge memory leak here because
+						// the new button in the title scene allocates lots of new
+						// objects without freeing the old ones
+						Scene::instance = new Scene_Title();
+						break;
+					case SDLK_RETURN:
+					case SDLK_KP_ENTER:
+						// Fullscreen on Alt+Enter
+						if (evnt.key.keysym.mod & KMOD_LALT ||
+							(evnt.key.keysym.mod & KMOD_RALT)) {
+							StartVideoModeChange();
+							ToggleFullscreen();
+							EndVideoModeChange();
+						}
+						break;
+					default:
+						break;
 				}
 				break;
-			case SDLK_F5:
-				// F5 for Zoom
-				StartVideoModeChange();
-				ToggleZoom();
-				EndVideoModeChange();
-				break;
-			case SDLK_F12:
-				// FIXME: There is a huge memory leak here because
-				// the new button in the title scene allocates lots of new
-				// objects without freeing the old ones
-				Scene::instance = new Scene_Title();
-				break;
-			case SDLK_RETURN:
-			case SDLK_KP_ENTER:
-				// Fullscreen on Alt+Enter
-				if (evnt.key.keysym.mod & KMOD_LALT ||
-					(evnt.key.keysym.mod & KMOD_RALT)) {
-					StartVideoModeChange();
-					ToggleFullscreen();
-					EndVideoModeChange();
-				}
-				break;
-			default:
-				break;
-			}
-		}
+
 #ifdef PAUSE_GAME_WHEN_FOCUS_LOST
-		else if (evnt.type == SDL_ACTIVEEVENT) {
-			if (evnt.active.type == SDL_APPACTIVE) {
-				if (evnt.active.gain && !focus) {
-					focus = true;
-					Graphics::TimerContinue();
-#ifdef PAUSE_AUDIO_WHEN_FOCUS_LOST
+			case SDL_ACTIVEEVENT:
+					if (evnt.active.state == SDL_APPINPUTFOCUS) {
+						if ( (evnt.active.state & SDL_APPACTIVE) == 0 //&& !focus
+							) {
+					//focus = true;
+					//Graphics::TimerContinue();
+								SDL_SetEventFilter(&IgnoreNonFocusEvents);
+								SDL_WaitEvent(NULL);
+								SDL_SetEventFilter(NULL);
+//#ifdef PAUSE_AUDIO_WHEN_FOCUS_LOST
 					//Audio::Continue();
-#endif
-				} else if (!evnt.active.gain && focus) {
+//#endif
+						} /*else if (!evnt.active.gain && focus) {
 					focus = false;
 					Input::ClearKeys();
-					Graphics::TimerWait();
-#ifdef PAUSE_AUDIO_WHEN_FOCUS_LOST
+					Graphics::TimerWait();*/
+//#ifdef PAUSE_AUDIO_WHEN_FOCUS_LOST
 					//Audio::Pause();
+//#endif
+					}
+					break;
 #endif
-				}
+			default:
+				;
+		} // Switch 1
+	} // for
+}
+
+///////////////////////////////////////////////////
+int ::IgnoreNonFocusEvents(const SDL_Event* e) {
+	switch (e->type) {
+		case SDL_ACTIVEEVENT:
+			if (e->active.state & SDL_APPINPUTFOCUS) {
+				return 1;
+			} else {
+				return 0;
 			}
-		}
-#endif
+			break;
+		default:
+			;
 	}
+	return 0;
 }
 
 ////////////////////////////////////////////////////////////

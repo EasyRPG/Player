@@ -707,7 +707,9 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 			SDL_BlitSurface(exfont, &rect, char_shadow, NULL);
 #endif
 			// Done
+#ifndef USE_ALPHA
 			SDL_FreeSurface(mask);
+#endif
 			SDL_FreeSurface(char_surface);
 			SDL_FreeSurface(char_shadow);
 		} else {
@@ -773,9 +775,11 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 			SDL_BlitSurface(text_surface_aux, NULL, text_surface, NULL);
 #endif
 			// Done
+#ifndef USE_ALPHA
 			SDL_FreeSurface(mask);
 			SDL_FreeSurface(char_surface);
 			SDL_FreeSurface(char_shadow);
+#endif
 		}
 /*
 #ifdef USE_ALPHA

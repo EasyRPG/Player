@@ -43,7 +43,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>..\..\bin\testgame\</OutDir>
     <TargetName>PlayerD</TargetName>
-    <SourcePath>C:\Users\Paulo\Desktop\SDL-1.2.14\SDL-1.2.14\src;$(SourcePath)</SourcePath>
+    <SourcePath>$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
