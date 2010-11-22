@@ -190,21 +190,22 @@ void Player::Update() {
 }
 
 ///////////////////////////////////////////////////
-int ::IgnoreNonFocusEvents(const SDL_Event* e) {
-	switch (e->type) {
-		case SDL_ACTIVEEVENT:
-			if (e->active.state & SDL_APPINPUTFOCUS) {
-				return 1;
-			} else {
-				return 0;
-			}
-			break;
-		default:
-			;
+namespace {
+	int IgnoreNonFocusEvents(const SDL_Event* e) {
+		switch (e->type) {
+			case SDL_ACTIVEEVENT:
+				if (e->active.state & SDL_APPINPUTFOCUS) {
+					return 1;
+				} else {
+					return 0;
+				}
+				break;
+			default:
+				;
+		}
+		return 0;
 	}
-	return 0;
 }
-
 ////////////////////////////////////////////////////////////
 /// Exit
 ////////////////////////////////////////////////////////////
