@@ -64,7 +64,7 @@ namespace {
 	bool wait_for_transition;
 	SDL_Surface* fake_screen;
 	SDL_Surface* blank_screen;
-	Font font(8);
+	Font* font;
 }
 
 ////////////////////////////////////////////////////////////
@@ -101,6 +101,8 @@ void Graphics::Init() {
 	default_backcolor = 0;
 
 	fps_showing = false;
+
+	font = new Font(8);
 }
 
 void Graphics::Quit() {
@@ -110,6 +112,7 @@ void Graphics::Quit() {
 		delete it->second;
 	}
 	SDL_FreeSurface(blank_screen);
+	delete font;
 }
 
 ////////////////////////////////////////////////////////////
@@ -265,7 +268,7 @@ void Graphics::PrintFPS() {
 	SDL_Color fg_color = { 255, 255, 255, 0 };
 	SDL_Surface* text_surface;
 	text << "FPS: " << fps;
-	text_surface = TTF_RenderText_Solid(font.GetTTF(), text.str().c_str(), fg_color);
+	text_surface = TTF_RenderText_Solid(font->GetTTF(), text.str().c_str(), fg_color);
 	SDL_BlitSurface(text_surface, NULL, Player::main_surface, NULL);
 	SDL_FreeSurface(text_surface);
 }
