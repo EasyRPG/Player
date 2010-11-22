@@ -81,7 +81,7 @@ void Player::Run() {
 	Scene::instance = new Scene_Title();
 	
 	// Main loop
-	while (Scene::type != SceneType::Null) {
+	while (Scene::type != Scene::Null) {
 		delete Scene::old_instance;
 		Scene::instance->MainFunction();		
 	}

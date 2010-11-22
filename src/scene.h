@@ -18,32 +18,32 @@
 #ifndef _SCENE_H_
 #define _SCENE_H_
 
-/// Scene types
-enum SceneType {
-	Null,
-	Title,
-	Map,
-	Menu,
-	Item,
-	Skill,
-	Equip,
-	Status,
-	File,
-	Save,
-	Load,
-	End,
-	Battle,
-	Shop,
-	Name,
-	Gameover,
-	Debug
-};
-
 ////////////////////////////////////////////////////////////
 /// Scene virtual class
 ////////////////////////////////////////////////////////////
 class Scene {
 public:
+	/// Scene types
+	enum SceneType {
+		Null,
+		Title,
+		Map,
+		Menu,
+		Item,
+		Skill,
+		Equip,
+		Status,
+		File,
+		Save,
+		Load,
+		End,
+		Battle,
+		Shop,
+		Name,
+		Gameover,
+		Debug
+	};
+	
 	////////////////////////////////////////////////////////
 	/// Destructor.
 	////////////////////////////////////////////////////////

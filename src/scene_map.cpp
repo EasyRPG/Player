@@ -38,7 +38,7 @@
 Scene_Map::Scene_Map() : 
 	message_window(NULL),
 	spriteset(NULL) {
-	type = SceneType::Map;
+	type = Scene::Map;
 }
 
 ////////////////////////////////////////////////////////////
@@ -51,7 +51,7 @@ void Scene_Map::MainFunction() {
 	Graphics::Transition(Graphics::FadeIn, 10, true);
 
 	// Scene loop
-	while (type == SceneType::Map) {
+	while (instance == this) {
 		Player::Update();
 		Graphics::Update();
 		Input::Update();

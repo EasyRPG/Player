@@ -19,9 +19,12 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "scene.h"
+
+#ifndef NULL
 #define NULL 0
+#endif
 
 ////////////////////////////////////////////////////////////
 Scene* Scene::instance;
-SceneType Scene::type;
+Scene::SceneType Scene::type;
 Scene* Scene::old_instance = NULL;

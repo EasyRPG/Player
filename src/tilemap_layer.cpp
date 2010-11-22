@@ -155,8 +155,8 @@ void TilemapLayer::Draw(int z_order) {
 		for (int y = 0; y < tiles_y; y++) {
 
 			// Get the real maps tile coordinates
-			unsigned int map_x = ox / 16 + x;
-			unsigned int map_y = oy / 16 + y;
+			int map_x = ox / 16 + x;
+			int map_y = oy / 16 + y;
 
 			if (width <= map_x || height <= map_y) continue;
 

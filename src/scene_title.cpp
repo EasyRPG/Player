@@ -54,7 +54,7 @@
 ////////////////////////////////////////////////////////////
 Scene_Title::Scene_Title() :
 	command_window(NULL) {
-	type = SceneType::Title;
+	type = Scene::Title;
 }
 
 ////////////////////////////////////////////////////////////
@@ -194,6 +194,6 @@ void Scene_Title::CommandContinue() {
 void Scene_Title::CommandShutdown() {
 	Game_System::SePlay(Data::system.decision_se);
 	Audio::BGS_Fade(800);
-	type = SceneType::Null;
+	type = Scene::Null;
 	instance = NULL;
 }

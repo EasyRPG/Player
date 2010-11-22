@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////
 Scene_Menu::Scene_Menu(int menu_index) :
 	menu_index(menu_index) {
-	type = SceneType::Menu;
+	type = Scene::Menu;
 }
 
 ////////////////////////////////////////////////////////////
@@ -75,7 +75,7 @@ void Scene_Menu::MainFunction() {
 
 	Graphics::Transition(Graphics::FadeIn, 10, false);
 
-	while (type == SceneType::Menu) {
+	while (instance == this) {
 		Player::Update();
 		Graphics::Update();
 		Input::Update();

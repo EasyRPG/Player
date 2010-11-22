@@ -72,9 +72,9 @@ private:
 	int oy;
 	int width;
 	int height;
-	int animation_frame;
-	int animation_step_ab;
-	int animation_step_c;
+	char animation_frame;
+	char animation_step_ab;
+	char animation_step_c;
 	int animation_speed;
 	int animation_type;
 
@@ -94,7 +94,7 @@ private:
 	Bitmap* autotiles_d[12][50];
 
 	struct TileData {
-		int ID;
+		short ID;
 		int z;
 	};
 	std::vector<std::vector<TileData> > data_cache;
