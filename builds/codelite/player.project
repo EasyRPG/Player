@@ -173,7 +173,7 @@
       <Compiler Options="-g -fno-rtti -fno-exceptions $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --cflags)  -DDINGOO -D_DEBUG -Wall -Wextra  -pedantic -Wno-unused" Required="yes" PreCompiledHeader="">
         <Preprocessor Value="USE_SDL"/>
       </Compiler>
-      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --libs) " Required="yes"/>
+      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --libs)  -lReaders -L../../../readers/builds/codelite/Debug" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/easyrpg.dge" IntermediateDirectory=".obj/Debug" Command="./easyrpg.dge" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
@@ -202,7 +202,7 @@
       <Compiler Options="-O3 -s -fno-rtti -fno-exceptions $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --cflags) -DDINGOO -ansi " Required="yes" PreCompiledHeader="">
         <Preprocessor Value="USE_SDL"/>
       </Compiler>
-      <Linker Options="-lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --libs)" Required="yes"/>
+      <Linker Options="-lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --libs) -lReaders -L../../../readers/builds/codelite/Release" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/easyrpg.dge" IntermediateDirectory=".obj/Release" Command="./easyrpg.dge" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
@@ -260,7 +260,7 @@
       <Compiler Options="-O3 -s -fno-rtti -fno-exceptions $(shell sdl-config --cflags) $(shell pkg-config --cflags gtk+-2.0) -Wall -Wextra -ansi -pedantic" Required="yes" PreCompiledHeader="">
         <Preprocessor Value="USE_SDL"/>
       </Compiler>
-      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs) $(shell pkg-config --libs gtk+-2.0)" Required="yes"/>
+      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs) $(shell pkg-config --libs gtk+-2.0) -lReaders -L../../../readers/builds/codelite/Release" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/easyrpg" IntermediateDirectory=".obj/Release" Command="./easyrpg" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
@@ -289,7 +289,7 @@
       <Compiler Options="-g -fno-rtti -fno-exceptions $(shell sdl-config --cflags) -DUNIX -D_DEBUG -Wall -Wextra -ansi -pedantic -Wno-unused" Required="yes" PreCompiledHeader="">
         <Preprocessor Value="USE_SDL"/>
       </Compiler>
-      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs) " Required="yes"/>
+      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs) -lReaders -L../../../readers/builds/codelite/Debug" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/easyrpg" IntermediateDirectory=".obj/Debug" Command="./easyrpg" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
@@ -318,7 +318,7 @@
       <Compiler Options="-O3 -s -fno-rtti -fno-exceptions $(shell sdl-config --cflags) -Wall -Wextra -ansi -pedantic -DUNIX" Required="yes" PreCompiledHeader="">
         <Preprocessor Value="USE_SDL"/>
       </Compiler>
-      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs)" Required="yes"/>
+      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs) -lReaders -L../../../readers/builds/codelite/Release" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/easyrpg" IntermediateDirectory=".obj/Release" Command="./easyrpg" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
@@ -348,9 +348,8 @@
         <IncludePath Value="$(EASYDEV_MINGW)/include"/>
         <Preprocessor Value="USE_SDL"/>
       </Compiler>
-      <Linker Options="-mwindows;-lmingw32;-lreaders;-lSDLmain;-lSDL;-lSDL_image;-lSDL_mixer;-lSDL_ttf;-lz;-lSDL_gfx" Required="yes">
+      <Linker Options="-mwindows;-lmingw32;-lSDLmain;-lSDL;-lSDL_image;-lSDL_mixer;-lSDL_ttf;-lz;-lSDL_gfx -lReaders -L../../../readers/builds/codelite/Debug" Required="yes">
         <LibraryPath Value="$(EASYDEV_MINGW)/lib"/>
-        <LibraryPath Value="../../../readers/builds/codelite/debug"/>
       </Linker>
       <ResourceCompiler Options="" Required="yes"/>
       <General OutputFile="../../bin/testgame/Player.exe" IntermediateDirectory=".obj/Debug" Command="./Player.exe" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
@@ -381,9 +380,8 @@
         <IncludePath Value="$(EASYDEV_MINGW)/include"/>
         <Preprocessor Value="USE_SDL"/>
       </Compiler>
-      <Linker Options="-mwindows;-lmingw32;-lreaders;-lSDLmain;-lSDL;-lSDL_image;-lSDL_mixer;-lSDL_ttf;-lz;-lSDL_gfx" Required="yes">
+      <Linker Options="-mwindows;-lmingw32;-lSDLmain;-lSDL;-lSDL_image;-lSDL_mixer;-lSDL_ttf;-lz;-lSDL_gfx -lReaders -L../../../readers/builds/codelite/Release" Required="yes">
         <LibraryPath Value="$(EASYDEV_MINGW)/lib"/>
-        <LibraryPath Value="../../../readers/builds/codelite/release"/>
       </Linker>
       <ResourceCompiler Options="" Required="yes"/>
       <General OutputFile="../../bin/testgame/Player.exe" IntermediateDirectory=".obj/Release" Command="./Player.exe" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
