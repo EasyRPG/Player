@@ -50,6 +50,6 @@ namespace Game_Actors {
 	/// @return whether the actor exists
 	////////////////////////////////////////////////////////
 	bool ActorExists(int actor_id);
-};
+}
 
 #endif

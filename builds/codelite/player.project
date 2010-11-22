@@ -143,6 +143,30 @@
   <File Name="../../src/player.cpp"/>
   <File Name="../../src/player.h"/>
   <File Name="../../resources/player.rc"/>
+  <Dependencies Name="GTK+ Debug">
+    <Project Name="Readers"/>
+  </Dependencies>
+  <Dependencies Name="GTK+ Release">
+    <Project Name="Readers"/>
+  </Dependencies>
+  <Dependencies Name="Win32 Debug">
+    <Project Name="Readers"/>
+  </Dependencies>
+  <Dependencies Name="Win32 Release">
+    <Project Name="Readers"/>
+  </Dependencies>
+  <Dependencies Name="Dingux-Debug">
+    <Project Name="Readers"/>
+  </Dependencies>
+  <Dependencies Name="Dingux-Release">
+    <Project Name="Readers"/>
+  </Dependencies>
+  <Dependencies Name="UNIX Debug">
+    <Project Name="Readers"/>
+  </Dependencies>
+  <Dependencies Name="UNIX Release">
+    <Project Name="Readers"/>
+  </Dependencies>
   <Settings Type="Executable">
     <Configuration Name="Dingux-Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g -fno-rtti -fno-exceptions $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --cflags)  -DDINGOO -D_DEBUG -Wall -Wextra  -pedantic -Wno-unused" Required="yes" PreCompiledHeader="">
@@ -203,12 +227,12 @@
       </AdditionalRules>
     </Configuration>
     <Configuration Name="GTK+ Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="" Required="yes" PreCompiledHeader="">
+      <Compiler Options="-g -fno-rtti -fno-exceptions $(shell sdl-config --cflags) -DUNIX -D_DEBUG $(shell pkg-config --cflags gtk+-2.0) -Wall -Wextra -ansi -pedantic -Wno-unused" Required="yes" PreCompiledHeader="">
         <Preprocessor Value="USE_SDL"/>
       </Compiler>
-      <Linker Options="" Required="yes"/>
+      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs) $(shell pkg-config --libs gtk+-2.0)" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="" IntermediateDirectory="" Command="" CommandArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="../../bin/testgame/easyrpg" IntermediateDirectory=".obj/Debug" Command="./easyrpg" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
@@ -232,7 +256,7 @@
       </AdditionalRules>
     </Configuration>
     <Configuration Name="GTK+ Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O3 -s -fno-rtti -fno-exceptions $(shell sdl-config --cflags) $(shell pkg-config --cflags gtk+-2.0) -Wall -Wextra -ansi -pedantic -DUNIX -DGTK" Required="yes" PreCompiledHeader="">
+      <Compiler Options="-O3 -s -fno-rtti -fno-exceptions $(shell sdl-config --cflags) $(shell pkg-config --cflags gtk+-2.0) -Wall -Wextra -ansi -pedantic" Required="yes" PreCompiledHeader="">
         <Preprocessor Value="USE_SDL"/>
       </Compiler>
       <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs) $(shell pkg-config --libs gtk+-2.0)" Required="yes"/>

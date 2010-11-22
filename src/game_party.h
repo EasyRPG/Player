@@ -176,6 +176,6 @@ namespace Game_Party {
 
 	/// @return number of battles escaped
 	int GetRunCount();
-};
+}
 
 #endif

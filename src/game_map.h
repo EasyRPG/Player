@@ -238,6 +238,6 @@ namespace Game_Map {
 
 	/// @return events list
 	std::vector<Game_Event*>& GetEvents();
-};
+}
 
 #endif

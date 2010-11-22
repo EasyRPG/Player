@@ -63,6 +63,6 @@ namespace Game_System {
 
 	/// Numbers of saves.
 	extern unsigned int save_count;
-};
+}
 
 #endif
