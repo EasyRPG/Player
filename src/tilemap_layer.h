@@ -82,10 +82,16 @@ private:
 	DrawableType type;
 	int layer;
 
-	Bitmap* GenerateAutotileAB(short ID, short animID);
-	Bitmap* GenerateAutotileD(short ID);
+	bool have_invisible_tile;
 
-	std::map<int, Bitmap*> autotiles;
+	void GenerateAutotileAB(short ID, short animID);
+	void GenerateAutotileD(short ID);
+
+	Bitmap* GetCachedAutotileAB(short ID, short animID);
+	Bitmap* GetCachedAutotileD(short ID);
+
+	Bitmap* autotiles_ab[3][3][50][50];
+	Bitmap* autotiles_d[12][50];
 
 	struct TileData {
 		int ID;

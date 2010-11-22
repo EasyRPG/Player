@@ -91,25 +91,26 @@ static char BlockD_Subtiles_IDS[] = {
 };
 
 ////////////////////////////////////////////////////////////
-// Constructor
-////////////////////////////////////////////////////////////
-TilemapLayer::TilemapLayer(int ilayer) {
-	chipset = NULL;
-	visible = true;
-	ox = 0;
-	oy = 0;
-	width = 0;
-	height = 0;
-	animation_frame = 0;
-	animation_step_ab = 0;
-	animation_step_c = 0;
-	animation_speed = 24;
-	animation_type = 1;
+TilemapLayer::TilemapLayer(int ilayer) :
+	chipset(NULL),
+	visible(true),
+	ox(0),
+	oy(0),
+	width(0),
+	height(0),
+	animation_frame(0),
+	animation_step_ab(0),
+	animation_step_c(0),
+	animation_speed(24),
+	animation_type(1),
+	have_invisible_tile(false),
+	layer(ilayer),
+	type(TILEMAP),
+	ID(Graphics::ID++) {
 
-	layer = ilayer;
-
-	type = TILEMAP;
-	ID = Graphics::ID++;
+	memset(autotiles_ab, NULL, sizeof(autotiles_ab));
+	memset(autotiles_d, NULL, sizeof(autotiles_d));
+	
 	Graphics::RegisterZObj(0, ID, true);
 	Graphics::RegisterZObj(16, ID, true);
 	Graphics::RegisterZObj(32, ID, true);
@@ -117,20 +118,22 @@ TilemapLayer::TilemapLayer(int ilayer) {
 }
 
 ////////////////////////////////////////////////////////////
-// Destructor
-////////////////////////////////////////////////////////////
 TilemapLayer::~TilemapLayer() {
 	std::map<int, Bitmap*>::iterator i;
 	Graphics::RemoveZObj(ID);
 	Graphics::RemoveDrawable(ID);
 
-	for (i = autotiles.begin(); i != autotiles.end(); i++) {
-		delete i->second;
-	}
+	for (int e = 0; e < 3; e++)
+		for (int i = 0; i < 3; i++)
+			for (int j = 0; j < 50; j++)
+				for (int m = 0; m < 50; m++)
+					delete autotiles_ab[e][i][j][m];
+				
+	for (int i = 0; i < 12; i++)
+		for (int j = 0; j < 50; j++)
+				delete autotiles_d[i][j];
 }
 
-////////////////////////////////////////////////////////////
-// Draw
 ////////////////////////////////////////////////////////////
 void TilemapLayer::Draw(int z_order) {
 	if (!visible) return;
@@ -154,13 +157,14 @@ void TilemapLayer::Draw(int z_order) {
 			// Get the real maps tile coordinates
 			unsigned int map_x = ox / 16 + x;
 			unsigned int map_y = oy / 16 + y;
+
+			if (width <= map_x || height <= map_y) continue;
+
 			int map_draw_x = x * 16 - ox % 16;
 			int map_draw_y = y * 16 - oy % 16;
 
-			if (data_cache.size() - 1 < map_x || data_cache[map_x].size() - 1 < map_y) continue;
-
 			// Get the tile data
-			TileData tile = data_cache[map_x][map_y];
+			TileData &tile = data_cache[map_x][map_y];
 			
 			// Draw the tile if its z is being draw now
 			if (z_order == tile.z) {
@@ -203,26 +207,24 @@ void TilemapLayer::Draw(int z_order) {
 					} else if (tile.ID < BLOCK_C) {
 						// If Blocks A1, A2, B
 
-						// Get the autotile id for the current animation
-						int autotile_id = tile.ID;
-						if (animation_step_ab == 1)
-							autotile_id += 20000;
-						if (animation_step_ab == 2)
-							autotile_id += 30000;
-
 						// Draw the tile from autile cache
-						autotiles[autotile_id]->BlitScreen(map_draw_x, map_draw_y);
+						GetCachedAutotileAB(tile.ID, animation_step_ab)->BlitScreen(map_draw_x, map_draw_y);
 					} else {
 						// If blocks D1-D12
 
 						// Draw the tile from autile cache
-						autotiles[tile.ID]->BlitScreen(map_draw_x, map_draw_y);
+						GetCachedAutotileD(tile.ID)->BlitScreen(map_draw_x, map_draw_y);
 					}
 				} else {
 					// If upper layer
 
 					// Check that block F is being drawn
 					if (tile.ID >= BLOCK_F && tile.ID < BLOCK_F + BLOCK_F_TILES) {
+						#ifdef USE_ALPHA
+						if (tile.ID == BLOCK_F && have_invisible_tile)
+							continue;
+						#endif
+
 						Rect rect;
 						rect.width = 16;
 						rect.height = 16;
@@ -248,11 +250,21 @@ void TilemapLayer::Draw(int z_order) {
 }
 
 ////////////////////////////////////////////////////////////
-// GenerateAutotileAB
+Bitmap* TilemapLayer::GetCachedAutotileAB(short ID, short animID) {
+	int block = ID / 1000;
+	int b_subtile = (ID - block * 1000) / 50;
+	int a_subtile = ID - block * 1000 - b_subtile * 50;
+	return autotiles_ab[animID][block][b_subtile][a_subtile];
+}
+
+Bitmap* TilemapLayer::GetCachedAutotileD(short ID) {
+	int block = (ID - 4000) / 50;
+	int subtile = ID - 4000 - block * 50;
+	return autotiles_d[block][subtile];
+}
+
 ////////////////////////////////////////////////////////////
-Bitmap* TilemapLayer::GenerateAutotileAB(short ID, short animID) {
-	Bitmap* tile = new Bitmap(16, 16);
-	
+void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 	// Calculate the block to use
 	//	1: A1 + Upper B (Grass + Coast)
 	//	2: A2 + Upper B (Snow + Coast)
@@ -264,6 +276,11 @@ Bitmap* TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 
 	// Calculate the A block combination
 	int a_subtile = ID - block * 1000 - b_subtile * 50;
+
+	if (autotiles_ab[animID][block][b_subtile][a_subtile])
+		return;
+
+	Bitmap* tile = new Bitmap(16, 16);
 
 	Rect rect;
 	rect.width = 8;
@@ -336,20 +353,21 @@ Bitmap* TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 		}
 	}
 
-	return tile;
+	autotiles_ab[animID][block][b_subtile][a_subtile] = tile;
 }
 
 ////////////////////////////////////////////////////////////
-// GenerateAutotileD
-////////////////////////////////////////////////////////////
-Bitmap* TilemapLayer::GenerateAutotileD(short ID) {
-	Bitmap* tile = new Bitmap(16, 16);
-
+void TilemapLayer::GenerateAutotileD(short ID) {
 	// Calculate the D block id
 	int block = (ID - 4000) / 50;
 
 	// Calculate the D block combination
 	int subtile = ID - 4000 - block * 50;
+
+	if(autotiles_d[block][subtile])
+		return;
+
+	Bitmap* tile = new Bitmap(16, 16);
 
 	// Get Block chipset coords
 	int block_x, block_y;
@@ -381,12 +399,10 @@ Bitmap* TilemapLayer::GenerateAutotileD(short ID) {
 		tile->Blit((i % 2) * 8, (i / 2) * 8, chipset, rect, 255);
 	}
 
-	return tile;
+	autotiles_d[block][subtile] = tile;
 }
 
 
-////////////////////////////////////////////////////////////
-// Update
 ////////////////////////////////////////////////////////////
 void TilemapLayer::Update() {
 	animation_frame += 1;
@@ -415,8 +431,6 @@ void TilemapLayer::Update() {
 	}
 }
 
-////////////////////////////////////////////////////////////
-// Properties
 ////////////////////////////////////////////////////////////
 Bitmap* TilemapLayer::GetChipset() const {
 	return chipset;
@@ -460,7 +474,6 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 			}
 		}
 
-		// Check if lower layer, and generate the autotiles cache
 		if (layer == 0) {
 			for (int y = 0; y < height; y++) {
 				for (int x = 0; x < width; x++) {
@@ -468,23 +481,31 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 					if (data_cache[x][y].ID < BLOCK_C) {
 						// If blocks A and B
 
-						// Check if autotile cache does not exists
-						if (autotiles.count(data_cache[x][y].ID) == 0) {
-							// Generate the autotiles for all 3 animation frames
-							autotiles[data_cache[x][y].ID] = GenerateAutotileAB(data_cache[x][y].ID, 0);
-							autotiles[data_cache[x][y].ID + 20000] = GenerateAutotileAB(data_cache[x][y].ID, 1);
-							autotiles[data_cache[x][y].ID + 30000] = GenerateAutotileAB(data_cache[x][y].ID, 2);
-						}
+						GenerateAutotileAB(data_cache[x][y].ID, 0);
+						GenerateAutotileAB(data_cache[x][y].ID, 1);
+						GenerateAutotileAB(data_cache[x][y].ID, 2);
 					} else if (data_cache[x][y].ID >= BLOCK_D && data_cache[x][y].ID < BLOCK_E) {
 						// If block D
 
-						// Check if autotile cache does not exists
-						if (autotiles.count(data_cache[x][y].ID) == 0)
-							autotiles[data_cache[x][y].ID] = GenerateAutotileD(data_cache[x][y].ID);
+						GenerateAutotileD(data_cache[x][y].ID);
 					}
 				}
 			}
 		}
+		#ifdef USE_ALPHA
+		else {
+			have_invisible_tile = true;
+			for (int x = 288; x < 288 + 16; x++) {
+				for (int y = 128; y < 128 + 16; y++) {
+					if (chipset->GetPixel(x, y).alpha > 0) {
+						have_invisible_tile = false;
+						x = 288 + 16;
+						break;
+					}
+				}
+			}
+		}
+		#endif
 	}
 	map_data = nmap_data;
 }
@@ -538,14 +559,10 @@ void TilemapLayer::SetAnimationType(int type) {
 }
 
 ////////////////////////////////////////////////////////////
-// Get z
-////////////////////////////////////////////////////////////
 int TilemapLayer::GetZ() const {
 	return -1;
 }
 
-////////////////////////////////////////////////////////////
-// Get ID
 ////////////////////////////////////////////////////////////
 unsigned long TilemapLayer::GetId() const {
 	return ID;
