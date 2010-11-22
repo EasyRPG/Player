@@ -143,6 +143,7 @@
   <File Name="../../src/player.cpp"/>
   <File Name="../../src/player.h"/>
   <File Name="../../resources/player.rc"/>
+  <File Name="../../src/system.h"/>
   <Dependencies Name="GTK+ Debug">
     <Project Name="Readers"/>
   </Dependencies>
@@ -230,7 +231,7 @@
       <Compiler Options="-g -fno-rtti -fno-exceptions $(shell sdl-config --cflags) -DUNIX -D_DEBUG $(shell pkg-config --cflags gtk+-2.0) -Wall -Wextra -ansi -pedantic -Wno-unused" Required="yes" PreCompiledHeader="">
         <Preprocessor Value="USE_SDL"/>
       </Compiler>
-      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs) $(shell pkg-config --libs gtk+-2.0)" Required="yes"/>
+      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lSDL_gfx -lz $(shell sdl-config --libs) $(shell pkg-config --libs gtk+-2.0) -lReaders -L../../../readers/builds/codelite/Debug" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/easyrpg" IntermediateDirectory=".obj/Debug" Command="./easyrpg" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>

@@ -36,8 +36,8 @@
 /// Constructor
 ////////////////////////////////////////////////////////////
 Scene_Map::Scene_Map() : 
-	message_window(NULL),
-	spriteset(NULL) {
+	spriteset(NULL),
+	message_window(NULL) {
 	type = Scene::Map;
 }
 

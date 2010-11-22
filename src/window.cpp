@@ -30,6 +30,7 @@
 /// Constructor
 ////////////////////////////////////////////////////////////
 Window::Window():
+	type(WINDOW),
 	windowskin(NULL),
 	contents(NULL),
 	stretch(true),
@@ -53,8 +54,7 @@ Window::Window():
 	border_down(NULL),
 	cursor_frame(0),
 	pause_frame(0),
-	animation_frames(0),
-	type(WINDOW) {
+	animation_frames(0) {
 
 	ID = Graphics::ID++;
 	Graphics::RegisterZObj(0, ID);

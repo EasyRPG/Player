@@ -103,10 +103,10 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	animation_step_c(0),
 	animation_speed(24),
 	animation_type(1),
-	have_invisible_tile(false),
-	layer(ilayer),
+	ID(Graphics::ID++),
 	type(TILEMAP),
-	ID(Graphics::ID++) {
+	layer(ilayer),
+	have_invisible_tile(false) {
 
 	memset(autotiles_ab, NULL, sizeof(autotiles_ab));
 	memset(autotiles_d, NULL, sizeof(autotiles_d));
