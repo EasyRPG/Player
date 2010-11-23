@@ -170,12 +170,22 @@
   </Dependencies>
   <Settings Type="Executable">
     <Configuration Name="Dingux-Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g -fno-rtti -fno-exceptions $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --cflags)  -DDINGOO -D_DEBUG -Wall -Wextra  -pedantic -Wno-unused" Required="yes" PreCompiledHeader="">
-        <Preprocessor Value="USE_SDL"/>
+      <Compiler Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-fno-rtti;-fno-exceptions;$(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --cflags)" Required="yes" PreCompiledHeader="">
+        <Preprocessor Value="UNIX"/>
+        <Preprocessor Value="DINGOO"/>
+        <Preprocessor Value="_DEBUG"/>
       </Compiler>
-      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --libs)  -lReaders -L../../../readers/builds/codelite/Debug" Required="yes"/>
+      <Linker Options="$(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --libs)" Required="yes">
+        <LibraryPath Value="../../../readers/builds/codelite/Debug"/>
+        <Library Value="SDL_mixer"/>
+        <Library Value="SDL_ttf"/>
+        <Library Value="SDL_image"/>
+        <Library Value="SDL_gfx"/>
+        <Library Value="z"/>
+        <Library Value="Readers"/>
+      </Linker>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="../../bin/testgame/easyrpg.dge" IntermediateDirectory=".obj/Debug" Command="./easyrpg.dge" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="../../bin/testgame/easyrpg.dge" IntermediateDirectory=".obj/Debug" Command="" CommandArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="no"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
@@ -199,12 +209,21 @@
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Dingux-Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O3 -s -fno-rtti -fno-exceptions $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --cflags) -DDINGOO -ansi " Required="yes" PreCompiledHeader="">
-        <Preprocessor Value="USE_SDL"/>
+      <Compiler Options="-O3;-ansi;-pedantic;-Wall;-Wextra;-fno-rtti;-fno-exceptions;$(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --cflags)" Required="yes" PreCompiledHeader="">
+        <Preprocessor Value="UNIX"/>
+        <Preprocessor Value="DINGOO"/>
       </Compiler>
-      <Linker Options="-lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --libs) -lReaders -L../../../readers/builds/codelite/Release" Required="yes"/>
+      <Linker Options="-s;$(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --libs)" Required="yes">
+        <LibraryPath Value="../../../readers/builds/codelite/Release"/>
+        <Library Value="SDL_mixer"/>
+        <Library Value="SDL_ttf"/>
+        <Library Value="SDL_image"/>
+        <Library Value="SDL_gfx"/>
+        <Library Value="z"/>
+        <Library Value="Readers"/>
+      </Linker>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="../../bin/testgame/easyrpg.dge" IntermediateDirectory=".obj/Release" Command="./easyrpg.dge" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="../../bin/testgame/easyrpg.dge" IntermediateDirectory=".obj/Release" Command="" CommandArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="no"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
@@ -228,12 +247,22 @@
       </AdditionalRules>
     </Configuration>
     <Configuration Name="GTK+ Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g -fno-rtti -fno-exceptions $(shell sdl-config --cflags) -DUNIX -D_DEBUG $(shell pkg-config --cflags gtk+-2.0) -Wall -Wextra -ansi -pedantic -Wno-unused" Required="yes" PreCompiledHeader="">
-        <Preprocessor Value="USE_SDL"/>
+      <Compiler Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-fno-rtti;-fno-exceptions;$(shell sdl-config --cflags);$(shell pkg-config --cflags gtk+-2.0)" Required="yes" PreCompiledHeader="">
+        <Preprocessor Value="UNIX"/>
+        <Preprocessor Value="GTK"/>
+        <Preprocessor Value="_DEBUG"/>
       </Compiler>
-      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lSDL_gfx -lz $(shell sdl-config --libs) $(shell pkg-config --libs gtk+-2.0) -lReaders -L../../../readers/builds/codelite/Debug" Required="yes"/>
+      <Linker Options="$(shell sdl-config --libs);$(shell pkg-config --libs gtk+-2.0)" Required="yes">
+        <LibraryPath Value="../../../readers/builds/codelite/Debug"/>
+        <Library Value="SDL_mixer"/>
+        <Library Value="SDL_ttf"/>
+        <Library Value="SDL_image"/>
+        <Library Value="SDL_gfx"/>
+        <Library Value="z"/>
+        <Library Value="Readers"/>
+      </Linker>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="../../bin/testgame/easyrpg" IntermediateDirectory=".obj/Debug" Command="./easyrpg" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="../../bin/testgame/player" IntermediateDirectory=".obj/Debug" Command="./player" CommandArguments="TestPlay HideTitle Window" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
@@ -257,12 +286,21 @@
       </AdditionalRules>
     </Configuration>
     <Configuration Name="GTK+ Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O3 -s -fno-rtti -fno-exceptions $(shell sdl-config --cflags) $(shell pkg-config --cflags gtk+-2.0) -Wall -Wextra -ansi -pedantic" Required="yes" PreCompiledHeader="">
-        <Preprocessor Value="USE_SDL"/>
+      <Compiler Options="-O3;-ansi;-pedantic;-Wall;-Wextra;-fno-rtti;-fno-exceptions;$(shell sdl-config --cflags);$(shell pkg-config --cflags gtk+-2.0)" Required="yes" PreCompiledHeader="">
+        <Preprocessor Value="UNIX"/>
+        <Preprocessor Value="GTK"/>
       </Compiler>
-      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs) $(shell pkg-config --libs gtk+-2.0) -lReaders -L../../../readers/builds/codelite/Release" Required="yes"/>
+      <Linker Options="-s;$(shell sdl-config --libs);$(shell pkg-config --libs gtk+-2.0)" Required="yes">
+        <LibraryPath Value="../../../readers/builds/codelite/Release"/>
+        <Library Value="SDL_mixer"/>
+        <Library Value="SDL_ttf"/>
+        <Library Value="SDL_image"/>
+        <Library Value="SDL_gfx"/>
+        <Library Value="z"/>
+        <Library Value="Readers"/>
+      </Linker>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="../../bin/testgame/easyrpg" IntermediateDirectory=".obj/Release" Command="./easyrpg" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="../../bin/testgame/player" IntermediateDirectory=".obj/Release" Command="./player" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
@@ -286,12 +324,21 @@
       </AdditionalRules>
     </Configuration>
     <Configuration Name="UNIX Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g -fno-rtti -fno-exceptions $(shell sdl-config --cflags) -DUNIX -D_DEBUG -Wall -Wextra -ansi -pedantic -Wno-unused" Required="yes" PreCompiledHeader="">
-        <Preprocessor Value="USE_SDL"/>
+      <Compiler Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-fno-rtti;-fno-exceptions;$(shell sdl-config --cflags)" Required="yes" PreCompiledHeader="">
+        <Preprocessor Value="UNIX"/>
+        <Preprocessor Value="_DEBUG"/>
       </Compiler>
-      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs) -lReaders -L../../../readers/builds/codelite/Debug" Required="yes"/>
+      <Linker Options="$(shell sdl-config --libs)" Required="yes">
+        <LibraryPath Value="../../../readers/builds/codelite/Debug"/>
+        <Library Value="SDL_mixer"/>
+        <Library Value="SDL_ttf"/>
+        <Library Value="SDL_image"/>
+        <Library Value="SDL_gfx"/>
+        <Library Value="z"/>
+        <Library Value="Readers"/>
+      </Linker>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="../../bin/testgame/easyrpg" IntermediateDirectory=".obj/Debug" Command="./easyrpg" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="../../bin/testgame/player" IntermediateDirectory=".obj/Debug" Command="./player" CommandArguments="TestPlay HideTitle Window" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
@@ -315,12 +362,20 @@
       </AdditionalRules>
     </Configuration>
     <Configuration Name="UNIX Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O3 -s -fno-rtti -fno-exceptions $(shell sdl-config --cflags) -Wall -Wextra -ansi -pedantic -DUNIX" Required="yes" PreCompiledHeader="">
-        <Preprocessor Value="USE_SDL"/>
+      <Compiler Options="-O3;-ansi;-pedantic;-Wall;-Wextra;-fno-rtti;-fno-exceptions;$(shell sdl-config --cflags)" Required="yes" PreCompiledHeader="">
+        <Preprocessor Value="UNIX"/>
       </Compiler>
-      <Linker Options="-O2 -lSDL_mixer -lSDL_ttf -lSDL_image -lz $(shell sdl-config --libs) -lReaders -L../../../readers/builds/codelite/Release" Required="yes"/>
+      <Linker Options="-s;$(shell sdl-config --libs)" Required="yes">
+        <LibraryPath Value="../../../readers/builds/codelite/Release"/>
+        <Library Value="SDL_mixer"/>
+        <Library Value="SDL_ttf"/>
+        <Library Value="SDL_image"/>
+        <Library Value="SDL_gfx"/>
+        <Library Value="z"/>
+        <Library Value="Readers"/>
+      </Linker>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="../../bin/testgame/easyrpg" IntermediateDirectory=".obj/Release" Command="./easyrpg" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="../../bin/testgame/player" IntermediateDirectory=".obj/Release" Command="./player" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
@@ -344,15 +399,25 @@
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Win32 Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g -fno-rtti -fno-exceptions -D_GNU_SOURCE=1 -Dmain=SDL_main -Wall -Wextra -ansi -pedantic -Wno-unused -U__STRICT_ANSI__ -Wno-write-strings" Required="yes" PreCompiledHeader="">
+      <Compiler Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-U__STRICT_ANSI__-fno-rtti;-fno-exceptions;-D_GNU_SOURCE=1;-Dmain=SDL_main" Required="yes" PreCompiledHeader="">
         <IncludePath Value="$(EASYDEV_MINGW)/include"/>
-        <Preprocessor Value="USE_SDL"/>
+        <Preprocessor Value="_DEBUG"/>
       </Compiler>
-      <Linker Options="-mwindows;-lmingw32;-lSDLmain;-lSDL;-lSDL_image;-lSDL_mixer;-lSDL_ttf;-lz;-lSDL_gfx -lReaders -L../../../readers/builds/codelite/Debug" Required="yes">
+      <Linker Options="-mwindows" Required="yes">
         <LibraryPath Value="$(EASYDEV_MINGW)/lib"/>
+        <LibraryPath Value="../../../readers/builds/codelite/Debug"/>
+        <Library Value="mingw32"/>
+        <Library Value="SDLmain"/>
+        <Library Value="SDL"/>
+        <Library Value="SDL_image"/>
+        <Library Value="SDL_mixer"/>
+        <Library Value="SDL_ttf"/>
+        <Library Value="SDL_gfx"/>
+        <Library Value="z"/>
+        <Library Value="Readers"/>
       </Linker>
       <ResourceCompiler Options="" Required="yes"/>
-      <General OutputFile="../../bin/testgame/Player.exe" IntermediateDirectory=".obj/Debug" Command="./Player.exe" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="../../bin/testgame/Player.exe" IntermediateDirectory=".obj/Debug" Command="./Player.exe" CommandArguments="TestPlay HideTitle Window" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
@@ -376,12 +441,21 @@
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Win32 Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O3 -s -fno-rtti -fno-exceptions -D_GNU_SOURCE=1 -Dmain=SDL_main -Wall -Wextra -ansi -pedantic  -U__STRICT_ANSI__" Required="yes" PreCompiledHeader="">
+      <Compiler Options="-O3;-ansi;-pedantic;-Wall;-Wextra;-U__STRICT_ANSI__;-fno-rtti;-fno-exceptions;-D_GNU_SOURCE=1;-Dmain=SDL_main;" Required="yes" PreCompiledHeader="">
         <IncludePath Value="$(EASYDEV_MINGW)/include"/>
-        <Preprocessor Value="USE_SDL"/>
       </Compiler>
-      <Linker Options="-mwindows;-lmingw32;-lSDLmain;-lSDL;-lSDL_image;-lSDL_mixer;-lSDL_ttf;-lz;-lSDL_gfx -lReaders -L../../../readers/builds/codelite/Release" Required="yes">
+      <Linker Options="-s;-mwindows" Required="yes">
         <LibraryPath Value="$(EASYDEV_MINGW)/lib"/>
+        <LibraryPath Value="../../../readers/builds/codelite/Release"/>
+        <Library Value="mingw32"/>
+        <Library Value="SDLmain"/>
+        <Library Value="SDL"/>
+        <Library Value="SDL_image"/>
+        <Library Value="SDL_mixer"/>
+        <Library Value="SDL_ttf"/>
+        <Library Value="SDL_gfx"/>
+        <Library Value="z"/>
+        <Library Value="Readers"/>
       </Linker>
       <ResourceCompiler Options="" Required="yes"/>
       <General OutputFile="../../bin/testgame/Player.exe" IntermediateDirectory=".obj/Release" Command="./Player.exe" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
@@ -410,8 +484,9 @@
     <GlobalSettings>
       <Compiler Options="">
         <IncludePath Value="../../../readers/include"/>
+        <Preprocessor Value="USE_SDL"/>
       </Compiler>
-      <Linker Options=""/>
+      <Linker Options="-O2"/>
       <ResourceCompiler Options=""/>
     </GlobalSettings>
   </Settings>
