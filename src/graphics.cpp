@@ -24,7 +24,11 @@
 #include "output.h"
 #include "player.h"
 #include "SDL_ttf.h"
+#include "system.h"
 #include <sstream>
+
+namespace {
+}
 
 ////////////////////////////////////////////////////////////
 // Global Variables
@@ -65,6 +69,17 @@ namespace {
 	SDL_Surface* fake_screen;
 	SDL_Surface* blank_screen;
 	Font* font;
+#ifdef USE_FIXED_TIMESTEP_FPS
+	const int MAXIMUM_FRAME_RATE = 60;
+	const int MINIMUM_FRAME_RATE = 15;
+	const double UPDATE_INTERVAL = 1.0 / MAXIMUM_FRAME_RATE;
+	const int MAX_CYCLES_PER_FRAME = MAXIMUM_FRAME_RATE / MINIMUM_FRAME_RATE;
+	double last_frame_time = 0;
+	double cycles_leftover = 0;
+	double current_time;
+	double update_iterations;
+	bool start;
+#endif
 }
 
 ////////////////////////////////////////////////////////////
@@ -101,6 +116,9 @@ void Graphics::Init() {
 	default_backcolor = 0;
 
 	fps_showing = false;
+#ifdef USE_FIXED_TIMESTEP_FPS
+	start = true;
+#endif
 
 	font = new Font(8);
 }
@@ -133,6 +151,44 @@ void Graphics::TimerContinue() {
 ////////////////////////////////////////////////////////////
 // Update
 ////////////////////////////////////////////////////////////
+#ifdef USE_FIXED_TIMESTEP_FPS
+void Graphics::Update() {
+	while (true) {
+		if (start) {
+			current_time = SDL_GetTicks() / 1000.0;
+			update_iterations = (current_time - last_frame_time) + cycles_leftover;
+
+			/*if (update_iterations > (MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL)) {
+				update_iterations = (MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL);
+			}*/
+			start = false;
+		}
+
+		if (update_iterations > UPDATE_INTERVAL) {
+			update_iterations -= UPDATE_INTERVAL;
+			
+			// Proccess game logic
+			return;
+		}
+
+		start = true;
+		cycles_leftover = update_iterations;
+		last_frame_time = current_time;
+
+		DrawFrame();
+
+		if ( (prepare_transition) && (!frozen) ) {
+			// Get into actual transition
+			is_in_transition_yet = true;
+		
+			// Freeze screen
+			Freeze();
+		}
+	}
+}
+
+#else
+
 void Graphics::Update() {
 	static unsigned long ticks;
 	static unsigned long frames = 0;
@@ -180,6 +236,7 @@ void Graphics::Update() {
 		SDL_Delay((long)(framerate_interval) - (ticks - last_ticks));
 	}
 }
+#endif
 
 void Graphics::DoTransition() {
 	// Preparation is done

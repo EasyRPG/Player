@@ -195,7 +195,7 @@ bool Game_Map::IsScrolling() {
 void Game_Map::Update() {
 	if (need_refresh) Refresh();
 	if (scroll_rest > 0) {
-		int distance = 2 ^ scroll_speed;
+		int distance = (1 << scroll_speed);
 		switch (scroll_direction) {
 			case 2:
 				ScrollDown(distance);

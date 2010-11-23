@@ -34,6 +34,8 @@
 	//#define USE_ALPHA
 #endif
 
+//#define USE_FIXED_TIMESTEP_FPS
+
 #ifdef USE_SDL_IMAGE
 	#define HAVE_BMP
 	#define HAVE_GIF
