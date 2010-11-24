@@ -49,6 +49,10 @@
 #include "window_command.h"
 #include "output.h"
 
+#ifdef GEKKO
+	#include <gccore.h>
+#endif
+
 ////////////////////////////////////////////////////////////
 /// Constructor
 ////////////////////////////////////////////////////////////
@@ -120,12 +124,23 @@ void Scene_Title::MainFunction() {
 	// Screen transition
 	Graphics::Transition(Graphics::FadeIn, 30, true);
 
+#ifdef GEKKO
+	SYS_SetResetCallback(Scene::WiiResetPressed);
+#endif
+
 	// Scene loop
 	while (Scene::instance == this) {
 		Player::Update();
 		Graphics::Update();
 		Input::Update();
 		Update();
+
+#ifdef GEKKO
+		if (Scene_Title::wii_reset_pressed == 1) {
+			Scene::wii_reset_pressed = 0;
+			CommandNewGame();
+		}
+#endif
 	}
 
 	// Delete graphical objects

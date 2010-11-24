@@ -28,6 +28,10 @@
 #include "msgbox.h"
 #include "graphics.h"
 
+#ifdef GEKKO
+	#include <gccore.h>
+#endif
+
 ////////////////////////////////////////////////////////////
 void Output::Error(char* fmt, ...) {
 	va_list args;
@@ -51,12 +55,20 @@ void Output::Error(const char* fmt, ...) {
 
 	va_end(args);
 }
-void Output::ErrorStr(std::string err){
+void Output::ErrorStr(std::string err) {
 	#if OUTPUT_TYPE == OUTPUT_CONSOLE
+		#ifdef GEKKO
+			GXRModeObj *rmode = VIDEO_GetPreferredMode(NULL);;
+			// Get the Video memory and create a console for text output on it
+			console_init(VIDEO_GetCurrentFramebuffer(), 20, 20, rmode->fbWidth,
+				rmode->xfbHeight,rmode->fbWidth*VI_DISPLAY_PIX_SZ);
+		#endif
 		std::cout << err << std::endl;
 		std::cout << std::endl;
 		std::cout << "EasyRPG Player will close now. Press any key..." << std::endl;
-		std::cin.get();
+		#ifndef GEKKO
+			std::cin.get();
+		#endif
 	#elif OUTPUT_TYPE == OUTPUT_FILE
 		std::ofstream file;
 		file.open(OUTPUT_FILENAME, std::ios::out | std::ios::app);

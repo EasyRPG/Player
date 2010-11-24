@@ -28,6 +28,10 @@
 #include "main_data.h"
 #include "scene_title.h"
 
+#ifdef GEKKO
+	#include <gccore.h>
+#endif
+
 ////////////////////////////////////////////////////////////
 /// Global Variables
 ////////////////////////////////////////////////////////////
@@ -67,6 +71,21 @@ void Player::Init() {
 #ifdef DEBUG
 	flags |= SDL_INIT_NOPARACHUTE;
 #endif
+
+#ifdef GEKKO
+	// Initialize the video system
+	VIDEO_Init();
+	GXRModeObj *rmode = VIDEO_GetPreferredMode(NULL);
+	void* xfb = MEM_K0_TO_K1(SYS_AllocateFramebuffer(rmode));
+	VIDEO_Configure(rmode);
+	VIDEO_SetNextFramebuffer(xfb);
+	VIDEO_SetBlack(FALSE);
+	VIDEO_Flush();
+	VIDEO_WaitVSync();
+
+	zoom = false;
+#endif
+
 	if ((SDL_Init(flags) < 0)) {
 		Output::Error("EasyRPG Player couldn't initialize SDL.\n%s\n", SDL_GetError());
 	}

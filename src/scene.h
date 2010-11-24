@@ -62,6 +62,11 @@ public:
 
 	/// Old scene, temporary save for deleting.
 	static Scene* old_instance;
+
+#ifdef GEKKO
+	static void WiiResetPressed();
+	static int wii_reset_pressed;
+#endif
 };
 
 #endif

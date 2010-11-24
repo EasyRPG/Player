@@ -15,7 +15,7 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#if UNIX || DINGOO
+#if UNIX || DINGOO || GEKKO
 
 ////////////////////////////////////////////////////////////
 // Headers
@@ -26,6 +26,13 @@
 #include <string.h>
 #include <dirent.h>
 #include <unistd.h>
+
+#ifdef GEKKO
+	#include <fat.h>
+	#include <cstdlib>
+	#include <cstdio>
+#endif
+
 #include <errno.h>
 #include "filefinder.h"
 #include "output.h"
@@ -46,6 +53,14 @@ void FileFinder::Init() {
 	// TODO find default paths
 	rtp_path = "";
 	fonts_path = "";
+
+#ifdef GEKKO
+	// Init libfat (Mount SD/USB)
+	if (!fatInitDefault()) {
+		// No display is available yet and no Volume mounted
+		exit(1);
+	}
+#endif
 }
 
 ////////////////////////////////////////////////////////////
@@ -54,6 +69,16 @@ void FileFinder::Init() {
 static bool fexists(std::string& filename) {
 	// Check if file exists and is readable
 	// At first the case sensitive version
+#ifdef GEKKO
+	// libfat is case insensitive
+	// No idea why but access is not available
+	FILE* file = fopen(filename.c_str(), "r");
+	if (file == NULL) {
+		return false;
+	} else {
+		return true;
+	}
+#else
 	if (access(filename.c_str(), R_OK) == 0) {
 		return true;
 	}
@@ -98,6 +123,7 @@ static bool fexists(std::string& filename) {
 	// No luck :(	
 	closedir(dir);
 	return false;
+#endif
 }
 
 ////////////////////////////////////////////////////////////

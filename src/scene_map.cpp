@@ -56,6 +56,13 @@ void Scene_Map::MainFunction() {
 		Graphics::Update();
 		Input::Update();
 		Update();
+
+#ifdef GEKKO
+		if (Scene_Title::wii_reset_pressed == 1) {
+			type = Scene::Null;
+			instance = NULL;
+		}
+#endif
 	}
 
 	Graphics::Transition(Graphics::FadeOut, 20, false);

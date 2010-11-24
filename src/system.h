@@ -18,6 +18,16 @@
 #ifndef _SYSTEM_H_
 #define _SYSTEM_H_
 
+#ifndef _WIN32
+#ifndef UNIX
+#ifndef DINGOO
+#ifndef GEKKO
+	#error "This build doesn't target an os"
+#endif
+#endif
+#endif
+#endif
+
 #ifdef USE_OPENGL
 	#define HAVE_BMP
 	#define HAVE_GIF

@@ -111,6 +111,8 @@
 ////////////////////////////////////////////////////////////
 #if defined(DINGOO) || defined(UNIX) && !defined(GTK)
 	#define OUTPUT_TYPE OUTPUT_FILE
+#elif defined(GEKKO)
+	#define OUTPUT_TYPE OUTPUT_CONSOLE
 #else
 	#define OUTPUT_TYPE OUTPUT_MSGBOX
 #endif

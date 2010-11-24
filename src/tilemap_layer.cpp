@@ -41,7 +41,7 @@ static const int BLOCK_F_TILES = 144;
 // Blocks subtiles IDs
 // Mess with this code and you will die in 3 days...
 ////////////////////////////////////////////////////////////
-static char BlockA_Subtiles_IDS[] = {
+static signed char BlockA_Subtiles_IDS[] = {
 	-1,	-1,	-1,	-1,		12,	-1,	-1,	-1,		-1,	13,	-1,	-1,		12,	13,	-1,	-1,
 	-1,	-1,	-1,	15,		12,	-1,	-1,	15,		-1,	13,	-1,	15,		12,	13,	-1,	15,
 	-1,	-1,	14,	-1,		12,	-1,	14,	-1,		-1,	13,	14,	-1,		12,	13,	14,	-1,
@@ -56,7 +56,7 @@ static char BlockA_Subtiles_IDS[] = {
 	4,	5,	2,	3,		8,	1,	10,	3,		0,	1,	2,	3
 };
 
-static char BlockB_Subtiles_IDS[] = {
+static signed char BlockB_Subtiles_IDS[] = {
 	0, 	1, 	2, 	3,		4, 	1, 	2, 	3,		0, 	5, 	2, 	3,		4, 	5, 	2, 	3,
 	0, 	1, 	6, 	3,		4, 	1, 	6, 	3,		0, 	5, 	6, 	3,		4, 	5, 	6, 	3,
 	0, 	1, 	2, 	7,		4, 	1, 	2, 	7,		0, 	5, 	2, 	7,		4, 	5, 	2, 	7,
@@ -67,14 +67,14 @@ static char BlockB_Subtiles_IDS[] = {
 	12,	13,	10,	11,		8,	13,	10,	11,		12,	9,	10,	11,		8,	9,	10,	11
 };
 
-static char BlockB2_Subtiles_IDS[] = {
+static signed char BlockB2_Subtiles_IDS[] = {
 	-1,	-1,	-1,	-1,		4,	-1,	-1,	-1,		-1,	5,	-1,	-1,		4,	5,	-1,	-1,
 	-1,	-1,	6,	-1,		4,	-1,	6,	-1,		-1,	5,	6,	-1,		4,	5,	6,	-1,
 	-1,	-1,	-1,	7,		4,	-1,	-1,	7,		-1,	5,	-1,	7,		4,	5,	-1,	7,
 	-1,	-1,	6,	7,		4,	-1,	6,	7,		-1,	5,	6,	7,		4,	5,	6,	7
 };
 
-static char BlockD_Subtiles_IDS[] = {
+static signed char BlockD_Subtiles_IDS[] = {
 	26,	27,	32,	33,		4,	27,	32,	33,		26,	5,	32,	33,		4,	5,	32,	33,
 	26,	27,	32,	11,		4,	27,	32,	11,		26,	5,	32,	11,		4,	5,	32,	11,
 	26,	27,	10,	33,		4,	27,	10,	33,		26,	5,	10,	33,		4,	5,	10,	33,

@@ -23,6 +23,10 @@
 #include "SDL.h"
 #include "output.h"
 
+#ifdef GEKKO
+	#include <wiiuse/wpad.h>
+#endif
+
 ////////////////////////////////////////////////////////////
 /// Global Variables
 ////////////////////////////////////////////////////////////
@@ -41,11 +45,19 @@ namespace Input {
 /// Initialize
 ////////////////////////////////////////////////////////////
 void Input::Init() {
+#ifdef GEKKO
+	WPAD_Init();
+#endif
+
 	if (!(SDL_WasInit(SDL_INIT_JOYSTICK) & SDL_INIT_JOYSTICK)) {
 		if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) {
 			Output::Warning("Couldn't initialize joystick.\n%s\n", SDL_GetError());
 		}
 	}
+
+#ifdef GEKKO
+	SDL_JoystickOpen(0);
+#endif
 
 	InitButtons();
 

@@ -345,7 +345,9 @@ void Graphics::DrawFrame() {
 	}
 
 	// Print FPS if needed
-	if (fps_showing) 
+#ifndef GEKKO
+	if (fps_showing)
+#endif
 		PrintFPS();
 
 	if (Player::zoom) {
