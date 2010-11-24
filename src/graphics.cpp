@@ -25,6 +25,7 @@
 #include "player.h"
 #include "SDL_ttf.h"
 #include "system.h"
+#include <algorithm>
 #include <sstream>
 
 namespace {
@@ -333,7 +334,8 @@ void Graphics::PrintFPS() {
 void Graphics::DrawFrame() {
 	if ( (!frozen) && (!skip_draw) ) {
 		if (zlist_needs_sorting) {
-			zlist.sort(SortZObj);
+			//zlist.sort(SortZObj);
+			std::stable_sort(zlist.begin(), zlist.end(), SortZObj);
 			zlist_needs_sorting = false;
 		}
 
@@ -463,7 +465,7 @@ void Graphics::RemoveDrawable(unsigned long ID) {
 ///////////////////////////////////////////////////////////
 // Sort ZObj
 ///////////////////////////////////////////////////////////
-bool Graphics::SortZObj(ZObj &first, ZObj &second) {
+inline bool Graphics::SortZObj(const ZObj &first, const ZObj &second) {
 	if (first.GetZ() < second.GetZ()) return true;
 	else if (first.GetZ() > second.GetZ()) return false;
 	else return first.GetCreation() < second.GetCreation();

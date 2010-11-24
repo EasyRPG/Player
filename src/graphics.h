@@ -49,7 +49,7 @@ namespace Graphics {
 	void RegisterDrawable(unsigned long ID, Drawable* drawable);
 	void RemoveDrawable(unsigned long ID);
 
-	bool SortZObj(ZObj &first, ZObj &second);
+	bool SortZObj(const ZObj &first, const ZObj &second);
 	void RegisterZObj(long z, unsigned long ID);
 	void RegisterZObj(long z, unsigned long ID, bool multiz);
 	void RemoveZObj(unsigned long ID);
