@@ -2,7 +2,7 @@
 <CodeLite_Project Name="Player">
   <Plugins>
     <Plugin Name="qmake">
-      <![CDATA[00030001N0012Dingux Debug0000000000000001N0012GTK+ Release0000000000000001N0011Win32 Debug000000000000]]>
+      <![CDATA[00040001N0012Dingux Debug0000000000000001N0012GTK+ Release0000000000000001N0011Win32 Debug0000000000000001N0013Win32 Release000000000000]]>
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="Engine">
@@ -399,7 +399,7 @@
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Win32 Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-U__STRICT_ANSI__-fno-rtti;-fno-exceptions;-D_GNU_SOURCE=1;-Dmain=SDL_main" Required="yes" PreCompiledHeader="">
+      <Compiler Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-U__STRICT_ANSI__;-fno-rtti;-fno-exceptions;-D_GNU_SOURCE=1;-Dmain=SDL_main" Required="yes" PreCompiledHeader="">
         <IncludePath Value="$(EASYDEV_MINGW)/include"/>
         <Preprocessor Value="_DEBUG"/>
       </Compiler>
