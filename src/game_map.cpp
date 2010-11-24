@@ -23,6 +23,7 @@
 #include "main_data.h"
 #include "output.h"
 #include "util_macro.h"
+#include "game_system.h"
 
 ////////////////////////////////////////////////////////////
 namespace {
@@ -75,6 +76,8 @@ void Game_Map::Dispose() {
 
 ////////////////////////////////////////////////////////////
 void Game_Map::Setup(int _id) {
+	Dispose();
+
 	map_id = _id;
 	char file[12];
 	sprintf(file, "Map%04d.lmu", map_id);
@@ -94,11 +97,11 @@ void Game_Map::Setup(int _id) {
 	display_x = 0;
 	display_y = 0;
 	need_refresh = false;
-	/*events.clear();
-	for i in @map.events.keys
-		@events[i] = Game_Event.new(@map_id, @map.events[i])
-	end
-	@common_events.clear();
+
+	for (size_t i = 0; i < map->events.size(); i++) {
+		events.push_back(new Game_Event(map_id, map->events[i]));
+	}
+	/*@common_events.clear();
 	for i in 1...$data_common_events.size
 		@common_events[i] = Game_CommonEvent.new(i)
 	end*/
@@ -109,18 +112,22 @@ void Game_Map::Setup(int _id) {
 
 ////////////////////////////////////////////////////////////
 void Game_Map::Autoplay() {
+	// TODO: Check music_type
+	if (!Data::treemap.maps[map->ID].music.name.empty()) {
+		Game_System::BgmPlay(Data::treemap.maps[map->ID].music);
+	}
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Map::Refresh() {
-	/*if (map_id > 0) {
-		for (int i = 0; i < events.size(); i++) {
+	if (map_id > 0) {
+		for (size_t i = 0; i < events.size(); i++) {
 			events[i]->Refresh();
 		}
-		for (int i = 0; i < common_events.size(); i++) {
+		/*for (size_t i = 0; i < common_events.size(); i++) {
 			common_events[i]->Refresh();
-		}
-	}*/
+		}*/
+	}
 	need_refresh = false;
 }
 
@@ -150,7 +157,7 @@ bool Game_Map::IsValid(int x, int y) {
 }
 
 ////////////////////////////////////////////////////////////
-bool Game_Map::IsPassable(int x, int y, int d, Game_Event* self_event) {
+bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event) {
 	return true;
 }
 
@@ -171,11 +178,11 @@ int Game_Map::GetTerrainTag(int x, int y) {
 
 ////////////////////////////////////////////////////////////
 int Game_Map::CheckEvent(int x, int y) {
-	/*for (int i = 0; i < events.size(); i++) {
-		if (events[i]->x == x && events[i]->y == y) {
-			return events[i]->id;
+	for (size_t i = 0; i < events.size(); i++) {
+		if (events[i]->GetX() == x && events[i]->GetY() == y) {
+			return events[i]->GetId();
 		}
-	}*/
+	}
 	return 0;
 }
 
@@ -213,12 +220,12 @@ void Game_Map::Update() {
 		scroll_rest -= distance;
 	}
 	
-	/*for (int i = 0; i < events.size(); i++) {
-		Game_Map::events[i].Update();
+	for (size_t i = 0; i < events.size(); i++) {
+		events[i]->Update();
 	}
 
-	for (int i = 0; i < common_events.size(); i++) {
-		common_events[i].Update();
+	/*for (size_t i = 0; i < common_events.size(); i++) {
+		common_events[i]->Update();
 	}*/
 }
 

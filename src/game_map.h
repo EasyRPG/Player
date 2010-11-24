@@ -97,7 +97,7 @@ namespace Game_Map {
 	/// @param self_event : ignores self
 	/// @return whether is passable
 	////////////////////////////////////////////////////////
-	bool IsPassable(int x, int y, int d, Game_Event* self_event = NULL);
+	bool IsPassable(int x, int y, int d, const Game_Character* self_event = NULL);
 
 	////////////////////////////////////////////////////////
 	/// Get if a tile has bush flag.

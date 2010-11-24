@@ -20,18 +20,35 @@
 ////////////////////////////////////////////////////////////
 #include "game_character.h"
 #include "game_map.h"
+#include "game_player.h"
 #include "main_data.h"
 #include "util_macro.h"
 
 ////////////////////////////////////////////////////////////
-Game_Character::Game_Character() {
-	x = 0;
-	y = 0;
-	real_x = 0;
-	real_y = 0;
-	move_speed = 4;
-
-	prelock_direction = 0;
+Game_Character::Game_Character() :
+	x(0),
+	y(0),
+	tile_id(0),
+	character_index(0),
+	real_x(0),
+	real_y(0),
+	direction(2),
+	pattern(1),
+	move_route_forcing(false),
+	through(false),
+	animation_id(0),
+	move_speed(4),
+	move_frequency(6),
+	prelock_direction(0),
+	locked(false),
+	anime_count(0),
+	stop_count(0),
+	original_pattern(1),
+	step_anime(false),
+	walk_anime(true),
+	turn_enabled(true),
+	direction_fix(false),
+	last_pattern(0) {
 }
 
 ////////////////////////////////////////////////////////////
@@ -41,7 +58,7 @@ bool Game_Character::IsMoving() const {
 
 ////////////////////////////////////////////////////////////
 bool Game_Character::IsPassable(int x, int y, int d) const {
-	/*int new_x = x + (d == 6 ? 1 : d == 4 ? -1 : 0);
+	int new_x = x + (d == 6 ? 1 : d == 4 ? -1 : 0);
 	int new_y = y + (d == 2 ? 1 : d == 8 ? -1 : 0);
 
 	if (!Game_Map::IsValid(new_x, new_y)) return false;
@@ -52,23 +69,24 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 	
 	if (!Game_Map::IsPassable(new_x, new_y, 10 - d)) return false;
 	
-	for (int i = 0; i < Game_Map::events.size(); i++) {
-		Game_Event* evnt = Game_Map::events[i];
-		if (evnt.x == new_x && evnt.y == new_y) {
-			if (!evnt.through) {
-				if (id != Main_Data::game_player.id)
+	for (int i = 0; i < Game_Map::GetEvents().size(); i++) {
+		Game_Event* evnt = Game_Map::GetEvents()[i];
+		if (evnt->GetX() == new_x && evnt->GetY() == new_y) {
+			if (!evnt->GetThrough()) {
+				if (this != (const Game_Character*)Main_Data::game_player)
 					return false;
-				if (!evnt.character_name.empty())
+
+				if (!evnt->GetCharacterName().empty())
 					return false;
 			}
 		}
 	}
 
-	if (Main_Data::game_player->x == new_x && Main_Data::game_player->y == new_y) {
-		if (!Main_Data::game_player->through && !character_name.empty()) {
+	if (Main_Data::game_player->GetX() == new_x && Main_Data::game_player->GetY() == new_y) {
+		if (!Main_Data::game_player->GetThrough() && !character_name.empty()) {
 			return false;
 		}
-	}*/
+	}
 
 	return true;
 }
@@ -84,12 +102,12 @@ void Game_Character::MoveTo(int x, int y) {
 
 ////////////////////////////////////////////////////////////
 int Game_Character::GetScreenX() const {
-	return (real_x - Game_Map::GetDisplayX() + 3) / 4 + 16;
+	return (real_x - Game_Map::GetDisplayX() + 3) / 8 + 8;
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Character::GetScreenY() const {
-	int y = (real_y - Game_Map::GetDisplayY() + 3) / 4 + 32;
+	int y = (real_y - Game_Map::GetDisplayY() + 3) / 8 + 16;
 
 	/*int n;
 	if (jump_count >= jump_peak)
@@ -121,25 +139,44 @@ void Game_Character::Update() {
 		UpdateJump();
 	else*/ if (IsMoving())
 		UpdateMove();
-	/*else
+	else
 		UpdateStop();
 
-	if (anime_count > 18 - move_speed * 2) {
-		if (!step_anime && stop_count > 0)
+	if (anime_count > 24 - move_speed) {
+		if (!step_anime && stop_count > 0) {
 			pattern = original_pattern;
-		else
-			pattern = (pattern + 1) % 4;
+			last_pattern = last_pattern == 0 ? 2 : 0;
+		} else {
+			if (last_pattern == 0) {
+				if (pattern == 2) {
+					pattern = 1;
+					last_pattern = 2;
+				} else {
+					pattern = 2;
+				}
+			} else {
+				if (pattern == 0) {
+					pattern = 1;
+					last_pattern = 0;
+				} else {
+					pattern = 0;
+				}
+			}
+		}
 
 		anime_count = 0;
 	}
-	if (wait_count > 0) {
+
+	/*if (wait_count > 0) {
 		wait_count -= 1
 		return;
 	}
+
 	if (move_route_forcing) {
 		MoveTypeCustom();
 		return;
 	}
+
 	if (starting || IsLock()) return;
 	
 	if (stop_count > (40 - move_frequency * 2) * (6 - move_frequency)) {
@@ -171,18 +208,29 @@ void Game_Character::UpdateMove() {
 	if (y * 128 < real_y)
 		real_y = max(real_y - distance, y * 128);
 
-	/*if (walk_anime)
+	if (walk_anime)
 		anime_count += 1.5;
 	else if (step_anime)
-		anime_count += 1;*/
+		anime_count += 1;
+}
+
+////////////////////////////////////////////////////////////
+void Game_Character::UpdateStop() {
+	if (step_anime)
+		anime_count += 1;
+	else if (pattern != original_pattern)
+		anime_count += 1.5;
+
+	//if (!starting || !IsLock())
+		stop_count += 1;
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Character::MoveDown() {
-	//if (turn_enabled) TurnDown();
+	if (turn_enabled) TurnDown();
 
 	if (IsPassable(x, y, 2)) {
-		//TurnDown()
+		TurnDown();
 		y += 1;
 		//IncreaseSteps();
 	} /*else {
@@ -192,10 +240,10 @@ void Game_Character::MoveDown() {
 
 ////////////////////////////////////////////////////////////
 void Game_Character::MoveLeft() {
-	//if (turn_enabled) TurnLeft();
+	if (turn_enabled) TurnLeft();
 
 	if (IsPassable(x, y, 4)) {
-		//TurnLeft()
+		TurnLeft();
 		x -= 1;
 		//IncreaseSteps();
 	} /*else {
@@ -205,10 +253,10 @@ void Game_Character::MoveLeft() {
 
 ////////////////////////////////////////////////////////////
 void Game_Character::MoveRight() {
-	//if (turn_enabled) TurnRight();
+	if (turn_enabled) TurnRight();
 
 	if (IsPassable(x, y, 6)) {
-		//TurnRight()
+		TurnRight();
 		x += 1;
 		//IncreaseSteps();
 	} /*else {
@@ -218,14 +266,46 @@ void Game_Character::MoveRight() {
 
 ////////////////////////////////////////////////////////////
 void Game_Character::MoveUp() {
-	//if (turn_enabled) TurnUp();
+	if (turn_enabled) TurnUp();
+
 	if (IsPassable(x, y, 8)) {
-		//TurnUp()
+		TurnUp();
 		y -= 1;
 		//IncreaseSteps();
 	} /*else {
 		check_event_trigger_touch(x, y - 1);
 	}*/
+}
+////////////////////////////////////////////////////////////
+void Game_Character::TurnDown() {
+	if (!direction_fix) {
+		direction = 2;
+		stop_count = 0;
+	}
+}
+
+////////////////////////////////////////////////////////////
+void Game_Character::TurnLeft() {
+	if (!direction_fix) {
+		direction = 4;
+		stop_count = 0;
+	}
+}
+
+////////////////////////////////////////////////////////////
+void Game_Character::TurnRight() {
+	if (!direction_fix) {
+		direction = 6;
+		stop_count = 0;
+	}
+}
+
+////////////////////////////////////////////////////////////
+void Game_Character::TurnUp() {
+	if (!direction_fix) {
+		direction = 8;
+		stop_count = 0;
+	}
 }
 
 ////////////////////////////////////////////////////////////

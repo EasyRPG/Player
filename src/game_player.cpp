@@ -159,5 +159,6 @@ void Game_Player::Refresh() {
 
 	actor = Game_Party::GetActors()[0];
 
-	character_name = actor->GetName();
+	character_name = actor->GetCharacterName();
+	character_index = actor->GetCharacterIndex();
 }

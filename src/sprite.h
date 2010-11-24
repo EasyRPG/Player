@@ -33,7 +33,7 @@
 class Sprite : public Drawable {
 public:
 	Sprite();
-	~Sprite();
+	virtual ~Sprite();
 	
 	void Draw(int z_order);
 

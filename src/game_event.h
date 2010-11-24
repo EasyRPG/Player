@@ -23,7 +23,8 @@
 ////////////////////////////////////////////////////////////
 #include <vector>
 #include "game_character.h"
-#include "rpg_commonevent.h"
+#include "rpg_event.h"
+#include "game_interpreter.h"
 
 ////////////////////////////////////////////////////////////
 /// Game_Event class
@@ -33,7 +34,7 @@ public:
 	////////////////////////////////////////////////////////
 	/// Constructor.
 	////////////////////////////////////////////////////////
-	Game_Event();
+	Game_Event(int map_id, RPG::Event event);
 
 	////////////////////////////////////////////////////////
 	/// Destructor.
@@ -44,6 +45,11 @@ public:
 	/// Clear Starting Flag.
 	////////////////////////////////////////////////////////
 	void ClearStarting();
+
+	////////////////////////////////////////////////////////
+	/// Refresh.
+	////////////////////////////////////////////////////////
+	void Refresh();
 
 	/// @return event id
 	int GetId() const;
@@ -61,9 +67,13 @@ private:
 	int ID;
 	bool starting;
 	int trigger;
-	std::vector<RPG::EventCommand> list;
-
 	int map_id;
+	RPG::Event event;
+	bool erased;
+	bool through;
+	RPG::EventPage page;
+	std::vector<RPG::EventCommand> list;
+	Game_Interpreter* interpreter;
 };
 
 #endif

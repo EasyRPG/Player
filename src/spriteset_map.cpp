@@ -39,13 +39,15 @@ Spriteset_Map::Spriteset_Map() {
 	panorama->SetZ(-1000);
 	fog = new Plane();
 	fog->SetZ(3000);
-	/*for (int i = 0; i < Game_Map::events.size; i++) {
-		Sprite_Character* sprite = new Sprite_Character();
-		character_sprites.push(sprite);
+
+	std::vector<Game_Event*> events = Game_Map::GetEvents();
+	for (size_t i = 0; i < events.size(); i++) {
+		Sprite_Character* sprite = new Sprite_Character(events[i]);
+		character_sprites.push_back(sprite);
 	}
-	Sprite_Character* player = new Sprite_Character();
-	character_sprites.push(player);
-	weather = new Weather();
+	Sprite_Character* player = new Sprite_Character((Game_Character*)Main_Data::game_player);
+	character_sprites.push_back(player);
+	/*weather = new Weather();
 	for (int i = 0; i < 50; i++) {
 		Sprite_Picture* sprite = new Sprite_Picture();
 		picture_sprites.push(sprite);
@@ -61,10 +63,10 @@ Spriteset_Map::~Spriteset_Map() {
 	delete tilemap;
 	delete panorama;
 	delete fog;
-	/*for (int i = 0; i < character_sprites.size(); i++) {
+	for (int i = 0; i < character_sprites.size(); i++) {
 		delete character_sprites[i];
 	}
-	for (int i = 0; i < picture_sprites.size(); i++) {
+	/*for (int i = 0; i < picture_sprites.size(); i++) {
 		delete picture_sprites[i];
 	}
 	delete weather;
@@ -78,4 +80,7 @@ void Spriteset_Map::Update() {
 	tilemap->SetOx(Game_Map::GetDisplayX() / 8);
 	tilemap->SetOy(Game_Map::GetDisplayY() / 8);
 	tilemap->Update();
+	for (int i = 0; i < character_sprites.size(); i++) {
+		character_sprites[i]->Update();
+	}
 }

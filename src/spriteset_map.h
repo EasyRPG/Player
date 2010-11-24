@@ -23,6 +23,7 @@
 ////////////////////////////////////////////////////////////
 #include "tilemap.h"
 #include "plane.h"
+#include "sprite_character.h"
 
 ////////////////////////////////////////////////////////////
 /// Spriteset_Map class
@@ -38,8 +39,8 @@ protected:
 	Tilemap* tilemap;
 	Plane* panorama;
 	Plane* fog;
-	/*std::vector<Sprite_Character*> character_sprites;
-	std::vector<Sprite_Picture*> picture_sprites;
+	std::vector<Sprite_Character*> character_sprites;
+	/*std::vector<Sprite_Picture*> picture_sprites;
 	Weather* weather;
 	Sprite_Timer* timer_sprite;*/
 };

@@ -34,8 +34,8 @@ public:
 		if ((size_t)switch_id < Data::switches.size())
 			Output::Error("Switch index %d is invalid.", switch_id);
 
-		if ((size_t)switch_id > data.size())
-			data.resize(switch_id, false);
+		if ((size_t)switch_id >= data.size())
+			data.resize(switch_id + 1, false);
 
 		return data[switch_id];
 	}

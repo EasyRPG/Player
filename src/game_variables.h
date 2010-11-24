@@ -34,8 +34,8 @@ public:
 		if ((size_t)variable_id < Data::variables.size())
 			Output::Error("Variable index %d is invalid.", variable_id);
 
-		if ((size_t)variable_id > data.size())
-			data.resize(variable_id, 0);
+		if ((size_t)variable_id >= data.size())
+			data.resize(variable_id + 1, 0);
 
 		return data[variable_id];
 	}
