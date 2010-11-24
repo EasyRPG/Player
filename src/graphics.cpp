@@ -60,6 +60,7 @@ namespace Graphics {
 }
 
 namespace {
+	bool zlist_needs_sorting;
 	bool prepare_transition;
 	bool skip_draw;
 	int transition_frames;
@@ -94,6 +95,8 @@ void Graphics::Init() {
 	framerate_interval = 1000.0 / DEFAULT_FPS;
 	last_ticks = SDL_GetTicks() + (long)framerate_interval;
 	next_ticks_fps = last_ticks + 1000;
+
+	zlist_needs_sorting = false;
 
 	transition_frames = 0;
 	transition_current_frame = 0;
@@ -319,6 +322,11 @@ void Graphics::PrintFPS() {
 ////////////////////////////////////////////////////////////
 void Graphics::DrawFrame() {
 	if ( (!frozen) && (!skip_draw) ) {
+		if (zlist_needs_sorting) {
+			zlist.sort(SortZObj);
+			zlist_needs_sorting = false;
+		}
+
 		SDL_FillRect(Player::main_surface, &Player::main_surface->clip_rect, default_backcolor);
 		DrawableType type;
 		for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
@@ -459,12 +467,12 @@ void Graphics::RegisterZObj(long z, unsigned long ID) {
 	ZObj zobj(z, creation, ID);
 
 	zlist.push_back(zobj);
-	zlist.sort(SortZObj);
+	zlist_needs_sorting = true;
 }
 void Graphics::RegisterZObj(long z, unsigned long ID, bool multiz) {
 	ZObj zobj(z, 999999, ID);
 	zlist.push_back(zobj);
-	zlist.sort(SortZObj);
+	zlist_needs_sorting = true;
 }
 
 ///////////////////////////////////////////////////////////
@@ -486,8 +494,8 @@ void Graphics::UpdateZObj(unsigned long ID, long z) {
 	for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
 		if (it_zlist->GetId() == ID) {
 			it_zlist->SetZ(z);
+			zlist_needs_sorting = true;
 			break;
 		}
 	}
-	zlist.sort(SortZObj);
 }
