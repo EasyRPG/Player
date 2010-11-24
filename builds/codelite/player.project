@@ -2,7 +2,7 @@
 <CodeLite_Project Name="Player">
   <Plugins>
     <Plugin Name="qmake">
-      <![CDATA[00080001N0012Dingux-Debug0000000000000001N0014Dingux-Release0000000000000001N0010GTK+ Debug0000000000000001N0012GTK+ Release0000000000000001N0010UNIX Debug0000000000000001N0012UNIX Release0000000000000001N0011Win32 Debug0000000000000001N0013Win32 Release000000000000]]>
+      <![CDATA[00030001N0012Dingux Debug0000000000000001N0012GTK+ Release0000000000000001N0011Win32 Debug000000000000]]>
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="Engine">
@@ -156,10 +156,10 @@
   <Dependencies Name="Win32 Release">
     <Project Name="Readers"/>
   </Dependencies>
-  <Dependencies Name="Dingux-Debug">
+  <Dependencies Name="Dingux Debug">
     <Project Name="Readers"/>
   </Dependencies>
-  <Dependencies Name="Dingux-Release">
+  <Dependencies Name="Dingux Release">
     <Project Name="Readers"/>
   </Dependencies>
   <Dependencies Name="UNIX Debug">
@@ -169,20 +169,20 @@
     <Project Name="Readers"/>
   </Dependencies>
   <Settings Type="Executable">
-    <Configuration Name="Dingux-Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+    <Configuration Name="Dingux Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-fno-rtti;-fno-exceptions;$(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --cflags)" Required="yes" PreCompiledHeader="">
         <Preprocessor Value="UNIX"/>
         <Preprocessor Value="DINGOO"/>
         <Preprocessor Value="_DEBUG"/>
       </Compiler>
       <Linker Options="$(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --libs)" Required="yes">
-        <LibraryPath Value="../../../readers/builds/codelite/Debug"/>
+        <LibraryPath Value="../../../readers/builds/codelite/.obj/Debug"/>
         <Library Value="SDL_mixer"/>
         <Library Value="SDL_ttf"/>
         <Library Value="SDL_image"/>
         <Library Value="SDL_gfx"/>
         <Library Value="z"/>
-        <Library Value="Readers"/>
+        <Library Value="readers"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/easyrpg.dge" IntermediateDirectory=".obj/Debug" Command="" CommandArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="no"/>
@@ -208,19 +208,19 @@
         <CustomPreBuild/>
       </AdditionalRules>
     </Configuration>
-    <Configuration Name="Dingux-Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+    <Configuration Name="Dingux Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-O3;-ansi;-pedantic;-Wall;-Wextra;-fno-rtti;-fno-exceptions;$(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --cflags)" Required="yes" PreCompiledHeader="">
         <Preprocessor Value="UNIX"/>
         <Preprocessor Value="DINGOO"/>
       </Compiler>
       <Linker Options="-s;$(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --libs)" Required="yes">
-        <LibraryPath Value="../../../readers/builds/codelite/Release"/>
+        <LibraryPath Value="../../../readers/builds/codelite/.obj/Release"/>
         <Library Value="SDL_mixer"/>
         <Library Value="SDL_ttf"/>
         <Library Value="SDL_image"/>
         <Library Value="SDL_gfx"/>
         <Library Value="z"/>
-        <Library Value="Readers"/>
+        <Library Value="readers"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/easyrpg.dge" IntermediateDirectory=".obj/Release" Command="" CommandArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="no"/>
@@ -253,13 +253,13 @@
         <Preprocessor Value="_DEBUG"/>
       </Compiler>
       <Linker Options="$(shell sdl-config --libs);$(shell pkg-config --libs gtk+-2.0)" Required="yes">
-        <LibraryPath Value="../../../readers/builds/codelite/Debug"/>
+        <LibraryPath Value="../../../readers/builds/codelite/.obj/Debug"/>
         <Library Value="SDL_mixer"/>
         <Library Value="SDL_ttf"/>
         <Library Value="SDL_image"/>
         <Library Value="SDL_gfx"/>
         <Library Value="z"/>
-        <Library Value="Readers"/>
+        <Library Value="readers"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/player" IntermediateDirectory=".obj/Debug" Command="./player" CommandArguments="TestPlay HideTitle Window" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
@@ -291,13 +291,13 @@
         <Preprocessor Value="GTK"/>
       </Compiler>
       <Linker Options="-s;$(shell sdl-config --libs);$(shell pkg-config --libs gtk+-2.0)" Required="yes">
-        <LibraryPath Value="../../../readers/builds/codelite/Release"/>
+        <LibraryPath Value="../../../readers/builds/codelite/.obj/Release"/>
         <Library Value="SDL_mixer"/>
         <Library Value="SDL_ttf"/>
         <Library Value="SDL_image"/>
         <Library Value="SDL_gfx"/>
         <Library Value="z"/>
-        <Library Value="Readers"/>
+        <Library Value="readers"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/player" IntermediateDirectory=".obj/Release" Command="./player" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
@@ -329,13 +329,13 @@
         <Preprocessor Value="_DEBUG"/>
       </Compiler>
       <Linker Options="$(shell sdl-config --libs)" Required="yes">
-        <LibraryPath Value="../../../readers/builds/codelite/Debug"/>
+        <LibraryPath Value="../../../readers/builds/codelite/.obj/Debug"/>
         <Library Value="SDL_mixer"/>
         <Library Value="SDL_ttf"/>
         <Library Value="SDL_image"/>
         <Library Value="SDL_gfx"/>
         <Library Value="z"/>
-        <Library Value="Readers"/>
+        <Library Value="readers"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/player" IntermediateDirectory=".obj/Debug" Command="./player" CommandArguments="TestPlay HideTitle Window" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
@@ -366,13 +366,13 @@
         <Preprocessor Value="UNIX"/>
       </Compiler>
       <Linker Options="-s;$(shell sdl-config --libs)" Required="yes">
-        <LibraryPath Value="../../../readers/builds/codelite/Release"/>
+        <LibraryPath Value="../../../readers/builds/codelite/.obj/Release"/>
         <Library Value="SDL_mixer"/>
         <Library Value="SDL_ttf"/>
         <Library Value="SDL_image"/>
         <Library Value="SDL_gfx"/>
         <Library Value="z"/>
-        <Library Value="Readers"/>
+        <Library Value="readers"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/player" IntermediateDirectory=".obj/Release" Command="./player" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
@@ -405,7 +405,7 @@
       </Compiler>
       <Linker Options="-mwindows" Required="yes">
         <LibraryPath Value="$(EASYDEV_MINGW)/lib"/>
-        <LibraryPath Value="../../../readers/builds/codelite/Debug"/>
+        <LibraryPath Value="../../../readers/builds/codelite/.obj/Debug"/>
         <Library Value="mingw32"/>
         <Library Value="SDLmain"/>
         <Library Value="SDL"/>
@@ -414,7 +414,7 @@
         <Library Value="SDL_ttf"/>
         <Library Value="SDL_gfx"/>
         <Library Value="z"/>
-        <Library Value="Readers"/>
+        <Library Value="readers"/>
       </Linker>
       <ResourceCompiler Options="" Required="yes"/>
       <General OutputFile="../../bin/testgame/Player.exe" IntermediateDirectory=".obj/Debug" Command="./Player.exe" CommandArguments="TestPlay HideTitle Window" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
@@ -446,7 +446,7 @@
       </Compiler>
       <Linker Options="-s;-mwindows" Required="yes">
         <LibraryPath Value="$(EASYDEV_MINGW)/lib"/>
-        <LibraryPath Value="../../../readers/builds/codelite/Release"/>
+        <LibraryPath Value="../../../readers/builds/codelite/.obj/Release"/>
         <Library Value="mingw32"/>
         <Library Value="SDLmain"/>
         <Library Value="SDL"/>
@@ -455,7 +455,7 @@
         <Library Value="SDL_ttf"/>
         <Library Value="SDL_gfx"/>
         <Library Value="z"/>
-        <Library Value="Readers"/>
+        <Library Value="readers"/>
       </Linker>
       <ResourceCompiler Options="" Required="yes"/>
       <General OutputFile="../../bin/testgame/Player.exe" IntermediateDirectory=".obj/Release" Command="./Player.exe" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>

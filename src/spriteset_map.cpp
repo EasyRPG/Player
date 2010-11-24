@@ -63,7 +63,7 @@ Spriteset_Map::~Spriteset_Map() {
 	delete tilemap;
 	delete panorama;
 	delete fog;
-	for (int i = 0; i < character_sprites.size(); i++) {
+	for (size_t i = 0; i < character_sprites.size(); i++) {
 		delete character_sprites[i];
 	}
 	/*for (int i = 0; i < picture_sprites.size(); i++) {
@@ -80,7 +80,7 @@ void Spriteset_Map::Update() {
 	tilemap->SetOx(Game_Map::GetDisplayX() / 8);
 	tilemap->SetOy(Game_Map::GetDisplayY() / 8);
 	tilemap->Update();
-	for (int i = 0; i < character_sprites.size(); i++) {
+	for (size_t i = 0; i < character_sprites.size(); i++) {
 		character_sprites[i]->Update();
 	}
 }

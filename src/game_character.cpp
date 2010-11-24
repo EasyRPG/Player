@@ -44,11 +44,11 @@ Game_Character::Game_Character() :
 	anime_count(0),
 	stop_count(0),
 	original_pattern(1),
+	last_pattern(0),
 	step_anime(false),
 	walk_anime(true),
 	turn_enabled(true),
-	direction_fix(false),
-	last_pattern(0) {
+	direction_fix(false) {
 }
 
 ////////////////////////////////////////////////////////////
@@ -69,7 +69,7 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 	
 	if (!Game_Map::IsPassable(new_x, new_y, 10 - d)) return false;
 	
-	for (int i = 0; i < Game_Map::GetEvents().size(); i++) {
+	for (size_t i = 0; i < Game_Map::GetEvents().size(); i++) {
 		Game_Event* evnt = Game_Map::GetEvents()[i];
 		if (evnt->GetX() == new_x && evnt->GetY() == new_y) {
 			if (!evnt->GetThrough()) {
