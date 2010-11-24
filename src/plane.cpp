@@ -90,8 +90,10 @@ void Plane::Refresh() {
 	needs_refresh = false;
 
 	delete plane;
+
+	Rect r = bitmap->GetRect();
 	
-	plane = new Bitmap(bitmap, bitmap->GetRect());
+	plane = new Bitmap(bitmap, r);
 		
 	plane->ToneChange(tone);
 	plane->OpacityChange(opacity, 0);

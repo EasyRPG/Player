@@ -50,6 +50,8 @@ Sprite::Sprite() {
 	sprite = NULL;
 	flash_duration = 0;
 
+	needs_refresh = false;
+
 	type = SPRITE;
 	ID = Graphics::ID++;
 	Graphics::RegisterZObj(0, ID);
@@ -78,7 +80,7 @@ void Sprite::Draw(int z_order) {
 	
 	Refresh();
 	
-	sprite->BlitScreen(x - ox, y - oy);
+	sprite->BlitScreen(x - ox, y - oy, sprite_rect);
 }
 
 ////////////////////////////////////////////////////////////
@@ -158,14 +160,18 @@ void Sprite::SetBitmap(Bitmap* nbitmap) {
 	} else {
 		src_rect = bitmap->GetRect();
 	}
+	sprite_rect = src_rect;
 	needs_refresh = true;
 }
 Rect Sprite::GetSrcRect() const {
 	return src_rect;
 }
-void Sprite::SetSrcRect(Rect nsrc_rect) {
+void Sprite::SetSrcRect(Rect& nsrc_rect) {
 	if (src_rect != nsrc_rect) needs_refresh = true;
 	src_rect = nsrc_rect;
+}
+void Sprite::SetSpriteRect(Rect& nsprite_rect) {
+	sprite_rect = nsprite_rect;
 }
 bool Sprite::GetVisible() const {
 	return visible;

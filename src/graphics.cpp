@@ -176,14 +176,6 @@ void Graphics::Update() {
 		last_frame_time = current_time;
 
 		DrawFrame();
-
-		if ( (prepare_transition) && (!frozen) ) {
-			// Get into actual transition
-			is_in_transition_yet = true;
-		
-			// Freeze screen
-			Freeze();
-		}
 	}
 }
 
@@ -210,14 +202,6 @@ void Graphics::Update() {
 		last_ticks = ticks;
 
 		DrawFrame();
-
-		if ( (prepare_transition) && (!frozen) ) {
-			// Get into actual transition
-			is_in_transition_yet = true;
-			
-			// Freeze screen
-			Freeze();
-		}
 
 		++framecount;
 		++frames;
@@ -334,10 +318,6 @@ void Graphics::PrintFPS() {
 // Draw Frame
 ////////////////////////////////////////////////////////////
 void Graphics::DrawFrame() {
-	if (is_in_transition_yet) {
-		DoTransition();
-	}
-
 	if ( (!frozen) && (!skip_draw) ) {
 		SDL_FillRect(Player::main_surface, &Player::main_surface->clip_rect, default_backcolor);
 		DrawableType type;
@@ -381,14 +361,32 @@ void Graphics::Freeze() {
 // Transition
 ////////////////////////////////////////////////////////////
 void Graphics::Transition(TransitionType type, int time, bool wait) {
+	//////
+	prepare_transition = true;
+	skip_draw = false;
+	DrawFrame();
+	/////
+
 	if (time > 255) time = 255;
 	if (time == 0) time = 1;
 	transition_frames = time;
 	transition_increment = 255/time;
 	transition_current_frame = 0;
-	prepare_transition = true;
 	actual_transition = type;
 	wait_for_transition = wait;
+
+	if (!frozen) {
+		// Get into actual transition
+		is_in_transition_yet = true;
+		
+		// Freeze screen
+		Freeze();
+	}
+
+	do {
+		DoTransition();
+		Update();
+	} while (is_in_transition_yet);
 }
 
 void Graphics::SetDefaultBackcolor(const SDL_Color& color) {

@@ -35,12 +35,12 @@ class Bitmap {
 public:
 	Bitmap(int width, int height);
 	Bitmap(std::string filename, bool transparent);
-	Bitmap(Bitmap* source, Rect src_rect);
+	Bitmap(Bitmap* source, Rect& src_rect);
 	~Bitmap();
 
 	void BlitScreen(int x, int y);
 	void BlitScreen(int x, int y, int opacity);
-	void BlitScreen(int x, int y, Rect src_rect, int opacity = 255);
+	void BlitScreen(int x, int y, Rect& src_rect, int opacity = 255);
 	
 	int GetWidth() const;
 	int GetHeight() const;
@@ -56,11 +56,11 @@ public:
 	void TileBlitX(const Rect& src_rect, Bitmap* src, const Rect& dst_rect);
 	void TileBlitY(const Rect& src_rect, Bitmap* src, const Rect& dst_rect);
 
-	void Blit(int x, int y, Bitmap* source, Rect src_rect, int opacity);
+	void Blit(int x, int y, Bitmap* source, Rect& src_rect, int opacity);
 	void StretchBlit(Bitmap* src, Rect& src_rect);
-	void StretchBlit(Rect dst_rect, Bitmap* src_bitmap, Rect src_rect, int opacity);
-	void FillRect(Rect rect, Color color);
-	void FillofColor(Rect& rect, Uint32 color);
+	void StretchBlit(const Rect& dst_rect, Bitmap* src_bitmap, Rect& src_rect, int opacity);
+	void FillRect(Rect& rect, Color color);
+	void FillofColor(const Rect& rect, Uint32 color);
 	void Clear();
 	void Clear(Color color);
 	Color GetPixel(int x, int y);

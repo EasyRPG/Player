@@ -48,7 +48,7 @@ void Scene_Map::MainFunction() {
 	spriteset = new Spriteset_Map();
 	//message_window = new Window_Message();
 
-	Graphics::Transition(Graphics::FadeIn, 30, true);
+	Graphics::Transition(Graphics::FadeIn, 20, true);
 
 	// Scene loop
 	while (instance == this) {
@@ -58,7 +58,7 @@ void Scene_Map::MainFunction() {
 		Update();
 	}
 
-	Graphics::Transition(Graphics::FadeOut, 30, false);
+	Graphics::Transition(Graphics::FadeOut, 20, false);
 
 	delete spriteset;
 

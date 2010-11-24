@@ -47,7 +47,8 @@ public:
 	Bitmap* GetBitmap() const;
 	void SetBitmap(Bitmap* nbitmap);
 	Rect GetSrcRect() const;
-	void SetSrcRect(Rect nsrc_rect);
+	void SetSrcRect(Rect& nsrc_rect);
+	void SetSpriteRect(Rect& nsprite_rect);
 	bool GetVisible() const;
 	void SetVisible(bool nvisible);
 	int GetX() const;
@@ -110,6 +111,7 @@ private:
 	int flash_duration;
 	int flash_frame;
 	Bitmap* sprite;
+	Rect sprite_rect;
 	bool needs_refresh;
 
 	void Refresh();

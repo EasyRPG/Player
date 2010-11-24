@@ -56,6 +56,9 @@ void Sprite_Character::Update() {
 			chara_height = GetBitmap()->GetHeight() / 2 / 4;
 			SetOx(chara_width / 2);
 			SetOy(chara_height);
+			int sx = (character_index % 4) * chara_width * 3;
+			int sy = (character_index / 4) * chara_height * 4;
+			SetSrcRect(Rect(sx, sy, chara_width * 3, chara_height * 4));
 		}
 	}
 	//SetVisible(character->GetVisible());
@@ -67,12 +70,7 @@ void Sprite_Character::Update() {
 			case 6: row = 1; break;
 			case 8: row = 0; break;
 		}
-
-		int sx = (character_index % 4) * chara_width * 3;
-		int sy = (character_index / 4) * chara_height * 4;
-		sx += character->GetPattern() * chara_width;
-		sy += row * chara_height;
-		SetSrcRect(Rect(sx, sy, chara_width, chara_height));
+		SetSpriteRect(Rect(character->GetPattern() * chara_width, row * chara_height, chara_width, chara_height));
 	}
 	SetX(character->GetScreenX());
 	SetY(character->GetScreenY());

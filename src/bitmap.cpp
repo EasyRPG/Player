@@ -120,7 +120,7 @@ Bitmap::Bitmap(std::string filename, bool transparent) {
 #endif
 	SDL_FreeSurface(temp);
 }
-Bitmap::Bitmap(Bitmap* source, Rect src_rect) {
+Bitmap::Bitmap(Bitmap* source, Rect& src_rect) {
 	SDL_Surface* temp;
 #ifdef USE_ALPHA
 	temp = SDL_CreateRGBSurface(SDL_SWSURFACE, src_rect.width, src_rect.height, 32, rmask, gmask, bmask, amask);
@@ -134,6 +134,12 @@ Bitmap::Bitmap(Bitmap* source, Rect src_rect) {
 	bitmap = SDL_DisplayFormatAlpha(temp);
 #else
 	bitmap = SDL_DisplayFormat(temp);
+	if ( (source->bitmap->flags & SDL_SRCCOLORKEY) == SDL_SRCCOLORKEY) {
+		Rect r(0, 0, src_rect.width, src_rect.height);
+		this->FillofColor(r, source->GetColorKey());
+		this->SetColorKey(source->GetColorKey());
+	}
+	
 #endif
 	if (bitmap == NULL) {
 		Output::Error("Couldn't optimize %dx%d image.\n%s\n", src_rect.width, src_rect.height, SDL_GetError());
@@ -188,7 +194,7 @@ void Bitmap::BlitScreen(int x, int y, int opacity) {
 	Rect src_rect(0, 0, GetWidth(), GetHeight());
 	BlitScreen(x, y, src_rect, opacity);
 }
-void Bitmap::BlitScreen(int x, int y, Rect src_rect, int opacity) {
+void Bitmap::BlitScreen(int x, int y, Rect& src_rect, int opacity) {
 	if (GetWidth() == 0 || GetHeight() == 0) return;
 	if (x >= Player::GetWidth() || y >= Player::GetHeight()) return;
 #ifndef USE_ALPHA
@@ -254,7 +260,7 @@ int Bitmap::GetHeight() const {
 ////////////////////////////////////////////////////////////
 /// Blit
 ////////////////////////////////////////////////////////////
-void Bitmap::Blit(int x, int y, Bitmap* src_bitmap, Rect src_rect, int opacity) {
+void Bitmap::Blit(int x, int y, Bitmap* src_bitmap, Rect& src_rect, int opacity) {
 	SDL_Surface* source = src_bitmap->bitmap;
 
 	if (source->w == 0 || source->h == 0 || GetWidth() == 0 || GetHeight() == 0) return;
@@ -349,7 +355,7 @@ void Bitmap::StretchBlit(Bitmap* src, Rect& src_rect) {
 ////////////////////////////////////////////////////////////
 /// Stretch blit
 ////////////////////////////////////////////////////////////
-void Bitmap::StretchBlit(Rect dst_rect, Bitmap* src_bitmap, Rect src_rect, int opacity) {
+void Bitmap::StretchBlit(const Rect& dst_rect, Bitmap* src_bitmap, Rect& src_rect, int opacity) {
 	if (src_rect.width == dst_rect.width && src_rect.height == dst_rect.height) {
 		Blit(dst_rect.x, dst_rect.y, src_bitmap, src_rect, opacity);
 	} else {
@@ -422,9 +428,9 @@ void Bitmap::SetColorKey(Uint32 color) {
 }
 
 // Fills `bitmap` with the given Uint32 `color`
-void Bitmap::FillofColor(Rect& rect, Uint32 color) {
-	rect.Adjust(GetWidth(), GetHeight());
-	if (rect.IsOutOfBounds(GetWidth(), GetHeight())) return;
+void Bitmap::FillofColor(const Rect& rect, Uint32 color) {
+	//rect.Adjust(GetWidth(), GetHeight());
+	//if (rect.IsOutOfBounds(GetWidth(), GetHeight())) return;
 	
 	SDL_Rect rect_sdl = {rect.x, rect.y, rect.width, rect.height};
 	SDL_FillRect(bitmap, &rect_sdl, color);
@@ -433,7 +439,7 @@ void Bitmap::FillofColor(Rect& rect, Uint32 color) {
 ////////////////////////////////////////////////////////////
 /// Fill rect
 ////////////////////////////////////////////////////////////
-void Bitmap::FillRect(Rect rect, Color color) {
+void Bitmap::FillRect(Rect& rect, Color color) {
 	rect.Adjust(GetWidth(), GetHeight());
 	if (rect.IsOutOfBounds(GetWidth(), GetHeight())) return;
 	

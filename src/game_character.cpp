@@ -195,7 +195,7 @@ void Game_Character::Update() {
 
 ////////////////////////////////////////////////////////////
 void Game_Character::UpdateMove() {
-	int distance = (1 << move_speed);
+	int distance = (1 << move_speed) / 2;
 	if (y * 128 > real_y)
 		real_y = min(real_y + distance, y * 128);
 
