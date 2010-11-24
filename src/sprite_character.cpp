@@ -39,6 +39,7 @@ Sprite_Character::~Sprite_Character() {
 ////////////////////////////////////////////////////////////
 void Sprite_Character::Update() {
 	Sprite::Update();
+	Rect r;
 	if (tile_id != character->GetTileId() ||
 		character_name != character->GetCharacterName() ||
 		character_index != character->GetCharacterIndex()) {
@@ -47,7 +48,8 @@ void Sprite_Character::Update() {
 		character_index = character->GetCharacterIndex();
 		if (tile_id > 0) {
 			SetBitmap(Cache::Tile(Game_Map::GetChipsetName(), tile_id));
-			SetSrcRect(Rect(0, 0, 16, 16));
+			r.Set(0, 0, 16, 16);
+			SetSrcRect(r);
 			SetOx(8);
 			SetOy(16);
 		} else {
@@ -58,7 +60,8 @@ void Sprite_Character::Update() {
 			SetOy(chara_height);
 			int sx = (character_index % 4) * chara_width * 3;
 			int sy = (character_index / 4) * chara_height * 4;
-			SetSrcRect(Rect(sx, sy, chara_width * 3, chara_height * 4));
+			r.Set(sx, sy, chara_width * 3, chara_height * 4);
+			SetSrcRect(r);
 		}
 	}
 	//SetVisible(character->GetVisible());
@@ -70,7 +73,8 @@ void Sprite_Character::Update() {
 			case 6: row = 1; break;
 			case 8: row = 0; break;
 		}
-		SetSpriteRect(Rect(character->GetPattern() * chara_width, row * chara_height, chara_width, chara_height));
+		r.Set(character->GetPattern() * chara_width, row * chara_height, chara_width, chara_height);
+		SetSpriteRect(r);
 	}
 	SetX(character->GetScreenX());
 	SetY(character->GetScreenY());

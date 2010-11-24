@@ -424,7 +424,7 @@ Uint32 Bitmap::GetColorKey() const {
 
 // Set `color` as color key for `bitmap`
 void Bitmap::SetColorKey(Uint32 color) {
-	SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, color);
+	SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY | SDL_RLEACCEL, color);
 }
 
 // Fills `bitmap` with the given Uint32 `color`
