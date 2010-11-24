@@ -118,7 +118,12 @@ void Graphics::Init() {
 
 	default_backcolor = 0;
 
+#ifdef GEKKO
+	fps_showing = true;
+#else
 	fps_showing = false;
+#endif
+
 #ifdef USE_FIXED_TIMESTEP_FPS
 	start = true;
 #endif
@@ -345,9 +350,7 @@ void Graphics::DrawFrame() {
 	}
 
 	// Print FPS if needed
-#ifndef GEKKO
 	if (fps_showing)
-#endif
 		PrintFPS();
 
 	if (Player::zoom) {
