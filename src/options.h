@@ -62,10 +62,10 @@
 #else
 	#define BPP 32
 #endif
-#define ALLOW_FULLSCREEN_TOGGLE true
-#define RUN_FULLSCREEN false
-#define PAUSE_GAME_WHEN_FOCUS_LOST true
-#define PAUSE_AUDIO_WHEN_FOCUS_LOST true
+#define ALLOW_FULLSCREEN_TOGGLE 1
+#define RUN_FULLSCREEN 0
+#define PAUSE_GAME_WHEN_FOCUS_LOST 1
+#define PAUSE_AUDIO_WHEN_FOCUS_LOST 1
 
 ////////////////////////////////////////////////////////////
 // INI_NAME
@@ -78,7 +78,7 @@
 //		Database filename.
 ////////////////////////////////////////////////////////////
 #define INI_NAME "RPG_RT.ini"
-#define READ_INI_GAME_TITLE true
+#define READ_INI_GAME_TITLE 1
 #define DATABASE_NAME "RPG_RT.ldb"
 #define TREEMAP_NAME "RPG_RT.lmt"
 

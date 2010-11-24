@@ -46,7 +46,13 @@ void Audio::Init() {
 			Output::Error("Couldn't initialize audio.\n%s\n", SDL_GetError());
 		}
 	}
-	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) < 0) {
+#ifdef GEKKO
+	int frequency = 32000;
+#else
+	int frequency = MIX_DEFAULT_FREQUENCY;
+#endif
+
+	if (Mix_OpenAudio(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) < 0) {
 		Output::Error("Couldn't initialize audio.\n%s\n", Mix_GetError());
 	}
 	/*int flags = MIX_INIT_MP3;

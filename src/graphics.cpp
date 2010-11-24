@@ -318,7 +318,12 @@ void Graphics::PrintFPS() {
 	SDL_Surface* text_surface;
 	text << "FPS: " << fps;
 	text_surface = TTF_RenderText_Solid(font->GetTTF(), text.str().c_str(), fg_color);
-	SDL_BlitSurface(text_surface, NULL, Player::main_surface, NULL);
+#ifdef GEKKO
+	SDL_Rect rect = { 10, 10, text_surface->w, text_surface->h };
+#else
+	SDL_Rect rect = { 0, 0, text_surface->w, text_surface->h };
+#endif
+	SDL_BlitSurface(text_surface, NULL, Player::main_surface, &rect);
 	SDL_FreeSurface(text_surface);
 }
 

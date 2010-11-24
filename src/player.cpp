@@ -121,7 +121,7 @@ void Player::Update() {
 	for (;;) {
 		int result = SDL_PollEvent(&evnt);
 
-#ifndef PAUSE_GAME_WHEN_FOCUS_LOST
+#if PAUSE_GAME_WHEN_FOCUS_LOST == 0
 		if (!result) {
 #else
 		if (!result && focus) {
@@ -179,7 +179,7 @@ void Player::Update() {
 				}
 				break;
 
-#ifdef PAUSE_GAME_WHEN_FOCUS_LOST
+#if PAUSE_GAME_WHEN_FOCUS_LOST != 0
 			case SDL_ACTIVEEVENT:
 					if (evnt.active.state == SDL_APPINPUTFOCUS) {
 						if ( (evnt.active.state & SDL_APPACTIVE) == 0 //&& !focus
