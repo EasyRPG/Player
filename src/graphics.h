@@ -53,6 +53,7 @@ namespace Graphics {
 	ZObj* RegisterZObj(long z, unsigned long ID);
 	void RegisterZObj(long z, unsigned long ID, bool multiz);
 	void RemoveZObj(unsigned long ID);
+	void RemoveZObj(unsigned long ID, bool multiz);
 	void UpdateZObj(ZObj* zobj, long z);
 
 	void PrintFPS();

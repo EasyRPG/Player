@@ -27,6 +27,7 @@
 #include "system.h"
 #include <algorithm>
 #include <sstream>
+#include <vector>
 
 namespace {
 }
@@ -495,13 +496,23 @@ void Graphics::RegisterZObj(long z, unsigned long ID, bool multiz) {
 ///////////////////////////////////////////////////////////
 // Remove ZObj
 ///////////////////////////////////////////////////////////
-struct remove_zobj_id : public std::binary_function<ZObj*, ZObj*, bool> {
-	remove_zobj_id(unsigned long val) : ID(val) {}
-	bool operator () (ZObj* obj) const {return obj->GetId() == ID;}
-	unsigned long ID;
-};
-void Graphics::RemoveZObj(unsigned long ID) {
-	zlist.remove_if (remove_zobj_id(ID));
+void Graphics::RemoveZObj(unsigned long ID, bool multiz) {
+	RemoveZObj(ID, false);
+}
+void Graphics::RemoveZObj(unsigned long ID, bool multiz) {
+	std::vector<std::list<ZObj*>::iterator> to_erase;
+	size_t i = 0;
+	for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
+		if ((*it_zlist)->GetId() == ID) {
+			delete *it_zlist;
+			to_erase.push_back(it_zlist);
+			if (!multiz) break;
+		}
+
+	}
+	for (i = 0; i < to_erase.size(); i++) {
+		zlist.erase(to_erase[i]);
+	}
 }
 
 ///////////////////////////////////////////////////////////

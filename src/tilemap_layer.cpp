@@ -120,7 +120,7 @@ TilemapLayer::TilemapLayer(int ilayer) :
 ////////////////////////////////////////////////////////////
 TilemapLayer::~TilemapLayer() {
 	std::map<int, Bitmap*>::iterator i;
-	Graphics::RemoveZObj(ID);
+	Graphics::RemoveZObj(ID, true);
 	Graphics::RemoveDrawable(ID);
 
 	for (int e = 0; e < 3; e++)
