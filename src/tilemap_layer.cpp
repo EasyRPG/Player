@@ -251,15 +251,15 @@ void TilemapLayer::Draw(int z_order) {
 
 ////////////////////////////////////////////////////////////
 Bitmap* TilemapLayer::GetCachedAutotileAB(short ID, short animID) {
-	int block = ID / 1000;
-	int b_subtile = (ID - block * 1000) / 50;
-	int a_subtile = ID - block * 1000 - b_subtile * 50;
+	short block = ID / 1000;
+	short b_subtile = (ID - block * 1000) / 50;
+	short a_subtile = ID - block * 1000 - b_subtile * 50;
 	return autotiles_ab[animID][block][b_subtile][a_subtile];
 }
 
 Bitmap* TilemapLayer::GetCachedAutotileD(short ID) {
-	int block = (ID - 4000) / 50;
-	int subtile = ID - 4000 - block * 50;
+	short block = (ID - 4000) / 50;
+	short subtile = ID - 4000 - block * 50;
 	return autotiles_d[block][subtile];
 }
 
@@ -269,13 +269,13 @@ void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 	//	1: A1 + Upper B (Grass + Coast)
 	//	2: A2 + Upper B (Snow + Coast)
 	//	3: A1 + Lower B (Grass + Ocean/Deep water)
-	int block = ID / 1000;
+	short block = ID / 1000;
 
 	// Calculate the B block combination
-	int b_subtile = (ID - block * 1000) / 50;
+	short b_subtile = (ID - block * 1000) / 50;
 
 	// Calculate the A block combination
-	int a_subtile = ID - block * 1000 - b_subtile * 50;
+	short a_subtile = ID - block * 1000 - b_subtile * 50;
 
 	if (autotiles_ab[animID][block][b_subtile][a_subtile])
 		return;
@@ -286,7 +286,7 @@ void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 	rect.width = 8;
 	rect.height = 8;
 
-	int block_x, block_y;
+	short block_x, block_y;
 
 	// Get Block B chipset coords
 	block_x = animID * 16;
@@ -359,10 +359,10 @@ void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 ////////////////////////////////////////////////////////////
 void TilemapLayer::GenerateAutotileD(short ID) {
 	// Calculate the D block id
-	int block = (ID - 4000) / 50;
+	short block = (ID - 4000) / 50;
 
 	// Calculate the D block combination
-	int subtile = ID - 4000 - block * 50;
+	short subtile = ID - 4000 - block * 50;
 
 	if(autotiles_d[block][subtile])
 		return;
@@ -370,7 +370,7 @@ void TilemapLayer::GenerateAutotileD(short ID) {
 	Bitmap* tile = new Bitmap(16, 16);
 
 	// Get Block chipset coords
-	int block_x, block_y;
+	short block_x, block_y;
 	if (block < 4) {
 		// If from first column
 		block_x = (block % 2) * 48;

@@ -52,7 +52,7 @@ void Game_Event::Refresh() {
 	if (!erased) {
 		RPG::Event a = event;
 		// FIXME: size_t is unsigned, so >=0 comparison is always true (gcc warning dixit)
-		for (size_t i = event.pages.size() - 1; i >= 0; i--) {
+		for (int i = (int)event.pages.size() - 1; i >= 0; i--) {
 			if	((event.pages[i].condition.switch_a && !Game_Switches[event.pages[i].condition.switch_a_id]) ||
 				(event.pages[i].condition.switch_b && !Game_Switches[event.pages[i].condition.switch_b_id]) ||
 				(event.pages[i].condition.variable && Game_Variables[event.pages[i].condition.variable_id] < event.pages[i].condition.variable_value)) {
