@@ -334,8 +334,8 @@ void Graphics::PrintFPS() {
 void Graphics::DrawFrame() {
 	if ( (!frozen) && (!skip_draw) ) {
 		if (zlist_needs_sorting) {
-			//zlist.sort(SortZObj);
-			std::stable_sort(zlist.begin(), zlist.end(), SortZObj);
+			zlist.sort(SortZObj);
+			//std::stable_sort(zlist.begin(), zlist.end(), SortZObj);
 			zlist_needs_sorting = false;
 		}
 
