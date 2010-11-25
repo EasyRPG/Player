@@ -51,7 +51,6 @@ void Game_Event::Refresh() {
 	RPG::EventPage new_page;
 	if (!erased) {
 		RPG::Event a = event;
-		// FIXME: size_t is unsigned, so >=0 comparison is always true (gcc warning dixit)
 		for (int i = (int)event.pages.size() - 1; i >= 0; i--) {
 			if	((event.pages[i].condition.switch_a && !Game_Switches[event.pages[i].condition.switch_a_id]) ||
 				(event.pages[i].condition.switch_b && !Game_Switches[event.pages[i].condition.switch_b_id]) ||
