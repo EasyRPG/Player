@@ -125,7 +125,10 @@ void Scene_Title::MainFunction() {
 	Graphics::Transition(Graphics::FadeIn, 30, true);
 
 #ifdef GEKKO
-	SYS_SetResetCallback(Scene::WiiResetPressed);
+	if (!Player::wii_reset_callback) {
+		Player::wii_reset_callback = 1;
+		SYS_SetResetCallback(Player::WiiResetPressed);
+	}
 #endif
 
 	// Scene loop
@@ -134,13 +137,6 @@ void Scene_Title::MainFunction() {
 		Graphics::Update();
 		Input::Update();
 		Update();
-
-#ifdef GEKKO
-		if (Scene_Title::wii_reset_pressed == 1) {
-			Scene::wii_reset_pressed = 0;
-			CommandNewGame();
-		}
-#endif
 	}
 
 	// Delete graphical objects

@@ -20,7 +20,6 @@
 ////////////////////////////////////////////////////////////
 #include "input.h"
 #include "input_buttons.h"
-#include "SDL.h"
 #include "output.h"
 
 #ifdef GEKKO
@@ -39,6 +38,9 @@ namespace Input {
 	int dir8;
 	int start_repeat_time;
 	int repeat_time;
+#ifdef GEKKO
+	SDL_Joystick* joystick;
+#endif
 }
 
 ////////////////////////////////////////////////////////////
@@ -56,7 +58,7 @@ void Input::Init() {
 	}
 
 #ifdef GEKKO
-	SDL_JoystickOpen(0);
+	joystick = SDL_JoystickOpen(0);
 #endif
 
 	InitButtons();
@@ -77,6 +79,39 @@ void Input::Update() {
 	Uint8* keystates = SDL_GetKeyState(NULL);
 	unsigned int i, e;
 	bool pressed;
+
+#ifdef GEKKO
+	// Map Joypad to Keyboard
+	// These values must be set to 0 again at the end of the function
+	Uint8 joy_hat = SDL_JoystickGetHat(joystick, 0);
+
+	if (!(joy_hat & SDL_HAT_CENTERED))
+	{
+		if (joy_hat & SDL_HAT_UP) {
+			keystates[(SDLKey)buttons[Input::UP][0]] = 1;
+		}
+		if (joy_hat & SDL_HAT_DOWN) {
+			keystates[(SDLKey)buttons[Input::DOWN][0]] = 1;
+		}
+		if (joy_hat & SDL_HAT_LEFT) {
+			keystates[(SDLKey)buttons[Input::LEFT][0]] = 1;
+		}
+		if (joy_hat & SDL_HAT_RIGHT) {
+			keystates[(SDLKey)buttons[Input::RIGHT][0]] = 1;
+		}
+	}
+
+	if (SDL_JoystickGetButton(joystick, 2)) { // (1)
+		keystates[(SDLKey)buttons[Input::CANCEL][0]] = 1;
+	}
+	if (SDL_JoystickGetButton(joystick, 3)) { // (2)
+		keystates[(SDLKey)buttons[Input::DECISION][0]] = 1;
+	}
+	if (SDL_JoystickGetButton(joystick, 6)) { // (Home)
+		// Just Exit for now: ToDo: Show QuitScene
+		exit(1);
+	}
+#endif
 	for (i = 0; i < buttons.size(); ++i) {
 		pressed = false;
 		for (e = 0; e < buttons[i].size(); e++) {
@@ -146,6 +181,15 @@ void Input::Update() {
 			dir8 = 1;
 		}
 	}
+
+#ifdef GEKKO
+	keystates[(SDLKey)buttons[Input::UP][0]] = 0;
+	keystates[(SDLKey)buttons[Input::DOWN][0]] = 0;
+	keystates[(SDLKey)buttons[Input::LEFT][0]] = 0;
+	keystates[(SDLKey)buttons[Input::RIGHT][0]] = 0;
+	keystates[(SDLKey)buttons[Input::CANCEL][0]] = 0;
+	keystates[(SDLKey)buttons[Input::DECISION][0]] = 0;
+#endif
 }
 
 ////////////////////////////////////////////////////////////

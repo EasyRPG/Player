@@ -28,13 +28,3 @@
 Scene* Scene::instance;
 Scene::SceneType Scene::type;
 Scene* Scene::old_instance = NULL;
-
-#ifdef GEKKO
-int Scene::wii_reset_pressed = 0;
-// Map New Game to Wii-Reset-Button until Joystick is implemented
-void Scene::WiiResetPressed()
-{
-	Scene::wii_reset_pressed = 1;
-}
-#endif
-

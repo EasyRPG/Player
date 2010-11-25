@@ -50,6 +50,11 @@ namespace Player {
 	bool last_zoom;
 	int last_width;
 	int last_height;
+
+#ifdef GEKKO
+	int wii_reset_pressed;
+	int wii_reset_callback;
+#endif
 }
 
 namespace {
@@ -84,6 +89,8 @@ void Player::Init() {
 	VIDEO_WaitVSync();
 
 	zoom = false;
+	wii_reset_pressed = 0;
+	wii_reset_callback = 0;
 #endif
 
 	if ((SDL_Init(flags) < 0)) {
@@ -119,6 +126,14 @@ void Player::Update() {
 	SDL_Event evnt;
 
 	for (;;) {
+#ifdef GEKKO
+		if (wii_reset_pressed) {
+			wii_reset_pressed = 0;
+			Scene::instance = new Scene_Title();
+			break;
+		}
+#endif
+
 		int result = SDL_PollEvent(&evnt);
 
 #if PAUSE_GAME_WHEN_FOCUS_LOST == 0
@@ -343,3 +358,12 @@ int Player::GetWidth() {
 int Player::GetHeight() {
 	return height;
 }
+
+////////////////////////////////////////////////////////////
+/// Toogles a reset to title flag when Wii Reset is pressed
+////////////////////////////////////////////////////////////
+#ifdef GEKKO
+void Player::WiiResetPressed() {
+	wii_reset_pressed = 1;
+}
+#endif

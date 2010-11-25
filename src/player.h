@@ -43,6 +43,10 @@ namespace Player {
 	int GetWidth();
 	int GetHeight();
 
+#ifdef GEKKO
+	void WiiResetPressed();
+#endif
+
 	extern SDL_Surface* main_window;
 	extern SDL_Surface* main_surface;
 	extern bool focus;
@@ -56,6 +60,10 @@ namespace Player {
 	extern bool last_zoom;
 	extern int last_width;
 	extern int last_height;
+#ifdef GEKKO
+	extern int wii_reset_pressed;
+	extern int wii_reset_callback;
+#endif
 }
 
 #endif
