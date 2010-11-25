@@ -496,7 +496,7 @@ void Graphics::RegisterZObj(long z, unsigned long ID, bool multiz) {
 ///////////////////////////////////////////////////////////
 // Remove ZObj
 ///////////////////////////////////////////////////////////
-void Graphics::RemoveZObj(unsigned long ID, bool multiz) {
+void Graphics::RemoveZObj(unsigned long ID) {
 	RemoveZObj(ID, false);
 }
 void Graphics::RemoveZObj(unsigned long ID, bool multiz) {
