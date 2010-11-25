@@ -54,7 +54,7 @@ Sprite::Sprite() {
 
 	type = SPRITE;
 	ID = Graphics::ID++;
-	Graphics::RegisterZObj(0, ID);
+	zobj = Graphics::RegisterZObj(0, ID);
 	Graphics::RegisterDrawable(ID, this);
 }
 
@@ -73,7 +73,7 @@ Sprite::~Sprite() {
 void Sprite::Draw(int z_order) {
 	if (!visible) return;
 	if (GetWidth() <= 0 || GetHeight() <= 0) return;
-	if (x < -GetWidth() || x > Player::GetWidth() || y < -GetHeight() || y > Player::GetHeight()) return;
+	if ((x - ox) < -GetWidth() || (x - ox) > Player::GetWidth() || (y - oy) < -GetHeight() || (y - oy) > Player::GetHeight()) return;
 	if (zoom_x <= 0 || zoom_y <= 0) return;
 	if (opacity <= 0) return;
 	if (!bitmap) return;
@@ -195,7 +195,7 @@ int Sprite::GetZ() const {
 	return z;
 }
 void Sprite::SetZ(int nz) {
-	if (z != nz) Graphics::UpdateZObj(ID, nz);
+	if (z != nz) Graphics::UpdateZObj(zobj, nz);
 	z = nz;
 }
 int Sprite::GetOx() const {

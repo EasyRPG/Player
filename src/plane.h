@@ -25,6 +25,7 @@
 #include "color.h"
 #include "tone.h"
 #include "drawable.h"
+#include "zobj.h"
 
 ////////////////////////////////////////////////////////////
 /// Plane class
@@ -65,6 +66,7 @@ public:
 private:
 	DrawableType type;
 	unsigned long ID;
+	ZObj* zobj;
 	Bitmap* bitmap;
 	bool visible;
 	int z;

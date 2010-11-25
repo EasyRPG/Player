@@ -26,6 +26,7 @@
 #include "tone.h"
 #include "rect.h"
 #include "drawable.h"
+#include "zobj.h"
 
 ////////////////////////////////////////////////////////////
 /// Sprite class
@@ -88,6 +89,7 @@ public:
 private:
 	DrawableType type;
 	unsigned long ID;
+	ZObj* zobj;
 	Bitmap* bitmap;
 	Rect src_rect;
 	bool visible;

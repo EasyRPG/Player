@@ -49,11 +49,11 @@ namespace Graphics {
 	void RegisterDrawable(unsigned long ID, Drawable* drawable);
 	void RemoveDrawable(unsigned long ID);
 
-	bool SortZObj(const ZObj &first, const ZObj &second);
-	void RegisterZObj(long z, unsigned long ID);
+	bool SortZObj(const ZObj* first, const ZObj* second);
+	ZObj* RegisterZObj(long z, unsigned long ID);
 	void RegisterZObj(long z, unsigned long ID, bool multiz);
 	void RemoveZObj(unsigned long ID);
-	void UpdateZObj(unsigned long ID, long z);
+	void UpdateZObj(ZObj* zobj, long z);
 
 	void PrintFPS();
 
@@ -96,9 +96,8 @@ namespace Graphics {
 	extern std::map<unsigned long, Drawable*> drawable_map;
 	extern std::map<unsigned long, Drawable*>::iterator it_drawable_map;
 
-	extern std::list<ZObj> zlist;
-	extern std::list<ZObj>::iterator it_zlist;
-
+	extern std::list<ZObj*> zlist;
+	extern std::list<ZObj*>::iterator it_zlist;
 }
 
 #endif

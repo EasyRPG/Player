@@ -57,7 +57,7 @@ Window::Window():
 	animation_frames(0) {
 
 	ID = Graphics::ID++;
-	Graphics::RegisterZObj(0, ID);
+	zobj = Graphics::RegisterZObj(0, ID);
 	Graphics::RegisterDrawable(ID, this);
 	
 	cursor1 = new Bitmap(cursor_rect.width, cursor_rect.height);
@@ -636,7 +636,7 @@ int Window::GetZ() const {
 	return z;
 }
 void Window::SetZ(int nz) {
-	if (z != nz) Graphics::UpdateZObj(ID, nz);
+	if (z != nz) Graphics::UpdateZObj(zobj, nz);
 	z = nz;
 }
 int Window::GetOx() const {

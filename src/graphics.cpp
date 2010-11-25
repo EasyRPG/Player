@@ -56,8 +56,8 @@ namespace Graphics {
 
 	std::map<unsigned long, Drawable*> drawable_map;
 	std::map<unsigned long, Drawable*>::iterator it_drawable_map;
-	std::list<ZObj> zlist;
-	std::list<ZObj>::iterator it_zlist;
+	std::list<ZObj*> zlist;
+	std::list<ZObj*>::iterator it_zlist;
 }
 
 namespace {
@@ -137,6 +137,9 @@ void Graphics::Quit() {
 	std::map<unsigned long, Drawable*> drawable_map_temp = drawable_map;
 	for (it = drawable_map_temp.begin(); it != drawable_map_temp.end(); it++) {
 		delete it->second;
+	}
+	for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
+		delete (*it_zlist);
 	}
 	SDL_FreeSurface(blank_screen);
 	delete font;
@@ -342,10 +345,10 @@ void Graphics::DrawFrame() {
 		SDL_FillRect(Player::main_surface, &Player::main_surface->clip_rect, default_backcolor);
 		DrawableType type;
 		for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
-			type = drawable_map[it_zlist->GetId()]->GetType();
+			type = drawable_map[(*it_zlist)->GetId()]->GetType();
 			if (( (!is_in_transition_yet) || (type != WINDOW) )
 				|| (!wait_for_transition)) // Make sure not to draw Windows until transition's finished
-				drawable_map[it_zlist->GetId()]->Draw(it_zlist->GetZ());
+				drawable_map[(*it_zlist)->GetId()]->Draw((*it_zlist)->GetZ());
 		}
 	}
 	skip_draw = false;
@@ -465,24 +468,26 @@ void Graphics::RemoveDrawable(unsigned long ID) {
 ///////////////////////////////////////////////////////////
 // Sort ZObj
 ///////////////////////////////////////////////////////////
-inline bool Graphics::SortZObj(const ZObj &first, const ZObj &second) {
-	if (first.GetZ() < second.GetZ()) return true;
-	else if (first.GetZ() > second.GetZ()) return false;
-	else return first.GetCreation() < second.GetCreation();
+inline bool Graphics::SortZObj(const ZObj* first, const ZObj* second) {
+	if (first->GetZ() < second->GetZ()) return true;
+	else if (first->GetZ() > second->GetZ()) return false;
+	else return first->GetCreation() < second->GetCreation();
 }
 
 ///////////////////////////////////////////////////////////
 // Register ZObj
 ///////////////////////////////////////////////////////////
-void Graphics::RegisterZObj(long z, unsigned long ID) {
+ZObj* Graphics::RegisterZObj(long z, unsigned long ID) {
 	creation += 1;
-	ZObj zobj(z, creation, ID);
+	ZObj* zobj = new ZObj(z, creation, ID);
 
 	zlist.push_back(zobj);
 	zlist_needs_sorting = true;
+
+	return zobj;
 }
 void Graphics::RegisterZObj(long z, unsigned long ID, bool multiz) {
-	ZObj zobj(z, 999999, ID);
+	ZObj* zobj = new ZObj(z, 999999, ID);
 	zlist.push_back(zobj);
 	zlist_needs_sorting = true;
 }
@@ -490,9 +495,9 @@ void Graphics::RegisterZObj(long z, unsigned long ID, bool multiz) {
 ///////////////////////////////////////////////////////////
 // Remove ZObj
 ///////////////////////////////////////////////////////////
-struct remove_zobj_id : public std::binary_function<ZObj, ZObj, bool> {
+struct remove_zobj_id : public std::binary_function<ZObj*, ZObj*, bool> {
 	remove_zobj_id(unsigned long val) : ID(val) {}
-	bool operator () (ZObj &obj) const {return obj.GetId() == ID;}
+	bool operator () (ZObj* obj) const {return obj->GetId() == ID;}
 	unsigned long ID;
 };
 void Graphics::RemoveZObj(unsigned long ID) {
@@ -502,12 +507,7 @@ void Graphics::RemoveZObj(unsigned long ID) {
 ///////////////////////////////////////////////////////////
 // Update ZObj Z
 ///////////////////////////////////////////////////////////
-void Graphics::UpdateZObj(unsigned long ID, long z) {
-	for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
-		if (it_zlist->GetId() == ID) {
-			it_zlist->SetZ(z);
-			zlist_needs_sorting = true;
-			break;
-		}
-	}
+void Graphics::UpdateZObj(ZObj* zobj, long z) {
+	zobj->SetZ(z);
+	zlist_needs_sorting = true;
 }

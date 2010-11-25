@@ -23,6 +23,7 @@
 ////////////////////////////////////////////////////////////
 #include "drawable.h"
 #include "bitmap.h"
+#include "zobj.h"
 
 ////////////////////////////////////////////////////////////
 /// Window class
@@ -77,6 +78,7 @@ public:
 protected:
 	DrawableType type;
 	unsigned long ID;
+	ZObj* zobj;
 	Bitmap* windowskin;
 	Bitmap* contents;
 	bool stretch;

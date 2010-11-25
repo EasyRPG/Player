@@ -44,7 +44,7 @@ Plane::Plane() {
 
 	type = PLANE;
 	ID = Graphics::ID++;
-	Graphics::RegisterZObj(0, ID);
+	zobj = Graphics::RegisterZObj(0, ID);
 	Graphics::RegisterDrawable(ID, this);
 }
 
@@ -120,7 +120,7 @@ int Plane::GetZ() const {
 	return z;
 }
 void Plane::SetZ(int nz) {
-	if (z != nz) Graphics::UpdateZObj(ID, nz);
+	if (z != nz) Graphics::UpdateZObj(zobj, nz);
 	z = nz;
 }
 int Plane::GetOx() const {
