@@ -95,6 +95,15 @@ void Audio::BGM_Play(std::string file, int volume, int pitch) {
 	}
 }
 
+void Audio::BGM_Pause() {
+	// Midi pause is not supported... =.=
+	Mix_PauseMusic();
+}
+
+void Audio::BGM_Resume() {
+	Mix_ResumeMusic();
+}
+
 ////////////////////////////////////////////////////////////
 /// BGM stop
 ////////////////////////////////////////////////////////////

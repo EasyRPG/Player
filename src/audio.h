@@ -35,6 +35,8 @@ namespace Audio {
 	void BGM_Play(std::string file, int volume, int pitch);
 	void BGM_Stop();
 	void BGM_Fade(int fade);
+	void BGM_Pause();
+	void BGM_Resume();
 	void BGS_Play(std::string file, int volume, int pitch);
 	void BGS_Stop();
 	void BGS_Fade(int fade);

@@ -28,7 +28,10 @@
 #include "main_data.h"
 #include "scene_title.h"
 
-#ifdef GEKKO
+#ifdef _WIN32
+	#include <windows.h>
+	#include "SDL_syswm.h"
+#elif GEKKO
 	#include <gccore.h>
 #endif
 
@@ -97,6 +100,25 @@ void Player::Init() {
 		Output::Error("EasyRPG Player couldn't initialize SDL.\n%s\n", SDL_GetError());
 	}
 
+#ifdef _WIN32
+	HICON icon;
+
+	HINSTANCE handle = GetModuleHandle(NULL);
+	icon = LoadIcon(handle, MAKEINTRESOURCE(45678));
+	if (icon == NULL) {
+		Output::Error("Couldn't load icon.");
+	}
+
+	SDL_SysWMinfo wminfo;
+	SDL_VERSION(&wminfo.version)
+	if (SDL_GetWMInfo(&wminfo) < 0) {
+		Output::Error("Wrong SDL version");
+	}
+
+	SetClassLongPtr(wminfo.window, GCLP_HICON, (LONG_PTR) icon);
+	DestroyIcon(icon);
+#endif
+
 	RefreshVideoMode();
 
 	SDL_ShowCursor(SDL_DISABLE);
@@ -112,8 +134,8 @@ void Player::Run() {
 	
 	// Main loop
 	while (Scene::type != Scene::Null) {
+		Scene::instance->MainFunction();	
 		delete Scene::old_instance;
-		Scene::instance->MainFunction();		
 	}
 
 	Player::Exit();
@@ -197,23 +219,29 @@ void Player::Update() {
 #if PAUSE_GAME_WHEN_FOCUS_LOST != 0
 			case SDL_ACTIVEEVENT:
 					if (evnt.active.state == SDL_APPINPUTFOCUS) {
-						if ( (evnt.active.state & SDL_APPACTIVE) == 0 //&& !focus
-							) {
-					//focus = true;
-					//Graphics::TimerContinue();
+						if ( (evnt.active.state & SDL_APPACTIVE) == 0 ) {
+							//#ifdef PAUSE_AUDIO_WHEN_FOCUS_LOST
+								Audio::BGM_Pause();
+							//#endif
+								// Ignore everything but regaining input focus
 								SDL_SetEventFilter(&IgnoreNonFocusEvents);
+
+								// Don't grab cursor while not focus
+								SDL_ShowCursor(SDL_ENABLE);
+
+								// Wait for focus
 								SDL_WaitEvent(NULL);
+
+								// Grab cursor again
+								SDL_ShowCursor(SDL_DISABLE);
+
+								// Disable filter...
 								SDL_SetEventFilter(NULL);
-//#ifdef PAUSE_AUDIO_WHEN_FOCUS_LOST
-					//Audio::Continue();
-//#endif
-						} /*else if (!evnt.active.gain && focus) {
-					focus = false;
-					Input::ClearKeys();
-					Graphics::TimerWait();*/
-//#ifdef PAUSE_AUDIO_WHEN_FOCUS_LOST
-					//Audio::Pause();
-//#endif
+							//#ifdef PAUSE_AUDIO_WHEN_FOCUS_LOST
+								Audio::BGM_Resume();
+							//#endif
+						}
+
 					}
 					break;
 #endif
