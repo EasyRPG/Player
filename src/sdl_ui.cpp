@@ -193,6 +193,10 @@ bool SdlUi::RefreshDisplayMode() {
 	return true;
 }
 
+void SdlUi::SetBackcolor(const SDL_Color& color) {
+	back_color = SDL_MapRGB(main_surface->format, color.r, color.g, color.b);
+}
+
 ///////////////////////////////////////////////////////////
 #ifdef SUPPORT_FULL_SCALING
 void SdlUi::Resize(long width, long height) {

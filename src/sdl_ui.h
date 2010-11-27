@@ -59,6 +59,7 @@ public:
 	void SetTitle(const std::string title);
 	void DrawScreenText(const std::string text);
 	void ShowCursor(bool flag);
+	void SetBackcolor(const SDL_Color& color);
 
 	void ProcessEvents();
 

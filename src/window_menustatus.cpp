@@ -20,6 +20,7 @@
 ////////////////////////////////////////////////////////////
 #include "window_menustatus.h"
 #include "graphics.h"
+#include "sdl_ui.h"
 #include "game_party.h"
 
 ////////////////////////////////////////////////////////////
@@ -44,6 +45,9 @@ void Window_MenuStatus::Refresh() {
 	Rect rect(0, 0, contents->GetWidth(), contents->GetHeight());
 	contents->FillofColor(rect, windowskin->GetColorKey());
 	contents->SetColorKey(windowskin->GetColorKey());
+
+	Color c = windowskin->GetPixel(0, 32);
+	DisplaySdlUi->SetBackcolor(c.Get());
 
 	int offset = 0;
 	for (size_t i = 0; i < Game_Party::GetActors().size(); ++i)
