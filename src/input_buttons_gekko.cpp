@@ -28,10 +28,10 @@ void Input::InitButtons() {
 	buttons.resize(BUTTON_COUNT);
 
 	// Remote
-	buttons[DECISION].push_back(Keys::JOY_0); // A
-	buttons[CANCEL].push_back(Keys::JOY_1); // B
-	buttons[N1].push_back(Keys::JOY_2); // 1
-	buttons[N2].push_back(Keys::JOY_3); // 2
+	buttons[N1].push_back(Keys::JOY_0); // A
+	buttons[N2].push_back(Keys::JOY_1); // B
+	buttons[CANCEL].push_back(Keys::JOY_2); // 1
+	buttons[DECISION].push_back(Keys::JOY_3); // 2
 	buttons[MINUS].push_back(Keys::JOY_4); // -
 	buttons[PLUS].push_back(Keys::JOY_5); // +
 	buttons[CANCEL].push_back(Keys::JOY_6); // Home

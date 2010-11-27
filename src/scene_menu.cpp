@@ -19,6 +19,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "scene_menu.h"
+#include "audio.h"
 #include "graphics.h"
 #include "game_party.h"
 #include "game_system.h"
@@ -99,10 +100,12 @@ void Scene_Menu::Update() {
 	gold_window->Update();
 	menustatus_window->Update();
 
-	if (command_window->GetActive())
+	if (command_window->GetActive()) {
 		UpdateCommand();
-	else if (menustatus_window->GetActive())
+	}
+	else if (menustatus_window->GetActive()) {
 		UpdateStatus();
+	}
 }
 
 
@@ -113,6 +116,16 @@ void Scene_Menu::UpdateCommand() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Data::system.cancel_se);
 		Scene::instance = new Scene_Map();
+	}
+	else if (Input::IsTriggered(Input::DECISION)) {
+		switch (command_window->GetIndex()) {
+		case 4: // Quit Game
+			Game_System::SePlay(Data::system.decision_se);
+			Audio::BGS_Fade(800);
+			type = Scene::Null;
+			instance = NULL;
+			break;
+		}
 	}
 }
 
