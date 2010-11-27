@@ -24,11 +24,12 @@
 #include <vector>
 
 ////////////////////////////////////////////////////////////
-/// Input namespace
+/// Input namespace.
 ////////////////////////////////////////////////////////////
 namespace Input {
+	/// Input buttons list.
 	enum InputButton {
-		UP = 0,
+		UP,
 		DOWN,
 		LEFT,
 		RIGHT,
@@ -50,14 +51,21 @@ namespace Input {
 		MULTIPLY,
 		DIVIDE,
 		PERIOD,
-		Count,
-		NOBUTTON
+		DEBUG_MENU,
+		DEBUG_THROUGH,
+		BUTTON_COUNT
 	};
 
+	////////////////////////////////////////////////////////////
+	/// Initialize input buttons to their mappings.
+	////////////////////////////////////////////////////////////
 	void InitButtons();
 
-	extern std::vector< std::vector<int> > buttons;
-	extern std::vector< std::vector<int> > dirkeys;
+	/// Buttons list of equivalent keys.
+	extern std::vector<std::vector<int> > buttons;
+
+	/// Direction buttons list of equivalent buttons.
+	extern std::vector<std::vector<int> > dir_buttons;
 }
 
 #endif

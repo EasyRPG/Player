@@ -49,10 +49,6 @@
 #include "window_command.h"
 #include "output.h"
 
-#ifdef GEKKO
-	#include <gccore.h>
-#endif
-
 ////////////////////////////////////////////////////////////
 /// Constructor
 ////////////////////////////////////////////////////////////
@@ -123,13 +119,6 @@ void Scene_Title::MainFunction() {
 
 	// Screen transition
 	Graphics::Transition(Graphics::FadeIn, 30, true);
-
-#ifdef GEKKO
-	if (!Player::wii_reset_callback) {
-		Player::wii_reset_callback = 1;
-		SYS_SetResetCallback(Player::WiiResetPressed);
-	}
-#endif
 
 	// Scene loop
 	while (Scene::instance == this) {

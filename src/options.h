@@ -38,11 +38,11 @@
 // GAME_TITLE
 //		Window title to show.
 //
-// SCREEN_WIDTH SCREEN_HEIGHT
-//		Screen default width and height.
+// SCREEN_TARGET_WIDTH SCREEN_TARGET_HEIGHT
+//		Targeted screen default width and height.
 //
-// BPP
-//		Screen bits per pixel
+// SCREEN_TARGET_BPP
+//		Targeted screen bits per pixel.
 //
 // ALLOW_FULLSCREEN_TOGGLE
 //		Allows user to change fullscreen state.
@@ -55,15 +55,12 @@
 //		looses its focus.
 ////////////////////////////////////////////////////////////
 #define GAME_TITLE "EasyRPG Player"
-#define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 240
-#ifdef DINGOO
-	#define BPP	16
-#else
-	#define BPP 32
-#endif
+#define SCREEN_TARGET_WIDTH 320
+#define SCREEN_TARGET_HEIGHT 240
+#define SCREEN_TARGET_BPP 32
 #define ALLOW_FULLSCREEN_TOGGLE 1
 #define RUN_FULLSCREEN 0
+#define RUN_ZOOM 1
 #define PAUSE_GAME_WHEN_FOCUS_LOST 1
 #define PAUSE_AUDIO_WHEN_FOCUS_LOST 1
 
@@ -85,12 +82,8 @@
 ////////////////////////////////////////////////////////////
 // DEFAULT_FPS
 //		Default fps rate.
-//
-// DEFAULT_BACKCOLOR
-//		Default back color for the player window.
 ////////////////////////////////////////////////////////////
 #define DEFAULT_FPS 60
-//#define DEFAULT_BACKCOLOR 0xFF000000
 
 ////////////////////////////////////////////////////////////
 // FONT_SMOOTHING
@@ -117,5 +110,16 @@
 	#define OUTPUT_TYPE OUTPUT_MSGBOX
 #endif
 #define OUTPUT_FILENAME "log.txt"
+
+////////////////////////////////////////////////////////////
+#define USE_KEYBOARD
+//#define USE_FULL_KEYBOARD
+//#define USE_MOUSE
+#define USE_JOYSTICK
+#define USE_JOYSTICK_HAT
+#define USE_JOYSTICK_AXIS
+
+////////////////////////////////////////////////////////////
+//#define USE_FIXED_TIMESTEP_FPS
 
 #endif

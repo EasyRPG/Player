@@ -45,10 +45,6 @@ void Window_MenuStatus::Refresh() {
 	contents->FillofColor(rect, windowskin->GetColorKey());
 	contents->SetColorKey(windowskin->GetColorKey());
 
-	Color c = windowskin->GetPixel(0, 32);
-	Graphics::SetDefaultBackcolor(c.Get());
-	
-
 	int offset = 0;
 	for (size_t i = 0; i < Game_Party::GetActors().size(); ++i)
 	{

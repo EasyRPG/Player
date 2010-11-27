@@ -23,32 +23,137 @@
 ////////////////////////////////////////////////////////////
 #include <vector>
 #include "input_buttons.h"
-#include "SDL.h"
 
 ////////////////////////////////////////////////////////////
-/// Input namespace
+/// Input namespace.
+/// Input works with Button states. Buttons are
+/// representations of one or more keys or actions (like
+/// keyboard keys, mouse buttons, joystick axis). This way
+/// buttons are platform and device independent, while the
+/// assigned keys can vary by the system.
 ////////////////////////////////////////////////////////////
 namespace Input {
+	////////////////////////////////////////////////////////
+	/// Initialize Input.
+	////////////////////////////////////////////////////////
 	void Init();
+
+	////////////////////////////////////////////////////////
+	/// Update Input state.
+	////////////////////////////////////////////////////////
 	void Update();
-	void ClearKeys();
+
+	////////////////////////////////////////////////////////
+	/// Reset all button states.
+	////////////////////////////////////////////////////////
+	void ResetKeys();
+
+	////////////////////////////////////////////////////////
+	/// Get if a button is being pressed.
+	/// @param button : button id
+	/// @return whether the button is being pressed
+	////////////////////////////////////////////////////////
 	bool IsPressed(InputButton button);
+
+	////////////////////////////////////////////////////////
+	/// Get if a button is starting to being pressed.
+	/// @param button : button id
+	/// @return whether the button is being triggered
+	////////////////////////////////////////////////////////
 	bool IsTriggered(InputButton button);
+
+	////////////////////////////////////////////////////////
+	/// Get if a button is being repeated. A button is being
+	/// repeated while it is maintained pressed and a
+	/// certain amount of frames has passed after last
+	/// repetition.
+	/// @param button : button id
+	/// @return whether the button is being repeated
+	////////////////////////////////////////////////////////
 	bool IsRepeated(InputButton button);
+
+	////////////////////////////////////////////////////////
+	/// Get if a button is being released.
+	/// @param button : button id
+	/// @return whether the button is being released
+	////////////////////////////////////////////////////////
 	bool IsReleased(InputButton button);
 
-	extern std::vector<int> press_time;
-	extern std::vector<bool> triggered;
-	extern std::vector<bool> repeated;
-	extern std::vector<bool> released;
-	extern int dir4;
-	extern int dir8;
-	extern int start_repeat_time;
-	extern int repeat_time;
+	////////////////////////////////////////////////////////
+	/// Get if any button is being pressed.
+	/// @return whether any button is being pressed
+	////////////////////////////////////////////////////////
+	bool IsAnyPressed();
 
-#ifdef GEKKO
-	extern SDL_Joystick* joystick;
-#endif
+	////////////////////////////////////////////////////////
+	/// Get if any button is being triggered.
+	/// @return whether any button is being triggered
+	////////////////////////////////////////////////////////
+	bool IsAnyTriggered();
+
+	////////////////////////////////////////////////////////
+	/// Get if any button is being repeated.
+	/// @return whether any button is being repeated
+	////////////////////////////////////////////////////////
+	bool IsAnyRepeated();
+
+	////////////////////////////////////////////////////////
+	/// Get if any button is being released.
+	/// @return whether any button is being released
+	////////////////////////////////////////////////////////
+	bool IsAnyReleased();
+
+	////////////////////////////////////////////////////////
+	/// Get all buttons being pressed.
+	/// @return a vector with the buttons ids
+	////////////////////////////////////////////////////////
+	std::vector<InputButton> GetAllPressed();
+
+	////////////////////////////////////////////////////////
+	/// Get all buttons being triggered.
+	/// @return a vector with the buttons ids
+	////////////////////////////////////////////////////////
+	std::vector<InputButton> GetAllTriggered();
+
+	////////////////////////////////////////////////////////
+	/// Get all buttons being repeated.
+	/// @return a vector with the buttons ids
+	////////////////////////////////////////////////////////
+	std::vector<InputButton> GetAllRepeated();
+
+	////////////////////////////////////////////////////////
+	/// Get all buttons being released.
+	/// @return a vector with the buttons ids
+	////////////////////////////////////////////////////////
+	std::vector<InputButton> GetAllReleased();
+
+	/// Buttons press time (in frames).
+	extern std::vector<int> press_time;
+
+	/// Buttons trigger state.
+	extern std::vector<bool> triggered;
+
+	/// Buttons trigger state.
+	extern std::vector<bool> repeated;
+
+	/// Buttons trigger state.
+	extern std::vector<bool> released;
+
+	/// Horizontal and vertical directions state.
+	extern int dir4;
+
+	/// All cardinal directions state.
+	extern int dir8;
+
+	/// Start repeat time (in frames) a key has
+	/// to be maintained pressed before being
+	/// repeated for fist time.
+	extern int start_repeat_time;
+
+	/// Repeat time (in frames) a key has to be
+	/// maintained pressed after the start repeat time
+	/// has passed for being repeated again.
+	extern int repeat_time;
 }
 
 #endif

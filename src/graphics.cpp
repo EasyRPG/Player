@@ -28,6 +28,7 @@
 #include <algorithm>
 #include <sstream>
 #include <vector>
+#include "sdl_ui.h"
 
 namespace {
 }
@@ -105,7 +106,7 @@ void Graphics::Init() {
 	transition_increment = 0;
 	actual_transition = NoTransition;
 	fake_screen = NULL;
-	blank_screen = SDL_DisplayFormat(Player::main_surface);
+	blank_screen = SDL_DisplayFormat(DisplaySdlUi->GetDisplaySurface());
 	SDL_FillRect(blank_screen, NULL, 0);
 
 	is_in_transition_yet = false;
@@ -241,16 +242,16 @@ void Graphics::DoTransition() {
 	if (transition_current_frame <= transition_frames) {
 		switch (actual_transition) {
 			case FadeIn:
-				SDL_FillRect(Player::main_surface, NULL, 0);
+				SDL_FillRect(DisplaySdlUi->GetDisplaySurface(), NULL, 0);
 				SDL_SetAlpha(fake_screen, SDL_SRCALPHA, transition_current_frame*transition_increment);
-				SDL_BlitSurface(fake_screen, NULL, Player::main_surface, NULL);
+				SDL_BlitSurface(fake_screen, NULL, DisplaySdlUi->GetDisplaySurface(), NULL);
 				////////
 				break;
 
 			case FadeOut:
 				SDL_SetAlpha(blank_screen, SDL_SRCALPHA, transition_current_frame*transition_increment);
 				SDL_BlitSurface(blank_screen, NULL, fake_screen, NULL);
-				SDL_BlitSurface(fake_screen, NULL, Player::main_surface, NULL);
+				SDL_BlitSurface(fake_screen, NULL, DisplaySdlUi->GetDisplaySurface(), NULL);
 
 				break;
 
@@ -276,47 +277,6 @@ void Graphics::DoTransition() {
 	}
 }
 
-void Graphics::zoom2X(SDL_Surface* src, SDL_Surface* dst) {
-	int h, w, t, t2, w2, m = 0, m2 = 0;
-
-	if (SDL_MUSTLOCK(src))
-		SDL_LockSurface(src);
-
-	if (SDL_MUSTLOCK(dst))
-		SDL_LockSurface(dst);
-
-	Uint32* src_pixels = (Uint32*) src->pixels;
-	Uint32* dst_pixels = (Uint32*) dst->pixels;
-
-	Uint32 pixel;
-
-	h = src->h;
-	w = src->w;
-
-	w2 = dst->w;
-
-	t = (src->pitch / src->format->BytesPerPixel) - w;
-	t2 = (dst->pitch / dst->format->BytesPerPixel) - w2;
-
-	for (register int i = 0, i2 = 0; i < h; i++, i2 += 2) {
-		for (register int j = 0, j2 = 0; j < w; j++, j2 += 2) {
-			pixel = src_pixels[i*w+j+m];
-			dst_pixels[i2*w2+j2+m2] = pixel;
-			dst_pixels[i2*w2+j2+m2+1] = pixel;
-			dst_pixels[(i2+1)*w2+j2+m2] = pixel;
-			dst_pixels[(i2+1)*w2+j2+m2+1] = pixel;
-		}
-		m = t*i;
-		m2 = t2*i2;
-	}
-
-	if (SDL_MUSTLOCK(src))
-		SDL_UnlockSurface(src);
-
-	if (SDL_MUSTLOCK(dst))
-		SDL_UnlockSurface(dst);
-}
-
 void Graphics::PrintFPS() {
 	std::stringstream text;
 	SDL_Color fg_color = { 255, 255, 255, 0 };
@@ -328,7 +288,7 @@ void Graphics::PrintFPS() {
 #else
 	SDL_Rect rect = { 0, 0, text_surface->w, text_surface->h };
 #endif
-	SDL_BlitSurface(text_surface, NULL, Player::main_surface, &rect);
+	SDL_BlitSurface(text_surface, NULL, DisplaySdlUi->GetDisplaySurface(), &rect);
 	SDL_FreeSurface(text_surface);
 }
 
@@ -343,7 +303,8 @@ void Graphics::DrawFrame() {
 			zlist_needs_sorting = false;
 		}
 
-		SDL_FillRect(Player::main_surface, &Player::main_surface->clip_rect, default_backcolor);
+		DisplayUi->CleanDisplay();
+
 		DrawableType type;
 		for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
 			type = drawable_map[(*it_zlist)->GetId()]->GetType();
@@ -364,10 +325,7 @@ void Graphics::DrawFrame() {
 	if (fps_showing)
 		PrintFPS();
 
-	if (Player::zoom) {
-		zoom2X(Player::main_surface, Player::main_window);
-	}
-	SDL_UpdateRect(Player::main_window, 0, 0, 0, 0);
+	DisplayUi->UpdateDisplay();
 }
 
 ////////////////////////////////////////////////////////////
@@ -376,7 +334,7 @@ void Graphics::DrawFrame() {
 void Graphics::Freeze() {
 	// TODO
 	// Make a copy of current screen
-	fake_screen = SDL_DisplayFormat(Player::main_surface);
+	fake_screen = SDL_DisplayFormat(DisplaySdlUi->GetDisplaySurface());
 	// Screen is frozen now
 	frozen = true;
 }
@@ -413,10 +371,6 @@ void Graphics::Transition(TransitionType type, int time, bool wait) {
 	} while (is_in_transition_yet);
 }
 
-void Graphics::SetDefaultBackcolor(const SDL_Color& color) {
-	default_backcolor = SDL_MapRGB(Player::main_surface->format, color.r, color.g, color.b);
-}
-
 ////////////////////////////////////////////////////////////
 // Reset frames
 ////////////////////////////////////////////////////////////
@@ -438,7 +392,7 @@ void Graphics::Wait(int duration) {
 ////////////////////////////////////////////////////////////
 Bitmap* Graphics::SnapToBitmap() {
 	// TODO
-	return new Bitmap(SCREEN_WIDTH, SCREEN_HEIGHT);
+	return new Bitmap(DisplayUi->GetWidth(), DisplayUi->GetHeight());
 }
 
 ////////////////////////////////////////////////////////////

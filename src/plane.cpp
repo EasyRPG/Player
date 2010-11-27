@@ -70,10 +70,10 @@ void Plane::Draw(int z_order) {
 
 	double bmpw = bitmap->GetWidth() * zoom_x;
 	double bmph = bitmap->GetHeight() * zoom_y;
-	double tilesx = ceil(Player::GetWidth() / bmpw);
-	double tilesy = ceil(Player::GetHeight() / bmph);
-	int screen_ox = ox % Player::GetWidth();
-	int screen_oy = oy % Player::GetHeight();
+	double tilesx = ceil(DisplayUi->GetWidth() / bmpw);
+	double tilesy = ceil(DisplayUi->GetHeight() / bmph);
+	int screen_ox = ox % DisplayUi->GetWidth();
+	int screen_oy = oy % DisplayUi->GetHeight();
 	for (double i = 0; i < tilesx; i++) {
 		for (double j = 0; j < tilesy; j++) {
 			plane->BlitScreen((int)(i * bmpw - screen_ox), (int)(j * bmph - screen_oy));

@@ -44,7 +44,6 @@ namespace Graphics {
 	Bitmap* SnapToBitmap();
 	int GetFrameCount();
 	void SetFrameCount(int nframecount);
-	void SetDefaultBackcolor(const SDL_Color& color);
 
 	void RegisterDrawable(unsigned long ID, Drawable* drawable);
 	void RemoveDrawable(unsigned long ID);
@@ -69,8 +68,6 @@ namespace Graphics {
 
 	void Transition(TransitionType type, int time, bool wait);
 	void DoTransition();
-
-	void zoom2X(SDL_Surface* src, SDL_Surface* dst);
 
 	extern TransitionType actual_transition;
 

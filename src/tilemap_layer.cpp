@@ -139,8 +139,8 @@ void TilemapLayer::Draw(int z_order) {
 	if (!visible) return;
 
 	// Get the number of tiles that can be displayed on window
-	int tiles_x = (int)ceil(Player::GetWidth() / 16.0);
-	int tiles_y = (int)ceil(Player::GetHeight() / 16.0);
+	int tiles_x = (int)ceil(DisplayUi->GetWidth() / 16.0);
+	int tiles_y = (int)ceil(DisplayUi->GetHeight() / 16.0);
 
 	// If ox or oy are not equal to the tile size draw the next tile too
 	// to prevent black (empty) tiles at the borders

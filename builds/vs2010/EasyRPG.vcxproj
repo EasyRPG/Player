@@ -114,11 +114,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\audio.cpp" />
+    <ClCompile Include="..\..\src\baseui.cpp" />
     <ClCompile Include="..\..\src\bitmap.cpp" />
     <ClCompile Include="..\..\src\cache.cpp" />
     <ClCompile Include="..\..\src\color.cpp" />
     <ClCompile Include="..\..\src\filefinder_win.cpp" />
     <ClCompile Include="..\..\src\font.cpp" />
+    <ClCompile Include="..\..\src\font_pearl_8x8.cpp" />
+    <ClCompile Include="..\..\src\font_render_8x8.cpp" />
     <ClCompile Include="..\..\src\game_actor.cpp" />
     <ClCompile Include="..\..\src\game_actors.cpp" />
     <ClCompile Include="..\..\src\game_battler.cpp" />
@@ -136,7 +139,8 @@
     <ClCompile Include="..\..\src\graphics.cpp" />
     <ClCompile Include="..\..\src\hslrgb.cpp" />
     <ClCompile Include="..\..\src\input.cpp" />
-    <ClCompile Include="..\..\src\input_buttons_os.cpp" />
+    <ClCompile Include="..\..\src\input_buttons_gekko.cpp" />
+    <ClCompile Include="..\..\src\input_buttons_desktop.cpp" />
     <ClCompile Include="..\..\src\game_interpreter.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\main_data.cpp" />
@@ -150,6 +154,7 @@
     <ClCompile Include="..\..\src\scene_map.cpp" />
     <ClCompile Include="..\..\src\scene_menu.cpp" />
     <ClCompile Include="..\..\src\scene_title.cpp" />
+    <ClCompile Include="..\..\src\sdl_ui.cpp" />
     <ClCompile Include="..\..\src\sprite.cpp" />
     <ClCompile Include="..\..\src\spriteset_map.cpp" />
     <ClCompile Include="..\..\src\sprite_character.cpp" />
@@ -170,9 +175,12 @@
     <ClInclude Include="..\..\src\bitmap.h" />
     <ClInclude Include="..\..\src\cache.h" />
     <ClInclude Include="..\..\src\color.h" />
+    <ClInclude Include="..\..\src\baseui.h" />
     <ClInclude Include="..\..\src\drawable.h" />
+    <ClInclude Include="..\..\src\eventui.h" />
     <ClInclude Include="..\..\src\filefinder.h" />
     <ClInclude Include="..\..\src\font.h" />
+    <ClInclude Include="..\..\src\font_render_8x8.h" />
     <ClInclude Include="..\..\src\game_actor.h" />
     <ClInclude Include="..\..\src\game_actors.h" />
     <ClInclude Include="..\..\src\game_battler.h" />
@@ -194,6 +202,7 @@
     <ClInclude Include="..\..\src\input.h" />
     <ClInclude Include="..\..\src\game_interpreter.h" />
     <ClInclude Include="..\..\src\input_buttons.h" />
+    <ClInclude Include="..\..\src\keys.h" />
     <ClInclude Include="..\..\src\main_data.h" />
     <ClInclude Include="..\..\src\msgbox.h" />
     <ClInclude Include="..\..\src\options.h" />
@@ -206,6 +215,7 @@
     <ClInclude Include="..\..\src\scene_map.h" />
     <ClInclude Include="..\..\src\scene_menu.h" />
     <ClInclude Include="..\..\src\scene_title.h" />
+    <ClInclude Include="..\..\src\sdl_ui.h" />
     <ClInclude Include="..\..\src\sprite.h" />
     <ClInclude Include="..\..\src\spriteset_map.h" />
     <ClInclude Include="..\..\src\sprite_character.h" />

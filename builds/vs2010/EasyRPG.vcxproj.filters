@@ -40,6 +40,15 @@
     <Filter Include="Source Files\Engine\Sprite">
       <UniqueIdentifier>{d6d5baa3-bfb3-42fb-9d14-d6146b6072ec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Multimedia\UI">
+      <UniqueIdentifier>{173294f6-8029-4cb6-9b0c-41960648fb71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Multimedia\UI\SDL">
+      <UniqueIdentifier>{1fa02dfd-29c0-46a0-98ae-fc726696819d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\font 8x8">
+      <UniqueIdentifier>{bb2eb505-d02e-4476-8dcc-77d59d056c36}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\cache.cpp">
@@ -94,9 +103,6 @@
       <Filter>Source Files\Multimedia\Audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\input.cpp">
-      <Filter>Source Files\Multimedia\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\input_buttons_os.cpp">
       <Filter>Source Files\Multimedia\Input</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\output.cpp">
@@ -194,6 +200,24 @@
     </ClCompile>
     <ClCompile Include="..\..\src\scene.cpp">
       <Filter>Source Files\Engine\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sdl_ui.cpp">
+      <Filter>Source Files\Multimedia\UI\SDL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\baseui.cpp">
+      <Filter>Source Files\Multimedia\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\font_pearl_8x8.cpp">
+      <Filter>Source Files\Tools\font 8x8</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\font_render_8x8.cpp">
+      <Filter>Source Files\Tools\font 8x8</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\input_buttons_gekko.cpp">
+      <Filter>Source Files\Multimedia\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\input_buttons_desktop.cpp">
+      <Filter>Source Files\Multimedia\Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -364,6 +388,21 @@
     </ClInclude>
     <ClInclude Include="..\..\src\game_event.h">
       <Filter>Source Files\Engine\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\baseui.h">
+      <Filter>Source Files\Multimedia\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\eventui.h">
+      <Filter>Source Files\Multimedia\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sdl_ui.h">
+      <Filter>Source Files\Multimedia\UI\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\keys.h">
+      <Filter>Source Files\Multimedia\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\font_render_8x8.h">
+      <Filter>Source Files\Tools\font 8x8</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

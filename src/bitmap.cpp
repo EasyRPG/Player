@@ -34,6 +34,7 @@
 #include "util_macro.h"
 #include "system.h"
 #include <cmath>
+#include "sdl_ui.h"
 
 ////////////////////////////////////////////////////////////
 /// Defines
@@ -188,7 +189,7 @@ Bitmap::~Bitmap() {
 ////////////////////////////////////////////////////////////
 void Bitmap::BlitScreen(int x, int y) {
 	SDL_Rect offset = {x, y, 0, 0};
-	SDL_BlitSurface(bitmap, NULL, Player::main_surface, &offset);
+	SDL_BlitSurface(bitmap, NULL, DisplaySdlUi->GetDisplaySurface(), &offset);
 }
 void Bitmap::BlitScreen(int x, int y, int opacity) {
 	Rect src_rect(0, 0, GetWidth(), GetHeight());
@@ -196,31 +197,31 @@ void Bitmap::BlitScreen(int x, int y, int opacity) {
 }
 void Bitmap::BlitScreen(int x, int y, Rect& src_rect, int opacity) {
 	if (GetWidth() == 0 || GetHeight() == 0) return;
-	if (x >= Player::GetWidth() || y >= Player::GetHeight()) return;
+	if (x >= DisplayUi->GetWidth() || y >= DisplayUi->GetHeight()) return;
 #ifndef USE_ALPHA
 	SDL_Rect src_r = { src_rect.x, src_rect.y, src_rect.width, src_rect.height };
 	SDL_Rect dst_r = {x, y, 0, 0};
 
 	// Regular blit here...
-	SDL_BlitSurface(bitmap, &src_r, Player::main_surface, &dst_r);
+	SDL_BlitSurface(bitmap, &src_r, DisplaySdlUi->GetDisplaySurface(), &dst_r);
 #else	
 	if (opacity >= 255) {
 		SDL_Rect offset = {x, y, 0, 0};
 		SDL_Rect src_rect_sdl = {src_rect.x, src_rect.y, src_rect.width, src_rect.height};
-		if (SDL_BlitSurface(bitmap, &src_rect_sdl, Player::main_surface, &offset) < 0) {
+		if (SDL_BlitSurface(bitmap, &src_rect_sdl, DisplaySdlUi->GetDisplaySurface(), &offset) < 0) {
 			Output::Error("Bitmap.cpp BlitScreen(): Could not blit surface:\n%s", SDL_GetError());
 		}
 	} else if (opacity > 0) {
 		src_rect.Adjust(GetWidth(), GetHeight());
 		if (src_rect.IsOutOfBounds(GetWidth(), GetHeight())) return;
 
-		SDL_LockSurface(Player::main_surface);
+		SDL_LockSurface(DisplaySdlUi->GetDisplaySurface());
 		SDL_LockSurface(bitmap);
 		
 		int src_stride = GetWidth() * 4;
-		int dst_stride = Player::main_surface->w * 4;
+		int dst_stride = DisplaySdlUi->GetDisplaySurface()->w * 4;
 		const Uint8* src_pixels = ((Uint8*)bitmap->pixels) + (src_rect.x + src_rect.y * GetWidth()) * 4;
-		Uint8* dst_pixels = ((Uint8*)Player::main_surface->pixels) + (x + y * Player::main_surface->w) * 4;
+		Uint8* dst_pixels = ((Uint8*)DisplaySdlUi->GetDisplaySurface()->pixels) + (x + y * DisplaySdlUi->GetDisplaySurface()->w) * 4;
 
 		for (int i = 0; i < src_rect.height; ++i) {
 			for (int j = 0; j < src_rect.width; ++j) {
@@ -237,7 +238,7 @@ void Bitmap::BlitScreen(int x, int y, Rect& src_rect, int opacity) {
 			dst_pixels += dst_stride;
 		}
 		
-		SDL_UnlockSurface(Player::main_surface);
+		SDL_UnlockSurface(DisplaySdlUi->GetDisplaySurface());
 		SDL_UnlockSurface(bitmap);
 	}
 #endif

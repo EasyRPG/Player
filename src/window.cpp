@@ -95,7 +95,7 @@ void Window::SetAnimation(int frames) {
 void Window::Draw(int z_order) {
 	if (!visible) return;
 	if (width <= 0 || height <= 0) return;
-	if (x < -width || x > Player::GetWidth() || y < -height || y > Player::GetHeight()) return;
+	if (x < -width || x > DisplayUi->GetWidth() || y < -height || y > DisplayUi->GetHeight()) return;
 	
 	Rect src_rect;
 

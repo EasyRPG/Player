@@ -70,20 +70,20 @@ namespace FileFinder {
 
 	/// Available image extension types
 	const std::string IMG_TYPES[] = {
-#ifdef HAVE_BMP
+#ifdef SUPPORT_BMP
 		".bmp",
 #endif
-#ifdef HAVE_GIF
+#ifdef SUPPORT_GIF
 		".gif",
 #endif
-#ifdef HAVE_JPG
+#ifdef SUPPORT_JPG
 		".jpg",
 		".jpeg",
 #endif
-#ifdef HAVE_PNG
+#ifdef SUPPORT_PNG
 		".png",
 #endif
-#ifdef HAVE_XYZ
+#ifdef SUPPORT_XYZ
 		".xyz",
 #endif
 		""
@@ -91,17 +91,17 @@ namespace FileFinder {
 
 	/// Available audio music extension types
 	const std::string MUSIC_TYPES[] = {
-#ifdef HAVE_WAV
+#ifdef SUPPORT_WAV
 		".wav",
 #endif
-#ifdef HAVE_MID
+#ifdef SUPPORT_MID
 		".mid",
 		".midi",
 #endif
-#ifdef HAVE_OGG
+#ifdef SUPPORT_OGG
 		".ogg",
 #endif
-#ifdef HAVE_MP3
+#ifdef SUPPORT_MP3
 		".mp3",
 #endif
 		""
@@ -109,13 +109,13 @@ namespace FileFinder {
 
 	/// Available audio music extension types
 	const std::string SOUND_TYPES[] = {
-#ifdef HAVE_WAV
+#ifdef SUPPORT_WAV
 		".wav",
 #endif
-#ifdef HAVE_OGG
+#ifdef SUPPORT_OGG
 		".ogg",
 #endif
-#ifdef HAVE_MP3
+#ifdef SUPPORT_MP3
 		".mp3",
 #endif
 		""
@@ -123,7 +123,7 @@ namespace FileFinder {
 
 	/// Available fonts types
 	const std::string FONTS_TYPES[] = {
-#ifdef HAVE_TTF
+#ifdef SUPPORT_TTF
 		".ttf",
 #endif
 		""

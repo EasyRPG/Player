@@ -18,56 +18,120 @@
 #ifndef _SYSTEM_H_
 #define _SYSTEM_H_
 
-#ifndef _WIN32
-#ifndef UNIX
-#ifndef DINGOO
-#ifndef GEKKO
+#if !(defined(_WIN32) || defined(UNIX) || defined(DINGOO) || defined(GEKKO))
 	#error "This build doesn't target an os"
 #endif
-#endif
-#endif
+
+#if !(defined(USE_SDL) || defined(USE_OPENGL))
+	#error "This build doesn't target a backend"
 #endif
 
+// TODO?: Combine system.h and options.h ?
+// options.h is oriented to configurations that the EasyRPG user might want
+// to change.
+// system.h is oriented to what used libraries and OS are capable of.
+#include "options.h"
+
+#define SCREEN_FORMAT_AUTO		0
+#define SCREEN_FORMAT_RGBA8888	1
+#define SCREEN_FORMAT_RGBA4444	2
+#define SCREEN_FORMAT_RGBA5551	3
+#define SCREEN_FORMAT_RGB444	4
+#define SCREEN_FORMAT_RGB565	5
+#define SCREEN_FORMAT_PALETTE	6
+
 #ifdef USE_OPENGL
-	#define HAVE_BMP
-	#define HAVE_GIF
-	//#define HAVE_JPG
-	#define HAVE_PNG
+	#define SUPPORT_ZOOM
+	#define SUPPORT_FULL_SCALING
+	#ifdef USE_SOIL
+		#define SUPPORT_BMP
+		#define SUPPORT_GIF
+		#define SUPPORT_JPG
+		#define SUPPORT_PNG
+		//#define SUPPORT_XYZ
+	#endif
+	#if SCREEN_TARGET_BPP == 16
+		#define SCREEN_BPP 16
+		#define SCREEN_FORMAT SCREEN_FORMAT_RGBA5551
+	#else
+		#define SCREEN_BPP 32
+		#define SCREEN_FORMAT SCREEN_FORMAT_RGBA8888
+	#endif
 #endif
 
 #ifdef USE_SDL
 	#ifndef USE_OPENGL
+		#define SCREEN_BPP SCREEN_TARGET_BPP
+		#define SCREEN_FORMAT SCREEN_FORMAT_AUTO
 		#define USE_SDL_IMAGE
 	#endif
+
 	#define USE_SDL_MIXER
 	#define USE_SDL_TTF
-	//#define USE_ALPHA
+	
+	#if !defined(DINGOO) && !defined(GEKKO)
+		#define SUPPORT_ZOOM
+		#define SUPPORT_FULLSCREEN_TOGGLE
+		#define SUPPORT_KEYBOARD
+		#define SUPPORT_MOUSE
+	#endif
+	#if !defined(DINGOO)
+		#define SUPPORT_HWSURFACE
+		#define SUPPORT_JOYSTICK
+		#define SUPPORT_JOYSTICK_HAT
+		#define SUPPORT_JOYSTICK_AXIS
+		#define JOYSTICK_AXIS_SENSIBILITY 20000
+	#endif
+
+	#ifdef USE_SDL_IMAGE
+		#define SUPPORT_BMP
+		#define SUPPORT_GIF
+		//#define SUPPORT_JPG
+		#define SUPPORT_PNG
+		//#define SUPPORT_XYZ
+	#endif
+
+	#ifdef USE_SDL_MIXER
+		#define SUPPORT_WAV
+		#define SUPPORT_MID
+		#define SUPPORT_OGG
+		#define SUPPORT_MP3
+	#endif
+
+	#ifdef USE_SDL_TTF
+		#define SUPPORT_TTF
+		#define SUPPORT_FON
+	#endif
 #endif
-
-//#define USE_FIXED_TIMESTEP_FPS
-
-#ifdef USE_SDL_IMAGE
-	#define HAVE_BMP
-	#define HAVE_GIF
-	//#define HAVE_JPG
-	#define HAVE_PNG
-#endif
-
-#ifdef USE_SDL_MIXER
-	#define HAVE_WAV
-	#define HAVE_MID
-	#define HAVE_OGG
-	#define HAVE_MP3
-#endif
-
-#ifdef USE_SDL_TTF
-	#define HAVE_TTF
-#endif
-
-#define HAVE_XYZ
 
 #ifdef _WIN32
 	#define DEFAULT_FONTS { "Font/DejaVuLGCSansMono.ttf", "Lucida Console", "MS Sans Serif", "" }
+#else
+	#define DEFAULT_FONTS { "Font/DejaVuLGCSansMono.ttf", "" }
 #endif
+
+#if !defined(_MSC_VER) || (_MSC_VER >= 1600)
+	#include <stdint.h>
+#else
+	typedef signed char			int8_t;
+	typedef	unsigned char		uint8_t;
+	typedef	signed short		int16_t;
+	typedef unsigned short		uint16_t;
+	typedef	signed int			int32_t;
+	typedef unsigned int		uint32_t;
+	typedef signed __int64		int64_t;
+	typedef unsigned __int64	uint64_t;
+#endif
+
+typedef int8_t		int8;
+typedef uint8_t		uint8;
+typedef int16_t		int16;
+typedef uint16_t	uint16;
+typedef int32_t		int32;
+typedef uint32_t	uint32;
+typedef int64_t		int64;
+typedef uint64_t	uint64;
+
+typedef uint32_t	uint;
 
 #endif

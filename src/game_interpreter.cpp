@@ -287,7 +287,7 @@ bool Game_Interpreter::ExecuteCommand() {
 /// Input Button
 ////////////////////////////////////////////////////////////
 void Game_Interpreter::InputButton() {
-	Input::InputButton n = Input::NOBUTTON;
+	Input::InputButton n = Input::BUTTON_COUNT;
 	
 	if (Input::IsTriggered(Input::UP)) {
 		n = Input::UP;
@@ -318,7 +318,7 @@ void Game_Interpreter::InputButton() {
 	} // end first if
 
 	// If a button was pressed
-	if (n != Input::NOBUTTON) {
+	if (n != Input::BUTTON_COUNT) {
 		// Set variable
 		Game_Variables[button_input_variable_id] = n;
 		Game_Map::SetNeedRefresh(true);

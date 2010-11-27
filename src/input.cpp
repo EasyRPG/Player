@@ -19,15 +19,9 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "input.h"
-#include "input_buttons.h"
-#include "output.h"
+#include "player.h"
+#include "system.h"
 
-#ifdef GEKKO
-	#include <wiiuse/wpad.h>
-#endif
-
-////////////////////////////////////////////////////////////
-/// Global Variables
 ////////////////////////////////////////////////////////////
 namespace Input {
 	std::vector<int> press_time;
@@ -38,120 +32,69 @@ namespace Input {
 	int dir8;
 	int start_repeat_time;
 	int repeat_time;
-#ifdef GEKKO
-	SDL_Joystick* joystick;
-#endif
+	std::vector<std::vector<int> > buttons;
+	std::vector<std::vector<int> > dir_buttons;
 }
 
 ////////////////////////////////////////////////////////////
-/// Initialize
-////////////////////////////////////////////////////////////
 void Input::Init() {
-#ifdef GEKKO
-	WPAD_Init();
-#endif
-
-	if (!(SDL_WasInit(SDL_INIT_JOYSTICK) & SDL_INIT_JOYSTICK)) {
-		if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) {
-			Output::Warning("Couldn't initialize joystick.\n%s\n", SDL_GetError());
-		}
-	}
-
-#ifdef GEKKO
-	joystick = SDL_JoystickOpen(0);
-#endif
-
 	InitButtons();
 
-	press_time.resize(buttons.size(), 0);
-	triggered.resize(buttons.size(), false);
-	repeated.resize(buttons.size(), false);
-	released.resize(buttons.size(), false);
+	press_time.resize(BUTTON_COUNT, 0);
+	triggered.resize(BUTTON_COUNT, false);
+	repeated.resize(BUTTON_COUNT, false);
+	released.resize(BUTTON_COUNT, false);
 
 	start_repeat_time = 60;
 	repeat_time = 10;
 }
 
 ////////////////////////////////////////////////////////////
-/// Update keys state
-////////////////////////////////////////////////////////////
 void Input::Update() {
-	Uint8* keystates = SDL_GetKeyState(NULL);
-	unsigned int i, e;
-	bool pressed;
+	std::vector<bool> keystates = DisplayUi->GetKeyStates();
 
-#ifdef GEKKO
-	// Map Joypad to Keyboard
-	// These values must be set to 0 again at the end of the function
-	Uint8 joy_hat = SDL_JoystickGetHat(joystick, 0);
+	// Check button states
+	for (uint i = 0; i < BUTTON_COUNT; ++i) {
+		bool pressed = false;
 
-	if (!(joy_hat & SDL_HAT_CENTERED))
-	{
-		if (joy_hat & SDL_HAT_UP) {
-			keystates[(SDLKey)buttons[Input::UP][0]] = 1;
-		}
-		if (joy_hat & SDL_HAT_DOWN) {
-			keystates[(SDLKey)buttons[Input::DOWN][0]] = 1;
-		}
-		if (joy_hat & SDL_HAT_LEFT) {
-			keystates[(SDLKey)buttons[Input::LEFT][0]] = 1;
-		}
-		if (joy_hat & SDL_HAT_RIGHT) {
-			keystates[(SDLKey)buttons[Input::RIGHT][0]] = 1;
-		}
-	}
-
-	if (SDL_JoystickGetButton(joystick, 2)) { // (1)
-		keystates[(SDLKey)buttons[Input::CANCEL][0]] = 1;
-	}
-	if (SDL_JoystickGetButton(joystick, 3)) { // (2)
-		keystates[(SDLKey)buttons[Input::DECISION][0]] = 1;
-	}
-	if (SDL_JoystickGetButton(joystick, 6)) { // (Home)
-		// Just Exit for now: ToDo: Show QuitScene
-		exit(1);
-	}
-#endif
-	for (i = 0; i < buttons.size(); ++i) {
-		pressed = false;
-		for (e = 0; e < buttons[i].size(); e++) {
-			if (keystates[(SDLKey)buttons[i][e]]) {
+		// Check state of keys assigned to button
+		for (uint e = 0; e < buttons[i].size(); e++) {
+			if (keystates[buttons[i][e]]) {
 				pressed = true;
 				break;
 			}
 		}
+
 		if (pressed) {
-			press_time[i] += 1;
 			released[i] = false;
+			press_time[i] += 1;
 		} else {
 			released[i] = press_time[i] > 0;
 			press_time[i] = 0;
 		}
+
 		if (press_time[i] > 0) {
 			triggered[i] = press_time[i] == 1;
-			repeated[i] = press_time[i] == 1 ||
-				(press_time[i] >= start_repeat_time &&
-				press_time[i] % repeat_time == 0);
+			repeated[i] = press_time[i] == 1 || (press_time[i] >= start_repeat_time &&	press_time[i] % repeat_time == 0);
 		} else {
 			triggered[i] = false;
 			repeated[i] = false;
 		}
 	}
 	
-	unsigned int dirpress[10];
-	for (i = 1; i < 10; i++) {
+	// Press time for directional buttons, the less they have been pressed, the higher their priority will be
+	int dirpress[10];
+
+	// Get max pressed time for each directional button
+	for (uint i = 1; i < 10; i++) {
 		dirpress[i] = 0;
-		if (i != 5) {
-			unsigned int max_presstime;
-			for (e = 0; e < dirkeys[i].size(); e++) {
-				max_presstime = press_time[dirkeys[i][e]];
-				if (max_presstime > dirpress[i]) {
-					dirpress[i] = max_presstime;
-				}
-			}
+		for (uint e = 0; e < dir_buttons[i].size(); e++) {
+			if (dirpress[i] < press_time[dir_buttons[i][e]])
+				dirpress[i] = press_time[dir_buttons[i][e]];
 		}
 	}
 
+	// Calculate diagonal directions pressed time by dir4 combinations
 	dirpress[1] += (dirpress[2] > 0 && dirpress[4] > 0) ? dirpress[2] + dirpress[4] : 0;
 	dirpress[3] += (dirpress[2] > 0 && dirpress[6] > 0) ? dirpress[2] + dirpress[6] : 0;
 	dirpress[7] += (dirpress[8] > 0 && dirpress[4] > 0) ? dirpress[8] + dirpress[4] : 0;
@@ -159,44 +102,35 @@ void Input::Update() {
 
 	dir4 = 0;
 	dir8 = 0;
-		
+	
+	// Check if no opposed keys are being pressed at the same time
 	if (!(dirpress[2] > 0 && dirpress[8] > 0) && !(dirpress[4] > 0 && dirpress[6] > 0)) {
-		e = 0;
-		for (i = 0; i < 4; i++) {
-			if (dirpress[(i + 1) * 2] > 0) {
-				if (e == 0 || dirpress[(i + 1) * 2] < e) {
-					dir4 = (i + 1) * 2;
-					e = dirpress[(i + 1) * 2];
+
+		// Get dir4 by the with lowest press time (besides 0 frames)
+		int min_press_time = 0;
+		for (int i = 2; i <= 8; i += 2) {
+			if (dirpress[i] > 0) {
+				if (min_press_time == 0 || dirpress[i] < min_press_time) {
+					dir4 = i;
+					min_press_time = dirpress[i];
 				}
 			}
 		}
-		dir8 = dir4;
-		if (dirpress[9] > 0) {
-			dir8 = 9;
-		} else if (dirpress[7] > 0) {
-			dir8 = 7;
-		} else if (dirpress[3] > 0) {
-			dir8 = 3;
-		} else if (dirpress[1] > 0) {
-			dir8 = 1;
-		}
-	}
 
-#ifdef GEKKO
-	keystates[(SDLKey)buttons[Input::UP][0]] = 0;
-	keystates[(SDLKey)buttons[Input::DOWN][0]] = 0;
-	keystates[(SDLKey)buttons[Input::LEFT][0]] = 0;
-	keystates[(SDLKey)buttons[Input::RIGHT][0]] = 0;
-	keystates[(SDLKey)buttons[Input::CANCEL][0]] = 0;
-	keystates[(SDLKey)buttons[Input::DECISION][0]] = 0;
-#endif
+		// Dir8 will be at least equal to Dir4
+		dir8 = dir4;
+
+		// Check diagonal directions (There is a priority order)
+		if		(dirpress[9] > 0)	dir8 = 9;
+		else if (dirpress[7] > 0)	dir8 = 7;
+		else if (dirpress[3] > 0)	dir8 = 3;
+		else if (dirpress[1] > 0)	dir8 = 1;
+	}
 }
 
 ////////////////////////////////////////////////////////////
-/// Clear keys state
-////////////////////////////////////////////////////////////
-void Input::ClearKeys() {
-	for (unsigned int i = 0; i < buttons.size(); i++) {
+void Input::ResetKeys() {
+	for (uint i = 0; i < BUTTON_COUNT; i++) {
 		press_time[i] = 0;
 		triggered[i] = false;
 		repeated[i] = false;
@@ -207,29 +141,86 @@ void Input::ClearKeys() {
 }
 
 ////////////////////////////////////////////////////////////
-/// Is pressed?
-////////////////////////////////////////////////////////////
 bool Input::IsPressed(InputButton button) {
 	return press_time[button] > 0;
 }
 
-////////////////////////////////////////////////////////////
-/// Is triggered?
-////////////////////////////////////////////////////////////
 bool Input::IsTriggered(InputButton button) {
 	return triggered[button];
 }
 
-////////////////////////////////////////////////////////////
-/// Is repeated?
-////////////////////////////////////////////////////////////
 bool Input::IsRepeated(InputButton button) {
 	return repeated[button];
 }
 
-////////////////////////////////////////////////////////////
-/// Is released?
-////////////////////////////////////////////////////////////
 bool Input::IsReleased(InputButton button) {
 	return released[button];
+}
+
+bool Input::IsAnyPressed() {
+	for (uint i = 0; i < BUTTON_COUNT; i++) {
+		if (press_time[i] > 0)
+			return true;
+	}
+	return false;
+}
+
+bool Input::IsAnyTriggered() {
+	for (uint i = 0; i < BUTTON_COUNT; i++) {
+		if (triggered[i])
+			return true;
+	}
+	return false;
+}
+
+bool Input::IsAnyRepeated() {
+	for (uint i = 0; i < BUTTON_COUNT; i++) {
+		if (repeated[i])
+			return true;
+	}
+	return false;
+}
+
+bool Input::IsAnyReleased() {
+	for (uint i = 0; i < BUTTON_COUNT; i++) {
+		if (released[i])
+			return true;
+	}
+	return false;
+}
+
+std::vector<Input::InputButton> Input::GetAllPressed() {
+	std::vector<InputButton> vector;
+	for (uint i = 0; i < BUTTON_COUNT; i++) {
+		if (press_time[i] > 0)
+			vector.push_back((InputButton)i);
+	}
+	return vector;
+}
+
+std::vector<Input::InputButton> Input::GetAllTriggered() {
+	std::vector<InputButton> vector;
+	for (uint i = 0; i < BUTTON_COUNT; i++) {
+		if (triggered[i])
+			vector.push_back((InputButton)i);
+	}
+	return vector;
+}
+
+std::vector<Input::InputButton> Input::GetAllRepeated() {
+	std::vector<InputButton> vector;
+	for (uint i = 0; i < BUTTON_COUNT; i++) {
+		if (repeated[i])
+			vector.push_back((InputButton)i);
+	}
+	return vector;
+}
+
+std::vector<Input::InputButton> Input::GetAllReleased() {
+	std::vector<InputButton> vector;
+	for (uint i = 0; i < BUTTON_COUNT; i++) {
+		if (released[i])
+			vector.push_back((InputButton)i);
+	}
+	return vector;
 }

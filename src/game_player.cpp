@@ -72,11 +72,11 @@ bool Game_Player::IsPassable(int x, int y, int d) {
 // Center
 ////////////////////////////////////////////////////////////
 void Game_Player::Center(int x, int y) {
-	int center_x = (Player::GetWidth() / 2 - 16) * 8;
-	int center_y = (Player::GetHeight() / 2 - 8) * 8;
+	int center_x = (DisplayUi->GetWidth() / 2 - 16) * 8;
+	int center_y = (DisplayUi->GetHeight() / 2 - 8) * 8;
 
-	int max_x = (Game_Map::GetWidth() - Player::GetWidth() / 16) * 128;
-	int max_y = (Game_Map::GetHeight() - Player::GetHeight() / 16) * 128;
+	int max_x = (Game_Map::GetWidth() - DisplayUi->GetWidth() / 16) * 128;
+	int max_y = (Game_Map::GetHeight() - DisplayUi->GetHeight() / 16) * 128;
 	Game_Map::SetDisplayX(max(0, min((x * 128 - center_x), max_x)));
 	Game_Map::SetDisplayY(max(0, min((y * 128 - center_y), max_y)));
 }
@@ -118,8 +118,8 @@ void Game_Player::Update() {
 
 	Game_Character::Update();
 	
-	int center_x = (Player::GetWidth() / 2 - 16) * 8;
-	int center_y = (Player::GetHeight() / 2 - 8) * 8;
+	int center_x = (DisplayUi->GetWidth() / 2 - 16) * 8;
+	int center_y = (DisplayUi->GetHeight() / 2 - 8) * 8;
 
 	if (real_y > last_real_y && real_y - Game_Map::GetDisplayY() > center_y)
 		Game_Map::ScrollDown(real_y - last_real_y);
