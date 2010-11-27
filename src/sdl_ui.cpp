@@ -94,7 +94,11 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag, boo
 	current_display_mode.width = width;
 	current_display_mode.height = height;
 	current_display_mode.fullscreen = fs_flag;
+#ifdef SUPPORT_ZOOM
 	current_display_mode.zoom = zoom;
+#else
+	current_display_mode.zoom = false;
+#endif
 
 	EndDisplayModeChange();
 
