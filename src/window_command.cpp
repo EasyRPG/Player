@@ -62,7 +62,7 @@ void Window_Command::DrawItem(int i, int color) {
 	//contents->FillRect(rect, Color(0, 0, 0, 0));
 	contents->FillofColor(rect2, windowskin->GetColorKey());
 	contents->SetColorKey(windowskin->GetColorKey());
-	contents->TextDraw(rect, commands[i], 0);
+	contents->TextDraw(rect, commands[i]);
 }
 
 ////////////////////////////////////////////////////////////

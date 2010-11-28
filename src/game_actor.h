@@ -69,9 +69,15 @@ public:
 	int GetMaxSp();
 
 	////////////////////////////////////////////////////////
+	/// Calculates the Exp needed for a level up
+	/// @param level : Level to calculate exp for
+	/// @todo Add Formula for RPG2k3
+	/// @return Needed experience
+	////////////////////////////////////////////////////////
+	int CalculateExp(int level);
+
+	////////////////////////////////////////////////////////
 	/// Calculates the Experience curve for every level
-	/// This formular is for RPG2k only!
-	/// @todo The approximation of the formula is incorrect
 	////////////////////////////////////////////////////////
 	void MakeExpList();
 

@@ -38,6 +38,12 @@ public:
 	Bitmap(Bitmap* source, Rect& src_rect);
 	~Bitmap();
 
+	enum TextAlignment {
+		align_left = 0,
+		align_center,
+		align_right
+	};
+
 	void BlitScreen(int x, int y);
 	void BlitScreen(int x, int y, int opacity);
 	void BlitScreen(int x, int y, Rect& src_rect, int opacity = 255);
@@ -70,7 +76,7 @@ public:
 	void LumChange(double luminance);
 	void HSLChange(double h, double s, double l);
 	void HSLChange(double h, double s, double l, Rect rect);
-	void TextDraw(Rect rect, std::string text, int align);
+	void TextDraw(Rect rect, std::string text, TextAlignment align = Bitmap::align_left);
 	Rect GetTextSize(std::string text);
 	void GradientFillRect(Rect rect, Color color1, Color color2, bool vertical);
 	void ClearRect(Rect rect);

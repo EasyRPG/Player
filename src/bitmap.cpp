@@ -558,7 +558,7 @@ void Bitmap::HSLChange(double h, double s, double l, Rect rect) {
 ////////////////////////////////////////////////////////////
 /// Draw text
 ////////////////////////////////////////////////////////////
-void Bitmap::TextDraw(Rect rect, std::string text, int align) {
+void Bitmap::TextDraw(Rect rect, std::string text, TextAlignment align) {
 	if (text.length() == 0) return;
 	if (rect.IsOutOfBounds(GetWidth(), GetHeight())) return;
 
@@ -897,9 +897,9 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 	
 	// Alignment code
 	if (rect.width > text_bmp->GetWidth()) {
-		if (align == 1) {
+		if (align == Bitmap::align_center) {
 			x += (rect.width - text_bmp->GetWidth()) / 2;
-		} else if (align == 2) {
+		} else if (align == Bitmap::align_right) {
 			x += rect.width - text_bmp->GetWidth();
 		}
 	}

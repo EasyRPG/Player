@@ -47,7 +47,6 @@ void Game_Actor::Setup(int actor_id) {
 	exp_list.resize(Data::actors[actor_id - 1].final_level, 0);
 	MakeExpList();
 	exp = exp_list[level - 1];
-	skills.push_back(Data::skills[0].ID);
 	hp = GetMaxHp();
 	sp = GetMaxSp();
 }
@@ -76,19 +75,29 @@ int Game_Actor::GetMaxSp() {
 }
 
 ////////////////////////////////////////////////////////////
+int Game_Actor::CalculateExp(int level)
+{
+        double base = Data::actors[actor_id - 1].exp_base;
+        double inflation = Data::actors[actor_id - 1].exp_inflation;
+		double correction = Data::actors[actor_id - 1].exp_correction;
+
+        int result = 0;
+
+        inflation = 1.5 + (inflation * 0.01);
+
+        for (int i = level; i >= 1; i--)
+        {
+                result = result + (int)(correction + base);
+                base = base * inflation;
+                inflation = ((level+1) * 0.002 + 0.8) * (inflation - 1) + 1;
+        }
+        return min(result, 1000000);
+}
+
+////////////////////////////////////////////////////////////
 void Game_Actor::MakeExpList() {
-	double standard = Data::actors[actor_id - 1].exp_base;
-	double additional = Data::actors[actor_id - 1].exp_inflation;
-	double correction = Data::actors[actor_id - 1].exp_correction;
-	int result = 0;
-
-	additional = 1.5 + (additional * 0.01);
-
 	for (int i = 1; i < Data::actors[actor_id - 1].final_level; ++i) {
-		result = result + (correction + (int)standard);
-		exp_list[i] = min(result, 1000000);
-		standard = standard * additional;
-		additional = (i * 0.002 + 0.8) * (additional - 1) + 1;
+		exp_list[i] = CalculateExp(i);
 	}
 }
 

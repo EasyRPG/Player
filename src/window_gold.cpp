@@ -50,5 +50,5 @@ void Window_Gold::Refresh() {
 	
 	contents->FillofColor(rect, windowskin->GetColorKey());
 	contents->SetColorKey(windowskin->GetColorKey());
-	contents->TextDraw(rect, gold.str(), 2);
+	contents->TextDraw(rect, gold.str(), Bitmap::align_right);
 }
