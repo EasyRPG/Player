@@ -626,7 +626,7 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 			if ((text[c+1] >= 'a' && text[c+1] <= 'z')) {
 				exfont_value = 26 + text[c+1] - 'a';
 			} else {
-				exfont_value = text[c+1]-'A';
+				exfont_value = text[c+1] - 'A';
 			}
 			is_full_glyph = true;
 
@@ -895,8 +895,7 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 	if (rect.height > text_bmp->GetHeight()) y += ((rect.height - text_bmp->GetHeight()) / 2);
 	int x = rect.x;
 	
-	/*
-	// Alignment code (RMXP only)
+	// Alignment code
 	if (rect.width > text_bmp->GetWidth()) {
 		if (align == 1) {
 			x += (rect.width - text_bmp->GetWidth()) / 2;
@@ -904,7 +903,6 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 			x += rect.width - text_bmp->GetWidth();
 		}
 	}
-	*/
 
 	Blit(x, y, text_bmp, src_rect, SDL_ALPHA_OPAQUE/*font.color.alpha*/);
 
@@ -919,17 +917,7 @@ void Bitmap::TextDraw(Rect rect, std::string text, int align) {
 /// Get text size
 ////////////////////////////////////////////////////////////
 Rect Bitmap::GetTextSize(std::string text) {
-	TTF_Font* ttf_font = font.GetTTF();
-	int style = 0;
-	if (font.bold) style |= TTF_STYLE_BOLD;
-	if (font.italic) style |= TTF_STYLE_ITALIC;
-	TTF_SetFontStyle(ttf_font, style);
-	
-	int w, h;
-	if (TTF_SizeUTF8(ttf_font, text.c_str(), &w, &h)) {
-		Output::Error("Couldn't determine text size for Font %s size %d.\n%s\n", text.c_str(), font.name.c_str(), font.size, TTF_GetError());
-	}
-	return Rect(0, 0, w, h);
+	return Rect(0, 0, text.length() * 6, 12);
 }
 
 ////////////////////////////////////////////////////////////

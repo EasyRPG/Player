@@ -56,6 +56,37 @@ public:
 	////////////////////////////////////////////////////////
 	void LearnSkill(int skill_id);
 
+	////////////////////////////////////////////////////////
+	/// Gets the maximum hp for the current level
+	/// @return max hp
+	////////////////////////////////////////////////////////
+	int GetMaxHp();
+
+	////////////////////////////////////////////////////////
+	/// Gets the maximum sp for the current level
+	/// @return max sp
+	////////////////////////////////////////////////////////
+	int GetMaxSp();
+
+	////////////////////////////////////////////////////////
+	/// Calculates the Experience curve for every level
+	/// This formular is for RPG2k only!
+	/// @todo The approximation of the formula is incorrect
+	////////////////////////////////////////////////////////
+	void MakeExpList();
+
+	////////////////////////////////////////////////////////
+	/// Converts the currect Exp to a string
+	/// @return Exp-String or ------ if Level is max
+	////////////////////////////////////////////////////////
+	std::string GetExpString();
+
+	////////////////////////////////////////////////////////
+	/// Converts the Exp for the next LV to a string
+	/// @return Exp-String or ------ if Level is max
+	////////////////////////////////////////////////////////
+	std::string GetNextExpString();
+
 	/// @return name.
 	std::string GetName() const;
 
@@ -70,6 +101,9 @@ public:
 
 	/// @return face graphic index.
 	int GetFaceIndex() const;
+
+	/// @return title
+	std::string GetTitle() const;
 
 	/// @return equipped weapon id
 	int GetWeaponId() const;
@@ -96,11 +130,13 @@ public:
 	std::vector<int> GetSkills() const;
 
 private:
+	int actor_id;
 	std::string name;
 	std::string character_name;
 	int character_index;
 	std::string face_name;
 	int face_index;
+	std::string title;
 	int weapon_id;
 	int shield_id;
 	int armor_id;
@@ -108,6 +144,7 @@ private:
 	int accessory_id;
 	int level;
 	int exp;
+	std::vector<int> exp_list;
 	std::vector<int> skills;
 };
 

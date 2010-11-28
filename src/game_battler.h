@@ -41,6 +41,15 @@ public:
 	////////////////////////////////////////////////////////
 	bool HasState(int state_id) const;
 
+	/// @return Vector containing the ids of all states the battler has
+	std::vector<int> GetStates() const;
+
+	/// @return current hp
+	int GetHp() const;
+
+	/// @return current sp
+	int GetSp() const;
+
 protected:
 	std::string battler_name;
 	int hp;

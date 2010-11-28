@@ -49,13 +49,19 @@ void Window_MenuStatus::Refresh() {
 	Color c = windowskin->GetPixel(0, 32);
 	DisplaySdlUi->SetBackcolor(c.Get());
 
-	int offset = 0;
+	int y = 0;
 	for (size_t i = 0; i < Game_Party::GetActors().size(); ++i)
 	{
-		DrawActorGraphic(Game_Party::GetActors()[i], 0, i*48 + offset);
+		DrawActorGraphic(Game_Party::GetActors()[i], 0, i*48 + y);
 
-		// (48 + 8, 4)
-		DrawActorName(Game_Party::GetActors()[i], 48 + 8, i*48 + 4 + offset);
-		offset += 10;
+		DrawActorName(Game_Party::GetActors()[i], 48 + 8, i*48 + 2 + y);
+		DrawActorClass(Game_Party::GetActors()[i], 48 + 8 + 88, i*48 + 2 + y);
+		DrawActorLevel(Game_Party::GetActors()[i], 48 + 8, i*48 + 2 + 16 + y);
+		DrawActorState(Game_Party::GetActors()[i], 48 + 8 + 42, i*48 + 2 + 16 + y);
+		DrawActorExp(Game_Party::GetActors()[i], 48 + 8, i*48 + 2 + 16 + 16 + y);
+		DrawActorHp(Game_Party::GetActors()[i], 48 + 8 + 106, i*48 + 2 + 16 + y);
+		DrawActorSp(Game_Party::GetActors()[i], 48 + 8 + 106, i*48 + 2 + 16 + 16 + y);
+
+		y += 10;
 	}
 }

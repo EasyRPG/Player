@@ -19,8 +19,10 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <algorithm>
+#include <sstream>
 #include "game_actor.h"
 #include "main_data.h"
+#include "util_macro.h"
 
 ////////////////////////////////////////////////////////////
 Game_Actor::Game_Actor(int actor_id) {
@@ -29,17 +31,25 @@ Game_Actor::Game_Actor(int actor_id) {
 
 ////////////////////////////////////////////////////////////
 void Game_Actor::Setup(int actor_id) {
+	this->actor_id = actor_id;
 	name = Data::actors[actor_id - 1].name;
 	character_name = Data::actors[actor_id - 1].character_name;
 	character_index = Data::actors[actor_id - 1].character_index;
 	face_name = Data::actors[actor_id - 1].face_name;
 	face_index = Data::actors[actor_id - 1].face_index;
+	title = Data::actors[actor_id - 1].title;
 	weapon_id = Data::actors[actor_id - 1].weapon_id;
 	shield_id = Data::actors[actor_id - 1].shield_id;
 	armor_id = Data::actors[actor_id - 1].armor_id;
 	helmet_id = Data::actors[actor_id - 1].helmet_id;
 	accessory_id = Data::actors[actor_id - 1].accessory_id;
 	level = Data::actors[actor_id - 1].initial_level;
+	exp_list.resize(Data::actors[actor_id - 1].final_level, 0);
+	MakeExpList();
+	exp = exp_list[level - 1];
+	skills.push_back(Data::skills[0].ID);
+	hp = GetMaxHp();
+	sp = GetMaxSp();
 }
 
 ////////////////////////////////////////////////////////////
@@ -52,6 +62,55 @@ void Game_Actor::LearnSkill(int skill_id) {
 	if (skill_id > 0 && !HasSkill(skill_id)) {
 		skills.push_back(skill_id);
 		std::sort(skills.begin(), skills.end());
+	}
+}
+
+////////////////////////////////////////////////////////////
+int Game_Actor::GetMaxHp() {
+	return min(Data::actors[actor_id - 1].parameter_maxhp[level + 50], 999);
+}
+
+////////////////////////////////////////////////////////////
+int Game_Actor::GetMaxSp() {
+	return min(Data::actors[actor_id - 1].parameter_maxsp[level + 50], 999);
+}
+
+////////////////////////////////////////////////////////////
+void Game_Actor::MakeExpList() {
+	double standard = Data::actors[actor_id - 1].exp_base;
+	double additional = Data::actors[actor_id - 1].exp_inflation;
+	double correction = Data::actors[actor_id - 1].exp_correction;
+	int result = 0;
+
+	additional = 1.5 + (additional * 0.01);
+
+	for (int i = 1; i < Data::actors[actor_id - 1].final_level; ++i) {
+		result = result + (correction + (int)standard);
+		exp_list[i] = min(result, 1000000);
+		standard = standard * additional;
+		additional = (i * 0.002 + 0.8) * (additional - 1) + 1;
+	}
+}
+
+////////////////////////////////////////////////////////////
+std::string Game_Actor::GetExpString() {
+	if ((unsigned)level == exp_list.size()) {
+		return "------";
+	} else {
+		std::stringstream ss;
+		ss << exp;
+		return ss.str();
+	}
+}
+
+////////////////////////////////////////////////////////////
+std::string Game_Actor::GetNextExpString() {
+	if ((unsigned)level == exp_list.size()) {
+		return "------";
+	} else {
+		std::stringstream ss;
+		ss << exp_list[level];
+		return ss.str();
 	}
 }
 
@@ -74,6 +133,10 @@ std::string Game_Actor::GetFaceName() const {
 
 int Game_Actor::GetFaceIndex() const {
 	return face_index;
+}
+
+std::string Game_Actor::GetTitle() const {
+	return title;
 }
 
 int Game_Actor::GetWeaponId() const {

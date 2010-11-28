@@ -19,6 +19,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "window_base.h"
+#include <sstream>
 #include "cache.h"
 #include "game_system.h"
 
@@ -71,42 +72,141 @@ void Window_Base::DrawActorGraphic(Game_Actor* actor, int cx, int cy) {
 }
 
 void Window_Base::DrawActorName(Game_Actor* actor, int cx, int cy) {
-	Rect rect(cx, cy, 32, 16);
+	Rect rect = contents->GetTextSize(actor->GetName());
+	rect.x = cx; rect.y = cy;
+	contents->GetFont()->color = 0;
 	contents->TextDraw(rect, actor->GetName(), 0);
 }
+
 void Window_Base::DrawActorTitle(Game_Actor* actor, int cx, int cy) {
-	
+
 }
+
 void Window_Base::DrawActorClass(Game_Actor* actor, int cx, int cy) {
-	
+	Rect rect = contents->GetTextSize(actor->GetTitle());
+	rect.x = cx; rect.y = cy;
+	contents->GetFont()->color = 0;
+	contents->TextDraw(rect, actor->GetTitle(), 0);
 }
+
 void Window_Base::DrawActorLevel(Game_Actor* actor, int cx, int cy) {
-	
+	// Draw LV-String
+	Rect rect(cx, cy, 12, 12);
+	contents->GetFont()->color = 1;
+	contents->TextDraw(rect, Data::terms.lvl_short, 0);
+
+	// Draw Level of the Actor
+	std::stringstream ss;
+	ss << actor->GetLevel();
+	rect.x = cx + 12;
+	contents->GetFont()->color = 0;
+	contents->TextDraw(rect, ss.str(), 2);
 }
+
 void Window_Base::DrawActorState(Game_Actor* actor, int cx, int cy) {
-	//DrawActorState(actor, x, y, 120); // 120 is from RMXP, maybe need to be adjusted
+	std::vector<int> states = actor->GetStates();
+	int highest_priority = 0;
+	int state = 0;
+
+	// Display the state with the highest priority
+	for (int i = 0; i < states.size(); ++i) {
+		if (Data::states[states[i]].priority > highest_priority) {
+			state = i;
+		}
+	}
+
+	Rect rect = contents->GetTextSize(Data::states[state].name);
+	rect.x = cx; rect.y = cy;
+	contents->GetFont()->color = Data::states[state].color;
+	contents->TextDraw(rect, Data::states[state].name, 0);
 }
+
 void Window_Base::DrawActorState(Game_Actor* actor, int cx, int cy, int width) {
 	
 }
+
 void Window_Base::DrawActorExp(Game_Actor* actor, int cx, int cy) {
-	
+	// Draw EXP-String
+	Rect rect(cx, cy, 12, 12);
+	contents->GetFont()->color = 1;
+	contents->TextDraw(rect, Data::terms.exp_short, 0);
+
+	// Draw Current Exp of the Actor
+	// ------/------
+	Rect rect2(cx + 12, cy, 6*6, 12);
+	contents->GetFont()->color = 0;
+	contents->TextDraw(rect2, actor->GetExpString(), 2);
+
+	// Draw the /
+	rect2.x += 6*6;
+	contents->TextDraw(rect2, "/", 0);
+
+	// Draw Exp for Level up
+	rect2.x += 6;
+	contents->TextDraw(rect2, actor->GetNextExpString(), 2);
 }
+
 void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy) {
-	//DrawActorHp(actor, x, y, 144); // 144 is from RMXP, maybe need to be adjusted
+	// Draw HP-String
+	Rect rect(cx, cy, 12, 12);
+	contents->GetFont()->color = 1;
+	contents->TextDraw(rect, Data::terms.hp_short, 0);
+
+	// Draw Current HP of the Actor
+	Rect rect2(cx + 12, cy, 3*6, 12);
+	contents->GetFont()->color = 0;
+	std::stringstream ss;
+	ss << actor->GetHp();
+	contents->TextDraw(rect2, ss.str(), 2);
+
+	// Draw the /
+	rect2.x += 3*6;
+	contents->TextDraw(rect2, "/", 0);
+
+	// Draw Max Hp
+	rect2.x += 6;
+	ss.str("");
+	ss.clear();
+	ss << actor->GetMaxHp();
+	contents->TextDraw(rect2, ss.str(), 2);
 }
 void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy, int width) {
 	
 }
+
 void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy) {
-	//DrawActorSp(actor, x, y, 144); // 144 is from RMXP, maybe need to be adjusted
+	// Draw SP-String
+	Rect rect(cx, cy, 12, 12);
+	contents->GetFont()->color = 1;
+	contents->TextDraw(rect, Data::terms.sp_short, 0);
+
+	// Draw Current SP of the Actor
+	Rect rect2(cx + 12, cy, 3*6, 12);
+	contents->GetFont()->color = 0;
+	std::stringstream ss;
+	ss << actor->GetSp();
+	contents->TextDraw(rect2, ss.str(), 2);
+
+	// Draw the /
+	rect2.x += 3*6;
+	contents->TextDraw(rect2, "/", 0);
+
+	// Draw Max Sp
+	rect2.x += 6;
+	ss.str("");
+	ss.clear();
+	ss << actor->GetMaxSp();
+	contents->TextDraw(rect2, ss.str(), 2);
 }
+
 void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy, int width) {
 	
 }
+
 void Window_Base::DrawActorParameter(Game_Actor* actor, int cx, int cy, int type) {
 	
 }
+
 void Window_Base::DrawItemName(RPG::Item* item, int cx, int cy) {
 	
 }

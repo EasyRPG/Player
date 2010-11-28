@@ -20,6 +20,7 @@
 ////////////////////////////////////////////////////////////
 #include "game_battler.h"
 #include <algorithm>
+#include "main_data.h"
 
 ////////////////////////////////////////////////////////////
 Game_Battler::Game_Battler() {
@@ -28,4 +29,17 @@ Game_Battler::Game_Battler() {
 ////////////////////////////////////////////////////////////
 bool Game_Battler::HasState(int state_id) const {
 	return (std::find(states.begin(), states.end(), state_id) != states.end());
+}
+
+////////////////////////////////////////////////////////////
+std::vector<int> Game_Battler::GetStates() const {
+	return states;
+}
+
+int Game_Battler::GetHp() const {
+	return hp;
+}
+
+int Game_Battler::GetSp() const {
+	return sp;
 }
