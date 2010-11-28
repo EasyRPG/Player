@@ -19,9 +19,16 @@
 #define _UTIL_MACRO_H_
 
 ////////////////////////////////////////////////////////////
-// Macros
+// Macros / Templates
 ////////////////////////////////////////////////////////////
-#define min(a, b)	(((a) < (b)) ? (a) : (b))
-#define max(a, b)	(((a) >= (b)) ? (a) : (b))
+template <typename T, typename S>
+inline T max(T x, S y) {
+    return (x >= y) ? x : y;
+}
+
+template <typename T, typename S>
+inline T min(T x, S y) {
+    return (x < y) ? x : y;
+}
 
 #endif

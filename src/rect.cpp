@@ -28,7 +28,7 @@ Rect::Rect() :
 	height(0) {
 }
 
-Rect::Rect(Sint16 x, Sint16 y, Uint16 width, Uint16 height) :
+Rect::Rect(int16 x, int16 y, uint16 width, uint16 height) :
 	x(x),
 	y(y),
 	width(width),
@@ -48,7 +48,7 @@ bool Rect::operator!=(const Rect &other) const {
 }
 
 ////////////////////////////////////////////////////////////
-void Rect::Set(Sint16 new_x, Sint16 new_y, Uint16 new_width, Uint16 new_height) {
+void Rect::Set(int16 new_x, int16 new_y, uint16 new_width, uint16 new_height) {
 	x = new_x;
 	y = new_y;
 	width = new_width;
@@ -56,7 +56,7 @@ void Rect::Set(Sint16 new_x, Sint16 new_y, Uint16 new_width, Uint16 new_height) 
 }
 
 ////////////////////////////////////////////////////////////
-void Rect::Adjust(Uint16 max_width, Uint16 max_height) {
+void Rect::Adjust(uint16 max_width, uint16 max_height) {
 	if (x < 0) {
 		width += x;
 		x = 0;
@@ -72,7 +72,7 @@ void Rect::Adjust(Uint16 max_width, Uint16 max_height) {
 }
 
 ////////////////////////////////////////////////////////////
-bool Rect::IsOutOfBounds(Uint16 max_width, Uint16 max_height) const {
+bool Rect::IsOutOfBounds(uint16 max_width, uint16 max_height) const {
 	if (width <= 0 || height <= 0) return true;
 	if (x >= max_width || y >= max_height) return true;
 	if (x + width <= 0 || y + height <= 0) return true;

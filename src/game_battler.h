@@ -24,6 +24,8 @@
 #include <string>
 #include <vector>
 
+class Game_Actor;
+
 ////////////////////////////////////////////////////////////
 /// Game_Battler class
 ////////////////////////////////////////////////////////////
@@ -50,10 +52,70 @@ public:
 	/// @return current sp
 	int GetSp() const;
 
+	////////////////////////////////////////////////////////
+	/// Sets the maximum HP.
+	/// @param _maxhp : max hp to set
+	////////////////////////////////////////////////////////
+	void SetMaxHp(int _maxhp);
+
+	/// @return current maxhp
+	int GetMaxHp();
+
+	////////////////////////////////////////////////////////
+	/// Sets the maximum SP.
+	/// @param _maxsp : max sp to set
+	////////////////////////////////////////////////////////
+	void SetMaxSp(int _maxsp);
+
+	/// @return current maxsp
+	int GetMaxSp();
+
+	////////////////////////////////////////////////////////
+	/// Sets the attack.
+	/// @param _atk : attack to set
+	////////////////////////////////////////////////////////
+	void SetAtk(int _atk);
+
+	////////////////////////////////////////////////////////
+	/// Sets the defense.
+	/// @param _def : defense to set
+	////////////////////////////////////////////////////////
+	void SetDef(int _def);
+
+	////////////////////////////////////////////////////////
+	/// Sets the spirit.
+	/// @param _spi : spirit to set
+	////////////////////////////////////////////////////////
+	void SetSpi(int _spi);
+
+	////////////////////////////////////////////////////////
+	/// Sets the agility.
+	/// @param _agi : agility to set
+	////////////////////////////////////////////////////////
+	void SetAgi(int _agi);
+
+	/// @return current atk
+	int GetAtk();
+
+	/// @return current def
+	int GetDef();
+
+	/// @return current spi
+	int GetSpi();
+
+	/// @return current agi
+	int GetAgi();
+
 protected:
 	std::string battler_name;
 	int hp;
 	int sp;
+	int maxhp_plus;
+	int maxsp_plus;
+	int atk_plus;
+	int def_plus;
+	int spi_plus;
+	int agi_plus;
 	std::vector<int> states;
 	bool hidden;
 	bool immortal;
@@ -64,6 +126,12 @@ protected:
 	bool animation_hit;
 	bool white_flash;
 	bool blink;
+
+	void SetGameActor(Game_Actor* _actor);
+
+private:
+	// Associated game actor, if any
+	Game_Actor* actor;
 };
 
 #endif

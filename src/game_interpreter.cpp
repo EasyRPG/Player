@@ -49,6 +49,7 @@ enum CommandCodes {
 	INPUT_NUMBER		= 10150,
 	CHANGE_GOLD         = 10310,
 	CHANGE_ITEMS        = 10320,
+	CHANGE_EXP          = 10410,
 	CONDITIONAL_BRANCH  = 12010
 };
 
@@ -539,18 +540,20 @@ bool Game_Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 						break;
 					case 2:
 						// Current HP
-						//value = actor->hp;
+						value = actor->GetHp();
 						break;
 					case 3:
 						// Current MP
-						//value = actor->mp;
+						value = actor->GetSp();
 						break;
 					case 4:
 						// Max HP
+						// TODO needs to be current max Hp of hero
 						value = Data::actors[list[index].parameters[6]].parameter_maxhp[actor->GetLevel() - 1];
 						break;
 					case 5:
 						// Max MP
+						// TODO needs to be current max Mp of hero
 						value = Data::actors[list[index].parameters[6]].parameter_maxsp[actor->GetLevel() - 1];
 						break;
 					case 6:
@@ -760,7 +763,7 @@ bool Game_Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 ////////////////////////////////////////////////////////////
 /// * Calculate Operated Value
 ///     operation    : operation (increase: 0, decrease: 1)
-///     operand_type : operand type (0: invariable, 1: variable)
+///     operand_type : operand type (0: set, 1: variable)
 ///     operand      : operand (number or var ID)
 ////////////////////////////////////////////////////////////
 int Game_Interpreter::OperateValue(int operation, int operand_type, int operand) {
@@ -909,6 +912,180 @@ bool Game_Interpreter::CommandChangePartyMember() { // Code 10330
 		}
 	}
 
+	return true;
+}
+
+////////////////////////////////////////////////////////////
+/// Change Experience
+////////////////////////////////////////////////////////////
+bool Game_Interpreter::CommandChangeExp() { // Code 10410
+	int value = OperateValue(
+		list[index].parameters[2],
+		list[index].parameters[3],
+		list[index].parameters[4]
+	);
+
+	Game_Actor* actor;
+
+	switch (list[index].parameters[0]) {
+		case 0:
+			// All party
+			for (std::vector<Game_Actor*>::iterator i = Game_Party::GetActors().begin(); 
+				i != Game_Party::GetActors().end(); 
+				i++) {
+				(*i)->SetExp((*i)->GetExp() + value);
+			}
+			break;
+		case 1:
+			// Hero
+			actor = Game_Actors::GetActor(list[index].parameters[1]);
+			actor->SetExp(actor->GetExp() + value);
+			break;
+		case 2:
+			// Var hero
+			actor = Game_Actors::GetActor(Game_Variables[list[index].parameters[1]]);
+			actor->SetExp(actor->GetExp() + value);
+			break;
+		default:
+			;
+	}
+
+	if (list[index].parameters[5] != 0) {
+		// TODO
+		// Show message increase level
+	} else {
+		// Don't show message increase level
+	}
+
+	// Continue
+	return true;
+}
+
+
+bool Game_Interpreter::CommandChangeLevel() { // Code 10420
+	int value = OperateValue(
+		list[index].parameters[2],
+		list[index].parameters[3],
+		list[index].parameters[4]
+	);
+
+	Game_Actor* actor;
+
+	switch (list[index].parameters[0]) {
+		case 0:
+			// All party
+			for (std::vector<Game_Actor*>::iterator i = Game_Party::GetActors().begin(); 
+				i != Game_Party::GetActors().end(); 
+				i++) {
+				(*i)->SetLevel((*i)->GetLevel() + value);
+			}
+			break;
+		case 1:
+			// Hero
+			actor = Game_Actors::GetActor(list[index].parameters[1]);
+			actor->SetLevel(actor->GetLevel() + value);
+			break;
+		case 2:
+			// Var hero
+			actor = Game_Actors::GetActor(Game_Variables[list[index].parameters[1]]);
+			actor->SetLevel(actor->GetLevel() + value);
+			break;
+		default:
+			;
+	}
+
+	if (list[index].parameters[5] != 0) {
+		// TODO
+		// Show message increase level
+	} else {
+		// Don't show message increase level
+	}
+
+	// Continue
+	return true;
+}
+
+bool Game_Interpreter::CommandChangeParameters() {
+	int value = OperateValue(
+		list[index].parameters[2],
+		list[index].parameters[4],
+		list[index].parameters[5]
+	);
+
+	Game_Actor* actor;
+	switch (list[index].parameters[0]) {
+		case 0:
+			// Party
+			for (std::vector<Game_Actor*>::iterator i = Game_Party::GetActors().begin(); 
+				i != Game_Party::GetActors().end(); 
+				i++) {
+					actor = Game_Actors::GetActor((*i)->GetActorId());
+				switch (list[index].parameters[3]) {
+					case 0:
+						// Max HP
+						actor->SetMaxHp(actor->GetMaxHp() + value);
+						break;
+					case 1:
+						// Max MP
+						actor->SetMaxSp(actor->GetMaxSp() + value);
+						break;
+					case 2:
+						// Attack
+						actor->SetAtk(actor->GetAtk() + value);
+						break;
+					case 3:
+						// Defense
+						actor->SetDef(actor->GetDef() + value);
+						break;
+					case 4:
+						// Spirit
+						actor->SetSpi(actor->GetSpi() + value);
+						break;
+					case 5:
+						// Agility
+						actor->SetAgi(actor->GetAgi() + value);
+						break;
+				}				
+			}
+			// Continue
+			return true;
+		case 1:
+			// Hero
+			actor = Game_Actors::GetActor(list[index].parameters[1]);
+			break;
+		case 2:
+			// Var hero
+			actor = Game_Actors::GetActor(Game_Variables[list[index].parameters[1]]);
+			break;
+		default:
+			actor = NULL;
+	}
+	switch (list[index].parameters[3]) {
+		case 0:
+			// Max HP
+			actor->SetMaxHp(actor->GetMaxHp() + value);
+			break;
+		case 1:
+			// Max MP
+			actor->SetMaxSp(actor->GetMaxSp() + value);
+			break;
+		case 2:
+			// Attack
+			actor->SetAtk(actor->GetAtk() + value);
+			break;
+		case 3:
+			// Defense
+			actor->SetDef(actor->GetDef() + value);
+			break;
+		case 4:
+			// Spirit
+			actor->SetSpi(actor->GetSpi() + value);
+			break;
+		case 5:
+			// Agility
+			actor->SetAgi(actor->GetAgi() + value);
+			break;
+	}	
 	return true;
 }
 

@@ -18,7 +18,7 @@
 #ifndef _RECT_H_
 #define _RECT_H_
 
-#include "SDL_stdinc.h"
+#include "system.h"
 
 ////////////////////////////////////////////////////////////
 /// Rect.
@@ -38,7 +38,7 @@ public:
 	/// @param width : initial width
 	/// @param height : initial height
 	///////////////////////////////////////////////////////
-	Rect(Sint16 x, Sint16 y, Uint16 width, Uint16 height);
+	Rect(int16 x, int16 y, uint16 width, uint16 height);
 	
 	///////////////////////////////////////////////////////
 	/// Comparison operator.
@@ -57,7 +57,7 @@ public:
 	/// @param width : new width
 	/// @param height : new height
 	///////////////////////////////////////////////////////
-	void Set(Sint16 x, Sint16 y, Uint16 width, Uint16 height);
+	void Set(int16 x, int16 y, uint16 width, uint16 height);
 
 	///////////////////////////////////////////////////////
 	/// Adjusts rect bounds, trimming it so it is contained
@@ -65,7 +65,7 @@ public:
 	/// @param width : max width
 	/// @param height : max height
 	///////////////////////////////////////////////////////
-	void Adjust(Uint16 width, Uint16 height);
+	void Adjust(uint16 width, uint16 height);
 
 	///////////////////////////////////////////////////////
 	/// Gets if rect is totally outside the given size.
@@ -73,12 +73,12 @@ public:
 	/// @param height : max height
 	/// @return whether the rect is outside of the scope
 	///////////////////////////////////////////////////////
-	bool IsOutOfBounds(Uint16 width, Uint16 height) const;
+	bool IsOutOfBounds(uint16 width, uint16 height) const;
 
-	Sint16 x;
-	Sint16 y;
-	Uint16 width;
-	Uint16 height;
+	int16 x;
+	int16 y;
+	uint16 width;
+	uint16 height;
 };
 
 #endif

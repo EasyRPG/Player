@@ -110,28 +110,42 @@
 	#define DEFAULT_FONTS { "Font/DejaVuLGCSansMono.ttf", "" }
 #endif
 
-#if !defined(_MSC_VER) || (_MSC_VER >= 1600)
-	#include <stdint.h>
+#ifdef USE_SDL 
+	#include "SDL_stdinc.h"
+	typedef Sint8   int8;
+	typedef Uint8   uint8;
+	typedef Sint16  int16;
+	typedef Uint16  uint16;
+	typedef Sint32  int32;
+	typedef Uint32  uint32;
+	typedef Sint64  int64;
+	typedef Uint64  uint64;
+
+	typedef Uint32  uint;
 #else
-	typedef signed char			int8_t;
-	typedef	unsigned char		uint8_t;
-	typedef	signed short		int16_t;
-	typedef unsigned short		uint16_t;
-	typedef	signed int			int32_t;
-	typedef unsigned int		uint32_t;
-	typedef signed __int64		int64_t;
-	typedef unsigned __int64	uint64_t;
-#endif
+	#if !defined(_MSC_VER) || (_MSC_VER >= 1600)
+		#include <stdint.h>
+	#else
+		typedef signed char			int8_t;
+		typedef	unsigned char		uint8_t;
+		typedef	signed short		int16_t;
+		typedef unsigned short		uint16_t;
+		typedef	signed int			int32_t;
+		typedef unsigned int		uint32_t;
+		typedef signed __int64		int64_t;
+		typedef unsigned __int64	uint64_t;
+	#endif
 
-typedef int8_t		int8;
-typedef uint8_t		uint8;
-typedef int16_t		int16;
-typedef uint16_t	uint16;
-typedef int32_t		int32;
-typedef uint32_t	uint32;
-typedef int64_t		int64;
-typedef uint64_t	uint64;
+	typedef int8_t		int8;
+	typedef uint8_t		uint8;
+	typedef int16_t		int16;
+	typedef uint16_t	uint16;
+	typedef int32_t		int32;
+	typedef uint32_t	uint32;
+	typedef int64_t		int64;
+	typedef uint64_t	uint64;
 
-typedef uint32_t	uint;
+	typedef uint32_t	uint;
 
+	#endif
 #endif

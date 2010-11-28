@@ -81,6 +81,9 @@ private:
 	bool CommandChangeItems();
 	bool CommandChangePartyMember();
 	bool CommandConditionalBranch();
+	bool CommandChangeExp();
+	bool CommandChangeLevel();
+	bool CommandChangeParameters();
 	bool CommandSkip();
 };
 

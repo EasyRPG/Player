@@ -57,16 +57,22 @@ public:
 	void LearnSkill(int skill_id);
 
 	////////////////////////////////////////////////////////
+	/// Gets the actor ID.
+	/// @return Actor ID
+	////////////////////////////////////////////////////////
+	int GetActorId() const;
+
+	////////////////////////////////////////////////////////
 	/// Gets the maximum hp for the current level
 	/// @return max hp
 	////////////////////////////////////////////////////////
-	int GetMaxHp();
+	int GetBaseMaxHp() const;
 
 	////////////////////////////////////////////////////////
 	/// Gets the maximum sp for the current level
 	/// @return max sp
 	////////////////////////////////////////////////////////
-	int GetMaxSp();
+	int GetBaseMaxSp() const;
 
 	////////////////////////////////////////////////////////
 	/// Calculates the Exp needed for a level up
@@ -132,8 +138,38 @@ public:
 	/// @return current experience points.
 	int GetExp() const;
 
+	////////////////////////////////////////////////////////
+	/// Set exp of actor.
+	/// @param _exp : exp to set
+	////////////////////////////////////////////////////////
+	void SetExp(int _exp);
+
+	////////////////////////////////////////////////////////
+	/// Set level of actor.
+	/// @param _level : level to set
+	////////////////////////////////////////////////////////
+	void SetLevel(int _level);
+
+	/// @return max hp
+	int GetMaxHp();
+
+	/// @return max sp
+	int GetMaxSp();
+
 	/// @return learned skills list.
 	std::vector<int> GetSkills() const;
+
+	/// @return atk
+	int GetBaseAtk() const;
+
+	/// @return def
+	int GetBaseDef() const;
+
+	/// @return spi
+	int GetBaseSpi() const;
+
+	/// @return agi
+	int GetBaseAgi() const;
 
 private:
 	int actor_id;

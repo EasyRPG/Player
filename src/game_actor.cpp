@@ -27,6 +27,7 @@
 ////////////////////////////////////////////////////////////
 Game_Actor::Game_Actor(int actor_id) {
 	Setup(actor_id);
+	SetGameActor(this);
 }
 
 ////////////////////////////////////////////////////////////
@@ -52,6 +53,11 @@ void Game_Actor::Setup(int actor_id) {
 }
 
 ////////////////////////////////////////////////////////////
+int Game_Actor::GetActorId() const {
+	return actor_id;
+}
+
+////////////////////////////////////////////////////////////
 bool Game_Actor::HasSkill(int skill_id) const {
 	return std::find(skills.begin(), skills.end(), skill_id) != skills.end();
 }
@@ -66,12 +72,98 @@ void Game_Actor::LearnSkill(int skill_id) {
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetMaxHp() {
-	return min(Data::actors[actor_id - 1].parameter_maxhp[level + 50], 999);
+	int base_maxhp = GetBaseMaxHp();
+	int n = min(max(base_maxhp + maxhp_plus, 1), 999);
+
+	for (std::vector<int>::iterator i = states.begin();
+		i != states.end();
+		i++) {
+			// TODO test needed
+			n *= Data::states[(*i)].hp_change_max / 100;
+	}
+
+	n = min(max(n, 1), 999);
+
+	return n;
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetMaxSp() {
-	return min(Data::actors[actor_id - 1].parameter_maxsp[level + 50], 999);
+	int base_maxsp = GetBaseMaxSp();
+	int n = min(max(base_maxsp + maxsp_plus, 1), 999);
+
+	for (std::vector<int>::iterator i = states.begin();
+		i != states.end();
+		i++) {
+			// TODO test needed
+			n *= Data::states[(*i)].sp_change_max / 100;
+	}
+
+	n = min(max(n, 1), 999);
+
+	return n;
+}
+
+////////////////////////////////////////////////////////////
+int Game_Actor::GetBaseMaxHp() const {
+	return Data::actors[actor_id - 1].parameter_maxhp[level + 50];
+}
+
+////////////////////////////////////////////////////////////
+int Game_Actor::GetBaseMaxSp() const {
+	return Data::actors[actor_id - 1].parameter_maxsp[level + 50];
+}
+
+////////////////////////////////////////////////////////////
+int Game_Actor::GetBaseAtk() const {
+	int n = Data::actors[actor_id - 1].parameter_attack[level + 50];
+
+	n += Data::items[weapon_id - 1].atk_points;
+	n += Data::items[shield_id - 1].atk_points;
+	n += Data::items[armor_id - 1].atk_points;
+	n += Data::items[helmet_id - 1].atk_points;
+	n += Data::items[accessory_id - 1].atk_points;
+
+	return min(max(n, 1), 999);
+}
+
+////////////////////////////////////////////////////////////
+int Game_Actor::GetBaseDef() const {
+	int n = Data::actors[actor_id - 1].parameter_defense[level + 50];
+
+	n += Data::items[weapon_id - 1].def_points;
+	n += Data::items[shield_id - 1].def_points;
+	n += Data::items[armor_id - 1].def_points;
+	n += Data::items[helmet_id - 1].def_points;
+	n += Data::items[accessory_id - 1].def_points;
+
+	return min(max(n, 1), 999);
+}
+
+////////////////////////////////////////////////////////////
+int Game_Actor::GetBaseSpi() const {
+	int n = Data::actors[actor_id - 1].parameter_spirit[level + 50];
+
+	n += Data::items[weapon_id - 1].spi_points;
+	n += Data::items[shield_id - 1].spi_points;
+	n += Data::items[armor_id - 1].spi_points;
+	n += Data::items[helmet_id - 1].spi_points;
+	n += Data::items[accessory_id - 1].spi_points;
+
+	return min(max(n, 1), 999);
+}
+
+////////////////////////////////////////////////////////////
+int Game_Actor::GetBaseAgi() const {
+	int n = Data::actors[actor_id - 1].parameter_agility[level + 50];
+
+	n += Data::items[weapon_id - 1].agi_points;
+	n += Data::items[shield_id - 1].agi_points;
+	n += Data::items[armor_id - 1].agi_points;
+	n += Data::items[helmet_id - 1].agi_points;
+	n += Data::items[accessory_id - 1].agi_points;
+
+	return min(max(n, 1), 999);
 }
 
 ////////////////////////////////////////////////////////////
@@ -128,54 +220,77 @@ std::string Game_Actor::GetName() const {
 	return name;
 }
 
+////////////////////////////////////////////////////////////
 std::string Game_Actor::GetCharacterName() const {
 	return character_name;
 }
 
+////////////////////////////////////////////////////////////
 int Game_Actor::GetCharacterIndex() const {
 	return character_index;
 }
 
+////////////////////////////////////////////////////////////
 std::string Game_Actor::GetFaceName() const {
 	return face_name;
 }
 
+////////////////////////////////////////////////////////////
 int Game_Actor::GetFaceIndex() const {
 	return face_index;
 }
 
+////////////////////////////////////////////////////////////
 std::string Game_Actor::GetTitle() const {
 	return title;
 }
 
+////////////////////////////////////////////////////////////
 int Game_Actor::GetWeaponId() const {
 	return weapon_id;
 }
 
+////////////////////////////////////////////////////////////
 int Game_Actor::GetShieldId() const {
 	return shield_id;
 }
 
+////////////////////////////////////////////////////////////
 int Game_Actor::GetArmorId() const {
 	return armor_id;
 }
 
+////////////////////////////////////////////////////////////
 int Game_Actor::GetHelmetId() const {
 	return helmet_id;
 }
 
+////////////////////////////////////////////////////////////
 int Game_Actor::GetAccessoryId() const {
 	return accessory_id;
 }
 
+////////////////////////////////////////////////////////////
 int Game_Actor::GetLevel() const {
 	return level;
 }
 
+////////////////////////////////////////////////////////////
 int Game_Actor::GetExp() const {
 	return exp;
 }
 
+////////////////////////////////////////////////////////////
+void Game_Actor::SetExp(int _exp) {
+	exp = _exp;
+}
+
+////////////////////////////////////////////////////////////
+void Game_Actor::SetLevel(int _level) {
+	level = _level;
+}
+
+////////////////////////////////////////////////////////////
 std::vector<int> Game_Actor::GetSkills() const {
 	return skills;
 }
