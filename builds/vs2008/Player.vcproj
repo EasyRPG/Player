@@ -361,9 +361,41 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\src\input_buttons_gekko.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\..\src\input_buttons_os.cpp"
 						>
 					</File>
+					<File
+						RelativePath="..\..\src\keys.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="UI"
+					>
+					<File
+						RelativePath="..\..\src\baseui.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\baseui.h"
+						>
+					</File>
+					<Filter
+						Name="SDL"
+						>
+						<File
+							RelativePath="..\..\src\sdl_ui.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\..\src\sdl_ui.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter
@@ -390,7 +422,7 @@
 					>
 				</File>
 				<Filter
-					Name="win"
+					Name="Win"
 					>
 					<File
 						RelativePath="..\..\src\filefinder_win.cpp"
@@ -406,6 +438,22 @@
 					</File>
 					<File
 						RelativePath="..\..\src\registry_win.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Font 8x8"
+					>
+					<File
+						RelativePath="..\..\src\font_pearl_8x8.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\font_render_8x8.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\font_render_8x8.h"
 						>
 					</File>
 				</Filter>

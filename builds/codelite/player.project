@@ -112,6 +112,16 @@
       <File Name="../../src/input.h"/>
       <File Name="../../src/input_buttons.h"/>
       <File Name="../../src/input_buttons_os.cpp"/>
+      <File Name="../../src/input_buttons_gekko.cpp"/>
+      <File Name="../../src/keys.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="UI">
+      <File Name="../../src/baseui.cpp"/>
+      <File Name="../../src/baseui.h"/>
+      <VirtualDirectory Name="SDL">
+        <File Name="../../src/sdl_ui.cpp"/>
+        <File Name="../../src/sdl_ui.h"/>
+      </VirtualDirectory>
     </VirtualDirectory>
   </VirtualDirectory>
   <VirtualDirectory Name="Tools">
@@ -134,6 +144,11 @@
     </VirtualDirectory>
     <VirtualDirectory Name="UNIX">
       <File Name="../../src/filefinder_unix.cpp"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="Font 8x8">
+      <File Name="../../src/font_pearl_8x8.cpp"/>
+      <File Name="../../src/font_render_8x8.cpp"/>
+      <File Name="../../src/font_render_8x8.h"/>
     </VirtualDirectory>
   </VirtualDirectory>
   <File Name="../../src/main.cpp"/>

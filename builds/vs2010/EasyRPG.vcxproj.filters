@@ -16,9 +16,6 @@
     <Filter Include="Source Files\Tools">
       <UniqueIdentifier>{d64c64b2-4255-436c-90e3-b8ad45439ca4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Tools\win">
-      <UniqueIdentifier>{60d055a3-9b00-4bae-99f6-e827231bf43c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Multimedia\Audio">
       <UniqueIdentifier>{978babb7-a33f-499d-a3be-c4d4a5a3a25d}</UniqueIdentifier>
     </Filter>
@@ -46,8 +43,11 @@
     <Filter Include="Source Files\Multimedia\UI\SDL">
       <UniqueIdentifier>{1fa02dfd-29c0-46a0-98ae-fc726696819d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Tools\font 8x8">
+    <Filter Include="Source Files\Tools\Font 8x8">
       <UniqueIdentifier>{bb2eb505-d02e-4476-8dcc-77d59d056c36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools\Win">
+      <UniqueIdentifier>{60d055a3-9b00-4bae-99f6-e827231bf43c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -109,13 +109,13 @@
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\filefinder_win.cpp">
-      <Filter>Source Files\Tools\win</Filter>
+      <Filter>Source Files\Tools\Win</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\msgbox_win.cpp">
-      <Filter>Source Files\Tools\win</Filter>
+      <Filter>Source Files\Tools\Win</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\registry_win.cpp">
-      <Filter>Source Files\Tools\win</Filter>
+      <Filter>Source Files\Tools\Win</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\main.cpp">
       <Filter>Source Files</Filter>
@@ -208,10 +208,10 @@
       <Filter>Source Files\Multimedia\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\font_pearl_8x8.cpp">
-      <Filter>Source Files\Tools\font 8x8</Filter>
+      <Filter>Source Files\Tools\Font 8x8</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\font_render_8x8.cpp">
-      <Filter>Source Files\Tools\font 8x8</Filter>
+      <Filter>Source Files\Tools\Font 8x8</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\input_buttons_gekko.cpp">
       <Filter>Source Files\Multimedia\Input</Filter>
@@ -300,7 +300,7 @@
       <Filter>Source Files\Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\registry_win.h">
-      <Filter>Source Files\Tools\win</Filter>
+      <Filter>Source Files\Tools\Win</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\main_data.h">
       <Filter>Source Files</Filter>
@@ -392,9 +392,6 @@
     <ClInclude Include="..\..\src\baseui.h">
       <Filter>Source Files\Multimedia\UI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\eventui.h">
-      <Filter>Source Files\Multimedia\UI</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\sdl_ui.h">
       <Filter>Source Files\Multimedia\UI\SDL</Filter>
     </ClInclude>
@@ -402,7 +399,7 @@
       <Filter>Source Files\Multimedia\Input</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\font_render_8x8.h">
-      <Filter>Source Files\Tools\font 8x8</Filter>
+      <Filter>Source Files\Tools\Font 8x8</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

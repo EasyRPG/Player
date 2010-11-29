@@ -177,7 +177,6 @@
     <ClInclude Include="..\..\src\color.h" />
     <ClInclude Include="..\..\src\baseui.h" />
     <ClInclude Include="..\..\src\drawable.h" />
-    <ClInclude Include="..\..\src\eventui.h" />
     <ClInclude Include="..\..\src\filefinder.h" />
     <ClInclude Include="..\..\src\font.h" />
     <ClInclude Include="..\..\src\font_render_8x8.h" />
