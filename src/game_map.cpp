@@ -167,7 +167,7 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 		if (events[i]->GetTileId() >= 0 && events[i] != self_event &&
 			events[i]->GetX() == x && events[i]->GetY() == y && !events[i]->GetThrough()) {
 
-			if (passages_up[events[i]->GetTileId()] & bit != 0)
+			if ((passages_up[events[i]->GetTileId()] & bit) != 0)
 				return false;
 		}
 	}

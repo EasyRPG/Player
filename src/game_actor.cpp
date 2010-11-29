@@ -106,17 +106,17 @@ int Game_Actor::GetMaxSp() {
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseMaxHp() const {
-	return Data::actors[actor_id - 1].parameter_maxhp[level + 50];
+	return Data::actors[actor_id - 1].parameter_maxhp[level - 1];
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseMaxSp() const {
-	return Data::actors[actor_id - 1].parameter_maxsp[level + 50];
+	return Data::actors[actor_id - 1].parameter_maxsp[level - 1];
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseAtk() const {
-	int n = Data::actors[actor_id - 1].parameter_attack[level + 50];
+	int n = Data::actors[actor_id - 1].parameter_attack[level - 1];
 
 	n += Data::items[weapon_id - 1].atk_points;
 	n += Data::items[shield_id - 1].atk_points;
@@ -129,7 +129,7 @@ int Game_Actor::GetBaseAtk() const {
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseDef() const {
-	int n = Data::actors[actor_id - 1].parameter_defense[level + 50];
+	int n = Data::actors[actor_id - 1].parameter_defense[level - 1];
 
 	n += Data::items[weapon_id - 1].def_points;
 	n += Data::items[shield_id - 1].def_points;
@@ -142,7 +142,7 @@ int Game_Actor::GetBaseDef() const {
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseSpi() const {
-	int n = Data::actors[actor_id - 1].parameter_spirit[level + 50];
+	int n = Data::actors[actor_id - 1].parameter_spirit[level - 1];
 
 	n += Data::items[weapon_id - 1].spi_points;
 	n += Data::items[shield_id - 1].spi_points;
@@ -155,7 +155,7 @@ int Game_Actor::GetBaseSpi() const {
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseAgi() const {
-	int n = Data::actors[actor_id - 1].parameter_agility[level + 50];
+	int n = Data::actors[actor_id - 1].parameter_agility[level - 1];
 
 	n += Data::items[weapon_id - 1].agi_points;
 	n += Data::items[shield_id - 1].agi_points;

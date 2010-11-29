@@ -365,7 +365,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\src\input_buttons_os.cpp"
+						RelativePath="..\..\src\input_buttons_desktop.cpp"
 						>
 					</File>
 					<File
