@@ -239,7 +239,7 @@ namespace Input {
 
 			KEYS_COUNT
 		};
-	};
-};
+	}
+}
 
 #endif

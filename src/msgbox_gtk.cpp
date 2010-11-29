@@ -35,10 +35,10 @@ void MsgBox::OK(std::string msg, std::string title) {
 	GdkWindow* parent_window;
 
 	//Must leave full screen before gtk dialog show
-	if (Player::fullscreen) {
-		Player::StartVideoModeChange();
-		Player::ToggleFullscreen();
-		Player::EndVideoModeChange();
+	if (DisplayUi->IsFullscreen()) {
+		DisplayUi->StartDisplayModeChange();
+		DisplayUi->ToggleFullscreen();
+		DisplayUi->EndDisplayModeChange();
 	}
 	gtk_init(NULL, NULL);
 	werror = gtk_message_dialog_new(NULL,
@@ -69,10 +69,10 @@ void MsgBox::Error(std::string msg, std::string title) {
 	GdkWindow* parent_window;
 
 	//Must leave full screen before gtk dialog show
-	if (Player::fullscreen)	{
-		Player::StartVideoModeChange();
-		Player::ToggleFullscreen();
-		Player::EndVideoModeChange();
+	if (DisplayUi->IsFullscreen()) {
+		DisplayUi->StartDisplayModeChange();
+		DisplayUi->ToggleFullscreen();
+		DisplayUi->EndDisplayModeChange();
 	}
 	gtk_init(NULL, NULL);
 	werror = gtk_message_dialog_new(NULL,
@@ -103,10 +103,10 @@ void MsgBox::Warning(std::string msg, std::string title) {
 	GdkWindow* parent_window;
 
 	//Must leave full screen before gtk dialog show
-	if (Player::fullscreen) {
-		Player::StartVideoModeChange();
-		Player::ToggleFullscreen();
-		Player::EndVideoModeChange();
+	if (DisplayUi->IsFullscreen()) {
+		DisplayUi->StartDisplayModeChange();
+		DisplayUi->ToggleFullscreen();
+		DisplayUi->EndDisplayModeChange();
 	}
 	gtk_init(NULL, NULL);
 	werror = gtk_message_dialog_new(NULL,

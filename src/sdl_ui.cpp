@@ -54,10 +54,10 @@ SdlUi* DisplaySdlUi;
 ///////////////////////////////////////////////////////////
 SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag, bool zoom) :
 	mode_changing(false),
+	back_color(0),
 	mouse_focus(false),
 	mouse_x(0),
-	mouse_y(0),
-	back_color(0) {
+	mouse_y(0) {
 
 	keys.resize(Input::Keys::KEYS_COUNT, false);
 

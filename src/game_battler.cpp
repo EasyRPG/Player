@@ -27,8 +27,8 @@
 ////////////////////////////////////////////////////////////
 Game_Battler::Game_Battler() :
 	hp(0),
-	maxhp_plus(0),
 	sp(0),
+	maxhp_plus(0),
 	maxsp_plus(0),
 	atk_plus(0),
 	def_plus(0),

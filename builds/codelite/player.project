@@ -111,7 +111,7 @@
       <File Name="../../src/input.cpp"/>
       <File Name="../../src/input.h"/>
       <File Name="../../src/input_buttons.h"/>
-      <File Name="../../src/input_buttons_os.cpp"/>
+      <File Name="../../src/input_buttons_desktop.cpp"/>
       <File Name="../../src/input_buttons_gekko.cpp"/>
       <File Name="../../src/keys.h"/>
     </VirtualDirectory>

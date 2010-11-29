@@ -117,7 +117,7 @@ void Window_Base::DrawActorState(Game_Actor* actor, int cx, int cy) {
 		int state = 0;
 
 		// Display the state with the highest priority
-		for (int i = 0; i < states.size(); ++i) {
+		for (size_t i = 0; i < states.size(); ++i) {
 			if (Data::states[states[i]].priority > highest_priority) {
 				state = i;
 			}
