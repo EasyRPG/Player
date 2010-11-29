@@ -42,30 +42,17 @@ Game_Player::~Game_Player() {
 ////////////////////////////////////////////////////////////
 // Is Passable
 ////////////////////////////////////////////////////////////
-bool Game_Player::IsPassable(int x, int y, int d) {
-	int new_x = x;
-	int new_y = y;
+bool Game_Player::IsPassable(int x, int y, int d) const {
+	int new_x = x + (d == 6 ? 1 : d == 4 ? -1 : 0);
+	int new_y = y + (d == 2 ? 1 : d == 8 ? -1 : 0);
 
-	if (d == 2) {
-		++new_y;
-	} else if (d == 8) {
-		--new_y;
-	}
-
-	if (d == 4) {
-		--new_x;
-	} else if (d == 6) {
-		++new_x;
-	}
+	if (!Game_Map::IsValid(new_x, new_y)) return false;
 
 #ifdef _DEBUG
-	if (Input::IsPressed(Input::SHIFT)) {
-		// Walk through walls in debug mode
-		return true;
-	}
+	if (Input::IsPressed(Input::DEBUG_THROUGH)) return true;
 #endif
 
-	return Game_Map::IsValid(new_x, new_y);
+	return Game_Character::IsPassable(x, y, d);
 }
 
 ////////////////////////////////////////////////////////////

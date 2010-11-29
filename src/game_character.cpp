@@ -125,7 +125,7 @@ int Game_Character::GetScreenZ() const {
 int Game_Character::GetScreenZ(int height) const {
 	/*if (always_on_top) return 999;*/
 	
-	int z = (real_y - Game_Map::GetDisplayY() + 3) / 4 + 32;
+	int z = (real_y - Game_Map::GetDisplayY() + 3) / 8 + 16;
 
 	/*if (tile_id > 0)
 		return z + Game_Map::priorities[tile_id] * 16

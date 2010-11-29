@@ -111,9 +111,11 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	memset(autotiles_ab, NULL, sizeof(autotiles_ab));
 	memset(autotiles_d, NULL, sizeof(autotiles_d));
 	
-	Graphics::RegisterZObj(0, ID, true);
-	Graphics::RegisterZObj(16, ID, true);
-	Graphics::RegisterZObj(32, ID, true);
+	int tiles_y = (int)ceil(DisplayUi->GetHeight() / 16.0) + 1;
+	for (int i = 0; i <= tiles_y; i++) {
+		Graphics::RegisterZObj(16 * i, ID, true);
+	}
+	Graphics::RegisterZObj(9999, ID, true);
 	Graphics::RegisterDrawable(ID, this);
 }
 
@@ -165,9 +167,18 @@ void TilemapLayer::Draw(int z_order) {
 
 			// Get the tile data
 			TileData &tile = data_cache[map_x][map_y];
+
+			int map_draw_z = tile.z;
+
+			if (map_draw_z > 0) {
+				if (map_draw_z < 9999) {
+					map_draw_z += y * 16;
+					if (y == 0) map_draw_z += 16;
+				}
+			}
 			
 			// Draw the tile if its z is being draw now
-			if (z_order == tile.z) {
+			if (z_order == map_draw_z) {
 				if (layer == 0) {
 					// If lower layer
 
@@ -453,21 +464,25 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 				// Get the tile ID
 				tile.ID = nmap_data[x + y * width];
 
-				// Calculate the tile Z
 				tile.z = 0;
 
-				// Check if passable data was set
+				// Calculate the tile Z
 				if (!passable.empty()) {
-					if (tile.ID >= BLOCK_E && tile.ID < BLOCK_E + BLOCK_E_TILES) {
-						// If tile is from block E
+					if (tile.ID >= BLOCK_F) {
+						if ((passable[tile.ID - BLOCK_F] & (1 << 4)) == (1 << 4)) tile.z = 32;
 
-						// Check if the over property is set
-						if (passable[tile.ID - BLOCK_E] & (1 << 4)) tile.z = 16;
-					} else if (tile.ID >= BLOCK_F && tile.ID < BLOCK_F + BLOCK_F_TILES) {
-						// If tile is from block F
+					} else if (tile.ID >= BLOCK_E) {
+						if ((passable[tile.ID - BLOCK_E] & (1 << 4)) == (1 << 4)) tile.z = 16;
 
-						// Check if the over property is set
-						if (passable[tile.ID - BLOCK_F] & (1 << 4)) tile.z = 32;
+					} else if (tile.ID >= BLOCK_D) {
+						if ((passable[(tile.ID - BLOCK_D) / 50 + 6] & (1 << 5)) == (1 << 5)) tile.z = 9999;
+						else if ((passable[(tile.ID - BLOCK_D) / 50 + 6] & (1 << 4)) == (1 << 4)) tile.z = 16;
+
+					} else if (tile.ID >= BLOCK_C) {
+						if ((passable[(tile.ID - BLOCK_C) / 50 + 3] & (1 << 4)) == (1 << 4)) tile.z = 16;
+
+					} else {
+						if ((passable[tile.ID / 1000] & (1 << 4)) == (1 << 4)) tile.z = 16;
 					}
 				}
 				data_cache[x][y] = tile;

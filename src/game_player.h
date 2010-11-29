@@ -31,7 +31,7 @@ public:
 	Game_Player();
 	~Game_Player();
 
-	bool IsPassable(int x, int y, int d);
+	bool IsPassable(int x, int y, int d) const;
 	void Center(int x, int y);
 	void MoveTo(int x, int y);
 	void Update();
