@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CodeLite_Project Name="Player">
-  <Plugins>
-    <Plugin Name="qmake">
-      <![CDATA[00040001N0012Dingux Debug0000000000000001N0012GTK+ Release0000000000000001N0011Win32 Debug0000000000000001N0013Win32 Release000000000000]]>
-    </Plugin>
-  </Plugins>
   <VirtualDirectory Name="Engine">
-    <File Name="../../src/cache.cpp"/>
-    <File Name="../../src/cache.h"/>
     <VirtualDirectory Name="Game">
       <File Name="../../src/game_actor.cpp"/>
       <File Name="../../src/game_actor.h"/>
@@ -82,6 +75,8 @@
       <File Name="../../src/spriteset_map.cpp"/>
       <File Name="../../src/spriteset_map.h"/>
     </VirtualDirectory>
+    <File Name="../../src/cache.cpp"/>
+    <File Name="../../src/cache.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="Multimedia">
     <VirtualDirectory Name="Audio">
@@ -179,6 +174,12 @@
     <Project Name="Readers"/>
   </Dependencies>
   <Dependencies Name="Win32 Release">
+    <Project Name="Readers"/>
+  </Dependencies>
+  <Dependencies Name="Mac OS X Debug">
+    <Project Name="Readers"/>
+  </Dependencies>
+  <Dependencies Name="Mac OS X Release">
     <Project Name="Readers"/>
   </Dependencies>
   <Dependencies Name="Dingux Debug">
@@ -504,6 +505,93 @@
       <AdditionalRules>
         <CustomPostBuild/>
         <CustomPreBuild/>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="Mac OS X Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-fno-rtti;-fno-exceptions;$(shell /opt/local/bin/sdl-config --cflags)" Required="yes" PreCompiledHeader="">
+        <Preprocessor Value="UNIX"/>
+        <Preprocessor Value="_DEBUG"/>
+      </Compiler>
+      <Linker Options="$(shell /opt/local/bin/sdl-config --libs)" Required="yes">
+        <LibraryPath Value="../../../readers/builds/codelite/.obj/Debug"/>
+        <Library Value="SDL_mixer"/>
+        <Library Value="SDL_ttf"/>
+        <Library Value="SDL_image"/>
+        <Library Value="SDL_gfx"/>
+        <Library Value="z"/>
+        <Library Value="readers"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="../../bin/testgame/$(ProjectName).app/Contents/MacOS/$(ProjectName)" IntermediateDirectory=".obj/Debug" Command="./$(ProjectName).app/Contents/MacOS/$(ProjectName)" CommandArguments="TestPlay HideTitle Window" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild>../../bin/testgame/$(ProjectName).app/Contents/Info.plist ../../bin/testgame/$(ProjectName).app/Contents/Resources/Player.icns
+## rule to copy the Info.plist file into the bundle
+../../bin/testgame/$(ProjectName).app/Contents/Info.plist: ../../resources/osx/Info.plist
+	mkdir -p '../../bin/testgame/$(ProjectName).app/Contents' &amp;&amp; cp -f ../../resources/osx/Info.plist '../../bin/testgame/$(ProjectName).app/Contents/Info.plist'
+## rule to copy the icon file into the bundle
+../../bin/testgame/$(ProjectName).app/Contents/Resources/Player.icns: ../../resources/osx/Player.icns
+	mkdir -p '../../bin/testgame/$(ProjectName).app/Contents/Resources/' &amp;&amp; cp -f ../../resources/osx/Player.icns '../../bin/testgame/$(ProjectName).app/Contents/Resources/Player.icns'</CustomPreBuild>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="Mac OS X Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-O3;-ansi;-pedantic;-Wall;-Wextra;-fno-rtti;-fno-exceptions;$(shell sdl-config --cflags)" Required="yes" PreCompiledHeader="">
+        <Preprocessor Value="UNIX"/>
+      </Compiler>
+      <Linker Options="-s;$(shell sdl-config --libs)" Required="yes">
+        <LibraryPath Value="../../../readers/builds/codelite/.obj/Release"/>
+        <Library Value="SDL_mixer"/>
+        <Library Value="SDL_ttf"/>
+        <Library Value="SDL_image"/>
+        <Library Value="SDL_gfx"/>
+        <Library Value="z"/>
+        <Library Value="readers"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName).app/Contents/MacOS/$(ProjectName)" IntermediateDirectory=".obj/Release" Command="./$(ProjectName).app/Contents/MacOS/$(ProjectName)" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild>$(IntermediateDirectory)/$(ProjectName).app/Contents/Info.plist $(IntermediateDirectory)/$(ProjectName).app/Contents/Resources/Player.icns
+## rule to copy the Info.plist file into the bundle
+$(IntermediateDirectory)/$(ProjectName).app/Contents/Info.plist: Info.plist
+	mkdir -p '$(IntermediateDirectory)/$(ProjectName).app/Contents' &amp;&amp; cp -f Info.plist '$(IntermediateDirectory)/$(ProjectName).app/Contents/Info.plist'
+## rule to copy the icon file into the bundle
+$(IntermediateDirectory)/$(ProjectName).app/Contents/Resources/Player.icns: Player.icns
+	mkdir -p '$(IntermediateDirectory)/$(ProjectName).app/Contents/Resources/' &amp;&amp; cp -f Player.icns '$(IntermediateDirectory)/$(ProjectName).app/Contents/Resources/Player.icns'</CustomPreBuild>
       </AdditionalRules>
     </Configuration>
     <GlobalSettings>
