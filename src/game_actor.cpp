@@ -53,7 +53,7 @@ void Game_Actor::Setup(int actor_id) {
 }
 
 ////////////////////////////////////////////////////////////
-int Game_Actor::GetActorId() const {
+int Game_Actor::GetId() const {
 	return actor_id;
 }
 

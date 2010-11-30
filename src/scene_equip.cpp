@@ -48,19 +48,19 @@ void Scene_Equip::MainFunction() {
 	Game_Actor* actor = Game_Party::GetActors()[actor_index];
 
 	help_window = new Window_Help();
-	left_window = new Window_EquipLeft(actor->GetActorId());
-	right_window = new Window_EquipRight(actor->GetActorId());
+	left_window = new Window_EquipLeft(actor->GetId());
+	right_window = new Window_EquipRight(actor->GetId());
 
-	item_window.push_back(new Window_EquipItem(actor->GetActorId(),
+	item_window.push_back(new Window_EquipItem(actor->GetId(),
 		Window_EquipItem::weapon));
 	// ToDo: Must be weapon again if two-handed
-	item_window.push_back(new Window_EquipItem(actor->GetActorId(),
+	item_window.push_back(new Window_EquipItem(actor->GetId(),
 		Window_EquipItem::shield));
-	item_window.push_back(new Window_EquipItem(actor->GetActorId(),
+	item_window.push_back(new Window_EquipItem(actor->GetId(),
 		Window_EquipItem::armor));
-	item_window.push_back(new Window_EquipItem(actor->GetActorId(),
+	item_window.push_back(new Window_EquipItem(actor->GetId(),
 		Window_EquipItem::helmet));
-	item_window.push_back(new Window_EquipItem(actor->GetActorId(),
+	item_window.push_back(new Window_EquipItem(actor->GetId(),
 		Window_EquipItem::other));
 
 	Refresh();

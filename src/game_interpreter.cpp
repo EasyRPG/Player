@@ -1054,7 +1054,7 @@ bool Game_Interpreter::CommandChangeParameters() {
 			for (std::vector<Game_Actor*>::iterator i = Game_Party::GetActors().begin(); 
 				i != Game_Party::GetActors().end(); 
 				i++) {
-					actor = Game_Actors::GetActor((*i)->GetActorId());
+					actor = Game_Actors::GetActor((*i)->GetId());
 				switch (list[index].parameters[3]) {
 					case 0:
 						// Max HP
