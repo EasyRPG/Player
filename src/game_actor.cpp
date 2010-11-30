@@ -90,7 +90,7 @@ int Game_Actor::GetMaxHp() {
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetMaxSp() {
 	int base_maxsp = GetBaseMaxSp();
-	int n = min(max(base_maxsp + maxsp_plus, 1), 999);
+	int n = min(max(base_maxsp + maxsp_plus, 0), 999);
 
 	for (std::vector<int>::iterator i = states.begin();
 		i != states.end();
@@ -99,7 +99,7 @@ int Game_Actor::GetMaxSp() {
 			n *= Data::states[(*i)].sp_change_max / 100;
 	}
 
-	n = min(max(n, 1), 999);
+	n = min(max(n, 0), 999);
 
 	return n;
 }
