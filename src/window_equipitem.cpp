@@ -21,7 +21,11 @@
 #include "window_equipitem.h"
 
 ////////////////////////////////////////////////////////////
-Window_EquipItem::Window_EquipItem() : Window_Selectable(0, 0, 0, 0) {
+Window_EquipItem::Window_EquipItem(int actor_id, EquipType equip_type) :
+	Window_Selectable(0, 128, 320, 112),
+	actor_id(actor_id),
+	equip_type(equip_type) {
+
 }
 
 ////////////////////////////////////////////////////////////

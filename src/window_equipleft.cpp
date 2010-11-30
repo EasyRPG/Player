@@ -21,7 +21,9 @@
 #include "window_equipleft.h"
 
 ////////////////////////////////////////////////////////////
-Window_EquipLeft::Window_EquipLeft() : Window_Base(0, 0, 0, 0) {
+Window_EquipLeft::Window_EquipLeft(int actor_id) :
+	Window_Base(0, 32, 124, 96),
+	actor_id(actor_id) {
 }
 
 ////////////////////////////////////////////////////////////

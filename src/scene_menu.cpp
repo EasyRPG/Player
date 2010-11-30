@@ -25,18 +25,15 @@
 #include "game_system.h"
 #include "input.h"
 #include "player.h"
+#include "scene_equip.h"
 #include "scene_map.h"
 
-////////////////////////////////////////////////////////////
-/// Constructor
 ////////////////////////////////////////////////////////////
 Scene_Menu::Scene_Menu(int menu_index) :
 	menu_index(menu_index) {
 	type = Scene::Menu;
 }
 
-////////////////////////////////////////////////////////////
-/// Main
 ////////////////////////////////////////////////////////////
 void Scene_Menu::MainFunction() {
 	// Create Options Window
@@ -85,15 +82,16 @@ void Scene_Menu::MainFunction() {
 
 	Graphics::Transition(Graphics::FadeOut, 20, false);
 
-	delete command_window;
-	delete gold_window;
-	delete menustatus_window;
-
 	Scene::old_instance = this;
 }
 
 ////////////////////////////////////////////////////////////
-/// General Frame Update
+Scene_Menu::~Scene_Menu() {
+	delete command_window;
+	delete gold_window;
+	delete menustatus_window;
+}
+
 ////////////////////////////////////////////////////////////
 void Scene_Menu::Update() {
 	command_window->Update();
@@ -108,9 +106,6 @@ void Scene_Menu::Update() {
 	}
 }
 
-
-////////////////////////////////////////////////////////////
-/// Update Function if Command Window is Active
 ////////////////////////////////////////////////////////////
 void Scene_Menu::UpdateCommand() {
 	if (Input::IsTriggered(Input::CANCEL)) {
@@ -142,18 +137,19 @@ void Scene_Menu::UpdateCommand() {
 }
 
 ////////////////////////////////////////////////////////////
-/// Update Function if Status Window is Active
-////////////////////////////////////////////////////////////
 void Scene_Menu::UpdateStatus() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Data::system.cancel_se);
 		command_window->SetActive(true);
 		menustatus_window->SetActive(false);
+		menustatus_window->SetIndex(-1);
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Data::system.decision_se);
 		switch (command_window->GetIndex()) {
-		// Todo
-		case 0:
+		case 1: // Tech Skill
+			break;
+		case 2: // Equipment
+			Scene::instance = new Scene_Equip(menustatus_window->GetIndex());
 			break;
 		}
 	}

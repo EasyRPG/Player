@@ -21,7 +21,10 @@
 #include "window_equipright.h"
 
 ////////////////////////////////////////////////////////////
-Window_EquipRight::Window_EquipRight() : Window_Selectable(0, 0, 0, 0) {
+Window_EquipRight::Window_EquipRight(int actor_id) :
+	Window_Selectable(124, 32, 196, 96),
+	actor_id(actor_id) {
+
 }
 
 ////////////////////////////////////////////////////////////

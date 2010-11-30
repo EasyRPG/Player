@@ -19,12 +19,82 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "scene_equip.h"
+#include "game_party.h"
+#include "game_system.h"
+#include "graphics.h"
+#include "input.h"
+#include "player.h"
+#include "scene_menu.h"
 
 ////////////////////////////////////////////////////////////
-Scene_Equip::Scene_Equip() {
+Scene_Equip::Scene_Equip(int actor_index, int equip_index) :
+	actor_index(actor_index),
+	equip_index(equip_index) {
+	type = Scene::Equip;
 }
 
 ////////////////////////////////////////////////////////////
 Scene_Equip::~Scene_Equip() {
+	delete help_window;
+	delete left_window;
+	delete right_window;
+	for (int i = 0; i < 5; ++i) {
+		delete item_window[i];
+	}
 }
 
+////////////////////////////////////////////////////////////
+void Scene_Equip::MainFunction() {
+	Game_Actor* actor = Game_Party::GetActors()[actor_index];
+
+	help_window = new Window_Help();
+	left_window = new Window_EquipLeft(actor->GetActorId());
+	right_window = new Window_EquipRight(actor->GetActorId());
+
+	item_window.push_back(new Window_EquipItem(actor->GetActorId(),
+		Window_EquipItem::weapon));
+	// ToDo: Must be weapon again if two-handed
+	item_window.push_back(new Window_EquipItem(actor->GetActorId(),
+		Window_EquipItem::shield));
+	item_window.push_back(new Window_EquipItem(actor->GetActorId(),
+		Window_EquipItem::armor));
+	item_window.push_back(new Window_EquipItem(actor->GetActorId(),
+		Window_EquipItem::helmet));
+	item_window.push_back(new Window_EquipItem(actor->GetActorId(),
+		Window_EquipItem::other));
+
+	Refresh();
+
+	Graphics::Transition(Graphics::FadeIn, 20, true);
+
+	// Scene loop
+	while (instance == this) {
+		Player::Update();
+		Graphics::Update();
+		Input::Update();
+		Update();
+	}
+
+	Graphics::Transition(Graphics::FadeOut, 20, false);
+
+	Scene::old_instance = this;
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Equip::Refresh() {
+	active_item_window = item_window[0];
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Equip::Update() {
+	if (Input::IsTriggered(Input::CANCEL)) {
+		Game_System::SePlay(Data::system.cancel_se);
+		Scene::instance = new Scene_Menu(2); // Select Equipment
+	}
+
+	left_window->Update();
+	right_window->Update();
+	active_item_window->Update();
+
+	Refresh();
+}

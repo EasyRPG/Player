@@ -24,23 +24,36 @@
 #include "window_selectable.h"
 
 ////////////////////////////////////////////////////////////
-/// Window_EquipItem class
+/// Window_EquipItem class.
+/// Displays the available equipment of a specific type.
 ////////////////////////////////////////////////////////////
 class Window_EquipItem : public Window_Selectable {
 
 public:
-	////////////////////////////////////////////////////////
-	/// Constructor.
-	////////////////////////////////////////////////////////
-	Window_EquipItem();
+	/// Enum containing the different equipment types
+	enum EquipType {
+		weapon,
+		shield,
+		armor,
+		helmet,
+		other
+	};
 
 	////////////////////////////////////////////////////////
-	/// Desstructor.
+	/// Constructor.
+	/// @param actor_id : Actor whos equipment is displayed
+	/// @param equip_type : Type of equipment to show
+	////////////////////////////////////////////////////////
+	Window_EquipItem(int actor_id, EquipType equip_type);
+
+	////////////////////////////////////////////////////////
+	/// Destructor.
 	////////////////////////////////////////////////////////
 	~Window_EquipItem();
 
 private:
-
+	int actor_id;
+	EquipType equip_type;
 };
 
 #endif

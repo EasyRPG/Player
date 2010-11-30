@@ -21,10 +21,9 @@
 #include "window_help.h"
 
 ////////////////////////////////////////////////////////////
-Window_Help::Window_Help() : Window_Base(0, 0, 0, 0) {
+Window_Help::Window_Help() : Window_Base(0, 0, 320, 32) {
 }
 
 ////////////////////////////////////////////////////////////
 Window_Help::~Window_Help() {
 }
-
