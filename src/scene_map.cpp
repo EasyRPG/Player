@@ -77,8 +77,8 @@ void Scene_Map::Update() {
 	// ESC-Menu calling
 	if (Input::IsTriggered(Input::CANCEL))
 	{
-		if (Game_Map::GetInterpreter().IsRunning())
-			return;
+		//if (Game_Map::GetInterpreter().IsRunning())
+			//return;
 		//$game_system.menu_disabled
 
 
