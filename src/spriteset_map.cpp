@@ -40,9 +40,9 @@ Spriteset_Map::Spriteset_Map() {
 	fog = new Plane();
 	fog->SetZ(3000);
 
-	std::vector<Game_Event*> events = Game_Map::GetEvents();
-	for (size_t i = 0; i < events.size(); i++) {
-		Sprite_Character* sprite = new Sprite_Character(events[i]);
+	tEventHash events = Game_Map::GetEvents();
+	for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
+		Sprite_Character* sprite = new Sprite_Character(i->second);
 		character_sprites.push_back(sprite);
 	}
 	Sprite_Character* player = new Sprite_Character((Game_Character*)Main_Data::game_player);

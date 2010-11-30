@@ -69,6 +69,7 @@ void Scene_Map::MainFunction() {
 /// Update
 ////////////////////////////////////////////////////////////
 void Scene_Map::Update() {
+	Game_Map::GetInterpreter().Update();
 	Game_Map::Update();
 	Main_Data::game_player->Update();
 	spriteset->Update();
@@ -76,8 +77,10 @@ void Scene_Map::Update() {
 	// ESC-Menu calling
 	if (Input::IsTriggered(Input::CANCEL))
 	{
-		//unless $game_system.map_interpreter.running? or
+		if (Game_Map::GetInterpreter().IsRunning())
+			return;
 		//$game_system.menu_disabled
+
 
 		Game_Temp::menu_calling = true;
 		Game_Temp::menu_beep = true;

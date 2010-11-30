@@ -69,6 +69,6 @@ int Game_CommonEvent::GetTrigger() const {
 	return Data::commonevents[common_event_id].trigger;
 }
 
-std::vector<RPG::EventCommand> Game_CommonEvent::GetList() const {
+std::vector<RPG::EventCommand>& Game_CommonEvent::GetList() {
 	return Data::commonevents[common_event_id].event_commands;
 }

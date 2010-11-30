@@ -171,6 +171,10 @@ public:
 	/// @return agi
 	int GetBaseAgi() const;
 
+	void ChangeExp(int exp);
+
+	void ChangeLevel(int level);
+
 private:
 	int actor_id;
 	std::string name;

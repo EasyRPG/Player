@@ -26,6 +26,7 @@
 #include "game_event.h"
 #include "rpg_encounter.h"
 
+typedef std::map<int, Game_Event*> tEventHash;
 ////////////////////////////////////////////////////////////
 /// Game_Map namespace
 ////////////////////////////////////////////////////////////
@@ -223,6 +224,8 @@ namespace Game_Map {
 	/// @return need refresh flag
 	bool GetNeedRefresh();
 
+	Game_Interpreter& GetInterpreter();
+
 	/// Set the need refresh flag
 	/// @param need_refresh : need refresh state
 	void SetNeedRefresh(bool need_refresh);
@@ -237,7 +240,7 @@ namespace Game_Map {
 	std::vector<short>& GetTerrainTags();
 
 	/// @return events list
-	std::vector<Game_Event*>& GetEvents();
+	tEventHash& GetEvents();
 }
 
 #endif

@@ -50,6 +50,7 @@ enum CommandCodes {
 	CHANGE_GOLD         = 10310,
 	CHANGE_ITEMS        = 10320,
 	CHANGE_EXP          = 10410,
+	CHANGE_LEVEL        = 10420,
 	CONDITIONAL_BRANCH  = 12010
 };
 
@@ -103,13 +104,13 @@ void Game_Interpreter::Clear() {
 /// Is Interpreter Running
 ////////////////////////////////////////////////////////////
 bool Game_Interpreter::IsRunning() {
-	return list.empty();
+	return !list.empty();
 }
 
 ////////////////////////////////////////////////////////////
 /// Setup
 ////////////////////////////////////////////////////////////
-void Game_Interpreter::Setup(std::vector<RPG::EventCommand> _list, int _event_id) {
+void Game_Interpreter::Setup(std::vector<RPG::EventCommand>& _list, int _event_id) {
 
 	Clear();
 
@@ -119,6 +120,12 @@ void Game_Interpreter::Setup(std::vector<RPG::EventCommand> _list, int _event_id
 	index = 0;
 
 	branch.clear();
+
+	CancelMenuCall();
+}
+
+void Game_Interpreter::CancelMenuCall() {
+	// TODO
 }
 
 ////////////////////////////////////////////////////////////
@@ -235,17 +242,14 @@ void Game_Interpreter::SetupStartingEvent() {
 		Game_Temp::common_event_id = 0;
 		return;
 	}
-	
+
 	Game_Event* _event;
-	for (size_t i = 0; i < Game_Map::GetEvents().size(); i++) {
-		_event = Game_Map::GetEvents()[i];
+	for (tEventHash::iterator i = Game_Map::GetEvents().begin(); i != Game_Map::GetEvents().end(); i++) {
+		_event = i->second;
 		
 		if (_event->GetStarting()) {
-			if (_event->GetTrigger() < 3) {
-				_event->ClearStarting();
-				_event->Lock();
-			}
-			Setup(_event->GetList(), _event->GetId());
+			_event->ClearStarting();
+			Setup(_event->GetList(), _event->GetId()	);
 			return;
 		}
 	}
@@ -267,21 +271,42 @@ void Game_Interpreter::SetupStartingEvent() {
 /// Execute Command
 ////////////////////////////////////////////////////////////
 bool Game_Interpreter::ExecuteCommand() {
-	/*
-	if (index >= list.size() - 1) {
-		//CommandEnd();
+	
+	if (index >= list.size()) {
+		CommandEnd();
 		return true;
 	}
 	
 	switch (list[index].code) {
 
-		case SHOW_MESSAGE: return CommandShowMessage();
-		case MESSAGE_OPTIONS: return CommandMessageOptions();
-		case SHOW_FACE_GRAPHIC: return CommandShowFaceGraphic();
-		case SHOW_CHOICE: return CommandSelectOption();
+		case SHOW_MESSAGE: 
+			return CommandShowMessage();
+		case SHOW_CHOICE: 
+			return CommandShowChoices();
+		case INPUT_NUMBER: 
+			return CommandInputNumber();
+		//case MESSAGE_OPTIONS: 
+			//return CommandMessageOptions();
+		case CHANGE_FACE_GRAPHIC: 
+			return CommandChangeFaceGraphic();
+		case CHANGE_EXP: 
+			return CommandChangeExp();
+		case CHANGE_GOLD: 
+			return CommandChangeGold();
+		case CHANGE_ITEMS: 
+			return CommandChangeItems();
+		case CHANGE_LEVEL: 
+			return CommandChangeLevel();
+		case CONDITIONAL_BRANCH: 
+			return CommandConditionalBranch();
+		case CONTROL_SWITCHES: 
+			return CommandControlSwitches();
+		case CONTROL_VARS: 
+			return CommandControlVariables();
+		default:
+			return true;
 
-	} */
-	return true;
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -325,6 +350,15 @@ void Game_Interpreter::InputButton() {
 		Game_Map::SetNeedRefresh(true);
 		button_input_variable_id = 0;
 	}
+}
+
+void Game_Interpreter::CommandEnd() {
+	list.clear();
+
+	if ((main_flag) && (event_id > 0)) {
+		Game_Map::GetEvents()[event_id]->Unlock();
+	}
+
 }
 
 /////////////////////////////////////////////
@@ -472,6 +506,7 @@ bool Game_Interpreter::CommandControlSwitches() { // Code CONTROL_SWITCHES
 		default:
 			return false;
 	}
+	Game_Map::SetNeedRefresh(true);
 	return true;
 }
 
@@ -977,18 +1012,18 @@ bool Game_Interpreter::CommandChangeLevel() { // Code 10420
 			for (std::vector<Game_Actor*>::iterator i = Game_Party::GetActors().begin(); 
 				i != Game_Party::GetActors().end(); 
 				i++) {
-				(*i)->SetLevel((*i)->GetLevel() + value);
+				(*i)->ChangeLevel((*i)->GetLevel() + value);
 			}
 			break;
 		case 1:
 			// Hero
 			actor = Game_Actors::GetActor(list[index].parameters[1]);
-			actor->SetLevel(actor->GetLevel() + value);
+			actor->ChangeLevel(actor->GetLevel() + value);
 			break;
 		case 2:
 			// Var hero
 			actor = Game_Actors::GetActor(Game_Variables[list[index].parameters[1]]);
-			actor->SetLevel(actor->GetLevel() + value);
+			actor->ChangeLevel(actor->GetLevel() + value);
 			break;
 		default:
 			;

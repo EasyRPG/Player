@@ -111,6 +111,10 @@ public:
 	////////////////////////////////////////////////////////
 	void Lock();
 
+	void Unlock();
+
+	void SetDirection(int direction);
+
 	/// @return screen x coordinate in pixels
 	virtual int GetScreenX() const;
 
@@ -163,6 +167,9 @@ public:
 	/// @param animation_id : new animation id
 	void SetAnimationId(int animation_id);
 
+	bool IsInPosition(int x, int y) const;
+	bool IsJumping() const;
+
 protected:
 	void UpdateMove();
 	void UpdateStop();
@@ -187,6 +194,7 @@ protected:
 
 	double anime_count;
 	int stop_count;
+	int jump_count;
 	int original_pattern;
 	int last_pattern;
 	bool step_anime;

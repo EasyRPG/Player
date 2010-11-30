@@ -19,6 +19,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "game_map.h"
+#include "game_interpreter.h"
 #include "lmu_reader.h"
 #include "main_data.h"
 #include "output.h"
@@ -40,13 +41,15 @@ namespace {
 	std::vector<unsigned char> passages_down;
 	std::vector<unsigned char> passages_up;
 	std::vector<short> terrain_tags;
-	std::vector<Game_Event*> events;
+	tEventHash events;
 
 	RPG::Map* map;
 	int map_id;
 	int scroll_direction;
 	int scroll_rest;
 	int scroll_speed;
+
+	Game_Interpreter* interpreter;
 }
 
 ////////////////////////////////////////////////////////////
@@ -62,16 +65,22 @@ void Game_Map::Init() {
 	scroll_direction = 0;
 	scroll_rest = 0;
 	scroll_speed = 0;
+	interpreter = NULL;
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Map::Dispose() {
-	for (size_t i = 0; i < events.size(); i++) {
+	/*for (size_t i = 0; i < events.size(); i++) {
 		delete events[i];
+	}*/
+	
+	for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
+		delete i->second;
 	}
 	events.clear();
 
 	delete map;
+	delete interpreter;
 	map = NULL;
 }
 
@@ -88,6 +97,8 @@ void Game_Map::Setup(int _id) {
 		Output::ErrorStr(Reader::GetError());
 	}
 
+	interpreter = new Game_Interpreter(0, true);
+
 	RPG::Chipset chipset = Data::chipsets[map->chipset_id - 1];
 	chipset_name = chipset.chipset_name;
 	passages_down = chipset.passable_data_lower;
@@ -100,7 +111,7 @@ void Game_Map::Setup(int _id) {
 	need_refresh = false;
 
 	for (size_t i = 0; i < map->events.size(); i++) {
-		events.push_back(new Game_Event(map_id, map->events[i]));
+		events.insert(std::pair<int, Game_Event*>(map->events[i].ID, new Game_Event(map_id, map->events[i])));
 	}
 	/*@common_events.clear();
 	for i in 1...$data_common_events.size
@@ -122,14 +133,20 @@ void Game_Map::Autoplay() {
 ////////////////////////////////////////////////////////////
 void Game_Map::Refresh() {
 	if (map_id > 0) {
-		for (size_t i = 0; i < events.size(); i++) {
-			events[i]->Refresh();
+		
+		for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
+			i->second->Refresh();
 		}
+
 		/*for (size_t i = 0; i < common_events.size(); i++) {
 			common_events[i]->Refresh();
 		}*/
 	}
 	need_refresh = false;
+}
+
+Game_Interpreter& Game_Map::GetInterpreter() {
+	return *interpreter;
 }
 
 ////////////////////////////////////////////////////////////
@@ -163,11 +180,11 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 
 	uint8 bit = (1 << (d / 2 - 1));
 
-	for (uint i = 0; i < events.size(); i++) {
-		if (events[i]->GetTileId() >= 0 && events[i] != self_event &&
-			events[i]->GetX() == x && events[i]->GetY() == y && !events[i]->GetThrough()) {
-
-			if ((passages_up[events[i]->GetTileId()] & bit) != 0)
+	for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
+		if (i->second->GetTileId() >= 0 && i->second != self_event &&
+			i->second->GetX() == x && i->second->GetY() == y && !i->second->GetThrough()) {
+				
+			if ((passages_up[i->second->GetTileId()] & bit) != 0)
 				return false;
 		}
 	}
@@ -239,9 +256,15 @@ int Game_Map::GetTerrainTag(int x, int y) {
 
 ////////////////////////////////////////////////////////////
 int Game_Map::CheckEvent(int x, int y) {
-	for (size_t i = 0; i < events.size(); i++) {
+	/*for (size_t i = 0; i < events.size(); i++) {
 		if (events[i]->GetX() == x && events[i]->GetY() == y) {
 			return events[i]->GetId();
+		}
+	}*/
+	tEventHash::iterator i;
+	for (i = events.begin(); i != events.end(); i++) {
+		if (i->second->GetX() == x && i->second->GetY() == y) {
+			return i->second->GetId();
 		}
 	}
 	return 0;
@@ -281,8 +304,8 @@ void Game_Map::Update() {
 		scroll_rest -= distance;
 	}
 	
-	for (size_t i = 0; i < events.size(); i++) {
-		events[i]->Update();
+	for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
+		i->second->Update();
 	}
 
 	/*for (size_t i = 0; i < common_events.size(); i++) {
@@ -389,6 +412,6 @@ std::vector<short>& Game_Map::GetTerrainTags() {
 	return Data::chipsets[map->chipset_id - 1].terrain_data;
 }
 
-std::vector<Game_Event*>& Game_Map::GetEvents() {
+tEventHash& Game_Map::GetEvents() {
 	return events;
 }

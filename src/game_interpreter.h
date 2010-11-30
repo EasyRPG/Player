@@ -34,7 +34,7 @@ public:
 	~Game_Interpreter();
 
 	void Clear();
-	void Setup(std::vector<RPG::EventCommand> _list, int _event_id);
+	void Setup(std::vector<RPG::EventCommand>& _list, int _event_id);
 	bool IsRunning();
 	void Update();
 
@@ -71,6 +71,8 @@ private:
 	int OperateValue(int operation, int operand_type, int operand);
 	Game_Character* GetCharacter(int character_id);
 
+	void CancelMenuCall();
+
 	bool CommandShowMessage();
 	bool CommandShowChoices();
 	bool CommandChangeFaceGraphic();
@@ -85,6 +87,8 @@ private:
 	bool CommandChangeLevel();
 	bool CommandChangeParameters();
 	bool CommandSkip();
+
+	void CommandEnd();
 };
 
 #endif

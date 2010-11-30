@@ -43,6 +43,7 @@ Game_Character::Game_Character() :
 	locked(false),
 	anime_count(0),
 	stop_count(0),
+	jump_count(0),
 	original_pattern(1),
 	last_pattern(0),
 	step_anime(false),
@@ -69,8 +70,8 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 	
 	if (!Game_Map::IsPassable(new_x, new_y, 10 - d)) return false;
 	
-	for (size_t i = 0; i < Game_Map::GetEvents().size(); i++) {
-		Game_Event* evnt = Game_Map::GetEvents()[i];
+	for (tEventHash::iterator i = Game_Map::GetEvents().begin(); i != Game_Map::GetEvents().end(); i++) {
+		Game_Event* evnt = i->second;
 		if (evnt->GetX() == new_x && evnt->GetY() == new_y) {
 			if (!evnt->GetThrough()) {
 				if (this != (const Game_Character*)Main_Data::game_player)
@@ -89,6 +90,10 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 	}
 
 	return true;
+}
+
+bool Game_Character::IsJumping() const {
+	return jump_count > 0;
 }
 
 ////////////////////////////////////////////////////////////
@@ -310,7 +315,26 @@ void Game_Character::TurnUp() {
 
 ////////////////////////////////////////////////////////////
 void Game_Character::Lock() {
-	//TODO
+	if (!locked) {
+		prelock_direction = direction;
+		// TODO
+		//TurnTowardPlayer();
+		locked = true;
+	}
+}
+
+void Game_Character::Unlock() {
+	if (locked) {
+		locked = false;
+		SetDirection(prelock_direction);
+	}
+}
+
+void Game_Character::SetDirection(int direction) {
+	if ((!direction_fix) && (direction != 0)) {
+		this->direction = direction;
+		stop_count = 0;
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -363,4 +387,8 @@ int Game_Character::GetAnimationId() const {
 }
 void Game_Character::SetAnimationId(int new_animation_id) {
 	animation_id = new_animation_id;
+}
+
+bool Game_Character::IsInPosition(int x, int y) const {
+	return ((this->x == x) && (this->y && y));
 }

@@ -22,12 +22,12 @@
 // Macros / Templates
 ////////////////////////////////////////////////////////////
 template <typename T, typename S>
-inline T max(T x, S y) {
+T max(T x, S y) {
     return (x >= y) ? x : y;
 }
 
 template <typename T, typename S>
-inline T min(T x, S y) {
+T min(T x, S y) {
     return (x < y) ? x : y;
 }
 

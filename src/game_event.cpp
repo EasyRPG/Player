@@ -19,16 +19,23 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "game_event.h"
+#include "game_actor.h"
+#include "game_actors.h"
+#include "game_map.h"
+#include "game_party.h"
+#include "game_player.h"
 #include "game_switches.h"
 #include "game_variables.h"
+#include "main_data.h"
 
 ////////////////////////////////////////////////////////////
-Game_Event::Game_Event(int map_id, RPG::Event event) :
+Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	starting(false),
 	map_id(map_id),
 	event(event),
 	erased(false),
-	through(true) {
+	through(true),
+	interpreter (NULL) {
 
 	ID = event.ID;
 	
@@ -47,27 +54,8 @@ void Game_Event::ClearStarting() {
 }
 
 ////////////////////////////////////////////////////////////
-void Game_Event::Refresh() {
-	RPG::EventPage new_page;
-	if (!erased) {
-		RPG::Event a = event;
-		for (int i = (int)event.pages.size() - 1; i >= 0; i--) {
-			if	((event.pages[i].condition.switch_a && !Game_Switches[event.pages[i].condition.switch_a_id]) ||
-				(event.pages[i].condition.switch_b && !Game_Switches[event.pages[i].condition.switch_b_id]) ||
-				(event.pages[i].condition.variable && Game_Variables[event.pages[i].condition.variable_id] < event.pages[i].condition.variable_value)) {
-				continue;
-			}
-			new_page = event.pages[i];
-			break;
-		}
-	}
-
-	if (new_page.ID == page.ID)
-		return;
-
-	page = new_page;
-
-	ClearStarting();
+void Game_Event::Setup(RPG::EventPage* new_page) {
+	page = *new_page;
 
 	if (page.ID == 0) {
 		tile_id = 0;
@@ -107,9 +95,60 @@ void Game_Event::Refresh() {
 	trigger = page.trigger;
 	list = page.event_commands;
 	interpreter = NULL;
-	//if (trigger == 4)
-	//	interpreter = new Game_Interpreter();
-	//CheckEventTriggerAuto();
+	if (trigger == 4)
+		interpreter = new Game_Interpreter();
+	CheckEventTriggerAuto();
+}
+
+void Game_Event::Refresh() {
+	RPG::EventPage* new_page = NULL;
+	if (!erased) {
+		std::vector<RPG::EventPage>::reverse_iterator i;
+		for (i = event.pages.rbegin(); i != event.pages.rend(); i++) {
+			if (!AreConditionsMet(*i)) {
+				continue;
+			}
+			new_page = &(*i);
+			break;
+		}
+	}
+
+	if (new_page == NULL)
+		return;
+
+	if (new_page->ID != this->page.ID) {
+		ClearStarting();
+		Setup(new_page);
+		CheckEventTriggerAuto();
+	}
+}
+
+bool Game_Event::AreConditionsMet(const RPG::EventPage& page) {
+	if (page.condition.switch_a && !Game_Switches[page.condition.switch_a_id]) {
+		return false;
+	}
+	if (page.condition.switch_b && !Game_Switches[page.condition.switch_b_id]) {
+		return false;
+	}
+	if (page.condition.variable && !(Game_Variables[page.condition.variable_id] < page.condition.variable_value)) {
+		return false;
+	}
+	if (page.condition.item && !Game_Party::ItemNumber(page.condition.item_id)) {
+		return false;
+	}
+	if (page.condition.actor) {
+		Game_Actor* actor = Game_Actors::GetActor(page.condition.actor_id);
+		if (!Game_Party::IsActorInParty(actor)) {
+			return false;
+		}
+	}
+	if (page.condition.timer) {
+		// TODO
+		return false;
+	}
+
+	// All conditions met :D
+	return true;
 }
 
 ////////////////////////////////////////////////////////////
@@ -125,6 +164,55 @@ int Game_Event::GetTrigger() const {
 	return trigger;
 }
 
-std::vector<RPG::EventCommand> Game_Event::GetList() {
+void Game_Event::Start() {
+	// RGSS scripts consider list empty if size <= 1. Why?
+	if (list.empty()) 
+		return;
+
+	starting = true;
+
+	if (trigger < 3)
+		Lock();
+
+	if (!Game_Map::GetInterpreter().IsRunning()) {
+		Game_Map::GetInterpreter().SetupStartingEvent();
+	}
+}
+
+void Game_Event::CheckEventTriggerAuto() {
+	if (trigger == 3) {
+		Start();
+	}
+}
+
+std::vector<RPG::EventCommand>& Game_Event::GetList() {
 	return list;
 }
+
+void Game_Event::CheckEventTriggerTouch(int x, int y) {
+	if (Game_Map::GetInterpreter().IsRunning())
+		return;
+
+	if ((trigger == 2) && (Main_Data::game_player->IsInPosition(x, y))) {
+
+		// TODO check over trigger VX differs from XP here
+		if (!IsJumping()) {
+			Start();
+		}
+	}
+}
+
+void Game_Event::Update() {
+	Game_Character::Update();
+
+	CheckEventTriggerAuto();
+
+	if (interpreter != NULL) {
+		if (!interpreter->IsRunning()) {
+			interpreter->Setup(list, event.ID);
+		}
+		interpreter->Update();
+	}
+	
+}
+

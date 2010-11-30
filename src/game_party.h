@@ -73,7 +73,7 @@ namespace Game_Party {
 	/// @param actor : actor object
 	/// @return whether the actor is in party.
 	////////////////////////////////////////////////////////
-	bool IsActorInParty(Game_Actor* actor_id);
+	bool IsActorInParty(Game_Actor* actor);
 
 	////////////////////////////////////////////////////////
 	/// Gain gold.

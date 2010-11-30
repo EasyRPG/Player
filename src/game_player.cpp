@@ -83,6 +83,8 @@ void Game_Player::MoveTo(int x, int y) {
 void Game_Player::Update() {
 //	bool last_moving = IsMoving();
 
+	if (Game_Map::GetInterpreter().IsRunning()) return;
+
 	if (!(IsMoving() /*|| Game_System::map_interpreter.IsRunning() ||
 		move_route_forcing || Game_Temp::message_window_showing*/)) {
 		switch (Input::dir4) {

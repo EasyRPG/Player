@@ -28,7 +28,7 @@ public:
 	static const int MAX_LINE = 4;
 
 	Game_Message();
-	~Game_Message();
+	//~Game_Message();
 
 	void Clear();
 

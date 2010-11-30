@@ -290,6 +290,19 @@ void Game_Actor::SetLevel(int _level) {
 	level = _level;
 }
 
+void Game_Actor::ChangeLevel(int level) {
+	this->level = max(min(level, 50), 1);
+	//ChangeExp()
+}
+
+void Game_Actor::ChangeExp(int exp) {
+	// TODO
+	/*int last_level = level;
+
+	this->exp = max(min(exp, 0), 999999);
+	while (this->exp*/
+}
+
 ////////////////////////////////////////////////////////////
 std::vector<int> Game_Actor::GetSkills() const {
 	return skills;

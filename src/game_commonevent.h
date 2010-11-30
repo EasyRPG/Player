@@ -62,7 +62,7 @@ public:
 	int GetSwitchId() const;
 
 	/// @return event commands list
-	std::vector<RPG::EventCommand> GetList() const;
+	std::vector<RPG::EventCommand>& GetList();
 
 private:
 	int common_event_id;

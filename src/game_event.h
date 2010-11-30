@@ -34,7 +34,7 @@ public:
 	////////////////////////////////////////////////////////
 	/// Constructor.
 	////////////////////////////////////////////////////////
-	Game_Event(int map_id, RPG::Event event);
+	Game_Event(int map_id, const RPG::Event& event);
 
 	////////////////////////////////////////////////////////
 	/// Destructor.
@@ -51,6 +51,8 @@ public:
 	////////////////////////////////////////////////////////
 	void Refresh();
 
+	void Setup(RPG::EventPage* new_page);
+
 	/// @return event id
 	int GetId() const;
 
@@ -61,7 +63,13 @@ public:
 	int GetTrigger() const;
 
 	/// @return event commands list
-	std::vector<RPG::EventCommand> GetList();
+	std::vector<RPG::EventCommand>& GetList();
+
+	void CheckEventTriggerAuto();
+	void CheckEventTriggerTouch(int x, int y);
+	void Start();
+	void Update();
+	bool AreConditionsMet(const RPG::EventPage& page);
 
 private:
 	int ID;
