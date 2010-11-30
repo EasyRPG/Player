@@ -219,6 +219,21 @@
     <ClCompile Include="..\..\src\input_buttons_desktop.cpp">
       <Filter>Source Files\Multimedia\Input</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\scene_equip.cpp">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\window_help.cpp">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\window_equipitem.cpp">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\window_equipleft.cpp">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\window_equipright.cpp">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cache.h">
@@ -400,6 +415,21 @@
     </ClInclude>
     <ClInclude Include="..\..\src\font_render_8x8.h">
       <Filter>Source Files\Tools\Font 8x8</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene_equip.h">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\window_help.h">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\window_equipitem.h">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\window_equipleft.h">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\window_equipright.h">
+      <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

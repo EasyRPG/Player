@@ -151,6 +151,7 @@
     <ClCompile Include="..\..\src\rect.cpp" />
     <ClCompile Include="..\..\src\registry_win.cpp" />
     <ClCompile Include="..\..\src\scene.cpp" />
+    <ClCompile Include="..\..\src\scene_equip.cpp" />
     <ClCompile Include="..\..\src\scene_map.cpp" />
     <ClCompile Include="..\..\src\scene_menu.cpp" />
     <ClCompile Include="..\..\src\scene_title.cpp" />
@@ -164,7 +165,11 @@
     <ClCompile Include="..\..\src\window.cpp" />
     <ClCompile Include="..\..\src\window_base.cpp" />
     <ClCompile Include="..\..\src\window_command.cpp" />
+    <ClCompile Include="..\..\src\window_equipitem.cpp" />
+    <ClCompile Include="..\..\src\window_equipleft.cpp" />
+    <ClCompile Include="..\..\src\window_equipright.cpp" />
     <ClCompile Include="..\..\src\window_gold.cpp" />
+    <ClCompile Include="..\..\src\window_help.cpp" />
     <ClCompile Include="..\..\src\window_message.cpp" />
     <ClCompile Include="..\..\src\window_selectable.cpp" />
     <ClCompile Include="..\..\src\window_menustatus.cpp" />
@@ -211,6 +216,7 @@
     <ClInclude Include="..\..\src\rect.h" />
     <ClInclude Include="..\..\src\registry_win.h" />
     <ClInclude Include="..\..\src\scene.h" />
+    <ClInclude Include="..\..\src\scene_equip.h" />
     <ClInclude Include="..\..\src\scene_map.h" />
     <ClInclude Include="..\..\src\scene_menu.h" />
     <ClInclude Include="..\..\src\scene_title.h" />
@@ -226,7 +232,11 @@
     <ClInclude Include="..\..\src\window.h" />
     <ClInclude Include="..\..\src\window_base.h" />
     <ClInclude Include="..\..\src\window_command.h" />
+    <ClInclude Include="..\..\src\window_equipitem.h" />
+    <ClInclude Include="..\..\src\window_equipleft.h" />
+    <ClInclude Include="..\..\src\window_equipright.h" />
     <ClInclude Include="..\..\src\window_gold.h" />
+    <ClInclude Include="..\..\src\window_help.h" />
     <ClInclude Include="..\..\src\window_message.h" />
     <ClInclude Include="..\..\src\window_selectable.h" />
     <ClInclude Include="..\..\src\window_menustatus.h" />

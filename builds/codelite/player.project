@@ -44,6 +44,8 @@
     </VirtualDirectory>
     <VirtualDirectory Name="Scene">
       <File Name="../../src/scene.h"/>
+      <File Name="../../src/scene_equip.cpp"/>
+      <File Name="../../src/scene_equip.h"/>
       <File Name="../../src/scene_title.cpp"/>
       <File Name="../../src/scene_title.h"/>
       <File Name="../../src/scene_map.cpp"/>
@@ -57,8 +59,16 @@
       <File Name="../../src/window_base.h"/>
       <File Name="../../src/window_command.cpp"/>
       <File Name="../../src/window_command.h"/>
+      <File Name="../../src/window_equipitem.cpp"/>
+      <File Name="../../src/window_equipitem.h"/>
+      <File Name="../../src/window_equipleft.cpp"/>
+      <File Name="../../src/window_equipleft.h"/>
+      <File Name="../../src/window_equipright.cpp"/>
+      <File Name="../../src/window_equipright.h"/>
       <File Name="../../src/window_gold.cpp"/>
       <File Name="../../src/window_gold.h"/>
+      <File Name="../../src/window_help.cpp"/>
+      <File Name="../../src/window_help.h"/>
       <File Name="../../src/window_selectable.cpp"/>
       <File Name="../../src/window_selectable.h"/>
       <File Name="../../src/window_message.h"/>
