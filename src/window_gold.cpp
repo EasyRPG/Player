@@ -46,9 +46,13 @@ void Window_Gold::Refresh() {
 	Rect rect(0, 0, contents->GetWidth(), 16);
 	std::stringstream gold;
 	gold << Game_Party::GetGold();
-	gold << Data::terms.gold;
 	
 	contents->FillofColor(rect, windowskin->GetColorKey());
 	contents->SetColorKey(windowskin->GetColorKey());
+	contents->GetFont()->color = 1;
+	contents->TextDraw(rect, Data::terms.gold, Bitmap::align_right);
+
+	rect.x -= 12;
+	contents->GetFont()->color = 0;
 	contents->TextDraw(rect, gold.str(), Bitmap::align_right);
 }

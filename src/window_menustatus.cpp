@@ -26,7 +26,7 @@
 ////////////////////////////////////////////////////////////
 /// Constructor
 ////////////////////////////////////////////////////////////
-Window_MenuStatus::Window_MenuStatus() : Window_Base(0, 0, 232, 240) {
+Window_MenuStatus::Window_MenuStatus() : Window_Selectable(0, 0, 232, 240) {
 	contents = new Bitmap(width - 16, height - 16);
 	Refresh();
 }
@@ -41,7 +41,6 @@ Window_MenuStatus::~Window_MenuStatus() {
 /// Refresh
 ////////////////////////////////////////////////////////////
 void Window_MenuStatus::Refresh() {
-	
 	Rect rect(0, 0, contents->GetWidth(), contents->GetHeight());
 	contents->FillofColor(rect, windowskin->GetColorKey());
 	contents->SetColorKey(windowskin->GetColorKey());
@@ -49,11 +48,12 @@ void Window_MenuStatus::Refresh() {
 	Color c = windowskin->GetPixel(0, 32);
 	DisplaySdlUi->SetBackcolor(c.Get());
 
+	item_max = Game_Party::GetActors().size();
+
 	int y = 0;
-	for (size_t i = 0; i < Game_Party::GetActors().size(); ++i)
+	for (size_t i = 0; i < item_max; ++i)
 	{
 		DrawActorGraphic(Game_Party::GetActors()[i], 0, i*48 + y);
-
 		DrawActorName(Game_Party::GetActors()[i], 48 + 8, i*48 + 2 + y);
 		DrawActorClass(Game_Party::GetActors()[i], 48 + 8 + 88, i*48 + 2 + y);
 		DrawActorLevel(Game_Party::GetActors()[i], 48 + 8, i*48 + 2 + 16 + y);
@@ -63,5 +63,17 @@ void Window_MenuStatus::Refresh() {
 		DrawActorSp(Game_Party::GetActors()[i], 48 + 8 + 106, i*48 + 2 + 16 + 16 + y);
 
 		y += 10;
+	}
+}
+
+////////////////////////////////////////////////////////////
+/// Update Cursor Rect
+////////////////////////////////////////////////////////////
+void Window_MenuStatus::UpdateCursorRect()
+{
+	if (index < 0) {
+		cursor_rect.Adjust(0, 0);
+	} else {
+		cursor_rect.Set(48 + 4, index * (48 + 10), 168, 48);
 	}
 }

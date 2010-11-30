@@ -41,7 +41,7 @@ public:
 	int GetPageItemMax();
 	//Window_Help* GetHelpWindow();
 	//void SetHelpWindow(Window_Help* nhelp_window);
-	void UpdateCursorRect();
+	virtual void UpdateCursorRect();
 	void Update();
 
 	//virtual void UpdateHelp() = 0;

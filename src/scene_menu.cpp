@@ -116,9 +116,21 @@ void Scene_Menu::UpdateCommand() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Data::system.cancel_se);
 		Scene::instance = new Scene_Map();
-	}
-	else if (Input::IsTriggered(Input::DECISION)) {
+	} else if (Input::IsTriggered(Input::DECISION)) {
 		switch (command_window->GetIndex()) {
+		case 0: // Item
+			Game_System::SePlay(Data::system.decision_se);
+			break;
+		case 1: // Tech Skill
+		case 2: // Equipment
+			Game_System::SePlay(Data::system.decision_se);
+			command_window->SetActive(false);
+			menustatus_window->SetActive(true);
+			menustatus_window->SetIndex(0);
+			break;
+		case 3: // Save
+			Game_System::SePlay(Data::system.decision_se);
+			break;
 		case 4: // Quit Game
 			Game_System::SePlay(Data::system.decision_se);
 			Audio::BGS_Fade(800);
@@ -133,4 +145,16 @@ void Scene_Menu::UpdateCommand() {
 /// Update Function if Status Window is Active
 ////////////////////////////////////////////////////////////
 void Scene_Menu::UpdateStatus() {
+	if (Input::IsTriggered(Input::CANCEL)) {
+		Game_System::SePlay(Data::system.cancel_se);
+		command_window->SetActive(true);
+		menustatus_window->SetActive(false);
+	} else if (Input::IsTriggered(Input::DECISION)) {
+		Game_System::SePlay(Data::system.decision_se);
+		switch (command_window->GetIndex()) {
+		// Todo
+		case 0:
+			break;
+		}
+	}
 }
