@@ -218,12 +218,6 @@ void Graphics::Update() {
 			last_ticks = ticks;
 
 			DrawFrame();
-			DrawFrame();
-			DrawFrame();
-			DrawFrame();
-			DrawFrame();
-			DrawFrame();
-			DrawFrame();
 
 			++framecount;
 			++frames;
