@@ -389,6 +389,36 @@ void Bitmap::TileBlitX(const Rect& src_rect, Bitmap* src, const Rect& dst_rect) 
 	}
 }
 
+// Tile src onto `bitmap` horizontally and vertically. This method calculates
+// how many blits are neccessary in order to fill up `bitmap`
+// horizontally.
+void Bitmap::TileBlitXY(const Rect& src_rect, Bitmap* src, const Rect& dst_rect) {
+	SDL_Rect sdl_src_rect = { src_rect.x, src_rect.y, src_rect.width, src_rect.height };
+	SDL_Rect sdl_dst_rect = { dst_rect.x, dst_rect.y, dst_rect.width, dst_rect.height };
+
+	int n_blits_y;
+	if ( src_rect.height >= bitmap->h  || src_rect.height == 0 ) {
+		n_blits_y = 1; 
+	} else {
+		n_blits_y = (int) ceil((float)bitmap->h / (float)src_rect.height);
+	}
+
+	int n_blits_x;
+	if ( (src_rect.width >= bitmap->w ) || (src_rect.width == 0) ) {
+		n_blits_x = 1; 
+	} else {
+		n_blits_x = (int) ceil((float)bitmap->w / (float)src_rect.width);
+	}
+
+	for (int j = 0; j < n_blits_y; j++) {
+		for (int i = 0; i < n_blits_x; i++) {
+			sdl_dst_rect.y = j*sdl_src_rect.h;
+			sdl_dst_rect.x = i*sdl_src_rect.w;
+			SDL_BlitSurface(src->bitmap, &sdl_src_rect, bitmap, &sdl_dst_rect);
+		}
+	}
+}
+
 // Same as TileBlitX() but tiles vertically.
 void Bitmap::TileBlitY(const Rect& src_rect, Bitmap* src, const Rect& dst_rect) {
 	SDL_Rect sdl_src_rect = { src_rect.x, src_rect.y, src_rect.width, src_rect.height };

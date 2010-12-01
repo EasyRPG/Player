@@ -346,9 +346,24 @@ void Window::RefreshCursor() {
 	Rect dst_rect(2, 2, cursor_rect.width - 4, cursor_rect.height - 4);
 	cursor1->StretchBlit(dst_rect, windowskin, src_rect, 255);
 #else
-	// TODO
 	Rect src_rect;
 	Rect dst_rect;
+
+	src_rect.x = 64 + 8;
+	src_rect.y = 8;
+	src_rect.width = 16;
+	src_rect.height = 16;
+
+	dst_rect.x = 0;
+	dst_rect.y = 0;
+
+	clip_rect1.x = 8;
+	clip_rect1.y = 8;
+	clip_rect1.width = cursor_rect.width - clip_rect1.x - 8;
+	clip_rect1.height = cursor_rect.height - clip_rect1.y - 8;
+
+	cursor1->SetClipRect(clip_rect1);
+	cursor1->TileBlitXY(src_rect, windowskin, dst_rect);
 #endif
 
 	// Border Up
@@ -451,6 +466,21 @@ void Window::RefreshCursor() {
 	dst_rect.height = cursor_rect.height - 4;
 	cursor2->StretchBlit(dst_rect, windowskin, src_rect, 255);
 #else
+	src_rect.x = 96 + 8;
+	src_rect.y = 8;
+	src_rect.width = 16;
+	src_rect.height = 16;
+
+	dst_rect.x = 0;
+	dst_rect.y = 0;
+
+	clip_rect2.x = 8;
+	clip_rect2.y = 8;
+	clip_rect2.width = cursor_rect.width - clip_rect2.x - 8;
+	clip_rect2.height = cursor_rect.height - clip_rect2.y - 8;
+
+	cursor2->SetClipRect(clip_rect2);
+	cursor2->TileBlitXY(src_rect, windowskin, dst_rect);
 
 #endif
 

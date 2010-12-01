@@ -61,6 +61,7 @@ public:
 
 	void TileBlitX(const Rect& src_rect, Bitmap* src, const Rect& dst_rect);
 	void TileBlitY(const Rect& src_rect, Bitmap* src, const Rect& dst_rect);
+	void TileBlitXY(const Rect& src_rect, Bitmap* src, const Rect& dst_rect);
 
 	void Blit(int x, int y, Bitmap* source, Rect& src_rect, int opacity);
 	void StretchBlit(Bitmap* src, Rect& src_rect);

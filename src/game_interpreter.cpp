@@ -51,6 +51,7 @@ enum CommandCodes {
 	CHANGE_ITEMS        = 10320,
 	CHANGE_EXP          = 10410,
 	CHANGE_LEVEL        = 10420,
+	CHANGE_PARAMETERS   = 10430,
 	CONDITIONAL_BRANCH  = 12010
 };
 
@@ -303,6 +304,8 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandControlSwitches();
 		case CONTROL_VARS: 
 			return CommandControlVariables();
+		case CHANGE_PARAMETERS:
+			return CommandChangeParameters();
 		default:
 			return true;
 
@@ -583,29 +586,27 @@ bool Game_Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 						break;
 					case 4:
 						// Max HP
-						// TODO needs to be current max Hp of hero
-						value = Data::actors[list[index].parameters[6]].parameter_maxhp[actor->GetLevel() - 1];
+						value = actor->GetMaxHp();
 						break;
 					case 5:
 						// Max MP
-						// TODO needs to be current max Mp of hero
-						value = Data::actors[list[index].parameters[6]].parameter_maxsp[actor->GetLevel() - 1];
+						value = actor->GetMaxSp();
 						break;
 					case 6:
 						// Attack
-						value = Data::actors[list[index].parameters[6]].parameter_attack[actor->GetLevel() - 1];
+						value = actor->GetAtk();
 						break;
 					case 7:
 						// Defense
-						value = Data::actors[list[index].parameters[6]].parameter_defense[actor->GetLevel() - 1];
+						value = actor->GetDef();
 						break;
 					case 8:
 						// Intelligence
-						value = Data::actors[list[index].parameters[6]].parameter_spirit[actor->GetLevel() - 1];
+						value = actor->GetSpi();
 						break;
 					case 9:
 						// Agility
-						value = Data::actors[list[index].parameters[6]].parameter_agility[actor->GetLevel() - 1];
+						value = actor->GetAgi();
 						break;
 					case 10:
 						// Weapon ID
@@ -886,6 +887,7 @@ bool Game_Interpreter::CommandChangeItems() { // Code 10320
 			value
 		);
 	}
+	Game_Map::SetNeedRefresh(true);
 	// Continue
 	return true;
 }
@@ -947,6 +949,9 @@ bool Game_Interpreter::CommandChangePartyMember() { // Code 10330
 		}
 	}
 
+	Game_Map::SetNeedRefresh(true);
+
+	// Continue
 	return true;
 }
 
@@ -1040,7 +1045,7 @@ bool Game_Interpreter::CommandChangeLevel() { // Code 10420
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeParameters() {
+bool Game_Interpreter::CommandChangeParameters() { // Code 10430
 	int value = OperateValue(
 		list[index].parameters[2],
 		list[index].parameters[4],
