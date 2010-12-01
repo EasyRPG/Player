@@ -205,33 +205,45 @@ void Graphics::Update() {
 		waitframes -= 1;
 		return;
 	}
-	ticks = SDL_GetTicks();
+	
+	for (;;) {
+		ticks = SDL_GetTicks();
 
 																 // FIXME: This code reduces speed of zoomed windows a lot
-	if ((ticks - last_ticks) >= (unsigned long)framerate_interval /*|| (framerate_interval - ticks + last_ticks) < 10*/) {
-		cyclesleftover = waitframes;
-		waitframes = (double)(ticks - last_ticks) / framerate_interval - cyclesleftover;
+		if ((ticks - last_ticks) >= (unsigned long)framerate_interval /*|| (framerate_interval - ticks + last_ticks) < 10*/) {
+			cyclesleftover = waitframes;
+			waitframes = (double)(ticks - last_ticks) / framerate_interval - cyclesleftover;
 
-		last_ticks += (ticks - last_ticks) - (unsigned long)cyclesleftover;
-		last_ticks = ticks;
+			//last_ticks += (ticks - last_ticks) - (unsigned long)cyclesleftover;
+			last_ticks = ticks;
 
-		DrawFrame();
+			DrawFrame();
+			DrawFrame();
+			DrawFrame();
+			DrawFrame();
+			DrawFrame();
+			DrawFrame();
+			DrawFrame();
 
-		++framecount;
-		++frames;
+			++framecount;
+			++frames;
 
-		if (ticks >= next_ticks_fps) {
-			next_ticks_fps += 1000;
-			fps = frames;
-			frames = 0;
+			if (ticks >= next_ticks_fps) {
+				next_ticks_fps += 1000;
+				fps = frames;
+				frames = 0;
 
-			char title[255];
-			sprintf(title, "%s - %d FPS", GAME_TITLE, fps);
+				char title[255];
+				sprintf(title, "%s - %d FPS", GAME_TITLE, fps);
 
-			SDL_WM_SetCaption(title, NULL);
+				SDL_WM_SetCaption(title, NULL);
+			}
+
+			break;
+
+		} else {
+			SDL_Delay((long)(framerate_interval) - (ticks - last_ticks));
 		}
-	} else {
-		SDL_Delay((long)(framerate_interval) - (ticks - last_ticks));
 	}
 }
 #endif
