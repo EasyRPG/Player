@@ -35,8 +35,8 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	event(event),
 	erased(false),
 	through(true),
-	interpreter(NULL),
-	page(NULL) {
+	page(NULL),
+	interpreter(NULL) {
 
 	ID = event.ID;
 	
