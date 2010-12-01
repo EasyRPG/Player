@@ -201,7 +201,7 @@ void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy) {
 	Rect rect2(cx + 12, cy, 3*6, 12);
 	// Color: 0 okay, 4 critical/empty
 	int color = 0;
-	if (actor->GetSp() <= actor->GetMaxSp() / 4) {
+	if (actor->GetMaxSp() != 0 && actor->GetSp() <= actor->GetMaxSp() / 4) {
 		color = 4;
 	}
 	contents->GetFont()->color = color;
