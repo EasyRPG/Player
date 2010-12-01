@@ -35,7 +35,8 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	event(event),
 	erased(false),
 	through(true),
-	interpreter (NULL) {
+	interpreter(NULL),
+	page(NULL) {
 
 	ID = event.ID;
 	
@@ -55,9 +56,9 @@ void Game_Event::ClearStarting() {
 
 ////////////////////////////////////////////////////////////
 void Game_Event::Setup(RPG::EventPage* new_page) {
-	page = *new_page;
+	page = new_page;
 
-	if (page.ID == 0) {
+	if (page == NULL) {
 		tile_id = 0;
 		character_name = "";
 		character_index = 0;
@@ -68,9 +69,9 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 		interpreter = NULL;
 		return;
 	}
-	character_name = page.character_name;
-	character_index = page.character_index;
-	pattern = page.character_pattern;
+	character_name = page->character_name;
+	character_index = page->character_index;
+	pattern = page->character_pattern;
 	/*if (original_direction != page.character_dir) {
 		direction = page.character_dir;
 		original_direction = direction;
@@ -84,16 +85,18 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	//opacity = page.translucent ? 192 : 255;
 	//blend_type = page.blend_type;
 	//move_type = page.move_type;
-	move_speed = page.move_speed;
-	move_frequency = page.move_frequency;
+	move_speed = page->move_speed;
+	move_frequency = page->move_frequency;
 	//move_route = page.move_route;
 	//move_route_index = 0;
 	move_route_forcing = false;
 	//animation_type = page.animation_type;
 	//through = page;
 	//always_on_top = page.overlap;
-	trigger = page.trigger;
-	list = page.event_commands;
+	trigger = page->trigger;
+	list = page->event_commands;
+	// Free resources if needed
+	delete interpreter;
 	interpreter = NULL;
 	if (trigger == 4)
 		interpreter = new Game_Interpreter();
@@ -113,10 +116,7 @@ void Game_Event::Refresh() {
 		}
 	}
 
-	if (new_page == NULL)
-		return;
-
-	if (new_page->ID != this->page.ID) {
+	if (new_page != this->page) {
 		ClearStarting();
 		Setup(new_page);
 		CheckEventTriggerAuto();
@@ -124,24 +124,35 @@ void Game_Event::Refresh() {
 }
 
 bool Game_Event::AreConditionsMet(const RPG::EventPage& page) {
+	// First switch (A)
 	if (page.condition.switch_a && !Game_Switches[page.condition.switch_a_id]) {
 		return false;
 	}
+
+	// Second switch (B)
 	if (page.condition.switch_b && !Game_Switches[page.condition.switch_b_id]) {
 		return false;
 	}
+
+	// Variable
 	if (page.condition.variable && !(Game_Variables[page.condition.variable_id] < page.condition.variable_value)) {
 		return false;
 	}
+
+	// Item in possession?
 	if (page.condition.item && !Game_Party::ItemNumber(page.condition.item_id)) {
 		return false;
 	}
+
+	// Actor in party?
 	if (page.condition.actor) {
 		Game_Actor* actor = Game_Actors::GetActor(page.condition.actor_id);
 		if (!Game_Party::IsActorInParty(actor)) {
 			return false;
 		}
 	}
+
+	// Timer
 	if (page.condition.timer) {
 		// TODO
 		return false;

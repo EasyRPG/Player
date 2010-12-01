@@ -87,6 +87,7 @@ private:
 	bool CommandChangeLevel();
 	bool CommandChangeParameters();
 	bool CommandSkip();
+	bool CommandWait();
 
 	void CommandEnd();
 };

@@ -79,7 +79,7 @@ private:
 	RPG::Event event;
 	bool erased;
 	bool through;
-	RPG::EventPage page;
+	RPG::EventPage* page;
 	std::vector<RPG::EventCommand> list;
 	Game_Interpreter* interpreter;
 };

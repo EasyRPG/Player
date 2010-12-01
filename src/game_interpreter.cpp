@@ -52,7 +52,8 @@ enum CommandCodes {
 	CHANGE_EXP          = 10410,
 	CHANGE_LEVEL        = 10420,
 	CHANGE_PARAMETERS   = 10430,
-	CONDITIONAL_BRANCH  = 12010
+	CONDITIONAL_BRANCH  = 12010,
+	WAIT                = 11410
 };
 
 enum Sizes {
@@ -306,10 +307,17 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandControlVariables();
 		case CHANGE_PARAMETERS:
 			return CommandChangeParameters();
+		case WAIT:
+			return CommandWait();
 		default:
 			return true;
 
 	}
+}
+
+bool Game_Interpreter::CommandWait() {
+	wait_count = list[index].parameters[0] * DEFAULT_FPS / 10;
+	return true;
 }
 
 ////////////////////////////////////////////////////////////
