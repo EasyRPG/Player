@@ -76,7 +76,7 @@
 		#define SUPPORT_MOUSE
 	#endif
 	#if !defined(DINGOO)
-		#define SUPPORT_HWSURFACE
+		//#define SUPPORT_HWSURFACE
 		#define SUPPORT_JOYSTICK
 		#define SUPPORT_JOYSTICK_HAT
 		#define SUPPORT_JOYSTICK_AXIS

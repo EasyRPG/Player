@@ -18,9 +18,9 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include "baseui.h"
 #include "window_menustatus.h"
 #include "graphics.h"
-#include "sdl_ui.h"
 #include "game_party.h"
 
 ////////////////////////////////////////////////////////////
@@ -45,8 +45,7 @@ void Window_MenuStatus::Refresh() {
 	contents->FillofColor(rect, windowskin->GetColorKey());
 	contents->SetColorKey(windowskin->GetColorKey());
 
-	Color c = windowskin->GetPixel(0, 32);
-	DisplaySdlUi->SetBackcolor(c.Get());
+	DisplayUi->SetBackcolor(windowskin->GetPixel(0, 32));
 
 	item_max = Game_Party::GetActors().size();
 

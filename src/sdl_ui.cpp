@@ -29,7 +29,9 @@
 	#include <gccore.h>
 	#include <wiiuse/wpad.h>
 #endif
+#include "color.h"
 #include "font_render_8x8.h"
+#include "graphics.h"
 #include "keys.h"
 #include "output.h"
 #include "player.h"
@@ -165,6 +167,8 @@ bool SdlUi::RefreshDisplayMode() {
 	if (current_display_mode.fullscreen)
 		flags |= SDL_FULLSCREEN;
 
+	Graphics::fps_showing = current_display_mode.fullscreen;
+
 	int display_width = current_display_mode.width;
 	int display_height = current_display_mode.height;
 
@@ -201,8 +205,8 @@ bool SdlUi::RefreshDisplayMode() {
 	return true;
 }
 
-void SdlUi::SetBackcolor(const SDL_Color& color) {
-	back_color = SDL_MapRGB(main_surface->format, color.r, color.g, color.b);
+void SdlUi::SetBackcolor(const Color& color) {
+	back_color = SDL_MapRGB(main_surface->format, color.red, color.green, color.blue);
 }
 
 ///////////////////////////////////////////////////////////
@@ -272,11 +276,11 @@ void SdlUi::SetTitle(const std::string title) {
 }
 
 ///////////////////////////////////////////////////////////
-void SdlUi::DrawScreenText(const std::string text) {
+void SdlUi::DrawScreenText(const std::string& text) {
 	if (SDL_MUSTLOCK(main_surface))
 		SDL_LockSurface(main_surface);
 
-	static uint32 color = SDL_MapRGBA(main_surface->format, 255, 255, 255, 255);
+	static uint32 color = SDL_MapRGB(main_surface->format, 255, 255, 255);
 
 	FontRender8x8::TextDraw(text, (uint8*)main_surface->pixels, 10, 10, main_surface->w, main_surface->h, main_surface->format->BytesPerPixel, color);
 	

@@ -30,9 +30,6 @@
 #include <vector>
 #include "sdl_ui.h"
 
-namespace {
-}
-
 ////////////////////////////////////////////////////////////
 // Global Variables
 ////////////////////////////////////////////////////////////
@@ -51,8 +48,6 @@ namespace Graphics {
 	bool frozen;
 
 	TransitionType actual_transition;
-
-	Uint32 default_backcolor;
 
 	bool fps_showing;
 
@@ -118,8 +113,6 @@ void Graphics::Init() {
 	if (TTF_Init() == -1) {
 		Output::Error("Couldn't initialize SDL_ttf library.\n%s\n", TTF_GetError());
 	}
-
-	default_backcolor = 0;
 
 #ifdef GEKKO
 	fps_showing = true;
@@ -285,17 +278,8 @@ void Graphics::DoTransition() {
 
 void Graphics::PrintFPS() {
 	std::stringstream text;
-	SDL_Color fg_color = { 255, 255, 255, 0 };
-	SDL_Surface* text_surface;
 	text << "FPS: " << fps;
-	text_surface = TTF_RenderText_Solid(font->GetTTF(), text.str().c_str(), fg_color);
-#ifdef GEKKO
-	SDL_Rect rect = { 10, 10, text_surface->w, text_surface->h };
-#else
-	SDL_Rect rect = { 0, 0, text_surface->w, text_surface->h };
-#endif
-	SDL_BlitSurface(text_surface, NULL, DisplaySdlUi->GetDisplaySurface(), &rect);
-	SDL_FreeSurface(text_surface);
+	DisplayUi->DrawScreenText(text.str());
 }
 
 ////////////////////////////////////////////////////////////

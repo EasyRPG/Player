@@ -57,9 +57,9 @@ public:
 	void CleanDisplay();
 	void UpdateDisplay();
 	void SetTitle(const std::string title);
-	void DrawScreenText(const std::string text);
+	void DrawScreenText(const std::string& text);
 	void ShowCursor(bool flag);
-	void SetBackcolor(const SDL_Color& color);
+	void SetBackcolor(const Color& color);
 
 	void ProcessEvents();
 

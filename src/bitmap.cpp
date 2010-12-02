@@ -491,7 +491,7 @@ void Bitmap::Clear(Color color) {
 ////////////////////////////////////////////////////////////
 /// Get pixel
 ////////////////////////////////////////////////////////////
-Color Bitmap::GetPixel(int x, int y) {
+Color& Bitmap::GetPixel(int x, int y) {
 	if (x < 0 || y < 0) return Color(0, 0, 0, 0);
 	if (x >= GetWidth() || y > GetHeight()) return Color(0, 0, 0, 0);
 	if SDL_MUSTLOCK(bitmap)
@@ -635,7 +635,7 @@ void Bitmap::TextDraw(Rect rect, std::string text, TextAlignment align) {
 	SDL_Surface* exfont = IMG_ReadXPMFromArray(const_cast<char**>(exfont_xpm));
 
 	// Get the Shadow color
-	Color shadowColor = system->GetPixel(16, 32);
+	Color shadowColor(system->GetPixel(16, 32));
 
 	// Where to draw the next glyph (x pos)
 	int next_glyph_pos = 0;
@@ -863,7 +863,7 @@ void Bitmap::TextDraw(Rect rect, std::string text, TextAlignment align) {
 			for (int j = 0; j < char_surface->w; ++j, pixels+=4, shadow_pixels+=4) {
 				int x = j + 1 + 16*color_index;
 				
-				Color drawColor = system->GetPixel(x, y);
+				Color drawColor(system->GetPixel(x, y));
 
 #if FONT_SMOOTHING == 0
 				// Make everything matching the colorkey transparent
