@@ -53,7 +53,8 @@ enum CommandCodes {
 	CHANGE_LEVEL        = 10420,
 	CHANGE_PARAMETERS   = 10430,
 	CONDITIONAL_BRANCH  = 12010,
-	WAIT                = 11410
+	WAIT                = 11410,
+	CHANGE_SAVE_ACCESS  = 11930
 };
 
 enum Sizes {
@@ -309,10 +310,17 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandChangeParameters();
 		case WAIT:
 			return CommandWait();
+		case CHANGE_SAVE_ACCESS:
+			return CommandChangeSaveAccess();
 		default:
 			return true;
 
 	}
+}
+
+bool Game_Interpreter::CommandChangeSaveAccess() {
+	Game_System::save_disabled = list[index].parameters[0] == 0;
+	return true;
 }
 
 bool Game_Interpreter::CommandWait() {

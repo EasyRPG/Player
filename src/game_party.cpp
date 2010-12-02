@@ -81,7 +81,7 @@ int Game_Party::ItemNumber(int item_id) {
 ////////////////////////////////////////////////////////////
 void Game_Party::GainGold(int n) {
 	int a = gold + n;
-	gold = min(max(a, 0), 9999999);
+	gold = min(max(a, 0), 999999);
 }
 
 ////////////////////////////////////////////////////////////

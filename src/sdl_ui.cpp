@@ -198,6 +198,8 @@ bool SdlUi::RefreshDisplayMode() {
 			main_window->format->Bmask,
 			main_window->format->Amask
 		);
+		if (!main_surface) 
+			return false;
 	} else {
 		main_surface = main_window;
 	}

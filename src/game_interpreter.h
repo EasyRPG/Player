@@ -86,6 +86,7 @@ private:
 	bool CommandChangeExp();
 	bool CommandChangeLevel();
 	bool CommandChangeParameters();
+	bool CommandChangeSaveAccess();
 	bool CommandSkip();
 	bool CommandWait();
 
