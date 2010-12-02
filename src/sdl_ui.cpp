@@ -57,7 +57,9 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag, boo
 	back_color(0),
 	mouse_focus(false),
 	mouse_x(0),
-	mouse_y(0) {
+	mouse_y(0),
+	main_surface(NULL),
+	main_window(NULL) {
 
 	keys.resize(Input::Keys::KEYS_COUNT, false);
 
@@ -119,7 +121,6 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag, boo
 ///////////////////////////////////////////////////////////
 SdlUi::~SdlUi() {
 	SDL_FreeSurface(main_surface);
-	SDL_FreeSurface(main_window);
 }
 
 ////////////////////////////////////////////////////////////
@@ -171,6 +172,11 @@ bool SdlUi::RefreshDisplayMode() {
 		display_width *= 2;
 		display_height *= 2;
 	}
+
+	if (main_surface != main_window) {
+		SDL_FreeSurface(main_surface);
+		main_surface = NULL;
+	}
 	
 	main_window = SDL_SetVideoMode(display_width, display_height, SCREEN_TARGET_BPP, flags);
 
@@ -191,8 +197,6 @@ bool SdlUi::RefreshDisplayMode() {
 	} else {
 		main_surface = main_window;
 	}
-
-	back_color = SDL_MapRGBA(main_surface->format, 0, 0, 0, 255);
 
 	return true;
 }

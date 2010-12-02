@@ -66,6 +66,7 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 		through = true;
 		trigger = -1;
 		list.clear();
+		delete interpreter;
 		interpreter = NULL;
 		return;
 	}
@@ -108,11 +109,12 @@ void Game_Event::Refresh() {
 	if (!erased) {
 		std::vector<RPG::EventPage>::reverse_iterator i;
 		for (i = event.pages.rbegin(); i != event.pages.rend(); i++) {
-			if (!AreConditionsMet(*i)) {
-				continue;
+			// Loop in reverse order to see whether any page meets conditions...
+			if (AreConditionsMet(*i)) {
+				new_page = &(*i);
+				// Stop looking for more...
+				break;
 			}
-			new_page = &(*i);
-			break;
 		}
 	}
 
