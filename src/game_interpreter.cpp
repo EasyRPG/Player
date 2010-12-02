@@ -54,7 +54,8 @@ enum CommandCodes {
 	CHANGE_PARAMETERS   = 10430,
 	CONDITIONAL_BRANCH  = 12010,
 	WAIT                = 11410,
-	CHANGE_SAVE_ACCESS  = 11930
+	CHANGE_SAVE_ACCESS  = 11930,
+	CHANGE_ACTOR_FACE   = 10640
 };
 
 enum Sizes {
@@ -312,10 +313,22 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandWait();
 		case CHANGE_SAVE_ACCESS:
 			return CommandChangeSaveAccess();
+		case CHANGE_ACTOR_FACE:
+			return CommandChangeActorFace();
 		default:
 			return true;
 
 	}
+}
+
+bool Game_Interpreter::CommandChangeActorFace() {
+	Game_Actor* actor = Game_Actors::GetActor(list[index].parameters[0]);
+	if (actor != NULL) {
+		actor->SetFace(list[index].string, list[index].parameters[1]);
+		Main_Data::game_player->Refresh();
+		return true;
+	}
+	return false;
 }
 
 bool Game_Interpreter::CommandChangeSaveAccess() {

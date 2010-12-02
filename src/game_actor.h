@@ -150,6 +150,8 @@ public:
 	////////////////////////////////////////////////////////
 	void SetLevel(int _level);
 
+	void SetFace(const std::string& file_name, int index);
+
 	/// @return max hp
 	int GetMaxHp();
 

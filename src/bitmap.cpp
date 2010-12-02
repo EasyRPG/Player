@@ -491,7 +491,7 @@ void Bitmap::Clear(Color color) {
 ////////////////////////////////////////////////////////////
 /// Get pixel
 ////////////////////////////////////////////////////////////
-Color& Bitmap::GetPixel(int x, int y) {
+Color Bitmap::GetPixel(int x, int y) {
 	if (x < 0 || y < 0) return Color(0, 0, 0, 0);
 	if (x >= GetWidth() || y > GetHeight()) return Color(0, 0, 0, 0);
 	if SDL_MUSTLOCK(bitmap)

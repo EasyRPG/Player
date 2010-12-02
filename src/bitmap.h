@@ -70,7 +70,7 @@ public:
 	void FillofColor(const Rect& rect, Uint32 color);
 	void Clear();
 	void Clear(Color color);
-	Color& GetPixel(int x, int y);
+	Color GetPixel(int x, int y);
 	void SetPixel(int x, int y, Color color);
 	void HueChange(double hue);
 	void SatChange(double saturation);
