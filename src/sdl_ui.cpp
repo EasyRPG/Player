@@ -117,6 +117,10 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag, boo
 	SDL_JoystickOpen(0);
 #endif
 
+#ifndef SUPPORT_MOUSE
+	ShowCursor(false);
+#endif
+
 	DisplaySdlUi = this;
 }
 
@@ -292,6 +296,9 @@ void SdlUi::DrawScreenText(const std::string& text) {
 
 ///////////////////////////////////////////////////////////
 void SdlUi::ShowCursor(bool flag) {
+#ifndef SUPPORT_MOUSE
+	flag = false;
+#endif
 	SDL_ShowCursor(flag ? SDL_ENABLE : SDL_DISABLE);
 }
 
@@ -349,11 +356,11 @@ void SdlUi::ProcessEvent(SDL_Event &evnt) {
 
 						SDL_SetEventFilter(&FilterUntilFocus);
 
-						SDL_ShowCursor(SDL_ENABLE);
+						ShowCursor(true);
 
 						SDL_WaitEvent(NULL);
 
-						SDL_ShowCursor(SDL_DISABLE);
+						ShowCursor(false);
 
 						SDL_SetEventFilter(NULL);
 

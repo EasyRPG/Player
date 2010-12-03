@@ -73,7 +73,7 @@
 		#define SUPPORT_ZOOM
 		#define SUPPORT_FULLSCREEN_TOGGLE
 		#define SUPPORT_KEYBOARD
-		#define SUPPORT_MOUSE
+		//#define SUPPORT_MOUSE
 	#endif
 	#if !defined(DINGOO)
 		//#define SUPPORT_HWSURFACE
