@@ -26,6 +26,7 @@
 #include "input.h"
 #include "cache.h"
 #include "main_data.h"
+#include "scene_logo.h"
 #include "scene_title.h"
 
 ////////////////////////////////////////////////////////////
@@ -56,7 +57,11 @@ void Player::Init() {
 
 ////////////////////////////////////////////////////////////
 void Player::Run() {
+#ifdef _DEBUG
 	Scene::instance = new Scene_Title();
+#else
+	Scene::instance = new Scene_Logo();
+#endif
 
 	reset_flag = false;
 	

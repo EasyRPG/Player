@@ -35,7 +35,9 @@ class Bitmap {
 public:
 	Bitmap(int width, int height);
 	Bitmap(std::string filename, bool transparent);
+	Bitmap(char* mem_data, size_t mem_size, bool transparent);
 	Bitmap(Bitmap* source, Rect& src_rect);
+
 	~Bitmap();
 
 	enum TextAlignment {

@@ -39,6 +39,8 @@
       <File Name="../../src/scene.h"/>
       <File Name="../../src/scene_equip.cpp"/>
       <File Name="../../src/scene_equip.h"/>
+      <File Name="../../src/scene_logo.cpp"/>
+      <File Name="../../src/scene_logo.h"/>
       <File Name="../../src/scene_title.cpp"/>
       <File Name="../../src/scene_title.h"/>
       <File Name="../../src/scene_map.cpp"/>

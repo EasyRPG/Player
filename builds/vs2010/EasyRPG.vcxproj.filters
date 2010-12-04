@@ -234,6 +234,9 @@
     <ClCompile Include="..\..\src\window_equipright.cpp">
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\scene_logo.cpp">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cache.h">
@@ -430,6 +433,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\window_equipright.h">
       <Filter>Source Files\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene_logo.h">
+      <Filter>Source Files\Engine\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

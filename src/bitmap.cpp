@@ -79,6 +79,7 @@ Bitmap::Bitmap(int width, int height) {
 	}
 	SDL_FreeSurface(temp);
 }
+
 Bitmap::Bitmap(std::string filename, bool transparent) {
 	std::string path = FileFinder::FindImage(filename);
 	if (path == "") {
@@ -121,6 +122,46 @@ Bitmap::Bitmap(std::string filename, bool transparent) {
 #endif
 	SDL_FreeSurface(temp);
 }
+
+Bitmap::Bitmap(char* mem_data, size_t mem_size, bool transparent) {
+	SDL_RWops* rw_ops = SDL_RWFromConstMem(mem_data, mem_size);
+	SDL_Surface* temp = IMG_Load_RW(rw_ops, 1);
+	if (temp == NULL) {
+		Output::Error("Couldn't load image from memory.\n%s\n", IMG_GetError());
+	}
+	Color col(0, 0, 0, 0);
+	if ((temp->format->BitsPerPixel == 8) && (transparent)) {
+		// The first color of the palette will be the key color
+		// if needed.
+		SDL_Color colorkey = temp->format->palette->colors[0];
+		col.red = colorkey.r;
+		col.green = colorkey.g;
+		col.blue = colorkey.b;
+#ifndef USE_ALPHA
+		// Remove color duplicates from palette
+		// This hack is needed to emulate RPG_RT behaviour
+		RemoveColorDuplicates(temp, &colorkey);
+		// Set color key
+		SDL_SetColorKey(temp, SDL_SRCCOLORKEY, SDL_MapRGB(temp->format, col.red, col.green, col.blue));
+#endif
+	}
+#ifdef USE_ALPHA
+	bitmap = SDL_DisplayFormatAlpha(temp);
+#else
+	// Don't need alpha
+	bitmap = SDL_DisplayFormat(temp);
+#endif
+	if (bitmap == NULL) {
+		Output::Error("Couldn't optimize memory image.\n%s\n", SDL_GetError());
+	}
+#ifdef USE_ALPHA
+	if (temp->format->BitsPerPixel == 8) {
+		SetTransparent(col);	
+	}
+#endif
+	SDL_FreeSurface(temp);
+}
+
 Bitmap::Bitmap(Bitmap* source, Rect& src_rect) {
 	SDL_Surface* temp;
 #ifdef USE_ALPHA

@@ -41,7 +41,8 @@ public:
 		Shop,
 		Name,
 		Gameover,
-		Debug
+		Debug,
+		Logo
 	};
 	
 	////////////////////////////////////////////////////////
