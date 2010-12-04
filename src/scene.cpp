@@ -19,6 +19,9 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "scene.h"
+#include "graphics.h"
+#include "input.h"
+#include "player.h"
 
 #ifndef NULL
 #define NULL 0
@@ -28,3 +31,56 @@
 Scene* Scene::instance;
 Scene::SceneType Scene::type;
 Scene* Scene::old_instance = NULL;
+
+////////////////////////////////////////////////////////////
+void Scene::MainFunction() {
+	Start();
+	PerformTransition();
+	PostStart();
+
+	// Scene loop
+	while (Scene::instance == this) {
+		Player::Update();
+		Graphics::Update();
+		Input::Update();
+		Update();
+	}
+	Graphics::Update();
+
+	PreTerminate();
+	PerformTransition();
+	Terminate();
+}
+
+////////////////////////////////////////////////////////////
+void Scene::Start() {
+}
+
+////////////////////////////////////////////////////////////
+void Scene::PostStart() {
+}
+
+////////////////////////////////////////////////////////////
+void Scene::PreTerminate() {
+}
+
+////////////////////////////////////////////////////////////
+void Scene::Terminate() {
+	Scene::old_instance = this;
+}
+
+////////////////////////////////////////////////////////////
+void Scene::PerformTransition() {
+	static bool faded_in = false;
+	if (!faded_in) {
+		Graphics::Transition(Graphics::FadeIn, 20, true);
+		faded_in = true;
+	} else {
+		Graphics::Transition(Graphics::FadeOut, 20, false);
+		faded_in = false;
+	}
+}
+
+////////////////////////////////////////////////////////////
+void Scene::Update() {
+}

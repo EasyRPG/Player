@@ -35,7 +35,44 @@ Scene_Menu::Scene_Menu(int menu_index) :
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Menu::MainFunction() {
+Scene_Menu::~Scene_Menu() {
+	delete command_window;
+	delete gold_window;
+	delete menustatus_window;
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Menu::Start() {
+	CreateCommandWindow();
+
+	// Gold Window
+	gold_window = new Window_Gold();
+	gold_window->SetX(0);
+	gold_window->SetY(208);
+
+	// Status Window
+	menustatus_window = new Window_MenuStatus();
+	menustatus_window->SetX(88);
+	menustatus_window->SetY(0);
+	menustatus_window->SetActive(false);
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Menu::Update() {
+	command_window->Update();
+	gold_window->Update();
+	menustatus_window->Update();
+
+	if (command_window->GetActive()) {
+		UpdateCommand();
+	}
+	else if (menustatus_window->GetActive()) {
+		UpdateActorSelection();
+	}
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Menu::CreateCommandWindow() {
 	// Create Options Window
 	std::vector<std::string> options;
 	options.push_back(Data::terms.command_item);
@@ -58,51 +95,6 @@ void Scene_Menu::MainFunction() {
 	// If save is forbidden disable this item
 	if (Game_System::save_disabled) {
 		command_window->DisableItem(3);
-	}
-
-	// Gold Window
-	gold_window = new Window_Gold();
-	gold_window->SetX(0);
-	gold_window->SetY(208);
-
-	// Status Window
-	menustatus_window = new Window_MenuStatus();
-	menustatus_window->SetX(88);
-	menustatus_window->SetY(0);
-	menustatus_window->SetActive(false);
-
-	Graphics::Transition(Graphics::FadeIn, 20, false);
-
-	while (instance == this) {
-		Player::Update();
-		Graphics::Update();
-		Input::Update();
-		Update();
-	}
-
-	Graphics::Transition(Graphics::FadeOut, 20, false);
-
-	Scene::old_instance = this;
-}
-
-////////////////////////////////////////////////////////////
-Scene_Menu::~Scene_Menu() {
-	delete command_window;
-	delete gold_window;
-	delete menustatus_window;
-}
-
-////////////////////////////////////////////////////////////
-void Scene_Menu::Update() {
-	command_window->Update();
-	gold_window->Update();
-	menustatus_window->Update();
-
-	if (command_window->GetActive()) {
-		UpdateCommand();
-	}
-	else if (menustatus_window->GetActive()) {
-		UpdateStatus();
 	}
 }
 
@@ -137,7 +129,7 @@ void Scene_Menu::UpdateCommand() {
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Menu::UpdateStatus() {
+void Scene_Menu::UpdateActorSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Data::system.cancel_se);
 		command_window->SetActive(true);

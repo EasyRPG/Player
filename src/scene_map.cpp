@@ -33,8 +33,6 @@
 #include "input.h"
 
 ////////////////////////////////////////////////////////////
-/// Constructor
-////////////////////////////////////////////////////////////
 Scene_Map::Scene_Map() : 
 	spriteset(NULL),
 	message_window(NULL) {
@@ -42,31 +40,16 @@ Scene_Map::Scene_Map() :
 }
 
 ////////////////////////////////////////////////////////////
-/// Main
-////////////////////////////////////////////////////////////
-void Scene_Map::MainFunction() {	
-	spriteset = new Spriteset_Map();
-	//message_window = new Window_Message();
-
-	Graphics::Transition(Graphics::FadeIn, 20, true);
-
-	// Scene loop
-	while (instance == this) {
-		Player::Update();
-		Graphics::Update();
-		Input::Update();
-		Update();
-	}
-
-	Graphics::Transition(Graphics::FadeOut, 20, false);
-
+Scene_Map::~Scene_Map() {
 	delete spriteset;
-
-	Scene::old_instance = this;
 }
 
 ////////////////////////////////////////////////////////////
-/// Update
+void Scene_Map::Start() {
+	spriteset = new Spriteset_Map();
+	//message_window = new Window_Message();
+}
+
 ////////////////////////////////////////////////////////////
 void Scene_Map::Update() {
 	Game_Map::GetInterpreter().Update();
