@@ -103,6 +103,12 @@ void Player::Run() {
 	}
 
 	reset_flag = false;
+
+	// Hack to avoid frame skip during the fade in
+	// The loop fixes the FPS
+	for (int i = 0; i < 50; ++i) {
+		Graphics::Update();
+	}
 	
 	// Main loop
 	while (Scene::type != Scene::Null) {

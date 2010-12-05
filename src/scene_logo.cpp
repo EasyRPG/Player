@@ -919,12 +919,6 @@ Scene_Logo::~Scene_Logo() {
 
 ////////////////////////////////////////////////////////////
 void Scene_Logo::Start() {
-	// Hack to avoid frame skip during the fade in
-	// The loop fixes the FPS
-	for (int i = 0; i < 50; ++i) {
-		Graphics::Update();
-	}
-
 	logo = new Sprite();
 	logo_img = new Bitmap((char*)easyrpg_logo, sizeof(easyrpg_logo), false);
 	logo->SetBitmap(logo_img);
