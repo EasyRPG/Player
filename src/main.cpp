@@ -26,7 +26,7 @@
 
 int main(int argc, char* argv[]) {
 	FileFinder::Init();
-	Player::Init();
+	Player::Init(argc, argv);
 	Graphics::Init();
 	Input::Init();
 	Audio::Init();

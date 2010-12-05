@@ -33,22 +33,48 @@
 namespace Player {
 	bool exit_flag;
 	bool reset_flag;
+	bool debug_flag;
+	bool hide_title_flag;
+	bool window_flag;
+	bool battle_test_flag;
+	//bool battle_test_troop_id;
 }
 
 ////////////////////////////////////////////////////////////
-void Player::Init() {
+void Player::Init(int argc, char *argv[]) {
 	static bool init = false;
 
 	if (init) return;
 
 	exit_flag = false;
 	reset_flag = false;
-	
+	debug_flag = false;
+	hide_title_flag = false;
+	window_flag = false;
+	battle_test_flag = false;
+	//battle_test_troop_id = NULL;
+
+	if (argc > 1 && !strcmp(argv[1], "TestPlay")) {
+		debug_flag = true;
+	}
+	if (argc > 2 && !strcmp(argv[2], "HideTitle")) {
+		hide_title_flag = true;
+	}
+	if (argc > 3 && !strcmp(argv[3], "Window")) {
+		window_flag = true;
+	}
+	if (argc > 4 && !strcmp(argv[1], "BattleTest")) {
+		if (atoi(argv[4])) {
+//			battle_test_troop_id = atoi(argv[4]);
+		} else {
+			Output::Error("Invalid troop ID.\n");
+		}
+	}
 	DisplayUi = BaseUi::CreateBaseUi(
 		SCREEN_TARGET_WIDTH,
 		SCREEN_TARGET_HEIGHT,
 		GAME_TITLE,
-		RUN_FULLSCREEN,
+		!window_flag,
 		RUN_ZOOM
 	);
 
@@ -57,11 +83,11 @@ void Player::Init() {
 
 ////////////////////////////////////////////////////////////
 void Player::Run() {
-#ifdef _DEBUG
+if (debug_flag) {
 	Scene::instance = new Scene_Title();
-#else
+} else {
 	Scene::instance = new Scene_Logo();
-#endif
+}
 
 	reset_flag = false;
 	

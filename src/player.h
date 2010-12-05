@@ -30,7 +30,7 @@ namespace Player {
 	////////////////////////////////////////////////////////
 	/// Initialize EasyRPG player.
 	////////////////////////////////////////////////////////
-	void Init();
+	void Init(int argc, char *argv[]);
 
 	////////////////////////////////////////////////////////
 	/// Run the game engine.
@@ -62,6 +62,22 @@ namespace Player {
 
 	/// Reset flag, if true will restart game on next Player::Update.
 	extern bool reset_flag;
+
+	/// Debug flag, if true will run game in debug mode.
+	extern bool debug_flag;
+
+	/// Hide Title flag, if true title scene will run without image and music.
+	extern bool hide_title_flag;
+
+	/// Window flag, if true will run in window mode instead of full screen.
+	extern bool window_flag;
+
+	/// Battle Test flag, if true will run battle test.
+	extern bool battle_test_flag;
+
+	/// Battle Test Troop ID to fight with if battle test is run.
+	//extern bool battle_test_troop_id;
+
 }
 
 #endif
