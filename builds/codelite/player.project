@@ -37,6 +37,8 @@
     </VirtualDirectory>
     <VirtualDirectory Name="Scene">
       <File Name="../../src/scene.h"/>
+      <File Name="../../src/scene_battle.cpp"/>
+      <File Name="../../src/scene_battle.h"/>
       <File Name="../../src/scene_equip.cpp"/>
       <File Name="../../src/scene_equip.h"/>
       <File Name="../../src/scene_logo.cpp"/>

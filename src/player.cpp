@@ -28,6 +28,7 @@
 #include "main_data.h"
 #include "scene_logo.h"
 #include "scene_title.h"
+#include "scene_battle.h"
 
 ////////////////////////////////////////////////////////////
 namespace Player {
@@ -37,7 +38,7 @@ namespace Player {
 	bool hide_title_flag;
 	bool window_flag;
 	bool battle_test_flag;
-	//bool battle_test_troop_id;
+	int battle_test_troop_id;
 }
 
 ////////////////////////////////////////////////////////////
@@ -48,11 +49,19 @@ void Player::Init(int argc, char *argv[]) {
 
 	exit_flag = false;
 	reset_flag = false;
+#ifdef _DEBUG
+	debug_flag = true;
+#else
 	debug_flag = false;
+#endif
 	hide_title_flag = false;
+#ifdef _DEBUG
+	window_flag = true; // Debug Build needs no fullscreen
+#else
 	window_flag = false;
+#endif
 	battle_test_flag = false;
-	//battle_test_troop_id = NULL;
+	battle_test_troop_id = 0;
 
 	if (argc > 1 && !strcmp(argv[1], "TestPlay")) {
 		debug_flag = true;
@@ -63,13 +72,15 @@ void Player::Init(int argc, char *argv[]) {
 	if (argc > 3 && !strcmp(argv[3], "Window")) {
 		window_flag = true;
 	}
-	if (argc > 4 && !strcmp(argv[1], "BattleTest")) {
-		if (atoi(argv[4])) {
-//			battle_test_troop_id = atoi(argv[4]);
+	if (argc > 1 && !strcmp(argv[1], "BattleTest")) {
+		battle_test_flag = true;
+		if (argc > 4) {
+			battle_test_troop_id = atoi(argv[4]);
 		} else {
-			Output::Error("Invalid troop ID.\n");
+			battle_test_troop_id = 0;
 		}
 	}
+
 	DisplayUi = BaseUi::CreateBaseUi(
 		SCREEN_TARGET_WIDTH,
 		SCREEN_TARGET_HEIGHT,
@@ -83,11 +94,13 @@ void Player::Init(int argc, char *argv[]) {
 
 ////////////////////////////////////////////////////////////
 void Player::Run() {
-if (debug_flag) {
-	Scene::instance = new Scene_Title();
-} else {
-	Scene::instance = new Scene_Logo();
-}
+	if (battle_test_flag) {
+		Scene::instance = new Scene_Battle();
+	} else if (debug_flag) {
+		Scene::instance = new Scene_Title();
+	} else {
+		Scene::instance = new Scene_Logo();
+	}
 
 	reset_flag = false;
 	

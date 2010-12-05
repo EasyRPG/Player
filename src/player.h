@@ -76,7 +76,7 @@ namespace Player {
 	extern bool battle_test_flag;
 
 	/// Battle Test Troop ID to fight with if battle test is run.
-	//extern bool battle_test_troop_id;
+	extern int battle_test_troop_id;
 
 }
 

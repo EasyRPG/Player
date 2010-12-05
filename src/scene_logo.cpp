@@ -21,7 +21,6 @@
 #include "scene_logo.h"
 #include "graphics.h"
 #include "input.h"
-#include "player.h"
 #include "scene_title.h"
 
 static unsigned char easyrpg_logo[] = {
@@ -920,25 +919,15 @@ Scene_Logo::~Scene_Logo() {
 
 ////////////////////////////////////////////////////////////
 void Scene_Logo::Start() {
-	// Hack to get FPS right 
-	for (int i = 0; i < 50; ++i)
+	// Hack to avoid frame skip during the fade in
+	// The loop fixes the FPS
+	for (int i = 0; i < 50; ++i) {
 		Graphics::Update();
-	//////
+	}
+
 	logo = new Sprite();
 	logo_img = new Bitmap((char*)easyrpg_logo, sizeof(easyrpg_logo), false);
 	logo->SetBitmap(logo_img);
-}
-
-////////////////////////////////////////////////////////////
-void Scene_Logo::PerformTransition() {
-	static bool faded_in = false;
-	if (!faded_in) {
-		Graphics::Transition(Graphics::FadeIn, 20, false);
-		faded_in = true;
-	} else {
-		Graphics::Transition(Graphics::FadeOut, 20, false);
-		faded_in = false;
-	}
 }
 
 ////////////////////////////////////////////////////////////
