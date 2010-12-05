@@ -25,6 +25,7 @@
 #include "player.h"
 #include "SDL_ttf.h"
 #include "system.h"
+#include "util_macro.h"
 #include <algorithm>
 #include <sstream>
 #include <vector>
@@ -64,10 +65,13 @@ namespace {
 	int transition_frames;
 	int transition_current_frame;
 	int transition_increment;
+	int increment_left, increment_left_acc;
+	int frames_left;
 	bool wait_for_transition;
 	SDL_Surface* fake_screen;
 	SDL_Surface* blank_screen;
 	Font* font;
+
 #ifdef USE_FIXED_TIMESTEP_FPS
 	const int MAXIMUM_FRAME_RATE = 60;
 	const int MINIMUM_FRAME_RATE = 15;
@@ -79,6 +83,13 @@ namespace {
 	double update_iterations;
 	bool start;
 #endif
+}
+
+namespace {
+	int mcd(int a, int b) {
+		if (a==0) return b;
+		return mcd(b%a,a);
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -238,26 +249,32 @@ void Graphics::Update() {
 void Graphics::DoTransition() {
 	// Preparation is done
 	prepare_transition = false;
-	if (transition_current_frame <= transition_frames) {
+	if (transition_current_frame < transition_frames) {
+
+		int inc;
+		if ( ++transition_current_frame % frames_left == 0 ) {
+			increment_left_acc += increment_left;
+		}
+		inc = transition_current_frame*transition_increment+increment_left_acc;
+
 		switch (actual_transition) {
 			case FadeIn:
 				SDL_FillRect(DisplaySdlUi->GetDisplaySurface(), NULL, 0);
-				SDL_SetAlpha(fake_screen, SDL_SRCALPHA, transition_current_frame*transition_increment);
+				SDL_SetAlpha(fake_screen, SDL_SRCALPHA, inc);
 				SDL_BlitSurface(fake_screen, NULL, DisplaySdlUi->GetDisplaySurface(), NULL);
 				////////
 				break;
 
 			case FadeOut:
-				SDL_SetAlpha(blank_screen, SDL_SRCALPHA, transition_current_frame*transition_increment);
-				SDL_BlitSurface(blank_screen, NULL, fake_screen, NULL);
+				SDL_SetAlpha(blank_screen, SDL_SRCALPHA, inc);
 				SDL_BlitSurface(fake_screen, NULL, DisplaySdlUi->GetDisplaySurface(), NULL);
+				SDL_BlitSurface(blank_screen, NULL, DisplaySdlUi->GetDisplaySurface(), NULL);
 
 				break;
 
 			default:
 				break;
 		}
-		transition_current_frame++;
 	} else {
 		if (actual_transition == FadeOut) {
 			// Little hack to skip drawing next frame
@@ -341,10 +358,16 @@ void Graphics::Transition(TransitionType type, int time, bool wait) {
 	if (time > 255) time = 255;
 	if (time == 0) time = 1;
 	transition_frames = time;
-	transition_increment = 255/time;
+	transition_increment = 255 / time;
 	transition_current_frame = 0;
+	increment_left_acc = 0;
 	actual_transition = type;
 	wait_for_transition = wait;
+
+	int div = mcd(255%time, time);
+
+	increment_left = (255%time) / div;
+	frames_left = time / div;
 
 	if (!frozen) {
 		// Get into actual transition

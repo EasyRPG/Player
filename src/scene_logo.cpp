@@ -920,6 +920,10 @@ Scene_Logo::~Scene_Logo() {
 
 ////////////////////////////////////////////////////////////
 void Scene_Logo::Start() {
+	// Hack to get FPS right 
+	for (int i = 0; i < 50; ++i)
+		Graphics::Update();
+	//////
 	logo = new Sprite();
 	logo_img = new Bitmap((char*)easyrpg_logo, sizeof(easyrpg_logo), false);
 	logo->SetBitmap(logo_img);
