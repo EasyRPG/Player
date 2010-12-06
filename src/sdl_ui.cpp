@@ -127,6 +127,7 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag, boo
 ///////////////////////////////////////////////////////////
 SdlUi::~SdlUi() {
 	SDL_FreeSurface(main_surface);
+	SDL_Quit();
 }
 
 ////////////////////////////////////////////////////////////
@@ -306,6 +307,10 @@ void SdlUi::ShowCursor(bool flag) {
 void SdlUi::Blit2X(SDL_Surface* src, SDL_Surface* dst) {
 	int h, w, t, t2, w2, m = 0, m2 = 0;
 
+	if (src == dst) {
+		return;
+	}
+	
 	if (SDL_MUSTLOCK(src))
 		SDL_LockSurface(src);
 
