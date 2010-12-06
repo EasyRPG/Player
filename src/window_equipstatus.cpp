@@ -18,6 +18,8 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <sstream>
+#include "game_actors.h"
 #include "window_equipstatus.h"
 
 ////////////////////////////////////////////////////////////
@@ -35,7 +37,16 @@ Window_EquipStatus::~Window_EquipStatus() {
 
 ////////////////////////////////////////////////////////////
 void Window_EquipStatus::Refresh() {
-	// ToDo
+	contents->Clear();
+	Rect rect(0, 0, contents->GetWidth(), contents->GetHeight());
+	contents->FillofColor(rect, windowskin->GetColorKey());
+	contents->SetColorKey(windowskin->GetColorKey());
+
+	DrawActorName(Game_Actors::GetActor(actor_id), 0, 0);
+
+	for (int i = 0; i < 4; ++i) {
+		DrawParameter(0, (12 + 2) + ((12 + 4) * i), i);
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -51,4 +62,69 @@ void Window_EquipStatus::SetNewParameters(
 ////////////////////////////////////////////////////////////
 void Window_EquipStatus::ClearParameters() {
 	draw_params = false;
+}
+
+////////////////////////////////////////////////////////////
+int Window_EquipStatus::GetNewParameterColor(int old_value, int new_value) {
+	if (old_value == new_value) {
+		return 0;
+	} else if (old_value < new_value) {
+		return 5;
+	} else {
+		return 4;
+	}
+}
+
+////////////////////////////////////////////////////////////
+void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
+	std::string name;
+	int value;
+	int new_value;
+	
+	switch (type) {
+	case 0:
+		name = Data::terms.attack;
+		value = Game_Actors::GetActor(actor_id)->GetAtk();
+		new_value = atk;
+		break;
+	case 1:
+		name = Data::terms.defense;
+		value = Game_Actors::GetActor(actor_id)->GetDef();
+		new_value = def;
+		break;
+	case 2:
+		name = Data::terms.spirit;
+		value = Game_Actors::GetActor(actor_id)->GetSpi();
+		new_value = spi;
+		break;
+	case 3:
+		name = Data::terms.agility;
+		value = Game_Actors::GetActor(actor_id)->GetAgi();
+		new_value = agi;
+		break;
+	default:
+		return;
+	}
+
+	// Draw Term
+	Rect rect = contents->GetTextSize(name);
+	rect.x = cx; rect.y = cy;
+	contents->GetFont()->color = 1;
+	contents->TextDraw(rect, name);
+
+	// Draw Value
+	rect.x = cx + 60; rect.width = 18;
+	std::stringstream ss;
+	ss << value;
+	contents->GetFont()->color = 0;
+	contents->TextDraw(rect, ss.str(), Bitmap::align_right);
+
+	if (draw_params) {
+		// Draw New Value
+		rect.x = cx + 90;
+		ss.str(""); ss.clear();
+		ss << new_value;
+		contents->GetFont()->color = GetNewParameterColor(value, new_value);
+		contents->TextDraw(rect, ss.str(), Bitmap::align_right);
+	}
 }

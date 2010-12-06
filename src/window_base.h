@@ -48,6 +48,7 @@ public:
 	void DrawActorSp(Game_Actor* actor, int cx, int cy);
 	void DrawActorSp(Game_Actor* actor, int cx, int cy, int cwidth);
 	void DrawActorParameter(Game_Actor* actor, int cx, int cy, int type);
+	void DrawEquipmentType(Game_Actor* actor, int cx, int cy, int type);
 	void DrawItemName(RPG::Item* item, int cx, int cy);
 
 private:

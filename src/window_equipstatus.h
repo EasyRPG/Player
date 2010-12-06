@@ -60,10 +60,27 @@ public:
 	////////////////////////////////////////////////////////
 	void ClearParameters();
 
+	////////////////////////////////////////////////////////
+	/// Returns the draw color based on the passed values
+	/// @param old_value : Old value
+	/// @param new_value : New value
+	/// @return 0 if equal, 4 if new > old, 5 if old > new
+	////////////////////////////////////////////////////////
+	int GetNewParameterColor(int old_value, int new_value);
+
+	////////////////////////////////////////////////////////
+	/// Draws the actor parameters followed by the new ones
+	/// @param cx : x coordinate
+	/// @param cy : y coordinate
+	/// @param type : Parameter type to draw
+	////////////////////////////////////////////////////////
+	void DrawParameter(int cx, int cy, int type);
+
 private:
 	int actor_id;
 	/// Draws the params if true
 	bool draw_params;
+
 	int atk;
 	int def;
 	int spi;

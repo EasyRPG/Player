@@ -227,9 +227,80 @@ void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy, int width) {
 }
 
 void Window_Base::DrawActorParameter(Game_Actor* actor, int cx, int cy, int type) {
+	std::string name;
+	int value;
 	
+	switch (type) {
+	case 0:
+		name = Data::terms.attack;
+		value = actor->GetAtk();
+		break;
+	case 1:
+		name = Data::terms.defense;
+		value = actor->GetDef();
+		break;
+	case 2:
+		name = Data::terms.spirit;
+		value = actor->GetSpi();
+		break;
+	case 3:
+		name = Data::terms.agility;
+		value = actor->GetAgi();
+		break;
+	default:
+		return;
+	}
+
+	// Draw Term
+	Rect rect = contents->GetTextSize(name);
+	rect.x = cx; rect.y = cy;
+	contents->GetFont()->color = 1;
+	contents->TextDraw(rect, name);
+
+	// Draw Value
+	rect.x = cx + 78;
+	std::stringstream ss;
+	ss << value;
+	contents->GetFont()->color = 0;
+	contents->TextDraw(rect, ss.str(), Bitmap::align_right);
+}
+
+void Window_Base::DrawEquipmentType(Game_Actor* actor, int cx, int cy, int type) {
+	std::string name;
+	
+	switch (type) {
+	case 0:
+		name = Data::terms.weapon;
+		break;
+	case 1:
+		if (actor->GetTwoSwordsStyle()) {
+			name = Data::terms.weapon;
+		} else {
+			name = Data::terms.shield;
+		}
+		break;
+	case 2:
+		name = Data::terms.armor;
+		break;
+	case 3:
+		name = Data::terms.helmet;
+		break;
+	case 4:
+		name = Data::terms.accessory;
+		break;
+	default:
+		return;
+	}
+
+	Rect rect = contents->GetTextSize(name);
+	rect.x = cx; rect.y = cy;
+	contents->GetFont()->color = 1;
+	contents->TextDraw(rect, name);
 }
 
 void Window_Base::DrawItemName(RPG::Item* item, int cx, int cy) {
-	
+	contents->GetFont()->color = 0;
+	Rect rect = contents->GetTextSize(item->name);
+	rect.x = cx; rect.y = cy;
+	contents->TextDraw(rect, item->name);
 }
