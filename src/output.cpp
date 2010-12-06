@@ -75,6 +75,7 @@ void Output::ErrorStr(std::string err) {
 		file << err;
 		file.close();
 	#elif OUTPUT_TYPE == OUTPUT_MSGBOX
+		DisplayUi->ShowCursor(true);
 		MsgBox::Error(err, GAME_TITLE);
 	#endif
 	Player::Exit();
@@ -116,7 +117,9 @@ void Output::WarningStr(std::string warn) {
 		file.close();
 	#elif OUTPUT_TYPE == OUTPUT_MSGBOX
 		Graphics::TimerWait();
+		bool last = DisplayUi->ShowCursor(true);
 		MsgBox::Warning(warn, GAME_TITLE);
+		DisplayUi->ShowCursor(last);
 		Graphics::TimerContinue();
 	#endif
 }
@@ -156,7 +159,9 @@ void Output::PostStr(std::string msg) {
 		file.close();
 	#elif OUTPUT_TYPE == OUTPUT_MSGBOX
 		Graphics::TimerWait();
+		bool last = DisplayUi->ShowCursor(true);
 		MsgBox::OK(msg, GAME_TITLE);
+		DisplayUi->ShowCursor(last);
 		Graphics::TimerContinue();
 	#endif
 }

@@ -110,8 +110,9 @@ public:
 	///////////////////////////////////////////////////////
 	/// Set if the cursor should be showed.
 	/// @param flag: cursor visibility flag
+	/// @return previous state
 	///////////////////////////////////////////////////////
-	virtual void ShowCursor(bool flag) = 0;
+	virtual bool ShowCursor(bool flag) = 0;
 
 	///////////////////////////////////////////////////////
 	/// Get if fullscreen mode is active.

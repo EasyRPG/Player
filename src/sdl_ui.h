@@ -58,7 +58,7 @@ public:
 	void UpdateDisplay();
 	void SetTitle(const std::string title);
 	void DrawScreenText(const std::string& text);
-	void ShowCursor(bool flag);
+	bool ShowCursor(bool flag);
 	void SetBackcolor(const Color& color);
 
 	void ProcessEvents();
@@ -140,6 +140,9 @@ protected:
 
 	/// Mouse y coordinate on screen relative to the window.
 	int mouse_y;
+
+	/// Cursor visibility flag
+	bool cursor_visible;
 };
 
 /// Global SdlUi variable.

@@ -61,7 +61,8 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag, boo
 	back_color(0),
 	mouse_focus(false),
 	mouse_x(0),
-	mouse_y(0) {
+	mouse_y(0),
+	cursor_visible(false) {
 
 	keys.resize(Input::Keys::KEYS_COUNT, false);
 
@@ -296,11 +297,14 @@ void SdlUi::DrawScreenText(const std::string& text) {
 }
 
 ///////////////////////////////////////////////////////////
-void SdlUi::ShowCursor(bool flag) {
+bool SdlUi::ShowCursor(bool flag) {
+	bool temp_flag = cursor_visible;
+	cursor_visible = flag;
 #ifndef SUPPORT_MOUSE
 	flag = false;
 #endif
 	SDL_ShowCursor(flag ? SDL_ENABLE : SDL_DISABLE);
+	return temp_flag;
 }
 
 ///////////////////////////////////////////////////////////
