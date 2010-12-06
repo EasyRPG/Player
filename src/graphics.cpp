@@ -295,8 +295,13 @@ void Graphics::DoTransition() {
 
 void Graphics::PrintFPS() {
 	std::stringstream text;
+	SDL_Color fg_color = { 255, 255, 255, 0 };
+	SDL_Surface* text_surface;
 	text << "FPS: " << fps;
-	DisplayUi->DrawScreenText(text.str());
+	SDL_Rect dst_pos = { 10, 10, 0, 0 };
+	text_surface = TTF_RenderText_Solid(font->GetTTF(), text.str().c_str(), fg_color);
+	SDL_BlitSurface(text_surface, NULL, DisplaySdlUi->GetDisplaySurface(), &dst_pos);
+	SDL_FreeSurface(text_surface);
 }
 
 ////////////////////////////////////////////////////////////
