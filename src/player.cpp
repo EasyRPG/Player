@@ -127,6 +127,7 @@ void Player::Pause() {
 
 ////////////////////////////////////////////////////////////
 void Player::Resume() {
+	Input::ResetKeys();
 	Audio::BGM_Resume();
 	Graphics::TimerContinue();
 }
