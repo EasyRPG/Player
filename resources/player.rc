@@ -11,7 +11,7 @@ FILETYPE 0x00000001L
 	{
 		BLOCK "000004E4"
 		{
-			VALUE "Comments", "http://easyrpg.sourceforge.net/"
+			VALUE "Comments", "http://easy-rpg.org/"
 			VALUE "CompanyName", "EasyRPG Project"
 			VALUE "FileVersion", "0.0.0.0"
 			VALUE "FileDescription", "EasyRPG Player"

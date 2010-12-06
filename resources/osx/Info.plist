@@ -7,7 +7,7 @@
     <string>Player</string>
 
     <key>CFBundleGetInfoString</key>
-    <string>http://easyrpg.sourceforge.net</string>
+    <string>http://easy-rpg.org/</string>
 
     <key>CFBundleIconFile</key>
     <string>Player.icns</string>
