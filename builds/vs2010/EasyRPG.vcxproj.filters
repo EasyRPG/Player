@@ -228,17 +228,20 @@
     <ClCompile Include="..\..\src\window_equipitem.cpp">
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\window_equipleft.cpp">
-      <Filter>Source Files\Engine\Window</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\window_equipright.cpp">
-      <Filter>Source Files\Engine\Window</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\scene_logo.cpp">
       <Filter>Source Files\Engine\Scene</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\scene_battle.cpp">
       <Filter>Source Files\Engine\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\window_equip.cpp">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\window_equipstatus.cpp">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\window_item.cpp">
+      <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -431,17 +434,20 @@
     <ClInclude Include="..\..\src\window_equipitem.h">
       <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\window_equipleft.h">
-      <Filter>Source Files\Engine\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\window_equipright.h">
-      <Filter>Source Files\Engine\Window</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\scene_logo.h">
       <Filter>Source Files\Engine\Scene</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\scene_battle.h">
       <Filter>Source Files\Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\window_equip.h">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\window_equipstatus.h">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\window_item.h">
+      <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

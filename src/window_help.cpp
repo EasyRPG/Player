@@ -21,9 +21,29 @@
 #include "window_help.h"
 
 ////////////////////////////////////////////////////////////
-Window_Help::Window_Help() : Window_Base(0, 0, 320, 32) {
+Window_Help::Window_Help() :
+	Window_Base(0, 0, 320, 32),	text(""), align(Bitmap::align_left) {
+	contents = new Bitmap(width - 16, height - 16);
+	Rect rect(0, 0, contents->GetWidth(), contents->GetHeight());
+	contents->FillofColor(rect, windowskin->GetColorKey());
+	contents->SetColorKey(windowskin->GetColorKey());
 }
 
 ////////////////////////////////////////////////////////////
 Window_Help::~Window_Help() {
+}
+
+////////////////////////////////////////////////////////////
+void Window_Help::SetText(std::string text,	Bitmap::TextAlignment align) {
+	if (this->text != text || this->align != align) {
+		Rect rect(0, 0, contents->GetWidth(), contents->GetHeight());
+		contents->FillofColor(rect, windowskin->GetColorKey());
+		contents->SetColorKey(windowskin->GetColorKey());
+
+		this->text = text;
+		this->align = align;
+
+		contents->GetFont()->color = 0;
+		contents->TextDraw(rect, text, align);
+	}
 }

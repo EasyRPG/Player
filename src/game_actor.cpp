@@ -50,6 +50,7 @@ void Game_Actor::Setup(int actor_id) {
 	exp = exp_list[level - 1];
 	hp = GetMaxHp();
 	sp = GetMaxSp();
+	two_swords_style = Data::actors[actor_id - 1].two_swords_style;
 }
 
 ////////////////////////////////////////////////////////////
@@ -311,4 +312,9 @@ void Game_Actor::ChangeExp(int exp) {
 ////////////////////////////////////////////////////////////
 std::vector<int> Game_Actor::GetSkills() const {
 	return skills;
+}
+
+////////////////////////////////////////////////////////////
+bool Game_Actor::GetTwoSwordsStyle() const {
+	return two_swords_style;
 }

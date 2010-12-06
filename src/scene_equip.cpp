@@ -36,65 +36,106 @@ Scene_Equip::Scene_Equip(int actor_index, int equip_index) :
 ////////////////////////////////////////////////////////////
 Scene_Equip::~Scene_Equip() {
 	delete help_window;
-	delete left_window;
-	delete right_window;
+	delete equip_window;
+	delete status_window;
 	for (int i = 0; i < 5; ++i) {
-		delete item_window[i];
+		delete item_windows[i];
 	}
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Equip::MainFunction() {
+void Scene_Equip::Start() {
 	Game_Actor* actor = Game_Party::GetActors()[actor_index];
 
+	// Create the windows
 	help_window = new Window_Help();
-	left_window = new Window_EquipLeft(actor->GetId());
-	right_window = new Window_EquipRight(actor->GetId());
+	status_window = new Window_EquipStatus(actor->GetId());
+	equip_window = new Window_Equip(actor->GetId());
 
-	item_window.push_back(new Window_EquipItem(actor->GetId(),
-		Window_EquipItem::weapon));
-	// ToDo: Must be weapon again if two-handed
-	item_window.push_back(new Window_EquipItem(actor->GetId(),
-		Window_EquipItem::shield));
-	item_window.push_back(new Window_EquipItem(actor->GetId(),
-		Window_EquipItem::armor));
-	item_window.push_back(new Window_EquipItem(actor->GetId(),
-		Window_EquipItem::helmet));
-	item_window.push_back(new Window_EquipItem(actor->GetId(),
-		Window_EquipItem::other));
+	equip_window->SetIndex(equip_index); 
 
-	Refresh();
-
-	Graphics::Transition(Graphics::FadeIn, 20, true);
-
-	// Scene loop
-	while (instance == this) {
-		Player::Update();
-		Graphics::Update();
-		Input::Update();
-		Update();
+	for (int i = 0; i < 5; ++i) {
+		item_windows.push_back(new Window_EquipItem(actor->GetId(),
+			(Window_EquipItem::EquipType)i));
 	}
 
-	Graphics::Transition(Graphics::FadeOut, 20, false);
-
-	Scene::old_instance = this;
-}
-
-////////////////////////////////////////////////////////////
-void Scene_Equip::Refresh() {
-	active_item_window = item_window[0];
+	// Assign the help windows
+	equip_window->SetHelpWindow(help_window);
+	for (size_t i = 0; i < item_windows.size(); ++i) {
+		item_windows[i]->SetHelpWindow(help_window);
+	}
 }
 
 ////////////////////////////////////////////////////////////
 void Scene_Equip::Update() {
+	help_window->Update();
+
+	UpdateEquipWindow();
+	UpdateStatusWindow();
+	UpdateItemWindows();
+
+	if (equip_window->GetActive()) {
+		UpdateEquipSelection();
+	} else if (item_window->GetActive()) {
+		UpdateItemSelection();
+	}
+}
+////////////////////////////////////////////////////////////
+void Scene_Equip::UpdateItemWindows() {
+	for (size_t i = 0; i < item_windows.size(); ++i) {
+		item_windows[i]->SetVisible(equip_window->GetIndex() == i);
+		item_windows[i]->Update();
+	}
+
+	item_window = item_windows[equip_window->GetIndex()];
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Equip::UpdateEquipWindow() {
+	equip_window->Update();
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Equip::UpdateStatusWindow() {
+	if (equip_window->GetActive()) {
+		status_window->ClearParameters();
+	} else if (item_window->GetActive()) {
+		// ToDo
+	}
+
+	status_window->Update();
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Equip::UpdateEquipSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Data::system.cancel_se);
 		Scene::instance = new Scene_Menu(2); // Select Equipment
+	} else if (Input::IsTriggered(Input::DECISION)) {
+		Game_System::SePlay(Data::system.decision_se);
+		equip_window->SetActive(false);
+		item_window->SetActive(true);
+		item_window->SetIndex(0);
 	}
+}
+	
+////////////////////////////////////////////////////////////
+void Scene_Equip::UpdateItemSelection() {
+	if (Input::IsTriggered(Input::CANCEL)) {
+		Game_System::SePlay(Data::system.cancel_se);
+		equip_window->SetActive(true);
+		item_window->SetActive(false);
+		item_window->SetIndex(-1);
+	} else if (Input::IsTriggered(Input::DECISION)) {
+		Game_System::SePlay(Data::system.decision_se);
+		equip_window->SetActive(true);
+		item_window->SetActive(false);
+		item_window->SetIndex(-1);
 
-	left_window->Update();
-	right_window->Update();
-	active_item_window->Update();
+		equip_window->Refresh();
 
-	Refresh();
+		for (size_t i = 0; i < item_windows.size(); ++i) {
+			item_windows[i]->Refresh();
+		}
+	}
 }

@@ -145,6 +145,18 @@ public:
 	void SetExp(int _exp);
 
 	////////////////////////////////////////////////////////
+	/// Change exp of actor.
+	/// @param exp : 
+	////////////////////////////////////////////////////////
+	void ChangeExp(int exp);
+
+	////////////////////////////////////////////////////////
+	/// Change level of actor.
+	/// @param level : new level 
+	////////////////////////////////////////////////////////
+	void ChangeLevel(int level);
+
+	////////////////////////////////////////////////////////
 	/// Set level of actor.
 	/// @param _level : level to set
 	////////////////////////////////////////////////////////
@@ -173,9 +185,8 @@ public:
 	/// @return agi
 	int GetBaseAgi() const;
 
-	void ChangeExp(int exp);
-
-	void ChangeLevel(int level);
+	/// @return true if actor has two weapons
+	bool GetTwoSwordsStyle() const;
 
 private:
 	int actor_id;
@@ -194,6 +205,7 @@ private:
 	int exp;
 	std::vector<int> exp_list;
 	std::vector<int> skills;
+	bool two_swords_style;
 };
 
 #endif

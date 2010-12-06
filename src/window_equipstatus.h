@@ -15,58 +15,59 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _WINDOW_EQUIPITEM_H_
-#define _WINDOW_EQUIPITEM_H_
+#ifndef _WINDOW_EQUIPSTATUS_H_
+#define _WINDOW_EQUIPSTATUS_H_
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "window_item.h"
+#include "window_base.h"
 
 ////////////////////////////////////////////////////////////
-/// Window_EquipItem class.
-/// Displays the available equipment of a specific type.
+/// Window_EquipLeft class.
+/// Displays stats of the hero/item.
 ////////////////////////////////////////////////////////////
-class Window_EquipItem : public Window_Item {
+class Window_EquipStatus : public Window_Base {
 
 public:
-	/// Enum containing the different equipment types
-	enum EquipType {
-		weapon = 0,
-		shield,
-		armor,
-		helmet,
-		other
-	};
-
 	////////////////////////////////////////////////////////
 	/// Constructor.
-	/// @param actor_id : Actor whos equipment is displayed
-	/// @param equip_type : Type of equipment to show
+	/// @param actor_id : Actor whose stats are displayed
 	////////////////////////////////////////////////////////
-	Window_EquipItem(int actor_id, int equip_type);
+	Window_EquipStatus(int actor_id);
 
 	////////////////////////////////////////////////////////
 	/// Destructor.
 	////////////////////////////////////////////////////////
-	~Window_EquipItem();
+	~Window_EquipStatus();
 
 	////////////////////////////////////////////////////////
-	/// Checks if the item should be in the list
-	/// @todo Always returns true
-	/// @param item_id Item to check
+	/// Refresh Screen.
 	////////////////////////////////////////////////////////
-	bool CheckInclude(int item_id);
+	void Refresh();
 
 	////////////////////////////////////////////////////////
-	/// Chechs if item should be enabled. Always true.
-	/// @param item_id : Item to check
+	/// Sets the parameter drawn after the ->
+	/// @param atk : Attack
+	/// @param def : Defense
+	/// @param spi : Spirit
+	/// @param agi : Agility
 	////////////////////////////////////////////////////////
-	bool CheckEnable(int item_id);
+	void SetNewParameters(int new_atk, int new_def, int new_spi, int new_agi);
+
+	////////////////////////////////////////////////////////
+	/// Remove the parameters drawn after the ->.
+	////////////////////////////////////////////////////////
+	void ClearParameters();
 
 private:
 	int actor_id;
-	EquipType equip_type;
+	/// Draws the params if true
+	bool draw_params;
+	int atk;
+	int def;
+	int spi;
+	int agi;
 };
 
 #endif
