@@ -49,7 +49,8 @@ Game_Character::Game_Character() :
 	step_anime(false),
 	walk_anime(true),
 	turn_enabled(true),
-	direction_fix(false) {
+	direction_fix(false),
+	priority_type(1) {
 }
 
 ////////////////////////////////////////////////////////////
@@ -90,6 +91,10 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 	}
 
 	return true;
+}
+
+int Game_Character::GetPriorityType() const {
+	return priority_type;
 }
 
 bool Game_Character::IsJumping() const {

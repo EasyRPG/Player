@@ -26,6 +26,7 @@
 #include "util_macro.h"
 #include "game_system.h"
 #include "system.h"
+#include <cassert>
 
 ////////////////////////////////////////////////////////////
 namespace {
@@ -146,6 +147,7 @@ void Game_Map::Refresh() {
 }
 
 Game_Interpreter& Game_Map::GetInterpreter() {
+	assert(interpreter);
 	return *interpreter;
 }
 
@@ -252,6 +254,18 @@ bool Game_Map::IsCounter(int x, int y) {
 ////////////////////////////////////////////////////////////
 int Game_Map::GetTerrainTag(int x, int y) {
 	return 0;
+}
+
+void Game_Map::GetEventsXY(std::vector<Game_Event>& events, int x, int y) {
+	std::vector<Game_Event> result;
+
+	std::vector<Game_Event>::iterator i;
+	for (i = events.begin(); i != events.end(); i++) {
+		if (i->GetX() == x && i->GetY() == y) {
+			result.push_back(*i);
+		}
+	}
+	events.swap(result);
 }
 
 ////////////////////////////////////////////////////////////

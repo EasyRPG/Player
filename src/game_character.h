@@ -169,6 +169,7 @@ public:
 
 	bool IsInPosition(int x, int y) const;
 	bool IsJumping() const;
+	int GetPriorityType() const;
 
 protected:
 	void UpdateMove();
@@ -201,6 +202,8 @@ protected:
 	bool walk_anime;
 	bool turn_enabled;
 	bool direction_fix;
+
+	int priority_type;
 };
 
 #endif

@@ -241,6 +241,8 @@ namespace Game_Map {
 
 	/// @return events list
 	tEventHash& GetEvents();
+
+	void GetEventsXY(std::vector<Game_Event>& events, int x, int y);
 }
 
 #endif

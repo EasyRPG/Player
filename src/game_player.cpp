@@ -21,11 +21,13 @@
 #include "game_player.h"
 #include "game_actor.h"
 #include "game_map.h"
+#include "game_message.h"
 #include "game_party.h"
 #include "input.h"
 #include "main_data.h"
 #include "player.h"
 #include "util_macro.h"
+#include <algorithm>
 
 ////////////////////////////////////////////////////////////
 // Constructor
@@ -77,16 +79,32 @@ void Game_Player::MoveTo(int x, int y) {
 	// MakeEncounterCount();
 }
 
+void Game_Player::UpdateScroll(int last_real_x, int last_real_y) {
+	int center_x = (DisplayUi->GetWidth() / 2 - 16) * 8;
+	int center_y = (DisplayUi->GetHeight() / 2 - 8) * 8;
+
+	if (real_y > last_real_y && real_y - Game_Map::GetDisplayY() > center_y)
+		Game_Map::ScrollDown(real_y - last_real_y);
+
+	if (real_x < last_real_x && real_x - Game_Map::GetDisplayX() < center_x)
+		Game_Map::ScrollLeft(last_real_x - real_x);
+
+	if (real_x > last_real_x && real_x - Game_Map::GetDisplayX() > center_x)
+		Game_Map::ScrollRight(real_x - last_real_x);
+
+	if (real_y < last_real_y && real_y - Game_Map::GetDisplayY() < center_y)
+		Game_Map::ScrollUp(last_real_y - real_y);
+
+}
+
 ////////////////////////////////////////////////////////////
 // Update
 ////////////////////////////////////////////////////////////
 void Game_Player::Update() {
 //	bool last_moving = IsMoving();
 
-	if (Game_Map::GetInterpreter().IsRunning()) return;
-
-	if (!(IsMoving() /*|| Game_System::map_interpreter.IsRunning() ||
-		move_route_forcing || Game_Temp::message_window_showing*/)) {
+	if (!IsMoving() /*|| Game_System::map_interpreter.IsRunning() ||
+		move_route_forcing || Game_Temp::message_window_showing*/) {
 		switch (Input::dir4) {
 			case 2:
 				MoveDown();
@@ -106,21 +124,10 @@ void Game_Player::Update() {
 	int last_real_y = real_y;
 
 	Game_Character::Update();
-	
-	int center_x = (DisplayUi->GetWidth() / 2 - 16) * 8;
-	int center_y = (DisplayUi->GetHeight() / 2 - 8) * 8;
 
-	if (real_y > last_real_y && real_y - Game_Map::GetDisplayY() > center_y)
-		Game_Map::ScrollDown(real_y - last_real_y);
+	UpdateScroll(last_real_x, last_real_y);
 
-	if (real_x < last_real_x && real_x - Game_Map::GetDisplayX() < center_x)
-		Game_Map::ScrollLeft(last_real_x - real_x);
-
-	if (real_x > last_real_x && real_x - Game_Map::GetDisplayX() > center_x)
-		Game_Map::ScrollRight(real_x - last_real_x);
-
-	if (real_y < last_real_y && real_y - Game_Map::GetDisplayY() < center_y)
-		Game_Map::ScrollUp(last_real_y - real_y);
+//	UpdateNonMoving();
 
 	/*if (!IsMoving()) {
 		if (last_moving) {
@@ -136,6 +143,50 @@ void Game_Player::Update() {
 			check_event_trigger_there([0,1,2])
 		end
 	}*/
+}
+
+void Game_Player::UpdateNonMoving(bool last_moving) {
+	if ( Game_Map::GetInterpreter().IsRunning() ) return;
+
+	if ( IsMoving() ) return;
+
+	if ( last_moving && CheckTouchEvent() ) return;
+
+	//if ( ! && Input::triggered(Input::DECISION) ) {
+		// TODO 
+		//if ( GetOnOffVehicle() ) return;
+//		if ( CheckActionEvent() ) return;
+//	}
+
+	if ( last_moving ) {
+//		UpdateEncounter();
+	}
+}
+
+bool Game_Player::CheckTouchEvent() {
+	std::vector<int> events;
+	events.push_back(1);
+	events.push_back(2);
+	return CheckEventTriggerHere(events);
+}
+
+bool Game_Player::CheckEventTriggerHere(const std::vector<int>& triggers) {
+	if ( Game_Map::GetInterpreter().IsRunning() ) return false;
+
+	bool result = false;
+
+	std::vector<Game_Event> events;
+	Game_Map::GetEventsXY(events, this->x, this->y);
+
+	std::vector<Game_Event>::iterator i;
+	for (i = events.begin(); i != events.end(); i++) {
+		if ( i->GetPriorityType() == 1 && std::find(triggers.begin(), triggers.end(), i->GetTrigger() ) != triggers.end() ) {
+			i->Start();
+			result = i->GetStarting();
+		}
+	}
+
+	return result;
 }
 
 void Game_Player::Refresh() {

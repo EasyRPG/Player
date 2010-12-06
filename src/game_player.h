@@ -22,6 +22,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "game_character.h"
+#include <vector>
 
 ////////////////////////////////////////////////////////////
 /// Game Player class
@@ -37,6 +38,12 @@ public:
 	void Update();
 
 	void Refresh();
+
+private:
+	void UpdateScroll(int last_real_x, int last_real_y);
+	void UpdateNonMoving(bool last_moving);
+	bool CheckTouchEvent();
+	bool CheckEventTriggerHere(const std::vector<int>& triggers);
 };
 
 #endif

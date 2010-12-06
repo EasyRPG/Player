@@ -38,7 +38,6 @@ namespace Main_Data {
 	Game_Screen* game_screen = NULL;
 	Game_Player* game_player = NULL;
 	Game_Troop* game_troop = NULL;
-	Game_Message* game_message = NULL;
 }
 
 void Main_Data::Cleanup() {

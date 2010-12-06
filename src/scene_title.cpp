@@ -30,6 +30,7 @@
 #include "game_map.h"
 #include "game_party.h"
 #include "game_player.h"
+#include "game_message.h"
 #include "game_screen.h"
 #include "game_switches.h"
 #include "game_system.h"
@@ -113,6 +114,7 @@ void Scene_Title::CreateGameObjects() {
 	Main_Data::game_screen = new Game_Screen();
 	Game_Actors::Init();
 	Game_Party::Init();
+	Game_Message::Init();
 	Main_Data::game_troop = new Game_Troop();
 	Game_Map::Init();
 	Main_Data::game_player = new Game_Player();

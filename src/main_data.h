@@ -29,7 +29,6 @@
 class Game_Player;
 class Game_Screen;
 class Game_Troop;
-class Game_Message;
 
 namespace Main_Data {
 	// Dynamic Game Data
@@ -37,7 +36,6 @@ namespace Main_Data {
 	extern Game_Player* game_player;
 	extern Game_Troop* game_troop;
 	extern Game_Player* game_player;
-	extern Game_Message* game_message;
 	
 	void Cleanup();
 }

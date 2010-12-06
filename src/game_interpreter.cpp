@@ -325,7 +325,6 @@ bool Game_Interpreter::CommandChangeActorFace() {
 	Game_Actor* actor = Game_Actors::GetActor(list[index].parameters[0]);
 	if (actor != NULL) {
 		actor->SetFace(list[index].string, list[index].parameters[1]);
-		Main_Data::game_player->Refresh();
 		return true;
 	}
 	return false;
@@ -427,7 +426,7 @@ std::vector<std::string> Game_Interpreter::GetStrings() {
 ////////////////////////////////////////////////////////////
 bool Game_Interpreter::CommandShowMessage() { // Code SHOW_MESSAGE
 	// If there's a text already, return immediately
-	if (!Main_Data::game_message->texts.empty()) {
+	if (!Game_Message::texts.empty()) {
 		return false;
 	}
 	unsigned int line_count = 0;
@@ -435,7 +434,7 @@ bool Game_Interpreter::CommandShowMessage() { // Code SHOW_MESSAGE
 	message_waiting = true;
 
 	// Set first line
-	Main_Data::game_message->texts[line_count] = list[index].string;
+	Game_Message::texts[line_count] = list[index].string;
 	line_count++;
 
 	for (;;) {
@@ -443,7 +442,7 @@ bool Game_Interpreter::CommandShowMessage() { // Code SHOW_MESSAGE
 		if ( (index < list.size()) && (list[index+1].code == SHOW_MESSAGE_2) ) {
 			// Add second (another) line
 			line_count++;
-			Main_Data::game_message->texts[line_count] += list[index+1].string;
+			Game_Message::texts[line_count] += list[index+1].string;
 		} else {
 			// If next event command is show choices
 			std::vector<std::string> s_choices;
@@ -452,8 +451,8 @@ bool Game_Interpreter::CommandShowMessage() { // Code SHOW_MESSAGE
 				// If choices fit on screen
 				if (s_choices.size() < (4 - line_count)) {
 					index++;
-					Main_Data::game_message->choice_start = line_count;
-					Main_Data::game_message->choice_cancel_type = list[index].parameters[0];
+					Game_Message::choice_start = line_count;
+					Game_Message::choice_cancel_type = list[index].parameters[0];
 					SetupChoices(s_choices);
 				}
 			} else {
@@ -462,9 +461,9 @@ bool Game_Interpreter::CommandShowMessage() { // Code SHOW_MESSAGE
 					// If input number fits on screen
 					if (line_count < 4) {
 						index++;
-						Main_Data::game_message->num_input_start = line_count;
-						Main_Data::game_message->num_input_digits_max = list[index].parameters[0];
-						Main_Data::game_message->num_input_variable_id = list[index].parameters[1];
+						Game_Message::num_input_start = line_count;
+						Game_Message::num_input_digits_max = list[index].parameters[0];
+						Game_Message::num_input_variable_id = list[index].parameters[1];
 					}
 				}
 			}
@@ -478,12 +477,12 @@ bool Game_Interpreter::CommandShowMessage() { // Code SHOW_MESSAGE
 /// Setup Choices
 ////////////////////////////////////////////////////////////
 void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices) {
-	Main_Data::game_message->choice_max = choices.size();
+	Game_Message::choice_max = choices.size();
 
 	// Set choices to message text
 	unsigned int i;
 	for (i = 0; i < choices.size(); i++) {
-		Main_Data::game_message->texts.push_back(choices[i]);
+		Game_Message::texts.push_back(choices[i]);
 	}
 
 	/* Set callback stuff */
@@ -495,16 +494,16 @@ void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices) {
 /// Command Show choices
 ////////////////////////////////////////////////////////////
 bool Game_Interpreter::CommandShowChoices() { // Code SHOW_CHOICE
-	if (!Main_Data::game_message->texts.empty()) {
+	if (!Game_Message::texts.empty()) {
 		return false;
 	}
 
 	message_waiting = true;
 
 	// Choices setup
-	Main_Data::game_message->texts.clear();
-	Main_Data::game_message->choice_start = 0;
-	Main_Data::game_message->choice_cancel_type = list[index].parameters[0];
+	Game_Message::texts.clear();
+	Game_Message::choice_start = 0;
+	Game_Message::choice_cancel_type = list[index].parameters[0];
 	SetupChoices(GetStrings());
 
 	return true;
@@ -925,16 +924,16 @@ bool Game_Interpreter::CommandChangeItems() { // Code 10320
 /// Input Number
 ////////////////////////////////////////////////////////////
 bool Game_Interpreter::CommandInputNumber() {
-	if (!Main_Data::game_message->texts.empty()) {
+	if (!Game_Message::texts.empty()) {
 		return false;
 	}
 
 	message_waiting = true;
 
-	Main_Data::game_message->texts.clear();
-	Main_Data::game_message->num_input_start = 0;
-	Main_Data::game_message->num_input_variable_id = list[index].parameters[1];
-	Main_Data::game_message->num_input_digits_max = list[index].parameters[0];
+	Game_Message::texts.clear();
+	Game_Message::num_input_start = 0;
+	Game_Message::num_input_variable_id = list[index].parameters[1];
+	Game_Message::num_input_digits_max = list[index].parameters[0];
 	
 	// Continue
 	return true;
@@ -944,10 +943,10 @@ bool Game_Interpreter::CommandInputNumber() {
 /// Change Face Graphic
 ////////////////////////////////////////////////////////////
 bool Game_Interpreter::CommandChangeFaceGraphic() { // Code 10130
-	Main_Data::game_message->face_name = list[index].string;
-	Main_Data::game_message->face_index = list[index].parameters[0];
-	Main_Data::game_message->face_left_position = (list[index].parameters[1] == 0);
-	Main_Data::game_message->face_flipped = (list[index].parameters[2] == 0);
+	Game_Message::face_name = list[index].string;
+	Game_Message::face_index = list[index].parameters[0];
+	Game_Message::face_left_position = list[index].parameters[1] == 0;
+	Game_Message::face_flipped = list[index].parameters[2] == 0;
 	return true;
 }
 

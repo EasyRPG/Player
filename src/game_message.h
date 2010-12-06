@@ -21,26 +21,24 @@
 #include <vector>
 #include <string>
 
-class Game_Message {
-
-public:
+namespace Game_Message {
 
 	static const int MAX_LINE = 4;
 
-	Game_Message();
+	void Init();
 	//~Game_Message();
 
 	void Clear();
 
 	bool Busy();
 
-	std::vector<std::string> texts;
-	std::string face_name;
-	int face_index;
-	bool face_flipped;
-	bool face_left_position;
+	extern std::vector<std::string> texts;
+	extern std::string face_name;
+	extern int face_index;
+	extern bool face_flipped;
+	extern bool face_left_position;
 
-	int background;
+	extern int background;
 
 	/* Number of lines before the start
 	of selection options.
@@ -53,22 +51,21 @@ public:
 	In this case, choice_start would be 1.
 	Same with num_input_start.
 	*/
-	int choice_start;
-	int num_input_start;
+	extern int choice_start;
+	extern int num_input_start;
 
 	// Number of choices
-	int choice_max;
+	extern int choice_max;
 
 	// Option to choose if cancel
-	int choice_cancel_type;
+	extern int choice_cancel_type;
 
-	int num_input_variable_id;
-	int num_input_digits_max;
+	extern int num_input_variable_id;
+	extern int num_input_digits_max;
 
-	int position;
+	extern int position;
 
-	bool visible;
-
-};
+	extern bool visible;
+}
 
 #endif
