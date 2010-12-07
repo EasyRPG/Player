@@ -66,7 +66,7 @@ void Sprite_Character::Update() {
 	}
 	//SetVisible(character->GetVisible());
 	if (tile_id == 0) {
-		int row;
+		int row = 0;
 		switch (character->GetDirection()) {
 			case 2: row = 2; break;
 			case 4: row = 3; break;

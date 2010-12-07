@@ -101,6 +101,11 @@ protected:
 	///////////////////////////////////////////////////////
 	void SetAppIcon();
 
+	///////////////////////////////////////////////////////
+	/// Reset keys states.
+	///////////////////////////////////////////////////////
+	void ResetKeys();
+
 	/// Display mode data struct
 	struct DisplayMode {
 		DisplayMode() : effective(false), fullscreen(false), zoom(false), width(0), height(0) {}

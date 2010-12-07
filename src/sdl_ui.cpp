@@ -118,7 +118,9 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag, boo
 	SDL_JoystickOpen(0);
 #endif
 
-#ifndef SUPPORT_MOUSE
+#ifdef SUPPORT_MOUSE
+	ShowCursor(true);
+#else
 	ShowCursor(false);
 #endif
 
@@ -300,9 +302,6 @@ void SdlUi::DrawScreenText(const std::string& text) {
 bool SdlUi::ShowCursor(bool flag) {
 	bool temp_flag = cursor_visible;
 	cursor_visible = flag;
-#ifndef SUPPORT_MOUSE
-	flag = false;
-#endif
 	SDL_ShowCursor(flag ? SDL_ENABLE : SDL_DISABLE);
 	return temp_flag;
 }
@@ -365,13 +364,15 @@ void SdlUi::ProcessEvent(SDL_Event &evnt) {
 
 						SDL_SetEventFilter(&FilterUntilFocus);
 
-						ShowCursor(true);
+						bool last = ShowCursor(true);
 
 						SDL_WaitEvent(NULL);
 
-						ShowCursor(false);
+						ShowCursor(last);
 
 						SDL_SetEventFilter(NULL);
+
+						ResetKeys();
 
 						Player::Resume();
 					}
@@ -554,6 +555,13 @@ void SdlUi::SetAppIcon() {
 	SetClassLongPtr(wminfo.window, GCLP_HICON, (LONG_PTR) icon);
 	DestroyIcon(icon);
 #endif
+}
+
+///////////////////////////////////////////////////////////
+void SdlUi::ResetKeys() {
+	for (uint i = 0; i < keys.size(); i++) {
+		keys[i] = false;
+	}
 }
 
 ///////////////////////////////////////////////////////////

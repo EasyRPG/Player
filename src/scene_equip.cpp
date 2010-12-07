@@ -82,8 +82,8 @@ void Scene_Equip::Update() {
 }
 ////////////////////////////////////////////////////////////
 void Scene_Equip::UpdateItemWindows() {
-	for (size_t i = 0; i < item_windows.size(); ++i) {
-		item_windows[i]->SetVisible(equip_window->GetIndex() == i);
+	for (uint i = 0; i < item_windows.size(); ++i) {
+		item_windows[i]->SetVisible((uint)equip_window->GetIndex() == i);
 		item_windows[i]->Update();
 	}
 
