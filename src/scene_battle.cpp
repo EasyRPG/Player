@@ -35,7 +35,7 @@ Scene_Battle::~Scene_Battle() {
 
 ////////////////////////////////////////////////////////////
 void Scene_Battle::Start() {
-	char* warning = "Scene_Battle is a stub class\n\
+	const char warning[] = "Scene_Battle is a stub class\n\
 						It was added for the BattleTest parameter.\n\n\
 						This scene will do nothing and hangs now. Enjoy! :)";
 

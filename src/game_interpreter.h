@@ -66,7 +66,7 @@ private:
 	std::map<int, bool> branch;
 
 	// Helper function
-	std::vector<std::string> GetStrings();
+	void GetStrings(std::vector<std::string>& ret_val);
 
 	int OperateValue(int operation, int operand_type, int operand);
 	Game_Character* GetCharacter(int character_id);

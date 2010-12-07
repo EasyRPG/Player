@@ -33,6 +33,7 @@
 // Constructor
 ////////////////////////////////////////////////////////////
 Game_Player::Game_Player() {
+	SetAssocChild(this);
 }
 
 ////////////////////////////////////////////////////////////
@@ -101,7 +102,7 @@ void Game_Player::UpdateScroll(int last_real_x, int last_real_y) {
 // Update
 ////////////////////////////////////////////////////////////
 void Game_Player::Update() {
-//	bool last_moving = IsMoving();
+	bool last_moving = IsMoving();
 
 	if (!IsMoving() /*|| Game_System::map_interpreter.IsRunning() ||
 		move_route_forcing || Game_Temp::message_window_showing*/) {
@@ -127,22 +128,7 @@ void Game_Player::Update() {
 
 	UpdateScroll(last_real_x, last_real_y);
 
-//	UpdateNonMoving();
-
-	/*if (!IsMoving()) {
-		if (last_moving) {
-			bool result = check_event_trigger_here(1, 2);
-			#ifndef DEBUG
-			if (!result && Input.press?(Input::CTRL)) {
-				if (encounter_count > 0) encounter_count -= 1;
-			}
-			#endif
-		}
-		if Input.trigger?(Input::C)
-			check_event_trigger_here([0])
-			check_event_trigger_there([0,1,2])
-		end
-	}*/
+	UpdateNonMoving(last_moving);
 }
 
 void Game_Player::UpdateNonMoving(bool last_moving) {
@@ -152,22 +138,41 @@ void Game_Player::UpdateNonMoving(bool last_moving) {
 
 	if ( last_moving && CheckTouchEvent() ) return;
 
-	//if ( ! && Input::triggered(Input::DECISION) ) {
+	if ( !Game_Message::visible && Input::IsTriggered(Input::DECISION) ) {
 		// TODO 
 		//if ( GetOnOffVehicle() ) return;
-//		if ( CheckActionEvent() ) return;
-//	}
+		if ( CheckActionEvent() ) return;
+	}
 
 	if ( last_moving ) {
+		// TODO
 //		UpdateEncounter();
 	}
 }
 
+bool Game_Player::CheckActionEvent() {
+	// TODO
+	//if ( IsInAirship() ) {
+		//return false;
+	//}
+	int triggers_here[] = { 0 };
+	std::vector<int> triggers(triggers_here, triggers_here + sizeof triggers_here / sizeof(int));
+
+	if ( CheckEventTriggerHere(triggers) ) {
+		return true;
+	}
+
+	int triggers_there[] = { 0, 1, 2 };
+	triggers.assign(triggers_there, triggers_there + sizeof triggers_there / sizeof(int));
+
+	return CheckEventTriggerThere(triggers);
+
+}
+
 bool Game_Player::CheckTouchEvent() {
-	std::vector<int> events;
-	events.push_back(1);
-	events.push_back(2);
-	return CheckEventTriggerHere(events);
+	int triggers[] = { 1, 2 };
+	std::vector<int> v_triggers( triggers, triggers + sizeof triggers / sizeof(int) );
+	return CheckEventTriggerHere(v_triggers);
 }
 
 bool Game_Player::CheckEventTriggerHere(const std::vector<int>& triggers) {
@@ -175,17 +180,76 @@ bool Game_Player::CheckEventTriggerHere(const std::vector<int>& triggers) {
 
 	bool result = false;
 
-	std::vector<Game_Event> events;
+	std::vector<Game_Event*> events;
 	Game_Map::GetEventsXY(events, this->x, this->y);
 
-	std::vector<Game_Event>::iterator i;
+	std::vector<Game_Event*>::iterator i;
 	for (i = events.begin(); i != events.end(); i++) {
-		if ( i->GetPriorityType() == 1 && std::find(triggers.begin(), triggers.end(), i->GetTrigger() ) != triggers.end() ) {
-			i->Start();
-			result = i->GetStarting();
+		if ( (*i)->GetPriorityType() == 1 && std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() ) {
+			(*i)->Start();
+			result = (*i)->GetStarting();
+		}
+	}
+	return result;
+}
+
+bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
+	if ( Game_Map::GetInterpreter().IsRunning() ) return false;
+
+	bool result = false;
+
+	int front_x = Game_Map::XwithDirection(x, direction);
+	int front_y = Game_Map::YwithDirection(y, direction);
+
+	std::vector<Game_Event*> events;
+	Game_Map::GetEventsXY(events, front_x, front_y);
+
+	std::vector<Game_Event*>::iterator i;
+	for (i = events.begin(); i != events.end(); i++) {
+		if ( (*i)->GetPriorityType() == 1 && 
+			std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() 
+		) 
+		{
+			(*i)->Start();
+			result = true;
 		}
 	}
 
+	if ( !result && Game_Map::IsCounter(front_x, front_y) ) {
+		front_x = Game_Map::XwithDirection(x, direction);
+		front_y = Game_Map::YwithDirection(y, direction);
+
+		Game_Map::GetEventsXY(events, front_x, front_y);
+
+		std::vector<Game_Event*>::iterator i;
+		for (i = events.begin(); i != events.end(); i++) {
+			if ( (*i)->GetPriorityType() == 1 && 
+				std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() 
+			) 
+			{
+				(*i)->Start();
+				result = true;
+			}
+		}
+	}
+	return result;
+}
+
+bool Game_Player::CheckEventTriggerTouch(int x, int y) {
+	if ( Game_Map::GetInterpreter().IsRunning() ) return false;
+
+	bool result = false;
+
+	std::vector<Game_Event*> events;
+	Game_Map::GetEventsXY(events, x, y);
+
+	std::vector<Game_Event*>::iterator i;
+	for (i = events.begin(); i != events.end(); i++) {
+		if ( (*i)->GetPriorityType() == 1 && ((*i)->GetTrigger() == 1 || (*i)->GetTrigger() == 2) ) {
+			(*i)->Start();
+			result = true;
+		}
+	}
 	return result;
 }
 

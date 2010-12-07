@@ -42,6 +42,8 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	
 	MoveTo(event.x, event.y);
 	Refresh();
+
+	SetAssocChild(this);
 }
 
 ////////////////////////////////////////////////////////////

@@ -23,6 +23,8 @@
 #include "game_player.h"
 #include "main_data.h"
 #include "util_macro.h"
+#include <cassert>
+#include <cstdlib>
 
 ////////////////////////////////////////////////////////////
 Game_Character::Game_Character() :
@@ -50,7 +52,9 @@ Game_Character::Game_Character() :
 	walk_anime(true),
 	turn_enabled(true),
 	direction_fix(false),
-	priority_type(1) {
+	priority_type(1),
+	event(NULL),
+	player(NULL) {
 }
 
 ////////////////////////////////////////////////////////////
@@ -243,9 +247,13 @@ void Game_Character::MoveDown() {
 		TurnDown();
 		y += 1;
 		//IncreaseSteps();
-	} /*else {
-		check_event_trigger_touch(x, y + 1);
-	}*/
+	} else {
+		if (player != NULL) {
+			player->CheckEventTriggerTouch(x, y + 1);
+		} else {
+			event->CheckEventTriggerTouch(x, y + 1);
+		}
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -256,9 +264,13 @@ void Game_Character::MoveLeft() {
 		TurnLeft();
 		x -= 1;
 		//IncreaseSteps();
-	} /*else {
-		check_event_trigger_touch(x - 1, y);
-	}*/
+	} else {
+		if (player != NULL) {
+			player->CheckEventTriggerTouch(x - 1, y);
+		} else {
+			event->CheckEventTriggerTouch(x - 1, y);
+		}
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -269,9 +281,13 @@ void Game_Character::MoveRight() {
 		TurnRight();
 		x += 1;
 		//IncreaseSteps();
-	} /*else {
-		check_event_trigger_touch(x + 1, y);
-	}*/
+	} else {
+		if (player != NULL) {
+			player->CheckEventTriggerTouch(x + 1, y);
+		} else {
+			event->CheckEventTriggerTouch(x + 1, y);
+		}
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -282,9 +298,13 @@ void Game_Character::MoveUp() {
 		TurnUp();
 		y -= 1;
 		//IncreaseSteps();
-	} /*else {
-		check_event_trigger_touch(x, y - 1);
-	}*/
+	} else {
+		if (player != NULL) {
+			player->CheckEventTriggerTouch(x, y - 1);
+		} else {
+			event->CheckEventTriggerTouch(x, y - 1);
+		}
+	}
 }
 ////////////////////////////////////////////////////////////
 void Game_Character::TurnDown() {
@@ -318,12 +338,43 @@ void Game_Character::TurnUp() {
 	}
 }
 
+void Game_Character::TurnTowardPlayer() {
+	int sx = DistanceXfromPlayer();
+	int sy = DistanceYfromPlayer();
+
+	if ( std::abs(sx) > std::abs(sy) ) {
+		(sx > 0) ? TurnLeft() : TurnRight();
+	} 
+	else if ( std::abs(sx) < std::abs(sy) ) {
+		(sy > 0) ? TurnUp() : TurnDown();
+	}
+}
+
+int Game_Character::DistanceXfromPlayer() const {
+	int sx = x - Main_Data::game_player->x;
+	if (Game_Map::LoopHorizontal()) {
+		if (std::abs(sx) > Game_Map::GetWidth() / 2) {
+			sx -= Game_Map::GetWidth();
+		}
+	}
+	return sx;
+}
+
+int Game_Character::DistanceYfromPlayer() const {
+	int sy = y - Main_Data::game_player->y;
+	if (Game_Map::LoopVertical()) {
+		if (std::abs(sy) > Game_Map::GetHeight() / 2) {
+			sy -= Game_Map::GetHeight();
+		}
+	}
+	return sy;
+}
+
 ////////////////////////////////////////////////////////////
 void Game_Character::Lock() {
 	if (!locked) {
 		prelock_direction = direction;
-		// TODO
-		//TurnTowardPlayer();
+		TurnTowardPlayer();
 		locked = true;
 	}
 }
@@ -396,4 +447,14 @@ void Game_Character::SetAnimationId(int new_animation_id) {
 
 bool Game_Character::IsInPosition(int x, int y) const {
 	return ((this->x == x) && (this->y && y));
+}
+
+void Game_Character::SetAssocChild(Game_Event* event) {
+	assert(this->event == NULL);
+	this->event = event;
+}
+
+void Game_Character::SetAssocChild(Game_Player* player) {
+	assert(this->player == NULL);
+	this->player = player;
 }

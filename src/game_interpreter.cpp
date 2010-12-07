@@ -397,7 +397,7 @@ void Game_Interpreter::CommandEnd() {
 /// This is just a helper (private) method
 /// to avoid repeating code
 /////////////////////////////////////////////
-std::vector<std::string> Game_Interpreter::GetStrings() {
+void Game_Interpreter::GetStrings(std::vector<std::string>& ret_val) {
 	// Let's find the choices
 	int current_indent = list[index+1].indent;
 	unsigned int index_temp = index+2;
@@ -418,7 +418,7 @@ std::vector<std::string> Game_Interpreter::GetStrings() {
 		// Move on to the next command
 		index_temp++;
 	}
-	return s_choices;
+	ret_val.swap(s_choices);
 }
 
 ////////////////////////////////////////////////////////////
@@ -434,20 +434,20 @@ bool Game_Interpreter::CommandShowMessage() { // Code SHOW_MESSAGE
 	message_waiting = true;
 
 	// Set first line
-	Game_Message::texts[line_count] = list[index].string;
+	Game_Message::texts.push_back(list[index].string);
 	line_count++;
 
 	for (;;) {
 		// If next event command is the following parts of the message
-		if ( (index < list.size()) && (list[index+1].code == SHOW_MESSAGE_2) ) {
+		if ( index < list.size() && list[index+1].code == SHOW_MESSAGE_2 ) {
 			// Add second (another) line
 			line_count++;
-			Game_Message::texts[line_count] += list[index+1].string;
+			Game_Message::texts.push_back(list[index+1].string);
 		} else {
 			// If next event command is show choices
 			std::vector<std::string> s_choices;
 			if ( (index < list.size()) && (list[index+1].code == SHOW_CHOICE) ) {
-				s_choices = GetStrings();
+				GetStrings(s_choices);
 				// If choices fit on screen
 				if (s_choices.size() < (4 - line_count)) {
 					index++;
@@ -501,10 +501,12 @@ bool Game_Interpreter::CommandShowChoices() { // Code SHOW_CHOICE
 	message_waiting = true;
 
 	// Choices setup
+	std::vector<std::string> choices;
 	Game_Message::texts.clear();
 	Game_Message::choice_start = 0;
 	Game_Message::choice_cancel_type = list[index].parameters[0];
-	SetupChoices(GetStrings());
+	GetStrings(choices);
+	SetupChoices(choices);
 
 	return true;
 }

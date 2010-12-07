@@ -23,6 +23,9 @@
 ////////////////////////////////////////////////////////////
 #include <string>
 
+class Game_Event;
+class Game_Player;
+
 ////////////////////////////////////////////////////////////
 /// Game_Character class.
 ////////////////////////////////////////////////////////////
@@ -167,6 +170,11 @@ public:
 	/// @param animation_id : new animation id
 	void SetAnimationId(int animation_id);
 
+	void TurnTowardPlayer();
+
+	int DistanceXfromPlayer() const;
+	int DistanceYfromPlayer() const;
+
 	bool IsInPosition(int x, int y) const;
 	bool IsJumping() const;
 	int GetPriorityType() const;
@@ -204,6 +212,14 @@ protected:
 	bool direction_fix;
 
 	int priority_type;
+
+	void SetAssocChild(Game_Event*);
+	void SetAssocChild(Game_Player*);
+
+private:
+	Game_Event* event;
+	Game_Player* player;
+
 };
 
 #endif

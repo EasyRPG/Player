@@ -39,11 +39,15 @@ public:
 
 	void Refresh();
 
+	bool CheckEventTriggerTouch(int x, int y);
+
 private:
 	void UpdateScroll(int last_real_x, int last_real_y);
 	void UpdateNonMoving(bool last_moving);
 	bool CheckTouchEvent();
+	bool CheckActionEvent();
 	bool CheckEventTriggerHere(const std::vector<int>& triggers);
+	bool CheckEventTriggerThere(const std::vector<int>& triggers);
 };
 
 #endif

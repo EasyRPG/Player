@@ -242,7 +242,18 @@ namespace Game_Map {
 	/// @return events list
 	tEventHash& GetEvents();
 
-	void GetEventsXY(std::vector<Game_Event>& events, int x, int y);
+	void GetEventsXY(std::vector<Game_Event*>& events, int x, int y);
+
+	bool LoopHorizontal();
+	bool LoopVertical();
+
+	int RoundX(int x);
+	int RoundY(int y);
+
+	int XwithDirection(int x, int direction);
+	int YwithDirection(int y, int direction);
+
+
 }
 
 #endif

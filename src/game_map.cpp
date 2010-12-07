@@ -243,11 +243,13 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 
 ////////////////////////////////////////////////////////////
 bool Game_Map::IsBush(int x, int y) {
+	// TODO
 	return false;
 }
 
 ////////////////////////////////////////////////////////////
 bool Game_Map::IsCounter(int x, int y) {
+	// TODO
 	return false;
 }
 
@@ -256,16 +258,49 @@ int Game_Map::GetTerrainTag(int x, int y) {
 	return 0;
 }
 
-void Game_Map::GetEventsXY(std::vector<Game_Event>& events, int x, int y) {
-	std::vector<Game_Event> result;
+void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
+	std::vector<Game_Event*> result;
 
-	std::vector<Game_Event>::iterator i;
-	for (i = events.begin(); i != events.end(); i++) {
-		if (i->GetX() == x && i->GetY() == y) {
-			result.push_back(*i);
+	tEventHash::const_iterator i;
+	for (i = Game_Map::GetEvents().begin(); i != Game_Map::GetEvents().end(); i++) {
+		if (i->second->GetX() == x && i->second->GetY() == y) {
+			result.push_back(i->second);
 		}
 	}
+
 	events.swap(result);
+}
+
+bool Game_Map::LoopHorizontal() {
+	return map->scroll_type == 2 || map->scroll_type == 3;
+}
+
+bool Game_Map::LoopVertical() {
+	return map->scroll_type == 1 || map->scroll_type == 3;
+}
+
+int Game_Map::RoundX(int x) {
+	if ( LoopHorizontal() ) {
+		return (x + GetWidth()) % GetWidth();
+	} else {
+		return x;
+	}
+}
+
+int Game_Map::RoundY(int y) {
+	if ( LoopVertical() ) {
+		return (y + GetHeight()) % GetHeight();
+	} else {
+		return y;
+	}
+}
+
+int Game_Map::XwithDirection(int x, int direction) {
+	return RoundX(x + (direction == 6 ? 1 : direction == 4 ? -1 : 0));
+}
+
+int Game_Map::YwithDirection(int y, int direction) {
+	return RoundY(y + (direction == 2 ? 1 : direction == 8 ? -1 : 0));
 }
 
 ////////////////////////////////////////////////////////////
