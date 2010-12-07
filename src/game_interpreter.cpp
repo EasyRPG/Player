@@ -253,7 +253,7 @@ void Game_Interpreter::SetupStartingEvent() {
 		
 		if (_event->GetStarting()) {
 			_event->ClearStarting();
-			Setup(_event->GetList(), _event->GetId()	);
+			Setup(_event->GetList(), _event->GetId());
 			return;
 		}
 	}

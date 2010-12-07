@@ -104,8 +104,8 @@ void Game_Player::UpdateScroll(int last_real_x, int last_real_y) {
 void Game_Player::Update() {
 	bool last_moving = IsMoving();
 
-	if (!IsMoving() /*|| Game_System::map_interpreter.IsRunning() ||
-		move_route_forcing || Game_Temp::message_window_showing*/) {
+	if (!IsMoving() && !Game_Map::GetInterpreter().IsRunning()
+		/*move_route_forcing || Game_Temp::message_window_showing*/) {
 		switch (Input::dir4) {
 			case 2:
 				MoveDown();
