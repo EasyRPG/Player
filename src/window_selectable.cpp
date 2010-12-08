@@ -68,7 +68,7 @@ int Window_Selectable::GetTopRow() const {
 void Window_Selectable::SetTopRow(int row) {
 	if (row < 0) row = 0;
 	if (row > GetRowMax() - 1) row = GetRowMax() - 1;
-	SetOy(row * 32);
+	SetOy(row * 16);
 }
 int Window_Selectable::GetPageRowMax() const {
 	return (height - 16) / 16;
