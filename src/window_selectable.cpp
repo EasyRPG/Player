@@ -29,7 +29,8 @@ Window_Selectable::Window_Selectable(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight),
 	item_max(1),
 	column_max(1),
-	index(-1) {
+	index(-1),
+	help_window(NULL) {
 }
 
 ////////////////////////////////////////////////////////////
@@ -46,9 +47,9 @@ int Window_Selectable::GetIndex() const {
 }
 void Window_Selectable::SetIndex(int nindex) {
 	index = nindex;
-	/*if (active && help_window != NULL) {
-		update_help
-	}*/
+	if (active && help_window != NULL) {
+		UpdateHelp();
+	}
 	UpdateCursorRect();
 }
 int Window_Selectable::GetRowMax() const {
@@ -68,15 +69,20 @@ int Window_Selectable::GetPageRowMax() const {
 int Window_Selectable::GetPageItemMax() {
 	return GetPageRowMax() * column_max;
 }
-/*Window_Help* Window_Selectable::GetHelpWindow() {
-	return window_help;
+
+Window_Help* Window_Selectable::GetHelpWindow() {
+	return help_window;
 }
+
 void Window_Selectable::SetHelpWindow(Window_Help* nhelp_window) {
 	help_window = nhelp_window;
-	if self.active and help_window != nil
-		update_help
+	if (active && help_window != NULL) {
+		UpdateHelp();
 	}
-}*/
+}
+
+void Window_Selectable::UpdateHelp() {
+}
 
 ////////////////////////////////////////////////////////////
 /// Update Cursor Rect
@@ -129,8 +135,8 @@ void Window_Selectable::Update() {
 			}
 		}
 	}
-	/*if self.active and help_window != nil
-		update_help
-	}*/
+	if (active && help_window != NULL) {
+		UpdateHelp();
+	}
 	UpdateCursorRect();
 }

@@ -54,20 +54,12 @@ public:
 	int GetItemId();
 
 	////////////////////////////////////////////////////////
-	/// Assigns a help window that displays a description
-	/// about the selected item.
-	/// @param help_window : The help window
-	////////////////////////////////////////////////////////
-	void SetHelpWindow(Window_Help* help_window);
-
-	////////////////////////////////////////////////////////
 	/// Updates the Help Text.
 	////////////////////////////////////////////////////////
 	void UpdateHelp();
 
 private:
 	int actor_id;
-	Window_Help* help_window;
 
 	std::vector<int> data;
 

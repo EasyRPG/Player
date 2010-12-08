@@ -79,16 +79,7 @@ public:
 	////////////////////////////////////////////////////////
 	void UpdateHelp();
 
-	////////////////////////////////////////////////////////
-	/// Assigns a help window that displays a description
-	/// about the selected item.
-	/// @param help_window : The help window
-	////////////////////////////////////////////////////////
-	void SetHelpWindow(Window_Help* help_window);
-
 private:
-	Window_Help* help_window;
-
 	std::vector<int> data;
 };
 

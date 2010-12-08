@@ -24,8 +24,7 @@
 ////////////////////////////////////////////////////////////
 Window_Equip::Window_Equip(int actor_id) :
 	Window_Selectable(124, 32, 196, 96),
-	actor_id(actor_id),
-	help_window(NULL) {
+	actor_id(actor_id) {
 	contents = new Bitmap(width-16, height-16);
 	Refresh();
 	index = 0;
@@ -59,20 +58,15 @@ void Window_Equip::Refresh() {
 
 	// Draw equipment text
 	for (int i = 0; i < 5; ++i) {
-		DrawEquipmentType(actor, 0, (12 + 4) * i, i);
+		DrawEquipmentType(actor, 0, ((12 + 4) * i) + 2, i);
 		if (data[i] > 0) {
-			DrawItemName(&Data::items[data[i] - 1], 60, (12 + 4) * i);
+			DrawItemName(&Data::items[data[i] - 1], 60, ((12 + 4) * i) + 2);
 		}
 	}
 }
 
 ////////////////////////////////////////////////////////////
-void Window_Equip::SetHelpWindow(Window_Help* help_window) {
-	this->help_window = help_window;
-}
-
-////////////////////////////////////////////////////////////
 void Window_Equip::UpdateHelp() {
 	help_window->SetText(GetItemId() == 0 ? "" : 
-		Data::items[GetItemId()].description);
+		Data::items[GetItemId() - 1].description);
 }

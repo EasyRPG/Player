@@ -22,7 +22,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "window_base.h"
-//#include "window_help.h"
+#include "window_help.h"
 
 ////////////////////////////////////////////////////////////
 /// Window Selectable class
@@ -39,18 +39,24 @@ public:
 	void SetTopRow(int row);
 	int GetPageRowMax() const;
 	int GetPageItemMax();
-	//Window_Help* GetHelpWindow();
-	//void SetHelpWindow(Window_Help* nhelp_window);
+	Window_Help* GetHelpWindow();
+
+	////////////////////////////////////////////////////////
+	/// Assigns a help window that displays a description
+	/// about the selected item.
+	/// @param help_window : The help window
+	////////////////////////////////////////////////////////
+	void SetHelpWindow(Window_Help* nhelp_window);
 	virtual void UpdateCursorRect();
 	void Update();
 
-	//virtual void UpdateHelp() = 0;
+	virtual void UpdateHelp();
 
 protected:
 	int item_max;
 	int column_max;
 	int index;
-	//Window_Help* window_help;
+	Window_Help* help_window;
 };
 
 #endif

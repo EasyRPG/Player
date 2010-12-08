@@ -57,8 +57,3 @@ void Window_Item::DrawItem(int index) {
 ////////////////////////////////////////////////////////////
 void Window_Item::UpdateHelp() {
 }
-
-////////////////////////////////////////////////////////////
-void Window_Item::SetHelpWindow(Window_Help* help_window) {
-	this->help_window = help_window;
-}
