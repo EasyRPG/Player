@@ -113,16 +113,10 @@
 
 ////////////////////////////////////////////////////////////
 #define USE_KEYBOARD
-#if defined(DINGOO)
-#define USE_FULL_KEYBOARD
-#endif
 //#define USE_MOUSE
-
-#if !defined(DINGOO)
 #define USE_JOYSTICK
 #define USE_JOYSTICK_HAT
 #define USE_JOYSTICK_AXIS
-#endif
 
 ////////////////////////////////////////////////////////////
 //#define USE_FIXED_TIMESTEP_FPS

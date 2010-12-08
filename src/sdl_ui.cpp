@@ -37,11 +37,11 @@
 #include "player.h"
 
 ///////////////////////////////////////////////////////////
-#ifdef USE_KEYBOARD
+#if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
 static Input::Keys::InputKey SdlKey2InputKey(SDLKey sdlkey);
 #endif
 
-#ifdef USE_JOYSTICK
+#if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
 static Input::Keys::InputKey SdlJKey2InputKey(int button_index);
 #endif
 
@@ -109,7 +109,7 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag, boo
 
 	SetTitle(title);
 
-#if defined(USE_JOYSTICK) || defined(USE_JOYSTICK_AXIS) || defined(USE_JOYSTICK_HAT)
+#if (defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)) || (defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)) || (defined(USE_JOYSTICK_HAT)  && defined(SUPPORT_JOYSTICK_HAT))
 	if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) {
 		Output::Warning("Couldn't initialize joystick.\n%s\n", SDL_GetError());
 	}
@@ -378,7 +378,7 @@ void SdlUi::ProcessEvent(SDL_Event &evnt) {
 					}
 					return;
 #endif
-#ifdef USE_MOUSE
+#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 				case SDL_APPMOUSEFOCUS:
 					mouse_focus = evnt.active.gain == 1;
 					return;
@@ -390,7 +390,7 @@ void SdlUi::ProcessEvent(SDL_Event &evnt) {
 			Player::exit_flag = true;
 			return;
 
-#ifdef USE_KEYBOARD
+#if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
 		case SDL_KEYDOWN:
 			switch (evnt.key.keysym.sym) {
 				case SDLK_F4:
@@ -439,7 +439,7 @@ void SdlUi::ProcessEvent(SDL_Event &evnt) {
 			return;
 #endif
 
-#ifdef USE_MOUSE
+#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 		case SDL_MOUSEMOTION:
 			mouse_focus = true;
 			mouse_x = evnt.motion.x;
@@ -462,14 +462,14 @@ void SdlUi::ProcessEvent(SDL_Event &evnt) {
 			return;
 #endif
 
-#ifdef USE_JOYSTICK
+#if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
 		case SDL_JOYBUTTONDOWN:
 		case SDL_JOYBUTTONUP:
 			keys[SdlJKey2InputKey(evnt.jbutton.button)] = evnt.jbutton.state == SDL_PRESSED;
 			return;
 #endif
 
-#ifdef USE_JOYSTICK_HAT
+#if defined(USE_JOYSTICK_HAT)  && defined(SUPPORT_JOYSTICK_HAT)
 		case SDL_JOYHATMOTION:
 			keys[Input::Keys::JOY_HAT_LOWER_LEFT] = false;
 			keys[Input::Keys::JOY_HAT_DOWN] = false;
@@ -507,7 +507,7 @@ void SdlUi::ProcessEvent(SDL_Event &evnt) {
 			return;
 #endif
 
-#ifdef USE_JOYSTICK_AXIS
+#if defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)
 		case SDL_JOYAXISMOTION:
 			if (evnt.jaxis.axis == 0) {
 				if (evnt.jaxis.value < -JOYSTICK_AXIS_SENSIBILITY) {
@@ -597,7 +597,7 @@ SDL_Surface* SdlUi::GetDisplaySurface() {
 }
 
 ///////////////////////////////////////////////////////////
-#ifdef USE_KEYBOARD
+#if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
 Input::Keys::InputKey SdlKey2InputKey(SDLKey sdlkey) {
 	switch (sdlkey) {
 		case SDLK_RETURN		: return Input::Keys::RETURN;
@@ -744,7 +744,7 @@ Input::Keys::InputKey SdlKey2InputKey(SDLKey sdlkey) {
 #endif
 
 ///////////////////////////////////////////////////////////
-#ifdef USE_JOYSTICK
+#if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
 Input::Keys::InputKey SdlJKey2InputKey(int button_index) {
 	switch (button_index) {
 		case 0	: return Input::Keys::JOY_0;
