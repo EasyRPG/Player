@@ -92,8 +92,8 @@ void Window_Selectable::UpdateCursorRect() {
 	} else if (row > GetTopRow() + (GetPageRowMax() - 1)) {
 		SetTopRow(row - (GetPageRowMax() - 1));
 	}
-	int cursor_width = width / column_max - 16;
-	int x = index % column_max * (cursor_width + 16);
+	int cursor_width = (width / column_max - 16) + 8;
+	int x = (index % column_max * (cursor_width + 16)) - 4;
 	int y = index / column_max * 16 - oy;
 	SetCursorRect(Rect(x, y, cursor_width, 16));
 }

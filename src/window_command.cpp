@@ -57,7 +57,7 @@ void Window_Command::Refresh() {
 void Window_Command::DrawItem(int i, int color) {
 
 	contents->GetFont()->color = color;
-	Rect rect(4, 16 * i, contents->GetWidth() - 8, 16);
+	Rect rect(0, 16 * i, contents->GetWidth() - 8, 16);
 	Rect rect2(0, 16 * i, contents->GetWidth() - 0, 16);
 	//contents->FillRect(rect, Color(0, 0, 0, 0));
 	contents->FillofColor(rect2, windowskin->GetColorKey());
