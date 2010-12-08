@@ -21,6 +21,7 @@
 #include <algorithm>
 #include <sstream>
 #include "game_actor.h"
+#include "game_party.h"
 #include "main_data.h"
 #include "util_macro.h"
 
@@ -71,9 +72,67 @@ void Game_Actor::LearnSkill(int skill_id) {
 	}
 }
 
+////////////////////////////////////////////////////////////
 void Game_Actor::SetFace(const std::string& file_name, int index) {
 	face_name.assign(file_name);
 	face_index = index;
+}
+
+////////////////////////////////////////////////////////////
+int Game_Actor::GetEquipment(int equip_type) const {
+	switch (equip_type) {
+	case 0:
+		return GetWeaponId();
+	case 1:
+		return GetShieldId();
+	case 2:
+		return GetArmorId();
+	case 3:
+		return GetHelmetId();
+	case 4:
+		return GetAccessoryId();
+	default:
+		return -1;
+	}
+}
+
+////////////////////////////////////////////////////////////
+int Game_Actor::SetEquipment(int equip_type, int new_item_id) {
+	int old_item_id = -1;
+
+	switch (equip_type) {
+	case 0:
+		old_item_id = weapon_id;
+		weapon_id = new_item_id;
+		break;
+	case 1:
+		old_item_id = shield_id;
+		shield_id = new_item_id;
+		break;
+	case 2:
+		old_item_id = armor_id;
+		armor_id = new_item_id;
+		break;
+	case 3:
+		old_item_id = helmet_id;
+		helmet_id = new_item_id;
+		break;
+	case 4:
+		old_item_id = accessory_id;
+		accessory_id = new_item_id;
+	}
+	
+	return old_item_id;
+}
+
+////////////////////////////////////////////////////////////
+void Game_Actor::ChangeEquip(int equip_type, int item_id, bool test) {
+	int prev_item = SetEquipment(equip_type, item_id);
+
+	if (!test) {
+		Game_Party::GainItem(prev_item, 1);
+		Game_Party::LoseItem(item_id, 1);
+	}
 }
 
 ////////////////////////////////////////////////////////////

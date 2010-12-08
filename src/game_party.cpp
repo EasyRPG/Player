@@ -66,6 +66,16 @@ void Game_Party::SetupStartingMembers() {
 }
 
 ////////////////////////////////////////////////////////////
+void Game_Party::GetItems(std::vector<int>& item_list) {
+	item_list.clear();
+
+	std::map<int, int>::iterator it;
+	for (it = items.begin(); it != items.end(); ++it) {
+		item_list.push_back(it->first);
+	}
+}
+
+////////////////////////////////////////////////////////////
 int Game_Party::ItemNumber(int item_id) {
 	std::map<int, int>::iterator it;
 	it = items.find(item_id);
@@ -85,12 +95,20 @@ void Game_Party::GainGold(int n) {
 }
 
 ////////////////////////////////////////////////////////////
-void Game_Party::GainItem(int item_id, int n) {
+void Game_Party::GainItem(int item_id, int amount, bool include_equip) {
 	int a;
 	if (item_id > 0) {
 		a = ItemNumber(item_id);
-		items[item_id] = min(max(a + n, 0), 99);
+		items[item_id] = min(max(a + amount, 0), 99);
+	} else {
+		Output::Warning("Can't add item to party\n%d is an invalid id.",
+			item_id);
 	}
+}
+
+////////////////////////////////////////////////////////////
+void Game_Party::LoseItem(int item_id, int amount, bool include_equip) {
+	GainItem(item_id, -amount, include_equip);
 }
 
 ////////////////////////////////////////////////////////////

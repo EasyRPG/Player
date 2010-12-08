@@ -162,7 +162,35 @@ public:
 	////////////////////////////////////////////////////////
 	void SetLevel(int _level);
 
+	////////////////////////////////////////////////////////
+	/// Set face graphic of actor.
+	/// @param file_name : file containing new face
+	/// @param index : index of face graphic in the file
+	////////////////////////////////////////////////////////
 	void SetFace(const std::string& file_name, int index);
+
+	////////////////////////////////////////////////////////
+	/// Gets the equipped equipment based on the type
+	/// @param equip_type : Type of equipment
+	/// @return item_id or 0 if no equipment or -1 if invalid
+	////////////////////////////////////////////////////////
+	int GetEquipment(int equip_type) const;
+
+	////////////////////////////////////////////////////////
+	/// Sets the equipment based on the type
+	/// @param equip_type : Type of equipment
+	/// @param new_item_id : Item to equip
+	/// @return item_id of old item, or 0 if no equipment or -1 if invalid
+	////////////////////////////////////////////////////////
+	int SetEquipment(int equip_type, int new_item_id);
+
+	////////////////////////////////////////////////////////
+	/// Changes the equipment of the actor.
+	/// @param equip_type : Type of equipment
+	/// @param item_id : Item to equip
+	/// @param test : For temporary equipment
+	////////////////////////////////////////////////////////
+	void ChangeEquip(int equip_type, int item_id, bool test = false);
 
 	/// @return max hp
 	int GetMaxHp();

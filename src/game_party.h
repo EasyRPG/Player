@@ -93,6 +93,12 @@ namespace Game_Party {
 	//void IncreaseSteps();
 
 	////////////////////////////////////////////////////////
+	/// Returns all items of the party
+	/// @param item_list Vector to fill
+	////////////////////////////////////////////////////////
+	void GetItems(std::vector<int>& item_list);
+
+	////////////////////////////////////////////////////////
 	/// Get number of possessed items.
 	/// @param item_id : database item id
 	/// @return number of items
@@ -102,9 +108,18 @@ namespace Game_Party {
 	////////////////////////////////////////////////////////
 	/// Gain an amount of items.
 	/// @param item_id : database item id
-	/// @param number : gained quantity
+	/// @param amount : gained quantity
+	/// @param include_equip : include equipped items
 	////////////////////////////////////////////////////////
-	void GainItem(int item_id, int number);
+	void GainItem(int item_id, int amount, bool include_equip = false);
+
+	////////////////////////////////////////////////////////
+	/// Lose an amount of items.
+	/// @param item_id : database item id
+	/// @param amount : lost quantity
+	/// @param include_equip : include equipped items
+	////////////////////////////////////////////////////////
+	void LoseItem(int item_id, int amount, bool include_equip = false);
 
 	////////////////////////////////////////////////////////
 	/// Lose an amount of items.

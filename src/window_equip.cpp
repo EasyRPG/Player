@@ -36,7 +36,11 @@ Window_Equip::~Window_Equip() {
 
 ////////////////////////////////////////////////////////////
 int Window_Equip::GetItemId() {
-	return data[index];
+	if (index < 0) {
+		return 0;
+	} else {
+		return data[index];
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -49,11 +53,9 @@ void Window_Equip::Refresh() {
 	// Add the equipment of the actor to data
 	data.clear();
 	Game_Actor* actor = Game_Actors::GetActor(actor_id);
-	data.push_back(actor->GetWeaponId());
-	data.push_back(actor->GetShieldId());
-	data.push_back(actor->GetArmorId());
-	data.push_back(actor->GetHelmetId());
-	data.push_back(actor->GetAccessoryId());
+	for (int i = 0; i < 5; ++i) {
+		data.push_back(actor->GetEquipment(i));
+	}
 	item_max = data.size();
 
 	// Draw equipment text

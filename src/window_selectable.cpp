@@ -21,6 +21,7 @@
 #include "window_selectable.h"
 #include "game_system.h"
 #include "input.h"
+#include "util_macro.h"
 
 ////////////////////////////////////////////////////////////
 /// Constructor
@@ -37,6 +38,12 @@ Window_Selectable::Window_Selectable(int ix, int iy, int iwidth, int iheight) :
 /// Destructor
 ////////////////////////////////////////////////////////////
 Window_Selectable::~Window_Selectable() {
+}
+
+////////////////////////////////////////////////////////////
+void Window_Selectable::CreateContents() {
+	delete contents;
+	contents = new Bitmap(width - 16, max(height - 16, GetRowMax() * 16));
 }
 
 ////////////////////////////////////////////////////////////
@@ -68,6 +75,15 @@ int Window_Selectable::GetPageRowMax() const {
 }
 int Window_Selectable::GetPageItemMax() {
 	return GetPageRowMax() * column_max;
+}
+
+Rect Window_Selectable::GetItemRect(int index) {
+	Rect rect = Rect();
+	rect.width = (contents->GetWidth()) / column_max;
+	rect.height = 16;
+	rect.x = index % column_max * rect.width;
+	rect.y = index / column_max * 16;
+	return rect;
 }
 
 Window_Help* Window_Selectable::GetHelpWindow() {

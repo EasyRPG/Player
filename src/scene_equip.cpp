@@ -31,6 +31,11 @@ Scene_Equip::Scene_Equip(int actor_index, int equip_index) :
 	actor_index(actor_index),
 	equip_index(equip_index) {
 	type = Scene::Equip;
+
+	// Debug Test code to add items
+	for (int i = 1; i < 30; ++i) {
+		Game_Party::GainItem(i, i + 10);
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -118,7 +123,7 @@ void Scene_Equip::UpdateEquipSelection() {
 		item_window->SetIndex(0);
 	}
 }
-	
+
 ////////////////////////////////////////////////////////////
 void Scene_Equip::UpdateItemSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {

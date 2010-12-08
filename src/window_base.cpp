@@ -298,8 +298,8 @@ void Window_Base::DrawEquipmentType(Game_Actor* actor, int cx, int cy, int type)
 	contents->TextDraw(rect, name);
 }
 
-void Window_Base::DrawItemName(RPG::Item* item, int cx, int cy) {
-	contents->GetFont()->color = 0;
+void Window_Base::DrawItemName(RPG::Item* item, int cx, int cy, bool enabled) {
+	contents->GetFont()->color = enabled ? 0 : 3;
 	Rect rect = contents->GetTextSize(item->name);
 	rect.x = cx; rect.y = cy;
 	contents->TextDraw(rect, item->name);

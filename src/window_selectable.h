@@ -32,6 +32,12 @@ public:
 	Window_Selectable(int ix, int iy, int iwidth, int iheight);
 	~Window_Selectable();
 
+	////////////////////////////////////////////////////////
+	/// Creates the contents based on how many items
+	/// are currently in the window.
+	////////////////////////////////////////////////////////
+	void CreateContents();
+
 	int GetIndex() const;
 	void SetIndex(int nindex);
 	int GetRowMax() const;
@@ -39,6 +45,14 @@ public:
 	void SetTopRow(int row);
 	int GetPageRowMax() const;
 	int GetPageItemMax();
+
+	////////////////////////////////////////////////////////
+	/// Returns the Item Rect used for item drawing
+	/// @param index Index of item
+	/// @return Rect where the item is drawn
+	////////////////////////////////////////////////////////
+	Rect GetItemRect(int index);
+
 	Window_Help* GetHelpWindow();
 
 	////////////////////////////////////////////////////////
