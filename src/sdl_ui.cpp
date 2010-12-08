@@ -118,7 +118,7 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag, boo
 	SDL_JoystickOpen(0);
 #endif
 
-#ifdef SUPPORT_MOUSE
+#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 	ShowCursor(true);
 #else
 	ShowCursor(false);
