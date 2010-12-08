@@ -22,6 +22,7 @@
 #include "tilemap_layer.h"
 #include "player.h"
 #include "graphics.h"
+#include <cstring> // GCC COMPILATION FIX
 
 ////////////////////////////////////////////////////////////
 // BlockD subtiles IDs

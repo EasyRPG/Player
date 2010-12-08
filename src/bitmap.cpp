@@ -35,6 +35,7 @@
 #include "system.h"
 #include <cmath>
 #include "sdl_ui.h"
+#include <cstring> // GCC COMPILATION FIX
 
 ////////////////////////////////////////////////////////////
 /// Defines
