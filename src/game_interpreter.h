@@ -35,7 +35,7 @@ public:
 
 	void Clear();
 	void Setup(std::vector<RPG::EventCommand>& _list, int _event_id);
-	bool IsRunning();
+	bool IsRunning() const;
 	void Update();
 
 	void SetupStartingEvent();

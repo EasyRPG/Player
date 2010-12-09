@@ -107,7 +107,7 @@ void Game_Interpreter::Clear() {
 ////////////////////////////////////////////////////////////
 /// Is Interpreter Running
 ////////////////////////////////////////////////////////////
-bool Game_Interpreter::IsRunning() {
+bool Game_Interpreter::IsRunning() const {
 	return !list.empty();
 }
 

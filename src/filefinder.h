@@ -46,7 +46,7 @@ namespace FileFinder {
 	/// @param name : the path and name
 	/// @return path to file
 	///////////////////////////////////////////////////////
-	std::string FileFinder::FindDefault(std::string name);
+	std::string FindDefault(std::string name);
 
 	///////////////////////////////////////////////////////
 	/// Find a music file.
