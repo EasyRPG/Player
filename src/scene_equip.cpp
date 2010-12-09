@@ -68,6 +68,7 @@ void Scene_Equip::Start() {
 	equip_window->SetHelpWindow(help_window);
 	for (size_t i = 0; i < item_windows.size(); ++i) {
 		item_windows[i]->SetHelpWindow(help_window);
+		item_windows[i]->SetActive(false);
 	}
 }
 
@@ -85,6 +86,7 @@ void Scene_Equip::Update() {
 		UpdateItemSelection();
 	}
 }
+
 ////////////////////////////////////////////////////////////
 void Scene_Equip::UpdateItemWindows() {
 	for (uint i = 0; i < item_windows.size(); ++i) {
