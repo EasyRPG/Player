@@ -142,6 +142,10 @@ std::string FileFinder::FindImage(std::string name) {
 	return FindFile(name, IMG_TYPES);
 }
 
+inline std::string FindDefault(std::string name) {
+	return name;
+}
+
 ////////////////////////////////////////////////////////////
 std::string FileFinder::FindMusic(std::string name) {
 	return FindFile(name, MUSIC_TYPES);
