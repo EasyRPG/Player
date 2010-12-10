@@ -1,181 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CodeLite_Project Name="Player">
+<CodeLite_Project Name="player">
   <Plugins>
     <Plugin Name="qmake">
       <![CDATA[00020001N0012Dingux Debug0000000000000001N0014Dingux Release000000000000]]>
     </Plugin>
   </Plugins>
-  <VirtualDirectory Name="Engine">
-    <VirtualDirectory Name="Game">
-      <File Name="../../src/game_actor.cpp"/>
-      <File Name="../../src/game_actor.h"/>
-      <File Name="../../src/game_actors.cpp"/>
-      <File Name="../../src/game_actors.h"/>
-      <File Name="../../src/game_battler.cpp"/>
-      <File Name="../../src/game_battler.h"/>
-      <File Name="../../src/game_character.cpp"/>
-      <File Name="../../src/game_character.h"/>
-      <File Name="../../src/game_commonevent.cpp"/>
-      <File Name="../../src/game_commonevent.h"/>
-      <File Name="../../src/game_event.cpp"/>
-      <File Name="../../src/game_event.h"/>
-      <File Name="../../src/game_interpreter.cpp"/>
-      <File Name="../../src/game_interpreter.h"/>
-      <File Name="../../src/game_map.cpp"/>
-      <File Name="../../src/game_map.h"/>
-      <File Name="../../src/game_message.cpp"/>
-      <File Name="../../src/game_message.h"/>
-      <File Name="../../src/game_party.cpp"/>
-      <File Name="../../src/game_party.h"/>
-      <File Name="../../src/game_player.cpp"/>
-      <File Name="../../src/game_player.h"/>
-      <File Name="../../src/game_screen.cpp"/>
-      <File Name="../../src/game_screen.h"/>
-      <File Name="../../src/game_switches.h"/>
-      <File Name="../../src/game_system.cpp"/>
-      <File Name="../../src/game_system.h"/>
-      <File Name="../../src/game_temp.cpp"/>
-      <File Name="../../src/game_temp.h"/>
-      <File Name="../../src/game_troop.cpp"/>
-      <File Name="../../src/game_troop.h"/>
-      <File Name="../../src/game_variables.h"/>
+  <VirtualDirectory Name="src">
+    <VirtualDirectory Name="Engine">
+      <VirtualDirectory Name="Game">
+        <File Name="../../src/game_actor.cpp"/>
+        <File Name="../../src/game_actor.h"/>
+        <File Name="../../src/game_actors.cpp"/>
+        <File Name="../../src/game_actors.h"/>
+        <File Name="../../src/game_battler.cpp"/>
+        <File Name="../../src/game_battler.h"/>
+        <File Name="../../src/game_character.cpp"/>
+        <File Name="../../src/game_character.h"/>
+        <File Name="../../src/game_commonevent.cpp"/>
+        <File Name="../../src/game_commonevent.h"/>
+        <File Name="../../src/game_event.cpp"/>
+        <File Name="../../src/game_event.h"/>
+        <File Name="../../src/game_interpreter.cpp"/>
+        <File Name="../../src/game_interpreter.h"/>
+        <File Name="../../src/game_map.cpp"/>
+        <File Name="../../src/game_map.h"/>
+        <File Name="../../src/game_message.cpp"/>
+        <File Name="../../src/game_message.h"/>
+        <File Name="../../src/game_party.cpp"/>
+        <File Name="../../src/game_party.h"/>
+        <File Name="../../src/game_player.cpp"/>
+        <File Name="../../src/game_player.h"/>
+        <File Name="../../src/game_screen.cpp"/>
+        <File Name="../../src/game_screen.h"/>
+        <File Name="../../src/game_switches.h"/>
+        <File Name="../../src/game_system.cpp"/>
+        <File Name="../../src/game_system.h"/>
+        <File Name="../../src/game_temp.cpp"/>
+        <File Name="../../src/game_temp.h"/>
+        <File Name="../../src/game_troop.cpp"/>
+        <File Name="../../src/game_troop.h"/>
+        <File Name="../../src/game_variables.h"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="Scene">
+        <File Name="../../src/scene.h"/>
+        <File Name="../../src/scene_battle.cpp"/>
+        <File Name="../../src/scene_battle.h"/>
+        <File Name="../../src/scene_equip.cpp"/>
+        <File Name="../../src/scene_equip.h"/>
+        <File Name="../../src/scene_logo.cpp"/>
+        <File Name="../../src/scene_logo.h"/>
+        <File Name="../../src/scene_title.cpp"/>
+        <File Name="../../src/scene_title.h"/>
+        <File Name="../../src/scene_map.cpp"/>
+        <File Name="../../src/scene_map.h"/>
+        <File Name="../../src/scene_menu.cpp"/>
+        <File Name="../../src/scene_menu.h"/>
+        <File Name="../../src/scene.cpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="Window">
+        <File Name="../../src/window_base.cpp"/>
+        <File Name="../../src/window_base.h"/>
+        <File Name="../../src/window_command.cpp"/>
+        <File Name="../../src/window_command.h"/>
+        <File Name="../../src/window_equipitem.cpp"/>
+        <File Name="../../src/window_equipitem.h"/>
+        <File Name="../../src/window_equip.cpp"/>
+        <File Name="../../src/window_equip.h"/>
+        <File Name="../../src/window_equipstatus.cpp"/>
+        <File Name="../../src/window_equipstatus.h"/>
+        <File Name="../../src/window_gold.cpp"/>
+        <File Name="../../src/window_gold.h"/>
+        <File Name="../../src/window_help.cpp"/>
+        <File Name="../../src/window_help.h"/>
+        <File Name="../../src/window_item.cpp"/>
+        <File Name="../../src/window_item.h"/>
+        <File Name="../../src/window_selectable.cpp"/>
+        <File Name="../../src/window_selectable.h"/>
+        <File Name="../../src/window_message.h"/>
+        <File Name="../../src/window_message.cpp"/>
+        <File Name="../../src/window_menustatus.cpp"/>
+        <File Name="../../src/window_menustatus.h"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="Sprite">
+        <File Name="../../src/sprite_character.cpp"/>
+        <File Name="../../src/sprite_character.h"/>
+        <File Name="../../src/spriteset_map.cpp"/>
+        <File Name="../../src/spriteset_map.h"/>
+      </VirtualDirectory>
+      <File Name="../../src/cache.cpp"/>
+      <File Name="../../src/cache.h"/>
     </VirtualDirectory>
-    <VirtualDirectory Name="Scene">
-      <File Name="../../src/scene.h"/>
-      <File Name="../../src/scene_battle.cpp"/>
-      <File Name="../../src/scene_battle.h"/>
-      <File Name="../../src/scene_equip.cpp"/>
-      <File Name="../../src/scene_equip.h"/>
-      <File Name="../../src/scene_logo.cpp"/>
-      <File Name="../../src/scene_logo.h"/>
-      <File Name="../../src/scene_title.cpp"/>
-      <File Name="../../src/scene_title.h"/>
-      <File Name="../../src/scene_map.cpp"/>
-      <File Name="../../src/scene_map.h"/>
-      <File Name="../../src/scene_menu.cpp"/>
-      <File Name="../../src/scene_menu.h"/>
-      <File Name="../../src/scene.cpp"/>
-    </VirtualDirectory>
-    <VirtualDirectory Name="Window">
-      <File Name="../../src/window_base.cpp"/>
-      <File Name="../../src/window_base.h"/>
-      <File Name="../../src/window_command.cpp"/>
-      <File Name="../../src/window_command.h"/>
-      <File Name="../../src/window_equipitem.cpp"/>
-      <File Name="../../src/window_equipitem.h"/>
-      <File Name="../../src/window_equip.cpp"/>
-      <File Name="../../src/window_equip.h"/>
-      <File Name="../../src/window_equipstatus.cpp"/>
-      <File Name="../../src/window_equipstatus.h"/>
-      <File Name="../../src/window_gold.cpp"/>
-      <File Name="../../src/window_gold.h"/>
-      <File Name="../../src/window_help.cpp"/>
-      <File Name="../../src/window_help.h"/>
-      <File Name="../../src/window_item.cpp"/>
-      <File Name="../../src/window_item.h"/>
-      <File Name="../../src/window_selectable.cpp"/>
-      <File Name="../../src/window_selectable.h"/>
-      <File Name="../../src/window_message.h"/>
-      <File Name="../../src/window_message.cpp"/>
-      <File Name="../../src/window_menustatus.cpp"/>
-      <File Name="../../src/window_menustatus.h"/>
-    </VirtualDirectory>
-    <VirtualDirectory Name="Sprite">
-      <File Name="../../src/sprite_character.cpp"/>
-      <File Name="../../src/sprite_character.h"/>
-      <File Name="../../src/spriteset_map.cpp"/>
-      <File Name="../../src/spriteset_map.h"/>
-    </VirtualDirectory>
-    <File Name="../../src/cache.cpp"/>
-    <File Name="../../src/cache.h"/>
-  </VirtualDirectory>
-  <VirtualDirectory Name="Multimedia">
-    <VirtualDirectory Name="Audio">
-      <File Name="../../src/audio.cpp"/>
-      <File Name="../../src/audio.h"/>
-    </VirtualDirectory>
-    <VirtualDirectory Name="Graphics">
-      <File Name="../../src/bitmap.cpp"/>
-      <File Name="../../src/bitmap.h"/>
-      <File Name="../../src/color.cpp"/>
-      <File Name="../../src/color.h"/>
-      <File Name="../../src/drawable.h"/>
-      <File Name="../../src/font.cpp"/>
-      <File Name="../../src/font.h"/>
-      <File Name="../../src/graphics.cpp"/>
-      <File Name="../../src/graphics.h"/>
-      <File Name="../../src/hslrgb.cpp"/>
-      <File Name="../../src/hslrgb.h"/>
-      <File Name="../../src/plane.cpp"/>
-      <File Name="../../src/plane.h"/>
-      <File Name="../../src/rect.cpp"/>
-      <File Name="../../src/rect.h"/>
-      <File Name="../../src/sprite.cpp"/>
-      <File Name="../../src/sprite.h"/>
-      <File Name="../../src/tilemap.cpp"/>
-      <File Name="../../src/tilemap.h"/>
-      <File Name="../../src/tilemap_layer.cpp"/>
-      <File Name="../../src/tilemap_layer.h"/>
-      <File Name="../../src/tone.cpp"/>
-      <File Name="../../src/tone.h"/>
-      <File Name="../../src/window.cpp"/>
-      <File Name="../../src/window.h"/>
-      <File Name="../../src/zobj.cpp"/>
-      <File Name="../../src/zobj.h"/>
-    </VirtualDirectory>
-    <VirtualDirectory Name="Input">
-      <File Name="../../src/input.cpp"/>
-      <File Name="../../src/input.h"/>
-      <File Name="../../src/input_buttons.h"/>
-      <File Name="../../src/input_buttons_desktop.cpp"/>
-      <File Name="../../src/input_buttons_gekko.cpp"/>
-      <File Name="../../src/keys.h"/>
-      <File Name="../../src/input_buttons_dingoo.cpp"/>
-    </VirtualDirectory>
-    <VirtualDirectory Name="UI">
-      <File Name="../../src/baseui.cpp"/>
-      <File Name="../../src/baseui.h"/>
-      <VirtualDirectory Name="SDL">
-        <File Name="../../src/sdl_ui.cpp"/>
-        <File Name="../../src/sdl_ui.h"/>
+    <VirtualDirectory Name="Multimedia">
+      <VirtualDirectory Name="Audio">
+        <File Name="../../src/audio.cpp"/>
+        <File Name="../../src/audio.h"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="Graphics">
+        <File Name="../../src/bitmap.cpp"/>
+        <File Name="../../src/bitmap.h"/>
+        <File Name="../../src/color.cpp"/>
+        <File Name="../../src/color.h"/>
+        <File Name="../../src/drawable.h"/>
+        <File Name="../../src/font.cpp"/>
+        <File Name="../../src/font.h"/>
+        <File Name="../../src/graphics.cpp"/>
+        <File Name="../../src/graphics.h"/>
+        <File Name="../../src/hslrgb.cpp"/>
+        <File Name="../../src/hslrgb.h"/>
+        <File Name="../../src/plane.cpp"/>
+        <File Name="../../src/plane.h"/>
+        <File Name="../../src/rect.cpp"/>
+        <File Name="../../src/rect.h"/>
+        <File Name="../../src/sprite.cpp"/>
+        <File Name="../../src/sprite.h"/>
+        <File Name="../../src/tilemap.cpp"/>
+        <File Name="../../src/tilemap.h"/>
+        <File Name="../../src/tilemap_layer.cpp"/>
+        <File Name="../../src/tilemap_layer.h"/>
+        <File Name="../../src/tone.cpp"/>
+        <File Name="../../src/tone.h"/>
+        <File Name="../../src/window.cpp"/>
+        <File Name="../../src/window.h"/>
+        <File Name="../../src/zobj.cpp"/>
+        <File Name="../../src/zobj.h"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="Input">
+        <File Name="../../src/input.cpp"/>
+        <File Name="../../src/input.h"/>
+        <File Name="../../src/input_buttons.h"/>
+        <File Name="../../src/input_buttons_desktop.cpp"/>
+        <File Name="../../src/input_buttons_gekko.cpp"/>
+        <File Name="../../src/keys.h"/>
+        <File Name="../../src/input_buttons_dingoo.cpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="UI">
+        <File Name="../../src/baseui.cpp"/>
+        <File Name="../../src/baseui.h"/>
+        <VirtualDirectory Name="SDL">
+          <File Name="../../src/sdl_ui.cpp"/>
+          <File Name="../../src/sdl_ui.h"/>
+        </VirtualDirectory>
       </VirtualDirectory>
     </VirtualDirectory>
+    <VirtualDirectory Name="Tools">
+      <File Name="../../src/filefinder.h"/>
+      <File Name="../../src/msgbox.h"/>
+      <File Name="../../src/output.cpp"/>
+      <File Name="../../src/output.h"/>
+      <File Name="../../src/util_macro.h"/>
+      <VirtualDirectory Name="GTK">
+        <File Name="../../src/msgbox_gtk.cpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="Win">
+        <File Name="../../src/filefinder_win.cpp"/>
+        <File Name="../../src/msgbox_win.cpp"/>
+        <File Name="../../src/registry_win.cpp"/>
+        <File Name="../../src/registry_win.h"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="Cocoa">
+        <File Name="../../src/msgbox_cocoa.cpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="UNIX">
+        <File Name="../../src/filefinder_unix.cpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="Font 8x8">
+        <File Name="../../src/font_pearl_8x8.cpp"/>
+        <File Name="../../src/font_render_8x8.cpp"/>
+        <File Name="../../src/font_render_8x8.h"/>
+      </VirtualDirectory>
+    </VirtualDirectory>
+    <File Name="../../src/main.cpp"/>
+    <File Name="../../src/main_data.cpp"/>
+    <File Name="../../src/main_data.h"/>
+    <File Name="../../src/options.h"/>
+    <File Name="../../src/player.cpp"/>
+    <File Name="../../src/player.h"/>
+    <File Name="../../resources/player.rc"/>
+    <File Name="../../src/system.h"/>
   </VirtualDirectory>
-  <VirtualDirectory Name="Tools">
-    <File Name="../../src/filefinder.h"/>
-    <File Name="../../src/msgbox.h"/>
-    <File Name="../../src/output.cpp"/>
-    <File Name="../../src/output.h"/>
-    <File Name="../../src/util_macro.h"/>
-    <VirtualDirectory Name="GTK">
-      <File Name="../../src/msgbox_gtk.cpp"/>
-    </VirtualDirectory>
-    <VirtualDirectory Name="Win">
-      <File Name="../../src/filefinder_win.cpp"/>
-      <File Name="../../src/msgbox_win.cpp"/>
-      <File Name="../../src/registry_win.cpp"/>
-      <File Name="../../src/registry_win.h"/>
-    </VirtualDirectory>
-    <VirtualDirectory Name="Cocoa">
-      <File Name="../../src/msgbox_cocoa.cpp"/>
-    </VirtualDirectory>
-    <VirtualDirectory Name="UNIX">
-      <File Name="../../src/filefinder_unix.cpp"/>
-    </VirtualDirectory>
-    <VirtualDirectory Name="Font 8x8">
-      <File Name="../../src/font_pearl_8x8.cpp"/>
-      <File Name="../../src/font_render_8x8.cpp"/>
-      <File Name="../../src/font_render_8x8.h"/>
-    </VirtualDirectory>
-  </VirtualDirectory>
-  <File Name="../../src/main.cpp"/>
-  <File Name="../../src/main_data.cpp"/>
-  <File Name="../../src/main_data.h"/>
-  <File Name="../../src/options.h"/>
-  <File Name="../../src/player.cpp"/>
-  <File Name="../../src/player.h"/>
-  <File Name="../../resources/player.rc"/>
-  <File Name="../../src/system.h"/>
   <Dependencies Name="GTK+ Debug">
     <Project Name="Readers"/>
   </Dependencies>
