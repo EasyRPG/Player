@@ -179,34 +179,31 @@
     <File Name="../../src/system.h"/>
   </VirtualDirectory>
   <Dependencies Name="GTK+ Debug">
-    <Project Name="Readers"/>
+    <Project Name="readers"/>
   </Dependencies>
   <Dependencies Name="GTK+ Release">
-    <Project Name="Readers"/>
+    <Project Name="readers"/>
   </Dependencies>
   <Dependencies Name="Win32 Debug">
-    <Project Name="Readers"/>
+    <Project Name="readers"/>
   </Dependencies>
   <Dependencies Name="Win32 Release">
-    <Project Name="Readers"/>
+    <Project Name="readers"/>
   </Dependencies>
   <Dependencies Name="Mac OS X Debug">
-    <Project Name="Readers"/>
+    <Project Name="readers"/>
   </Dependencies>
   <Dependencies Name="Mac OS X Release">
-    <Project Name="Readers"/>
+    <Project Name="readers"/>
   </Dependencies>
   <Dependencies Name="Dingux Debug">
-    <Project Name="Readers"/>
+    <Project Name="readers"/>
   </Dependencies>
   <Dependencies Name="Dingux Release">
-    <Project Name="Readers"/>
+    <Project Name="readers"/>
   </Dependencies>
   <Dependencies Name="UNIX Debug">
-    <Project Name="Readers"/>
-  </Dependencies>
-  <Dependencies Name="UNIX Release">
-    <Project Name="Readers"/>
+    <Project Name="readers"/>
   </Dependencies>
   <Settings Type="Executable">
     <Configuration Name="Dingux Debug" CompilerType="mipsel-linux" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
@@ -607,4 +604,5 @@ $(IntermediateDirectory)/$(ProjectName).app/Contents/Resources/Player.icns: Play
       <ResourceCompiler Options=""/>
     </GlobalSettings>
   </Settings>
+  <Dependencies Name="UNIX Release"/>
 </CodeLite_Project>
