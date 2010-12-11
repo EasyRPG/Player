@@ -179,6 +179,8 @@ public:
 	bool IsJumping() const;
 	int GetPriorityType() const;
 
+	virtual bool CheckEventTriggerTouch(int x, int y) = 0;
+
 protected:
 	void UpdateMove();
 	void UpdateStop();
@@ -212,14 +214,6 @@ protected:
 	bool direction_fix;
 
 	int priority_type;
-
-	void SetAssocChild(Game_Event*);
-	void SetAssocChild(Game_Player*);
-
-private:
-	Game_Event* event;
-	Game_Player* player;
-
 };
 
 #endif

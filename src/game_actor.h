@@ -163,6 +163,13 @@ public:
 	void SetLevel(int _level);
 
 	////////////////////////////////////////////////////////
+	/// Checks if the actor can equip the item
+	/// @param item_id : id of item to check
+	/// @return true if it can equip the item
+	////////////////////////////////////////////////////////
+	bool CheckEquippable(int item_id);
+
+	////////////////////////////////////////////////////////
 	/// Set face graphic of actor.
 	/// @param file_name : file containing new face
 	/// @param index : index of face graphic in the file
@@ -190,13 +197,7 @@ public:
 	/// @param item_id : Item to equip
 	/// @param test : For temporary equipment
 	////////////////////////////////////////////////////////
-	void ChangeEquip(int equip_type, int item_id, bool test = false);
-
-	/// @return max hp
-	int GetMaxHp();
-
-	/// @return max sp
-	int GetMaxSp();
+	void ChangeEquipment(int equip_type, int item_id, bool test = false);
 
 	/// @return learned skills list.
 	std::vector<int> GetSkills() const;

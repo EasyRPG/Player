@@ -66,7 +66,7 @@ public:
 	std::vector<RPG::EventCommand>& GetList();
 
 	void CheckEventTriggerAuto();
-	void CheckEventTriggerTouch(int x, int y);
+	bool CheckEventTriggerTouch(int x, int y);
 	void Start();
 	void Update();
 	bool AreConditionsMet(const RPG::EventPage& page);

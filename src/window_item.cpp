@@ -27,8 +27,6 @@
 Window_Item::Window_Item(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
 	column_max = 2;
-
-	Refresh();
 }
 
 ////////////////////////////////////////////////////////////
@@ -61,12 +59,23 @@ bool Window_Item::CheckEnable(int item_id) {
 
 ////////////////////////////////////////////////////////////
 void Window_Item::Refresh() {
-	data.clear();
+	std::vector<int> party_items;
 
-	Game_Party::GetItems(data);
-	data.push_back(0);
+	data.clear();
+	Game_Party::GetItems(party_items);
+
+	for (int i = 0; i < party_items.size(); ++i) {
+		if (this->CheckInclude(party_items[i])) {
+			data.push_back(party_items[i]);
+		}
+	}
+
+	if (CheckInclude(0)) {
+		data.push_back(0);
+	}
 
 	item_max = data.size();
+
 	CreateContents();
 
 	contents->Clear();

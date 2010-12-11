@@ -106,6 +106,30 @@ public:
 	/// @return current agi
 	int GetAgi();
 
+	////////////////////////////////////////////////////////
+	/// Gets the maximum hp for the current level
+	/// @return max hp
+	////////////////////////////////////////////////////////
+	virtual int GetBaseMaxHp() const = 0;
+
+	////////////////////////////////////////////////////////
+	/// Gets the maximum sp for the current level
+	/// @return max sp
+	////////////////////////////////////////////////////////
+	virtual int GetBaseMaxSp() const= 0;
+
+	/// @return atk
+	virtual int GetBaseAtk() const = 0;
+
+	/// @return def
+	virtual int GetBaseDef() const = 0;
+
+	/// @return spi
+	virtual int GetBaseSpi() const = 0;
+
+	/// @return agi
+	virtual int GetBaseAgi() const = 0;
+
 protected:
 	std::string battler_name;
 	int hp;
@@ -126,12 +150,6 @@ protected:
 	bool animation_hit;
 	bool white_flash;
 	bool blink;
-
-	void SetGameActor(Game_Actor* _actor);
-
-private:
-	// Associated game actor, if any
-	Game_Actor* actor;
 };
 
 #endif

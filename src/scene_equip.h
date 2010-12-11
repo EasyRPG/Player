@@ -86,7 +86,7 @@ private:
 	/// Current active item window
 	Window_EquipItem* item_window;
 	/// Displays stats of the hero/item
-	Window_EquipStatus* status_window;
+	Window_EquipStatus* equipstatus_window;
 	/// Displays currently equipped items
 	Window_Equip* equip_window;
 	/// Displays description about the selected item

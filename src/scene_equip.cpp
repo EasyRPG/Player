@@ -19,6 +19,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "scene_equip.h"
+#include "game_actors.h"
 #include "game_party.h"
 #include "game_system.h"
 #include "graphics.h"
@@ -32,17 +33,19 @@ Scene_Equip::Scene_Equip(int actor_index, int equip_index) :
 	equip_index(equip_index) {
 	type = Scene::Equip;
 
+#ifdef _DEBUG
 	// Debug Test code to add items
-	for (int i = 1; i < 30; ++i) {
-		Game_Party::GainItem(i, i + 10);
+	for (int i = 1; i < 82; ++i) {
+		Game_Party::GainItem(i, 1);
 	}
+#endif
 }
 
 ////////////////////////////////////////////////////////////
 Scene_Equip::~Scene_Equip() {
 	delete help_window;
 	delete equip_window;
-	delete status_window;
+	delete equipstatus_window;
 	for (int i = 0; i < 5; ++i) {
 		delete item_windows[i];
 	}
@@ -54,7 +57,7 @@ void Scene_Equip::Start() {
 
 	// Create the windows
 	help_window = new Window_Help();
-	status_window = new Window_EquipStatus(actor->GetId());
+	equipstatus_window = new Window_EquipStatus(actor->GetId());
 	equip_window = new Window_Equip(actor->GetId());
 
 	equip_window->SetIndex(equip_index); 
@@ -69,6 +72,7 @@ void Scene_Equip::Start() {
 	for (size_t i = 0; i < item_windows.size(); ++i) {
 		item_windows[i]->SetHelpWindow(help_window);
 		item_windows[i]->SetActive(false);
+		item_windows[i]->Refresh();
 	}
 }
 
@@ -105,12 +109,18 @@ void Scene_Equip::UpdateEquipWindow() {
 ////////////////////////////////////////////////////////////
 void Scene_Equip::UpdateStatusWindow() {
 	if (equip_window->GetActive()) {
-		status_window->ClearParameters();
+		equipstatus_window->ClearParameters();
 	} else if (item_window->GetActive()) {
-		// ToDo
+		Game_Actor* actor = Game_Party::GetActors()[actor_index];
+		Game_Actor temp = *actor;
+		temp.ChangeEquipment(equip_window->GetIndex(),
+			item_window->GetItemId(), true);
+
+		equipstatus_window->SetNewParameters(
+			temp.GetAtk(), temp.GetDef(), temp.GetSpi(), temp.GetAgi());
 	}
 
-	status_window->Update();
+	equipstatus_window->Update();
 }
 
 ////////////////////////////////////////////////////////////
@@ -135,6 +145,10 @@ void Scene_Equip::UpdateItemSelection() {
 		item_window->SetIndex(-1);
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Data::system.decision_se);
+
+		Game_Party::GetActors()[actor_index]->ChangeEquipment(
+			equip_window->GetIndex(), item_window->GetItemId());
+
 		equip_window->SetActive(true);
 		item_window->SetActive(false);
 		item_window->SetIndex(-1);

@@ -42,8 +42,6 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	
 	MoveTo(event.x, event.y);
 	Refresh();
-
-	SetAssocChild(this);
 }
 
 ////////////////////////////////////////////////////////////
@@ -204,9 +202,9 @@ std::vector<RPG::EventCommand>& Game_Event::GetList() {
 	return list;
 }
 
-void Game_Event::CheckEventTriggerTouch(int x, int y) {
+bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 	if (Game_Map::GetInterpreter().IsRunning())
-		return;
+		return false;
 
 	if ((trigger == 2) && (Main_Data::game_player->IsInPosition(x, y))) {
 
@@ -215,6 +213,8 @@ void Game_Event::CheckEventTriggerTouch(int x, int y) {
 			Start();
 		}
 	}
+
+	return true;
 }
 
 void Game_Event::Update() {

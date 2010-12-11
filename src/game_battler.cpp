@@ -42,13 +42,7 @@ Game_Battler::Game_Battler() :
 	animation_id(0),
 	animation_hit(false),
 	white_flash(false),
-	blink(false),
-	actor(NULL) {
-}
-
-////////////////////////////////////////////////////////////
-void Game_Battler::SetGameActor(Game_Actor* _actor) {
-	actor = _actor;
+	blink(false) {
 }
 
 ////////////////////////////////////////////////////////////
@@ -73,20 +67,36 @@ int Game_Battler::GetSp() const {
 
 ////////////////////////////////////////////////////////////
 int Game_Battler::GetMaxHp() {
-	if (actor == NULL) {
-		return 0;
-	} else {
-		return actor->GetMaxHp();
+	int base_maxhp = GetBaseMaxHp();
+	int n = min(max(base_maxhp + maxhp_plus, 1), 999);
+
+	for (std::vector<int>::iterator i = states.begin();
+		i != states.end();
+		i++) {
+			// TODO test needed
+			n *= Data::states[(*i)].hp_change_max / 100;
 	}
+
+	n = min(max(n, 1), 999);
+
+	return n;
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Battler::GetMaxSp() {
-	if (actor == NULL) {
-		return 0;
-	} else {
-		return actor->GetMaxSp();
+	int base_maxsp = GetBaseMaxSp();
+	int n = min(max(base_maxsp + maxsp_plus, 0), 999);
+
+	for (std::vector<int>::iterator i = states.begin();
+		i != states.end();
+		i++) {
+			// TODO test needed
+			n *= Data::states[(*i)].sp_change_max / 100;
 	}
+
+	n = min(max(n, 0), 999);
+
+	return n;
 }
 
 ////////////////////////////////////////////////////////////
@@ -105,7 +115,7 @@ void Game_Battler::SetMaxSp(int _maxsp) {
 
 ////////////////////////////////////////////////////////////
 int Game_Battler::GetAtk() {
-	int base_atk = actor->GetBaseAtk();
+	int base_atk = GetBaseAtk();
 	int n = min(max(base_atk + atk_plus, 1), 999);
 
 	for (std::vector<int>::iterator i = states.begin();
@@ -122,7 +132,7 @@ int Game_Battler::GetAtk() {
 
 ////////////////////////////////////////////////////////////
 int Game_Battler::GetDef() {
-	int base_def = actor->GetBaseDef();
+	int base_def = GetBaseDef();
 	int n = min(max(base_def + def_plus, 1), 999);
 
 	for (std::vector<int>::iterator i = states.begin();
@@ -139,7 +149,7 @@ int Game_Battler::GetDef() {
 
 ////////////////////////////////////////////////////////////
 int Game_Battler::GetSpi() {
-	int base_spi = actor->GetBaseSpi();
+	int base_spi = GetBaseSpi();
 	int n = min(max(base_spi + spi_plus, 1), 999);
 
 	for (std::vector<int>::iterator i = states.begin();
@@ -156,7 +166,7 @@ int Game_Battler::GetSpi() {
 
 ////////////////////////////////////////////////////////////
 int Game_Battler::GetAgi() {
-	int base_agi = actor->GetBaseAgi();
+	int base_agi = GetBaseAgi();
 	int n = min(max(base_agi + agi_plus, 1), 999);
 
 	for (std::vector<int>::iterator i = states.begin();

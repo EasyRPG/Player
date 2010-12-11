@@ -52,9 +52,7 @@ Game_Character::Game_Character() :
 	walk_anime(true),
 	turn_enabled(true),
 	direction_fix(false),
-	priority_type(1),
-	event(NULL),
-	player(NULL) {
+	priority_type(1) {
 }
 
 ////////////////////////////////////////////////////////////
@@ -248,11 +246,7 @@ void Game_Character::MoveDown() {
 		y += 1;
 		//IncreaseSteps();
 	} else {
-		if (player != NULL) {
-			player->CheckEventTriggerTouch(x, y + 1);
-		} else {
-			event->CheckEventTriggerTouch(x, y + 1);
-		}
+		CheckEventTriggerTouch(x, y + 1);
 	}
 }
 
@@ -265,11 +259,7 @@ void Game_Character::MoveLeft() {
 		x -= 1;
 		//IncreaseSteps();
 	} else {
-		if (player != NULL) {
-			player->CheckEventTriggerTouch(x - 1, y);
-		} else {
-			event->CheckEventTriggerTouch(x - 1, y);
-		}
+		CheckEventTriggerTouch(x - 1, y);
 	}
 }
 
@@ -282,11 +272,7 @@ void Game_Character::MoveRight() {
 		x += 1;
 		//IncreaseSteps();
 	} else {
-		if (player != NULL) {
-			player->CheckEventTriggerTouch(x + 1, y);
-		} else {
-			event->CheckEventTriggerTouch(x + 1, y);
-		}
+		CheckEventTriggerTouch(x + 1, y);
 	}
 }
 
@@ -299,13 +285,10 @@ void Game_Character::MoveUp() {
 		y -= 1;
 		//IncreaseSteps();
 	} else {
-		if (player != NULL) {
-			player->CheckEventTriggerTouch(x, y - 1);
-		} else {
-			event->CheckEventTriggerTouch(x, y - 1);
-		}
+		CheckEventTriggerTouch(x, y - 1);
 	}
 }
+
 ////////////////////////////////////////////////////////////
 void Game_Character::TurnDown() {
 	if (!direction_fix) {
@@ -447,14 +430,4 @@ void Game_Character::SetAnimationId(int new_animation_id) {
 
 bool Game_Character::IsInPosition(int x, int y) const {
 	return ((this->x == x) && (this->y && y));
-}
-
-void Game_Character::SetAssocChild(Game_Event* event) {
-	assert(this->event == NULL);
-	this->event = event;
-}
-
-void Game_Character::SetAssocChild(Game_Player* player) {
-	assert(this->player == NULL);
-	this->player = player;
 }

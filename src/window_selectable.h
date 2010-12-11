@@ -30,7 +30,7 @@
 class Window_Selectable: public Window_Base {
 public:
 	Window_Selectable(int ix, int iy, int iwidth, int iheight);
-	~Window_Selectable();
+	virtual ~Window_Selectable();
 
 	////////////////////////////////////////////////////////
 	/// Creates the contents based on how many items

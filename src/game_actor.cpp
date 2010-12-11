@@ -28,7 +28,6 @@
 ////////////////////////////////////////////////////////////
 Game_Actor::Game_Actor(int actor_id) {
 	Setup(actor_id);
-	SetGameActor(this);
 }
 
 ////////////////////////////////////////////////////////////
@@ -126,47 +125,17 @@ int Game_Actor::SetEquipment(int equip_type, int new_item_id) {
 }
 
 ////////////////////////////////////////////////////////////
-void Game_Actor::ChangeEquip(int equip_type, int item_id, bool test) {
+void Game_Actor::ChangeEquipment(int equip_type, int item_id, bool test) {
 	int prev_item = SetEquipment(equip_type, item_id);
 
 	if (!test) {
-		Game_Party::GainItem(prev_item, 1);
-		Game_Party::LoseItem(item_id, 1);
+		if (prev_item != 0) {
+			Game_Party::GainItem(prev_item, 1);
+		}
+		if (item_id != 0) {
+			Game_Party::LoseItem(item_id, 1);
+		}
 	}
-}
-
-////////////////////////////////////////////////////////////
-int Game_Actor::GetMaxHp() {
-	int base_maxhp = GetBaseMaxHp();
-	int n = min(max(base_maxhp + maxhp_plus, 1), 999);
-
-	for (std::vector<int>::iterator i = states.begin();
-		i != states.end();
-		i++) {
-			// TODO test needed
-			n *= Data::states[(*i)].hp_change_max / 100;
-	}
-
-	n = min(max(n, 1), 999);
-
-	return n;
-}
-
-////////////////////////////////////////////////////////////
-int Game_Actor::GetMaxSp() {
-	int base_maxsp = GetBaseMaxSp();
-	int n = min(max(base_maxsp + maxsp_plus, 0), 999);
-
-	for (std::vector<int>::iterator i = states.begin();
-		i != states.end();
-		i++) {
-			// TODO test needed
-			n *= Data::states[(*i)].sp_change_max / 100;
-	}
-
-	n = min(max(n, 0), 999);
-
-	return n;
 }
 
 ////////////////////////////////////////////////////////////
@@ -185,13 +154,17 @@ int Game_Actor::GetBaseAtk() const {
 
 	if (weapon_id > 0) {
 		n += Data::items[weapon_id - 1].atk_points;
-	} else if (shield_id > 0) {
+	}
+	if (shield_id > 0) {
 		n += Data::items[shield_id - 1].atk_points;
-	} else if (armor_id > 0) {
+	}
+	if (armor_id > 0) {
 		n += Data::items[armor_id - 1].atk_points;
-	} else if (helmet_id > 0) {
+	}
+	if (helmet_id > 0) {
 		n += Data::items[helmet_id - 1].atk_points;
-	} else if (accessory_id > 0) {
+	}
+	if (accessory_id > 0) {
 		n += Data::items[accessory_id - 1].atk_points;
 	}
 
@@ -204,13 +177,17 @@ int Game_Actor::GetBaseDef() const {
 
 	if (weapon_id > 0) {
 		n += Data::items[weapon_id - 1].def_points;
-	} else if (shield_id > 0) {
+	}
+	if (shield_id > 0) {
 		n += Data::items[shield_id - 1].def_points;
-	} else if (armor_id > 0) {
+	}
+	if (armor_id > 0) {
 		n += Data::items[armor_id - 1].def_points;
-	} else if (helmet_id > 0) {
+	}
+	if (helmet_id > 0) {
 		n += Data::items[helmet_id - 1].def_points;
-	} else if (accessory_id > 0) {
+	}
+	if (accessory_id > 0) {
 		n += Data::items[accessory_id - 1].def_points;
 	}
 
@@ -223,13 +200,17 @@ int Game_Actor::GetBaseSpi() const {
 
 	if (weapon_id > 0) {
 		n += Data::items[weapon_id - 1].spi_points;
-	} else if (shield_id > 0) {
+	}
+	if (shield_id > 0) {
 		n += Data::items[shield_id - 1].spi_points;
-	} else if (armor_id > 0) {
+	}
+	if (armor_id > 0) {
 		n += Data::items[armor_id - 1].spi_points;
-	} else if (helmet_id > 0) {
+	}
+	if (helmet_id > 0) {
 		n += Data::items[helmet_id - 1].spi_points;
-	} else if (accessory_id > 0) {
+	}
+	if (accessory_id > 0) {
 		n += Data::items[accessory_id - 1].spi_points;
 	}
 
@@ -242,13 +223,17 @@ int Game_Actor::GetBaseAgi() const {
 
 	if (weapon_id > 0) {
 		n += Data::items[weapon_id - 1].agi_points;
-	} else if (shield_id > 0) {
+	}
+	if (shield_id > 0) {
 		n += Data::items[shield_id - 1].agi_points;
-	} else if (armor_id > 0) {
+	}
+	if (armor_id > 0) {
 		n += Data::items[armor_id - 1].agi_points;
-	} else if (helmet_id > 0) {
+	}
+	if (helmet_id > 0) {
 		n += Data::items[helmet_id - 1].agi_points;
-	} else if (accessory_id > 0) {
+	}
+	if (accessory_id > 0) {
 		n += Data::items[accessory_id - 1].agi_points;
 	}
 
@@ -375,21 +360,39 @@ void Game_Actor::SetExp(int _exp) {
 }
 
 ////////////////////////////////////////////////////////////
-void Game_Actor::SetLevel(int _level) {
-	level = _level;
-}
-
-void Game_Actor::ChangeLevel(int level) {
-	this->level = max(min(level, 50), 1);
-	//ChangeExp()
-}
-
 void Game_Actor::ChangeExp(int exp) {
 	// TODO
 	/*int last_level = level;
 
 	this->exp = max(min(exp, 0), 999999);
 	while (this->exp*/
+}
+
+////////////////////////////////////////////////////////////
+void Game_Actor::SetLevel(int _level) {
+	level = _level;
+}
+
+////////////////////////////////////////////////////////////
+void Game_Actor::ChangeLevel(int level) {
+	this->level = max(min(level, 50), 1);
+	//ChangeExp()
+}
+
+////////////////////////////////////////////////////////////
+bool Game_Actor::CheckEquippable(int item_id) {
+	if (two_swords_style &&
+		Data::items[item_id - 1].type == RPG::Item::Type_shield) {
+			return false;
+	}
+
+	// If the actor id is out of range this is an optimization in the ldb file
+	// (all actors missing can equip the item)
+	if (Data::items[item_id - 1].actor_set.size() <= (unsigned)(actor_id - 1)) {
+		return true;
+	} else {
+		return Data::items[item_id - 1].actor_set.at(actor_id - 1);
+	}
 }
 
 ////////////////////////////////////////////////////////////

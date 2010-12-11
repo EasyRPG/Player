@@ -57,11 +57,13 @@ void Window_EquipStatus::SetNewParameters(
 	def = new_def;
 	spi = new_spi;
 	agi = new_agi;
+	Refresh();
 }
 
 ////////////////////////////////////////////////////////////
 void Window_EquipStatus::ClearParameters() {
 	draw_params = false;
+	Refresh();
 }
 
 ////////////////////////////////////////////////////////////
@@ -69,9 +71,9 @@ int Window_EquipStatus::GetNewParameterColor(int old_value, int new_value) {
 	if (old_value == new_value) {
 		return 0;
 	} else if (old_value < new_value) {
-		return 5;
-	} else {
 		return 4;
+	} else {
+		return 3;
 	}
 }
 

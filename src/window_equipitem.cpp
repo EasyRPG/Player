@@ -20,6 +20,7 @@
 ////////////////////////////////////////////////////////////
 #include "window_equipitem.h"
 #include "game_actors.h"
+#include "game_party.h"
 
 ////////////////////////////////////////////////////////////
 Window_EquipItem::Window_EquipItem(int actor_id, int equip_type) :
@@ -43,7 +44,43 @@ Window_EquipItem::~Window_EquipItem() {
 
 ////////////////////////////////////////////////////////////
 bool Window_EquipItem::CheckInclude(int item_id) {
-	return true;
+	// Add the empty element
+	if (item_id == 0) {
+		return true;
+	}
+
+	bool result = false;
+
+	switch (equip_type) {
+	case Window_EquipItem::weapon:
+		result = (Data::items[item_id - 1].type == RPG::Item::Type_weapon);
+		break;
+	case Window_EquipItem::shield:
+		result = (Data::items[item_id - 1].type == RPG::Item::Type_shield);
+		break;
+	case Window_EquipItem::armor:
+		result = (Data::items[item_id - 1].type == RPG::Item::Type_armor);
+		break;
+	case Window_EquipItem::helmet:
+		result = (Data::items[item_id - 1].type == RPG::Item::Type_helmet);
+		break;
+	case Window_EquipItem::other:
+		result = (Data::items[item_id - 1].type == RPG::Item::Type_accessory);
+		break;
+	default:
+		return false;
+	}
+
+	if (result) {
+		// Check if the party has the item at least once
+		if (Game_Party::ItemNumber(item_id) == 0) {
+			return false;
+		} else {
+			return Game_Actors::GetActor(actor_id)->CheckEquippable(item_id);
+		}
+	} else {
+		return false;
+	}
 }
 
 ////////////////////////////////////////////////////////////

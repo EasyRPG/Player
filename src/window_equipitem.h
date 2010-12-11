@@ -52,8 +52,8 @@ public:
 	~Window_EquipItem();
 
 	////////////////////////////////////////////////////////
-	/// Checks if the item should be in the list
-	/// @todo Always returns true
+	/// Checks if the item should be in the list based on
+	/// the type.
 	/// @param item_id Item to check
 	////////////////////////////////////////////////////////
 	bool CheckInclude(int item_id);
