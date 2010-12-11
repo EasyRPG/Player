@@ -53,17 +53,23 @@ void Window_EquipStatus::Refresh() {
 void Window_EquipStatus::SetNewParameters(
 	int new_atk, int new_def, int new_spi, int new_agi) {
 	draw_params = true;
-	atk = new_atk;
-	def = new_def;
-	spi = new_spi;
-	agi = new_agi;
-	Refresh();
+
+	if (new_atk != atk || new_def != def || new_spi != spi ||
+		new_agi != agi) {
+		atk = new_atk;
+		def = new_def;
+		spi = new_spi;
+		agi = new_agi;
+		Refresh();
+	}
 }
 
 ////////////////////////////////////////////////////////////
 void Window_EquipStatus::ClearParameters() {
-	draw_params = false;
-	Refresh();
+	if (draw_params != false) {
+		draw_params = false;
+		Refresh();
+	}
 }
 
 ////////////////////////////////////////////////////////////
