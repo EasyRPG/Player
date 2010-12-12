@@ -31,7 +31,7 @@
 class Window : public Drawable{
 public:
 	Window();
-	~Window();
+	virtual ~Window();
 
 	void Draw(int z_order);
 

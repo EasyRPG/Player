@@ -32,7 +32,7 @@
 class Window_Base : public Window {
 public:
 	Window_Base(int ix, int iy, int iwidth, int iheight);
-	~Window_Base();
+	virtual ~Window_Base();
 
 	void Update();
 	void DrawActorGraphic(Game_Actor* actor, int cx, int cy);

@@ -42,22 +42,30 @@
         <File Name="../../src/game_variables.h"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Scene">
+        <File Name="../../src/scene.cpp"/>
         <File Name="../../src/scene.h"/>
+        <File Name="../../src/scene_actortarget.cpp"/>
+        <File Name="../../src/scene_actortarget.h"/>
         <File Name="../../src/scene_battle.cpp"/>
         <File Name="../../src/scene_battle.h"/>
         <File Name="../../src/scene_equip.cpp"/>
         <File Name="../../src/scene_equip.h"/>
+        <File Name="../../src/scene_item.cpp"/>
+        <File Name="../../src/scene_item.h"/>
         <File Name="../../src/scene_logo.cpp"/>
         <File Name="../../src/scene_logo.h"/>
+        <File Name="../../src/scene_skill.cpp"/>
+        <File Name="../../src/scene_skill.h"/>
         <File Name="../../src/scene_title.cpp"/>
         <File Name="../../src/scene_title.h"/>
         <File Name="../../src/scene_map.cpp"/>
         <File Name="../../src/scene_map.h"/>
         <File Name="../../src/scene_menu.cpp"/>
         <File Name="../../src/scene_menu.h"/>
-        <File Name="../../src/scene.cpp"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Window">
+        <File Name="../../src/window_actortarget.cpp"/>
+        <File Name="../../src/window_actortarget.h"/>
         <File Name="../../src/window_base.cpp"/>
         <File Name="../../src/window_base.h"/>
         <File Name="../../src/window_command.cpp"/>
@@ -76,6 +84,10 @@
         <File Name="../../src/window_item.h"/>
         <File Name="../../src/window_selectable.cpp"/>
         <File Name="../../src/window_selectable.h"/>
+        <File Name="../../src/window_skill.cpp"/>
+        <File Name="../../src/window_skill.h"/>
+        <File Name="../../src/window_skillstatus.cpp"/>
+        <File Name="../../src/window_skillstatus.h"/>
         <File Name="../../src/window_message.h"/>
         <File Name="../../src/window_message.cpp"/>
         <File Name="../../src/window_menustatus.cpp"/>

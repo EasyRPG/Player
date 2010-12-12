@@ -32,6 +32,7 @@ public:
 		Item,
 		Skill,
 		Equip,
+		ActorTarget,
 		Status,
 		File,
 		Save,
