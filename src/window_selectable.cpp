@@ -79,9 +79,12 @@ int Window_Selectable::GetPageItemMax() {
 
 Rect Window_Selectable::GetItemRect(int index) {
 	Rect rect = Rect();
-	rect.width = (contents->GetWidth()) / column_max;
+	rect.width = (contents->GetWidth()) / column_max - 4;
 	rect.height = 16;
 	rect.x = index % column_max * rect.width;
+	if (rect.x > 0){
+		rect.x += 8;
+	}
 	rect.y = index / column_max * 16;
 	return rect;
 }
@@ -104,6 +107,8 @@ void Window_Selectable::UpdateHelp() {
 /// Update Cursor Rect
 ////////////////////////////////////////////////////////////
 void Window_Selectable::UpdateCursorRect() {
+	int cursor_width = 0;
+	int x = 0;
 	if (index < 0) {
 		SetCursorRect(Rect());
 		return;
@@ -114,10 +119,19 @@ void Window_Selectable::UpdateCursorRect() {
 	} else if (row > GetTopRow() + (GetPageRowMax() - 1)) {
 		SetTopRow(row - (GetPageRowMax() - 1));
 	}
-	int cursor_width = (width / column_max - 16) + 8;
-	int x = (index % column_max * (cursor_width + 16)) - 4;
+	
+	if (column_max > 1){
+		cursor_width = (width / column_max - 16) + 12;
+		x = (index % column_max * cursor_width) - 4 ;
+	}
+	else{
+		cursor_width = (width / column_max - 16) + 8;
+		x = (index % column_max * (cursor_width + 16)) - 4;
+	}
+
 	int y = index / column_max * 16 - oy;
 	SetCursorRect(Rect(x, y, cursor_width, 16));
+	
 }
 
 ////////////////////////////////////////////////////////////
