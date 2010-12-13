@@ -22,6 +22,7 @@
 #include "audio.h"
 #include "bitmap.h"
 #include "cache.h"
+#include "game_system.h"
 #include "input.h"
 #include "scene_title.h"
 
@@ -40,14 +41,13 @@ void Scene_Gameover::Start() {
 	// Load Background Graphic
 	background = new Sprite();
 	background->SetBitmap(Cache::Gameover(Data::system.gameover_name));
-	// Stop Music
-	Audio::BGM_Stop();
-	Audio::BGS_Stop();
+	// Play music
+	Game_System::BgmPlay(Data::system.gameover_music);
 }
 
 ////////////////////////////////////////////////////////////
 void Scene_Gameover::Update() {
 	if (Input::IsTriggered(Input::DECISION)) {
-			Scene::instance = new Scene_Title();
+		Scene::instance = new Scene_Title();
 	}
 }
