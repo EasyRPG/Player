@@ -150,8 +150,9 @@ void Graphics::Quit() {
 	for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
 		delete *it_zlist;
 	}
-	Cache::Clear();
 	SDL_FreeSurface(blank_screen);
+	Cache::Clear();
+	TTF_Quit();
 	delete font;
 }
 

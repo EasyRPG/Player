@@ -72,6 +72,9 @@ void Audio::Quit() {
 		Mix_FreeChunk(i->second);
 	}
 	Mix_FreeMusic(bgm);
+	Mix_FreeChunk(bgs);
+
+	Mix_CloseAudio();
 }
 
 ////////////////////////////////////////////////////////////

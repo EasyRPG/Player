@@ -19,6 +19,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "main_data.h"
+#include "game_actors.h"
 #include "game_party.h"
 #include "game_player.h"
 #include "game_screen.h"
@@ -51,5 +52,6 @@ void Main_Data::Cleanup() {
 	game_player = NULL;
 
 	Game_Map::Dispose();
+	Game_Actors::Dispose();
 	Font::Dispose();
 }
