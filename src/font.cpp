@@ -90,6 +90,17 @@ TTF_Font* Font::GetTTF() const {
 	}
 }
 
+void Font::Dispose() {
+	std::map<int, TTF_Font*>::iterator it;
+	std::map<std::string, std::map<int, TTF_Font*> >::iterator it2;
+
+	for (it2 = fonts.begin(); it2 != fonts.end(); ++it2) {
+		for (it = it2->second.begin(); it != it2->second.end(); ++it) {
+			TTF_CloseFont(it->second);
+		}
+	}
+}
+
 ////////////////////////////////////////////////////////////
 /// Class Exists
 ////////////////////////////////////////////////////////////

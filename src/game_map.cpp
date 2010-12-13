@@ -71,10 +71,6 @@ void Game_Map::Init() {
 
 ////////////////////////////////////////////////////////////
 void Game_Map::Dispose() {
-	/*for (size_t i = 0; i < events.size(); i++) {
-		delete events[i];
-	}*/
-	
 	for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
 		delete i->second;
 	}

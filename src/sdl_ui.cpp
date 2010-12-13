@@ -306,9 +306,17 @@ bool SdlUi::ShowCursor(bool flag) {
 	return temp_flag;
 }
 
+void sdlStretch32x2(uint32* s, uint32* d, int w)
+{
+  for(int i = 0; i < w; i++) {
+    *d++ = *s;
+    *d++ = *s++;
+  }
+}
+
 ///////////////////////////////////////////////////////////
 void SdlUi::Blit2X(SDL_Surface* src, SDL_Surface* dst) {
-	int h, w, t, t2, w2, m = 0, m2 = 0;
+	int src_pitch, dst_pitch;
 
 	if (src == dst) {
 		return;
@@ -323,26 +331,15 @@ void SdlUi::Blit2X(SDL_Surface* src, SDL_Surface* dst) {
 	uint32* src_pixels = (uint32*)src->pixels;
 	uint32* dst_pixels = (uint32*)dst->pixels;
 
-	uint32 pixel;
+	src_pitch = src->pitch / src->format->BytesPerPixel;
+	dst_pitch = dst->pitch / dst->format->BytesPerPixel;
 
-	h = src->h;
-	w = src->w;
-
-	w2 = dst->w;
-
-	t = (src->pitch / src->format->BytesPerPixel) - w;
-	t2 = (dst->pitch / dst->format->BytesPerPixel) - w2;
-
-	for (register int i = 0, i2 = 0; i < h; i++, i2 += 2) {
-		for (register int j = 0, j2 = 0; j < w; j++, j2 += 2) {
-			pixel = src_pixels[i * w + j + m];
-			dst_pixels[i2 * w2 + j2 + m2]			= pixel;
-			dst_pixels[i2 * w2 + j2 + m2 + 1]		= pixel;
-			dst_pixels[(i2 + 1) * w2 + j2 + m2]		= pixel;
-			dst_pixels[(i2 + 1) * w2 + j2 + m2 +1]	= pixel;
-		}
-		m = t * i;
-		m2 = t2 * i2;
+	for (register int i = 0; i < src->h; i++) {
+		sdlStretch32x2(src_pixels, dst_pixels, src->w);
+		dst_pixels += dst_pitch;
+		sdlStretch32x2(src_pixels, dst_pixels, src->w);
+		src_pixels += src_pitch;
+		dst_pixels += dst_pitch;
 	}
 
 	if (SDL_MUSTLOCK(src))

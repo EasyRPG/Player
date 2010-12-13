@@ -95,15 +95,15 @@ void Sprite::Refresh() {
 	
 	sprite = new Bitmap(bitmap, src_rect);
 		
-	sprite->ToneChange(tone);
-	sprite->OpacityChange(opacity, bush_depth);
-	sprite->Flip(flipx, flipy);
-	sprite->Zoom(zoom_x, zoom_y);
-	sprite->Rotate(angle);
+	//sprite->ToneChange(tone);
+	//sprite->OpacityChange(opacity, bush_depth);
+	//sprite->Flip(flipx, flipy);
+	//sprite->Zoom(zoom_x, zoom_y);
+	//sprite->Rotate(angle);
 
-	if (flash_duration > 0) {
-		sprite->Flash(flash_color, flash_frame, flash_duration);
-	}
+	//if (flash_duration > 0) {
+		//sprite->Flash(flash_color, flash_frame, flash_duration);
+	//}
 }
 
 ////////////////////////////////////////////////////////////

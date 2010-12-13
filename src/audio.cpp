@@ -71,6 +71,7 @@ void Audio::Quit() {
 	for (i = sounds.begin(); i != sounds.end(); i++) {
 		Mix_FreeChunk(i->second);
 	}
+	Mix_FreeMusic(bgm);
 }
 
 ////////////////////////////////////////////////////////////

@@ -38,6 +38,8 @@ public:
 	~Font();
 
 	TTF_Font* GetTTF() const;
+
+	static void Dispose();
 	
 	std::string name;
 	int size;

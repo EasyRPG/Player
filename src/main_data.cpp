@@ -24,8 +24,10 @@
 #include "game_screen.h"
 #include "game_troop.h"
 #include "game_message.h"
+#include "game_map.h"
 #include "game_variables.h"
 #include "game_switches.h"
+#include "font.h"
 
 ////////////////////////////////////////////////////////////
 /// Global Variables
@@ -47,4 +49,7 @@ void Main_Data::Cleanup() {
 	game_screen = NULL;
 	game_troop = NULL;
 	game_player = NULL;
+
+	Game_Map::Dispose();
+	Font::Dispose();
 }

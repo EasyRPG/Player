@@ -19,11 +19,13 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "graphics.h"
+#include "cache.h"
 #include "drawable.h"
 #include "options.h"
 #include "output.h"
 #include "player.h"
 #include "SDL_ttf.h"
+#include "font_render_8x8.h"
 #include "system.h"
 #include "util_macro.h"
 #include <algorithm>
@@ -86,9 +88,9 @@ namespace {
 }
 
 namespace {
-	int mcd(int a, int b) {
+	int gcd(int a, int b) {
 		if (a==0) return b;
-		return mcd(b%a,a);
+		return gcd(b%a,a);
 	}
 }
 
@@ -136,6 +138,7 @@ void Graphics::Init() {
 #endif
 
 	font = new Font(8);
+
 }
 
 void Graphics::Quit() {
@@ -145,8 +148,9 @@ void Graphics::Quit() {
 		delete it->second;
 	}
 	for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
-		delete (*it_zlist);
+		delete *it_zlist;
 	}
+	Cache::Clear();
 	SDL_FreeSurface(blank_screen);
 	delete font;
 }
@@ -269,7 +273,6 @@ void Graphics::DoTransition() {
 				SDL_SetAlpha(blank_screen, SDL_SRCALPHA, inc);
 				SDL_BlitSurface(fake_screen, NULL, DisplaySdlUi->GetDisplaySurface(), NULL);
 				SDL_BlitSurface(blank_screen, NULL, DisplaySdlUi->GetDisplaySurface(), NULL);
-
 				break;
 
 			default:
@@ -308,7 +311,7 @@ void Graphics::PrintFPS() {
 // Draw Frame
 ////////////////////////////////////////////////////////////
 void Graphics::DrawFrame() {
-	if ( (!frozen) && (!skip_draw) ) {
+	if ( !frozen && !skip_draw ) {
 		if (zlist_needs_sorting) {
 			zlist.sort(SortZObj);
 			zlist_needs_sorting = false;
@@ -323,8 +326,9 @@ void Graphics::DrawFrame() {
 				|| (!wait_for_transition)) // Make sure not to draw Windows until transition's finished
 				drawable_map[(*it_zlist)->GetId()]->Draw((*it_zlist)->GetZ());
 		}
+	} else {
+		skip_draw = false;
 	}
-	skip_draw = false;
 
 	// If we are preparing for transition
 	// we're done here
@@ -333,7 +337,7 @@ void Graphics::DrawFrame() {
 	}
 
 	// Print FPS if needed
-	if (fps_showing)
+	//if (fps_showing)
 		PrintFPS();
 
 	DisplayUi->UpdateDisplay();
@@ -360,8 +364,7 @@ void Graphics::Transition(TransitionType type, int time, bool wait) {
 	DrawFrame();
 	/////
 
-	if (time > 255) time = 255;
-	if (time == 0) time = 1;
+	if (time <= 0) time = 1;
 	transition_frames = time;
 	transition_increment = 255 / time;
 	transition_current_frame = 0;
@@ -369,7 +372,7 @@ void Graphics::Transition(TransitionType type, int time, bool wait) {
 	actual_transition = type;
 	wait_for_transition = wait;
 
-	int div = mcd(255%time, time);
+	int div = gcd(255%time, time);
 
 	increment_left = (255%time) / div;
 	frames_left = time / div;
