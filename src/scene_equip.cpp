@@ -49,7 +49,7 @@ void Scene_Equip::Start() {
 	Game_Actor* actor = Game_Party::GetActors()[actor_index];
 
 	// Create the windows
-	help_window = new Window_Help();
+	help_window = new Window_Help(0, 0, 320, 32);
 	equipstatus_window = new Window_EquipStatus(actor->GetId());
 	equip_window = new Window_Equip(actor->GetId());
 

@@ -18,20 +18,20 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <algorithm>
+#include <sstream>
+#include <vector>
 #include "graphics.h"
 #include "cache.h"
 #include "drawable.h"
+#include "font_render_8x8.h"
 #include "options.h"
 #include "output.h"
 #include "player.h"
 #include "SDL_ttf.h"
-#include "font_render_8x8.h"
+#include "sdl_ui.h"
 #include "system.h"
 #include "util_macro.h"
-#include <algorithm>
-#include <sstream>
-#include <vector>
-#include "sdl_ui.h"
 
 ////////////////////////////////////////////////////////////
 // Global Variables
@@ -338,7 +338,7 @@ void Graphics::DrawFrame() {
 	}
 
 	// Print FPS if needed
-	//if (fps_showing)
+	if (fps_showing)
 		PrintFPS();
 
 	DisplayUi->UpdateDisplay();

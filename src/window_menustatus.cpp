@@ -26,7 +26,8 @@
 ////////////////////////////////////////////////////////////
 /// Constructor
 ////////////////////////////////////////////////////////////
-Window_MenuStatus::Window_MenuStatus() : Window_Selectable(0, 0, 232, 240) {
+Window_MenuStatus::Window_MenuStatus(int ix, int iy, int iwidth, int iheight) :
+	Window_Selectable(ix, iy, iwidth, iheight) {
 	contents = new Bitmap(width - 16, height - 16);
 	Refresh();
 }

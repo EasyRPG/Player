@@ -15,37 +15,51 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _WINDOW_MESSAGE_H_
-#define _WINDOW_MESSAGE_H_
+#ifndef _SCENE_END_H_
+#define _SCENE_END_H_
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "window_selectable.h"
+#include "window_command.h"
+#include "window_help.h"
 
 ////////////////////////////////////////////////////////////
-/// Window Message Class
+/// Scene End class.
+/// Displays the "Do you really want to exit?"-text.
 ////////////////////////////////////////////////////////////
-class Window_Message: public Window_Selectable {
+class Scene_End : public Scene {
+
 public:
-	Window_Message(int ix, int iy, int iwidth, int iheight);
-	~Window_Message();
+	////////////////////////////////////////////////////////
+	/// Constructor.
+	////////////////////////////////////////////////////////
+	Scene_End();
 
-	void TerminateMessage();
-	void Refresh();
-	void ResetWindow();
+	////////////////////////////////////////////////////////
+	/// Destructor.
+	////////////////////////////////////////////////////////
+	~Scene_End();
+
+	void Start();
 	void Update();
-	void UpdateCursorRect();
 
-protected:
-	bool fade_in;
-	bool fade_out;
-	bool contents_showing;
-	int cursor_width;
-	//Window_InputNumber* input_number_window; // TODO: Implement Window_InputNumber
-	//Window_Gold* gold_window; // TODO: Implement Window_Gold
+	////////////////////////////////////////////////////////
+	/// Creates the Window displaying the yes and no option
+	////////////////////////////////////////////////////////
+	void CreateCommandWindow();
+
+	////////////////////////////////////////////////////////
+	/// Creates the Window displaying the confirmation
+	/// text.
+	////////////////////////////////////////////////////////
+	void CreateHelpWindow();
+
+private:
+	/// Help window showing the confirmation text
+	Window_Help* help_window;
+	/// Command Window containing the yes and no option
+	Window_Command* command_window;
 };
-
-
 
 #endif

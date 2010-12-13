@@ -28,9 +28,9 @@
 #include "cache.h"
 #include "game_actors.h"
 #include "game_map.h"
+#include "game_message.h"
 #include "game_party.h"
 #include "game_player.h"
-#include "game_message.h"
 #include "game_screen.h"
 #include "game_switches.h"
 #include "game_system.h"
@@ -41,13 +41,14 @@
 #include "input.h"
 #include "ldb_reader.h"
 #include "lmt_reader.h"
-#include "reader.h"
 #include "main_data.h"
 #include "options.h"
-#include "player.h"
-#include "scene_map.h"
-#include "window_command.h"
 #include "output.h"
+#include "player.h"
+#include "reader.h"
+#include "scene_map.h"
+#include "util_macro.h"
+#include "window_command.h"
 
 ////////////////////////////////////////////////////////////
 Scene_Title::Scene_Title() :
@@ -150,7 +151,11 @@ void Scene_Title::CreateCommandWindow() {
 	options.push_back(Data::terms.exit_game);
 	
 	// TODO: Calculate window width from max text length from options
-	command_window = new Window_Command(60, options);
+	int text_size = max(Data::terms.new_game.size() * 6,
+		Data::terms.load_game.size() * 6);
+	text_size = max(text_size, Data::terms.exit_game.size() * 6);
+
+	command_window = new Window_Command(text_size + 24, options);
 	command_window->SetX(160 - command_window->GetWidth() / 2);
 	command_window->SetY(224 - command_window->GetHeight());
 
@@ -187,7 +192,8 @@ void Scene_Title::CommandNewGame() {
 		CreateGameObjects();
 		Game_Party::SetupStartingMembers();
 		Game_Map::Setup(Data::treemap.start_map_id);
-		Main_Data::game_player->MoveTo(Data::treemap.start_x, Data::treemap.start_y);
+		Main_Data::game_player->MoveTo(
+			Data::treemap.start_x, Data::treemap.start_y);
 		Main_Data::game_player->Refresh();
 		Game_Map::Autoplay();
 		Game_Map::Update();

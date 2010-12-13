@@ -25,6 +25,7 @@
 #include "game_system.h"
 #include "input.h"
 #include "player.h"
+#include "scene_end.h"
 #include "scene_equip.h"
 #include "scene_item.h"
 #include "scene_map.h"
@@ -48,14 +49,10 @@ void Scene_Menu::Start() {
 	CreateCommandWindow();
 
 	// Gold Window
-	gold_window = new Window_Gold();
-	gold_window->SetX(0);
-	gold_window->SetY(208);
+	gold_window = new Window_Gold(0, 208, 88, 32);
 
 	// Status Window
-	menustatus_window = new Window_MenuStatus();
-	menustatus_window->SetX(88);
-	menustatus_window->SetY(0);
+	menustatus_window = new Window_MenuStatus(88, 0, 232, 240);
 	menustatus_window->SetActive(false);
 }
 
@@ -112,9 +109,6 @@ void Scene_Menu::UpdateCommand() {
 			//Scene::instance = new Scene_Item();
 			break;
 		case 1: // Tech Skill
-			Game_System::SePlay(Data::system.decision_se);
-			//Scene::instance = new Scene_Skill();
-			break;
 		case 2: // Equipment
 			Game_System::SePlay(Data::system.decision_se);
 			command_window->SetActive(false);
@@ -130,9 +124,7 @@ void Scene_Menu::UpdateCommand() {
 			break;
 		case 4: // Quit Game
 			Game_System::SePlay(Data::system.decision_se);
-			Audio::BGS_Fade(800);
-			type = Scene::Null;
-			instance = NULL;
+			Scene::instance = new Scene_End();
 			break;
 		}
 	}
@@ -149,6 +141,7 @@ void Scene_Menu::UpdateActorSelection() {
 		Game_System::SePlay(Data::system.decision_se);
 		switch (command_window->GetIndex()) {
 		case 1: // Tech Skill
+			//Scene::instance = new Scene_Skill();
 			break;
 		case 2: // Equipment
 			Scene::instance = new Scene_Equip(menustatus_window->GetIndex());

@@ -21,8 +21,8 @@
 #include "window_help.h"
 
 ////////////////////////////////////////////////////////////
-Window_Help::Window_Help() :
-	Window_Base(0, 0, 320, 32),	text(""), align(Bitmap::align_left) {
+Window_Help::Window_Help(int ix, int iy, int iwidth, int iheight) :
+	Window_Base(ix, iy, iwidth, iheight), align(Bitmap::align_left), text("") {
 	contents = new Bitmap(width - 16, height - 16);
 	Rect rect(0, 0, contents->GetWidth(), contents->GetHeight());
 	contents->FillofColor(rect, windowskin->GetColorKey());

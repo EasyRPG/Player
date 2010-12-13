@@ -26,7 +26,8 @@
 ////////////////////////////////////////////////////////////
 /// Constructor
 ////////////////////////////////////////////////////////////
-Window_Gold::Window_Gold() : Window_Base(0, 0, 88, 32) {
+Window_Gold::Window_Gold(int ix, int iy, int iwidth, int iheight) :
+	Window_Base(ix, iy, iwidth, iheight) {
 	contents = new Bitmap(width-16, height-16);
 
 	Refresh();
