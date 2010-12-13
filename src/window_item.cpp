@@ -48,7 +48,11 @@ bool Window_Item::CheckInclude(int item_id) {
 	// if (Game_Temp::InBattle()) {
 	// 	return item_id == Rpg::Item
 	
-	return (item_id > 0);
+	if (data.size() == 0 && item_id == 0) {
+		return true;
+	} else {
+		return (item_id > 0);
+	}
 }
 
 ////////////////////////////////////////////////////////////

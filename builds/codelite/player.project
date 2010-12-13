@@ -48,6 +48,8 @@
         <File Name="../../src/scene_actortarget.h"/>
         <File Name="../../src/scene_battle.cpp"/>
         <File Name="../../src/scene_battle.h"/>
+        <File Name="../../src/scene_end.cpp"/>
+        <File Name="../../src/scene_end.h"/>
         <File Name="../../src/scene_equip.cpp"/>
         <File Name="../../src/scene_equip.h"/>
         <File Name="../../src/scene_logo.cpp"/>

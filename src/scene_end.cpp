@@ -21,7 +21,6 @@
 #include <vector>
 #include "game_system.h"
 #include "input.h"
-#include "scene.h"
 #include "scene_end.h"
 #include "scene_menu.h"
 #include "scene_title.h"

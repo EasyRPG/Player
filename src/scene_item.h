@@ -22,6 +22,8 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "scene.h"
+#include "window_help.h"
+#include "window_item.h"
 
 ////////////////////////////////////////////////////////////
 /// Scene_Item class
@@ -39,8 +41,14 @@ public:
 	////////////////////////////////////////////////////////
 	~Scene_Item();
 
-private:
+	void Start();
+	void Update();
 
+private:
+	/// Displays description about the selected item
+	Window_Help* help_window;
+	/// Displays available items
+	Window_Item* item_window;
 };
 
 #endif

@@ -106,7 +106,7 @@ void Scene_Menu::UpdateCommand() {
 		switch (command_window->GetIndex()) {
 		case 0: // Item
 			Game_System::SePlay(Data::system.decision_se);
-			//Scene::instance = new Scene_Item();
+			Scene::instance = new Scene_Item();
 			break;
 		case 1: // Tech Skill
 		case 2: // Equipment
@@ -141,7 +141,7 @@ void Scene_Menu::UpdateActorSelection() {
 		Game_System::SePlay(Data::system.decision_se);
 		switch (command_window->GetIndex()) {
 		case 1: // Tech Skill
-			//Scene::instance = new Scene_Skill();
+			Scene::instance = new Scene_Skill(menustatus_window->GetIndex());
 			break;
 		case 2: // Equipment
 			Scene::instance = new Scene_Equip(menustatus_window->GetIndex());

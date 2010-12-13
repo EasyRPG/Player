@@ -19,12 +19,44 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "scene_skill.h"
+#include "game_system.h"
+#include "input.h"
+#include "scene_menu.h"
 
 ////////////////////////////////////////////////////////////
-Scene_Skill::Scene_Skill() {
+Scene_Skill::Scene_Skill(int actor_index) :
+	actor_index(actor_index) {
+	Scene::type = Scene::Skill;
 }
 
 ////////////////////////////////////////////////////////////
 Scene_Skill::~Scene_Skill() {
+	delete help_window;
+	delete skillstatus_window;
+	delete skill_window;
 }
 
+////////////////////////////////////////////////////////////
+void Scene_Skill::Start() {
+	// Create the windows
+	help_window = new Window_Help(0, 0, 320, 32);
+	skillstatus_window = new Window_SkillStatus(0, 32, 320, 32);
+	skill_window = new Window_Skill(0, 64, 320, 240 - 64);
+
+	skill_window->SetHelpWindow(help_window);
+	help_window->SetText("This scene is work in progress :)");
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Skill::Update() {
+	help_window->Update();
+	skillstatus_window->Update();
+	skill_window->Update();
+
+	if (Input::IsTriggered(Input::CANCEL)) {
+		Game_System::SePlay(Data::system.cancel_se);
+		Scene::instance = new Scene_Menu(1); // Select Skill
+	} else if (Input::IsTriggered(Input::DECISION)) {
+		Game_System::SePlay(Data::system.decision_se);
+	}
+}

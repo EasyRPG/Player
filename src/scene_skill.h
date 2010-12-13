@@ -22,6 +22,9 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "scene.h"
+#include "window_help.h"
+#include "window_skill.h"
+#include "window_skillstatus.h"
 
 ////////////////////////////////////////////////////////////
 /// Scene_Skill class
@@ -32,15 +35,26 @@ public:
 	////////////////////////////////////////////////////////
 	/// Constructor.
 	////////////////////////////////////////////////////////
-	Scene_Skill();
+	Scene_Skill(int actor_index);
 
 	////////////////////////////////////////////////////////
 	/// Destructor.
 	////////////////////////////////////////////////////////
 	~Scene_Skill();
 
-private:
+	void Start();
+	void Update();
 
+private:
+	/// Actor in the party whose skills are displayed
+	int actor_index;
+
+	/// Displays available skills
+	Window_Skill* skill_window;
+	/// Displays information about the actor
+	Window_SkillStatus* skillstatus_window;
+	/// Displays description about the selected skill
+	Window_Help* help_window;
 };
 
 #endif
