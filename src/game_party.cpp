@@ -97,11 +97,11 @@ void Game_Party::GainGold(int n) {
 ////////////////////////////////////////////////////////////
 void Game_Party::GainItem(int item_id, int amount, bool include_equip) {
 	int a;
-	if (item_id > 0) {
+	if (item_id > 0 && item_id < Data::items.size()) {
 		a = ItemNumber(item_id);
 		items[item_id] = min(max(a + amount, 0), 99);
 	} else {
-		Output::Warning("Can't add item to party\n%d is an invalid id.",
+		Output::Warning("Can't add item to party.\n%d is not a valid item id.",
 			item_id);
 	}
 }

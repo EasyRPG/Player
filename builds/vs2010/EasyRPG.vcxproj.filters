@@ -261,6 +261,9 @@
     <ClCompile Include="..\..\src\window_skillstatus.cpp">
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\scene_gameover.cpp">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cache.h">
@@ -484,6 +487,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\window_skill.h">
       <Filter>Source Files\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene_gameover.h">
+      <Filter>Source Files\Engine\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

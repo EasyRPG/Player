@@ -154,6 +154,7 @@
     <ClCompile Include="..\..\src\scene_actortarget.cpp" />
     <ClCompile Include="..\..\src\scene_battle.cpp" />
     <ClCompile Include="..\..\src\scene_equip.cpp" />
+    <ClCompile Include="..\..\src\scene_gameover.cpp" />
     <ClCompile Include="..\..\src\scene_item.cpp" />
     <ClCompile Include="..\..\src\scene_logo.cpp" />
     <ClCompile Include="..\..\src\scene_map.cpp" />
@@ -228,6 +229,7 @@
     <ClInclude Include="..\..\src\scene_actortarget.h" />
     <ClInclude Include="..\..\src\scene_battle.h" />
     <ClInclude Include="..\..\src\scene_equip.h" />
+    <ClInclude Include="..\..\src\scene_gameover.h" />
     <ClInclude Include="..\..\src\scene_item.h" />
     <ClInclude Include="..\..\src\scene_logo.h" />
     <ClInclude Include="..\..\src\scene_map.h" />

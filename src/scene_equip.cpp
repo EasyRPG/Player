@@ -32,13 +32,6 @@ Scene_Equip::Scene_Equip(int actor_index, int equip_index) :
 	actor_index(actor_index),
 	equip_index(equip_index) {
 	type = Scene::Equip;
-
-#ifdef _DEBUG
-	// Debug Test code to add items
-	for (int i = 1; i < 82; ++i) {
-		Game_Party::GainItem(i, 1);
-	}
-#endif
 }
 
 ////////////////////////////////////////////////////////////

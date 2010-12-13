@@ -357,6 +357,15 @@ void SdlUi::ProcessEvent(SDL_Event &evnt) {
 #ifdef PAUSE_GAME_WHEN_FOCUS_LOST
 				case SDL_APPINPUTFOCUS:
 					if (!evnt.active.gain) {
+#ifdef _WIN32
+						// Prevent the player from hanging when it receives a
+						// focus changed event but actually has focus.
+						// This happens when a MsgBox appears.
+						if (GetActiveWindow() != NULL) {
+							return;
+						}
+#endif
+
 						Player::Pause();
 
 						SDL_SetEventFilter(&FilterUntilFocus);

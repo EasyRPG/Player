@@ -26,7 +26,9 @@
 #include "input.h"
 #include "player.h"
 #include "scene_equip.h"
+#include "scene_item.h"
 #include "scene_map.h"
+#include "scene_skill.h"
 
 ////////////////////////////////////////////////////////////
 Scene_Menu::Scene_Menu(int menu_index) :
@@ -107,8 +109,12 @@ void Scene_Menu::UpdateCommand() {
 		switch (command_window->GetIndex()) {
 		case 0: // Item
 			Game_System::SePlay(Data::system.decision_se);
+			//Scene::instance = new Scene_Item();
 			break;
 		case 1: // Tech Skill
+			Game_System::SePlay(Data::system.decision_se);
+			//Scene::instance = new Scene_Skill();
+			break;
 		case 2: // Equipment
 			Game_System::SePlay(Data::system.decision_se);
 			command_window->SetActive(false);
@@ -117,6 +123,10 @@ void Scene_Menu::UpdateCommand() {
 			break;
 		case 3: // Save
 			Game_System::SePlay(Data::system.decision_se);
+			// Debug Test code to add items
+			for (int i = 1; i < 82; ++i) {
+				Game_Party::GainItem(i, 1);
+			}
 			break;
 		case 4: // Quit Game
 			Game_System::SePlay(Data::system.decision_se);
