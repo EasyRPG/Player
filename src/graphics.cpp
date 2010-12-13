@@ -152,8 +152,8 @@ void Graphics::Quit() {
 	}
 	SDL_FreeSurface(blank_screen);
 	Cache::Clear();
-	TTF_Quit();
 	delete font;
+	TTF_Quit();
 }
 
 ////////////////////////////////////////////////////////////
