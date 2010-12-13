@@ -220,6 +220,11 @@ void Audio::SE_Play(std::string file, int volume, int pitch) {
 	if (channel == -1) {
 		Output::Error("Couldn't play %s SE.\n%s\n", file.c_str(), Mix_GetError());
 	}
+	// FIXME: Create a cache for this maybe?
+	std::map<int, Mix_Chunk*>::iterator i = sounds.find(channel);
+	if (i != sounds.end()) {
+		Mix_FreeChunk(i->second);
+	}
 	sounds[channel] = sound;
 }
 
