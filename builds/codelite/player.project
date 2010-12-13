@@ -50,8 +50,6 @@
         <File Name="../../src/scene_battle.h"/>
         <File Name="../../src/scene_equip.cpp"/>
         <File Name="../../src/scene_equip.h"/>
-        <File Name="../../src/scene_item.cpp"/>
-        <File Name="../../src/scene_item.h"/>
         <File Name="../../src/scene_logo.cpp"/>
         <File Name="../../src/scene_logo.h"/>
         <File Name="../../src/scene_skill.cpp"/>
@@ -62,6 +60,10 @@
         <File Name="../../src/scene_map.h"/>
         <File Name="../../src/scene_menu.cpp"/>
         <File Name="../../src/scene_menu.h"/>
+        <File Name="../../src/scene_item.cpp"/>
+        <File Name="../../src/scene_item.h"/>
+        <File Name="../../src/scene_gameover.cpp"/>
+        <File Name="../../src/scene_gameover.h"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Window">
         <File Name="../../src/window_actortarget.cpp"/>
