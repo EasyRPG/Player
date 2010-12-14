@@ -85,7 +85,7 @@ Rect Window_Selectable::GetItemRect(int index) {
 	if (rect.x > 0){
 		rect.x += 8;
 	}
-	rect.y = index / column_max * 16;
+	rect.y = index / column_max * 16 + 2;
 	return rect;
 }
 
