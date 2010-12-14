@@ -25,8 +25,6 @@
 
 ////////////////////////////////////////////////////////////
 void Input::InitButtons() {
-	
-	
 	buttons.resize(BUTTON_COUNT);
 	
 	buttons[UP].push_back(Keys::UP);
@@ -43,13 +41,11 @@ void Input::InitButtons() {
 	buttons[DEBUG_MENU].push_back(Keys::TAB);//L
 	buttons[DEBUG_THROUGH].push_back(Keys::BACKSPACE);//R
 
-	
 	dir_buttons.resize(10);
 	dir_buttons[2].push_back(DOWN);
 	dir_buttons[4].push_back(LEFT);
 	dir_buttons[6].push_back(RIGHT);
 	dir_buttons[8].push_back(UP);
-
 }
 
 #endif

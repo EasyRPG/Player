@@ -81,6 +81,8 @@
 		#define SUPPORT_JOYSTICK_HAT
 		#define SUPPORT_JOYSTICK_AXIS
 		#define JOYSTICK_AXIS_SENSIBILITY 20000
+	#else
+		#define SUPPORT_KEYBOARD
 	#endif
 
 	#ifdef USE_SDL_IMAGE
