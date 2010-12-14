@@ -86,17 +86,17 @@ void Scene_Map::UpdateTeleportPlayer() {
 	if (!Main_Data::game_player->IsTeleporting())
 		return;
 
-	// Do transition out
+	Scene::PerformTransition();
 
 	delete spriteset;
 	Main_Data::game_player->PerformTeleport();
 	Game_Map::Autoplay();
 	Game_Map::Update();
-	Graphics::Wait(15);
+	//Graphics::Wait(15);
 
 	spriteset = new Spriteset_Map();
 
-	// Do transition in
+	Scene::PerformTransition();
 
 	Input::Update();
 }
