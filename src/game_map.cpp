@@ -66,19 +66,23 @@ void Game_Map::Init() {
 	scroll_direction = 0;
 	scroll_rest = 0;
 	scroll_speed = 0;
-	interpreter = NULL;
+	interpreter = new Game_Interpreter(0, true);
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Map::Dispose() {
-	for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
+	for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
 		delete i->second;
 	}
 	events.clear();
 
 	delete map;
-	delete interpreter;
 	map = NULL;
+}
+
+void Game_Map::Quit() {
+	Dispose();
+	delete interpreter;
 }
 
 ////////////////////////////////////////////////////////////
@@ -93,8 +97,6 @@ void Game_Map::Setup(int _id) {
 	if (map == NULL) {
 		Output::ErrorStr(Reader::GetError());
 	}
-
-	interpreter = new Game_Interpreter(0, true);
 
 	RPG::Chipset chipset = Data::chipsets[map->chipset_id - 1];
 	chipset_name = chipset.chipset_name;

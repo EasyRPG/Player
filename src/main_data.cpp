@@ -51,7 +51,7 @@ void Main_Data::Cleanup() {
 	game_troop = NULL;
 	game_player = NULL;
 
-	Game_Map::Dispose();
+	Game_Map::Quit();
 	Game_Actors::Dispose();
 	Font::Dispose();
 }

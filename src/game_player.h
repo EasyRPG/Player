@@ -33,6 +33,9 @@ public:
 	~Game_Player();
 
 	bool IsPassable(int x, int y, int d) const;
+	bool IsTeleporting() const;
+	void ReserveTeleport(int map_id, int x, int y);
+	void PerformTeleport();
 	void Center(int x, int y);
 	void MoveTo(int x, int y);
 	void Update();
@@ -42,6 +45,9 @@ public:
 	bool CheckEventTriggerTouch(int x, int y);
 
 private:
+	bool teleporting;
+	int new_map_id, new_x, new_y;
+
 	void UpdateScroll(int last_real_x, int last_real_y);
 	void UpdateNonMoving(bool last_moving);
 	bool CheckTouchEvent();

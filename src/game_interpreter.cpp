@@ -55,7 +55,8 @@ enum CommandCodes {
 	CONDITIONAL_BRANCH  = 12010,
 	WAIT                = 11410,
 	CHANGE_SAVE_ACCESS  = 11930,
-	CHANGE_ACTOR_FACE   = 10640
+	CHANGE_ACTOR_FACE   = 10640,
+	TELEPORT            = 10810
 };
 
 enum Sizes {
@@ -315,10 +316,29 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandChangeSaveAccess();
 		case CHANGE_ACTOR_FACE:
 			return CommandChangeActorFace();
+		case TELEPORT:
+			return CommandTeleport();
 		default:
 			return true;
 
 	}
+}
+
+bool Game_Interpreter::CommandTeleport() { // Code 10810
+	// TODO: if in battle return true
+	if (Main_Data::game_player->IsTeleporting() || 
+		Game_Message::visible) {
+			return false;
+	}
+
+	int map_id = list[index].parameters[0];
+	int x = list[index].parameters[1];
+	int y = list[index].parameters[2];
+
+	Main_Data::game_player->ReserveTeleport(map_id, x, y);
+	index++;
+
+	return false;
 }
 
 bool Game_Interpreter::CommandChangeActorFace() {

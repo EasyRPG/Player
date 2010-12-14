@@ -23,6 +23,7 @@
 #include "scene_title.h"
 #include "main_data.h"
 #include "game_map.h"
+#include "game_message.h"
 #include "game_player.h"
 #include "game_system.h"
 #include "game_temp.h"
@@ -57,6 +58,11 @@ void Scene_Map::Update() {
 	Main_Data::game_player->Update();
 	spriteset->Update();
 
+	if (Game_Message::visible) 
+		return;
+
+	UpdateTeleportPlayer();
+
 	// ESC-Menu calling
 	if (Input::IsTriggered(Input::CANCEL))
 	{
@@ -74,6 +80,25 @@ void Scene_Map::Update() {
 		if (Game_Temp::menu_calling)
 			CallMenu();
 	}
+}
+
+void Scene_Map::UpdateTeleportPlayer() {
+	if (!Main_Data::game_player->IsTeleporting())
+		return;
+
+	// Do transition out
+
+	delete spriteset;
+	Main_Data::game_player->PerformTeleport();
+	Game_Map::Autoplay();
+	Game_Map::Update();
+	Graphics::Wait(15);
+
+	spriteset = new Spriteset_Map();
+
+	// Do transition in
+
+	Input::Update();
 }
 
 ////////////////////////////////////////////////////////////

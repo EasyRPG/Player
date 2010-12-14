@@ -32,7 +32,11 @@
 ////////////////////////////////////////////////////////////
 // Constructor
 ////////////////////////////////////////////////////////////
-Game_Player::Game_Player() {
+Game_Player::Game_Player():
+	teleporting(false),
+	new_map_id(0),
+	new_x(0),
+	new_y(0) {
 }
 
 ////////////////////////////////////////////////////////////
@@ -57,6 +61,29 @@ bool Game_Player::IsPassable(int x, int y, int d) const {
 	return Game_Character::IsPassable(x, y, d);
 }
 
+void Game_Player::ReserveTeleport(int map_id, int x, int y) {
+	teleporting = true;
+	new_map_id = map_id;
+	new_x = x;
+	new_y = y;
+}
+
+void Game_Player::PerformTeleport() {
+	if (!teleporting) return;
+
+	teleporting = false;
+
+	if (Game_Map::GetMapId() != new_map_id) {
+		Game_Map::Setup(new_map_id);
+	}
+
+	MoveTo(new_x, new_y);
+}
+
+bool Game_Player::IsTeleporting() const {
+	return teleporting;
+}
+
 ////////////////////////////////////////////////////////////
 // Center
 ////////////////////////////////////////////////////////////
@@ -77,6 +104,12 @@ void Game_Player::MoveTo(int x, int y) {
 	Game_Character::MoveTo(x, y);
 	Center(x, y);
 	// MakeEncounterCount();
+
+	// TODO: vehicle stuff
+	/* if in_vehicle?                                    # Riding in vehicle
+      vehicle = $game_map.vehicles[@vehicle_type]     # Get vehicle
+      vehicle.refresh                                 # Refresh
+    end */
 }
 
 void Game_Player::UpdateScroll(int last_real_x, int last_real_y) {

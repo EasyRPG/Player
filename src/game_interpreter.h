@@ -90,6 +90,7 @@ private:
 	bool CommandChangeActorFace();
 	bool CommandSkip();
 	bool CommandWait();
+	bool CommandTeleport();
 
 	void CommandEnd();
 };

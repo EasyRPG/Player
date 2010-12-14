@@ -50,10 +50,12 @@ public:
 	void CallMenu();
 	void CallSave();
 	void CallDebug();
-	void TransferPlayer();
 	
 	Spriteset_Map* spriteset;
 	Window_Message* message_window;
+
+private:
+	void UpdateTeleportPlayer();
 };
 
 #endif
