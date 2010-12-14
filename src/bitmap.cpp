@@ -30,7 +30,11 @@
 #include "SDL_image.h"
 #include "SDL_ttf.h"
 #include "SDL_rotozoom.h"
+#if !defined(DINGOO)
 #include "exfont.xpm"
+#else
+#include "exfont.h"
+#endif
 #include "util_macro.h"
 #include "system.h"
 #include <cmath>
@@ -674,7 +678,12 @@ void Bitmap::TextDraw(Rect rect, std::string text, TextAlignment align) {
 	// Load the system file for the shadow and text color
 	Bitmap* system = Cache::System(Data::system.system_name);
 	// Load the exfont-file
+#if !defined(DINGOO)
 	SDL_Surface* exfont = IMG_ReadXPMFromArray(const_cast<char**>(exfont_xpm));
+#else
+	SDL_RWops* rw_ops = SDL_RWFromConstMem((char*)exfont_h, sizeof(exfont_h));
+	SDL_Surface* exfont = IMG_Load_RW(rw_ops, 1);
+#endif
 
 	// Get the Shadow color
 	Color shadowColor(system->GetPixel(16, 32));
