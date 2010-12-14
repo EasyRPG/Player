@@ -38,7 +38,7 @@ Scene_Item::~Scene_Item() {
 void Scene_Item::Start() {
 	// Create the windows
 	help_window = new Window_Help(0, 0, 320, 32);
-	item_window = new Window_Item(0, 33, 320, 240 - 32);
+	item_window = new Window_Item(0, 32, 320, 240 - 32);
 	item_window->SetHelpWindow(help_window);
 	item_window->Refresh();
 	item_window->SetIndex(0);

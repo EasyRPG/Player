@@ -107,8 +107,7 @@ void Window_Item::DrawItem(int index) {
 		
 		std::stringstream ss;
 		ss << std::setfill(' ') << std::setw(3) << number;
-		// to align the number with item name vertically
-		rect.y -= 2;
+
 		contents->TextDraw(rect, ss.str(), Bitmap::align_right);
 	}
 }

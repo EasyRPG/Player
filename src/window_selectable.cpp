@@ -80,7 +80,7 @@ int Window_Selectable::GetPageItemMax() {
 Rect Window_Selectable::GetItemRect(int index) {
 	Rect rect = Rect();
 	rect.width = (contents->GetWidth()) / column_max - 4;
-	rect.height = 16;
+	rect.height = 12;
 	rect.x = index % column_max * rect.width;
 	if (rect.x > 0){
 		rect.x += 8;
