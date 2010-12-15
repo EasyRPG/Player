@@ -19,6 +19,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <vector>
+#include "audio.h"
 #include "game_system.h"
 #include "input.h"
 #include "scene_end.h"
@@ -55,8 +56,10 @@ void Scene_End::Update() {
 		Game_System::SePlay(Data::system.decision_se);
 		switch (command_window->GetIndex()) {
 		case 0: // Yes
-			type = Scene::Null;
-			instance = NULL;
+			Audio::BGM_Fade(800);
+			Audio::BGS_Fade(800);
+			Audio::ME_Fade(800);
+			Scene::instance = new Scene_Title();
 			break;
 		case 1: // No
 			Scene::instance = new Scene_Menu(4);
