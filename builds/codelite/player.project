@@ -96,6 +96,8 @@
         <File Name="../../src/window_message.cpp"/>
         <File Name="../../src/window_menustatus.cpp"/>
         <File Name="../../src/window_menustatus.h"/>
+        <File Name="../../src/window_inputnumber.h"/>
+        <File Name="../../src/window_inputnumber.cpp"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Sprite">
         <File Name="../../src/sprite_character.cpp"/>
@@ -210,12 +212,6 @@
     <Project Name="readers"/>
   </Dependencies>
   <Dependencies Name="Mac OS X Release">
-    <Project Name="readers"/>
-  </Dependencies>
-  <Dependencies Name="Dingux Debug">
-    <Project Name="readers"/>
-  </Dependencies>
-  <Dependencies Name="Dingux Release">
     <Project Name="readers"/>
   </Dependencies>
   <Dependencies Name="UNIX Debug">
@@ -620,5 +616,13 @@ $(IntermediateDirectory)/$(ProjectName).app/Contents/Resources/Player.icns: Play
       <ResourceCompiler Options=""/>
     </GlobalSettings>
   </Settings>
-  <Dependencies Name="UNIX Release"/>
+  <Dependencies Name="Dingux Release">
+    <Project Name="readers"/>
+  </Dependencies>
+  <Dependencies Name="UNIX Release">
+    <Project Name="readers"/>
+  </Dependencies>
+  <Dependencies Name="Dingux Debug">
+    <Project Name="readers"/>
+  </Dependencies>
 </CodeLite_Project>
