@@ -240,6 +240,9 @@
     <ClCompile Include="..\..\src\window_equipstatus.cpp">
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\window_inputnumber.cpp">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\window_item.cpp">
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
@@ -468,6 +471,9 @@
       <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\window_equipstatus.h">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\window_inputnumber.h">
       <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\window_item.h">

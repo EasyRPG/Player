@@ -180,6 +180,7 @@
     <ClCompile Include="..\..\src\window_equipstatus.cpp" />
     <ClCompile Include="..\..\src\window_gold.cpp" />
     <ClCompile Include="..\..\src\window_help.cpp" />
+    <ClCompile Include="..\..\src\window_inputnumber.cpp" />
     <ClCompile Include="..\..\src\window_item.cpp" />
     <ClCompile Include="..\..\src\window_message.cpp" />
     <ClCompile Include="..\..\src\window_selectable.cpp" />
@@ -258,6 +259,7 @@
     <ClInclude Include="..\..\src\window_equipstatus.h" />
     <ClInclude Include="..\..\src\window_gold.h" />
     <ClInclude Include="..\..\src\window_help.h" />
+    <ClInclude Include="..\..\src\window_inputnumber.h" />
     <ClInclude Include="..\..\src\window_item.h" />
     <ClInclude Include="..\..\src\window_message.h" />
     <ClInclude Include="..\..\src\window_selectable.h" />
