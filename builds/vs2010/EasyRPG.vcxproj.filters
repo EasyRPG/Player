@@ -270,6 +270,9 @@
     <ClCompile Include="..\..\src\scene_end.cpp">
       <Filter>Source Files\Engine\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\window_shopstatus.cpp">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cache.h">
@@ -502,6 +505,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\scene_end.h">
       <Filter>Source Files\Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\window_shopstatus.h">
+      <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

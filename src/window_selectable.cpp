@@ -53,7 +53,7 @@ int Window_Selectable::GetIndex() const {
 	return index;
 }
 void Window_Selectable::SetIndex(int nindex) {
-	index = nindex;
+	index = min(nindex, item_max - 1);
 	if (active && help_window != NULL) {
 		UpdateHelp();
 	}

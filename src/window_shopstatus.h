@@ -15,33 +15,31 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _WINDOW_ACTORTARGET_H_
-#define _WINDOW_ACTORTARGET_H_
+#ifndef _WINDOW_SHOPSTATUS_H_
+#define _WINDOW_SHOPSTATUS_H_
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "window_selectable.h"
+#include "window_base.h"
 
 ////////////////////////////////////////////////////////////
-/// Window_ActorTarget class
+/// Window_ShopStatus class.
+/// Shows owned (and equipped) items.
+/// If needed it can also display the costs of a skill.
 ////////////////////////////////////////////////////////////
-class Window_ActorTarget : public Window_Selectable {
+class Window_ShopStatus : public Window_Base {
 
 public:
 	////////////////////////////////////////////////////////
 	/// Constructor.
 	////////////////////////////////////////////////////////
-	Window_ActorTarget(int ix, int iy, int iwidth, int iheight);
+	Window_ShopStatus(int ix, int iy, int iwidth, int iheight);
 
 	////////////////////////////////////////////////////////
 	/// Destructor.
 	////////////////////////////////////////////////////////
-	~Window_ActorTarget();
-
-	void Refresh();
-	void UpdateCursorRect();
-
+	~Window_ShopStatus();
 private:
 
 };

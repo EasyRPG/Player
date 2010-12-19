@@ -33,8 +33,9 @@ class Scene_Item : public Scene {
 public:
 	////////////////////////////////////////////////////////
 	/// Constructor.
+	/// @param item_index : index to select
 	////////////////////////////////////////////////////////
-	Scene_Item();
+	Scene_Item(int item_index = 0);
 
 	////////////////////////////////////////////////////////
 	/// Destructor.
@@ -49,6 +50,8 @@ private:
 	Window_Help* help_window;
 	/// Displays available items
 	Window_Item* item_window;
+	/// index of item selected on startup
+	int item_index;
 };
 
 #endif

@@ -120,9 +120,10 @@ bool Game_Party::IsItemUsable(int item_id) {
 		//} else if (Data::items[item_id - 1].type == RPG::Item::Type_switch) {
 		//	return Data::items[item_id - 1].ocassion_battle;
 		//} else {
-		if (Data::items[item_id - 1].type == RPG::Item::Type_medicine ||
+		if (actors.size() > 0 &&
+			(Data::items[item_id - 1].type == RPG::Item::Type_medicine ||
 			Data::items[item_id - 1].type == RPG::Item::Type_material ||
-			Data::items[item_id - 1].type == RPG::Item::Type_book) {
+			Data::items[item_id - 1].type == RPG::Item::Type_book)) {
 			return true;
 		} else if (Data::items[item_id - 1].type == RPG::Item::Type_switch) {
 			return Data::items[item_id - 1].ocassion_field;

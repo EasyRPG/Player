@@ -85,7 +85,7 @@ void Window_InputNumber::SetNumber(unsigned int inumber) {
 		num *= 10;
 	}
 	number = min(max(inumber, 0), num - 1);
-    Refresh();
+	Refresh();
 }
 
 ////////////////////////////////////////////////////////////

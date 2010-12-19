@@ -24,8 +24,6 @@
 #include "game_party.h"
 
 ////////////////////////////////////////////////////////////
-/// Constructor
-////////////////////////////////////////////////////////////
 Window_MenuStatus::Window_MenuStatus(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
 	contents = new Bitmap(width - 16, height - 16);
@@ -33,13 +31,9 @@ Window_MenuStatus::Window_MenuStatus(int ix, int iy, int iwidth, int iheight) :
 }
 
 ////////////////////////////////////////////////////////////
-/// Destructor
-////////////////////////////////////////////////////////////
 Window_MenuStatus::~Window_MenuStatus() {
 }
 
-////////////////////////////////////////////////////////////
-/// Refresh
 ////////////////////////////////////////////////////////////
 void Window_MenuStatus::Refresh() {
 	Rect rect(0, 0, contents->GetWidth(), contents->GetHeight());
@@ -67,15 +61,8 @@ void Window_MenuStatus::Refresh() {
 }
 
 ////////////////////////////////////////////////////////////
-/// Update Cursor Rect
-////////////////////////////////////////////////////////////
 void Window_MenuStatus::UpdateCursorRect()
 {
-	if (index < 0) {
-		SetCursorRect(Rect());
-		return;
-	}
-
 	if (index < 0) {
 		cursor_rect.Adjust(0, 0);
 	} else {

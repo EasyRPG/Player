@@ -22,25 +22,66 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "scene.h"
+#include "window_actortarget.h"
+#include "window_help.h"
+#include "window_shopstatus.h"
 
 ////////////////////////////////////////////////////////////
-/// Scene_ActorTarget class
+/// Scene ActorTarget class.
+/// Manages using of Items and Spells.
 ////////////////////////////////////////////////////////////
 class Scene_ActorTarget : public Scene {
 
 public:
 	////////////////////////////////////////////////////////
 	/// Constructor.
+	/// @param item_id : Item id of item to use
+	/// @param item_index : Index of item in Scene_Item
 	////////////////////////////////////////////////////////
-	Scene_ActorTarget();
+	Scene_ActorTarget(int item_id, int item_index);
+
+	////////////////////////////////////////////////////////
+	/// Constructor.
+	/// @param skill_id : Skill id of skill to use
+	/// @param actor_index: Index of the spell caster in party
+	/// @param skill_index : Index of skill in Scene_Skill
+	////////////////////////////////////////////////////////
+	Scene_ActorTarget(int skill_id, int actor_index, int skill_index);
 
 	////////////////////////////////////////////////////////
 	/// Destructor.
 	////////////////////////////////////////////////////////
 	~Scene_ActorTarget();
 
-private:
+	void Start();
+	void Update();
 
+	////////////////////////////////////////////////////////
+	/// Update function used when an item will be used.
+	////////////////////////////////////////////////////////
+	void UpdateItem();
+
+	////////////////////////////////////////////////////////
+	/// Update function used when a skill will be used.
+	////////////////////////////////////////////////////////
+	void UpdateSkill();
+
+private:
+	/// Contains the actors of the party
+	Window_ActorTarget* target_window;
+	/// Contains the name of the item/skill that will be used
+	Window_Help* help_window;
+	/// Contains quantity/cost of item/spell
+	Window_ShopStatus* status_window;
+
+	/// id of item/skill to use
+	int id;
+	/// index of item/skill in previous scene
+	int index;
+	/// index of spell caster in party (only for skills)
+	int actor_index;
+	/// True if item, false if skill
+	int use_item;
 };
 
 #endif

@@ -35,7 +35,7 @@ public:
 	////////////////////////////////////////////////////////
 	/// Constructor.
 	////////////////////////////////////////////////////////
-	Scene_Skill(int actor_index);
+	Scene_Skill(int actor_index, int skill_index = 0);
 
 	////////////////////////////////////////////////////////
 	/// Destructor.
@@ -48,7 +48,8 @@ public:
 private:
 	/// Actor in the party whose skills are displayed
 	int actor_index;
-
+	/// Skill to select at startup
+	int skill_index;
 	/// Displays available skills
 	Window_Skill* skill_window;
 	/// Displays information about the actor

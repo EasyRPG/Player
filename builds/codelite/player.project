@@ -88,6 +88,8 @@
         <File Name="../../src/window_item.h"/>
         <File Name="../../src/window_selectable.cpp"/>
         <File Name="../../src/window_selectable.h"/>
+        <File Name="../../src/window_shopstatus.cpp"/>
+        <File Name="../../src/window_shopstatus.h"/>
         <File Name="../../src/window_skill.cpp"/>
         <File Name="../../src/window_skill.h"/>
         <File Name="../../src/window_skillstatus.cpp"/>
