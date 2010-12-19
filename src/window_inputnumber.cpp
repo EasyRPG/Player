@@ -58,7 +58,7 @@ void Window_InputNumber::Refresh() {
 	Rect rect(0, 0, contents->GetWidth(), 16);
 	contents->FillofColor(rect, windowskin->GetColorKey());
 	contents->SetColorKey(windowskin->GetColorKey());
-	contents->GetFont()->color = 0;
+	contents->GetFont()->color = Color::Default;
 	char s[20];
 	sprintf(s, "%0*d", digits_max, number);
 	
