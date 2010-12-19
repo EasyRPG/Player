@@ -40,7 +40,9 @@ public:
 
 	enum ColorTypes {
 		Default = 0,
-		Disabled = 3
+		Disabled = 3,
+		Critical = 4,
+		Knockout = 5
 	};
 
 	Uint8 red;

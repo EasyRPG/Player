@@ -40,6 +40,4 @@ protected:
 	std::vector<std::string> commands;
 };
 
-
-
 #endif

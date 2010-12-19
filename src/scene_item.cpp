@@ -19,6 +19,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "scene_item.h"
+#include "game_party.h"
 #include "game_system.h"
 #include "input.h"
 #include "scene_menu.h"
@@ -53,6 +54,10 @@ void Scene_Item::Update() {
 		Game_System::SePlay(Data::system.cancel_se);
 		Scene::instance = new Scene_Menu(0); // Select Item
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		Game_System::SePlay(Data::system.decision_se);
+		if (Game_Party::IsItemUsable(item_window->GetItemId())) {
+			Game_System::SePlay(Data::system.decision_se);
+		} else {
+			Game_System::SePlay(Data::system.buzzer_se);
+		}
 	}
 }

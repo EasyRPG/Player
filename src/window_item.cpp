@@ -57,8 +57,7 @@ bool Window_Item::CheckInclude(int item_id) {
 
 ////////////////////////////////////////////////////////////
 bool Window_Item::CheckEnable(int item_id) {
-	// ToDo: return Game_Party::ItemCanUse(item_id);
-	return true;
+	return Game_Party::IsItemUsable(item_id);
 }
 
 ////////////////////////////////////////////////////////////

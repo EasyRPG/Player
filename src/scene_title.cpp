@@ -160,7 +160,8 @@ void Scene_Title::CreateCommandWindow() {
 	command_window->SetY(224 - command_window->GetHeight());
 
 	// Enable load game if available
-	if (CheckContinue()) {
+	continue_enabled = CheckContinue();
+	if (continue_enabled) {
 		command_window->SetIndex(1);
 	} else {
 		command_window->DisableItem(1);
@@ -203,8 +204,13 @@ void Scene_Title::CommandNewGame() {
 
 ////////////////////////////////////////////////////////////
 void Scene_Title::CommandContinue() {
-	// Play decision SE
-	Game_System::SePlay(Data::system.decision_se);
+	if (continue_enabled) {
+		Game_System::SePlay(Data::system.decision_se);
+	} else {
+		Game_System::SePlay(Data::system.buzzer_se);
+		return;
+	}
+
 	// Change scene
 	//Main_Data::scene = new Scene_Load();
 }

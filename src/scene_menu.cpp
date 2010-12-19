@@ -86,7 +86,7 @@ void Scene_Menu::CreateCommandWindow() {
 	// If there are no actors in the party disable Skills and Equipment
 	// RPG2k does not do this, but crashes if you try to access these menus
 	if (Game_Party::GetActors().empty()) {
-		command_window->DisableItem(0);
+		//command_window->DisableItem(0);
 		command_window->DisableItem(1);
 		command_window->DisableItem(2);
 	}
@@ -110,13 +110,22 @@ void Scene_Menu::UpdateCommand() {
 			break;
 		case 1: // Tech Skill
 		case 2: // Equipment
-			Game_System::SePlay(Data::system.decision_se);
-			command_window->SetActive(false);
-			menustatus_window->SetActive(true);
-			menustatus_window->SetIndex(0);
+			if (Game_Party::GetActors().empty()) {
+				Game_System::SePlay(Data::system.buzzer_se);
+			} else {
+				Game_System::SePlay(Data::system.decision_se);
+				command_window->SetActive(false);
+				menustatus_window->SetActive(true);
+				menustatus_window->SetIndex(0);
+			}
 			break;
 		case 3: // Save
-			Game_System::SePlay(Data::system.decision_se);
+			if (Game_System::save_disabled) {
+				Game_System::SePlay(Data::system.buzzer_se);
+			} else {
+				Game_System::SePlay(Data::system.decision_se);
+			}
+
 			// Debug Test code to add items
 			for (int i = 1; i < 82; ++i) {
 				Game_Party::GainItem(i, 1);

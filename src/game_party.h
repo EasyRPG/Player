@@ -122,18 +122,11 @@ namespace Game_Party {
 	void LoseItem(int item_id, int amount, bool include_equip = false);
 
 	////////////////////////////////////////////////////////
-	/// Lose an amount of items.
-	/// @param item_id : database item id
-	/// @param number : lost quantity
-	////////////////////////////////////////////////////////
-	//void LoseItem(int item_id, int number);
-
-	////////////////////////////////////////////////////////
 	/// Get if item can be used.
 	/// @param item_id : database item id
 	/// @return whether the item can be used
 	////////////////////////////////////////////////////////
-	//bool IsItemUsable(item_id);
+	bool IsItemUsable(int item_id);
 
 	////////////////////////////////////////////////////////
 	/// Clear all actors in party actions.

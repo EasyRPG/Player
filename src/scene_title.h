@@ -104,6 +104,9 @@ private:
 
 	/// Background graphic
 	Sprite* title;
+
+	/// contains state of continue button
+	bool continue_enabled;
 };
 
 #endif

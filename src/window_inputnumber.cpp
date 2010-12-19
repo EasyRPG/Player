@@ -18,7 +18,6 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <cmath>
 #include "window_inputnumber.h"
 #include "game_system.h"
 #include "input.h"
@@ -81,7 +80,11 @@ int Window_InputNumber::GetNumber() {
 /// Set Number
 ////////////////////////////////////////////////////////////
 void Window_InputNumber::SetNumber(unsigned int inumber) {
-	number = min(max(inumber, 0), pow(10, digits_max) - 1);
+	int num = 1;
+	for (int i = 0; i < digits_max; ++i) {
+		num *= 10;
+	}
+	number = min(max(inumber, 0), num - 1);
     Refresh();
 }
 
@@ -100,7 +103,10 @@ void Window_InputNumber::Update() {
 	if (Input::IsRepeated(Input::DOWN) || Input::IsRepeated(Input::UP)) {
 		Game_System::SePlay(Data::system.cursor_se);
 
-		int place = pow(10, digits_max - 1 - index);
+		int place = 1;
+		for (int i = 0; i < (digits_max - 1 - index); ++i) {
+			place *= 10;
+		}
 		int n = number / place % 10;
 		number -= n * place;
 		if (Input::IsRepeated(Input::UP)) {
