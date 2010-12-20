@@ -126,7 +126,15 @@ void Scene_Equip::UpdateEquipSelection() {
 		equip_window->SetActive(false);
 		item_window->SetActive(true);
 		item_window->SetIndex(0);
-	}
+	} else if (Game_Party::GetActors().size() > 1 && Input::IsTriggered(Input::RIGHT)) {
+		Game_System::SePlay(Data::system.cursor_se);
+		actor_index = (actor_index + 1) % Game_Party::GetActors().size();
+		Scene::instance = new Scene_Equip(actor_index, equip_window->GetIndex());
+	} else if (Game_Party::GetActors().size() > 1 && Input::IsTriggered(Input::LEFT)) {
+		Game_System::SePlay(Data::system.cursor_se);
+		actor_index = (actor_index + Game_Party::GetActors().size() - 1) % Game_Party::GetActors().size();
+		Scene::instance = new Scene_Equip(actor_index, equip_window->GetIndex());
+	} 
 }
 
 ////////////////////////////////////////////////////////////
