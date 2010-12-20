@@ -129,6 +129,7 @@
     <ClCompile Include="..\..\src\game_battler.cpp" />
     <ClCompile Include="..\..\src\game_character.cpp" />
     <ClCompile Include="..\..\src\game_commonevent.cpp" />
+    <ClCompile Include="..\..\src\game_enemy.cpp" />
     <ClCompile Include="..\..\src\game_event.cpp" />
     <ClCompile Include="..\..\src\game_map.cpp" />
     <ClCompile Include="..\..\src\game_message.cpp" />
@@ -138,6 +139,7 @@
     <ClCompile Include="..\..\src\game_system.cpp" />
     <ClCompile Include="..\..\src\game_temp.cpp" />
     <ClCompile Include="..\..\src\game_troop.cpp" />
+    <ClCompile Include="..\..\src\game_unit.cpp" />
     <ClCompile Include="..\..\src\graphics.cpp" />
     <ClCompile Include="..\..\src\hslrgb.cpp" />
     <ClCompile Include="..\..\src\input.cpp" />
@@ -205,6 +207,7 @@
     <ClInclude Include="..\..\src\game_battler.h" />
     <ClInclude Include="..\..\src\game_character.h" />
     <ClInclude Include="..\..\src\game_commonevent.h" />
+    <ClInclude Include="..\..\src\game_enemy.h" />
     <ClInclude Include="..\..\src\game_event.h" />
     <ClInclude Include="..\..\src\game_map.h" />
     <ClInclude Include="..\..\src\game_message.h" />
@@ -215,6 +218,7 @@
     <ClInclude Include="..\..\src\game_system.h" />
     <ClInclude Include="..\..\src\game_temp.h" />
     <ClInclude Include="..\..\src\game_troop.h" />
+    <ClInclude Include="..\..\src\game_unit.h" />
     <ClInclude Include="..\..\src\game_variables.h" />
     <ClInclude Include="..\..\src\graphics.h" />
     <ClInclude Include="..\..\src\hslrgb.h" />

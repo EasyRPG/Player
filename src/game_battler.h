@@ -130,6 +130,9 @@ public:
 	/// @return agi
 	virtual int GetBaseAgi() const = 0;
 
+	bool Exists() const;
+	bool IsDead() const;
+
 protected:
 	std::string battler_name;
 	int hp;

@@ -15,32 +15,18 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#include "game_interpreter.h"
-#include "game_troop.h"
-#include "rpg_enemy.h"
+#include <vector>
 
-Game_Troop::Game_Troop():
-	interpreter(NULL) {
-}
+class Game_Battler;
 
-Game_Troop::~Game_Troop()
-{
-}
+typedef std::vector<Game_Battler*> tBattlerArray;
 
-tEnemyArray Game_Troop::GetMembers() {
-	return enemies;
-}
+class Game_Unit {
+public:
+	Game_Unit();
+	~Game_Unit();
 
-void Game_Troop::Clear() {
-	interpreter->Clear();
-
-	enemies.clear();
-
-	turn_count = 0;
-	can_escape = false;
-	can_lose = false;
-	preemptive = false;
-	surprise = false;
-	turn_ending = false;
-	forcing_battler = NULL;
-}
+	virtual tBattlerArray GetMembers();
+	void GetExistingMembers(tBattlerArray& ret_val);
+	void GetDeadMembers(tBattlerArray& ret_val);
+};

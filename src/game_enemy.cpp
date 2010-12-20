@@ -15,32 +15,14 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#include "game_interpreter.h"
-#include "game_troop.h"
-#include "rpg_enemy.h"
+#include "game_enemy.h"
 
-Game_Troop::Game_Troop():
-	interpreter(NULL) {
-}
 
-Game_Troop::~Game_Troop()
+Game_Enemy::Game_Enemy(void)
 {
 }
 
-tEnemyArray Game_Troop::GetMembers() {
-	return enemies;
-}
 
-void Game_Troop::Clear() {
-	interpreter->Clear();
-
-	enemies.clear();
-
-	turn_count = 0;
-	can_escape = false;
-	can_lose = false;
-	preemptive = false;
-	surprise = false;
-	turn_ending = false;
-	forcing_battler = NULL;
+Game_Enemy::~Game_Enemy(void)
+{
 }

@@ -94,6 +94,7 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	//animation_type = page.animation_type;
 	//through = page;
 	//always_on_top = page.overlap;
+	priority_type = page->priority_type;
 	trigger = page->trigger;
 	list = page->event_commands;
 	// Free resources if needed

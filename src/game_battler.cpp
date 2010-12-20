@@ -55,6 +55,14 @@ std::vector<int> Game_Battler::GetStates() const {
 	return states;
 }
 
+bool Game_Battler::IsDead() const {
+	return !hidden && hp == 0 && !immortal;
+}
+
+bool Game_Battler::Exists() const {
+	return !hidden && !IsDead();
+}
+
 ////////////////////////////////////////////////////////////
 int Game_Battler::GetHp() const {
 	return hp;

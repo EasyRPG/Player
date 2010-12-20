@@ -15,32 +15,48 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef __game_troop__
-#define __game_troop__
-
-#include <vector>
 #include "game_unit.h"
+#include "game_battler.h"
 
-class Game_Enemy;
-class Game_Interpreter;
+Game_Unit::Game_Unit() {
+}
 
-typedef std::vector<Game_Battler*> tEnemyArray;
 
-class Game_Troop : public Game_Unit {
+Game_Unit::~Game_Unit() {
+}
 
-public:
-	Game_Troop();
-	~Game_Troop();
+tBattlerArray Game_Unit::GetMembers() {
+	return tBattlerArray();
+}
 
-	void Clear();
+void Game_Unit::GetExistingMembers(tBattlerArray& ret_val) {
+	tBattlerArray members(GetMembers());
+	tBattlerArray ex_members;
+	tBattlerArray::iterator it;
 
-	tEnemyArray GetMembers();
+	Game_Battler* battler;
+	for (it = members.begin(); it != members.end(); ++it) {
+		battler = *it;
+		if ( battler->Exists() ) {
+			ex_members.push_back(battler);
+		}
+	}
 
-private:
-	tEnemyArray enemies;
-	Game_Interpreter* interpreter;
-	int turn_count;
-	bool can_escape, can_lose, preemptive, surprise, turn_ending;
-	Game_Enemy* forcing_battler;
-};
-#endif // __game_troop__
+	ret_val.swap(ex_members);
+}
+
+void Game_Unit::GetDeadMembers(tBattlerArray& ret_val) {
+	tBattlerArray members(GetMembers());
+	tBattlerArray ex_members;
+	tBattlerArray::iterator it;
+
+	Game_Battler* battler;
+	for (it = members.begin(); it != members.end(); ++it) {
+		battler = *it;
+		if ( battler->IsDead() ) {
+			ex_members.push_back(battler);
+		}
+	}
+
+	ret_val.swap(ex_members);
+}
