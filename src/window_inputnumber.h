@@ -34,7 +34,7 @@ public:
 	/// @param idigits_max : The maximum number of digits 
 	///	allowed
 	////////////////////////////////////////////////////////
-	Window_InputNumber(unsigned int idigits_max);
+	Window_InputNumber(int idigits_max);
 	
 	////////////////////////////////////////////////////////
 	/// Destructor
@@ -69,7 +69,7 @@ public:
 	
 protected:
 	unsigned int number;
-	unsigned int digits_max;
+	int digits_max;
 	unsigned int cursor_width;
 	unsigned int index;
 };

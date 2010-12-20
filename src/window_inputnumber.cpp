@@ -27,17 +27,16 @@
 ////////////////////////////////////////////////////////////
 /// Constructor
 ////////////////////////////////////////////////////////////
-Window_InputNumber::Window_InputNumber(unsigned int idigits_max) : 
-	Window_Base(0, 0, 0, 0), digits_max(idigits_max) {
+Window_InputNumber::Window_InputNumber(int idigits_max) : 
+	Window_Base(0, 160, 320, 80), digits_max(idigits_max) {
+	//only accepts velues between 1 and 6 as RPGM2K
+	digits_max = (digits_max > 6) ? 6 : (digits_max <= 0) ? 1 : digits_max;
 	number = 0;
 	Bitmap* dummy_bitmap = new Bitmap(16, 16);
 	cursor_width = dummy_bitmap->GetTextSize("0").width + 4;
 	delete dummy_bitmap;
-	SetWidth(cursor_width * digits_max + 16);
-	SetHeight(32);
 	contents = new Bitmap(GetWidth() - 16, GetHeight() - 16);
 	z += 9999;
-	opacity = 0;
 	index = 0;
 
 	Refresh();
@@ -55,17 +54,18 @@ Window_InputNumber::~Window_InputNumber() {
 ////////////////////////////////////////////////////////////
 void Window_InputNumber::Refresh() {
 	contents->Clear();
-	Rect rect(0, 0, contents->GetWidth(), 16);
+	Rect rect(0, 0, contents->GetWidth(), contents->GetHeight());
+	Rect rect_text(0, 0, contents->GetWidth(), 16);
 	contents->FillofColor(rect, windowskin->GetColorKey());
 	contents->SetColorKey(windowskin->GetColorKey());
 	contents->GetFont()->color = Color::Default;
-	char s[20];
+	char s[6];
 	sprintf(s, "%0*d", digits_max, number);
 	
-	for (unsigned int i = 0; i < digits_max; ++i) {
+	for (int i = 0; i < digits_max; ++i) {
 		char c[2] = {s[i], '\0'}; 
-		rect.x = i * cursor_width + 2;
-		contents->TextDraw(rect, c, Bitmap::align_left);
+		rect_text.x = i * cursor_width + 10;
+		contents->TextDraw(rect_text, c, Bitmap::align_left);
 	}	
 }
 
@@ -92,7 +92,7 @@ void Window_InputNumber::SetNumber(unsigned int inumber) {
 /// Update Cursor Rect
 ////////////////////////////////////////////////////////////
 void Window_InputNumber::UpdateCursorRect() {
-	cursor_rect.Set(index * cursor_width, 0, cursor_width, 16);
+	cursor_rect.Set(index * cursor_width + 8, 0, cursor_width, 16);
 }
 
 ////////////////////////////////////////////////////////////
