@@ -76,7 +76,7 @@ bool Window_EquipItem::CheckInclude(int item_id) {
 		if (Game_Party::ItemNumber(item_id) == 0) {
 			return false;
 		} else {
-			return Game_Actors::GetActor(actor_id)->CheckEquippable(item_id);
+			return Game_Actors::GetActor(actor_id)->IsEquippable(item_id);
 		}
 	} else {
 		return false;

@@ -19,8 +19,13 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "scene_skill.h"
+#include "game_map.h"
+#include "game_party.h"
+#include "game_switches.h"
 #include "game_system.h"
 #include "input.h"
+#include "scene_actortarget.h"
+#include "scene_map.h"
 #include "scene_menu.h"
 
 ////////////////////////////////////////////////////////////
@@ -43,8 +48,11 @@ void Scene_Skill::Start() {
 	skillstatus_window = new Window_SkillStatus(0, 32, 320, 32);
 	skill_window = new Window_Skill(0, 64, 320, 240 - 64);
 
+	// Assign actors and help to windows
+	skill_window->SetActor(Game_Party::GetActors()[actor_index]->GetId());
+	skillstatus_window->SetActor(Game_Party::GetActors()[actor_index]->GetId());
+	skill_window->SetIndex(skill_index);
 	skill_window->SetHelpWindow(help_window);
-	help_window->SetText("This scene is work in progress :)");
 }
 
 ////////////////////////////////////////////////////////////
@@ -57,6 +65,27 @@ void Scene_Skill::Update() {
 		Game_System::SePlay(Data::system.cancel_se);
 		Scene::instance = new Scene_Menu(1); // Select Skill
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		Game_System::SePlay(Data::system.decision_se);
+		int skill_id = skill_window->GetSkillId();
+
+		Game_Actor* actor = Game_Party::GetActors()[actor_index];
+
+		if (actor->IsSkillUsable(skill_id)) {
+			Game_System::SePlay(Data::system.decision_se);
+
+			if (Data::skills[skill_id - 1].type == RPG::Skill::Type_switch) {
+				actor->SetSp(actor->GetSp() - actor->CalculateSkillCost(skill_id));
+				Game_Switches[Data::skills[skill_id - 1].switch_id] = true;
+				Scene::instance = new Scene_Map();
+				Game_Map::SetNeedRefresh(true);
+			} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_normal) {
+				Scene::instance = new Scene_ActorTarget(skill_id, actor_index, skill_window->GetIndex());
+			} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_teleport) {
+				// ToDo: Displays the teleport target scene/window
+			} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_escape) {
+				// ToDo: Displays the escape target scene/window
+			} 
+		} else {
+			Game_System::SePlay(Data::system.buzzer_se);
+		}
 	}
 }

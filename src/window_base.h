@@ -50,6 +50,7 @@ public:
 	void DrawActorParameter(Game_Actor* actor, int cx, int cy, int type);
 	void DrawEquipmentType(Game_Actor* actor, int cx, int cy, int type);
 	void DrawItemName(RPG::Item* item, int cx, int cy, bool enabled = true);
+	void DrawSkillName(RPG::Skill* skill, int cx, int cy, bool enabled = true);
 
 private:
 	std::string windowskin_name;

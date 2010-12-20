@@ -61,7 +61,7 @@ void Scene_Item::Update() {
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		int item_id = item_window->GetItemId();
 
-		if (Game_Party::IsItemUsable(item_window->GetItemId())) {
+		if (Game_Party::IsItemUsable(item_id)) {
 			Game_System::SePlay(Data::system.decision_se);
 
 			if (Data::items[item_id - 1].type == RPG::Item::Type_switch) {
@@ -69,8 +69,7 @@ void Scene_Item::Update() {
 				Scene::instance = new Scene_Map();
 				Game_Map::SetNeedRefresh(true);
 			} else {
-				Scene::instance = new Scene_ActorTarget(
-					item_window->GetItemId(), item_window->GetIndex());
+				Scene::instance = new Scene_ActorTarget(item_id, item_window->GetIndex());
 			}
 		} else {
 			Game_System::SePlay(Data::system.buzzer_se);

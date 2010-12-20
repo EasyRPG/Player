@@ -1267,7 +1267,7 @@ bool Game_Interpreter::CommandConditionalBranch() { // Code 12010
 					break;
 				case 4:
 					// Can learn skill
-					result = (actor->HasSkill(list[index].parameters[3]));
+					result = (actor->IsSkillLearned(list[index].parameters[3]));
 					break;
 				case 5:
 					// Equipped object

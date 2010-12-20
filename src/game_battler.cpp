@@ -190,6 +190,16 @@ int Game_Battler::GetAgi() {
 }
 
 ////////////////////////////////////////////////////////////
+void Game_Battler::SetHp(int _hp) {
+	hp = min(_hp, GetMaxHp());
+}
+
+////////////////////////////////////////////////////////////
+void Game_Battler::SetSp(int _sp) {
+	sp = min(_sp, GetMaxSp());
+}
+
+////////////////////////////////////////////////////////////
 void Game_Battler::SetAtk(int _atk) {
 	atk_plus += _atk - GetAtk();
 	atk_plus = min(max(atk_plus, 1), 999);
@@ -211,4 +221,40 @@ void Game_Battler::SetSpi(int _spi) {
 void Game_Battler::SetAgi(int _agi) {
 	agi_plus += _agi - GetAgi();
 	agi_plus = min(max(agi_plus, 1), 999);
+}
+
+////////////////////////////////////////////////////////////
+bool Game_Battler::IsSkillUsable(int skill_id) {
+	if (CalculateSkillCost(skill_id) > sp) {
+		return false;
+	}
+	// ToDo: Check for Movable(?) and Silence
+
+	// ToDo: Escape and Teleport Spells need event SetTeleportPlace and
+	// SetEscapePlace first. Not sure if any game uses this...
+	//if (Data::skills[skill_id - 1].type == RPG::Skill::Type_teleport) {
+	//	return is_there_a_teleport_set;
+	//} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_escape) {
+	//	return is_there_an_escape_set;
+	//} else
+	if (Data::skills[skill_id - 1].type == RPG::Skill::Type_normal) {
+		int scope = Data::skills[skill_id - 1].scope;
+		return (scope == RPG::Skill::Scope_self ||
+			scope == RPG::Skill::Scope_ally ||
+			scope == RPG::Skill::Scope_party);
+	} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_switch) {
+		// Todo:
+		// if (Game_Temp::IsInBattle()) {
+		// return Data::skills[skill_id - 1].occasion_battle;
+		// else {
+		return Data::skills[skill_id - 1].occasion_field;
+		// }
+	}
+
+	return false;
+}
+
+////////////////////////////////////////////////////////////
+int Game_Battler::CalculateSkillCost(int skill_id) {
+	return Data::skills[skill_id - 1].sp_cost;
 }

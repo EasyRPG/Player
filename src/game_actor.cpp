@@ -51,6 +51,12 @@ void Game_Actor::Setup(int actor_id) {
 	hp = GetMaxHp();
 	sp = GetMaxSp();
 	two_swords_style = Data::actors[actor_id - 1].two_swords_style;
+
+	for (size_t i = 0; i < Data::actors[actor_id - 1].skills.size(); ++i) {
+		if (Data::actors[actor_id - 1].skills[i].level <= level) {
+			LearnSkill(Data::actors[actor_id - 1].skills[i].skill_id);
+		}
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -59,13 +65,22 @@ int Game_Actor::GetId() const {
 }
 
 ////////////////////////////////////////////////////////////
-bool Game_Actor::HasSkill(int skill_id) const {
+bool Game_Actor::IsSkillLearned(int skill_id) {
 	return std::find(skills.begin(), skills.end(), skill_id) != skills.end();
 }
 
 ////////////////////////////////////////////////////////////
+bool Game_Actor::IsSkillUsable(int skill_id) {
+	if (!IsSkillLearned(skill_id)) {
+		return false;
+	} else {
+		return Game_Battler::IsSkillUsable(skill_id);
+	}
+}
+
+////////////////////////////////////////////////////////////
 void Game_Actor::LearnSkill(int skill_id) {
-	if (skill_id > 0 && !HasSkill(skill_id)) {
+	if (skill_id > 0 && !IsSkillLearned(skill_id)) {
 		skills.push_back(skill_id);
 		std::sort(skills.begin(), skills.end());
 	}
@@ -380,7 +395,7 @@ void Game_Actor::ChangeLevel(int level) {
 }
 
 ////////////////////////////////////////////////////////////
-bool Game_Actor::CheckEquippable(int item_id) {
+bool Game_Actor::IsEquippable(int item_id) {
 	if (two_swords_style &&
 		Data::items[item_id - 1].type == RPG::Item::Type_shield) {
 			return false;

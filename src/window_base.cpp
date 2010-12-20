@@ -200,7 +200,7 @@ void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy) {
 	// Draw Current SP of the Actor
 	Rect rect2(cx + 12, cy, 3*6, 12);
 	// Color: 0 okay, 4 critical/empty
-	int color = 0;
+	int color = Color::Default;
 	if (actor->GetMaxSp() != 0 && actor->GetSp() <= actor->GetMaxSp() / 4) {
 		color = Color::Critical;
 	}
@@ -299,8 +299,15 @@ void Window_Base::DrawEquipmentType(Game_Actor* actor, int cx, int cy, int type)
 }
 
 void Window_Base::DrawItemName(RPG::Item* item, int cx, int cy, bool enabled) {
-	contents->GetFont()->color = enabled ? 0 : 3;
+	contents->GetFont()->color = enabled ? Color::Default : Color::Disabled;
 	Rect rect = contents->GetTextSize(item->name);
 	rect.x = cx; rect.y = cy;
 	contents->TextDraw(rect, item->name);
+}
+
+void Window_Base::DrawSkillName(RPG::Skill* skill, int cx, int cy, bool enabled) {
+	contents->GetFont()->color = enabled ? Color::Default : Color::Disabled;
+	Rect rect = contents->GetTextSize(skill->name);
+	rect.x = cx; rect.y = cy;
+	contents->TextDraw(rect, skill->name);
 }

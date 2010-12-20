@@ -113,7 +113,6 @@ void Window_Item::DrawItem(int index) {
 
 ////////////////////////////////////////////////////////////
 void Window_Item::UpdateHelp() {
-	GetItemId();
 	help_window->SetText(GetItemId() == 0 ? "" : 
 		Data::items[GetItemId() - 1].description);
 }

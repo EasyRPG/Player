@@ -19,13 +19,39 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "window_skillstatus.h"
+#include "game_actor.h"
+#include "game_actors.h"
 
 ////////////////////////////////////////////////////////////
 Window_SkillStatus::Window_SkillStatus(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight) {
+	Window_Base(ix, iy, iwidth, iheight), actor_id(-1) {
+
+	contents = new Bitmap(width - 16, height - 16);
 }
 
 ////////////////////////////////////////////////////////////
 Window_SkillStatus::~Window_SkillStatus() {
 }
 
+////////////////////////////////////////////////////////////
+void Window_SkillStatus::SetActor(int actor_id) {
+	this->actor_id = actor_id;
+	Refresh();
+}
+
+////////////////////////////////////////////////////////////
+void Window_SkillStatus::Refresh() {
+	contents->Clear();
+	Rect rect(0, 0, contents->GetWidth(), 16);
+	
+	contents->FillofColor(rect, windowskin->GetColorKey());
+	contents->SetColorKey(windowskin->GetColorKey());
+
+	Game_Actor* actor = Game_Actors::GetActor(actor_id);
+
+	DrawActorName(actor, 0, 0);
+	DrawActorLevel(actor, 80, 0);
+	DrawActorClass(actor, 80 + 44, 0);
+	DrawActorHp(actor, 80 + 44 + 60, 0);
+	DrawActorSp(actor, 80 + 44 + 60 + 66, 0);
+}
