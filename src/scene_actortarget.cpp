@@ -52,7 +52,7 @@ void Scene_ActorTarget::Start() {
 	// Create the windows
 	help_window = new Window_Help(0, 0, 136, 32);
 	target_window = new Window_ActorTarget(136, 0, 184, 240);
-	status_window = new Window_ShopStatus(0, 32, 136, 32);
+	status_window = new Window_TargetStatus(0, 32, 136, 32);
 	
 	target_window->SetActive(true);
 	target_window->SetIndex(0);
@@ -61,9 +61,11 @@ void Scene_ActorTarget::Start() {
 		if (Data::items[id - 1].entire_party) {
 			target_window->SetIndex(-1);
 		}
+		status_window->SetData(id, true);
 		help_window->SetText(Data::items[id - 1].name);
 	} else {
 		// ToDo: Index based on scope
+		status_window->SetData(id, false);
 		help_window->SetText(Data::skills[id - 1].name);
 	}
 }

@@ -26,7 +26,6 @@
 ////////////////////////////////////////////////////////////
 /// Window_ShopStatus class.
 /// Shows owned (and equipped) items.
-/// If needed it can also display the costs of a skill.
 ////////////////////////////////////////////////////////////
 class Window_ShopStatus : public Window_Base {
 

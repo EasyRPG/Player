@@ -925,6 +925,18 @@ void Scene_Logo::Start() {
 }
 
 ////////////////////////////////////////////////////////////
+void Scene_Logo::PerformTransition() {
+	static bool faded_in = false;
+	if (!faded_in) {
+		Graphics::Transition(Graphics::FadeIn, 20, true);
+		faded_in = true;
+	} else {
+		Graphics::Transition(Graphics::FadeOut, 20, false);
+		faded_in = false;
+	}
+}
+
+////////////////////////////////////////////////////////////
 void Scene_Logo::Update() {
 	++frame_counter;
 

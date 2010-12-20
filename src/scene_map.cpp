@@ -49,6 +49,8 @@ Scene_Map::~Scene_Map() {
 void Scene_Map::Start() {
 	spriteset = new Spriteset_Map();
 	//message_window = new Window_Message();
+
+	Graphics::FrameReset();
 }
 
 ////////////////////////////////////////////////////////////

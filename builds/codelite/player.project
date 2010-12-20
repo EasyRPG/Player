@@ -18,6 +18,8 @@
         <File Name="../../src/game_character.h"/>
         <File Name="../../src/game_commonevent.cpp"/>
         <File Name="../../src/game_commonevent.h"/>
+        <File Name="../../src/game_enemy.cpp"/>
+        <File Name="../../src/game_enemy.h"/>
         <File Name="../../src/game_event.cpp"/>
         <File Name="../../src/game_event.h"/>
         <File Name="../../src/game_interpreter.cpp"/>
@@ -39,6 +41,8 @@
         <File Name="../../src/game_temp.h"/>
         <File Name="../../src/game_troop.cpp"/>
         <File Name="../../src/game_troop.h"/>
+        <File Name="../../src/game_unit.cpp"/>
+        <File Name="../../src/game_unit.h"/>
         <File Name="../../src/game_variables.h"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Scene">
@@ -84,8 +88,14 @@
         <File Name="../../src/window_gold.h"/>
         <File Name="../../src/window_help.cpp"/>
         <File Name="../../src/window_help.h"/>
+        <File Name="../../src/window_inputnumber.h"/>
+        <File Name="../../src/window_inputnumber.cpp"/>
         <File Name="../../src/window_item.cpp"/>
         <File Name="../../src/window_item.h"/>
+        <File Name="../../src/window_menustatus.cpp"/>
+        <File Name="../../src/window_menustatus.h"/>
+        <File Name="../../src/window_message.h"/>
+        <File Name="../../src/window_message.cpp"/>
         <File Name="../../src/window_selectable.cpp"/>
         <File Name="../../src/window_selectable.h"/>
         <File Name="../../src/window_shopstatus.cpp"/>
@@ -94,12 +104,8 @@
         <File Name="../../src/window_skill.h"/>
         <File Name="../../src/window_skillstatus.cpp"/>
         <File Name="../../src/window_skillstatus.h"/>
-        <File Name="../../src/window_message.h"/>
-        <File Name="../../src/window_message.cpp"/>
-        <File Name="../../src/window_menustatus.cpp"/>
-        <File Name="../../src/window_menustatus.h"/>
-        <File Name="../../src/window_inputnumber.h"/>
-        <File Name="../../src/window_inputnumber.cpp"/>
+        <File Name="../../src/window_targetstatus.cpp"/>
+        <File Name="../../src/window_targetstatus.h"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Sprite">
         <File Name="../../src/sprite_character.cpp"/>

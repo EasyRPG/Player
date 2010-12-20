@@ -190,6 +190,7 @@
     <ClCompile Include="..\..\src\window_shopstatus.cpp" />
     <ClCompile Include="..\..\src\window_skill.cpp" />
     <ClCompile Include="..\..\src\window_skillstatus.cpp" />
+    <ClCompile Include="..\..\src\window_targetstatus.cpp" />
     <ClCompile Include="..\..\src\zobj.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -272,6 +273,7 @@
     <ClInclude Include="..\..\src\window_shopstatus.h" />
     <ClInclude Include="..\..\src\window_skill.h" />
     <ClInclude Include="..\..\src\window_skillstatus.h" />
+    <ClInclude Include="..\..\src\window_targetstatus.h" />
     <ClInclude Include="..\..\src\zobj.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

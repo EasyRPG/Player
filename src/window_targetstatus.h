@@ -15,41 +15,50 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _SCENE_LOGO_H_
-#define _SCENE_LOGO_H_
+#ifndef _WINDOW_TARGETSTATUS_H_
+#define _WINDOW_TARGETSTATUS_H_
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "scene.h"
-#include "sprite.h"
-#include "system.h"
+#include "window_base.h"
 
 ////////////////////////////////////////////////////////////
-/// Scene Logo class.
-/// Displays the shiny EasyRPG logo on startup.
+/// Window_TargetStatus class.
+/// Shows owned (and equipped) items.
+/// If needed it can also display the costs of a skill.
 ////////////////////////////////////////////////////////////
-class Scene_Logo : public Scene {
+class Window_TargetStatus : public Window_Base {
 
 public:
 	////////////////////////////////////////////////////////
 	/// Constructor.
 	////////////////////////////////////////////////////////
-	Scene_Logo();
+	Window_TargetStatus(int ix, int iy, int iwidth, int iheight);
 
 	////////////////////////////////////////////////////////
 	/// Destructor.
 	////////////////////////////////////////////////////////
-	~Scene_Logo();
+	~Window_TargetStatus();
 
-	void Start();
-	void PerformTransition();
-	void Update();
+	////////////////////////////////////////////////////////
+	/// Renders the current item quantity/spell costs on
+	/// the window.
+	////////////////////////////////////////////////////////
+	void Refresh();
+
+	////////////////////////////////////////////////////////
+	/// Sets the id of the item/skill that shall be used
+	/// @param id Id of item/skill
+	/// @param is_item true if id for an item, otherwise for a skill
+	////////////////////////////////////////////////////////
+	void SetData(int id, bool is_item);
 
 private:
-	Sprite* logo;
-	Bitmap* logo_img;
-	int frame_counter;
+	/// Id of item or skill
+	int id;
+	/// True if item, false if skill
+	bool use_item;
 };
 
 #endif

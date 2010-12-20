@@ -41,6 +41,7 @@ public:
 	~Scene_Title();
 
 	void Start();
+	void PerformTransition();
 	void Update();
 
 	////////////////////////////////////////////////////////

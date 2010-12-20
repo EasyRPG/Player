@@ -24,7 +24,7 @@
 #include "scene.h"
 #include "window_actortarget.h"
 #include "window_help.h"
-#include "window_shopstatus.h"
+#include "window_targetstatus.h"
 
 ////////////////////////////////////////////////////////////
 /// Scene ActorTarget class.
@@ -72,7 +72,7 @@ private:
 	/// Contains the name of the item/skill that will be used
 	Window_Help* help_window;
 	/// Contains quantity/cost of item/spell
-	Window_ShopStatus* status_window;
+	Window_TargetStatus* status_window;
 
 	/// id of item/skill to use
 	int id;
@@ -81,7 +81,7 @@ private:
 	/// index of spell caster in party (only for skills)
 	int actor_index;
 	/// True if item, false if skill
-	int use_item;
+	bool use_item;
 };
 
 #endif

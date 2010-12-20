@@ -73,10 +73,10 @@ void Scene::Terminate() {
 void Scene::PerformTransition() {
 	static bool faded_in = false;
 	if (!faded_in) {
-		Graphics::Transition(Graphics::FadeIn, 20, true);
+		Graphics::Transition(Graphics::FadeIn, 10, true);
 		faded_in = true;
 	} else {
-		Graphics::Transition(Graphics::FadeOut, 20, false);
+		Graphics::Transition(Graphics::FadeOut, 10, false);
 		faded_in = false;
 	}
 }
