@@ -559,7 +559,6 @@ void SdlUi::SetAppIcon() {
 		Output::Error("Couldn't load icon.");
 
 	SetClassLongPtr(wminfo.window, GCLP_HICON, (LONG_PTR) icon);
-	DestroyIcon(icon);
 #endif
 }
 
