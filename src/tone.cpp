@@ -21,36 +21,30 @@
 #include "tone.h"
 
 ////////////////////////////////////////////////////////////
-/// Constructor
-////////////////////////////////////////////////////////////
-Tone::Tone() {
-	red = 0;
-	green = 0;
-	blue = 0;
-	gray = 0;
+Tone::Tone()  :
+	red(0),
+	green(0),
+	blue(0),
+	gray(0) {
 }
-Tone::Tone(int ired, int igreen, int iblue, int igray) {
-	red = ired;
-	green = igreen;
-	blue = iblue;
-	gray = igray;
+
+Tone::Tone(int red, int green, int blue, int gray) :
+	red(red),
+	green(green),
+	blue(blue),
+	gray(gray) {
 }
 
 ////////////////////////////////////////////////////////////
-/// Destructor
-////////////////////////////////////////////////////////////
-Tone::~Tone() {
+bool Tone::operator==(const Tone &other) const {
+	return red == other.red && green == other.green && blue == other.blue && gray == other.gray;
 }
 
-////////////////////////////////////////////////////////////
-/// != operator
 ////////////////////////////////////////////////////////////
 bool Tone::operator!=(const Tone &other) const {
 	return red != other.red || green != other.green || blue != other.blue || gray != other.gray;
 }
 
-////////////////////////////////////////////////////////////
-/// Set
 ////////////////////////////////////////////////////////////
 void Tone::Set(int nred, int ngreen, int nblue, int ngray) {
 	red = nred;

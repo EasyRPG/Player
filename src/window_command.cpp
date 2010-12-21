@@ -22,52 +22,37 @@
 #include "color.h"
 
 ////////////////////////////////////////////////////////////
-/// Constructor
-////////////////////////////////////////////////////////////
-Window_Command::Window_Command(int width, std::vector<std::string> icommands) :
-	Window_Selectable(0, 0, width, icommands.size() * 16 + 16)
-{
-	item_max = icommands.size();
-	commands = icommands;
+Window_Command::Window_Command(int width, std::vector<std::string> commands) :
+	Window_Selectable(0, 0, width, commands.size() * 16 + 16),
+	commands(commands) {
+
+	item_max = commands.size();
 	index = 0;
 
-	contents = new Bitmap(width - 16, item_max * 16);
+	contents = Bitmap::CreateBitmap(width - 16, item_max * 16);
+
 	Refresh();
 }
 
 ////////////////////////////////////////////////////////////
-/// Destructor
-////////////////////////////////////////////////////////////
-Window_Command::~Window_Command() {
-}
-
-////////////////////////////////////////////////////////////
-/// Refresh
-////////////////////////////////////////////////////////////
 void Window_Command::Refresh() {
 	contents->Clear();
 	for (int i = 0; i < item_max; i++) {
-		DrawItem(i, Color::Default);
+		DrawItem(i, Font::ColorDefault);
 	}
 }
 
 ////////////////////////////////////////////////////////////
-/// Draw Item
-////////////////////////////////////////////////////////////
-void Window_Command::DrawItem(int i, int color) {
+void Window_Command::DrawItem(int index, Font::SystemColor color) {
+	contents->ClearRect(Rect(0, 16 * index, contents->GetWidth() - 0, 16));
 
 	contents->GetFont()->color = color;
-	Rect rect(0, 16 * i, contents->GetWidth() - 8, 16);
-	Rect rect2(0, 16 * i, contents->GetWidth() - 0, 16);
-	//contents->FillRect(rect, Color(0, 0, 0, 0));
-	contents->FillofColor(rect2, windowskin->GetColorKey());
-	contents->SetColorKey(windowskin->GetColorKey());
-	contents->TextDraw(rect, commands[i]);
+
+	Rect rect(0, 16 * index, contents->GetWidth() - 8, 16);
+	contents->TextDraw(rect, commands[index]);
 }
 
 ////////////////////////////////////////////////////////////
-/// Disable Item
-////////////////////////////////////////////////////////////
 void Window_Command::DisableItem(int i) {
-	DrawItem(i, Color::Disabled);
+	DrawItem(i, Font::ColorDisabled);
 }

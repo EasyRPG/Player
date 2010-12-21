@@ -22,9 +22,10 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "bitmap.h"
+#include "bitmap_screen.h"
 #include "color.h"
-#include "tone.h"
 #include "drawable.h"
+#include "tone.h"
 #include "zobj.h"
 
 ////////////////////////////////////////////////////////////
@@ -33,32 +34,32 @@
 class Plane : public Drawable {
 public:
 	Plane();
-	~Plane();
+	virtual ~Plane();
 
 	void Draw(int z_order);
 
 	Bitmap* GetBitmap() const;
-	void SetBitmap(Bitmap* nbitmap);
+	void SetBitmap(Bitmap* bitmap);
 	bool GetVisible() const;
-	void SetVisible(bool nvisible);
+	void SetVisible(bool visible);
 	int GetZ() const;
-	void SetZ(int nz);
+	void SetZ(int z);
 	int GetOx() const;
-	void SetOx(int nox);
+	void SetOx(int ox);
 	int GetOy() const;
-	void SetOy(int noy);
+	void SetOy(int oy);
 	double GetZoomX() const;
-	void SetZoomX(float nzoom_x);
+	void SetZoomX(float zoom_x);
 	double GetZoomY() const;
-	void SetZoomY(float nzoom_y);
+	void SetZoomY(float zoom_y);
 	int GetOpacity() const;
-	void SetOpacity(int nopacity);
+	void SetOpacity(int opacity);
 	int GetBlendType() const;
-	void SetBlendType(int nblend_type);
-	Color GetColor() const;
-	void SetColor(Color ncolor);
+	void SetBlendType(int blend_type);
+	Color GetBlendColor() const;
+	void SetBlendColor(Color color);
 	Tone GetTone() const;
-	void SetTone(Tone ntone);
+	void SetTone(Tone tone);
 
 	unsigned long GetId() const;
 	DrawableType GetType() const;
@@ -67,22 +68,14 @@ private:
 	DrawableType type;
 	unsigned long ID;
 	ZObj* zobj;
+
 	Bitmap* bitmap;
+	BitmapScreen* bitmap_screen;
+
 	bool visible;
 	int z;
 	int ox;
 	int oy;
-	double zoom_x;
-	double zoom_y;
-	int opacity;
-	int blend_type;
-	Color color;
-	Tone tone;
-
-	Bitmap* plane;
-	bool needs_refresh;
-
-	void Refresh();
 };
 
 #endif

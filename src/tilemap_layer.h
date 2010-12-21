@@ -24,10 +24,10 @@
 #include <vector>
 #include "drawable.h"
 #include "bitmap.h"
-#include "sprite.h"
+#include "bitmap_screen.h"
 
 ////////////////////////////////////////////////////////////
-/// TilemapLayer class
+/// TilemapLayer class.
 ////////////////////////////////////////////////////////////
 class TilemapLayer : public Drawable {
 public:
@@ -65,6 +65,7 @@ public:
 
 private:
 	Bitmap* chipset;
+	BitmapScreen* chipset_screen;
 	std::vector<short> map_data;
 	std::vector<unsigned char> passable;
 	bool visible;
@@ -87,11 +88,11 @@ private:
 	void GenerateAutotileAB(short ID, short animID);
 	void GenerateAutotileD(short ID);
 
-	Bitmap* GetCachedAutotileAB(short ID, short animID);
-	Bitmap* GetCachedAutotileD(short ID);
+	BitmapScreen* GetCachedAutotileAB(short ID, short animID);
+	BitmapScreen* GetCachedAutotileD(short ID);
 
-	Bitmap* autotiles_ab[3][3][50][50];
-	Bitmap* autotiles_d[12][50];
+	BitmapScreen* autotiles_ab[3][3][50][50];
+	BitmapScreen* autotiles_d[12][50];
 
 	struct TileData {
 		short ID;

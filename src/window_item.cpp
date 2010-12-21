@@ -67,7 +67,7 @@ void Window_Item::Refresh() {
 	data.clear();
 	Game_Party::GetItems(party_items);
 
-	for (int i = 0; i < party_items.size(); ++i) {
+	for (uint i = 0; i < party_items.size(); ++i) {
 		if (this->CheckInclude(party_items[i])) {
 			data.push_back(party_items[i]);
 		}
@@ -83,8 +83,8 @@ void Window_Item::Refresh() {
 
 	contents->Clear();
 	Rect rect(0, 0, contents->GetWidth(), contents->GetHeight());
-	contents->FillofColor(rect, windowskin->GetColorKey());
-	contents->SetColorKey(windowskin->GetColorKey());
+	contents->SetTransparentColor(windowskin->GetTransparentColor());
+	contents->ClearRect(rect);
 
 	for (int i = 0; i < item_max; ++i) {
 		DrawItem(i);
@@ -94,8 +94,8 @@ void Window_Item::Refresh() {
 ////////////////////////////////////////////////////////////
 void Window_Item::DrawItem(int index) {
 	Rect rect = GetItemRect(index);
-	contents->FillofColor(rect, windowskin->GetColorKey());
-	contents->SetColorKey(windowskin->GetColorKey());
+	contents->SetTransparentColor(windowskin->GetTransparentColor());
+	contents->ClearRect(rect);
 
 	int item_id = data[index];
 
@@ -107,7 +107,7 @@ void Window_Item::DrawItem(int index) {
 		std::stringstream ss;
 		ss << std::setfill(' ') << std::setw(3) << number;
 
-		contents->TextDraw(rect, ss.str(), Bitmap::align_right);
+		contents->TextDraw(rect, ss.str(), Bitmap::TextAlignRight);
 	}
 }
 

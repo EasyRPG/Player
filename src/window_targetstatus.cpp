@@ -26,7 +26,7 @@
 Window_TargetStatus::Window_TargetStatus(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight), id(-1), use_item(false) {
 
-	contents = new Bitmap(width - 16, height - 16);
+	contents = Bitmap::CreateBitmap(width - 16, height - 16);
 }
 
 ////////////////////////////////////////////////////////////
@@ -35,11 +35,9 @@ Window_TargetStatus::~Window_TargetStatus() {
 
 ////////////////////////////////////////////////////////////
 void Window_TargetStatus::Refresh() {
-	contents->Clear();
 	Rect rect(0, 0, contents->GetWidth(), 16);
 
-	contents->FillofColor(rect, windowskin->GetColorKey());
-	contents->SetColorKey(windowskin->GetColorKey());
+	contents->ClearRect(rect);
 
 	if (id < 0) {
 		return;
@@ -60,8 +58,8 @@ void Window_TargetStatus::Refresh() {
 		ss << Data::skills[id - 1].sp_cost;
 	}
 
-	contents->GetFont()->color = Color::Default;
-	contents->TextDraw(rect, ss.str(), Bitmap::align_right);
+	contents->GetFont()->color = Font::ColorDefault;
+	contents->TextDraw(rect, ss.str(), Bitmap::TextAlignRight);
 }
 
 ////////////////////////////////////////////////////////////

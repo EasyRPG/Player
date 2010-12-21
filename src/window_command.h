@@ -25,19 +25,32 @@
 #include "window_selectable.h"
 
 ////////////////////////////////////////////////////////////
-/// Window Command Class
+/// Window Command class.
 ////////////////////////////////////////////////////////////
 class Window_Command: public Window_Selectable {
 public:
-	Window_Command(int width, std::vector<std::string> icommands);
-	~Window_Command();
+	////////////////////////////////////////////////////////
+	/// Constructor.
+	/// @param width : window width
+	/// @param commands : commands to display
+	////////////////////////////////////////////////////////
+	Window_Command(int width, std::vector<std::string> commands);
 
+	////////////////////////////////////////////////////////
+	/// Refresh the window contents.
+	////////////////////////////////////////////////////////
 	void Refresh();
-	void DrawItem(int i, int color);
-	void DisableItem(int i);
+
+	////////////////////////////////////////////////////////
+	/// Disable a command.
+	/// @param index : command index
+	////////////////////////////////////////////////////////
+	void DisableItem(int index);
 
 protected:
 	std::vector<std::string> commands;
+
+	void DrawItem(int index, Font::SystemColor color);
 };
 
 #endif

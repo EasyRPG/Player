@@ -109,6 +109,8 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	layer(ilayer),
 	have_invisible_tile(false) {
 
+	chipset_screen = BitmapScreen::CreateBitmapScreen(false);
+
 	memset(autotiles_ab, NULL, sizeof(autotiles_ab));
 	memset(autotiles_d, NULL, sizeof(autotiles_d));
 	
@@ -122,7 +124,6 @@ TilemapLayer::TilemapLayer(int ilayer) :
 
 ////////////////////////////////////////////////////////////
 TilemapLayer::~TilemapLayer() {
-	std::map<int, Bitmap*>::iterator i;
 	Graphics::RemoveZObj(ID, true);
 	Graphics::RemoveDrawable(ID);
 
@@ -135,6 +136,8 @@ TilemapLayer::~TilemapLayer() {
 	for (int i = 0; i < 12; i++)
 		for (int j = 0; j < 50; j++)
 				delete autotiles_d[i][j];
+
+	delete chipset_screen;
 }
 
 ////////////////////////////////////////////////////////////
@@ -202,7 +205,7 @@ void TilemapLayer::Draw(int z_order) {
 						}
 
 						// Draw the tile
-						chipset->BlitScreen(map_draw_x, map_draw_y, rect);
+						chipset_screen->BlitScreen(map_draw_x, map_draw_y, rect);
 					} else if (tile.ID >= BLOCK_C && tile.ID < BLOCK_D) {
 						// If Block C
 
@@ -215,7 +218,7 @@ void TilemapLayer::Draw(int z_order) {
 						rect.y = 64 + animation_step_c * 16;
 
 						// Draw the tile
-						chipset->BlitScreen(map_draw_x, map_draw_y, rect);
+						chipset_screen->BlitScreen(map_draw_x, map_draw_y, rect);
 					} else if (tile.ID < BLOCK_C) {
 						// If Blocks A1, A2, B
 
@@ -232,10 +235,8 @@ void TilemapLayer::Draw(int z_order) {
 
 					// Check that block F is being drawn
 					if (tile.ID >= BLOCK_F && tile.ID < BLOCK_F + BLOCK_F_TILES) {
-						#ifdef USE_ALPHA
 						if (tile.ID == BLOCK_F && have_invisible_tile)
 							continue;
-						#endif
 
 						Rect rect;
 						rect.width = 16;
@@ -253,7 +254,7 @@ void TilemapLayer::Draw(int z_order) {
 						}
 						
 						// Draw the tile
-						chipset->BlitScreen(map_draw_x, map_draw_y, rect);
+						chipset_screen->BlitScreen(map_draw_x, map_draw_y, rect);
 					}
 				}
 			}
@@ -262,14 +263,14 @@ void TilemapLayer::Draw(int z_order) {
 }
 
 ////////////////////////////////////////////////////////////
-Bitmap* TilemapLayer::GetCachedAutotileAB(short ID, short animID) {
+BitmapScreen* TilemapLayer::GetCachedAutotileAB(short ID, short animID) {
 	short block = ID / 1000;
 	short b_subtile = (ID - block * 1000) / 50;
 	short a_subtile = ID - block * 1000 - b_subtile * 50;
 	return autotiles_ab[animID][block][b_subtile][a_subtile];
 }
 
-Bitmap* TilemapLayer::GetCachedAutotileD(short ID) {
+BitmapScreen* TilemapLayer::GetCachedAutotileD(short ID) {
 	short block = (ID - 4000) / 50;
 	short subtile = ID - 4000 - block * 50;
 	return autotiles_d[block][subtile];
@@ -292,7 +293,7 @@ void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 	if (autotiles_ab[animID][block][b_subtile][a_subtile])
 		return;
 
-	Bitmap* tile = new Bitmap(16, 16);
+	Bitmap* tile = Bitmap::CreateBitmap(16, 16);
 
 	Rect rect;
 	rect.width = 8;
@@ -365,7 +366,7 @@ void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 		}
 	}
 
-	autotiles_ab[animID][block][b_subtile][a_subtile] = tile;
+	autotiles_ab[animID][block][b_subtile][a_subtile] = BitmapScreen::CreateBitmapScreen(tile);
 }
 
 ////////////////////////////////////////////////////////////
@@ -379,7 +380,7 @@ void TilemapLayer::GenerateAutotileD(short ID) {
 	if(autotiles_d[block][subtile])
 		return;
 
-	Bitmap* tile = new Bitmap(16, 16);
+	Bitmap* tile = Bitmap::CreateBitmap(16, 16);
 
 	// Get Block chipset coords
 	short block_x, block_y;
@@ -411,7 +412,7 @@ void TilemapLayer::GenerateAutotileD(short ID) {
 		tile->Blit((i % 2) * 8, (i / 2) * 8, chipset, rect, 255);
 	}
 
-	autotiles_d[block][subtile] = tile;
+	autotiles_d[block][subtile] = BitmapScreen::CreateBitmapScreen(tile);
 }
 
 
@@ -449,6 +450,8 @@ Bitmap* TilemapLayer::GetChipset() const {
 }
 void TilemapLayer::SetChipset(Bitmap* nchipset) {
 	chipset = nchipset;
+	chipset_screen->SetBitmap(chipset);
+	chipset_screen->SetSrcRect(chipset->GetRect());
 }
 std::vector<short> TilemapLayer::GetMapData() const {
 	return map_data;
@@ -507,9 +510,7 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 					}
 				}
 			}
-		}
-		#ifdef USE_ALPHA
-		else {
+		} else {
 			have_invisible_tile = true;
 			for (int x = 288; x < 288 + 16; x++) {
 				for (int y = 128; y < 128 + 16; y++) {
@@ -521,7 +522,6 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 				}
 			}
 		}
-		#endif
 	}
 	map_data = nmap_data;
 }

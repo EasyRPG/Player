@@ -32,9 +32,9 @@ Bitmap* Cache::LoadBitmap(std::string folder_name, std::string filename, bool tr
 
 	if (cache.count(path) == 0) {
 		if (!filename.empty())
-			cache[path] = new Bitmap(path, transparent);
+			cache[path] = Bitmap::CreateBitmap(path, transparent);
 		else
-			cache[path] = new Bitmap(16, 16);
+			cache[path] = Bitmap::CreateBitmap(16, 16);
 	}
 
 	return cache[path];
@@ -93,7 +93,7 @@ Bitmap* Cache::System2(std::string filename) {
 ////////////////////////////////////////////////////////////
 Bitmap* Cache::Tile(std::string filename, int tile_id) {
 	if (cache_tiles.count(filename) == 0 || cache_tiles[filename].count(tile_id) == 0) {
-		Bitmap* bmp = new Bitmap(16, 16);
+		Bitmap* bmp = Bitmap::CreateBitmap(16, 16);
 		// TODO
 		cache_tiles[filename][tile_id] = bmp;
 	}

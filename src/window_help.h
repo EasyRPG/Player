@@ -46,7 +46,7 @@ public:
 	/// @param text : Text to show
 	/// @param align : Text alignment
 	////////////////////////////////////////////////////////
-	void SetText(std::string text, Bitmap::TextAlignment align = Bitmap::align_left);
+	void SetText(std::string text, Bitmap::TextAlignment align = Bitmap::TextAlignLeft);
 
 private:
 	/// Text to draw

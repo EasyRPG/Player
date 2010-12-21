@@ -22,14 +22,15 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "bitmap.h"
+#include "bitmap_screen.h"
 #include "color.h"
-#include "tone.h"
-#include "rect.h"
 #include "drawable.h"
+#include "rect.h"
+#include "tone.h"
 #include "zobj.h"
 
 ////////////////////////////////////////////////////////////
-/// Sprite class
+/// Sprite class.
 ////////////////////////////////////////////////////////////
 class Sprite : public Drawable {
 public:
@@ -46,42 +47,42 @@ public:
 	int GetHeight() const;
 
 	Bitmap* GetBitmap() const;
-	void SetBitmap(Bitmap* nbitmap);
+	void SetBitmap(Bitmap* bitmap);
 	Rect GetSrcRect() const;
-	void SetSrcRect(Rect& nsrc_rect);
-	void SetSpriteRect(Rect& nsprite_rect);
+	void SetSrcRect(Rect src_rect);
+	void SetSpriteRect(Rect sprite_rect);
 	bool GetVisible() const;
-	void SetVisible(bool nvisible);
+	void SetVisible(bool visible);
 	int GetX() const;
-	void SetX(int nx);
+	void SetX(int x);
 	int GetY() const;
-	void SetY(int ny);
+	void SetY(int y);
 	int GetZ() const;
-	void SetZ(int nz);
+	void SetZ(int z);
 	int GetOx() const;
-	void SetOx(int nox);
+	void SetOx(int ox);
 	int GetOy() const;
-	void SetOy(int noy);
+	void SetOy(int oy);
 	double GetZoomX() const;
-	void SetZoomX(double nzoom_x);
+	void SetZoomX(double zoom_x);
 	double GetZoomY() const;
-	void SetZoomY(double nzoom_y);
+	void SetZoomY(double zoom_y);
 	double GetAngle() const;
-	void SetAngle(double nangle);
+	void SetAngle(double angle);
 	bool GetFlipX() const;
-	void SetFlipX(bool nflipx);
+	void SetFlipX(bool flipx);
 	bool GetFlipY() const;
-	void SetFlipY(bool nflipy);
+	void SetFlipY(bool flipy);
 	int GetBushDepth() const;
-	void SetBushDepth(int nbush_depth);
+	void SetBushDepth(int bush_depth);
 	int GetOpacity() const;
-	void SetOpacity(int nopacity);
+	void SetOpacity(int opacity);
 	int GetBlendType() const;
-	void SetBlendType(int nblend_type);
-	Color GetColor() const;
-	void SetColor(Color ncolor);
+	void SetBlendType(int blend_type);
+	Color GetBlendColor() const;
+	void SetBlendColor(Color color);
 	Tone GetTone() const;
-	void SetTone(Tone ntone);
+	void SetTone(Tone tone);
 
 	unsigned long GetId() const;
 	DrawableType GetType() const;
@@ -90,7 +91,10 @@ private:
 	DrawableType type;
 	unsigned long ID;
 	ZObj* zobj;
+
 	Bitmap* bitmap;
+	BitmapScreen* bitmap_screen;
+	
 	Rect src_rect;
 	bool visible;
 	int x;
@@ -98,25 +102,9 @@ private:
 	int z;
 	int ox;
 	int oy;
-	double zoom_x;
-	double zoom_y;
-	double angle;
-	bool flipx;
-	bool flipy;
-	int bush_depth;
-	int opacity;
-	int blend_type;
-	Color color;
-	Tone tone;
 	
-	Color flash_color;
 	int flash_duration;
 	int flash_frame;
-	Bitmap* sprite;
-	Rect sprite_rect;
-	bool needs_refresh;
-
-	void Refresh();
 };
 
 #endif

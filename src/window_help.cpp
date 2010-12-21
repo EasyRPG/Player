@@ -22,11 +22,12 @@
 
 ////////////////////////////////////////////////////////////
 Window_Help::Window_Help(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight), align(Bitmap::align_left), text("") {
-	contents = new Bitmap(width - 16, height - 16);
-	Rect rect(0, 0, contents->GetWidth(), contents->GetHeight());
-	contents->FillofColor(rect, windowskin->GetColorKey());
-	contents->SetColorKey(windowskin->GetColorKey());
+	Window_Base(ix, iy, iwidth, iheight),
+	align(Bitmap::TextAlignLeft) {
+
+	contents = Bitmap::CreateBitmap(width - 16, height - 16);
+	contents->SetTransparentColor(windowskin->GetTransparentColor());
+	contents->Clear();
 }
 
 ////////////////////////////////////////////////////////////
@@ -36,14 +37,14 @@ Window_Help::~Window_Help() {
 ////////////////////////////////////////////////////////////
 void Window_Help::SetText(std::string text,	Bitmap::TextAlignment align) {
 	if (this->text != text || this->align != align) {
-		Rect rect(0, 0, contents->GetWidth(), contents->GetHeight());
-		contents->FillofColor(rect, windowskin->GetColorKey());
-		contents->SetColorKey(windowskin->GetColorKey());
+		
+		contents->SetTransparentColor(windowskin->GetTransparentColor());
+		contents->Clear();
 
 		this->text = text;
 		this->align = align;
 
 		contents->GetFont()->color = 0;
-		contents->TextDraw(rect, text, align);
+		contents->TextDraw(contents->GetRect(), text, align);
 	}
 }

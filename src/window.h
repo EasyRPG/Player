@@ -28,7 +28,7 @@
 ////////////////////////////////////////////////////////////
 /// Window class
 ////////////////////////////////////////////////////////////
-class Window : public Drawable{
+class Window : public Drawable {
 public:
 	Window();
 	virtual ~Window();
@@ -98,24 +98,29 @@ protected:
 	int contents_opacity;
 
 private:
-	Bitmap* background;
-	Bitmap* frame;
-	Bitmap* border_up;
-	Bitmap* border_down;
-	Bitmap* cursor1;
-	Bitmap* cursor2;
+	BitmapScreen* windowskin_screen;
+	BitmapScreen* contents_screen;
+	BitmapScreen* background;
+	BitmapScreen* frame_down;
+	BitmapScreen* frame_up;
+	BitmapScreen* frame_left;
+	BitmapScreen* frame_right;
+	BitmapScreen* cursor1;
+	BitmapScreen* cursor2;
 
 	void RefreshBackground();
 	void RefreshFrame();
 	void RefreshCursor();
+
 	bool background_needs_refresh;
 	bool frame_needs_refresh;
 	bool cursor_needs_refresh;
+
 	int cursor_frame;
 	int pause_frame;
-	int animation_increment;
 	int animation_frames;
-	int animation_acc;
+	double animation_increment;
+	double animation_count;
 };
 
 #endif

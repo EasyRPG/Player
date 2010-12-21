@@ -25,9 +25,12 @@
 Window_Equip::Window_Equip(int actor_id) :
 	Window_Selectable(124, 32, 196, 96),
 	actor_id(actor_id) {
-	contents = new Bitmap(width-16, height-16);
-	Refresh();
+
+	contents = Bitmap::CreateBitmap(width - 16, height - 16);
+
 	index = 0;
+
+	Refresh();
 }
 
 ////////////////////////////////////////////////////////////
@@ -36,19 +39,12 @@ Window_Equip::~Window_Equip() {
 
 ////////////////////////////////////////////////////////////
 int Window_Equip::GetItemId() {
-	if (index < 0) {
-		return 0;
-	} else {
-		return data[index];
-	}
+	return index < 0 ? 0 : data[index];
 }
 
 ////////////////////////////////////////////////////////////
 void Window_Equip::Refresh() {
 	contents->Clear();
-	Rect rect(0, 0, contents->GetWidth(), contents->GetHeight());
-	contents->FillofColor(rect, windowskin->GetColorKey());
-	contents->SetColorKey(windowskin->GetColorKey());
 
 	// Add the equipment of the actor to data
 	data.clear();
@@ -60,15 +56,14 @@ void Window_Equip::Refresh() {
 
 	// Draw equipment text
 	for (int i = 0; i < 5; ++i) {
-		DrawEquipmentType(actor, 0, ((12 + 4) * i) + 2, i);
+		DrawEquipmentType(actor, 0, (12 + 4) * i + 2, i);
 		if (data[i] > 0) {
-			DrawItemName(&Data::items[data[i] - 1], 60, ((12 + 4) * i) + 2);
+			DrawItemName(&Data::items[data[i] - 1], 60, (12 + 4) * i + 2);
 		}
 	}
 }
 
 ////////////////////////////////////////////////////////////
 void Window_Equip::UpdateHelp() {
-	help_window->SetText(GetItemId() == 0 ? "" : 
-		Data::items[GetItemId() - 1].description);
+	help_window->SetText(GetItemId() == 0 ? "" : Data::items[GetItemId() - 1].description);
 }

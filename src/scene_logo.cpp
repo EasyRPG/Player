@@ -920,7 +920,7 @@ Scene_Logo::~Scene_Logo() {
 ////////////////////////////////////////////////////////////
 void Scene_Logo::Start() {
 	logo = new Sprite();
-	logo_img = new Bitmap((char*)easyrpg_logo, sizeof(easyrpg_logo), false);
+	logo_img = Bitmap::CreateBitmap((const uint8*)easyrpg_logo, sizeof(easyrpg_logo), false);
 	logo->SetBitmap(logo_img);
 }
 

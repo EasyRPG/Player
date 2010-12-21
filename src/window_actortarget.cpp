@@ -25,7 +25,9 @@
 ////////////////////////////////////////////////////////////
 Window_ActorTarget::Window_ActorTarget(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
-	contents = new Bitmap(width - 16, height - 16);
+
+	contents = Bitmap::CreateBitmap(width - 16, height - 16);
+
 	Refresh();
 }
 
@@ -35,31 +37,27 @@ Window_ActorTarget::~Window_ActorTarget() {
 
 ////////////////////////////////////////////////////////////
 void Window_ActorTarget::Refresh() {
-	Rect rect(0, 0, contents->GetWidth(), contents->GetHeight());
-	contents->FillofColor(rect, windowskin->GetColorKey());
-	contents->SetColorKey(windowskin->GetColorKey());
+	contents->Clear();
 
 	DisplayUi->SetBackcolor(windowskin->GetPixel(0, 32));
 
 	item_max = Game_Party::GetActors().size();
 
 	int y = 0;
-	for (int i = 0; i < item_max; ++i)
-	{
-		DrawActorGraphic(Game_Party::GetActors()[i], 0, i*48 + y);
-		DrawActorName(Game_Party::GetActors()[i], 48 + 8, i*48 + 2 + y);
-		DrawActorLevel(Game_Party::GetActors()[i], 48 + 8, i*48 + 2 + 16 + y);
-		DrawActorState(Game_Party::GetActors()[i], 48 + 8, i*48 + 2 + 16 + 16 + y);
-		DrawActorHp(Game_Party::GetActors()[i], 48 + 8 + 58, i*48 + 2 + 16 + y);
-		DrawActorSp(Game_Party::GetActors()[i], 48 + 8 + 58, i*48 + 2 + 16 + 16 + y);
+	for (int i = 0; i < item_max; ++i) {
+		DrawActorGraphic(Game_Party::GetActors()[i], 0, i * 48 + y);
+		DrawActorName(Game_Party::GetActors()[i], 48 + 8, i * 48 + 2 + y);
+		DrawActorLevel(Game_Party::GetActors()[i], 48 + 8, i * 48 + 2 + 16 + y);
+		DrawActorState(Game_Party::GetActors()[i], 48 + 8, i * 48 + 2 + 16 + 16 + y);
+		DrawActorHp(Game_Party::GetActors()[i], 48 + 8 + 58, i * 48 + 2 + 16 + y);
+		DrawActorSp(Game_Party::GetActors()[i], 48 + 8 + 58, i * 48 + 2 + 16 + 16 + y);
 
 		y += 10;
 	}
 }
 
 ////////////////////////////////////////////////////////////
-void Window_ActorTarget::UpdateCursorRect()
-{
+void Window_ActorTarget::UpdateCursorRect() {
 	if (index < 0) {
 		cursor_rect.Set(48 + 4, 0, 120, item_max * (48 + 10) - 10);
 	} else {

@@ -18,44 +18,34 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "window_base.h"
 #include <sstream>
+#include "window_base.h"
 #include "cache.h"
+#include "data.h"
 #include "game_system.h"
 
 ////////////////////////////////////////////////////////////
-/// Constructor
-////////////////////////////////////////////////////////////
-Window_Base::Window_Base(int ix, int iy, int iwidth, int iheight) {
+Window_Base::Window_Base(int x, int y, int width, int height) {
 	windowskin_name = Game_System::GetSystemName();
 	SetWindowskin(Cache::System(windowskin_name));
 
-	SetX(ix);
-	SetY(iy);
-	SetWidth(iwidth);
-	SetHeight(iheight);
+	SetX(x);
+	SetY(y);
+	SetWidth(width);
+	SetHeight(height);
 	SetZ(100);
 }
 
-////////////////////////////////////////////////////////////
-/// Destructor
-////////////////////////////////////////////////////////////
-Window_Base::~Window_Base() {
-}
-
-////////////////////////////////////////////////////////////
-/// Update
 ////////////////////////////////////////////////////////////
 void Window_Base::Update() {
 	Window::Update();
 	if (Game_System::GetSystemName() != windowskin_name) {
 		windowskin_name = Game_System::GetSystemName();
 		SetWindowskin(Cache::System(windowskin_name));
+		contents->SetTransparentColor(windowskin->GetTransparentColor());
 	}
 }
 
-////////////////////////////////////////////////////////////
-/// Draw helpers
 ////////////////////////////////////////////////////////////
 void Window_Base::DrawActorGraphic(Game_Actor* actor, int cx, int cy) {
 	Bitmap* faceset = Cache::Faceset(actor->GetFaceName());
@@ -74,7 +64,7 @@ void Window_Base::DrawActorGraphic(Game_Actor* actor, int cx, int cy) {
 void Window_Base::DrawActorName(Game_Actor* actor, int cx, int cy) {
 	Rect rect = contents->GetTextSize(actor->GetName());
 	rect.x = cx; rect.y = cy;
-	contents->GetFont()->color = Color::Default;
+	contents->GetFont()->color = Font::ColorDefault;
 	contents->TextDraw(rect, actor->GetName());
 }
 
@@ -85,7 +75,7 @@ void Window_Base::DrawActorTitle(Game_Actor* actor, int cx, int cy) {
 void Window_Base::DrawActorClass(Game_Actor* actor, int cx, int cy) {
 	Rect rect = contents->GetTextSize(actor->GetTitle());
 	rect.x = cx; rect.y = cy;
-	contents->GetFont()->color = Color::Default;
+	contents->GetFont()->color = Font::ColorDefault;
 	contents->TextDraw(rect, actor->GetTitle());
 }
 
@@ -99,8 +89,8 @@ void Window_Base::DrawActorLevel(Game_Actor* actor, int cx, int cy) {
 	std::stringstream ss;
 	ss << actor->GetLevel();
 	rect.x = cx + 12;
-	contents->GetFont()->color = Color::Default;
-	contents->TextDraw(rect, ss.str(), Bitmap::align_right);
+	contents->GetFont()->color = Font::ColorDefault;
+	contents->TextDraw(rect, ss.str(), Bitmap::TextAlignRight);
 }
 
 void Window_Base::DrawActorState(Game_Actor* actor, int cx, int cy) {
@@ -110,7 +100,7 @@ void Window_Base::DrawActorState(Game_Actor* actor, int cx, int cy) {
 	if (states.size() == 0) {
 		Rect rect = contents->GetTextSize(Data::terms.normal_status);
 		rect.x = cx; rect.y = cy;
-		contents->GetFont()->color = Color::Default;
+		contents->GetFont()->color = Font::ColorDefault;
 		contents->TextDraw(rect, Data::terms.normal_status);
 	} else {
 		int highest_priority = 0;
@@ -143,8 +133,8 @@ void Window_Base::DrawActorExp(Game_Actor* actor, int cx, int cy) {
 	// Draw Current Exp of the Actor
 	// ------/------
 	Rect rect2(cx + 12, cy, 6*6, 12);
-	contents->GetFont()->color = Color::Default;
-	contents->TextDraw(rect2, actor->GetExpString(), Bitmap::align_right);
+	contents->GetFont()->color = Font::ColorDefault;
+	contents->TextDraw(rect2, actor->GetExpString(), Bitmap::TextAlignRight);
 
 	// Draw the /
 	rect2.x += 6*6;
@@ -152,7 +142,7 @@ void Window_Base::DrawActorExp(Game_Actor* actor, int cx, int cy) {
 
 	// Draw Exp for Level up
 	rect2.x += 6;
-	contents->TextDraw(rect2, actor->GetNextExpString(), Bitmap::align_right);
+	contents->TextDraw(rect2, actor->GetNextExpString(), Bitmap::TextAlignRight);
 }
 
 void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy) {
@@ -164,20 +154,20 @@ void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy) {
 	// Draw Current HP of the Actor
 	Rect rect2(cx + 12, cy, 3*6, 12);
 	// Color: 0 okay, 4 critical, 5 dead
-	int color = Color::Default;
+	int color = Font::ColorDefault;
 	if (actor->GetHp() == 0) {
-		color = Color::Knockout;
+		color = Font::ColorKnockout;
 	} else if (actor->GetHp() <= actor->GetMaxHp() / 4) {
-		color = Color::Critical;
+		color = Font::ColorCritical;
 	}
 	contents->GetFont()->color = color;
 	std::stringstream ss;
 	ss << actor->GetHp();
-	contents->TextDraw(rect2, ss.str(), Bitmap::align_right);
+	contents->TextDraw(rect2, ss.str(), Bitmap::TextAlignRight);
 
 	// Draw the /
 	rect2.x += 3*6;
-	contents->GetFont()->color = Color::Default;
+	contents->GetFont()->color = Font::ColorDefault;
 	contents->TextDraw(rect2, "/");
 
 	// Draw Max Hp
@@ -185,7 +175,7 @@ void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy) {
 	ss.str("");
 	ss.clear();
 	ss << actor->GetMaxHp();
-	contents->TextDraw(rect2, ss.str(), Bitmap::align_right);
+	contents->TextDraw(rect2, ss.str(), Bitmap::TextAlignRight);
 }
 void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy, int width) {
 	
@@ -200,18 +190,18 @@ void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy) {
 	// Draw Current SP of the Actor
 	Rect rect2(cx + 12, cy, 3*6, 12);
 	// Color: 0 okay, 4 critical/empty
-	int color = Color::Default;
+	int color = Font::ColorDefault;
 	if (actor->GetMaxSp() != 0 && actor->GetSp() <= actor->GetMaxSp() / 4) {
-		color = Color::Critical;
+		color = Font::ColorCritical;
 	}
 	contents->GetFont()->color = color;
 	std::stringstream ss;
 	ss << actor->GetSp();
-	contents->TextDraw(rect2, ss.str(), Bitmap::align_right);
+	contents->TextDraw(rect2, ss.str(), Bitmap::TextAlignRight);
 
 	// Draw the /
 	rect2.x += 3*6;
-	contents->GetFont()->color = Color::Default;
+	contents->GetFont()->color = Font::ColorDefault;
 	contents->TextDraw(rect2, "/");
 
 	// Draw Max Sp
@@ -219,7 +209,7 @@ void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy) {
 	ss.str("");
 	ss.clear();
 	ss << actor->GetMaxSp();
-	contents->TextDraw(rect2, ss.str(), Bitmap::align_right);
+	contents->TextDraw(rect2, ss.str(), Bitmap::TextAlignRight);
 }
 
 void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy, int width) {
@@ -261,8 +251,8 @@ void Window_Base::DrawActorParameter(Game_Actor* actor, int cx, int cy, int type
 	rect.x = cx + 78;
 	std::stringstream ss;
 	ss << value;
-	contents->GetFont()->color = Color::Default;
-	contents->TextDraw(rect, ss.str(), Bitmap::align_right);
+	contents->GetFont()->color = Font::ColorDefault;
+	contents->TextDraw(rect, ss.str(), Bitmap::TextAlignRight);
 }
 
 void Window_Base::DrawEquipmentType(Game_Actor* actor, int cx, int cy, int type) {
@@ -299,14 +289,14 @@ void Window_Base::DrawEquipmentType(Game_Actor* actor, int cx, int cy, int type)
 }
 
 void Window_Base::DrawItemName(RPG::Item* item, int cx, int cy, bool enabled) {
-	contents->GetFont()->color = enabled ? Color::Default : Color::Disabled;
+	contents->GetFont()->color = enabled ? Font::ColorDefault : Font::ColorDisabled;
 	Rect rect = contents->GetTextSize(item->name);
 	rect.x = cx; rect.y = cy;
 	contents->TextDraw(rect, item->name);
 }
 
 void Window_Base::DrawSkillName(RPG::Skill* skill, int cx, int cy, bool enabled) {
-	contents->GetFont()->color = enabled ? Color::Default : Color::Disabled;
+	contents->GetFont()->color = enabled ? Font::ColorDefault : Font::ColorDisabled;
 	Rect rect = contents->GetTextSize(skill->name);
 	rect.x = cx; rect.y = cy;
 	contents->TextDraw(rect, skill->name);

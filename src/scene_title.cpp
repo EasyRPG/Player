@@ -165,7 +165,7 @@ void Scene_Title::CreateCommandWindow() {
 	// TODO: Calculate window width from max text length from options
 	int text_size = max(Data::terms.new_game.size() * 6,
 		Data::terms.load_game.size() * 6);
-	text_size = max(text_size, Data::terms.exit_game.size() * 6);
+	text_size = max(text_size, (int)Data::terms.exit_game.size() * 6);
 
 	command_window = new Window_Command(text_size + 24, options);
 	command_window->SetX(160 - command_window->GetWidth() / 2);

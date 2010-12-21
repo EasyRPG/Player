@@ -49,6 +49,12 @@
     <Filter Include="Source Files\Tools\Win">
       <UniqueIdentifier>{60d055a3-9b00-4bae-99f6-e827231bf43c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Multimedia\Graphics\sdl">
+      <UniqueIdentifier>{27af2db9-a710-41e4-a027-e1a806db7bcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Multimedia\Graphics\sdl_gl">
+      <UniqueIdentifier>{7c9e2021-4809-40d7-a505-60dddd6d70c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\cache.cpp">
@@ -281,6 +287,15 @@
     </ClCompile>
     <ClCompile Include="..\..\src\window_targetstatus.cpp">
       <Filter>Source Files\Engine\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sdl_bitmap.cpp">
+      <Filter>Source Files\Multimedia\Graphics\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sdl_bitmap_screen.cpp">
+      <Filter>Source Files\Multimedia\Graphics\sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\bitmap_screen.cpp">
+      <Filter>Source Files\Multimedia\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -526,6 +541,15 @@
     </ClInclude>
     <ClInclude Include="..\..\src\window_targetstatus.h">
       <Filter>Source Files\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sdl_bitmap.h">
+      <Filter>Source Files\Multimedia\Graphics\sdl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sdl_bitmap_screen.h">
+      <Filter>Source Files\Multimedia\Graphics\sdl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\bitmap_screen.h">
+      <Filter>Source Files\Multimedia\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

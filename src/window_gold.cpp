@@ -27,7 +27,7 @@
 Window_Gold::Window_Gold(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) {
 
-	contents = new Bitmap(width - 16, height - 16);
+	contents = Bitmap::CreateBitmap(width - 16, height - 16);
 
 	Refresh();
 }
@@ -43,12 +43,12 @@ void Window_Gold::Refresh() {
 	std::stringstream gold;
 	gold << Game_Party::GetGold();
 	
-	contents->FillofColor(rect, windowskin->GetColorKey());
-	contents->SetColorKey(windowskin->GetColorKey());
+	contents->ClearRect(rect);
+
 	contents->GetFont()->color = 1;
-	contents->TextDraw(rect, Data::terms.gold, Bitmap::align_right);
+	contents->TextDraw(rect, Data::terms.gold, Bitmap::TextAlignRight);
 
 	rect.x -= 12;
-	contents->GetFont()->color = Color::Default;
-	contents->TextDraw(rect, gold.str(), Bitmap::align_right);
+	contents->GetFont()->color = Font::ColorDefault;
+	contents->TextDraw(rect, gold.str(), Bitmap::TextAlignRight);
 }

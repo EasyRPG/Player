@@ -18,29 +18,19 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <math.h>
 #include "plane.h"
 #include "graphics.h"
-#include "rect.h"
 #include "player.h"
 
 ////////////////////////////////////////////////////////////
-/// Constructor
-////////////////////////////////////////////////////////////
-Plane::Plane() {
-	bitmap = NULL;
-	visible = true;
-	z = 0;
-	ox = 0;
-	oy = 0;
-	zoom_x = 1.0;
-	zoom_y = 1.0;
-	opacity = 255;
-	blend_type = 0;
-	color = Color();
-	tone = Tone();
-
-	plane = NULL;
+Plane::Plane() :
+	bitmap(NULL),
+	visible(true),
+	z(0),
+	ox(0),
+	oy(0) {
+	
+	bitmap_screen = BitmapScreen::CreateBitmapScreen(false);
 
 	type = PLANE;
 	ID = Graphics::ID++;
@@ -49,67 +39,37 @@ Plane::Plane() {
 }
 
 ////////////////////////////////////////////////////////////
-/// Destructor
-////////////////////////////////////////////////////////////
 Plane::~Plane() {
 	Graphics::RemoveZObj(ID);
 	Graphics::RemoveDrawable(ID);
-	delete plane;
+	delete bitmap_screen;
 }
 
-////////////////////////////////////////////////////////////
-/// Draw
 ////////////////////////////////////////////////////////////
 void Plane::Draw(int z_order) {
-	if (!visible) return;
-	if (opacity <= 0) return;
-	if (zoom_x <= 0 || zoom_y <= 0) return;
-	if (!bitmap) return;
+	if (!visible || !bitmap) return;
 
-	Refresh();
-
-	double bmpw = bitmap->GetWidth() * zoom_x;
-	double bmph = bitmap->GetHeight() * zoom_y;
-	double tilesx = ceil(DisplayUi->GetWidth() / bmpw);
-	double tilesy = ceil(DisplayUi->GetHeight() / bmph);
 	int screen_ox = ox % DisplayUi->GetWidth();
 	int screen_oy = oy % DisplayUi->GetHeight();
-	for (double i = 0; i < tilesx; i++) {
-		for (double j = 0; j < tilesy; j++) {
-			plane->BlitScreen((int)(i * bmpw - screen_ox), (int)(j * bmph - screen_oy));
-		}
-	}
+
+	Rect dst_rect;
+	dst_rect.x = -screen_ox;
+	dst_rect.y = -screen_oy;
+	dst_rect.width = screen_ox + DisplayUi->GetWidth();
+	dst_rect.height = screen_oy + DisplayUi->GetHeight();
+
+	bitmap_screen->BlitScreenTiled(bitmap->GetRect(), dst_rect);
 }
 
-////////////////////////////////////////////////////////////
-/// Refresh
-////////////////////////////////////////////////////////////
-void Plane::Refresh() {
-	if (!needs_refresh) return;
-
-	needs_refresh = false;
-
-	delete plane;
-
-	Rect r = bitmap->GetRect();
-	
-	plane = new Bitmap(bitmap, r);
-		
-	plane->ToneChange(tone);
-	plane->OpacityChange(opacity, 0);
-	plane->Zoom(zoom_x, zoom_y);
-}
-
-////////////////////////////////////////////////////////////
-/// Properties
 ////////////////////////////////////////////////////////////
 Bitmap* Plane::GetBitmap() const {
 	return bitmap;
 }
 void Plane::SetBitmap(Bitmap* nbitmap) {
-	needs_refresh = true;
 	bitmap = nbitmap;
+	bitmap_screen->SetBitmap(nbitmap);
 }
+
 bool Plane::GetVisible() const {
 	return visible;
 }
@@ -136,48 +96,42 @@ void Plane::SetOy(int noy) {
 	oy = noy;
 }
 double Plane::GetZoomX() const {
-	return zoom_x;
+	return bitmap_screen->GetZoomXEffect();
 }
-void Plane::SetZoomX(float nzoom_x) {
-	if (zoom_x != nzoom_x) needs_refresh = true;
-	zoom_x = nzoom_x;
+void Plane::SetZoomX(float zoom_x) {
+	bitmap_screen->SetZoomXEffect(zoom_x);
 }
 double Plane::GetZoomY() const {
-	return zoom_y;
+	return bitmap_screen->GetZoomYEffect();
 }
-void Plane::SetZoomY(float nzoom_y) {
-	if (zoom_y != nzoom_y) needs_refresh = true;
-	zoom_y = nzoom_y;
+void Plane::SetZoomY(float zoom_y) {
+	bitmap_screen->SetZoomYEffect(zoom_y);
 }
 int Plane::GetOpacity() const {
-	return opacity;
+	return bitmap_screen->GetOpacityEffect();
 }
-void Plane::SetOpacity(int nopacity) {
-	if (opacity != nopacity) needs_refresh = true;
-	opacity = nopacity;
+void Plane::SetOpacity(int opacity) {
+	bitmap_screen->SetOpacityEffect(opacity);
 }
 int Plane::GetBlendType() const {
-	return blend_type;
+	return bitmap_screen->GetBlendType();
 }
-void Plane::SetBlendType(int nblend_type) {
-	blend_type = nblend_type;
+void Plane::SetBlendType(int blend_type) {
+	bitmap_screen->SetBlendType(blend_type);
 }
-Color Plane::GetColor() const {
-	return color;
+Color Plane::GetBlendColor() const {
+	return bitmap_screen->GetBlendColor();
 }
-void Plane::SetColor(Color ncolor) {
-	color = ncolor;
+void Plane::SetBlendColor(Color color) {
+	bitmap_screen->SetBlendColor(color);
 }
 Tone Plane::GetTone() const {
-	return tone;
+	return bitmap_screen->GetToneEffect();
 }
-void Plane::SetTone(Tone ntone) {
-	if (tone != ntone) needs_refresh = true;
-	tone = ntone;
+void Plane::SetTone(Tone tone) {
+	bitmap_screen->SetToneEffect(tone);
 }
 
-////////////////////////////////////////////////////////////
-/// Get id
 ////////////////////////////////////////////////////////////
 unsigned long Plane::GetId() const {
 	return ID;

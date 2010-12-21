@@ -61,7 +61,7 @@ void Sprite_Character::Update() {
 			int sx = (character_index % 4) * chara_width * 3;
 			int sy = (character_index / 4) * chara_height * 4;
 			r.Set(sx, sy, chara_width * 3, chara_height * 4);
-			SetSrcRect(r);
+			SetSpriteRect(r);
 		}
 	}
 	//SetVisible(character->GetVisible());
@@ -74,7 +74,7 @@ void Sprite_Character::Update() {
 			case 8: row = 0; break;
 		}
 		r.Set(character->GetPattern() * chara_width, row * chara_height, chara_width, chara_height);
-		SetSpriteRect(r);
+		SetSrcRect(r);
 	}
 	SetX(character->GetScreenX());
 	SetY(character->GetScreenY());

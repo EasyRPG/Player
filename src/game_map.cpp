@@ -189,7 +189,7 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 		}
 	}
 
-	int16 tile_index = x + y * map->width;
+	int16 tile_index = (int16)(x + y * map->width);
 
 	int16 tile_id = map->upper_layer[tile_index] - 10000;
 

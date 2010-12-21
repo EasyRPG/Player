@@ -26,7 +26,7 @@
 ////////////////////////////////////////////////////////////
 Window_MenuStatus::Window_MenuStatus(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
-	contents = new Bitmap(width - 16, height - 16);
+	contents = Bitmap::CreateBitmap(width - 16, height - 16);
 	Refresh();
 }
 
@@ -36,9 +36,8 @@ Window_MenuStatus::~Window_MenuStatus() {
 
 ////////////////////////////////////////////////////////////
 void Window_MenuStatus::Refresh() {
-	Rect rect(0, 0, contents->GetWidth(), contents->GetHeight());
-	contents->FillofColor(rect, windowskin->GetColorKey());
-	contents->SetColorKey(windowskin->GetColorKey());
+	contents->SetTransparentColor(windowskin->GetTransparentColor());
+	contents->Clear();
 
 	DisplayUi->SetBackcolor(windowskin->GetPixel(0, 32));
 

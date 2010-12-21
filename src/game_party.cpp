@@ -19,6 +19,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <algorithm>
+#include "system.h"
 #include "game_party.h"
 #include "game_actors.h"
 #include "game_player.h"
@@ -97,7 +98,7 @@ void Game_Party::GainGold(int n) {
 ////////////////////////////////////////////////////////////
 void Game_Party::GainItem(int item_id, int amount, bool include_equip) {
 	int a;
-	if (item_id > 0 && item_id < Data::items.size()) {
+	if (item_id > 0 && (uint)item_id < Data::items.size()) {
 		a = ItemNumber(item_id);
 		items[item_id] = min(max(a + amount, 0), 99);
 	} else {

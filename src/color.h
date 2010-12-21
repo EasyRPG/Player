@@ -21,37 +21,67 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "SDL.h"
+#include "system.h"
 
 ////////////////////////////////////////////////////////////
-/// Color class
+/// Color class.
 ////////////////////////////////////////////////////////////
 class Color {
-
 public:
+	////////////////////////////////////////////////////////
+	/// Constructor. All components are set to 0, but alpha
+	/// that is set to 255.
+	////////////////////////////////////////////////////////
 	Color();
-	Color(Uint8 ired, Uint8 igreen, Uint8 iblue, Uint8 ialpha);
-	Color(Uint32 color, SDL_PixelFormat* format);
-	~Color();
 
-	bool operator!=(const Color& other) const;
+	////////////////////////////////////////////////////////
+	/// Constructor.
+	/// @param red : red component
+	/// @param green : green component
+	/// @param blue : blue component
+	/// @param alpha : alpha component
+	////////////////////////////////////////////////////////
+	Color(uint red, uint green, uint blue, uint alpha);
 
-	void Set(Uint8 nred, Uint8 ngreen, Uint8 nblue, Uint8 nalpha);
+	////////////////////////////////////////////////////////
+	/// Constructor.
+	/// @param red : red component
+	/// @param green : green component
+	/// @param blue : blue component
+	/// @param alpha : alpha component
+	////////////////////////////////////////////////////////
+	Color(int red, int green, int blue, int alpha);
 
-	enum ColorTypes {
-		Default = 0,
-		Disabled = 3,
-		Critical = 4,
-		Knockout = 5
-	};
+	////////////////////////////////////////////////////////
+	/// Equality operator.
+	////////////////////////////////////////////////////////
+	bool operator==(const Color &other) const;
 
-	Uint8 red;
-	Uint8 green;
-	Uint8 blue;
-	Uint8 alpha;
+	////////////////////////////////////////////////////////
+	/// Inequality operator.
+	////////////////////////////////////////////////////////
+	bool operator!=(const Color &other) const;
 
-	Uint32 GetUint32(SDL_PixelFormat* format) const;
-	SDL_Color Get() const;
+	////////////////////////////////////////////////////////
+	/// Set all color properties.
+	/// @param red : red component
+	/// @param green : green component
+	/// @param blue : blue component
+	/// @param alpha : alpha component
+	////////////////////////////////////////////////////////
+	void Set(uint red, uint green, uint blue, uint alpha);
+
+	/// Red component.
+	uint8 red;
+
+	/// Green component.
+	uint8 green;
+
+	/// Blue component.
+	uint8 blue;
+
+	/// Alpha component.
+	uint8 alpha;
 };
 
 #endif

@@ -21,63 +21,41 @@
 #include "color.h"
 
 ////////////////////////////////////////////////////////////
-/// Constructor
-////////////////////////////////////////////////////////////
-Color::Color() {
-	red = 0;
-	green = 0;
-	blue = 0;
-	alpha = 255;
+Color::Color() :
+	red(0),
+	green(0),
+	blue(0),
+	alpha(255) {
 }
-Color::Color(Uint8 ired, Uint8 igreen, Uint8 iblue, Uint8 ialpha) {
-	red = ired;
-	green = igreen;
-	blue = iblue;
-	alpha = ialpha;
+
+Color::Color(uint red, uint green, uint blue, uint alpha) :
+	red((uint8)red),
+	green((uint8)green),
+	blue((uint8)blue),
+	alpha((uint8)alpha) {
 }
-Color::Color(Uint32 color, SDL_PixelFormat* format) {
-	Uint8 r, g, b, a;
-	SDL_GetRGBA(color, format, &r, &g, &b, &a);
-	red = r;
-	green = g;
-	blue = b;
-	alpha = a;
+
+Color::Color(int red, int green, int blue, int alpha) :
+	red((uint8)red),
+	green((uint8)green),
+	blue((uint8)blue),
+	alpha((uint8)alpha) {
 }
 
 ////////////////////////////////////////////////////////////
-/// Destructor
-////////////////////////////////////////////////////////////
-Color::~Color() {
+bool Color::operator==(const Color &other) const {
+	return red == other.red && green == other.green && blue == other.blue && alpha == other.alpha;
 }
 
-////////////////////////////////////////////////////////////
-/// != operator
 ////////////////////////////////////////////////////////////
 bool Color::operator!=(const Color &other) const {
 	return red != other.red || green != other.green || blue != other.blue || alpha != other.alpha;
 }
 
 ////////////////////////////////////////////////////////////
-/// Set
-////////////////////////////////////////////////////////////
-void Color::Set(Uint8 nred, Uint8 ngreen, Uint8 nblue, Uint8 nalpha) {
-	red = nred;
-	green = ngreen;
-	blue = nblue;
-	alpha = nalpha;
-}
-
-////////////////////////////////////////////////////////////
-/// Get Uint32
-////////////////////////////////////////////////////////////
-Uint32 Color::GetUint32(SDL_PixelFormat* format) const {
-	return SDL_MapRGBA(format, (Uint8)red, (Uint8)green, (Uint8)blue, (Uint8)alpha);
-}
-
-////////////////////////////////////////////////////////////
-/// Get SDL_Color
-////////////////////////////////////////////////////////////
-SDL_Color Color::Get() const {
-	SDL_Color color = {red, green, blue, alpha};
-	return color;
+void Color::Set(uint red, uint green, uint blue, uint alpha) {
+	red = (uint8)red;
+	green = (uint8)green;
+	blue = (uint8)blue;
+	alpha = (uint8)alpha;
 }

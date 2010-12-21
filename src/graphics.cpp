@@ -256,11 +256,11 @@ void Graphics::DoTransition() {
 	prepare_transition = false;
 	if (transition_current_frame < transition_frames) {
 
-		int inc;
+		uint8 inc;
 		if ( ++transition_current_frame % frames_left == 0 ) {
 			increment_left_acc += increment_left;
 		}
-		inc = transition_current_frame*transition_increment+increment_left_acc;
+		inc = (uint8)(transition_current_frame * transition_increment+increment_left_acc);
 
 		switch (actual_transition) {
 			case FadeIn:
@@ -359,6 +359,8 @@ void Graphics::Freeze() {
 // Transition
 ////////////////////////////////////////////////////////////
 void Graphics::Transition(TransitionType type, int time, bool wait) {
+	return;
+
 	//////
 	prepare_transition = true;
 	skip_draw = false;
@@ -413,7 +415,7 @@ void Graphics::Wait(int duration) {
 ////////////////////////////////////////////////////////////
 Bitmap* Graphics::SnapToBitmap() {
 	// TODO
-	return new Bitmap(DisplayUi->GetWidth(), DisplayUi->GetHeight());
+	return Bitmap::CreateBitmap(DisplayUi->GetWidth(), DisplayUi->GetHeight());
 }
 
 ////////////////////////////////////////////////////////////

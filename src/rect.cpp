@@ -28,7 +28,7 @@ Rect::Rect() :
 	height(0) {
 }
 
-Rect::Rect(int16 x, int16 y, uint16 width, uint16 height) :
+Rect::Rect(int x, int y, int width, int height) :
 	x(x),
 	y(y),
 	width(width),
@@ -37,18 +37,16 @@ Rect::Rect(int16 x, int16 y, uint16 width, uint16 height) :
 
 ////////////////////////////////////////////////////////////
 bool Rect::operator==(const Rect &other) const {
-	return	x == other.x && y == other.y &&
-			width == other.width && height == other.height;
+	return	x == other.x && y == other.y && width == other.width && height == other.height;
 }
 
 ////////////////////////////////////////////////////////////
 bool Rect::operator!=(const Rect &other) const {
-	return	x != other.x || y != other.y ||
-			width != other.width || height != other.height;
+	return	x != other.x || y != other.y || width != other.width || height != other.height;
 }
 
 ////////////////////////////////////////////////////////////
-void Rect::Set(int16 new_x, int16 new_y, uint16 new_width, uint16 new_height) {
+void Rect::Set(int new_x, int new_y, int new_width, int new_height) {
 	x = new_x;
 	y = new_y;
 	width = new_width;
@@ -56,7 +54,7 @@ void Rect::Set(int16 new_x, int16 new_y, uint16 new_width, uint16 new_height) {
 }
 
 ////////////////////////////////////////////////////////////
-void Rect::Adjust(uint16 max_width, uint16 max_height) {
+void Rect::Adjust(int max_width, int max_height) {
 	if (x < 0) {
 		width += x;
 		x = 0;
@@ -72,7 +70,7 @@ void Rect::Adjust(uint16 max_width, uint16 max_height) {
 }
 
 ////////////////////////////////////////////////////////////
-bool Rect::IsOutOfBounds(uint16 max_width, uint16 max_height) const {
+bool Rect::IsOutOfBounds(int max_width, int max_height) const {
 	if (width <= 0 || height <= 0) return true;
 	if (x >= max_width || y >= max_height) return true;
 	if (x + width <= 0 || y + height <= 0) return true;

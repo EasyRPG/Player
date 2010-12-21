@@ -60,9 +60,6 @@ void Window_Skill::Refresh() {
 	CreateContents();
 
 	contents->Clear();
-	Rect rect(0, 0, contents->GetWidth(), contents->GetHeight());
-	contents->FillofColor(rect, windowskin->GetColorKey());
-	contents->SetColorKey(windowskin->GetColorKey());
 
 	if (data.size() == 0) {
 		data.push_back(0);
@@ -78,8 +75,7 @@ void Window_Skill::Refresh() {
 ////////////////////////////////////////////////////////////
 void Window_Skill::DrawItem(int index) {
 	Rect rect = GetItemRect(index);
-	contents->FillofColor(rect, windowskin->GetColorKey());
-	contents->SetColorKey(windowskin->GetColorKey());
+	contents->ClearRect(rect);
 
 	int skill_id = data[index];
 
@@ -91,7 +87,7 @@ void Window_Skill::DrawItem(int index) {
 		std::stringstream ss;
 		ss << std::setfill(' ') << std::setw(3) << costs;
 
-		contents->TextDraw(rect, ss.str(), Bitmap::align_right);
+		contents->TextDraw(rect, ss.str(), Bitmap::TextAlignCenter);
 	}
 }
 

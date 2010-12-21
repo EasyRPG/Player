@@ -27,7 +27,7 @@ Window_EquipStatus::Window_EquipStatus(int actor_id) :
 	Window_Base(0, 32, 124, 96),
 	actor_id(actor_id),
 	draw_params(false) {
-	contents = new Bitmap(width - 16, height - 16);
+	contents = Bitmap::CreateBitmap(width - 16, height - 16);
 	Refresh();
 }
 
@@ -38,9 +38,6 @@ Window_EquipStatus::~Window_EquipStatus() {
 ////////////////////////////////////////////////////////////
 void Window_EquipStatus::Refresh() {
 	contents->Clear();
-	Rect rect(0, 0, contents->GetWidth(), contents->GetHeight());
-	contents->FillofColor(rect, windowskin->GetColorKey());
-	contents->SetColorKey(windowskin->GetColorKey());
 
 	DrawActorName(Game_Actors::GetActor(actor_id), 0, 0);
 
@@ -125,7 +122,7 @@ void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 	std::stringstream ss;
 	ss << value;
 	contents->GetFont()->color = 0;
-	contents->TextDraw(rect, ss.str(), Bitmap::align_right);
+	contents->TextDraw(rect, ss.str(), Bitmap::TextAlignRight);
 
 	if (draw_params) {
 		// Draw New Value
@@ -133,6 +130,6 @@ void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 		ss.str(""); ss.clear();
 		ss << new_value;
 		contents->GetFont()->color = GetNewParameterColor(value, new_value);
-		contents->TextDraw(rect, ss.str(), Bitmap::align_right);
+		contents->TextDraw(rect, ss.str(), Bitmap::TextAlignRight);
 	}
 }

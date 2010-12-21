@@ -26,38 +26,37 @@
 class Rect {
 public:
 	///////////////////////////////////////////////////////
-	/// Default constructor.
-	/// All values are set to 0.
+	/// Constructor. All values are set to 0.
 	///////////////////////////////////////////////////////
 	Rect();
 
 	///////////////////////////////////////////////////////
-	/// Overloaded constructor.
+	/// Constructor.
 	/// @param x : initial x
 	/// @param x : initial y
 	/// @param width : initial width
 	/// @param height : initial height
 	///////////////////////////////////////////////////////
-	Rect(int16 x, int16 y, uint16 width, uint16 height);
-	
+	Rect(int x, int y, int width, int height);
+
 	///////////////////////////////////////////////////////
-	/// Comparison operator.
+	/// Equality operator.
 	///////////////////////////////////////////////////////
 	bool operator==(const Rect& other) const;
 
 	///////////////////////////////////////////////////////
-	/// Comparison operator.
+	/// Inequality operator.
 	///////////////////////////////////////////////////////
 	bool operator!=(const Rect& other) const;
 
 	///////////////////////////////////////////////////////
-	/// Set all rect values simultaniously.
+	/// Set all rect values simultaneously.
 	/// @param x : new x
 	/// @param x : new y
 	/// @param width : new width
 	/// @param height : new height
 	///////////////////////////////////////////////////////
-	void Set(int16 x, int16 y, uint16 width, uint16 height);
+	void Set(int x, int y, int width, int height);
 
 	///////////////////////////////////////////////////////
 	/// Adjusts rect bounds, trimming it so it is contained
@@ -65,7 +64,7 @@ public:
 	/// @param width : max width
 	/// @param height : max height
 	///////////////////////////////////////////////////////
-	void Adjust(uint16 width, uint16 height);
+	void Adjust(int width, int height);
 
 	///////////////////////////////////////////////////////
 	/// Gets if rect is totally outside the given size.
@@ -73,12 +72,19 @@ public:
 	/// @param height : max height
 	/// @return whether the rect is outside of the scope
 	///////////////////////////////////////////////////////
-	bool IsOutOfBounds(uint16 width, uint16 height) const;
+	bool IsOutOfBounds(int width, int height) const;
 
-	int16 x;
-	int16 y;
-	uint16 width;
-	uint16 height;
+	/// X coordinate.
+	int x;
+
+	/// Y coordinate.
+	int y;
+
+	/// Width.
+	int width;
+
+	/// Height.
+	int height;
 };
 
 #endif

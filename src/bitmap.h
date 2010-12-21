@@ -22,90 +22,278 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <string>
-#include "SDL.h"
-#include "rect.h"
+#include <list>
 #include "color.h"
-#include "tone.h"
 #include "font.h"
+#include "rect.h"
+#include "tone.h"
+
+class BitmapScreen;
 
 ////////////////////////////////////////////////////////////
-/// Bitmap class
+/// Base Bitmap class.
 ////////////////////////////////////////////////////////////
 class Bitmap {
 public:
-	Bitmap(int width, int height);
-	Bitmap(std::string filename, bool transparent);
-	Bitmap(char* mem_data, size_t mem_size, bool transparent);
-	Bitmap(Bitmap* source, Rect& src_rect);
+	////////////////////////////////////////////////////////
+	/// Creates bitmap with empty surface.
+	/// @param width : surface width
+	/// @param height : surface height
+	/// @param transparent : allow transparency on bitmap
+	////////////////////////////////////////////////////////
+	static Bitmap* CreateBitmap(int width, int height, bool transparent = true);
 
-	~Bitmap();
+	////////////////////////////////////////////////////////
+	/// Loads a bitmap from an image file.
+	/// @param filename : image file to load
+	/// @param transparent : allow transparency on bitmap
+	////////////////////////////////////////////////////////
+	static Bitmap* CreateBitmap(const std::string filename, bool transparent = true);
 
+	////////////////////////////////////////////////////////
+	/// Loads a bitmap from memory.
+	/// @param data : image data
+	/// @param bytes : size of data
+	/// @param transparent : allow transparency on bitmap
+	////////////////////////////////////////////////////////
+	static Bitmap* CreateBitmap(const uint8* data, uint bytes, bool transparent = true);
+
+	////////////////////////////////////////////////////////
+	/// Creates a bitmap from another.
+	/// @param source : source bitmap
+	/// @param src_rect : rect to copy from source bitmap
+	/// @param transparent : allow transparency on bitmap
+	////////////////////////////////////////////////////////
+	static Bitmap* CreateBitmap(Bitmap* source, Rect src_rect, bool transparent = true);
+
+	////////////////////////////////////////////////////////
+	/// Destructor.
+	////////////////////////////////////////////////////////
+	virtual ~Bitmap() {}
+	
+	////////////////////////////////////////////////////////
+	/// Blit source bitmap to this one.
+	/// @param x : x position
+	/// @param y : y position
+	/// @param src : source bitmap
+	/// @param src_rect : source bitmap rect
+	/// @param opacity : opacity for blending with bitmap
+	////////////////////////////////////////////////////////
+	virtual void Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity);
+
+	////////////////////////////////////////////////////////
+	/// Blit source bitmap in tiles to this one.
+	/// @param src_rect : source bitmap rect
+	/// @param src : source bitmap
+	/// @param dst_rect : destination rect
+	/// @param opacity : opacity for blending with bitmap
+	////////////////////////////////////////////////////////
+	virtual void TiledBlit(Rect src_rect, Bitmap* src, Rect dst_rect, int opacity);
+
+	////////////////////////////////////////////////////////
+	/// Blit source bitmap in tiles to this one.
+	/// @param ox : tile start x offset
+	/// @param ox : tile start y offset
+	/// @param src_rect : source bitmap rect
+	/// @param src : source bitmap
+	/// @param dst_rect : destination rect
+	/// @param opacity : opacity for blending with bitmap
+	////////////////////////////////////////////////////////
+	virtual void TiledBlit(int ox, int oy, Rect src_rect, Bitmap* src, Rect dst_rect, int opacity);
+
+	////////////////////////////////////////////////////////
+	/// Blit source bitmap stretched to this one.
+	/// @param src : source bitmap
+	/// @param src_rect : source bitmap rect
+	/// @param opacity : opacity for blending with bitmap
+	////////////////////////////////////////////////////////
+	virtual void StretchBlit(Bitmap* src, Rect src_rect, int opacity);
+
+	////////////////////////////////////////////////////////
+	/// Blit source bitmap stretched to this one.
+	/// @param dst_rect : destination rect
+	/// @param src : source bitmap
+	/// @param src_rect : source bitmap rect
+	/// @param opacity : opacity for blending with bitmap
+	////////////////////////////////////////////////////////
+	virtual void StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int opacity);
+
+	////////////////////////////////////////////////////////
+	/// Fill entire bitmap with color.
+	/// @param color : color for filling
+	////////////////////////////////////////////////////////
+	virtual void Fill(const Color &color);
+
+	////////////////////////////////////////////////////////
+	/// Fill bitmap rect with color.
+	/// @param dst_rect : destination rect
+	/// @param color : color for filling
+	////////////////////////////////////////////////////////
+	virtual void FillRect(Rect dst_rect, const Color &color);
+
+	////////////////////////////////////////////////////////
+	/// Clears the bitmap with transparent pixels.
+	////////////////////////////////////////////////////////
+	virtual void Clear();
+
+	////////////////////////////////////////////////////////
+	/// Clears the bitmap rect with transparent pixels.
+	/// @param dst_rect : destination rect
+	////////////////////////////////////////////////////////
+	virtual void ClearRect(Rect dst_rect);
+	
+	////////////////////////////////////////////////////////
+	/// Get a pixel color.
+	/// @param x : pixel x
+	/// @param y : pixel y
+	/// @return pixel color
+	////////////////////////////////////////////////////////
+	virtual Color GetPixel(int x, int y);
+
+	////////////////////////////////////////////////////////
+	/// Get a pixel color.
+	/// @param x : pixel x
+	/// @param y : pixel y
+	/// @param color : pixel color
+	////////////////////////////////////////////////////////
+	virtual void SetPixel(int x, int y, const Color &color);
+
+	////////////////////////////////////////////////////////
+	/// Rotate bitmap hue.
+	/// @param h : hue
+	////////////////////////////////////////////////////////
+	virtual void HueChange(double h);
+
+	////////////////////////////////////////////////////////
+	/// Adjust bitmap HSL colors.
+	/// @param h : hue, default 0.0
+	/// @param s : saturation, default 0.0
+	/// @param l : luminance, default 1.0
+	/// @param dst_rect : destination rect
+	////////////////////////////////////////////////////////
+	virtual void HSLChange(double h, double s, double l, Rect dst_rect);
+
+	////////////////////////////////////////////////////////
+	/// Adjust bitmap tone.
+	/// @param tone : tone to apply
+	////////////////////////////////////////////////////////
+	virtual void ToneChange(const Tone &tone);
+
+	////////////////////////////////////////////////////////
+	/// Flips the bitmap pixels.
+	/// @param horizontal : flip horizontally (mirror)
+	/// @param vertical : flip vertically
+	////////////////////////////////////////////////////////
+	virtual void Flip(bool horizontal, bool vertical);
+
+	////////////////////////////////////////////////////////
+	/// Create a resampled bitmap.
+	/// @param scale_w : resampled width
+	/// @param scale_h : resampled height
+	/// @param src_rect : source rect to resample
+	////////////////////////////////////////////////////////
+	virtual Bitmap* Resample(int scale_w, int scale_h, Rect src_rect);
+
+	/// TextDraw alignment options
 	enum TextAlignment {
-		align_left = 0,
-		align_center,
-		align_right
+		TextAlignLeft,
+		TextAlignCenter,
+		TextAlignRight
 	};
 
-	void BlitScreen(int x, int y);
-	void BlitScreen(int x, int y, int opacity);
-	void BlitScreen(int x, int y, Rect& src_rect, int opacity = 255);
-	
-	int GetWidth() const;
-	int GetHeight() const;
+	////////////////////////////////////////////////////////
+	/// Draws text to bitmap.
+	/// @param dst_rect : destination rect
+	/// @param text : text to draw
+	/// @param align : text alignment inside dst_rect
+	////////////////////////////////////////////////////////
+	virtual void TextDraw(Rect dst_rect, std::string text, TextAlignment align = Bitmap::TextAlignLeft) = 0;
 
-	Uint32 GetColorKey() const;
-	void SetColorKey(Uint32 color);
+	////////////////////////////////////////////////////////
+	/// Get space needed to draw some text.
+	/// @param text : text to draw
+	////////////////////////////////////////////////////////
+	virtual Rect GetTextSize(std::string text) const = 0;
 
-	void RemoveColorDuplicates(SDL_Surface* src, SDL_Color* src_color);
+	/// @return the bitmap width
+	virtual int GetWidth() const;
 
-	void SetClipRect(const Rect& clip_rect);
-	void ClearClipRect();
+	/// @return the bitmap height
+	virtual int GetHeight() const;
 
-	void TileBlitX(const Rect& src_rect, Bitmap* src, const Rect& dst_rect);
-	void TileBlitY(const Rect& src_rect, Bitmap* src, const Rect& dst_rect);
-	void TileBlitXY(const Rect& src_rect, Bitmap* src, const Rect& dst_rect);
+	/// @return bitmap bounds rect
+	virtual Rect GetRect() const;
 
-	void Blit(int x, int y, Bitmap* source, Rect& src_rect, int opacity);
-	void StretchBlit(Bitmap* src, Rect& src_rect);
-	void StretchBlit(const Rect& dst_rect, Bitmap* src_bitmap, Rect& src_rect, int opacity);
-	void FillRect(Rect& rect, Color color);
-	void FillofColor(const Rect& rect, Uint32 color);
-	void Clear();
-	void Clear(Color color);
-	Color GetPixel(int x, int y);
-	void SetPixel(int x, int y, Color color);
-	void HueChange(double hue);
-	void SatChange(double saturation);
-	void LumChange(double luminance);
-	void HSLChange(double h, double s, double l);
-	void HSLChange(double h, double s, double l, Rect rect);
-	void TextDraw(Rect rect, std::string text, TextAlignment align = Bitmap::align_left);
-	Rect GetTextSize(std::string text);
-	void GradientFillRect(Rect rect, Color color1, Color color2, bool vertical);
-	void ClearRect(Rect rect);
-	void Blur();
-	void RadialBlur(int angle, int division);
+	/// @return text drawing font
+	virtual Font* GetFont() const;
 
-	void SetTransparent(Color col);
-	void ToneChange(Tone tone);
-	void OpacityChange(int opacity, int bush_depth = 0);
-	void Flip(bool flipx, bool flipy);
-	void Zoom(double zoom_x, double zoom_y);
-	Bitmap* Resample(int scalew, int scaleh, Rect src_rect);
-	void Rotate(double angle);
-	void Flash(Color color, int frame, int duration);
-	
-	Rect GetRect() const;
-	Font* GetFont();
-	void SetFont(Font nfont);
+	/// @param text drawing font
+	virtual void SetFont(Font* font);
+
+	/// @return if bitmap allows transparency
+	virtual bool GetTransparent() const;
+
+	/// @return current transparent color
+	virtual Color GetTransparentColor() const;
+
+	/// @param color : new transparent color 
+	virtual void SetTransparentColor(Color color) = 0;
+
+	////////////////////////////////////////////////////////
+	/// Set the bitmap not to update its attached
+	/// BitmapScreen objects until EndEditing is called.
+	/// This way when multiple operation take place, the
+	/// attached BitmapScreen objects will be set dirty
+	/// only one time.
+	////////////////////////////////////////////////////////
+	virtual void BeginEditing();
+
+	////////////////////////////////////////////////////////
+	/// Set all attached BitmapScreen objects dirty and
+	/// restore normal updates.
+	////////////////////////////////////////////////////////
+	virtual void EndEditing();
 
 protected:
-	SDL_Surface* bitmap;
+	friend class BitmapScreen;
 
-private:
-	static int MaskGetByte(Uint32 mask);
+#ifdef USE_SDL
+	friend class SdlBitmapScreen;
+#endif
 
-	Font font;
+	Bitmap();
+
+	void* pixels;
+	int width;
+	int height;
+	int bpp;
+	int pitch;
+	uint32 rmask;
+	uint32 gmask;
+	uint32 bmask;
+	uint32 amask;
+
+	bool transparent;
+	uint32 colorkey;
+
+	/// Font for text drawing.
+	Font* font;
+
+	virtual Color GetColor(uint32 color) const = 0;
+	virtual uint32 GetUint32Color(const Color &color) const = 0;
+	virtual uint32 GetUint32Color(uint8 r, uint8  g, uint8 b, uint8 a) const = 0;
+	virtual void GetColorComponents(uint32 color, uint8 &r, uint8 &g, uint8 &b, uint8 &a) const = 0;
+
+	virtual void Lock() = 0;
+	virtual void Unlock() = 0;
+
+	virtual void AttachBitmapScreen(BitmapScreen* bitmap);
+	virtual void DetachBitmapScreen(BitmapScreen* bitmap);
+
+	virtual void RefreshCallback();
+
+	std::list<BitmapScreen*> attached_screen_bitmaps;
+	bool editing;
 };
 
 #endif

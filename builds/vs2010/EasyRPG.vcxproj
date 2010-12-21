@@ -118,6 +118,7 @@
     <ClCompile Include="..\..\src\audio.cpp" />
     <ClCompile Include="..\..\src\baseui.cpp" />
     <ClCompile Include="..\..\src\bitmap.cpp" />
+    <ClCompile Include="..\..\src\bitmap_screen.cpp" />
     <ClCompile Include="..\..\src\cache.cpp" />
     <ClCompile Include="..\..\src\color.cpp" />
     <ClCompile Include="..\..\src\filefinder_win.cpp" />
@@ -166,6 +167,8 @@
     <ClCompile Include="..\..\src\scene_menu.cpp" />
     <ClCompile Include="..\..\src\scene_skill.cpp" />
     <ClCompile Include="..\..\src\scene_title.cpp" />
+    <ClCompile Include="..\..\src\sdl_bitmap.cpp" />
+    <ClCompile Include="..\..\src\sdl_bitmap_screen.cpp" />
     <ClCompile Include="..\..\src\sdl_ui.cpp" />
     <ClCompile Include="..\..\src\sprite.cpp" />
     <ClCompile Include="..\..\src\spriteset_map.cpp" />
@@ -196,6 +199,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\src\audio.h" />
     <ClInclude Include="..\..\src\bitmap.h" />
+    <ClInclude Include="..\..\src\bitmap_screen.h" />
     <ClInclude Include="..\..\src\cache.h" />
     <ClInclude Include="..\..\src\color.h" />
     <ClInclude Include="..\..\src\baseui.h" />
@@ -247,6 +251,8 @@
     <ClInclude Include="..\..\src\scene_menu.h" />
     <ClInclude Include="..\..\src\scene_skill.h" />
     <ClInclude Include="..\..\src\scene_title.h" />
+    <ClInclude Include="..\..\src\sdl_bitmap.h" />
+    <ClInclude Include="..\..\src\sdl_bitmap_screen.h" />
     <ClInclude Include="..\..\src\sdl_ui.h" />
     <ClInclude Include="..\..\src\sprite.h" />
     <ClInclude Include="..\..\src\spriteset_map.h" />

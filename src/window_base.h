@@ -27,14 +27,29 @@
 #include "main_data.h"
 
 ////////////////////////////////////////////////////////////
-/// Window Base class
+/// Window Base class.
 ////////////////////////////////////////////////////////////
 class Window_Base : public Window {
 public:
-	Window_Base(int ix, int iy, int iwidth, int iheight);
-	virtual ~Window_Base();
+	////////////////////////////////////////////////////////////
+	/// Constructor.
+	/// @param x : window x position
+	/// @param y : window y position
+	/// @param width : window width
+	/// @param height : window height
+	////////////////////////////////////////////////////////////
+	Window_Base(int x, int y, int width, int height);
 
-	void Update();
+	////////////////////////////////////////////////////////////
+	/// Updates the window.
+	////////////////////////////////////////////////////////////
+	virtual void Update();
+
+	////////////////////////////////////////////////////////////
+	/// Draw helpers.
+	////////////////////////////////////////////////////////////
+	//@{
+
 	void DrawActorGraphic(Game_Actor* actor, int cx, int cy);
 	void DrawActorName(Game_Actor* actor, int cx, int cy);
 	void DrawActorTitle(Game_Actor* actor, int cx, int cy);
@@ -52,7 +67,9 @@ public:
 	void DrawItemName(RPG::Item* item, int cx, int cy, bool enabled = true);
 	void DrawSkillName(RPG::Skill* skill, int cx, int cy, bool enabled = true);
 
-private:
+	//@}
+
+protected:
 	std::string windowskin_name;
 };
 

@@ -32,10 +32,10 @@ Window_InputNumber::Window_InputNumber(int idigits_max) :
 	//only accepts velues between 1 and 6 as RPGM2K
 	digits_max = (digits_max > 6) ? 6 : (digits_max <= 0) ? 1 : digits_max;
 	number = 0;
-	Bitmap* dummy_bitmap = new Bitmap(16, 16);
+	Bitmap* dummy_bitmap = Bitmap::CreateBitmap(16, 16);
 	cursor_width = dummy_bitmap->GetTextSize("0").width + 4;
 	delete dummy_bitmap;
-	contents = new Bitmap(GetWidth() - 16, GetHeight() - 16);
+	contents = Bitmap::CreateBitmap(GetWidth() - 16, GetHeight() - 16);
 	z += 9999;
 	index = 0;
 
@@ -54,18 +54,17 @@ Window_InputNumber::~Window_InputNumber() {
 ////////////////////////////////////////////////////////////
 void Window_InputNumber::Refresh() {
 	contents->Clear();
-	Rect rect(0, 0, contents->GetWidth(), contents->GetHeight());
-	Rect rect_text(0, 0, contents->GetWidth(), 16);
-	contents->FillofColor(rect, windowskin->GetColorKey());
-	contents->SetColorKey(windowskin->GetColorKey());
-	contents->GetFont()->color = Color::Default;
+
+	contents->GetFont()->color = Font::ColorDefault;
 	char s[6];
 	sprintf(s, "%0*d", digits_max, number);
 	
+	Rect rect_text(0, 0, contents->GetWidth(), 16);
+
 	for (int i = 0; i < digits_max; ++i) {
 		char c[2] = {s[i], '\0'}; 
 		rect_text.x = i * cursor_width + 10;
-		contents->TextDraw(rect_text, c, Bitmap::align_left);
+		contents->TextDraw(rect_text, c, Bitmap::TextAlignLeft);
 	}	
 }
 
@@ -79,12 +78,12 @@ int Window_InputNumber::GetNumber() {
 ////////////////////////////////////////////////////////////
 /// Set Number
 ////////////////////////////////////////////////////////////
-void Window_InputNumber::SetNumber(unsigned int inumber) {
-	int num = 1;
+void Window_InputNumber::SetNumber(uint inumber) {
+	uint num = 1;
 	for (int i = 0; i < digits_max; ++i) {
 		num *= 10;
 	}
-	number = min(max(inumber, 0), num - 1);
+	number = min(max(inumber, (uint)0), num - 1);
 	Refresh();
 }
 
@@ -104,7 +103,7 @@ void Window_InputNumber::Update() {
 		Game_System::SePlay(Data::system.cursor_se);
 
 		int place = 1;
-		for (int i = 0; i < (digits_max - 1 - index); ++i) {
+		for (int i = 0; i < (digits_max - 1 - (int)index); ++i) {
 			place *= 10;
 		}
 		int n = number / place % 10;
