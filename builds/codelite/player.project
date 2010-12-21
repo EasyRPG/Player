@@ -149,6 +149,14 @@
         <File Name="../../src/window.h"/>
         <File Name="../../src/zobj.cpp"/>
         <File Name="../../src/zobj.h"/>
+        <VirtualDirectory Name="sdl">
+          <File Name="../../src/sdl_bitmap.cpp"/>
+          <File Name="../../src/sdl_bitmap.h"/>
+          <File Name="../../src/sdl_bitmap_screen.cpp"/>
+          <File Name="../../src/sdl_bitmap_screen.h"/>
+        </VirtualDirectory>
+        <File Name="../../src/bitmap_screen.cpp"/>
+        <File Name="../../src/bitmap_screen.h"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Input">
         <File Name="../../src/input.cpp"/>
