@@ -40,11 +40,33 @@
 	#define TRANSPARENT_FLAGS SDL_SRCALPHA
 	#define COLORKEY_FLAGS SDL_SRCCOLORKEY
 	#define DisplayFormat(surface) SDL_DisplayFormatAlpha(surface)
+RMASK, GMASK, BMASK, AMASK
 #else
 	#define TRANSPARENT_FLAGS SDL_SRCALPHA | SDL_SRCCOLORKEY
 	#define COLORKEY_FLAGS SDL_SRCCOLORKEY | SDL_RLEACCEL
 	#define SETALPHA_FLAGS SDL_SRCALPHA | SDL_RLEACCEL
 	#define DisplayFormat(surface) SDL_DisplayFormat(surface)
+#endif
+
+
+#if SDL_BYTEORDER == SDL_LIL_ENDIAN
+	const unsigned int RMASK = 0x0000FF00;
+	const unsigned int GMASK = 0x00FF0000;
+	const unsigned int BMASK = 0xFF000000;
+	#ifdef USE_ALPHA
+		const unsigned int AMASK = 0x000000FF;
+	#else
+		const unsigned int AMASK = 0x00000000;
+	#endif
+#else
+	const unsigned int RMASK = 0x00FF0000;
+	const unsigned int GMASK = 0x0000FF00;
+	const unsigned int BMASK = 0x000000FF;
+	#ifdef USE_ALPHA
+		const unsigned int AMASK = 0xFF000000;
+	#else
+		const unsigned int AMASK = 0x00000000;
+	#endif
 #endif
 
 ////////////////////////////////////////////////////////////
@@ -55,7 +77,7 @@ SdlBitmap::SdlBitmap(int width, int height, bool itransparent) {
 	if (transparent)
 		flags |= TRANSPARENT_FLAGS;
 
-	SDL_Surface* temp = SDL_CreateRGBSurface(flags, width, height, bpp, rmask, gmask, bmask, amask);
+	SDL_Surface* temp = SDL_CreateRGBSurface(flags, width, height, ((SdlUi*)DisplayUi)->GetDisplaySurface()->format->BitsPerPixel, RMASK, GMASK, BMASK, AMASK);
 
 	if (temp == NULL) {
 		Output::Error("Couldn't create %dx%d image.\n%s\n", width, height, SDL_GetError());
@@ -138,7 +160,7 @@ SdlBitmap::SdlBitmap(Bitmap* source, Rect src_rect, bool itransparent) {
 	if (transparent)
 		flags |= TRANSPARENT_FLAGS;
 
-	SDL_Surface* temp = SDL_CreateRGBSurface(flags, src_rect.width, src_rect.height, bpp, rmask, gmask, bmask, amask);
+	SDL_Surface* temp = SDL_CreateRGBSurface(flags, src_rect.width, src_rect.height, ((SdlUi*)DisplayUi)->GetDisplaySurface()->format->BitsPerPixel, RMASK, GMASK, BMASK, AMASK);
 
 	if (temp == NULL) {
 		Output::Error("Couldn't create %dx%d image.\n%s\n", src_rect.width, src_rect.height, SDL_GetError());
@@ -292,9 +314,9 @@ void SdlBitmap::GetColorComponents(uint32 color, uint8 &r, uint8 &g, uint8 &b, u
 
 ////////////////////////////////////////////////////////////
 void SdlBitmap::Lock() {
-	if SDL_MUSTLOCK(bitmap)	SDL_LockSurface(bitmap);
+	if (SDL_MUSTLOCK(bitmap)) SDL_LockSurface(bitmap);
 }
 
 void SdlBitmap::Unlock() {
-	if SDL_MUSTLOCK(bitmap)	SDL_UnlockSurface(bitmap);
+	if (SDL_MUSTLOCK(bitmap)) SDL_UnlockSurface(bitmap);
 }

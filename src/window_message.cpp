@@ -27,6 +27,8 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
 	//Window_Selectable(80, 304, 480, 160)
 	contents = Bitmap::CreateBitmap(width - 32, height - 32);
+	contents->SetTransparentColor(windowskin->GetTransparentColor());
+
 	visible = false;
 	z = 9998;
 	fade_in = false;

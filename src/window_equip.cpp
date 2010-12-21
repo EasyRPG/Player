@@ -27,6 +27,7 @@ Window_Equip::Window_Equip(int actor_id) :
 	actor_id(actor_id) {
 
 	contents = Bitmap::CreateBitmap(width - 16, height - 16);
+	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	index = 0;
 

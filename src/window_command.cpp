@@ -30,6 +30,7 @@ Window_Command::Window_Command(int width, std::vector<std::string> commands) :
 	index = 0;
 
 	contents = Bitmap::CreateBitmap(width - 16, item_max * 16);
+	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	Refresh();
 }
