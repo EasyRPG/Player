@@ -119,8 +119,8 @@ private:
 	int cursor_frame;
 	int pause_frame;
 	int animation_frames;
-	double animation_increment;
 	double animation_count;
+	double animation_increment;
 };
 
 #endif

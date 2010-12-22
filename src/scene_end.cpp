@@ -29,7 +29,8 @@
 
 ////////////////////////////////////////////////////////////
 Scene_End::Scene_End() :
-	command_window(NULL), help_window(NULL) {
+	help_window(NULL),
+	command_window(NULL) {
 	Scene::type = Scene::Title;
 }
 

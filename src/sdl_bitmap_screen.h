@@ -77,10 +77,10 @@ protected:
 	void CalcRotatedSize(int &width, int &height);
 	void CalcZoomedSize(int &width, int &height);
 
-	bool delete_bitmap;
-
 	Bitmap* bitmap;
 	Bitmap* bitmap_effects;
+
+	bool delete_bitmap;
 
 	bool needs_refresh;
 
