@@ -156,7 +156,7 @@ void Window::Draw(int z_order) {
 		}
 	}
 
-	/*if (contents != NULL) {
+	if (contents != NULL) {
 		if (width > 16 && height > 16 && -ox < width - 16 && -oy < height - 16 && contents_opacity > 0 && animation_frames <= 0) {
 			Rect src_rect(-min(-ox, 0), -min(-oy, 0), min(width - 16, width - 16 + ox), min(height - 16, height - 16 + oy));
 			
@@ -166,7 +166,7 @@ void Window::Draw(int z_order) {
 		}
 	}
 	
-	if (pause && pause_frame > 16 && animation_frames <= 0) {
+	/*if (pause && pause_frame > 16 && animation_frames <= 0) {
 		Rect src_rect(40, 16, 16, 8);
 		windowskin_screen->BlitScreen(x + width / 2 - 4, y + height - 8, src_rect);
 	}*/
@@ -289,12 +289,12 @@ void Window::RefreshCursor() {
 	cursor2_bitmap->TiledBlit(8, 0, Rect(96 + 8, 32 - 8, 16, 8), windowskin, dst_rect, 255);
 
 	// Border Left
-	dst_rect.Set(0, 0, 8, ch - 16);
+	dst_rect.Set(0, 8, 8, ch - 16);
 	cursor1_bitmap->TiledBlit(0, 8, Rect(64, 8, 8, 16), windowskin, dst_rect, 255);
 	cursor2_bitmap->TiledBlit(0, 8, Rect(96, 8, 8, 16), windowskin, dst_rect, 255);
 
 	// Border Right
-	dst_rect.Set(0, 0, 8, ch - 16);
+	dst_rect.Set(cw - 8, 8, 8, ch - 16);
 	cursor1_bitmap->TiledBlit(0, 8, Rect(96 - 8, 8, 8, 16), windowskin, dst_rect, 255);
 	cursor2_bitmap->TiledBlit(0, 8, Rect(128 - 8, 8, 8, 16), windowskin, dst_rect, 255);
 
