@@ -192,7 +192,7 @@ public:
 	/// @param scale_h : resampled height
 	/// @param src_rect : source rect to resample
 	////////////////////////////////////////////////////////
-	virtual Bitmap* Resample(int scale_w, int scale_h, Rect src_rect);
+	virtual Bitmap* Resample(int scale_w, int scale_h, const Rect& src_rect);
 
 	/// TextDraw alignment options
 	enum TextAlignment {
@@ -263,18 +263,18 @@ protected:
 
 	Bitmap();
 
-	void* pixels;
-	int width;
-	int height;
-	int bpp;
-	int pitch;
-	uint32 rmask;
-	uint32 gmask;
-	uint32 bmask;
-	uint32 amask;
+	virtual void* pixels() = 0;
+	virtual int width() const = 0;
+	virtual int height() const = 0;
+	virtual uint8 bpp() const = 0;
+	virtual uint16 pitch() const = 0;
+	virtual uint32 rmask() const = 0;
+	virtual uint32 gmask() const = 0;
+	virtual uint32 bmask() const = 0;
+	virtual uint32 amask() const = 0;
+	virtual uint32 colorkey() const = 0;
 
 	bool transparent;
-	uint32 colorkey;
 
 	/// Font for text drawing.
 	Font* font;

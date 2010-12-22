@@ -29,7 +29,7 @@
 #ifdef USE_ALPHA
 	#define SETALPHA_FLAGS SDL_SRCALPHA
 #else
-	#define SETALPHA_FLAGS SDL_SRCALPHA | SDL_RLEACCEL
+	#define SETALPHA_FLAGS SDL_SRCALPHA /*| SDL_RLEACCEL*/
 #endif
 
 ////////////////////////////////////////////////////////////
@@ -90,7 +90,7 @@ void SdlBitmapScreen::SetBitmap(Bitmap* source) {
 
 	bitmap->AttachBitmapScreen(this);
 
-	src_rect_effect = Rect(0, 0, bitmap->width, bitmap->height);
+	src_rect_effect = Rect(0, 0, bitmap->width(), bitmap->height());
 }
 
 ////////////////////////////////////////////////////////////
@@ -274,11 +274,11 @@ void SdlBitmapScreen::BlitScreenIntern(SDL_Surface* surface, int x, int y, Rect 
 		SDL_Rect src_r = {(int16)src_rect.x, (int16)src_rect.y, (uint16)src_rect.width, (uint16)src_rect.height};
 		SDL_Rect dst_r = {(int16)x, (int16)y, 0, 0};
 
-		SDL_SetAlpha(surface, SETALPHA_FLAGS, (uint8)opacity);
+		//SDL_SetAlpha(surface, SETALPHA_FLAGS, (uint8)opacity);
 
 		SDL_BlitSurface(surface, &src_r, DisplaySdlUi->GetDisplaySurface(), &dst_r);
 
-		SDL_SetAlpha(surface, SETALPHA_FLAGS, 255);
+		//SDL_SetAlpha(surface, SETALPHA_FLAGS, 255);
 	#endif
 }
 

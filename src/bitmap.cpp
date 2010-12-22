@@ -95,21 +95,21 @@ Bitmap::~Bitmap() {
 void Bitmap::Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
 	if (opacity < 0) return;
 
-	src_rect.Adjust(src->width, src->height);
-	if (src_rect.IsOutOfBounds(src->width, src->height)) return;
+	src_rect.Adjust(src->width(), src->height());
+	if (src_rect.IsOutOfBounds(src->width(), src->height())) return;
 
 	Rect dst_rect(x, y, src_rect.width, src_rect.height);
-	dst_rect.Adjust(width, height);
-	if (dst_rect.IsOutOfBounds(width, height)) return;
+	dst_rect.Adjust(width(), height());
+	if (dst_rect.IsOutOfBounds(width(), height())) return;
 
 	if (opacity > 255) opacity = 255;
 
 	Lock();
 	src->Lock();
 
-	if (bpp == 2) {
-		const uint16* src_pixels = (uint16*)src->pixels + src_rect.x + src_rect.y * src->pitch / bpp;
-		uint16* dst_pixels = (uint16*)pixels + x + y * pitch / bpp;
+	if (bpp() == 2) {
+		const uint16* src_pixels = (uint16*)src->pixels() + src_rect.x + src_rect.y * src->pitch() / bpp();
+		uint16* dst_pixels = (uint16*)pixels() + x + y * pitch() / bpp();
 
 		#ifdef USE_ALPHA
 			int src_stride = src->pitch / bpp - dst_rect.width;
@@ -140,15 +140,15 @@ void Bitmap::Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
 			}
 		#else
 			if (opacity < 255) {
-				int src_stride = src->pitch / bpp - dst_rect.width;
-				int dst_stride = pitch / bpp - dst_rect.width;
+				int src_stride = src->pitch() / bpp() - dst_rect.width;
+				int dst_stride = pitch() / bpp() - dst_rect.width;
 
 				uint8 src_r, src_g, src_b, src_a;
 				uint8 dst_r, dst_g, dst_b, dst_a;
 
 				for (int i = 0; i < dst_rect.height; i++) {
 					for (int j = 0; j < dst_rect.width; j++) {
-						if (transparent && src_pixels[0] == (uint16)colorkey) continue;
+						if (transparent && src_pixels[0] == (uint16)colorkey()) continue;
 
 						GetColorComponents(src_pixels[0], src_r, src_g, src_b, src_a);
 						GetColorComponents(dst_pixels[0], dst_r, dst_g, dst_b, dst_a);
@@ -167,12 +167,12 @@ void Bitmap::Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
 					dst_pixels += dst_stride;
 				}
 			} else if (transparent) {
-				int src_stride = src->pitch / bpp - dst_rect.width;
-				int dst_stride = pitch / bpp - dst_rect.width;
+				int src_stride = src->pitch() / bpp() - dst_rect.width;
+				int dst_stride = pitch() / bpp() - dst_rect.width;
 
 				for (int i = 0; i < dst_rect.height; i++) {
 					for (int j = 0; j < dst_rect.width; j++) {
-						if (transparent && src_pixels[0] == (uint16)colorkey) continue;
+						if (transparent && src_pixels[0] == (uint16)colorkey()) continue;
 
 						dst_pixels[0] = src_pixels[0];
 
@@ -183,20 +183,20 @@ void Bitmap::Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
 					dst_pixels += dst_stride;
 				}
 			} else {
-				int stride = dst_rect.width * bpp;
+				int stride = dst_rect.width * bpp();
 
 				for (int i = 0; i < dst_rect.height; i++) {
 					memcpy(dst_pixels, src_pixels, stride);
 
-					src_pixels += src->pitch / bpp;
-					dst_pixels += pitch / bpp;
+					src_pixels += src->pitch() / bpp();
+					dst_pixels += pitch() / bpp();
 				}
 			}
 		#endif
-	} else if (bpp == 4) {
-		const int rbyte = GetMaskByte(rmask);
-		const int gbyte = GetMaskByte(gmask);
-		const int bbyte = GetMaskByte(bmask);
+	} else if (bpp() == 4) {
+		const int rbyte = GetMaskByte(rmask());
+		const int gbyte = GetMaskByte(gmask());
+		const int bbyte = GetMaskByte(bmask());
 
 		#ifdef USE_ALPHA
 			const int abyte = GetMaskByte(amask);
@@ -224,36 +224,36 @@ void Bitmap::Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
 			}
 		#else
 			if (opacity < 255) {
-				const uint8* src_pixels = (uint8*)src->pixels + src_rect.x * bpp + src_rect.y * src->pitch;
-				uint8* dst_pixels = (uint8*)pixels + x * bpp + y * pitch;
+				const uint8* src_pixels = (uint8*)src->pixels() + src_rect.x * bpp() + src_rect.y * src->pitch();
+				uint8* dst_pixels = (uint8*)pixels() + x * bpp() + y * pitch();
 
-				int src_stride = src->pitch - dst_rect.width * bpp;
-				int dst_stride = pitch - dst_rect.width * bpp;
+				int src_stride = src->pitch() - dst_rect.width * bpp();
+				int dst_stride = pitch() - dst_rect.width * bpp();
 
 				for (int i = 0; i < dst_rect.height; i++) {
 					for (int j = 0; j < dst_rect.width; j++) {
-						if (transparent && ((uint32*)dst_pixels)[0] == colorkey) continue;
+						if (transparent && ((uint32*)dst_pixels)[0] == colorkey()) continue;
 
 						dst_pixels[rbyte] = (uint8)((dst_pixels[rbyte] * (255 - opacity) + src_pixels[rbyte] * opacity) / 255);
 						dst_pixels[gbyte] = (uint8)((dst_pixels[gbyte] * (255 - opacity) + src_pixels[gbyte] * opacity) / 255);
 						dst_pixels[bbyte] = (uint8)((dst_pixels[bbyte] * (255 - opacity) + src_pixels[bbyte] * opacity) / 255);
 
-						src_pixels += bpp;
-						dst_pixels += bpp;
+						src_pixels += bpp();
+						dst_pixels += bpp();
 					}
 					src_pixels += src_stride;
 					dst_pixels += dst_stride;
 				}
 			} else if (transparent) {
-				const uint32* src_pixels = (uint32*)src->pixels + src_rect.x + src_rect.y * src->pitch / bpp;
-				uint32* dst_pixels = (uint32*)pixels + x + y * pitch / bpp;
+				const uint32* src_pixels = (uint32*)src->pixels() + src_rect.x + src_rect.y * src->pitch() / bpp();
+				uint32* dst_pixels = (uint32*)pixels() + x + y * pitch() / bpp();
 
-				int src_stride = src->pitch / bpp - dst_rect.width;
-				int dst_stride = pitch / bpp - dst_rect.width;
-
+				int src_stride = src->pitch() / bpp() - dst_rect.width;
+				int dst_stride = pitch() / bpp() - dst_rect.width;
+				
 				for (int i = 0; i < dst_rect.height; i++) {
 					for (int j = 0; j < dst_rect.width; j++) {
-						if (transparent && src_pixels[0] == colorkey) continue;
+						if (transparent && src_pixels[0] == colorkey()) continue;
 
 						dst_pixels[0] = src_pixels[0];
 
@@ -264,16 +264,16 @@ void Bitmap::Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
 					dst_pixels += dst_stride;
 				}
 			} else {
-				const uint8* src_pixels = (uint8*)src->pixels + src_rect.x * bpp + src_rect.y * src->pitch;
-				uint8* dst_pixels = (uint8*)pixels + x * bpp + y * pitch;
+				const uint8* src_pixels = (uint8*)src->pixels() + src_rect.x * bpp() + src_rect.y * src->pitch();
+				uint8* dst_pixels = (uint8*)pixels() + x * bpp() + y * pitch();
 
-				int stride = dst_rect.width * bpp;
+				int stride = dst_rect.width * bpp();
 
 				for (int i = 0; i < dst_rect.height; i++) {
 					memcpy(dst_pixels, src_pixels, stride);
 
-					src_pixels += src->pitch;
-					dst_pixels += pitch;
+					src_pixels += src->pitch();
+					dst_pixels += pitch();
 				}
 			}
 		#endif
@@ -364,7 +364,7 @@ void Bitmap::TiledBlit(int ox, int oy, Rect src_rect, Bitmap* src, Rect dst_rect
 
 ////////////////////////////////////////////////////////////
 void Bitmap::StretchBlit(Bitmap* src, Rect src_rect, int opacity) {
-	if (src_rect.width == width && src_rect.height == height) {
+	if (src_rect.width == width() && src_rect.height == height()) {
 		Blit(0, 0, src, src_rect, opacity);
 	} else {
 		StretchBlit(GetRect(), src, src_rect, opacity);
@@ -376,10 +376,10 @@ void Bitmap::StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int opacity)
 	if (src_rect.width == dst_rect.width && src_rect.height == dst_rect.height) {
 		Blit(dst_rect.x, dst_rect.y, src, src_rect, opacity);
 	} else {
-		src_rect.Adjust(src->width, src->height);
-		if (src_rect.IsOutOfBounds(src->width, src->height)) return;
+		src_rect.Adjust(src->width(), src->height());
+		if (src_rect.IsOutOfBounds(src->width(), src->height())) return;
 
-		if (dst_rect.IsOutOfBounds(width, height)) return;
+		if (dst_rect.IsOutOfBounds(width(), height())) return;
 
 		Bitmap* resampled = src->Resample(dst_rect.width, dst_rect.height, src_rect);
 
@@ -393,30 +393,30 @@ void Bitmap::StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int opacity)
 void Bitmap::Fill(const Color &color) {
 	Lock();
 
-	if (bpp == 2) {
+	if (bpp() == 2) {
 		uint16 pixel = (uint16)GetUint32Color(color);
 
-		uint16* dst_pixels = (uint16*)pixels;
+		uint16* dst_pixels = (uint16*)pixels();
 
-		if (pitch == width) {
-			std::fill(dst_pixels, dst_pixels + height * pitch, pixel);
+		if (pitch() == width()) {
+			std::fill(dst_pixels, dst_pixels + height() * pitch(), pixel);
 		} else {
-			for (int i = 0; i < height; i++) {
-				std::fill(dst_pixels, dst_pixels + width, pixel);
-				dst_pixels += width;
+			for (int i = 0; i < height(); i++) {
+				std::fill(dst_pixels, dst_pixels + width(), pixel);
+				dst_pixels += width();
 			}
 		}
-	} else if (bpp == 4) {
+	} else if (bpp() == 4) {
 		uint32 pixel = GetUint32Color(color);
 
-		uint32* dst_pixels = (uint32*)pixels;
+		uint32* dst_pixels = (uint32*)pixels();
 
-		if (pitch == width) {
-			std::fill(dst_pixels, dst_pixels + height * pitch, pixel);
+		if (pitch() == width()) {
+			std::fill(dst_pixels, dst_pixels + height() * pitch(), pixel);
 		} else {
-			for (int i = 0; i < height; i++) {
-				std::fill(dst_pixels, dst_pixels + width, pixel);
-				dst_pixels += width;
+			for (int i = 0; i < height(); i++) {
+				std::fill(dst_pixels, dst_pixels + width(), pixel);
+				dst_pixels += width();
 			}
 		}
 	}
@@ -428,24 +428,24 @@ void Bitmap::Fill(const Color &color) {
 
 ////////////////////////////////////////////////////////////
 void Bitmap::FillRect(Rect dst_rect, const Color &color) {
-	dst_rect.Adjust(width, height);
-	if (dst_rect.IsOutOfBounds(width, height)) return;
+	dst_rect.Adjust(width(), height());
+	if (dst_rect.IsOutOfBounds(width(), height())) return;
 
 	Lock();
 
-	if (bpp == 2) {
+	if (bpp() == 2) {
 		uint16 pixel = (uint16)GetUint32Color(color);
 
-		uint16* dst_pixels = (uint16*)pixels;
+		uint16* dst_pixels = (uint16*)pixels();
 
 		for (int i = 0; i < dst_rect.height; i++) {
 			std::fill(dst_pixels, dst_pixels + dst_rect.width, pixel);
 			dst_pixels += dst_rect.width;
 		}
-	} else if (bpp == 4) {
+	} else if (bpp() == 4) {
 		uint32 pixel = GetUint32Color(color);
 
-		uint32* dst_pixels = (uint32*)pixels;
+		uint32* dst_pixels = (uint32*)pixels();
 
 		for (int i = 0; i < dst_rect.height; i++) {
 			std::fill(dst_pixels, dst_pixels + dst_rect.width, pixel);
@@ -470,17 +470,17 @@ void Bitmap::ClearRect(Rect dst_rect) {
 
 ////////////////////////////////////////////////////////////
 Color Bitmap::GetPixel(int x, int y) {
-	if (x < 0 || y < 0 || x >= width || y >= height) return Color();
+	if (x < 0 || y < 0 || x >= width() || y >= height()) return Color();
 
 	uint32 pixel = 0;
 
 	Lock();
 
-	if (bpp == 2) {
-		uint16* src_pixel = (uint16*)pixels + x + y * (pitch / bpp);
+	if (bpp() == 2) {
+		uint16* src_pixel = (uint16*)pixels() + x + y * (pitch() / bpp());
 		pixel = src_pixel[0];
-	} else if (bpp == 4) {
-		uint32* src_pixel = (uint32*)pixels + x + y * (pitch / bpp);
+	} else if (bpp() == 4) {
+		uint32* src_pixel = (uint32*)pixels() + x + y * (pitch() / bpp());
 		pixel = src_pixel[0];
 	}
 
@@ -489,7 +489,7 @@ Color Bitmap::GetPixel(int x, int y) {
 	Color color = GetColor(pixel);
 
 	#ifndef USE_ALPHA
-		if (transparent && pixel == colorkey) {
+		if (transparent && pixel == colorkey()) {
 			color.alpha = 0;
 		} else {
 			color.alpha = 255;
@@ -501,15 +501,15 @@ Color Bitmap::GetPixel(int x, int y) {
 
 ////////////////////////////////////////////////////////////
 void Bitmap::SetPixel(int x, int y, const Color &color) {
-	if (x < 0 || y < 0 || x >= width || y >= height) return;
+	if (x < 0 || y < 0 || x >= width() || y >= height()) return;
 
 	Lock();
 
-	if (bpp == 2) {
-		uint16* dst_pixel = (uint16*)pixels + x + y * pitch / bpp;
+	if (bpp() == 2) {
+		uint16* dst_pixel = (uint16*)pixels() + x + y * pitch() / bpp();
 		dst_pixel[0] = (uint16)GetUint32Color(color);
-	} else if (bpp == 4) {
-		uint32* dst_pixel = (uint32*)pixels + x + y * pitch / bpp;
+	} else if (bpp() == 4) {
+		uint32* dst_pixel = (uint32*)pixels() + x + y * pitch() / bpp();
 		dst_pixel[0] = GetUint32Color(color);
 	}
 
@@ -525,8 +525,8 @@ void Bitmap::HueChange(double h) {
 
 ////////////////////////////////////////////////////////////
 void Bitmap::HSLChange(double h, double s, double l, Rect dst_rect) {
-	dst_rect.Adjust(width, height);
-	if (dst_rect.IsOutOfBounds(width, height)) return;
+	dst_rect.Adjust(width(), height());
+	if (dst_rect.IsOutOfBounds(width(), height())) return;
 
 	Lock();
 
@@ -568,7 +568,7 @@ void Bitmap::HSLChange(double h, double s, double l, Rect dst_rect) {
 }
 
 ////////////////////////////////////////////////////////////
-Bitmap* Bitmap::Resample(int scale_w, int scale_h, Rect src_rect) {
+Bitmap* Bitmap::Resample(int scale_w, int scale_h, const Rect& src_rect) {
 	double zoom_x = (double)(scale_w) / src_rect.width;
 	double zoom_y = (double)(scale_h) / src_rect.height;
 
@@ -577,16 +577,16 @@ Bitmap* Bitmap::Resample(int scale_w, int scale_h, Rect src_rect) {
 	Lock();
 	resampled->Lock();
 
-	if (bpp == 2) {
-		uint16* src_pixels = (uint16*)pixels;
-		uint16* dst_pixels = (uint16*)resampled->pixels;
+	if (bpp() == 2) {
+		uint16* src_pixels = (uint16*)pixels();
+		uint16* dst_pixels = (uint16*)resampled->pixels();
 
-		int stride = resampled->pitch / bpp - resampled->GetWidth();
+		int stride = resampled->pitch() / bpp() - resampled->GetWidth();
 
 		int nearest_y, nearest_match;
 
 		for (int i = 0; i < scale_h; i++) {
-			nearest_y = (src_rect.y + (int)(i / zoom_y)) * pitch / bpp;
+			nearest_y = (src_rect.y + (int)(i / zoom_y)) * pitch() / bpp();
 
 			for (int j = 0; j < scale_w; j++) {
 				nearest_match = nearest_y + src_rect.x + (int)(j / zoom_x);
@@ -595,15 +595,15 @@ Bitmap* Bitmap::Resample(int scale_w, int scale_h, Rect src_rect) {
 			}
 			dst_pixels += stride;
 		}
-	} else if (bpp == 4){
+	} else if (bpp() == 4){
 		uint32* nearest_y;
 		uint32* nearest_match;
-		uint32* dst_pixels = (uint32*)resampled->pixels;
+		uint32* dst_pixels = (uint32*)resampled->pixels();
 
-		int stride = resampled->pitch / bpp - resampled->GetWidth();
+		int stride = resampled->pitch() / bpp() - resampled->GetWidth();
 
 		for (int i = 0; i < scale_h; i++) {
-			nearest_y = (uint32*)pixels + (src_rect.y + (int)(i / zoom_y)) * (pitch / bpp);
+			nearest_y = (uint32*)pixels() + (src_rect.y + (int)(i / zoom_y)) * (pitch() / bpp());
 
 			for (int j = 0; j < scale_w; j++) {
 				nearest_match = nearest_y + src_rect.x + (int)(j / zoom_x);
@@ -628,18 +628,18 @@ void Bitmap::ToneChange(const Tone &tone) {
 
 	Lock();
 
-	if (bpp == 2) {
-		uint16* dst_pixels = (uint16*)pixels;
+	if (bpp() == 2) {
+		uint16* dst_pixels = (uint16*)pixels();
 
-		int stride = pitch / bpp - width;
+		int stride = pitch() / bpp() - width();
 
 		uint8 dst_r, dst_g, dst_b, dst_a;
 
 		if (tone.gray == 0) {
-			for (int i = 0; i < height; i++) {
-				for (int j = 0; j < width; j++) {
+			for (int i = 0; i < height(); i++) {
+				for (int j = 0; j < width(); j++) {
 					#ifndef USE_ALPHA
-						if (transparent && dst_pixels[0] == (uint16)colorkey) continue;
+						if (transparent && dst_pixels[0] == (uint16)colorkey()) continue;
 					#endif
 
 					GetColorComponents(dst_pixels[0], dst_r, dst_g, dst_b, dst_a);
@@ -650,17 +650,17 @@ void Bitmap::ToneChange(const Tone &tone) {
 
 					dst_pixels[0] = (uint16)GetUint32Color(dst_r, dst_g, dst_b, dst_a);
 
-					dst_pixels += bpp;
+					dst_pixels += bpp();
 				}
 				dst_pixels += stride;
 			}
 		} else {
 			double factor = (255 - tone.gray) / 255.0;
 			double gray;
-			for (int i = 0; i < height; i++) {
-				for (int j = 0; j < width; j++) {
+			for (int i = 0; i < height(); i++) {
+				for (int j = 0; j < width(); j++) {
 					#ifndef USE_ALPHA
-						if (transparent && dst_pixels[0] == (uint16)colorkey) continue;
+						if (transparent && dst_pixels[0] == (uint16)colorkey()) continue;
 					#endif
 
 					GetColorComponents(dst_pixels[0], dst_r, dst_g, dst_b, dst_a);
@@ -671,42 +671,42 @@ void Bitmap::ToneChange(const Tone &tone) {
 					dst_g = (uint8)max(min((dst_g - gray) * factor + gray + tone.green + 0.5, 255), 0);
 					dst_b = (uint8)max(min((dst_b - gray) * factor + gray + tone.blue + 0.5, 255), 0);
 
-					dst_pixels += bpp;
+					dst_pixels += bpp();
 				}
 				dst_pixels += stride;
 			}
 		}
-	} else if (bpp == 4) {
-		uint8* dst_pixels = (uint8*)pixels;
+	} else if (bpp() == 4) {
+		uint8* dst_pixels = (uint8*)pixels();
 
-		int stride = pitch - width * bpp;
+		int stride = pitch() - width() * bpp();
 
-		const int rbyte = GetMaskByte(rmask);
-		const int gbyte = GetMaskByte(gmask);
-		const int bbyte = GetMaskByte(bmask);
+		const int rbyte = GetMaskByte(rmask());
+		const int gbyte = GetMaskByte(gmask());
+		const int bbyte = GetMaskByte(bmask());
 
 		if (tone.gray == 0) {
-			for (int i = 0; i < height; i++) {
-				for (int j = 0; j < width; j++) {
+			for (int i = 0; i < height(); i++) {
+				for (int j = 0; j < width(); j++) {
 					#ifndef USE_ALPHA
-						if (transparent && ((uint32*)dst_pixels)[0] == colorkey) continue;
+						if (transparent && ((uint32*)dst_pixels)[0] == colorkey()) continue;
 					#endif
 
 					dst_pixels[rbyte] = (uint8)max(min(dst_pixels[rbyte] + tone.red, 255), 0);
 					dst_pixels[gbyte] = (uint8)max(min(dst_pixels[gbyte] + tone.green, 255), 0);
 					dst_pixels[bbyte] = (uint8)max(min(dst_pixels[bbyte] + tone.blue, 255), 0);
 
-					dst_pixels += bpp;
+					dst_pixels += bpp();
 				}
 				dst_pixels += stride;
 			}
 		} else {
 			double factor = (255 - tone.gray) / 255.0;
 			double gray;
-			for (int i = 0; i < height; i++) {
-				for (int j = 0; j < width; j++) {
+			for (int i = 0; i < height(); i++) {
+				for (int j = 0; j < width(); j++) {
 					#ifndef USE_ALPHA
-						if (transparent && ((uint32*)dst_pixels)[0] == colorkey) continue;
+						if (transparent && ((uint32*)dst_pixels)[0] == colorkey()) continue;
 					#endif
 
 					gray = dst_pixels[rbyte] * 0.299 + dst_pixels[gbyte] * 0.587 + dst_pixels[bbyte] * 0.114;
@@ -715,7 +715,7 @@ void Bitmap::ToneChange(const Tone &tone) {
 					dst_pixels[gbyte] = (uint8)max(min((dst_pixels[gbyte] - gray) * factor + gray + tone.green + 0.5, 255), 0);
 					dst_pixels[bbyte] = (uint8)max(min((dst_pixels[bbyte] - gray) * factor + gray + tone.blue + 0.5, 255), 0);
 
-					dst_pixels += bpp;
+					dst_pixels += bpp();
 				}
 				dst_pixels += stride;
 			}
@@ -734,23 +734,23 @@ void Bitmap::Flip(bool horizontal, bool vertical) {
 	Lock();
 
 	if (horizontal && vertical) {
-		int stride = pitch - width * bpp;
+		int stride = pitch() - width() * bpp();
 
-		uint8* dst_pixels_first = (uint8*)pixels;
-		uint8* dst_pixels_last = (uint8*)pixels + (width - 1) * bpp + (height - 1) * pitch;
+		uint8* dst_pixels_first = (uint8*)pixels();
+		uint8* dst_pixels_last = (uint8*)pixels() + (width() - 1) * bpp() + (height() - 1) * pitch();
 
-		uint8* tmp_buffer = new uint8[bpp];
+		uint8* tmp_buffer = new uint8[bpp()];
 
-		for (int i = 0; i < height / 2; i++) {
-			for (int j = 0; j < width; j++) {
+		for (int i = 0; i < height() / 2; i++) {
+			for (int j = 0; j < width(); j++) {
 				if (dst_pixels_first == dst_pixels_last) break;
 
-				memcpy(tmp_buffer, dst_pixels_first, bpp);
-				memcpy(dst_pixels_first, dst_pixels_last, bpp);
-				memcpy(dst_pixels_last, tmp_buffer, bpp);
+				memcpy(tmp_buffer, dst_pixels_first, bpp());
+				memcpy(dst_pixels_first, dst_pixels_last, bpp());
+				memcpy(dst_pixels_last, tmp_buffer, bpp());
 
-				dst_pixels_first += bpp;
-				dst_pixels_last -= bpp;
+				dst_pixels_first += bpp();
+				dst_pixels_last -= bpp();
 			}
 			dst_pixels_first += stride;
 			dst_pixels_last += stride;
@@ -758,24 +758,24 @@ void Bitmap::Flip(bool horizontal, bool vertical) {
 
 		delete tmp_buffer;
 	} else if (horizontal) {
-		int stride_left = (width - width / 2) * bpp;
-		int stride_right = (width + width / 2) * bpp;
+		int stride_left = (width() - width() / 2) * bpp();
+		int stride_right = (width() + width() / 2) * bpp();
 
-		uint8* dst_pixels_left = (uint8*)pixels;
-		uint8* dst_pixels_right = (uint8*)pixels + (width - 1) * bpp;
+		uint8* dst_pixels_left = (uint8*)pixels();
+		uint8* dst_pixels_right = (uint8*)pixels() + (width() - 1) * bpp();
 
-		uint8* tmp_buffer = new uint8[bpp];
+		uint8* tmp_buffer = new uint8[bpp()];
 
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width / 2; j++) {
+		for (int i = 0; i < height(); i++) {
+			for (int j = 0; j < width() / 2; j++) {
 				if (dst_pixels_left == dst_pixels_right) continue;
 
-				memcpy(tmp_buffer, dst_pixels_left, bpp);
-				memcpy(dst_pixels_left, dst_pixels_right, bpp);
-				memcpy(dst_pixels_right, tmp_buffer, bpp);
+				memcpy(tmp_buffer, dst_pixels_left, bpp());
+				memcpy(dst_pixels_left, dst_pixels_right, bpp());
+				memcpy(dst_pixels_right, tmp_buffer, bpp());
 
-				dst_pixels_left += bpp;
-				dst_pixels_right -= bpp;
+				dst_pixels_left += bpp();
+				dst_pixels_right -= bpp();
 			}
 			dst_pixels_left += stride_left;
 			dst_pixels_right += stride_right;
@@ -783,22 +783,22 @@ void Bitmap::Flip(bool horizontal, bool vertical) {
 
 		delete tmp_buffer;
 	} else {
-		uint8* dst_pixels_up = (uint8*)pixels;
-		uint8* dst_pixels_down = (uint8*)pixels + (height - 1) * pitch;
+		uint8* dst_pixels_up = (uint8*)pixels();
+		uint8* dst_pixels_down = (uint8*)pixels() + (height() - 1) * pitch();
 
-		int stride = width * bpp;
+		int stride = width() * bpp();
 
 		uint8* tmp_buffer = new uint8[stride];
 
-		for (int i = 0; i < height / 2; i++) {
+		for (int i = 0; i < height() / 2; i++) {
 			if (dst_pixels_up == dst_pixels_down) break;
 
 			memcpy(tmp_buffer, dst_pixels_down, stride);
 			memcpy(dst_pixels_down, dst_pixels_up, stride);
 			memcpy(dst_pixels_up, tmp_buffer, stride);
 
-			dst_pixels_up += pitch;
-			dst_pixels_down -= pitch;
+			dst_pixels_up += pitch();
+			dst_pixels_down -= pitch();
 		}
 
 		delete tmp_buffer;
@@ -840,15 +840,15 @@ void Bitmap::DetachBitmapScreen(BitmapScreen* bitmap) {
 
 ////////////////////////////////////////////////////////////
 int Bitmap::GetWidth() const {
-	return  width;
+	return width();
 }
 
 int Bitmap::GetHeight() const {
-	return  height;
+	return height();
 }
 
 Rect Bitmap::GetRect() const {
-	return Rect(0, 0, width, height);
+	return Rect(0, 0, width(), height());
 }
 
 Font* Bitmap::GetFont() const {
@@ -867,6 +867,6 @@ Color Bitmap::GetTransparentColor() const {
 #ifdef USE_ALPHA
 	return Color(0, 0, 0, 0);
 #else
-	return GetColor(colorkey);
+	return GetColor(colorkey());
 #endif
 }

@@ -44,12 +44,23 @@ public:
 	Rect GetTextSize(std::string text) const;
 	void SetTransparentColor(Color color);
 
+	void* pixels();
+	int width() const;
+	int height() const;
+	uint8 bpp() const;
+	uint16 pitch() const;
+	uint32 rmask() const;
+	uint32 gmask() const;
+	uint32 bmask() const;
+	uint32 amask() const;
+	uint32 colorkey() const;
+
 protected:
 	friend class SdlBitmapScreen;
 
 	SdlBitmap(SDL_Surface* bitmap, bool transparent = true);
 
-	void SetupBitmapData();
+	//void SetupBitmapData();
 
 	void RemovePalleteColorkeyDuplicates(SDL_Surface* src, SDL_Color* color);
 

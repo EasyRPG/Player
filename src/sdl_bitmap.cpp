@@ -33,6 +33,7 @@
 #include "util_macro.h"
 #include "system.h"
 #include <cmath>
+#include <cassert>
 #include "sdl_ui.h"
 
 ////////////////////////////////////////////////////////////
@@ -42,9 +43,9 @@
 	#define DisplayFormat(surface) SDL_DisplayFormatAlpha(surface)
 RMASK, GMASK, BMASK, AMASK
 #else
-	#define TRANSPARENT_FLAGS SDL_SRCALPHA | SDL_SRCCOLORKEY
-	#define COLORKEY_FLAGS SDL_SRCCOLORKEY /*| SDL_RLEACCEL*/
-	#define SETALPHA_FLAGS SDL_SRCALPHA /*| SDL_RLEACCEL*/
+	#define TRANSPARENT_FLAGS /*SDL_SRCALPHA | */SDL_SRCCOLORKEY
+	#define COLORKEY_FLAGS SDL_SRCCOLORKEY | SDL_RLEACCEL
+	#define SETALPHA_FLAGS SDL_SRCALPHA | SDL_RLEACCEL
 	#define DisplayFormat(surface) SDL_DisplayFormat(surface)
 #endif
 
@@ -91,7 +92,7 @@ SdlBitmap::SdlBitmap(int width, int height, bool itransparent) {
 
 	SDL_FreeSurface(temp);
 
-	SetupBitmapData();
+//	SetupBitmapData();
 }
 
 SdlBitmap::SdlBitmap(const std::string filename, bool itransparent) {
@@ -123,7 +124,7 @@ SdlBitmap::SdlBitmap(const std::string filename, bool itransparent) {
 
 	SDL_FreeSurface(temp);
 
-	SetupBitmapData();
+//	SetupBitmapData();
 }
 
 SdlBitmap::SdlBitmap(const uint8* data, uint bytes, bool itransparent) {
@@ -149,8 +150,6 @@ SdlBitmap::SdlBitmap(const uint8* data, uint bytes, bool itransparent) {
 	}
 
 	SDL_FreeSurface(temp);
-
-	SetupBitmapData();
 }
 
 SdlBitmap::SdlBitmap(Bitmap* source, Rect src_rect, bool itransparent) {
@@ -181,15 +180,13 @@ SdlBitmap::SdlBitmap(Bitmap* source, Rect src_rect, bool itransparent) {
 
 	Blit(0, 0, source, src_rect, 255);
 
-	SetupBitmapData();
+//	SetupBitmapData();
 }
 
 SdlBitmap::SdlBitmap(SDL_Surface* bitmap, bool itransparent) :
 	bitmap(bitmap) {
 
 	transparent = itransparent;
-
-	SetupBitmapData();
 }
 
 ////////////////////////////////////////////////////////////
@@ -198,7 +195,51 @@ SdlBitmap::~SdlBitmap() {
 }
 
 ////////////////////////////////////////////////////////////
-void SdlBitmap::SetupBitmapData() {
+void * SdlBitmap::pixels() {
+	// WARNING!!!! 
+	// If bitmap is not locked before calling this
+	// this will return an invalid pointer!!
+	assert(!SDL_MUSTLOCK(bitmap) || bitmap->locked);
+	return bitmap->pixels;
+}
+
+uint8 SdlBitmap::bpp() const {
+	return bitmap->format->BytesPerPixel;
+}
+
+int SdlBitmap::width() const {
+	return bitmap->w;
+}
+
+int SdlBitmap::height() const {
+	return bitmap->h;
+}
+
+uint16 SdlBitmap::pitch() const {
+	return bitmap->pitch;
+}
+
+uint32 SdlBitmap::rmask() const {
+	return bitmap->format->Rmask;
+}
+
+uint32 SdlBitmap::gmask() const {
+	return bitmap->format->Gmask;
+}
+
+uint32 SdlBitmap::bmask() const {
+	return bitmap->format->Bmask;
+}
+
+uint32 SdlBitmap::amask() const {
+	return bitmap->format->Amask;
+}
+
+uint32 SdlBitmap::colorkey() const {
+	return bitmap->format->colorkey;
+}
+
+/*void SdlBitmap::SetupBitmapData() {
 	pixels = bitmap->pixels;
 	width = bitmap->w;
 	height = bitmap->h;
@@ -209,7 +250,7 @@ void SdlBitmap::SetupBitmapData() {
 	bmask = bitmap->format->Bmask;
 	amask = bitmap->format->Amask;
 	colorkey = bitmap->format->colorkey;
-}
+}*/
 
 ////////////////////////////////////////////////////////////
 void SdlBitmap::RemovePalleteColorkeyDuplicates(SDL_Surface* src, SDL_Color* color) {
@@ -239,11 +280,11 @@ void SdlBitmap::Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
 		SDL_Rect src_r = {(int16)src_rect.x, (int16)src_rect.y, (uint16)src_rect.width, (uint16)src_rect.height};
 		SDL_Rect dst_r = {(int16)x, (int16)y, 0, 0};
 
-		SDL_SetAlpha(((SdlBitmap*)src)->bitmap, SETALPHA_FLAGS, (uint8)opacity);
+		//SDL_SetAlpha(((SdlBitmap*)src)->bitmap, SETALPHA_FLAGS, (uint8)opacity);
 
 		SDL_BlitSurface(((SdlBitmap*)src)->bitmap, &src_r, bitmap, &dst_r);
 
-		SDL_SetAlpha(((SdlBitmap*)src)->bitmap, SETALPHA_FLAGS, 255);
+		//SDL_SetAlpha(((SdlBitmap*)src)->bitmap, SETALPHA_FLAGS, 255);
 
 		RefreshCallback();
 	#endif
@@ -289,7 +330,7 @@ void SdlBitmap::SetTransparentColor(Color color) {
 	#ifndef USE_ALPHA
 		SDL_SetColorKey(bitmap, COLORKEY_FLAGS, GetUint32Color(color));
 
-		colorkey = GetUint32Color(color);
+		//colorkey = GetUint32Color(color);
 	#endif
 }
 
@@ -314,7 +355,9 @@ void SdlBitmap::GetColorComponents(uint32 color, uint8 &r, uint8 &g, uint8 &b, u
 
 ////////////////////////////////////////////////////////////
 void SdlBitmap::Lock() {
-	if (SDL_MUSTLOCK(bitmap)) SDL_LockSurface(bitmap);
+	if (SDL_MUSTLOCK(bitmap)) {
+		SDL_LockSurface(bitmap);
+	}
 }
 
 void SdlBitmap::Unlock() {
