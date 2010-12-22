@@ -477,10 +477,10 @@ Color Bitmap::GetPixel(int x, int y) {
 	Lock();
 
 	if (bpp == 2) {
-		uint16* src_pixel = (uint16*)pixels + x + y * pitch / bpp;
+		uint16* src_pixel = (uint16*)pixels + x + y * (pitch / bpp);
 		pixel = src_pixel[0];
 	} else if (bpp == 4) {
-		uint32* src_pixel = (uint32*)pixels + x + y * pitch / bpp;
+		uint32* src_pixel = (uint32*)pixels + x + y * (pitch / bpp);
 		pixel = src_pixel[0];
 	}
 
