@@ -89,6 +89,8 @@ void SdlBitmapScreen::SetBitmap(Bitmap* source) {
 	needs_refresh = true;
 
 	bitmap->AttachBitmapScreen(this);
+
+	src_rect_effect = Rect(0, 0, bitmap->width, bitmap->height);
 }
 
 ////////////////////////////////////////////////////////////
@@ -107,15 +109,33 @@ void SdlBitmapScreen::BlitScreen(int x, int y) {
 	SDL_Surface* surface = ((SdlBitmap*)bitmap_effects)->bitmap;
 
 	if (bush_effect < surface->h) {
-		Rect src_rect(0, 0, surface->w, surface->h - bush_effect);
+		if (!src_rect_effect_applied) {
+			Rect src_rect = src_rect_effect;
+			src_rect.height -= bush_effect;
 
-		BlitScreenIntern(surface, x, y, src_rect, opacity_effect);
+			BlitScreenIntern(surface, x, y, src_rect, opacity_effect);
+		} else {
+			Rect src_rect(0, 0, surface->w, surface->h - bush_effect);
+
+			BlitScreenIntern(surface, x, y, src_rect, opacity_effect);
+		}
 	}
 
 	if (bush_effect > 0) {
-		Rect src_rect(0, 0, surface->w, bush_effect);
+		if (!src_rect_effect_applied) {
+			Rect src_rect(
+				src_rect_effect.x,
+				src_rect_effect.y + src_rect_effect.height - bush_effect,
+				src_rect_effect.width,
+				bush_effect
+			);
 
-		BlitScreenIntern(surface, x, y + bush_effect, src_rect, opacity_effect);
+			BlitScreenIntern(surface, x, y + bush_effect, src_rect, opacity_effect / 2);
+		} else {
+			Rect src_rect(0, surface->h - bush_effect, surface->w, bush_effect);
+
+			BlitScreenIntern(surface, x, y + bush_effect, src_rect, opacity_effect / 2);
+		}
 	}
 }
 
@@ -130,17 +150,38 @@ void SdlBitmapScreen::BlitScreen(int x, int y, Rect src_rect) {
 	SDL_Surface* surface = ((SdlBitmap*)bitmap_effects)->bitmap;
 
 	if (bush_effect < surface->h) {
-		Rect blit_rect = src_rect;
-		blit_rect.y	-= bush_effect;
+		if (!src_rect_effect_applied) {
+			Rect blit_rect = src_rect_effect.GetSubRect(src_rect);
+			blit_rect.y	-= bush_effect;
 
-		BlitScreenIntern(surface, x, y, blit_rect, opacity_effect);
+			if (!blit_rect.IsOutOfBounds(src_rect_effect))
+				BlitScreenIntern(surface, x, y, blit_rect, opacity_effect);
+		} else {
+			Rect blit_rect = src_rect;
+			blit_rect.y	-= bush_effect;
+
+			BlitScreenIntern(surface, x, y, blit_rect, opacity_effect);
+		}
 	}
 
 	if (bush_effect > 0) {
-		Rect blit_rect = src_rect;
-		blit_rect.y	= bush_effect;
+		if (!src_rect_effect_applied) {
+			Rect blit_rect = src_rect_effect.GetSubRect(src_rect);
+			blit_rect.y += src_rect_effect.height - bush_effect;
+			blit_rect.height = bush_effect;
 
-		BlitScreenIntern(surface, x, y + bush_effect, blit_rect, opacity_effect);
+			if (!blit_rect.IsOutOfBounds(src_rect_effect))
+				BlitScreenIntern(surface, x, y, blit_rect, opacity_effect);
+		} else {
+			Rect blit_rect(
+				src_rect.x,
+				src_rect.y + src_rect.height - bush_effect,
+				src_rect.width,
+				bush_effect
+			);
+
+			BlitScreenIntern(surface, x, y + bush_effect, blit_rect, opacity_effect / 2);
+		}
 	}
 }
 
@@ -252,23 +293,24 @@ void SdlBitmapScreen::Refresh() {
 		return;
 	}
 
-	if (bitmap_effects != NULL && bitmap_effects != bitmap) {
-		delete bitmap_effects;
-		bitmap_effects = NULL;
-	}
-
 	src_rect_effect.Adjust(bitmap->GetWidth(), bitmap->GetHeight());
 
 	if (bitmap == NULL || src_rect_effect.IsOutOfBounds(bitmap->GetWidth(), bitmap->GetHeight())) {
 		return;
 	}
 
-	if (src_rect_effect == Rect(0, 0, bitmap->GetWidth(), bitmap->GetHeight()) &&
-		tone_effect == Tone() && angle_effect == 0.0 &&
+	if (bitmap_effects != NULL && bitmap_effects != bitmap) {
+		delete bitmap_effects;
+		bitmap_effects = NULL;
+	}
+
+	if (tone_effect == Tone() && angle_effect == 0.0 &&
 		flipx_effect == false && flipy_effect == false &&
 		zoom_x_effect == 1.0 && zoom_y_effect == 1.0) {
 
 		bitmap_effects = bitmap;
+
+		src_rect_effect_applied = false;
 
 	} else {
 		int new_width = src_rect_effect.width;
@@ -297,6 +339,8 @@ void SdlBitmapScreen::Refresh() {
 		} else {
 			bitmap_effects = NULL;
 		}
+
+		src_rect_effect_applied = true;
 	}
 }
 
@@ -344,6 +388,7 @@ void SdlBitmapScreen::ClearEffects() {
 	zoom_x_effect = 1.0;
 	zoom_y_effect = 1.0;
 	angle_effect = 0.0;
+	src_rect_effect_applied = false;
 }
 
 void SdlBitmapScreen::SetFlashEffect(const Color &color, int duration) {
@@ -357,21 +402,25 @@ void SdlBitmapScreen::UpdateFlashEffect(int frame) {
 void SdlBitmapScreen::SetSrcRect(Rect src_rect) {
 	if (src_rect_effect != src_rect) {
 		src_rect_effect = src_rect;
-		needs_refresh = true;
+
+		if (tone_effect == Tone() || angle_effect == 0.0 ||
+			flipx_effect == false || flipy_effect == false ||
+			zoom_x_effect == 1.0 || zoom_y_effect == 1.0 ||
+			src_rect_effect_applied) {
+				needs_refresh = true;
+		}
 	}
 }
 
 void SdlBitmapScreen::SetOpacityEffect(int opacity) {
 	if (opacity_effect != opacity) {
 		opacity_effect = opacity;
-		needs_refresh = true;
 	}
 }
 
 void SdlBitmapScreen::SetBushDepthEffect(int bush_depth) {
 	if (bush_effect != bush_depth) {
 		bush_effect = bush_depth;
-		needs_refresh = true;
 	}
 }
 

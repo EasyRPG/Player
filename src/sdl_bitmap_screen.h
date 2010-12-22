@@ -85,6 +85,7 @@ protected:
 	bool needs_refresh;
 
 	Rect src_rect_effect;
+	bool src_rect_effect_applied;
 	int opacity_effect;
 	int bush_effect;
 	Tone tone_effect;

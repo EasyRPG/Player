@@ -76,3 +76,39 @@ bool Rect::IsOutOfBounds(int max_width, int max_height) const {
 	if (x + width <= 0 || y + height <= 0) return true;
 	return false;
 }
+
+////////////////////////////////////////////////////////////
+bool Rect::IsOutOfBounds(const Rect &src_rect) const {
+	if (width <= 0 || height <= 0) return true;
+	if (x >= src_rect.x + src_rect.width || y >= src_rect.y + src_rect.height) return true;
+	if (x + width <= src_rect.x || y + height <= src_rect.y) return true;
+	return false;
+}
+
+////////////////////////////////////////////////////////////
+Rect Rect::GetSubRect(const Rect &src_rect) {
+	Rect rect = src_rect;
+
+	rect.x += x;
+	rect.y += y;
+
+	if (rect.x < x) {
+		rect.width -= x - rect.x;
+		rect.x = x;
+	}
+
+	if (rect.y < y) {
+		rect.height -= y - rect.y;
+		rect.y = y;
+	}
+
+	if (rect.x + rect.width > x + width) {
+		rect.width = x + width - rect.x;
+	}
+
+	if (rect.y + rect.height > y + height) {
+		rect.height = y + height - rect.y;
+	}
+
+	return rect;
+}
