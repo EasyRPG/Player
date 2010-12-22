@@ -114,7 +114,7 @@ void Game_Party::LoseItem(int item_id, int amount, bool include_equip) {
 
 ////////////////////////////////////////////////////////////
 bool Game_Party::IsItemUsable(int item_id) {
-	if (item_id > 0 && item_id < Data::items.size()) {
+	if (item_id > 0 && item_id < (int)Data::items.size()) {
 		//ToDo: if (Game_Temp::IsInBattle()) {
 		//if (Data::items[item_id - 1].type == RPG::Item::Type_medicine) {
 		//	return !Data::items[item_id - 1].ocassion_field;

@@ -79,9 +79,10 @@ void SdlBitmapScreen::SetBitmap(Bitmap* source) {
 		bitmap_effects = NULL;
 	}
 
-	if (delete_bitmap && bitmap != NULL)
+	if (delete_bitmap && bitmap != NULL) {
 		delete bitmap;
-	else if (bitmap != NULL)
+		bitmap_effects = NULL;
+	} else if (bitmap != NULL)
 		bitmap->DetachBitmapScreen(this);
 
 	bitmap = source;

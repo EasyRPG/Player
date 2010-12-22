@@ -87,6 +87,11 @@ Bitmap::Bitmap() :
 }
 
 ////////////////////////////////////////////////////////////
+Bitmap::~Bitmap() {
+	delete font;
+}
+
+////////////////////////////////////////////////////////////
 void Bitmap::Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
 	if (opacity < 0) return;
 
@@ -467,9 +472,9 @@ void Bitmap::ClearRect(Rect dst_rect) {
 Color Bitmap::GetPixel(int x, int y) {
 	if (x < 0 || y < 0 || x >= width || y >= height) return Color();
 
-	Lock();
-
 	uint32 pixel = 0;
+
+	Lock();
 
 	if (bpp == 2) {
 		uint16* src_pixel = (uint16*)pixels + x + y * pitch / bpp;
