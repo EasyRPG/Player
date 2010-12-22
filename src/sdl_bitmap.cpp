@@ -91,8 +91,6 @@ SdlBitmap::SdlBitmap(int width, int height, bool itransparent) {
 	}
 
 	SDL_FreeSurface(temp);
-
-//	SetupBitmapData();
 }
 
 SdlBitmap::SdlBitmap(const std::string filename, bool itransparent) {
@@ -123,8 +121,6 @@ SdlBitmap::SdlBitmap(const std::string filename, bool itransparent) {
 	}
 
 	SDL_FreeSurface(temp);
-
-//	SetupBitmapData();
 }
 
 SdlBitmap::SdlBitmap(const uint8* data, uint bytes, bool itransparent) {
@@ -179,8 +175,6 @@ SdlBitmap::SdlBitmap(Bitmap* source, Rect src_rect, bool itransparent) {
 	}
 
 	Blit(0, 0, source, src_rect, 255);
-
-//	SetupBitmapData();
 }
 
 SdlBitmap::SdlBitmap(SDL_Surface* bitmap, bool itransparent) :

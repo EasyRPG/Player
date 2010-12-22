@@ -75,6 +75,7 @@ Window::~Window() {
 
 	delete windowskin_screen;
 	delete contents_screen;
+	delete contents;
 	delete background;
 	delete cursor1;
 	delete cursor2;
