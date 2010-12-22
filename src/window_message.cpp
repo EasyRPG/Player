@@ -26,7 +26,7 @@
 Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
 	//Window_Selectable(80, 304, 480, 160)
-	contents = Bitmap::CreateBitmap(width - 32, height - 32);
+	SetContents(Bitmap::CreateBitmap(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	visible = false;

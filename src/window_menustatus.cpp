@@ -27,7 +27,7 @@
 Window_MenuStatus::Window_MenuStatus(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
 
-	contents = Bitmap::CreateBitmap(width - 16, height - 16);
+	SetContents(Bitmap::CreateBitmap(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	Refresh();
@@ -66,7 +66,7 @@ void Window_MenuStatus::Refresh() {
 void Window_MenuStatus::UpdateCursorRect()
 {
 	if (index < 0) {
-		cursor_rect.Adjust(0, 0);
+		cursor_rect.Set(0, 0, 0, 0);
 	} else {
 		cursor_rect.Set(48 + 4, index * (48 + 10), 168, 48);
 	}

@@ -36,7 +36,7 @@ Window_InputNumber::Window_InputNumber(int idigits_max) :
 	cursor_width = dummy_bitmap->GetTextSize("0").width + 4;
 	delete dummy_bitmap;
 
-	contents = Bitmap::CreateBitmap(GetWidth() - 16, GetHeight() - 16);
+	SetContents(Bitmap::CreateBitmap(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	z += 9999;

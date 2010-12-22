@@ -28,7 +28,7 @@ Window_EquipStatus::Window_EquipStatus(int actor_id) :
 	actor_id(actor_id),
 	draw_params(false) {
 
-	contents = Bitmap::CreateBitmap(width - 16, height - 16);
+	SetContents(Bitmap::CreateBitmap(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	Refresh();
