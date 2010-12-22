@@ -359,8 +359,6 @@ void Graphics::Freeze() {
 // Transition
 ////////////////////////////////////////////////////////////
 void Graphics::Transition(TransitionType type, int time, bool wait) {
-	return;
-
 	//////
 	prepare_transition = true;
 	skip_draw = false;
