@@ -350,10 +350,14 @@ void SdlBitmap::GetColorComponents(uint32 color, uint8 &r, uint8 &g, uint8 &b, u
 ////////////////////////////////////////////////////////////
 void SdlBitmap::Lock() {
 	if (SDL_MUSTLOCK(bitmap)) {
-		SDL_LockSurface(bitmap);
+		if (SDL_LockSurface(bitmap) < 0) {
+			Output::Error("%s", SDL_GetError());
+		}
 	}
 }
 
 void SdlBitmap::Unlock() {
-	if (SDL_MUSTLOCK(bitmap)) SDL_UnlockSurface(bitmap);
+	if (SDL_MUSTLOCK(bitmap)) {
+		SDL_UnlockSurface(bitmap);
+	}
 }

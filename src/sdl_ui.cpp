@@ -254,11 +254,7 @@ void SdlUi::ToggleZoom() {
 void SdlUi::ProcessEvents() {
 	SDL_Event evnt;
 
-	for (;;) {
-		int result = SDL_PollEvent(&evnt);
-
-		if (result == 0)
-			break;
+	while ( SDL_PollEvent(&evnt) ) {
 
 		ProcessEvent(evnt);
 
