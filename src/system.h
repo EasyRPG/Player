@@ -70,13 +70,10 @@
 	#define USE_SDL_TTF
 	
 	#if !defined(DINGOO) && !defined(GEKKO)
-		#define SUPPORT_ZOOM
-		#define SUPPORT_FULLSCREEN_TOGGLE
 		#define SUPPORT_KEYBOARD
 		#define SUPPORT_MOUSE
 	#endif
 	#if !defined(DINGOO)
-		//#define SUPPORT_HWSURFACE
 		#define SUPPORT_JOYSTICK
 		#define SUPPORT_JOYSTICK_HAT
 		#define SUPPORT_JOYSTICK_AXIS

@@ -330,8 +330,8 @@ void SdlBitmap::TextDraw(Rect dst_rect, std::string text, TextAlignment align) {
 	text_surface = CreateBitmap(text.size()*6, TTF_FontHeight(ttf_font));
 	text_surface_aux = CreateBitmap(text.size()*6, TTF_FontHeight(ttf_font));
 
-	Color white_color = Color(255, 255, 255, 0);
-	Color black_color = Color(0, 0, 0, 0);
+	Color white_color(255, 255, 255, 0);
+	Color black_color(0, 0, 0, 0);
 
 	char text2[2]; text2[1] = '\0';
 
@@ -382,14 +382,14 @@ void SdlBitmap::TextDraw(Rect dst_rect, std::string text, TextAlignment align) {
 			mask = CreateBitmap(12, 12);
 
 			// Get exfont from graphic
-			Rect rect_exfont = Rect((exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12);
+			Rect rect_exfont((exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12);
 
 			// Create a black mask
 			mask->Blit(0, 0, exfont, rect_exfont, 255);
 			mask->SetTransparentColor(white_color);
 
 			// Get color region from system graphic
-			Rect clip_system = Rect(8+16*(font->color%10), 4+48+16*(font->color/10), 6, 12);
+			Rect clip_system(8+16*(font->color%10), 4+48+16*(font->color/10), 6, 12);
 
 			// Blit color background (twice because its a full glyph)
 			char_surface->Blit(0, 0, system, clip_system, 255);
@@ -429,7 +429,7 @@ void SdlBitmap::TextDraw(Rect dst_rect, std::string text, TextAlignment align) {
 			mask->SetTransparentColor(white_color);
 
 			// Get color region from system graphic
-			Rect clip_system = Rect(8+16*(font->color%10), 4+48+16*(font->color/10), char_surface->GetWidth(), char_surface->GetHeight());
+			Rect clip_system(8+16*(font->color%10), 4+48+16*(font->color/10), char_surface->GetWidth(), char_surface->GetHeight());
 
 			// Blit color background
 			text_surface_aux->Blit(next_glyph_rect.x, next_glyph_rect.y, system, clip_system, 255);

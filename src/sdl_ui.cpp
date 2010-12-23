@@ -55,6 +55,8 @@ SdlUi* DisplaySdlUi;
 
 ///////////////////////////////////////////////////////////
 SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag, bool zoom) :
+	zoom_available(true),
+	toggle_fs_available(false),
 	mode_changing(false),
 	main_window(NULL),
 	main_surface(NULL),
@@ -95,15 +97,9 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag, boo
 
 	StartDisplayModeChange();
 
-	current_display_mode.effective = false;
-	current_display_mode.width = width;
-	current_display_mode.height = height;
-	current_display_mode.fullscreen = fs_flag;
-#ifdef SUPPORT_ZOOM
-	current_display_mode.zoom = zoom;
-#else
-	current_display_mode.zoom = false;
-#endif
+	if (!RequestVideoMode(width, height, fs_flag)) {
+		Output::Error("No suitable video resolution found. Aborting.");
+	}
 
 	EndDisplayModeChange();
 
@@ -131,6 +127,133 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag, boo
 SdlUi::~SdlUi() {
 	SDL_FreeSurface(main_surface);
 	SDL_Quit();
+}
+
+bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
+	const SDL_VideoInfo *vinfo;
+	SDL_Rect **modes;
+	uint32 flags = SDL_SWSURFACE;
+
+	vinfo = SDL_GetVideoInfo();
+
+	current_display_mode.height = height;
+	current_display_mode.width = width;
+
+	if (vinfo->wm_available) {
+		toggle_fs_available = true;
+		do {
+			if (fullscreen) {
+				flags |= SDL_FULLSCREEN;
+			}
+
+			modes = SDL_ListModes(NULL, flags);
+
+			if (modes != NULL) {
+				// Set up...
+				current_display_mode.fullscreen = fullscreen;
+				current_display_mode.flags = flags;
+
+				if (modes == (SDL_Rect **)-1) {
+					// All modes available
+					// If we have a high res, turn zoom on
+					current_display_mode.zoom = (vinfo->current_h > height*2 && vinfo->current_w > width*2);
+					zoom_available = current_display_mode.zoom;
+					return true;
+				} else {
+					int len = 0;
+					while (modes[len]) 
+						++len;
+
+					for (int i = len-1; i >= 0; --i) {
+						if (
+							(modes[i]->h == height && modes[i]->w == width) ||
+							(modes[i]->h == height*2 && modes[i]->w == width*2)
+						) {
+							current_display_mode.zoom = ((modes[i]->w >> 1) == width);
+							zoom_available = current_display_mode.zoom;
+							return true;
+						}
+					}
+				}
+			}
+			// No modes available
+			if ((flags & SDL_FULLSCREEN) == SDL_FULLSCREEN) {
+				// Try without fullscreen
+				flags &= ~SDL_FULLSCREEN;
+			} else {
+				// No mode available :(
+				return false;
+			}
+		} while (true);
+	} // wm_available
+
+	if (!fullscreen) {
+		// Stop here since we need a window manager for non fullscreen modes
+		return false;
+	}
+
+	if (vinfo->hw_available) {
+		zoom_available = false;
+		flags |= SDL_FULLSCREEN | SDL_HWSURFACE;
+		
+		current_display_mode.fullscreen = true;
+		current_display_mode.flags = flags;
+		current_display_mode.zoom = false;
+
+		modes = SDL_ListModes(NULL, flags);
+		if (modes != NULL) {
+			if (modes == (SDL_Rect **)-1) {
+				// All modes available... Yay!
+				return true;
+			} else {
+				int len = 0;
+				while (modes[len]) 
+					++len;
+				for (int i = len-1; i > 0; --i) {
+					if (modes[i]->h == height && modes[i]->w == width) {
+						return true;
+					}
+				}
+			}
+		}
+	} // hw_available
+
+	// No hard accel and no window manager
+	flags = SDL_SWSURFACE | SDL_FULLSCREEN;
+
+	modes = SDL_ListModes(NULL, flags);
+	if (modes == NULL) {
+		// No video for you
+		return false;
+	}
+
+	if (modes == (SDL_Rect **)-1) {
+		// All modes available
+		current_display_mode.fullscreen = true;
+		current_display_mode.flags = flags;
+		current_display_mode.zoom = false;
+		zoom_available = current_display_mode.zoom;
+		return true;
+	}
+
+	int len = 0;
+	while (modes[len]) 
+		++len;
+	for (int i = len-1; i > 0; --i) {
+		if (
+			(modes[i]->h == height && modes[i]->w == width) ||
+			(modes[i]->h == height*2 && modes[i]->w == width*2)
+			) {
+				current_display_mode.fullscreen = fullscreen;
+				current_display_mode.flags = flags;
+				current_display_mode.zoom = ((modes[i]->w >> 1) == width);
+				zoom_available = current_display_mode.zoom;
+				return true;
+		}
+	}
+
+	// Didn't find a suitable video mode
+	return false;
 }
 
 ////////////////////////////////////////////////////////////
@@ -167,20 +290,14 @@ void SdlUi::EndDisplayModeChange() {
 
 ////////////////////////////////////////////////////////////
 bool SdlUi::RefreshDisplayMode() {
-#ifdef SUPPORT_HWSURFACE
-	uint32 flags = SDL_HWSURFACE;
-#else
-	uint32 flags = SDL_SWSURFACE;
-#endif
-	if (current_display_mode.fullscreen)
-		flags |= SDL_FULLSCREEN;
 
-	Graphics::fps_showing = current_display_mode.fullscreen;
-
+	uint32 flags = current_display_mode.flags;
 	int display_width = current_display_mode.width;
 	int display_height = current_display_mode.height;
 
-	if (current_display_mode.zoom) {
+	Graphics::fps_showing = (flags & SDL_FULLSCREEN) == SDL_FULLSCREEN;
+
+	if (zoom_available && current_display_mode.zoom) {
 		display_width *= 2;
 		display_height *= 2;
 	}
@@ -195,7 +312,7 @@ bool SdlUi::RefreshDisplayMode() {
 	if (!main_window)
 		return false;
 
-	if (current_display_mode.zoom) {
+	if (zoom_available && current_display_mode.zoom) {
 		main_surface = SDL_CreateRGBSurface(
 			SDL_SWSURFACE,
 			current_display_mode.width,
@@ -234,20 +351,16 @@ void SdlUi::Resize(long /*width*/, long /*height*/) {
 
 ///////////////////////////////////////////////////////////
 void SdlUi::ToggleFullscreen() {
-#ifdef SUPPORT_FULLSCREEN_TOGGLE
-	if (mode_changing) {
+	if (toggle_fs_available && mode_changing) {
 		current_display_mode.fullscreen = !current_display_mode.fullscreen;
 	}
-#endif
 }
 
 ///////////////////////////////////////////////////////////
 void SdlUi::ToggleZoom() {
-#ifdef SUPPORT_ZOOM
-	if (mode_changing) {
+	if (zoom_available && mode_changing) {
 		current_display_mode.zoom = !current_display_mode.zoom;
 	}
-#endif
 }
 
 ///////////////////////////////////////////////////////////
@@ -270,7 +383,7 @@ void SdlUi::CleanDisplay() {
 
 ///////////////////////////////////////////////////////////
 void SdlUi::UpdateDisplay() {
-	if (current_display_mode.zoom)
+	if (zoom_available && current_display_mode.zoom)
 		Blit2X(main_surface, main_window);
 
 	SDL_UpdateRect(main_window, 0, 0, 0, 0);

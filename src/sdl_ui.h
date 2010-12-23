@@ -108,13 +108,20 @@ protected:
 
 	/// Display mode data struct
 	struct DisplayMode {
-		DisplayMode() : effective(false), fullscreen(false), zoom(false), width(0), height(0) {}
+		DisplayMode() : effective(false), fullscreen(false), zoom(false), width(0), height(0), flags(0) {}
 		bool effective;
 		bool fullscreen;
 		bool zoom;
 		int width;
 		int height;
+		uint8 bpp;
+		uint32 flags;
 	};
+
+	bool zoom_available;
+	bool toggle_fs_available;
+
+	bool RequestVideoMode(int width, int height, bool fullscreen);
 
 	/// Current display mode
 	DisplayMode current_display_mode;
