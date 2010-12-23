@@ -36,6 +36,7 @@ namespace Cache {
 	Bitmap* BattleCharset(std::string filename);
 	Bitmap* BattleWeapon(std::string filename);
 	Bitmap* Charset(std::string filename);
+	Bitmap* ExFont();
 	Bitmap* Faceset(std::string filename);
 	Bitmap* Frame(std::string filename);
 	Bitmap* Gameover(std::string filename);

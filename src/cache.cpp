@@ -19,6 +19,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "cache.h"
+#include "exfont.h"
 
 ////////////////////////////////////////////////////////////
 namespace {
@@ -58,6 +59,15 @@ Bitmap* Cache::BattleWeapon(std::string filename) {
 }
 Bitmap* Cache::Charset(std::string filename) {
 	return LoadBitmap("CharSet/", filename, true);
+}
+Bitmap* Cache::ExFont() {
+	std::string hash = "\x00ExFont";
+
+	if (cache.count(hash) == 0) {
+		cache[hash] = Bitmap::CreateBitmap(exfont_h, sizeof(exfont_h), false);
+	}
+
+	return cache[hash];
 }
 Bitmap* Cache::Faceset(std::string filename) {
 	return LoadBitmap("FaceSet/", filename, true);

@@ -62,7 +62,7 @@ protected:
 
 	//void SetupBitmapData();
 
-	void RemovePalleteColorkeyDuplicates(SDL_Surface* src, SDL_Color* color);
+	void RemovePaletteColorkeyDuplicates(SDL_Surface* src, SDL_Color* color);
 
 	/// Bitmap data.
 	SDL_Surface* bitmap;
