@@ -193,7 +193,7 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 
 	if (vinfo->hw_available) {
 		zoom_available = false;
-		flags |= SDL_FULLSCREEN | SDL_HWSURFACE;
+		flags |= SDL_FULLSCREEN | SDL_HWSURFACE | SDL_DOUBLEBUF;
 		
 		current_display_mode.flags = flags;
 		current_display_mode.zoom = false;
@@ -394,7 +394,7 @@ void SdlUi::UpdateDisplay() {
 	if (zoom_available && current_display_mode.zoom)
 		Blit2X(main_surface, main_window);
 
-	SDL_UpdateRect(main_window, 0, 0, 0, 0);
+	SDL_Flip(main_window);
 }
 
 ///////////////////////////////////////////////////////////
