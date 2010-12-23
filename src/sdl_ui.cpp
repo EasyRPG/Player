@@ -266,7 +266,7 @@ void SdlUi::StartDisplayModeChange() {
 ////////////////////////////////////////////////////////////
 void SdlUi::EndDisplayModeChange() {
 	if (mode_changing && (
-		current_display_mode.fullscreen != last_display_mode.fullscreen ||
+		current_display_mode.flags != last_display_mode.flags ||
 		current_display_mode.zoom != last_display_mode.zoom ||
 		current_display_mode.width != last_display_mode.width ||
 		current_display_mode.height != last_display_mode.height)) {
@@ -352,7 +352,11 @@ void SdlUi::Resize(long /*width*/, long /*height*/) {
 ///////////////////////////////////////////////////////////
 void SdlUi::ToggleFullscreen() {
 	if (toggle_fs_available && mode_changing) {
-		current_display_mode.fullscreen = !current_display_mode.fullscreen;
+		if ((current_display_mode.flags & SDL_FULLSCREEN) == SDL_FULLSCREEN) {
+			current_display_mode.flags &= ~SDL_FULLSCREEN;
+		} else {
+			current_display_mode.flags |= SDL_FULLSCREEN;
+		}
 	}
 }
 
