@@ -40,7 +40,7 @@ Sprite::Sprite() :
 
 	bitmap_screen = BitmapScreen::CreateBitmapScreen(false);
 
-	type = SPRITE;
+	type = TypeSprite;
 	ID = Graphics::ID++;
 	zobj = Graphics::RegisterZObj(0, ID);
 	Graphics::RegisterDrawable(ID, this);

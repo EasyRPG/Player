@@ -36,47 +36,46 @@
 /// Enumeration of codes
 ////////////////////////////////////////////////////////////
 enum CommandCodes {
-	SHOW_MESSAGE		= 10110,
-	SHOW_MESSAGE_2		= 20110,
-	MESSAGE_OPTIONS		= 10120,
-	SHOW_FACE_GRAPHIC	= 10130,
-	CHANGE_FACE_GRAPHIC = 10130,
-	SHOW_CHOICE			= 10140,
-	SHOW_CHOICE_OPTION	= 20140,
-	SHOW_CHOICE_END		= 20141,
-	CONTROL_VARS		= 10220,
-	CONTROL_SWITCHES	= 10210,
-	INPUT_NUMBER		= 10150,
-	CHANGE_GOLD         = 10310,
-	CHANGE_ITEMS        = 10320,
-	CHANGE_EXP          = 10410,
-	CHANGE_LEVEL        = 10420,
-	CHANGE_PARAMETERS   = 10430,
-	CONDITIONAL_BRANCH  = 12010,
-	WAIT                = 11410,
-	CHANGE_SAVE_ACCESS  = 11930,
-	CHANGE_ACTOR_FACE   = 10640,
-	TELEPORT            = 10810
+	ShowMessage			= 10110,
+	ShowMessage_2		= 20110,
+	MessageOptions		= 10120,
+	ShowFaceGraphic		= 10130,
+	ChangeFaceGraphic	= 10130,
+	ShowChoice			= 10140,
+	ShowChoiceOption	= 20140,
+	ShowChoiceEnd		= 20141,
+	ControlVars			= 10220,
+	ControlSwitches		= 10210,
+	InputNumber			= 10150,
+	ChangeGold			= 10310,
+	ChangeItems			= 10320,
+	ChangeExp			= 10410,
+	ChangeLevel			= 10420,
+	ChangeParameters	= 10430,
+	ConditionalBranch	= 12010,
+	Wait				= 11410,
+	ChangeSaveAccess	= 11930,
+	ChangeActorFace		= 10640,
+	Teleport			= 10810
 };
 
 enum Sizes {
-	MAXSIZE = 9999999,
-	MINSIZE = -9999999
+	MaxSize = 9999999,
+	MinSize = -9999999
 };
 
 enum CharsID {
-	PLAYER		= 10001,
-	BOAT		= 10002,
-	SHIP		= 10003,
-	AIRSHIP		= 10004,
-	THIS_EVENT	= 10005
+	Player		= 10001,
+	Boat		= 10002,
+	Ship		= 10003,
+	Airship		= 10004,
+	ThisEvent	= 10005
 };
 
 ////////////////////////////////////////////////////////////
 /// Forward declarations
 ///////////////////////////////////////////////////////////
-Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag)
-{
+Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	depth = _depth;
 	main_flag = _main_flag;
 
@@ -87,8 +86,7 @@ Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag)
 	Clear();
 }
 
-Game_Interpreter::~Game_Interpreter()
-{
+Game_Interpreter::~Game_Interpreter() {
 }
 
 ////////////////////////////////////////////////////////////
@@ -284,39 +282,39 @@ bool Game_Interpreter::ExecuteCommand() {
 	
 	switch (list[index].code) {
 
-		case SHOW_MESSAGE: 
+		case ShowMessage: 
 			return CommandShowMessage();
-		case SHOW_CHOICE: 
+		case ShowChoice: 
 			return CommandShowChoices();
-		case INPUT_NUMBER: 
+		case InputNumber: 
 			return CommandInputNumber();
-		//case MESSAGE_OPTIONS: 
+		//case MessageOptions: 
 			//return CommandMessageOptions();
-		case CHANGE_FACE_GRAPHIC: 
+		case ChangeFaceGraphic: 
 			return CommandChangeFaceGraphic();
-		case CHANGE_EXP: 
+		case ChangeExp: 
 			return CommandChangeExp();
-		case CHANGE_GOLD: 
+		case ChangeGold: 
 			return CommandChangeGold();
-		case CHANGE_ITEMS: 
+		case ChangeItems: 
 			return CommandChangeItems();
-		case CHANGE_LEVEL: 
+		case ChangeLevel: 
 			return CommandChangeLevel();
-		case CONDITIONAL_BRANCH: 
+		case ConditionalBranch: 
 			return CommandConditionalBranch();
-		case CONTROL_SWITCHES: 
+		case ControlSwitches: 
 			return CommandControlSwitches();
-		case CONTROL_VARS: 
+		case ControlVars: 
 			return CommandControlVariables();
-		case CHANGE_PARAMETERS:
+		case ChangeParameters:
 			return CommandChangeParameters();
-		case WAIT:
+		case Wait:
 			return CommandWait();
-		case CHANGE_SAVE_ACCESS:
+		case ChangeSaveAccess:
 			return CommandChangeSaveAccess();
-		case CHANGE_ACTOR_FACE:
+		case ChangeActorFace:
 			return CommandChangeActorFace();
-		case TELEPORT:
+		case Teleport:
 			return CommandTeleport();
 		default:
 			return true;
@@ -423,14 +421,14 @@ void Game_Interpreter::GetStrings(std::vector<std::string>& ret_val) {
 	unsigned int index_temp = index+2;
 	std::vector<std::string> s_choices;
 	while ( index_temp < list.size() ) {
-		if ( (list[index_temp].code == SHOW_CHOICE_OPTION) && (list[index_temp].indent == current_indent) ) {
+		if ( (list[index_temp].code == ShowChoiceOption) && (list[index_temp].indent == current_indent) ) {
 			// Choice found
 			s_choices.push_back(list[index_temp].string);
 		}
 		// If found end of show choice command
-		if ( ( (list[index_temp].code == SHOW_CHOICE_END) && (list[index_temp].indent == current_indent) ) ||
+		if ( ( (list[index_temp].code == ShowChoiceEnd) && (list[index_temp].indent == current_indent) ) ||
 			// Or found Cancel branch
-			( (list[index_temp].code == SHOW_CHOICE_OPTION) && (list[index_temp].indent == current_indent) &&
+			( (list[index_temp].code == ShowChoiceOption) && (list[index_temp].indent == current_indent) &&
 			(list[index_temp].string == "") ) ) {
 			
 			break;
@@ -444,7 +442,7 @@ void Game_Interpreter::GetStrings(std::vector<std::string>& ret_val) {
 ////////////////////////////////////////////////////////////
 /// Command Show Message
 ////////////////////////////////////////////////////////////
-bool Game_Interpreter::CommandShowMessage() { // Code SHOW_MESSAGE
+bool Game_Interpreter::CommandShowMessage() { // Code ShowMessage
 	// If there's a text already, return immediately
 	if (!Game_Message::texts.empty()) {
 		return false;
@@ -459,14 +457,14 @@ bool Game_Interpreter::CommandShowMessage() { // Code SHOW_MESSAGE
 
 	for (;;) {
 		// If next event command is the following parts of the message
-		if ( index < list.size() && list[index+1].code == SHOW_MESSAGE_2 ) {
+		if ( index < list.size() && list[index+1].code == ShowMessage_2 ) {
 			// Add second (another) line
 			line_count++;
 			Game_Message::texts.push_back(list[index+1].string);
 		} else {
 			// If next event command is show choices
 			std::vector<std::string> s_choices;
-			if ( (index < list.size()) && (list[index+1].code == SHOW_CHOICE) ) {
+			if ( (index < list.size()) && (list[index+1].code == ShowChoice) ) {
 				GetStrings(s_choices);
 				// If choices fit on screen
 				if (s_choices.size() < (4 - line_count)) {
@@ -477,7 +475,7 @@ bool Game_Interpreter::CommandShowMessage() { // Code SHOW_MESSAGE
 				}
 			} else {
 				// If next event command is input number
-				if ((index < list.size()) && (list[index+1].code == INPUT_NUMBER) ) {
+				if ((index < list.size()) && (list[index+1].code == InputNumber) ) {
 					// If input number fits on screen
 					if (line_count < 4) {
 						index++;
@@ -513,7 +511,7 @@ void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices) {
 ////////////////////////////////////////////////////////////
 /// Command Show choices
 ////////////////////////////////////////////////////////////
-bool Game_Interpreter::CommandShowChoices() { // Code SHOW_CHOICE
+bool Game_Interpreter::CommandShowChoices() { // Code ShowChoice
 	if (!Game_Message::texts.empty()) {
 		return false;
 	}
@@ -534,7 +532,7 @@ bool Game_Interpreter::CommandShowChoices() { // Code SHOW_CHOICE
 ////////////////////////////////////////////////////////////
 /// Command control switches
 ////////////////////////////////////////////////////////////
-bool Game_Interpreter::CommandControlSwitches() { // Code CONTROL_SWITCHES
+bool Game_Interpreter::CommandControlSwitches() { // Code ControlSwitches
 	int i;
 	switch (list[index].parameters[0]) {
 		case 0:
@@ -566,7 +564,7 @@ bool Game_Interpreter::CommandControlSwitches() { // Code CONTROL_SWITCHES
 ////////////////////////////////////////////////////////////
 /// Command control vars
 ////////////////////////////////////////////////////////////
-bool Game_Interpreter::CommandControlVariables() { // Code CONTROL_VARS
+bool Game_Interpreter::CommandControlVariables() { // Code ControlVars
 	int i, value = 0;
 	Game_Actor* actor;
 	Game_Character* character;
@@ -796,11 +794,11 @@ bool Game_Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 							Game_Variables[i] %= value;
 						}
 				}
-				if (Game_Variables[i] > MAXSIZE) {
-					Game_Variables[i] = MAXSIZE;
+				if (Game_Variables[i] > MaxSize) {
+					Game_Variables[i] = MaxSize;
 				}
-				if (Game_Variables[i] < MINSIZE) {
-					Game_Variables[i] = MINSIZE;
+				if (Game_Variables[i] < MinSize) {
+					Game_Variables[i] = MinSize;
 				}
 			}
 			break;
@@ -835,11 +833,11 @@ bool Game_Interpreter::CommandControlVariables() { // Code CONTROL_VARS
 						Game_Variables[list[index].parameters[1]] %= value;
 					}
 			}
-			if (Game_Variables[list[index].parameters[1]] > MAXSIZE) {
-				Game_Variables[list[index].parameters[1]] = MAXSIZE;
+			if (Game_Variables[list[index].parameters[1]] > MaxSize) {
+				Game_Variables[list[index].parameters[1]] = MaxSize;
 			}
-			if (Game_Variables[list[index].parameters[1]] < MINSIZE) {
-				Game_Variables[list[index].parameters[1]] = MINSIZE;
+			if (Game_Variables[list[index].parameters[1]] < MinSize) {
+				Game_Variables[list[index].parameters[1]] = MinSize;
 			}
 	}
 	Game_Map::SetNeedRefresh(true);
@@ -875,19 +873,19 @@ int Game_Interpreter::OperateValue(int operation, int operand_type, int operand)
 Game_Character* Game_Interpreter::GetCharacter(int character_id) {
 
 	switch (character_id) {
-		case PLAYER:
+		case Player:
 			// Player/Hero
 			return Main_Data::game_player;
-		case BOAT:
+		case Boat:
 			// TODO Boat
 			break;
-		case SHIP:
+		case Ship:
 			// TODO Ship
 			break;
-		case AIRSHIP:
+		case Airship:
 			// TODO Airship
 			break;
-		case THIS_EVENT:
+		case ThisEvent:
 			// This event
 			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents()[event_id];
 			break;

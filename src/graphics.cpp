@@ -323,7 +323,7 @@ void Graphics::DrawFrame() {
 		DrawableType type;
 		for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
 			type = drawable_map[(*it_zlist)->GetId()]->GetType();
-			if (( (!is_in_transition_yet) || (type != WINDOW) )
+			if (( (!is_in_transition_yet) || (type != TypeWindow) )
 				|| (!wait_for_transition)) // Make sure not to draw Windows until transition's finished
 				drawable_map[(*it_zlist)->GetId()]->Draw((*it_zlist)->GetZ());
 		}

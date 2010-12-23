@@ -20,11 +20,11 @@
 
 // What kind of drawable is the current one?
 enum DrawableType {
-	WINDOW,
-	TILEMAP,
-	SPRITE,
-	PLANE,
-	DEFAULT
+	TypeWindow,
+	TypeTilemap,
+	TypeSprite,
+	TypePlane,
+	TypeDefault
 };
 
 ////////////////////////////////////////////////////////////

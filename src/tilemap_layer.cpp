@@ -105,7 +105,7 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	animation_speed(24),
 	animation_type(1),
 	ID(Graphics::ID++),
-	type(TILEMAP),
+	type(TypeTilemap),
 	layer(ilayer),
 	have_invisible_tile(false) {
 

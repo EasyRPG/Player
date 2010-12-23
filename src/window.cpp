@@ -29,7 +29,7 @@
 
 ////////////////////////////////////////////////////////////
 Window::Window():
-	type(WINDOW),
+	type(TypeWindow),
 	windowskin(NULL),
 	contents(NULL),
 	stretch(true),

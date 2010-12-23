@@ -32,7 +32,7 @@ Plane::Plane() :
 	
 	bitmap_screen = BitmapScreen::CreateBitmapScreen(false);
 
-	type = PLANE;
+	type = TypePlane;
 	ID = Graphics::ID++;
 	zobj = Graphics::RegisterZObj(0, ID);
 	Graphics::RegisterDrawable(ID, this);
