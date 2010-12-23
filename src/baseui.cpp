@@ -31,6 +31,6 @@ BaseUi* DisplayUi;
 ///////////////////////////////////////////////////////////
 BaseUi* BaseUi::CreateBaseUi(long width, long height, const std::string title, bool fs_flag, bool zoom) {
 	#ifdef USE_SDL
-		return (BaseUi*)new SdlUi(width, height, title, fs_flag, zoom);
+		return (BaseUi*)new SdlUi(width, height, title, fs_flag);
 	#endif
 }

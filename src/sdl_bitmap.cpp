@@ -347,6 +347,7 @@ void SdlBitmap::TextDraw(Rect dst_rect, std::string text, TextAlignment align) {
 	if ((shadow_color.red == 0) &&
 		(shadow_color.green == 0) &&
 		(shadow_color.blue == 0) ) {
+			// FIXME: what if running in 16 bpp?
 		shadow_color.blue++;
 	}
 

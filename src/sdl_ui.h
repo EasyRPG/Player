@@ -37,7 +37,7 @@ public:
 	/// @param title : window title
 	/// @param fullscreen : start in fullscreen flag
 	///////////////////////////////////////////////////////
-	SdlUi(long width, long height, const std::string title,	bool fullscreen, bool zoom);
+	SdlUi(long width, long height, const std::string title,	bool fullscreen);
 
 	///////////////////////////////////////////////////////
 	/// Destructor.
@@ -108,9 +108,8 @@ protected:
 
 	/// Display mode data struct
 	struct DisplayMode {
-		DisplayMode() : effective(false), fullscreen(false), zoom(false), width(0), height(0), flags(0) {}
+		DisplayMode() : effective(false), zoom(false), width(0), height(0), bpp(0), flags(0) {}
 		bool effective;
-		bool fullscreen;
 		bool zoom;
 		int width;
 		int height;
