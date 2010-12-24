@@ -190,7 +190,9 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 		// Stop here since we need a window manager for non fullscreen modes
 		return false;
 	}
-
+	
+// Dingoo has no hw_available, SDL_GetVideoInfo() returns an erroneously value
+#if !defined(DINGOO)
 	if (vinfo->hw_available) {
 		zoom_available = false;
 		flags |= SDL_FULLSCREEN | SDL_HWSURFACE | SDL_DOUBLEBUF;
@@ -215,6 +217,7 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 			}
 		}
 	} // hw_available
+#endif
 
 	// No hard accel and no window manager
 	flags = SDL_SWSURFACE | SDL_FULLSCREEN;
