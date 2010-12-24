@@ -64,6 +64,7 @@
 		#define SCREEN_BPP SCREEN_TARGET_BPP
 		#define SCREEN_FORMAT SCREEN_FORMAT_AUTO
 		#define USE_SDL_IMAGE
+		//#define USE_RLE
 	#endif
 
 	#define USE_SDL_MIXER

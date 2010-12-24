@@ -43,9 +43,14 @@
 	#define COLORKEY_FLAGS SDL_SRCCOLORKEY
 	#define DisplayFormat(surface) SDL_DisplayFormatAlpha(surface)
 #else
-	#define TRANSPARENT_FLAGS /*SDL_SRCALPHA | */SDL_SRCCOLORKEY
-	#define COLORKEY_FLAGS SDL_SRCCOLORKEY | SDL_RLEACCEL
-	#define SETALPHA_FLAGS SDL_SRCALPHA | SDL_RLEACCEL
+	#define TRANSPARENT_FLAGS SDL_SRCCOLORKEY
+	#ifdef USE_RLE
+		#define COLORKEY_FLAGS SDL_SRCCOLORKEY | SDL_RLEACCEL
+		#define SETALPHA_FLAGS SDL_SRCALPHA | SDL_RLEACCEL
+	#else
+		#define COLORKEY_FLAGS SDL_SRCCOLORKEY
+		#define SETALPHA_FLAGS SDL_SRCALPHA
+	#endif
 	#define DisplayFormat(surface) SDL_DisplayFormat(surface)
 #endif
 
@@ -274,11 +279,11 @@ void SdlBitmap::Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
 		SDL_Rect src_r = {(int16)src_rect.x, (int16)src_rect.y, (uint16)src_rect.width, (uint16)src_rect.height};
 		SDL_Rect dst_r = {(int16)x, (int16)y, 0, 0};
 
-		SDL_SetAlpha(((SdlBitmap*)src)->bitmap, SETALPHA_FLAGS, (uint8)opacity);
+		if (opacity < 255) SDL_SetAlpha(((SdlBitmap*)src)->bitmap, SETALPHA_FLAGS, (uint8)opacity);
 
 		SDL_BlitSurface(((SdlBitmap*)src)->bitmap, &src_r, bitmap, &dst_r);
 		
-		SDL_SetAlpha(((SdlBitmap*)src)->bitmap, SETALPHA_FLAGS, 255);
+		if (opacity < 255) SDL_SetAlpha(((SdlBitmap*)src)->bitmap, SETALPHA_FLAGS, 255);
 
 		RefreshCallback();
 	#endif

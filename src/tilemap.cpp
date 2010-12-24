@@ -49,9 +49,9 @@ void Tilemap::Update() {
 Bitmap* Tilemap::GetChipset() const {
 	return layer_down->GetChipset();
 }
-void Tilemap::SetChipset(Bitmap* nchipset) {
-	layer_down->SetChipset(nchipset);
-	layer_up->SetChipset(nchipset);
+void Tilemap::SetChipset(Bitmap* chipset) {
+	layer_down->SetChipset(chipset);
+	layer_up->SetChipset(chipset);
 }
 std::vector<short> Tilemap::GetMapDataDown() const {
 	return layer_down->GetMapData();
