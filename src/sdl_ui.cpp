@@ -155,7 +155,9 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 				if (modes == (SDL_Rect **)-1) {
 					// All modes available
 					// If we have a high res, turn zoom on
+#ifndef PSP
 					current_display_mode.zoom = (vinfo->current_h > height*2 && vinfo->current_w > width*2);
+#endif
 					zoom_available = current_display_mode.zoom;
 					return true;
 				} else {

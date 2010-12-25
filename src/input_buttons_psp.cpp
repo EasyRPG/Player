@@ -15,28 +15,37 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#if defined(PSP)
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
-#include "player.h"
-#include "graphics.h"
-#include "input.h"
-#include "audio.h"
-#include <cstdlib>
+#include "input_buttons.h"
+#include "keys.h"
 
-#ifdef PSP
-extern "C"
-#endif
-int main(int argc, char* argv[]) {
-	FileFinder::Init();
-	Player::Init(argc, argv);
-	Graphics::Init();
-	Input::Init();
-	Audio::Init();
+////////////////////////////////////////////////////////////
+void Input::InitButtons() {
+	buttons.resize(BUTTON_COUNT);
 
-	Player::Run();
-	
-	return EXIT_SUCCESS;
+	buttons[CANCEL].push_back(Keys::JOY_0); // Triangle
+	buttons[DECISION].push_back(Keys::JOY_1); // Circle
+	buttons[DECISION].push_back(Keys::JOY_2); // Cross
+	buttons[CANCEL].push_back(Keys::JOY_3); // Square
+
+	buttons[N1].push_back(Keys::JOY_4); // Left trigger
+	buttons[N2].push_back(Keys::JOY_5); // Right trigger
+
+	buttons[DOWN].push_back(Keys::JOY_6); // Down
+	buttons[LEFT].push_back(Keys::JOY_7); // Left
+	buttons[UP].push_back(Keys::JOY_8); // Up
+	buttons[RIGHT].push_back(Keys::JOY_9); // Right
+
+	dir_buttons.resize(10);
+	dir_buttons[2].push_back(DOWN);
+	dir_buttons[4].push_back(LEFT);
+	dir_buttons[6].push_back(RIGHT);
+	dir_buttons[8].push_back(UP);
+
 }
 
+#endif

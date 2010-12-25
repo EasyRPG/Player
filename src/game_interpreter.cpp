@@ -30,6 +30,7 @@
 #include "game_message.h"
 #include "graphics.h"
 #include "util_macro.h"
+#include <cstdlib>
 #include "main_data.h"
 
 ////////////////////////////////////////////////////////////

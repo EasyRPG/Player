@@ -18,7 +18,7 @@
 #ifndef _SYSTEM_H_
 #define _SYSTEM_H_
 
-#if !(defined(_WIN32) || defined(UNIX) || defined(DINGOO) || defined(GEKKO))
+#if !(defined(_WIN32) || defined(UNIX) || defined(DINGOO) || defined(GEKKO) || defined(PSP))
 	#error "This build doesn't target an os"
 #endif
 
@@ -111,7 +111,11 @@
 #endif
 
 #ifdef USE_SDL 
-	#include "SDL_stdinc.h"
+	#ifdef PSP
+		#include "SDL.h"
+	#else
+		#include "SDL_stdinc.h"
+	#endif
 	typedef Sint8   int8;
 	typedef Uint8   uint8;
 	typedef Sint16  int16;

@@ -19,6 +19,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <cmath>
+#include <cstring>
 #include <algorithm>
 #include "bitmap.h"
 #include "bitmap_screen.h"
@@ -824,6 +825,7 @@ void Bitmap::RefreshCallback() {
 	if (editing) return;
 
 	std::list<BitmapScreen*>::iterator it;
+
 
 	for (it = attached_screen_bitmaps.begin(); it != attached_screen_bitmaps.end(); it++) {
 		(*it)->SetDirty();

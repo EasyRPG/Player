@@ -29,7 +29,8 @@
 #include "scene_logo.h"
 #include "scene_title.h"
 #include "scene_battle.h"
-#include <cstring> // GCC COMPILATION FIX
+#include <cstring>
+#include <cstdlib>
 
 ////////////////////////////////////////////////////////////
 namespace Player {
