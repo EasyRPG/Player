@@ -83,18 +83,21 @@ void Audio::Quit() {
 void Audio::BGM_Play(std::string file, int volume, int pitch) {
 	std::string path = FileFinder::FindMusic(file);
 	if (path == "") {
-		Output::Error("No such file or directory - %s", file.c_str());
+		Output::Warning("No such file or directory - %s", file.c_str());
+		return;
 	}
 	if (bgm != NULL) Mix_FreeMusic(bgm);
 	bgm = Mix_LoadMUS(path.c_str());
 	if (!bgm) {
-		Output::Error("Couldn't load %s BGM.\n%s\n", file.c_str(), Mix_GetError());
+		Output::Warning("Couldn't load %s BGM.\n%s\n", file.c_str(), Mix_GetError());
+		return;
 	}
 	bgm_volume = volume * MIX_MAX_VOLUME / 100;
 	Mix_VolumeMusic(bgm_volume);
 	if (!me_stopped_bgm) {
 		if (Mix_PlayMusic(bgm, -1) == -1) {
-			Output::Error("Couldn't play %s BGM.\n%s\n", file.c_str(), Mix_GetError());
+			Output::Warning("Couldn't play %s BGM.\n%s\n", file.c_str(), Mix_GetError());
+			return;
 		}
 	}
 }
@@ -130,17 +133,20 @@ void Audio::BGM_Fade(int fade) {
 void Audio::BGS_Play(std::string file, int volume, int pitch) {
 	std::string path = FileFinder::FindMusic(file);
 	if (path == "") {
-		Output::Error("No such file or directory - %s", file.c_str());
+		Output::Warning("No such file or directory - %s", file.c_str());
+		return;
 	}
 	if (bgs != NULL) Mix_FreeChunk(bgs);
 	bgs = Mix_LoadWAV(path.c_str());
 	if (!bgs) {
-		Output::Error("Couldn't load %s BGS.\n%s\n", file.c_str(), Mix_GetError());
+		Output::Warning("Couldn't load %s BGS.\n%s\n", file.c_str(), Mix_GetError());
+		return;
 	}
 	bgs_channel = Mix_PlayChannel(-1, bgs, -1);
 	Mix_Volume(bgs_channel, volume * MIX_MAX_VOLUME / 100);
 	if (bgs_channel == -1) {
-		Output::Error("Couldn't play %s BGS.\n%s\n", file.c_str(), Mix_GetError());
+		Output::Warning("Couldn't play %s BGS.\n%s\n", file.c_str(), Mix_GetError());
+		return;
 	}
 }
 
@@ -173,17 +179,20 @@ void me_finish(int channel) {
 void Audio::ME_Play(std::string file, int volume, int pitch) {
 	std::string path = FileFinder::FindMusic(file);
 	if (path == "") {
-		 Output::Error("No such file or directory - %s", file.c_str());
+		Output::Warning("No such file or directory - %s", file.c_str());
+		return;
 	}
 	if (me != NULL) Mix_FreeChunk(bgs);
 	me = Mix_LoadWAV(path.c_str());
 	if (!me) {
-		Output::Error("Couldn't load %s ME.\n%s\n", file.c_str(), Mix_GetError());
+		Output::Warning("Couldn't load %s ME.\n%s\n", file.c_str(), Mix_GetError());
+		return;
 	}
 	me_channel = Mix_PlayChannel(-1, me, 0);
 	Mix_Volume(me_channel, volume * MIX_MAX_VOLUME / 100);
 	if (me_channel == -1) {
-		Output::Error("Couldn't play %s ME.\n%s\n", file.c_str(), Mix_GetError());
+		Output::Warning("Couldn't play %s ME.\n%s\n", file.c_str(), Mix_GetError());
+		return;
 	}
 	me_stopped_bgm = Mix_PlayingMusic() == 1;
 	Mix_ChannelFinished(me_finish);
@@ -209,16 +218,19 @@ void Audio::ME_Fade(int fade) {
 void Audio::SE_Play(std::string file, int volume, int pitch) {
 	std::string path = FileFinder::FindMusic(file);
 	if (path == "") {
-		Output::Error("No such file or directory - %s", file.c_str());
+		Output::Warning("No such file or directory - %s", file.c_str());
+		return;
 	}
 	Mix_Chunk* sound = Mix_LoadWAV(path.c_str());
 	if (!sound) {
-		Output::Error("Couldn't load %s SE.\n%s\n", file.c_str(), Mix_GetError());
+		Output::Warning("Couldn't load %s SE.\n%s\n", file.c_str(), Mix_GetError());
+		return;
 	}
 	int channel = Mix_PlayChannel(-1, sound, 0);
 	Mix_Volume(channel, volume * MIX_MAX_VOLUME / 100);
 	if (channel == -1) {
-		Output::Error("Couldn't play %s SE.\n%s\n", file.c_str(), Mix_GetError());
+		Output::Warning("Couldn't play %s SE.\n%s\n", file.c_str(), Mix_GetError());
+		return;
 	}
 	// FIXME: Create a cache for this maybe?
 	std::map<int, Mix_Chunk*>::iterator i = sounds.find(channel);
