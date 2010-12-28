@@ -28,6 +28,7 @@
 // Forward declarations
 ///////////////////////////////////////////////////////////
 class Color;
+class Bitmap;
 
 ///////////////////////////////////////////////////////////
 /// BaseUi base abstract class.
@@ -49,9 +50,9 @@ public:
 	static BaseUi* CreateBaseUi(long width, long height, const std::string title, bool fullscreen, bool zoom);
 
 	///////////////////////////////////////////////////////
-	/// Starts a display mode change.
+	/// Begins a display mode change.
 	///////////////////////////////////////////////////////
-	virtual void StartDisplayModeChange() = 0;
+	virtual void BeginDisplayModeChange() = 0;
 
 	///////////////////////////////////////////////////////
 	/// Ends a display mode change.
@@ -86,26 +87,35 @@ public:
 	virtual void CleanDisplay() = 0;
 
 	///////////////////////////////////////////////////////
-	/// Set color of background.
-	///////////////////////////////////////////////////////
-	virtual void SetBackcolor(const Color& color) = 0;
-
-	///////////////////////////////////////////////////////
 	/// Update video buffer.
 	///////////////////////////////////////////////////////
 	virtual void UpdateDisplay() = 0;
 
 	///////////////////////////////////////////////////////
+	/// Begins screen capture. While this mode is active
+	/// all drawing to screen will be applied to an internal
+	/// Bitmap, that is returned by the EndScreenCapture
+	/// method.
+	///////////////////////////////////////////////////////
+	virtual void BeginScreenCapture() = 0;
+
+	///////////////////////////////////////////////////////
+	/// Ends screen capture and get the drawn contents.
+	/// @return bitmap with drawn contents
+	///////////////////////////////////////////////////////
+	virtual Bitmap* EndScreenCapture() = 0;
+
+	///////////////////////////////////////////////////////
 	/// Set display title.
 	/// @param title : title string
 	///////////////////////////////////////////////////////
-	virtual void SetTitle(const std::string title) = 0;
+	virtual void SetTitle(const std::string &title) = 0;
 
 	///////////////////////////////////////////////////////
 	/// Display text on the screen.
 	/// @param text : text to display
 	///////////////////////////////////////////////////////
-	virtual void DrawScreenText(const std::string& text) = 0;
+	virtual void DrawScreenText(const std::string &text) = 0;
 
 	///////////////////////////////////////////////////////
 	/// Set if the cursor should be showed.
@@ -137,6 +147,12 @@ public:
 
 	/// @returns mouse y coordinate
 	virtual int GetMousePosY() = 0;
+	
+	/// @return background color
+	virtual Color GetBackcolor() = 0;
+
+	/// @param color : new background color
+	virtual void SetBackcolor(const Color &color) = 0;
 
 protected:
 	///////////////////////////////////////////////////////

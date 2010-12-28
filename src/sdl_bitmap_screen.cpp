@@ -92,9 +92,13 @@ void SdlBitmapScreen::SetBitmap(Bitmap* source) {
 	bitmap = source;
 	needs_refresh = true;
 
-	bitmap->AttachBitmapScreen(this);
+	if (bitmap) {
+		bitmap->AttachBitmapScreen(this);
 
-	src_rect_effect = Rect(0, 0, bitmap->width(), bitmap->height());
+		src_rect_effect = Rect(0, 0, bitmap->width(), bitmap->height());
+	} else {
+		src_rect_effect = Rect();
+	}
 }
 
 ////////////////////////////////////////////////////////////

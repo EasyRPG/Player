@@ -77,10 +77,15 @@ void Scene_Map::Update() {
 		Game_Temp::menu_beep = true;
 	}
 
-	if (!Main_Data::game_player->IsMoving())
-	{
+	if (!Main_Data::game_player->IsMoving()) {
 		if (Game_Temp::menu_calling)
 			CallMenu();
+
+		if (Game_Temp::transition_processing) {
+			Game_Temp::transition_processing = false;
+
+			Graphics::Transition(Game_Temp::transition_type, 32, Game_Temp::transition_erase);
+		}
 	}
 }
 

@@ -36,12 +36,12 @@ Sprite::Sprite() :
 	ox(0),
 	oy(0),
 	flash_duration(0),
-	flash_frame(0) {
+	flash_frame(0),
+	ID(Graphics::drawable_id++),
+	type(TypeSprite) {
 
 	bitmap_screen = BitmapScreen::CreateBitmapScreen(false);
 
-	type = TypeSprite;
-	ID = Graphics::ID++;
 	zobj = Graphics::RegisterZObj(0, ID);
 	Graphics::RegisterDrawable(ID, this);
 }

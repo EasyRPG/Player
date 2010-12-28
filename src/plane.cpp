@@ -24,6 +24,8 @@
 
 ////////////////////////////////////////////////////////////
 Plane::Plane() :
+	type(TypePlane),
+	ID(Graphics::drawable_id++),
 	bitmap(NULL),
 	visible(true),
 	z(0),
@@ -31,9 +33,7 @@ Plane::Plane() :
 	oy(0) {
 	
 	bitmap_screen = BitmapScreen::CreateBitmapScreen(false);
-
-	type = TypePlane;
-	ID = Graphics::ID++;
+	
 	zobj = Graphics::RegisterZObj(0, ID);
 	Graphics::RegisterDrawable(ID, this);
 }

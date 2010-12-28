@@ -10,20 +10,8 @@
     <Filter Include="Source Files\Engine">
       <UniqueIdentifier>{3c755e1b-5f8c-4eca-a7c9-3d9e8b29892b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Multimedia">
-      <UniqueIdentifier>{6223dc7f-cae6-4c4a-98f7-72511f6d5c67}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Tools">
       <UniqueIdentifier>{d64c64b2-4255-436c-90e3-b8ad45439ca4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Multimedia\Audio">
-      <UniqueIdentifier>{978babb7-a33f-499d-a3be-c4d4a5a3a25d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Multimedia\Graphics">
-      <UniqueIdentifier>{ada7a03e-2a3a-4ae5-91b0-75f802ba4a41}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Multimedia\Input">
-      <UniqueIdentifier>{6855f41e-6f53-4116-bf0f-382c4c1b967d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Engine\Game">
       <UniqueIdentifier>{88ed1727-57cd-4b2c-abf5-d9de729ce8fe}</UniqueIdentifier>
@@ -37,23 +25,41 @@
     <Filter Include="Source Files\Engine\Sprite">
       <UniqueIdentifier>{d6d5baa3-bfb3-42fb-9d14-d6146b6072ec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Multimedia\UI">
-      <UniqueIdentifier>{173294f6-8029-4cb6-9b0c-41960648fb71}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Multimedia\UI\SDL">
-      <UniqueIdentifier>{1fa02dfd-29c0-46a0-98ae-fc726696819d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Tools\Font 8x8">
       <UniqueIdentifier>{bb2eb505-d02e-4476-8dcc-77d59d056c36}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Tools\Win">
       <UniqueIdentifier>{60d055a3-9b00-4bae-99f6-e827231bf43c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Multimedia\Graphics\sdl">
+    <Filter Include="Source Files\Backend">
+      <UniqueIdentifier>{6223dc7f-cae6-4c4a-98f7-72511f6d5c67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Backend\Audio">
+      <UniqueIdentifier>{978babb7-a33f-499d-a3be-c4d4a5a3a25d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Backend\Graphics">
+      <UniqueIdentifier>{ada7a03e-2a3a-4ae5-91b0-75f802ba4a41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Backend\Graphics\sdl">
       <UniqueIdentifier>{27af2db9-a710-41e4-a027-e1a806db7bcc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Multimedia\Graphics\sdl_gl">
+    <Filter Include="Source Files\Backend\Graphics\sdl_gl">
       <UniqueIdentifier>{7c9e2021-4809-40d7-a505-60dddd6d70c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Backend\Input">
+      <UniqueIdentifier>{6855f41e-6f53-4116-bf0f-382c4c1b967d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Backend\UI">
+      <UniqueIdentifier>{173294f6-8029-4cb6-9b0c-41960648fb71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Backend\UI\SDL">
+      <UniqueIdentifier>{1fa02dfd-29c0-46a0-98ae-fc726696819d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Backend\Time">
+      <UniqueIdentifier>{6921f63b-dd00-43f1-8150-dfb84d1a79ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Backend\Time\sdl">
+      <UniqueIdentifier>{f7d05c21-24a8-4ab2-b83e-0b85b6214326}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -106,10 +112,10 @@
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\audio.cpp">
-      <Filter>Source Files\Multimedia\Audio</Filter>
+      <Filter>Source Files\Backend\Audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\input.cpp">
-      <Filter>Source Files\Multimedia\Input</Filter>
+      <Filter>Source Files\Backend\Input</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\output.cpp">
       <Filter>Source Files\Tools</Filter>
@@ -133,40 +139,40 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\bitmap.cpp">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\color.cpp">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\font.cpp">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\graphics.cpp">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\hslrgb.cpp">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\plane.cpp">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\rect.cpp">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\sprite.cpp">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\tilemap.cpp">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\tilemap_layer.cpp">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\tone.cpp">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\window.cpp">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\scene_map.cpp">
       <Filter>Source Files\Engine\Scene</Filter>
@@ -178,7 +184,7 @@
       <Filter>Source Files\Engine\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\zobj.cpp">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\game_character.cpp">
       <Filter>Source Files\Engine\Game</Filter>
@@ -208,10 +214,10 @@
       <Filter>Source Files\Engine\Scene</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\sdl_ui.cpp">
-      <Filter>Source Files\Multimedia\UI\SDL</Filter>
+      <Filter>Source Files\Backend\UI\SDL</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\baseui.cpp">
-      <Filter>Source Files\Multimedia\UI</Filter>
+      <Filter>Source Files\Backend\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\font_pearl_8x8.cpp">
       <Filter>Source Files\Tools\Font 8x8</Filter>
@@ -220,10 +226,10 @@
       <Filter>Source Files\Tools\Font 8x8</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\input_buttons_gekko.cpp">
-      <Filter>Source Files\Multimedia\Input</Filter>
+      <Filter>Source Files\Backend\Input</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\input_buttons_desktop.cpp">
-      <Filter>Source Files\Multimedia\Input</Filter>
+      <Filter>Source Files\Backend\Input</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\scene_equip.cpp">
       <Filter>Source Files\Engine\Scene</Filter>
@@ -289,13 +295,19 @@
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\sdl_bitmap.cpp">
-      <Filter>Source Files\Multimedia\Graphics\sdl</Filter>
+      <Filter>Source Files\Backend\Graphics\sdl</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\sdl_bitmap_screen.cpp">
-      <Filter>Source Files\Multimedia\Graphics\sdl</Filter>
+      <Filter>Source Files\Backend\Graphics\sdl</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\bitmap_screen.cpp">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gl_bitmap_screen.cpp">
+      <Filter>Source Files\Backend\Graphics\sdl_gl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sdl_time.cpp">
+      <Filter>Source Files\Backend\Time\sdl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -357,13 +369,13 @@
       <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\audio.h">
-      <Filter>Source Files\Multimedia\Audio</Filter>
+      <Filter>Source Files\Backend\Audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\input.h">
-      <Filter>Source Files\Multimedia\Input</Filter>
+      <Filter>Source Files\Backend\Input</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\input_buttons.h">
-      <Filter>Source Files\Multimedia\Input</Filter>
+      <Filter>Source Files\Backend\Input</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\filefinder.h">
       <Filter>Source Files\Tools</Filter>
@@ -390,43 +402,43 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\bitmap.h">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\color.h">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\drawable.h">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\font.h">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\graphics.h">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\hslrgb.h">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\plane.h">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\rect.h">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\sprite.h">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\tilemap.h">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\tilemap_layer.h">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\tone.h">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\window.h">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\scene_map.h">
       <Filter>Source Files\Engine\Scene</Filter>
@@ -438,7 +450,7 @@
       <Filter>Source Files\Engine\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\zobj.h">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\game_character.h">
       <Filter>Source Files\Engine\Game</Filter>
@@ -468,13 +480,13 @@
       <Filter>Source Files\Engine\Game</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\baseui.h">
-      <Filter>Source Files\Multimedia\UI</Filter>
+      <Filter>Source Files\Backend\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\sdl_ui.h">
-      <Filter>Source Files\Multimedia\UI\SDL</Filter>
+      <Filter>Source Files\Backend\UI\SDL</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\keys.h">
-      <Filter>Source Files\Multimedia\Input</Filter>
+      <Filter>Source Files\Backend\Input</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\font_render_8x8.h">
       <Filter>Source Files\Tools\Font 8x8</Filter>
@@ -543,13 +555,19 @@
       <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\sdl_bitmap.h">
-      <Filter>Source Files\Multimedia\Graphics\sdl</Filter>
+      <Filter>Source Files\Backend\Graphics\sdl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\sdl_bitmap_screen.h">
-      <Filter>Source Files\Multimedia\Graphics\sdl</Filter>
+      <Filter>Source Files\Backend\Graphics\sdl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\bitmap_screen.h">
-      <Filter>Source Files\Multimedia\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\gl_bitmap_screen.h">
+      <Filter>Source Files\Backend\Graphics\sdl_gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\time.h">
+      <Filter>Source Files\Backend\Time</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

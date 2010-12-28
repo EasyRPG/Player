@@ -23,6 +23,7 @@
 ////////////////////////////////////////////////////////////
 #include <string>
 #include "game_battler.h"
+#include "graphics.h"
 
 ////////////////////////////////////////////////////////////
 /// Game Temp static class
@@ -46,6 +47,10 @@ public:
 	static bool gameover;
 
 	static int common_event_id;
+
+	static bool transition_processing;
+	static Graphics::TransitionType transition_type;
+	static bool transition_erase;
 
 private:
 	Game_Temp();

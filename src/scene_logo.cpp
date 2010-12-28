@@ -928,10 +928,10 @@ void Scene_Logo::Start() {
 void Scene_Logo::PerformTransition() {
 	static bool faded_in = false;
 	if (!faded_in) {
-		Graphics::Transition(Graphics::FadeIn, 20, true);
+		Graphics::Transition(Graphics::TransitionFadeIn, 24);
 		faded_in = true;
 	} else {
-		Graphics::Transition(Graphics::FadeOut, 20, false);
+		Graphics::Transition(Graphics::TransitionFadeOut, 24);
 		faded_in = false;
 	}
 }

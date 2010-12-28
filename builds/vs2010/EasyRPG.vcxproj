@@ -41,7 +41,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\..\bin\testgame\</OutDir>
+    <OutDir>..\..\bin\testsuite\</OutDir>
     <TargetName>PlayerD</TargetName>
     <SourcePath>$(SourcePath)</SourcePath>
   </PropertyGroup>
@@ -141,6 +141,7 @@
     <ClCompile Include="..\..\src\game_temp.cpp" />
     <ClCompile Include="..\..\src\game_troop.cpp" />
     <ClCompile Include="..\..\src\game_unit.cpp" />
+    <ClCompile Include="..\..\src\gl_bitmap_screen.cpp" />
     <ClCompile Include="..\..\src\graphics.cpp" />
     <ClCompile Include="..\..\src\hslrgb.cpp" />
     <ClCompile Include="..\..\src\input.cpp" />
@@ -169,6 +170,7 @@
     <ClCompile Include="..\..\src\scene_title.cpp" />
     <ClCompile Include="..\..\src\sdl_bitmap.cpp" />
     <ClCompile Include="..\..\src\sdl_bitmap_screen.cpp" />
+    <ClCompile Include="..\..\src\sdl_time.cpp" />
     <ClCompile Include="..\..\src\sdl_ui.cpp" />
     <ClCompile Include="..\..\src\sprite.cpp" />
     <ClCompile Include="..\..\src\spriteset_map.cpp" />
@@ -225,6 +227,7 @@
     <ClInclude Include="..\..\src\game_troop.h" />
     <ClInclude Include="..\..\src\game_unit.h" />
     <ClInclude Include="..\..\src\game_variables.h" />
+    <ClInclude Include="..\..\src\gl_bitmap_screen.h" />
     <ClInclude Include="..\..\src\graphics.h" />
     <ClInclude Include="..\..\src\hslrgb.h" />
     <ClInclude Include="..\..\src\input.h" />
@@ -260,6 +263,7 @@
     <ClInclude Include="..\..\src\system.h" />
     <ClInclude Include="..\..\src\tilemap.h" />
     <ClInclude Include="..\..\src\tilemap_layer.h" />
+    <ClInclude Include="..\..\src\time.h" />
     <ClInclude Include="..\..\src\tone.h" />
     <ClInclude Include="..\..\src\util_macro.h" />
     <ClInclude Include="..\..\src\window.h" />

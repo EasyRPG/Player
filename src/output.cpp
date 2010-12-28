@@ -116,11 +116,10 @@ void Output::WarningStr(std::string warn) {
 		file << warn;
 		file.close();
 	#elif OUTPUT_TYPE == OUTPUT_MSGBOX
-		Graphics::TimerWait();
 		bool last = DisplayUi->ShowCursor(true);
 		MsgBox::Warning(warn, GAME_TITLE);
 		DisplayUi->ShowCursor(last);
-		Graphics::TimerContinue();
+		Graphics::FrameReset();
 	#endif
 }
 
@@ -158,10 +157,9 @@ void Output::PostStr(std::string msg) {
 		file << msg;
 		file.close();
 	#elif OUTPUT_TYPE == OUTPUT_MSGBOX
-		Graphics::TimerWait();
 		bool last = DisplayUi->ShowCursor(true);
 		MsgBox::OK(msg, GAME_TITLE);
 		DisplayUi->ShowCursor(last);
-		Graphics::TimerContinue();
+		Graphics::FrameReset();
 	#endif
 }

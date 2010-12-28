@@ -19,22 +19,26 @@
 #define _ZOBJ_H_
 
 ///////////////////////////////////////////////////////////
+/// Headers
+///////////////////////////////////////////////////////////
+#include "system.h"
+
+///////////////////////////////////////////////////////////
 /// ZObj class
 ///////////////////////////////////////////////////////////
 class ZObj {
 public:
-	ZObj(long iz, unsigned long icreation, unsigned long iid);
-	~ZObj();
+	ZObj(int z, uint32 creation, uint32 id);
 
-	void SetZ(long n);
-	long GetZ() const ;
-	unsigned long GetCreation() const ;
-	unsigned long GetId() const ;
+	void SetZ(int z);
+	int GetZ() const ;
+	uint32 GetCreation() const;
+	uint32 GetId() const;
 
 private:
-	long z;
-	unsigned long creation;
-	unsigned long ID;
+	int z;
+	uint32 creation;
+	uint32 ID;
 };
 
 #endif

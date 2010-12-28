@@ -24,78 +24,120 @@
 #include <string>
 #include <list>
 #include "SDL.h"
+#include "system.h"
 #include "bitmap.h"
 #include "drawable.h"
 #include "zobj.h"
 
 ////////////////////////////////////////////////////////////
-/// Graphics namespace
+/// Graphics namespace.
+/// Handles screen drawing.
 ////////////////////////////////////////////////////////////
 namespace Graphics {
+	////////////////////////////////////////////////////////
+	/// Initializes Graphics.
+	////////////////////////////////////////////////////////
 	void Init();
+
+	////////////////////////////////////////////////////////
+	/// Disposes Graphics.
+	////////////////////////////////////////////////////////
 	void Quit();
-	void TimerWait();
-	void TimerContinue();
+
+	////////////////////////////////////////////////////////
+	/// Updates the screen.
+	////////////////////////////////////////////////////////
 	void Update();
-	void DrawFrame();
-	void Freeze();
+
+	////////////////////////////////////////////////////////
+	/// Resets the fps count, should be called after an
+	/// expensive operation.
+	////////////////////////////////////////////////////////
 	void FrameReset();
+
+	////////////////////////////////////////////////////////
+	/// Waits frames.
+	/// @param duration : frames to wait
+	////////////////////////////////////////////////////////
 	void Wait(int duration);
+
+	////////////////////////////////////////////////////////
+	/// Get a bitmap with the actual contents of the screen.
+	/// @return screen contents
+	////////////////////////////////////////////////////////
 	Bitmap* SnapToBitmap();
-	int GetFrameCount();
-	void SetFrameCount(int nframecount);
 
-	void RegisterDrawable(unsigned long ID, Drawable* drawable);
-	void RemoveDrawable(unsigned long ID);
-
-	bool SortZObj(const ZObj* first, const ZObj* second);
-	ZObj* RegisterZObj(long z, unsigned long ID);
-	void RegisterZObj(long z, unsigned long ID, bool multiz);
-	void RemoveZObj(unsigned long ID);
-	void RemoveZObj(unsigned long ID, bool multiz);
-	void UpdateZObj(ZObj* zobj, long z);
-
-	void PrintFPS();
-
-	//////////////////////////////////
-	/// Screen Transition Variables
-	//////////////////////////////////
+	/// Transition types.
 	enum TransitionType {
-		FadeIn,
-		FadeOut,
-		NoTransition
+		TransitionFadeIn,
+		TransitionFadeOut,
+		TransitionRandomBlocks,
+		TransitionRandomBlocksUp,
+		TransitionRandomBlocksDown,
+		TransitionBlindOpen,
+		TransitionBlindClose,
+		TransitionVerticalStripesIn,
+		TransitionVerticalStripesOut,
+		TransitionHorizontalStripesIn,
+		TransitionHorizontalStripesOut,
+		TransitionBorderToCenterIn,
+		TransitionBorderToCenterOut,
+		TransitionCenterToBorderIn,
+		TransitionCenterToBorderOut,
+		TransitionScrollUpIn,
+		TransitionScrollDownIn,
+		TransitionScrollLeftIn,
+		TransitionScrollRightIn,
+		TransitionScrollUpOut,
+		TransitionScrollDownOut,
+		TransitionScrollLeftOut,
+		TransitionScrollRightOut,
+		TransitionVerticalCombine,
+		TransitionVerticalDivision,
+		TransitionHorizontalCombine,
+		TransitionHorizontalDivision,
+		TransitionCrossCombine,
+		TransitionCrossDivision,
+		TransitionZoomIn,
+		TransitionZoomOut,
+		TransitionMosaicIn,
+		TransitionMosaicOut,
+		TransitionWaveIn,
+		TransitionWaveOut,
+		TransitionErase,
+		TransitionNone
 	};
 
-	void Transition(TransitionType type, int time, bool wait);
-	void DoTransition();
+	////////////////////////////////////////////////////////
+	/// Does a screen transition.
+	/// @param type : transition type
+	/// @param duration : transition duration
+	/// @param erase : erase screen flag
+	////////////////////////////////////////////////////////
+	void Transition(TransitionType type, int duration, bool erase = false);
 
-	extern TransitionType actual_transition;
+	////////////////////////////////////////////////////////
+	/// Freezes the screen, and prepares it for a
+	/// transition.
+	////////////////////////////////////////////////////////
+	void Freeze();
 
-	extern bool is_in_transition_yet;
-	extern bool frozen;
+	/// @return frame count since player started
+	int GetFrameCount();
 
-	//////////////////////////////////
-	//////////////////////////////////
+	/// @param framecount : frame count since player started
+	void SetFrameCount(int framecount);
 
-	extern int fps;
-	extern int framerate;
-	extern int framecount;
-	extern double framerate_interval;
-	extern unsigned long creation;
-	extern unsigned long ID;
-	extern unsigned long last_ticks;
-	extern unsigned long last_ticks_wait;
-	extern unsigned long next_ticks_fps;
+	void RegisterDrawable(uint32 ID, Drawable* drawable);
+	void RemoveDrawable(uint32 ID);
+	ZObj* RegisterZObj(int z, uint32 ID);
+	void RegisterZObj(int z, uint32 ID, bool multiz);
+	void RemoveZObj(uint32 ID);
+	void RemoveZObj(uint32 ID, bool multiz);
+	void UpdateZObj(ZObj* zobj, int z);
 
-	extern Uint32 default_backcolor;
-
-	extern bool fps_showing;
-
-	extern std::map<unsigned long, Drawable*> drawable_map;
-	extern std::map<unsigned long, Drawable*>::iterator it_drawable_map;
-
-	extern std::list<ZObj*> zlist;
-	extern std::list<ZObj*>::iterator it_zlist;
+	extern bool fps_in_screen;
+	extern uint32 drawable_id;
 }
 
 #endif

@@ -91,6 +91,8 @@ private:
 	bool CommandSkip();
 	bool CommandWait();
 	bool CommandTeleport();
+	bool CommandEraseScreen();
+	bool CommandShowScreen();
 
 	void CommandEnd();
 };

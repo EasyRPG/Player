@@ -35,6 +35,7 @@
 #include "keys.h"
 #include "output.h"
 #include "player.h"
+#include "sdl_bitmap.h"
 
 ///////////////////////////////////////////////////////////
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
@@ -95,7 +96,7 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag) :
 
 	SetAppIcon();
 
-	StartDisplayModeChange();
+	BeginDisplayModeChange();
 
 	if (!RequestVideoMode(width, height, fs_flag)) {
 		Output::Error("No suitable video resolution found. Aborting.");
@@ -114,6 +115,12 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag) :
 	SDL_JoystickOpen(0);
 #endif
 
+#ifdef USE_SDL_TTF
+	if (TTF_Init() == -1) {
+		Output::Error("Couldn't initialize SDL_ttf library.\n%s\n", TTF_GetError());
+	}
+#endif
+
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 	ShowCursor(true);
 #else
@@ -129,7 +136,12 @@ SdlUi::~SdlUi() {
 	SDL_Quit();
 }
 
+///////////////////////////////////////////////////////////
 bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
+	// FIXME: This method has redundant comments.
+	// FIXME: Use HAVE_HWSURFACE or like define for a generic check if that's supported.
+	// FIXME: Split into sub methods and/or improve code (and fix code formatting)
+
 	const SDL_VideoInfo *vinfo;
 	SDL_Rect **modes;
 	uint32 flags = SDL_SWSURFACE;
@@ -141,7 +153,7 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 
 	if (vinfo->wm_available) {
 		toggle_fs_available = true;
-		do {
+		for(;;) {
 			if (fullscreen) {
 				flags |= SDL_FULLSCREEN;
 			}
@@ -185,7 +197,7 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 				// No mode available :(
 				return false;
 			}
-		} while (true);
+		}
 	} // wm_available
 
 	if (!fullscreen) {
@@ -258,7 +270,7 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 }
 
 ////////////////////////////////////////////////////////////
-void SdlUi::StartDisplayModeChange() {
+void SdlUi::BeginDisplayModeChange() {
 	last_display_mode = current_display_mode;
 	current_display_mode.effective = false;
 	mode_changing = true;
@@ -291,13 +303,12 @@ void SdlUi::EndDisplayModeChange() {
 
 ////////////////////////////////////////////////////////////
 bool SdlUi::RefreshDisplayMode() {
-
 	uint32 flags = current_display_mode.flags;
 	int display_width = current_display_mode.width;
 	int display_height = current_display_mode.height;
 	int bpp = current_display_mode.bpp;
 
-	Graphics::fps_showing = (flags & SDL_FULLSCREEN) == SDL_FULLSCREEN;
+	Graphics::fps_in_screen = (flags & SDL_FULLSCREEN) == SDL_FULLSCREEN;
 
 	if (zoom_available && current_display_mode.zoom) {
 		display_width *= 2;
@@ -341,8 +352,15 @@ bool SdlUi::RefreshDisplayMode() {
 	return true;
 }
 
+///////////////////////////////////////////////////////////
 void SdlUi::SetBackcolor(const Color& color) {
 	back_color = SDL_MapRGB(main_surface->format, color.red, color.green, color.blue);
+}
+
+Color SdlUi::GetBackcolor() {
+	uint8 r, g, b, a;
+	SDL_GetRGBA(back_color, main_surface->format, &r, &g, &b, &a);
+	return Color(r, g, b, a);
 }
 
 ///////////////////////////////////////////////////////////
@@ -403,12 +421,21 @@ void SdlUi::UpdateDisplay() {
 }
 
 ///////////////////////////////////////////////////////////
-void SdlUi::SetTitle(const std::string title) {
+void SdlUi::BeginScreenCapture() {
+	CleanDisplay();
+}
+
+Bitmap* SdlUi::EndScreenCapture() {
+	return (Bitmap*)new SdlBitmap(SDL_DisplayFormat(main_surface));
+}
+
+///////////////////////////////////////////////////////////
+void SdlUi::SetTitle(const std::string &title) {
 	SDL_WM_SetCaption(title.c_str(), NULL);
 }
 
 ///////////////////////////////////////////////////////////
-void SdlUi::DrawScreenText(const std::string& text) {
+void SdlUi::DrawScreenText(const std::string &text) {
 	if (SDL_MUSTLOCK(main_surface))
 		SDL_LockSurface(main_surface);
 
@@ -428,44 +455,34 @@ bool SdlUi::ShowCursor(bool flag) {
 	return temp_flag;
 }
 
-void stretch16(uint16* s, uint16* d, int w) {
-	for(int i = 0; i < w; i++) {
-		*d++ = *s;
-		*d++ = *s++;
-	}
-}
-
-void stretch32(uint32* s, uint32* d, int w)
-{
-	for(int i = 0; i < w; i++) {
-		*d++ = *s;
-		*d++ = *s++;
-	}
-}
-
 ///////////////////////////////////////////////////////////
-void SdlUi::Blit2X(SDL_Surface* src, SDL_Surface* dst) {
-	int src_pitch, dst_pitch;
-
-	if (src == dst) {
-		return;
+inline void stretch16(uint16* s, uint16* d, int w) {
+	for(int i = 0; i < w; i++) {
+		*d++ = *s;
+		*d++ = *s++;
 	}
+}
+
+inline void stretch32(uint32* s, uint32* d, int w) {
+	for(int i = 0; i < w; i++) {
+		*d++ = *s;
+		*d++ = *s++;
+	}
+}
+
+void SdlUi::Blit2X(SDL_Surface* src, SDL_Surface* dst) {
+	if (src == dst) return;
 	
-	if (SDL_MUSTLOCK(src))
-		SDL_LockSurface(src);
+	if (SDL_MUSTLOCK(src)) SDL_LockSurface(src);
+	if (SDL_MUSTLOCK(dst)) SDL_LockSurface(dst);
 
-	if (SDL_MUSTLOCK(dst))
-		SDL_LockSurface(dst);
-
-	//uint32* src_pixels = (uint32*)src->pixels;
-	//uint32* dst_pixels = (uint32*)dst->pixels;
-
-	src_pitch = src->pitch / src->format->BytesPerPixel;
-	dst_pitch = dst->pitch / dst->format->BytesPerPixel;
+	int src_pitch = src->pitch / src->format->BytesPerPixel;
+	int dst_pitch = dst->pitch / dst->format->BytesPerPixel;
 
 	if (current_display_mode.bpp == 16) {
-		uint16* src_pixels = (uint16*) src->pixels;
-		uint16* dst_pixels = (uint16*) dst->pixels;
+		uint16* src_pixels = (uint16*)src->pixels;
+		uint16* dst_pixels = (uint16*)dst->pixels;
+
 		for (register int i = 0; i < src->h; i++) {
 			stretch16(src_pixels, dst_pixels, src->w);
 			dst_pixels += dst_pitch;
@@ -474,8 +491,9 @@ void SdlUi::Blit2X(SDL_Surface* src, SDL_Surface* dst) {
 			dst_pixels += dst_pitch;
 		}
 	} else {
-		uint32* src_pixels = (uint32*) src->pixels;
-		uint32* dst_pixels = (uint32*) dst->pixels;
+		uint32* src_pixels = (uint32*)src->pixels;
+		uint32* dst_pixels = (uint32*)dst->pixels;
+
 		for (register int i = 0; i < src->h; i++) {
 			stretch32(src_pixels, dst_pixels, src->w);
 			dst_pixels += dst_pitch;
@@ -485,11 +503,8 @@ void SdlUi::Blit2X(SDL_Surface* src, SDL_Surface* dst) {
 		}
 	}
 
-	if (SDL_MUSTLOCK(src))
-		SDL_UnlockSurface(src);
-
-	if (SDL_MUSTLOCK(dst))
-		SDL_UnlockSurface(dst);
+	if (SDL_MUSTLOCK(src)) SDL_UnlockSurface(src);
+	if (SDL_MUSTLOCK(dst)) SDL_UnlockSurface(dst);
 }
 
 ///////////////////////////////////////////////////////////
@@ -553,14 +568,14 @@ void SdlUi::ProcessEvent(SDL_Event &evnt) {
 						}
 #endif
 						// Otherwise F4 toggles fullscreen
-						StartDisplayModeChange();
+						BeginDisplayModeChange();
 							ToggleFullscreen();
 						EndDisplayModeChange();
 					}
 					return;
 
 				case SDLK_F5:
-					StartDisplayModeChange();
+					BeginDisplayModeChange();
 						ToggleZoom();
 					EndDisplayModeChange();
 					return;
@@ -572,7 +587,7 @@ void SdlUi::ProcessEvent(SDL_Event &evnt) {
 				case SDLK_RETURN:
 				case SDLK_KP_ENTER:
 					if (evnt.key.keysym.mod & KMOD_LALT || (evnt.key.keysym.mod & KMOD_RALT)) {
-						StartDisplayModeChange();
+						BeginDisplayModeChange();
 							ToggleFullscreen();
 						EndDisplayModeChange();
 						return;
@@ -716,6 +731,7 @@ void SdlUi::ResetKeys() {
 bool SdlUi::IsFullscreen() {
 	return (current_display_mode.flags & SDL_FULLSCREEN) == SDL_FULLSCREEN;
 }
+
 long SdlUi::GetWidth() {
 	return current_display_mode.width;
 }

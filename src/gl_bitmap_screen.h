@@ -14,31 +14,3 @@
 // You should have received a copy of the GNU General Public License
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////
-// Headers
-////////////////////////////////////////////////////////////
-#include "zobj.h"
-
-///////////////////////////////////////////////////////////
-ZObj::ZObj(int z, uint32 creation, uint32 ID)  :
-	z(z),
-	creation(creation),
-	ID(ID) {
-}
-
-///////////////////////////////////////////////////////////
-void ZObj::SetZ(int nz) {
-	z = nz;
-}
-int ZObj::GetZ() const {
-	return z;
-}
-
-uint32 ZObj::GetCreation() const {
-	return creation;
-}
-
-uint32 ZObj::GetId() const {
-	return ID;
-}

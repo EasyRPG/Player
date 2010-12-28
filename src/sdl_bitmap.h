@@ -29,11 +29,11 @@
 ////////////////////////////////////////////////////////////
 class SdlBitmap : public Bitmap {
 public:
-	SdlBitmap(int width, int height, bool transparent = true);
-	SdlBitmap(const std::string filename, bool transparent = true);
-	SdlBitmap(const uint8* data, uint bytes, bool transparent = true);
-	SdlBitmap(Bitmap* source, Rect src_rect, bool transparent = true);
-
+	SdlBitmap(int width, int height, bool transparent);
+	SdlBitmap(const std::string filename, bool transparent);
+	SdlBitmap(const uint8* data, uint bytes, bool transparent);
+	SdlBitmap(Bitmap* source, Rect src_rect, bool transparent);
+	SdlBitmap(SDL_Surface* bitmap, bool transparent = true);
 	~SdlBitmap();
 
 	void Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity);
@@ -57,8 +57,6 @@ public:
 
 protected:
 	friend class SdlBitmapScreen;
-
-	SdlBitmap(SDL_Surface* bitmap, bool transparent = true);
 
 	//void SetupBitmapData();
 

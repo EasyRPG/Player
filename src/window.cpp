@@ -30,6 +30,7 @@
 ////////////////////////////////////////////////////////////
 Window::Window():
 	type(TypeWindow),
+	ID(Graphics::drawable_id++),
 	windowskin(NULL),
 	contents(NULL),
 	stretch(true),
@@ -52,7 +53,6 @@ Window::Window():
 	animation_count(0.0),
 	animation_increment(0.0) {
 
-	ID = Graphics::ID++;
 	zobj = Graphics::RegisterZObj(0, ID);
 	Graphics::RegisterDrawable(ID, this);
 	

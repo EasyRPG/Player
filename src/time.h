@@ -15,37 +15,29 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef _TIME_H_
+#define _TIME_H_
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "game_temp.h"
+#include "system.h"
 
 ////////////////////////////////////////////////////////////
-bool Game_Temp::menu_calling;
-bool Game_Temp::menu_beep;
-Game_Battler* Game_Temp::forcing_battler;
-bool Game_Temp::battle_calling;
-bool Game_Temp::shop_calling;
-bool Game_Temp::name_calling;
-bool Game_Temp::save_calling;
-bool Game_Temp::gameover;
-int Game_Temp::common_event_id;
-bool Game_Temp::transition_processing;
-Graphics::TransitionType Game_Temp::transition_type;
-bool Game_Temp::transition_erase;
-
+/// Time namespace.
 ////////////////////////////////////////////////////////////
-void Game_Temp::Init() {
-	menu_calling = false;
-	menu_beep = false;
-	forcing_battler = NULL;
-	battle_calling = false;
-	shop_calling = false;
-	name_calling = false;
-	save_calling = false;
-	gameover = false;
-	common_event_id = 0;
-	transition_processing = false;
-	transition_type = Graphics::TransitionNone;
-	transition_erase = false;
+namespace Time {
+	////////////////////////////////////////////////////////
+	/// Gets current time.
+	/// @return current time in ms
+	////////////////////////////////////////////////////////
+	uint32 Get();
+
+	////////////////////////////////////////////////////////
+	/// Sleeps some time.
+	/// @param time : ms to sleep
+	////////////////////////////////////////////////////////
+	void Sleep(uint32 time);
 }
+
+#endif

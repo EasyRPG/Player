@@ -22,163 +22,198 @@
 #include <sstream>
 #include <vector>
 #include "graphics.h"
+#include "bitmap_screen.h"
 #include "cache.h"
+#include "baseui.h"
 #include "drawable.h"
-#include "font_render_8x8.h"
-#include "options.h"
-#include "output.h"
-#include "player.h"
-#include "SDL_ttf.h"
-#include "sdl_ui.h"
-#include "system.h"
+#include "time.h"
 #include "util_macro.h"
+#include "player.h"
 
 ////////////////////////////////////////////////////////////
-// Global Variables
-////////////////////////////////////////////////////////////
 namespace Graphics {
+	bool fps_in_screen;
+	uint32 drawable_id;
+
+	void InternUpdate1(bool reset = false);
+	void InternUpdate2(bool reset = false);
+	void UpdateTitle();
+	void DrawFrame();
+	void DrawOverlay();
+
+	bool overlay_visible;
 	int fps;
 	int framerate;
 	int framecount;
-	double framerate_interval;
-	unsigned long creation;
-	unsigned long ID;
-	unsigned long last_ticks;
-	unsigned long last_ticks_wait;
-	unsigned long next_ticks_fps;
+	int fps_mode;
+	uint32 timer_wait;
 
-	bool is_in_transition_yet;
+	void UpdateTransition();
+
+	BitmapScreen* frozen_screen;
+	BitmapScreen* black_screen;
+	BitmapScreen* screen1;
+	BitmapScreen* screen2;
 	bool frozen;
+	TransitionType transition_type;
+	int transition_duration;
+	int transition_frame;
+	bool screen_erased;
 
-	TransitionType actual_transition;
+	uint32 drawable_creation;
 
-	bool fps_showing;
+	std::map<uint32, Drawable*> drawable_map;
+	std::map<uint32, Drawable*>::iterator it_drawable_map;
 
-	std::map<unsigned long, Drawable*> drawable_map;
-	std::map<unsigned long, Drawable*>::iterator it_drawable_map;
+	bool SortZObj(const ZObj* first, const ZObj* second);
+
+	bool zlist_dirty;
+
 	std::list<ZObj*> zlist;
 	std::list<ZObj*>::iterator it_zlist;
 }
 
-namespace {
-	bool zlist_needs_sorting;
-	bool prepare_transition;
-	bool skip_draw;
-	int transition_frames;
-	int transition_current_frame;
-	int transition_increment;
-	int increment_left, increment_left_acc;
-	int frames_left;
-	bool wait_for_transition;
-	SDL_Surface* fake_screen;
-	SDL_Surface* blank_screen;
-	Font* font;
-
-#ifdef USE_FIXED_TIMESTEP_FPS
-	const int MAXIMUM_FRAME_RATE = 60;
-	const int MINIMUM_FRAME_RATE = 15;
-	const double UPDATE_INTERVAL = 1.0 / MAXIMUM_FRAME_RATE;
-	const int MAX_CYCLES_PER_FRAME = MAXIMUM_FRAME_RATE / MINIMUM_FRAME_RATE;
-	double last_frame_time = 0;
-	double cycles_leftover = 0;
-	double current_time;
-	double update_iterations;
-	bool start;
-#endif
-}
-
-namespace {
-	int gcd(int a, int b) {
-		if (a==0) return b;
-		return gcd(b%a,a);
-	}
-}
-
-////////////////////////////////////////////////////////////
-// Initialize
 ////////////////////////////////////////////////////////////
 void Graphics::Init() {
+	overlay_visible = true;
+	fps_in_screen = false;
 	fps = 0;
 	framerate = DEFAULT_FPS;
 	framecount = 0;
-	creation = 0;
-	ID = 0;
-	framerate_interval = 1000.0 / DEFAULT_FPS;
-	last_ticks = SDL_GetTicks() + (long)framerate_interval;
-	next_ticks_fps = last_ticks + 1000;
+	fps_mode = 0;
+	timer_wait = 0;
+	frozen_screen = BitmapScreen::CreateBitmapScreen(true);
 
-	zlist_needs_sorting = false;
+	black_screen = BitmapScreen::CreateBitmapScreen(true);
+	Bitmap* black_bitmap = Bitmap::CreateBitmap(DisplayUi->GetWidth(), DisplayUi->GetHeight(), false);
+	black_bitmap->Fill(Color());
+	black_screen->SetBitmap(black_bitmap);
 
-	transition_frames = 0;
-	transition_current_frame = 0;
-	transition_increment = 0;
-	actual_transition = NoTransition;
-	fake_screen = NULL;
-	blank_screen = SDL_DisplayFormat(DisplaySdlUi->GetDisplaySurface());
-	SDL_FillRect(blank_screen, NULL, 0);
-
-	is_in_transition_yet = false;
-	wait_for_transition = false;
-	prepare_transition = false;
 	frozen = false;
-	skip_draw = false;
-
-	if (TTF_Init() == -1) {
-		Output::Error("Couldn't initialize SDL_ttf library.\n%s\n", TTF_GetError());
-	}
-
-#ifdef GEKKO
-	fps_showing = true;
-#else
-	fps_showing = false;
-#endif
-
-#ifdef USE_FIXED_TIMESTEP_FPS
-	start = true;
-#endif
-
-	font = new Font(8);
-
+	drawable_creation = 0;
+	drawable_id = 0;
+	zlist_dirty = false;
+	screen_erased = false;
 }
 
+////////////////////////////////////////////////////////////
 void Graphics::Quit() {
-	std::map<unsigned long, Drawable*>::iterator it;
-	std::map<unsigned long, Drawable*> drawable_map_temp = drawable_map;
+	std::map<uint32, Drawable*>::iterator it;
+	std::map<uint32, Drawable*> drawable_map_temp = drawable_map;
+
 	for (it = drawable_map_temp.begin(); it != drawable_map_temp.end(); it++) {
 		delete it->second;
 	}
+
+	drawable_map.clear();
+
 	for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
 		delete *it_zlist;
 	}
-	SDL_FreeSurface(blank_screen);
+
+	zlist.clear();
+
+	if (frozen_screen) {
+		delete frozen_screen;
+		frozen_screen = NULL;
+	}
+
+	if (black_screen) {
+		delete black_screen;
+		black_screen = NULL;
+	}
+
 	Cache::Clear();
-	delete font;
-	TTF_Quit();
 }
 
 ////////////////////////////////////////////////////////////
-// Timer Wait
-////////////////////////////////////////////////////////////
-void Graphics::TimerWait(){
-	last_ticks_wait = SDL_GetTicks();
-}
-
-////////////////////////////////////////////////////////////
-// Timer Continue
-////////////////////////////////////////////////////////////
-void Graphics::TimerContinue() {
-	last_ticks += SDL_GetTicks() - last_ticks_wait;
-	next_ticks_fps += SDL_GetTicks() - last_ticks_wait;
-}
-
-////////////////////////////////////////////////////////////
-// Update
-////////////////////////////////////////////////////////////
-#ifdef USE_FIXED_TIMESTEP_FPS
 void Graphics::Update() {
-	while (true) {
+	if (frozen) return;
+
+	switch(fps_mode) {
+		case 1:
+			InternUpdate2();
+			return;
+		default:
+			InternUpdate1();
+	}
+}
+
+////////////////////////////////////////////////////////////
+void Graphics::InternUpdate1(bool reset) {
+	static const double framerate_interval = 1000.0 / framerate;
+	static uint32 current_time = 0;
+	static double last_time = 0;
+	static double wait_frames = 0.0;
+	static double cycles_leftover = 0.0;
+	static uint32 frames = 0;
+	static uint32 next_fps_time = Time::Get() + 1000;
+
+	if (reset) {
+		last_time = Time::Get();
+		next_fps_time = (uint32)last_time + 1000;
+		frames = 0;
+		return;
+	}
+
+	if (wait_frames >= 1) {
+		wait_frames -= 1;
+		return;
+	}
+	
+	for (;;) {
+		current_time = Time::Get();
+
+		if ((current_time - last_time) >= framerate_interval) {
+			cycles_leftover = wait_frames;
+			wait_frames = ((double)current_time - last_time) / framerate_interval - cycles_leftover;
+			last_time += current_time - last_time - cycles_leftover;
+
+			DrawFrame();
+
+			framecount++;
+			frames++;
+
+			if (current_time >= next_fps_time) {
+				next_fps_time += 1000;
+				fps = frames;
+				frames = 0;
+
+				UpdateTitle();
+			}
+
+			break;
+
+		} else {
+			Time::Sleep((uint32)(framerate_interval - (current_time - last_time)));
+		}
+	}
+}
+
+////////////////////////////////////////////////////////////
+void Graphics::InternUpdate2(bool reset) {
+	static const int MAXIMUM_FRAME_RATE = framerate;
+	static const int MINIMUM_FRAME_RATE = max(framerate / 4, 1);
+	static const int MAX_CYCLES_PER_FRAME = MAXIMUM_FRAME_RATE / MINIMUM_FRAME_RATE;
+	static const double UPDATE_INTERVAL = 1.0 / MAXIMUM_FRAME_RATE;
+	static double last_frame_time = 0.0;
+	static double cycles_leftover = 0.0;
+	static double current_time = 0.0;
+	static double update_iterations = 0.0;
+	static bool start = true;
+	static int frames = 0;
+	static uint32 next_fps_time = Time::Get() + 1000; 
+
+	if (reset) {
+		start = true;
+		frames = 0;
+		next_fps_time = Time::Get() + 1000;
+		return;
+	}
+
+	for (;;) {
 		if (start) {
-			current_time = SDL_GetTicks() / 1000.0;
+			current_time = Time::Get() / 1000.0;
 			update_iterations = (current_time - last_frame_time) + cycles_leftover;
 
 			/*if (update_iterations > (MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL)) {
@@ -189,8 +224,9 @@ void Graphics::Update() {
 
 		if (update_iterations > UPDATE_INTERVAL) {
 			update_iterations -= UPDATE_INTERVAL;
-			
-			// Proccess game logic
+
+			framecount++;
+
 			return;
 		}
 
@@ -199,225 +235,297 @@ void Graphics::Update() {
 		last_frame_time = current_time;
 
 		DrawFrame();
-	}
-}
+		
+		frames++;
 
-#else
+		if (Time::Get() >= next_fps_time) {
+			next_fps_time += 1000;
+			fps = frames;
+			frames = 0;
 
-void Graphics::Update() {
-	static unsigned long ticks;
-	static unsigned long frames = 0;
-	static double waitframes = 0;
-	static double cyclesleftover;
-
-	if (waitframes >= 1) {
-		waitframes -= 1;
-		return;
-	}
-	
-	for (;;) {
-		ticks = SDL_GetTicks();
-
-																 // FIXME: This code reduces speed of zoomed windows a lot
-		if ((ticks - last_ticks) >= (unsigned long)framerate_interval /*|| (framerate_interval - ticks + last_ticks) < 10*/) {
-			cyclesleftover = waitframes;
-			waitframes = (double)(ticks - last_ticks) / framerate_interval - cyclesleftover;
-
-			//last_ticks += (ticks - last_ticks) - (unsigned long)cyclesleftover;
-			last_ticks = ticks;
-
-			DrawFrame();
-
-			++framecount;
-			++frames;
-
-			if (ticks >= next_ticks_fps) {
-				next_ticks_fps += 1000;
-				fps = frames;
-				frames = 0;
-
-				char title[255];
-				sprintf(title, "%s - %d FPS", GAME_TITLE, fps);
-
-				SDL_WM_SetCaption(title, NULL);
-			}
-
-			break;
-
-		} else {
-			SDL_Delay((long)(framerate_interval) - (ticks - last_ticks));
+			UpdateTitle();
 		}
 	}
-}
-#endif
-
-void Graphics::DoTransition() {
-	// Preparation is done
-	prepare_transition = false;
-	if (transition_current_frame < transition_frames) {
-
-		uint8 inc;
-		if ( ++transition_current_frame % frames_left == 0 ) {
-			increment_left_acc += increment_left;
-		}
-		inc = (uint8)(transition_current_frame * transition_increment+increment_left_acc);
-
-		switch (actual_transition) {
-			case FadeIn:
-				SDL_FillRect(DisplaySdlUi->GetDisplaySurface(), NULL, 0);
-				SDL_SetAlpha(fake_screen, SDL_SRCALPHA, inc);
-				SDL_BlitSurface(fake_screen, NULL, DisplaySdlUi->GetDisplaySurface(), NULL);
-				////////
-				break;
-
-			case FadeOut:
-				SDL_SetAlpha(blank_screen, SDL_SRCALPHA, inc);
-				SDL_BlitSurface(fake_screen, NULL, DisplaySdlUi->GetDisplaySurface(), NULL);
-				SDL_BlitSurface(blank_screen, NULL, DisplaySdlUi->GetDisplaySurface(), NULL);
-				break;
-
-			default:
-				break;
-		}
-	} else {
-		if (actual_transition == FadeOut) {
-			// Little hack to skip drawing next frame
-			// when changing scenes
-			skip_draw = true;
-		}
-		if (frozen) {
-			// Free fake_screen
-			SDL_FreeSurface(fake_screen);
-			fake_screen = NULL;
-			// Unfreeze...
-			frozen = false;
-		}
-		// Transition is over
-		is_in_transition_yet = false;
-	}
-}
-
-void Graphics::PrintFPS() {
-	std::stringstream text;
-	SDL_Color fg_color = { 255, 255, 255, 0 };
-	SDL_Surface* text_surface;
-	text << "FPS: " << fps;
-	SDL_Rect dst_pos = { 10, 10, 0, 0 };
-	text_surface = TTF_RenderText_Solid(font->GetTTF(), text.str().c_str(), fg_color);
-	SDL_BlitSurface(text_surface, NULL, DisplaySdlUi->GetDisplaySurface(), &dst_pos);
-	SDL_FreeSurface(text_surface);
 }
 
 ////////////////////////////////////////////////////////////
-// Draw Frame
+void Graphics::UpdateTitle() {
+	if (fps_in_screen) return;
+
+	std::stringstream title;
+	title << GAME_TITLE << " - FPS " << fps;
+	DisplayUi->SetTitle(title.str());
+}
+
 ////////////////////////////////////////////////////////////
 void Graphics::DrawFrame() {
-	if ( !frozen && !skip_draw ) {
-		if (zlist_needs_sorting) {
-			zlist.sort(SortZObj);
-			zlist_needs_sorting = false;
-		}
-
-		DisplayUi->CleanDisplay();
-
-		DrawableType type;
-		for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
-			type = drawable_map[(*it_zlist)->GetId()]->GetType();
-			if (( (!is_in_transition_yet) || (type != TypeWindow) )
-				|| (!wait_for_transition)) // Make sure not to draw Windows until transition's finished
-				drawable_map[(*it_zlist)->GetId()]->Draw((*it_zlist)->GetZ());
-		}
-	} else {
-		skip_draw = false;
-	}
-
-	// If we are preparing for transition
-	// we're done here
-	if (prepare_transition) {
+	if (transition_duration > 0) {
+		UpdateTransition();
 		return;
 	}
+	if (screen_erased) return;
 
-	// Print FPS if needed
-	if (fps_showing)
-		PrintFPS();
+	if (zlist_dirty) {
+		zlist.sort(SortZObj);
+		zlist_dirty = false;
+	}
+
+	DisplayUi->CleanDisplay();
+
+	for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
+		drawable_map[(*it_zlist)->GetId()]->Draw((*it_zlist)->GetZ());
+	}
+
+	if (overlay_visible) {
+		DrawOverlay();
+	}
 
 	DisplayUi->UpdateDisplay();
 }
 
 ////////////////////////////////////////////////////////////
-// Freeze screen
+void Graphics::DrawOverlay() {
+	if (Graphics::fps_in_screen) {
+		std::stringstream text;
+		text << "FPS: " << fps;
+		DisplayUi->DrawScreenText(text.str());
+	}
+}
+
+////////////////////////////////////////////////////////////
+Bitmap* Graphics::SnapToBitmap() {
+	DisplayUi->BeginScreenCapture();
+
+	for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
+		drawable_map[(*it_zlist)->GetId()]->Draw((*it_zlist)->GetZ());
+	}
+
+	return DisplayUi->EndScreenCapture();
+}
+
 ////////////////////////////////////////////////////////////
 void Graphics::Freeze() {
-	// TODO
-	// Make a copy of current screen
-	fake_screen = SDL_DisplayFormat(DisplaySdlUi->GetDisplaySurface());
-	// Screen is frozen now
+	frozen_screen->SetBitmap(SnapToBitmap());
 	frozen = true;
 }
 
 ////////////////////////////////////////////////////////////
-// Transition
-////////////////////////////////////////////////////////////
-void Graphics::Transition(TransitionType type, int time, bool wait) {
-	//////
-	prepare_transition = true;
-	skip_draw = false;
-	DrawFrame();
-	/////
+void Graphics::Transition(TransitionType type, int duration, bool erase) {
+	if (erase && screen_erased) return;
 
-	if (time <= 0) time = 1;
-	transition_frames = time;
-	transition_increment = 255 / time;
-	transition_current_frame = 0;
-	increment_left_acc = 0;
-	actual_transition = type;
-	wait_for_transition = wait;
+	if (type != TransitionNone) {
+		transition_type = type;
+		transition_frame = 0;
+		transition_duration = type == TransitionErase ? 1 : duration;
 
-	int div = gcd(255%time, time);
+		if (zlist_dirty) {
+			zlist.sort(SortZObj);
+			zlist_dirty = false;
+		}
 
-	increment_left = (255%time) / div;
-	frames_left = time / div;
+		if (!frozen) Freeze();
 
-	if (!frozen) {
-		// Get into actual transition
-		is_in_transition_yet = true;
-		
-		// Freeze screen
-		Freeze();
+		if (erase) {
+			screen1 = frozen_screen;
+
+			screen2 = black_screen;
+		} else {
+			screen2 = frozen_screen;
+
+			if (screen_erased)
+				screen1 = black_screen;
+			else 
+				screen1 = screen2;
+		}
+
+		Color color = DisplayUi->GetBackcolor();
+		DisplayUi->SetBackcolor(Color());
+
+		for (int i = 1; i <= transition_duration; i++) {
+			Player::Update();
+			InternUpdate1();
+		}
+
+		DisplayUi->SetBackcolor(color);
 	}
 
-	do {
-		DoTransition();
-		Update();
-	} while (is_in_transition_yet);
+	if (!erase)
+		frozen_screen->SetBitmap(NULL);
+
+	frozen = false;
+	screen_erased = erase;
+
+	transition_duration = 0;
+
+	FrameReset();
 }
 
-////////////////////////////////////////////////////////////
-// Reset frames
+void Graphics::UpdateTransition() {
+	int w = DisplayUi->GetWidth();
+	int h = DisplayUi->GetHeight();
+
+	transition_frame++;
+
+	int percentage = transition_frame * 100 / transition_duration;
+
+	DisplayUi->CleanDisplay();
+
+	switch (transition_type) {
+	case TransitionFadeIn:
+		screen1->BlitScreen(0, 0);
+		screen2->SetOpacityEffect(255 * percentage / 100);
+		screen2->BlitScreen(0, 0);
+		break;
+	case TransitionFadeOut:
+		screen1->BlitScreen(0, 0);
+		screen2->SetOpacityEffect(255 * percentage / 100);
+		screen2->BlitScreen(0, 0);
+		break;
+	case TransitionRandomBlocks:
+		break;
+	case TransitionRandomBlocksUp:
+		break;
+	case TransitionRandomBlocksDown:
+		break;
+	case TransitionBlindOpen:
+		for (int i = 0; i < h / 8; i++) {
+			screen1->BlitScreen(0, i * 8, Rect(0, i * 8, w, 8 - 8 * percentage / 100));
+			screen2->BlitScreen(0, i * 8 + 8 - 8 * percentage / 100, Rect(0, i * 8 + 8 - 8 * percentage / 100, w, 8 * percentage / 100));
+		}
+		break;
+	case TransitionBlindClose:
+		for (int i = 0; i < h / 8; i++) {
+			screen1->BlitScreen(0, i * 8 + 8 * percentage / 100, Rect(0, i * 8 + 8 * percentage / 100, w, 8 - 8 * percentage / 100));
+			screen2->BlitScreen(0, i * 8, Rect(0, i * 8, w, 8 * percentage / 100));
+		}
+		break;
+	case TransitionVerticalStripesIn:
+	case TransitionVerticalStripesOut:
+		for (int i = 0; i < h / 6 + 1 - h / 6 * percentage / 100; i++) {
+			screen1->BlitScreen(0, i * 6 + 3, Rect(0, i * 6 + 3, w, 3));
+			screen1->BlitScreen(0, h - i * 6, Rect(0, h - i * 6, w, 3));
+		}
+		for (int i = 0; i < h / 6 * percentage / 100; i++) {
+			screen2->BlitScreen(0, i * 6, Rect(0, i * 6, w, 3));
+			screen2->BlitScreen(0, h - 3 - i * 6, Rect(0, h - 3 - i * 6, w, 3));
+		}
+		break;
+	case TransitionHorizontalStripesIn:
+	case TransitionHorizontalStripesOut:
+		for (int i = 0; i < w / 8 + 1 - w / 8 * percentage / 100; i++) {
+			screen1->BlitScreen(i * 8 + 4, 0, Rect(i * 8 + 4, 0, 4, h));
+			screen1->BlitScreen(w  - i * 8, 0, Rect(w - i * 8, 0, 4, h));
+		}
+		for (int i = 0; i < w / 8 * percentage / 100; i++) {
+			screen2->BlitScreen(i * 8, 0, Rect(i * 8, 0, 4, h));
+			screen2->BlitScreen(w - 4 - i * 8, 0, Rect(w - 4 - i * 8, 0, 4, h));
+		}
+		break;
+	case TransitionBorderToCenterIn:
+	case TransitionBorderToCenterOut:
+		screen2->BlitScreen(0, 0);
+		screen1->BlitScreen((w / 2) * percentage / 100, (h / 2) * percentage / 100, Rect((w / 2) * percentage / 100, (h / 2) * percentage / 100, w - w * percentage / 100, h - h * percentage / 100));
+		break;
+	case TransitionCenterToBorderIn:
+	case TransitionCenterToBorderOut:
+		screen1->BlitScreen(0, 0);
+		screen2->BlitScreen(w / 2 - (w / 2) * percentage / 100, h / 2 - (h / 2) * percentage / 100, Rect(w / 2 - (w / 2) * percentage / 100, h / 2 - (h / 2) * percentage / 100, w * percentage / 100, h * percentage / 100));
+		break;
+	case TransitionScrollUpIn:
+	case TransitionScrollUpOut:
+		screen1->BlitScreen(0, -h * percentage / 100);
+		screen2->BlitScreen(0, h - h * percentage / 100);
+		break;
+	case TransitionScrollDownIn:
+	case TransitionScrollDownOut:
+		screen1->BlitScreen(0, h * percentage / 100);
+		screen2->BlitScreen(0, -h + h * percentage / 100);
+		break;
+	case TransitionScrollLeftIn:
+	case TransitionScrollLeftOut:
+		screen1->BlitScreen(-w * percentage / 100, 0);
+		screen2->BlitScreen(w - w * percentage / 100, 0);
+		break;
+	case TransitionScrollRightIn:
+	case TransitionScrollRightOut:
+		screen1->BlitScreen(w * percentage / 100, 0);
+		screen2->BlitScreen(-w + w * percentage / 100, 0);
+		break;
+	case TransitionVerticalCombine:
+		screen1->BlitScreen(0, (h / 2) * percentage / 100, Rect(0, (h / 2) * percentage / 100, w, h - h * percentage / 100));
+		screen2->BlitScreen(0, -h / 2 + (h / 2) * percentage / 100, Rect(0, 0, w, h / 2));
+		screen2->BlitScreen(0, h - (h / 2) * percentage / 100, Rect(0, h / 2, w, h / 2));
+		break;
+	case TransitionVerticalDivision:
+		screen1->BlitScreen(0, -(h / 2) * percentage / 100, Rect(0, 0, w, h / 2));
+		screen1->BlitScreen(0, h / 2 + (h / 2) * percentage / 100, Rect(0, h / 2, w, h / 2));
+		screen2->BlitScreen(0, (h / 2) - (h / 2) * percentage / 100, Rect(0, h * percentage / 100, w, h * percentage / 100));
+		break;
+	case TransitionHorizontalCombine:
+		screen1->BlitScreen((w / 2) * percentage / 100, 0, Rect((w / 2) * percentage / 100, 0, w - w * percentage / 100, h));
+		screen2->BlitScreen(- w / 2 + (w / 2) * percentage / 100, 0, Rect(0, 0, w / 2, h));
+		screen2->BlitScreen(w - (w / 2) * percentage / 100, 0, Rect(w / 2, 0, w / 2, h));
+		break;
+	case TransitionHorizontalDivision:
+		screen1->BlitScreen(-(w / 2) * percentage / 100, 0, Rect(0, 0, w / 2, h));
+		screen1->BlitScreen(w / 2 + (w / 2) * percentage / 100, 0, Rect(w / 2, 0, w / 2, h));
+		screen2->BlitScreen((w / 2) - (w / 2) * percentage / 100, 0, Rect(w * percentage / 100, 0, w * percentage / 100, h));
+		break;
+	case TransitionCrossCombine:
+		screen1->BlitScreen((w / 2) * percentage / 100, 0, Rect((w / 2) * percentage / 100, 0, w - w * percentage / 100, (h / 2) * percentage / 100));
+		screen1->BlitScreen((w / 2) * percentage / 100, h - (h / 2) * percentage / 100, Rect((w / 2) * percentage / 100, h - (h / 2) * percentage / 100, w - w * percentage / 100, (h / 2) * percentage / 100));
+		screen1->BlitScreen(0, (h / 2) * percentage / 100, Rect(0, (h / 2) * percentage / 100, w, h - h * percentage / 100));
+		screen2->BlitScreen(- w / 2 + (w / 2) * percentage / 100, -h / 2 + (h / 2) * percentage / 100, Rect(0, 0, w / 2, h / 2));
+		screen2->BlitScreen(w - (w / 2) * percentage / 100, -h / 2 + (h / 2) * percentage / 100, Rect(w / 2, 0, w / 2, h / 2));
+		screen2->BlitScreen(w - (w / 2) * percentage / 100, h - (h / 2) * percentage / 100, Rect(w / 2, h / 2, w / 2, h / 2));
+		screen2->BlitScreen(- w / 2 + (w / 2) * percentage / 100, h - (h / 2) * percentage / 100, Rect(0, h / 2, w / 2, h / 2));
+		break;
+	case TransitionCrossDivision:
+		screen1->BlitScreen(-(w / 2) * percentage / 100, -(h / 2) * percentage / 100, Rect(0, 0, w / 2, h / 2));
+		screen1->BlitScreen(w / 2 + (w / 2) * percentage / 100, -(h / 2) * percentage / 100, Rect(w / 2, 0, w / 2, h / 2));
+		screen1->BlitScreen(w / 2 + (w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, Rect(w / 2, h / 2, w / 2, h / 2));
+		screen1->BlitScreen(-(w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, Rect(0, h / 2, w / 2, h / 2));
+		screen2->BlitScreen(w / 2 - (w / 2) * percentage / 100, 0, Rect(w / 2 - (w / 2) * percentage / 100, 0, w * percentage / 100, h / 2 - (h / 2) * percentage / 100));
+		screen2->BlitScreen(w / 2 - (w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, Rect(w / 2 - (w / 2) * percentage / 100, h / 2 + (h / 2) * percentage / 100, w * percentage / 100, h / 2 + (h / 2) * percentage / 100));
+		screen2->BlitScreen(0, h / 2 - (h / 2) * percentage / 100, Rect(0, h / 2 - (h / 2) * percentage / 100, w, h * percentage / 100));
+		break;
+	case TransitionZoomIn:
+		break;
+	case TransitionZoomOut:
+		break;
+	case TransitionMosaicIn:
+		break;
+	case TransitionMosaicOut:
+		break;
+	case TransitionWaveIn:
+		break;
+	case TransitionWaveOut:
+		break;
+	default:
+		break;
+	}
+
+	DisplayUi->UpdateDisplay();
+}
+
 ////////////////////////////////////////////////////////////
 void Graphics::FrameReset() {
-	last_ticks = SDL_GetTicks();
-}
-
-////////////////////////////////////////////////////////////
-// Wait frames
-////////////////////////////////////////////////////////////
-void Graphics::Wait(int duration) {
-	for (int i = duration; i > 0; i--) {
-		Update();
+	switch(fps_mode) {
+	case 1:
+		InternUpdate2(true);
+		return;
+	default:
+		InternUpdate1(true);
 	}
 }
 
 ////////////////////////////////////////////////////////////
-// Snap screen to bitmap
-////////////////////////////////////////////////////////////
-Bitmap* Graphics::SnapToBitmap() {
-	// TODO
-	return Bitmap::CreateBitmap(DisplayUi->GetWidth(), DisplayUi->GetHeight());
+void Graphics::Wait(int duration) {
+	while(duration-- > 0) {
+		Update();
+	}
 }
 
-////////////////////////////////////////////////////////////
-// Properties
 ////////////////////////////////////////////////////////////
 int Graphics::GetFrameCount() {
 	return framecount;
@@ -427,73 +535,62 @@ void Graphics::SetFrameCount(int nframecount) {
 }
 
 ///////////////////////////////////////////////////////////
-// Register Drawable
-///////////////////////////////////////////////////////////
-void Graphics::RegisterDrawable(unsigned long ID, Drawable* drawable) {
+void Graphics::RegisterDrawable(uint32 ID, Drawable* drawable) {
 	drawable_map[ID] = drawable;
 }
 
-///////////////////////////////////////////////////////////
-// Remove Drawable
-///////////////////////////////////////////////////////////
-void Graphics::RemoveDrawable(unsigned long ID) {
-	std::map<unsigned long, Drawable*>::iterator it = Graphics::drawable_map.find(ID);
+void Graphics::RemoveDrawable(uint32 ID) {
+	std::map<uint32, Drawable*>::iterator it = drawable_map.find(ID);
 	drawable_map.erase(it);
 }
 
 ///////////////////////////////////////////////////////////
-// Sort ZObj
-///////////////////////////////////////////////////////////
-inline bool Graphics::SortZObj(const ZObj* first, const ZObj* second) {
-	if (first->GetZ() < second->GetZ()) return true;
-	else if (first->GetZ() > second->GetZ()) return false;
-	else return first->GetCreation() < second->GetCreation();
-}
-
-///////////////////////////////////////////////////////////
-// Register ZObj
-///////////////////////////////////////////////////////////
-ZObj* Graphics::RegisterZObj(long z, unsigned long ID) {
-	creation += 1;
-	ZObj* zobj = new ZObj(z, creation, ID);
-
+ZObj* Graphics::RegisterZObj(int z, uint32 ID) {
+	ZObj* zobj = new ZObj(z, drawable_creation++, ID);
 	zlist.push_back(zobj);
-	zlist_needs_sorting = true;
+
+	zlist_dirty = true;
 
 	return zobj;
 }
-void Graphics::RegisterZObj(long z, unsigned long ID, bool multiz) {
+
+void Graphics::RegisterZObj(int z, uint32 ID, bool multiz) {
 	ZObj* zobj = new ZObj(z, 999999, ID);
 	zlist.push_back(zobj);
-	zlist_needs_sorting = true;
+
+	zlist_dirty = true;
 }
 
 ///////////////////////////////////////////////////////////
-// Remove ZObj
-///////////////////////////////////////////////////////////
-void Graphics::RemoveZObj(unsigned long ID) {
+void Graphics::RemoveZObj(uint32 ID) {
 	RemoveZObj(ID, false);
 }
-void Graphics::RemoveZObj(unsigned long ID, bool multiz) {
+
+void Graphics::RemoveZObj(uint32 ID, bool multiz) {
 	std::vector<std::list<ZObj*>::iterator> to_erase;
-	size_t i = 0;
+
 	for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
 		if ((*it_zlist)->GetId() == ID) {
 			delete *it_zlist;
 			to_erase.push_back(it_zlist);
 			if (!multiz) break;
 		}
-
 	}
-	for (i = 0; i < to_erase.size(); i++) {
+
+	for (uint i = 0; i < to_erase.size(); i++) {
 		zlist.erase(to_erase[i]);
 	}
 }
 
 ///////////////////////////////////////////////////////////
-// Update ZObj Z
-///////////////////////////////////////////////////////////
-void Graphics::UpdateZObj(ZObj* zobj, long z) {
+void Graphics::UpdateZObj(ZObj* zobj, int z) {
 	zobj->SetZ(z);
-	zlist_needs_sorting = true;
+	zlist_dirty = true;
+}
+
+///////////////////////////////////////////////////////////
+inline bool Graphics::SortZObj(const ZObj* first, const ZObj* second) {
+	if (first->GetZ() < second->GetZ()) return true;
+	else if (first->GetZ() > second->GetZ()) return false;
+	else return first->GetCreation() < second->GetCreation();
 }

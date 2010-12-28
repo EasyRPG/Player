@@ -42,6 +42,7 @@ public:
 
 	void Start();
 	void PerformTransition();
+	void PostStart();
 	void Update();
 
 	////////////////////////////////////////////////////////

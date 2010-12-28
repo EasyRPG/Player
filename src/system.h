@@ -32,17 +32,12 @@
 // system.h is oriented to what used libraries and OS are capable of.
 #include "options.h"
 
-#define SCREEN_FORMAT_AUTO		0
-#define SCREEN_FORMAT_RGBA8888	1
-#define SCREEN_FORMAT_RGBA4444	2
-#define SCREEN_FORMAT_RGBA5551	3
-#define SCREEN_FORMAT_RGB444	4
-#define SCREEN_FORMAT_RGB565	5
-#define SCREEN_FORMAT_PALETTE	6
-
 #ifdef USE_OPENGL
 	#define SUPPORT_ZOOM
 	#define SUPPORT_FULL_SCALING
+
+	#define USE_SDL_IMAGE
+
 	#ifdef USE_SOIL
 		#define SUPPORT_BMP
 		#define SUPPORT_GIF
@@ -50,19 +45,10 @@
 		#define SUPPORT_PNG
 		//#define SUPPORT_XYZ
 	#endif
-	#if SCREEN_TARGET_BPP == 16
-		#define SCREEN_BPP 16
-		#define SCREEN_FORMAT SCREEN_FORMAT_RGBA5551
-	#else
-		#define SCREEN_BPP 32
-		#define SCREEN_FORMAT SCREEN_FORMAT_RGBA8888
-	#endif
 #endif
 
 #ifdef USE_SDL
 	#ifndef USE_OPENGL
-		#define SCREEN_BPP SCREEN_TARGET_BPP
-		#define SCREEN_FORMAT SCREEN_FORMAT_AUTO
 		#define USE_SDL_IMAGE
 		//#define USE_RLE
 	#endif

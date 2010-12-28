@@ -82,12 +82,19 @@ void Scene_Title::Start() {
 void Scene_Title::PerformTransition() {
 	static bool faded_in = false;
 	if (!faded_in) {
-		Graphics::Transition(Graphics::FadeIn, 20, true);
+		Graphics::Transition(Graphics::TransitionErase, 1, true);
+
+		Graphics::Transition(Graphics::TransitionFadeIn, 32);
 		faded_in = true;
 	} else {
-		Graphics::Transition(Graphics::FadeOut, 20, false);
+		Graphics::Transition(Graphics::TransitionFadeOut, 12, true);
 		faded_in = false;
 	}
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Title::PostStart() {
+	command_window->SetVisible(true);
 }
 
 ////////////////////////////////////////////////////////////
@@ -181,6 +188,8 @@ void Scene_Title::CreateCommandWindow() {
 
 	// Set the number of frames for the opening animation to last
 	command_window->SetAnimation(32);
+
+	command_window->SetVisible(false);
 }
 
 ////////////////////////////////////////////////////////////
@@ -201,7 +210,7 @@ void Scene_Title::CommandNewGame() {
 	} else {
 		Game_System::SePlay(Data::system.decision_se);
 		Audio::BGM_Stop();
-		Graphics::framecount = 0;
+		Graphics::SetFrameCount(0);
 		CreateGameObjects();
 		Game_Party::SetupStartingMembers();
 		Game_Map::Setup(Data::treemap.start_map_id);

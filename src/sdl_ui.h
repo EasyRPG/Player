@@ -25,6 +25,8 @@
 #include "baseui.h"
 #include "system.h"
 
+class Bitmap;
+
 ///////////////////////////////////////////////////////////
 /// SdlUi class.
 ///////////////////////////////////////////////////////////
@@ -49,18 +51,19 @@ public:
 	///////////////////////////////////////////////////////
 	//@{
 
-	void StartDisplayModeChange();
+	void BeginDisplayModeChange();
 	void EndDisplayModeChange();
 	void Resize(long width, long height);
 	void ToggleFullscreen();
 	void ToggleZoom();
 	void CleanDisplay();
 	void UpdateDisplay();
-	void SetTitle(const std::string title);
-	void DrawScreenText(const std::string& text);
+	void BeginScreenCapture();
+	Bitmap* EndScreenCapture();
+	void SetTitle(const std::string &title);
+	void DrawScreenText(const std::string &text);
 	bool ShowCursor(bool flag);
-	void SetBackcolor(const Color& color);
-
+	
 	void ProcessEvents();
 
 	bool IsFullscreen();
@@ -71,6 +74,9 @@ public:
 	bool GetMouseFocus();
 	int GetMousePosX();
 	int GetMousePosY();
+
+	Color GetBackcolor();
+	void SetBackcolor(const Color &color);
 
 	//@}
 
