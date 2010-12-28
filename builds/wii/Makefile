@@ -25,7 +25,7 @@ INCLUDES	:=  ../../../readers/include ../../src
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS	= -O3 -ansi -pedantic -Wall -Wextra -fno-rtti -DUSE_SDL $(MACHDEP) $(INCLUDE)
+CFLAGS	= -O3 -Wall -Wextra -fno-rtti -DUSE_SDL $(MACHDEP) $(INCLUDE)
 CXXFLAGS	=	$(CFLAGS) -fno-exceptions
 
 LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map

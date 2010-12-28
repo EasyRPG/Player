@@ -23,6 +23,8 @@
 ///////////////////////////////////////////////////////////
 #include <string>
 #include <vector>
+#include "color.h"
+#include "rect.h"
 
 ///////////////////////////////////////////////////////////
 // Forward declarations
@@ -112,10 +114,28 @@ public:
 	virtual void SetTitle(const std::string &title) = 0;
 
 	///////////////////////////////////////////////////////
-	/// Display text on the screen.
+	/// Display white text in the top left corner of the screen.
+	/// Used by the FPS-Display.
 	/// @param text : text to display
 	///////////////////////////////////////////////////////
 	virtual void DrawScreenText(const std::string &text) = 0;
+
+	///////////////////////////////////////////////////////
+	/// Display text on the screen.
+	/// @param text : text to display
+	/// @param x : X-coordinate where text is displayed
+	/// @param y : Y-coordinate where text is displayed
+	/// @param color : Text color
+	///////////////////////////////////////////////////////
+	virtual void DrawScreenText(const std::string &text, int x, int y, Color color = Color(255, 255, 255, 0)) = 0;
+
+	///////////////////////////////////////////////////////
+	/// Display text on the screen.
+	/// @param text : text to display
+	/// @param dst_rect : Rect where text is displayed
+	/// @param color : Text color
+	///////////////////////////////////////////////////////
+	virtual void DrawScreenText(const std::string &text, Rect dst_rect, Color color = Color(255, 255, 255, 0)) = 0;
 
 	///////////////////////////////////////////////////////
 	/// Set if the cursor should be showed.

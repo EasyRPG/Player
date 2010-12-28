@@ -138,6 +138,11 @@ void Input::ResetKeys() {
 	}
 	dir4 = 0;
 	dir8 = 0;
+
+	std::vector<bool> &keystates = DisplayUi->GetKeyStates();
+	for (size_t i = 0; i < keystates.size(); ++i) {
+		keystates[i] = false;
+	}
 }
 
 ////////////////////////////////////////////////////////////

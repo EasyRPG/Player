@@ -31,6 +31,9 @@
 #include "scene_battle.h"
 #include <cstring>
 #include <cstdlib>
+#ifdef GEKKO
+	#include <fat.h>
+#endif
 
 ////////////////////////////////////////////////////////////
 namespace Player {
@@ -96,6 +99,13 @@ void Player::Init(int argc, char *argv[]) {
 
 ////////////////////////////////////////////////////////////
 void Player::Run() {
+#ifdef GEKKO
+	// Init libfat (Mount SD/USB)
+	if (!fatInitDefault()) {
+		Output::Error("Couldn't mount any storage medium!");
+	}
+#endif
+
 	if (battle_test_flag) {
 		Scene::instance = new Scene_Battle();
 	} else if (debug_flag) {

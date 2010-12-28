@@ -22,6 +22,7 @@
 // Headers
 ///////////////////////////////////////////////////////////
 #include <string>
+#include "rect.h"
 #include "system.h"
 
 ///////////////////////////////////////////////////////////
@@ -30,16 +31,28 @@
 namespace FontRender8x8 {
 	///////////////////////////////////////////////////////
 	/// Draw text to pixels.
-	/// @param text : 
-	/// @param pixels : 
-	/// @param x : 
-	/// @param y : 
-	/// @param w : 
-	/// @param h : 
-	/// @param bpp : 
-	/// @param pitch : 
+	/// @param text : Text to draw
+	/// @param pixels : Pixels where text is drawn on
+	/// @param x : x coord where drawing starts
+	/// @param y : y coord where drawing starts
+	/// @param surface_width : Width of surface the pixels are belonging to
+	/// @param surface_height : Height of surface the pixels are belonging to
+	/// @param bpp : Bits per Pixel of surface the pixels are belonging to
+	/// @param color : Color to use
 	///////////////////////////////////////////////////////
-	void TextDraw(const std::string text, uint8* pixels, int x, int y, int w, int h, int bpp, uint32 color);
+	void TextDraw(const std::string& text, uint8* pixels, int x, int y, int surface_width, int surface_height, int bpp, uint32 color);
+
+	///////////////////////////////////////////////////////
+	/// Draw text to pixels in a rect.
+	/// @param text : Text to draw
+	/// @param pixels : Pixels where text is drawn on
+	/// @param dst_rect : Target rect
+	/// @param width : Width of surface the pixels are belonging to
+	/// @param height : Height of surface the pixels are belonging to
+	/// @param bpp : Bits per Pixel of surface the pixels are belonging to
+	/// @param color : Color to use
+	///////////////////////////////////////////////////////
+	void TextDraw(const std::string& text, uint8* pixels, Rect dst_rect, int surface_width, int surface_height, int bpp, uint32 color);
 }
 
 #endif

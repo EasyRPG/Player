@@ -320,7 +320,7 @@ bool SdlUi::RefreshDisplayMode() {
 		main_surface = NULL;
 	}
 	
-	main_window = SDL_SetVideoMode(display_width, display_height, 32, flags);
+	main_window = SDL_SetVideoMode(display_width, display_height, bpp, flags);
 	if (!main_window)
 		return false;
 
@@ -436,12 +436,30 @@ void SdlUi::SetTitle(const std::string &title) {
 
 ///////////////////////////////////////////////////////////
 void SdlUi::DrawScreenText(const std::string &text) {
+	DrawScreenText(text, 10, 10);
+}
+
+///////////////////////////////////////////////////////////
+void SdlUi::DrawScreenText(const std::string &text, int x, int y, Color color) {
 	if (SDL_MUSTLOCK(main_surface))
 		SDL_LockSurface(main_surface);
 
-	static uint32 color = SDL_MapRGB(main_surface->format, 255, 255, 255);
+	uint32 icolor = SDL_MapRGB(main_surface->format, color.red, color.green, color.blue);
 
-	FontRender8x8::TextDraw(text, (uint8*)main_surface->pixels, 10, 10, main_surface->w, main_surface->h, main_surface->format->BytesPerPixel, color);
+	FontRender8x8::TextDraw(text, (uint8*)main_surface->pixels, x, y, main_surface->w, main_surface->h, main_surface->format->BytesPerPixel, icolor);
+	
+	if (SDL_MUSTLOCK(main_surface))
+		SDL_UnlockSurface(main_surface);
+}
+
+///////////////////////////////////////////////////////////
+void SdlUi::DrawScreenText(const std::string &text, Rect dst_rect, Color color) {
+	if (SDL_MUSTLOCK(main_surface))
+		SDL_LockSurface(main_surface);
+
+	uint32 icolor = SDL_MapRGB(main_surface->format, color.red, color.green, color.blue);
+
+	FontRender8x8::TextDraw(text, (uint8*)main_surface->pixels, dst_rect, main_surface->w, main_surface->h, main_surface->format->BytesPerPixel, icolor);
 	
 	if (SDL_MUSTLOCK(main_surface))
 		SDL_UnlockSurface(main_surface);

@@ -20,17 +20,37 @@
 ////////////////////////////////////////////////////////////
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <cstdlib>
 #include <cstdarg>
-#include "output.h"
-#include "options.h"
-#include "player.h"
-#include "msgbox.h"
 #include "graphics.h"
+#include "input.h"
+#include "msgbox.h"
+#include "options.h"
+#include "output.h"
+#include "player.h"
+#include "time.h"
 
-#ifdef GEKKO
-	#include <gccore.h>
-#endif
+////////////////////////////////////////////////////////////
+static void HandleScreenOutput(std::string msg, bool is_error) {
+		std::stringstream ss;
+		ss << msg << "\n\n";
+		if (is_error) {
+			 ss << "EasyRPG Player will close now.\nPress any key to exit...";
+		} else {
+			ss << "Press any key to continue...";
+		}
+		DisplayUi->DrawScreenText(ss.str(), 10, 30 + 10);
+		DisplayUi->UpdateDisplay();
+		Input::ResetKeys();
+		while (!Input::IsAnyPressed()) {
+			Time::Sleep(1);
+			DisplayUi->ProcessEvents();
+			Input::Update();
+		}
+		Graphics::FrameReset();
+		Graphics::Update();
+}
 
 ////////////////////////////////////////////////////////////
 void Output::Error(char* fmt, ...) {
@@ -57,18 +77,9 @@ void Output::Error(const char* fmt, ...) {
 }
 void Output::ErrorStr(std::string err) {
 	#if OUTPUT_TYPE == OUTPUT_CONSOLE
-		#ifdef GEKKO
-			GXRModeObj *rmode = VIDEO_GetPreferredMode(NULL);;
-			// Get the Video memory and create a console for text output on it
-			console_init(VIDEO_GetCurrentFramebuffer(), 20, 20, rmode->fbWidth,
-				rmode->xfbHeight,rmode->fbWidth*VI_DISPLAY_PIX_SZ);
-		#endif
 		printf("%s\n", err.c_str());
 		std::cout << std::endl;
 		std::cout << "EasyRPG Player will close now. Press any key..." << std::endl;
-		#ifndef GEKKO
-			std::cin.get();
-		#endif
 	#elif OUTPUT_TYPE == OUTPUT_FILE
 		std::ofstream file;
 		file.open(OUTPUT_FILENAME, std::ios::out | std::ios::app);
@@ -79,6 +90,17 @@ void Output::ErrorStr(std::string err) {
 			DisplayUi->ShowCursor(true);
 		}
 		MsgBox::Error(err, GAME_TITLE);
+	#elif OUTPUT_TYPE == OUTPUT_SCREEN
+		if (DisplayUi != NULL) {
+			DisplayUi->DrawScreenText("Error:", 10, 30, Color(255, 0, 0, 0));
+			HandleScreenOutput(err, true);
+		} else {
+			// Fallback to Console if the display is not ready yet
+			printf("%s\n", err.c_str());
+			std::cout << std::endl;
+			std::cout << "EasyRPG Player will close now. Press any key..." << std::endl;
+			std::cin.get();
+		}
 	#endif
 	Player::Exit();
 	exit(EXIT_FAILURE);
@@ -122,6 +144,9 @@ void Output::WarningStr(std::string warn) {
 		MsgBox::Warning(warn, GAME_TITLE);
 		DisplayUi->ShowCursor(last);
 		Graphics::FrameReset();
+	#elif OUTPUT_TYPE == OUTPUT_SCREEN
+		DisplayUi->DrawScreenText("Warning:", 10, 30, Color(255, 255, 0, 0));
+		HandleScreenOutput(warn, false);
 	#endif
 }
 
@@ -163,5 +188,8 @@ void Output::PostStr(std::string msg) {
 		MsgBox::OK(msg, GAME_TITLE);
 		DisplayUi->ShowCursor(last);
 		Graphics::FrameReset();
+	#elif OUTPUT_TYPE == OUTPUT_SCREEN
+		DisplayUi->DrawScreenText("Info:", 10, 30, Color(255, 255, 0, 0));
+		HandleScreenOutput(msg, false);
 	#endif
 }

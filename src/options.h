@@ -102,14 +102,15 @@
 // OUTPUT_FILENAME
 //		Name of the file for output.
 ////////////////////////////////////////////////////////////
-#if defined(DINGOO) || defined(UNIX) && !defined(GTK)
+/*#if defined(DINGOO) || defined(UNIX) && !defined(GTK)
 	#define OUTPUT_TYPE OUTPUT_FILE
 #elif defined(GEKKO) || defined(PSP)
 	#define OUTPUT_TYPE OUTPUT_CONSOLE
 #else
-	#define OUTPUT_TYPE OUTPUT_MSGBOX
-#endif
-#define OUTPUT_FILENAME "log.txt"
+	#define OUTPUT_TYPE OUTPUT_SCREEN
+#endif*/
+#define OUTPUT_TYPE OUTPUT_SCREEN
+#define OUTPUT_FILENAME "easyrpg_log.txt"
 
 ////////////////////////////////////////////////////////////
 #define USE_KEYBOARD

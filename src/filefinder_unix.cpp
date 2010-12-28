@@ -28,7 +28,6 @@
 #include <unistd.h>
 
 #ifdef GEKKO
-	#include <fat.h>
 	#include <cstdlib>
 	#include <cstdio>
 #endif
@@ -53,14 +52,6 @@ void FileFinder::Init() {
 	// TODO find default paths
 	rtp_path = "";
 	fonts_path = "";
-
-#ifdef GEKKO
-	// Init libfat (Mount SD/USB)
-	if (!fatInitDefault()) {
-		// No display is available yet and no Volume mounted
-		exit(1);
-	}
-#endif
 }
 
 ////////////////////////////////////////////////////////////
