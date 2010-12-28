@@ -41,7 +41,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\..\bin\testsuite\</OutDir>
+    <OutDir>..\..\bin\testgame\</OutDir>
     <TargetName>PlayerD</TargetName>
     <SourcePath>$(SourcePath)</SourcePath>
   </PropertyGroup>
@@ -63,7 +63,7 @@
       <DisableSpecificWarnings>4996;4100</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <MinimalRebuild>true</MinimalRebuild>
     </ClCompile>
     <Link>
@@ -91,8 +91,7 @@
       <MultiProcessorCompilation>
       </MultiProcessorCompilation>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
-      <DebugInformationFormat>
-      </DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -102,7 +101,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(EASYDEV_MSVC)\lib\release;..\..\..\readers\lib\release</AdditionalLibraryDirectories>

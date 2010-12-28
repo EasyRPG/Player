@@ -63,7 +63,7 @@ void Output::ErrorStr(std::string err) {
 			console_init(VIDEO_GetCurrentFramebuffer(), 20, 20, rmode->fbWidth,
 				rmode->xfbHeight,rmode->fbWidth*VI_DISPLAY_PIX_SZ);
 		#endif
-		std::cout << err << std::endl;
+		printf("%s\n", err.c_str());
 		std::cout << std::endl;
 		std::cout << "EasyRPG Player will close now. Press any key..." << std::endl;
 		#ifndef GEKKO
@@ -75,7 +75,9 @@ void Output::ErrorStr(std::string err) {
 		file << err;
 		file.close();
 	#elif OUTPUT_TYPE == OUTPUT_MSGBOX
-		DisplayUi->ShowCursor(true);
+		if (DisplayUi != NULL) {
+			DisplayUi->ShowCursor(true);
+		}
 		MsgBox::Error(err, GAME_TITLE);
 	#endif
 	Player::Exit();
@@ -109,7 +111,7 @@ void Output::Warning(const char* fmt, ...) {
 }
 void Output::WarningStr(std::string warn) {
 	#if OUTPUT_TYPE == OUTPUT_CONSOLE
-		std::cout << warn << std::endl;
+		printf("%s\n", warn.c_str());
 	#elif OUTPUT_TYPE == OUTPUT_FILE
 		std::ofstream file;
 		file.open(OUTPUT_FILENAME, std::ios::out | std::ios::app);
@@ -150,7 +152,7 @@ void Output::Post(const char* fmt, ...) {
 }
 void Output::PostStr(std::string msg) {
 	#if OUTPUT_TYPE == OUTPUT_CONSOLE
-		std::cout << msg << std::endl;
+		printf("%s\n", msg.c_str());
 	#elif OUTPUT_TYPE == OUTPUT_FILE
 		std::ofstream file;
 		file.open(OUTPUT_FILENAME, std::ios::out | std::ios::app);

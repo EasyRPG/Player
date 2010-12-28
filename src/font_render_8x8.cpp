@@ -35,40 +35,40 @@ void DrawChr(uint8 chr, uint8* pixels, int x, int y, int w, int bpp, uint32 colo
 
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
-				if (pchr[i] & (1 << j)) dst_pixels[0] = (uint8)color;
+				if (pchr[i] & (0x80 >> j)) dst_pixels[0] = (uint8)color;
 				dst_pixels += 1;
 			}
-			dst_pixels += w;
+			dst_pixels += w - 8;
 		}
 	} else if (bpp == 2) {
 		uint16* dst_pixels = (uint16*)pixels + x + y * w;
 
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
-				if (pchr[i] & (1 << j)) dst_pixels[0] = (uint16)color;
+				if (pchr[i] & (0x80 >> j)) dst_pixels[0] = (uint16)color;
 				dst_pixels += 1;
 			}
-			dst_pixels += w;
+			dst_pixels += w - 8;
 		}
 	} else if (bpp == 3) {
 		uint8* dst_pixels = pixels + x + y * w;
 
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
-				if (pchr[i] & (1 << j)) memcpy((void*)dst_pixels, (const void*)color, 3);
+				if (pchr[i] & (0x80 >> j)) memcpy(dst_pixels, &color, 3);
 				dst_pixels += 3;
 			}
-			dst_pixels += w * 3;
+			dst_pixels += w - 8;
 		}
 	} else if (bpp == 4) {
 		uint32* dst_pixels = (uint32*)pixels + x + y * w;
 
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
-				if (pchr[i] & (1 << j)) dst_pixels[0] = color;
+				if (pchr[i] & (0x80 >> j)) dst_pixels[0] = color;
 				dst_pixels += 1;
 			}
-			dst_pixels += w;
+			dst_pixels += w - 8;
 		}
 	}
 }
@@ -96,8 +96,10 @@ void FontRender8x8::TextDraw(const std::string text, uint8* pixels, int x, int y
 			case '\0':
 				return;
 			default:
-				if (dst_x < w)
-					DrawChr((uint8)text[i], pixels, x, y, w, bpp, color);
+				if (dst_x < w) {
+					DrawChr((uint8)text[i], pixels, dst_x, dst_y, w, bpp, color);
+					dst_x += 8;
+				}
 		}
 	}
 }

@@ -106,7 +106,7 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag) :
 
 	SetTitle(title);
 
-#if (defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)) || (defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)) || (defined(USE_JOYSTICK_HAT)  && defined(SUPPORT_JOYSTICK_HAT))
+#if (defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)) || (defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)) || (defined(USE_JOYSTICK_HAT) && defined(SUPPORT_JOYSTICK_HAT))
 	if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) {
 		Output::Warning("Couldn't initialize joystick.\n%s\n", SDL_GetError());
 	}
@@ -320,7 +320,7 @@ bool SdlUi::RefreshDisplayMode() {
 		main_surface = NULL;
 	}
 	
-	main_window = SDL_SetVideoMode(display_width, display_height, bpp, flags);
+	main_window = SDL_SetVideoMode(display_width, display_height, 32, flags);
 	if (!main_window)
 		return false;
 
