@@ -338,19 +338,13 @@ void Graphics::Transition(TransitionType type, int duration, bool erase) {
 				screen1 = screen2;
 		}
 
-		Color color = DisplayUi->GetBackcolor();
-		DisplayUi->SetBackcolor(Color());
-
 		for (int i = 1; i <= transition_duration; i++) {
 			Player::Update();
 			InternUpdate1();
 		}
-
-		DisplayUi->SetBackcolor(color);
 	}
 
-	if (!erase)
-		frozen_screen->SetBitmap(NULL);
+	if (!erase) frozen_screen->SetBitmap(NULL);
 
 	frozen = false;
 	screen_erased = erase;
@@ -367,8 +361,6 @@ void Graphics::UpdateTransition() {
 	transition_frame++;
 
 	int percentage = transition_frame * 100 / transition_duration;
-
-	DisplayUi->CleanDisplay();
 
 	switch (transition_type) {
 	case TransitionFadeIn:
@@ -459,7 +451,7 @@ void Graphics::UpdateTransition() {
 	case TransitionVerticalDivision:
 		screen1->BlitScreen(0, -(h / 2) * percentage / 100, Rect(0, 0, w, h / 2));
 		screen1->BlitScreen(0, h / 2 + (h / 2) * percentage / 100, Rect(0, h / 2, w, h / 2));
-		screen2->BlitScreen(0, (h / 2) - (h / 2) * percentage / 100, Rect(0, h * percentage / 100, w, h * percentage / 100));
+		screen2->BlitScreen(0, h / 2 - (h / 2) * percentage / 100, Rect(0, h / 2 - (h / 2) * percentage / 100, w, h * percentage / 100));
 		break;
 	case TransitionHorizontalCombine:
 		screen1->BlitScreen((w / 2) * percentage / 100, 0, Rect((w / 2) * percentage / 100, 0, w - w * percentage / 100, h));
@@ -469,7 +461,7 @@ void Graphics::UpdateTransition() {
 	case TransitionHorizontalDivision:
 		screen1->BlitScreen(-(w / 2) * percentage / 100, 0, Rect(0, 0, w / 2, h));
 		screen1->BlitScreen(w / 2 + (w / 2) * percentage / 100, 0, Rect(w / 2, 0, w / 2, h));
-		screen2->BlitScreen((w / 2) - (w / 2) * percentage / 100, 0, Rect(w * percentage / 100, 0, w * percentage / 100, h));
+		screen2->BlitScreen(w / 2 - (w / 2) * percentage / 100, 0, Rect(w / 2 - (w / 2) * percentage / 100, 0, w * percentage / 100, h));
 		break;
 	case TransitionCrossCombine:
 		screen1->BlitScreen((w / 2) * percentage / 100, 0, Rect((w / 2) * percentage / 100, 0, w - w * percentage / 100, (h / 2) * percentage / 100));
@@ -502,6 +494,7 @@ void Graphics::UpdateTransition() {
 	case TransitionWaveOut:
 		break;
 	default:
+		DisplayUi->CleanDisplay();
 		break;
 	}
 

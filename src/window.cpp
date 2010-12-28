@@ -57,7 +57,7 @@ Window::Window():
 	Graphics::RegisterDrawable(ID, this);
 	
 	windowskin_screen = BitmapScreen::CreateBitmapScreen(false);
-	contents_screen = BitmapScreen::CreateBitmapScreen(false);
+	contents_screen = BitmapScreen::CreateBitmapScreen(true);
 
 	background = BitmapScreen::CreateBitmapScreen(true);
 	frame_down = BitmapScreen::CreateBitmapScreen(true);
@@ -75,7 +75,6 @@ Window::~Window() {
 
 	delete windowskin_screen;
 	delete contents_screen;
-	delete contents;
 	delete background;
 	delete cursor1;
 	delete cursor2;

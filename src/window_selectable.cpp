@@ -42,7 +42,6 @@ Window_Selectable::~Window_Selectable() {
 
 ////////////////////////////////////////////////////////////
 void Window_Selectable::CreateContents() {
-	delete contents;
 	SetContents(Bitmap::CreateBitmap(width - 16, max(height - 16, GetRowMax() * 16)));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 }

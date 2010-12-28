@@ -43,9 +43,6 @@
     <Filter Include="Source Files\Backend\Graphics\sdl">
       <UniqueIdentifier>{27af2db9-a710-41e4-a027-e1a806db7bcc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Backend\Graphics\sdl_gl">
-      <UniqueIdentifier>{7c9e2021-4809-40d7-a505-60dddd6d70c5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Backend\Input">
       <UniqueIdentifier>{6855f41e-6f53-4116-bf0f-382c4c1b967d}</UniqueIdentifier>
     </Filter>
@@ -60,6 +57,9 @@
     </Filter>
     <Filter Include="Source Files\Backend\Time\sdl">
       <UniqueIdentifier>{f7d05c21-24a8-4ab2-b83e-0b85b6214326}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Backend\Graphics\gl">
+      <UniqueIdentifier>{7c9e2021-4809-40d7-a505-60dddd6d70c5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -304,7 +304,7 @@
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\gl_bitmap_screen.cpp">
-      <Filter>Source Files\Backend\Graphics\sdl_gl</Filter>
+      <Filter>Source Files\Backend\Graphics\gl</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\sdl_time.cpp">
       <Filter>Source Files\Backend\Time\sdl</Filter>
@@ -564,7 +564,7 @@
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\gl_bitmap_screen.h">
-      <Filter>Source Files\Backend\Graphics\sdl_gl</Filter>
+      <Filter>Source Files\Backend\Graphics\gl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\time.h">
       <Filter>Source Files\Backend\Time</Filter>
