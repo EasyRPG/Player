@@ -67,7 +67,7 @@ void Window_Item::Refresh() {
 	data.clear();
 	Game_Party::GetItems(party_items);
 
-	for (uint i = 0; i < party_items.size(); ++i) {
+	for (size_t i = 0; i < party_items.size(); ++i) {
 		if (this->CheckInclude(party_items[i])) {
 			data.push_back(party_items[i]);
 		}
@@ -105,7 +105,7 @@ void Window_Item::DrawItem(int index) {
 		DrawItemName(&Data::items[item_id - 1], rect.x, rect.y, enabled);
 		
 		std::stringstream ss;
-		ss << std::setfill(' ') << std::setw(3) << number;
+		ss << "x" << std::setfill(' ') << std::setw(3) << number;
 
 		contents->TextDraw(rect, ss.str(), Bitmap::TextAlignRight);
 	}

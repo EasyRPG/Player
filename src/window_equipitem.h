@@ -66,7 +66,7 @@ public:
 
 private:
 	int actor_id;
-	EquipType equip_type;
+	int equip_type;
 };
 
 #endif

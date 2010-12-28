@@ -56,8 +56,7 @@ void Scene_Equip::Start() {
 	equip_window->SetIndex(equip_index); 
 
 	for (int i = 0; i < 5; ++i) {
-		item_windows.push_back(new Window_EquipItem(actor->GetId(),
-			(Window_EquipItem::EquipType)i));
+		item_windows.push_back(new Window_EquipItem(actor->GetId(), i));
 	}
 
 	// Assign the help windows

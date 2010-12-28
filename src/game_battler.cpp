@@ -239,9 +239,14 @@ bool Game_Battler::IsSkillUsable(int skill_id) {
 	//} else
 	if (Data::skills[skill_id - 1].type == RPG::Skill::Type_normal) {
 		int scope = Data::skills[skill_id - 1].scope;
-		return (scope == RPG::Skill::Scope_self ||
+
+		if (scope == RPG::Skill::Scope_self ||
 			scope == RPG::Skill::Scope_ally ||
-			scope == RPG::Skill::Scope_party);
+			scope == RPG::Skill::Scope_party) {
+			// ToDo: A skill is also acceptable when it cures a status
+			return (Data::skills[skill_id - 1].affect_hp ||
+					Data::skills[skill_id - 1].affect_sp);
+		}
 	} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_switch) {
 		// Todo:
 		// if (Game_Temp::IsInBattle()) {
