@@ -36,7 +36,7 @@ void MsgBox::OK(std::string msg, std::string title) {
 
 	//Must leave full screen before gtk dialog show
 	if (DisplayUi->IsFullscreen()) {
-		DisplayUi->StartDisplayModeChange();
+		DisplayUi->BeginDisplayModeChange();
 		DisplayUi->ToggleFullscreen();
 		DisplayUi->EndDisplayModeChange();
 	}
@@ -70,7 +70,7 @@ void MsgBox::Error(std::string msg, std::string title) {
 
 	//Must leave full screen before gtk dialog show
 	if (DisplayUi->IsFullscreen()) {
-		DisplayUi->StartDisplayModeChange();
+		DisplayUi->BeginDisplayModeChange();
 		DisplayUi->ToggleFullscreen();
 		DisplayUi->EndDisplayModeChange();
 	}
@@ -104,7 +104,7 @@ void MsgBox::Warning(std::string msg, std::string title) {
 
 	//Must leave full screen before gtk dialog show
 	if (DisplayUi->IsFullscreen()) {
-		DisplayUi->StartDisplayModeChange();
+		DisplayUi->BeginDisplayModeChange();
 		DisplayUi->ToggleFullscreen();
 		DisplayUi->EndDisplayModeChange();
 	}
