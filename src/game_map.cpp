@@ -124,9 +124,13 @@ void Game_Map::Setup(int _id) {
 ////////////////////////////////////////////////////////////
 void Game_Map::Autoplay() {
 	// TODO: Check music_type
-	if (!Data::treemap.maps[map->ID].music.name.empty()) {
-		Game_System::BgmPlay(Data::treemap.maps[map->ID].music);
-	}
+	
+	//Search for a map with same id in treemap
+	for (unsigned int i = 0; i < Data::treemap.maps.size(); ++i) {
+		if ((Data::treemap.maps[i].ID == map_id) && !Data::treemap.maps[i].music.name.empty()) {
+			Game_System::BgmPlay(Data::treemap.maps[i].music);
+		}
+ 	}
 }
 
 ////////////////////////////////////////////////////////////
