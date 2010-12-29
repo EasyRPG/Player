@@ -309,6 +309,9 @@
     <ClCompile Include="..\..\src\sdl_time.cpp">
       <Filter>Source Files\Backend\Time\sdl</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\sdl_audio.cpp">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cache.h">

@@ -167,6 +167,7 @@
     <ClCompile Include="..\..\src\scene_menu.cpp" />
     <ClCompile Include="..\..\src\scene_skill.cpp" />
     <ClCompile Include="..\..\src\scene_title.cpp" />
+    <ClCompile Include="..\..\src\sdl_audio.cpp" />
     <ClCompile Include="..\..\src\sdl_bitmap.cpp" />
     <ClCompile Include="..\..\src\sdl_bitmap_screen.cpp" />
     <ClCompile Include="..\..\src\sdl_time.cpp" />

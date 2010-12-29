@@ -120,6 +120,7 @@
       <VirtualDirectory Name="Audio">
         <File Name="../../src/audio.cpp"/>
         <File Name="../../src/audio.h"/>
+        <File Name="../../src/sdl_audio.cpp"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Graphics">
         <File Name="../../src/bitmap.cpp"/>

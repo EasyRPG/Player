@@ -78,6 +78,7 @@
 	#endif
 
 	#ifdef USE_SDL_MIXER
+		#define SUPPORT_AUDIO
 		#define SUPPORT_WAV
 		#define SUPPORT_MID
 		#define SUPPORT_OGG

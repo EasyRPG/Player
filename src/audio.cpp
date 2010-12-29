@@ -19,234 +19,54 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "audio.h"
-#include "output.h"
-#include "filefinder.h"
+#include "system.h"
+
+#ifndef SUPPORT_AUDIO
+///////////////////////////////////////////////////////////
+// This file implements a No-Audio-Backend.
+///////////////////////////////////////////////////////////
+void Audio::Init() {}
+
+///////////////////////////////////////////////////////////
+void Audio::Quit() {}
+
+///////////////////////////////////////////////////////////
+void Audio::BGM_Play(std::string, int, int) {}
+
+///////////////////////////////////////////////////////////
+void Audio::BGM_Pause() {}
+
+///////////////////////////////////////////////////////////
+void Audio::BGM_Resume() {}
+
+///////////////////////////////////////////////////////////
+void Audio::BGM_Stop() {}
+
+///////////////////////////////////////////////////////////
+void Audio::BGM_Fade(int) {}
+
+///////////////////////////////////////////////////////////
+void Audio::BGS_Play(std::string, int, int) {}
 
 ////////////////////////////////////////////////////////////
-/// Global Variables
-////////////////////////////////////////////////////////////
-namespace Audio {
-	Mix_Music* bgm;
-	int bgm_volume;
-	Mix_Chunk* bgs;
-	int bgs_channel;
-	Mix_Chunk* me;
-	int me_channel;
-	bool me_stopped_bgm;
-	std::map<int, Mix_Chunk*> sounds;
-	std::map<int, Mix_Chunk*>::iterator it_sounds;
-}
+void Audio::BGS_Stop() {}
 
 ////////////////////////////////////////////////////////////
-/// Initialize
+void Audio::BGS_Fade(int) {}
+
+///////////////////////////////////////////////////////////
+void Audio::ME_Play(std::string, int, int) {}
+
 ////////////////////////////////////////////////////////////
-void Audio::Init() {
-	if (!(SDL_WasInit(SDL_INIT_AUDIO) & SDL_INIT_AUDIO)) {
-		if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
-			Output::Error("Couldn't initialize audio.\n%s\n", SDL_GetError());
-		}
-	}
-#ifdef GEKKO
-	int frequency = 32000;
-#else
-	int frequency = MIX_DEFAULT_FREQUENCY;
+void Audio::ME_Stop() {}
+
+////////////////////////////////////////////////////////////
+void Audio::ME_Fade(int fade) {}
+
+////////////////////////////////////////////////////////////
+void Audio::SE_Play(std::string, int, int) {}
+
+////////////////////////////////////////////////////////////
+void Audio::SE_Stop() {}
+
 #endif
-
-	if (Mix_OpenAudio(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) < 0) {
-		Output::Error("Couldn't initialize audio.\n%s\n", Mix_GetError());
-	}
-	/*int flags = MIX_INIT_MP3;
-	int initted = Mix_Init(flags);
-	if ((initted & flags) != flags) {
-		Output::Error("Couldn't initialize audio.\n%s\n", Mix_GetError());
-	}*/
-	bgm = NULL;
-	bgs = NULL;
-	me = NULL;
-	me_stopped_bgm = false;
-}
-
-void Audio::Quit() {
-	std::map<int, Mix_Chunk*>::iterator i;
-	for (i = sounds.begin(); i != sounds.end(); i++) {
-		Mix_FreeChunk(i->second);
-	}
-	Mix_FreeMusic(bgm);
-	Mix_FreeChunk(bgs);
-
-	Mix_CloseAudio();
-}
-
-////////////////////////////////////////////////////////////
-/// BGM play
-////////////////////////////////////////////////////////////
-void Audio::BGM_Play(std::string file, int volume, int pitch) {
-	std::string path = FileFinder::FindMusic(file);
-	if (path == "") {
-		Output::Warning("No such file or directory - %s", file.c_str());
-		return;
-	}
-	if (bgm != NULL) Mix_FreeMusic(bgm);
-	bgm = Mix_LoadMUS(path.c_str());
-	if (!bgm) {
-		Output::Warning("Couldn't load %s BGM.\n%s\n", file.c_str(), Mix_GetError());
-		return;
-	}
-	bgm_volume = volume * MIX_MAX_VOLUME / 100;
-	Mix_VolumeMusic(bgm_volume);
-	if (!me_stopped_bgm) {
-		if (Mix_PlayMusic(bgm, -1) == -1) {
-			Output::Warning("Couldn't play %s BGM.\n%s\n", file.c_str(), Mix_GetError());
-			return;
-		}
-	}
-}
-
-void Audio::BGM_Pause() {
-	// Midi pause is not supported... =.=
-	Mix_PauseMusic();
-}
-
-void Audio::BGM_Resume() {
-	Mix_ResumeMusic();
-}
-
-////////////////////////////////////////////////////////////
-/// BGM stop
-////////////////////////////////////////////////////////////
-void Audio::BGM_Stop() {
-	Mix_HaltMusic();
-	me_stopped_bgm = false;
-}
-
-////////////////////////////////////////////////////////////
-/// BGM fade
-////////////////////////////////////////////////////////////
-void Audio::BGM_Fade(int fade) {
-	Mix_FadeOutMusic(fade);
-	me_stopped_bgm = false;
-}
-
-////////////////////////////////////////////////////////////
-/// BGS play
-////////////////////////////////////////////////////////////
-void Audio::BGS_Play(std::string file, int volume, int pitch) {
-	std::string path = FileFinder::FindMusic(file);
-	if (path == "") {
-		Output::Warning("No such file or directory - %s", file.c_str());
-		return;
-	}
-	if (bgs != NULL) Mix_FreeChunk(bgs);
-	bgs = Mix_LoadWAV(path.c_str());
-	if (!bgs) {
-		Output::Warning("Couldn't load %s BGS.\n%s\n", file.c_str(), Mix_GetError());
-		return;
-	}
-	bgs_channel = Mix_PlayChannel(-1, bgs, -1);
-	Mix_Volume(bgs_channel, volume * MIX_MAX_VOLUME / 100);
-	if (bgs_channel == -1) {
-		Output::Warning("Couldn't play %s BGS.\n%s\n", file.c_str(), Mix_GetError());
-		return;
-	}
-}
-
-////////////////////////////////////////////////////////////
-/// BGS stop
-////////////////////////////////////////////////////////////
-void Audio::BGS_Stop() {
-	if (Mix_Playing(bgs_channel)) Mix_HaltChannel(bgs_channel);
-}
-
-////////////////////////////////////////////////////////////
-/// BGS fade
-////////////////////////////////////////////////////////////
-void Audio::BGS_Fade(int fade) {
-	Mix_FadeOutChannel(bgs_channel, fade);
-}
-
-////////////////////////////////////////////////////////////
-/// ME play
-////////////////////////////////////////////////////////////
-void me_finish(int channel) {
-	if (Audio::me_channel == channel) {
-		if (Audio::me_stopped_bgm) {
-			Mix_VolumeMusic(Audio::bgm_volume);
-			Mix_FadeInMusic(Audio::bgm, -1, 1000);
-			Audio::me_stopped_bgm = false;
-		}
-	}
-}
-void Audio::ME_Play(std::string file, int volume, int pitch) {
-	std::string path = FileFinder::FindMusic(file);
-	if (path == "") {
-		Output::Warning("No such file or directory - %s", file.c_str());
-		return;
-	}
-	if (me != NULL) Mix_FreeChunk(bgs);
-	me = Mix_LoadWAV(path.c_str());
-	if (!me) {
-		Output::Warning("Couldn't load %s ME.\n%s\n", file.c_str(), Mix_GetError());
-		return;
-	}
-	me_channel = Mix_PlayChannel(-1, me, 0);
-	Mix_Volume(me_channel, volume * MIX_MAX_VOLUME / 100);
-	if (me_channel == -1) {
-		Output::Warning("Couldn't play %s ME.\n%s\n", file.c_str(), Mix_GetError());
-		return;
-	}
-	me_stopped_bgm = Mix_PlayingMusic() == 1;
-	Mix_ChannelFinished(me_finish);
-}
-
-////////////////////////////////////////////////////////////
-/// ME stop
-////////////////////////////////////////////////////////////
-void Audio::ME_Stop() {
-	if (Mix_Playing(me_channel)) Mix_HaltChannel(me_channel);
-}
-
-////////////////////////////////////////////////////////////
-/// ME fade
-////////////////////////////////////////////////////////////
-void Audio::ME_Fade(int fade) {
-	Mix_FadeOutChannel(me_channel, fade);
-}
-
-////////////////////////////////////////////////////////////
-/// SE play
-////////////////////////////////////////////////////////////
-void Audio::SE_Play(std::string file, int volume, int pitch) {
-	std::string path = FileFinder::FindMusic(file);
-	if (path == "") {
-		Output::Warning("No such file or directory - %s", file.c_str());
-		return;
-	}
-	Mix_Chunk* sound = Mix_LoadWAV(path.c_str());
-	if (!sound) {
-		Output::Warning("Couldn't load %s SE.\n%s\n", file.c_str(), Mix_GetError());
-		return;
-	}
-	int channel = Mix_PlayChannel(-1, sound, 0);
-	Mix_Volume(channel, volume * MIX_MAX_VOLUME / 100);
-	if (channel == -1) {
-		Output::Warning("Couldn't play %s SE.\n%s\n", file.c_str(), Mix_GetError());
-		return;
-	}
-	// FIXME: Create a cache for this maybe?
-	std::map<int, Mix_Chunk*>::iterator i = sounds.find(channel);
-	if (i != sounds.end()) {
-		Mix_FreeChunk(i->second);
-	}
-	sounds[channel] = sound;
-}
-
-////////////////////////////////////////////////////////////
-/// SE stop
-////////////////////////////////////////////////////////////
-void Audio::SE_Stop() {
-	for (it_sounds = sounds.begin(); it_sounds != sounds.end(); it_sounds++) {
-		if (Mix_Playing(it_sounds->first)) Mix_HaltChannel(it_sounds->first);
-		Mix_FreeChunk(it_sounds->second);
-	}
-	sounds.clear();
-}
