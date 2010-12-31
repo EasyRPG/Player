@@ -49,8 +49,8 @@ public:
 
 	////////////////////////////////////////////////////////
 	/// Sets the id of the item/skill that shall be used
-	/// @param id Id of item/skill
-	/// @param is_item true if id for an item, otherwise for a skill
+	/// @param id : Id of item/skill
+	/// @param is_item : true if id for an item, otherwise for a skill
 	////////////////////////////////////////////////////////
 	void SetData(int id, bool is_item);
 

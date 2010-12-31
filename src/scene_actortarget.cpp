@@ -59,12 +59,17 @@ void Scene_ActorTarget::Start() {
 
 	if (use_item) {
 		if (Data::items[id - 1].entire_party) {
-			target_window->SetIndex(-1);
+			target_window->SetIndex(-100);
 		}
 		status_window->SetData(id, true);
 		help_window->SetText(Data::items[id - 1].name);
 	} else {
-		// ToDo: Index based on scope
+		if (Data::skills[id - 1].scope == RPG::Skill::Scope_self) {
+			target_window->SetIndex(-actor_index);
+		} else if (Data::skills[id - 1].scope == RPG::Skill::Scope_party) {
+			target_window->SetIndex(-100);
+		}
+
 		status_window->SetData(id, false);
 		help_window->SetText(Data::skills[id - 1].name);
 	}
@@ -95,6 +100,6 @@ void Scene_ActorTarget::UpdateItem() {
 void Scene_ActorTarget::UpdateSkill() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Data::system.cancel_se);
-		Scene::instance = new Scene_Skill(index); // Select old skill
+		Scene::instance = new Scene_Skill(actor_index, index); // Select old skill
 	}
 }
