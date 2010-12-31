@@ -108,6 +108,7 @@ Bitmap* SdlBitmapScreen::GetBitmap() {
 
 ////////////////////////////////////////////////////////////
 void SdlBitmapScreen::BlitScreen(int x, int y) {
+	// FIXME: This method needs more comments.
 	if (bitmap == NULL || opacity_effect <= 0) return;
 
 	Refresh();
@@ -149,6 +150,7 @@ void SdlBitmapScreen::BlitScreen(int x, int y) {
 
 ////////////////////////////////////////////////////////////
 void SdlBitmapScreen::BlitScreen(int x, int y, Rect src_rect) {
+	// FIXME: This method needs more comments.
 	if (bitmap == NULL || opacity_effect <= 0) return;
 
 	Refresh();
@@ -222,6 +224,7 @@ void SdlBitmapScreen::BlitScreenTiled(Rect src_rect, Rect dst_rect) {
 
 ////////////////////////////////////////////////////////////
 void SdlBitmapScreen::BlitScreenIntern(SDL_Surface* surface, int x, int y, Rect src_rect, int opacity) {
+	// FIXME: This method needs more comments.
 	#ifdef USE_ALPHA
 		if (opacity == 255) {
 			SDL_Rect src_r = {src_rect.x, src_rect.y, src_rect.width, src_rect.height};
@@ -292,6 +295,7 @@ void SdlBitmapScreen::BlitScreenIntern(SDL_Surface* surface, int x, int y, Rect 
 
 ////////////////////////////////////////////////////////////
 void SdlBitmapScreen::Refresh() {
+	// FIXME: This method needs more comments.
 	if (!needs_refresh) return;
 
 	needs_refresh = false;

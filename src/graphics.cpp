@@ -141,6 +141,7 @@ void Graphics::Update() {
 
 ////////////////////////////////////////////////////////////
 void Graphics::InternUpdate1(bool reset) {
+	// FIXME: This method needs more comments.
 	static const double framerate_interval = 1000.0 / framerate;
 	static uint32 current_time = 0;
 	static double last_time = 0;
@@ -192,6 +193,7 @@ void Graphics::InternUpdate1(bool reset) {
 
 ////////////////////////////////////////////////////////////
 void Graphics::InternUpdate2(bool reset) {
+	// FIXME: This method needs more comments. Why two InternUpdates?
 	static const int MAXIMUM_FRAME_RATE = framerate;
 	static const int MINIMUM_FRAME_RATE = max(framerate / 4, 1);
 	static const int MAX_CYCLES_PER_FRAME = MAXIMUM_FRAME_RATE / MINIMUM_FRAME_RATE;
@@ -355,6 +357,7 @@ void Graphics::Transition(TransitionType type, int duration, bool erase) {
 }
 
 void Graphics::UpdateTransition() {
+	// FIXME: Comments. Pleeeease. screen1, screen2?
 	int w = DisplayUi->GetWidth();
 	int h = DisplayUi->GetHeight();
 

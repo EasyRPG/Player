@@ -138,10 +138,6 @@ SdlUi::~SdlUi() {
 
 ///////////////////////////////////////////////////////////
 bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
-	// FIXME: This method has redundant comments.
-	// FIXME: Use HAVE_HWSURFACE or like define for a generic check if that's supported.
-	// FIXME: Split into sub methods and/or improve code (and fix code formatting)
-
 	const SDL_VideoInfo *vinfo;
 	SDL_Rect **modes;
 	uint32 flags = SDL_SWSURFACE;
@@ -153,13 +149,12 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 
 	if (vinfo->wm_available) {
 		toggle_fs_available = true;
-		for(;;) {
+		for (;;) {
 			if (fullscreen) {
 				flags |= SDL_FULLSCREEN;
 			}
 
 			modes = SDL_ListModes(NULL, flags);
-
 			if (modes != NULL) {
 				// Set up...
 				current_display_mode.flags = flags;
@@ -167,6 +162,8 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 				if (modes == (SDL_Rect **)-1) {
 					// All modes available
 					// If we have a high res, turn zoom on
+// FIXME: Detect SDL version for this. current_h and current_w are only available in >1.2.10
+// PSP SDL port is older than this, lol
 #ifndef PSP
 					current_display_mode.zoom = (vinfo->current_h > height*2 && vinfo->current_w > width*2);
 #endif
@@ -206,6 +203,8 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 	}
 	
 // Dingoo has no hw_available, SDL_GetVideoInfo() returns an erroneously value
+// SDL is supposed to give accurate info about the hardware, so there's no need
+// for a HAVE_HWSURFACE flag
 #if !defined(DINGOO)
 	if (vinfo->hw_available) {
 		zoom_available = false;
@@ -253,12 +252,14 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 	int len = 0;
 	while (modes[len]) 
 		++len;
+
 	for (int i = len-1; i > 0; --i) {
 		if (
 			(modes[i]->h == height && modes[i]->w == width) ||
 			(modes[i]->h == height*2 && modes[i]->w == width*2)
 			) {
 				current_display_mode.flags = flags;
+				// FIXME: we have to find a way to make zoom possible only in windowed mode
 				current_display_mode.zoom = ((modes[i]->w >> 1) == width);
 				zoom_available = current_display_mode.zoom;
 				return true;
