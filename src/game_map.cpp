@@ -204,7 +204,7 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 		return true;
 
 	if (map->lower_layer[tile_index] >= 5000) {
-		tile_id = map->lower_layer[tile_index] - 5000;
+		tile_id = map->lower_layer[tile_index] - 5000 + 18;
 
 		if ((passages_down[tile_id] & bit) == 0)
 			return false;
