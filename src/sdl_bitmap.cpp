@@ -374,7 +374,9 @@ void SdlBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 		Rect next_glyph_rect(next_glyph_pos, 0, 0, 0);
 
 		// ExFont-Detection: Check for A-Z or a-z behind the $
-		if (text[c] == '$' && c != text.size() - 1 && ((text[c+1] >= 'a' && text[c+1] <= 'z') || (text[c+1] >= 'A' && text[c+1] <= 'Z'))) {
+		if (text[c] == '$' && c != text.size() - 1 &&
+			((text[c+1] >= 'a' && text[c+1] <= 'z') ||
+			(text[c+1] >= 'A' && text[c+1] <= 'Z'))) {
 			int exfont_value;
 			// Calculate which exfont shall be rendered
 			if ((text[c+1] >= 'a' && text[c+1] <= 'z')) {

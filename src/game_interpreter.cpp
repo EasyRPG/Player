@@ -98,7 +98,7 @@ Game_Interpreter::~Game_Interpreter() {
 void Game_Interpreter::Clear() {
 	map_id = 0;						// map ID when starting up
 	event_id = 0;					// event ID
-	message_waiting = false;		// waiting for message to end
+	Game_Message::message_waiting = false;	// waiting for message to end
 	move_route_waiting = false;		// waiting for move completion
 	button_input_variable_id = 0;	// button input variable ID
 	wait_count = 0;					// wait count
@@ -171,7 +171,7 @@ void Game_Interpreter::Update() {
 			}
 		}
 
-		if (message_waiting) {
+		if (Game_Message::message_waiting) {
 			return;
 		}
 
@@ -285,7 +285,7 @@ bool Game_Interpreter::ExecuteCommand() {
 	
 	switch (list[index].code) {
 
-		case ShowMessage: 
+		case ShowMessage:
 			return CommandShowMessage();
 		case ShowChoice: 
 			return CommandShowChoices();
@@ -449,14 +449,20 @@ void Game_Interpreter::GetStrings(std::vector<std::string>& ret_val) {
 ////////////////////////////////////////////////////////////
 /// Command Show Message
 ////////////////////////////////////////////////////////////
-bool Game_Interpreter::CommandShowMessage() { // Code ShowMessage
+bool Game_Interpreter::CommandShowMessage(bool append_text) { // Code ShowMessage
 	// If there's a text already, return immediately
-	if (!Game_Message::texts.empty()) {
-		return false;
+	if (!append_text) {
+		if (!Game_Message::texts.empty()) {
+			return false;
+		}
+	} else {
+		// Page break (Form feed)
+		// Used when multiple ShowMessage Events are following
+		Game_Message::texts.push_back("\f");
 	}
 	unsigned int line_count = 0;
 
-	message_waiting = true;
+	Game_Message::message_waiting = true;
 
 	// Set first line
 	Game_Message::texts.push_back(list[index].string);
@@ -464,14 +470,14 @@ bool Game_Interpreter::CommandShowMessage() { // Code ShowMessage
 
 	for (;;) {
 		// If next event command is the following parts of the message
-		if ( index < list.size() && list[index+1].code == ShowMessage_2 ) {
+		if ( index < list.size() - 1 && list[index+1].code == ShowMessage_2 ) {
 			// Add second (another) line
 			line_count++;
 			Game_Message::texts.push_back(list[index+1].string);
 		} else {
 			// If next event command is show choices
 			std::vector<std::string> s_choices;
-			if ( (index < list.size()) && (list[index+1].code == ShowChoice) ) {
+			if ( (index < list.size() - 1) && (list[index+1].code == ShowChoice) ) {
 				GetStrings(s_choices);
 				// If choices fit on screen
 				if (s_choices.size() < (4 - line_count)) {
@@ -482,7 +488,7 @@ bool Game_Interpreter::CommandShowMessage() { // Code ShowMessage
 				}
 			} else {
 				// If next event command is input number
-				if ((index < list.size()) && (list[index+1].code == InputNumber) ) {
+				if ((index < list.size() - 1) && (list[index+1].code == InputNumber) ) {
 					// If input number fits on screen
 					if (line_count < 4) {
 						index++;
@@ -490,8 +496,15 @@ bool Game_Interpreter::CommandShowMessage() { // Code ShowMessage
 						Game_Message::num_input_digits_max = list[index].parameters[0];
 						Game_Message::num_input_variable_id = list[index].parameters[1];
 					}
+				} else {
+					// If next event command is another Message
+					if ((index < list.size() - 1) && (list[index+1].code == ShowMessage)) {
+						index++;
+						CommandShowMessage(true);
+					}
 				}
 			}
+			Game_Message::Init();
 			return true;
 		}
 		index++;
@@ -523,7 +536,7 @@ bool Game_Interpreter::CommandShowChoices() { // Code ShowChoice
 		return false;
 	}
 
-	message_waiting = true;
+	Game_Message::message_waiting = true;
 
 	// Choices setup
 	std::vector<std::string> choices;
@@ -955,7 +968,7 @@ bool Game_Interpreter::CommandInputNumber() {
 		return false;
 	}
 
-	message_waiting = true;
+	Game_Message::message_waiting = true;
 
 	Game_Message::texts.clear();
 	Game_Message::num_input_start = 0;

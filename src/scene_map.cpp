@@ -43,12 +43,13 @@ Scene_Map::Scene_Map() :
 ////////////////////////////////////////////////////////////
 Scene_Map::~Scene_Map() {
 	delete spriteset;
+	delete message_window;
 }
 
 ////////////////////////////////////////////////////////////
 void Scene_Map::Start() {
 	spriteset = new Spriteset_Map();
-	//message_window = new Window_Message();
+	message_window = new Window_Message(0, 0, 320, 80);
 
 	Graphics::FrameReset();
 }
@@ -59,6 +60,7 @@ void Scene_Map::Update() {
 	Game_Map::Update();
 	Main_Data::game_player->Update();
 	spriteset->Update();
+	message_window->Update();
 
 	if (Game_Message::visible) 
 		return;

@@ -49,9 +49,6 @@ private:
 
 	int loop_count;
 
-	// May change this for a custom variable in game_temp
-	bool message_waiting;
-
 	bool move_route_waiting;
 
 	int button_input_variable_id;
@@ -73,7 +70,7 @@ private:
 
 	void CancelMenuCall();
 
-	bool CommandShowMessage();
+	bool CommandShowMessage(bool append_text = false);
 	bool CommandShowChoices();
 	bool CommandChangeFaceGraphic();
 	bool CommandInputNumber();

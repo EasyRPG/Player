@@ -32,12 +32,17 @@ namespace Game_Message {
 
 	bool Busy();
 
+	/// Contains the different lines of text
 	extern std::vector<std::string> texts;
+	/// Name of the file that contains the face
 	extern std::string face_name;
+	/// index of the face to display
 	extern int face_index;
+	/// Whether to mirror the face
 	extern bool face_flipped;
+	/// If the face shall be placed left
 	extern bool face_left_position;
-
+	/// ???
 	extern int background;
 
 	/* Number of lines before the start
@@ -62,9 +67,10 @@ namespace Game_Message {
 
 	extern int num_input_variable_id;
 	extern int num_input_digits_max;
-
+	/// Where the msgbox is displayed
 	extern int position;
-
+	/// If a message is currently being processed
+	extern bool message_waiting;
 	extern bool visible;
 }
 

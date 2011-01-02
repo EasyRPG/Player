@@ -19,6 +19,7 @@
 
 namespace Game_Message {
 	std::vector<std::string> texts;
+
 	std::string face_name;
 	int face_index;
 	bool face_flipped;
@@ -26,37 +27,24 @@ namespace Game_Message {
 
 	int background;
 
-	/* Number of lines before the start
-	of selection options.
-	+-----------------------------------+
-	|	Hi, hero, What's your name?		|
-	|- Alex								|
-	|- Brian							|
-	|- Carol							|
-	+-----------------------------------+
-	In this case, choice_start would be 1.
-	Same with num_input_start.
-	*/
 	int choice_start;
 	int num_input_start;
 
-	// Number of choices
 	int choice_max;
 
-	// Option to choose if cancel
 	int choice_cancel_type;
 
 	int num_input_variable_id;
 	int num_input_digits_max;
 
 	int position;
+	bool message_waiting;
 
 	bool visible;
 }
 
 void Game_Message::Init() {
 	visible = false;
-	Clear();
 }
 
 void Game_Message::Clear() {
@@ -70,6 +58,7 @@ void Game_Message::Clear() {
 	choice_cancel_type = 0;
 	num_input_variable_id = 0;
 	num_input_digits_max = 0;
+	visible = false;
 }
 
 bool Game_Message::Busy() {

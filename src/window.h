@@ -70,7 +70,8 @@ public:
 	void SetBackOpacity(int nback_opacity);
 	int GetContentsOpacity() const;
 	void SetContentsOpacity(int ncontents_opacity);
-	void SetAnimation(int frames);
+	void SetOpenAnimation(int frames);
+	void SetCloseAnimation(int frames);
 
 	unsigned long GetId() const;
 	DrawableType GetType() const;

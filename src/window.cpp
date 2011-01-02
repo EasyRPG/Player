@@ -85,7 +85,15 @@ Window::~Window() {
 }
 
 ////////////////////////////////////////////////////////////
-void Window::SetAnimation(int frames) {
+void Window::SetOpenAnimation(int frames) {
+	animation_frames = frames;
+	animation_count = 0.0;
+	animation_increment = (height / 2.0) / frames;
+}
+
+////////////////////////////////////////////////////////////
+void Window::SetCloseAnimation(int frames) {
+	// ToDo: Implement Close Anim
 	animation_frames = frames;
 	animation_count = 0.0;
 	animation_increment = (height / 2.0) / frames;

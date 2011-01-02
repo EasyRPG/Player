@@ -187,7 +187,7 @@ void Scene_Title::CreateCommandWindow() {
 	}
 
 	// Set the number of frames for the opening animation to last
-	command_window->SetAnimation(32);
+	command_window->SetOpenAnimation(32);
 
 	command_window->SetVisible(false);
 }
