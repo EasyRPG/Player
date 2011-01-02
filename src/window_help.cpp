@@ -38,7 +38,6 @@ Window_Help::~Window_Help() {
 ////////////////////////////////////////////////////////////
 void Window_Help::SetText(std::string text,	Bitmap::TextAlignment align) {
 	if (this->text != text || this->align != align) {
-		
 		contents->SetTransparentColor(windowskin->GetTransparentColor());
 		contents->Clear();
 
@@ -46,6 +45,6 @@ void Window_Help::SetText(std::string text,	Bitmap::TextAlignment align) {
 		this->align = align;
 
 		contents->GetFont()->color = 0;
-		contents->TextDraw(contents->GetRect(), text, align);
+		contents->TextDraw(0, 2, text, align);
 	}
 }

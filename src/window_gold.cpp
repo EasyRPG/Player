@@ -18,6 +18,7 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <iomanip>
 #include <sstream>
 #include "window_gold.h"
 #include "game_party.h"
@@ -40,16 +41,13 @@ Window_Gold::~Window_Gold() {
 ////////////////////////////////////////////////////////////
 void Window_Gold::Refresh() {
 	contents->Clear();
-	Rect rect(0, 0, contents->GetWidth(), 16);
 	std::stringstream gold;
-	gold << Game_Party::GetGold();
-	
-	contents->ClearRect(rect);
+	gold << std::setfill(' ') << std::setw(6) << 999999;
 
 	contents->GetFont()->color = 1;
-	contents->TextDraw(rect, Data::terms.gold, Bitmap::TextAlignRight);
+	Rect gold_text_size = contents->GetTextSize(Data::terms.gold);
+	contents->TextDraw(contents->GetWidth() - gold_text_size.width, 2, Data::terms.gold);
 
-	rect.x -= 12;
 	contents->GetFont()->color = Font::ColorDefault;
-	contents->TextDraw(rect, gold.str(), Bitmap::TextAlignRight);
+	contents->TextDraw(contents->GetWidth() - gold_text_size.width - 6 * 6, 2, gold.str(), Bitmap::TextAlignRight);
 }

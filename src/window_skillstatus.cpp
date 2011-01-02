@@ -48,7 +48,7 @@ void Window_SkillStatus::Refresh() {
 
 	DrawActorName(actor, 0, 0);
 	DrawActorLevel(actor, 80, 0);
-	DrawActorClass(actor, 80 + 44, 0);
+	DrawActorState(actor, 80 + 44, 0);
 	DrawActorHp(actor, 80 + 44 + 60, 0);
 	DrawActorSp(actor, 80 + 44 + 60 + 66, 0);
 }

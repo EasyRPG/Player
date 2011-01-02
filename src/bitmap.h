@@ -203,17 +203,19 @@ public:
 
 	////////////////////////////////////////////////////////
 	/// Draws text to bitmap.
-	/// @param dst_rect : destination rect
+	/// @param x : x coordinate where text rendering starts
+	/// @param y : y coordinate where text rendering starts
 	/// @param text : text to draw
 	/// @param align : text alignment inside dst_rect
 	////////////////////////////////////////////////////////
-	virtual void TextDraw(Rect dst_rect, std::string text, TextAlignment align = Bitmap::TextAlignLeft) = 0;
+	virtual void TextDraw(int x, int y, std::string text, TextAlignment align = Bitmap::TextAlignLeft) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Get space needed to draw some text.
+	/// This assumes that every char has a size of 6x12.
 	/// @param text : text to draw
 	////////////////////////////////////////////////////////
-	virtual Rect GetTextSize(std::string text) const = 0;
+	virtual Rect GetTextSize(std::string text) const;
 
 	/// @return the bitmap width
 	virtual int GetWidth() const;

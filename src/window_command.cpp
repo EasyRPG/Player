@@ -49,8 +49,7 @@ void Window_Command::DrawItem(int index, Font::SystemColor color) {
 
 	contents->GetFont()->color = color;
 
-	Rect rect(0, 16 * index, contents->GetWidth() - 8, 16);
-	contents->TextDraw(rect, commands[index]);
+	contents->TextDraw(0, 16 * index + 2, commands[index]);
 }
 
 ////////////////////////////////////////////////////////////

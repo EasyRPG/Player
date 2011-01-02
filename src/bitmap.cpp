@@ -841,6 +841,11 @@ void Bitmap::DetachBitmapScreen(BitmapScreen* bitmap) {
 }
 
 ////////////////////////////////////////////////////////////
+Rect Bitmap::GetTextSize(std::string text) const {
+	return Rect(0, 0, text.size() * 6, 12);
+}
+
+////////////////////////////////////////////////////////////
 int Bitmap::GetWidth() const {
 	return width();
 }

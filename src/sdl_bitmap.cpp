@@ -315,8 +315,10 @@ void SdlBitmap::FillRect(Rect dst_rect, const Color &color) {
 }
 
 ////////////////////////////////////////////////////////////
-void SdlBitmap::TextDraw(Rect dst_rect, std::string text, TextAlignment align) {
+void SdlBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 	if (text.length() == 0) return;
+	Rect dst_rect = GetTextSize(text);
+	dst_rect.x = x; dst_rect.y = y;
 	if (dst_rect.IsOutOfBounds(GetWidth(), GetHeight())) return;
 
 	TTF_Font* ttf_font = font->GetTTF();
@@ -470,20 +472,22 @@ void SdlBitmap::TextDraw(Rect dst_rect, std::string text, TextAlignment align) {
 	Bitmap* text_bmp = CreateBitmap(text_surface, text_surface->GetRect());
 	
 	Rect src_rect(0, 0, dst_rect.width, dst_rect.height);
-	int y = dst_rect.y;
-	if (dst_rect.height > text_bmp->GetHeight()) y += ((dst_rect.height - text_bmp->GetHeight()) / 2);
-	int x = dst_rect.x;
+	int iy = dst_rect.y;
+	if (dst_rect.height > text_bmp->GetHeight()) {
+		iy += ((dst_rect.height - text_bmp->GetHeight()) / 2);
+	}
+	int ix = dst_rect.x;
 	
 	// Alignment code
 	if (dst_rect.width > text_bmp->GetWidth()) {
 		if (align == Bitmap::TextAlignCenter) {
-			x += (dst_rect.width - text_bmp->GetWidth()) / 2;
+			ix += (dst_rect.width - text_bmp->GetWidth()) / 2;
 		} else if (align == Bitmap::TextAlignRight) {
-			x += dst_rect.width - text_bmp->GetWidth();
+			ix += dst_rect.width - text_bmp->GetWidth();
 		}
 	}
 
-	Blit(x, y, text_bmp, src_rect, SDL_ALPHA_OPAQUE);
+	Blit(ix, iy, text_bmp, src_rect, SDL_ALPHA_OPAQUE);
 
 	delete text_bmp;
 	delete text_surface;
@@ -493,6 +497,7 @@ void SdlBitmap::TextDraw(Rect dst_rect, std::string text, TextAlignment align) {
 ////////////////////////////////////////////////////////////
 Rect SdlBitmap::GetTextSize(std::string text) const {
 	return Rect(0, 0, text.size() * 6, 12);
+	//return Rect(0, 0, text.size() * 6, min(TTF_FontHeight(font->GetTTF()), 12));
 }
 
 ////////////////////////////////////////////////////////////

@@ -61,13 +61,11 @@ void Window_InputNumber::Refresh() {
 	contents->GetFont()->color = Font::ColorDefault;
 	char s[6];
 	sprintf(s, "%0*d", digits_max, number);
-	
-	Rect rect_text(0, 0, contents->GetWidth(), 16);
 
 	for (int i = 0; i < digits_max; ++i) {
 		char c[2] = {s[i], '\0'}; 
-		rect_text.x = i * cursor_width + 10;
-		contents->TextDraw(rect_text, c, Bitmap::TextAlignLeft);
+		int x = i * cursor_width + 10;
+		contents->TextDraw(x, 0, c);
 	}	
 }
 

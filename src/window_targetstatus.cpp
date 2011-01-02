@@ -36,9 +36,7 @@ Window_TargetStatus::~Window_TargetStatus() {
 
 ////////////////////////////////////////////////////////////
 void Window_TargetStatus::Refresh() {
-	Rect rect(0, 0, contents->GetWidth(), 16);
-
-	contents->ClearRect(rect);
+	contents->Clear();
 
 	if (id < 0) {
 		return;
@@ -47,9 +45,9 @@ void Window_TargetStatus::Refresh() {
 	contents->GetFont()->color = 1;
 
 	if (use_item) {
-		contents->TextDraw(rect, Data::terms.possessed_items);
+		contents->TextDraw(0, 0, Data::terms.possessed_items);
 	} else {
-		contents->TextDraw(rect, Data::terms.sp_cost);
+		contents->TextDraw(0, 0, Data::terms.sp_cost);
 	}
 
 	std::stringstream ss;
@@ -60,7 +58,7 @@ void Window_TargetStatus::Refresh() {
 	}
 
 	contents->GetFont()->color = Font::ColorDefault;
-	contents->TextDraw(rect, ss.str(), Bitmap::TextAlignRight);
+	contents->TextDraw(0, 0, ss.str(), Bitmap::TextAlignRight);
 }
 
 ////////////////////////////////////////////////////////////

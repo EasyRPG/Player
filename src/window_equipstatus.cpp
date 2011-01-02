@@ -18,6 +18,7 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <iomanip>
 #include <sstream>
 #include "game_actors.h"
 #include "window_equipstatus.h"
@@ -116,23 +117,22 @@ void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 
 	// Draw Term
 	Rect rect = contents->GetTextSize(name);
-	rect.x = cx; rect.y = cy;
 	contents->GetFont()->color = 1;
-	contents->TextDraw(rect, name);
+	contents->TextDraw(cx, cy, name);
 
 	// Draw Value
-	rect.x = cx + 60; rect.width = 18;
+	cx += 60;
 	std::stringstream ss;
-	ss << value;
+	ss << std::setfill(' ') << std::setw(3) << value;
 	contents->GetFont()->color = 0;
-	contents->TextDraw(rect, ss.str(), Bitmap::TextAlignRight);
+	contents->TextDraw(cx, cy, ss.str(), Bitmap::TextAlignRight);
 
 	if (draw_params) {
 		// Draw New Value
-		rect.x = cx + 90;
+		cx += 90;
 		ss.str(""); ss.clear();
 		ss << new_value;
 		contents->GetFont()->color = GetNewParameterColor(value, new_value);
-		contents->TextDraw(rect, ss.str(), Bitmap::TextAlignRight);
+		contents->TextDraw(cx, cy, ss.str(), Bitmap::TextAlignRight);
 	}
 }

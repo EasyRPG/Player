@@ -18,6 +18,7 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <iomanip>
 #include <sstream>
 #include "window_base.h"
 #include "cache.h"
@@ -62,10 +63,8 @@ void Window_Base::DrawActorGraphic(Game_Actor* actor, int cx, int cy) {
 }
 
 void Window_Base::DrawActorName(Game_Actor* actor, int cx, int cy) {
-	Rect rect = contents->GetTextSize(actor->GetName());
-	rect.x = cx; rect.y = cy;
 	contents->GetFont()->color = Font::ColorDefault;
-	contents->TextDraw(rect, actor->GetName());
+	contents->TextDraw(cx, cy, actor->GetName());
 }
 
 void Window_Base::DrawActorTitle(Game_Actor* actor, int cx, int cy) {
@@ -73,24 +72,20 @@ void Window_Base::DrawActorTitle(Game_Actor* actor, int cx, int cy) {
 }
 
 void Window_Base::DrawActorClass(Game_Actor* actor, int cx, int cy) {
-	Rect rect = contents->GetTextSize(actor->GetTitle());
-	rect.x = cx; rect.y = cy;
 	contents->GetFont()->color = Font::ColorDefault;
-	contents->TextDraw(rect, actor->GetTitle());
+	contents->TextDraw(cx, cy, actor->GetTitle());
 }
 
 void Window_Base::DrawActorLevel(Game_Actor* actor, int cx, int cy) {
 	// Draw LV-String
-	Rect rect(cx, cy, 12, 12);
 	contents->GetFont()->color = 1;
-	contents->TextDraw(rect, Data::terms.lvl_short);
+	contents->TextDraw(cx, cy, Data::terms.lvl_short);
 
 	// Draw Level of the Actor
 	std::stringstream ss;
-	ss << actor->GetLevel();
-	rect.x = cx + 12;
+	ss << std::setfill(' ') << std::setw(2) << actor->GetLevel();
 	contents->GetFont()->color = Font::ColorDefault;
-	contents->TextDraw(rect, ss.str(), Bitmap::TextAlignRight);
+	contents->TextDraw(cx + 12, cy, ss.str(), Bitmap::TextAlignRight);
 }
 
 void Window_Base::DrawActorState(Game_Actor* actor, int cx, int cy) {
@@ -98,10 +93,8 @@ void Window_Base::DrawActorState(Game_Actor* actor, int cx, int cy) {
 
 	// Unit has Normal state if no state is set
 	if (states.size() == 0) {
-		Rect rect = contents->GetTextSize(Data::terms.normal_status);
-		rect.x = cx; rect.y = cy;
 		contents->GetFont()->color = Font::ColorDefault;
-		contents->TextDraw(rect, Data::terms.normal_status);
+		contents->TextDraw(cx, cy, Data::terms.normal_status);
 	} else {
 		int highest_priority = 0;
 		int state = 0;
@@ -113,10 +106,8 @@ void Window_Base::DrawActorState(Game_Actor* actor, int cx, int cy) {
 			}
 		}
 
-		Rect rect = contents->GetTextSize(Data::states[state].name);
-		rect.x = cx; rect.y = cy;
 		contents->GetFont()->color = Data::states[state].color;
-		contents->TextDraw(rect, Data::states[state].name);
+		contents->TextDraw(cx, cy, Data::states[state].name);
 	}
 }
 
@@ -126,33 +117,30 @@ void Window_Base::DrawActorState(Game_Actor* actor, int cx, int cy, int width) {
 
 void Window_Base::DrawActorExp(Game_Actor* actor, int cx, int cy) {
 	// Draw EXP-String
-	Rect rect(cx, cy, 12, 12);
 	contents->GetFont()->color = 1;
-	contents->TextDraw(rect, Data::terms.exp_short);
+	contents->TextDraw(cx, cy, Data::terms.exp_short);
 
-	// Draw Current Exp of the Actor
+	// Current Exp of the Actor
 	// ------/------
-	Rect rect2(cx + 12, cy, 6*6, 12);
 	contents->GetFont()->color = Font::ColorDefault;
-	contents->TextDraw(rect2, actor->GetExpString(), Bitmap::TextAlignRight);
+	std::stringstream ss;
+	ss << std::setfill(' ') << std::setw(6) << actor->GetExpString();
 
-	// Draw the /
-	rect2.x += 6*6;
-	contents->TextDraw(rect2, "/");
+	// Delimiter
+	ss << '/';
 
-	// Draw Exp for Level up
-	rect2.x += 6;
-	contents->TextDraw(rect2, actor->GetNextExpString(), Bitmap::TextAlignRight);
+	// Exp for Level up
+	ss << std::setfill(' ') << std::setw(6) << actor->GetNextExpString();
+	contents->TextDraw(cx + 12, cy, ss.str(), Bitmap::TextAlignRight);
 }
 
 void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy) {
 	// Draw HP-String
-	Rect rect(cx, cy, 12, 12);
 	contents->GetFont()->color = 1;
-	contents->TextDraw(rect, Data::terms.hp_short);
+	contents->TextDraw(cx, cy, Data::terms.hp_short);
 
 	// Draw Current HP of the Actor
-	Rect rect2(cx + 12, cy, 3*6, 12);
+	cx += 12;
 	// Color: 0 okay, 4 critical, 5 dead
 	int color = Font::ColorDefault;
 	if (actor->GetHp() == 0) {
@@ -162,20 +150,20 @@ void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy) {
 	}
 	contents->GetFont()->color = color;
 	std::stringstream ss;
-	ss << actor->GetHp();
-	contents->TextDraw(rect2, ss.str(), Bitmap::TextAlignRight);
+	ss << std::setfill(' ') << std::setw(3) << actor->GetHp();
+	contents->TextDraw(cx, cy, ss.str(), Bitmap::TextAlignRight);
 
 	// Draw the /
-	rect2.x += 3*6;
+	cx += 3 * 6;
 	contents->GetFont()->color = Font::ColorDefault;
-	contents->TextDraw(rect2, "/");
+	contents->TextDraw(cx, cy, "/");
 
 	// Draw Max Hp
-	rect2.x += 6;
+	cx += 6;
 	ss.str("");
 	ss.clear();
-	ss << actor->GetMaxHp();
-	contents->TextDraw(rect2, ss.str(), Bitmap::TextAlignRight);
+	ss << std::setfill(' ') << std::setw(3) << actor->GetMaxHp();
+	contents->TextDraw(cx, cy, ss.str(), Bitmap::TextAlignRight);
 }
 void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy, int width) {
 	
@@ -183,12 +171,11 @@ void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy, int width) {
 
 void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy) {
 	// Draw SP-String
-	Rect rect(cx, cy, 12, 12);
 	contents->GetFont()->color = 1;
-	contents->TextDraw(rect, Data::terms.sp_short);
+	contents->TextDraw(cx, cy, Data::terms.sp_short);
 
 	// Draw Current SP of the Actor
-	Rect rect2(cx + 12, cy, 3*6, 12);
+	cx += 12;
 	// Color: 0 okay, 4 critical/empty
 	int color = Font::ColorDefault;
 	if (actor->GetMaxSp() != 0 && actor->GetSp() <= actor->GetMaxSp() / 4) {
@@ -196,20 +183,19 @@ void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy) {
 	}
 	contents->GetFont()->color = color;
 	std::stringstream ss;
-	ss << actor->GetSp();
-	contents->TextDraw(rect2, ss.str(), Bitmap::TextAlignRight);
+	ss << std::setfill(' ') << std::setw(3) << actor->GetSp();
+	contents->TextDraw(cx, cy, ss.str(), Bitmap::TextAlignRight);
 
 	// Draw the /
-	rect2.x += 3*6;
+	cx += 3 * 6;
 	contents->GetFont()->color = Font::ColorDefault;
-	contents->TextDraw(rect2, "/");
+	contents->TextDraw(cx, cy, "/");
 
 	// Draw Max Sp
-	rect2.x += 6;
 	ss.str("");
 	ss.clear();
-	ss << actor->GetMaxSp();
-	contents->TextDraw(rect2, ss.str(), Bitmap::TextAlignRight);
+	ss << std::setfill(' ') << std::setw(3) << actor->GetMaxSp();
+	contents->TextDraw(cx + 6, cy, ss.str(), Bitmap::TextAlignRight);
 }
 
 void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy, int width) {
@@ -243,16 +229,14 @@ void Window_Base::DrawActorParameter(Game_Actor* actor, int cx, int cy, int type
 
 	// Draw Term
 	Rect rect = contents->GetTextSize(name);
-	rect.x = cx; rect.y = cy;
 	contents->GetFont()->color = 1;
-	contents->TextDraw(rect, name);
+	contents->TextDraw(cx, cy, name);
 
 	// Draw Value
-	rect.x = cx + 78;
 	std::stringstream ss;
 	ss << value;
 	contents->GetFont()->color = Font::ColorDefault;
-	contents->TextDraw(rect, ss.str(), Bitmap::TextAlignRight);
+	contents->TextDraw(cx + 78, cy, ss.str(), Bitmap::TextAlignRight);
 }
 
 void Window_Base::DrawEquipmentType(Game_Actor* actor, int cx, int cy, int type) {
@@ -282,22 +266,16 @@ void Window_Base::DrawEquipmentType(Game_Actor* actor, int cx, int cy, int type)
 		return;
 	}
 
-	Rect rect = contents->GetTextSize(name);
-	rect.x = cx; rect.y = cy;
 	contents->GetFont()->color = 1;
-	contents->TextDraw(rect, name);
+	contents->TextDraw(cx, cy, name);
 }
 
 void Window_Base::DrawItemName(RPG::Item* item, int cx, int cy, bool enabled) {
 	contents->GetFont()->color = enabled ? Font::ColorDefault : Font::ColorDisabled;
-	Rect rect = contents->GetTextSize(item->name);
-	rect.x = cx; rect.y = cy;
-	contents->TextDraw(rect, item->name);
+	contents->TextDraw(cx, cy, item->name);
 }
 
 void Window_Base::DrawSkillName(RPG::Skill* skill, int cx, int cy, bool enabled) {
 	contents->GetFont()->color = enabled ? Font::ColorDefault : Font::ColorDisabled;
-	Rect rect = contents->GetTextSize(skill->name);
-	rect.x = cx; rect.y = cy;
-	contents->TextDraw(rect, skill->name);
+	contents->TextDraw(cx, cy, skill->name);
 }

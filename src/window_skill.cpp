@@ -85,9 +85,8 @@ void Window_Skill::DrawItem(int index) {
 		DrawSkillName(&Data::skills[skill_id - 1], rect.x, rect.y, enabled);
 		
 		std::stringstream ss;
-		ss << "-" << std::setfill(' ') << std::setw(3) << costs;
-
-		contents->TextDraw(rect, ss.str(), Bitmap::TextAlignRight);
+		ss << std::setfill(' ') << std::setw(21) << "-" << std::setfill(' ') << std::setw(3) << costs;
+		contents->TextDraw(rect.x, rect.y, ss.str(), Bitmap::TextAlignRight);
 	}
 }
 
