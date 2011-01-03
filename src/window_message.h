@@ -76,21 +76,33 @@ public:
 	void Update();
 
 	////////////////////////////////////////////////////////
-	/// Continues outputting more text depending on the
-	/// speed setting.
+	/// Continues outputting more text. Also handles the
+	/// CommandCode parsing.
 	////////////////////////////////////////////////////////
 	void UpdateMessage();
 
 	////////////////////////////////////////////////////////
 	/// Parses the parameter part of a \-message-command.
-	/// If has_bracket is true parsing is done between the
-	/// [] (or until a non-number is reached), otherwise it
-	/// will parse the number.
-	/// @param is_valid : Contains if the returned number is valid
-	/// @param has_bracket : If the var is in []
+	/// It starts parsing after the [ and stops after
+	/// encountering ], a non-number or a line break.
+	/// @param is_valid : Contains if a number was read
+	/// @param call_depth: How many ] to skip, used for
+	/// chained commands
 	/// @return the read number
 	////////////////////////////////////////////////////////
-	int ParseParameter(bool& is_valid);
+	int ParseParameter(bool& is_valid, int call_depth = 1);
+
+	////////////////////////////////////////////////////////
+	/// Parses a message command code (\ followed by a char).
+	/// This should only be used for codes that accept
+	/// parameters!
+	/// The text_index must be on the char following the \
+	/// when calling.
+	/// @param call_depth : Directly passed to ParseParameter
+	/// and automatically increased by 1 in every recursion.
+	/// @return The final text output of the code.
+	////////////////////////////////////////////////////////
+	std::string ParseCommandCode(int call_depth = 1);
 
 	////////////////////////////////////////////////////////
 	/// Stub. For Choice.

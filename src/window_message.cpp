@@ -180,59 +180,21 @@ void Window_Message::UpdateMessage() {
 		} else if (text[text_index] == '\\' && (unsigned)text_index != text.size() - 1) {
 			// Special message codes
 			++text_index;
-			int parameter;
-			bool is_valid;
+			std::string command_result;
 			switch (text[text_index]) {
 			case 'c':
-				// Color
-				parameter = ParseParameter(is_valid);
-				if (is_valid) {
-					contents->GetFont()->color = parameter > 19 ? 0 : parameter;
-				} else {
-					contents->GetFont()->color = Font::ColorDefault;
-				}
-				break;
 			case 'n':
-				// Output Hero name
-				parameter = ParseParameter(is_valid);
-				if (is_valid) {
-					Game_Actor* actor = NULL;
-					if (parameter == 0) {
-						// Party hero
-						actor = Game_Party::GetActors()[0];
-					} else {
-						actor = Game_Actors::GetActor(parameter);
-					}
-					if (actor != NULL) {
-						contents->TextDraw(contents_x, contents_y, actor->GetName());
-						contents_x += contents->GetTextSize(actor->GetName()).width;
-					}
-				}
-				break;
 			case 's':
-				// Speed modifier
-				// ToDo: Find out how long each \s take
-				parameter = ParseParameter(is_valid);
-				break;
 			case 'v':
-				// Show Variable value
-				parameter = ParseParameter(is_valid);
-				if (is_valid && Game_Variables.isValidVar(parameter)) {
-					std::stringstream ss;
-					ss << Game_Variables[parameter];
-					contents->TextDraw(contents_x, contents_y, ss.str());
-					contents_x += contents->GetTextSize(ss.str()).width;
-				} else {
-					// Invalid Var is always 0
-					std::stringstream ss;
-					ss << '0';
-					contents->TextDraw(contents_x, contents_y, ss.str());
-					contents_x += contents->GetTextSize(ss.str()).width;
-				}
+				// These commands support indirect access via \v[]
+				command_result = ParseCommandCode();
+				contents->TextDraw(contents_x, contents_y, command_result);
+				contents_x += contents->GetTextSize(command_result).width;
 				break;
 			case '\\':
 				// Show Backslash
 				contents->TextDraw(contents_x, contents_y, std::string("\\"));
+				contents_x += contents->GetTextSize("\\").width;
 				break;
 			case '$':
 				// Show Money Window ToDo
@@ -276,7 +238,7 @@ void Window_Message::UpdateMessage() {
 			contents_x += 12;
 			++text_index;
 		} else {
-			// Normal Text Draw
+			// Normal Text
 			contents->TextDraw(contents_x, contents_y, text.substr(text_index, 1));
 			contents_x += 6;
 		}
@@ -285,7 +247,7 @@ void Window_Message::UpdateMessage() {
 }
 
 ////////////////////////////////////////////////////////////
-int Window_Message::ParseParameter(bool& is_valid) {
+int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 	++text_index;
 
 	if ((unsigned)text_index == text.size() ||
@@ -319,7 +281,10 @@ int Window_Message::ParseParameter(bool& is_valid) {
 			text[text_index] <= '9') {
 			ss << text[text_index];
 		} else if (text[text_index] == ']') {
-			break;
+			--call_depth;
+			if (call_depth == 0) {
+				break;
+			}
 		} else {
 			// End of number
 			// Search for ] or line break
@@ -329,7 +294,10 @@ int Window_Message::ParseParameter(bool& is_valid) {
 						--text_index;
 						break;
 					} else if (text[text_index] == ']') {
-						break;
+						--call_depth;
+						if (call_depth == 0) {
+							break;
+						}
 					}
 					++text_index;
 			}
@@ -352,6 +320,89 @@ int Window_Message::ParseParameter(bool& is_valid) {
 	is_valid = true;
 	printf("Parsed %d\n", num);
 	return num;
+}
+
+////////////////////////////////////////////////////////////
+std::string Window_Message::ParseCommandCode(int call_depth) {
+	int parameter;
+	bool is_valid;
+	// sub_code is used by chained arguments like \v[\v[1]]
+	// In that case sub_code contains the result from \v[1]
+	int sub_code = -1;
+	char cmd_char = text[text_index];
+	if ((unsigned)text_index + 3 < text.size() &&
+		text[text_index + 2] == '\\' &&
+		text[text_index + 3] == 'v') {
+		text_index += 3;
+		// The result is a variable value, str-to-int is safe in this case
+		sub_code = atoi(ParseCommandCode(++call_depth).c_str());
+	}
+	switch (cmd_char) {
+	case 'c':
+		// Color
+		if (sub_code >= 0) {
+			parameter = sub_code;
+		} else {
+			parameter = ParseParameter(is_valid, call_depth);
+		}
+		contents->GetFont()->color = parameter > 19 ? 0 : parameter;
+		break;
+	case 'n':
+		// Output Hero name
+		if (sub_code >= 0) {
+			is_valid = true;
+			parameter = sub_code;
+		} else {
+			parameter = ParseParameter(is_valid, call_depth);
+		}
+		if (is_valid) {
+			Game_Actor* actor = NULL;
+			if (parameter == 0) {
+				// Party hero
+				actor = Game_Party::GetActors()[0];
+			} else {
+				actor = Game_Actors::GetActor(parameter);
+			}
+			if (actor != NULL) {
+				return actor->GetName();
+			}
+		} else {
+			Output::Warning("Invalid argument for \\n-Command");
+		}
+		break;
+	case 's':
+		// Speed modifier
+		// ToDo: Find out how long each \s take
+		if (sub_code >= 0) {
+			is_valid = true;
+			parameter = sub_code;
+		} else {
+			parameter = ParseParameter(is_valid, call_depth);
+		}
+		break;
+	case 'v':
+		// Show Variable value
+		if (sub_code >= 0) {
+			is_valid = true;
+			parameter = sub_code;
+		} else {
+			parameter = ParseParameter(is_valid, call_depth);
+		}
+		if (is_valid && Game_Variables.isValidVar(parameter)) {
+			std::stringstream ss;
+			ss << Game_Variables[parameter];
+			return ss.str();
+		} else {
+			// Invalid Var is always 0
+			std::stringstream ss;
+			ss << '0';
+			return ss.str();
+		}
+	default:;
+		// When this happens text_index was not on a \ during calling
+	}
+
+	return "";
 }
 
 ////////////////////////////////////////////////////////////
