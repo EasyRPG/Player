@@ -59,7 +59,7 @@ enum CommandCodes {
 	ChangeActorFace		= 10640,
 	Teleport			= 10810,
 	EraseScreen			= 11010,
-	ShowScreen			= 11020,
+	ShowScreen			= 11020
 };
 
 enum Sizes {

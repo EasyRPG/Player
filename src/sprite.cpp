@@ -28,6 +28,8 @@
 /// Constructor
 ////////////////////////////////////////////////////////////
 Sprite::Sprite() :
+	type(TypeSprite),
+	ID(Graphics::drawable_id++),
 	bitmap(NULL),
 	visible(true),
 	x(0),
@@ -36,9 +38,7 @@ Sprite::Sprite() :
 	ox(0),
 	oy(0),
 	flash_duration(0),
-	flash_frame(0),
-	ID(Graphics::drawable_id++),
-	type(TypeSprite) {
+	flash_frame(0) {
 
 	bitmap_screen = BitmapScreen::CreateBitmapScreen(false);
 
