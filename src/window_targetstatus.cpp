@@ -58,7 +58,7 @@ void Window_TargetStatus::Refresh() {
 	}
 
 	contents->GetFont()->color = Font::ColorDefault;
-	contents->TextDraw(0, 0, ss.str(), Bitmap::TextAlignRight);
+	contents->TextDraw(contents->GetWidth() - contents->GetTextSize(ss.str()).width, 0, ss.str(), Bitmap::TextAlignRight);
 }
 
 ////////////////////////////////////////////////////////////
