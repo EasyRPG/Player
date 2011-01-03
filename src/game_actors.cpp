@@ -43,8 +43,10 @@ void Game_Actors::Dispose() {
 
 ////////////////////////////////////////////////////////////
 Game_Actor* Game_Actors::GetActor(int actor_id) {
-	if (!ActorExists(actor_id))
-		Output::Error("Actor id %d is invalid.", actor_id);
+	if (!ActorExists(actor_id)) {
+		Output::Warning("Actor id %d is invalid.", actor_id);
+		return NULL;
+	}
 	else if (!data[actor_id])
 		data[actor_id] = new Game_Actor(actor_id);
 
@@ -53,5 +55,5 @@ Game_Actor* Game_Actors::GetActor(int actor_id) {
 
 ////////////////////////////////////////////////////////////
 bool Game_Actors::ActorExists(int actor_id) {
-	return actor_id > 0 || (size_t)actor_id < data.size();
+	return actor_id > 0 && (size_t)actor_id < data.size();
 }

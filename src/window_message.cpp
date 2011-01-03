@@ -18,14 +18,21 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <sstream>
 #include "window_message.h"
+#include "game_actors.h"
 #include "game_message.h"
+#include "game_party.h"
+#include "game_variables.h"
+#include "graphics.h"
 #include "input.h"
+#include "util_macro.h"
 
 ////////////////////////////////////////////////////////////
 Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),
-	contents_x(0), contents_y(0), line_count(0), current_char(-1), text("")
+	contents_x(0), contents_y(0), line_count(0), text_index(-1), text(""),
+	halt_output(false)
 {
 	SetContents(Bitmap::CreateBitmap(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
@@ -78,6 +85,7 @@ void Window_Message::InsertNewPage() {
 	contents_x = 0;
 	contents_y = 0;
 	line_count = 0;
+	contents->GetFont()->color = Font::ColorDefault;
 }
 
 ////////////////////////////////////////////////////////////
@@ -136,49 +144,214 @@ void Window_Message::UpdateMessage() {
 	// At the moment 3 chars per frame are drawn
 	// ToDo: Value must depend on Speedevent
 
+	// Contains at what frame the sleep is over
+	static int sleep_until = -1;
+	if (sleep_until > -1) {
+		if (Graphics::GetFrameCount() >= sleep_until) {
+			// Sleep over
+			sleep_until = -1;
+		} else {
+			return;
+		}
+	}
+
+	bool instant_speed = false;
 	int loop_count = 0;
-	while (loop_count != 3) {
+	int loop_max = 3;
+	while (instant_speed || loop_count < loop_max) {
 		++loop_count;
-		++current_char;
-		if (current_char == text.size()) {
+		++text_index;
+		if ((unsigned)text_index == text.size()) {
 			FinishMessageProcessing();
 			text.clear();
-			current_char = -1;
+			text_index = -1;
 			pause = true;
 			break;
 		}
 
-		if (text[current_char] == '\n') {
+		if (text[text_index] == '\n') {
+			instant_speed = false;
 			InsertNewLine();
-		} else if (text[current_char] == '\f') {
-			// \f is a form feed
+		} else if (text[text_index] == '\f') {
+			// \f is a form feed (page break)
+			instant_speed = false;
 			pause = true;
 			break;
-		} else if (text[current_char] == '\\' && current_char != text.size() - 1) {
+		} else if (text[text_index] == '\\' && (unsigned)text_index != text.size() - 1) {
 			// Special message codes
-			++current_char;
-			switch (text[current_char]) {
+			++text_index;
+			int parameter;
+			bool is_valid;
+			switch (text[text_index]) {
+			case 'c':
+				// Color
+				parameter = ParseParameter(is_valid);
+				if (is_valid) {
+					contents->GetFont()->color = parameter > 19 ? 0 : parameter;
+				} else {
+					contents->GetFont()->color = Font::ColorDefault;
+				}
+				break;
+			case 'n':
+				// Output Hero name
+				parameter = ParseParameter(is_valid);
+				if (is_valid) {
+					Game_Actor* actor = NULL;
+					if (parameter == 0) {
+						// Party hero
+						actor = Game_Party::GetActors()[0];
+					} else {
+						actor = Game_Actors::GetActor(parameter);
+					}
+					if (actor != NULL) {
+						contents->TextDraw(contents_x, contents_y, actor->GetName());
+						contents_x += contents->GetTextSize(actor->GetName()).width;
+					}
+				}
+				break;
+			case 's':
+				// Speed modifier
+				// ToDo: Find out how long each \s take
+				parameter = ParseParameter(is_valid);
+				break;
+			case 'v':
+				// Show Variable value
+				parameter = ParseParameter(is_valid);
+				if (is_valid && Game_Variables.isValidVar(parameter)) {
+					std::stringstream ss;
+					ss << Game_Variables[parameter];
+					contents->TextDraw(contents_x, contents_y, ss.str());
+					contents_x += contents->GetTextSize(ss.str()).width;
+				} else {
+					// Invalid Var is always 0
+					std::stringstream ss;
+					ss << '0';
+					contents->TextDraw(contents_x, contents_y, ss.str());
+					contents_x += contents->GetTextSize(ss.str()).width;
+				}
+				break;
 			case '\\':
+				// Show Backslash
 				contents->TextDraw(contents_x, contents_y, std::string("\\"));
+				break;
+			case '$':
+				// Show Money Window ToDo
+				break;
+			case '!':
+				// Text pause
+				halt_output = true;
+				pause = true;
+				break;
+			case '^':
+				// Force message close
+				TerminateMessage();
+				break;
+			case '>':
+				// Instant speed start
+				// ToDo: Not working properly
+				instant_speed = true;
+				break;
+			case '<':
+				// Instant speed stop
+				instant_speed = false;
+				break;
+			case '.':
+				// Millisecond sleep
+				sleep_until = Graphics::GetFrameCount() + 60 / 4;
+				return;
+				break;
+			case '|':
+				// Second sleep
+				sleep_until = Graphics::GetFrameCount() + 60;
+				return;
 				break;
 			default:;
 			}
-		} else if (text[current_char] == '$' &&
-			current_char != text.size() - 1 &&
-			((text[current_char+1] >= 'a' && text[current_char+1] <= 'z') ||
-			(text[current_char+1] >= 'A' && text[current_char+1] <= 'Z'))) {
+		} else if (text[text_index] == '$' &&
+			(unsigned)text_index != text.size() - 1 &&
+			((text[text_index+1] >= 'a' && text[text_index+1] <= 'z') ||
+			(text[text_index+1] >= 'A' && text[text_index+1] <= 'Z'))) {
 			// ExFont
-			contents->TextDraw(contents_x, contents_y, text.substr(current_char, 2));
+			contents->TextDraw(contents_x, contents_y, text.substr(text_index, 2));
 			contents_x += 12;
-			++current_char;
+			++text_index;
 		} else {
 			// Normal Text Draw
-			contents->TextDraw(contents_x, contents_y, text.substr(current_char, 1));
+			contents->TextDraw(contents_x, contents_y, text.substr(text_index, 1));
 			contents_x += 6;
 		}
 	}
 	loop_count = 0;
-	// ToDo: break on Instant Message Command code
+}
+
+////////////////////////////////////////////////////////////
+int Window_Message::ParseParameter(bool& is_valid) {
+	++text_index;
+
+	if ((unsigned)text_index == text.size() ||
+		text[text_index] != '[') {
+		--text_index;
+		is_valid = false;
+		return 0;
+	}
+
+	++text_index; // Skip the [
+
+	bool null_at_start = false;
+	std::stringstream ss;
+	for (;;) {
+		if ((unsigned)text_index == text.size()) {
+			break;
+		} else if (text[text_index] == '\n' ||
+			text[text_index] == '\f') {
+			--text_index;
+			break;
+		}
+		else if (text[text_index] == '0') {
+			// Truncate 0 at the start
+			if (!ss.str().empty()) {
+				ss << '0';
+			} else {
+				null_at_start = true;
+			}
+		}
+		else if (text[text_index] >= '1' &&
+			text[text_index] <= '9') {
+			ss << text[text_index];
+		} else if (text[text_index] == ']') {
+			break;
+		} else {
+			// End of number
+			// Search for ] or line break
+			while ((unsigned)text_index != text.size()) {
+					if (text[text_index] == '\n' ||
+						text[text_index] == '\f') {
+						--text_index;
+						break;
+					} else if (text[text_index] == ']') {
+						break;
+					}
+					++text_index;
+			}
+			break;
+		}
+		++text_index;
+	}
+
+	if (ss.str().empty()) {
+		if (null_at_start) {
+			ss << "0";
+		} else {
+			is_valid = false;
+			return 0;
+		}
+	}
+
+	int num;
+	ss >> num;
+	is_valid = true;
+	printf("Parsed %d\n", num);
+	return num;
 }
 
 ////////////////////////////////////////////////////////////
@@ -191,7 +364,11 @@ void Window_Message::WaitForInput() {
 	if (Input::IsTriggered(Input::DECISION) ||
 		Input::IsTriggered(Input::CANCEL)) {
 		pause = false;
-		InsertNewPage();
+		if (halt_output) {
+			halt_output = false;
+		} else {
+			InsertNewPage();
+		}
 		if (text.empty()) {
 			TerminateMessage();
 		}

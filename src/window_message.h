@@ -82,6 +82,17 @@ public:
 	void UpdateMessage();
 
 	////////////////////////////////////////////////////////
+	/// Parses the parameter part of a \-message-command.
+	/// If has_bracket is true parsing is done between the
+	/// [] (or until a non-number is reached), otherwise it
+	/// will parse the number.
+	/// @param is_valid : Contains if the returned number is valid
+	/// @param has_bracket : If the var is in []
+	/// @return the read number
+	////////////////////////////////////////////////////////
+	int ParseParameter(bool& is_valid);
+
+	////////////////////////////////////////////////////////
 	/// Stub. For Choice.
 	////////////////////////////////////////////////////////
 	void UpdateCursorRect();
@@ -102,9 +113,11 @@ protected:
 	//bool contents_showing;
 	//int cursor_width;
 	/// Index of the next char in text that will be outputted
-	unsigned current_char;
+	int text_index;
 	/// text message that will be displayed
 	std::string text;
+	/// Prevents new page call when a halt \! was found
+	bool halt_output;
 	//Window_InputNumber* input_number_window; // TODO: Implement Window_InputNumber
 	//Window_Gold* gold_window; // TODO: Implement Window_Gold
 };

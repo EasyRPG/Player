@@ -31,13 +31,24 @@
 class Game_Variables_Class {
 public:
 	int& operator[] (int variable_id) {
-		if ((size_t)variable_id >= Data::variables.size())
-			Output::Error("Variable index %d is invalid.", variable_id);
+		if (variable_id <= 0 || (size_t)variable_id >= Data::variables.size()) {
+			Output::Warning("Variable index %d is invalid.\n\
+							Check the id with isValidVar before calling this!");
+			if (data.size() == 0) {
+				data.resize(1, 0);
+			}
+			data[0] = 0;
+			return data[0];
+		}
 
 		if ((size_t)variable_id >= data.size())
 			data.resize(variable_id + 1, 0);
 
 		return data[variable_id];
+	}
+
+	bool isValidVar(int variable_id) {
+		return (variable_id > 0 && (size_t)variable_id < Data::variables.size());
 	}
 
 private:
