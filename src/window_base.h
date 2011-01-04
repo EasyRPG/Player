@@ -49,8 +49,8 @@ public:
 	/// Draw helpers.
 	////////////////////////////////////////////////////////////
 	//@{
-
-	void DrawActorGraphic(Game_Actor* actor, int cx, int cy);
+	void DrawFace(std::string face_name, int face_index, int cx, int cy, bool flip = false);
+	void DrawActorFace(Game_Actor* actor, int cx, int cy);
 	void DrawActorName(Game_Actor* actor, int cx, int cy);
 	void DrawActorTitle(Game_Actor* actor, int cx, int cy);
 	void DrawActorClass(Game_Actor* actor, int cx, int cy);

@@ -49,7 +49,7 @@ void Window_MenuStatus::Refresh() {
 	int y = 0;
 	for (int i = 0; i < item_max; ++i)
 	{
-		DrawActorGraphic(Game_Party::GetActors()[i], 0, i*48 + y);
+		DrawActorFace(Game_Party::GetActors()[i], 0, i*48 + y);
 		DrawActorName(Game_Party::GetActors()[i], 48 + 8, i*48 + 2 + y);
 		DrawActorClass(Game_Party::GetActors()[i], 48 + 8 + 88, i*48 + 2 + y);
 		DrawActorLevel(Game_Party::GetActors()[i], 48 + 8, i*48 + 2 + 16 + y);

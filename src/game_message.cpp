@@ -44,7 +44,6 @@ namespace Game_Message {
 }
 
 void Game_Message::Init() {
-	visible = false;
 }
 
 void Game_Message::Clear() {
@@ -58,7 +57,6 @@ void Game_Message::Clear() {
 	choice_cancel_type = 0;
 	num_input_variable_id = 0;
 	num_input_digits_max = 0;
-	visible = false;
 }
 
 bool Game_Message::Busy() {

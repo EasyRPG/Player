@@ -34,6 +34,18 @@ public:
 	Window_Message(int ix, int iy, int iwidth, int iheight);
 	~Window_Message();
 
+	/*
+	Notes about MessageBox Open/Close:
+	RPG2k does open a MessageBox when the first ShowMsgBox-Event
+	on an event page occurs (or when there is a MsgBox event anywhere?).
+	The Box is then open until the whole event page ended
+	(Interpreter::CommandEnd).
+	The following behaviour is not implemented yet:
+	The MsgBox must stay open when the event following the current event
+	is an auto start (or parallel process?)-event. RPG2k scans the whole event
+	for a MsgBox call and keeps the MsgBox open when it finds one.
+	*/
+
 	////////////////////////////////////////////////////////
 	/// Starts message processing by reading all non-
 	/// displayed from Game_Message
@@ -96,8 +108,8 @@ public:
 	/// Parses a message command code (\ followed by a char).
 	/// This should only be used for codes that accept
 	/// parameters!
-	/// The text_index must be on the char following the \
-	/// when calling.
+	/// The text_index must be on the char following \ when
+	/// calling.
 	/// @param call_depth : Directly passed to ParseParameter
 	/// and automatically increased by 1 in every recursion.
 	/// @return The final text output of the code.

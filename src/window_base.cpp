@@ -48,18 +48,28 @@ void Window_Base::Update() {
 }
 
 ////////////////////////////////////////////////////////////
-void Window_Base::DrawActorGraphic(Game_Actor* actor, int cx, int cy) {
-	Bitmap* faceset = Cache::Faceset(actor->GetFaceName());
-	int face_index = actor->GetFaceIndex();
+void Window_Base::DrawFace(std::string face_name, int face_index, int cx, int cy, bool flip) {
+	Bitmap* faceset = Cache::Faceset(face_name);
 
-	Rect dst_rect(
+	Rect src_rect(
 		(face_index % 4) * 48,
 		face_index / 4 * 48,
 		48,
 		48
 	);
 
-	contents->Blit(cx, cy, faceset, dst_rect, 255);
+	if (flip) {
+		Bitmap* faceflip = Bitmap::CreateBitmap(faceset, src_rect, false);
+		faceflip->Flip(true, false);
+		contents->Blit(cx, cy, faceflip, Rect(0, 0, 48, 48), 255);
+		delete faceflip;
+	} else {
+		contents->Blit(cx, cy, faceset, src_rect, 255);
+	}
+}
+
+void Window_Base::DrawActorFace(Game_Actor* actor, int cx, int cy) {
+	DrawFace(actor->GetFaceName(), actor->GetFaceIndex(), cx, cy);
 }
 
 void Window_Base::DrawActorName(Game_Actor* actor, int cx, int cy) {

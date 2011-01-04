@@ -64,12 +64,7 @@ void Window_Message::StartMessageProcessing() {
 			line.resize(50);
 		}
 		text.append(line);
-		if (text[text.size() - 1] != '\f') {
-			// Prevent line break on next page when there is a form feed
-			// A form feed happens when there were two or more ShowMessage
-			// Events in a row
-			text.append("\n");
-		}
+		text.append("\n");
 	}
 	InsertNewPage();
 }
@@ -82,7 +77,21 @@ void Window_Message::FinishMessageProcessing() {
 ////////////////////////////////////////////////////////////
 void Window_Message::InsertNewPage() {
 	contents->Clear();
-	contents_x = 0;
+	if (!Game_Message::face_name.empty()) {
+		// 8 + 48 + 16 (left margin + face size + right margin)
+		// ToDo: All these magic numbers should be in an enum in Window
+		if (Game_Message::face_left_position) {
+			contents_x = 8 + 48 + 16;
+			printf("%d", Game_Message::face_flipped);
+			DrawFace(Game_Message::face_name, Game_Message::face_index, 8, 6, Game_Message::face_flipped);
+		} else {
+			contents_x = 0;
+			printf("%d", Game_Message::face_flipped);
+			DrawFace(Game_Message::face_name, Game_Message::face_index, 248, 6, Game_Message::face_flipped);
+		}
+	} else {
+		contents_x = 0;
+	}
 	contents_y = 0;
 	line_count = 0;
 	contents->GetFont()->color = Font::ColorDefault;
@@ -90,7 +99,11 @@ void Window_Message::InsertNewPage() {
 
 ////////////////////////////////////////////////////////////
 void Window_Message::InsertNewLine() {
-	contents_x = 0;
+	if (!Game_Message::face_name.empty() && Game_Message::face_left_position) {
+		contents_x = 8 + 48 + 16;
+	} else {
+		contents_x = 0;
+	}
 	contents_y += 16;
 	++line_count;
 }
@@ -99,9 +112,9 @@ void Window_Message::InsertNewLine() {
 void Window_Message::TerminateMessage() {
 	pause = false;
 	Game_Message::message_waiting = false;
-	Game_Message::Clear();
-	SetCloseAnimation(5);
-	visible = false;
+	// Only remove the texts here, the other flag resetting is done in
+	// Game_Interpreter::CommandEnd
+	Game_Message::texts.clear();
 }
 
 ////////////////////////////////////////////////////////////
@@ -121,20 +134,32 @@ void Window_Message::ResetWindow() {
 ////////////////////////////////////////////////////////////
 void Window_Message::Update() {
 	Window::Update();
-
-	if (pause) {
+	if (visible && !Game_Message::visible) {
+		// The Event Page ended but the MsgBox was used in this Event
+		// It can be closed now.
+		TerminateMessage();
+		SetCloseAnimation(5);
+		// Remove this when the Close Animation is implemented
+		// The close animation must set the visible false flag
+		visible = false;
+	}
+	else if (pause) {
 		WaitForInput();
 	}
 	else if (!text.empty()) {
+		// Output the remaining text for the current page
 		UpdateMessage();
 	}
 	else if (IsTextOutputPossible()) {
+		// Output a new page
 		StartMessageProcessing();
+		//printf("Text: %s\n", text.c_str());
+		if (!visible) {
+			// The MessageBox is not open yet but text output is needed
+			SetOpenAnimation(5);
+			visible = true;
+		}
 		Game_Message::visible = true;
-		SetOpenAnimation(5);
-		visible = true;
-	} else {
-		
 	}
 }
 
@@ -156,6 +181,7 @@ void Window_Message::UpdateMessage() {
 	}
 
 	bool instant_speed = false;
+	static bool kill_message = false;
 	int loop_count = 0;
 	int loop_max = 3;
 	while (instant_speed || loop_count < loop_max) {
@@ -163,20 +189,31 @@ void Window_Message::UpdateMessage() {
 		++text_index;
 		if ((unsigned)text_index == text.size()) {
 			FinishMessageProcessing();
-			text.clear();
 			text_index = -1;
-			pause = true;
+			pause = !kill_message;
+			if (kill_message) {
+				TerminateMessage();
+				kill_message = false;
+			}
 			break;
 		}
 
 		if (text[text_index] == '\n') {
-			instant_speed = false;
+			if (instant_speed) {
+				// Special case: When there is not a \< anywhere in the
+				// current message only the current line is displayed instant
+				bool instant_speed_stop_found = false;
+				for (unsigned i = text_index + 1; i < text.size() - 2; ++i) {
+					if (text[i] == '\\' && text[i + 1] == '<') {
+						instant_speed_stop_found = true;
+						break;
+					}
+				}
+				if (!instant_speed_stop_found) {
+					instant_speed = false;
+				}
+			}
 			InsertNewLine();
-		} else if (text[text_index] == '\f') {
-			// \f is a form feed (page break)
-			instant_speed = false;
-			pause = true;
-			break;
 		} else if (text[text_index] == '\\' && (unsigned)text_index != text.size() - 1) {
 			// Special message codes
 			++text_index;
@@ -206,7 +243,9 @@ void Window_Message::UpdateMessage() {
 				break;
 			case '^':
 				// Force message close
-				TerminateMessage();
+				// The close happens at the end of the message, not where
+				// the ^ is encoutered
+				kill_message = true;
 				break;
 			case '>':
 				// Instant speed start
@@ -264,8 +303,7 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 	for (;;) {
 		if ((unsigned)text_index == text.size()) {
 			break;
-		} else if (text[text_index] == '\n' ||
-			text[text_index] == '\f') {
+		} else if (text[text_index] == '\n') {
 			--text_index;
 			break;
 		}
@@ -289,8 +327,7 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 			// End of number
 			// Search for ] or line break
 			while ((unsigned)text_index != text.size()) {
-					if (text[text_index] == '\n' ||
-						text[text_index] == '\f') {
+					if (text[text_index] == '\n') {
 						--text_index;
 						break;
 					} else if (text[text_index] == ']') {
@@ -318,7 +355,6 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 	int num;
 	ss >> num;
 	is_valid = true;
-	printf("Parsed %d\n", num);
 	return num;
 }
 
@@ -412,14 +448,16 @@ void Window_Message::UpdateCursorRect() {
 
 ////////////////////////////////////////////////////////////
 void Window_Message::WaitForInput() {
+	active = true;
 	if (Input::IsTriggered(Input::DECISION) ||
 		Input::IsTriggered(Input::CANCEL)) {
+		active = false;
 		pause = false;
 		if (halt_output) {
 			halt_output = false;
-		} else {
+		}/* else {
 			InsertNewPage();
-		}
+		}*/
 		if (text.empty()) {
 			TerminateMessage();
 		}

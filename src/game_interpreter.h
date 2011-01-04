@@ -70,7 +70,7 @@ private:
 
 	void CancelMenuCall();
 
-	bool CommandShowMessage(bool append_text = false);
+	bool CommandShowMessage();
 	bool CommandShowChoices();
 	bool CommandChangeFaceGraphic();
 	bool CommandInputNumber();

@@ -40,6 +40,7 @@ Window_InputNumber::Window_InputNumber(int idigits_max) :
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	z += 9999;
+	opacity = 0;
 	index = 0;
 
 	Refresh();

@@ -93,10 +93,8 @@ void Window::SetOpenAnimation(int frames) {
 
 ////////////////////////////////////////////////////////////
 void Window::SetCloseAnimation(int frames) {
-	// ToDo: Implement Close Anim
-	animation_frames = frames;
-	animation_count = 0.0;
-	animation_increment = (height / 2.0) / frames;
+	(void)frames;
+	// ToDo
 }
 
 ////////////////////////////////////////////////////////////
@@ -105,6 +103,7 @@ void Window::Draw(int z_order) {
 	if (width <= 0 || height <= 0) return;
 	if (x < -width || x > DisplayUi->GetWidth() || y < -height || y > DisplayUi->GetHeight()) return;
 	
+
 	if (windowskin != NULL) {
 		if (width > 4 && height > 4 && (back_opacity * opacity / 255 > 0)) {
 			if (background_needs_refresh) RefreshBackground();
@@ -146,7 +145,7 @@ void Window::Draw(int z_order) {
 			}
 		}
 
-		if (width > 16 && height > 16 && cursor_rect.width > 4 && cursor_rect.height > 4 && animation_frames <= 0) {
+		if (width > 16 && height > 16 && cursor_rect.width > 4 && cursor_rect.height > 4 && animation_frames == 0) {
 			if (cursor_needs_refresh) RefreshCursor();
 
 			Rect src_rect(
@@ -164,7 +163,7 @@ void Window::Draw(int z_order) {
 	}
 
 	if (contents != NULL) {
-		if (width > 16 && height > 16 && -ox < width - 16 && -oy < height - 16 && contents_opacity > 0 && animation_frames <= 0) {
+		if (width > 16 && height > 16 && -ox < width - 16 && -oy < height - 16 && contents_opacity > 0 && animation_frames == 0) {
 			Rect src_rect(-min(-ox, 0), -min(-oy, 0), min(width - 16, width - 16 + ox), min(height - 16, height - 16 + oy));
 			
 			contents_screen->SetOpacityEffect(contents_opacity);
@@ -173,12 +172,13 @@ void Window::Draw(int z_order) {
 		}
 	}
 	
-	/*if (pause && pause_frame > 16 && animation_frames <= 0) {
+	if (pause && pause_frame > 16 && animation_frames <= 0) {
 		Rect src_rect(40, 16, 16, 8);
 		windowskin_screen->BlitScreen(x + width / 2 - 4, y + height - 8, src_rect);
-	}*/
+	}
 	
 	if (animation_frames > 0) {
+		// Open Animation
 		animation_frames -= 1;
 		animation_count += animation_increment;
 	}
@@ -337,7 +337,7 @@ void Window::Update() {
 		if (cursor_frame > 32) cursor_frame = 0;
 		if (pause) {
 			pause_frame += 1;
-			if (cursor_frame > 32) pause_frame = 0;
+			if (pause_frame == 40) pause_frame = 0;
 		}
 	}
 }

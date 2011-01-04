@@ -409,12 +409,15 @@ void Game_Interpreter::InputButton() {
 }
 
 void Game_Interpreter::CommandEnd() {
+	if (Game_Message::visible) {
+		Game_Message::visible = false;
+		Game_Message::Clear();
+	}
 	list.clear();
 
 	if ((main_flag) && (event_id > 0)) {
 		Game_Map::GetEvents()[event_id]->Unlock();
 	}
-
 }
 
 /////////////////////////////////////////////
@@ -449,16 +452,10 @@ void Game_Interpreter::GetStrings(std::vector<std::string>& ret_val) {
 ////////////////////////////////////////////////////////////
 /// Command Show Message
 ////////////////////////////////////////////////////////////
-bool Game_Interpreter::CommandShowMessage(bool append_text) { // Code ShowMessage
+bool Game_Interpreter::CommandShowMessage() { // Code ShowMessage
 	// If there's a text already, return immediately
-	if (!append_text) {
-		if (!Game_Message::texts.empty()) {
-			return false;
-		}
-	} else {
-		// Page break (Form feed)
-		// Used when multiple ShowMessage Events are following
-		Game_Message::texts.push_back("\f");
+	if (!Game_Message::texts.empty()) {
+		return false;
 	}
 	unsigned int line_count = 0;
 
@@ -486,24 +483,17 @@ bool Game_Interpreter::CommandShowMessage(bool append_text) { // Code ShowMessag
 					Game_Message::choice_cancel_type = list[index].parameters[0];
 					SetupChoices(s_choices);
 				}
-			} else {
+			} else if ((index < list.size() - 1) && (list[index+1].code == InputNumber) ) {
 				// If next event command is input number
-				if ((index < list.size() - 1) && (list[index+1].code == InputNumber) ) {
-					// If input number fits on screen
-					if (line_count < 4) {
-						index++;
-						Game_Message::num_input_start = line_count;
-						Game_Message::num_input_digits_max = list[index].parameters[0];
-						Game_Message::num_input_variable_id = list[index].parameters[1];
-					}
-				} else {
-					// If next event command is another Message
-					if ((index < list.size() - 1) && (list[index+1].code == ShowMessage)) {
-						index++;
-						CommandShowMessage(true);
-					}
+				// If input number fits on screen
+				if (line_count < 4) {
+					index++;
+					Game_Message::num_input_start = line_count;
+					Game_Message::num_input_digits_max = list[index].parameters[0];
+					Game_Message::num_input_variable_id = list[index].parameters[1];
 				}
 			}
+			
 			Game_Message::Init();
 			return true;
 		}
@@ -986,7 +976,7 @@ bool Game_Interpreter::CommandChangeFaceGraphic() { // Code 10130
 	Game_Message::face_name = list[index].string;
 	Game_Message::face_index = list[index].parameters[0];
 	Game_Message::face_left_position = list[index].parameters[1] == 0;
-	Game_Message::face_flipped = list[index].parameters[2] == 0;
+	Game_Message::face_flipped = list[index].parameters[2] != 0;
 	return true;
 }
 
