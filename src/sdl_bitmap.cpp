@@ -30,7 +30,7 @@
 #include "output.h"
 #include "player.h"
 #include "SDL_image.h"
-#include "SDL_rotozoom.h"
+//#include "SDL_rotozoom.h"
 #include "SDL_ttf.h"
 #include "sdl_ui.h"
 #include "system.h"
