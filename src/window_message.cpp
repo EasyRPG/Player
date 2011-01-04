@@ -220,9 +220,13 @@ void Window_Message::UpdateMessage() {
 			std::string command_result;
 			switch (text[text_index]) {
 			case 'c':
+			case 'C':
 			case 'n':
+			case 'N':
 			case 's':
+			case 'S':
 			case 'v':
+			case 'V':
 				// These commands support indirect access via \v[]
 				command_result = ParseCommandCode();
 				contents->TextDraw(contents_x, contents_y, command_result);
@@ -233,6 +237,9 @@ void Window_Message::UpdateMessage() {
 				contents->TextDraw(contents_x, contents_y, std::string("\\"));
 				contents_x += contents->GetTextSize("\\").width;
 				break;
+			case '_':
+				// Insert half size space
+				contents_x += contents->GetTextSize(" ").width / 2;
 			case '$':
 				// Show Money Window ToDo
 				break;
@@ -368,13 +375,15 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 	char cmd_char = text[text_index];
 	if ((unsigned)text_index + 3 < text.size() &&
 		text[text_index + 2] == '\\' &&
-		text[text_index + 3] == 'v') {
+		(text[text_index + 3] == 'v' ||
+		 text[text_index + 3] == 'V')) {
 		text_index += 3;
 		// The result is a variable value, str-to-int is safe in this case
 		sub_code = atoi(ParseCommandCode(++call_depth).c_str());
 	}
 	switch (cmd_char) {
 	case 'c':
+	case 'C':
 		// Color
 		if (sub_code >= 0) {
 			parameter = sub_code;
@@ -384,6 +393,7 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 		contents->GetFont()->color = parameter > 19 ? 0 : parameter;
 		break;
 	case 'n':
+	case 'N':
 		// Output Hero name
 		if (sub_code >= 0) {
 			is_valid = true;
@@ -407,6 +417,7 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 		}
 		break;
 	case 's':
+	case 'S':
 		// Speed modifier
 		// ToDo: Find out how long each \s take
 		if (sub_code >= 0) {
@@ -417,6 +428,7 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 		}
 		break;
 	case 'v':
+	case 'V':
 		// Show Variable value
 		if (sub_code >= 0) {
 			is_valid = true;
