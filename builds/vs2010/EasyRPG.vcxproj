@@ -144,8 +144,10 @@
     <ClCompile Include="..\..\src\graphics.cpp" />
     <ClCompile Include="..\..\src\hslrgb.cpp" />
     <ClCompile Include="..\..\src\input.cpp" />
-    <ClCompile Include="..\..\src\input_buttons_gekko.cpp" />
     <ClCompile Include="..\..\src\input_buttons_desktop.cpp" />
+    <ClCompile Include="..\..\src\input_buttons_dingoo.cpp" />
+    <ClCompile Include="..\..\src\input_buttons_gekko.cpp" />
+    <ClCompile Include="..\..\src\input_buttons_psp.cpp" />
     <ClCompile Include="..\..\src\game_interpreter.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\main_data.cpp" />
@@ -206,6 +208,7 @@
     <ClInclude Include="..\..\src\color.h" />
     <ClInclude Include="..\..\src\baseui.h" />
     <ClInclude Include="..\..\src\drawable.h" />
+    <ClInclude Include="..\..\src\exfont.h" />
     <ClInclude Include="..\..\src\filefinder.h" />
     <ClInclude Include="..\..\src\font.h" />
     <ClInclude Include="..\..\src\font_render_8x8.h" />

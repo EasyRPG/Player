@@ -225,10 +225,16 @@
     <ClCompile Include="..\..\src\font_render_8x8.cpp">
       <Filter>Source Files\Tools\Font 8x8</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\input_buttons_desktop.cpp">
+      <Filter>Source Files\Backend\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\input_buttons_dingoo.cpp">
+      <Filter>Source Files\Backend\Input</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\input_buttons_gekko.cpp">
       <Filter>Source Files\Backend\Input</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\input_buttons_desktop.cpp">
+    <ClCompile Include="..\..\src\input_buttons_psp.cpp">
       <Filter>Source Files\Backend\Input</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\scene_equip.cpp">
@@ -411,6 +417,9 @@
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\drawable.h">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\exfont.h">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\font.h">
