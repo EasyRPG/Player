@@ -48,6 +48,7 @@ static void HandleScreenOutput(std::string msg, bool is_error) {
 			DisplayUi->ProcessEvents();
 			Input::Update();
 		}
+		Input::ResetKeys();
 		Graphics::FrameReset();
 		Graphics::Update();
 }

@@ -85,5 +85,6 @@ bool Window_EquipItem::CheckInclude(int item_id) {
 
 ////////////////////////////////////////////////////////////
 bool Window_EquipItem::CheckEnable(int item_id) {
+	(void)item_id;
 	return true;
 }

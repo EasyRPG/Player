@@ -199,20 +199,7 @@ void Window_Message::UpdateMessage() {
 		}
 
 		if (text[text_index] == '\n') {
-			if (instant_speed) {
-				// Special case: When there is not a \< anywhere in the
-				// current message only the current line is displayed instant
-				bool instant_speed_stop_found = false;
-				for (unsigned i = text_index + 1; i < text.size() - 2; ++i) {
-					if (text[i] == '\\' && text[i + 1] == '<') {
-						instant_speed_stop_found = true;
-						break;
-					}
-				}
-				if (!instant_speed_stop_found) {
-					instant_speed = false;
-				}
-			}
+			instant_speed = false;
 			InsertNewLine();
 		} else if (text[text_index] == '\\' && (unsigned)text_index != text.size() - 1) {
 			// Special message codes
