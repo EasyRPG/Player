@@ -35,7 +35,6 @@
 #include "sdl_ui.h"
 #include "system.h"
 #include "util_macro.h"
-#include "exfont.xpm"
 
 ////////////////////////////////////////////////////////////
 #ifdef USE_ALPHA

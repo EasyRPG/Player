@@ -2,7 +2,7 @@
 <CodeLite_Project Name="player">
   <Plugins>
     <Plugin Name="qmake">
-      <![CDATA[00020001N0012Dingux Debug0000000000000001N0014Dingux Release000000000000]]>
+      <![CDATA[00030001N0012Dingux Debug0000000000000001N0014Dingux Release0000000000000001N0010GTK+ Debug000000000000]]>
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="src">
@@ -120,7 +120,9 @@
       <VirtualDirectory Name="Audio">
         <File Name="../../src/audio.cpp"/>
         <File Name="../../src/audio.h"/>
-        <File Name="../../src/sdl_audio.cpp"/>
+        <VirtualDirectory Name="SDL">
+          <File Name="../../src/sdl_audio.cpp"/>
+        </VirtualDirectory>
       </VirtualDirectory>
       <VirtualDirectory Name="Graphics">
         <File Name="../../src/bitmap.cpp"/>
@@ -150,7 +152,7 @@
         <File Name="../../src/window.h"/>
         <File Name="../../src/zobj.cpp"/>
         <File Name="../../src/zobj.h"/>
-        <VirtualDirectory Name="sdl">
+        <VirtualDirectory Name="SDL">
           <File Name="../../src/sdl_bitmap.cpp"/>
           <File Name="../../src/sdl_bitmap.h"/>
           <File Name="../../src/sdl_bitmap_screen.cpp"/>
@@ -158,10 +160,11 @@
         </VirtualDirectory>
         <File Name="../../src/bitmap_screen.cpp"/>
         <File Name="../../src/bitmap_screen.h"/>
-        <VirtualDirectory Name="gl">
+        <VirtualDirectory Name="GL">
           <File Name="../../src/gl_bitmap_screen.cpp"/>
           <File Name="../../src/gl_bitmap_screen.h"/>
         </VirtualDirectory>
+        <File Name="../../src/exfont.h"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Input">
         <File Name="../../src/input.cpp"/>
@@ -171,6 +174,7 @@
         <File Name="../../src/input_buttons_gekko.cpp"/>
         <File Name="../../src/keys.h"/>
         <File Name="../../src/input_buttons_dingoo.cpp"/>
+        <File Name="../../src/input_buttons_psp.cpp"/>
       </VirtualDirectory>
       <VirtualDirectory Name="UI">
         <File Name="../../src/baseui.cpp"/>
@@ -181,7 +185,7 @@
         </VirtualDirectory>
       </VirtualDirectory>
       <VirtualDirectory Name="Time">
-        <VirtualDirectory Name="sdl">
+        <VirtualDirectory Name="SDL">
           <File Name="../../src/sdl_time.cpp"/>
         </VirtualDirectory>
         <File Name="../../src/time.h"/>
@@ -223,30 +227,17 @@
     <File Name="../../resources/player.rc"/>
     <File Name="../../src/system.h"/>
   </VirtualDirectory>
-  <Dependencies Name="GTK+ Debug">
-    <Project Name="readers"/>
-  </Dependencies>
-  <Dependencies Name="GTK+ Release">
-    <Project Name="readers"/>
-  </Dependencies>
-  <Dependencies Name="Win32 Debug">
-    <Project Name="readers"/>
-  </Dependencies>
-  <Dependencies Name="Win32 Release">
-    <Project Name="readers"/>
-  </Dependencies>
-  <Dependencies Name="Mac OS X Debug">
-    <Project Name="readers"/>
-  </Dependencies>
-  <Dependencies Name="Mac OS X Release">
-    <Project Name="readers"/>
-  </Dependencies>
-  <Dependencies Name="UNIX Debug">
-    <Project Name="readers"/>
-  </Dependencies>
   <Settings Type="Executable">
+    <GlobalSettings>
+      <Compiler Options="" C_Options="">
+        <IncludePath Value="../../../readers/include"/>
+        <Preprocessor Value="USE_SDL"/>
+      </Compiler>
+      <Linker Options="-O2"/>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
     <Configuration Name="Dingux Debug" CompilerType="mipsel-linux" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-fno-rtti;-fno-exceptions;$(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --cflags)" Required="yes" PreCompiledHeader="">
+      <Compiler Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-fno-rtti;-fno-exceptions;$(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --cflags)" C_Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-fno-rtti;-fno-exceptions;$(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --cflags)" Required="yes" PreCompiledHeader="">
         <Preprocessor Value="UNIX"/>
         <Preprocessor Value="DINGOO"/>
         <Preprocessor Value="_DEBUG"/>
@@ -261,7 +252,8 @@
         <Library Value="readers"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="../../bin/testgame/easyrpg.dge" IntermediateDirectory=".obj/Debug" Command="" CommandArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="no"/>
+      <General OutputFile="../../bin/testgame/easyrpg.dge" IntermediateDirectory=".obj/Debug" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="no"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -284,7 +276,7 @@
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Dingux Release" CompilerType="mipsel-linux" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O3;-ansi;-pedantic;-Wall;-Wextra;-fno-rtti;-fno-exceptions;$(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --cflags)" Required="yes" PreCompiledHeader="">
+      <Compiler Options="-O3;-ansi;-pedantic;-Wall;-Wextra;-fno-rtti;-fno-exceptions;$(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --cflags)" C_Options="-O3;-ansi;-pedantic;-Wall;-Wextra;-fno-rtti;-fno-exceptions;$(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --cflags)" Required="yes" PreCompiledHeader="">
         <Preprocessor Value="UNIX"/>
         <Preprocessor Value="DINGOO"/>
       </Compiler>
@@ -298,7 +290,8 @@
         <Library Value="readers"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="../../bin/testgame/easyrpg.dge" IntermediateDirectory=".obj/Release" Command="" CommandArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="no"/>
+      <General OutputFile="../../bin/testgame/easyrpg.dge" IntermediateDirectory=".obj/Release" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="no"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -321,7 +314,7 @@
       </AdditionalRules>
     </Configuration>
     <Configuration Name="GTK+ Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-fno-rtti;-fno-exceptions;$(shell sdl-config --cflags);$(shell pkg-config --cflags gtk+-2.0)" Required="yes" PreCompiledHeader="">
+      <Compiler Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-fno-rtti;-fno-exceptions;$(shell sdl-config --cflags);$(shell pkg-config --cflags gtk+-2.0)" C_Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-fno-rtti;-fno-exceptions;$(shell sdl-config --cflags);$(shell pkg-config --cflags gtk+-2.0)" Required="yes" PreCompiledHeader="">
         <Preprocessor Value="UNIX"/>
         <Preprocessor Value="GTK"/>
         <Preprocessor Value="_DEBUG"/>
@@ -336,7 +329,8 @@
         <Library Value="readers"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="../../bin/testgame/player" IntermediateDirectory=".obj/Debug" Command="./player" CommandArguments="TestPlay HideTitle Window" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="../../bin/testgame/player" IntermediateDirectory=".obj/Debug" Command="./player" CommandArguments="TestPlay HideTitle Window" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -359,7 +353,7 @@
       </AdditionalRules>
     </Configuration>
     <Configuration Name="GTK+ Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O3;-ansi;-pedantic;-Wall;-Wextra;-fno-rtti;-fno-exceptions;$(shell sdl-config --cflags);$(shell pkg-config --cflags gtk+-2.0)" Required="yes" PreCompiledHeader="">
+      <Compiler Options="-O3;-ansi;-pedantic;-Wall;-Wextra;-fno-rtti;-fno-exceptions;$(shell sdl-config --cflags);$(shell pkg-config --cflags gtk+-2.0)" C_Options="-O3;-ansi;-pedantic;-Wall;-Wextra;-fno-rtti;-fno-exceptions;$(shell sdl-config --cflags);$(shell pkg-config --cflags gtk+-2.0)" Required="yes" PreCompiledHeader="">
         <Preprocessor Value="UNIX"/>
         <Preprocessor Value="GTK"/>
       </Compiler>
@@ -373,7 +367,8 @@
         <Library Value="readers"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="../../bin/testgame/player" IntermediateDirectory=".obj/Release" Command="./player" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="../../bin/testgame/player" IntermediateDirectory=".obj/Release" Command="./player" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -396,7 +391,7 @@
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Mac OS X Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-fno-rtti;-fno-exceptions;$(shell /opt/local/bin/sdl-config --cflags)" Required="yes" PreCompiledHeader="">
+      <Compiler Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-fno-rtti;-fno-exceptions;$(shell /opt/local/bin/sdl-config --cflags)" C_Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-fno-rtti;-fno-exceptions;$(shell /opt/local/bin/sdl-config --cflags)" Required="yes" PreCompiledHeader="">
         <Preprocessor Value="UNIX"/>
         <Preprocessor Value="_DEBUG"/>
       </Compiler>
@@ -410,7 +405,8 @@
         <Library Value="readers"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="../../bin/testgame/$(ProjectName).app/Contents/MacOS/$(ProjectName)" IntermediateDirectory=".obj/Debug" Command="./$(ProjectName).app/Contents/MacOS/$(ProjectName)" CommandArguments="TestPlay HideTitle Window" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="../../bin/testgame/$(ProjectName).app/Contents/MacOS/$(ProjectName)" IntermediateDirectory=".obj/Debug" Command="./$(ProjectName).app/Contents/MacOS/$(ProjectName)" CommandArguments="TestPlay HideTitle Window" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -439,7 +435,7 @@
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Mac OS X Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O3;-ansi;-pedantic;-Wall;-Wextra;-fno-rtti;-fno-exceptions;$(shell sdl-config --cflags)" Required="yes" PreCompiledHeader="">
+      <Compiler Options="-O3;-ansi;-pedantic;-Wall;-Wextra;-fno-rtti;-fno-exceptions;$(shell sdl-config --cflags)" C_Options="-O3;-ansi;-pedantic;-Wall;-Wextra;-fno-rtti;-fno-exceptions;$(shell sdl-config --cflags)" Required="yes" PreCompiledHeader="">
         <Preprocessor Value="UNIX"/>
       </Compiler>
       <Linker Options="-s;$(shell sdl-config --libs)" Required="yes">
@@ -452,7 +448,8 @@
         <Library Value="readers"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="$(IntermediateDirectory)/$(ProjectName).app/Contents/MacOS/$(ProjectName)" IntermediateDirectory=".obj/Release" Command="./$(ProjectName).app/Contents/MacOS/$(ProjectName)" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName).app/Contents/MacOS/$(ProjectName)" IntermediateDirectory=".obj/Release" Command="./$(ProjectName).app/Contents/MacOS/$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -481,7 +478,7 @@ $(IntermediateDirectory)/$(ProjectName).app/Contents/Resources/Player.icns: Play
       </AdditionalRules>
     </Configuration>
     <Configuration Name="UNIX Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-fno-rtti;-fno-exceptions;$(shell sdl-config --cflags)" Required="yes" PreCompiledHeader="">
+      <Compiler Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-fno-rtti;-fno-exceptions;$(shell sdl-config --cflags)" C_Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-fno-rtti;-fno-exceptions;$(shell sdl-config --cflags)" Required="yes" PreCompiledHeader="">
         <Preprocessor Value="UNIX"/>
         <Preprocessor Value="_DEBUG"/>
       </Compiler>
@@ -495,7 +492,8 @@ $(IntermediateDirectory)/$(ProjectName).app/Contents/Resources/Player.icns: Play
         <Library Value="readers"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="../../bin/testgame/player" IntermediateDirectory=".obj/Debug" Command="./player" CommandArguments="TestPlay HideTitle Window" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="../../bin/testgame/player" IntermediateDirectory=".obj/Debug" Command="./player" CommandArguments="TestPlay HideTitle Window" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -518,7 +516,7 @@ $(IntermediateDirectory)/$(ProjectName).app/Contents/Resources/Player.icns: Play
       </AdditionalRules>
     </Configuration>
     <Configuration Name="UNIX Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O3;-ansi;-pedantic;-Wall;-Wextra;-fno-rtti;-fno-exceptions;$(shell sdl-config --cflags)" Required="yes" PreCompiledHeader="">
+      <Compiler Options="-O3;-ansi;-pedantic;-Wall;-Wextra;-fno-rtti;-fno-exceptions;$(shell sdl-config --cflags)" C_Options="-O3;-ansi;-pedantic;-Wall;-Wextra;-fno-rtti;-fno-exceptions;$(shell sdl-config --cflags)" Required="yes" PreCompiledHeader="">
         <Preprocessor Value="UNIX"/>
       </Compiler>
       <Linker Options="-s;$(shell sdl-config --libs)" Required="yes">
@@ -531,7 +529,8 @@ $(IntermediateDirectory)/$(ProjectName).app/Contents/Resources/Player.icns: Play
         <Library Value="readers"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="../../bin/testgame/player" IntermediateDirectory=".obj/Release" Command="./player" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="../../bin/testgame/player" IntermediateDirectory=".obj/Release" Command="./player" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -554,7 +553,7 @@ $(IntermediateDirectory)/$(ProjectName).app/Contents/Resources/Player.icns: Play
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Win32 Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-U__STRICT_ANSI__;-fno-rtti;-fno-exceptions;-D_GNU_SOURCE=1;-Dmain=SDL_main" Required="yes" PreCompiledHeader="">
+      <Compiler Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-U__STRICT_ANSI__;-fno-rtti;-fno-exceptions;-D_GNU_SOURCE=1;-Dmain=SDL_main" C_Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-U__STRICT_ANSI__;-fno-rtti;-fno-exceptions;-D_GNU_SOURCE=1;-Dmain=SDL_main" Required="yes" PreCompiledHeader="">
         <IncludePath Value="$(EASYDEV_MINGW)/include"/>
         <Preprocessor Value="_DEBUG"/>
       </Compiler>
@@ -572,7 +571,8 @@ $(IntermediateDirectory)/$(ProjectName).app/Contents/Resources/Player.icns: Play
         <Library Value="readers"/>
       </Linker>
       <ResourceCompiler Options="" Required="yes"/>
-      <General OutputFile="../../bin/testgame/Player.exe" IntermediateDirectory=".obj/Debug" Command="./Player.exe" CommandArguments="TestPlay HideTitle Window" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="../../bin/testgame/Player.exe" IntermediateDirectory=".obj/Debug" Command="./Player.exe" CommandArguments="TestPlay HideTitle Window" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -595,7 +595,7 @@ $(IntermediateDirectory)/$(ProjectName).app/Contents/Resources/Player.icns: Play
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Win32 Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O3;-ansi;-pedantic;-Wall;-Wextra;-U__STRICT_ANSI__;-fno-rtti;-fno-exceptions;-D_GNU_SOURCE=1;-Dmain=SDL_main;" Required="yes" PreCompiledHeader="">
+      <Compiler Options="-O3;-ansi;-pedantic;-Wall;-Wextra;-U__STRICT_ANSI__;-fno-rtti;-fno-exceptions;-D_GNU_SOURCE=1;-Dmain=SDL_main;" C_Options="-O3;-ansi;-pedantic;-Wall;-Wextra;-U__STRICT_ANSI__;-fno-rtti;-fno-exceptions;-D_GNU_SOURCE=1;-Dmain=SDL_main;" Required="yes" PreCompiledHeader="">
         <IncludePath Value="$(EASYDEV_MINGW)/include"/>
       </Compiler>
       <Linker Options="-s;-mwindows" Required="yes">
@@ -612,7 +612,8 @@ $(IntermediateDirectory)/$(ProjectName).app/Contents/Resources/Player.icns: Play
         <Library Value="readers"/>
       </Linker>
       <ResourceCompiler Options="" Required="yes"/>
-      <General OutputFile="../../bin/testgame/Player.exe" IntermediateDirectory=".obj/Release" Command="./Player.exe" CommandArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="../../bin/testgame/Player.exe" IntermediateDirectory=".obj/Release" Command="./Player.exe" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="../../bin/testgame" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -634,22 +635,15 @@ $(IntermediateDirectory)/$(ProjectName).app/Contents/Resources/Player.icns: Play
         <CustomPreBuild/>
       </AdditionalRules>
     </Configuration>
-    <GlobalSettings>
-      <Compiler Options="">
-        <IncludePath Value="../../../readers/include"/>
-        <Preprocessor Value="USE_SDL"/>
-      </Compiler>
-      <Linker Options="-O2"/>
-      <ResourceCompiler Options=""/>
-    </GlobalSettings>
   </Settings>
-  <Dependencies Name="Dingux Release">
-    <Project Name="readers"/>
-  </Dependencies>
-  <Dependencies Name="UNIX Release">
-    <Project Name="readers"/>
-  </Dependencies>
-  <Dependencies Name="Dingux Debug">
-    <Project Name="readers"/>
-  </Dependencies>
+  <Dependencies Name="Dingux Debug"/>
+  <Dependencies Name="Dingux Release"/>
+  <Dependencies Name="GTK+ Debug"/>
+  <Dependencies Name="GTK+ Release"/>
+  <Dependencies Name="Mac OS X Debug"/>
+  <Dependencies Name="Mac OS X Release"/>
+  <Dependencies Name="UNIX Debug"/>
+  <Dependencies Name="UNIX Release"/>
+  <Dependencies Name="Win32 Debug"/>
+  <Dependencies Name="Win32 Release"/>
 </CodeLite_Project>
