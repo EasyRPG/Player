@@ -18,69 +18,56 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "window_inputnumber.h"
+#include "window_numberinput.h"
 #include "game_system.h"
 #include "input.h"
 #include "main_data.h"
 #include "util_macro.h"
 
 ////////////////////////////////////////////////////////////
-/// Constructor
-////////////////////////////////////////////////////////////
-Window_InputNumber::Window_InputNumber(int idigits_max) : 
-	Window_Base(0, 160, 320, 80), digits_max(idigits_max) {
-	//only accepts velues between 1 and 6 as RPGM2K
-	digits_max = (digits_max > 6) ? 6 : (digits_max <= 0) ? 1 : digits_max;
+Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) : 
+	Window_Selectable(ix, iy, iwidth, iheight), digits_max(6) {
 	number = 0;
-	Bitmap* dummy_bitmap = Bitmap::CreateBitmap(16, 16);
-	cursor_width = dummy_bitmap->GetTextSize("0").width + 4;
-	delete dummy_bitmap;
 
 	SetContents(Bitmap::CreateBitmap(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
-
+	cursor_width = 14;
 	z += 9999;
 	opacity = 0;
 	index = 0;
+	active = false;
 
 	Refresh();
 	UpdateCursorRect();
 }
 
 ////////////////////////////////////////////////////////////
-/// Destructor
-////////////////////////////////////////////////////////////
-Window_InputNumber::~Window_InputNumber() {
+Window_NumberInput::~Window_NumberInput() {
 }
 
 ////////////////////////////////////////////////////////////
-/// Refresh
-////////////////////////////////////////////////////////////
-void Window_InputNumber::Refresh() {
+void Window_NumberInput::Refresh() {
 	contents->Clear();
 
 	contents->GetFont()->color = Font::ColorDefault;
-	char s[6];
+	char s[7];
+	// Copies digits_max numbers from number-string to s
 	sprintf(s, "%0*d", digits_max, number);
 
 	for (int i = 0; i < digits_max; ++i) {
 		char c[2] = {s[i], '\0'}; 
-		int x = i * cursor_width + 10;
-		contents->TextDraw(x, 0, c);
-	}	
+		int x = i * (cursor_width - 2) + 12;
+		contents->TextDraw(x, 2, c);
+	}
 }
 
 ////////////////////////////////////////////////////////////
-/// Get Number
-////////////////////////////////////////////////////////////
-int Window_InputNumber::GetNumber() {
+int Window_NumberInput::GetNumber() {
 	return number;
 }
 
 ////////////////////////////////////////////////////////////
-/// Set Number
-////////////////////////////////////////////////////////////
-void Window_InputNumber::SetNumber(uint inumber) {
+void Window_NumberInput::SetNumber(uint inumber) {
 	uint num = 1;
 	for (int i = 0; i < digits_max; ++i) {
 		num *= 10;
@@ -90,47 +77,61 @@ void Window_InputNumber::SetNumber(uint inumber) {
 }
 
 ////////////////////////////////////////////////////////////
-/// Update Cursor Rect
-////////////////////////////////////////////////////////////
-void Window_InputNumber::UpdateCursorRect() {
-	cursor_rect.Set(index * cursor_width + 8, 0, cursor_width, 16);
+int Window_NumberInput::GetMaxDigits() {
+	return digits_max;
 }
 
 ////////////////////////////////////////////////////////////
-/// Update
+void Window_NumberInput::SetMaxDigits(int idigits_max) {
+	// Only accepts values between 1 and 6 as RPGM2K
+	digits_max =
+		(idigits_max > 6) ? 6 :
+		(idigits_max <= 0) ? 1 :
+		idigits_max;
+
+	Refresh();
+}
+
 ////////////////////////////////////////////////////////////
-void Window_InputNumber::Update() {
-	Window_Base::Update();
-	if (Input::IsRepeated(Input::DOWN) || Input::IsRepeated(Input::UP)) {
-		Game_System::SePlay(Data::system.cursor_se);
+void Window_NumberInput::UpdateCursorRect() {
+	cursor_rect.Set(index * (cursor_width - 2) + 8, 0, cursor_width, 16);
+}
 
-		int place = 1;
-		for (int i = 0; i < (digits_max - 1 - (int)index); ++i) {
-			place *= 10;
-		}
-		int n = number / place % 10;
-		number -= n * place;
-		if (Input::IsRepeated(Input::UP)) {
-			n = (n + 1) % 10;
-		} 
-		if (Input::IsRepeated(Input::DOWN)) {
-			n = (n + 9) % 10;
-		}
-		number += n * place;
-		Refresh();
-	}
-
-	if (Input::IsRepeated(Input::RIGHT)) {
-		if (digits_max >= 2) {
+////////////////////////////////////////////////////////////
+void Window_NumberInput::Update() {
+	Window_Selectable::Update();
+	if (active) {
+		if (Input::IsRepeated(Input::DOWN) || Input::IsRepeated(Input::UP)) {
 			Game_System::SePlay(Data::system.cursor_se);
-			index = (index + 1) % digits_max;
-		}
-	}
 
-	if (Input::IsRepeated(Input::LEFT)) {
-		Game_System::SePlay(Data::system.cursor_se);
-		index = (index + digits_max - 1) % digits_max;
-	}
+			int place = 1;
+			for (int i = 0; i < (digits_max - 1 - (int)index); ++i) {
+				place *= 10;
+			}
+			int n = number / place % 10;
+			number -= n * place;
+			if (Input::IsRepeated(Input::UP)) {
+				n = (n + 1) % 10;
+			} 
+			if (Input::IsRepeated(Input::DOWN)) {
+				n = (n + 9) % 10;
+			}
+			number += n * place;
+			Refresh();
+		}
+
+		if (Input::IsRepeated(Input::RIGHT)) {
+			if (digits_max >= 2) {
+				Game_System::SePlay(Data::system.cursor_se);
+				index = (index + 1) % digits_max;
+			}
+		}
+
+		if (Input::IsRepeated(Input::LEFT)) {
+			Game_System::SePlay(Data::system.cursor_se);
+			index = (index + digits_max - 1) % digits_max;
+		}
 	
-	UpdateCursorRect();
+		UpdateCursorRect();
+	}
 }

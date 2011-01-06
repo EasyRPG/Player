@@ -46,17 +46,22 @@ namespace Game_Message {
 void Game_Message::Init() {
 }
 
-void Game_Message::Clear() {
+void Game_Message::SemiClear() {
 	texts.clear();
+	choice_start = 99;
+	choice_max = 0;
+	choice_cancel_type = 0;
+	num_input_start = -1;
+	num_input_variable_id = 0;
+	num_input_digits_max = 0;
+}
+
+void Game_Message::FullClear() {
+	SemiClear();
 	face_name.clear();
 	face_index = 0;
 	background = 0;
 	position = 2;
-	choice_start = 99;
-	choice_max = 0;
-	choice_cancel_type = 0;
-	num_input_variable_id = 0;
-	num_input_digits_max = 0;
 }
 
 bool Game_Message::Busy() {

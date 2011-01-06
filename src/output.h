@@ -83,6 +83,36 @@ namespace Output {
 	/// @param err : error to display
 	///////////////////////////////////////////////////////
 	void ErrorStr(std::string err);
+
+	///////////////////////////////////////////////////////
+	/// Prints a debug message to the console.
+	/// @param fmt : formatted debug text to display
+	///////////////////////////////////////////////////////
+#ifdef _DEBUG
+	void Debug(char* fmt, ...);
+#else
+	void Debug(char*, ...) {}
+#endif
+
+	///////////////////////////////////////////////////////
+	/// Prints a debug message to the console.
+	/// @param fmt : formatted debug text to display
+	///////////////////////////////////////////////////////
+#ifdef _DEBUG
+	void Debug(const char* fmt, ...);
+#else
+	void Debug(const char*, ...) {}
+#endif
+
+	///////////////////////////////////////////////////////
+	/// Prints a debug message to the console.
+	/// @param err: formatted debug text to display
+	///////////////////////////////////////////////////////
+#ifdef _DEBUG
+	void DebugStr(std::string msg);
+#else
+	void DebugStr(std::string) {}
+#endif
 }
 
 #endif

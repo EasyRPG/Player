@@ -258,7 +258,7 @@
     <ClCompile Include="..\..\src\window_equipstatus.cpp">
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\window_inputnumber.cpp">
+    <ClCompile Include="..\..\src\window_numberinput.cpp">
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\window_item.cpp">
@@ -524,7 +524,7 @@
     <ClInclude Include="..\..\src\window_equipstatus.h">
       <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\window_inputnumber.h">
+    <ClInclude Include="..\..\src\window_numberinput.h">
       <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\window_item.h">

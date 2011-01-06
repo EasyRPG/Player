@@ -33,7 +33,9 @@ public:
 	int& operator[] (int variable_id) {
 		if (variable_id <= 0 || (size_t)variable_id >= Data::variables.size()) {
 			Output::Warning("Variable index %d is invalid.\n\
-							Check the id with isValidVar before calling this!");
+							Check the id with isValidVar before calling this!",
+							variable_id);
+
 			if (data.size() == 0) {
 				data.resize(1, 0);
 			}

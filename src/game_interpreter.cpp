@@ -497,7 +497,7 @@ void Game_Interpreter::InputButton() {
 void Game_Interpreter::CommandEnd() {
 	if (Game_Message::visible) {
 		Game_Message::visible = false;
-		Game_Message::Clear();
+		Game_Message::FullClear();
 	}
 	list.clear();
 

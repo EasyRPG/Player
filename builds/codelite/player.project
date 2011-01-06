@@ -88,8 +88,8 @@
         <File Name="../../src/window_gold.h"/>
         <File Name="../../src/window_help.cpp"/>
         <File Name="../../src/window_help.h"/>
-        <File Name="../../src/window_inputnumber.h"/>
-        <File Name="../../src/window_inputnumber.cpp"/>
+        <File Name="../../src/window_numberinput.h"/>
+        <File Name="../../src/window_numberinput.cpp"/>
         <File Name="../../src/window_item.cpp"/>
         <File Name="../../src/window_item.h"/>
         <File Name="../../src/window_menustatus.cpp"/>

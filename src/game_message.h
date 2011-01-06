@@ -28,7 +28,10 @@ namespace Game_Message {
 	void Init();
 	//~Game_Message();
 
-	void Clear();
+	/// Used by Window_Message to reset some flags
+	void SemiClear();
+	/// Used by the Game_Interpreter to completly reset all flags
+	void FullClear();
 
 	bool Busy();
 

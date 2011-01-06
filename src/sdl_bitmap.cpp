@@ -318,6 +318,7 @@ void SdlBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 	if (text.length() == 0) return;
 	Rect dst_rect = GetTextSize(text);
 	dst_rect.x = x; dst_rect.y = y;
+	dst_rect.width += 1; dst_rect.height += 1; // Need place for shadow
 	if (dst_rect.IsOutOfBounds(GetWidth(), GetHeight())) return;
 
 	TTF_Font* ttf_font = font->GetTTF();
@@ -333,8 +334,8 @@ void SdlBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 	Bitmap* char_surface; // Single char
 	Bitmap* char_shadow; // Drop shadow of char
 
-	text_surface = CreateBitmap(text.size()*6, TTF_FontHeight(ttf_font));
-	text_surface_aux = CreateBitmap(text.size()*6, TTF_FontHeight(ttf_font));
+	text_surface = CreateBitmap(dst_rect.width, TTF_FontHeight(ttf_font));
+	text_surface_aux = CreateBitmap(dst_rect.width, TTF_FontHeight(ttf_font));
 
 	Color white_color(255, 255, 255, 0);
 	Color black_color(0, 0, 0, 0);

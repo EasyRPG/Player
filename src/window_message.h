@@ -22,6 +22,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <string>
+#include "window_numberinput.h"
 #include "window_selectable.h"
 
 ////////////////////////////////////////////////////////////
@@ -33,6 +34,13 @@ class Window_Message: public Window_Selectable {
 public:
 	Window_Message(int ix, int iy, int iwidth, int iheight);
 	~Window_Message();
+
+	enum WindowMessageValues {
+		LeftMargin = 8,
+		FaceSize = 48,
+		RightFaceMargin = 16,
+		TopMargin = 6
+	};
 
 	/*
 	Notes about MessageBox Open/Close:
@@ -58,6 +66,16 @@ public:
 	void FinishMessageProcessing();
 
 	////////////////////////////////////////////////////////
+	/// Does the initial steps to start a Choice selection.
+	////////////////////////////////////////////////////////
+	void StartChoiceProcessing();
+
+	////////////////////////////////////////////////////////
+	/// Does the initial steps to start a number input.
+	////////////////////////////////////////////////////////
+	void StartNumberInputProcessing();
+
+	////////////////////////////////////////////////////////
 	/// Clears the Messagebox and places the write pointer
 	/// in the top left corner.
 	////////////////////////////////////////////////////////
@@ -75,10 +93,10 @@ public:
 	void TerminateMessage();
 
 	////////////////////////////////////////////////////////
-	/// Checks if the Text Output shall start.
+	/// Checks if the next message page can be displayed.
 	/// @return If the text output can start.
 	////////////////////////////////////////////////////////
-	bool IsTextOutputPossible();
+	bool IsNextMessagePossible();
 
 	////////////////////////////////////////////////////////
 	/// Stub.
@@ -127,6 +145,16 @@ public:
 	////////////////////////////////////////////////////////
 	void WaitForInput();
 
+	////////////////////////////////////////////////////////
+	/// Stub. Handles Choice Selection.
+	////////////////////////////////////////////////////////
+	void InputChoice();
+
+	////////////////////////////////////////////////////////
+	/// Handles number input.
+	////////////////////////////////////////////////////////
+	void InputNumber();
+
 protected:
 	/// X-position of next char
 	int contents_x;
@@ -140,9 +168,13 @@ protected:
 	int text_index;
 	/// text message that will be displayed
 	std::string text;
+	/// Used by Message kill command \^
+	bool kill_message;
 	/// Prevents new page call when a halt \! was found
 	bool halt_output;
-	//Window_InputNumber* input_number_window; // TODO: Implement Window_InputNumber
+	
+	/// Used by the number input event
+	Window_NumberInput* number_input_window;
 	//Window_Gold* gold_window; // TODO: Implement Window_Gold
 };
 

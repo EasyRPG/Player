@@ -21,8 +21,10 @@
 #include <sstream>
 #include "window_message.h"
 #include "game_actors.h"
+#include "game_map.h"
 #include "game_message.h"
 #include "game_party.h"
+#include "game_system.h"
 #include "game_variables.h"
 #include "graphics.h"
 #include "input.h"
@@ -32,7 +34,7 @@
 Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),
 	contents_x(0), contents_y(0), line_count(0), text_index(-1), text(""),
-	halt_output(false)
+	kill_message(false), halt_output(false), number_input_window(NULL)
 {
 	SetContents(Bitmap::CreateBitmap(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
@@ -43,15 +45,18 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	//cursor_width = 0;
 	active = false;
 	index = -1;
+	
+	number_input_window = new Window_NumberInput(0, 0);
+	number_input_window->SetVisible(false);
 }
 
 ////////////////////////////////////////////////////////////
 Window_Message::~Window_Message() {
 	TerminateMessage();
 	//Game_Temp::message_window_showing = false;
-	/*if (input_number_window != NULL) {
-		input_number_window.dispose
-	}*/
+	// The Windows are already deleted in Graphics during closing
+	// But this probably memleaks during scene change?
+	//delete number_input_window;
 }
 
 ////////////////////////////////////////////////////////////
@@ -67,27 +72,59 @@ void Window_Message::StartMessageProcessing() {
 		text.append("\n");
 	}
 	InsertNewPage();
+	if (Game_Message::num_input_start == 0 && Game_Message::num_input_variable_id > 0) {
+		// If there is an input window on the first line
+		StartNumberInputProcessing();
+	}
 }
 
 ////////////////////////////////////////////////////////////
 void Window_Message::FinishMessageProcessing() {
+	/*if (Game_Message::choice_max > 0) {
+	} else*/
+	if (Game_Message::num_input_variable_id > 0) {
+		StartNumberInputProcessing();
+	} else if (kill_message) {
+		TerminateMessage();
+		kill_message = false;
+	} else {
+		pause = true;
+	}
+
+	text_index = -1;
 	text.clear();
+}
+
+////////////////////////////////////////////////////////////
+void Window_Message::StartChoiceProcessing() {
+	//active = true;
+	//index = 0;
+}
+
+////////////////////////////////////////////////////////////
+void Window_Message::StartNumberInputProcessing() {
+	number_input_window->SetMaxDigits(Game_Message::num_input_digits_max);
+	if (!Game_Message::face_name.empty() && Game_Message::face_left_position) {
+		number_input_window->SetX(LeftMargin + FaceSize + RightFaceMargin);
+	} else {
+		number_input_window->SetX(x);
+	}
+	number_input_window->SetY(y + contents_y - 2);
+	number_input_window->SetActive(true);
+	number_input_window->SetVisible(true);
+	number_input_window->Update();
 }
 
 ////////////////////////////////////////////////////////////
 void Window_Message::InsertNewPage() {
 	contents->Clear();
 	if (!Game_Message::face_name.empty()) {
-		// 8 + 48 + 16 (left margin + face size + right margin)
-		// ToDo: All these magic numbers should be in an enum in Window
 		if (Game_Message::face_left_position) {
-			contents_x = 8 + 48 + 16;
-			printf("%d", Game_Message::face_flipped);
-			DrawFace(Game_Message::face_name, Game_Message::face_index, 8, 6, Game_Message::face_flipped);
+			contents_x = LeftMargin + FaceSize + RightFaceMargin;
+			DrawFace(Game_Message::face_name, Game_Message::face_index, LeftMargin, TopMargin, Game_Message::face_flipped);
 		} else {
 			contents_x = 0;
-			printf("%d", Game_Message::face_flipped);
-			DrawFace(Game_Message::face_name, Game_Message::face_index, 248, 6, Game_Message::face_flipped);
+			DrawFace(Game_Message::face_name, Game_Message::face_index, 248, TopMargin, Game_Message::face_flipped);
 		}
 	} else {
 		contents_x = 0;
@@ -100,7 +137,7 @@ void Window_Message::InsertNewPage() {
 ////////////////////////////////////////////////////////////
 void Window_Message::InsertNewLine() {
 	if (!Game_Message::face_name.empty() && Game_Message::face_left_position) {
-		contents_x = 8 + 48 + 16;
+		contents_x = LeftMargin + FaceSize + RightFaceMargin;
 	} else {
 		contents_x = 0;
 	}
@@ -112,13 +149,18 @@ void Window_Message::InsertNewLine() {
 void Window_Message::TerminateMessage() {
 	pause = false;
 	Game_Message::message_waiting = false;
-	// Only remove the texts here, the other flag resetting is done in
-	// Game_Interpreter::CommandEnd
-	Game_Message::texts.clear();
+	number_input_window->SetActive(false);
+	number_input_window->SetVisible(false);
+	// The other flag resetting is done in Game_Interpreter::CommandEnd
+	Game_Message::SemiClear();
 }
 
 ////////////////////////////////////////////////////////////
-bool Window_Message::IsTextOutputPossible() {
+bool Window_Message::IsNextMessagePossible() {
+	if (Game_Message::num_input_variable_id > 0) {
+		return true;
+	}
+
 	if (Game_Message::texts.empty()) {
 		return false;
 	}
@@ -134,6 +176,7 @@ void Window_Message::ResetWindow() {
 ////////////////////////////////////////////////////////////
 void Window_Message::Update() {
 	Window::Update();
+	number_input_window->Update();
 	if (visible && !Game_Message::visible) {
 		// The Event Page ended but the MsgBox was used in this Event
 		// It can be closed now.
@@ -145,12 +188,15 @@ void Window_Message::Update() {
 	}
 	else if (pause) {
 		WaitForInput();
-	}
-	else if (!text.empty()) {
+	} else if (active) {
+		InputChoice();
+	} else if (number_input_window->GetVisible()) {
+		InputNumber();
+	} else if (!text.empty()) {
 		// Output the remaining text for the current page
 		UpdateMessage();
 	}
-	else if (IsTextOutputPossible()) {
+	else if (IsNextMessagePossible()) {
 		// Output a new page
 		StartMessageProcessing();
 		//printf("Text: %s\n", text.c_str());
@@ -181,7 +227,6 @@ void Window_Message::UpdateMessage() {
 	}
 
 	bool instant_speed = false;
-	static bool kill_message = false;
 	int loop_count = 0;
 	int loop_max = 3;
 	while (instant_speed || loop_count < loop_max) {
@@ -189,12 +234,6 @@ void Window_Message::UpdateMessage() {
 		++text_index;
 		if ((unsigned)text_index == text.size()) {
 			FinishMessageProcessing();
-			text_index = -1;
-			pause = !kill_message;
-			if (kill_message) {
-				TerminateMessage();
-				kill_message = false;
-			}
 			break;
 		}
 
@@ -447,18 +486,33 @@ void Window_Message::UpdateCursorRect() {
 
 ////////////////////////////////////////////////////////////
 void Window_Message::WaitForInput() {
-	active = true;
+	active = true; // Enables the Pause arrow
 	if (Input::IsTriggered(Input::DECISION) ||
 		Input::IsTriggered(Input::CANCEL)) {
 		active = false;
 		pause = false;
 		if (halt_output) {
 			halt_output = false;
-		}/* else {
-			InsertNewPage();
-		}*/
+		}
+
 		if (text.empty()) {
 			TerminateMessage();
 		}
+	}
+}
+
+////////////////////////////////////////////////////////////
+void Window_Message::InputChoice() {
+
+}
+
+////////////////////////////////////////////////////////////
+void Window_Message::InputNumber() {
+	if (Input::IsTriggered(Input::DECISION)) {
+		Game_System::SePlay(Data::system.decision_se);
+		Game_Variables[Game_Message::num_input_variable_id] = number_input_window->GetNumber();
+		Game_Map::SetNeedRefresh(true);
+		TerminateMessage();
+		number_input_window->SetNumber(0);
 	}
 }

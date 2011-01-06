@@ -194,3 +194,34 @@ void Output::PostStr(std::string msg) {
 		HandleScreenOutput(msg, false);
 	#endif
 }
+
+////////////////////////////////////////////////////////////
+#ifdef _DEBUG
+void Output::Debug(char* fmt, ...) {
+	va_list args;
+	va_start(args, fmt);
+
+	char str[256];
+
+	vsprintf(str, fmt, args);
+
+	Output::DebugStr((std::string)str);
+
+	va_end(args);
+}
+void Output::Debug(const char* fmt, ...) {
+	va_list args;
+	va_start(args, fmt);
+
+	char str[256];
+
+	vsprintf(str, fmt, args);
+
+	Output::DebugStr((std::string)str);
+
+	va_end(args);
+}
+void Output::DebugStr(std::string msg) {
+	printf("Debug: %s\n", msg.c_str());
+}
+#endif
