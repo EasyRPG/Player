@@ -579,7 +579,7 @@ bool Game_Interpreter::CommandControlVariables() { // Code ControlVars
 	Game_Actor* actor;
 	Game_Character* character;
 
-	switch (list[index].parameters[0]) {
+	switch (list[index].parameters[4]) {
 		case 0:
 			// Constant
 			value = list[index].parameters[5];
@@ -597,14 +597,14 @@ bool Game_Interpreter::CommandControlVariables() { // Code ControlVars
 			int a, b;
 			a = max(list[index].parameters[5], list[index].parameters[6]);
 			b = min(list[index].parameters[5], list[index].parameters[6]);
-			value = rand() % (a-b)+b;
+			value = rand() % (a-b+1)+b;
 			break;
 		case 4:
 			// Items
-			switch (list[index].parameters[7]) {
+			switch (list[index].parameters[6]) {
 				case 0:
 					// Number of items posessed
-					value = Game_Party::ItemNumber(list[index].parameters[6]);
+					value = Game_Party::ItemNumber(list[index].parameters[5]);
 					break;
 				case 1:
 					// Number of heroes that have the item equipped
@@ -623,9 +623,9 @@ bool Game_Interpreter::CommandControlVariables() { // Code ControlVars
 			break;
 		case 5:
 			// Hero
-			actor = Game_Actors::GetActor(list[index].parameters[6]);
+			actor = Game_Actors::GetActor(list[index].parameters[5]);
 			if (actor != NULL) {
-				switch (list[index].parameters[7]) {
+				switch (list[index].parameters[6]) {
 					case 0:
 						// Level
 						value = actor->GetLevel();
@@ -691,8 +691,8 @@ bool Game_Interpreter::CommandControlVariables() { // Code ControlVars
 			break;
 		case 6:
 			// Characters
-			if (list[index].parameters[7] != 0){
-				character = GetCharacter(list[index].parameters[6]);
+			if (list[index].parameters[6] != 0){
+				character = GetCharacter(list[index].parameters[5]);
 			} else {
 				// Special case for Player Map ID
 				character = NULL;
@@ -700,7 +700,7 @@ bool Game_Interpreter::CommandControlVariables() { // Code ControlVars
 			}
 			// Other cases
 			if (character != NULL) {
-				switch (list[index].parameters[7]) {
+				switch (list[index].parameters[6]) {
 					case 1:
 						// X Coordinate
 						value = character->GetX();
@@ -726,7 +726,7 @@ bool Game_Interpreter::CommandControlVariables() { // Code ControlVars
 			break;
 		case 7:
 			// More
-			switch (list[index].parameters[6]) {
+			switch (list[index].parameters[5]) {
 				case 0:
 					// Gold
 					value = Game_Party::GetGold();
