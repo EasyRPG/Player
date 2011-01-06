@@ -433,6 +433,13 @@ void SdlBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 			char_surface = new SdlBitmap(TTF_RenderUTF8_Solid(ttf_font, text2, white_color2));
 			char_shadow = new SdlBitmap(TTF_RenderUTF8_Solid(ttf_font, text2, c_tmp2));
 
+			if (!((SdlBitmap*)char_surface)->bitmap || !((SdlBitmap*)char_shadow)->bitmap) {
+				Output::Warning("Couldn't render char %c (%d). Skipping...", text[c], (int)text[c]);
+				delete char_surface;
+				delete char_shadow;
+				continue;
+			}
+
 			// Create a black mask
 			mask = CreateBitmap(char_surface->GetWidth(), char_surface->GetHeight());
 			mask->Blit(0, 0, char_surface, char_surface->GetRect(), 255);

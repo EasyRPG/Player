@@ -224,4 +224,11 @@ void Output::Debug(const char* fmt, ...) {
 void Output::DebugStr(std::string msg) {
 	printf("Debug: %s\n", msg.c_str());
 }
+#else
+void Output::Debug(char*, ...) {
+}
+void Output::Debug(const char*, ...) {
+}
+void Output::DebugStr(std::string) {
+}
 #endif

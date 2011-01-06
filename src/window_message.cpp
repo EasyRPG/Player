@@ -40,7 +40,7 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	visible = false;
-	z = 9998;
+	SetZ(9998);
 	//contents_showing = false;
 	//cursor_width = 0;
 	active = false;
@@ -71,6 +71,7 @@ void Window_Message::StartMessageProcessing() {
 		text.append(line);
 		text.append("\n");
 	}
+	item_max = Game_Message::choice_max;
 	InsertNewPage();
 	if (Game_Message::num_input_start == 0 && Game_Message::num_input_variable_id > 0) {
 		// If there is an input window on the first line
@@ -80,9 +81,9 @@ void Window_Message::StartMessageProcessing() {
 
 ////////////////////////////////////////////////////////////
 void Window_Message::FinishMessageProcessing() {
-	/*if (Game_Message::choice_max > 0) {
-	} else*/
-	if (Game_Message::num_input_variable_id > 0) {
+	if (Game_Message::choice_max > 0) {
+		StartChoiceProcessing();
+	} else if (Game_Message::num_input_variable_id > 0) {
 		StartNumberInputProcessing();
 	} else if (kill_message) {
 		TerminateMessage();
@@ -97,8 +98,8 @@ void Window_Message::FinishMessageProcessing() {
 
 ////////////////////////////////////////////////////////////
 void Window_Message::StartChoiceProcessing() {
-	//active = true;
-	//index = 0;
+	active = true;
+	index = 0;
 }
 
 ////////////////////////////////////////////////////////////
@@ -503,7 +504,16 @@ void Window_Message::WaitForInput() {
 
 ////////////////////////////////////////////////////////////
 void Window_Message::InputChoice() {
+	if (Input::IsTriggered(Input::CANCEL)) {
+		if (Game_Message::choice_cancel_type > 0) {
+			Game_System::SePlay(Data::system.cancel_se);
+			TerminateMessage();
+		}
+	} else if (Input::IsTriggered(Input::DECISION)) {
+		Game_System::SePlay(Data::system.decision_se);
 
+		TerminateMessage();
+	}
 }
 
 ////////////////////////////////////////////////////////////
