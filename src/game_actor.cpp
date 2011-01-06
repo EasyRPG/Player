@@ -87,6 +87,13 @@ void Game_Actor::LearnSkill(int skill_id) {
 }
 
 ////////////////////////////////////////////////////////////
+void Game_Actor::UnlearnSkill(int skill_id) {
+	std::vector<int>::iterator it = std::find(skills.begin(), skills.end(), skill_id);
+	if (it != skills.end())
+		skills.erase(it);
+}
+
+////////////////////////////////////////////////////////////
 void Game_Actor::SetFace(const std::string& file_name, int index) {
 	face_name.assign(file_name);
 	face_index = index;

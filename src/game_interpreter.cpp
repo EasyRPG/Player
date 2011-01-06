@@ -56,7 +56,7 @@ enum CommandCodes {
 	ChangeSkills			= 10440,
 	ChangeEquipment			= 10450,
 	ChangeHP				= 10460,
-	ChangeMP				= 10470,
+	ChangeSP				= 10470,
 	ChangeCondition			= 10480,
 	FullHeal				= 10490,
 	SimulatedAttack			= 10500,
@@ -397,6 +397,16 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandControlVariables();
 		case ChangeParameters:
 			return CommandChangeParameters();
+		case ChangeSkills:
+			return CommandChangeSkills();
+		case ChangeEquipment:
+			return CommandChangeEquipment();
+		case ChangeHP:
+			return CommandChangeHP();
+		case ChangeSP:
+			return CommandChangeSP();
+		case FullHeal:
+			return CommandFullHeal();
 		case Wait:
 			return CommandWait();
 		case ChangeSaveAccess:
@@ -1270,6 +1280,154 @@ bool Game_Interpreter::CommandChangeParameters() { // Code 10430
 			actor->SetAgi(actor->GetAgi() + value);
 			break;
 	}	
+	return true;
+}
+
+static std::vector<Game_Actor*> GetActors(int mode, int id) {
+	std::vector<Game_Actor*> actors;
+
+	switch (mode) {
+	case 0:
+		// Party
+		for (std::vector<Game_Actor*>::iterator i = Game_Party::GetActors().begin(); 
+			 i != Game_Party::GetActors().end(); 
+			 i++) {
+			actors.push_back(Game_Actors::GetActor((*i)->GetId()));
+		}
+		break;
+	case 1:
+		// Hero
+		actors.push_back(Game_Actors::GetActor(id));
+		break;
+	case 2:
+		// Var hero
+		actors.push_back(Game_Actors::GetActor(Game_Variables[id]));
+		break;
+	}
+
+	return actors;
+}
+
+static int ValueOrVariable(int mode, int val) {
+	switch (mode) {
+		case 0:
+			return val;
+		case 1:
+			return Game_Variables[val];
+		default:
+			return -1;
+	}
+}
+
+bool Game_Interpreter::CommandChangeSkills() { // Code 10440
+	std::vector<Game_Actor*> actors = GetActors(list[index].parameters[0],
+												list[index].parameters[1]);
+	bool remove = list[index].parameters[2] != 0;
+	int skill_id = ValueOrVariable(list[index].parameters[3],
+								   list[index].parameters[4]);
+
+	for (std::vector<Game_Actor*>::iterator i = actors.begin(); 
+		 i != actors.end(); 
+		 i++) {
+		Game_Actor* actor = *i;
+		if (remove)
+			actor->UnlearnSkill(skill_id);
+		else
+			actor->LearnSkill(skill_id);
+	}
+
+	return true;
+}
+
+bool Game_Interpreter::CommandChangeEquipment() { // Code 10450
+	std::vector<Game_Actor*> actors = GetActors(list[index].parameters[0],
+												list[index].parameters[1]);
+	int item_id;
+	int slot;
+
+	switch (list[index].parameters[2]) {
+		case 0:
+			item_id = ValueOrVariable(list[index].parameters[3],
+									  list[index].parameters[4]);
+			// TODO slot = <correct slot for item_id>
+			slot = 0;
+			break;
+		case 1:
+			item_id = 0;
+			slot = list[index].parameters[3];
+			break;
+		default:
+			return false;
+	}
+
+	for (std::vector<Game_Actor*>::iterator i = actors.begin(); 
+		 i != actors.end(); 
+		 i++) {
+		Game_Actor* actor = *i;
+		actor->ChangeEquipment(slot, item_id, false);
+	}
+
+	return true;
+}
+
+bool Game_Interpreter::CommandChangeHP() { // Code 10460
+	std::vector<Game_Actor*> actors = GetActors(list[index].parameters[0],
+												list[index].parameters[1]);
+	bool remove = list[index].parameters[2] != 0;
+	int amount = ValueOrVariable(list[index].parameters[3],
+								 list[index].parameters[4]);
+	bool lethal = list[index].parameters[5] != 0;
+
+	if (remove)
+		amount = -amount;
+
+	for (std::vector<Game_Actor*>::iterator i = actors.begin(); 
+		 i != actors.end(); 
+		 i++) {
+		Game_Actor* actor = *i;
+		int hp = actor->GetHp() + amount;
+		if (hp < 0)
+			hp = lethal ? 0 : 1;
+		actor->SetHp(hp);
+	}
+
+	return true;
+}
+
+bool Game_Interpreter::CommandChangeSP() { // Code 10470
+	std::vector<Game_Actor*> actors = GetActors(list[index].parameters[0],
+												list[index].parameters[1]);
+	bool remove = list[index].parameters[2] != 0;
+	int amount = ValueOrVariable(list[index].parameters[3],
+								 list[index].parameters[4]);
+
+	if (remove)
+		amount = -amount;
+
+	for (std::vector<Game_Actor*>::iterator i = actors.begin(); 
+		 i != actors.end(); 
+		 i++) {
+		Game_Actor* actor = *i;
+		int sp = actor->GetSp() + amount;
+		if (sp < 0)
+			sp = 0;
+		actor->SetSp(sp);
+	}
+
+	return true;
+}
+
+bool Game_Interpreter::CommandFullHeal() { // Code 10490
+	std::vector<Game_Actor*> actors = GetActors(list[index].parameters[0],
+												list[index].parameters[1]);
+
+	for (std::vector<Game_Actor*>::iterator i = actors.begin(); 
+		 i != actors.end(); 
+		 i++) {
+		Game_Actor* actor = *i;
+		actor->SetHp(actor->GetMaxHp());
+	}
+
 	return true;
 }
 

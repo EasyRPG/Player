@@ -50,6 +50,12 @@ public:
 	void LearnSkill(int skill_id);
 
 	////////////////////////////////////////////////////////
+	/// Unlearn a skill.
+	/// @param skill_id : database skill id
+	////////////////////////////////////////////////////////
+	void UnlearnSkill(int skill_id);
+
+	////////////////////////////////////////////////////////
 	/// Checks if the actor has the skill learned
 	/// @param skill_id : id of skill to check
 	/// @return true if skill has been learned

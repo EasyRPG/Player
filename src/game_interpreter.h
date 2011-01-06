@@ -83,6 +83,11 @@ private:
 	bool CommandChangeExp();
 	bool CommandChangeLevel();
 	bool CommandChangeParameters();
+	bool CommandChangeSkills();
+	bool CommandChangeEquipment();
+	bool CommandChangeHP();
+	bool CommandChangeSP();
+	bool CommandFullHeal();
 	bool CommandChangeSaveAccess();
 	bool CommandChangeActorFace();
 	bool CommandSkip();
