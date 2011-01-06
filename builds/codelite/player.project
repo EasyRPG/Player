@@ -636,14 +636,34 @@ $(IntermediateDirectory)/$(ProjectName).app/Contents/Resources/Player.icns: Play
       </AdditionalRules>
     </Configuration>
   </Settings>
-  <Dependencies Name="Dingux Debug"/>
-  <Dependencies Name="Dingux Release"/>
-  <Dependencies Name="GTK+ Debug"/>
-  <Dependencies Name="GTK+ Release"/>
-  <Dependencies Name="Mac OS X Debug"/>
-  <Dependencies Name="Mac OS X Release"/>
-  <Dependencies Name="UNIX Debug"/>
-  <Dependencies Name="UNIX Release"/>
-  <Dependencies Name="Win32 Debug"/>
-  <Dependencies Name="Win32 Release"/>
+  <Dependencies Name="GTK+ Debug">
+    <Project Name="readers"/>
+  </Dependencies>
+  <Dependencies Name="GTK+ Release">
+    <Project Name="readers"/>
+  </Dependencies>
+  <Dependencies Name="Dingux Debug">
+    <Project Name="readers"/>
+  </Dependencies>
+  <Dependencies Name="Dingux Release">
+    <Project Name="readers"/>
+  </Dependencies>
+  <Dependencies Name="Mac OS X Debug">
+    <Project Name="readers"/>
+  </Dependencies>
+  <Dependencies Name="Mac OS X Release">
+    <Project Name="readers"/>
+  </Dependencies>
+  <Dependencies Name="UNIX Release">
+    <Project Name="readers"/>
+  </Dependencies>
+  <Dependencies Name="UNIX Debug">
+    <Project Name="readers"/>
+  </Dependencies>
+  <Dependencies Name="Win32 Debug">
+    <Project Name="readers"/>
+  </Dependencies>
+  <Dependencies Name="Win32 Release">
+    <Project Name="readers"/>
+  </Dependencies>
 </CodeLite_Project>
