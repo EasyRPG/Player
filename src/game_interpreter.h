@@ -87,7 +87,11 @@ private:
 	bool CommandChangeEquipment();
 	bool CommandChangeHP();
 	bool CommandChangeSP();
+	bool CommandChangeCondition();
 	bool CommandFullHeal();
+	bool CommandChangeHeroName();
+	bool CommandChangeHeroTitle();
+	bool CommandChangeSpriteAssociation();
 	bool CommandChangeSaveAccess();
 	bool CommandChangeActorFace();
 	bool CommandSkip();

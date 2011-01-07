@@ -36,6 +36,7 @@ void Game_Actor::Setup(int actor_id) {
 	name = Data::actors[actor_id - 1].name;
 	character_name = Data::actors[actor_id - 1].character_name;
 	character_index = Data::actors[actor_id - 1].character_index;
+	character_transparent = false;
 	face_name = Data::actors[actor_id - 1].face_name;
 	face_index = Data::actors[actor_id - 1].face_index;
 	title = Data::actors[actor_id - 1].title;
@@ -426,3 +427,21 @@ std::vector<int> Game_Actor::GetSkills() const {
 bool Game_Actor::GetTwoSwordsStyle() const {
 	return two_swords_style;
 }
+
+////////////////////////////////////////////////////////////
+void Game_Actor::SetName(const std::string &new_name) {
+	name = new_name;
+}
+
+////////////////////////////////////////////////////////////
+void Game_Actor::SetTitle(const std::string &new_title) {
+	name = new_title;
+}
+
+////////////////////////////////////////////////////////////
+void Game_Actor::SetSprite(const std::string &file, int index, bool transparent) {
+	character_name = file;
+	character_index = index;
+	character_transparent = transparent;
+}
+

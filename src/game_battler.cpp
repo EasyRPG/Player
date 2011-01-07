@@ -263,3 +263,19 @@ bool Game_Battler::IsSkillUsable(int skill_id) {
 int Game_Battler::CalculateSkillCost(int skill_id) {
 	return Data::skills[skill_id - 1].sp_cost;
 }
+
+////////////////////////////////////////////////////////////
+void Game_Battler::AddState(int state_id) {
+	if (state_id > 0 && !HasState(state_id)) {
+		states.push_back(state_id);
+		std::sort(states.begin(), states.end());
+	}
+}
+
+////////////////////////////////////////////////////////////
+void Game_Battler::RemoveState(int state_id) {
+	std::vector<int>::iterator it = std::find(states.begin(), states.end(), state_id);
+	if (it != states.end())
+		states.erase(it);
+}
+

@@ -230,11 +230,23 @@ public:
 	/// @return true if actor has two weapons
 	bool GetTwoSwordsStyle() const;
 
+	/// @param new_name : new name
+	void SetName(const std::string &new_name);
+
+	/// @param new_title : new title
+	void SetTitle(const std::string &new_title);
+
+	/// @param file : graphic file
+	/// @param index : graphic index
+	/// @param transparent : transparent flag
+	void SetSprite(const std::string &file, int index, bool transparent);
+
 private:
 	int actor_id;
 	std::string name;
 	std::string character_name;
 	int character_index;
+	bool character_transparent;
 	std::string face_name;
 	int face_index;
 	std::string title;

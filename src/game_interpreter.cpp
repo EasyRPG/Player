@@ -405,8 +405,18 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandChangeHP();
 		case ChangeSP:
 			return CommandChangeSP();
+		case ChangeCondition:
+			return CommandChangeCondition();
+		case ChangePartyMembers:
+			return CommandChangePartyMember();
 		case FullHeal:
 			return CommandFullHeal();
+		case ChangeHeroName:
+			return CommandChangeHeroName();
+		case ChangeHeroTitle:
+			return CommandChangeHeroTitle();
+		case ChangeSpriteAssociation:
+			return CommandChangeSpriteAssociation();
 		case Wait:
 			return CommandWait();
 		case ChangeSaveAccess:
@@ -1083,7 +1093,7 @@ bool Game_Interpreter::CommandChangePartyMember() { // Code 10330
 	Game_Actor* actor;
 	int id;
 
-	if (list[index].parameters[2] == 0) {
+	if (list[index].parameters[1] == 0) {
 		id = list[index].parameters[2];
 	} else {
 		id = Game_Variables[list[index].parameters[2]];
@@ -1417,6 +1427,25 @@ bool Game_Interpreter::CommandChangeSP() { // Code 10470
 	return true;
 }
 
+bool Game_Interpreter::CommandChangeCondition() { // Code 10480
+	std::vector<Game_Actor*> actors = GetActors(list[index].parameters[0],
+												list[index].parameters[1]);
+	bool remove = list[index].parameters[2] != 0;
+	int state_id = list[index].parameters[3];
+
+	for (std::vector<Game_Actor*>::iterator i = actors.begin(); 
+		 i != actors.end(); 
+		 i++) {
+		Game_Actor* actor = *i;
+		if (remove)
+			actor->RemoveState(state_id);
+		else
+			actor->AddState(state_id);
+	}
+
+	return true;
+}
+
 bool Game_Interpreter::CommandFullHeal() { // Code 10490
 	std::vector<Game_Actor*> actors = GetActors(list[index].parameters[0],
 												list[index].parameters[1]);
@@ -1428,6 +1457,27 @@ bool Game_Interpreter::CommandFullHeal() { // Code 10490
 		actor->SetHp(actor->GetMaxHp());
 	}
 
+	return true;
+}
+
+bool Game_Interpreter::CommandChangeHeroName() { // code 10610
+	Game_Actor* actor = Game_Actors::GetActor(list[index].parameters[0]);
+	actor->SetName(list[index].string);
+	return true;
+}
+
+bool Game_Interpreter::CommandChangeHeroTitle() { // code 10620
+	Game_Actor* actor = Game_Actors::GetActor(list[index].parameters[0]);
+	actor->SetTitle(list[index].string);
+	return true;
+}
+
+bool Game_Interpreter::CommandChangeSpriteAssociation() { // code 10630
+	Game_Actor* actor = Game_Actors::GetActor(list[index].parameters[0]);
+	const std::string &file = list[index].string;
+	int idx = list[index].parameters[1];
+	bool transparent = list[index].parameters[2] != 0;
+	actor->SetSprite(file, idx, transparent);
 	return true;
 }
 
