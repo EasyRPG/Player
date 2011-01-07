@@ -127,7 +127,7 @@ void Game_Screen::ShakeEnd() {
 	shake_continuous = false;
 }
 
-static double interpolate(double d, int x0, int x1)
+static double interpolate(double d, double x0, double x1)
 {
 	return (x0 * (d - 1) + x1) / d;
 }

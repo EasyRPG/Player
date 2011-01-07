@@ -258,7 +258,10 @@ namespace Game_Map {
 	int XwithDirection(int x, int direction);
 	int YwithDirection(int y, int direction);
 
-
+	void SetParallaxName(const std::string& name);
+	void SetParallaxScroll(bool horz, bool vert,
+						   bool horz_auto, bool vert_auto,
+						   int horz_speed, int vert_speed);
 }
 
 #endif

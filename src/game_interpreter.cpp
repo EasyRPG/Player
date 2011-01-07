@@ -479,12 +479,16 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandWeatherEffects();
 		case ChangeSystemGraphics:
 			return CommandChangeSystemGraphics();
+		case ChangeScreenTransitions:
+			return CommandChangeScreenTransitions();
 		case ChangeEventLocation:
 			return CommandChangeEventLocation();
 		case TradeEventLocations:
 			return CommandTradeEventLocations();
 		case TimerOperation:
 			return CommandTimerOperation();
+		case ChangePBG:
+			return CommandChangePBG();
 		default:
 			return true;
 
@@ -2009,6 +2013,61 @@ bool Game_Interpreter::CommandChangeSystemGraphics() { // code 10680
 	return true;
 }
 
+bool Game_Interpreter::CommandChangeScreenTransitions() { // code 10690
+	static const int fades[2][21] = {
+		{
+			Graphics::TransitionFadeOut,
+			Graphics::TransitionRandomBlocksUp,
+			Graphics::TransitionBorderToCenterOut,
+			Graphics::TransitionCenterToBorderOut,
+			Graphics::TransitionBlindClose,
+			Graphics::TransitionVerticalStripesOut,
+			Graphics::TransitionHorizontalStripesOut,
+			Graphics::TransitionBorderToCenterOut,
+			Graphics::TransitionCenterToBorderOut,
+			Graphics::TransitionScrollUpOut,
+			Graphics::TransitionScrollDownOut,
+			Graphics::TransitionScrollLeftOut,
+			Graphics::TransitionScrollRightOut,
+			Graphics::TransitionVerticalDivision,
+			Graphics::TransitionHorizontalDivision,
+			Graphics::TransitionCrossDivision,
+			Graphics::TransitionZoomIn,
+			Graphics::TransitionMosaicOut,
+			Graphics::TransitionWaveOut,
+			Graphics::TransitionErase,
+			Graphics::TransitionNone
+		},
+		{
+			Graphics::TransitionFadeIn,
+			Graphics::TransitionRandomBlocksDown,
+			Graphics::TransitionBorderToCenterIn,
+			Graphics::TransitionCenterToBorderIn,
+			Graphics::TransitionBlindOpen,
+			Graphics::TransitionVerticalStripesIn,
+			Graphics::TransitionHorizontalStripesIn,
+			Graphics::TransitionBorderToCenterIn,
+			Graphics::TransitionCenterToBorderIn,
+			Graphics::TransitionScrollUpIn,
+			Graphics::TransitionScrollDownIn,
+			Graphics::TransitionScrollLeftIn,
+			Graphics::TransitionScrollRightIn,
+			Graphics::TransitionVerticalCombine,
+			Graphics::TransitionHorizontalCombine,
+			Graphics::TransitionCrossCombine,
+			Graphics::TransitionZoomOut,
+			Graphics::TransitionMosaicIn,
+			Graphics::TransitionWaveIn,
+			Graphics::TransitionErase,
+			Graphics::TransitionNone,
+		}
+	};
+	int which = list[index].parameters[0];
+	int trans = fades[which % 2][list[index].parameters[1]];
+	Game_System::SetTransition(which, trans);
+	return true;
+}
+
 bool Game_Interpreter::CommandChangeEventLocation() { // Code 10860
 	int event_id = list[index].parameters[0];
 	Game_Character *event = GetCharacter(event_id);
@@ -2164,3 +2223,18 @@ bool Game_Interpreter::CommandTimerOperation() { // code 10230
 	return true;
 }
 
+bool Game_Interpreter::CommandChangePBG() { // code 11720
+	const std::string& name = list[index].string;
+	Game_Map::SetParallaxName(name);
+
+	bool horz = list[index].parameters[0] != 0;
+	bool horz_auto = list[index].parameters[1] != 0;
+	int horz_speed = list[index].parameters[2];
+	bool vert = list[index].parameters[3] != 0;
+	bool vert_auto = list[index].parameters[4] != 0;
+	int vert_speed = list[index].parameters[5];
+	Game_Map::SetParallaxScroll(horz, vert,
+								horz_auto, vert_auto,
+								horz_speed, vert_speed);
+	return true;
+}

@@ -58,6 +58,16 @@ namespace Game_System {
 		SFX_Count
 	};
 
+	enum sys_transition {
+		Transition_TeleportErase,
+		Transition_TeleportShow,
+		Transition_BeginBattleErase,
+		Transition_BeginBattleShow,
+		Transition_EndBattleErase,
+		Transition_EndBattleShow,
+		Transition_Count
+	};
+
 	enum sys_timer {
 		Timer1,
 		Timer2
@@ -148,6 +158,13 @@ namespace Game_System {
 	////////////////////////////////////////////////////////
 	void UpdateTimers();
 
+	////////////////////////////////////////////////////////
+	/// Set the system transitions
+	/// @param which : which "context" to set the transition for
+	/// @param trans : the transition
+	////////////////////////////////////////////////////////
+	void SetTransition(int which, int transition);
+
 	/// Menu saving option disabled flag.
 	extern bool save_disabled;
 	extern bool teleport_disabled;
@@ -158,6 +175,7 @@ namespace Game_System {
 	extern RPG::Music system_bgm[BGM_Count];
 	extern RPG::Sound system_sfx[SFX_Count];
 	extern Timer timers[2];
+	extern int transitions[Transition_Count];
 
 	/// Numbers of saves.
 	extern unsigned int save_count;

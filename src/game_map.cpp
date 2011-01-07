@@ -38,6 +38,13 @@ namespace {
 	int display_x;
 	int display_y;
 	bool need_refresh;
+	std::string parallax_name;
+	bool parallax_horz_scroll;
+	bool parallax_vert_scroll;
+	bool parallax_horz_auto;
+	bool parallax_vert_auto;
+	int parallax_horz_speed;
+	int parallax_vert_speed;
 
 	std::vector<unsigned char> passages_down;
 	std::vector<unsigned char> passages_up;
@@ -465,4 +472,20 @@ std::vector<short>& Game_Map::GetTerrainTags() {
 
 tEventHash& Game_Map::GetEvents() {
 	return events;
+}
+
+////////////////////////////////////////////////////////////
+void Game_Map::SetParallaxName(const std::string& name) {
+	parallax_name = name;
+}
+
+void Game_Map::SetParallaxScroll(bool horz, bool vert,
+								 bool horz_auto, bool vert_auto,
+								 int horz_speed, int vert_speed) {
+	parallax_horz_scroll = horz;
+	parallax_vert_scroll = vert;
+	parallax_horz_auto = horz_auto;
+	parallax_vert_auto = vert_auto;
+	parallax_horz_speed = horz_speed;
+	parallax_vert_speed = vert_speed;
 }

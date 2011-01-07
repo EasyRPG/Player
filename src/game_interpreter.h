@@ -129,9 +129,11 @@ private:
 	bool CommandShakeScreen();
 	bool CommandWeatherEffects();
 	bool CommandChangeSystemGraphics();
+	bool CommandChangeScreenTransitions();
 	bool CommandChangeEventLocation();
 	bool CommandTradeEventLocations();
 	bool CommandTimerOperation();
+	bool CommandChangePBG();
 
 	void CommandEnd();
 };

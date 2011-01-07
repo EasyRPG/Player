@@ -35,6 +35,7 @@ namespace Game_System {
 	RPG::Music system_bgm[BGM_Count];
 	RPG::Sound system_sfx[SFX_Count];
 	Timer timers[2];
+	int transitions[Transition_Count];
 }
 
 static std::string system_name;
@@ -124,5 +125,10 @@ void Game_System::StopTimer(int which) {
 void Game_System::UpdateTimers() {
 	timers[0].Update();
 	timers[1].Update();
+}
+
+////////////////////////////////////////////////////////////
+void Game_System::SetTransition(int which, int transition) {
+	transitions[which] = transition;
 }
 
