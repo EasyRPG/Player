@@ -28,7 +28,7 @@
 #include "game_actors.h"
 #include "game_system.h"
 #include "game_message.h"
-#include "pictures.h"
+#include "game_picture.h"
 #include "graphics.h"
 #include "audio.h"
 #include "util_macro.h"

@@ -18,7 +18,7 @@
 #ifndef __game_screen__
 #define __game_screen__
 
-#include "pictures.h"
+#include "game_picture.h"
 
 class Game_Screen {
 
