@@ -80,6 +80,7 @@ private:
 	bool CommandShowChoices();
 	bool CommandChangeFaceGraphic();
 	bool CommandInputNumber();
+	bool CommandMessageOptions();
 	bool CommandControlSwitches();
 	bool CommandControlVariables();
 	bool CommandChangeGold();
@@ -108,6 +109,8 @@ private:
 	bool CommandMemorizeBGM();
 	bool CommandPlayMemorizedBGM();
 	bool CommandPlaySound();
+	bool CommandChangeSystemBGM();
+	bool CommandChangeSystemSFX();
 	bool CommandChangeSaveAccess();
 	bool CommandChangeTeleportAccess();
 	bool CommandChangeEscapeAccess();
@@ -128,6 +131,7 @@ private:
 	bool CommandChangeSystemGraphics();
 	bool CommandChangeEventLocation();
 	bool CommandTradeEventLocations();
+	bool CommandTimerOperation();
 
 	void CommandEnd();
 };

@@ -379,8 +379,8 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandShowChoices();
 		case InputNumber: 
 			return CommandInputNumber();
-		//case MessageOptions: 
-			//return CommandMessageOptions();
+		case MessageOptions: 
+			return CommandMessageOptions();
 		case ChangeFaceGraphic: 
 			return CommandChangeFaceGraphic();
 		case ChangeExp: 
@@ -439,6 +439,10 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandPlayMemorizedBGM();
 		case PlaySound:
 			return CommandPlaySound();
+		case ChangeSystemBGM:
+			return CommandChangeSystemBGM();
+		case ChangeSystemSFX:
+			return CommandChangeSystemSFX();
 		case Wait:
 			return CommandWait();
 		case ChangeSaveAccess:
@@ -479,6 +483,8 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandChangeEventLocation();
 		case TradeEventLocations:
 			return CommandTradeEventLocations();
+		case TimerOperation:
+			return CommandTimerOperation();
 		default:
 			return true;
 
@@ -1049,6 +1055,36 @@ int Game_Interpreter::OperateValue(int operation, int operand_type, int operand)
 }
 
 ////////////////////////////////////////////////////////////
+/// * Calculate List of Actors
+///     mode : 0: party, 1: specific actor, 2: actor referenced by variable
+///     id   : actor ID (mode = 1) or variable ID (mode = 2)
+////////////////////////////////////////////////////////////
+static std::vector<Game_Actor*> GetActors(int mode, int id) {
+	std::vector<Game_Actor*> actors;
+
+	switch (mode) {
+	case 0:
+		// Party
+		for (std::vector<Game_Actor*>::iterator i = Game_Party::GetActors().begin(); 
+			 i != Game_Party::GetActors().end(); 
+			 i++) {
+			actors.push_back(Game_Actors::GetActor((*i)->GetId()));
+		}
+		break;
+	case 1:
+		// Hero
+		actors.push_back(Game_Actors::GetActor(id));
+		break;
+	case 2:
+		// Var hero
+		actors.push_back(Game_Actors::GetActor(Game_Variables[id]));
+		break;
+	}
+
+	return actors;
+}
+
+////////////////////////////////////////////////////////////
 /// Get Character
 ////////////////////////////////////////////////////////////
 Game_Character* Game_Interpreter::GetCharacter(int character_id) {
@@ -1188,35 +1224,19 @@ bool Game_Interpreter::CommandChangePartyMember() { // Code 10330
 /// Change Experience
 ////////////////////////////////////////////////////////////
 bool Game_Interpreter::CommandChangeExp() { // Code 10410
+	std::vector<Game_Actor*> actors = GetActors(list[index].parameters[0],
+												list[index].parameters[1]);
 	int value = OperateValue(
 		list[index].parameters[2],
 		list[index].parameters[3],
 		list[index].parameters[4]
 	);
 
-	Game_Actor* actor;
-
-	switch (list[index].parameters[0]) {
-		case 0:
-			// All party
-			for (std::vector<Game_Actor*>::iterator i = Game_Party::GetActors().begin(); 
-				i != Game_Party::GetActors().end(); 
-				i++) {
-				(*i)->SetExp((*i)->GetExp() + value);
-			}
-			break;
-		case 1:
-			// Hero
-			actor = Game_Actors::GetActor(list[index].parameters[1]);
-			actor->SetExp(actor->GetExp() + value);
-			break;
-		case 2:
-			// Var hero
-			actor = Game_Actors::GetActor(Game_Variables[list[index].parameters[1]]);
-			actor->SetExp(actor->GetExp() + value);
-			break;
-		default:
-			;
+	for (std::vector<Game_Actor*>::iterator i = actors.begin(); 
+		 i != actors.end(); 
+		 i++) {
+		Game_Actor* actor = *i;
+		actor->SetExp(actor->GetExp() + value);
 	}
 
 	if (list[index].parameters[5] != 0) {
@@ -1232,35 +1252,19 @@ bool Game_Interpreter::CommandChangeExp() { // Code 10410
 
 
 bool Game_Interpreter::CommandChangeLevel() { // Code 10420
+	std::vector<Game_Actor*> actors = GetActors(list[index].parameters[0],
+												list[index].parameters[1]);
 	int value = OperateValue(
 		list[index].parameters[2],
 		list[index].parameters[3],
 		list[index].parameters[4]
 	);
 
-	Game_Actor* actor;
-
-	switch (list[index].parameters[0]) {
-		case 0:
-			// All party
-			for (std::vector<Game_Actor*>::iterator i = Game_Party::GetActors().begin(); 
-				i != Game_Party::GetActors().end(); 
-				i++) {
-				(*i)->ChangeLevel((*i)->GetLevel() + value);
-			}
-			break;
-		case 1:
-			// Hero
-			actor = Game_Actors::GetActor(list[index].parameters[1]);
-			actor->ChangeLevel(actor->GetLevel() + value);
-			break;
-		case 2:
-			// Var hero
-			actor = Game_Actors::GetActor(Game_Variables[list[index].parameters[1]]);
-			actor->ChangeLevel(actor->GetLevel() + value);
-			break;
-		default:
-			;
+	for (std::vector<Game_Actor*>::iterator i = actors.begin(); 
+		 i != actors.end(); 
+		 i++) {
+		Game_Actor* actor = *i;
+		actor->ChangeLevel(actor->GetLevel() + value);
 	}
 
 	if (list[index].parameters[5] != 0) {
@@ -1275,112 +1279,46 @@ bool Game_Interpreter::CommandChangeLevel() { // Code 10420
 }
 
 bool Game_Interpreter::CommandChangeParameters() { // Code 10430
+	std::vector<Game_Actor*> actors = GetActors(list[index].parameters[0],
+												list[index].parameters[1]);
 	int value = OperateValue(
 		list[index].parameters[2],
 		list[index].parameters[4],
 		list[index].parameters[5]
-	);
+		);
 
-	Game_Actor* actor;
-	switch (list[index].parameters[0]) {
-		case 0:
-			// Party
-			for (std::vector<Game_Actor*>::iterator i = Game_Party::GetActors().begin(); 
-				i != Game_Party::GetActors().end(); 
-				i++) {
-					actor = Game_Actors::GetActor((*i)->GetId());
-				switch (list[index].parameters[3]) {
-					case 0:
-						// Max HP
-						actor->SetMaxHp(actor->GetMaxHp() + value);
-						break;
-					case 1:
-						// Max MP
-						actor->SetMaxSp(actor->GetMaxSp() + value);
-						break;
-					case 2:
-						// Attack
-						actor->SetAtk(actor->GetAtk() + value);
-						break;
-					case 3:
-						// Defense
-						actor->SetDef(actor->GetDef() + value);
-						break;
-					case 4:
-						// Spirit
-						actor->SetSpi(actor->GetSpi() + value);
-						break;
-					case 5:
-						// Agility
-						actor->SetAgi(actor->GetAgi() + value);
-						break;
-				}				
-			}
-			// Continue
-			return true;
-		case 1:
-			// Hero
-			actor = Game_Actors::GetActor(list[index].parameters[1]);
-			break;
-		case 2:
-			// Var hero
-			actor = Game_Actors::GetActor(Game_Variables[list[index].parameters[1]]);
-			break;
-		default:
-			actor = NULL;
+	for (std::vector<Game_Actor*>::iterator i = actors.begin(); 
+		 i != actors.end(); 
+		 i++) {
+		Game_Actor* actor = *i;
+		switch (list[index].parameters[3]) {
+			case 0:
+				// Max HP
+				actor->SetMaxHp(actor->GetMaxHp() + value);
+				break;
+			case 1:
+				// Max MP
+				actor->SetMaxSp(actor->GetMaxSp() + value);
+				break;
+			case 2:
+				// Attack
+				actor->SetAtk(actor->GetAtk() + value);
+				break;
+			case 3:
+				// Defense
+				actor->SetDef(actor->GetDef() + value);
+				break;
+			case 4:
+				// Spirit
+				actor->SetSpi(actor->GetSpi() + value);
+				break;
+			case 5:
+				// Agility
+				actor->SetAgi(actor->GetAgi() + value);
+				break;
+		}	
 	}
-	switch (list[index].parameters[3]) {
-		case 0:
-			// Max HP
-			actor->SetMaxHp(actor->GetMaxHp() + value);
-			break;
-		case 1:
-			// Max MP
-			actor->SetMaxSp(actor->GetMaxSp() + value);
-			break;
-		case 2:
-			// Attack
-			actor->SetAtk(actor->GetAtk() + value);
-			break;
-		case 3:
-			// Defense
-			actor->SetDef(actor->GetDef() + value);
-			break;
-		case 4:
-			// Spirit
-			actor->SetSpi(actor->GetSpi() + value);
-			break;
-		case 5:
-			// Agility
-			actor->SetAgi(actor->GetAgi() + value);
-			break;
-	}	
 	return true;
-}
-
-static std::vector<Game_Actor*> GetActors(int mode, int id) {
-	std::vector<Game_Actor*> actors;
-
-	switch (mode) {
-	case 0:
-		// Party
-		for (std::vector<Game_Actor*>::iterator i = Game_Party::GetActors().begin(); 
-			 i != Game_Party::GetActors().end(); 
-			 i++) {
-			actors.push_back(Game_Actors::GetActor((*i)->GetId()));
-		}
-		break;
-	case 1:
-		// Hero
-		actors.push_back(Game_Actors::GetActor(id));
-		break;
-	case 2:
-		// Var hero
-		actors.push_back(Game_Actors::GetActor(Game_Variables[id]));
-		break;
-	}
-
-	return actors;
 }
 
 static int ValueOrVariable(int mode, int val) {
@@ -2169,6 +2107,61 @@ bool Game_Interpreter::CommandWeatherEffects() { // code 11070
 	int type = list[index].parameters[0];
 	int strength = list[index].parameters[1];
 	screen->Weather(type, strength);
+	return true;
+}
+
+bool Game_Interpreter::CommandMessageOptions() { //code 10120
+	Game_Message::background = list[index].parameters[0];
+	Game_Message::position = list[index].parameters[1];
+	Game_Message::fixed_position = list[index].parameters[2] != 0;
+	Game_Message::dont_halt = list[index].parameters[3] != 0;
+	return true;
+}
+
+bool Game_Interpreter::CommandChangeSystemBGM() { //code 10660
+	RPG::Music music;
+	int context = list[index].parameters[0];
+	music.name = list[index].string;
+	music.fadein = list[index].parameters[1];
+	music.volume = list[index].parameters[2];
+	music.tempo = list[index].parameters[3];
+	music.balance = list[index].parameters[4];
+	Game_System::SetSystemBGM(context, music);
+	return true;
+}
+
+bool Game_Interpreter::CommandChangeSystemSFX() { //code 10670
+	RPG::Sound sound;
+	int context = list[index].parameters[0];
+	sound.name = list[index].string;
+	sound.volume = list[index].parameters[1];
+	sound.tempo = list[index].parameters[2];
+	sound.balance = list[index].parameters[3];
+	Game_System::SetSystemSE(context, sound);
+	return true;
+}
+
+bool Game_Interpreter::CommandTimerOperation() { // code 10230
+	int timer_id = list[index].parameters[5];
+	int seconds;
+	bool visible, battle;
+
+	switch (list[index].parameters[0]) {
+		case 0:
+			seconds = ValueOrVariable(list[index].parameters[1],
+									  list[index].parameters[2]);
+			Game_System::SetTimer(timer_id, seconds);
+			break;
+		case 1:
+			visible = list[index].parameters[3];
+			battle = list[index].parameters[4];
+			Game_System::StartTimer(timer_id, visible, battle);
+		case 2:
+			Game_System::StopTimer(timer_id);
+			break;
+		default:
+			return false;
+	}
 	return true;
 }
 

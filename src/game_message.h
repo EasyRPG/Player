@@ -72,6 +72,10 @@ namespace Game_Message {
 	extern int num_input_digits_max;
 	/// Where the msgbox is displayed
 	extern int position;
+	// don't move the message box to avoid obscuring the player
+	extern bool fixed_position;
+	// don't wait for a key to be pressed
+	extern bool dont_halt;
 	/// If a message is currently being processed
 	extern bool message_waiting;
 	extern bool visible;

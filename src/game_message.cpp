@@ -38,6 +38,8 @@ namespace Game_Message {
 	int num_input_digits_max;
 
 	int position;
+	bool fixed_position;
+	bool dont_halt;
 	bool message_waiting;
 
 	bool visible;
@@ -62,6 +64,8 @@ void Game_Message::FullClear() {
 	face_index = 0;
 	background = 0;
 	position = 2;
+	fixed_position = false;
+	dont_halt = false;
 }
 
 bool Game_Message::Busy() {

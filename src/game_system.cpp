@@ -32,6 +32,9 @@ namespace Game_System {
 	unsigned int save_count;
 	RPG::Music current_bgm;
 	RPG::Music memorized_bgm;
+	RPG::Music system_bgm[BGM_Count];
+	RPG::Sound system_sfx[SFX_Count];
+	Timer timers[2];
 }
 
 static std::string system_name;
@@ -80,3 +83,46 @@ void Game_System::SetSystemName(std::string new_system_name) {
 }
 
 ////////////////////////////////////////////////////////////
+void Game_System::SetSystemBGM(int which, RPG::Music bgm) {
+	system_bgm[which] = bgm;
+}
+
+////////////////////////////////////////////////////////////
+void Game_System::SetSystemSE(int which, RPG::Sound sfx) {
+	system_sfx[which] = sfx;
+}
+
+////////////////////////////////////////////////////////////
+void Game_System::Timer::Update() {
+	// TODO: if (<during battle> && !battle) return;
+	if (running && value > 0)
+		value--;
+}
+
+////////////////////////////////////////////////////////////
+void Game_System::SetTimer(int which, int seconds) {
+	Timer& timer = timers[which];
+	timer.value = seconds * DEFAULT_FPS;
+}
+
+////////////////////////////////////////////////////////////
+void Game_System::StartTimer(int which, bool visible, bool battle) {
+	Timer& timer = timers[which];
+	timer.running = true;
+	timer.visible = visible;
+	timer.battle = battle;
+}
+
+////////////////////////////////////////////////////////////
+void Game_System::StopTimer(int which) {
+	Timer& timer = timers[which];
+	timer.running = false;
+	timer.visible = false;
+}
+
+////////////////////////////////////////////////////////////
+void Game_System::UpdateTimers() {
+	timers[0].Update();
+	timers[1].Update();
+}
+

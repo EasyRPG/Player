@@ -29,6 +29,56 @@
 /// Game System namespace
 ////////////////////////////////////////////////////////////
 namespace Game_System {
+	enum sys_bgm {
+		BGM_Battle,
+		BGM_Victory,
+		BGM_Inn,
+		BGM_Skiff,
+		BGM_Ship,
+		BGM_Airship,
+		BGM_GameOver,
+
+		BGM_Count
+	};
+
+	enum sys_sfx {
+		SFX_Cursor,
+		SFX_Decision,
+		SFX_Cancel,
+		SFX_Buzzer,
+		SFX_BeginBattle,
+		SFX_Escape,
+		SFX_EnemyAttacks,
+		SFX_EnemyDamage,
+		SFX_AllyDamage,
+		SFX_Evasion,
+		SFX_EnemyKill,
+		SFX_UseItem,
+
+		SFX_Count
+	};
+
+	enum sys_timer {
+		Timer1,
+		Timer2
+	};
+
+	class Timer {
+	public:
+		int value;
+		bool running;
+		bool visible;
+		bool battle;
+
+		Timer() :
+			value(0),
+			running(false),
+			visible(false),
+			battle(false) {}
+
+		void Update();
+	};
+
 	////////////////////////////////////////////////////////
 	/// Initialize Game System.
 	////////////////////////////////////////////////////////
@@ -58,6 +108,46 @@ namespace Game_System {
 	////////////////////////////////////////////////////////
 	void SetSystemName(std::string system_name);
 
+	////////////////////////////////////////////////////////
+	/// Set the system music
+	/// @param which : which "context" to set the music for
+	/// @param bgm   : the music
+	////////////////////////////////////////////////////////
+	void SetSystemBGM(int which, RPG::Music bgm);
+
+	////////////////////////////////////////////////////////
+	/// Set a system sound effect
+	/// @param which : which "context" to set the effect for
+	/// @param bgm   : the sound
+	////////////////////////////////////////////////////////
+	void SetSystemSE(int which, RPG::Sound sfx);
+
+	////////////////////////////////////////////////////////
+	/// Set a timer
+	/// @param which   : which timer to set
+	/// @param seconds : the time in seconds
+	////////////////////////////////////////////////////////
+	void SetTimer(int which, int seconds);
+
+	////////////////////////////////////////////////////////
+	/// Start a timer
+	/// @param which   : which timer to start
+	/// @param visible : whether the timer is visible
+	/// @param visible : whether the timer runs during battle
+	////////////////////////////////////////////////////////
+	void StartTimer(int which, bool visible, bool battle);
+
+	////////////////////////////////////////////////////////
+	/// Stop a timer
+	/// @param which   : which timer to stop
+	////////////////////////////////////////////////////////
+	void StopTimer(int which);
+
+	////////////////////////////////////////////////////////
+	/// Update all timers
+	////////////////////////////////////////////////////////
+	void UpdateTimers();
+
 	/// Menu saving option disabled flag.
 	extern bool save_disabled;
 	extern bool teleport_disabled;
@@ -65,6 +155,9 @@ namespace Game_System {
 	extern bool main_menu_disabled;
 	extern RPG::Music current_bgm;
 	extern RPG::Music memorized_bgm;
+	extern RPG::Music system_bgm[BGM_Count];
+	extern RPG::Sound system_sfx[SFX_Count];
+	extern Timer timers[2];
 
 	/// Numbers of saves.
 	extern unsigned int save_count;
