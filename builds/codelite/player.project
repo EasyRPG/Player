@@ -167,8 +167,6 @@
           <File Name="../../src/gl_bitmap_screen.h"/>
         </VirtualDirectory>
         <File Name="../../src/exfont.h"/>
-        <File Name="../../src/pictures.cpp"/>
-        <File Name="../../src/pictures.h"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Input">
         <File Name="../../src/input.cpp"/>
