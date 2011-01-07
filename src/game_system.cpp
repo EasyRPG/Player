@@ -30,6 +30,8 @@ namespace Game_System {
 	bool escape_disabled;
 	bool main_menu_disabled;
 	unsigned int save_count;
+	RPG::Music current_bgm;
+	RPG::Music memorized_bgm;
 }
 
 static std::string system_name;
@@ -47,6 +49,7 @@ void Game_System::Init() {
 void Game_System::BgmPlay(RPG::Music bgm) {
 	//@playing_bgm = bgm
 	// RPG Maker Hack: (OFF) means play nothing
+	current_bgm = bgm;
 	if (!bgm.name.empty() && bgm.name != "(OFF)") {
 		Audio::BGM_Play("Music/" + bgm.name, bgm.volume, bgm.tempo);
 	} else {
@@ -75,3 +78,5 @@ std::string Game_System::GetSystemName() {
 void Game_System::SetSystemName(std::string new_system_name) {
 	system_name = new_system_name;
 }
+
+////////////////////////////////////////////////////////////

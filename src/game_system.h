@@ -63,6 +63,8 @@ namespace Game_System {
 	extern bool teleport_disabled;
 	extern bool escape_disabled;
 	extern bool main_menu_disabled;
+	extern RPG::Music current_bgm;
+	extern RPG::Music memorized_bgm;
 
 	/// Numbers of saves.
 	extern unsigned int save_count;

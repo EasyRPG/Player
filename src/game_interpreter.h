@@ -105,6 +105,8 @@ private:
 	bool CommandStoreEventID();
 	bool CommandPlayBGM();
 	bool CommandFadeOutBGM();
+	bool CommandMemorizeBGM();
+	bool CommandPlayMemorizedBGM();
 	bool CommandPlaySound();
 	bool CommandChangeSaveAccess();
 	bool CommandChangeTeleportAccess();
@@ -116,6 +118,10 @@ private:
 	bool CommandTeleport();
 	bool CommandEraseScreen();
 	bool CommandShowScreen();
+	bool CommandShowPicture();
+	bool CommandMovePicture();
+	bool CommandErasePicture();
+	bool CommandChangeSystemGraphics();
 
 	void CommandEnd();
 };

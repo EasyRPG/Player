@@ -28,6 +28,7 @@
 #include "game_actors.h"
 #include "game_system.h"
 #include "game_message.h"
+#include "pictures.h"
 #include "graphics.h"
 #include "audio.h"
 #include "util_macro.h"
@@ -432,6 +433,10 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandPlayBGM();
 		case FadeOutBGM:
 			return CommandFadeOutBGM();
+		case MemorizeBGM:
+			return CommandMemorizeBGM();
+		case PlayMemorizedBGM:
+			return CommandPlayMemorizedBGM();
 		case PlaySound:
 			return CommandPlaySound();
 		case Wait:
@@ -454,6 +459,14 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandShowScreen();
 		case Comment:
 			return true;
+		case ShowPicture:
+			return CommandShowPicture();
+		case MovePicture:
+			return CommandMovePicture();
+		case ErasePicture:
+			return CommandErasePicture();
+		case ChangeSystemGraphics:
+			CommandChangeSystemGraphics();
 		default:
 			return true;
 
@@ -1592,6 +1605,16 @@ bool Game_Interpreter::CommandFadeOutBGM() { // code 11520
 	return true;
 }
 
+bool Game_Interpreter::CommandMemorizeBGM() { // code 11530
+	Game_System::memorized_bgm = Game_System::current_bgm;
+	return true;
+}
+
+bool Game_Interpreter::CommandPlayMemorizedBGM() { // code 11540
+	Game_System::BgmPlay(Game_System::memorized_bgm);
+	return true;
+}
+
 bool Game_Interpreter::CommandPlaySound() { // code 11550
 	RPG::Sound sound;
 	sound.name = list[index].string;
@@ -1937,4 +1960,102 @@ bool Game_Interpreter::CommandShowScreen() {
 			Game_Temp::transition_type = Graphics::TransitionNone;
 			return true;
 	}
+}
+
+////////////////////////////////////////////////////////////
+bool Game_Interpreter::CommandShowPicture() { // code 11110
+	int pic_id = list[index].parameters[0];
+	Picture& picture = Pictures::Get(pic_id);
+	std::string& pic_name = list[index].string;
+	int x = ValueOrVariable(list[index].parameters[1], list[index].parameters[2]);
+	int y = ValueOrVariable(list[index].parameters[1], list[index].parameters[3]);
+	bool scrolls = list[index].parameters[4] > 0;
+	int magnify = list[index].parameters[5];
+	int top_trans = list[index].parameters[6];
+	bool use_trans = list[index].parameters[7] > 0;
+	int red = list[index].parameters[8];
+	int green = list[index].parameters[9];
+	int blue = list[index].parameters[10];
+	int saturation = list[index].parameters[11];
+	int effect = list[index].parameters[12];
+	int speed = list[index].parameters[13];
+	int bottom_trans = list[index].parameters[14];
+
+	picture.Show(pic_name);
+	picture.UseTransparent(use_trans);
+	picture.Scrolls(scrolls);
+
+	picture.Move(x, y);
+	picture.Color(red, green, blue, saturation);
+	picture.Magnify(magnify);
+	picture.Transparency(top_trans, bottom_trans);
+	picture.Set();
+
+	switch (effect) {
+		case 0:
+			picture.StopEffects();
+			break;
+		case 1:
+			picture.Rotate(speed);
+			break;
+		case 2:
+			picture.Waver(speed);
+			break;
+	}
+
+	return true;
+}
+
+bool Game_Interpreter::CommandMovePicture() { // code 11120
+	int pic_id = list[index].parameters[0];
+	Picture& picture = Pictures::Get(pic_id);
+	int x = ValueOrVariable(list[index].parameters[1], list[index].parameters[2]);
+	int y = ValueOrVariable(list[index].parameters[1], list[index].parameters[3]);
+	int magnify = list[index].parameters[5];
+	int top_trans = list[index].parameters[6];
+	int red = list[index].parameters[8];
+	int green = list[index].parameters[9];
+	int blue = list[index].parameters[10];
+	int saturation = list[index].parameters[11];
+	int effect = list[index].parameters[12];
+	int speed = list[index].parameters[13];
+	int tenths = list[index].parameters[14];
+	bool wait = list[index].parameters[15] != 0;
+	int bottom_trans = list[index].parameters[16];
+
+	picture.Move(x, y);
+	picture.Color(red, green, blue, saturation);
+	picture.Magnify(magnify);
+	picture.Transparency(top_trans, bottom_trans);
+	picture.Transition(tenths);
+
+	switch (effect) {
+		case 0:
+			picture.StopEffects();
+			break;
+		case 1:
+			picture.Rotate(speed);
+			break;
+		case 2:
+			picture.Waver(speed);
+			break;
+	}
+
+	if (wait)
+		wait_count = tenths * DEFAULT_FPS / 10;
+
+	return true;
+}
+
+bool Game_Interpreter::CommandErasePicture() { // code 11130
+	int pic_id = list[index].parameters[0];
+	Picture& picture = Pictures::Get(pic_id);
+	picture.Erase();
+
+	return true;
+}
+
+bool Game_Interpreter::CommandChangeSystemGraphics() { // code 10680
+	Game_System::SetSystemName(list[index].string);
+	return true;
 }
