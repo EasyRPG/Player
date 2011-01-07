@@ -15,14 +15,15 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _H_INTERPRETER
-#define _H_INTERPRETER
+#ifndef _INTERPRETER_H_
+#define _INTERPRETER_H_
 
 #include <map>
 #include <string>
 #include <vector>
 #include "game_character.h"
 #include "rpg_eventcommand.h"
+#include "system.h"
 
 ////////////////////////////////////////////////////////////
 /// Game_Interpreter class
@@ -60,7 +61,12 @@ private:
 	Game_Interpreter* child_interpreter;
 
 	std::vector<RPG::EventCommand> list;
-	std::map<int, bool> branch;
+	/// Contains the results of branches
+	/// Note: Difference to RGSS:
+	/// RGSS uses bool for this and uses a ruby feature to get three states:
+	/// true, false and (if element is missing) nil.
+	/// This is not possible under C++, the mapping is: -1 false, 0 nil, 1 true
+	std::map<int, int8> branch;
 
 	// Helper function
 	void GetStrings(std::vector<std::string>& ret_val);
@@ -80,6 +86,7 @@ private:
 	bool CommandChangeItems();
 	bool CommandChangePartyMember();
 	bool CommandConditionalBranch();
+	bool CommandElseBranch();
 	bool CommandChangeExp();
 	bool CommandChangeLevel();
 	bool CommandChangeParameters();

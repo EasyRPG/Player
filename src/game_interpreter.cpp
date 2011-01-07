@@ -143,7 +143,7 @@ enum CommandCodes {
 	Stay					= 20730,
 	NoStay					= 20731,
 	EndInn					= 20732,
-	Else					= 22010,
+	ElseBranch				= 22010,
 	EndBranch				= 22011,
 	EndLoop					= 22210,
 	Comment2				= 22410
@@ -392,6 +392,8 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandChangeLevel();
 		case ConditionalBranch: 
 			return CommandConditionalBranch();
+		case ElseBranch:
+			return CommandElseBranch();
 		case ControlSwitches: 
 			return CommandControlSwitches();
 		case ControlVars: 
@@ -1747,13 +1749,21 @@ bool Game_Interpreter::CommandConditionalBranch() { // Code 12010
 	}
 
 	// Store result in branch
-	branch[list[index].indent] = result;
+	branch[list[index].indent] = (result ? 1 : -1);
 
 	if (result) {
 		branch.erase(list[index].indent);
 		return true;
 	}
 
+	return CommandSkip();
+}
+
+bool Game_Interpreter::CommandElseBranch() { // command 22010
+	if (branch[list[index].indent] < 0) {
+		branch.erase(list[index].indent);
+		return true;
+	}
 	return CommandSkip();
 }
 
