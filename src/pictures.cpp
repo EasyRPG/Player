@@ -19,26 +19,13 @@
 // Headers
 ////////////////////////////////////////////////////////////
 
+#include "options.h"
 #include "pictures.h"
 #include <vector>
 
 ////////////////////////////////////////////////////////////
 /// Picture class
 ////////////////////////////////////////////////////////////
-
-static const int FramesPerSec = 60;
-
-static std::vector<Picture> pictures;
-
-Picture& Pictures::Get(int id) {
-	if ((size_t) id >= pictures.size())
-		pictures.resize(id);
-	return pictures[id - 1];
-}
-
-static int Frames() {
-	return 0;	// TODO
-}
 
 Picture::PictureState::PictureState() :
 	red(255.0),
@@ -68,8 +55,7 @@ Picture::~Picture()
 void Picture::Show(const std::string& _name) {
 	name = _name;
 	shown = true;
-	start_time = Frames();
-	finish_time = start_time;
+	duration = 0;
 }
 
 void Picture::Erase() {
@@ -109,11 +95,6 @@ void Picture::Transparency(int t, int b) {
 	st.bottom_trans = b;
 }
 
-void Picture::Set() {
-	start_state = finish_state;
-	current_state = finish_state;
-}
-
 void Picture::Rotate(int _speed) {
 	rotate = true;
 	waver = false;
@@ -134,48 +115,36 @@ void Picture::StopEffects() {
 }
 
 void Picture::Transition(int tenths) {
-	current_state = start_state;
-	start_time = Frames();
-	finish_time = start_time + tenths * FramesPerSec / 10;
-	transition = tenths > 0;
+	duration = tenths * DEFAULT_FPS / 10;
+	if (tenths == 0)
+		current_state = finish_state;
 }
 
-static double interpolate(double k, double x0, double x1) {
-	return x0 + k * (x1 - x0);
+static double interpolate(double d, double x0, double x1) {
+	return (x0 + (d - 1) + x1) / d;
 }
 
 void Picture::Update() {
-	if (finish_time <= start_time)
+	if (rotate || waver)
+		value += speed;
+
+	if (duration <= 0)
 		return;
 
-	int t = Frames();
-	if (rotate || waver) {
-		double dt = t - start_time;
-		value = dt * speed / FramesPerSec;
-	}
-
-	if (!transition)
-		return;
-
-	PictureState& st0 = start_state;
-	PictureState& st1 = finish_state;
 	PictureState& st = current_state;
+	PictureState& st1 = finish_state;
+	double k = duration;
 
-	double k = (double) (t - start_time) / (finish_time - start_time);
-	if (k > 1.0)
-		k = 1.0;
+	st.x = interpolate(k, st.x, st1.x);
+	st.y = interpolate(k, st.y, st1.y);
+	st.red = interpolate(k, st.red, st1.red);
+	st.green = interpolate(k, st.green, st1.green);
+	st.blue = interpolate(k, st.blue, st1.blue);
+	st.saturation = interpolate(k, st.saturation, st1.saturation);
+	st.magnify = interpolate(k, st.magnify, st1.magnify);
+	st.top_trans = interpolate(k, st.top_trans, st1.top_trans);
+	st.bottom_trans = interpolate(k, st.bottom_trans, st1.bottom_trans);
 
-	st.x = interpolate(k, st0.x, st1.x);
-	st.y = interpolate(k, st0.y, st1.y);
-	st.red = interpolate(k, st0.red, st1.red);
-	st.green = interpolate(k, st0.green, st1.green);
-	st.blue = interpolate(k, st0.blue, st1.blue);
-	st.saturation = interpolate(k, st0.saturation, st1.saturation);
-	st.magnify = interpolate(k, st0.magnify, st1.magnify);
-	st.top_trans = interpolate(k, st0.top_trans, st1.top_trans);
-	st.bottom_trans = interpolate(k, st0.bottom_trans, st1.bottom_trans);
-
-	if (t >= finish_time)
-		transition = false;
+	duration--;
 }
 

@@ -465,8 +465,20 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandMovePicture();
 		case ErasePicture:
 			return CommandErasePicture();
+		case TintScreen:
+			return CommandTintScreen();
+		case FlashScreen:
+			return CommandFlashScreen();
+		case ShakeScreen:
+			return CommandShakeScreen();
+		case WeatherEffects:
+			return CommandWeatherEffects();
 		case ChangeSystemGraphics:
-			CommandChangeSystemGraphics();
+			return CommandChangeSystemGraphics();
+		case ChangeEventLocation:
+			return CommandChangeEventLocation();
+		case TradeEventLocations:
+			return CommandTradeEventLocations();
 		default:
 			return true;
 
@@ -1965,7 +1977,7 @@ bool Game_Interpreter::CommandShowScreen() {
 ////////////////////////////////////////////////////////////
 bool Game_Interpreter::CommandShowPicture() { // code 11110
 	int pic_id = list[index].parameters[0];
-	Picture& picture = Pictures::Get(pic_id);
+	Picture& picture = Main_Data::game_screen->GetPicture(pic_id);
 	std::string& pic_name = list[index].string;
 	int x = ValueOrVariable(list[index].parameters[1], list[index].parameters[2]);
 	int y = ValueOrVariable(list[index].parameters[1], list[index].parameters[3]);
@@ -1989,7 +2001,7 @@ bool Game_Interpreter::CommandShowPicture() { // code 11110
 	picture.Color(red, green, blue, saturation);
 	picture.Magnify(magnify);
 	picture.Transparency(top_trans, bottom_trans);
-	picture.Set();
+	picture.Transition(0);
 
 	switch (effect) {
 		case 0:
@@ -2008,7 +2020,7 @@ bool Game_Interpreter::CommandShowPicture() { // code 11110
 
 bool Game_Interpreter::CommandMovePicture() { // code 11120
 	int pic_id = list[index].parameters[0];
-	Picture& picture = Pictures::Get(pic_id);
+	Picture& picture = Main_Data::game_screen->GetPicture(pic_id);
 	int x = ValueOrVariable(list[index].parameters[1], list[index].parameters[2]);
 	int y = ValueOrVariable(list[index].parameters[1], list[index].parameters[3]);
 	int magnify = list[index].parameters[5];
@@ -2049,7 +2061,7 @@ bool Game_Interpreter::CommandMovePicture() { // code 11120
 
 bool Game_Interpreter::CommandErasePicture() { // code 11130
 	int pic_id = list[index].parameters[0];
-	Picture& picture = Pictures::Get(pic_id);
+	Picture& picture = Main_Data::game_screen->GetPicture(pic_id);
 	picture.Erase();
 
 	return true;
@@ -2059,3 +2071,104 @@ bool Game_Interpreter::CommandChangeSystemGraphics() { // code 10680
 	Game_System::SetSystemName(list[index].string);
 	return true;
 }
+
+bool Game_Interpreter::CommandChangeEventLocation() { // Code 10860
+	int event_id = list[index].parameters[0];
+	Game_Character *event = GetCharacter(event_id);
+	int x = ValueOrVariable(list[index].parameters[1], list[index].parameters[2]);
+	int y = ValueOrVariable(list[index].parameters[1], list[index].parameters[3]);
+	event->MoveTo(x, y);
+	return true;
+}
+
+bool Game_Interpreter::CommandTradeEventLocations() { // Code 10870
+	int event1_id = list[index].parameters[0];
+	Game_Character *event1 = GetCharacter(event1_id);
+	int x1 = event1->GetX();
+	int y1 = event1->GetY();
+	int event2_id = list[index].parameters[1];
+	Game_Character *event2 = GetCharacter(event2_id);
+	int x2 = event2->GetX();
+	int y2 = event2->GetY();
+
+	event1->MoveTo(x2, y2);
+	event2->MoveTo(x1, y1);
+
+	return true;
+}
+
+bool Game_Interpreter::CommandTintScreen() { // code 11030
+	Game_Screen* screen = Main_Data::game_screen;
+	int r = list[index].parameters[0];
+	int g = list[index].parameters[1];
+	int b = list[index].parameters[2];
+	int s = list[index].parameters[3];
+	int tenths = list[index].parameters[4];
+	bool wait = list[index].parameters[5] != 0;
+
+	screen->TintScreen(r, g, b, s, tenths);
+
+	if (wait)
+		wait_count = tenths * DEFAULT_FPS / 10;
+
+	return true;
+}
+
+bool Game_Interpreter::CommandFlashScreen() { // code 11040
+	Game_Screen* screen = Main_Data::game_screen;
+	int r = list[index].parameters[0];
+	int g = list[index].parameters[1];
+	int b = list[index].parameters[2];
+	int s = list[index].parameters[3];
+	int tenths = list[index].parameters[4];
+	bool wait = list[index].parameters[5] != 0;
+
+	switch (list[index].parameters[6]) {
+		case 0:
+			screen->FlashOnce(r, g, b, s, tenths);
+			if (wait)
+				wait_count = tenths * DEFAULT_FPS / 10;
+			break;
+		case 1:
+			screen->FlashBegin(r, g, b, s, tenths);
+			break;
+		case 2:
+			screen->FlashEnd();
+			break;
+	}
+
+	return true;
+}
+
+bool Game_Interpreter::CommandShakeScreen() { // code 11050
+	Game_Screen* screen = Main_Data::game_screen;
+	int strength = list[index].parameters[0];
+	int speed = list[index].parameters[1];
+	int tenths = list[index].parameters[2];
+	bool wait = list[index].parameters[3] != 0;
+
+	switch (list[index].parameters[4]) {
+		case 0:
+			screen->ShakeOnce(strength, speed, tenths);
+			if (wait)
+				wait_count = tenths * DEFAULT_FPS / 10;
+			break;
+		case 1:
+			screen->ShakeBegin(strength, speed);
+			break;
+		case 2:
+			screen->ShakeEnd();
+			break;
+	}
+
+	return true;
+}
+
+bool Game_Interpreter::CommandWeatherEffects() { // code 11070
+	Game_Screen* screen = Main_Data::game_screen;
+	int type = list[index].parameters[0];
+	int strength = list[index].parameters[1];
+	screen->Weather(type, strength);
+	return true;
+}
+

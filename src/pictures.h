@@ -46,11 +46,6 @@ public:
 
 		friend class Picture;
 	};
-	enum State {
-		Start,
-		End,
-		Current
-	};
 	Picture();
 	~Picture();
 
@@ -65,31 +60,23 @@ public:
 	void Rotate(int speed);
 	void Waver(int speed);
 	void StopEffects();
-	void Set();
 	void Transition(int tenths);
 
 	void Update();
 
 private:
 	std::string name;
-	PictureState start_state;
 	PictureState finish_state;
 	PictureState current_state;
+	int duration;
 	bool shown;
 	bool scrolls;
 	bool use_trans;
-	bool transition;
-	int start_time;
-	int finish_time;
 	bool rotate;
 	bool waver;
 	int speed;
 	double value;
 };
-
-namespace Pictures {
-	Picture& Get(int id);
-}
 
 #endif
 

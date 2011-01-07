@@ -121,7 +121,13 @@ private:
 	bool CommandShowPicture();
 	bool CommandMovePicture();
 	bool CommandErasePicture();
+	bool CommandTintScreen();
+	bool CommandFlashScreen();
+	bool CommandShakeScreen();
+	bool CommandWeatherEffects();
 	bool CommandChangeSystemGraphics();
+	bool CommandChangeEventLocation();
+	bool CommandTradeEventLocations();
 
 	void CommandEnd();
 };
