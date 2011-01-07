@@ -318,6 +318,9 @@
     <ClCompile Include="..\..\src\sdl_audio.cpp">
       <Filter>Source Files\Backend\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\game_picture.cpp">
+      <Filter>Source Files\Engine\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cache.h">
@@ -580,6 +583,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\time.h">
       <Filter>Source Files\Backend\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game_picture.h">
+      <Filter>Source Files\Engine\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

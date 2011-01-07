@@ -670,8 +670,7 @@ bool Game_Interpreter::CommandShowMessage() { // Code ShowMessage
 					Game_Message::num_input_variable_id = list[index].parameters[1];
 				}
 			}
-			
-			Game_Message::Init();
+
 			return true;
 		}
 		index++;
@@ -2111,7 +2110,7 @@ bool Game_Interpreter::CommandWeatherEffects() { // code 11070
 }
 
 bool Game_Interpreter::CommandMessageOptions() { //code 10120
-	Game_Message::background = list[index].parameters[0];
+	Game_Message::background = list[index].parameters[0] == 0;
 	Game_Message::position = list[index].parameters[1];
 	Game_Message::fixed_position = list[index].parameters[2] != 0;
 	Game_Message::dont_halt = list[index].parameters[3] != 0;

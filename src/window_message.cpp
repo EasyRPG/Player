@@ -48,6 +48,8 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	
 	number_input_window = new Window_NumberInput(0, 0);
 	number_input_window->SetVisible(false);
+
+	Game_Message::Init();
 }
 
 ////////////////////////////////////////////////////////////
@@ -119,6 +121,15 @@ void Window_Message::StartNumberInputProcessing() {
 ////////////////////////////////////////////////////////////
 void Window_Message::InsertNewPage() {
 	contents->Clear();
+
+	y = Game_Message::position * 80;
+
+	if (Game_Message::background) {
+		opacity = 255;
+	} else {
+		opacity = 0;
+	}
+
 	if (!Game_Message::face_name.empty()) {
 		if (Game_Message::face_left_position) {
 			contents_x = LeftMargin + FaceSize + RightFaceMargin;

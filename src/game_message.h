@@ -45,8 +45,8 @@ namespace Game_Message {
 	extern bool face_flipped;
 	/// If the face shall be placed left
 	extern bool face_left_position;
-	/// ???
-	extern int background;
+	/// If the background graphic is displayed
+	extern bool background;
 
 	/* Number of lines before the start
 	of selection options.

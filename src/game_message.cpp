@@ -25,7 +25,7 @@ namespace Game_Message {
 	bool face_flipped;
 	bool face_left_position;
 
-	int background;
+	bool background;
 
 	int choice_start;
 	int num_input_start;
@@ -46,6 +46,8 @@ namespace Game_Message {
 }
 
 void Game_Message::Init() {
+	background = true;
+	position = 2;
 }
 
 void Game_Message::SemiClear() {
@@ -62,10 +64,10 @@ void Game_Message::FullClear() {
 	SemiClear();
 	face_name.clear();
 	face_index = 0;
-	background = 0;
+	/*background = true;
 	position = 2;
 	fixed_position = false;
-	dont_halt = false;
+	dont_halt = false;*/
 }
 
 bool Game_Message::Busy() {

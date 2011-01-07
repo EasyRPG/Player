@@ -134,6 +134,7 @@
     <ClCompile Include="..\..\src\game_map.cpp" />
     <ClCompile Include="..\..\src\game_message.cpp" />
     <ClCompile Include="..\..\src\game_party.cpp" />
+    <ClCompile Include="..\..\src\game_picture.cpp" />
     <ClCompile Include="..\..\src\game_player.cpp" />
     <ClCompile Include="..\..\src\game_screen.cpp" />
     <ClCompile Include="..\..\src\game_system.cpp" />
@@ -222,6 +223,7 @@
     <ClInclude Include="..\..\src\game_map.h" />
     <ClInclude Include="..\..\src\game_message.h" />
     <ClInclude Include="..\..\src\game_party.h" />
+    <ClInclude Include="..\..\src\game_picture.h" />
     <ClInclude Include="..\..\src\game_player.h" />
     <ClInclude Include="..\..\src\game_screen.h" />
     <ClInclude Include="..\..\src\game_switches.h" />
