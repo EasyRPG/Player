@@ -26,6 +26,9 @@
 ////////////////////////////////////////////////////////////
 namespace Game_System {
 	bool save_disabled;
+	bool teleport_disabled;
+	bool escape_disabled;
+	bool main_menu_disabled;
 	unsigned int save_count;
 }
 
@@ -34,6 +37,9 @@ static std::string system_name;
 ////////////////////////////////////////////////////////////
 void Game_System::Init() {
 	save_disabled = false;
+	teleport_disabled = false;
+	escape_disabled = false;
+	main_menu_disabled = false;
 	save_count = 0;
 }
 

@@ -60,6 +60,9 @@ namespace Game_System {
 
 	/// Menu saving option disabled flag.
 	extern bool save_disabled;
+	extern bool teleport_disabled;
+	extern bool escape_disabled;
+	extern bool main_menu_disabled;
 
 	/// Numbers of saves.
 	extern unsigned int save_count;

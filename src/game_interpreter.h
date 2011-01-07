@@ -92,7 +92,17 @@ private:
 	bool CommandChangeHeroName();
 	bool CommandChangeHeroTitle();
 	bool CommandChangeSpriteAssociation();
+	bool CommandMemorizeLocation();
+	bool CommandRecallToLocation();
+	bool CommandStoreTerrainID();
+	bool CommandStoreEventID();
+	bool CommandPlayBGM();
+	bool CommandFadeOutBGM();
+	bool CommandPlaySound();
 	bool CommandChangeSaveAccess();
+	bool CommandChangeTeleportAccess();
+	bool CommandChangeEscapeAccess();
+	bool CommandChangeMainMenuAccess();
 	bool CommandChangeActorFace();
 	bool CommandSkip();
 	bool CommandWait();

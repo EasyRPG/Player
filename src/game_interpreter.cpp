@@ -29,6 +29,7 @@
 #include "game_system.h"
 #include "game_message.h"
 #include "graphics.h"
+#include "audio.h"
 #include "util_macro.h"
 #include <cstdlib>
 #include "main_data.h"
@@ -75,7 +76,7 @@ enum CommandCodes {
 	EnterHeroName			= 10740,
 	Teleport				= 10810,
 	MemorizeLocation		= 10820,
-	RecalltoLocation		= 10830,
+	RecallToLocation		= 10830,
 	EnterExitVehicle		= 10840,
 	SetVehicleLocation		= 10850,
 	ChangeEventLocation		= 10860,
@@ -111,13 +112,13 @@ enum CommandCodes {
 	ChangeEncounterRate		= 11740,
 	TileSubstitution		= 11750,
 	TeleportTargets			= 11810,
-	TeleportAccess			= 11820,
+	ChangeTeleportAccess	= 11820,
 	EscapeTarget			= 11830,
-	EscapeAccess			= 11840,
+	ChangeEscapeAccess		= 11840,
 	OpenSaveMenu			= 11910,
 	ChangeSaveAccess		= 11930,
 	OpenMainMenu			= 11950,
-	MainMenuAccess			= 11960,
+	ChangeMainMenuAccess	= 11960,
 	ConditionalBranch		= 12010,
 	Label					= 12110,
 	JumptoLabel				= 12120,
@@ -417,10 +418,30 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandChangeHeroTitle();
 		case ChangeSpriteAssociation:
 			return CommandChangeSpriteAssociation();
+		case MemorizeLocation:
+			return CommandMemorizeLocation();
+		case RecallToLocation:
+			return CommandRecallToLocation();
+		case StoreTerrainID:
+			return CommandStoreTerrainID();
+		case StoreEventID:
+			return CommandStoreEventID();
+		case PlayBGM:
+			return CommandPlayBGM();
+		case FadeOutBGM:
+			return CommandFadeOutBGM();
+		case PlaySound:
+			return CommandPlaySound();
 		case Wait:
 			return CommandWait();
 		case ChangeSaveAccess:
 			return CommandChangeSaveAccess();
+		case ChangeTeleportAccess:
+			return CommandChangeTeleportAccess();
+		case ChangeEscapeAccess:
+			return CommandChangeEscapeAccess();
+		case ChangeMainMenuAccess:
+			return CommandChangeMainMenuAccess();
 		case ChangeActorFace:
 			return CommandChangeActorFace();
 		case Teleport:
@@ -429,6 +450,8 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandEraseScreen();
 		case ShowScreen:
 			return CommandShowScreen();
+		case Comment:
+			return true;
 		default:
 			return true;
 
@@ -461,8 +484,23 @@ bool Game_Interpreter::CommandChangeActorFace() {
 	return false;
 }
 
-bool Game_Interpreter::CommandChangeSaveAccess() {
+bool Game_Interpreter::CommandChangeSaveAccess() { // code 11930
 	Game_System::save_disabled = list[index].parameters[0] == 0;
+	return true;
+}
+
+bool Game_Interpreter::CommandChangeTeleportAccess() { // code 11820
+	Game_System::teleport_disabled = list[index].parameters[0] == 0;
+	return true;
+}
+
+bool Game_Interpreter::CommandChangeEscapeAccess() { // code 11840
+	Game_System::escape_disabled = list[index].parameters[0] == 0;
+	return true;
+}
+
+bool Game_Interpreter::CommandChangeMainMenuAccess() { // code 11960
+	Game_System::main_menu_disabled = list[index].parameters[0] == 0;
 	return true;
 }
 
@@ -1478,6 +1516,87 @@ bool Game_Interpreter::CommandChangeSpriteAssociation() { // code 10630
 	int idx = list[index].parameters[1];
 	bool transparent = list[index].parameters[2] != 0;
 	actor->SetSprite(file, idx, transparent);
+	return true;
+}
+
+bool Game_Interpreter::CommandMemorizeLocation() { // code 10820
+	Game_Character *player = GetCharacter(Player);
+	int var_map_id = list[index].parameters[0];
+	int var_x = list[index].parameters[1];
+	int var_y = list[index].parameters[2];
+ 	Game_Variables[var_map_id] = Game_Map::GetMapId();
+	Game_Variables[var_x] = player->GetX();
+	Game_Variables[var_y] = player->GetY();
+	return true;
+}
+
+bool Game_Interpreter::CommandRecallToLocation() { // Code 10830
+	Game_Character *player = GetCharacter(Player);
+	int var_map_id = list[index].parameters[0];
+	int var_x = list[index].parameters[1];
+	int var_y = list[index].parameters[2];
+	int map_id = Game_Variables[var_map_id];
+	int x = Game_Variables[var_x];
+	int y = Game_Variables[var_y];
+
+	if (map_id == Game_Map::GetMapId()) {
+		player->MoveTo(x, y);
+		return true;
+	};
+
+	if (Main_Data::game_player->IsTeleporting() || 
+		Game_Message::visible) {
+			return false;
+	}
+
+	Main_Data::game_player->ReserveTeleport(map_id, x, y);
+	index++;
+
+	return false;
+}
+
+bool Game_Interpreter::CommandStoreTerrainID() { // code 10820
+	int x = ValueOrVariable(list[index].parameters[0], list[index].parameters[1]);
+	int y = ValueOrVariable(list[index].parameters[0], list[index].parameters[2]);
+	int var_id = list[index].parameters[3];
+ 	Game_Variables[var_id] = Game_Map::GetTerrainTag(x, y);
+	return true;
+}
+
+bool Game_Interpreter::CommandStoreEventID() { // code 10920
+	int x = ValueOrVariable(list[index].parameters[0], list[index].parameters[1]);
+	int y = ValueOrVariable(list[index].parameters[0], list[index].parameters[2]);
+	int var_id = list[index].parameters[3];
+	std::vector<Game_Event*> events;
+	Game_Map::GetEventsXY(events, x, y);
+ 	Game_Variables[var_id] = events.size() > 0 ? events[0]->GetId() : 0;
+	return true;
+}
+
+bool Game_Interpreter::CommandPlayBGM() { // code 11510
+	RPG::Music music;
+	music.name = list[index].string;
+	music.fadein = list[index].parameters[0];
+	music.volume = list[index].parameters[1];
+	music.tempo = list[index].parameters[2];
+	music.balance = list[index].parameters[3];
+	Game_System::BgmPlay(music);
+	return true;
+}
+
+bool Game_Interpreter::CommandFadeOutBGM() { // code 11520
+	int fadeout = list[index].parameters[0];
+	Audio::BGM_Fade(fadeout);
+	return true;
+}
+
+bool Game_Interpreter::CommandPlaySound() { // code 11550
+	RPG::Sound sound;
+	sound.name = list[index].string;
+	sound.volume = list[index].parameters[0];
+	sound.tempo = list[index].parameters[1];
+	sound.balance = list[index].parameters[2];
+	Game_System::SePlay(sound);
 	return true;
 }
 
