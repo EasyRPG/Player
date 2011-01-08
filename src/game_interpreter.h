@@ -69,7 +69,7 @@ private:
 	int OperateValue(int operation, int operand_type, int operand);
 	Game_Character* GetCharacter(int character_id);
 
-	bool SkipTo(int code, int min_indent = -1, int max_indent = -1);
+	bool SkipTo(int code, int code2 = -1, int min_indent = -1, int max_indent = -1);
 	void SetContinuation(bool (Game_Interpreter::*func)());
 
 	void CancelMenuCall();

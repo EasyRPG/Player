@@ -378,7 +378,9 @@ void Game_Interpreter::SetupStartingEvent() {
 ////////////////////////////////////////////////////////////
 /// Skip to Command
 ////////////////////////////////////////////////////////////
-bool Game_Interpreter::SkipTo(int code, int min_indent, int max_indent) {
+bool Game_Interpreter::SkipTo(int code, int code2, int min_indent, int max_indent) {
+	if (code2 < 0)
+		code2 = code;
 	if (min_indent < 0)
 		min_indent = list[index].indent;
 	if (max_indent < 0)
@@ -389,7 +391,8 @@ bool Game_Interpreter::SkipTo(int code, int min_indent, int max_indent) {
 			return false;
 		if (list[idx].indent > max_indent)
 			continue;
-		if (list[idx].code != code)
+		if (list[idx].code != code &&
+			list[idx].code != code2)
 			continue;
 		index = idx;
 		return true;
@@ -1859,7 +1862,7 @@ bool Game_Interpreter::CommandConditionalBranch() { // Code 12010
 	if (result)
 		return true;
 
-	return SkipTo(ElseBranch);
+	return SkipTo(ElseBranch, EndBranch);
 }
 
 ////////////////////////////////////////////////////////////
@@ -2356,7 +2359,7 @@ bool Game_Interpreter::CommandJumpToLabel() { // code 12120
 }
 
 bool Game_Interpreter::CommandBreakLoop() { // code 12220
-	return SkipTo(EndLoop, 0, list[index].indent - 1);
+	return SkipTo(EndLoop, EndLoop, 0, list[index].indent - 1);
 }
 
 bool Game_Interpreter::CommandEndLoop() { // code 22210
