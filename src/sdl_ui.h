@@ -95,9 +95,22 @@ protected:
 	bool RefreshDisplayMode();
 
 	///////////////////////////////////////////////////////
-	/// Process a single SDL Event.
+	/// Process a SDL Event.
 	///////////////////////////////////////////////////////
+	//@{
+
 	void ProcessEvent(SDL_Event &sdl_event);
+
+	void ProcessActiveEvent(SDL_Event &evnt);
+	void ProcessKeyDownEvent(SDL_Event &evnt);
+	void ProcessKeyUpEvent(SDL_Event &evnt);
+	void ProcessMouseMotionEvent(SDL_Event &evnt);
+	void ProcessMouseButtonEvent(SDL_Event &evnt);
+	void ProcessJoystickButtonEvent(SDL_Event &evnt);
+	void ProcessJoystickHatEvent(SDL_Event &evnt);
+	void ProcessJoystickAxisEvent(SDL_Event &evnt);
+
+	//@}
 
 	///////////////////////////////////////////////////////
 	/// Blit a surface scaled x2 to another surface.

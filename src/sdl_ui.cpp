@@ -38,18 +38,18 @@
 #include "sdl_bitmap.h"
 
 ///////////////////////////////////////////////////////////
+static int FilterUntilFocus(const SDL_Event* evnt);
+
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
-static Input::Keys::InputKey SdlKey2InputKey(SDLKey sdlkey);
+	static Input::Keys::InputKey SdlKey2InputKey(SDLKey sdlkey);
 #endif
 
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
-static Input::Keys::InputKey SdlJKey2InputKey(int button_index);
+	static Input::Keys::InputKey SdlJKey2InputKey(int button_index);
 #endif
 
-static int FilterUntilFocus(const SDL_Event* evnt);
-
 #ifdef GEKKO
-static void GekkoResetCallback();
+	static void GekkoResetCallback();
 #endif
 
 SdlUi* DisplaySdlUi;
@@ -70,7 +70,7 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag) :
 	keys.resize(Input::Keys::KEYS_COUNT, false);
 
 #ifdef GEKKO
-	// Initialize the video system
+	// Initialize the Gekko(Wii) video system
 	VIDEO_Init();
 	GXRModeObj* rmode = VIDEO_GetPreferredMode(NULL);
 	void* xfb = MEM_K0_TO_K1(SYS_AllocateFramebuffer(rmode));
@@ -97,11 +97,9 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag) :
 	SetAppIcon();
 
 	BeginDisplayModeChange();
-
-	if (!RequestVideoMode(width, height, fs_flag)) {
-		Output::Error("No suitable video resolution found. Aborting.");
-	}
-
+		if (!RequestVideoMode(width, height, fs_flag)) {
+			Output::Error("No suitable video resolution found. Aborting.");
+		}
 	EndDisplayModeChange();
 
 	SetTitle(title);
@@ -138,6 +136,9 @@ SdlUi::~SdlUi() {
 
 ///////////////////////////////////////////////////////////
 bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
+	// FIXME: Split method into submethods, really, this method isn't nice.
+	// Note to Zhek, don't delete this fixme again.
+
 	const SDL_VideoInfo *vinfo;
 	SDL_Rect **modes;
 	uint32 flags = SDL_SWSURFACE;
@@ -149,6 +150,8 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 
 	if (vinfo->wm_available) {
 		toggle_fs_available = true;
+		// FIXME: this for may work, but is really confusing. Calling a method
+		// that does this with the desired flags would be nicer.
 		for (;;) {
 			if (fullscreen) {
 				flags |= SDL_FULLSCREEN;
@@ -205,6 +208,7 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 // Dingoo has no hw_available, SDL_GetVideoInfo() returns an erroneously value
 // SDL is supposed to give accurate info about the hardware, so there's no need
 // for a HAVE_HWSURFACE flag
+// Nice, why this comments contradict themselves?
 #if !defined(DINGOO)
 	if (vinfo->hw_available) {
 		zoom_available = false;
@@ -229,7 +233,7 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 				}
 			}
 		}
-	} // hw_available
+	}
 #endif
 
 	// No hard accel and no window manager
@@ -254,8 +258,7 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 		++len;
 
 	for (int i = len-1; i > 0; --i) {
-		if (
-			(modes[i]->h == height && modes[i]->w == width) ||
+		if ((modes[i]->h == height && modes[i]->w == width) ||
 			(modes[i]->h == height*2 && modes[i]->w == width*2)
 			) {
 				current_display_mode.flags = flags;
@@ -279,6 +282,7 @@ void SdlUi::BeginDisplayModeChange() {
 
 ////////////////////////////////////////////////////////////
 void SdlUi::EndDisplayModeChange() {
+	// Check if the new display mode is different from last one
 	if (mode_changing && (
 		current_display_mode.flags != last_display_mode.flags ||
 		current_display_mode.zoom != last_display_mode.zoom ||
@@ -286,8 +290,11 @@ void SdlUi::EndDisplayModeChange() {
 		current_display_mode.height != last_display_mode.height)) {
 
 			if (!RefreshDisplayMode()) {
+				// Mode change failed, check if last one was effective
 				if (last_display_mode.effective) {
 					current_display_mode = last_display_mode;
+
+					// Try a rollback to last mode
 					if (!RefreshDisplayMode()) {
 						Output::Error("Couldn't rollback to last display mode.\n%s\n", SDL_GetError());
 					}
@@ -309,31 +316,34 @@ bool SdlUi::RefreshDisplayMode() {
 	int display_height = current_display_mode.height;
 	int bpp = current_display_mode.bpp;
 
-	Graphics::fps_in_screen = (flags & SDL_FULLSCREEN) == SDL_FULLSCREEN;
+	// Display on screen fps while fullscreen or no window available
+	Graphics::fps_on_screen = (flags & SDL_FULLSCREEN) == SDL_FULLSCREEN || !toggle_fs_available;
 
 	if (zoom_available && current_display_mode.zoom) {
 		display_width *= 2;
 		display_height *= 2;
 	}
 
+	// Free non zoomed surface
 	if (main_surface != main_window) {
 		SDL_FreeSurface(main_surface);
 		main_surface = NULL;
 	}
 	
+	// Create our window
 	main_window = SDL_SetVideoMode(display_width, display_height, bpp, flags);
+
 	if (!main_window)
 		return false;
 
-	if (main_window->format->BitsPerPixel == 16 ||
-		main_window->format->BitsPerPixel == 32) {
-		current_display_mode.bpp = main_window->format->BitsPerPixel;
-	} else {
-		// 16 or 32 bits are required
+	// Only 16 and 32 bpp are supported
+	if (main_window->format->BitsPerPixel != 16 &&	main_window->format->BitsPerPixel != 32)
 		return false;
-	}
+		
+	current_display_mode.bpp = main_window->format->BitsPerPixel;
 
 	if (zoom_available && current_display_mode.zoom) {
+		// Create a non zoomed surface as drawing surface
 		main_surface = SDL_CreateRGBSurface(
 			SDL_SWSURFACE,
 			current_display_mode.width,
@@ -344,9 +354,12 @@ bool SdlUi::RefreshDisplayMode() {
 			main_window->format->Bmask,
 			main_window->format->Amask
 		);
+
 		if (!main_surface) 
 			return false;
+
 	} else {
+		// Drawing surface will be the window itself
 		main_surface = main_window;
 	}
 
@@ -380,11 +393,10 @@ void SdlUi::Resize(long /*width*/, long /*height*/) {
 ///////////////////////////////////////////////////////////
 void SdlUi::ToggleFullscreen() {
 	if (toggle_fs_available && mode_changing) {
-		if ((current_display_mode.flags & SDL_FULLSCREEN) == SDL_FULLSCREEN) {
+		if ((current_display_mode.flags & SDL_FULLSCREEN) == SDL_FULLSCREEN)
 			current_display_mode.flags &= ~SDL_FULLSCREEN;
-		} else {
+		else
 			current_display_mode.flags |= SDL_FULLSCREEN;
-		}
 	}
 }
 
@@ -399,8 +411,8 @@ void SdlUi::ToggleZoom() {
 void SdlUi::ProcessEvents() {
 	SDL_Event evnt;
 
-	while ( SDL_PollEvent(&evnt) ) {
-
+	// Poll SDL events and process them
+	while (SDL_PollEvent(&evnt)) {
 		ProcessEvent(evnt);
 
 		if (Player::exit_flag)
@@ -416,6 +428,7 @@ void SdlUi::CleanDisplay() {
 ///////////////////////////////////////////////////////////
 void SdlUi::UpdateDisplay() {
 	if (zoom_available && current_display_mode.zoom)
+		// Blit drawing surface x2 scaled over window surface
 		Blit2X(main_surface, main_window);
 
 	SDL_Flip(main_window);
@@ -442,28 +455,24 @@ void SdlUi::DrawScreenText(const std::string &text) {
 
 ///////////////////////////////////////////////////////////
 void SdlUi::DrawScreenText(const std::string &text, int x, int y, Color color) {
-	if (SDL_MUSTLOCK(main_surface))
-		SDL_LockSurface(main_surface);
+	if (SDL_MUSTLOCK(main_surface)) SDL_LockSurface(main_surface);
 
-	uint32 icolor = SDL_MapRGB(main_surface->format, color.red, color.green, color.blue);
+	uint32 ucolor = SDL_MapRGB(main_surface->format, color.red, color.green, color.blue);
 
-	FontRender8x8::TextDraw(text, (uint8*)main_surface->pixels, x, y, main_surface->w, main_surface->h, main_surface->format->BytesPerPixel, icolor);
+	FontRender8x8::TextDraw(text, (uint8*)main_surface->pixels, x, y, main_surface->w, main_surface->h, main_surface->format->BytesPerPixel, ucolor);
 	
-	if (SDL_MUSTLOCK(main_surface))
-		SDL_UnlockSurface(main_surface);
+	if (SDL_MUSTLOCK(main_surface))	SDL_UnlockSurface(main_surface);
 }
 
 ///////////////////////////////////////////////////////////
 void SdlUi::DrawScreenText(const std::string &text, Rect dst_rect, Color color) {
-	if (SDL_MUSTLOCK(main_surface))
-		SDL_LockSurface(main_surface);
+	if (SDL_MUSTLOCK(main_surface))	SDL_LockSurface(main_surface);
 
-	uint32 icolor = SDL_MapRGB(main_surface->format, color.red, color.green, color.blue);
+	uint32 ucolor = SDL_MapRGB(main_surface->format, color.red, color.green, color.blue);
 
-	FontRender8x8::TextDraw(text, (uint8*)main_surface->pixels, dst_rect, main_surface->w, main_surface->h, main_surface->format->BytesPerPixel, icolor);
+	FontRender8x8::TextDraw(text, (uint8*)main_surface->pixels, dst_rect, main_surface->w, main_surface->h, main_surface->format->BytesPerPixel, ucolor);
 	
-	if (SDL_MUSTLOCK(main_surface))
-		SDL_UnlockSurface(main_surface);
+	if (SDL_MUSTLOCK(main_surface))	SDL_UnlockSurface(main_surface);
 }
 
 ///////////////////////////////////////////////////////////
@@ -530,194 +539,249 @@ void SdlUi::Blit2X(SDL_Surface* src, SDL_Surface* dst) {
 void SdlUi::ProcessEvent(SDL_Event &evnt) {
 	switch (evnt.type) {
 		case SDL_ACTIVEEVENT:
-			switch (evnt.active.state) {
-#ifdef PAUSE_GAME_WHEN_FOCUS_LOST
-				case SDL_APPINPUTFOCUS:
-					if (!evnt.active.gain) {
-#ifdef _WIN32
-						// Prevent the player from hanging when it receives a
-						// focus changed event but actually has focus.
-						// This happens when a MsgBox appears.
-						if (GetActiveWindow() != NULL) {
-							return;
-						}
-#endif
-
-						Player::Pause();
-
-						SDL_SetEventFilter(&FilterUntilFocus);
-
-						bool last = ShowCursor(true);
-
-						SDL_WaitEvent(NULL);
-
-						ShowCursor(last);
-
-						SDL_SetEventFilter(NULL);
-
-						ResetKeys();
-
-						Player::Resume();
-					}
-					return;
-#endif
-#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
-				case SDL_APPMOUSEFOCUS:
-					mouse_focus = evnt.active.gain == 1;
-					return;
-#endif
-				default: return;
-			}
+			ProcessActiveEvent(evnt);
+			return;
 
 		case SDL_QUIT:
 			Player::exit_flag = true;
 			return;
 
-#if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
 		case SDL_KEYDOWN:
-			switch (evnt.key.keysym.sym) {
-				case SDLK_F4:
-					// AltGr+F4 does nothing
-					if (!(evnt.key.keysym.mod & KMOD_RALT)) {
-#ifdef _WIN32
-						// Close Program on LeftAlt+F4
-						if (evnt.key.keysym.mod & KMOD_LALT) {
-							Player::exit_flag = true;
-							return;
-						}
-#endif
-						// Otherwise F4 toggles fullscreen
-						BeginDisplayModeChange();
-							ToggleFullscreen();
-						EndDisplayModeChange();
-					}
-					return;
-
-				case SDLK_F5:
-					BeginDisplayModeChange();
-						ToggleZoom();
-					EndDisplayModeChange();
-					return;
-
-				case SDLK_F12:
-					Player::reset_flag = true;
-					return;
-
-				case SDLK_RETURN:
-				case SDLK_KP_ENTER:
-					if (evnt.key.keysym.mod & KMOD_LALT || (evnt.key.keysym.mod & KMOD_RALT)) {
-						BeginDisplayModeChange();
-							ToggleFullscreen();
-						EndDisplayModeChange();
-						return;
-					}
-
-				default:
-					keys[SdlKey2InputKey(evnt.key.keysym.sym)] = true;
-					return;
-			}
+			ProcessKeyDownEvent(evnt);
+			return;
 
 		case SDL_KEYUP:
-			keys[SdlKey2InputKey(evnt.key.keysym.sym)] = false;
+			ProcessKeyUpEvent(evnt);
 			return;
-#endif
 
-#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 		case SDL_MOUSEMOTION:
-			mouse_focus = true;
-			mouse_x = evnt.motion.x;
-			mouse_y = evnt.motion.y;
+			ProcessMouseMotionEvent(evnt);
 			return;
 
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP:
-			switch (evnt.button.button) {
-				case SDL_BUTTON_LEFT:
-					keys[Input::Keys::MOUSE_LEFT] = evnt.button.state == SDL_PRESSED;
-					break;
-				case SDL_BUTTON_MIDDLE:
-					keys[Input::Keys::MOUSE_MIDDLE] = evnt.button.state == SDL_PRESSED;
-					break;
-				case SDL_BUTTON_RIGHT:
-					keys[Input::Keys::MOUSE_RIGHT] = evnt.button.state == SDL_PRESSED;
-					break;
-			}
+			ProcessMouseButtonEvent(evnt);
 			return;
-#endif
 
-#if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
 		case SDL_JOYBUTTONDOWN:
 		case SDL_JOYBUTTONUP:
-			keys[SdlJKey2InputKey(evnt.jbutton.button)] = evnt.jbutton.state == SDL_PRESSED;
+			ProcessJoystickButtonEvent(evnt);
 			return;
-#endif
 
-#if defined(USE_JOYSTICK_HAT)  && defined(SUPPORT_JOYSTICK_HAT)
 		case SDL_JOYHATMOTION:
-			keys[Input::Keys::JOY_HAT_LOWER_LEFT] = false;
-			keys[Input::Keys::JOY_HAT_DOWN] = false;
-			keys[Input::Keys::JOY_HAT_LOWER_RIGHT] = false;
-			keys[Input::Keys::JOY_HAT_LEFT] = false;
-			keys[Input::Keys::JOY_HAT_RIGHT] = false;
-			keys[Input::Keys::JOY_HAT_UPPER_LEFT] = false;
-			keys[Input::Keys::JOY_HAT_UP] = false;
-			keys[Input::Keys::JOY_HAT_UPPER_RIGHT] = false;
+			ProcessJoystickHatEvent(evnt);
+			return;
 
-			if ((evnt.jhat.value & SDL_HAT_RIGHTUP) == SDL_HAT_RIGHTUP)
-				keys[Input::Keys::JOY_HAT_UPPER_RIGHT] = true;	
+		case SDL_JOYAXISMOTION:
+			ProcessJoystickAxisEvent(evnt);
+			return;
+	}
+}
 
-			else if ((evnt.jhat.value & SDL_HAT_RIGHTDOWN)  == SDL_HAT_RIGHTDOWN)
-				keys[Input::Keys::JOY_HAT_LOWER_RIGHT] = true;
+///////////////////////////////////////////////////////////
+void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
+#ifdef PAUSE_GAME_WHEN_FOCUS_LOST
+	switch(evnt.active.type) {
+		case SDL_APPINPUTFOCUS:
+			if (!evnt.active.gain) {
+#ifdef _WIN32
+				// Prevent the player from hanging when it receives a
+				// focus changed event but actually has focus.
+				// This happens when a MsgBox appears.
+				if (GetActiveWindow() != NULL) {
+					return;
+				}
+#endif
 
-			else if ((evnt.jhat.value & SDL_HAT_LEFTUP)  == SDL_HAT_LEFTUP)
-				keys[Input::Keys::JOY_HAT_UPPER_LEFT] = true;
+				Player::Pause();
 
-			else if ((evnt.jhat.value & SDL_HAT_LEFTDOWN)  == SDL_HAT_LEFTDOWN)
-				keys[Input::Keys::JOY_HAT_LOWER_LEFT] = true;
+				bool last = ShowCursor(true);
 
-			else if (evnt.jhat.value & SDL_HAT_UP)
-				keys[Input::Keys::JOY_HAT_UP] = true;
+				// Filter SDL events with FilterUntilFocus until focus is
+				// regained
+				SDL_SetEventFilter(&FilterUntilFocus);
+				SDL_WaitEvent(NULL);
+				SDL_SetEventFilter(NULL);
 
-			else if (evnt.jhat.value & SDL_HAT_RIGHT)
-				keys[Input::Keys::JOY_HAT_RIGHT] = true;
+				ShowCursor(last);
 
-			else if (evnt.jhat.value & SDL_HAT_DOWN)
-				keys[Input::Keys::JOY_HAT_DOWN] = true;
+				ResetKeys();
 
-			else if (evnt.jhat.value & SDL_HAT_LEFT)
-				keys[Input::Keys::JOY_HAT_LEFT] = true;
-
+				Player::Resume();
+			}
 			return;
 #endif
 
-#if defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)
-		case SDL_JOYAXISMOTION:
-			if (evnt.jaxis.axis == 0) {
-				if (evnt.jaxis.value < -JOYSTICK_AXIS_SENSIBILITY) {
-					keys[Input::Keys::JOY_AXIS_X_LEFT] = true;
-					keys[Input::Keys::JOY_AXIS_X_RIGHT] = false;
-				} else if (evnt.jaxis.value > JOYSTICK_AXIS_SENSIBILITY) {
-					keys[Input::Keys::JOY_AXIS_X_LEFT] = false;
-					keys[Input::Keys::JOY_AXIS_X_RIGHT] = true;
-				} else {
-					keys[Input::Keys::JOY_AXIS_X_LEFT] = false;
-					keys[Input::Keys::JOY_AXIS_X_RIGHT] = false;
-				}
-			} else if (evnt.jaxis.axis == 1) {
-				if (evnt.jaxis.value < -JOYSTICK_AXIS_SENSIBILITY) {
-					keys[Input::Keys::JOY_AXIS_Y_UP] = true;
-					keys[Input::Keys::JOY_AXIS_Y_DOWN] = false;
-				} else if (evnt.jaxis.value > JOYSTICK_AXIS_SENSIBILITY) {
-					keys[Input::Keys::JOY_AXIS_Y_UP] = false;
-					keys[Input::Keys::JOY_AXIS_Y_DOWN] = true;
-				} else {
-					keys[Input::Keys::JOY_AXIS_Y_UP] = false;
-					keys[Input::Keys::JOY_AXIS_Y_DOWN] = false;
-				}
-			}
+#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
+		case SDL_APPMOUSEFOCUS:
+			mouse_focus = evnt.active.gain == 1;
 			return;
 #endif
 	}
+}
+
+///////////////////////////////////////////////////////////
+void SdlUi::ProcessKeyDownEvent(SDL_Event &evnt) {
+#if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
+	switch (evnt.key.keysym.sym) {
+	case SDLK_F4:
+#ifdef _WIN32
+		// Close program on LeftAlt+F4
+		if (evnt.key.keysym.mod & KMOD_LALT) {
+			Player::exit_flag = true;
+			return;
+		}
+#endif
+
+		// Toggle fullscreen on F4 and no alt is pressed
+		if (!(evnt.key.keysym.mod & KMOD_RALT) && !(evnt.key.keysym.mod & KMOD_LALT)) {
+			BeginDisplayModeChange();
+				ToggleFullscreen();
+			EndDisplayModeChange();
+		}
+		return;
+
+	case SDLK_F5:
+		// Toggle fullscreen on F5
+		BeginDisplayModeChange();
+			ToggleZoom();
+		EndDisplayModeChange();
+		return;
+
+	case SDLK_F12:
+		// Reset the game engine on F12
+		Player::reset_flag = true;
+		return;
+
+	case SDLK_RETURN:
+	case SDLK_KP_ENTER:
+		// Toggle fullscreen on Alt+Enter
+		if (evnt.key.keysym.mod & KMOD_LALT || (evnt.key.keysym.mod & KMOD_RALT)) {
+			BeginDisplayModeChange();
+				ToggleFullscreen();
+			EndDisplayModeChange();
+			return;
+		}
+
+		// Continue if return/enter not handled by fullscreen hotkey
+	default:
+		// Update key state
+		keys[SdlKey2InputKey(evnt.key.keysym.sym)] = true;
+		return;
+	}
+#endif
+}
+
+///////////////////////////////////////////////////////////
+void SdlUi::ProcessKeyUpEvent(SDL_Event &evnt) {
+#if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
+	keys[SdlKey2InputKey(evnt.key.keysym.sym)] = false;
+#endif
+}
+
+///////////////////////////////////////////////////////////
+void SdlUi::ProcessMouseMotionEvent(SDL_Event &evnt) {
+#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
+	mouse_focus = true;
+	mouse_x = evnt.motion.x;
+	mouse_y = evnt.motion.y;
+#endif
+}
+
+///////////////////////////////////////////////////////////
+void SdlUi::ProcessMouseButtonEvent(SDL_Event &evnt) {
+#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
+	switch (evnt.button.button) {
+	case SDL_BUTTON_LEFT:
+		keys[Input::Keys::MOUSE_LEFT] = evnt.button.state == SDL_PRESSED;
+		break;
+	case SDL_BUTTON_MIDDLE:
+		keys[Input::Keys::MOUSE_MIDDLE] = evnt.button.state == SDL_PRESSED;
+		break;
+	case SDL_BUTTON_RIGHT:
+		keys[Input::Keys::MOUSE_RIGHT] = evnt.button.state == SDL_PRESSED;
+		break;
+	}
+#endif
+}
+
+///////////////////////////////////////////////////////////
+void SdlUi::ProcessJoystickButtonEvent(SDL_Event &evnt) {
+#if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
+	keys[SdlJKey2InputKey(evnt.jbutton.button)] = evnt.jbutton.state == SDL_PRESSED;
+#endif
+}
+
+///////////////////////////////////////////////////////////
+void SdlUi::ProcessJoystickHatEvent(SDL_Event &evnt) {
+#if defined(USE_JOYSTICK_HAT)  && defined(SUPPORT_JOYSTICK_HAT)
+	// Set all states to false
+	keys[Input::Keys::JOY_HAT_LOWER_LEFT] = false;
+	keys[Input::Keys::JOY_HAT_DOWN] = false;
+	keys[Input::Keys::JOY_HAT_LOWER_RIGHT] = false;
+	keys[Input::Keys::JOY_HAT_LEFT] = false;
+	keys[Input::Keys::JOY_HAT_RIGHT] = false;
+	keys[Input::Keys::JOY_HAT_UPPER_LEFT] = false;
+	keys[Input::Keys::JOY_HAT_UP] = false;
+	keys[Input::Keys::JOY_HAT_UPPER_RIGHT] = false;
+
+	// Check hat states
+	if ((evnt.jhat.value & SDL_HAT_RIGHTUP) == SDL_HAT_RIGHTUP)
+		keys[Input::Keys::JOY_HAT_UPPER_RIGHT] = true;	
+
+	else if ((evnt.jhat.value & SDL_HAT_RIGHTDOWN)  == SDL_HAT_RIGHTDOWN)
+		keys[Input::Keys::JOY_HAT_LOWER_RIGHT] = true;
+
+	else if ((evnt.jhat.value & SDL_HAT_LEFTUP)  == SDL_HAT_LEFTUP)
+		keys[Input::Keys::JOY_HAT_UPPER_LEFT] = true;
+
+	else if ((evnt.jhat.value & SDL_HAT_LEFTDOWN)  == SDL_HAT_LEFTDOWN)
+		keys[Input::Keys::JOY_HAT_LOWER_LEFT] = true;
+
+	else if (evnt.jhat.value & SDL_HAT_UP)
+		keys[Input::Keys::JOY_HAT_UP] = true;
+
+	else if (evnt.jhat.value & SDL_HAT_RIGHT)
+		keys[Input::Keys::JOY_HAT_RIGHT] = true;
+
+	else if (evnt.jhat.value & SDL_HAT_DOWN)
+		keys[Input::Keys::JOY_HAT_DOWN] = true;
+
+	else if (evnt.jhat.value & SDL_HAT_LEFT)
+		keys[Input::Keys::JOY_HAT_LEFT] = true;
+#endif
+}
+
+///////////////////////////////////////////////////////////
+void SdlUi::ProcessJoystickAxisEvent(SDL_Event &evnt) {
+#if defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)
+	// Horizontal axis
+	if (evnt.jaxis.axis == 0) {
+		if (evnt.jaxis.value < -JOYSTICK_AXIS_SENSIBILITY) {
+			keys[Input::Keys::JOY_AXIS_X_LEFT] = true;
+			keys[Input::Keys::JOY_AXIS_X_RIGHT] = false;
+		} else if (evnt.jaxis.value > JOYSTICK_AXIS_SENSIBILITY) {
+			keys[Input::Keys::JOY_AXIS_X_LEFT] = false;
+			keys[Input::Keys::JOY_AXIS_X_RIGHT] = true;
+		} else {
+			keys[Input::Keys::JOY_AXIS_X_LEFT] = false;
+			keys[Input::Keys::JOY_AXIS_X_RIGHT] = false;
+		}
+
+	// Vertical Axis
+	} else if (evnt.jaxis.axis == 1) {
+		if (evnt.jaxis.value < -JOYSTICK_AXIS_SENSIBILITY) {
+			keys[Input::Keys::JOY_AXIS_Y_UP] = true;
+			keys[Input::Keys::JOY_AXIS_Y_DOWN] = false;
+		} else if (evnt.jaxis.value > JOYSTICK_AXIS_SENSIBILITY) {
+			keys[Input::Keys::JOY_AXIS_Y_UP] = false;
+			keys[Input::Keys::JOY_AXIS_Y_DOWN] = true;
+		} else {
+			keys[Input::Keys::JOY_AXIS_Y_UP] = false;
+			keys[Input::Keys::JOY_AXIS_Y_DOWN] = false;
+		}
+	}
+#endif
 }
 
 ///////////////////////////////////////////////////////////

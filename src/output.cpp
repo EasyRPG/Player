@@ -46,6 +46,9 @@ static void HandleScreenOutput(std::string msg, bool is_error) {
 		while (!Input::IsAnyPressed()) {
 			Time::Sleep(1);
 			DisplayUi->ProcessEvents();
+
+			if (Player::exit_flag) break;
+
 			Input::Update();
 		}
 		Input::ResetKeys();

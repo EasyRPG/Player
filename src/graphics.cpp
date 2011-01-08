@@ -32,7 +32,7 @@
 
 ////////////////////////////////////////////////////////////
 namespace Graphics {
-	bool fps_in_screen;
+	bool fps_on_screen;
 	uint32 drawable_id;
 
 	void InternUpdate1(bool reset = false);
@@ -76,7 +76,7 @@ namespace Graphics {
 ////////////////////////////////////////////////////////////
 void Graphics::Init() {
 	overlay_visible = true;
-	fps_in_screen = false;
+	fps_on_screen = false;
 	fps = 0;
 	framerate = DEFAULT_FPS;
 	framecount = 0;
@@ -252,7 +252,7 @@ void Graphics::InternUpdate2(bool reset) {
 
 ////////////////////////////////////////////////////////////
 void Graphics::UpdateTitle() {
-	if (fps_in_screen) return;
+	if (fps_on_screen) return;
 
 	std::stringstream title;
 	title << GAME_TITLE << " - FPS " << fps;
@@ -287,7 +287,7 @@ void Graphics::DrawFrame() {
 
 ////////////////////////////////////////////////////////////
 void Graphics::DrawOverlay() {
-	if (Graphics::fps_in_screen) {
+	if (Graphics::fps_on_screen) {
 		std::stringstream text;
 		text << "FPS: " << fps;
 		DisplayUi->DrawScreenText(text.str());

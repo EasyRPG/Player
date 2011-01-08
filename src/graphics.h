@@ -136,7 +136,7 @@ namespace Graphics {
 	void RemoveZObj(uint32 ID, bool multiz);
 	void UpdateZObj(ZObj* zobj, int z);
 
-	extern bool fps_in_screen;
+	extern bool fps_on_screen;
 	extern uint32 drawable_id;
 }
 
