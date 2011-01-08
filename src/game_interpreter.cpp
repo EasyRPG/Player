@@ -799,7 +799,7 @@ void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices) {
 
 bool Game_Interpreter::ContinuationChoices() {
 	for (;;) {
-		if (!SkipTo(ShowChoiceOption))
+		if (!SkipTo(ShowChoiceOption, ShowChoiceEnd))
 			return false;
 		int which = list[index].parameters[0];
 		if (which > Game_Message::choice_result)
@@ -2315,8 +2315,8 @@ bool Game_Interpreter::CommandTimerOperation() { // code 10230
 			Game_System::SetTimer(timer_id, seconds);
 			break;
 		case 1:
-			visible = list[index].parameters[3];
-			battle = list[index].parameters[4];
+			visible = list[index].parameters[3] != 0;
+			battle = list[index].parameters[4] != 0;
 			Game_System::StartTimer(timer_id, visible, battle);
 		case 2:
 			Game_System::StopTimer(timer_id);
@@ -2423,7 +2423,8 @@ bool Game_Interpreter::ContinuationOpenShop() {
 
 	return SkipTo(Game_Temp::shop_transaction
 				  ? Transaction
-				  : NoTransaction);
+				  : NoTransaction,
+				  EndShop);
 }
 
 bool Game_Interpreter::CommandShowInn() { // code 10730
@@ -2453,7 +2454,7 @@ bool Game_Interpreter::ContinuationShowInn() {
 		return true;
 	}
 
-	return SkipTo(Game_Temp::inn_stay ? Stay : NoStay);
+	return SkipTo(Game_Temp::inn_stay ? Stay : NoStay, EndInn);
 }
 
 bool Game_Interpreter::DefaultContinuation() {
@@ -2522,7 +2523,7 @@ bool Game_Interpreter::CommandEnemyEncounter() { // code 10710
 	}
 	Game_Temp::battle_escape_mode = list[index].parameters[3]; // disallow, end event processing, custom handler
 	Game_Temp::battle_defeat_mode = list[index].parameters[4]; // game over, custom handler
-	Game_Temp::battle_first_strike = list[index].parameters[5];
+	Game_Temp::battle_first_strike = list[index].parameters[5] != 0;
 	Game_Temp::battle_mode = list[index].parameters[6]; // normal, initiative, surround, back attack, pincer
 	Game_Temp::battle_result = Game_Temp::BattleVictory;
 
@@ -2534,7 +2535,7 @@ bool Game_Interpreter::CommandEnemyEncounter() { // code 10710
 bool Game_Interpreter::ContinuationEnemyEncounter() {
 	switch (Game_Temp::battle_result) {
 		case Game_Temp::BattleVictory:
-			return SkipTo(VictoryHandler);
+			return SkipTo(VictoryHandler, EndBattle);
 		case Game_Temp::BattleEscape:
 			switch (Game_Temp::battle_escape_mode) {
 				case 0:	// disallowed - shouldn't happen
@@ -2542,21 +2543,19 @@ bool Game_Interpreter::ContinuationEnemyEncounter() {
 				case 1:
 					return CommandEndEventProcessing();
 				case 2:
-					return SkipTo(EscapeHandler);
+					return SkipTo(EscapeHandler, EndBattle);
 				default:
 					return false;
 			}
-			return false;
 		case Game_Temp::BattleDefeat:
 			switch (Game_Temp::battle_defeat_mode) {
 				case 0:
 					return CommandGameOver();
 				case 1:
-					return SkipTo(DefeatHandler);
+					return SkipTo(DefeatHandler, EndBattle);
 				default:
 					return false;
 			}
-			return false;
 		default:
 			return false;
 	}
