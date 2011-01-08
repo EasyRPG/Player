@@ -122,7 +122,7 @@ enum CommandCodes {
 	ChangeMainMenuAccess	= 11960,
 	ConditionalBranch		= 12010,
 	Label					= 12110,
-	JumptoLabel				= 12120,
+	JumpToLabel				= 12120,
 	Loop					= 12210,
 	BreakLoop				= 12220,
 	EndEventProcessing		= 12310,
@@ -131,6 +131,7 @@ enum CommandCodes {
 	Comment					= 12410,
 	GameOver				= 12420,
 	ReturntoTitleScreen		= 12510,
+
 	ShowMessage_2			= 20110,
 	ShowChoiceOption		= 20140,
 	ShowChoiceEnd			= 20141,
@@ -489,6 +490,34 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandTimerOperation();
 		case ChangePBG:
 			return CommandChangePBG();
+		case Label:
+			return true;
+		case JumpToLabel:
+			return CommandJumpToLabel();
+		case Loop:
+			return true;
+		case BreakLoop:
+			return CommandBreakLoop();
+		case EndLoop:
+			return CommandEndLoop();
+		case EndEventProcessing:
+			return CommandEndEventProcessing();
+		case OpenShop:
+			return CommandOpenShop();
+		case ShowInn:
+			return CommandShowInn();
+		case EnterHeroName:
+			return CommandEnterHeroName();
+		case GameOver:
+			return CommandGameOver();
+		case ReturntoTitleScreen:
+			return CommandReturntoTitleScreen();
+		case OpenSaveMenu:
+			return CommandOpenSaveMenu();
+		case OpenMainMenu:
+			return CommandOpenMainMenu();
+		case EnemyEncounter:
+			return CommandEnemyEncounter();
 		default:
 			return true;
 
@@ -542,7 +571,14 @@ bool Game_Interpreter::CommandChangeMainMenuAccess() { // code 11960
 }
 
 bool Game_Interpreter::CommandWait() {
-	wait_count = list[index].parameters[0] * DEFAULT_FPS / 10;
+	switch (list[index].parameters[0]) {
+		case 0:
+			wait_count = list[index].parameters[0] * DEFAULT_FPS / 10;
+			break;
+		default:
+			// TODO: wait until key pressed
+			break;
+	}
 	return true;
 }
 
@@ -912,7 +948,7 @@ bool Game_Interpreter::CommandControlVariables() { // Code ControlVars
 					value = Game_Party::GetGold();
 					break;
 				case 1:
-					// TODO Seconds remaining in the timer
+					value = Game_System::ReadTimer(Game_System::Timer1);
 					break;
 				case 2:
 					// Number of heroes in party
@@ -942,7 +978,7 @@ bool Game_Interpreter::CommandControlVariables() { // Code ControlVars
 					// TODO MIDI performance position (wtf is this?)
 					break;
 				case 9:
-					// TODO Something for RM2003
+					value = Game_System::ReadTimer(Game_System::Timer2);
 					break;
 			}
 			break;
@@ -1628,7 +1664,16 @@ bool Game_Interpreter::CommandConditionalBranch() { // Code 12010
 			}
 			break;
 		case 2:
-			// TODO Timer
+			value1 = Game_System::ReadTimer(Game_System::Timer1);
+			value2 = list[index].parameters[1] * DEFAULT_FPS;
+			switch (list[index].parameters[2]) {
+				case 0:
+					result = (value1 >= value2);
+					break;
+				case 1:
+					result = (value1 <= value2);
+					break;
+			}
 			break;
 		case 3:
 			// Gold
@@ -1720,7 +1765,16 @@ bool Game_Interpreter::CommandConditionalBranch() { // Code 12010
 			// TODO BGM Playing
 			break;
 		case 10:
-			// TODO Something with timer RM2003 specific
+			value1 = Game_System::ReadTimer(Game_System::Timer2);
+			value2 = list[index].parameters[1] * DEFAULT_FPS;
+			switch (list[index].parameters[2]) {
+				case 0:
+					result = (value1 >= value2);
+					break;
+				case 1:
+					result = (value1 <= value2);
+					break;
+			}
 			break;
 	}
 
@@ -2238,3 +2292,166 @@ bool Game_Interpreter::CommandChangePBG() { // code 11720
 								horz_speed, vert_speed);
 	return true;
 }
+
+bool Game_Interpreter::CommandJumpToLabel() { // code 12120
+	int label_id = list[index].parameters[0];
+
+	for (int idx = 0; (size_t) idx < list.size(); idx++) {
+		if (list[idx].code != Label)
+			continue;
+		if (list[idx].parameters[0] != label_id)
+			continue;
+		index = idx;
+		break;
+	}
+
+	return true;
+}
+
+bool Game_Interpreter::CommandBreakLoop() { // code 12220
+	int indent = list[index].indent;
+
+	for (int idx = 0; (size_t) idx < list.size(); idx++) {
+		if (list[idx].indent >= indent)
+			continue;
+		if (list[idx].code != EndLoop)
+			continue;
+		index = idx + 1;
+		break;
+	}
+
+	return true;
+}
+
+bool Game_Interpreter::CommandEndLoop() { // code 22210
+	int indent = list[index].indent;
+
+	for (int idx = index; idx >= 0; idx--) {
+		if (list[idx].indent > indent)
+			continue;
+		if (list[idx].indent < indent)
+			return false;
+		if (list[idx].code != Loop)
+			continue;
+		index = idx;
+		break;
+	}
+
+	return true;
+}
+
+bool Game_Interpreter::CommandEndEventProcessing() { // code 12310
+	index = list.size();
+	return true;
+}
+
+bool Game_Interpreter::CommandOpenShop() { // code 10720
+
+	switch (list[index].parameters[0]) {
+		case 0:
+			Game_Temp::shop_buys = true;
+			Game_Temp::shop_sells = true;
+			break;
+		case 1:
+			Game_Temp::shop_buys = true;
+			Game_Temp::shop_sells = false;
+			break;
+		case 2:
+			Game_Temp::shop_buys = false;
+			Game_Temp::shop_sells = true;
+			break;
+		default:
+			return false;
+	}
+
+	Game_Temp::shop_type = list[index].parameters[1];
+	Game_Temp::shop_handlers = list[index].parameters[2] != 0;
+
+	Game_Temp::shop_goods.clear();
+    std::vector<int>::const_iterator it;
+	for (it = list[index].parameters.begin() + 4; it < list[index].parameters.end(); it++)
+		Game_Temp::shop_goods.push_back(*it);
+
+	Game_Temp::shop_calling =  true;
+	return true;
+}
+
+bool Game_Interpreter::CommandShowInn() { // code 10730
+	Game_Temp::inn_type = list[index].parameters[0];
+	Game_Temp::inn_price = list[index].parameters[1];
+	Game_Temp::inn_handlers = list[index].parameters[2] != 0;
+
+	Game_Temp::inn_calling =  true;
+	return true;
+}
+
+bool Game_Interpreter::CommandEnterHeroName() { // code 10740
+	Game_Temp::hero_name_id = list[index].parameters[0];
+	Game_Temp::hero_name_charset = list[index].parameters[1];
+	
+	if (list[index].parameters[2] != 0)
+		Game_Temp::hero_name = Game_Actors::GetActor(Game_Temp::hero_name_id)->GetName();
+	else
+		Game_Temp::hero_name.clear();
+
+	Game_Temp::name_calling =  true;
+	return true;
+}
+
+bool Game_Interpreter::CommandGameOver() { // code 12420
+	Game_Temp::gameover =  true;
+	return true;
+}
+
+bool Game_Interpreter::CommandReturntoTitleScreen() { // code 12510
+	Game_Temp::title_calling =  true;
+	return true;
+}
+
+bool Game_Interpreter::CommandOpenSaveMenu() { // code 11910
+	Game_Temp::save_calling =  true;
+	return true;
+}
+
+bool Game_Interpreter::CommandOpenMainMenu() { // code 11950
+	Game_Temp::menu_calling =  true;
+	return true;
+}
+
+bool Game_Interpreter::CommandEnemyEncounter() { // code 10710
+	int troop_id = ValueOrVariable(list[index].parameters[0],
+								   list[index].parameters[1]);
+
+	int terrain_id;
+	std::string background;
+	int formation;		// 1: loose, 2: tight
+	Game_Character *player;
+	switch (list[index].parameters[2]) {
+		case 0:
+			player = GetCharacter(Player);
+			terrain_id = Game_Map::GetTerrainTag(player->GetX(), player->GetY());
+			background = "";
+			break;
+		case 1:
+			terrain_id = 0;
+			background = list[index].string;
+			formation = list[index].parameters[7];
+			break;
+		case 2:
+			terrain_id = list[index].parameters[8];
+			background = "";
+			break;
+		default:
+			return false;
+	}
+	int escape_mode = list[index].parameters[3]; // disallow, end event processing, custom handler
+	int defeat_mode = list[index].parameters[4]; // game over, custom handler
+	bool first_strike = list[index].parameters[5];
+	int battle_mode = list[index].parameters[6]; // normal, initiative, surround, back attack, pincer
+
+	// TODO: actually set up the battle
+
+	Game_Temp::battle_calling = true;
+	return true;
+}
+

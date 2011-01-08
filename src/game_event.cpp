@@ -26,6 +26,7 @@
 #include "game_player.h"
 #include "game_switches.h"
 #include "game_variables.h"
+#include "game_system.h"
 #include "main_data.h"
 
 ////////////////////////////////////////////////////////////
@@ -157,8 +158,16 @@ bool Game_Event::AreConditionsMet(const RPG::EventPage& page) {
 
 	// Timer
 	if (page.condition.timer) {
-		// TODO
-		return false;
+		int frames = Game_System::ReadTimer(Game_System::Timer1);
+		if (frames > page.condition.timer_sec * DEFAULT_FPS)
+			return false;
+	}
+
+	// Timer2
+	if (page.condition.timer2) {
+		int frames = Game_System::ReadTimer(Game_System::Timer2);
+		if (frames > page.condition.timer2_sec * DEFAULT_FPS)
+			return false;
 	}
 
 	// All conditions met :D

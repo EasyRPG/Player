@@ -128,6 +128,12 @@ void Game_System::UpdateTimers() {
 }
 
 ////////////////////////////////////////////////////////////
+int Game_System::ReadTimer(int which) {
+	Timer& timer = timers[which];
+	return timer.value;
+}
+
+////////////////////////////////////////////////////////////
 void Game_System::SetTransition(int which, int transition) {
 	transitions[which] = transition;
 }

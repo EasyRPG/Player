@@ -159,6 +159,13 @@ namespace Game_System {
 	void UpdateTimers();
 
 	////////////////////////////////////////////////////////
+	/// Read a timer
+	/// @param which   : which timer to read
+	/// @return number of frames remaining
+	////////////////////////////////////////////////////////
+	int ReadTimer(int which);
+
+	////////////////////////////////////////////////////////
 	/// Set the system transitions
 	/// @param which : which "context" to set the transition for
 	/// @param trans : the transition

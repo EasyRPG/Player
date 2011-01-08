@@ -26,13 +26,26 @@ bool Game_Temp::menu_beep;
 Game_Battler* Game_Temp::forcing_battler;
 bool Game_Temp::battle_calling;
 bool Game_Temp::shop_calling;
+bool Game_Temp::inn_calling;
 bool Game_Temp::name_calling;
 bool Game_Temp::save_calling;
+bool Game_Temp::title_calling;
 bool Game_Temp::gameover;
 int Game_Temp::common_event_id;
 bool Game_Temp::transition_processing;
 Graphics::TransitionType Game_Temp::transition_type;
 bool Game_Temp::transition_erase;
+bool Game_Temp::shop_buys;
+bool Game_Temp::shop_sells;
+int Game_Temp::shop_type;
+bool Game_Temp::shop_handlers;
+std::vector<int> Game_Temp::shop_goods;
+int Game_Temp::inn_type;
+int Game_Temp::inn_price;
+bool Game_Temp::inn_handlers;
+std::string Game_Temp::hero_name;
+int Game_Temp::hero_name_id;
+int Game_Temp::hero_name_charset;
 
 ////////////////////////////////////////////////////////////
 void Game_Temp::Init() {
@@ -43,9 +56,19 @@ void Game_Temp::Init() {
 	shop_calling = false;
 	name_calling = false;
 	save_calling = false;
+	title_calling = false;
 	gameover = false;
 	common_event_id = 0;
 	transition_processing = false;
 	transition_type = Graphics::TransitionNone;
 	transition_erase = false;
+	shop_buys = true;
+	shop_sells = true;
+	shop_type = 0;
+	shop_handlers = false;
+	inn_type = 0;
+	inn_handlers = false;
+	hero_name = "";
+	hero_name_id = 0;
+	hero_name_charset = 0;
 }

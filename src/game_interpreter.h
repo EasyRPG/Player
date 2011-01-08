@@ -134,6 +134,18 @@ private:
 	bool CommandTradeEventLocations();
 	bool CommandTimerOperation();
 	bool CommandChangePBG();
+	bool CommandJumpToLabel();
+	bool CommandBreakLoop();
+	bool CommandEndLoop();
+	bool CommandEndEventProcessing();
+	bool CommandOpenShop();
+	bool CommandShowInn();
+	bool CommandEnterHeroName();
+	bool CommandGameOver();
+	bool CommandReturntoTitleScreen();
+	bool CommandOpenSaveMenu();
+	bool CommandOpenMainMenu();
+	bool CommandEnemyEncounter();
 
 	void CommandEnd();
 };
