@@ -192,6 +192,7 @@ void Game_Interpreter::Clear() {
 	button_input_variable_id = 0;	// button input variable ID
 	wait_count = 0;					// wait count
 	child_interpreter = NULL;		// child interpreter for common events, etc
+	continuation = NULL;			// function to execute to resume command
 }
 
 ////////////////////////////////////////////////////////////
