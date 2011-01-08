@@ -36,6 +36,8 @@ namespace Game_System {
 	RPG::Sound system_sfx[SFX_Count];
 	Timer timers[2];
 	int transitions[Transition_Count];
+	std::map<int, Target> teleport_targets;
+	Target escape_target;
 }
 
 static std::string system_name;
@@ -138,3 +140,33 @@ void Game_System::SetTransition(int which, int transition) {
 	transitions[which] = transition;
 }
 
+////////////////////////////////////////////////////////////
+void Game_System::AddTeleportTarget(int map_id, int x, int y, int switch_id) {
+	teleport_targets[map_id] = Target(map_id, x, y, switch_id);
+}
+
+////////////////////////////////////////////////////////////
+void Game_System::RemoveTeleportTarget(int map_id) {
+	std::map<int,Target>::iterator it = teleport_targets.find(map_id);
+	if (it != teleport_targets.end())
+		teleport_targets.erase(it);
+}
+
+////////////////////////////////////////////////////////////
+Game_System::Target* Game_System::GetTeleportTarget(int map_id) {
+	std::map<int,Target>::iterator it = teleport_targets.find(map_id);
+	if (it != teleport_targets.end())
+		return &it->second;
+	else
+		return NULL;
+}
+
+////////////////////////////////////////////////////////////
+void Game_System::SetEscapeTarget(int map_id, int x, int y, int switch_id) {
+	escape_target = Target(map_id, x, y, switch_id);
+}
+
+////////////////////////////////////////////////////////////
+Game_System::Target* Game_System::GetEscapeTarget() {
+	return &escape_target;
+}

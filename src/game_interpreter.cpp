@@ -580,9 +580,12 @@ bool Game_Interpreter::ExecuteCommand() {
 			return SkipTo(EndBattle);
 		case EndBattle:
 			return true;
+		case TeleportTargets:
+			return CommandTeleportTargets();
+		case EscapeTarget:
+			return CommandEscapeTarget();
 		default:
 			return true;
-
 	}
 }
 
@@ -2559,5 +2562,33 @@ bool Game_Interpreter::ContinuationEnemyEncounter() {
 		default:
 			return false;
 	}
+}
+
+bool Game_Interpreter::CommandTeleportTargets() { // code 11810
+	int map_id = list[index].parameters[1];
+
+	if (list[index].parameters[0] != 0) {
+		Game_System::RemoveTeleportTarget(map_id);
+		return true;
+	}
+
+	int x = list[index].parameters[2];
+	int y = list[index].parameters[3];
+	int switch_id = (list[index].parameters[4] != 0)
+		? list[index].parameters[5]
+		: -1;
+	Game_System::AddTeleportTarget(map_id, x, y, switch_id);
+	return true;
+}
+
+bool Game_Interpreter::CommandEscapeTarget() { // code 11830
+	int map_id = list[index].parameters[0];
+	int x = list[index].parameters[1];
+	int y = list[index].parameters[2];
+	int switch_id = (list[index].parameters[3] != 0)
+		? list[index].parameters[4]
+		: -1;
+	Game_System::SetEscapeTarget(map_id, x, y, switch_id);
+	return true;
 }
 

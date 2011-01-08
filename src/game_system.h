@@ -22,6 +22,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <string>
+#include <map>
 #include "rpg_music.h"
 #include "rpg_sound.h"
 
@@ -87,6 +88,25 @@ namespace Game_System {
 			battle(false) {}
 
 		void Update();
+	};
+
+
+	class Target {
+	public:
+		int map_id;
+		int x;
+		int y;
+		int switch_id;
+		Target()
+			: map_id(0),
+			  switch_id(0)
+		{}
+		Target(int map_id, int x, int y, int switch_id)
+			: map_id(map_id),
+			  x(x),
+			  y(y),
+			  switch_id(switch_id)
+		{}
 	};
 
 	////////////////////////////////////////////////////////
@@ -172,6 +192,44 @@ namespace Game_System {
 	////////////////////////////////////////////////////////
 	void SetTransition(int which, int transition);
 
+	////////////////////////////////////////////////////////
+	/// Set a teleport target
+	/// @param from_map : the map for which the target is used
+	/// @param map_id   : the destination map
+	/// @param x        : the destination X coordinate
+	/// @param y        : the destination Y coordinate
+	////////////////////////////////////////////////////////
+	void AddTeleportTarget(int map_id, int x, int y, int switch_id);
+
+	////////////////////////////////////////////////////////
+	/// Remove a teleport target
+	/// @param map_id : the map for which the target was used
+	////////////////////////////////////////////////////////
+	void RemoveTeleportTarget(int map_id);
+
+	////////////////////////////////////////////////////////
+	/// Find a teleport target
+	/// @param map_id : the map for which to obtain the target
+	/// @return: pointer to a Target structure, or NULL
+	////////////////////////////////////////////////////////
+	Target* GetTeleportTarget(int map_id);
+
+	////////////////////////////////////////////////////////
+	/// Set an escape  target
+	/// @param from_map : the map for which the target is used
+	/// @param map_id   : the destination map
+	/// @param x        : the destination X coordinate
+	/// @param y        : the destination Y coordinate
+	////////////////////////////////////////////////////////
+	void SetEscapeTarget(int map_id, int x, int y, int switch_id);
+
+	////////////////////////////////////////////////////////
+	/// Find an escape target
+	/// @param map_id : the map for which to obtain the target
+	/// @return: pointer to a Target structure, or NULL
+	////////////////////////////////////////////////////////
+	Target* GetEscapeTarget();
+
 	/// Menu saving option disabled flag.
 	extern bool save_disabled;
 	extern bool teleport_disabled;
@@ -183,6 +241,8 @@ namespace Game_System {
 	extern RPG::Sound system_sfx[SFX_Count];
 	extern Timer timers[2];
 	extern int transitions[Transition_Count];
+	extern std::map<int, Target> teleport_targets;
+	extern Target escape_target;
 
 	/// Numbers of saves.
 	extern unsigned int save_count;

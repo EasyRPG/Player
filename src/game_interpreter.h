@@ -143,6 +143,8 @@ private:
 	bool CommandOpenSaveMenu();
 	bool CommandOpenMainMenu();
 	bool CommandEnemyEncounter();
+	bool CommandTeleportTargets();
+	bool CommandEscapeTarget();
 
 	void CommandEnd();
 
