@@ -799,10 +799,12 @@ void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices) {
 }
 
 bool Game_Interpreter::ContinuationChoices() {
+	int indent = list[index].indent;
 	for (;;) {
-		if (!SkipTo(ShowChoiceOption, ShowChoiceEnd))
+		if (!SkipTo(ShowChoiceOption, ShowChoiceEnd, indent, indent))
 			return false;
 		int which = list[index].parameters[0];
+		index++;
 		if (which > Game_Message::choice_result)
 			return false;
 		if (which < Game_Message::choice_result)
