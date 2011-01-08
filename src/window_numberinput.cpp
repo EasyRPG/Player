@@ -73,6 +73,7 @@ void Window_NumberInput::SetNumber(uint inumber) {
 		num *= 10;
 	}
 	number = min(max(inumber, (uint)0), num - 1);
+	index = 0;
 	Refresh();
 }
 
@@ -88,7 +89,7 @@ void Window_NumberInput::SetMaxDigits(int idigits_max) {
 		(idigits_max > 6) ? 6 :
 		(idigits_max <= 0) ? 1 :
 		idigits_max;
-
+	index = 0;
 	Refresh();
 }
 

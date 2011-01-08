@@ -56,6 +56,8 @@ namespace {
 	int scroll_direction;
 	int scroll_rest;
 	int scroll_speed;
+	
+	std::string map_bgm;
 
 	Game_Interpreter* interpreter;
 }
@@ -74,6 +76,8 @@ void Game_Map::Init() {
 	scroll_rest = 0;
 	scroll_speed = 0;
 	interpreter = new Game_Interpreter(0, true);
+	
+	map_bgm = "";
 }
 
 ////////////////////////////////////////////////////////////
@@ -130,14 +134,30 @@ void Game_Map::Setup(int _id) {
 
 ////////////////////////////////////////////////////////////
 void Game_Map::Autoplay() {
-	// TODO: Check music_type
+	int parent_index = 0;
+	int current_index = GetMapIndex(map_id);
 	
-	//Search for a map with same id in treemap
-	for (unsigned int i = 0; i < Data::treemap.maps.size(); ++i) {
-		if ((Data::treemap.maps[i].ID == map_id) && !Data::treemap.maps[i].music.name.empty()) {
-			Game_System::BgmPlay(Data::treemap.maps[i].music);
+	if ((current_index > -1) && !Data::treemap.maps[current_index].music.name.empty()) {
+		switch(Data::treemap.maps[current_index].music_type) {
+			case 0: // inherits music from parent
+				parent_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
+				if (Data::treemap.maps[parent_index].music.name != "(OFF)" && Data::treemap.maps[parent_index].music.name != map_bgm) {
+					Game_System::BgmPlay(Data::treemap.maps[parent_index].music);
+					map_bgm = Data::treemap.maps[parent_index].music.name;
+				}
+				break;
+			case 1:  // from event
+				//TODO: just wait by an event?
+				break;
+			case 2:  // specific map music
+				if (Data::treemap.maps[current_index].music.name != map_bgm) {
+					Game_System::BgmPlay(Data::treemap.maps[current_index].music);
+					map_bgm = Data::treemap.maps[current_index].music.name;
+				}
 		}
- 	}
+	
+	}
+
 }
 
 ////////////////////////////////////////////////////////////
@@ -489,3 +509,15 @@ void Game_Map::SetParallaxScroll(bool horz, bool vert,
 	parallax_horz_speed = horz_speed;
 	parallax_vert_speed = vert_speed;
 }
+
+////////////////////////////////////////////////////////////
+int Game_Map::GetMapIndex(int id) {
+	for (unsigned int i = 0; i < Data::treemap.maps.size(); ++i) {
+		if (Data::treemap.maps[i].ID == id) {
+			return i;
+		}
+	}
+	//nothing found
+	return -1;
+}
+
