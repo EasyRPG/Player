@@ -299,9 +299,11 @@ void Game_Interpreter::Update() {
 
 		if (Game_Temp::battle_calling ||
 			Game_Temp::shop_calling ||
+			Game_Temp::inn_calling ||
 			Game_Temp::name_calling ||
 			Game_Temp::menu_calling ||
 			Game_Temp::save_calling ||
+			Game_Temp::title_calling ||
 			Game_Temp::gameover) {
 			
 			return;
@@ -388,7 +390,7 @@ bool Game_Interpreter::SkipTo(int code, int min_indent, int max_indent) {
 		if (list[idx].indent > max_indent)
 			continue;
 		if (list[idx].code != code)
-			return false;
+			continue;
 		index = idx;
 		return true;
 	}
@@ -628,12 +630,13 @@ bool Game_Interpreter::CommandChangeMainMenuAccess() { // code 11960
 }
 
 bool Game_Interpreter::CommandWait() {
-	switch (list[index].parameters[0]) {
+	switch (list[index].parameters[1]) {
 		case 0:
 			wait_count = list[index].parameters[0] * DEFAULT_FPS / 10;
 			break;
 		default:
 			// TODO: wait until key pressed
+			wait_count = 0;
 			break;
 	}
 	return true;
@@ -1856,10 +1859,7 @@ bool Game_Interpreter::CommandConditionalBranch() { // Code 12010
 	if (result)
 		return true;
 
-	if (!SkipTo(ElseBranch))
-		return false;
-	index++;
-	return true;
+	return SkipTo(ElseBranch);
 }
 
 ////////////////////////////////////////////////////////////
@@ -2356,10 +2356,7 @@ bool Game_Interpreter::CommandJumpToLabel() { // code 12120
 }
 
 bool Game_Interpreter::CommandBreakLoop() { // code 12220
-	if (!SkipTo(EndLoop, 0, list[index].indent - 1))
-		return false;
-	index++;
-	return true;
+	return SkipTo(EndLoop, 0, list[index].indent - 1);
 }
 
 bool Game_Interpreter::CommandEndLoop() { // code 22210
@@ -2407,7 +2404,7 @@ bool Game_Interpreter::CommandOpenShop() { // code 10720
 	Game_Temp::shop_handlers = list[index].parameters[2] != 0;
 
 	Game_Temp::shop_goods.clear();
-    std::vector<int>::const_iterator it;
+	std::vector<int>::const_iterator it;
 	for (it = list[index].parameters.begin() + 4; it < list[index].parameters.end(); it++)
 		Game_Temp::shop_goods.push_back(*it);
 
@@ -2421,19 +2418,9 @@ bool Game_Interpreter::ContinuationOpenShop() {
 	if (!Game_Temp::shop_handlers)
 		return true;
 
-	if (Game_Temp::shop_transaction) {
-		int indent = list[index].indent;
-		index++;
-		if (list[index].indent != indent ||
-			list[index].code != Transaction)
-			return false;
-	} else {
-		if (!SkipTo(NoTransaction))
-			return false;
-	}
-
-	index++;
-	return true;
+	return SkipTo(Game_Temp::shop_transaction
+				  ? Transaction
+				  : NoTransaction);
 }
 
 bool Game_Interpreter::CommandShowInn() { // code 10730
@@ -2463,18 +2450,7 @@ bool Game_Interpreter::ContinuationShowInn() {
 		return true;
 	}
 
-	if (Game_Temp::inn_stay) {
-		if (!SkipTo(Stay))
-			return false;
-		index++;
-	} else {
-		if (!SkipTo(NoStay))
-			return false;
-		index++;
-	}
-
-	index++;
-	return true;
+	return SkipTo(Game_Temp::inn_stay ? Stay : NoStay);
 }
 
 bool Game_Interpreter::DefaultContinuation() {
@@ -2555,10 +2531,7 @@ bool Game_Interpreter::CommandEnemyEncounter() { // code 10710
 bool Game_Interpreter::ContinuationEnemyEncounter() {
 	switch (Game_Temp::battle_result) {
 		case Game_Temp::BattleVictory:
-			if (!SkipTo(VictoryHandler))
-				return false;
-			index++;
-			return true;
+			return SkipTo(VictoryHandler);
 		case Game_Temp::BattleEscape:
 			switch (Game_Temp::battle_escape_mode) {
 				case 0:	// disallowed - shouldn't happen
@@ -2566,10 +2539,7 @@ bool Game_Interpreter::ContinuationEnemyEncounter() {
 				case 1:
 					return CommandEndEventProcessing();
 				case 2:
-					if (!SkipTo(EscapeHandler))
-						return false;
-					index++;
-					return true;
+					return SkipTo(EscapeHandler);
 				default:
 					return false;
 			}
@@ -2579,10 +2549,7 @@ bool Game_Interpreter::ContinuationEnemyEncounter() {
 				case 0:
 					return CommandGameOver();
 				case 1:
-					if (!SkipTo(DefeatHandler))
-						return false;
-					index++;
-					return true;
+					return SkipTo(DefeatHandler);
 				default:
 					return false;
 			}
