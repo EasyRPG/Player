@@ -50,6 +50,8 @@ namespace Game_Message {
 void Game_Message::Init() {
 	background = true;
 	position = 2;
+
+	FullClear();
 }
 
 void Game_Message::SemiClear() {
@@ -60,7 +62,6 @@ void Game_Message::SemiClear() {
 	num_input_start = -1;
 	num_input_variable_id = 0;
 	num_input_digits_max = 0;
-	choice_result = 0;
 }
 
 void Game_Message::FullClear() {

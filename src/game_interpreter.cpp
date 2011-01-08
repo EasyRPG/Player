@@ -412,7 +412,6 @@ bool Game_Interpreter::ExecuteCommand() {
 	}
 	
 	switch (list[index].code) {
-
 		case ShowMessage:
 			return CommandShowMessage();
 		case ShowChoice: 
@@ -710,8 +709,8 @@ void Game_Interpreter::CommandEnd() {
 /////////////////////////////////////////////
 void Game_Interpreter::GetStrings(std::vector<std::string>& ret_val) {
 	// Let's find the choices
-	int current_indent = list[index+1].indent;
-	unsigned int index_temp = index+2;
+	int current_indent = list[index + 1].indent;
+	unsigned int index_temp = index + 1;
 	std::vector<std::string> s_choices;
 	while ( index_temp < list.size() ) {
 		if ( (list[index_temp].code == ShowChoiceOption) && (list[index_temp].indent == current_indent) ) {
@@ -760,7 +759,7 @@ bool Game_Interpreter::CommandShowMessage() { // Code ShowMessage
 			if ( (index < list.size() - 1) && (list[index+1].code == ShowChoice) ) {
 				GetStrings(s_choices);
 				// If choices fit on screen
-				if (s_choices.size() < (4 - line_count)) {
+				if (s_choices.size() <= (4 - line_count)) {
 					index++;
 					Game_Message::choice_start = line_count;
 					Game_Message::choice_cancel_type = list[index].parameters[0];
@@ -787,6 +786,7 @@ bool Game_Interpreter::CommandShowMessage() { // Code ShowMessage
 /// Setup Choices
 ////////////////////////////////////////////////////////////
 void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices) {
+	Game_Message::choice_start = Game_Message::texts.size();
 	Game_Message::choice_max = choices.size();
 
 	// Set choices to message text
@@ -796,8 +796,6 @@ void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices) {
 	}
 
 	SetContinuation(&Game_Interpreter::ContinuationChoices);
-
-	// TODO
 }
 
 bool Game_Interpreter::ContinuationChoices() {
@@ -812,7 +810,6 @@ bool Game_Interpreter::ContinuationChoices() {
 		break;
 	}
 
-	index++;
 	return true;
 }
 
@@ -828,8 +825,6 @@ bool Game_Interpreter::CommandShowChoices() { // Code ShowChoice
 
 	// Choices setup
 	std::vector<std::string> choices;
-	Game_Message::texts.clear();
-	Game_Message::choice_start = 0;
 	Game_Message::choice_cancel_type = list[index].parameters[0];
 	GetStrings(choices);
 	SetupChoices(choices);

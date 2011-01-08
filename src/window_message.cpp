@@ -74,11 +74,8 @@ void Window_Message::StartMessageProcessing() {
 		text.append("\n");
 	}
 	item_max = Game_Message::choice_max;
+
 	InsertNewPage();
-	if (Game_Message::num_input_start == 0 && Game_Message::num_input_variable_id > 0) {
-		// If there is an input window on the first line
-		StartNumberInputProcessing();
-	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -141,7 +138,17 @@ void Window_Message::InsertNewPage() {
 	} else {
 		contents_x = 0;
 	}
-	contents_y = 0;
+
+	if (Game_Message::choice_start == 0 && Game_Message::choice_max > 0) {
+		contents_x += 12;
+	}
+
+	if (Game_Message::num_input_start == 0 && Game_Message::num_input_variable_id > 0) {
+		// If there is an input window on the first line
+		StartNumberInputProcessing();
+	}
+
+	contents_y = 2;
 	line_count = 0;
 	contents->GetFont()->color = Font::ColorDefault;
 }
@@ -153,13 +160,21 @@ void Window_Message::InsertNewLine() {
 	} else {
 		contents_x = 0;
 	}
+
 	contents_y += 16;
 	++line_count;
+
+	if (Game_Message::choice_start <= line_count && Game_Message::choice_max > 0) {
+		contents_x += 12;
+	}
 }
 
 ////////////////////////////////////////////////////////////
 void Window_Message::TerminateMessage() {
+	active = false;
 	pause = false;
+	index = -1;
+
 	Game_Message::message_waiting = false;
 	number_input_window->SetActive(false);
 	number_input_window->SetVisible(false);
@@ -187,8 +202,9 @@ void Window_Message::ResetWindow() {
 
 ////////////////////////////////////////////////////////////
 void Window_Message::Update() {
-	Window::Update();
+	Window_Selectable::Update();
 	number_input_window->Update();
+
 	if (visible && !Game_Message::visible) {
 		// The Event Page ended but the MsgBox was used in this Event
 		// It can be closed now.
@@ -493,7 +509,22 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 
 ////////////////////////////////////////////////////////////
 void Window_Message::UpdateCursorRect() {
+	if (index >= 0) {
+		int x_pos = 2;
+		int y_pos = (Game_Message::choice_start + index) * 16;
+		int width = contents->GetWidth();
 
+		if (!Game_Message::face_name.empty()) {
+			if (Game_Message::face_left_position) {
+				x_pos += LeftMargin + FaceSize + RightFaceMargin;
+			}
+			width = width - LeftMargin - FaceSize - RightFaceMargin - 4;
+		}
+
+		cursor_rect.Set(x_pos, y_pos, width, 16);
+	} else {
+		cursor_rect.Set(0, 0, 0, 0);
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -518,11 +549,12 @@ void Window_Message::InputChoice() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		if (Game_Message::choice_cancel_type > 0) {
 			Game_System::SePlay(Data::system.cancel_se);
+			Game_Message::choice_result = 4; // Cancel
 			TerminateMessage();
 		}
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Data::system.decision_se);
-
+		Game_Message::choice_result = index;
 		TerminateMessage();
 	}
 }
