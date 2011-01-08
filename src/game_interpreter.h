@@ -59,20 +59,18 @@ private:
 	int wait_count;
 
 	Game_Interpreter* child_interpreter;
+	bool (Game_Interpreter::*continuation)();
 
 	std::vector<RPG::EventCommand> list;
-	/// Contains the results of branches
-	/// Note: Difference to RGSS:
-	/// RGSS uses bool for this and uses a ruby feature to get three states:
-	/// true, false and (if element is missing) nil.
-	/// This is not possible under C++, the mapping is: -1 false, 0 nil, 1 true
-	std::map<int, int8> branch;
 
 	// Helper function
 	void GetStrings(std::vector<std::string>& ret_val);
 
 	int OperateValue(int operation, int operand_type, int operand);
 	Game_Character* GetCharacter(int character_id);
+
+	bool SkipTo(int code, int min_indent = -1, int max_indent = -1);
+	void SetContinuation(bool (Game_Interpreter::*func)());
 
 	void CancelMenuCall();
 
@@ -116,7 +114,6 @@ private:
 	bool CommandChangeEscapeAccess();
 	bool CommandChangeMainMenuAccess();
 	bool CommandChangeActorFace();
-	bool CommandSkip();
 	bool CommandWait();
 	bool CommandTeleport();
 	bool CommandEraseScreen();
@@ -148,6 +145,12 @@ private:
 	bool CommandEnemyEncounter();
 
 	void CommandEnd();
+
+	bool DefaultContinuation();
+	bool ContinuationChoices();
+	bool ContinuationOpenShop();
+	bool ContinuationShowInn();
+	bool ContinuationEnemyEncounter();
 };
 
 #endif

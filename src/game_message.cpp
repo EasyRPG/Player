@@ -43,6 +43,8 @@ namespace Game_Message {
 	bool message_waiting;
 
 	bool visible;
+
+	int choice_result;
 }
 
 void Game_Message::Init() {
@@ -58,6 +60,7 @@ void Game_Message::SemiClear() {
 	num_input_start = -1;
 	num_input_variable_id = 0;
 	num_input_digits_max = 0;
+	choice_result = 0;
 }
 
 void Game_Message::FullClear() {

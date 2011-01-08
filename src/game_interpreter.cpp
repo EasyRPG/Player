@@ -148,7 +148,7 @@ enum CommandCodes {
 	ElseBranch				= 22010,
 	EndBranch				= 22011,
 	EndLoop					= 22210,
-	Comment2				= 22410
+	Comment_2				= 22410
 };
 
 enum Sizes {
@@ -192,7 +192,6 @@ void Game_Interpreter::Clear() {
 	button_input_variable_id = 0;	// button input variable ID
 	wait_count = 0;					// wait count
 	child_interpreter = NULL;		// child interpreter for common events, etc
-	branch.clear();
 }
 
 ////////////////////////////////////////////////////////////
@@ -214,13 +213,15 @@ void Game_Interpreter::Setup(std::vector<RPG::EventCommand>& _list, int _event_i
 	list = _list;
 	index = 0;
 
-	branch.clear();
-
 	CancelMenuCall();
 }
 
 void Game_Interpreter::CancelMenuCall() {
 	// TODO
+}
+
+void Game_Interpreter::SetContinuation(bool (Game_Interpreter::*func)()) {
+	continuation = func;
 }
 
 ////////////////////////////////////////////////////////////
@@ -305,6 +306,15 @@ void Game_Interpreter::Update() {
 			return;
 		}
 
+		if (continuation) {
+			bool result = (this->*continuation)();
+			continuation = NULL;
+			if (result)
+				continue;
+			else
+				return;
+		}
+
 		if (list.empty()) {
 			if (main_flag) {
 				SetupStartingEvent();
@@ -363,6 +373,29 @@ void Game_Interpreter::SetupStartingEvent() {
 }
 
 ////////////////////////////////////////////////////////////
+/// Skip to Command
+////////////////////////////////////////////////////////////
+bool Game_Interpreter::SkipTo(int code, int min_indent, int max_indent) {
+	if (min_indent < 0)
+		min_indent = list[index].indent;
+	if (max_indent < 0)
+		max_indent = list[index].indent;
+
+	for (int idx = index; (size_t) idx < list.size(); idx++) {
+		if (list[idx].indent < min_indent)
+			return false;
+		if (list[idx].indent > max_indent)
+			continue;
+		if (list[idx].code != code)
+			return false;
+		index = idx;
+		return true;
+	}
+
+	return false;
+}
+
+////////////////////////////////////////////////////////////
 /// Execute Command
 ////////////////////////////////////////////////////////////
 bool Game_Interpreter::ExecuteCommand() {
@@ -378,6 +411,10 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandShowMessage();
 		case ShowChoice: 
 			return CommandShowChoices();
+		case ShowChoiceOption:
+			return SkipTo(ShowChoiceEnd);
+		case ShowChoiceEnd:
+			return true;
 		case InputNumber: 
 			return CommandInputNumber();
 		case MessageOptions: 
@@ -395,7 +432,9 @@ bool Game_Interpreter::ExecuteCommand() {
 		case ConditionalBranch: 
 			return CommandConditionalBranch();
 		case ElseBranch:
-			return CommandElseBranch();
+			return SkipTo(EndBranch);
+		case EndBranch:
+			return true;
 		case ControlSwitches: 
 			return CommandControlSwitches();
 		case ControlVars: 
@@ -463,6 +502,7 @@ bool Game_Interpreter::ExecuteCommand() {
 		case ShowScreen:
 			return CommandShowScreen();
 		case Comment:
+		case Comment_2:
 			return true;
 		case ShowPicture:
 			return CommandShowPicture();
@@ -504,8 +544,18 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandEndEventProcessing();
 		case OpenShop:
 			return CommandOpenShop();
+		case Transaction:
+		case NoTransaction:
+			return SkipTo(EndShop);
+		case EndShop:
+			return true;
 		case ShowInn:
 			return CommandShowInn();
+		case Stay:
+		case NoStay:
+			return SkipTo(EndInn);
+		case EndInn:
+			return true;
 		case EnterHeroName:
 			return CommandEnterHeroName();
 		case GameOver:
@@ -518,6 +568,12 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandOpenMainMenu();
 		case EnemyEncounter:
 			return CommandEnemyEncounter();
+		case VictoryHandler:
+		case EscapeHandler:
+		case DefeatHandler:
+			return SkipTo(EndBattle);
+		case EndBattle:
+			return true;
 		default:
 			return true;
 
@@ -729,9 +785,25 @@ void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices) {
 		Game_Message::texts.push_back(choices[i]);
 	}
 
-	/* Set callback stuff */
+	SetContinuation(&Game_Interpreter::ContinuationChoices);
 
 	// TODO
+}
+
+bool Game_Interpreter::ContinuationChoices() {
+	for (;;) {
+		if (!SkipTo(ShowChoiceOption))
+			return false;
+		int which = list[index].parameters[0];
+		if (which > Game_Message::choice_result)
+			return false;
+		if (which < Game_Message::choice_result)
+			continue;
+		break;
+	}
+
+	index++;
+	return true;
 }
 
 ////////////////////////////////////////////////////////////
@@ -1497,6 +1569,8 @@ bool Game_Interpreter::CommandFullHeal() { // Code 10490
 		 i++) {
 		Game_Actor* actor = *i;
 		actor->SetHp(actor->GetMaxHp());
+		actor->SetSp(actor->GetMaxSp());
+		actor->RemoveAllStates();
 	}
 
 	return true;
@@ -1778,41 +1852,13 @@ bool Game_Interpreter::CommandConditionalBranch() { // Code 12010
 			break;
 	}
 
-	// Store result in branch
-	branch[list[index].indent] = (result ? 1 : -1);
-
-	if (result) {
-		branch.erase(list[index].indent);
+	if (result)
 		return true;
-	}
 
-	return CommandSkip();
-}
-
-bool Game_Interpreter::CommandElseBranch() { // command 22010
-	if (branch[list[index].indent] < 0) {
-		branch.erase(list[index].indent);
-		return true;
-	}
-	return CommandSkip();
-}
-
-////////////////////////////////////////////////////////////
-/// Skip Command
-////////////////////////////////////////////////////////////
-bool Game_Interpreter::CommandSkip() {
-	int indent = list[index].indent;
-
-	for (;;) {
-		// If next event command is at the same level as indent
-		if ( (index < list.size()) && (list[index+1].indent == indent) ) {
-			// Continue
-			return true;
-		}
-		// Advance index
-		index++;
-	}
-
+	if (!SkipTo(ElseBranch))
+		return false;
+	index++;
+	return true;
 }
 
 ////////////////////////////////////////////////////////////
@@ -2309,17 +2355,9 @@ bool Game_Interpreter::CommandJumpToLabel() { // code 12120
 }
 
 bool Game_Interpreter::CommandBreakLoop() { // code 12220
-	int indent = list[index].indent;
-
-	for (int idx = 0; (size_t) idx < list.size(); idx++) {
-		if (list[idx].indent >= indent)
-			continue;
-		if (list[idx].code != EndLoop)
-			continue;
-		index = idx + 1;
-		break;
-	}
-
+	if (!SkipTo(EndLoop, 0, list[index].indent - 1))
+		return false;
+	index++;
 	return true;
 }
 
@@ -2372,7 +2410,28 @@ bool Game_Interpreter::CommandOpenShop() { // code 10720
 	for (it = list[index].parameters.begin() + 4; it < list[index].parameters.end(); it++)
 		Game_Temp::shop_goods.push_back(*it);
 
+	Game_Temp::shop_transaction = false;
 	Game_Temp::shop_calling =  true;
+	SetContinuation(&Game_Interpreter::ContinuationOpenShop);
+	return false;
+}
+
+bool Game_Interpreter::ContinuationOpenShop() {
+	if (!Game_Temp::shop_handlers)
+		return true;
+
+	if (Game_Temp::shop_transaction) {
+		int indent = list[index].indent;
+		index++;
+		if (list[index].indent != indent ||
+			list[index].code != Transaction)
+			return false;
+	} else {
+		if (!SkipTo(NoTransaction))
+			return false;
+	}
+
+	index++;
 	return true;
 }
 
@@ -2382,6 +2441,43 @@ bool Game_Interpreter::CommandShowInn() { // code 10730
 	Game_Temp::inn_handlers = list[index].parameters[2] != 0;
 
 	Game_Temp::inn_calling =  true;
+	Game_Temp::inn_stay =  false;
+	SetContinuation(&Game_Interpreter::ContinuationShowInn);
+	return false;
+}
+
+bool Game_Interpreter::ContinuationShowInn() {
+	if (!Game_Temp::inn_handlers) {
+		if (Game_Temp::inn_stay) {
+			// Full heal
+			for (std::vector<Game_Actor*>::iterator i = Game_Party::GetActors().begin(); 
+				 i != Game_Party::GetActors().end(); 
+				 i++) {
+				Game_Actor* actor = Game_Actors::GetActor((*i)->GetId());
+				actor->SetHp(actor->GetMaxHp());
+				actor->SetSp(actor->GetMaxSp());
+				actor->RemoveAllStates();
+			}
+		}
+		return true;
+	}
+
+	if (Game_Temp::inn_stay) {
+		if (!SkipTo(Stay))
+			return false;
+		index++;
+	} else {
+		if (!SkipTo(NoStay))
+			return false;
+		index++;
+	}
+
+	index++;
+	return true;
+}
+
+bool Game_Interpreter::DefaultContinuation() {
+	index++;
 	return true;
 }
 
@@ -2400,58 +2496,98 @@ bool Game_Interpreter::CommandEnterHeroName() { // code 10740
 
 bool Game_Interpreter::CommandGameOver() { // code 12420
 	Game_Temp::gameover =  true;
-	return true;
+	SetContinuation(&Game_Interpreter::DefaultContinuation);
+	return false;
 }
 
 bool Game_Interpreter::CommandReturntoTitleScreen() { // code 12510
 	Game_Temp::title_calling =  true;
-	return true;
+	SetContinuation(&Game_Interpreter::DefaultContinuation);
+	return false;
 }
 
 bool Game_Interpreter::CommandOpenSaveMenu() { // code 11910
 	Game_Temp::save_calling =  true;
-	return true;
+	SetContinuation(&Game_Interpreter::DefaultContinuation);
+	return false;
 }
 
 bool Game_Interpreter::CommandOpenMainMenu() { // code 11950
 	Game_Temp::menu_calling =  true;
-	return true;
+	SetContinuation(&Game_Interpreter::DefaultContinuation);
+	return false;
 }
 
 bool Game_Interpreter::CommandEnemyEncounter() { // code 10710
-	int troop_id = ValueOrVariable(list[index].parameters[0],
-								   list[index].parameters[1]);
-
-	int terrain_id;
-	std::string background;
-	int formation;		// 1: loose, 2: tight
+	Game_Temp::battle_troop_id = ValueOrVariable(list[index].parameters[0],
+												 list[index].parameters[1]);
 	Game_Character *player;
 	switch (list[index].parameters[2]) {
 		case 0:
 			player = GetCharacter(Player);
-			terrain_id = Game_Map::GetTerrainTag(player->GetX(), player->GetY());
-			background = "";
+			Game_Temp::battle_terrain_id = Game_Map::GetTerrainTag(player->GetX(), player->GetY());
+			Game_Temp::battle_background = "";
 			break;
 		case 1:
-			terrain_id = 0;
-			background = list[index].string;
-			formation = list[index].parameters[7];
+			Game_Temp::battle_terrain_id = 0;
+			Game_Temp::battle_background = list[index].string;
+			Game_Temp::battle_formation = list[index].parameters[7];
 			break;
 		case 2:
-			terrain_id = list[index].parameters[8];
-			background = "";
+			Game_Temp::battle_terrain_id = list[index].parameters[8];
+			Game_Temp::battle_background = "";
 			break;
 		default:
 			return false;
 	}
-	int escape_mode = list[index].parameters[3]; // disallow, end event processing, custom handler
-	int defeat_mode = list[index].parameters[4]; // game over, custom handler
-	bool first_strike = list[index].parameters[5];
-	int battle_mode = list[index].parameters[6]; // normal, initiative, surround, back attack, pincer
-
-	// TODO: actually set up the battle
+	Game_Temp::battle_escape_mode = list[index].parameters[3]; // disallow, end event processing, custom handler
+	Game_Temp::battle_defeat_mode = list[index].parameters[4]; // game over, custom handler
+	Game_Temp::battle_first_strike = list[index].parameters[5];
+	Game_Temp::battle_mode = list[index].parameters[6]; // normal, initiative, surround, back attack, pincer
+	Game_Temp::battle_result = Game_Temp::BattleVictory;
 
 	Game_Temp::battle_calling = true;
-	return true;
+	SetContinuation(&Game_Interpreter::ContinuationEnemyEncounter);
+	return false;
+}
+
+bool Game_Interpreter::ContinuationEnemyEncounter() {
+	switch (Game_Temp::battle_result) {
+		case Game_Temp::BattleVictory:
+			if (!SkipTo(VictoryHandler))
+				return false;
+			index++;
+			return true;
+		case Game_Temp::BattleEscape:
+			switch (Game_Temp::battle_escape_mode) {
+				case 0:	// disallowed - shouldn't happen
+					return true;
+				case 1:
+					return CommandEndEventProcessing();
+				case 2:
+					if (!SkipTo(EscapeHandler))
+						return false;
+					index++;
+					return true;
+				default:
+					return false;
+			}
+			return false;
+		case Game_Temp::BattleDefeat:
+			switch (Game_Temp::battle_defeat_mode) {
+				case 0:
+					return CommandGameOver();
+				case 1:
+					if (!SkipTo(DefeatHandler))
+						return false;
+					index++;
+					return true;
+				default:
+					return false;
+			}
+			return false;
+		default:
+			return false;
+	}
 }
 

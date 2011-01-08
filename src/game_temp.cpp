@@ -40,12 +40,23 @@ bool Game_Temp::shop_sells;
 int Game_Temp::shop_type;
 bool Game_Temp::shop_handlers;
 std::vector<int> Game_Temp::shop_goods;
+bool Game_Temp::shop_transaction;
 int Game_Temp::inn_type;
 int Game_Temp::inn_price;
 bool Game_Temp::inn_handlers;
+bool Game_Temp::inn_stay;
 std::string Game_Temp::hero_name;
 int Game_Temp::hero_name_id;
 int Game_Temp::hero_name_charset;
+int Game_Temp::battle_troop_id;
+int Game_Temp::battle_terrain_id;
+std::string Game_Temp::battle_background;
+int Game_Temp::battle_formation;
+int Game_Temp::battle_escape_mode;
+int Game_Temp::battle_defeat_mode;
+bool Game_Temp::battle_first_strike;
+int Game_Temp::battle_mode;
+int Game_Temp::battle_result;
 
 ////////////////////////////////////////////////////////////
 void Game_Temp::Init() {
@@ -71,4 +82,12 @@ void Game_Temp::Init() {
 	hero_name = "";
 	hero_name_id = 0;
 	hero_name_charset = 0;
+	battle_troop_id = 0;
+	battle_background = "";
+	battle_mode = 0;
+	battle_terrain_id = 0;
+	battle_formation = 0;
+	battle_escape_mode = 0;
+	battle_defeat_mode = 0;
+	battle_first_strike = false;
 }

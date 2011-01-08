@@ -279,3 +279,8 @@ void Game_Battler::RemoveState(int state_id) {
 		states.erase(it);
 }
 
+////////////////////////////////////////////////////////////
+void Game_Battler::RemoveAllStates() {
+	states.clear();
+}
+

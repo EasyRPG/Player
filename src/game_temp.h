@@ -59,14 +59,32 @@ public:
 	static int shop_type;		// message set A, B, or C
 	static bool shop_handlers;	// custom transaction/no-transaction handlers
 	static std::vector<int> shop_goods;
+	static bool shop_transaction;
 
 	static int inn_type;		// message set A or B
 	static int inn_price;
 	static bool inn_handlers;	// custom stay/no-stay handlers
+	static bool inn_stay;
 
 	static std::string hero_name;
 	static int hero_name_id;
 	static int hero_name_charset;
+
+	static int battle_troop_id;
+	static int battle_terrain_id;
+	static std::string battle_background;
+	static int battle_formation;
+	static int battle_escape_mode;
+	static int battle_defeat_mode;
+	static bool battle_first_strike;
+	static int battle_mode;
+	static int battle_result;
+
+	enum BattleResult {
+		BattleVictory,
+		BattleEscape,
+		BattleDefeat
+	};
 
 private:
 	Game_Temp();
