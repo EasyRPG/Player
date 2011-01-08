@@ -35,12 +35,6 @@ Scene_Item::Scene_Item(int item_index) :
 }
 
 ////////////////////////////////////////////////////////////
-Scene_Item::~Scene_Item() {
-	delete help_window;
-	delete item_window;
-}
-
-////////////////////////////////////////////////////////////
 void Scene_Item::Start() {
 	// Create the windows
 	help_window = new Window_Help(0, 0, 320, 32);
@@ -51,13 +45,19 @@ void Scene_Item::Start() {
 }
 
 ////////////////////////////////////////////////////////////
+void Scene_Item::Terminate() {
+	delete help_window;
+	delete item_window;
+}
+
+////////////////////////////////////////////////////////////
 void Scene_Item::Update() {
 	help_window->Update();
 	item_window->Update();
 
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Data::system.cancel_se);
-		Scene::instance = new Scene_Menu(0); // Select Item
+		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		int item_id = item_window->GetItemId();
 
@@ -66,10 +66,11 @@ void Scene_Item::Update() {
 
 			if (Data::items[item_id - 1].type == RPG::Item::Type_switch) {
 				Game_Switches[Data::items[item_id - 1].switch_id] = true;
-				Scene::instance = new Scene_Map();
+				Scene::PopUntil(Scene::Map);
 				Game_Map::SetNeedRefresh(true);
 			} else {
-				Scene::instance = new Scene_ActorTarget(item_id, item_window->GetIndex());
+				Scene::Push(new Scene_ActorTarget(item_id, item_window->GetIndex()));
+				item_index = item_window->GetIndex();
 			}
 		} else {
 			Game_System::SePlay(Data::system.buzzer_se);

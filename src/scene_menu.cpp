@@ -38,13 +38,6 @@ Scene_Menu::Scene_Menu(int menu_index) :
 }
 
 ////////////////////////////////////////////////////////////
-Scene_Menu::~Scene_Menu() {
-	delete command_window;
-	delete gold_window;
-	delete menustatus_window;
-}
-
-////////////////////////////////////////////////////////////
 void Scene_Menu::Start() {
 	CreateCommandWindow();
 
@@ -54,6 +47,13 @@ void Scene_Menu::Start() {
 	// Status Window
 	menustatus_window = new Window_MenuStatus(88, 0, 232, 240);
 	menustatus_window->SetActive(false);
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Menu::Terminate() {
+	delete command_window;
+	delete gold_window;
+	delete menustatus_window;
 }
 
 ////////////////////////////////////////////////////////////
@@ -101,12 +101,14 @@ void Scene_Menu::CreateCommandWindow() {
 void Scene_Menu::UpdateCommand() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Data::system.cancel_se);
-		Scene::instance = new Scene_Map();
+		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		switch (command_window->GetIndex()) {
+		menu_index = command_window->GetIndex();
+
+		switch (menu_index) {
 		case 0: // Item
 			Game_System::SePlay(Data::system.decision_se);
-			Scene::instance = new Scene_Item();
+			Scene::Push(new Scene_Item());
 			break;
 		case 1: // Tech Skill
 		case 2: // Equipment
@@ -133,7 +135,7 @@ void Scene_Menu::UpdateCommand() {
 			break;
 		case 4: // Quit Game
 			Game_System::SePlay(Data::system.decision_se);
-			Scene::instance = new Scene_End();
+			Scene::Push(new Scene_End());
 			break;
 		}
 	}
@@ -150,10 +152,10 @@ void Scene_Menu::UpdateActorSelection() {
 		Game_System::SePlay(Data::system.decision_se);
 		switch (command_window->GetIndex()) {
 		case 1: // Tech Skill
-			Scene::instance = new Scene_Skill(menustatus_window->GetIndex());
+			Scene::Push(new Scene_Skill(menustatus_window->GetIndex()));
 			break;
 		case 2: // Equipment
-			Scene::instance = new Scene_Equip(menustatus_window->GetIndex());
+			Scene::Push(new Scene_Equip(menustatus_window->GetIndex()));
 			break;
 		}
 	}

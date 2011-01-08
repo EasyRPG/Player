@@ -19,6 +19,11 @@
 #define _SCENE_H_
 
 ////////////////////////////////////////////////////////////
+/// Includes
+////////////////////////////////////////////////////////////
+#include <vector>
+
+////////////////////////////////////////////////////////////
 /// Scene virtual class
 ////////////////////////////////////////////////////////////
 class Scene {
@@ -43,9 +48,15 @@ public:
 		Name,
 		Gameover,
 		Debug,
-		Logo
+		Logo,
+		SceneMax
 	};
 	
+	////////////////////////////////////////////////////////
+	/// Constructor.
+	////////////////////////////////////////////////////////
+	Scene();
+
 	////////////////////////////////////////////////////////
 	/// Destructor.
 	////////////////////////////////////////////////////////
@@ -53,6 +64,9 @@ public:
 
 	////////////////////////////////////////////////////////
 	/// Scene entry point.
+	/// The Scene Main-Function manages a stack and always
+	/// executes the scene that is currently on the top of
+	/// the stack.
 	////////////////////////////////////////////////////////
 	virtual void MainFunction();
 
@@ -81,7 +95,7 @@ public:
 	/// Terminate processing.
 	/// This function is executed after the fade out for
 	/// the scene change. All delete operations should be
-	/// done in the destructor and not in this func.
+	/// done in this func and not in the destructor.
 	////////////////////////////////////////////////////////
 	virtual void Terminate();
 
@@ -96,14 +110,44 @@ public:
 	////////////////////////////////////////////////////////
 	virtual void Update();
 
+	////////////////////////////////////////////////////////
+	/// Pushes a new scene on the scene execution stack.
+	/// @param new_scene New scene
+	/// @param pop_stack_top : If the scene that is currently
+	/// on the top should be popped
+	////////////////////////////////////////////////////////
+	static void Push(Scene* new_scene, bool pop_stack_top = false);
+
+	////////////////////////////////////////////////////////
+	/// Removes the scene that is on the top of the stack
+	////////////////////////////////////////////////////////
+	static void Pop();
+
+	////////////////////////////////////////////////////////
+	/// Removes scenes from the stack, until a specific one
+	/// is reached.
+	/// @param type : Type of the scene that is searched
+	////////////////////////////////////////////////////////
+	static void PopUntil(SceneType type);
+
+	// Don't write to the following values directly when you want to change
+	// the scene! Use Push and Pop instead!
+
+	/// Scene type.
+	SceneType type;
+
 	/// Current scene.
 	static Scene* instance;
 
-	/// Current scene type.
-	static SceneType type;
+	/// Old scenes, temporary save for deleting.
+	static std::vector<Scene*> old_instances;
 
-	/// Old scene, temporary save for deleting.
-	static Scene* old_instance;
+	/// Contains name of the Scenes. For Debug purposes.
+	static const char scene_names[SceneMax][12];
+
+private:
+	/// Scene stack
+	static std::vector<Scene*> instances;
 };
 
 #endif

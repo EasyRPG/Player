@@ -912,16 +912,16 @@ Scene_Logo::Scene_Logo() :
 }
 
 ////////////////////////////////////////////////////////////
-Scene_Logo::~Scene_Logo() {
-	delete logo;
-	delete logo_img;
-}
-
-////////////////////////////////////////////////////////////
 void Scene_Logo::Start() {
 	logo = new Sprite();
 	logo_img = Bitmap::CreateBitmap((const uint8*)easyrpg_logo, sizeof(easyrpg_logo), false);
 	logo->SetBitmap(logo_img);
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Logo::Terminate() {
+	delete logo;
+	delete logo_img;
 }
 
 ////////////////////////////////////////////////////////////
@@ -943,6 +943,6 @@ void Scene_Logo::Update() {
 	if (frame_counter == 90 ||
 		Input::IsTriggered(Input::DECISION) ||
 		Input::IsTriggered(Input::CANCEL)) {
-			Scene::instance = new Scene_Title();
+			Scene::Push(new Scene_Title(), true);
 	}
 }

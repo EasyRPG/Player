@@ -37,14 +37,7 @@ Scene_ActorTarget::Scene_ActorTarget(
 	int skill_id, int actor_index, int skill_index) :
 	id(skill_id), index(skill_index),
 	actor_index(actor_index), use_item(false) {
-
-}
-
-////////////////////////////////////////////////////////////
-Scene_ActorTarget::~Scene_ActorTarget() {
-	delete target_window;
-	delete help_window;
-	delete status_window;
+	Scene::type = Scene::ActorTarget;
 }
 
 ////////////////////////////////////////////////////////////
@@ -76,6 +69,13 @@ void Scene_ActorTarget::Start() {
 }
 
 ////////////////////////////////////////////////////////////
+void Scene_ActorTarget::Terminate() {
+	delete target_window;
+	delete help_window;
+	delete status_window;
+}
+
+////////////////////////////////////////////////////////////
 void Scene_ActorTarget::Update() {
 	help_window->Update();
 	target_window->Update();
@@ -92,7 +92,7 @@ void Scene_ActorTarget::Update() {
 void Scene_ActorTarget::UpdateItem() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Data::system.cancel_se);
-		Scene::instance = new Scene_Item(index); // Select old Item
+		Scene::Pop();
 	}
 }
 
@@ -100,6 +100,6 @@ void Scene_ActorTarget::UpdateItem() {
 void Scene_ActorTarget::UpdateSkill() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Data::system.cancel_se);
-		Scene::instance = new Scene_Skill(actor_index, index); // Select old skill
+		Scene::Pop();
 	}
 }

@@ -57,12 +57,6 @@ Scene_Title::Scene_Title() :
 }
 
 ////////////////////////////////////////////////////////////
-Scene_Title::~Scene_Title() {
-	delete command_window;
-	delete title;
-}
-
-////////////////////////////////////////////////////////////
 void Scene_Title::Start() {
 	// Clear the cache when the game returns to title screen
 	// e.g. by pressing F12
@@ -95,6 +89,13 @@ void Scene_Title::PerformTransition() {
 ////////////////////////////////////////////////////////////
 void Scene_Title::PostStart() {
 	command_window->SetVisible(true);
+}
+
+
+////////////////////////////////////////////////////////////
+void Scene_Title::Terminate() {
+	delete command_window;
+	delete title;
 }
 
 ////////////////////////////////////////////////////////////
@@ -219,7 +220,7 @@ void Scene_Title::CommandNewGame() {
 		Main_Data::game_player->Refresh();
 		Game_Map::Autoplay();
 		Game_Map::Update();
-		Scene::instance = new Scene_Map();
+		Scene::Push(new Scene_Map());
 	}
 }
 
@@ -233,13 +234,12 @@ void Scene_Title::CommandContinue() {
 	}
 
 	// Change scene
-	//Main_Data::scene = new Scene_Load();
+	//Scene::Push(new Scene_Load());
 }
 
 ////////////////////////////////////////////////////////////
 void Scene_Title::CommandShutdown() {
 	Game_System::SePlay(Data::system.decision_se);
 	Audio::BGS_Fade(800);
-	type = Scene::Null;
-	instance = NULL;
+	Pop();
 }

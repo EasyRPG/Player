@@ -107,11 +107,11 @@ void Player::Run() {
 #endif
 
 	if (battle_test_flag) {
-		Scene::instance = new Scene_Battle();
+		Scene::Push(new Scene_Battle());
 	} else if (debug_flag) {
-		Scene::instance = new Scene_Title();
+		Scene::Push(new Scene_Title());
 	} else {
-		Scene::instance = new Scene_Logo();
+		Scene::Push(new Scene_Logo());
 	}
 
 	reset_flag = false;
@@ -120,9 +120,17 @@ void Player::Run() {
 	Graphics::FrameReset();
 	
 	// Main loop
-	while (Scene::type != Scene::Null) {
+	while (Scene::instance->type != Scene::Null) {
 		Scene::instance->MainFunction();
-		delete Scene::old_instance;
+
+		if (Scene::old_instances.size() != 0) {
+			Output::Debug("Deletion stack:");
+		}
+		for (size_t i = 0; i < Scene::old_instances.size(); ++i) {
+			Output::Debug(Scene::scene_names[Scene::old_instances[i]->type]);
+			delete Scene::old_instances[i];
+		}
+		Scene::old_instances.clear();
 	}
 
 	Player::Exit();
@@ -149,7 +157,7 @@ void Player::Update() {
 		exit(EXIT_SUCCESS);
 	} else if (reset_flag) {
 		reset_flag = false;
-		Scene::instance = new Scene_Title();
+		Scene::PopUntil(Scene::Title);
 	}
 }
 

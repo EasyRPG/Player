@@ -30,10 +30,6 @@ Scene_Battle::Scene_Battle() {
 }
 
 ////////////////////////////////////////////////////////////
-Scene_Battle::~Scene_Battle() {
-}
-
-////////////////////////////////////////////////////////////
 void Scene_Battle::Start() {
 	const char warning[] = "Scene_Battle is a stub class\n\
 						It was added for the BattleTest parameter.\n\n\
@@ -53,7 +49,6 @@ void Scene_Battle::Start() {
 ////////////////////////////////////////////////////////////
 void Scene_Battle::Update() {
 	if (Input::IsTriggered(Input::DECISION)) {
-		Scene::type = Scene::Null;
-		Scene::instance = NULL;
+		Scene::Push(new Scene());
 	}
 }

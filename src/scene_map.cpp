@@ -41,17 +41,17 @@ Scene_Map::Scene_Map() :
 }
 
 ////////////////////////////////////////////////////////////
-Scene_Map::~Scene_Map() {
-	delete spriteset;
-	delete message_window;
-}
-
-////////////////////////////////////////////////////////////
 void Scene_Map::Start() {
 	spriteset = new Spriteset_Map();
 	message_window = new Window_Message(0, 240 - 80, 320, 80);
 
 	Graphics::FrameReset();
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Map::Terminate() {
+	delete spriteset;
+	delete message_window;
 }
 
 ////////////////////////////////////////////////////////////
@@ -80,8 +80,10 @@ void Scene_Map::Update() {
 	}
 
 	if (!Main_Data::game_player->IsMoving()) {
-		if (Game_Temp::menu_calling)
+		if (Game_Temp::menu_calling) {
 			CallMenu();
+			return;
+		}
 
 		if (Game_Temp::transition_processing) {
 			Game_Temp::transition_processing = false;
@@ -138,7 +140,7 @@ void Scene_Map::CallMenu() {
 
 	// TODO: Main_Data::game_player->Straighten();
 
-	Scene::instance = new Scene_Menu();
+	Scene::Push(new Scene_Menu());
 }
 
 void Scene_Map::CallSave() {

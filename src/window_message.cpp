@@ -549,7 +549,7 @@ void Window_Message::InputChoice() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		if (Game_Message::choice_cancel_type > 0) {
 			Game_System::SePlay(Data::system.cancel_se);
-			Game_Message::choice_result = 4; // Cancel
+			Game_Message::choice_result = Game_Message::choice_cancel_type - 1; // Cancel
 			TerminateMessage();
 		}
 	} else if (Input::IsTriggered(Input::DECISION)) {

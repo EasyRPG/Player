@@ -18,10 +18,12 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <cassert>
 #include "scene.h"
 #include "graphics.h"
 #include "input.h"
 #include "player.h"
+#include "output.h"
 
 #ifndef NULL
 #define NULL 0
@@ -29,8 +31,35 @@
 
 ////////////////////////////////////////////////////////////
 Scene* Scene::instance;
-Scene::SceneType Scene::type;
-Scene* Scene::old_instance = NULL;
+std::vector<Scene*> Scene::old_instances;
+std::vector<Scene*> Scene::instances;
+const char Scene::scene_names[SceneMax][12] =
+{
+	"Null",
+	"Title",
+	"Map",
+	"Menu",
+	"Item",
+	"Skill",
+	"Equip",
+	"ActorTarget",
+	"Status",
+	"File",
+	"Save",
+	"Load",
+	"End",
+	"Battle",
+	"Shop",
+	"Name",
+	"Gameover",
+	"Debug",
+	"Logo"
+};
+
+////////////////////////////////////////////////////////////
+Scene::Scene() {
+	type = Scene::Null;
+}
 
 ////////////////////////////////////////////////////////////
 void Scene::MainFunction() {
@@ -45,6 +74,12 @@ void Scene::MainFunction() {
 		Input::Update();
 		Update();
 	}
+
+#ifdef _DEBUG
+	assert(Scene::instance == instances[instances.size() - 1] &&
+		"Don't set Scene::instance directly, use Push instead!");
+#endif
+
 	Graphics::Update();
 
 	PreTerminate();
@@ -66,7 +101,6 @@ void Scene::PreTerminate() {
 
 ////////////////////////////////////////////////////////////
 void Scene::Terminate() {
-	Scene::old_instance = this;
 }
 
 ////////////////////////////////////////////////////////////
@@ -83,4 +117,50 @@ void Scene::PerformTransition() {
 
 ////////////////////////////////////////////////////////////
 void Scene::Update() {
+}
+
+////////////////////////////////////////////////////////////
+void Scene::Push(Scene* new_scene, bool pop_stack_top) {
+	if (pop_stack_top) {
+		old_instances.push_back(instances[instances.size() - 1]);
+		instances.pop_back();
+	}
+
+	instances.push_back(new_scene);
+	instance = new_scene;
+
+	Output::Debug("Scene Stack after Push:");
+	for (size_t i = 0; i < instances.size(); ++i) {
+		Output::Debug(scene_names[instances[i]->type]);
+	}
+}
+
+////////////////////////////////////////////////////////////
+void Scene::Pop() {
+	old_instances.push_back(instances[instances.size() - 1]);
+	instances.pop_back();
+
+	if (instances.size() == 0) {
+		Push(new Scene()); // Null-scene
+	} else {
+		instance = instances[instances.size() - 1];
+	}
+
+	Output::Debug("Scene Stack after Pop:");
+	for (size_t i = 0; i < instances.size(); ++i) {
+		Output::Debug(scene_names[instances[i]->type]);
+	}
+}
+
+////////////////////////////////////////////////////////////
+void Scene::PopUntil(SceneType type) {
+	for (size_t i = instances.size() - 1 ; i >= 0; --i) {
+		if (instances[i]->type == type) {
+			instance = instances[instances.size() - 1];
+			return;
+		}
+
+		old_instances.push_back(instances[i]);
+		instances.pop_back();
+	}
 }

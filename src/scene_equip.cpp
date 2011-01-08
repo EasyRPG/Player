@@ -35,16 +35,6 @@ Scene_Equip::Scene_Equip(int actor_index, int equip_index) :
 }
 
 ////////////////////////////////////////////////////////////
-Scene_Equip::~Scene_Equip() {
-	delete help_window;
-	delete equip_window;
-	delete equipstatus_window;
-	for (int i = 0; i < 5; ++i) {
-		delete item_windows[i];
-	}
-}
-
-////////////////////////////////////////////////////////////
 void Scene_Equip::Start() {
 	Game_Actor* actor = Game_Party::GetActors()[actor_index];
 
@@ -65,6 +55,16 @@ void Scene_Equip::Start() {
 		item_windows[i]->SetHelpWindow(help_window);
 		item_windows[i]->SetActive(false);
 		item_windows[i]->Refresh();
+	}
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Equip::Terminate() {
+	delete help_window;
+	delete equip_window;
+	delete equipstatus_window;
+	for (int i = 0; i < 5; ++i) {
+		delete item_windows[i];
 	}
 }
 
@@ -119,7 +119,7 @@ void Scene_Equip::UpdateStatusWindow() {
 void Scene_Equip::UpdateEquipSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Data::system.cancel_se);
-		Scene::instance = new Scene_Menu(2); // Select Equipment
+		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Data::system.decision_se);
 		equip_window->SetActive(false);
@@ -128,11 +128,11 @@ void Scene_Equip::UpdateEquipSelection() {
 	} else if (Game_Party::GetActors().size() > 1 && Input::IsTriggered(Input::RIGHT)) {
 		Game_System::SePlay(Data::system.cursor_se);
 		actor_index = (actor_index + 1) % Game_Party::GetActors().size();
-		Scene::instance = new Scene_Equip(actor_index, equip_window->GetIndex());
+		Scene::Push(new Scene_Equip(actor_index, equip_window->GetIndex()), true);
 	} else if (Game_Party::GetActors().size() > 1 && Input::IsTriggered(Input::LEFT)) {
 		Game_System::SePlay(Data::system.cursor_se);
 		actor_index = (actor_index + Game_Party::GetActors().size() - 1) % Game_Party::GetActors().size();
-		Scene::instance = new Scene_Equip(actor_index, equip_window->GetIndex());
+		Scene::Push(new Scene_Equip(actor_index, equip_window->GetIndex()), true);
 	} 
 }
 

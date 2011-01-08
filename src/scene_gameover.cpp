@@ -32,11 +32,6 @@ Scene_Gameover::Scene_Gameover() {
 }
 
 ////////////////////////////////////////////////////////////
-Scene_Gameover::~Scene_Gameover() {
-	delete background;
-}
-
-////////////////////////////////////////////////////////////
 void Scene_Gameover::Start() {
 	// Load Background Graphic
 	background = new Sprite();
@@ -46,8 +41,13 @@ void Scene_Gameover::Start() {
 }
 
 ////////////////////////////////////////////////////////////
+void Scene_Gameover::Terminate() {
+	delete background;
+}
+
+////////////////////////////////////////////////////////////
 void Scene_Gameover::Update() {
 	if (Input::IsTriggered(Input::DECISION)) {
-		Scene::instance = new Scene_Title();
+		Scene::PopUntil(Scene::Title);
 	}
 }

@@ -31,13 +31,7 @@
 Scene_End::Scene_End() :
 	help_window(NULL),
 	command_window(NULL) {
-	Scene::type = Scene::Title;
-}
-
-////////////////////////////////////////////////////////////
-Scene_End::~Scene_End() {
-	delete command_window;
-	delete help_window;
+	Scene::type = Scene::End;
 }
 
 ////////////////////////////////////////////////////////////
@@ -47,12 +41,18 @@ void Scene_End::Start() {
 }
 
 ////////////////////////////////////////////////////////////
+void Scene_End::Terminate() {
+	delete command_window;
+	delete help_window;
+}
+
+////////////////////////////////////////////////////////////
 void Scene_End::Update() {
 	command_window->Update();
 
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Data::system.cancel_se);
-		Scene::instance = new Scene_Menu(4); // Select End Game
+		Scene::Pop(); // Select End Game
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Data::system.decision_se);
 		switch (command_window->GetIndex()) {
@@ -60,10 +60,10 @@ void Scene_End::Update() {
 			Audio::BGM_Fade(800);
 			Audio::BGS_Fade(800);
 			Audio::ME_Fade(800);
-			Scene::instance = new Scene_Title();
+			Scene::PopUntil(Scene::Title);
 			break;
 		case 1: // No
-			Scene::instance = new Scene_Menu(4);
+			Scene::Pop();
 			break;
 		}
 	}
