@@ -2039,7 +2039,9 @@ bool Game_Interpreter::CommandShowPicture() { // code 11110
 	int saturation = list[index].parameters[11];
 	int effect = list[index].parameters[12];
 	int speed = list[index].parameters[13];
-	int bottom_trans = list[index].parameters[14];
+	int bottom_trans = list[index].parameters.size() >= 15
+		? list[index].parameters[14]
+		: top_trans;
 
 	picture.Show(pic_name);
 	picture.UseTransparent(use_trans);
@@ -2081,7 +2083,9 @@ bool Game_Interpreter::CommandMovePicture() { // code 11120
 	int speed = list[index].parameters[13];
 	int tenths = list[index].parameters[14];
 	bool wait = list[index].parameters[15] != 0;
-	int bottom_trans = list[index].parameters[16];
+	int bottom_trans = list[index].parameters.size() >= 17
+		? list[index].parameters[16]
+		: top_trans;
 
 	picture.Move(x, y);
 	picture.Color(red, green, blue, saturation);
@@ -2711,21 +2715,24 @@ static RPG::MoveCommand decode_move(std::vector<int>::const_iterator& it)
 	return cmd;
 }
 
+std::vector<RPG::MoveRoute*> pending;
+
 bool Game_Interpreter::CommandMoveEvent() { // code 11330
 	int event_id = list[index].parameters[0];
 	Game_Character* event = GetCharacter(event_id);
 
-	RPG::MoveRoute route;
+	RPG::MoveRoute *route = new RPG::MoveRoute;
 	int move_freq = list[index].parameters[1];
-	route.repeat = list[index].parameters[2] != 0;
-	route.skippable = list[index].parameters[3] != 0;
+	route->repeat = list[index].parameters[2] != 0;
+	route->skippable = list[index].parameters[3] != 0;
 
     std::vector<int>::const_iterator it;
 	for (it = list[index].parameters.begin() + 4; it < list[index].parameters.end(); )
-	    route.move_commands.push_back(decode_move(it));
+	    route->move_commands.push_back(decode_move(it));
 
-	event->ForceMoveRoute(route);
+	event->ForceMoveRoute(*route);
 	// event->ForceMoveRoute(route, move_freq, this);
+	pending.push_back(route);
 	return true;
 }
 
