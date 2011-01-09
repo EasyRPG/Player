@@ -154,13 +154,19 @@ void Scene::Pop() {
 
 ////////////////////////////////////////////////////////////
 void Scene::PopUntil(SceneType type) {
-	for (size_t i = instances.size() - 1 ; i >= 0; --i) {
+	int count = 0;
+
+	for (int i = (int)instances.size() - 1 ; i >= 0; --i) {
 		if (instances[i]->type == type) {
+			for (i = 0; i < count; ++i) {
+				old_instances.push_back(instances[instances.size() - 1]);
+				instances.pop_back();
+			}
 			instance = instances[instances.size() - 1];
 			return;
 		}
-
-		old_instances.push_back(instances[i]);
-		instances.pop_back();
+		++count;
 	}
+
+	Output::Warning("The requested scene %s was not on the stack", scene_names[type]);
 }

@@ -57,6 +57,7 @@ void Game_Message::Init() {
 
 void Game_Message::SemiClear() {
 	texts.clear();
+	choice_disabled.clear();
 	choice_start = 99;
 	choice_max = 0;
 	choice_cancel_type = 0;
