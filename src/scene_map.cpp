@@ -21,6 +21,7 @@
 #include "scene_map.h"
 #include "scene_menu.h"
 #include "scene_title.h"
+#include "scene_name.h"
 #include "main_data.h"
 #include "game_map.h"
 #include "game_message.h"
@@ -85,6 +86,11 @@ void Scene_Map::Update() {
 			return;
 		}
 
+		if (Game_Temp::name_calling) {
+			CallName();
+			return;
+		}
+
 		if (Game_Temp::transition_processing) {
 			Game_Temp::transition_processing = false;
 
@@ -124,7 +130,9 @@ void Scene_Map::CallShop() {
 }
 
 void Scene_Map::CallName() {
+	Game_Temp::name_calling = false;
 
+	Scene::Push(new Scene_Name());
 }
 
 ////////////////////////////////////////////////////////////
