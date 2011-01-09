@@ -2465,8 +2465,20 @@ bool Game_Interpreter::CommandShowInn() { // code 10730
 	}
 
 	Game_Message::choice_start = Game_Message::texts.size();
-	Game_Message::texts.push_back("Stay");
-	Game_Message::texts.push_back("Don't Stay");
+
+	switch (inn_type) {
+		case 0:
+			Game_Message::texts.push_back(Data::terms.inn_a_accept);
+			Game_Message::texts.push_back(Data::terms.inn_a_cancel);
+			break;
+		case 1:
+			Game_Message::texts.push_back(Data::terms.inn_b_accept);
+			Game_Message::texts.push_back(Data::terms.inn_b_cancel);
+			break;
+		default:
+			return false;
+	}
+
 	Game_Message::choice_max = 2;
 	Game_Message::choice_disabled.clear();
 	if (Game_Party::GetGold() < Game_Temp::inn_price)
