@@ -33,6 +33,7 @@
 #include "audio.h"
 #include "util_macro.h"
 #include <cstdlib>
+#include <iostream>
 #include <sstream>
 #include "main_data.h"
 
@@ -2511,6 +2512,7 @@ bool Game_Interpreter::ContinuationShowInn() {
 				actor->RemoveAllStates();
 			}
 		}
+		index++;
 		return true;
 	}
 
