@@ -65,6 +65,10 @@ namespace Game_Message {
 	// Number of choices
 	extern int choice_max;
 
+	// Disabled choices:
+	// choice_disabled[i] is true if choice <i> is disabled (zero-based)
+	extern std::vector<bool> choice_disabled;
+
 	// Option to choose if cancel
 	extern int choice_cancel_type;
 

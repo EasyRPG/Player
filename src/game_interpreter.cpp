@@ -33,6 +33,7 @@
 #include "audio.h"
 #include "util_macro.h"
 #include <cstdlib>
+#include <sstream>
 #include "main_data.h"
 
 ////////////////////////////////////////////////////////////
@@ -299,7 +300,7 @@ void Game_Interpreter::Update() {
 
 		if (Game_Temp::battle_calling ||
 			Game_Temp::shop_calling ||
-			Game_Temp::inn_calling ||
+//			Game_Temp::inn_calling ||
 			Game_Temp::name_calling ||
 			Game_Temp::menu_calling ||
 			Game_Temp::save_calling ||
@@ -788,6 +789,7 @@ bool Game_Interpreter::CommandShowMessage() { // Code ShowMessage
 void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices) {
 	Game_Message::choice_start = Game_Message::texts.size();
 	Game_Message::choice_max = choices.size();
+	Game_Message::choice_disabled.clear();
 
 	// Set choices to message text
 	unsigned int i;
@@ -2421,26 +2423,72 @@ bool Game_Interpreter::ContinuationOpenShop() {
 	if (!Game_Temp::shop_handlers)
 		return true;
 
-	return SkipTo(Game_Temp::shop_transaction
-				  ? Transaction
-				  : NoTransaction,
-				  EndShop);
+	if (!SkipTo(Game_Temp::shop_transaction
+				? Transaction
+				: NoTransaction,
+				EndShop))
+		return false;
+	index++;
+	return true;
 }
 
 bool Game_Interpreter::CommandShowInn() { // code 10730
-	Game_Temp::inn_type = list[index].parameters[0];
+	int inn_type = list[index].parameters[0];
 	Game_Temp::inn_price = list[index].parameters[1];
 	Game_Temp::inn_handlers = list[index].parameters[2] != 0;
 
+	Game_Message::message_waiting = true;
+
+	Game_Message::texts.clear();
+
+	std::ostringstream out;
+
+	switch (inn_type) {
+		case 0:
+			out << Data::terms.inn_a_greeting_1
+				<< " " << Game_Temp::inn_price
+				<< " " << Data::terms.gold
+				<< Data::terms.inn_a_greeting_2;
+			Game_Message::texts.push_back(out.str());
+			Game_Message::texts.push_back(Data::terms.inn_a_greeting_3);
+			break;
+		case 1:
+			out << Data::terms.inn_b_greeting_1
+				<< " " << Game_Temp::inn_price
+				<< " " << Data::terms.gold
+				<< Data::terms.inn_b_greeting_2;
+			Game_Message::texts.push_back(out.str());
+			Game_Message::texts.push_back(Data::terms.inn_b_greeting_3);
+			break;
+		default:
+			return false;
+	}
+
+	Game_Message::choice_start = Game_Message::texts.size();
+	Game_Message::texts.push_back("Stay");
+	Game_Message::texts.push_back("Don't Stay");
+	Game_Message::choice_max = 2;
+	Game_Message::choice_disabled.clear();
+	if (Game_Party::GetGold() < Game_Temp::inn_price)
+		Game_Message::choice_disabled.push_back(true);
+
 	Game_Temp::inn_calling =  true;
-	Game_Temp::inn_stay =  false;
+	Game_Message::choice_result = 4;
+
 	SetContinuation(&Game_Interpreter::ContinuationShowInn);
 	return false;
 }
 
 bool Game_Interpreter::ContinuationShowInn() {
+	bool inn_stay = Game_Message::choice_result == 0;
+
+	Game_Temp::inn_calling =  false;
+
+	if (inn_stay)
+		Game_Party::GainGold(-Game_Temp::inn_price);
+
 	if (!Game_Temp::inn_handlers) {
-		if (Game_Temp::inn_stay) {
+		if (inn_stay) {
 			// Full heal
 			for (std::vector<Game_Actor*>::iterator i = Game_Party::GetActors().begin(); 
 				 i != Game_Party::GetActors().end(); 
@@ -2454,7 +2502,10 @@ bool Game_Interpreter::ContinuationShowInn() {
 		return true;
 	}
 
-	return SkipTo(Game_Temp::inn_stay ? Stay : NoStay, EndInn);
+	if (!SkipTo(inn_stay ? Stay : NoStay, EndInn))
+		return false;
+	index++;
+	return true;
 }
 
 bool Game_Interpreter::DefaultContinuation() {
@@ -2543,7 +2594,10 @@ bool Game_Interpreter::ContinuationEnemyEncounter() {
 				case 1:
 					return CommandEndEventProcessing();
 				case 2:
-					return SkipTo(EscapeHandler, EndBattle);
+					if (!SkipTo(EscapeHandler, EndBattle))
+						return false;
+					index++;
+					return true;
 				default:
 					return false;
 			}
@@ -2552,7 +2606,10 @@ bool Game_Interpreter::ContinuationEnemyEncounter() {
 				case 0:
 					return CommandGameOver();
 				case 1:
-					return SkipTo(DefeatHandler, EndBattle);
+					if (!SkipTo(DefeatHandler, EndBattle))
+						return false;
+					index++;
+					return true;
 				default:
 					return false;
 			}

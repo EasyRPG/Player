@@ -31,6 +31,7 @@ namespace Game_Message {
 	int num_input_start;
 
 	int choice_max;
+	std::vector<bool> choice_disabled;
 
 	int choice_cancel_type;
 
