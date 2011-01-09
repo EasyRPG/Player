@@ -19,6 +19,7 @@
 #define _GAMEMESSAGE_H_
 
 #include <vector>
+#include <bitset>
 #include <string>
 
 namespace Game_Message {
@@ -67,7 +68,7 @@ namespace Game_Message {
 
 	// Disabled choices:
 	// choice_disabled[i] is true if choice <i> is disabled (zero-based)
-	extern std::vector<bool> choice_disabled;
+	extern std::bitset<8> choice_disabled;
 
 	// Option to choose if cancel
 	extern int choice_cancel_type;

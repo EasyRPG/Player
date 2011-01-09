@@ -170,10 +170,8 @@ void Window_Message::InsertNewLine() {
 
 		unsigned choice_index = line_count - Game_Message::choice_start;
 		// Check for disabled choices
-		if (choice_index < Game_Message::choice_disabled.size()) {
-			if (Game_Message::choice_disabled.at(choice_index)) {
-				contents->GetFont()->color = Font::ColorDisabled;
-			}
+		if (Game_Message::choice_disabled.test(choice_index)) {
+			contents->GetFont()->color = Font::ColorDisabled;
 		}
 
 		contents_x += 12;
@@ -564,11 +562,9 @@ void Window_Message::InputChoice() {
 			TerminateMessage();
 		}
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		if ((unsigned)index < Game_Message::choice_disabled.size()) {
-			if (Game_Message::choice_disabled[index]) {
-				Game_System::SePlay(Data::system.buzzer_se);
-				return;
-			}
+		if (Game_Message::choice_disabled.test(index)) {
+			Game_System::SePlay(Data::system.buzzer_se);
+			return;
 		}
 
 		Game_System::SePlay(Data::system.decision_se);

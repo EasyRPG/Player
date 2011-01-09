@@ -790,7 +790,7 @@ bool Game_Interpreter::CommandShowMessage() { // Code ShowMessage
 void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices) {
 	Game_Message::choice_start = Game_Message::texts.size();
 	Game_Message::choice_max = choices.size();
-	Game_Message::choice_disabled.clear();
+	Game_Message::choice_disabled.reset();
 
 	// Set choices to message text
 	unsigned int i;
@@ -2481,9 +2481,9 @@ bool Game_Interpreter::CommandShowInn() { // code 10730
 	}
 
 	Game_Message::choice_max = 2;
-	Game_Message::choice_disabled.clear();
+	Game_Message::choice_disabled.reset();
 	if (Game_Party::GetGold() < Game_Temp::inn_price)
-		Game_Message::choice_disabled.push_back(true);
+		Game_Message::choice_disabled.set(0);
 
 	Game_Temp::inn_calling =  true;
 	Game_Message::choice_result = 4;
@@ -2657,6 +2657,75 @@ bool Game_Interpreter::CommandEscapeTarget() { // code 11830
 		? list[index].parameters[4]
 		: -1;
 	Game_System::SetEscapeTarget(map_id, x, y, switch_id);
+	return true;
+}
+
+static int decode_int(std::vector<int>::const_iterator& it)
+{
+	int value = 0;
+
+	for (;;) {
+		int x = *it++;
+		value <<= 7;
+		value |= x & 0x7F;
+		if (!(x & 0x80))
+			break;
+	}
+
+	return value;
+}
+
+static const std::string decode_str(std::vector<int>::const_iterator& it)
+{
+	std::ostringstream out;
+	int len = decode_int(it);
+
+	for (int i = 0; i < len; i++)
+		out << (char) *it++;
+
+	return out.str();
+}
+
+static RPG::MoveCommand decode_move(std::vector<int>::const_iterator& it)
+{
+	RPG::MoveCommand cmd;
+	cmd.command_id = *it++;
+
+	switch (cmd.command_id) {
+		case 32:	// Switch ON
+		case 33:	// Switch OFF
+			cmd.parameter_a = decode_int(it);
+			break;
+		case 34:	// Change Graphic
+			cmd.parameter_string = decode_str(it);
+			cmd.parameter_a = decode_int(it);
+			break;
+		case 35:	// Play Sound Effect
+			cmd.parameter_string = decode_str(it);
+			cmd.parameter_a = decode_int(it);
+			cmd.parameter_b = decode_int(it);
+			cmd.parameter_c = decode_int(it);
+			break;
+	}
+
+	return cmd;
+}
+
+bool Game_Interpreter::CommandMoveEvent() { // code 11330
+	int event_id = list[index].parameters[0];
+	Game_Character* event = GetCharacter(event_id);
+
+	RPG::MoveRoute route;
+	int move_freq = list[index].parameters[1];
+	route.repeat = list[index].parameters[2] != 0;
+	route.skippable = list[index].parameters[3] != 0;
+
+    std::vector<int>::const_iterator it;
+	for (it = list[index].parameters.begin() + 4; it < list[index].parameters.end(); )
+	    route.move_commands.push_back(decode_move(it));
+
+	event->ForceMoveRoute(route);
+	// event->ForceMoveRoute(route, move_freq, this);
 	return true;
 }
 

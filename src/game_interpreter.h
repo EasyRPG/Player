@@ -145,6 +145,7 @@ private:
 	bool CommandEnemyEncounter();
 	bool CommandTeleportTargets();
 	bool CommandEscapeTarget();
+	bool CommandMoveEvent();
 
 	void CommandEnd();
 

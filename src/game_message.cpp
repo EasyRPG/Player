@@ -31,7 +31,7 @@ namespace Game_Message {
 	int num_input_start;
 
 	int choice_max;
-	std::vector<bool> choice_disabled;
+	std::bitset<8> choice_disabled;
 
 	int choice_cancel_type;
 
@@ -57,7 +57,7 @@ void Game_Message::Init() {
 
 void Game_Message::SemiClear() {
 	texts.clear();
-	choice_disabled.clear();
+	choice_disabled.reset();
 	choice_start = 99;
 	choice_max = 0;
 	choice_cancel_type = 0;
