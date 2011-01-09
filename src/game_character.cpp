@@ -18,9 +18,13 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include "audio.h"
 #include "game_character.h"
 #include "game_map.h"
 #include "game_player.h"
+#include "game_switches.h"
+#include "game_system.h"
+#include "lmu_chunks.h"
 #include "main_data.h"
 #include "util_macro.h"
 #include <cassert>
@@ -39,10 +43,16 @@ Game_Character::Game_Character() :
 	move_route_forcing(false),
 	through(false),
 	animation_id(0),
+	move_route(NULL),
+	original_move_route(NULL),
+	move_route_index(0),
+	original_move_route_index(0),
+	move_type(0),
 	move_speed(4),
 	move_frequency(6),
 	prelock_direction(0),
 	locked(false),
+	move_failed(false),
 	anime_count(0),
 	stop_count(0),
 	jump_count(0),
@@ -58,6 +68,14 @@ Game_Character::Game_Character() :
 ////////////////////////////////////////////////////////////
 bool Game_Character::IsMoving() const {
 	return real_x != x * 128 || real_y != y * 128;
+}
+
+bool Game_Character::IsJumping() const {
+	return jump_count > 0;
+}
+
+bool Game_Character::IsStopping() const {
+	return !(IsMoving() || IsJumping());
 }
 
 ////////////////////////////////////////////////////////////
@@ -97,10 +115,6 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 
 int Game_Character::GetPriorityType() const {
 	return priority_type;
-}
-
-bool Game_Character::IsJumping() const {
-	return jump_count > 0;
 }
 
 ////////////////////////////////////////////////////////////
@@ -182,13 +196,15 @@ void Game_Character::Update() {
 	/*if (wait_count > 0) {
 		wait_count -= 1
 		return;
-	}
+	}*/
 
 	if (move_route_forcing) {
 		MoveTypeCustom();
-		return;
+	} else if (!locked) {
+		UpdateSelfMovement();
 	}
 
+	/*
 	if (starting || IsLock()) return;
 	
 	if (stop_count > (40 - move_frequency * 2) * (6 - move_frequency)) {
@@ -227,6 +243,27 @@ void Game_Character::UpdateMove() {
 }
 
 ////////////////////////////////////////////////////////////
+void Game_Character::UpdateSelfMovement() {
+	if (stop_count > 30 * (5 - move_frequency)) {
+		switch (move_type) {
+		case 1: // Random
+			break;
+		case 2: // Cycle up-down
+			break;
+		case 3: // Cycle left-right
+			break;
+		case 4: // Step towards hero
+			break;
+		case 5: // Step away from hero
+			break;
+		case 6: // Custom route
+			MoveTypeCustom();
+			break;
+		}
+	}
+}
+
+////////////////////////////////////////////////////////////
 void Game_Character::UpdateStop() {
 	if (step_anime)
 		anime_count += 1;
@@ -238,6 +275,97 @@ void Game_Character::UpdateStop() {
 }
 
 ////////////////////////////////////////////////////////////
+void Game_Character::MoveTypeCustom() {
+	if (IsStopping()) {
+		move_failed = false;
+		if ((size_t)move_route_index >= move_route->move_commands.size()) {
+			// End of Move list
+			if (move_route->repeat) {
+				move_route_index = 0;
+			} else if (move_route_forcing) {
+				move_route_forcing = false;
+				move_route = original_move_route;
+				move_route_index = original_move_route_index;
+				original_move_route = NULL;
+			}
+		} else {
+			RPG::MoveCommand& move_command = move_route->move_commands[move_route_index];
+			switch (move_command.command_id) {
+			case LMU_Reader::ChunkMoveCommands::move_up:
+				MoveDown();	break;
+			case LMU_Reader::ChunkMoveCommands::move_right:
+				MoveRight(); break;
+			case LMU_Reader::ChunkMoveCommands::move_down:
+				MoveDown(); break;
+			case LMU_Reader::ChunkMoveCommands::move_left:
+				MoveLeft(); break;
+			case LMU_Reader::ChunkMoveCommands::move_upright: break;
+			case LMU_Reader::ChunkMoveCommands::move_downright: break;
+			case LMU_Reader::ChunkMoveCommands::move_downleft: break;
+			case LMU_Reader::ChunkMoveCommands::move_upleft: break;
+			case LMU_Reader::ChunkMoveCommands::move_random: break;
+			case LMU_Reader::ChunkMoveCommands::move_towards_hero: break;
+			case LMU_Reader::ChunkMoveCommands::move_away_from_hero: break;
+			case LMU_Reader::ChunkMoveCommands::move_forward: break;
+			case LMU_Reader::ChunkMoveCommands::face_up:
+				TurnUp(); break;
+			case LMU_Reader::ChunkMoveCommands::face_right:
+				TurnRight(); break;
+			case LMU_Reader::ChunkMoveCommands::face_down:
+				TurnDown(); break;
+			case LMU_Reader::ChunkMoveCommands::face_left:
+				TurnLeft(); break;
+			case LMU_Reader::ChunkMoveCommands::turn_90_degree_right: break;
+			case LMU_Reader::ChunkMoveCommands::turn_90_degree_left: break;
+			case LMU_Reader::ChunkMoveCommands::turn_180_degree: break;
+			case LMU_Reader::ChunkMoveCommands::turn_90_degree_random: break;
+			case LMU_Reader::ChunkMoveCommands::face_random_direction: break;
+			case LMU_Reader::ChunkMoveCommands::face_hero: break;
+			case LMU_Reader::ChunkMoveCommands::face_away_from_hero: break;
+			case LMU_Reader::ChunkMoveCommands::wait: break;
+			case LMU_Reader::ChunkMoveCommands::begin_jump: break;
+			case LMU_Reader::ChunkMoveCommands::end_jump: break;
+			case LMU_Reader::ChunkMoveCommands::lock_facing: break;
+			case LMU_Reader::ChunkMoveCommands::unlock_facing: break;
+			case LMU_Reader::ChunkMoveCommands::increase_movement_speed:
+				move_speed = min(move_speed + 1, 8); break;
+			case LMU_Reader::ChunkMoveCommands::decrease_movement_speed: 
+				move_speed = max(move_speed - 1, 1); break;
+			case LMU_Reader::ChunkMoveCommands::increase_movement_frequence: break;
+			case LMU_Reader::ChunkMoveCommands::decrease_movement_frequence: break;
+			case LMU_Reader::ChunkMoveCommands::switch_on: // Parameter A: Switch to turn on
+				Game_Switches[move_command.parameter_a] = true;
+				Game_Map::SetNeedRefresh(true);
+				break;
+			case LMU_Reader::ChunkMoveCommands::switch_off: // Parameter A: Switch to turn off
+				Game_Switches[move_command.parameter_a] = false;
+				Game_Map::SetNeedRefresh(true);
+				break;
+			case LMU_Reader::ChunkMoveCommands::change_graphic: break; // String: File, Parameter A: index
+			case LMU_Reader::ChunkMoveCommands::play_sound_effect: // String: File, Parameters: Volume, Tempo, Balance
+				if (move_command.parameter_string != "(OFF)") {
+					Audio::SE_Play("Sound/" + move_command.parameter_string,
+						move_command.parameter_a, move_command.parameter_b);
+				}
+				break;
+			case LMU_Reader::ChunkMoveCommands::walk_everywhere_on:
+				through = true; break;
+			case LMU_Reader::ChunkMoveCommands::walk_everywhere_off:
+				through = false; break;
+			case LMU_Reader::ChunkMoveCommands::stop_animation: break;
+			case LMU_Reader::ChunkMoveCommands::start_animation: break;
+			case LMU_Reader::ChunkMoveCommands::increase_transp: break; // ???
+			case LMU_Reader::ChunkMoveCommands::decrease_transp: break; // ???
+			}
+
+			if (move_route->skippable || !move_failed) {
+				++move_route_index;
+			}
+		}
+	}
+}
+
+////////////////////////////////////////////////////////////
 void Game_Character::MoveDown() {
 	if (turn_enabled) TurnDown();
 
@@ -245,8 +373,10 @@ void Game_Character::MoveDown() {
 		TurnDown();
 		y += 1;
 		//IncreaseSteps();
+		move_failed = false;
 	} else {
 		CheckEventTriggerTouch(x, y + 1);
+		move_failed = true;
 	}
 }
 
@@ -258,8 +388,10 @@ void Game_Character::MoveLeft() {
 		TurnLeft();
 		x -= 1;
 		//IncreaseSteps();
+		move_failed = false;
 	} else {
 		CheckEventTriggerTouch(x - 1, y);
+		move_failed = true;
 	}
 }
 
@@ -271,8 +403,10 @@ void Game_Character::MoveRight() {
 		TurnRight();
 		x += 1;
 		//IncreaseSteps();
+		move_failed = false;
 	} else {
 		CheckEventTriggerTouch(x + 1, y);
+		move_failed = true;
 	}
 }
 
@@ -284,8 +418,10 @@ void Game_Character::MoveUp() {
 		TurnUp();
 		y -= 1;
 		//IncreaseSteps();
+		move_failed = false;
 	} else {
 		CheckEventTriggerTouch(x, y - 1);
+		move_failed = true;
 	}
 }
 

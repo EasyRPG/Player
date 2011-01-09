@@ -86,11 +86,11 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	//opacity = page.opacity;
 	//opacity = page.translucent ? 192 : 255;
 	//blend_type = page.blend_type;
-	//move_type = page.move_type;
+	move_type = page->move_type;
 	move_speed = page->move_speed;
 	move_frequency = page->move_frequency;
-	//move_route = page.move_route;
-	//move_route_index = 0;
+	move_route = &page->move_route;
+	move_route_index = 0;
 	move_route_forcing = false;
 	//animation_type = page.animation_type;
 	//through = page;

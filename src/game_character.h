@@ -22,6 +22,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <string>
+#include "rpg_moveroute.h"
 
 class Game_Event;
 class Game_Player;
@@ -48,6 +49,18 @@ public:
 	virtual bool IsMoving() const;
 
 	////////////////////////////////////////////////////////
+	/// Checks if the character is jumping.
+	/// @return whether the character is jumping
+	////////////////////////////////////////////////////////
+	virtual bool IsJumping() const;
+
+	////////////////////////////////////////////////////////
+	/// Checks if the character is stopping.
+	/// @return whether the character is stopping
+	////////////////////////////////////////////////////////
+	virtual bool IsStopping() const;
+
+	////////////////////////////////////////////////////////
 	/// Get if character the character can walk in a tile
 	/// with a specific direction.
 	/// @param x : tile x
@@ -68,6 +81,11 @@ public:
 	/// Updates character state and actions.
 	////////////////////////////////////////////////////////
 	virtual void Update();
+
+	////////////////////////////////////////////////////////
+	/// Walks around in a custom move route.
+	////////////////////////////////////////////////////////
+	void MoveTypeCustom();
 
 	////////////////////////////////////////////////////////
 	/// Move the character down.
@@ -176,13 +194,13 @@ public:
 	int DistanceYfromPlayer() const;
 
 	bool IsInPosition(int x, int y) const;
-	bool IsJumping() const;
 	int GetPriorityType() const;
 
 	virtual bool CheckEventTriggerTouch(int x, int y) = 0;
 
 protected:
 	void UpdateMove();
+	void UpdateSelfMovement();
 	void UpdateStop();
 
 	int x;
@@ -198,9 +216,15 @@ protected:
 	bool through;
 	int animation_id;
 	
+	RPG::MoveRoute* move_route;
+	RPG::MoveRoute* original_move_route;
+	int move_route_index;
+	int original_move_route_index;
+	int move_type;
 	int move_speed;
 	int move_frequency;
 	int prelock_direction;
+	bool move_failed;
 	bool locked;
 
 	double anime_count;

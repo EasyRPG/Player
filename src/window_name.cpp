@@ -40,7 +40,7 @@ Window_Name::~Window_Name() {
 ////////////////////////////////////////////////////////////
 void Window_Name::Refresh() {
 	contents->Clear();
-	contents->GetFont()->color = 1;
+	contents->GetFont()->color = Font::ColorDefault;
 	contents->TextDraw(2, 2, name);
 }
 
