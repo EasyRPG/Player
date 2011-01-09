@@ -136,6 +136,12 @@ public:
 
 	void SetDirection(int direction);
 
+	////////////////////////////////////////////////////////
+	/// Forces a new, temporary, move route
+	/// @param new_route : New move route
+	////////////////////////////////////////////////////////
+	void ForceMoveRoute(RPG::MoveRoute& new_route);
+
 	/// @return screen x coordinate in pixels
 	virtual int GetScreenX() const;
 
@@ -226,6 +232,7 @@ protected:
 	int prelock_direction;
 	bool move_failed;
 	bool locked;
+	int wait_count;
 
 	double anime_count;
 	int stop_count;

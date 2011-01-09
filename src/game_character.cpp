@@ -52,6 +52,7 @@ Game_Character::Game_Character() :
 	move_frequency(6),
 	prelock_direction(0),
 	locked(false),
+	wait_count(0),
 	move_failed(false),
 	anime_count(0),
 	stop_count(0),
@@ -510,6 +511,20 @@ void Game_Character::SetDirection(int direction) {
 		this->direction = direction;
 		stop_count = 0;
 	}
+}
+
+////////////////////////////////////////////////////////////
+void Game_Character::ForceMoveRoute(RPG::MoveRoute& new_route) {
+	if (original_move_route == NULL) {
+		original_move_route = move_route;
+		original_move_route_index = move_route_index;
+	}
+	move_route = &new_route;
+	move_route_index = 0;
+	move_route_forcing = true;
+	prelock_direction = 0;
+	wait_count = 0;
+	MoveTypeCustom();
 }
 
 ////////////////////////////////////////////////////////////
