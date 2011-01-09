@@ -321,6 +321,18 @@
     <ClCompile Include="..\..\src\game_picture.cpp">
       <Filter>Source Files\Engine\Game</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\scene_name.cpp">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\window_name.cpp">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\window_face.cpp">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\window_keyboard.cpp">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cache.h">
@@ -586,6 +598,18 @@
     </ClInclude>
     <ClInclude Include="..\..\src\game_picture.h">
       <Filter>Source Files\Engine\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene_name.h">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\window_keyboard.h">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\window_name.h">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\window_face.h">
+      <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -168,6 +168,7 @@
     <ClCompile Include="..\..\src\scene_logo.cpp" />
     <ClCompile Include="..\..\src\scene_map.cpp" />
     <ClCompile Include="..\..\src\scene_menu.cpp" />
+    <ClCompile Include="..\..\src\scene_name.cpp" />
     <ClCompile Include="..\..\src\scene_skill.cpp" />
     <ClCompile Include="..\..\src\scene_title.cpp" />
     <ClCompile Include="..\..\src\sdl_audio.cpp" />
@@ -188,8 +189,11 @@
     <ClCompile Include="..\..\src\window_equip.cpp" />
     <ClCompile Include="..\..\src\window_equipitem.cpp" />
     <ClCompile Include="..\..\src\window_equipstatus.cpp" />
+    <ClCompile Include="..\..\src\window_face.cpp" />
     <ClCompile Include="..\..\src\window_gold.cpp" />
     <ClCompile Include="..\..\src\window_help.cpp" />
+    <ClCompile Include="..\..\src\window_keyboard.cpp" />
+    <ClCompile Include="..\..\src\window_name.cpp" />
     <ClCompile Include="..\..\src\window_numberinput.cpp" />
     <ClCompile Include="..\..\src\window_item.cpp" />
     <ClCompile Include="..\..\src\window_message.cpp" />
@@ -257,6 +261,7 @@
     <ClInclude Include="..\..\src\scene_logo.h" />
     <ClInclude Include="..\..\src\scene_map.h" />
     <ClInclude Include="..\..\src\scene_menu.h" />
+    <ClInclude Include="..\..\src\scene_name.h" />
     <ClInclude Include="..\..\src\scene_skill.h" />
     <ClInclude Include="..\..\src\scene_title.h" />
     <ClInclude Include="..\..\src\sdl_bitmap.h" />
@@ -278,8 +283,11 @@
     <ClInclude Include="..\..\src\window_equip.h" />
     <ClInclude Include="..\..\src\window_equipitem.h" />
     <ClInclude Include="..\..\src\window_equipstatus.h" />
+    <ClInclude Include="..\..\src\window_face.h" />
     <ClInclude Include="..\..\src\window_gold.h" />
     <ClInclude Include="..\..\src\window_help.h" />
+    <ClInclude Include="..\..\src\window_keyboard.h" />
+    <ClInclude Include="..\..\src\window_name.h" />
     <ClInclude Include="..\..\src\window_numberinput.h" />
     <ClInclude Include="..\..\src\window_item.h" />
     <ClInclude Include="..\..\src\window_message.h" />
