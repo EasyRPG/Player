@@ -340,6 +340,9 @@ void SdlBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 	Color white_color(255, 255, 255, 0);
 	Color black_color(0, 0, 0, 0);
 
+	text_surface_aux->SetTransparentColor(black_color);
+	text_surface->SetTransparentColor(black_color);
+
 	char text2[2]; text2[1] = '\0';
 
 	// Load the system file for the shadow and text color
@@ -452,9 +455,6 @@ void SdlBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 			text_surface_aux->Blit(next_glyph_rect.x, next_glyph_rect.y, system, clip_system, 255);
 			// Blit mask onto background
 			text_surface_aux->Blit(next_glyph_rect.x, next_glyph_rect.y, mask, mask->GetRect(), 255);
-
-			text_surface_aux->SetTransparentColor(black_color);
-			text_surface->SetTransparentColor(black_color);
 
 			// Blit first shadow and then text
 			text_surface->Blit(next_glyph_pos+1, 1, char_shadow, char_shadow->GetRect(), 255);
