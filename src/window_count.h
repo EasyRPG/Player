@@ -15,8 +15,8 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _WINDOW_NUMBER_H_
-#define _WINDOW_NUMBER_H_
+#ifndef _WINDOW_COUNT_H_
+#define _WINDOW_COUNT_H_
 
 ////////////////////////////////////////////////////////////
 // Headers
