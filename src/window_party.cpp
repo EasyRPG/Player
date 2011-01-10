@@ -21,6 +21,7 @@
 #include "bitmap.h"
 #include "cache.h"
 #include "game_party.h"
+#include "game_actor.h"
 #include "window_party.h"
 
 ////////////////////////////////////////////////////////////
@@ -31,7 +32,7 @@ Window_Party::Window_Party(int ix, int iy, int iwidth, int iheight) :
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	cycle = 0;
-	item = NULL;
+	item_id = 0;
 
 	Refresh();
 }
@@ -56,12 +57,13 @@ void Window_Party::Refresh() {
 		int sx = ((sprite_id % 4) * 3 + phase) * width;
 		int sy = ((sprite_id / 4) * 4 + 2) * height;
 		Rect src(sx, sy, width, height);
-		contents->Blit(i * 32, 0, bm, src, CanUse(actor->GetId()) ? 255 : 128);
+		bool equippable = item_id == 0 || actor->IsEquippable(item_id);
+		contents->Blit(i * 32, 0, bm, src, equippable ? 255 : 128);
 	}
 }
 
-void Window_Party::SetItem(int item_id) {
-	item = &Data::items[item_id - 1];
+void Window_Party::SetItem(int nitem_id) {
+	item_id = nitem_id;
 	Refresh();
 }
 
@@ -69,11 +71,5 @@ void Window_Party::Update() {
 	cycle++;
 	if (cycle % anim_rate == 0)
 		Refresh();
-}
-
-bool Window_Party::CanUse(int actor_id) {
-	return item &&
-		((size_t) actor_id > item->actor_set.size() ||
-		 item->actor_set.at(actor_id - 1));
 }
 

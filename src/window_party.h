@@ -53,14 +53,9 @@ public:
 	////////////////////////////////////////////////////////
 	void SetItem(int item_id);
 
-	////////////////////////////////////////////////////////
-	/// Test whether an actor can use the reference item
-	////////////////////////////////////////////////////////
-	bool CanUse(int actor_id);
-
 protected:
 	// reference item
-	RPG::Item* item;
+	int item_id;
 	// animation cycle
 	int cycle;
 	// animation rate
