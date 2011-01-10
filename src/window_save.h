@@ -15,66 +15,44 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _SCENE_SHOP_H_
-#define _SCENE_SHOP_H_
+#ifndef _WINDOW_SAVE_H_
+#define _WINDOW_SAVE_H_
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "scene.h"
+#include <string>
 #include "window_base.h"
-#include "window_help.h"
-#include "window_buy.h"
-#include "window_count.h"
-#include "window_party.h"
-#include "window_total.h"
-#include "window_gold.h"
-#include "window_sell.h"
-#include "window_shop.h"
 
 ////////////////////////////////////////////////////////////
-/// Scene_Item class
+/// Window Save Class
 ////////////////////////////////////////////////////////////
-class Scene_Shop : public Scene {
-
+class Window_Save :	public Window_Base {
 public:
 	////////////////////////////////////////////////////////
 	/// Constructor.
 	////////////////////////////////////////////////////////
-	Scene_Shop();
+	Window_Save(int ix, int iy, int iwidth, int iheight);
 
-	void Start();
+	////////////////////////////////////////////////////////
+	/// Destructor.
+	////////////////////////////////////////////////////////
+	~Window_Save();
+
+	////////////////////////////////////////////////////////
+	/// Renders the current save on the window.
+	////////////////////////////////////////////////////////
+	void Refresh();
+
+	void SetIndex(int id);
+	void SetParty(const std::vector<Game_Actor*>& actors);
 	void Update();
-	void Terminate();
 
-	enum ShopMode {
-		BuySellLeave,
-		BuySellLeave2,
-		Buy,
-		BuyHowMany,
-		Bought,
-		Sell,
-		SellHowMany,
-		Sold,
-		Leave
-	};
+protected:
+	void UpdateCursorRect();
 
-	void SetMode(int nmode);
-
-private:
-	/// Displays available items
-	Window_Help* help_window;
-	Window_Buy* buy_window;
-	Window_Party* party_window;
-	Window_Total* total_window;
-	Window_Gold* gold_window;
-	Window_Sell* sell_window;
-	Window_Count* count_window;
-	Window_Base* empty2_window;
-	Window_Base* empty_window;
-	Window_Shop* shop_window;
-	int mode;
-	int timer;
+	int index;
+	std::vector<Game_Actor*> party;
 };
 
 #endif
