@@ -72,6 +72,8 @@ void Window_Party::Update() {
 }
 
 bool Window_Party::CanUse(int actor_id) {
-	return item && item->actor_set[actor_id];
+	return item &&
+		((size_t) actor_id >= item->actor_set.size() ||
+		 item->actor_set.at(actor_id - 1));
 }
 
