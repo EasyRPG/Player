@@ -2,7 +2,7 @@
 <CodeLite_Project Name="player">
   <Plugins>
     <Plugin Name="qmake">
-      <![CDATA[00030001N0012Dingux Debug0000000000000001N0014Dingux Release0000000000000001N0010GTK+ Debug000000000000]]>
+      <![CDATA[00040001N0012Dingux Debug0000000000000001N0014Dingux Release0000000000000001N0010GTK+ Debug0000000000000001N0011Win32 Debug000000000000]]>
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="src">
@@ -76,6 +76,12 @@
         <File Name="../../src/scene_name.h"/>
         <File Name="../../src/scene_shop.cpp"/>
         <File Name="../../src/scene_shop.h"/>
+        <File Name="../../src/scene_save.h"/>
+        <File Name="../../src/scene_save.cpp"/>
+        <File Name="../../src/scene_file.h"/>
+        <File Name="../../src/scene_file.cpp"/>
+        <File Name="../../src/scene_load.h"/>
+        <File Name="../../src/scene_load.cpp"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Window">
         <File Name="../../src/window_actortarget.cpp"/>
@@ -112,10 +118,6 @@
         <File Name="../../src/window_skillstatus.h"/>
         <File Name="../../src/window_targetstatus.cpp"/>
         <File Name="../../src/window_targetstatus.h"/>
-        <File Name="../../src/window_buy.cpp"/>
-        <File Name="../../src/window_buy.h"/>
-        <File Name="../../src/window_count.cpp"/>
-        <File Name="../../src/window_count.h"/>
         <File Name="../../src/window_face.cpp"/>
         <File Name="../../src/window_face.h"/>
         <File Name="../../src/window_keyboard.cpp"/>
@@ -124,12 +126,18 @@
         <File Name="../../src/window_name.h"/>
         <File Name="../../src/window_party.cpp"/>
         <File Name="../../src/window_party.h"/>
-        <File Name="../../src/window_sell.cpp"/>
-        <File Name="../../src/window_sell.h"/>
         <File Name="../../src/window_shop.cpp"/>
         <File Name="../../src/window_shop.h"/>
-        <File Name="../../src/window_total.cpp"/>
-        <File Name="../../src/window_total.h"/>
+        <File Name="../../src/window_filetitle.h"/>
+        <File Name="../../src/window_filetitle.cpp"/>
+        <File Name="../../src/window_shopsell.h"/>
+        <File Name="../../src/window_shopbuy.cpp"/>
+        <File Name="../../src/window_shopbuy.h"/>
+        <File Name="../../src/window_shopnumber.cpp"/>
+        <File Name="../../src/window_shopnumber.h"/>
+        <File Name="../../src/window_shopsell.cpp"/>
+        <File Name="../../src/window_savefile.h"/>
+        <File Name="../../src/window_savefile.cpp"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Sprite">
         <File Name="../../src/sprite_character.cpp"/>
@@ -251,6 +259,36 @@
     <File Name="../../resources/player.rc"/>
     <File Name="../../src/system.h"/>
   </VirtualDirectory>
+  <Dependencies Name="GTK+ Debug">
+    <Project Name="readers"/>
+  </Dependencies>
+  <Dependencies Name="GTK+ Release">
+    <Project Name="readers"/>
+  </Dependencies>
+  <Dependencies Name="Dingux Debug">
+    <Project Name="readers"/>
+  </Dependencies>
+  <Dependencies Name="Dingux Release">
+    <Project Name="readers"/>
+  </Dependencies>
+  <Dependencies Name="Mac OS X Debug">
+    <Project Name="readers"/>
+  </Dependencies>
+  <Dependencies Name="Mac OS X Release">
+    <Project Name="readers"/>
+  </Dependencies>
+  <Dependencies Name="UNIX Release">
+    <Project Name="readers"/>
+  </Dependencies>
+  <Dependencies Name="UNIX Debug">
+    <Project Name="readers"/>
+  </Dependencies>
+  <Dependencies Name="Win32 Debug">
+    <Project Name="readers"/>
+  </Dependencies>
+  <Dependencies Name="Win32 Release">
+    <Project Name="readers"/>
+  </Dependencies>
   <Settings Type="Executable">
     <GlobalSettings>
       <Compiler Options="" C_Options="">
@@ -579,6 +617,7 @@ $(IntermediateDirectory)/$(ProjectName).app/Contents/Resources/Player.icns: Play
     <Configuration Name="Win32 Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-U__STRICT_ANSI__;-fno-rtti;-fno-exceptions;-D_GNU_SOURCE=1;-Dmain=SDL_main" C_Options="-g;-ansi;-pedantic;-Wall;-Wextra;-Wno-unused;-U__STRICT_ANSI__;-fno-rtti;-fno-exceptions;-D_GNU_SOURCE=1;-Dmain=SDL_main" Required="yes" PreCompiledHeader="">
         <IncludePath Value="$(EASYDEV_MINGW)/include"/>
+        <IncludePath Value="$(EASYDEV_MINGW)/include/SDL"/>
         <Preprocessor Value="_DEBUG"/>
       </Compiler>
       <Linker Options="-mwindows" Required="yes">
@@ -660,34 +699,4 @@ $(IntermediateDirectory)/$(ProjectName).app/Contents/Resources/Player.icns: Play
       </AdditionalRules>
     </Configuration>
   </Settings>
-  <Dependencies Name="GTK+ Debug">
-    <Project Name="readers"/>
-  </Dependencies>
-  <Dependencies Name="GTK+ Release">
-    <Project Name="readers"/>
-  </Dependencies>
-  <Dependencies Name="Dingux Debug">
-    <Project Name="readers"/>
-  </Dependencies>
-  <Dependencies Name="Dingux Release">
-    <Project Name="readers"/>
-  </Dependencies>
-  <Dependencies Name="Mac OS X Debug">
-    <Project Name="readers"/>
-  </Dependencies>
-  <Dependencies Name="Mac OS X Release">
-    <Project Name="readers"/>
-  </Dependencies>
-  <Dependencies Name="UNIX Release">
-    <Project Name="readers"/>
-  </Dependencies>
-  <Dependencies Name="UNIX Debug">
-    <Project Name="readers"/>
-  </Dependencies>
-  <Dependencies Name="Win32 Debug">
-    <Project Name="readers"/>
-  </Dependencies>
-  <Dependencies Name="Win32 Release">
-    <Project Name="readers"/>
-  </Dependencies>
 </CodeLite_Project>
