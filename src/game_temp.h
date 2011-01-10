@@ -24,6 +24,7 @@
 #include <string>
 #include "game_battler.h"
 #include "graphics.h"
+#include "rpg_music.h"
 
 ////////////////////////////////////////////////////////////
 /// Game Temp static class
@@ -79,6 +80,8 @@ public:
 	static bool battle_first_strike;
 	static int battle_mode;
 	static int battle_result;
+	
+	static RPG::Music* map_bgm;
 
 	enum BattleResult {
 		BattleVictory,

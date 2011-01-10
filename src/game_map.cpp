@@ -20,6 +20,7 @@
 ////////////////////////////////////////////////////////////
 #include "game_map.h"
 #include "game_interpreter.h"
+#include "game_temp.h"
 #include "lmu_reader.h"
 #include "main_data.h"
 #include "output.h"
@@ -56,8 +57,6 @@ namespace {
 	int scroll_direction;
 	int scroll_rest;
 	int scroll_speed;
-	
-	std::string map_bgm;
 
 	Game_Interpreter* interpreter;
 }
@@ -77,7 +76,6 @@ void Game_Map::Init() {
 	scroll_speed = 0;
 	interpreter = new Game_Interpreter(0, true);
 	
-	map_bgm = "";
 }
 
 ////////////////////////////////////////////////////////////
@@ -141,18 +139,18 @@ void Game_Map::Autoplay() {
 		switch(Data::treemap.maps[current_index].music_type) {
 			case 0: // inherits music from parent
 				parent_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
-				if (Data::treemap.maps[parent_index].music.name != "(OFF)" && Data::treemap.maps[parent_index].music.name != map_bgm) {
-					Game_System::BgmPlay(Data::treemap.maps[parent_index].music);
-					map_bgm = Data::treemap.maps[parent_index].music.name;
+				if (Data::treemap.maps[parent_index].music.name != "(OFF)" && &Data::treemap.maps[parent_index].music != Game_Temp::map_bgm) {
+					Game_Temp::map_bgm = &Data::treemap.maps[parent_index].music;
+					Game_System::BgmPlay(*Game_Temp::map_bgm);
 				}
 				break;
 			case 1:  // from event
 				//TODO: just wait by an event?
 				break;
 			case 2:  // specific map music
-				if (Data::treemap.maps[current_index].music.name != map_bgm) {
-					Game_System::BgmPlay(Data::treemap.maps[current_index].music);
-					map_bgm = Data::treemap.maps[current_index].music.name;
+				if (&Data::treemap.maps[current_index].music != Game_Temp::map_bgm) {
+					Game_Temp::map_bgm = &Data::treemap.maps[current_index].music;
+					Game_System::BgmPlay(*Game_Temp::map_bgm);
 				}
 		}
 	
