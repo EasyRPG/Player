@@ -25,7 +25,8 @@
 
 ////////////////////////////////////////////////////////////
 Window_Sell::Window_Sell(int ix, int iy, int iwidth, int iheight) :
-	Window_Item(ix, iy, iwidth, iheight) {}
+	Window_Item(ix, iy, iwidth, iheight),
+	party_window(NULL) {}
 
 ////////////////////////////////////////////////////////////
 Window_Sell::~Window_Sell() {
@@ -34,5 +35,17 @@ Window_Sell::~Window_Sell() {
 ////////////////////////////////////////////////////////////
 bool Window_Sell::CheckEnable(int item_id) {
 	return true;
+}
+
+void Window_Sell::Update(void) {
+	Window_Selectable::Update();
+	if (active) {
+		if (party_window)
+			party_window->SetItem(GetItemId());
+	}
+}
+
+void Window_Sell::SetPartyWindow(Window_Party *w) {
+	party_window = w;
 }
 

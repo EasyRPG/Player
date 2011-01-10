@@ -107,6 +107,9 @@ void Window_Buy::Update() {
 		if (help_window)
 			help_window->SetText(Data::items[item_id - 1].description);
 
+		if (party_window)
+			party_window->SetItem(item_id);
+
 		if (total_window) {
 			int possessed = Game_Party::ItemNumber(item_id);
 			int equipped = 0;
@@ -138,4 +141,8 @@ void Window_Buy::SetHelpWindow(Window_Help* w) {
 
 void Window_Buy::SetTotalWindow(Window_Total* w) {
 	total_window = w;
+}
+
+void Window_Buy::SetPartyWindow(Window_Party* w) {
+	party_window = w;
 }

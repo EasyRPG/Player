@@ -61,13 +61,16 @@ void Scene_Shop::Start() {
 
 	buy_window->SetHelpWindow(help_window);
 	buy_window->SetTotalWindow(total_window);
+	buy_window->SetPartyWindow(party_window);
 
 	sell_window->SetHelpWindow(help_window);
+	sell_window->SetPartyWindow(party_window);
 	sell_window->SetActive(false);
 	sell_window->Refresh();
 	sell_window->SetIndex(0);
 	sell_window->SetActive(true);
 
+	Game_Temp::shop_transaction = false;
 	timer = 0;
 
 	SetMode(BuySellLeave);
@@ -176,6 +179,7 @@ void Scene_Shop::Update() {
 	sell_window->Update();
 	shop_window->Update();
 	count_window->Update();
+	party_window->Update();
 
 	switch (mode) {
 		case BuySellLeave:
@@ -245,6 +249,7 @@ void Scene_Shop::Update() {
 				Game_Party::GainGold(-count_window->GetTotal());
 				Game_Party::GainItem(item_id, count_window->GetNumber());
 				gold_window->Refresh();
+				Game_Temp::shop_transaction = true;
 				SetMode(Buy);
 			}
 			break;
@@ -260,6 +265,7 @@ void Scene_Shop::Update() {
 				Game_Party::LoseItem(item_id, count_window->GetNumber());
 				gold_window->Refresh();
 				sell_window->Refresh();
+				Game_Temp::shop_transaction = true;
 				SetMode(Sell);
 			}
 			break;

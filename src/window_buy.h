@@ -24,6 +24,7 @@
 #include "window_base.h"
 #include "window_help.h"
 #include "window_total.h"
+#include "window_party.h"
 
 ////////////////////////////////////////////////////////////
 /// Window Shop Class
@@ -53,6 +54,7 @@ public:
 	int GetSelected(void);
 	void SetHelpWindow(Window_Help* w);
 	void SetTotalWindow(Window_Total* w);
+	void SetPartyWindow(Window_Party* w);
 	
 protected:
 	static const int border_x = 8;
@@ -60,6 +62,7 @@ protected:
 	static const int row_spacing = 16;
 	Window_Help* help_window;
 	Window_Total* total_window;
+	Window_Party* party_window;
 	int row_max;
 	int top_index;
 	int index;

@@ -30,6 +30,9 @@ Window_Party::Window_Party(int ix, int iy, int iwidth, int iheight) :
 	SetContents(Bitmap::CreateBitmap(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
+	cycle = 0;
+	item = NULL;
+
 	Refresh();
 }
 
@@ -46,13 +49,29 @@ void Window_Party::Refresh() {
 		Game_Actor *actor = actors[i];
 		const std::string& sprite_name = actor->GetCharacterName();
 		int sprite_id = actor->GetCharacterIndex();
+		int phase = (cycle / anim_rate) % 3;
 		Bitmap *bm = Cache::Charset(sprite_name);
 		int width = bm->GetWidth() / 4 / 3;
 		int height = bm->GetHeight() / 2 / 4;
-		int sx = ((sprite_id % 4) * 3 + 0) * width;
+		int sx = ((sprite_id % 4) * 3 + phase) * width;
 		int sy = ((sprite_id / 4) * 4 + 2) * height;
 		Rect src(sx, sy, width, height);
-		contents->Blit(i * 32, 0, bm, src, 255);
+		contents->Blit(i * 32, 0, bm, src, CanUse(actor->GetId()) ? 255 : 128);
 	}
+}
+
+void Window_Party::SetItem(int item_id) {
+	item = &Data::items[item_id - 1];
+	Refresh();
+}
+
+void Window_Party::Update() {
+	cycle++;
+	if (cycle % anim_rate == 0)
+		Refresh();
+}
+
+bool Window_Party::CanUse(int actor_id) {
+	return item && item->actor_set[actor_id];
 }
 
