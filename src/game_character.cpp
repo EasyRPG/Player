@@ -95,7 +95,7 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 	for (tEventHash::iterator i = Game_Map::GetEvents().begin(); i != Game_Map::GetEvents().end(); i++) {
 		Game_Event* evnt = i->second;
 		if (evnt->GetX() == new_x && evnt->GetY() == new_y) {
-			if (!evnt->GetThrough()) {
+			if (!evnt->GetThrough() && evnt->GetPriorityType() == 1) {
 				if (this != (const Game_Character*)Main_Data::game_player)
 					return false;
 
@@ -580,5 +580,5 @@ void Game_Character::SetAnimationId(int new_animation_id) {
 }
 
 bool Game_Character::IsInPosition(int x, int y) const {
-	return ((this->x == x) && (this->y && y));
+	return ((this->x == x) && (this->y == y));
 }

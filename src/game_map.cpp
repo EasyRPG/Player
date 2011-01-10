@@ -214,9 +214,9 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 	for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
 		if (i->second->GetTileId() >= 0 && i->second != self_event &&
 			i->second->GetX() == x && i->second->GetY() == y && !i->second->GetThrough()) {
-				
-			if ((passages_up[i->second->GetTileId()] & bit) != 0)
-				return false;
+			// FIXME: What does this do?
+			/*if ((passages_up[i->second->GetTileId()] & bit) != 0)
+				return false;*/
 		}
 	}
 

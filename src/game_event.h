@@ -31,6 +31,20 @@
 ////////////////////////////////////////////////////////////
 class Game_Event : public Game_Character {
 public:
+	enum Triggers {
+		TriggerPushKey = 0,
+		TriggerHeroTouch,
+		TriggerHeroOrEventTouch,
+		TriggerAutoStart,
+		TriggerParallelProcess
+	};
+
+	enum Priorities {
+		PriorityBelowHero,
+		PrioritySameAsHero,
+		PriorityAboveHero
+	};
+
 	////////////////////////////////////////////////////////
 	/// Constructor.
 	////////////////////////////////////////////////////////

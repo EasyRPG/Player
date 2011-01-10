@@ -63,6 +63,11 @@ void Scene_Title::Start() {
 	Cache::Clear();
 	LoadDatabase();
 
+	if (Data::system.ldb_id == 2003) {
+		Output::Debug("Switching to Rpg2003 Interpreter");
+		Player::engine = Player::EngineRpg2k3;
+	}
+
 	// Create Game System
 	Game_System::Init();
 

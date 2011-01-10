@@ -203,7 +203,10 @@ void Game_Event::Start() {
 }
 
 void Game_Event::CheckEventTriggerAuto() {
-	if (trigger == 3) {
+	if (trigger == TriggerAutoStart ||
+		(trigger == TriggerHeroTouch && Main_Data::game_player->IsInPosition(x, y)))
+	{
+		// ToDo: HeroOrEventTouch
 		Start();
 	}
 }

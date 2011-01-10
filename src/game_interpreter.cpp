@@ -15,9 +15,11 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#include <cstdlib>
+#include <iostream>
+#include <sstream>
 #include "game_interpreter.h"
-#include "output.h"
-#include "input.h"
+#include "audio.h"
 #include "game_map.h"
 #include "game_event.h"
 #include "game_player.h"
@@ -30,12 +32,11 @@
 #include "game_message.h"
 #include "game_picture.h"
 #include "graphics.h"
-#include "audio.h"
-#include "util_macro.h"
-#include <cstdlib>
-#include <iostream>
-#include <sstream>
+#include "input.h"
 #include "main_data.h"
+#include "output.h"
+#include "player.h"
+#include "util_macro.h"
 
 ////////////////////////////////////////////////////////////
 /// Enumeration of codes
@@ -159,11 +160,11 @@ enum Sizes {
 };
 
 enum CharsID {
-	Player		= 10001,
-	Boat		= 10002,
-	Ship		= 10003,
-	Airship		= 10004,
-	ThisEvent	= 10005
+	CharPlayer		= 10001,
+	CharBoat		= 10002,
+	CharShip		= 10003,
+	CharAirship		= 10004,
+	CharThisEvent	= 10005
 };
 
 ////////////////////////////////////////////////////////////
@@ -189,7 +190,7 @@ Game_Interpreter::~Game_Interpreter() {
 void Game_Interpreter::Clear() {
 	map_id = 0;						// map ID when starting up
 	event_id = 0;					// event ID
-	Game_Message::message_waiting = false;	// waiting for message to end
+	//Game_Message::message_waiting = false;	// waiting for message to end
 	move_route_waiting = false;		// waiting for move completion
 	button_input_variable_id = 0;	// button input variable ID
 	wait_count = 0;					// wait count
@@ -592,8 +593,7 @@ bool Game_Interpreter::ExecuteCommand() {
 
 bool Game_Interpreter::CommandTeleport() { // Code 10810
 	// TODO: if in battle return true
-	if (Main_Data::game_player->IsTeleporting() || 
-		Game_Message::visible) {
+	if (Main_Data::game_player->IsTeleporting()) {
 			return false;
 	}
 
@@ -637,14 +637,18 @@ bool Game_Interpreter::CommandChangeMainMenuAccess() { // code 11960
 }
 
 bool Game_Interpreter::CommandWait() {
-	switch (list[index].parameters[1]) {
-		case 0:
-			wait_count = list[index].parameters[0] * DEFAULT_FPS / 10;
-			break;
-		default:
-			// TODO: wait until key pressed
-			wait_count = 0;
-			break;
+	if (Player::engine == Player::EngineRpg2k) {
+		wait_count = list[index].parameters[0] * DEFAULT_FPS / 10;
+	} else {
+		switch (list[index].parameters[1]) {
+			case 0:
+				wait_count = list[index].parameters[0] * DEFAULT_FPS / 10;
+				break;
+			default:
+				// TODO: wait until key pressed
+				wait_count = 0;
+				break;
+		}
 	}
 	return true;
 }
@@ -1211,19 +1215,19 @@ static std::vector<Game_Actor*> GetActors(int mode, int id) {
 Game_Character* Game_Interpreter::GetCharacter(int character_id) {
 
 	switch (character_id) {
-		case Player:
+		case CharPlayer:
 			// Player/Hero
 			return Main_Data::game_player;
-		case Boat:
+		case CharBoat:
 			// TODO Boat
 			break;
-		case Ship:
+		case CharShip:
 			// TODO Ship
 			break;
-		case Airship:
+		case CharAirship:
 			// TODO Airship
 			break;
-		case ThisEvent:
+		case CharThisEvent:
 			// This event
 			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents()[event_id];
 			break;
@@ -1608,7 +1612,7 @@ bool Game_Interpreter::CommandChangeSpriteAssociation() { // code 10630
 }
 
 bool Game_Interpreter::CommandMemorizeLocation() { // code 10820
-	Game_Character *player = GetCharacter(Player);
+	Game_Character *player = GetCharacter(CharPlayer);
 	int var_map_id = list[index].parameters[0];
 	int var_x = list[index].parameters[1];
 	int var_y = list[index].parameters[2];
@@ -1619,7 +1623,7 @@ bool Game_Interpreter::CommandMemorizeLocation() { // code 10820
 }
 
 bool Game_Interpreter::CommandRecallToLocation() { // Code 10830
-	Game_Character *player = GetCharacter(Player);
+	Game_Character *player = GetCharacter(CharPlayer);
 	int var_map_id = list[index].parameters[0];
 	int var_x = list[index].parameters[1];
 	int var_y = list[index].parameters[2];
@@ -2039,9 +2043,14 @@ bool Game_Interpreter::CommandShowPicture() { // code 11110
 	int saturation = list[index].parameters[11];
 	int effect = list[index].parameters[12];
 	int speed = list[index].parameters[13];
-	int bottom_trans = list[index].parameters.size() >= 15
-		? list[index].parameters[14]
-		: top_trans;
+	int bottom_trans;
+
+	if (Player::engine == Player::EngineRpg2k) {
+		// Rpg2k does not support this option
+		bottom_trans = top_trans;
+	} else {
+		bottom_trans = list[index].parameters[14];
+	}
 
 	picture.Show(pic_name);
 	picture.UseTransparent(use_trans);
@@ -2083,9 +2092,14 @@ bool Game_Interpreter::CommandMovePicture() { // code 11120
 	int speed = list[index].parameters[13];
 	int tenths = list[index].parameters[14];
 	bool wait = list[index].parameters[15] != 0;
-	int bottom_trans = list[index].parameters.size() >= 17
-		? list[index].parameters[16]
-		: top_trans;
+
+	int bottom_trans;
+	if (Player::engine == Player::EngineRpg2k) {
+		// Rpg2k does not support this option
+		bottom_trans = top_trans;
+	} else {
+		bottom_trans = list[index].parameters[16];
+	}
 
 	picture.Move(x, y);
 	picture.Color(red, green, blue, saturation);
@@ -2574,7 +2588,7 @@ bool Game_Interpreter::CommandEnemyEncounter() { // code 10710
 	Game_Character *player;
 	switch (list[index].parameters[2]) {
 		case 0:
-			player = GetCharacter(Player);
+			player = GetCharacter(CharPlayer);
 			Game_Temp::battle_terrain_id = Game_Map::GetTerrainTag(player->GetX(), player->GetY());
 			Game_Temp::battle_background = "";
 			break;

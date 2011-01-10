@@ -44,6 +44,7 @@ namespace Player {
 	bool window_flag;
 	bool battle_test_flag;
 	int battle_test_troop_id;
+	EngineType engine;
 }
 
 ////////////////////////////////////////////////////////////
@@ -67,6 +68,8 @@ void Player::Init(int argc, char *argv[]) {
 #endif
 	battle_test_flag = false;
 	battle_test_troop_id = 0;
+
+	engine = EngineRpg2k;
 
 	if (argc > 1 && !strcmp(argv[1], "TestPlay")) {
 		debug_flag = true;

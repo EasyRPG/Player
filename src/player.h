@@ -27,6 +27,11 @@
 /// Player namespace.
 ////////////////////////////////////////////////////////////
 namespace Player {
+	enum EngineType {
+		EngineRpg2k,
+		EngineRpg2k3
+	};
+
 	////////////////////////////////////////////////////////
 	/// Initialize EasyRPG player.
 	////////////////////////////////////////////////////////
@@ -78,6 +83,8 @@ namespace Player {
 	/// Battle Test Troop ID to fight with if battle test is run.
 	extern int battle_test_troop_id;
 
+	/// Currently interpreted engine
+	extern EngineType engine;
 }
 
 #endif
