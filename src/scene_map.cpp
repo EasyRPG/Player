@@ -22,6 +22,7 @@
 #include "scene_menu.h"
 #include "scene_title.h"
 #include "scene_name.h"
+#include "scene_shop.h"
 #include "main_data.h"
 #include "game_map.h"
 #include "game_message.h"
@@ -91,6 +92,11 @@ void Scene_Map::Update() {
 			return;
 		}
 
+		if (Game_Temp::shop_calling) {
+			CallShop();
+			return;
+		}
+
 		if (Game_Temp::transition_processing) {
 			Game_Temp::transition_processing = false;
 
@@ -126,7 +132,9 @@ void Scene_Map::CallBattle() {
 }
 
 void Scene_Map::CallShop() {
+	Game_Temp::shop_calling = false;
 
+	Scene::Push(new Scene_Shop());
 }
 
 void Scene_Map::CallName() {
