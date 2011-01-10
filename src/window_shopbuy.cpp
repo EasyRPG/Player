@@ -20,17 +20,17 @@
 ////////////////////////////////////////////////////////////
 #include <algorithm>
 #include <string>
-#include "window_buy.h"
+#include "window_shopbuy.h"
 #include "game_system.h"
 #include "game_temp.h"
 #include "game_party.h"
 #include "input.h"
 
 ////////////////////////////////////////////////////////////
-Window_Buy::Window_Buy(int ix, int iy, int iwidth, int iheight) : 
+Window_ShopBuy::Window_ShopBuy(int ix, int iy, int iwidth, int iheight) : 
 	Window_Base(ix, iy, iwidth, iheight),
 	help_window(NULL),
-	total_window(NULL) {
+	status_window(NULL) {
 
 	index = 0;
 	top_index = 0;
@@ -45,14 +45,14 @@ Window_Buy::Window_Buy(int ix, int iy, int iwidth, int iheight) :
 	UpdateCursorRect();
 }
 
-Window_Buy::~Window_Buy() {
+Window_ShopBuy::~Window_ShopBuy() {
 }
 
-int Window_Buy::GetSelected(void) {
+int Window_ShopBuy::GetSelected(void) {
 	return Game_Temp::shop_goods[index];
 }
 
-Rect Window_Buy::GetItemRect(int index) {
+Rect Window_ShopBuy::GetItemRect(int index) {
 	Rect rect = Rect();
 	int width = contents->GetWidth() - 2 * border_x;
 	int height = row_spacing;
@@ -64,11 +64,11 @@ Rect Window_Buy::GetItemRect(int index) {
 	return rect;
 }
 
-void Window_Buy::UpdateCursorRect() {
+void Window_ShopBuy::UpdateCursorRect() {
 	SetCursorRect(GetItemRect(index));
 }
 
-void Window_Buy::Refresh() {
+void Window_ShopBuy::Refresh() {
 	contents->Clear();
 
 	contents->GetFont()->color = Font::ColorDefault;
@@ -83,7 +83,7 @@ void Window_Buy::Refresh() {
 	}
 }
 
-void Window_Buy::Update() {
+void Window_ShopBuy::Update() {
 	Window_Base::Update();
 	if (active) {
 		if (Input::IsRepeated(Input::DOWN)) {
@@ -110,7 +110,7 @@ void Window_Buy::Update() {
 		if (party_window)
 			party_window->SetItem(item_id);
 
-		if (total_window) {
+		if (status_window) {
 			int possessed = Game_Party::ItemNumber(item_id);
 			int equipped = 0;
 			const std::vector<Game_Actor*>& actors = Game_Party::GetActors();
@@ -127,22 +127,22 @@ void Window_Buy::Update() {
 				if (actor->GetAccessoryId() == item_id)
 					equipped++;
 			}
-			total_window->SetPossessed(possessed);
-			total_window->SetEquipped(equipped);
+			status_window->SetPossessed(possessed);
+			status_window->SetEquipped(equipped);
 		}
 	}
 
 	UpdateCursorRect();
 }
 
-void Window_Buy::SetHelpWindow(Window_Help* w) {
+void Window_ShopBuy::SetHelpWindow(Window_Help* w) {
 	help_window = w;
 }
 
-void Window_Buy::SetTotalWindow(Window_Total* w) {
-	total_window = w;
+void Window_ShopBuy::SetStatusWindow(Window_ShopStatus* w) {
+	status_window = w;
 }
 
-void Window_Buy::SetPartyWindow(Window_Party* w) {
+void Window_ShopBuy::SetPartyWindow(Window_Party* w) {
 	party_window = w;
 }

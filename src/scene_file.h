@@ -15,66 +15,43 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _SCENE_SHOP_H_
-#define _SCENE_SHOP_H_
+#ifndef _SCENE_FILE_H_
+#define _SCENE_FILE_H_
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <vector>
 #include "scene.h"
-#include "window_base.h"
-#include "window_help.h"
-#include "window_gold.h"
-#include "window_party.h"
-#include "window_shopbuy.h"
-#include "window_shopnumber.h"
-#include "window_shopstatus.h"
-#include "window_shopsell.h"
-#include "window_shop.h"
+#include "window_savefile.h"
+#include "window_filetitle.h"
 
 ////////////////////////////////////////////////////////////
 /// Scene_Item class
 ////////////////////////////////////////////////////////////
-class Scene_Shop : public Scene {
+class Scene_File : public Scene {
 
 public:
 	////////////////////////////////////////////////////////
 	/// Constructor.
+	/// @param message : title message
 	////////////////////////////////////////////////////////
-	Scene_Shop();
+	Scene_File(const std::string& message);
 
 	void Start();
 	void Update();
 	void Terminate();
 
-	enum ShopMode {
-		BuySellLeave,
-		BuySellLeave2,
-		Buy,
-		BuyHowMany,
-		Bought,
-		Sell,
-		SellHowMany,
-		Sold,
-		Leave
-	};
+	virtual void Action(int index) = 0;
 
-	void SetMode(int nmode);
+protected:
+	void Refresh();
 
-private:
-	/// Displays available items
-	Window_Help* help_window;
-	Window_ShopBuy* buy_window;
-	Window_Party* party_window;
-	Window_ShopStatus* status_window;
-	Window_Gold* gold_window;
-	Window_ShopSell* sell_window;
-	Window_ShopNumber* count_window;
-	Window_Base* empty2_window;
-	Window_Base* empty_window;
-	Window_Shop* shop_window;
-	int mode;
-	int timer;
+	int index;
+	int top_index;
+	Window_FileTitle* title_window;
+	std::vector<Window_SaveFile*> file_windows;
+	std::string message;
 };
 
 #endif

@@ -15,44 +15,36 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _WINDOW_SAVE_H_
-#define _WINDOW_SAVE_H_
-
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
 #include <string>
-#include "window_base.h"
+#include "window_filetitle.h"
 
 ////////////////////////////////////////////////////////////
-/// Window Save Class
+Window_FileTitle::Window_FileTitle(int ix, int iy, int iwidth, int iheight) :
+	Window_Base(ix, iy, iwidth, iheight),
+	message("") {
+
+	SetContents(Bitmap::CreateBitmap(width - 16, height - 16));
+	contents->SetTransparentColor(windowskin->GetTransparentColor());
+
+	Refresh();
+}
+
 ////////////////////////////////////////////////////////////
-class Window_Save :	public Window_Base {
-public:
-	////////////////////////////////////////////////////////
-	/// Constructor.
-	////////////////////////////////////////////////////////
-	Window_Save(int ix, int iy, int iwidth, int iheight);
+Window_FileTitle::~Window_FileTitle() {
+}
 
-	////////////////////////////////////////////////////////
-	/// Destructor.
-	////////////////////////////////////////////////////////
-	~Window_Save();
+////////////////////////////////////////////////////////////
+void Window_FileTitle::Refresh() {
+	contents->Clear();
+	contents->GetFont()->color = Font::ColorDefault;
+	contents->TextDraw(2, 2, message);
+}
 
-	////////////////////////////////////////////////////////
-	/// Renders the current save on the window.
-	////////////////////////////////////////////////////////
-	void Refresh();
+void Window_FileTitle::Set(const std::string& text) {
+	message = text;
+	Refresh();
+}
 
-	void SetIndex(int id);
-	void SetParty(const std::vector<Game_Actor*>& actors);
-	void Update();
-
-protected:
-	void UpdateCursorRect();
-
-	int index;
-	std::vector<Game_Actor*> party;
-};
-
-#endif

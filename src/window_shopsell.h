@@ -15,57 +15,44 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _WINDOW_BUY_H_
-#define _WINDOW_BUY_H_
+#ifndef _WINDOW_SELL_H_
+#define _WINDOW_SELL_H_
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "window_base.h"
+#include <vector>
 #include "window_help.h"
-#include "window_total.h"
+#include "window_item.h"
 #include "window_party.h"
 
 ////////////////////////////////////////////////////////////
-/// Window Shop Class
-/// The shop item list window
+/// Class_Name class
 ////////////////////////////////////////////////////////////
-// Window_Selectable is too badly broken to use as a base class
-class Window_Buy : public Window_Base {
+class Window_ShopSell : public Window_Item {
+
 public:
 	////////////////////////////////////////////////////////
-	/// Constructor
-	/// @param idigits_max : The maximum number of digits 
-	///	allowed
+	/// Constructor.
 	////////////////////////////////////////////////////////
-	Window_Buy(int ix, int iy, int iwidth = 320, int iheight = 80);
-	
-	////////////////////////////////////////////////////////
-	/// Destructor
-	////////////////////////////////////////////////////////
-	~Window_Buy();
+	Window_ShopSell(int ix, int iy, int iwidth, int iheight);
 
-	void CreateContents();
+	////////////////////////////////////////////////////////
+	/// Destructor.
+	////////////////////////////////////////////////////////
+	virtual ~Window_ShopSell();
 
-	virtual void UpdateCursorRect();
-	Rect GetItemRect(int index);
-	void Update();
-	void Refresh();
-	int GetSelected(void);
-	void SetHelpWindow(Window_Help* w);
-	void SetTotalWindow(Window_Total* w);
+	////////////////////////////////////////////////////////
+	/// Chechs if item should be enabled.
+	/// @param item_id : Item to check
+	////////////////////////////////////////////////////////
+	virtual bool CheckEnable(int item_id);
+
 	void SetPartyWindow(Window_Party* w);
-	
+	void Update(void);
+
 protected:
-	static const int border_x = 8;
-	static const int border_y = 4;
-	static const int row_spacing = 16;
-	Window_Help* help_window;
-	Window_Total* total_window;
-	Window_Party* party_window;
-	int row_max;
-	int top_index;
-	int index;
+	Window_Party *party_window;
 };
 
 #endif

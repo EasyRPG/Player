@@ -15,41 +15,55 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _WINDOW_TOTAL_H_
-#define _WINDOW_TOTAL_H_
+#ifndef _WINDOW_BUY_H_
+#define _WINDOW_BUY_H_
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <string>
 #include "window_base.h"
+#include "window_help.h"
+#include "window_shopstatus.h"
+#include "window_party.h"
 
 ////////////////////////////////////////////////////////////
-/// Window Total Class
+/// Window Shop Class
+/// The shop item list window
 ////////////////////////////////////////////////////////////
-class Window_Total :	public Window_Base {
+// Window_Selectable is too badly broken to use as a base class
+class Window_ShopBuy : public Window_Base {
 public:
 	////////////////////////////////////////////////////////
-	/// Constructor.
+	/// Constructor
 	////////////////////////////////////////////////////////
-	Window_Total(int ix, int iy, int iwidth, int iheight);
+	Window_ShopBuy(int ix, int iy, int iwidth = 320, int iheight = 80);
+	
+	////////////////////////////////////////////////////////
+	/// Destructor
+	////////////////////////////////////////////////////////
+	~Window_ShopBuy();
 
-	////////////////////////////////////////////////////////
-	/// Destructor.
-	////////////////////////////////////////////////////////
-	~Window_Total();
+	void CreateContents();
 
-	////////////////////////////////////////////////////////
-	/// Renders the current total on the window.
-	////////////////////////////////////////////////////////
+	virtual void UpdateCursorRect();
+	Rect GetItemRect(int index);
+	void Update();
 	void Refresh();
-
-	void SetPossessed(int val);
-	void SetEquipped(int val);
-
+	int GetSelected(void);
+	void SetHelpWindow(Window_Help* w);
+	void SetStatusWindow(Window_ShopStatus* w);
+	void SetPartyWindow(Window_Party* w);
+	
 protected:
-	int possessed;
-	int equipped;
+	static const int border_x = 8;
+	static const int border_y = 4;
+	static const int row_spacing = 16;
+	Window_Help* help_window;
+	Window_ShopStatus* status_window;
+	Window_Party* party_window;
+	int row_max;
+	int top_index;
+	int index;
 };
 
 #endif

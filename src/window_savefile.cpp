@@ -21,12 +21,12 @@
 #include <string>
 #include <iomanip>
 #include <sstream>
-#include "window_save.h"
+#include "window_savefile.h"
 #include "game_system.h"
 #include "input.h"
 
 ////////////////////////////////////////////////////////////
-Window_Save::Window_Save(int ix, int iy, int iwidth, int iheight) : 
+Window_SaveFile::Window_SaveFile(int ix, int iy, int iwidth, int iheight) : 
 	Window_Base(ix, iy, iwidth, iheight) {
 	index = 0;
 
@@ -38,22 +38,22 @@ Window_Save::Window_Save(int ix, int iy, int iwidth, int iheight) :
 	UpdateCursorRect();
 }
 
-Window_Save::~Window_Save() {
+Window_SaveFile::~Window_SaveFile() {
 }
 
-void Window_Save::UpdateCursorRect() {
+void Window_SaveFile::UpdateCursorRect() {
 	SetCursorRect(GetActive() ? Rect(0, 0, 48, 16) : Rect());
 }
 
-void Window_Save::SetIndex(int id) {
+void Window_SaveFile::SetIndex(int id) {
 	index = id;
 }
 
-void Window_Save::SetParty(const std::vector<Game_Actor*>& actors) {
+void Window_SaveFile::SetParty(const std::vector<Game_Actor*>& actors) {
 	party = actors;
 }
 
-void Window_Save::Refresh() {
+void Window_SaveFile::Refresh() {
 	contents->Clear();
 
 	contents->GetFont()->color = Font::ColorDefault;
@@ -90,7 +90,7 @@ void Window_Save::Refresh() {
 		DrawActorFace(party[i], 88 + i * 56, 0);
 }
 
-void Window_Save::Update() {
+void Window_SaveFile::Update() {
 	Window_Base::Update();
 	UpdateCursorRect();
 }

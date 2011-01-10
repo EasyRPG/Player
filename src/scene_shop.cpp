@@ -29,7 +29,7 @@ Scene_Shop::Scene_Shop() :
 	help_window(NULL),
 	buy_window(NULL),
 	party_window(NULL),
-	total_window(NULL),
+	status_window(NULL),
 	gold_window(NULL),
 	sell_window(NULL),
 	count_window(NULL),
@@ -44,12 +44,12 @@ void Scene_Shop::Start() {
 	// Create the windows
 
 	help_window = new Window_Help(0, 0, 320, 32);
-	buy_window = new Window_Buy(0, 32, 184, 128);
+	buy_window = new Window_ShopBuy(0, 32, 184, 128);
 	party_window = new Window_Party(184, 32, 136, 48);
-	total_window = new Window_Total(184, 80, 136, 48);
+	status_window = new Window_ShopStatus(184, 80, 136, 48);
 	gold_window = new Window_Gold(184, 128, 136, 32);
-	sell_window = new Window_Sell(0, 32, 320, 128);
-	count_window = new Window_Count(0, 32, 184, 128);
+	sell_window = new Window_ShopSell(0, 32, 320, 128);
+	count_window = new Window_ShopNumber(0, 32, 184, 128);
 	empty2_window = new Window_Base(0, 32, 184, 128);
 	empty_window = new Window_Base(0, 32, 320, 128);
 	shop_window = new Window_Shop(0, 160, 320, 80);
@@ -60,7 +60,7 @@ void Scene_Shop::Start() {
 	shop_window->SetVisible(true);
 
 	buy_window->SetHelpWindow(help_window);
-	buy_window->SetTotalWindow(total_window);
+	buy_window->SetStatusWindow(status_window);
 	buy_window->SetPartyWindow(party_window);
 
 	sell_window->SetHelpWindow(help_window);
@@ -81,7 +81,7 @@ void Scene_Shop::Terminate() {
 	delete help_window;
 	delete buy_window;
 	delete party_window;
-	delete total_window;
+	delete status_window;
 	delete gold_window;
 	delete sell_window;
 	delete count_window;
@@ -127,7 +127,7 @@ void Scene_Shop::SetMode(int nmode) {
 		case BuySellLeave2:
 		case Sell:
 			Enable(party_window, false);
-			Enable(total_window, false);
+			Enable(status_window, false);
 			Enable(gold_window, false);
 			break;
 		case Buy:
@@ -136,7 +136,7 @@ void Scene_Shop::SetMode(int nmode) {
 		case Bought:
 		case Sold:
 			Enable(party_window, true);
-			Enable(total_window, true);
+			Enable(status_window, true);
 			Enable(gold_window, true);
 			break;
 	}
@@ -249,6 +249,7 @@ void Scene_Shop::Update() {
 				Game_Party::GainGold(-count_window->GetTotal());
 				Game_Party::GainItem(item_id, count_window->GetNumber());
 				gold_window->Refresh();
+				sell_window->Refresh();
 				Game_Temp::shop_transaction = true;
 				SetMode(Buy);
 			}

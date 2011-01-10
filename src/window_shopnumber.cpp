@@ -21,10 +21,10 @@
 #include <sstream>
 #include "game_system.h"
 #include "input.h"
-#include "window_count.h"
+#include "window_shopnumber.h"
 
 ////////////////////////////////////////////////////////////
-Window_Count::Window_Count(int ix, int iy, int iwidth, int iheight) : 
+Window_ShopNumber::Window_ShopNumber(int ix, int iy, int iwidth, int iheight) : 
 	Window_Base(ix, iy, iwidth, iheight),
 	lo(1), hi(1), number(1) {
 
@@ -37,23 +37,23 @@ Window_Count::Window_Count(int ix, int iy, int iwidth, int iheight) :
 }
 
 ////////////////////////////////////////////////////////////
-Window_Count::~Window_Count() {
+Window_ShopNumber::~Window_ShopNumber() {
 }
 
 ////////////////////////////////////////////////////////////
-void Window_Count::SetItemValue(unsigned int val) {
+void Window_ShopNumber::SetItemValue(unsigned int val) {
 	item_value = val;
 	Refresh();
 }
 
 ////////////////////////////////////////////////////////////
-void Window_Count::SetItemName(const std::string& name) {
+void Window_ShopNumber::SetItemName(const std::string& name) {
 	item_name = name;
 	Refresh();
 }
 
 ////////////////////////////////////////////////////////////
-void Window_Count::Refresh() {
+void Window_ShopNumber::Refresh() {
 	std::ostringstream numstr, valstr;
 	numstr << number;
 	valstr << number * item_value;
@@ -75,23 +75,23 @@ void Window_Count::Refresh() {
 }
 
 ////////////////////////////////////////////////////////////
-int Window_Count::GetNumber() const {
+int Window_ShopNumber::GetNumber() const {
 	return number;
 }
 
 ////////////////////////////////////////////////////////////
-int Window_Count::GetTotal() const {
+int Window_ShopNumber::GetTotal() const {
 	return number * item_value;
 }
 
 ////////////////////////////////////////////////////////////
-void Window_Count::SetNumber(unsigned int val) {
+void Window_ShopNumber::SetNumber(unsigned int val) {
 	number = std::min(std::max(val, lo), hi);
 	Refresh();
 }
 
 ////////////////////////////////////////////////////////////
-void Window_Count::SetRange(unsigned int nlo, unsigned int nhi) {
+void Window_ShopNumber::SetRange(unsigned int nlo, unsigned int nhi) {
 	lo = nlo;
 	hi = nhi;
 	number = std::min(std::max(number, lo), hi);
@@ -99,7 +99,7 @@ void Window_Count::SetRange(unsigned int nlo, unsigned int nhi) {
 }
 
 ////////////////////////////////////////////////////////////
-void Window_Count::Update() {
+void Window_ShopNumber::Update() {
 	Window_Base::Update();
 
 	if (active) {
