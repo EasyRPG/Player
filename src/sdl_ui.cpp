@@ -36,6 +36,7 @@
 #include "output.h"
 #include "player.h"
 #include "sdl_bitmap.h"
+#include <cstdlib>
 
 ///////////////////////////////////////////////////////////
 static int FilterUntilFocus(const SDL_Event* evnt);
@@ -88,6 +89,22 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag) :
 	uint32 flags = SDL_INIT_VIDEO | SDL_INIT_TIMER;
 #ifdef DEBUG
 	flags |= SDL_INIT_NOPARACHUTE;
+#endif
+
+	// Set some SDL env. variables before starting
+	// These are platform dependant, so every port
+	// needs to set them manually
+#ifdef _WIN32
+	// Tell SDL to use DirectDraw port
+	// in release mode
+#ifndef DEBUG
+	putenv("SDL_VIDEODRIVER=directx");
+	putenv("SDL_AUDIODRIVER=dsound");
+#endif
+
+	// Set window position to the middle of the
+	// screen
+	putenv("SDL_VIDEO_WINDOW_POS=center");
 #endif
 
 	if (SDL_Init(flags) < 0) {
