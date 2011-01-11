@@ -598,7 +598,7 @@ void SdlUi::ProcessEvent(SDL_Event &evnt) {
 ///////////////////////////////////////////////////////////
 void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 #ifdef PAUSE_GAME_WHEN_FOCUS_LOST
-	switch(evnt.active.type) {
+	switch(evnt.active.state) {
 		case SDL_APPINPUTFOCUS:
 			if (!evnt.active.gain) {
 #ifdef _WIN32
