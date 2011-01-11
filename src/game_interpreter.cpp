@@ -1481,14 +1481,24 @@ bool Game_Interpreter::CommandChangeEquipment() { // Code 10450
 	std::vector<Game_Actor*> actors = GetActors(list[index].parameters[0],
 												list[index].parameters[1]);
 	int item_id;
+	int type;
 	int slot;
 
 	switch (list[index].parameters[2]) {
 		case 0:
 			item_id = ValueOrVariable(list[index].parameters[3],
 									  list[index].parameters[4]);
-			// TODO slot = <correct slot for item_id>
-			slot = 0;
+			type = Data::items[item_id - 1].type;
+			switch (type) {
+				case RPG::Item::Type_weapon:
+				case RPG::Item::Type_shield:
+				case RPG::Item::Type_armor:
+				case RPG::Item::Type_helmet:
+				case RPG::Item::Type_accessory:
+					slot = type - 1;
+				default:
+					return true;
+			}
 			break;
 		case 1:
 			item_id = 0;
