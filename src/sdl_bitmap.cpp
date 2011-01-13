@@ -272,20 +272,27 @@ void SdlBitmap::RemovePaletteColorkeyDuplicates(SDL_Surface* src, SDL_Color* col
 
 ////////////////////////////////////////////////////////////
 void SdlBitmap::Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
-	#ifdef USE_ALPHA
-		Bitmap::Blit(x, y, src, src_rect, opacity);
-	#else
-		SDL_Rect src_r = {(int16)src_rect.x, (int16)src_rect.y, (uint16)src_rect.width, (uint16)src_rect.height};
-		SDL_Rect dst_r = {(int16)x, (int16)y, 0, 0};
+	SDL_Rect src_r = {(int16)src_rect.x, (int16)src_rect.y, (uint16)src_rect.width, (uint16)src_rect.height};
+	SDL_Rect dst_r = {(int16)x, (int16)y, 0, 0};
 
+	#ifdef USE_ALPHA
+	if (opacity < 255)
+		Bitmap::Blit(x, y, src, src_rect, opacity);
+	else {
+		bool has_alpha = (((SdlBitmap*)src)->bitmap->flags & SDL_SRCALPHA) != 0;
+		SDL_SetAlpha(((SdlBitmap*)src)->bitmap, 0, 255);
+		SDL_BlitSurface(((SdlBitmap*)src)->bitmap, &src_r, bitmap, &dst_r);
+		SDL_SetAlpha(((SdlBitmap*)src)->bitmap, has_alpha ? SDL_SRCALPHA : 0, 255);
+	}
+	#else
 		if (opacity < 255) SDL_SetAlpha(((SdlBitmap*)src)->bitmap, SETALPHA_FLAGS, (uint8)opacity);
 
 		SDL_BlitSurface(((SdlBitmap*)src)->bitmap, &src_r, bitmap, &dst_r);
 		
 		if (opacity < 255) SDL_SetAlpha(((SdlBitmap*)src)->bitmap, SETALPHA_FLAGS, 255);
-
-		RefreshCallback();
 	#endif
+
+	RefreshCallback();
 }
 
 ////////////////////////////////////////////////////////////
@@ -430,6 +437,40 @@ void SdlBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 		} else {
 			// No ExFont, draw normal text
 
+		#ifdef USE_ALPHA
+			// ToDo: Remove SDL-Dependency (use FreeType directly?) 
+			SDL_Color white_color2 = {255, 255, 255, 255};
+			SDL_Color black_color2 = {0, 0, 0, 255};
+			SDL_Surface* char_surface_temp = TTF_RenderUTF8_Solid(ttf_font, text2, white_color2);
+			SDL_Surface* char_shadow_temp = TTF_RenderUTF8_Solid(ttf_font, text2, black_color2);
+			SDL_Surface* char_surface_surf = DisplayFormat(char_surface_temp);
+			SDL_Surface* char_shadow_surf = DisplayFormat(char_shadow_temp);
+			SDL_FreeSurface(char_surface_temp);
+			SDL_FreeSurface(char_shadow_temp);
+
+			char_surface = new SdlBitmap(char_surface_surf);
+			char_shadow = new SdlBitmap(char_shadow_surf);
+
+			if (!((SdlBitmap*)char_surface)->bitmap || !((SdlBitmap*)char_shadow)->bitmap) {
+				Output::Warning("Couldn't render char %c (%d). Skipping...", text[c], (int)text[c]);
+				delete char_surface;
+				delete char_shadow;
+				continue;
+			}
+			// Create a black mask
+			mask = CreateBitmap(char_surface->GetWidth(), char_surface->GetHeight());
+			mask->Blit(0, 0, char_surface, char_surface->GetRect(), 255);
+
+			// Get color region from system graphic
+			Rect clip_system(8+16*(font->color%10), 4+48+16*(font->color/10), char_surface->GetWidth(), char_surface->GetHeight());
+
+			text_surface->Blit(next_glyph_rect.x, next_glyph_rect.y, char_surface, char_surface->GetRect(), 255);
+			// Blit color background
+			SDL_Rect src_r = {(int16)clip_system.x, (int16)clip_system.y, (uint16)clip_system.width, (uint16)clip_system.height};
+			SDL_Rect dst_r = {(int16)next_glyph_rect.x, (int16)next_glyph_rect.y, 0, 0};
+			SDL_BlitSurface(((SdlBitmap*)system)->bitmap, &src_r, ((SdlBitmap*)text_surface)->bitmap, &dst_r);
+			// text_surface->Blit(next_glyph_rect.x, next_glyph_rect.y, system, clip_system, 255);
+		#else
 			// ToDo: Remove SDL-Dependency (use FreeType directly?)
 			SDL_Color white_color2 = {white_color.red, white_color.green, white_color.blue, 0};
 			SDL_Color c_tmp2 = {shadow_color.red, shadow_color.green, shadow_color.blue, 0};
@@ -459,6 +500,7 @@ void SdlBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 			// Blit first shadow and then text
 			text_surface->Blit(next_glyph_pos+1, 1, char_shadow, char_shadow->GetRect(), 255);
 			text_surface->Blit(0, 0, text_surface_aux, text_surface_aux->GetRect(), 255);
+		#endif
 		}
 
 		delete mask;

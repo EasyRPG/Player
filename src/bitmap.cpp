@@ -113,8 +113,8 @@ void Bitmap::Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
 		uint16* dst_pixels = (uint16*)pixels() + x + y * pitch() / bpp();
 
 		#ifdef USE_ALPHA
-			int src_stride = src->pitch / bpp - dst_rect.width;
-			int dst_stride = pitch / bpp - dst_rect.width;
+			int src_stride = src->pitch() / bpp() - dst_rect.width;
+			int dst_stride = pitch() / bpp() - dst_rect.width;
 
 			uint8 src_r, src_g, src_b, src_a;
 			uint8 dst_r, dst_g, dst_b, dst_a;
@@ -200,13 +200,13 @@ void Bitmap::Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
 		const int bbyte = GetMaskByte(bmask());
 
 		#ifdef USE_ALPHA
-			const int abyte = GetMaskByte(amask);
+			const int abyte = GetMaskByte(amask());
 
-			const uint8* src_pixels = (uint8*)src->pixels + src_rect.x * bpp + src_rect.y * src->pitch;
-			uint8* dst_pixels = (uint8*)pixels + x * bpp + y * pitch;
+			const uint8* src_pixels = (uint8*)src->pixels() + src_rect.x * bpp() + src_rect.y * src->pitch();
+			uint8* dst_pixels = (uint8*)pixels() + x * bpp() + y * pitch();
 
-			int src_stride = src->pitch - dst_rect.width * bpp;
-			int dst_stride = pitch - dst_rect.width * bpp;
+			int src_stride = src->pitch() - dst_rect.width * bpp();
+			int dst_stride = pitch() - dst_rect.width * bpp();
 
 			for (int i = 0; i < dst_rect.height; i++) {
 				for (int j = 0; j < dst_rect.width; j++) {
@@ -217,8 +217,8 @@ void Bitmap::Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
 					dst_pixels[bbyte] = (dst_pixels[bbyte] * (255 - srca) + src_pixels[bbyte] * srca) / 255;
 					dst_pixels[abyte] = dst_pixels[abyte] * (255 - srca) / 255 + srca;
 
-					src_pixels += bpp;
-					dst_pixels += bpp;
+					src_pixels += bpp();
+					dst_pixels += bpp();
 				}
 				src_pixels += src_stride;
 				dst_pixels += dst_stride;
