@@ -43,6 +43,7 @@ public:
 	bool ExecuteCommand();
 	void InputButton();
 	void SetupChoices(const std::vector<std::string>& choices);
+	void EndMoveRoute(RPG::MoveRoute* route);
 
 private:
 	int depth;
@@ -150,6 +151,10 @@ private:
 	bool CommandSpriteTransparency();
 	bool CommandEraseEvent();
 	bool CommandChangeMapTileset();
+	bool CommandCallEvent();
+	bool CommandChangeEncounterRate();
+	bool CommandProceedWithMovement();
+	bool CommandPlayMovie();
 
 	void CommandEnd();
 

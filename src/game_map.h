@@ -171,6 +171,9 @@ namespace Game_Map {
 	/// @return battle encounter left steps
 	int GetEncounterStep();
 
+	/// @param battle encounter steps
+	void SetEncounterStep(int step);
+
 	/// @return lower layer map data
 	std::vector<short>& GetMapDataDown();
 

@@ -46,6 +46,12 @@ Game_Screen::Game_Screen()
 
 	weather_type = 0;
 	weather_strength = 0;
+
+	movie_filename = "";
+	movie_pos_x = 0;
+	movie_pos_y = 0;
+	movie_res_x = 0;
+	movie_res_y = 0;
 }
 
 Game_Screen::~Game_Screen()
@@ -117,14 +123,23 @@ void Game_Screen::ShakeBegin(int power, int speed) {
 	shake_continuous = true;
 }
 
+void Game_Screen::ShakeEnd() {
+	shake_duration = 0;
+	shake_continuous = false;
+}
+
 void Game_Screen::Weather(int type, int strength) {
 	weather_type = type;
 	weather_strength = strength;
 }
 
-void Game_Screen::ShakeEnd() {
-	shake_duration = 0;
-	shake_continuous = false;
+void Game_Screen::PlayMovie(const std::string& filename,
+							int pos_x, int pos_y, int res_x, int res_y) {
+	movie_filename = filename;
+	movie_pos_x = pos_x;
+	movie_pos_y = pos_y;
+	movie_res_x = res_x;
+	movie_res_y = res_y;
 }
 
 static double interpolate(double d, double x0, double x1)
@@ -166,5 +181,9 @@ void Game_Screen::Update() {
 	std::vector<Picture>::iterator it;
 	for (it = pictures.begin(); it < pictures.end(); it++)
 		it->Update();
+
+	if (!movie_filename.empty()) {
+		/* update movie */
+	}
 }
 

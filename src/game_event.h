@@ -85,6 +85,8 @@ public:
 	void Update();
 	bool AreConditionsMet(const RPG::EventPage& page);
 
+	RPG::Event& GetEvent();
+
 private:
 	int ID;
 	bool starting;

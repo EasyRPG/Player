@@ -597,7 +597,15 @@ bool Game_Interpreter::ExecuteCommand() {
 		case EraseEvent:
 			return CommandEraseEvent();
 		case ChangeMapTileset:
-			CommandChangeMapTileset();
+			return CommandChangeMapTileset();
+		case CallEvent:
+			return CommandCallEvent();
+		case ChangeEncounterRate:
+			return CommandChangeEncounterRate();
+		case ProceedWithMovement:
+			return CommandProceedWithMovement();
+		case PlayMovie:
+			return CommandPlayMovie();
 		default:
 			return true;
 	}
@@ -2757,7 +2765,7 @@ bool Game_Interpreter::CommandMoveEvent() { // code 11330
 	int event_id = list[index].parameters[0];
 	Game_Character* event = GetCharacter(event_id);
 
-	RPG::MoveRoute *route = new RPG::MoveRoute;
+	RPG::MoveRoute* route = new RPG::MoveRoute;
 	int move_freq = list[index].parameters[1];
 	route->repeat = list[index].parameters[2] != 0;
 	route->skippable = list[index].parameters[3] != 0;
@@ -2766,10 +2774,19 @@ bool Game_Interpreter::CommandMoveEvent() { // code 11330
 	for (it = list[index].parameters.begin() + 4; it < list[index].parameters.end(); )
 	    route->move_commands.push_back(decode_move(it));
 
-	event->ForceMoveRoute(*route);
-	// event->ForceMoveRoute(route, move_freq, this);
+	event->ForceMoveRoute(route, move_freq, this);
 	pending.push_back(route);
 	return true;
+}
+
+void Game_Interpreter::EndMoveRoute(RPG::MoveRoute* route) {
+	std::vector<RPG::MoveRoute*>::iterator it;
+	for (it = pending.begin(); it != pending.end(); it++)
+		if (*it == route)
+			break;
+
+	if (it != pending.end())
+		pending.erase(it);
 }
 
 bool Game_Interpreter::CommandFlashSprite() { // code 11320
@@ -2833,6 +2850,63 @@ bool Game_Interpreter::CommandChangeMapTileset() { // code 11710
 	if (!scene)
 		return true;
 	scene->spriteset->ChipsetUpdated();
+
+	return true;
+}
+
+bool Game_Interpreter::CommandCallEvent() { // code 12330
+	int event_id;
+	int event_page;
+
+	if (child_interpreter != NULL)
+		return false;
+
+	child_interpreter = new Game_Interpreter(depth + 1);
+
+	switch (list[index].parameters[0]) {
+		case 0: // Common Event
+			event_id = list[index].parameters[1];
+			child_interpreter->Setup(Data::commonevents[event_id - 1].event_commands, 0);
+			return true;
+		case 1: // Map Event
+			event_id = list[index].parameters[1];
+			event_page = list[index].parameters[2];
+			break;
+		case 2: // Indirect
+			event_id = Game_Variables[list[index].parameters[1]];
+			event_page = Game_Variables[list[index].parameters[2]];
+			break;
+		default:
+			return false;
+	}
+
+	Game_Event* event = Game_Map::GetEvents()[event_id];
+	RPG::EventPage& page = event->GetEvent().pages[event_page - 1];
+	child_interpreter->Setup(page.event_commands, event_id);
+
+	return true;
+}
+
+bool Game_Interpreter::CommandChangeEncounterRate() { // code 11740
+	int steps = list[index].parameters[0];
+
+	Game_Map::SetEncounterStep(steps);
+
+	return true;
+}
+
+bool Game_Interpreter::CommandProceedWithMovement() { // code 11340
+	return pending.empty();
+}
+
+bool Game_Interpreter::CommandPlayMovie() { // code 11560
+	const std::string& filename = list[index].string;
+	int pos_x = ValueOrVariable(list[index].parameters[0], list[index].parameters[1]);
+	int pos_y = ValueOrVariable(list[index].parameters[0], list[index].parameters[2]);
+	int res_x = list[index].parameters[3];
+	int res_y = list[index].parameters[4];
+
+	Main_Data::game_screen->PlayMovie(filename, pos_x, pos_y, res_x, res_y);
 
 	return true;
 }

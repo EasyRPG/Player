@@ -26,6 +26,7 @@
 
 class Game_Event;
 class Game_Player;
+class Game_Interpreter;
 
 ////////////////////////////////////////////////////////////
 /// Game_Character class.
@@ -140,7 +141,7 @@ public:
 	/// Forces a new, temporary, move route
 	/// @param new_route : New move route
 	////////////////////////////////////////////////////////
-	void ForceMoveRoute(RPG::MoveRoute& new_route);
+	void ForceMoveRoute(RPG::MoveRoute* new_route, int frequency, Game_Interpreter* owner);
 
 	/// @return screen x coordinate in pixels
 	virtual int GetScreenX() const;
@@ -225,7 +226,9 @@ protected:
 	RPG::MoveRoute* move_route;
 	RPG::MoveRoute* original_move_route;
 	int move_route_index;
+	Game_Interpreter* move_route_owner;
 	int original_move_route_index;
+	int original_move_frequency;
 	int move_type;
 	int move_speed;
 	int move_frequency;

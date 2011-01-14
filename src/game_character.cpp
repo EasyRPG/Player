@@ -288,6 +288,7 @@ void Game_Character::MoveTypeCustom() {
 				move_route = original_move_route;
 				move_route_index = original_move_route_index;
 				original_move_route = NULL;
+				move_route_owner->EndMoveRoute(move_route);
 			}
 		} else {
 			RPG::MoveCommand& move_command = move_route->move_commands[move_route_index];
@@ -514,14 +515,19 @@ void Game_Character::SetDirection(int direction) {
 }
 
 ////////////////////////////////////////////////////////////
-void Game_Character::ForceMoveRoute(RPG::MoveRoute& new_route) {
+void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
+									int frequency,
+									Game_Interpreter* owner) {
 	if (original_move_route == NULL) {
 		original_move_route = move_route;
 		original_move_route_index = move_route_index;
+		original_move_frequency = move_frequency;
 	}
-	move_route = &new_route;
+	move_route = new_route;
 	move_route_index = 0;
 	move_route_forcing = true;
+	move_frequency = frequency;
+	move_route_owner = owner;
 	prelock_direction = 0;
 	wait_count = 0;
 	MoveTypeCustom();

@@ -58,6 +58,7 @@ namespace {
 	int scroll_direction;
 	int scroll_rest;
 	int scroll_speed;
+	int encounter_steps;
 
 	Game_Interpreter* interpreter;
 }
@@ -76,6 +77,7 @@ void Game_Map::Init() {
 	scroll_rest = 0;
 	scroll_speed = 0;
 	interpreter = new Game_Interpreter(0, true);
+	encounter_steps = 0;
 	
 }
 
@@ -123,6 +125,7 @@ void Game_Map::Setup(int _id) {
 	scroll_direction = 2;
 	scroll_rest = 0;
 	scroll_speed = 4;
+	encounter_steps = Data::treemap.maps[map_id - 1].encounter_steps;
 }
 
 ////////////////////////////////////////////////////////////
@@ -398,11 +401,15 @@ int Game_Map::GetHeight() {
 }
 
 std::vector<RPG::Encounter>& Game_Map::GetEncounterList() {
-	return Data::treemap.maps[map_id].encounters;
+	return Data::treemap.maps[map_id - 1].encounters;
 }
 
 int Game_Map::GetEncounterStep() {
-	return Data::treemap.maps[map_id].encounter_steps;
+	return encounter_steps;
+}
+
+void Game_Map::SetEncounterStep(int step) {
+	encounter_steps = step;
 }
 
 std::vector<short>& Game_Map::GetMapDataDown() {

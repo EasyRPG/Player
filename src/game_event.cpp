@@ -244,3 +244,7 @@ void Game_Event::Update() {
 	
 }
 
+RPG::Event& Game_Event::GetEvent() {
+	return event;
+}
+

@@ -36,6 +36,8 @@ public:
 	void ShakeBegin(int power, int speed);
 	void ShakeEnd();
 	void Weather(int type, int strength);
+	void PlayMovie(const std::string& filename,
+				   int pos_x, int pos_y, int res_x, int res_y);
 	void Update();
 
 private:
@@ -69,5 +71,11 @@ private:
 
 	int weather_type;
 	int weather_strength;
+
+	std::string movie_filename;
+	int movie_pos_x;
+	int movie_pos_y;
+	int movie_res_x;
+	int movie_res_y;
 };
 #endif // __game_screen__
