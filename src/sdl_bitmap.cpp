@@ -376,6 +376,10 @@ void SdlBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 	// The current char is an exfont (is_full_glyph must be true too)
 	bool is_exfont = false;
 
+	#ifdef USE_ALPHA
+	SDL_SetColorKey(((SdlBitmap*) exfont)->bitmap, COLORKEY_FLAGS, SDL_MapRGB(((SdlBitmap*) exfont)->bitmap->format, 0, 0, 0));
+	#endif
+
 	// This loops always renders a single char, color blends it and then puts
 	// it onto the text_surface (including the drop shadow)
 	for (unsigned c = 0; c < text.size(); ++c) {
@@ -397,6 +401,30 @@ void SdlBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 			is_full_glyph = true;
 			is_exfont = true;
 
+		#ifdef USE_ALPHA
+			char_surface = CreateBitmap(12, 12);
+			char_shadow = CreateBitmap(12, 12);
+			mask = CreateBitmap(12, 12);
+
+			// Get exfont from graphic
+			Rect rect_exfont((exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12);
+
+			text_surface->Blit(next_glyph_rect.x, next_glyph_rect.y, exfont, rect_exfont, 255);
+
+			// Get color region from system graphic
+			Rect clip_system(8+16*(font->color%10), 4+48+16*(font->color/10), 6, 12);
+
+			// Blit color background (twice because its a full glyph)
+			char_surface->Blit(0, 0, system, clip_system, 255);
+			char_surface->Blit(6, 0, system, clip_system, 255);
+
+			// Blit black mask onto color background
+			SDL_Rect src_r = {(int16)clip_system.x, (int16)clip_system.y, (uint16)clip_system.width, (uint16)clip_system.height};
+			SDL_Rect dst_r = {(int16)next_glyph_rect.x, (int16)next_glyph_rect.y, 0, 0};
+			SDL_BlitSurface(((SdlBitmap*)system)->bitmap, &src_r, ((SdlBitmap*)text_surface)->bitmap, &dst_r);
+			dst_r.x += 6;
+			SDL_BlitSurface(((SdlBitmap*)system)->bitmap, &src_r, ((SdlBitmap*)text_surface)->bitmap, &dst_r);
+		#else
 			char_surface = CreateBitmap(12, 12);
 			char_shadow = CreateBitmap(12, 12);
 			mask = CreateBitmap(12, 12);
@@ -434,6 +462,7 @@ void SdlBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 			// Blit first shadow and then text
 			text_surface->Blit(next_glyph_rect.x + 1, next_glyph_rect.y + 1, char_shadow, char_shadow->GetRect(), 255);
 			text_surface->Blit(next_glyph_rect.x, next_glyph_rect.y, char_surface, char_surface->GetRect(), 255);
+		#endif
 		} else {
 			// No ExFont, draw normal text
 

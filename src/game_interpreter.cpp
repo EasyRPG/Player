@@ -31,6 +31,10 @@
 #include "game_system.h"
 #include "game_message.h"
 #include "game_picture.h"
+#include "spriteset_map.h"
+#include "sprite_character.h"
+#include "scene_map.h"
+#include "scene.h"
 #include "graphics.h"
 #include "input.h"
 #include "main_data.h"
@@ -586,6 +590,14 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandTeleportTargets();
 		case EscapeTarget:
 			return CommandEscapeTarget();
+		case SpriteTransparency:
+			return CommandSpriteTransparency();
+		case FlashSprite:
+			return CommandFlashSprite();
+		case EraseEvent:
+			return CommandEraseEvent();
+		case ChangeMapTileset:
+			CommandChangeMapTileset();
 		default:
 			return true;
 	}
@@ -2757,6 +2769,71 @@ bool Game_Interpreter::CommandMoveEvent() { // code 11330
 	event->ForceMoveRoute(*route);
 	// event->ForceMoveRoute(route, move_freq, this);
 	pending.push_back(route);
+	return true;
+}
+
+bool Game_Interpreter::CommandFlashSprite() { // code 11320
+	int event_id = list[index].parameters[0];
+	Color color(list[index].parameters[1],
+				list[index].parameters[2],
+				list[index].parameters[3],
+				list[index].parameters[4]);
+	int tenths = list[index].parameters[5];
+	bool wait = list[index].parameters[6] > 0;
+	Game_Character* event = GetCharacter(event_id);
+
+	Scene_Map* scene = (Scene_Map*) Scene::Find(Scene::Map);
+	if (!scene)
+		return true;
+
+	Sprite_Character* sprite = scene->spriteset->FindCharacter(event);
+	if (!sprite)
+		return true;
+
+	sprite->Flash(color, tenths * DEFAULT_FPS / 10);
+
+	if (wait)
+		wait_count = tenths * DEFAULT_FPS / 10;
+
+	return true;
+}
+
+bool Game_Interpreter::CommandSpriteTransparency() { // code 11310
+	bool visible = list[index].parameters[0] != 0;
+	Game_Character* player = Main_Data::game_player;
+
+	Scene_Map* scene = (Scene_Map*) Scene::Find(Scene::Map);
+	if (!scene)
+		return true;
+
+	Sprite_Character* sprite = scene->spriteset->FindCharacter(player);
+	if (!sprite)
+		return true;
+
+	sprite->SetVisible(visible);
+
+	return true;
+}
+
+bool Game_Interpreter::CommandEraseEvent() { // code 12320
+	if (event_id == 0)
+		return true;
+
+	tEventHash& events = Game_Map::GetEvents();
+	events.erase(event_id);
+
+	return true;
+}
+
+bool Game_Interpreter::CommandChangeMapTileset() { // code 11710
+	int chipset_id = list[index].parameters[0];
+	Game_Map::SetChipset(chipset_id);
+
+	Scene_Map* scene = (Scene_Map*) Scene::Find(Scene::Map);
+	if (!scene)
+		return true;
+	scene->spriteset->ChipsetUpdated();
+
 	return true;
 }
 

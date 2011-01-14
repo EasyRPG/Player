@@ -146,6 +146,10 @@ private:
 	bool CommandTeleportTargets();
 	bool CommandEscapeTarget();
 	bool CommandMoveEvent();
+	bool CommandFlashSprite();
+	bool CommandSpriteTransparency();
+	bool CommandEraseEvent();
+	bool CommandChangeMapTileset();
 
 	void CommandEnd();
 

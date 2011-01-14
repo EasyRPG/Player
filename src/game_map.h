@@ -271,6 +271,9 @@ namespace Game_Map {
 	////////////////////////////////////////////////////////
 	int GetMapIndex(int id);
 
+	/// Set the chipset
+	/// @param id : new chipset ID
+	void SetChipset(int id);
 }
 
 #endif

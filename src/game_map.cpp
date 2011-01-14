@@ -31,6 +31,7 @@
 
 ////////////////////////////////////////////////////////////
 namespace {
+	int chipset_id;
 	std::string chipset_name;
 	std::string battleback_name;
 	std::string panorama_name;
@@ -107,13 +108,7 @@ void Game_Map::Setup(int _id) {
 		Output::ErrorStr(Reader::GetError());
 	}
 
-	RPG::Chipset chipset = Data::chipsets[map->chipset_id - 1];
-	chipset_name = chipset.chipset_name;
-	passages_down = chipset.passable_data_lower;
-	passages_up = chipset.passable_data_upper;
-	terrain_tags = chipset.terrain_data;
-	panorama_speed = chipset.animation_speed;
-	panorama_type = chipset.animation_type;
+	SetChipset(map->chipset_id);
 	display_x = 0;
 	display_y = 0;
 	need_refresh = false;
@@ -477,15 +472,15 @@ void Game_Map::SetNeedRefresh(bool new_need_refresh) {
 
 ////////////////////////////////////////////////////////////
 std::vector<unsigned char>& Game_Map::GetPassagesDown() {
-	return Data::chipsets[map->chipset_id - 1].passable_data_lower;
+	return passages_down;
 }
 
 std::vector<unsigned char>& Game_Map::GetPassagesUp() {
-	return Data::chipsets[map->chipset_id - 1].passable_data_upper;
+	return passages_up;
 }
 
 std::vector<short>& Game_Map::GetTerrainTags() {
-	return Data::chipsets[map->chipset_id - 1].terrain_data;
+	return terrain_tags;
 }
 
 tEventHash& Game_Map::GetEvents() {
@@ -519,3 +514,13 @@ int Game_Map::GetMapIndex(int id) {
 	return -1;
 }
 
+////////////////////////////////////////////////////////////
+void Game_Map::SetChipset(int id) {
+	RPG::Chipset chipset = Data::chipsets[chipset_id - 1];
+	chipset_name = chipset.chipset_name;
+	passages_down = chipset.passable_data_lower;
+	passages_up = chipset.passable_data_upper;
+	terrain_tags = chipset.terrain_data;
+	panorama_speed = chipset.animation_speed;
+	panorama_type = chipset.animation_type;
+}

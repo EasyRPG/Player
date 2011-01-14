@@ -130,6 +130,13 @@ public:
 	////////////////////////////////////////////////////////
 	static void PopUntil(SceneType type);
 
+	////////////////////////////////////////////////////////
+	/// Finds the topmost scene of a specific type on the stack
+	/// @param type : Type of the scene that is searched
+	/// @return : The scene found, or NULL if no such scene exists
+	////////////////////////////////////////////////////////
+	static Scene* Find(SceneType type);
+
 	// Don't write to the following values directly when you want to change
 	// the scene! Use Push and Pop instead!
 

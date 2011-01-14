@@ -170,3 +170,14 @@ void Scene::PopUntil(SceneType type) {
 
 	Output::Warning("The requested scene %s was not on the stack", scene_names[type]);
 }
+
+////////////////////////////////////////////////////////////
+Scene* Scene::Find(SceneType type) {
+	std::vector<Scene*>::const_reverse_iterator it;
+	for (it = instances.rbegin() ; it != instances.rend(); it++)
+		if ((*it)->type == type)
+			return *it;
+
+	Output::Warning("The requested scene %s was not on the stack", scene_names[type]);
+	return NULL;
+}

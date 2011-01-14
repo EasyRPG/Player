@@ -84,3 +84,24 @@ void Spriteset_Map::Update() {
 		character_sprites[i]->Update();
 	}
 }
+
+////////////////////////////////////////////////////////////
+/// Find the sprite for a specific character
+////////////////////////////////////////////////////////////
+Sprite_Character* Spriteset_Map::FindCharacter(Game_Character* character) const
+{
+	std::vector<Sprite_Character*>::const_iterator it;
+	for (it = character_sprites.begin(); it != character_sprites.end(); it++) {
+		Sprite_Character* sprite = *it;
+		if (sprite->GetCharacter() == character)
+			return sprite;
+	}
+	return NULL;
+}
+
+void Spriteset_Map::ChipsetUpdated() {
+	tilemap->SetChipset(Cache::Chipset(Game_Map::GetChipsetName()));
+	tilemap->SetPassableDown(Game_Map::GetPassagesDown());
+	tilemap->SetPassableUp(Game_Map::GetPassagesUp());
+}
+
