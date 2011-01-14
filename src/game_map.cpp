@@ -516,7 +516,8 @@ int Game_Map::GetMapIndex(int id) {
 
 ////////////////////////////////////////////////////////////
 void Game_Map::SetChipset(int id) {
-	RPG::Chipset chipset = Data::chipsets[chipset_id - 1];
+	chipset_id = id;
+	RPG::Chipset &chipset = Data::chipsets[chipset_id - 1];
 	chipset_name = chipset.chipset_name;
 	passages_down = chipset.passable_data_lower;
 	passages_up = chipset.passable_data_upper;
