@@ -49,11 +49,13 @@ void Scene_Map::Start() {
 	spriteset = new Spriteset_Map();
 	message_window = new Window_Message(0, 240 - 80, 320, 80);
 
+	Main_Data::game_screen->Reset();
 	Graphics::FrameReset();
 }
 
 ////////////////////////////////////////////////////////////
 void Scene_Map::Terminate() {
+	Main_Data::game_screen->Reset();
 	delete spriteset;
 	delete message_window;
 }

@@ -20,6 +20,17 @@
 
 Game_Screen::Game_Screen()
 {
+	Reset();
+}
+
+Game_Screen::~Game_Screen()
+{
+}
+
+void Game_Screen::Reset()
+{
+	pictures.clear();
+
 	tint_red = 0;
 	tint_green = 0;
 	tint_blue = 0;
@@ -43,6 +54,7 @@ Game_Screen::Game_Screen()
 	shake_duration = 0;
 	shake_direction = 0;
 	shake_position = 0;
+	shake_continuous = false;
 
 	weather_type = 0;
 	weather_strength = 0;
@@ -52,10 +64,6 @@ Game_Screen::Game_Screen()
 	movie_pos_y = 0;
 	movie_res_x = 0;
 	movie_res_y = 0;
-}
-
-Game_Screen::~Game_Screen()
-{
 }
 
 Picture& Game_Screen::GetPicture(int id) {

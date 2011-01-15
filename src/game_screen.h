@@ -28,6 +28,7 @@ public:
 
 	Picture& GetPicture(int id);
 
+	void Reset();
 	void TintScreen(int r, int g, int b, int s, int tenths);
 	void FlashOnce(int r, int g, int b, int s, int tenths);
 	void FlashBegin(int r, int g, int b, int s, int tenths);

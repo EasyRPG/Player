@@ -574,6 +574,8 @@ Bitmap* Bitmap::Resample(int scale_w, int scale_h, const Rect& src_rect) {
 	double zoom_y = (double)(scale_h) / src_rect.height;
 
 	Bitmap* resampled = CreateBitmap(scale_w, scale_h, transparent);
+	if (transparent)
+		resampled->SetTransparentColor(GetTransparentColor());
 
 	Lock();
 	resampled->Lock();
@@ -640,7 +642,10 @@ void Bitmap::ToneChange(const Tone &tone) {
 			for (int i = 0; i < height(); i++) {
 				for (int j = 0; j < width(); j++) {
 					#ifndef USE_ALPHA
-						if (transparent && dst_pixels[0] == (uint16)colorkey()) continue;
+						if (transparent && ((uint32*)dst_pixels)[0] == colorkey()) {
+							dst_pixels++;
+							continue;
+						}
 					#endif
 
 					GetColorComponents(dst_pixels[0], dst_r, dst_g, dst_b, dst_a);
@@ -651,7 +656,7 @@ void Bitmap::ToneChange(const Tone &tone) {
 
 					dst_pixels[0] = (uint16)GetUint32Color(dst_r, dst_g, dst_b, dst_a);
 
-					dst_pixels += bpp();
+					dst_pixels++;
 				}
 				dst_pixels += stride;
 			}
@@ -661,7 +666,10 @@ void Bitmap::ToneChange(const Tone &tone) {
 			for (int i = 0; i < height(); i++) {
 				for (int j = 0; j < width(); j++) {
 					#ifndef USE_ALPHA
-						if (transparent && dst_pixels[0] == (uint16)colorkey()) continue;
+						if (transparent && ((uint32*)dst_pixels)[0] == colorkey()) {
+							dst_pixels++;
+							continue;
+						}
 					#endif
 
 					GetColorComponents(dst_pixels[0], dst_r, dst_g, dst_b, dst_a);
@@ -672,7 +680,7 @@ void Bitmap::ToneChange(const Tone &tone) {
 					dst_g = (uint8)max(min((dst_g - gray) * factor + gray + tone.green + 0.5, 255), 0);
 					dst_b = (uint8)max(min((dst_b - gray) * factor + gray + tone.blue + 0.5, 255), 0);
 
-					dst_pixels += bpp();
+					dst_pixels++;
 				}
 				dst_pixels += stride;
 			}
@@ -690,7 +698,10 @@ void Bitmap::ToneChange(const Tone &tone) {
 			for (int i = 0; i < height(); i++) {
 				for (int j = 0; j < width(); j++) {
 					#ifndef USE_ALPHA
-						if (transparent && ((uint32*)dst_pixels)[0] == colorkey()) continue;
+						if (transparent && ((uint32*)dst_pixels)[0] == colorkey()) {
+							dst_pixels += bpp();
+							continue;
+						}
 					#endif
 
 					dst_pixels[rbyte] = (uint8)max(min(dst_pixels[rbyte] + tone.red, 255), 0);
@@ -707,7 +718,10 @@ void Bitmap::ToneChange(const Tone &tone) {
 			for (int i = 0; i < height(); i++) {
 				for (int j = 0; j < width(); j++) {
 					#ifndef USE_ALPHA
-						if (transparent && ((uint32*)dst_pixels)[0] == colorkey()) continue;
+						if (transparent && ((uint32*)dst_pixels)[0] == colorkey()) {
+							dst_pixels += bpp();
+							continue;
+						}
 					#endif
 
 					gray = dst_pixels[rbyte] * 0.299 + dst_pixels[gbyte] * 0.587 + dst_pixels[bbyte] * 0.114;

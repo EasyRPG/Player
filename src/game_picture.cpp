@@ -68,13 +68,15 @@ void Picture::UpdateSprite() {
 	sprite->SetZ(1);
 	sprite->SetZoomX(st.magnify / 100.0);
 	sprite->SetZoomY(st.magnify / 100.0);
+	sprite->SetOx(sprite->GetBitmap()->GetWidth() * st.magnify / 200.0);
+	sprite->SetOy(sprite->GetBitmap()->GetHeight() * st.magnify / 200.0);
 	sprite->SetAngle(rotate ? value : 0.0);
 	sprite->SetOpacity((int)(255 * (100 - st.top_trans) / 100));
 	// TODO: bottom_trans
-	sprite->SetTone(Tone((int) st.red,
-						 (int) st.green,
-						 (int) st.blue,
-						 (int) st.saturation));
+	sprite->SetTone(Tone((int) ((st.red        - 100) * 255 / 100),
+						 (int) ((st.green      - 100) * 255 / 100),
+						 (int) ((st.blue       - 100) * 255 / 100),
+						 (int) ((st.saturation - 100) * 255 / 100)));
 }
 
 void Picture::Show(const std::string& _name) {
