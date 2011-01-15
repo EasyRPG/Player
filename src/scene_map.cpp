@@ -60,6 +60,8 @@ void Scene_Map::Terminate() {
 
 ////////////////////////////////////////////////////////////
 void Scene_Map::Update() {
+	UpdateTeleportPlayer();
+
 	Game_Map::GetInterpreter().Update();
 	Game_Map::Update();
 	Main_Data::game_player->Update();
@@ -77,10 +79,8 @@ void Scene_Map::Update() {
 		Scene::PopUntil(Scene::Title);
 	}
 
-	if (Game_Message::visible) 
+	if (Game_Message::visible)
 		return;
-
-	UpdateTeleportPlayer();
 
 	// ESC-Menu calling
 	if (Input::IsTriggered(Input::CANCEL))

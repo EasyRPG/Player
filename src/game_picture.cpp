@@ -63,13 +63,13 @@ void Picture::UpdateSprite() {
 
 	PictureState& st = current_state;
 
-	sprite->SetX(st.x);
-	sprite->SetY(st.y);
+	sprite->SetX((int)st.x);
+	sprite->SetY((int)st.y);
 	sprite->SetZ(1);
 	sprite->SetZoomX(st.magnify / 100.0);
 	sprite->SetZoomY(st.magnify / 100.0);
 	sprite->SetAngle(rotate ? value : 0.0);
-	sprite->SetOpacity(255 * (100 - st.top_trans) / 100);
+	sprite->SetOpacity((int)(255 * (100 - st.top_trans) / 100));
 	// TODO: bottom_trans
 	sprite->SetTone(Tone((int) st.red,
 						 (int) st.green,

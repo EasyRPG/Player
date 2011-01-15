@@ -633,6 +633,12 @@ bool Game_Interpreter::CommandTeleport() { // Code 10810
 	int y = list[index].parameters[2];
 
 	Main_Data::game_player->ReserveTeleport(map_id, x, y);
+
+	if (Game_Message::visible) {
+		Game_Message::visible = false;
+		Game_Message::FullClear();
+	}
+
 	index++;
 
 	return false;
