@@ -28,6 +28,7 @@
 #include <vector>
 #include "filefinder.h"
 #include "options.h"
+#include "player.h"
 #include "registry_win.h"
 
 // MinGW shlobj.h does not define this
@@ -119,19 +120,18 @@ std::string GetFontFilename(std::string name) {
 
 ////////////////////////////////////////////////////////////
 void FileFinder::Init() {
-	 search_paths.push_back("");
+	search_paths.push_back("");
+	std::string rtp_path;
 
-	#if RPGMAKER == RPG2K
-		std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\ASCII\\RPG2000", "RuntimePackagePath");
+	if (Player::engine == Player::EngineRpg2k) {
+		rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\ASCII\\RPG2000", "RuntimePackagePath");
 		if (rtp_path.empty())
 			rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\ASCII\\RPG2000", "RuntimePackagePath");
-	#elif RPGMAKER == RPG2K3
-		std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\Enterbrain\\RPG2003", "RuntimePackagePath");
+	} else if (Player::engine == Player::EngineRpg2k3) {
+		rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\Enterbrain\\RPG2003", "RuntimePackagePath");
 		if (rtp_path.empty())
 			rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\Enterbrain\\RPG2003", "RuntimePackagePath");
-	#else
-		#error Set RPGMAKER to RPG2K or RPG2K3
-	#endif
+	}
 
 	if (!rtp_path.empty())
 		search_paths.push_back(MakePath(rtp_path, true));

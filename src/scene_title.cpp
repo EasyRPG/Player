@@ -26,6 +26,7 @@
 #include "audio.h"
 #include "bitmap.h"
 #include "cache.h"
+#include "filefinder.h"
 #include "game_actors.h"
 #include "game_map.h"
 #include "game_message.h"
@@ -52,7 +53,7 @@
 
 ////////////////////////////////////////////////////////////
 Scene_Title::Scene_Title() :
-	command_window(NULL) {
+	command_window(NULL), init(false) {
 	type = Scene::Title;
 }
 
@@ -60,13 +61,24 @@ Scene_Title::Scene_Title() :
 void Scene_Title::Start() {
 	// Clear the cache when the game returns to title screen
 	// e.g. by pressing F12
-	Cache::Clear();
+	if (init) {
+		Cache::Clear();
+	}
+
 	LoadDatabase();
 
-	if (Data::system.ldb_id == 2003) {
-		Output::Debug("Switching to Rpg2003 Interpreter");
-		Player::engine = Player::EngineRpg2k3;
+	if (!init) {
+		if (Data::system.ldb_id == 2003) {
+			Output::Debug("Switching to Rpg2003 Interpreter");
+			Player::engine = Player::EngineRpg2k3;
+		}
+
+
+		// File Finder cant be initialized earlier because we need the RPG-version
+		FileFinder::Init();
 	}
+
+	init = true;
 
 	// Create Game System
 	Game_System::Init();

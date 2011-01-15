@@ -18,7 +18,6 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "filefinder.h"
 #include "player.h"
 #include "graphics.h"
 #include "input.h"
@@ -29,7 +28,6 @@
 extern "C"
 #endif
 int main(int argc, char* argv[]) {
-	FileFinder::Init();
 	Player::Init(argc, argv);
 	Graphics::Init();
 	Input::Init();
@@ -39,4 +37,3 @@ int main(int argc, char* argv[]) {
 	
 	return EXIT_SUCCESS;
 }
-

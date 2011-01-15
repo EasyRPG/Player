@@ -105,6 +105,11 @@ private:
 
 	/// contains state of continue button
 	bool continue_enabled;
+
+	/// contains if the title scene was already executed once
+	/// Prevents reiniting from file finder e.g.
+	/// This scene is always on the stack so this bool is never deleted
+	bool init;
 };
 
 #endif
