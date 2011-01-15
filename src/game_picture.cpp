@@ -68,8 +68,8 @@ void Picture::UpdateSprite() {
 	sprite->SetZ(1);
 	sprite->SetZoomX(st.magnify / 100.0);
 	sprite->SetZoomY(st.magnify / 100.0);
-	sprite->SetOx(sprite->GetBitmap()->GetWidth() * st.magnify / 200.0);
-	sprite->SetOy(sprite->GetBitmap()->GetHeight() * st.magnify / 200.0);
+	sprite->SetOx((int)(sprite->GetBitmap()->GetWidth() * st.magnify / 200.0));
+	sprite->SetOy((int)(sprite->GetBitmap()->GetHeight() * st.magnify / 200.0));
 	sprite->SetAngle(rotate ? value : 0.0);
 	sprite->SetOpacity((int)(255 * (100 - st.top_trans) / 100));
 	// TODO: bottom_trans

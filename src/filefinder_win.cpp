@@ -49,7 +49,13 @@ static bool FileExists(std::string filename) {
 	return _access(filename.c_str(), 4) == 0;
 }
 static std::string MakePath(const std::string &dir, const std::string &name, bool ending_slash = false) {
-	std::string str = dir + "\\" + name;
+	std::string str;
+	if (dir.empty()) {
+		str = name;
+	} else {
+		str = dir + "\\" + name;
+	}
+
 	for (std::size_t i = 0; i < str.length(); i++) {
 		if (str[i] == '/')
 			str[i] = '\\';
@@ -91,7 +97,7 @@ std::string GetFontsPath() {
 #ifdef UNICODE
 			WideCharToMultiByte(CP_ACP, WC_NO_BEST_FIT_CHARS | WC_COMPOSITECHECK, path, MAX_PATH, fpath, MAX_PATH, NULL, NULL);
 #endif
-			fonts_path = MakePath(fpath, true);
+			fonts_path = MakePath(fpath, "");
 		}
 
 		init = true;
@@ -135,7 +141,7 @@ void FileFinder::Init() {
 	}
 
 	if (!rtp_path.empty())
-		search_paths.push_back(MakePath(rtp_path, true));
+		search_paths.push_back(MakePath(rtp_path, ""));
 }
 
 ////////////////////////////////////////////////////////////
@@ -160,7 +166,7 @@ std::string FileFinder::FindSound(const std::string& name) {
 
 ////////////////////////////////////////////////////////////
 std::string FileFinder::FindFont(const std::string& name) {
-	std::string path = FindFile("Font", name, FONTS_TYPES);
+	std::string path = MakePath("", name);
 
 	if (!path.empty()) {
 		return path;
