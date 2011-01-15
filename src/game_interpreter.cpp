@@ -2988,9 +2988,9 @@ bool Game_Interpreter::CommandChangeVehicleGraphic() { // code 10650
 	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) list[index].parameters[0];
 	Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
 	const std::string& name = list[index].string;
-	int index = list[index].parameters[1];
+	int vehicle_index = list[index].parameters[1];
 
-	vehicle->SetGraphic(name, index);
+	vehicle->SetGraphic(name, vehicle_index);
 
 	return true;
 }
