@@ -47,21 +47,28 @@ void Sprite_Character::Update() {
 		character_name = character->GetCharacterName();
 		character_index = character->GetCharacterIndex();
 		if (tile_id > 0) {
-			SetBitmap(Cache::Tile(Game_Map::GetChipsetName(), tile_id));
+			// FIXME: The cached bitmap gets deleted in Bitmap Screen (needs a no delete flag to prevent copying)
+			Bitmap* tile = Cache::Tile(Game_Map::GetChipsetName(), tile_id);
+			SetBitmap(Bitmap::CreateBitmap(tile, tile->GetRect()));
 			r.Set(0, 0, 16, 16);
 			SetSrcRect(r);
 			SetOx(8);
 			SetOy(16);
 		} else {
-			SetBitmap(Cache::Charset(character_name));
-			chara_width = GetBitmap()->GetWidth() / 4 / 3;
-			chara_height = GetBitmap()->GetHeight() / 2 / 4;
-			SetOx(chara_width / 2);
-			SetOy(chara_height);
-			int sx = (character_index % 4) * chara_width * 3;
-			int sy = (character_index / 4) * chara_height * 4;
-			r.Set(sx, sy, chara_width * 3, chara_height * 4);
-			SetSpriteRect(r);
+			if (character_name.empty()) {
+				SetBitmap(NULL);
+			} else {
+				// FIXME: The cached bitmap gets deleted in Bitmap Screen (needs a no delete flag to prevent copying)
+				SetBitmap(Bitmap::CreateBitmap(Cache::Charset(character_name), Cache::Charset(character_name)->GetRect()));
+				chara_width = GetBitmap()->GetWidth() / 4 / 3;
+				chara_height = GetBitmap()->GetHeight() / 2 / 4;
+				SetOx(chara_width / 2);
+				SetOy(chara_height);
+				int sx = (character_index % 4) * chara_width * 3;
+				int sy = (character_index / 4) * chara_height * 4;
+				r.Set(sx, sy, chara_width * 3, chara_height * 4);
+				SetSpriteRect(r);
+			}
 		}
 	}
 	//SetVisible(character->GetVisible());

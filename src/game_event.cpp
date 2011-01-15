@@ -73,6 +73,8 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	}
 	character_name = page->character_name;
 	character_index = page->character_index;
+	tile_id = page->character_name.empty() ? page->character_index : 0;
+
 	pattern = page->character_pattern;
 	/*if (original_direction != page.character_dir) {
 		direction = page.character_dir;

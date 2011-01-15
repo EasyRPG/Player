@@ -103,9 +103,34 @@ Bitmap* Cache::System2(std::string filename) {
 ////////////////////////////////////////////////////////////
 Bitmap* Cache::Tile(std::string filename, int tile_id) {
 	if (cache_tiles.count(filename) == 0 || cache_tiles[filename].count(tile_id) == 0) {
-		Bitmap* bmp = Bitmap::CreateBitmap(16, 16);
-		// TODO
-		cache_tiles[filename][tile_id] = bmp;
+		Bitmap* tile = Bitmap::CreateBitmap(16, 16);
+		Bitmap* chipset = Cache::Chipset(filename);
+		Rect rect = Rect(0, 0, 16, 16);
+
+		int sub_tile_id = 0;
+		
+		if (tile_id > 0 && tile_id < 48) {
+			sub_tile_id = tile_id;
+			rect.x += 288;
+			rect.y += 128;
+		} else if (tile_id >= 48 && tile_id < 96) {
+			sub_tile_id = tile_id - 48;
+			rect.x += 384;
+		} else if (tile_id >= 96 && tile_id < 144) {
+			sub_tile_id = tile_id - 96;
+			rect.x += 384;
+			rect.y += 128;
+		} else { // Invalid -> Use empty file (first one)
+			rect.x = 288;
+			rect.y = 128;
+		}
+
+		rect.x += sub_tile_id % 6 * 16;
+		rect.y += sub_tile_id / 6 * 16;
+
+
+		tile = Bitmap::CreateBitmap(chipset, rect);
+		cache_tiles[filename][tile_id] = tile;
 	}
 	return cache_tiles[filename][tile_id];
 }
