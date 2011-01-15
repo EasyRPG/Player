@@ -241,6 +241,10 @@ public:
 	/// @param transparent : transparent flag
 	void SetSprite(const std::string &file, int index, bool transparent);
 
+	/// @param add : true => add the command, false => remove the command
+	/// @param id  : command to add/remove, 0 to remove all commands
+	void ChangeBattleCommands(bool add, int id);
+
 private:
 	int actor_id;
 	std::string name;
@@ -260,6 +264,7 @@ private:
 	std::vector<int> exp_list;
 	std::vector<int> skills;
 	bool two_swords_style;
+	std::vector<unsigned int> battle_commands;
 };
 
 #endif

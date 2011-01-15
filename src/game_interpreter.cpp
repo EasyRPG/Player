@@ -200,6 +200,7 @@ void Game_Interpreter::Clear() {
 	wait_count = 0;					// wait count
 	child_interpreter = NULL;		// child interpreter for common events, etc
 	continuation = NULL;			// function to execute to resume command
+	button_timer = 0;
 }
 
 ////////////////////////////////////////////////////////////
@@ -606,6 +607,10 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandProceedWithMovement();
 		case PlayMovie:
 			return CommandPlayMovie();
+		case ChangeBattleCommands:
+			return CommandChangeBattleCommands();
+		case KeyInputProc:
+			return CommandKeyInputProc();
 		default:
 			return true;
 	}
@@ -2907,6 +2912,74 @@ bool Game_Interpreter::CommandPlayMovie() { // code 11560
 	int res_y = list[index].parameters[4];
 
 	Main_Data::game_screen->PlayMovie(filename, pos_x, pos_y, res_x, res_y);
+
+	return true;
+}
+
+bool Game_Interpreter::CommandChangeBattleCommands() { // code 1009
+	int actor_id = list[index].parameters[1];
+	Game_Actor* actor = Game_Actors::GetActor(actor_id);
+	int cmd_id = list[index].parameters[2];
+	bool add = list[index].parameters[3] != 0;
+
+	actor->ChangeBattleCommands(add, cmd_id);
+
+	return true;
+}
+
+bool Game_Interpreter::CommandKeyInputProc() { // code 11610
+	int var_id = list[index].parameters[0];
+	bool wait = list[index].parameters[1] != 0;
+	int time_id = list[index].parameters[7];
+	bool time = list[index].parameters[8] != 0;
+	bool check_decision = list[index].parameters[ 3];
+	bool check_cancel   = list[index].parameters[ 4];
+	bool check_numbers  = list[index].parameters[ 5];
+	bool check_arith    = list[index].parameters[ 6];
+	bool check_shift    = list[index].parameters[ 9];
+	bool check_down     = list[index].parameters[10];
+	bool check_left     = list[index].parameters[11];
+	bool check_right    = list[index].parameters[12];
+	bool check_up       = list[index].parameters[13];
+	int result = 0;
+
+	if (check_down && Input::IsTriggered(Input::DOWN))
+		result = 1;
+	if (check_left && Input::IsTriggered(Input::LEFT))
+		result = 2;
+	if (check_right && Input::IsTriggered(Input::RIGHT))
+		result = 3;
+	if (check_up && Input::IsTriggered(Input::UP))
+		result = 4;
+	if (check_decision && Input::IsTriggered(Input::DECISION))
+		result = 5;
+	if (check_cancel && Input::IsTriggered(Input::CANCEL))
+		result = 6;
+	if (check_shift && Input::IsTriggered(Input::SHIFT))
+		result = 7;
+	if (check_numbers)
+		for (int i = 0; i < 10; i++)
+			if (Input::IsTriggered((Input::InputButton)(Input::N0 + i)))
+				result = 10 + i;
+	if (check_arith)
+		for (int i = 0; i < 5; i++)
+			if (Input::IsTriggered((Input::InputButton)(Input::PLUS + i)))
+				result = 20 + i;
+
+	Game_Variables[var_id] = result;
+
+	if (!wait)
+		return true;
+
+	button_timer++;
+
+	if (result == 0)
+		return false;
+
+	if (time)
+		Game_Variables[time_id] = button_timer;
+
+	button_timer = 0;
 
 	return true;
 }

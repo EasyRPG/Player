@@ -32,30 +32,32 @@ Game_Actor::Game_Actor(int actor_id) {
 
 ////////////////////////////////////////////////////////////
 void Game_Actor::Setup(int actor_id) {
+	const RPG::Actor& actor = Data::actors[actor_id - 1];
 	this->actor_id = actor_id;
-	name = Data::actors[actor_id - 1].name;
-	character_name = Data::actors[actor_id - 1].character_name;
-	character_index = Data::actors[actor_id - 1].character_index;
+	name = actor.name;
+	character_name = actor.character_name;
+	character_index = actor.character_index;
 	character_transparent = false;
-	face_name = Data::actors[actor_id - 1].face_name;
-	face_index = Data::actors[actor_id - 1].face_index;
-	title = Data::actors[actor_id - 1].title;
-	weapon_id = Data::actors[actor_id - 1].weapon_id;
-	shield_id = Data::actors[actor_id - 1].shield_id;
-	armor_id = Data::actors[actor_id - 1].armor_id;
-	helmet_id = Data::actors[actor_id - 1].helmet_id;
-	accessory_id = Data::actors[actor_id - 1].accessory_id;
-	level = Data::actors[actor_id - 1].initial_level;
-	exp_list.resize(Data::actors[actor_id - 1].final_level, 0);
+	face_name = actor.face_name;
+	face_index = actor.face_index;
+	title = actor.title;
+	weapon_id = actor.weapon_id;
+	shield_id = actor.shield_id;
+	armor_id = actor.armor_id;
+	helmet_id = actor.helmet_id;
+	accessory_id = actor.accessory_id;
+	level = actor.initial_level;
+	exp_list.resize(actor.final_level, 0);
 	MakeExpList();
 	exp = exp_list[level - 1];
 	hp = GetMaxHp();
 	sp = GetMaxSp();
-	two_swords_style = Data::actors[actor_id - 1].two_swords_style;
+	two_swords_style = actor.two_swords_style;
+	battle_commands = std::vector<unsigned int>(actor.battle_commands);
 
-	for (size_t i = 0; i < Data::actors[actor_id - 1].skills.size(); ++i) {
-		if (Data::actors[actor_id - 1].skills[i].level <= level) {
-			LearnSkill(Data::actors[actor_id - 1].skills[i].skill_id);
+	for (size_t i = 0; i < actor.skills.size(); ++i) {
+		if (actor.skills[i].level <= level) {
+			LearnSkill(actor.skills[i].skill_id);
 		}
 	}
 }
@@ -443,5 +445,25 @@ void Game_Actor::SetSprite(const std::string &file, int index, bool transparent)
 	character_name = file;
 	character_index = index;
 	character_transparent = transparent;
+}
+
+////////////////////////////////////////////////////////////
+void Game_Actor::ChangeBattleCommands(bool add, int id) {
+	if (add) {
+		if (std::find(battle_commands.begin(), battle_commands.end(), id)
+			== battle_commands.end()) {
+			battle_commands.push_back(id);
+			std::sort(battle_commands.begin(), battle_commands.end());
+		}
+	}
+	else if (id == 0) {
+		battle_commands.clear();
+	}
+	else {
+		std::vector<unsigned int>::iterator it;
+		it = std::find(battle_commands.begin(), battle_commands.end(), id);
+		if (it != battle_commands.end())
+			battle_commands.erase(it);
+	}
 }
 

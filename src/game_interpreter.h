@@ -64,6 +64,8 @@ private:
 
 	std::vector<RPG::EventCommand> list;
 
+	int button_timer;
+
 	// Helper function
 	void GetStrings(std::vector<std::string>& ret_val);
 
@@ -155,6 +157,8 @@ private:
 	bool CommandChangeEncounterRate();
 	bool CommandProceedWithMovement();
 	bool CommandPlayMovie();
+	bool CommandChangeBattleCommands();
+	bool CommandKeyInputProc();
 
 	void CommandEnd();
 
