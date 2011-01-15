@@ -50,9 +50,6 @@ struct Tree {
 	directory_map files;
 };
 
-#define COUNT(x) (sizeof(x) / sizeof(*(x)))
-#define VECTOR(x) x, x + COUNT(x)
-
 namespace FileFinder {
 	std::vector<Tree*> trees;
 
@@ -68,8 +65,6 @@ namespace FileFinder {
 	std::string DefaultFont();
 }
 
-#undef VECTOR
-
 ////////////////////////////////////////////////////////////
 /// Utility functions
 ////////////////////////////////////////////////////////////
@@ -79,6 +74,19 @@ static std::string lower(const std::string& str) {
 	for (it = result.begin(); it != result.end(); it++)
 		*it = tolower(*it);
 	return result;
+}
+
+static bool isdir(const std::string& path) {
+#ifdef GEKKO
+	DIR* dir = opendir(path.c_str());
+	if (!dir)
+		return false;
+	closedir(dir);
+	return true;
+#else
+	std::string test = path + "/.";
+	return access(test.c_str(), F_OK) == 0;
+#endif
 }
 
 static string_map scandir(const std::string& path, bool dirs = false) {
@@ -96,11 +104,8 @@ static string_map scandir(const std::string& path, bool dirs = false) {
 	while ((dirent = readdir(dir)) != NULL) {
 		if (dirent->d_name[0] == '.')
 			continue;
-		if (dirs) {
-			std::string test = path + "/" + dirent->d_name + "/.";
-			if (access(test.c_str(), F_OK) != 0)
-				continue;
-		}
+		if (dirs && !isdir(path + "/" + dirent->d_name))
+			continue;
 		std::string name = dirent->d_name;
 		std::string lname = lower(name);
 		result[lname] = name;
@@ -152,11 +157,8 @@ std::string FileFinder::Find(const std::string& _dir,
 		std::string dirpath = tree->root + "/" + dirname;
 		for (const std::string* pext = exts; !pext->empty(); pext++) {
 			std::string& filename = tree->files[dir][file + *pext];
-			if (filename.empty())
-				continue;
-			std::string result = dirpath + "/" + filename;
-			if (access(result.c_str(), F_OK) == 0)
-				return result;
+			if (!filename.empty())
+				return dirpath + "/" + filename;
 		}
 	}
 
