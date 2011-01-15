@@ -48,7 +48,8 @@ static std::string fonts_path;
 static bool FileExists(std::string filename) {
 	return _access(filename.c_str(), 4) == 0;
 }
-static std::string MakePath(std::string str, bool ending_slash = false) {
+static std::string MakePath(const std::string &dir, const std::string &name, bool ending_slash = false) {
+	std::string str = dir + "\\" + name;
 	for (std::size_t i = 0; i < str.length(); i++) {
 		if (str[i] == '/')
 			str[i] = '\\';
@@ -59,8 +60,8 @@ static std::string MakePath(std::string str, bool ending_slash = false) {
 
 	return str;
 }
-static std::string FindFile(std::string name, const std::string exts[]) {
-	name = MakePath(name);
+static std::string FindFile(const std::string &dir, const std::string &_name, const std::string exts[]) {
+	std::string name = MakePath(dir, _name);
 
 	for (std::size_t i = 0; i < search_paths.size(); i++) {
 		std::string path = search_paths[i] + name;
@@ -138,29 +139,28 @@ void FileFinder::Init() {
 }
 
 ////////////////////////////////////////////////////////////
-std::string FileFinder::FindImage(std::string name) {
-	return FindFile(name, IMG_TYPES);
+std::string FileFinder::FindImage(const std::string& dir, const std::string& name) {
+	return FindFile(dir, name, IMG_TYPES);
 }
 
-inline std::string FindDefault(std::string name) {
-	return name;
-}
-
-////////////////////////////////////////////////////////////
-std::string FileFinder::FindMusic(std::string name) {
-	return FindFile(name, MUSIC_TYPES);
+inline std::string FindDefault(const std::string& dir, const std::string& name) {
+	static const std::string no_exts[] = {""};
+	return FindFile(dir, name, no_exts);
 }
 
 ////////////////////////////////////////////////////////////
-std::string FileFinder::FindSound(std::string name) {
-	return FindFile(name, SOUND_TYPES);
+std::string FileFinder::FindMusic(const std::string& name) {
+	return FindFile("Music", name, MUSIC_TYPES);
 }
 
 ////////////////////////////////////////////////////////////
-std::string FileFinder::FindFont(std::string name) {
-	name = MakePath(name);
+std::string FileFinder::FindSound(const std::string& name) {
+	return FindFile("Sound", name, SOUND_TYPES);
+}
 
-	std::string path = FindFile(name, FONTS_TYPES);
+////////////////////////////////////////////////////////////
+std::string FileFinder::FindFont(const std::string& name) {
+	std::string path = FindFile("Font", name, FONTS_TYPES);
 
 	if (!path.empty()) {
 		return path;

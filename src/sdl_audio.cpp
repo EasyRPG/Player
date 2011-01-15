@@ -202,7 +202,7 @@ void Audio::ME_Fade(int fade) {
 
 ////////////////////////////////////////////////////////////
 void Audio::SE_Play(std::string file, int volume, int pitch) {
-	std::string path = FileFinder::FindMusic(file);
+	std::string path = FileFinder::FindSound(file);
 	if (path == "") {
 		Output::Warning("No such file or directory - %s", file.c_str());
 		return;

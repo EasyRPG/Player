@@ -19,49 +19,53 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "cache.h"
+#include "filefinder.h"
 #include "exfont.h"
 
 ////////////////////////////////////////////////////////////
+typedef std::pair<std::string,std::string> string_pair;
+
 namespace {
-	std::map<std::string, Bitmap*> cache;
+	std::map<string_pair, Bitmap*> cache;
 	std::map<std::string, std::map<int, Bitmap*> > cache_tiles;
 }
 
 ////////////////////////////////////////////////////////////
 Bitmap* Cache::LoadBitmap(std::string folder_name, std::string filename, bool transparent) {
-	std::string path = folder_name + filename;
+	string_pair key = string_pair(folder_name, filename);
 
-	if (cache.count(path) == 0) {
-		if (!filename.empty())
-			cache[path] = Bitmap::CreateBitmap(path, transparent);
+	if (cache.count(key) == 0) {
+		std::string path = FileFinder::FindImage(folder_name, filename);
+		if (!path.empty())
+			cache[key] = Bitmap::CreateBitmap(path, transparent);
 		else
-			cache[path] = Bitmap::CreateBitmap(16, 16);
+			cache[key] = Bitmap::CreateBitmap(16, 16);
 	}
 
-	return cache[path];
+	return cache[key];
 }
 
 ////////////////////////////////////////////////////////////
 Bitmap* Cache::Backdrop(std::string filename) {
-	return LoadBitmap("Backdrop/", filename, false);
+	return LoadBitmap("Backdrop", filename, false);
 }
 Bitmap* Cache::Battle(std::string filename) {
-	return LoadBitmap("Battle/", filename, true);
+	return LoadBitmap("Battle", filename, true);
 }
 Bitmap* Cache::Battle2(std::string filename) {
-	return LoadBitmap("Battle2/", filename, true);
+	return LoadBitmap("Battle2", filename, true);
 }
 Bitmap* Cache::BattleCharset(std::string filename) {
-	return LoadBitmap("BattleCharSet/", filename, true);
+	return LoadBitmap("BattleCharSet", filename, true);
 }
 Bitmap* Cache::BattleWeapon(std::string filename) {
-	return LoadBitmap("BattleWeapon/", filename, true);
+	return LoadBitmap("BattleWeapon", filename, true);
 }
 Bitmap* Cache::Charset(std::string filename) {
-	return LoadBitmap("CharSet/", filename, true);
+	return LoadBitmap("CharSet", filename, true);
 }
 Bitmap* Cache::ExFont() {
-	std::string hash = "\x00ExFont";
+	string_pair hash = string_pair("\x00","ExFont");
 
 	if (cache.count(hash) == 0) {
 		cache[hash] = Bitmap::CreateBitmap(exfont_h, sizeof(exfont_h), false);
@@ -70,34 +74,34 @@ Bitmap* Cache::ExFont() {
 	return cache[hash];
 }
 Bitmap* Cache::Faceset(std::string filename) {
-	return LoadBitmap("FaceSet/", filename, true);
+	return LoadBitmap("FaceSet", filename, true);
 }
 Bitmap* Cache::Frame(std::string filename) {
-	return LoadBitmap("Frame/", filename, true);
+	return LoadBitmap("Frame", filename, true);
 }
 Bitmap* Cache::Gameover(std::string filename) {
-	return LoadBitmap("GameOver/", filename, false);
+	return LoadBitmap("GameOver", filename, false);
 }
 Bitmap* Cache::Monster(std::string filename) {
-	return LoadBitmap("Monster/", filename, true);
+	return LoadBitmap("Monster", filename, true);
 }
 Bitmap* Cache::Panorama(std::string filename) {
-	return LoadBitmap("Panorama/", filename, false);
+	return LoadBitmap("Panorama", filename, false);
 }
 Bitmap* Cache::Picture(std::string filename) {
-	return LoadBitmap("Picture/", filename, true);
+	return LoadBitmap("Picture", filename, true);
 }
 Bitmap* Cache::Chipset(std::string filename) {
-	return LoadBitmap("ChipSet/", filename, true);
+	return LoadBitmap("ChipSet", filename, true);
 }
 Bitmap* Cache::Title(std::string filename) {
-	return LoadBitmap("Title/", filename, false);
+	return LoadBitmap("Title", filename, false);
 }
 Bitmap* Cache::System(std::string filename) {
-	return LoadBitmap("System/", filename, true);
+	return LoadBitmap("System", filename, true);
 }
 Bitmap* Cache::System2(std::string filename) {
-	return LoadBitmap("System2/", filename, true);
+	return LoadBitmap("System2", filename, true);
 }
 
 ////////////////////////////////////////////////////////////
@@ -137,7 +141,7 @@ Bitmap* Cache::Tile(std::string filename, int tile_id) {
 
 ////////////////////////////////////////////////////////////
 void Cache::Clear() {
-	std::map<std::string, Bitmap*>::iterator it_cache;
+	std::map<string_pair, Bitmap*>::iterator it_cache;
 	for (it_cache = cache.begin(); it_cache != cache.end(); it_cache++) {
 		delete it_cache->second;
 	}

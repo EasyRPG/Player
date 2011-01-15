@@ -39,35 +39,35 @@ namespace FileFinder {
 	/// @param name : the image path and name
 	/// @return path to file
 	///////////////////////////////////////////////////////
-	std::string FindImage(std::string name);
+	std::string FindImage(const std::string& dir, const std::string& name);
 	
 	///////////////////////////////////////////////////////
 	/// Find a file.
 	/// @param name : the path and name
 	/// @return path to file
 	///////////////////////////////////////////////////////
-	std::string FindDefault(std::string name);
+	std::string FindDefault(const std::string& dir, const std::string& name);
 
 	///////////////////////////////////////////////////////
 	/// Find a music file.
 	/// @param name : the music path and name
 	/// @return path to file
 	///////////////////////////////////////////////////////
-	std::string FindMusic(std::string name);
+	std::string FindMusic(const std::string& name);
 
 	///////////////////////////////////////////////////////
 	/// Find a sound file.
 	/// @param name : the sound path and name
 	/// @return path to file
 	///////////////////////////////////////////////////////
-	std::string FindSound(std::string name);
+	std::string FindSound(const std::string& name);
 
 	///////////////////////////////////////////////////////
 	/// Find a font file.
 	/// @param name : the font name
 	/// @return path to file
 	///////////////////////////////////////////////////////
-	std::string FindFont(std::string name);
+	std::string FindFont(const std::string& name);
 
 	///////////////////////////////////////////////////////
 	/// Get a default font.

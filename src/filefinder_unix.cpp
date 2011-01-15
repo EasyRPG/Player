@@ -22,8 +22,10 @@
 ////////////////////////////////////////////////////////////
 #include <iostream>
 #include <fstream>
-#include <ctype.h>
-#include <string.h>
+#include <vector>
+#include <map>
+#include <string>
+#include <cctype>
 #include <dirent.h>
 #include <unistd.h>
 
@@ -36,13 +38,93 @@
 #include "filefinder.h"
 #include "output.h"
 
+typedef std::map<std::string, std::string> string_map;
+typedef std::map<std::string, string_map> directory_map;
+
 ////////////////////////////////////////////////////////////
 /// Global Variables
 ////////////////////////////////////////////////////////////
+struct Tree {
+	std::string root;
+	string_map dirs;
+	directory_map files;
+};
+
+#define COUNT(x) (sizeof(x) / sizeof(*(x)))
+#define VECTOR(x) x, x + COUNT(x)
+
 namespace FileFinder {
-	std::string fonts_path;
-	std::string rtp_path;
-	std::string rtp_paths[3];
+	std::vector<Tree*> trees;
+
+	std::string Find(const std::string& _dir,
+					 const std::string& _file,
+					 const std::string exts[]);
+	std::string FindDefault(const std::string& dir, const std::string& file);
+	std::string FindImage(const std::string& dir, const std::string& file);
+	std::string FindSound(const std::string& dir, const std::string& file);
+	std::string FindMusic(const std::string& dir, const std::string& file);
+	std::string FindVideo(const std::string& dir, const std::string& file);
+	std::string FindFont(const std::string& name);
+	std::string DefaultFont();
+}
+
+#undef VECTOR
+
+////////////////////////////////////////////////////////////
+/// Utility functions
+////////////////////////////////////////////////////////////
+static std::string lower(const std::string& str) {
+	std::string result = str;
+	std::string::iterator it;
+	for (it = result.begin(); it != result.end(); it++)
+		*it = tolower(*it);
+	return result;
+}
+
+static string_map scandir(const std::string& path, bool dirs = false) {
+	string_map result;
+
+	DIR* dir = opendir(path.c_str());
+	if (!dir) {
+		Output::Error("Error opening dir %s: %s", path.c_str(),
+					  strerror(errno));
+		return result;
+	}
+
+	struct dirent* dirent;
+
+	while ((dirent = readdir(dir)) != NULL) {
+		if (dirent->d_name[0] == '.')
+			continue;
+		if (dirs) {
+			std::string test = path + "/" + dirent->d_name + "/.";
+			if (access(test.c_str(), F_OK) != 0)
+				continue;
+		}
+		std::string name = dirent->d_name;
+		std::string lname = lower(name);
+		result[lname] = name;
+	}
+
+	closedir(dir);
+
+	return result;
+}
+
+static Tree* scandirs(const std::string& root) {
+	Tree* tree = new Tree;
+
+	tree->root = root;
+	tree->dirs = scandir(root, true);
+
+	string_map::const_iterator it;
+	for (it = tree->dirs.begin(); it != tree->dirs.end(); it++) {
+		string_map m = scandir(it->second);
+		if (!m.empty())
+			tree->files[it->first] = m;
+	}
+
+	return tree;
 }
 
 ////////////////////////////////////////////////////////////
@@ -50,191 +132,76 @@ namespace FileFinder {
 ////////////////////////////////////////////////////////////
 void FileFinder::Init() {
 	// TODO find default paths
-	rtp_path = "";
-	fonts_path = "";
+	trees.push_back(scandirs("."));
 }
 
 ////////////////////////////////////////////////////////////
 /// Check if file exists
 ////////////////////////////////////////////////////////////
-static bool fexists(std::string& filename) {
-	// Check if file exists and is readable
-	// At first the case sensitive version
-#ifdef GEKKO
-	// libfat is case insensitive
-	// No idea why but access is not available
-	FILE* file = fopen(filename.c_str(), "r");
-	if (file == NULL) {
-		return false;
-	} else {
-		return true;
-	}
-#else
-	if (access(filename.c_str(), R_OK) == 0) {
-		return true;
-	}
-
-	// File not found, doing case insensitive search
-	// Extract the directory out of the filename
-	size_t dirpos = filename.rfind('/');
-	std::string dirname;
-	std::string file;
-	if (dirpos == std::string::npos) { // No / found, assume . as dir
-		dirname = std::string(".");
-		file = filename;
-	} else {
-		dirname = filename.substr(0, dirpos+1);
-		file = filename.substr(dirpos+1);
-	}
-	//printf("dir: %s", dirname.c_str());
-	//printf("\nfile: %s\n", file.c_str());
-
-	DIR* dir = opendir(dirname.c_str());
-	if (dir == NULL) {
-		Output::Error("Error opening dir %s: %s", dirname.c_str(),
-						strerror(errno));
-	}
-
-	struct dirent* dirent;
-
-	while ((dirent = readdir(dir)) != NULL)	{
-		if (strcasecmp(file.c_str(), dirent->d_name) == 0) {
-			// File found, now check if its readable
-			if (dirname == ".") {
-				filename = dirent->d_name;
-			} else {
-				filename = dirname + dirent->d_name;
-			}
-			//printf("Returning %s\n", filename.c_str());
-			closedir(dir);
-			return (access(filename.c_str(), R_OK) == 0);
+std::string FileFinder::Find(const std::string& _dir,
+							 const std::string& _file,
+							 const std::string exts[]) {
+	std::string dir = lower(_dir);
+	std::string file = lower(_file);
+	std::vector<Tree*>::const_iterator it;
+	for (it = trees.begin(); it != trees.end(); it++) {
+		Tree* tree = *it;
+		std::string& dirname = tree->dirs[dir];
+		if (dirname.empty())
+			continue;
+		std::string dirpath = tree->root + "/" + dirname;
+		for (const std::string* pext = exts; !pext->empty(); pext++) {
+			std::string& filename = tree->files[dir][file + *pext];
+			if (filename.empty())
+				continue;
+			std::string result = dirpath + "/" + filename;
+			if (access(result.c_str(), F_OK) == 0)
+				return result;
 		}
 	}
 
-	// No luck :(	
-	closedir(dir);
-	return false;
-#endif
-}
-
-////////////////////////////////////////////////////////////
-/// Make path
-////////////////////////////////////////////////////////////
-std::string slasher(std::string str) {
-	for(unsigned int i = 0; i < str.length(); i++) {
-		if (str[i] == '\\') {
-			str[i] = '/';
-		}
-	}
-	return str;
+	return "";
 }
 
 ////////////////////////////////////////////////////////////
 /// Find file
 ////////////////////////////////////////////////////////////
-std::string FileFinder::FindDefault(std::string name) {
-	name = slasher(name);
-	std::string path = name;
-	if (fexists(path)) return path;
-	return "";
+std::string FileFinder::FindDefault(const std::string& dir, const std::string& file) {
+	static const std::string no_exts[] = {""};
+	return Find(dir, file, no_exts);
 }
 
 ////////////////////////////////////////////////////////////
 /// Find image
 ////////////////////////////////////////////////////////////
-std::string FileFinder::FindImage(std::string name) {
-	
-	name = slasher(name);
-	std::string path = name;
-	if (fexists(path)) return path;
-	path = name; path += ".bmp";
-	if (fexists(path)) return path;
-	path = name; path += ".gif";
-	if (fexists(path)) return path;
-	path = name; path += ".png";
-	if (fexists(path)) return path;
-	path = name; path += ".xyz";
-	if (fexists(path)) return path;
-	for (int i = 0; i < 3; i++) {
-		if (rtp_paths[i] != "") {
-			std::string rtp_path = slasher(rtp_paths[i]);
-			rtp_path += name;
-			path = rtp_path;
-			if (fexists(path)) return path;
-			path = rtp_path; path += ".bmp";
-			if (fexists(path)) return path;
-			path = rtp_path; path += ".gif";
-			if (fexists(path)) return path;
-			path = rtp_path; path += ".png";
-			if (fexists(path)) return path;
-			path = rtp_path; path += ".xyz";
-			if (fexists(path)) return path;
-		}
-	}
-
-	return "";
+std::string FileFinder::FindImage(const std::string& dir, const std::string& file) {
+	return Find(dir, file, IMG_TYPES);
 }
 
 ////////////////////////////////////////////////////////////
+/// Find sound
+////////////////////////////////////////////////////////////
+std::string FileFinder::FindSound(const std::string& file) {
+	return Find("sound", file, SOUND_TYPES);
+}
+////////////////////////////////////////////////////////////
 /// Find music
 ////////////////////////////////////////////////////////////
-std::string FileFinder::FindMusic(std::string name) {
-	name = slasher(name);
-	std::string path = name;
-	if (fexists(path)) return path;
-	path = name; path += ".wav";
-	if (fexists(path)) return path;
-	path = name; path += ".mid";
-	if (fexists(path)) return path;
-	path = name; path += ".midi";
-	if (fexists(path)) return path;
-	path = name; path += ".ogg";
-	if (fexists(path)) return path;
-	path = name; path += ".mp3";
-	if (fexists(path)) return path;
-	for (int i = 0; i < 3; i++) {
-		if (rtp_paths[i] != "") {
-			std::string rtp_path = slasher(rtp_paths[i]);
-			rtp_path += name;
-			path = rtp_path;
-			if (fexists(path)) return path;
-			path = rtp_path; path += ".wav";
-			if (fexists(path)) return path;
-			path = rtp_path; path += ".mid";
-			if (fexists(path)) return path;
-			path = rtp_path; path += ".midi";
-			if (fexists(path)) return path;
-			path = rtp_path; path += ".ogg";
-			if (fexists(path)) return path;
-			path = rtp_path; path += ".mp3";
-			if (fexists(path)) return path;
-		}
-	}
-	return "";
+std::string FileFinder::FindMusic(const std::string& file) {
+	return Find("music", file, MUSIC_TYPES);
 }
 
 ////////////////////////////////////////////////////////////
 /// Find font
 ////////////////////////////////////////////////////////////
-std::string FileFinder::FindFont(std::string name) {
-	name = slasher(name);
-	std::string path = name;
-	if (fexists(path)) return path;
-	path = name; path += ".ttf";
-	if (fexists(path)) return path;
-
-	path = fonts_path; path += name;
-	if (fexists(path)) return path;
-	path = fonts_path; path += name; path += ".ttf";
-	if (fexists(path)) return path;
-
-	return "";
+std::string FileFinder::FindFont(const std::string& file) {
+	return Find("font", file, FONTS_TYPES);
 }
 
 ////////////////////////////////////////////////////////////
 std::string FileFinder::DefaultFont() {
 	// TODO
-	return "Font/DejaVuLGCSansMono";
+	return "DejaVuLGCSansMono";
 }
 
 #endif

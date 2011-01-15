@@ -100,13 +100,7 @@ SdlBitmap::SdlBitmap(int width, int height, bool itransparent) {
 SdlBitmap::SdlBitmap(const std::string filename, bool itransparent) {
 	transparent = itransparent;
 
-	std::string path = FileFinder::FindImage(filename);
-
-	if (path.empty()) {
-		Output::Error("No such file or directory - %s", filename.c_str());
-	}
-
-	SDL_Surface* temp = IMG_Load(path.c_str());
+	SDL_Surface* temp = IMG_Load(filename.c_str());
 
 	if (temp == NULL) {
 		Output::Error("Couldn't load %s image.\n%s\n", filename.c_str(), IMG_GetError());

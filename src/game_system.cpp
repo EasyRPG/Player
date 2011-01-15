@@ -56,7 +56,7 @@ void Game_System::BgmPlay(RPG::Music bgm) {
 	// RPG Maker Hack: (OFF) means play nothing
 	current_bgm = bgm;
 	if (!bgm.name.empty() && bgm.name != "(OFF)") {
-		Audio::BGM_Play("Music/" + bgm.name, bgm.volume, bgm.tempo);
+		Audio::BGM_Play(bgm.name, bgm.volume, bgm.tempo);
 	} else {
 		Audio::BGM_Stop();
 	}
@@ -66,7 +66,7 @@ void Game_System::BgmPlay(RPG::Music bgm) {
 ////////////////////////////////////////////////////////////
 void Game_System::SePlay(RPG::Sound se) {
 	if (!se.name.empty() && se.name != "(OFF)") {
-		Audio::SE_Play("Sound/" + se.name, se.volume, se.tempo);
+		Audio::SE_Play(se.name, se.volume, se.tempo);
 	}
 }
 
