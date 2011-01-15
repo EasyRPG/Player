@@ -1262,7 +1262,6 @@ Game_Character* Game_Interpreter::GetCharacter(int character_id) {
 			// Other events
 			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents()[character_id];
 	}
-	return NULL;
 }
 
 ////////////////////////////////////////////////////////////

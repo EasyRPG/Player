@@ -141,6 +141,7 @@
     <ClCompile Include="..\..\src\game_temp.cpp" />
     <ClCompile Include="..\..\src\game_troop.cpp" />
     <ClCompile Include="..\..\src\game_unit.cpp" />
+    <ClCompile Include="..\..\src\game_vehicle.cpp" />
     <ClCompile Include="..\..\src\gl_bitmap_screen.cpp" />
     <ClCompile Include="..\..\src\graphics.cpp" />
     <ClCompile Include="..\..\src\hslrgb.cpp" />
@@ -246,6 +247,7 @@
     <ClInclude Include="..\..\src\game_troop.h" />
     <ClInclude Include="..\..\src\game_unit.h" />
     <ClInclude Include="..\..\src\game_variables.h" />
+    <ClInclude Include="..\..\src\game_vehicle.h" />
     <ClInclude Include="..\..\src\gl_bitmap_screen.h" />
     <ClInclude Include="..\..\src\graphics.h" />
     <ClInclude Include="..\..\src\hslrgb.h" />
