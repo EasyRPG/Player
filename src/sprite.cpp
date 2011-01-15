@@ -181,7 +181,7 @@ double Sprite::GetZoomY() const {
 	return bitmap_screen->GetZoomYEffect();
 }
 void Sprite::SetZoomY(double zoom_y) {
-	bitmap_screen->SetZoomXEffect(zoom_y);
+	bitmap_screen->SetZoomYEffect(zoom_y);
 }
 
 double Sprite::GetAngle() const {

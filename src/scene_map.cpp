@@ -63,6 +63,7 @@ void Scene_Map::Update() {
 	Game_Map::GetInterpreter().Update();
 	Game_Map::Update();
 	Main_Data::game_player->Update();
+	Main_Data::game_screen->Update();
 	spriteset->Update();
 	message_window->Update();
 	

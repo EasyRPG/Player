@@ -20,7 +20,9 @@
 ////////////////////////////////////////////////////////////
 
 #include "options.h"
+#include "cache.h"
 #include "game_picture.h"
+#include "sprite.h"
 #include <vector>
 
 ////////////////////////////////////////////////////////////
@@ -43,23 +45,55 @@ Picture::Picture() :
 	rotate(false),
 	waver(false),
 	speed(0),
-	value(0.0)
+	value(0.0),
+	sprite(NULL)
 {
 	Transition(0);
 }
 
 Picture::~Picture()
 {
+	if (sprite != NULL)
+		delete sprite;
+}
+
+void Picture::UpdateSprite() {
+	if (sprite == NULL)
+		return;
+
+	PictureState& st = current_state;
+
+	sprite->SetX(st.x);
+	sprite->SetY(st.y);
+	sprite->SetZ(1);
+	sprite->SetZoomX(st.magnify / 100.0);
+	sprite->SetZoomY(st.magnify / 100.0);
+	sprite->SetAngle(rotate ? value : 0.0);
+	sprite->SetOpacity(255 * (100 - st.top_trans) / 100);
+	// TODO: bottom_trans
+	sprite->SetTone(Tone((int) st.red,
+						 (int) st.green,
+						 (int) st.blue,
+						 (int) st.saturation));
 }
 
 void Picture::Show(const std::string& _name) {
 	name = _name;
 	shown = true;
 	duration = 0;
+
+	Bitmap* bitmap = Cache::Picture(name);
+	sprite = new Sprite();
+	sprite->SetBitmap(bitmap);
+	sprite->SetOx(bitmap->GetWidth() / 2);
+	sprite->SetOy(bitmap->GetHeight() / 2);
 }
 
 void Picture::Erase() {
 	shown = false;
+	if (sprite != NULL)
+		delete sprite;
+	sprite = NULL;
 }
 
 void Picture::UseTransparent(bool flag) {
@@ -116,12 +150,14 @@ void Picture::StopEffects() {
 
 void Picture::Transition(int tenths) {
 	duration = tenths * DEFAULT_FPS / 10;
-	if (tenths == 0)
+	if (tenths == 0) {
 		current_state = finish_state;
+		UpdateSprite();
+	}
 }
 
 static double interpolate(double d, double x0, double x1) {
-	return (x0 + (d - 1) + x1) / d;
+	return (x0 * (d - 1) + x1) / d;
 }
 
 void Picture::Update() {
@@ -146,5 +182,7 @@ void Picture::Update() {
 	st.bottom_trans = interpolate(k, st.bottom_trans, st1.bottom_trans);
 
 	duration--;
+
+	UpdateSprite();
 }
 

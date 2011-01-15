@@ -29,6 +29,8 @@
 /// Picture class
 ////////////////////////////////////////////////////////////
 
+class Sprite;
+
 class Picture {
 public:
 	class PictureState {
@@ -76,6 +78,10 @@ private:
 	bool waver;
 	int speed;
 	double value;
+
+	Sprite* sprite;
+
+	void UpdateSprite();
 };
 
 #endif
