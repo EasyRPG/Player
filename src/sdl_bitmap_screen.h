@@ -96,6 +96,9 @@ protected:
 	double angle_effect;
 	int blend_type_effect;
 	Color blend_color_effect;
+
+	int origin_x;
+	int origin_y;
 };
 
 #endif

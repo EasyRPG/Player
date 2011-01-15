@@ -825,6 +825,100 @@ void Bitmap::Flip(bool horizontal, bool vertical) {
 }
 
 ////////////////////////////////////////////////////////////
+Bitmap* Bitmap::RotateScale(double angle, int scale_w, int scale_h) {
+	double c = cos(angle);
+	double s = sin(angle);
+	int w = width();
+	int h = height();
+	double sx = (double) scale_w / w;
+	double sy = (double) scale_h / h;
+
+	double fxx =  c * sx;
+	double fxy =  s * sy;
+	double fyx = -s * sx;
+	double fyy =  c * sy;
+
+	double x0 = 0;
+	double y0 = 0;
+	double x1 = fxx * w;
+	double y1 = fyx * w;
+	double x2 = fxx * w + fxy * h;
+	double y2 = fyx * w + fyy * h;
+	double x3 = fxy * h;
+	double y3 = fyy * h;
+
+	double xmin = std::min(std::min(x0, x1), std::min(x2, x3));
+	double ymin = std::min(std::min(y0, y1), std::min(y2, y3));
+	double xmax = std::max(std::max(x0, x1), std::max(x2, x3));
+	double ymax = std::max(std::max(y0, y1), std::max(y2, y3));
+	double fx0 = -xmin;
+	double fy0 = -ymin;
+
+	int dst_w = (int)(ceil(xmax) - floor(xmin));
+	int dst_h = (int)(ceil(ymax) - floor(ymin));
+
+	double ixx =  c / sx;
+	double ixy = -s / sx;
+	double iyx =  s / sy;
+	double iyy =  c / sy;
+	double ix0 = -(c * fx0 - s * fy0) / sx;
+	double iy0 = -(s * fx0 + c * fy0) / sy;
+
+	Bitmap* result = CreateBitmap(dst_w, dst_h, true);
+	const Color& trans = transparent ? GetTransparentColor() : Color(255,0,255,0);
+	result->SetTransparentColor(trans);
+	result->Fill(trans);
+
+	Lock();
+	result->Lock();
+
+	if (bpp() == 2) {
+		uint16* src_pixels = (uint16*)pixels();
+		uint16* dst_pixels = (uint16*)result->pixels();
+		int src_pitch = pitch() / bpp();
+		int pad = result->pitch() / bpp() - result->GetWidth();
+
+		for (int i = 0; i < dst_h; i++) {
+			for (int j = 0; j < dst_w; j++) {
+				double x = ix0 + ixy * (i + 0.5) + ixx * (j + 0.5);
+				double y = iy0 + iyy * (i + 0.5) + iyx * (j + 0.5);
+				int xi = (int) floor(x);
+				int yi = (int) floor(y);
+				if (xi < 0 || xi >= w || yi < 0 || yi >= h)
+					dst_pixels++;
+				else
+					*dst_pixels++ = src_pixels[yi * src_pitch + xi];
+			}
+			dst_pixels += pad;
+		}
+	} else if (bpp() == 4){
+		uint32* src_pixels = (uint32*)pixels();
+		uint32* dst_pixels = (uint32*)result->pixels();
+		int src_pitch = pitch() / bpp();
+		int pad = result->pitch() / bpp() - result->GetWidth();
+
+		for (int i = 0; i < dst_h; i++) {
+			for (int j = 0; j < dst_w; j++) {
+				double x = ix0 + ixy * (i + 0.5) + ixx * (j + 0.5);
+				double y = iy0 + iyy * (i + 0.5) + iyx * (j + 0.5);
+				int xi = (int) floor(x);
+				int yi = (int) floor(y);
+				if (xi < 0 || xi >= w || yi < 0 || yi >= h)
+					dst_pixels++;
+				else
+					*dst_pixels++ = src_pixels[yi * src_pitch + xi];
+			}
+			dst_pixels += pad;
+		}
+	}
+
+	Unlock();
+	result->Unlock();
+
+	return result;
+}
+
+////////////////////////////////////////////////////////////
 void Bitmap::BeginEditing() {
 	editing = true;
 }
@@ -891,3 +985,4 @@ Color Bitmap::GetTransparentColor() const {
 	return GetColor(colorkey());
 #endif
 }
+

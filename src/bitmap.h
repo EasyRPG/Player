@@ -194,6 +194,14 @@ public:
 	////////////////////////////////////////////////////////
 	virtual Bitmap* Resample(int scale_w, int scale_h, const Rect& src_rect);
 
+	////////////////////////////////////////////////////////
+	/// Create a rotated and scaled bitmap.
+	/// @param angle : rotation angle
+	/// @param scale_w : resampled width
+	/// @param scale_h : resampled height
+	////////////////////////////////////////////////////////
+	virtual Bitmap* RotateScale(double angle, int scale_w, int scale_h);
+
 	/// TextDraw alignment options
 	enum TextAlignment {
 		TextAlignLeft,

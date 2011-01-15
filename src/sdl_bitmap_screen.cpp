@@ -115,6 +115,9 @@ void SdlBitmapScreen::BlitScreen(int x, int y) {
 
 	if (bitmap_effects == NULL) return;
 
+	x -= origin_x;
+	y -= origin_y;
+
 	SDL_Surface* surface = ((SdlBitmap*)bitmap_effects)->bitmap;
 
 	if (bush_effect < surface->h) {
@@ -156,6 +159,9 @@ void SdlBitmapScreen::BlitScreen(int x, int y, Rect src_rect) {
 	Refresh();
 
 	if (bitmap_effects == NULL) return;
+
+	x -= origin_x;
+	y -= origin_y;
 
 	SDL_Surface* surface = ((SdlBitmap*)bitmap_effects)->bitmap;
 
@@ -299,6 +305,8 @@ void SdlBitmapScreen::Refresh() {
 	if (!needs_refresh) return;
 
 	needs_refresh = false;
+	origin_x = 0;
+	origin_y = 0;
 
 	if (delete_bitmap) {
 		bitmap_effects = bitmap;
@@ -341,7 +349,15 @@ void SdlBitmapScreen::Refresh() {
 			bitmap_effects->ToneChange(tone_effect);
 			bitmap_effects->Flip(flipx_effect, flipy_effect);
 
-			if (zoom_x_effect != 1.0 || zoom_y_effect != 1.0) {
+			if (angle_effect != 0.0) {
+				Bitmap* temp = bitmap_effects->RotateScale(
+					angle_effect * 3.14159 / 180, zoomed_width, zoomed_height);
+				origin_x = (temp->width() - zoomed_width) / 2;
+				origin_y = (temp->height() - zoomed_height) / 2;
+				delete bitmap_effects;
+				bitmap_effects = temp;
+			}
+			else if (zoom_x_effect != 1.0 || zoom_y_effect != 1.0) {
 				Bitmap* temp = bitmap_effects->Resample(zoomed_width, zoomed_height, bitmap_effects->GetRect());
 				delete bitmap_effects;
 				bitmap_effects = temp;

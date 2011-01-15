@@ -166,24 +166,23 @@ void Picture::Update() {
 	if (rotate || waver)
 		value += speed;
 
-	if (duration <= 0)
-		return;
+	if (duration > 0) {
+		PictureState& st = current_state;
+		PictureState& st1 = finish_state;
+		double k = duration;
 
-	PictureState& st = current_state;
-	PictureState& st1 = finish_state;
-	double k = duration;
+		st.x = interpolate(k, st.x, st1.x);
+		st.y = interpolate(k, st.y, st1.y);
+		st.red = interpolate(k, st.red, st1.red);
+		st.green = interpolate(k, st.green, st1.green);
+		st.blue = interpolate(k, st.blue, st1.blue);
+		st.saturation = interpolate(k, st.saturation, st1.saturation);
+		st.magnify = interpolate(k, st.magnify, st1.magnify);
+		st.top_trans = interpolate(k, st.top_trans, st1.top_trans);
+		st.bottom_trans = interpolate(k, st.bottom_trans, st1.bottom_trans);
 
-	st.x = interpolate(k, st.x, st1.x);
-	st.y = interpolate(k, st.y, st1.y);
-	st.red = interpolate(k, st.red, st1.red);
-	st.green = interpolate(k, st.green, st1.green);
-	st.blue = interpolate(k, st.blue, st1.blue);
-	st.saturation = interpolate(k, st.saturation, st1.saturation);
-	st.magnify = interpolate(k, st.magnify, st1.magnify);
-	st.top_trans = interpolate(k, st.top_trans, st1.top_trans);
-	st.bottom_trans = interpolate(k, st.bottom_trans, st1.bottom_trans);
-
-	duration--;
+		duration--;
+	}
 
 	UpdateSprite();
 }
