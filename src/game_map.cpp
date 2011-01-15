@@ -61,6 +61,7 @@ namespace {
 	int encounter_steps;
 
 	Game_Interpreter* interpreter;
+	Game_Vehicle* vehicles[3];
 }
 
 ////////////////////////////////////////////////////////////
@@ -78,7 +79,9 @@ void Game_Map::Init() {
 	scroll_speed = 0;
 	interpreter = new Game_Interpreter(0, true);
 	encounter_steps = 0;
-	
+
+	for (int i = 0; i < 3; i++)
+		vehicles[i] = new Game_Vehicle((Game_Vehicle::Type) i);
 }
 
 ////////////////////////////////////////////////////////////
@@ -126,6 +129,9 @@ void Game_Map::Setup(int _id) {
 	scroll_rest = 0;
 	scroll_speed = 4;
 	encounter_steps = Data::treemap.maps[map_id - 1].encounter_steps;
+
+	for (int i = 0; i < 3; i++)
+		vehicles[i]->Refresh();
 }
 
 ////////////////////////////////////////////////////////////
@@ -382,6 +388,9 @@ void Game_Map::Update() {
 		i->second->Update();
 	}
 
+	for (int i = 0; i < 3; i++)
+		vehicles[i]->Update();
+
 	/*for (size_t i = 0; i < common_events.size(); i++) {
 		common_events[i]->Update();
 	}*/
@@ -531,4 +540,9 @@ void Game_Map::SetChipset(int id) {
 	terrain_tags = chipset.terrain_data;
 	panorama_speed = chipset.animation_speed;
 	panorama_type = chipset.animation_type;
+}
+
+////////////////////////////////////////////////////////////
+Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
+	return vehicles[which];
 }

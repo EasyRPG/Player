@@ -21,6 +21,7 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include "rpg_music.h"
 #include "game_character.h"
 #include <vector>
 
@@ -43,10 +44,20 @@ public:
 	void Refresh();
 
 	bool CheckEventTriggerTouch(int x, int y);
+	bool GetOnOffVehicle();
+	bool IsMovable() const;
+	bool InVehicle() const;
+	bool InAirship() const;
+	bool AirshipLandOk(int x, int y) const;
+	bool CanWalk(int x, int y);
 
 private:
 	bool teleporting;
+	int vehicle_type;
+	bool vehicle_getting_on;
+	bool vehicle_getting_off;
 	int new_map_id, new_x, new_y;
+	RPG::Music walking_bgm;
 
 	void UpdateScroll(int last_real_x, int last_real_y);
 	void UpdateNonMoving(bool last_moving);
@@ -54,6 +65,8 @@ private:
 	bool CheckActionEvent();
 	bool CheckEventTriggerHere(const std::vector<int>& triggers);
 	bool CheckEventTriggerThere(const std::vector<int>& triggers);
+	bool GetOnVehicle();
+	bool GetOffVehicle();
 };
 
 #endif

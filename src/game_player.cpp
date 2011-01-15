@@ -23,6 +23,7 @@
 #include "game_map.h"
 #include "game_message.h"
 #include "game_party.h"
+#include "game_system.h"
 #include "input.h"
 #include "main_data.h"
 #include "player.h"
@@ -34,6 +35,9 @@
 ////////////////////////////////////////////////////////////
 Game_Player::Game_Player():
 	teleporting(false),
+	vehicle_type(-1),
+	vehicle_getting_on(false),
+	vehicle_getting_off(false),
 	new_map_id(0),
 	new_x(0),
 	new_y(0) {
@@ -298,3 +302,113 @@ void Game_Player::Refresh() {
 	character_name = actor->GetCharacterName();
 	character_index = actor->GetCharacterIndex();
 }
+
+bool Game_Player::GetOnOffVehicle() {
+	if (!IsMovable())
+		return false;
+	if (InVehicle())
+		return GetOffVehicle();
+    else
+		return GetOnVehicle();
+}
+
+bool Game_Player::GetOnVehicle() {
+    int front_x = Game_Map::XwithDirection(x, direction);
+    int front_y = Game_Map::YwithDirection(y, direction);
+	Game_Vehicle::Type type;
+
+	if (Game_Map::GetVehicle(Game_Vehicle::Airship)->IsInPosition(x, y))
+		type = Game_Vehicle::Airship;
+    else if (Game_Map::GetVehicle(Game_Vehicle::Ship)->IsInPosition(front_x, front_y))
+		type = Game_Vehicle::Ship;
+    else if (Game_Map::GetVehicle(Game_Vehicle::Boat)->IsInPosition(front_x, front_y))
+		type = Game_Vehicle::Boat;
+	else
+		return false;
+
+    vehicle_getting_on = true;
+    vehicle_type = type;
+	if (type == Game_Vehicle::Airship)
+		through = true;
+	// TODO:
+	// else
+	// 	ForceMoveForward();
+	walking_bgm = Game_System::current_bgm;
+	Game_Map::GetVehicle(type)->GetOn();
+	return true;
+}
+
+bool Game_Player::GetOffVehicle() {
+	if (InAirship()) {
+		if (!AirshipLandOk(x, y))
+			return false;
+	}
+	else {
+		int front_x = Game_Map::XwithDirection(x, direction);
+		int front_y = Game_Map::YwithDirection(y, direction);
+		if (!CanWalk(front_x, front_y))
+			return false;
+	}
+
+	Game_Map::GetVehicle((Game_Vehicle::Type) vehicle_type)->GetOff();
+	if (InAirship())
+		direction = 2;
+	else {
+		// TODO
+		// ForceMoveForward();
+		transparent = false;
+	}
+
+    vehicle_getting_off = true;
+    move_speed = 4;
+    through = false;
+	Game_System::BgmPlay(walking_bgm);
+	// TODO
+	// MakeEncounterCount();
+
+	return true;
+}
+
+bool Game_Player::IsMovable() const {
+	if (IsMoving())
+		return false;
+	if (GetMoveRouteForcing())
+		return false;
+	if (vehicle_getting_on)
+		return false;
+	if (vehicle_getting_off)
+		return false;
+	if (Game_Message::visible)
+		return false;
+	if (InAirship() && !Game_Map::GetVehicle(Game_Vehicle::Airship)->IsMovable())
+		return false;
+    return true;
+}
+
+bool Game_Player::InVehicle() const {
+	return vehicle_type >= 0;
+}
+
+bool Game_Player::InAirship() const {
+	return vehicle_type == Game_Vehicle::Airship;
+}
+
+bool Game_Player::AirshipLandOk(int x, int y) const {
+	// TODO:
+	// if (!Game_Map::AirshipLandOk(x, y))
+	// 	return false;
+	std::vector<Game_Event*> events;
+	Game_Map::GetEventsXY(events, x, y);
+	if (!events.empty())
+		return false;
+	return true;
+}
+
+bool Game_Player::CanWalk(int x, int y) {
+	int last_vehicle_type = vehicle_type;
+    vehicle_type = -1;
+    bool result = IsPassable(x, y, direction);
+    vehicle_type = last_vehicle_type;
+    return result;
+}
+

@@ -200,10 +200,16 @@ public:
 	int DistanceXfromPlayer() const;
 	int DistanceYfromPlayer() const;
 
-	bool IsInPosition(int x, int y) const;
+	virtual bool IsInPosition(int x, int y) const;
 	int GetPriorityType() const;
 
 	virtual bool CheckEventTriggerTouch(int x, int y) = 0;
+
+	virtual bool IsTransparent() const;
+
+	virtual void UpdateBushDepth();
+
+	void SetGraphic(const std::string& name, int index);
 
 	enum Triggers {
 		TriggerPushKey = 0,
@@ -262,6 +268,7 @@ protected:
 	bool direction_fix;
 
 	int priority_type;
+	bool transparent;
 };
 
 #endif

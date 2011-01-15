@@ -63,7 +63,8 @@ Game_Character::Game_Character() :
 	walk_anime(true),
 	turn_enabled(true),
 	direction_fix(false),
-	priority_type(1) {
+	priority_type(1),
+	transparent(false) {
 }
 
 ////////////////////////////////////////////////////////////
@@ -588,3 +589,17 @@ void Game_Character::SetAnimationId(int new_animation_id) {
 bool Game_Character::IsInPosition(int x, int y) const {
 	return ((this->x == x) && (this->y == y));
 }
+
+bool Game_Character::IsTransparent() const {
+	return transparent;
+}
+
+void Game_Character::UpdateBushDepth() {
+	// TODO
+}
+
+void Game_Character::SetGraphic(const std::string& name, int index) {
+	character_name = name;
+	character_index = index;
+}
+

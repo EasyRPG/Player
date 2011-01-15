@@ -611,6 +611,12 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandChangeBattleCommands();
 		case KeyInputProc:
 			return CommandKeyInputProc();
+		case ChangeVehicleGraphic:
+			return CommandChangeVehicleGraphic();
+		case EnterExitVehicle:
+			return CommandEnterExitVehicle();
+		case SetVehicleLocation:
+			return CommandSetVehicleLocation();
 		default:
 			return true;
 	}
@@ -1244,22 +1250,17 @@ Game_Character* Game_Interpreter::GetCharacter(int character_id) {
 			// Player/Hero
 			return Main_Data::game_player;
 		case CharBoat:
-			// TODO Boat
-			break;
+			return Game_Map::GetVehicle(Game_Vehicle::Boat);
 		case CharShip:
-			// TODO Ship
-			break;
+			return Game_Map::GetVehicle(Game_Vehicle::Ship);
 		case CharAirship:
-			// TODO Airship
-			break;
+			return Game_Map::GetVehicle(Game_Vehicle::Airship);
 		case CharThisEvent:
 			// This event
 			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents()[event_id];
-			break;
 		default:
 			// Other events
 			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents()[character_id];
-			break;
 	}
 	return NULL;
 }
@@ -2980,6 +2981,35 @@ bool Game_Interpreter::CommandKeyInputProc() { // code 11610
 		Game_Variables[time_id] = button_timer;
 
 	button_timer = 0;
+
+	return true;
+}
+
+bool Game_Interpreter::CommandChangeVehicleGraphic() { // code 10650
+	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) list[index].parameters[0];
+	Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
+	const std::string& name = list[index].string;
+	int index = list[index].parameters[1];
+
+	vehicle->SetGraphic(name, index);
+
+	return true;
+}
+
+bool Game_Interpreter::CommandEnterExitVehicle() { // code 10840
+	Main_Data::game_player->GetOnOffVehicle();
+
+	return true;
+}
+
+bool Game_Interpreter::CommandSetVehicleLocation() { // code 10850
+	Game_Vehicle::Type vehicle_id = (Game_Vehicle::Type) list[index].parameters[0];
+	Game_Vehicle* vehicle = Game_Map::GetVehicle(vehicle_id);
+	int map_id = ValueOrVariable(list[index].parameters[1], list[index].parameters[2]);
+	int x = ValueOrVariable(list[index].parameters[1], list[index].parameters[3]);
+	int y = ValueOrVariable(list[index].parameters[1], list[index].parameters[4]);
+
+	vehicle->SetPosition(map_id, x, y);
 
 	return true;
 }

@@ -24,6 +24,7 @@
 #include <vector>
 #include <string>
 #include "game_event.h"
+#include "game_vehicle.h"
 #include "rpg_encounter.h"
 
 typedef std::map<int, Game_Event*> tEventHash;
@@ -277,6 +278,8 @@ namespace Game_Map {
 	/// Set the chipset
 	/// @param id : new chipset ID
 	void SetChipset(int id);
+
+	Game_Vehicle* GetVehicle(Game_Vehicle::Type which);
 }
 
 #endif

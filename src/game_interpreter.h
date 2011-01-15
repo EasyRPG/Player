@@ -159,6 +159,9 @@ private:
 	bool CommandPlayMovie();
 	bool CommandChangeBattleCommands();
 	bool CommandKeyInputProc();
+	bool CommandChangeVehicleGraphic();
+	bool CommandEnterExitVehicle();
+	bool CommandSetVehicleLocation();
 
 	void CommandEnd();
 
