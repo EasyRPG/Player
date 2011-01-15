@@ -2932,15 +2932,15 @@ bool Game_Interpreter::CommandKeyInputProc() { // code 11610
 	bool wait = list[index].parameters[1] != 0;
 	int time_id = list[index].parameters[7];
 	bool time = list[index].parameters[8] != 0;
-	bool check_decision = list[index].parameters[ 3];
-	bool check_cancel   = list[index].parameters[ 4];
-	bool check_numbers  = list[index].parameters[ 5];
-	bool check_arith    = list[index].parameters[ 6];
-	bool check_shift    = list[index].parameters[ 9];
-	bool check_down     = list[index].parameters[10];
-	bool check_left     = list[index].parameters[11];
-	bool check_right    = list[index].parameters[12];
-	bool check_up       = list[index].parameters[13];
+	bool check_decision = list[index].parameters[ 3] != 0;
+	bool check_cancel   = list[index].parameters[ 4] != 0;
+	bool check_numbers  = list[index].parameters[ 5] != 0;
+	bool check_arith    = list[index].parameters[ 6] != 0;
+	bool check_shift    = list[index].parameters[ 9] != 0;
+	bool check_down     = list[index].parameters[10] != 0;
+	bool check_left     = list[index].parameters[11] != 0;
+	bool check_right    = list[index].parameters[12] != 0;
+	bool check_up       = list[index].parameters[13] != 0;
 	int result = 0;
 
 	if (check_down && Input::IsTriggered(Input::DOWN))

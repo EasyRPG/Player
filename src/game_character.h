@@ -205,6 +205,20 @@ public:
 
 	virtual bool CheckEventTriggerTouch(int x, int y) = 0;
 
+	enum Triggers {
+		TriggerPushKey = 0,
+		TriggerHeroTouch,
+		TriggerHeroOrEventTouch,
+		TriggerAutoStart,
+		TriggerParallelProcess
+	};
+
+	enum Priorities {
+		PriorityBelowHero = 0,
+		PrioritySameAsHero,
+		PriorityAboveHero
+	};
+
 protected:
 	void UpdateMove();
 	void UpdateSelfMovement();

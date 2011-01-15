@@ -203,10 +203,8 @@ void Game_Event::Start() {
 }
 
 void Game_Event::CheckEventTriggerAuto() {
-	if (trigger == TriggerAutoStart ||
-		(trigger == TriggerHeroTouch && Main_Data::game_player->IsInPosition(x, y)))
+	if (trigger == TriggerAutoStart)
 	{
-		// ToDo: HeroOrEventTouch
 		Start();
 	}
 }
@@ -219,7 +217,7 @@ bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 	if (Game_Map::GetInterpreter().IsRunning())
 		return false;
 
-	if ((trigger == 2) && (Main_Data::game_player->IsInPosition(x, y))) {
+	if ((trigger == TriggerHeroOrEventTouch) && (Main_Data::game_player->IsInPosition(x, y))) {
 
 		// TODO check over trigger VX differs from XP here
 		if (!IsJumping()) {

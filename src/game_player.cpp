@@ -217,7 +217,7 @@ bool Game_Player::CheckEventTriggerHere(const std::vector<int>& triggers) {
 
 	std::vector<Game_Event*>::iterator i;
 	for (i = events.begin(); i != events.end(); i++) {
-		if ( (*i)->GetPriorityType() == 1 && std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() ) {
+		if ( (*i)->GetPriorityType() == PriorityBelowHero && std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() ) {
 			(*i)->Start();
 			result = (*i)->GetStarting();
 		}
@@ -238,7 +238,7 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 
 	std::vector<Game_Event*>::iterator i;
 	for (i = events.begin(); i != events.end(); i++) {
-		if ( (*i)->GetPriorityType() == 1 && 
+		if ( (*i)->GetPriorityType() == PrioritySameAsHero && 
 			std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() 
 		) 
 		{
