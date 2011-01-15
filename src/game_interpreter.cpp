@@ -310,7 +310,7 @@ void Game_Interpreter::Update() {
 			Game_Temp::name_calling ||
 			Game_Temp::menu_calling ||
 			Game_Temp::save_calling ||
-			Game_Temp::title_calling ||
+			Game_Temp::to_title ||
 			Game_Temp::gameover) {
 			
 			return;
@@ -2595,7 +2595,7 @@ bool Game_Interpreter::CommandGameOver() { // code 12420
 }
 
 bool Game_Interpreter::CommandReturntoTitleScreen() { // code 12510
-	Game_Temp::title_calling =  true;
+	Game_Temp::to_title =  true;
 	SetContinuation(&Game_Interpreter::DefaultContinuation);
 	return false;
 }

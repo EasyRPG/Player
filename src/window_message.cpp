@@ -55,6 +55,7 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 ////////////////////////////////////////////////////////////
 Window_Message::~Window_Message() {
 	TerminateMessage();
+	Game_Message::visible = false;
 	//Game_Temp::message_window_showing = false;
 	// The Windows are already deleted in Graphics during closing
 	// But this probably memleaks during scene change?

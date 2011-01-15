@@ -46,7 +46,7 @@ public:
 	static bool inn_calling;
 	static bool name_calling;
 	static bool save_calling;
-	static bool title_calling;
+	static bool to_title;
 	static bool gameover;
 
 	static int common_event_id;

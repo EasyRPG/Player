@@ -18,6 +18,7 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include "scene_gameover.h"
 #include "scene_map.h"
 #include "scene_menu.h"
 #include "scene_title.h"
@@ -64,6 +65,16 @@ void Scene_Map::Update() {
 	Main_Data::game_player->Update();
 	spriteset->Update();
 	message_window->Update();
+	
+	if (Game_Temp::gameover) {
+		Game_Temp::gameover = false;
+		Scene::Push(new Scene_Gameover());
+	}
+	
+	if (Game_Temp::to_title) {
+		Game_Temp::to_title = false;
+		Scene::PopUntil(Scene::Title);
+	}
 
 	if (Game_Message::visible) 
 		return;
