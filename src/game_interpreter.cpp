@@ -2309,18 +2309,26 @@ bool Game_Interpreter::CommandShakeScreen() { // code 11050
 	int tenths = list[index].parameters[2];
 	bool wait = list[index].parameters[3] != 0;
 
-	switch (list[index].parameters[4]) {
-		case 0:
-			screen->ShakeOnce(strength, speed, tenths);
-			if (wait)
-				wait_count = tenths * DEFAULT_FPS / 10;
-			break;
-		case 1:
-			screen->ShakeBegin(strength, speed);
-			break;
-		case 2:
-			screen->ShakeEnd();
-			break;
+	if (Player::engine == Player::EngineRpg2k) {
+		screen->ShakeOnce(strength, speed, tenths);
+		if (wait) {
+			wait_count = tenths * DEFAULT_FPS / 10;
+		}
+	} else {
+		switch (list[index].parameters[4]) {
+			case 0:
+				screen->ShakeOnce(strength, speed, tenths);
+				if (wait) {
+					wait_count = tenths * DEFAULT_FPS / 10;
+				}
+				break;
+			case 1:
+				screen->ShakeBegin(strength, speed);
+				break;
+			case 2:
+				screen->ShakeEnd();
+				break;
+		}
 	}
 
 	return true;

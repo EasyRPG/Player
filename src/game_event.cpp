@@ -103,7 +103,7 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	// Free resources if needed
 	delete interpreter;
 	interpreter = NULL;
-	if (trigger == 4)
+	if (trigger == TriggerParallelProcess)
 		interpreter = new Game_Interpreter();
 	CheckEventTriggerAuto();
 }
@@ -141,7 +141,7 @@ bool Game_Event::AreConditionsMet(const RPG::EventPage& page) {
 	}
 
 	// Variable
-	if (page.condition.variable && !(Game_Variables[page.condition.variable_id] < page.condition.variable_value)) {
+	if (page.condition.variable && !(Game_Variables[page.condition.variable_id] >= page.condition.variable_value)) {
 		return false;
 	}
 
