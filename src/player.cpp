@@ -126,11 +126,8 @@ void Player::Run() {
 	while (Scene::instance->type != Scene::Null) {
 		Scene::instance->MainFunction();
 
-		if (Scene::old_instances.size() != 0) {
-			Output::Debug("Deletion stack:");
-		}
 		for (size_t i = 0; i < Scene::old_instances.size(); ++i) {
-			Output::Debug(Scene::scene_names[Scene::old_instances[i]->type]);
+			//Output::Debug(Scene::scene_names[Scene::old_instances[i]->type]);
 			delete Scene::old_instances[i];
 		}
 		Scene::old_instances.clear();

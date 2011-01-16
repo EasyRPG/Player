@@ -40,7 +40,7 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	visible = false;
-	SetZ(9998);
+	SetZ(10000);
 	//contents_showing = false;
 	//cursor_width = 0;
 	active = false;

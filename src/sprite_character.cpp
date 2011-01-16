@@ -47,7 +47,7 @@ void Sprite_Character::Update() {
 		character_name = character->GetCharacterName();
 		character_index = character->GetCharacterIndex();
 		if (tile_id > 0) {
-			// FIXME: The cached bitmap gets deleted in Bitmap Screen (needs a no delete flag to prevent copying)
+			// FIXME: The cached bitmap gets deleted in Bitmap Screen (no delete flag not working)
 			Bitmap* tile = Cache::Tile(Game_Map::GetChipsetName(), tile_id);
 			SetBitmap(Bitmap::CreateBitmap(tile, tile->GetRect()));
 			r.Set(0, 0, 16, 16);
@@ -58,7 +58,7 @@ void Sprite_Character::Update() {
 			if (character_name.empty()) {
 				SetBitmap(NULL);
 			} else {
-				// FIXME: The cached bitmap gets deleted in Bitmap Screen (needs a no delete flag to prevent copying)
+				// FIXME: The cached bitmap gets deleted in Bitmap Screen (no delete flag not working)
 				SetBitmap(Bitmap::CreateBitmap(Cache::Charset(character_name), Cache::Charset(character_name)->GetRect()));
 				chara_width = GetBitmap()->GetWidth() / 4 / 3;
 				chara_height = GetBitmap()->GetHeight() / 2 / 4;

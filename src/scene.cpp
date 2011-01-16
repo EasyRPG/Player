@@ -129,10 +129,10 @@ void Scene::Push(Scene* new_scene, bool pop_stack_top) {
 	instances.push_back(new_scene);
 	instance = new_scene;
 
-	Output::Debug("Scene Stack after Push:");
+	/*Output::Debug("Scene Stack after Push:");
 	for (size_t i = 0; i < instances.size(); ++i) {
 		Output::Debug(scene_names[instances[i]->type]);
-	}
+	}*/
 }
 
 ////////////////////////////////////////////////////////////
@@ -146,10 +146,10 @@ void Scene::Pop() {
 		instance = instances[instances.size() - 1];
 	}
 
-	Output::Debug("Scene Stack after Pop:");
+	/*Output::Debug("Scene Stack after Pop:");
 	for (size_t i = 0; i < instances.size(); ++i) {
 		Output::Debug(scene_names[instances[i]->type]);
-	}
+	}*/
 }
 
 ////////////////////////////////////////////////////////////
@@ -178,6 +178,6 @@ Scene* Scene::Find(SceneType type) {
 		if ((*it)->type == type)
 			return *it;
 
-	Output::Warning("The requested scene %s was not on the stack", scene_names[type]);
+	Output::Warning("The searched scene %s was not on the stack", scene_names[type]);
 	return NULL;
 }
