@@ -129,7 +129,7 @@ void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 
 	if (draw_params) {
 		// Draw New Value
-		cx += 90;
+		cx += 30;
 		ss.str(""); ss.clear();
 		ss << new_value;
 		contents->GetFont()->color = GetNewParameterColor(value, new_value);
