@@ -19,6 +19,7 @@
 #define __game_screen__
 
 #include <map>
+#include "plane.h"
 #include "game_picture.h"
 
 class Game_Screen {
@@ -79,5 +80,35 @@ private:
 	int movie_pos_y;
 	int movie_res_x;
 	int movie_res_y;
+
+	enum Weather {
+		Weather_None,
+		Weather_Rain,
+		Weather_Snow,
+		Weather_Fog,
+		Weather_Sandstorm
+	};
+
+protected:
+	struct Snowflake {
+		uint16 x;
+		uint8 y;
+		uint8 life;
+	};
+
+	std::vector<Snowflake> snowflakes;
+
+	Plane* weather_plane;
+	Bitmap* snow_bitmap;
+	Bitmap* rain_bitmap;
+
+	void InitWeather();
+	void StopWeather();
+	void InitSnowRain();
+	void UpdateSnowRain(int speed);
+	void DrawRain();
+	void DrawSnow();
+	void DrawFog();
+	void DrawSandstorm();
 };
 #endif // __game_screen__

@@ -18,13 +18,18 @@
 #include "options.h"
 #include "game_screen.h"
 
-Game_Screen::Game_Screen()
+Game_Screen::Game_Screen() :
+	weather_plane(NULL),
+	snow_bitmap(NULL),
+	rain_bitmap(NULL)
 {
 	Reset();
 }
 
 Game_Screen::~Game_Screen()
 {
+	if (weather_plane)
+		delete weather_plane;
 }
 
 void Game_Screen::Reset()
@@ -70,6 +75,9 @@ void Game_Screen::Reset()
 	movie_pos_y = 0;
 	movie_res_x = 0;
 	movie_res_y = 0;
+
+	snowflakes.clear();
+	StopWeather();
 }
 
 Picture* Game_Screen::GetPicture(int id) {
@@ -146,6 +154,9 @@ void Game_Screen::ShakeEnd() {
 void Game_Screen::Weather(int type, int strength) {
 	weather_type = type;
 	weather_strength = strength;
+	StopWeather();
+	if (weather_type != Weather_None)
+		InitWeather();
 }
 
 void Game_Screen::PlayMovie(const std::string& filename,
@@ -160,6 +171,140 @@ void Game_Screen::PlayMovie(const std::string& filename,
 static double interpolate(double d, double x0, double x1)
 {
 	return (x0 * (d - 1) + x1) / d;
+}
+
+void Game_Screen::InitWeather() {
+	if (weather_plane == NULL) {
+		weather_plane = new Plane();
+		Bitmap* bitmap = Bitmap::CreateBitmap(320, 240);
+		bitmap->SetTransparentColor(Color(0,0,0,0));
+		weather_plane->SetBitmap(bitmap);
+		weather_plane->SetZ(9999);
+	}
+	weather_plane->GetBitmap()->Clear();
+
+	if (rain_bitmap == NULL) {
+		Color gray(192,192,192,255);
+		rain_bitmap = Bitmap::CreateBitmap(8, 16);
+		rain_bitmap->Clear();
+		for (int j = 0; j < 16; j++)
+			rain_bitmap->SetPixel(7-j/2, j, gray);
+	}
+
+	if (snow_bitmap == NULL) {
+		snow_bitmap = Bitmap::CreateBitmap(4, 4);
+		snow_bitmap->Clear();
+		Color gray(192,192,192,255);
+		Color white(255,255,255,255);
+		Color colors[3] = {
+			snow_bitmap->GetTransparentColor(),
+			gray,
+			white
+		};
+		static const int snow[4][4] = {
+			{0, 1, 1, 0},
+			{1, 2, 2, 1},
+			{1, 2, 2, 1},
+			{0, 1, 1, 0}
+		};
+		for (int j = 0; j < 4; j++)
+			for (int i = 0; i < 4; i++)
+				snow_bitmap->SetPixel(i, j, colors[snow[j][i]]);
+	}
+}
+
+void Game_Screen::StopWeather() {
+	if (weather_plane != NULL)
+		delete weather_plane;
+	weather_plane = NULL;
+	snowflakes.clear();
+}
+
+void Game_Screen::InitSnowRain() {
+	if (!snowflakes.empty())
+		return;
+
+	static const int num_snowflakes[3] = {100, 200, 300};
+
+	for (int i = 0; i < num_snowflakes[weather_strength]; i++) {
+		Snowflake f;
+		f.x = (short) (rand() * 440.0 / RAND_MAX);
+		f.y = (uint8) rand();
+		f.life = (uint8) rand();
+		snowflakes.push_back(f);
+	}
+}
+
+static const int snowflake_life = 200;
+static const int snowflake_visible = 150;
+
+void Game_Screen::UpdateSnowRain(int speed) {
+	std::vector<Snowflake>::iterator it;
+
+	for (it = snowflakes.begin(); it != snowflakes.end(); it++) {
+		Snowflake& f = *it;
+		f.y += speed;
+		f.life++;
+		if (f.life > snowflake_life)
+			f.life = 0;
+	}
+}
+
+void Game_Screen::DrawRain() {
+
+	Bitmap* bitmap = weather_plane->GetBitmap();
+	weather_plane->SetOpacity(192);
+
+	Rect rect = bitmap->GetRect();
+
+	std::vector<Snowflake>::iterator it;
+	for (it = snowflakes.begin(); it != snowflakes.end(); it++) {
+		Snowflake& f = *it;
+		if (f.life > snowflake_visible)
+			continue;
+		bitmap->Blit(f.x - f.y/2, f.y, rain_bitmap, rect, 255);
+	}
+}
+
+void Game_Screen::DrawSnow() {
+	static const int wobble[2][18] = {
+		{-1,-1, 0, 1, 0, 1, 1, 0,-1,-1, 0, 1, 0, 1, 1, 0,-1, 0},
+		{-1,-1, 0, 0, 1, 1, 0,-1,-1, 0, 1, 0, 1, 1, 0,-1, 0, 0}
+	};
+	Bitmap* bitmap = weather_plane->GetBitmap();
+	weather_plane->SetOpacity(192);
+
+	Rect rect = bitmap->GetRect();
+
+	std::vector<Snowflake>::iterator it;
+	for (it = snowflakes.begin(); it != snowflakes.end(); it++) {
+		Snowflake& f = *it;
+		if (f.life > snowflake_visible)
+			continue;
+		int x = f.x - f.y/2;
+		int y = f.y;
+		int i = (y / 2) % 18;
+		x += wobble[0][i];
+		y += wobble[1][i];
+		bitmap->Blit(x, y, snow_bitmap, rect, 255);
+	}
+}
+
+void Game_Screen::DrawFog() {
+
+	Bitmap* bitmap = weather_plane->GetBitmap();
+	bitmap->Fill(Color(128,128,128,255));
+	static const int opacities[3] = {128, 160, 192};
+	weather_plane->SetOpacity(opacities[weather_strength]);
+}
+
+void Game_Screen::DrawSandstorm() {
+
+	Bitmap* bitmap = weather_plane->GetBitmap();
+	bitmap->Fill(Color(192,160,128,255));
+	static const int opacities[3] = {128, 160, 192};
+	weather_plane->SetOpacity(opacities[weather_strength]);
+	// TODO
 }
 
 void Game_Screen::Update() {
@@ -199,6 +344,31 @@ void Game_Screen::Update() {
 
 	if (!movie_filename.empty()) {
 		/* update movie */
+	}
+
+	switch (weather_type) {
+		case Weather_None:
+			break;
+		case Weather_Rain:
+			InitWeather();
+			InitSnowRain();
+			UpdateSnowRain(4);
+			DrawRain();
+			break;
+		case Weather_Snow:
+			InitWeather();
+			InitSnowRain();
+			UpdateSnowRain(2);
+			DrawSnow();
+			break;
+		case Weather_Fog:
+			InitWeather();
+			DrawFog();
+			break;
+		case Weather_Sandstorm:
+			InitWeather();
+			DrawSandstorm();
+			break;
 	}
 }
 
