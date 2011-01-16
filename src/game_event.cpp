@@ -28,6 +28,7 @@
 #include "game_variables.h"
 #include "game_system.h"
 #include "main_data.h"
+#include "player.h"
 
 ////////////////////////////////////////////////////////////
 Game_Event::Game_Event(int map_id, const RPG::Event& event) :
@@ -141,8 +142,39 @@ bool Game_Event::AreConditionsMet(const RPG::EventPage& page) {
 	}
 
 	// Variable
-	if (page.condition.variable && !(Game_Variables[page.condition.variable_id] >= page.condition.variable_value)) {
-		return false;
+	if (Player::engine == Player::EngineRpg2k) {
+		if (page.condition.variable && !(Game_Variables[page.condition.variable_id] >= page.condition.variable_value)) {
+			return false;
+		}
+	} else {
+		if (page.condition.variable) {
+			switch (page.condition.compare_operator) {
+			case 0: // ==
+				if (!(Game_Variables[page.condition.variable_id] == page.condition.variable_value))
+					return false;
+				break;
+			case 1: // >=
+				if (!(Game_Variables[page.condition.variable_id] >= page.condition.variable_value))
+					return false;
+				break;
+			case 2: // <=
+				if (!(Game_Variables[page.condition.variable_id] <= page.condition.variable_value))
+					return false;
+				break;
+			case 3: // >
+				if (!(Game_Variables[page.condition.variable_id] > page.condition.variable_value))
+					return false;
+				break;
+			case 4: // <
+				if (!(Game_Variables[page.condition.variable_id] < page.condition.variable_value))
+					return false;
+				break;
+			case 5: // !=
+				if (!(Game_Variables[page.condition.variable_id] != page.condition.variable_value))
+					return false;
+				break;
+			}
+		}
 	}
 
 	// Item in possession?
