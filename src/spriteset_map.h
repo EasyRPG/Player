@@ -44,6 +44,11 @@ public:
 	/// Notify that the map's chipset has changed
 	////////////////////////////////////////////////////////////
 	void ChipsetUpdated();
+
+	/// Substitute tile in lower layer
+	void SubstituteDown(int old_id, int new_id);
+	/// Substitute tile in upper layer
+	void SubstituteUp(int old_id, int new_id);
 	
 protected:
 	Tilemap* tilemap;

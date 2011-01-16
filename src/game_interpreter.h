@@ -162,6 +162,7 @@ private:
 	bool CommandChangeVehicleGraphic();
 	bool CommandEnterExitVehicle();
 	bool CommandSetVehicleLocation();
+	bool CommandTileSubstitution();
 
 	void CommandEnd();
 

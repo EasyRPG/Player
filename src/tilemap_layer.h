@@ -62,6 +62,7 @@ public:
 	int GetZ() const;
 	unsigned long GetId() const;
 	DrawableType GetType() const;
+	void Substitute(int old_id, int new_id);
 
 private:
 	Bitmap* chipset;
@@ -99,6 +100,7 @@ private:
 		int z;
 	};
 	std::vector<std::vector<TileData> > data_cache;
+	uint8 substitutions[144];
 };
 
 #endif

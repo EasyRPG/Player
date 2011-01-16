@@ -61,6 +61,8 @@ public:
 	void SetAnimationSpeed(int speed);
 	int GetAnimationType() const;
 	void SetAnimationType(int type);
+	void SubstituteDown(int old_id, int new_id);
+	void SubstituteUp(int old_id, int new_id);
 
 private:
 	TilemapLayer* layer_down;

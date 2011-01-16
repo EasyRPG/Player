@@ -120,6 +120,9 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	}
 	Graphics::RegisterZObj(9999, ID, true);
 	Graphics::RegisterDrawable(ID, this);
+
+	for (int i = 0; i < 144; i++)
+		substitutions[i] = i;
 }
 
 ////////////////////////////////////////////////////////////
@@ -187,6 +190,7 @@ void TilemapLayer::Draw(int z_order) {
 					// If lower layer
 
 					if (tile.ID >= BLOCK_E && tile.ID < BLOCK_E + BLOCK_E_TILES) {
+						int id = substitutions[tile.ID - BLOCK_E];
 						// If Block E
 
 						Rect rect;
@@ -194,14 +198,14 @@ void TilemapLayer::Draw(int z_order) {
 						rect.height = 16;
 
 						// Get the tile coordinates from chipset
-						if (tile.ID < BLOCK_E + 96) {
+						if (id < 96) {
 							// If from first column of the block
-							rect.x = 192 + ((tile.ID - BLOCK_E) % 6) * 16;
-							rect.y = ((tile.ID - BLOCK_E) / 6) * 16;
+							rect.x = 192 + (id % 6) * 16;
+							rect.y = (id / 6) * 16;
 						} else {
 							// If from second column of the block
-							rect.x = 288 + ((tile.ID - BLOCK_E - 96) % 6) * 16;
-							rect.y = ((tile.ID - BLOCK_E - 96) / 6) * 16;
+							rect.x = 288 + ((id - 96) % 6) * 16;
+							rect.y = ((id - 96) / 6) * 16;
 						}
 
 						// Draw the tile
@@ -238,19 +242,20 @@ void TilemapLayer::Draw(int z_order) {
 						if (tile.ID == BLOCK_F && have_invisible_tile)
 							continue;
 
+						int id = substitutions[tile.ID - BLOCK_F];
 						Rect rect;
 						rect.width = 16;
 						rect.height = 16;
 
 						// Get the tile coordinates from chipset
-						if (tile.ID < BLOCK_F + 48) {
+						if (id < 48) {
 							// If from first column of the block
-							rect.x = 288 + ((tile.ID - BLOCK_F) % 6) * 16;
-							rect.y = 128 + ((tile.ID - BLOCK_F) / 6) * 16;
+							rect.x = 288 + (id % 6) * 16;
+							rect.y = 128 + (id / 6) * 16;
 						} else {
 							// If from second column of the block
-							rect.x = 384 + ((tile.ID - BLOCK_F - 48) % 6) * 16;
-							rect.y = ((tile.ID - BLOCK_F - 48) / 6) * 16;
+							rect.x = 384 + ((id - 48) % 6) * 16;
+							rect.y = ((id - 48) / 6) * 16;
 						}
 						
 						// Draw the tile
@@ -473,10 +478,10 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 				// Calculate the tile Z
 				if (!passable.empty()) {
 					if (tile.ID >= BLOCK_F) {
-						if ((passable[tile.ID - BLOCK_F] & (1 << 4)) == (1 << 4)) tile.z = 32;
+						if ((passable[substitutions[tile.ID - BLOCK_F]] & (1 << 4)) == (1 << 4)) tile.z = 32;
 
 					} else if (tile.ID >= BLOCK_E) {
-						if ((passable[tile.ID - BLOCK_E] & (1 << 4)) == (1 << 4)) tile.z = 16;
+						if ((passable[substitutions[tile.ID - BLOCK_E]] & (1 << 4)) == (1 << 4)) tile.z = 16;
 
 					} else if (tile.ID >= BLOCK_D) {
 						if ((passable[(tile.ID - BLOCK_D) / 50 + 6] & (1 << 5)) == (1 << 5)) tile.z = 9999;
@@ -586,4 +591,8 @@ unsigned long TilemapLayer::GetId() const {
 
 DrawableType TilemapLayer::GetType() const {
 	return type;
+}
+
+void TilemapLayer::Substitute(int old_id, int new_id) {
+	substitutions[old_id] = (uint8) new_id;
 }

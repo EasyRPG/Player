@@ -617,6 +617,8 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandEnterExitVehicle();
 		case SetVehicleLocation:
 			return CommandSetVehicleLocation();
+		case TileSubstitution:
+			return CommandTileSubstitution();
 		default:
 			return true;
 	}
@@ -3023,6 +3025,22 @@ bool Game_Interpreter::CommandSetVehicleLocation() { // code 10850
 	int y = ValueOrVariable(list[index].parameters[1], list[index].parameters[4]);
 
 	vehicle->SetPosition(map_id, x, y);
+
+	return true;
+}
+
+bool Game_Interpreter::CommandTileSubstitution() { // code 11750
+	bool upper = list[index].parameters[0] != 0;
+	int old_id = list[index].parameters[1];
+	int new_id = list[index].parameters[2];
+	Scene_Map* scene = (Scene_Map*) Scene::Find(Scene::Map);
+	if (!scene)
+		return true;
+
+	if (upper)
+		scene->spriteset->SubstituteUp(old_id, new_id);
+	else
+		scene->spriteset->SubstituteDown(old_id, new_id);
 
 	return true;
 }
