@@ -29,6 +29,12 @@ Game_Screen::~Game_Screen()
 
 void Game_Screen::Reset()
 {
+	std::map<int, Picture*>::iterator it;
+
+	for (it = pictures.begin(); it != pictures.end(); ++it) {
+		delete it->second;
+	}
+
 	pictures.clear();
 
 	tint_red = 0;

@@ -104,6 +104,8 @@ void Game_Map::Quit() {
 void Game_Map::Setup(int _id) {
 	Dispose();
 
+	Main_Data::game_screen->Reset();
+
 	map_id = _id;
 	char file[12];
 	sprintf(file, "Map%04d.lmu", map_id);
