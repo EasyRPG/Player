@@ -2070,7 +2070,7 @@ bool Game_Interpreter::CommandShowScreen() {
 ////////////////////////////////////////////////////////////
 bool Game_Interpreter::CommandShowPicture() { // code 11110
 	int pic_id = list[index].parameters[0];
-	Picture& picture = Main_Data::game_screen->GetPicture(pic_id);
+	Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
 	std::string& pic_name = list[index].string;
 	int x = ValueOrVariable(list[index].parameters[1], list[index].parameters[2]);
 	int y = ValueOrVariable(list[index].parameters[1], list[index].parameters[3]);
@@ -2093,25 +2093,25 @@ bool Game_Interpreter::CommandShowPicture() { // code 11110
 		bottom_trans = list[index].parameters[14];
 	}
 
-	picture.Show(pic_name);
-	picture.UseTransparent(use_trans);
-	picture.Scrolls(scrolls);
+	picture->Show(pic_name);
+	picture->UseTransparent(use_trans);
+	picture->Scrolls(scrolls);
 
-	picture.Move(x, y);
-	picture.Color(red, green, blue, saturation);
-	picture.Magnify(magnify);
-	picture.Transparency(top_trans, bottom_trans);
-	picture.Transition(0);
+	picture->Move(x, y);
+	picture->Color(red, green, blue, saturation);
+	picture->Magnify(magnify);
+	picture->Transparency(top_trans, bottom_trans);
+	picture->Transition(0);
 
 	switch (effect) {
 		case 0:
-			picture.StopEffects();
+			picture->StopEffects();
 			break;
 		case 1:
-			picture.Rotate(speed);
+			picture->Rotate(speed);
 			break;
 		case 2:
-			picture.Waver(speed);
+			picture->Waver(speed);
 			break;
 	}
 
@@ -2120,7 +2120,7 @@ bool Game_Interpreter::CommandShowPicture() { // code 11110
 
 bool Game_Interpreter::CommandMovePicture() { // code 11120
 	int pic_id = list[index].parameters[0];
-	Picture& picture = Main_Data::game_screen->GetPicture(pic_id);
+	Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
 	int x = ValueOrVariable(list[index].parameters[1], list[index].parameters[2]);
 	int y = ValueOrVariable(list[index].parameters[1], list[index].parameters[3]);
 	int magnify = list[index].parameters[5];
@@ -2142,21 +2142,21 @@ bool Game_Interpreter::CommandMovePicture() { // code 11120
 		bottom_trans = list[index].parameters[16];
 	}
 
-	picture.Move(x, y);
-	picture.Color(red, green, blue, saturation);
-	picture.Magnify(magnify);
-	picture.Transparency(top_trans, bottom_trans);
-	picture.Transition(tenths);
+	picture->Move(x, y);
+	picture->Color(red, green, blue, saturation);
+	picture->Magnify(magnify);
+	picture->Transparency(top_trans, bottom_trans);
+	picture->Transition(tenths);
 
 	switch (effect) {
 		case 0:
-			picture.StopEffects();
+			picture->StopEffects();
 			break;
 		case 1:
-			picture.Rotate(speed);
+			picture->Rotate(speed);
 			break;
 		case 2:
-			picture.Waver(speed);
+			picture->Waver(speed);
 			break;
 	}
 
@@ -2168,8 +2168,8 @@ bool Game_Interpreter::CommandMovePicture() { // code 11120
 
 bool Game_Interpreter::CommandErasePicture() { // code 11130
 	int pic_id = list[index].parameters[0];
-	Picture& picture = Main_Data::game_screen->GetPicture(pic_id);
-	picture.Erase();
+	Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
+	picture->Erase();
 
 	return true;
 }

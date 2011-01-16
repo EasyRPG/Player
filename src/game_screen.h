@@ -18,6 +18,7 @@
 #ifndef __game_screen__
 #define __game_screen__
 
+#include <map>
 #include "game_picture.h"
 
 class Game_Screen {
@@ -26,7 +27,7 @@ public:
 	Game_Screen();
 	~Game_Screen();
 
-	Picture& GetPicture(int id);
+	Picture* GetPicture(int id);
 
 	void Reset();
 	void TintScreen(int r, int g, int b, int s, int tenths);
@@ -42,7 +43,7 @@ public:
 	void Update();
 
 private:
-	std::vector<Picture> pictures;
+	std::map<int,Picture*> pictures;
 
 	double tint_red;
 	double tint_green;

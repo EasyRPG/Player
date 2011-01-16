@@ -55,10 +55,13 @@ Picture::~Picture()
 {
 	if (sprite != NULL)
 		delete sprite;
+	sprite = NULL;
 }
 
 void Picture::UpdateSprite() {
 	if (sprite == NULL)
+		return;
+	if (!shown)
 		return;
 
 	PictureState& st = current_state;
@@ -83,6 +86,11 @@ void Picture::Show(const std::string& _name) {
 	name = _name;
 	shown = true;
 	duration = 0;
+
+	if (sprite != NULL) {
+		delete sprite;
+		sprite = NULL;
+	}
 
 	Bitmap* bitmap = Cache::Picture(name);
 	sprite = new Sprite();
@@ -163,6 +171,9 @@ static double interpolate(double d, double x0, double x1) {
 }
 
 void Picture::Update() {
+	if (!shown)
+		return;
+
 	if (rotate || waver)
 		value += speed;
 

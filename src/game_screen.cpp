@@ -66,10 +66,11 @@ void Game_Screen::Reset()
 	movie_res_y = 0;
 }
 
-Picture& Game_Screen::GetPicture(int id) {
-	if ((size_t) id >= pictures.size())
-		pictures.resize(id);
-	return pictures[id - 1];
+Picture* Game_Screen::GetPicture(int id) {
+	Picture*& p = pictures[id];
+	if (p == NULL)
+		p = new Picture();
+	return p;
 }
 
 void Game_Screen::TintScreen(int r, int g, int b, int s, int tenths) {
@@ -186,9 +187,9 @@ void Game_Screen::Update() {
 			shake_duration--;
 	}
 
-	std::vector<Picture>::iterator it;
-	for (it = pictures.begin(); it < pictures.end(); it++)
-		it->Update();
+	std::map<int,Picture*>::const_iterator it;
+	for (it = pictures.begin(); it != pictures.end(); it++)
+		it->second->Update();
 
 	if (!movie_filename.empty()) {
 		/* update movie */
