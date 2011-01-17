@@ -171,6 +171,14 @@ private:
 	bool ContinuationOpenShop();
 	bool ContinuationShowInn();
 	bool ContinuationEnemyEncounter();
+
+private:
+	int DecodeInt(std::vector<int>::const_iterator& it);
+	const std::string DecodeString(std::vector<int>::const_iterator& it);
+	RPG::MoveCommand DecodeMove(std::vector<int>::const_iterator& it);
+
+	std::vector<RPG::MoveRoute*> pending;
+
 };
 
 #endif

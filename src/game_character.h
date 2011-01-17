@@ -225,6 +225,13 @@ public:
 		PriorityAboveHero
 	};
 
+	enum Directions {
+		DirectionDown = 2,
+		DirectionLeft = 4,
+		DirectionRight = 6,
+		DirectionUp = 8
+	};
+
 protected:
 	void UpdateMove();
 	void UpdateSelfMovement();
@@ -239,6 +246,9 @@ protected:
 	int real_y;
 	int direction;
 	int pattern;
+	int original_direction;
+	int original_pattern;
+	int last_pattern;
 	bool move_route_forcing;
 	bool through;
 	int animation_id;
@@ -260,8 +270,6 @@ protected:
 	double anime_count;
 	int stop_count;
 	int jump_count;
-	int original_pattern;
-	int last_pattern;
 	bool step_anime;
 	bool walk_anime;
 	bool turn_enabled;

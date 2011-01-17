@@ -64,6 +64,7 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 		tile_id = 0;
 		character_name = "";
 		character_index = 0;
+		direction = 2;
 		//move_type = 0;
 		through = true;
 		trigger = -1;
@@ -74,18 +75,25 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	}
 	character_name = page->character_name;
 	character_index = page->character_index;
+
 	tile_id = page->character_name.empty() ? page->character_index : 0;
 
-	pattern = page->character_pattern;
-	/*if (original_direction != page.character_dir) {
-		direction = page.character_dir;
+	if (original_direction != page->character_direction) {
+		switch (page->character_direction) {
+		case 0: direction = 8; break;
+		case 1: direction = 6; break;
+		case 2: direction = 2; break;
+		case 3: direction = 4; break;
+		};
+
 		original_direction = direction;
 		prelock_direction = 0;
 	}
-	if (original_pattern != page.character_pattern) {
-		pattern = page.character_pattern;
+
+	if (original_pattern != page->character_pattern) {
+		pattern = page->character_pattern;
 		original_pattern = pattern;
-	}*/
+	}
 	//opacity = page.opacity;
 	//opacity = page.translucent ? 192 : 255;
 	//blend_type = page.blend_type;
@@ -101,11 +109,13 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	priority_type = page->priority_type;
 	trigger = page->trigger;
 	list = page->event_commands;
+	
 	// Free resources if needed
 	delete interpreter;
 	interpreter = NULL;
-	if (trigger == TriggerParallelProcess)
+	if (trigger == TriggerParallelProcess) {
 		interpreter = new Game_Interpreter();
+	}
 	CheckEventTriggerAuto();
 }
 

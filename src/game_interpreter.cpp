@@ -555,6 +555,8 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandEndLoop();
 		case EndEventProcessing:
 			return CommandEndEventProcessing();
+		case MoveEvent:
+			return CommandMoveEvent();
 		case OpenShop:
 			return CommandOpenShop();
 		case Transaction:
@@ -2729,8 +2731,7 @@ bool Game_Interpreter::CommandEscapeTarget() { // code 11830
 	return true;
 }
 
-static int decode_int(std::vector<int>::const_iterator& it)
-{
+int Game_Interpreter::DecodeInt(std::vector<int>::const_iterator& it) {
 	int value = 0;
 
 	for (;;) {
@@ -2744,10 +2745,10 @@ static int decode_int(std::vector<int>::const_iterator& it)
 	return value;
 }
 
-static const std::string decode_str(std::vector<int>::const_iterator& it)
+const std::string Game_Interpreter::DecodeString(std::vector<int>::const_iterator& it)
 {
 	std::ostringstream out;
-	int len = decode_int(it);
+	int len = DecodeInt(it);
 
 	for (int i = 0; i < len; i++)
 		out << (char) *it++;
@@ -2755,7 +2756,7 @@ static const std::string decode_str(std::vector<int>::const_iterator& it)
 	return out.str();
 }
 
-static RPG::MoveCommand decode_move(std::vector<int>::const_iterator& it)
+RPG::MoveCommand Game_Interpreter::DecodeMove(std::vector<int>::const_iterator& it)
 {
 	RPG::MoveCommand cmd;
 	cmd.command_id = *it++;
@@ -2763,25 +2764,22 @@ static RPG::MoveCommand decode_move(std::vector<int>::const_iterator& it)
 	switch (cmd.command_id) {
 		case 32:	// Switch ON
 		case 33:	// Switch OFF
-			cmd.parameter_a = decode_int(it);
+			cmd.parameter_a = DecodeInt(it);
 			break;
 		case 34:	// Change Graphic
-			cmd.parameter_string = decode_str(it);
-			cmd.parameter_a = decode_int(it);
+			cmd.parameter_string = DecodeString(it);
+			cmd.parameter_a = DecodeInt(it);
 			break;
 		case 35:	// Play Sound Effect
-			cmd.parameter_string = decode_str(it);
-			cmd.parameter_a = decode_int(it);
-			cmd.parameter_b = decode_int(it);
-			cmd.parameter_c = decode_int(it);
+			cmd.parameter_string = DecodeString(it);
+			cmd.parameter_a = DecodeInt(it);
+			cmd.parameter_b = DecodeInt(it);
+			cmd.parameter_c = DecodeInt(it);
 			break;
 	}
 
 	return cmd;
 }
-
-std::vector<RPG::MoveRoute*> pending;
-
 bool Game_Interpreter::CommandMoveEvent() { // code 11330
 	int event_id = list[index].parameters[0];
 	Game_Character* event = GetCharacter(event_id);

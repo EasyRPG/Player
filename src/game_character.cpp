@@ -40,6 +40,9 @@ Game_Character::Game_Character() :
 	real_y(0),
 	direction(2),
 	pattern(1),
+	original_direction(2),
+	original_pattern(1),
+	last_pattern(0),
 	move_route_forcing(false),
 	through(false),
 	animation_id(0),
@@ -56,9 +59,7 @@ Game_Character::Game_Character() :
 	wait_count(0),
 	anime_count(0),
 	stop_count(0),
-	jump_count(0),
-	original_pattern(1),
-	last_pattern(0),
+	jump_count(0),	
 	step_anime(false),
 	walk_anime(true),
 	turn_enabled(true),
@@ -82,8 +83,8 @@ bool Game_Character::IsStopping() const {
 
 ////////////////////////////////////////////////////////////
 bool Game_Character::IsPassable(int x, int y, int d) const {
-	int new_x = x + (d == 6 ? 1 : d == 4 ? -1 : 0);
-	int new_y = y + (d == 2 ? 1 : d == 8 ? -1 : 0);
+	int new_x = x + (d == DirectionRight ? 1 : d == DirectionLeft ? -1 : 0);
+	int new_y = y + (d == DirectionDown ? 1 : d == DirectionUp ? -1 : 0);
 
 	if (!Game_Map::IsValid(new_x, new_y)) return false;
 
@@ -295,7 +296,7 @@ void Game_Character::MoveTypeCustom() {
 			RPG::MoveCommand& move_command = move_route->move_commands[move_route_index];
 			switch (move_command.command_id) {
 			case LMU_Reader::ChunkMoveCommands::move_up:
-				MoveDown();	break;
+				MoveUp();	break;
 			case LMU_Reader::ChunkMoveCommands::move_right:
 				MoveRight(); break;
 			case LMU_Reader::ChunkMoveCommands::move_down:
@@ -372,7 +373,7 @@ void Game_Character::MoveTypeCustom() {
 void Game_Character::MoveDown() {
 	if (turn_enabled) TurnDown();
 
-	if (IsPassable(x, y, 2)) {
+	if (IsPassable(x, y, DirectionDown)) {
 		TurnDown();
 		y += 1;
 		//IncreaseSteps();
@@ -387,7 +388,7 @@ void Game_Character::MoveDown() {
 void Game_Character::MoveLeft() {
 	if (turn_enabled) TurnLeft();
 
-	if (IsPassable(x, y, 4)) {
+	if (IsPassable(x, y, DirectionLeft)) {
 		TurnLeft();
 		x -= 1;
 		//IncreaseSteps();
@@ -402,7 +403,7 @@ void Game_Character::MoveLeft() {
 void Game_Character::MoveRight() {
 	if (turn_enabled) TurnRight();
 
-	if (IsPassable(x, y, 6)) {
+	if (IsPassable(x, y, DirectionRight)) {
 		TurnRight();
 		x += 1;
 		//IncreaseSteps();
@@ -417,7 +418,7 @@ void Game_Character::MoveRight() {
 void Game_Character::MoveUp() {
 	if (turn_enabled) TurnUp();
 
-	if (IsPassable(x, y, 8)) {
+	if (IsPassable(x, y, DirectionUp)) {
 		TurnUp();
 		y -= 1;
 		//IncreaseSteps();
