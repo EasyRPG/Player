@@ -2492,8 +2492,10 @@ bool Game_Interpreter::CommandOpenShop() { // code 10720
 }
 
 bool Game_Interpreter::ContinuationOpenShop() {
-	if (!Game_Temp::shop_handlers)
+	if (!Game_Temp::shop_handlers) {
+		index++;
 		return true;
+	}
 
 	if (!SkipTo(Game_Temp::shop_transaction
 				? Transaction
