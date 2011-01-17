@@ -27,6 +27,13 @@
 #include "SDL.h"
 #include "SDL_mixer.h"
 
+#ifdef _WIN32
+// FIXME: A bug in sdl_mixer causes that the player is muted forever when a
+// fadeout happened.
+// Fade out on Vista and higher has been disabled until this is fixed.
+#include "util_win.h"
+#endif
+
 ////////////////////////////////////////////////////////////
 namespace Audio {
 	Mix_Music* bgm;
@@ -121,6 +128,12 @@ void Audio::BGM_Stop() {
 
 ////////////////////////////////////////////////////////////
 void Audio::BGM_Fade(int fade) {
+#ifdef _WIN32
+	if (WindowsUtils::GetWindowsVersion() >= 6) {
+		BGM_Stop();
+		return;
+	}
+#endif
 	Mix_FadeOutMusic(fade);
 	me_stopped_bgm = false;
 }

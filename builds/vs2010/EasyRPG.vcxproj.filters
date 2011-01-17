@@ -366,6 +366,9 @@
     <ClCompile Include="..\..\src\window_shopsell.cpp">
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\util_win.cpp">
+      <Filter>Source Files\Tools\Win</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cache.h">
@@ -676,6 +679,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\window_shopnumber.h">
       <Filter>Source Files\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\util_win.h">
+      <Filter>Source Files\Tools\Win</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

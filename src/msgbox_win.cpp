@@ -21,7 +21,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "msgbox.h"
-#include "SDL_syswm.h"
+#include "util_win.h"
 #include <windows.h>
 #ifdef _MSC_VER
 #include <Commctrl.h>
@@ -84,32 +84,6 @@ static std::string s2ws(const std::string& s) {
 #endif
 
 ////////////////////////////////////////////////////////////
-/// Detects the Windows version during runtime.
-/// Vista (and later) have version 6 and higher.
-////////////////////////////////////////////////////////////
-int GetWindowsVersion() {
-	OSVERSIONINFO osvi;
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-	GetVersionEx(&osvi);
-
-	return osvi.dwMajorVersion;
-}
-
-////////////////////////////////////////////////////////////
-/// Gets the HWND of the SDL-Window.
-////////////////////////////////////////////////////////////
-HWND GetHwnd() {
-	SDL_SysWMinfo wmi;
-	SDL_VERSION(&wmi.version);
-
-	if(!SDL_GetWMInfo(&wmi)) {
-		return NULL;
-	}
-
-	return wmi.window;
-}
-
-////////////////////////////////////////////////////////////
 /// Displays a centered message box.
 ////////////////////////////////////////////////////////////
 INT CBTMessageBox(HWND hwnd, LPCTSTR lpText, LPCTSTR lpCaption,
@@ -131,7 +105,7 @@ LRESULT CALLBACK CBTProc(INT nCode, WPARAM wParam, LPARAM lParam) {
 	// window handle is wParam
 	if (nCode == HCBT_ACTIVATE) {
 		// set window handles
-		hParentWnd = GetHwnd();
+		hParentWnd = WindowsUtils::GetHwnd();
 		hChildWnd  = (HWND)wParam;
 
 		if ((hParentWnd != 0) && (hChildWnd != 0) &&
@@ -211,7 +185,7 @@ void ShowTaskDialog(std::string& msg, std::string& title, LPCTSTR icon) {
 		memset(&config, '\0', sizeof(config));
 
 		config.cbSize = sizeof(config);
-		config.hwndParent = GetHwnd();
+		config.hwndParent = WindowsUtils::GetHwnd();
 		config.dwFlags = TDF_POSITION_RELATIVE_TO_WINDOW;
 		config.pszWindowTitle = windowTitle.c_str();
 		config.pszMainIcon = icon;
@@ -228,13 +202,13 @@ void ShowTaskDialog(std::string& msg, std::string& title, LPCTSTR icon) {
 ////////////////////////////////////////////////////////////
 void MsgBox::OK(std::string msg, std::string title) {
 #ifdef _MSC_VER
-	if (GetWindowsVersion() >= 6) {
+	if (WindowsUtils::GetWindowsVersion() >= 6) {
 		ShowTaskDialog(msg, title, TD_INFORMATION_ICON);
 	} else {
-		CBTMessageBox(GetHwnd(), s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK);
+		CBTMessageBox(WindowsUtils::GetHwnd(), s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK);
 	}
 #else
-	CBTMessageBox(GetHwnd(), s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK);
+	CBTMessageBox(WindowsUtils::GetHwnd(), s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK);
 #endif
 }
 
@@ -243,13 +217,13 @@ void MsgBox::OK(std::string msg, std::string title) {
 ////////////////////////////////////////////////////////////
 void MsgBox::Error(std::string msg, std::string title) {
 #ifdef _MSC_VER
-	if (GetWindowsVersion() >= 6) {
+	if (WindowsUtils::GetWindowsVersion() >= 6) {
 		ShowTaskDialog(msg, title, TD_ERROR_ICON);
 	} else {
-		CBTMessageBox(GetHwnd(), s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK | MB_ICONERROR);
+		CBTMessageBox(WindowsUtils::GetHwnd(), s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK | MB_ICONERROR);
 	}
 #else
-	CBTMessageBox(GetHwnd(), s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK | MB_ICONERROR);
+	CBTMessageBox(WindowsUtils::GetHwnd(), s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK | MB_ICONERROR);
 #endif
 }
 
@@ -258,13 +232,13 @@ void MsgBox::Error(std::string msg, std::string title) {
 ////////////////////////////////////////////////////////////
 void MsgBox::Warning(std::string msg, std::string title) {
 #ifdef _MSC_VER
-	if (GetWindowsVersion() >= 6) {
+	if (WindowsUtils::GetWindowsVersion() >= 6) {
 		ShowTaskDialog(msg, title, TD_WARNING_ICON);
 	} else {
-		CBTMessageBox(GetHwnd(), s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK | MB_ICONEXCLAMATION);
+		CBTMessageBox(WindowsUtils::GetHwnd(), s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK | MB_ICONEXCLAMATION);
 	}
 #else
-	CBTMessageBox(GetHwnd(), s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK | MB_ICONEXCLAMATION);
+	CBTMessageBox(WindowsUtils::GetHwnd(), s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK | MB_ICONEXCLAMATION);
 #endif
 }
 

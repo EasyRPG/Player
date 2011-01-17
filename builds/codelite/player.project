@@ -239,6 +239,8 @@
         <File Name="../../src/msgbox_win.cpp"/>
         <File Name="../../src/registry_win.cpp"/>
         <File Name="../../src/registry_win.h"/>
+        <File Name="../../src/util_win.cpp"/>
+        <File Name="../../src/util_win.h"/>		
       </VirtualDirectory>
       <VirtualDirectory Name="Cocoa">
         <File Name="../../src/msgbox_cocoa.cpp"/>
