@@ -150,11 +150,16 @@ void Game_Map::Autoplay() {
 					Game_System::BgmPlay(*Game_Temp::map_bgm);
 				}
 				break;
-			case 1:  // from event
-				//TODO: just wait by an event?
+			case 1:  // No Change
 				break;
 			case 2:  // specific map music
 				if (&Data::treemap.maps[current_index].music != Game_Temp::map_bgm) {
+					if (Game_Temp::map_bgm != NULL) {
+						if (Data::treemap.maps[current_index].music.name == Game_Temp::map_bgm->name) {
+							// ToDo: Here the volume and pitch must be updated if the song is the same
+							return;
+						}
+					}
 					Game_Temp::map_bgm = &Data::treemap.maps[current_index].music;
 					Game_System::BgmPlay(*Game_Temp::map_bgm);
 				}

@@ -53,8 +53,8 @@ void Game_System::Init() {
 
 ////////////////////////////////////////////////////////////
 void Game_System::BgmPlay(RPG::Music bgm) {
-	// RPG Maker Hack: (OFF) means play nothing
 	current_bgm = bgm;
+	// RPG Maker Hack: (OFF) means play nothing
 	if (!bgm.name.empty() && bgm.name != "(OFF)") {
 		Audio::BGM_Play(bgm.name, bgm.volume, bgm.tempo);
 	} else {

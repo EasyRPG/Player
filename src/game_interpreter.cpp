@@ -576,7 +576,7 @@ bool Game_Interpreter::ExecuteCommand() {
 		case GameOver:
 			return CommandGameOver();
 		case ReturntoTitleScreen:
-			return CommandReturntoTitleScreen();
+			return CommandReturnToTitleScreen();
 		case OpenSaveMenu:
 			return CommandOpenSaveMenu();
 		case OpenMainMenu:
@@ -738,10 +738,7 @@ void Game_Interpreter::InputButton() {
 }
 
 void Game_Interpreter::CommandEnd() {
-	if (Game_Message::visible) {
-		Game_Message::visible = false;
-		Game_Message::FullClear();
-	}
+	CloseMessageWindow();
 	list.clear();
 
 	if ((main_flag) && (event_id > 0)) {
@@ -776,6 +773,14 @@ void Game_Interpreter::GetStrings(std::vector<std::string>& ret_val) {
 		index_temp++;
 	}
 	ret_val.swap(s_choices);
+}
+
+////////////////////////////////////////////////////////////
+void Game_Interpreter::CloseMessageWindow() {
+	if (Game_Message::visible) {
+		Game_Message::visible = false;
+		Game_Message::FullClear();
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -2486,7 +2491,8 @@ bool Game_Interpreter::CommandOpenShop() { // code 10720
 		Game_Temp::shop_goods.push_back(*it);
 
 	Game_Temp::shop_transaction = false;
-	Game_Temp::shop_calling =  true;
+	CloseMessageWindow();
+	Game_Temp::shop_calling = true;
 	SetContinuation(&Game_Interpreter::ContinuationOpenShop);
 	return false;
 }
@@ -2560,7 +2566,8 @@ bool Game_Interpreter::CommandShowInn() { // code 10730
 	if (Game_Party::GetGold() < Game_Temp::inn_price)
 		Game_Message::choice_disabled.set(0);
 
-	Game_Temp::inn_calling =  true;
+	CloseMessageWindow();
+	Game_Temp::inn_calling = true;
 	Game_Message::choice_result = 4;
 
 	SetContinuation(&Game_Interpreter::ContinuationShowInn);
@@ -2570,7 +2577,7 @@ bool Game_Interpreter::CommandShowInn() { // code 10730
 bool Game_Interpreter::ContinuationShowInn() {
 	bool inn_stay = Game_Message::choice_result == 0;
 
-	Game_Temp::inn_calling =  false;
+	Game_Temp::inn_calling = false;
 
 	if (inn_stay)
 		Game_Party::GainGold(-Game_Temp::inn_price);
@@ -2611,30 +2618,35 @@ bool Game_Interpreter::CommandEnterHeroName() { // code 10740
 	else
 		Game_Temp::hero_name.clear();
 
-	Game_Temp::name_calling =  true;
+	CloseMessageWindow();
+	Game_Temp::name_calling = true;
 	return true;
 }
 
 bool Game_Interpreter::CommandGameOver() { // code 12420
-	Game_Temp::gameover =  true;
+	CloseMessageWindow();
+	Game_Temp::gameover = true;
 	SetContinuation(&Game_Interpreter::DefaultContinuation);
 	return false;
 }
 
-bool Game_Interpreter::CommandReturntoTitleScreen() { // code 12510
-	Game_Temp::to_title =  true;
+bool Game_Interpreter::CommandReturnToTitleScreen() { // code 12510
+	CloseMessageWindow();
+	Game_Temp::to_title = true;
 	SetContinuation(&Game_Interpreter::DefaultContinuation);
 	return false;
 }
 
 bool Game_Interpreter::CommandOpenSaveMenu() { // code 11910
-	Game_Temp::save_calling =  true;
+	CloseMessageWindow();
+	Game_Temp::save_calling = true;
 	SetContinuation(&Game_Interpreter::DefaultContinuation);
 	return false;
 }
 
 bool Game_Interpreter::CommandOpenMainMenu() { // code 11950
-	Game_Temp::menu_calling =  true;
+	CloseMessageWindow();
+	Game_Temp::menu_calling = true;
 	SetContinuation(&Game_Interpreter::DefaultContinuation);
 	return false;
 }
@@ -2667,6 +2679,7 @@ bool Game_Interpreter::CommandEnemyEncounter() { // code 10710
 	Game_Temp::battle_mode = list[index].parameters[6]; // normal, initiative, surround, back attack, pincer
 	Game_Temp::battle_result = Game_Temp::BattleVictory;
 
+	CloseMessageWindow();
 	Game_Temp::battle_calling = true;
 	SetContinuation(&Game_Interpreter::ContinuationEnemyEncounter);
 	return false;

@@ -77,6 +77,11 @@ private:
 
 	void CancelMenuCall();
 
+	////////////////////////////////////////////////////////
+	/// Closes the Message Window
+	////////////////////////////////////////////////////////
+	void CloseMessageWindow();
+
 	bool CommandShowMessage();
 	bool CommandShowChoices();
 	bool CommandChangeFaceGraphic();
@@ -142,7 +147,7 @@ private:
 	bool CommandShowInn();
 	bool CommandEnterHeroName();
 	bool CommandGameOver();
-	bool CommandReturntoTitleScreen();
+	bool CommandReturnToTitleScreen();
 	bool CommandOpenSaveMenu();
 	bool CommandOpenMainMenu();
 	bool CommandEnemyEncounter();
