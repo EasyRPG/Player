@@ -133,6 +133,9 @@ namespace FileFinder {
 #ifdef SUPPORT_TTF
 		".ttf",
 #endif
+#ifdef SUPPORT_FON
+		".fon",
+#endif
 		""
 	};
 }

@@ -348,7 +348,7 @@ void Game_Character::MoveTypeCustom() {
 			case LMU_Reader::ChunkMoveCommands::change_graphic: break; // String: File, Parameter A: index
 			case LMU_Reader::ChunkMoveCommands::play_sound_effect: // String: File, Parameters: Volume, Tempo, Balance
 				if (move_command.parameter_string != "(OFF)") {
-					Audio::SE_Play("Sound/" + move_command.parameter_string,
+					Audio::SE_Play(move_command.parameter_string,
 						move_command.parameter_a, move_command.parameter_b);
 				}
 				break;

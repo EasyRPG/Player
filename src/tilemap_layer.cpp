@@ -121,7 +121,7 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	Graphics::RegisterZObj(9999, ID, true);
 	Graphics::RegisterDrawable(ID, this);
 
-	for (int i = 0; i < 144; i++)
+	for (uint8 i = 0; i < 144; i++)
 		substitutions[i] = i;
 }
 

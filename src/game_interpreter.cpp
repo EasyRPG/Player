@@ -2500,8 +2500,10 @@ bool Game_Interpreter::ContinuationOpenShop() {
 	if (!SkipTo(Game_Temp::shop_transaction
 				? Transaction
 				: NoTransaction,
-				EndShop))
+				EndShop)) {
 		return false;
+	}
+
 	index++;
 	return true;
 }

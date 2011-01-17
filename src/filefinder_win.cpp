@@ -127,6 +127,7 @@ std::string GetFontFilename(std::string name) {
 
 ////////////////////////////////////////////////////////////
 void FileFinder::Init() {
+	search_paths.clear();
 	search_paths.push_back("");
 	std::string rtp_path;
 
@@ -166,7 +167,7 @@ std::string FileFinder::FindSound(const std::string& name) {
 
 ////////////////////////////////////////////////////////////
 std::string FileFinder::FindFont(const std::string& name) {
-	std::string path = MakePath("", name);
+	std::string path = FindFile("Font", name, FONTS_TYPES);
 
 	if (!path.empty()) {
 		return path;
@@ -184,7 +185,7 @@ std::string FileFinder::FindFont(const std::string& name) {
 	std::string font_filename = GetFontFilename(filename);
 	if (!font_filename.empty()) {
 		if (FileExists(folder_path + font_filename))
-			return folder_path +  font_filename;
+			return folder_path + font_filename;
 
 		if (FileExists(fonts_path + font_filename))
 			return fonts_path + font_filename;
@@ -199,6 +200,7 @@ std::string FileFinder::DefaultFont() {
 	static bool init = false;
 
 	if (!init) {
+		search_paths.push_back("");
 		std::string fonts[] = DEFAULT_FONTS;
 
 		const std::string* pfont = fonts;
