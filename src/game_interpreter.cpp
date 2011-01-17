@@ -2762,24 +2762,25 @@ RPG::MoveCommand Game_Interpreter::DecodeMove(std::vector<int>::const_iterator& 
 	cmd.command_id = *it++;
 
 	switch (cmd.command_id) {
-		case 32:	// Switch ON
-		case 33:	// Switch OFF
-			cmd.parameter_a = DecodeInt(it);
-			break;
-		case 34:	// Change Graphic
-			cmd.parameter_string = DecodeString(it);
-			cmd.parameter_a = DecodeInt(it);
-			break;
-		case 35:	// Play Sound Effect
-			cmd.parameter_string = DecodeString(it);
-			cmd.parameter_a = DecodeInt(it);
-			cmd.parameter_b = DecodeInt(it);
-			cmd.parameter_c = DecodeInt(it);
-			break;
+	case 32:	// Switch ON
+	case 33:	// Switch OFF
+		cmd.parameter_a = DecodeInt(it);
+		break;
+	case 34:	// Change Graphic
+		cmd.parameter_string = DecodeString(it);
+		cmd.parameter_a = DecodeInt(it);
+		break;
+	case 35:	// Play Sound Effect
+		cmd.parameter_string = DecodeString(it);
+		cmd.parameter_a = DecodeInt(it);
+		cmd.parameter_b = DecodeInt(it);
+		cmd.parameter_c = DecodeInt(it);
+		break;
 	}
 
 	return cmd;
 }
+
 bool Game_Interpreter::CommandMoveEvent() { // code 11330
 	int event_id = list[index].parameters[0];
 	Game_Character* event = GetCharacter(event_id);
@@ -2789,9 +2790,9 @@ bool Game_Interpreter::CommandMoveEvent() { // code 11330
 	route->repeat = list[index].parameters[2] != 0;
 	route->skippable = list[index].parameters[3] != 0;
 
-    std::vector<int>::const_iterator it;
+	std::vector<int>::const_iterator it;
 	for (it = list[index].parameters.begin() + 4; it < list[index].parameters.end(); )
-	    route->move_commands.push_back(decode_move(it));
+		route->move_commands.push_back(DecodeMove(it));
 
 	event->ForceMoveRoute(route, move_freq, this);
 	pending.push_back(route);
