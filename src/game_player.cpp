@@ -78,6 +78,7 @@ void Game_Player::PerformTeleport() {
 	teleporting = false;
 
 	if (Game_Map::GetMapId() != new_map_id) {
+		move_route_owner = NULL;
 		Game_Map::Setup(new_map_id);
 	}
 

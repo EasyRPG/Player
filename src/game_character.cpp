@@ -287,7 +287,9 @@ void Game_Character::MoveTypeCustom() {
 				move_route_index = 0;
 			} else if (move_route_forcing) {
 				move_route_forcing = false;
-				move_route_owner->EndMoveRoute(move_route);
+				if (move_route_owner != NULL) {
+					move_route_owner->EndMoveRoute(move_route);
+				}
 				move_route = original_move_route;
 				move_route_index = original_move_route_index;
 				original_move_route = NULL;

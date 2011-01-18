@@ -305,7 +305,7 @@ void Game_Interpreter::Update() {
 			return;
 		}
 
-		if (Game_Temp::battle_calling ||
+		if (//Game_Temp::battle_calling ||
 			Game_Temp::shop_calling ||
 //			Game_Temp::inn_calling ||
 			Game_Temp::name_calling ||
@@ -2678,7 +2678,11 @@ bool Game_Interpreter::CommandEnemyEncounter() { // code 10710
 	Game_Temp::battle_escape_mode = list[index].parameters[3]; // disallow, end event processing, custom handler
 	Game_Temp::battle_defeat_mode = list[index].parameters[4]; // game over, custom handler
 	Game_Temp::battle_first_strike = list[index].parameters[5] != 0;
-	Game_Temp::battle_mode = list[index].parameters[6]; // normal, initiative, surround, back attack, pincer
+
+	if (Player::engine == Player::EngineRpg2k3) {
+		Game_Temp::battle_mode = list[index].parameters[6]; // normal, initiative, surround, back attack, pincer
+	}
+
 	Game_Temp::battle_result = Game_Temp::BattleVictory;
 
 	CloseMessageWindow();

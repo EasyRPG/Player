@@ -91,6 +91,8 @@ void Game_Map::Dispose() {
 	}
 	events.clear();
 
+	Main_Data::game_screen->Reset();
+
 	delete map;
 	map = NULL;
 }
@@ -103,8 +105,6 @@ void Game_Map::Quit() {
 ////////////////////////////////////////////////////////////
 void Game_Map::Setup(int _id) {
 	Dispose();
-
-	Main_Data::game_screen->Reset();
 
 	map_id = _id;
 	char file[12];
