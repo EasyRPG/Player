@@ -51,24 +51,24 @@ public:
 	////////////////////////////////////////////////////////
 	/// Destructor.
 	////////////////////////////////////////////////////////
-	virtual ~BitmapScreen() {}
+	virtual ~BitmapScreen();
 
 	////////////////////////////////////////////////////////
 	/// Marks the BitmapScreen as dirty.
 	////////////////////////////////////////////////////////
-	virtual void SetDirty() = 0;
+	virtual void SetDirty();
 
 	////////////////////////////////////////////////////////
 	/// Set source bitmap.
 	/// @param source : source bitmap
 	////////////////////////////////////////////////////////
-	virtual void SetBitmap(Bitmap* source) = 0;
+	virtual void SetBitmap(Bitmap* source);
 
 	////////////////////////////////////////////////////////
 	/// Get source bitmap.
 	/// @return source bitmap
 	////////////////////////////////////////////////////////
-	virtual Bitmap* GetBitmap() = 0;
+	virtual Bitmap* GetBitmap();
 
 	////////////////////////////////////////////////////////
 	/// Blit the bitmap to the screen.
@@ -95,89 +95,108 @@ public:
 	////////////////////////////////////////////////////////
 	/// Clear all effects data.
 	////////////////////////////////////////////////////////
-	virtual void ClearEffects() = 0;
+	virtual void ClearEffects();
 
 	////////////////////////////////////////////////////////
 	/// Flash effect.
 	/// @param color : flash color
 	/// @param duration : flash duration
 	////////////////////////////////////////////////////////
-	virtual void SetFlashEffect(const Color &color, int duration) = 0;
+	virtual void SetFlashEffect(const Color &color, int duration);
 
 	////////////////////////////////////////////////////////
 	/// Flash effect update.
 	/// @param frame : frame of flash animation
 	////////////////////////////////////////////////////////
-	virtual void UpdateFlashEffect(int frame) = 0;
+	virtual void UpdateFlashEffect(int frame);
 
 	/// @return source rect
-	virtual Rect GetSrcRect() const = 0;
+	virtual Rect GetSrcRect() const;
 
 	/// @param src_rect : source rect
-	virtual void SetSrcRect(Rect src_rect) = 0;
+	virtual void SetSrcRect(Rect src_rect);
 
 	/// @return bitmap opacity
-	virtual int GetOpacityEffect() const = 0;
+	virtual int GetOpacityEffect() const;
 
 	/// @param opacity : bitmap opacity
-	virtual void SetOpacityEffect(int opacity) = 0;
+	virtual void SetOpacityEffect(int opacity);
 
 	/// @return bush depth effect
-	virtual int GetBushDepthEffect() const = 0;
+	virtual int GetBushDepthEffect() const;
 
 	/// @param bush_depth : bush depth effect
-	virtual void SetBushDepthEffect(int bush_depth) = 0;
+	virtual void SetBushDepthEffect(int bush_depth);
 
 	/// @return tone effect
-	virtual Tone GetToneEffect() const = 0;
+	virtual Tone GetToneEffect() const;
 
 	/// @param tone : tone effect
-	virtual void SetToneEffect(Tone tone) = 0;
+	virtual void SetToneEffect(Tone tone);
 
 	/// @return horizontal flip
-	virtual bool GetFlipXEffect() const = 0;
+	virtual bool GetFlipXEffect() const;
 
 	/// @param flipx : horizontal flip
-	virtual void SetFlipXEffect(bool flipx) = 0;
+	virtual void SetFlipXEffect(bool flipx);
 
 	/// @return vertical flip
-	virtual bool GetFlipYEffect() const = 0;
+	virtual bool GetFlipYEffect() const;
 
 	/// @param flipy : vertical flip
-	virtual void SetFlipYEffect(bool flipy) = 0;
+	virtual void SetFlipYEffect(bool flipy);
 
 	/// @return horizontal zoom
-	virtual double GetZoomXEffect() const = 0;
+	virtual double GetZoomXEffect() const;
 
 	/// @param zoom_x : horizontal zoom
-	virtual void SetZoomXEffect(double zoom_x) = 0;
+	virtual void SetZoomXEffect(double zoom_x);
 
 	/// @return vertical zoom
-	virtual double GetZoomYEffect() const = 0;
+	virtual double GetZoomYEffect() const;
 
 	/// @param zoom_y : vertical zoom
-	virtual void SetZoomYEffect(double zoom_y) = 0;
+	virtual void SetZoomYEffect(double zoom_y);
 
 	/// @return angle of rotation in degrees
-	virtual double GetAngleEffect() const = 0;
+	virtual double GetAngleEffect() const;
 
 	/// @param angle : angle of rotation in degrees
-	virtual void SetAngleEffect(double angle) = 0;
+	virtual void SetAngleEffect(double angle);
 
 	/// @return blend type
-	virtual int GetBlendType() const = 0;
+	virtual int GetBlendType() const;
 
 	/// @param blend_type : blend type
-	virtual void SetBlendType(int blend_type) = 0;
+	virtual void SetBlendType(int blend_type);
 
 	/// @return blend color
-	virtual Color GetBlendColor() const = 0;
+	virtual Color GetBlendColor() const;
 
 	/// @param blend_color : blend color
-	virtual void SetBlendColor(Color blend_color) = 0;
+	virtual void SetBlendColor(Color blend_color);
 
 protected:
-	BitmapScreen() {}
+	BitmapScreen(Bitmap* source);
+	BitmapScreen(bool delete_bitmap);
+
+	Bitmap* bitmap;
+
+	bool delete_bitmap;
+
+	bool needs_refresh;
+
+	Rect src_rect_effect;
+	int opacity_effect;
+	int bush_effect;
+	Tone tone_effect;
+	bool flipx_effect;
+	bool flipy_effect;
+	double zoom_x_effect;
+	double zoom_y_effect;
+	double angle_effect;
+	int blend_type_effect;
+	Color blend_color_effect;
 };
 
 #endif

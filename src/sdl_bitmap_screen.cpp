@@ -38,42 +38,19 @@
 
 ////////////////////////////////////////////////////////////
 SdlBitmapScreen::SdlBitmapScreen(Bitmap* bitmap) :
-	bitmap(bitmap),
-	bitmap_effects(NULL),
-	delete_bitmap(bitmap != NULL) {
-
-	ClearEffects();
-
-	if (delete_bitmap) {
-		src_rect_effect = bitmap->GetRect();
-
-		bitmap->AttachBitmapScreen(this);
-	}
-}
+	BitmapScreen(bitmap),
+	bitmap_effects(NULL) {}
 
 ////////////////////////////////////////////////////////////
 SdlBitmapScreen::SdlBitmapScreen(bool delete_bitmap) :
-	bitmap(NULL),
-	bitmap_effects(NULL),
-	delete_bitmap(delete_bitmap) {
-
-	ClearEffects();
-}
+	BitmapScreen(delete_bitmap),
+	bitmap_effects(NULL) {}
 
 ////////////////////////////////////////////////////////////
 SdlBitmapScreen::~SdlBitmapScreen() {
 	if (bitmap_effects != NULL && bitmap_effects != bitmap) {
 		delete bitmap_effects;
-	} else if (delete_bitmap && bitmap != NULL) {
-		delete bitmap;
-	} else if (bitmap != NULL) {
-		bitmap->DetachBitmapScreen(this);
 	}
-}
-
-////////////////////////////////////////////////////////////
-void SdlBitmapScreen::SetDirty() {
-	needs_refresh = true;
 }
 
 ////////////////////////////////////////////////////////////
@@ -99,11 +76,6 @@ void SdlBitmapScreen::SetBitmap(Bitmap* source) {
 	} else {
 		src_rect_effect = Rect();
 	}
-}
-
-////////////////////////////////////////////////////////////
-Bitmap* SdlBitmapScreen::GetBitmap() {
-	return bitmap;
 }
 
 ////////////////////////////////////////////////////////////
@@ -405,26 +377,8 @@ void SdlBitmapScreen::CalcZoomedSize(int &width, int &height) {
 
 ////////////////////////////////////////////////////////////
 void SdlBitmapScreen::ClearEffects() {
-	needs_refresh = true;
-
-	opacity_effect = 255;
-	bush_effect = 0;
-	tone_effect = Tone();
-	src_rect_effect = Rect(0, 0, 0, 0);
-	flipx_effect = false;
-	flipy_effect = false;
-	zoom_x_effect = 1.0;
-	zoom_y_effect = 1.0;
-	angle_effect = 0.0;
+	BitmapScreen::ClearEffects();
 	src_rect_effect_applied = false;
-}
-
-void SdlBitmapScreen::SetFlashEffect(const Color &color, int duration) {
-	// TODO
-}
-
-void SdlBitmapScreen::UpdateFlashEffect(int frame) {
-	// TODO
 }
 
 void SdlBitmapScreen::SetSrcRect(Rect src_rect) {
@@ -440,108 +394,3 @@ void SdlBitmapScreen::SetSrcRect(Rect src_rect) {
 	}
 }
 
-void SdlBitmapScreen::SetOpacityEffect(int opacity) {
-	if (opacity_effect != opacity) {
-		opacity_effect = opacity;
-	}
-}
-
-void SdlBitmapScreen::SetBushDepthEffect(int bush_depth) {
-	if (bush_effect != bush_depth) {
-		bush_effect = bush_depth;
-	}
-}
-
-void SdlBitmapScreen::SetToneEffect(Tone tone) {
-	if (tone_effect != tone) {
-		tone_effect = tone;
-		needs_refresh = true;
-	}
-}
-
-void SdlBitmapScreen::SetFlipXEffect(bool flipx) {
-	if (flipx_effect != flipx) {
-		flipx_effect = flipx;
-		needs_refresh = true;
-	}
-}
-
-void SdlBitmapScreen::SetFlipYEffect(bool flipy) {
-	if (flipy_effect != flipy) {
-		flipy_effect = flipy;
-		needs_refresh = true;
-	}
-}
-
-void SdlBitmapScreen::SetZoomXEffect(double zoom_x) {
-	if (zoom_x_effect != zoom_x) {
-		zoom_x_effect = zoom_x;
-		needs_refresh = true;
-	}
-}
-
-void SdlBitmapScreen::SetZoomYEffect(double zoom_y) {
-	if (zoom_y_effect != zoom_y) {
-		zoom_y_effect = zoom_y;
-		needs_refresh = true;
-	}
-}
-
-void SdlBitmapScreen::SetAngleEffect(double angle) {
-	if (angle_effect != angle) {
-		angle_effect = angle;
-		needs_refresh = true;
-	}
-}
-
-void SdlBitmapScreen::SetBlendType(int blend_type) {
-	blend_type_effect = blend_type;
-}
-
-void SdlBitmapScreen::SetBlendColor(Color blend_color) {
-	blend_color_effect = blend_color;
-}
-
-Rect SdlBitmapScreen::GetSrcRect() const {
-	return src_rect_effect;
-}
-
-int SdlBitmapScreen::GetOpacityEffect() const {
-	return opacity_effect;
-}
-
-int SdlBitmapScreen::GetBushDepthEffect() const {
-	return bush_effect;
-}
-
-Tone SdlBitmapScreen::GetToneEffect() const {
-	return tone_effect;
-}
-
-bool SdlBitmapScreen::GetFlipXEffect() const {
-	return flipx_effect;
-}
-
-bool SdlBitmapScreen::GetFlipYEffect() const {
-	return flipy_effect;
-}
-
-double SdlBitmapScreen::GetZoomXEffect() const {
-	return zoom_x_effect;
-}
-
-double SdlBitmapScreen::GetZoomYEffect() const {
-	return zoom_y_effect;
-}
-
-double SdlBitmapScreen::GetAngleEffect() const {
-	return angle_effect;
-}
-
-int SdlBitmapScreen::GetBlendType() const {
-	return blend_type_effect;
-}
-
-Color SdlBitmapScreen::GetBlendColor() const {
-	return blend_color_effect;
-}

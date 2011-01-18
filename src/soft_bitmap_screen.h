@@ -15,46 +15,35 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _SDL_BITMAP_SCREEN_H_
-#define _SDL_BITMAP_SCREEN_H_
+#ifndef _SOFT_BITMAP_SCREEN_H_
+#define _SOFT_BITMAP_SCREEN_H_
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
 #include "bitmap_screen.h"
-#include "SDL.h"
 
 ////////////////////////////////////////////////////////////
 /// SdlBitmapScreen class.
 ////////////////////////////////////////////////////////////
-class SdlBitmapScreen : public BitmapScreen {
+class SoftBitmapScreen : public BitmapScreen {
 public:
-	SdlBitmapScreen(Bitmap* source);
-	SdlBitmapScreen(bool delete_bitmap);
-	~SdlBitmapScreen();
-
-	void SetBitmap(Bitmap* bitmap);
+	SoftBitmapScreen(Bitmap* source);
+	SoftBitmapScreen(bool delete_bitmap);
+	~SoftBitmapScreen();
 
 	void BlitScreen(int x, int y);
 	void BlitScreen(int x, int y, Rect src_rect);
 	void BlitScreenTiled(Rect src_rect, Rect dst_rect);
 
-	void ClearEffects();
-
-	void SetSrcRect(Rect src_rect);
-
 protected:
-	static void BlitScreenIntern(SDL_Surface* surface, int x, int y, Rect src_rect, int opacity);
-
-	void Refresh();
-
-	void CalcRotatedSize(int &width, int &height);
-	void CalcZoomedSize(int &width, int &height);
+	void BlitScreenIntern(int x, int y, Rect src_rect);
 
 	Bitmap* bitmap_effects;
-	bool src_rect_effect_applied;
 	int origin_x;
 	int origin_y;
+
+	void Refresh();
 };
 
 #endif

@@ -202,6 +202,13 @@ public:
 	////////////////////////////////////////////////////////
 	virtual Bitmap* RotateScale(double angle, int scale_w, int scale_h);
 
+	////////////////////////////////////////////////////////
+	/// Change the opacity of a bitmap.
+	/// @param opacity : the maximum opacity
+	/// @param src_rect: the rectangle to modify
+	////////////////////////////////////////////////////////
+	virtual void OpacityChange(int opacity, const Rect &src_rect);
+
 	/// TextDraw alignment options
 	enum TextAlignment {
 		TextAlignLeft,
@@ -266,8 +273,9 @@ public:
 
 protected:
 	friend class BitmapScreen;
+	friend class SoftBitmapScreen;
 
-#ifdef USE_SDL
+#ifdef USE_SDL_BITMAP
 	friend class SdlBitmapScreen;
 #endif
 

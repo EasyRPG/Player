@@ -68,7 +68,7 @@ Bitmap* Cache::ExFont() {
 	string_pair hash = string_pair("\x00","ExFont");
 
 	if (cache.count(hash) == 0) {
-		cache[hash] = Bitmap::CreateBitmap(exfont_h, sizeof(exfont_h), false);
+		cache[hash] = Bitmap::CreateBitmap(exfont_h, sizeof(exfont_h), true);
 	}
 
 	return cache[hash];

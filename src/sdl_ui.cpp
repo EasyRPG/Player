@@ -36,6 +36,7 @@
 #include "output.h"
 #include "player.h"
 #include "sdl_bitmap.h"
+#include "soft_bitmap.h"
 #include <cstdlib>
 
 ///////////////////////////////////////////////////////////
@@ -426,7 +427,11 @@ void SdlUi::BeginScreenCapture() {
 }
 
 Bitmap* SdlUi::EndScreenCapture() {
+#ifdef USE_SDL_BITMAP
 	return (Bitmap*)new SdlBitmap(SDL_DisplayFormat(main_surface));
+#else
+	return (Bitmap*)new SoftBitmap(SDL_DisplayFormat(main_surface));
+#endif
 }
 
 ///////////////////////////////////////////////////////////

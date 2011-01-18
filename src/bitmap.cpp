@@ -24,10 +24,12 @@
 #include "bitmap.h"
 #include "bitmap_screen.h"
 
-#if defined(USE_SDL) && !defined(USE_OPENGL)
+#if defined(USE_SDL_BITMAP)
 	#include "sdl_bitmap.h"
 #elif defined(USE_OPENGL)
 	#include "gl_bitmap.h"
+#else
+	#include "soft_bitmap.h"
 #endif
 
 #include "hslrgb.h"
@@ -49,34 +51,42 @@ static int GetMaskByte(uint32 mask) {
 
 ////////////////////////////////////////////////////////////
 Bitmap* Bitmap::CreateBitmap(int width, int height, bool transparent) {
-	#ifdef USE_SDL
+	#ifdef USE_SDL_BITMAP
 		return (Bitmap*)new SdlBitmap(width, height, transparent);
 	#elif USE_OPENGL
 		return (Bitmap*)new GlBitmap(width, height, transparent);
+	#else
+		return (Bitmap*)new SoftBitmap(width, height, transparent);
 	#endif
 }
 
 Bitmap* Bitmap::CreateBitmap(const std::string filename, bool transparent) {
-	#ifdef USE_SDL
+	#ifdef USE_SDL_BITMAP
 		return (Bitmap*)new SdlBitmap(filename, transparent);
 	#elif USE_OPENGL
 		return (Bitmap*)new GlBitmap(filename, transparent);
+	#else
+		return (Bitmap*)new SoftBitmap(filename, transparent);
 	#endif
 }
 
 Bitmap* Bitmap::CreateBitmap(const uint8* data, uint bytes, bool transparent) {
-	#ifdef USE_SDL
+	#ifdef USE_SDL_BITMAP
 		return (Bitmap*)new SdlBitmap(data, bytes, transparent);
 	#elif USE_OPENGL
 		return (Bitmap*)new GlBitmap(data, bytes, transparent);
+	#else
+		return (Bitmap*)new SoftBitmap(data, bytes, transparent);
 	#endif
 }
 
 Bitmap* Bitmap::CreateBitmap(Bitmap* source, Rect src_rect, bool transparent) {
-	#ifdef USE_SDL
+	#ifdef USE_SDL_BITMAP
 		return (Bitmap*)new SdlBitmap(source, src_rect, transparent);
 	#elif USE_OPENGL
 		return (Bitmap*)new GlBitmap(source, src_rect, transparent);
+	#else
+		return (Bitmap*)new SoftBitmap(source, src_rect, transparent);
 	#endif
 }
 
@@ -916,6 +926,48 @@ Bitmap* Bitmap::RotateScale(double angle, int scale_w, int scale_h) {
 	result->Unlock();
 
 	return result;
+}
+
+////////////////////////////////////////////////////////////
+void Bitmap::OpacityChange(int opacity, const Rect& src_rect) {
+	if (opacity == 255)
+		return;
+
+	Lock();
+
+	if (bpp() == 2) {
+		uint16* dst_pixels = (uint16*)pixels();
+
+		int stride = pitch() / bpp() - width();
+
+		uint8 dst_r, dst_g, dst_b, dst_a;
+
+		for (int j = src_rect.y; j < src_rect.y + src_rect.width; j++) {
+			for (int i = src_rect.x; i < src_rect.x + src_rect.height; i++) {
+				GetColorComponents(dst_pixels[0], dst_r, dst_g, dst_b, dst_a);
+				dst_a = dst_a * opacity / 255;
+
+				dst_pixels++;
+			}
+			dst_pixels += stride;
+		}
+	} else if (bpp() == 4) {
+		uint8* dst_pixels = (uint8*) pixels();
+		int pad = pitch() - width() * bpp();
+		const int abyte = GetMaskByte(amask());
+
+		for (int j = src_rect.y; j < src_rect.y + src_rect.width; j++) {
+			for (int i = src_rect.x; i < src_rect.x + src_rect.height; i++) {
+				dst_pixels[abyte] = (dst_pixels[abyte] * opacity) / 255;
+				dst_pixels += bpp();
+			}
+			dst_pixels += pad;
+		}
+	}
+	
+	Unlock();
+
+	RefreshCallback();
 }
 
 ////////////////////////////////////////////////////////////
