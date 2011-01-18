@@ -109,7 +109,12 @@ void Game_Party::GainItem(int item_id, int amount, bool include_equip) {
 
 ////////////////////////////////////////////////////////////
 void Game_Party::LoseItem(int item_id, int amount, bool include_equip) {
+	int total_items;
 	GainItem(item_id, -amount, include_equip);
+	total_items = ItemNumber(item_id);
+	if (total_items <= 0) {
+		items.erase(item_id);
+	}
 }
 
 ////////////////////////////////////////////////////////////
