@@ -605,7 +605,7 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandCallEvent();
 		case ChangeEncounterRate:
 			return CommandChangeEncounterRate();
-		case ProceedWithMovement:
+		case ProceedWithMovement: // FIXME: Causes a hang
 			return CommandProceedWithMovement();
 		case PlayMovie:
 			return CommandPlayMovie();
@@ -2664,7 +2664,9 @@ bool Game_Interpreter::CommandEnemyEncounter() { // code 10710
 		case 1:
 			Game_Temp::battle_terrain_id = 0;
 			Game_Temp::battle_background = list[index].string;
-			Game_Temp::battle_formation = list[index].parameters[7];
+			if (Player::engine == Player::EngineRpg2k3) {
+				Game_Temp::battle_formation = list[index].parameters[7];
+			}
 			break;
 		case 2:
 			Game_Temp::battle_terrain_id = list[index].parameters[8];
@@ -2818,12 +2820,15 @@ bool Game_Interpreter::CommandMoveEvent() { // code 11330
 
 void Game_Interpreter::EndMoveRoute(RPG::MoveRoute* route) {
 	std::vector<RPG::MoveRoute*>::iterator it;
-	for (it = pending.begin(); it != pending.end(); it++)
-		if (*it == route)
+	for (it = pending.begin(); it != pending.end(); it++) {
+		if (*it == route) {
 			break;
+		}
+	}
 
-	if (it != pending.end())
+	if (it != pending.end()) {
 		pending.erase(it);
+	}
 }
 
 bool Game_Interpreter::CommandFlashSprite() { // code 11320

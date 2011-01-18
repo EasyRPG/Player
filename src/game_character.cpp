@@ -287,10 +287,10 @@ void Game_Character::MoveTypeCustom() {
 				move_route_index = 0;
 			} else if (move_route_forcing) {
 				move_route_forcing = false;
+				move_route_owner->EndMoveRoute(move_route);
 				move_route = original_move_route;
 				move_route_index = original_move_route_index;
 				original_move_route = NULL;
-				move_route_owner->EndMoveRoute(move_route);
 			}
 		} else {
 			RPG::MoveCommand& move_command = move_route->move_commands[move_route_index];
@@ -345,7 +345,10 @@ void Game_Character::MoveTypeCustom() {
 				Game_Switches[move_command.parameter_a] = false;
 				Game_Map::SetNeedRefresh(true);
 				break;
-			case LMU_Reader::ChunkMoveCommands::change_graphic: break; // String: File, Parameter A: index
+			case LMU_Reader::ChunkMoveCommands::change_graphic: // String: File, Parameter A: index
+				character_name = move_command.parameter_string;
+				character_index = move_command.parameter_a;
+				break;
 			case LMU_Reader::ChunkMoveCommands::play_sound_effect: // String: File, Parameters: Volume, Tempo, Balance
 				if (move_command.parameter_string != "(OFF)") {
 					Audio::SE_Play(move_command.parameter_string,

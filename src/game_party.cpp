@@ -149,8 +149,10 @@ void Game_Party::AddActor(int actor_id) {
 
 ////////////////////////////////////////////////////////////
 void Game_Party::RemoveActor(int actor_id) {
-	actors.erase(std::find(actors.begin(), actors.end(), Game_Actors::GetActor(actor_id)));
-	Main_Data::game_player->Refresh();
+	if (IsActorInParty(Game_Actors::GetActor(actor_id))) {
+		actors.erase(std::find(actors.begin(), actors.end(), Game_Actors::GetActor(actor_id)));
+		Main_Data::game_player->Refresh();
+	}
 }
 
 ////////////////////////////////////////////////////////////
