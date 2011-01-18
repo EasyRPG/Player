@@ -21,6 +21,7 @@
 #include <cstdlib>
 #include <iostream>
 #include "cache.h"
+#include "filefinder.h"
 #include "options.h"
 #include "data.h"
 #include "output.h"
@@ -28,6 +29,7 @@
 #include "SDL_image.h"
 #include "system.h"
 #include "soft_bitmap.h"
+#include FT_BITMAP_H
 
 ////////////////////////////////////////////////////////////
 void SoftBitmap::Init(int width, int height) {
@@ -276,6 +278,104 @@ void SoftBitmap::Mask(int x, int y, Bitmap* _src, Rect src_rect) {
 	RefreshCallback();
 }
 
+FT_Library SoftBitmap::library;
+FT_Face SoftBitmap::face;
+bool SoftBitmap::ft_initialized = false;
+
+void SoftBitmap::InitFreeType() {
+	if (ft_initialized)
+		return;
+
+    FT_Error ans = FT_Init_FreeType(&library);
+    if (ans != FT_Err_Ok) {
+		Output::Error("Couldn't initialize FreeType\n");
+		return;
+	}
+
+	std::string path = FileFinder::FindFont(font->name);
+    ans = FT_New_Face(library, path.c_str(), 0, &face);
+    if (ans != FT_Err_Ok) {
+		Output::Error("Couldn't initialize FreeType face\n");
+		FT_Done_FreeType(library);
+		return;
+	}
+
+    ans = FT_Set_Char_Size(face, font->size * 64, font->size * 64, 72, 72);
+    if (ans != FT_Err_Ok) {
+		Output::Error("Couldn't set FreeType face size\n");
+		FT_Done_Face(face);
+		FT_Done_FreeType(library);
+		return;
+    }
+
+	ft_initialized = true;
+}
+
+void SoftBitmap::DoneFreeType() {
+	if (!ft_initialized)
+		return;
+
+    FT_Done_Face(face);
+
+    FT_Done_FreeType(library);
+
+	ft_initialized = false;
+}
+
+SoftBitmap* SoftBitmap::RenderFreeTypeChar(int c) {
+	FT_Error ans = FT_Load_Char(face, c, FT_LOAD_NO_BITMAP);
+    if (ans != FT_Err_Ok) {
+		Output::Error("Couldn't load FreeType character %d\n", c);
+		return NULL;
+	}
+
+	ans = FT_Render_Glyph(face->glyph, FT_RENDER_MODE_MONO);
+    if (ans != FT_Err_Ok) {
+		Output::Error("Couldn't render FreeType character %d\n", c);
+		return NULL;
+	}
+
+	FT_Bitmap ft_bitmap;
+	if (face->glyph->bitmap.pixel_mode == FT_PIXEL_MODE_GRAY)
+		ft_bitmap = face->glyph->bitmap;
+	else {
+		FT_Bitmap_New(&ft_bitmap);
+		FT_Bitmap_Convert(library, &face->glyph->bitmap, &ft_bitmap, 4);
+	}
+
+	if (ft_bitmap.pixel_mode != FT_PIXEL_MODE_GRAY) {
+		Output::Error("FreeType character has wrong format\n", c);
+		return NULL;
+	}
+
+	const uint8* src = (const uint8*) ft_bitmap.buffer;
+	if (ft_bitmap.pitch < 0)
+		src -= ft_bitmap.rows * ft_bitmap.pitch;
+
+	SoftBitmap* bitmap = new SoftBitmap(ft_bitmap.width, font->size + 2, true);
+	uint8* dst = (uint8*) bitmap->pixels();
+
+	const int base_line = bitmap->height() / 4;
+	int offset = bitmap->height() - face->glyph->bitmap_top - base_line;
+
+	for (int yd = 0; yd < bitmap->height(); yd++) {
+		int ys = yd - offset;
+		if (ys < 0 || ys >= ft_bitmap.rows)
+			continue;
+		const uint8* p = src + ys * ft_bitmap.pitch;
+		uint8* q = dst + yd * bitmap->pitch();
+		for (int x = 0; x < ft_bitmap.width; x++) {
+			*q++ = *p++ ? 0xFF : 0x00;
+			// *dst++ = *p++ * 256 / ft_bitmap.num_grays;
+			*q++ = 0;
+			*q++ = 0;
+			*q++ = 0;
+		}
+	}
+
+	return bitmap;
+}
+
 ////////////////////////////////////////////////////////////
 void SoftBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 	if (text.length() == 0) return;
@@ -284,26 +384,9 @@ void SoftBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 	dst_rect.width += 1; dst_rect.height += 1; // Need place for shadow
 	if (dst_rect.IsOutOfBounds(GetWidth(), GetHeight())) return;
 
-	TTF_Font* ttf_font = font->GetTTF();
-	int style = 0;
-	if (font->bold) style |= TTF_STYLE_BOLD;
-	if (font->italic) style |= TTF_STYLE_ITALIC;
-	TTF_SetFontStyle(ttf_font, style);
+	SoftBitmap* text_surface; // Complete text will be on this surface
 
-	Bitmap* text_surface; // Complete text will be on this surface
-	Bitmap* text_surface_aux;
-	Bitmap* mask;
-
-	Bitmap* char_surface; // Single char
-	Bitmap* char_shadow; // Drop shadow of char
-
-	text_surface = CreateBitmap(dst_rect.width, TTF_FontHeight(ttf_font));
-	text_surface_aux = CreateBitmap(dst_rect.width, TTF_FontHeight(ttf_font));
-
-	Color white_color(255, 255, 255, 0);
-	Color black_color(0, 0, 0, 0);
-
-	char text2[2]; text2[1] = '\0';
+	text_surface = new SoftBitmap(dst_rect.width, dst_rect.height, true);
 
 	// Load the system file for the shadow and text color
 	Bitmap* system = Cache::System(Data::system.system_name);
@@ -329,12 +412,14 @@ void SoftBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 	// The current char is an exfont (is_full_glyph must be true too)
 	bool is_exfont = false;
 
+	InitFreeType();
+
 	// This loops always renders a single char, color blends it and then puts
 	// it onto the text_surface (including the drop shadow)
 	for (unsigned c = 0; c < text.size(); ++c) {
-		text2[0] = text[c];
-
 		Rect next_glyph_rect(next_glyph_pos, 0, 0, 0);
+
+		SoftBitmap* mask;
 
 		// ExFont-Detection: Check for A-Z or a-z behind the $
 		if (text[c] == '$' && c != text.size() - 1 &&
@@ -350,9 +435,7 @@ void SoftBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 			is_full_glyph = true;
 			is_exfont = true;
 
-			char_surface = CreateBitmap(12, 12);
-			char_shadow = CreateBitmap(12, 12);
-			mask = CreateBitmap(12, 12);
+			mask = new SoftBitmap(12, 12, true);
 
 			// Get exfont from graphic
 			Rect rect_exfont((exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12);
@@ -360,67 +443,37 @@ void SoftBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 			// Create a mask
 			mask->Clear();
 			mask->Blit(0, 0, exfont, rect_exfont, 255);
-
-			// Get color region from system graphic
-			Rect clip_system(8+16*(font->color%10), 4+48+16*(font->color/10), 6, 12);
-
-			// Blit color background (twice because its a full glyph)
-			char_surface->Blit(0, 0, system, clip_system, 255);
-			char_surface->Blit(6, 0, system, clip_system, 255);
-
-			// Blit black mask onto color background
-			((SoftBitmap*)char_surface)->Mask(0, 0, mask, mask->GetRect());
-
-			// Paint char shadow surface of shadow color
-			char_shadow->Fill(shadow_color);
-
-			// Reset the mask
-			mask->Clear();
-			// Paste white exfont onto mask
-			mask->Blit(0, 0, exfont, rect_exfont, 255);
-
-			// Paste mask onto char_shadow
-			((SoftBitmap*) char_shadow)->Mask(0, 0, mask, mask->GetRect());
-
-			// Blit first shadow and then text
-			text_surface->Blit(next_glyph_rect.x + 1, next_glyph_rect.y + 1, char_shadow, char_shadow->GetRect(), 255);
-			text_surface->Blit(next_glyph_rect.x, next_glyph_rect.y, char_surface, char_surface->GetRect(), 255);
 		} else {
 			// No ExFont, draw normal text
 
-			// ToDo: Remove SDL-Dependency (use FreeType directly?)
-			SDL_Color white_color2 = {white_color.red, white_color.green, white_color.blue, 0};
-			SDL_Color c_tmp2 = {shadow_color.red, shadow_color.green, shadow_color.blue, 0};
-			SDL_Surface* char_surface_tmp = TTF_RenderUTF8_Solid(ttf_font, text2, white_color2);
-			SDL_Surface* char_shadow_tmp = TTF_RenderUTF8_Solid(ttf_font, text2, c_tmp2);
-			char_surface = new SoftBitmap(char_surface_tmp);
-			char_shadow = new SoftBitmap(char_shadow_tmp);
-			SDL_FreeSurface(char_surface_tmp);
-			SDL_FreeSurface(char_shadow_tmp);
-
-			if (!((SoftBitmap*)char_surface)->bitmap || !((SoftBitmap*)char_shadow)->bitmap) {
+			mask = RenderFreeTypeChar(text[c]);
+			if (mask == NULL) {
 				Output::Warning("Couldn't render char %c (%d). Skipping...", text[c], (int)text[c]);
-				delete char_surface;
-				delete char_shadow;
 				continue;
 			}
-
-			// Create a mask
-			mask = CreateBitmap(char_surface->GetWidth(), char_surface->GetHeight());
-			mask->Blit(0, 0, char_surface, char_surface->GetRect(), 255);
-
-			// Get color region from system graphic
-			Rect clip_system(8+16*(font->color%10), 4+48+16*(font->color/10), char_surface->GetWidth(), char_surface->GetHeight());
-
-			// Blit color background
-			text_surface_aux->Blit(next_glyph_rect.x, next_glyph_rect.y, system, clip_system, 255);
-			// Blit mask onto background
-			((SoftBitmap*) text_surface_aux)->Mask(next_glyph_rect.x, next_glyph_rect.y, mask, mask->GetRect());
-
-			// Blit first shadow and then text
-			text_surface->Blit(next_glyph_pos+1, 1, char_shadow, char_shadow->GetRect(), 255);
-			text_surface->Blit(0, 0, text_surface_aux, text_surface_aux->GetRect(), 255);
 		}
+
+		// Get color region from system graphic
+		Rect clip_system(8+16*(font->color%10), 4+48+16*(font->color/10), 6, 12);
+
+		SoftBitmap* char_surface = new SoftBitmap(mask->width(), mask->height(), true);
+
+		// Blit gradient color background (twice in case of a full glyph)
+		char_surface->Blit(0, 0, system, clip_system, 255);
+		char_surface->Blit(6, 0, system, clip_system, 255);
+		// Blit mask onto background
+		char_surface->Mask(0, 0, mask, mask->GetRect());
+
+		SoftBitmap* char_shadow = new SoftBitmap(mask->width(), mask->height(), true);
+
+		// Blit solid color background
+		char_shadow->Fill(shadow_color);
+		// Blit mask onto background
+		char_shadow->Mask(0, 0, mask, mask->GetRect());
+
+		// Blit first shadow and then text
+		text_surface->Blit(next_glyph_rect.x + 1, next_glyph_rect.y + 1, char_shadow, char_shadow->GetRect(), 255);
+		text_surface->Blit(next_glyph_rect.x, next_glyph_rect.y, char_surface, char_surface->GetRect(), 255);
 
 		delete mask;
 		delete char_surface;
@@ -438,6 +491,8 @@ void SoftBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 		}
 		next_glyph_pos += 6;	
 	}
+
+	DoneFreeType();
 
 	Bitmap* text_bmp = CreateBitmap(text_surface, text_surface->GetRect());
 
@@ -461,7 +516,6 @@ void SoftBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 
 	delete text_bmp;
 	delete text_surface;
-	delete text_surface_aux;
 
 	RefreshCallback();
 }

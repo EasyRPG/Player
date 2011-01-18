@@ -103,15 +103,19 @@ void Window_ShopBuy::Update() {
 			index++;
 			if ((size_t) index >= Game_Temp::shop_goods.size())
 				index = 0;
-			top_index = std::max(top_index, index - row_max + 1);
 		}
-		if (Input::IsRepeated(Input::UP)) {
+		else if (Input::IsRepeated(Input::UP)) {
 			Game_System::SePlay(Data::system.cursor_se);
 			index--;
 			if (index < 0)
 				index = Game_Temp::shop_goods.size() - 1;
-			top_index = std::min(top_index, index);
 		}
+		else
+			return;
+
+		top_index = std::min(top_index, index);
+		top_index = std::max(top_index, index - row_max + 1);
+
 		Refresh();
 
 		int item_id = GetSelected();

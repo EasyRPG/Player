@@ -21,6 +21,9 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 #include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
@@ -82,6 +85,14 @@ protected:
 
 	static void copy_from_sdl(void* bitmap, SDL_Surface* src);
 	static SDL_Surface* copy_to_sdl(Bitmap* source);
+
+	static FT_Library library;
+	static FT_Face face;
+	static bool ft_initialized;
+
+	void InitFreeType();
+	SoftBitmap* RenderFreeTypeChar(int c);
+	void DoneFreeType();
 };
 
 #endif

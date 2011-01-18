@@ -41,11 +41,6 @@ SoftBitmapScreen::SoftBitmapScreen(bool delete_bitmap) :
 SoftBitmapScreen::~SoftBitmapScreen() {
 	if (bitmap_effects != NULL)
 		delete bitmap_effects;
-
-	if (delete_bitmap && bitmap != NULL)
-		delete bitmap;
-	else if (bitmap != NULL)
-		bitmap->DetachBitmapScreen(this);
 }
 
 ////////////////////////////////////////////////////////////
@@ -113,6 +108,11 @@ void SoftBitmapScreen::BlitScreenIntern(int x, int y, Rect src_rect) {
 void SoftBitmapScreen::Refresh() {
 	origin_x = 0;
 	origin_y = 0;
+
+	if (!needs_refresh)
+		return;
+
+	needs_refresh = false;
 
 	if (bitmap_effects != NULL)
 		delete bitmap_effects;

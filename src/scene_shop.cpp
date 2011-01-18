@@ -23,6 +23,8 @@
 #include "game_party.h"
 #include "input.h"
 #include "scene_shop.h"
+#include "output.h"
+#include "time.h"
 
 ////////////////////////////////////////////////////////////
 Scene_Shop::Scene_Shop() :
@@ -294,6 +296,6 @@ void Scene_Shop::Update() {
 				SetMode(Sell);
 			break;
 		default:
-			return;
+			break;
 	}
 }
