@@ -90,7 +90,7 @@ void Window_Shop::UpdateCursorRect() {
 	switch (mode) {
 		case Scene_Shop::BuySellLeave:
 		case Scene_Shop::BuySellLeave2:
-			rect = Rect(12, index * 16 + 2, contents->GetWidth() - 20, 16);
+			rect = Rect(4, index * 16 + 2, contents->GetWidth() - 8, 16);
 			break;
 		default:
 			rect = Rect();
@@ -169,13 +169,23 @@ void Window_Shop::Update() {
 		switch (mode) {
 			case Scene_Shop::BuySellLeave:
 			case Scene_Shop::BuySellLeave2:
-				if (Input::IsTriggered(Input::DOWN) && index < leave_index) {
+				if (Input::IsRepeated(Input::DOWN)) {
+					if (index < leave_index) {
+						index++;
+					}
+					else {
+						index = 1;
+					}
 					Game_System::SePlay(Data::system.cursor_se);
-					index++;
 				}
-				if (Input::IsTriggered(Input::UP) && index > 1) {
+				if (Input::IsRepeated(Input::UP)) {
+					if (index > 1) {
+						index--;
+					}
+					else {
+						index = leave_index;
+					}
 					Game_System::SePlay(Data::system.cursor_se);
-					index--;
 				}
 				if (Input::IsTriggered(Input::DECISION)) {
 					Game_System::SePlay(Data::system.decision_se);

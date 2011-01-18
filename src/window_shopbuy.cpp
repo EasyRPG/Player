@@ -19,6 +19,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <algorithm>
+#include <sstream>
 #include <string>
 #include "window_shopbuy.h"
 #include "game_system.h"
@@ -71,15 +72,26 @@ void Window_ShopBuy::UpdateCursorRect() {
 void Window_ShopBuy::Refresh() {
 	contents->Clear();
 
-	contents->GetFont()->color = Font::ColorDefault;
-
 	for (int i = 0; i < row_max; i++) {
 		int idx = top_index + i;
 		if ((size_t) idx >= Game_Temp::shop_goods.size())
 			break;
 		int item_id = Game_Temp::shop_goods[idx];
+
+		if (Data::items[item_id - 1].price <= Game_Party::GetGold() && Game_Party::ItemNumber(item_id) < 99) {
+			contents->GetFont()->color = Font::ColorDefault;
+		}
+		else {
+			contents->GetFont()->color = Font::ColorDisabled;
+		}
 		const std::string& s = Data::items[item_id - 1].name;
+		std::stringstream p;
+		p << Data::items[item_id - 1].price;
 		contents->TextDraw(border_x + 4, border_y + 2 + i * row_spacing, s);
+		int price_x = (contents->GetWidth() - 2 * border_x) - contents->GetTextSize(p.str()).width - 4;
+		int price_y = border_y + 2 + i * row_spacing;
+		contents->TextDraw(price_x, price_y , p.str(), Bitmap::TextAlignRight);
+
 	}
 }
 
@@ -90,14 +102,14 @@ void Window_ShopBuy::Update() {
 			Game_System::SePlay(Data::system.cursor_se);
 			index++;
 			if ((size_t) index >= Game_Temp::shop_goods.size())
-				index--;
+				index = 0;
 			top_index = std::max(top_index, index - row_max + 1);
 		}
 		if (Input::IsRepeated(Input::UP)) {
 			Game_System::SePlay(Data::system.cursor_se);
 			index--;
 			if (index < 0)
-				index++;
+				index = Game_Temp::shop_goods.size() - 1;
 			top_index = std::min(top_index, index);
 		}
 		Refresh();

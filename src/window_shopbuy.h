@@ -55,8 +55,8 @@ public:
 	void SetPartyWindow(Window_Party* w);
 	
 protected:
-	static const int border_x = 8;
-	static const int border_y = 4;
+	static const int border_x = 0;
+	static const int border_y = 0;
 	static const int row_spacing = 16;
 	Window_Help* help_window;
 	Window_ShopStatus* status_window;

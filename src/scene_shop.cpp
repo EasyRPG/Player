@@ -206,17 +206,23 @@ void Scene_Shop::Update() {
 				SetMode(BuySellLeave2);
 			}
 			if (Input::IsTriggered(Input::DECISION)) {
-				Game_System::SePlay(Data::system.decision_se);
 				int item_id = buy_window->GetSelected();
-				RPG::Item& item = Data::items[item_id - 1];
-				int value = item.price;
-				int limit = std::min(99, Game_Party::GetGold() / value);
-				const std::string& name = item.name;
-				count_window->SetRange(1, limit);
-				count_window->SetNumber(1);
-				count_window->SetItemValue(value);
-				count_window->SetItemName(name);
-				SetMode(BuyHowMany);
+				//checks the money and number of items possessed before buy
+				if (Data::items[item_id - 1].price <= Game_Party::GetGold() && Game_Party::ItemNumber(item_id) < 99) {
+					Game_System::SePlay(Data::system.decision_se);
+					RPG::Item& item = Data::items[item_id - 1];
+					int value = item.price;
+					int limit = std::min(99, Game_Party::GetGold() / value);
+					const std::string& name = item.name;
+					count_window->SetRange(1, limit);
+					count_window->SetNumber(1);
+					count_window->SetItemValue(value);
+					count_window->SetItemName(name);
+					SetMode(BuyHowMany);
+				}
+				else {
+					Game_System::SePlay(Data::system.buzzer_se);
+				}
 			}
 			break;
 		case Sell:
@@ -225,17 +231,24 @@ void Scene_Shop::Update() {
 				SetMode(BuySellLeave2);
 			}
 			if (Input::IsTriggered(Input::DECISION)) {
-				Game_System::SePlay(Data::system.decision_se);
 				int item_id = sell_window->GetItemId();
-				RPG::Item& item = Data::items[item_id - 1];
-				int value = item.price;
-				const std::string& name = item.name;
-				int possessed = Game_Party::ItemNumber(item_id);
-				count_window->SetRange(1, possessed);
-				count_window->SetNumber(1);
-				count_window->SetItemValue(value);
-				count_window->SetItemName(name);
-				SetMode(SellHowMany);
+				// checks if the item has a valid id
+				if (item_id > 0) {
+					Game_System::SePlay(Data::system.decision_se);
+					RPG::Item& item = Data::items[item_id - 1];
+					int value = item.price;
+					const std::string& name = item.name;
+					int possessed = Game_Party::ItemNumber(item_id);
+					count_window->SetRange(1, possessed);
+					count_window->SetNumber(1);
+					count_window->SetItemValue(value);
+					count_window->SetItemName(name);
+					SetMode(SellHowMany);
+				}
+				else {
+					Game_System::SePlay(Data::system.buzzer_se);
+				}
+				
 			}
 			break;
 		case BuyHowMany:

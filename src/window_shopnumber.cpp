@@ -103,29 +103,40 @@ void Window_ShopNumber::Update() {
 	Window_Base::Update();
 
 	if (active) {
-		if (Input::IsRepeated(Input::DOWN)) {
+		if (Input::IsRepeated(Input::LEFT)) {
 			if (number > lo) {
 				Game_System::SePlay(Data::system.cursor_se);
 				number--;
 			}
 			else {
-				Game_System::SePlay(Data::system.buzzer_se);
 				number = lo;
 			}
-
 			Refresh();
 		}
 
-		if (Input::IsRepeated(Input::UP)) {
+		if (Input::IsRepeated(Input::RIGHT)) {
 			if (number < hi) {
 				Game_System::SePlay(Data::system.cursor_se);
 				number++;
 			}
 			else {
-				Game_System::SePlay(Data::system.buzzer_se);
 				number = hi;
 			}
 
+			Refresh();
+		}
+		if (Input::IsRepeated(Input::UP)) {
+			if (number < hi) {
+				Game_System::SePlay(Data::system.cursor_se);
+				number = hi;
+			}
+			Refresh();
+		}
+		if (Input::IsRepeated(Input::DOWN)) {
+			if (number > lo) {
+				Game_System::SePlay(Data::system.cursor_se);
+				number = lo;
+			}
 			Refresh();
 		}
 	}
