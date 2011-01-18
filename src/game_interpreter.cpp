@@ -2294,18 +2294,24 @@ bool Game_Interpreter::CommandFlashScreen() { // code 11040
 	int tenths = list[index].parameters[4];
 	bool wait = list[index].parameters[5] != 0;
 
-	switch (list[index].parameters[6]) {
-		case 0:
-			screen->FlashOnce(r, g, b, s, tenths);
-			if (wait)
-				wait_count = tenths * DEFAULT_FPS / 10;
-			break;
-		case 1:
-			screen->FlashBegin(r, g, b, s, tenths);
-			break;
-		case 2:
-			screen->FlashEnd();
-			break;
+	if (Player::engine == Player::EngineRpg2k3) {
+		switch (list[index].parameters[6]) {
+			case 0:
+				screen->FlashOnce(r, g, b, s, tenths);
+				if (wait)
+					wait_count = tenths * DEFAULT_FPS / 10;
+				break;
+			case 1:
+				screen->FlashBegin(r, g, b, s, tenths);
+				break;
+			case 2:
+				screen->FlashEnd();
+				break;
+		}
+	} else {
+		screen->FlashOnce(r, g, b, s, tenths);
+		if (wait)
+			wait_count = tenths * DEFAULT_FPS / 10;
 	}
 
 	return true;
