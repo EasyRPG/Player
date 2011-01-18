@@ -475,7 +475,7 @@ void SdlBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 			char_shadow = new SdlBitmap(char_shadow_surf);
 
 			if (!((SdlBitmap*)char_surface)->bitmap || !((SdlBitmap*)char_shadow)->bitmap) {
-				Output::Warning("Couldn't render char %c (%d). Skipping...", text[c], (int)text[c]);
+				Output::Debug("Couldn't render char %c (%d). Skipping...", text[c], (int)text[c]);
 				delete char_surface;
 				delete char_shadow;
 				continue;
@@ -501,7 +501,7 @@ void SdlBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 			char_shadow = new SdlBitmap(TTF_RenderUTF8_Solid(ttf_font, text2, c_tmp2));
 
 			if (!((SdlBitmap*)char_surface)->bitmap || !((SdlBitmap*)char_shadow)->bitmap) {
-				Output::Warning("Couldn't render char %c (%d). Skipping...", text[c], (int)text[c]);
+				Output::Debug("Couldn't render char %c (%d). Skipping...", text[c], (int)text[c]);
 				delete char_surface;
 				delete char_shadow;
 				continue;

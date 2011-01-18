@@ -236,7 +236,6 @@ void Scene_Title::CommandNewGame() {
 			Data::treemap.start_x, Data::treemap.start_y);
 		Main_Data::game_player->Refresh();
 		Game_Map::Autoplay();
-		Game_Map::Update();
 		Scene::Push(new Scene_Map());
 	}
 }
