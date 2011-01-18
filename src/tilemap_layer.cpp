@@ -73,6 +73,11 @@ static signed char BlockB2_Subtiles_IDS[] = {
 	-1,	-1,	6,	-1,		4,	-1,	6,	-1,		-1,	5,	6,	-1,		4,	5,	6,	-1,
 	-1,	-1,	-1,	7,		4,	-1,	-1,	7,		-1,	5,	-1,	7,		4,	5,	-1,	7,
 	-1,	-1,	6,	7,		4,	-1,	6,	7,		-1,	5,	6,	7,		4,	5,	6,	7
+
+	-1,	-1,	-1,	-1,		8,	-1,	-1,	-1,		-1,	9,	-1,	-1,		8,	9,	-1,	-1,
+	-1,	-1,	10,	-1,		8,	-1,	10,	-1,		-1,	9,	10,	-1,		8,	9,	10,	-1,
+	-1,	-1,	-1,	11,		8,	-1,	-1,	11,		-1,	9,	-1,	11,		8,	9,	-1,	11,
+	-1,	-1,	10,	11,		8,	-1,	10,	11,		-1,	9,	10,	11,		8,	9,	10,	11
 };
 
 static signed char BlockD_Subtiles_IDS[] = {
@@ -363,8 +368,8 @@ void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 			if (BlockB2_Subtiles_IDS[b_subtile * 4 + i] == -1) continue;
 
 			// Get the block B subtiles ids and get their coordinates on the chipset
-			rect.x = block_x + (BlockB2_Subtiles_IDS[b_subtile * 4 + i] % 2) * 8;
-			rect.y = block_y + (BlockB2_Subtiles_IDS[b_subtile * 4 + i] / 2) * 8;
+			rect.x = block_x + (BlockB2_Subtiles_IDS[(block == 2 ? 64 : 0) + b_subtile * 4 + i] % 2) * 8;
+			rect.y = block_y + (BlockB2_Subtiles_IDS[(block == 2 ? 64 : 0) + b_subtile * 4 + i] / 2) * 8;
 
 			// Blit the subtile
 			tile->Blit((i % 2) * 8, (i / 2) * 8, chipset, rect, 255);
