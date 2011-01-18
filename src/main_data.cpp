@@ -44,14 +44,14 @@ namespace Main_Data {
 }
 
 void Main_Data::Cleanup() {
+	Game_Map::Quit();
+	Game_Actors::Dispose();
+	Font::Dispose();
+
 	delete game_screen;
 	delete game_troop;
 	delete game_player;
 	game_screen = NULL;
 	game_troop = NULL;
 	game_player = NULL;
-
-	Game_Map::Quit();
-	Game_Actors::Dispose();
-	Font::Dispose();
 }

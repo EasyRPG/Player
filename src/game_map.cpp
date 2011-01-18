@@ -91,7 +91,9 @@ void Game_Map::Dispose() {
 	}
 	events.clear();
 
-	Main_Data::game_screen->Reset();
+	if (Main_Data::game_screen != NULL) {
+		Main_Data::game_screen->Reset();
+	}
 
 	delete map;
 	map = NULL;
