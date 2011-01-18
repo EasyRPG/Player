@@ -222,37 +222,6 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 		return false;
 	}
 	
-// Dingoo has no hw_available, SDL_GetVideoInfo() returns an erroneously value
-// SDL is supposed to give accurate info about the hardware, so there's no need
-// for a HAVE_HWSURFACE flag
-// Nice, why this comments contradict themselves?
-#if !defined(DINGOO)
-	if (vinfo->hw_available) {
-		zoom_available = false;
-		flags |= SDL_FULLSCREEN | SDL_HWSURFACE | SDL_DOUBLEBUF;
-		
-		current_display_mode.flags = flags;
-		current_display_mode.zoom = false;
-
-		modes = SDL_ListModes(NULL, flags);
-		if (modes != NULL) {
-			if (modes == (SDL_Rect **)-1) {
-				// All modes available... Yay!
-				return true;
-			} else {
-				int len = 0;
-				while (modes[len]) 
-					++len;
-				for (int i = len-1; i > 0; --i) {
-					if (modes[i]->h == height && modes[i]->w == width) {
-						return true;
-					}
-				}
-			}
-		}
-	}
-#endif
-
 	// No hard accel and no window manager
 	flags = SDL_SWSURFACE | SDL_FULLSCREEN;
 
