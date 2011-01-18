@@ -78,7 +78,7 @@ void Window_ShopBuy::Refresh() {
 			break;
 		int item_id = Game_Temp::shop_goods[idx];
 
-		if (Data::items[item_id - 1].price <= Game_Party::GetGold() && Game_Party::ItemNumber(item_id) < 99) {
+		if (CheckEnable(item_id)) {
 			contents->GetFont()->color = Font::ColorDefault;
 		}
 		else {
@@ -157,4 +157,13 @@ void Window_ShopBuy::SetStatusWindow(Window_ShopStatus* w) {
 
 void Window_ShopBuy::SetPartyWindow(Window_Party* w) {
 	party_window = w;
+}
+
+////////////////////////////////////////////////////////////
+bool Window_ShopBuy::CheckEnable(int item_id) {
+	int item_price = Data::items[item_id - 1].price;
+	int party_gold = Game_Party::GetGold();
+	int item_number = Game_Party::ItemNumber(item_id);
+	
+	return (item_price <= party_gold && item_number < 99);
 }

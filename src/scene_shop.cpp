@@ -208,7 +208,7 @@ void Scene_Shop::Update() {
 			if (Input::IsTriggered(Input::DECISION)) {
 				int item_id = buy_window->GetSelected();
 				//checks the money and number of items possessed before buy
-				if (Data::items[item_id - 1].price <= Game_Party::GetGold() && Game_Party::ItemNumber(item_id) < 99) {
+				if (buy_window->CheckEnable(item_id)) {
 					Game_System::SePlay(Data::system.decision_se);
 					RPG::Item& item = Data::items[item_id - 1];
 					int value = item.price;

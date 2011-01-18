@@ -53,6 +53,11 @@ public:
 	void SetHelpWindow(Window_Help* w);
 	void SetStatusWindow(Window_ShopStatus* w);
 	void SetPartyWindow(Window_Party* w);
+	////////////////////////////////////////////////////////
+	/// Checks if the item should be enabled.
+	/// @param item_id : Item to check
+	////////////////////////////////////////////////////////
+	bool CheckEnable(int item_id);
 	
 protected:
 	static const int border_x = 0;
