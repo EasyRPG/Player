@@ -108,12 +108,6 @@ void SoftBitmap::ReadPNG(FILE *stream, const void *buffer) {
 		return;
 	}
 
-	if (setjmp(png_jmpbuf(png_ptr))) {
-		png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp) NULL);
-		Output::Error("Error reading PNG file");
-		return;
-	}
-
 	if (stream != NULL)
 		png_init_io(png_ptr, stream);
 	else
