@@ -120,7 +120,8 @@ Bitmap* BitmapScreen::GetBitmap() {
 void BitmapScreen::ClearEffects() {
 	needs_refresh = true;
 
-	opacity_effect = 255;
+	opacity_top_effect = 255;
+	opacity_bottom_effect = 128;
 	bush_effect = 0;
 	tone_effect = Tone();
 	src_rect_effect = Rect(0, 0, 0, 0);
@@ -146,9 +147,15 @@ void BitmapScreen::SetSrcRect(Rect src_rect) {
 	}
 }
 
-void BitmapScreen::SetOpacityEffect(int opacity) {
-	if (opacity_effect != opacity) {
-		opacity_effect = opacity;
+void BitmapScreen::SetOpacityEffect(int opacity_top, int opacity_bottom) {
+	if (opacity_top_effect != opacity_top) {
+		opacity_top_effect = opacity_top;
+		needs_refresh = true;
+	}
+	if (opacity_bottom_effect == -1)
+		opacity_bottom_effect = (opacity_top_effect + 1) / 2;
+	if (opacity_bottom_effect != opacity_bottom) {
+		opacity_bottom_effect = opacity_bottom;
 		needs_refresh = true;
 	}
 }
@@ -214,8 +221,8 @@ Rect BitmapScreen::GetSrcRect() const {
 	return src_rect_effect;
 }
 
-int BitmapScreen::GetOpacityEffect() const {
-	return opacity_effect;
+int BitmapScreen::GetOpacityEffect(int which) const {
+	return which > 0 ? opacity_bottom_effect : opacity_top_effect;
 }
 
 int BitmapScreen::GetBushDepthEffect() const {

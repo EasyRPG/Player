@@ -74,8 +74,11 @@ void Picture::UpdateSprite() {
 	sprite->SetOx((int)(sprite->GetBitmap()->GetWidth() * st.magnify / 200.0));
 	sprite->SetOy((int)(sprite->GetBitmap()->GetHeight() * st.magnify / 200.0));
 	sprite->SetAngle(rotate ? value : 0.0);
-	sprite->SetOpacity((int)(255 * (100 - st.top_trans) / 100));
-	// TODO: bottom_trans
+	sprite->SetOpacity(
+		(int)(255 * (100 - st.top_trans) / 100),
+		(int)(255 * (100 - st.bottom_trans) / 100));
+	if (st.bottom_trans != st.top_trans)
+		sprite->SetBushDepth(sprite->GetHeight() / 2);
 	sprite->SetTone(Tone((int) ((st.red        - 100) * 255 / 100),
 						 (int) ((st.green      - 100) * 255 / 100),
 						 (int) ((st.blue       - 100) * 255 / 100),

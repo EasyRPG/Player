@@ -946,32 +946,26 @@ void Bitmap::OpacityChange(int opacity, const Rect& src_rect) {
 	Lock();
 
 	if (bpp() == 2) {
-		uint16* dst_pixels = (uint16*)pixels();
-
-		int stride = pitch() / bpp() - width();
-
 		uint8 dst_r, dst_g, dst_b, dst_a;
 
-		for (int j = src_rect.y; j < src_rect.y + src_rect.width; j++) {
-			for (int i = src_rect.x; i < src_rect.x + src_rect.height; i++) {
+		for (int j = src_rect.y; j < src_rect.y + src_rect.height; j++) {
+			uint16* dst_pixels = (uint16*) pixels() + j * pitch() / 2 + src_rect.x;
+			for (int i = src_rect.x; i < src_rect.x + src_rect.width; i++) {
 				GetColorComponents(dst_pixels[0], dst_r, dst_g, dst_b, dst_a);
 				dst_a = dst_a * opacity / 255;
 
 				dst_pixels++;
 			}
-			dst_pixels += stride;
 		}
 	} else if (bpp() == 4) {
-		uint8* dst_pixels = (uint8*) pixels();
-		int pad = pitch() - width() * bpp();
 		const int abyte = GetMaskByte(amask());
 
-		for (int j = src_rect.y; j < src_rect.y + src_rect.width; j++) {
-			for (int i = src_rect.x; i < src_rect.x + src_rect.height; i++) {
+		for (int j = src_rect.y; j < src_rect.y + src_rect.height; j++) {
+			uint8* dst_pixels = (uint8*) pixels() + j * pitch() + src_rect.x * bpp();
+			for (int i = src_rect.x; i < src_rect.x + src_rect.width; i++) {
 				dst_pixels[abyte] = (dst_pixels[abyte] * opacity) / 255;
 				dst_pixels += bpp();
 			}
-			dst_pixels += pad;
 		}
 	}
 	

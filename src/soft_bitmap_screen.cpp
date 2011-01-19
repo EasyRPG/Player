@@ -47,7 +47,7 @@ SoftBitmapScreen::~SoftBitmapScreen() {
 
 ////////////////////////////////////////////////////////////
 void SoftBitmapScreen::BlitScreen(int x, int y) {
-	if (bitmap == NULL || opacity_effect <= 0)
+	if (bitmap == NULL || opacity_top_effect <= 0)
 		return;
 
 	Refresh();
@@ -60,7 +60,7 @@ void SoftBitmapScreen::BlitScreen(int x, int y) {
 
 ////////////////////////////////////////////////////////////
 void SoftBitmapScreen::BlitScreen(int x, int y, Rect src_rect) {
-	if (bitmap == NULL || opacity_effect <= 0)
+	if (bitmap == NULL || opacity_top_effect <= 0)
 		return;
 
 	Refresh();
@@ -75,7 +75,7 @@ void SoftBitmapScreen::BlitScreen(int x, int y, Rect src_rect) {
 
 ////////////////////////////////////////////////////////////
 void SoftBitmapScreen::BlitScreenTiled(Rect src_rect, Rect dst_rect) {
-	if (bitmap == NULL || opacity_effect <= 0)
+	if (bitmap == NULL || opacity_top_effect <= 0)
 		return;
 
 	Refresh();
@@ -130,14 +130,14 @@ void SoftBitmapScreen::Refresh() {
 	bitmap_effects->ToneChange(tone_effect);
 	bitmap_effects->Flip(flipx_effect, flipy_effect);
 
-	if (opacity_effect < 255 && bush_effect < bitmap_effects->GetHeight()) {
+	if (opacity_top_effect < 255 && bush_effect < bitmap_effects->GetHeight()) {
 		Rect src_rect(0, 0, bitmap_effects->GetWidth(), bitmap_effects->GetHeight() - bush_effect);
-		bitmap_effects->OpacityChange(opacity_effect, src_rect);
+		bitmap_effects->OpacityChange(opacity_top_effect, src_rect);
 	}
 
-	if (bush_effect > 0) {
+	if (opacity_bottom_effect < 255 && bush_effect > 0) {
 		Rect src_rect(0, bitmap_effects->GetHeight() - bush_effect, bitmap_effects->GetWidth(), bush_effect);
-		bitmap_effects->OpacityChange(opacity_effect / 2, src_rect);
+		bitmap_effects->OpacityChange(opacity_bottom_effect / 2, src_rect);
 	}
 
 	if (zoom_x_effect == 1.0 && zoom_y_effect == 1.0 && angle_effect == 0.0)

@@ -215,8 +215,8 @@ void Sprite::SetBushDepth(int bush_depth) {
 int Sprite::GetOpacity() const {
 	return bitmap_screen->GetOpacityEffect();
 }
-void Sprite::SetOpacity(int opacity) {
-	bitmap_screen->SetOpacityEffect(opacity);
+void Sprite::SetOpacity(int top_opacity, int bottom_opacity) {
+	bitmap_screen->SetOpacityEffect(top_opacity, bottom_opacity);
 }
 
 int Sprite::GetBlendType() const {

@@ -117,10 +117,13 @@ public:
 	virtual void SetSrcRect(Rect src_rect);
 
 	/// @return bitmap opacity
-	virtual int GetOpacityEffect() const;
+	/// @param which : 0 => top, 1 => bottom (below bush depth)
+	virtual int GetOpacityEffect(int which = 0) const;
 
-	/// @param opacity : bitmap opacity
-	virtual void SetOpacityEffect(int opacity);
+	/// @param opacity_top : bitmap top opacity (above bush depth)
+	/// @param opacity_bottom : bitmap bottom opacity (below bush depth)
+	///  note: opacity_bottom == -1 => opacity_bottom = (opacity_top + 1) / 2
+	virtual void SetOpacityEffect(int opacity_top, int opacity_bottom = -1);
 
 	/// @return bush depth effect
 	virtual int GetBushDepthEffect() const;
@@ -187,7 +190,8 @@ protected:
 	bool needs_refresh;
 
 	Rect src_rect_effect;
-	int opacity_effect;
+	int opacity_top_effect;
+	int opacity_bottom_effect;
 	int bush_effect;
 	Tone tone_effect;
 	bool flipx_effect;

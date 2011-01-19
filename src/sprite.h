@@ -76,7 +76,7 @@ public:
 	int GetBushDepth() const;
 	void SetBushDepth(int bush_depth);
 	int GetOpacity() const;
-	void SetOpacity(int opacity);
+	void SetOpacity(int top_opacity, int bottom_opacity = -1);
 	int GetBlendType() const;
 	void SetBlendType(int blend_type);
 	Color GetBlendColor() const;
