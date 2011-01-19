@@ -190,11 +190,9 @@ TilemapLayer::~TilemapLayer() {
 	Graphics::RemoveZObj(ID, true);
 	Graphics::RemoveDrawable(ID);
 
-	for (int e = 0; e < 3; e++)
-		for (int i = 0; i < 3; i++)
-			for (int j = 0; j < 50; j++)
-				for (int m = 0; m < 50; m++)
-					delete autotiles_ab[e][i][j][m];
+	std::map<uint32, BitmapScreen*>::iterator it;
+	for (it = autotiles_ab_map.begin(); it != autotiles_ab_map.end(); it++)
+		delete it->second;
 				
 	for (int i = 0; i < 12; i++)
 		for (int j = 0; j < 50; j++)
@@ -351,26 +349,26 @@ void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 
 	// Calculate the B block combination
 	short b_subtile = (ID - block * 1000) / 50;
+	if (b_subtile >= 16) {
+		Output::Warning("Invalid AB autotile ID: %d (b_subtile = %d)",
+						ID, b_subtile);
+		return;
+	}
 
 	// Calculate the A block combination
 	short a_subtile = ID - block * 1000 - b_subtile * 50;
+	if (a_subtile >= 47) {
+		Output::Warning("Invalid AB autotile ID: %d (a_subtile = %d)",
+						ID, a_subtile);
+		return;
+	}
 
 	if (autotiles_ab[animID][block][b_subtile][a_subtile])
 		return;
 
-	Bitmap* tile = Bitmap::CreateBitmap(16, 16);
+	uint8 quarters[2][2][2];
 
-	Rect rect;
-	rect.width = 8;
-	rect.height = 8;
-
-	short block_x, block_y;
-
-	// Get Block B chipset coords
-	block_x = animID * 16;
-	block_y = 64;
-
-	// Blit B block subtiles
+	// Determine block B subtiles
 	for (int j = 0; j < 2; j++) {
 		for (int i = 0; i < 2; i++) {
 			// Skip the subtile if it will be used one from A block instead
@@ -379,38 +377,25 @@ void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 			// Get the block B subtiles ids and get their coordinates on the chipset
 			int t = (b_subtile >> (j * 2 + i)) & 1;
 			if (block == 2) t ^= 3;
-			rect.x = block_x + i * 8;
-			rect.y = block_y + (t * 2 + j) * 8;
 
-			// Blit the subtile
-			tile->Blit(i * 8, j * 8, chipset, rect, 255);
+			quarters[j][i][0] = animID;
+			quarters[j][i][1] = 4 + t;
 		}
 	}
 
-	// Get Block A chipset coords
-	block_x = animID * 16 + (block == 1 ? 48 : 0);
-	block_y = 0;
-
-	// Blit A block subtiles
+	// Determine block A subtiles
 	for (int j = 0; j < 2; j++) {
 		for (int i = 0; i < 2; i++) {
 			// Skip the subtile if it was used one from B block
 			if (BlockA_Subtiles_IDS[a_subtile][j][i] == -1) continue;
 
 			// Get the block A subtiles ids and get their coordinates on the chipset
-			rect.x = block_x + i * 8;
-			rect.y = block_y + (BlockA_Subtiles_IDS[a_subtile][j][i] * 2 + j) * 8;
-
-			// Blit the subtile
-			tile->Blit(i * 8, j * 8, chipset, rect, 255);
+			quarters[j][i][0] = animID + (block == 1 ? 3 : 0);
+			quarters[j][i][1] = BlockA_Subtiles_IDS[a_subtile][j][i];
 		}
 	}
 
-	// Get Block B chipset coords
-	block_x = animID * 16;
-	block_y = 64;
-
-	// Blit B block subtiles when combining A and B
+	// Determine block B subtiles when combining A and B
 	if (b_subtile != 0 && a_subtile != 0) {
 		for (int j = 0; j < 2; j++) {
 			for (int i = 0; i < 2; i++) {
@@ -422,16 +407,47 @@ void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 				if (t == 0) continue;
 
 				// Get the coordinates on the chipset
-				rect.x = block_x + i * 8;
-				rect.y = block_y + j * 8 + t * 16;
-
-				// Blit the subtile
-				tile->Blit(i * 8, j * 8, chipset, rect, 255);
+				quarters[j][i][0] = animID;
+				quarters[j][i][1] = 4 + t;
 			}
 		}
 	}
 
-	autotiles_ab[animID][block][b_subtile][a_subtile] = BitmapScreen::CreateBitmapScreen(tile);
+	// pack the quarters data into a word
+	uint32 quarters_hash = 0;
+	for (int j = 0; j < 2; j++)
+		for (int i = 0; i < 2; i++)
+			for (int k = 0; k < 2; k++) {
+				quarters_hash <<= 4;
+				quarters_hash |= quarters[j][i][k];
+			}
+
+	// check whether we have already generated this tile
+	std::map<uint32, BitmapScreen*>::iterator it;
+	it = autotiles_ab_map.find(quarters_hash);
+	if (it != autotiles_ab_map.end()) {
+		autotiles_ab[animID][block][b_subtile][a_subtile] = it->second;
+		return;
+	}
+
+	// generate the tile
+	Bitmap* tile = Bitmap::CreateBitmap(16, 16);
+
+	Rect rect;
+	rect.width = 8;
+	rect.height = 8;
+
+	for (int j = 0; j < 2; j++) {
+		for (int i = 0; i < 2; i++) {
+			rect.x = quarters[j][i][0] * 16 + i * 8;
+			rect.y = quarters[j][i][1] * 16 + j * 8;
+			tile->Blit(i * 8, j * 8, chipset, rect, 255);
+		}
+	}
+
+	BitmapScreen* screen = BitmapScreen::CreateBitmapScreen(tile);
+	autotiles_ab_map[quarters_hash] = screen;
+	autotiles_ab[animID][block][b_subtile][a_subtile] = screen;
 }
 
 ////////////////////////////////////////////////////////////

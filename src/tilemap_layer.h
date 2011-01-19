@@ -22,6 +22,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <vector>
+#include <map>
 #include "drawable.h"
 #include "bitmap.h"
 #include "bitmap_screen.h"
@@ -92,8 +93,9 @@ private:
 	BitmapScreen* GetCachedAutotileAB(short ID, short animID);
 	BitmapScreen* GetCachedAutotileD(short ID);
 
-	BitmapScreen* autotiles_ab[3][3][50][50];
+	BitmapScreen* autotiles_ab[3][3][16][47];
 	BitmapScreen* autotiles_d[12][50];
+	std::map<uint32, BitmapScreen*> autotiles_ab_map;
 
 	struct TileData {
 		short ID;
