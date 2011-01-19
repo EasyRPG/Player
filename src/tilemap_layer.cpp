@@ -23,6 +23,7 @@
 #include "player.h"
 #include "graphics.h"
 #include <cstring> // GCC COMPILATION FIX
+#include "output.h"
 
 ////////////////////////////////////////////////////////////
 // BlockD subtiles IDs
@@ -42,58 +43,112 @@ static const int BLOCK_F_TILES = 144;
 // Blocks subtiles IDs
 // Mess with this code and you will die in 3 days...
 ////////////////////////////////////////////////////////////
-static signed char BlockA_Subtiles_IDS[] = {
-	-1,	-1,	-1,	-1,		12,	-1,	-1,	-1,		-1,	13,	-1,	-1,		12,	13,	-1,	-1,
-	-1,	-1,	-1,	15,		12,	-1,	-1,	15,		-1,	13,	-1,	15,		12,	13,	-1,	15,
-	-1,	-1,	14,	-1,		12,	-1,	14,	-1,		-1,	13,	14,	-1,		12,	13,	14,	-1,
-	-1,	-1,	14,	15,		12,	-1,	14,	15,		-1,	13,	14,	15,		12,	13,	14,	15,
-	4,	-1,	6,	-1,		4,	13,	6,	-1,		4,	-1,	6,	15,		4,	13,	6,	15,
-	8,	9,	-1,	-1,		8,	9,	-1,	15,		8,	9,	14,	-1,		8,	9,	14,	15,
-	-1,	5,	-1,	7,		-1,	5,	14,	7,		12,	5,	-1,	7,		12,	5,	14,	7,
-	-1,	-1,	10,	11,		12,	-1,	10,	11,		-1,	13,	10,	11,		12,	13,	10,	11,
-	4,	5,	6,	7,		8,	9,	10,	11,		0,	9,	6,	-1,		0,	9,	6,	15,
-	8,	1,	-1,	7,		8,	1,	14,	7,		-1,	5,	10,	3,		12,	5,	10,	3,
-	4,	-1,	2,	11,		4,	13,	2,	11,		0,	1,	6,	7,		0,	9,	2,	11,
-	4,	5,	2,	3,		8,	1,	10,	3,		0,	1,	2,	3
+// [tile-id][row][col]
+static signed char BlockA_Subtiles_IDS[47][2][2] = {
+#define N -1
+	{{N, N}, {N, N}},
+	{{3, N}, {N, N}},
+	{{N, 3}, {N, N}},
+	{{3, 3}, {N, N}},
+	{{N, N}, {N, 3}},
+	{{3, N}, {N, 3}},
+	{{N, 3}, {N, 3}},
+	{{3, 3}, {N, 3}},
+	{{N, N}, {3, N}},
+	{{3, N}, {3, N}},
+	{{N, 3}, {3, N}},
+	{{3, 3}, {3, N}},
+	{{N, N}, {3, 3}},
+	{{3, N}, {3, 3}},
+	{{N, 3}, {3, 3}},
+	{{3, 3}, {3, 3}},
+	{{1, N}, {1, N}},
+	{{1, 3}, {1, N}},
+	{{1, N}, {1, 3}},
+	{{1, 3}, {1, 3}},
+	{{2, 2}, {N, N}},
+	{{2, 2}, {N, 3}},
+	{{2, 2}, {3, N}},
+	{{2, 2}, {3, 3}},
+	{{N, 1}, {N, 1}},
+	{{N, 1}, {3, 1}},
+	{{3, 1}, {N, 1}},
+	{{3, 1}, {3, 1}},
+	{{N, N}, {2, 2}},
+	{{3, N}, {2, 2}},
+	{{N, 3}, {2, 2}},
+	{{3, 3}, {2, 2}},
+	{{1, 1}, {1, 1}},
+	{{2, 2}, {2, 2}},
+	{{0, 2}, {1, N}},
+	{{0, 2}, {1, 3}},
+	{{2, 0}, {N, 1}},
+	{{2, 0}, {3, 1}},
+	{{N, 1}, {2, 0}},
+	{{3, 1}, {2, 0}},
+	{{1, N}, {0, 2}},
+	{{1, 3}, {0, 2}},
+	{{0, 0}, {1, 1}},
+	{{0, 2}, {0, 2}},
+	{{1, 1}, {0, 0}},
+	{{2, 0}, {2, 0}},
+	{{0, 0}, {0, 0}}
+#undef N
 };
 
-static signed char BlockB_Subtiles_IDS[] = {
-	0, 	1, 	2, 	3,		4, 	1, 	2, 	3,		0, 	5, 	2, 	3,		4, 	5, 	2, 	3,
-	0, 	1, 	6, 	3,		4, 	1, 	6, 	3,		0, 	5, 	6, 	3,		4, 	5, 	6, 	3,
-	0, 	1, 	2, 	7,		4, 	1, 	2, 	7,		0, 	5, 	2, 	7,		4, 	5, 	2, 	7,
-	0, 	1, 	6, 	7,		4, 	1, 	6, 	7,		0, 	5, 	6, 	7,		4, 	5, 	6, 	7,
-	12,	13,	14,	15,		8,	13,	14,	15,		12,	9,	14,	15,		8,	9,	14,	15,
-	12,	13,	10,	15,		8,	13,	10,	15,		12,	9,	10,	15,		8,	9,	10,	15,
-	12,	13,	14,	11,		8,	13,	14,	11,		12,	9,	14,	11,		8,	9,	14,	11,
-	12,	13,	10,	11,		8,	13,	10,	11,		12,	9,	10,	11,		8,	9,	10,	11
-};
-
-static signed char BlockB2_Subtiles_IDS[] = {
-	-1,	-1,	-1,	-1,		4,	-1,	-1,	-1,		-1,	5,	-1,	-1,		4,	5,	-1,	-1,
-	-1,	-1,	6,	-1,		4,	-1,	6,	-1,		-1,	5,	6,	-1,		4,	5,	6,	-1,
-	-1,	-1,	-1,	7,		4,	-1,	-1,	7,		-1,	5,	-1,	7,		4,	5,	-1,	7,
-	-1,	-1,	6,	7,		4,	-1,	6,	7,		-1,	5,	6,	7,		4,	5,	6,	7
-
-	-1,	-1,	-1,	-1,		8,	-1,	-1,	-1,		-1,	9,	-1,	-1,		8,	9,	-1,	-1,
-	-1,	-1,	10,	-1,		8,	-1,	10,	-1,		-1,	9,	10,	-1,		8,	9,	10,	-1,
-	-1,	-1,	-1,	11,		8,	-1,	-1,	11,		-1,	9,	-1,	11,		8,	9,	-1,	11,
-	-1,	-1,	10,	11,		8,	-1,	10,	11,		-1,	9,	10,	11,		8,	9,	10,	11
-};
-
-static signed char BlockD_Subtiles_IDS[] = {
-	26,	27,	32,	33,		4,	27,	32,	33,		26,	5,	32,	33,		4,	5,	32,	33,
-	26,	27,	32,	11,		4,	27,	32,	11,		26,	5,	32,	11,		4,	5,	32,	11,
-	26,	27,	10,	33,		4,	27,	10,	33,		26,	5,	10,	33,		4,	5,	10,	33,
-	26,	27,	10,	11,		4,	27,	10,	11,		26,	5,	10,	11,		4,	5,	10,	11,
-	24,	25,	30,	31,		24,	5,	30,	31,		24,	25,	30,	11,		24,	5,	30,	11,
-	14,	15,	20,	21,		14,	15,	20,	11,		14,	15,	10,	21,		14,	15,	10,	11,
-	28,	29,	34,	35,		28,	29,	10,	35,		4,	29,	34,	35,		4,	29,	10,	35,
-	38,	39,	44,	45,		4,	39,	44,	45,		38,	5,	44,	45,		4,	5,	44,	45,
-	24,	29,	30,	35,		14,	15,	44,	45,		12,	13,	18,	19,		12,	13,	18,	11,
-	16,	17,	22,	23,		16,	17,	10,	23,		40,	41,	46,	47,		4,	41,	46,	47,
-	36,	37,	42,	43,		36,	5,	42,	43,		12,	17,	18,	23,		12,	13,	42,	43,
-	36,	41,	42,	47,		16,	17,	46,	47,		12,	17,	42,	47,		26,	27,	32,	33,
-	26,	27,	32,	33,		0,	1,	6,	7
+// [tile-id][row][col][x/y]
+static signed char BlockD_Subtiles_IDS[50][2][2][2] = {
+//     T-L     T-R       B-L     B-R
+    {{{1, 2}, {1, 2}}, {{1, 2}, {1, 2}}},
+    {{{2, 0}, {1, 2}}, {{1, 2}, {1, 2}}},
+    {{{1, 2}, {2, 0}}, {{1, 2}, {1, 2}}},
+    {{{2, 0}, {2, 0}}, {{1, 2}, {1, 2}}},
+    {{{1, 2}, {1, 2}}, {{1, 2}, {2, 0}}},
+    {{{2, 0}, {1, 2}}, {{1, 2}, {2, 0}}},
+    {{{1, 2}, {2, 0}}, {{1, 2}, {2, 0}}},
+    {{{2, 0}, {2, 0}}, {{1, 2}, {2, 0}}},
+    {{{1, 2}, {1, 2}}, {{2, 0}, {1, 2}}},
+    {{{2, 0}, {1, 2}}, {{2, 0}, {1, 2}}},
+    {{{1, 2}, {2, 0}}, {{2, 0}, {1, 2}}},
+    {{{2, 0}, {2, 0}}, {{2, 0}, {1, 2}}},
+    {{{1, 2}, {1, 2}}, {{2, 0}, {2, 0}}},
+    {{{2, 0}, {1, 2}}, {{2, 0}, {2, 0}}},
+    {{{1, 2}, {2, 0}}, {{2, 0}, {2, 0}}},
+    {{{2, 0}, {2, 0}}, {{2, 0}, {2, 0}}},
+    {{{0, 2}, {0, 2}}, {{0, 2}, {0, 2}}},
+    {{{0, 2}, {2, 0}}, {{0, 2}, {0, 2}}},
+    {{{0, 2}, {0, 2}}, {{0, 2}, {2, 0}}},
+    {{{0, 2}, {2, 0}}, {{0, 2}, {2, 0}}},
+    {{{1, 1}, {1, 1}}, {{1, 1}, {1, 1}}},
+    {{{1, 1}, {1, 1}}, {{1, 1}, {2, 0}}},
+    {{{1, 1}, {1, 1}}, {{2, 0}, {1, 1}}},
+    {{{1, 1}, {1, 1}}, {{2, 0}, {2, 0}}},
+    {{{2, 2}, {2, 2}}, {{2, 2}, {2, 2}}},
+    {{{2, 2}, {2, 2}}, {{2, 0}, {2, 2}}},
+    {{{2, 0}, {2, 2}}, {{2, 2}, {2, 2}}},
+    {{{2, 0}, {2, 2}}, {{2, 0}, {2, 2}}},
+    {{{1, 3}, {1, 3}}, {{1, 3}, {1, 3}}},
+    {{{2, 0}, {1, 3}}, {{1, 3}, {1, 3}}},
+    {{{1, 3}, {2, 0}}, {{1, 3}, {1, 3}}},
+    {{{2, 0}, {2, 0}}, {{1, 3}, {1, 3}}},
+    {{{0, 2}, {2, 2}}, {{0, 2}, {2, 2}}},
+    {{{1, 1}, {1, 1}}, {{1, 3}, {1, 3}}},
+    {{{0, 1}, {0, 1}}, {{0, 1}, {0, 1}}},
+    {{{0, 1}, {0, 1}}, {{0, 1}, {2, 0}}},
+    {{{2, 1}, {2, 1}}, {{2, 1}, {2, 1}}},
+    {{{2, 1}, {2, 1}}, {{2, 0}, {2, 1}}},
+    {{{2, 3}, {2, 3}}, {{2, 3}, {2, 3}}},
+    {{{2, 0}, {2, 3}}, {{2, 3}, {2, 3}}},
+    {{{0, 3}, {0, 3}}, {{0, 3}, {0, 3}}},
+    {{{0, 3}, {2, 0}}, {{0, 3}, {0, 3}}},
+    {{{0, 1}, {2, 1}}, {{0, 1}, {2, 1}}},
+    {{{0, 1}, {0, 1}}, {{0, 3}, {0, 3}}},
+    {{{0, 3}, {2, 3}}, {{0, 3}, {2, 3}}},
+    {{{2, 1}, {2, 1}}, {{2, 3}, {2, 3}}},
+    {{{0, 1}, {2, 1}}, {{0, 3}, {2, 3}}},
+    {{{1, 2}, {1, 2}}, {{1, 2}, {1, 2}}},
+    {{{1, 2}, {1, 2}}, {{1, 2}, {1, 2}}},
+    {{{0, 0}, {0, 0}}, {{0, 0}, {0, 0}}}
 };
 
 ////////////////////////////////////////////////////////////
@@ -316,20 +371,20 @@ void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 	block_y = 64;
 
 	// Blit B block subtiles
-	//	1 -> Upper right
-	//	2 -> Upper left
-	//	3 -> Lower right
-	//	4 -> Lower left
-	for (int i = 0; i < 4; i++) {
-		// Skip the subtile if it will be used one from A block instead
-		if (BlockA_Subtiles_IDS[a_subtile * 4 + i] != -1) continue;
+	for (int j = 0; j < 2; j++) {
+		for (int i = 0; i < 2; i++) {
+			// Skip the subtile if it will be used one from A block instead
+			if (BlockA_Subtiles_IDS[a_subtile][j][i] != -1) continue;
 
-		// Get the block B subtiles ids and get their coordinates on the chipset
-		rect.x = block_x + (BlockB_Subtiles_IDS[(block == 2 ? 64 : 0) + b_subtile * 4 + i] % 2) * 8;
-		rect.y = block_y + (BlockB_Subtiles_IDS[(block == 2 ? 64 : 0) + b_subtile * 4 + i] / 2) * 8;
+			// Get the block B subtiles ids and get their coordinates on the chipset
+			int t = (b_subtile >> (j * 2 + i)) & 1;
+			if (block == 2) t ^= 3;
+			rect.x = block_x + i * 8;
+			rect.y = block_y + (t * 2 + j) * 8;
 
-		// Blit the subtile
-		tile->Blit((i % 2) * 8, (i / 2) * 8, chipset, rect, 255);
+			// Blit the subtile
+			tile->Blit(i * 8, j * 8, chipset, rect, 255);
+		}
 	}
 
 	// Get Block A chipset coords
@@ -337,20 +392,18 @@ void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 	block_y = 0;
 
 	// Blit A block subtiles
-	//	1 -> Upper right
-	//	2 -> Upper left
-	//	3 -> Lower right
-	//	4 -> Lower left
-	for (int i = 0; i < 4; i++) {
-		// Skip the subtile if it was used one from B block
-		if (BlockA_Subtiles_IDS[a_subtile * 4 + i] == -1) continue;
+	for (int j = 0; j < 2; j++) {
+		for (int i = 0; i < 2; i++) {
+			// Skip the subtile if it was used one from B block
+			if (BlockA_Subtiles_IDS[a_subtile][j][i] == -1) continue;
 
-		// Get the block A subtiles ids and get their coordinates on the chipset
-		rect.x = block_x + (BlockA_Subtiles_IDS[a_subtile * 4 + i] % 2) * 8;
-		rect.y = block_y + (BlockA_Subtiles_IDS[a_subtile * 4 + i] / 2) * 8;
+			// Get the block A subtiles ids and get their coordinates on the chipset
+			rect.x = block_x + i * 8;
+			rect.y = block_y + (BlockA_Subtiles_IDS[a_subtile][j][i] * 2 + j) * 8;
 
-		// Blit the subtile
-		tile->Blit((i % 2) * 8, (i / 2) * 8, chipset, rect, 255);
+			// Blit the subtile
+			tile->Blit(i * 8, j * 8, chipset, rect, 255);
+		}
 	}
 
 	// Get Block B chipset coords
@@ -358,21 +411,23 @@ void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 	block_y = 64;
 
 	// Blit B block subtiles when combining A and B
-	//	1 -> Upper right
-	//	2 -> Upper left
-	//	3 -> Lower right
-	//	4 -> Lower left
 	if (b_subtile != 0 && a_subtile != 0) {
-		for (int i = 0; i < 4; i++) {
-			// Skip the subtile if it was used one from A or B block
-			if (BlockB2_Subtiles_IDS[b_subtile * 4 + i] == -1) continue;
+		for (int j = 0; j < 2; j++) {
+			for (int i = 0; i < 2; i++) {
+				// calculate tile (row 0..3)
+				int t = (b_subtile >> (j * 2 + i)) & 1;
+				if (block == 2) t *= 2;
 
-			// Get the block B subtiles ids and get their coordinates on the chipset
-			rect.x = block_x + (BlockB2_Subtiles_IDS[(block == 2 ? 64 : 0) + b_subtile * 4 + i] % 2) * 8;
-			rect.y = block_y + (BlockB2_Subtiles_IDS[(block == 2 ? 64 : 0) + b_subtile * 4 + i] / 2) * 8;
+				// Skip the subtile if not used
+				if (t == 0) continue;
 
-			// Blit the subtile
-			tile->Blit((i % 2) * 8, (i / 2) * 8, chipset, rect, 255);
+				// Get the coordinates on the chipset
+				rect.x = block_x + i * 8;
+				rect.y = block_y + j * 8 + t * 16;
+
+				// Blit the subtile
+				tile->Blit(i * 8, j * 8, chipset, rect, 255);
+			}
 		}
 	}
 
@@ -409,17 +464,15 @@ void TilemapLayer::GenerateAutotileD(short ID) {
 	rect.height = 8;
 
 	// Blit D block subtiles
-	//	1 -> Upper right
-	//	2 -> Upper left
-	//	3 -> Lower right
-	//	4 -> Lower left
-	for (int i = 0; i < 4; i++) {
-		// Get the block D subtiles ids and get their coordinates on the chipset
-		rect.x = block_x + (BlockD_Subtiles_IDS[subtile * 4 + i] % 6) * 8;
-		rect.y = block_y + (BlockD_Subtiles_IDS[subtile * 4 + i] / 6) * 8;
+	for (int j = 0; j < 2; j++) {
+		for (int i = 0; i < 2; i++) {
+			// Get the block D subtiles ids and get their coordinates on the chipset
+			rect.x = block_x + (BlockD_Subtiles_IDS[subtile][j][i][0] * 2 + i) * 8;
+			rect.y = block_y + (BlockD_Subtiles_IDS[subtile][j][i][1] * 2 + j) * 8;
 
-		// Blit the subtile
-		tile->Blit((i % 2) * 8, (i / 2) * 8, chipset, rect, 255);
+			// Blit the subtile
+			tile->Blit(i * 8, j * 8, chipset, rect, 255);
+		}
 	}
 
 	autotiles_d[block][subtile] = BitmapScreen::CreateBitmapScreen(tile);
