@@ -20,16 +20,19 @@
 ////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <iostream>
+#include <png.h>
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include FT_BITMAP_H
+#include "SDL.h"
+
 #include "cache.h"
 #include "filefinder.h"
 #include "options.h"
 #include "data.h"
 #include "output.h"
-#include "SDL.h"
-#include "SDL_image.h"
 #include "system.h"
 #include "soft_bitmap.h"
-#include FT_BITMAP_H
 
 ////////////////////////////////////////////////////////////
 void SoftBitmap::Init(int width, int height) {
@@ -85,6 +88,114 @@ SDL_Surface* SoftBitmap::copy_to_sdl(Bitmap* source) {
 }
 
 ////////////////////////////////////////////////////////////
+static void read_data(png_structp png_ptr, png_bytep data, png_size_t length) {
+    png_bytep* bufp = (png_bytep*) png_get_io_ptr(png_ptr);
+	memcpy(data, *bufp, length);
+	*bufp += length;
+}
+
+////////////////////////////////////////////////////////////
+void SoftBitmap::ReadPNG(FILE *stream, const void *buffer) {
+	png_struct *png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+	if (png_ptr == NULL) {
+		Output::Error("Couldn't allocate PNG structure");
+		return;
+	}
+
+	png_info *info_ptr = png_create_info_struct(png_ptr);
+	if (info_ptr == NULL) {
+		Output::Error("Couldn't allocate PNG info structure");
+		return;
+	}
+
+	if (setjmp(png_jmpbuf(png_ptr))) {
+		png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp) NULL);
+		Output::Error("Error reading PNG file");
+		return;
+	}
+
+	if (stream != NULL)
+		png_init_io(png_ptr, stream);
+	else
+		png_set_read_fn(png_ptr, (voidp) &buffer, read_data);
+
+	png_read_info(png_ptr, info_ptr);
+
+	png_uint_32 width, height;
+	int bit_depth, color_type;
+	png_get_IHDR(png_ptr, info_ptr, &width, &height,
+				 &bit_depth, &color_type, NULL, NULL, NULL);
+
+	png_color black = {0,0,0};
+	png_colorp palette;
+	int num_palette = 0;
+
+	switch (color_type) {
+		case PNG_COLOR_TYPE_PALETTE:
+			if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS))
+				png_set_tRNS_to_alpha(png_ptr);
+			else if (transparent && png_get_valid(png_ptr, info_ptr, PNG_INFO_PLTE))
+				png_get_PLTE(png_ptr, info_ptr, &palette, &num_palette);
+			png_set_palette_to_rgb(png_ptr);
+			png_set_swap_alpha(png_ptr);
+			png_set_filler(png_ptr, 0xFF, PNG_FILLER_BEFORE);
+			break;
+		case PNG_COLOR_TYPE_GRAY:
+			png_set_gray_to_rgb(png_ptr);
+			if (bit_depth < 8)
+				png_set_expand_gray_1_2_4_to_8(png_ptr);
+			png_set_filler(png_ptr, 0xFF, PNG_FILLER_BEFORE);
+			if (transparent) {
+				palette = &black;
+				num_palette = 1;
+			}
+			break;
+		case PNG_COLOR_TYPE_GRAY_ALPHA:
+			png_set_gray_to_rgb(png_ptr);
+			if (bit_depth < 8)
+				png_set_expand_gray_1_2_4_to_8(png_ptr);
+			break;
+		case PNG_COLOR_TYPE_RGB:
+			png_set_filler(png_ptr, 0xFF, PNG_FILLER_BEFORE);
+			break;
+		case PNG_COLOR_TYPE_RGB_ALPHA:
+			png_set_swap_alpha(png_ptr);
+			break;
+	}
+
+	if (bit_depth < 8)
+		png_set_packing(png_ptr);
+
+	if (bit_depth == 16)
+		png_set_strip_16(png_ptr);
+
+	png_read_update_info(png_ptr, info_ptr);
+
+	Init(width, height);
+
+	for (png_uint_32 y = 0; y < height; y++) {
+		png_bytep dst = (png_bytep) pixels() + y * pitch();
+		png_read_row(png_ptr, dst, NULL);
+	}
+
+	if (transparent && num_palette > 0) {
+		png_color& ck = palette[0];
+		uint8 ck1[4] = {255, ck.red, ck.green, ck.blue};
+		uint8 ck2[4] = {  0, ck.red, ck.green, ck.blue};
+		uint32 srckey = *(uint32*)ck1;
+		uint32 dstkey = *(uint32*)ck2;
+		uint32* p = (uint32*) bitmap;
+		for (int i = 0; i < w * h; i++, p++)
+			if (*p == srckey)
+				*p = dstkey;
+	}
+
+	png_read_end(png_ptr, NULL);
+
+	png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+}
+
+////////////////////////////////////////////////////////////
 SoftBitmap::SoftBitmap(int width, int height, bool itransparent) {
 	transparent = itransparent;
 
@@ -94,44 +205,19 @@ SoftBitmap::SoftBitmap(int width, int height, bool itransparent) {
 SoftBitmap::SoftBitmap(const std::string filename, bool itransparent) {
 	transparent = itransparent;
 
-	SDL_Surface* temp = IMG_Load(filename.c_str());
-
-	if (temp == NULL) {
-		Output::Error("Couldn't load %s image.\n%s\n", filename.c_str(), IMG_GetError());
+	FILE* stream = fopen(filename.c_str(), "rb");
+	if (!stream) {
+		Output::Error("Couldn't open input file %s", filename.c_str());
+		return;
 	}
-
-	Init(temp->w, temp->h);
-
-	if (temp->format->BitsPerPixel == 8 && transparent) {
-		SDL_Color colorkey = temp->format->palette->colors[0];
-		SDL_SetColorKey(temp, SDL_SRCCOLORKEY, SDL_MapRGB(temp->format, colorkey.r, colorkey.g, colorkey.b));
-	}
-
-	copy_from_sdl(bitmap, temp);
-
-	SDL_FreeSurface(temp);
+	ReadPNG(stream, (void*) NULL);
+	fclose(stream);
 }
 
 SoftBitmap::SoftBitmap(const uint8* data, uint bytes, bool itransparent) {
 	transparent = itransparent;
 
-	SDL_RWops* rw_ops = SDL_RWFromConstMem(data, bytes);
-	SDL_Surface* temp = IMG_Load_RW(rw_ops, 1);
-
-	if (temp == NULL) {
-		Output::Error("Couldn't load image from memory.\n%s\n", IMG_GetError());
-	}
-
-	Init(temp->w, temp->h);
-
-	if (temp->format->BitsPerPixel == 8 && transparent) {
-		SDL_Color colorkey = temp->format->palette->colors[0];
-		SDL_SetColorKey(temp, SDL_SRCCOLORKEY, SDL_MapRGB(temp->format, colorkey.r, colorkey.g, colorkey.b));
-	}
-
-	copy_from_sdl(bitmap, temp);
-
-	SDL_FreeSurface(temp);
+	ReadPNG((FILE*) NULL, (const void*) data);
 }
 
 SoftBitmap::SoftBitmap(Bitmap* source, Rect src_rect, bool itransparent) {

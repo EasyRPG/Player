@@ -447,20 +447,20 @@ void Bitmap::FillRect(Rect dst_rect, const Color &color) {
 	if (bpp() == 2) {
 		uint16 pixel = (uint16)GetUint32Color(color);
 
-		uint16* dst_pixels = (uint16*)pixels();
+		uint16* dst_pixels = (uint16*)pixels() + dst_rect.y * pitch() / bpp() + dst_rect.x;
 
 		for (int i = 0; i < dst_rect.height; i++) {
 			std::fill(dst_pixels, dst_pixels + dst_rect.width, pixel);
-			dst_pixels += dst_rect.width;
+			dst_pixels += pitch() / bpp();
 		}
 	} else if (bpp() == 4) {
 		uint32 pixel = GetUint32Color(color);
 
-		uint32* dst_pixels = (uint32*)pixels();
+		uint32* dst_pixels = (uint32*)pixels() + dst_rect.y * pitch() / bpp() + dst_rect.x;
 
 		for (int i = 0; i < dst_rect.height; i++) {
 			std::fill(dst_pixels, dst_pixels + dst_rect.width, pixel);
-			dst_pixels += dst_rect.width;
+			dst_pixels += pitch() / bpp();
 		}
 	}
 

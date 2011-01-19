@@ -21,6 +21,8 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <string>
+#include <cstdio>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -93,6 +95,8 @@ protected:
 	void InitFreeType();
 	SoftBitmap* RenderFreeTypeChar(int c);
 	void DoneFreeType();
+
+	void ReadPNG(FILE* stream, const void *data);
 };
 
 #endif
