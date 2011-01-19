@@ -50,7 +50,7 @@
 #ifdef USE_SDL
 	#ifndef USE_OPENGL
 		#define USE_SDL_IMAGE
-		#define USE_SDL_BITMAP
+		//#define USE_SDL_BITMAP
 		//#define USE_RLE
 	#endif
 

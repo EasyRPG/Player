@@ -62,6 +62,9 @@ namespace {
 
 	Game_Interpreter* interpreter;
 	Game_Vehicle* vehicles[3];
+
+	uint8 substitutions_down[144];
+	uint8 substitutions_up[144];
 }
 
 ////////////////////////////////////////////////////////////
@@ -234,6 +237,7 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 	int16 tile_index = (int16)(x + y * map->width);
 
 	int16 tile_id = map->upper_layer[tile_index] - 10000;
+	tile_id = substitutions_up[tile_id];
 
 	if ((passages_up[tile_id] & bit) == 0)
 		return false;
@@ -242,7 +246,9 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 		return true;
 
 	if (map->lower_layer[tile_index] >= 5000) {
-		tile_id = map->lower_layer[tile_index] - 5000 + 18;
+		tile_id = map->lower_layer[tile_index] - 5000;
+		tile_id = substitutions_down[tile_id];
+		tile_id += 18;
 
 		if ((passages_down[tile_id] & bit) == 0)
 			return false;
@@ -549,9 +555,26 @@ void Game_Map::SetChipset(int id) {
 	terrain_tags = chipset.terrain_data;
 	panorama_speed = chipset.animation_speed;
 	panorama_type = chipset.animation_type;
+	if (passages_down.size() < 162)
+		passages_down.resize(162, (unsigned char) 0x0F);
+	if (passages_up.size() < 144)
+		passages_up.resize(144, (unsigned char) 0x0F);
+	for (uint8 i = 0; i < 144; i++) {
+		substitutions_down[i] = i;
+		substitutions_up[i] = i;
+	}
 }
 
 ////////////////////////////////////////////////////////////
 Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
 	return vehicles[which];
+}
+
+////////////////////////////////////////////////////////////
+void Game_Map::SubstituteDown(int old_id, int new_id) {
+	substitutions_down[old_id] = (uint8) new_id;
+}
+
+void Game_Map::SubstituteUp(int old_id, int new_id) {
+	substitutions_up[old_id] = (uint8) new_id;
 }

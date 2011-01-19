@@ -280,6 +280,8 @@ namespace Game_Map {
 	void SetChipset(int id);
 
 	Game_Vehicle* GetVehicle(Game_Vehicle::Type which);
+	void SubstituteDown(int old_id, int new_id);
+	void SubstituteUp(int old_id, int new_id);
 }
 
 #endif

@@ -109,7 +109,8 @@
 #else
 	#define OUTPUT_TYPE OUTPUT_SCREEN
 #endif*/
-#define OUTPUT_TYPE OUTPUT_SCREEN
+//#define OUTPUT_TYPE OUTPUT_SCREEN
+#define OUTPUT_TYPE OUTPUT_CONSOLE
 #define OUTPUT_FILENAME "easyrpg_log.txt"
 
 ////////////////////////////////////////////////////////////

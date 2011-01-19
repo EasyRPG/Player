@@ -106,9 +106,11 @@ void Spriteset_Map::ChipsetUpdated() {
 }
 
 void Spriteset_Map::SubstituteDown(int old_id, int new_id) {
+	Game_Map::SubstituteDown(old_id, new_id);
 	tilemap->SubstituteDown(old_id, new_id);
 }
 
 void Spriteset_Map::SubstituteUp(int old_id, int new_id) {
+	Game_Map::SubstituteUp(old_id, new_id);
 	tilemap->SubstituteUp(old_id, new_id);
 }
