@@ -206,4 +206,9 @@ std::string FileFinder::DefaultFont() {
 	return "DejaVuLGCSansMono";
 }
 
+////////////////////////////////////////////////////////////
+FILE* FileFinder::fopenUTF8(const std::string& name_utf8, const std::string& mode) {
+	return fopen(name_utf8.c_str(), mode.c_str());
+}
+
 #endif

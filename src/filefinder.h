@@ -75,6 +75,14 @@ namespace FileFinder {
 	///////////////////////////////////////////////////////
 	std::string DefaultFont();
 
+	///////////////////////////////////////////////////////
+	/// Open a file specified by a UTF-8 string
+	/// @param : filename in UTF-8
+	/// @param : mode ("r", "w", etc)
+	/// @return: FILE*
+	///////////////////////////////////////////////////////
+	FILE* fopenUTF8(const std::string& name_utf8, const std::string& mode);
+
 	/// Available image extension types
 	const std::string IMG_TYPES[] = {
 #ifdef SUPPORT_BMP

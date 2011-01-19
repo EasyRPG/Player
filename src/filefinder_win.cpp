@@ -20,6 +20,7 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <cstdio>
 #include <iostream>
 #include <fstream>
 #include <windows.h>
@@ -216,6 +217,12 @@ std::string FileFinder::DefaultFont() {
 	}
 	
 	return default_font;
+}
+
+FILE* FileFinder::fopenUTF8(const std::string& name_utf8, const std::string& mode) {
+	std::wstring name_w = Utils::DecodeUTF(name_utf8);
+	std::wstring mode_w = Utils::DecodeUTF(mode);
+	return wfopen(name_w.c_str(), mode_w.c_str());
 }
 
 #endif
