@@ -369,6 +369,12 @@
     <ClCompile Include="..\..\src\util_win.cpp">
       <Filter>Source Files\Tools\Win</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\soft_bitmap.cpp">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\soft_bitmap_screen.cpp">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cache.h">
@@ -682,6 +688,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\util_win.h">
       <Filter>Source Files\Tools\Win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\soft_bitmap.h">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\soft_bitmap_screen.h">
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
