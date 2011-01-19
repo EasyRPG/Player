@@ -18,6 +18,9 @@
 #ifndef _SOFT_BITMAP_H_
 #define _SOFT_BITMAP_H_
 
+#include "system.h"
+#ifdef USE_SOFT_BITMAP
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
@@ -98,5 +101,7 @@ protected:
 
 	void ReadPNG(FILE* stream, const void *data);
 };
+
+#endif
 
 #endif

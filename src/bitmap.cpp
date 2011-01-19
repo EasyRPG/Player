@@ -28,8 +28,10 @@
 	#include "sdl_bitmap.h"
 #elif defined(USE_OPENGL)
 	#include "gl_bitmap.h"
-#else
+#elif defined(USE_SOFT_BITMAP)
 	#include "soft_bitmap.h"
+#else
+	#error "No bitmap implementation selected"
 #endif
 
 #include "hslrgb.h"
@@ -51,42 +53,50 @@ static int GetMaskByte(uint32 mask) {
 
 ////////////////////////////////////////////////////////////
 Bitmap* Bitmap::CreateBitmap(int width, int height, bool transparent) {
-	#ifdef USE_SDL_BITMAP
+	#if defined(USE_SDL_BITMAP)
 		return (Bitmap*)new SdlBitmap(width, height, transparent);
-	#elif USE_OPENGL
+	#elif defined(USE_OPENGL)
 		return (Bitmap*)new GlBitmap(width, height, transparent);
-	#else
+	#elif defined(USE_SOFT_BITMAP)
 		return (Bitmap*)new SoftBitmap(width, height, transparent);
+	#else
+		#error "No bitmap implementation selected"
 	#endif
 }
 
 Bitmap* Bitmap::CreateBitmap(const std::string filename, bool transparent) {
-	#ifdef USE_SDL_BITMAP
+	#if defined(USE_SDL_BITMAP)
 		return (Bitmap*)new SdlBitmap(filename, transparent);
-	#elif USE_OPENGL
+	#elif defined(USE_OPENGL)
 		return (Bitmap*)new GlBitmap(filename, transparent);
-	#else
+	#elif defined(USE_SOFT_BITMAP)
 		return (Bitmap*)new SoftBitmap(filename, transparent);
+	#else
+		#error "No bitmap implementation selected"
 	#endif
 }
 
 Bitmap* Bitmap::CreateBitmap(const uint8* data, uint bytes, bool transparent) {
-	#ifdef USE_SDL_BITMAP
+	#if defined(USE_SDL_BITMAP)
 		return (Bitmap*)new SdlBitmap(data, bytes, transparent);
-	#elif USE_OPENGL
+	#elif defined(USE_OPENGL)
 		return (Bitmap*)new GlBitmap(data, bytes, transparent);
-	#else
+	#elif defined(USE_SOFT_BITMAP)
 		return (Bitmap*)new SoftBitmap(data, bytes, transparent);
+	#else
+		#error "No bitmap implementation selected"
 	#endif
 }
 
 Bitmap* Bitmap::CreateBitmap(Bitmap* source, Rect src_rect, bool transparent) {
-	#ifdef USE_SDL_BITMAP
+	#if defined(USE_SDL_BITMAP)
 		return (Bitmap*)new SdlBitmap(source, src_rect, transparent);
-	#elif USE_OPENGL
+	#elif defined(USE_OPENGL)
 		return (Bitmap*)new GlBitmap(source, src_rect, transparent);
-	#else
+	#elif defined(USE_SOFT_BITMAP)
 		return (Bitmap*)new SoftBitmap(source, src_rect, transparent);
+	#else
+		#error "No bitmap implementation selected"
 	#endif
 }
 

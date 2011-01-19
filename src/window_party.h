@@ -22,6 +22,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "window_base.h"
+#include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
 /// Window Party Class
@@ -58,6 +59,11 @@ protected:
 	int item_id;
 	// animation cycle
 	int cycle;
+
+	// character bitmaps
+	// bitmaps[actor#][anim phase][equippable]
+	Bitmap* bitmaps[4][3][2];
+
 	// animation rate
 	static const int anim_rate = 20;
 };

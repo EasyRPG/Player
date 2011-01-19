@@ -15,6 +15,9 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#include "system.h"
+#ifdef USE_SOFT_BITMAP
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
@@ -25,13 +28,11 @@
 #include FT_FREETYPE_H
 #include FT_BITMAP_H
 #include "SDL.h"
-
 #include "cache.h"
 #include "filefinder.h"
 #include "options.h"
 #include "data.h"
 #include "output.h"
-#include "system.h"
 #include "soft_bitmap.h"
 
 ////////////////////////////////////////////////////////////
@@ -634,3 +635,6 @@ void SoftBitmap::Lock() {
 
 void SoftBitmap::Unlock() {
 }
+
+#endif
+

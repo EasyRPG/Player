@@ -34,11 +34,41 @@ Window_Party::Window_Party(int ix, int iy, int iwidth, int iheight) :
 	cycle = 0;
 	item_id = 0;
 
+	const std::vector<Game_Actor*>& actors = Game_Party::GetActors();
+	for (size_t i = 0; i < actors.size() && i < 4; i++) {
+		Game_Actor *actor = actors[i];
+		const std::string& sprite_name = actor->GetCharacterName();
+		int sprite_id = actor->GetCharacterIndex();
+		Bitmap *bm = Cache::Charset(sprite_name);
+		int width = bm->GetWidth() / 4 / 3;
+		int height = bm->GetHeight() / 2 / 4;
+		for (int j = 0; j < 3; j++) {
+			int sx = ((sprite_id % 4) * 3 + j) * width;
+			int sy = ((sprite_id / 4) * 4 + 2) * height;
+			Rect src(sx, sy, width, height);
+			for (int k = 0; k < 2; k++) {
+				Bitmap *bm2 = Bitmap::CreateBitmap(width, height, true);
+				#ifndef USE_ALPHA
+				bm2->SetTransparentColor(bm->GetTransparentColor());
+				bm2->Clear();
+				#endif
+				bm2->Blit(0, 0, bm, src, 255);
+				if (k == 0)
+					bm2->ToneChange(Tone(0, 0, 0, 255));
+				bitmaps[i][j][k] = bm2;
+			}
+		}
+	}
+
 	Refresh();
 }
 
 ////////////////////////////////////////////////////////////
 Window_Party::~Window_Party() {
+	for (size_t i = 0; i < Game_Party::GetActors().size() && i < 4; i++)
+		for (int j = 0; j < 3; j++)
+			for (int k = 0; k < 2; k++)
+				delete bitmaps[i][j][k];
 }
 
 ////////////////////////////////////////////////////////////
@@ -46,19 +76,12 @@ void Window_Party::Refresh() {
 	contents->Clear();
 
 	const std::vector<Game_Actor*>& actors = Game_Party::GetActors();
-	for (size_t i = 0; i < actors.size(); i++) {
+	for (size_t i = 0; i < actors.size() && i < 4; i++) {
 		Game_Actor *actor = actors[i];
-		const std::string& sprite_name = actor->GetCharacterName();
-		int sprite_id = actor->GetCharacterIndex();
 		int phase = (cycle / anim_rate) % 3;
-		Bitmap *bm = Cache::Charset(sprite_name);
-		int width = bm->GetWidth() / 4 / 3;
-		int height = bm->GetHeight() / 2 / 4;
-		int sx = ((sprite_id % 4) * 3 + phase) * width;
-		int sy = ((sprite_id / 4) * 4 + 2) * height;
-		Rect src(sx, sy, width, height);
 		bool equippable = item_id == 0 || actor->IsEquippable(item_id);
-		contents->Blit(i * 32, 0, bm, src, equippable ? 255 : 128);
+		Bitmap *bm = bitmaps[i][phase][equippable ? 1 : 0];
+		contents->Blit(i * 32, 0, bm, bm->GetRect(), 255);
 	}
 }
 

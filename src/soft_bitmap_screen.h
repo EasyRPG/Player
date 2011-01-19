@@ -18,6 +18,9 @@
 #ifndef _SOFT_BITMAP_SCREEN_H_
 #define _SOFT_BITMAP_SCREEN_H_
 
+#include "system.h"
+#ifdef USE_SOFT_BITMAP
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
@@ -45,5 +48,7 @@ protected:
 
 	void Refresh();
 };
+
+#endif
 
 #endif
