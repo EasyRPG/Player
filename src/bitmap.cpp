@@ -1042,3 +1042,24 @@ Color Bitmap::GetTransparentColor() const {
 #endif
 }
 
+void Bitmap::TextDraw(int x, int y, int width, int height, std::string text, TextAlignment align) {
+	Rect rect = GetTextSize(text);
+	int dx = rect.width - width;
+
+	switch (align) {
+		case TextAlignLeft:
+			TextDraw(x, y, text);
+			break;
+		case TextAlignCenter:
+			TextDraw(x + dx / 2, y, text);
+			break;
+		case TextAlignRight:
+			TextDraw(x + dx, y, text);
+			break;
+	}
+}
+
+void Bitmap::TextDraw(Rect rect, std::string text, TextAlignment align) {
+	TextDraw(rect.x, rect.y, rect.width, rect.height, text, align);
+}
+

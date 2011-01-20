@@ -221,9 +221,28 @@ public:
 	/// @param x : x coordinate where text rendering starts
 	/// @param y : y coordinate where text rendering starts
 	/// @param text : text to draw
-	/// @param align : text alignment inside dst_rect
+	/// @param align : text alignment (IGNORED!)
 	////////////////////////////////////////////////////////
 	virtual void TextDraw(int x, int y, std::string text, TextAlignment align = Bitmap::TextAlignLeft) = 0;
+
+	////////////////////////////////////////////////////////
+	/// Draws text to bitmap.
+	/// @param x : x coordinate of bounding rectangle
+	/// @param y : y coordinate of bounding rectangle
+	/// @param width : width of bounding rectangle
+	/// @param height : height of bounding rectangle
+	/// @param text : text to draw
+	/// @param align : text alignment inside bounding rectangle
+	////////////////////////////////////////////////////////
+	virtual void TextDraw(int x, int y, int width, int height, std::string text, TextAlignment align = Bitmap::TextAlignLeft);
+
+	////////////////////////////////////////////////////////
+	/// Draws text to bitmap.
+	/// @param rect : bounding rectangle
+	/// @param text : text to draw
+	/// @param align : text alignment inside bounding rectangle
+	////////////////////////////////////////////////////////
+	virtual void TextDraw(Rect rect, std::string text, TextAlignment align = Bitmap::TextAlignLeft);
 
 	////////////////////////////////////////////////////////
 	/// Get space needed to draw some text.

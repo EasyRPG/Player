@@ -200,7 +200,7 @@ SoftBitmap::SoftBitmap(int width, int height, bool itransparent) {
 SoftBitmap::SoftBitmap(const std::string filename, bool itransparent) {
 	transparent = itransparent;
 
-	FILE* stream = fopen(filename.c_str(), "rb");
+	FILE* stream = FileFinder::fopenUTF8(filename, "rb");
 	if (!stream) {
 		Output::Error("Couldn't open input file %s", filename.c_str());
 		return;
