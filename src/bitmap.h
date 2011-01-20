@@ -160,18 +160,19 @@ public:
 
 	////////////////////////////////////////////////////////
 	/// Rotate bitmap hue.
-	/// @param h : hue
+	/// @param hue : hue change, degrees
 	////////////////////////////////////////////////////////
-	virtual void HueChange(double h);
+	virtual void HueChange(double hue);
 
 	////////////////////////////////////////////////////////
 	/// Adjust bitmap HSL colors.
-	/// @param h : hue, default 0.0
-	/// @param s : saturation, default 0.0
-	/// @param l : luminance, default 1.0
+	/// @param hue : hue change, degrees
+	/// @param sat : saturation scale
+	/// @param lum : luminance scale
+	/// @param loff: luminance offset
 	/// @param dst_rect : destination rect
 	////////////////////////////////////////////////////////
-	virtual void HSLChange(double h, double s, double l, Rect dst_rect);
+	virtual void HSLChange(double hue, double sat, double lum, double loff, Rect dst_rect);
 
 	////////////////////////////////////////////////////////
 	/// Adjust bitmap tone.
