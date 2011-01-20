@@ -153,6 +153,7 @@ void Scene_Shop::SetMode(int nmode) {
 			Enable(empty2_window, false);
 			break;
 		case Buy:
+			buy_window->Refresh();
 			Enable(buy_window, true);
 			Enable(count_window, false);
 			Enable(empty2_window, false);
