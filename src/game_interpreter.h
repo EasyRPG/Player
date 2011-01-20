@@ -168,6 +168,7 @@ private:
 	bool CommandEnterExitVehicle();
 	bool CommandSetVehicleLocation();
 	bool CommandTileSubstitution();
+	bool CommandPanScreen();
 
 	void CommandEnd();
 
@@ -176,6 +177,7 @@ private:
 	bool ContinuationOpenShop();
 	bool ContinuationShowInn();
 	bool ContinuationEnemyEncounter();
+	bool ContinuationPanScreen();
 
 private:
 	int DecodeInt(std::vector<int>::const_iterator& it);

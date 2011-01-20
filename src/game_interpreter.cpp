@@ -621,6 +621,8 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandSetVehicleLocation();
 		case TileSubstitution:
 			return CommandTileSubstitution();
+		case PanScreen:
+			return CommandPanScreen();
 		default:
 			return true;
 	}
@@ -3073,6 +3075,49 @@ bool Game_Interpreter::CommandTileSubstitution() { // code 11750
 	else
 		scene->spriteset->SubstituteDown(old_id, new_id);
 
+	return true;
+}
+
+bool Game_Interpreter::CommandPanScreen() { // code 11060
+	static const int directions[4] = {8, 6, 2, 4};
+	int direction;
+	int distance;
+	int speed;
+	bool wait = false;
+
+	switch (list[index].parameters[0]) {
+	case 0: // Lock
+		// TODO
+	    break;
+	case 1: // Unlock
+		// TODO
+	    break;
+	case 2: // Pan
+		direction = directions[list[index].parameters[1]];
+		distance = list[index].parameters[2];
+		speed = list[index].parameters[3];
+		wait = list[index].parameters[4] != 0;
+		Game_Map::StartScroll(direction, distance, speed);
+	    break;
+	case 3: // Reset
+		// TODO
+		speed = list[index].parameters[3];
+		wait = list[index].parameters[4] != 0;
+	    break;
+	}
+
+	if (!wait)
+		return true;
+
+	SetContinuation(&Game_Interpreter::ContinuationPanScreen);
+	return false;
+}
+
+bool Game_Interpreter::ContinuationPanScreen() {
+	if (Game_Map::IsScrolling())
+		return false;
+
+	index++;
 	return true;
 }
 
