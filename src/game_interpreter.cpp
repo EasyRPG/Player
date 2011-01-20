@@ -337,9 +337,11 @@ void Game_Interpreter::Update() {
 		}
 
 		if (!ExecuteCommand()) {
+			active = true;
 			return;
 		}
 
+		active = false;
 		index++;
 	} // for
 }
@@ -3085,6 +3087,9 @@ bool Game_Interpreter::CommandPanScreen() { // code 11060
 	int speed;
 	bool wait = false;
 
+	if (active)
+		return true;
+
 	switch (list[index].parameters[0]) {
 	case 0: // Lock
 		// TODO
@@ -3093,11 +3098,11 @@ bool Game_Interpreter::CommandPanScreen() { // code 11060
 		// TODO
 	    break;
 	case 2: // Pan
+		// TODO
 		direction = directions[list[index].parameters[1]];
 		distance = list[index].parameters[2];
 		speed = list[index].parameters[3];
 		wait = list[index].parameters[4] != 0;
-		Game_Map::StartScroll(direction, distance, speed);
 	    break;
 	case 3: // Reset
 		// TODO
@@ -3106,18 +3111,6 @@ bool Game_Interpreter::CommandPanScreen() { // code 11060
 	    break;
 	}
 
-	if (!wait)
-		return true;
-
-	SetContinuation(&Game_Interpreter::ContinuationPanScreen);
-	return false;
-}
-
-bool Game_Interpreter::ContinuationPanScreen() {
-	if (Game_Map::IsScrolling())
-		return false;
-
-	index++;
-	return true;
+	return !wait;
 }
 

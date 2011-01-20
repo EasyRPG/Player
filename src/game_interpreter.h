@@ -65,6 +65,7 @@ private:
 	std::vector<RPG::EventCommand> list;
 
 	int button_timer;
+	bool active;
 
 	// Helper function
 	void GetStrings(std::vector<std::string>& ret_val);
