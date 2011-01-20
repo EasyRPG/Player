@@ -188,6 +188,7 @@
     <ClCompile Include="..\..\src\tilemap.cpp" />
     <ClCompile Include="..\..\src\tilemap_layer.cpp" />
     <ClCompile Include="..\..\src\tone.cpp" />
+    <ClCompile Include="..\..\src\utils.cpp" />
     <ClCompile Include="..\..\src\util_win.cpp" />
     <ClCompile Include="..\..\src\window.cpp" />
     <ClCompile Include="..\..\src\window_actortarget.cpp" />
@@ -295,6 +296,7 @@
     <ClInclude Include="..\..\src\tilemap_layer.h" />
     <ClInclude Include="..\..\src\time.h" />
     <ClInclude Include="..\..\src\tone.h" />
+    <ClInclude Include="..\..\src\utils.h" />
     <ClInclude Include="..\..\src\util_macro.h" />
     <ClInclude Include="..\..\src\util_win.h" />
     <ClInclude Include="..\..\src\window.h" />

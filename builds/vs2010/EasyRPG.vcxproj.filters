@@ -375,6 +375,9 @@
     <ClCompile Include="..\..\src\soft_bitmap_screen.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\utils.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cache.h">
@@ -694,6 +697,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\soft_bitmap_screen.h">
       <Filter>Source Files\Backend\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\utils.h">
+      <Filter>Source Files\Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

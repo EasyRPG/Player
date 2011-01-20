@@ -31,6 +31,7 @@
 #include "options.h"
 #include "player.h"
 #include "registry_win.h"
+#include "utils.h"
 
 // MinGW shlobj.h does not define this
 #ifndef SHGFP_TYPE_CURRENT
@@ -222,7 +223,7 @@ std::string FileFinder::DefaultFont() {
 FILE* FileFinder::fopenUTF8(const std::string& name_utf8, const std::string& mode) {
 	std::wstring name_w = Utils::DecodeUTF(name_utf8);
 	std::wstring mode_w = Utils::DecodeUTF(mode);
-	return wfopen(name_w.c_str(), mode_w.c_str());
+	return _wfopen(name_w.c_str(), mode_w.c_str());
 }
 
 #endif
