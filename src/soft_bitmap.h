@@ -40,7 +40,6 @@ public:
 	SoftBitmap(const std::string filename, bool transparent);
 	SoftBitmap(const uint8* data, uint bytes, bool transparent);
 	SoftBitmap(Bitmap* source, Rect src_rect, bool transparent);
-	SoftBitmap(SDL_Surface* bitmap, bool transparent = true);
 	~SoftBitmap();
 
 	void Blit(int x, int y, Bitmap* _src, Rect src_rect, int opacity);
@@ -87,9 +86,6 @@ protected:
 
 	void Lock();
 	void Unlock();
-
-	static void copy_from_sdl(void* bitmap, SDL_Surface* src);
-	static SDL_Surface* copy_to_sdl(Bitmap* source);
 
 	static FT_Library library;
 	static FT_Face face;

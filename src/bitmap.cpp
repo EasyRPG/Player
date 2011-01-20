@@ -116,12 +116,12 @@ Bitmap::~Bitmap() {
 void Bitmap::Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
 	if (opacity < 0) return;
 
-	src_rect.Adjust(src->width(), src->height());
-	if (src_rect.IsOutOfBounds(src->width(), src->height())) return;
+	Rect dst_rect(x, y, 0, 0);
 
-	Rect dst_rect(x, y, src_rect.width, src_rect.height);
-	dst_rect.Adjust(width(), height());
-	if (dst_rect.IsOutOfBounds(width(), height())) return;
+	if (!Rect::AdjustRectangles(src_rect, dst_rect, src->GetRect()))
+		return;
+	if (!Rect::AdjustRectangles(dst_rect, src_rect, GetRect()))
+		return;
 
 	if (opacity > 255) opacity = 255;
 

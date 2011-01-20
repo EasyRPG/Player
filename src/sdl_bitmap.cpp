@@ -82,7 +82,7 @@ SdlBitmap::SdlBitmap(int width, int height, bool itransparent) {
 	if (transparent)
 		flags |= TRANSPARENT_FLAGS;
 
-	SDL_Surface* temp = SDL_CreateRGBSurface(flags, width, height, ((SdlUi*)DisplayUi)->GetDisplaySurface()->format->BitsPerPixel, RMASK, GMASK, BMASK, AMASK);
+	SDL_Surface* temp = SDL_CreateRGBSurface(flags, width, height, ((SdlUi*)DisplayUi)->GetDisplaySurface()->bpp() * 8, RMASK, GMASK, BMASK, AMASK);
 
 	if (temp == NULL) {
 		Output::Error("Couldn't create %dx%d image.\n%s\n", width, height, SDL_GetError());
@@ -153,7 +153,7 @@ SdlBitmap::SdlBitmap(Bitmap* source, Rect src_rect, bool itransparent) {
 	if (transparent)
 		flags |= TRANSPARENT_FLAGS;
 
-	SDL_Surface* temp = SDL_CreateRGBSurface(flags, src_rect.width, src_rect.height, ((SdlUi*)DisplayUi)->GetDisplaySurface()->format->BitsPerPixel, RMASK, GMASK, BMASK, AMASK);
+	SDL_Surface* temp = SDL_CreateRGBSurface(flags, src_rect.width, src_rect.height, ((SdlUi*)DisplayUi)->GetDisplaySurface()->bpp() * 8, RMASK, GMASK, BMASK, AMASK);
 
 	if (temp == NULL) {
 		Output::Error("Couldn't create %dx%d image.\n%s\n", src_rect.width, src_rect.height, SDL_GetError());

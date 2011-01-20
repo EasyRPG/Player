@@ -148,7 +148,7 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag) :
 
 ///////////////////////////////////////////////////////////
 SdlUi::~SdlUi() {
-	SDL_FreeSurface(main_surface);
+	delete main_surface;
 	SDL_Quit();
 }
 
@@ -312,10 +312,17 @@ bool SdlUi::RefreshDisplayMode() {
 	}
 
 	// Free non zoomed surface
-	if (main_surface != main_window) {
-		SDL_FreeSurface(main_surface);
+	#ifdef USE_SDL_BITMAP
+	if (main_surface != NULL && ((SdlBitmap*) main_surface)->bitmap != main_window) {
+		delete main_surface;
 		main_surface = NULL;
 	}
+	#else
+	if (main_surface != NULL) {
+		delete main_surface;
+		main_surface = NULL;
+	}
+	#endif
 	
 	// Create our window
 	main_window = SDL_SetVideoMode(display_width, display_height, bpp, flags);
@@ -331,7 +338,8 @@ bool SdlUi::RefreshDisplayMode() {
 
 	if (zoom_available && current_display_mode.zoom) {
 		// Create a non zoomed surface as drawing surface
-		main_surface = SDL_CreateRGBSurface(
+		#ifdef USE_SDL_BITMAP
+		SDL_Surface *surface = SDL_CreateRGBSurface(
 			SDL_SWSURFACE,
 			current_display_mode.width,
 			current_display_mode.height,
@@ -341,13 +349,25 @@ bool SdlUi::RefreshDisplayMode() {
 			main_window->format->Bmask,
 			main_window->format->Amask
 		);
+		main_surface = new SdlBitmap(surface, false);
+		#else
+		main_surface = Bitmap::CreateBitmap(current_display_mode.width,
+											current_display_mode.height,
+											false);
+		#endif
 
 		if (!main_surface) 
 			return false;
 
 	} else {
+		#ifdef USE_SDL_BITMAP
 		// Drawing surface will be the window itself
-		main_surface = main_window;
+		main_surface = new SdlBitmap(main_window, false);
+		#else
+		main_surface = Bitmap::CreateBitmap(current_display_mode.width,
+											current_display_mode.height,
+											false);
+		#endif
 	}
 
 	return true;
@@ -355,13 +375,11 @@ bool SdlUi::RefreshDisplayMode() {
 
 ///////////////////////////////////////////////////////////
 void SdlUi::SetBackcolor(const Color& color) {
-	back_color = SDL_MapRGB(main_surface->format, color.red, color.green, color.blue);
+	back_color = main_surface->GetUint32Color(color);
 }
 
 Color SdlUi::GetBackcolor() {
-	uint8 r, g, b, a;
-	SDL_GetRGBA(back_color, main_surface->format, &r, &g, &b, &a);
-	return Color(r, g, b, a);
+	return main_surface->GetColor(back_color);
 }
 
 ///////////////////////////////////////////////////////////
@@ -409,7 +427,13 @@ void SdlUi::ProcessEvents() {
 
 ///////////////////////////////////////////////////////////
 void SdlUi::CleanDisplay() {
-	SDL_FillRect(main_surface, &main_surface->clip_rect, back_color);
+#ifdef USE_SDL_BITMAP
+	const SDL_Rect& r = ((SdlBitmap*)main_surface)->bitmap->clip_rect;
+	Rect rect(r.x, r.y, r.w, r.h);
+	main_surface->FillRect(rect, main_surface->GetColor(back_color));
+#else
+	main_surface->FillRect(main_surface->GetRect(), main_surface->GetColor(back_color));
+#endif
 }
 
 ///////////////////////////////////////////////////////////
@@ -428,9 +452,9 @@ void SdlUi::BeginScreenCapture() {
 
 Bitmap* SdlUi::EndScreenCapture() {
 #ifdef USE_SDL_BITMAP
-	return (Bitmap*)new SdlBitmap(SDL_DisplayFormat(main_surface));
+	return (Bitmap*)new SdlBitmap(SDL_DisplayFormat(((SdlBitmap*)main_surface)->bitmap));
 #else
-	return (Bitmap*)new SoftBitmap(SDL_DisplayFormat(main_surface));
+	return Bitmap::CreateBitmap(main_surface, main_surface->GetRect());
 #endif
 }
 
@@ -446,24 +470,24 @@ void SdlUi::DrawScreenText(const std::string &text) {
 
 ///////////////////////////////////////////////////////////
 void SdlUi::DrawScreenText(const std::string &text, int x, int y, Color color) {
-	if (SDL_MUSTLOCK(main_surface)) SDL_LockSurface(main_surface);
+	main_surface->Lock();
 
-	uint32 ucolor = SDL_MapRGB(main_surface->format, color.red, color.green, color.blue);
+	uint32 ucolor = main_surface->GetUint32Color(color);
 
-	FontRender8x8::TextDraw(text, (uint8*)main_surface->pixels, x, y, main_surface->w, main_surface->h, main_surface->format->BytesPerPixel, ucolor);
+	FontRender8x8::TextDraw(text, (uint8*)main_surface->pixels(), x, y, main_surface->width(), main_surface->height(), main_surface->bpp(), ucolor);
 	
-	if (SDL_MUSTLOCK(main_surface))	SDL_UnlockSurface(main_surface);
+	main_surface->Unlock();
 }
 
 ///////////////////////////////////////////////////////////
 void SdlUi::DrawScreenText(const std::string &text, Rect dst_rect, Color color) {
-	if (SDL_MUSTLOCK(main_surface))	SDL_LockSurface(main_surface);
+	main_surface->Lock();
 
-	uint32 ucolor = SDL_MapRGB(main_surface->format, color.red, color.green, color.blue);
+	uint32 ucolor = main_surface->GetUint32Color(color);
 
-	FontRender8x8::TextDraw(text, (uint8*)main_surface->pixels, dst_rect, main_surface->w, main_surface->h, main_surface->format->BytesPerPixel, ucolor);
+	FontRender8x8::TextDraw(text, (uint8*)main_surface->pixels(), dst_rect, main_surface->width(), main_surface->height(), main_surface->bpp(), ucolor);
 	
-	if (SDL_MUSTLOCK(main_surface))	SDL_UnlockSurface(main_surface);
+	main_surface->Unlock();
 }
 
 ///////////////////////////////////////////////////////////
@@ -477,52 +501,77 @@ bool SdlUi::ShowCursor(bool flag) {
 ///////////////////////////////////////////////////////////
 inline void stretch16(uint16* s, uint16* d, int w) {
 	for(int i = 0; i < w; i++) {
-		*d++ = *s;
-		*d++ = *s++;
+		const uint16 &pixel = *s++;
+		*d++ = pixel;
+		*d++ = pixel;
 	}
 }
+
+#ifndef USE_SDL_BITMAP
+int rshift, gshift, bshift;
+#endif
 
 inline void stretch32(uint32* s, uint32* d, int w) {
+#ifdef USE_SDL_BITMAP
 	for(int i = 0; i < w; i++) {
-		*d++ = *s;
-		*d++ = *s++;
+		const uint32& pixel = *s++;
+		*d++ = pixel;
+		*d++ = pixel;
 	}
+#else
+	for(int i = 0; i < w; i++) {
+		const uint8* src = (const uint8*) (s++);
+		uint32 pixel;
+		src++;
+		pixel  = *src++ << rshift;
+		pixel += *src++ << gshift;
+		pixel += *src++ << bshift;
+		*d++ = pixel;
+		*d++ = pixel;
+	}
+#endif
 }
 
-void SdlUi::Blit2X(SDL_Surface* src, SDL_Surface* dst) {
-	if (src == dst) return;
+void SdlUi::Blit2X(Bitmap* src, SDL_Surface* dst) {
+	#ifdef USE_SDL_BITMAP
+	if (((SdlBitmap*)src)->bitmap == dst) return;
+	#else
+	rshift = main_window->format->Rshift;
+	gshift = main_window->format->Gshift;
+	bshift = main_window->format->Bshift;
+	#endif
 	
-	if (SDL_MUSTLOCK(src)) SDL_LockSurface(src);
+	src->Lock();
 	if (SDL_MUSTLOCK(dst)) SDL_LockSurface(dst);
 
-	int src_pitch = src->pitch / src->format->BytesPerPixel;
+	int src_pitch = src->pitch() / src->bpp();
 	int dst_pitch = dst->pitch / dst->format->BytesPerPixel;
 
 	if (current_display_mode.bpp == 16) {
-		uint16* src_pixels = (uint16*)src->pixels;
+		uint16* src_pixels = (uint16*)src->pixels();
 		uint16* dst_pixels = (uint16*)dst->pixels;
 
-		for (register int i = 0; i < src->h; i++) {
-			stretch16(src_pixels, dst_pixels, src->w);
+		for (register int i = 0; i < src->height(); i++) {
+			stretch16(src_pixels, dst_pixels, src->width());
 			dst_pixels += dst_pitch;
-			stretch16(src_pixels, dst_pixels, src->w);
+			stretch16(src_pixels, dst_pixels, src->width());
 			src_pixels += src_pitch;
 			dst_pixels += dst_pitch;
 		}
 	} else {
-		uint32* src_pixels = (uint32*)src->pixels;
+		uint32* src_pixels = (uint32*)src->pixels();
 		uint32* dst_pixels = (uint32*)dst->pixels;
 
-		for (register int i = 0; i < src->h; i++) {
-			stretch32(src_pixels, dst_pixels, src->w);
+		for (register int i = 0; i < src->height(); i++) {
+			stretch32(src_pixels, dst_pixels, src->width());
 			dst_pixels += dst_pitch;
-			stretch32(src_pixels, dst_pixels, src->w);
+			stretch32(src_pixels, dst_pixels, src->width());
 			src_pixels += src_pitch;
 			dst_pixels += dst_pitch;
 		}
 	}
 
-	if (SDL_MUSTLOCK(src)) SDL_UnlockSurface(src);
+	src->Unlock();
 	if (SDL_MUSTLOCK(dst)) SDL_UnlockSurface(dst);
 }
 
@@ -830,7 +879,7 @@ int SdlUi::GetMousePosY() {
 	return mouse_y;
 }
 
-SDL_Surface* SdlUi::GetDisplaySurface() {
+Bitmap* SdlUi::GetDisplaySurface() {
 	return main_surface;
 }
 

@@ -57,6 +57,7 @@ public:
 
 protected:
 	friend class SdlBitmapScreen;
+	friend class SdlUi;
 
 	//void SetupBitmapData();
 

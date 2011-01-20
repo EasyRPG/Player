@@ -27,7 +27,6 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include FT_BITMAP_H
-#include "SDL.h"
 #include "cache.h"
 #include "filefinder.h"
 #include "options.h"
@@ -44,48 +43,6 @@ void SoftBitmap::Init(int width, int height) {
 	if (bitmap == NULL) {
 		Output::Error("Couldn't create %dx%d image.\n", w, h);
 	}
-}
-
-void SoftBitmap::copy_from_sdl(void* bitmap, SDL_Surface* src) {
-
-	SDL_Surface* tmp = SDL_CreateRGBSurface(
-		SDL_SWSURFACE|SDL_SRCALPHA, src->w, src->h,
-		32, RMASK, GMASK, BMASK, AMASK);
-
-	if (tmp == NULL) {
-		Output::Error("Couldn't create surface\n%s\n", SDL_GetError());
-	}
-
-	SDL_BlitSurface(src, NULL, tmp, NULL);
-
-	if (SDL_MUSTLOCK(tmp)) {
-		if (SDL_LockSurface(tmp) < 0) {
-			Output::Error("%s", SDL_GetError());
-		}
-	}
-
-	uint32* q = (uint32*) bitmap;
-	for (int y = 0; y < tmp->h; y++) {
-		const uint32 *p = (const uint32*) ((const char*) tmp->pixels + y * tmp->pitch);
-		for (int x = 0; x < tmp->w; x++)
-			*q++ = *p++;
-	}
-
-	if (SDL_MUSTLOCK(tmp)) {
-		SDL_UnlockSurface(tmp);
-	}
-
-	SDL_FreeSurface(tmp);
-}
-
-SDL_Surface* SoftBitmap::copy_to_sdl(Bitmap* source) {
-	SoftBitmap* src = (SoftBitmap*) source;
-
-	SDL_Surface* temp = SDL_CreateRGBSurfaceFrom(
-		src->pixels(), src->width(), src->height(), 32, src->width() * 4,
-		RMASK, GMASK, BMASK, AMASK);
-
-	return temp;
 }
 
 ////////////////////////////////////////////////////////////
@@ -223,14 +180,6 @@ SoftBitmap::SoftBitmap(Bitmap* source, Rect src_rect, bool itransparent) {
 	Blit(0, 0, source, src_rect, 255);
 }
 
-SoftBitmap::SoftBitmap(SDL_Surface* source, bool itransparent) {
-	transparent = itransparent;
-
-	Init(source->w, source->h);
-
-	copy_from_sdl(bitmap, source);
-}
-
 ////////////////////////////////////////////////////////////
 SoftBitmap::~SoftBitmap() {
 	free(bitmap);
@@ -283,13 +232,12 @@ void SoftBitmap::Blit(int x, int y, Bitmap* _src, Rect src_rect, int opacity) {
 		return;
 
 	SoftBitmap* src = (SoftBitmap*) _src;
+	Rect dst_rect(x, y, 0, 0);
 
-	src_rect.Adjust(src->width(), src->height());
-	if (src_rect.IsOutOfBounds(src->width(), src->height())) return;
-
-	Rect dst_rect(x, y, src_rect.width, src_rect.height);
-	dst_rect.Adjust(width(), height());
-	if (dst_rect.IsOutOfBounds(width(), height())) return;
+	if (!Rect::AdjustRectangles(src_rect, dst_rect, src->GetRect()))
+		return;
+	if (!Rect::AdjustRectangles(dst_rect, src_rect, GetRect()))
+		return;
 
 	if (opacity > 255) opacity = 255;
 
@@ -297,7 +245,7 @@ void SoftBitmap::Blit(int x, int y, Bitmap* _src, Rect src_rect, int opacity) {
 	src->Lock();
 
 	const uint8* src_pixels = (const uint8*)src->pixels() + src_rect.x * bpp() + src_rect.y * src->pitch();
-	uint8* dst_pixels = (uint8*)pixels() + x * bpp() + y * pitch();
+	uint8* dst_pixels = (uint8*)pixels() + dst_rect.x * bpp() + dst_rect.y * pitch();
 
 	int src_pad = src->pitch() - dst_rect.width * bpp();
 	int dst_pad = pitch() - dst_rect.width * bpp();
@@ -326,18 +274,18 @@ void SoftBitmap::Blit(int x, int y, Bitmap* _src, Rect src_rect, int opacity) {
 void SoftBitmap::Mask(int x, int y, Bitmap* _src, Rect src_rect) {
 	SoftBitmap* src = (SoftBitmap*) _src;
 
-	src_rect.Adjust(src->width(), src->height());
-	if (src_rect.IsOutOfBounds(src->width(), src->height())) return;
+	Rect dst_rect(x, y, 0, 0);
 
-	Rect dst_rect(x, y, src_rect.width, src_rect.height);
-	dst_rect.Adjust(width(), height());
-	if (dst_rect.IsOutOfBounds(width(), height())) return;
+	if (!Rect::AdjustRectangles(src_rect, dst_rect, src->GetRect()))
+		return;
+	if (!Rect::AdjustRectangles(dst_rect, src_rect, GetRect()))
+		return;
 
 	Lock();
 	src->Lock();
 
 	const uint8* src_pixels = (uint8*)src->pixels() + src_rect.x * bpp() + src_rect.y * src->pitch();
-	uint8* dst_pixels = (uint8*)pixels() + x * bpp() + y * pitch();
+	uint8* dst_pixels = (uint8*)pixels() + dst_rect.x * bpp() + dst_rect.y * pitch();
 
 	int src_pad = src->pitch() - dst_rect.width * bpp();
 	int dst_pad = pitch() - dst_rect.width * bpp();

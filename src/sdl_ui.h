@@ -85,7 +85,7 @@ public:
 	//@}
 
 	/// Get display surface.
-	SDL_Surface* GetDisplaySurface();
+	Bitmap* GetDisplaySurface();
 
 protected:
 	///////////////////////////////////////////////////////
@@ -117,7 +117,7 @@ protected:
 	/// @param src : source surface
 	/// @param dst : destination surface
 	///////////////////////////////////////////////////////
-	void Blit2X(SDL_Surface* src, SDL_Surface* dst);
+	void Blit2X(Bitmap* src, SDL_Surface* dst);
 
 	///////////////////////////////////////////////////////
 	/// Set app icon.
@@ -158,7 +158,7 @@ protected:
 	SDL_Surface* main_window;
 
 	/// Surface used for zoom.
-	SDL_Surface* main_surface;
+	Bitmap* main_surface;
 
 	/// Color for display background
 	uint32 back_color;

@@ -295,7 +295,9 @@ protected:
 	friend class SoftBitmapScreen;
 
 #ifdef USE_SDL
+	friend class SdlBitmap;
 	friend class SdlBitmapScreen;
+	friend class SdlUi;
 #endif
 
 	Bitmap();

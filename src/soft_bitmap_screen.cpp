@@ -96,14 +96,7 @@ void SoftBitmapScreen::BlitScreenTiled(Rect src_rect, Rect dst_rect) {
 
 ////////////////////////////////////////////////////////////
 void SoftBitmapScreen::BlitScreenIntern(int x, int y, Rect src_rect) {
-	SDL_Surface* surface = SoftBitmap::copy_to_sdl(bitmap_effects);
-
-	SDL_Rect src_r = {(int16)src_rect.x, (int16)src_rect.y, (uint16)src_rect.width, (uint16)src_rect.height};
-	SDL_Rect dst_r = {(int16)x, (int16)y, 0, 0};
-
-	SDL_BlitSurface(surface, &src_r, DisplaySdlUi->GetDisplaySurface(), &dst_r);
-
-	SDL_FreeSurface(surface);
+	DisplaySdlUi->GetDisplaySurface()->Blit(x, y, bitmap_effects, src_rect, 255);
 }
 
 ////////////////////////////////////////////////////////////

@@ -98,6 +98,18 @@ public:
 
 	/// Height.
 	int height;
+
+	///////////////////////////////////////////////////////
+	/// Adjust a source/destination pair of rectangles
+	/// src is adjusted to fit within ref
+	/// dst will have the same width and height as src
+	/// Any adjustments made to src are also made to dst
+	/// @param src : rect
+	/// @param dst : rect
+	/// @param ref : rect
+	/// @return : true if the rectangles are non-empty
+	///////////////////////////////////////////////////////
+	static bool AdjustRectangles(Rect& src, Rect& dst, const Rect& ref);
 };
 
 #endif
