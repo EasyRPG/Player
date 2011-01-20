@@ -156,6 +156,11 @@ namespace Game_Map {
 	/// Updates the map state.
 	////////////////////////////////////////////////////////
 	void Update();
+
+	////////////////////////////////////////////////////////
+	/// Updates the scroll state.
+	////////////////////////////////////////////////////////
+	void UpdateScroll();
 	
 	/// @return current map id
 	int GetMapId();
@@ -282,6 +287,25 @@ namespace Game_Map {
 	Game_Vehicle* GetVehicle(Game_Vehicle::Type which);
 	void SubstituteDown(int old_id, int new_id);
 	void SubstituteUp(int old_id, int new_id);
+
+	enum PanDirection {
+		PanUp,
+		PanRight,
+		PanDown,
+		PanLeft
+	};
+
+	void LockPan();
+	void UnlockPan();
+	void StartPan(int direction, int distance, int speed, bool wait);
+	void ResetPan(int speed, bool wait);
+	void UpdatePan();
+
+	bool IsPanActive();
+	bool IsPanWaiting();
+	bool IsPanLocked();
+	int GetPanX();
+	int GetPanY();
 }
 
 #endif

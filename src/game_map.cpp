@@ -65,6 +65,14 @@ namespace {
 
 	uint8 substitutions_down[144];
 	uint8 substitutions_up[144];
+
+	bool pan_locked;
+	bool pan_wait;
+	int pan_speed;
+	int pan_dx;
+	int pan_dy;
+	int pan_x;
+	int pan_y;
 }
 
 ////////////////////////////////////////////////////////////
@@ -378,8 +386,7 @@ bool Game_Map::IsScrolling() {
 }
 
 ////////////////////////////////////////////////////////////
-void Game_Map::Update() {
-	if (need_refresh) Refresh();
+void Game_Map::UpdateScroll() {
 	if (scroll_rest > 0) {
 		int distance = (1 << scroll_speed) / 2;
 		switch (scroll_direction) {
@@ -398,6 +405,13 @@ void Game_Map::Update() {
 		}
 		scroll_rest -= distance;
 	}
+}
+
+////////////////////////////////////////////////////////////
+void Game_Map::Update() {
+	if (need_refresh) Refresh();
+	UpdateScroll();
+	UpdatePan();
 	
 	for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
 		i->second->Update();
@@ -578,3 +592,72 @@ void Game_Map::SubstituteDown(int old_id, int new_id) {
 void Game_Map::SubstituteUp(int old_id, int new_id) {
 	substitutions_up[old_id] = (uint8) new_id;
 }
+
+////////////////////////////////////////////////////////////
+void Game_Map::LockPan() {
+	pan_locked = true;
+}
+
+void Game_Map::UnlockPan() {
+	pan_locked = false;
+}
+
+void Game_Map::StartPan(int direction, int distance, int speed, bool wait) {
+	distance *= 128;
+	switch (direction) {
+		case PanUp:		pan_dy -= distance;		break;
+		case PanRight:	pan_dx += distance;		break;
+		case PanDown:	pan_dy += distance;		break;
+		case PanLeft:	pan_dx -= distance;		break;
+	}
+	pan_speed = speed;
+	pan_wait = wait;
+}
+
+void Game_Map::ResetPan(int speed, bool wait) {
+	pan_dx = 0;
+	pan_dy = 0;
+	pan_speed = speed;
+	pan_wait = wait;
+}
+
+void Game_Map::UpdatePan() {
+	if (!IsPanActive())
+		return;
+
+	int step = 1 << (pan_speed - 1);
+	int dx = pan_dx - pan_x;
+	int dy = pan_dy - pan_y;
+
+	if (dx > 0)
+		pan_x += std::min(step, dx);
+	else if (dx < 0)
+		pan_x -= std::min(step, -dx);
+
+	if (dy > 0)
+		pan_y += std::min(step, dy);
+	else if (dy < 0)
+		pan_y -= std::min(step, -dy);
+}
+
+////////////////////////////////////////////////////////////
+bool Game_Map::IsPanActive() {
+	return pan_x != pan_dx || pan_y != pan_dy;
+}
+
+bool Game_Map::IsPanWaiting() {
+	return IsPanActive() && pan_wait;
+}
+
+bool Game_Map::IsPanLocked() {
+	return pan_locked;
+}
+
+int Game_Map::GetPanX() {
+	return pan_x;
+}
+
+int Game_Map::GetPanY() {
+	return pan_y;
+}
+

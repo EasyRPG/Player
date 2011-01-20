@@ -3081,34 +3081,33 @@ bool Game_Interpreter::CommandTileSubstitution() { // code 11750
 }
 
 bool Game_Interpreter::CommandPanScreen() { // code 11060
-	static const int directions[4] = {8, 6, 2, 4};
 	int direction;
 	int distance;
 	int speed;
 	bool wait = false;
 
 	if (active)
-		return true;
+		return !Game_Map::IsPanWaiting();
 
 	switch (list[index].parameters[0]) {
 	case 0: // Lock
-		// TODO
-	    break;
+		Game_Map::LockPan();
+		break;
 	case 1: // Unlock
-		// TODO
-	    break;
+		Game_Map::UnlockPan();
+		break;
 	case 2: // Pan
-		// TODO
-		direction = directions[list[index].parameters[1]];
+		direction = list[index].parameters[1];
 		distance = list[index].parameters[2];
 		speed = list[index].parameters[3];
 		wait = list[index].parameters[4] != 0;
-	    break;
+		Game_Map::StartPan(direction, distance, speed, wait);
+		break;
 	case 3: // Reset
-		// TODO
 		speed = list[index].parameters[3];
 		wait = list[index].parameters[4] != 0;
-	    break;
+		Game_Map::ResetPan(speed, wait);
+		break;
 	}
 
 	return !wait;
