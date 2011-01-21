@@ -121,33 +121,34 @@ void Game_Player::UpdateScroll(int last_real_x, int last_real_y) {
 	int center_x = (DisplayUi->GetWidth() / 2 - 16) * 8;
 	int center_y = (DisplayUi->GetHeight() / 2 - 8) * 8;
 
-#if 1
 	if (Game_Map::IsPanLocked())
 		return;
 
-	int dx = real_x - center_x + Game_Map::GetPanX() - Game_Map::GetDisplayX();
-	int dy = real_y - center_y + Game_Map::GetPanY() - Game_Map::GetDisplayY();
-	if (dx > 0)
-		Game_Map::ScrollRight(dx);
-	if (dx < 0)
-		Game_Map::ScrollLeft(-dx);
-	if (dy > 0)
-		Game_Map::ScrollDown(dy);
-	if (dy < 0)
-		Game_Map::ScrollUp(-dy);
-#else
-	if (real_y > last_real_y && real_y - Game_Map::GetDisplayY() > center_y)
-		Game_Map::ScrollDown(real_y - last_real_y);
+	if (Game_Map::GetPanX() != 0 && Game_Map::GetPanY() != 0) {
+		int dx = real_x - center_x + Game_Map::GetPanX() - Game_Map::GetDisplayX();
+		int dy = real_y - center_y + Game_Map::GetPanY() - Game_Map::GetDisplayY();
+		if (dx > 0)
+			Game_Map::ScrollRight(dx);
+		if (dx < 0)
+			Game_Map::ScrollLeft(-dx);
+		if (dy > 0)
+			Game_Map::ScrollDown(dy);
+		if (dy < 0)
+			Game_Map::ScrollUp(-dy);
+	}
+	else {
+		if (real_y > last_real_y && real_y - Game_Map::GetDisplayY() > center_y)
+			Game_Map::ScrollDown(real_y - last_real_y);
 
-	if (real_x < last_real_x && real_x - Game_Map::GetDisplayX() < center_x)
-		Game_Map::ScrollLeft(last_real_x - real_x);
+		if (real_x < last_real_x && real_x - Game_Map::GetDisplayX() < center_x)
+			Game_Map::ScrollLeft(last_real_x - real_x);
 
-	if (real_x > last_real_x && real_x - Game_Map::GetDisplayX() > center_x)
-		Game_Map::ScrollRight(real_x - last_real_x);
+		if (real_x > last_real_x && real_x - Game_Map::GetDisplayX() > center_x)
+			Game_Map::ScrollRight(real_x - last_real_x);
 
-	if (real_y < last_real_y && real_y - Game_Map::GetDisplayY() < center_y)
-		Game_Map::ScrollUp(last_real_y - real_y);
-#endif
+		if (real_y < last_real_y && real_y - Game_Map::GetDisplayY() < center_y)
+			Game_Map::ScrollUp(last_real_y - real_y);
+	}
 }
 
 ////////////////////////////////////////////////////////////
