@@ -518,7 +518,8 @@ inline void stretch32(uint32* s, uint32* d, int w) {
 		*d++ = pixel;
 		*d++ = pixel;
 	}
-#else
+#endif
+#ifdef USE_SOFT_BITMAP
 	for(int i = 0; i < w; i++) {
 		const uint8* src = (const uint8*) (s++);
 		uint32 pixel;
@@ -526,6 +527,17 @@ inline void stretch32(uint32* s, uint32* d, int w) {
 		pixel  = *src++ << rshift;
 		pixel += *src++ << gshift;
 		pixel += *src++ << bshift;
+		*d++ = pixel;
+		*d++ = pixel;
+	}
+#endif
+#ifdef USE_PIXMAN_BITMAP
+	for(int i = 0; i < w; i++) {
+		const uint32 src = *s++;
+		const uint32 r = (src>>16) & 0xFF;
+		const uint32 g = (src>> 8) & 0xFF;
+		const uint32 b = (src>> 0) & 0xFF;
+		uint32 pixel = (r<<rshift) | (g<<gshift) | (b<<bshift);
 		*d++ = pixel;
 		*d++ = pixel;
 	}

@@ -28,6 +28,8 @@
 	#include "gl_bitmap_screen.h"
 #elif defined(USE_SOFT_BITMAP)
 	#include "soft_bitmap_screen.h"
+#elif defined(USE_PIXMAN_BITMAP)
+	#include "pixman_bitmap_screen.h"
 #else
 	#error "No bitmap implementation selected"
 #endif
@@ -40,6 +42,8 @@ BitmapScreen* BitmapScreen::CreateBitmapScreen(Bitmap* source) {
 		return (BitmapScreen*)new GlBitmapScreen(source);
 	#elif defined(USE_SOFT_BITMAP)
 		return (BitmapScreen*)new SoftBitmapScreen(source);
+	#elif defined(USE_PIXMAN_BITMAP)
+		return (BitmapScreen*)new PixmanBitmapScreen(source);
 	#else
 		#error "No bitmap implementation selected"
 	#endif
@@ -53,6 +57,8 @@ BitmapScreen* BitmapScreen::CreateBitmapScreen(bool delete_bitmap) {
 		return (BitmapScreen*)new GlBitmapScreen(delete_bitmap);
 	#elif defined(USE_SOFT_BITMAP)
 		return (BitmapScreen*)new SoftBitmapScreen(delete_bitmap);
+	#elif defined(USE_PIXMAN_BITMAP)
+		return (BitmapScreen*)new PixmanBitmapScreen(delete_bitmap);
 	#else
 		#error "No bitmap implementation selected"
 	#endif

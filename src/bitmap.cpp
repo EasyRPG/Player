@@ -30,6 +30,8 @@
 	#include "gl_bitmap.h"
 #elif defined(USE_SOFT_BITMAP)
 	#include "soft_bitmap.h"
+#elif defined(USE_PIXMAN_BITMAP)
+	#include "pixman_bitmap.h"
 #else
 	#error "No bitmap implementation selected"
 #endif
@@ -58,6 +60,8 @@ Bitmap* Bitmap::CreateBitmap(int width, int height, bool transparent) {
 		return (Bitmap*)new GlBitmap(width, height, transparent);
 	#elif defined(USE_SOFT_BITMAP)
 		return (Bitmap*)new SoftBitmap(width, height, transparent);
+	#elif defined(USE_PIXMAN_BITMAP)
+		return (Bitmap*)new PixmanBitmap(width, height, transparent);
 	#else
 		#error "No bitmap implementation selected"
 	#endif
@@ -70,6 +74,8 @@ Bitmap* Bitmap::CreateBitmap(const std::string filename, bool transparent) {
 		return (Bitmap*)new GlBitmap(filename, transparent);
 	#elif defined(USE_SOFT_BITMAP)
 		return (Bitmap*)new SoftBitmap(filename, transparent);
+	#elif defined(USE_PIXMAN_BITMAP)
+		return (Bitmap*)new PixmanBitmap(filename, transparent);
 	#else
 		#error "No bitmap implementation selected"
 	#endif
@@ -82,6 +88,8 @@ Bitmap* Bitmap::CreateBitmap(const uint8* data, uint bytes, bool transparent) {
 		return (Bitmap*)new GlBitmap(data, bytes, transparent);
 	#elif defined(USE_SOFT_BITMAP)
 		return (Bitmap*)new SoftBitmap(data, bytes, transparent);
+	#elif defined(USE_PIXMAN_BITMAP)
+		return (Bitmap*)new PixmanBitmap(data, bytes, transparent);
 	#else
 		#error "No bitmap implementation selected"
 	#endif
@@ -94,6 +102,8 @@ Bitmap* Bitmap::CreateBitmap(Bitmap* source, Rect src_rect, bool transparent) {
 		return (Bitmap*)new GlBitmap(source, src_rect, transparent);
 	#elif defined(USE_SOFT_BITMAP)
 		return (Bitmap*)new SoftBitmap(source, src_rect, transparent);
+	#elif defined(USE_PIXMAN_BITMAP)
+		return (Bitmap*)new PixmanBitmap(source, src_rect, transparent);
 	#else
 		#error "No bitmap implementation selected"
 	#endif

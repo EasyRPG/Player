@@ -58,8 +58,19 @@
 	#define SUPPORT_FON
 #endif
 
+#ifdef USE_PIXMAN_BITMAP
+	//#define SUPPORT_BMP
+	//#define SUPPORT_GIF
+	//#define SUPPORT_JPG
+	#define SUPPORT_PNG
+	#define SUPPORT_XYZ
+
+	#define SUPPORT_TTF
+	#define SUPPORT_FON
+#endif
+
 #ifdef USE_SDL
-	#if !defined(USE_OPENGL) && !defined(USE_SOFT_BITMAP)
+	#if !defined(USE_OPENGL) && !defined(USE_SOFT_BITMAP) && !defined(USE_PIXMAN_BITMAP)
 		#define USE_SDL_IMAGE
 		#define USE_SDL_BITMAP
 		//#define USE_RLE
