@@ -16,6 +16,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include <string>
+#include <cctype>
 
 #include "utils.h"
 
@@ -40,5 +41,13 @@ std::wstring Utils::DecodeUTF(const std::string& str) {
 	}
 
 	return wstr;
+}
+
+std::string Utils::LowerCase(const std::string& str) {
+	std::string result = str;
+	std::string::iterator it;
+	for (it = result.begin(); it != result.end(); it++)
+		*it = tolower(*it);
+	return result;
 }
 

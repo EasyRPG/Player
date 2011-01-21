@@ -32,6 +32,7 @@
 #include "options.h"
 #include "data.h"
 #include "output.h"
+#include "utils.h"
 #include "soft_bitmap.h"
 
 ////////////////////////////////////////////////////////////
@@ -148,6 +149,58 @@ void SoftBitmap::ReadPNG(FILE *stream, const void *buffer) {
 }
 
 ////////////////////////////////////////////////////////////
+void SoftBitmap::ReadXYZ(const uint8 *data, uint len) {
+	bitmap = NULL;
+
+    if (len < 8 || strncmp((char *) data, "XYZ1", 4) != 0) {
+		Output::Error("Not a valid XYZ file.");
+		return;
+    }
+
+    unsigned short w = data[4] + (data[5] << 8);
+    unsigned short h = data[6] + (data[7] << 8);
+
+	uLongf src_size = len - 8;
+    Bytef* src_buffer = (Bytef*)&data[8];
+    uLongf dst_size = 768 + (w * h);
+    Bytef* dst_buffer = new Bytef[dst_size];
+
+    int status = uncompress(dst_buffer, &dst_size, src_buffer, src_size);
+	if (status != Z_OK) {
+		Output::Error("Error decompressing XYZ file.");
+		return;
+	}
+    const uint8 (*palette)[3] = (const uint8(*)[3]) dst_buffer;
+
+	Init(w, h);
+
+    uint8* dst = (uint8*) bitmap;
+    const uint8* src = (const uint8*) &dst_buffer[768];
+    for (int y = 0; y < h; y++) {
+		for (int x = 0; x < w; x++) {
+			uint8 pix = *src++;
+			const uint8* color = palette[pix];
+			*dst++ = (transparent && pix == 0) ? 0 : 255;
+			*dst++ = color[0];
+			*dst++ = color[1];
+			*dst++ = color[2];
+		}
+    }
+
+    delete dst_buffer;
+}
+
+void SoftBitmap::ReadXYZ(FILE *stream) {
+    fseek(stream, 0, SEEK_END);
+    long size = ftell(stream);
+    fseek(stream, 0, SEEK_SET);
+	uint8* buffer = new uint8[size];
+	fread((void*) buffer, 1, size, stream);
+	ReadXYZ(buffer, (uint) size);
+	delete buffer;
+}
+
+////////////////////////////////////////////////////////////
 SoftBitmap::SoftBitmap(int width, int height, bool itransparent) {
 	transparent = itransparent;
 
@@ -157,19 +210,38 @@ SoftBitmap::SoftBitmap(int width, int height, bool itransparent) {
 SoftBitmap::SoftBitmap(const std::string filename, bool itransparent) {
 	transparent = itransparent;
 
-	FILE* stream = FileFinder::fopenUTF8(filename, "rb");
-	if (!stream) {
-		Output::Error("Couldn't open input file %s", filename.c_str());
+	int namelen = (int) filename.size();
+	if (namelen < 5 || filename[namelen - 4] != '.') {
+		Output::Error("Invalid extension for image file %s", filename.c_str());
 		return;
 	}
-	ReadPNG(stream, (void*) NULL);
+
+	std::string ext = Utils::LowerCase(filename.substr(namelen - 3, 3));
+	if (ext != "png" && ext != "xyz") {
+		Output::Error("Unsupported image file %s", filename.c_str());
+		return;
+	}
+
+	FILE* stream = FileFinder::fopenUTF8(filename, "rb");
+	if (!stream) {
+		Output::Error("Couldn't open image file %s", filename.c_str());
+		return;
+	}
+	if (ext == "png")
+		ReadPNG(stream, (void*) NULL);
+	else if (ext == "xyz")
+		ReadXYZ(stream);
+
 	fclose(stream);
 }
 
 SoftBitmap::SoftBitmap(const uint8* data, uint bytes, bool itransparent) {
 	transparent = itransparent;
 
-	ReadPNG((FILE*) NULL, (const void*) data);
+	if (bytes > 4 && strncmp((char*) data, "XYZ1", 4) == 0)
+		ReadXYZ(data, bytes);
+	else
+		ReadPNG((FILE*) NULL, (const void*) data);
 }
 
 SoftBitmap::SoftBitmap(Bitmap* source, Rect src_rect, bool itransparent) {

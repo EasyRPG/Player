@@ -52,7 +52,7 @@
 	//#define SUPPORT_GIF
 	//#define SUPPORT_JPG
 	#define SUPPORT_PNG
-	//#define SUPPORT_XYZ
+	#define SUPPORT_XYZ
 
 	#define SUPPORT_TTF
 	#define SUPPORT_FON

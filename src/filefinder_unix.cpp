@@ -25,7 +25,6 @@
 #include <vector>
 #include <map>
 #include <string>
-#include <cctype>
 #include <dirent.h>
 #include <unistd.h>
 
@@ -35,6 +34,7 @@
 #endif
 
 #include <errno.h>
+#include "utils.h"
 #include "filefinder.h"
 #include "output.h"
 
@@ -68,14 +68,6 @@ namespace FileFinder {
 ////////////////////////////////////////////////////////////
 /// Utility functions
 ////////////////////////////////////////////////////////////
-static std::string lower(const std::string& str) {
-	std::string result = str;
-	std::string::iterator it;
-	for (it = result.begin(); it != result.end(); it++)
-		*it = tolower(*it);
-	return result;
-}
-
 static bool isdir(const std::string& path) {
 #ifdef GEKKO
 	DIR* dir = opendir(path.c_str());
@@ -107,7 +99,7 @@ static string_map scandir(const std::string& path, bool dirs = false) {
 		if (dirs && !isdir(path + "/" + dirent->d_name))
 			continue;
 		std::string name = dirent->d_name;
-		std::string lname = lower(name);
+		std::string lname = Utils::LowerCase(name);
 		result[lname] = name;
 	}
 
@@ -146,8 +138,8 @@ void FileFinder::Init() {
 std::string FileFinder::Find(const std::string& _dir,
 							 const std::string& _file,
 							 const std::string exts[]) {
-	std::string dir = lower(_dir);
-	std::string file = lower(_file);
+	std::string dir = Utils::LowerCase(_dir);
+	std::string file = Utils::LowerCase(_file);
 	std::vector<Tree*>::const_iterator it;
 	for (it = trees.begin(); it != trees.end(); it++) {
 		Tree* tree = *it;

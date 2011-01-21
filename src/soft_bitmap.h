@@ -98,6 +98,8 @@ protected:
 	void DoneFreeType();
 
 	void ReadPNG(FILE* stream, const void *data);
+	void ReadXYZ(const uint8 *data, uint len);
+	void ReadXYZ(FILE *stream);
 };
 
 #endif

@@ -6,6 +6,8 @@
 
 namespace Utils {
 
+	std::string LowerCase(const std::string& str);
+
 	std::wstring DecodeUTF(const std::string& str);
 
 }
