@@ -82,11 +82,12 @@ void Window_Skill::DrawItem(int index) {
 	if (skill_id > 0) {
 		int costs = Data::skills[skill_id - 1].sp_cost;
 		bool enabled = Game_Actors::GetActor(actor_id)->IsSkillUsable(skill_id);
-		DrawSkillName(&Data::skills[skill_id - 1], rect.x, rect.y, enabled);
 		
 		std::stringstream ss;
 		ss << std::setfill(' ') << std::setw(21) << "-" << std::setfill(' ') << std::setw(3) << costs;
 		contents->TextDraw(rect.x, rect.y, ss.str(), Bitmap::TextAlignRight);
+
+		DrawSkillName(&Data::skills[skill_id - 1], rect.x, rect.y, enabled);
 	}
 }
 

@@ -18,6 +18,9 @@
 #ifndef _SDL_BITMAP_H_
 #define _SDL_BITMAP_H_
 
+#include "system.h"
+#ifdef USE_SDL_BITMAP
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
@@ -74,5 +77,7 @@ protected:
 	void Lock();
 	void Unlock();
 };
+
+#endif
 
 #endif

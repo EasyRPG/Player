@@ -23,7 +23,10 @@
 ////////////////////////////////////////////////////////////
 #include <string>
 #include <map>
+#include "system.h"
+#ifdef USE_SDL_TTF
 #include "SDL_ttf.h"
+#endif
 #include "color.h"
 
 ////////////////////////////////////////////////////////////
@@ -37,7 +40,9 @@ public:
 	Font(std::string _name, int _size);
 	~Font();
 
+	#ifdef USE_SDL_TTF
 	TTF_Font* GetTTF() const;
+	#endif
 
 	static void Dispose();
 	
@@ -63,8 +68,10 @@ public:
 	};
 
 private:
+	#ifdef USE_SDL_TTF
 	// TODO Where's the clean up for this?
 	static std::map<std::string, std::map<int, TTF_Font*> > fonts;
+	#endif
 };
 
 #endif

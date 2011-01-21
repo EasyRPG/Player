@@ -30,7 +30,9 @@ const int Font::default_size = 9;
 const bool Font::default_bold = false;
 const bool Font::default_italic = false;
 const int Font::default_color = 0;
+#ifdef USE_SDL_TTF
 std::map<std::string, std::map<int, TTF_Font*> > Font::fonts;
+#endif
 
 ////////////////////////////////////////////////////////////
 /// Constructor
@@ -76,6 +78,7 @@ Font::~Font() {
 ////////////////////////////////////////////////////////////
 /// Get TTF_Font*
 ////////////////////////////////////////////////////////////
+#ifdef USE_SDL_TTF
 TTF_Font* Font::GetTTF() const {
 	if (fonts.count(name) > 0 && fonts[name].count(size) > 0) {
 		return fonts[name][size];
@@ -89,8 +92,10 @@ TTF_Font* Font::GetTTF() const {
 		return ttf_font;
 	}
 }
+#endif
 
 void Font::Dispose() {
+#ifdef USE_SDL_TTF
 	std::map<int, TTF_Font*>::iterator it;
 	std::map<std::string, std::map<int, TTF_Font*> >::iterator it2;
 
@@ -99,6 +104,7 @@ void Font::Dispose() {
 			TTF_CloseFont(it->second);
 		}
 	}
+#endif
 }
 
 ////////////////////////////////////////////////////////////

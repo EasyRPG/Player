@@ -18,6 +18,9 @@
 #ifndef _SDL_BITMAP_SCREEN_H_
 #define _SDL_BITMAP_SCREEN_H_
 
+#include "system.h"
+#ifdef USE_SDL_BITMAP
+
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
@@ -56,5 +59,7 @@ protected:
 	int origin_x;
 	int origin_y;
 };
+
+#endif
 
 #endif

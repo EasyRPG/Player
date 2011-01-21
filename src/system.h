@@ -47,17 +47,26 @@
 	#endif
 #endif
 
+#ifdef USE_SOFT_BITMAP
+	//#define SUPPORT_BMP
+	//#define SUPPORT_GIF
+	//#define SUPPORT_JPG
+	#define SUPPORT_PNG
+	//#define SUPPORT_XYZ
+
+	#define SUPPORT_TTF
+	#define SUPPORT_FON
+#endif
+
 #ifdef USE_SDL
-	#ifndef USE_OPENGL
+	#if !defined(USE_OPENGL) && !defined(USE_SOFT_BITMAP)
 		#define USE_SDL_IMAGE
-		#ifndef USE_SOFT_BITMAP
-			#define USE_SDL_BITMAP
-		#endif
+		#define USE_SDL_BITMAP
 		//#define USE_RLE
+		#define USE_SDL_TTF
 	#endif
 
 	#define USE_SDL_MIXER
-	#define USE_SDL_TTF
 	
 	#if !defined(DINGOO) && !defined(GEKKO)
 		#define SUPPORT_KEYBOARD

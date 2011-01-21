@@ -28,6 +28,8 @@
 #include <cstdio>
 #include <ft2build.h>
 #include FT_FREETYPE_H
+// for SDL_BYTEORDER
+#include "SDL.h"
 
 #include "bitmap.h"
 
