@@ -93,6 +93,14 @@ void Game_Map::Init() {
 
 	for (int i = 0; i < 3; i++)
 		vehicles[i] = new Game_Vehicle((Game_Vehicle::Type) i);
+
+	pan_locked = false;
+	pan_wait = false;
+	pan_speed = 0;
+	pan_dx = 0;
+	pan_dy = 0;
+	pan_x = 0;
+	pan_y = 0;
 }
 
 ////////////////////////////////////////////////////////////
@@ -147,6 +155,14 @@ void Game_Map::Setup(int _id) {
 
 	for (int i = 0; i < 3; i++)
 		vehicles[i]->Refresh();
+
+	pan_locked = false;
+	pan_wait = false;
+	pan_speed = 0;
+	pan_dx = 0;
+	pan_dy = 0;
+	pan_x = 0;
+	pan_y = 0;
 }
 
 ////////////////////////////////////////////////////////////

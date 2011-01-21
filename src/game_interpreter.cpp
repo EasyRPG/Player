@@ -177,6 +177,7 @@ enum CharsID {
 Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	depth = _depth;
 	main_flag = _main_flag;
+	active = false;
 
 	if (depth > 100) {
 		Output::Warning("Too many event calls (over 9000)");

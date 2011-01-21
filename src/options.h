@@ -109,8 +109,12 @@
 #else
 	#define OUTPUT_TYPE OUTPUT_SCREEN
 #endif*/
+#ifndef OUTPUT_TYPE
 #define OUTPUT_TYPE OUTPUT_SCREEN
+#endif
+#ifndef OUTPUT_FILENAME
 #define OUTPUT_FILENAME "easyrpg_log.txt"
+#endif
 
 ////////////////////////////////////////////////////////////
 #define USE_KEYBOARD
