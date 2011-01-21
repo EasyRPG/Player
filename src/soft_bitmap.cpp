@@ -187,7 +187,7 @@ void SoftBitmap::ReadXYZ(const uint8 *data, uint len) {
 		}
     }
 
-    delete dst_buffer;
+    delete[] dst_buffer;
 }
 
 void SoftBitmap::ReadXYZ(FILE *stream) {
@@ -197,7 +197,7 @@ void SoftBitmap::ReadXYZ(FILE *stream) {
 	uint8* buffer = new uint8[size];
 	fread((void*) buffer, 1, size, stream);
 	ReadXYZ(buffer, (uint) size);
-	delete buffer;
+	delete[] buffer;
 }
 
 ////////////////////////////////////////////////////////////
