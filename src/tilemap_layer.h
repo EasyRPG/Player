@@ -90,12 +90,32 @@ private:
 	void GenerateAutotileAB(short ID, short animID);
 	void GenerateAutotileD(short ID);
 
-	BitmapScreen* GetCachedAutotileAB(short ID, short animID);
-	BitmapScreen* GetCachedAutotileD(short ID);
+	static const int TILES_PER_ROW = 64;
 
-	BitmapScreen* autotiles_ab[3][3][16][47];
-	BitmapScreen* autotiles_d[12][50];
-	std::map<uint32, BitmapScreen*> autotiles_ab_map;
+	struct TileXY {
+		uint8 x;
+		uint8 y;
+		bool valid;
+		TileXY() : valid(false) {}
+		TileXY(int x, int y) : x(x), y(y), valid(true) {}
+	};
+
+	BitmapScreen* GenerateAutotiles(int count, const std::map<uint32, TileXY>& map);
+
+	TileXY GetCachedAutotileAB(short ID, short animID);
+	TileXY GetCachedAutotileD(short ID);
+
+	BitmapScreen* autotiles_ab_screen;
+	BitmapScreen* autotiles_d_screen;
+
+	int autotiles_ab_next;
+	int autotiles_d_next;
+
+	TileXY autotiles_ab[3][3][16][47];
+	TileXY autotiles_d[12][50];
+
+	std::map<uint32, TileXY> autotiles_ab_map;
+	std::map<uint32, TileXY> autotiles_d_map;
 
 	struct TileData {
 		short ID;

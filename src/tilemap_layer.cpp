@@ -170,6 +170,8 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	have_invisible_tile(false) {
 
 	chipset_screen = BitmapScreen::CreateBitmapScreen(false);
+	autotiles_ab_screen = NULL;
+	autotiles_d_screen = NULL;
 
 	memset(autotiles_ab, NULL, sizeof(autotiles_ab));
 	memset(autotiles_d, NULL, sizeof(autotiles_d));
@@ -190,15 +192,9 @@ TilemapLayer::~TilemapLayer() {
 	Graphics::RemoveZObj(ID, true);
 	Graphics::RemoveDrawable(ID);
 
-	std::map<uint32, BitmapScreen*>::iterator it;
-	for (it = autotiles_ab_map.begin(); it != autotiles_ab_map.end(); it++)
-		delete it->second;
-				
-	for (int i = 0; i < 12; i++)
-		for (int j = 0; j < 50; j++)
-				delete autotiles_d[i][j];
-
 	delete chipset_screen;
+	delete autotiles_ab_screen;
+	delete autotiles_d_screen;
 }
 
 ////////////////////////////////////////////////////////////
@@ -285,12 +281,16 @@ void TilemapLayer::Draw(int z_order) {
 						// If Blocks A1, A2, B
 
 						// Draw the tile from autile cache
-						GetCachedAutotileAB(tile.ID, animation_step_ab)->BlitScreen(map_draw_x, map_draw_y);
+						TileXY pos = GetCachedAutotileAB(tile.ID, animation_step_ab);
+						Rect src_rect(pos.x * 16, pos.y * 16, 16, 16);
+						autotiles_ab_screen->BlitScreen(map_draw_x, map_draw_y, src_rect);
 					} else {
 						// If blocks D1-D12
 
 						// Draw the tile from autile cache
-						GetCachedAutotileD(tile.ID)->BlitScreen(map_draw_x, map_draw_y);
+						TileXY pos = GetCachedAutotileD(tile.ID);
+						Rect src_rect(pos.x * 16, pos.y * 16, 16, 16);
+						autotiles_d_screen->BlitScreen(map_draw_x, map_draw_y, src_rect);
 					}
 				} else {
 					// If upper layer
@@ -326,14 +326,14 @@ void TilemapLayer::Draw(int z_order) {
 }
 
 ////////////////////////////////////////////////////////////
-BitmapScreen* TilemapLayer::GetCachedAutotileAB(short ID, short animID) {
+TilemapLayer::TileXY TilemapLayer::GetCachedAutotileAB(short ID, short animID) {
 	short block = ID / 1000;
 	short b_subtile = (ID - block * 1000) / 50;
 	short a_subtile = ID - block * 1000 - b_subtile * 50;
 	return autotiles_ab[animID][block][b_subtile][a_subtile];
 }
 
-BitmapScreen* TilemapLayer::GetCachedAutotileD(short ID) {
+TilemapLayer::TileXY TilemapLayer::GetCachedAutotileD(short ID) {
 	short block = (ID - 4000) / 50;
 	short subtile = ID - 4000 - block * 50;
 	return autotiles_d[block][subtile];
@@ -363,7 +363,7 @@ void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 		return;
 	}
 
-	if (autotiles_ab[animID][block][b_subtile][a_subtile])
+	if (autotiles_ab[animID][block][b_subtile][a_subtile].valid)
 		return;
 
 	uint8 quarters[2][2][2];
@@ -423,31 +423,20 @@ void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 			}
 
 	// check whether we have already generated this tile
-	std::map<uint32, BitmapScreen*>::iterator it;
+	std::map<uint32, TileXY>::iterator it;
 	it = autotiles_ab_map.find(quarters_hash);
 	if (it != autotiles_ab_map.end()) {
 		autotiles_ab[animID][block][b_subtile][a_subtile] = it->second;
 		return;
 	}
 
-	// generate the tile
-	Bitmap* tile = Bitmap::CreateBitmap(16, 16);
+	int id = autotiles_ab_next++;
+	int dst_x = id % TILES_PER_ROW;
+	int dst_y = id / TILES_PER_ROW;
 
-	Rect rect;
-	rect.width = 8;
-	rect.height = 8;
-
-	for (int j = 0; j < 2; j++) {
-		for (int i = 0; i < 2; i++) {
-			rect.x = quarters[j][i][0] * 16 + i * 8;
-			rect.y = quarters[j][i][1] * 16 + j * 8;
-			tile->Blit(i * 8, j * 8, chipset, rect, 255);
-		}
-	}
-
-	BitmapScreen* screen = BitmapScreen::CreateBitmapScreen(tile);
-	autotiles_ab_map[quarters_hash] = screen;
-	autotiles_ab[animID][block][b_subtile][a_subtile] = screen;
+	TileXY tile_xy(dst_x, dst_y);
+	autotiles_ab_map[quarters_hash] = tile_xy;
+	autotiles_ab[animID][block][b_subtile][a_subtile] = tile_xy;
 }
 
 ////////////////////////////////////////////////////////////
@@ -458,42 +447,93 @@ void TilemapLayer::GenerateAutotileD(short ID) {
 	// Calculate the D block combination
 	short subtile = ID - 4000 - block * 50;
 
-	if(autotiles_d[block][subtile])
+	if (block >= 12 || subtile >= 50 || block < 0 || subtile < 0)
+		Output::Error("Index out of range: %d %d", block, subtile);
+
+	if (autotiles_d[block][subtile].valid)
 		return;
 
-	Bitmap* tile = Bitmap::CreateBitmap(16, 16);
+	uint8 quarters[2][2][2];
 
 	// Get Block chipset coords
 	short block_x, block_y;
 	if (block < 4) {
 		// If from first column
-		block_x = (block % 2) * 48;
-		block_y = 128 + (block / 2) * 64;
+		block_x = (block % 2) * 3;
+		block_y = 8 + (block / 2) * 4;
 	} else {
 		// If from second column
-		block_x = 96 + (block % 2) * 48;
-		block_y = ((block - 4) / 2) * 64;
+		block_x = 6 + (block % 2) * 3;
+		block_y = ((block - 4) / 2) * 4;
 	}
 
-	Rect rect;
-	rect.width = 8;
-	rect.height = 8;
-
-	// Blit D block subtiles
+	// Calculate D block subtiles
 	for (int j = 0; j < 2; j++) {
 		for (int i = 0; i < 2; i++) {
 			// Get the block D subtiles ids and get their coordinates on the chipset
-			rect.x = block_x + (BlockD_Subtiles_IDS[subtile][j][i][0] * 2 + i) * 8;
-			rect.y = block_y + (BlockD_Subtiles_IDS[subtile][j][i][1] * 2 + j) * 8;
-
-			// Blit the subtile
-			tile->Blit(i * 8, j * 8, chipset, rect, 255);
+			quarters[j][i][0] = block_x + BlockD_Subtiles_IDS[subtile][j][i][0];
+			quarters[j][i][1] = block_y + BlockD_Subtiles_IDS[subtile][j][i][1];
 		}
 	}
 
-	autotiles_d[block][subtile] = BitmapScreen::CreateBitmapScreen(tile);
+	// pack the quarters data into a word
+	uint32 quarters_hash = 0;
+	for (int j = 0; j < 2; j++)
+		for (int i = 0; i < 2; i++)
+			for (int k = 0; k < 2; k++) {
+				quarters_hash <<= 4;
+				quarters_hash |= quarters[j][i][k];
+			}
+
+
+
+	// check whether we have already generated this tile
+	std::map<uint32, TileXY>::iterator it;
+	it = autotiles_d_map.find(quarters_hash);
+	if (it != autotiles_d_map.end()) {
+		autotiles_d[block][subtile] = it->second;
+		return;
+	}
+
+	int id = autotiles_d_next++;
+	int dst_x = id % TILES_PER_ROW;
+	int dst_y = id / TILES_PER_ROW;
+
+	TileXY tile_xy(dst_x, dst_y);
+	autotiles_d_map[quarters_hash] = tile_xy;
+	autotiles_d[block][subtile] = tile_xy;
 }
 
+
+////////////////////////////////////////////////////////////
+BitmapScreen* TilemapLayer::GenerateAutotiles(int count, const std::map<uint32, TileXY>& map) {
+	int rows = (count + TILES_PER_ROW - 1) / TILES_PER_ROW;
+	Bitmap *tiles = Bitmap::CreateBitmap(TILES_PER_ROW * 16, rows * 16);
+	tiles->Fill(Color(255,255,0,255));
+	Rect rect(0, 0, 8, 8);
+
+	std::map<uint32, TileXY>::const_iterator it;
+	for (it = map.begin(); it != map.end(); it++) {
+		uint32 quarters_hash = it->first;
+		TileXY dst = it->second;
+
+		// unpack the quarters data
+		for (int j = 0; j < 2; j++) {
+			for (int i = 0; i < 2; i++) {
+				int x = quarters_hash >> 28;
+				quarters_hash <<= 4;
+				int y = quarters_hash >> 28;
+				quarters_hash <<= 4;
+
+				rect.x = (x * 2 + i) * 8;
+				rect.y = (y * 2 + j) * 8;
+				tiles->Blit((dst.x * 2 + i) * 8, (dst.y * 2 + j) * 8, chipset, rect, 255);
+			}
+		}
+	}
+
+	return BitmapScreen::CreateBitmapScreen(tiles);
+}
 
 ////////////////////////////////////////////////////////////
 void TilemapLayer::Update() {
@@ -573,6 +613,10 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 		}
 
 		if (layer == 0) {
+			autotiles_ab_map.clear();
+			autotiles_d_map.clear();
+			autotiles_ab_next = 0;
+			autotiles_d_next = 0;
 			for (int y = 0; y < height; y++) {
 				for (int x = 0; x < width; x++) {
 
@@ -589,6 +633,8 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 					}
 				}
 			}
+			autotiles_ab_screen = GenerateAutotiles(autotiles_ab_next, autotiles_ab_map);
+			autotiles_d_screen = GenerateAutotiles(autotiles_d_next, autotiles_d_map);
 		} else {
 			have_invisible_tile = true;
 			for (int x = 288; x < 288 + 16; x++) {

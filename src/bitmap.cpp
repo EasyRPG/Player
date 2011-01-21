@@ -640,7 +640,7 @@ void Bitmap::HSLChange(double h, double s, double l, double lo, Rect dst_rect) {
 		for (int i = 0; i < dst_rect.height; i++) {
 			for (int j = 0; j < dst_rect.width; j++) {
 				#ifndef USE_ALPHA
-					if (transparent && dst_pixels[0] == (uint16)colorkey) continue;
+					if (transparent && dst_pixels[0] == (uint16)colorkey()) continue;
 				#endif
 				uint8 dst_r, dst_g, dst_b, dst_a;
 				GetColorComponents(dst_pixels[0], dst_r, dst_g, dst_b, dst_a);
@@ -661,7 +661,7 @@ void Bitmap::HSLChange(double h, double s, double l, double lo, Rect dst_rect) {
 		for (int i = 0; i < dst_rect.height; i++) {
 			for (int j = 0; j < dst_rect.width; j++) {
 				#ifndef USE_ALPHA
-					if (transparent && dst_pixels[0] == colorkey) continue;
+					if (transparent && dst_pixels[0] == colorkey()) continue;
 				#endif
 				RGB_adjust_HSL(dst_pixels[rbyte], dst_pixels[gbyte], dst_pixels[bbyte], hue, sat, lum, loff);
 
