@@ -84,7 +84,7 @@ protected:
 	/// Bitmap data.
 	pixman_image_t *bitmap;
 
-	void Init(int width, int height);
+	void Init(int width, int height, void* data);
 
 	Color GetColor(uint32 color) const;
 	uint32 GetUint32Color(const Color &color) const;

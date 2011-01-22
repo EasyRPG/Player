@@ -24,201 +24,86 @@
 #include <cstdlib>
 #include <cmath>
 #include <iostream>
-#include <png.h>
-#include <ft2build.h>
-#include FT_FREETYPE_H
-#include FT_BITMAP_H
 #include "cache.h"
 #include "filefinder.h"
 #include "options.h"
 #include "data.h"
 #include "output.h"
 #include "utils.h"
+#include "image.h"
+#include "ftfont.h"
 #include "pixman_bitmap.h"
 
 ////////////////////////////////////////////////////////////
-void PixmanBitmap::Init(int width, int height) {
-	bitmap = pixman_image_create_bits(PIXMAN_a8r8g8b8, width, height, (uint32_t*) NULL, width*4);
+static void destroy_func(pixman_image_t *image, void *data) {
+	free(data);
+}
+
+void PixmanBitmap::Init(int width, int height, void* data) {
+	bitmap = pixman_image_create_bits(PIXMAN_a8r8g8b8, width, height, (uint32_t*) data, width*4);
 
 	if (bitmap == NULL) {
 		Output::Error("Couldn't create %dx%d image.\n", width, height);
 	}
+
+	if (data != NULL)
+		pixman_image_set_destroy_function(bitmap, destroy_func, data);
 }
 
 ////////////////////////////////////////////////////////////
-static void read_data(png_structp png_ptr, png_bytep data, png_size_t length) {
-    png_bytep* bufp = (png_bytep*) png_get_io_ptr(png_ptr);
-	memcpy(data, *bufp, length);
-	*bufp += length;
+static void ConvertImage(int& width, int& height, void*& pixels) {
+	// premultiply alpha and convert bytes to words
+	for (int y = 0; y < height; y++) {
+		uint8* src = (uint8*) pixels + y * width * 4;
+		uint32* dst = (uint32*) src;
+		for (int x = 0; x < width; x++) {
+			uint32 a = src[x * 4 + 0];
+			uint32 r = src[x * 4 + 1] * a / 0xFF;
+			uint32 g = src[x * 4 + 2] * a / 0xFF;
+			uint32 b = src[x * 4 + 3] * a / 0xFF;
+			dst[x] = (a<<24) | (r<<16) | (g<<8) | (b<<0);
+		}
+	}
 }
 
-////////////////////////////////////////////////////////////
 void PixmanBitmap::ReadPNG(FILE *stream, const void *buffer) {
 	bitmap = NULL;
 
-	png_struct *png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-	if (png_ptr == NULL) {
-		Output::Error("Couldn't allocate PNG structure");
-		return;
-	}
+	int w, h;
+	void* pixels;
+	Image::ReadPNG(stream, buffer, transparent, w, h, pixels);
 
-	png_info *info_ptr = png_create_info_struct(png_ptr);
-	if (info_ptr == NULL) {
-		Output::Error("Couldn't allocate PNG info structure");
-		return;
-	}
-
-	if (stream != NULL)
-		png_init_io(png_ptr, stream);
-	else
-		png_set_read_fn(png_ptr, (voidp) &buffer, read_data);
-
-	png_read_info(png_ptr, info_ptr);
-
-	png_uint_32 width, height;
-	int bit_depth, color_type;
-	png_get_IHDR(png_ptr, info_ptr, &width, &height,
-				 &bit_depth, &color_type, NULL, NULL, NULL);
-
-	png_color black = {0,0,0};
-	png_colorp palette;
-	int num_palette = 0;
-
-	switch (color_type) {
-		case PNG_COLOR_TYPE_PALETTE:
-			if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS))
-				png_set_tRNS_to_alpha(png_ptr);
-			else if (transparent && png_get_valid(png_ptr, info_ptr, PNG_INFO_PLTE))
-				png_get_PLTE(png_ptr, info_ptr, &palette, &num_palette);
-			png_set_palette_to_rgb(png_ptr);
-			png_set_swap_alpha(png_ptr);
-			png_set_filler(png_ptr, 0xFF, PNG_FILLER_BEFORE);
-			break;
-		case PNG_COLOR_TYPE_GRAY:
-			png_set_gray_to_rgb(png_ptr);
-			if (bit_depth < 8)
-				png_set_expand_gray_1_2_4_to_8(png_ptr);
-			png_set_filler(png_ptr, 0xFF, PNG_FILLER_BEFORE);
-			if (transparent) {
-				palette = &black;
-				num_palette = 1;
-			}
-			break;
-		case PNG_COLOR_TYPE_GRAY_ALPHA:
-			png_set_gray_to_rgb(png_ptr);
-			if (bit_depth < 8)
-				png_set_expand_gray_1_2_4_to_8(png_ptr);
-			break;
-		case PNG_COLOR_TYPE_RGB:
-			png_set_filler(png_ptr, 0xFF, PNG_FILLER_BEFORE);
-			break;
-		case PNG_COLOR_TYPE_RGB_ALPHA:
-			png_set_swap_alpha(png_ptr);
-			break;
-	}
-
-	if (bit_depth < 8)
-		png_set_packing(png_ptr);
-
-	if (bit_depth == 16)
-		png_set_strip_16(png_ptr);
-
-	png_read_update_info(png_ptr, info_ptr);
-
-	Init(width, height);
-
-	for (png_uint_32 y = 0; y < height; y++) {
-		png_bytep dst = (png_bytep) pixels() + y * pitch();
-		png_read_row(png_ptr, dst, NULL);
-		for (png_uint_32 x = 0; x < width; x++) {
-			uint32 a = dst[x * 4 + 0];
-			uint32 r = dst[x * 4 + 1] * a / 0xFF;
-			uint32 g = dst[x * 4 + 2] * a / 0xFF;
-			uint32 b = dst[x * 4 + 3] * a / 0xFF;
-			((uint32*)dst)[x] = (a<<24) | (r<<16) | (g<<8) | (b<<0);
-		}
-	}
-
-	// TODO: stride
-	if (transparent && num_palette > 0) {
-		png_color& ck = palette[0];
-		//uint8 ck1[4] = {255, ck.red, ck.green, ck.blue};
-		//uint32 srckey = *(uint32*)ck1;
-		uint32 srckey = GetUint32Color(ck.red, ck.green, ck.blue, 255);
-		uint32 dstkey = 0;
-		uint32* p = (uint32*) pixels();
-		int pad = pitch() / bpp() - width;
-		for (png_uint_32 y = 0; y < height; y++) {
-			for (png_uint_32 x = 0; x < width; x++) {
-				if (*p == srckey)
-					*p = dstkey;
-				p++;
-			}
-			p += pad;
-		}
-	}
-
-	png_read_end(png_ptr, NULL);
-
-	png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+	ConvertImage(w, h, pixels);
+	Init(w, h, pixels);
 }
 
-////////////////////////////////////////////////////////////
 void PixmanBitmap::ReadXYZ(const uint8 *data, uint len) {
 	bitmap = NULL;
 
-    if (len < 8 || strncmp((char *) data, "XYZ1", 4) != 0) {
-		Output::Error("Not a valid XYZ file.");
-		return;
-    }
+	int w, h;
+	void* pixels;
+	Image::ReadXYZ(data, len, transparent, w, h, pixels);
 
-    unsigned short w = data[4] + (data[5] << 8);
-    unsigned short h = data[6] + (data[7] << 8);
-
-	uLongf src_size = len - 8;
-    Bytef* src_buffer = (Bytef*)&data[8];
-    uLongf dst_size = 768 + (w * h);
-    Bytef* dst_buffer = new Bytef[dst_size];
-
-    int status = uncompress(dst_buffer, &dst_size, src_buffer, src_size);
-	if (status != Z_OK) {
-		Output::Error("Error decompressing XYZ file.");
-		return;
-	}
-    const uint8 (*palette)[3] = (const uint8(*)[3]) dst_buffer;
-
-	Init(w, h);
-
-    uint32* dst = (uint32*) pixels();
-    const uint8* src = (const uint8*) &dst_buffer[768];
-    for (int y = 0; y < h; y++) {
-		for (int x = 0; x < w; x++) {
-			uint8 pix = *src++;
-			const uint8* color = palette[pix];
-			*dst++ = (transparent && pix == 0)
-				? 0
-				: ((0xFF<<24) | (color[0]<<16) | (color[1]<<8) | (color[2]<<0));
-		}
-    }
-
-    delete[] dst_buffer;
+	ConvertImage(w, h, pixels);
+	Init(w, h, pixels);
 }
 
 void PixmanBitmap::ReadXYZ(FILE *stream) {
-    fseek(stream, 0, SEEK_END);
-    long size = ftell(stream);
-    fseek(stream, 0, SEEK_SET);
-	uint8* buffer = new uint8[size];
-	fread((void*) buffer, 1, size, stream);
-	ReadXYZ(buffer, (uint) size);
-	delete[] buffer;
+	bitmap = NULL;
+
+	int w, h;
+	void* pixels;
+	Image::ReadXYZ(stream, transparent, w, h, pixels);
+
+	ConvertImage(w, h, pixels);
+	Init(w, h, pixels);
 }
 
 ////////////////////////////////////////////////////////////
 PixmanBitmap::PixmanBitmap(int width, int height, bool itransparent) {
 	transparent = itransparent;
 
-	Init(width, height);
+	Init(width, height, (void *) NULL);
 }
 
 PixmanBitmap::PixmanBitmap(const std::string filename, bool itransparent) {
@@ -261,7 +146,7 @@ PixmanBitmap::PixmanBitmap(const uint8* data, uint bytes, bool itransparent) {
 PixmanBitmap::PixmanBitmap(Bitmap* source, Rect src_rect, bool itransparent) {
 	transparent = itransparent;
 
-	Init(src_rect.width, src_rect.height);
+	Init(src_rect.width, src_rect.height, (void *) NULL);
 
 	Blit(0, 0, source, src_rect, 255);
 }
@@ -678,99 +563,6 @@ void PixmanBitmap::Flip(bool horizontal, bool vertical) {
 	RefreshCallback();
 }
 
-FT_Library PixmanBitmap::library;
-FT_Face PixmanBitmap::face;
-bool PixmanBitmap::ft_initialized = false;
-
-void PixmanBitmap::InitFreeType() {
-	if (ft_initialized)
-		return;
-
-    FT_Error ans = FT_Init_FreeType(&library);
-    if (ans != FT_Err_Ok) {
-		Output::Error("Couldn't initialize FreeType\n");
-		return;
-	}
-
-	std::string path = FileFinder::FindFont(font->name);
-    ans = FT_New_Face(library, path.c_str(), 0, &face);
-    if (ans != FT_Err_Ok) {
-		Output::Error("Couldn't initialize FreeType face\n");
-		FT_Done_FreeType(library);
-		return;
-	}
-
-    ans = FT_Set_Char_Size(face, font->size * 64, font->size * 64, 72, 72);
-    if (ans != FT_Err_Ok) {
-		Output::Error("Couldn't set FreeType face size\n");
-		FT_Done_Face(face);
-		FT_Done_FreeType(library);
-		return;
-    }
-
-	ft_initialized = true;
-}
-
-void PixmanBitmap::DoneFreeType() {
-	if (!ft_initialized)
-		return;
-
-    FT_Done_Face(face);
-
-    FT_Done_FreeType(library);
-
-	ft_initialized = false;
-}
-
-PixmanBitmap* PixmanBitmap::RenderFreeTypeChar(int c) {
-	FT_Error ans = FT_Load_Char(face, c, FT_LOAD_NO_BITMAP);
-    if (ans != FT_Err_Ok) {
-		Output::Error("Couldn't load FreeType character %d\n", c);
-		return NULL;
-	}
-
-	ans = FT_Render_Glyph(face->glyph, FT_RENDER_MODE_MONO);
-    if (ans != FT_Err_Ok) {
-		Output::Error("Couldn't render FreeType character %d\n", c);
-		return NULL;
-	}
-
-	FT_Bitmap ft_bitmap;
-	if (face->glyph->bitmap.pixel_mode == FT_PIXEL_MODE_GRAY)
-		ft_bitmap = face->glyph->bitmap;
-	else {
-		FT_Bitmap_New(&ft_bitmap);
-		FT_Bitmap_Convert(library, &face->glyph->bitmap, &ft_bitmap, 4);
-	}
-
-	if (ft_bitmap.pixel_mode != FT_PIXEL_MODE_GRAY) {
-		Output::Error("FreeType character has wrong format\n", c);
-		return NULL;
-	}
-
-	const uint8* src = (const uint8*) ft_bitmap.buffer;
-	if (ft_bitmap.pitch < 0)
-		src -= ft_bitmap.rows * ft_bitmap.pitch;
-
-	PixmanBitmap* bitmap = new PixmanBitmap(ft_bitmap.width, font->size + 2, true);
-	uint8* dst = (uint8*) bitmap->pixels();
-
-	const int base_line = bitmap->height() / 4;
-	int offset = bitmap->height() - face->glyph->bitmap_top - base_line;
-
-	for (int yd = 0; yd < bitmap->height(); yd++) {
-		int ys = yd - offset;
-		if (ys < 0 || ys >= ft_bitmap.rows)
-			continue;
-		const uint8* p = src + ys * ft_bitmap.pitch;
-		uint32* q = (uint32*) (dst + yd * bitmap->pitch());
-		for (int x = 0; x < ft_bitmap.width; x++)
-			*q++ = (*p++ != 0) ? 0xFF000000 : 0x00000000;
-	}
-
-	return bitmap;
-}
-
 ////////////////////////////////////////////////////////////
 void PixmanBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 	if (text.length() == 0) return;
@@ -807,7 +599,7 @@ void PixmanBitmap::TextDraw(int x, int y, std::string text, TextAlignment align)
 	// The current char is an exfont (is_full_glyph must be true too)
 	bool is_exfont = false;
 
-	InitFreeType();
+	FreeType::Init(font);
 
 	// This loops always renders a single char, color blends it and then puts
 	// it onto the text_surface (including the drop shadow)
@@ -841,7 +633,7 @@ void PixmanBitmap::TextDraw(int x, int y, std::string text, TextAlignment align)
 		} else {
 			// No ExFont, draw normal text
 
-			mask = RenderFreeTypeChar(text[c]);
+			mask = (PixmanBitmap*) FreeType::RenderChar(font, text[c]);
 			if (mask == NULL) {
 				Output::Warning("Couldn't render char %c (%d). Skipping...", text[c], (int)text[c]);
 				continue;
@@ -887,7 +679,7 @@ void PixmanBitmap::TextDraw(int x, int y, std::string text, TextAlignment align)
 		next_glyph_pos += 6;	
 	}
 
-	DoneFreeType();
+	FreeType::Done();
 
 	Bitmap* text_bmp = CreateBitmap(text_surface, text_surface->GetRect());
 

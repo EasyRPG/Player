@@ -303,6 +303,7 @@ public:
 protected:
 	friend class BitmapScreen;
 	friend class SoftBitmapScreen;
+	friend class FreeType;
 
 #ifdef USE_SDL
 	friend class SdlBitmap;

@@ -25,7 +25,6 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <string>
-#include <cstdio>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 // for SDL_BYTEORDER
@@ -96,10 +95,6 @@ protected:
 	void InitFreeType();
 	SoftBitmap* RenderFreeTypeChar(int c);
 	void DoneFreeType();
-
-	void ReadPNG(FILE* stream, const void *data);
-	void ReadXYZ(const uint8 *data, uint len);
-	void ReadXYZ(FILE *stream);
 };
 
 #endif
