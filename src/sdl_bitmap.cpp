@@ -321,6 +321,7 @@ void SdlBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 	if (text.length() == 0) return;
 	Rect dst_rect = GetTextSize(text);
 
+	// Alignment code
 	switch (align) {
 	case Bitmap::TextAlignCenter:
 		dst_rect.x = x - dst_rect.width / 2; break;
@@ -563,15 +564,6 @@ void SdlBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 		iy += ((dst_rect.height - text_bmp->GetHeight()) / 2);
 	}
 	int ix = dst_rect.x;
-	
-	// Alignment code
-	if (dst_rect.width > text_bmp->GetWidth()) {
-		if (align == Bitmap::TextAlignCenter) {
-			ix += (dst_rect.width - text_bmp->GetWidth()) / 2;
-		} else if (align == Bitmap::TextAlignRight) {
-			ix += dst_rect.width - text_bmp->GetWidth();
-		}
-	}
 
 	Blit(ix, iy, text_bmp, src_rect, SDL_ALPHA_OPAQUE);
 

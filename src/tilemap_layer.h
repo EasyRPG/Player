@@ -97,7 +97,7 @@ private:
 		uint8 y;
 		bool valid;
 		TileXY() : valid(false) {}
-		TileXY(int x, int y) : x(x), y(y), valid(true) {}
+		TileXY(uint8 x, uint8 y) : x(x), y(y), valid(true) {}
 	};
 
 	BitmapScreen* GenerateAutotiles(int count, const std::map<uint32, TileXY>& map);

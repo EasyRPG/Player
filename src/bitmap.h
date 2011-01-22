@@ -231,7 +231,7 @@ public:
 	/// @param x : x coordinate where text rendering starts
 	/// @param y : y coordinate where text rendering starts
 	/// @param text : text to draw
-	/// @param align : text alignment (IGNORED!)
+	/// @param align : text alignment
 	////////////////////////////////////////////////////////
 	virtual void TextDraw(int x, int y, std::string text, TextAlignment align = Bitmap::TextAlignLeft) = 0;
 

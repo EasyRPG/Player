@@ -105,9 +105,9 @@ void Window_Item::DrawItem(int index) {
 		DrawItemName(&Data::items[item_id - 1], rect.x, rect.y, enabled);
 		
 		std::stringstream ss;
-		ss << "x" << std::setfill(' ') << std::setw(3) << number;
-
-		contents->TextDraw(rect.x + 20 * 6, rect.y, ss.str(), Bitmap::TextAlignRight);
+		ss << number;
+		contents->TextDraw(rect.x + rect.width - 28, rect.y, "x");
+		contents->TextDraw(rect.x + rect.width - 6, rect.y, ss.str(), Bitmap::TextAlignRight);
 	}
 }
 

@@ -43,10 +43,10 @@ Window_EquipStatus::~Window_EquipStatus() {
 void Window_EquipStatus::Refresh() {
 	contents->Clear();
 
-	DrawActorName(Game_Actors::GetActor(actor_id), 0, 0);
+	DrawActorName(Game_Actors::GetActor(actor_id), 0, 2);
 
 	for (int i = 0; i < 4; ++i) {
-		DrawParameter(0, (12 + 2) + ((12 + 4) * i), i);
+		DrawParameter(0, (12 + 6) + ((12 + 4) * i), i);
 	}
 }
 
@@ -78,7 +78,7 @@ int Window_EquipStatus::GetNewParameterColor(int old_value, int new_value) {
 	if (old_value == new_value) {
 		return 0;
 	} else if (old_value < new_value) {
-		return 4;
+		return 2;
 	} else {
 		return 3;
 	}
@@ -123,16 +123,16 @@ void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 	// Draw Value
 	cx += 60;
 	std::stringstream ss;
-	ss << std::setfill(' ') << std::setw(3) << value;
+	ss << value;
 	contents->GetFont()->color = 0;
-	contents->TextDraw(cx, cy, ss.str(), Bitmap::TextAlignRight);
+	contents->TextDraw(cx + 18, cy, ss.str(), Bitmap::TextAlignRight);
 
 	if (draw_params) {
 		// Draw New Value
 		cx += 30;
-		ss.str(""); ss.clear();
+		ss.str("");
 		ss << new_value;
 		contents->GetFont()->color = GetNewParameterColor(value, new_value);
-		contents->TextDraw(cx, cy, ss.str(), Bitmap::TextAlignRight);
+		contents->TextDraw(cx + 18, cy, ss.str(), Bitmap::TextAlignRight);
 	}
 }

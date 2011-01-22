@@ -99,9 +99,9 @@ void Window_Base::DrawActorLevel(Game_Actor* actor, int cx, int cy) {
 
 	// Draw Level of the Actor
 	std::stringstream ss;
-	ss << std::setfill(' ') << std::setw(2) << actor->GetLevel();
+	ss << actor->GetLevel();
 	contents->GetFont()->color = Font::ColorDefault;
-	contents->TextDraw(cx + 12, cy, ss.str(), Bitmap::TextAlignRight);
+	contents->TextDraw(cx + 24, cy, ss.str(), Bitmap::TextAlignRight);
 }
 
 void Window_Base::DrawActorState(Game_Actor* actor, int cx, int cy) {
@@ -143,7 +143,7 @@ void Window_Base::DrawActorExp(Game_Actor* actor, int cx, int cy) {
 
 	// Exp for Level up
 	ss << std::setfill(' ') << std::setw(6) << actor->GetNextExpString();
-	contents->TextDraw(cx + 12, cy, ss.str(), Bitmap::TextAlignRight);
+	contents->TextDraw(cx + 12, cy, ss.str(), Bitmap::TextAlignLeft);
 }
 
 void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy) {
@@ -162,8 +162,8 @@ void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy) {
 	}
 	contents->GetFont()->color = color;
 	std::stringstream ss;
-	ss << std::setfill(' ') << std::setw(3) << actor->GetHp();
-	contents->TextDraw(cx, cy, ss.str(), Bitmap::TextAlignRight);
+	ss << actor->GetHp();
+	contents->TextDraw(cx + 18, cy, ss.str(), Bitmap::TextAlignRight);
 
 	// Draw the /
 	cx += 3 * 6;
@@ -173,9 +173,8 @@ void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy) {
 	// Draw Max Hp
 	cx += 6;
 	ss.str("");
-	ss.clear();
-	ss << std::setfill(' ') << std::setw(3) << actor->GetMaxHp();
-	contents->TextDraw(cx, cy, ss.str(), Bitmap::TextAlignRight);
+	ss << actor->GetMaxHp();
+	contents->TextDraw(cx + 18, cy, ss.str(), Bitmap::TextAlignRight);
 }
 
 void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy) {
@@ -192,8 +191,8 @@ void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy) {
 	}
 	contents->GetFont()->color = color;
 	std::stringstream ss;
-	ss << std::setfill(' ') << std::setw(3) << actor->GetSp();
-	contents->TextDraw(cx, cy, ss.str(), Bitmap::TextAlignRight);
+	ss << actor->GetSp();
+	contents->TextDraw(cx + 18, cy, ss.str(), Bitmap::TextAlignRight);
 
 	// Draw the /
 	cx += 3 * 6;
@@ -201,10 +200,10 @@ void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy) {
 	contents->TextDraw(cx, cy, "/");
 
 	// Draw Max Sp
+	cx += 6;
 	ss.str("");
-	ss.clear();
-	ss << std::setfill(' ') << std::setw(3) << actor->GetMaxSp();
-	contents->TextDraw(cx + 6, cy, ss.str(), Bitmap::TextAlignRight);
+	ss << actor->GetMaxSp();
+	contents->TextDraw(cx + 18, cy, ss.str(), Bitmap::TextAlignRight);
 }
 
 void Window_Base::DrawActorParameter(Game_Actor* actor, int cx, int cy, int type) {
