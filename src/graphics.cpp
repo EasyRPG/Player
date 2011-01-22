@@ -143,7 +143,10 @@ void Graphics::Update() {
 void Graphics::InternUpdate1(bool reset) {
 	// FIXME: This method needs more comments.
 	static const double framerate_interval = 1000.0 / framerate;
+	static uint32 current_time = 0;
 	static double last_time = 0;
+	static double wait_frames = 0.0;
+	static double cycles_leftover = 0.0;
 	static uint32 frames = 0;
 	static uint32 next_fps_time = Time::Get() + 1000;
 
@@ -153,12 +156,20 @@ void Graphics::InternUpdate1(bool reset) {
 		frames = 0;
 		return;
 	}
+
+	if (wait_frames >= 1) {
+		wait_frames -= 1;
+		return;
+	}
 	
 	for (;;) {
-		uint32 current_time = Time::Get();
+		current_time = Time::Get();
 
 		if ((current_time - last_time) >= framerate_interval) {
-			last_time = current_time;
+			cycles_leftover = wait_frames;
+			wait_frames = ((double)current_time - last_time) / framerate_interval - cycles_leftover;
+			last_time += current_time - last_time - cycles_leftover;
+
 			DrawFrame();
 
 			framecount++;
