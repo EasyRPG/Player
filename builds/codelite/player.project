@@ -126,8 +126,8 @@
         <File Name="../../src/window_keyboard.h"/>
         <File Name="../../src/window_name.cpp"/>
         <File Name="../../src/window_name.h"/>
-        <File Name="../../src/window_party.cpp"/>
-        <File Name="../../src/window_party.h"/>
+        <File Name="../../src/window_shopparty.cpp"/>
+        <File Name="../../src/window_shopparty.h"/>
         <File Name="../../src/window_shop.cpp"/>
         <File Name="../../src/window_shop.h"/>
         <File Name="../../src/window_filetitle.h"/>

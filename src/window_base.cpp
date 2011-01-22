@@ -127,10 +127,6 @@ void Window_Base::DrawActorState(Game_Actor* actor, int cx, int cy) {
 	}
 }
 
-void Window_Base::DrawActorState(Game_Actor* actor, int cx, int cy, int width) {
-	
-}
-
 void Window_Base::DrawActorExp(Game_Actor* actor, int cx, int cy) {
 	// Draw EXP-String
 	contents->GetFont()->color = 1;
@@ -181,9 +177,6 @@ void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy) {
 	ss << std::setfill(' ') << std::setw(3) << actor->GetMaxHp();
 	contents->TextDraw(cx, cy, ss.str(), Bitmap::TextAlignRight);
 }
-void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy, int width) {
-	
-}
 
 void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy) {
 	// Draw SP-String
@@ -212,10 +205,6 @@ void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy) {
 	ss.clear();
 	ss << std::setfill(' ') << std::setw(3) << actor->GetMaxSp();
 	contents->TextDraw(cx + 6, cy, ss.str(), Bitmap::TextAlignRight);
-}
-
-void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy, int width) {
-	
 }
 
 void Window_Base::DrawActorParameter(Game_Actor* actor, int cx, int cy, int type) {
@@ -294,4 +283,18 @@ void Window_Base::DrawItemName(RPG::Item* item, int cx, int cy, bool enabled) {
 void Window_Base::DrawSkillName(RPG::Skill* skill, int cx, int cy, bool enabled) {
 	contents->GetFont()->color = enabled ? Font::ColorDefault : Font::ColorDisabled;
 	contents->TextDraw(cx, cy, skill->name);
+}
+
+void Window_Base::DrawCurrencyValue(int money, int cx, int cy) {
+	// This function draws right aligned because of the dynamic with of the
+	// gold output (cx and cy define the right border)
+	std::stringstream gold;
+	gold << money;
+
+	contents->GetFont()->color = 1;
+	Rect gold_text_size = contents->GetTextSize(Data::terms.gold);
+	contents->TextDraw(cx, cy, Data::terms.gold, Bitmap::TextAlignRight);
+
+	contents->GetFont()->color = Font::ColorDefault;
+	contents->TextDraw(cx - gold_text_size.width, cy, gold.str(), Bitmap::TextAlignRight);
 }

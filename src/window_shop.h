@@ -50,7 +50,8 @@ public:
 	void Update();
 
 	void SetMode(int nmode);
-	int GetChoice();
+	int GetChoice() const;
+	void SetChoice(int nchoice);
 
 protected:
 	void UpdateCursorRect();

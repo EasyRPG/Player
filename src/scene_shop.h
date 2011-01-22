@@ -25,7 +25,7 @@
 #include "window_base.h"
 #include "window_help.h"
 #include "window_gold.h"
-#include "window_party.h"
+#include "window_shopparty.h"
 #include "window_shopbuy.h"
 #include "window_shopnumber.h"
 #include "window_shopstatus.h"
@@ -33,7 +33,8 @@
 #include "window_shop.h"
 
 ////////////////////////////////////////////////////////////
-/// Scene_Item class
+/// Scene Shop class.
+/// Manages buying and selling of items.
 ////////////////////////////////////////////////////////////
 class Scene_Shop : public Scene {
 
@@ -44,7 +45,6 @@ public:
 	Scene_Shop();
 
 	void Start();
-	void Update();
 	void Terminate();
 
 	enum ShopMode {
@@ -61,17 +61,23 @@ public:
 
 	void SetMode(int nmode);
 
+	void Update();
+	void UpdateCommandSelection();
+	void UpdateBuySelection();
+	void UpdateSellSelection();
+	void UpdateNumberInput();
+
 private:
 	/// Displays available items
 	Window_Help* help_window;
 	Window_ShopBuy* buy_window;
-	Window_Party* party_window;
+	Window_ShopParty* party_window;
 	Window_ShopStatus* status_window;
 	Window_Gold* gold_window;
 	Window_ShopSell* sell_window;
-	Window_ShopNumber* count_window;
-	Window_Base* empty2_window;
+	Window_ShopNumber* number_window;
 	Window_Base* empty_window;
+	Window_Base* empty_window2;
 	Window_Shop* shop_window;
 	int mode;
 	int timer;

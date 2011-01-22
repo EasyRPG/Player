@@ -77,12 +77,34 @@ void Game_Party::GetItems(std::vector<int>& item_list) {
 }
 
 ////////////////////////////////////////////////////////////
-int Game_Party::ItemNumber(int item_id) {
-	std::map<int, int>::iterator it;
-	it = items.find(item_id);
+int Game_Party::ItemNumber(int item_id, bool get_equipped) {
+	if (get_equipped && item_id > 0) {
+		int number = 0;
+		for (size_t i = 0; i < actors.size(); ++i) {
+			if (actors[i]->GetWeaponId() == item_id) {
+				++number;
+			}
+			if (actors[i]->GetShieldId() == item_id) {
+				++number;
+			}
+			if (actors[i]->GetArmorId() == item_id) {
+				++number;
+			}
+			if (actors[i]->GetHelmetId() == item_id) {
+				++number;
+			}
+			if (actors[i]->GetAccessoryId() == item_id) {
+				++number;
+			}
+		}
+		return number;
+	} else {
+		std::map<int, int>::iterator it;
+		it = items.find(item_id);
 
-	if (it != items.end()) {
-		return it->second;
+		if (it != items.end()) {
+			return it->second;
+		}
 	}
 	
 	return 0;
@@ -92,6 +114,11 @@ int Game_Party::ItemNumber(int item_id) {
 ////////////////////////////////////////////////////////////
 void Game_Party::GainGold(int n) {
 	int a = gold + n;
+	gold = min(max(a, 0), 999999);
+}
+
+void Game_Party::LoseGold(int n) {
+	int a = gold - n;
 	gold = min(max(a, 0), 999999);
 }
 
@@ -107,7 +134,6 @@ void Game_Party::GainItem(int item_id, int amount, bool include_equip) {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Game_Party::LoseItem(int item_id, int amount, bool include_equip) {
 	int total_items;
 	GainItem(item_id, -amount, include_equip);

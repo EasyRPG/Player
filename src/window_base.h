@@ -56,17 +56,14 @@ public:
 	void DrawActorClass(Game_Actor* actor, int cx, int cy);
 	void DrawActorLevel(Game_Actor* actor, int cx, int cy);
 	void DrawActorState(Game_Actor* actor, int cx, int cy);
-	void DrawActorState(Game_Actor* actor, int cx, int cy, int cwidth);
 	void DrawActorExp(Game_Actor* actor, int cx, int cy);
 	void DrawActorHp(Game_Actor* actor, int cx, int cy);
-	void DrawActorHp(Game_Actor* actor, int cx, int cy, int cwidth);
 	void DrawActorSp(Game_Actor* actor, int cx, int cy);
-	void DrawActorSp(Game_Actor* actor, int cx, int cy, int cwidth);
 	void DrawActorParameter(Game_Actor* actor, int cx, int cy, int type);
 	void DrawEquipmentType(Game_Actor* actor, int cx, int cy, int type);
 	void DrawItemName(RPG::Item* item, int cx, int cy, bool enabled = true);
 	void DrawSkillName(RPG::Skill* skill, int cx, int cy, bool enabled = true);
-
+	void DrawCurrencyValue(int money, int cx, int cy);
 	//@}
 
 protected:

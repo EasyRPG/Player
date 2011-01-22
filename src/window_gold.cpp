@@ -41,13 +41,5 @@ Window_Gold::~Window_Gold() {
 ////////////////////////////////////////////////////////////
 void Window_Gold::Refresh() {
 	contents->Clear();
-	std::stringstream gold;
-	gold << std::setfill(' ') << std::setw(6) << Game_Party::GetGold();
-
-	contents->GetFont()->color = 1;
-	Rect gold_text_size = contents->GetTextSize(Data::terms.gold);
-	contents->TextDraw(contents->GetWidth() - gold_text_size.width, 2, Data::terms.gold);
-
-	contents->GetFont()->color = Font::ColorDefault;
-	contents->TextDraw(contents->GetWidth() - gold_text_size.width - 6 * 6, 2, gold.str(), Bitmap::TextAlignRight);
+	DrawCurrencyValue(Game_Party::GetGold(), contents->GetWidth(), 2);
 }

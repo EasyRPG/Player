@@ -88,7 +88,7 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag) :
 #endif
 
 	uint32 flags = SDL_INIT_VIDEO | SDL_INIT_TIMER;
-#ifdef DEBUG
+#if (defined(_DEBUG) || defined(_Win32))
 	flags |= SDL_INIT_NOPARACHUTE;
 #endif
 
@@ -99,7 +99,7 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag) :
 	// Tell SDL to use DirectDraw port
 	// in release mode
 #ifndef DEBUG
-	putenv("SDL_VIDEODRIVER=directx");
+	//putenv("SDL_VIDEODRIVER=directx"); // Disables Vsync and Aero under Vista and higher
 	putenv("SDL_AUDIODRIVER=dsound");
 #endif
 

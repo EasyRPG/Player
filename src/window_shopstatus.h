@@ -25,7 +25,8 @@
 #include "window_base.h"
 
 ////////////////////////////////////////////////////////////
-/// Window Total Class
+/// Window ShopStatus Class.
+/// Displays possessed and equipped items.
 ////////////////////////////////////////////////////////////
 class Window_ShopStatus : public Window_Base {
 public:
@@ -44,12 +45,14 @@ public:
 	////////////////////////////////////////////////////////
 	void Refresh();
 
-	void SetPossessed(int val);
-	void SetEquipped(int val);
+	////////////////////////////////////////////////////////
+	/// Sets the item to display.
+	/// @param item_id : Id of item to use
+	////////////////////////////////////////////////////////
+	void SetItemId(int item_id);
 
 protected:
-	int possessed;
-	int equipped;
+	int item_id;
 };
 
 #endif

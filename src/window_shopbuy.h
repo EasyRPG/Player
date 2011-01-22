@@ -15,23 +15,20 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _WINDOW_BUY_H_
-#define _WINDOW_BUY_H_
+#ifndef _WINDOW_SHOPBUY_H_
+#define _WINDOW_SHOPBUY_H_
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "window_base.h"
-#include "window_help.h"
-#include "window_shopstatus.h"
-#include "window_party.h"
+#include <vector>
+#include "window_selectable.h"
 
 ////////////////////////////////////////////////////////////
 /// Window Shop Class
-/// The shop item list window
+/// The shop item list window.
 ////////////////////////////////////////////////////////////
-// Window_Selectable is too badly broken to use as a base class
-class Window_ShopBuy : public Window_Base {
+class Window_ShopBuy : public Window_Selectable {
 public:
 	////////////////////////////////////////////////////////
 	/// Constructor
@@ -43,32 +40,37 @@ public:
 	////////////////////////////////////////////////////////
 	~Window_ShopBuy();
 
-	void CreateContents();
+	////////////////////////////////////////////////////////
+	/// Get item id of the selected item
+	/// @return current selected item id
+	////////////////////////////////////////////////////////
+	int GetItemId();
 
-	virtual void UpdateCursorRect();
-	Rect GetItemRect(int index);
-	void Update();
+	////////////////////////////////////////////////////////
+	/// Refreshes the item list.
+	////////////////////////////////////////////////////////
 	void Refresh();
-	int GetSelected(void);
-	void SetHelpWindow(Window_Help* w);
-	void SetStatusWindow(Window_ShopStatus* w);
-	void SetPartyWindow(Window_Party* w);
+
+	////////////////////////////////////////////////////////
+	/// Draws an item together with the price.
+	/// @param index : index of item to draw
+	////////////////////////////////////////////////////////
+	void DrawItem(int index);
+
+	////////////////////////////////////////////////////////
+	/// Updates the Help Window
+	////////////////////////////////////////////////////////
+	void UpdateHelp();
+
 	////////////////////////////////////////////////////////
 	/// Checks if the item should be enabled.
-	/// @param item_id : Item to check
+	/// @param item_id : Item id to check
+	/// @return If it is enabled
 	////////////////////////////////////////////////////////
 	bool CheckEnable(int item_id);
 	
 protected:
-	static const int border_x = 0;
-	static const int border_y = 0;
-	static const int row_spacing = 16;
-	Window_Help* help_window;
-	Window_ShopStatus* status_window;
-	Window_Party* party_window;
-	int row_max;
-	int top_index;
-	int index;
+	std::vector<int> data;
 };
 
 #endif

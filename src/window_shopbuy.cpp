@@ -18,156 +18,73 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <algorithm>
 #include <sstream>
 #include <string>
+#include "window_base.h"
 #include "window_shopbuy.h"
 #include "game_system.h"
 #include "game_temp.h"
 #include "game_party.h"
-#include "input.h"
 
 ////////////////////////////////////////////////////////////
 Window_ShopBuy::Window_ShopBuy(int ix, int iy, int iwidth, int iheight) : 
-	Window_Base(ix, iy, iwidth, iheight),
-	help_window(NULL),
-	status_window(NULL) {
-
+	Window_Selectable(ix, iy, iwidth, iheight) {
 	index = 0;
-	top_index = 0;
-
-	SetContents(Bitmap::CreateBitmap(width - 16, height - 16));
-	contents->SetTransparentColor(windowskin->GetTransparentColor());
-	SetZ(9999);
-
-	row_max = (contents->GetHeight() - 2 * border_y) / row_spacing;
-
-	Refresh();
-	UpdateCursorRect();
 }
 
 Window_ShopBuy::~Window_ShopBuy() {
 }
 
-int Window_ShopBuy::GetSelected(void) {
-	return Game_Temp::shop_goods[index];
+////////////////////////////////////////////////////////////
+int Window_ShopBuy::GetItemId() {
+	if (index < 0) {
+		return 0;
+	} else {
+		return data[index];
+	}
 }
 
-Rect Window_ShopBuy::GetItemRect(int index) {
-	Rect rect = Rect();
-	int width = contents->GetWidth() - 2 * border_x;
-	int height = row_spacing;
-	rect.width = width;
-	rect.height = height;
-	rect.x = border_x;
-	rect.y = (index - top_index) * height + border_y;
-
-	return rect;
-}
-
-void Window_ShopBuy::UpdateCursorRect() {
-	SetCursorRect(GetItemRect(index));
-}
-
+////////////////////////////////////////////////////////////
 void Window_ShopBuy::Refresh() {
+	data = Game_Temp::shop_goods;
+	item_max = data.size();
+
+	CreateContents();
+
+	contents->Clear();
+	Rect rect(0, 0, contents->GetWidth(), contents->GetHeight());
+	contents->SetTransparentColor(windowskin->GetTransparentColor());
 	contents->Clear();
 
-	for (int i = 0; i < row_max; i++) {
-		int idx = top_index + i;
-		if ((size_t) idx >= Game_Temp::shop_goods.size())
-			break;
-		int item_id = Game_Temp::shop_goods[idx];
-
-		if (CheckEnable(item_id)) {
-			contents->GetFont()->color = Font::ColorDefault;
-		}
-		else {
-			contents->GetFont()->color = Font::ColorDisabled;
-		}
-		const std::string& s = Data::items[item_id - 1].name;
-		std::stringstream p;
-		p << Data::items[item_id - 1].price;
-		contents->TextDraw(border_x + 4, border_y + 2 + i * row_spacing, s);
-		int price_x = (contents->GetWidth() - 2 * border_x) - contents->GetTextSize(p.str()).width - 4;
-		int price_y = border_y + 2 + i * row_spacing;
-		contents->TextDraw(price_x, price_y , p.str(), Bitmap::TextAlignRight);
-
+	for (size_t i = 0; i < data.size(); ++i) {
+		DrawItem(i);
 	}
 }
 
-void Window_ShopBuy::Update() {
-	Window_Base::Update();
-	if (active) {
-		if (Input::IsRepeated(Input::DOWN)) {
-			Game_System::SePlay(Data::system.cursor_se);
-			index++;
-			if ((size_t) index >= Game_Temp::shop_goods.size())
-				index = 0;
-		}
-		else if (Input::IsRepeated(Input::UP)) {
-			Game_System::SePlay(Data::system.cursor_se);
-			index--;
-			if (index < 0)
-				index = Game_Temp::shop_goods.size() - 1;
-		}
-		else
-			return;
+////////////////////////////////////////////////////////////
+void Window_ShopBuy::DrawItem(int index) {
+	int item_id = data[index];
+	bool enabled = Data::items[item_id - 1].price <= Game_Party::GetGold();
+	Rect rect = GetItemRect(index);
+	contents->SetTransparentColor(windowskin->GetTransparentColor());
+	contents->ClearRect(rect);
+	DrawItemName(&Data::items[item_id - 1], rect.x, rect.y, enabled);
 
-		top_index = std::min(top_index, index);
-		top_index = std::max(top_index, index - row_max + 1);
-
-		Refresh();
-
-		int item_id = GetSelected();
-
-		if (help_window)
-			help_window->SetText(Data::items[item_id - 1].description);
-
-		if (party_window)
-			party_window->SetItem(item_id);
-
-		if (status_window) {
-			int possessed = Game_Party::ItemNumber(item_id);
-			int equipped = 0;
-			const std::vector<Game_Actor*>& actors = Game_Party::GetActors();
-			for (size_t i = 0; i < actors.size(); i++) {
-				const Game_Actor* actor = actors[i];
-				if (actor->GetWeaponId() == item_id)
-					equipped++;
-				if (actor->GetShieldId() == item_id)
-					equipped++;
-				if (actor->GetArmorId() == item_id)
-					equipped++;
-				if (actor->GetHelmetId() == item_id)
-					equipped++;
-				if (actor->GetAccessoryId() == item_id)
-					equipped++;
-			}
-			status_window->SetPossessed(possessed);
-			status_window->SetEquipped(equipped);
-		}
-	}
-
-	UpdateCursorRect();
+	std::stringstream ss;
+	ss << Data::items[item_id - 1].price;
+	contents->TextDraw(rect.width + 4, rect.y, ss.str(), Bitmap::TextAlignRight);
 }
 
-void Window_ShopBuy::SetHelpWindow(Window_Help* w) {
-	help_window = w;
-}
-
-void Window_ShopBuy::SetStatusWindow(Window_ShopStatus* w) {
-	status_window = w;
-}
-
-void Window_ShopBuy::SetPartyWindow(Window_Party* w) {
-	party_window = w;
+////////////////////////////////////////////////////////////
+void Window_ShopBuy::UpdateHelp() {
+	help_window->SetText(GetItemId() == 0 ? "" : 
+		Data::items[GetItemId() - 1].description);
 }
 
 ////////////////////////////////////////////////////////////
 bool Window_ShopBuy::CheckEnable(int item_id) {
-	int item_price = Data::items[item_id - 1].price;
-	int party_gold = Game_Party::GetGold();
-	int item_number = Game_Party::ItemNumber(item_id);
-	
-	return (item_price <= party_gold && item_number < 99);
+	return (
+		item_id > 0 &&
+		Data::items[item_id - 1].price <= Game_Party::GetGold() &&
+		Game_Party::ItemNumber(item_id) < 99);
 }

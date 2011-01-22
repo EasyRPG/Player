@@ -320,7 +320,17 @@ void SdlBitmap::FillRect(Rect dst_rect, const Color &color) {
 void SdlBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 	if (text.length() == 0) return;
 	Rect dst_rect = GetTextSize(text);
-	dst_rect.x = x; dst_rect.y = y;
+
+	switch (align) {
+	case Bitmap::TextAlignCenter:
+		dst_rect.x = x - dst_rect.width / 2; break;
+	case Bitmap::TextAlignRight:
+		dst_rect.x = x - dst_rect.width; break;
+	default:
+		dst_rect.x = x; break;
+	}
+
+	dst_rect.y = y;
 	dst_rect.width += 1; dst_rect.height += 1; // Need place for shadow
 	if (dst_rect.IsOutOfBounds(GetWidth(), GetHeight())) return;
 

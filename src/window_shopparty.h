@@ -15,8 +15,8 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _WINDOW_PARTY_H_
-#define _WINDOW_PARTY_H_
+#ifndef _WINDOW_SHOPPARTY_H_
+#define _WINDOW_SHOPPARTY_H_
 
 ////////////////////////////////////////////////////////////
 // Headers
@@ -25,19 +25,20 @@
 #include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
-/// Window Party Class
+/// Window ShopParty Class.
+/// Displays the party in the Shop Scene
 ////////////////////////////////////////////////////////////
-class Window_Party :	public Window_Base {
+class Window_ShopParty : public Window_Base {
 public:
 	////////////////////////////////////////////////////////
 	/// Constructor.
 	////////////////////////////////////////////////////////
-	Window_Party(int ix, int iy, int iwidth, int iheight);
+	Window_ShopParty(int ix, int iy, int iwidth, int iheight);
 
 	////////////////////////////////////////////////////////
 	/// Destructor.
 	////////////////////////////////////////////////////////
-	~Window_Party();
+	~Window_ShopParty();
 
 	////////////////////////////////////////////////////////
 	/// Renders the current party on the window.
@@ -52,20 +53,20 @@ public:
 	////////////////////////////////////////////////////////
 	/// Set the reference item
 	////////////////////////////////////////////////////////
-	void SetItem(int item_id);
+	void SetItemId(int item_id);
 
 protected:
-	// reference item
+	/// reference item
 	int item_id;
-	// animation cycle
+	/// animation cycle
 	int cycle;
 
-	// character bitmaps
-	// bitmaps[actor#][anim phase][equippable]
+	/// character bitmaps
+	/// bitmaps[actor#][anim phase][equippable]
 	Bitmap* bitmaps[4][3][2];
 
-	// animation rate
-	static const int anim_rate = 20;
+	/// animation rate
+	static const int anim_rate = 12;
 };
 
 #endif

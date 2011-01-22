@@ -24,10 +24,10 @@
 #include <vector>
 #include "window_help.h"
 #include "window_item.h"
-#include "window_party.h"
 
 ////////////////////////////////////////////////////////////
-/// Class_Name class
+/// Window ShopSell class.
+/// Displays all items of the party and allows to sell them.
 ////////////////////////////////////////////////////////////
 class Window_ShopSell : public Window_Item {
 
@@ -47,12 +47,6 @@ public:
 	/// @param item_id : Item to check
 	////////////////////////////////////////////////////////
 	virtual bool CheckEnable(int item_id);
-
-	void SetPartyWindow(Window_Party* w);
-	void Update(void);
-
-protected:
-	Window_Party *party_window;
 };
 
 #endif

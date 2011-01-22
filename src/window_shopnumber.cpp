@@ -21,19 +21,17 @@
 #include <sstream>
 #include "game_system.h"
 #include "input.h"
+#include "util_macro.h"
 #include "window_shopnumber.h"
 
 ////////////////////////////////////////////////////////////
 Window_ShopNumber::Window_ShopNumber(int ix, int iy, int iwidth, int iheight) : 
 	Window_Base(ix, iy, iwidth, iheight),
-	lo(1), hi(1), number(1) {
+	item_max(1), price(0), number(1), item_id(0) {
 
 	SetContents(Bitmap::CreateBitmap(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
-	SetZ(9999);
-
-	Refresh();
-	SetCursorRect(Rect(138, 40, 20, 16));
+	contents->Clear();
 }
 
 ////////////////////////////////////////////////////////////
@@ -41,37 +39,29 @@ Window_ShopNumber::~Window_ShopNumber() {
 }
 
 ////////////////////////////////////////////////////////////
-void Window_ShopNumber::SetItemValue(unsigned int val) {
-	item_value = val;
-	Refresh();
-}
-
-////////////////////////////////////////////////////////////
-void Window_ShopNumber::SetItemName(const std::string& name) {
-	item_name = name;
-	Refresh();
+void Window_ShopNumber::SetData(int item_id, int item_max, int price) {
+	this->item_id = item_id;
+	this->item_max = min(item_max, 99);
+	this->price = price;
+	number = 1;
 }
 
 ////////////////////////////////////////////////////////////
 void Window_ShopNumber::Refresh() {
-	std::ostringstream numstr, valstr;
-	numstr << number;
-	valstr << number * item_value;
-
 	contents->Clear();
 
-	contents->GetFont()->color = Font::ColorDefault;
-	contents->TextDraw(0, 40 + 2, item_name);
-	contents->TextDraw(124, 40 + 2, "x");
-	contents->TextDraw(138 + 2, 40 + 2, numstr.str());
+	int y = 34;
+	DrawItemName(&Data::items[item_id - 1], 0, y);
 
-	contents->GetFont()->color = 1;
-	int cx = contents->GetWidth() - (Data::terms.gold.size() + 1) * 6;
-	contents->TextDraw(cx, 72 + 2, Data::terms.gold);
+	std::stringstream ss;
+	ss << number;
 
 	contents->GetFont()->color = Font::ColorDefault;
-	cx -=  (valstr.str().size()) * 6;
-	contents->TextDraw(cx, 72 + 2, valstr.str());
+	contents->TextDraw(132, y, "x");
+	contents->TextDraw(132 + 30, y, ss.str(), Bitmap::TextAlignRight);
+	SetCursorRect(Rect(132 + 14, y - 2, 20, 16));
+	
+	DrawCurrencyValue(GetTotal(), contents->GetWidth(), y + 32);
 }
 
 ////////////////////////////////////////////////////////////
@@ -80,64 +70,29 @@ int Window_ShopNumber::GetNumber() const {
 }
 
 ////////////////////////////////////////////////////////////
-int Window_ShopNumber::GetTotal() const {
-	return number * item_value;
-}
-
-////////////////////////////////////////////////////////////
-void Window_ShopNumber::SetNumber(unsigned int val) {
-	number = std::min(std::max(val, lo), hi);
-	Refresh();
-}
-
-////////////////////////////////////////////////////////////
-void Window_ShopNumber::SetRange(unsigned int nlo, unsigned int nhi) {
-	lo = nlo;
-	hi = nhi;
-	number = std::min(std::max(number, lo), hi);
-	Refresh();
-}
-
-////////////////////////////////////////////////////////////
 void Window_ShopNumber::Update() {
 	Window_Base::Update();
 
 	if (active) {
-		if (Input::IsRepeated(Input::LEFT)) {
-			if (number > lo) {
-				Game_System::SePlay(Data::system.cursor_se);
-				number--;
-			}
-			else {
-				number = lo;
-			}
-			Refresh();
+		int last_number = number;
+		if (Input::IsRepeated(Input::RIGHT) && number < item_max) {
+			number++;
+		} else if (Input::IsRepeated(Input::LEFT) && number > 1) {
+			number--;
+		} else if (Input::IsRepeated(Input::UP) && number < item_max) {
+			number = min(number + 10, item_max);
+		} else if (Input::IsRepeated(Input::DOWN) && number > 1) {
+			number = max(number - 10, 1);
 		}
 
-		if (Input::IsRepeated(Input::RIGHT)) {
-			if (number < hi) {
-				Game_System::SePlay(Data::system.cursor_se);
-				number++;
-			}
-			else {
-				number = hi;
-			}
-
-			Refresh();
-		}
-		if (Input::IsRepeated(Input::UP)) {
-			if (number < hi) {
-				Game_System::SePlay(Data::system.cursor_se);
-				number = hi;
-			}
-			Refresh();
-		}
-		if (Input::IsRepeated(Input::DOWN)) {
-			if (number > lo) {
-				Game_System::SePlay(Data::system.cursor_se);
-				number = lo;
-			}
+		if (last_number != number) {
+			Game_System::SePlay(Data::system.cursor_se);
 			Refresh();
 		}
 	}
+}
+
+////////////////////////////////////////////////////////////
+int Window_ShopNumber::GetTotal() const {
+	return Data::items[item_id - 1].price * number;
 }

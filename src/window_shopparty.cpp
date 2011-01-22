@@ -22,10 +22,10 @@
 #include "cache.h"
 #include "game_party.h"
 #include "game_actor.h"
-#include "window_party.h"
+#include "window_shopparty.h"
 
 ////////////////////////////////////////////////////////////
-Window_Party::Window_Party(int ix, int iy, int iwidth, int iheight) :
+Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) {
 
 	SetContents(Bitmap::CreateBitmap(width - 16, height - 16));
@@ -64,7 +64,7 @@ Window_Party::Window_Party(int ix, int iy, int iwidth, int iheight) :
 }
 
 ////////////////////////////////////////////////////////////
-Window_Party::~Window_Party() {
+Window_ShopParty::~Window_ShopParty() {
 	for (size_t i = 0; i < Game_Party::GetActors().size() && i < 4; i++)
 		for (int j = 0; j < 3; j++)
 			for (int k = 0; k < 2; k++)
@@ -72,27 +72,31 @@ Window_Party::~Window_Party() {
 }
 
 ////////////////////////////////////////////////////////////
-void Window_Party::Refresh() {
+void Window_ShopParty::Refresh() {
 	contents->Clear();
 
 	const std::vector<Game_Actor*>& actors = Game_Party::GetActors();
 	for (size_t i = 0; i < actors.size() && i < 4; i++) {
 		Game_Actor *actor = actors[i];
-		int phase = (cycle / anim_rate) % 3;
+		int phase = (cycle / anim_rate) % 4;
+		if (phase == 3) {
+			phase = 1;
+		}
 		bool equippable = item_id == 0 || actor->IsEquippable(item_id);
 		Bitmap *bm = bitmaps[i][phase][equippable ? 1 : 0];
 		contents->Blit(i * 32, 0, bm, bm->GetRect(), 255);
 	}
 }
 
-void Window_Party::SetItem(int nitem_id) {
-	item_id = nitem_id;
-	Refresh();
+void Window_ShopParty::SetItemId(int nitem_id) {
+	if (nitem_id != item_id) {
+		item_id = nitem_id;
+		Refresh();
+	}
 }
 
-void Window_Party::Update() {
+void Window_ShopParty::Update() {
 	cycle++;
 	if (cycle % anim_rate == 0)
 		Refresh();
 }
-

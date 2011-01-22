@@ -85,7 +85,7 @@ namespace Game_Party {
 	/// Lose gold.
 	/// @param value : lost gold
 	////////////////////////////////////////////////////////
-	//void LoseGold(int value);
+	void LoseGold(int value);
 
 	////////////////////////////////////////////////////////
 	/// Increase steps in 1.
@@ -99,11 +99,13 @@ namespace Game_Party {
 	void GetItems(std::vector<int>& item_list);
 
 	////////////////////////////////////////////////////////
-	/// Get number of possessed items.
+	/// Get number of possessed or equipped items.
 	/// @param item_id : database item id
+	/// @get_equipped : If true this returns the number
+	/// of equipped items
 	/// @return number of items
 	////////////////////////////////////////////////////////
-	int ItemNumber(int item_id);
+	int ItemNumber(int item_id, bool get_equipped = false);
 
 	////////////////////////////////////////////////////////
 	/// Gain an amount of items.

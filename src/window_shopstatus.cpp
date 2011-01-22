@@ -20,17 +20,15 @@
 ////////////////////////////////////////////////////////////
 #include <string>
 #include <sstream>
+#include "game_party.h"
 #include "window_shopstatus.h"
 
 ////////////////////////////////////////////////////////////
 Window_ShopStatus::Window_ShopStatus(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight) {
+	Window_Base(ix, iy, iwidth, iheight), item_id(0) {
 
 	SetContents(Bitmap::CreateBitmap(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
-
-	possessed = 0;
-	equipped = 0;
 
 	Refresh();
 }
@@ -42,32 +40,31 @@ Window_ShopStatus::~Window_ShopStatus() {
 ////////////////////////////////////////////////////////////
 void Window_ShopStatus::Refresh() {
 	contents->Clear();
-	contents->GetFont()->color = Font::ColorDefault;
 
-	std::stringstream possessed_ss;
-	possessed_ss << possessed;
-	const std::string& possessed_str = possessed_ss.str();
-	int possessed_w = contents->GetTextSize(possessed_str).width;
+	if (item_id != 0) {
+		int number = Game_Party::ItemNumber(item_id);
 
-	contents->TextDraw(2, 2, Data::terms.possessed_items);
-	contents->TextDraw(contents->GetWidth() - 2 - possessed_w, 2, possessed_str);
+		contents->GetFont()->color = 1;
+		contents->TextDraw(0, 2, Data::terms.possessed_items);
+		contents->TextDraw(0, 18, Data::terms.equipped_items);
 
-	std::stringstream equipped_ss;
-	equipped_ss << equipped;
-	const std::string& equipped_str = equipped_ss.str();
-	int equipped_w = contents->GetTextSize(equipped_str).width;
+		std::stringstream ss;
+		ss << number;
 
-	contents->TextDraw(2, 18, Data::terms.equipped_items);
-	contents->TextDraw(contents->GetWidth() - 2 - equipped_w, 18, equipped_str);
+		contents->GetFont()->color = Font::ColorDefault;
+		contents->TextDraw(120, 2, ss.str(), Bitmap::TextAlignRight);
+
+		ss.str("");
+		ss << Game_Party::ItemNumber(item_id, true);
+		contents->TextDraw(120, 18, ss.str(), Bitmap::TextAlignRight);
+	}
 }
 
-void Window_ShopStatus::SetPossessed(int val) {
-	possessed = val;
-	Refresh();
-}
-
-void Window_ShopStatus::SetEquipped(int val) {
-	equipped = val;
-	Refresh();
+////////////////////////////////////////////////////////////
+void Window_ShopStatus::SetItemId(int new_item_id) {
+	if (new_item_id != item_id) {
+		item_id = new_item_id;
+		Refresh();
+	}
 }
 

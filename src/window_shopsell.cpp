@@ -25,8 +25,7 @@
 
 ////////////////////////////////////////////////////////////
 Window_ShopSell::Window_ShopSell(int ix, int iy, int iwidth, int iheight) :
-	Window_Item(ix, iy, iwidth, iheight),
-	party_window(NULL) {}
+	Window_Item(ix, iy, iwidth, iheight) {}
 
 ////////////////////////////////////////////////////////////
 Window_ShopSell::~Window_ShopSell() {
@@ -34,18 +33,5 @@ Window_ShopSell::~Window_ShopSell() {
 
 ////////////////////////////////////////////////////////////
 bool Window_ShopSell::CheckEnable(int item_id) {
-	return true;
+	return Data::items[item_id - 1].price > 0;
 }
-
-void Window_ShopSell::Update(void) {
-	Window_Selectable::Update();
-	if (active) {
-		if (party_window)
-			party_window->SetItem(GetItemId());
-	}
-}
-
-void Window_ShopSell::SetPartyWindow(Window_Party *w) {
-	party_window = w;
-}
-
