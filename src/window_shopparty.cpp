@@ -85,6 +85,12 @@ void Window_ShopParty::Refresh() {
 		bool equippable = item_id == 0 || actor->IsEquippable(item_id);
 		Bitmap *bm = bitmaps[i][phase][equippable ? 1 : 0];
 		contents->Blit(i * 32, 0, bm, bm->GetRect(), 255);
+		bool is_equipped = false;
+		//check if item is equipped by any member
+		for (int j = 0; j < 5; ++j)
+			is_equipped |= (actor->GetEquipment(j) == item_id);
+		if (is_equipped) 
+			contents->TextDraw(i * 32 + 18, 22, "E");
 	}
 }
 
