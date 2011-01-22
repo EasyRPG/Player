@@ -240,7 +240,7 @@
         <File Name="../../src/registry_win.cpp"/>
         <File Name="../../src/registry_win.h"/>
         <File Name="../../src/util_win.cpp"/>
-        <File Name="../../src/util_win.h"/>		
+        <File Name="../../src/util_win.h"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Cocoa">
         <File Name="../../src/msgbox_cocoa.cpp"/>
@@ -253,6 +253,8 @@
         <File Name="../../src/font_render_8x8.cpp"/>
         <File Name="../../src/font_render_8x8.h"/>
       </VirtualDirectory>
+      <File Name="../../src/utils.h"/>
+      <File Name="../../src/utils.cpp"/>
     </VirtualDirectory>
     <File Name="../../src/main.cpp"/>
     <File Name="../../src/main_data.cpp"/>
