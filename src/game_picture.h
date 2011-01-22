@@ -60,7 +60,7 @@ public:
 	void Magnify(int scale);
 	void Transparency(int t, int b);
 	void Rotate(int speed);
-	void Waver(int speed);
+	void Waver(int depth);
 	void StopEffects();
 	void Transition(int tenths);
 
@@ -77,7 +77,10 @@ private:
 	bool rotate;
 	bool waver;
 	int speed;
+	int depth;
 	double value;
+
+	static const int waver_speed = 10;
 
 	Sprite* sprite;
 

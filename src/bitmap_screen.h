@@ -179,6 +179,18 @@ public:
 	/// @param blend_color : blend color
 	virtual void SetBlendColor(Color blend_color);
 
+	/// @return waver magnitude in pixels
+	virtual int GetWaverEffectDepth() const;
+
+	/// @return waver phase in degrees
+	virtual double GetWaverEffectPhase() const;
+
+	/// @param waver magnitude in pixels
+	virtual void SetWaverEffectDepth(int depth);
+
+	/// @param waver phase in degrees
+	virtual void SetWaverEffectPhase(double phase);
+
 protected:
 	BitmapScreen(Bitmap* source);
 	BitmapScreen(bool delete_bitmap);
@@ -201,6 +213,8 @@ protected:
 	double angle_effect;
 	int blend_type_effect;
 	Color blend_color_effect;
+	int waver_effect_depth;
+	double waver_effect_phase;
 };
 
 #endif

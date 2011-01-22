@@ -204,6 +204,15 @@ public:
 	virtual Bitmap* RotateScale(double angle, int scale_w, int scale_h);
 
 	////////////////////////////////////////////////////////
+	/// Create a wavy bitmap.
+	/// @param depth : wave magnitude
+	/// @param phase : wave phase
+	/// @param scale_w : resampled width
+	/// @param scale_h : resampled height
+	////////////////////////////////////////////////////////
+	virtual Bitmap* Waver(int depth, double phase);
+
+	////////////////////////////////////////////////////////
 	/// Change the opacity of a bitmap.
 	/// @param opacity : the maximum opacity
 	/// @param src_rect: the rectangle to modify

@@ -45,6 +45,7 @@ Picture::Picture() :
 	rotate(false),
 	waver(false),
 	speed(0),
+	depth(0),
 	value(0.0),
 	sprite(NULL)
 {
@@ -74,6 +75,8 @@ void Picture::UpdateSprite() {
 	sprite->SetOx((int)(sprite->GetBitmap()->GetWidth() * st.magnify / 200.0));
 	sprite->SetOy((int)(sprite->GetBitmap()->GetHeight() * st.magnify / 200.0));
 	sprite->SetAngle(rotate ? value : 0.0);
+	sprite->SetWaverPhase(waver ? value : 0.0);
+	sprite->SetWaverDepth(waver ? depth : 0);
 	sprite->SetOpacity(
 		(int)(255 * (100 - st.top_trans) / 100),
 		(int)(255 * (100 - st.bottom_trans) / 100));
@@ -149,10 +152,10 @@ void Picture::Rotate(int _speed) {
 	value = 0.0;
 }
 
-void Picture::Waver(int _speed) {
+void Picture::Waver(int _depth) {
 	rotate = false;
 	waver = true;
-	speed = _speed;
+	depth = _depth;
 	value = 0.0;
 }
 
@@ -177,8 +180,10 @@ void Picture::Update() {
 	if (!shown)
 		return;
 
-	if (rotate || waver)
+	if (rotate)
 		value += speed;
+	if (waver)
+		value += waver_speed;
 
 	if (duration > 0) {
 		PictureState& st = current_state;

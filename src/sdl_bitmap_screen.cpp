@@ -170,7 +170,7 @@ void SdlBitmapScreen::BlitScreen(int x, int y, Rect src_rect) {
 				bush_effect
 			);
 
-			BlitScreenIntern(surface, x, y + bush_effect, blit_rect, opacity_bottom_effect / 2);
+			BlitScreenIntern(surface, x, y + bush_effect, blit_rect, opacity_bottom_effect);
 		}
 	}
 }
@@ -302,7 +302,8 @@ void SdlBitmapScreen::Refresh() {
 
 	if (tone_effect == Tone() && angle_effect == 0.0 &&
 		flipx_effect == false && flipy_effect == false &&
-		zoom_x_effect == 1.0 && zoom_y_effect == 1.0) {
+		zoom_x_effect == 1.0 && zoom_y_effect == 1.0 &&
+		waver_effect_depth == 0) {
 
 		bitmap_effects = bitmap;
 
@@ -338,10 +339,12 @@ void SdlBitmapScreen::Refresh() {
 				delete bitmap_effects;
 				bitmap_effects = temp;
 			}
+		}
 
-			// TODO: Rotate
-		} else {
-			bitmap_effects = NULL;
+		if (waver_effect_depth != 0) {
+			Bitmap* temp = bitmap_effects->Waver(waver_effect_depth, waver_effect_phase);
+			delete bitmap_effects;
+			bitmap_effects = temp;
 		}
 
 		src_rect_effect_applied = true;
@@ -392,7 +395,7 @@ void SdlBitmapScreen::SetSrcRect(Rect src_rect) {
 		if (tone_effect == Tone() || angle_effect == 0.0 ||
 			flipx_effect == false || flipy_effect == false ||
 			zoom_x_effect == 1.0 || zoom_y_effect == 1.0 ||
-			src_rect_effect_applied) {
+			waver_effect_depth == 0 || src_rect_effect_applied) {
 				needs_refresh = true;
 		}
 	}

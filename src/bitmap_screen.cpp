@@ -136,6 +136,8 @@ void BitmapScreen::ClearEffects() {
 	zoom_x_effect = 1.0;
 	zoom_y_effect = 1.0;
 	angle_effect = 0.0;
+	waver_effect_depth = 0;
+	waver_effect_phase = 0.0;
 }
 
 void BitmapScreen::SetFlashEffect(const Color &color, int duration) {
@@ -215,6 +217,20 @@ void BitmapScreen::SetAngleEffect(double angle) {
 	}
 }
 
+void BitmapScreen::SetWaverEffectDepth(int depth) {
+	if (waver_effect_depth != depth) {
+		waver_effect_depth = depth;
+		needs_refresh = true;
+	}
+}
+
+void BitmapScreen::SetWaverEffectPhase(double phase) {
+	if (waver_effect_phase != phase) {
+		waver_effect_phase = phase;
+		needs_refresh = true;
+	}
+}
+
 void BitmapScreen::SetBlendType(int blend_type) {
 	blend_type_effect = blend_type;
 }
@@ -265,4 +281,12 @@ int BitmapScreen::GetBlendType() const {
 
 Color BitmapScreen::GetBlendColor() const {
 	return blend_color_effect;
+}
+
+int BitmapScreen::GetWaverEffectDepth() const {
+	return waver_effect_depth;
+}
+
+double BitmapScreen::GetWaverEffectPhase() const {
+	return waver_effect_phase;
 }

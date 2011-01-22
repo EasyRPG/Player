@@ -83,6 +83,10 @@ public:
 	void SetBlendColor(Color color);
 	Tone GetTone() const;
 	void SetTone(Tone tone);
+	int GetWaverDepth() const;
+	void SetWaverDepth(int depth);
+	double GetWaverPhase() const;
+	void SetWaverPhase(double phase);
 
 	unsigned long GetId() const;
 	DrawableType GetType() const;

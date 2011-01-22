@@ -240,6 +240,20 @@ void Sprite::SetTone(Tone tone) {
 	bitmap_screen->SetToneEffect(tone);
 }
 
+int Sprite::GetWaverDepth() const {
+	return bitmap_screen->GetWaverEffectDepth();
+}
+void Sprite::SetWaverDepth(int depth) {
+	bitmap_screen->SetWaverEffectDepth(depth);
+}
+
+double Sprite::GetWaverPhase() const {
+	return bitmap_screen->GetWaverEffectPhase();
+}
+void Sprite::SetWaverPhase(double phase) {
+	bitmap_screen->SetWaverEffectPhase(phase);
+}
+
 ////////////////////////////////////////////////////////////
 unsigned long Sprite::GetId() const {
 	return ID;

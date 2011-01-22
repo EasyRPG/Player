@@ -702,7 +702,7 @@ Bitmap* Bitmap::Resample(int scale_w, int scale_h, const Rect& src_rect) {
 		uint16* src_pixels = (uint16*)pixels();
 		uint16* dst_pixels = (uint16*)resampled->pixels();
 
-		int stride = resampled->pitch() / bpp() - resampled->GetWidth();
+		int stride = resampled->pitch() / resampled->bpp() - resampled->GetWidth();
 
 		int nearest_y, nearest_match;
 
@@ -721,7 +721,7 @@ Bitmap* Bitmap::Resample(int scale_w, int scale_h, const Rect& src_rect) {
 		uint32* nearest_match;
 		uint32* dst_pixels = (uint32*)resampled->pixels();
 
-		int stride = resampled->pitch() / bpp() - resampled->GetWidth();
+		int stride = resampled->pitch() / resampled->bpp() - resampled->GetWidth();
 
 		for (int i = 0; i < scale_h; i++) {
 			nearest_y = (uint32*)pixels() + (src_rect.y + (int)(i / zoom_y)) * (pitch() / bpp());
@@ -944,16 +944,16 @@ void Bitmap::Flip(bool horizontal, bool vertical) {
 
 ////////////////////////////////////////////////////////////
 Bitmap* Bitmap::RotateScale(double angle, int scale_w, int scale_h) {
-	double c = cos(angle);
-	double s = sin(angle);
+	double c = cos(-angle);
+	double s = sin(-angle);
 	int w = width();
 	int h = height();
 	double sx = (double) scale_w / w;
 	double sy = (double) scale_h / h;
 
 	double fxx =  c * sx;
-	double fxy = -s * sy;
-	double fyx =  s * sx;
+	double fxy =  s * sy;
+	double fyx = -s * sx;
 	double fyy =  c * sy;
 
 	double x0 = 0;
@@ -1070,6 +1070,34 @@ void Bitmap::OpacityChange(int opacity, const Rect& src_rect) {
 	Unlock();
 
 	RefreshCallback();
+}
+
+////////////////////////////////////////////////////////////
+Bitmap* Bitmap::Waver(int depth, double phase) {
+	Bitmap* resampled = CreateBitmap(width() + 2 * depth, height(), transparent);
+	if (transparent)
+		resampled->SetTransparentColor(GetTransparentColor());
+	resampled->Clear();
+
+	Lock();
+	resampled->Lock();
+
+	uint8* src_pixels = (uint8*)pixels();
+	uint8* dst_pixels = (uint8*)resampled->pixels();
+
+	for (int y = 0; y < height(); y++) {
+		int offset = (int) (depth * (1 + sin((phase + y * 20) * 3.14159 / 180)));
+
+		memcpy(&dst_pixels[offset * bpp()], src_pixels, width() * bpp());
+
+		src_pixels += pitch();
+		dst_pixels += resampled->pitch();
+	}
+
+	Unlock();
+	resampled->Unlock();
+
+	return resampled;
 }
 
 ////////////////////////////////////////////////////////////
