@@ -952,8 +952,8 @@ Bitmap* Bitmap::RotateScale(double angle, int scale_w, int scale_h) {
 	double sy = (double) scale_h / h;
 
 	double fxx =  c * sx;
-	double fxy =  s * sy;
-	double fyx = -s * sx;
+	double fxy = -s * sy;
+	double fyx =  s * sx;
 	double fyy =  c * sy;
 
 	double x0 = 0;

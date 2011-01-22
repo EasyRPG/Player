@@ -22,6 +22,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include <cmath>
 #include <iostream>
 #include <png.h>
 #include <ft2build.h>
@@ -267,7 +268,7 @@ PixmanBitmap::PixmanBitmap(Bitmap* source, Rect src_rect, bool itransparent) {
 
 ////////////////////////////////////////////////////////////
 PixmanBitmap::~PixmanBitmap() {
-	free(bitmap);
+	pixman_image_unref(bitmap);
 }
 
 ////////////////////////////////////////////////////////////
@@ -317,12 +318,6 @@ void PixmanBitmap::Blit(int x, int y, Bitmap* _src, Rect src_rect, int opacity) 
 		return;
 
 	PixmanBitmap* src = (PixmanBitmap*) _src;
-	Rect dst_rect(x, y, 0, 0);
-
-	if (!Rect::AdjustRectangles(src_rect, dst_rect, src->GetRect()))
-		return;
-	if (!Rect::AdjustRectangles(dst_rect, src_rect, GetRect()))
-		return;
 
 	if (opacity > 255) opacity = 255;
 
@@ -330,7 +325,7 @@ void PixmanBitmap::Blit(int x, int y, Bitmap* _src, Rect src_rect, int opacity) 
 							 src->bitmap, (pixman_image_t*) NULL, bitmap,
 							 src_rect.x, src_rect.y,
 							 0, 0,
-							 dst_rect.x, dst_rect.y,
+							 x, y,
 							 src_rect.width, src_rect.height);
 
 	RefreshCallback();
@@ -339,19 +334,232 @@ void PixmanBitmap::Blit(int x, int y, Bitmap* _src, Rect src_rect, int opacity) 
 void PixmanBitmap::Mask(int x, int y, Bitmap* _src, Rect src_rect) {
 	PixmanBitmap* src = (PixmanBitmap*) _src;
 
-	Rect dst_rect(x, y, 0, 0);
-
-	if (!Rect::AdjustRectangles(src_rect, dst_rect, src->GetRect()))
-		return;
-	if (!Rect::AdjustRectangles(dst_rect, src_rect, GetRect()))
-		return;
-
 	pixman_image_composite32(PIXMAN_OP_DISJOINT_IN_REVERSE,
 							 src->bitmap, (pixman_image_t*) NULL, bitmap,
 							 src_rect.x, src_rect.y,
 							 0, 0,
-							 dst_rect.x, dst_rect.y,
+							 x, y,
 							 src_rect.width, src_rect.height);
+
+	RefreshCallback();
+}
+
+static pixman_color_t PixmanColor(const Color &color) {
+	pixman_color_t pcolor;
+	pcolor.red = color.red * color.alpha;
+	pcolor.green = color.green * color.alpha;
+	pcolor.blue = color.blue * color.alpha;
+	pcolor.alpha = color.alpha << 8;
+	return pcolor;
+}
+
+void PixmanBitmap::Fill(const Color &color) {
+	pixman_color_t pcolor = PixmanColor(color);
+	pixman_rectangle16_t rect = {0, 0, width(), height()};
+
+	pixman_image_fill_rectangles(PIXMAN_OP_SRC, bitmap, &pcolor, 1, &rect);
+
+	RefreshCallback();
+}
+
+void PixmanBitmap::FillRect(Rect dst_rect, const Color &color) {
+	pixman_color_t pcolor = PixmanColor(color);
+	pixman_rectangle16_t rect = {dst_rect.x, dst_rect.y, dst_rect.width, dst_rect.height};
+
+	pixman_image_fill_rectangles(PIXMAN_OP_SRC, bitmap, &pcolor, 1, &rect);
+
+	RefreshCallback();
+}
+
+void PixmanBitmap::Clear() {
+	pixman_color_t pcolor = {0, 0, 0, 0};
+	pixman_rectangle16_t rect = {0, 0, width(), height()};
+
+	pixman_image_fill_rectangles(PIXMAN_OP_CLEAR, bitmap, &pcolor, 1, &rect);
+
+	RefreshCallback();
+}
+
+void PixmanBitmap::ClearRect(Rect dst_rect) {
+	pixman_color_t pcolor = {0, 0, 0, 0};
+	pixman_rectangle16_t rect = {dst_rect.x, dst_rect.y, dst_rect.width, dst_rect.height};
+
+	pixman_image_fill_rectangles(PIXMAN_OP_CLEAR, bitmap, &pcolor, 1, &rect);
+
+	RefreshCallback();
+}
+
+Bitmap* PixmanBitmap::Resample(int scale_w, int scale_h, const Rect& src_rect) {
+	double zoom_x = (double)src_rect.width  / scale_w;
+	double zoom_y = (double)src_rect.height / scale_h;
+
+	pixman_transform_t xform;
+	pixman_transform_init_scale(&xform,
+								pixman_double_to_fixed(zoom_x),
+								pixman_double_to_fixed(zoom_y));
+
+	PixmanBitmap *resampled = new PixmanBitmap(scale_w, scale_h, transparent);
+	
+	pixman_image_set_transform(bitmap, &xform);
+
+	pixman_image_composite32(PIXMAN_OP_SRC,
+							 bitmap, (pixman_image_t*) NULL, resampled->bitmap,
+							 src_rect.x, src_rect.y,
+							 0, 0,
+							 0, 0,
+							 scale_w, scale_h);
+
+	pixman_transform_init_identity(&xform);
+	pixman_image_set_transform(bitmap, &xform);
+
+	return resampled;
+}
+
+Bitmap* PixmanBitmap::RotateScale(double angle, int scale_w, int scale_h) {
+	pixman_transform_t fwd, rev;
+	pixman_transform_init_identity(&fwd);
+	pixman_transform_init_identity(&rev);
+
+	double zoom_x = (double) scale_w  / width();
+	double zoom_y = (double) scale_h / height();
+	pixman_transform_scale(&fwd, &rev,
+						   pixman_double_to_fixed(zoom_x),
+						   pixman_double_to_fixed(zoom_y));
+
+	double c = cos(angle);
+	double s = sin(angle);
+	pixman_transform_rotate(&fwd, &rev,
+							pixman_double_to_fixed(c),
+							pixman_double_to_fixed(s));
+
+	pixman_box16_t box = {0, 0, width(), height()};
+	pixman_transform_bounds(&fwd, &box);
+	int dst_w = box.x2 - box.x1;
+	int dst_h = box.y2 - box.y1;
+
+	pixman_transform_translate(&fwd, &rev,
+							   pixman_int_to_fixed(-box.x1),
+							   pixman_int_to_fixed(-box.y1));
+
+	PixmanBitmap *resampled = new PixmanBitmap(dst_w, dst_h, true);
+	resampled->Clear();
+
+	pixman_image_set_transform(bitmap, &rev);
+
+	pixman_image_composite32(PIXMAN_OP_SRC,
+							 bitmap, (pixman_image_t*) NULL, resampled->bitmap,
+							 0, 0,
+							 0, 0,
+							 0, 0,
+							 dst_w, dst_h);
+
+	pixman_transform_t xform;
+	pixman_transform_init_identity(&xform);
+	pixman_image_set_transform(bitmap, &xform);
+
+	return resampled;
+}
+
+void PixmanBitmap::OpacityChange(int opacity, const Rect& dst_rect) {
+	if (opacity == 255)
+		return;
+
+	pixman_color_t pcolor = {0, 0, 0, opacity << 8};
+	pixman_rectangle16_t rect = {dst_rect.x, dst_rect.y, dst_rect.width, dst_rect.height};
+
+	pixman_image_fill_rectangles(PIXMAN_OP_IN_REVERSE, bitmap, &pcolor, 1, &rect);
+
+	RefreshCallback();
+}
+
+void PixmanBitmap::ToneChange(const Tone &tone) {
+	if (tone == Tone()) return;
+
+	pixman_rectangle16_t rect = {0, 0, width(), height()};
+
+	if (tone.gray == 0) {
+		pixman_color_t tcolor = {tone.red << 8, tone.green << 8, tone.blue << 8, 0xFFFF};
+		pixman_image_t *timage = pixman_image_create_solid_fill(&tcolor);
+
+		pixman_image_composite32(PIXMAN_OP_ADD,
+								 timage, bitmap, bitmap,
+								 0, 0,
+								 0, 0,
+								 0, 0,
+								 rect.width, rect.height);
+
+		pixman_image_unref(timage);
+	}
+	else {
+		PixmanBitmap *gray = new PixmanBitmap(this, GetRect(), transparent);
+		pixman_color_t gcolor = {0, 0, 0, 0xFFFF};
+		pixman_image_fill_rectangles(PIXMAN_OP_HSL_SATURATION, gray->bitmap, &gcolor, 1, &rect);
+
+		pixman_color_t acolor = {0, 0, 0, tone.gray << 8};
+		pixman_image_fill_rectangles(PIXMAN_OP_IN_REVERSE, gray->bitmap, &acolor, 1, &rect);
+
+		pixman_image_composite32(PIXMAN_OP_ATOP,
+								 gray->bitmap, (pixman_image_t*) NULL, bitmap,
+								 0, 0,
+								 0, 0,
+								 0, 0,
+								 rect.width, rect.height);
+
+		pixman_color_t tcolor = {tone.red << 8, tone.green << 8, tone.blue << 8, 0xFFFF};
+		pixman_image_t *timage = pixman_image_create_solid_fill(&tcolor);
+
+		pixman_image_composite32(PIXMAN_OP_ADD,
+								 timage, bitmap, bitmap,
+								 0, 0,
+								 0, 0,
+								 0, 0,
+								 rect.width, rect.height);
+
+		pixman_image_unref(timage);
+
+		delete gray;
+	}
+
+	RefreshCallback();
+}
+
+void PixmanBitmap::Flip(bool horizontal, bool vertical) {
+	if (!horizontal && !vertical) return;
+
+	int w = width();
+	int h = height();
+
+	pixman_transform_t xform;
+	pixman_transform_init_scale(&xform,
+								pixman_int_to_fixed(horizontal ? -1 : 1),
+								pixman_int_to_fixed(vertical ? -1 : 1));
+
+	pixman_transform_translate((pixman_transform_t*) NULL, &xform,
+							   pixman_int_to_fixed(horizontal ? w : 0),
+							   pixman_int_to_fixed(vertical ? h : 0));
+
+	PixmanBitmap *resampled = new PixmanBitmap(w, h, transparent);
+
+	pixman_image_set_transform(bitmap, &xform);
+
+	pixman_image_composite32(PIXMAN_OP_SRC,
+							 bitmap, (pixman_image_t*) NULL, resampled->bitmap,
+							 0, 0,
+							 0, 0,
+							 0, 0,
+							 w, h);
+
+	pixman_transform_init_identity(&xform);
+	pixman_image_set_transform(bitmap, &xform);
+
+	pixman_image_composite32(PIXMAN_OP_SRC,
+							 resampled->bitmap, (pixman_image_t*) NULL, bitmap,
+							 0, 0,
+							 0, 0,
+							 0, 0,
+							 w, h);
+
+	delete resampled;
 
 	RefreshCallback();
 }

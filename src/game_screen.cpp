@@ -251,11 +251,10 @@ void Game_Screen::UpdateSnowRain(int speed) {
 }
 
 void Game_Screen::DrawRain() {
-
 	Bitmap* bitmap = weather_plane->GetBitmap();
 	weather_plane->SetOpacity(192);
 
-	Rect rect = bitmap->GetRect();
+	Rect rect = rain_bitmap->GetRect();
 
 	std::vector<Snowflake>::iterator it;
 	for (it = snowflakes.begin(); it != snowflakes.end(); it++) {
@@ -274,7 +273,7 @@ void Game_Screen::DrawSnow() {
 	Bitmap* bitmap = weather_plane->GetBitmap();
 	weather_plane->SetOpacity(192);
 
-	Rect rect = bitmap->GetRect();
+	Rect rect = snow_bitmap->GetRect();
 
 	std::vector<Snowflake>::iterator it;
 	for (it = snowflakes.begin(); it != snowflakes.end(); it++) {

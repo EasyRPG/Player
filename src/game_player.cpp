@@ -124,7 +124,7 @@ void Game_Player::UpdateScroll(int last_real_x, int last_real_y) {
 	if (Game_Map::IsPanLocked())
 		return;
 
-	if (Game_Map::GetPanX() != 0 && Game_Map::GetPanY() != 0) {
+	if (Game_Map::GetPanX() != 0 || Game_Map::GetPanY() != 0) {
 		int dx = real_x - center_x + Game_Map::GetPanX() - Game_Map::GetDisplayX();
 		int dy = real_y - center_y + Game_Map::GetPanY() - Game_Map::GetDisplayY();
 		if (dx > 0)

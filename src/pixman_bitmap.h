@@ -45,6 +45,16 @@ public:
 
 	void Blit(int x, int y, Bitmap* _src, Rect src_rect, int opacity);
 	void Mask(int x, int y, Bitmap* _src, Rect src_rect);
+	void Fill(const Color &color);
+	void FillRect(Rect dst_rect, const Color &color);
+	void Clear();
+	void ClearRect(Rect dst_rect);
+	Bitmap* Resample(int scale_w, int scale_h, const Rect& src_rect);
+	Bitmap* RotateScale(double angle, int scale_w, int scale_h);
+	void OpacityChange(int opacity, const Rect& dst_rect);
+	void ToneChange(const Tone &tone);
+	void Flip(bool horizontal, bool vertical);
+
 	void TextDraw(int x, int y, std::string text, TextAlignment align = Bitmap::TextAlignLeft);
 	void SetTransparentColor(Color color);
 

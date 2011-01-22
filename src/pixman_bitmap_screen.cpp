@@ -26,8 +26,6 @@
 #include "pixman_bitmap_screen.h"
 #include "pixman_bitmap.h"
 #include "sdl_ui.h"
-#include "output.h"
-#include "util_macro.h"
 
 ////////////////////////////////////////////////////////////
 PixmanBitmapScreen::PixmanBitmapScreen(Bitmap* bitmap) :
