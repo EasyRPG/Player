@@ -321,12 +321,124 @@ void PixmanBitmap::Blit(int x, int y, Bitmap* _src, Rect src_rect, int opacity) 
 
 	if (opacity > 255) opacity = 255;
 
+	pixman_image_t* mask;
+	if (opacity < 255) {
+		pixman_color_t tcolor = {0, 0, 0, opacity << 8};
+		mask = pixman_image_create_solid_fill(&tcolor);
+	}
+	else
+		mask = (pixman_image_t*) NULL;
+
 	pixman_image_composite32(PIXMAN_OP_OVER,
-							 src->bitmap, (pixman_image_t*) NULL, bitmap,
+							 src->bitmap, mask, bitmap,
 							 src_rect.x, src_rect.y,
 							 0, 0,
 							 x, y,
 							 src_rect.width, src_rect.height);
+
+	if (mask != NULL)
+		pixman_image_unref(mask);
+
+	RefreshCallback();
+}
+
+static pixman_image_t* GetSubimage(Bitmap* _src, const Rect& src_rect) {
+	PixmanBitmap* src = (PixmanBitmap*) _src;
+	uint8* pixels = (uint8*) src->pixels() + src_rect.x * src->bpp() + src_rect.y * src->pitch();
+	return pixman_image_create_bits(PIXMAN_a8r8g8b8, src_rect.width, src_rect.height,
+									(uint32_t*) pixels, src->pitch());
+}
+
+void PixmanBitmap::TiledBlit(Rect src_rect, Bitmap* src, Rect dst_rect, int opacity) {
+	TiledBlit(0, 0, src_rect, src, dst_rect, opacity);
+}
+
+void PixmanBitmap::TiledBlit(int ox, int oy, Rect src_rect, Bitmap* src, Rect dst_rect, int opacity) {
+	if (opacity < 0)
+		return;
+
+	if (opacity > 255) opacity = 255;
+
+	if (ox >= src_rect.width)	ox %= src_rect.width;
+	if (oy >= src_rect.height)	ox %= src_rect.height;
+	if (ox < 0) ox += src_rect.width  * ((-ox + src_rect.width  - 1) / src_rect.width);
+	if (oy < 0) oy += src_rect.height * ((-oy + src_rect.height - 1) / src_rect.height);
+
+	pixman_image_t* src_bm = GetSubimage(src, src_rect);
+
+	pixman_image_t* mask;
+	if (opacity < 255) {
+		pixman_color_t tcolor = {0, 0, 0, opacity << 8};
+		mask = pixman_image_create_solid_fill(&tcolor);
+	}
+	else
+		mask = (pixman_image_t*) NULL;
+
+	pixman_image_set_repeat(src_bm, PIXMAN_REPEAT_NORMAL);
+
+	pixman_transform_t xform;
+	pixman_transform_init_translate(&xform,
+									pixman_int_to_fixed(ox),
+									pixman_int_to_fixed(oy));
+
+	pixman_image_set_transform(src_bm, &xform);
+
+	pixman_image_composite32(PIXMAN_OP_OVER,
+							 src_bm, mask, bitmap,
+							 0, 0,
+							 0, 0,
+							 dst_rect.x, dst_rect.y,
+							 dst_rect.width, dst_rect.height);
+
+	pixman_image_unref(src_bm);
+
+	if (mask != NULL)
+		pixman_image_unref(mask);
+
+	RefreshCallback();
+}
+
+void PixmanBitmap::StretchBlit(Bitmap* src, Rect src_rect, int opacity) {
+	StretchBlit(GetRect(), src, src_rect, opacity);
+}
+
+void PixmanBitmap::StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int opacity) {
+	if (opacity < 0)
+		return;
+
+	if (opacity > 255) opacity = 255;
+
+	pixman_image_t* src_bm = GetSubimage(src, src_rect);
+
+	pixman_image_t* mask;
+	if (opacity < 255) {
+		pixman_color_t tcolor = {0, 0, 0, opacity << 8};
+		mask = pixman_image_create_solid_fill(&tcolor);
+	}
+	else
+		mask = (pixman_image_t*) NULL;
+
+	double zoom_x = (double)src_rect.width  / dst_rect.width;
+	double zoom_y = (double)src_rect.height / dst_rect.height;
+
+	pixman_transform_t xform;
+	pixman_transform_init_scale(&xform,
+								pixman_double_to_fixed(zoom_x),
+								pixman_double_to_fixed(zoom_y));
+
+	pixman_image_set_transform(src_bm, &xform);
+
+	pixman_image_composite32(PIXMAN_OP_OVER,
+							 src_bm, mask, bitmap,
+							 0, 0,
+							 0, 0,
+							 dst_rect.x, dst_rect.y,
+							 dst_rect.width, dst_rect.height);
+
+	pixman_image_unref(src_bm);
+
+	if (mask != NULL)
+		pixman_image_unref(mask);
 
 	RefreshCallback();
 }
@@ -343,6 +455,8 @@ void PixmanBitmap::Mask(int x, int y, Bitmap* _src, Rect src_rect) {
 
 	RefreshCallback();
 }
+
+////////////////////////////////////////////////////////////
 
 static pixman_color_t PixmanColor(const Color &color) {
 	pixman_color_t pcolor;
