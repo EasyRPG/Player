@@ -21,6 +21,7 @@
 #include <cmath>
 #include <cstring>
 #include <algorithm>
+#include "utils.h"
 #include "bitmap.h"
 #include "bitmap_screen.h"
 #include "text.h"
@@ -1197,6 +1198,10 @@ void Bitmap::DetachBitmapScreen(BitmapScreen* bitmap) {
 
 ////////////////////////////////////////////////////////////
 Rect Bitmap::GetTextSize(std::string text) const {
+	return GetTextSize(Utils::DecodeUTF(text));
+}
+
+Rect Bitmap::GetTextSize(std::wstring text) const {
 	return Rect(0, 0, text.size() * 6, 12);
 }
 
@@ -1233,29 +1238,41 @@ Color Bitmap::GetTransparentColor() const {
 #endif
 }
 
-void Bitmap::TextDraw(int x, int y, int width, int height, std::string text, TextAlignment align) {
-	Rect rect = GetTextSize(text);
+void Bitmap::TextDraw(int x, int y, int width, int height, std::wstring wtext, TextAlignment align) {
+	Rect rect = GetTextSize(wtext);
 	int dx = rect.width - width;
 
 	switch (align) {
 		case TextAlignLeft:
-			TextDraw(x, y, text);
+			TextDraw(x, y, wtext);
 			break;
 		case TextAlignCenter:
-			TextDraw(x + dx / 2, y, text);
+			TextDraw(x + dx / 2, y, wtext);
 			break;
 		case TextAlignRight:
-			TextDraw(x + dx, y, text);
+			TextDraw(x + dx, y, wtext);
 			break;
 	}
 }
 
+void Bitmap::TextDraw(int x, int y, int width, int height, std::string text, TextAlignment align) {
+	TextDraw(x, y, width, height, Utils::DecodeUTF(text), align);
+}
+
+void Bitmap::TextDraw(Rect rect, std::wstring wtext, TextAlignment align) {
+	TextDraw(rect.x, rect.y, rect.width, rect.height, wtext, align);
+}
+
 void Bitmap::TextDraw(Rect rect, std::string text, TextAlignment align) {
-	TextDraw(rect.x, rect.y, rect.width, rect.height, text, align);
+	TextDraw(rect, Utils::DecodeUTF(text), align);
+}
+
+void Bitmap::TextDraw(int x, int y, std::wstring wtext, TextAlignment align) {
+	Text::Draw(this, x, y, wtext, align);
+	RefreshCallback();
 }
 
 void Bitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
-	Text::Draw(this, x, y, text, align);
-	RefreshCallback();
+	TextDraw(x, y, Utils::DecodeUTF(text), align);
 }
 

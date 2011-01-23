@@ -22,17 +22,18 @@
 #include "data.h"
 #include "cache.h"
 #include "output.h"
+#include "utils.h"
 #include "bitmap.h"
 #include "font.h"
 #include "text.h"
 
 ////////////////////////////////////////////////////////////
-void Text::Draw(Bitmap* dest, int x, int y, std::string text, Bitmap::TextAlignment align) {
-	if (text.length() == 0) return;
+void Text::Draw(Bitmap* dest, int x, int y, std::wstring wtext, Bitmap::TextAlignment align) {
+	if (wtext.length() == 0) return;
 
 	Font* font = dest->GetFont();
 
-	Rect dst_rect = dest->GetTextSize(text);
+	Rect dst_rect = dest->GetTextSize(wtext);
 	dst_rect.x = x; dst_rect.y = y;
 	dst_rect.width += 1; dst_rect.height += 1; // Need place for shadow
 	if (dst_rect.IsOutOfBounds(dest->GetWidth(), dest->GetHeight())) return;
@@ -70,21 +71,21 @@ void Text::Draw(Bitmap* dest, int x, int y, std::string text, Bitmap::TextAlignm
 
 	// This loops always renders a single char, color blends it and then puts
 	// it onto the text_surface (including the drop shadow)
-	for (unsigned c = 0; c < text.size(); ++c) {
+	for (unsigned c = 0; c < wtext.size(); ++c) {
 		Rect next_glyph_rect(next_glyph_pos, 0, 0, 0);
 
 		Bitmap* mask;
 
 		// ExFont-Detection: Check for A-Z or a-z behind the $
-		if (text[c] == '$' && c != text.size() - 1 &&
-			((text[c+1] >= 'a' && text[c+1] <= 'z') ||
-			(text[c+1] >= 'A' && text[c+1] <= 'Z'))) {
+		if (wtext[c] == L'$' && c != wtext.size() - 1 &&
+			((wtext[c+1] >= L'a' && wtext[c+1] <= L'z') ||
+			(wtext[c+1] >= L'A' && wtext[c+1] <= L'Z'))) {
 			int exfont_value;
 			// Calculate which exfont shall be rendered
-			if ((text[c+1] >= 'a' && text[c+1] <= 'z')) {
-				exfont_value = 26 + text[c+1] - 'a';
+			if ((wtext[c+1] >= L'a' && wtext[c+1] <= L'z')) {
+				exfont_value = 26 + wtext[c+1] - L'a';
 			} else {
-				exfont_value = text[c+1] - 'A';
+				exfont_value = wtext[c+1] - L'A';
 			}
 			is_full_glyph = true;
 			is_exfont = true;
@@ -100,9 +101,9 @@ void Text::Draw(Bitmap* dest, int x, int y, std::string text, Bitmap::TextAlignm
 		} else {
 			// No ExFont, draw normal text
 
-			mask = font->Render(text[c]);
+			mask = font->Render(wtext[c]);
 			if (mask == NULL) {
-				Output::Warning("Couldn't render char %c (%d). Skipping...", text[c], (int)text[c]);
+				Output::Warning("Couldn't render char %lc (%d). Skipping...", wtext[c], (int)wtext[c]);
 				continue;
 			}
 		}
@@ -176,5 +177,12 @@ void Text::Draw(Bitmap* dest, int x, int y, std::string text, Bitmap::TextAlignm
 
 	delete text_bmp;
 	delete text_surface;
+}
+
+void Text::Draw(Bitmap* dest, int x, int y, std::string text, Bitmap::TextAlignment align) {
+	if (text.length() == 0) return;
+
+	std::wstring wtext = Utils::DecodeUTF(text);
+	Draw(dest, x, y, wtext, align);
 }
 

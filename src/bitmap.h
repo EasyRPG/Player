@@ -242,6 +242,7 @@ public:
 	/// @param align : text alignment
 	////////////////////////////////////////////////////////
 	virtual void TextDraw(int x, int y, std::string text, TextAlignment align = Bitmap::TextAlignLeft);
+	virtual void TextDraw(int x, int y, std::wstring text, TextAlignment align = Bitmap::TextAlignLeft);
 
 	////////////////////////////////////////////////////////
 	/// Draws text to bitmap.
@@ -253,6 +254,7 @@ public:
 	/// @param align : text alignment inside bounding rectangle
 	////////////////////////////////////////////////////////
 	virtual void TextDraw(int x, int y, int width, int height, std::string text, TextAlignment align = Bitmap::TextAlignLeft);
+	virtual void TextDraw(int x, int y, int width, int height, std::wstring text, TextAlignment align = Bitmap::TextAlignLeft);
 
 	////////////////////////////////////////////////////////
 	/// Draws text to bitmap.
@@ -261,6 +263,7 @@ public:
 	/// @param align : text alignment inside bounding rectangle
 	////////////////////////////////////////////////////////
 	virtual void TextDraw(Rect rect, std::string text, TextAlignment align = Bitmap::TextAlignLeft);
+	virtual void TextDraw(Rect rect, std::wstring text, TextAlignment align = Bitmap::TextAlignLeft);
 
 	////////////////////////////////////////////////////////
 	/// Get space needed to draw some text.
@@ -268,6 +271,8 @@ public:
 	/// @param text : text to draw
 	////////////////////////////////////////////////////////
 	virtual Rect GetTextSize(std::string text) const;
+	/// Wide string version
+	virtual Rect GetTextSize(std::wstring text) const;
 
 	/// @return the bitmap width
 	virtual int GetWidth() const;

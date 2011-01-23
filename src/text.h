@@ -24,6 +24,7 @@
 class Text {
 public:
 	static void Draw(Bitmap* dest, int x, int y, std::string text, Bitmap::TextAlignment align = Bitmap::TextAlignLeft);
+	static void Draw(Bitmap* dest, int x, int y, std::wstring text, Bitmap::TextAlignment align = Bitmap::TextAlignLeft);
 };
 
 #endif
