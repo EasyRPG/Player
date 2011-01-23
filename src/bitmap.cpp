@@ -420,6 +420,10 @@ void Bitmap::StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int opacity)
 }
 
 ////////////////////////////////////////////////////////////
+void Bitmap::Mask(int x, int y, Bitmap* src, Rect src_rect) {
+}
+
+////////////////////////////////////////////////////////////
 void Bitmap::Fill(const Color &color) {
 	Lock();
 

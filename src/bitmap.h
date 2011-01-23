@@ -118,6 +118,14 @@ public:
 	////////////////////////////////////////////////////////
 	virtual void StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int opacity);
 
+	/// Blit source bitmap transparency to this one.
+	/// @param x : x position
+	/// @param y : y position
+	/// @param src : source bitmap
+	/// @param src_rect : source bitmap rect
+	////////////////////////////////////////////////////////
+	virtual void Mask(int x, int y, Bitmap* src, Rect src_rect);
+
 	////////////////////////////////////////////////////////
 	/// Fill entire bitmap with color.
 	/// @param color : color for filling
