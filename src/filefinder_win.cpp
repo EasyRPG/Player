@@ -68,13 +68,13 @@ static std::string MakePath(const std::string &dir, const std::string &name, boo
 
 	return str;
 }
-static std::string FindFile(const std::string &dir, const std::string &_name, const std::string exts[]) {
+static std::string FindFile(const std::string &dir, const std::string &_name, const char* const exts[]) {
 	std::string name = MakePath(dir, _name);
 
 	for (std::size_t i = 0; i < search_paths.size(); i++) {
 		std::string path = search_paths[i] + name;
-		const std::string* pexts = exts;
-		while(const std::string* ext = pexts++) {
+		const char*const* pexts = exts;
+		while (const char*const* ext = pexts++) {
 			if (ext->empty()) break;
 
 			if (FileExists(path + *ext))
@@ -153,7 +153,7 @@ std::string FileFinder::FindImage(const std::string& dir, const std::string& nam
 }
 
 inline std::string FindDefault(const std::string& dir, const std::string& name) {
-	static const std::string no_exts[] = {""};
+	static const char* const no_exts[] = {""};
 	return FindFile(dir, name, no_exts);
 }
 

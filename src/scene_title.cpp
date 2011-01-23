@@ -75,7 +75,9 @@ void Scene_Title::Start() {
 
 
 		// File Finder cant be initialized earlier because we need the RPG-version
+		#ifndef UNIX
 		FileFinder::Init();
+		#endif
 	}
 
 	init = true;
@@ -138,10 +140,10 @@ void Scene_Title::LoadDatabase() {
 	// Load Database
 	Data::Clear();
 
-	if (!LDB_Reader::Load(DATABASE_NAME)) {
+	if (!LDB_Reader::Load(FileFinder::FindDefault(".", DATABASE_NAME))) {
 		Output::ErrorStr(Reader::GetError());
 	}
-	if (!LMT_Reader::Load(TREEMAP_NAME)) {
+	if (!LMT_Reader::Load(FileFinder::FindDefault(".", TREEMAP_NAME))) {
 		Output::ErrorStr(Reader::GetError());
 	}
 }

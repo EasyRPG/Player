@@ -84,7 +84,7 @@ namespace FileFinder {
 	FILE* fopenUTF8(const std::string& name_utf8, const std::string& mode);
 
 	/// Available image extension types
-	const std::string IMG_TYPES[] = {
+	const char* const IMG_TYPES[] = {
 #ifdef SUPPORT_BMP
 		".bmp",
 #endif
@@ -101,11 +101,11 @@ namespace FileFinder {
 #ifdef SUPPORT_XYZ
 		".xyz",
 #endif
-		""
+		NULL
 	};
 
 	/// Available audio music extension types
-	const std::string MUSIC_TYPES[] = {
+	const char* const MUSIC_TYPES[] = {
 #ifdef SUPPORT_WAV
 		".wav",
 #endif
@@ -119,11 +119,11 @@ namespace FileFinder {
 #ifdef SUPPORT_MP3
 		".mp3",
 #endif
-		""
+		NULL
 	};
 
 	/// Available audio music extension types
-	const std::string SOUND_TYPES[] = {
+	const char* const SOUND_TYPES[] = {
 #ifdef SUPPORT_WAV
 		".wav",
 #endif
@@ -133,18 +133,18 @@ namespace FileFinder {
 #ifdef SUPPORT_MP3
 		".mp3",
 #endif
-		""
+		NULL
 	};
 
 	/// Available fonts types
-	const std::string FONTS_TYPES[] = {
+	const char* const FONTS_TYPES[] = {
 #ifdef SUPPORT_TTF
 		".ttf",
 #endif
 #ifdef SUPPORT_FON
 		".fon",
 #endif
-		""
+		NULL
 	};
 }
 

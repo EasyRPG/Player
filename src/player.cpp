@@ -25,6 +25,7 @@
 #include "graphics.h"
 #include "input.h"
 #include "cache.h"
+#include "filefinder.h"
 #include "main_data.h"
 #include "scene_logo.h"
 #include "scene_title.h"
@@ -98,6 +99,10 @@ void Player::Init(int argc, char *argv[]) {
 			battle_test_troop_id = 0;
 		}
 	}
+
+#ifdef UNIX
+	FileFinder::Init();
+#endif
 
 	DisplayUi = BaseUi::CreateBaseUi(
 		SCREEN_TARGET_WIDTH,
