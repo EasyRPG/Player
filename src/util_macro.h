@@ -21,6 +21,14 @@
 ////////////////////////////////////////////////////////////
 // Macros / Templates
 ////////////////////////////////////////////////////////////
+#ifdef max
+#undef max
+#endif
+
+#ifdef min
+#undef min
+#endif
+
 template <typename T, typename S>
 T max(T x, S y) {
     return (x >= y) ? x : y;

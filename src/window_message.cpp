@@ -29,6 +29,7 @@
 #include "graphics.h"
 #include "input.h"
 #include "util_macro.h"
+#include "utils.h"
 
 ////////////////////////////////////////////////////////////
 Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
@@ -68,9 +69,6 @@ void Window_Message::StartMessageProcessing() {
 	text.clear();
 	for (size_t i = 0; i < Game_Message::texts.size(); ++i) {
 		std::string line = Game_Message::texts[i];
-		if (line.length() > 50) {
-			line.resize(50);
-		}
 		text.append(line);
 		text.append("\n");
 	}
@@ -349,7 +347,11 @@ void Window_Message::UpdateMessage() {
 			++text_index;
 		} else {
 			// Normal Text
-			contents->TextDraw(contents_x, contents_y, text.substr(text_index, 1));
+			// Detect unicode size
+			int charsize = Utils::GetUtf8ByteSize(text[text_index]);
+			std::string glyph = text.substr(text_index, charsize);
+			contents->TextDraw(contents_x, contents_y, glyph);
+			text_index += charsize - 1;
 			contents_x += 6;
 		}
 	}

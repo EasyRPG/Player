@@ -37,6 +37,7 @@
 #include "SDL_ttf.h"
 #include "sdl_ui.h"
 #include "util_macro.h"
+#include "utils.h"
 
 ////////////////////////////////////////////////////////////
 #ifdef USE_ALPHA
@@ -357,7 +358,7 @@ void SdlBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 	text_surface_aux->SetTransparentColor(black_color);
 	text_surface->SetTransparentColor(black_color);
 
-	char text2[2]; text2[1] = '\0';
+	char glyph[5];
 
 	// Load the system file for the shadow and text color
 	Bitmap* system = Cache::System(Data::system.system_name);
@@ -371,7 +372,7 @@ void SdlBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 	if ((shadow_color.red == 0) &&
 		(shadow_color.green == 0) &&
 		(shadow_color.blue == 0) ) {
-			// FIXME: what if running in 16 bpp?
+		// FIXME: what if running in 16 bpp?
 		shadow_color.blue++;
 	}
 
@@ -390,7 +391,7 @@ void SdlBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 	// This loops always renders a single char, color blends it and then puts
 	// it onto the text_surface (including the drop shadow)
 	for (unsigned c = 0; c < text.size(); ++c) {
-		text2[0] = text[c];
+		glyph[0] = text[c];
 
 		Rect next_glyph_rect(next_glyph_pos, 0, 0, 0);
 
@@ -473,12 +474,36 @@ void SdlBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 		} else {
 			// No ExFont, draw normal text
 
+			// Detect unicode size
+			switch (Utils::GetUtf8ByteSize(text[c])) {
+			case 1:
+				glyph[1] = '\0';
+				break;
+			case 2:
+				glyph[1] = text[c + 1];
+				++c;
+				glyph[2] = '\0';
+				break;
+			case 3:
+				glyph[1] = text[c + 1];
+				glyph[2] = text[c + 2];
+				c += 2;
+				glyph[2] = '\0';
+				break;
+			case 4:
+				glyph[1] = text[c + 1];
+				glyph[2] = text[c + 2];
+				glyph[3] = text[c + 3];
+				c += 3;
+				glyph[4] = '\0';
+			}
+
 		#ifdef USE_ALPHA
 			// ToDo: Remove SDL-Dependency (use FreeType directly?) 
 			SDL_Color white_color2 = {255, 255, 255, 255};
 			SDL_Color black_color2 = {0, 0, 0, 255};
-			SDL_Surface* char_surface_temp = TTF_RenderUTF8_Solid(ttf_font, text2, white_color2);
-			SDL_Surface* char_shadow_temp = TTF_RenderUTF8_Solid(ttf_font, text2, black_color2);
+			SDL_Surface* char_surface_temp = TTF_RenderUTF8_Solid(ttf_font, glyph, white_color2);
+			SDL_Surface* char_shadow_temp = TTF_RenderUTF8_Solid(ttf_font, glyph, black_color2);
 			SDL_Surface* char_surface_surf = DisplayFormat(char_surface_temp);
 			SDL_Surface* char_shadow_surf = DisplayFormat(char_shadow_temp);
 			SDL_FreeSurface(char_surface_temp);
@@ -510,8 +535,8 @@ void SdlBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 			// ToDo: Remove SDL-Dependency (use FreeType directly?)
 			SDL_Color white_color2 = {white_color.red, white_color.green, white_color.blue, 0};
 			SDL_Color c_tmp2 = {shadow_color.red, shadow_color.green, shadow_color.blue, 0};
-			char_surface = new SdlBitmap(TTF_RenderUTF8_Solid(ttf_font, text2, white_color2));
-			char_shadow = new SdlBitmap(TTF_RenderUTF8_Solid(ttf_font, text2, c_tmp2));
+			char_surface = new SdlBitmap(TTF_RenderUTF8_Solid(ttf_font, glyph, white_color2));
+			char_shadow = new SdlBitmap(TTF_RenderUTF8_Solid(ttf_font, glyph, c_tmp2));
 
 			if (!((SdlBitmap*)char_surface)->bitmap || !((SdlBitmap*)char_shadow)->bitmap) {
 				Output::Debug("Couldn't render char %c (%d). Skipping...", text[c], (int)text[c]);

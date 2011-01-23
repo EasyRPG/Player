@@ -20,6 +20,7 @@
 
 #include "utils.h"
 
+////////////////////////////////////////////////////////////
 std::wstring Utils::DecodeUTF(const std::string& str) {
 	std::wstring wstr;
 	std::string::const_iterator it;
@@ -43,6 +44,24 @@ std::wstring Utils::DecodeUTF(const std::string& str) {
 	return wstr;
 }
 
+////////////////////////////////////////////////////////////
+int Utils::GetUtf8ByteSize(char glyph) {
+	// Detect unicode size
+	int val = (unsigned char)glyph;
+	if (val < 0x80) {
+		return 1;
+	} else if (val & 0xC0) {
+		return 2;
+	} else if (val & 0xE0) {
+		return 3;
+	} else if (val & 0xF0) {
+		return 4;
+	}
+
+	return 0;
+}
+
+////////////////////////////////////////////////////////////
 std::string Utils::LowerCase(const std::string& str) {
 	std::string result = str;
 	std::string::iterator it;
