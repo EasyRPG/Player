@@ -91,7 +91,7 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag) :
 #endif
 
 	uint32 flags = SDL_INIT_VIDEO | SDL_INIT_TIMER;
-#if (defined(_DEBUG) || defined(_Win32))
+#if (defined(_DEBUG) || defined(_WIN32))
 	flags |= SDL_INIT_NOPARACHUTE;
 #endif
 
