@@ -32,9 +32,18 @@ void Text::Draw(Bitmap* dest, int x, int y, std::wstring wtext, Bitmap::TextAlig
 	if (wtext.length() == 0) return;
 
 	Font* font = dest->GetFont();
-
 	Rect dst_rect = dest->GetTextSize(wtext);
-	dst_rect.x = x; dst_rect.y = y;
+
+	switch (align) {
+	case Bitmap::TextAlignCenter:
+		dst_rect.x = x - dst_rect.width / 2; break;
+	case Bitmap::TextAlignRight:
+		dst_rect.x = x - dst_rect.width; break;
+	default:
+		dst_rect.x = x; break;
+	}
+
+	dst_rect.y = y;
 	dst_rect.width += 1; dst_rect.height += 1; // Need place for shadow
 	if (dst_rect.IsOutOfBounds(dest->GetWidth(), dest->GetHeight())) return;
 
@@ -57,7 +66,7 @@ void Text::Draw(Bitmap* dest, int x, int y, std::wstring wtext, Bitmap::TextAlig
 	if ((shadow_color.red == 0) &&
 		(shadow_color.green == 0) &&
 		(shadow_color.blue == 0) ) {
-			// FIXME: what if running in 16 bpp?
+		// FIXME: what if running in 16 bpp?
 		shadow_color.blue++;
 	}
 
@@ -119,7 +128,9 @@ void Text::Draw(Bitmap* dest, int x, int y, std::wstring wtext, Bitmap::TextAlig
 
 		// Blit gradient color background (twice in case of a full glyph)
 		char_surface->Blit(0, 0, system, clip_system, 255);
-		char_surface->Blit(6, 0, system, clip_system, 255);
+		if (is_full_glyph) {
+			char_surface->Blit(6, 0, system, clip_system, 255);
+		}
 		// Blit mask onto background
 		char_surface->Mask(0, 0, mask, mask->GetRect());
 
@@ -163,15 +174,6 @@ void Text::Draw(Bitmap* dest, int x, int y, std::wstring wtext, Bitmap::TextAlig
 		iy += ((dst_rect.height - text_bmp->GetHeight()) / 2);
 	}
 	int ix = dst_rect.x;
-	
-	// Alignment code
-	if (dst_rect.width > text_bmp->GetWidth()) {
-		if (align == Bitmap::TextAlignCenter) {
-			ix += (dst_rect.width - text_bmp->GetWidth()) / 2;
-		} else if (align == Bitmap::TextAlignRight) {
-			ix += dst_rect.width - text_bmp->GetWidth();
-		}
-	}
 
 	dest->Blit(ix, iy, text_bmp, src_rect, 255);
 
@@ -185,4 +187,3 @@ void Text::Draw(Bitmap* dest, int x, int y, std::string text, Bitmap::TextAlignm
 	std::wstring wtext = Utils::DecodeUTF(text);
 	Draw(dest, x, y, wtext, align);
 }
-
