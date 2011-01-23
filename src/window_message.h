@@ -132,7 +132,7 @@ public:
 	/// and automatically increased by 1 in every recursion.
 	/// @return The final text output of the code.
 	////////////////////////////////////////////////////////
-	std::string ParseCommandCode(int call_depth = 1);
+	std::wstring ParseCommandCode(int call_depth = 1);
 
 	////////////////////////////////////////////////////////
 	/// Stub. For Choice.
@@ -167,7 +167,7 @@ protected:
 	/// Index of the next char in text that will be outputted
 	int text_index;
 	/// text message that will be displayed
-	std::string text;
+	std::wstring text;
 	/// Used by Message kill command \^
 	bool kill_message;
 	/// Prevents new page call when a halt \! was found

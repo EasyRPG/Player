@@ -63,25 +63,7 @@ std::string Utils::EncodeUTF(const std::wstring& wstr) {
 		else
 			return std::string("");
 	}
-
 	return str;
-}
-
-////////////////////////////////////////////////////////////
-int Utils::GetUtf8ByteSize(char glyph) {
-	// Detect unicode size
-	int val = (unsigned char)glyph;
-	if (val < 0x80) {
-		return 1;
-	} else if (val & 0xC0) {
-		return 2;
-	} else if (val & 0xE0) {
-		return 3;
-	} else if (val & 0xF0) {
-		return 4;
-	}
-
-	return 0;
 }
 
 ////////////////////////////////////////////////////////////

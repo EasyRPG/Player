@@ -41,16 +41,6 @@ namespace Utils {
 	/// @return The converted string
 	////////////////////////////////////////////////////////
 	std::string EncodeUTF(const std::wstring& wstr);
-
-	////////////////////////////////////////////////////////
-	/// Checks how many chars a passed glyph takes in utf8
-	/// encoding.
-	/// @todo Better would be passing a pointer and then
-	/// checking in every byte if the correct bits are set
-	/// @param glyph : Start of glyph.
-	/// @return Used bytes by this glyph
-	////////////////////////////////////////////////////////
-	int GetUtf8ByteSize(char glyph);
 }
 
 #endif
