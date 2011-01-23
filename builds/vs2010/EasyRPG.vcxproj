@@ -178,6 +178,7 @@
     <ClCompile Include="..\..\src\sdl_audio.cpp" />
     <ClCompile Include="..\..\src\sdl_bitmap.cpp" />
     <ClCompile Include="..\..\src\sdl_bitmap_screen.cpp" />
+    <ClCompile Include="..\..\src\sdl_font.cpp" />
     <ClCompile Include="..\..\src\sdl_time.cpp" />
     <ClCompile Include="..\..\src\sdl_ui.cpp" />
     <ClCompile Include="..\..\src\soft_bitmap.cpp" />
@@ -185,6 +186,7 @@
     <ClCompile Include="..\..\src\sprite.cpp" />
     <ClCompile Include="..\..\src\spriteset_map.cpp" />
     <ClCompile Include="..\..\src\sprite_character.cpp" />
+    <ClCompile Include="..\..\src\text.cpp" />
     <ClCompile Include="..\..\src\tilemap.cpp" />
     <ClCompile Include="..\..\src\tilemap_layer.cpp" />
     <ClCompile Include="..\..\src\tone.cpp" />
@@ -285,6 +287,7 @@
     <ClInclude Include="..\..\src\scene_title.h" />
     <ClInclude Include="..\..\src\sdl_bitmap.h" />
     <ClInclude Include="..\..\src\sdl_bitmap_screen.h" />
+    <ClInclude Include="..\..\src\sdl_font.h" />
     <ClInclude Include="..\..\src\sdl_ui.h" />
     <ClInclude Include="..\..\src\soft_bitmap.h" />
     <ClInclude Include="..\..\src\soft_bitmap_screen.h" />
@@ -292,6 +295,7 @@
     <ClInclude Include="..\..\src\spriteset_map.h" />
     <ClInclude Include="..\..\src\sprite_character.h" />
     <ClInclude Include="..\..\src\system.h" />
+    <ClInclude Include="..\..\src\text.h" />
     <ClInclude Include="..\..\src\tilemap.h" />
     <ClInclude Include="..\..\src\tilemap_layer.h" />
     <ClInclude Include="..\..\src\time.h" />
