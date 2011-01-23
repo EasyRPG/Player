@@ -224,12 +224,6 @@ void SoftBitmap::Mask(int x, int y, Bitmap* _src, Rect src_rect) {
 }
 
 ////////////////////////////////////////////////////////////
-void SoftBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
-	Text::Draw(this, x, y, text, align);
-	RefreshCallback();
-}
-
-////////////////////////////////////////////////////////////
 void SoftBitmap::SetTransparentColor(Color color) {
 }
 

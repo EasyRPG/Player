@@ -15,55 +15,46 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _FONT_H_
-#define _FONT_H_
+#ifndef _EASYRPG_SDL_FONT_H_
+#define _EASYRPG_SDL_FONT_H_
+
+#include "system.h"
+#ifdef USE_SDL_TTF
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
 #include <string>
 #include <map>
+#include <SDL_ttf.h>
+#include "font.h"
+#include "sdl_bitmap.h"
 
 ////////////////////////////////////////////////////////////
-/// Font class
+/// SdlFont class
 ////////////////////////////////////////////////////////////
-
-class Bitmap;
-
-class Font {
+class SdlFont : public Font {
 public:
-	Font();
-	Font(std::string _name);
-	Font(int _size);
-	Font(std::string _name, int _size);
-	virtual ~Font();
+	SdlFont();
+	SdlFont(std::string _name);
+	SdlFont(int _size);
+	SdlFont(std::string _name, int _size);
+	~SdlFont();
 
-	virtual int GetHeight() = 0;
-	virtual Bitmap* Render(int glyph) = 0;
-	
-	static Font* CreateFont();
-	static bool Exists(std::string name);
+	int GetHeight();
+	Bitmap* Render(int glyph);
+
 	static void Dispose();
 
-	static const std::string default_name;
-	static const int default_size;
-	static const bool default_bold;
-	static const bool default_italic;
-	static const int default_color;
+private:
+	// TODO Where's the clean up for this?
+	static std::map<std::string, std::map<int, TTF_Font*> > fonts;
 
-	enum SystemColor {
-		ColorDefault = 0,
-		ColorDisabled = 3,
-		ColorCritical = 4,
-		ColorKnockout = 5
-	};
-
-	std::string name;
-	int size;
-	bool bold;
-	bool italic;
-	int color;
+	TTF_Font* ttf_font;
+	void GetTTF();
 };
+
+#endif
 
 #endif
 

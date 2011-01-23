@@ -16,7 +16,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "system.h"
-#if defined(USE_SOFT_BITMAP) || defined(USE_PIXMAN_BITMAP)
+#ifndef USE_SDL_TTF
 
 ////////////////////////////////////////////////////////////
 // Headers
@@ -31,11 +31,35 @@
 #include "bitmap.h"
 #include "ftfont.h"
 
-static FT_Library library;
-static FT_Face face;
-static bool ft_initialized = false;
+FT_Library FTFont::library;
+FT_Face FTFont::face;
+bool FTFont::ft_initialized = false;
 
-void FreeType::Init(const Font* font) {
+////////////////////////////////////////////////////////////
+/// Constructor
+////////////////////////////////////////////////////////////
+FTFont::FTFont()
+	: Font() {}
+
+FTFont::FTFont(int _size)
+	: Font(_size) {}
+
+FTFont::FTFont(std::string _name)
+	: Font(_name) {}
+
+FTFont::FTFont(std::string _name, int _size)
+	: Font(_name, _size) {}
+
+////////////////////////////////////////////////////////////
+/// Destructor
+////////////////////////////////////////////////////////////
+FTFont::FTFont::~FTFont() {
+}
+
+////////////////////////////////////////////////////////////
+/// Initialization
+////////////////////////////////////////////////////////////
+void FTFont::Init() {
 	if (ft_initialized)
 		return;
 
@@ -45,7 +69,7 @@ void FreeType::Init(const Font* font) {
 		return;
 	}
 
-	std::string path = FileFinder::FindFont(font->name);
+	std::string path = FileFinder::FindFont(name);
     ans = FT_New_Face(library, path.c_str(), 0, &face);
     if (ans != FT_Err_Ok) {
 		Output::Error("Couldn't initialize FreeType face\n");
@@ -53,7 +77,7 @@ void FreeType::Init(const Font* font) {
 		return;
 	}
 
-    ans = FT_Set_Char_Size(face, font->size * 64, font->size * 64, 72, 72);
+    ans = FT_Set_Char_Size(face, size * 64, size * 64, 72, 72);
     if (ans != FT_Err_Ok) {
 		Output::Error("Couldn't set FreeType face size\n");
 		FT_Done_Face(face);
@@ -64,7 +88,10 @@ void FreeType::Init(const Font* font) {
 	ft_initialized = true;
 }
 
-void FreeType::Done() {
+////////////////////////////////////////////////////////////
+/// Cleanup
+////////////////////////////////////////////////////////////
+void FTFont::Dispose() {
 	if (!ft_initialized)
 		return;
 
@@ -75,7 +102,16 @@ void FreeType::Done() {
 	ft_initialized = false;
 }
 
-Bitmap* FreeType::RenderChar(const Font* font, int c) {
+////////////////////////////////////////////////////////////
+/// Public methods
+////////////////////////////////////////////////////////////
+int FTFont::GetHeight() {
+	return size + 2;
+}
+
+Bitmap* FTFont::Render(int c) {
+	Init();
+
 	FT_Error ans = FT_Load_Char(face, c, FT_LOAD_NO_BITMAP);
     if (ans != FT_Err_Ok) {
 		Output::Error("Couldn't load FreeType character %d\n", c);
@@ -105,7 +141,7 @@ Bitmap* FreeType::RenderChar(const Font* font, int c) {
 	if (ft_bitmap.pitch < 0)
 		src -= ft_bitmap.rows * ft_bitmap.pitch;
 
-	Bitmap* bitmap = Bitmap::CreateBitmap(ft_bitmap.width, font->size + 2, true);
+	Bitmap* bitmap = Bitmap::CreateBitmap(ft_bitmap.width, size + 2, true);
 	uint8* dst = (uint8*) bitmap->pixels();
 
 	const int base_line = bitmap->height() / 4;

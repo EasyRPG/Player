@@ -29,11 +29,18 @@ namespace Utils {
 	std::string LowerCase(const std::string& str);
 
 	////////////////////////////////////////////////////////
-	/// Converts Utf8 to Utf16.
+	/// Converts Utf8 to Utf16 (Windows) or Utf32 (Unix).
 	/// @param str : String to convert.
 	/// @return The converted string
 	////////////////////////////////////////////////////////
 	std::wstring DecodeUTF(const std::string& str);
+
+	////////////////////////////////////////////////////////
+	/// Converts Utf16 (Windows) or Utf32 (Unix) to Utf8.
+	/// @param str : String to convert.
+	/// @return The converted string
+	////////////////////////////////////////////////////////
+	std::string EncodeUTF(const std::wstring& wstr);
 
 	////////////////////////////////////////////////////////
 	/// Checks how many chars a passed glyph takes in utf8

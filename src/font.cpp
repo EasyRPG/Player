@@ -18,9 +18,15 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "font.h"
 #include "filefinder.h"
 #include "output.h"
+#include "system.h"
+#include "font.h"
+#ifdef USE_SDL_TTF
+#include "sdl_font.h"
+#else
+#include "ftfont.h"
+#endif
 
 ////////////////////////////////////////////////////////////
 /// Static Variables
@@ -30,9 +36,6 @@ const int Font::default_size = 9;
 const bool Font::default_bold = false;
 const bool Font::default_italic = false;
 const int Font::default_color = 0;
-#ifdef USE_SDL_TTF
-std::map<std::string, std::map<int, TTF_Font*> > Font::fonts;
-#endif
 
 ////////////////////////////////////////////////////////////
 /// Constructor
@@ -76,40 +79,31 @@ Font::~Font() {
 }
 
 ////////////////////////////////////////////////////////////
-/// Get TTF_Font*
-////////////////////////////////////////////////////////////
-#ifdef USE_SDL_TTF
-TTF_Font* Font::GetTTF() const {
-	if (fonts.count(name) > 0 && fonts[name].count(size) > 0) {
-		return fonts[name][size];
-	} else {
-		std::string path = FileFinder::FindFont(name);
-		TTF_Font* ttf_font = TTF_OpenFont(path.c_str(), size);
-		if (!ttf_font) {
-			Output::Error("Couldn't open font %s size %d.\n%s\n", name.c_str(), size, TTF_GetError());
-		}
-		fonts[name][size] = ttf_font;
-		return ttf_font;
-	}
-}
-#endif
-
-void Font::Dispose() {
-#ifdef USE_SDL_TTF
-	std::map<int, TTF_Font*>::iterator it;
-	std::map<std::string, std::map<int, TTF_Font*> >::iterator it2;
-
-	for (it2 = fonts.begin(); it2 != fonts.end(); ++it2) {
-		for (it = it2->second.begin(); it != it2->second.end(); ++it) {
-			TTF_CloseFont(it->second);
-		}
-	}
-#endif
-}
-
-////////////////////////////////////////////////////////////
 /// Class Exists
 ////////////////////////////////////////////////////////////
 bool Font::Exists(std::string name) {
 	return FileFinder::FindFont(name) != "";
 }
+
+////////////////////////////////////////////////////////////
+/// Factory
+////////////////////////////////////////////////////////////
+Font* Font::CreateFont() {
+#ifdef USE_SDL_TTF
+	return new SdlFont();
+#else
+	return new FTFont();
+#endif
+}
+
+////////////////////////////////////////////////////////////
+/// Cleanup
+////////////////////////////////////////////////////////////
+void Font::Dispose() {
+#ifdef USE_SDL_TTF
+	SdlFont::Dispose();
+#else
+	FTFont::Dispose();
+#endif
+}
+

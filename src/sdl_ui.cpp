@@ -37,6 +37,9 @@
 #include "player.h"
 #include "sdl_bitmap.h"
 #include "soft_bitmap.h"
+#ifdef USE_SDL_TTF
+#include <SDL_ttf.h>
+#endif
 #include <cstdlib>
 
 ///////////////////////////////////////////////////////////

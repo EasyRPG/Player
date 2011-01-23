@@ -19,16 +19,36 @@
 #define _EASYRPG_FTFONT_H_
 
 #include "system.h"
-#if defined(USE_SOFT_BITMAP) || defined(USE_PIXMAN_BITMAP)
+#ifndef USE_SDL_TTF
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include FT_BITMAP_H
 #include "font.h"
 #include "bitmap.h"
 
-class FreeType {
+////////////////////////////////////////////////////////////
+/// FTFont class
+////////////////////////////////////////////////////////////
+class FTFont : public Font {
 public:
-	static void Init(const Font* font);
-	static void Done();
-	static Bitmap* RenderChar(const Font* font, int c);
+	FTFont();
+	FTFont(std::string _name);
+	FTFont(int _size);
+	FTFont(std::string _name, int _size);
+	~FTFont();
+
+	int GetHeight();
+	Bitmap* Render(int glyph);
+
+	static void Dispose();
+
+private:
+	static FT_Library library;
+	static FT_Face face;
+	static bool ft_initialized;
+
+	void Init();
 };
 
 #endif

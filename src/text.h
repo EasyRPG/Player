@@ -18,9 +18,6 @@
 #ifndef _EASYRPG_TEXT_H_
 #define _EASYRPG_TEXT_H_
 
-#include "system.h"
-#if defined(USE_SOFT_BITMAP) || defined(USE_PIXMAN_BITMAP)
-
 #include "ftfont.h"
 #include "bitmap.h"
 
@@ -28,7 +25,5 @@ class Text {
 public:
 	static void Draw(Bitmap* dest, int x, int y, std::string text, Bitmap::TextAlignment align = Bitmap::TextAlignLeft);
 };
-
-#endif
 
 #endif

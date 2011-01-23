@@ -15,9 +15,6 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#include "system.h"
-#if defined(USE_SOFT_BITMAP) || defined(USE_PIXMAN_BITMAP)
-
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
@@ -26,7 +23,7 @@
 #include "cache.h"
 #include "output.h"
 #include "bitmap.h"
-#include "ftfont.h"
+#include "font.h"
 #include "text.h"
 
 ////////////////////////////////////////////////////////////
@@ -42,6 +39,10 @@ void Text::Draw(Bitmap* dest, int x, int y, std::string text, Bitmap::TextAlignm
 
 	Bitmap* text_surface; // Complete text will be on this surface
 	text_surface = Bitmap::CreateBitmap(dst_rect.width, dst_rect.height, true);
+	#ifndef USE_ALPHA
+	text_surface->SetTransparentColor(dest->GetTransparentColor());
+	#endif
+	text_surface->Clear();
 
 	// Load the system file for the shadow and text color
 	Bitmap* system = Cache::System(Data::system.system_name);
@@ -66,8 +67,6 @@ void Text::Draw(Bitmap* dest, int x, int y, std::string text, Bitmap::TextAlignm
 	bool is_full_glyph = false;
 	// The current char is an exfont (is_full_glyph must be true too)
 	bool is_exfont = false;
-
-	FreeType::Init(font);
 
 	// This loops always renders a single char, color blends it and then puts
 	// it onto the text_surface (including the drop shadow)
@@ -101,7 +100,7 @@ void Text::Draw(Bitmap* dest, int x, int y, std::string text, Bitmap::TextAlignm
 		} else {
 			// No ExFont, draw normal text
 
-			mask = FreeType::RenderChar(font, text[c]);
+			mask = font->Render(text[c]);
 			if (mask == NULL) {
 				Output::Warning("Couldn't render char %c (%d). Skipping...", text[c], (int)text[c]);
 				continue;
@@ -112,6 +111,10 @@ void Text::Draw(Bitmap* dest, int x, int y, std::string text, Bitmap::TextAlignm
 		Rect clip_system(8+16*(font->color%10), 4+48+16*(font->color/10), 6, 12);
 
 		Bitmap* char_surface = Bitmap::CreateBitmap(mask->GetWidth(), mask->GetHeight(), true);
+		#ifndef USE_ALPHA
+		char_surface->SetTransparentColor(dest->GetTransparentColor());
+		#endif
+		char_surface->Clear();
 
 		// Blit gradient color background (twice in case of a full glyph)
 		char_surface->Blit(0, 0, system, clip_system, 255);
@@ -120,6 +123,10 @@ void Text::Draw(Bitmap* dest, int x, int y, std::string text, Bitmap::TextAlignm
 		char_surface->Mask(0, 0, mask, mask->GetRect());
 
 		Bitmap* char_shadow = Bitmap::CreateBitmap(mask->GetWidth(), mask->GetHeight(), true);
+		#ifndef USE_ALPHA
+		char_shadow->SetTransparentColor(dest->GetTransparentColor());
+		#endif
+		char_shadow->Clear();
 
 		// Blit solid color background
 		char_shadow->Fill(shadow_color);
@@ -147,8 +154,6 @@ void Text::Draw(Bitmap* dest, int x, int y, std::string text, Bitmap::TextAlignm
 		next_glyph_pos += 6;	
 	}
 
-	FreeType::Done();
-
 	Bitmap* text_bmp = Bitmap::CreateBitmap(text_surface, text_surface->GetRect());
 
 	Rect src_rect(0, 0, dst_rect.width, dst_rect.height);
@@ -172,6 +177,4 @@ void Text::Draw(Bitmap* dest, int x, int y, std::string text, Bitmap::TextAlignm
 	delete text_bmp;
 	delete text_surface;
 }
-
-#endif
 

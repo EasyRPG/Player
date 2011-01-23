@@ -44,6 +44,29 @@ std::wstring Utils::DecodeUTF(const std::string& str) {
 	return wstr;
 }
 
+std::string Utils::EncodeUTF(const std::wstring& wstr) {
+	std::string str;
+	std::wstring::const_iterator it;
+	for (it = wstr.begin(); it != wstr.end(); it++) {
+		int c = (int) (wchar_t) *it;
+		if (c < 0x80)
+			str.push_back((char) c);
+		else if (c < 0x800) {
+			str.push_back((char) (0xC0 | (c >> 6)));
+			str.push_back((char) (c & 0x3F));
+		}
+		else if (c < 0x10000) {
+			str.push_back((char) (0xE0 | (c >> 12)));
+			str.push_back((char) ((c >> 6) & 0x3F));
+			str.push_back((char) (c & 0x3F));
+		}
+		else
+			return std::string("");
+	}
+
+	return str;
+}
+
 ////////////////////////////////////////////////////////////
 int Utils::GetUtf8ByteSize(char glyph) {
 	// Detect unicode size

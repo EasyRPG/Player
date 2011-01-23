@@ -241,7 +241,7 @@ public:
 	/// @param text : text to draw
 	/// @param align : text alignment
 	////////////////////////////////////////////////////////
-	virtual void TextDraw(int x, int y, std::string text, TextAlignment align = Bitmap::TextAlignLeft) = 0;
+	virtual void TextDraw(int x, int y, std::string text, TextAlignment align = Bitmap::TextAlignLeft);
 
 	////////////////////////////////////////////////////////
 	/// Draws text to bitmap.
@@ -311,7 +311,7 @@ public:
 protected:
 	friend class BitmapScreen;
 	friend class SoftBitmapScreen;
-	friend class FreeType;
+	friend class FTFont;
 
 #ifdef USE_SDL
 	friend class SdlBitmap;

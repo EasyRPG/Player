@@ -45,7 +45,6 @@ public:
 
 	void Blit(int x, int y, Bitmap* _src, Rect src_rect, int opacity);
 	void Mask(int x, int y, Bitmap* _src, Rect src_rect);
-	void TextDraw(int x, int y, std::string text, TextAlignment align = Bitmap::TextAlignLeft);
 	void SetTransparentColor(Color color);
 
 	void* pixels();

@@ -59,7 +59,6 @@ public:
 	Bitmap* Resample(int scale_w, int scale_h, const Rect& src_rect);
 	Bitmap* RotateScale(double angle, int scale_w, int scale_h);
 	void OpacityChange(int opacity, const Rect& dst_rect);
-	void TextDraw(int x, int y, std::string text, TextAlignment align = Bitmap::TextAlignLeft);
 	void SetTransparentColor(Color color);
 
 	void* pixels();

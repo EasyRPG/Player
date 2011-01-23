@@ -564,12 +564,6 @@ void PixmanBitmap::Flip(bool horizontal, bool vertical) {
 }
 
 ////////////////////////////////////////////////////////////
-void PixmanBitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
-	Text::Draw(this, x, y, text, align);
-	RefreshCallback();
-}
-
-////////////////////////////////////////////////////////////
 void PixmanBitmap::SetTransparentColor(Color color) {
 }
 

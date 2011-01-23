@@ -23,6 +23,7 @@
 #include <algorithm>
 #include "bitmap.h"
 #include "bitmap_screen.h"
+#include "text.h"
 
 #if defined(USE_SDL_BITMAP)
 	#include "sdl_bitmap.h"
@@ -113,7 +114,7 @@ Bitmap* Bitmap::CreateBitmap(Bitmap* source, Rect src_rect, bool transparent) {
 Bitmap::Bitmap() :
 	editing(false) {
 
-	font = new Font();
+	font = Font::CreateFont();
 }
 
 ////////////////////////////////////////////////////////////
@@ -421,6 +422,65 @@ void Bitmap::StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int opacity)
 
 ////////////////////////////////////////////////////////////
 void Bitmap::Mask(int x, int y, Bitmap* src, Rect src_rect) {
+	Lock();
+	src->Lock();
+
+	if (bpp() == 2) {
+		for (int j = 0; j < src_rect.height; j++) {
+			uint16* src_pixels = (uint16*) src->pixels() + (src_rect.y + j) * src->pitch() / 2 + src_rect.x;
+			uint16* dst_pixels = (uint16*) pixels() + (y + j) * pitch() / 2 + x;
+			for (int i = 0; i < src_rect.width; i++) {
+				uint32 src_pix = (uint32) *src_pixels;
+				uint8 src_r, src_g, src_b, src_a;
+				GetColorComponents(src_pix, src_r, src_g, src_b, src_a);
+
+				uint32 dst_pix = (uint32) *dst_pixels;
+				uint8 dst_r, dst_g, dst_b, dst_a;
+				GetColorComponents(src_pix, dst_r, dst_g, dst_b, dst_a);
+
+				dst_pix = GetUint32Color(dst_r, dst_g, dst_b, src_a);
+
+				src_pixels++;
+				*dst_pixels++ = dst_pix;
+			}
+		}
+	} else if (bpp() == 4) {
+		#ifdef USE_ALPHA
+		const int src_abyte = GetMaskByte(src->amask());
+		const int dst_abyte = GetMaskByte(amask());
+		const int src_bpp = src->bpp();
+		const int dst_bpp = bpp();
+
+		for (int j = 0; j < src_rect.height; j++) {
+			uint8* src_pixels = (uint8*) src->pixels() + (src_rect.y + j) * src->pitch() + src_rect.x * src_bpp;
+			uint8* dst_pixels = (uint8*) pixels() + (y + j) * pitch() + x * dst_bpp;
+			for (int i = 0; i < src_rect.width; i++) {
+				dst_pixels[dst_abyte] = src_pixels[src_abyte];
+				src_pixels += src_bpp;
+				dst_pixels += dst_bpp;
+			}
+		}
+		#else
+		const uint32 src_trans = src->colorkey();
+		const uint32 dst_trans = colorkey();
+
+		for (int j = 0; j < src_rect.height; j++) {
+			uint32* src_pixels = (uint32*) src->pixels() + (src_rect.y + j) * src->pitch() / src->bpp() + src_rect.x;
+			uint32* dst_pixels = (uint32*) pixels() + (y + j) * pitch() / bpp() + x;
+			for (int i = 0; i < src_rect.width; i++) {
+				if (*src_pixels == src_trans)
+					*dst_pixels = dst_trans;
+				src_pixels++;
+				dst_pixels++;
+			}
+		}
+		#endif
+	}
+
+	src->Unlock();
+	Unlock();
+
+	RefreshCallback();
 }
 
 ////////////////////////////////////////////////////////////
@@ -1192,5 +1252,10 @@ void Bitmap::TextDraw(int x, int y, int width, int height, std::string text, Tex
 
 void Bitmap::TextDraw(Rect rect, std::string text, TextAlignment align) {
 	TextDraw(rect.x, rect.y, rect.width, rect.height, text, align);
+}
+
+void Bitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
+	Text::Draw(this, x, y, text, align);
+	RefreshCallback();
 }
 
