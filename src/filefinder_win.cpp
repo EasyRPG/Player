@@ -25,7 +25,6 @@
 #include <fstream>
 #include <windows.h>
 #include <shlobj.h>
-#include <io.h>
 #include <vector>
 #include "filefinder.h"
 #include "options.h"
@@ -48,8 +47,10 @@ static std::string fonts_path;
 // Helper Methods
 ////////////////////////////////////////////////////////////
 static bool FileExists(std::string filename) {
-	return _access(filename.c_str(), 4) == 0;
+	std::wstring file = Utils::DecodeUTF(filename);
+	return GetFileAttributes(file.c_str()) != (DWORD)-1;
 }
+
 static std::string MakePath(const std::string &dir, const std::string &name, bool ending_slash = false) {
 	std::string str;
 	if (dir.empty()) {
