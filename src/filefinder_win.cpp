@@ -76,7 +76,7 @@ static std::string FindFile(const std::string &dir, const std::string &_name, co
 		std::string path = search_paths[i] + name;
 		const char*const* pexts = exts;
 		while (const char*const* ext = pexts++) {
-			if (ext->empty()) break;
+			if (!*ext) break;
 
 			if (FileExists(path + *ext))
 				return path + *ext;
@@ -153,7 +153,7 @@ std::string FileFinder::FindImage(const std::string& dir, const std::string& nam
 	return FindFile(dir, name, IMG_TYPES);
 }
 
-inline std::string FindDefault(const std::string& dir, const std::string& name) {
+std::string FileFinder::FindDefault(const std::string& dir, const std::string& name) {
 	static const char* const no_exts[] = {""};
 	return FindFile(dir, name, no_exts);
 }

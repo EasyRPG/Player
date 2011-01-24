@@ -542,7 +542,7 @@ inline void stretch16(uint16* s, uint16* d, int w) {
 inline void stretch24(uint8* s, uint8* d, int w) {
 #ifdef USE_SDL_BITMAP
 	for(int i = 0; i < w; i++) {
-		const uint8* pixel = (const uint8*) s += 3;
+		const uint8* pixel = (uint8*) s += 3;
 		*d++ = pixel[0];
 		*d++ = pixel[1];
 		*d++ = pixel[2];
