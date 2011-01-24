@@ -316,6 +316,7 @@ public:
 protected:
 	friend class BitmapScreen;
 	friend class SoftBitmapScreen;
+	friend class GlBitmapScreen;
 	friend class FTFont;
 
 #ifdef USE_SDL

@@ -518,10 +518,10 @@ inline void stretch16(uint16* s, uint16* d, int w) {
 	for(int i = 0; i < w; i++) {
 		const uint8* src = (const uint8*) (s++);
 		uint16 pixel;
-		src++;
-		pixel  = *src++ << rshift;
+		pixel  = *src++ << bshift;
 		pixel += *src++ << gshift;
-		pixel += *src++ << bshift;
+		pixel += *src++ << rshift;
+		src++;
 		*d++ = pixel;
 		*d++ = pixel;
 	}
@@ -542,7 +542,8 @@ inline void stretch16(uint16* s, uint16* d, int w) {
 inline void stretch24(uint8* s, uint8* d, int w) {
 #ifdef USE_SDL_BITMAP
 	for(int i = 0; i < w; i++) {
-		const uint8* pixel = (uint8*) s += 3;
+		const uint8* pixel = (const uint8*) s;
+		s += 3;
 		*d++ = pixel[0];
 		*d++ = pixel[1];
 		*d++ = pixel[2];
@@ -555,12 +556,12 @@ inline void stretch24(uint8* s, uint8* d, int w) {
 	for(int i = 0; i < w; i++) {
 		const uint8* pixel = (const uint8*) s;
 		s += 4;
-		*d++ = pixel[1];
 		*d++ = pixel[2];
-		*d++ = pixel[3];
 		*d++ = pixel[1];
+		*d++ = pixel[0];
 		*d++ = pixel[2];
-		*d++ = pixel[3];
+		*d++ = pixel[1];
+		*d++ = pixel[0];
 	}
 #endif
 #ifdef USE_PIXMAN_BITMAP
@@ -592,10 +593,9 @@ inline void stretch32(uint32* s, uint32* d, int w) {
 	for(int i = 0; i < w; i++) {
 		const uint8* src = (const uint8*) (s++);
 		uint32 pixel;
-		src++;
-		pixel  = *src++ << rshift;
+		pixel  = *src++ << bshift;
 		pixel += *src++ << gshift;
-		pixel += *src++ << bshift;
+		pixel += *src++ << rshift;
 		*d++ = pixel;
 		*d++ = pixel;
 	}

@@ -73,14 +73,13 @@ void Image::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 			else if (transparent && png_get_valid(png_ptr, info_ptr, PNG_INFO_PLTE))
 				png_get_PLTE(png_ptr, info_ptr, &palette, &num_palette);
 			png_set_palette_to_rgb(png_ptr);
-			png_set_swap_alpha(png_ptr);
-			png_set_filler(png_ptr, 0xFF, PNG_FILLER_BEFORE);
+			png_set_filler(png_ptr, 0xFF, PNG_FILLER_AFTER);
 			break;
 		case PNG_COLOR_TYPE_GRAY:
 			png_set_gray_to_rgb(png_ptr);
 			if (bit_depth < 8)
 				png_set_expand_gray_1_2_4_to_8(png_ptr);
-			png_set_filler(png_ptr, 0xFF, PNG_FILLER_BEFORE);
+			png_set_filler(png_ptr, 0xFF, PNG_FILLER_AFTER);
 			if (transparent) {
 				palette = &black;
 				num_palette = 1;
@@ -92,10 +91,9 @@ void Image::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 				png_set_expand_gray_1_2_4_to_8(png_ptr);
 			break;
 		case PNG_COLOR_TYPE_RGB:
-			png_set_filler(png_ptr, 0xFF, PNG_FILLER_BEFORE);
+			png_set_filler(png_ptr, 0xFF, PNG_FILLER_AFTER);
 			break;
 		case PNG_COLOR_TYPE_RGB_ALPHA:
-			png_set_swap_alpha(png_ptr);
 			break;
 	}
 
@@ -118,8 +116,8 @@ void Image::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 
 	if (transparent && num_palette > 0) {
 		png_color& ck = palette[0];
-		uint8 ck1[4] = {255, ck.red, ck.green, ck.blue};
-		uint8 ck2[4] = {  0, ck.red, ck.green, ck.blue};
+		uint8 ck1[4] = {ck.red, ck.green, ck.blue, 255};
+		uint8 ck2[4] = {ck.red, ck.green, ck.blue,   0};
 		uint32 srckey = *(uint32*)ck1;
 		uint32 dstkey = *(uint32*)ck2;
 		uint32* p = (uint32*) pixels;
@@ -168,10 +166,10 @@ void Image::ReadXYZ(const uint8* data, uint len, bool transparent,
 		for (int x = 0; x < w; x++) {
 			uint8 pix = *src++;
 			const uint8* color = palette[pix];
-			*dst++ = (transparent && pix == 0) ? 0 : 255;
 			*dst++ = color[0];
 			*dst++ = color[1];
 			*dst++ = color[2];
+			*dst++ = (transparent && pix == 0) ? 0 : 255;
 		}
     }
 

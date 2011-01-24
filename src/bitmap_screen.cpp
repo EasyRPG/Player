@@ -24,21 +24,22 @@
 
 #if defined(USE_SDL_BITMAP)
 	#include "sdl_bitmap_screen.h"
-#elif defined(USE_OPENGL)
+#endif
+#if defined(USE_OPENGL_BITMAP)
 	#include "gl_bitmap_screen.h"
-#elif defined(USE_SOFT_BITMAP)
+#endif
+#if defined(USE_SOFT_BITMAP)
 	#include "soft_bitmap_screen.h"
-#elif defined(USE_PIXMAN_BITMAP)
+#endif
+#if defined(USE_PIXMAN_BITMAP)
 	#include "pixman_bitmap_screen.h"
-#else
-	#error "No bitmap implementation selected"
 #endif
 
 ////////////////////////////////////////////////////////////
 BitmapScreen* BitmapScreen::CreateBitmapScreen(Bitmap* source) {
 	#if defined(USE_SDL_BITMAP)
 		return (BitmapScreen*)new SdlBitmapScreen(source);
-	#elif defined(USE_OPENGL)
+	#elif defined(USE_OPENGL_BITMAP)
 		return (BitmapScreen*)new GlBitmapScreen(source);
 	#elif defined(USE_SOFT_BITMAP)
 		return (BitmapScreen*)new SoftBitmapScreen(source);
@@ -53,7 +54,7 @@ BitmapScreen* BitmapScreen::CreateBitmapScreen(Bitmap* source) {
 BitmapScreen* BitmapScreen::CreateBitmapScreen(bool delete_bitmap) {
 	#if defined(USE_SDL_BITMAP)
 		return (BitmapScreen*)new SdlBitmapScreen(delete_bitmap);
-	#elif defined(USE_OPENGL)
+	#elif defined(USE_OPENGL_BITMAP)
 		return (BitmapScreen*)new GlBitmapScreen(delete_bitmap);
 	#elif defined(USE_SOFT_BITMAP)
 		return (BitmapScreen*)new SoftBitmapScreen(delete_bitmap);

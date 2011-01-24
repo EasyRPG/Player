@@ -29,6 +29,8 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include <pixman.h>
+// for SDL_BYTEORDER
+#include <SDL.h>
 
 #include "bitmap.h"
 
@@ -75,10 +77,19 @@ public:
 protected:
 	friend class PixmanBitmapScreen;
 
+#if SDL_BYTEORDER == SDL_LIL_ENDIAN
 	static const unsigned int AMASK = 0xFF000000;
 	static const unsigned int RMASK = 0x00FF0000;
 	static const unsigned int GMASK = 0x0000FF00;
 	static const unsigned int BMASK = 0x000000FF;
+	static const pixman_format_code_t format = PIXMAN_a8r8g8b8;
+#else
+	static const unsigned int BMASK = 0xFF000000;
+	static const unsigned int GMASK = 0x00FF0000;
+	static const unsigned int RMASK = 0x0000FF00;
+	static const unsigned int AMASK = 0x000000FF;
+	static const pixman_format_code_t format = PIXMAN_b8g8r8a8;
+#endif
 
 	/// Bitmap data.
 	pixman_image_t *bitmap;
@@ -93,17 +104,11 @@ protected:
 	void Lock();
 	void Unlock();
 
-	static FT_Library library;
-	static FT_Face face;
-	static bool ft_initialized;
-
-	void InitFreeType();
-	PixmanBitmap* RenderFreeTypeChar(int c);
-	void DoneFreeType();
-
 	void ReadPNG(FILE* stream, const void *data);
 	void ReadXYZ(const uint8 *data, uint len);
 	void ReadXYZ(FILE *stream);
+
+	static pixman_image_t* GetSubimage(Bitmap* _src, const Rect& src_rect);
 };
 
 #endif

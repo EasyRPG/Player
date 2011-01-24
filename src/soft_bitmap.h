@@ -25,10 +25,8 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <string>
-#include <ft2build.h>
-#include FT_FREETYPE_H
 // for SDL_BYTEORDER
-#include "SDL.h"
+#include <SDL.h>
 
 #include "bitmap.h"
 
@@ -62,15 +60,15 @@ protected:
 	friend class SoftBitmapScreen;
 
 #if SDL_BYTEORDER == SDL_LIL_ENDIAN
-	static const unsigned int RMASK = 0x0000FF00;
-	static const unsigned int GMASK = 0x00FF0000;
-	static const unsigned int BMASK = 0xFF000000;
-	static const unsigned int AMASK = 0x000000FF;
-#else
+	static const unsigned int AMASK = 0xFF000000;
 	static const unsigned int RMASK = 0x00FF0000;
 	static const unsigned int GMASK = 0x0000FF00;
 	static const unsigned int BMASK = 0x000000FF;
-	static const unsigned int AMASK = 0xFF000000;
+#else
+	static const unsigned int BMASK = 0xFF000000;
+	static const unsigned int GMASK = 0x00FF0000;
+	static const unsigned int RMASK = 0x0000FF00;
+	static const unsigned int AMASK = 0x000000FF;
 #endif
 
 	/// Bitmap data.
@@ -86,14 +84,6 @@ protected:
 
 	void Lock();
 	void Unlock();
-
-	static FT_Library library;
-	static FT_Face face;
-	static bool ft_initialized;
-
-	void InitFreeType();
-	SoftBitmap* RenderFreeTypeChar(int c);
-	void DoneFreeType();
 };
 
 #endif

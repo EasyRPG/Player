@@ -40,7 +40,7 @@ static void destroy_func(pixman_image_t *image, void *data) {
 }
 
 void PixmanBitmap::Init(int width, int height, void* data) {
-	bitmap = pixman_image_create_bits(PIXMAN_a8r8g8b8, width, height, (uint32_t*) data, width*4);
+	bitmap = pixman_image_create_bits(format, width, height, (uint32_t*) data, width*4);
 
 	if (bitmap == NULL) {
 		Output::Error("Couldn't create %dx%d image.\n", width, height);
@@ -57,11 +57,15 @@ static void ConvertImage(int& width, int& height, void*& pixels) {
 		uint8* src = (uint8*) pixels + y * width * 4;
 		uint32* dst = (uint32*) src;
 		for (int x = 0; x < width; x++) {
-			uint32 a = src[x * 4 + 0];
-			uint32 r = src[x * 4 + 1] * a / 0xFF;
-			uint32 g = src[x * 4 + 2] * a / 0xFF;
-			uint32 b = src[x * 4 + 3] * a / 0xFF;
+			uint32 a = src[x * 4 + 3];
+			uint32 r = src[x * 4 + 0] * a / 0xFF;
+			uint32 g = src[x * 4 + 1] * a / 0xFF;
+			uint32 b = src[x * 4 + 2] * a / 0xFF;
+			#if SDL_BYTEORDER == SDL_LIL_ENDIAN
 			dst[x] = (a<<24) | (r<<16) | (g<<8) | (b<<0);
+			#else
+			dst[x] = (b<<24) | (g<<16) | (r<<8) | (a<<0);
+			#endif
 		}
 	}
 }
@@ -227,10 +231,10 @@ void PixmanBitmap::Blit(int x, int y, Bitmap* _src, Rect src_rect, int opacity) 
 	RefreshCallback();
 }
 
-static pixman_image_t* GetSubimage(Bitmap* _src, const Rect& src_rect) {
+pixman_image_t* PixmanBitmap::GetSubimage(Bitmap* _src, const Rect& src_rect) {
 	PixmanBitmap* src = (PixmanBitmap*) _src;
 	uint8* pixels = (uint8*) src->pixels() + src_rect.x * src->bpp() + src_rect.y * src->pitch();
-	return pixman_image_create_bits(PIXMAN_a8r8g8b8, src_rect.width, src_rect.height,
+	return pixman_image_create_bits(format, src_rect.width, src_rect.height,
 									(uint32_t*) pixels, src->pitch());
 }
 
@@ -583,14 +587,25 @@ uint32 PixmanBitmap::GetUint32Color(uint8 _r, uint8 _g, uint8 _b, uint8 _a) cons
 	uint32 r = _r * a / 0xFF;
 	uint32 g = _g * a / 0xFF;
 	uint32 b = _b * a / 0xFF;
+	#if SDL_BYTEORDER == SDL_LIL_ENDIAN
 	return (a<<24) | (r<<16) | (g<<8) | (b<<0);
+	#else
+	return (b<<24) | (g<<16) | (r<<8) | (a<<0);
+	#endif
 }
 
 void PixmanBitmap::GetColorComponents(uint32 color, uint8 &r, uint8 &g, uint8 &b, uint8 &a) const {
+	#if SDL_BYTEORDER == SDL_LIL_ENDIAN
 	uint32 _a = (color >> 24) & 0xFF;
 	uint32 _r = (color >> 16) & 0xFF;
 	uint32 _g = (color >>  8) & 0xFF;
 	uint32 _b = (color >>  0) & 0xFF;
+	#else
+	uint32 _a = (color >>  0) & 0xFF;
+	uint32 _r = (color >>  8) & 0xFF;
+	uint32 _g = (color >> 16) & 0xFF;
+	uint32 _b = (color >> 24) & 0xFF;
+	#endif
 	if (_a > 0) {
 		a = (uint8) _a;
 		r = (uint8) (0xFF * _r / _a);
