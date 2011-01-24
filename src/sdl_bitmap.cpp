@@ -100,12 +100,12 @@ SdlBitmap::SdlBitmap(int width, int height, bool itransparent) {
 	SDL_FreeSurface(temp);
 }
 
-SdlBitmap::SdlBitmap(const std::string filename, bool itransparent) {
+SdlBitmap::SdlBitmap(const std::string& filename, bool itransparent, bool read_only) {
 	transparent = itransparent;
 
 	SDL_Surface* temp = IMG_Load(filename.c_str());
 
-	if (temp == NULL) {
+	if ( !temp ) {
 		Output::Error("Couldn't load %s image.\n%s\n", filename.c_str(), IMG_GetError());
 	}
 
@@ -115,13 +115,16 @@ SdlBitmap::SdlBitmap(const std::string filename, bool itransparent) {
 		SDL_SetColorKey(temp, COLORKEY_FLAGS, SDL_MapRGB(temp->format, colorkey.r, colorkey.g, colorkey.b));
 	}
 
-	bitmap = DisplayFormat(temp);
-
-	if (bitmap == NULL) {
-		Output::Error("Couldn't optimize %s image.\n%s\n", filename.c_str(), SDL_GetError());
+	if (read_only) {
+		// Make surface read-only
+		bitmap = DisplayFormat(temp);
+		if (bitmap == NULL) {
+			Output::Error("Couldn't optimize %s image.\n%s\n", filename.c_str(), SDL_GetError());
+		}
+		SDL_FreeSurface(temp);
+	} else {
+		bitmap = temp;
 	}
-
-	SDL_FreeSurface(temp);
 }
 
 SdlBitmap::SdlBitmap(const uint8* data, uint bytes, bool itransparent) {

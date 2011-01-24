@@ -69,7 +69,7 @@ SoftBitmap::SoftBitmap(int width, int height, bool itransparent) {
 	Init(width, height);
 }
 
-SoftBitmap::SoftBitmap(const std::string filename, bool itransparent) {
+SoftBitmap::SoftBitmap(const std::string& filename, bool itransparent) {
 	transparent = itransparent;
 
 	int namelen = (int) filename.size();

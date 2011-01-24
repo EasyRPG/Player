@@ -70,7 +70,7 @@ Bitmap* Bitmap::CreateBitmap(int width, int height, bool transparent) {
 	#endif
 }
 
-Bitmap* Bitmap::CreateBitmap(const std::string filename, bool transparent) {
+Bitmap* Bitmap::CreateBitmap(const std::string& filename, bool transparent, bool read_only) {
 	#if defined(USE_SDL_BITMAP)
 		return (Bitmap*)new SdlBitmap(filename, transparent);
 	#elif defined(USE_SOFT_BITMAP)

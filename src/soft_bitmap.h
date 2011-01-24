@@ -36,7 +36,7 @@
 class SoftBitmap : public Bitmap {
 public:
 	SoftBitmap(int width, int height, bool transparent);
-	SoftBitmap(const std::string filename, bool transparent);
+	SoftBitmap(const std::string& filename, bool transparent);
 	SoftBitmap(const uint8* data, uint bytes, bool transparent);
 	SoftBitmap(Bitmap* source, Rect src_rect, bool transparent);
 	~SoftBitmap();

@@ -60,7 +60,7 @@ void Text::Draw(Bitmap* dest, int x, int y, std::wstring wtext, Bitmap::TextAlig
 	Bitmap* exfont = Cache::ExFont();
 
 	// Get the Shadow color
-	Color shadow_color(system->GetPixel(16, 32));
+	Color shadow_color(Cache::system_info.sh_color);
 	// If shadow is pure black, add 1 to blue channel
 	// so it doesn't become transparent
 	if ((shadow_color.red == 0) &&

@@ -21,6 +21,7 @@
 #include "baseui.h"
 #include "window_menustatus.h"
 #include "graphics.h"
+#include "cache.h"
 #include "game_party.h"
 
 ////////////////////////////////////////////////////////////
@@ -42,7 +43,7 @@ void Window_MenuStatus::Refresh() {
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 	contents->Clear();
 
-	DisplayUi->SetBackcolor(windowskin->GetPixel(0, 32));
+	DisplayUi->SetBackcolor(Cache::system_info.bg_color);
 
 	item_max = Game_Party::GetActors().size();
 

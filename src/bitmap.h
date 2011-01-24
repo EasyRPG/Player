@@ -47,8 +47,9 @@ public:
 	/// Loads a bitmap from an image file.
 	/// @param filename : image file to load
 	/// @param transparent : allow transparency on bitmap
+	/// @param read_only : should bitmap be read_only (fast blit)
 	////////////////////////////////////////////////////////
-	static Bitmap* CreateBitmap(const std::string filename, bool transparent = true);
+	static Bitmap* CreateBitmap(const std::string& filename, bool transparent = true, bool read_only = true);
 
 	////////////////////////////////////////////////////////
 	/// Loads a bitmap from memory.

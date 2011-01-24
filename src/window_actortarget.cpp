@@ -20,6 +20,7 @@
 ////////////////////////////////////////////////////////////
 #include "window_actortarget.h"
 #include "baseui.h"
+#include "cache.h"
 #include "game_party.h"
 
 ////////////////////////////////////////////////////////////
@@ -40,7 +41,7 @@ Window_ActorTarget::~Window_ActorTarget() {
 void Window_ActorTarget::Refresh() {
 	contents->Clear();
 
-	DisplayUi->SetBackcolor(windowskin->GetPixel(0, 32));
+	DisplayUi->SetBackcolor(Cache::system_info.bg_color);
 
 	item_max = Game_Party::GetActors().size();
 

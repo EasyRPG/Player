@@ -30,38 +30,61 @@ namespace {
 	std::map<std::string, std::map<int, Bitmap*> > cache_tiles;
 }
 
+tSystemInfo Cache::system_info;
+
+bool IsCached(const string_pair& key) {
+	return cache.count(key) != 0;
+}
+
+bool IsCached(const std::string& folder_name, const std::string& filename) {
+	string_pair key = string_pair(folder_name, filename);
+	return cache.count(key) != 0;
+}
+
 ////////////////////////////////////////////////////////////
-Bitmap* Cache::LoadBitmap(std::string folder_name, std::string filename, bool transparent) {
+Bitmap* Cache::LoadBitmap(
+	const std::string& folder_name, 
+	const std::string& filename,
+	bool transparent, 
+	bool read_only
+) {
 	string_pair key = string_pair(folder_name, filename);
 
-	if (cache.count(key) == 0) {
+	if ( !IsCached(key) ) {
 		std::string path = FileFinder::FindImage(folder_name, filename);
-		if (!path.empty())
+		if (!path.empty()) {
+			if (!read_only) {
+				return Bitmap::CreateBitmap(path, transparent, read_only);
+			}
 			cache[key] = Bitmap::CreateBitmap(path, transparent);
-		else
+		} else {
+			if (!read_only) {
+				return 0;
+			}
 			cache[key] = Bitmap::CreateBitmap(16, 16);
+		}
 	}
 
 	return cache[key];
 }
 
 ////////////////////////////////////////////////////////////
-Bitmap* Cache::Backdrop(std::string filename) {
+Bitmap* Cache::Backdrop(const std::string& filename) {
 	return LoadBitmap("Backdrop", filename, false);
 }
-Bitmap* Cache::Battle(std::string filename) {
+Bitmap* Cache::Battle(const std::string& filename) {
 	return LoadBitmap("Battle", filename, true);
 }
-Bitmap* Cache::Battle2(std::string filename) {
+Bitmap* Cache::Battle2(const std::string& filename) {
 	return LoadBitmap("Battle2", filename, true);
 }
-Bitmap* Cache::BattleCharset(std::string filename) {
+Bitmap* Cache::BattleCharset(const std::string& filename) {
 	return LoadBitmap("BattleCharSet", filename, true);
 }
-Bitmap* Cache::BattleWeapon(std::string filename) {
+Bitmap* Cache::BattleWeapon(const std::string& filename) {
 	return LoadBitmap("BattleWeapon", filename, true);
 }
-Bitmap* Cache::Charset(std::string filename) {
+Bitmap* Cache::Charset(const std::string& filename) {
 	return LoadBitmap("CharSet", filename, true);
 }
 Bitmap* Cache::ExFont() {
@@ -73,39 +96,54 @@ Bitmap* Cache::ExFont() {
 
 	return cache[hash];
 }
-Bitmap* Cache::Faceset(std::string filename) {
+Bitmap* Cache::Faceset(const std::string& filename) {
 	return LoadBitmap("FaceSet", filename, true);
 }
-Bitmap* Cache::Frame(std::string filename) {
+Bitmap* Cache::Frame(const std::string& filename) {
 	return LoadBitmap("Frame", filename, true);
 }
-Bitmap* Cache::Gameover(std::string filename) {
+Bitmap* Cache::Gameover(const std::string& filename) {
 	return LoadBitmap("GameOver", filename, false);
 }
-Bitmap* Cache::Monster(std::string filename) {
+Bitmap* Cache::Monster(const std::string& filename) {
 	return LoadBitmap("Monster", filename, true);
 }
-Bitmap* Cache::Panorama(std::string filename) {
+Bitmap* Cache::Panorama(const std::string& filename) {
 	return LoadBitmap("Panorama", filename, false);
 }
-Bitmap* Cache::Picture(std::string filename) {
+Bitmap* Cache::Picture(const std::string& filename) {
 	return LoadBitmap("Picture", filename, true);
 }
-Bitmap* Cache::Chipset(std::string filename) {
+Bitmap* Cache::Chipset(const std::string& filename) {
 	return LoadBitmap("ChipSet", filename, true);
 }
-Bitmap* Cache::Title(std::string filename) {
+Bitmap* Cache::Title(const std::string& filename) {
 	return LoadBitmap("Title", filename, false);
 }
-Bitmap* Cache::System(std::string filename) {
-	return LoadBitmap("System", filename, true);
+Bitmap* Cache::System(const std::string& filename) {
+	const char* sys_name = "System";
+	if (!IsCached(sys_name, filename)) {
+		// Load bitmap in system memory for direct pixel access
+		Bitmap* sram_b = LoadBitmap(sys_name, filename, true, false);
+		if (!sram_b) {
+			return 0;
+		}
+		// Overwrite previous colours. Probably FIXME...
+		system_info.bg_color = sram_b->GetPixel(0, 32);
+		system_info.sh_color = sram_b->GetPixel(16, 32);
+
+		// FIXME: Load new bitmap from system memory
+		// instead of deleting and loading again from disk
+		delete sram_b;
+	}
+	return LoadBitmap(sys_name, filename, true);
 }
-Bitmap* Cache::System2(std::string filename) {
+Bitmap* Cache::System2(const std::string& filename) {
 	return LoadBitmap("System2", filename, true);
 }
 
 ////////////////////////////////////////////////////////////
-Bitmap* Cache::Tile(std::string filename, int tile_id) {
+Bitmap* Cache::Tile(const std::string& filename, int tile_id) {
 	if (cache_tiles.count(filename) == 0 || cache_tiles[filename].count(tile_id) == 0) {
 		Bitmap* tile = Bitmap::CreateBitmap(16, 16);
 		Bitmap* chipset = Cache::Chipset(filename);
