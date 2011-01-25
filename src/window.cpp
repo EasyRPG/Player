@@ -346,12 +346,12 @@ void Window::Update() {
 Bitmap* Window::GetWindowskin() const {
 	return windowskin;
 }
-void Window::SetWindowskin(Bitmap* nwindowskin) {
+void Window::SetWindowskin(Bitmap* nwindowskin, bool delete_bitmap) {
 	background_needs_refresh = true;
 	frame_needs_refresh = true;
 	cursor_needs_refresh = true;
 	windowskin = nwindowskin;
-	windowskin_screen->SetBitmap(windowskin, true);
+	windowskin_screen->SetBitmap(windowskin, delete_bitmap);
 }
 
 Surface* Window::GetContents() const {

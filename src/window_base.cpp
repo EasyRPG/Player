@@ -30,8 +30,7 @@ Window_Base::Window_Base(int x, int y, int width, int height) {
 	windowskin_name = Game_System::GetSystemName();
 	// Cached System graphic gets destroyed :/
 	// FixMe: BitmapScreen is marked as dont delete but still deletes
-	Bitmap* new_system = Cache::System(windowskin_name);
-	SetWindowskin(Bitmap::CreateBitmap(new_system, new_system->GetRect()));
+	SetWindowskin(Cache::System(windowskin_name), false);
 
 	SetX(x);
 	SetY(y);
@@ -47,8 +46,7 @@ void Window_Base::Update() {
 		// Cached System graphic gets destroyed here :/
 		// FixMe: BitmapScreen is marked as dont delete but still deletes
 		windowskin_name = Game_System::GetSystemName();
-		Bitmap* new_system = Cache::System(windowskin_name);
-		SetWindowskin(Bitmap::CreateBitmap(new_system, new_system->GetRect()));
+		SetWindowskin(Cache::System(windowskin_name), false);
 		contents->SetTransparentColor(windowskin->GetTransparentColor());
 	}
 }

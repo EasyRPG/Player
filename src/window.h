@@ -38,7 +38,7 @@ public:
 
 	void Update();
 	Bitmap* GetWindowskin() const;
-	void SetWindowskin(Bitmap* nwindowskin);
+	void SetWindowskin(Bitmap* nwindowskin, bool delete_bitmap);
 	Surface* GetContents() const;
 	void SetContents(Surface* ncontents);
 	bool GetStretch() const;
