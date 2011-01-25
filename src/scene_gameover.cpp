@@ -23,6 +23,7 @@
 #include "bitmap.h"
 #include "cache.h"
 #include "game_system.h"
+#include "graphics.h"
 #include "input.h"
 #include "scene_title.h"
 
@@ -40,7 +41,7 @@ void Scene_Gameover::Start() {
 	Audio::BGM_Stop();
 	Audio::BGS_Stop();
 	// Play gameover music
-	Game_System::BgmPlay(Data::system.gameover_music);
+	Game_System::BgmPlay(Game_System::system_bgm[Game_System::BGM_GameOver]);
 }
 
 ////////////////////////////////////////////////////////////

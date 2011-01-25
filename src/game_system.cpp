@@ -49,6 +49,14 @@ void Game_System::Init() {
 	escape_disabled = false;
 	main_menu_disabled = false;
 	save_count = 0;
+	
+	SetSystemBGM(BGM_Battle, Data::system.battle_music); 
+	SetSystemBGM(BGM_Victory, Data::system.battle_end_music); 
+	SetSystemBGM(BGM_Inn, Data::system.inn_music);
+	SetSystemBGM(BGM_Skiff, Data::system.boat_music);
+	SetSystemBGM(BGM_Ship, Data::system.ship_music);
+	SetSystemBGM(BGM_Airship, Data::system.airship_music);
+	SetSystemBGM(BGM_GameOver, Data::system.gameover_music); 
 }
 
 ////////////////////////////////////////////////////////////
