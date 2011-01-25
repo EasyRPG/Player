@@ -384,6 +384,9 @@
     <ClCompile Include="..\..\src\sdl_font.cpp">
       <Filter>Source Files\Backend\Graphics\sdl</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\surface.cpp">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cache.h">
@@ -712,6 +715,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\sdl_font.h">
       <Filter>Source Files\Backend\Graphics\sdl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\surface.h">
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
