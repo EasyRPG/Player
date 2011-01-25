@@ -30,13 +30,8 @@
 #include "util_macro.h"
 
 ////////////////////////////////////////////////////////////
-SoftBitmapScreen::SoftBitmapScreen(Bitmap* bitmap) :
-	BitmapScreen(bitmap),
-	bitmap_effects(NULL) {}
-
-////////////////////////////////////////////////////////////
-SoftBitmapScreen::SoftBitmapScreen(bool delete_bitmap) :
-	BitmapScreen(delete_bitmap),
+SoftBitmapScreen::SoftBitmapScreen(Bitmap* bitmap, bool delete_bitmap) :
+	BitmapScreen(bitmap, delete_bitmap),
 	bitmap_effects(NULL) {}
 
 ////////////////////////////////////////////////////////////
@@ -108,6 +103,9 @@ void SoftBitmapScreen::Refresh() {
 		return;
 
 	needs_refresh = false;
+
+	if (bitmap == NULL)
+		return;
 
 	if (bitmap_effects != NULL)
 		delete bitmap_effects;

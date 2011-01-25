@@ -34,19 +34,17 @@ class BitmapScreen {
 public:
 	////////////////////////////////////////////////////////
 	/// Creates a BitmapScreen object.
-	/// @param source : source bitmap, if different from
-	///		NULL it will be deleted together with the
-	///		BitmapScreen object.
+	/// @param source : source bitmap, or NULL.
+	/// @param delete_bitmap : if true, the bitmap will be 
+	///      deleted when it is replaced or when this object
+    ///      is deleted.
 	////////////////////////////////////////////////////////
-	static BitmapScreen* CreateBitmapScreen(Bitmap* source);
+	static BitmapScreen* CreateBitmapScreen(Bitmap* source, bool delete_bitmap = false);
 
 	////////////////////////////////////////////////////////
-	/// Creates a BitmapScreen object.
-	/// @param delete_bitmap : if true the bitmaps set to
-	///     this object will be deleted together with the
-	///		BitmapScreen object.
+	/// Creates a BitmapScreen object with no attached bitmap
 	////////////////////////////////////////////////////////
-	static BitmapScreen* CreateBitmapScreen(bool delete_bitmap);
+	static BitmapScreen* CreateBitmapScreen();
 
 	////////////////////////////////////////////////////////
 	/// Destructor.
@@ -61,8 +59,11 @@ public:
 	////////////////////////////////////////////////////////
 	/// Set source bitmap.
 	/// @param source : source bitmap
+	/// @param delete_bitmap : if true, the bitmap will be 
+	///      deleted when it is replaced or when this object
+    ///      is deleted.
 	////////////////////////////////////////////////////////
-	virtual void SetBitmap(Bitmap* source);
+	virtual void SetBitmap(Bitmap* source, bool delete_bitmap = false);
 
 	////////////////////////////////////////////////////////
 	/// Get source bitmap.
@@ -192,8 +193,7 @@ public:
 	virtual void SetWaverEffectPhase(double phase);
 
 protected:
-	BitmapScreen(Bitmap* source);
-	BitmapScreen(bool delete_bitmap);
+	BitmapScreen(Bitmap* source, bool delete_bitmap);
 
 	Bitmap* bitmap;
 

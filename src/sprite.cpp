@@ -40,7 +40,7 @@ Sprite::Sprite() :
 	flash_duration(0),
 	flash_frame(0) {
 
-	bitmap_screen = BitmapScreen::CreateBitmapScreen(false);
+	bitmap_screen = BitmapScreen::CreateBitmapScreen();
 
 	zobj = Graphics::RegisterZObj(0, ID);
 	Graphics::RegisterDrawable(ID, this);
@@ -106,14 +106,14 @@ Bitmap* Sprite::GetBitmap() const {
 	return bitmap;
 }
 
-void Sprite::SetBitmap(Bitmap* nbitmap) {
+void Sprite::SetBitmap(Bitmap* nbitmap, bool delete_bitmap) {
 	bitmap = nbitmap;
 	if (!bitmap) {
 		src_rect = Rect();
 	} else {
 		src_rect = bitmap->GetRect();
 	}
-	bitmap_screen->SetBitmap(bitmap);
+	bitmap_screen->SetBitmap(bitmap, delete_bitmap);
 	bitmap_screen->SetSrcRect(src_rect);
 }
 Rect Sprite::GetSrcRect() const {

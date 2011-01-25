@@ -36,39 +36,29 @@
 #endif
 
 ////////////////////////////////////////////////////////////
-BitmapScreen* BitmapScreen::CreateBitmapScreen(Bitmap* source) {
+BitmapScreen* BitmapScreen::CreateBitmapScreen(Bitmap* source, bool delete_bitmap) {
 	#if defined(USE_SDL_BITMAP)
-		return (BitmapScreen*)new SdlBitmapScreen(source);
+		return (BitmapScreen*)new SdlBitmapScreen(source, delete_bitmap);
 	#elif defined(USE_OPENGL_BITMAP)
-		return (BitmapScreen*)new GlBitmapScreen(source);
+		return (BitmapScreen*)new GlBitmapScreen(source, delete_bitmap);
 	#elif defined(USE_SOFT_BITMAP)
-		return (BitmapScreen*)new SoftBitmapScreen(source);
+		return (BitmapScreen*)new SoftBitmapScreen(source, delete_bitmap);
 	#elif defined(USE_PIXMAN_BITMAP)
-		return (BitmapScreen*)new PixmanBitmapScreen(source);
+		return (BitmapScreen*)new PixmanBitmapScreen(source, delete_bitmap);
 	#else
 		#error "No bitmap implementation selected"
 	#endif
 }
 
 ////////////////////////////////////////////////////////////
-BitmapScreen* BitmapScreen::CreateBitmapScreen(bool delete_bitmap) {
-	#if defined(USE_SDL_BITMAP)
-		return (BitmapScreen*)new SdlBitmapScreen(delete_bitmap);
-	#elif defined(USE_OPENGL_BITMAP)
-		return (BitmapScreen*)new GlBitmapScreen(delete_bitmap);
-	#elif defined(USE_SOFT_BITMAP)
-		return (BitmapScreen*)new SoftBitmapScreen(delete_bitmap);
-	#elif defined(USE_PIXMAN_BITMAP)
-		return (BitmapScreen*)new PixmanBitmapScreen(delete_bitmap);
-	#else
-		#error "No bitmap implementation selected"
-	#endif
+BitmapScreen* BitmapScreen::CreateBitmapScreen() {
+	return CreateBitmapScreen(NULL);
 }
 
 ////////////////////////////////////////////////////////////
-BitmapScreen::BitmapScreen(Bitmap* bitmap) :
+BitmapScreen::BitmapScreen(Bitmap* bitmap, bool delete_bitmap) :
 	bitmap(bitmap),
-	delete_bitmap(bitmap != NULL) {
+	delete_bitmap(delete_bitmap) {
 
 	ClearEffects();
 
@@ -76,14 +66,6 @@ BitmapScreen::BitmapScreen(Bitmap* bitmap) :
 		src_rect_effect = bitmap->GetRect();
 		bitmap->AttachBitmapScreen(this);
 	}
-}
-
-////////////////////////////////////////////////////////////
-BitmapScreen::BitmapScreen(bool delete_bitmap) :
-	bitmap(NULL),
-	delete_bitmap(delete_bitmap) {
-
-	ClearEffects();
 }
 
 ////////////////////////////////////////////////////////////
@@ -101,11 +83,13 @@ void BitmapScreen::SetDirty() {
 }
 
 ////////////////////////////////////////////////////////////
-void BitmapScreen::SetBitmap(Bitmap* source) {
+void BitmapScreen::SetBitmap(Bitmap* source, bool _delete_bitmap) {
 	if (delete_bitmap && bitmap != NULL) {
 		delete bitmap;
 	} else if (bitmap != NULL)
 		bitmap->DetachBitmapScreen(this);
+
+	delete_bitmap = _delete_bitmap;
 
 	bitmap = source;
 	needs_refresh = true;

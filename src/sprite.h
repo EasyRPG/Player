@@ -47,7 +47,7 @@ public:
 	int GetHeight() const;
 
 	Bitmap* GetBitmap() const;
-	void SetBitmap(Bitmap* bitmap);
+	void SetBitmap(Bitmap* bitmap, bool delete_bitmap = false);
 	Rect GetSrcRect() const;
 	void SetSrcRect(Rect src_rect);
 	void SetSpriteRect(Rect sprite_rect);

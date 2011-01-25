@@ -31,8 +31,7 @@
 ////////////////////////////////////////////////////////////
 class SoftBitmapScreen : public BitmapScreen {
 public:
-	SoftBitmapScreen(Bitmap* source);
-	SoftBitmapScreen(bool delete_bitmap);
+	SoftBitmapScreen(Bitmap* source, bool delete_bitmap);
 	~SoftBitmapScreen();
 
 	void BlitScreen(int x, int y);

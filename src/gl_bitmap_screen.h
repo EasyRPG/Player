@@ -33,15 +33,14 @@
 ////////////////////////////////////////////////////////////
 class GlBitmapScreen : public BitmapScreen {
 public:
-	GlBitmapScreen(Bitmap* source);
-	GlBitmapScreen(bool delete_bitmap);
+	GlBitmapScreen(Bitmap* source, bool delete_bitmap);
 	~GlBitmapScreen();
 
 	void BlitScreen(int x, int y);
 	void BlitScreen(int x, int y, Rect src_rect);
 	void BlitScreenTiled(Rect src_rect, Rect dst_rect);
 
-	void SetBitmap(Bitmap* source);
+	void SetBitmap(Bitmap* source, bool delete_bitmap);
 	void SetBushDepthEffect(int bush_depth);
 	void SetOpacityEffect(int opacity_top, int opacity_bottom);
 	void SetDirty();

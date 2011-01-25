@@ -31,8 +31,7 @@
 ////////////////////////////////////////////////////////////
 class PixmanBitmapScreen : public BitmapScreen {
 public:
-	PixmanBitmapScreen(Bitmap* source);
-	PixmanBitmapScreen(bool delete_bitmap);
+	PixmanBitmapScreen(Bitmap* source, bool delete_bitmap);
 	~PixmanBitmapScreen();
 
 	void BlitScreen(int x, int y);

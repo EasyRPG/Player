@@ -39,35 +39,30 @@
 #endif
 
 ////////////////////////////////////////////////////////////
-SdlBitmapScreen::SdlBitmapScreen(Bitmap* bitmap) :
-	BitmapScreen(bitmap),
-	bitmap_effects(NULL) {}
-
-////////////////////////////////////////////////////////////
-SdlBitmapScreen::SdlBitmapScreen(bool delete_bitmap) :
-	BitmapScreen(delete_bitmap),
+SdlBitmapScreen::SdlBitmapScreen(Bitmap* bitmap, bool delete_bitmap) :
+	BitmapScreen(bitmap, delete_bitmap),
 	bitmap_effects(NULL) {}
 
 ////////////////////////////////////////////////////////////
 SdlBitmapScreen::~SdlBitmapScreen() {
-	if (bitmap_effects != NULL && bitmap_effects != bitmap) {
+	if (bitmap_effects != NULL)
 		delete bitmap_effects;
-	}
 }
 
 ////////////////////////////////////////////////////////////
-void SdlBitmapScreen::SetBitmap(Bitmap* source) {
-	if (bitmap_effects != NULL && bitmap_effects != bitmap) {
+void SdlBitmapScreen::SetBitmap(Bitmap* source, bool _delete_bitmap) {
+	if (bitmap_effects != NULL) {
 		delete bitmap_effects;
 		bitmap_effects = NULL;
 	}
 
 	if (delete_bitmap && bitmap != NULL) {
 		delete bitmap;
-		bitmap_effects = NULL;
+		bitmap = NULL;
 	} else if (bitmap != NULL)
 		bitmap->DetachBitmapScreen(this);
 
+	delete_bitmap = _delete_bitmap;
 	bitmap = source;
 	needs_refresh = true;
 
@@ -87,12 +82,14 @@ void SdlBitmapScreen::BlitScreen(int x, int y) {
 
 	Refresh();
 
-	if (bitmap_effects == NULL) return;
+	if (bitmap == NULL) return;
 
 	x -= origin_x;
 	y -= origin_y;
 
-	SDL_Surface* surface = ((SdlBitmap*)bitmap_effects)->bitmap;
+	SDL_Surface* surface = bitmap_effects != NULL
+		? ((SdlBitmap*)bitmap_effects)->bitmap
+		: ((SdlBitmap*)bitmap)->bitmap;
 
 	if (bush_effect < surface->h) {
 		if (!src_rect_effect_applied) {
@@ -132,12 +129,12 @@ void SdlBitmapScreen::BlitScreen(int x, int y, Rect src_rect) {
 
 	Refresh();
 
-	if (bitmap_effects == NULL) return;
-
 	x -= origin_x;
 	y -= origin_y;
 
-	SDL_Surface* surface = ((SdlBitmap*)bitmap_effects)->bitmap;
+	SDL_Surface* surface = bitmap_effects != NULL
+		? ((SdlBitmap*)bitmap_effects)->bitmap
+		: ((SdlBitmap*)bitmap)->bitmap;
 
 	if (bush_effect < surface->h) {
 		if (!src_rect_effect_applied) {
@@ -181,9 +178,9 @@ void SdlBitmapScreen::BlitScreenTiled(Rect src_rect, Rect dst_rect) {
 
 	Refresh();
 
-	if (bitmap_effects == NULL) return;
-
-	SDL_Surface* surface = ((SdlBitmap*)bitmap_effects)->bitmap;
+	SDL_Surface* surface = bitmap_effects != NULL
+		? ((SdlBitmap*)bitmap_effects)->bitmap
+		: ((SdlBitmap*)bitmap)->bitmap;
 
 	int y_blits = 1;
 	if (src_rect.height < surface->h && src_rect.height != 0) {
@@ -284,18 +281,15 @@ void SdlBitmapScreen::Refresh() {
 	origin_x = 0;
 	origin_y = 0;
 
-	if (delete_bitmap) {
-		bitmap_effects = bitmap;
+	if (bitmap == NULL)
 		return;
-	}
 
 	src_rect_effect.Adjust(bitmap->GetWidth(), bitmap->GetHeight());
 
-	if (bitmap == NULL || src_rect_effect.IsOutOfBounds(bitmap->GetWidth(), bitmap->GetHeight())) {
+	if (src_rect_effect.IsOutOfBounds(bitmap->GetWidth(), bitmap->GetHeight()))
 		return;
-	}
 
-	if (bitmap_effects != NULL && bitmap_effects != bitmap) {
+	if (bitmap_effects != NULL) {
 		delete bitmap_effects;
 		bitmap_effects = NULL;
 	}
@@ -304,8 +298,6 @@ void SdlBitmapScreen::Refresh() {
 		flipx_effect == false && flipy_effect == false &&
 		zoom_x_effect == 1.0 && zoom_y_effect == 1.0 &&
 		waver_effect_depth == 0) {
-
-		bitmap_effects = bitmap;
 
 		src_rect_effect_applied = false;
 

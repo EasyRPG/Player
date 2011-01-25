@@ -32,7 +32,7 @@ Plane::Plane() :
 	ox(0),
 	oy(0) {
 	
-	bitmap_screen = BitmapScreen::CreateBitmapScreen(false);
+	bitmap_screen = BitmapScreen::CreateBitmapScreen();
 	
 	zobj = Graphics::RegisterZObj(0, ID);
 	Graphics::RegisterDrawable(ID, this);
@@ -65,9 +65,9 @@ void Plane::Draw(int z_order) {
 Bitmap* Plane::GetBitmap() const {
 	return bitmap;
 }
-void Plane::SetBitmap(Bitmap* nbitmap) {
+void Plane::SetBitmap(Bitmap* nbitmap, bool delete_bitmap) {
 	bitmap = nbitmap;
-	bitmap_screen->SetBitmap(nbitmap);
+	bitmap_screen->SetBitmap(nbitmap, delete_bitmap);
 }
 
 bool Plane::GetVisible() const {

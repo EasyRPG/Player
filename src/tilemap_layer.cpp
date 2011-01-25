@@ -169,7 +169,7 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	layer(ilayer),
 	have_invisible_tile(false) {
 
-	chipset_screen = BitmapScreen::CreateBitmapScreen(false);
+	chipset_screen = BitmapScreen::CreateBitmapScreen();
 	autotiles_ab_screen = NULL;
 	autotiles_d_screen = NULL;
 
@@ -532,7 +532,7 @@ BitmapScreen* TilemapLayer::GenerateAutotiles(int count, const std::map<uint32, 
 		}
 	}
 
-	return BitmapScreen::CreateBitmapScreen(tiles);
+	return BitmapScreen::CreateBitmapScreen(tiles, true);
 }
 
 ////////////////////////////////////////////////////////////
@@ -569,7 +569,7 @@ Bitmap* TilemapLayer::GetChipset() const {
 }
 void TilemapLayer::SetChipset(Bitmap* nchipset) {
 	chipset = nchipset;
-	chipset_screen->SetBitmap(chipset);
+	chipset_screen->SetBitmap(chipset, false);
 	chipset_screen->SetSrcRect(chipset->GetRect());
 }
 std::vector<short> TilemapLayer::GetMapData() const {

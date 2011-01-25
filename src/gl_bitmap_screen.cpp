@@ -28,22 +28,11 @@
 #include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
-GlBitmapScreen::GlBitmapScreen(Bitmap* bitmap) :
-	BitmapScreen(bitmap) {
+GlBitmapScreen::GlBitmapScreen(Bitmap* bitmap, bool delete_bitmap) :
+	BitmapScreen(bitmap, delete_bitmap) {
 	glGenTextures(1, &tex);
 	if (bitmap != NULL)
 		UploadBitmap();
-	bush_tex = 0;
-	gray_tex = 0;
-	gray_bitmap = NULL;
-	needs_bush_refresh = true;
-	needs_gray_refresh = true;
-}
-
-////////////////////////////////////////////////////////////
-GlBitmapScreen::GlBitmapScreen(bool delete_bitmap) :
-	BitmapScreen(delete_bitmap) {
-	glGenTextures(1, &tex);
 	bush_tex = 0;
 	gray_tex = 0;
 	gray_bitmap = NULL;
@@ -164,8 +153,8 @@ void GlBitmapScreen::MakeGrayTex() {
 }
 
 ////////////////////////////////////////////////////////////
-void GlBitmapScreen::SetBitmap(Bitmap* source) {
-	BitmapScreen::SetBitmap(source);
+void GlBitmapScreen::SetBitmap(Bitmap* source, bool delete_bitmap) {
+	BitmapScreen::SetBitmap(source, delete_bitmap);
 	if (bitmap != NULL)
 		UploadBitmap();
 	needs_bush_refresh = true;

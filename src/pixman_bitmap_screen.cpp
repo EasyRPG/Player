@@ -28,13 +28,8 @@
 #include "sdl_ui.h"
 
 ////////////////////////////////////////////////////////////
-PixmanBitmapScreen::PixmanBitmapScreen(Bitmap* bitmap) :
-	BitmapScreen(bitmap),
-	bitmap_effects(NULL) {}
-
-////////////////////////////////////////////////////////////
-PixmanBitmapScreen::PixmanBitmapScreen(bool delete_bitmap) :
-	BitmapScreen(delete_bitmap),
+PixmanBitmapScreen::PixmanBitmapScreen(Bitmap* bitmap, bool delete_bitmap) :
+	BitmapScreen(bitmap, delete_bitmap),
 	bitmap_effects(NULL) {}
 
 ////////////////////////////////////////////////////////////
@@ -106,6 +101,9 @@ void PixmanBitmapScreen::Refresh() {
 		return;
 
 	needs_refresh = false;
+
+	if (bitmap == NULL)
+		return;
 
 	if (bitmap_effects != NULL)
 		delete bitmap_effects;

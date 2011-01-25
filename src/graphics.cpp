@@ -82,12 +82,12 @@ void Graphics::Init() {
 	framecount = 0;
 	fps_mode = 0;
 	timer_wait = 0;
-	frozen_screen = BitmapScreen::CreateBitmapScreen(true);
+	frozen_screen = BitmapScreen::CreateBitmapScreen();
 
-	black_screen = BitmapScreen::CreateBitmapScreen(true);
+	black_screen = BitmapScreen::CreateBitmapScreen();
 	Bitmap* black_bitmap = Bitmap::CreateBitmap(DisplayUi->GetWidth(), DisplayUi->GetHeight(), false);
 	black_bitmap->Fill(Color());
-	black_screen->SetBitmap(black_bitmap);
+	black_screen->SetBitmap(black_bitmap, true);
 
 	frozen = false;
 	drawable_creation = 0;
@@ -307,7 +307,7 @@ Bitmap* Graphics::SnapToBitmap() {
 
 ////////////////////////////////////////////////////////////
 void Graphics::Freeze() {
-	frozen_screen->SetBitmap(SnapToBitmap());
+	frozen_screen->SetBitmap(SnapToBitmap(), true);
 	frozen = true;
 }
 

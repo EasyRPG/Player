@@ -39,7 +39,7 @@ public:
 	void Draw(int z_order);
 
 	Bitmap* GetBitmap() const;
-	void SetBitmap(Bitmap* bitmap);
+	void SetBitmap(Bitmap* bitmap, bool delete_bitmap = false);
 	bool GetVisible() const;
 	void SetVisible(bool visible);
 	int GetZ() const;

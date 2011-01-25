@@ -32,11 +32,10 @@
 ////////////////////////////////////////////////////////////
 class SdlBitmapScreen : public BitmapScreen {
 public:
-	SdlBitmapScreen(Bitmap* source);
-	SdlBitmapScreen(bool delete_bitmap);
+	SdlBitmapScreen(Bitmap* source, bool delete_bitmap);
 	~SdlBitmapScreen();
 
-	void SetBitmap(Bitmap* bitmap);
+	void SetBitmap(Bitmap* bitmap, bool delete_bitmap);
 
 	void BlitScreen(int x, int y);
 	void BlitScreen(int x, int y, Rect src_rect);
