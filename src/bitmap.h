@@ -41,7 +41,7 @@ public:
 	/// @param height : surface height
 	/// @param transparent : allow transparency on bitmap
 	////////////////////////////////////////////////////////
-	static Bitmap* CreateBitmap(int width, int height, bool transparent = true);
+	static Bitmap* CreateBitmap(int width, int height, const Color& color);
 
 	////////////////////////////////////////////////////////
 	/// Loads a bitmap from an image file.
@@ -71,114 +71,29 @@ public:
 	/// Destructor.
 	////////////////////////////////////////////////////////
 	virtual ~Bitmap();
-	
-	////////////////////////////////////////////////////////
-	/// Blit source bitmap to this one.
-	/// @param x : x position
-	/// @param y : y position
-	/// @param src : source bitmap
-	/// @param src_rect : source bitmap rect
-	/// @param opacity : opacity for blending with bitmap
-	////////////////////////////////////////////////////////
-	virtual void Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity);
 
-	////////////////////////////////////////////////////////
-	/// Blit source bitmap in tiles to this one.
-	/// @param src_rect : source bitmap rect
-	/// @param src : source bitmap
-	/// @param dst_rect : destination rect
-	/// @param opacity : opacity for blending with bitmap
-	////////////////////////////////////////////////////////
-	virtual void TiledBlit(Rect src_rect, Bitmap* src, Rect dst_rect, int opacity);
+	/// @return the bitmap width
+	virtual int GetWidth() const;
 
-	////////////////////////////////////////////////////////
-	/// Blit source bitmap in tiles to this one.
-	/// @param ox : tile start x offset
-	/// @param ox : tile start y offset
-	/// @param src_rect : source bitmap rect
-	/// @param src : source bitmap
-	/// @param dst_rect : destination rect
-	/// @param opacity : opacity for blending with bitmap
-	////////////////////////////////////////////////////////
-	virtual void TiledBlit(int ox, int oy, Rect src_rect, Bitmap* src, Rect dst_rect, int opacity);
+	/// @return the bitmap height
+	virtual int GetHeight() const;
 
-	////////////////////////////////////////////////////////
-	/// Blit source bitmap stretched to this one.
-	/// @param src : source bitmap
-	/// @param src_rect : source bitmap rect
-	/// @param opacity : opacity for blending with bitmap
-	////////////////////////////////////////////////////////
-	virtual void StretchBlit(Bitmap* src, Rect src_rect, int opacity);
+	/// @return bitmap bounds rect
+	virtual Rect GetRect() const;
 
-	////////////////////////////////////////////////////////
-	/// Blit source bitmap stretched to this one.
-	/// @param dst_rect : destination rect
-	/// @param src : source bitmap
-	/// @param src_rect : source bitmap rect
-	/// @param opacity : opacity for blending with bitmap
-	////////////////////////////////////////////////////////
-	virtual void StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int opacity);
+	/// @return if bitmap allows transparency
+	virtual bool GetTransparent() const;
 
-	/// Blit source bitmap transparency to this one.
-	/// @param x : x position
-	/// @param y : y position
-	/// @param src : source bitmap
-	/// @param src_rect : source bitmap rect
-	////////////////////////////////////////////////////////
-	virtual void Mask(int x, int y, Bitmap* src, Rect src_rect);
+	/// @return current transparent color
+	virtual Color GetTransparentColor() const;
 
-	////////////////////////////////////////////////////////
-	/// Fill entire bitmap with color.
-	/// @param color : color for filling
-	////////////////////////////////////////////////////////
-	virtual void Fill(const Color &color);
+	/// @param color : new transparent color 
+	virtual void SetTransparentColor(Color color) = 0;
 
-	////////////////////////////////////////////////////////
-	/// Fill bitmap rect with color.
-	/// @param dst_rect : destination rect
-	/// @param color : color for filling
-	////////////////////////////////////////////////////////
-	virtual void FillRect(Rect dst_rect, const Color &color);
+	virtual bool HaveInvisibleTile();
 
-	////////////////////////////////////////////////////////
-	/// Clears the bitmap with transparent pixels.
-	////////////////////////////////////////////////////////
-	virtual void Clear();
-
-	////////////////////////////////////////////////////////
-	/// Clears the bitmap rect with transparent pixels.
-	/// @param dst_rect : destination rect
-	////////////////////////////////////////////////////////
-	virtual void ClearRect(Rect dst_rect);
-	
-	////////////////////////////////////////////////////////
-	/// Rotate bitmap hue.
-	/// @param hue : hue change, degrees
-	////////////////////////////////////////////////////////
-	virtual void HueChange(double hue);
-
-	////////////////////////////////////////////////////////
-	/// Adjust bitmap HSL colors.
-	/// @param hue : hue change, degrees
-	/// @param sat : saturation scale
-	/// @param lum : luminance scale
-	/// @param loff: luminance offset
-	/// @param dst_rect : destination rect
-	////////////////////////////////////////////////////////
-	virtual void HSLChange(double hue, double sat, double lum, double loff, Rect dst_rect);
-
-	////////////////////////////////////////////////////////
-	/// Adjust bitmap tone.
-	/// @param tone : tone to apply
-	////////////////////////////////////////////////////////
-	virtual void ToneChange(const Tone &tone);
-
-	////////////////////////////////////////////////////////
-	/// Flips the bitmap pixels.
-	/// @param horizontal : flip horizontally (mirror)
-	/// @param vertical : flip vertically
-	////////////////////////////////////////////////////////
-	virtual void Flip(bool horizontal, bool vertical);
+	static const uint32 System  = 0x80000000;
+	static const uint32 Chipset = 0x40000000;
 
 	////////////////////////////////////////////////////////
 	/// Create a resampled bitmap.
@@ -200,110 +115,11 @@ public:
 	/// Create a wavy bitmap.
 	/// @param depth : wave magnitude
 	/// @param phase : wave phase
-	/// @param scale_w : resampled width
-	/// @param scale_h : resampled height
 	////////////////////////////////////////////////////////
 	virtual Bitmap* Waver(int depth, double phase);
 
-	////////////////////////////////////////////////////////
-	/// Change the opacity of a bitmap.
-	/// @param opacity : the maximum opacity
-	/// @param src_rect: the rectangle to modify
-	////////////////////////////////////////////////////////
-	virtual void OpacityChange(int opacity, const Rect &src_rect);
-
-	/// TextDraw alignment options
-	enum TextAlignment {
-		TextAlignLeft,
-		TextAlignCenter,
-		TextAlignRight
-	};
-
-	////////////////////////////////////////////////////////
-	/// Draws text to bitmap.
-	/// @param x : x coordinate where text rendering starts
-	/// @param y : y coordinate where text rendering starts
-	/// @param text : text to draw
-	/// @param align : text alignment
-	////////////////////////////////////////////////////////
-	virtual void TextDraw(int x, int y, std::string text, TextAlignment align = Bitmap::TextAlignLeft);
-	virtual void TextDraw(int x, int y, std::wstring text, TextAlignment align = Bitmap::TextAlignLeft);
-
-	////////////////////////////////////////////////////////
-	/// Draws text to bitmap.
-	/// @param x : x coordinate of bounding rectangle
-	/// @param y : y coordinate of bounding rectangle
-	/// @param width : width of bounding rectangle
-	/// @param height : height of bounding rectangle
-	/// @param text : text to draw
-	/// @param align : text alignment inside bounding rectangle
-	////////////////////////////////////////////////////////
-	virtual void TextDraw(int x, int y, int width, int height, std::string text, TextAlignment align = Bitmap::TextAlignLeft);
-	virtual void TextDraw(int x, int y, int width, int height, std::wstring text, TextAlignment align = Bitmap::TextAlignLeft);
-
-	////////////////////////////////////////////////////////
-	/// Draws text to bitmap.
-	/// @param rect : bounding rectangle
-	/// @param text : text to draw
-	/// @param align : text alignment inside bounding rectangle
-	////////////////////////////////////////////////////////
-	virtual void TextDraw(Rect rect, std::string text, TextAlignment align = Bitmap::TextAlignLeft);
-	virtual void TextDraw(Rect rect, std::wstring text, TextAlignment align = Bitmap::TextAlignLeft);
-
-	////////////////////////////////////////////////////////
-	/// Get space needed to draw some text.
-	/// This assumes that every char has a size of 6x12.
-	/// @param text : text to draw
-	////////////////////////////////////////////////////////
-	virtual Rect GetTextSize(std::string text) const;
-	/// Wide string version
-	virtual Rect GetTextSize(std::wstring text) const;
-
-	/// @return the bitmap width
-	virtual int GetWidth() const;
-
-	/// @return the bitmap height
-	virtual int GetHeight() const;
-
-	/// @return bitmap bounds rect
-	virtual Rect GetRect() const;
-
-	/// @return text drawing font
-	virtual Font* GetFont() const;
-
-	/// @param text drawing font
-	virtual void SetFont(Font* font);
-
-	/// @return if bitmap allows transparency
-	virtual bool GetTransparent() const;
-
-	/// @return current transparent color
-	virtual Color GetTransparentColor() const;
-
-	/// @param color : new transparent color 
-	virtual void SetTransparentColor(Color color) = 0;
-
-	////////////////////////////////////////////////////////
-	/// Set the bitmap not to update its attached
-	/// BitmapScreen objects until EndEditing is called.
-	/// This way when multiple operation take place, the
-	/// attached BitmapScreen objects will be set dirty
-	/// only one time.
-	////////////////////////////////////////////////////////
-	virtual void BeginEditing();
-
-	////////////////////////////////////////////////////////
-	/// Set all attached BitmapScreen objects dirty and
-	/// restore normal updates.
-	////////////////////////////////////////////////////////
-	virtual void EndEditing();
-
-	virtual bool HaveInvisibleTile();
-
-	static const uint32 System  = 0x80000000;
-	static const uint32 Chipset = 0x40000000;
-
 protected:
+	friend class Surface;
 	friend class BitmapScreen;
 	friend class SoftBitmapScreen;
 	friend class GlBitmapScreen;
@@ -330,21 +146,16 @@ protected:
 
 	bool transparent;
 
-	/// Font for text drawing.
-	Font* font;
-
 	virtual Color GetColor(uint32 color) const = 0;
 	virtual uint32 GetUint32Color(const Color &color) const = 0;
 	virtual uint32 GetUint32Color(uint8 r, uint8  g, uint8 b, uint8 a) const = 0;
 	virtual void GetColorComponents(uint32 color, uint8 &r, uint8 &g, uint8 &b, uint8 &a) const = 0;
 
-	virtual void Lock() = 0;
-	virtual void Unlock() = 0;
-
 	virtual void AttachBitmapScreen(BitmapScreen* bitmap);
 	virtual void DetachBitmapScreen(BitmapScreen* bitmap);
 
-	virtual void RefreshCallback();
+	virtual void Lock() = 0;
+	virtual void Unlock() = 0;
 
 	////////////////////////////////////////////////////////
 	/// Get a pixel color.
@@ -354,18 +165,9 @@ protected:
 	////////////////////////////////////////////////////////
 	virtual Color GetPixel(int x, int y);
 
-	////////////////////////////////////////////////////////
-	/// Get a pixel color.
-	/// @param x : pixel x
-	/// @param y : pixel y
-	/// @param color : pixel color
-	////////////////////////////////////////////////////////
-	virtual void SetPixel(int x, int y, const Color &color);
-
 	virtual void CheckPixels(uint32 flags);
 
 	std::list<BitmapScreen*> attached_screen_bitmaps;
-	bool editing;
 	bool have_invisible_tile;
 };
 

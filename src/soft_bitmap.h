@@ -28,12 +28,12 @@
 // for SDL_BYTEORDER
 #include <SDL.h>
 
-#include "bitmap.h"
+#include "surface.h"
 
 ////////////////////////////////////////////////////////////
 /// SoftBitmap class.
 ////////////////////////////////////////////////////////////
-class SoftBitmap : public Bitmap {
+class SoftBitmap : public Surface {
 public:
 	SoftBitmap(int width, int height, bool transparent);
 	SoftBitmap(const std::string& filename, bool transparent, uint32 flags);

@@ -20,6 +20,7 @@
 
 #include <map>
 #include "plane.h"
+#include "surface.h"
 #include "game_picture.h"
 
 class Game_Screen {
@@ -99,6 +100,7 @@ protected:
 	std::vector<Snowflake> snowflakes;
 
 	Plane* weather_plane;
+	Surface* weather_surface;
 	Bitmap* snow_bitmap;
 	Bitmap* rain_bitmap;
 

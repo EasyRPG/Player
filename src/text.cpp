@@ -28,16 +28,16 @@
 #include "text.h"
 
 ////////////////////////////////////////////////////////////
-void Text::Draw(Bitmap* dest, int x, int y, std::wstring wtext, Bitmap::TextAlignment align) {
+void Text::Draw(Surface* dest, int x, int y, std::wstring wtext, Surface::TextAlignment align) {
 	if (wtext.length() == 0) return;
 
 	Font* font = dest->GetFont();
 	Rect dst_rect = dest->GetTextSize(wtext);
 
 	switch (align) {
-	case Bitmap::TextAlignCenter:
+	case Surface::TextAlignCenter:
 		dst_rect.x = x - dst_rect.width / 2; break;
-	case Bitmap::TextAlignRight:
+	case Surface::TextAlignRight:
 		dst_rect.x = x - dst_rect.width; break;
 	default:
 		dst_rect.x = x; break;
@@ -47,8 +47,8 @@ void Text::Draw(Bitmap* dest, int x, int y, std::wstring wtext, Bitmap::TextAlig
 	dst_rect.width += 1; dst_rect.height += 1; // Need place for shadow
 	if (dst_rect.IsOutOfBounds(dest->GetWidth(), dest->GetHeight())) return;
 
-	Bitmap* text_surface; // Complete text will be on this surface
-	text_surface = Bitmap::CreateBitmap(dst_rect.width, dst_rect.height, true);
+	Surface* text_surface; // Complete text will be on this surface
+	text_surface = Surface::CreateSurface(dst_rect.width, dst_rect.height, true);
 	#ifndef USE_ALPHA
 	text_surface->SetTransparentColor(dest->GetTransparentColor());
 	#endif
@@ -99,14 +99,16 @@ void Text::Draw(Bitmap* dest, int x, int y, std::wstring wtext, Bitmap::TextAlig
 			is_full_glyph = true;
 			is_exfont = true;
 
-			mask = Bitmap::CreateBitmap(12, 12, true);
+			Surface* mask_s;
+			mask_s = Surface::CreateSurface(12, 12, true);
 
 			// Get exfont from graphic
 			Rect rect_exfont((exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12);
 
 			// Create a mask
-			mask->Clear();
-			mask->Blit(0, 0, exfont, rect_exfont, 255);
+			mask_s->Clear();
+			mask_s->Blit(0, 0, exfont, rect_exfont, 255);
+			mask = mask_s;
 		} else {
 			// No ExFont, draw normal text
 
@@ -120,7 +122,7 @@ void Text::Draw(Bitmap* dest, int x, int y, std::wstring wtext, Bitmap::TextAlig
 		// Get color region from system graphic
 		Rect clip_system(8+16*(font->color%10), 4+48+16*(font->color/10), 6, 12);
 
-		Bitmap* char_surface = Bitmap::CreateBitmap(mask->GetWidth(), mask->GetHeight(), true);
+		Surface* char_surface = Surface::CreateSurface(mask->GetWidth(), mask->GetHeight(), true);
 		#ifndef USE_ALPHA
 		char_surface->SetTransparentColor(dest->GetTransparentColor());
 		#endif
@@ -134,7 +136,7 @@ void Text::Draw(Bitmap* dest, int x, int y, std::wstring wtext, Bitmap::TextAlig
 		// Blit mask onto background
 		char_surface->Mask(0, 0, mask, mask->GetRect());
 
-		Bitmap* char_shadow = Bitmap::CreateBitmap(mask->GetWidth(), mask->GetHeight(), true);
+		Surface* char_shadow = Surface::CreateSurface(mask->GetWidth(), mask->GetHeight(), true);
 		#ifndef USE_ALPHA
 		char_shadow->SetTransparentColor(dest->GetTransparentColor());
 		#endif
@@ -181,7 +183,7 @@ void Text::Draw(Bitmap* dest, int x, int y, std::wstring wtext, Bitmap::TextAlig
 	delete text_surface;
 }
 
-void Text::Draw(Bitmap* dest, int x, int y, std::string text, Bitmap::TextAlignment align) {
+void Text::Draw(Surface* dest, int x, int y, std::string text, Surface::TextAlignment align) {
 	if (text.length() == 0) return;
 
 	std::wstring wtext = Utils::DecodeUTF(text);

@@ -299,7 +299,7 @@ void SdlBitmap::StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int opaci
 	if (src_rect.width == dst_rect.width && src_rect.height == dst_rect.height) {
 		Blit(dst_rect.x, dst_rect.y, src, src_rect, opacity);
 	} else {
-		Bitmap::StretchBlit(dst_rect, src, src_rect, opacity);
+		Surface::StretchBlit(dst_rect, src, src_rect, opacity);
 	}
 }
 

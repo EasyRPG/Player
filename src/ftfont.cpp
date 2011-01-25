@@ -29,6 +29,7 @@
 #include "filefinder.h"
 #include "font.h"
 #include "bitmap.h"
+#include "surface.h"
 #include "ftfont.h"
 
 FT_Library FTFont::library;
@@ -141,7 +142,7 @@ Bitmap* FTFont::Render(int c) {
 	if (ft_bitmap.pitch < 0)
 		src -= ft_bitmap.rows * ft_bitmap.pitch;
 
-	Bitmap* bitmap = Bitmap::CreateBitmap(ft_bitmap.width, size + 2, true);
+	Surface* bitmap = Surface::CreateSurface(ft_bitmap.width, size + 2, true);
 	uint8* dst = (uint8*) bitmap->pixels();
 
 	const int base_line = bitmap->height() / 4;

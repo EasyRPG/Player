@@ -21,7 +21,7 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "bitmap.h"
+#include "surface.h"
 #include "window_base.h"
 
 ////////////////////////////////////////////////////////////
@@ -46,13 +46,13 @@ public:
 	/// @param text : Text to show
 	/// @param align : Text alignment
 	////////////////////////////////////////////////////////
-	void SetText(std::string text, Bitmap::TextAlignment align = Bitmap::TextAlignLeft);
+	void SetText(std::string text, Surface::TextAlignment align = Surface::TextAlignLeft);
 
 private:
 	/// Text to draw
 	std::string text;
 	/// Alignment of text
-	Bitmap::TextAlignment align;
+	Surface::TextAlignment align;
 };
 
 #endif

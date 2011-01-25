@@ -28,7 +28,7 @@
 Window_MenuStatus::Window_MenuStatus(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
 
-	SetContents(Bitmap::CreateBitmap(width - 16, height - 16));
+	SetContents(Surface::CreateSurface(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	Refresh();

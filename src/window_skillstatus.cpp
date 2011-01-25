@@ -26,7 +26,7 @@
 Window_SkillStatus::Window_SkillStatus(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight), actor_id(-1) {
 
-	SetContents(Bitmap::CreateBitmap(width - 16, height - 16));
+	SetContents(Surface::CreateSurface(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 }
 

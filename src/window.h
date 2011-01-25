@@ -23,6 +23,7 @@
 ////////////////////////////////////////////////////////////
 #include "drawable.h"
 #include "bitmap.h"
+#include "surface.h"
 #include "zobj.h"
 
 ////////////////////////////////////////////////////////////
@@ -38,8 +39,8 @@ public:
 	void Update();
 	Bitmap* GetWindowskin() const;
 	void SetWindowskin(Bitmap* nwindowskin);
-	Bitmap* GetContents() const;
-	void SetContents(Bitmap* ncontents);
+	Surface* GetContents() const;
+	void SetContents(Surface* ncontents);
 	bool GetStretch() const;
 	void SetStretch(bool nstretch);
 	Rect GetCursorRect() const;
@@ -81,7 +82,7 @@ protected:
 	unsigned long ID;
 	ZObj* zobj;
 	Bitmap* windowskin;
-	Bitmap* contents;
+	Surface* contents;
 	bool stretch;
 	Rect cursor_rect;
 	bool active;

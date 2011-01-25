@@ -33,11 +33,12 @@
 #include <SDL.h>
 
 #include "bitmap.h"
+#include "surface.h"
 
 ////////////////////////////////////////////////////////////
 /// PixmanBitmap class.
 ////////////////////////////////////////////////////////////
-class PixmanBitmap : public Bitmap {
+class PixmanBitmap : public Surface {
 public:
 	PixmanBitmap(int width, int height, bool transparent);
 	PixmanBitmap(const std::string filename, bool transparent, uint32 flags);

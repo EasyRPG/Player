@@ -29,7 +29,7 @@ Window_ShopNumber::Window_ShopNumber(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight),
 	item_max(1), price(0), number(1), item_id(0) {
 
-	SetContents(Bitmap::CreateBitmap(width - 16, height - 16));
+	SetContents(Surface::CreateSurface(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 	contents->Clear();
 }
@@ -58,7 +58,7 @@ void Window_ShopNumber::Refresh() {
 
 	contents->GetFont()->color = Font::ColorDefault;
 	contents->TextDraw(132, y, "x");
-	contents->TextDraw(132 + 30, y, ss.str(), Bitmap::TextAlignRight);
+	contents->TextDraw(132 + 30, y, ss.str(), Surface::TextAlignRight);
 	SetCursorRect(Rect(132 + 14, y - 2, 20, 16));
 	
 	DrawCurrencyValue(GetTotal(), contents->GetWidth(), y + 32);

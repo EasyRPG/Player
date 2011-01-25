@@ -22,6 +22,7 @@
 #include "tilemap_layer.h"
 #include "player.h"
 #include "graphics.h"
+#include "surface.h"
 #include <cstring> // GCC COMPILATION FIX
 #include "output.h"
 
@@ -508,7 +509,7 @@ void TilemapLayer::GenerateAutotileD(short ID) {
 ////////////////////////////////////////////////////////////
 BitmapScreen* TilemapLayer::GenerateAutotiles(int count, const std::map<uint32, TileXY>& map) {
 	int rows = (count + TILES_PER_ROW - 1) / TILES_PER_ROW;
-	Bitmap *tiles = Bitmap::CreateBitmap(TILES_PER_ROW * 16, rows * 16);
+	Surface *tiles = Surface::CreateSurface(TILES_PER_ROW * 16, rows * 16);
 	tiles->Fill(Color(255,255,0,255));
 	Rect rect(0, 0, 8, 8);
 

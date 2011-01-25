@@ -354,9 +354,9 @@ bool SdlUi::RefreshDisplayMode() {
 		);
 		main_surface = new SdlBitmap(surface, false);
 		#else
-		main_surface = Bitmap::CreateBitmap(current_display_mode.width,
-											current_display_mode.height,
-											false);
+		main_surface = Surface::CreateSurface(current_display_mode.width,
+											  current_display_mode.height,
+											  false);
 		#endif
 
 		if (!main_surface) 
@@ -367,9 +367,9 @@ bool SdlUi::RefreshDisplayMode() {
 		// Drawing surface will be the window itself
 		main_surface = new SdlBitmap(main_window, false);
 		#else
-		main_surface = Bitmap::CreateBitmap(current_display_mode.width,
-											current_display_mode.height,
-											false);
+		main_surface = Surface::CreateSurface(current_display_mode.width,
+											  current_display_mode.height,
+											  false);
 		#endif
 	}
 
@@ -613,7 +613,7 @@ inline void stretch32(uint32* s, uint32* d, int w) {
 #endif
 }
 
-void SdlUi::Blit2X(Bitmap* src, SDL_Surface* dst) {
+void SdlUi::Blit2X(Surface* src, SDL_Surface* dst) {
 	#ifdef USE_SDL_BITMAP
 	if (((SdlBitmap*)src)->bitmap == dst) return;
 	#else
@@ -971,7 +971,7 @@ int SdlUi::GetMousePosY() {
 	return mouse_y;
 }
 
-Bitmap* SdlUi::GetDisplaySurface() {
+Surface* SdlUi::GetDisplaySurface() {
 	return main_surface;
 }
 

@@ -65,7 +65,7 @@ void Window_Base::DrawFace(std::string face_name, int face_index, int cx, int cy
 	);
 
 	if (flip) {
-		Bitmap* faceflip = Bitmap::CreateBitmap(faceset, src_rect, false);
+		Surface* faceflip = Surface::CreateSurface(faceset, src_rect, false);
 		faceflip->Flip(true, false);
 		contents->Blit(cx, cy, faceflip, Rect(0, 0, 48, 48), 255);
 		delete faceflip;
@@ -101,7 +101,7 @@ void Window_Base::DrawActorLevel(Game_Actor* actor, int cx, int cy) {
 	std::stringstream ss;
 	ss << actor->GetLevel();
 	contents->GetFont()->color = Font::ColorDefault;
-	contents->TextDraw(cx + 24, cy, ss.str(), Bitmap::TextAlignRight);
+	contents->TextDraw(cx + 24, cy, ss.str(), Surface::TextAlignRight);
 }
 
 void Window_Base::DrawActorState(Game_Actor* actor, int cx, int cy) {
@@ -143,7 +143,7 @@ void Window_Base::DrawActorExp(Game_Actor* actor, int cx, int cy) {
 
 	// Exp for Level up
 	ss << std::setfill(' ') << std::setw(6) << actor->GetNextExpString();
-	contents->TextDraw(cx + 12, cy, ss.str(), Bitmap::TextAlignLeft);
+	contents->TextDraw(cx + 12, cy, ss.str(), Surface::TextAlignLeft);
 }
 
 void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy) {
@@ -163,7 +163,7 @@ void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy) {
 	contents->GetFont()->color = color;
 	std::stringstream ss;
 	ss << actor->GetHp();
-	contents->TextDraw(cx + 18, cy, ss.str(), Bitmap::TextAlignRight);
+	contents->TextDraw(cx + 18, cy, ss.str(), Surface::TextAlignRight);
 
 	// Draw the /
 	cx += 3 * 6;
@@ -174,7 +174,7 @@ void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy) {
 	cx += 6;
 	ss.str("");
 	ss << actor->GetMaxHp();
-	contents->TextDraw(cx + 18, cy, ss.str(), Bitmap::TextAlignRight);
+	contents->TextDraw(cx + 18, cy, ss.str(), Surface::TextAlignRight);
 }
 
 void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy) {
@@ -192,7 +192,7 @@ void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy) {
 	contents->GetFont()->color = color;
 	std::stringstream ss;
 	ss << actor->GetSp();
-	contents->TextDraw(cx + 18, cy, ss.str(), Bitmap::TextAlignRight);
+	contents->TextDraw(cx + 18, cy, ss.str(), Surface::TextAlignRight);
 
 	// Draw the /
 	cx += 3 * 6;
@@ -203,7 +203,7 @@ void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy) {
 	cx += 6;
 	ss.str("");
 	ss << actor->GetMaxSp();
-	contents->TextDraw(cx + 18, cy, ss.str(), Bitmap::TextAlignRight);
+	contents->TextDraw(cx + 18, cy, ss.str(), Surface::TextAlignRight);
 }
 
 void Window_Base::DrawActorParameter(Game_Actor* actor, int cx, int cy, int type) {
@@ -240,7 +240,7 @@ void Window_Base::DrawActorParameter(Game_Actor* actor, int cx, int cy, int type
 	std::stringstream ss;
 	ss << value;
 	contents->GetFont()->color = Font::ColorDefault;
-	contents->TextDraw(cx + 78, cy, ss.str(), Bitmap::TextAlignRight);
+	contents->TextDraw(cx + 78, cy, ss.str(), Surface::TextAlignRight);
 }
 
 void Window_Base::DrawEquipmentType(Game_Actor* actor, int cx, int cy, int type) {
@@ -292,8 +292,8 @@ void Window_Base::DrawCurrencyValue(int money, int cx, int cy) {
 
 	contents->GetFont()->color = 1;
 	Rect gold_text_size = contents->GetTextSize(Data::terms.gold);
-	contents->TextDraw(cx, cy, Data::terms.gold, Bitmap::TextAlignRight);
+	contents->TextDraw(cx, cy, Data::terms.gold, Surface::TextAlignRight);
 
 	contents->GetFont()->color = Font::ColorDefault;
-	contents->TextDraw(cx - gold_text_size.width, cy, gold.str(), Bitmap::TextAlignRight);
+	contents->TextDraw(cx - gold_text_size.width, cy, gold.str(), Surface::TextAlignRight);
 }

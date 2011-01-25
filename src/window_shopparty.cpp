@@ -19,6 +19,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "bitmap.h"
+#include "surface.h"
 #include "cache.h"
 #include "game_party.h"
 #include "game_actor.h"
@@ -28,7 +29,7 @@
 Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) {
 
-	SetContents(Bitmap::CreateBitmap(width - 16, height - 16));
+	SetContents(Surface::CreateSurface(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	cycle = 0;
@@ -47,7 +48,7 @@ Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 			int sy = ((sprite_id / 4) * 4 + 2) * height;
 			Rect src(sx, sy, width, height);
 			for (int k = 0; k < 2; k++) {
-				Bitmap *bm2 = Bitmap::CreateBitmap(width, height, true);
+				Surface *bm2 = Surface::CreateSurface(width, height, true);
 				#ifndef USE_ALPHA
 				bm2->SetTransparentColor(bm->GetTransparentColor());
 				bm2->Clear();

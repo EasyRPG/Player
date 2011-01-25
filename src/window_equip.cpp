@@ -26,7 +26,7 @@ Window_Equip::Window_Equip(int actor_id) :
 	Window_Selectable(124, 32, 196, 96),
 	actor_id(actor_id) {
 
-	SetContents(Bitmap::CreateBitmap(width - 16, height - 16));
+	SetContents(Surface::CreateSurface(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	index = 0;

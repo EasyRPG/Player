@@ -110,26 +110,28 @@ void SoftBitmapScreen::Refresh() {
 	if (bitmap_effects != NULL)
 		delete bitmap_effects;
 
-	bitmap_effects = Bitmap::CreateBitmap(src_rect_effect.width, src_rect_effect.height, true);
+	Surface *surface_effects = Surface::CreateSurface(src_rect_effect.width, src_rect_effect.height, true);
 
 	src_rect_effect.Adjust(bitmap->GetWidth(), bitmap->GetHeight());
 
 	if (src_rect_effect.IsOutOfBounds(bitmap->GetWidth(), bitmap->GetHeight()))
 		return;
 
-	bitmap_effects->Blit(0, 0, bitmap, src_rect_effect, 255);
-	bitmap_effects->ToneChange(tone_effect);
-	bitmap_effects->Flip(flipx_effect, flipy_effect);
+	surface_effects->Blit(0, 0, bitmap, src_rect_effect, 255);
+	surface_effects->ToneChange(tone_effect);
+	surface_effects->Flip(flipx_effect, flipy_effect);
 
-	if (opacity_top_effect < 255 && bush_effect < bitmap_effects->GetHeight()) {
-		Rect src_rect(0, 0, bitmap_effects->GetWidth(), bitmap_effects->GetHeight() - bush_effect);
-		bitmap_effects->OpacityChange(opacity_top_effect, src_rect);
+	if (opacity_top_effect < 255 && bush_effect < surface_effects->GetHeight()) {
+		Rect src_rect(0, 0, surface_effects->GetWidth(), surface_effects->GetHeight() - bush_effect);
+		surface_effects->OpacityChange(opacity_top_effect, src_rect);
 	}
 
 	if (opacity_bottom_effect < 255 && bush_effect > 0) {
-		Rect src_rect(0, bitmap_effects->GetHeight() - bush_effect, bitmap_effects->GetWidth(), bush_effect);
-		bitmap_effects->OpacityChange(opacity_bottom_effect / 2, src_rect);
+		Rect src_rect(0, surface_effects->GetHeight() - bush_effect, surface_effects->GetWidth(), bush_effect);
+		surface_effects->OpacityChange(opacity_bottom_effect / 2, src_rect);
 	}
+
+	bitmap_effects = surface_effects;
 
 	if (zoom_x_effect == 1.0 && zoom_y_effect == 1.0 && angle_effect == 0.0 && waver_effect_depth == 0)
 		return;

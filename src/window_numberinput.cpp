@@ -29,7 +29,7 @@ Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) 
 	Window_Selectable(ix, iy, iwidth, iheight), digits_max(6) {
 	number = 0;
 
-	SetContents(Bitmap::CreateBitmap(width - 16, height - 16));
+	SetContents(Surface::CreateSurface(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 	cursor_width = 14;
 	SetZ(10001);

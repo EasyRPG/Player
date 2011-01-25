@@ -30,7 +30,7 @@ Window_SaveFile::Window_SaveFile(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) {
 	index = 0;
 
-	SetContents(Bitmap::CreateBitmap(width - 8, height - 16));
+	SetContents(Surface::CreateSurface(width - 8, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 	SetZ(9999);
 

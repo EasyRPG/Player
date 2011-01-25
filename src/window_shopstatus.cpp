@@ -27,7 +27,7 @@
 Window_ShopStatus::Window_ShopStatus(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight), item_id(0) {
 
-	SetContents(Bitmap::CreateBitmap(width - 16, height - 16));
+	SetContents(Surface::CreateSurface(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	Refresh();
@@ -52,11 +52,11 @@ void Window_ShopStatus::Refresh() {
 		ss << number;
 
 		contents->GetFont()->color = Font::ColorDefault;
-		contents->TextDraw(120, 2, ss.str(), Bitmap::TextAlignRight);
+		contents->TextDraw(120, 2, ss.str(), Surface::TextAlignRight);
 
 		ss.str("");
 		ss << Game_Party::ItemNumber(item_id, true);
-		contents->TextDraw(120, 18, ss.str(), Bitmap::TextAlignRight);
+		contents->TextDraw(120, 18, ss.str(), Surface::TextAlignRight);
 	}
 }
 

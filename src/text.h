@@ -19,12 +19,12 @@
 #define _EASYRPG_TEXT_H_
 
 #include "ftfont.h"
-#include "bitmap.h"
+#include "surface.h"
 
 class Text {
 public:
-	static void Draw(Bitmap* dest, int x, int y, std::string text, Bitmap::TextAlignment align = Bitmap::TextAlignLeft);
-	static void Draw(Bitmap* dest, int x, int y, std::wstring text, Bitmap::TextAlignment align = Bitmap::TextAlignLeft);
+	static void Draw(Surface* dest, int x, int y, std::string text, Surface::TextAlignment align = Surface::TextAlignLeft);
+	static void Draw(Surface* dest, int x, int y, std::wstring text, Surface::TextAlignment align = Surface::TextAlignLeft);
 };
 
 #endif

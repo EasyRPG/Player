@@ -29,7 +29,7 @@ Window_Command::Window_Command(int width, std::vector<std::string> commands) :
 	item_max = commands.size();
 	index = 0;
 
-	SetContents(Bitmap::CreateBitmap(width - 16, item_max * 16));
+	SetContents(Surface::CreateSurface(width - 16, item_max * 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	Refresh();

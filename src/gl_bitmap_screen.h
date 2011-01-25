@@ -26,6 +26,7 @@
 ////////////////////////////////////////////////////////////
 #include <vector>
 #include <GL/gl.h>
+#include "surface.h"
 #include "bitmap_screen.h"
 
 ////////////////////////////////////////////////////////////
@@ -62,7 +63,7 @@ protected:
 	GLuint tex;
 	GLuint bush_tex;
 	GLuint gray_tex;
-	Bitmap* gray_bitmap;
+	Surface* gray_bitmap;
 	bool needs_bush_refresh;
 	bool needs_gray_refresh;
 };

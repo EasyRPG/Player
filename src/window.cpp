@@ -188,7 +188,7 @@ void Window::Draw(int z_order) {
 void Window::RefreshBackground() {
 	background_needs_refresh = false;
 
-	Bitmap* bitmap = Bitmap::CreateBitmap(width, height);
+	Surface* bitmap = Surface::CreateSurface(width, height);
 
 	if (stretch) {
 		bitmap->StretchBlit(windowskin, Rect(0, 0, 32, 32), 255);
@@ -203,8 +203,8 @@ void Window::RefreshBackground() {
 void Window::RefreshFrame() {
 	frame_needs_refresh = false;
 
-	Bitmap* up_bitmap = Bitmap::CreateBitmap(width, 8);
-	Bitmap* down_bitmap = Bitmap::CreateBitmap(width, 8);
+	Surface* up_bitmap = Surface::CreateSurface(width, 8);
+	Surface* down_bitmap = Surface::CreateSurface(width, 8);
 
 	up_bitmap->SetTransparentColor(windowskin->GetTransparentColor());
 	down_bitmap->SetTransparentColor(windowskin->GetTransparentColor());
@@ -240,8 +240,8 @@ void Window::RefreshFrame() {
 	frame_down->SetBitmap(down_bitmap, true);
 
 	if (height > 16) {
-		Bitmap* left_bitmap = Bitmap::CreateBitmap(8, height - 16);
-		Bitmap* right_bitmap = Bitmap::CreateBitmap(8, height - 16);
+		Surface* left_bitmap = Surface::CreateSurface(8, height - 16);
+		Surface* right_bitmap = Surface::CreateSurface(8, height - 16);
 
 		left_bitmap->SetTransparentColor(windowskin->GetTransparentColor());
 		right_bitmap->SetTransparentColor(windowskin->GetTransparentColor());
@@ -274,8 +274,8 @@ void Window::RefreshCursor() {
 	int cw = cursor_rect.width;
 	int ch = cursor_rect.height;
 
-	Bitmap* cursor1_bitmap = Bitmap::CreateBitmap(cw, ch);
-	Bitmap* cursor2_bitmap = Bitmap::CreateBitmap(cw, ch);
+	Surface* cursor1_bitmap = Surface::CreateSurface(cw, ch);
+	Surface* cursor2_bitmap = Surface::CreateSurface(cw, ch);
 
 	cursor1_bitmap->SetTransparentColor(windowskin->GetTransparentColor());
 	cursor2_bitmap->SetTransparentColor(windowskin->GetTransparentColor());
@@ -354,10 +354,10 @@ void Window::SetWindowskin(Bitmap* nwindowskin) {
 	windowskin_screen->SetBitmap(windowskin, false);
 }
 
-Bitmap* Window::GetContents() const {
+Surface* Window::GetContents() const {
 	return contents;
 }
-void Window::SetContents(Bitmap* ncontents) {
+void Window::SetContents(Surface* ncontents) {
 	contents = ncontents;
 	contents_screen->SetBitmap(contents, true);
 }

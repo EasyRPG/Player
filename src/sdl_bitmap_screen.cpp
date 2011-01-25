@@ -313,10 +313,12 @@ void SdlBitmapScreen::Refresh() {
 		CalcRotatedSize(new_width, new_height);
 
 		if (new_width > 0 && new_height > 0) {
-			bitmap_effects = Bitmap::CreateBitmap(bitmap, src_rect_effect, bitmap->GetTransparent());
+			Surface* surf_effects = Surface::CreateSurface(bitmap, src_rect_effect, bitmap->GetTransparent());
 
-			bitmap_effects->ToneChange(tone_effect);
-			bitmap_effects->Flip(flipx_effect, flipy_effect);
+			surf_effects->ToneChange(tone_effect);
+			surf_effects->Flip(flipx_effect, flipy_effect);
+
+			bitmap_effects = surf_effects;
 
 			if (angle_effect != 0.0) {
 				Bitmap* temp = bitmap_effects->RotateScale(

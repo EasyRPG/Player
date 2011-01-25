@@ -26,6 +26,7 @@
 #include "color.h"
 #include "rect.h"
 #include "system.h"
+#include "surface.h"
 
 class Bitmap;
 
@@ -85,7 +86,7 @@ public:
 	//@}
 
 	/// Get display surface.
-	Bitmap* GetDisplaySurface();
+	Surface* GetDisplaySurface();
 
 protected:
 	///////////////////////////////////////////////////////
@@ -117,7 +118,7 @@ protected:
 	/// @param src : source surface
 	/// @param dst : destination surface
 	///////////////////////////////////////////////////////
-	void Blit2X(Bitmap* src, SDL_Surface* dst);
+	void Blit2X(Surface* src, SDL_Surface* dst);
 
 	///////////////////////////////////////////////////////
 	/// Set app icon.
@@ -158,7 +159,7 @@ protected:
 	SDL_Surface* main_window;
 
 	/// Surface used for zoom.
-	Bitmap* main_surface;
+	Surface* main_surface;
 
 	/// Color for display background
 	uint32 back_color;

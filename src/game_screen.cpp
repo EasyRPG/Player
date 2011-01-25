@@ -20,6 +20,7 @@
 
 Game_Screen::Game_Screen() :
 	weather_plane(NULL),
+	weather_surface(NULL),
 	snow_bitmap(NULL),
 	rain_bitmap(NULL)
 {
@@ -30,6 +31,8 @@ Game_Screen::~Game_Screen()
 {
 	if (weather_plane)
 		delete weather_plane;
+	if (weather_surface)
+		delete weather_surface;
 }
 
 void Game_Screen::Reset()
@@ -203,12 +206,12 @@ static const uint8 rain_image[] = {
 void Game_Screen::InitWeather() {
 	if (weather_plane == NULL) {
 		weather_plane = new Plane();
-		Bitmap* bitmap = Bitmap::CreateBitmap(320, 240);
-		bitmap->SetTransparentColor(Color(0,0,0,0));
-		weather_plane->SetBitmap(bitmap);
+		weather_surface = Surface::CreateSurface(320, 240);
+		weather_surface->SetTransparentColor(Color(0,0,0,0));
+		weather_plane->SetBitmap(weather_surface);
 		weather_plane->SetZ(9999);
 	}
-	weather_plane->GetBitmap()->Clear();
+	weather_surface->Clear();
 
 	if (rain_bitmap == NULL)
 		rain_bitmap = Bitmap::CreateBitmap(rain_image, sizeof(rain_image));
@@ -255,7 +258,6 @@ void Game_Screen::UpdateSnowRain(int speed) {
 }
 
 void Game_Screen::DrawRain() {
-	Bitmap* bitmap = weather_plane->GetBitmap();
 	weather_plane->SetOpacity(192);
 
 	Rect rect = rain_bitmap->GetRect();
@@ -265,7 +267,7 @@ void Game_Screen::DrawRain() {
 		Snowflake& f = *it;
 		if (f.life > snowflake_visible)
 			continue;
-		bitmap->Blit(f.x - f.y/2, f.y, rain_bitmap, rect, 255);
+		weather_surface->Blit(f.x - f.y/2, f.y, rain_bitmap, rect, 255);
 	}
 }
 
@@ -274,7 +276,6 @@ void Game_Screen::DrawSnow() {
 		{-1,-1, 0, 1, 0, 1, 1, 0,-1,-1, 0, 1, 0, 1, 1, 0,-1, 0},
 		{-1,-1, 0, 0, 1, 1, 0,-1,-1, 0, 1, 0, 1, 1, 0,-1, 0, 0}
 	};
-	Bitmap* bitmap = weather_plane->GetBitmap();
 	weather_plane->SetOpacity(192);
 
 	Rect rect = snow_bitmap->GetRect();
@@ -289,22 +290,20 @@ void Game_Screen::DrawSnow() {
 		int i = (y / 2) % 18;
 		x += wobble[0][i];
 		y += wobble[1][i];
-		bitmap->Blit(x, y, snow_bitmap, rect, 255);
+		weather_surface->Blit(x, y, snow_bitmap, rect, 255);
 	}
 }
 
 void Game_Screen::DrawFog() {
 
-	Bitmap* bitmap = weather_plane->GetBitmap();
-	bitmap->Fill(Color(128,128,128,255));
+	weather_surface->Fill(Color(128,128,128,255));
 	static const int opacities[3] = {128, 160, 192};
 	weather_plane->SetOpacity(opacities[weather_strength]);
 }
 
 void Game_Screen::DrawSandstorm() {
 
-	Bitmap* bitmap = weather_plane->GetBitmap();
-	bitmap->Fill(Color(192,160,128,255));
+	weather_surface->Fill(Color(192,160,128,255));
 	static const int opacities[3] = {128, 160, 192};
 	weather_plane->SetOpacity(opacities[weather_strength]);
 	// TODO

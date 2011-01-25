@@ -139,7 +139,7 @@ void GlBitmapScreen::MakeGrayTex() {
 		}
 	}
 	if (gray_bitmap == NULL)
-		gray_bitmap = Bitmap::CreateBitmap(bitmap->width(), bitmap->height(), true);
+		gray_bitmap = Surface::CreateSurface(bitmap->width(), bitmap->height(), true);
 
 	gray_bitmap->Blit(0, 0, bitmap, bitmap->GetRect(), 255);
 	gray_bitmap->ToneChange(Tone(0, 0, 0, 255));

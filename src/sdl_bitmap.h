@@ -25,12 +25,13 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "bitmap.h"
+#include "surface.h"
 #include "SDL.h"
 
 ////////////////////////////////////////////////////////////
 /// SdlBitmap class.
 ////////////////////////////////////////////////////////////
-class SdlBitmap : public Bitmap {
+class SdlBitmap : public Surface {
 public:
 	SdlBitmap(int width, int height, bool transparent);
 	SdlBitmap(const std::string& filename, bool transparent, uint32 flags);

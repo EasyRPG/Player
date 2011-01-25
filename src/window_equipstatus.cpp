@@ -29,7 +29,7 @@ Window_EquipStatus::Window_EquipStatus(int actor_id) :
 	actor_id(actor_id),
 	draw_params(false) {
 
-	SetContents(Bitmap::CreateBitmap(width - 16, height - 16));
+	SetContents(Surface::CreateSurface(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	Refresh();
@@ -125,7 +125,7 @@ void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 	std::stringstream ss;
 	ss << value;
 	contents->GetFont()->color = 0;
-	contents->TextDraw(cx + 18, cy, ss.str(), Bitmap::TextAlignRight);
+	contents->TextDraw(cx + 18, cy, ss.str(), Surface::TextAlignRight);
 
 	if (draw_params) {
 		// Draw New Value
@@ -133,6 +133,6 @@ void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 		ss.str("");
 		ss << new_value;
 		contents->GetFont()->color = GetNewParameterColor(value, new_value);
-		contents->TextDraw(cx + 18, cy, ss.str(), Bitmap::TextAlignRight);
+		contents->TextDraw(cx + 18, cy, ss.str(), Surface::TextAlignRight);
 	}
 }

@@ -56,7 +56,7 @@ Window_Keyboard::Window_Keyboard(int ix, int iy, int iwidth, int iheight) :
 	row = 0;
 	col = 0;
 
-	SetContents(Bitmap::CreateBitmap(width - 16, height - 16));
+	SetContents(Surface::CreateSurface(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 	SetZ(9999);
 

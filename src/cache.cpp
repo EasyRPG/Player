@@ -55,7 +55,7 @@ Bitmap* Cache::LoadBitmap(
 		if (!path.empty())
 			cache[key] = Bitmap::CreateBitmap(path, transparent, flags);
 		else
-			cache[key] = Bitmap::CreateBitmap(16, 16);
+			cache[key] = Bitmap::CreateBitmap(16, 16, Color());
 	}
 
 	return cache[key];
@@ -123,7 +123,6 @@ Bitmap* Cache::System2(const std::string& filename) {
 ////////////////////////////////////////////////////////////
 Bitmap* Cache::Tile(const std::string& filename, int tile_id) {
 	if (cache_tiles.count(filename) == 0 || cache_tiles[filename].count(tile_id) == 0) {
-		Bitmap* tile = Bitmap::CreateBitmap(16, 16);
 		Bitmap* chipset = Cache::Chipset(filename);
 		Rect rect = Rect(0, 0, 16, 16);
 
@@ -149,7 +148,7 @@ Bitmap* Cache::Tile(const std::string& filename, int tile_id) {
 		rect.y += sub_tile_id / 6 * 16;
 
 
-		tile = Bitmap::CreateBitmap(chipset, rect);
+		Bitmap* tile = Bitmap::CreateBitmap(chipset, rect);
 		cache_tiles[filename][tile_id] = tile;
 	}
 	return cache_tiles[filename][tile_id];
