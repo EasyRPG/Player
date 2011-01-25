@@ -203,6 +203,8 @@
         <File Name="../../src/exfont.h"/>
         <File Name="../../src/text.h"/>
         <File Name="../../src/text.cpp"/>
+        <File Name="../../src/surface.cpp"/>
+        <File Name="../../src/surface.h"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Input">
         <File Name="../../src/input.cpp"/>

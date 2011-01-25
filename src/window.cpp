@@ -351,7 +351,7 @@ void Window::SetWindowskin(Bitmap* nwindowskin) {
 	frame_needs_refresh = true;
 	cursor_needs_refresh = true;
 	windowskin = nwindowskin;
-	windowskin_screen->SetBitmap(windowskin, false);
+	windowskin_screen->SetBitmap(windowskin, true);
 }
 
 Surface* Window::GetContents() const {

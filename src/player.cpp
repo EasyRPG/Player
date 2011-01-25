@@ -181,6 +181,7 @@ void Player::Exit() {
 	Main_Data::Cleanup();
 	Graphics::Quit();
 	Audio::Quit();
+	FileFinder::Quit();
 	delete DisplayUi;
 }
 

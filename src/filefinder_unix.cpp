@@ -24,6 +24,7 @@
 #include <fstream>
 #include <vector>
 #include <map>
+#include <cstring>
 #include <string>
 #include <dirent.h>
 #include <unistd.h>
@@ -131,6 +132,16 @@ static Tree* scandirs(const std::string& root) {
 void FileFinder::Init() {
 	// TODO find default paths
 	trees.push_back(scandirs("."));
+}
+
+////////////////////////////////////////////////////////
+/// Quit FileFinder.
+////////////////////////////////////////////////////////
+void FileFinder::Quit() {
+	std::vector<Tree*>::iterator it;
+	for (it = trees.begin(); it != trees.end(); ++it) {
+		delete *it;
+	}
 }
 
 ////////////////////////////////////////////////////////////
