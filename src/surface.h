@@ -239,30 +239,14 @@ public:
 	virtual void SetFont(Font* font);
 
 protected:
-	friend class Bitmap;
-	friend class BitmapScreen;
-	friend class SoftBitmapScreen;
-	friend class GlBitmapScreen;
 	friend class FTFont;
 
 #ifdef USE_SDL
 	friend class SdlBitmap;
-	friend class SdlBitmapScreen;
 	friend class SdlUi;
 #endif
 
 	Surface();
-
-	virtual void* pixels() = 0;
-	virtual int width() const = 0;
-	virtual int height() const = 0;
-	virtual uint8 bpp() const = 0;
-	virtual uint16 pitch() const = 0;
-	virtual uint32 rmask() const = 0;
-	virtual uint32 gmask() const = 0;
-	virtual uint32 bmask() const = 0;
-	virtual uint32 amask() const = 0;
-	virtual uint32 colorkey() const = 0;
 
 	/// Font for text drawing.
 	Font* font;

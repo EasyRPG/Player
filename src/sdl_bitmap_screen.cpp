@@ -50,28 +50,12 @@ SdlBitmapScreen::~SdlBitmapScreen() {
 }
 
 ////////////////////////////////////////////////////////////
-void SdlBitmapScreen::SetBitmap(Bitmap* source, bool _delete_bitmap) {
+void SdlBitmapScreen::SetBitmap(Bitmap* source, bool delete_bitmap) {
+	BitmapScreen::SetBitmap(source, delete_bitmap);
+
 	if (bitmap_effects != NULL) {
 		delete bitmap_effects;
 		bitmap_effects = NULL;
-	}
-
-	if (delete_bitmap && bitmap != NULL) {
-		delete bitmap;
-		bitmap = NULL;
-	} else if (bitmap != NULL)
-		bitmap->DetachBitmapScreen(this);
-
-	delete_bitmap = _delete_bitmap;
-	bitmap = source;
-	needs_refresh = true;
-
-	if (bitmap) {
-		bitmap->AttachBitmapScreen(this);
-
-		src_rect_effect = Rect(0, 0, bitmap->width(), bitmap->height());
-	} else {
-		src_rect_effect = Rect();
 	}
 }
 
@@ -323,8 +307,8 @@ void SdlBitmapScreen::Refresh() {
 			if (angle_effect != 0.0) {
 				Bitmap* temp = bitmap_effects->RotateScale(
 					angle_effect * 3.14159 / 180, zoomed_width, zoomed_height);
-				origin_x = (temp->width() - zoomed_width) / 2;
-				origin_y = (temp->height() - zoomed_height) / 2;
+				origin_x = (temp->GetWidth() - zoomed_width) / 2;
+				origin_y = (temp->GetHeight() - zoomed_height) / 2;
 				delete bitmap_effects;
 				bitmap_effects = temp;
 			}

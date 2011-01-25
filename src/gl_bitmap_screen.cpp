@@ -76,7 +76,7 @@ void GlBitmapScreen::UploadBitmap(
 			GL_TEXTURE_2D,
 			0,
 			0, 0,
-			bitmap->width(), bitmap->height(),
+			bitmap->GetWidth(), bitmap->GetHeight(),
 			format, type,
 			data);
 	#endif
@@ -88,14 +88,14 @@ void GlBitmapScreen::UploadBitmap(
 ////////////////////////////////////////////////////////////
 void GlBitmapScreen::UploadBitmap() {
 	glBindTexture(GL_TEXTURE_2D, tex);
-	width = bitmap->width();
-	height = bitmap->height();
+	width = bitmap->GetWidth();
+	height = bitmap->GetHeight();
 	UploadBitmap(GL_RGBA, width, height, GL_BGRA, GL_UNSIGNED_BYTE, bitmap->pixels());
 }
 
 ////////////////////////////////////////////////////////////
 void GlBitmapScreen::MakeBushTex() {
-	int h = bitmap->height();
+	int h = bitmap->GetHeight();
 	if (bush_effect <= 0 || bush_effect >= h)
 		return;
 
@@ -132,21 +132,21 @@ void GlBitmapScreen::MakeGrayTex() {
 		glGenTextures(1, &gray_tex);
 
 	if (gray_bitmap != NULL) {
-		if (gray_bitmap->width() != bitmap->width() ||
-			gray_bitmap->height() != bitmap->height()) {
+		if (gray_bitmap->GetWidth() != bitmap->GetWidth() ||
+			gray_bitmap->GetHeight() != bitmap->GetHeight()) {
 			delete gray_bitmap;
 			gray_bitmap = NULL;
 		}
 	}
 	if (gray_bitmap == NULL)
-		gray_bitmap = Surface::CreateSurface(bitmap->width(), bitmap->height(), true);
+		gray_bitmap = Surface::CreateSurface(bitmap->GetWidth(), bitmap->GetHeight(), true);
 
 	gray_bitmap->Blit(0, 0, bitmap, bitmap->GetRect(), 255);
 	gray_bitmap->ToneChange(Tone(0, 0, 0, 255));
 
 	glBindTexture(GL_TEXTURE_2D, gray_tex);
-	int w = bitmap->width();
-	int h = bitmap->height();
+	int w = bitmap->GetWidth();
+	int h = bitmap->GetHeight();
 	UploadBitmap(GL_RGBA, w, h, GL_BGRA, GL_UNSIGNED_BYTE, gray_bitmap->pixels());
 
 	needs_gray_refresh = false;
@@ -256,8 +256,8 @@ void GlBitmapScreen::BlitScreen(int x, int y, Rect src_rect) {
 		glTranslated(-0.5, -0.5, 0);
 	}
 
-	double zoomed_width  = bitmap->width()  * zoom_x_effect;
-	double zoomed_height = bitmap->height() * zoom_y_effect;
+	double zoomed_width  = bitmap->GetWidth()  * zoom_x_effect;
+	double zoomed_height = bitmap->GetHeight() * zoom_y_effect;
 	glScaled(zoomed_width, zoomed_height, 1);
 
 	if (flipx_effect) {
@@ -408,11 +408,11 @@ void GlBitmapScreen::EffectsSetup(std::vector<int>& textures, int& num_units) {
 		combine(1, GL_CONSTANT, GL_SRC_COLOR, GL_CONSTANT, GL_SRC_ALPHA);
 	}
 
-	int opacity = (bush_effect >= bitmap->height())
+	int opacity = (bush_effect >= bitmap->GetHeight())
 		? opacity_bottom_effect
 		: opacity_top_effect;
 
-	if (bush_effect > 0 && bush_effect < bitmap->height()
+	if (bush_effect > 0 && bush_effect < bitmap->GetHeight()
 		&& opacity_top_effect != opacity_bottom_effect) {
 		MakeBushTex();
 		GLfloat white[4] = {1, 1, 1, 1};

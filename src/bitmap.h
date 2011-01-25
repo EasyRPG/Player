@@ -121,15 +121,7 @@ public:
 protected:
 	friend class Surface;
 	friend class BitmapScreen;
-	friend class SoftBitmapScreen;
 	friend class GlBitmapScreen;
-	friend class FTFont;
-
-#ifdef USE_SDL
-	friend class SdlBitmap;
-	friend class SdlBitmapScreen;
-	friend class SdlUi;
-#endif
 
 	Bitmap();
 

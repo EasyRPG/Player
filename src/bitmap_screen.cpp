@@ -96,7 +96,7 @@ void BitmapScreen::SetBitmap(Bitmap* source, bool _delete_bitmap) {
 
 	if (bitmap) {
 		bitmap->AttachBitmapScreen(this);
-		src_rect_effect = Rect(0, 0, bitmap->width(), bitmap->height());
+		src_rect_effect = bitmap->GetRect();
 	} else {
 		src_rect_effect = Rect();
 	}

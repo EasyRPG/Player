@@ -276,7 +276,7 @@ void SdlBitmap::Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
 
 	#ifdef USE_ALPHA
 	if (opacity < 255)
-		Bitmap::Blit(x, y, src, src_rect, opacity);
+		Surface::Blit(x, y, src, src_rect, opacity);
 	else {
 		bool has_alpha = (((SdlBitmap*)src)->bitmap->flags & SDL_SRCALPHA) != 0;
 		SDL_SetAlpha(((SdlBitmap*)src)->bitmap, 0, 255);
