@@ -148,6 +148,10 @@ void FileFinder::Init() {
 		search_paths.push_back(MakePath(rtp_path, ""));
 }
 
+void FileFinder::Quit() {
+
+}
+
 ////////////////////////////////////////////////////////////
 std::string FileFinder::FindImage(const std::string& dir, const std::string& name) {
 	return FindFile(dir, name, IMG_TYPES);
