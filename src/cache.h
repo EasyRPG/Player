@@ -37,7 +37,8 @@ typedef struct {
 /// Cache namespace
 ////////////////////////////////////////////////////////////
 namespace Cache {
-	Bitmap* LoadBitmap(const std::string& folder_name, const std::string& filename, bool transparent, bool read_only = true);
+	Bitmap* LoadBitmap(const std::string& folder_name, const std::string& filename,
+					   bool transparent = true, uint32 flags = 0);
 	Bitmap* Backdrop(const std::string& filename);
 	Bitmap* Battle(const std::string& filename);
 	Bitmap* Battle2(const std::string& filename);

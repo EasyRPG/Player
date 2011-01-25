@@ -110,7 +110,7 @@ PixmanBitmap::PixmanBitmap(int width, int height, bool itransparent) {
 	Init(width, height, (void *) NULL);
 }
 
-PixmanBitmap::PixmanBitmap(const std::string filename, bool itransparent) {
+PixmanBitmap::PixmanBitmap(const std::string filename, bool itransparent, uint32 flags) {
 	transparent = itransparent;
 
 	int namelen = (int) filename.size();
@@ -136,15 +136,19 @@ PixmanBitmap::PixmanBitmap(const std::string filename, bool itransparent) {
 		ReadXYZ(stream);
 
 	fclose(stream);
+
+	CheckPixels(flags);
 }
 
-PixmanBitmap::PixmanBitmap(const uint8* data, uint bytes, bool itransparent) {
+PixmanBitmap::PixmanBitmap(const uint8* data, uint bytes, bool itransparent, uint32 flags) {
 	transparent = itransparent;
 
 	if (bytes > 4 && strncmp((char*) data, "XYZ1", 4) == 0)
 		ReadXYZ(data, bytes);
 	else
 		ReadPNG((FILE*) NULL, (const void*) data);
+
+	CheckPixels(flags);
 }
 
 PixmanBitmap::PixmanBitmap(Bitmap* source, Rect src_rect, bool itransparent) {

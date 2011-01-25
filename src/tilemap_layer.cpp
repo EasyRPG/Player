@@ -636,16 +636,7 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 			autotiles_ab_screen = GenerateAutotiles(autotiles_ab_next, autotiles_ab_map);
 			autotiles_d_screen = GenerateAutotiles(autotiles_d_next, autotiles_d_map);
 		} else {
-			have_invisible_tile = true;
-			for (int x = 288; x < 288 + 16; x++) {
-				for (int y = 128; y < 128 + 16; y++) {
-					if (chipset->GetPixel(x, y).alpha > 0) {
-						have_invisible_tile = false;
-						x = 288 + 16;
-						break;
-					}
-				}
-			}
+			have_invisible_tile = chipset->HaveInvisibleTile();
 		}
 	}
 	map_data = nmap_data;

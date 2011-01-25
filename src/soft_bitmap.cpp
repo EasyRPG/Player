@@ -69,7 +69,7 @@ SoftBitmap::SoftBitmap(int width, int height, bool itransparent) {
 	Init(width, height);
 }
 
-SoftBitmap::SoftBitmap(const std::string& filename, bool itransparent) {
+SoftBitmap::SoftBitmap(const std::string& filename, bool itransparent, uint32 flags) {
 	transparent = itransparent;
 
 	int namelen = (int) filename.size();
@@ -97,9 +97,11 @@ SoftBitmap::SoftBitmap(const std::string& filename, bool itransparent) {
 	ConvertImage(w, h, bitmap);
 
 	fclose(stream);
+
+	CheckPixels(flags);
 }
 
-SoftBitmap::SoftBitmap(const uint8* data, uint bytes, bool itransparent) {
+SoftBitmap::SoftBitmap(const uint8* data, uint bytes, bool itransparent, uint32 flags) {
 	transparent = itransparent;
 
 	if (bytes > 4 && strncmp((char*) data, "XYZ1", 4) == 0)
@@ -108,6 +110,8 @@ SoftBitmap::SoftBitmap(const uint8* data, uint bytes, bool itransparent) {
 		Image::ReadPNG((FILE*) NULL, (const void*) data, transparent, w, h, bitmap);
 
 	ConvertImage(w, h, bitmap);
+
+	CheckPixels(flags);
 }
 
 SoftBitmap::SoftBitmap(Bitmap* source, Rect src_rect, bool itransparent) {

@@ -22,6 +22,7 @@
 #include <cstring>
 #include <algorithm>
 #include "utils.h"
+#include "cache.h"
 #include "bitmap.h"
 #include "bitmap_screen.h"
 #include "text.h"
@@ -70,29 +71,29 @@ Bitmap* Bitmap::CreateBitmap(int width, int height, bool transparent) {
 	#endif
 }
 
-Bitmap* Bitmap::CreateBitmap(const std::string& filename, bool transparent, bool read_only) {
+Bitmap* Bitmap::CreateBitmap(const std::string& filename, bool transparent, uint32 flags) {
 	#if defined(USE_SDL_BITMAP)
-		return (Bitmap*)new SdlBitmap(filename, transparent);
+		return (Bitmap*)new SdlBitmap(filename, transparent, flags);
 	#elif defined(USE_SOFT_BITMAP)
-		return (Bitmap*)new SoftBitmap(filename, transparent);
+		return (Bitmap*)new SoftBitmap(filename, transparent, flags);
 	#elif defined(USE_PIXMAN_BITMAP)
-		return (Bitmap*)new PixmanBitmap(filename, transparent);
+		return (Bitmap*)new PixmanBitmap(filename, transparent, flags);
 	#elif defined(USE_OPENGL_BITMAP)
-		return (Bitmap*)new GlBitmap(filename, transparent);
+		return (Bitmap*)new GlBitmap(filename, transparent, flags);
 	#else
 		#error "No bitmap implementation selected"
 	#endif
 }
 
-Bitmap* Bitmap::CreateBitmap(const uint8* data, uint bytes, bool transparent) {
+Bitmap* Bitmap::CreateBitmap(const uint8* data, uint bytes, bool transparent, uint32 flags) {
 	#if defined(USE_SDL_BITMAP)
-		return (Bitmap*)new SdlBitmap(data, bytes, transparent);
+		return (Bitmap*)new SdlBitmap(data, bytes, transparent, flags);
 	#elif defined(USE_SOFT_BITMAP)
-		return (Bitmap*)new SoftBitmap(data, bytes, transparent);
+		return (Bitmap*)new SoftBitmap(data, bytes, transparent, flags);
 	#elif defined(USE_PIXMAN_BITMAP)
-		return (Bitmap*)new PixmanBitmap(data, bytes, transparent);
+		return (Bitmap*)new PixmanBitmap(data, bytes, transparent, flags);
 	#elif defined(USE_OPENGL_BITMAP)
-		return (Bitmap*)new GlBitmap(data, bytes, transparent);
+		return (Bitmap*)new GlBitmap(data, bytes, transparent, flags);
 	#else
 		#error "No bitmap implementation selected"
 	#endif
@@ -1275,5 +1276,29 @@ void Bitmap::TextDraw(int x, int y, std::wstring wtext, TextAlignment align) {
 
 void Bitmap::TextDraw(int x, int y, std::string text, TextAlignment align) {
 	TextDraw(x, y, Utils::DecodeUTF(text), align);
+}
+
+void Bitmap::CheckPixels(uint32 flags) {
+	if (flags & System) {
+		Cache::system_info.bg_color = GetPixel(0, 32);
+		Cache::system_info.sh_color = GetPixel(16, 32);
+	}
+
+	if (flags & Chipset) {
+		have_invisible_tile = true;
+		for (int x = 288; x < 288 + 16; x++) {
+			for (int y = 128; y < 128 + 16; y++) {
+				if (GetPixel(x, y).alpha > 0) {
+					have_invisible_tile = false;
+					x = 288 + 16;
+					break;
+				}
+			}
+		}
+	}
+}
+
+bool Bitmap::HaveInvisibleTile() {
+	return have_invisible_tile;
 }
 

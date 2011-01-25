@@ -49,7 +49,7 @@ public:
 	/// @param transparent : allow transparency on bitmap
 	/// @param read_only : should bitmap be read_only (fast blit)
 	////////////////////////////////////////////////////////
-	static Bitmap* CreateBitmap(const std::string& filename, bool transparent = true, bool read_only = true);
+	static Bitmap* CreateBitmap(const std::string& filename, bool transparent = true, uint32 flags = 0);
 
 	////////////////////////////////////////////////////////
 	/// Loads a bitmap from memory.
@@ -57,7 +57,7 @@ public:
 	/// @param bytes : size of data
 	/// @param transparent : allow transparency on bitmap
 	////////////////////////////////////////////////////////
-	static Bitmap* CreateBitmap(const uint8* data, uint bytes, bool transparent = true);
+	static Bitmap* CreateBitmap(const uint8* data, uint bytes, bool transparent = true, uint32 flags = 0);
 
 	////////////////////////////////////////////////////////
 	/// Creates a bitmap from another.
@@ -151,22 +151,6 @@ public:
 	////////////////////////////////////////////////////////
 	virtual void ClearRect(Rect dst_rect);
 	
-	////////////////////////////////////////////////////////
-	/// Get a pixel color.
-	/// @param x : pixel x
-	/// @param y : pixel y
-	/// @return pixel color
-	////////////////////////////////////////////////////////
-	virtual Color GetPixel(int x, int y);
-
-	////////////////////////////////////////////////////////
-	/// Get a pixel color.
-	/// @param x : pixel x
-	/// @param y : pixel y
-	/// @param color : pixel color
-	////////////////////////////////////////////////////////
-	virtual void SetPixel(int x, int y, const Color &color);
-
 	////////////////////////////////////////////////////////
 	/// Rotate bitmap hue.
 	/// @param hue : hue change, degrees
@@ -314,6 +298,11 @@ public:
 	////////////////////////////////////////////////////////
 	virtual void EndEditing();
 
+	virtual bool HaveInvisibleTile();
+
+	static const uint32 System  = 0x80000000;
+	static const uint32 Chipset = 0x40000000;
+
 protected:
 	friend class BitmapScreen;
 	friend class SoftBitmapScreen;
@@ -357,8 +346,27 @@ protected:
 
 	virtual void RefreshCallback();
 
+	////////////////////////////////////////////////////////
+	/// Get a pixel color.
+	/// @param x : pixel x
+	/// @param y : pixel y
+	/// @return pixel color
+	////////////////////////////////////////////////////////
+	virtual Color GetPixel(int x, int y);
+
+	////////////////////////////////////////////////////////
+	/// Get a pixel color.
+	/// @param x : pixel x
+	/// @param y : pixel y
+	/// @param color : pixel color
+	////////////////////////////////////////////////////////
+	virtual void SetPixel(int x, int y, const Color &color);
+
+	virtual void CheckPixels(uint32 flags);
+
 	std::list<BitmapScreen*> attached_screen_bitmaps;
 	bool editing;
+	bool have_invisible_tile;
 };
 
 #endif
