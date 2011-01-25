@@ -105,7 +105,7 @@ Bitmap* SdlFont::Render(int c) {
 	SDL_SetColorKey(temp, SDL_SRCCOLORKEY, SDL_MapRGB(temp->format, colorkey.r, colorkey.g, colorkey.b));
 	SDL_Surface* surf = DisplayFormat(temp);
 	SDL_FreeSurface(temp);
-	return  new SdlBitmap(surf);
+	return new SdlBitmap(surf);
 }
 
 ////////////////////////////////////////////////////////////
