@@ -71,6 +71,12 @@ public:
 	void Update();
 	bool AreConditionsMet(const RPG::EventPage& page);
 
+	/// @param dis_flag : Enables or Disables the Event
+	void SetDisabled(bool dis_flag);
+
+	/// @return if the event has been disabled (via EraseEvent-EventCommand)
+	bool GetDisabled();
+
 	RPG::Event& GetEvent();
 
 private:

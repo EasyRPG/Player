@@ -186,7 +186,6 @@ private:
 	RPG::MoveCommand DecodeMove(std::vector<int>::const_iterator& it);
 
 	std::vector<RPG::MoveRoute*> pending;
-
 };
 
 #endif

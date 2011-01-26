@@ -428,7 +428,7 @@ void Game_Map::Update() {
 	if (need_refresh) Refresh();
 	UpdateScroll();
 	UpdatePan();
-	
+
 	for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
 		i->second->Update();
 	}

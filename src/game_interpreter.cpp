@@ -2894,7 +2894,7 @@ bool Game_Interpreter::CommandEraseEvent() { // code 12320
 		return true;
 
 	tEventHash& events = Game_Map::GetEvents();
-	events.erase(event_id);
+	events[event_id]->SetDisabled(true);
 
 	return true;
 }
