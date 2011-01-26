@@ -134,10 +134,10 @@ void Scene_Map::UpdateTeleportPlayer() {
 	delete spriteset;
 	Main_Data::game_player->PerformTeleport();
 	Game_Map::Autoplay();
-	Game_Map::Update();
-	//Graphics::Wait(15);
 
 	spriteset = new Spriteset_Map();
+
+	Game_Map::Update();
 
 	Scene::TransitionIn();
 

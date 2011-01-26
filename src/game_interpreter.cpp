@@ -2904,8 +2904,10 @@ bool Game_Interpreter::CommandChangeMapTileset() { // code 11710
 	Game_Map::SetChipset(chipset_id);
 
 	Scene_Map* scene = (Scene_Map*) Scene::Find(Scene::Map);
+
 	if (!scene)
 		return true;
+
 	scene->spriteset->ChipsetUpdated();
 
 	return true;
