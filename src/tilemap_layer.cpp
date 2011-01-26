@@ -18,13 +18,13 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <cstring>
 #include <math.h>
 #include "tilemap_layer.h"
-#include "player.h"
 #include "graphics.h"
-#include "surface.h"
-#include <cstring> // GCC COMPILATION FIX
 #include "output.h"
+#include "player.h"
+#include "surface.h"
 
 ////////////////////////////////////////////////////////////
 // BlockD subtiles IDs

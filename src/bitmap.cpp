@@ -274,8 +274,10 @@ Bitmap* Bitmap::RotateScale(double angle, int scale_w, int scale_h) {
 ////////////////////////////////////////////////////////////
 Bitmap* Bitmap::Waver(int depth, double phase) {
 	Surface* resampled = Surface::CreateSurface(width() + 2 * depth, height(), true);
+
 	if (transparent)
 		resampled->SetTransparentColor(GetTransparentColor());
+
 	resampled->Clear();
 
 	Lock();
