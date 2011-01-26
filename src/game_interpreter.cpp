@@ -187,6 +187,10 @@ Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 }
 
 Game_Interpreter::~Game_Interpreter() {
+	std::vector<pending_move_route>::iterator it;
+	for (it = pending.begin(); it != pending.end(); it++) {
+		(*it).second->DetachMoveRouteOwner(this);
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -2833,14 +2837,14 @@ bool Game_Interpreter::CommandMoveEvent() { // code 11330
 		route->move_commands.push_back(DecodeMove(it));
 
 	event->ForceMoveRoute(route, move_freq, this);
-	pending.push_back(route);
+	pending.push_back(pending_move_route(route, event));
 	return true;
 }
 
 void Game_Interpreter::EndMoveRoute(RPG::MoveRoute* route) {
-	std::vector<RPG::MoveRoute*>::iterator it;
+	std::vector<pending_move_route>::iterator it;
 	for (it = pending.begin(); it != pending.end(); it++) {
-		if (*it == route) {
+		if ((*it).first == route) {
 			break;
 		}
 	}

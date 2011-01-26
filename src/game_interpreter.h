@@ -188,7 +188,9 @@ private:
 	int debug_x;
 	int debug_y;
 
-	std::vector<RPG::MoveRoute*> pending;
+	typedef std::pair<RPG::MoveRoute*,Game_Character*> pending_move_route;
+
+	std::vector<pending_move_route> pending;
 };
 
 #endif
