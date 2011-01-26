@@ -63,9 +63,10 @@ Scene::Scene() {
 
 ////////////////////////////////////////////////////////////
 void Scene::MainFunction() {
+	size_t depth = instances.size();
 	Start();
-	PerformTransition();
-	PostStart();
+	TransitionIn();
+	Resume();
 
 	// Scene loop
 	while (Scene::instance == this) {
@@ -73,6 +74,15 @@ void Scene::MainFunction() {
 		Graphics::Update();
 		Input::Update();
 		Update();
+		if (Scene::instance != this && instances.size() > depth) {
+			Suspend();
+			TransitionOut();
+			Graphics::Push();
+			Scene::instance->MainFunction();
+			Graphics::Pop();
+			TransitionIn();
+			Resume();
+		}
 	}
 
 #ifdef _DEBUG
@@ -82,8 +92,8 @@ void Scene::MainFunction() {
 
 	Graphics::Update();
 
-	PreTerminate();
-	PerformTransition();
+	Suspend();
+	TransitionOut();
 	Terminate();
 }
 
@@ -92,11 +102,11 @@ void Scene::Start() {
 }
 
 ////////////////////////////////////////////////////////////
-void Scene::PostStart() {
+void Scene::Resume() {
 }
 
 ////////////////////////////////////////////////////////////
-void Scene::PreTerminate() {
+void Scene::Suspend() {
 }
 
 ////////////////////////////////////////////////////////////
@@ -104,15 +114,13 @@ void Scene::Terminate() {
 }
 
 ////////////////////////////////////////////////////////////
-void Scene::PerformTransition() {
-	static bool faded_in = false;
-	if (!faded_in) {
-		Graphics::Transition(Graphics::TransitionFadeIn, 24);
-		faded_in = true;
-	} else {
-		Graphics::Transition(Graphics::TransitionFadeOut, 24, true);
-		faded_in = false;
-	}
+void Scene::TransitionIn() {
+	Graphics::Transition(Graphics::TransitionFadeIn, 24);
+}
+
+////////////////////////////////////////////////////////////
+void Scene::TransitionOut() {
+	Graphics::Transition(Graphics::TransitionFadeOut, 24, true);
 }
 
 ////////////////////////////////////////////////////////////

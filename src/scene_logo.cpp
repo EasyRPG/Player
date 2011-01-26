@@ -925,15 +925,13 @@ void Scene_Logo::Terminate() {
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Logo::PerformTransition() {
-	static bool faded_in = false;
-	if (!faded_in) {
-		Graphics::Transition(Graphics::TransitionFadeIn, 24);
-		faded_in = true;
-	} else {
-		Graphics::Transition(Graphics::TransitionFadeOut, 24);
-		faded_in = false;
-	}
+void Scene_Logo::TransitionIn() {
+	Graphics::Transition(Graphics::TransitionFadeIn, 24);
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Logo::TransitionOut() {
+	Graphics::Transition(Graphics::TransitionFadeOut, 24);
 }
 
 ////////////////////////////////////////////////////////////

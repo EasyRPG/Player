@@ -92,24 +92,25 @@ void Scene_Title::Start() {
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Title::PerformTransition() {
-	static bool faded_in = false;
-	if (!faded_in) {
-		Graphics::Transition(Graphics::TransitionErase, 1, true);
-
-		Graphics::Transition(Graphics::TransitionFadeIn, 32);
-		faded_in = true;
-	} else {
-		Graphics::Transition(Graphics::TransitionFadeOut, 12, true);
-		faded_in = false;
-	}
+void Scene_Title::TransitionIn() {
+	Graphics::Transition(Graphics::TransitionErase, 1, true);
+	Graphics::Transition(Graphics::TransitionFadeIn, 32);
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Title::PostStart() {
+void Scene_Title::TransitionOut() {
+	Graphics::Transition(Graphics::TransitionFadeOut, 12, true);
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Title::Resume() {
 	command_window->SetVisible(true);
 }
 
+////////////////////////////////////////////////////////////
+void Scene_Title::Suspend() {
+	command_window->SetVisible(false);
+}
 
 ////////////////////////////////////////////////////////////
 void Scene_Title::Terminate() {

@@ -129,7 +129,7 @@ void Scene_Map::UpdateTeleportPlayer() {
 	if (!Main_Data::game_player->IsTeleporting())
 		return;
 
-	Scene::PerformTransition();
+	Scene::TransitionOut();
 
 	delete spriteset;
 	Main_Data::game_player->PerformTeleport();
@@ -139,7 +139,7 @@ void Scene_Map::UpdateTeleportPlayer() {
 
 	spriteset = new Spriteset_Map();
 
-	Scene::PerformTransition();
+	Scene::TransitionIn();
 
 	Input::Update();
 }

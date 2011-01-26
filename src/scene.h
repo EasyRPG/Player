@@ -79,17 +79,20 @@ public:
 	virtual void Start();
 
 	////////////////////////////////////////////////////////
-	/// Post-Start processing.
-	/// This function is executed after the fade in.
+	/// Resume processing.
+	/// This function is executed after the fade in,
+	/// either when starting the scene or when returning
+	/// from a nested scene
 	////////////////////////////////////////////////////////
-	virtual void PostStart();
+	virtual void Resume();
 
 	////////////////////////////////////////////////////////
-	/// Pre-Terminate processing.
+	/// Suspend processing.
 	/// This function is executed before the fade out for
-	/// the scene change.
+	/// the scene change, either when terminating the scene
+	/// or switching to a nested scene
 	////////////////////////////////////////////////////////
-	virtual void PreTerminate();
+	virtual void Suspend();
 
 	////////////////////////////////////////////////////////
 	/// Terminate processing.
@@ -100,9 +103,16 @@ public:
 	virtual void Terminate();
 
 	////////////////////////////////////////////////////////
-	/// Does the transition during scene-switching.
+	/// Does the transition upon starting or resuming
+	/// the scene
 	////////////////////////////////////////////////////////
-	virtual void PerformTransition();
+	virtual void TransitionIn();
+
+	////////////////////////////////////////////////////////
+	/// Does the transition upon ending or suspending
+	/// the scene
+	////////////////////////////////////////////////////////
+	virtual void TransitionOut();
 
 	////////////////////////////////////////////////////////
 	/// Called every frame.

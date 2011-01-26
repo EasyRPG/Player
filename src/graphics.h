@@ -138,6 +138,9 @@ namespace Graphics {
 
 	extern bool fps_on_screen;
 	extern uint32 drawable_id;
+
+	void Push();
+	void Pop();
 }
 
 #endif

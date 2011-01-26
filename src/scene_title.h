@@ -36,9 +36,11 @@ public:
 	Scene_Title();
 
 	void Start();
-	void PerformTransition();
-	void PostStart();
 	void Terminate();
+	void TransitionIn();
+	void TransitionOut();
+	void Suspend();
+	void Resume();
 	void Update();
 
 	////////////////////////////////////////////////////////

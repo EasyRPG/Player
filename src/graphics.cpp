@@ -62,15 +62,18 @@ namespace Graphics {
 
 	uint32 drawable_creation;
 
-	std::map<uint32, Drawable*> drawable_map;
-	std::map<uint32, Drawable*>::iterator it_drawable_map;
+	struct State {
+		State() : zlist_dirty(false) {}
+		std::map<uint32, Drawable*> drawable_map;
+		std::list<ZObj*> zlist;
+		bool zlist_dirty;
+	};
+	State* state;
+	std::vector<State*> stack;
+	void Push();
+	void Pop();
 
 	bool SortZObj(const ZObj* first, const ZObj* second);
-
-	bool zlist_dirty;
-
-	std::list<ZObj*> zlist;
-	std::list<ZObj*>::iterator it_zlist;
 }
 
 ////////////////////////////////////////////////////////////
@@ -91,26 +94,27 @@ void Graphics::Init() {
 	frozen = false;
 	drawable_creation = 0;
 	drawable_id = 0;
-	zlist_dirty = false;
+	state = new State();
 	screen_erased = false;
 }
 
 ////////////////////////////////////////////////////////////
 void Graphics::Quit() {
 	std::map<uint32, Drawable*>::iterator it;
-	std::map<uint32, Drawable*> drawable_map_temp = drawable_map;
+	std::map<uint32, Drawable*> drawable_map_temp = state->drawable_map;
 
 	for (it = drawable_map_temp.begin(); it != drawable_map_temp.end(); it++) {
 		delete it->second;
 	}
 
-	drawable_map.clear();
+	state->drawable_map.clear();
 
-	for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
+	std::list<ZObj*>::iterator it_zlist;
+	for (it_zlist = state->zlist.begin(); it_zlist != state->zlist.end(); it_zlist++) {
 		delete *it_zlist;
 	}
 
-	zlist.clear();
+	state->zlist.clear();
 
 	if (frozen_screen) {
 		delete frozen_screen;
@@ -266,15 +270,16 @@ void Graphics::DrawFrame() {
 	}
 	if (screen_erased) return;
 
-	if (zlist_dirty) {
-		zlist.sort(SortZObj);
-		zlist_dirty = false;
+	if (state->zlist_dirty) {
+		state->zlist.sort(SortZObj);
+		state->zlist_dirty = false;
 	}
 
 	DisplayUi->CleanDisplay();
 
-	for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
-		drawable_map[(*it_zlist)->GetId()]->Draw((*it_zlist)->GetZ());
+	std::list<ZObj*>::iterator it_zlist;
+	for (it_zlist = state->zlist.begin(); it_zlist != state->zlist.end(); it_zlist++) {
+		state->drawable_map[(*it_zlist)->GetId()]->Draw((*it_zlist)->GetZ());
 	}
 
 	if (overlay_visible) {
@@ -297,8 +302,9 @@ void Graphics::DrawOverlay() {
 Bitmap* Graphics::SnapToBitmap() {
 	DisplayUi->BeginScreenCapture();
 
-	for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
-		drawable_map[(*it_zlist)->GetId()]->Draw((*it_zlist)->GetZ());
+	std::list<ZObj*>::iterator it_zlist;
+	for (it_zlist = state->zlist.begin(); it_zlist != state->zlist.end(); it_zlist++) {
+		state->drawable_map[(*it_zlist)->GetId()]->Draw((*it_zlist)->GetZ());
 	}
 
 	return DisplayUi->EndScreenCapture();
@@ -319,9 +325,9 @@ void Graphics::Transition(TransitionType type, int duration, bool erase) {
 		transition_frame = 0;
 		transition_duration = type == TransitionErase ? 1 : duration;
 
-		if (zlist_dirty) {
-			zlist.sort(SortZObj);
-			zlist_dirty = false;
+		if (state->zlist_dirty) {
+			state->zlist.sort(SortZObj);
+			state->zlist_dirty = false;
 		}
 
 		if (!frozen) Freeze();
@@ -531,29 +537,29 @@ void Graphics::SetFrameCount(int nframecount) {
 
 ///////////////////////////////////////////////////////////
 void Graphics::RegisterDrawable(uint32 ID, Drawable* drawable) {
-	drawable_map[ID] = drawable;
+	state->drawable_map[ID] = drawable;
 }
 
 void Graphics::RemoveDrawable(uint32 ID) {
-	std::map<uint32, Drawable*>::iterator it = drawable_map.find(ID);
-	drawable_map.erase(it);
+	std::map<uint32, Drawable*>::iterator it = state->drawable_map.find(ID);
+	state->drawable_map.erase(it);
 }
 
 ///////////////////////////////////////////////////////////
 ZObj* Graphics::RegisterZObj(int z, uint32 ID) {
 	ZObj* zobj = new ZObj(z, drawable_creation++, ID);
-	zlist.push_back(zobj);
+	state->zlist.push_back(zobj);
 
-	zlist_dirty = true;
+	state->zlist_dirty = true;
 
 	return zobj;
 }
 
 void Graphics::RegisterZObj(int z, uint32 ID, bool multiz) {
 	ZObj* zobj = new ZObj(z, 999999, ID);
-	zlist.push_back(zobj);
+	state->zlist.push_back(zobj);
 
-	zlist_dirty = true;
+	state->zlist_dirty = true;
 }
 
 ///////////////////////////////////////////////////////////
@@ -564,7 +570,8 @@ void Graphics::RemoveZObj(uint32 ID) {
 void Graphics::RemoveZObj(uint32 ID, bool multiz) {
 	std::vector<std::list<ZObj*>::iterator> to_erase;
 
-	for (it_zlist = zlist.begin(); it_zlist != zlist.end(); it_zlist++) {
+	std::list<ZObj*>::iterator it_zlist;
+	for (it_zlist = state->zlist.begin(); it_zlist != state->zlist.end(); it_zlist++) {
 		if ((*it_zlist)->GetId() == ID) {
 			delete *it_zlist;
 			to_erase.push_back(it_zlist);
@@ -573,14 +580,14 @@ void Graphics::RemoveZObj(uint32 ID, bool multiz) {
 	}
 
 	for (uint i = 0; i < to_erase.size(); i++) {
-		zlist.erase(to_erase[i]);
+		state->zlist.erase(to_erase[i]);
 	}
 }
 
 ///////////////////////////////////////////////////////////
 void Graphics::UpdateZObj(ZObj* zobj, int z) {
 	zobj->SetZ(z);
-	zlist_dirty = true;
+	state->zlist_dirty = true;
 }
 
 ///////////////////////////////////////////////////////////
@@ -589,3 +596,17 @@ inline bool Graphics::SortZObj(const ZObj* first, const ZObj* second) {
 	else if (first->GetZ() > second->GetZ()) return false;
 	else return first->GetCreation() < second->GetCreation();
 }
+
+///////////////////////////////////////////////////////////
+void Graphics::Push() {
+	stack.push_back(state);
+	state = new State();
+}
+
+///////////////////////////////////////////////////////////
+void Graphics::Pop() {
+	delete state;
+	state = stack.back();
+	stack.pop_back();
+}
+
