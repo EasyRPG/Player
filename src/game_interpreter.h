@@ -35,7 +35,7 @@ public:
 	~Game_Interpreter();
 
 	void Clear();
-	void Setup(std::vector<RPG::EventCommand>& _list, int _event_id);
+	void Setup(std::vector<RPG::EventCommand>& _list, int _event_id, int dbg_x = -1, int dbg_y = -1);
 	bool IsRunning() const;
 	void Update();
 
@@ -184,6 +184,9 @@ private:
 	int DecodeInt(std::vector<int>::const_iterator& it);
 	const std::string DecodeString(std::vector<int>::const_iterator& it);
 	RPG::MoveCommand DecodeMove(std::vector<int>::const_iterator& it);
+
+	int debug_x;
+	int debug_y;
 
 	std::vector<RPG::MoveRoute*> pending;
 };

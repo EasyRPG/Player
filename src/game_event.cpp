@@ -243,7 +243,7 @@ bool Game_Event::GetDisabled() const {
 
 void Game_Event::Start() {
 	// RGSS scripts consider list empty if size <= 1. Why?
-	if (list.empty()) 
+	if (list.empty() || erased) 
 		return;
 
 	starting = true;
@@ -291,7 +291,7 @@ void Game_Event::Update() {
 
 	if (interpreter != NULL) {
 		if (!interpreter->IsRunning()) {
-			interpreter->Setup(list, event.ID);
+			interpreter->Setup(list, event.ID, event.x, event.y);
 		}
 		interpreter->Update();
 	}

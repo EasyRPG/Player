@@ -214,13 +214,17 @@ bool Game_Interpreter::IsRunning() const {
 ////////////////////////////////////////////////////////////
 /// Setup
 ////////////////////////////////////////////////////////////
-void Game_Interpreter::Setup(std::vector<RPG::EventCommand>& _list, int _event_id) {
+void Game_Interpreter::Setup(std::vector<RPG::EventCommand>& _list, int _event_id, int dbg_x, int dbg_y) {
 
 	Clear();
 
 	map_id = Game_Map::GetMapId();
 	event_id = _event_id;
 	list = _list;
+
+	debug_x = dbg_x;
+	debug_y = dbg_y;
+
 	index = 0;
 
 	CancelMenuCall();
@@ -283,7 +287,7 @@ void Game_Interpreter::Update() {
 				
 			Game_Event* g_event;
 			for (size_t i = 0; i < Game_Map::GetEvents().size(); i++) {
-				g_event = Game_Map::GetEvents()[i];
+				g_event = Game_Map::GetEvents().find(i)->second;
 
 				if (g_event->GetMoveRouteForcing()) {
 					return;
@@ -368,7 +372,7 @@ void Game_Interpreter::SetupStartingEvent() {
 		
 		if (_event->GetStarting()) {
 			_event->ClearStarting();
-			Setup(_event->GetList(), _event->GetId());
+			Setup(_event->GetList(), _event->GetId(), _event->GetX(), _event->GetY());
 			return;
 		}
 	}
@@ -747,7 +751,7 @@ void Game_Interpreter::CommandEnd() {
 	list.clear();
 
 	if ((main_flag) && (event_id > 0)) {
-		Game_Map::GetEvents()[event_id]->Unlock();
+		Game_Map::GetEvents().find(event_id)->second->Unlock();
 	}
 }
 
@@ -1277,10 +1281,10 @@ Game_Character* Game_Interpreter::GetCharacter(int character_id) {
 			return Game_Map::GetVehicle(Game_Vehicle::Airship);
 		case CharThisEvent:
 			// This event
-			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents()[event_id];
+			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents().find(event_id)->second;
 		default:
 			// Other events
-			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents()[character_id];
+			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents().find(character_id)->second;
 	}
 }
 
@@ -1876,7 +1880,7 @@ bool Game_Interpreter::CommandConditionalBranch() { // Code 12010
 			break;
 		case 6:
 			// Orientation of char
-			character = GetCharacter(list[index].parameters[3]);
+			character = GetCharacter(list[index].parameters[1]);
 			if (character != NULL) {
 				switch (list[index].parameters[2]) {
 					case 0:
@@ -2925,7 +2929,7 @@ bool Game_Interpreter::CommandCallEvent() { // code 12330
 	switch (list[index].parameters[0]) {
 		case 0: // Common Event
 			event_id = list[index].parameters[1];
-			child_interpreter->Setup(Data::commonevents[event_id - 1].event_commands, 0);
+			child_interpreter->Setup(Data::commonevents[event_id - 1].event_commands, 0, Data::commonevents[event_id - 1].ID, -2);
 			return true;
 		case 1: // Map Event
 			event_id = list[index].parameters[1];
@@ -2939,9 +2943,9 @@ bool Game_Interpreter::CommandCallEvent() { // code 12330
 			return false;
 	}
 
-	Game_Event* event = Game_Map::GetEvents()[event_id];
+	Game_Event* event = Game_Map::GetEvents().find(event_id)->second;
 	RPG::EventPage& page = event->GetEvent().pages[event_page - 1];
-	child_interpreter->Setup(page.event_commands, event_id);
+	child_interpreter->Setup(page.event_commands, event_id, event->GetX(), event->GetY());
 
 	return true;
 }
