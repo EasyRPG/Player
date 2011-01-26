@@ -75,7 +75,7 @@ public:
 	void SetDisabled(bool dis_flag);
 
 	/// @return if the event has been disabled (via EraseEvent-EventCommand)
-	bool GetDisabled();
+	bool GetDisabled() const;
 
 	RPG::Event& GetEvent();
 
