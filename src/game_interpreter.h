@@ -188,6 +188,8 @@ private:
 	int debug_x;
 	int debug_y;
 
+	bool teleport_pending;
+
 	typedef std::pair<RPG::MoveRoute*,Game_Character*> pending_move_route;
 
 	std::vector<pending_move_route> pending;

@@ -36,6 +36,7 @@ public:
 	bool IsPassable(int x, int y, int d) const;
 	bool IsTeleporting() const;
 	void ReserveTeleport(int map_id, int x, int y);
+	void StartTeleport();
 	void PerformTeleport();
 	void Center(int x, int y);
 	void MoveTo(int x, int y);

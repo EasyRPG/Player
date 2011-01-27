@@ -66,10 +66,13 @@ bool Game_Player::IsPassable(int x, int y, int d) const {
 }
 
 void Game_Player::ReserveTeleport(int map_id, int x, int y) {
-	teleporting = true;
 	new_map_id = map_id;
 	new_x = x;
 	new_y = y;
+}
+
+void Game_Player::StartTeleport() {
+	teleporting = true;
 }
 
 void Game_Player::PerformTeleport() {

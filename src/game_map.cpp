@@ -141,6 +141,8 @@ void Game_Map::Setup(int _id) {
 	display_y = 0;
 	need_refresh = false;
 
+	events.clear();
+
 	for (size_t i = 0; i < map->events.size(); i++) {
 		events.insert(std::pair<int, Game_Event*>(map->events[i].ID, new Game_Event(map_id, map->events[i])));
 	}

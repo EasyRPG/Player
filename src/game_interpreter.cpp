@@ -178,6 +178,7 @@ Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	depth = _depth;
 	main_flag = _main_flag;
 	active = false;
+	teleport_pending = false;
 
 	if (depth > 100) {
 		Output::Warning("Too many event calls (over 9000)");
@@ -336,7 +337,7 @@ void Game_Interpreter::Update() {
 		}
 
 		if (list.empty()) {
-			if (main_flag) {
+			if (!Main_Data::game_player->IsTeleporting() && main_flag) {
 				SetupStartingEvent();
 			}
 
@@ -650,6 +651,7 @@ bool Game_Interpreter::CommandTeleport() { // Code 10810
 	int y = list[index].parameters[2];
 
 	Main_Data::game_player->ReserveTeleport(map_id, x, y);
+	teleport_pending = true;
 
 	if (Game_Message::visible) {
 		Game_Message::visible = false;
@@ -753,6 +755,11 @@ void Game_Interpreter::InputButton() {
 void Game_Interpreter::CommandEnd() {
 	CloseMessageWindow();
 	list.clear();
+
+	if (teleport_pending) {
+		teleport_pending = false;
+		Main_Data::game_player->StartTeleport();
+	}
 
 	if ((main_flag) && (event_id > 0)) {
 		Game_Map::GetEvents().find(event_id)->second->Unlock();
