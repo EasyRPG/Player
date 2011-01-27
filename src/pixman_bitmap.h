@@ -65,12 +65,13 @@ public:
 	void SetTransparentColor(Color color);
 
 #ifndef USE_BIG_ENDIAN
-	typedef PixelFormat<32,8,16,8,8,8,0,8,24,false> pixel_format;
-	static const pixman_format_code_t format = PIXMAN_a8r8g8b8;
+	typedef PixelFormat<32,false,true,false,true,8,16,8,8,8,0,8,24> pixel_format;
+	typedef PixelFormat<32,false,true,false,true,8,0,8,8,8,16,8,24> image_format;
+	static const pixman_format_code_t pixman_format = PIXMAN_a8r8g8b8;
 #else
-	#error "USE_BIG_ENDIAN defined"
-	typedef PixelFormat<32,8,8,8,16,8,24,8,0,false> pixel_format;
-	static const pixman_format_code_t format = PIXMAN_b8g8r8a8;
+	typedef PixelFormat<32,false,true,false,true,8,8,8,16,8,24,8,0> pixel_format;
+	typedef PixelFormat<32,false,true,false,true,8,24,8,16,8,8,8,0> image_format;
+	static const pixman_format_code_t pixman_format = PIXMAN_b8g8r8a8;
 #endif
 
 	void* pixels();
@@ -103,8 +104,23 @@ protected:
 	void ReadPNG(FILE* stream, const void *data);
 	void ReadXYZ(const uint8 *data, uint len);
 	void ReadXYZ(FILE *stream);
+	void ConvertImage(int& width, int& height, void*& pixels);
 
 	static pixman_image_t* GetSubimage(Bitmap* _src, const Rect& src_rect);
+	static inline void MultiplyAlpha(uint8 &r, uint8 &g, uint8 &b, const uint8 &a) {
+		r = (uint8)((int)r * a / 0xFF);
+		g = (uint8)((int)g * a / 0xFF);
+		b = (uint8)((int)b * a / 0xFF);
+	}
+	static inline void DivideAlpha(uint8 &r, uint8 &g, uint8 &b, const uint8 &a) {
+		if (a == 0)
+			r = g = b = 0;
+		else {
+			r = (uint8)((int)r * 0xFF / a);
+			g = (uint8)((int)g * 0xFF / a);
+			b = (uint8)((int)b * 0xFF / a);
+		}
+	}
 };
 
 #endif

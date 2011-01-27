@@ -42,7 +42,7 @@ static void destroy_func(pixman_image_t *image, void *data) {
 }
 
 void PixmanBitmap::Init(int width, int height, void* data) {
-	bitmap = pixman_image_create_bits(format, width, height, (uint32_t*) data, width*4);
+	bitmap = pixman_image_create_bits(pixman_format, width, height, (uint32_t*) data, width*4);
 
 	if (bitmap == NULL) {
 		Output::Error("Couldn't create %dx%d image.\n", width, height);
@@ -53,21 +53,16 @@ void PixmanBitmap::Init(int width, int height, void* data) {
 }
 
 ////////////////////////////////////////////////////////////
-static void ConvertImage(int& width, int& height, void*& pixels) {
+void PixmanBitmap::ConvertImage(int& width, int& height, void*& pixels) {
 	// premultiply alpha and convert bytes to words
 	for (int y = 0; y < height; y++) {
-		uint8* src = (uint8*) pixels + y * width * 4;
-		uint32* dst = (uint32*) src;
+		uint8* dst = (uint8*) pixels + y * width * 4;
 		for (int x = 0; x < width; x++) {
-			uint32 a = src[x * 4 + 3];
-			uint32 r = src[x * 4 + 0] * a / 0xFF;
-			uint32 g = src[x * 4 + 1] * a / 0xFF;
-			uint32 b = src[x * 4 + 2] * a / 0xFF;
-			#ifndef USE_BIG_ENDIAN
-			dst[x] = (a<<24) | (r<<16) | (g<<8) | (b<<0);
-			#else
-			dst[x] = (b<<24) | (g<<16) | (r<<8) | (a<<0);
-			#endif
+			uint8 r, g, b, a;
+			image_format::get_rgba(format, dst, r, g, b, a);
+			MultiplyAlpha(r, g, b, a);
+			pixel_format::set_rgba(format, dst, r, g, b, a);
+			dst += 4;
 		}
 	}
 }
@@ -240,7 +235,7 @@ void PixmanBitmap::Blit(int x, int y, Bitmap* _src, Rect src_rect, int opacity) 
 pixman_image_t* PixmanBitmap::GetSubimage(Bitmap* _src, const Rect& src_rect) {
 	PixmanBitmap* src = (PixmanBitmap*) _src;
 	uint8* pixels = (uint8*) src->pixels() + src_rect.x * src->bpp() + src_rect.y * src->pitch();
-	return pixman_image_create_bits(format, src_rect.width, src_rect.height,
+	return pixman_image_create_bits(pixman_format, src_rect.width, src_rect.height,
 									(uint32_t*) pixels, src->pitch());
 }
 
@@ -592,42 +587,14 @@ uint32 PixmanBitmap::GetUint32Color(const Color &color) const {
 	return GetUint32Color(color.red, color.green, color.blue, color.alpha);
 }
 
-uint32 PixmanBitmap::GetUint32Color(uint8 _r, uint8 _g, uint8 _b, uint8 _a) const {
-	uint32 a = _a;
-	uint32 r = _r * a / 0xFF;
-	uint32 g = _g * a / 0xFF;
-	uint32 b = _b * a / 0xFF;
-	#ifndef USE_BIG_ENDIAN
-	return (a<<24) | (r<<16) | (g<<8) | (b<<0);
-	#else
-	return (b<<24) | (g<<16) | (r<<8) | (a<<0);
-	#endif
+uint32 PixmanBitmap::GetUint32Color(uint8 r, uint8 g, uint8 b, uint8 a) const {
+	MultiplyAlpha(r, g, b, a);
+	return pixel_format::rgba_to_uint32(format, r, g, b, a);
 }
 
 void PixmanBitmap::GetColorComponents(uint32 color, uint8 &r, uint8 &g, uint8 &b, uint8 &a) const {
-	#ifndef USE_BIG_ENDIAN
-	uint32 _a = (color >> 24) & 0xFF;
-	uint32 _r = (color >> 16) & 0xFF;
-	uint32 _g = (color >>  8) & 0xFF;
-	uint32 _b = (color >>  0) & 0xFF;
-	#else
-	uint32 _a = (color >>  0) & 0xFF;
-	uint32 _r = (color >>  8) & 0xFF;
-	uint32 _g = (color >> 16) & 0xFF;
-	uint32 _b = (color >> 24) & 0xFF;
-	#endif
-	if (_a > 0) {
-		a = (uint8) _a;
-		r = (uint8) (0xFF * _r / _a);
-		g = (uint8) (0xFF * _g / _a);
-		b = (uint8) (0xFF * _b / _a);
-	}
-	else {
-		a = 0;
-		r = 0;
-		g = 0;
-		b = 0;
-	}
+	pixel_format::uint32_to_rgba(format, color, r, g, b, a);
+	DivideAlpha(r, g, b, a);
 }
 
 ////////////////////////////////////////////////////////////

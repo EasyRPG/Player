@@ -46,18 +46,13 @@ void SoftBitmap::Init(int width, int height) {
 }
 
 ////////////////////////////////////////////////////////////
-static void ConvertImage(int& width, int& height, void*& pixels) {
+void SoftBitmap::ConvertImage(int& width, int& height, void*& pixels) {
 	uint8* dst = (uint8*) pixels;
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
-			uint8 r = dst[0];
-			uint8 g = dst[1];
-			uint8 b = dst[2];
-			uint8 a = dst[3];
-			dst[0] = b;
-			dst[1] = g;
-			dst[2] = r;
-			dst[3] = a;
+			uint8 r, g, b, a;
+			image_format::get_rgba(format, dst, r, g, b, a);
+			pixel_format::set_rgba(format, dst, r, g, b, a);
 			dst += 4;
 		}
 	}
@@ -256,20 +251,20 @@ void SoftBitmap::SetTransparentColor(Color color) {
 ////////////////////////////////////////////////////////////
 Color SoftBitmap::GetColor(uint32 uint32_color) const {
 	uint8 r, g, b, a;
-	pixel_format::uint32_to_rgba(uint32_color, r, g, b, a);
+	pixel_format::uint32_to_rgba(format, uint32_color, r, g, b, a);
 	return Color(r, g, b, a);
 }
 
 uint32 SoftBitmap::GetUint32Color(const Color &color) const {
-	return pixel_format::rgba_to_uint32(color.red, color.green, color.blue, color.alpha);
+	return pixel_format::rgba_to_uint32(format, color.red, color.green, color.blue, color.alpha);
 }
 
 uint32 SoftBitmap::GetUint32Color(uint8 r, uint8 g, uint8 b, uint8 a) const {
-	return pixel_format::rgba_to_uint32(r, g, b, a);
+	return pixel_format::rgba_to_uint32(format, r, g, b, a);
 }
 
 void SoftBitmap::GetColorComponents(uint32 color, uint8 &r, uint8 &g, uint8 &b, uint8 &a) const {
-	pixel_format::uint32_to_rgba(color, r, g, b, a);
+	pixel_format::uint32_to_rgba(format, color, r, g, b, a);
 }
 
 ////////////////////////////////////////////////////////////

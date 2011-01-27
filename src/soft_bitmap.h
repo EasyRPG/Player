@@ -78,9 +78,11 @@ protected:
 	friend class SoftBitmapScreen;
 
 #ifndef USE_BIG_ENDIAN
-	typedef PixelFormat<32,8,16,8,8,8,0,8,24,false> pixel_format;
+	typedef PixelFormat<32,false,true,false,true,8,16,8,8,8,0,8,24> pixel_format;
+	typedef PixelFormat<32,false,true,false,true,8,0,8,8,8,16,8,24> image_format;
 #else
-	typedef PixelFormat<32,8,8,8,16,8,24,8,0,false> pixel_format;
+	typedef PixelFormat<32,false,true,false,true,8,8,8,16,8,24,8,0> pixel_format;
+	typedef PixelFormat<32,false,true,false,true,8,24,8,16,8,8,8,0> image_format;
 #endif
 
 	/// Bitmap data.
@@ -96,6 +98,8 @@ protected:
 
 	void Lock();
 	void Unlock();
+
+	void ConvertImage(int& width, int& height, void*& pixels);
 };
 
 #endif

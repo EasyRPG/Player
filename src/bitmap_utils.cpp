@@ -33,7 +33,7 @@ Color BitmapUtils<PF>::GetPixel(Bitmap* src, int x, int y) {
 
 	const uint8* pixel = (const uint8*)src->pixels() + x * PF::bytes + y * src->pitch();
 	uint8 r, g, b, a;
-	PF::get_rgba(src->colorkey(), pixel, r, g, b, a);
+	PF::get_rgba(src->format, pixel, r, g, b, a);
 
 	src->Unlock();
 
@@ -189,7 +189,7 @@ void BitmapUtils<PF>::SetPixel(Surface* dst, int x, int y, const Color &color) {
 	dst->Lock();
 
 	uint8* dst_pixel = (uint8*) dst->pixels() + x * PF::bytes + y * dst->pitch();
-	PF::set_rgba(dst->colorkey(), dst_pixel, color.red, color.green, color.blue, color.alpha);
+	PF::set_rgba(dst->format, dst_pixel, color.red, color.green, color.blue, color.alpha);
 
 	dst->Unlock();
 
@@ -216,17 +216,15 @@ void BitmapUtils<PF>::Blit(Surface* dst, int x, int y, Bitmap* src, Rect src_rec
 	if (PF::has_alpha || opacity < 255) {
 		const uint8* src_pixels = (uint8*)src->pixels() + src_rect.x * PF::bytes + src_rect.y * src->pitch();
 		uint8* dst_pixels = (uint8*)dst->pixels() + dst_rect.x * PF::bytes + dst_rect.y * dst->pitch();
-		uint32 src_colorkey = src->colorkey();
-		uint32 dst_colorkey = dst->colorkey();
 		int src_pad = src->pitch() - dst_rect.width * PF::bytes;
 		int dst_pad = dst->pitch() - dst_rect.width * PF::bytes;
 
 		for (int i = 0; i < dst_rect.height; i++) {
 			for (int j = 0; j < dst_rect.width; j++) {
 				uint8 sr, sg, sb, sa;
-				PF::get_rgba(src_colorkey, src_pixels, sr, sg, sb, sa);
+				PF::get_rgba(src->format, src_pixels, sr, sg, sb, sa);
 				uint8 dr, dg, db, da;
-				PF::get_rgba(src_colorkey, dst_pixels, dr, dg, db, da);
+				PF::get_rgba(dst->format, dst_pixels, dr, dg, db, da);
 				int srca = (int) sa * opacity / 255;
 
 				uint8 rr = (uint8) ((dr * (255 - srca) + sr * srca) / 255);
@@ -234,7 +232,7 @@ void BitmapUtils<PF>::Blit(Surface* dst, int x, int y, Bitmap* src, Rect src_rec
 				uint8 rb = (uint8) ((db * (255 - srca) + sb * srca) / 255);
 				uint8 ra = (uint8) ((da * (255 - srca)) / 255 + srca);
 
-				PF::set_rgba(dst_colorkey, dst_pixels, rr, rg, rb, ra);
+				PF::set_rgba(dst->format, dst_pixels, rr, rg, rb, ra);
 
 				src_pixels += PF::bytes;
 				dst_pixels += PF::bytes;
@@ -249,11 +247,10 @@ void BitmapUtils<PF>::Blit(Surface* dst, int x, int y, Bitmap* src, Rect src_rec
 
 		int src_pad = src->pitch() - dst_rect.width * PF::bytes;
 		int dst_pad = dst->pitch() - dst_rect.width * PF::bytes;
-		uint32 colorkey = src->colorkey();
 
 		for (int i = 0; i < dst_rect.height; i++) {
 			for (int j = 0; j < dst_rect.width; j++) {
-				if (PF::get_uint32(src_pixels) != colorkey)
+				if (PF::get_uint32(src_pixels) != src->format.colorkey)
 					PF::copy_pixel(dst_pixels, src_pixels);
 
 				src_pixels += PF::bytes;
@@ -404,17 +401,15 @@ void BitmapUtils<PF>::Mask(Surface* dst, int x, int y, Bitmap* src, Rect src_rec
 
 	const uint8* src_pixels = (const uint8*) src->pixels() + src_rect.y * src->pitch() + src_rect.x * PF::bytes;
 	uint8* dst_pixels = (uint8*) dst->pixels() + dst_rect.y * dst->pitch() + dst_rect.x * PF::bytes;
-	uint32 src_colorkey = src->colorkey();
-	uint32 dst_colorkey = dst->colorkey();
 	int src_pad = src->pitch() - dst_rect.width * PF::bytes;
 	int dst_pad = dst->pitch() - dst_rect.width * PF::bytes;
 
 	for (int j = 0; j < dst_rect.height; j++) {
 		for (int i = 0; i < dst_rect.width; i++) {
-			uint8 sa = PF::get_alpha(src_colorkey, src_pixels);
-			uint8 da = PF::get_alpha(dst_colorkey, dst_pixels);
+			uint8 sa = PF::get_alpha(src->format, src_pixels);
+			uint8 da = PF::get_alpha(dst->format, dst_pixels);
 			uint8 ra = std::min(sa, da);
-			PF::set_alpha(dst_colorkey, dst_pixels, ra);
+			PF::set_alpha(dst->format, dst_pixels, ra);
 			src_pixels += PF::bytes;
 			dst_pixels += PF::bytes;
 		}
@@ -434,7 +429,7 @@ void BitmapUtils<PF>::Fill(Surface* dst, const Color &color) {
 	dst->Lock();
 
 	uint8 pixel[4];
-	PF::set_rgba(dst->colorkey(), pixel, color.red, color.green, color.blue, color.alpha);
+	PF::set_rgba(dst->format, pixel, color.red, color.green, color.blue, color.alpha);
 
 	uint8* dst_pixels = (uint8*)dst->pixels();
 
@@ -462,7 +457,7 @@ void BitmapUtils<PF>::FillRect(Surface* dst, Rect dst_rect, const Color &color) 
 	dst->Lock();
 
 	uint8 pixel[4];
-	PF::set_rgba(dst->colorkey(), pixel, color.red, color.green, color.blue, color.alpha);
+	PF::set_rgba(dst->format, pixel, color.red, color.green, color.blue, color.alpha);
 
 	uint8* dst_pixels = (uint8*)dst->pixels() + dst_rect.y * dst->pitch() + dst_rect.x *  PF::bytes;
 
@@ -588,16 +583,15 @@ void BitmapUtils<PF>::HSLChange(Surface* dst, double h, double s, double l, doub
 
 	uint8* dst_pixels = (uint8*) dst->pixels() + dst_rect.x * PF::bytes + dst_rect.y * dst->pitch();
 	int pad = dst->pitch() - dst_rect.width * PF::bytes;
-	uint32 colorkey = dst->colorkey();
 
 	for (int i = 0; i < dst_rect.height; i++) {
 		for (int j = 0; j < dst_rect.width; j++) {
 			uint8 r, g, b, a;
-			PF::get_rgba(colorkey, dst_pixels, r, g, b, a);
+			PF::get_rgba(dst->format, dst_pixels, r, g, b, a);
 			if (a == 0)
 				continue;
 			RGB_adjust_HSL(r, g, b, hue, sat, lum, loff);
-			PF::set_rgba(colorkey, dst_pixels, r, g, b, a);
+			PF::set_rgba(dst->format, dst_pixels, r, g, b, a);
 
 			dst_pixels += PF::bytes;
 		}
@@ -618,13 +612,12 @@ void BitmapUtils<PF>::ToneChange(Surface* dst, const Tone &tone) {
 
 	uint8* dst_pixels = (uint8*)dst->pixels();
 	int pad = dst->pitch() - dst->width() * PF::bytes;
-	uint32 colorkey = dst->colorkey();
 
 	if (tone.gray == 0) {
 		for (int i = 0; i < dst->height(); i++) {
 			for (int j = 0; j < dst->width(); j++) {
 				uint8 r, g, b, a;
-				PF::get_rgba(colorkey, dst_pixels, r, g, b, a);
+				PF::get_rgba(dst->format, dst_pixels, r, g, b, a);
 				if (a == 0) {
 					dst_pixels += PF::bytes;
 					continue;
@@ -634,7 +627,7 @@ void BitmapUtils<PF>::ToneChange(Surface* dst, const Tone &tone) {
 				g = (uint8)std::max(std::min(g + tone.green, 255), 0);
 				b = (uint8)std::max(std::min(b + tone.blue,  255), 0);
 
-				PF::set_rgba(colorkey, dst_pixels, r, g, b, a);
+				PF::set_rgba(dst->format, dst_pixels, r, g, b, a);
 
 				dst_pixels += PF::bytes;
 			}
@@ -645,7 +638,7 @@ void BitmapUtils<PF>::ToneChange(Surface* dst, const Tone &tone) {
 		for (int i = 0; i < dst->height(); i++) {
 			for (int j = 0; j < dst->width(); j++) {
 				uint8 r, g, b, a;
-				PF::get_rgba(colorkey, dst_pixels, r, g, b, a);
+				PF::get_rgba(dst->format, dst_pixels, r, g, b, a);
 				if (dst->transparent && a == 0) {
 					dst_pixels += PF::bytes;
 					continue;
@@ -657,7 +650,7 @@ void BitmapUtils<PF>::ToneChange(Surface* dst, const Tone &tone) {
 				g = (uint8)std::max(std::min((g - gray) * factor + gray + tone.green + 0.5, 255.0), 0.0);
 				b = (uint8)std::max(std::min((b - gray) * factor + gray + tone.blue  + 0.5, 255.0), 0.0);
 
-				PF::set_rgba(colorkey, dst_pixels, r, g, b, a);
+				PF::set_rgba(dst->format, dst_pixels, r, g, b, a);
 
 				dst_pixels += PF::bytes;
 			}
@@ -758,13 +751,12 @@ void BitmapUtils<PF>::OpacityChange(Surface* dst, int opacity, const Rect& src_r
 
 	uint8* dst_pixels = (uint8*) dst->pixels() + src_rect.y * dst->pitch() + src_rect.x * PF::bytes;
 	int pad = dst->pitch() - dst->width() * PF::bytes;
-	uint32 colorkey = dst->colorkey();
 
 	for (int j = 0; j < src_rect.height; j++) {
 		for (int i = 0; i < src_rect.width; i++) {
-			uint8 a = PF::get_alpha(colorkey, dst_pixels);
+			uint8 a = PF::get_alpha(dst->format, dst_pixels);
 			a = (uint8) ((a * opacity) / 255);
-			PF::set_alpha(colorkey, dst_pixels, a);
+			PF::set_alpha(dst->format, dst_pixels, a);
 			dst_pixels += PF::bytes;
 		}
 
@@ -776,5 +768,14 @@ void BitmapUtils<PF>::OpacityChange(Surface* dst, int opacity, const Rect& src_r
 	dst->RefreshCallback();
 }
 
-template class BitmapUtils<PixelFormat<32,8,16,8,8,8,0,8,24,false> >;
-template class BitmapUtils<PixelFormat<32,8,8,8,16,8,24,8,0,false> >;
+template class BitmapUtils<PixelFormat<32,false,true,false, true, 8,16,8,8,8,0,8,24> >;
+template class BitmapUtils<PixelFormat<32,false,true,false, true, 8,8,8,16,8,24,8,0> >;
+template class BitmapUtils<PixelFormat<16,true, true, false,false,0,0,0,0,0,0,0,0> >;
+template class BitmapUtils<PixelFormat<24,true, true, false,true, 0,0,0,0,0,0,0,0> >;
+template class BitmapUtils<PixelFormat<32,true, true, false,true, 0,0,0,0,0,0,0,0> >;
+template class BitmapUtils<PixelFormat<16,true, false,true ,false,0,0,0,0,0,0,0,0> >;
+template class BitmapUtils<PixelFormat<24,true, false,true ,true, 0,0,0,0,0,0,0,0> >;
+template class BitmapUtils<PixelFormat<32,true, false,true ,true, 0,0,0,0,0,0,0,0> >;
+template class BitmapUtils<PixelFormat<16,true, false,false,false,0,0,0,0,0,0,0,0> >;
+template class BitmapUtils<PixelFormat<24,true, false,false,true, 0,0,0,0,0,0,0,0> >;
+template class BitmapUtils<PixelFormat<32,true, false,false,true, 0,0,0,0,0,0,0,0> >;
