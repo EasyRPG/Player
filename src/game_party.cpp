@@ -124,10 +124,15 @@ void Game_Party::LoseGold(int n) {
 
 ////////////////////////////////////////////////////////////
 void Game_Party::GainItem(int item_id, int amount, bool include_equip) {
-	int a;
+	int total_items;
 	if (item_id > 0 && (uint)item_id <= Data::items.size()) {
-		a = ItemNumber(item_id);
-		items[item_id] = min(max(a + amount, 0), 99);
+		total_items = ItemNumber(item_id);
+		items[item_id] = min(max(total_items + amount, 0), 99);
+
+		total_items = ItemNumber(item_id);
+		if (total_items <= 0) {
+			items.erase(item_id);
+		}
 	} else {
 		Output::Warning("Can't add item to party.\n%d is not a valid item id.",
 			item_id);
@@ -135,12 +140,7 @@ void Game_Party::GainItem(int item_id, int amount, bool include_equip) {
 }
 
 void Game_Party::LoseItem(int item_id, int amount, bool include_equip) {
-	int total_items;
 	GainItem(item_id, -amount, include_equip);
-	total_items = ItemNumber(item_id);
-	if (total_items <= 0) {
-		items.erase(item_id);
-	}
 }
 
 ////////////////////////////////////////////////////////////

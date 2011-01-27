@@ -1840,7 +1840,7 @@ bool Game_Interpreter::CommandConditionalBranch() { // Code 12010
 				result = (Game_Party::GetGold() >= list[index].parameters[1]);
 			} else {
 				// Less than or equal
-				result = (Game_Party::GetGold() >= list[index].parameters[1]);
+				result = (Game_Party::GetGold() <= list[index].parameters[1]);
 			}
 			break;
 		case 4:
@@ -1857,7 +1857,7 @@ bool Game_Interpreter::CommandConditionalBranch() { // Code 12010
 					break;
 				case 1:
 					// Name
-					result = (actor->GetName() ==  list[index].string);
+					result = (actor->GetName() == list[index].string);
 					break;
 				case 2:
 					// Higher or equal level
@@ -1865,10 +1865,10 @@ bool Game_Interpreter::CommandConditionalBranch() { // Code 12010
 					break;
 				case 3:
 					// Higher or equal HP
-					//result = (actor->hp >= list[index].parameters[3]);
+					result = (actor->GetHp() >= list[index].parameters[3]);
 					break;
 				case 4:
-					// Can learn skill
+					// Is skill learned
 					result = (actor->IsSkillLearned(list[index].parameters[3]));
 					break;
 				case 5:
