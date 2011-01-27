@@ -44,7 +44,6 @@ public:
 	void StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int opacity);
 	void Fill(const Color &color);
 	void FillRect(Rect dst_rect, const Color &color);
-	Rect GetTextSize(std::string text) const;
 	void SetTransparentColor(Color color);
 
 	void* pixels();

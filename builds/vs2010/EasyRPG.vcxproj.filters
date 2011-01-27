@@ -387,6 +387,9 @@
     <ClCompile Include="..\..\src\surface.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\wcwidth.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cache.h">
@@ -717,6 +720,12 @@
       <Filter>Source Files\Backend\Graphics\sdl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\surface.h">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\wcwidth.h">
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\pixel_format.h">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
   </ItemGroup>

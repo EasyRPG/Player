@@ -80,7 +80,7 @@ void Scene_Menu::CreateCommandWindow() {
 	options.push_back(Data::terms.menu_save);
 	options.push_back(Data::terms.menu_quit);
 
-	command_window = new Window_Command(88, options);
+	command_window = new Window_Command(options, 88);
 	command_window->SetIndex(menu_index);
 
 	// If there are no actors in the party disable Skills and Equipment

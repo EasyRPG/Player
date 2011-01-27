@@ -216,9 +216,9 @@ public:
 	/// This assumes that every char has a size of 6x12.
 	/// @param text : text to draw
 	////////////////////////////////////////////////////////
-	virtual Rect GetTextSize(std::string text) const;
+	static Rect GetTextSize(const std::string& text);
 	/// Wide string version
-	virtual Rect GetTextSize(std::wstring text) const;
+	static Rect GetTextSize(const std::wstring& text);
 
 	////////////////////////////////////////////////////////
 	/// Set the bitmap not to update its attached

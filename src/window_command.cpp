@@ -20,11 +20,20 @@
 ////////////////////////////////////////////////////////////
 #include "window_command.h"
 #include "color.h"
+#include "surface.h"
+#include "util_macro.h"
 
 ////////////////////////////////////////////////////////////
-Window_Command::Window_Command(int width, std::vector<std::string> commands) :
+Window_Command::Window_Command(std::vector<std::string> commands, int width) :
 	Window_Selectable(0, 0, width, commands.size() * 16 + 16),
 	commands(commands) {
+
+	if (width < 0) {
+		for (size_t i = 0; i < commands.size(); ++i) {
+			width = max(width, Surface::GetTextSize(commands[i]).width);
+		}
+		SetWidth(width + 2);
+	}
 
 	item_max = commands.size();
 	index = 0;

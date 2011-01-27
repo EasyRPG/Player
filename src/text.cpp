@@ -26,13 +26,14 @@
 #include "bitmap.h"
 #include "font.h"
 #include "text.h"
+#include "wcwidth.h"
 
 ////////////////////////////////////////////////////////////
 void Text::Draw(Surface* dest, int x, int y, std::wstring wtext, Surface::TextAlignment align) {
 	if (wtext.length() == 0) return;
 
 	Font* font = dest->GetFont();
-	Rect dst_rect = dest->GetTextSize(wtext);
+	Rect dst_rect = Surface::GetTextSize(wtext);
 
 	switch (align) {
 	case Surface::TextAlignCenter:
@@ -127,6 +128,8 @@ void Text::Draw(Surface* dest, int x, int y, std::wstring wtext, Surface::TextAl
 		char_surface->SetTransparentColor(dest->GetTransparentColor());
 		#endif
 		char_surface->Clear();
+
+		is_full_glyph = mk_wcwidth(wtext[c]) == 2;
 
 		// Blit gradient color background (twice in case of a full glyph)
 		char_surface->Blit(0, 0, system, clip_system, 255);

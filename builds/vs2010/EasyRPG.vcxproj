@@ -193,6 +193,7 @@
     <ClCompile Include="..\..\src\tone.cpp" />
     <ClCompile Include="..\..\src\utils.cpp" />
     <ClCompile Include="..\..\src\util_win.cpp" />
+    <ClCompile Include="..\..\src\wcwidth.cpp" />
     <ClCompile Include="..\..\src\window.cpp" />
     <ClCompile Include="..\..\src\window_actortarget.cpp" />
     <ClCompile Include="..\..\src\window_base.cpp" />
@@ -266,6 +267,7 @@
     <ClInclude Include="..\..\src\msgbox.h" />
     <ClInclude Include="..\..\src\options.h" />
     <ClInclude Include="..\..\src\output.h" />
+    <ClInclude Include="..\..\src\pixel_format.h" />
     <ClInclude Include="..\..\src\plane.h" />
     <ClInclude Include="..\..\src\player.h" />
     <ClInclude Include="..\..\src\rect.h" />
@@ -305,6 +307,7 @@
     <ClInclude Include="..\..\src\utils.h" />
     <ClInclude Include="..\..\src\util_macro.h" />
     <ClInclude Include="..\..\src\util_win.h" />
+    <ClInclude Include="..\..\src\wcwidth.h" />
     <ClInclude Include="..\..\src\window.h" />
     <ClInclude Include="..\..\src\window_actortarget.h" />
     <ClInclude Include="..\..\src\window_base.h" />

@@ -31,10 +31,11 @@ class Window_Command: public Window_Selectable {
 public:
 	////////////////////////////////////////////////////////
 	/// Constructor.
-	/// @param width : window width
 	/// @param commands : commands to display
+	/// @param width : window width, if no width is passed
+	/// 			the width is autocalculated
 	////////////////////////////////////////////////////////
-	Window_Command(int width, std::vector<std::string> commands);
+	Window_Command(std::vector<std::string> commands, int width = -1);
 
 	////////////////////////////////////////////////////////
 	/// Refresh the window contents.

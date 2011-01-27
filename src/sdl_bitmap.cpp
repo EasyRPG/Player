@@ -320,12 +320,6 @@ void SdlBitmap::FillRect(Rect dst_rect, const Color &color) {
 }
 
 ////////////////////////////////////////////////////////////
-Rect SdlBitmap::GetTextSize(std::string text) const {
-	return Rect(0, 0, text.size() * 6, 12);
-	//return Rect(0, 0, text.size() * 6, min(font->GetHeight(), 12));
-}
-
-////////////////////////////////////////////////////////////
 void SdlBitmap::SetTransparentColor(Color color) {
 	#ifndef USE_ALPHA
 		SDL_SetColorKey(bitmap, COLORKEY_FLAGS, GetUint32Color(color));

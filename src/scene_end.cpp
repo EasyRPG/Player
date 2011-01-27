@@ -76,16 +76,14 @@ void Scene_End::CreateCommandWindow() {
 	options.push_back(Data::terms.yes);
 	options.push_back(Data::terms.no);
 
-	// TODO: Calculate window width from max text length from options
-	int text_size = max(Data::terms.yes.size() * 6, Data::terms.no.size() * 6);
-	command_window = new Window_Command(text_size + 24, options);
+	command_window = new Window_Command(options);
 	command_window->SetX(160 - command_window->GetWidth() / 2);
 	command_window->SetY(72 + 48);
 }
 
 ////////////////////////////////////////////////////////////
 void Scene_End::CreateHelpWindow() {
-	int text_size = Data::terms.exit_game_message.size() * 6;
+	int text_size = Surface::GetTextSize(Data::terms.exit_game_message).width;
 
 	help_window = new Window_Help(160 - (text_size + 16)/ 2,
 		72, text_size + 16, 32);
