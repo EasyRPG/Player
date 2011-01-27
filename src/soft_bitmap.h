@@ -25,10 +25,9 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <string>
-// for SDL_BYTEORDER
-#include <SDL.h>
 
 #include "surface.h"
+#include "pixel_format.h"
 
 ////////////////////////////////////////////////////////////
 /// SoftBitmap class.
@@ -41,8 +40,27 @@ public:
 	SoftBitmap(Bitmap* source, Rect src_rect, bool transparent);
 	~SoftBitmap();
 
-	void Blit(int x, int y, Bitmap* _src, Rect src_rect, int opacity);
-	void Mask(int x, int y, Bitmap* _src, Rect src_rect);
+	Color GetPixel(int x, int y);
+	void SetPixel(int x, int y, const Color &color);
+	void Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity);
+	void TiledBlit(Rect src_rect, Bitmap* src, Rect dst_rect, int opacity);
+	void TiledBlit(int ox, int oy, Rect src_rect, Bitmap* src, Rect dst_rect, int opacity);
+	void StretchBlit(Bitmap* src, Rect src_rect, int opacity);
+	void StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int opacity);
+	void Mask(int x, int y, Bitmap* src, Rect src_rect);
+	void Fill(const Color &color);
+	void FillRect(Rect dst_rect, const Color &color);
+	void Clear();
+	void ClearRect(Rect dst_rect);
+	void HueChange(double hue);
+	void HSLChange(double hue, double sat, double lum, double loff, Rect dst_rect);
+	void ToneChange(const Tone &tone);
+	void Flip(bool horizontal, bool vertical);
+	void OpacityChange(int opacity, const Rect &src_rect);
+	Bitmap* Resample(int scale_w, int scale_h, const Rect& src_rect);
+	Bitmap* RotateScale(double angle, int scale_w, int scale_h);
+	Bitmap* Waver(int depth, double phase);
+
 	void SetTransparentColor(Color color);
 
 	void* pixels();
@@ -59,16 +77,10 @@ public:
 protected:
 	friend class SoftBitmapScreen;
 
-#if SDL_BYTEORDER == SDL_LIL_ENDIAN
-	static const unsigned int AMASK = 0xFF000000;
-	static const unsigned int RMASK = 0x00FF0000;
-	static const unsigned int GMASK = 0x0000FF00;
-	static const unsigned int BMASK = 0x000000FF;
+#ifndef USE_BIG_ENDIAN
+	typedef PixelFormat<32,8,16,8,8,8,0,8,24,false> pixel_format;
 #else
-	static const unsigned int BMASK = 0xFF000000;
-	static const unsigned int GMASK = 0x00FF0000;
-	static const unsigned int RMASK = 0x0000FF00;
-	static const unsigned int AMASK = 0x000000FF;
+	typedef PixelFormat<32,8,8,8,16,8,24,8,0,false> pixel_format;
 #endif
 
 	/// Bitmap data.

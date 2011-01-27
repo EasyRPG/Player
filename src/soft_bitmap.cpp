@@ -31,6 +31,7 @@
 #include "utils.h"
 #include "image.h"
 #include "text.h"
+#include "bitmap_utils.h"
 #include "soft_bitmap.h"
 
 ////////////////////////////////////////////////////////////
@@ -133,7 +134,7 @@ void* SoftBitmap::pixels() {
 }
 
 uint8 SoftBitmap::bpp() const {
-	return 4;
+	return pixel_format::bytes;
 }
 
 int SoftBitmap::width() const {
@@ -149,104 +150,103 @@ uint16 SoftBitmap::pitch() const {
 }
 
 uint32 SoftBitmap::rmask() const {
-	return RMASK;
+	return pixel_format::rmask;
 }
 
 uint32 SoftBitmap::gmask() const {
-	return GMASK;
+	return pixel_format::gmask;
 }
 
 uint32 SoftBitmap::bmask() const {
-	return BMASK;
+	return pixel_format::bmask;
 }
 
 uint32 SoftBitmap::amask() const {
-	return AMASK;
+	return pixel_format::amask;
 }
 
 uint32 SoftBitmap::colorkey() const {
 	return 0;
 }
 
-////////////////////////////////////////////////////////////
-void SoftBitmap::Blit(int x, int y, Bitmap* _src, Rect src_rect, int opacity) {
-	if (opacity < 0)
-		return;
-
-	SoftBitmap* src = (SoftBitmap*) _src;
-	Rect dst_rect(x, y, 0, 0);
-
-	if (!Rect::AdjustRectangles(src_rect, dst_rect, src->GetRect()))
-		return;
-	if (!Rect::AdjustRectangles(dst_rect, src_rect, GetRect()))
-		return;
-
-	if (opacity > 255) opacity = 255;
-
-	Lock();
-	src->Lock();
-
-	const uint8* src_pixels = (const uint8*)src->pixels() + src_rect.x * bpp() + src_rect.y * src->pitch();
-	uint8* dst_pixels = (uint8*)pixels() + dst_rect.x * bpp() + dst_rect.y * pitch();
-
-	int src_pad = src->pitch() - dst_rect.width * bpp();
-	int dst_pad = pitch() - dst_rect.width * bpp();
-
-	for (int i = 0; i < dst_rect.height; i++) {
-		for (int j = 0; j < dst_rect.width; j++) {
-			uint8 srca = src_pixels[3] * opacity / 255;
-			dst_pixels[0] = (dst_pixels[0] * (255 - srca) + src_pixels[0] * srca) / 255;
-			dst_pixels[1] = (dst_pixels[1] * (255 - srca) + src_pixels[1] * srca) / 255;
-			dst_pixels[2] = (dst_pixels[2] * (255 - srca) + src_pixels[2] * srca) / 255;
-			dst_pixels[3] = std::max(dst_pixels[3], srca);
-
-			src_pixels += 4;
-			dst_pixels += 4;
-		}
-		src_pixels += src_pad;
-		dst_pixels += dst_pad;
-	}
-
-	Unlock();
-	src->Unlock();
-
-	RefreshCallback();
+Color SoftBitmap::GetPixel(int x, int y) {
+	return BitmapUtils<pixel_format>::GetPixel(this, x, y);
 }
 
-void SoftBitmap::Mask(int x, int y, Bitmap* _src, Rect src_rect) {
-	SoftBitmap* src = (SoftBitmap*) _src;
+void SoftBitmap::SetPixel(int x, int y, const Color &color) {
+	BitmapUtils<pixel_format>::SetPixel(this, x, y, color);
+}
 
-	Rect dst_rect(x, y, 0, 0);
+void SoftBitmap::Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
+	BitmapUtils<pixel_format>::Blit(this, x, y, src, src_rect, opacity);
+}
 
-	if (!Rect::AdjustRectangles(src_rect, dst_rect, src->GetRect()))
-		return;
-	if (!Rect::AdjustRectangles(dst_rect, src_rect, GetRect()))
-		return;
+void SoftBitmap::TiledBlit(Rect src_rect, Bitmap* src, Rect dst_rect, int opacity) {
+	BitmapUtils<pixel_format>::TiledBlit(this, src_rect, src, dst_rect, opacity);
+}
 
-	Lock();
-	src->Lock();
+void SoftBitmap::TiledBlit(int ox, int oy, Rect src_rect, Bitmap* src, Rect dst_rect, int opacity) {
+	BitmapUtils<pixel_format>::TiledBlit(this, ox, oy, src_rect, src, dst_rect, opacity);
+}
 
-	const uint8* src_pixels = (uint8*)src->pixels() + src_rect.x * bpp() + src_rect.y * src->pitch();
-	uint8* dst_pixels = (uint8*)pixels() + dst_rect.x * bpp() + dst_rect.y * pitch();
+void SoftBitmap::StretchBlit(Bitmap* src, Rect src_rect, int opacity) {
+	BitmapUtils<pixel_format>::StretchBlit(this, src, src_rect, opacity);
+}
 
-	int src_pad = src->pitch() - dst_rect.width * bpp();
-	int dst_pad = pitch() - dst_rect.width * bpp();
+void SoftBitmap::StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int opacity) {
+	BitmapUtils<pixel_format>::StretchBlit(this, dst_rect, src, src_rect, opacity);
+}
 
-	for (int i = 0; i < dst_rect.height; i++) {
-		for (int j = 0; j < dst_rect.width; j++) {
-			dst_pixels[3] = std::min(dst_pixels[3], src_pixels[3]);
+void SoftBitmap::Mask(int x, int y, Bitmap* src, Rect src_rect) {
+	BitmapUtils<pixel_format>::Mask(this, x, y, src, src_rect);
+}
 
-			src_pixels += 4;
-			dst_pixels += 4;
-		}
-		src_pixels += src_pad;
-		dst_pixels += dst_pad;
-	}
+void SoftBitmap::Fill(const Color &color) {
+	BitmapUtils<pixel_format>::Fill(this, color);
+}
 
-	Unlock();
-	src->Unlock();
+void SoftBitmap::FillRect(Rect dst_rect, const Color &color) {
+	BitmapUtils<pixel_format>::FillRect(this, dst_rect, color);
+}
 
-	RefreshCallback();
+void SoftBitmap::Clear() {
+	BitmapUtils<pixel_format>::Clear(this);
+}
+
+void SoftBitmap::ClearRect(Rect dst_rect) {
+	BitmapUtils<pixel_format>::ClearRect(this, dst_rect);
+}
+
+void SoftBitmap::HueChange(double hue) {
+	BitmapUtils<pixel_format>::HueChange(this, hue);
+}
+
+void SoftBitmap::HSLChange(double hue, double sat, double lum, double loff, Rect dst_rect) {
+	BitmapUtils<pixel_format>::HSLChange(this, hue, sat, lum, loff, dst_rect);
+}
+
+void SoftBitmap::ToneChange(const Tone &tone) {
+	BitmapUtils<pixel_format>::ToneChange(this, tone);
+}
+
+void SoftBitmap::Flip(bool horizontal, bool vertical) {
+	BitmapUtils<pixel_format>::Flip(this, horizontal, vertical);
+}
+
+void SoftBitmap::OpacityChange(int opacity, const Rect &src_rect) {
+	BitmapUtils<pixel_format>::OpacityChange(this, opacity, src_rect);
+}
+
+Bitmap* SoftBitmap::Resample(int scale_w, int scale_h, const Rect& src_rect) {
+	return BitmapUtils<pixel_format>::Resample(this, scale_w, scale_h, src_rect);
+}
+
+Bitmap* SoftBitmap::RotateScale(double angle, int scale_w, int scale_h) {
+	return BitmapUtils<pixel_format>::RotateScale(this, angle, scale_w, scale_h);
+}
+
+Bitmap* SoftBitmap::Waver(int depth, double phase) {
+	return BitmapUtils<pixel_format>::Waver(this, depth, phase);
 }
 
 ////////////////////////////////////////////////////////////
@@ -255,26 +255,21 @@ void SoftBitmap::SetTransparentColor(Color color) {
 
 ////////////////////////////////////////////////////////////
 Color SoftBitmap::GetColor(uint32 uint32_color) const {
-	const uint8* p = (const uint8*) &uint32_color;
-	return Color(p[2], p[1], p[0], p[3]);
+	uint8 r, g, b, a;
+	pixel_format::uint32_to_rgba(uint32_color, r, g, b, a);
+	return Color(r, g, b, a);
 }
 
 uint32 SoftBitmap::GetUint32Color(const Color &color) const {
-	uint8 x[4] = {color.blue, color.green, color.red, color.alpha};
-	return *(const uint32*) x;
+	return pixel_format::rgba_to_uint32(color.red, color.green, color.blue, color.alpha);
 }
 
-uint32 SoftBitmap::GetUint32Color(uint8 r, uint8  g, uint8 b, uint8 a) const {
-	uint8 x[4] = {b, g, r, a};
-	return *(const uint32*) x;
+uint32 SoftBitmap::GetUint32Color(uint8 r, uint8 g, uint8 b, uint8 a) const {
+	return pixel_format::rgba_to_uint32(r, g, b, a);
 }
 
 void SoftBitmap::GetColorComponents(uint32 color, uint8 &r, uint8 &g, uint8 &b, uint8 &a) const {
-	const uint8* p = (const uint8*) &color;
-	b = p[0];
-	g = p[1];
-	r = p[2];
-	a = p[3];
+	pixel_format::uint32_to_rgba(color, r, g, b, a);
 }
 
 ////////////////////////////////////////////////////////////

@@ -29,11 +29,10 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include <pixman.h>
-// for SDL_BYTEORDER
-#include <SDL.h>
 
 #include "bitmap.h"
 #include "surface.h"
+#include "pixel_format.h"
 
 ////////////////////////////////////////////////////////////
 /// PixmanBitmap class.
@@ -61,8 +60,18 @@ public:
 	void Flip(bool horizontal, bool vertical);
 	Bitmap* Resample(int scale_w, int scale_h, const Rect& src_rect);
 	Bitmap* RotateScale(double angle, int scale_w, int scale_h);
+	Bitmap* Waver(int depth, double phase);
 	void OpacityChange(int opacity, const Rect& dst_rect);
 	void SetTransparentColor(Color color);
+
+#ifndef USE_BIG_ENDIAN
+	typedef PixelFormat<32,8,16,8,8,8,0,8,24,false> pixel_format;
+	static const pixman_format_code_t format = PIXMAN_a8r8g8b8;
+#else
+	#error "USE_BIG_ENDIAN defined"
+	typedef PixelFormat<32,8,8,8,16,8,24,8,0,false> pixel_format;
+	static const pixman_format_code_t format = PIXMAN_b8g8r8a8;
+#endif
 
 	void* pixels();
 	int width() const;
@@ -77,20 +86,6 @@ public:
 
 protected:
 	friend class PixmanBitmapScreen;
-
-#if SDL_BYTEORDER == SDL_LIL_ENDIAN
-	static const unsigned int AMASK = 0xFF000000;
-	static const unsigned int RMASK = 0x00FF0000;
-	static const unsigned int GMASK = 0x0000FF00;
-	static const unsigned int BMASK = 0x000000FF;
-	static const pixman_format_code_t format = PIXMAN_a8r8g8b8;
-#else
-	static const unsigned int BMASK = 0xFF000000;
-	static const unsigned int GMASK = 0x00FF0000;
-	static const unsigned int RMASK = 0x0000FF00;
-	static const unsigned int AMASK = 0x000000FF;
-	static const pixman_format_code_t format = PIXMAN_b8g8r8a8;
-#endif
 
 	/// Bitmap data.
 	pixman_image_t *bitmap;
