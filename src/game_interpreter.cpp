@@ -2705,6 +2705,7 @@ bool Game_Interpreter::CommandEnemyEncounter() { // code 10710
 
 	CloseMessageWindow();
 	Game_Temp::battle_calling = true;
+
 	SetContinuation(&Game_Interpreter::ContinuationEnemyEncounter);
 	return false;
 }
@@ -2712,7 +2713,16 @@ bool Game_Interpreter::CommandEnemyEncounter() { // code 10710
 bool Game_Interpreter::ContinuationEnemyEncounter() {
 	switch (Game_Temp::battle_result) {
 		case Game_Temp::BattleVictory:
-			return SkipTo(VictoryHandler, EndBattle);
+			// ToDo: Battle system not implemented
+			Output::Warning("Battle system not implemented\n"\
+							"Simulating a win.");
+			if (!SkipTo(VictoryHandler, EndBattle)) {
+				// Was an event battle with no handlers
+				index++;
+				return false;
+			}
+			index++;
+			return true;
 		case Game_Temp::BattleEscape:
 			switch (Game_Temp::battle_escape_mode) {
 				case 0:	// disallowed - shouldn't happen

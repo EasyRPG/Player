@@ -31,9 +31,9 @@ Scene_Battle::Scene_Battle() {
 
 ////////////////////////////////////////////////////////////
 void Scene_Battle::Start() {
-	const char warning[] = "Scene_Battle is a stub class\n\
-						It was added for the BattleTest parameter.\n\n\
-						This scene will do nothing and hangs now. Enjoy! :)";
+	const char warning[] = "Scene_Battle is a stub class\n"\
+						"It was added for the BattleTest parameter.\n\n"\
+						"This scene will do nothing and hangs now. Enjoy! :)";
 
 	if (Player::battle_test_flag) {
 		if (Player::battle_test_troop_id <= 0) {

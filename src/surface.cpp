@@ -963,8 +963,8 @@ Rect Surface::GetTextSize(const std::wstring& text) {
 	int size = mk_wcswidth(text.c_str(), text.size());
 
 	if (size == -1) {
-		Output::Warning("Text contains invalid chars.\n\
-			Is the encoding correct?");
+		Output::Warning("Text contains invalid chars.\n"\
+			"Is the encoding correct?");
 
 		return Rect(0, 0, text.size() * 6, 12);
 	} else {
