@@ -97,7 +97,6 @@ void Text::Draw(Surface* dest, int x, int y, std::wstring wtext, Surface::TextAl
 			} else {
 				exfont_value = wtext[c+1] - L'A';
 			}
-			is_full_glyph = true;
 			is_exfont = true;
 
 			Surface* mask_s;
@@ -129,7 +128,7 @@ void Text::Draw(Surface* dest, int x, int y, std::wstring wtext, Surface::TextAl
 		#endif
 		char_surface->Clear();
 
-		is_full_glyph = mk_wcwidth(wtext[c]) == 2;
+		is_full_glyph = is_exfont || (mk_wcwidth(wtext[c]) == 2);
 
 		// Blit gradient color background (twice in case of a full glyph)
 		char_surface->Blit(0, 0, system, clip_system, 255);

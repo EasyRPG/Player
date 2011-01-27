@@ -165,6 +165,8 @@ public:
 private:
 	/// Scene stack
 	static std::vector<Scene*> instances;
+
+	static int push_pop_operation;
 };
 
 #endif

@@ -52,6 +52,8 @@ protected:
 	std::vector<std::string> commands;
 
 	void DrawItem(int index, Font::SystemColor color);
+
+	int GetRequiredWidth(std::vector<std::string>& commands, int width);
 };
 
 #endif

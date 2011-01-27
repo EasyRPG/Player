@@ -25,20 +25,13 @@
 
 ////////////////////////////////////////////////////////////
 Window_Command::Window_Command(std::vector<std::string> commands, int width) :
-	Window_Selectable(0, 0, width, commands.size() * 16 + 16),
+	Window_Selectable(0, 0, GetRequiredWidth(commands, width), commands.size() * 16 + 16),
 	commands(commands) {
-
-	if (width < 0) {
-		for (size_t i = 0; i < commands.size(); ++i) {
-			width = max(width, Surface::GetTextSize(commands[i]).width);
-		}
-		SetWidth(width + 2);
-	}
 
 	item_max = commands.size();
 	index = 0;
 
-	SetContents(Surface::CreateSurface(width - 16, item_max * 16));
+	SetContents(Surface::CreateSurface(this->width - 16, item_max * 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	Refresh();
@@ -64,4 +57,16 @@ void Window_Command::DrawItem(int index, Font::SystemColor color) {
 ////////////////////////////////////////////////////////////
 void Window_Command::DisableItem(int i) {
 	DrawItem(i, Font::ColorDisabled);
+}
+
+////////////////////////////////////////////////////////////
+int Window_Command::GetRequiredWidth(std::vector<std::string>& commands, int width) {
+	if (width < 0) {
+		for (size_t i = 0; i < commands.size(); ++i) {
+			width = max(width, Surface::GetTextSize(commands[i]).width);
+		}
+		return width + 16;
+	} else {
+		return width;
+	}
 }

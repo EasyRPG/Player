@@ -18,10 +18,11 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "game_temp.h"
-#include "game_system.h"
-#include "input.h"
 #include "scene_name.h"
+#include "game_actors.h"
+#include "game_system.h"
+#include "game_temp.h"
+#include "input.h"
 
 ////////////////////////////////////////////////////////////
 Scene_Name::Scene_Name() :
@@ -70,6 +71,10 @@ void Scene_Name::Update() {
 		std::string s(kbd_window->GetSelected());
 		if (s == "Done") {
 			Game_Temp::hero_name = name_window->Get();
+			Game_Actor* actor = Game_Actors::GetActor(Game_Temp::hero_name_id);
+			if (actor != NULL) {
+				actor->SetName(name_window->Get());
+			}
 			Scene::Pop();
 		}
 		else if (s == "Symbol")

@@ -161,9 +161,13 @@ void Cache::Clear() {
 		delete it_cache->second;
 	}
 	cache.clear();
-	// TODO Why is this clean up commented out?
-	/*for (it1_cache_tiles = cache_tiles.begin(); it1_cache_tiles != cache_tiles.end(); it1_cache_tiles++) {
-		for (it2_cache_tiles = it1_cache_tiles.begin(); it2_cache_tiles != it1_cache_tiles.end(); it2_cache_tiles++) {
+
+	/*
+	std::map<std::string, std::map<int, Bitmap*> >::iterator it1_cache_tiles;
+	std::map<int, Bitmap*>::iterator it2_cache_tiles;
+
+	for (it1_cache_tiles = cache_tiles.begin(); it1_cache_tiles != cache_tiles.end(); it1_cache_tiles++) {
+		for (it2_cache_tiles = cache_tiles.cache_tiles.begin(); it2_cache_tiles != it2_cache_tiles.end(); it2_cache_tiles++) {
 			delete it2_cache_tiles->second;
 		}
 	}

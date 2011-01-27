@@ -28,6 +28,7 @@
 #include "game_variables.h"
 #include "graphics.h"
 #include "input.h"
+#include "player.h"
 #include "util_macro.h"
 #include "utils.h"
 
@@ -60,7 +61,9 @@ Window_Message::~Window_Message() {
 	//Game_Temp::message_window_showing = false;
 	// The Windows are already deleted in Graphics during closing
 	// But this probably memleaks during scene change?
-	//delete number_input_window;
+	if (!Player::exit_flag) {
+		delete number_input_window;
+	}
 }
 
 ////////////////////////////////////////////////////////////

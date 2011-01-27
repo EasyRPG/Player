@@ -55,6 +55,7 @@ const char Scene::scene_names[SceneMax][12] =
 	"Debug",
 	"Logo"
 };
+int Scene::push_pop_operation = 0;
 
 ////////////////////////////////////////////////////////////
 Scene::Scene() {
@@ -63,8 +64,12 @@ Scene::Scene() {
 
 ////////////////////////////////////////////////////////////
 void Scene::MainFunction() {
-	size_t depth = instances.size();
-	Start();
+	if (push_pop_operation == 1) {
+		Start();
+	}
+
+	push_pop_operation = 0;
+
 	TransitionIn();
 	Resume();
 
@@ -74,19 +79,10 @@ void Scene::MainFunction() {
 		Graphics::Update();
 		Input::Update();
 		Update();
-		if (Scene::instance != this && instances.size() > depth) {
-			Suspend();
-			TransitionOut();
-			Graphics::Push();
-			Scene::instance->MainFunction();
-			Graphics::Pop();
-			TransitionIn();
-			Resume();
-		}
 	}
 
 #ifdef _DEBUG
-	assert(Scene::instance == instances[instances.size() - 1] &&
+	assert(Scene::instance == instances.back() &&
 		"Don't set Scene::instance directly, use Push instead!");
 #endif
 
@@ -94,7 +90,12 @@ void Scene::MainFunction() {
 
 	Suspend();
 	TransitionOut();
-	Terminate();
+
+	if (push_pop_operation == 1) {
+		Graphics::Push();
+	} else if (push_pop_operation == 2) {
+		Terminate();
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -115,12 +116,12 @@ void Scene::Terminate() {
 
 ////////////////////////////////////////////////////////////
 void Scene::TransitionIn() {
-	Graphics::Transition(Graphics::TransitionFadeIn, 24);
+	Graphics::Transition(Graphics::TransitionFadeIn, 12);
 }
 
 ////////////////////////////////////////////////////////////
 void Scene::TransitionOut() {
-	Graphics::Transition(Graphics::TransitionFadeOut, 24, true);
+	Graphics::Transition(Graphics::TransitionFadeOut, 12, true);
 }
 
 ////////////////////////////////////////////////////////////
@@ -130,12 +131,14 @@ void Scene::Update() {
 ////////////////////////////////////////////////////////////
 void Scene::Push(Scene* new_scene, bool pop_stack_top) {
 	if (pop_stack_top) {
-		old_instances.push_back(instances[instances.size() - 1]);
+		old_instances.push_back(instances.back());
 		instances.pop_back();
 	}
 
 	instances.push_back(new_scene);
 	instance = new_scene;
+
+	push_pop_operation = 1;
 
 	/*Output::Debug("Scene Stack after Push:");
 	for (size_t i = 0; i < instances.size(); ++i) {
@@ -145,14 +148,16 @@ void Scene::Push(Scene* new_scene, bool pop_stack_top) {
 
 ////////////////////////////////////////////////////////////
 void Scene::Pop() {
-	old_instances.push_back(instances[instances.size() - 1]);
+	old_instances.push_back(instances.back());
 	instances.pop_back();
 
 	if (instances.size() == 0) {
 		Push(new Scene()); // Null-scene
 	} else {
-		instance = instances[instances.size() - 1];
+		instance = instances.back();
 	}
+
+	push_pop_operation = 2;
 
 	/*Output::Debug("Scene Stack after Pop:");
 	for (size_t i = 0; i < instances.size(); ++i) {
@@ -167,10 +172,11 @@ void Scene::PopUntil(SceneType type) {
 	for (int i = (int)instances.size() - 1 ; i >= 0; --i) {
 		if (instances[i]->type == type) {
 			for (i = 0; i < count; ++i) {
-				old_instances.push_back(instances[instances.size() - 1]);
+				old_instances.push_back(instances.back());
 				instances.pop_back();
 			}
-			instance = instances[instances.size() - 1];
+			instance = instances.back();
+			push_pop_operation = 2;
 			return;
 		}
 		++count;
@@ -182,10 +188,11 @@ void Scene::PopUntil(SceneType type) {
 ////////////////////////////////////////////////////////////
 Scene* Scene::Find(SceneType type) {
 	std::vector<Scene*>::const_reverse_iterator it;
-	for (it = instances.rbegin() ; it != instances.rend(); it++)
-		if ((*it)->type == type)
+	for (it = instances.rbegin() ; it != instances.rend(); it++) {
+		if ((*it)->type == type) {
 			return *it;
+		}
+	}
 
-	Output::Warning("The searched scene %s was not on the stack", scene_names[type]);
 	return NULL;
 }

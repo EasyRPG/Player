@@ -605,8 +605,9 @@ void Graphics::Push() {
 
 ///////////////////////////////////////////////////////////
 void Graphics::Pop() {
-	delete state;
-	state = stack.back();
-	stack.pop_back();
+	if (stack.size() > 0) {
+		delete state;
+		state = stack.back();
+		stack.pop_back();
+	}
 }
-
