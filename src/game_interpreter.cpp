@@ -975,17 +975,8 @@ bool Game_Interpreter::CommandControlVariables() { // Code ControlVars
 					value = Game_Party::ItemNumber(list[index].parameters[5]);
 					break;
 				case 1:
-					// Number of heroes that have the item equipped
-					std::vector<Game_Actor*>::iterator j;
-					for (j = Game_Party::GetActors().begin(); j != Game_Party::GetActors().end(); j++) {
-						if ( ((*j)->GetWeaponId() == list[index].parameters[6]) ||
-							((*j)->GetShieldId() == list[index].parameters[6]) ||
-							((*j)->GetArmorId() == list[index].parameters[6]) ||
-							((*j)->GetHelmetId() == list[index].parameters[6]) ||
-							((*j)->GetAccessoryId() == list[index].parameters[6]) ) {
-								value++;
-						}
-					}
+					// How often the item is equipped
+					value = Game_Party::ItemNumber(list[index].parameters[5], true);
 					break;
 			}
 			break;
@@ -1123,11 +1114,11 @@ bool Game_Interpreter::CommandControlVariables() { // Code ControlVars
 					value = Game_Party::GetDefeatCount();
 					break;
 				case 7:
-					// Number of flights (aka run away)
+					// Number of escapes (aka run away)
 					value = Game_Party::GetRunCount();
 					break;
 				case 8:
-					// TODO MIDI performance position (wtf is this?)
+					// TODO: MIDI play position
 					break;
 				case 9:
 					value = Game_System::ReadTimer(Game_System::Timer2);
@@ -1218,6 +1209,7 @@ bool Game_Interpreter::CommandControlVariables() { // Code ControlVars
 				Game_Variables[list[index].parameters[1]] = MinSize;
 			}
 	}
+
 	Game_Map::SetNeedRefresh(true);
 	return true;
 }
