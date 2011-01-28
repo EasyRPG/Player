@@ -76,6 +76,8 @@ Window_ShopParty::~Window_ShopParty() {
 void Window_ShopParty::Refresh() {
 	contents->Clear();
 
+	Bitmap* system = Cache::System(Data::system.system_name);
+
 	const std::vector<Game_Actor*>& actors = Game_Party::GetActors();
 	for (size_t i = 0; i < actors.size() && i < 4; i++) {
 		Game_Actor *actor = actors[i];
@@ -93,7 +95,7 @@ void Window_ShopParty::Refresh() {
 			for (int j = 0; j < 5; ++j)
 				is_equipped |= (actor->GetEquipment(j) == item_id);
 			if (is_equipped) 
-				contents->TextDraw(i * 32 + 18, 22, "E");
+				contents->Blit(i * 32 + 18, 22, system, Rect(128 + 8 * phase, 24, 8, 8), 255);
 			else {
 
 				RPG::Item* new_item = &Data::items[item_id - 1];
@@ -141,11 +143,10 @@ void Window_ShopParty::Refresh() {
 					int diff_def = new_item->def_points - current_item->def_points;
 					int diff_spi = new_item->spi_points - current_item->spi_points;
 					int diff_agi = new_item->agi_points - current_item->agi_points;
-					//TODO: add proper icons instead '+' & '-'
 					if (diff_atk > 0 || diff_def > 0 || diff_spi > 0 || diff_agi > 0)
-						contents->TextDraw(i * 32 + 18, 22, "+"); //U+25B2 ?
+						contents->Blit(i * 32 + 18, 22, system, Rect(128 + 8 * phase, 0, 8, 8), 255);
 					else if (diff_atk < 0 || diff_def < 0 || diff_spi < 0 || diff_agi < 0)
-						contents->TextDraw(i * 32 + 18, 22, "-"); //U+25BC ?
+						contents->Blit(i * 32 + 18, 22, system, Rect(128 + 8 * phase, 16, 8, 8), 255);
 				}
 			}
 		}
