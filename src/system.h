@@ -115,7 +115,7 @@
 #endif
 
 #ifdef _WIN32
-	#define DEFAULT_FONTS { "RM2000", "DejaVuLGCSansMono", "Lucida Console", "MS Sans Serif", "" }
+	#define DEFAULT_FONTS { "RM2000", "DejaVuLGCSansMono", "msgothic", "Lucida Console", "MS Sans Serif", "" }
 #else
 	#define DEFAULT_FONTS { "DejaVuLGCSansMono.ttf", "" }
 #endif
