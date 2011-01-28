@@ -264,7 +264,7 @@ private:
 	std::vector<int> exp_list;
 	std::vector<int> skills;
 	bool two_swords_style;
-	std::vector<unsigned int> battle_commands;
+	std::vector<uint32_t> battle_commands;
 };
 
 #endif

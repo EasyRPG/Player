@@ -53,7 +53,7 @@ void Game_Actor::Setup(int actor_id) {
 	hp = GetMaxHp();
 	sp = GetMaxSp();
 	two_swords_style = actor.two_swords_style;
-	battle_commands = std::vector<unsigned int>(actor.battle_commands);
+	battle_commands = std::vector<uint32_t>(actor.battle_commands);
 
 	for (size_t i = 0; i < actor.skills.size(); ++i) {
 		if (actor.skills[i].level <= level) {
@@ -460,7 +460,7 @@ void Game_Actor::ChangeBattleCommands(bool add, int id) {
 		battle_commands.clear();
 	}
 	else {
-		std::vector<unsigned int>::iterator it;
+		std::vector<uint32_t>::iterator it;
 		it = std::find(battle_commands.begin(), battle_commands.end(), id);
 		if (it != battle_commands.end())
 			battle_commands.erase(it);
