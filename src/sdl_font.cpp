@@ -98,14 +98,11 @@ int SdlFont::GetHeight() {
 
 Bitmap* SdlFont::Render(int c) {
 	GetTTF();
-	SDL_Color color = {255, 255, 255, 255};
+	SDL_Color color = {255, 255, 255, 0};
 	uint16 text[2] = {(uint16) c, 0};
 	SDL_Surface* temp = TTF_RenderUNICODE_Solid(ttf_font, text, color);
-	SDL_Color colorkey = temp->format->palette->colors[0];
-	SDL_SetColorKey(temp, SDL_SRCCOLORKEY, SDL_MapRGB(temp->format, colorkey.r, colorkey.g, colorkey.b));
-	SDL_Surface* surf = DisplayFormat(temp);
-	SDL_FreeSurface(temp);
-	return new SdlBitmap(surf);
+	SDL_SetColorKey(temp, SDL_SRCCOLORKEY, SDL_MapRGB(temp->format, 0, 0, 0));
+	return new SdlBitmap(temp);
 }
 
 ////////////////////////////////////////////////////////////

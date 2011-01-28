@@ -37,6 +37,7 @@
 #endif
 #if (defined(_WIN32) && !defined(_DEBUG))
 	#include <Windows.h>
+	#include <WinIoCtl.h>
 	#include <DbgHelp.h>
 	static void InitMiniDumpWriter();
 #endif
