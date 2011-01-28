@@ -95,7 +95,7 @@ void Window_ShopParty::Refresh() {
 			for (int j = 0; j < 5; ++j)
 				is_equipped |= (actor->GetEquipment(j) == item_id);
 			if (is_equipped) 
-				contents->Blit(i * 32 + 18, 22, system, Rect(128 + 8 * phase, 24, 8, 8), 255);
+				contents->Blit(i * 32 + 20, 24, system, Rect(128 + 8 * phase, 24, 8, 8), 255);
 			else {
 
 				RPG::Item* new_item = &Data::items[item_id - 1];
@@ -144,9 +144,11 @@ void Window_ShopParty::Refresh() {
 					int diff_spi = new_item->spi_points - current_item->spi_points;
 					int diff_agi = new_item->agi_points - current_item->agi_points;
 					if (diff_atk > 0 || diff_def > 0 || diff_spi > 0 || diff_agi > 0)
-						contents->Blit(i * 32 + 18, 22, system, Rect(128 + 8 * phase, 0, 8, 8), 255);
+						contents->Blit(i * 32 + 20, 24, system, Rect(128 + 8 * phase, 0, 8, 8), 255);
 					else if (diff_atk < 0 || diff_def < 0 || diff_spi < 0 || diff_agi < 0)
-						contents->Blit(i * 32 + 18, 22, system, Rect(128 + 8 * phase, 16, 8, 8), 255);
+						contents->Blit(i * 32 + 20, 24, system, Rect(128 + 8 * phase, 16, 8, 8), 255);
+					else
+						contents->Blit(i * 32 + 20, 24, system, Rect(128 + 8 * phase, 8, 8, 8), 255);
 				}
 			}
 		}
