@@ -74,7 +74,7 @@ void Scene_Title::Start() {
 		}
 
 		// File Finder cant be initialized earlier because we need the RPG-version
-		#ifndef UNIX
+		#ifdef _WIN32
 		FileFinder::Init();
 		#endif
 	}

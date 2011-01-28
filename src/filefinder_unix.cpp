@@ -15,7 +15,7 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#if UNIX || DINGOO || GEKKO || PSP
+#if UNIX || DINGOO
 
 ////////////////////////////////////////////////////////////
 // Headers
@@ -28,11 +28,6 @@
 #include <string>
 #include <dirent.h>
 #include <unistd.h>
-
-#ifdef GEKKO
-	#include <cstdlib>
-	#include <cstdio>
-#endif
 
 #include <errno.h>
 #include "utils.h"
@@ -70,16 +65,8 @@ namespace FileFinder {
 /// Utility functions
 ////////////////////////////////////////////////////////////
 static bool isdir(const std::string& path) {
-#ifdef GEKKO
-	DIR* dir = opendir(path.c_str());
-	if (!dir)
-		return false;
-	closedir(dir);
-	return true;
-#else
 	std::string test = path + "/.";
 	return access(test.c_str(), F_OK) == 0;
-#endif
 }
 
 static string_map scandir(const std::string& path, bool dirs = false) {

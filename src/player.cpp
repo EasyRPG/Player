@@ -100,7 +100,7 @@ void Player::Init(int argc, char *argv[]) {
 		}
 	}
 
-#ifdef UNIX
+#ifndef _WIN32
 	FileFinder::Init();
 #endif
 
