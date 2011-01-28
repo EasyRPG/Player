@@ -17,6 +17,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstring>
 #include "system.h"
 #include "bitmap.h"
 #include "surface.h"

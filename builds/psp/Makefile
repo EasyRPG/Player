@@ -24,6 +24,6 @@ PSP_DIR_NAME = easyrpg
 PSPSDK=$(shell psp-config --pspsdk-path)
 PSPBIN = $(PSPSDK)/../bin
 CFLAGS += $(shell $(PSPBIN)/sdl-config --cflags)
-LIBS += -lstdc++ -lSDL_ttf -lfreetype -lSDL_gfx -lSDL_mixer -lvorbisidec -lSDL_image -lsmpeg -lpng -ljpeg -lz -lm $(shell $(PSPBIN)/sdl-config --libs)
+LIBS += -lstdc++ -lSDL_ttf -lfreetype -lSDL_gfx -lSDL_mixer -lvorbisfile -lvorbis -lvorbisenc -logg -lSDL_image -lsmpeg -lpng -ljpeg -lz -lm $(shell $(PSPBIN)/sdl-config --libs)
 include $(PSPSDK)/lib/build.mak
 

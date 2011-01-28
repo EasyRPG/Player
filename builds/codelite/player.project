@@ -206,6 +206,9 @@
         <File Name="../../src/text.cpp"/>
         <File Name="../../src/surface.cpp"/>
         <File Name="../../src/surface.h"/>
+        <File Name="../../src/bitmap_utils.cpp"/>
+        <File Name="../../src/bitmap_utils.h"/>
+        <File Name="../../src/pixel_format.h"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Input">
         <File Name="../../src/input.cpp"/>

@@ -25,6 +25,8 @@
 #include <cstdlib>
 
 #ifdef PSP
+#include <pspkernel.h>
+PSP_MODULE_INFO("EasyRPG",0,1,1);
 extern "C"
 #endif
 int main(int argc, char* argv[]) {
