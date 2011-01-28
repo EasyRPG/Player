@@ -145,6 +145,7 @@ namespace FileFinder {
 	const char* const FONTS_TYPES[] = {
 #ifdef SUPPORT_TTF
 		".ttf",
+		".ttc",
 #endif
 #ifdef SUPPORT_FON
 		".fon",
