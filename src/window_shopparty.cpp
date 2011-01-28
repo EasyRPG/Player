@@ -86,12 +86,69 @@ void Window_ShopParty::Refresh() {
 		bool equippable = item_id == 0 || actor->IsEquippable(item_id);
 		Bitmap *bm = bitmaps[i][phase][equippable ? 1 : 0];
 		contents->Blit(i * 32, 0, bm, bm->GetRect(), 255);
-		bool is_equipped = false;
-		//check if item is equipped by any member
-		for (int j = 0; j < 5; ++j)
-			is_equipped |= (actor->GetEquipment(j) == item_id);
-		if (is_equipped) 
-			contents->TextDraw(i * 32 + 18, 22, "E");
+
+		if (equippable) {
+			//check if item is equipped by each member
+			bool is_equipped = false;
+			for (int j = 0; j < 5; ++j)
+				is_equipped |= (actor->GetEquipment(j) == item_id);
+			if (is_equipped) 
+				contents->TextDraw(i * 32 + 18, 22, "E");
+			else {
+
+				RPG::Item* new_item = &Data::items[item_id - 1];
+				int item_type =  new_item->type;
+				int equip_type = item_type - 1;
+				RPG::Item* current_item = NULL;
+
+				switch (item_type) {
+				
+				//get the current equipped item
+				case RPG::Item::Type_weapon:
+					if (actor->GetWeaponId() > 0)
+						current_item = &Data::items[actor->GetWeaponId() - 1];
+					else
+						current_item = &Data::items[0];
+					break;
+				case RPG::Item::Type_helmet:
+					if (actor->GetHelmetId() > 0)
+						current_item = &Data::items[actor->GetHelmetId() - 1];
+					else
+						current_item = &Data::items[0];
+					break;
+				case RPG::Item::Type_shield:
+					if (actor->GetShieldId() > 0)
+						current_item = &Data::items[actor->GetShieldId() - 1];
+					else
+						current_item = &Data::items[0];
+					break;
+				case RPG::Item::Type_armor:
+					if (actor->GetArmorId() > 0)
+						current_item = &Data::items[actor->GetArmorId() - 1];
+					else
+						current_item = &Data::items[0];
+					break;
+				case RPG::Item::Type_accessory:
+					if (actor->GetAccessoryId() > 0)
+						current_item = &Data::items[actor->GetAccessoryId() -1];
+					else
+						current_item = &Data::items[0];
+					break;
+				}
+
+				if (current_item != NULL) {
+					int diff_atk = new_item->atk_points - current_item->atk_points;
+					int diff_def = new_item->def_points - current_item->def_points;
+					int diff_spi = new_item->spi_points - current_item->spi_points;
+					int diff_agi = new_item->agi_points - current_item->agi_points;
+					//TODO: add proper icons instead '+' & '-'
+					if (diff_atk > 0 || diff_def > 0 || diff_spi > 0 || diff_agi > 0)
+						contents->TextDraw(i * 32 + 18, 22, "+"); //U+25B2 ?
+					else if (diff_atk < 0 || diff_def < 0 || diff_spi < 0 || diff_agi < 0)
+						contents->TextDraw(i * 32 + 18, 22, "-"); //U+25BC ?
+				}
+			}
+		}
 	}
 }
 
