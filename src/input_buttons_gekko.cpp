@@ -28,7 +28,8 @@ void Input::InitButtons() {
 	buttons.resize(BUTTON_COUNT);
 
 	// Remote
-	buttons[N1].push_back(Keys::JOY_0); // A
+	buttons[TOGGLE_FPS].push_back(Keys::JOY_0); // A
+	//buttons[N1].push_back(Keys::JOY_0); // A
 	buttons[N2].push_back(Keys::JOY_1); // B
 	buttons[CANCEL].push_back(Keys::JOY_2); // 1
 	buttons[DECISION].push_back(Keys::JOY_3); // 2

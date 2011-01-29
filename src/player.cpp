@@ -60,6 +60,13 @@ void Player::Init(int argc, char *argv[]) {
 
 	if (init) return;
 
+#ifdef GEKKO
+	// Init libfat (Mount SD/USB)
+	if (!fatInitDefault()) {
+		Output::Error("Couldn't mount any storage medium!");
+	}
+#endif
+
 #if (defined(_WIN32) && !defined(_DEBUG))
 	InitMiniDumpWriter();
 #endif
@@ -118,13 +125,6 @@ void Player::Init(int argc, char *argv[]) {
 
 ////////////////////////////////////////////////////////////
 void Player::Run() {
-#ifdef GEKKO
-	// Init libfat (Mount SD/USB)
-	if (!fatInitDefault()) {
-		Output::Error("Couldn't mount any storage medium!");
-	}
-#endif
-
 	if (battle_test_flag) {
 		Scene::Push(new Scene_Battle());
 	} else if (debug_flag) {
