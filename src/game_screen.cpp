@@ -87,7 +87,7 @@ void Game_Screen::Reset()
 Picture* Game_Screen::GetPicture(int id) {
 	Picture*& p = pictures[id];
 	if (p == NULL)
-		p = new Picture();
+		p = new Picture(id);
 	return p;
 }
 

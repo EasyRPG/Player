@@ -48,7 +48,7 @@ public:
 
 		friend class Picture;
 	};
-	Picture();
+	Picture(int ID);
 	~Picture();
 
 	void Show(const std::string& name);
@@ -67,6 +67,7 @@ public:
 	void Update();
 
 private:
+	int ID;
 	std::string name;
 	PictureState finish_state;
 	PictureState current_state;

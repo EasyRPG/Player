@@ -39,7 +39,8 @@ Picture::PictureState::PictureState() :
 	bottom_trans(0.0)
 {}
 
-Picture::Picture() :
+Picture::Picture(int ID) :
+	ID(ID),
 	shown(false),
 	scrolls(false),
 	rotate(false),
@@ -69,7 +70,7 @@ void Picture::UpdateSprite() {
 
 	sprite->SetX((int)st.x);
 	sprite->SetY((int)st.y);
-	sprite->SetZ(9999);
+	sprite->SetZ(1000 + ID);
 	sprite->SetZoomX(st.magnify / 100.0);
 	sprite->SetZoomY(st.magnify / 100.0);
 	sprite->SetOx((int)(sprite->GetBitmap()->GetWidth() * st.magnify / 200.0));

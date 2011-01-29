@@ -729,7 +729,7 @@ void Surface::ToneChange(const Tone &tone) {
 			for (int i = 0; i < height(); i++) {
 				for (int j = 0; j < width(); j++) {
 					#ifndef USE_ALPHA
-						if (transparent && ((uint32*)dst_pixels)[0] == colorkey()) {
+						if (transparent && ((uint16*)dst_pixels)[0] == colorkey()) {
 							dst_pixels++;
 							continue;
 						}
@@ -753,7 +753,7 @@ void Surface::ToneChange(const Tone &tone) {
 			for (int i = 0; i < height(); i++) {
 				for (int j = 0; j < width(); j++) {
 					#ifndef USE_ALPHA
-						if (transparent && ((uint32*)dst_pixels)[0] == colorkey()) {
+						if (transparent && ((uint16*)dst_pixels)[0] == colorkey()) {
 							dst_pixels++;
 							continue;
 						}
