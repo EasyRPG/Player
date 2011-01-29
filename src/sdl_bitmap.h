@@ -44,6 +44,7 @@ public:
 	void StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int opacity);
 	void Fill(const Color &color);
 	void FillRect(Rect dst_rect, const Color &color);
+	void Mask(int x, int y, Bitmap* src, Rect src_rect);
 	void SetTransparentColor(Color color);
 
 	void* pixels();

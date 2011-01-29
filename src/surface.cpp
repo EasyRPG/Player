@@ -422,6 +422,7 @@ void Surface::Mask(int x, int y, Bitmap* src, Rect src_rect) {
 	src->Lock();
 
 	if (bpp() == 2) {
+		#ifdef USE_ALPHA
 		for (int j = 0; j < src_rect.height; j++) {
 			uint16* src_pixels = (uint16*) src->pixels() + (src_rect.y + j) * src->pitch() / 2 + src_rect.x;
 			uint16* dst_pixels = (uint16*) pixels() + (y + j) * pitch() / 2 + x;
@@ -440,6 +441,21 @@ void Surface::Mask(int x, int y, Bitmap* src, Rect src_rect) {
 				*dst_pixels++ = (uint16)dst_pix;
 			}
 		}
+		#else
+		const uint16 src_trans = src->colorkey();
+		const uint16 dst_trans = colorkey();
+
+		for (int j = 0; j < src_rect.height; j++) {
+			uint16* src_pixels = (uint16*) src->pixels() + (src_rect.y + j) * src->pitch() / src->bpp() + src_rect.x;
+			uint16* dst_pixels = (uint16*) pixels() + (y + j) * pitch() / bpp() + x;
+			for (int i = 0; i < src_rect.width; i++) {
+				if (*src_pixels == src_trans)
+					*dst_pixels = dst_trans;
+				src_pixels++;
+				dst_pixels++;
+			}
+		}
+		#endif
 	} else if (bpp() == 4) {
 		#ifdef USE_ALPHA
 		const int src_abyte = GetMaskByte(src->amask());

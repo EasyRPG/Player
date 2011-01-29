@@ -320,6 +320,19 @@ void SdlBitmap::FillRect(Rect dst_rect, const Color &color) {
 }
 
 ////////////////////////////////////////////////////////////
+void SdlBitmap::Mask(int x, int y, Bitmap* src, Rect src_rect) {
+	#ifdef USE_ALPHA
+		Surface::Mask(x, y, src, src_rect);
+	#else
+		src->SetTransparentColor(Color(255,255,255,0));
+		Blit(x, y, src, src_rect, 255);
+		SetTransparentColor(Color(0,0,0,0));
+	#endif
+
+	RefreshCallback();
+}
+
+////////////////////////////////////////////////////////////
 void SdlBitmap::SetTransparentColor(Color color) {
 	#ifndef USE_ALPHA
 		SDL_SetColorKey(bitmap, COLORKEY_FLAGS, GetUint32Color(color));

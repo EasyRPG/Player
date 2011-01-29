@@ -118,7 +118,6 @@ void Text::Draw(Surface* dest, int x, int y, std::wstring wtext, Surface::TextAl
 				continue;
 			}
 		}
-		mask->SetTransparentColor(Color(255,255,255,0));
 
 		// Get color region from system graphic
 		Rect clip_system(8+16*(font->color%10), 4+48+16*(font->color/10), 6, 12);
@@ -137,9 +136,7 @@ void Text::Draw(Surface* dest, int x, int y, std::wstring wtext, Surface::TextAl
 			char_surface->Blit(6, 0, system, clip_system, 255);
 		}
 		// Blit mask onto background
-		//char_surface->Mask(0, 0, mask, mask->GetRect());
-		char_surface->Blit(0, 0, mask, mask->GetRect(), 255);
-		char_surface->SetTransparentColor(Color(0,0,0,0));
+		char_surface->Mask(0, 0, mask, mask->GetRect());
 
 		Surface* char_shadow = Surface::CreateSurface(mask->GetWidth(), mask->GetHeight(), true);
 		#ifndef USE_ALPHA
@@ -150,9 +147,7 @@ void Text::Draw(Surface* dest, int x, int y, std::wstring wtext, Surface::TextAl
 		// Blit solid color background
 		char_shadow->Fill(shadow_color);
 		// Blit mask onto background
-		//char_shadow->Mask(0, 0, mask, mask->GetRect());
-		char_shadow->Blit(0, 0, mask, mask->GetRect(), 255);
-		char_shadow->SetTransparentColor(Color(0,0,0,0));
+		char_shadow->Mask(0, 0, mask, mask->GetRect());
 
 		// Blit first shadow and then text
 		text_surface->Blit(next_glyph_rect.x + 1, next_glyph_rect.y + 1, char_shadow, char_shadow->GetRect(), 255);
