@@ -29,13 +29,13 @@
 #undef min
 #endif
 
-template <typename T, typename S>
-T max(T x, S y) {
+template <typename T>
+T max(T x, T y) {
     return (x >= y) ? x : y;
 }
 
-template <typename T, typename S>
-T min(T x, S y) {
+template <typename T>
+T min(T x, T y) {
     return (x < y) ? x : y;
 }
 

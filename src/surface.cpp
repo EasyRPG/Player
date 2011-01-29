@@ -763,9 +763,9 @@ void Surface::ToneChange(const Tone &tone) {
 
 					gray = dst_r * 0.299 + dst_g * 0.587 + dst_b * 0.114;
 
-					dst_r = (uint8)max(min((dst_r - gray) * factor + gray + tone.red + 0.5, 255), 0);
-					dst_g = (uint8)max(min((dst_g - gray) * factor + gray + tone.green + 0.5, 255), 0);
-					dst_b = (uint8)max(min((dst_b - gray) * factor + gray + tone.blue + 0.5, 255), 0);
+					dst_r = (uint8)max(min((dst_r - gray) * factor + gray + tone.red + 0.5, 255.0), 0.0);
+					dst_g = (uint8)max(min((dst_g - gray) * factor + gray + tone.green + 0.5, 255.0), 0.0);
+					dst_b = (uint8)max(min((dst_b - gray) * factor + gray + tone.blue + 0.5, 255.0), 0.0);
 
 					dst_pixels++;
 				}
@@ -813,9 +813,9 @@ void Surface::ToneChange(const Tone &tone) {
 
 					gray = dst_pixels[rbyte] * 0.299 + dst_pixels[gbyte] * 0.587 + dst_pixels[bbyte] * 0.114;
 
-					dst_pixels[rbyte] = (uint8)max(min((dst_pixels[rbyte] - gray) * factor + gray + tone.red + 0.5, 255), 0);
-					dst_pixels[gbyte] = (uint8)max(min((dst_pixels[gbyte] - gray) * factor + gray + tone.green + 0.5, 255), 0);
-					dst_pixels[bbyte] = (uint8)max(min((dst_pixels[bbyte] - gray) * factor + gray + tone.blue + 0.5, 255), 0);
+					dst_pixels[rbyte] = (uint8)max(min((dst_pixels[rbyte] - gray) * factor + gray + tone.red + 0.5, 255.0), 0.0);
+					dst_pixels[gbyte] = (uint8)max(min((dst_pixels[gbyte] - gray) * factor + gray + tone.green + 0.5, 255.0), 0.0);
+					dst_pixels[bbyte] = (uint8)max(min((dst_pixels[bbyte] - gray) * factor + gray + tone.blue + 0.5, 255.0), 0.0);
 
 					dst_pixels += bpp();
 				}
