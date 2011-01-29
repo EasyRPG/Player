@@ -44,7 +44,6 @@ void Window_Help::SetText(std::string text,	Surface::TextAlignment align) {
 		this->text = text;
 		this->align = align;
 
-		contents->GetFont()->color = 0;
-		contents->TextDraw(0, 2, text, align);
+		contents->TextDraw(0, 2, Font::ColorDefault, text, align);
 	}
 }

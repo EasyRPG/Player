@@ -172,6 +172,8 @@ protected:
 	bool kill_message;
 	/// Prevents new page call when a halt \! was found
 	bool halt_output;
+	/// Text color
+	int text_color;
 	
 	/// Used by the number input event
 	Window_NumberInput* number_input_window;

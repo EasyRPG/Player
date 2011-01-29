@@ -47,6 +47,7 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	//cursor_width = 0;
 	active = false;
 	index = -1;
+	text_color = Font::ColorDefault;
 
 	number_input_window = new Window_NumberInput(0, 0);
 	number_input_window->SetVisible(false);
@@ -151,7 +152,7 @@ void Window_Message::InsertNewPage() {
 
 	contents_y = 2;
 	line_count = 0;
-	contents->GetFont()->color = Font::ColorDefault;
+	text_color = Font::ColorDefault;
 }
 
 ////////////////////////////////////////////////////////////
@@ -167,12 +168,12 @@ void Window_Message::InsertNewLine() {
 
 	if (line_count >= Game_Message::choice_start && Game_Message::choice_max > 0) {
 		// A choice resets the font color
-		contents->GetFont()->color = Font::ColorDefault;
+		text_color = Font::ColorDefault;
 
 		unsigned choice_index = line_count - Game_Message::choice_start;
 		// Check for disabled choices
 		if (Game_Message::choice_disabled.test(choice_index)) {
-			contents->GetFont()->color = Font::ColorDisabled;
+			text_color = Font::ColorDisabled;
 		}
 
 		contents_x += 12;
@@ -293,12 +294,12 @@ void Window_Message::UpdateMessage() {
 			case L'V':
 				// These commands support indirect access via \v[]
 				command_result = ParseCommandCode();
-				contents->TextDraw(contents_x, contents_y, command_result);
+				contents->TextDraw(contents_x, contents_y, text_color, command_result);
 				contents_x += contents->Surface::GetTextSize(command_result).width;
 				break;
 			case L'\\':
 				// Show Backslash
-				contents->TextDraw(contents_x, contents_y, std::string("\\"));
+				contents->TextDraw(contents_x, contents_y, text_color, std::string("\\"));
 				contents_x += contents->GetTextSize("\\").width;
 				break;
 			case L'_':
@@ -344,13 +345,13 @@ void Window_Message::UpdateMessage() {
 			((text[text_index+1] >= L'a' && text[text_index+1] <= L'z') ||
 			(text[text_index+1] >= L'A' && text[text_index+1] <= L'Z'))) {
 			// ExFont
-			contents->TextDraw(contents_x, contents_y, text.substr(text_index, 2));
+			contents->TextDraw(contents_x, contents_y, text_color, text.substr(text_index, 2));
 			contents_x += 12;
 			++text_index;
 		} else {
 			// Normal Text
 			std::wstring glyph = text.substr(text_index, 1);
-			contents->TextDraw(contents_x, contents_y, glyph);
+			contents->TextDraw(contents_x, contents_y, text_color, glyph);
 			contents_x += contents->Surface::GetTextSize(glyph).width;
 		}
 	}
@@ -457,7 +458,7 @@ std::wstring Window_Message::ParseCommandCode(int call_depth) {
 		} else {
 			parameter = ParseParameter(is_valid, call_depth);
 		}
-		contents->GetFont()->color = parameter > 19 ? 0 : parameter;
+		text_color = parameter > 19 ? 0 : parameter;
 		break;
 	case L'n':
 	case L'N':

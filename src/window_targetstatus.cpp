@@ -42,12 +42,10 @@ void Window_TargetStatus::Refresh() {
 		return;
 	}
 
-	contents->GetFont()->color = 1;
-
 	if (use_item) {
-		contents->TextDraw(0, 0, Data::terms.possessed_items);
+		contents->TextDraw(0, 0, 1, Data::terms.possessed_items);
 	} else {
-		contents->TextDraw(0, 0, Data::terms.sp_cost);
+		contents->TextDraw(0, 0, 1, Data::terms.sp_cost);
 	}
 
 	std::stringstream ss;
@@ -57,8 +55,7 @@ void Window_TargetStatus::Refresh() {
 		ss << Data::skills[id - 1].sp_cost;
 	}
 
-	contents->GetFont()->color = Font::ColorDefault;
-	contents->TextDraw(contents->GetWidth() - contents->GetTextSize(ss.str()).width, 0, ss.str(), Surface::TextAlignRight);
+	contents->TextDraw(contents->GetWidth() - contents->GetTextSize(ss.str()).width, 0, Font::ColorDefault, ss.str(), Surface::TextAlignRight);
 }
 
 ////////////////////////////////////////////////////////////

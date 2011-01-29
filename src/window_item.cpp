@@ -106,8 +106,8 @@ void Window_Item::DrawItem(int index) {
 		
 		std::stringstream ss;
 		ss << number;
-		contents->TextDraw(rect.x + rect.width - 28, rect.y, "x");
-		contents->TextDraw(rect.x + rect.width - 6, rect.y, ss.str(), Surface::TextAlignRight);
+		contents->TextDraw(rect.x + rect.width - 28, rect.y, Font::ColorDefault, "x");
+		contents->TextDraw(rect.x + rect.width - 6, rect.y, Font::ColorDefault, ss.str(), Surface::TextAlignRight);
 	}
 }
 

@@ -40,8 +40,7 @@ Window_Name::~Window_Name() {
 ////////////////////////////////////////////////////////////
 void Window_Name::Refresh() {
 	contents->Clear();
-	contents->GetFont()->color = Font::ColorDefault;
-	contents->TextDraw(2, 2, name);
+	contents->TextDraw(2, 2, Font::ColorDefault, name);
 }
 
 void Window_Name::Set(const std::string& text) {

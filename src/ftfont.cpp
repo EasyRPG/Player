@@ -33,45 +33,47 @@
 #include "ftfont.h"
 
 FT_Library FTFont::library;
-FT_Face FTFont::face;
-bool FTFont::ft_initialized = false;
+int FTFont::ft_lib_refcount = 0;
 
 ////////////////////////////////////////////////////////////
 /// Constructor
 ////////////////////////////////////////////////////////////
-FTFont::FTFont()
-	: Font() {}
-
-FTFont::FTFont(int _size)
-	: Font(_size) {}
-
-FTFont::FTFont(std::string _name)
-	: Font(_name) {}
-
-FTFont::FTFont(std::string _name, int _size)
-	: Font(_name, _size) {}
+FTFont::FTFont(std::string name, int size, bool bold, bool italic)
+	: Font(name, size, bold, italic), ft_face_initialized(false) {}
 
 ////////////////////////////////////////////////////////////
 /// Destructor
 ////////////////////////////////////////////////////////////
-FTFont::FTFont::~FTFont() {
+FTFont::~FTFont() {
+	if (ft_face_initialized) {
+		FT_Done_Face(face);
+		ft_face_initialized = false;
+	}
+	if (ft_lib_refcount > 0)
+		ft_lib_refcount--;
+	if (ft_lib_refcount == 0)
+		FT_Done_FreeType(library);
 }
 
 ////////////////////////////////////////////////////////////
 /// Initialization
 ////////////////////////////////////////////////////////////
 void FTFont::Init() {
-	if (ft_initialized)
+	if (ft_face_initialized)
 		return;
 
-    FT_Error ans = FT_Init_FreeType(&library);
-    if (ans != FT_Err_Ok) {
-		Output::Error("Couldn't initialize FreeType\n");
-		return;
+	if (ft_lib_refcount == 0) {
+		FT_Error ans = FT_Init_FreeType(&library);
+		if (ans != FT_Err_Ok) {
+			Output::Error("Couldn't initialize FreeType\n");
+			return;
+		}
 	}
 
+	ft_lib_refcount++;
+
 	std::string path = FileFinder::FindFont(name);
-    ans = FT_New_Face(library, path.c_str(), 0, &face);
+    FT_Error ans = FT_New_Face(library, path.c_str(), 0, &face);
     if (ans != FT_Err_Ok) {
 		Output::Error("Couldn't initialize FreeType face\n");
 		FT_Done_FreeType(library);
@@ -86,21 +88,7 @@ void FTFont::Init() {
 		return;
     }
 
-	ft_initialized = true;
-}
-
-////////////////////////////////////////////////////////////
-/// Cleanup
-////////////////////////////////////////////////////////////
-void FTFont::Dispose() {
-	if (!ft_initialized)
-		return;
-
-    FT_Done_Face(face);
-
-    FT_Done_FreeType(library);
-
-	ft_initialized = false;
+	ft_face_initialized = true;
 }
 
 ////////////////////////////////////////////////////////////

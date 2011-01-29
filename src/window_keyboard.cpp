@@ -108,13 +108,11 @@ void Window_Keyboard::UpdateCursorRect() {
 void Window_Keyboard::Refresh() {
 	contents->Clear();
 
-	contents->GetFont()->color = Font::ColorDefault;
-
 	for (int j = 0; j < row_max; j++) {
 		for (int i = 0; i < col_max; i++) {
 			const std::string s(items[mode][j][i]);
 			Rect r = GetItemRect(j, i);
-			contents->TextDraw(r.x + 4, r.y + 2, s);
+			contents->TextDraw(r.x + 4, r.y + 2, Font::ColorDefault, s);
 		}
 	}
 }

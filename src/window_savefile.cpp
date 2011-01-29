@@ -56,35 +56,29 @@ void Window_SaveFile::SetParty(const std::vector<Game_Actor*>& actors) {
 void Window_SaveFile::Refresh() {
 	contents->Clear();
 
-	contents->GetFont()->color = Font::ColorDefault;
-
 	std::ostringstream out;
 	out << "File " << std::setw(2) << std::setfill(' ') << index + 1;
-	contents->TextDraw(4, 0+2, out.str());
+	contents->TextDraw(4, 0+2, Font::ColorDefault, out.str());
 
 	if (party.empty())
 		return;
 
 	Game_Actor* actor = party[0];
-	contents->TextDraw(8, 16+2, actor->GetName());
+	contents->TextDraw(8, 16+2, Font::ColorDefault, actor->GetName());
 
-	contents->GetFont()->color = 1;
-	contents->TextDraw(8, 32+2, Data::terms.lvl_short);
+	contents->TextDraw(8, 32+2, 1, Data::terms.lvl_short);
 
-	contents->GetFont()->color = Font::ColorDefault;
 	int lx = Surface::GetTextSize(Data::terms.lvl_short).width;
 	out.str("");
 	out << std::setw(2) << std::setfill(' ') << actor->GetLevel();
-	contents->TextDraw(8+lx, 32+2, out.str());
+	contents->TextDraw(8+lx, 32+2, Font::ColorDefault, out.str());
 
-	contents->GetFont()->color = 1;
-	contents->TextDraw(42, 32+2, Data::terms.hp_short);
+	contents->TextDraw(42, 32+2, 1, Data::terms.hp_short);
 
-	contents->GetFont()->color = Font::ColorDefault;
 	int hx = Surface::GetTextSize(Data::terms.hp_short).width;
 	out.str("");
 	out << actor->GetHp();
-	contents->TextDraw(42+hx, 32+2, out.str());
+	contents->TextDraw(42+hx, 32+2, Font::ColorDefault, out.str());
 
 	for (int i = 0; i < 4 && (size_t) i < party.size(); i++)
 		DrawActorFace(party[i], 88 + i * 56, 0);

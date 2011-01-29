@@ -56,9 +56,8 @@ void Window_ShopNumber::Refresh() {
 	std::stringstream ss;
 	ss << number;
 
-	contents->GetFont()->color = Font::ColorDefault;
-	contents->TextDraw(132, y, "x");
-	contents->TextDraw(132 + 30, y, ss.str(), Surface::TextAlignRight);
+	contents->TextDraw(132, y, Font::ColorDefault, "x");
+	contents->TextDraw(132 + 30, y, Font::ColorDefault, ss.str(), Surface::TextAlignRight);
 	SetCursorRect(Rect(132 + 14, y - 2, 20, 16));
 	
 	DrawCurrencyValue(GetTotal(), contents->GetWidth(), y + 32);

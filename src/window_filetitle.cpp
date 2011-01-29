@@ -39,8 +39,7 @@ Window_FileTitle::~Window_FileTitle() {
 ////////////////////////////////////////////////////////////
 void Window_FileTitle::Refresh() {
 	contents->Clear();
-	contents->GetFont()->color = Font::ColorDefault;
-	contents->TextDraw(2, 2, message);
+	contents->TextDraw(2, 2, Font::ColorDefault, message);
 }
 
 void Window_FileTitle::Set(const std::string& text) {

@@ -35,21 +35,13 @@
 ////////////////////////////////////////////////////////////
 class SdlFont : public Font {
 public:
-	SdlFont();
-	SdlFont(std::string _name);
-	SdlFont(int _size);
-	SdlFont(std::string _name, int _size);
+	SdlFont(const std::string& name, int size, bool bold, bool italic);
 	~SdlFont();
 
 	int GetHeight();
 	Bitmap* Render(int glyph);
 
-	static void Dispose();
-
 private:
-	// TODO Where's the clean up for this?
-	static std::map<std::string, std::map<int, TTF_Font*> > fonts;
-
 	TTF_Font* ttf_font;
 	void GetTTF();
 };

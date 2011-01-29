@@ -29,7 +29,7 @@
 #include "wcwidth.h"
 
 ////////////////////////////////////////////////////////////
-void Text::Draw(Surface* dest, int x, int y, std::wstring wtext, Surface::TextAlignment align) {
+void Text::Draw(Surface* dest, int x, int y, int color, std::wstring wtext, Surface::TextAlignment align) {
 	if (wtext.length() == 0) return;
 
 	Font* font = dest->GetFont();
@@ -120,7 +120,7 @@ void Text::Draw(Surface* dest, int x, int y, std::wstring wtext, Surface::TextAl
 		}
 
 		// Get color region from system graphic
-		Rect clip_system(8+16*(font->color%10), 4+48+16*(font->color/10), 6, 12);
+		Rect clip_system(8+16*(color%10), 4+48+16*(color/10), 6, 12);
 
 		Surface* char_surface = Surface::CreateSurface(mask->GetWidth(), mask->GetHeight(), true);
 		#ifndef USE_ALPHA
@@ -185,9 +185,9 @@ void Text::Draw(Surface* dest, int x, int y, std::wstring wtext, Surface::TextAl
 	delete text_surface;
 }
 
-void Text::Draw(Surface* dest, int x, int y, std::string text, Surface::TextAlignment align) {
+void Text::Draw(Surface* dest, int x, int y, int color, std::string text, Surface::TextAlignment align) {
 	if (text.length() == 0) return;
 
 	std::wstring wtext = Utils::DecodeUTF(text);
-	Draw(dest, x, y, wtext, align);
+	Draw(dest, x, y, color, wtext, align);
 }

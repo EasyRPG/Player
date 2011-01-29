@@ -48,10 +48,7 @@ void Window_Command::Refresh() {
 ////////////////////////////////////////////////////////////
 void Window_Command::DrawItem(int index, Font::SystemColor color) {
 	contents->ClearRect(Rect(0, 16 * index, contents->GetWidth() - 0, 16));
-
-	contents->GetFont()->color = color;
-
-	contents->TextDraw(0, 16 * index + 2, commands[index]);
+	contents->TextDraw(0, 16 * index + 2, color, commands[index]);
 }
 
 ////////////////////////////////////////////////////////////

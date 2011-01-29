@@ -32,21 +32,17 @@
 ////////////////////////////////////////////////////////////
 class FTFont : public Font {
 public:
-	FTFont();
-	FTFont(std::string _name);
-	FTFont(int _size);
-	FTFont(std::string _name, int _size);
+	FTFont(std::string name, int size, bool bold, bool italic);
 	~FTFont();
 
 	int GetHeight();
 	Bitmap* Render(int glyph);
 
-	static void Dispose();
-
 private:
 	static FT_Library library;
-	static FT_Face face;
-	static bool ft_initialized;
+	static int ft_lib_refcount;
+	FT_Face face;
+	bool ft_face_initialized;
 
 	void Init();
 };

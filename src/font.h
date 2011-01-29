@@ -22,7 +22,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <string>
-#include <map>
+#include <vector>
 
 ////////////////////////////////////////////////////////////
 /// Font class
@@ -32,24 +32,20 @@ class Bitmap;
 
 class Font {
 public:
-	Font();
-	Font(std::string _name);
-	Font(int _size);
-	Font(std::string _name, int _size);
+	Font(const std::string& name, int size, bool bold, bool italic);
 	virtual ~Font();
 
 	virtual int GetHeight() = 0;
 	virtual Bitmap* Render(int glyph) = 0;
 	
-	static Font* CreateFont();
-	static bool Exists(std::string name);
+	static Font* CreateFont(const std::string& name = "", int size = 0, bool bold = false, bool italic = false);
+	static bool Exists(const std::string& name);
 	static void Dispose();
 
 	static const std::string default_name;
-	static const int default_size;
-	static const bool default_bold;
-	static const bool default_italic;
-	static const int default_color;
+	static const int default_size = 9;
+	static const bool default_bold = false;
+	static const bool default_italic = false;
 
 	enum SystemColor {
 		ColorDefault = 0,
@@ -58,11 +54,12 @@ public:
 		ColorKnockout = 5
 	};
 
-	std::string name;
-	int size;
-	bool bold;
-	bool italic;
-	int color;
+	const std::string name;
+	const int size;
+	const bool bold;
+	const bool italic;
+protected:
+	static std::vector<Font*> fonts;
 };
 
 #endif

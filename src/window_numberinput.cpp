@@ -49,7 +49,6 @@ Window_NumberInput::~Window_NumberInput() {
 void Window_NumberInput::Refresh() {
 	contents->Clear();
 
-	contents->GetFont()->color = Font::ColorDefault;
 	char s[7];
 	// Copies digits_max numbers from number-string to s
 	sprintf(s, "%0*d", digits_max, number);
@@ -57,7 +56,7 @@ void Window_NumberInput::Refresh() {
 	for (int i = 0; i < digits_max; ++i) {
 		char c[2] = {s[i], '\0'}; 
 		int x = i * (cursor_width - 2) + 12;
-		contents->TextDraw(x, 2, c);
+		contents->TextDraw(x, 2, Font::ColorDefault, c);
 	}
 }
 

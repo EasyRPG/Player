@@ -39,24 +39,10 @@
 #endif
 
 ////////////////////////////////////////////////////////////
-/// Static Variables
-////////////////////////////////////////////////////////////
-std::map<std::string, std::map<int, TTF_Font*> > SdlFont::fonts;
-
-////////////////////////////////////////////////////////////
 /// Constructor
 ////////////////////////////////////////////////////////////
-SdlFont::SdlFont()
-	: Font(), ttf_font(NULL) {}
-
-SdlFont::SdlFont(int _size)
-	: Font(_size), ttf_font(NULL) {}
-
-SdlFont::SdlFont(std::string _name)
-	: Font(_name), ttf_font(NULL) {}
-
-SdlFont::SdlFont(std::string _name, int _size)
-	: Font(_name, _size), ttf_font(NULL) {}
+SdlFont::SdlFont(const std::string& name, int size, bool bold, bool italic)
+	: Font(name, size, bold, italic), ttf_font(NULL) {}
 
 ////////////////////////////////////////////////////////////
 /// Destructor
@@ -71,15 +57,10 @@ void SdlFont::GetTTF() {
 	if (ttf_font != NULL)
 		return;
 
-	if (fonts.count(name) > 0 && fonts[name].count(size) > 0) {
-		ttf_font = fonts[name][size];
-	} else {
-		std::string path = FileFinder::FindFont(name);
-		ttf_font = TTF_OpenFont(path.c_str(), size);
-		if (!ttf_font) {
-			Output::Error("Couldn't open font %s size %d.\n%s\n", name.c_str(), size, TTF_GetError());
-		}
-		fonts[name][size] = ttf_font;
+	std::string path = FileFinder::FindFont(name);
+	ttf_font = TTF_OpenFont(path.c_str(), size);
+	if (!ttf_font) {
+		Output::Error("Couldn't open font %s size %d.\n%s\n", name.c_str(), size, TTF_GetError());
 	}
 
 	int style = 0;
@@ -106,20 +87,6 @@ Bitmap* SdlFont::Render(int c) {
 	SDL_Surface* surf = DisplayFormat(temp);
 	SDL_FreeSurface(temp);
 	return new SdlBitmap(surf);
-}
-
-////////////////////////////////////////////////////////////
-/// Cleanup
-////////////////////////////////////////////////////////////
-void SdlFont::Dispose() {
-	std::map<int, TTF_Font*>::iterator it;
-	std::map<std::string, std::map<int, TTF_Font*> >::iterator it2;
-
-	for (it2 = fonts.begin(); it2 != fonts.end(); ++it2) {
-		for (it = it2->second.begin(); it != it2->second.end(); ++it) {
-			TTF_CloseFont(it->second);
-		}
-	}
 }
 
 #endif

@@ -72,7 +72,7 @@ void Window_ShopBuy::DrawItem(int index) {
 
 	std::stringstream ss;
 	ss << Data::items[item_id - 1].price;
-	contents->TextDraw(rect.width + 4, rect.y, ss.str(), Surface::TextAlignRight);
+	contents->TextDraw(rect.width + 4, rect.y, Font::ColorDefault, ss.str(), Surface::TextAlignRight);
 }
 
 ////////////////////////////////////////////////////////////

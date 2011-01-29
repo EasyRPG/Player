@@ -96,7 +96,6 @@ Surface::Surface() :
 
 ////////////////////////////////////////////////////////////
 Surface::~Surface() {
-	delete font;
 }
 
 ////////////////////////////////////////////////////////////
@@ -997,41 +996,41 @@ void Surface::SetFont(Font* new_font) {
 	font = new_font;
 }
 
-void Surface::TextDraw(int x, int y, int width, int height, std::wstring wtext, TextAlignment align) {
+void Surface::TextDraw(int x, int y, int width, int height, int color, std::wstring wtext, TextAlignment align) {
 	Rect rect = Surface::GetTextSize(wtext);
 	int dx = rect.width - width;
 
 	switch (align) {
 		case TextAlignLeft:
-			TextDraw(x, y, wtext);
+			TextDraw(x, y, color, wtext);
 			break;
 		case TextAlignCenter:
-			TextDraw(x + dx / 2, y, wtext);
+			TextDraw(x + dx / 2, y, color, wtext);
 			break;
 		case TextAlignRight:
-			TextDraw(x + dx, y, wtext);
+			TextDraw(x + dx, y, color, wtext);
 			break;
 	}
 }
 
-void Surface::TextDraw(int x, int y, int width, int height, std::string text, TextAlignment align) {
-	TextDraw(x, y, width, height, Utils::DecodeUTF(text), align);
+void Surface::TextDraw(int x, int y, int width, int height, int color, std::string text, TextAlignment align) {
+	TextDraw(x, y, width, height, color, Utils::DecodeUTF(text), align);
 }
 
-void Surface::TextDraw(Rect rect, std::wstring wtext, TextAlignment align) {
-	TextDraw(rect.x, rect.y, rect.width, rect.height, wtext, align);
+void Surface::TextDraw(Rect rect, int color, std::wstring wtext, TextAlignment align) {
+	TextDraw(rect.x, rect.y, rect.width, rect.height, color, wtext, align);
 }
 
-void Surface::TextDraw(Rect rect, std::string text, TextAlignment align) {
-	TextDraw(rect, Utils::DecodeUTF(text), align);
+void Surface::TextDraw(Rect rect, int color, std::string text, TextAlignment align) {
+	TextDraw(rect, color, Utils::DecodeUTF(text), align);
 }
 
-void Surface::TextDraw(int x, int y, std::wstring wtext, TextAlignment align) {
-	Text::Draw(this, x, y, wtext, align);
+void Surface::TextDraw(int x, int y, int color, std::wstring wtext, TextAlignment align) {
+	Text::Draw(this, x, y, color, wtext, align);
 	RefreshCallback();
 }
 
-void Surface::TextDraw(int x, int y, std::string text, TextAlignment align) {
-	TextDraw(x, y, Utils::DecodeUTF(text), align);
+void Surface::TextDraw(int x, int y, int color, std::string text, TextAlignment align) {
+	TextDraw(x, y, color, Utils::DecodeUTF(text), align);
 }
 
