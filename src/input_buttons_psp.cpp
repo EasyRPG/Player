@@ -27,10 +27,11 @@
 void Input::InitButtons() {
 	buttons.resize(BUTTON_COUNT);
 
-	buttons[CANCEL].push_back(Keys::JOY_0); // Triangle
 	buttons[DECISION].push_back(Keys::JOY_1); // Circle
 	buttons[DECISION].push_back(Keys::JOY_2); // Cross
 	buttons[CANCEL].push_back(Keys::JOY_3); // Square
+
+	buttons[TOGGLE_FPS].push_back(Keys::JOY_0); // Triangle
 
 	buttons[N1].push_back(Keys::JOY_4); // Left trigger
 	buttons[N2].push_back(Keys::JOY_5); // Right trigger

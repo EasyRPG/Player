@@ -42,6 +42,7 @@
 #include <SDL_ttf.h>
 #endif
 #include <cstdlib>
+#include <cstring>
 
 ///////////////////////////////////////////////////////////
 static int FilterUntilFocus(const SDL_Event* evnt);
@@ -100,6 +101,8 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag) :
 	// Set window position to the middle of the
 	// screen
 	putenv("SDL_VIDEO_WINDOW_POS=center");
+#elif defined(PSP)
+	putenv("SDL_ASPECT_RATIO=4:3");
 #endif
 
 	if (SDL_Init(flags) < 0) {
