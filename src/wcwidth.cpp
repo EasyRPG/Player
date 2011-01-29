@@ -59,7 +59,11 @@
  * Latest version: http://www.cl.cam.ac.uk/~mgk25/ucs/wcwidth.c
  */
 
+#if defined(DINGOO)
+#include <stdlib.h>
+#else
 #include <wchar.h>
+#endif
 
 struct interval {
   int first;

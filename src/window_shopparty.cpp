@@ -100,7 +100,6 @@ void Window_ShopParty::Refresh() {
 
 				RPG::Item* new_item = &Data::items[item_id - 1];
 				int item_type =  new_item->type;
-				int equip_type = item_type - 1;
 				RPG::Item* current_item = NULL;
 
 				switch (item_type) {

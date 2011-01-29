@@ -29,6 +29,11 @@
 #include "tone.h"
 #include "bitmap.h"
 
+#if defined(DINGOO)
+#define wstring basic_string<wchar_t>
+#endif
+
+
 template <class T>
 class BitmapUtils;
 

@@ -32,6 +32,10 @@
 #include "util_macro.h"
 #include "utils.h"
 
+#if defined(DINGOO)
+#define wstringstream basic_stringstream<wchar_t>
+#endif
+
 ////////////////////////////////////////////////////////////
 Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),

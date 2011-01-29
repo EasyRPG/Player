@@ -20,6 +20,10 @@
 
 #include <string>
 
+#if defined(DINGOO)
+#define wstring basic_string<wchar_t>
+#endif
+
 namespace Utils {
 	////////////////////////////////////////////////////////
 	/// Converts a string to lower case.
