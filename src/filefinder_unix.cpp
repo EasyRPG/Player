@@ -121,6 +121,13 @@ void FileFinder::Init() {
 	trees.push_back(scandirs("."));
 }
 
+void FileFinder::InitRtpPaths() {
+	// ToDo: Define default rtp paths
+	//if (Player::engine == Player::EngineRpg2k) {
+	//} else if (Player::engine == Player::EngineRpg2k3) {
+	//}
+}
+
 ////////////////////////////////////////////////////////
 /// Quit FileFinder.
 ////////////////////////////////////////////////////////

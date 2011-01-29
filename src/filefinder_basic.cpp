@@ -24,7 +24,7 @@
 #include <vector>
 #include "filefinder.h"
 #include "options.h"
-#include "output.h"
+#include "player.h"
 
 ////////////////////////////////////////////////////////////
 // Helper Variables
@@ -79,6 +79,25 @@ void FileFinder::Init() {
 	search_paths.clear();
 	search_paths.push_back("");
 }
+
+void FileFinder::InitRtpPaths() {
+	if (Player::engine == Player::EngineRpg2k) {
+#ifdef GEKKO
+		search_paths.push_back(MakePath("sd:/data/rtp/2000/", ""));
+		search_paths.push_back(MakePath("usb:/data/rtp/2000/", ""));
+#else
+		search_paths.push_back(MakePath("/data/rtp/2000/", ""));
+#endif
+	} else if (Player::engine == Player::EngineRpg2k3) {
+#ifdef GEKKO
+		search_paths.push_back(MakePath("sd:/data/rtp/2003/", ""));
+		search_paths.push_back(MakePath("usb:/data/rtp/2003/", ""));
+#else
+		search_paths.push_back(MakePath("/data/rtp/2003/", ""));
+#endif
+	}
+}
+
 
 void FileFinder::Quit() {
 

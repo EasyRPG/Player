@@ -108,9 +108,7 @@ void Player::Init(int argc, char *argv[]) {
 		}
 	}
 
-#ifndef _WIN32
 	FileFinder::Init();
-#endif
 
 	DisplayUi = BaseUi::CreateBaseUi(
 		SCREEN_TARGET_WIDTH,

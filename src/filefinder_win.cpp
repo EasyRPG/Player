@@ -132,6 +132,9 @@ std::string GetFontFilename(std::string name) {
 void FileFinder::Init() {
 	search_paths.clear();
 	search_paths.push_back("");
+}
+
+void FileFinder::InitRtpPaths() {
 	std::string rtp_path;
 
 	if (Player::engine == Player::EngineRpg2k) {

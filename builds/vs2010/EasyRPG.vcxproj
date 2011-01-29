@@ -95,35 +95,35 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>.</OutDir>
+    <OutDir>..\..\bin\</OutDir>
     <TargetName>PlayerD</TargetName>
     <SourcePath>$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Pixman|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>.</OutDir>
+    <OutDir>..\..\bin\</OutDir>
     <TargetName>PlayerD</TargetName>
     <SourcePath>$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug SoftBitmap|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>.</OutDir>
+    <OutDir>..\..\bin\</OutDir>
     <TargetName>PlayerD</TargetName>
     <SourcePath>$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>./</OutDir>
+    <OutDir>..\..\bin\</OutDir>
     <TargetName>Player</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Pixman|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>./</OutDir>
+    <OutDir>..\..\bin\</OutDir>
     <TargetName>Player</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release SoftBitmap|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>./</OutDir>
+    <OutDir>..\..\bin\</OutDir>
     <TargetName>Player</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

@@ -73,10 +73,7 @@ void Scene_Title::Start() {
 			Player::engine = Player::EngineRpg2k3;
 		}
 
-		// File Finder cant be initialized earlier because we need the RPG-version
-		#ifdef _WIN32
-		FileFinder::Init();
-		#endif
+		FileFinder::InitRtpPaths();
 	}
 
 	init = true;
