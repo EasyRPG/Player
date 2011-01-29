@@ -45,7 +45,7 @@
 /// Bits traits
 ////////////////////////////////////////////////////////////
 
-template <class PF, int bits = PF::bits>
+template <class PF, int bits>
 struct bits_traits {
 };
 
@@ -113,10 +113,10 @@ struct bits_traits<PF, 32> {
 
 // general case
 template<class PF,
-		 int bits = PF::bits,
-		 bool aligned = PF::aligned,
-		 bool has_alpha = PF::has_alpha,
-		 bool has_colorkey = PF::has_colorkey>
+		 int bits,
+		 bool aligned,
+		 bool has_alpha,
+		 bool has_colorkey>
 struct alpha_traits {
 	static inline uint8 get_alpha(const DynamicFormat& format, const uint8* p) {
 		uint8 r, g, b, a;
@@ -169,9 +169,9 @@ struct alpha_traits<PF, 32, IsAligned, HasAlpha, HasColorkey> {
 ////////////////////////////////////////////////////////////
 
 template<class PF,
-		 bool aligned = PF::aligned,
-		 bool has_alpha = PF::has_alpha,
-		 bool has_colorkey = PF::has_colorkey>
+		 bool aligned,
+		 bool has_alpha,
+		 bool has_colorkey>
 struct rgba_traits {
 };
 
@@ -278,7 +278,7 @@ struct rgba_traits<PF, NotAligned, NoAlpha, NoColorkey> {
 /// Mask traits
 ////////////////////////////////////////////////////////////
 
-template<class PF, bool dynamic = PF::dynamic>
+template<class PF, bool dynamic>
 struct mask_traits {
 };
 
@@ -378,10 +378,10 @@ public:
 	static const bool has_colorkey = COLORKEY;
 	static const bool aligned = ALIGNED;
 
-	typedef bits_traits<my_type> bits_traits_type;
-	typedef alpha_traits<my_type> alpha_traits_type;
-	typedef rgba_traits<my_type> rgba_traits_type;
-	typedef mask_traits<my_type> mask_traits_type;
+	typedef bits_traits<my_type, bits> bits_traits_type;
+	typedef alpha_traits<my_type,bits,aligned,has_alpha,has_colorkey> alpha_traits_type;
+	typedef rgba_traits<my_type,aligned,has_alpha,has_colorkey> rgba_traits_type;
+	typedef mask_traits<my_type,dynamic> mask_traits_type;
 
 	static inline int endian(int byte) {
 #ifndef USE_BIG_ENDIAN
