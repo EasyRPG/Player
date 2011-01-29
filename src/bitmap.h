@@ -162,6 +162,7 @@ protected:
 	friend class BitmapScreen;
 	friend class GlBitmapScreen;
 	template <class T> friend class BitmapUtils;
+	template <class T1, class T2> friend class Blit2X;
 
 	Bitmap();
 

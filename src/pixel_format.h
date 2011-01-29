@@ -29,16 +29,28 @@
 /// PixelFormat class
 ////////////////////////////////////////////////////////////
 
+#define NoAlpha false
+#define HasAlpha true
+
+#define NoColorkey false
+#define HasColorkey true
+
+#define NotDynamic false
+#define IsDynamic true
+
+#define NotAligned false
+#define IsAligned true
+
 ////////////////////////////////////////////////////////////
 /// Bits traits
 ////////////////////////////////////////////////////////////
 
-template <int BITS>
+template <class PF, int bits = PF::bits>
 struct bits_traits {
 };
 
-template <>
-struct bits_traits<16> {
+template <class PF>
+struct bits_traits<PF, 16> {
 	static inline uint32 get_uint32(const uint8* p) {
 		return (uint32)*(const uint16*)p;
 	}
@@ -55,15 +67,18 @@ struct bits_traits<16> {
 	}
 };
 
-template <>
-struct bits_traits<24> {
+template <class PF>
+struct bits_traits<PF, 24> {
 	static inline uint32 get_uint32(const uint8* p) {
-		return ((uint32)(p[2]) << 16) | ((uint32)(p[1]) << 8) | (uint32)(p[0]);
+		return
+			((uint32)(p[PF::endian(2)]) << 16) |
+			((uint32)(p[PF::endian(1)]) <<  8) |
+			((uint32)(p[PF::endian(0)]) <<  0);
 	}
 	static inline void set_uint32(uint8* p, uint32 pix) {
-		p[0] = (pix >> 0) & 0xFF;
-		p[1] = (pix >> 1) & 0xFF;
-		p[2] = (pix >> 2) & 0xFF;
+		p[PF::endian(0)] = (pix >>  0) & 0xFF;
+		p[PF::endian(1)] = (pix >>  8) & 0xFF;
+		p[PF::endian(2)] = (pix >> 16) & 0xFF;
 	}
 	static inline void copy_pixel(uint8* dst, const uint8* src) {
 		memcpy(dst, src, 3);
@@ -74,8 +89,8 @@ struct bits_traits<24> {
 	}
 };
 
-template <>
-struct bits_traits<32> {
+template <class PF>
+struct bits_traits<PF, 32> {
 	static inline uint32 get_uint32(const uint8* p) {
 		return *(const uint32*) p;
 	}
@@ -117,7 +132,7 @@ struct alpha_traits {
 
 // colorkey
 template <class PF, int bits, bool aligned>
-struct alpha_traits<PF, bits, aligned, false, true> {
+struct alpha_traits<PF, bits, aligned, NoAlpha, HasColorkey> {
 	static inline uint8 get_alpha(const DynamicFormat& format, const uint8* p) {
 		uint32 pix = PF::get_uint32(p);
 		return (pix == format.colorkey) ? 0 : 255;
@@ -129,8 +144,8 @@ struct alpha_traits<PF, bits, aligned, false, true> {
 };
 
 // no alpha or colorkey
-template<class PF>
-struct alpha_traits<PF, 32, true, false, false> {
+template<class PF, int bits, bool aligned>
+struct alpha_traits<PF, bits, aligned, NoAlpha, NoColorkey> {
 	static inline uint8 get_alpha(const DynamicFormat& format, const uint8* p) {
 		return 255;
 	}
@@ -140,7 +155,7 @@ struct alpha_traits<PF, 32, true, false, false> {
 
 // aligned, with alpha
 template<class PF>
-struct alpha_traits<PF, 32, true, true, false> {
+struct alpha_traits<PF, 32, IsAligned, HasAlpha, HasColorkey> {
 	static inline uint8 get_alpha(const DynamicFormat& format, const uint8* p) {
 		return p[PF::abyte];
 	}
@@ -162,7 +177,7 @@ struct rgba_traits {
 
 // aligned, has alpha
 template<class PF>
-struct rgba_traits<PF, true, true, false> {
+struct rgba_traits<PF, IsAligned, HasAlpha, NoColorkey> {
 	static inline void get_rgba(const DynamicFormat& format, const uint8* p, uint8& r, uint8& g, uint8& b, uint8& a) {
 		r = p[PF::r_byte(format)];
 		g = p[PF::g_byte(format)];
@@ -180,7 +195,7 @@ struct rgba_traits<PF, true, true, false> {
 
 // aligned, has colorkey
 template<class PF>
-struct rgba_traits<PF, true, false, true> {
+struct rgba_traits<PF, IsAligned, NoAlpha, HasColorkey> {
 	static inline void get_rgba(const DynamicFormat& format, const uint8* p, uint8& r, uint8& g, uint8& b, uint8& a) {
 		r = p[PF::r_byte(format)];
 		g = p[PF::g_byte(format)];
@@ -201,7 +216,7 @@ struct rgba_traits<PF, true, false, true> {
 
 // aligned, no alpha or colorkey
 template<class PF>
-struct rgba_traits<PF, true, false, false> {
+struct rgba_traits<PF, IsAligned, NoAlpha, NoColorkey> {
 	static inline void get_rgba(const DynamicFormat& format, const uint8* p, uint8& r, uint8& g, uint8& b, uint8& a) {
 		r = p[PF::r_byte(format)];
 		g = p[PF::g_byte(format)];
@@ -218,7 +233,7 @@ struct rgba_traits<PF, true, false, false> {
 
 // unaligned, has alpha
 template<class PF>
-struct rgba_traits<PF, false, true, false> {
+struct rgba_traits<PF, NotAligned, HasAlpha, NoColorkey> {
 	static inline void get_rgba(const DynamicFormat& format, const uint8* p, uint8& r, uint8& g, uint8& b, uint8& a) {
 		const uint32 pix = PF::get_uint32(p);
 		PF::uint32_to_rgba(format, pix, r, g, b, a);
@@ -231,7 +246,7 @@ struct rgba_traits<PF, false, true, false> {
 
 // unaligned, has colorkey
 template<class PF>
-struct rgba_traits<PF, false, false, true> {
+struct rgba_traits<PF, NotAligned, NoAlpha, HasColorkey> {
 	static inline void get_rgba(const DynamicFormat& format, const uint8* p, uint8& r, uint8& g, uint8& b, uint8& a) {
 		const uint32 pix = PF::get_uint32(p);
 		if (pix == format.colorkey)
@@ -247,7 +262,7 @@ struct rgba_traits<PF, false, false, true> {
 
 // unaligned, no alpha or colorkey
 template<class PF>
-struct rgba_traits<PF, false, false, false> {
+struct rgba_traits<PF, NotAligned, NoAlpha, NoColorkey> {
 	static inline void get_rgba(const DynamicFormat& format, const uint8* p, uint8& r, uint8& g, uint8& b, uint8& a) {
 		const uint32 pix = PF::get_uint32(p);
 		PF::uint32_to_rgba(format, pix, r, g, b, a);
@@ -268,7 +283,7 @@ struct mask_traits {
 };
 
 template<class PF>
-struct mask_traits<PF, false> {
+struct mask_traits<PF, NotDynamic> {
 	static inline void uint32_to_rgba(const DynamicFormat& format, uint32 pix, uint8& r, uint8& g, uint8& b, uint8& a) {
 		r = (uint8)(((pix >> PF::rshift) & ((1 << PF::rbits) - 1)) << (8 - PF::rbits));
 		g = (uint8)(((pix >> PF::gshift) & ((1 << PF::gbits) - 1)) << (8 - PF::gbits));
@@ -288,10 +303,15 @@ struct mask_traits<PF, false> {
 	static inline int g_byte(const DynamicFormat& format) { return PF::gbyte; }
 	static inline int b_byte(const DynamicFormat& format) { return PF::bbyte; }
 	static inline int a_byte(const DynamicFormat& format) { return PF::abyte; }
+
+	static inline int r_mask(const DynamicFormat& format) { return PF::rmask; }
+	static inline int g_mask(const DynamicFormat& format) { return PF::gmask; }
+	static inline int b_mask(const DynamicFormat& format) { return PF::bmask; }
+	static inline int a_mask(const DynamicFormat& format) { return PF::amask; }
 };
 
 template<class PF>
-struct mask_traits<PF, true> {
+struct mask_traits<PF, IsDynamic> {
 	static inline void uint32_to_rgba(const DynamicFormat& format, uint32 pix, uint8& r, uint8& g, uint8& b, uint8& a) {
 		r = (uint8)(((pix >> format.rshift) & ((1 << format.rbits) - 1)) << (8 - format.rbits));
 		g = (uint8)(((pix >> format.gshift) & ((1 << format.gbits) - 1)) << (8 - format.gbits));
@@ -311,6 +331,11 @@ struct mask_traits<PF, true> {
 	static inline int g_byte(const DynamicFormat& format) { return format.gbyte; }
 	static inline int b_byte(const DynamicFormat& format) { return format.bbyte; }
 	static inline int a_byte(const DynamicFormat& format) { return format.abyte; }
+
+	static inline int r_mask(const DynamicFormat& format) { return format.rmask; }
+	static inline int g_mask(const DynamicFormat& format) { return format.gmask; }
+	static inline int b_mask(const DynamicFormat& format) { return format.bmask; }
+	static inline int a_mask(const DynamicFormat& format) { return format.amask; }
 };
 
 ////////////////////////////////////////////////////////////
@@ -353,10 +378,18 @@ public:
 	static const bool has_colorkey = COLORKEY;
 	static const bool aligned = ALIGNED;
 
-	typedef bits_traits<bits> bits_traits_type;
+	typedef bits_traits<my_type> bits_traits_type;
 	typedef alpha_traits<my_type> alpha_traits_type;
 	typedef rgba_traits<my_type> rgba_traits_type;
 	typedef mask_traits<my_type> mask_traits_type;
+
+	static inline int endian(int byte) {
+#ifndef USE_BIG_ENDIAN
+		return byte;
+#else
+		return bytes - 1 - byte;
+#endif
+	}
 
 	static inline void uint32_to_rgba(const DynamicFormat& format, uint32 pix, uint8& r, uint8& g, uint8& b, uint8& a) {
 		mask_traits_type::uint32_to_rgba(format, pix, r, g, b, a);
@@ -367,19 +400,35 @@ public:
 	}
 
 	static inline int r_byte(const DynamicFormat& format) {
-		return mask_traits_type::r_byte(format);
+		return endian(mask_traits_type::r_byte(format));
 	}
 
 	static inline int g_byte(const DynamicFormat& format) {
-		return mask_traits_type::g_byte(format);
+		return endian(mask_traits_type::g_byte(format));
 	}
 
 	static inline int b_byte(const DynamicFormat& format) {
-		return mask_traits_type::b_byte(format);
+		return endian(mask_traits_type::b_byte(format));
 	}
 
 	static inline int a_byte(const DynamicFormat& format) {
-		return mask_traits_type::a_byte(format);
+		return endian(mask_traits_type::a_byte(format));
+	}
+
+	static inline int r_mask(const DynamicFormat& format) {
+		return mask_traits_type::r_mask(format);
+	}
+
+	static inline int g_mask(const DynamicFormat& format) {
+		return mask_traits_type::g_mask(format);
+	}
+
+	static inline int b_mask(const DynamicFormat& format) {
+		return mask_traits_type::b_mask(format);
+	}
+
+	static inline int a_mask(const DynamicFormat& format) {
+		return mask_traits_type::a_mask(format);
 	}
 
 	static inline uint32 get_uint32(const uint8* p) {
@@ -418,6 +467,30 @@ public:
 		rgba_traits_type::set_rgba(format, p, r, g, b, a);
 	}
 };
+
+#ifndef USE_BIG_ENDIAN
+typedef PixelFormat<32,NotDynamic,HasAlpha,NoColorkey,IsAligned,8,16,8,8,8,0,8,24> format_B8G8R8A8;
+typedef PixelFormat<32,NotDynamic,HasAlpha,NoColorkey,IsAligned,8,0,8,8,8,16,8,24> format_R8G8B8A8;
+#else
+typedef PixelFormat<32,NotDynamic,HasAlpha,NoColorkey,IsAligned,8,8,8,16,8,24,8,0> format_B8G8R8A8;
+typedef PixelFormat<32,NotDynamic,HasAlpha,NoColorkey,IsAligned,8,24,8,16,8,8,8,0> format_R8G8B8A8;
+#endif
+
+////////////////////////////////////////////////////////////
+
+#undef NoAlpha
+#undef HasAlpha
+
+#undef NoColorkey
+#undef HasColorkey
+
+#undef NotDynamic
+#undef IsDynamic
+
+#undef NotAligned
+#undef IsAligned
+
+////////////////////////////////////////////////////////////
 
 #endif
 

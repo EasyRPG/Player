@@ -145,19 +145,19 @@ uint16 SoftBitmap::pitch() const {
 }
 
 uint32 SoftBitmap::rmask() const {
-	return pixel_format::rmask;
+	return pixel_format::r_mask(format);
 }
 
 uint32 SoftBitmap::gmask() const {
-	return pixel_format::gmask;
+	return pixel_format::g_mask(format);
 }
 
 uint32 SoftBitmap::bmask() const {
-	return pixel_format::bmask;
+	return pixel_format::b_mask(format);
 }
 
 uint32 SoftBitmap::amask() const {
-	return pixel_format::amask;
+	return pixel_format::a_mask(format);
 }
 
 uint32 SoftBitmap::colorkey() const {
