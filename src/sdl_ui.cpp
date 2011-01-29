@@ -76,16 +76,6 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag) :
 	keys.resize(Input::Keys::KEYS_COUNT, false);
 
 #ifdef GEKKO
-	// Initialize the Gekko(Wii) video system
-	VIDEO_Init();
-	GXRModeObj* rmode = VIDEO_GetPreferredMode(NULL);
-	void* xfb = MEM_K0_TO_K1(SYS_AllocateFramebuffer(rmode));
-	VIDEO_Configure(rmode);
-	VIDEO_SetNextFramebuffer(xfb);
-	VIDEO_SetBlack(FALSE);
-	VIDEO_Flush();
-	VIDEO_WaitVSync();
-
 	WPAD_Init();
 
 	SYS_SetResetCallback(GekkoResetCallback);

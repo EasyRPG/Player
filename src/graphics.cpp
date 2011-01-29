@@ -255,10 +255,15 @@ void Graphics::InternUpdate2(bool reset) {
 
 ////////////////////////////////////////////////////////////
 void Graphics::UpdateTitle() {
-	if (fps_on_screen) return;
+	if (DisplayUi->IsFullscreen()) return;
 
 	std::stringstream title;
-	title << GAME_TITLE << " - FPS " << fps;
+	title << GAME_TITLE;
+
+	if (!fps_on_screen) {
+		title << " - FPS " << fps;
+	}
+
 	DisplayUi->SetTitle(title.str());
 }
 

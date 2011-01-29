@@ -21,6 +21,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "msgbox.h"
+#include "utils.h"
 #include "util_win.h"
 #include <windows.h>
 #ifdef _MSC_VER
@@ -64,30 +65,10 @@ LRESULT CALLBACK CBTProc(INT, WPARAM, LPARAM);
 HHOOK hhk;
 
 ////////////////////////////////////////////////////////////
-/// MSVC Unicode std::string to LPCWSTR
-////////////////////////////////////////////////////////////
-#ifdef UNICODE
-static std::wstring s2ws(const std::string& s) {
-	int len;
-	int slength = (int)s.length() + 1;
-	len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0);
-	wchar_t* buf = new wchar_t[len];
-	MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, buf, len);
-	std::wstring r(buf);
-	delete[] buf;
-	return r;
-}
-#else
-static std::string s2ws(const std::string& s) {
-	return s;
-}
-#endif
-
-////////////////////////////////////////////////////////////
 /// Displays a centered message box.
 ////////////////////////////////////////////////////////////
 INT CBTMessageBox(HWND hwnd, LPCTSTR lpText, LPCTSTR lpCaption,
-                  UINT uType) {
+				UINT uType) {
 	hhk = SetWindowsHookEx(WH_CBT, &CBTProc, 0, GetCurrentThreadId());
 	return MessageBox(hwnd, lpText, lpCaption, uType);
 }
@@ -171,14 +152,9 @@ void ShowTaskDialog(std::string& msg, std::string& title, LPCTSTR icon) {
 			msg = msg.substr(0, pos);
 		}
 
-#ifdef UNICODE
-		std::wstring windowTitle = s2ws(title);
-		std::wstring mainInstruction = s2ws(msg);
-		std::wstring wcontent = s2ws(content);
-#else
-		std::string windowTitle = title;
-		std::string mainInstruction = msg;
-#endif
+		std::wstring windowTitle = Utils::DecodeUTF(title);
+		std::wstring mainInstruction = Utils::DecodeUTF(msg);
+		std::wstring wcontent = Utils::DecodeUTF(content);
 
 		// Prepare the Dialog
 		TASKDIALOGCONFIG config;
@@ -205,10 +181,10 @@ void MsgBox::OK(std::string msg, std::string title) {
 	if (WindowsUtils::GetWindowsVersion() >= 6) {
 		ShowTaskDialog(msg, title, TD_INFORMATION_ICON);
 	} else {
-		CBTMessageBox(WindowsUtils::GetHwnd(), s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK);
+		CBTMessageBox(WindowsUtils::GetHwnd(), Utils::DecodeUTF(msg).c_str(), Utils::DecodeUTF(title).c_str(), MB_OK);
 	}
 #else
-	CBTMessageBox(WindowsUtils::GetHwnd(), s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK);
+	CBTMessageBox(WindowsUtils::GetHwnd(), Utils::DecodeUTF(msg).c_str(), Utils::DecodeUTF(title).c_str(), MB_OK);
 #endif
 }
 
@@ -220,10 +196,10 @@ void MsgBox::Error(std::string msg, std::string title) {
 	if (WindowsUtils::GetWindowsVersion() >= 6) {
 		ShowTaskDialog(msg, title, TD_ERROR_ICON);
 	} else {
-		CBTMessageBox(WindowsUtils::GetHwnd(), s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK | MB_ICONERROR);
+		CBTMessageBox(WindowsUtils::GetHwnd(), Utils::DecodeUTF(msg).c_str(), Utils::DecodeUTF(title).c_str(), MB_OK | MB_ICONERROR);
 	}
 #else
-	CBTMessageBox(WindowsUtils::GetHwnd(), s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK | MB_ICONERROR);
+	CBTMessageBox(WindowsUtils::GetHwnd(), Utils::DecodeUTF(msg).c_str(), Utils::DecodeUTF(title).c_str(), MB_OK | MB_ICONERROR);
 #endif
 }
 
@@ -235,10 +211,10 @@ void MsgBox::Warning(std::string msg, std::string title) {
 	if (WindowsUtils::GetWindowsVersion() >= 6) {
 		ShowTaskDialog(msg, title, TD_WARNING_ICON);
 	} else {
-		CBTMessageBox(WindowsUtils::GetHwnd(), s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK | MB_ICONEXCLAMATION);
+		CBTMessageBox(WindowsUtils::GetHwnd(), Utils::DecodeUTF(msg).c_str(), Utils::DecodeUTF(title).c_str(), MB_OK | MB_ICONEXCLAMATION);
 	}
 #else
-	CBTMessageBox(WindowsUtils::GetHwnd(), s2ws(msg).c_str(), s2ws(title).c_str(), MB_OK | MB_ICONEXCLAMATION);
+	CBTMessageBox(WindowsUtils::GetHwnd(), Utils::DecodeUTF(msg).c_str(), Utils::DecodeUTF(title).c_str(), MB_OK | MB_ICONEXCLAMATION);
 #endif
 }
 

@@ -22,22 +22,7 @@
 ////////////////////////////////////////////////////////////
 #include <string>
 #include "registry_win.h"
-
-////////////////////////////////////////////////////////////
-/// MSVC Unicode std::string to LPCWSTR
-////////////////////////////////////////////////////////////
-#ifdef UNICODE
-static std::wstring s2ws2(const std::string& s) {
-	int len;
-	int slength = (int)s.length() + 1;
-	len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0);
-	wchar_t* buf = new wchar_t[len];
-	MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, buf, len);
-	std::wstring r(buf);
-	delete[] buf;
-	return r;
-}
-#endif
+#include "utils.h"
 
 ////////////////////////////////////////////////////////////
 /// Read String value
@@ -47,19 +32,15 @@ std::string Registry::ReadStrValue(HKEY hkey, std::string key, std::string val) 
 	DWORD size = 1024;
 	DWORD type = REG_SZ;
 	HKEY key_handle;
-#if UNICODE
-	std::wstring wkey = s2ws2(key.c_str());
-#else
-	std::string wkey = key;
-#endif
+
+	std::wstring wkey = Utils::DecodeUTF(key.c_str());
+
 	if (RegOpenKeyEx(hkey, wkey.c_str(), NULL, KEY_QUERY_VALUE, &key_handle)) {
 		return "";
 	}
-#if UNICODE
-	std::wstring wval = s2ws2(val.c_str());
-#else
-	std::string wval = val;
-#endif
+
+	std::wstring wval = Utils::DecodeUTF(val.c_str());
+
 	if (RegQueryValueEx(key_handle, wval.c_str(), NULL, &type, (LPBYTE)&value, &size)) {
 		return "";
 	}
@@ -81,19 +62,15 @@ int Registry::ReadBinValue(HKEY hkey, std::string key, std::string val, unsigned
 	DWORD size = 1024;
 	DWORD type = REG_BINARY;
 	HKEY key_handle;
-#if UNICODE
-	std::wstring wkey = s2ws2(key.c_str());
-#else
-	std::string wkey = key;
-#endif
+
+	std::wstring wkey = Utils::DecodeUTF(key.c_str());
+
 	if (RegOpenKeyEx(hkey, wkey.c_str(), NULL, KEY_QUERY_VALUE, &key_handle)) {
 		return 0;
 	}
-#if UNICODE
-	std::wstring wval = s2ws2(val.c_str());
-#else
-	std::string wval = val;
-#endif
+
+	std::wstring wval = Utils::DecodeUTF(val.c_str());
+
 	if (RegQueryValueEx(key_handle, wval.c_str(), NULL, &type, bin, &size)) {
 		return 0;
 	}

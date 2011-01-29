@@ -53,6 +53,7 @@ namespace Input {
 		PERIOD,
 		DEBUG_MENU,
 		DEBUG_THROUGH,
+		TOGGLE_FPS,
 		BUTTON_COUNT
 	};
 

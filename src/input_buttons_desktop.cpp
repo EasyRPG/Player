@@ -68,6 +68,7 @@ void Input::InitButtons() {
 	buttons[DEBUG_MENU].push_back(Keys::F9);
 	buttons[DEBUG_THROUGH].push_back(Keys::LCTRL);
 	buttons[DEBUG_THROUGH].push_back(Keys::RCTRL);
+	buttons[TOGGLE_FPS].push_back(Keys::F2);
 #endif
 
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
