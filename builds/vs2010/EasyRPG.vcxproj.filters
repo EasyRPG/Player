@@ -61,6 +61,12 @@
     <Filter Include="Source Files\Backend\Graphics\gl">
       <UniqueIdentifier>{7c9e2021-4809-40d7-a505-60dddd6d70c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Backend\Graphics\pixman">
+      <UniqueIdentifier>{d2bc687f-f170-41dd-ac7f-7a3b237d6af1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Backend\Graphics\soft">
+      <UniqueIdentifier>{07190c41-1d1f-43d6-9b8f-70ea3d180999}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\cache.cpp">
@@ -369,12 +375,6 @@
     <ClCompile Include="..\..\src\util_win.cpp">
       <Filter>Source Files\Tools\Win</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\soft_bitmap.cpp">
-      <Filter>Source Files\Backend\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\soft_bitmap_screen.cpp">
-      <Filter>Source Files\Backend\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\utils.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
@@ -389,6 +389,24 @@
     </ClCompile>
     <ClCompile Include="..\..\src\wcwidth.cpp">
       <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ftfont.cpp">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\image.cpp">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\soft_bitmap.cpp">
+      <Filter>Source Files\Backend\Graphics\soft</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\soft_bitmap_screen.cpp">
+      <Filter>Source Files\Backend\Graphics\soft</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\pixman_bitmap.cpp">
+      <Filter>Source Files\Backend\Graphics\pixman</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\pixman_bitmap_screen.cpp">
+      <Filter>Source Files\Backend\Graphics\pixman</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\bitmap_utils.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
@@ -707,12 +725,6 @@
     <ClInclude Include="..\..\src\util_win.h">
       <Filter>Source Files\Tools\Win</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\soft_bitmap.h">
-      <Filter>Source Files\Backend\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\soft_bitmap_screen.h">
-      <Filter>Source Files\Backend\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\utils.h">
       <Filter>Source Files\Tools</Filter>
     </ClInclude>
@@ -730,6 +742,24 @@
     </ClInclude>
     <ClInclude Include="..\..\src\pixel_format.h">
       <Filter>Source Files\Backend\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\image.h">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ftfont.h">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\soft_bitmap_screen.h">
+      <Filter>Source Files\Backend\Graphics\soft</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\soft_bitmap.h">
+      <Filter>Source Files\Backend\Graphics\soft</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\pixman_bitmap_screen.h">
+      <Filter>Source Files\Backend\Graphics\pixman</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\pixman_bitmap.h">
+      <Filter>Source Files\Backend\Graphics\pixman</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\bitmap_utils.h">
       <Filter>Source Files\Backend\Graphics</Filter>

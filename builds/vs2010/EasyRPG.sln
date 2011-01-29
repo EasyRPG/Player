@@ -1,25 +1,45 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+# Visual C++ Express 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EasyRPG", "EasyRPG.vcxproj", "{BDAFF2D9-EC6B-4D53-8857-3F1064252322}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D892967A-6B8E-4AC5-9D38-785D748796D0} = {D892967A-6B8E-4AC5-9D38-785D748796D0}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Readers", "..\..\..\readers\builds\vs2010\readers.vcxproj", "{D892967A-6B8E-4AC5-9D38-785D748796D0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "readers", "..\..\..\readers\builds\vs2010\readers.vcxproj", "{D892967A-6B8E-4AC5-9D38-785D748796D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Pixman|Win32 = Debug Pixman|Win32
+		Debug SoftBitmap|Win32 = Debug SoftBitmap|Win32
 		Debug|Win32 = Debug|Win32
+		Release Pixman|Win32 = Release Pixman|Win32
+		Release SoftBitmap|Win32 = Release SoftBitmap|Win32
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BDAFF2D9-EC6B-4D53-8857-3F1064252322}.Debug Pixman|Win32.ActiveCfg = Debug Pixman|Win32
+		{BDAFF2D9-EC6B-4D53-8857-3F1064252322}.Debug Pixman|Win32.Build.0 = Debug Pixman|Win32
+		{BDAFF2D9-EC6B-4D53-8857-3F1064252322}.Debug SoftBitmap|Win32.ActiveCfg = Debug SoftBitmap|Win32
+		{BDAFF2D9-EC6B-4D53-8857-3F1064252322}.Debug SoftBitmap|Win32.Build.0 = Debug SoftBitmap|Win32
 		{BDAFF2D9-EC6B-4D53-8857-3F1064252322}.Debug|Win32.ActiveCfg = Debug|Win32
 		{BDAFF2D9-EC6B-4D53-8857-3F1064252322}.Debug|Win32.Build.0 = Debug|Win32
+		{BDAFF2D9-EC6B-4D53-8857-3F1064252322}.Release Pixman|Win32.ActiveCfg = Release Pixman|Win32
+		{BDAFF2D9-EC6B-4D53-8857-3F1064252322}.Release Pixman|Win32.Build.0 = Release Pixman|Win32
+		{BDAFF2D9-EC6B-4D53-8857-3F1064252322}.Release SoftBitmap|Win32.ActiveCfg = Release SoftBitmap|Win32
+		{BDAFF2D9-EC6B-4D53-8857-3F1064252322}.Release SoftBitmap|Win32.Build.0 = Release SoftBitmap|Win32
 		{BDAFF2D9-EC6B-4D53-8857-3F1064252322}.Release|Win32.ActiveCfg = Release|Win32
 		{BDAFF2D9-EC6B-4D53-8857-3F1064252322}.Release|Win32.Build.0 = Release|Win32
+		{D892967A-6B8E-4AC5-9D38-785D748796D0}.Debug Pixman|Win32.ActiveCfg = Debug|Win32
+		{D892967A-6B8E-4AC5-9D38-785D748796D0}.Debug Pixman|Win32.Build.0 = Debug|Win32
+		{D892967A-6B8E-4AC5-9D38-785D748796D0}.Debug SoftBitmap|Win32.ActiveCfg = Debug|Win32
+		{D892967A-6B8E-4AC5-9D38-785D748796D0}.Debug SoftBitmap|Win32.Build.0 = Debug|Win32
 		{D892967A-6B8E-4AC5-9D38-785D748796D0}.Debug|Win32.ActiveCfg = Debug|Win32
 		{D892967A-6B8E-4AC5-9D38-785D748796D0}.Debug|Win32.Build.0 = Debug|Win32
+		{D892967A-6B8E-4AC5-9D38-785D748796D0}.Release Pixman|Win32.ActiveCfg = Release|Win32
+		{D892967A-6B8E-4AC5-9D38-785D748796D0}.Release Pixman|Win32.Build.0 = Release|Win32
+		{D892967A-6B8E-4AC5-9D38-785D748796D0}.Release SoftBitmap|Win32.ActiveCfg = Release|Win32
+		{D892967A-6B8E-4AC5-9D38-785D748796D0}.Release SoftBitmap|Win32.Build.0 = Release|Win32
 		{D892967A-6B8E-4AC5-9D38-785D748796D0}.Release|Win32.ActiveCfg = Release|Win32
 		{D892967A-6B8E-4AC5-9D38-785D748796D0}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
