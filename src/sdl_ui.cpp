@@ -324,8 +324,8 @@ bool SdlUi::RefreshDisplayMode() {
 	if (!main_window)
 		return false;
 
-	// Only 16 and 32 bpp are supported
-	if (main_window->format->BitsPerPixel != 16 &&	main_window->format->BitsPerPixel != 32)
+	// Modes below 15 bpp aren't supported
+	if (main_window->format->BitsPerPixel < 15)
 		return false;
 		
 	current_display_mode.bpp = main_window->format->BitsPerPixel;

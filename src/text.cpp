@@ -62,13 +62,17 @@ void Text::Draw(Surface* dest, int x, int y, int color, std::wstring wtext, Surf
 
 	// Get the Shadow color
 	Color shadow_color(Cache::system_info.sh_color);
-	// If shadow is pure black, add 1 to blue channel
+	// If shadow is pure black, increase blue channel
 	// so it doesn't become transparent
 	if ((shadow_color.red == 0) &&
 		(shadow_color.green == 0) &&
 		(shadow_color.blue == 0) ) {
-		// FIXME: what if running in 16 bpp?
-		shadow_color.blue++;
+		
+		if (text_surface->bpp() >= 3) {
+			shadow_color.blue++;
+		} else {
+			shadow_color.blue += 8;
+		}
 	}
 
 	// Where to draw the next glyph (x pos)

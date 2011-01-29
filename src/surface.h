@@ -245,6 +245,7 @@ public:
 	virtual void SetFont(Font* font);
 
 protected:
+	friend class Text;
 	friend class FTFont;
 	template <class T> friend class BitmapUtils;
 
