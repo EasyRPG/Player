@@ -25,20 +25,7 @@
 #include "output.h"
 #include "player.h"
 #include "surface.h"
-
-////////////////////////////////////////////////////////////
-// BlockD subtiles IDs
-////////////////////////////////////////////////////////////
-static const int BLOCK_C = 3000;
-
-static const int BLOCK_D = 4000;
-static const int BLOCK_D_BLOCKS = 12;
-
-static const int BLOCK_E = 5000;
-static const int BLOCK_E_TILES = 144;
-
-static const int BLOCK_F = 10000;
-static const int BLOCK_F_TILES = 144;
+#include "map_data.h"
 
 ////////////////////////////////////////////////////////////
 // Blocks subtiles IDs
@@ -178,7 +165,7 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	memset(autotiles_d, NULL, sizeof(autotiles_d));
 	
 	int tiles_y = (int)ceil(DisplayUi->GetHeight() / 16.0) + 1;
-	for (int i = 0; i <= tiles_y; i++) {
+	for (int i = 0; i < tiles_y + 2; i++) {
 		Graphics::RegisterZObj(16 * i, ID, true);
 	}
 	Graphics::RegisterZObj(9999, ID, true);
@@ -593,20 +580,20 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 				// Calculate the tile Z
 				if (!passable.empty()) {
 					if (tile.ID >= BLOCK_F) {
-						if ((passable[substitutions[tile.ID - BLOCK_F]] & (1 << 4)) == (1 << 4)) tile.z = 32;
+						if ((passable[substitutions[tile.ID - BLOCK_F]] & Passable::Above) != 0) tile.z = 32;
 
 					} else if (tile.ID >= BLOCK_E) {
-						if ((passable[substitutions[tile.ID - BLOCK_E]] & (1 << 4)) == (1 << 4)) tile.z = 16;
+						if ((passable[substitutions[tile.ID - BLOCK_E]] & Passable::Above) != 0) tile.z = 16;
 
 					} else if (tile.ID >= BLOCK_D) {
-						if ((passable[(tile.ID - BLOCK_D) / 50 + 6] & (1 << 5)) == (1 << 5)) tile.z = 9999;
-						else if ((passable[(tile.ID - BLOCK_D) / 50 + 6] & (1 << 4)) == (1 << 4)) tile.z = 16;
+						if ((passable[(tile.ID - BLOCK_D) / 50 + 6] & Passable::Wall) != 0) tile.z = 9999;
+						else if ((passable[(tile.ID - BLOCK_D) / 50 + 6] & Passable::Above) != 0) tile.z = 16;
 
 					} else if (tile.ID >= BLOCK_C) {
-						if ((passable[(tile.ID - BLOCK_C) / 50 + 3] & (1 << 4)) == (1 << 4)) tile.z = 16;
+						if ((passable[(tile.ID - BLOCK_C) / 50 + 3] & Passable::Above) != 0) tile.z = 16;
 
 					} else {
-						if ((passable[tile.ID / 1000] & (1 << 4)) == (1 << 4)) tile.z = 16;
+						if ((passable[tile.ID / 1000] & Passable::Above) != 0) tile.z = 16;
 					}
 				}
 				data_cache[x][y] = tile;

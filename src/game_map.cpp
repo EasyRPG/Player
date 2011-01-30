@@ -22,6 +22,7 @@
 #include "game_interpreter.h"
 #include "game_temp.h"
 #include "lmu_reader.h"
+#include "map_data.h"
 #include "main_data.h"
 #include "output.h"
 #include "util_macro.h"
@@ -262,30 +263,30 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 
 	int16 tile_index = (int16)(x + y * map->width);
 
-	int16 tile_id = map->upper_layer[tile_index] - 10000;
+	int16 tile_id = map->upper_layer[tile_index] - BLOCK_F;
 	tile_id = substitutions_up[tile_id];
 
 	if ((passages_up[tile_id] & bit) == 0)
 		return false;
 
-	if ((passages_up[tile_id] & (1 << 4)) != (1 << 4))
+	if ((passages_up[tile_id] & Passable::Above) == 0)
 		return true;
 
-	if (map->lower_layer[tile_index] >= 5000) {
-		tile_id = map->lower_layer[tile_index] - 5000;
+	if (map->lower_layer[tile_index] >= BLOCK_E) {
+		tile_id = map->lower_layer[tile_index] - BLOCK_E;
 		tile_id = substitutions_down[tile_id];
 		tile_id += 18;
 
 		if ((passages_down[tile_id] & bit) == 0)
 			return false;
 
-	} else if (map->lower_layer[tile_index] >= 4000) {
-		tile_id = (map->lower_layer[tile_index] - 4000) / 50;
-		int16 autotile_id = map->lower_layer[tile_index] - 4000 - tile_id * 50;
+	} else if (map->lower_layer[tile_index] >= BLOCK_D) {
+		tile_id = (map->lower_layer[tile_index] - BLOCK_D) / 50;
+		int16 autotile_id = map->lower_layer[tile_index] - BLOCK_D - tile_id * 50;
 
 		tile_id += 6;
 
-		if (((passages_down[tile_id] & (1 << 5)) == (1 << 5)) && (
+		if (((passages_down[tile_id] & Passable::Wall) != 0) && (
 				(autotile_id >= 20 && autotile_id <= 23) ||
 				(autotile_id >= 33 && autotile_id <= 37) ||
 				autotile_id == 42 ||
@@ -297,13 +298,13 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 		if ((passages_down[tile_id] & bit) == 0)
 			return false;
 
-	} else if (map->lower_layer[tile_index] >= 3000) {
-		tile_id = (map->lower_layer[tile_index] - 3000) / 50 + 3;
+	} else if (map->lower_layer[tile_index] >= BLOCK_C) {
+		tile_id = (map->lower_layer[tile_index] - BLOCK_C) / 50 + 3;
 
 		if ((passages_down[tile_id] & bit) == 0)
 			return false;
 
-	} else if (map->lower_layer[tile_index] < 3000) {
+	} else if (map->lower_layer[tile_index] < BLOCK_C) {
 		tile_id = map->lower_layer[tile_index] / 1000;
 
 		if ((passages_down[tile_id] & bit) == 0)
