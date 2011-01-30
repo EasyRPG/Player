@@ -61,7 +61,6 @@ Sprite::~Sprite() {
 void Sprite::Draw(int z_order) {
 	if (!visible) return;
 	if (GetWidth() <= 0 || GetHeight() <= 0) return;
-	if ((x - ox) < -GetWidth() || (x - ox) > DisplayUi->GetWidth() || (y - oy) < -GetHeight() || (y - oy) > DisplayUi->GetHeight()) return;
 
 	bitmap_screen->BlitScreen(x - ox, y - oy, src_rect);
 }

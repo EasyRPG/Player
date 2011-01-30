@@ -49,13 +49,14 @@ public:
 protected:
 	static void BlitScreenIntern(SDL_Surface* surface, int x, int y, Rect src_rect, int opacity);
 
-	void Refresh();
+	void Refresh(Rect& rect);
 
 	void CalcRotatedSize(int &width, int &height);
 	void CalcZoomedSize(int &width, int &height);
 
 	Bitmap* bitmap_effects;
-	bool src_rect_effect_applied;
+	Rect bitmap_effects_src_rect;
+	Rect bitmap_effects_rect;
 	int origin_x;
 	int origin_y;
 };

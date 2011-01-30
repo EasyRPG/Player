@@ -61,57 +61,17 @@ void SdlBitmapScreen::SetBitmap(Bitmap* source, bool delete_bitmap) {
 
 ////////////////////////////////////////////////////////////
 void SdlBitmapScreen::BlitScreen(int x, int y) {
-	// FIXME: This method needs more comments.
-	if (bitmap == NULL || opacity_top_effect <= 0) return;
-
-	Refresh();
-
-	if (bitmap == NULL) return;
-
-	x -= origin_x;
-	y -= origin_y;
-
-	SDL_Surface* surface = bitmap_effects != NULL
-		? ((SdlBitmap*)bitmap_effects)->bitmap
-		: ((SdlBitmap*)bitmap)->bitmap;
-
-	if (bush_effect < surface->h) {
-		if (!src_rect_effect_applied) {
-			Rect src_rect = src_rect_effect;
-			src_rect.height -= bush_effect;
-
-			BlitScreenIntern(surface, x, y, src_rect, opacity_top_effect);
-		} else {
-			Rect src_rect(0, 0, surface->w, surface->h - bush_effect);
-
-			BlitScreenIntern(surface, x, y, src_rect, opacity_top_effect);
-		}
-	}
-
-	if (bush_effect > 0) {
-		if (!src_rect_effect_applied) {
-			Rect src_rect(
-				src_rect_effect.x,
-				src_rect_effect.y + src_rect_effect.height - bush_effect,
-				src_rect_effect.width,
-				bush_effect
-			);
-
-			BlitScreenIntern(surface, x, y + bush_effect, src_rect, opacity_bottom_effect);
-		} else {
-			Rect src_rect(0, surface->h - bush_effect, surface->w, bush_effect);
-
-			BlitScreenIntern(surface, x, y + bush_effect, src_rect, opacity_bottom_effect);
-		}
-	}
+	BlitScreen(x, y, Rect(0, 0, src_rect_effect.width, src_rect_effect.height));
 }
 
 ////////////////////////////////////////////////////////////
 void SdlBitmapScreen::BlitScreen(int x, int y, Rect src_rect) {
 	// FIXME: This method needs more comments.
-	if (bitmap == NULL || opacity_top_effect <= 0) return;
+	if (bitmap == NULL || (opacity_top_effect <= 0 && opacity_bottom_effect <= 0))
+		return;
 
-	Refresh();
+	src_rect = src_rect_effect.GetSubRect(src_rect);
+	Refresh(src_rect);
 
 	x -= origin_x;
 	y -= origin_y;
@@ -121,46 +81,28 @@ void SdlBitmapScreen::BlitScreen(int x, int y, Rect src_rect) {
 		: ((SdlBitmap*)bitmap)->bitmap;
 
 	if (bush_effect < surface->h) {
-		if (!src_rect_effect_applied) {
-			Rect blit_rect = src_rect_effect.GetSubRect(src_rect);
-			blit_rect.y	-= bush_effect;
+		Rect blit_rect = src_rect;
+		blit_rect.y	-= bush_effect;
 
-			if (!blit_rect.IsOutOfBounds(src_rect_effect))
-				BlitScreenIntern(surface, x, y, blit_rect, opacity_top_effect);
-		} else {
-			Rect blit_rect = src_rect;
-			blit_rect.y	-= bush_effect;
-
-			BlitScreenIntern(surface, x, y, blit_rect, opacity_top_effect);
-		}
+		BlitScreenIntern(surface, x, y, blit_rect, opacity_top_effect);
 	}
 
 	if (bush_effect > 0) {
-		if (!src_rect_effect_applied) {
-			Rect blit_rect = src_rect_effect.GetSubRect(src_rect);
-			blit_rect.y += src_rect_effect.height - bush_effect;
-			blit_rect.height = bush_effect;
+		Rect blit_rect = src_rect;
+		blit_rect.y = src_rect.height - bush_effect;
+		blit_rect.height = bush_effect;
 
-			if (!blit_rect.IsOutOfBounds(src_rect_effect))
-				BlitScreenIntern(surface, x, y, blit_rect, opacity_bottom_effect);
-		} else {
-			Rect blit_rect(
-				src_rect.x,
-				src_rect.y + src_rect.height - bush_effect,
-				src_rect.width,
-				bush_effect
-			);
-
-			BlitScreenIntern(surface, x, y + bush_effect, blit_rect, opacity_bottom_effect);
-		}
+		BlitScreenIntern(surface, x, y + bush_effect, blit_rect, opacity_bottom_effect);
 	}
 }
 
 ////////////////////////////////////////////////////////////
 void SdlBitmapScreen::BlitScreenTiled(Rect src_rect, Rect dst_rect) {
-	if (bitmap == NULL || opacity_top_effect <= 0) return;
+	if (bitmap == NULL || (opacity_top_effect <= 0 && opacity_bottom_effect <= 0))
+		return;
 
-	Refresh();
+	src_rect = src_rect_effect.GetSubRect(src_rect);
+	Refresh(src_rect);
 
 	SDL_Surface* surface = bitmap_effects != NULL
 		? ((SdlBitmap*)bitmap_effects)->bitmap
@@ -257,10 +199,14 @@ void SdlBitmapScreen::BlitScreenIntern(SDL_Surface* surface, int x, int y, Rect 
 }
 
 ////////////////////////////////////////////////////////////
-void SdlBitmapScreen::Refresh() {
+void SdlBitmapScreen::Refresh(Rect& rect) {
 	// FIXME: This method needs more comments.
-	if (!needs_refresh) return;
+	if (!needs_refresh && rect == bitmap_effects_src_rect) {
+		rect = bitmap_effects_rect;
+		return;
+	}
 
+	bitmap_effects_src_rect = rect;
 	needs_refresh = false;
 	origin_x = 0;
 	origin_y = 0;
@@ -268,9 +214,9 @@ void SdlBitmapScreen::Refresh() {
 	if (bitmap == NULL)
 		return;
 
-	src_rect_effect.Adjust(bitmap->GetWidth(), bitmap->GetHeight());
+	rect.Adjust(bitmap->GetWidth(), bitmap->GetHeight());
 
-	if (src_rect_effect.IsOutOfBounds(bitmap->GetWidth(), bitmap->GetHeight()))
+	if (rect.IsOutOfBounds(bitmap->GetWidth(), bitmap->GetHeight()))
 		return;
 
 	if (bitmap_effects != NULL) {
@@ -282,12 +228,10 @@ void SdlBitmapScreen::Refresh() {
 		flipx_effect == false && flipy_effect == false &&
 		zoom_x_effect == 1.0 && zoom_y_effect == 1.0 &&
 		waver_effect_depth == 0) {
-
-		src_rect_effect_applied = false;
-
+		bitmap_effects_rect = rect;
 	} else {
-		int new_width = src_rect_effect.width;
-		int new_height = src_rect_effect.height;
+		int new_width = rect.width;
+		int new_height = rect.height;
 
 		CalcZoomedSize(new_width, new_height);
 
@@ -297,7 +241,7 @@ void SdlBitmapScreen::Refresh() {
 		CalcRotatedSize(new_width, new_height);
 
 		if (new_width > 0 && new_height > 0) {
-			Surface* surf_effects = Surface::CreateSurface(bitmap, src_rect_effect, bitmap->GetTransparent());
+			Surface* surf_effects = Surface::CreateSurface(bitmap, rect, bitmap->GetTransparent());
 
 			surf_effects->ToneChange(tone_effect);
 			surf_effects->Flip(flipx_effect, flipy_effect);
@@ -325,8 +269,10 @@ void SdlBitmapScreen::Refresh() {
 			bitmap_effects = temp;
 		}
 
-		src_rect_effect_applied = true;
+		bitmap_effects_rect = bitmap_effects->GetRect();
 	}
+
+	rect = bitmap_effects_rect;
 }
 
 ////////////////////////////////////////////////////////////
@@ -363,7 +309,6 @@ void SdlBitmapScreen::CalcZoomedSize(int &width, int &height) {
 ////////////////////////////////////////////////////////////
 void SdlBitmapScreen::ClearEffects() {
 	BitmapScreen::ClearEffects();
-	src_rect_effect_applied = false;
 }
 
 void SdlBitmapScreen::SetSrcRect(Rect src_rect) {
@@ -373,7 +318,7 @@ void SdlBitmapScreen::SetSrcRect(Rect src_rect) {
 		if (tone_effect == Tone() || angle_effect == 0.0 ||
 			flipx_effect == false || flipy_effect == false ||
 			zoom_x_effect == 1.0 || zoom_y_effect == 1.0 ||
-			waver_effect_depth == 0 || src_rect_effect_applied) {
+			waver_effect_depth == 0) {
 				needs_refresh = true;
 		}
 	}

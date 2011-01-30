@@ -42,10 +42,11 @@ protected:
 	void BlitScreenIntern(int x, int y, Rect src_rect);
 
 	Bitmap* bitmap_effects;
+	Rect bitmap_effects_src_rect;
 	int origin_x;
 	int origin_y;
 
-	void Refresh();
+	void Refresh(Rect& rect);
 };
 
 #endif
