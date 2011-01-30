@@ -184,19 +184,19 @@ uint16 PixmanBitmap::pitch() const {
 }
 
 uint32 PixmanBitmap::rmask() const {
-	return pixel_format::rmask;
+	return pixel_format::r_mask(format);
 }
 
 uint32 PixmanBitmap::gmask() const {
-	return pixel_format::gmask;
+	return pixel_format::g_mask(format);
 }
 
 uint32 PixmanBitmap::bmask() const {
-	return pixel_format::bmask;
+	return pixel_format::b_mask(format);
 }
 
 uint32 PixmanBitmap::amask() const {
-	return pixel_format::amask;
+	return pixel_format::a_mask(format);
 }
 
 uint32 PixmanBitmap::colorkey() const {

@@ -104,13 +104,15 @@ void SoftBitmapScreen::Refresh(Rect& rect) {
 	if (bitmap == NULL)
 		return;
 
-	if (bitmap_effects != NULL)
-		delete bitmap_effects;
-
 	rect.Adjust(bitmap->GetWidth(), bitmap->GetHeight());
 
 	if (rect.IsOutOfBounds(bitmap->GetWidth(), bitmap->GetHeight()))
 		return;
+
+	if (bitmap_effects != NULL) {
+		delete bitmap_effects;
+		bitmap_effects = NULL;
+	}
 
 	Surface *surface_effects = Surface::CreateSurface(rect.width, rect.height, true);
 
