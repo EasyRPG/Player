@@ -29,7 +29,8 @@
 #include "data.h"
 #include "output.h"
 #include "utils.h"
-#include "image.h"
+#include "image_xyz.h"
+#include "image_png.h"
 #include "text.h"
 #include "bitmap_utils.h"
 #include "soft_bitmap.h"
@@ -86,9 +87,9 @@ SoftBitmap::SoftBitmap(const std::string& filename, bool itransparent, uint32 fl
 		return;
 	}
 	if (ext == "png")
-		Image::ReadPNG(stream, (const void*) NULL, transparent, w, h, bitmap);
+		ImagePNG::ReadPNG(stream, (const void*) NULL, transparent, w, h, bitmap);
 	else if (ext == "xyz")
-		Image::ReadXYZ(stream, transparent, w, h, bitmap);
+		ImagePNG::ReadXYZ(stream, transparent, w, h, bitmap);
 
 	ConvertImage(w, h, bitmap);
 
@@ -101,9 +102,9 @@ SoftBitmap::SoftBitmap(const uint8* data, uint bytes, bool itransparent, uint32 
 	transparent = itransparent;
 
 	if (bytes > 4 && strncmp((char*) data, "XYZ1", 4) == 0)
-		Image::ReadXYZ(data, bytes, transparent, w, h, bitmap);
+		ImageXYZ::ReadXYZ(data, bytes, transparent, w, h, bitmap);
 	else
-		Image::ReadPNG((FILE*) NULL, (const void*) data, transparent, w, h, bitmap);
+		ImagePNG::ReadPNG((FILE*) NULL, (const void*) data, transparent, w, h, bitmap);
 
 	ConvertImage(w, h, bitmap);
 

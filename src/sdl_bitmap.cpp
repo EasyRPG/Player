@@ -33,6 +33,7 @@
 #include "output.h"
 #include "player.h"
 #include "SDL_image.h"
+#include "image_xyz.h"
 //#include "SDL_rotozoom.h"
 #include "SDL_ttf.h"
 #include "sdl_ui.h"
@@ -78,6 +79,36 @@
 #endif
 
 ////////////////////////////////////////////////////////////
+
+SDL_Surface* SdlBitmap::ReadXYZ(const std::string& filename, const uint8 *data, uint len) {
+	int w, h;
+	void* pixels;
+	if (!filename.empty()) {
+		FILE* stream = FileFinder::fopenUTF8(filename, "rb");
+		if (!stream)
+			Output::Error("Couldn't open image file %s", filename.c_str());
+		ImageXYZ::ReadXYZ(stream, transparent, w, h, pixels);
+		fclose(stream);
+	} else
+		ImageXYZ::ReadXYZ(data, len, transparent, w, h, pixels);
+
+#if SDL_BYTEORDER == SDL_LIL_ENDIAN
+	SDL_Surface* src = SDL_CreateRGBSurfaceFrom(pixels, w, h, 32, w * 4, 0x000000FF, 0x0000FF00, 0x00FF0000, 0);
+#else
+	SDL_Surface* src = SDL_CreateRGBSurfaceFrom(pixels, w, h, 32, w * 4, 0xFF000000, 0x00FF0000, 0x0000FF00, 0);
+#endif
+	SDL_Surface* dst = SDL_CreateRGBSurface(SDL_SWSURFACE, w, h, ((SdlUi*)DisplayUi)->GetDisplaySurface()->bpp() * 8, 0, 0, 0, 0);
+
+	SDL_Rect rect = {0, 0, (uint16) w, (uint16) h};
+	SDL_BlitSurface(src, &rect, dst, &rect);
+
+	SDL_FreeSurface(src);
+	free(pixels);
+
+	return dst;
+}
+
+////////////////////////////////////////////////////////////
 SdlBitmap::SdlBitmap(int width, int height, bool itransparent) {
 	transparent = itransparent;
 
@@ -103,7 +134,9 @@ SdlBitmap::SdlBitmap(int width, int height, bool itransparent) {
 SdlBitmap::SdlBitmap(const std::string& filename, bool itransparent, uint32 flags) {
 	transparent = itransparent;
 
-	SDL_Surface* temp = IMG_Load(filename.c_str());
+	std::string ext = Utils::LowerCase(filename.substr(filename.size() - 3, 3));
+
+	SDL_Surface* temp = (ext == "xyz") ? ReadXYZ(filename, NULL, 0) : IMG_Load(filename.c_str());
 
 	if ( !temp ) {
 		Output::Error("Couldn't load %s image.\n%s\n", filename.c_str(), IMG_GetError());
@@ -127,8 +160,13 @@ SdlBitmap::SdlBitmap(const std::string& filename, bool itransparent, uint32 flag
 SdlBitmap::SdlBitmap(const uint8* data, uint bytes, bool itransparent, uint32 flags) {
 	transparent = itransparent;
 
-	SDL_RWops* rw_ops = SDL_RWFromConstMem(data, bytes);
-	SDL_Surface* temp = IMG_Load_RW(rw_ops, 1);
+	SDL_Surface* temp;
+	if (bytes > 4 && strncmp((char*) data, "XYZ1", 4) == 0)
+		temp = ReadXYZ(NULL, data, bytes);
+	else {
+		SDL_RWops* rw_ops = SDL_RWFromConstMem(data, bytes);
+		temp = IMG_Load_RW(rw_ops, 1);
+	}
 
 	if (temp == NULL) {
 		Output::Error("Couldn't load image from memory.\n%s\n", IMG_GetError());

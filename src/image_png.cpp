@@ -24,7 +24,7 @@
 
 #include <png.h>
 #include "output.h"
-#include "image.h"
+#include "image_png.h"
 
 ////////////////////////////////////////////////////////////
 static void read_data(png_structp png_ptr, png_bytep data, png_size_t length) {
@@ -34,7 +34,7 @@ static void read_data(png_structp png_ptr, png_bytep data, png_size_t length) {
 }
 
 ////////////////////////////////////////////////////////////
-void Image::ReadPNG(FILE* stream, const void* buffer, bool transparent,
+void ImagePNG::Read(FILE* stream, const void* buffer, bool transparent,
 					int& width, int& height, void*& pixels) {
 	pixels = NULL;
 
@@ -129,63 +129,6 @@ void Image::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 	png_read_end(png_ptr, NULL);
 
 	png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
-}
-
-////////////////////////////////////////////////////////////
-void Image::ReadXYZ(const uint8* data, uint len, bool transparent,
-					int& width, int& height, void*& pixels) {
-	pixels = NULL;
-
-    if (len < 8 || strncmp((char *) data, "XYZ1", 4) != 0) {
-		Output::Error("Not a valid XYZ file.");
-		return;
-    }
-
-    unsigned short w = data[4] + (data[5] << 8);
-    unsigned short h = data[6] + (data[7] << 8);
-
-	uLongf src_size = len - 8;
-    Bytef* src_buffer = (Bytef*)&data[8];
-    uLongf dst_size = 768 + (w * h);
-    Bytef* dst_buffer = new Bytef[dst_size];
-
-    int status = uncompress(dst_buffer, &dst_size, src_buffer, src_size);
-	if (status != Z_OK) {
-		Output::Error("Error decompressing XYZ file.");
-		return;
-	}
-    const uint8 (*palette)[3] = (const uint8(*)[3]) dst_buffer;
-
-	width = w;
-	height = h;
-	pixels = malloc(w * h * 4);
-
-    uint8* dst = (uint8*) pixels;
-    const uint8* src = (const uint8*) &dst_buffer[768];
-    for (int y = 0; y < h; y++) {
-		for (int x = 0; x < w; x++) {
-			uint8 pix = *src++;
-			const uint8* color = palette[pix];
-			*dst++ = color[0];
-			*dst++ = color[1];
-			*dst++ = color[2];
-			*dst++ = (transparent && pix == 0) ? 0 : 255;
-		}
-    }
-
-    delete[] dst_buffer;
-}
-
-////////////////////////////////////////////////////////////
-void Image::ReadXYZ(FILE* stream, bool transparent,
-					int& width, int& height, void*& pixels) {
-    fseek(stream, 0, SEEK_END);
-    long size = ftell(stream);
-    fseek(stream, 0, SEEK_SET);
-	uint8* buffer = new uint8[size];
-	fread((void*) buffer, 1, size, stream);
-	ReadXYZ(buffer, (uint) size, transparent, width, height, pixels);
-	delete[] buffer;
 }
 
 ////////////////////////////////////////////////////////////

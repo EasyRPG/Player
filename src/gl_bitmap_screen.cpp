@@ -31,7 +31,7 @@
 #include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
-namespace {
+namespace GL {
 	// Supported GL extensions
 	bool npot_supported = false; // Non power of 2 textures supported
 
@@ -39,8 +39,12 @@ namespace {
 	void InitGLExtensions();
 }
 
+#ifndef CHECK_GL_ERROR
+#define CHECK_GL_ERROR()
+#endif
+
 ////////////////////////////////////////////////////////////
-void InitGLExtensions() {
+void GL::InitGLExtensions() {
 	static bool glext_inited = false;
 
 	// Return if extensions were already checked
@@ -48,7 +52,8 @@ void InitGLExtensions() {
 		return;
 
 	// Get a string with all extensions
-	const std::string ext_string = std::string(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS))); CHECK_GL_ERROR();
+	const std::string ext_string = std::string(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS)));
+	CHECK_GL_ERROR();
 
 	std::istringstream iss((ext_string));
 
@@ -91,9 +96,9 @@ void GlBitmapScreen::UploadBitmap(
 	GLenum format, GLenum type, const GLvoid *data) {
 
 	// TODO: Maybe a better place for putting this? Some GlUi class? GlSdlUi? GlutUi?
-	InitGLExtensions();
+	GL::InitGLExtensions();
 
-	if (npot_supported) {
+	if (GL::npot_supported) {
 		glTexImage2D(
 			GL_TEXTURE_2D,
 			0,
