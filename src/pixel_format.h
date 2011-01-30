@@ -26,6 +26,102 @@
 #include "system.h"
 
 ////////////////////////////////////////////////////////////
+/// Component struct
+////////////////////////////////////////////////////////////
+struct Component {
+	uint8 bits;
+	uint8 shift;
+	uint8 byte;
+	uint32 mask;
+
+	static inline int count_bits(uint32 mask) {
+		int count = 0;
+		if ((mask & 0xFFFF0000) != 0)
+			count += 16, mask >>= 16;
+		if ((mask & 0xFF00) != 0)
+			count += 8, mask >>= 8;
+		if ((mask & 0xF0) != 0)
+			count += 4, mask >>= 4;
+		if ((mask & 0xC) != 0)
+			count += 2, mask >>= 2;
+		if ((mask & 0x2) != 0)
+			count += 1, mask >>= 1;
+		if ((mask & 0x1) != 0)
+			count++;
+		return count;
+	}
+
+	inline void convert_mask() {
+		int bit_count = count_bits(mask);
+		uint32 mask_ex = (1U << bit_count) - 1;
+		uint32 mask_lo = mask_ex - mask;
+		shift = count_bits(mask_lo);
+		bits = bit_count - shift;
+		byte = shift / 8;
+	}
+
+	Component() {}
+
+	Component(unsigned int bits, unsigned int shift) :
+		bits(bits),
+		shift(shift),
+		byte(shift / 8),
+		mask(((1 << bits)-1) << shift) {}
+
+	Component(uint32 mask) :
+		mask(mask) { convert_mask(); }
+};
+
+////////////////////////////////////////////////////////////
+/// DynamicFormat struct
+////////////////////////////////////////////////////////////
+struct DynamicFormat {
+	Component r, g, b, a;
+	uint32 colorkey;
+
+	DynamicFormat() {}
+
+	DynamicFormat(int rb, int rs,
+				  int gb, int gs,
+				  int bb, int bs,
+				  int ab, int as,
+				  int colorkey) :
+		r(rb, rs), g(gb, gs), b(bb, bs), a(ab, as), colorkey(colorkey) {}
+
+	DynamicFormat(uint32 rmask,
+				  uint32 gmask,
+				  uint32 bmask,
+				  uint32 amask,
+				  int colorkey) :
+		r(rmask), g(gmask), b(bmask), a(amask),
+		colorkey(colorkey) {}
+
+	void Set(int rb, int rs,
+			 int gb, int gs,
+			 int bb, int bs,
+			 int ab, int as,
+			 int colorkey) {
+		r = Component(rb, rs);
+		g = Component(gb, gs);
+		b = Component(bb, bs);
+		a = Component(ab, as);
+		colorkey = colorkey;
+	}
+
+	void Set(uint32 rmask,
+			 uint32 gmask,
+			 uint32 bmask,
+			 uint32 amask,
+			 int colorkey) {
+		r = Component(rmask);
+		g = Component(gmask);
+		b = Component(bmask);
+		a = Component(amask);
+		colorkey = colorkey;
+	}
+};
+
+////////////////////////////////////////////////////////////
 /// PixelFormat class
 ////////////////////////////////////////////////////////////
 
@@ -113,7 +209,6 @@ struct bits_traits<PF, 32> {
 
 // general case
 template<class PF,
-		 int bits,
 		 bool aligned,
 		 bool has_alpha,
 		 bool has_colorkey>
@@ -131,8 +226,8 @@ struct alpha_traits {
 };
 
 // colorkey
-template <class PF, int bits, bool aligned>
-struct alpha_traits<PF, bits, aligned, NoAlpha, HasColorkey> {
+template <class PF, bool aligned>
+struct alpha_traits<PF, aligned, NoAlpha, HasColorkey> {
 	static inline uint8 get_alpha(const DynamicFormat& format, const uint8* p) {
 		uint32 pix = PF::get_uint32(p);
 		return (pix == format.colorkey) ? 0 : 255;
@@ -144,8 +239,8 @@ struct alpha_traits<PF, bits, aligned, NoAlpha, HasColorkey> {
 };
 
 // no alpha or colorkey
-template<class PF, int bits, bool aligned>
-struct alpha_traits<PF, bits, aligned, NoAlpha, NoColorkey> {
+template<class PF, bool aligned>
+struct alpha_traits<PF, aligned, NoAlpha, NoColorkey> {
 	static inline uint8 get_alpha(const DynamicFormat& format, const uint8* p) {
 		return 255;
 	}
@@ -155,12 +250,12 @@ struct alpha_traits<PF, bits, aligned, NoAlpha, NoColorkey> {
 
 // aligned, with alpha
 template<class PF>
-struct alpha_traits<PF, 32, IsAligned, HasAlpha, HasColorkey> {
+struct alpha_traits<PF, IsAligned, HasAlpha, HasColorkey> {
 	static inline uint8 get_alpha(const DynamicFormat& format, const uint8* p) {
-		return p[PF::abyte];
+		return p[PF::a_byte(format)];
 	}
 	static inline void set_alpha(const DynamicFormat& format, uint8* p, uint8 alpha) {
-		p[PF::abyte] = alpha;
+		p[PF::a_byte(format)] = alpha;
 	}
 };
 
@@ -278,64 +373,26 @@ struct rgba_traits<PF, NotAligned, NoAlpha, NoColorkey> {
 /// Mask traits
 ////////////////////////////////////////////////////////////
 
-template<class PF, bool dynamic>
+template<class PF, bool dynamic, int _bits, int _shift>
 struct mask_traits {
 };
 
-template<class PF>
-struct mask_traits<PF, NotDynamic> {
-	static inline void uint32_to_rgba(const DynamicFormat& format, uint32 pix, uint8& r, uint8& g, uint8& b, uint8& a) {
-		r = (uint8)(((pix >> PF::rshift) & ((1 << PF::rbits) - 1)) << (8 - PF::rbits));
-		g = (uint8)(((pix >> PF::gshift) & ((1 << PF::gbits) - 1)) << (8 - PF::gbits));
-		b = (uint8)(((pix >> PF::bshift) & ((1 << PF::bbits) - 1)) << (8 - PF::bbits));
-		a = (uint8)(((pix >> PF::ashift) & ((1 << PF::abits) - 1)) << (8 - PF::abits));
-	}
-
-	static inline uint32 rgba_to_uint32(const DynamicFormat& format, const uint8& r, const uint8& g, const uint8& b, const uint8& a) {
-		return
-			(((uint32)r >> (8 - PF::rbits)) << PF::rshift) | 
-			(((uint32)g >> (8 - PF::gbits)) << PF::gshift) | 
-			(((uint32)b >> (8 - PF::bbits)) << PF::bshift) | 
-			(((uint32)a >> (8 - PF::abits)) << PF::ashift);
-	}
-
-	static inline int r_byte(const DynamicFormat& format) { return PF::rbyte; }
-	static inline int g_byte(const DynamicFormat& format) { return PF::gbyte; }
-	static inline int b_byte(const DynamicFormat& format) { return PF::bbyte; }
-	static inline int a_byte(const DynamicFormat& format) { return PF::abyte; }
-
-	static inline int r_mask(const DynamicFormat& format) { return PF::rmask; }
-	static inline int g_mask(const DynamicFormat& format) { return PF::gmask; }
-	static inline int b_mask(const DynamicFormat& format) { return PF::bmask; }
-	static inline int a_mask(const DynamicFormat& format) { return PF::amask; }
+template<class PF, int _bits, int _shift>
+struct mask_traits<PF, NotDynamic, _bits, _shift> {
+	static const int _byte = _shift / 8;
+	static const int _mask = ((1 << _bits)-1) << _shift;
+	static inline int bits(const Component& c) { return _bits; }
+	static inline int shift(const Component& c) { return _shift; }
+	static inline int byte(const Component& c) { return _byte; }
+	static inline int mask(const Component& c) { return _mask; }
 };
 
-template<class PF>
-struct mask_traits<PF, IsDynamic> {
-	static inline void uint32_to_rgba(const DynamicFormat& format, uint32 pix, uint8& r, uint8& g, uint8& b, uint8& a) {
-		r = (uint8)(((pix >> format.rshift) & ((1 << format.rbits) - 1)) << (8 - format.rbits));
-		g = (uint8)(((pix >> format.gshift) & ((1 << format.gbits) - 1)) << (8 - format.gbits));
-		b = (uint8)(((pix >> format.bshift) & ((1 << format.bbits) - 1)) << (8 - format.bbits));
-		a = (uint8)(((pix >> format.ashift) & ((1 << format.abits) - 1)) << (8 - format.abits));
-	}
-
-	static inline uint32 rgba_to_uint32(const DynamicFormat& format, const uint8& r, const uint8& g, const uint8& b, const uint8& a) {
-		return
-			(((uint32)r >> (8 - format.rbits)) << format.rshift) | 
-			(((uint32)g >> (8 - format.gbits)) << format.gshift) | 
-			(((uint32)b >> (8 - format.bbits)) << format.bshift) | 
-			(((uint32)a >> (8 - format.abits)) << format.ashift);
-	}
-
-	static inline int r_byte(const DynamicFormat& format) { return format.rbyte; }
-	static inline int g_byte(const DynamicFormat& format) { return format.gbyte; }
-	static inline int b_byte(const DynamicFormat& format) { return format.bbyte; }
-	static inline int a_byte(const DynamicFormat& format) { return format.abyte; }
-
-	static inline int r_mask(const DynamicFormat& format) { return format.rmask; }
-	static inline int g_mask(const DynamicFormat& format) { return format.gmask; }
-	static inline int b_mask(const DynamicFormat& format) { return format.bmask; }
-	static inline int a_mask(const DynamicFormat& format) { return format.amask; }
+template<class PF, int _bits, int _shift>
+struct mask_traits<PF, IsDynamic, _bits, _shift> {
+	static inline int bits(const Component& c) { return c.bits; }
+	static inline int shift(const Component& c) { return c.shift; }
+	static inline int byte(const Component& c) { return c.byte; }
+	static inline int mask(const Component& c) { return c.mask; }
 };
 
 ////////////////////////////////////////////////////////////
@@ -353,35 +410,18 @@ public:
 	static const int bits = BITS;
 	static const int bytes = (BITS + 7) / 8;
 
-	static const int rbits = RB;
-	static const int rshift = RS;
-	static const int rbyte = RS / 8;
-	static const int rmask = ((1 << RB)-1) << RS;
-
-	static const int gbits = GB;
-	static const int gshift = GS;
-	static const int gbyte = GS / 8;
-	static const int gmask = ((1 << GB)-1) << GS;
-
-	static const int bbits = BB;
-	static const int bshift = BS;
-	static const int bbyte = BS / 8;
-	static const int bmask = ((1 << BB)-1) << BS;
-
-	static const int abits = AB;
-	static const int ashift = AS;
-	static const int abyte = AS / 8;
-	static const int amask = ((1 << AB)-1) << AS;
-
 	static const bool dynamic = DYNAMIC;
 	static const bool has_alpha = HAS_ALPHA;
 	static const bool has_colorkey = COLORKEY;
 	static const bool aligned = ALIGNED;
 
 	typedef bits_traits<my_type, bits> bits_traits_type;
-	typedef alpha_traits<my_type,bits,aligned,has_alpha,has_colorkey> alpha_traits_type;
+	typedef alpha_traits<my_type,aligned,has_alpha,has_colorkey> alpha_traits_type;
 	typedef rgba_traits<my_type,aligned,has_alpha,has_colorkey> rgba_traits_type;
-	typedef mask_traits<my_type,dynamic> mask_traits_type;
+	typedef mask_traits<my_type,dynamic,RB,RS> mask_r_traits_type;
+	typedef mask_traits<my_type,dynamic,GB,GS> mask_g_traits_type;
+	typedef mask_traits<my_type,dynamic,BB,BS> mask_b_traits_type;
+	typedef mask_traits<my_type,dynamic,AB,AS> mask_a_traits_type;
 
 	static inline int endian(int byte) {
 #ifndef USE_BIG_ENDIAN
@@ -392,44 +432,39 @@ public:
 	}
 
 	static inline void uint32_to_rgba(const DynamicFormat& format, uint32 pix, uint8& r, uint8& g, uint8& b, uint8& a) {
-		mask_traits_type::uint32_to_rgba(format, pix, r, g, b, a);
+		r = (uint8)(((pix >> r_shift(format)) & ((1 << r_bits(format)) - 1)) << (8 - r_bits(format)));
+		g = (uint8)(((pix >> g_shift(format)) & ((1 << g_bits(format)) - 1)) << (8 - g_bits(format)));
+		b = (uint8)(((pix >> b_shift(format)) & ((1 << b_bits(format)) - 1)) << (8 - b_bits(format)));
+		a = (uint8)(((pix >> a_shift(format)) & ((1 << a_bits(format)) - 1)) << (8 - a_bits(format)));
 	}
 
 	static inline uint32 rgba_to_uint32(const DynamicFormat& format, const uint8& r, const uint8& g, const uint8& b, const uint8& a) {
-		return mask_traits_type::rgba_to_uint32(format, r, g, b, a);
+		return
+			(((uint32)r >> (8 - r_bits(format))) << r_shift(format)) | 
+			(((uint32)g >> (8 - g_bits(format))) << g_shift(format)) | 
+			(((uint32)b >> (8 - b_bits(format))) << b_shift(format)) | 
+			(((uint32)a >> (8 - a_bits(format))) << a_shift(format));
 	}
 
-	static inline int r_byte(const DynamicFormat& format) {
-		return endian(mask_traits_type::r_byte(format));
-	}
+	static inline int r_byte(const DynamicFormat& format) {		return endian(mask_r_traits_type::byte(format.r));	}
+	static inline int g_byte(const DynamicFormat& format) {		return endian(mask_g_traits_type::byte(format.g));	}
+	static inline int b_byte(const DynamicFormat& format) {		return endian(mask_b_traits_type::byte(format.b));	}
+	static inline int a_byte(const DynamicFormat& format) {		return endian(mask_a_traits_type::byte(format.a));	}
 
-	static inline int g_byte(const DynamicFormat& format) {
-		return endian(mask_traits_type::g_byte(format));
-	}
+	static inline int r_mask(const DynamicFormat& format) {		return mask_r_traits_type::mask(format.r);	}
+	static inline int g_mask(const DynamicFormat& format) {		return mask_g_traits_type::mask(format.g);	}
+	static inline int b_mask(const DynamicFormat& format) {		return mask_b_traits_type::mask(format.b);	}
+	static inline int a_mask(const DynamicFormat& format) {		return mask_a_traits_type::mask(format.a);	}
 
-	static inline int b_byte(const DynamicFormat& format) {
-		return endian(mask_traits_type::b_byte(format));
-	}
+	static inline int r_bits(const DynamicFormat& format) {		return mask_r_traits_type::bits(format.r);	}
+	static inline int g_bits(const DynamicFormat& format) {		return mask_g_traits_type::bits(format.g);	}
+	static inline int b_bits(const DynamicFormat& format) {		return mask_b_traits_type::bits(format.b);	}
+	static inline int a_bits(const DynamicFormat& format) {		return mask_a_traits_type::bits(format.a);	}
 
-	static inline int a_byte(const DynamicFormat& format) {
-		return endian(mask_traits_type::a_byte(format));
-	}
-
-	static inline int r_mask(const DynamicFormat& format) {
-		return mask_traits_type::r_mask(format);
-	}
-
-	static inline int g_mask(const DynamicFormat& format) {
-		return mask_traits_type::g_mask(format);
-	}
-
-	static inline int b_mask(const DynamicFormat& format) {
-		return mask_traits_type::b_mask(format);
-	}
-
-	static inline int a_mask(const DynamicFormat& format) {
-		return mask_traits_type::a_mask(format);
-	}
+	static inline int r_shift(const DynamicFormat& format) {	return mask_r_traits_type::shift(format.r);	}
+	static inline int g_shift(const DynamicFormat& format) {	return mask_g_traits_type::shift(format.g);	}
+	static inline int b_shift(const DynamicFormat& format) {	return mask_b_traits_type::shift(format.b);	}
+	static inline int a_shift(const DynamicFormat& format) {	return mask_a_traits_type::shift(format.a);	}
 
 	static inline uint32 get_uint32(const uint8* p) {
 		return bits_traits_type::get_uint32(p);

@@ -27,47 +27,12 @@
 #include "font.h"
 #include "rect.h"
 #include "tone.h"
+#include "pixel_format.h"
 
 class BitmapScreen;
 
 template <class T>
 class BitmapUtils;
-
-////////////////////////////////////////////////////////////
-/// DynamicFormat struct : pixel format
-////////////////////////////////////////////////////////////
-struct DynamicFormat {
-	int rbits, rshift, rbyte, rmask;
-	int gbits, gshift, gbyte, gmask;
-	int bbits, bshift, bbyte, bmask;
-	int abits, ashift, abyte, amask;
-	uint32 colorkey;
-
-	DynamicFormat() {}
-
-	DynamicFormat(int rb, int rs,
-				  int gb, int gs,
-				  int bb, int bs,
-				  int ab, int as,
-				  int colorkey) :
-		rbits(rb),	rshift(rs),	rbyte(rs / 8),	rmask(((1 << rb)-1) << rs),
-		gbits(gb),	gshift(gs),	gbyte(gs / 8),	gmask(((1 << gb)-1) << gs),
-		bbits(bb),	bshift(bs),	bbyte(bs / 8),	bmask(((1 << bb)-1) << bs),
-		abits(ab),	ashift(as),	abyte(as / 8),	amask(((1 << ab)-1) << as),
-		colorkey(colorkey) {}
-
-	void Set(int rb, int rs,
-			 int gb, int gs,
-			 int bb, int bs,
-			 int ab, int as,
-			 int colorkey) {
-		rbits = rb; rshift = rs; rbyte = rs / 8; rmask = ((1 << rb)-1) << rs;
-		gbits = gb; gshift = gs; gbyte = gs / 8; gmask = ((1 << gb)-1) << gs;
-		bbits = bb; bshift = bs; bbyte = bs / 8; bmask = ((1 << bb)-1) << bs;
-		abits = ab; ashift = as; abyte = as / 8; amask = ((1 << ab)-1) << as;
-		colorkey = colorkey;
-	}
-};
 
 ////////////////////////////////////////////////////////////
 /// Base Bitmap class.
@@ -162,7 +127,7 @@ protected:
 	friend class BitmapScreen;
 	friend class GlBitmapScreen;
 	template <class T> friend class BitmapUtils;
-	template <class T1, class T2> friend class Blit2X;
+	template <class T1, class T2> friend class Blit;
 
 	Bitmap();
 
