@@ -468,6 +468,7 @@
     <ClInclude Include="..\..\src\input_buttons.h" />
     <ClInclude Include="..\..\src\keys.h" />
     <ClInclude Include="..\..\src\main_data.h" />
+    <ClInclude Include="..\..\src\map_data.h" />
     <ClInclude Include="..\..\src\msgbox.h" />
     <ClInclude Include="..\..\src\options.h" />
     <ClInclude Include="..\..\src\output.h" />

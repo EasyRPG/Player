@@ -764,6 +764,9 @@
     <ClInclude Include="..\..\src\bitmap_utils.h">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\map_data.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\resources\player.rc">
