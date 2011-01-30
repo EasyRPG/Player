@@ -34,7 +34,7 @@ static void read_data(png_structp png_ptr, png_bytep data, png_size_t length) {
 }
 
 ////////////////////////////////////////////////////////////
-void ImagePNG::Read(FILE* stream, const void* buffer, bool transparent,
+void ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 					int& width, int& height, void*& pixels) {
 	pixels = NULL;
 

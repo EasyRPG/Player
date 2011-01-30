@@ -89,7 +89,7 @@ SoftBitmap::SoftBitmap(const std::string& filename, bool itransparent, uint32 fl
 	if (ext == "png")
 		ImagePNG::ReadPNG(stream, (const void*) NULL, transparent, w, h, bitmap);
 	else if (ext == "xyz")
-		ImagePNG::ReadXYZ(stream, transparent, w, h, bitmap);
+		ImageXYZ::ReadXYZ(stream, transparent, w, h, bitmap);
 
 	ConvertImage(w, h, bitmap);
 
