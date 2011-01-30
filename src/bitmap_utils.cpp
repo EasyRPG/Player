@@ -44,8 +44,7 @@ Color BitmapUtils<PF>::GetPixel(Bitmap* src, int x, int y) {
 ////////////////////////////////////////////////////////////
 template <class PF>
 Bitmap* BitmapUtils<PF>::Resample(Bitmap* src, int scale_w, int scale_h, const Rect& src_rect) {
-	double zoom_x = (double)(scale_w) / src_rect.width;
-	double zoom_y = (double)(scale_h) / src_rect.height;
+	double zoom_y = (double)src_rect.height / scale_h;
 
 	Surface* dst = Surface::CreateSurface(scale_w, scale_h, src->transparent);
 	if (src->transparent)
@@ -59,14 +58,32 @@ Bitmap* BitmapUtils<PF>::Resample(Bitmap* src, int scale_w, int scale_h, const R
 	int pad = dst->pitch() - PF::bytes * dst->width();
 
 	for (int i = 0; i < scale_h; i++) {
-		const uint8* nearest_y = (const uint8*) src->pixels() + (src_rect.y + (int)(i / zoom_y)) * src->pitch();
-
-		for (int j = 0; j < scale_w; j++) {
-			const uint8* nearest_match = nearest_y + (src_rect.x + (int)(j / zoom_x)) * PF::bytes;
-			PF::copy_pixel(dst_pixels, nearest_match);
-
-			dst_pixels += PF::bytes;
+		const uint8* nearest_y = (const uint8*) src->pixels() + (src_rect.y + (int)((i + 0.5) * zoom_y)) * src->pitch();
+		if (scale_w > src_rect.width) {
+			int error = scale_w / 2;
+			const uint8* nearest_match = nearest_y + src_rect.x * PF::bytes;
+			for (int j = 0; j < scale_w; j++) {
+				error -= src_rect.width;
+				if (error < 0) {
+					nearest_match += PF::bytes;
+					error += scale_w;
+				}
+				PF::copy_pixel(dst_pixels, nearest_match);
+				dst_pixels += PF::bytes;
+			}
 		}
+		else {
+			static const int FRAC_BITS = 16;
+			int step = (src_rect.width << FRAC_BITS) / scale_w;
+			int x = (src_rect.x << FRAC_BITS) + step / 2;
+			for (int j = 0; j < scale_w; j++) {
+				const uint8* nearest_match = nearest_y + (x >> FRAC_BITS) * PF::bytes;
+				PF::copy_pixel(dst_pixels, nearest_match);
+				dst_pixels += PF::bytes;
+				x += step;
+			}
+		}
+
 		dst_pixels += pad;
 	}
 
