@@ -25,7 +25,13 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <vector>
-#include <GL/gl.h>
+#if defined(USE_GLES)
+	#include <GLES/gl.h>
+#elif defined(USE_SDL)
+	#include <SDL_opengl.h>
+#else
+	#include <GL/gl.h>
+#endif
 #include "surface.h"
 #include "bitmap_screen.h"
 

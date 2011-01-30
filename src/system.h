@@ -22,7 +22,7 @@
 	#error "This build doesn't target an os"
 #endif
 
-#if !(defined(USE_SDL) || defined(USE_OPENGL))
+#if !(defined(USE_SDL)) /*|| defined(USE_OPENGL))*/
 	#error "This build doesn't target a backend"
 #endif
 
@@ -33,6 +33,8 @@
 #include "options.h"
 
 #ifdef USE_OPENGL
+	#define USE_OPENGL_BITMAP
+
 	#define SUPPORT_ZOOM
 	#define SUPPORT_FULL_SCALING
 
@@ -70,7 +72,7 @@
 #endif
 
 #ifdef USE_SDL
-	#if !defined(USE_OPENGL) && !defined(USE_SOFT_BITMAP) && !defined(USE_PIXMAN_BITMAP)
+	#if !defined(USE_OPENGL_BITMAP) && !defined(USE_SOFT_BITMAP) && !defined(USE_PIXMAN_BITMAP)
 		#define USE_SDL_IMAGE
 		#define USE_SDL_BITMAP
 		//#define USE_RLE
