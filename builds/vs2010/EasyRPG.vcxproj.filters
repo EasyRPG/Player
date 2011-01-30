@@ -393,9 +393,6 @@
     <ClCompile Include="..\..\src\ftfont.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\image.cpp">
-      <Filter>Source Files\Backend\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\soft_bitmap.cpp">
       <Filter>Source Files\Backend\Graphics\soft</Filter>
     </ClCompile>
@@ -409,6 +406,12 @@
       <Filter>Source Files\Backend\Graphics\pixman</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\bitmap_utils.cpp">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\image_png.cpp">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\image_xyz.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
@@ -743,9 +746,6 @@
     <ClInclude Include="..\..\src\pixel_format.h">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\image.h">
-      <Filter>Source Files\Backend\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\ftfont.h">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
@@ -766,6 +766,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\map_data.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\image_xyz.h">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\image_png.h">
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

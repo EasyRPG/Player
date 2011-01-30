@@ -343,7 +343,8 @@
     <ClCompile Include="..\..\src\gl_bitmap_screen.cpp" />
     <ClCompile Include="..\..\src\graphics.cpp" />
     <ClCompile Include="..\..\src\hslrgb.cpp" />
-    <ClCompile Include="..\..\src\image.cpp" />
+    <ClCompile Include="..\..\src\image_png.cpp" />
+    <ClCompile Include="..\..\src\image_xyz.cpp" />
     <ClCompile Include="..\..\src\input.cpp" />
     <ClCompile Include="..\..\src\input_buttons_desktop.cpp" />
     <ClCompile Include="..\..\src\input_buttons_dingoo.cpp" />
@@ -462,7 +463,8 @@
     <ClInclude Include="..\..\src\gl_bitmap_screen.h" />
     <ClInclude Include="..\..\src\graphics.h" />
     <ClInclude Include="..\..\src\hslrgb.h" />
-    <ClInclude Include="..\..\src\image.h" />
+    <ClInclude Include="..\..\src\image_png.h" />
+    <ClInclude Include="..\..\src\image_xyz.h" />
     <ClInclude Include="..\..\src\input.h" />
     <ClInclude Include="..\..\src\game_interpreter.h" />
     <ClInclude Include="..\..\src\input_buttons.h" />
