@@ -25,6 +25,7 @@
 #include <vector>
 #include <map>
 #include <cstring>
+#include <cstdlib>
 #include <string>
 #include <dirent.h>
 #include <unistd.h>
@@ -33,6 +34,7 @@
 #include "utils.h"
 #include "filefinder.h"
 #include "output.h"
+#include "player.h"
 
 typedef std::map<std::string, std::string> string_map;
 typedef std::map<std::string, string_map> directory_map;
@@ -105,7 +107,7 @@ static Tree* scandirs(const std::string& root) {
 
 	string_map::const_iterator it;
 	for (it = tree->dirs.begin(); it != tree->dirs.end(); it++) {
-		string_map m = scandir(it->second);
+		string_map m = scandir(root + "/" + it->second);
 		if (!m.empty())
 			tree->files[it->first] = m;
 	}
@@ -121,11 +123,35 @@ void FileFinder::Init() {
 	trees.push_back(scandirs("."));
 }
 
+namespace FileFinder {
+	void AddPaths(const char *_path);
+}
+
+void FileFinder::AddPaths(const char *_path) {
+	if (_path == NULL)
+		return;
+	std::string path(_path);
+	if (!isdir(path))
+		return;
+
+	size_t size = path.size();
+	for (size_t start = 0; start < size; ) {
+		size_t end = path.find(':');
+		if (end == path.npos)
+			end = size;
+		const std::string& dir = path.substr(start, end - start);
+		if (!dir.empty())
+			trees.push_back(scandirs(dir));
+		start = end + 1;
+	}
+}
+
 void FileFinder::InitRtpPaths() {
-	// ToDo: Define default rtp paths
-	//if (Player::engine == Player::EngineRpg2k) {
-	//} else if (Player::engine == Player::EngineRpg2k3) {
-	//}
+	if (Player::engine == Player::EngineRpg2k)
+		AddPaths(getenv("RPG2K_RTP_PATH"));
+	else if (Player::engine == Player::EngineRpg2k3)
+		AddPaths(getenv("RPG2K3_RTP_PATH"));
+	AddPaths(getenv("RPG_RTP_PATH"));
 }
 
 ////////////////////////////////////////////////////////
