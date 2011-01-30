@@ -64,6 +64,7 @@ Game_Character::Game_Character() :
 	walk_anime(true),
 	turn_enabled(true),
 	direction_fix(false),
+	cycle_stat(false),
 	priority_type(1),
 	transparent(false) {
 }
@@ -86,13 +87,16 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 	int new_x = x + (d == DirectionRight ? 1 : d == DirectionLeft ? -1 : 0);
 	int new_y = y + (d == DirectionDown ? 1 : d == DirectionUp ? -1 : 0);
 
-	if (!Game_Map::IsValid(new_x, new_y)) return false;
+	if (!Game_Map::IsValid(new_x, new_y))
+		return false;
 
 	if (through) return true;
 
-	if (!Game_Map::IsPassable(x, y, d, this)) return false;
+	if (!Game_Map::IsPassable(x, y, d, this))
+		return false;
 	
-	if (!Game_Map::IsPassable(new_x, new_y, 10 - d)) return false;
+	if (!Game_Map::IsPassable(new_x, new_y, 10 - d))
+		return false;
 	
 	for (tEventHash::iterator i = Game_Map::GetEvents().begin(); i != Game_Map::GetEvents().end(); i++) {
 		Game_Event* evnt = i->second;
@@ -234,14 +238,19 @@ void Game_Character::UpdateSelfMovement() {
 	if (stop_count > 30 * (5 - move_frequency)) {
 		switch (move_type) {
 		case 1: // Random
+			MoveTypeRandom();
 			break;
 		case 2: // Cycle up-down
+			MoveTypeCycleUpDown();
 			break;
 		case 3: // Cycle left-right
+			MoveTypeCycleLeftRight();
 			break;
 		case 4: // Step towards hero
+			MoveTypeTowardsPlayer();
 			break;
 		case 5: // Step away from hero
+			MoveTypeAwayFromPlayer();
 			break;
 		case 6: // Custom route
 			MoveTypeCustom();
@@ -262,6 +271,81 @@ void Game_Character::UpdateStop() {
 }
 
 ////////////////////////////////////////////////////////////
+void Game_Character::MoveTypeRandom() {
+	if (IsStopping()) {
+		switch (rand() % 6) {
+		case 0:
+			stop_count = 0;
+			break;
+		case 1: case 2:
+			MoveRandom();
+			break;
+		default:
+			MoveForward();
+		}
+	}
+}
+
+void Game_Character::MoveTypeCycleLeftRight() {
+	if (IsStopping()) {
+		cycle_stat ? MoveLeft() : MoveRight();
+
+		cycle_stat = move_failed ? !cycle_stat : cycle_stat;
+	}
+}
+
+void Game_Character::MoveTypeCycleUpDown() {
+	if (IsStopping()) {
+		cycle_stat ? MoveUp() : MoveDown();
+
+		cycle_stat = move_failed ? !cycle_stat : cycle_stat;
+	}
+}
+
+void Game_Character::MoveTypeTowardsPlayer() {
+	if (IsStopping()) {
+		int sx = x - Main_Data::game_player->GetX();
+		int sy = y - Main_Data::game_player->GetY();
+
+		if ( std::abs(sx) + std::abs(sy) >= 20 ) {
+			MoveRandom();
+		} else {
+			switch (rand() % 6) {
+			case 0:
+				MoveRandom();
+				break;
+			case 1:
+				MoveForward();
+				break;
+			default:
+				MoveTowardsPlayer();
+			}
+		}
+	}
+}
+
+void Game_Character::MoveTypeAwayFromPlayer() {
+	if (IsStopping()) {
+		int sx = x - Main_Data::game_player->GetX();
+		int sy = y - Main_Data::game_player->GetY();
+
+		if ( std::abs(sx) + std::abs(sy) >= 20 ) {
+			MoveRandom();
+		} else {
+			switch (rand() % 6) {
+			case 0:
+				MoveRandom();
+				break;
+			case 1:
+				MoveForward();
+				break;
+			default:
+				MoveAwayFromPlayer();
+			}
+		}
+	}
+}
+
 void Game_Character::MoveTypeCustom() {
 	if (IsStopping()) {
 		move_failed = false;
@@ -282,7 +366,7 @@ void Game_Character::MoveTypeCustom() {
 			RPG::MoveCommand& move_command = move_route->move_commands[move_route_index];
 			switch (move_command.command_id) {
 			case LMU_Reader::ChunkMoveCommands::move_up:
-				MoveUp();	break;
+				MoveUp(); break;
 			case LMU_Reader::ChunkMoveCommands::move_right:
 				MoveRight(); break;
 			case LMU_Reader::ChunkMoveCommands::move_down:
@@ -293,10 +377,18 @@ void Game_Character::MoveTypeCustom() {
 			case LMU_Reader::ChunkMoveCommands::move_downright: break;
 			case LMU_Reader::ChunkMoveCommands::move_downleft: break;
 			case LMU_Reader::ChunkMoveCommands::move_upleft: break;
-			case LMU_Reader::ChunkMoveCommands::move_random: break;
-			case LMU_Reader::ChunkMoveCommands::move_towards_hero: break;
-			case LMU_Reader::ChunkMoveCommands::move_away_from_hero: break;
-			case LMU_Reader::ChunkMoveCommands::move_forward: break;
+			case LMU_Reader::ChunkMoveCommands::move_random:
+				MoveRandom();
+				break;
+			case LMU_Reader::ChunkMoveCommands::move_towards_hero:
+				MoveTowardsPlayer();
+				break;
+			case LMU_Reader::ChunkMoveCommands::move_away_from_hero:
+				MoveAwayFromPlayer();
+				break;
+			case LMU_Reader::ChunkMoveCommands::move_forward:
+				MoveForward();
+				break;
 			case LMU_Reader::ChunkMoveCommands::face_up:
 				TurnUp(); break;
 			case LMU_Reader::ChunkMoveCommands::face_right:
@@ -305,18 +397,30 @@ void Game_Character::MoveTypeCustom() {
 				TurnDown(); break;
 			case LMU_Reader::ChunkMoveCommands::face_left:
 				TurnLeft(); break;
-			case LMU_Reader::ChunkMoveCommands::turn_90_degree_right: break;
-			case LMU_Reader::ChunkMoveCommands::turn_90_degree_left: break;
-			case LMU_Reader::ChunkMoveCommands::turn_180_degree: break;
-			case LMU_Reader::ChunkMoveCommands::turn_90_degree_random: break;
+			case LMU_Reader::ChunkMoveCommands::turn_90_degree_right:
+				Turn90DegreeRight();
+				break;
+			case LMU_Reader::ChunkMoveCommands::turn_90_degree_left:
+				Turn90DegreeLeft();
+				break;
+			case LMU_Reader::ChunkMoveCommands::turn_180_degree:
+				Turn180Degree();
+				break;
+			case LMU_Reader::ChunkMoveCommands::turn_90_degree_random:
+				Turn90DegreeLeftOrRight();
+				break;
 			case LMU_Reader::ChunkMoveCommands::face_random_direction: break;
 			case LMU_Reader::ChunkMoveCommands::face_hero: break;
 			case LMU_Reader::ChunkMoveCommands::face_away_from_hero: break;
 			case LMU_Reader::ChunkMoveCommands::wait: break;
 			case LMU_Reader::ChunkMoveCommands::begin_jump: break;
 			case LMU_Reader::ChunkMoveCommands::end_jump: break;
-			case LMU_Reader::ChunkMoveCommands::lock_facing: break;
-			case LMU_Reader::ChunkMoveCommands::unlock_facing: break;
+			case LMU_Reader::ChunkMoveCommands::lock_facing:
+				Lock();
+				break;
+			case LMU_Reader::ChunkMoveCommands::unlock_facing:
+				Unlock();
+				break;
 			case LMU_Reader::ChunkMoveCommands::increase_movement_speed:
 				move_speed = min(move_speed + 1, 8); break;
 			case LMU_Reader::ChunkMoveCommands::decrease_movement_speed: 
@@ -342,9 +446,11 @@ void Game_Character::MoveTypeCustom() {
 				}
 				break;
 			case LMU_Reader::ChunkMoveCommands::walk_everywhere_on:
-				through = true; break;
+				through = true;
+				break;
 			case LMU_Reader::ChunkMoveCommands::walk_everywhere_off:
-				through = false; break;
+				through = false;
+				break;
 			case LMU_Reader::ChunkMoveCommands::stop_animation: break;
 			case LMU_Reader::ChunkMoveCommands::start_animation: break;
 			case LMU_Reader::ChunkMoveCommands::increase_transp: break; // ???
@@ -373,7 +479,6 @@ void Game_Character::MoveDown() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Game_Character::MoveLeft() {
 	if (turn_enabled) TurnLeft();
 
@@ -388,7 +493,6 @@ void Game_Character::MoveLeft() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Game_Character::MoveRight() {
 	if (turn_enabled) TurnRight();
 
@@ -403,7 +507,6 @@ void Game_Character::MoveRight() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Game_Character::MoveUp() {
 	if (turn_enabled) TurnUp();
 
@@ -418,6 +521,79 @@ void Game_Character::MoveUp() {
 	}
 }
 
+void Game_Character::MoveForward() {
+	switch (direction) {
+	case DirectionDown:
+		MoveDown();
+		break;
+	case DirectionLeft:
+		MoveLeft();
+		break;
+	case DirectionRight:
+		MoveRight();
+		break;
+	case DirectionUp:
+		MoveUp();
+		break;
+	}
+}
+
+void Game_Character::MoveRandom() {
+	switch (rand() % 4) {
+	case 0: 
+		MoveDown();
+		break;
+	case 1:
+		MoveLeft();
+		break;
+	case 2:
+		MoveRight();
+		break;
+	case 3:
+		MoveUp();
+		break;
+	}
+}
+
+void Game_Character::MoveTowardsPlayer() {
+	int sx = DistanceXfromPlayer();
+	int sy = DistanceYfromPlayer();
+
+	if (sx != 0 || sy != 0) {
+		if ( std::abs(sx) > std::abs(sy) ) {
+			(sx > 0) ? MoveLeft() : MoveRight();
+			if (move_failed && sy != 0) {
+				(sy > 0) ? MoveUp() : MoveDown();
+			}
+		} else {
+			(sy > 0) ? MoveUp() : MoveDown();
+			if (move_failed && sx != 0) {
+				(sx > 0) ? MoveLeft() : MoveRight();
+			}
+		}
+	}
+}
+
+void Game_Character::MoveAwayFromPlayer() {
+	int sx = DistanceXfromPlayer();
+	int sy = DistanceYfromPlayer();
+
+	if (sx != 0 || sy != 0) {
+		if ( std::abs(sx) > std::abs(sy) ) {
+			(sx > 0) ? MoveRight() : MoveLeft();
+			if (move_failed && sy != 0) {
+				(sy > 0) ? MoveDown() : MoveUp();
+			}
+		} else {
+			(sy > 0) ? MoveDown() : MoveUp();
+			if (move_failed && sx != 0) {
+				(sx > 0) ? MoveRight() : MoveLeft();
+			}
+		}
+	}
+}
+
+
 ////////////////////////////////////////////////////////////
 void Game_Character::TurnDown() {
 	if (!direction_fix) {
@@ -426,7 +602,6 @@ void Game_Character::TurnDown() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Game_Character::TurnLeft() {
 	if (!direction_fix) {
 		direction = 4;
@@ -434,7 +609,6 @@ void Game_Character::TurnLeft() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Game_Character::TurnRight() {
 	if (!direction_fix) {
 		direction = 6;
@@ -442,7 +616,6 @@ void Game_Character::TurnRight() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Game_Character::TurnUp() {
 	if (!direction_fix) {
 		direction = 8;
@@ -450,6 +623,68 @@ void Game_Character::TurnUp() {
 	}
 }
 
+void Game_Character::Turn90DegreeLeft() {
+	switch (direction) {
+	case DirectionDown:
+		TurnRight();
+		break;
+	case DirectionLeft:
+		TurnDown();
+		break;
+	case DirectionRight:
+		TurnUp();
+		break;
+	case DirectionUp:
+		TurnLeft();
+		break;
+	}
+}
+
+void Game_Character::Turn90DegreeRight() {
+	switch (direction) {
+	case DirectionDown:
+		TurnLeft();
+		break;
+	case DirectionLeft:
+		TurnUp();
+		break;
+	case DirectionRight:
+		TurnDown();
+		break;
+	case DirectionUp:
+		TurnRight();
+		break;
+	}
+}
+
+void Game_Character::Turn180Degree() {
+	switch (direction) {
+	case DirectionDown:
+		TurnUp();
+		break;
+	case DirectionLeft:
+		TurnRight();
+		break;
+	case DirectionRight:
+		TurnLeft();
+		break;
+	case DirectionUp:
+		TurnDown();
+		break;
+	}
+}
+
+void Game_Character::Turn90DegreeLeftOrRight() {
+	int value = rand() % 2;
+	
+	if (value == 0) {
+		Turn90DegreeLeft();
+	} else {
+		Turn90DegreeRight();
+	}
+}
+
+////////////////////////////////////////////////////////////
 void Game_Character::TurnTowardPlayer() {
 	int sx = DistanceXfromPlayer();
 	int sy = DistanceYfromPlayer();

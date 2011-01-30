@@ -55,17 +55,17 @@ struct Component {
 		int bit_count = count_bits(mask);
 		uint32 mask_ex = (1U << bit_count) - 1;
 		uint32 mask_lo = mask_ex - mask;
-		shift = count_bits(mask_lo);
-		bits = bit_count - shift;
+		shift = (uint8)count_bits(mask_lo);
+		bits = (uint8)(bit_count - shift);
 		byte = shift / 8;
 	}
 
 	Component() {}
 
 	Component(unsigned int bits, unsigned int shift) :
-		bits(bits),
-		shift(shift),
-		byte(shift / 8),
+		bits((uint8)bits),
+		shift((uint8)shift),
+		byte((uint8)(shift / 8)),
 		mask(((1 << bits)-1) << shift) {}
 
 	Component(uint32 mask) :

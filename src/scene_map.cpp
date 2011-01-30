@@ -61,6 +61,15 @@ void Scene_Map::Terminate() {
 }
 
 ////////////////////////////////////////////////////////////
+/*void Scene_Map::TransitionIn() {
+	Graphics::Transition((Graphics::TransitionType)Data::system.transition_in, 12);
+}
+
+void Scene_Map::TransitionOut() {
+	Graphics::Transition((Graphics::TransitionType)Data::system.transition_in, 12, true);
+}*/
+
+////////////////////////////////////////////////////////////
 void Scene_Map::Update() {
 	Game_Map::GetInterpreter().Update();
 

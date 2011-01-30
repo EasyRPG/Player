@@ -38,6 +38,8 @@ public:
 	void Start();
 	void Update();
 	void Terminate();
+//	void TransitionIn();
+//	void TransitionOut();
 
 	void CallBattle();
 	void CallShop();
