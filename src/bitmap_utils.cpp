@@ -44,51 +44,11 @@ Color BitmapUtilsT<PF>::GetPixel(Bitmap* src, int x, int y) {
 ////////////////////////////////////////////////////////////
 template <class PF>
 Bitmap* BitmapUtilsT<PF>::Resample(Bitmap* src, int scale_w, int scale_h, const Rect& src_rect) {
-	double zoom_y = (double)src_rect.height / scale_h;
-
 	Surface* dst = Surface::CreateSurface(scale_w, scale_h, src->transparent);
 	if (src->transparent)
 		dst->SetTransparentColor(src->GetTransparentColor());
 
-	src->Lock();
-	dst->Lock();
-
-	uint8* dst_pixels = (uint8*)dst->pixels();
-
-	int pad = dst->pitch() - PF::bytes * dst->width();
-
-	for (int i = 0; i < scale_h; i++) {
-		const uint8* nearest_y = (const uint8*) src->pixels() + (src_rect.y + (int)((i + 0.5) * zoom_y)) * src->pitch();
-		if (scale_w > src_rect.width) {
-			int error = scale_w / 2;
-			const uint8* nearest_match = nearest_y + src_rect.x * PF::bytes;
-			for (int j = 0; j < scale_w; j++) {
-				error -= src_rect.width;
-				if (error < 0) {
-					nearest_match += PF::bytes;
-					error += scale_w;
-				}
-				PF::copy_pixel(dst_pixels, nearest_match);
-				dst_pixels += PF::bytes;
-			}
-		}
-		else {
-			static const int FRAC_BITS = 16;
-			int step = (src_rect.width << FRAC_BITS) / scale_w;
-			int x = (src_rect.x << FRAC_BITS) + step / 2;
-			for (int j = 0; j < scale_w; j++) {
-				const uint8* nearest_match = nearest_y + (x >> FRAC_BITS) * PF::bytes;
-				PF::copy_pixel(dst_pixels, nearest_match);
-				dst_pixels += PF::bytes;
-				x += step;
-			}
-		}
-
-		dst_pixels += pad;
-	}
-
-	src->Unlock();
-	dst->Unlock();
+	ScaleBlit(dst, dst->GetRect(), src, src_rect);
 
 	return dst;
 }
@@ -96,74 +56,29 @@ Bitmap* BitmapUtilsT<PF>::Resample(Bitmap* src, int scale_w, int scale_h, const 
 ////////////////////////////////////////////////////////////
 template <class PF>
 Bitmap* BitmapUtilsT<PF>::RotateScale(Bitmap* src, double angle, int scale_w, int scale_h) {
-	double c = cos(-angle);
-	double s = sin(-angle);
-	int w = src->width();
-	int h = src->height();
+	int w = src->GetWidth();
+	int h = src->GetHeight();
 	double sx = (double) scale_w / w;
 	double sy = (double) scale_h / h;
 
-	double fxx =  c * sx;
-	double fxy =  s * sy;
-	double fyx = -s * sx;
-	double fyy =  c * sy;
+	Matrix fwd = Matrix::Setup(angle, sx, sy, 0, 0, 0, 0);
+	Rect rect = TransformRectangle(fwd, Rect(0, 0, w, h));
 
-	double x0 = 0;
-	double y0 = 0;
-	double x1 = fxx * w;
-	double y1 = fyx * w;
-	double x2 = fxx * w + fxy * h;
-	double y2 = fyx * w + fyy * h;
-	double x3 = fxy * h;
-	double y3 = fyy * h;
+	double fx0 = -rect.x;
+	double fy0 = -rect.y;
 
-	double xmin = std::min(std::min(x0, x1), std::min(x2, x3));
-	double ymin = std::min(std::min(y0, y1), std::min(y2, y3));
-	double xmax = std::max(std::max(x0, x1), std::max(x2, x3));
-	double ymax = std::max(std::max(y0, y1), std::max(y2, y3));
-	double fx0 = -xmin;
-	double fy0 = -ymin;
+	int dst_w = rect.width;
+	int dst_h = rect.height;
 
-	int dst_w = (int)(ceil(xmax) - floor(xmin));
-	int dst_h = (int)(ceil(ymax) - floor(ymin));
-
-	double ixx =  c / sx;
-	double ixy = -s / sx;
-	double iyx =  s / sy;
-	double iyy =  c / sy;
-	double ix0 = -(c * fx0 - s * fy0) / sx;
-	double iy0 = -(s * fx0 + c * fy0) / sy;
+	fwd = fwd.PreMultiply(Matrix::Translation(fx0, fy0));
+	Matrix inv = fwd.Inverse();
 
 	Surface* result = Surface::CreateSurface(dst_w, dst_h, true);
 	const Color& trans = src->transparent ? src->GetTransparentColor() : Color(255,0,255,0);
 	result->SetTransparentColor(trans);
 	result->Fill(trans);
 
-	src->Lock();
-	result->Lock();
-
-	const uint8* src_pixels = (const uint8*)src->pixels();
-	uint8* dst_pixels = (uint8*)result->pixels();
-	int src_pitch = src->pitch();
-	int pad = result->pitch() - result->width() * PF::bytes;
-
-	for (int i = 0; i < dst_h; i++) {
-		for (int j = 0; j < dst_w; j++) {
-			double x = ix0 + ixy * (i + 0.5) + ixx * (j + 0.5);
-			double y = iy0 + iyy * (i + 0.5) + iyx * (j + 0.5);
-			int xi = (int) floor(x);
-			int yi = (int) floor(y);
-			if (xi < 0 || xi >= w || yi < 0 || yi >= h)
-				;
-			else
-				PF::copy_pixel(dst_pixels, &src_pixels[yi * src_pitch + xi * PF::bytes]);
-			dst_pixels += PF::bytes;
-		}
-		dst_pixels += pad;
-	}
-
-	src->Unlock();
-	result->Unlock();
+	TransformBlit(result, result->GetRect(), src, src->GetRect(), inv);
 
 	return result;
 }
@@ -377,12 +292,133 @@ void BitmapUtilsT<PF>::TiledBlit(Surface* dst, int ox, int oy, Rect src_rect, Bi
 
 ////////////////////////////////////////////////////////////
 template <class PF>
-void BitmapUtilsT<PF>::StretchBlit(Surface* dst, Bitmap* src, Rect src_rect, int opacity) {
-	if (src_rect.width == dst->width() && src_rect.height == dst->height()) {
-		dst->Blit(0, 0, src, src_rect, opacity);
-	} else {
-		dst->StretchBlit(dst->GetRect(), src, src_rect, opacity);
+void BitmapUtilsT<PF>::ScaleBlit(Surface* dst, const Rect& dst_rect, Bitmap* src, const Rect& src_rect) {
+	double zoom_x = (double)src_rect.width / dst_rect.height;
+	double zoom_y = (double)src_rect.height / dst_rect.height;
+
+	src->Lock();
+	dst->Lock();
+
+	double sx0 = src_rect.x;
+	double sy0 = src_rect.y;
+	double sx1 = src_rect.x + src_rect.width;
+	double sy1 = src_rect.y + src_rect.height;
+	int dx0 = dst_rect.x;
+	int dy0 = dst_rect.y;
+	int dx1 = dst_rect.x + dst_rect.width;
+	int dy1 = dst_rect.y + dst_rect.height;
+
+	if (dx0 < 0) {
+		sx0 -= zoom_x * dst_rect.x;
+		dx0 = 0;
 	}
+
+	int dw = dst->GetWidth();
+	if (dx1 - dw > 0) {
+		sx1 -= dx1 - dw;
+		dx1 = dw;
+	}
+
+	if (dy0 < 0) {
+		sy0 -= zoom_y * dst_rect.y;
+		dy0 = 0;
+	}
+
+	int dh = dst->GetHeight();
+	if (dy1 - dh > 0) {
+		sy1 -= dy1 - dh;
+		dy1 = dh;
+	}
+
+	if (dx0 >= dx1 || dy0 >= dy1)
+		return;
+
+	uint8* dst_pixels = (uint8*)dst->pixels();
+
+	int pad = dst->pitch() - PF::bytes * dst->width();
+
+	for (int y = dy0; y < dy1; y++) {
+		const uint8* nearest_y = (const uint8*) src->pixels() + (int)((sy0 + y) * zoom_y) * src->pitch();
+		static const int FRAC_BITS = 16;
+		int step = (int)((sx1 - sx0) * (1 << FRAC_BITS)) / (dx1 - dx0);
+		int x = (int)(sx0 * (1 << FRAC_BITS)) + step / 2;
+		for (int j = 0; j < dst_rect.width; j++) {
+			const uint8* nearest_match = nearest_y + (x >> FRAC_BITS) * PF::bytes;
+			PF::copy_pixel(dst_pixels, nearest_match);
+			dst_pixels += PF::bytes;
+			x += step;
+		}
+
+		dst_pixels += pad;
+	}
+
+	src->Unlock();
+	dst->Unlock();
+}
+
+////////////////////////////////////////////////////////////
+template <class PF>
+void BitmapUtilsT<PF>::TransformBlit(Surface *dst, Rect dst_rect,
+									 Bitmap* src, Rect src_rect,
+									 const Matrix& inv) {
+	dst_rect.Adjust(dst->GetWidth(), dst->GetHeight());
+
+	src->Lock();
+	dst->Lock();
+
+	int sx0 = src_rect.x;
+	int sy0 = src_rect.y;
+	int sx1 = src_rect.x + src_rect.width;
+	int sy1 = src_rect.y + src_rect.height;
+
+	const uint8* src_pixels = (const uint8*)src->pixels();
+	uint8* dst_pixels = (uint8*)dst->pixels();
+	int src_pitch = src->pitch();
+	int pad = dst->pitch() - dst->width() * PF::bytes;
+
+	for (int y = dst_rect.y; y < dst_rect.y + dst_rect.height; y++) {
+		for (int x = dst_rect.x; x < dst_rect.x + dst_rect.width; x++) {
+			double fx, fy;
+			inv.Transform(x + 0.5, y + 0.5, fx, fy);
+			int xi = (int) floor(fx);
+			int yi = (int) floor(fy);
+			if (xi < sx0 || xi >= sx1 || yi < sy0 || yi >= sy1)
+				;
+			else
+				PF::copy_pixel(dst_pixels, &src_pixels[yi * src_pitch + xi * PF::bytes]);
+			dst_pixels += PF::bytes;
+		}
+		dst_pixels += pad;
+	}
+
+	src->Unlock();
+	dst->Unlock();
+}
+
+////////////////////////////////////////////////////////////
+template <class PF>
+void BitmapUtilsT<PF>::TransformBlit(
+	Surface *dst, Rect dst_rect,
+	Bitmap* src, Rect src_rect,
+	double angle, int dst_w, int dst_h,
+	int src_pos_x, int src_pos_y,
+	int dst_pos_x, int dst_pos_y) {
+
+	double sx = (double) dst_w / src_rect.width;
+	double sy = (double) dst_h / src_rect.height;
+
+	Matrix fwd = Matrix::Setup(angle, sx, sy,
+							   src_pos_x, src_pos_y,
+							   dst_pos_x, dst_pos_y);
+	Matrix inv = fwd.Inverse();
+
+	TransformBlit(dst, dst_rect, src, src_rect, inv);
+}
+
+////////////////////////////////////////////////////////////
+template <class PF>
+void BitmapUtilsT<PF>::StretchBlit(Surface* dst, Bitmap* src, Rect src_rect, int opacity) {
+	dst->StretchBlit(dst->GetRect(), src, src_rect, opacity);
 }
 
 ////////////////////////////////////////////////////////////
@@ -855,7 +891,45 @@ BitmapUtils* BitmapUtils::Create(int bpp, bool has_alpha, bool has_colorkey, con
 }
 
 ////////////////////////////////////////////////////////////
-void BitmapUtils::SetColorKey(int colorkey) {
-	format.colorkey = colorkey;
+void BitmapUtils::SetColorKey(uint32 colorkey) {
+	format.SetColorKey(colorkey);
+}
+
+////////////////////////////////////////////////////////////
+Rect BitmapUtils::TransformRectangle(const Matrix& m, const Rect& rect) {
+	int sx0 = rect.x;
+	int sy0 = rect.y;
+	int sx1 = rect.x + rect.width;
+	int sy1 = rect.y + rect.height;
+
+	double x0, y0, x1, y1, x2, y2, x3, y3;
+	m.Transform(sx0, sy0, x0, y0);
+	m.Transform(sx1, sy0, x1, y1);
+	m.Transform(sx1, sy1, x2, y2);
+	m.Transform(sx0, sy1, x3, y3);
+
+	double xmin = std::min(std::min(x0, x1), std::min(x2, x3));
+	double ymin = std::min(std::min(y0, y1), std::min(y2, y3));
+	double xmax = std::max(std::max(x0, x1), std::max(x2, x3));
+	double ymax = std::max(std::max(y0, y1), std::max(y2, y3));
+
+	int dx0 = (int) floor(xmin);
+	int dy0 = (int) floor(ymin);
+	int dx1 = (int) ceil(xmax);
+	int dy1 = (int) ceil(ymax);
+
+	return Rect(dx0, dy0, dx1 - dx0, dy1 - dy0);
+}
+
+////////////////////////////////////////////////////////////
+Matrix Matrix::Setup(double angle,
+					 double scale_x, double scale_y,
+					 int src_pos_x, int src_pos_y,
+					 int dst_pos_x, int dst_pos_y) {
+	Matrix m = Matrix::Translation(-src_pos_x, -src_pos_y);
+	m = m.PreMultiply(Matrix::Scale(scale_x, scale_y));
+	m = m.PreMultiply(Matrix::Rotation(angle));
+	m = m.PreMultiply(Matrix::Translation(dst_pos_x, dst_pos_y));
+	return m;
 }
 
