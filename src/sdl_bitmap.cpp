@@ -210,10 +210,14 @@ SdlBitmap::SdlBitmap(Bitmap* source, Rect src_rect, bool itransparent) {
 
 	SDL_FreeSurface(temp);
 
+	#ifdef USE_ALPHA
+	Clear();
+	#else
 	if ((((SdlBitmap*)source)->bitmap->flags & SDL_SRCCOLORKEY) == SDL_SRCCOLORKEY && transparent) {
 		SDL_FillRect(bitmap, NULL, ((SdlBitmap*)source)->bitmap->format->colorkey);
 		SDL_SetColorKey(bitmap, COLORKEY_FLAGS, ((SdlBitmap*)source)->bitmap->format->colorkey);
 	}
+	#endif
 
 	Blit(0, 0, source, src_rect, 255);
 }
@@ -309,19 +313,12 @@ void SdlBitmap::RemovePaletteColorkeyDuplicates(SDL_Surface* src, SDL_Color* col
 
 ////////////////////////////////////////////////////////////
 void SdlBitmap::Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
-	SDL_Rect src_r = {(int16)src_rect.x, (int16)src_rect.y, (uint16)src_rect.width, (uint16)src_rect.height};
-	SDL_Rect dst_r = {(int16)x, (int16)y, 0, 0};
-
 	#ifdef USE_ALPHA
-	if (opacity < 255)
 		Surface::Blit(x, y, src, src_rect, opacity);
-	else {
-		bool has_alpha = (((SdlBitmap*)src)->bitmap->flags & SDL_SRCALPHA) != 0;
-		SDL_SetAlpha(((SdlBitmap*)src)->bitmap, 0, 255);
-		SDL_BlitSurface(((SdlBitmap*)src)->bitmap, &src_r, bitmap, &dst_r);
-		SDL_SetAlpha(((SdlBitmap*)src)->bitmap, has_alpha ? SDL_SRCALPHA : 0, 255);
-	}
 	#else
+		SDL_Rect src_r = {(int16)src_rect.x, (int16)src_rect.y, (uint16)src_rect.width, (uint16)src_rect.height};
+		SDL_Rect dst_r = {(int16)x, (int16)y, 0, 0};
+
 		if (opacity < 255) SDL_SetAlpha(((SdlBitmap*)src)->bitmap, SETALPHA_FLAGS, (uint8)opacity);
 
 		SDL_BlitSurface(((SdlBitmap*)src)->bitmap, &src_r, bitmap, &dst_r);
