@@ -28,6 +28,7 @@
 
 #include "surface.h"
 #include "pixel_format.h"
+#include "bitmap_utils.h"
 
 ////////////////////////////////////////////////////////////
 /// SoftBitmap class.
@@ -79,6 +80,7 @@ protected:
 
 	typedef format_B8G8R8A8 pixel_format;
 	typedef format_R8G8B8A8 image_format;
+	BitmapUtilsT<pixel_format>* bm_utils;
 
 	/// Bitmap data.
 	int w, h;

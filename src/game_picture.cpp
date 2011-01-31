@@ -86,7 +86,7 @@ void Picture::UpdateSprite() {
 	sprite->SetTone(Tone((int) ((st.red        - 100) * 255 / 100),
 						 (int) ((st.green      - 100) * 255 / 100),
 						 (int) ((st.blue       - 100) * 255 / 100),
-						 (int) ((st.saturation - 100) * 255 / 100)));
+						 (int) ((100 - st.saturation) * 255 / 100)));
 }
 
 void Picture::Show(const std::string& _name) {

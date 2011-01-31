@@ -27,11 +27,9 @@
 #include "font.h"
 #include "rect.h"
 #include "tone.h"
-#include "pixel_format.h"
 
 class BitmapScreen;
 
-template <class T>
 class BitmapUtils;
 
 ////////////////////////////////////////////////////////////
@@ -126,12 +124,12 @@ protected:
 	friend class Surface;
 	friend class BitmapScreen;
 	friend class GlBitmapScreen;
-	template <class T> friend class BitmapUtils;
-	template <class T1, class T2> friend class Blit;
+	friend class BitmapUtils;
+	template <class T> friend class BitmapUtilsT;
+	friend class Blit;
+	template <class T1, class T2> friend class BlitT;
 
 	Bitmap();
-
-	DynamicFormat format;
 
 	virtual void* pixels() = 0;
 	virtual int width() const = 0;

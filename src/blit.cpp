@@ -21,7 +21,7 @@
 
 ////////////////////////////////////////////////////////////
 template <class PFsrc, class PFdst>
-void Blit<PFsrc, PFdst>::Blit1X(const DynamicFormat& format, uint8* dst_pixels, int dst_pitch, Bitmap* src) {
+void BlitT<PFsrc, PFdst>::Blit1X(uint8* dst_pixels, int dst_pitch, Bitmap* src) {
 	src->Lock();
 
 	const uint8* src_pixels = (uint8*)src->pixels();
@@ -31,7 +31,7 @@ void Blit<PFsrc, PFdst>::Blit1X(const DynamicFormat& format, uint8* dst_pixels, 
 	int dst_pad = dst_pitch - src_width * PFdst::bytes;
 
 	for (int y = 0; y < src_height; y++) {
-		blit1x_traits_type::copy_pixels(format, dst_pixels, src_pixels, src_width);
+		blit1x_traits_type::copy_pixels(dst_format, dst_pixels, src_format, src_pixels, src_width);
 		src_pixels += src_pad;
 		dst_pixels += dst_pad;
 	}
@@ -40,7 +40,7 @@ void Blit<PFsrc, PFdst>::Blit1X(const DynamicFormat& format, uint8* dst_pixels, 
 }
 
 template <class PFsrc, class PFdst>
-void Blit<PFsrc, PFdst>::Blit2X(const DynamicFormat& format, uint8* dst_pixels, int dst_pitch, Bitmap* src) {
+void BlitT<PFsrc, PFdst>::Blit2X(uint8* dst_pixels, int dst_pitch, Bitmap* src) {
 	src->Lock();
 
 	const uint8* src_pixels = (uint8*)src->pixels();
@@ -51,7 +51,7 @@ void Blit<PFsrc, PFdst>::Blit2X(const DynamicFormat& format, uint8* dst_pixels, 
 
 	for (int y = 0; y < src_height; y++) {
 		for (int x = 0; x < src_width; x++) {
-			blit2x_traits_type::copy_pixel_2x(format, dst_pixels, src_pixels);
+			blit2x_traits_type::copy_pixel_2x(dst_format, dst_pixels, src_format, src_pixels);
 
 			dst_pixels += PFdst::bytes;
 			src_pixels += PFsrc::bytes;
@@ -67,6 +67,40 @@ void Blit<PFsrc, PFdst>::Blit2X(const DynamicFormat& format, uint8* dst_pixels, 
 	src->Unlock();
 }
 
-template class Blit<format_B8G8R8A8, PixelFormat<32,false,true ,false, true, 8,16,8,8,8,0,8,24> >;
-template class Blit<format_B8G8R8A8, PixelFormat<24,false,true ,false, true, 8,16,8,8,8,0,0,0> >;
-template class Blit<format_B8G8R8A8, PixelFormat<16,false,true ,false, false,5,11,6,5,5,0,0,0> >;
+template <class PFsrc, class PFdst>
+bool BlitT<PFsrc, PFdst>::Match() {
+	if (PFsrc::Format(src_format) != src_format)
+		return false;
+	if (PFdst::Format(dst_format) != dst_format)
+		return false;
+	return true;
+}
+
+template class BlitT<format_B8G8R8A8, format_dynamic_32>;
+template class BlitT<format_B8G8R8A8, format_dynamic_24>;
+template class BlitT<format_B8G8R8A8, format_dynamic_16>;
+
+////////////////////////////////////////////////////////////
+Blit* Blit::Create(int dst_bpp, const DynamicFormat& dst_format,
+				   int src_bpp, const DynamicFormat& src_format) {
+	if (src_bpp != 32)
+		return NULL;
+	Blit* blit;
+	switch (dst_bpp) {
+		case 32:
+			blit = new BlitT<format_B8G8R8A8, format_dynamic_32>(dst_format, src_format);
+			break;
+		case 24:
+			blit = new BlitT<format_B8G8R8A8, format_dynamic_24>(dst_format, src_format);
+			break;
+		case 16:
+			blit = new BlitT<format_B8G8R8A8, format_dynamic_16>(dst_format, src_format);
+			break;
+	}
+	if (blit->Match())
+		return blit;
+
+	delete blit;
+	return NULL;
+}
+

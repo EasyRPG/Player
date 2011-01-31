@@ -31,18 +31,58 @@
 class Bitmap;
 
 ////////////////////////////////////////////////////////////
+/// Bitmap utils abstract parent class
+////////////////////////////////////////////////////////////
+
+class BitmapUtils {
+public:
+	BitmapUtils(const DynamicFormat& format) :
+		format(format) {}
+
+	virtual Color GetPixel(Bitmap* src, int x, int y) = 0;
+	virtual void SetPixel(Surface* dst, int x, int y, const Color &color) = 0;
+	virtual Bitmap* Resample(Bitmap* src, int scale_w, int scale_h, const Rect& src_rect) = 0;
+	virtual Bitmap* RotateScale(Bitmap* src, double angle, int scale_w, int scale_h) = 0;
+	virtual Bitmap* Waver(Bitmap* src, int depth, double phase) = 0;
+	virtual void Blit(Surface* dst, int x, int y, Bitmap* src, Rect src_rect, int opacity) = 0;
+	virtual void TiledBlit(Surface* dst, Rect src_rect, Bitmap* src, Rect dst_rect, int opacity) = 0;
+	virtual void TiledBlit(Surface* dst, int ox, int oy, Rect src_rect, Bitmap* src, Rect dst_rect, int opacity) = 0;
+	virtual void StretchBlit(Surface* dst, Bitmap* src, Rect src_rect, int opacity) = 0;
+	virtual void StretchBlit(Surface* dst, Rect dst_rect, Bitmap* src, Rect src_rect, int opacity) = 0;
+	virtual void Mask(Surface* dst, int x, int y, Bitmap* src, Rect src_rect) = 0;
+	virtual void Fill(Surface* dst, const Color &color) = 0;
+	virtual void FillRect(Surface* dst, Rect dst_rect, const Color &color) = 0;
+	virtual void Clear(Surface* dst) = 0;
+	virtual void ClearRect(Surface* dst, Rect dst_rect) = 0;
+	virtual void HueChange(Surface* dst, double hue) = 0;
+	virtual void HSLChange(Surface* dst, double hue, double sat, double lum, double loff, Rect dst_rect) = 0;
+	virtual void ToneChange(Surface* dst, const Tone &tone) = 0;
+	virtual void Flip(Surface* dst, bool horizontal, bool vertical) = 0;
+	virtual void OpacityChange(Surface* dst, int opacity, const Rect &src_rect) = 0;
+
+	virtual void SetColorKey(int colorkey);
+
+	static BitmapUtils* Create(int bpp, bool has_alpha, bool has_colorkey,
+							   const DynamicFormat& format);
+	DynamicFormat format;
+};
+
+////////////////////////////////////////////////////////////
 /// Bitmap utils class template
 ////////////////////////////////////////////////////////////
 template <class PF>
-class BitmapUtils {
+class BitmapUtilsT : public BitmapUtils {
 public:
+	BitmapUtilsT(const DynamicFormat& format) :
+		BitmapUtils(format) {}
+
 	////////////////////////////////////////////////////////
 	/// Get a pixel color.
 	/// @param x : pixel x
 	/// @param y : pixel y
 	/// @return pixel color
 	////////////////////////////////////////////////////////
-	static Color GetPixel(Bitmap* src, int x, int y);
+	Color GetPixel(Bitmap* src, int x, int y);
 
 	////////////////////////////////////////////////////////
 	/// Get a pixel color.
@@ -50,7 +90,7 @@ public:
 	/// @param y : pixel y
 	/// @param color : pixel color
 	////////////////////////////////////////////////////////
-	static void SetPixel(Surface* dst, int x, int y, const Color &color);
+	void SetPixel(Surface* dst, int x, int y, const Color &color);
 
 	////////////////////////////////////////////////////////
 	/// Create a resampled bitmap.
@@ -58,7 +98,7 @@ public:
 	/// @param scale_h : resampled height
 	/// @param src_rect : source rect to resample
 	////////////////////////////////////////////////////////
-	static Bitmap* Resample(Bitmap* src, int scale_w, int scale_h, const Rect& src_rect);
+	Bitmap* Resample(Bitmap* src, int scale_w, int scale_h, const Rect& src_rect);
 
 	////////////////////////////////////////////////////////
 	/// Create a rotated and scaled bitmap.
@@ -66,14 +106,14 @@ public:
 	/// @param scale_w : resampled width
 	/// @param scale_h : resampled height
 	////////////////////////////////////////////////////////
-	static Bitmap* RotateScale(Bitmap* src, double angle, int scale_w, int scale_h);
+	Bitmap* RotateScale(Bitmap* src, double angle, int scale_w, int scale_h);
 
 	////////////////////////////////////////////////////////
 	/// Create a wavy bitmap.
 	/// @param depth : wave magnitude
 	/// @param phase : wave phase
 	////////////////////////////////////////////////////////
-	static Bitmap* Waver(Bitmap* src, int depth, double phase);
+	Bitmap* Waver(Bitmap* src, int depth, double phase);
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap to this one.
@@ -83,7 +123,7 @@ public:
 	/// @param src_rect : source bitmap rect
 	/// @param opacity : opacity for blending with bitmap
 	////////////////////////////////////////////////////////
-	static void Blit(Surface* dst, int x, int y, Bitmap* src, Rect src_rect, int opacity);
+	void Blit(Surface* dst, int x, int y, Bitmap* src, Rect src_rect, int opacity);
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap in tiles to this one.
@@ -92,7 +132,7 @@ public:
 	/// @param dst_rect : destination rect
 	/// @param opacity : opacity for blending with bitmap
 	////////////////////////////////////////////////////////
-	static void TiledBlit(Surface* dst, Rect src_rect, Bitmap* src, Rect dst_rect, int opacity);
+	void TiledBlit(Surface* dst, Rect src_rect, Bitmap* src, Rect dst_rect, int opacity);
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap in tiles to this one.
@@ -103,7 +143,7 @@ public:
 	/// @param dst_rect : destination rect
 	/// @param opacity : opacity for blending with bitmap
 	////////////////////////////////////////////////////////
-	static void TiledBlit(Surface* dst, int ox, int oy, Rect src_rect, Bitmap* src, Rect dst_rect, int opacity);
+	void TiledBlit(Surface* dst, int ox, int oy, Rect src_rect, Bitmap* src, Rect dst_rect, int opacity);
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap stretched to this one.
@@ -111,7 +151,7 @@ public:
 	/// @param src_rect : source bitmap rect
 	/// @param opacity : opacity for blending with bitmap
 	////////////////////////////////////////////////////////
-	static void StretchBlit(Surface* dst, Bitmap* src, Rect src_rect, int opacity);
+	void StretchBlit(Surface* dst, Bitmap* src, Rect src_rect, int opacity);
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap stretched to this one.
@@ -120,7 +160,7 @@ public:
 	/// @param src_rect : source bitmap rect
 	/// @param opacity : opacity for blending with bitmap
 	////////////////////////////////////////////////////////
-	static void StretchBlit(Surface* dst, Rect dst_rect, Bitmap* src, Rect src_rect, int opacity);
+	void StretchBlit(Surface* dst, Rect dst_rect, Bitmap* src, Rect src_rect, int opacity);
 
 	/// Blit source bitmap transparency to this one.
 	/// @param x : x position
@@ -128,37 +168,37 @@ public:
 	/// @param src : source bitmap
 	/// @param src_rect : source bitmap rect
 	////////////////////////////////////////////////////////
-	static void Mask(Surface* dst, int x, int y, Bitmap* src, Rect src_rect);
+	void Mask(Surface* dst, int x, int y, Bitmap* src, Rect src_rect);
 
 	////////////////////////////////////////////////////////
 	/// Fill entire bitmap with color.
 	/// @param color : color for filling
 	////////////////////////////////////////////////////////
-	static void Fill(Surface* dst, const Color &color);
+	void Fill(Surface* dst, const Color &color);
 
 	////////////////////////////////////////////////////////
 	/// Fill bitmap rect with color.
 	/// @param dst_rect : destination rect
 	/// @param color : color for filling
 	////////////////////////////////////////////////////////
-	static void FillRect(Surface* dst, Rect dst_rect, const Color &color);
+	void FillRect(Surface* dst, Rect dst_rect, const Color &color);
 
 	////////////////////////////////////////////////////////
 	/// Clears the bitmap with transparent pixels.
 	////////////////////////////////////////////////////////
-	static void Clear(Surface* dst);
+	void Clear(Surface* dst);
 
 	////////////////////////////////////////////////////////
 	/// Clears the bitmap rect with transparent pixels.
 	/// @param dst_rect : destination rect
 	////////////////////////////////////////////////////////
-	static void ClearRect(Surface* dst, Rect dst_rect);
+	void ClearRect(Surface* dst, Rect dst_rect);
 	
 	////////////////////////////////////////////////////////
 	/// Rotate bitmap hue.
 	/// @param hue : hue change, degrees
 	////////////////////////////////////////////////////////
-	static void HueChange(Surface* dst, double hue);
+	void HueChange(Surface* dst, double hue);
 
 	////////////////////////////////////////////////////////
 	/// Adjust bitmap HSL colors.
@@ -168,28 +208,27 @@ public:
 	/// @param loff: luminance offset
 	/// @param dst_rect : destination rect
 	////////////////////////////////////////////////////////
-	static void HSLChange(Surface* dst, double hue, double sat, double lum, double loff, Rect dst_rect);
+	void HSLChange(Surface* dst, double hue, double sat, double lum, double loff, Rect dst_rect);
 
 	////////////////////////////////////////////////////////
 	/// Adjust bitmap tone.
 	/// @param tone : tone to apply
 	////////////////////////////////////////////////////////
-	static void ToneChange(Surface* dst, const Tone &tone);
+	void ToneChange(Surface* dst, const Tone &tone);
 
 	////////////////////////////////////////////////////////
 	/// Flips the bitmap pixels.
 	/// @param horizontal : flip horizontally (mirror)
 	/// @param vertical : flip vertically
 	////////////////////////////////////////////////////////
-	static void Flip(Surface* dst, bool horizontal, bool vertical);
+	void Flip(Surface* dst, bool horizontal, bool vertical);
 
 	////////////////////////////////////////////////////////
 	/// Change the opacity of a bitmap.
 	/// @param opacity : the maximum opacity
 	/// @param src_rect: the rectangle to modify
 	////////////////////////////////////////////////////////
-	static void OpacityChange(Surface* dst, int opacity, const Rect &src_rect);
-
+	void OpacityChange(Surface* dst, int opacity, const Rect &src_rect);
 };
 
 #endif

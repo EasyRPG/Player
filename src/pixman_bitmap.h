@@ -33,6 +33,7 @@
 #include "bitmap.h"
 #include "surface.h"
 #include "pixel_format.h"
+#include "bitmap_utils.h"
 
 ////////////////////////////////////////////////////////////
 /// PixmanBitmap class.
@@ -64,13 +65,12 @@ public:
 	void OpacityChange(int opacity, const Rect& dst_rect);
 	void SetTransparentColor(Color color);
 
+	typedef format_B8G8R8A8 pixel_format;
+	typedef format_R8G8B8A8 image_format;
+	BitmapUtilsT<pixel_format>* bm_utils;
 #ifndef USE_BIG_ENDIAN
-	typedef PixelFormat<32,false,true,false,true,8,16,8,8,8,0,8,24> pixel_format;
-	typedef PixelFormat<32,false,true,false,true,8,0,8,8,8,16,8,24> image_format;
 	static const pixman_format_code_t pixman_format = PIXMAN_a8r8g8b8;
 #else
-	typedef PixelFormat<32,false,true,false,true,8,8,8,16,8,24,8,0> pixel_format;
-	typedef PixelFormat<32,false,true,false,true,8,24,8,16,8,8,8,0> image_format;
 	static const pixman_format_code_t pixman_format = PIXMAN_b8g8r8a8;
 #endif
 

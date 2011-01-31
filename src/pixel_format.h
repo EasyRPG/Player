@@ -60,6 +60,14 @@ struct Component {
 		byte = shift / 8;
 	}
 
+	inline bool operator==(const Component& c) {
+		return mask == c.mask;
+	}
+
+	inline bool operator!=(const Component& c) {
+		return mask != c.mask;
+	}
+
 	Component() {}
 
 	Component(unsigned int bits, unsigned int shift) :
@@ -85,14 +93,14 @@ struct DynamicFormat {
 				  int gb, int gs,
 				  int bb, int bs,
 				  int ab, int as,
-				  int colorkey) :
+				  uint32 colorkey) :
 		r(rb, rs), g(gb, gs), b(bb, bs), a(ab, as), colorkey(colorkey) {}
 
 	DynamicFormat(uint32 rmask,
 				  uint32 gmask,
 				  uint32 bmask,
 				  uint32 amask,
-				  int colorkey) :
+				  uint32 colorkey) :
 		r(rmask), g(gmask), b(bmask), a(amask),
 		colorkey(colorkey) {}
 
@@ -100,7 +108,7 @@ struct DynamicFormat {
 			 int gb, int gs,
 			 int bb, int bs,
 			 int ab, int as,
-			 int colorkey) {
+			 uint32 colorkey) {
 		r = Component(rb, rs);
 		g = Component(gb, gs);
 		b = Component(bb, bs);
@@ -112,12 +120,24 @@ struct DynamicFormat {
 			 uint32 gmask,
 			 uint32 bmask,
 			 uint32 amask,
-			 int colorkey) {
+			 uint32 _colorkey) {
 		r = Component(rmask);
 		g = Component(gmask);
 		b = Component(bmask);
 		a = Component(amask);
-		colorkey = colorkey;
+		colorkey = _colorkey;
+	}
+
+	void SetColorKey(int _colorkey) {
+		colorkey = _colorkey;
+	}
+
+	inline bool operator==(const DynamicFormat& f) {
+		return r ==  f.r && g == f.g && b == f.b && a == f.a;
+	}
+
+	inline bool operator!=(const DynamicFormat& f) {
+		return r !=  f.r || g != f.g || b != f.b || a != f.a;
 	}
 };
 
@@ -451,10 +471,10 @@ public:
 	static inline int b_byte(const DynamicFormat& format) {		return endian(mask_b_traits_type::byte(format.b));	}
 	static inline int a_byte(const DynamicFormat& format) {		return endian(mask_a_traits_type::byte(format.a));	}
 
-	static inline int r_mask(const DynamicFormat& format) {		return mask_r_traits_type::mask(format.r);	}
-	static inline int g_mask(const DynamicFormat& format) {		return mask_g_traits_type::mask(format.g);	}
-	static inline int b_mask(const DynamicFormat& format) {		return mask_b_traits_type::mask(format.b);	}
-	static inline int a_mask(const DynamicFormat& format) {		return mask_a_traits_type::mask(format.a);	}
+	static inline uint32 r_mask(const DynamicFormat& format) {		return mask_r_traits_type::mask(format.r);	}
+	static inline uint32 g_mask(const DynamicFormat& format) {		return mask_g_traits_type::mask(format.g);	}
+	static inline uint32 b_mask(const DynamicFormat& format) {		return mask_b_traits_type::mask(format.b);	}
+	static inline uint32 a_mask(const DynamicFormat& format) {		return mask_a_traits_type::mask(format.a);	}
 
 	static inline int r_bits(const DynamicFormat& format) {		return mask_r_traits_type::bits(format.r);	}
 	static inline int g_bits(const DynamicFormat& format) {		return mask_g_traits_type::bits(format.g);	}
@@ -501,15 +521,47 @@ public:
 	static inline void set_rgba(const DynamicFormat& format, uint8* p, const uint8& r, const uint8& g, const uint8& b, const uint8& a) {
 		rgba_traits_type::set_rgba(format, p, r, g, b, a);
 	}
+
+	static inline bool match(const DynamicFormat& ref, const DynamicFormat& format) {
+		return
+			format.r.mask == r_mask(ref) &&
+			format.g.mask == g_mask(ref) &&
+			format.b.mask == b_mask(ref) &&
+			format.a.mask == a_mask(ref);
+	}
+
+	static inline DynamicFormat Format(const DynamicFormat& format) {
+		return DynamicFormat(
+			r_bits(format), r_mask(format),
+			g_bits(format), g_mask(format),
+			b_bits(format), b_mask(format),
+			a_bits(format), a_mask(format),
+			format.colorkey);
+	}
 };
 
 #ifndef USE_BIG_ENDIAN
 typedef PixelFormat<32,NotDynamic,HasAlpha,NoColorkey,IsAligned,8,16,8,8,8,0,8,24> format_B8G8R8A8;
 typedef PixelFormat<32,NotDynamic,HasAlpha,NoColorkey,IsAligned,8,0,8,8,8,16,8,24> format_R8G8B8A8;
+typedef PixelFormat<32,NotDynamic,HasAlpha,NoColorkey,IsAligned,8,24,8,16,8,8,8,0> format_A8B8G8R8;
+typedef PixelFormat<32,NotDynamic,HasAlpha,NoColorkey,IsAligned,8,8,8,16,8,24,8,0> format_A8R8G8B8;
 #else
 typedef PixelFormat<32,NotDynamic,HasAlpha,NoColorkey,IsAligned,8,8,8,16,8,24,8,0> format_B8G8R8A8;
 typedef PixelFormat<32,NotDynamic,HasAlpha,NoColorkey,IsAligned,8,24,8,16,8,8,8,0> format_R8G8B8A8;
+typedef PixelFormat<32,NotDynamic,HasAlpha,NoColorkey,IsAligned,8,0,8,8,8,16,8,24> format_A8B8G8R8;
+typedef PixelFormat<32,NotDynamic,HasAlpha,NoColorkey,IsAligned,8,16,8,8,8,0,8,24> format_A8R8G8B8;
 #endif
+
+typedef PixelFormat<32,IsDynamic,NoAlpha,NoColorkey,IsAligned,0,0,0,0,0,0,0,0> format_dynamic_32;
+typedef PixelFormat<32,IsDynamic,HasAlpha,NoColorkey,IsAligned,0,0,0,0,0,0,0,0> format_dynamic_32_a;
+typedef PixelFormat<32,IsDynamic,NoAlpha,HasColorkey,IsAligned,0,0,0,0,0,0,0,0> format_dynamic_32_ck;
+
+typedef PixelFormat<24,IsDynamic,NoAlpha,NoColorkey,IsAligned,0,0,0,0,0,0,0,0> format_dynamic_24;
+typedef PixelFormat<24,IsDynamic,NoAlpha,HasColorkey,IsAligned,0,0,0,0,0,0,0,0> format_dynamic_24_ck;
+
+typedef PixelFormat<16,IsDynamic,NoAlpha,NoColorkey,NotAligned,0,0,0,0,0,0,0,0> format_dynamic_16;
+typedef PixelFormat<16,IsDynamic,HasAlpha,NoColorkey,NotAligned,0,0,0,0,0,0,0,0> format_dynamic_16_a;
+typedef PixelFormat<16,IsDynamic,NoAlpha,HasColorkey,NotAligned,0,0,0,0,0,0,0,0> format_dynamic_16_ck;
 
 ////////////////////////////////////////////////////////////
 
