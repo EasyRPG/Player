@@ -26,6 +26,7 @@
 #include "system.h"
 
 class Game_Event;
+class Game_CommonEvent;
 
 ////////////////////////////////////////////////////////////
 /// Game_Interpreter class
@@ -42,6 +43,7 @@ public:
 	void Update();
 
 	void SetupStartingEvent(Game_Event* ev);
+	void SetupStartingEvent(Game_CommonEvent* ev);
 	bool ExecuteCommand();
 	void InputButton();
 	void SetupChoices(const std::vector<std::string>& choices);

@@ -19,6 +19,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "game_commonevent.h"
+#include "game_map.h"
 #include "game_switches.h"
 #include "game_interpreter.h"
 #include "main_data.h"
@@ -36,9 +37,10 @@ Game_CommonEvent::~Game_CommonEvent() {
 
 ////////////////////////////////////////////////////////////
 void Game_CommonEvent::Refresh() {
-	if ( (GetTrigger() == 2) && ( Game_Switches[GetSwitchId()] ) ) {
+	if ( (GetTrigger() == Game_Character::TriggerParallelProcess) && ( Game_Switches[GetSwitchId()] ) ) {
 		if (interpreter == NULL) {
 			interpreter = new Game_Interpreter();
+			Update();
 		}
 	} else {
 		delete interpreter;
@@ -49,26 +51,31 @@ void Game_CommonEvent::Refresh() {
 ////////////////////////////////////////////////////////////
 void Game_CommonEvent::Update() {
 	if (interpreter) {
-		if (!interpreter->IsRunning()) {
+		if (!Game_Map::GetInterpreter().IsRunning()) {
 			interpreter->Setup(GetList(), 0);
+			Game_Map::GetInterpreter().SetupStartingEvent(this);
 		}
 		interpreter->Update();
 	}
 }
 
 ////////////////////////////////////////////////////////////
+int Game_CommonEvent::GetIndex() const {
+	return common_event_id;
+}
+
 std::string Game_CommonEvent::GetName() const {
-	return Data::commonevents[common_event_id].name;
+	return Data::commonevents[common_event_id - 1].name;
 }
 
 int Game_CommonEvent::GetSwitchId() const {
-	return Data::commonevents[common_event_id].switch_id;
+	return Data::commonevents[common_event_id - 1].switch_id;
 }
 
 int Game_CommonEvent::GetTrigger() const {
-	return Data::commonevents[common_event_id].trigger;
+	return Data::commonevents[common_event_id - 1].trigger;
 }
 
 std::vector<RPG::EventCommand>& Game_CommonEvent::GetList() {
-	return Data::commonevents[common_event_id].event_commands;
+	return Data::commonevents[common_event_id - 1].event_commands;
 }

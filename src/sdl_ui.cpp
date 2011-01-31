@@ -23,7 +23,9 @@
 #include "sdl_ui.h"
 #ifdef _WIN32
 	#define WIN32_LEAN_AND_MEAN
+	#ifndef NOMINMAX
 	#define NOMINMAX
+	#endif
 	#include <windows.h>
 	#include "SDL_syswm.h"
 #elif GEKKO

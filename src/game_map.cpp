@@ -53,6 +53,7 @@ namespace {
 	std::vector<unsigned char> passages_up;
 	std::vector<short> terrain_tags;
 	tEventHash events;
+	tCommonEventHash common_events;
 
 	RPG::Map* map;
 	int map_id;
@@ -111,6 +112,11 @@ void Game_Map::Dispose() {
 	}
 	events.clear();
 
+	for (tCommonEventHash::iterator i = common_events.begin(); i != common_events.end(); ++i) {
+		delete i->second;
+	}
+	common_events.clear();
+
 	if (Main_Data::game_screen != NULL) {
 		Main_Data::game_screen->Reset();
 	}
@@ -144,13 +150,14 @@ void Game_Map::Setup(int _id) {
 
 	events.clear();
 
-	for (size_t i = 0; i < map->events.size(); i++) {
+	for (size_t i = 0; i < map->events.size(); ++i) {
 		events.insert(std::pair<int, Game_Event*>(map->events[i].ID, new Game_Event(map_id, map->events[i])));
 	}
-	/*@common_events.clear();
-	for i in 1...$data_common_events.size
-		@common_events[i] = Game_CommonEvent.new(i)
-	end*/
+
+	for (size_t i = 0; i < Data::commonevents.size(); ++i) {
+		common_events.insert(std::pair<int, Game_CommonEvent*>(Data::commonevents[i].ID, new Game_CommonEvent(Data::commonevents[i].ID)));
+	}
+
 	scroll_direction = 2;
 	scroll_rest = 0;
 	scroll_speed = 4;
@@ -205,13 +212,13 @@ void Game_Map::Autoplay() {
 void Game_Map::Refresh() {
 	if (map_id > 0) {
 		
-		for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
+		for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
 			i->second->Refresh();
 		}
 
-		/*for (size_t i = 0; i < common_events.size(); i++) {
-			common_events[i]->Refresh();
-		}*/
+		for (tCommonEventHash::iterator i = common_events.begin(); i != common_events.end(); ++i) {
+			i->second->Refresh();
+		}
 	}
 	need_refresh = false;
 }
@@ -389,6 +396,7 @@ int Game_Map::CheckEvent(int x, int y) {
 			return i->second->GetId();
 		}
 	}
+
 	return 0;
 }
 
@@ -549,6 +557,10 @@ std::vector<short>& Game_Map::GetTerrainTags() {
 
 tEventHash& Game_Map::GetEvents() {
 	return events;
+}
+
+tCommonEventHash& Game_Map::GetCommonEvents() {
+	return common_events;
 }
 
 ////////////////////////////////////////////////////////////

@@ -23,11 +23,14 @@
 ////////////////////////////////////////////////////////////
 #include <vector>
 #include <string>
+#include "game_commonevent.h"
 #include "game_event.h"
 #include "game_vehicle.h"
 #include "rpg_encounter.h"
 
 typedef std::map<int, Game_Event*> tEventHash;
+typedef std::map<int, Game_CommonEvent*> tCommonEventHash;
+
 ////////////////////////////////////////////////////////////
 /// Game_Map namespace
 ////////////////////////////////////////////////////////////
@@ -255,6 +258,9 @@ namespace Game_Map {
 
 	/// @return events list
 	tEventHash& GetEvents();
+
+	/// @return common events list
+	tCommonEventHash& GetCommonEvents();
 
 	void GetEventsXY(std::vector<Game_Event*>& events, int x, int y);
 

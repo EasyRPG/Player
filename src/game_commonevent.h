@@ -52,6 +52,9 @@ public:
 	////////////////////////////////////////////////////////
 	void Update();
 
+	/// @return common event index in list
+	int GetIndex() const;
+
 	/// @return event name
 	std::string GetName() const;
 

@@ -377,12 +377,16 @@ void Game_Interpreter::SetupStartingEvent(Game_Event* ev) {
 		common_event = &Data::commonevents[i];
 
 		// If trigger is auto run, and condition switch is ON
-		if ( (common_event->trigger == 1) &&
+		if ( (common_event->trigger == Game_Character::TriggerAutoStart) &&
 			Game_Switches[common_event->switch_id]) {
 			Setup(common_event->event_commands, 0);
 			return;
 		}
 	}
+}
+
+void Game_Interpreter::SetupStartingEvent(Game_CommonEvent* ev) {
+	Setup(ev->GetList(), 0, ev->GetIndex(), -2);
 }
 
 ////////////////////////////////////////////////////////////
