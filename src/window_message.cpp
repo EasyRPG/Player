@@ -33,13 +33,18 @@
 #include "utils.h"
 
 #if defined(DINGOO)
-#define wstringstream basic_stringstream<wchar_t>
+//#define wstringstream basic_stringstream<wchar_t>
+#define wstringstream stringstream
 #endif
 
 ////////////////////////////////////////////////////////////
 Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),
+#if !defined(DINGOO)
 	contents_x(0), contents_y(0), line_count(0), text_index(-1), text(L""),
+#else
+	contents_x(0), contents_y(0), line_count(0), text_index(-1), text(""),
+#endif
 	kill_message(false), halt_output(false), number_input_window(NULL)
 {
 	SetContents(Surface::CreateSurface(width - 16, height - 16));
@@ -77,7 +82,11 @@ void Window_Message::StartMessageProcessing() {
 	text.clear();
 	for (size_t i = 0; i < Game_Message::texts.size(); ++i) {
 		std::string line = Game_Message::texts[i];
+#if !defined(DINGOO)
 		text.append(Utils::DecodeUTF(line + "\n"));
+#else
+		text.append(line + "\n");
+#endif
 	}
 	item_max = Game_Message::choice_max;
 
@@ -286,7 +295,11 @@ void Window_Message::UpdateMessage() {
 		} else if (text[text_index] == L'\\' && (unsigned)text_index != text.size() - 1) {
 			// Special message codes
 			++text_index;
+#if !defined(DINGOO)
 			std::wstring command_result;
+#else
+			std::string command_result;
+#endif
 			switch (text[text_index]) {
 			case L'c':
 			case L'C':
@@ -354,7 +367,11 @@ void Window_Message::UpdateMessage() {
 			++text_index;
 		} else {
 			// Normal Text
+#if !defined(DINGOO)
 			std::wstring glyph = text.substr(text_index, 1);
+#else
+			std::string glyph = text.substr(text_index, 1);
+#endif
 			contents->TextDraw(contents_x, contents_y, text_color, glyph);
 			contents_x += contents->Surface::GetTextSize(glyph).width;
 		}
@@ -436,7 +453,11 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 }
 
 ////////////////////////////////////////////////////////////
+#if !defined(DINGOO)
 std::wstring Window_Message::ParseCommandCode(int call_depth) {
+#else
+std::string Window_Message::ParseCommandCode(int call_depth) {
+#endif
 	int parameter;
 	bool is_valid;
 	// sub_code is used by chained arguments like \v[\v[1]]
@@ -482,7 +503,11 @@ std::wstring Window_Message::ParseCommandCode(int call_depth) {
 				actor = Game_Actors::GetActor(parameter);
 			}
 			if (actor != NULL) {
+#if !defined(DINGOO)
 				return Utils::DecodeUTF(actor->GetName());
+#else
+				return actor->GetName();
+#endif
 			}
 		} else {
 			Output::Warning("Invalid argument for \\n-Command");
@@ -521,8 +546,11 @@ std::wstring Window_Message::ParseCommandCode(int call_depth) {
 	default:;
 		// When this happens text_index was not on a \ during calling
 	}
-
+#if !defined(DINGOO)
 	return L"";
+#else
+	return "";
+#endif
 }
 
 ////////////////////////////////////////////////////////////
