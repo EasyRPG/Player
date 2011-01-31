@@ -25,6 +25,8 @@
 #include "rpg_eventcommand.h"
 #include "system.h"
 
+class Game_Event;
+
 ////////////////////////////////////////////////////////////
 /// Game_Interpreter class
 ////////////////////////////////////////////////////////////
@@ -39,7 +41,7 @@ public:
 	bool IsRunning() const;
 	void Update();
 
-	void SetupStartingEvent();
+	void SetupStartingEvent(Game_Event* ev);
 	bool ExecuteCommand();
 	void InputButton();
 	void SetupChoices(const std::vector<std::string>& choices);

@@ -338,7 +338,9 @@ void Game_Interpreter::Update() {
 
 		if (list.empty()) {
 			if (!Main_Data::game_player->IsTeleporting() && main_flag) {
-				SetupStartingEvent();
+				if (Game_Map::GetNeedRefresh()) {
+					Game_Map::Refresh();
+				}
 			}
 
 			if (list.empty()) {
@@ -359,11 +361,7 @@ void Game_Interpreter::Update() {
 ////////////////////////////////////////////////////////////
 /// Setup Starting Event
 ////////////////////////////////////////////////////////////
-void Game_Interpreter::SetupStartingEvent() {
-
-	if (Game_Map::GetNeedRefresh()) {
-		Game_Map::Refresh();
-	}
+void Game_Interpreter::SetupStartingEvent(Game_Event* ev) {
 
 	if (Game_Temp::common_event_id > 0) {
 		Setup(Data::commonevents[Game_Temp::common_event_id].event_commands, 0);
@@ -371,16 +369,8 @@ void Game_Interpreter::SetupStartingEvent() {
 		return;
 	}
 
-	Game_Event* _event;
-	for (tEventHash::iterator i = Game_Map::GetEvents().begin(); i != Game_Map::GetEvents().end(); i++) {
-		_event = i->second;
-		
-		if (_event->GetStarting()) {
-			_event->ClearStarting();
-			Setup(_event->GetList(), _event->GetId(), _event->GetX(), _event->GetY());
-			return;
-		}
-	}
+	ev->ClearStarting();
+	Setup(ev->GetList(), ev->GetId(), ev->GetX(), ev->GetY());
 
 	RPG::CommonEvent* common_event;
 	for (size_t i = 0; i < Data::commonevents.size(); i++) {

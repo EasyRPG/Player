@@ -82,7 +82,7 @@ void Game_Map::Init() {
 	panorama_speed = 0;
 	display_x = 0;
 	display_y = 0;
-	need_refresh = false;
+	need_refresh = true;
 	
 	map = NULL;
 	map_id = 0;
