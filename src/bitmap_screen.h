@@ -91,7 +91,7 @@ public:
 	/// @param src_rect : source bitmap rect
 	/// @param dst_rect : screen destination rect
 	////////////////////////////////////////////////////////
-	virtual void BlitScreenTiled(Rect src_rect, Rect dst_rect) = 0;
+	virtual void BlitScreenTiled(Rect src_rect, Rect dst_rect, int ox, int oy) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Clear all effects data.

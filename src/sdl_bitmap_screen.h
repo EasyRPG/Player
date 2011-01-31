@@ -40,7 +40,7 @@ public:
 
 	void BlitScreen(int x, int y);
 	void BlitScreen(int x, int y, Rect src_rect);
-	void BlitScreenTiled(Rect src_rect, Rect dst_rect);
+	void BlitScreenTiled(Rect src_rect, Rect dst_rect, int ox, int oy);
 
 	void ClearEffects();
 

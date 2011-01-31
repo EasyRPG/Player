@@ -53,7 +53,7 @@ public:
 protected:
 	Tilemap* tilemap;
 	Plane* panorama;
-	Plane* fog;
+	std::string panorama_name;
 	std::vector<Sprite_Character*> character_sprites;
 	/*std::vector<Sprite_Picture*> picture_sprites;
 	Weather* weather;

@@ -2423,9 +2423,9 @@ bool Game_Interpreter::CommandChangePBG() { // code 11720
 	Game_Map::SetParallaxName(name);
 
 	bool horz = list[index].parameters[0] != 0;
-	bool horz_auto = list[index].parameters[1] != 0;
-	int horz_speed = list[index].parameters[2];
-	bool vert = list[index].parameters[3] != 0;
+	bool vert = list[index].parameters[1] != 0;
+	bool horz_auto = list[index].parameters[2] != 0;
+	int horz_speed = list[index].parameters[3];
 	bool vert_auto = list[index].parameters[4] != 0;
 	int vert_speed = list[index].parameters[5];
 	Game_Map::SetParallaxScroll(horz, vert,

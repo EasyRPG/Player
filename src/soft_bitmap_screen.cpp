@@ -62,17 +62,29 @@ void SoftBitmapScreen::BlitScreen(int x, int y, Rect src_rect) {
 }
 
 ////////////////////////////////////////////////////////////
-void SoftBitmapScreen::BlitScreenTiled(Rect src_rect, Rect dst_rect) {
+void SoftBitmapScreen::BlitScreenTiled(Rect src_rect, Rect dst_rect, int ox, int oy) {
 	if (bitmap == NULL || (opacity_top_effect <= 0 && opacity_bottom_effect <= 0))
 		return;
 
 	src_rect = src_rect_effect.GetSubRect(src_rect);
 	Refresh(src_rect);
 
+	if (ox > 0)
+		ox -= src_rect.width * ((ox + src_rect.width - 1) / src_rect.width);
+	else if (ox < 0)
+		ox += src_rect.width * (ox / src_rect.width);
+
+	if (oy > 0)
+		oy -= src_rect.height * ((oy + src_rect.height - 1) / src_rect.height);
+	else if (oy < 0)
+		oy += src_rect.height * (oy / src_rect.height);
+
+	int x0 = dst_rect.x + ox;
+	int y0 = dst_rect.y + oy;
 	int x1 = dst_rect.x + dst_rect.width;
 	int y1 = dst_rect.y + dst_rect.height;
-	for (int y = dst_rect.y; y < y1; y += src_rect.height) {
-		for (int x = dst_rect.x; x < x1; x += src_rect.width) {
+	for (int y = y0; y < y1; y += src_rect.height) {
+		for (int x = x0; x < x1; x += src_rect.width) {
 			Rect rect = src_rect;
 			if (y + rect.height > y1)
 				rect.height = y1 - y;

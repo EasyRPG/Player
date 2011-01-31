@@ -37,8 +37,6 @@ Spriteset_Map::Spriteset_Map() {
 	tilemap->SetMapDataUp(Game_Map::GetMapDataUp());
 	panorama = new Plane();
 	panorama->SetZ(-1000);
-	fog = new Plane();
-	fog->SetZ(3000);
 
 	tEventHash events = Game_Map::GetEvents();
 	for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
@@ -62,7 +60,6 @@ Spriteset_Map::Spriteset_Map() {
 Spriteset_Map::~Spriteset_Map() {
 	delete tilemap;
 	delete panorama;
-	delete fog;
 	for (size_t i = 0; i < character_sprites.size(); i++) {
 		delete character_sprites[i];
 	}
@@ -83,6 +80,13 @@ void Spriteset_Map::Update() {
 	for (size_t i = 0; i < character_sprites.size(); i++) {
 		character_sprites[i]->Update();
 	}
+	const std::string& name = Game_Map::GetParallaxName();
+	if (name != panorama_name) {
+		panorama_name = name;
+		panorama->SetBitmap(Cache::Panorama(panorama_name));
+	}
+	panorama->SetOx(Game_Map::GetParallaxX());
+	panorama->SetOy(Game_Map::GetParallaxY());
 }
 
 ////////////////////////////////////////////////////////////

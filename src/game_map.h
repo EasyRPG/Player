@@ -203,27 +203,6 @@ namespace Game_Map {
 	/// @param battleback_name : new battleback name
 	void SetBattlebackName(std::string battleback_name);
 
-	/// @return panorama filename
-	std::string& GetPanoramaName();
-
-	/// Set the panorama name
-	/// @param panorama_name : new panorama name
-	void SetPanoramaName(std::string panorama_name);
-
-	/// @return panorama animation type
-	int GetPanoramaType();
-
-	/// Set the panorama type
-	/// @param panorama_type : new panorama type
-	void SetPanoramaType(int panorama_type);
-
-	/// @return panorama animation speed
-	int GetPanoramaSpeed();
-
-	/// Set the panorama speed
-	/// @param panorama_speed : new panorama speed
-	void SetPanoramaSpeed(int panorama_speed);
-
 	/// @return display x
 	int GetDisplayX();
 
@@ -312,6 +291,11 @@ namespace Game_Map {
 	bool IsPanLocked();
 	int GetPanX();
 	int GetPanY();
+
+	void UpdateParallax();
+	int GetParallaxX();
+	int GetParallaxY();
+	const std::string& GetParallaxName();
 }
 
 #endif

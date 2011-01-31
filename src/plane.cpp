@@ -49,16 +49,9 @@ Plane::~Plane() {
 void Plane::Draw(int z_order) {
 	if (!visible || !bitmap) return;
 
-	int screen_ox = ox % DisplayUi->GetWidth();
-	int screen_oy = oy % DisplayUi->GetHeight();
+	Rect dst_rect(0, 0, DisplayUi->GetWidth(), DisplayUi->GetHeight());
 
-	Rect dst_rect;
-	dst_rect.x = -screen_ox;
-	dst_rect.y = -screen_oy;
-	dst_rect.width = screen_ox + DisplayUi->GetWidth();
-	dst_rect.height = screen_oy + DisplayUi->GetHeight();
-
-	bitmap_screen->BlitScreenTiled(bitmap->GetRect(), dst_rect);
+	bitmap_screen->BlitScreenTiled(bitmap->GetRect(), dst_rect, ox, oy);
 }
 
 ////////////////////////////////////////////////////////////

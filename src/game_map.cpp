@@ -35,9 +35,6 @@ namespace {
 	int chipset_id;
 	std::string chipset_name;
 	std::string battleback_name;
-	std::string panorama_name;
-	int panorama_type;
-	int panorama_speed;
 	int display_x;
 	int display_y;
 	bool need_refresh;
@@ -48,6 +45,10 @@ namespace {
 	bool parallax_vert_auto;
 	int parallax_horz_speed;
 	int parallax_vert_speed;
+	int parallax_auto_x;
+	int parallax_auto_y;
+	int parallax_x;
+	int parallax_y;
 
 	std::vector<unsigned char> passages_down;
 	std::vector<unsigned char> passages_up;
@@ -79,8 +80,6 @@ namespace {
 
 ////////////////////////////////////////////////////////////
 void Game_Map::Init() {
-	panorama_type = 0;
-	panorama_speed = 0;
 	display_x = 0;
 	display_y = 0;
 	need_refresh = true;
@@ -142,6 +141,14 @@ void Game_Map::Setup(int _id) {
 	if (map == NULL) {
 		Output::ErrorStr(Reader::GetError());
 	}
+
+	if (map->parallax_flag) {
+		SetParallaxName(map->parallax_name);
+		SetParallaxScroll(map->parallax_loop_x, map->parallax_loop_y,
+						  map->parallax_auto_loop_x, map->parallax_auto_loop_y,
+						  map->parallax_sx, map->parallax_sy);
+	} else
+		SetParallaxName("");
 
 	SetChipset(map->chipset_id);
 	display_x = 0;
@@ -439,6 +446,7 @@ void Game_Map::Update() {
 	if (need_refresh) Refresh();
 	UpdateScroll();
 	UpdatePan();
+	UpdateParallax();
 
 	for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
 		i->second->Update();
@@ -500,27 +508,6 @@ void Game_Map::SetBattlebackName(std::string new_battleback_name) {
 	battleback_name = new_battleback_name;
 }
 
-std::string& Game_Map::GetPanoramaName() {
-	return panorama_name;
-}
-void Game_Map::SetPanoramaName(std::string new_panorama_name) {
-	panorama_name = new_panorama_name;
-}
-
-int Game_Map::GetPanoramaType() {
-	return panorama_type;
-}
-void Game_Map::SetPanoramaType(int new_panorama_type) {
-	panorama_type = new_panorama_type;
-}
-
-int Game_Map::GetPanoramaSpeed() {
-	return panorama_speed;
-}
-void Game_Map::SetPanoramaSpeed(int new_panorama_speed) {
-	panorama_speed = new_panorama_speed;
-}
-
 int Game_Map::GetDisplayX() {
 	return display_x;
 }
@@ -577,6 +564,10 @@ void Game_Map::SetParallaxScroll(bool horz, bool vert,
 	parallax_vert_auto = vert_auto;
 	parallax_horz_speed = horz_speed;
 	parallax_vert_speed = vert_speed;
+	parallax_auto_x = 0;
+	parallax_auto_y = 0;
+	parallax_x = 0;
+	parallax_y = 0;
 }
 
 ////////////////////////////////////////////////////////////
@@ -598,8 +589,6 @@ void Game_Map::SetChipset(int id) {
 	passages_down = chipset.passable_data_lower;
 	passages_up = chipset.passable_data_upper;
 	terrain_tags = chipset.terrain_data;
-	panorama_speed = chipset.animation_speed;
-	panorama_type = chipset.animation_type;
 	if (passages_down.size() < 162)
 		passages_down.resize(162, (unsigned char) 0x0F);
 	if (passages_up.size() < 144)
@@ -690,5 +679,49 @@ int Game_Map::GetPanX() {
 
 int Game_Map::GetPanY() {
 	return pan_y;
+}
+
+////////////////////////////////////////////////////////////
+void Game_Map::UpdateParallax() {
+	if (parallax_name.empty())
+		return;
+
+	if (parallax_horz_scroll) {
+		if (parallax_horz_auto) {
+			int step =
+				(parallax_horz_speed > 0) ? 1 << parallax_horz_speed :
+				(parallax_horz_speed < 0) ? 1 << -parallax_horz_speed :
+				0;
+			parallax_auto_x += step;
+		}
+		parallax_x = display_x * 4 + parallax_auto_x;
+	} else
+		parallax_x = 0;
+
+	if (parallax_vert_scroll) {
+		if (parallax_vert_auto) {
+			int step =
+				(parallax_vert_speed > 0) ? 1 << parallax_vert_speed :
+				(parallax_vert_speed < 0) ? 1 << -parallax_vert_speed :
+				0;
+			parallax_auto_y += step;
+		}
+		parallax_y = display_y * 4 + parallax_auto_y;
+	} else
+		parallax_y = 0;
+}
+
+int Game_Map::GetParallaxX() {
+	int px = parallax_x - display_x * 8;
+	return (px < 0) ? -(-px / 64) : (px / 64);
+}
+
+int Game_Map::GetParallaxY() {
+	int py = parallax_y - display_y * 8;
+	return (py < 0) ? -(-py / 64) : (py / 64);
+}
+
+const std::string& Game_Map::GetParallaxName() {
+	return parallax_name;
 }
 
