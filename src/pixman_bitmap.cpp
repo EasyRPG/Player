@@ -168,6 +168,7 @@ PixmanBitmap::PixmanBitmap(Bitmap* source, Rect src_rect, bool itransparent) {
 ////////////////////////////////////////////////////////////
 PixmanBitmap::~PixmanBitmap() {
 	pixman_image_unref(bitmap);
+	delete bm_utils;
 }
 
 ////////////////////////////////////////////////////////////
