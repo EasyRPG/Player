@@ -21,6 +21,7 @@
 #include <string>
 
 #if defined(DINGOO)
+#undef wstring
 #define wstring basic_string<wchar_t>
 #endif
 

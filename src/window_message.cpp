@@ -32,6 +32,13 @@
 #include "util_macro.h"
 #include "utils.h"
 
+
+#ifdef NO_WCHAR
+// This is a workaround if your system has no wchar
+#undef wstring
+#define wstring string
+#endif
+
 ////////////////////////////////////////////////////////////
 Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),

@@ -31,6 +31,7 @@
 
 #ifdef NO_WCHAR
 // This is a workaround if your system has no wchar
+#undef wstring
 #define wstring string
 #define wstringstream stringstream
 #define utf(x) x
