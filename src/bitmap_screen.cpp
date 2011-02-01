@@ -68,6 +68,18 @@ BitmapScreen::BitmapScreen(Bitmap* bitmap, bool delete_bitmap) :
 	ClearEffects();
 	bitmap_changed = true;
 
+	current_tone = tone_effect;
+	current_zoom_x = zoom_x_effect;
+	current_zoom_y = zoom_y_effect;
+	current_flip_x = flipx_effect;
+	current_flip_y = flipy_effect;
+	current_opacity_top = opacity_top_effect;
+	current_opacity_bottom = opacity_bottom_effect;
+	current_bush_depth = bush_effect;
+
+	bitmap_effects_src_rect = Rect();
+	bitmap_scale_src_rect = Rect();
+
 	if (bitmap != NULL) {
 		src_rect_effect = bitmap->GetRect();
 		bitmap->AttachBitmapScreen(this);

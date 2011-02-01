@@ -121,8 +121,8 @@ template <class PFsrc, class PFdst>
 class BlitT : public Blit {
 	static const bool same =
 		PFsrc::bits == PFdst::bits   &&
-		PFsrc::has_alpha == PFdst::has_alpha &&
-		PFsrc::has_colorkey == PFdst::has_colorkey &&
+		PFsrc::alpha == PFdst::alpha &&
+		PFsrc::colorkey == PFdst::colorkey &&
 		PFsrc::mask_r_traits_type::mask == PFdst::mask_r_traits_type::mask  &&
 		PFsrc::mask_g_traits_type::mask == PFdst::mask_g_traits_type::mask  &&
 		PFsrc::mask_b_traits_type::mask == PFdst::mask_b_traits_type::mask  &&
