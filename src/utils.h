@@ -45,6 +45,17 @@ namespace Utils {
 	/// @return The converted string
 	////////////////////////////////////////////////////////
 	std::string EncodeUTF(const std::wstring& wstr);
+
+	////////////////////////////////////////////////////////
+	/// Checks how many chars a passed glyph takes in utf8
+	/// encoding.
+	/// This function only checks the first byte. It cant
+	/// detect wrong encodings. Only use it when your system
+	/// has no support for wstring.
+	/// @param glyph : Start of glyph.
+	/// @return Used bytes by this glyph
+	////////////////////////////////////////////////////////
+	int GetUtf8ByteSize(char glyph);
 }
 
 #endif

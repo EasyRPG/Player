@@ -67,6 +67,23 @@ std::string Utils::EncodeUTF(const std::wstring& wstr) {
 }
 
 ////////////////////////////////////////////////////////////
+int Utils::GetUtf8ByteSize(char glyph) {
+	// Detect unicode size
+	int val = (unsigned char)glyph;
+	if (val < 0x80) {
+		return 1;
+	} else if ((val & 0xF0) == 0xF0) {
+		return 4;
+	} else if ((val & 0xE0) == 0xE0) {
+		return 3;
+	} else if ((val & 0xC0) == 0xC0) {
+		return 2;
+	}
+
+	return 0;
+}
+
+////////////////////////////////////////////////////////////
 std::string Utils::LowerCase(const std::string& str) {
 	std::string result = str;
 	std::string::iterator it;

@@ -32,19 +32,10 @@
 #include "util_macro.h"
 #include "utils.h"
 
-#if defined(DINGOO)
-//#define wstringstream basic_stringstream<wchar_t>
-#define wstringstream stringstream
-#endif
-
 ////////////////////////////////////////////////////////////
 Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),
-#if !defined(DINGOO)
-	contents_x(0), contents_y(0), line_count(0), text_index(-1), text(L""),
-#else
-	contents_x(0), contents_y(0), line_count(0), text_index(-1), text(""),
-#endif
+	contents_x(0), contents_y(0), line_count(0), text_index(-1), text(utf("")),
 	kill_message(false), halt_output(false), number_input_window(NULL)
 {
 	SetContents(Surface::CreateSurface(width - 16, height - 16));
@@ -82,10 +73,10 @@ void Window_Message::StartMessageProcessing() {
 	text.clear();
 	for (size_t i = 0; i < Game_Message::texts.size(); ++i) {
 		std::string line = Game_Message::texts[i];
-#if !defined(DINGOO)
-		text.append(Utils::DecodeUTF(line + "\n"));
-#else
+#if defined(NO_WCHAR)
 		text.append(line + "\n");
+#else
+		text.append(Utils::DecodeUTF(line + "\n"));
 #endif
 	}
 	item_max = Game_Message::choice_max;
@@ -289,89 +280,90 @@ void Window_Message::UpdateMessage() {
 			break;
 		}
 
-		if (text[text_index] == L'\n') {
+		if (text[text_index] == utf('\n')) {
 			instant_speed = false;
 			InsertNewLine();
-		} else if (text[text_index] == L'\\' && (unsigned)text_index != text.size() - 1) {
+		} else if (text[text_index] == utf('\\') && (unsigned)text_index != text.size() - 1) {
 			// Special message codes
 			++text_index;
-#if !defined(DINGOO)
+
 			std::wstring command_result;
-#else
-			std::string command_result;
-#endif
+
 			switch (text[text_index]) {
-			case L'c':
-			case L'C':
-			case L'n':
-			case L'N':
-			case L's':
-			case L'S':
-			case L'v':
-			case L'V':
+			case utf('c'):
+			case utf('C'):
+			case utf('n'):
+			case utf('N'):
+			case utf('s'):
+			case utf('S'):
+			case utf('v'):
+			case utf('V'):
 				// These commands support indirect access via \v[]
 				command_result = ParseCommandCode();
 				contents->TextDraw(contents_x, contents_y, text_color, command_result);
 				contents_x += contents->Surface::GetTextSize(command_result).width;
 				break;
-			case L'\\':
+			case utf('\\'):
 				// Show Backslash
 				contents->TextDraw(contents_x, contents_y, text_color, std::string("\\"));
 				contents_x += contents->GetTextSize("\\").width;
 				break;
-			case L'_':
+			case utf('_'):
 				// Insert half size space
 				contents_x += contents->GetTextSize(" ").width / 2;
-			case L'$':
+			case utf('$'):
 				// Show Money Window ToDo
 				break;
-			case L'!':
+			case utf('!'):
 				// Text pause
 				halt_output = true;
 				pause = true;
 				break;
-			case L'^':
+			case utf('^'):
 				// Force message close
 				// The close happens at the end of the message, not where
 				// the ^ is encoutered
 				kill_message = true;
 				break;
-			case L'>':
+			case utf('>'):
 				// Instant speed start
 				// ToDo: Not working properly
 				instant_speed = true;
 				break;
-			case L'<':
+			case utf('<'):
 				// Instant speed stop
 				instant_speed = false;
 				break;
-			case L'.':
+			case utf('.'):
 				// 1/4 second sleep
 				sleep_until = Graphics::GetFrameCount() + 60 / 4;
 				return;
 				break;
-			case L'|':
+			case utf('|'):
 				// Second sleep
 				sleep_until = Graphics::GetFrameCount() + 60;
 				return;
 				break;
 			default:;
 			}
-		} else if (text[text_index] == L'$' &&
+		} else if (text[text_index] == utf('$') &&
 			(unsigned)text_index != text.size() - 1 &&
-			((text[text_index+1] >= L'a' && text[text_index+1] <= L'z') ||
-			(text[text_index+1] >= L'A' && text[text_index+1] <= L'Z'))) {
+			((text[text_index+1] >= utf('a') && text[text_index+1] <= utf('z')) ||
+			(text[text_index+1] >= utf('A') && text[text_index+1] <= utf('Z')))) {
 			// ExFont
 			contents->TextDraw(contents_x, contents_y, text_color, text.substr(text_index, 2));
 			contents_x += 12;
 			++text_index;
 		} else {
 			// Normal Text
-#if !defined(DINGOO)
-			std::wstring glyph = text.substr(text_index, 1);
+#ifdef NO_WCHAR
+			int utfsize = Utils::GetUtf8ByteSize(text[text_index]);
+			std::string glyph = text.substr(text_index, utfsize);
+			text_index += utfsize - 1;
 #else
-			std::string glyph = text.substr(text_index, 1);
+			std::wstring glyph = text.substr(text_index, 1);
 #endif
+
 			contents->TextDraw(contents_x, contents_y, text_color, glyph);
 			contents_x += contents->Surface::GetTextSize(glyph).width;
 		}
@@ -384,7 +376,7 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 	++text_index;
 
 	if ((unsigned)text_index == text.size() ||
-		text[text_index] != L'[') {
+		text[text_index] != utf('[')) {
 		--text_index;
 		is_valid = false;
 		return 0;
@@ -397,11 +389,11 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 	for (;;) {
 		if ((unsigned)text_index == text.size()) {
 			break;
-		} else if (text[text_index] == L'\n') {
+		} else if (text[text_index] == utf('\n')) {
 			--text_index;
 			break;
 		}
-		else if (text[text_index] == L'0') {
+		else if (text[text_index] == utf('0')) {
 			// Truncate 0 at the start
 			if (!ss.str().empty()) {
 				ss << '0';
@@ -409,10 +401,10 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 				null_at_start = true;
 			}
 		}
-		else if (text[text_index] >= L'1' &&
-			text[text_index] <= L'9') {
+		else if (text[text_index] >= utf('1') &&
+			text[text_index] <= utf('9')) {
 			ss << text[text_index];
-		} else if (text[text_index] == L']') {
+		} else if (text[text_index] == utf(']')) {
 			--call_depth;
 			if (call_depth == 0) {
 				break;
@@ -421,10 +413,10 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 			// End of number
 			// Search for ] or line break
 			while ((unsigned)text_index != text.size()) {
-					if (text[text_index] == L'\n') {
+					if (text[text_index] == utf('\n')) {
 						--text_index;
 						break;
-					} else if (text[text_index] == L']') {
+					} else if (text[text_index] == utf(']')) {
 						--call_depth;
 						if (call_depth == 0) {
 							break;
@@ -453,11 +445,7 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 }
 
 ////////////////////////////////////////////////////////////
-#if !defined(DINGOO)
 std::wstring Window_Message::ParseCommandCode(int call_depth) {
-#else
-std::string Window_Message::ParseCommandCode(int call_depth) {
-#endif
 	int parameter;
 	bool is_valid;
 	// sub_code is used by chained arguments like \v[\v[1]]
@@ -465,9 +453,9 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 	int sub_code = -1;
 	wchar_t cmd_char = text[text_index];
 	if ((unsigned)text_index + 3 < text.size() &&
-		text[text_index + 2] == L'\\' &&
-		(text[text_index + 3] == L'v' ||
-		 text[text_index + 3] == L'V')) {
+		text[text_index + 2] == utf('\\') &&
+		(text[text_index + 3] == utf('v') ||
+		 text[text_index + 3] == utf('V'))) {
 		text_index += 3;
 		// The result is an int value, str-to-int is safe in this case
 		std::wstringstream ss;
@@ -475,8 +463,8 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 		ss >> sub_code;
 	}
 	switch (cmd_char) {
-	case L'c':
-	case L'C':
+	case utf('c'):
+	case utf('C'):
 		// Color
 		if (sub_code >= 0) {
 			parameter = sub_code;
@@ -485,8 +473,8 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 		}
 		text_color = parameter > 19 ? 0 : parameter;
 		break;
-	case L'n':
-	case L'N':
+	case utf('n'):
+	case utf('N'):
 		// Output Hero name
 		if (sub_code >= 0) {
 			is_valid = true;
@@ -503,18 +491,18 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 				actor = Game_Actors::GetActor(parameter);
 			}
 			if (actor != NULL) {
-#if !defined(DINGOO)
-				return Utils::DecodeUTF(actor->GetName());
-#else
+#ifdef NO_WCHAR
 				return actor->GetName();
+#else
+				return Utils::DecodeUTF(actor->GetName());
 #endif
 			}
 		} else {
 			Output::Warning("Invalid argument for \\n-Command");
 		}
 		break;
-	case L's':
-	case L'S':
+	case utf('s'):
+	case utf('S'):
 		// Speed modifier
 		// ToDo: Find out how long each \s take
 		if (sub_code >= 0) {
@@ -524,8 +512,8 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 			parameter = ParseParameter(is_valid, call_depth);
 		}
 		break;
-	case L'v':
-	case L'V':
+	case utf('v'):
+	case utf('V'):
 		// Show Variable value
 		if (sub_code >= 0) {
 			is_valid = true;
@@ -540,17 +528,13 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 		} else {
 			// Invalid Var is always 0
 			std::wstringstream ss;
-			ss << L'0';
+			ss << utf('0');
 			return ss.str();
 		}
 	default:;
 		// When this happens text_index was not on a \ during calling
 	}
-#if !defined(DINGOO)
-	return L"";
-#else
-	return "";
-#endif
+	return utf("");
 }
 
 ////////////////////////////////////////////////////////////
