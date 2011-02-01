@@ -33,20 +33,6 @@ class PixmanBitmapScreen : public BitmapScreen {
 public:
 	PixmanBitmapScreen(Bitmap* source, bool delete_bitmap);
 	~PixmanBitmapScreen();
-
-	void BlitScreen(int x, int y);
-	void BlitScreen(int x, int y, Rect src_rect);
-	void BlitScreenTiled(Rect src_rect, Rect dst_rect, int ox, int oy);
-
-protected:
-	void BlitScreenIntern(int x, int y, Rect src_rect);
-
-	Bitmap* bitmap_effects;
-	Rect bitmap_effects_src_rect;
-	int origin_x;
-	int origin_y;
-
-	void Refresh(Rect& rect);
 };
 
 #endif

@@ -28,6 +28,7 @@
 #include "rect.h"
 #include "tone.h"
 #include "bitmap.h"
+#include "matrix.h"
 
 #if defined(DINGOO)
 #define wstring basic_string<wchar_t>
@@ -109,6 +110,59 @@ public:
 	////////////////////////////////////////////////////////
 	virtual void StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int opacity);
 
+	////////////////////////////////////////////////////////
+	/// Blit source bitmap flipped
+	/// @param x : x position
+	/// @param y : y position
+	/// @param src : source bitmap
+	/// @param src_rect : source bitmap rect
+	/// @param horizontal : flip horizontally
+	/// @param vertical : flip vertically
+	////////////////////////////////////////////////////////
+	virtual void FlipBlit(int x, int y, Bitmap* src, Rect src_rect, bool horizontal, bool vertical);
+
+	////////////////////////////////////////////////////////
+	/// Blit source bitmap scaled
+	/// @param dst : the destination surface
+	/// @param dst_rect : destination rect
+	/// @param src : source bitmap
+	/// @param src_rect : source bitmap rect
+	////////////////////////////////////////////////////////
+	virtual void ScaleBlit(const Rect& dst_rect, Bitmap* src, const Rect& src_rect);
+
+	////////////////////////////////////////////////////////
+	/// Blit source bitmap scaled, rotated and translated
+	/// @param dst : the destination surface
+	/// @param dst_rect : destination rect
+	/// @param src : source bitmap
+	/// @param src_rect : source bitmap rect
+	/// @param inv : transformation matrix
+	///  - from destination coordinates to source coordinates
+	////////////////////////////////////////////////////////
+	virtual void TransformBlit(Rect dst_rect, Bitmap* src, Rect src_rect, const Matrix& inv);
+
+	////////////////////////////////////////////////////////
+	/// Blit source bitmap scaled, rotated and translated
+	/// @param dst : the destination surface
+	/// @param dst_rect : destination rect
+	/// @param src : source bitmap
+	/// @param src_rect : source bitmap rect
+	/// @param angle : rotation angle (positive is clockwise)
+	/// @param dst_w : scaled width
+	/// @param dst_h : scaled height
+	/// @param src_pos_x : source origin x
+	/// @param src_pos_y : source origin y
+	/// @param dst_pos_x : destination origin x
+	/// @param dst_pos_y : destination origin y
+	////////////////////////////////////////////////////////
+	virtual void TransformBlit(Rect dst_rect,
+							   Bitmap* src, Rect src_rect,
+							   double angle,
+							   double scale_x, double scale_y,
+							   int src_pos_x, int src_pos_y,
+							   int dst_pos_x, int dst_pos_y);
+
+	////////////////////////////////////////////////////////
 	/// Blit source bitmap transparency to this one.
 	/// @param x : x position
 	/// @param y : y position
@@ -116,6 +170,18 @@ public:
 	/// @param src_rect : source bitmap rect
 	////////////////////////////////////////////////////////
 	virtual void Mask(int x, int y, Bitmap* src, Rect src_rect);
+
+	////////////////////////////////////////////////////////
+	/// Blit source with waver effect.
+	/// @param dst : the destination surface
+	/// @param x : x position
+	/// @param y : y position
+	/// @param src : source bitmap
+	/// @param src_rect : source bitmap rect
+	/// @param depth : wave magnitude
+	/// @param phase : wave phase
+	////////////////////////////////////////////////////////
+	virtual void WaverBlit(int x, int y, Bitmap* src, Rect src_rect, int depth, double phase);
 
 	////////////////////////////////////////////////////////
 	/// Fill entire bitmap with color.
@@ -161,14 +227,15 @@ public:
 	/// Adjust bitmap tone.
 	/// @param tone : tone to apply
 	////////////////////////////////////////////////////////
-	virtual void ToneChange(const Tone &tone);
+	virtual void ToneChange(const Rect &dst_rect, const Tone &tone);
 
 	////////////////////////////////////////////////////////
 	/// Flips the bitmap pixels.
+	/// @param dst_rect : the rectangle to flip
 	/// @param horizontal : flip horizontally (mirror)
 	/// @param vertical : flip vertically
 	////////////////////////////////////////////////////////
-	virtual void Flip(bool horizontal, bool vertical);
+	virtual void Flip(const Rect& dst_rect, bool horizontal, bool vertical);
 
 	////////////////////////////////////////////////////////
 	/// Change the opacity of a bitmap.

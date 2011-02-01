@@ -41,27 +41,6 @@ public:
 	SoftBitmap(Bitmap* source, Rect src_rect, bool transparent);
 	~SoftBitmap();
 
-	Color GetPixel(int x, int y);
-	void SetPixel(int x, int y, const Color &color);
-	void Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity);
-	void TiledBlit(Rect src_rect, Bitmap* src, Rect dst_rect, int opacity);
-	void TiledBlit(int ox, int oy, Rect src_rect, Bitmap* src, Rect dst_rect, int opacity);
-	void StretchBlit(Bitmap* src, Rect src_rect, int opacity);
-	void StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int opacity);
-	void Mask(int x, int y, Bitmap* src, Rect src_rect);
-	void Fill(const Color &color);
-	void FillRect(Rect dst_rect, const Color &color);
-	void Clear();
-	void ClearRect(Rect dst_rect);
-	void HueChange(double hue);
-	void HSLChange(double hue, double sat, double lum, double loff, Rect dst_rect);
-	void ToneChange(const Tone &tone);
-	void Flip(bool horizontal, bool vertical);
-	void OpacityChange(int opacity, const Rect &src_rect);
-	Bitmap* Resample(int scale_w, int scale_h, const Rect& src_rect);
-	Bitmap* RotateScale(double angle, int scale_w, int scale_h);
-	Bitmap* Waver(int depth, double phase);
-
 	void SetTransparentColor(Color color);
 
 	void* pixels();
@@ -80,7 +59,6 @@ protected:
 
 	typedef format_B8G8R8A8 pixel_format;
 	typedef format_R8G8B8A8 image_format;
-	BitmapUtilsT<pixel_format>* bm_utils;
 
 	/// Bitmap data.
 	int w, h;

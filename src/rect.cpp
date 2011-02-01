@@ -70,6 +70,30 @@ void Rect::Adjust(int max_width, int max_height) {
 }
 
 ////////////////////////////////////////////////////////////
+void Rect::Adjust(const Rect& rect) {
+	if (x < rect.x) {
+		width += x - rect.x;
+		x = rect.x;
+	}
+
+	if (y < rect.y) {
+		height += y - rect.y;
+		y = rect.y;
+	}
+
+	if (rect.x + rect.width < x + width)
+		width = rect.x + rect.width - x;
+
+	if (rect.y + rect.height < y + height)
+		height = rect.y + rect.height - y;
+}
+
+////////////////////////////////////////////////////////////
+bool Rect::IsEmpty() const {
+	return width <= 0 || height <= 0;
+}
+
+////////////////////////////////////////////////////////////
 bool Rect::IsOutOfBounds(int max_width, int max_height) const {
 	if (width <= 0 || height <= 0) return true;
 	if (x >= max_width || y >= max_height) return true;

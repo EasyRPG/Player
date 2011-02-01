@@ -343,6 +343,51 @@ void PixmanBitmap::StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int op
 	RefreshCallback();
 }
 
+void PixmanBitmap::ScaleBlit(const Rect& dst_rect, Bitmap* _src, const Rect& src_rect) {
+	PixmanBitmap* src = (PixmanBitmap*) _src;
+
+	double zoom_x = (double)src_rect.width  / dst_rect.width;
+	double zoom_y = (double)src_rect.height / dst_rect.height;
+
+	pixman_transform_t xform;
+	pixman_transform_init_scale(&xform,
+								pixman_double_to_fixed(zoom_x),
+								pixman_double_to_fixed(zoom_y));
+	
+	pixman_image_set_transform(src->bitmap, &xform);
+
+	pixman_image_composite32(PIXMAN_OP_SRC,
+							 src->bitmap, (pixman_image_t*) NULL, bitmap,
+							 src_rect.x, src_rect.y,
+							 0, 0,
+							 dst_rect.x, dst_rect.y,
+							 dst_rect.width, dst_rect.height);
+
+	pixman_transform_init_identity(&xform);
+	pixman_image_set_transform(bitmap, &xform);
+}
+
+void PixmanBitmap::TransformBlit(Rect dst_rect, Bitmap* _src, Rect src_rect, const Matrix& inv) {
+	PixmanBitmap* src = (PixmanBitmap*) _src;
+	pixman_transform_t xform = {{
+		{ pixman_double_to_fixed(inv.xx), pixman_double_to_fixed(inv.xy), pixman_double_to_fixed(inv.x0) },
+		{ pixman_double_to_fixed(inv.yx), pixman_double_to_fixed(inv.yy), pixman_double_to_fixed(inv.y0) },
+		{ pixman_double_to_fixed(0.0),    pixman_double_to_fixed(0.0),    pixman_double_to_fixed(1.0) }
+		}};
+
+	pixman_image_set_transform(src->bitmap, &xform);
+
+	pixman_image_composite32(PIXMAN_OP_SRC,
+							 src->bitmap, (pixman_image_t*) NULL, bitmap,
+							 0, 0,
+							 0, 0,
+							 dst_rect.x, dst_rect.y,
+							 dst_rect.width, dst_rect.height);
+
+	pixman_transform_init_identity(&xform);
+	pixman_image_set_transform(src->bitmap, &xform);
+}
+
 void PixmanBitmap::Mask(int x, int y, Bitmap* _src, Rect src_rect) {
 	PixmanBitmap* src = (PixmanBitmap*) _src;
 
@@ -403,81 +448,6 @@ void PixmanBitmap::ClearRect(Rect dst_rect) {
 	RefreshCallback();
 }
 
-Bitmap* PixmanBitmap::Resample(int scale_w, int scale_h, const Rect& src_rect) {
-	double zoom_x = (double)src_rect.width  / scale_w;
-	double zoom_y = (double)src_rect.height / scale_h;
-
-	pixman_transform_t xform;
-	pixman_transform_init_scale(&xform,
-								pixman_double_to_fixed(zoom_x),
-								pixman_double_to_fixed(zoom_y));
-
-	PixmanBitmap *resampled = new PixmanBitmap(scale_w, scale_h, transparent);
-	
-	pixman_image_set_transform(bitmap, &xform);
-
-	pixman_image_composite32(PIXMAN_OP_SRC,
-							 bitmap, (pixman_image_t*) NULL, resampled->bitmap,
-							 src_rect.x, src_rect.y,
-							 0, 0,
-							 0, 0,
-							 scale_w, scale_h);
-
-	pixman_transform_init_identity(&xform);
-	pixman_image_set_transform(bitmap, &xform);
-
-	return resampled;
-}
-
-Bitmap* PixmanBitmap::RotateScale(double angle, int scale_w, int scale_h) {
-	pixman_transform_t fwd, rev;
-	pixman_transform_init_identity(&fwd);
-	pixman_transform_init_identity(&rev);
-
-	double zoom_x = (double) scale_w  / width();
-	double zoom_y = (double) scale_h / height();
-	pixman_transform_scale(&fwd, &rev,
-						   pixman_double_to_fixed(zoom_x),
-						   pixman_double_to_fixed(zoom_y));
-
-	double c = cos(angle);
-	double s = sin(angle);
-	pixman_transform_rotate(&fwd, &rev,
-							pixman_double_to_fixed(c),
-							pixman_double_to_fixed(s));
-
-	pixman_box16_t box = {0, 0, width(), height()};
-	pixman_transform_bounds(&fwd, &box);
-	int dst_w = box.x2 - box.x1;
-	int dst_h = box.y2 - box.y1;
-
-	pixman_transform_translate(&fwd, &rev,
-							   pixman_int_to_fixed(-box.x1),
-							   pixman_int_to_fixed(-box.y1));
-
-	PixmanBitmap *resampled = new PixmanBitmap(dst_w, dst_h, true);
-	resampled->Clear();
-
-	pixman_image_set_transform(bitmap, &rev);
-
-	pixman_image_composite32(PIXMAN_OP_SRC,
-							 bitmap, (pixman_image_t*) NULL, resampled->bitmap,
-							 0, 0,
-							 0, 0,
-							 0, 0,
-							 dst_w, dst_h);
-
-	pixman_transform_t xform;
-	pixman_transform_init_identity(&xform);
-	pixman_image_set_transform(bitmap, &xform);
-
-	return resampled;
-}
-
-Bitmap* PixmanBitmap::Waver(int depth, double phase) {
-	return bm_utils->Waver(this, depth, phase);
-}
-
 void PixmanBitmap::OpacityChange(int opacity, const Rect& dst_rect) {
 	if (opacity == 255)
 		return;
@@ -490,10 +460,8 @@ void PixmanBitmap::OpacityChange(int opacity, const Rect& dst_rect) {
 	RefreshCallback();
 }
 
-void PixmanBitmap::ToneChange(const Tone &tone) {
+void PixmanBitmap::ToneChange(const Rect& dst_rect, const Tone &tone) {
 	if (tone == Tone()) return;
-
-	pixman_rectangle16_t rect = {0, 0, width(), height()};
 
 	if (tone.gray == 0) {
 		pixman_color_t tcolor = {tone.red << 8, tone.green << 8, tone.blue << 8, 0xFFFF};
@@ -503,13 +471,15 @@ void PixmanBitmap::ToneChange(const Tone &tone) {
 								 timage, bitmap, bitmap,
 								 0, 0,
 								 0, 0,
-								 0, 0,
-								 rect.width, rect.height);
+								 dst_rect.x, dst_rect.y,
+								 dst_rect.width, dst_rect.height);
 
 		pixman_image_unref(timage);
 	}
 	else {
-		PixmanBitmap *gray = new PixmanBitmap(this, GetRect(), transparent);
+		pixman_rectangle16_t rect = {0, 0, dst_rect.width, dst_rect.height};
+
+		PixmanBitmap *gray = new PixmanBitmap(this, dst_rect, transparent);
 		pixman_color_t gcolor = {0, 0, 0, 0xFFFF};
 		pixman_image_fill_rectangles(PIXMAN_OP_HSL_SATURATION, gray->bitmap, &gcolor, 1, &rect);
 
@@ -520,8 +490,8 @@ void PixmanBitmap::ToneChange(const Tone &tone) {
 								 gray->bitmap, (pixman_image_t*) NULL, bitmap,
 								 0, 0,
 								 0, 0,
-								 0, 0,
-								 rect.width, rect.height);
+								 dst_rect.x, dst_rect.y,
+								 dst_rect.width, dst_rect.height);
 
 		pixman_color_t tcolor = {tone.red << 8, tone.green << 8, tone.blue << 8, 0xFFFF};
 		pixman_image_t *timage = pixman_image_create_solid_fill(&tcolor);
@@ -530,8 +500,8 @@ void PixmanBitmap::ToneChange(const Tone &tone) {
 								 timage, bitmap, bitmap,
 								 0, 0,
 								 0, 0,
-								 0, 0,
-								 rect.width, rect.height);
+								 dst_rect.x, dst_rect.y,
+								 dst_rect.width, dst_rect.height);
 
 		pixman_image_unref(timage);
 
@@ -541,11 +511,13 @@ void PixmanBitmap::ToneChange(const Tone &tone) {
 	RefreshCallback();
 }
 
-void PixmanBitmap::Flip(bool horizontal, bool vertical) {
-	if (!horizontal && !vertical) return;
+void PixmanBitmap::FlipBlit(int x, int y, Bitmap* _src, Rect src_rect, bool horizontal, bool vertical) {
+	if (!horizontal && !vertical) {
+		Blit(x, y, _src, src_rect, 255);
+		return;
+	}
 
-	int w = width();
-	int h = height();
+	PixmanBitmap* src = (PixmanBitmap*) _src;
 
 	pixman_transform_t xform;
 	pixman_transform_init_scale(&xform,
@@ -553,29 +525,39 @@ void PixmanBitmap::Flip(bool horizontal, bool vertical) {
 								pixman_int_to_fixed(vertical ? -1 : 1));
 
 	pixman_transform_translate((pixman_transform_t*) NULL, &xform,
-							   pixman_int_to_fixed(horizontal ? w : 0),
-							   pixman_int_to_fixed(vertical ? h : 0));
-
-	PixmanBitmap *resampled = new PixmanBitmap(w, h, transparent);
+							   pixman_int_to_fixed(horizontal ? src_rect.width : 0),
+							   pixman_int_to_fixed(vertical ? src_rect.height : 0));
 
 	pixman_image_set_transform(bitmap, &xform);
 
 	pixman_image_composite32(PIXMAN_OP_SRC,
-							 bitmap, (pixman_image_t*) NULL, resampled->bitmap,
+							 src->bitmap, (pixman_image_t*) NULL, bitmap,
+							 src_rect.x, src_rect.y,
 							 0, 0,
-							 0, 0,
-							 0, 0,
-							 w, h);
+							 x, y,
+							 src_rect.width, src_rect.height);
 
 	pixman_transform_init_identity(&xform);
 	pixman_image_set_transform(bitmap, &xform);
+
+	RefreshCallback();
+}
+
+////////////////////////////////////////////////////////////
+void PixmanBitmap::Flip(const Rect& dst_rect, bool horizontal, bool vertical) {
+	if (!horizontal && !vertical)
+		return;
+
+	PixmanBitmap* resampled = new PixmanBitmap(dst_rect.width, dst_rect.height, transparent);
+
+	resampled->FlipBlit(0, 0, this, dst_rect, horizontal, vertical);
 
 	pixman_image_composite32(PIXMAN_OP_SRC,
 							 resampled->bitmap, (pixman_image_t*) NULL, bitmap,
 							 0, 0,
 							 0, 0,
-							 0, 0,
-							 w, h);
+							 dst_rect.x, dst_rect.y,
+							 dst_rect.width, dst_rect.height);
 
 	delete resampled;
 

@@ -67,6 +67,19 @@ public:
 	void Adjust(int width, int height);
 
 	///////////////////////////////////////////////////////
+	/// Adjusts rect bounds, trimming it so it is contained
+	/// inside the given rectangle.
+	/// @param rect : bounding rectangle
+	///////////////////////////////////////////////////////
+	void Adjust(const Rect& rect);
+
+	///////////////////////////////////////////////////////
+	/// Check if rect is empty
+	/// @return whether the rect is empty
+	///////////////////////////////////////////////////////
+	bool IsEmpty() const;
+
+	///////////////////////////////////////////////////////
 	/// Gets if rect is totally outside the given size.
 	/// @param width : max width
 	/// @param height : max height

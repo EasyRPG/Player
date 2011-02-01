@@ -22,6 +22,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "bitmap.h"
+#include "surface.h"
 #include "tone.h"
 
 ////////////////////////////////////////////////////////////
@@ -76,7 +77,7 @@ public:
 	/// @param x : x position
 	/// @param y : y position
 	////////////////////////////////////////////////////////
-	virtual void BlitScreen(int x, int y) = 0;
+	virtual void BlitScreen(int x, int y);
 
 	////////////////////////////////////////////////////////
 	/// Blit the bitmap to the screen.
@@ -84,14 +85,14 @@ public:
 	/// @param y : y position
 	/// @param src_rect : source rect
 	////////////////////////////////////////////////////////
-	virtual void BlitScreen(int x, int y, Rect src_rect) = 0;
+	virtual void BlitScreen(int x, int y, Rect src_rect);
 
 	////////////////////////////////////////////////////////
 	/// Blit the bitmap to the screen.
 	/// @param src_rect : source bitmap rect
 	/// @param dst_rect : screen destination rect
 	////////////////////////////////////////////////////////
-	virtual void BlitScreenTiled(Rect src_rect, Rect dst_rect, int ox, int oy) = 0;
+	virtual void BlitScreenTiled(Rect src_rect, Rect dst_rect, int ox, int oy);
 
 	////////////////////////////////////////////////////////
 	/// Clear all effects data.
@@ -200,6 +201,7 @@ protected:
 	bool delete_bitmap;
 
 	bool needs_refresh;
+	bool bitmap_changed;
 
 	Rect src_rect_effect;
 	int opacity_top_effect;
@@ -215,6 +217,27 @@ protected:
 	Color blend_color_effect;
 	int waver_effect_depth;
 	double waver_effect_phase;
+
+	virtual void BlitScreenIntern(Bitmap* draw_bitmap, int x, int y, Rect src_rect);
+
+	virtual Bitmap* Refresh(Rect& rect);
+
+	Surface* bitmap_effects;
+	Bitmap* bitmap_scale;
+
+	Rect bitmap_effects_src_rect;
+	Rect bitmap_scale_src_rect;
+	bool bitmap_effects_valid;
+	bool bitmap_scale_valid;
+
+	Tone current_tone;
+	double current_zoom_x;
+	double current_zoom_y;
+	bool current_flip_x;
+	bool current_flip_y;
+	int current_opacity_top;
+	int current_opacity_bottom;
+	int current_bush_depth;
 };
 
 #endif

@@ -105,21 +105,6 @@ public:
 	////////////////////////////////////////////////////////
 	virtual Bitmap* Resample(int scale_w, int scale_h, const Rect& src_rect);
 
-	////////////////////////////////////////////////////////
-	/// Create a rotated and scaled bitmap.
-	/// @param angle : rotation angle
-	/// @param scale_w : resampled width
-	/// @param scale_h : resampled height
-	////////////////////////////////////////////////////////
-	virtual Bitmap* RotateScale(double angle, int scale_w, int scale_h);
-
-	////////////////////////////////////////////////////////
-	/// Create a wavy bitmap.
-	/// @param depth : wave magnitude
-	/// @param phase : wave phase
-	////////////////////////////////////////////////////////
-	virtual Bitmap* Waver(int depth, double phase);
-
 protected:
 	friend class Surface;
 	friend class BitmapScreen;
@@ -164,6 +149,8 @@ protected:
 	virtual Color GetPixel(int x, int y);
 
 	virtual void CheckPixels(uint32 flags);
+
+	BitmapUtils* bm_utils;
 
 	std::list<BitmapScreen*> attached_screen_bitmaps;
 	bool have_invisible_tile;

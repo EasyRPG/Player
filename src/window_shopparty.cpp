@@ -55,7 +55,7 @@ Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 				#endif
 				bm2->Blit(0, 0, bm, src, 255);
 				if (k == 0)
-					bm2->ToneChange(Tone(0, 0, 0, 255));
+					bm2->ToneChange(bm2->GetRect(), Tone(0, 0, 0, 255));
 				bitmaps[i][j][k] = bm2;
 			}
 		}

@@ -31,6 +31,7 @@
 ///////////////////////////////////////////////////////////
 class Color;
 class Bitmap;
+class Surface;
 
 ///////////////////////////////////////////////////////////
 /// BaseUi base abstract class.
@@ -173,6 +174,8 @@ public:
 
 	/// @param color : new background color
 	virtual void SetBackcolor(const Color &color) = 0;
+
+	virtual Surface* GetDisplaySurface() = 0;
 
 protected:
 	///////////////////////////////////////////////////////

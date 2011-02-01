@@ -55,67 +55,6 @@ Bitmap* BitmapUtilsT<PF>::Resample(Bitmap* src, int scale_w, int scale_h, const 
 
 ////////////////////////////////////////////////////////////
 template <class PF>
-Bitmap* BitmapUtilsT<PF>::RotateScale(Bitmap* src, double angle, int scale_w, int scale_h) {
-	int w = src->GetWidth();
-	int h = src->GetHeight();
-	double sx = (double) scale_w / w;
-	double sy = (double) scale_h / h;
-
-	Matrix fwd = Matrix::Setup(angle, sx, sy, 0, 0, 0, 0);
-	Rect rect = TransformRectangle(fwd, Rect(0, 0, w, h));
-
-	double fx0 = -rect.x;
-	double fy0 = -rect.y;
-
-	int dst_w = rect.width;
-	int dst_h = rect.height;
-
-	fwd = fwd.PreMultiply(Matrix::Translation(fx0, fy0));
-	Matrix inv = fwd.Inverse();
-
-	Surface* result = Surface::CreateSurface(dst_w, dst_h, true);
-	const Color& trans = src->transparent ? src->GetTransparentColor() : Color(255,0,255,0);
-	result->SetTransparentColor(trans);
-	result->Fill(trans);
-
-	TransformBlit(result, result->GetRect(), src, src->GetRect(), inv);
-
-	return result;
-}
-
-////////////////////////////////////////////////////////////
-template <class PF>
-Bitmap* BitmapUtilsT<PF>::Waver(Bitmap* src, int depth, double phase) {
-	Surface* dst = Surface::CreateSurface(src->width() + 2 * depth, src->height(), true);
-
-	if (src->transparent)
-		dst->SetTransparentColor(src->GetTransparentColor());
-
-	dst->Clear();
-
-	src->Lock();
-	dst->Lock();
-
-	const uint8* src_pixels = (const uint8*)src->pixels();
-	uint8* dst_pixels = (uint8*)dst->pixels();
-
-	for (int y = 0; y < src->height(); y++) {
-		int offset = (int) (depth * (1 + sin((phase + y * 20) * 3.14159 / 180)));
-
-		PF::copy_pixels(&dst_pixels[offset * PF::bytes], src_pixels, src->width());
-
-		src_pixels += src->pitch();
-		dst_pixels += dst->pitch();
-	}
-
-	src->Unlock();
-	dst->Unlock();
-
-	return dst;
-}
-
-////////////////////////////////////////////////////////////
-template <class PF>
 void BitmapUtilsT<PF>::SetPixel(Surface* dst, int x, int y, const Color &color) {
 	if (x < 0 || y < 0 || x >= dst->width() || y >= dst->height()) return;
 
@@ -292,6 +231,77 @@ void BitmapUtilsT<PF>::TiledBlit(Surface* dst, int ox, int oy, Rect src_rect, Bi
 
 ////////////////////////////////////////////////////////////
 template <class PF>
+void BitmapUtilsT<PF>::FlipBlit(Surface* dst, int x, int y, Bitmap* src, Rect src_rect, bool horizontal, bool vertical) {
+	if (!horizontal && !vertical) {
+		dst->Blit(x, y, src, src_rect, 255);
+		return;
+	}
+
+	int ox = horizontal
+		? src_rect.x - x
+		: src_rect.x + src_rect.width - x - 1;
+	int oy = vertical
+		? src_rect.y - y
+		: src_rect.y + src_rect.height - y - 1;
+
+	Rect dst_rect(x, y, 0, 0);
+
+	if (!Rect::AdjustRectangles(src_rect, dst_rect, src->GetRect()))
+		return;
+	if (!Rect::AdjustRectangles(dst_rect, src_rect, dst->GetRect()))
+		return;
+
+	src->Lock();
+	dst->Lock();
+
+	int sx0 = dst_rect.x + ox;
+	int sy0 = dst_rect.y + oy;
+
+	uint8* dst_pixels = (uint8*) dst->pixels() + dst_rect.y * dst->pitch() + dst_rect.x * PF::bytes;
+	const uint8* src_pixels = (const uint8*) src->pixels() + sy0 * src->pitch() + sx0 * PF::bytes;
+
+	if (horizontal && vertical) {
+		for (int y = 0; y < dst_rect.height; y++) {
+			uint8* dp = dst_pixels;
+			const uint8* sp = src_pixels;
+			for (int x = 0; x < dst_rect.width; x++) {
+				PF::copy_pixel(dp, sp);
+				dp += PF::bytes;
+				sp -= PF::bytes;
+			}
+		}
+
+		dst_pixels += dst->pitch();
+		src_pixels -= src->pitch();
+	} else if (horizontal) {
+		for (int y = 0; y < dst_rect.height; y++) {
+			uint8* dp = dst_pixels;
+			const uint8* sp = src_pixels;
+			for (int x = 0; x < dst_rect.width; x++) {
+				PF::copy_pixel(dp, sp);
+				dp += PF::bytes;
+				sp -= PF::bytes;
+			}
+
+			dst_pixels += dst->pitch();
+			src_pixels += src->pitch();
+		}
+	} else {
+		for (int y = 0; y < dst_rect.height; y++)
+			PF::copy_pixels(dst_pixels, src_pixels, dst_rect.width);
+
+		dst_pixels += dst->pitch();
+		src_pixels -= src->pitch();
+	}
+
+	src->Unlock();
+	dst->Unlock();
+
+	dst->RefreshCallback();
+}
+
+////////////////////////////////////////////////////////////
+template <class PF>
 void BitmapUtilsT<PF>::ScaleBlit(Surface* dst, const Rect& dst_rect, Bitmap* src, const Rect& src_rect) {
 	double zoom_x = (double)src_rect.width / dst_rect.height;
 	double zoom_y = (double)src_rect.height / dst_rect.height;
@@ -400,19 +410,21 @@ template <class PF>
 void BitmapUtilsT<PF>::TransformBlit(
 	Surface *dst, Rect dst_rect,
 	Bitmap* src, Rect src_rect,
-	double angle, int dst_w, int dst_h,
+	double angle, double sx, double sy,
 	int src_pos_x, int src_pos_y,
 	int dst_pos_x, int dst_pos_y) {
-
-	double sx = (double) dst_w / src_rect.width;
-	double sy = (double) dst_h / src_rect.height;
 
 	Matrix fwd = Matrix::Setup(angle, sx, sy,
 							   src_pos_x, src_pos_y,
 							   dst_pos_x, dst_pos_y);
 	Matrix inv = fwd.Inverse();
 
-	TransformBlit(dst, dst_rect, src, src_rect, inv);
+	Rect rect = TransformRectangle(fwd, Rect(0, 0, src_rect.width, src_rect.height));
+	dst_rect.Adjust(rect);
+	if (dst_rect.IsEmpty())
+		return;
+
+	dst->TransformBlit(dst_rect, src, src_rect, inv);
 }
 
 ////////////////////////////////////////////////////////////
@@ -475,6 +487,50 @@ void BitmapUtilsT<PF>::Mask(Surface* dst, int x, int y, Bitmap* src, Rect src_re
 	dst->Unlock();
 
 	dst->RefreshCallback();
+}
+
+////////////////////////////////////////////////////////////
+template <class PF>
+void BitmapUtilsT<PF>::WaverBlit(Surface* dst, int x, int y, Bitmap* src, Rect src_rect, int depth, double phase) {
+	src->Lock();
+	dst->Lock();
+
+	if (y < 0) {
+		src_rect.y -= y;
+		src_rect.height += y;
+		y = 0;
+	}
+
+	if (y + src_rect.height > dst->GetHeight()) {
+		int dy = y + src_rect.height - dst->GetHeight();
+		src_rect.height -= dy;
+	}
+
+	const uint8* src_pixels = (const uint8*)src->pixels() + src_rect.y * src->pitch() + src_rect.x * src->bpp();
+	uint8* dst_pixels = (uint8*)dst->pixels() + y * dst->pitch() + x * dst->bpp();
+	int dst_width = dst->GetWidth();
+
+	for (int y = 0; y < src_rect.height; y++) {
+		int offset = (int) (depth * (1 + sin((phase + y * 20) * 3.14159 / 180)));
+		int sx0 = 0;
+		int dx0 = offset;
+		int count = src_rect.width;
+		if (x + offset + count > dst_width)
+			count -= x + count + offset - dst_width;
+		if (x + offset < 0) {
+			sx0 -= x + offset;
+			dx0 -= x + offset;
+			count += x + offset;
+		}
+
+		PF::copy_pixels(&dst_pixels[dx0 * PF::bytes], &src_pixels[sx0 * PF::bytes], count);
+
+		src_pixels += src->pitch();
+		dst_pixels += dst->pitch();
+	}
+
+	src->Unlock();
+	dst->Unlock();
 }
 
 ////////////////////////////////////////////////////////////
@@ -659,17 +715,17 @@ void BitmapUtilsT<PF>::HSLChange(Surface* dst, double h, double s, double l, dou
 
 ////////////////////////////////////////////////////////////
 template <class PF>
-void BitmapUtilsT<PF>::ToneChange(Surface* dst, const Tone &tone) {
+void BitmapUtilsT<PF>::ToneChange(Surface* dst, const Rect& dst_rect, const Tone &tone) {
 	if (tone == Tone()) return;
 
 	dst->Lock();
 
-	uint8* dst_pixels = (uint8*)dst->pixels();
-	int pad = dst->pitch() - dst->width() * PF::bytes;
+	uint8* dst_pixels = (uint8*)dst->pixels() + dst_rect.y * dst->pitch() + dst_rect.x * PF::bytes;
+	int pad = dst->pitch() - dst_rect.width * PF::bytes;
 
 	if (tone.gray == 0) {
-		for (int i = 0; i < dst->height(); i++) {
-			for (int j = 0; j < dst->width(); j++) {
+		for (int i = 0; i < dst_rect.height; i++) {
+			for (int j = 0; j < dst_rect.width; j++) {
 				uint8 r, g, b, a;
 				PF::get_rgba(format, dst_pixels, r, g, b, a);
 				if (a == 0) {
@@ -689,8 +745,8 @@ void BitmapUtilsT<PF>::ToneChange(Surface* dst, const Tone &tone) {
 		}
 	} else {
 		double factor = (255 - tone.gray) / 255.0;
-		for (int i = 0; i < dst->height(); i++) {
-			for (int j = 0; j < dst->width(); j++) {
+		for (int i = 0; i < dst_rect.height; i++) {
+			for (int j = 0; j < dst_rect.width; j++) {
 				uint8 r, g, b, a;
 				PF::get_rgba(format, dst_pixels, r, g, b, a);
 				if (a == 0) {
@@ -719,7 +775,7 @@ void BitmapUtilsT<PF>::ToneChange(Surface* dst, const Tone &tone) {
 
 ////////////////////////////////////////////////////////////
 template <class PF>
-void BitmapUtilsT<PF>::Flip(Surface* dst, bool horizontal, bool vertical) {
+void BitmapUtilsT<PF>::Flip(Surface* dst, const Rect& dst_rect, bool horizontal, bool vertical) {
 	if (!horizontal && !vertical) return;
 
 	dst->Lock();
@@ -727,13 +783,13 @@ void BitmapUtilsT<PF>::Flip(Surface* dst, bool horizontal, bool vertical) {
 	if (horizontal && vertical) {
 		int pad = dst->pitch() - dst->width() * PF::bytes;
 
-		uint8* dst_pixels_first = (uint8*)dst->pixels();
-		uint8* dst_pixels_last = (uint8*)dst->pixels() + (dst->width() - 1) * PF::bytes + (dst->height() - 1) * dst->pitch();
+		uint8* dst_pixels_first = (uint8*)dst->pixels() + dst_rect.y * dst->pitch() + dst_rect.x * PF::bytes;
+		uint8* dst_pixels_last = dst_pixels_first + (dst_rect.height - 1) * dst->pitch() + (dst_rect.width - 1) * PF::bytes;
 
 		uint8 tmp_buffer[4];
 
-		for (int i = 0; i < dst->height() / 2; i++) {
-			for (int j = 0; j < dst->width(); j++) {
+		for (int i = 0; i < dst_rect.height / 2; i++) {
+			for (int j = 0; j < dst_rect.width; j++) {
 				if (dst_pixels_first == dst_pixels_last)
 					break;
 				PF::copy_pixel(tmp_buffer, dst_pixels_first);
@@ -747,16 +803,16 @@ void BitmapUtilsT<PF>::Flip(Surface* dst, bool horizontal, bool vertical) {
 			dst_pixels_last += pad;
 		}
 	} else if (horizontal) {
-		int pad_left = (dst->width() - dst->width() / 2) * PF::bytes;
-		int pad_right = (dst->width() + dst->width() / 2) * PF::bytes;
+		int pad_left = (dst_rect.width - dst_rect.width / 2) * PF::bytes;
+		int pad_right = (dst_rect.width + dst_rect.width / 2) * PF::bytes;
 
-		uint8* dst_pixels_left = (uint8*)dst->pixels();
-		uint8* dst_pixels_right = (uint8*)dst->pixels() + (dst->width() - 1) * PF::bytes;
+		uint8* dst_pixels_left = (uint8*)dst->pixels() + dst_rect.y * dst->pitch() + dst_rect.x * PF::bytes;
+		uint8* dst_pixels_right = dst_pixels_left + (dst_rect.width - 1) * PF::bytes;
 
 		uint8 tmp_buffer[4];
 
-		for (int i = 0; i < dst->height(); i++) {
-			for (int j = 0; j < dst->width() / 2; j++) {
+		for (int i = 0; i < dst_rect.height; i++) {
+			for (int j = 0; j < dst_rect.width / 2; j++) {
 				if (dst_pixels_left == dst_pixels_right) continue;
 
 				PF::copy_pixel(tmp_buffer, dst_pixels_left);
@@ -770,12 +826,12 @@ void BitmapUtilsT<PF>::Flip(Surface* dst, bool horizontal, bool vertical) {
 			dst_pixels_right += pad_right;
 		}
 	} else {
-		uint8* dst_pixels_up = (uint8*)dst->pixels();
-		uint8* dst_pixels_down = (uint8*)dst->pixels() + (dst->height() - 1) * dst->pitch();
-		int width = dst->width();
+		uint8* dst_pixels_up = (uint8*)dst->pixels() + dst_rect.y * dst->pitch() + dst_rect.x * PF::bytes;
+		uint8* dst_pixels_down = dst_pixels_up + (dst_rect.height - 1) * dst->pitch();
+		int width = dst_rect.width;
 		uint8* tmp_buffer = new uint8[width * PF::bytes];
 
-		for (int i = 0; i < dst->height() / 2; i++) {
+		for (int i = 0; i < dst_rect.height / 2; i++) {
 			if (dst_pixels_up == dst_pixels_down)
 				break;
 

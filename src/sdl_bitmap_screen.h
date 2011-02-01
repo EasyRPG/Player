@@ -25,8 +25,6 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "bitmap_screen.h"
-#include "surface.h"
-#include "SDL.h"
 
 ////////////////////////////////////////////////////////////
 /// SdlBitmapScreen class.
@@ -36,29 +34,9 @@ public:
 	SdlBitmapScreen(Bitmap* source, bool delete_bitmap);
 	~SdlBitmapScreen();
 
-	void SetBitmap(Bitmap* bitmap, bool delete_bitmap);
-
-	void BlitScreen(int x, int y);
-	void BlitScreen(int x, int y, Rect src_rect);
-	void BlitScreenTiled(Rect src_rect, Rect dst_rect, int ox, int oy);
-
-	void ClearEffects();
-
-	void SetSrcRect(Rect src_rect);
-
 protected:
-	static void BlitScreenIntern(SDL_Surface* surface, int x, int y, Rect src_rect, int opacity);
-
-	void Refresh(Rect& rect);
-
-	void CalcRotatedSize(int &width, int &height);
-	void CalcZoomedSize(int &width, int &height);
-
-	Bitmap* bitmap_effects;
-	Rect bitmap_effects_src_rect;
-	Rect bitmap_effects_rect;
-	int origin_x;
-	int origin_y;
+	void BlitScreenIntern(Bitmap* draw_bitmap, int x, int y, Rect src_rect);
+	Bitmap* Refresh(Rect& rect);
 };
 
 #endif

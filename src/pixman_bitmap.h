@@ -51,23 +51,22 @@ public:
 	void TiledBlit(int ox, int oy, Rect src_rect, Bitmap* src, Rect dst_rect, int opacity);
 	void StretchBlit(Bitmap* src, Rect src_rect, int opacity);
 	void StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int opacity);
+	void FlipBlit(int x, int y, Bitmap* src, Rect src_rect, bool horizontal, bool vertical);
+	void ScaleBlit(const Rect& dst_rect, Bitmap* src, const Rect& src_rect);
+	void TransformBlit(Rect dst_rect, Bitmap* src, Rect src_rect, const Matrix& inv);
 	void Mask(int x, int y, Bitmap* _src, Rect src_rect);
 	void Fill(const Color &color);
 	void FillRect(Rect dst_rect, const Color &color);
 	void Clear();
 	void ClearRect(Rect dst_rect);
 
-	void ToneChange(const Tone &tone);
-	void Flip(bool horizontal, bool vertical);
-	Bitmap* Resample(int scale_w, int scale_h, const Rect& src_rect);
-	Bitmap* RotateScale(double angle, int scale_w, int scale_h);
-	Bitmap* Waver(int depth, double phase);
+	void ToneChange(const Rect& dst_rect, const Tone &tone);
+	void Flip(const Rect& dst_rect, bool horizontal, bool vertical);
 	void OpacityChange(int opacity, const Rect& dst_rect);
 	void SetTransparentColor(Color color);
 
 	typedef format_B8G8R8A8 pixel_format;
 	typedef format_R8G8B8A8 image_format;
-	BitmapUtilsT<pixel_format>* bm_utils;
 #ifndef USE_BIG_ENDIAN
 	static const pixman_format_code_t pixman_format = PIXMAN_a8r8g8b8;
 #else
