@@ -134,11 +134,11 @@ void BitmapScreen::BlitScreenTiled(Rect src_rect, Rect dst_rect, int ox, int oy)
 	for (int y = y0; y < y1; y += src_rect.height) {
 		for (int x = x0; x < x1; x += src_rect.width) {
 			Rect rect = src_rect;
-			if (y + src_rect.height > y1)
-				src_rect.height = y1 - y;
-			if (x + src_rect.width > x1)
-				src_rect.width = x1 - x;
-			BlitScreenIntern(draw_bitmap, x, y, src_rect);
+			if (y + rect.height > y1)
+				rect.height = y1 - y;
+			if (x + rect.width > x1)
+				rect.width = x1 - x;
+			BlitScreenIntern(draw_bitmap, x, y, rect);
 		}
 	}
 }
