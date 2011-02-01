@@ -424,10 +424,7 @@ Bitmap* BitmapScreen::Refresh(Rect& rect) {
 
 		bitmap_effects->Clear();
 
-		if (flipx_effect || flipy_effect)
-			bitmap_effects->FlipBlit(rect.x, rect.y, bitmap, rect, flipx_effect, flipy_effect);
-		else
-			bitmap_effects->Blit(rect.x, rect.y, bitmap, rect, 255);
+		bitmap_effects->FlipBlit(rect.x, rect.y, bitmap, rect, flipx_effect, flipy_effect);
 
 		if (tone_effect != Tone())
 			bitmap_effects->ToneChange(rect, tone_effect);

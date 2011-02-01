@@ -238,11 +238,11 @@ void BitmapUtilsT<PF>::FlipBlit(Surface* dst, int x, int y, Bitmap* src, Rect sr
 	}
 
 	int ox = horizontal
-		? src_rect.x - x
-		: src_rect.x + src_rect.width - x - 1;
+		? src_rect.x + src_rect.width - 1 + x
+		: src_rect.x - x;
 	int oy = vertical
-		? src_rect.y - y
-		: src_rect.y + src_rect.height - y - 1;
+		? src_rect.y + src_rect.height - 1 + y
+		: src_rect.y - y;
 
 	Rect dst_rect(x, y, 0, 0);
 
@@ -254,8 +254,8 @@ void BitmapUtilsT<PF>::FlipBlit(Surface* dst, int x, int y, Bitmap* src, Rect sr
 	src->Lock();
 	dst->Lock();
 
-	int sx0 = dst_rect.x + ox;
-	int sy0 = dst_rect.y + oy;
+	int sx0 = horizontal ? ox - dst_rect.x : ox + dst_rect.x;
+	int sy0 = vertical   ? oy - dst_rect.y : oy + dst_rect.y;
 
 	uint8* dst_pixels = (uint8*) dst->pixels() + dst_rect.y * dst->pitch() + dst_rect.x * PF::bytes;
 	const uint8* src_pixels = (const uint8*) src->pixels() + sy0 * src->pitch() + sx0 * PF::bytes;
