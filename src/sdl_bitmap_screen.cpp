@@ -51,7 +51,8 @@ void SdlBitmapScreen::BlitScreenIntern(Bitmap* draw_bitmap, int x, int y, Rect s
 	if (angle_effect != 0.0) {
 		Matrix fwd = Matrix::Setup(
 			angle_effect * 3.14159 / 180, zoom_x_effect, zoom_y_effect,
-			src_rect.x, src_rect.y, x, y);
+			src_rect.x + src_rect.width / 2, src_rect.y + src_rect.height / 2,
+			x + src_rect.width / 2, y + src_rect.height / 2);
 		Rect rect = BitmapUtils::TransformRectangle(fwd, Rect(0, 0, src_rect.width, src_rect.height));
 		//rect.Adjust(dst->GetRect());
 		//if (rect.IsEmpty())

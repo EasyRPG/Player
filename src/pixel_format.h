@@ -86,6 +86,8 @@ struct Component {
 struct DynamicFormat {
 	Component r, g, b, a;
 	uint32 colorkey;
+	bool has_alpha;
+	bool has_colorkey;
 
 	DynamicFormat() {}
 
@@ -93,43 +95,57 @@ struct DynamicFormat {
 				  int gb, int gs,
 				  int bb, int bs,
 				  int ab, int as,
-				  uint32 colorkey) :
-		r(rb, rs), g(gb, gs), b(bb, bs), a(ab, as), colorkey(colorkey) {}
+				  uint32 colorkey,
+				  bool has_colorkey) :
+		r(rb, rs), g(gb, gs), b(bb, bs), a(ab, as),
+		colorkey(colorkey),
+		has_alpha(ab > 0),
+		has_colorkey(has_colorkey) {}
 
 	DynamicFormat(uint32 rmask,
 				  uint32 gmask,
 				  uint32 bmask,
 				  uint32 amask,
-				  uint32 colorkey) :
+				  uint32 colorkey,
+				  bool has_colorkey) :
 		r(rmask), g(gmask), b(bmask), a(amask),
-		colorkey(colorkey) {}
+		colorkey(colorkey),
+		has_alpha(amask != 0),
+		has_colorkey(has_colorkey) {}
 
 	void Set(int rb, int rs,
 			 int gb, int gs,
 			 int bb, int bs,
 			 int ab, int as,
-			 uint32 colorkey) {
+			 uint32 colorkey,
+			 bool _has_colorkey) {
 		r = Component(rb, rs);
 		g = Component(gb, gs);
 		b = Component(bb, bs);
 		a = Component(ab, as);
 		colorkey = colorkey;
+		has_alpha = ab > 0;
+		has_colorkey = _has_colorkey;
 	}
 
 	void Set(uint32 rmask,
 			 uint32 gmask,
 			 uint32 bmask,
 			 uint32 amask,
-			 uint32 _colorkey) {
+			 uint32 _colorkey,
+			 bool _has_colorkey) {
 		r = Component(rmask);
 		g = Component(gmask);
 		b = Component(bmask);
 		a = Component(amask);
 		colorkey = _colorkey;
+		has_alpha = amask != 0;
+		has_colorkey = _has_colorkey;
 	}
 
 	void SetColorKey(int _colorkey) {
 		colorkey = _colorkey;
+		has_colorkey = true;
 	}
 
 	inline bool operator==(const DynamicFormat& f) {
@@ -151,8 +167,11 @@ struct DynamicFormat {
 #define NoColorkey false
 #define HasColorkey true
 
-#define NotDynamic false
-#define IsDynamic true
+#define StaticMasks false
+#define DynamicMasks true
+
+#define StaticAlpha false
+#define DynamicAlpha true
 
 #define NotAligned false
 #define IsAligned true
@@ -230,8 +249,9 @@ struct bits_traits<PF, 32> {
 // general case
 template<class PF,
 		 bool aligned,
-		 bool has_alpha,
-		 bool has_colorkey>
+		 bool dynamic_alpha,
+		 bool alpha_flag,
+		 bool colorkey>
 struct alpha_traits {
 	static inline uint8 get_alpha(const DynamicFormat& format, const uint8* p) {
 		uint8 r, g, b, a;
@@ -243,11 +263,33 @@ struct alpha_traits {
 		PF::get_rgba(format, p, r, g, b, a);
 		PF::set_rgba(format, p, r, g, b, alpha);
 	}
+	static inline void overlay_pixel(const DynamicFormat& dst_format, uint8* dst,
+									 const DynamicFormat& src_format, const uint8* src) {
+		PF::default_overlay_pixel(dst_format, dst, src_format, src);
+	}
+};
+
+// dynamic, colorkey
+template <class PF, bool aligned>
+struct alpha_traits<PF, aligned, DynamicAlpha, NoAlpha, HasColorkey> {
+	static inline uint8 get_alpha(const DynamicFormat& format, const uint8* p) {
+		uint32 pix = PF::get_uint32(p);
+		return (PF::has_colorkey(format) && pix == format.colorkey) ? 0 : 255;
+	}
+	static inline void set_alpha(const DynamicFormat& format, uint8* p, uint8 alpha) {
+		if (PF::has_colorkey(format) && alpha == 0)
+			PF::set_uint32(p, format.colorkey);
+	}
+	static inline void overlay_pixel(const DynamicFormat& dst_format, uint8* dst,
+									 const DynamicFormat& src_format, const uint8* src) {
+		if (PF::get_alpha(src_format, src) != 0)
+			PF::copy_pixel(dst, src);
+	}
 };
 
 // colorkey
 template <class PF, bool aligned>
-struct alpha_traits<PF, aligned, NoAlpha, HasColorkey> {
+struct alpha_traits<PF, aligned, StaticAlpha, NoAlpha, HasColorkey> {
 	static inline uint8 get_alpha(const DynamicFormat& format, const uint8* p) {
 		uint32 pix = PF::get_uint32(p);
 		return (pix == format.colorkey) ? 0 : 255;
@@ -256,26 +298,40 @@ struct alpha_traits<PF, aligned, NoAlpha, HasColorkey> {
 		if (alpha == 0)
 			PF::set_uint32(p, format.colorkey);
 	}
+	static inline void overlay_pixel(const DynamicFormat& dst_format, uint8* dst,
+									 const DynamicFormat& src_format, const uint8* src) {
+		if (PF::get_uint32(src) != src_format.colorkey)
+			PF::copy_pixel(dst, src);
+	}
 };
 
 // no alpha or colorkey
 template<class PF, bool aligned>
-struct alpha_traits<PF, aligned, NoAlpha, NoColorkey> {
+struct alpha_traits<PF, aligned, StaticAlpha, NoAlpha, NoColorkey> {
 	static inline uint8 get_alpha(const DynamicFormat& format, const uint8* p) {
 		return 255;
 	}
 	static inline void set_alpha(const DynamicFormat& format, uint8* p, uint8 alpha) {
 	}
+	static inline void overlay_pixel(const DynamicFormat& dst_format, uint8* dst,
+									 const DynamicFormat& src_format, const uint8* src) {
+		PF::copy_pixel(dst, src);
+	}
 };
 
 // aligned, with alpha
-template<class PF>
-struct alpha_traits<PF, IsAligned, HasAlpha, HasColorkey> {
+template<class PF, bool dynamic_alpha>
+struct alpha_traits<PF, IsAligned, dynamic_alpha, HasAlpha, HasColorkey> {
 	static inline uint8 get_alpha(const DynamicFormat& format, const uint8* p) {
-		return p[PF::a_byte(format)];
+		return PF::has_alpha(format) ? p[PF::a_byte(format)] : 255;
 	}
 	static inline void set_alpha(const DynamicFormat& format, uint8* p, uint8 alpha) {
-		p[PF::a_byte(format)] = alpha;
+		if (PF::has_alpha(format))
+			p[PF::a_byte(format)] = alpha;
+	}
+	static inline void overlay_pixel(const DynamicFormat& dst_format, uint8* dst,
+									 const DynamicFormat& src_format, const uint8* src) {
+		PF::default_overlay_pixel(dst_format, dst, src_format, src);
 	}
 };
 
@@ -285,41 +341,43 @@ struct alpha_traits<PF, IsAligned, HasAlpha, HasColorkey> {
 
 template<class PF,
 		 bool aligned,
-		 bool has_alpha,
-		 bool has_colorkey>
+		 bool dynamic_alpha,
+		 bool alpha,
+		 bool colorkey>
 struct rgba_traits {
 };
 
 // aligned, has alpha
-template<class PF>
-struct rgba_traits<PF, IsAligned, HasAlpha, NoColorkey> {
+template<class PF, bool dynamic_alpha>
+struct rgba_traits<PF, IsAligned, dynamic_alpha, HasAlpha, NoColorkey> {
 	static inline void get_rgba(const DynamicFormat& format, const uint8* p, uint8& r, uint8& g, uint8& b, uint8& a) {
 		r = p[PF::r_byte(format)];
 		g = p[PF::g_byte(format)];
 		b = p[PF::b_byte(format)];
-		a = p[PF::a_byte(format)];
+		a = PF::has_alpha(format) ? p[PF::a_byte(format)] : 255;
 	}
 
 	static inline void set_rgba(const DynamicFormat& format, uint8* p, const uint8& r, const uint8& g, const uint8& b, const uint8& a) {
 		p[PF::r_byte(format)] = r;
 		p[PF::g_byte(format)] = g;
 		p[PF::b_byte(format)] = b;
-		p[PF::a_byte(format)] = a;
+		if (PF::has_alpha(format))
+			p[PF::a_byte(format)] = a;
 	}
 };
 
 // aligned, has colorkey
-template<class PF>
-struct rgba_traits<PF, IsAligned, NoAlpha, HasColorkey> {
+template<class PF, bool dynamic_alpha>
+struct rgba_traits<PF, IsAligned, dynamic_alpha, NoAlpha, HasColorkey> {
 	static inline void get_rgba(const DynamicFormat& format, const uint8* p, uint8& r, uint8& g, uint8& b, uint8& a) {
 		r = p[PF::r_byte(format)];
 		g = p[PF::g_byte(format)];
 		b = p[PF::b_byte(format)];
-		a = (PF::get_uint32(p) == format.colorkey) ? 0 : 255;
+		a = (PF::has_colorkey(format) && PF::get_uint32(p) == format.colorkey) ? 0 : 255;
 	}
 
 	static inline void set_rgba(const DynamicFormat& format, uint8* p, const uint8& r, const uint8& g, const uint8& b, const uint8& a) {
-		if (a == 0)
+		if (PF::has_colorkey(format) && a == 0)
 			PF::set_uint32(p, format.colorkey);
 		else {
 			p[PF::r_byte(format)] = r;
@@ -331,7 +389,7 @@ struct rgba_traits<PF, IsAligned, NoAlpha, HasColorkey> {
 
 // aligned, no alpha or colorkey
 template<class PF>
-struct rgba_traits<PF, IsAligned, NoAlpha, NoColorkey> {
+struct rgba_traits<PF, IsAligned, StaticAlpha, NoAlpha, NoColorkey> {
 	static inline void get_rgba(const DynamicFormat& format, const uint8* p, uint8& r, uint8& g, uint8& b, uint8& a) {
 		r = p[PF::r_byte(format)];
 		g = p[PF::g_byte(format)];
@@ -346,12 +404,14 @@ struct rgba_traits<PF, IsAligned, NoAlpha, NoColorkey> {
 	}
 };
 
-// unaligned, has alpha
-template<class PF>
-struct rgba_traits<PF, NotAligned, HasAlpha, NoColorkey> {
+// unaligned, has alpha (dynamic)
+template<class PF, bool dynamic_alpha>
+struct rgba_traits<PF, NotAligned, dynamic_alpha, HasAlpha, NoColorkey> {
 	static inline void get_rgba(const DynamicFormat& format, const uint8* p, uint8& r, uint8& g, uint8& b, uint8& a) {
 		const uint32 pix = PF::get_uint32(p);
 		PF::uint32_to_rgba(format, pix, r, g, b, a);
+		if (!PF::has_alpha(format))
+			a = 255;
 	}
 	static inline void set_rgba(const DynamicFormat& format, uint8* p, const uint8& r, const uint8& g, const uint8& b, const uint8& a) {
 		const uint32 pix = PF::rgba_to_uint32(format, r, g, b, a);
@@ -359,25 +419,27 @@ struct rgba_traits<PF, NotAligned, HasAlpha, NoColorkey> {
 	}
 };
 
-// unaligned, has colorkey
-template<class PF>
-struct rgba_traits<PF, NotAligned, NoAlpha, HasColorkey> {
+// unaligned, has colorkey (dynamic)
+template<class PF, bool dynamic_alpha>
+struct rgba_traits<PF, NotAligned, dynamic_alpha, NoAlpha, HasColorkey> {
 	static inline void get_rgba(const DynamicFormat& format, const uint8* p, uint8& r, uint8& g, uint8& b, uint8& a) {
 		const uint32 pix = PF::get_uint32(p);
-		if (pix == format.colorkey)
+		if (PF::has_colorkey(format) && pix == format.colorkey)
 			a = 0;
 		PF::uint32_to_rgba(format, pix, r, g, b, a);
 	}
 
 	static inline void set_rgba(const DynamicFormat& format, uint8* p, const uint8& r, const uint8& g, const uint8& b, const uint8& a) {
-		const uint32 pix = (a == 0) ? format.colorkey : PF::rgba_to_uint32(format, r, g, b, a);
+		const uint32 pix = (PF::has_colorkey(format) && a == 0)
+			? format.colorkey
+			: PF::rgba_to_uint32(format, r, g, b, a);
 		PF::set_uint32(p, pix);
 	}
 };
 
 // unaligned, no alpha or colorkey
 template<class PF>
-struct rgba_traits<PF, NotAligned, NoAlpha, NoColorkey> {
+struct rgba_traits<PF, NotAligned, StaticAlpha, NoAlpha, NoColorkey> {
 	static inline void get_rgba(const DynamicFormat& format, const uint8* p, uint8& r, uint8& g, uint8& b, uint8& a) {
 		const uint32 pix = PF::get_uint32(p);
 		PF::uint32_to_rgba(format, pix, r, g, b, a);
@@ -398,7 +460,7 @@ struct mask_traits {
 };
 
 template<class PF, int _bits, int _shift>
-struct mask_traits<PF, NotDynamic, _bits, _shift> {
+struct mask_traits<PF, StaticMasks, _bits, _shift> {
 	static const int _byte = _shift / 8;
 	static const int _mask = ((1 << _bits)-1) << _shift;
 	static inline int bits(const Component& c) { return _bits; }
@@ -408,7 +470,7 @@ struct mask_traits<PF, NotDynamic, _bits, _shift> {
 };
 
 template<class PF, int _bits, int _shift>
-struct mask_traits<PF, IsDynamic, _bits, _shift> {
+struct mask_traits<PF, DynamicMasks, _bits, _shift> {
 	static inline int bits(const Component& c) { return c.bits; }
 	static inline int shift(const Component& c) { return c.shift; }
 	static inline int byte(const Component& c) { return c.byte; }
@@ -420,28 +482,32 @@ struct mask_traits<PF, IsDynamic, _bits, _shift> {
 ////////////////////////////////////////////////////////////
 
 template <int BITS,
-		  bool DYNAMIC, bool HAS_ALPHA, bool COLORKEY, bool ALIGNED,
+		  bool DYNAMIC_MASKS, bool DYNAMIC_ALPHA, bool HAS_ALPHA, bool COLORKEY, bool ALIGNED,
 		  int RB, int RS, int GB, int GS, int BB, int BS, int AB, int AS>
 class PixelFormat {
 public:
-	typedef class PixelFormat<BITS,DYNAMIC,HAS_ALPHA,COLORKEY,ALIGNED,
+	typedef class PixelFormat<BITS,DYNAMIC_MASKS,DYNAMIC_ALPHA,HAS_ALPHA,COLORKEY,ALIGNED,
 							  RB,RS,GB,GS,BB,BS,AB,AS> my_type;
 
 	static const int bits = BITS;
 	static const int bytes = (BITS + 7) / 8;
 
-	static const bool dynamic = DYNAMIC;
-	static const bool has_alpha = HAS_ALPHA;
-	static const bool has_colorkey = COLORKEY;
+	static const bool dynamic_masks = DYNAMIC_MASKS;
+	static const bool dynamic_alpha = DYNAMIC_ALPHA;
+	static const bool alpha = HAS_ALPHA;
+	static const bool colorkey = COLORKEY;
 	static const bool aligned = ALIGNED;
 
+	static const int ONE = 255;
+	// static const int ONE = 256; // faster but less accurate
+
 	typedef bits_traits<my_type, bits> bits_traits_type;
-	typedef alpha_traits<my_type,aligned,has_alpha,has_colorkey> alpha_traits_type;
-	typedef rgba_traits<my_type,aligned,has_alpha,has_colorkey> rgba_traits_type;
-	typedef mask_traits<my_type,dynamic,RB,RS> mask_r_traits_type;
-	typedef mask_traits<my_type,dynamic,GB,GS> mask_g_traits_type;
-	typedef mask_traits<my_type,dynamic,BB,BS> mask_b_traits_type;
-	typedef mask_traits<my_type,dynamic,AB,AS> mask_a_traits_type;
+	typedef alpha_traits<my_type,aligned,dynamic_alpha,alpha,colorkey> alpha_traits_type;
+	typedef rgba_traits<my_type,aligned,dynamic_alpha,alpha,colorkey> rgba_traits_type;
+	typedef mask_traits<my_type,dynamic_masks,RB,RS> mask_r_traits_type;
+	typedef mask_traits<my_type,dynamic_masks,GB,GS> mask_g_traits_type;
+	typedef mask_traits<my_type,dynamic_masks,BB,BS> mask_b_traits_type;
+	typedef mask_traits<my_type,dynamic_masks,AB,AS> mask_a_traits_type;
 
 	static inline int endian(int byte) {
 #ifndef USE_BIG_ENDIAN
@@ -486,6 +552,14 @@ public:
 	static inline int b_shift(const DynamicFormat& format) {	return mask_b_traits_type::shift(format.b);	}
 	static inline int a_shift(const DynamicFormat& format) {	return mask_a_traits_type::shift(format.a);	}
 
+	static inline bool has_alpha(const DynamicFormat& format) {
+		return dynamic_alpha ? format.has_alpha : alpha;
+	}
+
+	static inline bool has_colorkey(const DynamicFormat& format) {
+		return dynamic_alpha ? format.has_colorkey : colorkey;
+	}
+
 	static inline uint32 get_uint32(const uint8* p) {
 		return bits_traits_type::get_uint32(p);
 	}
@@ -506,12 +580,50 @@ public:
 		bits_traits_type::set_pixels(dst, src, n);
 	}
 
+	static inline uint8 opaque(const DynamicFormat& format) {
+		return (uint8) (0xFF << (8 - a_bits(format)));
+	}
+
 	static inline uint8 get_alpha(const DynamicFormat& format, const uint8* p) {
 		return alpha_traits_type::get_alpha(format, p);
 	}
 
 	static inline void set_alpha(const DynamicFormat& format, uint8* p, uint8 alpha) {
 		alpha_traits_type::set_alpha(format, p, alpha);
+	}
+
+	static inline void overlay_pixel(const DynamicFormat& dst_format, uint8* dst,
+									 const DynamicFormat& src_format, const uint8* src) {
+		alpha_traits_type::overlay_pixel(dst_format, dst, src_format, src);
+	}
+
+	static inline void default_overlay_pixel(const DynamicFormat& dst_format, uint8* dst,
+											 const DynamicFormat& src_format, const uint8* src) {
+		if (get_alpha(src_format, src) >= opaque(src_format))
+			copy_pixel(dst, src);
+		else {
+			uint8 sr, sg, sb, sa;
+			get_rgba(src_format, src, sr, sg, sb, sa);
+			uint8 dr, dg, db, da;
+			get_rgba(dst_format, dst, dr, dg, db, da);
+			int srca = (int) sa;
+
+			uint8 rr = (uint8) ((dr * (255 - srca) + sr * srca) / ONE);
+			uint8 rg = (uint8) ((dg * (255 - srca) + sg * srca) / ONE);
+			uint8 rb = (uint8) ((db * (255 - srca) + sb * srca) / ONE);
+			uint8 ra = (uint8) ((da * (255 - srca)) / ONE + srca);
+
+			set_rgba(dst_format, dst, rr, rg, rb, ra);
+		}
+	}
+
+	static inline void overlay_pixels(const DynamicFormat& dst_format, uint8* dst,
+									  const DynamicFormat& src_format, const uint8* src, int n) {
+		if (has_colorkey(src_format) || has_alpha(src_format))
+			for (int i = 0; i < n; i++)
+				overlay_pixel(dst_format, dst + i * bytes, src_format, src + i * bytes);
+		else
+			copy_pixels(dst, src, n);
 	}
 
 	static inline void get_rgba(const DynamicFormat& format, const uint8* p, uint8& r, uint8& g, uint8& b, uint8& a) {
@@ -536,32 +648,34 @@ public:
 			g_bits(format), g_mask(format),
 			b_bits(format), b_mask(format),
 			a_bits(format), a_mask(format),
-			format.colorkey);
+			format.colorkey,
+			has_colorkey(format));
 	}
 };
 
 #ifndef USE_BIG_ENDIAN
-typedef PixelFormat<32,NotDynamic,HasAlpha,NoColorkey,IsAligned,8,16,8,8,8,0,8,24> format_B8G8R8A8;
-typedef PixelFormat<32,NotDynamic,HasAlpha,NoColorkey,IsAligned,8,0,8,8,8,16,8,24> format_R8G8B8A8;
-typedef PixelFormat<32,NotDynamic,HasAlpha,NoColorkey,IsAligned,8,24,8,16,8,8,8,0> format_A8B8G8R8;
-typedef PixelFormat<32,NotDynamic,HasAlpha,NoColorkey,IsAligned,8,8,8,16,8,24,8,0> format_A8R8G8B8;
+typedef PixelFormat<32,StaticMasks,StaticAlpha,HasAlpha,NoColorkey,IsAligned,8,16,8,8,8,0,8,24> format_B8G8R8A8;
+typedef PixelFormat<32,StaticMasks,StaticAlpha,HasAlpha,NoColorkey,IsAligned,8,0,8,8,8,16,8,24> format_R8G8B8A8;
+typedef PixelFormat<32,StaticMasks,StaticAlpha,HasAlpha,NoColorkey,IsAligned,8,24,8,16,8,8,8,0> format_A8B8G8R8;
+typedef PixelFormat<32,StaticMasks,StaticAlpha,HasAlpha,NoColorkey,IsAligned,8,8,8,16,8,24,8,0> format_A8R8G8B8;
 #else
-typedef PixelFormat<32,NotDynamic,HasAlpha,NoColorkey,IsAligned,8,8,8,16,8,24,8,0> format_B8G8R8A8;
-typedef PixelFormat<32,NotDynamic,HasAlpha,NoColorkey,IsAligned,8,24,8,16,8,8,8,0> format_R8G8B8A8;
-typedef PixelFormat<32,NotDynamic,HasAlpha,NoColorkey,IsAligned,8,0,8,8,8,16,8,24> format_A8B8G8R8;
-typedef PixelFormat<32,NotDynamic,HasAlpha,NoColorkey,IsAligned,8,16,8,8,8,0,8,24> format_A8R8G8B8;
+typedef PixelFormat<32,StaticMasks,StaticAlpha,HasAlpha,NoColorkey,IsAligned,8,8,8,16,8,24,8,0> format_B8G8R8A8;
+typedef PixelFormat<32,StaticMasks,StaticAlpha,HasAlpha,NoColorkey,IsAligned,8,24,8,16,8,8,8,0> format_R8G8B8A8;
+typedef PixelFormat<32,StaticMasks,StaticAlpha,HasAlpha,NoColorkey,IsAligned,8,0,8,8,8,16,8,24> format_A8B8G8R8;
+typedef PixelFormat<32,StaticMasks,StaticAlpha,HasAlpha,NoColorkey,IsAligned,8,16,8,8,8,0,8,24> format_A8R8G8B8;
 #endif
 
-typedef PixelFormat<32,IsDynamic,NoAlpha,NoColorkey,IsAligned,0,0,0,0,0,0,0,0> format_dynamic_32;
-typedef PixelFormat<32,IsDynamic,HasAlpha,NoColorkey,IsAligned,0,0,0,0,0,0,0,0> format_dynamic_32_a;
-typedef PixelFormat<32,IsDynamic,NoAlpha,HasColorkey,IsAligned,0,0,0,0,0,0,0,0> format_dynamic_32_ck;
+typedef PixelFormat<32,DynamicMasks,DynamicAlpha,HasAlpha,NoColorkey,IsAligned,0,0,0,0,0,0,0,0> format_dynamic_32_a;
+typedef PixelFormat<32,DynamicMasks,DynamicAlpha,NoAlpha,HasColorkey,IsAligned,0,0,0,0,0,0,0,0> format_dynamic_32_ck;
 
-typedef PixelFormat<24,IsDynamic,NoAlpha,NoColorkey,IsAligned,0,0,0,0,0,0,0,0> format_dynamic_24;
-typedef PixelFormat<24,IsDynamic,NoAlpha,HasColorkey,IsAligned,0,0,0,0,0,0,0,0> format_dynamic_24_ck;
+typedef PixelFormat<24,DynamicMasks,DynamicAlpha,NoAlpha,HasColorkey,IsAligned,0,0,0,0,0,0,0,0> format_dynamic_24_ck;
 
-typedef PixelFormat<16,IsDynamic,NoAlpha,NoColorkey,NotAligned,0,0,0,0,0,0,0,0> format_dynamic_16;
-typedef PixelFormat<16,IsDynamic,HasAlpha,NoColorkey,NotAligned,0,0,0,0,0,0,0,0> format_dynamic_16_a;
-typedef PixelFormat<16,IsDynamic,NoAlpha,HasColorkey,NotAligned,0,0,0,0,0,0,0,0> format_dynamic_16_ck;
+typedef PixelFormat<16,DynamicMasks,DynamicAlpha,HasAlpha,NoColorkey,NotAligned,0,0,0,0,0,0,0,0> format_dynamic_16_a;
+typedef PixelFormat<16,DynamicMasks,DynamicAlpha,NoAlpha,HasColorkey,NotAligned,0,0,0,0,0,0,0,0> format_dynamic_16_ck;
+
+typedef PixelFormat<32,DynamicMasks,StaticAlpha,NoAlpha,NoColorkey,IsAligned,0,0,0,0,0,0,0,0> format_dynamic_32;
+typedef PixelFormat<24,DynamicMasks,StaticAlpha,NoAlpha,NoColorkey,IsAligned,0,0,0,0,0,0,0,0> format_dynamic_24;
+typedef PixelFormat<16,DynamicMasks,StaticAlpha,NoAlpha,NoColorkey,NotAligned,0,0,0,0,0,0,0,0> format_dynamic_16;
 
 ////////////////////////////////////////////////////////////
 
@@ -571,8 +685,11 @@ typedef PixelFormat<16,IsDynamic,NoAlpha,HasColorkey,NotAligned,0,0,0,0,0,0,0,0>
 #undef NoColorkey
 #undef HasColorkey
 
-#undef NotDynamic
-#undef IsDynamic
+#undef StaticMasks
+#undef DynamicMasks
+
+#undef StaticAlpha
+#undef DynamicAlpha
 
 #undef NotAligned
 #undef IsAligned

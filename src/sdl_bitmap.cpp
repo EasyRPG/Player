@@ -113,16 +113,14 @@ SDL_Surface* SdlBitmap::ReadXYZ(const std::string& filename, const uint8 *data, 
 ////////////////////////////////////////////////////////////
 void SdlBitmap::SetupBitmapUtils(SDL_PixelFormat* fmt) {
 #ifdef USE_ALPHA
-	bool has_alpha = true;
 	bool has_colorkey = false;
 	uint32 amask = ~(fmt->Rmask | fmt->Gmask | fmt->Bmask);
 #else
-	bool has_alpha = false;
-	bool has_colorkey = transparent;
 	uint32 amask = 0;
+	bool has_colorkey = transparent;
 #endif
-	DynamicFormat format(fmt->Rmask, fmt->Gmask, fmt->Bmask, amask, fmt->colorkey);
-	bm_utils = BitmapUtils::Create(fmt->BitsPerPixel, has_alpha, has_colorkey, format);
+	DynamicFormat format(fmt->Rmask, fmt->Gmask, fmt->Bmask, amask, fmt->colorkey, has_colorkey);
+	bm_utils = BitmapUtils::Create(fmt->BitsPerPixel, true, format);
 }
 
 ////////////////////////////////////////////////////////////

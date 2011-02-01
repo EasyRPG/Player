@@ -59,6 +59,7 @@ protected:
 
 	typedef format_B8G8R8A8 pixel_format;
 	typedef format_R8G8B8A8 image_format;
+	static const DynamicFormat dynamic_format;
 
 	/// Bitmap data.
 	int w, h;

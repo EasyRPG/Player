@@ -284,7 +284,7 @@ public:
 	/// @param format : DynamicFormat
 	/// @return : a BitmapUtils instance for the specified pixel format
 	////////////////////////////////////////////////////////
-	static BitmapUtils* Create(int bpp, bool has_alpha, bool has_colorkey,
+	static BitmapUtils* Create(int bpp, bool dynamic_alpha,
 							   const DynamicFormat& format);
 
 	DynamicFormat format;

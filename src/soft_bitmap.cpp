@@ -37,7 +37,7 @@
 
 ////////////////////////////////////////////////////////////
 
-static const DynamicFormat dynamic_format;
+const DynamicFormat SoftBitmap::dynamic_format = SoftBitmap::pixel_format::Format(DynamicFormat());
 
 ////////////////////////////////////////////////////////////
 void SoftBitmap::Init(int width, int height) {

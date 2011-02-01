@@ -72,6 +72,7 @@ public:
 #else
 	static const pixman_format_code_t pixman_format = PIXMAN_b8g8r8a8;
 #endif
+	static const DynamicFormat dynamic_format;
 
 	void* pixels();
 	int width() const;

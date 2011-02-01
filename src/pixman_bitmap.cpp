@@ -39,7 +39,7 @@
 
 ////////////////////////////////////////////////////////////
 
-static const DynamicFormat dynamic_format;
+const DynamicFormat PixmanBitmap::dynamic_format = PixmanBitmap::pixel_format::Format(DynamicFormat());
 
 ////////////////////////////////////////////////////////////
 static void destroy_func(pixman_image_t *image, void *data) {
@@ -377,9 +377,9 @@ void PixmanBitmap::TransformBlit(Rect dst_rect, Bitmap* _src, Rect src_rect, con
 
 	pixman_image_set_transform(src->bitmap, &xform);
 
-	pixman_image_composite32(PIXMAN_OP_SRC,
+	pixman_image_composite32(PIXMAN_OP_OVER,
 							 src->bitmap, (pixman_image_t*) NULL, bitmap,
-							 0, 0,
+							 dst_rect.x, dst_rect.y,
 							 0, 0,
 							 dst_rect.x, dst_rect.y,
 							 dst_rect.width, dst_rect.height);

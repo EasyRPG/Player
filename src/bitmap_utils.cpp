@@ -85,7 +85,9 @@ void BitmapUtilsT<PF>::Blit(Surface* dst, int x, int y, Bitmap* src, Rect src_re
 	dst->Lock();
 	src->Lock();
 
-	if (PF::has_alpha || opacity < 255) {
+	const DynamicFormat& src_format = src->bm_utils->format;
+
+	if (opacity < 255) {
 		const uint8* src_pixels = (uint8*)src->pixels() + src_rect.x * PF::bytes + src_rect.y * src->pitch();
 		uint8* dst_pixels = (uint8*)dst->pixels() + dst_rect.x * PF::bytes + dst_rect.y * dst->pitch();
 		int src_pad = src->pitch() - dst_rect.width * PF::bytes;
@@ -97,12 +99,12 @@ void BitmapUtilsT<PF>::Blit(Surface* dst, int x, int y, Bitmap* src, Rect src_re
 				PF::get_rgba(format, src_pixels, sr, sg, sb, sa);
 				uint8 dr, dg, db, da;
 				PF::get_rgba(format, dst_pixels, dr, dg, db, da);
-				int srca = (int) sa * opacity / 255;
+				int srca = (int) sa * opacity / PF::ONE;
 
-				uint8 rr = (uint8) ((dr * (255 - srca) + sr * srca) / 255);
-				uint8 rg = (uint8) ((dg * (255 - srca) + sg * srca) / 255);
-				uint8 rb = (uint8) ((db * (255 - srca) + sb * srca) / 255);
-				uint8 ra = (uint8) ((da * (255 - srca)) / 255 + srca);
+				uint8 rr = (uint8) ((dr * (255 - srca) + sr * srca) / PF::ONE);
+				uint8 rg = (uint8) ((dg * (255 - srca) + sg * srca) / PF::ONE);
+				uint8 rb = (uint8) ((db * (255 - srca) + sb * srca) / PF::ONE);
+				uint8 ra = (uint8) ((da * (255 - srca)) / PF::ONE + srca);
 
 				PF::set_rgba(format, dst_pixels, rr, rg, rb, ra);
 
@@ -113,7 +115,7 @@ void BitmapUtilsT<PF>::Blit(Surface* dst, int x, int y, Bitmap* src, Rect src_re
 			src_pixels += src_pad;
 			dst_pixels += dst_pad;
 		}
-	} else if (PF::has_colorkey) {
+	} else if (PF::has_alpha(src_format) || PF::has_colorkey(src_format)) {
 		const uint8* src_pixels = (uint8*)src->pixels() + src_rect.x * PF::bytes + src_rect.y * src->pitch();
 		uint8* dst_pixels = (uint8*)dst->pixels() + dst_rect.x * PF::bytes + dst_rect.y * dst->pitch();
 
@@ -122,9 +124,7 @@ void BitmapUtilsT<PF>::Blit(Surface* dst, int x, int y, Bitmap* src, Rect src_re
 
 		for (int i = 0; i < dst_rect.height; i++) {
 			for (int j = 0; j < dst_rect.width; j++) {
-				if (PF::get_uint32(src_pixels) != format.colorkey)
-					PF::copy_pixel(dst_pixels, src_pixels);
-
+				PF::overlay_pixel(format, dst_pixels, src_format, src_pixels);
 				src_pixels += PF::bytes;
 				dst_pixels += PF::bytes;
 			}
@@ -137,7 +137,7 @@ void BitmapUtilsT<PF>::Blit(Surface* dst, int x, int y, Bitmap* src, Rect src_re
 		uint8* dst_pixels = (uint8*)dst->pixels() + dst_rect.x * PF::bytes + dst_rect.y * dst->pitch();
 
 		for (int i = 0; i < dst_rect.height; i++) {
-			memcpy(dst_pixels, src_pixels, dst_rect.width);
+			PF::copy_pixels(dst_pixels, src_pixels, dst_rect.width);
 
 			src_pixels += src->pitch();
 			dst_pixels += dst->pitch();
@@ -382,9 +382,11 @@ void BitmapUtilsT<PF>::TransformBlit(Surface *dst, Rect dst_rect,
 	int sy1 = src_rect.y + src_rect.height;
 
 	const uint8* src_pixels = (const uint8*)src->pixels();
-	uint8* dst_pixels = (uint8*)dst->pixels();
+	uint8* dst_pixels = (uint8*)dst->pixels() + dst_rect.y * dst->pitch() + dst_rect.x * dst->bpp();
 	int src_pitch = src->pitch();
-	int pad = dst->pitch() - dst->width() * PF::bytes;
+	int pad = dst->pitch() - dst_rect.width * PF::bytes;
+
+	const DynamicFormat& src_format = src->bm_utils->format;
 
 	for (int y = dst_rect.y; y < dst_rect.y + dst_rect.height; y++) {
 		for (int x = dst_rect.x; x < dst_rect.x + dst_rect.width; x++) {
@@ -395,7 +397,7 @@ void BitmapUtilsT<PF>::TransformBlit(Surface *dst, Rect dst_rect,
 			if (xi < sx0 || xi >= sx1 || yi < sy0 || yi >= sy1)
 				;
 			else
-				PF::copy_pixel(dst_pixels, &src_pixels[yi * src_pitch + xi * PF::bytes]);
+				PF::overlay_pixel(format, dst_pixels, src_format, &src_pixels[yi * src_pitch + xi * PF::bytes]);
 			dst_pixels += PF::bytes;
 		}
 		dst_pixels += pad;
@@ -419,7 +421,7 @@ void BitmapUtilsT<PF>::TransformBlit(
 							   dst_pos_x, dst_pos_y);
 	Matrix inv = fwd.Inverse();
 
-	Rect rect = TransformRectangle(fwd, Rect(0, 0, src_rect.width, src_rect.height));
+	Rect rect = TransformRectangle(fwd, Rect(src_rect.x, src_rect.y, src_rect.width, src_rect.height));
 	dst_rect.Adjust(rect);
 	if (dst_rect.IsEmpty())
 		return;
@@ -523,7 +525,7 @@ void BitmapUtilsT<PF>::WaverBlit(Surface* dst, int x, int y, Bitmap* src, Rect s
 			count += x + offset;
 		}
 
-		PF::copy_pixels(&dst_pixels[dx0 * PF::bytes], &src_pixels[sx0 * PF::bytes], count);
+		PF::overlay_pixels(format, &dst_pixels[dx0 * PF::bytes], src->bm_utils->format, &src_pixels[sx0 * PF::bytes], count);
 
 		src_pixels += src->pitch();
 		dst_pixels += dst->pitch();
@@ -865,7 +867,7 @@ void BitmapUtilsT<PF>::OpacityChange(Surface* dst, int opacity, const Rect& src_
 	for (int j = 0; j < src_rect.height; j++) {
 		for (int i = 0; i < src_rect.width; i++) {
 			uint8 a = PF::get_alpha(format, dst_pixels);
-			a = (uint8) ((a * opacity) / 255);
+			a = (uint8) ((a * opacity) / PF::ONE);
 			PF::set_alpha(format, dst_pixels, a);
 			dst_pixels += PF::bytes;
 		}
@@ -884,18 +886,17 @@ template class BitmapUtilsT<format_R8G8B8A8>;
 template class BitmapUtilsT<format_A8B8G8R8>;
 template class BitmapUtilsT<format_A8R8G8B8>;
 
-template class BitmapUtilsT<format_dynamic_32>;
 template class BitmapUtilsT<format_dynamic_32_a>;
 template class BitmapUtilsT<format_dynamic_32_ck>;
-template class BitmapUtilsT<format_dynamic_24>;
+
 template class BitmapUtilsT<format_dynamic_24_ck>;
-template class BitmapUtilsT<format_dynamic_16>;
+
 template class BitmapUtilsT<format_dynamic_16_a>;
 template class BitmapUtilsT<format_dynamic_16_ck>;
 
 ////////////////////////////////////////////////////////////
-BitmapUtils* BitmapUtils::Create(int bpp, bool has_alpha, bool has_colorkey, const DynamicFormat& format) {
-	if (bpp == 32 && has_alpha && !has_colorkey) {
+BitmapUtils* BitmapUtils::Create(int bpp, bool dynamic_alpha, const DynamicFormat& format) {
+	if (bpp == 32 && !dynamic_alpha && format.has_alpha && !format.has_colorkey) {
 		if (format.a.mask == format_B8G8R8A8::a_mask(format)) {
 			if (format.r.mask == format_B8G8R8A8::r_mask(format) &&
 				format.g.mask == format_B8G8R8A8::g_mask(format) &&
@@ -920,26 +921,19 @@ BitmapUtils* BitmapUtils::Create(int bpp, bool has_alpha, bool has_colorkey, con
 
 	switch (bpp) {
 		case 32:
-			if (has_alpha)
+			if (format.has_alpha)
 				return new BitmapUtilsT<format_dynamic_32_a>(format);
-			else if (has_colorkey)
-				return new BitmapUtilsT<format_dynamic_32_ck>(format);
 			else
-				return new BitmapUtilsT<format_dynamic_32>(format);
+				return new BitmapUtilsT<format_dynamic_32_ck>(format);
 			break;
 		case 24:
-			if (has_colorkey)
-				return new BitmapUtilsT<format_dynamic_24_ck>(format);
-			else
-				return new BitmapUtilsT<format_dynamic_24>(format);
+			return new BitmapUtilsT<format_dynamic_24_ck>(format);
 			break;
 		case 16:
-			if (has_alpha)
+			if (format.has_alpha)
 				return new BitmapUtilsT<format_dynamic_16_a>(format);
-			else if (has_colorkey)
-				return new BitmapUtilsT<format_dynamic_16_ck>(format);
 			else
-				return new BitmapUtilsT<format_dynamic_16>(format);
+				return new BitmapUtilsT<format_dynamic_16_ck>(format);
 			break;
 		default:
 			return NULL;

@@ -355,7 +355,8 @@ void BitmapScreen::BlitScreenIntern(Bitmap* draw_bitmap, int x, int y, Rect src_
 						   draw_bitmap, src_rect,
 						   angle_effect * 3.14159 / 180,
 						   zoom_x_effect, zoom_y_effect,
-						   src_rect.x, src_rect.y, x, y);
+						   src_rect.x + src_rect.width / 2, src_rect.y + src_rect.width / 2,
+						   x + src_rect.width / 2, y + src_rect.height / 2);
 	else if (waver_effect_depth > 0)
 		dst->WaverBlit(x, y, draw_bitmap, src_rect, waver_effect_depth, waver_effect_phase);
 	else
