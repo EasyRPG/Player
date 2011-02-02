@@ -346,9 +346,10 @@ bool SdlUi::RefreshDisplayMode() {
 			return false;
 
 	} else {
+		void *pixels = (uint8*) main_window->pixels + main_window->offset;
 		// Drawing surface will be the window itself
 		main_surface = Surface::CreateSurfaceFrom(
-			main_window->pixels,
+			pixels,
 			main_window->w,
 			main_window->h,
 			main_window->format->BitsPerPixel,
