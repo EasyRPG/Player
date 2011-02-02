@@ -177,7 +177,7 @@ void* PixmanBitmap::pixels() {
 }
 
 uint8 PixmanBitmap::bpp() const {
-	return 4;
+	return (pixman_image_get_depth(bitmap) + 7) / 8;
 }
 
 int PixmanBitmap::width() const {
@@ -210,6 +210,33 @@ uint32 PixmanBitmap::amask() const {
 
 uint32 PixmanBitmap::colorkey() const {
 	return 0;
+}
+
+////////////////////////////////////////////////////////////
+Bitmap* PixmanBitmap::Resample(int scale_w, int scale_h, const Rect& src_rect) {
+	PixmanBitmap *dst = new PixmanBitmap(scale_w, scale_h, transparent);
+
+	double zoom_x = (double)src_rect.width  / scale_w;
+	double zoom_y = (double)src_rect.height / scale_h;
+
+	pixman_transform_t xform;
+	pixman_transform_init_scale(&xform,
+								pixman_double_to_fixed(zoom_x),
+								pixman_double_to_fixed(zoom_y));
+	
+	pixman_image_set_transform(bitmap, &xform);
+
+	pixman_image_composite32(PIXMAN_OP_SRC,
+							 bitmap, (pixman_image_t*) NULL, dst->bitmap,
+							 src_rect.x, src_rect.y,
+							 0, 0,
+							 0, 0,
+							 scale_w, scale_h);
+
+	pixman_transform_init_identity(&xform);
+	pixman_image_set_transform(bitmap, &xform);
+
+	return dst;
 }
 
 ////////////////////////////////////////////////////////////
@@ -306,7 +333,10 @@ void PixmanBitmap::StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int op
 	if (opacity < 0)
 		return;
 
-	if (opacity > 255) opacity = 255;
+	if (opacity >= 255) {
+		ScaleBlit(dst_rect, src, src_rect);
+		return;
+	}
 
 	pixman_image_t* src_bm = GetSubimage(src, src_rect);
 
@@ -364,7 +394,7 @@ void PixmanBitmap::ScaleBlit(const Rect& dst_rect, Bitmap* _src, const Rect& src
 							 dst_rect.width, dst_rect.height);
 
 	pixman_transform_init_identity(&xform);
-	pixman_image_set_transform(bitmap, &xform);
+	pixman_image_set_transform(src->bitmap, &xform);
 }
 
 void PixmanBitmap::TransformBlit(Rect dst_rect, Bitmap* _src, Rect src_rect, const Matrix& inv) {

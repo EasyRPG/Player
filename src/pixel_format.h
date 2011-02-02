@@ -607,11 +607,28 @@ public:
 			uint8 dr, dg, db, da;
 			get_rgba(dst_format, dst, dr, dg, db, da);
 			int srca = (int) sa;
+			uint8 rr, rg, rb, ra;
 
-			uint8 rr = (uint8) ((dr * (255 - srca) + sr * srca) / ONE);
-			uint8 rg = (uint8) ((dg * (255 - srca) + sg * srca) / ONE);
-			uint8 rb = (uint8) ((db * (255 - srca) + sb * srca) / ONE);
-			uint8 ra = (uint8) ((da * (255 - srca)) / ONE + srca);
+			if (da >= opaque(dst_format)) {
+				rr = (uint8) ((dr * (255 - srca) + sr * srca) / ONE);
+				rg = (uint8) ((dg * (255 - srca) + sg * srca) / ONE);
+				rb = (uint8) ((db * (255 - srca) + sb * srca) / ONE);
+				ra = (uint8) ((da * (255 - srca)) / ONE + srca);
+			}
+			else if (da == 0) {
+				rr = (uint8) sr;
+				rg = (uint8) sg;
+				rb = (uint8) sb;
+				ra = (uint8) sa;
+			}
+			else {
+				int dsta = (int) da;
+				int resa = 255 - (255 - dsta) * (255 - srca) / ONE;
+				rr = (uint8) ((dr * dsta * (255 - srca) + sr * srca) / resa);
+				rg = (uint8) ((dg * dsta * (255 - srca) + sg * srca) / resa);
+				rb = (uint8) ((db * dsta * (255 - srca) + sb * srca) / resa);
+				ra = (uint8) resa;
+			}
 
 			set_rgba(dst_format, dst, rr, rg, rb, ra);
 		}

@@ -46,6 +46,8 @@ public:
 	PixmanBitmap(Bitmap* source, Rect src_rect, bool transparent);
 	~PixmanBitmap();
 
+	Bitmap* Resample(int scale_w, int scale_h, const Rect& src_rect);
+
 	void Blit(int x, int y, Bitmap* _src, Rect src_rect, int opacity);
 	void TiledBlit(Rect src_rect, Bitmap* _src, Rect dst_rect, int opacity);
 	void TiledBlit(int ox, int oy, Rect src_rect, Bitmap* src, Rect dst_rect, int opacity);

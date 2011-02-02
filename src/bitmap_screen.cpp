@@ -486,7 +486,7 @@ Bitmap* BitmapScreen::Refresh(Rect& rect, bool& need_scale) {
 	int zoomed_width  = (int)(rect.width  * zoom_x_effect);
 	int zoomed_height = (int)(rect.height * zoom_y_effect);
 
-	if (zoomed_width > 320 || zoomed_height > 320) {
+	if (zoomed_width > 640 || zoomed_height > 640) {
 		need_scale = true;
 		return src_bitmap;
 	}

@@ -43,18 +43,6 @@ Color BitmapUtilsT<PF>::GetPixel(Bitmap* src, int x, int y) {
 
 ////////////////////////////////////////////////////////////
 template <class PF>
-Bitmap* BitmapUtilsT<PF>::Resample(Bitmap* src, int scale_w, int scale_h, const Rect& src_rect) {
-	Surface* dst = Surface::CreateSurface(scale_w, scale_h, src->transparent);
-	if (src->transparent)
-		dst->SetTransparentColor(src->GetTransparentColor());
-
-	ScaleBlit(dst, dst->GetRect(), src, src_rect);
-
-	return dst;
-}
-
-////////////////////////////////////////////////////////////
-template <class PF>
 void BitmapUtilsT<PF>::SetPixel(Surface* dst, int x, int y, const Color &color) {
 	if (x < 0 || y < 0 || x >= dst->width() || y >= dst->height()) return;
 
@@ -80,12 +68,12 @@ void BitmapUtilsT<PF>::Blit(Surface* dst, int x, int y, Bitmap* src, Rect src_re
 	if (!Rect::AdjustRectangles(dst_rect, src_rect, dst->GetRect()))
 		return;
 
-	if (opacity > 255) opacity = 255;
+	const DynamicFormat& src_format = src->bm_utils->format;
+
+	if (opacity >= PF::opaque(src_format)) opacity = PF::ONE;
 
 	dst->Lock();
 	src->Lock();
-
-	const DynamicFormat& src_format = src->bm_utils->format;
 
 	if (opacity < 255) {
 		const uint8* src_pixels = (uint8*)src->pixels() + src_rect.x * PF::bytes + src_rect.y * src->pitch();
@@ -348,8 +336,8 @@ void BitmapUtilsT<PF>::ScaleBlit(Surface* dst, const Rect& dst_rect, Bitmap* src
 
 	int pad = dst->pitch() - PF::bytes * (dx1 - dx0);
 
-	for (int y = dy0; y < dy1; y++) {
-		const uint8* nearest_y = (const uint8*) src->pixels() + (int)(sy0 + y * zoom_y) * src->pitch();
+	for (int i = 0; i < dy1 - dy0; i++) {
+		const uint8* nearest_y = (const uint8*) src->pixels() + (int)(sy0 + i * zoom_y) * src->pitch();
 		static const int FRAC_BITS = 16;
 		int step = (int)((sx1 - sx0) * (1 << FRAC_BITS)) / (dx1 - dx0);
 		int x = (int)(sx0 * (1 << FRAC_BITS)) + step / 2;
@@ -441,18 +429,23 @@ template <class PF>
 void BitmapUtilsT<PF>::StretchBlit(Surface* dst, Rect dst_rect, Bitmap* src, Rect src_rect, int opacity) {
 	if (src_rect.width == dst_rect.width && src_rect.height == dst_rect.height) {
 		dst->Blit(dst_rect.x, dst_rect.y, src, src_rect, opacity);
-	} else {
-		src_rect.Adjust(src->width(), src->height());
-		if (src_rect.IsOutOfBounds(src->width(), src->height())) return;
-
-		if (dst_rect.IsOutOfBounds(dst->width(), dst->height())) return;
-
-		Bitmap* resampled = src->Resample(dst_rect.width, dst_rect.height, src_rect);
-
-		dst->Blit(dst_rect.x, dst_rect.y, resampled, resampled->GetRect(), opacity);
-
-		delete resampled;
+		return;
 	}
+	if (opacity >= PF::opaque(src->bm_utils->format)) {
+		dst->ScaleBlit(dst_rect, src, src_rect);
+		return;
+	}
+
+	if (!Rect::AdjustRectangles(src_rect, dst_rect, src->GetRect()))
+		return;
+	if (!Rect::AdjustRectangles(dst_rect, src_rect, dst->GetRect()))
+		return;
+
+	Bitmap* resampled = src->Resample(dst_rect.width, dst_rect.height, src_rect);
+
+	dst->Blit(dst_rect.x, dst_rect.y, resampled, resampled->GetRect(), opacity);
+
+	delete resampled;
 }
 
 ////////////////////////////////////////////////////////////

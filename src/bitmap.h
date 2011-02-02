@@ -108,6 +108,7 @@ public:
 protected:
 	friend class Surface;
 	friend class BitmapScreen;
+	friend class SdlBitmapScreen;
 	friend class GlBitmapScreen;
 	friend class BitmapUtils;
 	template <class T> friend class BitmapUtilsT;

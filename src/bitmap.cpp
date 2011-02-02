@@ -97,7 +97,12 @@ Color Bitmap::GetPixel(int x, int y) {
 
 ////////////////////////////////////////////////////////////
 Bitmap* Bitmap::Resample(int scale_w, int scale_h, const Rect& src_rect) {
-	return bm_utils->Resample(this, scale_w, scale_h, src_rect);
+	Surface* dst = Surface::CreateSurface(scale_w, scale_h, transparent);
+	if (transparent)
+		dst->SetTransparentColor(GetTransparentColor());
+	dst->Clear();
+	dst->ScaleBlit(dst->GetRect(), this, src_rect);
+	return dst;
 }
 
 ////////////////////////////////////////////////////////////

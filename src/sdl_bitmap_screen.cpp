@@ -22,6 +22,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "sdl_bitmap_screen.h"
+#include "sdl_bitmap.h"
 #include "bitmap_utils.h"
 #include "baseui.h"
 
@@ -70,20 +71,27 @@ void SdlBitmapScreen::BlitScreenIntern(Bitmap* draw_bitmap, int x, int y, Rect s
 		draw_bitmap = temp;
 		src_rect = temp->GetRect();
 	}
-	else if (needs_scale) {
-		int zoomed_width  = (int)(src_rect.width  * zoom_x_effect);
-		int zoomed_height = (int)(src_rect.height * zoom_y_effect);
-		temp = draw_bitmap->Resample(zoomed_width, zoomed_height, src_rect);
-		src_rect = temp->GetRect();
-	}
-	else if (waver_effect_depth > 0) {
-		Surface* surf = Surface::CreateSurface(src_rect.width + 2 * waver_effect_depth, src_rect.height);
-		surf->Clear();
-		surf->WaverBlit(waver_effect_depth, 0, draw_bitmap, src_rect, waver_effect_depth, waver_effect_phase);
-		x -= waver_effect_depth;
-		temp = surf;
-		draw_bitmap = temp;
-		src_rect = temp->GetRect();
+	else {
+		if (needs_scale) {
+			int zoomed_width  = (int)(src_rect.width  * zoom_x_effect);
+			int zoomed_height = (int)(src_rect.height * zoom_y_effect);
+			temp = draw_bitmap->Resample(zoomed_width, zoomed_height, src_rect);
+			draw_bitmap = temp;
+			src_rect = temp->GetRect();
+		}
+		if (waver_effect_depth > 0) {
+			Surface* surf = Surface::CreateSurface(src_rect.width + 2 * waver_effect_depth, src_rect.height);
+			if (draw_bitmap->transparent)
+				surf->SetTransparentColor(draw_bitmap->GetTransparentColor());
+			surf->Clear();
+			surf->WaverBlit(waver_effect_depth, 0, draw_bitmap, src_rect, waver_effect_depth, waver_effect_phase);
+			x -= waver_effect_depth;
+			if (temp != NULL)
+				delete temp;
+			temp = surf;
+			draw_bitmap = temp;
+			src_rect = temp->GetRect();
+		}
 	}
 
 	if (bush_effect < src_rect_effect.height) {

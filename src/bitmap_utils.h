@@ -59,15 +59,6 @@ public:
 	virtual void SetPixel(Surface* dst, int x, int y, const Color &color) = 0;
 
 	////////////////////////////////////////////////////////
-	/// Create a resampled bitmap.
-	/// @param src : the source bitmap
-	/// @param scale_w : resampled width
-	/// @param scale_h : resampled height
-	/// @param src_rect : source rect to resample
-	////////////////////////////////////////////////////////
-	virtual Bitmap* Resample(Bitmap* src, int scale_w, int scale_h, const Rect& src_rect) = 0;
-
-	////////////////////////////////////////////////////////
 	/// Blit source bitmap
 	/// @param dst : the destination surface
 	/// @param x : x position
