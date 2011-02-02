@@ -359,57 +359,6 @@ bool SdlUi::RefreshDisplayMode() {
 			main_window->format->Amask
 		);
 	}
-#if 0
-	SDL_VERSION(&sys_info.version);
-	SDL_GetWMInfo(&sys_info);
-
-	HWND hwnd = sys_info.window;
-
-	if (screen_dib != 0) {
-		DeleteObject(screen_dib);
-		screen_dib = 0;
-	}
-
-	BITMAPINFO *binfo = 0;
-
-	BOOL is16bitmode = main_surface->bpp() == 2;
-
-	/* Suss out the bitmap info header */
-	int binfo_size = sizeof(*binfo);
-	if( is16bitmode ) {
-		/* 16bit modes, palette area used for rgb bitmasks */
-		binfo_size += 3*sizeof(DWORD);
-	} 
-
-	binfo = (BITMAPINFO *) malloc(binfo_size);
-
-	binfo->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-	binfo->bmiHeader.biWidth = main_window->w;
-	binfo->bmiHeader.biHeight = -main_window->h;	/* -ve for topdown bitmap */
-	binfo->bmiHeader.biPlanes = 1;
-	binfo->bmiHeader.biSizeImage = main_window->h * main_surface->pitch();
-	binfo->bmiHeader.biXPelsPerMeter = 0;
-	binfo->bmiHeader.biYPelsPerMeter = 0;
-	binfo->bmiHeader.biClrUsed = 0;
-	binfo->bmiHeader.biClrImportant = 0;
-	binfo->bmiHeader.biBitCount = main_window->format->BitsPerPixel;
-	
-	if ( is16bitmode ) {
-		/* BI_BITFIELDS tells CreateDIBSection about the rgb masks in the palette */
-		binfo->bmiHeader.biCompression = BI_BITFIELDS;
-		((Uint32*)binfo->bmiColors)[0] = main_window->format->Rmask;
-		((Uint32*)binfo->bmiColors)[1] = main_window->format->Gmask;
-		((Uint32*)binfo->bmiColors)[2] = main_window->format->Bmask;
-	} else {
-		binfo->bmiHeader.biCompression = BI_RGB;	/* BI_BITFIELDS for 565 vs 555 */
-	}
-	
-	/* Create the offscreen bitmap buffer */
-	HDC hdc = GetDC(hwnd);
-	screen_dib = CreateDIBSection(hdc, binfo, DIB_RGB_COLORS, (void **)(&main_surface->pixels()), NULL, 0);
-	ReleaseDC(SDL_Window, hdc);
-
-#endif
 
 	return true;
 }
