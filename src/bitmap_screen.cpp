@@ -110,12 +110,13 @@ void BitmapScreen::BlitScreen(int x, int y, Rect src_rect) {
 		return;
 
 	src_rect = src_rect_effect.GetSubRect(src_rect);
-	Bitmap* draw_bitmap = Refresh(src_rect);
+	bool need_scale = false;
+	Bitmap* draw_bitmap = Refresh(src_rect, need_scale);
 
 	bitmap_changed = false;
 	needs_refresh = false;
 
-	BlitScreenIntern(draw_bitmap, x, y, src_rect);
+	BlitScreenIntern(draw_bitmap, x, y, src_rect, need_scale);
 }
 
 ////////////////////////////////////////////////////////////
@@ -124,33 +125,42 @@ void BitmapScreen::BlitScreenTiled(Rect src_rect, Rect dst_rect, int ox, int oy)
 		return;
 
 	src_rect = src_rect_effect.GetSubRect(src_rect);
-	Bitmap* draw_bitmap = Refresh(src_rect);
+	bool need_scale = false;
+	Bitmap* draw_bitmap = Refresh(src_rect, need_scale);
 
 	bitmap_changed = false;
 	needs_refresh = false;
 
+	int width = src_rect.width;
+	int height = src_rect.height;
+
+	if (need_scale) {
+		width  = (int)(width  * zoom_x_effect);
+		height = (int)(height * zoom_y_effect);
+	}
+
 	if (ox > 0)
-		ox -= src_rect.width * ((ox + src_rect.width - 1) / src_rect.width);
+		ox -= width * ((ox + width - 1) / width);
 	else if (ox < 0)
-		ox += src_rect.width * (ox / src_rect.width);
+		ox += width * (ox / width);
 
 	if (oy > 0)
-		oy -= src_rect.height * ((oy + src_rect.height - 1) / src_rect.height);
+		oy -= height * ((oy + height - 1) / height);
 	else if (oy < 0)
-		oy += src_rect.height * (oy / src_rect.height);
+		oy += height * (oy / height);
 
 	int x0 = dst_rect.x + ox;
 	int y0 = dst_rect.y + oy;
 	int x1 = dst_rect.x + dst_rect.width;
 	int y1 = dst_rect.y + dst_rect.height;
-	for (int y = y0; y < y1; y += src_rect.height) {
-		for (int x = x0; x < x1; x += src_rect.width) {
+	for (int y = y0; y < y1; y += height) {
+		for (int x = x0; x < x1; x += width) {
 			Rect rect = src_rect;
 			if (y + rect.height > y1)
 				rect.height = y1 - y;
 			if (x + rect.width > x1)
 				rect.width = x1 - x;
-			BlitScreenIntern(draw_bitmap, x, y, rect);
+			BlitScreenIntern(draw_bitmap, x, y, rect, need_scale);
 		}
 	}
 }
@@ -357,7 +367,7 @@ double BitmapScreen::GetWaverEffectPhase() const {
 }
 
 ////////////////////////////////////////////////////////////
-void BitmapScreen::BlitScreenIntern(Bitmap* draw_bitmap, int x, int y, Rect src_rect) {
+void BitmapScreen::BlitScreenIntern(Bitmap* draw_bitmap, int x, int y, Rect src_rect, bool need_scale) {
 	if (!draw_bitmap)
 		return;
 
@@ -369,6 +379,12 @@ void BitmapScreen::BlitScreenIntern(Bitmap* draw_bitmap, int x, int y, Rect src_
 						   zoom_x_effect, zoom_y_effect,
 						   src_rect.x + src_rect.width / 2, src_rect.y + src_rect.width / 2,
 						   x + src_rect.width / 2, y + src_rect.height / 2);
+	else if (need_scale) {
+		int zoomed_width  = (int)(src_rect.width  * zoom_x_effect);
+		int zoomed_height = (int)(src_rect.height * zoom_y_effect);
+		Rect dst_rect(x, y, zoomed_width, zoomed_height);
+		dst->ScaleBlit(dst_rect, draw_bitmap, src_rect);
+	}
 	else if (waver_effect_depth > 0)
 		dst->WaverBlit(x, y, draw_bitmap, src_rect, waver_effect_depth, waver_effect_phase);
 	else
@@ -376,7 +392,9 @@ void BitmapScreen::BlitScreenIntern(Bitmap* draw_bitmap, int x, int y, Rect src_
 }
 
 ////////////////////////////////////////////////////////////
-Bitmap* BitmapScreen::Refresh(Rect& rect) {
+Bitmap* BitmapScreen::Refresh(Rect& rect, bool& need_scale) {
+	need_scale = false;
+
 	rect.Adjust(bitmap->GetWidth(), bitmap->GetHeight());
 
 	if (rect.IsOutOfBounds(bitmap->GetWidth(), bitmap->GetHeight()))
@@ -444,9 +462,7 @@ Bitmap* BitmapScreen::Refresh(Rect& rect) {
 		if (opacity_top_effect < 255 && bush_effect < src_rect_effect.height) {
 			Rect src_rect = src_rect_effect;
 			src_rect.height -= bush_effect;
-			src_rect.x -= rect.x - src_rect_effect.x;
-			src_rect.y -= rect.y - src_rect_effect.y;
-			src_rect.Adjust(rect.width, rect.height);
+			src_rect.Adjust(rect);
 			bitmap_effects->OpacityChange(opacity_top_effect, src_rect);
 		}
 
@@ -454,9 +470,7 @@ Bitmap* BitmapScreen::Refresh(Rect& rect) {
 			Rect src_rect = src_rect_effect;
 			src_rect.y += src_rect_effect.height - bush_effect;
 			src_rect.height = bush_effect;
-			src_rect.x -= rect.x - src_rect_effect.x;
-			src_rect.y -= rect.y - src_rect_effect.y;
-			src_rect.Adjust(rect.width, rect.height);
+			src_rect.Adjust(rect);
 			bitmap_effects->OpacityChange(opacity_bottom_effect, src_rect);
 		}
 
@@ -468,6 +482,14 @@ Bitmap* BitmapScreen::Refresh(Rect& rect) {
 
 	if (no_zoom || angle_effect != 0.0)
 		return src_bitmap;
+
+	int zoomed_width  = (int)(rect.width  * zoom_x_effect);
+	int zoomed_height = (int)(rect.height * zoom_y_effect);
+
+	if (zoomed_width > 320 || zoomed_height > 320) {
+		need_scale = true;
+		return src_bitmap;
+	}
 
 	bool zoom_changed =
 		zoom_x_effect != current_zoom_x ||
@@ -485,9 +507,6 @@ Bitmap* BitmapScreen::Refresh(Rect& rect) {
 
 	current_zoom_x = zoom_x_effect;
 	current_zoom_y = zoom_y_effect;
-
-	int zoomed_width  = (int)(rect.width  * zoom_x_effect);
-	int zoomed_height = (int)(rect.height * zoom_y_effect);
 
 	if (bitmap_scale != NULL)
 		delete bitmap_scale;

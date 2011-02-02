@@ -303,7 +303,7 @@ void BitmapUtilsT<PF>::FlipBlit(Surface* dst, int x, int y, Bitmap* src, Rect sr
 ////////////////////////////////////////////////////////////
 template <class PF>
 void BitmapUtilsT<PF>::ScaleBlit(Surface* dst, const Rect& dst_rect, Bitmap* src, const Rect& src_rect) {
-	double zoom_x = (double)src_rect.width / dst_rect.height;
+	double zoom_x = (double)src_rect.width / dst_rect.width;
 	double zoom_y = (double)src_rect.height / dst_rect.height;
 
 	src->Lock();
@@ -319,42 +319,43 @@ void BitmapUtilsT<PF>::ScaleBlit(Surface* dst, const Rect& dst_rect, Bitmap* src
 	int dy1 = dst_rect.y + dst_rect.height;
 
 	if (dx0 < 0) {
-		sx0 -= zoom_x * dst_rect.x;
+		sx0 -= zoom_x * dx0;
 		dx0 = 0;
 	}
 
 	int dw = dst->GetWidth();
 	if (dx1 - dw > 0) {
-		sx1 -= dx1 - dw;
+		sx1 -= zoom_x * (dx1 - dw);
 		dx1 = dw;
 	}
 
 	if (dy0 < 0) {
-		sy0 -= zoom_y * dst_rect.y;
+		sy0 -= zoom_y * dy0;
 		dy0 = 0;
 	}
 
 	int dh = dst->GetHeight();
 	if (dy1 - dh > 0) {
-		sy1 -= dy1 - dh;
+		sy1 -= zoom_y * (dy1 - dh);
 		dy1 = dh;
 	}
 
 	if (dx0 >= dx1 || dy0 >= dy1)
 		return;
 
-	uint8* dst_pixels = (uint8*)dst->pixels();
+	const DynamicFormat& src_format = src->bm_utils->format;
+	uint8* dst_pixels = (uint8*)dst->pixels() + dy0 * dst->pitch() + dx0 * dst->bpp();
 
-	int pad = dst->pitch() - PF::bytes * dst->width();
+	int pad = dst->pitch() - PF::bytes * (dx1 - dx0);
 
 	for (int y = dy0; y < dy1; y++) {
-		const uint8* nearest_y = (const uint8*) src->pixels() + (int)((sy0 + y) * zoom_y) * src->pitch();
+		const uint8* nearest_y = (const uint8*) src->pixels() + (int)(sy0 + y * zoom_y) * src->pitch();
 		static const int FRAC_BITS = 16;
 		int step = (int)((sx1 - sx0) * (1 << FRAC_BITS)) / (dx1 - dx0);
 		int x = (int)(sx0 * (1 << FRAC_BITS)) + step / 2;
-		for (int j = 0; j < dst_rect.width; j++) {
+		for (int j = dx0; j < dx1; j++) {
 			const uint8* nearest_match = nearest_y + (x >> FRAC_BITS) * PF::bytes;
-			PF::copy_pixel(dst_pixels, nearest_match);
+			PF::overlay_pixel(format, dst_pixels, src_format, nearest_match);
 			dst_pixels += PF::bytes;
 			x += step;
 		}

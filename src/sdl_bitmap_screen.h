@@ -35,8 +35,8 @@ public:
 	~SdlBitmapScreen();
 
 protected:
-	void BlitScreenIntern(Bitmap* draw_bitmap, int x, int y, Rect src_rect);
-	Bitmap* Refresh(Rect& rect);
+	void BlitScreenIntern(Bitmap* draw_bitmap, int x, int y, Rect src_rect, bool needs_scale);
+	Bitmap* Refresh(Rect& rect, bool& needs_scale);
 };
 
 #endif

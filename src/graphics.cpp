@@ -198,8 +198,8 @@ void Graphics::InternUpdate1(bool reset) {
 void Graphics::InternUpdate2(bool reset) {
 	// FIXME: This method needs more comments. Why two InternUpdates?
 	static const int MAXIMUM_FRAME_RATE = framerate;
-	static const int MINIMUM_FRAME_RATE = max(framerate / 4, 1);
-	static const int MAX_CYCLES_PER_FRAME = MAXIMUM_FRAME_RATE / MINIMUM_FRAME_RATE;
+	//static const int MINIMUM_FRAME_RATE = max(framerate / 4, 1);
+	//static const int MAX_CYCLES_PER_FRAME = MAXIMUM_FRAME_RATE / MINIMUM_FRAME_RATE;
 	static const double UPDATE_INTERVAL = 1.0 / MAXIMUM_FRAME_RATE;
 	static double last_frame_time = 0.0;
 	static double cycles_leftover = 0.0;

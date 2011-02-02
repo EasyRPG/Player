@@ -218,9 +218,9 @@ protected:
 	int waver_effect_depth;
 	double waver_effect_phase;
 
-	virtual void BlitScreenIntern(Bitmap* draw_bitmap, int x, int y, Rect src_rect);
+	virtual void BlitScreenIntern(Bitmap* draw_bitmap, int x, int y, Rect src_rect, bool need_scale);
 
-	virtual Bitmap* Refresh(Rect& rect);
+	virtual Bitmap* Refresh(Rect& rect, bool& need_scale);
 
 	Surface* bitmap_effects;
 	Bitmap* bitmap_scale;

@@ -356,7 +356,7 @@ void PixmanBitmap::ScaleBlit(const Rect& dst_rect, Bitmap* _src, const Rect& src
 	
 	pixman_image_set_transform(src->bitmap, &xform);
 
-	pixman_image_composite32(PIXMAN_OP_SRC,
+	pixman_image_composite32(PIXMAN_OP_OVER,
 							 src->bitmap, (pixman_image_t*) NULL, bitmap,
 							 src_rect.x, src_rect.y,
 							 0, 0,
