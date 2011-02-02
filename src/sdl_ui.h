@@ -22,6 +22,9 @@
 // Headers
 ///////////////////////////////////////////////////////////
 #include "SDL.h"
+#ifdef _WIN32
+#include "SDL_syswm.h"
+#endif
 #include "baseui.h"
 #include "color.h"
 #include "rect.h"

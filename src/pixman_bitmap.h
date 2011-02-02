@@ -44,6 +44,7 @@ public:
 	PixmanBitmap(const std::string filename, bool transparent, uint32 flags);
 	PixmanBitmap(const uint8* data, uint bytes, bool transparent, uint32 flags);
 	PixmanBitmap(Bitmap* source, Rect src_rect, bool transparent);
+	PixmanBitmap(void *pixels, int width, int height, int pitch);
 	~PixmanBitmap();
 
 	Bitmap* Resample(int scale_w, int scale_h, const Rect& src_rect);
@@ -93,7 +94,7 @@ protected:
 	/// Bitmap data.
 	pixman_image_t *bitmap;
 
-	void Init(int width, int height, void* data);
+	void Init(int width, int height, void* data, int pitch, bool destroy);
 
 	Color GetColor(uint32 color) const;
 	uint32 GetUint32Color(const Color &color) const;

@@ -33,11 +33,12 @@
 ////////////////////////////////////////////////////////////
 class SdlBitmap : public Surface {
 public:
-	SdlBitmap(int width, int height, bool transparent);
+	SdlBitmap(int width, int height, int bpp, bool transparent);
 	SdlBitmap(const std::string& filename, bool transparent, uint32 flags);
 	SdlBitmap(const uint8* data, uint bytes, bool transparent, uint32 flags);
 	SdlBitmap(Bitmap* source, Rect src_rect, bool transparent);
 	SdlBitmap(SDL_Surface* bitmap, bool transparent = true);
+	SdlBitmap(void *pixels, int width, int height, int depth, int pitch, uint32 Rmask, uint32 Gmask, uint32 Bmask, uint32 Amask);
 	~SdlBitmap();
 
 	void Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity);

@@ -337,37 +337,79 @@ bool SdlUi::RefreshDisplayMode() {
 
 	if (zoom_available && current_display_mode.zoom) {
 		// Create a non zoomed surface as drawing surface
-		#ifdef USE_SDL_BITMAP
-		SDL_Surface *surface = SDL_CreateRGBSurface(
-			SDL_SWSURFACE,
-			current_display_mode.width,
-			current_display_mode.height,
-			main_window->format->BitsPerPixel,
-			main_window->format->Rmask,
-			main_window->format->Gmask,
-			main_window->format->Bmask,
-			main_window->format->Amask
-		);
-		main_surface = new SdlBitmap(surface, false);
-		#else
 		main_surface = Surface::CreateSurface(current_display_mode.width,
 											  current_display_mode.height,
+											  current_display_mode.bpp,
 											  false);
-		#endif
 
 		if (!main_surface) 
 			return false;
 
 	} else {
-		#ifdef USE_SDL_BITMAP
 		// Drawing surface will be the window itself
-		main_surface = new SdlBitmap(main_window, false);
-		#else
-		main_surface = Surface::CreateSurface(current_display_mode.width,
-											  current_display_mode.height,
-											  false);
-		#endif
+		main_surface = Surface::CreateSurfaceFrom(
+			main_window->pixels,
+			main_window->w,
+			main_window->h,
+			main_window->format->BitsPerPixel,
+			main_window->pitch,
+			main_window->format->Rmask,
+			main_window->format->Gmask,
+			main_window->format->Bmask,
+			main_window->format->Amask
+		);
 	}
+#if 0
+	SDL_VERSION(&sys_info.version);
+	SDL_GetWMInfo(&sys_info);
+
+	HWND hwnd = sys_info.window;
+
+	if (screen_dib != 0) {
+		DeleteObject(screen_dib);
+		screen_dib = 0;
+	}
+
+	BITMAPINFO *binfo = 0;
+
+	BOOL is16bitmode = main_surface->bpp() == 2;
+
+	/* Suss out the bitmap info header */
+	int binfo_size = sizeof(*binfo);
+	if( is16bitmode ) {
+		/* 16bit modes, palette area used for rgb bitmasks */
+		binfo_size += 3*sizeof(DWORD);
+	} 
+
+	binfo = (BITMAPINFO *) malloc(binfo_size);
+
+	binfo->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	binfo->bmiHeader.biWidth = main_window->w;
+	binfo->bmiHeader.biHeight = -main_window->h;	/* -ve for topdown bitmap */
+	binfo->bmiHeader.biPlanes = 1;
+	binfo->bmiHeader.biSizeImage = main_window->h * main_surface->pitch();
+	binfo->bmiHeader.biXPelsPerMeter = 0;
+	binfo->bmiHeader.biYPelsPerMeter = 0;
+	binfo->bmiHeader.biClrUsed = 0;
+	binfo->bmiHeader.biClrImportant = 0;
+	binfo->bmiHeader.biBitCount = main_window->format->BitsPerPixel;
+	
+	if ( is16bitmode ) {
+		/* BI_BITFIELDS tells CreateDIBSection about the rgb masks in the palette */
+		binfo->bmiHeader.biCompression = BI_BITFIELDS;
+		((Uint32*)binfo->bmiColors)[0] = main_window->format->Rmask;
+		((Uint32*)binfo->bmiColors)[1] = main_window->format->Gmask;
+		((Uint32*)binfo->bmiColors)[2] = main_window->format->Bmask;
+	} else {
+		binfo->bmiHeader.biCompression = BI_RGB;	/* BI_BITFIELDS for 565 vs 555 */
+	}
+	
+	/* Create the offscreen bitmap buffer */
+	HDC hdc = GetDC(hwnd);
+	screen_dib = CreateDIBSection(hdc, binfo, DIB_RGB_COLORS, (void **)(&main_surface->pixels()), NULL, 0);
+	ReleaseDC(SDL_Window, hdc);
+
+#endif
 
 	return true;
 }
@@ -437,11 +479,12 @@ void SdlUi::CleanDisplay() {
 
 ///////////////////////////////////////////////////////////
 void SdlUi::UpdateDisplay() {
-	if (zoom_available && current_display_mode.zoom)
+	if (zoom_available && current_display_mode.zoom) {
 		// Blit drawing surface x2 scaled over window surface
 		Blit2X(main_surface, main_window);
+	}
 
-	SDL_Flip(main_window);
+	SDL_UpdateRect(main_window, 0, 0, 0, 0);
 }
 
 ///////////////////////////////////////////////////////////

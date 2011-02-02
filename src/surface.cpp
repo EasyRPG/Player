@@ -47,9 +47,9 @@
 #include "util_macro.h"
 
 ////////////////////////////////////////////////////////////
-Surface* Surface::CreateSurface(int width, int height, bool transparent) {
+Surface* Surface::CreateSurface(int width, int height, int bpp, bool transparent) {
 	#if defined(USE_SDL_BITMAP)
-		return (Surface*)new SdlBitmap(width, height, transparent);
+		return (Surface*)new SdlBitmap(width, height, bpp, transparent);
 	#elif defined(USE_SOFT_BITMAP)
 		return (Surface*)new SoftBitmap(width, height, transparent);
 	#elif defined(USE_PIXMAN_BITMAP)
@@ -72,6 +72,14 @@ Surface* Surface::CreateSurface(Bitmap* source, Rect src_rect, bool transparent)
 		return (Surface*)new GlBitmap(source, src_rect, transparent);
 	#else
 		#error "No bitmap implementation selected"
+	#endif
+}
+
+Surface* Surface::CreateSurfaceFrom(void *pixels, int width, int height, int depth, int pitch, uint32 Rmask, uint32 Gmask, uint32 Bmask, uint32 Amask) {
+	#if defined(USE_SDL_BITMAP)
+	return (Surface*) new SdlBitmap(pixels, width, height, depth, pitch, Rmask, Gmask, Bmask, Amask);
+	#elif defined(USE_PIXMAN_BITMAP)
+	return (Surface*) new PixmanBitmap(pixels, width, height, pitch);
 	#endif
 }
 

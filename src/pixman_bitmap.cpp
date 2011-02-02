@@ -46,14 +46,19 @@ static void destroy_func(pixman_image_t *image, void *data) {
 	free(data);
 }
 
-void PixmanBitmap::Init(int width, int height, void* data) {
-	bitmap = pixman_image_create_bits(pixman_format, width, height, (uint32_t*) data, width*4);
+void PixmanBitmap::Init(int width, int height, void* data, int pitch=0, bool destroy=true) {
+
+	if ( !pitch ) {
+		pitch = width * 4;
+	}
+
+	bitmap = pixman_image_create_bits(pixman_format, width, height, (uint32_t*) data, pitch);
 
 	if (bitmap == NULL) {
 		Output::Error("Couldn't create %dx%d image.\n", width, height);
 	}
 
-	if (data != NULL)
+	if (data != NULL && destroy)
 		pixman_image_set_destroy_function(bitmap, destroy_func, data);
 }
 
@@ -111,6 +116,13 @@ PixmanBitmap::PixmanBitmap(int width, int height, bool itransparent) {
 	bm_utils = new BitmapUtilsT<pixel_format>(dynamic_format);
 
 	Init(width, height, (void *) NULL);
+}
+
+PixmanBitmap::PixmanBitmap(void *pixels, int width, int height, int pitch) {
+	transparent = false;
+	bm_utils = new BitmapUtilsT<pixel_format>(dynamic_format);
+
+	Init(width, height, pixels, pitch, false);
 }
 
 PixmanBitmap::PixmanBitmap(const std::string filename, bool itransparent, uint32 flags) {

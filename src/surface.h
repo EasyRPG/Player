@@ -46,9 +46,10 @@ public:
 	/// Creates surface.
 	/// @param width  : surface width
 	/// @param height : surface height
+	/// @param bpp : surface bpp
 	/// @param transparent : allow transparency on surface
 	////////////////////////////////////////////////////////
-	static Surface* CreateSurface(int width, int height, bool transparent = true);
+	static Surface* CreateSurface(int width, int height, int bpp = 0, bool transparent = true);
 
 	////////////////////////////////////////////////////////
 	/// Creates a bitmap from another.
@@ -57,6 +58,8 @@ public:
 	/// @param transparent : allow transparency on bitmap
 	////////////////////////////////////////////////////////
 	static Surface* CreateSurface(Bitmap* source, Rect src_rect, bool transparent = true);
+
+	static Surface* CreateSurfaceFrom(void *pixels, int width, int height, int depth, int pitch, uint32 Rmask, uint32 Gmask, uint32 Bmask, uint32 Amask);
 
 	////////////////////////////////////////////////////////
 	/// Destructor.
