@@ -43,6 +43,34 @@ Color BitmapUtilsT<PF>::GetPixel(Bitmap* src, int x, int y) {
 
 ////////////////////////////////////////////////////////////
 template <class PF>
+Bitmap::TileOpacity BitmapUtilsT<PF>::CheckOpacity(Bitmap* src, const Rect& rect) {
+	bool all = true;
+	bool any = false;
+
+	uint8* src_pixels = (uint8*)src->pixels() + rect.y * src->pitch() + rect.x * src->bpp();
+	int src_pad = src->pitch() - rect.width * src->bpp();
+
+	for (int y = 0; y < rect.height; y++) {
+		for (int x = 0; x < rect.width; x++) {
+			if (PF::get_alpha(format, src_pixels) > 0)
+				any = true;
+			else
+				all = false;
+			if (any && !all)
+				goto done;
+			src_pixels += PF::bytes;
+		}
+		src_pixels += src_pad;
+	}
+done:
+	return
+		all ? Bitmap::Opaque :
+		any ? Bitmap::Partial :
+		Bitmap::Transparent;
+}
+
+////////////////////////////////////////////////////////////
+template <class PF>
 void BitmapUtilsT<PF>::SetPixel(Surface* dst, int x, int y, const Color &color) {
 	if (x < 0 || y < 0 || x >= dst->width() || y >= dst->height()) return;
 

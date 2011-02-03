@@ -83,11 +83,13 @@ Bitmap* Bitmap::CreateBitmap(Bitmap* source, Rect src_rect, bool transparent) {
 }
 
 ////////////////////////////////////////////////////////////
-Bitmap::Bitmap() {
+Bitmap::Bitmap() : opacity(NULL) {
 }
 
 ////////////////////////////////////////////////////////////
 Bitmap::~Bitmap() {
+	if (opacity != NULL)
+		delete[] opacity;
 }
 
 ////////////////////////////////////////////////////////////
@@ -140,6 +142,11 @@ Color Bitmap::GetTransparentColor() const {
 }
 
 ////////////////////////////////////////////////////////////
+Bitmap::TileOpacity Bitmap::CheckOpacity(const Rect& rect) {
+	return bm_utils->CheckOpacity(this, rect);
+}
+
+////////////////////////////////////////////////////////////
 void Bitmap::CheckPixels(uint32 flags) {
 	if (flags & System) {
 		Cache::system_info.bg_color = GetPixel(0, 32);
@@ -147,20 +154,18 @@ void Bitmap::CheckPixels(uint32 flags) {
 	}
 
 	if (flags & Chipset) {
-		have_invisible_tile = true;
-		for (int x = 288; x < 288 + 16; x++) {
-			for (int y = 128; y < 128 + 16; y++) {
-				if (GetPixel(x, y).alpha > 0) {
-					have_invisible_tile = false;
-					x = 288 + 16;
-					break;
-				}
+		opacity = new TileOpacity[16][30];
+		for (int row = 0; row < 16; row++) {
+			for (int col = 0; col < 30; col++) {
+				Rect rect(col * 16, row * 16, 16, 16);
+				opacity[row][col] = CheckOpacity(rect);
 			}
 		}
 	}
 }
 
-bool Bitmap::HaveInvisibleTile() {
-	return have_invisible_tile;
+////////////////////////////////////////////////////////////
+Bitmap::TileOpacity Bitmap::GetTileOpacity(int row, int col) {
+	return (opacity == NULL) ? Partial : opacity[row][col];
 }
 

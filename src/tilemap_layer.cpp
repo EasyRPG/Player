@@ -154,8 +154,7 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	animation_type(1),
 	ID(Graphics::drawable_id++),
 	type(TypeTilemap),
-	layer(ilayer),
-	have_invisible_tile(false) {
+	layer(ilayer) {
 
 	chipset_screen = BitmapScreen::CreateBitmapScreen();
 	autotiles_ab_screen = NULL;
@@ -183,6 +182,14 @@ TilemapLayer::~TilemapLayer() {
 	delete chipset_screen;
 	delete autotiles_ab_screen;
 	delete autotiles_d_screen;
+}
+
+////////////////////////////////////////////////////////////
+void TilemapLayer::DrawTile(BitmapScreen* screen, int x, int y, int row, int col, bool autotile) {
+	if (!autotile && screen->GetBitmap()->GetTileOpacity(row, col) == Bitmap::Transparent)
+		return;
+	Rect rect(col * 16, row * 16, 16, 16);
+	screen->BlitScreen(x, y, rect);
 }
 
 ////////////////////////////////////////////////////////////
@@ -235,77 +242,63 @@ void TilemapLayer::Draw(int z_order) {
 						int id = substitutions[tile.ID - BLOCK_E];
 						// If Block E
 
-						Rect rect;
-						rect.width = 16;
-						rect.height = 16;
+						int row, col;
 
 						// Get the tile coordinates from chipset
 						if (id < 96) {
 							// If from first column of the block
-							rect.x = 192 + (id % 6) * 16;
-							rect.y = (id / 6) * 16;
+							col = 12 + id % 6;
+							row = id / 6;
 						} else {
 							// If from second column of the block
-							rect.x = 288 + ((id - 96) % 6) * 16;
-							rect.y = ((id - 96) / 6) * 16;
+							col = 18 + (id - 96) % 6;
+							row = (id - 96) / 6;
 						}
 
-						// Draw the tile
-						chipset_screen->BlitScreen(map_draw_x, map_draw_y, rect);
+						DrawTile(chipset_screen, map_draw_x, map_draw_y, row, col, false);
 					} else if (tile.ID >= BLOCK_C && tile.ID < BLOCK_D) {
 						// If Block C
 
-						Rect rect;
-						rect.width = 16;
-						rect.height = 16;
-
 						// Get the tile coordinates from chipset
-						rect.x = 48 + ((tile.ID - BLOCK_C) / 50) * 16;
-						rect.y = 64 + animation_step_c * 16;
+						int col = 3 + (tile.ID - BLOCK_C) / 50;
+						int row = 4 + animation_step_c;
 
 						// Draw the tile
-						chipset_screen->BlitScreen(map_draw_x, map_draw_y, rect);
+						DrawTile(chipset_screen, map_draw_x, map_draw_y, row, col, false);
 					} else if (tile.ID < BLOCK_C) {
 						// If Blocks A1, A2, B
 
 						// Draw the tile from autile cache
 						TileXY pos = GetCachedAutotileAB(tile.ID, animation_step_ab);
-						Rect src_rect(pos.x * 16, pos.y * 16, 16, 16);
-						autotiles_ab_screen->BlitScreen(map_draw_x, map_draw_y, src_rect);
+						DrawTile(autotiles_ab_screen, map_draw_x, map_draw_y, pos.y, pos.x, true);
 					} else {
 						// If blocks D1-D12
 
 						// Draw the tile from autile cache
 						TileXY pos = GetCachedAutotileD(tile.ID);
-						Rect src_rect(pos.x * 16, pos.y * 16, 16, 16);
-						autotiles_d_screen->BlitScreen(map_draw_x, map_draw_y, src_rect);
+						DrawTile(autotiles_d_screen, map_draw_x, map_draw_y, pos.y, pos.x, true);
 					}
 				} else {
 					// If upper layer
 
 					// Check that block F is being drawn
 					if (tile.ID >= BLOCK_F && tile.ID < BLOCK_F + BLOCK_F_TILES) {
-						if (tile.ID == BLOCK_F && have_invisible_tile)
-							continue;
-
 						int id = substitutions[tile.ID - BLOCK_F];
-						Rect rect;
-						rect.width = 16;
-						rect.height = 16;
+						int row, col;
 
 						// Get the tile coordinates from chipset
 						if (id < 48) {
 							// If from first column of the block
-							rect.x = 288 + (id % 6) * 16;
-							rect.y = 128 + (id / 6) * 16;
+							col = 18 + id % 6;
+							row = 8 + id / 6;
 						} else {
 							// If from second column of the block
-							rect.x = 384 + ((id - 48) % 6) * 16;
-							rect.y = ((id - 48) / 6) * 16;
+							col = 24 + (id - 48) % 6;
+							row = (id - 48) / 6;
 						}
 						
 						// Draw the tile
-						chipset_screen->BlitScreen(map_draw_x, map_draw_y, rect);
+						DrawTile(chipset_screen, map_draw_x, map_draw_y, row, col, false);
 					}
 				}
 			}
@@ -623,8 +616,6 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 			}
 			autotiles_ab_screen = GenerateAutotiles(autotiles_ab_next, autotiles_ab_map);
 			autotiles_d_screen = GenerateAutotiles(autotiles_d_next, autotiles_d_map);
-		} else {
-			have_invisible_tile = chipset->HaveInvisibleTile();
 		}
 	}
 	map_data = nmap_data;

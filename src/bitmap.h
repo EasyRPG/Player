@@ -92,8 +92,6 @@ public:
 	/// @param color : new transparent color 
 	virtual void SetTransparentColor(Color color) = 0;
 
-	virtual bool HaveInvisibleTile();
-
 	static const uint32 System  = 0x80000000;
 	static const uint32 Chipset = 0x40000000;
 
@@ -104,6 +102,14 @@ public:
 	/// @param src_rect : source rect to resample
 	////////////////////////////////////////////////////////
 	virtual Bitmap* Resample(int scale_w, int scale_h, const Rect& src_rect);
+
+	enum TileOpacity {
+		Opaque,
+		Partial,
+		Transparent
+	};
+
+	TileOpacity GetTileOpacity(int row, int col);
 
 protected:
 	friend class Surface;
@@ -149,11 +155,15 @@ protected:
 	////////////////////////////////////////////////////////
 	virtual Color GetPixel(int x, int y);
 
+	virtual TileOpacity CheckOpacity(const Rect& rect);
+
 	virtual void CheckPixels(uint32 flags);
 
 	BitmapUtils* bm_utils;
 
 	std::list<BitmapScreen*> attached_screen_bitmaps;
+	TileOpacity (*opacity)[30];
+
 	bool have_invisible_tile;
 };
 

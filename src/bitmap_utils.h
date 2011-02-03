@@ -50,6 +50,14 @@ public:
 	virtual Color GetPixel(Bitmap* src, int x, int y) = 0;
 
 	////////////////////////////////////////////////////////
+	/// Check the opacity of a rectangle
+	/// @param src : the source bitmap
+	/// @param rect : the source rectangle
+	/// @returns : opacity (Opaque, Partial, Transparent)
+	////////////////////////////////////////////////////////
+	virtual Bitmap::TileOpacity CheckOpacity(Bitmap* src, const Rect& rect) = 0;
+
+	////////////////////////////////////////////////////////
 	/// Get a pixel color.
 	/// @param src : the source bitmap
 	/// @param x : pixel x
@@ -291,6 +299,8 @@ public:
 		BitmapUtils(format) {}
 
 	Color GetPixel(Bitmap* src, int x, int y);
+	Bitmap::TileOpacity CheckOpacity(Bitmap* src, const Rect& rect);
+
 	void SetPixel(Surface* dst, int x, int y, const Color &color);
 	Bitmap* Resample(Bitmap* src, int scale_w, int scale_h, const Rect& src_rect);
 	Bitmap* RotateScale(Bitmap* src, double angle, int scale_w, int scale_h);

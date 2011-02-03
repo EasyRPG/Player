@@ -35,6 +35,7 @@ public:
 	TilemapLayer(int ilayer);
 	~TilemapLayer();
 
+	void DrawTile(BitmapScreen* screen, int x, int y, int row, int col, bool autotile);
 	void Draw(int z_order);
 
 	void Update();
@@ -84,8 +85,6 @@ private:
 	unsigned long ID;
 	DrawableType type;
 	int layer;
-
-	bool have_invisible_tile;
 
 	void GenerateAutotileAB(short ID, short animID);
 	void GenerateAutotileD(short ID);
