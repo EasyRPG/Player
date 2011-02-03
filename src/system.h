@@ -50,7 +50,7 @@
 #endif
 
 #ifdef USE_SOFT_BITMAP
-	//#define SUPPORT_BMP
+	#define SUPPORT_BMP
 	//#define SUPPORT_GIF
 	//#define SUPPORT_JPG
 	#define SUPPORT_PNG
@@ -61,7 +61,7 @@
 #endif
 
 #ifdef USE_PIXMAN_BITMAP
-	//#define SUPPORT_BMP
+	#define SUPPORT_BMP
 	//#define SUPPORT_GIF
 	//#define SUPPORT_JPG
 	#define SUPPORT_PNG
@@ -99,7 +99,7 @@
 		#define SUPPORT_GIF
 		//#define SUPPORT_JPG
 		#define SUPPORT_PNG
-		//#define SUPPORT_XYZ
+		#define SUPPORT_XYZ
 	#endif
 
 	#ifdef USE_SDL_MIXER

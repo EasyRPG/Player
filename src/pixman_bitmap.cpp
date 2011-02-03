@@ -31,6 +31,7 @@
 #include "output.h"
 #include "utils.h"
 #include "image_xyz.h"
+#include "image_bmp.h"
 #include "image_png.h"
 #include "text.h"
 #include "pixel_format.h"
@@ -76,39 +77,6 @@ void PixmanBitmap::ConvertImage(int& width, int& height, void*& pixels) {
 	}
 }
 
-void PixmanBitmap::ReadPNG(FILE *stream, const void *buffer) {
-	bitmap = NULL;
-
-	int w, h;
-	void* pixels;
-	ImagePNG::ReadPNG(stream, buffer, transparent, w, h, pixels);
-
-	ConvertImage(w, h, pixels);
-	Init(w, h, pixels);
-}
-
-void PixmanBitmap::ReadXYZ(const uint8 *data, uint len) {
-	bitmap = NULL;
-
-	int w, h;
-	void* pixels;
-	ImageXYZ::ReadXYZ(data, len, transparent, w, h, pixels);
-
-	ConvertImage(w, h, pixels);
-	Init(w, h, pixels);
-}
-
-void PixmanBitmap::ReadXYZ(FILE *stream) {
-	bitmap = NULL;
-
-	int w, h;
-	void* pixels;
-	ImageXYZ::ReadXYZ(stream, transparent, w, h, pixels);
-
-	ConvertImage(w, h, pixels);
-	Init(w, h, pixels);
-}
-
 ////////////////////////////////////////////////////////////
 PixmanBitmap::PixmanBitmap(int width, int height, bool itransparent) {
 	transparent = itransparent;
@@ -135,7 +103,7 @@ PixmanBitmap::PixmanBitmap(const std::string filename, bool itransparent, uint32
 	}
 
 	std::string ext = Utils::LowerCase(filename.substr(namelen - 3, 3));
-	if (ext != "png" && ext != "xyz") {
+	if (ext != "png" && ext != "xyz" && ext != "bmp") {
 		Output::Error("Unsupported image file %s", filename.c_str());
 		return;
 	}
@@ -145,12 +113,21 @@ PixmanBitmap::PixmanBitmap(const std::string filename, bool itransparent, uint32
 		Output::Error("Couldn't open image file %s", filename.c_str());
 		return;
 	}
+
+	int w, h;
+	void* pixels;
+
 	if (ext == "png")
-		ReadPNG(stream, (void*) NULL);
+		ImagePNG::ReadPNG(stream, (void*) NULL, transparent, w, h, pixels);
 	else if (ext == "xyz")
-		ReadXYZ(stream);
+		ImageXYZ::ReadXYZ(stream, transparent, w, h, pixels);
+	else if (ext == "bmp")
+		ImageBMP::ReadBMP(stream, transparent, w, h, pixels);
 
 	fclose(stream);
+
+	ConvertImage(w, h, pixels);
+	Init(w, h, pixels);
 
 	CheckPixels(flags);
 }
@@ -159,10 +136,18 @@ PixmanBitmap::PixmanBitmap(const uint8* data, uint bytes, bool itransparent, uin
 	transparent = itransparent;
 	bm_utils = new BitmapUtilsT<pixel_format>(dynamic_format);
 
+	int w, h;
+	void* pixels;
+
 	if (bytes > 4 && strncmp((char*) data, "XYZ1", 4) == 0)
-		ReadXYZ(data, bytes);
+		ImageXYZ::ReadXYZ(data, bytes, transparent, w, h, pixels);
+	else if (bytes > 2 && strncmp((char*) data, "BM", 4) == 0)
+		ImageBMP::ReadBMP(data, bytes, transparent, w, h, pixels);
 	else
-		ReadPNG((FILE*) NULL, (const void*) data);
+		ImagePNG::ReadPNG((FILE*) NULL, (const void*) data, transparent, w, h, pixels);
+
+	ConvertImage(w, h, pixels);
+	Init(w, h, pixels);
 
 	CheckPixels(flags);
 }

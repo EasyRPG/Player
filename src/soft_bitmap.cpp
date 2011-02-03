@@ -30,6 +30,7 @@
 #include "output.h"
 #include "utils.h"
 #include "image_xyz.h"
+#include "image_bmp.h"
 #include "image_png.h"
 #include "text.h"
 #include "bitmap_utils.h"
@@ -92,7 +93,7 @@ SoftBitmap::SoftBitmap(const std::string& filename, bool itransparent, uint32 fl
 	}
 
 	std::string ext = Utils::LowerCase(filename.substr(namelen - 3, 3));
-	if (ext != "png" && ext != "xyz") {
+	if (ext != "png" && ext != "xyz" && ext != "bmp") {
 		Output::Error("Unsupported image file %s", filename.c_str());
 		return;
 	}
@@ -110,6 +111,8 @@ SoftBitmap::SoftBitmap(const std::string& filename, bool itransparent, uint32 fl
 		ImagePNG::ReadPNG(stream, (const void*) NULL, transparent, width, height, pixels);
 	else if (ext == "xyz")
 		ImageXYZ::ReadXYZ(stream, transparent, width, height, pixels);
+	else if (ext == "bmp")
+		ImageBMP::ReadBMP(stream, transparent, width, height, pixels);
 
 	ConvertImage(width, height, pixels);
 
@@ -127,6 +130,8 @@ SoftBitmap::SoftBitmap(const uint8* data, uint bytes, bool itransparent, uint32 
 
 	if (bytes > 4 && strncmp((char*) data, "XYZ1", 4) == 0)
 		ImageXYZ::ReadXYZ(data, bytes, transparent, width, height, pixels);
+	else if (bytes > 2 && strncmp((char*) data, "BM", 2) == 0)
+		ImageBMP::ReadBMP(data, bytes, transparent, width, height, pixels);
 	else
 		ImagePNG::ReadPNG((FILE*) NULL, (const void*) data, transparent, width, height, pixels);
 
