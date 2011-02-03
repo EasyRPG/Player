@@ -46,11 +46,10 @@ static void destroy_func(pixman_image_t *image, void *data) {
 	free(data);
 }
 
-void PixmanBitmap::Init(int width, int height, void* data, int pitch=0, bool destroy=true) {
+void PixmanBitmap::Init(int width, int height, void* data, int pitch, bool destroy) {
 
-	if ( !pitch ) {
+	if (!pitch)
 		pitch = width * 4;
-	}
 
 	bitmap = pixman_image_create_bits(pixman_format, width, height, (uint32_t*) data, pitch);
 

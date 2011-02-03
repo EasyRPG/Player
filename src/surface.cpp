@@ -77,9 +77,13 @@ Surface* Surface::CreateSurface(Bitmap* source, Rect src_rect, bool transparent)
 
 Surface* Surface::CreateSurfaceFrom(void *pixels, int width, int height, int depth, int pitch, uint32 Rmask, uint32 Gmask, uint32 Bmask, uint32 Amask) {
 	#if defined(USE_SDL_BITMAP)
-	return (Surface*) new SdlBitmap(pixels, width, height, depth, pitch, Rmask, Gmask, Bmask, Amask);
+		return (Surface*) new SdlBitmap(pixels, width, height, depth, pitch, Rmask, Gmask, Bmask, Amask);
+	#elif defined(USE_SOFT_BITMAP)
+		return (Surface*) new SoftBitmap(pixels, width, height, pitch);
 	#elif defined(USE_PIXMAN_BITMAP)
-	return (Surface*) new PixmanBitmap(pixels, width, height, pitch);
+		return (Surface*) new PixmanBitmap(pixels, width, height, pitch);
+	#else
+		#error "No bitmap implementation selected"
 	#endif
 }
 

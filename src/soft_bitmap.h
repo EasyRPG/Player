@@ -36,6 +36,7 @@
 class SoftBitmap : public Surface {
 public:
 	SoftBitmap(int width, int height, bool transparent);
+	SoftBitmap(void *pixels, int width, int height, int pitch);
 	SoftBitmap(const std::string& filename, bool transparent, uint32 flags);
 	SoftBitmap(const uint8* data, uint bytes, bool transparent, uint32 flags);
 	SoftBitmap(Bitmap* source, Rect src_rect, bool transparent);
@@ -63,9 +64,11 @@ protected:
 
 	/// Bitmap data.
 	int w, h;
+	int _pitch;
 	void* bitmap;
+	bool destroy;
 
-	void Init(int width, int height);
+	void Init(int width, int height, void* data, int pitch = 0, bool destroy = true);
 
 	Color GetColor(uint32 color) const;
 	uint32 GetUint32Color(const Color &color) const;

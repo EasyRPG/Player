@@ -40,10 +40,12 @@
 const DynamicFormat SoftBitmap::dynamic_format = SoftBitmap::pixel_format::Format(DynamicFormat());
 
 ////////////////////////////////////////////////////////////
-void SoftBitmap::Init(int width, int height) {
+void SoftBitmap::Init(int width, int height, void *data = NULL, int pitch, bool _destroy) {
 	w = width;
 	h = height;
-	bitmap = calloc(h, w * 4);
+	_pitch = (pitch != 0) ? pitch : w * 4;
+	bitmap = (data != NULL)  ? data : malloc(h * _pitch);
+	destroy = _destroy;
 
 	if (bitmap == NULL) {
 		Output::Error("Couldn't create %dx%d image.\n", w, h);
@@ -61,6 +63,8 @@ void SoftBitmap::ConvertImage(int& width, int& height, void*& pixels) {
 			dst += 4;
 		}
 	}
+
+	Init(width, height, pixels);
 }
 
 ////////////////////////////////////////////////////////////
@@ -68,6 +72,13 @@ SoftBitmap::SoftBitmap(int width, int height, bool itransparent) {
 	transparent = itransparent;
 	bm_utils = new BitmapUtilsT<pixel_format>(dynamic_format);
 	Init(width, height);
+	Clear();
+}
+
+SoftBitmap::SoftBitmap(void *pixels, int width, int height, int pitch) {
+	transparent = false;
+	bm_utils = new BitmapUtilsT<pixel_format>(dynamic_format);
+	Init(width, height, pixels, pitch, false);
 }
 
 SoftBitmap::SoftBitmap(const std::string& filename, bool itransparent, uint32 flags) {
@@ -91,12 +102,16 @@ SoftBitmap::SoftBitmap(const std::string& filename, bool itransparent, uint32 fl
 		Output::Error("Couldn't open image file %s", filename.c_str());
 		return;
 	}
-	if (ext == "png")
-		ImagePNG::ReadPNG(stream, (const void*) NULL, transparent, w, h, bitmap);
-	else if (ext == "xyz")
-		ImageXYZ::ReadXYZ(stream, transparent, w, h, bitmap);
 
-	ConvertImage(w, h, bitmap);
+	int width, height;
+	void* pixels;
+
+	if (ext == "png")
+		ImagePNG::ReadPNG(stream, (const void*) NULL, transparent, width, height, pixels);
+	else if (ext == "xyz")
+		ImageXYZ::ReadXYZ(stream, transparent, width, height, pixels);
+
+	ConvertImage(width, height, pixels);
 
 	fclose(stream);
 
@@ -107,12 +122,15 @@ SoftBitmap::SoftBitmap(const uint8* data, uint bytes, bool itransparent, uint32 
 	transparent = itransparent;
 	bm_utils = new BitmapUtilsT<pixel_format>(dynamic_format);
 
-	if (bytes > 4 && strncmp((char*) data, "XYZ1", 4) == 0)
-		ImageXYZ::ReadXYZ(data, bytes, transparent, w, h, bitmap);
-	else
-		ImagePNG::ReadPNG((FILE*) NULL, (const void*) data, transparent, w, h, bitmap);
+	int width, height;
+	void* pixels;
 
-	ConvertImage(w, h, bitmap);
+	if (bytes > 4 && strncmp((char*) data, "XYZ1", 4) == 0)
+		ImageXYZ::ReadXYZ(data, bytes, transparent, width, height, pixels);
+	else
+		ImagePNG::ReadPNG((FILE*) NULL, (const void*) data, transparent, width, height, pixels);
+
+	ConvertImage(width, height, pixels);
 
 	CheckPixels(flags);
 }
@@ -122,13 +140,15 @@ SoftBitmap::SoftBitmap(Bitmap* source, Rect src_rect, bool itransparent) {
 	bm_utils = new BitmapUtilsT<pixel_format>(dynamic_format);
 
 	Init(src_rect.width, src_rect.height);
+	Clear();
 
 	Blit(0, 0, source, src_rect, 255);
 }
 
 ////////////////////////////////////////////////////////////
 SoftBitmap::~SoftBitmap() {
-	free(bitmap);
+	if (destroy)
+		free(bitmap);
 	delete bm_utils;
 }
 
@@ -150,7 +170,7 @@ int SoftBitmap::height() const {
 }
 
 uint16 SoftBitmap::pitch() const {
-	return width() * bpp();
+	return _pitch;
 }
 
 uint32 SoftBitmap::rmask() const {
