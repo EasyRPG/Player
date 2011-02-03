@@ -119,7 +119,7 @@ protected:
 
 template <class PFsrc, class PFdst>
 class BlitT : public Blit {
-	static const bool same =
+	/* static const bool */ enum { same =
 		PFsrc::bits == PFdst::bits   &&
 		PFsrc::alpha == PFdst::alpha &&
 		PFsrc::colorkey == PFdst::colorkey &&
@@ -128,7 +128,7 @@ class BlitT : public Blit {
 		PFsrc::mask_b_traits_type::mask == PFdst::mask_b_traits_type::mask  &&
 		PFsrc::mask_a_traits_type::mask == PFdst::mask_a_traits_type::mask  &&
 		!PFsrc::dynamic_masks &&
-		!PFdst::dynamic_masks;
+		!PFdst::dynamic_masks };
 	typedef blit1x_traits<PFsrc,PFdst,same> blit1x_traits_type;
 	typedef blit2x_traits<PFsrc,PFdst,same> blit2x_traits_type;
 
