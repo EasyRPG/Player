@@ -226,8 +226,11 @@ std::string FileFinder::FindFont(const std::string& file) {
 
 ////////////////////////////////////////////////////////////
 std::string FileFinder::DefaultFont() {
-	// TODO
-	return "DejaVuLGCSansMono";
+	std::string fonts[] = DEFAULT_FONTS;
+	for (const std::string* pfont = fonts; !pfont->empty(); pfont++)
+		if (!FindFont(*pfont).empty())
+			return *pfont;
+	return "";
 }
 
 ////////////////////////////////////////////////////////////

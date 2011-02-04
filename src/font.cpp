@@ -32,7 +32,6 @@
 ////////////////////////////////////////////////////////////
 /// Static Variables
 ////////////////////////////////////////////////////////////
-const std::string Font::default_name = FileFinder::DefaultFont();
 std::vector<Font*> Font::fonts;
 
 ////////////////////////////////////////////////////////////
@@ -62,7 +61,7 @@ bool Font::Exists(const std::string& name) {
 /// Factory
 ////////////////////////////////////////////////////////////
 Font* Font::CreateFont(const std::string& _name, int size, bool bold, bool italic) {
-	const std::string& name = _name.empty() ? default_name : _name;
+	const std::string& name = _name.empty() ? FileFinder::DefaultFont() : _name;
 	if (size == 0)
 		size = default_size;
 

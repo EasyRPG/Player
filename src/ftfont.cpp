@@ -80,7 +80,25 @@ void FTFont::Init() {
 		return;
 	}
 
-    ans = FT_Set_Char_Size(face, size * 64, size * 64, 72, 72);
+	for (int i = 0; i < face->num_fixed_sizes; i++) {
+		FT_Bitmap_Size* size = &face->available_sizes[i];
+		Output::Debug("Font Size %d: %d %d %f %f %f", i,
+					  size->width, size->height, size->size / 64.0,
+					  size->x_ppem / 64.0, size->y_ppem / 64.0);
+	}
+
+	// RM2000.FON hack
+	int sz, dpi;
+	if (face->num_fixed_sizes == 1) {
+		sz = face->available_sizes[0].size;
+		dpi = 96;
+	}
+	else {
+		sz = size * 64;
+		dpi = 72;
+	}
+
+    ans = FT_Set_Char_Size(face, sz, sz, dpi, dpi);
     if (ans != FT_Err_Ok) {
 		Output::Error("Couldn't set FreeType face size\n");
 		FT_Done_Face(face);
@@ -133,7 +151,9 @@ Bitmap* FTFont::Render(int c) {
 	Surface* bitmap = Surface::CreateSurface(ft_bitmap.width, size + 2, true);
 	uint8* dst = (uint8*) bitmap->pixels();
 
-	const int base_line = bitmap->height() / 4;
+	const int base_line = (face->descender != 0)
+		? bitmap->height() * -face->descender / face->height
+		: 0;
 	int offset = bitmap->height() - face->glyph->bitmap_top - base_line;
 
 	uint32 fg = bitmap->GetUint32Color(0, 0, 0, 255);

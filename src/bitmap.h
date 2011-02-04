@@ -24,9 +24,7 @@
 #include <string>
 #include <list>
 #include "color.h"
-#include "font.h"
 #include "rect.h"
-#include "tone.h"
 #include "pixel_format.h"
 
 class BitmapScreen;
