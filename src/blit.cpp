@@ -85,7 +85,7 @@ Blit* Blit::Create(int dst_bpp, const DynamicFormat& dst_format,
 				   int src_bpp, const DynamicFormat& src_format) {
 	if (src_bpp != 32)
 		return NULL;
-	Blit* blit;
+	Blit* blit = NULL;
 	switch (dst_bpp) {
 		case 32:
 			blit = new BlitT<format_B8G8R8A8, format_dynamic_32>(dst_format, src_format);

@@ -53,7 +53,7 @@ void ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 	if (stream != NULL)
 		png_init_io(png_ptr, stream);
 	else
-		png_set_read_fn(png_ptr, (voidp) &buffer, read_data);
+		png_set_read_fn(png_ptr, (png_voidp) &buffer, read_data);
 
 	png_read_info(png_ptr, info_ptr);
 

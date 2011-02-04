@@ -25,7 +25,7 @@ INCLUDES	:=  ../../../readers/include ../../src
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS	= -O3 -Wall -Wextra -fno-rtti -DUSE_SDL $(MACHDEP) $(INCLUDE)
+CFLAGS	= -O2 -Wall -Wextra -fno-rtti -DUSE_SDL -DUSE_PIXMAN_BITMAP -DUSE_ALPHA -DUSE_BIG_ENDIAN -DNDEBUG $(MACHDEP) $(INCLUDE)
 CXXFLAGS	=	$(CFLAGS) -fno-exceptions
 
 LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
@@ -33,9 +33,8 @@ LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS	:=	 -lSDL_ttf -lSDL_gfx -lSDL_mixer -lSDL_image -lsmpeg \
-                -lSDL -ljpeg -lpng -lfreetype -lasnd -lvorbisidec \
-                -lz -lfat -lwiiuse -lbte -logc -liconv -lm -lwiikeyboard
+LIBS	:=	 -lpixman-1 -lSDL_mixer -lSDL -ljpeg -lpng -lfreetype -lasnd \
+			-lvorbisidec -lz -lfat -lwiiuse -lbte -logc -liconv -lm -lwiikeyboard
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing

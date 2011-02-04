@@ -170,7 +170,6 @@
         <File Name="../../src/graphics.h"/>
         <File Name="../../src/hslrgb.cpp"/>
         <File Name="../../src/hslrgb.h"/>
-		<File Name="../../src/pixel_format.h"/>
         <File Name="../../src/plane.cpp"/>
         <File Name="../../src/plane.h"/>
         <File Name="../../src/rect.cpp"/>
@@ -209,6 +208,28 @@
         <File Name="../../src/bitmap_utils.cpp"/>
         <File Name="../../src/bitmap_utils.h"/>
         <File Name="../../src/pixel_format.h"/>
+        <VirtualDirectory Name="Pixman">
+          <File Name="../../src/pixman_bitmap.cpp"/>
+          <File Name="../../src/pixman_bitmap.h"/>
+          <File Name="../../src/pixman_bitmap_screen.cpp"/>
+          <File Name="../../src/pixman_bitmap_screen.h"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="Soft">
+          <File Name="../../src/soft_bitmap.cpp"/>
+          <File Name="../../src/soft_bitmap.h"/>
+          <File Name="../../src/soft_bitmap_screen.cpp"/>
+          <File Name="../../src/soft_bitmap_screen.h"/>
+        </VirtualDirectory>
+        <File Name="../../src/ftfont.cpp"/>
+        <File Name="../../src/ftfont.h"/>
+        <File Name="../../src/image_bmp.cpp"/>
+        <File Name="../../src/image_bmp.h"/>
+        <File Name="../../src/image_jpg.cpp"/>
+        <File Name="../../src/image_jpg.h"/>
+        <File Name="../../src/image_png.cpp"/>
+        <File Name="../../src/image_png.h"/>
+        <File Name="../../src/image_xyz.cpp"/>
+        <File Name="../../src/image_xyz.h"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Input">
         <File Name="../../src/input.cpp"/>
