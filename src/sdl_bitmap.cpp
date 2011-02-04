@@ -119,8 +119,8 @@ void SdlBitmap::SetupBitmapUtils(SDL_PixelFormat* fmt) {
 	uint32 amask = 0;
 	bool has_colorkey = transparent;
 #endif
-	DynamicFormat format(fmt->Rmask, fmt->Gmask, fmt->Bmask, amask, fmt->colorkey, has_colorkey);
-	bm_utils = BitmapUtils::Create(fmt->BitsPerPixel, true, format);
+	format = DynamicFormat(fmt->Rmask, fmt->Gmask, fmt->Bmask, amask, fmt->colorkey, has_colorkey);
+	bm_utils = BitmapUtils::Create(fmt->BitsPerPixel, true, format, format);
 }
 
 SdlBitmap::SdlBitmap(void *pixels, int width, int height, int depth, int pitch, uint32 Rmask, uint32 Gmask, uint32 Bmask, uint32 Amask) {
@@ -401,7 +401,7 @@ void SdlBitmap::FillRect(Rect dst_rect, const Color &color) {
 ////////////////////////////////////////////////////////////
 void SdlBitmap::Mask(int x, int y, Bitmap* src, Rect src_rect) {
 	#ifdef USE_ALPHA
-		Surface::Mask(x, y, src, src_rect);
+		Surface::MaskBlit(x, y, src, src_rect);
 	#else
 		src->SetTransparentColor(Color(255,255,255,0));
 		Blit(x, y, src, src_rect, 255);
@@ -416,7 +416,7 @@ void SdlBitmap::SetTransparentColor(Color color) {
 	#ifndef USE_ALPHA
 		uint32 colorkey = GetUint32Color(color);
 		SDL_SetColorKey(bitmap, COLORKEY_FLAGS, colorkey);
-		bm_utils->SetColorKey(colorkey);
+		format.SetColorKey(colorkey);
 	#endif
 }
 

@@ -54,18 +54,16 @@ public:
 	void TiledBlit(int ox, int oy, Rect src_rect, Bitmap* src, Rect dst_rect, int opacity);
 	void StretchBlit(Bitmap* src, Rect src_rect, int opacity);
 	void StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int opacity);
-	void FlipBlit(int x, int y, Bitmap* src, Rect src_rect, bool horizontal, bool vertical);
-	void ScaleBlit(const Rect& dst_rect, Bitmap* src, const Rect& src_rect);
 	void TransformBlit(Rect dst_rect, Bitmap* src, Rect src_rect, const Matrix& inv);
-	void Mask(int x, int y, Bitmap* _src, Rect src_rect);
+	void MaskBlit(int x, int y, Bitmap* src, Rect src_rect);
 	void Fill(const Color &color);
 	void FillRect(Rect dst_rect, const Color &color);
 	void Clear();
 	void ClearRect(Rect dst_rect);
-
-	void ToneChange(const Rect& dst_rect, const Tone &tone);
+	void OpacityBlit(int x, int y, Bitmap* src, Rect src_rect, int opacity);
+	void ToneBlit(int x, int y, Bitmap* src, Rect src_rect, const Tone &tone);
+	void FlipBlit(int x, int y, Bitmap* src, Rect src_rect, bool horizontal, bool vertical);
 	void Flip(const Rect& dst_rect, bool horizontal, bool vertical);
-	void OpacityChange(int opacity, const Rect& dst_rect);
 	void SetTransparentColor(Color color);
 
 	typedef format_B8G8R8A8 pixel_format;

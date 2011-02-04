@@ -27,6 +27,7 @@
 #include "font.h"
 #include "rect.h"
 #include "tone.h"
+#include "pixel_format.h"
 
 class BitmapScreen;
 
@@ -117,7 +118,7 @@ protected:
 	friend class SdlBitmapScreen;
 	friend class GlBitmapScreen;
 	friend class BitmapUtils;
-	template <class T> friend class BitmapUtilsT;
+	template <class T1, class T2> friend class BitmapUtilsT;
 	friend class Blit;
 	template <class T1, class T2> friend class BlitT;
 
@@ -133,6 +134,7 @@ protected:
 	virtual uint32 bmask() const = 0;
 	virtual uint32 amask() const = 0;
 	virtual uint32 colorkey() const = 0;
+	virtual uint8* pointer(int x, int y);
 
 	bool transparent;
 
@@ -147,6 +149,9 @@ protected:
 	virtual void Lock() = 0;
 	virtual void Unlock() = 0;
 
+	virtual void Begin();
+	virtual void End();
+
 	////////////////////////////////////////////////////////
 	/// Get a pixel color.
 	/// @param x : pixel x
@@ -159,6 +164,7 @@ protected:
 
 	virtual void CheckPixels(uint32 flags);
 
+	DynamicFormat format;
 	BitmapUtils* bm_utils;
 
 	std::list<BitmapScreen*> attached_screen_bitmaps;

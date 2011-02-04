@@ -94,7 +94,18 @@ Bitmap::~Bitmap() {
 
 ////////////////////////////////////////////////////////////
 Color Bitmap::GetPixel(int x, int y) {
-	return bm_utils->GetPixel(this, x, y);
+	if (x < 0 || y < 0 || x >= width() || y >= height())
+		return Color();
+
+	Lock();
+
+	const uint8* src_pixels = pointer(x, y);
+	uint8 r, g, b, a;
+	bm_utils->GetPixel(src_pixels, r, g, b, a);
+
+	Unlock();
+
+	return Color(r, g, b, a);
 }
 
 ////////////////////////////////////////////////////////////
@@ -103,7 +114,7 @@ Bitmap* Bitmap::Resample(int scale_w, int scale_h, const Rect& src_rect) {
 	if (transparent)
 		dst->SetTransparentColor(GetTransparentColor());
 	dst->Clear();
-	dst->ScaleBlit(dst->GetRect(), this, src_rect);
+	dst->StretchBlit(dst->GetRect(), this, src_rect, 255);
 	return dst;
 }
 
@@ -114,6 +125,16 @@ void Bitmap::AttachBitmapScreen(BitmapScreen* bitmap) {
 
 void Bitmap::DetachBitmapScreen(BitmapScreen* bitmap) {
 	attached_screen_bitmaps.remove(bitmap);
+}
+
+////////////////////////////////////////////////////////////
+void Bitmap::Begin() {
+	Lock();
+	bm_utils->SetColorKey(colorkey());
+}
+
+void Bitmap::End() {
+	Unlock();
 }
 
 ////////////////////////////////////////////////////////////
@@ -143,7 +164,22 @@ Color Bitmap::GetTransparentColor() const {
 
 ////////////////////////////////////////////////////////////
 Bitmap::TileOpacity Bitmap::CheckOpacity(const Rect& rect) {
-	return bm_utils->CheckOpacity(this, rect);
+	bool all = true;
+	bool any = false;
+
+	uint8* src_pixels = pointer(rect.x, rect.y);
+
+	for (int y = 0; y < rect.height; y++) {
+		bm_utils->CheckOpacity(src_pixels, rect.width, all, any);
+		if (any && !all)
+			break;
+		src_pixels += pitch();
+	}
+
+	return
+		all ? Bitmap::Opaque :
+		any ? Bitmap::Partial :
+		Bitmap::Transparent;
 }
 
 ////////////////////////////////////////////////////////////
@@ -167,5 +203,10 @@ void Bitmap::CheckPixels(uint32 flags) {
 ////////////////////////////////////////////////////////////
 Bitmap::TileOpacity Bitmap::GetTileOpacity(int row, int col) {
 	return (opacity == NULL) ? Partial : opacity[row][col];
+}
+
+////////////////////////////////////////////////////////////
+uint8* Bitmap::pointer(int x, int y) {
+	return (uint8*) pixels() + y * pitch() + x * bpp();
 }
 

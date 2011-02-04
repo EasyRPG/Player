@@ -69,22 +69,29 @@ void SoftBitmap::ConvertImage(int& width, int& height, void*& pixels) {
 }
 
 ////////////////////////////////////////////////////////////
+void SoftBitmap::SetupBitmapUtils() {
+	format = dynamic_format;
+	format.has_alpha = transparent;
+	bm_utils = new BitmapUtilsT<pixel_format,pixel_format>(format,format);
+}
+
+////////////////////////////////////////////////////////////
 SoftBitmap::SoftBitmap(int width, int height, bool itransparent) {
 	transparent = itransparent;
-	bm_utils = new BitmapUtilsT<pixel_format>(dynamic_format);
+	SetupBitmapUtils();
 	Init(width, height);
 	Clear();
 }
 
 SoftBitmap::SoftBitmap(void *pixels, int width, int height, int pitch) {
 	transparent = false;
-	bm_utils = new BitmapUtilsT<pixel_format>(dynamic_format);
+	SetupBitmapUtils();
 	Init(width, height, pixels, pitch, false);
 }
 
 SoftBitmap::SoftBitmap(const std::string& filename, bool itransparent, uint32 flags) {
 	transparent = itransparent;
-	bm_utils = new BitmapUtilsT<pixel_format>(dynamic_format);
+	SetupBitmapUtils();
 
 	int namelen = (int) filename.size();
 	if (namelen < 5 || filename[namelen - 4] != '.') {
@@ -123,7 +130,7 @@ SoftBitmap::SoftBitmap(const std::string& filename, bool itransparent, uint32 fl
 
 SoftBitmap::SoftBitmap(const uint8* data, uint bytes, bool itransparent, uint32 flags) {
 	transparent = itransparent;
-	bm_utils = new BitmapUtilsT<pixel_format>(dynamic_format);
+	SetupBitmapUtils();
 
 	int width, height;
 	void* pixels;
@@ -142,7 +149,7 @@ SoftBitmap::SoftBitmap(const uint8* data, uint bytes, bool itransparent, uint32 
 
 SoftBitmap::SoftBitmap(Bitmap* source, Rect src_rect, bool itransparent) {
 	transparent = itransparent;
-	bm_utils = new BitmapUtilsT<pixel_format>(dynamic_format);
+	SetupBitmapUtils();
 
 	Init(src_rect.width, src_rect.height);
 	Clear();

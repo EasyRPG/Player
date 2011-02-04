@@ -15,10 +15,15 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#include "image_jpg.h"
-#include "output.h"
+#include "system.h"
+#if defined(USE_SOFT_BITMAP) || defined(USE_PIXMAN_BITMAP)
+
+#include <cstdlib>
+#include <cstdio>
 #include <jpeglib.h>
 #include <cassert>
+#include "output.h"
+#include "image_jpg.h"
 
 void ImageJPG::ReadJPG(FILE * stream, uint8 *data, uint len, int& width,
 						int& height, void*& pixels) {
@@ -93,5 +98,5 @@ clean_exit:
 	return;
 }
 
-
+#endif
 

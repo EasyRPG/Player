@@ -99,22 +99,127 @@ Surface::~Surface() {
 
 ////////////////////////////////////////////////////////////
 void Surface::SetPixel(int x, int y, const Color &color) {
-	bm_utils->SetPixel(this, x, y, color);
+	if (x < 0 || y < 0 || x >= width() || y >= height()) return;
+
+	Begin();
+
+	uint8* dst_pixels = pointer(x, y);
+	bm_utils->SetPixel(dst_pixels, color.red, color.green, color.blue, color.alpha);
+
+	End();
 }
 
 ////////////////////////////////////////////////////////////
 void Surface::Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
-	bm_utils->Blit(this, x, y, src, src_rect, opacity);
+	if (opacity < 0) return;
+
+	Rect dst_rect(x, y, 0, 0);
+
+	if (!Rect::AdjustRectangles(src_rect, dst_rect, src->GetRect()))
+		return;
+	if (!Rect::AdjustRectangles(dst_rect, src_rect, GetRect()))
+		return;
+
+	Begin(src);
+
+	if (opacity >= bm_utils->src_format.opaque())
+		opacity = 255;
+
+	const uint8* src_pixels = src->pointer(src_rect.x, src_rect.y);
+	uint8* dst_pixels = pointer(dst_rect.x, dst_rect.y);
+
+	bool opacity_blit = opacity < 255;
+	bool overlay_blit = bm_utils->src_format.has_alpha || bm_utils->src_format.has_colorkey;
+
+
+	for (int i = 0; i < dst_rect.height; i++) {
+		if (opacity_blit)
+			bm_utils->OpacityBlit(dst_pixels, src_pixels, dst_rect.width, opacity);
+		else if (overlay_blit)
+			bm_utils->OverlayBlit(dst_pixels, src_pixels, dst_rect.width);
+		else
+			bm_utils->CopyBlit(dst_pixels, src_pixels, dst_rect.width);
+		src_pixels += src->pitch();
+		dst_pixels += pitch();
+	}
+
+	End(src);
 }
 
 ////////////////////////////////////////////////////////////
 void Surface::TiledBlit(Rect src_rect, Bitmap* src, Rect dst_rect, int opacity) {
-	bm_utils->TiledBlit(this, src_rect, src, dst_rect, opacity);
+	int y_blits = 1;
+	if (src_rect.height < dst_rect.height && src_rect.height != 0) {
+		y_blits = (int)ceil(dst_rect.height / (float)src_rect.height);
+	}
+
+	int x_blits = 1;
+	if (src_rect.width < dst_rect.width && src_rect.width != 0) {
+		x_blits = (int)ceil(dst_rect.width / (float)src_rect.width);
+	}
+
+	Rect tile = src_rect;
+
+	for (int j = 0; j < y_blits; j++) {
+		tile.height = std::min(src_rect.height, dst_rect.height + dst_rect.y - j * src_rect.height);
+		for (int i = 0; i < x_blits; i++) {
+			tile.width = std::min(src_rect.width, dst_rect.width + dst_rect.x - i * src_rect.width);
+			Blit(dst_rect.x + i * src_rect.width, dst_rect.y + j * src_rect.height, src, tile, opacity);
+		}
+	}
 }
 
 ////////////////////////////////////////////////////////////
 void Surface::TiledBlit(int ox, int oy, Rect src_rect, Bitmap* src, Rect dst_rect, int opacity) {
-	bm_utils->TiledBlit(this, ox, oy, src_rect, src, dst_rect, opacity);
+	while (ox >= src_rect.width) ox -= src_rect.width;
+	while (oy >= src_rect.height) ox -= src_rect.height;
+	while (ox < 0) ox += src_rect.width;
+	while (oy < 0) ox += src_rect.height;
+
+	int y_blits = 1;
+	if (src_rect.height - oy < dst_rect.height && src_rect.height != 0) {
+		y_blits = (int)ceil((dst_rect.height + oy) / (float)src_rect.height);
+	}
+
+	int x_blits = 1;
+	if (src_rect.width - ox < dst_rect.width && src_rect.width != 0) {
+		x_blits = (int)ceil((dst_rect.width + ox) / (float)src_rect.width);
+	}
+
+	Rect tile;
+	int dst_x, dst_y;
+
+	for (int j = 0; j < y_blits; j++) {
+		dst_y = dst_rect.y + j * src_rect.height;
+
+		if (j == 0) {
+			tile.y = src_rect.y + oy;
+			tile.height = src_rect.height - oy;
+		} else {
+			dst_y -= oy;
+			tile.y = src_rect.y;
+			tile.height = src_rect.height;
+		}
+
+		tile.height = std::min(tile.height, dst_rect.y + dst_rect.height - dst_y);
+
+		for (int i = 0; i < x_blits; i++) {
+			dst_x = dst_rect.x + i * src_rect.width;
+
+			if (i == 0) {
+				tile.x = src_rect.x + ox;
+				tile.width = src_rect.width - ox;
+			} else {
+				dst_x -= ox;
+				tile.x = src_rect.x;
+				tile.width = src_rect.width;
+			}
+
+			tile.width = std::min(tile.width, dst_rect.x + dst_rect.width - dst_x);
+
+			Blit(dst_x, dst_y, src, tile, opacity);
+		}
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -127,22 +232,140 @@ void Surface::StretchBlit(Bitmap* src, Rect src_rect, int opacity) {
 
 ////////////////////////////////////////////////////////////
 void Surface::StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int opacity) {
-	bm_utils->StretchBlit(this, dst_rect, src, src_rect, opacity);
+	if (src_rect.width == dst_rect.width && src_rect.height == dst_rect.height) {
+		Blit(dst_rect.x, dst_rect.y, src, src_rect, opacity);
+		return;
+	}
+
+	double zoom_x = (double)src_rect.width / dst_rect.width;
+	double zoom_y = (double)src_rect.height / dst_rect.height;
+
+	double sx0 = src_rect.x;
+	double sy0 = src_rect.y;
+	double sx1 = src_rect.x + src_rect.width;
+	double sy1 = src_rect.y + src_rect.height;
+	int dx0 = dst_rect.x;
+	int dy0 = dst_rect.y;
+	int dx1 = dst_rect.x + dst_rect.width;
+	int dy1 = dst_rect.y + dst_rect.height;
+
+	if (dx0 < 0) {
+		sx0 -= zoom_x * dx0;
+		dx0 = 0;
+	}
+
+	int dw = GetWidth();
+	if (dx1 - dw > 0) {
+		sx1 -= zoom_x * (dx1 - dw);
+		dx1 = dw;
+	}
+
+	if (dy0 < 0) {
+		sy0 -= zoom_y * dy0;
+		dy0 = 0;
+	}
+
+	int dh = GetHeight();
+	if (dy1 - dh > 0) {
+		sy1 -= zoom_y * (dy1 - dh);
+		dy1 = dh;
+	}
+
+	if (dx0 >= dx1 || dy0 >= dy1)
+		return;
+
+	Begin(src);
+
+	uint8* dst_pixels = pointer(dx0, dy0);
+	int step = (int)((sx1 - sx0) * (1 << BitmapUtils::FRAC_BITS)) / (dx1 - dx0);
+
+	bool opacity_blit = opacity < 255;
+	bool overlay_blit = bm_utils->src_format.has_alpha || bm_utils->src_format.has_colorkey;
+
+	for (int i = 0; i < dy1 - dy0; i++) {
+		const uint8* nearest_y = (const uint8*) src->pixels() + (int)(sy0 + i * zoom_y) * src->pitch();
+		int x = (int)(sx0 * (1 << BitmapUtils::FRAC_BITS)) + step / 2;
+		if (opacity_blit)
+			bm_utils->OpacityScaleBlit(dst_pixels, nearest_y, dx1 - dx0, x, step, opacity);
+		else if (overlay_blit)
+			bm_utils->OverlayScaleBlit(dst_pixels, nearest_y, dx1 - dx0, x, step);
+		else
+			bm_utils->CopyScaleBlit(dst_pixels, nearest_y, dx1 - dx0, x, step);
+		dst_pixels += pitch();
+	}
+
+	End(src);
 }
 
 ////////////////////////////////////////////////////////////
 void Surface::FlipBlit(int x, int y, Bitmap* src, Rect src_rect, bool horizontal, bool vertical) {
-	bm_utils->FlipBlit(this, x, y, src, src_rect, horizontal, vertical);
-}
+	if (!horizontal && !vertical) {
+		Blit(x, y, src, src_rect, 255);
+		return;
+	}
 
-////////////////////////////////////////////////////////////
-void Surface::ScaleBlit(const Rect& dst_rect, Bitmap* src, const Rect& src_rect) {
-	bm_utils->ScaleBlit(this, dst_rect, src, src_rect);
+	int ox = horizontal
+		? src_rect.x + src_rect.width - 1 + x
+		: src_rect.x - x;
+	int oy = vertical
+		? src_rect.y + src_rect.height - 1 + y
+		: src_rect.y - y;
+
+	Rect dst_rect(x, y, 0, 0);
+
+	if (!Rect::AdjustRectangles(src_rect, dst_rect, src->GetRect()))
+		return;
+	if (!Rect::AdjustRectangles(dst_rect, src_rect, GetRect()))
+		return;
+
+	Begin(src);
+
+	int sx0 = horizontal ? ox - dst_rect.x : ox + dst_rect.x;
+	int sy0 = vertical   ? oy - dst_rect.y : oy + dst_rect.y;
+
+	uint8* dst_pixels = pointer(dst_rect.x, dst_rect.y);
+	const uint8* src_pixels = src->pointer(sx0, sy0);
+
+	if (horizontal && vertical) {
+		for (int y = 0; y < dst_rect.height; y++) {
+			bm_utils->FlipHBlit(dst_pixels, src_pixels, dst_rect.width);
+			dst_pixels += pitch();
+			src_pixels -= src->pitch();
+		}
+	} else if (horizontal) {
+		for (int y = 0; y < dst_rect.height; y++) {
+			bm_utils->FlipHBlit(dst_pixels, src_pixels, dst_rect.width);
+			dst_pixels += pitch();
+			src_pixels += src->pitch();
+		}
+	} else {
+		for (int y = 0; y < dst_rect.height; y++) {
+			bm_utils->CopyBlit(dst_pixels, src_pixels, dst_rect.width);
+			dst_pixels += pitch();
+			src_pixels -= src->pitch();
+		}
+	}
+
+	End(src);
 }
 
 ////////////////////////////////////////////////////////////
 void Surface::TransformBlit(Rect dst_rect, Bitmap* src, Rect src_rect, const Matrix& inv) {
-	bm_utils->TransformBlit(this, dst_rect, src, src_rect, inv);
+	dst_rect.Adjust(GetWidth(), GetHeight());
+
+	Begin(src);
+
+	const uint8* src_pixels = (const uint8*)src->pixels();
+	uint8* dst_pixels = pointer(dst_rect.x, dst_rect.y);
+
+	for (int y = dst_rect.y; y < dst_rect.y + dst_rect.height; y++) {
+		bm_utils->TransformBlit(dst_pixels, src_pixels, src->pitch(),
+								dst_rect.x, dst_rect.x + dst_rect.width, y,
+								src_rect, inv);
+		dst_pixels += pitch();
+	}
+
+	End(src);
 }
 
 ////////////////////////////////////////////////////////////
@@ -152,20 +375,83 @@ void Surface::TransformBlit(Rect dst_rect,
 							double scale_x, double scale_y,
 							int src_pos_x, int src_pos_y,
 							int dst_pos_x, int dst_pos_y) {
-	bm_utils->TransformBlit(
-		this, dst_rect, src, src_rect,
-		angle, scale_x, scale_y,
-		src_pos_x, src_pos_y, dst_pos_x, dst_pos_y);
+	Matrix fwd = Matrix::Setup(angle, scale_x, scale_y,
+							   src_pos_x, src_pos_y,
+							   dst_pos_x, dst_pos_y);
+	Matrix inv = fwd.Inverse();
+
+	Rect rect = TransformRectangle(fwd, src_rect);
+	dst_rect.Adjust(rect);
+	if (dst_rect.IsEmpty())
+		return;
+
+	TransformBlit(dst_rect, src, src_rect, inv);
 }
 
 ////////////////////////////////////////////////////////////
-void Surface::Mask(int x, int y, Bitmap* src, Rect src_rect) {
-	bm_utils->Mask(this, x, y, src, src_rect);
+void Surface::MaskBlit(int x, int y, Bitmap* src, Rect src_rect) {
+	Rect dst_rect(x, y, 0, 0);
+
+	if (!Rect::AdjustRectangles(src_rect, dst_rect, src->GetRect()))
+		return;
+	if (!Rect::AdjustRectangles(dst_rect, src_rect, GetRect()))
+		return;
+
+	Begin(src);
+
+	const uint8* src_pixels = src->pointer(src_rect.x, src_rect.y);
+	uint8* dst_pixels = pointer(dst_rect.x, dst_rect.y);
+
+	for (int j = 0; j < dst_rect.height; j++) {
+		bm_utils->MaskBlit(dst_pixels, src_pixels, dst_rect.width);
+		src_pixels += src->pitch();
+		dst_pixels += pitch();
+	}
+
+	End(src);
 }
 
 ////////////////////////////////////////////////////////////
 void Surface::WaverBlit(int x, int y, Bitmap* src, Rect src_rect, int depth, double phase) {
-	bm_utils->WaverBlit(this, x, y, src, src_rect, depth, phase);
+	if (y < 0) {
+		src_rect.y -= y;
+		src_rect.height += y;
+		y = 0;
+	}
+
+	if (y + src_rect.height > GetHeight()) {
+		int dy = y + src_rect.height - GetHeight();
+		src_rect.height -= dy;
+	}
+
+	Begin(src);
+
+	const uint8* src_pixels = src->pointer(src_rect.x, src_rect.y);
+	uint8* dst_pixels = pointer(x, y);
+	int dst_width = GetWidth();
+	int src_bytes = src->bpp();
+	int dst_bytes = bpp();
+
+	for (int y = 0; y < src_rect.height; y++) {
+		int offset = (int) (depth * (1 + sin((phase + y * 20) * 3.14159 / 180)));
+		int sx0 = 0;
+		int dx0 = offset;
+		int count = src_rect.width;
+		if (x + offset + count > dst_width)
+			count -= x + count + offset - dst_width;
+		if (x + offset < 0) {
+			sx0 -= x + offset;
+			dx0 -= x + offset;
+			count += x + offset;
+		}
+
+		bm_utils->OverlayBlit(&dst_pixels[dx0 * dst_bytes], &src_pixels[sx0 * src_bytes], count);
+
+		src_pixels += src->pitch();
+		dst_pixels += pitch();
+	}
+
+	End(src);
 }
 
 ////////////////////////////////////////////////////////////
@@ -175,7 +461,27 @@ void Surface::Fill(const Color &color) {
 
 ////////////////////////////////////////////////////////////
 void Surface::FillRect(Rect dst_rect, const Color &color) {
-	bm_utils->FillRect(this, dst_rect, color);
+	dst_rect.Adjust(width(), height());
+	if (dst_rect.IsOutOfBounds(width(), height()))
+		return;
+
+	Begin();
+
+	uint8 pixel[4];
+	bm_utils->SetPixel(pixel, color.red, color.green, color.blue, color.alpha);
+
+	uint8* dst_pixels = pointer(dst_rect.x, dst_rect.y);
+
+	if (dst_rect.width * bpp() == pitch())
+		bm_utils->SetPixels(dst_pixels, pixel, dst_rect.height * dst_rect.width);
+	else {
+		for (int i = 0; i < dst_rect.height; i++) {
+			bm_utils->SetPixels(dst_pixels, pixel, dst_rect.width);
+			dst_pixels += pitch();
+		}
+	}
+
+	End();
 }
 
 ////////////////////////////////////////////////////////////
@@ -189,39 +495,176 @@ void Surface::ClearRect(Rect dst_rect) {
 }
 
 ////////////////////////////////////////////////////////////
-void Surface::HueChange(double hue) {
-	HSLChange(hue, 1, 1, 0, GetRect());
+void Surface::HueChangeBlit(int x, int y, Bitmap* src, Rect src_rect, double hue) {
+	HSLBlit(x, y, src, src_rect, hue, 1, 1, 0);
 }
 
 ////////////////////////////////////////////////////////////
-void Surface::HSLChange(double h, double s, double l, double lo, Rect dst_rect) {
-	bm_utils->HSLChange(this, h, s, l, lo, dst_rect);
+void Surface::HSLBlit(int x, int y, Bitmap* src, Rect src_rect, double h, double s, double l, double lo) {
+	Rect dst_rect(x, y, 0, 0);
+
+	if (!Rect::AdjustRectangles(src_rect, dst_rect, src->GetRect()))
+		return;
+	if (!Rect::AdjustRectangles(dst_rect, src_rect, GetRect()))
+		return;
+
+	int hue  = (int) (h / 60.0 * 0x100);
+	int sat  = (int) (s * 0x100);
+	int lum  = (int) (l * 0x100);
+	int loff = (int) (lo * 0x100);
+
+	if (hue < 0)
+		hue += ((-hue + 0x5FF) / 0x600) * 0x600;
+	else if (hue > 0x600)
+		hue -= (hue / 0x600) * 0x600;
+
+	Begin(src);
+
+	const uint8* src_pixels = src->pointer(src_rect.x, src_rect.y);
+	uint8* dst_pixels = pointer(dst_rect.x, dst_rect.y);
+
+	for (int i = 0; i < dst_rect.height; i++) {
+		bm_utils->HSLBlit(dst_pixels, src_pixels, dst_rect.width, hue, sat, lum, loff);
+		dst_pixels += pitch();
+	}
+
+	End(src);
 }
 
 ////////////////////////////////////////////////////////////
-void Surface::ToneChange(const Rect &dst_rect, const Tone &tone) {
-	bm_utils->ToneChange(this, dst_rect, tone);
+void Surface::ToneBlit(int x, int y, Bitmap* src, Rect src_rect, const Tone &tone) {
+	if (tone == Tone()) {
+		if (src != this)
+			Blit(x, y, src, src_rect, 255);
+		return;
+	}
+
+	Rect dst_rect(x, y, 0, 0);
+
+	if (!Rect::AdjustRectangles(src_rect, dst_rect, src->GetRect()))
+		return;
+	if (!Rect::AdjustRectangles(dst_rect, src_rect, GetRect()))
+		return;
+
+	Begin(src);
+
+	const uint8* src_pixels = src->pointer(src_rect.x, src_rect.y);
+	uint8* dst_pixels = pointer(dst_rect.x, dst_rect.y);
+
+	if (tone.gray == 0) {
+		for (int i = 0; i < dst_rect.height; i++) {
+			bm_utils->ToneBlit(dst_pixels, src_pixels, dst_rect.width, tone);
+			src_pixels += src->pitch();
+			dst_pixels += pitch();
+		}
+	} else {
+		double factor = (255 - tone.gray) / 255.0;
+		for (int i = 0; i < dst_rect.height; i++) {
+			bm_utils->ToneBlit(dst_pixels, src_pixels, dst_rect.width, tone, factor);
+			src_pixels += src->pitch();
+			dst_pixels += pitch();
+		}
+	}
+	
+	End(src);
+}
+
+////////////////////////////////////////////////////////////
+void Surface::OpacityBlit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
+	if (opacity == 255) {
+		if (src != this)
+			Blit(x, y, src, src_rect, 255);
+		return;
+	}
+
+	Rect dst_rect(x, y, 0, 0);
+
+	if (!Rect::AdjustRectangles(src_rect, dst_rect, src->GetRect()))
+		return;
+	if (!Rect::AdjustRectangles(dst_rect, src_rect, GetRect()))
+		return;
+
+	Begin(src);
+
+	const uint8* src_pixels = src->pointer(src_rect.x, src_rect.y);
+	uint8* dst_pixels = pointer(dst_rect.x, dst_rect.y);
+
+	for (int j = 0; j < dst_rect.height; j++) {
+		bm_utils->OpacityChangeBlit(dst_pixels, src_pixels, dst_rect.width, opacity);
+		src_pixels += src->pitch();
+		dst_pixels += pitch();
+	}
+
+	End(src);
 }
 
 ////////////////////////////////////////////////////////////
 void Surface::Flip(const Rect& dst_rect, bool horizontal, bool vertical) {
-	bm_utils->Flip(this, dst_rect, horizontal, vertical);
+	if (!horizontal && !vertical)
+		return;
+
+	Begin();
+
+	if (horizontal && vertical) {
+		int pad = pitch() - width() * bpp();
+		uint8* dst_pixels_first = pointer(dst_rect.x, dst_rect.y);
+		uint8* dst_pixels_last = pointer(dst_rect.x + dst_rect.width - 1, dst_rect.y + dst_rect.height - 1);
+
+		for (int i = 0; i < dst_rect.height / 2; i++) {
+			bm_utils->FlipHV(dst_pixels_first, dst_pixels_last, dst_rect.width);
+			dst_pixels_first += pad;
+			dst_pixels_last -= pad;
+		}
+	} else if (horizontal) {
+		int pad_left = (dst_rect.width - dst_rect.width / 2) * bpp();
+		int pad_right = (dst_rect.width + dst_rect.width / 2) * bpp();
+
+		uint8* dst_pixels_left = pointer(dst_rect.x, dst_rect.y);
+		uint8* dst_pixels_right = pointer(dst_rect.x + dst_rect.width - 1, dst_rect.y);
+
+		for (int i = 0; i < dst_rect.height; i++) {
+			bm_utils->FlipH(dst_pixels_left, dst_pixels_right, dst_rect.width / 2);
+			dst_pixels_left += pad_left;
+			dst_pixels_right += pad_right;
+		}
+	} else {
+		uint8* dst_pixels_up = pointer(dst_rect.x, dst_rect.y);
+		uint8* dst_pixels_down = pointer(dst_rect.x, dst_rect.y + dst_rect.height - 1);
+		uint8* tmp_buffer = new uint8[dst_rect.width * bpp()];
+
+		for (int i = 0; i < dst_rect.height / 2; i++) {
+			if (dst_pixels_up == dst_pixels_down)
+				break;
+			bm_utils->FlipV(dst_pixels_up, dst_pixels_down, dst_rect.width, tmp_buffer);
+			dst_pixels_up += pitch();
+			dst_pixels_down -= pitch();
+		}
+
+		delete tmp_buffer;
+	}
+
+	End();
 }
 
 ////////////////////////////////////////////////////////////
-void Surface::OpacityChange(int opacity, const Rect& src_rect) {
-	bm_utils->OpacityChange(this, opacity, src_rect);
+void Surface::Begin() {
+	Bitmap::Begin();
 }
 
-////////////////////////////////////////////////////////////
-void Surface::BeginEditing() {
-	editing = true;
+void Surface::Begin(Bitmap* src) {
+	Begin();
+	src->Lock();
+	bm_utils->SetSrcFormat(src->format);
 }
 
-void Surface::EndEditing() {
-	editing = false;
-
+void Surface::End() {
+	Bitmap::End();
 	RefreshCallback();
+}
+
+void Surface::End(Bitmap* src) {
+	src->Unlock();
+	End();
 }
 
 void Surface::RefreshCallback() {
@@ -297,5 +740,43 @@ void Surface::TextDraw(int x, int y, int color, std::wstring wtext, TextAlignmen
 
 void Surface::TextDraw(int x, int y, int color, std::string text, TextAlignment align) {
 	TextDraw(x, y, color, Utils::DecodeUTF(text), align);
+}
+
+////////////////////////////////////////////////////////////
+Rect Surface::TransformRectangle(const Matrix& m, const Rect& rect) {
+	int sx0 = rect.x;
+	int sy0 = rect.y;
+	int sx1 = rect.x + rect.width;
+	int sy1 = rect.y + rect.height;
+
+	double x0, y0, x1, y1, x2, y2, x3, y3;
+	m.Transform(sx0, sy0, x0, y0);
+	m.Transform(sx1, sy0, x1, y1);
+	m.Transform(sx1, sy1, x2, y2);
+	m.Transform(sx0, sy1, x3, y3);
+
+	double xmin = std::min(std::min(x0, x1), std::min(x2, x3));
+	double ymin = std::min(std::min(y0, y1), std::min(y2, y3));
+	double xmax = std::max(std::max(x0, x1), std::max(x2, x3));
+	double ymax = std::max(std::max(y0, y1), std::max(y2, y3));
+
+	int dx0 = (int) floor(xmin);
+	int dy0 = (int) floor(ymin);
+	int dx1 = (int) ceil(xmax);
+	int dy1 = (int) ceil(ymax);
+
+	return Rect(dx0, dy0, dx1 - dx0, dy1 - dy0);
+}
+
+////////////////////////////////////////////////////////////
+Matrix Matrix::Setup(double angle,
+					 double scale_x, double scale_y,
+					 int src_pos_x, int src_pos_y,
+					 int dst_pos_x, int dst_pos_y) {
+	Matrix m = Matrix::Translation(-src_pos_x, -src_pos_y);
+	m = m.PreMultiply(Matrix::Scale(scale_x, scale_y));
+	m = m.PreMultiply(Matrix::Rotation(angle));
+	m = m.PreMultiply(Matrix::Translation(dst_pos_x, dst_pos_y));
+	return m;
 }
 

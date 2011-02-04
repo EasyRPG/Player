@@ -79,6 +79,7 @@ protected:
 	void Unlock();
 
 	void ConvertImage(int& width, int& height, void*& pixels);
+	void SetupBitmapUtils();
 };
 
 #endif

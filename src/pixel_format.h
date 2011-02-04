@@ -155,6 +155,10 @@ struct DynamicFormat {
 	inline bool operator!=(const DynamicFormat& f) {
 		return r !=  f.r || g != f.g || b != f.b || a != f.a;
 	}
+
+	inline uint8 opaque(void) {
+		return (a.bits > 0) ? (uint8)(((1 << a.bits) - 1) << (8 - a.bits)) : 255;
+	}
 };
 
 ////////////////////////////////////////////////////////////

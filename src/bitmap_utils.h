@@ -37,243 +37,218 @@ class Bitmap;
 
 class BitmapUtils {
 public:
-	BitmapUtils(const DynamicFormat& format) :
-		format(format) {}
+	BitmapUtils(const DynamicFormat& format, const DynamicFormat& src_format) :
+		format(format), src_format(src_format) {}
 
 	////////////////////////////////////////////////////////
 	/// Get a pixel color.
-	/// @param src : the source bitmap
-	/// @param x : pixel x
-	/// @param y : pixel y
-	/// @return pixel color
+	/// @param src_pixel : pointer to source pixel
+	/// @param r (out) : red
+	/// @param g (out) : green
+	/// @param b (out) : blue
+	/// @param a (out) : alpha
 	////////////////////////////////////////////////////////
-	virtual Color GetPixel(Bitmap* src, int x, int y) = 0;
+	virtual void GetPixel(const uint8* src_pixels, uint8& r, uint8& g, uint8& b, uint8& a) = 0;
 
 	////////////////////////////////////////////////////////
-	/// Check the opacity of a rectangle
-	/// @param src : the source bitmap
-	/// @param rect : the source rectangle
-	/// @returns : opacity (Opaque, Partial, Transparent)
+	/// Check the opacity of a pixel row
+	/// @param src_pixels : pointer to source pixel row
+	/// @param n : number of pixels
+	/// @param all (out) : true if all pixels are opaque
+	/// @param any (out) : true if any pixels are opaque
 	////////////////////////////////////////////////////////
-	virtual Bitmap::TileOpacity CheckOpacity(Bitmap* src, const Rect& rect) = 0;
+	virtual void CheckOpacity(const uint8* src_pixels, int n, bool& all, bool& any) = 0;
 
 	////////////////////////////////////////////////////////
-	/// Get a pixel color.
-	/// @param src : the source bitmap
-	/// @param x : pixel x
-	/// @param y : pixel y
-	/// @param color : pixel color
+	/// Set a pixel to a given color.
+	/// @param dst_pixel : pointer to destination pixel
+	/// @param r : red
+	/// @param g : green
+	/// @param b : blue
+	/// @param a : alpha
 	////////////////////////////////////////////////////////
-	virtual void SetPixel(Surface* dst, int x, int y, const Color &color) = 0;
+	virtual void SetPixel(uint8* dst_pixels, const uint8& r, const uint8& g, const uint8& b, const uint8& a) = 0;
 
 	////////////////////////////////////////////////////////
-	/// Blit source bitmap
-	/// @param dst : the destination surface
-	/// @param x : x position
-	/// @param y : y position
-	/// @param src : source bitmap
-	/// @param src_rect : source bitmap rect
-	/// @param opacity : opacity for blending with bitmap
+	/// Set multiple pixels to a given value.
+	/// @param dst_pixels : pointer to destination pixel row
+	/// @param src_pixel : pointer to source pixel
+	/// @param n : number of pixels
 	////////////////////////////////////////////////////////
-	virtual void Blit(Surface* dst, int x, int y, Bitmap* src, Rect src_rect, int opacity) = 0;
+	virtual void SetPixels(uint8* dst_pixels, const uint8* src_pixels, int n) = 0;
 
 	////////////////////////////////////////////////////////
-	/// Blit source bitmap in tiles
-	/// @param dst : the destination surface
-	/// @param src_rect : source bitmap rect
-	/// @param src : source bitmap
-	/// @param dst_rect : destination rect
-	/// @param opacity : opacity for blending with bitmap
+	/// Blit source bitmap to destination with opacity scaling
+	/// @param dst_pixels : pointer to destination pixel row
+	/// @param src_pixel : pointer to source pixels
+	/// @param n : number of pixels
+	/// @param opacity : opacity scale (255 == unity)
 	////////////////////////////////////////////////////////
-	virtual void TiledBlit(Surface* dst, Rect src_rect, Bitmap* src, Rect dst_rect, int opacity) = 0;
+	virtual void OpacityBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int opacity) = 0;
 
 	////////////////////////////////////////////////////////
-	/// Blit source bitmap in tiles
-	/// @param dst : the destination surface
-	/// @param ox : tile start x offset
-	/// @param ox : tile start y offset
-	/// @param src_rect : source bitmap rect
-	/// @param src : source bitmap
-	/// @param dst_rect : destination rect
-	/// @param opacity : opacity for blending with bitmap
+	/// Blit source bitmap over destination (transparency allows source through)
+	/// @param dst_pixels : pointer to destination pixel row
+	/// @param src_pixel : pointer to source pixel row
+	/// @param n : number of pixels
 	////////////////////////////////////////////////////////
-	virtual void TiledBlit(Surface* dst, int ox, int oy, Rect src_rect, Bitmap* src, Rect dst_rect, int opacity) = 0;
+	virtual void OverlayBlit(uint8* dst_pixels, const uint8* src_pixels, int n) = 0;
 
 	////////////////////////////////////////////////////////
-	/// Blit source bitmap stretched
-	/// @param dst : the destination surface
-	/// @param src : source bitmap
-	/// @param src_rect : source bitmap rect
-	/// @param opacity : opacity for blending with bitmap
+	/// Blit source bitmap into destination (transparency is copied)
+	/// @param dst_pixels : pointer to destination pixel row
+	/// @param src_pixel : pointer to source pixel row
+	/// @param n : number of pixels
 	////////////////////////////////////////////////////////
-	virtual void StretchBlit(Surface* dst, Bitmap* src, Rect src_rect, int opacity) = 0;
+	virtual void CopyBlit(uint8* dst_pixels, const uint8* src_pixels, int n) = 0;
 
 	////////////////////////////////////////////////////////
-	/// Blit source bitmap stretched
-	/// @param dst : the destination surface
-	/// @param dst_rect : destination rect
-	/// @param src : source bitmap
-	/// @param src_rect : source bitmap rect
-	/// @param opacity : opacity for blending with bitmap
+	/// Blit source bitmap to destination with horizontal flip
+	/// @param dst_pixels : pointer to destination pixel row
+	/// @param src_pixel : pointer to source pixel row
+	/// @param n : number of pixels
 	////////////////////////////////////////////////////////
-	virtual void StretchBlit(Surface* dst, Rect dst_rect, Bitmap* src, Rect src_rect, int opacity) = 0;
+	virtual void FlipHBlit(uint8* dst_pixels, const uint8* src_pixels, int n) = 0;
 
 	////////////////////////////////////////////////////////
-	/// Blit source bitmap flipped
-	/// @param x : x position
-	/// @param y : y position
-	/// @param src : source bitmap
-	/// @param src_rect : source bitmap rect
-	/// @param horizontal : flip horizontally
-	/// @param vertical : flip vertically
+	/// Blit source bitmap to destination with scaling and opacity scaling
+	/// @param dst_pixels : pointer to destination pixel row
+	/// @param src_pixel : pointer to source pixel row
+	/// @param n : number of pixels
+	/// @param x : fixed point source x position
+	/// @param step : fixed point source x step (inverse scale factor)
+	/// @param opacity : opacity scale (255 == unity)
 	////////////////////////////////////////////////////////
-	virtual void FlipBlit(Surface* dst, int x, int y, Bitmap* src, Rect src_rect, bool horizontal, bool vertical) = 0;
+	virtual void OpacityScaleBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int x, int step, int opacity) = 0;
 
 	////////////////////////////////////////////////////////
-	/// Blit source bitmap scaled
-	/// @param dst : the destination surface
-	/// @param dst_rect : destination rect
-	/// @param src : source bitmap
-	/// @param src_rect : source bitmap rect
+	/// Blit source bitmap over destination with scaling
+	///  (transparency allows source through)
+	/// @param dst_pixels : pointer to destination pixel row
+	/// @param src_pixel : pointer to source pixel row
+	/// @param n : number of pixels
+	/// @param x : fixed point source x position
+	/// @param step : fixed point source x step (inverse scale factor)
 	////////////////////////////////////////////////////////
-	virtual void ScaleBlit(Surface* dst, const Rect& dst_rect, Bitmap* src, const Rect& src_rect) = 0;
+	virtual void OverlayScaleBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int x, int step) = 0;
 
 	////////////////////////////////////////////////////////
-	/// Blit source bitmap scaled, rotated and translated
-	/// @param dst : the destination surface
-	/// @param dst_rect : destination rect
-	/// @param src : source bitmap
-	/// @param src_rect : source bitmap rect
-	/// @param inv : transformation matrix
-	///  - from destination coordinates to source coordinates
+	/// Blit source bitmap int destination with scaling
+	///  (transparency is copied)
+	/// @param dst_pixels : pointer to destination pixel row
+	/// @param src_pixel : pointer to source pixel row
+	/// @param n : number of pixels
+	/// @param x : fixed point source x position
+	/// @param step : fixed point source x step (inverse scale factor)
 	////////////////////////////////////////////////////////
-	virtual void TransformBlit(Surface *dst, Rect dst_rect, Bitmap* src, Rect src_rect, const Matrix& inv) = 0;
+	virtual void CopyScaleBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int x, int step) = 0;
 
 	////////////////////////////////////////////////////////
-	/// Blit source bitmap scaled, rotated and translated
-	/// @param dst : the destination surface
-	/// @param dst_rect : destination rect
-	/// @param src : source bitmap
-	/// @param src_rect : source bitmap rect
-	/// @param angle : rotation angle (positive is clockwise)
-	/// @param dst_w : scaled width
-	/// @param dst_h : scaled height
-	/// @param src_pos_x : source origin x
-	/// @param src_pos_y : source origin y
-	/// @param dst_pos_x : destination origin x
-	/// @param dst_pos_y : destination origin y
+	/// Blit source bitmap over destination with transformation
+	///  (transparency allows source through)
+	/// @param dst_pixels : pointer to destination pixel row
+	/// @param src_pixel : pointer to top-left corner of source pixels
+	/// @param src_pitch : pitch of source data
+	/// @param x0 : destination x coordinate of row left
+	/// @param x1 : destination x coordinate of row right
+	/// @param y : destination y coordinat of row
+	/// @param src_rect : source clip rectangle
+	/// @param inv : inverse (dst->src) transformation matrix
 	////////////////////////////////////////////////////////
-	virtual void TransformBlit(Surface *dst, Rect dst_rect,
-							   Bitmap* src, Rect src_rect,
-							   double angle,
-							   double scale_x, double scale_y,
-							   int src_pos_x, int src_pos_y,
-							   int dst_pos_x, int dst_pos_y) = 0;
+	virtual void TransformBlit(uint8* dst_pixels, const uint8* src_pixels, int src_pitch,
+							   int x0, int x1, int y, const Rect& src_rect, const Matrix& inv) = 0;
 
 	////////////////////////////////////////////////////////
-	/// Blit source bitmap transparency
-	/// @param dst : the destination surface
-	/// @param x : x position
-	/// @param y : y position
-	/// @param src : source bitmap
-	/// @param src_rect : source bitmap rect
+	/// Replace destination alpha with source alpha
+	/// @param dst_pixels : pointer to destination pixel row
+	/// @param src_pixel : pointer to source pixel row
+	/// @param n : number of pixels
 	////////////////////////////////////////////////////////
-	virtual void Mask(Surface* dst, int x, int y, Bitmap* src, Rect src_rect) = 0;
-
-	////////////////////////////////////////////////////////
-	/// Blit source with waver effect.
-	/// @param dst : the destination surface
-	/// @param x : x position
-	/// @param y : y position
-	/// @param src : source bitmap
-	/// @param src_rect : source bitmap rect
-	/// @param depth : wave magnitude
-	/// @param phase : wave phase
-	////////////////////////////////////////////////////////
-	virtual void WaverBlit(Surface* dst, int x, int y, Bitmap* src, Rect src_rect, int depth, double phase) = 0;
-
-	////////////////////////////////////////////////////////
-	/// Fill entire bitmap with color.
-	/// @param dst : the destination surface
-	/// @param color : color for filling
-	////////////////////////////////////////////////////////
-	virtual void Fill(Surface* dst, const Color &color) = 0;
-
-	////////////////////////////////////////////////////////
-	/// Fill bitmap rect with color.
-	/// @param dst : the destination surface
-	/// @param dst_rect : destination rect
-	/// @param color : color for filling
-	////////////////////////////////////////////////////////
-	virtual void FillRect(Surface* dst, Rect dst_rect, const Color &color) = 0;
-
-	////////////////////////////////////////////////////////
-	/// Clears the bitmap with transparent pixels.
-	/// @param dst : the destination surface
-	////////////////////////////////////////////////////////
-	virtual void Clear(Surface* dst) = 0;
-
-	////////////////////////////////////////////////////////
-	/// Clears the bitmap rect with transparent pixels.
-	/// @param dst : the destination surface
-	/// @param dst_rect : destination rect
-	////////////////////////////////////////////////////////
-	virtual void ClearRect(Surface* dst, Rect dst_rect) = 0;
-
-	////////////////////////////////////////////////////////
-	/// Rotate bitmap hue.
-	/// @param dst : the destination surface
-	/// @param hue : hue change, degrees
-	////////////////////////////////////////////////////////
-	virtual void HueChange(Surface* dst, double hue) = 0;
+	virtual void MaskBlit(uint8* dst_pixels, const uint8* src_pixels, int n) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Adjust bitmap HSL colors.
-	/// @param dst : the destination surface
+	/// @param dst_pixels : pointer to destination pixel row
+	/// @param src_pixel : pointer to source pixel row
+	/// @param n : number of pixels
 	/// @param hue : hue change, degrees
 	/// @param sat : saturation scale
 	/// @param lum : luminance scale
 	/// @param loff: luminance offset
-	/// @param dst_rect : destination rect
 	////////////////////////////////////////////////////////
-	virtual void HSLChange(Surface* dst, double hue, double sat, double lum, double loff, Rect dst_rect) = 0;
+	virtual void HSLBlit(uint8* dst_pixels, const uint8* src_pixels, int n,
+						 double hue, double sat, double lum, double loff) = 0;
 
 	////////////////////////////////////////////////////////
-	/// Adjust bitmap tone.
-	/// @param dst : the destination surface
+	/// Adjust bitmap tone, without saturation change
+	/// @param dst_pixels : pointer to destination pixel row
+	/// @param src_pixel : pointer to source pixel row
+	/// @param n : number of pixels
+	/// @param tone : tone to apply (gray is ignored)
+	////////////////////////////////////////////////////////
+	virtual void ToneBlit(uint8* dst_pixels, const uint8* src_pixels, int n, const Tone& tone) = 0;
+
+	////////////////////////////////////////////////////////
+	/// Adjust bitmap tone, with saturation change
+	/// @param dst_pixels : pointer to destination pixel row
+	/// @param src_pixel : pointer to source pixel row
+	/// @param n : number of pixels
 	/// @param tone : tone to apply
+	/// @param factor : must be (255 - tone.gray) / 255;
 	////////////////////////////////////////////////////////
-	virtual void ToneChange(Surface* dst, const Rect& dst_rect, const Tone &tone) = 0;
+	virtual void ToneBlit(uint8* dst_pixels, const uint8* src_pixels, int n, const Tone& tone, double factor) = 0;
 
 	////////////////////////////////////////////////////////
-	/// Flips the bitmap pixels.
-	/// @param dst : the destination surface
-	/// @param horizontal : flip horizontally (mirror)
-	/// @param vertical : flip vertically
+	/// Adjust bitmap opacity
+	/// @param dst_pixels : pointer to destination pixel row
+	/// @param src_pixel : pointer to source pixel row
+	/// @param n : number of pixels
+	/// @param tone : opacity scale (255 = unity)
 	////////////////////////////////////////////////////////
-	virtual void Flip(Surface* dst, const Rect& dst_rect, bool horizontal, bool vertical) = 0;
+	virtual void OpacityChangeBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int opacity) = 0;
 
 	////////////////////////////////////////////////////////
-	/// Change the opacity of a bitmap.
-	/// @param dst : the destination surface
-	/// @param opacity : the maximum opacity
-	/// @param src_rect: the rectangle to modify
+	/// Flips the bitmap pixels horizontally and vertically.
+	/// @param pixels_first (in, out) : pointer to the top-left pixel
+	/// @param pixels_last (in, out) : pointer to the bottom-left pixel
+	/// @param n : number of pixels
 	////////////////////////////////////////////////////////
-	virtual void OpacityChange(Surface* dst, int opacity, const Rect &src_rect) = 0;
+	virtual void FlipHV(uint8*& pixels_first, uint8*& pixels_last, int n) = 0;
 
 	////////////////////////////////////////////////////////
-	/// Set the color key of the associated DynamicFormat
-	/// @param colorkey : the color-key
+	/// Flips the bitmap pixels horizontally
+	/// @param pixels_left (in, out) : pointer to the left-most pixel
+	/// @param pixels_last (in, out) : pointer to the right-most pixel
+	/// @param n : number of pixels
+	////////////////////////////////////////////////////////
+	virtual void FlipH(uint8*& pixels_left, uint8*& pixels_right, int n) = 0;
+
+	////////////////////////////////////////////////////////
+	/// Flips the bitmap pixels vertically.
+	/// @param pixels_up (in, out) : pointer to the upper pixel row
+	/// @param pixels_down (in, out) : pointer to the lower pixel row
+	/// @param n : number of pixels
+	/// @param tmp_buffer : temporary buffer (size: n pixels)
+	////////////////////////////////////////////////////////
+	virtual void FlipV(uint8*& pixels_first, uint8*& pixels_last, int n, uint8* tmp_buffer) = 0;
+
+	////////////////////////////////////////////////////////
+	/// Set the color key of the target DynamicFormat
+	/// @param colorkey : the color key
 	////////////////////////////////////////////////////////
 	virtual void SetColorKey(uint32 colorkey);
 
 	////////////////////////////////////////////////////////
-	/// Calculate the bounding rectangle of a transformed rectangle
-	/// @param m    : transformation matrix
-	/// @param rect : source rectangle
-	/// @return : the bounding rectangle
+	/// Set the color key of the source DynamicFormat
+	/// @param colorkey : the color key
 	////////////////////////////////////////////////////////
-	static Rect TransformRectangle(const Matrix& m, const Rect& rect);
+	virtual void SetSrcColorKey(uint32 colorkey);
+
+	////////////////////////////////////////////////////////
+	/// Set the source DynamicFormat
+	/// @param format : the new source format
+	////////////////////////////////////////////////////////
+	virtual void SetSrcFormat(const DynamicFormat& format);
 
 	////////////////////////////////////////////////////////
 	/// BitmapUtils factory function
@@ -284,52 +259,56 @@ public:
 	/// @return : a BitmapUtils instance for the specified pixel format
 	////////////////////////////////////////////////////////
 	static BitmapUtils* Create(int bpp, bool dynamic_alpha,
-							   const DynamicFormat& format);
+							   const DynamicFormat& dst_format,
+							   const DynamicFormat& src_format);
 
-	DynamicFormat format;
+protected:
+	friend class Surface;
+	DynamicFormat format, src_format;
+
+	/// Number of fraction bits for fixed point values (*ScaleBlit)
+	static const int FRAC_BITS = 16;
 };
 
 ////////////////////////////////////////////////////////////
 /// Bitmap utils class template
 ////////////////////////////////////////////////////////////
-template <class PF>
+template <class PFsrc, class PFdst>
 class BitmapUtilsT : public BitmapUtils {
 public:
-	BitmapUtilsT(const DynamicFormat& format) :
-		BitmapUtils(format) {}
+	/// constructor
+	BitmapUtilsT(const DynamicFormat& format, const DynamicFormat& src_format) :
+		BitmapUtils(format, src_format) {}
 
-	Color GetPixel(Bitmap* src, int x, int y);
-	Bitmap::TileOpacity CheckOpacity(Bitmap* src, const Rect& rect);
+	/// implementations of inherited pure virtual methods
+	/// for documentation, see parent BitmapUtils class
+	void GetPixel(const uint8* src_pixels, uint8& r, uint8& g, uint8& b, uint8& a);
+	void CheckOpacity(const uint8* src_pixels, int n, bool& all, bool& any);
+	void SetPixel(uint8* dst_pixels, const uint8& r, const uint8& g, const uint8& b, const uint8& a);
+	void SetPixels(uint8* dst_pixels, const uint8* src_pixels, int n);
+	void OpacityBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int opacity);
+	void OverlayBlit(uint8* dst_pixels, const uint8* src_pixels, int n);
+	void CopyBlit(uint8* dst_pixels, const uint8* src_pixels, int n);
+	void FlipHBlit(uint8* dst_pixels, const uint8* src_pixels, int n);
+	void OpacityScaleBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int x, int step, int opacity);
+	void OverlayScaleBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int x, int step);
+	void CopyScaleBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int x, int step);
+	void TransformBlit(uint8* dst_pixels, const uint8* src_pixels, int src_pitch,
+						   int x0, int x1, int y, const Rect& src_rect, const Matrix& inv);
+	void MaskBlit(uint8* dst_pixels, const uint8* src_pixels, int n);
+	void HSLBlit(uint8* dst_pixels, const uint8* src_pixels, int n,
+					 double hue, double sat, double lum, double loff);
+	void ToneBlit(uint8* dst_pixels, const uint8* src_pixels, int n, const Tone& tone);
+	void ToneBlit(uint8* dst_pixels, const uint8* src_pixels, int n, const Tone& tone, double factor);
+	void OpacityChangeBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int opacity);
+	void FlipHV(uint8*& pixels_first, uint8*& pixels_last, int n);
+	void FlipH(uint8*& pixels_left, uint8*& pixels_right, int n);
+	void FlipV(uint8*& pixels_first, uint8*& pixels_last, int n, uint8* tmp_buffer);
 
-	void SetPixel(Surface* dst, int x, int y, const Color &color);
-	Bitmap* Resample(Bitmap* src, int scale_w, int scale_h, const Rect& src_rect);
-	Bitmap* RotateScale(Bitmap* src, double angle, int scale_w, int scale_h);
-	Bitmap* Waver(Bitmap* src, int depth, double phase);
-	void Blit(Surface* dst, int x, int y, Bitmap* src, Rect src_rect, int opacity);
-	void TiledBlit(Surface* dst, Rect src_rect, Bitmap* src, Rect dst_rect, int opacity);
-	void TiledBlit(Surface* dst, int ox, int oy, Rect src_rect, Bitmap* src, Rect dst_rect, int opacity);
-	void StretchBlit(Surface* dst, Bitmap* src, Rect src_rect, int opacity);
-	void StretchBlit(Surface* dst, Rect dst_rect, Bitmap* src, Rect src_rect, int opacity);
-	void FlipBlit(Surface* dst, int x, int y, Bitmap* src, Rect src_rect, bool horizontal, bool vertical);
-	void ScaleBlit(Surface* dst, const Rect& dst_rect, Bitmap* src, const Rect& src_rect);
-	void TransformBlit(Surface *dst, Rect dst_rect, Bitmap* src, Rect src_rect, const Matrix& inv);
-	void TransformBlit(Surface *dst, Rect dst_rect,
-					   Bitmap* src, Rect src_rect,
-					   double angle,
-					   double scale_x, double scale_y,
-					   int src_pos_x, int src_pos_y,
-					   int dst_pos_x, int dst_pos_y);
-	void Mask(Surface* dst, int x, int y, Bitmap* src, Rect src_rect);
-	void WaverBlit(Surface* dst, int x, int y, Bitmap* src, Rect src_rect, int depth, double phase);
-	void Fill(Surface* dst, const Color &color);
-	void FillRect(Surface* dst, Rect dst_rect, const Color &color);
-	void Clear(Surface* dst);
-	void ClearRect(Surface* dst, Rect dst_rect);
-	void HueChange(Surface* dst, double hue);
-	void HSLChange(Surface* dst, double hue, double sat, double lum, double loff, Rect dst_rect);
-	void ToneChange(Surface* dst, const Rect& dst_rect, const Tone &tone);
-	void Flip(Surface* dst, const Rect& dst_rect, bool horizontal, bool vertical);
-	void OpacityChange(Surface* dst, int opacity, const Rect &src_rect);
+protected:
+	void blend_pixel(uint8* dst_pixel, const uint8* src_pixel, int opacity);
+	void overlay_pixel(uint8* dst_pixel, const uint8* src_pixel);
+	void copy_pixel(uint8* dst_pixel, const uint8* src_pixel);
 };
 
 #endif

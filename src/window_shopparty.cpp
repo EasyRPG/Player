@@ -51,11 +51,11 @@ Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 				Surface *bm2 = Surface::CreateSurface(width, height, true);
 				#ifndef USE_ALPHA
 				bm2->SetTransparentColor(bm->GetTransparentColor());
-				bm2->Clear();
 				#endif
+				bm2->Clear();
 				bm2->Blit(0, 0, bm, src, 255);
 				if (k == 0)
-					bm2->ToneChange(bm2->GetRect(), Tone(0, 0, 0, 255));
+					bm2->ToneBlit(0, 0, bm2, bm2->GetRect(), Tone(0, 0, 0, 255));
 				bitmaps[i][j][k] = bm2;
 			}
 		}

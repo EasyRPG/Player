@@ -383,7 +383,7 @@ void BitmapScreen::BlitScreenIntern(Bitmap* draw_bitmap, int x, int y, Rect src_
 		int zoomed_width  = (int)(src_rect.width  * zoom_x_effect);
 		int zoomed_height = (int)(src_rect.height * zoom_y_effect);
 		Rect dst_rect(x, y, zoomed_width, zoomed_height);
-		dst->ScaleBlit(dst_rect, draw_bitmap, src_rect);
+		dst->StretchBlit(dst_rect, draw_bitmap, src_rect, 255);
 	}
 	else if (waver_effect_depth > 0)
 		dst->WaverBlit(x, y, draw_bitmap, src_rect, waver_effect_depth, waver_effect_phase);
@@ -457,13 +457,13 @@ Bitmap* BitmapScreen::Refresh(Rect& rect, bool& need_scale) {
 		bitmap_effects->FlipBlit(rect.x, rect.y, bitmap, rect, flipx_effect, flipy_effect);
 
 		if (tone_effect != Tone())
-			bitmap_effects->ToneChange(rect, tone_effect);
+			bitmap_effects->ToneBlit(rect.x, rect.y, bitmap_effects, rect, tone_effect);
 
 		if (opacity_top_effect < 255 && bush_effect < src_rect_effect.height) {
 			Rect src_rect = src_rect_effect;
 			src_rect.height -= bush_effect;
 			src_rect.Adjust(rect);
-			bitmap_effects->OpacityChange(opacity_top_effect, src_rect);
+			bitmap_effects->OpacityBlit(src_rect.x, src_rect.y, bitmap_effects, src_rect, opacity_top_effect);
 		}
 
 		if (opacity_bottom_effect < 255 && bush_effect > 0) {
@@ -471,7 +471,7 @@ Bitmap* BitmapScreen::Refresh(Rect& rect, bool& need_scale) {
 			src_rect.y += src_rect_effect.height - bush_effect;
 			src_rect.height = bush_effect;
 			src_rect.Adjust(rect);
-			bitmap_effects->OpacityChange(opacity_bottom_effect, src_rect);
+			bitmap_effects->OpacityBlit(src_rect.x, src_rect.y, bitmap_effects, src_rect, opacity_bottom_effect);
 		}
 
 		bitmap_effects_src_rect = rect;
