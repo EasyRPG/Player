@@ -128,10 +128,12 @@ void Scene_Menu::UpdateCommand() {
 				Game_System::SePlay(Data::system.decision_se);
 			}
 
+#ifdef _DEBUG
 			// Debug Test code to add items
 			for (int i = 1; i < 82; ++i) {
 				Game_Party::GainItem(i, 1);
 			}
+#endif
 			break;
 		case 4: // Quit Game
 			Game_System::SePlay(Data::system.decision_se);

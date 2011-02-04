@@ -478,7 +478,7 @@ void SdlUi::DrawScreenText(const std::string &text, Rect dst_rect, Color color) 
 	uint32 ucolor = main_surface->GetUint32Color(color);
 
 	FontRender8x8::TextDraw(text, (uint8*)main_surface->pixels(), dst_rect, main_surface->width(), main_surface->height(), main_surface->bpp(), ucolor);
-	
+
 	main_surface->Unlock();
 }
 

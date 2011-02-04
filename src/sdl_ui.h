@@ -65,8 +65,8 @@ public:
 	Bitmap* EndScreenCapture();
 	void SetTitle(const std::string &title);
 	void DrawScreenText(const std::string &text);
-	void DrawScreenText(const std::string &text, int x, int y, Color color = Color(255, 255, 255, 0));
-	void DrawScreenText(const std::string &text, Rect dst_rect, Color color = Color(255, 255, 255, 0));
+	void DrawScreenText(const std::string &text, int x, int y, Color color = Color(255, 255, 255, 255));
+	void DrawScreenText(const std::string &text, Rect dst_rect, Color color = Color(255, 255, 255, 255));
 	bool ShowCursor(bool flag);
 	
 	void ProcessEvents();
