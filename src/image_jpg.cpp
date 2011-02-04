@@ -17,9 +17,10 @@
 
 #include "image_jpg.h"
 #include "output.h"
-#include "jpeglib.h"
+#include <jpeglib.h>
+#include <cassert>
 
-void ImageJPG::ReadJPG(FILE * stream, int& width,
+void ImageJPG::ReadJPG(FILE * stream, uint8 *data, uint len, int& width,
 						int& height, void*& pixels) {
 
 	struct jpeg_decompress_struct cinfo;
@@ -27,12 +28,21 @@ void ImageJPG::ReadJPG(FILE * stream, int& width,
 	int pitch;
 	JSAMPARRAY buffer;
 	uint8* dst;
+	bool from_mem;
 
 	pixels = NULL;
 
+	from_mem = (data) ? true : false;
+
 	jpeg_create_decompress(&cinfo);
 
-	jpeg_stdio_src(&cinfo, stream);
+	if (from_mem) {
+		assert(data);
+		jpeg_mem_src(&cinfo, data, len);
+	} else {
+		assert(stream);
+		jpeg_stdio_src(&cinfo, stream);
+	}
 
 	res = jpeg_read_header(&cinfo, TRUE);
 
@@ -77,9 +87,6 @@ void ImageJPG::ReadJPG(FILE * stream, int& width,
 		Output::Warning("Corrupted JPEG image.");
 		goto clean_exit;
 	}
-
-	jpeg_destroy_decompress(&cinfo);
-	return;
 
 clean_exit:
 	jpeg_destroy_decompress(&cinfo);

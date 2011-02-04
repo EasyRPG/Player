@@ -24,7 +24,7 @@
 #include <cstdio>
 
 namespace ImageJPG {
-	void ReadJPG(FILE* stream, int& width, int& height, void*& pixels);
+	void ReadJPG(FILE* stream, uint8* data, uint len, int& width, int& height, void*& pixels);
 }
 
 #endif
