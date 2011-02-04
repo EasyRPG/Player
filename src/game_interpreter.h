@@ -174,6 +174,7 @@ private:
 	bool CommandSetVehicleLocation();
 	bool CommandTileSubstitution();
 	bool CommandPanScreen();
+	bool CommandSimulatedAttack();
 
 	void CommandEnd();
 

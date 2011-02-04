@@ -629,6 +629,8 @@ bool Game_Interpreter::ExecuteCommand() {
 			return CommandTileSubstitution();
 		case PanScreen:
 			return CommandPanScreen();
+		case SimulatedAttack:
+			return CommandSimulatedAttack();
 		default:
 			return true;
 	}
@@ -3125,5 +3127,39 @@ bool Game_Interpreter::CommandPanScreen() { // code 11060
 	}
 
 	return !wait;
+}
+
+bool Game_Interpreter::CommandSimulatedAttack() { // code 10500
+	std::vector<Game_Actor*> actors = GetActors(list[index].parameters[0],
+												list[index].parameters[1]);
+	int atk = list[index].parameters[2];
+	int def = list[index].parameters[3];
+	int spi = list[index].parameters[4];
+	int var = list[index].parameters[5];
+
+	for (std::vector<Game_Actor*>::iterator i = actors.begin(); 
+		 i != actors.end(); 
+		 i++) {
+		Game_Actor* actor = *i;
+		int result = atk;
+		result -= (actor->GetDef() * def) / 400;
+		result -= (actor->GetSpi() * spi) / 800;
+		if (var != 0) {
+			int rperc = var * 5;
+			int rval = rand() % (2 * rperc) - rperc;
+			result += result * rval / 100;
+		}
+
+		result = std::max(0, result);
+
+		int hp = actor->GetHp() - result;
+		hp = std::max(0, hp);
+		actor->SetHp(hp);
+
+		if (list[index].parameters[6] != 0)
+			Game_Variables[list[index].parameters[7]] = result;
+	}
+
+	return true;
 }
 

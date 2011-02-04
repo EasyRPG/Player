@@ -48,11 +48,12 @@ FTFont::~FTFont() {
 	if (ft_face_initialized) {
 		FT_Done_Face(face);
 		ft_face_initialized = false;
+
+		if (ft_lib_refcount > 0)
+			ft_lib_refcount--;
+		if (ft_lib_refcount == 0)
+			FT_Done_FreeType(library);
 	}
-	if (ft_lib_refcount > 0)
-		ft_lib_refcount--;
-	if (ft_lib_refcount == 0)
-		FT_Done_FreeType(library);
 }
 
 ////////////////////////////////////////////////////////////
@@ -69,8 +70,6 @@ void FTFont::Init() {
 			return;
 		}
 	}
-
-	ft_lib_refcount++;
 
 	std::string path = FileFinder::FindFont(name);
     FT_Error ans = FT_New_Face(library, path.c_str(), 0, &face);
@@ -106,6 +105,7 @@ void FTFont::Init() {
 		return;
     }
 
+	ft_lib_refcount++;
 	ft_face_initialized = true;
 }
 
