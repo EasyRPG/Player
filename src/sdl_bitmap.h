@@ -67,7 +67,7 @@ protected:
 
 	void RemovePaletteColorkeyDuplicates(SDL_Surface* src, SDL_Color* color);
 	SDL_Surface* ReadXYZ(const std::string& filename, const uint8 *data, uint len);
-	void SetupBitmapUtils(SDL_PixelFormat* fmt);
+	void SetupFormat(SDL_PixelFormat* fmt);
 
 	/// Bitmap data.
 	SDL_Surface* bitmap;

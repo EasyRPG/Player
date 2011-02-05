@@ -64,16 +64,16 @@ public:
 	void ToneBlit(int x, int y, Bitmap* src, Rect src_rect, const Tone &tone);
 	void FlipBlit(int x, int y, Bitmap* src, Rect src_rect, bool horizontal, bool vertical);
 	void Flip(const Rect& dst_rect, bool horizontal, bool vertical);
-	void SetTransparentColor(Color color);
+	void Blit2x(Rect dst_rect, Bitmap* _src, Rect src_rect);
 
-	typedef format_B8G8R8A8 pixel_format;
-	typedef format_R8G8B8A8 image_format;
+	static const format_B8G8R8A8_a pixel_format;
+	static const format_B8G8R8A8_n opaque_format;
+	static const format_R8G8B8A8_a image_format;
 #ifndef USE_BIG_ENDIAN
 	static const pixman_format_code_t pixman_format = PIXMAN_a8r8g8b8;
 #else
 	static const pixman_format_code_t pixman_format = PIXMAN_b8g8r8a8;
 #endif
-	static const DynamicFormat dynamic_format;
 
 	void* pixels();
 	int width() const;

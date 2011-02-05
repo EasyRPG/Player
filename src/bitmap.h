@@ -89,7 +89,7 @@ public:
 	virtual Color GetTransparentColor() const;
 
 	/// @param color : new transparent color 
-	virtual void SetTransparentColor(Color color) = 0;
+	virtual void SetTransparentColor(Color color);
 
 	static const uint32 System  = 0x80000000;
 	static const uint32 Chipset = 0x40000000;
@@ -147,7 +147,7 @@ protected:
 	virtual void Lock() = 0;
 	virtual void Unlock() = 0;
 
-	virtual void Begin();
+	virtual BitmapUtils* Begin();
 	virtual void End();
 
 	////////////////////////////////////////////////////////
@@ -163,7 +163,6 @@ protected:
 	virtual void CheckPixels(uint32 flags);
 
 	DynamicFormat format;
-	BitmapUtils* bm_utils;
 
 	std::list<BitmapScreen*> attached_screen_bitmaps;
 	TileOpacity (*opacity)[30];

@@ -111,16 +111,15 @@ SDL_Surface* SdlBitmap::ReadXYZ(const std::string& filename, const uint8 *data, 
 }
 
 ////////////////////////////////////////////////////////////
-void SdlBitmap::SetupBitmapUtils(SDL_PixelFormat* fmt) {
+void SdlBitmap::SetupFormat(SDL_PixelFormat* fmt) {
 #ifdef USE_ALPHA
-	bool has_colorkey = false;
 	uint32 amask = ~(fmt->Rmask | fmt->Gmask | fmt->Bmask);
+	PF::AlphaType alpha = transparent ? PF::Alpha : PF::NoAlpha;
 #else
 	uint32 amask = 0;
-	bool has_colorkey = transparent;
+	PF::AlphaType alpha = transparent ? PF::ColorKey : PF::NoAlpha;
 #endif
-	format = DynamicFormat(fmt->Rmask, fmt->Gmask, fmt->Bmask, amask, fmt->colorkey, has_colorkey);
-	bm_utils = BitmapUtils::Create(fmt->BitsPerPixel, true, format, format);
+	format = DynamicFormat((int) fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, amask, alpha);
 }
 
 SdlBitmap::SdlBitmap(void *pixels, int width, int height, int depth, int pitch, uint32 Rmask, uint32 Gmask, uint32 Bmask, uint32 Amask) {
@@ -132,7 +131,7 @@ SdlBitmap::SdlBitmap(void *pixels, int width, int height, int depth, int pitch, 
 		Output::Error("Couldn't create %dx%d bitmap.\n%s\n", width, height, SDL_GetError());
 	}
 
-	SetupBitmapUtils(bitmap->format);
+	SetupFormat(bitmap->format);
 
 }
 
@@ -161,7 +160,7 @@ SdlBitmap::SdlBitmap(int width, int height, int bpp, bool itransparent) {
 		Output::Error("Couldn't optimize %dx%d image.\n%s\n", width, height, SDL_GetError());
 	}
 
-	SetupBitmapUtils(bitmap->format);
+	SetupFormat(bitmap->format);
 
 	SDL_FreeSurface(temp);
 }
@@ -189,7 +188,7 @@ SdlBitmap::SdlBitmap(const std::string& filename, bool itransparent, uint32 flag
 	}
 	SDL_FreeSurface(temp);
 
-	SetupBitmapUtils(bitmap->format);
+	SetupFormat(bitmap->format);
 
 	CheckPixels(flags);
 }
@@ -223,7 +222,7 @@ SdlBitmap::SdlBitmap(const uint8* data, uint bytes, bool itransparent, uint32 fl
 
 	SDL_FreeSurface(temp);
 
-	SetupBitmapUtils(bitmap->format);
+	SetupFormat(bitmap->format);
 
 	CheckPixels(flags);
 }
@@ -258,7 +257,7 @@ SdlBitmap::SdlBitmap(Bitmap* source, Rect src_rect, bool itransparent) {
 	}
 	#endif
 
-	SetupBitmapUtils(bitmap->format);
+	SetupFormat(bitmap->format);
 
 	Blit(0, 0, source, src_rect, 255);
 }
@@ -268,13 +267,12 @@ SdlBitmap::SdlBitmap(SDL_Surface* bitmap, bool itransparent) :
 
 	transparent = itransparent;
 
-	SetupBitmapUtils(bitmap->format);
+	SetupFormat(bitmap->format);
 }
 
 ////////////////////////////////////////////////////////////
 SdlBitmap::~SdlBitmap() {
 	SDL_FreeSurface(bitmap);
-	delete bm_utils;
 }
 
 ////////////////////////////////////////////////////////////
@@ -416,7 +414,6 @@ void SdlBitmap::SetTransparentColor(Color color) {
 	#ifndef USE_ALPHA
 		uint32 colorkey = GetUint32Color(color);
 		SDL_SetColorKey(bitmap, COLORKEY_FLAGS, colorkey);
-		format.SetColorKey(colorkey);
 	#endif
 }
 

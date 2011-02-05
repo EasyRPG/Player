@@ -491,171 +491,27 @@ bool SdlUi::ShowCursor(bool flag) {
 }
 
 ///////////////////////////////////////////////////////////
-#ifndef USE_SDL_BITMAP
-int rshift, gshift, bshift;
-int rloss, gloss, bloss;
-#endif
-
-inline void stretch16(const uint8* s, uint16* d, int w) {
-#ifdef USE_SDL_BITMAP
-	for(int i = 0; i < w; i++) {
-		const uint16 &pixel = *(const uint16*)s;
-		s += 2;
-		*d++ = pixel;
-		*d++ = pixel;
-	}
-#endif
-#ifdef USE_SOFT_BITMAP
-	for(int i = 0; i < w; i++) {
-		uint16 pixel;
-		pixel  = (*s++ >> bloss) << bshift;
-		pixel += (*s++ >> gloss) << gshift;
-		pixel += (*s++ >> rloss) << rshift;
-		s++;
-		*d++ = pixel;
-		*d++ = pixel;
-	}
-#endif
-#ifdef USE_PIXMAN_BITMAP
-	for(int i = 0; i < w; i++) {
-		const uint32 src = *(const uint32*)s;
-		s += 4;
-		const uint32 r = (src>>16) & 0xFF;
-		const uint32 g = (src>> 8) & 0xFF;
-		const uint32 b = (src>> 0) & 0xFF;
-		uint16 pixel = ((r>>rloss)<<rshift) | ((g>>gloss)<<gshift) | ((b>>bloss)<<bshift);
-		*d++ = pixel;
-		*d++ = pixel;
-	}
-#endif
-}
-
-inline void stretch24(const uint8* s, uint8* d, int w) {
-#ifdef USE_SDL_BITMAP
-	for(int i = 0; i < w; i++) {
-		*d++ = s[0];
-		*d++ = s[1];
-		*d++ = s[2];
-		*d++ = s[0];
-		*d++ = s[1];
-		*d++ = s[2];
-		s += 3;
-	}
-#endif
-#ifdef USE_SOFT_BITMAP
-	for(int i = 0; i < w; i++) {
-		*d++ = s[2];
-		*d++ = s[1];
-		*d++ = s[0];
-		*d++ = s[2];
-		*d++ = s[1];
-		*d++ = s[0];
-		s += 4;
-	}
-#endif
-#ifdef USE_PIXMAN_BITMAP
-	for(int i = 0; i < w; i++) {
-		const uint32 src = *(const uint32*) s;
-		s += 4;
-		const uint32 r = (src>>16) & 0xFF;
-		const uint32 g = (src>> 8) & 0xFF;
-		const uint32 b = (src>> 0) & 0xFF;
-		*d++ = r;
-		*d++ = g;
-		*d++ = b;
-		*d++ = r;
-		*d++ = g;
-		*d++ = b;
-	}
-#endif
-}
-
-inline void stretch32(const uint8* s, uint32* d, int w) {
-#ifdef USE_SDL_BITMAP
-	for(int i = 0; i < w; i++) {
-		const uint32 pixel = *(const uint32*)s;
-		s += 4;
-		*d++ = pixel;
-		*d++ = pixel;
-	}
-#endif
-#ifdef USE_SOFT_BITMAP
-	for(int i = 0; i < w; i++) {
-		uint32 pixel;
-		pixel  = *s++ << bshift;
-		pixel += *s++ << gshift;
-		pixel += *s++ << rshift;
-		s++;
-		*d++ = pixel;
-		*d++ = pixel;
-	}
-#endif
-#ifdef USE_PIXMAN_BITMAP
-	for(int i = 0; i < w; i++) {
-		const uint32 src = *(uint32*)s;
-		s += 4;
-		const uint32 r = (src>>16) & 0xFF;
-		const uint32 g = (src>> 8) & 0xFF;
-		const uint32 b = (src>> 0) & 0xFF;
-		uint32 pixel = (r<<rshift) | (g<<gshift) | (b<<bshift);
-		*d++ = pixel;
-		*d++ = pixel;
-	}
-#endif
-}
-
-void SdlUi::Blit2X(Surface* src, SDL_Surface* dst) {
+void SdlUi::Blit2X(Bitmap* src, SDL_Surface* dst_surf) {
 	#ifdef USE_SDL_BITMAP
-	if (((SdlBitmap*)src)->bitmap == dst) return;
-	#else
-	rshift = main_window->format->Rshift;
-	gshift = main_window->format->Gshift;
-	bshift = main_window->format->Bshift;
-	rloss = main_window->format->Rloss;
-	gloss = main_window->format->Gloss;
-	bloss = main_window->format->Bloss;
+	if (((SdlBitmap*)src)->bitmap == dst_surf) return;
 	#endif
-	
-	src->Lock();
-	if (SDL_MUSTLOCK(dst)) SDL_LockSurface(dst);
 
-	int src_pitch = src->pitch();
-	int dst_pitch = dst->pitch;
+	if (SDL_MUSTLOCK(dst_surf)) SDL_LockSurface(dst_surf);
 
-	if (current_display_mode.bpp == 16) {
-		uint8* src_pixels = (uint8*)src->pixels();
-		uint8* dst_pixels = (uint8*)dst->pixels;
+	Surface* dst = Surface::CreateSurfaceFrom(
+		dst_surf->pixels,
+		dst_surf->w,
+		dst_surf->h,
+		dst_surf->format->BitsPerPixel,
+		dst_surf->pitch,
+		dst_surf->format->Rmask,
+		dst_surf->format->Gmask,
+		dst_surf->format->Bmask,
+		dst_surf->format->Amask);
 
-		for (register int i = 0; i < src->height(); i++) {
-			stretch16(src_pixels, (uint16*) dst_pixels, src->width());
-			memcpy(dst_pixels + dst_pitch, dst_pixels, dst_pitch);
-			src_pixels += src_pitch;
-			dst_pixels += 2 * dst_pitch;
-		}
-	} else if (current_display_mode.bpp == 24) {
-		uint8* src_pixels = (uint8*)src->pixels();
-		uint8* dst_pixels = (uint8*)dst->pixels;
+	dst->Blit2x(dst->GetRect(), src, src->GetRect());
 
-		for (register int i = 0; i < src->height(); i++) {
-			stretch24(src_pixels, dst_pixels, src->width());
-			memcpy(dst_pixels + dst_pitch, dst_pixels, dst_pitch);
-			src_pixels += src->pitch();
-			dst_pixels += 2 * dst->pitch;
-		}
-	} else {
-		uint8* src_pixels = (uint8*)src->pixels();
-		uint8* dst_pixels = (uint8*)dst->pixels;
-
-		for (register int i = 0; i < src->height(); i++) {
-			stretch32(src_pixels, (uint32*) dst_pixels, src->width());
-			memcpy(dst_pixels + dst_pitch, dst_pixels, dst_pitch);
-			src_pixels += src_pitch;
-			dst_pixels += 2 * dst_pitch;
-		}
-	}
-
-	src->Unlock();
-	if (SDL_MUSTLOCK(dst)) SDL_UnlockSurface(dst);
+	if (SDL_MUSTLOCK(dst_surf)) SDL_UnlockSurface(dst_surf);
 }
 
 ///////////////////////////////////////////////////////////

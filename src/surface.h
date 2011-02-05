@@ -218,7 +218,6 @@ public:
 	/// @param sat : saturation scale
 	/// @param lum : luminance scale
 	/// @param loff: luminance offset
-	/// @param dst_rect : destination rect
 	////////////////////////////////////////////////////////
 	virtual void HSLBlit(int x, int y, Bitmap* src, Rect src_rect, double h, double s, double l, double lo);
 
@@ -249,6 +248,14 @@ public:
 	/// @param vertical : flip vertically
 	////////////////////////////////////////////////////////
 	virtual void Flip(const Rect& dst_rect, bool horizontal, bool vertical);
+
+	////////////////////////////////////////////////////////
+	/// Blit source bitmap scaled 2:1, with no transparency
+	/// @param dst_rect : destination rectangle
+	/// @param src : source bitmap
+	/// @param src_rect : source bitmap rectangle
+	////////////////////////////////////////////////////////
+	virtual void Blit2x(Rect dst_rect, Bitmap* src, Rect src_rect);
 
 	////////////////////////////////////////////////////////
 	/// Calculate the bounding rectangle of a transformed rectangle
@@ -330,8 +337,8 @@ protected:
 	/// Font for text drawing.
 	Font* font;
 
-	virtual void Begin();
-	virtual void Begin(Bitmap* src);
+	virtual BitmapUtils* Begin();
+	virtual BitmapUtils* Begin(Bitmap* src);
 	virtual void End();
 	virtual void End(Bitmap* src);
 	virtual void RefreshCallback();

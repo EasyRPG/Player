@@ -97,13 +97,13 @@ Color Bitmap::GetPixel(int x, int y) {
 	if (x < 0 || y < 0 || x >= width() || y >= height())
 		return Color();
 
-	Lock();
+	BitmapUtils* bm_utils = Begin();
 
 	const uint8* src_pixels = pointer(x, y);
 	uint8 r, g, b, a;
 	bm_utils->GetPixel(src_pixels, r, g, b, a);
 
-	Unlock();
+	End();
 
 	return Color(r, g, b, a);
 }
@@ -128,9 +128,11 @@ void Bitmap::DetachBitmapScreen(BitmapScreen* bitmap) {
 }
 
 ////////////////////////////////////////////////////////////
-void Bitmap::Begin() {
+BitmapUtils* Bitmap::Begin() {
 	Lock();
-	bm_utils->SetColorKey(colorkey());
+	BitmapUtils* bm_utils = BitmapUtils::Create(format, format, false);
+	bm_utils->SetDstColorKey(colorkey());
+	return bm_utils;
 }
 
 void Bitmap::End() {
@@ -163,9 +165,15 @@ Color Bitmap::GetTransparentColor() const {
 }
 
 ////////////////////////////////////////////////////////////
+void Bitmap::SetTransparentColor(Color color) {
+}
+
+////////////////////////////////////////////////////////////
 Bitmap::TileOpacity Bitmap::CheckOpacity(const Rect& rect) {
 	bool all = true;
 	bool any = false;
+
+	BitmapUtils* bm_utils = Begin();
 
 	uint8* src_pixels = pointer(rect.x, rect.y);
 
@@ -175,6 +183,8 @@ Bitmap::TileOpacity Bitmap::CheckOpacity(const Rect& rect) {
 			break;
 		src_pixels += pitch();
 	}
+
+	End();
 
 	return
 		all ? Bitmap::Opaque :

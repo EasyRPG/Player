@@ -40,7 +40,9 @@
 
 ////////////////////////////////////////////////////////////
 
-const DynamicFormat PixmanBitmap::dynamic_format = PixmanBitmap::pixel_format::Format(DynamicFormat());
+const format_B8G8R8A8_a PixmanBitmap::pixel_format;
+const format_B8G8R8A8_n PixmanBitmap::opaque_format;
+const format_R8G8B8A8_a PixmanBitmap::image_format;
 
 ////////////////////////////////////////////////////////////
 static void destroy_func(pixman_image_t *image, void *data) {
@@ -69,9 +71,9 @@ void PixmanBitmap::ConvertImage(int& width, int& height, void*& pixels) {
 		uint8* dst = (uint8*) pixels + y * width * 4;
 		for (int x = 0; x < width; x++) {
 			uint8 r, g, b, a;
-			image_format::get_rgba(dynamic_format, dst, r, g, b, a);
+			image_format.get_rgba(dst, r, g, b, a);
 			MultiplyAlpha(r, g, b, a);
-			pixel_format::set_rgba(dynamic_format, dst, r, g, b, a);
+			pixel_format.set_rgba(dst, r, g, b, a);
 			dst += 4;
 		}
 	}
@@ -80,21 +82,19 @@ void PixmanBitmap::ConvertImage(int& width, int& height, void*& pixels) {
 ////////////////////////////////////////////////////////////
 PixmanBitmap::PixmanBitmap(int width, int height, bool itransparent) {
 	transparent = itransparent;
-	bm_utils = new BitmapUtilsT<pixel_format,pixel_format>(dynamic_format,dynamic_format);
-
+	format = (transparent ? pixel_format.Format() : opaque_format.Format());
 	Init(width, height, (void *) NULL);
 }
 
 PixmanBitmap::PixmanBitmap(void *pixels, int width, int height, int pitch) {
 	transparent = false;
-	bm_utils = new BitmapUtilsT<pixel_format,pixel_format>(dynamic_format,dynamic_format);
-
+	format = (transparent ? pixel_format.Format() : opaque_format.Format());
 	Init(width, height, pixels, pitch, false);
 }
 
 PixmanBitmap::PixmanBitmap(const std::string filename, bool itransparent, uint32 flags) {
 	transparent = itransparent;
-	bm_utils = new BitmapUtilsT<pixel_format,pixel_format>(dynamic_format,dynamic_format);
+	format = (transparent ? pixel_format.Format() : opaque_format.Format());
 
 	int namelen = (int) filename.size();
 	if (namelen < 5 || filename[namelen - 4] != '.') {
@@ -134,7 +134,7 @@ PixmanBitmap::PixmanBitmap(const std::string filename, bool itransparent, uint32
 
 PixmanBitmap::PixmanBitmap(const uint8* data, uint bytes, bool itransparent, uint32 flags) {
 	transparent = itransparent;
-	bm_utils = new BitmapUtilsT<pixel_format,pixel_format>(dynamic_format,dynamic_format);
+	format = (transparent ? pixel_format.Format() : opaque_format.Format());
 
 	int w, h;
 	void* pixels;
@@ -154,7 +154,7 @@ PixmanBitmap::PixmanBitmap(const uint8* data, uint bytes, bool itransparent, uin
 
 PixmanBitmap::PixmanBitmap(Bitmap* source, Rect src_rect, bool itransparent) {
 	transparent = itransparent;
-	bm_utils = new BitmapUtilsT<pixel_format,pixel_format>(dynamic_format,dynamic_format);
+	format = (transparent ? pixel_format.Format() : opaque_format.Format());
 
 	Init(src_rect.width, src_rect.height, (void *) NULL);
 
@@ -164,7 +164,6 @@ PixmanBitmap::PixmanBitmap(Bitmap* source, Rect src_rect, bool itransparent) {
 ////////////////////////////////////////////////////////////
 PixmanBitmap::~PixmanBitmap() {
 	pixman_image_unref(bitmap);
-	delete bm_utils;
 }
 
 ////////////////////////////////////////////////////////////
@@ -189,19 +188,19 @@ uint16 PixmanBitmap::pitch() const {
 }
 
 uint32 PixmanBitmap::rmask() const {
-	return pixel_format::r_mask(dynamic_format);
+	return pixel_format.r_mask();
 }
 
 uint32 PixmanBitmap::gmask() const {
-	return pixel_format::g_mask(dynamic_format);
+	return pixel_format.g_mask();
 }
 
 uint32 PixmanBitmap::bmask() const {
-	return pixel_format::b_mask(dynamic_format);
+	return pixel_format.b_mask();
 }
 
 uint32 PixmanBitmap::amask() const {
-	return pixel_format::a_mask(dynamic_format);
+	return pixel_format.a_mask();
 }
 
 uint32 PixmanBitmap::colorkey() const {
@@ -597,8 +596,27 @@ void PixmanBitmap::Flip(const Rect& dst_rect, bool horizontal, bool vertical) {
 	RefreshCallback();
 }
 
-////////////////////////////////////////////////////////////
-void PixmanBitmap::SetTransparentColor(Color color) {
+void PixmanBitmap::Blit2x(Rect dst_rect, Bitmap* _src, Rect src_rect) {
+	PixmanBitmap* src = (PixmanBitmap*) _src;
+
+	pixman_transform_t xform;
+	pixman_transform_init_scale(&xform,
+								pixman_double_to_fixed(0.5),
+								pixman_double_to_fixed(0.5));
+
+	pixman_image_set_transform(src->bitmap, &xform);
+
+	pixman_image_composite32(PIXMAN_OP_SRC,
+							 src->bitmap, (pixman_image_t*) NULL, bitmap,
+							 src_rect.x, src_rect.y,
+							 0, 0,
+							 dst_rect.x, dst_rect.y,
+							 dst_rect.width, dst_rect.height);
+
+	pixman_transform_init_identity(&xform);
+	pixman_image_set_transform(src->bitmap, &xform);
+
+	RefreshCallback();
 }
 
 ////////////////////////////////////////////////////////////
@@ -614,11 +632,11 @@ uint32 PixmanBitmap::GetUint32Color(const Color &color) const {
 
 uint32 PixmanBitmap::GetUint32Color(uint8 r, uint8 g, uint8 b, uint8 a) const {
 	MultiplyAlpha(r, g, b, a);
-	return pixel_format::rgba_to_uint32(dynamic_format, r, g, b, a);
+	return pixel_format.rgba_to_uint32(r, g, b, a);
 }
 
 void PixmanBitmap::GetColorComponents(uint32 color, uint8 &r, uint8 &g, uint8 &b, uint8 &a) const {
-	pixel_format::uint32_to_rgba(dynamic_format, color, r, g, b, a);
+	pixel_format.uint32_to_rgba(color, r, g, b, a);
 	DivideAlpha(r, g, b, a);
 }
 

@@ -101,7 +101,7 @@ Surface::~Surface() {
 void Surface::SetPixel(int x, int y, const Color &color) {
 	if (x < 0 || y < 0 || x >= width() || y >= height()) return;
 
-	Begin();
+	BitmapUtils* bm_utils = Begin();
 
 	uint8* dst_pixels = pointer(x, y);
 	bm_utils->SetPixel(dst_pixels, color.red, color.green, color.blue, color.alpha);
@@ -120,17 +120,16 @@ void Surface::Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
 	if (!Rect::AdjustRectangles(dst_rect, src_rect, GetRect()))
 		return;
 
-	Begin(src);
+	BitmapUtils* bm_utils = Begin(src);
 
-	if (opacity >= bm_utils->src_format.opaque())
+	if (opacity >= 255)
 		opacity = 255;
 
 	const uint8* src_pixels = src->pointer(src_rect.x, src_rect.y);
 	uint8* dst_pixels = pointer(dst_rect.x, dst_rect.y);
 
 	bool opacity_blit = opacity < 255;
-	bool overlay_blit = bm_utils->src_format.has_alpha || bm_utils->src_format.has_colorkey;
-
+	bool overlay_blit = bm_utils->GetSrcFormat().alpha_type != PF::NoAlpha;
 
 	for (int i = 0; i < dst_rect.height; i++) {
 		if (opacity_blit)
@@ -274,16 +273,16 @@ void Surface::StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int opacity
 	if (dx0 >= dx1 || dy0 >= dy1)
 		return;
 
-	Begin(src);
+	BitmapUtils* bm_utils = Begin(src);
 
 	uint8* dst_pixels = pointer(dx0, dy0);
 	int step = (int)((sx1 - sx0) * (1 << BitmapUtils::FRAC_BITS)) / (dx1 - dx0);
 
 	bool opacity_blit = opacity < 255;
-	bool overlay_blit = bm_utils->src_format.has_alpha || bm_utils->src_format.has_colorkey;
+	bool overlay_blit = bm_utils->GetSrcFormat().alpha_type != PF::NoAlpha;
 
 	for (int i = 0; i < dy1 - dy0; i++) {
-		const uint8* nearest_y = (const uint8*) src->pixels() + (int)(sy0 + i * zoom_y) * src->pitch();
+		const uint8* nearest_y = src->pointer(0, (int)(sy0 + i * zoom_y));
 		int x = (int)(sx0 * (1 << BitmapUtils::FRAC_BITS)) + step / 2;
 		if (opacity_blit)
 			bm_utils->OpacityScaleBlit(dst_pixels, nearest_y, dx1 - dx0, x, step, opacity);
@@ -318,7 +317,7 @@ void Surface::FlipBlit(int x, int y, Bitmap* src, Rect src_rect, bool horizontal
 	if (!Rect::AdjustRectangles(dst_rect, src_rect, GetRect()))
 		return;
 
-	Begin(src);
+	BitmapUtils* bm_utils = Begin(src);
 
 	int sx0 = horizontal ? ox - dst_rect.x : ox + dst_rect.x;
 	int sy0 = vertical   ? oy - dst_rect.y : oy + dst_rect.y;
@@ -353,9 +352,9 @@ void Surface::FlipBlit(int x, int y, Bitmap* src, Rect src_rect, bool horizontal
 void Surface::TransformBlit(Rect dst_rect, Bitmap* src, Rect src_rect, const Matrix& inv) {
 	dst_rect.Adjust(GetWidth(), GetHeight());
 
-	Begin(src);
+	BitmapUtils* bm_utils = Begin(src);
 
-	const uint8* src_pixels = (const uint8*)src->pixels();
+	const uint8* src_pixels = (const uint8*)src->pointer(0, 0);
 	uint8* dst_pixels = pointer(dst_rect.x, dst_rect.y);
 
 	for (int y = dst_rect.y; y < dst_rect.y + dst_rect.height; y++) {
@@ -397,7 +396,7 @@ void Surface::MaskBlit(int x, int y, Bitmap* src, Rect src_rect) {
 	if (!Rect::AdjustRectangles(dst_rect, src_rect, GetRect()))
 		return;
 
-	Begin(src);
+	BitmapUtils* bm_utils = Begin(src);
 
 	const uint8* src_pixels = src->pointer(src_rect.x, src_rect.y);
 	uint8* dst_pixels = pointer(dst_rect.x, dst_rect.y);
@@ -424,7 +423,7 @@ void Surface::WaverBlit(int x, int y, Bitmap* src, Rect src_rect, int depth, dou
 		src_rect.height -= dy;
 	}
 
-	Begin(src);
+	BitmapUtils* bm_utils = Begin(src);
 
 	const uint8* src_pixels = src->pointer(src_rect.x, src_rect.y);
 	uint8* dst_pixels = pointer(x, y);
@@ -465,7 +464,7 @@ void Surface::FillRect(Rect dst_rect, const Color &color) {
 	if (dst_rect.IsOutOfBounds(width(), height()))
 		return;
 
-	Begin();
+	BitmapUtils* bm_utils = Begin();
 
 	uint8 pixel[4];
 	bm_utils->SetPixel(pixel, color.red, color.green, color.blue, color.alpha);
@@ -518,7 +517,7 @@ void Surface::HSLBlit(int x, int y, Bitmap* src, Rect src_rect, double h, double
 	else if (hue > 0x600)
 		hue -= (hue / 0x600) * 0x600;
 
-	Begin(src);
+	BitmapUtils* bm_utils = Begin(src);
 
 	const uint8* src_pixels = src->pointer(src_rect.x, src_rect.y);
 	uint8* dst_pixels = pointer(dst_rect.x, dst_rect.y);
@@ -546,7 +545,7 @@ void Surface::ToneBlit(int x, int y, Bitmap* src, Rect src_rect, const Tone &ton
 	if (!Rect::AdjustRectangles(dst_rect, src_rect, GetRect()))
 		return;
 
-	Begin(src);
+	BitmapUtils* bm_utils = Begin(src);
 
 	const uint8* src_pixels = src->pointer(src_rect.x, src_rect.y);
 	uint8* dst_pixels = pointer(dst_rect.x, dst_rect.y);
@@ -584,7 +583,7 @@ void Surface::OpacityBlit(int x, int y, Bitmap* src, Rect src_rect, int opacity)
 	if (!Rect::AdjustRectangles(dst_rect, src_rect, GetRect()))
 		return;
 
-	Begin(src);
+	BitmapUtils* bm_utils = Begin(src);
 
 	const uint8* src_pixels = src->pointer(src_rect.x, src_rect.y);
 	uint8* dst_pixels = pointer(dst_rect.x, dst_rect.y);
@@ -603,7 +602,7 @@ void Surface::Flip(const Rect& dst_rect, bool horizontal, bool vertical) {
 	if (!horizontal && !vertical)
 		return;
 
-	Begin();
+	BitmapUtils* bm_utils = Begin();
 
 	if (horizontal && vertical) {
 		int pad = pitch() - width() * bpp();
@@ -647,24 +646,62 @@ void Surface::Flip(const Rect& dst_rect, bool horizontal, bool vertical) {
 }
 
 ////////////////////////////////////////////////////////////
-void Surface::Begin() {
-	Bitmap::Begin();
+void Surface::Blit2x(Rect dst_rect, Bitmap* src, Rect src_rect) {
+	dst_rect.Halve();
+	if (!Rect::AdjustRectangles(src_rect, dst_rect, src->GetRect()))
+		return;
+	dst_rect.Double();
+
+	src_rect.Double();
+	if (!Rect::AdjustRectangles(dst_rect, src_rect, GetRect()))
+		return;
+	src_rect.Halve();
+
+	BitmapUtils* bm_utils = Begin(src);
+
+	const uint8* src_pixels = src->pointer(src_rect.x, src_rect.y);
+	uint8* dst_pixels = pointer(dst_rect.x, dst_rect.y);
+
+	for (int i = 0; i < src_rect.height; i++) {
+		const uint8* save = dst_pixels;
+		bm_utils->Blit2x(dst_pixels, src_pixels, src_rect.width);
+		dst_pixels += pitch();
+		memcpy(dst_pixels, save, 2 * src_rect.width * bpp());
+		dst_pixels += pitch();
+		src_pixels += src->pitch();
+	}
+
+	End(src);
 }
 
-void Surface::Begin(Bitmap* src) {
-	Begin();
+////////////////////////////////////////////////////////////
+BitmapUtils* Surface::Begin() {
+	Lock();
+
+	BitmapUtils* bm_utils = BitmapUtils::Create(format, format, false);
+	bm_utils->SetDstColorKey(colorkey());
+	return bm_utils;
+}
+
+BitmapUtils* Surface::Begin(Bitmap* src) {
+	Lock();
 	src->Lock();
-	bm_utils->SetSrcFormat(src->format);
+
+	BitmapUtils* bm_utils = BitmapUtils::Create(format, src->format, true);
+	bm_utils->SetDstColorKey(colorkey());
+	bm_utils->SetSrcColorKey(src->colorkey());
+	return bm_utils;
 }
 
 void Surface::End() {
-	Bitmap::End();
+	Unlock();
 	RefreshCallback();
 }
 
 void Surface::End(Bitmap* src) {
 	src->Unlock();
-	End();
+	Unlock();
+	RefreshCallback();
 }
 
 void Surface::RefreshCallback() {

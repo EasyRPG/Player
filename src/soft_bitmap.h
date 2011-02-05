@@ -58,9 +58,9 @@ public:
 protected:
 	friend class SoftBitmapScreen;
 
-	typedef format_B8G8R8A8 pixel_format;
-	typedef format_R8G8B8A8 image_format;
-	static const DynamicFormat dynamic_format;
+	static const format_B8G8R8A8_a pixel_format;
+	static const format_B8G8R8A8_n opaque_format;
+	static const format_R8G8B8A8_a image_format;
 
 	/// Bitmap data.
 	int w, h;
@@ -79,7 +79,7 @@ protected:
 	void Unlock();
 
 	void ConvertImage(int& width, int& height, void*& pixels);
-	void SetupBitmapUtils();
+	void SetupFormat();
 };
 
 #endif

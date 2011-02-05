@@ -23,6 +23,7 @@
 ////////////////////////////////////////////////////////////
 #include <string>
 #include <list>
+#include <map>
 #include "pixel_format.h"
 #include "color.h"
 #include "rect.h"
@@ -37,9 +38,6 @@ class Bitmap;
 
 class BitmapUtils {
 public:
-	BitmapUtils(const DynamicFormat& format, const DynamicFormat& src_format) :
-		format(format), src_format(src_format) {}
-
 	////////////////////////////////////////////////////////
 	/// Get a pixel color.
 	/// @param src_pixel : pointer to source pixel
@@ -133,7 +131,7 @@ public:
 	virtual void OverlayScaleBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int x, int step) = 0;
 
 	////////////////////////////////////////////////////////
-	/// Blit source bitmap int destination with scaling
+	/// Blit source bitmap into destination with scaling
 	///  (transparency is copied)
 	/// @param dst_pixels : pointer to destination pixel row
 	/// @param src_pixel : pointer to source pixel row
@@ -233,22 +231,49 @@ public:
 	virtual void FlipV(uint8*& pixels_first, uint8*& pixels_last, int n, uint8* tmp_buffer) = 0;
 
 	////////////////////////////////////////////////////////
-	/// Set the color key of the target DynamicFormat
-	/// @param colorkey : the color key
+	/// Blit source bitmap into destination scaled 2:1
+	///  (transparency is copied)
+	/// @param dst_pixels : pointer to destination pixel row
+	/// @param src_pixel : pointer to source pixel row
+	/// @param n : number of source pixels
 	////////////////////////////////////////////////////////
-	virtual void SetColorKey(uint32 colorkey);
+	virtual void Blit2x(uint8* dst_pixels, const uint8* src_pixels, int n) = 0;
 
 	////////////////////////////////////////////////////////
-	/// Set the color key of the source DynamicFormat
+	/// Set the color key of the target
 	/// @param colorkey : the color key
 	////////////////////////////////////////////////////////
-	virtual void SetSrcColorKey(uint32 colorkey);
+	virtual void SetDstColorKey(uint32 colorkey) = 0;
 
 	////////////////////////////////////////////////////////
-	/// Set the source DynamicFormat
-	/// @param format : the new source format
+	/// Set the color key of the source
+	/// @param colorkey : the color key
 	////////////////////////////////////////////////////////
-	virtual void SetSrcFormat(const DynamicFormat& format);
+	virtual void SetSrcColorKey(uint32 colorkey) = 0;
+
+	////////////////////////////////////////////////////////
+	/// Set the destination dynamic format
+	/// @param format : the new format
+	////////////////////////////////////////////////////////
+	virtual void SetDstFormat(const DynamicFormat& format) = 0;
+
+	////////////////////////////////////////////////////////
+	/// Set the source dynamic format
+	/// @param format : the new format
+	////////////////////////////////////////////////////////
+	virtual void SetSrcFormat(const DynamicFormat& format) = 0;
+
+	////////////////////////////////////////////////////////
+	/// Get the destination pixel format
+	/// @return : the destination format
+	////////////////////////////////////////////////////////
+	virtual const DynamicFormat& GetDstFormat() const = 0;
+
+	////////////////////////////////////////////////////////
+	/// Get the source pixel format
+	/// @return : the source format
+	////////////////////////////////////////////////////////
+	virtual const DynamicFormat& GetSrcFormat() const = 0;
 
 	////////////////////////////////////////////////////////
 	/// BitmapUtils factory function
@@ -258,57 +283,20 @@ public:
 	/// @param format : DynamicFormat
 	/// @return : a BitmapUtils instance for the specified pixel format
 	////////////////////////////////////////////////////////
-	static BitmapUtils* Create(int bpp, bool dynamic_alpha,
-							   const DynamicFormat& dst_format,
-							   const DynamicFormat& src_format);
-
-protected:
-	friend class Surface;
-	DynamicFormat format, src_format;
+	static BitmapUtils* Create(const DynamicFormat& dst_format,
+							   const DynamicFormat& src_format,
+							   bool need_source);
 
 	/// Number of fraction bits for fixed point values (*ScaleBlit)
 	static const int FRAC_BITS = 16;
-};
-
-////////////////////////////////////////////////////////////
-/// Bitmap utils class template
-////////////////////////////////////////////////////////////
-template <class PFsrc, class PFdst>
-class BitmapUtilsT : public BitmapUtils {
-public:
-	/// constructor
-	BitmapUtilsT(const DynamicFormat& format, const DynamicFormat& src_format) :
-		BitmapUtils(format, src_format) {}
-
-	/// implementations of inherited pure virtual methods
-	/// for documentation, see parent BitmapUtils class
-	void GetPixel(const uint8* src_pixels, uint8& r, uint8& g, uint8& b, uint8& a);
-	void CheckOpacity(const uint8* src_pixels, int n, bool& all, bool& any);
-	void SetPixel(uint8* dst_pixels, const uint8& r, const uint8& g, const uint8& b, const uint8& a);
-	void SetPixels(uint8* dst_pixels, const uint8* src_pixels, int n);
-	void OpacityBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int opacity);
-	void OverlayBlit(uint8* dst_pixels, const uint8* src_pixels, int n);
-	void CopyBlit(uint8* dst_pixels, const uint8* src_pixels, int n);
-	void FlipHBlit(uint8* dst_pixels, const uint8* src_pixels, int n);
-	void OpacityScaleBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int x, int step, int opacity);
-	void OverlayScaleBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int x, int step);
-	void CopyScaleBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int x, int step);
-	void TransformBlit(uint8* dst_pixels, const uint8* src_pixels, int src_pitch,
-						   int x0, int x1, int y, const Rect& src_rect, const Matrix& inv);
-	void MaskBlit(uint8* dst_pixels, const uint8* src_pixels, int n);
-	void HSLBlit(uint8* dst_pixels, const uint8* src_pixels, int n,
-					 double hue, double sat, double lum, double loff);
-	void ToneBlit(uint8* dst_pixels, const uint8* src_pixels, int n, const Tone& tone);
-	void ToneBlit(uint8* dst_pixels, const uint8* src_pixels, int n, const Tone& tone, double factor);
-	void OpacityChangeBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int opacity);
-	void FlipHV(uint8*& pixels_first, uint8*& pixels_last, int n);
-	void FlipH(uint8*& pixels_left, uint8*& pixels_right, int n);
-	void FlipV(uint8*& pixels_first, uint8*& pixels_last, int n, uint8* tmp_buffer);
 
 protected:
-	void blend_pixel(uint8* dst_pixel, const uint8* src_pixel, int opacity);
-	void overlay_pixel(uint8* dst_pixel, const uint8* src_pixel);
-	void copy_pixel(uint8* dst_pixel, const uint8* src_pixel);
+	typedef std::pair<int, int> int_pair;
+	static std::map<int, BitmapUtils*> static_unary;
+	static std::map<int, BitmapUtils*> dynamic_unary;
+	static std::map<int_pair, BitmapUtils*> static_binary;
+	static std::map<int_pair, BitmapUtils*> dynamic_binary;
+	static bool maps_initialized;
 };
 
 #endif

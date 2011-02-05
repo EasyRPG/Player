@@ -169,3 +169,19 @@ bool Rect::AdjustRectangles(Rect& src, Rect& dst, const Rect& ref) {
 	return src.width > 0 && src.height > 0;
 }
 
+////////////////////////////////////////////////////////////
+void Rect::Double() {
+	x *= 2;
+	y *= 2;
+	width *= 2;
+	height *= 2;
+}
+
+////////////////////////////////////////////////////////////
+void Rect::Halve() {
+	x /= 2;
+	y /= 2;
+	width /= 2;
+	height /= 2;
+}
+

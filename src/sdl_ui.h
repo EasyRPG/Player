@@ -114,11 +114,11 @@ protected:
 	//@}
 
 	///////////////////////////////////////////////////////
-	/// Blit a surface scaled x2 to another surface.
-	/// @param src : source surface
+	/// Blit a bitmap scaled x2 to an SDL surface.
+	/// @param src : source bitmap
 	/// @param dst : destination surface
 	///////////////////////////////////////////////////////
-	void Blit2X(Surface* src, SDL_Surface* dst);
+	void Blit2X(Bitmap* src, SDL_Surface* dst);
 
 	///////////////////////////////////////////////////////
 	/// Set app icon.
