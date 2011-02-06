@@ -194,7 +194,7 @@ void BitmapUtilsT<PFsrc,PFdst>::GetPixel(const uint8* src_pixel, uint8& r, uint8
 ////////////////////////////////////////////////////////////
 template <class PFsrc, class PFdst>
 void BitmapUtilsT<PFsrc,PFdst>::CheckOpacity(const uint8* src_pixels, int n, bool& all, bool& any) {
-	for (int x = 0; x < x; x++) {
+	for (int x = 0; x < n; x++) {
 		if (pf_src.get_alpha(src_pixels) > 0)
 			any = true;
 		else
