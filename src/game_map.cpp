@@ -56,7 +56,7 @@ namespace {
 	tEventHash events;
 	tCommonEventHash common_events;
 
-	RPG::Map* map;
+	std::auto_ptr<RPG::Map> map;
 	int map_id;
 	int scroll_direction;
 	int scroll_rest;
@@ -84,7 +84,7 @@ void Game_Map::Init() {
 	display_y = 0;
 	need_refresh = true;
 	
-	map = NULL;
+	map.reset();
 	map_id = 0;
 	scroll_direction = 0;
 	scroll_rest = 0;
@@ -120,8 +120,7 @@ void Game_Map::Dispose() {
 		Main_Data::game_screen->Reset();
 	}
 
-	delete map;
-	map = NULL;
+	map.reset();
 }
 
 void Game_Map::Quit() {
@@ -138,7 +137,7 @@ void Game_Map::Setup(int _id) {
 	sprintf(file, "Map%04d.lmu", map_id);
 
 	map = LMU_Reader::LoadMap(file);
-	if (map == NULL) {
+	if (map.get() == NULL) {
 		Output::ErrorStr(Reader::GetError());
 	}
 
