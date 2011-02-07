@@ -420,6 +420,15 @@
     <ClCompile Include="..\..\src\image_bmp.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\resampler.cpp">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\channel.cpp">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mixer.cpp">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cache.h">
@@ -784,6 +793,15 @@
     </ClInclude>
     <ClInclude Include="..\..\src\image_bmp.h">
       <Filter>Source Files\Backend\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\resampler.h">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\channel.h">
+      <Filter>Source Files\Backend\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mixer.h">
+      <Filter>Source Files\Backend\Audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

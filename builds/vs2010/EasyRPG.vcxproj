@@ -318,6 +318,7 @@
     <ClCompile Include="..\..\src\bitmap_screen.cpp" />
     <ClCompile Include="..\..\src\bitmap_utils.cpp" />
     <ClCompile Include="..\..\src\cache.cpp" />
+    <ClCompile Include="..\..\src\channel.cpp" />
     <ClCompile Include="..\..\src\color.cpp" />
     <ClCompile Include="..\..\src\filefinder_win.cpp" />
     <ClCompile Include="..\..\src\font.cpp" />
@@ -357,6 +358,7 @@
     <ClCompile Include="..\..\src\game_interpreter.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\main_data.cpp" />
+    <ClCompile Include="..\..\src\mixer.cpp" />
     <ClCompile Include="..\..\src\msgbox_win.cpp" />
     <ClCompile Include="..\..\src\output.cpp" />
     <ClCompile Include="..\..\src\pixman_bitmap.cpp" />
@@ -365,6 +367,7 @@
     <ClCompile Include="..\..\src\player.cpp" />
     <ClCompile Include="..\..\src\rect.cpp" />
     <ClCompile Include="..\..\src\registry_win.cpp" />
+    <ClCompile Include="..\..\src\resampler.cpp" />
     <ClCompile Include="..\..\src\scene.cpp" />
     <ClCompile Include="..\..\src\scene_actortarget.cpp" />
     <ClCompile Include="..\..\src\scene_battle.cpp" />
@@ -436,6 +439,7 @@
     <ClInclude Include="..\..\src\bitmap_screen.h" />
     <ClInclude Include="..\..\src\bitmap_utils.h" />
     <ClInclude Include="..\..\src\cache.h" />
+    <ClInclude Include="..\..\src\channel.h" />
     <ClInclude Include="..\..\src\color.h" />
     <ClInclude Include="..\..\src\baseui.h" />
     <ClInclude Include="..\..\src\drawable.h" />
@@ -477,6 +481,7 @@
     <ClInclude Include="..\..\src\keys.h" />
     <ClInclude Include="..\..\src\main_data.h" />
     <ClInclude Include="..\..\src\map_data.h" />
+    <ClInclude Include="..\..\src\mixer.h" />
     <ClInclude Include="..\..\src\msgbox.h" />
     <ClInclude Include="..\..\src\options.h" />
     <ClInclude Include="..\..\src\output.h" />
@@ -487,6 +492,7 @@
     <ClInclude Include="..\..\src\player.h" />
     <ClInclude Include="..\..\src\rect.h" />
     <ClInclude Include="..\..\src\registry_win.h" />
+    <ClInclude Include="..\..\src\resampler.h" />
     <ClInclude Include="..\..\src\scene.h" />
     <ClInclude Include="..\..\src\scene_actortarget.h" />
     <ClInclude Include="..\..\src\scene_battle.h" />
