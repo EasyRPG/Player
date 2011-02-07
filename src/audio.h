@@ -43,7 +43,7 @@ namespace Audio {
 	/// @param volume : Volume
 	/// @param pitch : 
 	///////////////////////////////////////////////////////
-	void BGM_Play(std::string file, int volume, int pitch);
+	void BGM_Play(std::string const& file, int volume, int pitch);
 
 	///////////////////////////////////////////////////////
 	/// Stops the currently playing background music.
@@ -72,7 +72,7 @@ namespace Audio {
 	/// @param volume : Volume
 	/// @param pitch : 
 	///////////////////////////////////////////////////////
-	void BGS_Play(std::string file, int volume, int pitch);
+	void BGS_Play(std::string const& file, int volume, int pitch);
 
 	///////////////////////////////////////////////////////
 	/// Stops the currently playing background sound.
@@ -91,7 +91,7 @@ namespace Audio {
 	/// @param volume : Volume
 	/// @param pitch : 
 	///////////////////////////////////////////////////////
-	void ME_Play(std::string file, int volume, int pitch);
+	void ME_Play(std::string const& file, int volume, int pitch);
 
 	///////////////////////////////////////////////////////
 	/// Stops the currently playing music effect.
@@ -110,7 +110,7 @@ namespace Audio {
 	/// @param volume : Volume
 	/// @param pitch : 
 	///////////////////////////////////////////////////////
-	void SE_Play(std::string file, int volume, int pitch);
+	void SE_Play(std::string const& file, int volume, int pitch);
 
 	///////////////////////////////////////////////////////
 	/// Stops the currently playing sound effect.

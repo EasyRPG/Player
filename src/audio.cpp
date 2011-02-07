@@ -31,7 +31,7 @@ void Audio::Init() {}
 void Audio::Quit() {}
 
 ///////////////////////////////////////////////////////////
-void Audio::BGM_Play(std::string, int, int) {}
+void Audio::BGM_Play(std::string const&, int, int) {}
 
 ///////////////////////////////////////////////////////////
 void Audio::BGM_Pause() {}
@@ -46,7 +46,7 @@ void Audio::BGM_Stop() {}
 void Audio::BGM_Fade(int) {}
 
 ///////////////////////////////////////////////////////////
-void Audio::BGS_Play(std::string, int, int) {}
+void Audio::BGS_Play(std::string const&, int, int) {}
 
 ////////////////////////////////////////////////////////////
 void Audio::BGS_Stop() {}
@@ -55,7 +55,7 @@ void Audio::BGS_Stop() {}
 void Audio::BGS_Fade(int) {}
 
 ///////////////////////////////////////////////////////////
-void Audio::ME_Play(std::string, int, int) {}
+void Audio::ME_Play(std::string const&, int, int) {}
 
 ////////////////////////////////////////////////////////////
 void Audio::ME_Stop() {}
@@ -64,7 +64,7 @@ void Audio::ME_Stop() {}
 void Audio::ME_Fade(int fade) {}
 
 ////////////////////////////////////////////////////////////
-void Audio::SE_Play(std::string, int, int) {}
+void Audio::SE_Play(std::string const&, int, int) {}
 
 ////////////////////////////////////////////////////////////
 void Audio::SE_Stop() {}

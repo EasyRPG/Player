@@ -118,13 +118,13 @@ namespace Game_System {
 	/// Play a Music.
 	/// @param bgm : music data.
 	////////////////////////////////////////////////////////
-	void BgmPlay(RPG::Music bmg);
+	void BgmPlay(RPG::Music const& bmg);
 
 	////////////////////////////////////////////////////////
 	/// Play a Sound.
 	/// @param se : sound data.
 	////////////////////////////////////////////////////////
-	void SePlay(RPG::Sound se);
+	void SePlay(RPG::Sound const& se);
 
 	////////////////////////////////////////////////////////
 	/// Get system graphic name.
@@ -136,21 +136,21 @@ namespace Game_System {
 	/// Set the system graphic.
 	/// @param system_name : new system name
 	////////////////////////////////////////////////////////
-	void SetSystemName(std::string system_name);
+	void SetSystemName(std::string const& system_name);
 
 	////////////////////////////////////////////////////////
 	/// Set the system music
 	/// @param which : which "context" to set the music for
 	/// @param bgm   : the music
 	////////////////////////////////////////////////////////
-	void SetSystemBGM(int which, RPG::Music bgm);
+	void SetSystemBGM(int which, RPG::Music const& bgm);
 
 	////////////////////////////////////////////////////////
 	/// Set a system sound effect
 	/// @param which : which "context" to set the effect for
 	/// @param bgm   : the sound
 	////////////////////////////////////////////////////////
-	void SetSystemSE(int which, RPG::Sound sfx);
+	void SetSystemSE(int which, RPG::Sound const& sfx);
 
 	////////////////////////////////////////////////////////
 	/// Set a timer

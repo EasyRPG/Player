@@ -60,7 +60,7 @@ void Game_System::Init() {
 }
 
 ////////////////////////////////////////////////////////////
-void Game_System::BgmPlay(RPG::Music bgm) {
+void Game_System::BgmPlay(RPG::Music const& bgm) {
 	current_bgm = bgm;
 	// RPG Maker Hack: (OFF) means play nothing
 	if (!bgm.name.empty() && bgm.name != "(OFF)") {
@@ -72,7 +72,7 @@ void Game_System::BgmPlay(RPG::Music bgm) {
 }
 
 ////////////////////////////////////////////////////////////
-void Game_System::SePlay(RPG::Sound se) {
+void Game_System::SePlay(RPG::Sound const& se) {
 	if (!se.name.empty() && se.name != "(OFF)") {
 		Audio::SE_Play(se.name, se.volume, se.tempo);
 	}
@@ -88,17 +88,17 @@ std::string Game_System::GetSystemName() {
 }
 
 ////////////////////////////////////////////////////////////
-void Game_System::SetSystemName(std::string new_system_name) {
+void Game_System::SetSystemName(std::string const& new_system_name) {
 	system_name = new_system_name;
 }
 
 ////////////////////////////////////////////////////////////
-void Game_System::SetSystemBGM(int which, RPG::Music bgm) {
+void Game_System::SetSystemBGM(int which, RPG::Music const& bgm) {
 	system_bgm[which] = bgm;
 }
 
 ////////////////////////////////////////////////////////////
-void Game_System::SetSystemSE(int which, RPG::Sound sfx) {
+void Game_System::SetSystemSE(int which, RPG::Sound const& sfx) {
 	system_sfx[which] = sfx;
 }
 
