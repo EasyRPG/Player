@@ -16,6 +16,7 @@ ADD_DEFINITIONS(
 	-D USE_SDL=1
 
 	-Wall -Werror
+	-fno-exceptions -fno-rtti
 )
 
 INCLUDE_DIRECTORIES(
