@@ -18,11 +18,13 @@
 #ifndef _EASYRPG_RESAMPLER_H_
 #define _EASYRPG_RESAMPLER_H_
 
-class Resampler
-{
+#include "system.h"
+
+class Resampler {
 public:
-	Resampler();
-	~Resampler();
+	virtual void merge(int16* data, int d_len, int16* stream, int s_len, uint16 vol, uint8 balance) = 0;
+
+	static Resampler* GetInstance(uint16 inrate, uint16 outrate);
 };
 
 #endif

@@ -16,11 +16,66 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "resampler.h"
+#include "output.h"
+#include <algorithm>
+#include <cassert>
 
-Resampler::Resampler() {
+static const int32 ST_SAMPLE_MAX = 0x7fff;
+static const int32 ST_SAMPLE_MIN = (-ST_SAMPLE_MAX - 1);
+
+inline void clip_add(int16& a, int b) {
+	int32 val = a + b;
+	a = (int16) std::max(ST_SAMPLE_MIN, std::min(ST_SAMPLE_MAX, val));
 }
 
-Resampler::~Resampler() {
+class SimpleResampler : public Resampler {
+public:
+	SimpleResampler(uint16 _inrate, uint16 _outrate) : inrate(_inrate), outrate(_outrate) {
+
+	}
+	void merge(int16* data, int d_len, int16* stream, int s_len, uint16 vol, uint8 balance);
+
+private:
+	uint16 inrate;
+	uint16 outrate;
+};
+
+class CopyResampler : public Resampler {
+public:
+	CopyResampler() {
+
+	}
+	void merge(int16* data, int d_len, int16* stream, int s_len, uint16 vol, uint8 balance);
+};
+
+void SimpleResampler::merge(int16* data, int d_len, int16* stream, int s_len, uint16 vol, uint8 balance) {
+
+
 }
 
+void CopyResampler::merge(int16* data, int d_len, int16* stream, int s_len, uint16 vol, uint8 balance) {
+	int i = 0;
+	while (i < d_len && i < s_len) {
+		clip_add(data[0], stream[0]); // TODO apply vol and balance
+		clip_add(data[1], stream[1]);
+
+		stream += 2;
+		data += 2;
+		i += 2;
+	}
+}
+
+Resampler* Resampler::GetInstance(uint16 inrate, uint16 outrate) {
+	if (inrate == outrate) {
+		return new CopyResampler();
+	} else {
+		if ((inrate % outrate) == 0) {
+			return new SimpleResampler(inrate, outrate);
+		} else {
+			// TODO
+			//return new LinearResampler(inrate, outrate);
+			return 0;
+		}
+	}
+}
 

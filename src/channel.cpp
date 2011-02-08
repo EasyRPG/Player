@@ -20,25 +20,27 @@
 
 namespace Audio {
 
-Channel::Channel(uint16 _rate, uint16 _vol, uint8 _balance, pBuf& data):
+Channel::Channel(uint16 _rate, uint16 _vol, uint8 _balance, pBuf& data, int _bsize):
 rate(_rate),
 vol(_vol),
 balance(_balance),
 buffer(data),
-paused(true) {
+bsize(_bsize),
+paused(true),
+offset(0) {
 
-	// resampler = GetResamplerInstance(rate, global_rate); 
+	resampler = Resampler::GetInstance(rate, 22050); 
 
 }
 
 Channel::~Channel() {
+	delete resampler;
 }
 
 
 void Channel::Mix(int16 *stream, int len) {
-	// resampler->proc(stream, len, vol, balance);
-
+	uint32 pos = offset*2; // * 2 = stereo
+	resampler->merge(buffer+pos, bsize-pos, stream, len, vol, balance);
 }
-
 
 }

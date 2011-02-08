@@ -25,7 +25,12 @@
 #include "filefinder.h"
 #include "output.h"
 #include "SDL.h"
+#ifdef USE_SDL_MIXER
 #include "SDL_mixer.h"
+#else
+#include "mixer.h"
+#endif
+
 
 #ifdef _WIN32
 // FIXME: A bug in sdl_mixer causes that the player is muted forever when a
@@ -45,6 +50,11 @@ namespace Audio {
 	bool me_stopped_bgm;
 	std::map<int, Mix_Chunk*> sounds;
 	std::map<int, Mix_Chunk*>::iterator it_sounds;
+
+#ifndef USE_SDL_MIXER
+	SDL_AudioSpec audio_spec;
+	Mixer *mixer;
+#endif
 }
 
 ///////////////////////////////////////////////////////////
@@ -59,7 +69,19 @@ void Audio::Init() {
 #else
 	int frequency = MIX_DEFAULT_FREQUENCY;
 #endif
-
+#ifndef USE_SDL_MIXER
+	mixer = new Mixer();
+	audio_spec.freq = 22050;
+	audio_spec.format = AUDIO_S16SYS;
+	audio_spec.channels = 2;
+	audio_spec.samples = 2048;
+	audio_spec.callback = mixer->callback();
+	audio_spec.userdata = NULL;
+	if ( SDL_OpenAudio(&audio_spec, NULL) < 0 ) {
+		Output::Error("Couldn't open audio device. %s", SDL_GetError());
+	}
+	SDL_PauseAudio(0);
+#else
 	if (Mix_OpenAudio(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) < 0) {
 		Output::Error("Couldn't initialize audio.\n%s\n", Mix_GetError());
 	}
@@ -68,6 +90,8 @@ void Audio::Init() {
 	if ((initted & flags) != flags) {
 		Output::Error("Couldn't initialize audio.\n%s\n", Mix_GetError());
 	}*/
+#endif
+
 	bgm = NULL;
 	bgs = NULL;
 	me = NULL;
@@ -84,6 +108,9 @@ void Audio::Quit() {
 	Mix_FreeChunk(bgs);
 
 	Mix_CloseAudio();
+#ifndef USE_SDL_MIXER
+	delete mixer;
+#endif
 }
 
 ///////////////////////////////////////////////////////////
