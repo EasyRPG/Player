@@ -40,6 +40,7 @@
 #include "player.h"
 #include "sdl_bitmap.h"
 #include "soft_bitmap.h"
+#include "pixman_bitmap.h"
 #ifdef USE_SDL_TTF
 #include <SDL_ttf.h>
 #endif
@@ -335,12 +336,35 @@ bool SdlUi::RefreshDisplayMode() {
 		
 	current_display_mode.bpp = main_window->format->BitsPerPixel;
 
+	const DynamicFormat format(
+		main_window->format->BitsPerPixel,
+		main_window->format->Rmask,
+		main_window->format->Gmask,
+		main_window->format->Bmask,
+		main_window->format->Amask,
+		PF::NoAlpha);
+
+	#ifdef USE_SOFT_BITMAP
+		#if 0
+			SoftBitmap::SetFormat(format_B8G8R8A8_a().format());
+		#else
+			SoftBitmap::SetFormat(SoftBitmap::ChooseFormat(format));
+		#endif
+	#endif
+	#ifdef USE_PIXMAN_BITMAP
+		#if 0
+			PixmanBitmap::SetFormat(format_B8G8R8A8_a().format());
+		#else
+			PixmanBitmap::SetFormat(PixmanBitmap::ChooseFormat(format));
+		#endif
+	#endif
+
 	if (zoom_available && current_display_mode.zoom) {
 		// Create a non zoomed surface as drawing surface
 		main_surface = Surface::CreateSurface(current_display_mode.width,
 											  current_display_mode.height,
-											  current_display_mode.bpp,
-											  false);
+											  false,
+											  current_display_mode.bpp);
 
 		if (!main_surface) 
 			return false;
@@ -349,16 +373,7 @@ bool SdlUi::RefreshDisplayMode() {
 		void *pixels = (uint8*) main_window->pixels + main_window->offset;
 		// Drawing surface will be the window itself
 		main_surface = Surface::CreateSurfaceFrom(
-			pixels,
-			main_window->w,
-			main_window->h,
-			main_window->format->BitsPerPixel,
-			main_window->pitch,
-			main_window->format->Rmask,
-			main_window->format->Gmask,
-			main_window->format->Bmask,
-			main_window->format->Amask
-		);
+			pixels, main_window->w, main_window->h, main_window->pitch, format);
 	}
 
 	return true;
@@ -466,7 +481,7 @@ void SdlUi::DrawScreenText(const std::string &text, int x, int y, Color color) {
 
 	uint32 ucolor = main_surface->GetUint32Color(color);
 
-	FontRender8x8::TextDraw(text, (uint8*)main_surface->pixels(), x, y, main_surface->width(), main_surface->height(), main_surface->bpp(), ucolor);
+	FontRender8x8::TextDraw(text, (uint8*)main_surface->pixels(), x, y, main_surface->width(), main_surface->height(), main_surface->bytes(), ucolor);
 	
 	main_surface->Unlock();
 }
@@ -477,7 +492,7 @@ void SdlUi::DrawScreenText(const std::string &text, Rect dst_rect, Color color) 
 
 	uint32 ucolor = main_surface->GetUint32Color(color);
 
-	FontRender8x8::TextDraw(text, (uint8*)main_surface->pixels(), dst_rect, main_surface->width(), main_surface->height(), main_surface->bpp(), ucolor);
+	FontRender8x8::TextDraw(text, (uint8*)main_surface->pixels(), dst_rect, main_surface->width(), main_surface->height(), main_surface->bytes(), ucolor);
 
 	main_surface->Unlock();
 }
@@ -502,14 +517,18 @@ void SdlUi::Blit2X(Bitmap* src, SDL_Surface* dst_surf) {
 		dst_surf->pixels,
 		dst_surf->w,
 		dst_surf->h,
-		dst_surf->format->BitsPerPixel,
 		dst_surf->pitch,
-		dst_surf->format->Rmask,
-		dst_surf->format->Gmask,
-		dst_surf->format->Bmask,
-		dst_surf->format->Amask);
+		DynamicFormat(
+			dst_surf->format->BitsPerPixel,
+			dst_surf->format->Rmask,
+			dst_surf->format->Gmask,
+			dst_surf->format->Bmask,
+			dst_surf->format->Amask,
+			PF::NoAlpha));
 
 	dst->Blit2x(dst->GetRect(), src, src->GetRect());
+
+	delete dst;
 
 	if (SDL_MUSTLOCK(dst_surf)) SDL_UnlockSurface(dst_surf);
 }

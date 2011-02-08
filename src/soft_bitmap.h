@@ -36,31 +36,17 @@
 class SoftBitmap : public Surface {
 public:
 	SoftBitmap(int width, int height, bool transparent);
-	SoftBitmap(void *pixels, int width, int height, int pitch);
+	SoftBitmap(void *pixels, int width, int height, int pitch, const DynamicFormat& format);
 	SoftBitmap(const std::string& filename, bool transparent, uint32 flags);
 	SoftBitmap(const uint8* data, uint bytes, bool transparent, uint32 flags);
 	SoftBitmap(Bitmap* source, Rect src_rect, bool transparent);
 	~SoftBitmap();
 
-	void SetTransparentColor(Color color);
-
-	void* pixels();
-	int width() const;
-	int height() const;
-	uint8 bpp() const;
-	uint16 pitch() const;
-	uint32 rmask() const;
-	uint32 gmask() const;
-	uint32 bmask() const;
-	uint32 amask() const;
-	uint32 colorkey() const;
+	static DynamicFormat ChooseFormat(const DynamicFormat& format);
+	static void SetFormat(const DynamicFormat& format);
 
 protected:
 	friend class SoftBitmapScreen;
-
-	static const format_B8G8R8A8_a pixel_format;
-	static const format_B8G8R8A8_n opaque_format;
-	static const format_R8G8B8A8_a image_format;
 
 	/// Bitmap data.
 	int w, h;
@@ -68,18 +54,19 @@ protected:
 	void* bitmap;
 	bool destroy;
 
+	void* pixels();
+	int width() const;
+	int height() const;
+	uint16 pitch() const;
+
 	void Init(int width, int height, void* data, int pitch = 0, bool destroy = true);
+	void ConvertImage(int& width, int& height, void*& pixels, bool transparent);
 
-	Color GetColor(uint32 color) const;
-	uint32 GetUint32Color(const Color &color) const;
-	uint32 GetUint32Color(uint8 r, uint8  g, uint8 b, uint8 a) const;
-	void GetColorComponents(uint32 color, uint8 &r, uint8 &g, uint8 &b, uint8 &a) const;
-
-	void Lock();
-	void Unlock();
-
-	void ConvertImage(int& width, int& height, void*& pixels);
-	void SetupFormat();
+	static bool initialized;
+	static DynamicFormat pixel_format;
+	static DynamicFormat opaque_pixel_format;
+	static DynamicFormat image_format;
+	static DynamicFormat opaque_image_format;
 };
 
 #endif

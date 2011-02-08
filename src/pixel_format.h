@@ -66,9 +66,9 @@ struct Component {
 
 	inline void convert_mask() {
 		int bit_count = count_bits(mask);
-		uint32 mask_ex = (1U << bit_count) - 1;
+		uint32 mask_ex = (~0U >> (32 - bit_count));
 		uint32 mask_lo = mask_ex - mask;
-		shift = (uint8)count_bits(mask_lo);
+		shift = (uint8)count_bits(mask_lo) & 0x1F;
 		bits = (uint8)(bit_count - shift);
 		byte = shift / 8;
 	}
@@ -79,6 +79,14 @@ struct Component {
 
 	inline bool operator!=(const Component& c) {
 		return mask != c.mask;
+	}
+
+	inline uint unpack(uint32 pix) const {
+		return (uint8)(((pix >> shift) & ((1 << bits) - 1)) << (8 - bits));
+	}
+
+	inline uint32 pack(const uint8& x) const {
+		return (((uint32)x >> (8 - bits)) << shift);
 	}
 
 	Component() {}
@@ -99,6 +107,7 @@ struct Component {
 class DynamicFormat {
 public:
 	int bits;
+	int bytes;
 	Component r, g, b, a;
 	PF::AlphaType alpha_type;
 
@@ -110,7 +119,7 @@ public:
 				  int bb, int bs,
 				  int ab, int as,
 				  PF::AlphaType alpha_type) :
-		bits(bits),
+		bits(bits), bytes((bits + 7) / 8),
 		r(rb, rs), g(gb, gs), b(bb, bs), a(ab, as),
 		alpha_type(alpha_type) {}
 
@@ -120,12 +129,12 @@ public:
 				  uint32 bmask,
 				  uint32 amask,
 				  PF::AlphaType alpha_type) :
-		bits(bits),
+		bits(bits), bytes((bits + 7) / 8),
 		r(rmask), g(gmask), b(bmask), a(amask),
 		alpha_type(alpha_type) {}
 
 	DynamicFormat(const DynamicFormat& ref) :
-		bits(ref.bits),
+		bits(ref.bits), bytes((bits + 7) / 8),
 		r(ref.r), g(ref.g), b(ref.b), a(ref.a),
 		alpha_type(ref.alpha_type) {}
 
@@ -136,6 +145,7 @@ public:
 			 int ab, int as,
 			 PF::AlphaType _alpha_type) {
 		bits = _bits;
+		bytes = (bits + 7) / 8;
 		r = Component(rb, rs);
 		g = Component(gb, gs);
 		b = Component(bb, bs);
@@ -150,6 +160,7 @@ public:
 			 uint32 amask,
 			 PF::AlphaType _alpha_type) {
 		bits = _bits;
+		bytes = (bits + 7) / 8;
 		r = Component(rmask);
 		g = Component(gmask);
 		b = Component(bmask);
@@ -167,6 +178,26 @@ public:
 			(b.shift << 17);
 	}
 
+	inline int code_alpha() const {
+		int x = (int) (alpha_type == PF::Alpha ? PF::Alpha : PF::NoAlpha) | ((bits - 1) << 2);
+		return x |
+			(r.shift <<  7) |
+			(g.shift << 12) |
+			(b.shift << 17) |
+			(alpha_type == PF::Alpha ? (a.shift << 22) : 0);
+	}
+
+	inline void uint32_to_rgba(uint32 pix, uint8& _r, uint8& _g, uint8& _b, uint8& _a) const {
+		_r = r.unpack(pix);
+		_g = g.unpack(pix);
+		_b = b.unpack(pix);
+		_a = a.unpack(pix);
+	}
+
+	inline uint32 rgba_to_uint32(const uint8& _r, const uint8& _g, const uint8& _b, const uint8& _a) const {
+		return r.pack(_r) | g.pack(_g) | b.pack(_b) | a.pack(_a);
+	}
+
 	inline bool operator==(const DynamicFormat& f) {
 		return r ==  f.r && g == f.g && b == f.b && a == f.a && alpha_type == f.alpha_type;
 	}
@@ -182,6 +213,24 @@ public:
 
 template <class TPF, int bits>
 struct bits_traits {
+};
+
+template <class TPF>
+struct bits_traits<TPF, 8> {
+	static inline uint32 get_uint32(const uint8* p) {
+		return (uint32)*(const uint8*)p;
+	}
+	static inline void set_uint32(uint8* p, uint32 pix) {
+		*(uint8*)p = (uint8) pix;
+	}
+	static inline void copy_pixel(uint8* dst, const uint8* src) {
+		*(uint8*)dst = *(const uint8*)src;
+	}
+	static inline void set_pixels(uint8* dst, const uint8* src, int n) {
+		uint8 pixel = (uint8) get_uint32(src);
+		uint8* dst_pix = (uint8*) dst;
+		std::fill(dst_pix, dst_pix + n, pixel);
+	}
 };
 
 template <class TPF>
@@ -437,14 +486,30 @@ struct rgba_traits<TPF, PF::NotAligned, dynamic_alpha, PF::Alpha> {
 	}
 };
 
-// unaligned, has colorkey (dynamic)
-template<class TPF, bool dynamic_alpha>
-struct rgba_traits<TPF, PF::NotAligned, dynamic_alpha, PF::ColorKey> {
+// unaligned, has colorkey
+template<class TPF>
+struct rgba_traits<TPF, PF::NotAligned, PF::StaticAlpha, PF::ColorKey> {
 	static inline void get_rgba(const TPF* pf, const uint8* p, uint8& r, uint8& g, uint8& b, uint8& a) {
 		const uint32 pix = pf->get_uint32(p);
-		if (pf->has_alpha() && pix == pf->colorkey)
-			a = 0;
 		pf->uint32_to_rgba(pix, r, g, b, a);
+		a = pix == pf->colorkey ? 0 : 255;
+	}
+
+	static inline void set_rgba(const TPF* pf, uint8* p, const uint8& r, const uint8& g, const uint8& b, const uint8& a) {
+		const uint32 pix = a == 0
+			? pf->colorkey
+			: pf->rgba_to_uint32(r, g, b, a);
+		pf->set_uint32(p, pix);
+	}
+};
+
+// unaligned, has colorkey (dynamic)
+template<class TPF>
+struct rgba_traits<TPF, PF::NotAligned, PF::DynamicAlpha, PF::ColorKey> {
+	static inline void get_rgba(const TPF* pf, const uint8* p, uint8& r, uint8& g, uint8& b, uint8& a) {
+		const uint32 pix = pf->get_uint32(p);
+		pf->uint32_to_rgba(pix, r, g, b, a);
+		a = (pf->has_alpha() && pix == pf->colorkey) ? 0 : 255;
 	}
 
 	static inline void set_rgba(const TPF* pf, uint8* p, const uint8& r, const uint8& g, const uint8& b, const uint8& a) {
@@ -489,6 +554,7 @@ struct mask_traits<TPF, PF::StaticMasks, _bits, _shift> {
 
 template<class TPF, int _bits, int _shift>
 struct mask_traits<TPF, PF::DynamicMasks, _bits, _shift> {
+	static const int _mask = 0;
 	static inline int bits(const Component& c) { return c.bits; }
 	static inline int shift(const Component& c) { return c.shift; }
 	static inline int byte(const Component& c) { return c.byte; }
@@ -621,10 +687,10 @@ public:
 	inline int b_bits() const {		return mask_b_traits_type::bits(format().b);	}
 	inline int a_bits() const {		return mask_a_traits_type::bits(format().a);	}
 
-	inline int r_shift() const {		return mask_r_traits_type::shift(format().r);	}
-	inline int g_shift() const {		return mask_g_traits_type::shift(format().g);	}
-	inline int b_shift() const {		return mask_b_traits_type::shift(format().b);	}
-	inline int a_shift() const {		return mask_a_traits_type::shift(format().a);	}
+	inline int r_shift() const {	return mask_r_traits_type::shift(format().r);	}
+	inline int g_shift() const {	return mask_g_traits_type::shift(format().g);	}
+	inline int b_shift() const {	return mask_b_traits_type::shift(format().b);	}
+	inline int a_shift() const {	return mask_a_traits_type::shift(format().a);	}
 
 	inline bool alpha_type() const {
 		return alpha_type_traits_type::alpha_type(this);
@@ -738,6 +804,8 @@ typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::NoAlpha,PF::IsAligne
 typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::NoAlpha,PF::IsAligned,8,16,8,8,8,0,8,24> format_A8R8G8B8_n;
 #endif
 
+typedef PixelFormatT< 8,PF::StaticMasks,PF::StaticAlpha,PF::ColorKey,PF::IsAligned,8,0,8,0,8,0,0,0> format_L8_k;
+
 typedef PixelFormatT<32,PF::DynamicMasks,PF::StaticAlpha,PF::Alpha,PF::IsAligned,0,0,0,0,0,0,0,0> format_dynamic_32_a;
 typedef PixelFormatT<32,PF::DynamicMasks,PF::StaticAlpha,PF::ColorKey,PF::IsAligned,0,0,0,0,0,0,0,0> format_dynamic_32_k;
 typedef PixelFormatT<32,PF::DynamicMasks,PF::StaticAlpha,PF::NoAlpha,PF::IsAligned,0,0,0,0,0,0,0,0> format_dynamic_32_n;
@@ -751,6 +819,7 @@ typedef PixelFormatT<16,PF::DynamicMasks,PF::StaticAlpha,PF::Alpha,PF::NotAligne
 typedef PixelFormatT<16,PF::DynamicMasks,PF::StaticAlpha,PF::ColorKey,PF::NotAligned,0,0,0,0,0,0,0,0> format_dynamic_16_k;
 typedef PixelFormatT<16,PF::DynamicMasks,PF::StaticAlpha,PF::NoAlpha,PF::NotAligned,0,0,0,0,0,0,0,0> format_dynamic_16_n;
 typedef PixelFormatT<16,PF::DynamicMasks,PF::DynamicAlpha,PF::NoAlpha,PF::NotAligned,0,0,0,0,0,0,0,0> format_dynamic_16_d;
+
 
 ////////////////////////////////////////////////////////////
 

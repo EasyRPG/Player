@@ -110,9 +110,8 @@ Color Bitmap::GetPixel(int x, int y) {
 
 ////////////////////////////////////////////////////////////
 Bitmap* Bitmap::Resample(int scale_w, int scale_h, const Rect& src_rect) {
-	Surface* dst = Surface::CreateSurface(scale_w, scale_h, transparent);
-	if (transparent)
-		dst->SetTransparentColor(GetTransparentColor());
+	Surface* dst = Surface::CreateSurface(scale_w, scale_h, GetTransparent());
+	dst->SetTransparentColor(GetTransparentColor());
 	dst->Clear();
 	dst->StretchBlit(dst->GetRect(), this, src_rect, 255);
 	return dst;
@@ -153,7 +152,7 @@ Rect Bitmap::GetRect() const {
 }
 
 bool Bitmap::GetTransparent() const {
-	return transparent;
+	return format.alpha_type != PF::NoAlpha;
 }
 
 Color Bitmap::GetTransparentColor() const {
@@ -216,7 +215,58 @@ Bitmap::TileOpacity Bitmap::GetTileOpacity(int row, int col) {
 }
 
 ////////////////////////////////////////////////////////////
+void Bitmap::GetColorComponents(uint32 color, uint8 &r, uint8 &g, uint8 &b, uint8 &a) const {
+	format.uint32_to_rgba(color, r, g, b, a);
+}
+
+Color Bitmap::GetColor(uint32 color) const {
+	uint8 r, g, b, a;
+	GetColorComponents(color, r, g, b, a);
+	return Color(r, g, b, a);
+}
+
+uint32 Bitmap::GetUint32Color(uint8 r, uint8 g, uint8 b, uint8 a) const {
+	return format.rgba_to_uint32(r, g, b, a);
+}
+
+uint32 Bitmap::GetUint32Color(const Color &color) const {
+	return GetUint32Color(color.red, color.green, color.blue, color.alpha);
+}
+
+////////////////////////////////////////////////////////////
+void Bitmap::Lock() {
+}
+
+void Bitmap::Unlock() {
+}
+
+////////////////////////////////////////////////////////////
+uint8 Bitmap::bytes() const {
+	return format.bytes;
+}
+
+uint32 Bitmap::rmask() const {
+	return format.r.mask;
+}
+
+uint32 Bitmap::gmask() const {
+	return format.g.mask;
+}
+
+uint32 Bitmap::bmask() const {
+	return format.b.mask;
+}
+
+uint32 Bitmap::amask() const {
+	return format.a.mask;
+}
+
+uint32 Bitmap::colorkey() const {
+	return 0;
+}
+
+////////////////////////////////////////////////////////////
 uint8* Bitmap::pointer(int x, int y) {
-	return (uint8*) pixels() + y * pitch() + x * bpp();
+	return (uint8*) pixels() + y * pitch() + x * bytes();
 }
 

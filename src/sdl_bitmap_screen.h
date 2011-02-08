@@ -36,7 +36,7 @@ public:
 
 protected:
 	void BlitScreenIntern(Bitmap* draw_bitmap, int x, int y, Rect src_rect, bool needs_scale);
-	Bitmap* Refresh(Rect& rect, bool& needs_scale);
+	Bitmap* Refresh(Rect& rect, bool& need_scale, int& bush_y);
 };
 
 #endif

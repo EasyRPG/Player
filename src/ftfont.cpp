@@ -144,29 +144,28 @@ Bitmap* FTFont::Render(int c) {
 		return NULL;
 	}
 
-	const uint8* src = (const uint8*) ft_bitmap.buffer;
-	if (ft_bitmap.pitch < 0)
-		src -= ft_bitmap.rows * ft_bitmap.pitch;
+	int pitch = ft_bitmap.pitch;
+	if (pitch < 0)
+		pitch = -pitch;
+
+	Surface* source = Surface::CreateSurfaceFrom(
+		ft_bitmap.buffer, ft_bitmap.width, ft_bitmap.rows, pitch, format_L8_k().format());
+	source->SetTransparentColor(Color(0,0,0,0));
 
 	Surface* bitmap = Surface::CreateSurface(ft_bitmap.width, size + 2, true);
-	uint8* dst = (uint8*) bitmap->pixels();
+	bitmap->SetTransparentColor(Color(0,0,0,0));
+	bitmap->Fill(Color(255,255,255,255));
 
 	const int base_line = (face->descender != 0)
 		? bitmap->height() * -face->descender / face->height
 		: 0;
 	int offset = bitmap->height() - face->glyph->bitmap_top - base_line;
 
-	uint32 fg = bitmap->GetUint32Color(0, 0, 0, 255);
-	uint32 bg = bitmap->GetUint32Color(0, 0, 0, 0);
-	for (int yd = 0; yd < bitmap->height(); yd++) {
-		int ys = yd - offset;
-		if (ys < 0 || ys >= ft_bitmap.rows)
-			continue;
-		const uint8* p = src + ys * ft_bitmap.pitch;
-		uint32* q = (uint32*) (dst + yd * bitmap->pitch());
-		for (int x = 0; x < ft_bitmap.width; x++)
-			*q++ = (*p++ != 0) ? fg : bg;
-	}
+	bitmap->MaskBlit(0, offset, source, source->GetRect());
+	if (ft_bitmap.pitch < 0)
+		bitmap->Flip(bitmap->GetRect(), false, true);
+
+	delete source;
 
 	return bitmap;
 }

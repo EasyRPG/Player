@@ -47,9 +47,9 @@
 #include "util_macro.h"
 
 ////////////////////////////////////////////////////////////
-Surface* Surface::CreateSurface(int width, int height, int bpp, bool transparent) {
+Surface* Surface::CreateSurface(int width, int height, bool transparent, int bpp) {
 	#if defined(USE_SDL_BITMAP)
-		return (Surface*)new SdlBitmap(width, height, bpp, transparent);
+		return (Surface*)new SdlBitmap(width, height, transparent, bpp);
 	#elif defined(USE_SOFT_BITMAP)
 		return (Surface*)new SoftBitmap(width, height, transparent);
 	#elif defined(USE_PIXMAN_BITMAP)
@@ -75,13 +75,13 @@ Surface* Surface::CreateSurface(Bitmap* source, Rect src_rect, bool transparent)
 	#endif
 }
 
-Surface* Surface::CreateSurfaceFrom(void *pixels, int width, int height, int depth, int pitch, uint32 Rmask, uint32 Gmask, uint32 Bmask, uint32 Amask) {
+Surface* Surface::CreateSurfaceFrom(void *pixels, int width, int height, int pitch, const DynamicFormat& format) {
 	#if defined(USE_SDL_BITMAP)
-		return (Surface*) new SdlBitmap(pixels, width, height, depth, pitch, Rmask, Gmask, Bmask, Amask);
+		return (Surface*) new SdlBitmap(pixels, width, height, pitch, format);
 	#elif defined(USE_SOFT_BITMAP)
-		return (Surface*) new SoftBitmap(pixels, width, height, pitch);
+		return (Surface*) new SoftBitmap(pixels, width, height, pitch, format);
 	#elif defined(USE_PIXMAN_BITMAP)
-		return (Surface*) new PixmanBitmap(pixels, width, height, pitch);
+		return (Surface*) new PixmanBitmap(pixels, width, height, pitch, format);
 	#else
 		#error "No bitmap implementation selected"
 	#endif
@@ -120,16 +120,16 @@ void Surface::Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
 	if (!Rect::AdjustRectangles(dst_rect, src_rect, GetRect()))
 		return;
 
-	BitmapUtils* bm_utils = Begin(src);
-
 	if (opacity >= 255)
 		opacity = 255;
 
-	const uint8* src_pixels = src->pointer(src_rect.x, src_rect.y);
-	uint8* dst_pixels = pointer(dst_rect.x, dst_rect.y);
+	BitmapUtils* bm_utils = Begin(src);
 
 	bool opacity_blit = opacity < 255;
 	bool overlay_blit = bm_utils->GetSrcFormat().alpha_type != PF::NoAlpha;
+
+	const uint8* src_pixels = src->pointer(src_rect.x, src_rect.y);
+	uint8* dst_pixels = pointer(dst_rect.x, dst_rect.y);
 
 	for (int i = 0; i < dst_rect.height; i++) {
 		if (opacity_blit)
@@ -223,14 +223,14 @@ void Surface::TiledBlit(int ox, int oy, Rect src_rect, Bitmap* src, Rect dst_rec
 
 ////////////////////////////////////////////////////////////
 void Surface::StretchBlit(Bitmap* src, Rect src_rect, int opacity) {
-	if (src_rect.width == width() && src_rect.height == height())
-		Blit(0, 0, src, src_rect, opacity);
-	else
-		StretchBlit(GetRect(), src, src_rect, opacity);
+	StretchBlit(GetRect(), src, src_rect, opacity);
 }
 
 ////////////////////////////////////////////////////////////
 void Surface::StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int opacity) {
+	if (opacity <= 0)
+		return;
+
 	if (src_rect.width == dst_rect.width && src_rect.height == dst_rect.height) {
 		Blit(dst_rect.x, dst_rect.y, src, src_rect, opacity);
 		return;
@@ -278,18 +278,11 @@ void Surface::StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int opacity
 	uint8* dst_pixels = pointer(dx0, dy0);
 	int step = (int)((sx1 - sx0) * (1 << BitmapUtils::FRAC_BITS)) / (dx1 - dx0);
 
-	bool opacity_blit = opacity < 255;
-	bool overlay_blit = bm_utils->GetSrcFormat().alpha_type != PF::NoAlpha;
-
 	for (int i = 0; i < dy1 - dy0; i++) {
 		const uint8* nearest_y = src->pointer(0, (int)(sy0 + i * zoom_y));
 		int x = (int)(sx0 * (1 << BitmapUtils::FRAC_BITS)) + step / 2;
-		if (opacity_blit)
-			bm_utils->OpacityScaleBlit(dst_pixels, nearest_y, dx1 - dx0, x, step, opacity);
-		else if (overlay_blit)
-			bm_utils->OverlayScaleBlit(dst_pixels, nearest_y, dx1 - dx0, x, step);
-		else
-			bm_utils->CopyScaleBlit(dst_pixels, nearest_y, dx1 - dx0, x, step);
+
+		bm_utils->ScaleBlit(dst_pixels, nearest_y, dst_rect.width, x, step, opacity);
 		dst_pixels += pitch();
 	}
 
@@ -349,7 +342,10 @@ void Surface::FlipBlit(int x, int y, Bitmap* src, Rect src_rect, bool horizontal
 }
 
 ////////////////////////////////////////////////////////////
-void Surface::TransformBlit(Rect dst_rect, Bitmap* src, Rect src_rect, const Matrix& inv) {
+void Surface::TransformBlit(Rect dst_rect, Bitmap* src, Rect src_rect, const Matrix& inv, int opacity) {
+	if (opacity <= 0)
+		return;
+
 	dst_rect.Adjust(GetWidth(), GetHeight());
 
 	BitmapUtils* bm_utils = Begin(src);
@@ -360,7 +356,7 @@ void Surface::TransformBlit(Rect dst_rect, Bitmap* src, Rect src_rect, const Mat
 	for (int y = dst_rect.y; y < dst_rect.y + dst_rect.height; y++) {
 		bm_utils->TransformBlit(dst_pixels, src_pixels, src->pitch(),
 								dst_rect.x, dst_rect.x + dst_rect.width, y,
-								src_rect, inv);
+								src_rect, inv, opacity);
 		dst_pixels += pitch();
 	}
 
@@ -373,7 +369,8 @@ void Surface::TransformBlit(Rect dst_rect,
 							double angle,
 							double scale_x, double scale_y,
 							int src_pos_x, int src_pos_y,
-							int dst_pos_x, int dst_pos_y) {
+							int dst_pos_x, int dst_pos_y,
+							int opacity) {
 	Matrix fwd = Matrix::Setup(angle, scale_x, scale_y,
 							   src_pos_x, src_pos_y,
 							   dst_pos_x, dst_pos_y);
@@ -384,7 +381,7 @@ void Surface::TransformBlit(Rect dst_rect,
 	if (dst_rect.IsEmpty())
 		return;
 
-	TransformBlit(dst_rect, src, src_rect, inv);
+	TransformBlit(dst_rect, src, src_rect, inv, opacity);
 }
 
 ////////////////////////////////////////////////////////////
@@ -411,7 +408,7 @@ void Surface::MaskBlit(int x, int y, Bitmap* src, Rect src_rect) {
 }
 
 ////////////////////////////////////////////////////////////
-void Surface::WaverBlit(int x, int y, Bitmap* src, Rect src_rect, int depth, double phase) {
+void Surface::WaverBlit(int x, int y, Bitmap* src, Rect src_rect, int depth, double phase, int opacity) {
 	if (y < 0) {
 		src_rect.y -= y;
 		src_rect.height += y;
@@ -428,8 +425,8 @@ void Surface::WaverBlit(int x, int y, Bitmap* src, Rect src_rect, int depth, dou
 	const uint8* src_pixels = src->pointer(src_rect.x, src_rect.y);
 	uint8* dst_pixels = pointer(x, y);
 	int dst_width = GetWidth();
-	int src_bytes = src->bpp();
-	int dst_bytes = bpp();
+	int src_bytes = src->bytes();
+	int dst_bytes = bytes();
 
 	for (int y = 0; y < src_rect.height; y++) {
 		int offset = (int) (depth * (1 + sin((phase + y * 20) * 3.14159 / 180)));
@@ -444,7 +441,7 @@ void Surface::WaverBlit(int x, int y, Bitmap* src, Rect src_rect, int depth, dou
 			count += x + offset;
 		}
 
-		bm_utils->OverlayBlit(&dst_pixels[dx0 * dst_bytes], &src_pixels[sx0 * src_bytes], count);
+		bm_utils->Blit(&dst_pixels[dx0 * dst_bytes], &src_pixels[sx0 * src_bytes], count, opacity);
 
 		src_pixels += src->pitch();
 		dst_pixels += pitch();
@@ -471,7 +468,7 @@ void Surface::FillRect(Rect dst_rect, const Color &color) {
 
 	uint8* dst_pixels = pointer(dst_rect.x, dst_rect.y);
 
-	if (dst_rect.width * bpp() == pitch())
+	if (dst_rect.width * bytes() == pitch())
 		bm_utils->SetPixels(dst_pixels, pixel, dst_rect.height * dst_rect.width);
 	else {
 		for (int i = 0; i < dst_rect.height; i++) {
@@ -605,7 +602,7 @@ void Surface::Flip(const Rect& dst_rect, bool horizontal, bool vertical) {
 	BitmapUtils* bm_utils = Begin();
 
 	if (horizontal && vertical) {
-		int pad = pitch() - width() * bpp();
+		int pad = pitch() - width() * bytes();
 		uint8* dst_pixels_first = pointer(dst_rect.x, dst_rect.y);
 		uint8* dst_pixels_last = pointer(dst_rect.x + dst_rect.width - 1, dst_rect.y + dst_rect.height - 1);
 
@@ -615,8 +612,8 @@ void Surface::Flip(const Rect& dst_rect, bool horizontal, bool vertical) {
 			dst_pixels_last -= pad;
 		}
 	} else if (horizontal) {
-		int pad_left = (dst_rect.width - dst_rect.width / 2) * bpp();
-		int pad_right = (dst_rect.width + dst_rect.width / 2) * bpp();
+		int pad_left = (dst_rect.width - dst_rect.width / 2) * bytes();
+		int pad_right = (dst_rect.width + dst_rect.width / 2) * bytes();
 
 		uint8* dst_pixels_left = pointer(dst_rect.x, dst_rect.y);
 		uint8* dst_pixels_right = pointer(dst_rect.x + dst_rect.width - 1, dst_rect.y);
@@ -629,7 +626,7 @@ void Surface::Flip(const Rect& dst_rect, bool horizontal, bool vertical) {
 	} else {
 		uint8* dst_pixels_up = pointer(dst_rect.x, dst_rect.y);
 		uint8* dst_pixels_down = pointer(dst_rect.x, dst_rect.y + dst_rect.height - 1);
-		uint8* tmp_buffer = new uint8[dst_rect.width * bpp()];
+		uint8* tmp_buffer = new uint8[dst_rect.width * bytes()];
 
 		for (int i = 0; i < dst_rect.height / 2; i++) {
 			if (dst_pixels_up == dst_pixels_down)
@@ -666,7 +663,7 @@ void Surface::Blit2x(Rect dst_rect, Bitmap* src, Rect src_rect) {
 		const uint8* save = dst_pixels;
 		bm_utils->Blit2x(dst_pixels, src_pixels, src_rect.width);
 		dst_pixels += pitch();
-		memcpy(dst_pixels, save, 2 * src_rect.width * bpp());
+		memcpy(dst_pixels, save, 2 * src_rect.width * bytes());
 		dst_pixels += pitch();
 		src_pixels += src->pitch();
 	}

@@ -33,12 +33,12 @@
 ////////////////////////////////////////////////////////////
 class SdlBitmap : public Surface {
 public:
-	SdlBitmap(int width, int height, int bpp, bool transparent);
+	SdlBitmap(int width, int height, bool transparent, int bpp = 0);
 	SdlBitmap(const std::string& filename, bool transparent, uint32 flags);
 	SdlBitmap(const uint8* data, uint bytes, bool transparent, uint32 flags);
 	SdlBitmap(Bitmap* source, Rect src_rect, bool transparent);
 	SdlBitmap(SDL_Surface* bitmap, bool transparent = true);
-	SdlBitmap(void *pixels, int width, int height, int depth, int pitch, uint32 Rmask, uint32 Gmask, uint32 Bmask, uint32 Amask);
+	SdlBitmap(void *pixels, int width, int height, int pitch, const DynamicFormat& format);
 	~SdlBitmap();
 
 	void Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity);
@@ -48,10 +48,14 @@ public:
 	void Mask(int x, int y, Bitmap* src, Rect src_rect);
 	void SetTransparentColor(Color color);
 
+protected:
+	friend class SdlBitmapScreen;
+	friend class SdlUi;
+
 	void* pixels();
 	int width() const;
 	int height() const;
-	uint8 bpp() const;
+	uint8 bytes() const;
 	uint16 pitch() const;
 	uint32 rmask() const;
 	uint32 gmask() const;
@@ -59,15 +63,11 @@ public:
 	uint32 amask() const;
 	uint32 colorkey() const;
 
-protected:
-	friend class SdlBitmapScreen;
-	friend class SdlUi;
-
 	//void SetupBitmapData();
 
 	void RemovePaletteColorkeyDuplicates(SDL_Surface* src, SDL_Color* color);
-	SDL_Surface* ReadXYZ(const std::string& filename, const uint8 *data, uint len);
-	void SetupFormat(SDL_PixelFormat* fmt);
+	SDL_Surface* ReadXYZ(const std::string& filename, bool transparent, const uint8 *data, uint len);
+	void SetupFormat(SDL_PixelFormat* fmt, bool transparent);
 
 	/// Bitmap data.
 	SDL_Surface* bitmap;

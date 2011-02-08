@@ -42,7 +42,7 @@ struct blend_traits {
 
 		if (sa == 0)
 			;	// skip
-		else if (sa >= bmu->pf_src.opaque())
+		else if (srca >= bmu->pf_src.opaque())
 			bmu->copy_pixel(dst_pixel, src_pixel);
 		else if (da == 0)
 			bmu->copy_pixel(dst_pixel, src_pixel);
@@ -138,7 +138,12 @@ public:
 	void OpacityScaleBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int x, int step, int opacity);
 	void OverlayScaleBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int x, int step);
 	void CopyScaleBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int x, int step);
-	void TransformBlit(uint8* dst_pixels, const uint8* src_pixels, int src_pitch,
+	void OpacityTransformBlit(uint8* dst_pixels, const uint8* src_pixels, int src_pitch,
+							  int x0, int x1, int y, const Rect& src_rect, const Matrix& inv,
+							  int opacity);
+	void OverlayTransformBlit(uint8* dst_pixels, const uint8* src_pixels, int src_pitch,
+							  int x0, int x1, int y, const Rect& src_rect, const Matrix& inv);
+	void CopyTransformBlit(uint8* dst_pixels, const uint8* src_pixels, int src_pitch,
 						   int x0, int x1, int y, const Rect& src_rect, const Matrix& inv);
 	void MaskBlit(uint8* dst_pixels, const uint8* src_pixels, int n);
 	void HSLBlit(uint8* dst_pixels, const uint8* src_pixels, int n,
@@ -161,7 +166,12 @@ public:
 	typedef BitmapUtilsT<PFsrc,PFdst> my_type;
 	static const PF::OpacityType src_opacity = PFsrc::opacity;
 	static const PF::OpacityType dst_opacity = PFdst::opacity;
-	static const bool same_format = true;
+	static const bool same_format = 
+		!PFsrc::dynamic_masks &&
+		!PFdst::dynamic_masks &&
+		PFsrc::mask_r_traits_type::_mask == PFdst::mask_r_traits_type::_mask &&
+		PFsrc::mask_g_traits_type::_mask == PFdst::mask_g_traits_type::_mask &&
+		PFsrc::mask_b_traits_type::_mask == PFdst::mask_b_traits_type::_mask;
 
 	typedef blend_traits<my_type, src_opacity, dst_opacity> blend_traits_type;
 	typedef overlay_traits<my_type, src_opacity, dst_opacity> overlay_traits_type;
@@ -286,12 +296,35 @@ void BitmapUtilsT<PFsrc,PFdst>::CopyScaleBlit(uint8* dst_pixels, const uint8* sr
 
 ////////////////////////////////////////////////////////////
 template <class PFsrc, class PFdst>
-void BitmapUtilsT<PFsrc,PFdst>::TransformBlit(uint8* dst_pixels, const uint8* src_pixels, int src_pitch,
-											  int x0, int x1, int y, const Rect& src_rect, const Matrix& inv) {
-	int sx0 = src_rect.x;
-	int sy0 = src_rect.y;
-	int sx1 = src_rect.x + src_rect.width;
-	int sy1 = src_rect.y + src_rect.height;
+void BitmapUtilsT<PFsrc,PFdst>::OpacityTransformBlit(uint8* dst_pixels, const uint8* src_pixels, int src_pitch,
+													 int x0, int x1, int y, const Rect& src_rect, const Matrix& inv,
+													 int opacity) {
+	const int sx0 = src_rect.x;
+	const int sy0 = src_rect.y;
+	const int sx1 = src_rect.x + src_rect.width;
+	const int sy1 = src_rect.y + src_rect.height;
+
+	for (int x = x0; x < x1; x++) {
+		double fx, fy;
+		inv.Transform(x + 0.5, y + 0.5, fx, fy);
+		int xi = (int) floor(fx);
+		int yi = (int) floor(fy);
+		if (xi < sx0 || xi >= sx1 || yi < sy0 || yi >= sy1)
+			;
+		else
+			blend_pixel(dst_pixels, &src_pixels[yi * src_pitch + xi * pf_src.bytes], opacity);
+		dst_pixels += pf_dst.bytes;
+	}
+}
+
+////////////////////////////////////////////////////////////
+template <class PFsrc, class PFdst>
+void BitmapUtilsT<PFsrc,PFdst>::OverlayTransformBlit(uint8* dst_pixels, const uint8* src_pixels, int src_pitch,
+													 int x0, int x1, int y, const Rect& src_rect, const Matrix& inv) {
+	const int sx0 = src_rect.x;
+	const int sy0 = src_rect.y;
+	const int sx1 = src_rect.x + src_rect.width;
+	const int sy1 = src_rect.y + src_rect.height;
 
 	for (int x = x0; x < x1; x++) {
 		double fx, fy;
@@ -302,6 +335,28 @@ void BitmapUtilsT<PFsrc,PFdst>::TransformBlit(uint8* dst_pixels, const uint8* sr
 			;
 		else
 			overlay_pixel(dst_pixels, &src_pixels[yi * src_pitch + xi * pf_src.bytes]);
+		dst_pixels += pf_dst.bytes;
+	}
+}
+
+////////////////////////////////////////////////////////////
+template <class PFsrc, class PFdst>
+void BitmapUtilsT<PFsrc,PFdst>::CopyTransformBlit(uint8* dst_pixels, const uint8* src_pixels, int src_pitch,
+												  int x0, int x1, int y, const Rect& src_rect, const Matrix& inv) {
+	const int sx0 = src_rect.x;
+	const int sy0 = src_rect.y;
+	const int sx1 = src_rect.x + src_rect.width;
+	const int sy1 = src_rect.y + src_rect.height;
+
+	for (int x = x0; x < x1; x++) {
+		double fx, fy;
+		inv.Transform(x + 0.5, y + 0.5, fx, fy);
+		int xi = (int) floor(fx);
+		int yi = (int) floor(fy);
+		if (xi < sx0 || xi >= sx1 || yi < sy0 || yi >= sy1)
+			;
+		else
+			copy_pixel(dst_pixels, &src_pixels[yi * src_pitch + xi * pf_src.bytes]);
 		dst_pixels += pf_dst.bytes;
 	}
 }
@@ -541,9 +596,51 @@ const DynamicFormat& BitmapUtilsT<PFsrc,PFdst>::GetSrcFormat() const {
 }
 
 ////////////////////////////////////////////////////////////
+void BitmapUtils::Blit(uint8* dst_pixels, const uint8* src_pixels, int n, int opacity) {
+	bool opacity_blit = opacity < 255;
+	bool overlay_blit = GetSrcFormat().alpha_type != PF::NoAlpha;
+
+	if (opacity_blit)
+		OpacityBlit(dst_pixels, src_pixels, n, opacity);
+	else if (overlay_blit)
+		OverlayBlit(dst_pixels, src_pixels, n);
+	else
+		CopyBlit(dst_pixels, src_pixels, n);
+}
+
+////////////////////////////////////////////////////////////
+void BitmapUtils::ScaleBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int x, int step, int opacity) {
+	bool opacity_blit = opacity < 255;
+	bool overlay_blit = GetSrcFormat().alpha_type != PF::NoAlpha;
+
+	if (opacity_blit)
+		OpacityScaleBlit(dst_pixels, src_pixels, n, x, step, opacity);
+	else if (overlay_blit)
+		OverlayScaleBlit(dst_pixels, src_pixels, n, x, step);
+	else
+		CopyScaleBlit(dst_pixels, src_pixels, n, x, step);
+}
+
+////////////////////////////////////////////////////////////
+void BitmapUtils::TransformBlit(uint8* dst_pixels, const uint8* src_pixels, int src_pitch,
+								int x0, int x1, int y, const Rect& src_rect, const Matrix& inv,
+								int opacity) {
+	bool opacity_blit = opacity < 255;
+	bool overlay_blit = GetSrcFormat().alpha_type != PF::NoAlpha;
+
+	if (opacity_blit)
+		OpacityTransformBlit(dst_pixels, src_pixels, src_pitch, x0, x1, y, src_rect, inv, opacity);
+	else if (overlay_blit)
+		OverlayTransformBlit(dst_pixels, src_pixels, src_pitch, x0, x1, y, src_rect, inv);
+	else
+		CopyTransformBlit(dst_pixels, src_pixels, src_pitch, x0, x1, y, src_rect, inv);
+}
+
+////////////////////////////////////////////////////////////
 typedef BitmapUtils* BitmapUtilsP;
 
-static const BitmapUtilsP static_utils[] = {
+static const BitmapUtilsP bitmap_utils[] = {
+	// 32-bpp with alpha => similar
 	new BitmapUtilsT<format_B8G8R8A8_a,format_B8G8R8A8_a>(),
 	new BitmapUtilsT<format_B8G8R8A8_a,format_B8G8R8A8_n>(),
 	new BitmapUtilsT<format_B8G8R8A8_n,format_B8G8R8A8_a>(),
@@ -564,30 +661,65 @@ static const BitmapUtilsP static_utils[] = {
 	new BitmapUtilsT<format_A8R8G8B8_n,format_A8R8G8B8_a>(),
 	new BitmapUtilsT<format_A8R8G8B8_n,format_A8R8G8B8_n>(),
 
+	// 32-bpp with color-key => similar
+
 	new BitmapUtilsT<format_B8G8R8A8_k,format_B8G8R8A8_k>(),
 	new BitmapUtilsT<format_B8G8R8A8_k,format_B8G8R8A8_n>(),
 	new BitmapUtilsT<format_B8G8R8A8_n,format_B8G8R8A8_k>(),
-	new BitmapUtilsT<format_B8G8R8A8_n,format_B8G8R8A8_n>(),
 
 	new BitmapUtilsT<format_R8G8B8A8_k,format_R8G8B8A8_k>(),
 	new BitmapUtilsT<format_R8G8B8A8_k,format_R8G8B8A8_n>(),
 	new BitmapUtilsT<format_R8G8B8A8_n,format_R8G8B8A8_k>(),
-	new BitmapUtilsT<format_R8G8B8A8_n,format_R8G8B8A8_n>(),
 
 	new BitmapUtilsT<format_A8B8G8R8_k,format_A8B8G8R8_k>(),
 	new BitmapUtilsT<format_A8B8G8R8_k,format_A8B8G8R8_n>(),
 	new BitmapUtilsT<format_A8B8G8R8_n,format_A8B8G8R8_k>(),
-	new BitmapUtilsT<format_A8B8G8R8_n,format_A8B8G8R8_n>(),
 
 	new BitmapUtilsT<format_A8R8G8B8_k,format_A8R8G8B8_k>(),
 	new BitmapUtilsT<format_A8R8G8B8_k,format_A8R8G8B8_n>(),
 	new BitmapUtilsT<format_A8R8G8B8_n,format_A8R8G8B8_k>(),
-	new BitmapUtilsT<format_A8R8G8B8_n,format_A8R8G8B8_n>(),
 
-	(BitmapUtilsP) NULL
-};
+	// 32-bpp RGBA (external image format) => dynamic
 
-static const BitmapUtilsP dynamic_utils[] = {
+	new BitmapUtilsT<format_R8G8B8A8_a,format_dynamic_32_a>(),
+	new BitmapUtilsT<format_R8G8B8A8_a,format_dynamic_32_k>(),
+	new BitmapUtilsT<format_R8G8B8A8_n,format_dynamic_32_n>(),
+
+	new BitmapUtilsT<format_R8G8B8A8_a,format_dynamic_24_k>(),
+	new BitmapUtilsT<format_R8G8B8A8_n,format_dynamic_24_n>(),
+
+	new BitmapUtilsT<format_R8G8B8A8_a,format_dynamic_16_a>(),
+	new BitmapUtilsT<format_R8G8B8A8_a,format_dynamic_16_k>(),
+	new BitmapUtilsT<format_R8G8B8A8_n,format_dynamic_16_n>(),
+
+	// 32-bpp => dynamic no-alpha
+	new BitmapUtilsT<format_B8G8R8A8_n,format_dynamic_32_n>(),
+	new BitmapUtilsT<format_R8G8B8A8_n,format_dynamic_32_n>(),
+	new BitmapUtilsT<format_A8B8G8R8_n,format_dynamic_32_n>(),
+	new BitmapUtilsT<format_A8R8G8B8_n,format_dynamic_32_n>(),
+
+	new BitmapUtilsT<format_B8G8R8A8_n,format_dynamic_24_n>(),
+	new BitmapUtilsT<format_R8G8B8A8_n,format_dynamic_24_n>(),
+	new BitmapUtilsT<format_A8B8G8R8_n,format_dynamic_24_n>(),
+	new BitmapUtilsT<format_A8R8G8B8_n,format_dynamic_24_n>(),
+
+	new BitmapUtilsT<format_B8G8R8A8_n,format_dynamic_16_n>(),
+	new BitmapUtilsT<format_R8G8B8A8_n,format_dynamic_16_n>(),
+	new BitmapUtilsT<format_A8B8G8R8_n,format_dynamic_16_n>(),
+	new BitmapUtilsT<format_A8R8G8B8_n,format_dynamic_16_n>(),
+
+	// 8-bpp L (freetype) => dynamic
+
+	new BitmapUtilsT<format_L8_k,format_dynamic_32_a>(),
+	new BitmapUtilsT<format_L8_k,format_dynamic_32_k>(),
+
+	new BitmapUtilsT<format_L8_k,format_dynamic_24_k>(),
+
+	new BitmapUtilsT<format_L8_k,format_dynamic_16_a>(),
+	new BitmapUtilsT<format_L8_k,format_dynamic_16_k>(),
+
+	// Dynamic => Dynamic
+
 	new BitmapUtilsT<format_dynamic_32_a,format_dynamic_32_a>(),
 	new BitmapUtilsT<format_dynamic_32_a,format_dynamic_32_n>(),
 	new BitmapUtilsT<format_dynamic_32_n,format_dynamic_32_a>(),
@@ -617,65 +749,74 @@ static const BitmapUtilsP dynamic_utils[] = {
 };
 
 ////////////////////////////////////////////////////////////
-std::map<int, BitmapUtils*> BitmapUtils::static_unary;
-std::map<int, BitmapUtils*> BitmapUtils::dynamic_unary;
+std::map<int, BitmapUtils*> BitmapUtils::unary_map;
 typedef std::pair<int, int> int_pair;
-std::map<int_pair, BitmapUtils*> BitmapUtils::static_binary;
-std::map<int_pair, BitmapUtils*> BitmapUtils::dynamic_binary;
+std::map<int_pair, BitmapUtils*> BitmapUtils::binary_map;
 bool BitmapUtils::maps_initialized = false;
 
 BitmapUtils* BitmapUtils::Create(const DynamicFormat& dst_format,
 								 const DynamicFormat& src_format,
 								 bool need_source) {
 	if (!maps_initialized) {
-		for (const BitmapUtilsP* pp = static_utils; *pp != NULL; pp++) {
+		for (const BitmapUtilsP* pp = bitmap_utils; *pp != NULL; pp++) {
 			BitmapUtilsP p = *pp;
 			const DynamicFormat& dfmt = p->GetDstFormat();
 			const DynamicFormat& sfmt = p->GetSrcFormat();
 			int dkey = dfmt.code(true);
 			int skey = sfmt.code(true);
-			static_unary[dkey] = p;
-			static_binary[int_pair(dkey, skey)] = p;
-		}
-
-		for (const BitmapUtilsP* pp = dynamic_utils; *pp != NULL; pp++) {
-			BitmapUtilsP p = *pp;
-			const DynamicFormat& dfmt = p->GetDstFormat();
-			const DynamicFormat& sfmt = p->GetSrcFormat();
-			int dkey = dfmt.code(true);
-			int skey = sfmt.code(true);
-			dynamic_unary[dkey] = p;
-			dynamic_binary[int_pair(dkey, skey)] = p;
+			unary_map[dkey] = p;
+			binary_map[int_pair(dkey, skey)] = p;
 		}
 
 		maps_initialized = true;
 	}
 
 	if (need_source) {
-		int_pair key(dst_format.code(true), src_format.code(true));
 		std::map<int_pair, BitmapUtils*>::const_iterator it;
-		it = static_binary.find(key);
-		if (it != static_binary.end())
+
+		// static dst, static src
+		int_pair key1(dst_format.code(true), src_format.code(true));
+		it = binary_map.find(key1);
+		if (it != binary_map.end())
 			return it->second;
-		int_pair key2(dst_format.code(false), src_format.code(false));
-		it = dynamic_binary.find(key2);
-		if (it != dynamic_binary.end()) {
+
+		// dynamic dst, static src
+		int_pair key2(dst_format.code(false), src_format.code(true));
+		it = binary_map.find(key2);
+		if (it != binary_map.end()) {
+			it->second->SetDstFormat(dst_format);
+			return it->second;
+		}
+
+		// static dst, dynamic src
+		int_pair key3(dst_format.code(true), src_format.code(false));
+		it = binary_map.find(key3);
+		if (it != binary_map.end()) {
+			it->second->SetSrcFormat(src_format);
+			return it->second;
+		}
+
+		// dynamic dst, dynamic src
+		int_pair key4(dst_format.code(false), src_format.code(false));
+		it = binary_map.find(key4);
+		if (it != binary_map.end()) {
 			it->second->SetDstFormat(dst_format);
 			it->second->SetSrcFormat(src_format);
 			return it->second;
 		}
 	}
 	else {
-		int key = dst_format.code(true);
 		std::map<int, BitmapUtils*>::const_iterator it;
-		it = static_unary.find(key);
-		if (it != static_unary.end())
+
+		int key1 = dst_format.code(true);
+		it = unary_map.find(key1);
+		if (it != unary_map.end())
 			return it->second;
+
 		int key2 = dst_format.code(false);
-		it = dynamic_unary.find(key2);
-		if (it != dynamic_unary.end()) {
+		it = unary_map.find(key2);
+		if (it != unary_map.end()) {
 			it->second->SetDstFormat(dst_format);
-			it->second->SetSrcFormat(src_format);
 			return it->second;
 		}
 	}

@@ -38,15 +38,39 @@
 
 ////////////////////////////////////////////////////////////
 
-const format_B8G8R8A8_a SoftBitmap::pixel_format;
-const format_B8G8R8A8_n SoftBitmap::opaque_format;
-const format_R8G8B8A8_a SoftBitmap::image_format;
+DynamicFormat SoftBitmap::pixel_format;
+DynamicFormat SoftBitmap::opaque_pixel_format;
+DynamicFormat SoftBitmap::image_format;
+DynamicFormat SoftBitmap::opaque_image_format;
+
+////////////////////////////////////////////////////////////
+void SoftBitmap::SetFormat(const DynamicFormat& format) {
+	pixel_format = format;
+	opaque_pixel_format = format;
+	opaque_pixel_format.alpha_type = PF::NoAlpha;
+	image_format = format_R8G8B8A8_a().format();
+	opaque_image_format = format_R8G8B8A8_n().format();
+}
+
+////////////////////////////////////////////////////////////
+DynamicFormat SoftBitmap::ChooseFormat(const DynamicFormat& format) {
+	uint32 amask;
+	PF::AlphaType atype;
+	amask = (format.a.mask == 0)
+		? ((~0U >> (32 - format.bits)) ^ (format.r.mask | format.g.mask | format.b.mask))
+		: format.a.mask;
+	atype = (amask == 0) ? PF::ColorKey : PF::Alpha;
+		
+	return DynamicFormat(format.bits,
+						 format.r.mask, format.g.mask, format.b.mask,
+						 amask, atype);
+}
 
 ////////////////////////////////////////////////////////////
 void SoftBitmap::Init(int width, int height, void *data = NULL, int pitch, bool _destroy) {
 	w = width;
 	h = height;
-	_pitch = (pitch != 0) ? pitch : w * 4;
+	_pitch = (pitch != 0) ? pitch : w * format.bytes;
 	bitmap = (data != NULL)  ? data : malloc(h * _pitch);
 	destroy = _destroy;
 
@@ -56,42 +80,29 @@ void SoftBitmap::Init(int width, int height, void *data = NULL, int pitch, bool 
 }
 
 ////////////////////////////////////////////////////////////
-void SoftBitmap::ConvertImage(int& width, int& height, void*& pixels) {
-	uint8* dst = (uint8*) pixels;
-	for (int y = 0; y < height; y++) {
-		for (int x = 0; x < width; x++) {
-			uint8 r, g, b, a;
-			image_format.get_rgba(dst, r, g, b, a);
-			pixel_format.set_rgba(dst, r, g, b, a);
-			dst += 4;
-		}
-	}
-
-	Init(width, height, pixels);
+void SoftBitmap::ConvertImage(int& width, int& height, void*& pixels, bool transparent) {
+	Init(width, height, NULL);
+	const DynamicFormat& img_format = transparent ? image_format : opaque_image_format;
+	SoftBitmap src(pixels, width, height, 0, img_format);
+	Clear();
+	Blit(0, 0, &src, src.GetRect(), 255);
+	free(pixels);
 }
 
 ////////////////////////////////////////////////////////////
-void SoftBitmap::SetupFormat() {
-	format = (transparent ? pixel_format.Format() : opaque_format.Format());
-}
-
-////////////////////////////////////////////////////////////
-SoftBitmap::SoftBitmap(int width, int height, bool itransparent) {
-	transparent = itransparent;
-	SetupFormat();
+SoftBitmap::SoftBitmap(int width, int height, bool transparent) {
+	format = transparent ? pixel_format : opaque_pixel_format;
 	Init(width, height);
 	Clear();
 }
 
-SoftBitmap::SoftBitmap(void *pixels, int width, int height, int pitch) {
-	transparent = false;
-	SetupFormat();
+SoftBitmap::SoftBitmap(void *pixels, int width, int height, int pitch, const DynamicFormat& _format) {
+	format = _format;
 	Init(width, height, pixels, pitch, false);
 }
 
-SoftBitmap::SoftBitmap(const std::string& filename, bool itransparent, uint32 flags) {
-	transparent = itransparent;
-	SetupFormat();
+SoftBitmap::SoftBitmap(const std::string& filename, bool transparent, uint32 flags) {
+	format = transparent ? pixel_format : opaque_pixel_format;
 
 	int namelen = (int) filename.size();
 	if (namelen < 5 || filename[namelen - 4] != '.') {
@@ -121,16 +132,15 @@ SoftBitmap::SoftBitmap(const std::string& filename, bool itransparent, uint32 fl
 	else if (ext == "bmp")
 		ImageBMP::ReadBMP(stream, transparent, width, height, pixels);
 
-	ConvertImage(width, height, pixels);
+	ConvertImage(width, height, pixels, transparent);
 
 	fclose(stream);
 
 	CheckPixels(flags);
 }
 
-SoftBitmap::SoftBitmap(const uint8* data, uint bytes, bool itransparent, uint32 flags) {
-	transparent = itransparent;
-	SetupFormat();
+SoftBitmap::SoftBitmap(const uint8* data, uint bytes, bool transparent, uint32 flags) {
+	format = transparent ? pixel_format : opaque_pixel_format;
 
 	int width, height;
 	void* pixels;
@@ -142,18 +152,15 @@ SoftBitmap::SoftBitmap(const uint8* data, uint bytes, bool itransparent, uint32 
 	else
 		ImagePNG::ReadPNG((FILE*) NULL, (const void*) data, transparent, width, height, pixels);
 
-	ConvertImage(width, height, pixels);
+	ConvertImage(width, height, pixels, transparent);
 
 	CheckPixels(flags);
 }
 
-SoftBitmap::SoftBitmap(Bitmap* source, Rect src_rect, bool itransparent) {
-	transparent = itransparent;
-	SetupFormat();
-
+SoftBitmap::SoftBitmap(Bitmap* source, Rect src_rect, bool transparent) {
+	format = transparent ? pixel_format : opaque_pixel_format;
 	Init(src_rect.width, src_rect.height);
 	Clear();
-
 	Blit(0, 0, source, src_rect, 255);
 }
 
@@ -168,10 +175,6 @@ void* SoftBitmap::pixels() {
 	return bitmap;
 }
 
-uint8 SoftBitmap::bpp() const {
-	return pixel_format.bytes;
-}
-
 int SoftBitmap::width() const {
 	return w;
 }
@@ -182,52 +185,6 @@ int SoftBitmap::height() const {
 
 uint16 SoftBitmap::pitch() const {
 	return _pitch;
-}
-
-uint32 SoftBitmap::rmask() const {
-	return pixel_format.r_mask();
-}
-
-uint32 SoftBitmap::gmask() const {
-	return pixel_format.g_mask();
-}
-
-uint32 SoftBitmap::bmask() const {
-	return pixel_format.b_mask();
-}
-
-uint32 SoftBitmap::amask() const {
-	return pixel_format.a_mask();
-}
-
-uint32 SoftBitmap::colorkey() const {
-	return 0;
-}
-
-////////////////////////////////////////////////////////////
-Color SoftBitmap::GetColor(uint32 uint32_color) const {
-	uint8 r, g, b, a;
-	pixel_format.uint32_to_rgba(uint32_color, r, g, b, a);
-	return Color(r, g, b, a);
-}
-
-uint32 SoftBitmap::GetUint32Color(const Color &color) const {
-	return pixel_format.rgba_to_uint32(color.red, color.green, color.blue, color.alpha);
-}
-
-uint32 SoftBitmap::GetUint32Color(uint8 r, uint8 g, uint8 b, uint8 a) const {
-	return pixel_format.rgba_to_uint32(r, g, b, a);
-}
-
-void SoftBitmap::GetColorComponents(uint32 color, uint8 &r, uint8 &g, uint8 &b, uint8 &a) const {
-	pixel_format.uint32_to_rgba(color, r, g, b, a);
-}
-
-////////////////////////////////////////////////////////////
-void SoftBitmap::Lock() {
-}
-
-void SoftBitmap::Unlock() {
 }
 
 #endif

@@ -68,7 +68,7 @@ void Text::Draw(Surface* dest, int x, int y, int color, std::wstring wtext, Surf
 		(shadow_color.green == 0) &&
 		(shadow_color.blue == 0) ) {
 		
-		if (text_surface->bpp() >= 3) {
+		if (text_surface->bytes() >= 3) {
 			shadow_color.blue++;
 		} else {
 			shadow_color.blue += 8;

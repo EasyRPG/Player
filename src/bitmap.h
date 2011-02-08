@@ -113,39 +113,37 @@ public:
 protected:
 	friend class Surface;
 	friend class BitmapScreen;
+	friend class SdlBitmap;
 	friend class SdlBitmapScreen;
 	friend class GlBitmapScreen;
 	friend class BitmapUtils;
 	template <class T1, class T2> friend class BitmapUtilsT;
-	friend class Blit;
-	template <class T1, class T2> friend class BlitT;
 
 	Bitmap();
 
 	virtual void* pixels() = 0;
 	virtual int width() const = 0;
 	virtual int height() const = 0;
-	virtual uint8 bpp() const = 0;
 	virtual uint16 pitch() const = 0;
-	virtual uint32 rmask() const = 0;
-	virtual uint32 gmask() const = 0;
-	virtual uint32 bmask() const = 0;
-	virtual uint32 amask() const = 0;
-	virtual uint32 colorkey() const = 0;
+
+	virtual uint8 bytes() const;
+	virtual uint32 rmask() const;
+	virtual uint32 gmask() const;
+	virtual uint32 bmask() const;
+	virtual uint32 amask() const;
+	virtual uint32 colorkey() const;
 	virtual uint8* pointer(int x, int y);
 
-	bool transparent;
-
-	virtual Color GetColor(uint32 color) const = 0;
-	virtual uint32 GetUint32Color(const Color &color) const = 0;
-	virtual uint32 GetUint32Color(uint8 r, uint8  g, uint8 b, uint8 a) const = 0;
-	virtual void GetColorComponents(uint32 color, uint8 &r, uint8 &g, uint8 &b, uint8 &a) const = 0;
+	virtual Color GetColor(uint32 color) const;
+	virtual uint32 GetUint32Color(const Color &color) const;
+	virtual uint32 GetUint32Color(uint8 r, uint8  g, uint8 b, uint8 a) const;
+	virtual void GetColorComponents(uint32 color, uint8 &r, uint8 &g, uint8 &b, uint8 &a) const;
 
 	virtual void AttachBitmapScreen(BitmapScreen* bitmap);
 	virtual void DetachBitmapScreen(BitmapScreen* bitmap);
 
-	virtual void Lock() = 0;
-	virtual void Unlock() = 0;
+	virtual void Lock();
+	virtual void Unlock();
 
 	virtual BitmapUtils* Begin();
 	virtual void End();
@@ -166,8 +164,6 @@ protected:
 
 	std::list<BitmapScreen*> attached_screen_bitmaps;
 	TileOpacity (*opacity)[30];
-
-	bool have_invisible_tile;
 };
 
 #endif

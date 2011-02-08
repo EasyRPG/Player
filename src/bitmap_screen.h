@@ -139,18 +139,6 @@ public:
 	/// @param tone : tone effect
 	virtual void SetToneEffect(Tone tone);
 
-	/// @return horizontal flip
-	virtual bool GetFlipXEffect() const;
-
-	/// @param flipx : horizontal flip
-	virtual void SetFlipXEffect(bool flipx);
-
-	/// @return vertical flip
-	virtual bool GetFlipYEffect() const;
-
-	/// @param flipy : vertical flip
-	virtual void SetFlipYEffect(bool flipy);
-
 	/// @return horizontal zoom
 	virtual double GetZoomXEffect() const;
 
@@ -208,8 +196,6 @@ protected:
 	int opacity_bottom_effect;
 	int bush_effect;
 	Tone tone_effect;
-	bool flipx_effect;
-	bool flipy_effect;
 	double zoom_x_effect;
 	double zoom_y_effect;
 	double angle_effect;
@@ -218,9 +204,10 @@ protected:
 	int waver_effect_depth;
 	double waver_effect_phase;
 
-	virtual void BlitScreenIntern(Bitmap* draw_bitmap, int x, int y, Rect src_rect, bool need_scale);
+	virtual void BlitScreenIntern(Bitmap* draw_bitmap, int x, int y, Rect src_rect,
+								  bool need_scale, int bush_y);
 
-	virtual Bitmap* Refresh(Rect& rect, bool& need_scale);
+	virtual Bitmap* Refresh(Rect& rect, bool& need_scale, int& bush_y);
 
 	Surface* bitmap_effects;
 	Bitmap* bitmap_scale;
@@ -233,11 +220,6 @@ protected:
 	Tone current_tone;
 	double current_zoom_x;
 	double current_zoom_y;
-	bool current_flip_x;
-	bool current_flip_y;
-	int current_opacity_top;
-	int current_opacity_bottom;
-	int current_bush_depth;
 };
 
 #endif

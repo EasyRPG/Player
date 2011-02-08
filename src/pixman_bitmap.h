@@ -35,6 +35,8 @@
 #include "pixel_format.h"
 #include "bitmap_utils.h"
 
+class DynamicFormatX;
+
 ////////////////////////////////////////////////////////////
 /// PixmanBitmap class.
 ////////////////////////////////////////////////////////////
@@ -44,8 +46,11 @@ public:
 	PixmanBitmap(const std::string filename, bool transparent, uint32 flags);
 	PixmanBitmap(const uint8* data, uint bytes, bool transparent, uint32 flags);
 	PixmanBitmap(Bitmap* source, Rect src_rect, bool transparent);
-	PixmanBitmap(void *pixels, int width, int height, int pitch);
+	PixmanBitmap(void *pixels, int width, int height, int pitch, const DynamicFormat& format);
 	~PixmanBitmap();
+
+	static DynamicFormat ChooseFormat(const DynamicFormat& format);
+	static void SetFormat(const DynamicFormat& format);
 
 	Bitmap* Resample(int scale_w, int scale_h, const Rect& src_rect);
 
@@ -56,6 +61,7 @@ public:
 	void StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int opacity);
 	void TransformBlit(Rect dst_rect, Bitmap* src, Rect src_rect, const Matrix& inv);
 	void MaskBlit(int x, int y, Bitmap* src, Rect src_rect);
+	void WaverBlit(int x, int y, Bitmap* src, Rect src_rect, int depth, double phase, int opacity);
 	void Fill(const Color &color);
 	void FillRect(Rect dst_rect, const Color &color);
 	void Clear();
@@ -66,14 +72,10 @@ public:
 	void Flip(const Rect& dst_rect, bool horizontal, bool vertical);
 	void Blit2x(Rect dst_rect, Bitmap* _src, Rect src_rect);
 
-	static const format_B8G8R8A8_a pixel_format;
-	static const format_B8G8R8A8_n opaque_format;
-	static const format_R8G8B8A8_a image_format;
-#ifndef USE_BIG_ENDIAN
-	static const pixman_format_code_t pixman_format = PIXMAN_a8r8g8b8;
-#else
-	static const pixman_format_code_t pixman_format = PIXMAN_b8g8r8a8;
-#endif
+	static DynamicFormat pixel_format;
+	static DynamicFormat opaque_pixel_format;
+	static DynamicFormat image_format;
+	static DynamicFormat opaque_image_format;
 
 	void* pixels();
 	int width() const;
@@ -91,6 +93,7 @@ protected:
 
 	/// Bitmap data.
 	pixman_image_t *bitmap;
+	pixman_format_code_t pixman_format;
 
 	void Init(int width, int height, void* data, int pitch = 0, bool destroy = true);
 
@@ -105,7 +108,7 @@ protected:
 	void ReadPNG(FILE* stream, const void *data);
 	void ReadXYZ(const uint8 *data, uint len);
 	void ReadXYZ(FILE *stream);
-	void ConvertImage(int& width, int& height, void*& pixels);
+	void ConvertImage(int& width, int& height, void*& pixels, bool transparent);
 
 	static pixman_image_t* GetSubimage(Bitmap* _src, const Rect& src_rect);
 	static inline void MultiplyAlpha(uint8 &r, uint8 &g, uint8 &b, const uint8 &a) {
@@ -122,6 +125,14 @@ protected:
 			b = (uint8)((int)b * 0xFF / a);
 		}
 	}
+
+	typedef std::pair<int, pixman_format_code_t> format_pair;
+	static std::map<int, pixman_format_code_t> formats_map;
+	static bool formats_initialized;
+
+	static void initialize_formats();
+	static void add_pair(pixman_format_code_t pcode, const DynamicFormat& format);
+	static pixman_format_code_t find_format(const DynamicFormat& format);
 };
 
 #endif

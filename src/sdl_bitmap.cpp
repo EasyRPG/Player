@@ -23,66 +23,39 @@
 ////////////////////////////////////////////////////////////
 #include <cassert>
 #include <cmath>
-#include "sdl_bitmap.h"
-#include "cache.h"
 #include "filefinder.h"
-#include "graphics.h"
-#include "hslrgb.h"
-#include "main_data.h"
 #include "options.h"
 #include "output.h"
-#include "player.h"
 #include "SDL_image.h"
 #include "image_xyz.h"
 //#include "SDL_rotozoom.h"
-#include "SDL_ttf.h"
-#include "sdl_ui.h"
-#include "util_macro.h"
 #include "utils.h"
+#include "baseui.h"
 #include "pixel_format.h"
 #include "bitmap_utils.h"
+#include "sdl_bitmap.h"
 
 ////////////////////////////////////////////////////////////
+
 #ifdef USE_ALPHA
 	#define TRANSPARENT_FLAGS SDL_SRCALPHA
-	#define COLORKEY_FLAGS SDL_SRCCOLORKEY
 	#define DisplayFormat(surface) SDL_DisplayFormatAlpha(surface)
 #else
 	#define TRANSPARENT_FLAGS SDL_SRCCOLORKEY
-	#ifdef USE_RLE
-		#define COLORKEY_FLAGS SDL_SRCCOLORKEY | SDL_RLEACCEL
-		#define SETALPHA_FLAGS SDL_SRCALPHA | SDL_RLEACCEL
-	#else
-		#define COLORKEY_FLAGS SDL_SRCCOLORKEY
-		#define SETALPHA_FLAGS SDL_SRCALPHA
-	#endif
 	#define DisplayFormat(surface) SDL_DisplayFormat(surface)
 #endif
 
-
-#if SDL_BYTEORDER == SDL_LIL_ENDIAN
-	const unsigned int RMASK = 0x0000FF00;
-	const unsigned int GMASK = 0x00FF0000;
-	const unsigned int BMASK = 0xFF000000;
-	#ifdef USE_ALPHA
-		const unsigned int AMASK = 0x000000FF;
-	#else
-		const unsigned int AMASK = 0x00000000;
-	#endif
+#ifdef USE_RLE
+	#define COLORKEY_FLAGS SDL_SRCCOLORKEY | SDL_RLEACCEL
+	#define SETALPHA_FLAGS SDL_SRCALPHA | SDL_RLEACCEL
 #else
-	const unsigned int RMASK = 0x00FF0000;
-	const unsigned int GMASK = 0x0000FF00;
-	const unsigned int BMASK = 0x000000FF;
-	#ifdef USE_ALPHA
-		const unsigned int AMASK = 0xFF000000;
-	#else
-		const unsigned int AMASK = 0x00000000;
-	#endif
+	#define COLORKEY_FLAGS SDL_SRCCOLORKEY
+	#define SETALPHA_FLAGS SDL_SRCALPHA
 #endif
 
 ////////////////////////////////////////////////////////////
 
-SDL_Surface* SdlBitmap::ReadXYZ(const std::string& filename, const uint8 *data, uint len) {
+SDL_Surface* SdlBitmap::ReadXYZ(const std::string& filename, bool transparent, const uint8 *data, uint len) {
 	int w, h;
 	void* pixels;
 	if (!filename.empty()) {
@@ -99,7 +72,7 @@ SDL_Surface* SdlBitmap::ReadXYZ(const std::string& filename, const uint8 *data, 
 #else
 	SDL_Surface* src = SDL_CreateRGBSurfaceFrom(pixels, w, h, 32, w * 4, 0xFF000000, 0x00FF0000, 0x0000FF00, 0);
 #endif
-	SDL_Surface* dst = SDL_CreateRGBSurface(SDL_SWSURFACE, w, h, ((SdlUi*)DisplayUi)->GetDisplaySurface()->bpp() * 8, 0, 0, 0, 0);
+	SDL_Surface* dst = SDL_CreateRGBSurface(SDL_SWSURFACE, w, h, DisplayUi->GetDisplaySurface()->bytes() * 8, 0, 0, 0, 0);
 
 	SDL_Rect rect = {0, 0, (uint16) w, (uint16) h};
 	SDL_BlitSurface(src, &rect, dst, &rect);
@@ -111,10 +84,10 @@ SDL_Surface* SdlBitmap::ReadXYZ(const std::string& filename, const uint8 *data, 
 }
 
 ////////////////////////////////////////////////////////////
-void SdlBitmap::SetupFormat(SDL_PixelFormat* fmt) {
+void SdlBitmap::SetupFormat(SDL_PixelFormat* fmt, bool transparent) {
 #ifdef USE_ALPHA
-	uint32 amask = ~(fmt->Rmask | fmt->Gmask | fmt->Bmask);
-	PF::AlphaType alpha = transparent ? PF::Alpha : PF::NoAlpha;
+	uint32 amask = (~0U >> (32 - fmt->BitsPerPixel)) ^ (fmt->Rmask | fmt->Gmask | fmt->Bmask);
+	PF::AlphaType alpha = transparent ? (amask == 0 ? PF::ColorKey : PF::Alpha) : PF::NoAlpha;
 #else
 	uint32 amask = 0;
 	PF::AlphaType alpha = transparent ? PF::ColorKey : PF::NoAlpha;
@@ -122,31 +95,27 @@ void SdlBitmap::SetupFormat(SDL_PixelFormat* fmt) {
 	format = DynamicFormat((int) fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, amask, alpha);
 }
 
-SdlBitmap::SdlBitmap(void *pixels, int width, int height, int depth, int pitch, uint32 Rmask, uint32 Gmask, uint32 Bmask, uint32 Amask) {
-	transparent = false;
-
-	bitmap = SDL_CreateRGBSurfaceFrom(pixels, width, height, depth, pitch, Rmask, Gmask, Bmask, Amask);
+SdlBitmap::SdlBitmap(void *pixels, int width, int height, int pitch, const DynamicFormat& format) {
+	bitmap = SDL_CreateRGBSurfaceFrom(pixels, width, height, format.bits, pitch,
+									  format.r.mask, format.g.mask, format.b.mask, format.a.mask);
 
 	if (bitmap == NULL) {
 		Output::Error("Couldn't create %dx%d bitmap.\n%s\n", width, height, SDL_GetError());
 	}
 
-	SetupFormat(bitmap->format);
-
+	SetupFormat(bitmap->format, false);
 }
 
 ////////////////////////////////////////////////////////////
-SdlBitmap::SdlBitmap(int width, int height, int bpp, bool itransparent) {
-	transparent = itransparent;
-
+SdlBitmap::SdlBitmap(int width, int height, bool transparent, int bpp) {
 	if ( !bpp ) {
 		assert(DisplayUi);
-		bpp = ((SdlUi*)DisplayUi)->GetDisplaySurface()->bpp() * 8;
+		bpp = DisplayUi->GetDisplaySurface()->bytes() * 8;
 	}
 
 	uint32 flags = SDL_SWSURFACE;
 	if (transparent)
-		flags |= TRANSPARENT_FLAGS;
+		flags |= bpp == 32 ? TRANSPARENT_FLAGS : SDL_SRCCOLORKEY;
 
 	SDL_Surface* temp = SDL_CreateRGBSurface(flags, width, height, bpp, 0, 0, 0, 0);
 
@@ -160,17 +129,15 @@ SdlBitmap::SdlBitmap(int width, int height, int bpp, bool itransparent) {
 		Output::Error("Couldn't optimize %dx%d image.\n%s\n", width, height, SDL_GetError());
 	}
 
-	SetupFormat(bitmap->format);
+	SetupFormat(bitmap->format, transparent);
 
 	SDL_FreeSurface(temp);
 }
 
-SdlBitmap::SdlBitmap(const std::string& filename, bool itransparent, uint32 flags) {
-	transparent = itransparent;
-
+SdlBitmap::SdlBitmap(const std::string& filename, bool transparent, uint32 flags) {
 	std::string ext = Utils::LowerCase(filename.substr(filename.size() - 3, 3));
 
-	SDL_Surface* temp = (ext == "xyz") ? ReadXYZ(filename, NULL, 0) : IMG_Load(filename.c_str());
+	SDL_Surface* temp = (ext == "xyz") ? ReadXYZ(filename, transparent, NULL, 0) : IMG_Load(filename.c_str());
 
 	if ( !temp ) {
 		Output::Error("Couldn't load %s image.\n%s\n", filename.c_str(), IMG_GetError());
@@ -188,17 +155,15 @@ SdlBitmap::SdlBitmap(const std::string& filename, bool itransparent, uint32 flag
 	}
 	SDL_FreeSurface(temp);
 
-	SetupFormat(bitmap->format);
+	SetupFormat(bitmap->format, transparent);
 
 	CheckPixels(flags);
 }
 
-SdlBitmap::SdlBitmap(const uint8* data, uint bytes, bool itransparent, uint32 flags) {
-	transparent = itransparent;
-
+SdlBitmap::SdlBitmap(const uint8* data, uint bytes, bool transparent, uint32 flags) {
 	SDL_Surface* temp;
 	if (bytes > 4 && strncmp((char*) data, "XYZ1", 4) == 0)
-		temp = ReadXYZ(NULL, data, bytes);
+		temp = ReadXYZ(NULL, transparent, data, bytes);
 	else {
 		SDL_RWops* rw_ops = SDL_RWFromConstMem(data, bytes);
 		temp = IMG_Load_RW(rw_ops, 1);
@@ -222,19 +187,17 @@ SdlBitmap::SdlBitmap(const uint8* data, uint bytes, bool itransparent, uint32 fl
 
 	SDL_FreeSurface(temp);
 
-	SetupFormat(bitmap->format);
+	SetupFormat(bitmap->format, transparent);
 
 	CheckPixels(flags);
 }
 
-SdlBitmap::SdlBitmap(Bitmap* source, Rect src_rect, bool itransparent) {
-	transparent = itransparent;
-
+SdlBitmap::SdlBitmap(Bitmap* source, Rect src_rect, bool transparent) {
 	uint32 flags = SDL_SWSURFACE;
 	if (transparent)
-		flags |= TRANSPARENT_FLAGS;
+		flags |= DisplayUi->GetDisplaySurface()->bytes() == 4 ? TRANSPARENT_FLAGS : SDL_SRCCOLORKEY;
 
-	SDL_Surface* temp = SDL_CreateRGBSurface(flags, src_rect.width, src_rect.height, ((SdlUi*)DisplayUi)->GetDisplaySurface()->bpp() * 8, 0, 0, 0, 0);
+	SDL_Surface* temp = SDL_CreateRGBSurface(flags, src_rect.width, src_rect.height, DisplayUi->GetDisplaySurface()->bytes() * 8, 0, 0, 0, 0);
 
 	if (temp == NULL) {
 		Output::Error("Couldn't create %dx%d image.\n%s\n", src_rect.width, src_rect.height, SDL_GetError());
@@ -248,26 +211,21 @@ SdlBitmap::SdlBitmap(Bitmap* source, Rect src_rect, bool itransparent) {
 
 	SDL_FreeSurface(temp);
 
-	#ifdef USE_ALPHA
-	Clear();
-	#else
-	if ((((SdlBitmap*)source)->bitmap->flags & SDL_SRCCOLORKEY) == SDL_SRCCOLORKEY && transparent) {
+	SetupFormat(bitmap->format, transparent);
+
+	if (format.alpha_type == PF::Alpha)
+		Clear();
+	else if ((((SdlBitmap*)source)->bitmap->flags & SDL_SRCCOLORKEY) == SDL_SRCCOLORKEY && transparent) {
 		SDL_FillRect(bitmap, NULL, ((SdlBitmap*)source)->bitmap->format->colorkey);
 		SDL_SetColorKey(bitmap, COLORKEY_FLAGS, ((SdlBitmap*)source)->bitmap->format->colorkey);
 	}
-	#endif
-
-	SetupFormat(bitmap->format);
 
 	Blit(0, 0, source, src_rect, 255);
 }
 
-SdlBitmap::SdlBitmap(SDL_Surface* bitmap, bool itransparent) :
+SdlBitmap::SdlBitmap(SDL_Surface* bitmap, bool transparent) :
 	bitmap(bitmap) {
-
-	transparent = itransparent;
-
-	SetupFormat(bitmap->format);
+	SetupFormat(bitmap->format, transparent);
 }
 
 ////////////////////////////////////////////////////////////
@@ -284,7 +242,7 @@ void* SdlBitmap::pixels() {
 	return bitmap->pixels;
 }
 
-uint8 SdlBitmap::bpp() const {
+uint8 SdlBitmap::bytes() const {
 	return bitmap->format->BytesPerPixel;
 }
 
@@ -355,9 +313,9 @@ void SdlBitmap::RemovePaletteColorkeyDuplicates(SDL_Surface* src, SDL_Color* col
 
 ////////////////////////////////////////////////////////////
 void SdlBitmap::Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
-	#ifdef USE_ALPHA
+	if (src->format.alpha_type == PF::Alpha)
 		Surface::Blit(x, y, src, src_rect, opacity);
-	#else
+	else {
 		SDL_Rect src_r = {(int16)src_rect.x, (int16)src_rect.y, (uint16)src_rect.width, (uint16)src_rect.height};
 		SDL_Rect dst_r = {(int16)x, (int16)y, 0, 0};
 
@@ -366,7 +324,7 @@ void SdlBitmap::Blit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
 		SDL_BlitSurface(((SdlBitmap*)src)->bitmap, &src_r, bitmap, &dst_r);
 		
 		if (opacity < 255) SDL_SetAlpha(((SdlBitmap*)src)->bitmap, SETALPHA_FLAGS, 255);
-	#endif
+	}
 
 	RefreshCallback();
 }
@@ -398,23 +356,23 @@ void SdlBitmap::FillRect(Rect dst_rect, const Color &color) {
 
 ////////////////////////////////////////////////////////////
 void SdlBitmap::Mask(int x, int y, Bitmap* src, Rect src_rect) {
-	#ifdef USE_ALPHA
+	if (format.alpha_type == PF::Alpha)
 		Surface::MaskBlit(x, y, src, src_rect);
-	#else
+	else {
 		src->SetTransparentColor(Color(255,255,255,0));
 		Blit(x, y, src, src_rect, 255);
 		SetTransparentColor(Color(0,0,0,0));
-	#endif
+	}
 
 	RefreshCallback();
 }
 
 ////////////////////////////////////////////////////////////
 void SdlBitmap::SetTransparentColor(Color color) {
-	#ifndef USE_ALPHA
+	if (format.alpha_type == PF::ColorKey) {
 		uint32 colorkey = GetUint32Color(color);
 		SDL_SetColorKey(bitmap, COLORKEY_FLAGS, colorkey);
-	#endif
+	}
 }
 
 ////////////////////////////////////////////////////////////

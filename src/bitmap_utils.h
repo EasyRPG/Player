@@ -82,6 +82,15 @@ public:
 	/// @param n : number of pixels
 	/// @param opacity : opacity scale (255 == unity)
 	////////////////////////////////////////////////////////
+	virtual void Blit(uint8* dst_pixels, const uint8* src_pixels, int n, int opacity);
+
+	////////////////////////////////////////////////////////
+	/// Blit source bitmap to destination with opacity scaling
+	/// @param dst_pixels : pointer to destination pixel row
+	/// @param src_pixel : pointer to source pixels
+	/// @param n : number of pixels
+	/// @param opacity : opacity scale (255 == unity)
+	////////////////////////////////////////////////////////
 	virtual void OpacityBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int opacity) = 0;
 
 	////////////////////////////////////////////////////////
@@ -117,6 +126,17 @@ public:
 	/// @param step : fixed point source x step (inverse scale factor)
 	/// @param opacity : opacity scale (255 == unity)
 	////////////////////////////////////////////////////////
+	virtual void ScaleBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int x, int step, int opacity);
+
+	////////////////////////////////////////////////////////
+	/// Blit source bitmap to destination with scaling and opacity scaling
+	/// @param dst_pixels : pointer to destination pixel row
+	/// @param src_pixel : pointer to source pixel row
+	/// @param n : number of pixels
+	/// @param x : fixed point source x position
+	/// @param step : fixed point source x step (inverse scale factor)
+	/// @param opacity : opacity scale (255 == unity)
+	////////////////////////////////////////////////////////
 	virtual void OpacityScaleBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int x, int step, int opacity) = 0;
 
 	////////////////////////////////////////////////////////
@@ -142,6 +162,38 @@ public:
 	virtual void CopyScaleBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int x, int step) = 0;
 
 	////////////////////////////////////////////////////////
+	/// Blit source bitmap over destination with transformation and opacity scaling
+	/// @param dst_pixels : pointer to destination pixel row
+	/// @param src_pixel : pointer to top-left corner of source pixels
+	/// @param src_pitch : pitch of source data
+	/// @param x0 : destination x coordinate of row left
+	/// @param x1 : destination x coordinate of row right
+	/// @param y : destination y coordinat of row
+	/// @param src_rect : source clip rectangle
+	/// @param inv : inverse (dst->src) transformation matrix
+	/// @param opacity : opacity scale (255 == unity)
+	////////////////////////////////////////////////////////
+	virtual void TransformBlit(uint8* dst_pixels, const uint8* src_pixels, int src_pitch,
+							   int x0, int x1, int y, const Rect& src_rect, const Matrix& inv,
+							   int opacity);
+
+	////////////////////////////////////////////////////////
+	/// Blit source bitmap over destination with transformation and opacity scaling
+	/// @param dst_pixels : pointer to destination pixel row
+	/// @param src_pixel : pointer to top-left corner of source pixels
+	/// @param src_pitch : pitch of source data
+	/// @param x0 : destination x coordinate of row left
+	/// @param x1 : destination x coordinate of row right
+	/// @param y : destination y coordinat of row
+	/// @param src_rect : source clip rectangle
+	/// @param inv : inverse (dst->src) transformation matrix
+	/// @param opacity : opacity scale (255 == unity)
+	////////////////////////////////////////////////////////
+	virtual void OpacityTransformBlit(uint8* dst_pixels, const uint8* src_pixels, int src_pitch,
+									  int x0, int x1, int y, const Rect& src_rect, const Matrix& inv,
+									  int opacity) = 0;
+
+	////////////////////////////////////////////////////////
 	/// Blit source bitmap over destination with transformation
 	///  (transparency allows source through)
 	/// @param dst_pixels : pointer to destination pixel row
@@ -152,9 +204,26 @@ public:
 	/// @param y : destination y coordinat of row
 	/// @param src_rect : source clip rectangle
 	/// @param inv : inverse (dst->src) transformation matrix
+	/// @param opacity : opacity scale (255 == unity)
 	////////////////////////////////////////////////////////
-	virtual void TransformBlit(uint8* dst_pixels, const uint8* src_pixels, int src_pitch,
-							   int x0, int x1, int y, const Rect& src_rect, const Matrix& inv) = 0;
+	virtual void OverlayTransformBlit(uint8* dst_pixels, const uint8* src_pixels, int src_pitch,
+									  int x0, int x1, int y, const Rect& src_rect, const Matrix& inv) = 0;
+
+	////////////////////////////////////////////////////////
+	/// Blit source bitmap over destination with transformation
+	///  (transparency is copied)
+	/// @param dst_pixels : pointer to destination pixel row
+	/// @param src_pixel : pointer to top-left corner of source pixels
+	/// @param src_pitch : pitch of source data
+	/// @param x0 : destination x coordinate of row left
+	/// @param x1 : destination x coordinate of row right
+	/// @param y : destination y coordinat of row
+	/// @param src_rect : source clip rectangle
+	/// @param inv : inverse (dst->src) transformation matrix
+	/// @param opacity : opacity scale (255 == unity)
+	////////////////////////////////////////////////////////
+	virtual void CopyTransformBlit(uint8* dst_pixels, const uint8* src_pixels, int src_pitch,
+								   int x0, int x1, int y, const Rect& src_rect, const Matrix& inv) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Replace destination alpha with source alpha
@@ -292,10 +361,8 @@ public:
 
 protected:
 	typedef std::pair<int, int> int_pair;
-	static std::map<int, BitmapUtils*> static_unary;
-	static std::map<int, BitmapUtils*> dynamic_unary;
-	static std::map<int_pair, BitmapUtils*> static_binary;
-	static std::map<int_pair, BitmapUtils*> dynamic_binary;
+	static std::map<int, BitmapUtils*> unary_map;
+	static std::map<int_pair, BitmapUtils*> binary_map;
 	static bool maps_initialized;
 };
 

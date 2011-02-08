@@ -49,17 +49,25 @@ public:
 	/// @param bpp : surface bpp
 	/// @param transparent : allow transparency on surface
 	////////////////////////////////////////////////////////
-	static Surface* CreateSurface(int width, int height, int bpp = 0, bool transparent = true);
+	static Surface* CreateSurface(int width, int height, bool transparent = true, int bpp = 0);
 
 	////////////////////////////////////////////////////////
-	/// Creates a bitmap from another.
+	/// Creates a copy of an existing bitmap.
 	/// @param source : source bitmap
 	/// @param src_rect : rect to copy from source bitmap
 	/// @param transparent : allow transparency on bitmap
 	////////////////////////////////////////////////////////
 	static Surface* CreateSurface(Bitmap* source, Rect src_rect, bool transparent = true);
 
-	static Surface* CreateSurfaceFrom(void *pixels, int width, int height, int depth, int pitch, uint32 Rmask, uint32 Gmask, uint32 Bmask, uint32 Amask);
+	////////////////////////////////////////////////////////
+	/// Creates a surface wrapper around existing pixel data.
+	/// @param pixels : pointer to pixel data
+	/// @param width  : surface width
+	/// @param height : surface height
+	/// @param height : surface pitch
+	/// @param format : pixel format
+	////////////////////////////////////////////////////////
+	static Surface* CreateSurfaceFrom(void *pixels, int width, int height, int pitch, const DynamicFormat& format);
 
 	////////////////////////////////////////////////////////
 	/// Destructor.
@@ -132,7 +140,7 @@ public:
 	/// @param inv : transformation matrix
 	///  - from destination coordinates to source coordinates
 	////////////////////////////////////////////////////////
-	virtual void TransformBlit(Rect dst_rect, Bitmap* src, Rect src_rect, const Matrix& inv);
+	virtual void TransformBlit(Rect dst_rect, Bitmap* src, Rect src_rect, const Matrix& inv, int opacity);
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap scaled, rotated and translated
@@ -152,7 +160,8 @@ public:
 							   double angle,
 							   double scale_x, double scale_y,
 							   int src_pos_x, int src_pos_y,
-							   int dst_pos_x, int dst_pos_y);
+							   int dst_pos_x, int dst_pos_y,
+							   int opacity);
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap transparency to this one.
@@ -172,7 +181,7 @@ public:
 	/// @param depth : wave magnitude
 	/// @param phase : wave phase
 	////////////////////////////////////////////////////////
-	virtual void WaverBlit(int x, int y, Bitmap* src, Rect src_rect, int depth, double phase);
+	virtual void WaverBlit(int x, int y, Bitmap* src, Rect src_rect, int depth, double phase, int opacity);
 
 	////////////////////////////////////////////////////////
 	/// Fill entire bitmap with color.
@@ -264,6 +273,103 @@ public:
 	/// @return : the bounding rectangle
 	////////////////////////////////////////////////////////
 	static Rect TransformRectangle(const Matrix& m, const Rect& rect);
+
+	/// Multiple Effects functions
+	/// Note: these are in effects.cpp, not surface.cpp
+	/// Note: all perform rendering using existing functions,
+	///  so it is not necessary for back-ends to implement them
+
+	////////////////////////////////////////////////////////
+	/// Blit source bitmap with effects
+	/// @param x : destination x position
+	/// @param y : destination y position
+	/// @param src : source bitmap
+	/// @param src_rect : source bitmap rectangle
+	/// @param top_opacity : opacity of top section
+	/// @param bottom_opacity : opacity of bottom section
+	/// @param opacity_split : boundary between sections,
+	///  (zero is bottom edge)
+	/// @param tone : tone to apply
+	/// @param zoom_x : x scale factor
+	/// @param zoom_y : y scale factor
+	/// @param angle : rotation angle
+	/// @param waver_depth : wave magnitude
+	/// @param waver_phase : wave phase
+	/// Note: rotation and waver are mutually exclusive
+	////////////////////////////////////////////////////////
+	virtual void EffectsBlit(int x, int y, Bitmap* src, Rect src_rect,
+							 int top_opacity, int bottom_opacity, int opacity_split,
+							 const Tone& tone,
+							 double zoom_x, double zoom_y, double angle,
+							 int waver_depth, double waver_phase);
+
+	////////////////////////////////////////////////////////
+	/// Blit source bitmap with transformation and opacity scaling
+	/// @param fwd : forward (src->dst) transformation matrix
+	/// @param src : source bitmap
+	/// @param src_rect : source bitmap rectangle
+	/// @param opacity : opacity
+	////////////////////////////////////////////////////////
+	virtual void EffectsBlit(const Matrix &fwd, Bitmap* src, Rect src_rect,
+							 int opacity);
+
+	////////////////////////////////////////////////////////
+	/// Blit source bitmap with transformation and (split) opacity scaling
+	/// @param fwd : forward (src->dst) transformation matrix
+	/// @param src : source bitmap
+	/// @param src_rect : source bitmap rectangle
+	/// @param top_opacity : opacity of top section
+	/// @param bottom_opacity : opacity of bottom section
+	/// @param opacity_split : boundary between sections,
+	///  (zero is bottom edge)
+	////////////////////////////////////////////////////////
+	virtual void EffectsBlit(const Matrix &fwd, Bitmap* src, Rect src_rect,
+							 int top_opacity, int bottom_opacity, int opacity_split);
+
+	////////////////////////////////////////////////////////
+	/// Blit source bitmap with scaling, waver and (split) opacity scaling
+	/// @param src : source bitmap
+	/// @param src_rect : source bitmap rectangle
+	/// @param top_opacity : opacity of top section
+	/// @param bottom_opacity : opacity of bottom section
+	/// @param opacity_split : boundary between sections,
+	///  (zero is bottom edge)
+	/// @param zoom_x : x scale factor
+	/// @param zoom_y : y scale factor
+	/// @param waver_depth : wave magnitude
+	/// @param waver_phase : wave phase
+	////////////////////////////////////////////////////////
+	virtual void EffectsBlit(int x, int y, Bitmap* src, Rect src_rect,
+							 int top_opacity, int bottom_opacity, int opacity_split,
+							 double zoom_x, double zoom_y,
+							 int waver_depth, double waver_phase);
+
+	////////////////////////////////////////////////////////
+	/// Blit source bitmap with waver and (split) opacity scaling
+	/// @param src : source bitmap
+	/// @param src_rect : source bitmap rectangle
+	/// @param top_opacity : opacity of top section
+	/// @param bottom_opacity : opacity of bottom section
+	/// @param opacity_split : boundary between sections,
+	///  (zero is bottom edge)
+	/// @param waver_depth : wave magnitude
+	/// @param waver_phase : wave phase
+	////////////////////////////////////////////////////////
+	virtual void EffectsBlit(int x, int y, Bitmap* src, Rect src_rect,
+							 int top_opacity, int bottom_opacity, int opacity_split,
+							 int waver_depth, double waver_phase);
+
+	////////////////////////////////////////////////////////
+	/// Blit source bitmap with waver and opacity scaling
+	/// @param src : source bitmap
+	/// @param src_rect : source bitmap rectangle
+	/// @param opacity : opacity
+	/// @param waver_depth : wave magnitude
+	/// @param waver_phase : wave phase
+	////////////////////////////////////////////////////////
+	virtual void EffectsBlit(int x, int y, Bitmap* src, Rect src_rect,
+							 int opacity,
+							 int waver_depth, double waver_phase);
 
 	/// TextDraw alignment options
 	enum TextAlignment {
