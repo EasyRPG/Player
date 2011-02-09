@@ -25,6 +25,7 @@
 #include "scene_name.h"
 #include "scene_shop.h"
 #include "scene_save.h"
+#include "scene_battle.h"
 #include "main_data.h"
 #include "game_map.h"
 #include "game_message.h"
@@ -127,6 +128,11 @@ void Scene_Map::Update() {
 			return;
 		}
 
+		if (Game_Temp::battle_calling) {
+			CallBattle();
+			return;
+		}
+
 		if (Game_Temp::transition_processing) {
 			Game_Temp::transition_processing = false;
 
@@ -158,7 +164,9 @@ void Scene_Map::UpdateTeleportPlayer() {
 /// Menu Calling Stuff
 ////////////////////////////////////////////////////////////
 void Scene_Map::CallBattle() {
+	Game_Temp::battle_calling = false;
 
+	Scene::Push(new Scene_Battle());
 }
 
 void Scene_Map::CallShop() {

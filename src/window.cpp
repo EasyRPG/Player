@@ -44,6 +44,8 @@ Window::Window():
 	z(0),
 	ox(0),
 	oy(0),
+	border_x(8),
+	border_y(8),
 	opacity(255),
 	back_opacity(255),
 	contents_opacity(255),
@@ -149,26 +151,31 @@ void Window::Draw(int z_order) {
 			if (cursor_needs_refresh) RefreshCursor();
 
 			Rect src_rect(
-				-min(cursor_rect.x + 8, 0),
-				-min(cursor_rect.y + 8, 0),
-				min(cursor_rect.width, width - cursor_rect.x + 8),
-				min(cursor_rect.height, height - cursor_rect.y + 8)
+				-min(cursor_rect.x + border_x, 0),
+				-min(cursor_rect.y + border_y, 0),
+				min(cursor_rect.width, width - cursor_rect.x + border_x),
+				min(cursor_rect.height, height - cursor_rect.y + border_y)
 			);
 
 			if (cursor_frame < 16)
-				cursor1->BlitScreen(x + cursor_rect.x + 8, y + cursor_rect.y + 8, src_rect);
+				cursor1->BlitScreen(x + cursor_rect.x + border_x, y + cursor_rect.y + border_y, src_rect);
 			else
-				cursor2->BlitScreen(x + cursor_rect.x + 8, y + cursor_rect.y + 8, src_rect);
+				cursor2->BlitScreen(x + cursor_rect.x + border_x, y + cursor_rect.y + border_y, src_rect);
 		}
 	}
 
 	if (contents != NULL) {
-		if (width > 16 && height > 16 && -ox < width - 16 && -oy < height - 16 && contents_opacity > 0 && animation_frames == 0) {
-			Rect src_rect(-min(-ox, 0), -min(-oy, 0), min(width - 16, width - 16 + ox), min(height - 16, height - 16 + oy));
+		if (width > 2 * border_x && height > 2 * border_y &&
+			-ox < width - 2 * border_x && -oy < height - 2 * border_y &&
+			contents_opacity > 0 && animation_frames == 0) {
+			Rect src_rect(-min(-ox, 0), -min(-oy, 0),
+						  min(width - 2 * border_x, width - 2 * border_x + ox),
+						  min(height - 2 * border_y, height - 2 * border_y + oy));
 			
 			contents_screen->SetOpacityEffect(contents_opacity);
 
-			contents_screen->BlitScreen(max(x + 8, x + 8 - ox), max(y + 8, y + 8 - oy), src_rect);
+			contents_screen->BlitScreen(max(x + border_x, x + border_x - ox),
+										max(y + border_y, y + border_y - oy), src_rect);
 		}
 	}
 	
@@ -455,6 +462,20 @@ int Window::GetOy() const {
 }
 void Window::SetOy(int noy) {
 	oy = noy;
+}
+
+int Window::GetBorderX() const {
+	return border_x;
+}
+void Window::SetBorderX(int x) {
+	border_x = x;
+}
+
+int Window::GetBorderY() const {
+	return border_y;
+}
+void Window::SetBorderY(int y) {
+	border_y = y;
 }
 
 int Window::GetOpacity() const {

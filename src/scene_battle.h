@@ -22,6 +22,11 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "scene.h"
+#include "window_help.h"
+#include "window_item.h"
+#include "window_skill.h"
+#include "window_battlecommand.h"
+#include "window_battlestatus.h"
 
 ////////////////////////////////////////////////////////////
 /// Scene_Battle class.
@@ -38,10 +43,28 @@ public:
 
 	void Start();
 	void Update();
-	//void Terminate();
+
+	enum State {
+		Options,
+		Battle,
+		AutoBattle,
+		Command,
+		Item,
+		Skill
+	};
+
+	void SetState(State state);
+	int GetActiveActor();
 
 private:
+	State state;
 
+	Window_Help* help_window;
+	Window_BattleCommand* options_window;
+	Window_BattleStatus* status_window;
+	Window_BattleCommand* command_window;
+	Window_Item* item_window;
+	Window_Skill* skill_window;
 };
 
 #endif

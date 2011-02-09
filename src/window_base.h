@@ -57,8 +57,8 @@ public:
 	void DrawActorLevel(Game_Actor* actor, int cx, int cy);
 	void DrawActorState(Game_Actor* actor, int cx, int cy);
 	void DrawActorExp(Game_Actor* actor, int cx, int cy);
-	void DrawActorHp(Game_Actor* actor, int cx, int cy);
-	void DrawActorSp(Game_Actor* actor, int cx, int cy);
+	void DrawActorHp(Game_Actor* actor, int cx, int cy, bool draw_max = true);
+	void DrawActorSp(Game_Actor* actor, int cx, int cy, bool draw_max = true);
 	void DrawActorParameter(Game_Actor* actor, int cx, int cy, int type);
 	void DrawEquipmentType(Game_Actor* actor, int cx, int cy, int type);
 	void DrawItemName(RPG::Item* item, int cx, int cy, bool enabled = true);

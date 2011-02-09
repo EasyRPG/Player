@@ -129,7 +129,7 @@ void Window_Base::DrawActorExp(Game_Actor* actor, int cx, int cy) {
 	contents->TextDraw(cx + 12, cy, Font::ColorDefault, ss.str(), Surface::TextAlignLeft);
 }
 
-void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy) {
+void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy, bool draw_max) {
 	// Draw HP-String
 	contents->TextDraw(cx, cy, 1, Data::terms.hp_short);
 
@@ -146,6 +146,9 @@ void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy) {
 	ss << actor->GetHp();
 	contents->TextDraw(cx + 18, cy, color, ss.str(), Surface::TextAlignRight);
 
+	if (!draw_max)
+		return;
+
 	// Draw the /
 	cx += 3 * 6;
 	contents->TextDraw(cx, cy, Font::ColorDefault, "/");
@@ -157,7 +160,7 @@ void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy) {
 	contents->TextDraw(cx + 18, cy, Font::ColorDefault, ss.str(), Surface::TextAlignRight);
 }
 
-void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy) {
+void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy, bool draw_max) {
 	// Draw SP-String
 	contents->TextDraw(cx, cy, 1, Data::terms.sp_short);
 
@@ -171,6 +174,9 @@ void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy) {
 	std::stringstream ss;
 	ss << actor->GetSp();
 	contents->TextDraw(cx + 18, cy, color, ss.str(), Surface::TextAlignRight);
+
+	if (!draw_max)
+		return;
 
 	// Draw the /
 	cx += 3 * 6;

@@ -65,6 +65,10 @@ public:
 	void SetOx(int nox);
 	int GetOy() const;
 	void SetOy(int noy);
+	int GetBorderX() const;
+	void SetBorderX(int nox);
+	int GetBorderY() const;
+	void SetBorderY(int noy);
 	int GetOpacity() const;
 	void SetOpacity(int nopacity);
 	int GetBackOpacity() const;
@@ -95,6 +99,8 @@ protected:
 	int z;
 	int ox;
 	int oy;
+	int border_x;
+	int border_y;
 	int opacity;
 	int back_opacity;
 	int contents_opacity;
