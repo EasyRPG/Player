@@ -280,6 +280,16 @@ void Game_Battler::RemoveState(int state_id) {
 }
 
 ////////////////////////////////////////////////////////////
+static bool NonPermanent(int state_id) {
+	return Data::states[state_id - 1].type == 0;
+}
+
+void Game_Battler::RemoveStates() {
+	std::vector<int>::iterator end = std::remove_if(states.begin(), states.end(), NonPermanent);
+	states.erase(end, states.end());
+}
+
+////////////////////////////////////////////////////////////
 void Game_Battler::RemoveAllStates() {
 	states.clear();
 }

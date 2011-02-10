@@ -88,7 +88,7 @@ public:
 	/// @param index: character index (0..3)
 	/// @param value: timer value
 	////////////////////////////////////////////////////////
-	void SetTimeGauge(int index, int value);
+	void SetTimeGauge(int index, int value, int limit);
 
 protected:
 	friend class Scene_Battle;

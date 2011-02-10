@@ -41,12 +41,14 @@ public:
 
 	void Start();
 	void Update();
+	void Terminate();
 
 	enum State {
 		Options,
 		Battle,
 		AutoBattle,
 		Command,
+		Target,
 		Item,
 		Skill
 	};
@@ -54,9 +56,58 @@ public:
 	void SetState(State state);
 	int GetActiveActor();
 
+	struct Ally {
+		enum AnimState {
+			Idle,
+			RightHand,
+			LeftHand,
+			SkillUse,
+			Dead,
+			Damage,
+			BadStatus,
+			Defending,
+			WalkingLeft,
+			WalkingRight,
+			Victory,
+			Item
+		};
+
+		Ally(Game_Actor* game_actor) :
+			game_actor(game_actor),
+			rpg_actor(&Data::actors[game_actor->GetId() - 1]),
+			sprite(NULL),
+			anim_state(0),
+			gauge(0) {}
+
+		void CreateSprite();
+
+		Game_Actor* game_actor;
+		const RPG::Actor* rpg_actor;
+		Sprite* sprite;
+		int anim_state;
+		int gauge;
+		static const int gauge_full = 500;
+	};
+
+	struct Enemy {
+		Enemy(const RPG::TroopMember* member) :
+			member(member),
+			enemy(&Data::enemies[member->ID - 1]),
+			sprite(NULL),
+			visible(!member->invisible) {}
+
+		void CreateSprite();
+
+		const RPG::TroopMember* member;
+		const RPG::Enemy* enemy;
+		Sprite* sprite;
+		bool visible;
+	};
+
 private:
 	State state;
 	int cycle;
+	int active_enemy;
 
 	Window_Help* help_window;
 	Window_BattleCommand* options_window;
@@ -67,8 +118,20 @@ private:
 	Background* background;
 
 	const RPG::Troop* troop;
-	std::vector<Sprite*> enemy_sprites;
-	std::vector<Sprite*> actor_sprites;
+	std::vector<Ally> allies;
+	std::vector<Enemy> enemies;
+
+	Sprite *ally_cursor;
+	Sprite *enemy_cursor;
+
+	void CreateSprites();
+	void CreateCursors();
+	void CreateWindows();
+
+	void Attack();
+	void Defend();
+	void UseItem();
+	void UseSkill();
 };
 
 #endif

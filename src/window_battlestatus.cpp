@@ -104,8 +104,8 @@ int Window_BattleStatus::GetActiveCharacter() {
 }
 
 ////////////////////////////////////////////////////////////
-void Window_BattleStatus::SetTimeGauge(int _index, int value) {
-	gauges[_index] = value;
+void Window_BattleStatus::SetTimeGauge(int _index, int value, int limit) {
+	gauges[_index] = value * gauge_full / limit;
 	RefreshGauge(_index);
 
 	int num_actors = actors.size();
