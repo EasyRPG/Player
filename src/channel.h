@@ -20,16 +20,14 @@
 
 #include "system.h"
 #include "resampler.h"
+#include "audio_stream.h"
 
 
 namespace Audio {
 
 class Channel {
 public:
-
-	typedef int16* pBuf;
-
-	Channel(uint16 _rate, uint16 _vol, uint8 _balance, pBuf& data, int _bsize);
+	Channel(uint16 _rate, uint16 _vol, uint8 _balance, AudioStream* _stream);
 	~Channel();
 
 	void Pause() { paused = true; }
@@ -44,10 +42,6 @@ public:
 
 	void Mix(int16 *stream, int len);
 
-	void SetOffset(uint32 _offset) { offset = _offset; }
-	uint32 GetOffset() const { return offset; }
-
-
 private:
 
 	Resampler *resampler;
@@ -55,12 +49,10 @@ private:
 	uint16 rate;
 	uint16 vol;
 	uint8 balance;
-	pBuf buffer;
-	int bsize;
 	bool paused;
 
-	// 2 byte offset (int16 samples)
-	uint32 offset;
+	AudioStream *stream;
+
 };
 
 }

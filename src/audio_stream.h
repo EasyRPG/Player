@@ -15,29 +15,29 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#include "channel.h"
-#include "resampler.h"
+#ifndef _EASYRPG_AUDIOSTREAM_H_
+#define _EASYRPG_AUDIOSTREAM_H_
 
+#include "system.h"
 namespace Audio {
 
-Channel::Channel(uint16 _rate, uint16 _vol, uint8 _balance, AudioStream* _stream):
-rate(_rate),
-vol(_vol),
-balance(_balance),
-paused(true),
-stream(_stream) {
+class AudioStream {
+public:
+	virtual ~AudioStream();
 
-	resampler = Resampler::GetInstance(rate, 22050); 
+	virtual int ReadBuffer(int16* buf, const int samples) = 0;
 
-}
+	virtual bool IsStereo() = 0;
 
-Channel::~Channel() {
-	delete resampler;
-}
+	virtual bool EndOfStream() = 0;
+
+	virtual int GetRate() = 0;
+};
 
 
-void Channel::Mix(int16 *data, int len) {
-	resampler->merge(data, len, stream, vol, balance);
-}
+
 
 }
+
+
+#endif 

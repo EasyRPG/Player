@@ -313,6 +313,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\audio.cpp" />
+    <ClCompile Include="..\..\src\audio_stream.cpp" />
     <ClCompile Include="..\..\src\baseui.cpp" />
     <ClCompile Include="..\..\src\bitmap.cpp" />
     <ClCompile Include="..\..\src\bitmap_screen.cpp" />
@@ -320,6 +321,7 @@
     <ClCompile Include="..\..\src\cache.cpp" />
     <ClCompile Include="..\..\src\channel.cpp" />
     <ClCompile Include="..\..\src\color.cpp" />
+    <ClCompile Include="..\..\src\effects.cpp" />
     <ClCompile Include="..\..\src\filefinder_win.cpp" />
     <ClCompile Include="..\..\src\font.cpp" />
     <ClCompile Include="..\..\src\font_pearl_8x8.cpp" />
@@ -435,6 +437,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\audio.h" />
+    <ClInclude Include="..\..\src\audio_stream.h" />
     <ClInclude Include="..\..\src\bitmap.h" />
     <ClInclude Include="..\..\src\bitmap_screen.h" />
     <ClInclude Include="..\..\src\bitmap_utils.h" />
