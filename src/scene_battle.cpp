@@ -23,6 +23,7 @@
 #include "output.h"
 #include "player.h"
 #include "sprite.h"
+#include "cache.h"
 #include "game_system.h"
 #include "game_temp.h"
 #include "game_party.h"
@@ -34,10 +35,80 @@ Scene_Battle::Scene_Battle() {
 }
 
 ////////////////////////////////////////////////////////////
+Scene_Battle::~Scene_Battle() {
+	delete help_window;
+	delete options_window;
+	delete status_window;
+	delete command_window;
+	delete item_window;
+	delete skill_window;
+	delete background;
+}
+
+////////////////////////////////////////////////////////////
 void Scene_Battle::Start() {
 	if (Player::battle_test_flag) {
 		if (Player::battle_test_troop_id <= 0) {
 			Output::Error("Invalid Monster Party Id");
+		}
+	}
+
+	cycle = 0;
+
+	if (!Game_Temp::battle_background.empty())
+		background = new Background(Game_Temp::battle_background);
+	else
+		background = new Background(Game_Temp::battle_terrain_id);
+
+	troop = &Data::troops[Game_Temp::battle_troop_id - 1];
+
+	for (std::vector<RPG::TroopMember>::const_iterator it = troop->members.begin();
+		 it != troop->members.end();
+		 it++) {
+		const RPG::TroopMember& mem = *it;
+		const RPG::Enemy& enemy = Data::enemies[mem.ID - 1];
+		Bitmap* graphic = Cache::Monster(enemy.battler_name);
+		bool hue_change = enemy.battler_hue != 0;
+		if (hue_change) {
+			Surface* new_graphic = Surface::CreateSurface(graphic->GetWidth(), graphic->GetHeight());
+			new_graphic->HueChangeBlit(0, 0, graphic, graphic->GetRect(), enemy.battler_hue);
+			delete graphic;
+			graphic = new_graphic;
+		}
+
+		Sprite* sprite = new Sprite();
+		sprite->SetBitmap(graphic, hue_change);
+		sprite->SetOx(graphic->GetWidth() / 2);
+		sprite->SetOy(graphic->GetHeight() / 2);
+		sprite->SetX(mem.x);
+		sprite->SetY(mem.y);
+		sprite->SetZ(mem.y);
+		sprite->SetVisible(!mem.invisible);
+
+		enemy_sprites.push_back(sprite);
+	}
+
+	if (Player::engine == Player::EngineRpg2k3) {
+		const std::vector<Game_Actor*>& actors = Game_Party::GetActors();
+		for (std::vector<Game_Actor*>::const_iterator it = actors.begin();
+			 it != actors.end();
+			 it++) {
+			const Game_Actor* actor = *it;
+			const RPG::Actor& rpg_actor = Data::actors[actor->GetId() - 1];
+			const RPG::BattlerAnimation& anim = Data::battleranimations[rpg_actor.battler_animation - 1];
+			const RPG::BattlerAnimationExtension& ext = anim.base_data[0];
+			Bitmap* graphic = Cache::BattleCharset(ext.battler_name);
+
+			Sprite* sprite = new Sprite();
+			sprite->SetBitmap(graphic);
+			sprite->SetSrcRect(Rect(0, ext.battler_index * 48, 48, 48));
+			sprite->SetOx(24);
+			sprite->SetOy(24);
+			sprite->SetX(rpg_actor.battle_x);
+			sprite->SetY(rpg_actor.battle_y);
+			sprite->SetZ(rpg_actor.battle_y);
+
+			actor_sprites.push_back(sprite);
 		}
 	}
 
@@ -54,8 +125,8 @@ void Scene_Battle::Start() {
 	status_window = new Window_BattleStatus();
 
 	std::vector<std::string> commands;
-	commands.push_back(Data::terms.command_attack);
-	commands.push_back(Data::terms.command_defend);
+	commands.push_back(!Data::terms.command_attack.empty() ? Data::terms.command_attack : "Attack");
+	commands.push_back(!Data::terms.command_defend.empty() ? Data::terms.command_defend : "Defend");
 	commands.push_back(Data::terms.command_item);
 	commands.push_back(Data::terms.command_skill);
 
@@ -142,6 +213,8 @@ void Scene_Battle::Update() {
 	status_window->Update();
 	command_window->Update();
 
+	cycle++;
+
 	if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Data::system.decision_se);
 		switch (state) {
@@ -227,6 +300,30 @@ void Scene_Battle::Update() {
 			break;
 		default:
 			break;
+	}
+
+	for (int i = 0; i < (int) troop->members.size(); i++) {
+		const RPG::TroopMember& mem = troop->members[i];
+		const RPG::Enemy& enemy = Data::enemies[mem.ID - 1];
+		if (!enemy.levitate)
+			continue;
+		Sprite* sprite = enemy_sprites[i];
+		int y = (int) (3 * sin(cycle / 20.0));
+		sprite->SetY(mem.y + y);
+		sprite->SetZ(mem.y + y);
+	}
+
+	if (Player::engine == Player::EngineRpg2k3) {
+		for (int i = 0; i < (int) actors.size(); i++) {
+			const Game_Actor* actor = actors[i];
+			const RPG::Actor& rpg_actor = Data::actors[actor->GetId() - 1];
+			const RPG::BattlerAnimation& anim = Data::battleranimations[rpg_actor.battler_animation - 1];
+			const RPG::BattlerAnimationExtension& ext = anim.base_data[0];
+			Sprite* sprite = actor_sprites[i];
+			static const int frames[] = {0,1,2,1};
+			int frame = frames[(cycle / 20) % 4];
+			sprite->SetSrcRect(Rect(frame * 48, ext.battler_index * 48, 48, 48));
+		}
 	}
 }
 

@@ -22,6 +22,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "scene.h"
+#include "background.h"
 #include "window_help.h"
 #include "window_item.h"
 #include "window_skill.h"
@@ -31,15 +32,12 @@
 ////////////////////////////////////////////////////////////
 /// Scene_Battle class.
 /// Manages the battles.
-/// @todo Not implemented. Just a stub class for battle test
 ////////////////////////////////////////////////////////////
 class Scene_Battle : public Scene {
 
 public:
-	////////////////////////////////////////////////////////
-	/// Constructor.
-	////////////////////////////////////////////////////////
 	Scene_Battle();
+	~Scene_Battle();
 
 	void Start();
 	void Update();
@@ -58,6 +56,7 @@ public:
 
 private:
 	State state;
+	int cycle;
 
 	Window_Help* help_window;
 	Window_BattleCommand* options_window;
@@ -65,6 +64,11 @@ private:
 	Window_BattleCommand* command_window;
 	Window_Item* item_window;
 	Window_Skill* skill_window;
+	Background* background;
+
+	const RPG::Troop* troop;
+	std::vector<Sprite*> enemy_sprites;
+	std::vector<Sprite*> actor_sprites;
 };
 
 #endif
