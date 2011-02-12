@@ -23,6 +23,7 @@
 ////////////////////////////////////////////////////////////
 #include <string>
 #include <vector>
+#include "rpg_state.h"
 
 class Game_Actor;
 
@@ -44,7 +45,11 @@ public:
 	bool HasState(int state_id) const;
 
 	/// @return Vector containing the ids of all states the battler has
-	std::vector<int> GetStates() const;
+	const std::vector<int>& GetStates() const;
+
+	/// @return The highest priority state affecting the battler
+	///  returns NULL if no states
+	const RPG::State* GetState();
 
 	/// @return current hp
 	int GetHp() const;

@@ -51,7 +51,7 @@ bool Game_Battler::HasState(int state_id) const {
 }
 
 ////////////////////////////////////////////////////////////
-std::vector<int> Game_Battler::GetStates() const {
+const std::vector<int>& Game_Battler::GetStates() const {
 	return states;
 }
 
@@ -61,6 +61,25 @@ bool Game_Battler::IsDead() const {
 
 bool Game_Battler::Exists() const {
 	return !hidden && !IsDead();
+}
+
+const RPG::State* Game_Battler::GetState() {
+	int priority = 0;
+	const RPG::State* the_state = NULL;
+
+	for (int i = 0; i < (int) states.size(); i++) {
+		const RPG::State* state = &Data::states[states[i]];
+		// Death has highest priority
+		if (state->ID == 1)
+			return state;
+
+		if (state->priority > priority) {
+			the_state = state;
+			priority = state->priority;
+		}
+	}
+
+	return the_state;
 }
 
 ////////////////////////////////////////////////////////////

@@ -115,16 +115,13 @@ void Window_BattleCommand::Refresh() {
 		DrawItem(i, color);
 	}
 
-	Bitmap* system = Cache::System(Data::system.system_name);
+	SetUpArrow(false);
+	SetDownArrow(false);
 	if (active && (cycle / 20) % 2 == 0) {
-		if (top_row > 0) {
-			Rect src_rect(40, 8, 16, 8);
-			contents->Blit(contents->GetWidth() / 2 - 4, 0, system, src_rect, 255);
-		}
-		if (top_row + num_rows < (int) num_commands) {
-			Rect src_rect(40, 16, 16, 8);
-			contents->Blit(contents->GetWidth() / 2 - 4, contents->GetHeight() - 8, system, src_rect, 255);
-		}
+		if (top_row > 0)
+			SetUpArrow(true);
+		if (top_row + num_rows < (int) num_commands)
+			SetDownArrow(true);
 	}
 }
 

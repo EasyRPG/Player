@@ -24,6 +24,7 @@
 #include "input.h"
 #include "game_party.h"
 #include "game_actor.h"
+#include "game_system.h"
 #include "window_battlestatus.h"
 
 ////////////////////////////////////////////////////////////
@@ -131,6 +132,7 @@ void Window_BattleStatus::Update() {
 		int num_actors = actors.size();
 
 		if (Input::IsRepeated(Input::DOWN)) {
+			Game_System::SePlay(Data::system.cursor_se);
 			for (int i = 1; i < num_actors; i++) {
 				int new_index = (index + i) % num_actors;
 				if (gauges[new_index] == gauge_full) {
@@ -140,6 +142,7 @@ void Window_BattleStatus::Update() {
 			}
 		}
 		if (Input::IsRepeated(Input::UP)) {
+			Game_System::SePlay(Data::system.cursor_se);
 			for (int i = num_actors - 1; i > 0; i--) {
 				int new_index = (index + i) % num_actors;
 				if (gauges[new_index] == gauge_full) {

@@ -37,6 +37,8 @@ Window::Window():
 	active(true),
 	visible(true),
 	pause(false),
+	up_arrow(false),
+	down_arrow(false),
 	x(0),
 	y(0),
 	width(0),
@@ -181,9 +183,19 @@ void Window::Draw(int z_order) {
 	
 	if (pause && pause_frame > 16 && animation_frames <= 0) {
 		Rect src_rect(40, 16, 16, 8);
-		windowskin_screen->BlitScreen(x + width / 2 - 4, y + height - 8, src_rect);
+		windowskin_screen->BlitScreen(x + width / 2 - 8, y + height - 8, src_rect);
 	}
 	
+	if (up_arrow) {
+		Rect src_rect(40, 8, 16, 8);
+		windowskin_screen->BlitScreen(x + width / 2 - 8, y, src_rect);
+	}
+
+	if (down_arrow) {
+		Rect src_rect(40, 16, 16, 8);
+		windowskin_screen->BlitScreen(x + width / 2 - 8, y + height - 8, src_rect);
+	}
+
 	if (animation_frames > 0) {
 		// Open Animation
 		animation_frames -= 1;
@@ -404,6 +416,20 @@ bool Window::GetPause() const {
 }
 void Window::SetPause(bool npause) {
 	pause = npause;
+}
+
+bool Window::GetUpArrow() const {
+	return up_arrow;
+}
+void Window::SetUpArrow(bool nup_arrow) {
+	up_arrow = nup_arrow;
+}
+
+bool Window::GetDownArrow() const {
+	return down_arrow;
+}
+void Window::SetDownArrow(bool ndown_arrow) {
+	down_arrow = ndown_arrow;
 }
 
 int Window::GetX() const {

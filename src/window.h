@@ -51,6 +51,10 @@ public:
 	void SetVisible(bool nvisible);
 	bool GetPause() const;
 	void SetPause(bool npause);
+	bool GetUpArrow() const;
+	void SetUpArrow(bool npause);
+	bool GetDownArrow() const;
+	void SetDownArrow(bool npause);
 	int GetX() const;
 	void SetX(int nx);
 	int GetY() const;
@@ -92,6 +96,8 @@ protected:
 	bool active;
 	bool visible;
 	bool pause;
+	bool up_arrow;
+	bool down_arrow;
 	int x;
 	int y;
 	int width;

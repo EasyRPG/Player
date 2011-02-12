@@ -98,17 +98,8 @@ void Window_Base::DrawActorState(Game_Actor* actor, int cx, int cy) {
 	if (states.size() == 0) {
 		contents->TextDraw(cx, cy, Font::ColorDefault, Data::terms.normal_status);
 	} else {
-		int highest_priority = 0;
-		int state = 0;
-
-		// Display the state with the highest priority
-		for (size_t i = 0; i < states.size(); ++i) {
-			if (Data::states[states[i]].priority > highest_priority) {
-				state = i;
-			}
-		}
-
-		contents->TextDraw(cx, cy, Data::states[state].color, Data::states[state].name);
+		const RPG::State* state = actor->GetState();
+		contents->TextDraw(cx, cy, state->color, state->name);
 	}
 }
 
