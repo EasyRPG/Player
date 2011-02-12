@@ -2709,9 +2709,6 @@ bool Game_Interpreter::CommandEnemyEncounter() { // code 10710
 bool Game_Interpreter::ContinuationEnemyEncounter() {
 	switch (Game_Temp::battle_result) {
 		case Game_Temp::BattleVictory:
-			// ToDo: Battle system not implemented
-			Output::Warning("Battle system not implemented\n"\
-							"Simulating a win.");
 			if (!SkipTo(VictoryHandler, EndBattle)) {
 				// Was an event battle with no handlers
 				index++;

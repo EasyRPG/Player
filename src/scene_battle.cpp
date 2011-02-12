@@ -19,6 +19,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <algorithm>
+#include <sstream>
 #include "rpg_battlecommand.h"
 #include "input.h"
 #include "output.h"
@@ -46,7 +47,8 @@ Scene_Battle::Enemy::Enemy(const RPG::TroopMember* member) :
 	game_enemy(new Game_Enemy(member->ID)),
 	member(member),
 	rpg_enemy(&Data::enemies[member->ID - 1]),
-	sprite(NULL)
+	sprite(NULL),
+	fade(0)
 {
 	game_enemy->SetHidden(member->invisible);
 }
@@ -97,6 +99,30 @@ void Scene_Battle::Ally::CreateSprite() {
 	sprite->SetX(rpg_actor->battle_x);
 	sprite->SetY(rpg_actor->battle_y);
 	sprite->SetZ(rpg_actor->battle_y);
+}
+
+////////////////////////////////////////////////////////////
+Scene_Battle::FloatText::FloatText(int x, int y, int color, const std::string& text, int _duration) {
+	Rect rect = Surface::GetTextSize(text);
+
+	Surface* graphic = Surface::CreateSurface(rect.width, rect.height);
+	graphic->Clear();
+	graphic->TextDraw(-rect.x, -rect.y, color, text);
+
+	sprite = new Sprite();
+	sprite->SetBitmap(graphic);
+	sprite->SetOx(rect.width / 2);
+	sprite->SetOy(rect.height + 5);
+	sprite->SetX(x);
+	sprite->SetY(y);
+	sprite->SetZ(500+y);
+
+	duration = _duration;
+}
+
+////////////////////////////////////////////////////////////
+Scene_Battle::FloatText::~FloatText() {
+	delete sprite;
 }
 
 ////////////////////////////////////////////////////////////
@@ -294,6 +320,21 @@ void Scene_Battle::Message(const std::string& msg) {
 }
 
 ////////////////////////////////////////////////////////////
+void Scene_Battle::Floater(const Sprite* ref, int color, const std::string& text, int duration) {
+	int x = ref->GetX();
+	int y = ref->GetY() - ref->GetOy();
+	FloatText* floater = new FloatText(x, y, color, text, duration);
+	floaters.push_back(floater);
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Battle::Floater(const Sprite* ref, int color, int value, int duration) {
+	std::ostringstream out;
+	out << value;
+	Floater(ref, color, out.str(), duration);
+}
+
+////////////////////////////////////////////////////////////
 void Scene_Battle::UpdateAnimState(Ally& ally, int default_state) {
 	const RPG::State* state = ally.game_actor->GetState();
 	ally.anim_state = state
@@ -325,10 +366,10 @@ void Scene_Battle::Attack() {
 		effect += change;
 
 		enemy.game_enemy->SetHp(enemy.game_enemy->GetHp() - effect);
+		Floater(enemy.sprite, Font::ColorDefault, effect, 60);
 	}
-	else {
-		// FIXME "miss" message
-	}
+	else
+		Floater(enemy.sprite, Font::ColorDefault, Data::terms.miss, 60);
 
 	Restart(ally);
 }
@@ -581,9 +622,12 @@ void Scene_Battle::UseSkill(Ally& ally, const RPG::Skill& skill,
 
 void Scene_Battle::UseSkillAlly(Ally& ally, const RPG::Skill& skill, Ally* target) {
 	Game_Actor* actor = target->game_actor;
+	bool miss = true;
 
 	if (skill.power > 0) {
 		if (rand() % 100 < skill.hit) {
+			miss = false;
+
 			// FIXME: is this still affected by stats for allies?
 			int effect = skill.power;
 
@@ -606,9 +650,9 @@ void Scene_Battle::UseSkillAlly(Ally& ally, const RPG::Skill& skill, Ally* targe
 				actor->SetSpi(actor->GetSpi() + effect);
 			if (skill.affect_agility)
 				actor->SetAgi(actor->GetAgi() + effect);
-		}
-		else {
-			// FIXME "miss" message
+
+			if (skill.affect_hp || skill.affect_sp)
+				Floater(target->sprite, 9, effect, 60);
 		}
 	}
 
@@ -618,18 +662,26 @@ void Scene_Battle::UseSkillAlly(Ally& ally, const RPG::Skill& skill, Ally* targe
 		if (rand() % 100 >= skill.hit)
 			continue;
 
+		miss = false;
+
 		if (skill.state_effect)
 			actor->AddState(i + 1);
 		else
 			actor->RemoveState(i + 1);
 	}
+
+	if (miss)
+		Floater(target->sprite, Font::ColorDefault, Data::terms.miss, 60);
 }
 
 void Scene_Battle::UseSkillEnemy(Ally& ally, const RPG::Skill& skill, Enemy* target) {
 	Game_Enemy* enemy = target->game_enemy;
+	bool miss = true;
 
 	if (skill.power > 0) {
 		if (rand() % 100 < skill.hit) {
+			miss = false;
+
 			// FIXME: This is what the help file says, but it doesn't look right
 			int effect = skill.power +
 				ally.game_actor->GetAtk() * skill.pdef_f / 20 + 
@@ -654,9 +706,9 @@ void Scene_Battle::UseSkillEnemy(Ally& ally, const RPG::Skill& skill, Enemy* tar
 				enemy->SetSpi(enemy->GetSpi() - effect);
 			if (skill.affect_agility)
 				enemy->SetAgi(enemy->GetAgi() - effect);
-		}
-		else {
-			// FIXME "miss" message
+
+			if (skill.affect_hp || skill.affect_sp)
+				Floater(target->sprite, Font::ColorDefault, effect, 60);
 		}
 	}
 
@@ -666,24 +718,20 @@ void Scene_Battle::UseSkillEnemy(Ally& ally, const RPG::Skill& skill, Enemy* tar
 		if (rand() % 100 >= skill.hit)
 			continue;
 
+		miss = false;
+
 		if (skill.state_effect)
 			enemy->RemoveState(i + 1);
 		else
 			enemy->AddState(i + 1);
 	}
+
+	if (miss)
+		Floater(target->sprite, Font::ColorDefault, Data::terms.miss, 60);
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Battle::Update() {
-	options_window->Update();
-	status_window->Update();
-	command_window->Update();
-
-	cycle++;
-
-	CheckWin();
-	CheckLose();
-
+void Scene_Battle::ProcessInput() {
 	if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Data::system.decision_se);
 		switch (state) {
@@ -765,19 +813,6 @@ void Scene_Battle::Update() {
 		}
 	}
 
-	target_ally = status_window->GetActiveCharacter();
-	if (target_ally >= 0) {
-		const Ally& ally = allies[target_ally];
-		ally_cursor->SetVisible(true);
-		ally_cursor->SetX(ally.rpg_actor->battle_x - ally_cursor->GetWidth() / 2);
-		ally_cursor->SetY(ally.rpg_actor->battle_y - ally.sprite->GetHeight() / 2 - ally_cursor->GetHeight() - 2);
-		static const int frames[] = {0,1,2,1};
-		int frame = frames[(cycle / 15) % 4];
-		ally_cursor->SetSrcRect(Rect(frame * 16, 16, 16, 16));
-	}
-	else
-		ally_cursor->SetVisible(false);
-
 	if (state == State_TargetEnemy && target_enemy >= 0) {
 		if (Input::IsRepeated(Input::DOWN))
 			target_enemy++;
@@ -797,6 +832,22 @@ void Scene_Battle::Update() {
 				target_enemy = -1;
 		}
 	}
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Battle::UpdateCursors() {
+	target_ally = status_window->GetActiveCharacter();
+	if (target_ally >= 0) {
+		const Ally& ally = allies[target_ally];
+		ally_cursor->SetVisible(true);
+		ally_cursor->SetX(ally.rpg_actor->battle_x - ally_cursor->GetWidth() / 2);
+		ally_cursor->SetY(ally.rpg_actor->battle_y - ally.sprite->GetHeight() / 2 - ally_cursor->GetHeight() - 2);
+		static const int frames[] = {0,1,2,1};
+		int frame = frames[(cycle / 15) % 4];
+		ally_cursor->SetSrcRect(Rect(frame * 16, 16, 16, 16));
+	}
+	else
+		ally_cursor->SetVisible(false);
 
 	if (state == State_TargetEnemy && target_enemy >= 0) {
 		const Enemy& enemy = enemies[target_enemy];
@@ -809,9 +860,21 @@ void Scene_Battle::Update() {
 	}
 	else
 		enemy_cursor->SetVisible(false);
+}
 
+////////////////////////////////////////////////////////////
+void Scene_Battle::UpdateSprites() {
 	for (std::vector<Enemy>::iterator it = enemies.begin(); it != enemies.end(); it++) {
-		it->sprite->SetVisible(it->game_enemy->Exists());
+		if (it->sprite->GetVisible() && !it->game_enemy->Exists() && it->fade == 0)
+			it->fade = 60;
+
+		if (it->fade > 0) {
+			it->sprite->SetOpacity(it->fade * 255 / 60);
+			it->fade--;
+			if (it->fade == 0)
+				it->sprite->SetVisible(false);
+		}
+			
 		if (!it->rpg_enemy->levitate)
 			continue;
 		int y = (int) (3 * sin(cycle / 30.0));
@@ -841,6 +904,39 @@ void Scene_Battle::Update() {
 				break;
 		}
 	}
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Battle::UpdateFloaters() {
+	std::vector<FloatText*>::const_iterator it;
+	std::vector<FloatText*>::iterator dst = floaters.begin();
+	for (it = floaters.begin(); it != floaters.end(); it++) {
+		FloatText* floater = *it;
+		floater->duration--;
+		if (floater->duration <= 0)
+			delete floater;
+		else
+			*dst++ = floater;
+	}
+
+	floaters.erase(dst, floaters.end());
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Battle::Update() {
+	options_window->Update();
+	status_window->Update();
+	command_window->Update();
+
+	cycle++;
+
+	CheckWin();
+	CheckLose();
+
+	ProcessInput();
+	UpdateCursors();
+	UpdateSprites();
+	UpdateFloaters();
 }
 
 ////////////////////////////////////////////////////////////

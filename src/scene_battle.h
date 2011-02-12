@@ -96,6 +96,14 @@ public:
 		const RPG::TroopMember* member;
 		const RPG::Enemy* rpg_enemy;
 		Sprite* sprite;
+		int fade;
+	};
+
+	struct FloatText {
+		FloatText(int x, int y, int color, const std::string& text, int duration);
+		~FloatText();
+		int duration;
+		Sprite* sprite;
 	};
 
 private:
@@ -120,6 +128,7 @@ private:
 
 	Sprite *ally_cursor;
 	Sprite *enemy_cursor;
+	std::vector<FloatText*> floaters;
 
 	void CreateSprites();
 	void CreateCursors();
@@ -127,6 +136,8 @@ private:
 
 	void SetState(State state);
 	void Message(const std::string& msg);
+	void Floater(const Sprite* ref, int color, const std::string& text, int duration);
+	void Floater(const Sprite* ref, int color, int value, int duration);
 	void UpdateAnimState(Ally& ally, int default_state = Ally::Idle);
 	void Restart(Ally& ally, int state = Ally::Idle);
 
@@ -145,6 +156,10 @@ private:
 	void UseItemAlly(Ally& ally, const RPG::Item& item, Ally* target);
 	void UseSkillAlly(Ally& ally, const RPG::Skill& skill, Ally* target);
 	void UseSkillEnemy(Ally& ally, const RPG::Skill& skill, Enemy* target);
+	void ProcessInput();
+	void UpdateCursors();
+	void UpdateSprites();
+	void UpdateFloaters();
 
 	int GetActiveActor();
 	bool HaveCorpse();
