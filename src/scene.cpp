@@ -53,7 +53,8 @@ const char Scene::scene_names[SceneMax][12] =
 	"Name",
 	"Gameover",
 	"Debug",
-	"Logo"
+	"Logo",
+	"Order"
 };
 int Scene::push_pop_operation = 0;
 

@@ -48,6 +48,13 @@ public:
 	////////////////////////////////////////////////////////
 	void DisableItem(int index);
 
+	////////////////////////////////////////////////////////
+	/// Replaces the text of an item
+	/// @param index : command index
+	/// @param text : new item text
+	////////////////////////////////////////////////////////
+	void SetItemText(unsigned index, std::string text);
+
 protected:
 	std::vector<std::string> commands;
 

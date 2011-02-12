@@ -49,6 +49,7 @@ public:
 		Gameover,
 		Debug,
 		Logo,
+		Order,
 		SceneMax
 	};
 	

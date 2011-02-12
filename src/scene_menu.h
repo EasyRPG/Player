@@ -56,6 +56,19 @@ public:
 	////////////////////////////////////////////////////////
 	void UpdateActorSelection();
 
+	/// Options available in a Rpg2k3 Menu
+	enum CommandOptionType {
+		Item = 1,
+		Skill,
+		Equipment,
+		Save,
+		Status,
+		Row,
+		Order,
+		Wait,
+		Quit
+	};
+
 private:
 	/// selected index on startup
 	int menu_index;
@@ -68,6 +81,9 @@ private:
 
 	/// window displaying the heros and their status
 	Window_MenuStatus* menustatus_window;
+
+	/// Options available in the Menu
+	std::vector<CommandOptionType> command_options;
 };
 
 #endif

@@ -80,6 +80,7 @@ public:
 	static bool battle_first_strike;
 	static int battle_mode;
 	static int battle_result;
+	static bool battle_wait;
 	
 	static RPG::Music* map_bgm;
 

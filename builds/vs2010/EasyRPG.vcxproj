@@ -314,6 +314,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\audio.cpp" />
     <ClCompile Include="..\..\src\audio_stream.cpp" />
+    <ClCompile Include="..\..\src\background.cpp" />
     <ClCompile Include="..\..\src\baseui.cpp" />
     <ClCompile Include="..\..\src\bitmap.cpp" />
     <ClCompile Include="..\..\src\bitmap_screen.cpp" />
@@ -382,9 +383,11 @@
     <ClCompile Include="..\..\src\scene_map.cpp" />
     <ClCompile Include="..\..\src\scene_menu.cpp" />
     <ClCompile Include="..\..\src\scene_name.cpp" />
+    <ClCompile Include="..\..\src\scene_order.cpp" />
     <ClCompile Include="..\..\src\scene_save.cpp" />
     <ClCompile Include="..\..\src\scene_shop.cpp" />
     <ClCompile Include="..\..\src\scene_skill.cpp" />
+    <ClCompile Include="..\..\src\scene_status.cpp" />
     <ClCompile Include="..\..\src\scene_title.cpp" />
     <ClCompile Include="..\..\src\sdl_audio.cpp" />
     <ClCompile Include="..\..\src\sdl_bitmap.cpp" />
@@ -408,6 +411,10 @@
     <ClCompile Include="..\..\src\window.cpp" />
     <ClCompile Include="..\..\src\window_actortarget.cpp" />
     <ClCompile Include="..\..\src\window_base.cpp" />
+    <ClCompile Include="..\..\src\window_battlecommand.cpp" />
+    <ClCompile Include="..\..\src\window_battleitem.cpp" />
+    <ClCompile Include="..\..\src\window_battleskill.cpp" />
+    <ClCompile Include="..\..\src\window_battlestatus.cpp" />
     <ClCompile Include="..\..\src\window_command.cpp" />
     <ClCompile Include="..\..\src\window_equip.cpp" />
     <ClCompile Include="..\..\src\window_equipitem.cpp" />
@@ -438,6 +445,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\src\audio.h" />
     <ClInclude Include="..\..\src\audio_stream.h" />
+    <ClInclude Include="..\..\src\background.h" />
     <ClInclude Include="..\..\src\bitmap.h" />
     <ClInclude Include="..\..\src\bitmap_screen.h" />
     <ClInclude Include="..\..\src\bitmap_utils.h" />
@@ -508,9 +516,11 @@
     <ClInclude Include="..\..\src\scene_map.h" />
     <ClInclude Include="..\..\src\scene_menu.h" />
     <ClInclude Include="..\..\src\scene_name.h" />
+    <ClInclude Include="..\..\src\scene_order.h" />
     <ClInclude Include="..\..\src\scene_save.h" />
     <ClInclude Include="..\..\src\scene_shop.h" />
     <ClInclude Include="..\..\src\scene_skill.h" />
+    <ClInclude Include="..\..\src\scene_status.h" />
     <ClInclude Include="..\..\src\scene_title.h" />
     <ClInclude Include="..\..\src\sdl_bitmap.h" />
     <ClInclude Include="..\..\src\sdl_bitmap_screen.h" />
@@ -535,6 +545,10 @@
     <ClInclude Include="..\..\src\window.h" />
     <ClInclude Include="..\..\src\window_actortarget.h" />
     <ClInclude Include="..\..\src\window_base.h" />
+    <ClInclude Include="..\..\src\window_battlecommand.h" />
+    <ClInclude Include="..\..\src\window_battleitem.h" />
+    <ClInclude Include="..\..\src\window_battleskill.h" />
+    <ClInclude Include="..\..\src\window_battlestatus.h" />
     <ClInclude Include="..\..\src\window_command.h" />
     <ClInclude Include="..\..\src\window_equip.h" />
     <ClInclude Include="..\..\src\window_equipitem.h" />

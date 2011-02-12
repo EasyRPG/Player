@@ -55,6 +55,7 @@ int Game_Temp::battle_defeat_mode;
 bool Game_Temp::battle_first_strike;
 int Game_Temp::battle_mode;
 int Game_Temp::battle_result;
+bool Game_Temp::battle_wait;
 RPG::Music* Game_Temp::map_bgm;
 
 ////////////////////////////////////////////////////////////
@@ -89,5 +90,6 @@ void Game_Temp::Init() {
 	battle_escape_mode = 0;
 	battle_defeat_mode = 0;
 	battle_first_strike = false;
+	battle_wait = false;
 	map_bgm = NULL;
 }

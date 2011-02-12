@@ -57,6 +57,14 @@ void Window_Command::DisableItem(int i) {
 }
 
 ////////////////////////////////////////////////////////////
+void Window_Command::SetItemText(unsigned index, std::string text) {
+	if (index < commands.size()) {
+		commands[index] = text;
+		DrawItem(index, Font::ColorDefault);
+	}
+}
+
+////////////////////////////////////////////////////////////
 int Window_Command::GetRequiredWidth(std::vector<std::string>& commands, int width) {
 	if (width < 0) {
 		for (size_t i = 0; i < commands.size(); ++i) {
