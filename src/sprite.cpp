@@ -190,6 +190,20 @@ void Sprite::SetAngle(double angle) {
 	bitmap_screen->SetAngleEffect(angle);
 }
 
+bool Sprite::GetFlipX() const {
+	return bitmap_screen->GetFlipXEffect();
+}
+void Sprite::SetFlipX(bool flipx) {
+	bitmap_screen->SetFlipXEffect(flipx);
+}
+
+bool Sprite::GetFlipY() const {
+	return bitmap_screen->GetFlipYEffect();
+}
+void Sprite::SetFlipY(bool flipy) {
+	bitmap_screen->SetFlipYEffect(flipy);
+}
+
 int Sprite::GetBushDepth() const {
 	return bitmap_screen->GetBushDepthEffect();
 }

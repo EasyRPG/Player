@@ -71,6 +71,8 @@ BitmapScreen::BitmapScreen(Bitmap* bitmap, bool delete_bitmap) :
 	current_tone = tone_effect;
 	current_zoom_x = zoom_x_effect;
 	current_zoom_y = zoom_y_effect;
+	current_flip_x = flipx_effect;
+	current_flip_y = flipy_effect;
 
 	bitmap_effects_src_rect = Rect();
 	bitmap_scale_src_rect = Rect();
@@ -209,6 +211,8 @@ void BitmapScreen::ClearEffects() {
 	bush_effect = 0;
 	tone_effect = Tone();
 	src_rect_effect = Rect(0, 0, 0, 0);
+	flipx_effect = false;
+	flipy_effect = false;
 	zoom_x_effect = 1.0;
 	zoom_y_effect = 1.0;
 	angle_effect = 0.0;
@@ -254,6 +258,20 @@ void BitmapScreen::SetBushDepthEffect(int bush_depth) {
 void BitmapScreen::SetToneEffect(Tone tone) {
 	if (tone_effect != tone) {
 		tone_effect = tone;
+		needs_refresh = true;
+	}
+}
+
+void BitmapScreen::SetFlipXEffect(bool flipx) {
+	if (flipx_effect != flipx) {
+		flipx_effect = flipx;
+		needs_refresh = true;
+	}
+}
+
+void BitmapScreen::SetFlipYEffect(bool flipy) {
+	if (flipy_effect != flipy) {
+		flipy_effect = flipy;
 		needs_refresh = true;
 	}
 }
@@ -317,6 +335,14 @@ Tone BitmapScreen::GetToneEffect() const {
 	return tone_effect;
 }
 
+bool BitmapScreen::GetFlipXEffect() const {
+	return flipx_effect;
+}
+
+bool BitmapScreen::GetFlipYEffect() const {
+	return flipy_effect;
+}
+
 double BitmapScreen::GetZoomXEffect() const {
 	return zoom_x_effect;
 }
@@ -374,16 +400,20 @@ Bitmap* BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
 		return NULL;
 
 	bool no_tone = tone_effect == Tone();
+	bool no_flip = !flipx_effect && !flipy_effect;
+	bool no_effects = no_tone && no_flip;
 	bool no_zoom = zoom_x_effect == 1.0 && zoom_y_effect == 1.0;
-	bool tone_changed = tone_effect != current_tone;
+	bool effects_changed = tone_effect != current_tone ||
+		flipx_effect != current_flip_x ||
+		flipy_effect != current_flip_y;
 	bool effects_rect_changed = rect != bitmap_effects_src_rect;
 
-	if (tone_changed || effects_rect_changed || bitmap_changed) {
+	if (effects_changed || effects_rect_changed || bitmap_changed) {
 		bitmap_effects_valid = false;
 		bitmap_scale_valid = false;
 	}
 
-	if (no_tone && no_zoom)
+	if (no_effects && no_zoom)
 		return bitmap;
 
 	if (bitmap_effects != NULL && bitmap_effects_valid && no_zoom)
@@ -391,12 +421,14 @@ Bitmap* BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
 
 	Bitmap *src_bitmap;
 
-	if (no_tone)
+	if (no_effects)
 		src_bitmap = bitmap;
 	else if (bitmap_effects_valid)
 		src_bitmap = bitmap_effects;
 	else {
 		current_tone = tone_effect;
+		current_flip_x = flipx_effect;
+		current_flip_y = flipy_effect;
 
 		if (bitmap_effects != NULL &&
 			bitmap_effects->GetWidth() < rect.x + rect.width &&
@@ -409,7 +441,14 @@ Bitmap* BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
 			bitmap_effects = Surface::CreateSurface(bitmap->GetWidth(), bitmap->GetHeight(), true);
 
 		bitmap_effects->Clear();
-		bitmap_effects->ToneBlit(rect.x, rect.y, bitmap, rect, tone_effect);
+		if (no_flip)
+			bitmap_effects->ToneBlit(rect.x, rect.y, bitmap, rect, tone_effect);
+		else if (no_tone)
+			bitmap_effects->FlipBlit(rect.x, rect.y, bitmap, rect, flipx_effect, flipy_effect);
+		else {
+			bitmap_effects->ToneBlit(rect.x, rect.y, bitmap, rect, tone_effect);
+			bitmap_effects->Flip(rect, flipx_effect, flipy_effect);
+		}
 
 		bitmap_effects_src_rect = rect;
 		bitmap_effects_valid = true;

@@ -69,6 +69,10 @@ public:
 	void SetZoomY(double zoom_y);
 	double GetAngle() const;
 	void SetAngle(double angle);
+	bool GetFlipX() const;
+	void SetFlipX(bool flipx);
+	bool GetFlipY() const;
+	void SetFlipY(bool flipy);
 	int GetBushDepth() const;
 	void SetBushDepth(int bush_depth);
 	int GetOpacity() const;
