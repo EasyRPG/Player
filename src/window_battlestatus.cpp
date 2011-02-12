@@ -110,7 +110,7 @@ void Window_BattleStatus::SetTimeGauge(int _index, int value, int limit) {
 	RefreshGauge(_index);
 
 	int num_actors = actors.size();
-	int old_index = index;
+	int old_index = index < 0 ? 0 : index;
 	index = -1;
 	for (int i = 0; i < num_actors; i++) {
 		int new_index = (old_index + i) % num_actors;

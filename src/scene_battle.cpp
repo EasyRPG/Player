@@ -43,7 +43,8 @@ Scene_Battle::~Scene_Battle() {
 }
 
 ////////////////////////////////////////////////////////////
-Scene_Battle::Enemy::Enemy(const RPG::TroopMember* member) :
+Scene_Battle::Enemy::Enemy(const RPG::TroopMember* member, int id) :
+	ID(id),
 	game_enemy(new Game_Enemy(member->ID)),
 	member(member),
 	rpg_enemy(&Data::enemies[member->ID - 1]),
@@ -74,9 +75,12 @@ void Scene_Battle::Enemy::CreateSprite() {
 }
 
 ////////////////////////////////////////////////////////////
-Scene_Battle::Ally::Ally(Game_Actor* game_actor) :
+Scene_Battle::Ally::Ally(Game_Actor* game_actor, int id) :
+	ID(id),
 	game_actor(game_actor),
 	rpg_actor(&Data::actors[game_actor->GetId() - 1]),
+	sprite_frame(-1),
+	sprite_file(""),
 	sprite(NULL),
 	anim_state(Idle),
 	gauge(0)
@@ -87,18 +91,45 @@ void Scene_Battle::Ally::CreateSprite() {
 	if (Player::engine != Player::EngineRpg2k3)
 		return;
 
-	const RPG::BattlerAnimation& anim = Data::battleranimations[rpg_actor->battler_animation - 1];
-	const RPG::BattlerAnimationExtension& ext = anim.base_data[anim_state - 1];
-	Bitmap* graphic = Cache::BattleCharset(ext.battler_name);
-
 	sprite = new Sprite();
-	sprite->SetBitmap(graphic);
-	sprite->SetSrcRect(Rect(0, ext.battler_index * 48, 48, 48));
 	sprite->SetOx(24);
 	sprite->SetOy(24);
 	sprite->SetX(rpg_actor->battle_x);
 	sprite->SetY(rpg_actor->battle_y);
 	sprite->SetZ(rpg_actor->battle_y);
+
+	SetAnimState(anim_state);
+	UpdateAnim(0);
+}
+
+void Scene_Battle::Ally::SetAnimState(int state) {
+	if (Player::engine != Player::EngineRpg2k3)
+		return;
+
+	anim_state = state;
+
+	const RPG::BattlerAnimation& anim = Data::battleranimations[rpg_actor->battler_animation - 1];
+	const RPG::BattlerAnimationExtension& ext = anim.base_data[anim_state - 1];
+	if (ext.battler_name == sprite_file)
+		return;
+
+	sprite_file = ext.battler_name;
+	sprite->SetBitmap(Cache::BattleCharset(sprite_file));
+}
+
+void Scene_Battle::Ally::UpdateAnim(int cycle) {
+	if (Player::engine != Player::EngineRpg2k3)
+		return;
+
+	static const int frames[] = {0,1,2,1};
+	int frame = frames[(cycle / 15) % 4];
+	if (frame == sprite_frame)
+		return;
+
+	const RPG::BattlerAnimation& anim = Data::battleranimations[rpg_actor->battler_animation - 1];
+	const RPG::BattlerAnimationExtension& ext = anim.base_data[anim_state - 1];
+
+	sprite->SetSrcRect(Rect(frame * 48, ext.battler_index * 48, 48, 48));
 }
 
 ////////////////////////////////////////////////////////////
@@ -164,11 +195,9 @@ void Scene_Battle::CreateWindows() {
 
 	skill_window = new Window_BattleSkill(0, 172, 320, 68);
 	skill_window->SetVisible(false);
-	skill_window->SetHelpWindow(help_window);
 
 	item_window = new Window_BattleItem(0, 172, 320, 68);
 	item_window->SetVisible(false);
-	item_window->SetHelpWindow(help_window);
 	item_window->Refresh();
 	item_window->SetIndex(0);
 }
@@ -192,16 +221,14 @@ void Scene_Battle::Start() {
 
 	troop = &Data::troops[Game_Temp::battle_troop_id - 1];
 
-	for (std::vector<RPG::TroopMember>::const_iterator it = troop->members.begin();
-		 it != troop->members.end();
-		 it++)
-		enemies.push_back(Enemy(&*it));
+	std::vector<RPG::TroopMember>::const_iterator ei;
+	for (ei = troop->members.begin(); ei != troop->members.end(); ei++)
+		enemies.push_back(Enemy(&*ei, ei - troop->members.begin()));
 
 	const std::vector<Game_Actor*>& actors = Game_Party::GetActors();
-	for (std::vector<Game_Actor*>::const_iterator it = actors.begin();
-		 it != actors.end();
-		 it++)
-		allies.push_back(Ally(*it));
+	std::vector<Game_Actor*>::const_iterator ai;
+	for (ai = actors.begin(); ai != actors.end(); ai++)
+		allies.push_back(Ally(*ai, ai - actors.begin()));
 
 	CreateSprites();
 	CreateCursors();
@@ -209,7 +236,8 @@ void Scene_Battle::Start() {
 
 	int gauge = Game_Temp::battle_first_strike ? Ally::gauge_full : 0;
 	std::fill(status_window->gauges, status_window->gauges+4, gauge);
-	for (std::vector<Ally>::iterator it = allies.begin(); it != allies.end(); it++)
+	std::vector<Ally>::iterator it;
+	for (it = allies.begin(); it != allies.end(); it++)
 		it->gauge = gauge;
 
 	SetState(State_Options);
@@ -269,6 +297,9 @@ void Scene_Battle::SetState(Scene_Battle::State new_state) {
 			skill_window->SetActive(true);
 			skill_window->SetActor(GetActiveActor());
 			break;
+		case State_Victory:
+		case State_Defeat:
+			break;
 	}
 
 	options_window->SetVisible(false);
@@ -277,6 +308,9 @@ void Scene_Battle::SetState(Scene_Battle::State new_state) {
 	item_window->SetVisible(false);
 	skill_window->SetVisible(false);
 	help_window->SetVisible(false);
+
+	item_window->SetHelpWindow(NULL);
+	skill_window->SetHelpWindow(NULL);
 
 	switch (state) {
 		case State_Options:
@@ -295,10 +329,19 @@ void Scene_Battle::SetState(Scene_Battle::State new_state) {
 			break;
 		case State_Item:
 			item_window->SetVisible(true);
+			item_window->SetHelpWindow(help_window);
 			help_window->SetVisible(true);
 			break;
 		case State_Skill:
 			skill_window->SetVisible(true);
+			skill_window->SetHelpWindow(help_window);
+			help_window->SetVisible(true);
+			break;
+		case State_Victory:
+		case State_Defeat:
+			status_window->SetVisible(true);
+			status_window->SetX(0);
+			command_window->SetVisible(true);
 			help_window->SetVisible(true);
 			break;
 	}
@@ -306,6 +349,9 @@ void Scene_Battle::SetState(Scene_Battle::State new_state) {
 
 ////////////////////////////////////////////////////////////
 void Scene_Battle::Message(const std::string& msg) {
+	help_window->SetText(msg);
+	help_window->SetVisible(true);
+	help_window->SetPause(true);
 }
 
 ////////////////////////////////////////////////////////////
@@ -325,17 +371,24 @@ void Scene_Battle::Floater(const Sprite* ref, int color, int value, int duration
 
 ////////////////////////////////////////////////////////////
 void Scene_Battle::UpdateAnimState(Ally& ally, int default_state) {
+	int anim_state = default_state;
 	const RPG::State* state = ally.game_actor->GetState();
-	ally.anim_state = state
-		? (state->battler_animation_id == 100 ? 7 : state->battler_animation_id + 1)
-		: default_state;
+	if (state)
+		anim_state = state->battler_animation_id == 100
+			? 7
+			: state->battler_animation_id + 1;
+	ally.SetAnimState(anim_state);
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Battle::Restart(Ally& ally, int state) {
-	UpdateAnimState(ally, state);
+void Scene_Battle::Restart(Ally& ally, int anim_state) {
+	UpdateAnimState(ally, anim_state);
 	ally.gauge = 0;
-	SetState(State_Battle);
+	status_window->SetTimeGauge(ally.ID, ally.gauge, Ally::gauge_full);
+	if (state != State_AutoBattle)
+		SetState(State_Battle);
+	target_ally = -1;
+	target_enemy = -1;
 }
 
 ////////////////////////////////////////////////////////////
@@ -447,8 +500,10 @@ void Scene_Battle::UseItem() {
 				UseItem(ally, item, NULL);
 				Restart(ally);
 			}
-			else
+			else {
+				target_ally = active_ally;
 				SetState(State_TargetAlly);
+			}
 			break;
 		case RPG::Item::Type_book:
 		case RPG::Item::Type_material:
@@ -492,6 +547,7 @@ void Scene_Battle::UseSkill(Ally& ally, const RPG::Skill& skill) {
 
 	switch (skill.scope) {
 		case RPG::Skill::Scope_enemy:
+			target_enemy = 0;
 			SetState(State_TargetEnemy);
 			return;
 		case RPG::Skill::Scope_enemies:
@@ -503,6 +559,7 @@ void Scene_Battle::UseSkill(Ally& ally, const RPG::Skill& skill) {
 			Restart(ally);
 			break;
 		case RPG::Skill::Scope_ally:
+			target_ally = active_ally;
 			SetState(State_TargetAlly);
 			return;
 		case RPG::Skill::Scope_party:
@@ -594,12 +651,17 @@ void Scene_Battle::UseItemAlly(Ally& ally, const RPG::Item& item, Ally* target) 
 		return;
 
 	// HP recovery
-	int hp = item.recover_hp_rate * target->game_actor->GetMaxHp() + item.recover_hp;
+	int hp = item.recover_hp_rate * target->game_actor->GetMaxHp() / 100 + item.recover_hp;
 	target->game_actor->SetHp(target->game_actor->GetHp() + hp);
 
 	// SP recovery
-	int sp = item.recover_sp_rate * target->game_actor->GetMaxSp() + item.recover_sp;
+	int sp = item.recover_sp_rate * target->game_actor->GetMaxSp() / 100 + item.recover_sp;
 	target->game_actor->SetSp(target->game_actor->GetSp() + sp);
+
+	if (hp > 0)
+		Floater(target->sprite, 9, hp, 60);
+	else if (sp > 0)
+		Floater(target->sprite, 9, sp, 60);
 
 	// Status recovery
 	for (int i = 0; i < (int) item.state_set.size(); i++)
@@ -803,6 +865,10 @@ void Scene_Battle::ProcessInput() {
 			case State_Skill:
 				UseSkill();
 				break;
+			case State_Victory:
+			case State_Defeat:
+				Scene::Pop();
+				break;
 		}
 	}
 
@@ -827,6 +893,10 @@ void Scene_Battle::ProcessInput() {
 			case State_TargetAlly:
 				SetState(State_Item);
 				break;
+			case State_Victory:
+			case State_Defeat:
+				Scene::Pop();
+				break;
 		}
 	}
 
@@ -839,21 +909,59 @@ void Scene_Battle::ProcessInput() {
 		target_enemy += enemies.size();
 		target_enemy %= enemies.size();
 
-		if (!enemies[target_enemy].game_enemy->Exists()) {
-			for (int i = 1; i < (int) enemies.size(); i++) {
-				target_enemy++;
-				if (enemies[target_enemy].game_enemy->Exists())
-					break;
-			}
-			if (!enemies[target_enemy].game_enemy->Exists())
-				target_enemy = -1;
-		}
+		ChooseEnemy();
+	}
+
+	if (state == State_TargetAlly && target_ally >= 0) {
+		if (Input::IsRepeated(Input::DOWN))
+			target_ally++;
+		if (Input::IsRepeated(Input::UP))
+			target_ally--;
+
+		target_ally += allies.size();
+		target_ally %= allies.size();
 	}
 }
 
 ////////////////////////////////////////////////////////////
+void Scene_Battle::ChooseEnemy() {
+	if (target_enemy < 0)
+		target_enemy = 0;
+
+	if (enemies[target_enemy].game_enemy->Exists())
+		return;
+
+	for (int i = 1; i < (int) enemies.size(); i++) {
+		target_enemy++;
+		if (enemies[target_enemy].game_enemy->Exists())
+			break;
+	}
+
+	if (!enemies[target_enemy].game_enemy->Exists())
+		target_enemy = -1;
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Battle::DoAuto() {
+	if (state != State_AutoBattle)
+		return;
+
+	active_ally = status_window->GetActiveCharacter();
+	if (active_ally < 0)
+		return;
+
+	ChooseEnemy();
+	if (target_enemy < 0)
+		return;
+
+	Attack();
+}
+
+////////////////////////////////////////////////////////////
 void Scene_Battle::UpdateCursors() {
-	target_ally = status_window->GetActiveCharacter();
+	int selected_ally = target_ally;
+	if (selected_ally < 0)
+		selected_ally = status_window->GetActiveCharacter();
 	if (target_ally >= 0) {
 		const Ally& ally = allies[target_ally];
 		ally_cursor->SetVisible(true);
@@ -900,13 +1008,7 @@ void Scene_Battle::UpdateSprites() {
 	}
 
 	for (std::vector<Ally>::iterator it = allies.begin(); it != allies.end(); it++) {
-		if (Player::engine == Player::EngineRpg2k3) {
-			const RPG::BattlerAnimation& anim = Data::battleranimations[it->rpg_actor->battler_animation - 1];
-			const RPG::BattlerAnimationExtension& ext = anim.base_data[it->anim_state - 1];
-			static const int frames[] = {0,1,2,1};
-			int frame = frames[(cycle / 15) % 4];
-			it->sprite->SetSrcRect(Rect(frame * 48, ext.battler_index * 48, 48, 48));
-		}
+		it->UpdateAnim(cycle);
 
 		switch (state) {
 			case State_Battle:
@@ -944,6 +1046,7 @@ void Scene_Battle::Update() {
 	options_window->Update();
 	status_window->Update();
 	command_window->Update();
+	help_window->Update();
 
 	if (state == State_Battle)
 		command_window->SetActor(GetTargetActor());
@@ -954,6 +1057,7 @@ void Scene_Battle::Update() {
 	CheckLose();
 
 	ProcessInput();
+	DoAuto();
 	UpdateCursors();
 	UpdateSprites();
 	UpdateFloaters();
@@ -984,19 +1088,29 @@ bool Scene_Battle::HaveCorpse() {
 
 ////////////////////////////////////////////////////////////
 void Scene_Battle::CheckWin() {
+	if (state == State_Victory || state == State_Defeat)
+		return;
+
 	for (std::vector<Enemy>::iterator it = enemies.begin(); it != enemies.end(); it++)
-		if (!it->game_enemy->IsDead() || it->fade > 0)
+		if (!it->game_enemy->IsDead())
 			return;
+	for (std::vector<Ally>::iterator it = allies.begin(); it != allies.end(); it++)
+		it->SetAnimState(Ally::Victory);
 	Game_Temp::battle_result = Game_Temp::BattleVictory;
-	Scene::Pop();
+	SetState(State_Victory);
+	Message(Data::terms.victory.empty() ? Data::terms.victory : "Victory");
 }
 
 ////////////////////////////////////////////////////////////
 void Scene_Battle::CheckLose() {
+	if (state == State_Victory || state == State_Defeat)
+		return;
+
 	for (std::vector<Ally>::iterator it = allies.begin(); it != allies.end(); it++)
 		if (!it->game_actor->IsDead())
 			return;
 	Game_Temp::battle_result = Game_Temp::BattleDefeat;
-	Scene::Pop();
+	SetState(State_Defeat);
+	Message(!Data::terms.defeat.empty() ? Data::terms.defeat : "Defeat");
 }
 

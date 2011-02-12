@@ -57,7 +57,9 @@ public:
 		State_Item,
 		State_Skill,
 		State_TargetEnemy,
-		State_TargetAlly
+		State_TargetAlly,
+		State_Victory,
+		State_Defeat
 	};
 
 	struct Ally {
@@ -76,12 +78,17 @@ public:
 			Item
 		};
 
-		Ally(Game_Actor* game_actor);
+		Ally(Game_Actor* game_actor, int id);
 
 		void CreateSprite();
+		void SetAnimState(int state);
+		void UpdateAnim(int cycle);
 
+		int ID;
 		Game_Actor* game_actor;
 		const RPG::Actor* rpg_actor;
+		int sprite_frame;
+		std::string sprite_file;
 		Sprite* sprite;
 		int anim_state;
 		int gauge;
@@ -89,10 +96,11 @@ public:
 	};
 
 	struct Enemy {
-		Enemy(const RPG::TroopMember* member);
+		Enemy(const RPG::TroopMember* member, int id);
 
 		void CreateSprite();
 
+		int ID;
 		Game_Enemy* game_enemy;
 		const RPG::TroopMember* member;
 		const RPG::Enemy* rpg_enemy;
@@ -161,6 +169,8 @@ private:
 	void UseSkillAlly(Ally& ally, const RPG::Skill& skill, Ally* target);
 	void UseSkillEnemy(Ally& ally, const RPG::Skill& skill, Enemy* target);
 	void ProcessInput();
+	void ChooseEnemy();
+	void DoAuto();
 	void UpdateCursors();
 	void UpdateSprites();
 	void UpdateFloaters();
