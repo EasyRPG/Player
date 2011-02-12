@@ -214,7 +214,7 @@ public:
 	void ChangeEquipment(int equip_type, int item_id, bool test = false);
 
 	/// @return learned skills list.
-	std::vector<int> GetSkills() const;
+	const std::vector<int>& GetSkills() const;
 
 	/// @return atk
 	int GetBaseAtk() const;

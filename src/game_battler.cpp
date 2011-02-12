@@ -18,8 +18,9 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "game_battler.h"
 #include <algorithm>
+#include "player.h"
+#include "game_battler.h"
 #include "game_actor.h"
 #include "util_macro.h"
 #include "main_data.h"
@@ -210,12 +211,12 @@ int Game_Battler::GetAgi() {
 
 ////////////////////////////////////////////////////////////
 void Game_Battler::SetHp(int _hp) {
-	hp = min(_hp, GetMaxHp());
+	hp = min(max(_hp, 0), GetMaxHp());
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Battler::SetSp(int _sp) {
-	sp = min(_sp, GetMaxSp());
+	sp = min(max(_sp, 0), GetMaxSp());
 }
 
 ////////////////////////////////////////////////////////////
@@ -280,7 +281,11 @@ bool Game_Battler::IsSkillUsable(int skill_id) {
 
 ////////////////////////////////////////////////////////////
 int Game_Battler::CalculateSkillCost(int skill_id) {
-	return Data::skills[skill_id - 1].sp_cost;
+	const RPG::Skill& skill = Data::skills[skill_id - 1];
+	return (Player::engine == Player::EngineRpg2k3 &&
+			skill.sp_type == RPG::Skill::SpType_percent)
+		? GetMaxSp() * skill.sp_percent / 100
+		: skill.sp_cost;
 }
 
 ////////////////////////////////////////////////////////////

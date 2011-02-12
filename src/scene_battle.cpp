@@ -19,6 +19,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <algorithm>
+#include "rpg_battlecommand.h"
 #include "input.h"
 #include "output.h"
 #include "player.h"
@@ -27,6 +28,7 @@
 #include "game_system.h"
 #include "game_temp.h"
 #include "game_party.h"
+#include "game_enemy.h"
 #include "game_switches.h"
 #include "scene_battle.h"
 
@@ -40,12 +42,21 @@ Scene_Battle::~Scene_Battle() {
 }
 
 ////////////////////////////////////////////////////////////
+Scene_Battle::Enemy::Enemy(const RPG::TroopMember* member) :
+	game_enemy(new Game_Enemy(member->ID)),
+	member(member),
+	rpg_enemy(&Data::enemies[member->ID - 1]),
+	sprite(NULL)
+{
+	game_enemy->SetHidden(member->invisible);
+}
+
 void Scene_Battle::Enemy::CreateSprite() {
-	Bitmap* graphic = Cache::Monster(enemy->battler_name);
-	bool hue_change = enemy->battler_hue != 0;
+	Bitmap* graphic = Cache::Monster(rpg_enemy->battler_name);
+	bool hue_change = rpg_enemy->battler_hue != 0;
 	if (hue_change) {
 		Surface* new_graphic = Surface::CreateSurface(graphic->GetWidth(), graphic->GetHeight());
-		new_graphic->HueChangeBlit(0, 0, graphic, graphic->GetRect(), enemy->battler_hue);
+		new_graphic->HueChangeBlit(0, 0, graphic, graphic->GetRect(), rpg_enemy->battler_hue);
 		delete graphic;
 		graphic = new_graphic;
 	}
@@ -57,7 +68,17 @@ void Scene_Battle::Enemy::CreateSprite() {
 	sprite->SetX(member->x);
 	sprite->SetY(member->y);
 	sprite->SetZ(member->y);
-	sprite->SetVisible(visible);
+	sprite->SetVisible(!game_enemy->IsHidden());
+}
+
+////////////////////////////////////////////////////////////
+Scene_Battle::Ally::Ally(Game_Actor* game_actor) :
+	game_actor(game_actor),
+	rpg_actor(&Data::actors[game_actor->GetId() - 1]),
+	sprite(NULL),
+	anim_state(Idle),
+	gauge(0)
+{
 }
 
 void Scene_Battle::Ally::CreateSprite() {
@@ -126,7 +147,7 @@ void Scene_Battle::CreateWindows() {
 
 	command_window = new Window_BattleCommand(244, 172, 76, 68, commands);
 
-	skill_window = new Window_Skill(0, 172, 320, 68);
+	skill_window = new Window_BattleSkill(0, 172, 320, 68);
 	skill_window->SetVisible(false);
 	skill_window->SetHelpWindow(help_window);
 
@@ -231,6 +252,7 @@ void Scene_Battle::SetState(Scene_Battle::State new_state) {
 		case State_Skill:
 			skill_window->SetActive(true);
 			skill_window->SetActor(GetActiveActor());
+			skill_window->SetSubset(RPG::Skill::Type_normal);
 			break;
 	}
 
@@ -289,7 +311,25 @@ void Scene_Battle::Restart(Ally& ally, int state) {
 ////////////////////////////////////////////////////////////
 void Scene_Battle::Attack() {
 	Ally& ally = allies[active_ally];
-	// FIXME: Attack
+	Enemy& enemy = enemies[target_enemy];
+
+	const RPG::Item& weapon = Data::items[ally.game_actor->GetWeaponId() - 1];
+	double to_hit = 100 - (100 - weapon.hit) * (1 + (1.0 * enemy.game_enemy->GetAgi() / ally.game_actor->GetAgi() - 1) / 2);
+
+	if (rand() % 100 < to_hit) {
+		int effect = ally.game_actor->GetAtk() / 2 - enemy.game_enemy->GetDef() / 4;
+		if (effect < 0)
+			effect = 0;
+		int act_perc = (rand() % 40) - 20;
+		int change = effect * act_perc / 100;
+		effect += change;
+
+		enemy.game_enemy->SetHp(enemy.game_enemy->GetHp() - effect);
+	}
+	else {
+		// FIXME "miss" message
+	}
+
 	Restart(ally);
 }
 
@@ -325,7 +365,7 @@ void Scene_Battle::UseItem() {
 			break;
 		case RPG::Item::Type_medicine:
 			if (item.entire_party) {
-				UseItem(ally, item, Target_Allies, NULL, NULL);
+				UseItem(ally, item, NULL);
 				Restart(ally);
 			}
 			else
@@ -366,23 +406,28 @@ void Scene_Battle::UseItemSkill(Ally& ally, const RPG::Item& item) {
 }
 
 void Scene_Battle::UseSkill(Ally& ally, const RPG::Skill& skill) {
+	if (skill.type != RPG::Skill::Type_normal) {
+		UseSkill(ally, skill, NULL, NULL);
+		return;
+	}
+
 	switch (skill.scope) {
 		case RPG::Skill::Scope_enemy:
 			SetState(State_TargetEnemy);
 			return;
 		case RPG::Skill::Scope_enemies:
-			UseSkill(ally, skill, Target_Enemies);
+			UseSkill(ally, skill, NULL, NULL);
 			Restart(ally);
 			break;
 		case RPG::Skill::Scope_self:
-			UseSkill(ally, skill, Target_Self);
+			UseSkill(ally, skill, NULL, NULL);
 			Restart(ally);
 			break;
 		case RPG::Skill::Scope_ally:
 			SetState(State_TargetAlly);
 			return;
 		case RPG::Skill::Scope_party:
-			UseSkill(ally, skill, Target_Allies);
+			UseSkill(ally, skill, NULL, NULL);
 			Restart(ally);
 			break;
 	}
@@ -409,17 +454,10 @@ void Scene_Battle::UseItemDone() {
 	int item_id = item_window->GetItemId();
 	const RPG::Item& item = Data::items[item_id - 1];
 
-	switch (state) {
-		case State_TargetAlly:
-			UseItem(ally, item, Target_Ally, &allies[target_ally], NULL);
-			break;
-		case State_TargetEnemy:
-			UseItem(ally, item, Target_Enemy, NULL, &enemies[target_enemy]);
-			break;
-		default:
-			break;
-	}
+	if (state != State_TargetAlly)
+		return;
 
+	UseItem(ally, item, &allies[target_ally]);
 	Restart(ally);
 }
 
@@ -430,10 +468,10 @@ void Scene_Battle::UseSkillDone() {
 
 	switch (state) {
 		case State_TargetAlly:
-			UseSkill(ally, skill, Target_Ally, &allies[target_ally], NULL);
+			UseSkill(ally, skill, &allies[target_ally], NULL);
 			break;
 		case State_TargetEnemy:
-			UseSkill(ally, skill, Target_Enemy, NULL, &enemies[target_enemy]);
+			UseSkill(ally, skill, NULL, &enemies[target_enemy]);
 			break;
 		default:
 			break;
@@ -442,16 +480,197 @@ void Scene_Battle::UseSkillDone() {
 	Restart(ally);
 }
 
-void Scene_Battle::UseItem(Ally& ally, const RPG::Item& item,
-						   Target target, Ally* target_ally, Enemy* target_enemy) {
-	// FIXME: Use Item
-	// FIXME: Decrement item count or use count
-	item_window->Refresh();
+void Scene_Battle::UseItem(Ally& ally, const RPG::Item& item, Ally* target_ally) {
+	if (item.type != RPG::Item::Type_medicine)
+		return;
+	if (item.entire_party != (target_ally == NULL))
+		return;
+	if (item.ocassion_field)
+		return;
+
+	if (target_ally)
+		UseItemAlly(ally, item, target_ally);
+	else
+		for (std::vector<Ally>::iterator it = allies.begin(); it != allies.end(); it++)
+			UseItemAlly(ally, item, &*it);
+
+	switch (item.uses) {
+		case 0:
+			// unlimited uses
+			break;
+		case 1:
+			// single use
+			Game_Party::LoseItem(item.ID, 1, false);
+			item_window->Refresh();
+			break;
+		default:
+			// multiple use
+			// FIXME: we need a Game_Item type to hold the usage count
+			break;
+	}
+}
+
+void Scene_Battle::UseItemAlly(Ally& ally, const RPG::Item& item, Ally* target) {
+	if (item.ko_only && !target->game_actor->IsDead())
+		return;
+
+	// HP recovery
+	int hp = item.recover_hp_rate * target->game_actor->GetMaxHp() + item.recover_hp;
+	target->game_actor->SetHp(target->game_actor->GetHp() + hp);
+
+	// SP recovery
+	int sp = item.recover_sp_rate * target->game_actor->GetMaxSp() + item.recover_sp;
+	target->game_actor->SetSp(target->game_actor->GetSp() + sp);
+
+	// Status recovery
+	for (int i = 0; i < (int) item.state_set.size(); i++)
+		if (item.state_set[i])
+			target->game_actor->RemoveState(i + 1);
 }
 
 void Scene_Battle::UseSkill(Ally& ally, const RPG::Skill& skill,
-							Target target, Ally* target_ally, Enemy* target_enemy) {
-	// FIXME: use skill
+							Ally* target_ally, Enemy* target_enemy) {
+	int sp = ally.game_actor->CalculateSkillCost(skill.ID);
+	if (sp > ally.game_actor->GetSp()) // not enough SP
+		return;
+
+	switch (skill.type) {
+		case RPG::Skill::Type_normal:
+			switch (skill.scope) {
+				case RPG::Skill::Scope_enemy:
+					UseSkillEnemy(ally, skill, target_enemy);
+					return;
+				case RPG::Skill::Scope_enemies:
+					for (std::vector<Enemy>::iterator it = enemies.begin(); it != enemies.end(); it++)
+						UseSkillEnemy(ally, skill, &*it);
+					break;
+				case RPG::Skill::Scope_self:
+					UseSkillAlly(ally, skill, &ally);
+					break;
+				case RPG::Skill::Scope_ally:
+					UseSkillAlly(ally, skill, target_ally);
+					return;
+				case RPG::Skill::Scope_party:
+					for (std::vector<Ally>::iterator it = allies.begin(); it != allies.end(); it++)
+						UseSkillAlly(ally, skill, &*it);
+					break;
+			}
+			break;
+		case RPG::Skill::Type_teleport:
+			// FIXME: teleport skill
+			break;
+		case RPG::Skill::Type_escape:
+			// FIXME: is there more to it than this?
+			if (Game_Temp::battle_escape_mode != 0) {
+				Game_Temp::battle_result = Game_Temp::BattleEscape;
+				Scene::Pop();
+			}
+			break;
+		case RPG::Skill::Type_switch:
+			if (!skill.occasion_battle)
+				return;
+			Game_Switches[skill.switch_id] = true;
+			break;
+	}
+
+	if (skill.type != RPG::Skill::Type_normal)
+		Game_System::SePlay(skill.sound_effect);
+
+	ally.game_actor->SetSp(ally.game_actor->GetSp() - sp);
+}
+
+void Scene_Battle::UseSkillAlly(Ally& ally, const RPG::Skill& skill, Ally* target) {
+	Game_Actor* actor = target->game_actor;
+
+	if (skill.power > 0) {
+		if (rand() % 100 < skill.hit) {
+			// FIXME: is this still affected by stats for allies?
+			int effect = skill.power;
+
+			if (skill.variance > 0) {
+				int var_perc = skill.variance * 5;
+				int act_perc = rand() % (var_perc * 2) - var_perc;
+				int change = effect * act_perc / 100;
+				effect += change;
+			}
+
+			if (skill.affect_hp)
+				actor->SetHp(actor->GetHp() + effect);
+			if (skill.affect_sp)
+				actor->SetSp(actor->GetSp() + effect);
+			if (skill.affect_attack)
+				actor->SetAtk(actor->GetAtk() + effect);
+			if (skill.affect_defense)
+				actor->SetDef(actor->GetDef() + effect);
+			if (skill.affect_spirit)
+				actor->SetSpi(actor->GetSpi() + effect);
+			if (skill.affect_agility)
+				actor->SetAgi(actor->GetAgi() + effect);
+		}
+		else {
+			// FIXME "miss" message
+		}
+	}
+
+	for (int i = 0; i < (int) skill.state_effects.size(); i++) {
+		if (!skill.state_effects[i])
+			continue;
+		if (rand() % 100 >= skill.hit)
+			continue;
+
+		if (skill.state_effect)
+			actor->AddState(i + 1);
+		else
+			actor->RemoveState(i + 1);
+	}
+}
+
+void Scene_Battle::UseSkillEnemy(Ally& ally, const RPG::Skill& skill, Enemy* target) {
+	Game_Enemy* enemy = target->game_enemy;
+
+	if (skill.power > 0) {
+		if (rand() % 100 < skill.hit) {
+			// FIXME: This is what the help file says, but it doesn't look right
+			int effect = skill.power +
+				ally.game_actor->GetAtk() * skill.pdef_f / 20 + 
+				enemy->GetDef() * skill.mdef_f / 40;
+
+			if (skill.variance > 0) {
+				int var_perc = skill.variance * 5;
+				int act_perc = rand() % (var_perc * 2) - var_perc;
+				int change = effect * act_perc / 100;
+				effect += change;
+			}
+
+			if (skill.affect_hp)
+				enemy->SetHp(enemy->GetHp() - effect);
+			if (skill.affect_sp)
+				enemy->SetSp(enemy->GetSp() - effect);
+			if (skill.affect_attack)
+				enemy->SetAtk(enemy->GetAtk() - effect);
+			if (skill.affect_defense)
+				enemy->SetDef(enemy->GetDef() - effect);
+			if (skill.affect_spirit)
+				enemy->SetSpi(enemy->GetSpi() - effect);
+			if (skill.affect_agility)
+				enemy->SetAgi(enemy->GetAgi() - effect);
+		}
+		else {
+			// FIXME "miss" message
+		}
+	}
+
+	for (int i = 0; i < (int) skill.state_effects.size(); i++) {
+		if (!skill.state_effects[i])
+			continue;
+		if (rand() % 100 >= skill.hit)
+			continue;
+
+		if (skill.state_effect)
+			enemy->RemoveState(i + 1);
+		else
+			enemy->AddState(i + 1);
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -461,6 +680,9 @@ void Scene_Battle::Update() {
 	command_window->Update();
 
 	cycle++;
+
+	CheckWin();
+	CheckLose();
 
 	if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Data::system.decision_se);
@@ -565,13 +787,13 @@ void Scene_Battle::Update() {
 		target_enemy += enemies.size();
 		target_enemy %= enemies.size();
 
-		if (!enemies[target_enemy].visible) {
+		if (!enemies[target_enemy].game_enemy->Exists()) {
 			for (int i = 1; i < (int) enemies.size(); i++) {
 				target_enemy++;
-				if (enemies[target_enemy].visible)
+				if (enemies[target_enemy].game_enemy->Exists())
 					break;
 			}
-			if (!enemies[target_enemy].visible)
+			if (!enemies[target_enemy].game_enemy->Exists())
 				target_enemy = -1;
 		}
 	}
@@ -589,7 +811,8 @@ void Scene_Battle::Update() {
 		enemy_cursor->SetVisible(false);
 
 	for (std::vector<Enemy>::iterator it = enemies.begin(); it != enemies.end(); it++) {
-		if (!it->enemy->levitate)
+		it->sprite->SetVisible(it->game_enemy->Exists());
+		if (!it->rpg_enemy->levitate)
 			continue;
 		int y = (int) (3 * sin(cycle / 30.0));
 		it->sprite->SetY(it->member->y + y);
@@ -635,5 +858,23 @@ bool Scene_Battle::HaveCorpse() {
 		if (it->game_actor->IsDead())
 			return true;
 	return false;
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Battle::CheckWin() {
+	for (std::vector<Enemy>::iterator it = enemies.begin(); it != enemies.end(); it++)
+		if (!it->game_enemy->IsDead())
+			return;
+	Game_Temp::battle_result = Game_Temp::BattleVictory;
+	Scene::Pop();
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Battle::CheckLose() {
+	for (std::vector<Ally>::iterator it = allies.begin(); it != allies.end(); it++)
+		if (!it->game_actor->IsDead())
+			return;
+	Game_Temp::battle_result = Game_Temp::BattleDefeat;
+	Scene::Pop();
 }
 

@@ -15,48 +15,39 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _GAME_ENEMY_H_
-#define _GAME_ENEMY_H_
+#ifndef _WINDOW_BATTLESKILL_H_
+#define _WINDOW_BATTLESKILL_H_
 
-#include "game_battler.h"
-class Game_Enemy :
-	public Game_Battler
-{
+////////////////////////////////////////////////////////////
+// Headers
+////////////////////////////////////////////////////////////
+#include <vector>
+#include "window_skill.h"
+
+////////////////////////////////////////////////////////////
+/// Window_BattleSkill class
+////////////////////////////////////////////////////////////
+class Window_BattleSkill : public Window_Skill {
+
 public:
-	Game_Enemy(int enemy_id);
+	////////////////////////////////////////////////////////
+	/// Constructor.
+	////////////////////////////////////////////////////////
+	Window_BattleSkill(int ix, int iy, int iwidth, int iheight);
 
 	////////////////////////////////////////////////////////
-	/// Gets the maximum hp for the current level
-	/// @return max hp
+	/// Sets the actor whose skills are displayed.
+	/// @param actor_id : Id of the actor
 	////////////////////////////////////////////////////////
-	int GetBaseMaxHp() const;
+	void SetSubset(int id);
 
 	////////////////////////////////////////////////////////
-	/// Gets the maximum sp for the current level
-	/// @return max sp
+	/// Refreshes the skill list.
 	////////////////////////////////////////////////////////
-	int GetBaseMaxSp() const;
+	void Refresh();
 
-	/// @return atk
-	int GetBaseAtk() const;
-
-	/// @return def
-	int GetBaseDef() const;
-
-	/// @return spi
-	int GetBaseSpi() const;
-
-	/// @return agi
-	int GetBaseAgi() const;
-
-	void SetHidden(bool _hidden);
-	bool IsHidden();
-
-protected:
-	void Setup(int enemy_id);
-
-	int enemy_id;
+private:
+	int subset;
 };
 
 #endif
-

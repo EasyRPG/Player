@@ -21,11 +21,16 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include "rpg_troopmember.h"
+#include "rpg_actor.h"
+#include "rpg_enemy.h"
+#include "game_actor.h"
+#include "game_enemy.h"
 #include "scene.h"
 #include "background.h"
 #include "window_help.h"
 #include "window_battleitem.h"
-#include "window_skill.h"
+#include "window_battleskill.h"
 #include "window_battlecommand.h"
 #include "window_battlestatus.h"
 
@@ -54,14 +59,6 @@ public:
 		State_TargetAlly
 	};
 
-	enum Target {
-		Target_Enemy,
-		Target_Enemies,
-		Target_Self,
-		Target_Ally,
-		Target_Allies
-	};
-
 	struct Ally {
 		enum AnimationState {
 			Idle = 1,
@@ -78,12 +75,7 @@ public:
 			Item
 		};
 
-		Ally(Game_Actor* game_actor) :
-			game_actor(game_actor),
-			rpg_actor(&Data::actors[game_actor->GetId() - 1]),
-			sprite(NULL),
-			anim_state(Idle),
-			gauge(0) {}
+		Ally(Game_Actor* game_actor);
 
 		void CreateSprite();
 
@@ -96,18 +88,14 @@ public:
 	};
 
 	struct Enemy {
-		Enemy(const RPG::TroopMember* member) :
-			member(member),
-			enemy(&Data::enemies[member->ID - 1]),
-			sprite(NULL),
-			visible(!member->invisible) {}
+		Enemy(const RPG::TroopMember* member);
 
 		void CreateSprite();
 
+		Game_Enemy* game_enemy;
 		const RPG::TroopMember* member;
-		const RPG::Enemy* enemy;
+		const RPG::Enemy* rpg_enemy;
 		Sprite* sprite;
-		bool visible;
 	};
 
 private:
@@ -123,7 +111,7 @@ private:
 	Window_BattleStatus* status_window;
 	Window_BattleCommand* command_window;
 	Window_BattleItem* item_window;
-	Window_Skill* skill_window;
+	Window_BattleSkill* skill_window;
 	Background* background;
 
 	const RPG::Troop* troop;
@@ -151,14 +139,17 @@ private:
 	void TargetDone();
 	void UseItemDone();
 	void UseSkillDone();
-	void UseItem(Ally& ally, const RPG::Item& item,
-				 Target target, Ally* target_ally = NULL, Enemy* target_enemy = NULL);
+	void UseItem(Ally& ally, const RPG::Item& item, Ally* target_ally);
 	void UseSkill(Ally& ally, const RPG::Skill& skill,
-				  Target target, Ally* target_ally = NULL, Enemy* target_enemy = NULL);
-
+				  Ally* target_ally, Enemy* target_enemy);
+	void UseItemAlly(Ally& ally, const RPG::Item& item, Ally* target);
+	void UseSkillAlly(Ally& ally, const RPG::Skill& skill, Ally* target);
+	void UseSkillEnemy(Ally& ally, const RPG::Skill& skill, Enemy* target);
 
 	int GetActiveActor();
 	bool HaveCorpse();
+	void CheckWin();
+	void CheckLose();
 };
 
 #endif

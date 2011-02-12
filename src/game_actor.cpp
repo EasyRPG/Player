@@ -421,7 +421,7 @@ bool Game_Actor::IsEquippable(int item_id) {
 }
 
 ////////////////////////////////////////////////////////////
-std::vector<int> Game_Actor::GetSkills() const {
+const std::vector<int>& Game_Actor::GetSkills() const {
 	return skills;
 }
 
