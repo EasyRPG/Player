@@ -15,8 +15,8 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _WINDOW_BATTLECOMMAND_H_
-#define _WINDOW_BATTLECOMMAND_H_
+#ifndef _WINDOW_BATTLEOPTION_H_
+#define _WINDOW_BATTLEOPTION_H_
 
 ////////////////////////////////////////////////////////////
 // Headers
@@ -24,19 +24,16 @@
 #include <string>
 #include <vector>
 #include "window_base.h"
-#include "window_help.h"
-#include "rpg_battlecommand.h"
 
 ////////////////////////////////////////////////////////////
-/// Window_BattleCommand class.
+/// Window_BattleOption class.
 ////////////////////////////////////////////////////////////
-class Window_BattleCommand: public Window_Base {
+class Window_BattleOption: public Window_Base {
 public:
 	////////////////////////////////////////////////////////
 	/// Constructor.
-	/// @param commands : commands to display
 	////////////////////////////////////////////////////////
-	Window_BattleCommand(int x, int y, int width, int height);
+	Window_BattleOption(int x, int y, int width, int height);
 
 	////////////////////////////////////////////////////////
 	/// Refresh the window contents.
@@ -48,35 +45,16 @@ public:
 	////////////////////////////////////////////////////////
 	void Update();
 
-	////////////////////////////////////////////////////////
-	/// Enable or disable a command.
-	/// @param index : command index
-	/// @param enabled : whether the command is enabled
-	////////////////////////////////////////////////////////
-	void SetEnabled(int index, bool enabled);
-
-	////////////////////////////////////////////////////////
-	/// Enable or disable a command.
-	/// @param index : command index
-	/// @param enabled : whether the command is enabled
-	////////////////////////////////////////////////////////
-	void SetActor(int actor_id);
-
 	int GetIndex();
 	void SetIndex(int index);
 	void SetActive(bool active);
 	void UpdateCursorRect();
-	RPG::BattleCommand GetCommand();
-	int GetSkillSubset();
 
 protected:
-	int actor_id;
 	std::vector<std::string> commands;
 	int index;
 	int num_rows;
 	int top_row;
-	std::vector<bool> disabled;
-	int cycle;
 
 	void DrawItem(int index, Font::SystemColor color);
 };

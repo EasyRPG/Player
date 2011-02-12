@@ -23,15 +23,17 @@
 #include "cache.h"
 #include "surface.h"
 #include "input.h"
+#include "player.h"
 #include "game_system.h"
+#include "game_actors.h"
 #include "window_battlecommand.h"
 
 ////////////////////////////////////////////////////////////
-Window_BattleCommand::Window_BattleCommand(int x, int y, int width, int height,
-										   const std::vector<std::string>& commands) :
-	Window_Base(x, y, width, height), commands(commands) {
+Window_BattleCommand::Window_BattleCommand(int x, int y, int width, int height) :
+	Window_Base(x, y, width, height) {
 
-	num_commands = commands.size();
+	SetActor(0);
+
 	disabled.resize(commands.size());
 	index = -1;
 	top_row = 0;
@@ -42,14 +44,6 @@ Window_BattleCommand::Window_BattleCommand(int x, int y, int width, int height,
 
 	num_rows = contents->GetHeight() / 16;
 
-	Refresh();
-}
-
-////////////////////////////////////////////////////////////
-void Window_BattleCommand::SetCommands(const std::vector<std::string>& _commands) {
-	commands = _commands;
-	num_commands = commands.size();
-	disabled.resize(num_commands);
 	Refresh();
 }
 
@@ -71,6 +65,7 @@ void Window_BattleCommand::SetActive(bool active) {
 void Window_BattleCommand::Update() {
 	Window_Base::Update();
 
+	int num_commands = commands.size();
 	int old_index = index;
 	if (active && num_commands >= 0 && index >= 0) {
 		if (Input::IsRepeated(Input::DOWN)) {
@@ -109,6 +104,11 @@ void Window_BattleCommand::UpdateCursorRect() {
 
 ////////////////////////////////////////////////////////////
 void Window_BattleCommand::Refresh() {
+	if (contents == NULL)
+		return;
+
+	int num_commands = commands.size();
+
 	contents->Clear();
 	for (int i = 0; i < num_commands; i++) {
 		Font::SystemColor color = disabled[i] ? Font::ColorDisabled : Font::ColorDefault;
@@ -142,5 +142,72 @@ int Window_BattleCommand::GetIndex() {
 ////////////////////////////////////////////////////////////
 void Window_BattleCommand::SetIndex(int _index) {
 	index = _index;
+}
+
+////////////////////////////////////////////////////////////
+void Window_BattleCommand::SetActor(int _actor_id) {
+	actor_id = (Player::engine == Player::EngineRpg2k3) ? _actor_id : 0;
+	commands.clear();
+
+	if (actor_id == 0) {
+		commands.push_back(!Data::terms.command_attack.empty() ? Data::terms.command_attack : "Attack");
+		commands.push_back(!Data::terms.command_defend.empty() ? Data::terms.command_defend : "Defend");
+		commands.push_back(!Data::terms.command_item.empty() ? Data::terms.command_item : "Item");
+		commands.push_back(!Data::terms.command_skill.empty() ? Data::terms.command_skill : "Skill");
+	}
+	else {
+		Game_Actor* actor = Game_Actors::GetActor(actor_id);
+		const std::vector<uint32_t>& bcmds = actor->GetBattleCommands();
+		std::vector<uint32_t>::const_iterator it;
+		for (it = bcmds.begin(); it != bcmds.end(); it++) {
+			uint32_t bcmd = *it;
+			if (bcmd <= 0 || bcmd > Data::battlecommands.commands.size())
+				break;
+			const RPG::BattleCommand& command = Data::battlecommands.commands[bcmd - 1];
+			commands.push_back(command.name);
+		}
+	}
+
+	disabled.resize(commands.size());
+	Refresh();
+}
+
+////////////////////////////////////////////////////////////
+RPG::BattleCommand Window_BattleCommand::GetCommand() {
+	if (actor_id > 0) {
+		Game_Actor* actor = Game_Actors::GetActor(actor_id);
+		return Data::battlecommands.commands[actor->GetBattleCommands()[index] - 1];
+	}
+
+	RPG::BattleCommand command;
+	static const int types[] = {
+		RPG::BattleCommand::Type_attack,
+		RPG::BattleCommand::Type_defense,
+		RPG::BattleCommand::Type_item,
+		RPG::BattleCommand::Type_special
+	};
+
+	command.ID = index + 1;
+	command.name = commands[index];
+	command.type = types[index];
+	return command;
+}
+
+////////////////////////////////////////////////////////////
+int Window_BattleCommand::GetSkillSubset() {
+	if (actor_id == 0)
+		return RPG::Skill::Type_normal;
+
+	Game_Actor* actor = Game_Actors::GetActor(actor_id);
+	const std::vector<uint32_t>& bcmds = actor->GetBattleCommands();
+	int idx = 4;
+	for (int i = 0; i < index; i++) {
+		uint32_t bmcd = bcmds[i];
+		const RPG::BattleCommand& command = Data::battlecommands.commands[bmcd - 1];
+		if (command.type == RPG::BattleCommand::Type_subskill)
+			idx++;
+	}
+
+	return idx;
 }
 

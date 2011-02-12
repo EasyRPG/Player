@@ -156,22 +156,11 @@ void Scene_Battle::CreateWindows() {
 	help_window = new Window_Help(0, 0, 320, 32);
 	help_window->SetVisible(false);
 
-	std::vector<std::string> options;
-	options.push_back(Data::terms.battle_fight);
-	options.push_back(Data::terms.battle_auto);
-	options.push_back(Data::terms.battle_escape);
-
-	options_window = new Window_BattleCommand(0, 172, 76, 68, options);
+	options_window = new Window_BattleOption(0, 172, 76, 68);
 
 	status_window = new Window_BattleStatus();
 
-	std::vector<std::string> commands;
-	commands.push_back(!Data::terms.command_attack.empty() ? Data::terms.command_attack : "Attack");
-	commands.push_back(!Data::terms.command_defend.empty() ? Data::terms.command_defend : "Defend");
-	commands.push_back(!Data::terms.command_item.empty() ? Data::terms.command_item : "Item");
-	commands.push_back(!Data::terms.command_skill.empty() ? Data::terms.command_skill : "Skill");
-
-	command_window = new Window_BattleCommand(244, 172, 76, 68, commands);
+	command_window = new Window_BattleCommand(244, 172, 76, 68);
 
 	skill_window = new Window_BattleSkill(0, 172, 320, 68);
 	skill_window->SetVisible(false);
@@ -263,6 +252,7 @@ void Scene_Battle::SetState(Scene_Battle::State new_state) {
 			break;
 		case State_Command:
 			command_window->SetActive(true);
+			command_window->SetActor(GetActiveActor());
 			break;
 		case State_TargetEnemy:
 			break;
@@ -278,7 +268,6 @@ void Scene_Battle::SetState(Scene_Battle::State new_state) {
 		case State_Skill:
 			skill_window->SetActive(true);
 			skill_window->SetActor(GetActiveActor());
-			skill_window->SetSubset(RPG::Skill::Type_normal);
 			break;
 	}
 
@@ -350,6 +339,55 @@ void Scene_Battle::Restart(Ally& ally, int state) {
 }
 
 ////////////////////////////////////////////////////////////
+void Scene_Battle::Command() {
+	RPG::BattleCommand command = command_window->GetCommand();
+	switch (command.type) {
+		case RPG::BattleCommand::Type_attack:
+			target_enemy = 0;
+			SetState(State_TargetEnemy);
+			break;
+		case RPG::BattleCommand::Type_skill:
+			SetState(State_Skill);
+			skill_window->SetSubset(RPG::Skill::Type_normal);
+			break;
+		case RPG::BattleCommand::Type_subskill:
+			SetState(State_Skill);
+			skill_window->SetSubset(command_window->GetSkillSubset());
+			break;
+		case RPG::BattleCommand::Type_defense:
+			Defend();
+			break;
+		case RPG::BattleCommand::Type_item:
+			SetState(State_Item);
+			break;
+		case RPG::BattleCommand::Type_escape:
+			Escape();
+			break;
+		case RPG::BattleCommand::Type_special:
+			Special();
+			break;
+	}
+}
+
+void Scene_Battle::Escape() {
+	if (Game_Temp::battle_escape_mode != 0) {
+		// FIXME: escape probability
+		Game_Temp::battle_result = Game_Temp::BattleEscape;
+		Scene::Pop();
+		return;
+	}
+
+	Ally& ally = allies[active_ally];
+	Restart(ally);
+}
+
+void Scene_Battle::Special() {
+	// FIXME: special commands (link to event)
+
+	Ally& ally = allies[active_ally];
+	Restart(ally);
+}
+
 void Scene_Battle::Attack() {
 	Ally& ally = allies[active_ally];
 	Enemy& enemy = enemies[target_enemy];
@@ -601,11 +639,7 @@ void Scene_Battle::UseSkill(Ally& ally, const RPG::Skill& skill,
 			// FIXME: teleport skill
 			break;
 		case RPG::Skill::Type_escape:
-			// FIXME: is there more to it than this?
-			if (Game_Temp::battle_escape_mode != 0) {
-				Game_Temp::battle_result = Game_Temp::BattleEscape;
-				Scene::Pop();
-			}
+			Escape();
 			break;
 		case RPG::Skill::Type_switch:
 			if (!skill.occasion_battle)
@@ -744,10 +778,7 @@ void Scene_Battle::ProcessInput() {
 						SetState(State_AutoBattle);
 						break;
 					case 2:
-						if (Game_Temp::battle_escape_mode != 0) {
-							Game_Temp::battle_result = Game_Temp::BattleEscape;
-							Scene::Pop();
-						}
+						Escape();
 						break;
 				}
 				break;
@@ -760,21 +791,7 @@ void Scene_Battle::ProcessInput() {
 				// no-op
 				break;
 			case State_Command:
-				switch (command_window->GetIndex()) {
-					case 0:
-						target_enemy = 0;
-						SetState(State_TargetEnemy);
-						break;
-					case 1:
-						Defend();
-						break;
-					case 2:
-						SetState(State_Item);
-						break;
-					case 3:
-						SetState(State_Skill);
-						break;
-				}
+				Command();
 				break;
 			case State_TargetEnemy:
 			case State_TargetAlly:
@@ -928,6 +945,9 @@ void Scene_Battle::Update() {
 	status_window->Update();
 	command_window->Update();
 
+	if (state == State_Battle)
+		command_window->SetActor(GetTargetActor());
+
 	cycle++;
 
 	CheckWin();
@@ -949,6 +969,12 @@ int Scene_Battle::GetActiveActor() {
 }
 
 ////////////////////////////////////////////////////////////
+int Scene_Battle::GetTargetActor() {
+	const std::vector<Game_Actor*>& actors = Game_Party::GetActors();
+	return actors[std::max(target_ally, 0)]->GetId();
+}
+
+////////////////////////////////////////////////////////////
 bool Scene_Battle::HaveCorpse() {
 	for (std::vector<Ally>::iterator it = allies.begin(); it != allies.end(); it++)
 		if (it->game_actor->IsDead())
@@ -959,7 +985,7 @@ bool Scene_Battle::HaveCorpse() {
 ////////////////////////////////////////////////////////////
 void Scene_Battle::CheckWin() {
 	for (std::vector<Enemy>::iterator it = enemies.begin(); it != enemies.end(); it++)
-		if (!it->game_enemy->IsDead())
+		if (!it->game_enemy->IsDead() || it->fade > 0)
 			return;
 	Game_Temp::battle_result = Game_Temp::BattleVictory;
 	Scene::Pop();

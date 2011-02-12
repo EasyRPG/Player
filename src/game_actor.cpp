@@ -467,3 +467,9 @@ void Game_Actor::ChangeBattleCommands(bool add, int id) {
 	}
 }
 
+////////////////////////////////////////////////////////////
+const std::vector<uint32_t>& Game_Actor::GetBattleCommands() {
+	return battle_commands;
+}
+
+

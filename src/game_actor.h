@@ -246,6 +246,8 @@ public:
 	/// @param id  : command to add/remove, 0 to remove all commands
 	void ChangeBattleCommands(bool add, int id);
 
+	const std::vector<uint32_t>& GetBattleCommands();
+
 private:
 	int actor_id;
 	std::string name;

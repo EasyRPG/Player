@@ -31,6 +31,7 @@
 #include "window_help.h"
 #include "window_battleitem.h"
 #include "window_battleskill.h"
+#include "window_battleoption.h"
 #include "window_battlecommand.h"
 #include "window_battlestatus.h"
 
@@ -115,7 +116,7 @@ private:
 	int target_ally;
 
 	Window_Help* help_window;
-	Window_BattleCommand* options_window;
+	Window_BattleOption* options_window;
 	Window_BattleStatus* status_window;
 	Window_BattleCommand* command_window;
 	Window_BattleItem* item_window;
@@ -141,6 +142,9 @@ private:
 	void UpdateAnimState(Ally& ally, int default_state = Ally::Idle);
 	void Restart(Ally& ally, int state = Ally::Idle);
 
+	void Command();
+	void Escape();
+	void Special();
 	void Attack();
 	void Defend();
 	void UseItem();
@@ -162,6 +166,7 @@ private:
 	void UpdateFloaters();
 
 	int GetActiveActor();
+	int GetTargetActor();
 	bool HaveCorpse();
 	void CheckWin();
 	void CheckLose();
