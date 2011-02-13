@@ -19,7 +19,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "system.h"
-#if defined(USE_SDL) && defined(SUPPORT_AUDIO)
+#if defined(USE_SDL) && defined(SUPPORT_AUDIO) && !defined(USE_OPENAL)
 #include <map>
 #include "audio.h"
 #include "filefinder.h"
