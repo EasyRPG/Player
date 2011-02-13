@@ -22,8 +22,8 @@
 #include "game_actors.h"
 
 ////////////////////////////////////////////////////////////
-Window_Equip::Window_Equip(int actor_id) :
-	Window_Selectable(124, 32, 196, 96),
+Window_Equip::Window_Equip(int ix, int iy, int iwidth, int iheight, int actor_id) :
+	Window_Selectable(ix, iy, iwidth, iheight),
 	actor_id(actor_id) {
 
 	SetContents(Surface::CreateSurface(width - 16, height - 16));

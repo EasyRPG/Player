@@ -24,10 +24,11 @@
 #include "window_equipstatus.h"
 
 ////////////////////////////////////////////////////////////
-Window_EquipStatus::Window_EquipStatus(int actor_id) :
-	Window_Base(0, 32, 124, 96),
+Window_EquipStatus::Window_EquipStatus(int ix, int iy, int iwidth, int iheight, int actor_id, bool draw_actorname) :
+	Window_Base(ix, iy, iwidth, iheight),
 	actor_id(actor_id),
-	draw_params(false) {
+	draw_params(false),
+	draw_actorname(draw_actorname) {
 
 	SetContents(Surface::CreateSurface(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
@@ -43,10 +44,17 @@ Window_EquipStatus::~Window_EquipStatus() {
 void Window_EquipStatus::Refresh() {
 	contents->Clear();
 
-	DrawActorName(Game_Actors::GetActor(actor_id), 0, 2);
+	int y_offset;
+
+	if (draw_actorname) {
+		y_offset = 18;
+		DrawActorName(Game_Actors::GetActor(actor_id), 0, 2);
+	} else {
+		y_offset = 2;
+	}
 
 	for (int i = 0; i < 4; ++i) {
-		DrawParameter(0, (12 + 6) + ((12 + 4) * i), i);
+		DrawParameter(0, y_offset + ((12 + 4) * i), i);
 	}
 }
 

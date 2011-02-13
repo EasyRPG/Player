@@ -33,8 +33,9 @@ public:
 	////////////////////////////////////////////////////////
 	/// Constructor.
 	/// @param actor_id : Actor whose stats are displayed
+	/// @param draw_actorname : Displays the actor name above the items
 	////////////////////////////////////////////////////////
-	Window_EquipStatus(int actor_id);
+	Window_EquipStatus(int ix, int iy, int iwidth, int iheight, int actor_id, bool draw_actorname = true);
 
 	////////////////////////////////////////////////////////
 	/// Destructor.
@@ -80,6 +81,8 @@ private:
 	int actor_id;
 	/// Draws the params if true
 	bool draw_params;
+	/// Draws the actor name above the values if true
+	bool draw_actorname;
 
 	int atk;
 	int def;

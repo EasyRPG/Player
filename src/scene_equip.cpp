@@ -40,8 +40,8 @@ void Scene_Equip::Start() {
 
 	// Create the windows
 	help_window = new Window_Help(0, 0, 320, 32);
-	equipstatus_window = new Window_EquipStatus(actor->GetId());
-	equip_window = new Window_Equip(actor->GetId());
+	equipstatus_window = new Window_EquipStatus(0, 32, 124, 96, actor->GetId());
+	equip_window = new Window_Equip(124, 32, 196, 96, actor->GetId());
 
 	equip_window->SetIndex(equip_index); 
 
@@ -133,7 +133,7 @@ void Scene_Equip::UpdateEquipSelection() {
 		Game_System::SePlay(Data::system.cursor_se);
 		actor_index = (actor_index + Game_Party::GetActors().size() - 1) % Game_Party::GetActors().size();
 		Scene::Push(new Scene_Equip(actor_index, equip_window->GetIndex()), true);
-	} 
+	}
 }
 
 ////////////////////////////////////////////////////////////

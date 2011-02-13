@@ -32,6 +32,7 @@
 #include "scene_map.h"
 #include "scene_skill.h"
 #include "scene_order.h"
+#include "scene_status.h"
 
 ////////////////////////////////////////////////////////////
 Scene_Menu::Scene_Menu(int menu_index) :
@@ -245,7 +246,7 @@ void Scene_Menu::UpdateActorSelection() {
 			Scene::Push(new Scene_Equip(menustatus_window->GetIndex()));
 			break;
 		case Status:
-			//Scene::Push(new Scene_Status(menustatus_window->GetIndex()));
+			Scene::Push(new Scene_Status(menustatus_window->GetIndex()));
 			break;
 		case Row:
 			//

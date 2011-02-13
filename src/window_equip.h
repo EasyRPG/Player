@@ -34,7 +34,7 @@ public:
 	/// Constructor.
 	/// @param actor_id : Actor whose inventory is displayed
 	////////////////////////////////////////////////////////
-	Window_Equip(int actor_id);
+	Window_Equip(int ix, int iy, int iwidth, int iheight, int actor_id);
 
 	////////////////////////////////////////////////////////
 	/// Destructor.

@@ -15,44 +15,31 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _SCENE_STATUS_H_
-#define _SCENE_STATUS_H_
-
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "scene.h"
+#include <iomanip>
+#include <sstream>
 #include "window_actorinfo.h"
-#include "window_actorstatus.h"
-#include "window_equip.h"
-#include "window_equipstatus.h"
-#include "window_gold.h"
+#include "game_actor.h"
+#include "game_party.h"
 
 ////////////////////////////////////////////////////////////
-/// Scene Status class.
-/// Displays status information about a party member.
+Window_ActorInfo::Window_ActorInfo(int ix, int iy, int iwidth, int iheight, int actor_id) :
+	Window_Base(ix, iy, iwidth, iheight),
+	actor_id(actor_id) {
+
+	SetContents(Surface::CreateSurface(width - 16, height - 16));
+	contents->SetTransparentColor(windowskin->GetTransparentColor());
+
+	Refresh();
+}
+
 ////////////////////////////////////////////////////////////
-class Scene_Status : public Scene {
-public:
-	////////////////////////////////////////////////////////
-	/// Constructor.
-	/// @param actor_index : Party index of the actor
-	////////////////////////////////////////////////////////
-	Scene_Status(int actor_index);
+Window_ActorInfo::~Window_ActorInfo() {
+}
 
-	void Start();
-	void Terminate();
-	void Update();
-
-private:
-	int actor_index;
-
-	Window_ActorInfo* actorinfo_window;
-	Window_ActorStatus* actorstatus_window;
-	Window_Gold* gold_window;
-	Window_EquipStatus* equipstatus_window;
-	Window_Equip* equip_window;
-};
-
-#endif
-
+////////////////////////////////////////////////////////////
+void Window_ActorInfo::Refresh() {
+	contents->Clear();
+}

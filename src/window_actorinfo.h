@@ -15,44 +15,38 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _SCENE_STATUS_H_
-#define _SCENE_STATUS_H_
+#ifndef _WINDOW_ACTORINFO_H_
+#define _WINDOW_ACTORINFO_H_
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "scene.h"
-#include "window_actorinfo.h"
-#include "window_actorstatus.h"
-#include "window_equip.h"
-#include "window_equipstatus.h"
-#include "window_gold.h"
+#include "window_base.h"
 
 ////////////////////////////////////////////////////////////
-/// Scene Status class.
-/// Displays status information about a party member.
+/// Window ActorInfo Class
+/// Displays the left hand information window in the status
+/// scene.
 ////////////////////////////////////////////////////////////
-class Scene_Status : public Scene {
+class Window_ActorInfo : public Window_Base {
 public:
 	////////////////////////////////////////////////////////
 	/// Constructor.
-	/// @param actor_index : Party index of the actor
 	////////////////////////////////////////////////////////
-	Scene_Status(int actor_index);
+	Window_ActorInfo(int ix, int iy, int iwidth, int iheight, int actor_id);
 
-	void Start();
-	void Terminate();
-	void Update();
+	////////////////////////////////////////////////////////
+	/// Destructor.
+	////////////////////////////////////////////////////////
+	~Window_ActorInfo();
 
+	////////////////////////////////////////////////////////
+	/// Renders the stats on the window.
+	////////////////////////////////////////////////////////
+	void Refresh();
+	
 private:
-	int actor_index;
-
-	Window_ActorInfo* actorinfo_window;
-	Window_ActorStatus* actorstatus_window;
-	Window_Gold* gold_window;
-	Window_EquipStatus* equipstatus_window;
-	Window_Equip* equip_window;
+	int actor_id;
 };
 
 #endif
-
