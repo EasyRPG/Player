@@ -18,6 +18,7 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <algorithm>
 #include "bitmap.h"
 #include "surface.h"
 #include "cache.h"
@@ -106,7 +107,7 @@ int Window_BattleStatus::GetActiveCharacter() {
 
 ////////////////////////////////////////////////////////////
 void Window_BattleStatus::SetTimeGauge(int _index, int value, int limit) {
-	gauges[_index] = value * gauge_full / limit;
+	gauges[_index] = std::min(value, limit) * gauge_full / limit;
 	RefreshGauge(_index);
 
 	int num_actors = actors.size();

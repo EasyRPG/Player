@@ -72,3 +72,8 @@ bool Game_Enemy::IsHidden() {
 	return hidden;
 }
 
+////////////////////////////////////////////////////////////
+void Game_Enemy::Transform(int new_enemy_id) {
+	enemy_id = new_enemy_id;
+}
+

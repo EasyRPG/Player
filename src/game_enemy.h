@@ -51,6 +51,7 @@ public:
 
 	void SetHidden(bool _hidden);
 	bool IsHidden();
+	void Transform(int new_enemy_id);
 
 protected:
 	void Setup(int enemy_id);

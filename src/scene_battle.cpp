@@ -49,8 +49,12 @@ Scene_Battle::Enemy::Enemy(const RPG::TroopMember* member, int id) :
 	member(member),
 	rpg_enemy(&Data::enemies[member->ID - 1]),
 	sprite(NULL),
-	fade(0)
+	fade(0),
+	gauge(0),
+	defending(false),
+	charged(false)
 {
+	speed = 25 + rand() % 10;
 	game_enemy->SetHidden(member->invisible);
 }
 
@@ -74,6 +78,13 @@ void Scene_Battle::Enemy::CreateSprite() {
 	sprite->SetVisible(!game_enemy->IsHidden());
 }
 
+void Scene_Battle::Enemy::Transform(int enemy_id) {
+	rpg_enemy = &Data::enemies[enemy_id - 1];
+	game_enemy->Transform(enemy_id);
+	delete sprite;
+	CreateSprite();
+}
+
 ////////////////////////////////////////////////////////////
 Scene_Battle::Ally::Ally(Game_Actor* game_actor, int id) :
 	ID(id),
@@ -83,8 +94,10 @@ Scene_Battle::Ally::Ally(Game_Actor* game_actor, int id) :
 	sprite_file(""),
 	sprite(NULL),
 	anim_state(Idle),
-	gauge(0)
+	gauge(0),
+	defending(false)
 {
+	speed = 30 + rand() % 10;
 }
 
 void Scene_Battle::Ally::CreateSprite() {
@@ -213,6 +226,7 @@ void Scene_Battle::Start() {
 	cycle = 0;
 	target_enemy = -1;
 	target_ally = -1;
+	active_enemy = -1;
 	active_ally = -1;
 	auto_battle = false;
 	action_timer = 0;
@@ -306,6 +320,12 @@ void Scene_Battle::SetState(Scene_Battle::State new_state) {
 		case State_AllyAttack:
 		case State_AllyItem:
 		case State_AllySkill:
+			action_timer = 60;
+			break;
+		case State_EnemyAction:
+		case State_EnemyAction2x:
+			action_timer = 60;
+			break;
 		case State_Victory:
 		case State_Defeat:
 			break;
@@ -335,6 +355,8 @@ void Scene_Battle::SetState(Scene_Battle::State new_state) {
 		case State_AllyAttack:
 		case State_AllyItem:
 		case State_AllySkill:
+		case State_EnemyAction:
+		case State_EnemyAction2x:
 			status_window->SetVisible(true);
 			status_window->SetX(0);
 			command_window->SetVisible(true);
@@ -360,10 +382,12 @@ void Scene_Battle::SetState(Scene_Battle::State new_state) {
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Battle::Message(const std::string& msg) {
+void Scene_Battle::Message(const std::string& msg, bool pause) {
 	help_window->SetText(msg);
 	help_window->SetVisible(true);
-	help_window->SetPause(true);
+	help_window->SetPause(pause);
+	if (!pause)
+		message_timer = 120;
 }
 
 ////////////////////////////////////////////////////////////
@@ -401,6 +425,7 @@ void Scene_Battle::Restart(Ally& ally, int anim_state) {
 		SetState(State_Battle);
 	target_ally = -1;
 	target_enemy = -1;
+	ally.defending = false;
 }
 
 ////////////////////////////////////////////////////////////
@@ -459,6 +484,7 @@ void Scene_Battle::Special() {
 void Scene_Battle::Defend() {
 	Ally& ally = allies[active_ally];
 	Restart(ally, Ally::Defending);
+	ally.defending = true;
 }
 
 void Scene_Battle::Item() {
@@ -568,17 +594,14 @@ void Scene_Battle::TargetDone() {
 		case State_Command:
 			// FIXME
 			ally.SetAnimState(Ally::RightHand);
-			action_timer = 60;
 			SetState(State_AllyAttack);
 			break;
 		case State_Item:
 			ally.SetAnimState(Ally::Item);
-			action_timer = 60;
 			SetState(State_AllyItem);
 			break;
 		case State_Skill:
 			ally.SetAnimState(Ally::SkillUse);
-			action_timer = 60;
 			SetState(State_AllySkill);
 			break;
 		default:
@@ -858,6 +881,180 @@ void Scene_Battle::UseSkillEnemy(Ally& ally, const RPG::Skill& skill, Enemy* tar
 }
 
 ////////////////////////////////////////////////////////////
+bool Scene_Battle::EnemyActionValid(const RPG::EnemyAction& action, Enemy* enemy) {
+	switch (action.condition_type) {
+		case RPG::EnemyAction::ConditionType_always:
+			return true;
+		case RPG::EnemyAction::ConditionType_switch:
+			return Game_Switches[action.switch_id];
+		case RPG::EnemyAction::ConditionType_turn:
+		{
+			int interval = action.condition_param2 == 0 ? 1 : action.condition_param2;
+			int turns = turn_fragments / turn_length;
+			return (turns - action.condition_param1) % interval == 0;
+		}
+		case RPG::EnemyAction::ConditionType_actors:
+		{
+			int count = 0;
+			for (std::vector<Enemy>::const_iterator it = enemies.begin(); it != enemies.end(); it++)
+				if (it->game_enemy->Exists())
+					count++;
+			return count >= action.condition_param1 && count <= action.condition_param2;
+		}
+		case RPG::EnemyAction::ConditionType_hp:
+		{
+			int hp_percent = enemy->game_enemy->GetHp() * 100 / enemy->game_enemy->GetMaxHp();
+			return hp_percent >= action.condition_param1 && hp_percent <= action.condition_param2;
+		}
+		case RPG::EnemyAction::ConditionType_sp:
+		{
+			int sp_percent = enemy->game_enemy->GetSp() * 100 / enemy->game_enemy->GetMaxSp();
+			return sp_percent >= action.condition_param1 && sp_percent <= action.condition_param2;
+		}
+		case RPG::EnemyAction::ConditionType_party_lvl:
+		{
+			int party_lvl = 0;
+			for (std::vector<Ally>::const_iterator it = allies.begin(); it != allies.end(); it++)
+				party_lvl += it->game_actor->GetLevel();
+			party_lvl /= allies.size();
+			return party_lvl >= action.condition_param1 && party_lvl <= action.condition_param2;
+		}
+		case RPG::EnemyAction::ConditionType_party_fatigue:
+		{
+			int party_exh = 0;
+			for (std::vector<Ally>::const_iterator it = allies.begin(); it != allies.end(); it++)
+				// FIXME: this is what the help file says, but it looks wrong
+				party_exh += 100 - (200 * it->game_actor->GetHp() / it->game_actor->GetMaxHp() -
+									100 * it->game_actor->GetSp() / it->game_actor->GetMaxSp() / 3);
+			party_exh /= allies.size();
+			return party_exh >= action.condition_param1 && party_exh <= action.condition_param2;
+		}
+		default:
+			return true;
+	}
+}
+
+////////////////////////////////////////////////////////////
+const RPG::EnemyAction* Scene_Battle::ChooseEnemyAction(Enemy* enemy) {
+	const std::vector<RPG::EnemyAction>& actions = enemy->rpg_enemy->actions;
+	std::vector<int> valid;
+	std::vector<RPG::EnemyAction>::const_iterator it;
+	int total = 0;
+	for (int i = 0; i < (int) actions.size(); i++) {
+		const RPG::EnemyAction& action = actions[i];
+		if (EnemyActionValid(action, enemy)) {
+			valid.push_back(i);
+			total += action.rating;
+		}
+	}
+
+	int which = rand() % total;
+	for (std::vector<int>::const_iterator it = valid.begin(); it != valid.end(); it++) {
+		const RPG::EnemyAction& action = actions[*it];
+		if (which >= action.rating) {
+			which -= action.rating;
+			continue;
+		}
+
+		return &action;
+	}
+
+	return NULL;
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Battle::EnemyAction(Enemy* enemy) {
+	if (!enemy->game_enemy->Exists())
+		return;
+
+	enemy->defending = false;
+
+	const RPG::EnemyAction* action = ChooseEnemyAction(enemy);
+	if (action == NULL)
+		return;
+
+	active_enemy = enemy->ID;
+	enemy_action = action;
+	if (action->kind == RPG::EnemyAction::Kind_basic &&
+		action->basic == RPG::EnemyAction::Basic_dual_attack)
+		SetState(State_EnemyAction2x);
+	else
+		SetState(State_EnemyAction);
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Battle::EnemyActionDone() {
+	Enemy* enemy = &enemies[active_enemy];
+	const RPG::EnemyAction* action = enemy_action;
+
+	switch (action->kind) {
+		// FIXME: TODO: implement enemy actions
+		case RPG::EnemyAction::Kind_basic:
+			switch (action->basic) {
+				case RPG::EnemyAction::Basic_attack:
+					EnemyAttack();
+					break;
+				case RPG::EnemyAction::Basic_dual_attack:
+					EnemyAttack();
+					break;
+				case RPG::EnemyAction::Basic_defense:
+					enemy->defending = true;
+					break;
+				case RPG::EnemyAction::Basic_observe:
+					Message(!Data::terms.observing.empty() ? Data::terms.observing : "Observing");
+					break;
+				case RPG::EnemyAction::Basic_charge:
+					enemy->charged = true;
+					break;
+				case RPG::EnemyAction::Basic_autodestruction:
+					break;
+				case RPG::EnemyAction::Basic_nothing:
+					break;
+			}
+			break;
+		case RPG::EnemyAction::Kind_skill:
+			break;
+		case RPG::EnemyAction::Kind_transformation:
+			enemy->Transform(action->enemy_id);
+			break;
+	}
+
+	if (action->switch_on)
+		Game_Switches[action->switch_on_id] = true;
+	if (action->switch_off)
+		Game_Switches[action->switch_off_id] = false;
+
+	SetState(State_Battle);
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Battle::EnemyAttack() {
+	Enemy& enemy = enemies[active_enemy];
+	int target_ally = rand() % allies.size();
+	Ally& ally = allies[target_ally];
+
+	if (ally.game_actor->IsDead())
+		return;
+
+	int hit = enemy.rpg_enemy->miss ? 70 : 90;
+	double to_hit = 100 - (100 - hit) * (1 + (1.0 * ally.game_actor->GetAgi() / enemy.game_enemy->GetAgi() - 1) / 2);
+
+	if (rand() % 100 < to_hit) {
+		int effect = enemy.game_enemy->GetAtk() / 2 - ally.game_actor->GetDef() / 4;
+		if (effect < 0)
+			effect = 0;
+		int act_perc = (rand() % 40) - 20;
+		int change = effect * act_perc / 100;
+		effect += change;
+
+		ally.game_actor->SetHp(ally.game_actor->GetHp() - effect);
+		Floater(ally.sprite, Font::ColorDefault, effect, 60);
+	}
+	else
+		Floater(ally.sprite, Font::ColorDefault, Data::terms.miss, 60);
+}
+
+////////////////////////////////////////////////////////////
 void Scene_Battle::ProcessActions() {
 	switch (state) {
 		case State_AllyAttack:
@@ -875,23 +1072,54 @@ void Scene_Battle::ProcessActions() {
 			if (action_timer <= 0)
 				SkillDone();
 			break;
+		case State_EnemyAction:
+			action_timer--;
+			if (action_timer <= 0)
+				EnemyActionDone();
+			break;
+		case State_EnemyAction2x:
+			action_timer--;
+			if (action_timer <= 30) {
+				EnemyAttack();
+				state = State_EnemyAction;
+			}
+			break;
 		default:
 			break;
 	}
 
-	for (std::vector<Ally>::iterator it = allies.begin(); it != allies.end(); it++) {
-		switch (state) {
-			case State_Battle:
-			case State_AutoBattle:
+	switch (state) {
+		case State_Battle:
+		case State_AutoBattle:
+			turn_fragments++;
+
+			if (help_window->GetVisible() && message_timer > 0) {
+				message_timer--;
+				if (message_timer <= 0)
+					help_window->SetVisible(false);
+			}
+
+			for (std::vector<Ally>::iterator it = allies.begin(); it != allies.end(); it++) {
 				if (it->gauge < Ally::gauge_full) {
 					// FIXME: this should account for agility, paralysis, etc
-					it->gauge++;
+					it->gauge += it->speed;
 					status_window->SetTimeGauge(it - allies.begin(), it->gauge, Ally::gauge_full);
 				}
-				break;
-			default:
-				break;
-		}
+			}
+
+			for (std::vector<Enemy>::iterator it = enemies.begin(); it != enemies.end(); it++) {
+				if (it->gauge < Enemy::gauge_full) {
+					// FIXME: this should account for agility, paralysis, etc
+					it->gauge += it->speed;
+					if (it->gauge >= Enemy::gauge_full) {
+						EnemyAction(&*it);
+						it->gauge = 0;
+					}
+				}
+			}
+			break;
+		default:
+			break;
 	}
 }
 
@@ -937,6 +1165,8 @@ void Scene_Battle::ProcessInput() {
 			case State_AllyAttack:
 			case State_AllyItem:
 			case State_AllySkill:
+			case State_EnemyAction:
+			case State_EnemyAction2x:
 				break;
 			case State_Victory:
 			case State_Defeat:
@@ -969,6 +1199,8 @@ void Scene_Battle::ProcessInput() {
 			case State_AllyAttack:
 			case State_AllyItem:
 			case State_AllySkill:
+			case State_EnemyAction:
+			case State_EnemyAction2x:
 				break;
 			case State_Victory:
 			case State_Defeat:
