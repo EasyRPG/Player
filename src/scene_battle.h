@@ -58,6 +58,9 @@ public:
 		State_Skill,
 		State_TargetEnemy,
 		State_TargetAlly,
+		State_AllyAttack,
+		State_AllyItem,
+		State_AllySkill,
 		State_Victory,
 		State_Defeat
 	};
@@ -118,10 +121,12 @@ public:
 private:
 	State state;
 	State target_state;
+	bool auto_battle;
 	int cycle;
 	int active_ally;
 	int target_enemy;
 	int target_ally;
+	int action_timer;
 
 	Window_Help* help_window;
 	Window_BattleOption* options_window;
@@ -155,23 +160,28 @@ private:
 	void Special();
 	void Attack();
 	void Defend();
-	void UseItem();
-	void UseSkill();
-	void UseItemSkill(Ally& ally, const RPG::Item& item);
-	void UseSkill(Ally& ally, const RPG::Skill& skill);
+	void Item();
+	void Skill();
+	void ItemSkill(Ally& ally, const RPG::Item& item);
+	void Skill(Ally& ally, const RPG::Skill& skill);
 	void TargetDone();
-	void UseItemDone();
-	void UseSkillDone();
+	void ActionDone();
+	void AttackDone();
+	void ItemDone();
+	void SkillDone();
 	void UseItem(Ally& ally, const RPG::Item& item, Ally* target_ally);
 	void UseSkill(Ally& ally, const RPG::Skill& skill,
 				  Ally* target_ally, Enemy* target_enemy);
 	void UseItemAlly(Ally& ally, const RPG::Item& item, Ally* target);
 	void UseSkillAlly(Ally& ally, const RPG::Skill& skill, Ally* target);
 	void UseSkillEnemy(Ally& ally, const RPG::Skill& skill, Enemy* target);
+
+	void ProcessActions();
 	void ProcessInput();
 	void ChooseEnemy();
 	void DoAuto();
 	void UpdateCursors();
+	void UpdateAttack();
 	void UpdateSprites();
 	void UpdateFloaters();
 

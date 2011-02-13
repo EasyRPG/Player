@@ -53,8 +53,10 @@ int Window_Skill::GetSkillId() {
 void Window_Skill::Refresh() {
 	data.clear();
 
-	for (size_t i = 0; i < Game_Actors::GetActor(actor_id)->GetSkills().size(); ++i) {
-		data.push_back(Game_Actors::GetActor(actor_id)->GetSkills()[i]);
+	const std::vector<int>& skills = Game_Actors::GetActor(actor_id)->GetSkills();
+	for (size_t i = 0; i < skills.size(); ++i) {
+		if (CheckInclude(skills[i]))
+			data.push_back(skills[i]);
 	}
 
 	CreateContents();
@@ -81,7 +83,7 @@ void Window_Skill::DrawItem(int index) {
 
 	if (skill_id > 0) {
 		int costs = Data::skills[skill_id - 1].sp_cost;
-		bool enabled = Game_Actors::GetActor(actor_id)->IsSkillUsable(skill_id);
+		bool enabled = CheckEnable(skill_id);
 		int color = !enabled ? Font::ColorDisabled : Font::ColorDefault;
 		
 		std::stringstream ss;
@@ -98,3 +100,14 @@ void Window_Skill::UpdateHelp() {
 	help_window->SetText(GetSkillId() == 0 ? "" : 
 		Data::skills[GetSkillId() - 1].description);
 }
+
+////////////////////////////////////////////////////////////
+bool Window_Skill::CheckInclude(int skill_id) {
+	return true;
+}
+
+////////////////////////////////////////////////////////////
+bool Window_Skill::CheckEnable(int skill_id) {
+	return Game_Actors::GetActor(actor_id)->IsSkillUsable(skill_id);
+}
+

@@ -200,10 +200,11 @@ int Window_BattleCommand::GetSkillSubset() {
 
 	Game_Actor* actor = Game_Actors::GetActor(actor_id);
 	const std::vector<uint32_t>& bcmds = actor->GetBattleCommands();
+	int bcmd = bcmds[index];
+
 	int idx = 4;
-	for (int i = 0; i < index; i++) {
-		uint32_t bmcd = bcmds[i];
-		const RPG::BattleCommand& command = Data::battlecommands.commands[bmcd - 1];
+	for (int i = 0; i < bcmd - 1; i++) {
+		const RPG::BattleCommand& command = Data::battlecommands.commands[i];
 		if (command.type == RPG::BattleCommand::Type_subskill)
 			idx++;
 	}

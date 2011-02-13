@@ -34,26 +34,18 @@ void Window_BattleSkill::SetSubset(int id) {
 }
 
 ////////////////////////////////////////////////////////////
-void Window_BattleSkill::Refresh() {
-	data.clear();
+bool Window_BattleSkill::CheckInclude(int skill_id) {
+	const RPG::Skill& skill = Data::skills[skill_id - 1];
+	return (subset == RPG::Skill::Type_normal)
+		? (skill.type < 4)
+		: (subset == skill.type);
+}
 
-	const std::vector<int>& skills = Game_Actors::GetActor(actor_id)->GetSkills();
-	for (size_t i = 0; i < skills.size(); i++) {
-		int skill_id = skills[i];
-		const RPG::Skill& skill = Data::skills[skill_id];
-		if (subset == RPG::Skill::Type_normal || subset == skill.type)
-			data.push_back(skill_id);
-	}
-
-	if (data.size() == 0)
-		data.push_back(0);
-
-	CreateContents();
-	contents->Clear();
-
-	item_max = data.size();
-
-	for (int i = 0; i < item_max; i++)
-		DrawItem(i);
+////////////////////////////////////////////////////////////
+bool Window_BattleSkill::CheckEnable(int skill_id) {
+	const RPG::Skill& skill = Data::skills[skill_id - 1];
+	return (skill.type == RPG::Skill::Type_switch)
+		? skill.occasion_battle
+		: true;
 }
 

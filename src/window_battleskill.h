@@ -42,9 +42,16 @@ public:
 	void SetSubset(int id);
 
 	////////////////////////////////////////////////////////
-	/// Refreshes the skill list.
+	/// Checks if the skill should be in the list
+	/// @param skill_id Skill to check
 	////////////////////////////////////////////////////////
-	void Refresh();
+	bool CheckInclude(int skill_id);
+
+	////////////////////////////////////////////////////////
+	/// Chechs if skill should be enabled.
+	/// @param skill_id : Skill to check
+	////////////////////////////////////////////////////////
+	bool CheckEnable(int skill_id);
 
 private:
 	int subset;
