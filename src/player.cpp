@@ -30,6 +30,9 @@
 #include "scene_logo.h"
 #include "scene_title.h"
 #include "scene_battle.h"
+#include <algorithm>
+#include <set>
+#include <locale>
 #include <cstring>
 #include <cstdlib>
 #ifdef GEKKO
@@ -90,23 +93,47 @@ void Player::Init(int argc, char *argv[]) {
 
 	engine = EngineRpg2k;
 
-	if (argc > 1 && !strcmp(argv[1], "TestPlay")) {
-		debug_flag = true;
+	// extended
+	std::set<std::string> args;
+	for(int i = 1; i < argc; ++i) {
+		std::string const in = argv[i];
+		std::string out(in.size(), '\0');
+		std::transform(in.begin(), in.end(), out.begin(), tolower);
+		args.insert(out);
 	}
-	if (argc > 2 && !strcmp(argv[2], "HideTitle")) {
-		hide_title_flag = true;
-	}
-	if (argc > 3 && !strcmp(argv[3], "Window")) {
-		window_flag = true;
-	}
-	if (argc > 1 && !strcmp(argv[1], "BattleTest")) {
+	if((argc > 1) && std::string(argv[1]) == "battletest") {
 		battle_test_flag = true;
-		if (argc > 4) {
-			battle_test_troop_id = atoi(argv[4]);
-		} else {
-			battle_test_troop_id = 0;
+		battle_test_troop_id = (argc > 4)? atoi(argv[4]) : 0;
+	} else {
+		window_flag = args.find("window") != args.end();
+		debug_flag = args.find("testplay") != args.end();
+		hide_title_flag = args.find("hidetitle") != args.end();
+	}
+
+	/* RPG_RT
+	switch(argc) {
+	case 4:
+		if(!strcmp(argv[3], "Window")) {
+			window_flag = true;
+		}
+	case 3:
+		if(!strcmp(argv[2], "HideTitle")) {
+			hide_title_flag = true;
+		}
+	case 2:
+		if(!strcmp(argv[1], "TestPlay")) {
+			debug_flag = true;
+		}
+		else if (!strcmp(argv[1], "BattleTest")) {
+			battle_test_flag = true;
+			if (argc > 4) {
+				battle_test_troop_id = atoi(argv[4]);
+			} else {
+				battle_test_troop_id = 0;
+			}
 		}
 	}
+	*/
 
 	FileFinder::Init();
 
