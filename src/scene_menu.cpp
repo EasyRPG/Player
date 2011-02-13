@@ -250,6 +250,9 @@ void Scene_Menu::UpdateActorSelection() {
 		case Row:
 			//
 			break;
+		default:
+			assert(false);
+			break;
 		}
 
 		command_window->SetActive(true);
