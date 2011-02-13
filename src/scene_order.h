@@ -22,6 +22,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "scene.h"
+#include "window_command.h"
 
 ////////////////////////////////////////////////////////////
 /// Scene Order class.
@@ -39,7 +40,22 @@ public:
 	void Update();
 
 private:
+	/// Contains new actor order or 0 if actor wasnt rearranged yet
+	std::vector<int> actors;
+	/// Contains number of rearranged actors
+	int actor_counter;
 
+	Window_Command* window_left;
+	Window_Command* window_right;
+	Window_Command* window_confirm;
+
+	void CreateCommandWindow();
+
+	void UpdateOrder();
+	void UpdateConfirm();
+
+	void Redo();
+	void Confirm();
 };
 
 #endif

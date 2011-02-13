@@ -18,26 +18,154 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <algorithm>
 #include <string>
 #include <vector>
 #include "scene_order.h"
+#include "game_party.h"
+#include "game_player.h"
+#include "game_system.h"
+#include "input.h"
+#include "scene_map.h"
 
 ////////////////////////////////////////////////////////////
-Scene_Order::Scene_Order() {
+Scene_Order::Scene_Order() :
+	actor_counter(0) {
 	type = Scene::Order;
 }
 
 ////////////////////////////////////////////////////////////
 void Scene_Order::Start() {
+	actors.resize(Game_Party::GetActors().size());
 
+	CreateCommandWindow();
 }
 
 ////////////////////////////////////////////////////////////
 void Scene_Order::Terminate() {
-
+	delete window_left;
+	delete window_right;
+	delete window_confirm;
 }
 
 ////////////////////////////////////////////////////////////
 void Scene_Order::Update() {
+	window_left->Update();
+	window_right->Update();
+	window_confirm->Update();
 
+	if (window_left->GetActive()) {
+		UpdateOrder();
+	} else if (window_confirm->GetActive()) {
+		UpdateConfirm();
+	}
+}
+
+void Scene_Order::UpdateOrder() {
+	if (Input::IsTriggered(Input::CANCEL)) {
+		Game_System::SePlay(Data::system.cancel_se);
+		Scene::Pop();
+	} else if (Input::IsTriggered(Input::DECISION)) {
+		if (std::find(actors.begin(), actors.end(), window_left->GetIndex() + 1) != actors.end()) {
+			Game_System::SePlay(Data::system.cancel_se);
+		} else {
+			Game_System::SePlay(Data::system.decision_se);
+			window_left->SetItemText(window_left->GetIndex(), "");
+			window_right->SetItemText(actor_counter, Game_Party::GetActors()[window_left->GetIndex()]->GetName());
+
+			actors[actor_counter] = window_left->GetIndex() + 1;
+
+			++actor_counter;
+
+			// Display Confirm/Redo window
+			if (actor_counter == (int)Game_Party::GetActors().size()) {
+				window_left->SetIndex(-1);
+				window_left->SetActive(false);
+				window_confirm->SetIndex(0);
+				window_confirm->SetActive(true);
+				window_confirm->SetVisible(true);
+			}
+		}
+	}
+}
+
+void Scene_Order::UpdateConfirm() {
+	if (Input::IsTriggered(Input::CANCEL)) {
+		Redo();
+	} else if (Input::IsTriggered(Input::DECISION)) {
+		if (window_confirm->GetIndex() == 0) {
+			Confirm();
+			Scene::Pop();
+		} else {
+			Redo();
+		}
+	}
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Order::CreateCommandWindow() {
+	std::vector<std::string> options_left;
+	std::vector<std::string> options_right;
+	std::vector<std::string> options_confirm;
+
+	for (std::vector<Game_Actor*>::iterator it = Game_Party::GetActors().begin();
+		it != Game_Party::GetActors().end(); ++it) {
+		options_left.push_back((*it)->GetName());
+		options_right.push_back("");
+	}
+
+	// Are they stored anywhere in terms?
+	options_confirm.push_back("Confirm");
+	options_confirm.push_back("Redo");
+
+	window_left = new Window_Command(options_left, 88, 4);
+	window_left->SetX(68);
+	window_left->SetY(48);
+
+	window_right = new Window_Command(options_right, 88, 4);
+	window_right->SetX(164);
+	window_right->SetY(48);
+	window_right->SetActive(false);
+	window_right->SetIndex(-1);
+
+	window_confirm = new Window_Command(options_confirm, 80);
+	window_confirm->SetX(120);
+	window_confirm->SetY(144);
+	window_confirm->SetActive(false);
+	window_confirm->SetVisible(false);
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Order::Redo() {
+	Game_System::SePlay(Data::system.cancel_se);
+
+	for (std::vector<Game_Actor*>::iterator it = Game_Party::GetActors().begin();
+		it != Game_Party::GetActors().end(); ++it) {
+		int index = it - Game_Party::GetActors().begin();
+		window_left->SetItemText(index, (*it)->GetName());
+		window_right->SetItemText(index, "");
+	}
+
+	window_left->SetActive(true);
+	window_left->SetIndex(0);
+
+	window_confirm->SetActive(false);
+	window_confirm->SetVisible(false);
+	window_confirm->SetIndex(-1);
+
+	actor_counter = 0;
+	actors.clear();
+	actors.resize(Game_Party::GetActors().size());
+}
+
+void Scene_Order::Confirm() {
+	Game_System::SePlay(Data::system.decision_se);
+
+	std::vector<Game_Actor*> party_actors = Game_Party::GetActors();
+
+	for (size_t i = 0; i < party_actors.size(); ++i) {
+		Game_Party::GetActors()[i] = party_actors[actors[i] - 1];
+	}
+
+	// ToDo: Where is the best place to overwrite the character map graphic?
 }

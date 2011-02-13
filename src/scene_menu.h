@@ -40,6 +40,7 @@ public:
 	void Start();
 	void Update();
 	void Terminate();
+	void Resume();
 
 	////////////////////////////////////////////////////////
 	/// Creates the Window displaying the options.

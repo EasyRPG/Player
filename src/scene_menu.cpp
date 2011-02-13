@@ -31,6 +31,7 @@
 #include "scene_item.h"
 #include "scene_map.h"
 #include "scene_skill.h"
+#include "scene_order.h"
 
 ////////////////////////////////////////////////////////////
 Scene_Menu::Scene_Menu(int menu_index) :
@@ -55,6 +56,15 @@ void Scene_Menu::Terminate() {
 	delete command_window;
 	delete gold_window;
 	delete menustatus_window;
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Menu::Resume() {
+	if (command_options[command_window->GetIndex()] == Order) {
+		// FixMe: This must be done before fadein but on pop start is not
+		// called. And placing it in TransitionIn is not nice.
+		menustatus_window->Refresh();
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -91,6 +101,7 @@ void Scene_Menu::CreateCommandWindow() {
 		command_options.push_back(Quit);
 	}
 
+	// Add all menu items
 	std::vector<CommandOptionType>::iterator it;
 	for (it = command_options.begin(); it != command_options.end(); ++it) {
 		switch(*it) {
@@ -127,17 +138,28 @@ void Scene_Menu::CreateCommandWindow() {
 	command_window = new Window_Command(options, 88);
 	command_window->SetIndex(menu_index);
 
-	// If there are no actors in the party disable Skills and Equipment
-	// RPG2k does not do this, but crashes if you try to access these menus
-	if (Game_Party::GetActors().empty()) {
-		//command_window->DisableItem(0);
-		command_window->DisableItem(1);
-		command_window->DisableItem(2);
-	}
-
-	// If save is forbidden disable this item
-	if (Game_System::save_disabled) {
-		command_window->DisableItem(3);
+	// Disable items
+	for (it = command_options.begin(); it != command_options.end(); ++it) {
+		switch(*it) {
+		case Save:
+			// If save is forbidden disable this item
+			if (Game_System::save_disabled) {
+				command_window->DisableItem(it - command_options.begin());
+			}
+		case Wait:
+		case Quit:
+			break;
+		case Order:
+			if (Game_Party::GetActors().size() <= 1) {
+				command_window->DisableItem(it - command_options.begin());
+			}
+			break;
+		default:
+			if (Game_Party::GetActors().empty()) {
+				command_window->DisableItem(it - command_options.begin());
+			}
+			break;
+		}
 	}
 }
 
@@ -151,8 +173,12 @@ void Scene_Menu::UpdateCommand() {
 
 		switch (command_options[menu_index]) {
 		case Item:
-			Game_System::SePlay(Data::system.decision_se);
-			Scene::Push(new Scene_Item());
+			if (Game_Party::GetActors().empty()) {
+				Game_System::SePlay(Data::system.buzzer_se);
+			} else {
+				Game_System::SePlay(Data::system.decision_se);
+				Scene::Push(new Scene_Item());
+			}
 			break;
 		case Skill:
 		case Equipment:
@@ -182,7 +208,12 @@ void Scene_Menu::UpdateCommand() {
 #endif
 			break;
 		case Order:
-			Game_System::SePlay(Data::system.decision_se);
+			if (Game_Party::GetActors().size() <= 1) {
+				Game_System::SePlay(Data::system.buzzer_se);
+			} else {
+				Game_System::SePlay(Data::system.decision_se);
+				Scene::Push(new Scene_Order());
+			}
 			break;
 		case Wait:
 			Game_System::SePlay(Data::system.decision_se);

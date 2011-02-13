@@ -24,12 +24,12 @@
 #include "util_macro.h"
 
 ////////////////////////////////////////////////////////////
-Window_Command::Window_Command(std::vector<std::string> commands, int width) :
-	Window_Selectable(0, 0, GetRequiredWidth(commands, width), commands.size() * 16 + 16),
+Window_Command::Window_Command(std::vector<std::string> commands, int width, int max_item) :
+	Window_Selectable(0, 0, GetRequiredWidth(commands, width), (max_item == -1 ? commands.size() : max_item) * 16 + 16),
 	commands(commands) {
 
-	item_max = commands.size();
 	index = 0;
+	item_max = commands.size();
 
 	SetContents(Surface::CreateSurface(this->width - 16, item_max * 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
