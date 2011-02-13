@@ -28,6 +28,8 @@
 #include "game_enemy.h"
 #include "scene.h"
 #include "background.h"
+#include "drawable.h"
+#include "zobj.h"
 #include "window_help.h"
 #include "window_battleitem.h"
 #include "window_battleskill.h"
@@ -58,11 +60,8 @@ public:
 		State_Skill,
 		State_TargetEnemy,
 		State_TargetAlly,
-		State_AllyAttack,
-		State_AllyItem,
-		State_AllySkill,
+		State_AllyAction,
 		State_EnemyAction,
-		State_EnemyAction2x,
 		State_Victory,
 		State_Defeat
 	};
@@ -128,6 +127,107 @@ public:
 		Sprite* sprite;
 	};
 
+	class Animation : public Drawable {
+	public:
+		Animation(int x, int y, const RPG::Animation* animation);
+		~Animation();
+
+		void Draw(int z_order);
+		unsigned long GetId() const;
+		int GetZ() const;
+		DrawableType GetType() const;
+
+		void Setup();
+		void Update(int frame);
+
+	protected:
+		int x;
+		int y;
+		const RPG::Animation* animation;
+		int frame;
+		bool initialized;
+		bool large;
+		BitmapScreen* screen;
+		unsigned long ID;
+		ZObj* zobj;
+	};
+
+	class Action {
+	public:
+		virtual bool operator()() = 0;
+	};
+
+	class WaitAction : public Action {
+	public:
+		WaitAction(int duration) :
+			duration(duration) {}
+		bool operator()();
+	protected:
+		int duration;
+	};
+
+	class SpriteAction : public Action {
+	public:
+		SpriteAction(Ally* ally, int anim_state, int duration) :
+			ally(ally), anim_state(anim_state), duration(duration) {}
+		bool operator()();
+	protected:
+		Ally* ally;
+		int anim_state;
+		int duration;
+	};
+
+	class AnimationAction : public Action {
+	public:
+		AnimationAction(const Sprite* target, const RPG::Animation* animation);
+		~AnimationAction();
+
+		bool operator()();
+
+		void Draw(int z_order);
+		unsigned long GetId() const;
+		int GetZ() const;
+		DrawableType GetType() const;
+
+	protected:
+		int frame;
+		int frames;
+		const Sprite* target;
+		Animation* animation;
+	};
+
+	class MoveAction : public Action {
+	public:
+		MoveAction(Ally* ally, int anim_state, int x0, int x1, int speed) :
+			ally(ally), anim_state(anim_state), x0(x0), x1(x1), speed(speed) {}
+		bool operator()();
+	protected:
+		Ally* ally;
+		int anim_state;
+		int x0;
+		int x1;
+		int speed;
+	};
+
+	class CommandAction : public Action {
+	public:
+		CommandAction(void (Scene_Battle::*func)()) :
+			func(func) {}
+		bool operator()();
+	protected:
+		void (Scene_Battle::*func)();
+	};
+
+	class CommandAction1 : public Action {
+	public:
+		CommandAction1(void (Scene_Battle::*func)(void*), void* param) :
+			func(func), param(param) {}
+		bool operator()();
+	protected:
+		void (Scene_Battle::*func)(void*);
+		void* param;
+	};
+
 private:
 	static const int turn_length = 333; // frames
 
@@ -140,9 +240,12 @@ private:
 	int target_enemy;
 	int target_ally;
 	int action_timer;
+	int attack_state;
 	int turn_fragments;
 	int message_timer;
 	const RPG::EnemyAction* enemy_action;
+	std::vector<Action*> actions;
+	int skill_id;
 
 	Window_Help* help_window;
 	Window_BattleOption* options_window;
@@ -168,8 +271,10 @@ private:
 	void Message(const std::string& msg, bool pause = true);
 	void Floater(const Sprite* ref, int color, const std::string& text, int duration);
 	void Floater(const Sprite* ref, int color, int value, int duration);
+	void SetAnimState(Ally& ally, int state);
 	void UpdateAnimState(Ally& ally, int default_state = Ally::Idle);
 	void Restart(Ally& ally, int state = Ally::Idle);
+	void Restart();
 
 	void Command();
 	void Escape();
@@ -178,16 +283,16 @@ private:
 	void Defend();
 	void Item();
 	void Skill();
-	void ItemSkill(Ally& ally, const RPG::Item& item);
-	void Skill(Ally& ally, const RPG::Skill& skill);
+	void ItemSkill(const RPG::Item& item);
+	void Skill(const RPG::Skill& skill);
 	void TargetDone();
-	void ActionDone();
-	void AttackDone();
-	void ItemDone();
-	void SkillDone();
-	void UseItem(Ally& ally, const RPG::Item& item, Ally* target_ally);
-	void UseSkill(Ally& ally, const RPG::Skill& skill,
-				  Ally* target_ally, Enemy* target_enemy);
+	void BeginAttack();
+	void BeginItem();
+	void BeginSkill();
+	void DoAttack();
+	void UseItem();
+	void UseSkill();
+
 	void UseItemAlly(Ally& ally, const RPG::Item& item, Ally* target);
 	void UseSkillAlly(Ally& ally, const RPG::Skill& skill, Ally* target);
 	void UseSkillEnemy(Ally& ally, const RPG::Skill& skill, Enemy* target);
@@ -196,7 +301,7 @@ private:
 	const RPG::EnemyAction* ChooseEnemyAction(Enemy* enemy);
 	void EnemyAction(Enemy* enemy);
 	void EnemyActionDone();
-	void EnemyAttack();
+	void EnemyAttack(void* target = NULL);
 
 	void ProcessActions();
 	void ProcessInput();

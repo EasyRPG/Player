@@ -25,6 +25,8 @@
 #include "output.h"
 #include "player.h"
 #include "sprite.h"
+#include "graphics.h"
+#include "filefinder.h"
 #include "cache.h"
 #include "game_system.h"
 #include "game_temp.h"
@@ -146,6 +148,160 @@ void Scene_Battle::Ally::UpdateAnim(int cycle) {
 }
 
 ////////////////////////////////////////////////////////////
+bool Scene_Battle::WaitAction::operator()() {
+	duration--;
+	return duration <= 0;
+}
+
+////////////////////////////////////////////////////////////
+bool Scene_Battle::SpriteAction::operator()() {
+	if (ally != NULL) {
+		((Scene_Battle*) Scene::instance)->SetAnimState(*ally, anim_state);
+		ally = NULL;
+	}
+	duration--;
+	return duration <= 0;
+}
+
+////////////////////////////////////////////////////////////
+bool Scene_Battle::MoveAction::operator()() {
+	int x = ally->sprite->GetX();
+	int done = false;
+	if (x0 < x1) {
+		x += speed;
+		done = (x >= x1);
+	}
+	if (x0 > x1) {
+		x -= speed;
+		done = (x <= x1);
+	}
+	if (x0 == x1)
+		done = true;
+
+	if (done)
+		x = x1;
+
+	ally->sprite->SetX(x);
+
+	return done;
+}
+
+////////////////////////////////////////////////////////////
+bool Scene_Battle::CommandAction::operator()() {
+	(((Scene_Battle*) Scene::instance)->*func)();
+	return true;
+}
+
+////////////////////////////////////////////////////////////
+bool Scene_Battle::CommandAction1::operator()() {
+	(((Scene_Battle*) Scene::instance)->*func)(param);
+	return true;
+}
+
+////////////////////////////////////////////////////////////
+Scene_Battle::Animation::Animation(int x, int y, const RPG::Animation* animation) :
+	x(x), y(y), animation(animation), frame(0), initialized(false) {}
+
+void Scene_Battle::Animation::Setup() {
+
+	if (initialized)
+		return;
+
+	ID = Graphics::drawable_id++;
+
+	const std::string& name = animation->animation_name;
+	Bitmap* graphic;
+
+	if (!FileFinder::FindImage("Battle", name).empty()) {
+		large = false;
+		graphic = Cache::Battle(name);
+	}
+	else if (!FileFinder::FindImage("Battle2", name).empty()) {
+		large = true;
+		graphic = Cache::Battle2(name);
+	}
+	else {
+		Output::Warning("Couldn't find animation: %s", name.c_str());
+		screen = NULL;
+		return;
+	}
+
+	zobj = Graphics::RegisterZObj(GetZ(), ID);
+	Graphics::RegisterDrawable(ID, this);
+
+	screen = BitmapScreen::CreateBitmapScreen(graphic);
+
+	initialized = true;
+}
+
+Scene_Battle::Animation::~Animation() {
+	if (!initialized)
+		return;
+
+	Graphics::RemoveZObj(ID);
+	Graphics::RemoveDrawable(ID);
+	if (screen != NULL)
+		delete screen;
+}
+
+unsigned long Scene_Battle::Animation::GetId() const {
+	return ID;
+}
+
+int Scene_Battle::Animation::GetZ() const {
+	return 400;
+}
+
+DrawableType Scene_Battle::Animation::GetType() const {
+	return TypeDefault;
+}
+
+void Scene_Battle::Animation::Draw(int z_order) {
+	if (frame >= (int) animation->frames.size())
+		return;
+
+	const RPG::AnimationFrame& anim_frame = animation->frames[frame];
+
+	std::vector<RPG::AnimationCellData>::const_iterator it;
+	for (it = anim_frame.cells.begin(); it != anim_frame.cells.end(); it++) {
+		const RPG::AnimationCellData& cell = *it;
+		int sx = cell.ID % 5;
+		int sy = cell.ID / 5;
+		int size = large ? 128 : 96;
+		int zoomed = size * cell.zoom / 100;
+		screen->SetSrcRect(Rect(sx * size, sy * size, size, size));
+		screen->SetZoomXEffect(cell.zoom / 100.0);
+		screen->SetZoomYEffect(cell.zoom / 100.0);
+		screen->SetToneEffect(Tone(cell.tone_red, cell.tone_green, cell.tone_blue, cell.tone_gray));
+		screen->SetOpacityEffect(255 * (100 - cell.transparency) / 100);
+		screen->BlitScreen(x + cell.x - zoomed / 2, y + cell.y - zoomed / 2);
+	}
+}
+
+void Scene_Battle::Animation::Update(int _frame) {
+	frame = _frame;
+	Setup();
+}
+
+////////////////////////////////////////////////////////////
+Scene_Battle::AnimationAction::AnimationAction(const Sprite* target, const RPG::Animation* animation) :
+	frame(0), frames(animation->frames.size()) {
+	this->animation = new Animation(target->GetX(), target->GetY(), animation);
+}
+
+bool Scene_Battle::AnimationAction::operator()() {
+	animation->Update(frame);
+	frame++;
+	if (frame >= frames)
+		return true;
+	return false;
+}
+
+Scene_Battle::AnimationAction::~AnimationAction() {
+	delete animation;
+}
+
+////////////////////////////////////////////////////////////
 Scene_Battle::FloatText::FloatText(int x, int y, int color, const std::string& text, int _duration) {
 	Rect rect = Surface::GetTextSize(text);
 
@@ -230,6 +386,7 @@ void Scene_Battle::Start() {
 	active_ally = -1;
 	auto_battle = false;
 	action_timer = 0;
+	enemy_action = NULL;
 
 	if (!Game_Temp::battle_background.empty())
 		background = new Background(Game_Temp::battle_background);
@@ -317,15 +474,8 @@ void Scene_Battle::SetState(Scene_Battle::State new_state) {
 			skill_window->SetActor(GetActiveActor());
 			skill_window->SetIndex(0);
 			break;
-		case State_AllyAttack:
-		case State_AllyItem:
-		case State_AllySkill:
-			action_timer = 60;
-			break;
+		case State_AllyAction:
 		case State_EnemyAction:
-		case State_EnemyAction2x:
-			action_timer = 60;
-			break;
 		case State_Victory:
 		case State_Defeat:
 			break;
@@ -352,11 +502,8 @@ void Scene_Battle::SetState(Scene_Battle::State new_state) {
 		case State_Command:
 		case State_TargetEnemy:
 		case State_TargetAlly:
-		case State_AllyAttack:
-		case State_AllyItem:
-		case State_AllySkill:
+		case State_AllyAction:
 		case State_EnemyAction:
-		case State_EnemyAction2x:
 			status_window->SetVisible(true);
 			status_window->SetX(0);
 			command_window->SetVisible(true);
@@ -406,6 +553,12 @@ void Scene_Battle::Floater(const Sprite* ref, int color, int value, int duration
 }
 
 ////////////////////////////////////////////////////////////
+void Scene_Battle::SetAnimState(Ally& ally, int state) {
+	ally.SetAnimState(state);
+	ally.UpdateAnim(cycle);
+}
+
+////////////////////////////////////////////////////////////
 void Scene_Battle::UpdateAnimState(Ally& ally, int default_state) {
 	int anim_state = default_state;
 	const RPG::State* state = ally.game_actor->GetState();
@@ -413,7 +566,7 @@ void Scene_Battle::UpdateAnimState(Ally& ally, int default_state) {
 		anim_state = state->battler_animation_id == 100
 			? 7
 			: state->battler_animation_id + 1;
-	ally.SetAnimState(anim_state);
+	SetAnimState(ally, anim_state);
 }
 
 ////////////////////////////////////////////////////////////
@@ -421,11 +574,15 @@ void Scene_Battle::Restart(Ally& ally, int anim_state) {
 	UpdateAnimState(ally, anim_state);
 	ally.gauge = 0;
 	status_window->SetTimeGauge(ally.ID, ally.gauge, Ally::gauge_full);
-	if (state != State_AutoBattle)
-		SetState(State_Battle);
+	SetState(State_Battle);
 	target_ally = -1;
 	target_enemy = -1;
 	ally.defending = false;
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Battle::Restart() {
+	Restart(allies[active_ally]);
 }
 
 ////////////////////////////////////////////////////////////
@@ -462,6 +619,7 @@ void Scene_Battle::Command() {
 	}
 }
 
+////////////////////////////////////////////////////////////
 void Scene_Battle::Escape() {
 	if (Game_Temp::battle_escape_mode != 0) {
 		// FIXME: escape probability
@@ -470,26 +628,25 @@ void Scene_Battle::Escape() {
 		return;
 	}
 
-	Ally& ally = allies[active_ally];
-	Restart(ally);
+	Restart();
 }
 
+////////////////////////////////////////////////////////////
 void Scene_Battle::Special() {
 	// FIXME: special commands (link to event)
 
-	Ally& ally = allies[active_ally];
-	Restart(ally);
+	Restart();
 }
 
+////////////////////////////////////////////////////////////
 void Scene_Battle::Defend() {
 	Ally& ally = allies[active_ally];
 	Restart(ally, Ally::Defending);
 	ally.defending = true;
 }
 
+////////////////////////////////////////////////////////////
 void Scene_Battle::Item() {
-	Ally& ally = allies[active_ally];
-
 	int item_id = item_window->GetItemId();
 	if (item_id <= 0) {
 		Game_System::SePlay(Data::system.buzzer_se);
@@ -507,14 +664,14 @@ void Scene_Battle::Item() {
 		case RPG::Item::Type_helmet:
 		case RPG::Item::Type_accessory:
 			if (item.use_skill)
-				ItemSkill(ally, item);
+				ItemSkill(item);
 			else
 				// can't be used
 				Game_System::SePlay(Data::system.buzzer_se);
 			break;
 		case RPG::Item::Type_medicine:
 			if (item.entire_party)
-				SetState(State_AllyItem);
+				BeginItem();
 			else {
 				target_ally = active_ally;
 				SetState(State_TargetAlly);
@@ -526,18 +683,17 @@ void Scene_Battle::Item() {
 			Game_System::SePlay(Data::system.buzzer_se);
 			break;
 		case RPG::Item::Type_special:
-			ItemSkill(ally, item);
+			ItemSkill(item);
 			break;
 		case RPG::Item::Type_switch:
 			Game_Switches[item.switch_id] = true;
-			Restart(ally);
+			Restart();
 			break;
 	}
 }
 
+////////////////////////////////////////////////////////////
 void Scene_Battle::Skill() {
-	Ally& ally = allies[active_ally];
-
 	int skill_id = skill_window->GetSkillId();
 	if (skill_id <= 0) {
 		Game_System::SePlay(Data::system.buzzer_se);
@@ -546,20 +702,24 @@ void Scene_Battle::Skill() {
 
 	const RPG::Skill& skill = Data::skills[skill_id - 1];
 
-	Skill(ally, skill);
+	Skill(skill);
 }
 
-void Scene_Battle::ItemSkill(Ally& ally, const RPG::Item& item) {
+////////////////////////////////////////////////////////////
+void Scene_Battle::ItemSkill(const RPG::Item& item) {
 	const RPG::Skill& skill = Data::skills[item.skill_id - 1];
-	Skill(ally, skill);
+	Skill(skill);
 }
 
-void Scene_Battle::Skill(Ally& ally, const RPG::Skill& skill) {
+////////////////////////////////////////////////////////////
+void Scene_Battle::Skill(const RPG::Skill& skill) {
+	skill_id = skill.ID;
+
 	switch (skill.type) {
 		case RPG::Skill::Type_teleport:
 		case RPG::Skill::Type_escape:
 		case RPG::Skill::Type_switch:
-			SetState(State_AllySkill);
+			BeginSkill();
 			return;
 		case RPG::Skill::Type_normal:
 		default:
@@ -571,61 +731,79 @@ void Scene_Battle::Skill(Ally& ally, const RPG::Skill& skill) {
 			target_enemy = 0;
 			SetState(State_TargetEnemy);
 			return;
-		case RPG::Skill::Scope_enemies:
-			SetState(State_AllySkill);
-			break;
-		case RPG::Skill::Scope_self:
-			SetState(State_AllySkill);
-			break;
 		case RPG::Skill::Scope_ally:
 			target_ally = active_ally;
 			SetState(State_TargetAlly);
-			return;
+			break;
+		case RPG::Skill::Scope_enemies:
+		case RPG::Skill::Scope_self:
 		case RPG::Skill::Scope_party:
-			SetState(State_AllySkill);
+			BeginSkill();
 			break;
 	}
 }
 
+////////////////////////////////////////////////////////////
 void Scene_Battle::TargetDone() {
-	Ally& ally = allies[active_ally];
-
 	switch (target_state) {
 		case State_Command:
-			// FIXME
-			ally.SetAnimState(Ally::RightHand);
-			SetState(State_AllyAttack);
+			BeginAttack();
 			break;
 		case State_Item:
-			ally.SetAnimState(Ally::Item);
-			SetState(State_AllyItem);
+			BeginItem();
 			break;
 		case State_Skill:
-			ally.SetAnimState(Ally::SkillUse);
-			SetState(State_AllySkill);
+			BeginSkill();
 			break;
 		default:
 			break;
 	}
 }
 
-void Scene_Battle::ActionDone() {
-	switch (state) {
-		case State_AllyAttack:
-			AttackDone();
-			break;
-		case State_AllyItem:
-			ItemDone();
-			break;
-		case State_AllySkill:
-			SkillDone();
-			break;
-		default:
-			break;
-	}
+////////////////////////////////////////////////////////////
+void Scene_Battle::BeginAttack() {
+	Ally& ally = allies[active_ally];
+	Enemy& enemy = enemies[target_enemy];
+	int x0 = ally.rpg_actor->battle_x;
+	int x1 = enemy.sprite->GetX() - enemy.sprite->GetOx() + enemy.sprite->GetWidth() +
+		ally.sprite->GetOx();
+
+	actions.clear();
+	actions.push_back(new MoveAction(&ally, Ally::WalkingLeft, x0, x1, 8));
+	actions.push_back(new SpriteAction(&ally, Ally::RightHand, 15));
+	actions.push_back(new CommandAction(&Scene_Battle::DoAttack));
+	actions.push_back(new MoveAction(&ally, Ally::WalkingRight, x1, x0, 8));
+	actions.push_back(new CommandAction(&Scene_Battle::Restart));
+
+	SetState(State_AllyAction);
 }
 
-void Scene_Battle::AttackDone() {
+////////////////////////////////////////////////////////////
+void Scene_Battle::BeginItem() {
+	Ally& ally = allies[active_ally];
+
+	actions.clear();
+	actions.push_back(new SpriteAction(&ally, Ally::Item, 60));
+	actions.push_back(new CommandAction(&Scene_Battle::UseItem));
+	actions.push_back(new CommandAction(&Scene_Battle::Restart));
+
+	SetState(State_AllyAction);
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Battle::BeginSkill() {
+	Ally& ally = allies[active_ally];
+
+	actions.clear();
+	actions.push_back(new SpriteAction(&ally, Ally::SkillUse, 60));
+	actions.push_back(new CommandAction(&Scene_Battle::UseSkill));
+	actions.push_back(new CommandAction(&Scene_Battle::Restart));
+
+	SetState(State_AllyAction);
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Battle::DoAttack() {
 	Ally& ally = allies[active_ally];
 	Enemy& enemy = enemies[target_enemy];
 
@@ -645,40 +823,22 @@ void Scene_Battle::AttackDone() {
 	}
 	else
 		Floater(enemy.sprite, Font::ColorDefault, Data::terms.miss, 60);
-
-	Restart(ally);
 }
 
-void Scene_Battle::ItemDone() {
+////////////////////////////////////////////////////////////
+void Scene_Battle::UseItem() {
 	Ally& ally = allies[active_ally];
 	int item_id = item_window->GetItemId();
 	const RPG::Item& item = Data::items[item_id - 1];
 	Ally* ally_target = target_ally >= 0 ? &allies[target_ally] : NULL;
 
-	UseItem(ally, item, ally_target);
-	Restart(ally);
-}
-
-void Scene_Battle::SkillDone() {
-	Ally& ally = allies[active_ally];
-	int skill_id = skill_window->GetSkillId();
-	const RPG::Skill& skill = Data::skills[skill_id - 1];
-	Ally* ally_target = target_ally >= 0 ? &allies[target_ally] : NULL;
-	Enemy* enemy_target = target_enemy >= 0 ? &enemies[target_enemy] : NULL;
-
-	UseSkill(ally, skill, ally_target, enemy_target);
-
-	Restart(ally);
-}
-
-void Scene_Battle::UseItem(Ally& ally, const RPG::Item& item, Ally* target_ally) {
 	if (item.type != RPG::Item::Type_medicine)
 		return;
 	if (item.ocassion_field)
 		return;
 
 	if (!item.entire_party)
-		UseItemAlly(ally, item, target_ally);
+		UseItemAlly(ally, item, ally_target);
 	else
 		for (std::vector<Ally>::iterator it = allies.begin(); it != allies.end(); it++)
 			UseItemAlly(ally, item, &*it);
@@ -699,6 +859,7 @@ void Scene_Battle::UseItem(Ally& ally, const RPG::Item& item, Ally* target_ally)
 	}
 }
 
+////////////////////////////////////////////////////////////
 void Scene_Battle::UseItemAlly(Ally& ally, const RPG::Item& item, Ally* target) {
 	if (item.ko_only && !target->game_actor->IsDead())
 		return;
@@ -722,8 +883,13 @@ void Scene_Battle::UseItemAlly(Ally& ally, const RPG::Item& item, Ally* target) 
 			target->game_actor->RemoveState(i + 1);
 }
 
-void Scene_Battle::UseSkill(Ally& ally, const RPG::Skill& skill,
-							Ally* target_ally, Enemy* target_enemy) {
+////////////////////////////////////////////////////////////
+void Scene_Battle::UseSkill() {
+	Ally& ally = allies[active_ally];
+	const RPG::Skill& skill = Data::skills[skill_id - 1];
+	Ally* ally_target = target_ally >= 0 ? &allies[target_ally] : NULL;
+	Enemy* enemy_target = target_enemy >= 0 ? &enemies[target_enemy] : NULL;
+
 	int sp = ally.game_actor->CalculateSkillCost(skill.ID);
 	if (sp > ally.game_actor->GetSp()) // not enough SP
 		return;
@@ -744,7 +910,7 @@ void Scene_Battle::UseSkill(Ally& ally, const RPG::Skill& skill,
 		default:
 			switch (skill.scope) {
 				case RPG::Skill::Scope_enemy:
-					UseSkillEnemy(ally, skill, target_enemy);
+					UseSkillEnemy(ally, skill, enemy_target);
 					return;
 				case RPG::Skill::Scope_enemies:
 					for (std::vector<Enemy>::iterator it = enemies.begin(); it != enemies.end(); it++)
@@ -754,7 +920,7 @@ void Scene_Battle::UseSkill(Ally& ally, const RPG::Skill& skill,
 					UseSkillAlly(ally, skill, &ally);
 					break;
 				case RPG::Skill::Scope_ally:
-					UseSkillAlly(ally, skill, target_ally);
+					UseSkillAlly(ally, skill, ally_target);
 					return;
 				case RPG::Skill::Scope_party:
 					for (std::vector<Ally>::iterator it = allies.begin(); it != allies.end(); it++)
@@ -770,6 +936,7 @@ void Scene_Battle::UseSkill(Ally& ally, const RPG::Skill& skill,
 	ally.game_actor->SetSp(ally.game_actor->GetSp() - sp);
 }
 
+////////////////////////////////////////////////////////////
 void Scene_Battle::UseSkillAlly(Ally& ally, const RPG::Skill& skill, Ally* target) {
 	Game_Actor* actor = target->game_actor;
 	bool miss = true;
@@ -824,6 +991,7 @@ void Scene_Battle::UseSkillAlly(Ally& ally, const RPG::Skill& skill, Ally* targe
 		Floater(target->sprite, Font::ColorDefault, Data::terms.miss, 60);
 }
 
+////////////////////////////////////////////////////////////
 void Scene_Battle::UseSkillEnemy(Ally& ally, const RPG::Skill& skill, Enemy* target) {
 	Game_Enemy* enemy = target->game_enemy;
 	bool miss = true;
@@ -975,11 +1143,44 @@ void Scene_Battle::EnemyAction(Enemy* enemy) {
 
 	active_enemy = enemy->ID;
 	enemy_action = action;
-	if (action->kind == RPG::EnemyAction::Kind_basic &&
-		action->basic == RPG::EnemyAction::Basic_dual_attack)
-		SetState(State_EnemyAction2x);
-	else
-		SetState(State_EnemyAction);
+
+	actions.clear();
+
+	switch (action->kind) {
+		case RPG::EnemyAction::Kind_basic:
+			switch (action->basic) {
+				case RPG::EnemyAction::Basic_attack:
+				{
+					Ally* ally = &allies[rand() % allies.size()];
+					actions.push_back(new WaitAction(60));
+					actions.push_back(new AnimationAction(ally->sprite, &Data::animations[0]));
+					actions.push_back(new CommandAction1(&Scene_Battle::EnemyAttack, (void*) ally));
+					break;
+				}
+				case RPG::EnemyAction::Basic_dual_attack:
+				{
+					Ally* ally1 = &allies[rand() % allies.size()];
+					Ally* ally2 = &allies[rand() % allies.size()];
+					actions.push_back(new WaitAction(30));
+					actions.push_back(new AnimationAction(ally1->sprite, &Data::animations[0]));
+					actions.push_back(new CommandAction1(&Scene_Battle::EnemyAttack, (void*) ally1));
+					actions.push_back(new WaitAction(30));
+					actions.push_back(new AnimationAction(ally2->sprite, &Data::animations[0]));
+					actions.push_back(new CommandAction1(&Scene_Battle::EnemyAttack, (void*) ally2));
+					break;
+				}
+				default:
+					actions.push_back(new WaitAction(60));
+					actions.push_back(new CommandAction(&Scene_Battle::EnemyActionDone));
+					break;
+			}
+		default:
+			actions.push_back(new WaitAction(60));
+			actions.push_back(new CommandAction(&Scene_Battle::EnemyActionDone));
+			break;
+	}
+
+	SetState(State_EnemyAction);
 }
 
 ////////////////////////////////////////////////////////////
@@ -1028,9 +1229,11 @@ void Scene_Battle::EnemyActionDone() {
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Battle::EnemyAttack() {
+void Scene_Battle::EnemyAttack(void* target) {
 	Enemy& enemy = enemies[active_enemy];
-	int target_ally = rand() % allies.size();
+	int target_ally = (target != NULL)
+		? ((Ally*)target)->ID
+		: rand() % allies.size();
 	Ally& ally = allies[target_ally];
 
 	if (ally.game_actor->IsDead())
@@ -1056,38 +1259,6 @@ void Scene_Battle::EnemyAttack() {
 
 ////////////////////////////////////////////////////////////
 void Scene_Battle::ProcessActions() {
-	switch (state) {
-		case State_AllyAttack:
-			action_timer--;
-			if (action_timer <= 0)
-				AttackDone();
-			break;
-		case State_AllyItem:
-			action_timer--;
-			if (action_timer <= 0)
-				ItemDone();
-			break;
-		case State_AllySkill:
-			action_timer--;
-			if (action_timer <= 0)
-				SkillDone();
-			break;
-		case State_EnemyAction:
-			action_timer--;
-			if (action_timer <= 0)
-				EnemyActionDone();
-			break;
-		case State_EnemyAction2x:
-			action_timer--;
-			if (action_timer <= 30) {
-				EnemyAttack();
-				state = State_EnemyAction;
-			}
-			break;
-		default:
-			break;
-	}
-
 	switch (state) {
 		case State_Battle:
 		case State_AutoBattle:
@@ -1118,6 +1289,15 @@ void Scene_Battle::ProcessActions() {
 				}
 			}
 			break;
+		case State_AllyAction:
+		case State_EnemyAction:
+			if (!actions.empty()) {
+				Action* action = actions[0];
+				if ((*action)()) {
+					delete action;
+					actions.erase(actions.begin());
+				}
+			}
 		default:
 			break;
 	}
@@ -1131,10 +1311,12 @@ void Scene_Battle::ProcessInput() {
 			case State_Options:
 				switch (options_window->GetIndex()) {
 					case 0:
+						auto_battle = false;
 						SetState(State_Battle);
 						break;
 					case 1:
-						SetState(State_AutoBattle);
+						auto_battle = true;
+						SetState(State_Battle);
 						break;
 					case 2:
 						Escape();
@@ -1162,11 +1344,8 @@ void Scene_Battle::ProcessInput() {
 			case State_Skill:
 				Skill();
 				break;
-			case State_AllyAttack:
-			case State_AllyItem:
-			case State_AllySkill:
+			case State_AllyAction:
 			case State_EnemyAction:
-			case State_EnemyAction2x:
 				break;
 			case State_Victory:
 			case State_Defeat:
@@ -1196,11 +1375,8 @@ void Scene_Battle::ProcessInput() {
 			case State_TargetAlly:
 				SetState(State_Item);
 				break;
-			case State_AllyAttack:
-			case State_AllyItem:
-			case State_AllySkill:
+			case State_AllyAction:
 			case State_EnemyAction:
-			case State_EnemyAction2x:
 				break;
 			case State_Victory:
 			case State_Defeat:
@@ -1263,7 +1439,9 @@ void Scene_Battle::DoAuto() {
 	if (target_enemy < 0)
 		return;
 
-	AttackDone();
+	DoAttack();
+
+	Restart(allies[active_ally]);
 }
 
 ////////////////////////////////////////////////////////////
@@ -1297,20 +1475,6 @@ void Scene_Battle::UpdateCursors() {
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Battle::UpdateAttack() {
-	const Ally& ally = allies[active_ally];
-	const Enemy& enemy = enemies[target_enemy];
-	double k =
-		(action_timer > 48) ? (60 - action_timer) / 12.0 :
-		(action_timer < 12) ? action_timer / 12.0 :
-		1.0;
-	int x0 = ally.rpg_actor->battle_x;
-	int x1 = enemy.sprite->GetX() - enemy.sprite->GetOx() + enemy.sprite->GetWidth() +
-		ally.sprite->GetOx();
-	ally.sprite->SetX((int)(x0 * (1 - k) + x1 * k));
-}
-
-////////////////////////////////////////////////////////////
 void Scene_Battle::UpdateSprites() {
 	for (std::vector<Enemy>::iterator it = enemies.begin(); it != enemies.end(); it++) {
 		if (it->sprite->GetVisible() && !it->game_enemy->Exists() && it->fade == 0)
@@ -1332,9 +1496,6 @@ void Scene_Battle::UpdateSprites() {
 
 	for (std::vector<Ally>::iterator it = allies.begin(); it != allies.end(); it++)
 		it->UpdateAnim(cycle);
-
-	if (state == State_AllyAttack)
-		UpdateAttack();
 }
 
 ////////////////////////////////////////////////////////////
