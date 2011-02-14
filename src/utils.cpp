@@ -15,6 +15,7 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#include <algorithm>
 #include <string>
 #include <cctype>
 
@@ -86,9 +87,7 @@ int Utils::GetUtf8ByteSize(char glyph) {
 ////////////////////////////////////////////////////////////
 std::string Utils::LowerCase(const std::string& str) {
 	std::string result = str;
-	std::string::iterator it;
-	for (it = result.begin(); it != result.end(); it++)
-		*it = tolower(*it);
+	std::transform(result.begin(), result.end(), result.begin(), tolower);
 	return result;
 }
 
