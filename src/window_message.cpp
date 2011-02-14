@@ -24,6 +24,7 @@
 #include "game_map.h"
 #include "game_message.h"
 #include "game_party.h"
+#include "game_player.h"
 #include "game_system.h"
 #include "game_variables.h"
 #include "graphics.h"
@@ -132,7 +133,31 @@ void Window_Message::StartNumberInputProcessing() {
 void Window_Message::InsertNewPage() {
 	contents->Clear();
 
-	y = Game_Message::position * 80;
+	if (Game_Message::fixed_position) {
+		y = Game_Message::position * 80;
+	} else {
+		// Move Message Box to prevent player hiding
+		int disp = Main_Data::game_player->GetScreenY();
+
+		switch (Game_Message::position) {
+		case 0: // Up
+			y = disp > (16 * 7) ? 0 : 2 * 80;
+			break;
+		case 1: // Center
+			if (disp <= 16 * 7) {
+				y = 2 * 80;
+			} else if (disp >= 16 * 10) {
+				y = 0;
+			} else {
+				y = 80;
+			}
+			break;
+		case 2: // Down
+			y = disp >= (16 * 10) ? 0 : 2 * 80;
+			break;
+		};
+	}
+	
 
 	if (Game_Message::background) {
 		opacity = 255;

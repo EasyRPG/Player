@@ -17,6 +17,8 @@
 
 #include "battle_battler.h"
 #include "game_interpreter_battle.h"
+#include "game_switches.h"
+#include "game_variables.h"
 
 ///////////////////////////////////////////////////////////
 Game_Interpreter_Battle::Game_Interpreter_Battle(int depth, bool main_flag) :

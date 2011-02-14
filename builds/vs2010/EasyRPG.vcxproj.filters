@@ -67,6 +67,9 @@
     <Filter Include="Source Files\Backend\Graphics\soft">
       <UniqueIdentifier>{07190c41-1d1f-43d6-9b8f-70ea3d180999}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Engine\Game\Battle">
+      <UniqueIdentifier>{8dd8555e-8e3f-4df1-abfc-77acf985f743}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\cache.cpp">
@@ -455,6 +458,33 @@
     </ClCompile>
     <ClCompile Include="..\..\src\scene_order.cpp">
       <Filter>Source Files\Engine\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\window_battleoption.cpp">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\window_actorinfo.cpp">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\window_actorstatus.cpp">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game_interpreter_battle.cpp">
+      <Filter>Source Files\Engine\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game_interpreter_map.cpp">
+      <Filter>Source Files\Engine\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\battle_actions.cpp">
+      <Filter>Source Files\Engine\Game\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\battle_algorithms.cpp">
+      <Filter>Source Files\Engine\Game\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\battle_animation.cpp">
+      <Filter>Source Files\Engine\Game\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\battle_battler.cpp">
+      <Filter>Source Files\Engine\Game\Battle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -853,6 +883,30 @@
     </ClInclude>
     <ClInclude Include="..\..\src\scene_order.h">
       <Filter>Source Files\Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\window_battleoption.h">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\window_actorinfo.h">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\window_actorstatus.h">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game_interpreter_battle.h">
+      <Filter>Source Files\Engine\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game_interpreter_map.h">
+      <Filter>Source Files\Engine\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\battle_actions.h">
+      <Filter>Source Files\Engine\Game\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\battle_animation.h">
+      <Filter>Source Files\Engine\Game\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\battle_battler.h">
+      <Filter>Source Files\Engine\Game\Battle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

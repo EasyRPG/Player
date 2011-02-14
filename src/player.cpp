@@ -94,7 +94,7 @@ void Player::Init(int argc, char *argv[]) {
 
 	engine = EngineRpg2k;
 
-	// extended
+	// Command line parser
 	if((argc > 1) && Utils::LowerCase(argv[1]) == "battletest") {
 		battle_test_flag = true;
 		battle_test_troop_id = (argc > 4)? atoi(argv[4]) : 0;
@@ -105,31 +105,6 @@ void Player::Init(int argc, char *argv[]) {
 		debug_flag = args.find("testplay") != args.end();
 		hide_title_flag = args.find("hidetitle") != args.end();
 	}
-
-	/* RPG_RT
-	switch(argc) {
-	case 4:
-		if(!strcmp(argv[3], "Window")) {
-			window_flag = true;
-		}
-	case 3:
-		if(!strcmp(argv[2], "HideTitle")) {
-			hide_title_flag = true;
-		}
-	case 2:
-		if(!strcmp(argv[1], "TestPlay")) {
-			debug_flag = true;
-		}
-		else if (!strcmp(argv[1], "BattleTest")) {
-			battle_test_flag = true;
-			if (argc > 4) {
-				battle_test_troop_id = atoi(argv[4]);
-			} else {
-				battle_test_troop_id = 0;
-			}
-		}
-	}
-	*/
 
 	FileFinder::Init();
 

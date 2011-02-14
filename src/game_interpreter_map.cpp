@@ -291,7 +291,7 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 bool Game_Interpreter_Map::CommandMessageOptions() { //code 10120
 	Game_Message::background = list[index].parameters[0] == 0;
 	Game_Message::position = list[index].parameters[1];
-	Game_Message::fixed_position = list[index].parameters[2] != 0;
+	Game_Message::fixed_position = list[index].parameters[2] == 0;
 	Game_Message::dont_halt = list[index].parameters[3] != 0;
 	return true;
 }
