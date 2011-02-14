@@ -30,6 +30,7 @@
 #include "scene_logo.h"
 #include "scene_title.h"
 #include "scene_battle.h"
+#include "utils.h"
 #include <algorithm>
 #include <set>
 #include <locale>
@@ -94,17 +95,12 @@ void Player::Init(int argc, char *argv[]) {
 	engine = EngineRpg2k;
 
 	// extended
-	std::set<std::string> args;
-	for(int i = 1; i < argc; ++i) {
-		std::string const in = argv[i];
-		std::string out(in.size(), '\0');
-		std::transform(in.begin(), in.end(), out.begin(), tolower);
-		args.insert(out);
-	}
-	if((argc > 1) && std::string(argv[1]) == "battletest") {
+	if((argc > 1) && Utils::LowerCase(argv[1]) == "battletest") {
 		battle_test_flag = true;
 		battle_test_troop_id = (argc > 4)? atoi(argv[4]) : 0;
 	} else {
+		std::set<std::string> args;
+		for(int i = 1; i < argc; ++i) { args.insert(Utils::LowerCase(argv[i])); }
 		window_flag = args.find("window") != args.end();
 		debug_flag = args.find("testplay") != args.end();
 		hide_title_flag = args.find("hidetitle") != args.end();
