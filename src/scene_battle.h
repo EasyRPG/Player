@@ -21,6 +21,7 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <deque>
 #include "rpg_troopmember.h"
 #include "rpg_actor.h"
 #include "rpg_enemy.h"
@@ -66,7 +67,27 @@ public:
 		State_Defeat
 	};
 
-	struct Ally {
+	struct Battler {
+		enum Side {
+			Side_Ally,
+			Side_Enemy
+		};
+
+		int side;
+		int ID;
+		Sprite* sprite;
+		int gauge;
+		int speed;
+		static const int gauge_full = 10000;
+
+		Battler(int side, int id) :
+			side(side), ID(id), sprite(NULL), gauge(0) {}
+
+		virtual Game_Battler* GetActor() = 0;
+		virtual void CreateSprite() = 0;
+	};
+
+	struct Ally : public Battler {
 		enum AnimationState {
 			Idle = 1,
 			RightHand,
@@ -84,40 +105,34 @@ public:
 
 		Ally(Game_Actor* game_actor, int id);
 
+		Game_Battler* GetActor() { return game_actor; }
+		const Game_Battler* GetActor() const { return game_actor; }
 		void CreateSprite();
 		void SetAnimState(int state);
 		void UpdateAnim(int cycle);
 
-		int ID;
 		Game_Actor* game_actor;
 		const RPG::Actor* rpg_actor;
 		int sprite_frame;
 		std::string sprite_file;
-		Sprite* sprite;
 		int anim_state;
-		int speed;
-		int gauge;
 		bool defending;
-		static const int gauge_full = 10000;
 	};
 
-	struct Enemy {
+	struct Enemy : public Battler {
 		Enemy(const RPG::TroopMember* member, int id);
 
+		Game_Battler* GetActor() { return game_enemy; }
 		void CreateSprite();
 		void Transform(int enemy_id);
 
-		int ID;
 		Game_Enemy* game_enemy;
 		const RPG::TroopMember* member;
 		const RPG::Enemy* rpg_enemy;
-		Sprite* sprite;
 		int fade;
-		int speed;
-		int gauge;
 		bool defending;
 		bool charged;
-		static const int gauge_full = 10000;
+		bool escaped;
 	};
 
 	struct FloatText {
@@ -155,6 +170,7 @@ public:
 	class Action {
 	public:
 		virtual bool operator()() = 0;
+		virtual ~Action();
 	};
 
 	class WaitAction : public Action {
@@ -168,42 +184,35 @@ public:
 
 	class SpriteAction : public Action {
 	public:
-		SpriteAction(Ally* ally, int anim_state, int duration) :
-			ally(ally), anim_state(anim_state), duration(duration) {}
+		SpriteAction(Ally* ally, int anim_state) :
+			ally(ally), anim_state(anim_state) {}
 		bool operator()();
 	protected:
 		Ally* ally;
 		int anim_state;
-		int duration;
 	};
 
 	class AnimationAction : public Action {
 	public:
 		AnimationAction(const Sprite* target, const RPG::Animation* animation);
+		AnimationAction(int x, int y, const RPG::Animation* animation);
 		~AnimationAction();
 
 		bool operator()();
 
-		void Draw(int z_order);
-		unsigned long GetId() const;
-		int GetZ() const;
-		DrawableType GetType() const;
-
 	protected:
 		int frame;
 		int frames;
-		const Sprite* target;
 		Animation* animation;
 	};
 
 	class MoveAction : public Action {
 	public:
-		MoveAction(Ally* ally, int anim_state, int x0, int x1, int speed) :
-			ally(ally), anim_state(anim_state), x0(x0), x1(x1), speed(speed) {}
+		MoveAction(Sprite* sprite, int x0, int x1, int speed) :
+			sprite(sprite), x0(x0), x1(x1), speed(speed) {}
 		bool operator()();
 	protected:
-		Ally* ally;
-		int anim_state;
+		Sprite* sprite;
 		int x0;
 		int x1;
 		int speed;
@@ -244,7 +253,7 @@ private:
 	int turn_fragments;
 	int message_timer;
 	const RPG::EnemyAction* enemy_action;
-	std::vector<Action*> actions;
+	std::deque<Action*> actions;
 	int skill_id;
 
 	Window_Help* help_window;
@@ -262,6 +271,9 @@ private:
 	Sprite *ally_cursor;
 	Sprite *enemy_cursor;
 	std::vector<FloatText*> floaters;
+
+	void AlliesCentroid(int& x, int& y);
+	void EnemiesCentroid(int& x, int& y);
 
 	void CreateSprites();
 	void CreateCursors();
@@ -294,14 +306,28 @@ private:
 	void UseSkill();
 
 	void UseItemAlly(Ally& ally, const RPG::Item& item, Ally* target);
-	void UseSkillAlly(Ally& ally, const RPG::Skill& skill, Ally* target);
-	void UseSkillEnemy(Ally& ally, const RPG::Skill& skill, Enemy* target);
+	void UseSkillAlly(Battler& ally, const RPG::Skill& skill, Battler* target);
+	void UseSkillEnemy(Battler& ally, const RPG::Skill& skill, Battler* target);
+	int SkillAnimation(const RPG::Skill& skill, const Ally& ally);
 
 	bool EnemyActionValid(const RPG::EnemyAction& action, Enemy* enemy);
 	const RPG::EnemyAction* ChooseEnemyAction(Enemy* enemy);
 	void EnemyAction(Enemy* enemy);
-	void EnemyActionDone();
+	void EnemyActionBasic();
+	void EnemyActionSkill();
+
 	void EnemyAttack(void* target = NULL);
+	void EnemyDefend();
+	void EnemyObserve();
+	void EnemyCharge();
+	void EnemyDestruct();
+	void EnemySkill();
+	void EnemyTransform();
+	void EnemyEscape();
+	void EnemyActionDone();
+	void EnemySkillAlly(Enemy& ally, const RPG::Skill& skill, Ally* target);
+	void EnemySkillEnemy(Enemy& ally, const RPG::Skill& skill, Enemy* target);
+	Sprite* EnemySkillTarget();
 
 	void ProcessActions();
 	void ProcessInput();
