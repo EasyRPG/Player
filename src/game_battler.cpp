@@ -94,11 +94,11 @@ int Game_Battler::GetSp() const {
 }
 
 ////////////////////////////////////////////////////////////
-int Game_Battler::GetMaxHp() {
+int Game_Battler::GetMaxHp() const {
 	int base_maxhp = GetBaseMaxHp();
 	int n = min(max(base_maxhp + maxhp_plus, 1), 999);
 
-	for (std::vector<int>::iterator i = states.begin();
+	for (std::vector<int>::const_iterator i = states.begin();
 		i != states.end();
 		i++) {
 			// TODO test needed
@@ -111,11 +111,11 @@ int Game_Battler::GetMaxHp() {
 }
 
 ////////////////////////////////////////////////////////////
-int Game_Battler::GetMaxSp() {
+int Game_Battler::GetMaxSp() const {
 	int base_maxsp = GetBaseMaxSp();
 	int n = min(max(base_maxsp + maxsp_plus, 0), 999);
 
-	for (std::vector<int>::iterator i = states.begin();
+	for (std::vector<int>::const_iterator i = states.begin();
 		i != states.end();
 		i++) {
 			// TODO test needed

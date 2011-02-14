@@ -64,7 +64,7 @@ public:
 	void SetMaxHp(int _maxhp);
 
 	/// @return current maxhp
-	int GetMaxHp();
+	int GetMaxHp() const;
 
 	////////////////////////////////////////////////////////
 	/// Sets the maximum SP.
@@ -73,7 +73,7 @@ public:
 	void SetMaxSp(int _maxsp);
 
 	/// @return current maxsp
-	int GetMaxSp();
+	int GetMaxSp() const;
 
 	////////////////////////////////////////////////////////
 	/// Sets the current hp
