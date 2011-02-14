@@ -21,12 +21,14 @@
 #include "game_commonevent.h"
 #include "game_map.h"
 #include "game_switches.h"
-#include "game_interpreter.h"
+#include "game_interpreter_map.h"
+#include "game_interpreter_battle.h"
 #include "main_data.h"
 
 ////////////////////////////////////////////////////////////
-Game_CommonEvent::Game_CommonEvent(int common_event_id) :
+Game_CommonEvent::Game_CommonEvent(int common_event_id, bool battle) :
 	common_event_id(common_event_id),
+	battle(battle),
 	interpreter(NULL) {
 }
 
@@ -39,7 +41,9 @@ Game_CommonEvent::~Game_CommonEvent() {
 void Game_CommonEvent::Refresh() {
 	if ( (GetTrigger() == Game_Character::TriggerParallelProcess) && ( Game_Switches[GetSwitchId()] ) ) {
 		if (interpreter == NULL) {
-			interpreter = new Game_Interpreter();
+			interpreter = battle
+				? (Game_Interpreter*) new Game_Interpreter_Battle()
+				: (Game_Interpreter*) new Game_Interpreter_Map();
 			Update();
 		}
 	} else {

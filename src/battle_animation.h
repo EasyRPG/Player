@@ -28,12 +28,10 @@
 
 ////////////////////////////////////////////////////////////
 
-namespace Battle {
-
-class Animation : public Drawable {
+class BattleAnimation : public Drawable {
 public:
-	Animation(int x, int y, const RPG::Animation* animation);
-	~Animation();
+	BattleAnimation(int x, int y, const RPG::Animation* animation);
+	~BattleAnimation();
 
 	void Draw(int z_order);
 	unsigned long GetId() const;
@@ -41,7 +39,12 @@ public:
 	DrawableType GetType() const;
 
 	void Setup();
-	void Update(int frame);
+	void Update();
+	int GetFrame() const;
+	int GetFrames() const;
+	void SetFrame(int);
+	void SetVisible(bool visible);
+	bool GetVisible();
 
 protected:
 	int x;
@@ -49,13 +52,12 @@ protected:
 	const RPG::Animation* animation;
 	int frame;
 	bool initialized;
+	bool visible;
 	bool large;
 	BitmapScreen* screen;
 	unsigned long ID;
 	ZObj* zobj;
 };
-
-}
 
 #endif
 

@@ -64,9 +64,7 @@ public:
 	bool operator()();
 
 protected:
-	int frame;
-	int frames;
-	Battle::Animation* animation;
+	BattleAnimation* animation;
 };
 
 class MoveAction : public Action {

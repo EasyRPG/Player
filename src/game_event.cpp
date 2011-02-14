@@ -27,6 +27,7 @@
 #include "game_switches.h"
 #include "game_variables.h"
 #include "game_system.h"
+#include "game_interpreter_map.h"
 #include "main_data.h"
 #include "player.h"
 
@@ -114,7 +115,7 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	delete interpreter;
 	interpreter = NULL;
 	if (trigger == TriggerParallelProcess) {
-		interpreter = new Game_Interpreter();
+		interpreter = new Game_Interpreter_Map();
 	}
 	CheckEventTriggerAuto();
 }

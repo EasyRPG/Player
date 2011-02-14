@@ -15,13 +15,15 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef __game_screen__
-#define __game_screen__
+#ifndef _GAME_SCREEN_
+#define _GAME_SCREEN_
 
 #include <map>
 #include "plane.h"
 #include "surface.h"
 #include "game_picture.h"
+#include "game_character.h"
+#include "battle_animation.h"
 
 class Game_Screen {
 
@@ -42,6 +44,8 @@ public:
 	void Weather(int type, int strength);
 	void PlayMovie(const std::string& filename,
 				   int pos_x, int pos_y, int res_x, int res_y);
+	void ShowBattleAnimation(int animation_id, Game_Character* target, bool global);
+	bool IsBattleAnimationWaiting() const;
 	void Update();
 
 private:
@@ -89,6 +93,8 @@ private:
 		Weather_Fog,
 		Weather_Sandstorm
 	};
+
+	BattleAnimation* animation;
 
 protected:
 	struct Snowflake {

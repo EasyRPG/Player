@@ -26,15 +26,20 @@
 #include "battle_animation.h"
 
 ////////////////////////////////////////////////////////////
-Battle::Animation::Animation(int x, int y, const RPG::Animation* animation) :
-	x(x), y(y), animation(animation), frame(0), initialized(false) {}
+BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) :
+	x(x), y(y), animation(animation), frame(0), initialized(false), visible(false),
+	ID(Graphics::drawable_id++) {
+}
 
-void Battle::Animation::Setup() {
+BattleAnimation::~BattleAnimation() {
+	SetVisible(false);
+	if (screen != NULL)
+		delete screen;
+}
 
+void BattleAnimation::Setup() {
 	if (initialized)
 		return;
-
-	ID = Graphics::drawable_id++;
 
 	const std::string& name = animation->animation_name;
 	Bitmap* graphic;
@@ -53,39 +58,28 @@ void Battle::Animation::Setup() {
 		return;
 	}
 
-	zobj = Graphics::RegisterZObj(GetZ(), ID);
-	Graphics::RegisterDrawable(ID, this);
-
 	screen = BitmapScreen::CreateBitmapScreen(graphic);
 
 	initialized = true;
 }
 
-Battle::Animation::~Animation() {
-	if (!initialized)
-		return;
-
-	Graphics::RemoveZObj(ID);
-	Graphics::RemoveDrawable(ID);
-	if (screen != NULL)
-		delete screen;
-}
-
-unsigned long Battle::Animation::GetId() const {
+unsigned long BattleAnimation::GetId() const {
 	return ID;
 }
 
-int Battle::Animation::GetZ() const {
+int BattleAnimation::GetZ() const {
 	return 400;
 }
 
-DrawableType Battle::Animation::GetType() const {
+DrawableType BattleAnimation::GetType() const {
 	return TypeDefault;
 }
 
-void Battle::Animation::Draw(int z_order) {
+void BattleAnimation::Draw(int z_order) {
 	if (frame >= (int) animation->frames.size())
 		return;
+
+	Setup();
 
 	const RPG::AnimationFrame& anim_frame = animation->frames[frame];
 
@@ -105,8 +99,40 @@ void Battle::Animation::Draw(int z_order) {
 	}
 }
 
-void Battle::Animation::Update(int _frame) {
-	frame = _frame;
-	Setup();
+void BattleAnimation::Update() {
+	frame++;
 }
+
+void BattleAnimation::SetFrame(int _frame) {
+	frame = _frame;
+}
+
+int BattleAnimation::GetFrame() const {
+	return frame;
+}
+
+int BattleAnimation::GetFrames() const {
+	return animation->frames.size();
+}
+
+void BattleAnimation::SetVisible(bool _visible) {
+	if (visible == _visible)
+		return;
+
+	visible = _visible;
+
+	if (visible) {
+		zobj = Graphics::RegisterZObj(GetZ(), ID);
+		Graphics::RegisterDrawable(ID, this);
+	}
+	else {
+		Graphics::RemoveZObj(ID);
+		Graphics::RemoveDrawable(ID);
+	}
+}
+
+bool BattleAnimation::GetVisible() {
+	return visible;
+}
+
 

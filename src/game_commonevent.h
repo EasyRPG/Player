@@ -35,7 +35,7 @@ public:
 	/// Constructor.
 	/// @param common_event_id : database common event id
 	////////////////////////////////////////////////////////
-	Game_CommonEvent(int common_event_id);
+	Game_CommonEvent(int common_event_id, bool battle = false);
 
 	////////////////////////////////////////////////////////
 	/// Destructor.
@@ -69,6 +69,7 @@ public:
 
 private:
 	int common_event_id;
+	bool battle;
 
 	// Interpreter for parallel common events
 	Game_Interpreter* interpreter;

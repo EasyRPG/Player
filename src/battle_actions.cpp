@@ -72,22 +72,21 @@ bool Battle::MoveAction::operator()() {
 }
 
 ////////////////////////////////////////////////////////////
-Battle::AnimationAction::AnimationAction(const Sprite* target, const RPG::Animation* animation) :
-	frame(0), frames(animation->frames.size()) {
-	this->animation = new Battle::Animation(target->GetX(), target->GetY(), animation);
+Battle::AnimationAction::AnimationAction(const Sprite* target, const RPG::Animation* animation) {
+	this->animation = new BattleAnimation(target->GetX(), target->GetY(), animation);
 }
 
-Battle::AnimationAction::AnimationAction(int x, int y, const RPG::Animation* animation) :
-	frame(0), frames(animation->frames.size()) {
-	this->animation = new Battle::Animation(x, y, animation);
+Battle::AnimationAction::AnimationAction(int x, int y, const RPG::Animation* animation) {
+	this->animation = new BattleAnimation(x, y, animation);
 }
 
 bool Battle::AnimationAction::operator()() {
-	animation->Update(frame);
-	frame++;
-	if (frame >= frames)
-		return true;
-	return false;
+	if (!animation->GetVisible())
+		animation->SetVisible(true);
+	else
+		animation->Update();
+
+	return animation->GetFrame() >= animation->GetFrames();
 }
 
 Battle::AnimationAction::~AnimationAction() {

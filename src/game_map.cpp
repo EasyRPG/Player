@@ -19,7 +19,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "game_map.h"
-#include "game_interpreter.h"
+#include "game_interpreter_map.h"
 #include "game_temp.h"
 #include "lmu_reader.h"
 #include "map_data.h"
@@ -89,7 +89,7 @@ void Game_Map::Init() {
 	scroll_direction = 0;
 	scroll_rest = 0;
 	scroll_speed = 0;
-	interpreter = new Game_Interpreter(0, true);
+	interpreter = new Game_Interpreter_Map(0, true);
 	encounter_steps = 0;
 
 	for (int i = 0; i < 3; i++)

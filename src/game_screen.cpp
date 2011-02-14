@@ -16,10 +16,12 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include <cstdlib>
+#include "data.h"
 #include "options.h"
 #include "game_screen.h"
 
 Game_Screen::Game_Screen() :
+	animation(NULL),
 	weather_plane(NULL),
 	weather_surface(NULL),
 	snow_bitmap(NULL),
@@ -30,6 +32,8 @@ Game_Screen::Game_Screen() :
 
 Game_Screen::~Game_Screen()
 {
+	if (animation)
+		delete animation;
 	if (weather_plane)
 		delete weather_plane;
 	if (weather_surface)
@@ -170,6 +174,18 @@ void Game_Screen::PlayMovie(const std::string& filename,
 	movie_pos_y = pos_y;
 	movie_res_x = res_x;
 	movie_res_y = res_y;
+}
+
+void Game_Screen::ShowBattleAnimation(int animation_id, Game_Character* target, bool global) {
+	animation = new BattleAnimation(target->GetScreenX(), target->GetScreenY(),
+									&Data::animations[animation_id - 1]);
+	animation->SetVisible(true);
+	// FIXME: target
+	// FIXME: global
+}
+
+bool Game_Screen::IsBattleAnimationWaiting() const {
+	return animation != NULL;
 }
 
 static double interpolate(double d, double x0, double x1)
@@ -372,6 +388,14 @@ void Game_Screen::Update() {
 			InitWeather();
 			DrawSandstorm();
 			break;
+	}
+
+	if (animation != NULL) {
+		animation->Update();
+		if (animation->GetFrame() >= animation->GetFrames()) {
+			delete animation;
+			animation = NULL;
+		}
 	}
 }
 
