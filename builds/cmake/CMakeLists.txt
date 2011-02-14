@@ -17,7 +17,7 @@ ADD_DEFINITIONS(
 	-D USE_SDL=1
 	-D USE_OPENAL=1
 
-	-Wall -Werror
+	-Wall -Werror # -Wextra
 	-fno-exceptions -fno-rtti
 )
 
