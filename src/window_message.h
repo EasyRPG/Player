@@ -22,6 +22,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <string>
+#include "window_gold.h"
 #include "window_numberinput.h"
 #include "window_selectable.h"
 
@@ -176,8 +177,6 @@ protected:
 	int contents_y;
 	/// Current number of lines on this page
 	int line_count;
-	//bool contents_showing;
-	//int cursor_width;
 	/// Index of the next char in text that will be outputted
 	int text_index;
 	/// text message that will be displayed
@@ -191,7 +190,7 @@ protected:
 	
 	/// Used by the number input event
 	Window_NumberInput* number_input_window;
-	//Window_Gold* gold_window; // TODO: Implement Window_Gold
+	Window_Gold* gold_window;
 };
 
 #endif

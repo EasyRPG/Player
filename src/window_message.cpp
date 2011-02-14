@@ -33,7 +33,6 @@
 #include "util_macro.h"
 #include "utils.h"
 
-
 #ifdef NO_WCHAR
 // This is a workaround if your system has no wchar
 #undef wstring
@@ -51,14 +50,16 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 
 	visible = false;
 	SetZ(10000);
-	//contents_showing = false;
-	//cursor_width = 0;
+
 	active = false;
 	index = -1;
 	text_color = Font::ColorDefault;
 
 	number_input_window = new Window_NumberInput(0, 0);
 	number_input_window->SetVisible(false);
+
+	gold_window = new Window_Gold(232, 0, 88, 32);
+	gold_window->SetVisible(false);
 
 	Game_Message::Init();
 }
@@ -67,10 +68,10 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 Window_Message::~Window_Message() {
 	TerminateMessage();
 	Game_Message::visible = false;
-	//Game_Temp::message_window_showing = false;
-	// The Windows are already deleted in Graphics during closing
-	// But this probably memleaks during scene change?
+
+	// Without this check the player crashes at the end
 	if (!Player::exit_flag) {
+		delete gold_window;
 		delete number_input_window;
 	}
 }
@@ -223,8 +224,14 @@ void Window_Message::TerminateMessage() {
 	index = -1;
 
 	Game_Message::message_waiting = false;
-	number_input_window->SetActive(false);
-	number_input_window->SetVisible(false);
+	if (number_input_window->GetVisible()) {
+		number_input_window->SetActive(false);
+		number_input_window->SetVisible(false);
+	}
+
+	if (gold_window->GetVisible()) {
+		gold_window->SetVisible(false);
+	}
 	// The other flag resetting is done in Game_Interpreter::CommandEnd
 	Game_Message::SemiClear();
 }
@@ -288,7 +295,7 @@ void Window_Message::Update() {
 void Window_Message::UpdateMessage() {
 	// Message Box Show Message rendering loop
 	// At the moment 3 chars per frame are drawn
-	// ToDo: Value must depend on Speedevent
+	// ToDo: Value must depend on Speedcommand \s
 
 	// Contains at what frame the sleep is over
 	static int sleep_until = -1;
@@ -344,7 +351,10 @@ void Window_Message::UpdateMessage() {
 				// Insert half size space
 				contents_x += contents->GetTextSize(" ").width / 2;
 			case utf('$'):
-				// Show Money Window ToDo
+				// Show Gold Window
+				gold_window->SetY(y == 0 ? 240 - 32 : 0);
+				gold_window->SetOpenAnimation(5);
+				gold_window->SetVisible(true);
 				break;
 			case utf('!'):
 				// Text pause
