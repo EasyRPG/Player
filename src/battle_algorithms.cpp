@@ -24,6 +24,7 @@
 #include "game_system.h"
 #include "game_party.h"
 #include "game_switches.h"
+#include "game_battle.h"
 #include "scene_battle.h"
 
 ////////////////////////////////////////////////////////////
@@ -47,17 +48,17 @@ void Scene_Battle::AttackEnemy(Battle::Ally& ally, Battle::Enemy& enemy) {
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Battle::UseItem(Battle::Ally& ally, const RPG::Item& item, Battle::Ally* ally_target) {
+void Scene_Battle::UseItem(Battle::Ally& ally, const RPG::Item& item) {
 	if (item.type != RPG::Item::Type_medicine)
 		return;
 	if (item.ocassion_field)
 		return;
 
 	if (!item.entire_party)
-		UseItemAlly(ally, item, ally_target);
+		UseItemAlly(ally, item, Game_Battle::GetTargetAlly());
 	else
-		for (std::vector<Battle::Ally>::iterator it = allies.begin(); it != allies.end(); it++)
-			UseItemAlly(ally, item, &*it);
+		for (std::vector<Battle::Ally>::iterator it = Game_Battle::allies.begin(); it != Game_Battle::allies.end(); it++)
+			UseItemAlly(ally, item, *it);
 
 	switch (item.uses) {
 		case 0:
@@ -76,27 +77,27 @@ void Scene_Battle::UseItem(Battle::Ally& ally, const RPG::Item& item, Battle::Al
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Battle::UseItemAlly(Battle::Ally& ally, const RPG::Item& item, Battle::Ally* target) {
-	if (item.ko_only && !target->GetActor()->IsDead())
+void Scene_Battle::UseItemAlly(Battle::Ally& ally, const RPG::Item& item, Battle::Ally& target) {
+	if (item.ko_only && !target.GetActor()->IsDead())
 		return;
 
 	// HP recovery
-	int hp = item.recover_hp_rate * target->GetActor()->GetMaxHp() / 100 + item.recover_hp;
-	target->GetActor()->SetHp(target->GetActor()->GetHp() + hp);
+	int hp = item.recover_hp_rate * target.GetActor()->GetMaxHp() / 100 + item.recover_hp;
+	target.GetActor()->SetHp(target.GetActor()->GetHp() + hp);
 
 	// SP recovery
-	int sp = item.recover_sp_rate * target->GetActor()->GetMaxSp() / 100 + item.recover_sp;
-	target->GetActor()->SetSp(target->GetActor()->GetSp() + sp);
+	int sp = item.recover_sp_rate * target.GetActor()->GetMaxSp() / 100 + item.recover_sp;
+	target.GetActor()->SetSp(target.GetActor()->GetSp() + sp);
 
 	if (hp > 0)
-		Floater(target->sprite, 9, hp, 60);
+		Floater(target.sprite, 9, hp, 60);
 	else if (sp > 0)
-		Floater(target->sprite, 9, sp, 60);
+		Floater(target.sprite, 9, sp, 60);
 
 	// Status recovery
 	for (int i = 0; i < (int) item.state_set.size(); i++)
 		if (item.state_set[i])
-			target->GetActor()->RemoveState(i + 1);
+			target.GetActor()->RemoveState(i + 1);
 }
 
 ////////////////////////////////////////////////////////////
@@ -122,21 +123,21 @@ void Scene_Battle::UseSkill(Battle::Ally& ally, const RPG::Skill& skill) {
 		default:
 			switch (skill.scope) {
 				case RPG::Skill::Scope_enemy:
-					UseSkillEnemy(ally, skill, &enemies[target_enemy]);
+					UseSkillEnemy(ally, skill, Game_Battle::GetTargetEnemy());
 					return;
 				case RPG::Skill::Scope_enemies:
-					for (std::vector<Battle::Enemy>::iterator it = enemies.begin(); it != enemies.end(); it++)
-						UseSkillEnemy(ally, skill, &*it);
+					for (std::vector<Battle::Enemy>::iterator it = Game_Battle::enemies.begin(); it != Game_Battle::enemies.end(); it++)
+						UseSkillEnemy(ally, skill, *it);
 					break;
 				case RPG::Skill::Scope_self:
-					UseSkillAlly(ally, skill, &ally);
+					UseSkillAlly(ally, skill, ally);
 					break;
 				case RPG::Skill::Scope_ally:
-					UseSkillAlly(ally, skill, &allies[target_ally]);
+					UseSkillAlly(ally, skill, Game_Battle::GetTargetAlly());
 					return;
 				case RPG::Skill::Scope_party:
-					for (std::vector<Battle::Ally>::iterator it = allies.begin(); it != allies.end(); it++)
-						UseSkillAlly(ally, skill, &*it);
+					for (std::vector<Battle::Ally>::iterator it = Game_Battle::allies.begin(); it != Game_Battle::allies.end(); it++)
+						UseSkillAlly(ally, skill, *it);
 					break;
 			}
 			break;
@@ -149,8 +150,8 @@ void Scene_Battle::UseSkill(Battle::Ally& ally, const RPG::Skill& skill) {
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Battle::UseSkillAlly(Battle::Battler& user, const RPG::Skill& skill, Battle::Battler* target) {
-	Game_Battler* actor = target->GetActor();
+void Scene_Battle::UseSkillAlly(Battle::Battler& user, const RPG::Skill& skill, Battle::Battler& target) {
+	Game_Battler* actor = target.GetActor();
 	bool miss = true;
 
 	if (skill.power > 0) {
@@ -181,7 +182,7 @@ void Scene_Battle::UseSkillAlly(Battle::Battler& user, const RPG::Skill& skill, 
 				actor->SetAgi(actor->GetAgi() + effect);
 
 			if (skill.affect_hp || skill.affect_sp)
-				Floater(target->sprite, 9, effect, 60);
+				Floater(target.sprite, 9, effect, 60);
 		}
 	}
 
@@ -200,12 +201,12 @@ void Scene_Battle::UseSkillAlly(Battle::Battler& user, const RPG::Skill& skill, 
 	}
 
 	if (miss)
-		Floater(target->sprite, Font::ColorDefault, Data::terms.miss, 60);
+		Floater(target.sprite, Font::ColorDefault, Data::terms.miss, 60);
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Battle::UseSkillEnemy(Battle::Battler& user, const RPG::Skill& skill, Battle::Battler* target) {
-	Game_Battler* actor = target->GetActor();
+void Scene_Battle::UseSkillEnemy(Battle::Battler& user, const RPG::Skill& skill, Battle::Battler& target) {
+	Game_Battler* actor = target.GetActor();
 	bool miss = true;
 
 	if (skill.power > 0) {
@@ -238,7 +239,7 @@ void Scene_Battle::UseSkillEnemy(Battle::Battler& user, const RPG::Skill& skill,
 				actor->SetAgi(actor->GetAgi() - effect);
 
 			if (skill.affect_hp || skill.affect_sp)
-				Floater(target->sprite, Font::ColorDefault, effect, 60);
+				Floater(target.sprite, Font::ColorDefault, effect, 60);
 		}
 	}
 
@@ -257,11 +258,11 @@ void Scene_Battle::UseSkillEnemy(Battle::Battler& user, const RPG::Skill& skill,
 	}
 
 	if (miss)
-		Floater(target->sprite, Font::ColorDefault, Data::terms.miss, 60);
+		Floater(target.sprite, Font::ColorDefault, Data::terms.miss, 60);
 }
 
 ////////////////////////////////////////////////////////////
-bool Scene_Battle::EnemyActionValid(const RPG::EnemyAction& action, Battle::Enemy* enemy) {
+bool Scene_Battle::EnemyActionValid(const RPG::EnemyAction& action, Battle::Enemy& enemy) {
 	switch (action.condition_type) {
 		case RPG::EnemyAction::ConditionType_always:
 			return true;
@@ -270,43 +271,43 @@ bool Scene_Battle::EnemyActionValid(const RPG::EnemyAction& action, Battle::Enem
 		case RPG::EnemyAction::ConditionType_turn:
 		{
 			int interval = action.condition_param2 == 0 ? 1 : action.condition_param2;
-			int turns = turn_fragments / turn_length;
+			int turns = Game_Battle::GetTurns();
 			return (turns - action.condition_param1) % interval == 0;
 		}
 		case RPG::EnemyAction::ConditionType_actors:
 		{
 			int count = 0;
-			for (std::vector<Battle::Enemy>::const_iterator it = enemies.begin(); it != enemies.end(); it++)
+			for (std::vector<Battle::Enemy>::const_iterator it = Game_Battle::enemies.begin(); it != Game_Battle::enemies.end(); it++)
 				if (it->game_enemy->Exists())
 					count++;
 			return count >= action.condition_param1 && count <= action.condition_param2;
 		}
 		case RPG::EnemyAction::ConditionType_hp:
 		{
-			int hp_percent = enemy->game_enemy->GetHp() * 100 / enemy->game_enemy->GetMaxHp();
+			int hp_percent = enemy.game_enemy->GetHp() * 100 / enemy.game_enemy->GetMaxHp();
 			return hp_percent >= action.condition_param1 && hp_percent <= action.condition_param2;
 		}
 		case RPG::EnemyAction::ConditionType_sp:
 		{
-			int sp_percent = enemy->game_enemy->GetSp() * 100 / enemy->game_enemy->GetMaxSp();
+			int sp_percent = enemy.game_enemy->GetSp() * 100 / enemy.game_enemy->GetMaxSp();
 			return sp_percent >= action.condition_param1 && sp_percent <= action.condition_param2;
 		}
 		case RPG::EnemyAction::ConditionType_party_lvl:
 		{
 			int party_lvl = 0;
-			for (std::vector<Battle::Ally>::const_iterator it = allies.begin(); it != allies.end(); it++)
+			for (std::vector<Battle::Ally>::const_iterator it = Game_Battle::allies.begin(); it != Game_Battle::allies.end(); it++)
 				party_lvl += it->game_actor->GetLevel();
-			party_lvl /= allies.size();
+			party_lvl /= Game_Battle::allies.size();
 			return party_lvl >= action.condition_param1 && party_lvl <= action.condition_param2;
 		}
 		case RPG::EnemyAction::ConditionType_party_fatigue:
 		{
 			int party_exh = 0;
-			for (std::vector<Battle::Ally>::const_iterator it = allies.begin(); it != allies.end(); it++)
+			for (std::vector<Battle::Ally>::const_iterator it = Game_Battle::allies.begin(); it != Game_Battle::allies.end(); it++)
 				// FIXME: this is what the help file says, but it looks wrong
 				party_exh += 100 - (200 * it->GetActor()->GetHp() / it->GetActor()->GetMaxHp() -
 									100 * it->GetActor()->GetSp() / it->GetActor()->GetMaxSp() / 3);
-			party_exh /= allies.size();
+			party_exh /= Game_Battle::allies.size();
 			return party_exh >= action.condition_param1 && party_exh <= action.condition_param2;
 		}
 		default:
@@ -315,8 +316,8 @@ bool Scene_Battle::EnemyActionValid(const RPG::EnemyAction& action, Battle::Enem
 }
 
 ////////////////////////////////////////////////////////////
-const RPG::EnemyAction* Scene_Battle::ChooseEnemyAction(Battle::Enemy* enemy) {
-	const std::vector<RPG::EnemyAction>& actions = enemy->rpg_enemy->actions;
+const RPG::EnemyAction* Scene_Battle::ChooseEnemyAction(Battle::Enemy& enemy) {
+	const std::vector<RPG::EnemyAction>& actions = enemy.rpg_enemy->actions;
 	std::vector<int> valid;
 	std::vector<RPG::EnemyAction>::const_iterator it;
 	int total = 0;
@@ -388,21 +389,21 @@ void Scene_Battle::EnemySkill(Battle::Enemy& enemy, const RPG::Skill& skill) {
 		default:
 			switch (skill.scope) {
 				case RPG::Skill::Scope_enemy:
-					UseSkillAlly(enemy, skill, &allies[target_ally]);
+					UseSkillAlly(enemy, skill, Game_Battle::GetTargetAlly());
 					return;
 				case RPG::Skill::Scope_enemies:
-					for (std::vector<Battle::Ally>::iterator it = allies.begin(); it != allies.end(); it++)
-						UseSkillAlly(enemy, skill, &*it);
+					for (std::vector<Battle::Ally>::iterator it = Game_Battle::allies.begin(); it != Game_Battle::allies.end(); it++)
+						UseSkillAlly(enemy, skill, *it);
 					break;
 				case RPG::Skill::Scope_self:
-					UseSkillEnemy(enemy, skill, &enemy);
+					UseSkillEnemy(enemy, skill, enemy);
 					break;
 				case RPG::Skill::Scope_ally:
-					UseSkillEnemy(enemy, skill, &enemies[target_enemy]);
+					UseSkillEnemy(enemy, skill, Game_Battle::GetTargetEnemy());
 					return;
 				case RPG::Skill::Scope_party:
-					for (std::vector<Battle::Enemy>::iterator it = enemies.begin(); it != enemies.end(); it++)
-						UseSkillEnemy(enemy, skill, &*it);
+					for (std::vector<Battle::Enemy>::iterator it = Game_Battle::enemies.begin(); it != Game_Battle::enemies.end(); it++)
+						UseSkillEnemy(enemy, skill, *it);
 					break;
 			}
 			break;

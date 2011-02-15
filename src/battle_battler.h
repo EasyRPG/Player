@@ -41,13 +41,17 @@ struct Battler {
 	Sprite* sprite;
 	int gauge;
 	int speed;
+
 	static const int gauge_full = 10000;
 
 	Battler(int side, int id) :
 		side(side), ID(id), sprite(NULL), gauge(0) {}
 
 	virtual Game_Battler* GetActor() = 0;
+	virtual const Game_Battler* GetActor() const = 0;
 	virtual void CreateSprite() = 0;
+	virtual bool CanAct() const = 0;
+	bool IsReady() const;
 };
 
 struct Ally : public Battler {
@@ -73,6 +77,7 @@ struct Ally : public Battler {
 	void CreateSprite();
 	void SetAnimState(int state);
 	void UpdateAnim(int cycle);
+	bool CanAct() const;
 
 	Game_Actor* game_actor;
 	const RPG::Actor* rpg_actor;
@@ -80,14 +85,17 @@ struct Ally : public Battler {
 	std::string sprite_file;
 	int anim_state;
 	bool defending;
+	int last_command;
 };
 
 struct Enemy : public Battler {
 	Enemy(const RPG::TroopMember* member, int id);
 
 	Game_Battler* GetActor() { return game_enemy; }
+	const Game_Battler* GetActor() const { return game_enemy; }
 	void CreateSprite();
 	void Transform(int enemy_id);
+	bool CanAct() const;
 
 	Game_Enemy* game_enemy;
 	const RPG::TroopMember* member;

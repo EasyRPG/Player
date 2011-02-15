@@ -462,7 +462,7 @@ void PixmanBitmap::StretchBlit(Rect dst_rect, Bitmap* _src, Rect src_rect, int o
 
 	pixman_image_composite32(PIXMAN_OP_OVER,
 							 src->bitmap, mask, bitmap,
-							 src_rect.x, src_rect.y,
+							 src_rect.x / zoom_x, src_rect.y / zoom_y,
 							 0, 0,
 							 dst_rect.x, dst_rect.y,
 							 dst_rect.width, dst_rect.height);

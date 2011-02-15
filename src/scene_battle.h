@@ -84,23 +84,16 @@ public:
 private:
 	friend class Battle::SpriteAction;
 
-	static const int turn_length = 333; // frames
-
 	State state;
 	State target_state;
 	bool auto_battle;
 	int cycle;
-	int active_enemy;
-	int active_ally;
-	int target_enemy;
-	int target_ally;
-	int action_timer;
 	int attack_state;
-	int turn_fragments;
 	int message_timer;
 	const RPG::EnemyAction* enemy_action;
 	std::deque<Battle::Action*> actions;
 	int skill_id;
+	int pending_command;
 
 	Window_Help* help_window;
 	Window_BattleOption* options_window;
@@ -108,20 +101,11 @@ private:
 	Window_BattleCommand* command_window;
 	Window_BattleItem* item_window;
 	Window_BattleSkill* skill_window;
-	Background* background;
-
-	const RPG::Troop* troop;
-	std::vector<Battle::Ally> allies;
-	std::vector<Battle::Enemy> enemies;
 
 	Sprite *ally_cursor;
 	Sprite *enemy_cursor;
 	std::vector<FloatText*> floaters;
 
-	void AlliesCentroid(int& x, int& y);
-	void EnemiesCentroid(int& x, int& y);
-
-	void CreateSprites();
 	void CreateCursors();
 	void CreateWindows();
 
@@ -153,7 +137,7 @@ private:
 
 	int SkillAnimation(const RPG::Skill& skill, const Battle::Ally& ally);
 
-	void EnemyAction(Battle::Enemy* enemy);
+	void EnemyAction();
 	void EnemyActionBasic();
 	void EnemyActionSkill();
 
@@ -176,27 +160,22 @@ private:
 	void UpdateSprites();
 	void UpdateFloaters();
 
-	int GetActiveActor();
-	int GetTargetActor();
-	bool HaveCorpse();
 	void CheckWin();
 	void CheckLose();
 
 	// battle_algorithms.cpp
 
 	void AttackEnemy(Battle::Ally& ally, Battle::Enemy& enemy);
-	void UseItem(Battle::Ally& ally, const RPG::Item& item, Battle::Ally* ally_target);
-	void UseItemAlly(Battle::Ally& ally, const RPG::Item& item, Battle::Ally* target);
+	void UseItem(Battle::Ally& ally, const RPG::Item& item);
+	void UseItemAlly(Battle::Ally& ally, const RPG::Item& item, Battle::Ally& target);
 	void UseSkill(Battle::Ally& ally, const RPG::Skill& skill);
-	void UseSkillAlly(Battle::Battler& ally, const RPG::Skill& skill, Battle::Battler* target);
-	void UseSkillEnemy(Battle::Battler& ally, const RPG::Skill& skill, Battle::Battler* target);
+	void UseSkillAlly(Battle::Battler& ally, const RPG::Skill& skill, Battle::Battler& target);
+	void UseSkillEnemy(Battle::Battler& ally, const RPG::Skill& skill, Battle::Battler& target);
 
-	bool EnemyActionValid(const RPG::EnemyAction& action, Battle::Enemy* enemy);
-	const RPG::EnemyAction* ChooseEnemyAction(Battle::Enemy* enemy);
+	bool EnemyActionValid(const RPG::EnemyAction& action, Battle::Enemy& enemy);
+	const RPG::EnemyAction* ChooseEnemyAction(Battle::Enemy& enemy);
 	void EnemyAttackAlly(Battle::Enemy& enemy, Battle::Ally& ally);
 	void EnemySkill(Battle::Enemy& enemy, const RPG::Skill& skill);
-	void EnemySkillAlly(Battle::Enemy& ally, const RPG::Skill& skill, Battle::Ally* target);
-	void EnemySkillEnemy(Battle::Enemy& ally, const RPG::Skill& skill, Battle::Enemy* target);
 };
 
 #endif

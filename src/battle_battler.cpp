@@ -66,6 +66,14 @@ void Battle::Enemy::Transform(int enemy_id) {
 	CreateSprite();
 }
 
+bool Battle::Enemy::CanAct() const {
+	return GetActor()->Exists() && !escaped;
+}
+
+bool Battle::Battler::IsReady() const {
+	return gauge >= gauge_full;
+}
+
 ////////////////////////////////////////////////////////////
 Battle::Ally::Ally(Game_Actor* game_actor, int id) :
 	Battler(Battler::Side_Ally, id),
@@ -122,5 +130,9 @@ void Battle::Ally::UpdateAnim(int cycle) {
 	const RPG::BattlerAnimationExtension& ext = anim.base_data[anim_state - 1];
 
 	sprite->SetSrcRect(Rect(frame * 48, ext.battler_index * 48, 48, 48));
+}
+
+bool Battle::Ally::CanAct() const {
+	return !GetActor()->IsDead();
 }
 

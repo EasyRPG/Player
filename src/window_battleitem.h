@@ -54,15 +54,8 @@ public:
 	////////////////////////////////////////////////////////
 	void SetActor(int actor_id);
 
-	////////////////////////////////////////////////////////
-	/// Sets the actor used for enable checks
-	/// @param actor_id : the actor
-	////////////////////////////////////////////////////////
-	void SetHaveCorpse(bool have_corpse);
-
 protected:
 	int actor_id;
-	bool have_corpse;
 
 	bool CanUseItem(const RPG::Item& item);
 	bool CanUseSkill(int skill_id);

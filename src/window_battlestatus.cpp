@@ -26,12 +26,12 @@
 #include "game_party.h"
 #include "game_actor.h"
 #include "game_system.h"
+#include "game_battle.h"
 #include "window_battlestatus.h"
 
 ////////////////////////////////////////////////////////////
 Window_BattleStatus::Window_BattleStatus() :
-	Window_Base(0, 172, 244, 68),
-	actors(Game_Party::GetActors()) {
+	Window_Base(0, 172, 244, 68) {
 
 	SetBorderX(4);
 	SetBorderY(4);
@@ -40,7 +40,6 @@ Window_BattleStatus::Window_BattleStatus() :
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	index = -1;
-	std::fill(gauges, gauges + 4, 0);
 
 	Refresh();
 }
@@ -53,9 +52,9 @@ Window_BattleStatus::~Window_BattleStatus() {
 void Window_BattleStatus::Refresh() {
 	contents->Clear();
 
-	for (size_t i = 0; i < actors.size() && i < 4; i++) {
+	for (size_t i = 0; i < Game_Battle::allies.size() && i < 4; i++) {
 		int y = i * 15;
-		Game_Actor* actor = actors[i];
+		Game_Actor* actor = Game_Battle::allies[i].game_actor;
 		DrawActorName(actor, 4, y);
 		DrawActorState(actor, 80, y);
 		DrawActorHp(actor, 136, y, true);
@@ -67,8 +66,8 @@ void Window_BattleStatus::Refresh() {
 ////////////////////////////////////////////////////////////
 void Window_BattleStatus::RefreshGauge(int i) {
 	int y = i * 15;
-	contents->ClearRect(Rect(192, y, 57, 16));
-	Game_Actor* actor = actors[i];
+	contents->ClearRect(Rect(192, y, 44, 16));
+	Game_Actor* actor = Game_Battle::allies[i].game_actor;
 	DrawGauge(actor, i, 192, y);
 	DrawActorSp(actor, 202, y, false);
 }
@@ -77,8 +76,9 @@ void Window_BattleStatus::RefreshGauge(int i) {
 void Window_BattleStatus::DrawGauge(Game_Actor* actor, int index, int cx, int cy) {
 	Bitmap* system2 = Cache::System2(Data::system.system2_name);
 
-	bool full = gauges[index] == gauge_full;
-	int gauge = gauges[index] * 25 / gauge_full;
+	Battle::Ally& ally = Game_Battle::GetAlly(index);
+	bool full = ally.IsReady();
+	int gauge_w = ally.gauge * 25 / Game_Battle::gauge_full;
 	int speed = 2; // FIXME: how to determine?
 	int gauge_y = 32 + speed * 16;
 	Rect gauge_left(0, gauge_y, 16, 16);
@@ -86,7 +86,7 @@ void Window_BattleStatus::DrawGauge(Game_Actor* actor, int index, int cx, int cy
 	Rect gauge_right(32, gauge_y, 16, 16);
 	Rect gauge_bar(full ? 64 : 48, gauge_y, 16, 16);
 	Rect dst_rect(cx+16, cy, 25, 16);
-	Rect bar_rect(cx+16, cy, gauge, 16);
+	Rect bar_rect(cx+16, cy, gauge_w, 16);
 
 	contents->Blit(cx+0, cy, system2, gauge_left, 255);
 	contents->StretchBlit(dst_rect, system2, gauge_center, 255);
@@ -106,16 +106,13 @@ int Window_BattleStatus::GetActiveCharacter() {
 }
 
 ////////////////////////////////////////////////////////////
-void Window_BattleStatus::SetTimeGauge(int _index, int value, int limit) {
-	gauges[_index] = std::min(value, limit) * gauge_full / limit;
-	RefreshGauge(_index);
-
-	int num_actors = actors.size();
+void Window_BattleStatus::ChooseActiveCharacter() {
+	int num_actors = Game_Battle::allies.size();
 	int old_index = index < 0 ? 0 : index;
 	index = -1;
 	for (int i = 0; i < num_actors; i++) {
 		int new_index = (old_index + i) % num_actors;
-		if (gauges[new_index] == gauge_full) {
+		if (Game_Battle::GetAlly(new_index).IsReady()) {
 			index = new_index;
 			break;
 		}
@@ -125,18 +122,20 @@ void Window_BattleStatus::SetTimeGauge(int _index, int value, int limit) {
 		UpdateCursorRect();
 }
 
-
 ////////////////////////////////////////////////////////////
 void Window_BattleStatus::Update() {
 	Window_Base::Update();
-	if (active && index >= 0) {
-		int num_actors = actors.size();
 
+	int num_actors = Game_Battle::allies.size();
+	for (int i = 0; i < num_actors; i++)
+		RefreshGauge(i);
+
+	if (active && index >= 0) {
 		if (Input::IsRepeated(Input::DOWN)) {
 			Game_System::SePlay(Data::system.cursor_se);
 			for (int i = 1; i < num_actors; i++) {
 				int new_index = (index + i) % num_actors;
-				if (gauges[new_index] == gauge_full) {
+				if (Game_Battle::GetAlly(new_index).IsReady()) {
 					index = new_index;
 					break;
 				}
@@ -146,13 +145,15 @@ void Window_BattleStatus::Update() {
 			Game_System::SePlay(Data::system.cursor_se);
 			for (int i = num_actors - 1; i > 0; i--) {
 				int new_index = (index + i) % num_actors;
-				if (gauges[new_index] == gauge_full) {
+				if (Game_Battle::GetAlly(new_index).IsReady()) {
 					index = new_index;
 					break;
 				}
 			}
 		}
 	}
+
+	ChooseActiveCharacter();
 
 	UpdateCursorRect();
 }

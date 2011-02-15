@@ -21,11 +21,12 @@
 #include "rpg_item.h"
 #include "rpg_skill.h"
 #include "player.h"
+#include "game_battle.h"
 #include "window_battleitem.h"
 
 ////////////////////////////////////////////////////////////
 Window_BattleItem::Window_BattleItem(int ix, int iy, int iwidth, int iheight) :
-	Window_Item(ix, iy, iwidth, iheight), actor_id(0), have_corpse(false) {}
+	Window_Item(ix, iy, iwidth, iheight), actor_id(0) {}
 
 ////////////////////////////////////////////////////////////
 Window_BattleItem::~Window_BattleItem() {
@@ -34,11 +35,6 @@ Window_BattleItem::~Window_BattleItem() {
 ////////////////////////////////////////////////////////////
 void Window_BattleItem::SetActor(int _actor_id) {
 	actor_id = _actor_id;
-}
-
-////////////////////////////////////////////////////////////
-void Window_BattleItem::SetHaveCorpse(bool _have_corpse) {
-	have_corpse = _have_corpse;
 }
 
 ////////////////////////////////////////////////////////////
@@ -55,7 +51,7 @@ bool Window_BattleItem::CheckEnable(int item_id) {
 		case RPG::Item::Type_accessory:
 			return item.use_skill && CanUseItem(item) && CanUseSkill(item.skill_id);
 		case RPG::Item::Type_medicine:
-			return CanUseItem(item) && !item.ocassion_field && (!item.ko_only || have_corpse);
+			return CanUseItem(item) && !item.ocassion_field && (!item.ko_only || Game_Battle::HaveCorpse());
 		case RPG::Item::Type_book:
 		case RPG::Item::Type_material:
 			return false;
