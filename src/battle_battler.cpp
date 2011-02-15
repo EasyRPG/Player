@@ -25,8 +25,21 @@
 #include "battle_battler.h"
 
 ////////////////////////////////////////////////////////////
+bool Battle::Battler::IsReady() const {
+	return gauge >= gauge_full;
+}
+
+int Battle::Battler::GetTurns() const {
+	return turns;
+}
+
+void Battle::Battler::NextTurn() {
+	turns++;
+}
+
+////////////////////////////////////////////////////////////
 Battle::Enemy::Enemy(const RPG::TroopMember* member, int id) :
-	Battler(Battler::Side_Enemy, id),
+	Battler(id),
 	game_enemy(new Game_Enemy(member->ID)),
 	member(member),
 	rpg_enemy(&Data::enemies[member->ID - 1]),
@@ -70,19 +83,16 @@ bool Battle::Enemy::CanAct() const {
 	return GetActor()->Exists() && !escaped;
 }
 
-bool Battle::Battler::IsReady() const {
-	return gauge >= gauge_full;
-}
-
 ////////////////////////////////////////////////////////////
 Battle::Ally::Ally(Game_Actor* game_actor, int id) :
-	Battler(Battler::Side_Ally, id),
+	Battler(id),
 	game_actor(game_actor),
 	rpg_actor(&Data::actors[game_actor->GetId() - 1]),
 	sprite_frame(-1),
 	sprite_file(""),
 	anim_state(Idle),
-	defending(false)
+	defending(false),
+	last_command(0)
 {
 	speed = 30 + rand() % 10;
 }
@@ -134,5 +144,11 @@ void Battle::Ally::UpdateAnim(int cycle) {
 
 bool Battle::Ally::CanAct() const {
 	return !GetActor()->IsDead();
+}
+
+void Battle::Ally::EnableCombo(int command_id, int multiple) {
+	combo_command = command_id;
+	combo_multiple = multiple;
+	// FIXME: make use of this data
 }
 

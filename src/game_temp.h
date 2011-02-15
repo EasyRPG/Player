@@ -84,10 +84,19 @@ public:
 	
 	static RPG::Music* map_bgm;
 
+	enum BattleMode {
+		BattleNormal,
+		BattleInitiative,
+		BattleSurround,
+		BattleBackAttack,
+		BattlePincer
+	};
+
 	enum BattleResult {
 		BattleVictory,
 		BattleEscape,
-		BattleDefeat
+		BattleDefeat,
+		BattleAbort
 	};
 
 private:

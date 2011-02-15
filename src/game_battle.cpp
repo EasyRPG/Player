@@ -1,7 +1,13 @@
 
+#include <deque>
+#include <algorithm>
 #include "data.h"
 #include "game_party.h"
 #include "game_temp.h"
+#include "game_switches.h"
+#include "game_variables.h"
+#include "battle_animation.h"
+#include "battle_battler.h"
 #include "game_battle.h"
 
 namespace Game_Battle {
@@ -17,6 +23,11 @@ namespace Game_Battle {
 	int target_ally;
 	int active_enemy;
 	int active_ally;
+	bool terminate;
+	bool allies_flee;
+
+	BattleAnimation* animation;
+	std::deque<BattleAnimation*> animations;
 }
 
 ////////////////////////////////////////////////////////////
@@ -55,11 +66,24 @@ void Game_Battle::Init() {
 	active_ally = -1;
 	target_enemy = -1;
 	target_ally = -1;
+	terminate = false;
+	animation = NULL;
+	animations.clear();
+	allies_flee = false;
 }
 
 void Game_Battle::Quit() {
 	delete background;
 	background = NULL;
+
+	if (animation != NULL)
+		delete animation;
+	animation = NULL;
+
+	while (!animations.empty()) {
+		delete animations.front();
+		animations.pop_front();
+	}
 
 	// Remove conditions which end after battle
 	for (std::vector<Battle::Ally>::iterator it = allies.begin(); it != allies.end(); it++)
@@ -270,17 +294,173 @@ bool Game_Battle::HaveCorpse() {
 
 ////////////////////////////////////////////////////////////
 bool Game_Battle::CheckWin() {
-	for (std::vector<Battle::Enemy>::iterator it = Game_Battle::enemies.begin(); it != Game_Battle::enemies.end(); it++)
+	for (std::vector<Battle::Enemy>::iterator it = enemies.begin(); it != enemies.end(); it++)
 		if (!it->game_enemy->IsDead())
 			return false;
 	return true;
 }
 
 bool Game_Battle::CheckLose() {
-	for (std::vector<Battle::Ally>::iterator it = Game_Battle::allies.begin(); it != Game_Battle::allies.end(); it++)
+	for (std::vector<Battle::Ally>::iterator it = allies.begin(); it != allies.end(); it++)
 		if (!it->GetActor()->IsDead())
 			return false;
 	return true;
 }
 
 ////////////////////////////////////////////////////////////
+void Game_Battle::Terminate() {
+	terminate = true;
+}
+
+////////////////////////////////////////////////////////////
+void Game_Battle::ShowAnimation(int animation_id, bool allies, Battle::Ally* ally, Battle::Enemy* enemy, bool wait) {
+	const RPG::Animation* rpg_anim = &Data::animations[animation_id - 1];
+	int x, y;
+
+	if (ally != NULL) {
+		x = ally->sprite->GetX();
+		y = ally->sprite->GetY();
+	}
+	else if (enemy != NULL) {
+		x = enemy->sprite->GetX();
+		y = enemy->sprite->GetY();
+	}
+	else if (allies)
+		AlliesCentroid(x, y);
+	else
+		EnemiesCentroid(x, y);
+
+	BattleAnimation* new_animation = new BattleAnimation(x, y, rpg_anim);
+
+	if (wait) {
+		if (animation != NULL)
+			delete animation;
+		animation = new_animation;
+	}
+	else
+		animations.push_back(new_animation);
+}
+
+////////////////////////////////////////////////////////////
+void Game_Battle::UpdateAnimations() {
+	animation->Update();
+	if (animation->IsDone()) {
+		delete animation;
+		animation = NULL;
+	}
+
+	for (std::deque<BattleAnimation*>::iterator it = animations.begin(); it != animations.end(); it++) {
+		BattleAnimation* anim = *it;
+		if (anim == NULL)
+			continue;
+		anim->Update();
+		if (anim->IsDone()) {
+			delete anim;
+			*it = NULL;
+		}
+	}
+
+	std::deque<BattleAnimation*>::iterator end;
+	end = std::remove(animations.begin(), animations.end(), (BattleAnimation*) NULL);
+	animations.erase(end, animations.end());
+}
+
+////////////////////////////////////////////////////////////
+bool Game_Battle::IsAnimationWaiting() {
+	return animation != NULL;
+}
+
+////////////////////////////////////////////////////////////
+void Game_Battle::ChangeBackground(const std::string& name) {
+	delete background;
+
+	background = new Background(name);
+}
+
+////////////////////////////////////////////////////////////
+void Game_Battle::EnemyEscape() {
+	Battle::Enemy& enemy = GetActiveEnemy();
+
+	enemy.fade = 30;
+	enemy.escaped = true;
+}
+
+////////////////////////////////////////////////////////////
+void Game_Battle::MonsterFlee(int id) {
+	SetActiveEnemy(id);
+	if (GetActiveEnemy().game_enemy->Exists())
+		EnemyEscape();
+}
+
+////////////////////////////////////////////////////////////
+void Game_Battle::MonstersFlee() {
+	for (int i = 0; i < (int) enemies.size(); i++)
+		MonsterFlee(i);
+}
+
+////////////////////////////////////////////////////////////
+bool Game_Battle::CheckTurns(int turns, int base, int multiple) {
+	return turns >= base && (turns - base) % multiple == 0;
+}
+
+bool Game_Battle::CheckCondition(const RPG::TroopPageCondition& condition) {
+	if (condition.switch_a && !Game_Switches[condition.switch_a_id])
+		return false;
+
+	if (condition.switch_b && !Game_Switches[condition.switch_b_id])
+		return false;
+
+	if (condition.variable && !(Game_Variables[condition.variable_id] >= condition.variable_value))
+		return false;
+
+	if (condition.turn && !CheckTurns(GetTurns(), condition.turn_b, condition.turn_a))
+		return false;
+
+	if (condition.turn_enemy && !CheckTurns(GetEnemy(condition.turn_enemy_id).GetTurns(),
+											condition.turn_enemy_b, condition.turn_enemy_a))
+		return false;
+
+	if (condition.turn_actor) {
+		Battle::Ally* ally = FindAlly(condition.turn_actor_id);
+		if (!ally)
+			return false;
+		if (!CheckTurns(ally->GetTurns(), condition.turn_actor_b, condition.turn_actor_a))
+			return false;
+	}
+
+    if (condition.enemy_hp) {
+		int hp = GetEnemy(condition.enemy_id).GetActor()->GetHp();
+		if (hp < condition.enemy_hp_min || hp > condition.enemy_hp_max)
+			return false;
+	}
+
+    if (condition.actor_hp) {
+		Battle::Ally* ally = FindAlly(condition.actor_id);
+		if (!ally)
+			return false;
+		int hp = ally->GetActor()->GetHp();
+		if (hp < condition.actor_hp_min || hp > condition.actor_hp_max)
+			return false;
+	}
+
+    if (condition.command_actor) {
+		Battle::Ally* ally = FindAlly(condition.actor_id);
+		if (!ally)
+			return false;
+		if (ally->last_command != condition.command_id)
+			return false;
+	}
+
+	return true;
+}
+
+void Game_Battle::CheckEvents() {
+	std::vector<RPG::TroopPage>::const_iterator it;
+	for (it = troop->pages.begin(); it != troop->pages.end(); it++) {
+		const RPG::TroopPage& page = *it;
+		if (!CheckCondition(page.condition))
+			continue;
+		// FIXME: create interpreter
+	}
+}
+

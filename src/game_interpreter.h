@@ -39,7 +39,7 @@ public:
 	virtual ~Game_Interpreter();
 
 	void Clear();
-	void Setup(std::vector<RPG::EventCommand>& _list, int _event_id, int dbg_x = -1, int dbg_y = -1);
+	void Setup(const std::vector<RPG::EventCommand>& _list, int _event_id, int dbg_x = -1, int dbg_y = -1);
 	bool IsRunning() const;
 	void Update();
 

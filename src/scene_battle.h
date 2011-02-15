@@ -148,7 +148,6 @@ private:
 	void EnemyDestruct();
 	void EnemySkill();
 	void EnemyTransform();
-	void EnemyEscape();
 	void EnemyActionDone();
 
 	void ProcessActions();
@@ -162,6 +161,8 @@ private:
 
 	void CheckWin();
 	void CheckLose();
+	void CheckAbort();
+	void CheckFlee();
 
 	// battle_algorithms.cpp
 

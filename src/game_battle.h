@@ -9,6 +9,8 @@ namespace Game_Battle {
 	extern Background* background;
 	extern bool active;
 	extern int turn_fragments;
+	extern bool terminate;
+	extern bool allies_flee;
 
 	static const int gauge_full = Battle::Battler::gauge_full;
 	static const int turn_length = 333; // frames
@@ -52,5 +54,21 @@ namespace Game_Battle {
 	bool HaveCorpse();
 	bool CheckWin();
 	bool CheckLose();
+	void Terminate();
+
+	void ShowAnimation(int animation_id, bool allies, Battle::Ally* ally, Battle::Enemy* enemy, bool wait);
+	void UpdateAnimations();
+	bool IsAnimationWaiting();
+
+	void ChangeBackground(const std::string& name);
+
+	void EnemyEscape();
+
+	void MonsterFlee(int id);
+	void MonstersFlee();
+
+	bool CheckTurns(int turns, int base, int multiple);
+	bool CheckCondition(const RPG::TroopPageCondition& condition);
+	void CheckEvents();
 }
 

@@ -813,14 +813,6 @@ void Scene_Battle::EnemyTransform() {
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Battle::EnemyEscape() {
-	Battle::Enemy& enemy = Game_Battle::GetActiveEnemy();
-
-	enemy.fade = 30;
-	enemy.escaped = true;
-}
-
-////////////////////////////////////////////////////////////
 void Scene_Battle::EnemyActionDone() {
 	const RPG::EnemyAction* action = enemy_action;
 
@@ -841,6 +833,8 @@ void Scene_Battle::ProcessActions() {
 
 			CheckWin();
 			CheckLose();
+			CheckAbort();
+			CheckFlee();
 
 			if (help_window->GetVisible() && message_timer > 0) {
 				message_timer--;
@@ -1075,6 +1069,7 @@ void Scene_Battle::Update() {
 	UpdateCursors();
 	UpdateSprites();
 	UpdateFloaters();
+	Game_Battle::UpdateAnimations();
 }
 
 ////////////////////////////////////////////////////////////
@@ -1103,5 +1098,22 @@ void Scene_Battle::CheckLose() {
 	Game_Temp::battle_result = Game_Temp::BattleDefeat;
 	SetState(State_Defeat);
 	Message(!Data::terms.defeat.empty() ? Data::terms.defeat : "Defeat");
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Battle::CheckAbort() {
+	if (!Game_Battle::terminate)
+		return;
+	Game_Temp::battle_result = Game_Temp::BattleAbort;
+	Scene::Pop();
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Battle::CheckFlee() {
+	if (!Game_Battle::allies_flee)
+		return;
+	Game_Battle::allies_flee = false;
+	Game_Temp::battle_result = Game_Temp::BattleEscape;
+	Scene::Pop();
 }
 

@@ -513,6 +513,7 @@ bool Game_Interpreter_Map::CommandTeleport() { // Code 10810
 	int map_id = list[index].parameters[0];
 	int x = list[index].parameters[1];
 	int y = list[index].parameters[2];
+	// FIXME: RPG2K3 => facing direction = list[index].parameters[3]
 
 	Main_Data::game_player->ReserveTeleport(map_id, x, y);
 	teleport_pending = true;
@@ -1176,9 +1177,10 @@ bool Game_Interpreter_Map::CommandEnemyEncounter() { // code 10710
 	Game_Temp::battle_defeat_mode = list[index].parameters[4]; // game over, custom handler
 	Game_Temp::battle_first_strike = list[index].parameters[5] != 0;
 
-	if (Player::engine == Player::EngineRpg2k3) {
+	if (Player::engine == Player::EngineRpg2k3)
 		Game_Temp::battle_mode = list[index].parameters[6]; // normal, initiative, surround, back attack, pincer
-	}
+	else
+		Game_Temp::battle_mode = 0;
 
 	Game_Temp::battle_result = Game_Temp::BattleVictory;
 
@@ -1225,6 +1227,11 @@ bool Game_Interpreter_Map::ContinuationEnemyEncounter() {
 				default:
 					return false;
 			}
+		case Game_Temp::BattleAbort:
+			if (!SkipTo(EndBattle))
+				return false;
+			index++;
+			return true;
 		default:
 			return false;
 	}

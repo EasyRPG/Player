@@ -86,7 +86,7 @@ bool Game_Interpreter::IsRunning() const {
 ////////////////////////////////////////////////////////////
 /// Setup
 ////////////////////////////////////////////////////////////
-void Game_Interpreter::Setup(std::vector<RPG::EventCommand>& _list, int _event_id, int dbg_x, int dbg_y) {
+void Game_Interpreter::Setup(const std::vector<RPG::EventCommand>& _list, int _event_id, int dbg_x, int dbg_y) {
 
 	Clear();
 

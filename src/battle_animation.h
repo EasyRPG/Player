@@ -45,6 +45,7 @@ public:
 	void SetFrame(int);
 	void SetVisible(bool visible);
 	bool GetVisible();
+	bool IsDone() const;
 
 protected:
 	int x;

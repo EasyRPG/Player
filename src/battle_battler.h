@@ -36,22 +36,24 @@ struct Battler {
 		Side_Enemy
 	};
 
-	int side;
 	int ID;
 	Sprite* sprite;
 	int gauge;
 	int speed;
+	int turns;
 
 	static const int gauge_full = 10000;
 
-	Battler(int side, int id) :
-		side(side), ID(id), sprite(NULL), gauge(0) {}
+	Battler(int id) :
+		ID(id), sprite(NULL), gauge(0) {}
 
 	virtual Game_Battler* GetActor() = 0;
 	virtual const Game_Battler* GetActor() const = 0;
 	virtual void CreateSprite() = 0;
 	virtual bool CanAct() const = 0;
 	bool IsReady() const;
+	int GetTurns() const;
+	void NextTurn();
 };
 
 struct Ally : public Battler {
@@ -78,6 +80,7 @@ struct Ally : public Battler {
 	void SetAnimState(int state);
 	void UpdateAnim(int cycle);
 	bool CanAct() const;
+	void EnableCombo(int command_id, int multiple);
 
 	Game_Actor* game_actor;
 	const RPG::Actor* rpg_actor;
@@ -85,7 +88,9 @@ struct Ally : public Battler {
 	std::string sprite_file;
 	int anim_state;
 	bool defending;
-	int last_command;
+	int last_command;	// FIXME: this needs to be cleared
+	int combo_command;
+	int combo_multiple;
 };
 
 struct Enemy : public Battler {

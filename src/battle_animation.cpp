@@ -135,4 +135,7 @@ bool BattleAnimation::GetVisible() {
 	return visible;
 }
 
+bool BattleAnimation::IsDone() const {
+	return GetFrame() >= GetFrames();
+}
 

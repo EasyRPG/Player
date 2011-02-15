@@ -392,7 +392,7 @@ void Game_Screen::Update() {
 
 	if (animation != NULL) {
 		animation->Update();
-		if (animation->GetFrame() >= animation->GetFrames()) {
+		if (animation->IsDone()) {
 			delete animation;
 			animation = NULL;
 		}

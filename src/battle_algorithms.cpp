@@ -375,10 +375,10 @@ void Scene_Battle::EnemySkill(Battle::Enemy& enemy, const RPG::Skill& skill) {
 	switch (skill.type) {
 		case RPG::Skill::Type_teleport:
 			// FIXME: can monsters teleport?
-			EnemyEscape();
+			Game_Battle::EnemyEscape();
 			break;
 		case RPG::Skill::Type_escape:
-			EnemyEscape();
+			Game_Battle::EnemyEscape();
 			break;
 		case RPG::Skill::Type_switch:
 			if (!skill.occasion_battle)
