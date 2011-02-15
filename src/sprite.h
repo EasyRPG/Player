@@ -106,7 +106,8 @@ private:
 	int z;
 	int ox;
 	int oy;
-	
+
+	Color flash_color;
 	int flash_duration;
 	int flash_frame;
 };

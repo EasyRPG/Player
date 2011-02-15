@@ -81,23 +81,28 @@ void Sprite::Update() {
 		flash_frame += 1;
 		if (flash_duration == flash_frame) {
 			flash_duration = 0;
-			bitmap_screen->SetFlashEffect(Color(), 0);
+			bitmap_screen->SetFlashEffect(Color());
 		} else {
-			bitmap_screen->UpdateFlashEffect(flash_frame);
+			Color flash_effect = flash_color;
+			flash_effect.alpha = flash_duration == 0 || flash_frame >= flash_duration
+				? 0
+				: flash_effect.alpha * (flash_duration - flash_frame) / flash_duration;
+			bitmap_screen->SetFlashEffect(flash_effect);
 		}
 	}
 }
 
 ////////////////////////////////////////////////////////////
 void Sprite::Flash(int duration){
-	bitmap_screen->SetFlashEffect(Color(0, 0, 0, 0), duration);
+	bitmap_screen->SetFlashEffect(flash_color);
 	flash_duration = duration;
 	flash_frame = 0;
 }
 void Sprite::Flash(Color color, int duration){
-	bitmap_screen->SetFlashEffect(color, duration);
+	flash_color = color;
 	flash_duration = duration;
 	flash_frame = 0;
+	bitmap_screen->SetFlashEffect(color);
 }
 
 ////////////////////////////////////////////////////////////

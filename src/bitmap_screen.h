@@ -99,19 +99,6 @@ public:
 	////////////////////////////////////////////////////////
 	virtual void ClearEffects();
 
-	////////////////////////////////////////////////////////
-	/// Flash effect.
-	/// @param color : flash color
-	/// @param duration : flash duration
-	////////////////////////////////////////////////////////
-	virtual void SetFlashEffect(const Color &color, int duration);
-
-	////////////////////////////////////////////////////////
-	/// Flash effect update.
-	/// @param frame : frame of flash animation
-	////////////////////////////////////////////////////////
-	virtual void UpdateFlashEffect(int frame);
-
 	/// @return source rect
 	virtual Rect GetSrcRect() const;
 
@@ -138,6 +125,12 @@ public:
 
 	/// @param tone : tone effect
 	virtual void SetToneEffect(Tone tone);
+
+	////////////////////////////////////////////////////////
+	/// Flash effect.
+	/// @param color : flash color
+	////////////////////////////////////////////////////////
+	virtual void SetFlashEffect(const Color &color);
 
 	/// @return horizontal flip
 	virtual bool GetFlipXEffect() const;
@@ -217,6 +210,7 @@ protected:
 	Color blend_color_effect;
 	int waver_effect_depth;
 	double waver_effect_phase;
+	Color flash_effect;
 
 	virtual void BlitScreenIntern(Bitmap* draw_bitmap, int x, int y, Rect src_rect,
 								  bool need_scale, int bush_y);
@@ -232,6 +226,7 @@ protected:
 	bool bitmap_scale_valid;
 
 	Tone current_tone;
+	Color current_flash;
 	double current_zoom_x;
 	double current_zoom_y;
 	bool current_flip_x;

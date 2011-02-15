@@ -241,6 +241,16 @@ public:
 	virtual void ToneBlit(int x, int y, Bitmap* src, Rect src_rect, const Tone &tone);
 
 	////////////////////////////////////////////////////////
+	/// Blend bitmap with color.
+	/// @param x : x position
+	/// @param y : y position
+	/// @param src : source bitmap
+	/// @param src_rect : source bitmap rect
+	/// @param tone : color to apply
+	////////////////////////////////////////////////////////
+	virtual void BlendBlit(int x, int y, Bitmap* src, Rect src_rect, const Color &color);
+
+	////////////////////////////////////////////////////////
 	/// Change the opacity of a bitmap.
 	/// @param x : x position
 	/// @param y : y position

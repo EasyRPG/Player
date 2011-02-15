@@ -16,6 +16,8 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "battle_battler.h"
+#include "game_switches.h"
+#include "game_variables.h"
 #include "game_interpreter_battle.h"
 #include "game_switches.h"
 #include "game_variables.h"

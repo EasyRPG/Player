@@ -150,6 +150,7 @@ public:
 					 double hue, double sat, double lum, double loff);
 	void ToneBlit(uint8* dst_pixels, const uint8* src_pixels, int n, const Tone& tone);
 	void ToneBlit(uint8* dst_pixels, const uint8* src_pixels, int n, const Tone& tone, double factor);
+	void BlendBlit(uint8* dst_pixels, const uint8* src_pixels, int n, const Color& color);
 	void OpacityChangeBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int opacity);
 	void FlipHV(uint8*& pixels_first, uint8*& pixels_last, int n);
 	void FlipH(uint8*& pixels_left, uint8*& pixels_right, int n);
@@ -495,6 +496,25 @@ void BitmapUtilsT<PFsrc,PFdst>::ToneBlit(uint8* dst_pixels, const uint8* src_pix
 			pf_dst.set_rgba(dst_pixels, r, g, b, a);
 		}
 
+		src_pixels += pf_src.bytes;
+		dst_pixels += pf_dst.bytes;
+	}
+}
+
+////////////////////////////////////////////////////////////
+template <class PFsrc, class PFdst>
+void BitmapUtilsT<PFsrc,PFdst>::BlendBlit(uint8* dst_pixels, const uint8* src_pixels, int n, const Color& color) {
+	for (int i = 0; i < n; i++) {
+		uint8 r, g, b, a;
+		pf_src.get_rgba(src_pixels, r, g, b, a);
+		if (a != 0) {
+			uint8 srca = color.alpha;
+			uint8 rr = (uint8) ((r * (255 - srca) + color.red   * srca) / PF::ONE);
+			uint8 rg = (uint8) ((g * (255 - srca) + color.green * srca) / PF::ONE);
+			uint8 rb = (uint8) ((b * (255 - srca) + color.blue  * srca) / PF::ONE);
+			uint8 ra = a;
+			pf_dst.set_rgba(dst_pixels, rr, rg, rb, ra);
+		}
 		src_pixels += pf_src.bytes;
 		dst_pixels += pf_dst.bytes;
 	}

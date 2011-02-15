@@ -266,6 +266,15 @@ public:
 	virtual void ToneBlit(uint8* dst_pixels, const uint8* src_pixels, int n, const Tone& tone, double factor) = 0;
 
 	////////////////////////////////////////////////////////
+	/// Blend bitmap with color
+	/// @param dst_pixels : pointer to destination pixel row
+	/// @param src_pixel : pointer to source pixel row
+	/// @param n : number of pixels
+	/// @param color : color to apply
+	////////////////////////////////////////////////////////
+	virtual void BlendBlit(uint8* dst_pixels, const uint8* src_pixels, int n, const Color& color) = 0;
+
+	////////////////////////////////////////////////////////
 	/// Adjust bitmap opacity
 	/// @param dst_pixels : pointer to destination pixel row
 	/// @param src_pixel : pointer to source pixel row

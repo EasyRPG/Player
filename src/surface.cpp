@@ -566,6 +566,35 @@ void Surface::ToneBlit(int x, int y, Bitmap* src, Rect src_rect, const Tone &ton
 }
 
 ////////////////////////////////////////////////////////////
+void Surface::BlendBlit(int x, int y, Bitmap* src, Rect src_rect, const Color &color) {
+	if (color.alpha == 0) {
+		if (src != this)
+			Blit(x, y, src, src_rect, 255);
+		return;
+	}
+
+	Rect dst_rect(x, y, 0, 0);
+
+	if (!Rect::AdjustRectangles(src_rect, dst_rect, src->GetRect()))
+		return;
+	if (!Rect::AdjustRectangles(dst_rect, src_rect, GetRect()))
+		return;
+
+	BitmapUtils* bm_utils = Begin(src);
+
+	const uint8* src_pixels = src->pointer(src_rect.x, src_rect.y);
+	uint8* dst_pixels = pointer(dst_rect.x, dst_rect.y);
+
+	for (int i = 0; i < dst_rect.height; i++) {
+		bm_utils->BlendBlit(dst_pixels, src_pixels, dst_rect.width, color);
+		src_pixels += src->pitch();
+		dst_pixels += pitch();
+	}
+	
+	End(src);
+}
+
+////////////////////////////////////////////////////////////
 void Surface::OpacityBlit(int x, int y, Bitmap* src, Rect src_rect, int opacity) {
 	if (opacity == 255) {
 		if (src != this)

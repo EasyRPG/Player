@@ -68,6 +68,7 @@ public:
 	void ClearRect(Rect dst_rect);
 	void OpacityBlit(int x, int y, Bitmap* src, Rect src_rect, int opacity);
 	void ToneBlit(int x, int y, Bitmap* src, Rect src_rect, const Tone &tone);
+	void BlendBlit(int x, int y, Bitmap* _src, Rect src_rect, const Color& color);
 	void FlipBlit(int x, int y, Bitmap* src, Rect src_rect, bool horizontal, bool vertical);
 	void Flip(const Rect& dst_rect, bool horizontal, bool vertical);
 	void Blit2x(Rect dst_rect, Bitmap* _src, Rect src_rect);

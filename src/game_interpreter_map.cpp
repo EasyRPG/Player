@@ -1277,10 +1277,10 @@ bool Game_Interpreter_Map::CommandSpriteTransparency() { // code 11310
 
 bool Game_Interpreter_Map::CommandFlashSprite() { // code 11320
 	int event_id = list[index].parameters[0];
-	Color color(list[index].parameters[1],
-				list[index].parameters[2],
-				list[index].parameters[3],
-				list[index].parameters[4]);
+	Color color(list[index].parameters[1] << 3,
+				list[index].parameters[2] << 3,
+				list[index].parameters[3] << 3,
+				list[index].parameters[4] << 3);
 	int tenths = list[index].parameters[5];
 	bool wait = list[index].parameters[6] > 0;
 	Game_Character* event = GetCharacter(event_id);

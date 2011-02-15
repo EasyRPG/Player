@@ -25,7 +25,7 @@ Color::Color() :
 	red(0),
 	green(0),
 	blue(0),
-	alpha(255) {
+	alpha(0) {
 }
 
 Color::Color(uint red, uint green, uint blue, uint alpha) :

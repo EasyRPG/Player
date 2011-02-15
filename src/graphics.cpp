@@ -88,7 +88,7 @@ void Graphics::Init() {
 	frozen_screen = BitmapScreen::CreateBitmapScreen();
 
 	black_screen = BitmapScreen::CreateBitmapScreen();
-	Bitmap* black_bitmap = Bitmap::CreateBitmap(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color());
+	Bitmap* black_bitmap = Bitmap::CreateBitmap(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0,0,0,255));
 	black_screen->SetBitmap(black_bitmap, true);
 
 	frozen = false;

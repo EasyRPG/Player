@@ -73,6 +73,7 @@ BitmapScreen::BitmapScreen(Bitmap* bitmap, bool delete_bitmap) :
 	current_zoom_y = zoom_y_effect;
 	current_flip_x = flipx_effect;
 	current_flip_y = flipy_effect;
+	current_flash = flash_effect;
 
 	bitmap_effects_src_rect = Rect();
 	bitmap_scale_src_rect = Rect();
@@ -218,14 +219,7 @@ void BitmapScreen::ClearEffects() {
 	angle_effect = 0.0;
 	waver_effect_depth = 0;
 	waver_effect_phase = 0.0;
-}
-
-void BitmapScreen::SetFlashEffect(const Color &color, int duration) {
-	// TODO
-}
-
-void BitmapScreen::UpdateFlashEffect(int frame) {
-	// TODO
+	flash_effect = Color(0,0,0,0);
 }
 
 void BitmapScreen::SetSrcRect(Rect src_rect) {
@@ -258,6 +252,13 @@ void BitmapScreen::SetBushDepthEffect(int bush_depth) {
 void BitmapScreen::SetToneEffect(Tone tone) {
 	if (tone_effect != tone) {
 		tone_effect = tone;
+		needs_refresh = true;
+	}
+}
+
+void BitmapScreen::SetFlashEffect(const Color &color) {
+	if (flash_effect != color) {
+		flash_effect = color;
 		needs_refresh = true;
 	}
 }
@@ -400,10 +401,12 @@ Bitmap* BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
 		return NULL;
 
 	bool no_tone = tone_effect == Tone();
+	bool no_flash = flash_effect.alpha == 0;
 	bool no_flip = !flipx_effect && !flipy_effect;
-	bool no_effects = no_tone && no_flip;
+	bool no_effects = no_tone && no_flash && no_flip;
 	bool no_zoom = zoom_x_effect == 1.0 && zoom_y_effect == 1.0;
 	bool effects_changed = tone_effect != current_tone ||
+		flash_effect != current_flash ||
 		flipx_effect != current_flip_x ||
 		flipy_effect != current_flip_y;
 	bool effects_rect_changed = rect != bitmap_effects_src_rect;
@@ -427,6 +430,7 @@ Bitmap* BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
 		src_bitmap = bitmap_effects;
 	else {
 		current_tone = tone_effect;
+		current_flash = flash_effect;
 		current_flip_x = flipx_effect;
 		current_flip_y = flipy_effect;
 
@@ -441,12 +445,27 @@ Bitmap* BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
 			bitmap_effects = Surface::CreateSurface(bitmap->GetWidth(), bitmap->GetHeight(), true);
 
 		bitmap_effects->Clear();
-		if (no_flip)
-			bitmap_effects->ToneBlit(rect.x, rect.y, bitmap, rect, tone_effect);
-		else if (no_tone)
+		if (no_tone && no_flash)
 			bitmap_effects->FlipBlit(rect.x, rect.y, bitmap, rect, flipx_effect, flipy_effect);
-		else {
+		else if (no_flip && no_flash)
 			bitmap_effects->ToneBlit(rect.x, rect.y, bitmap, rect, tone_effect);
+		else if (no_flip && no_tone)
+			bitmap_effects->BlendBlit(rect.x, rect.y, bitmap, rect, flash_effect);
+		else if (no_flash) {
+			bitmap_effects->ToneBlit(rect.x, rect.y, bitmap, rect, tone_effect);
+			bitmap_effects->Flip(rect, flipx_effect, flipy_effect);
+		}
+		else if (no_tone) {
+			bitmap_effects->BlendBlit(rect.x, rect.y, bitmap, rect, flash_effect);
+			bitmap_effects->Flip(rect, flipx_effect, flipy_effect);
+		}
+		else if (no_flip) {
+			bitmap_effects->BlendBlit(rect.x, rect.y, bitmap, rect, flash_effect);
+			bitmap_effects->ToneBlit(rect.x, rect.y, bitmap_effects, rect, tone_effect);
+		}
+		else {
+			bitmap_effects->BlendBlit(rect.x, rect.y, bitmap, rect, flash_effect);
+			bitmap_effects->ToneBlit(rect.x, rect.y, bitmap_effects, rect, tone_effect);
 			bitmap_effects->Flip(rect, flipx_effect, flipy_effect);
 		}
 
