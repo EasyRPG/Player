@@ -81,20 +81,20 @@ protected:
 
 class CommandAction : public Action {
 public:
-	CommandAction(void (Scene_Battle::*func)()) :
+	CommandAction(void (*func)()) :
 		func(func) {}
 	bool operator()();
 protected:
-	void (Scene_Battle::*func)();
+	void (*func)();
 };
 
 class CommandAction1 : public Action {
 public:
-	CommandAction1(void (Scene_Battle::*func)(void*), void* param) :
+	CommandAction1(void (*func)(void*), void* param) :
 		func(func), param(param) {}
 	bool operator()();
 protected:
-	void (Scene_Battle::*func)(void*);
+	void (*func)(void*);
 	void* param;
 };
 

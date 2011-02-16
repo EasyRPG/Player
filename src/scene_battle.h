@@ -39,6 +39,7 @@
 #include "window_battlestatus.h"
 #include "battle_battler.h"
 #include "battle_animation.h"
+#include "battle_interface.h"
 
 namespace Battle {
 class Action;
@@ -49,7 +50,7 @@ class SpriteAction;
 /// Scene_Battle class.
 /// Manages the battles.
 ////////////////////////////////////////////////////////////
-class Scene_Battle : public Scene {
+class Scene_Battle : public Scene, public Battle_Interface {
 
 public:
 	Scene_Battle();
@@ -101,21 +102,29 @@ private:
 	Window_BattleCommand* command_window;
 	Window_BattleItem* item_window;
 	Window_BattleSkill* skill_window;
+	Background* background;
+
+	BattleAnimation* animation;
+	std::deque<BattleAnimation*> animations;
+
+	std::vector<FloatText*> floaters;
 
 	Sprite *ally_cursor;
 	Sprite *enemy_cursor;
-	std::vector<FloatText*> floaters;
 
 	void CreateCursors();
 	void CreateWindows();
 
-	void SetState(State state);
 	void Message(const std::string& msg, bool pause = true);
 	void Floater(const Sprite* ref, int color, const std::string& text, int duration);
 	void Floater(const Sprite* ref, int color, int value, int duration);
+	void ShowAnimation(int animation_id, bool allies, Battle::Ally* ally, Battle::Enemy* enemy, bool wait);
+	void UpdateAnimations();
+	bool IsAnimationWaiting();
+
+	void SetState(State state);
 	void SetAnimState(Battle::Ally& ally, int state);
-	void UpdateAnimState(Battle::Ally& ally, int default_state = Battle::Ally::Idle);
-	void Restart(Battle::Ally& ally, int state = Battle::Ally::Idle);
+	void UpdateAnimState();
 	void Restart();
 
 	void Command();
@@ -141,19 +150,14 @@ private:
 	void EnemyActionBasic();
 	void EnemyActionSkill();
 
-	void EnemyAttack(void* target = NULL);
-	void EnemyDefend();
-	void EnemyObserve();
-	void EnemyCharge();
-	void EnemyDestruct();
-	void EnemySkill();
-	void EnemyTransform();
-	void EnemyActionDone();
+	static void EnemyActionDone(void* param);
 
 	void ProcessActions();
 	void ProcessInput();
 	void ChooseEnemy();
 	void DoAuto();
+
+	void UpdateBackground();
 	void UpdateCursors();
 	void UpdateAttack();
 	void UpdateSprites();

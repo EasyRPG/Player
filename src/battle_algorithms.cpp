@@ -25,10 +25,9 @@
 #include "game_party.h"
 #include "game_switches.h"
 #include "game_battle.h"
-#include "scene_battle.h"
 
 ////////////////////////////////////////////////////////////
-void Scene_Battle::AttackEnemy(Battle::Ally& ally, Battle::Enemy& enemy) {
+void Game_Battle::AttackEnemy(Battle::Ally& ally, Battle::Enemy& enemy) {
 	const RPG::Item& weapon = Data::items[ally.game_actor->GetWeaponId() - 1];
 	double to_hit = 100 - (100 - weapon.hit) * (1 + (1.0 * enemy.game_enemy->GetAgi() / ally.GetActor()->GetAgi() - 1) / 2);
 
@@ -41,14 +40,14 @@ void Scene_Battle::AttackEnemy(Battle::Ally& ally, Battle::Enemy& enemy) {
 		effect += change;
 
 		enemy.game_enemy->SetHp(enemy.game_enemy->GetHp() - effect);
-		Floater(enemy.sprite, Font::ColorDefault, effect, 60);
+		GetScene()->Floater(enemy.sprite, Font::ColorDefault, effect, 60);
 	}
 	else
-		Floater(enemy.sprite, Font::ColorDefault, Data::terms.miss, 60);
+		GetScene()->Floater(enemy.sprite, Font::ColorDefault, Data::terms.miss, 60);
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Battle::UseItem(Battle::Ally& ally, const RPG::Item& item) {
+void Game_Battle::UseItem(Battle::Ally& ally, const RPG::Item& item) {
 	if (item.type != RPG::Item::Type_medicine)
 		return;
 	if (item.ocassion_field)
@@ -67,7 +66,6 @@ void Scene_Battle::UseItem(Battle::Ally& ally, const RPG::Item& item) {
 		case 1:
 			// single use
 			Game_Party::LoseItem(item.ID, 1, false);
-			item_window->Refresh();
 			break;
 		default:
 			// multiple use
@@ -77,7 +75,7 @@ void Scene_Battle::UseItem(Battle::Ally& ally, const RPG::Item& item) {
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Battle::UseItemAlly(Battle::Ally& ally, const RPG::Item& item, Battle::Ally& target) {
+void Game_Battle::UseItemAlly(Battle::Ally& ally, const RPG::Item& item, Battle::Ally& target) {
 	if (item.ko_only && !target.GetActor()->IsDead())
 		return;
 
@@ -90,9 +88,9 @@ void Scene_Battle::UseItemAlly(Battle::Ally& ally, const RPG::Item& item, Battle
 	target.GetActor()->SetSp(target.GetActor()->GetSp() + sp);
 
 	if (hp > 0)
-		Floater(target.sprite, 9, hp, 60);
+		GetScene()->Floater(target.sprite, 9, hp, 60);
 	else if (sp > 0)
-		Floater(target.sprite, 9, sp, 60);
+		GetScene()->Floater(target.sprite, 9, sp, 60);
 
 	// Status recovery
 	for (int i = 0; i < (int) item.state_set.size(); i++)
@@ -101,7 +99,7 @@ void Scene_Battle::UseItemAlly(Battle::Ally& ally, const RPG::Item& item, Battle
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Battle::UseSkill(Battle::Ally& ally, const RPG::Skill& skill) {
+void Game_Battle::UseSkill(Battle::Ally& ally, const RPG::Skill& skill) {
 
 	int sp = ally.GetActor()->CalculateSkillCost(skill.ID);
 	if (sp > ally.GetActor()->GetSp()) // not enough SP
@@ -150,7 +148,7 @@ void Scene_Battle::UseSkill(Battle::Ally& ally, const RPG::Skill& skill) {
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Battle::UseSkillAlly(Battle::Battler& user, const RPG::Skill& skill, Battle::Battler& target) {
+void Game_Battle::UseSkillAlly(Battle::Battler& user, const RPG::Skill& skill, Battle::Battler& target) {
 	Game_Battler* actor = target.GetActor();
 	bool miss = true;
 
@@ -182,7 +180,7 @@ void Scene_Battle::UseSkillAlly(Battle::Battler& user, const RPG::Skill& skill, 
 				actor->SetAgi(actor->GetAgi() + effect);
 
 			if (skill.affect_hp || skill.affect_sp)
-				Floater(target.sprite, 9, effect, 60);
+				GetScene()->Floater(target.sprite, 9, effect, 60);
 		}
 	}
 
@@ -201,11 +199,11 @@ void Scene_Battle::UseSkillAlly(Battle::Battler& user, const RPG::Skill& skill, 
 	}
 
 	if (miss)
-		Floater(target.sprite, Font::ColorDefault, Data::terms.miss, 60);
+		GetScene()->Floater(target.sprite, Font::ColorDefault, Data::terms.miss, 60);
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Battle::UseSkillEnemy(Battle::Battler& user, const RPG::Skill& skill, Battle::Battler& target) {
+void Game_Battle::UseSkillEnemy(Battle::Battler& user, const RPG::Skill& skill, Battle::Battler& target) {
 	Game_Battler* actor = target.GetActor();
 	bool miss = true;
 
@@ -239,7 +237,7 @@ void Scene_Battle::UseSkillEnemy(Battle::Battler& user, const RPG::Skill& skill,
 				actor->SetAgi(actor->GetAgi() - effect);
 
 			if (skill.affect_hp || skill.affect_sp)
-				Floater(target.sprite, Font::ColorDefault, effect, 60);
+				GetScene()->Floater(target.sprite, Font::ColorDefault, effect, 60);
 		}
 	}
 
@@ -258,11 +256,11 @@ void Scene_Battle::UseSkillEnemy(Battle::Battler& user, const RPG::Skill& skill,
 	}
 
 	if (miss)
-		Floater(target.sprite, Font::ColorDefault, Data::terms.miss, 60);
+		GetScene()->Floater(target.sprite, Font::ColorDefault, Data::terms.miss, 60);
 }
 
 ////////////////////////////////////////////////////////////
-bool Scene_Battle::EnemyActionValid(const RPG::EnemyAction& action, Battle::Enemy& enemy) {
+bool Game_Battle::EnemyActionValid(const RPG::EnemyAction& action, Battle::Enemy& enemy) {
 	switch (action.condition_type) {
 		case RPG::EnemyAction::ConditionType_always:
 			return true;
@@ -316,7 +314,7 @@ bool Scene_Battle::EnemyActionValid(const RPG::EnemyAction& action, Battle::Enem
 }
 
 ////////////////////////////////////////////////////////////
-const RPG::EnemyAction* Scene_Battle::ChooseEnemyAction(Battle::Enemy& enemy) {
+const RPG::EnemyAction* Game_Battle::ChooseEnemyAction(Battle::Enemy& enemy) {
 	const std::vector<RPG::EnemyAction>& actions = enemy.rpg_enemy->actions;
 	std::vector<int> valid;
 	std::vector<RPG::EnemyAction>::const_iterator it;
@@ -329,6 +327,8 @@ const RPG::EnemyAction* Scene_Battle::ChooseEnemyAction(Battle::Enemy& enemy) {
 		}
 	}
 
+	enemy_action = NULL;
+
 	int which = rand() % total;
 	for (std::vector<int>::const_iterator it = valid.begin(); it != valid.end(); it++) {
 		const RPG::EnemyAction& action = actions[*it];
@@ -337,14 +337,14 @@ const RPG::EnemyAction* Scene_Battle::ChooseEnemyAction(Battle::Enemy& enemy) {
 			continue;
 		}
 
-		return &action;
+		enemy_action = &action;
 	}
 
-	return NULL;
+	return enemy_action;
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Battle::EnemyAttackAlly(Battle::Enemy& enemy, Battle::Ally& ally) {
+void Game_Battle::EnemyAttackAlly(Battle::Enemy& enemy, Battle::Ally& ally) {
 	if (ally.GetActor()->IsDead())
 		return;
 
@@ -360,14 +360,14 @@ void Scene_Battle::EnemyAttackAlly(Battle::Enemy& enemy, Battle::Ally& ally) {
 		effect += change;
 
 		ally.GetActor()->SetHp(ally.GetActor()->GetHp() - effect);
-		Floater(ally.sprite, Font::ColorDefault, effect, 60);
+		GetScene()->Floater(ally.sprite, Font::ColorDefault, effect, 60);
 	}
 	else
-		Floater(ally.sprite, Font::ColorDefault, Data::terms.miss, 60);
+		GetScene()->Floater(ally.sprite, Font::ColorDefault, Data::terms.miss, 60);
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Battle::EnemySkill(Battle::Enemy& enemy, const RPG::Skill& skill) {
+void Game_Battle::EnemySkill(Battle::Enemy& enemy, const RPG::Skill& skill) {
 	int sp = enemy.game_enemy->CalculateSkillCost(skill.ID);
 	if (sp > enemy.game_enemy->GetSp()) // not enough SP
 		return;

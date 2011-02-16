@@ -66,7 +66,7 @@ void Window_BattleStatus::Refresh() {
 ////////////////////////////////////////////////////////////
 void Window_BattleStatus::RefreshGauge(int i) {
 	int y = i * 15;
-	contents->ClearRect(Rect(192, y, 44, 16));
+	contents->ClearRect(Rect(192, y, 44, 15));
 	Game_Actor* actor = Game_Battle::allies[i].game_actor;
 	DrawGauge(actor, i, 192, y);
 	DrawActorSp(actor, 202, y, false);

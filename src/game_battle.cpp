@@ -6,18 +6,18 @@
 #include "game_temp.h"
 #include "game_switches.h"
 #include "game_variables.h"
+#include "game_interpreter_battle.h"
 #include "battle_animation.h"
 #include "battle_battler.h"
 #include "game_battle.h"
 
 namespace Game_Battle {
+	Battle_Interface* scene;
 
 	const RPG::Troop* troop;
 	std::vector<Battle::Ally> allies;
 	std::vector<Battle::Enemy> enemies;
-	Background* background;
 
-	bool active;
 	int turn_fragments;
 	int target_enemy;
 	int target_ally;
@@ -25,19 +25,19 @@ namespace Game_Battle {
 	int active_ally;
 	bool terminate;
 	bool allies_flee;
+	int item_id;
+	int skill_id;
+	int morph_id;
+	std::string background_name;
+	const RPG::EnemyAction* enemy_action;
 
-	BattleAnimation* animation;
-	std::deque<BattleAnimation*> animations;
+	const RPG::TroopPage* script_page;
+	Game_Interpreter* interpreter;
 }
 
 ////////////////////////////////////////////////////////////
-void Game_Battle::Init() {
-	active = true;
-
-	if (!Game_Temp::battle_background.empty())
-		background = new Background(Game_Temp::battle_background);
-	else
-		background = new Background(Game_Temp::battle_terrain_id);
+void Game_Battle::Init(Battle_Interface* _scene) {
+	scene = _scene;
 
 	troop = &Data::troops[Game_Temp::battle_troop_id - 1];
 
@@ -62,29 +62,24 @@ void Game_Battle::Init() {
 	for (std::vector<Battle::Ally>::iterator it = allies.begin(); it != allies.end(); it++)
 		it->gauge = gauge;
 
+	background_name = Game_Temp::battle_background;
+
 	active_enemy = -1;
 	active_ally = -1;
 	target_enemy = -1;
 	target_ally = -1;
 	terminate = false;
-	animation = NULL;
-	animations.clear();
 	allies_flee = false;
+	item_id = -1;
+	skill_id = -1;
+	morph_id = -1;
+
+	script_page = NULL;
+
+	interpreter = new Game_Interpreter_Battle();
 }
 
 void Game_Battle::Quit() {
-	delete background;
-	background = NULL;
-
-	if (animation != NULL)
-		delete animation;
-	animation = NULL;
-
-	while (!animations.empty()) {
-		delete animations.front();
-		animations.pop_front();
-	}
-
 	// Remove conditions which end after battle
 	for (std::vector<Battle::Ally>::iterator it = allies.begin(); it != allies.end(); it++)
 		it->GetActor()->RemoveStates();
@@ -92,7 +87,14 @@ void Game_Battle::Quit() {
 	allies.clear();
 	enemies.clear();
 
-	active = false;
+	delete interpreter;
+
+	scene = NULL;
+}
+
+////////////////////////////////////////////////////////////
+Battle_Interface* Game_Battle::GetScene() {
+	return scene;
 }
 
 ////////////////////////////////////////////////////////////
@@ -313,68 +315,8 @@ void Game_Battle::Terminate() {
 }
 
 ////////////////////////////////////////////////////////////
-void Game_Battle::ShowAnimation(int animation_id, bool allies, Battle::Ally* ally, Battle::Enemy* enemy, bool wait) {
-	const RPG::Animation* rpg_anim = &Data::animations[animation_id - 1];
-	int x, y;
-
-	if (ally != NULL) {
-		x = ally->sprite->GetX();
-		y = ally->sprite->GetY();
-	}
-	else if (enemy != NULL) {
-		x = enemy->sprite->GetX();
-		y = enemy->sprite->GetY();
-	}
-	else if (allies)
-		AlliesCentroid(x, y);
-	else
-		EnemiesCentroid(x, y);
-
-	BattleAnimation* new_animation = new BattleAnimation(x, y, rpg_anim);
-
-	if (wait) {
-		if (animation != NULL)
-			delete animation;
-		animation = new_animation;
-	}
-	else
-		animations.push_back(new_animation);
-}
-
-////////////////////////////////////////////////////////////
-void Game_Battle::UpdateAnimations() {
-	animation->Update();
-	if (animation->IsDone()) {
-		delete animation;
-		animation = NULL;
-	}
-
-	for (std::deque<BattleAnimation*>::iterator it = animations.begin(); it != animations.end(); it++) {
-		BattleAnimation* anim = *it;
-		if (anim == NULL)
-			continue;
-		anim->Update();
-		if (anim->IsDone()) {
-			delete anim;
-			*it = NULL;
-		}
-	}
-
-	std::deque<BattleAnimation*>::iterator end;
-	end = std::remove(animations.begin(), animations.end(), (BattleAnimation*) NULL);
-	animations.erase(end, animations.end());
-}
-
-////////////////////////////////////////////////////////////
-bool Game_Battle::IsAnimationWaiting() {
-	return animation != NULL;
-}
-
-////////////////////////////////////////////////////////////
 void Game_Battle::ChangeBackground(const std::string& name) {
-	delete background;
-
-	background = new Background(name);
+	background_name = name;
 }
 
 ////////////////////////////////////////////////////////////
@@ -455,12 +397,142 @@ bool Game_Battle::CheckCondition(const RPG::TroopPageCondition& condition) {
 }
 
 void Game_Battle::CheckEvents() {
-	std::vector<RPG::TroopPage>::const_iterator it;
-	for (it = troop->pages.begin(); it != troop->pages.end(); it++) {
+	const RPG::TroopPage* new_page = NULL;
+	std::vector<RPG::TroopPage>::const_reverse_iterator it;
+	for (it = troop->pages.rbegin(); it != troop->pages.rend(); it++) {
 		const RPG::TroopPage& page = *it;
-		if (!CheckCondition(page.condition))
-			continue;
-		// FIXME: create interpreter
+		if (CheckCondition(page.condition)) {
+			new_page = &*it;
+			break;
+		}
 	}
+
+	if (new_page != NULL && new_page != script_page)
+		interpreter->Setup(new_page->event_commands, 0);
+}
+
+////////////////////////////////////////////////////////////
+void Game_Battle::Restart() {
+	scene->Restart();
+	Battle::Ally& ally = GetActiveAlly();
+	ally.NextTurn();
+	ClearTargetAlly();
+	ClearTargetEnemy();
+}
+
+////////////////////////////////////////////////////////////
+void Game_Battle::SetItem(int id) {
+	item_id = id;
+}
+
+void Game_Battle::SetSkill(int id) {
+	skill_id = id;
+}
+
+void Game_Battle::SetMorph(int id) {
+	morph_id = id;
+}
+
+////////////////////////////////////////////////////////////
+bool Game_Battle::Escape() {
+	if (Game_Temp::battle_escape_mode != 0) {
+		// FIXME: escape probability
+		Game_Temp::battle_result = Game_Temp::BattleEscape;
+		return true;
+	}
+
+	return false;
+}
+
+void Game_Battle::Defend() {
+	Battle::Ally& ally = GetActiveAlly();
+	ally.defending = true;
+}
+
+void Game_Battle::Attack() {
+	Battle::Ally& ally = GetActiveAlly();
+	Battle::Enemy& enemy = GetTargetEnemy();
+	AttackEnemy(ally, enemy);
+	ally.defending = false;
+}
+
+void Game_Battle::UseItem() {
+	Battle::Ally& ally = GetActiveAlly();
+	const RPG::Item& item = Data::items[item_id - 1];
+	UseItem(ally, item);
+	ally.defending = false;
+}
+
+void Game_Battle::UseSkill() {
+	const RPG::Skill& skill = Data::skills[skill_id - 1];
+	Battle::Ally& ally = GetActiveAlly();
+	UseSkill(ally, skill);
+	ally.defending = false;
+}
+
+////////////////////////////////////////////////////////////
+void Game_Battle::EnemyAttack(void* target) {
+	Battle::Enemy& enemy = GetActiveEnemy();
+	Battle::Ally& ally = *((Battle::Ally*)target);
+
+	EnemyAttackAlly(enemy, ally);
+}
+
+void Game_Battle::EnemyDefend() {
+	Battle::Enemy& enemy = GetActiveEnemy();
+	const std::string msg = !Data::terms.defending.empty()
+		? Data::terms.defending
+		: " is defending";
+	GetScene()->Message(enemy.rpg_enemy->name + msg);
+	enemy.defending = true;
+}
+
+void Game_Battle::EnemyObserve() {
+	Battle::Enemy& enemy = GetActiveEnemy();
+	const std::string msg = !Data::terms.observing.empty()
+		? Data::terms.observing
+		: " is observing the battle";
+	GetScene()->Message(enemy.rpg_enemy->name + msg);
+}
+
+void Game_Battle::EnemyCharge() {
+	Battle::Enemy& enemy = GetActiveEnemy();
+	const std::string msg = !Data::terms.focus.empty()
+		? Data::terms.focus
+		: " is charging";
+	GetScene()->Message(enemy.rpg_enemy->name + msg);
+	enemy.charged = true;
+}
+
+void Game_Battle::EnemyDestruct() {
+	Battle::Enemy& enemy = GetActiveEnemy();
+	const std::string msg = !Data::terms.autodestruction.empty()
+		? Data::terms.autodestruction
+		: "Self-destruct";
+	GetScene()->Message(msg);
+	enemy.charged = true;
+	for (std::vector<Battle::Ally>::iterator it = allies.begin(); it != allies.end(); it++)
+		EnemyAttack((void*)&*it);
+	enemy.game_enemy->SetHp(0);
+}
+
+void Game_Battle::EnemySkill() {
+	const RPG::Skill& skill = Data::skills[skill_id - 1];
+	Battle::Enemy& enemy = GetActiveEnemy();
+	EnemySkill(enemy, skill);
+}
+
+void Game_Battle::EnemyTransform() {
+	Battle::Enemy& enemy = GetActiveEnemy();
+	enemy.Transform(morph_id);
+}
+
+////////////////////////////////////////////////////////////
+void Game_Battle::EnemyActionDone() {
+	if (enemy_action->switch_on)
+		Game_Switches[enemy_action->switch_on_id] = true;
+
+	if (enemy_action->switch_off)
+		Game_Switches[enemy_action->switch_off_id] = false;
 }
 

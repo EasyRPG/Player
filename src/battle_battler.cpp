@@ -35,6 +35,7 @@ int Battle::Battler::GetTurns() const {
 
 void Battle::Battler::NextTurn() {
 	turns++;
+	gauge = 0;
 }
 
 ////////////////////////////////////////////////////////////

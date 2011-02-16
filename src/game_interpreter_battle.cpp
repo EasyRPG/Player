@@ -212,9 +212,9 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation() {
 	Battle::Enemy* enemy = (!allies && target >= 0) ? &Game_Battle::GetEnemy(target) : NULL;
 
 	if (active)
-		return !Game_Battle::IsAnimationWaiting();
+		return !Game_Battle::GetScene()->IsAnimationWaiting();
 
-	Game_Battle::ShowAnimation(animation_id, allies, ally, enemy, wait);
+	Game_Battle::GetScene()->ShowAnimation(animation_id, allies, ally, enemy, wait);
 	return !wait;
 }
 

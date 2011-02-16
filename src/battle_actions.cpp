@@ -38,13 +38,13 @@ bool Battle::SpriteAction::operator()() {
 
 ////////////////////////////////////////////////////////////
 bool Battle::CommandAction::operator()() {
-	(((Scene_Battle*) Scene::instance)->*func)();
+	(*func)();
 	return true;
 }
 
 ////////////////////////////////////////////////////////////
 bool Battle::CommandAction1::operator()() {
-	(((Scene_Battle*) Scene::instance)->*func)(param);
+	(*func)(param);
 	return true;
 }
 
