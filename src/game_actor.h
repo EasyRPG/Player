@@ -246,6 +246,9 @@ public:
 	/// @param id  : command to add/remove, 0 to remove all commands
 	void ChangeBattleCommands(bool add, int id);
 
+	int GetClass() const;
+	void SetClass(int class_id);
+
 	const std::vector<uint32_t>& GetBattleCommands();
 
 private:
@@ -264,6 +267,7 @@ private:
 	int accessory_id;
 	int level;
 	int exp;
+	int class_id;
 	std::vector<int> exp_list;
 	std::vector<int> skills;
 	bool two_swords_style;

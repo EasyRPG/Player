@@ -130,14 +130,12 @@ int Game_Battler::GetMaxSp() const {
 ////////////////////////////////////////////////////////////
 void Game_Battler::SetMaxHp(int _maxhp) {
 	maxhp_plus += _maxhp - GetMaxHp(); 
-	maxhp_plus = min(max(maxhp_plus, -999), 999);
 	hp = min(GetMaxHp(), hp);
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Battler::SetMaxSp(int _maxsp) {
 	maxsp_plus += _maxsp - GetMaxSp(); 
-	maxsp_plus = min(max(maxsp_plus, -999), 999);
 	sp = min(GetMaxSp(), sp);
 }
 
@@ -222,25 +220,21 @@ void Game_Battler::SetSp(int _sp) {
 ////////////////////////////////////////////////////////////
 void Game_Battler::SetAtk(int _atk) {
 	atk_plus += _atk - GetAtk();
-	atk_plus = min(max(atk_plus, 1), 999);
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Battler::SetDef(int _def) {
 	def_plus += _def - GetDef();
-	def_plus = min(max(def_plus, 1), 999);
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Battler::SetSpi(int _spi) {
 	spi_plus += _spi - GetSpi();
-	spi_plus = min(max(spi_plus, 1), 999);
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Battler::SetAgi(int _agi) {
 	agi_plus += _agi - GetAgi();
-	agi_plus = min(max(agi_plus, 1), 999);
 }
 
 ////////////////////////////////////////////////////////////

@@ -23,6 +23,7 @@
 #include "game_actor.h"
 #include "game_party.h"
 #include "main_data.h"
+#include "player.h"
 #include "util_macro.h"
 
 ////////////////////////////////////////////////////////////
@@ -50,6 +51,7 @@ void Game_Actor::Setup(int actor_id) {
 	exp_list.resize(actor.final_level, 0);
 	MakeExpList();
 	exp = exp_list[level - 1];
+	class_id = 0;
 	hp = GetMaxHp();
 	sp = GetMaxSp();
 	two_swords_style = actor.two_swords_style;
@@ -165,17 +167,23 @@ void Game_Actor::ChangeEquipment(int equip_type, int item_id, bool test) {
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseMaxHp() const {
-	return Data::actors[actor_id - 1].parameter_maxhp[level - 1];
+	return class_id > 0
+		? Data::classes[class_id - 1].parameter_maxhp[level - 1]
+		: Data::actors[actor_id - 1].parameter_maxhp[level - 1];
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseMaxSp() const {
-	return Data::actors[actor_id - 1].parameter_maxsp[level - 1];
+	return class_id > 0
+		? Data::classes[class_id - 1].parameter_maxsp[level - 1]
+		: Data::actors[actor_id - 1].parameter_maxsp[level - 1];
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseAtk() const {
-	int n = Data::actors[actor_id - 1].parameter_attack[level - 1];
+	int n = class_id > 0
+		? Data::classes[class_id - 1].parameter_attack[level - 1]
+		: Data::actors[actor_id - 1].parameter_attack[level - 1];
 
 	if (weapon_id > 0) {
 		n += Data::items[weapon_id - 1].atk_points;
@@ -198,7 +206,9 @@ int Game_Actor::GetBaseAtk() const {
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseDef() const {
-	int n = Data::actors[actor_id - 1].parameter_defense[level - 1];
+	int n = class_id > 0
+		? Data::classes[class_id - 1].parameter_defense[level - 1]
+		: Data::actors[actor_id - 1].parameter_defense[level - 1];
 
 	if (weapon_id > 0) {
 		n += Data::items[weapon_id - 1].def_points;
@@ -221,7 +231,9 @@ int Game_Actor::GetBaseDef() const {
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseSpi() const {
-	int n = Data::actors[actor_id - 1].parameter_spirit[level - 1];
+	int n = class_id > 0
+		? Data::classes[class_id - 1].parameter_spirit[level - 1]
+		: Data::actors[actor_id - 1].parameter_spirit[level - 1];
 
 	if (weapon_id > 0) {
 		n += Data::items[weapon_id - 1].spi_points;
@@ -244,7 +256,9 @@ int Game_Actor::GetBaseSpi() const {
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseAgi() const {
-	int n = Data::actors[actor_id - 1].parameter_agility[level - 1];
+	int n = class_id > 0
+		? Data::classes[class_id - 1].parameter_agility[level - 1]
+		: Data::actors[actor_id - 1].parameter_agility[level - 1];
 
 	if (weapon_id > 0) {
 		n += Data::items[weapon_id - 1].agi_points;
@@ -400,7 +414,8 @@ void Game_Actor::SetLevel(int _level) {
 
 ////////////////////////////////////////////////////////////
 void Game_Actor::ChangeLevel(int level) {
-	this->level = max(min(level, 50), 1);
+	int max_level = Player::engine == Player::EngineRpg2k3 ? 99 : 50;
+	this->level = max(min(level, max_level), 1);
 	//ChangeExp()
 }
 
@@ -472,4 +487,13 @@ const std::vector<uint32_t>& Game_Actor::GetBattleCommands() {
 	return battle_commands;
 }
 
+////////////////////////////////////////////////////////////
+
+int Game_Actor::GetClass() const {
+	return class_id;
+}
+
+void Game_Actor::SetClass(int _class_id) {
+	class_id = _class_id;
+}
 

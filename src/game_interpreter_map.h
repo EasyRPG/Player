@@ -106,6 +106,7 @@ private:
 	bool CommandSimulatedAttack();
 	bool CommandConditionalBranch();
 	bool CommandShowBattleAnimation();
+	bool CommandChangeClass();
 
 	bool ContinuationOpenShop();
 	bool ContinuationShowInn();

@@ -274,6 +274,8 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 			return CommandSimulatedAttack();
 		case ShowBattleAnimation:
 			return CommandShowBattleAnimation();
+		case ChangeClass:
+			return CommandChangeClass();
 		case ConditionalBranch: 
 			return CommandConditionalBranch();
 		case ElseBranch:
@@ -1582,6 +1584,97 @@ bool Game_Interpreter_Map::CommandShowBattleAnimation() { // code 11210
 	Main_Data::game_screen->ShowBattleAnimation(animation_id, event, global);
 
 	return !wait;
+}
+
+bool Game_Interpreter_Map::CommandChangeClass() { // code 1008
+	int actor_id = list[index].parameters[1];
+	int class_id = list[index].parameters[2];
+	bool level1 = list[index].parameters[3] > 0;
+	int skill_mode = list[index].parameters[4]; // no change, replace, add
+	int stats_mode = list[index].parameters[5]; // no change, halve, level 1, current level
+	bool show = list[index].parameters[6] > 0;
+
+	Game_Actor* actor = Game_Actors::GetActor(actor_id);
+
+	int cur_lvl = actor->GetLevel();
+	int cur_exp = actor->GetExp();
+
+	switch (stats_mode) {
+		case 2:
+			actor->SetClass(class_id);
+			actor->SetLevel(1);
+			actor->SetExp(0);
+			break;
+		case 3:
+			actor->SetClass(class_id);
+			break;
+	}
+
+	int cur_hp = actor->GetMaxHp();
+	int cur_sp = actor->GetMaxSp();
+	int cur_atk = actor->GetAtk();
+	int cur_def = actor->GetDef();
+	int cur_spi = actor->GetSpi();
+	int cur_agi = actor->GetAgi();
+
+	switch (stats_mode) {
+		case 1:
+			cur_hp /= 2;
+			cur_sp /= 2;
+			cur_atk /= 2;
+			cur_def /= 2;
+			cur_spi /= 2;
+			cur_agi /= 2;
+			break;
+	}
+
+	actor->SetClass(class_id);
+	if (level1) {
+		actor->SetLevel(1);
+		actor->SetExp(0);
+	}
+	else {
+		actor->SetExp(cur_exp);
+		actor->SetLevel(cur_lvl);
+	}
+
+	actor->SetMaxHp(cur_hp);
+	actor->SetMaxSp(cur_sp);
+	actor->SetAtk(cur_atk);
+	actor->SetDef(cur_def);
+	actor->SetSpi(cur_spi);
+	actor->SetAgi(cur_agi);
+
+	int level = actor->GetLevel();
+
+	switch (skill_mode) {
+		case 0:
+			break;
+		case 1:
+			while (!actor->GetSkills().empty())
+				actor->UnlearnSkill(actor->GetSkills()[0]);
+			break;
+		case 2:
+		{
+			const RPG::Class& klass = Data::classes[class_id - 1];
+			while (!actor->GetSkills().empty())
+				actor->UnlearnSkill(actor->GetSkills()[0]);
+			std::vector<RPG::Learning>::const_iterator it;
+			for (it = klass.skills.begin(); it != klass.skills.end(); it++) {
+				const RPG::Learning& learn = *it;
+				if (level >= learn.level)
+					actor->LearnSkill(learn.skill_id);
+			}
+			break;
+		}
+	}
+
+	if (show && level > cur_lvl) {
+		// TODO
+		// Show message increase level
+	}
+
+	return true;
 }
 
 ////////////////////////////////////////////////////////////
