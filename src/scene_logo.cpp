@@ -23,7 +23,7 @@
 #include "input.h"
 #include "scene_title.h"
 
-static unsigned char easyrpg_logo[] = {
+static const uint8 easyrpg_logo[] = {
 	0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0x00, 0x00, 0x0D,
 	0x49, 0x48, 0x44, 0x52, 0x00, 0x00, 0x01, 0x40, 0x00, 0x00, 0x00, 0xF0,
 	0x08, 0x03, 0x00, 0x00, 0x00, 0x46, 0xF3, 0x4D, 0x59, 0x00, 0x00, 0x03,
@@ -914,7 +914,7 @@ Scene_Logo::Scene_Logo() :
 ////////////////////////////////////////////////////////////
 void Scene_Logo::Start() {
 	logo = new Sprite();
-	logo_img = Bitmap::CreateBitmap((const uint8*)easyrpg_logo, sizeof(easyrpg_logo), false);
+	logo_img = Bitmap::CreateBitmap(easyrpg_logo, sizeof(easyrpg_logo), false);
 	logo->SetBitmap(logo_img);
 }
 

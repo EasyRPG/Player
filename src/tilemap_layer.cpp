@@ -32,7 +32,7 @@
 // Mess with this code and you will die in 3 days...
 ////////////////////////////////////////////////////////////
 // [tile-id][row][col]
-static signed char BlockA_Subtiles_IDS[47][2][2] = {
+static const int8 BlockA_Subtiles_IDS[47][2][2] = {
 #define N -1
 	{{N, N}, {N, N}},
 	{{3, N}, {N, N}},
@@ -85,7 +85,7 @@ static signed char BlockA_Subtiles_IDS[47][2][2] = {
 };
 
 // [tile-id][row][col][x/y]
-static signed char BlockD_Subtiles_IDS[50][2][2][2] = {
+static const uint8 BlockD_Subtiles_IDS[50][2][2][2] = {
 //     T-L     T-R       B-L     B-R
     {{{1, 2}, {1, 2}}, {{1, 2}, {1, 2}}},
     {{{2, 0}, {1, 2}}, {{1, 2}, {1, 2}}},

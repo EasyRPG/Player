@@ -62,8 +62,6 @@ static int FilterUntilFocus(const SDL_Event* evnt);
 	static void GekkoResetCallback();
 #endif
 
-SdlUi* DisplaySdlUi;
-
 ///////////////////////////////////////////////////////////
 SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag) :
 	zoom_available(true),
@@ -142,8 +140,6 @@ SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag) :
 #else
 	ShowCursor(false);
 #endif
-
-	DisplaySdlUi = this;
 }
 
 ///////////////////////////////////////////////////////////
