@@ -212,6 +212,13 @@ public:
 	void ForceMoveRoute(RPG::MoveRoute* new_route, int frequency, Game_Interpreter* owner);
 
 	////////////////////////////////////////////////////////
+	/// Cancels a previous forced move route
+	/// @param route : Previous move route
+	/// @param owner : The interpreter which set the route
+	////////////////////////////////////////////////////////
+	void CancelMoveRoute(RPG::MoveRoute* route, Game_Interpreter* owner);
+
+	////////////////////////////////////////////////////////
 	/// Tells the Character to not report back to the owner.
 	/// (Usually because the owner got deleted)
 	/// @param owner : The owner of the move route; if the

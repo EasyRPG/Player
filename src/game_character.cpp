@@ -759,6 +759,19 @@ void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
 	MoveTypeCustom();
 }
 
+void Game_Character::CancelMoveRoute(RPG::MoveRoute* route, Game_Interpreter* owner) {
+	if (!move_route_forcing ||
+		move_route_owner != owner ||
+		move_route != route)
+		return;
+
+	move_route_forcing = false;
+	move_route_owner = NULL;
+	move_route = original_move_route;
+	move_route_index = original_move_route_index;
+	original_move_route = NULL;
+}
+
 void Game_Character::DetachMoveRouteOwner(Game_Interpreter* owner) {
 	if (owner == move_route_owner) {
 		move_route_owner = NULL;

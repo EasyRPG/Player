@@ -276,6 +276,8 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 			return CommandShowBattleAnimation();
 		case ChangeClass:
 			return CommandChangeClass();
+		case HaltAllMovement:
+			return CommandHaltAllMovement();
 		case ConditionalBranch: 
 			return CommandConditionalBranch();
 		case ElseBranch:
@@ -1674,6 +1676,14 @@ bool Game_Interpreter_Map::CommandChangeClass() { // code 1008
 		// Show message increase level
 	}
 
+	return true;
+}
+
+bool Game_Interpreter_Map::CommandHaltAllMovement() { // code 11350
+	std::vector<pending_move_route>::iterator it;
+	for (it = pending.begin(); it != pending.end(); it++)
+		it->second->CancelMoveRoute(it->first, this);
+	pending.clear();
 	return true;
 }
 
