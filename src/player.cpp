@@ -115,9 +115,7 @@ void Player::Init(int argc, char *argv[]) {
 
 ////////////////////////////////////////////////////////////
 void Player::Run() {
-	if (battle_test_flag) {
-		Scene::Push(new Scene_Battle());
-	} else if (debug_flag) {
+	if (debug_flag) {
 		Scene::Push(new Scene_Title());
 	} else {
 		Scene::Push(new Scene_Logo());

@@ -114,9 +114,11 @@ void Scene_Battle::Start() {
 	if (Player::battle_test_flag) {
 		if (Player::battle_test_troop_id <= 0) {
 			Output::Error("Invalid Monster Party Id");
-		}
-		else
+		} else {
 			Game_Temp::battle_troop_id = Player::battle_test_troop_id;
+			// ToDo: Rpg2k does specify a background graphic instead
+			Game_Temp::battle_terrain_id = 1;
+		}
 	}
 
 	Game_Battle::Init(this);

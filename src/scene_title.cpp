@@ -47,13 +47,14 @@
 #include "output.h"
 #include "player.h"
 #include "reader.h"
+#include "scene_battle.h"
 #include "scene_map.h"
 #include "util_macro.h"
 #include "window_command.h"
 
 ////////////////////////////////////////////////////////////
 Scene_Title::Scene_Title() :
-	command_window(NULL), init(false) {
+	command_window(NULL), title(NULL), init(false) {
 	type = Scene::Title;
 }
 
@@ -81,21 +82,27 @@ void Scene_Title::Start() {
 	// Create Game System
 	Game_System::Init();
 
-	CreateTitleGraphic();
-	CreateCommandWindow();
+	if (!Player::battle_test_flag) {
+		CreateTitleGraphic();
+		PlayTitleMusic();
+	}
 
-	PlayTitleMusic();
+	CreateCommandWindow();
 }
 
 ////////////////////////////////////////////////////////////
 void Scene_Title::TransitionIn() {
-	Graphics::Transition(Graphics::TransitionErase, 1, true);
-	Graphics::Transition(Graphics::TransitionFadeIn, 32);
+	if (!Player::battle_test_flag) {
+		Graphics::Transition(Graphics::TransitionErase, 1, true);
+		Graphics::Transition(Graphics::TransitionFadeIn, 32);
+	}
 }
 
 ////////////////////////////////////////////////////////////
 void Scene_Title::TransitionOut() {
-	Graphics::Transition(Graphics::TransitionFadeOut, 12, true);
+	if (!Player::battle_test_flag) {
+		Graphics::Transition(Graphics::TransitionFadeOut, 12, true);
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -116,6 +123,11 @@ void Scene_Title::Terminate() {
 
 ////////////////////////////////////////////////////////////
 void Scene_Title::Update() {
+	if (Player::battle_test_flag) {
+		PrepareBattleTest();
+		return;
+	}
+
 	command_window->Update();
 
 	if (Input::IsTriggered(Input::DECISION)) {
@@ -216,6 +228,16 @@ bool Scene_Title::CheckValidPlayerLocation() {
 }
 
 ////////////////////////////////////////////////////////////
+void Scene_Title::PrepareBattleTest() {
+	CreateGameObjects();
+	Game_Party::SetupBattleTestMembers();
+	//Game_Troop::can_escape = true;
+	Game_System::BgmPlay(Data::system.battle_music);
+
+	Scene::Push(new Scene_Battle(), true);
+}
+
+////////////////////////////////////////////////////////////
 void Scene_Title::CommandNewGame() {
 	if (!CheckValidPlayerLocation()) {
 		Output::Warning("The game has no start location set.");
@@ -234,7 +256,6 @@ void Scene_Title::CommandNewGame() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Title::CommandContinue() {
 	if (continue_enabled) {
 		Game_System::SePlay(Data::system.decision_se);
@@ -247,9 +268,8 @@ void Scene_Title::CommandContinue() {
 	//Scene::Push(new Scene_Load());
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Title::CommandShutdown() {
 	Game_System::SePlay(Data::system.decision_se);
 	Audio::BGS_Fade(800);
-	Pop();
+	Scene::Pop();
 }
