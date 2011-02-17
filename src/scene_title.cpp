@@ -77,6 +77,8 @@ void Scene_Title::Start() {
 		FileFinder::InitRtpPaths();
 	}
 
+	Main_Data::game_data.Setup();
+
 	init = true;
 
 	// Create Game System
@@ -164,7 +166,6 @@ void Scene_Title::CreateGameObjects() {
 	Game_Actors::Init();
 	Game_Party::Init();
 	Game_Message::Init();
-	Main_Data::game_troop = new Game_Troop();
 	Game_Map::Init();
 	Main_Data::game_player = new Game_Player();
 }
@@ -230,7 +231,7 @@ bool Scene_Title::CheckValidPlayerLocation() {
 ////////////////////////////////////////////////////////////
 void Scene_Title::PrepareBattleTest() {
 	CreateGameObjects();
-	Game_Party::SetupBattleTestMembers();
+	//Game_Party::SetupBattleTestMembers();
 	//Game_Troop::can_escape = true;
 	Game_System::BgmPlay(Data::system.battle_music);
 

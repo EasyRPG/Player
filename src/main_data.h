@@ -22,6 +22,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "data.h"
+#include "rpg_save.h"
 #include "game_screen.h"
 
 ////////////////////////////////////////////////////////////
@@ -29,14 +30,12 @@
 ////////////////////////////////////////////////////////////
 class Game_Player;
 class Game_Screen;
-class Game_Troop;
 
 namespace Main_Data {
 	// Dynamic Game Data
 	extern Game_Screen* game_screen;
 	extern Game_Player* game_player;
-	extern Game_Troop* game_troop;
-	extern Game_Player* game_player;
+	extern RPG::Save game_data;
 	
 	void Cleanup();
 }

@@ -53,7 +53,7 @@ int Window_Skill::GetSkillId() {
 void Window_Skill::Refresh() {
 	data.clear();
 
-	const std::vector<int>& skills = Game_Actors::GetActor(actor_id)->GetSkills();
+	const std::vector<int16_t>& skills = Game_Actors::GetActor(actor_id)->GetSkills();
 	for (size_t i = 0; i < skills.size(); ++i) {
 		if (CheckInclude(skills[i]))
 			data.push_back(skills[i]);

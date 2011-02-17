@@ -41,11 +41,16 @@ struct Battler {
 	int gauge;
 	int speed;
 	int turns;
+	int atk_mod;
+	int def_mod;
+	int spi_mod;
+	int agi_mod;
 
 	static const int gauge_full = 10000;
 
 	Battler(int id) :
-		ID(id), sprite(NULL), gauge(0) {}
+		ID(id), sprite(NULL), gauge(0), turns(0),
+		atk_mod(0), def_mod(0), spi_mod(0), agi_mod(0) {}
 
 	virtual Game_Battler* GetActor() = 0;
 	virtual const Game_Battler* GetActor() const = 0;
@@ -54,6 +59,14 @@ struct Battler {
 	bool IsReady() const;
 	int GetTurns() const;
 	void NextTurn();
+	int GetAtk() const;
+	int GetDef() const;
+	int GetSpi() const;
+	int GetAgi() const;
+	void ModifyAtk(int effect);
+	void ModifyDef(int effect);
+	void ModifySpi(int effect);
+	void ModifyAgi(int effect);
 };
 
 struct Ally : public Battler {

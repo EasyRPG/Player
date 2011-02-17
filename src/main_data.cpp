@@ -33,14 +33,14 @@
 ////////////////////////////////////////////////////////////
 /// Global Variables
 ////////////////////////////////////////////////////////////
-Game_Variables_Class Game_Variables;
-Game_Switches_Class Game_Switches;
+Game_Variables_Class Game_Variables(Main_Data::game_data.system.variables);
+Game_Switches_Class Game_Switches(Main_Data::game_data.system.switches);
 
 namespace Main_Data {
 	// Dynamic Game Data
 	Game_Screen* game_screen = NULL;
 	Game_Player* game_player = NULL;
-	Game_Troop* game_troop = NULL;
+	RPG::Save game_data;
 }
 
 void Main_Data::Cleanup() {
@@ -49,9 +49,7 @@ void Main_Data::Cleanup() {
 	Font::Dispose();
 
 	delete game_screen;
-	delete game_troop;
 	delete game_player;
 	game_screen = NULL;
-	game_troop = NULL;
 	game_player = NULL;
 }

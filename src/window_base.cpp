@@ -92,7 +92,7 @@ void Window_Base::DrawActorLevel(Game_Actor* actor, int cx, int cy) {
 }
 
 void Window_Base::DrawActorState(Game_Actor* actor, int cx, int cy) {
-	std::vector<int> states = actor->GetStates();
+	std::vector<int16_t> states = actor->GetStates();
 
 	// Unit has Normal state if no state is set
 	if (states.size() == 0) {

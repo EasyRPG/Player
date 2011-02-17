@@ -35,7 +35,7 @@ public:
 	////////////////////////////////////////////////////////
 	/// Constructor.
 	////////////////////////////////////////////////////////
-	Game_Battler();
+	// Game_Battler();
 
 	////////////////////////////////////////////////////////
 	/// Get if battler has a state.
@@ -45,83 +45,42 @@ public:
 	bool HasState(int state_id) const;
 
 	/// @return Vector containing the ids of all states the battler has
-	const std::vector<int>& GetStates() const;
+	virtual const std::vector<int16_t>& GetStates() const = 0;
+	virtual std::vector<int16_t>& GetStates() = 0;
 
 	/// @return The highest priority state affecting the battler
 	///  returns NULL if no states
 	const RPG::State* GetState();
 
 	/// @return current hp
-	int GetHp() const;
+	virtual int GetHp() const = 0;
 
-	/// @return current sp
-	int GetSp() const;
-
-	////////////////////////////////////////////////////////
-	/// Sets the maximum HP.
-	/// @param _maxhp : max hp to set
-	////////////////////////////////////////////////////////
-	void SetMaxHp(int _maxhp);
+	/// Sets the current hp
+	virtual void SetHp(int hp) = 0;
 
 	/// @return current maxhp
-	int GetMaxHp() const;
+	virtual int GetMaxHp() const;
 
-	////////////////////////////////////////////////////////
-	/// Sets the maximum SP.
-	/// @param _maxsp : max sp to set
-	////////////////////////////////////////////////////////
-	void SetMaxSp(int _maxsp);
+	/// @return current sp
+	virtual int GetSp() const = 0;
+
+	/// Sets the current sp
+	virtual void SetSp(int _sp) = 0;
 
 	/// @return current maxsp
-	int GetMaxSp() const;
-
-	////////////////////////////////////////////////////////
-	/// Sets the current hp
-	/// @param _hp : new hp to set
-	////////////////////////////////////////////////////////
-	void SetHp(int _hp);
-
-	////////////////////////////////////////////////////////
-	/// Sets the current sp
-	/// @param _hp : new sp to set
-	////////////////////////////////////////////////////////
-	void SetSp(int _sp);
-
-	////////////////////////////////////////////////////////
-	/// Sets the attack.
-	/// @param _atk : attack to set
-	////////////////////////////////////////////////////////
-	void SetAtk(int _atk);
-
-	////////////////////////////////////////////////////////
-	/// Sets the defense.
-	/// @param _def : defense to set
-	////////////////////////////////////////////////////////
-	void SetDef(int _def);
-
-	////////////////////////////////////////////////////////
-	/// Sets the spirit.
-	/// @param _spi : spirit to set
-	////////////////////////////////////////////////////////
-	void SetSpi(int _spi);
-
-	////////////////////////////////////////////////////////
-	/// Sets the agility.
-	/// @param _agi : agility to set
-	////////////////////////////////////////////////////////
-	void SetAgi(int _agi);
+	virtual int GetMaxSp() const;
 
 	/// @return current atk
-	int GetAtk();
+	virtual int GetAtk() const;
 
 	/// @return current def
-	int GetDef();
+	virtual int GetDef() const;
 
 	/// @return current spi
-	int GetSpi();
+	virtual int GetSpi() const;
 
 	/// @return current agi
-	int GetAgi();
+	virtual int GetAgi() const;
 
 	////////////////////////////////////////////////////////
 	/// Gets the maximum hp for the current level
@@ -146,6 +105,9 @@ public:
 
 	/// @return agi
 	virtual int GetBaseAgi() const = 0;
+
+	virtual bool IsHidden() const;
+	virtual bool IsImmortal() const;
 
 	bool Exists() const;
 	bool IsDead() const;
@@ -185,27 +147,6 @@ public:
 	/// Removes all States
 	////////////////////////////////////////////////////////
 	void RemoveAllStates();
-
-protected:
-	std::string battler_name;
-	int hp;
-	int sp;
-	int maxhp_plus;
-	int maxsp_plus;
-	int atk_plus;
-	int def_plus;
-	int spi_plus;
-	int agi_plus;
-	std::vector<int> states;
-	bool hidden;
-	bool immortal;
-	bool damage_pop;
-	int damage;
-	bool critical;
-	int animation_id;
-	bool animation_hit;
-	bool white_flash;
-	bool blink;
 };
 
 #endif

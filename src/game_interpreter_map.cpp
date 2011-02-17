@@ -344,27 +344,27 @@ bool Game_Interpreter_Map::CommandChangeParameters() { // Code 10430
 		switch (list[index].parameters[3]) {
 			case 0:
 				// Max HP
-				actor->SetMaxHp(actor->GetMaxHp() + value);
+				actor->SetBaseMaxHp(actor->GetBaseMaxHp() + value);
 				break;
 			case 1:
 				// Max MP
-				actor->SetMaxSp(actor->GetMaxSp() + value);
+				actor->SetBaseMaxSp(actor->GetBaseMaxSp() + value);
 				break;
 			case 2:
 				// Attack
-				actor->SetAtk(actor->GetAtk() + value);
+				actor->SetBaseAtk(actor->GetBaseAtk() + value);
 				break;
 			case 3:
 				// Defense
-				actor->SetDef(actor->GetDef() + value);
+				actor->SetBaseDef(actor->GetBaseDef() + value);
 				break;
 			case 4:
 				// Spirit
-				actor->SetSpi(actor->GetSpi() + value);
+				actor->SetBaseSpi(actor->GetBaseSpi() + value);
 				break;
 			case 5:
 				// Agility
-				actor->SetAgi(actor->GetAgi() + value);
+				actor->SetBaseAgi(actor->GetBaseAgi() + value);
 				break;
 		}	
 	}
@@ -1612,12 +1612,12 @@ bool Game_Interpreter_Map::CommandChangeClass() { // code 1008
 			break;
 	}
 
-	int cur_hp = actor->GetMaxHp();
-	int cur_sp = actor->GetMaxSp();
-	int cur_atk = actor->GetAtk();
-	int cur_def = actor->GetDef();
-	int cur_spi = actor->GetSpi();
-	int cur_agi = actor->GetAgi();
+	int cur_hp = actor->GetBaseMaxHp();
+	int cur_sp = actor->GetBaseMaxSp();
+	int cur_atk = actor->GetBaseAtk();
+	int cur_def = actor->GetBaseDef();
+	int cur_spi = actor->GetBaseSpi();
+	int cur_agi = actor->GetBaseAgi();
 
 	switch (stats_mode) {
 		case 1:
@@ -1640,12 +1640,12 @@ bool Game_Interpreter_Map::CommandChangeClass() { // code 1008
 		actor->SetLevel(cur_lvl);
 	}
 
-	actor->SetMaxHp(cur_hp);
-	actor->SetMaxSp(cur_sp);
-	actor->SetAtk(cur_atk);
-	actor->SetDef(cur_def);
-	actor->SetSpi(cur_spi);
-	actor->SetAgi(cur_agi);
+	actor->SetBaseMaxHp(cur_hp);
+	actor->SetBaseMaxSp(cur_sp);
+	actor->SetBaseAtk(cur_atk);
+	actor->SetBaseDef(cur_def);
+	actor->SetBaseSpi(cur_spi);
+	actor->SetBaseAgi(cur_agi);
 
 	int level = actor->GetLevel();
 

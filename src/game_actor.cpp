@@ -26,52 +26,39 @@
 #include "player.h"
 #include "util_macro.h"
 
+extern RPG::Save game_data;
+
 ////////////////////////////////////////////////////////////
-Game_Actor::Game_Actor(int actor_id) {
-	Setup(actor_id);
+Game_Actor::Game_Actor(int actor_id) :
+	data(Main_Data::game_data.party[actor_id - 1]) {
+	data.Setup(actor_id);
+	Setup();
 }
 
 ////////////////////////////////////////////////////////////
-void Game_Actor::Setup(int actor_id) {
-	const RPG::Actor& actor = Data::actors[actor_id - 1];
-	this->actor_id = actor_id;
-	name = actor.name;
-	character_name = actor.character_name;
-	character_index = actor.character_index;
-	character_transparent = false;
-	face_name = actor.face_name;
-	face_index = actor.face_index;
-	title = actor.title;
-	weapon_id = actor.weapon_id;
-	shield_id = actor.shield_id;
-	armor_id = actor.armor_id;
-	helmet_id = actor.helmet_id;
-	accessory_id = actor.accessory_id;
-	level = actor.initial_level;
-	exp_list.resize(actor.final_level, 0);
+void Game_Actor::Setup() {
 	MakeExpList();
-	exp = exp_list[level - 1];
-	class_id = 0;
-	hp = GetMaxHp();
-	sp = GetMaxSp();
-	two_swords_style = actor.two_swords_style;
-	battle_commands = std::vector<uint32_t>(actor.battle_commands);
+}
 
-	for (size_t i = 0; i < actor.skills.size(); ++i) {
-		if (actor.skills[i].level <= level) {
-			LearnSkill(actor.skills[i].skill_id);
-		}
-	}
+////////////////////////////////////////////////////////////
+void Game_Actor::Init() {
+	const std::vector<RPG::Learning>& skills = Data::actors[data.ID - 1].skills;
+	for (int i = 0; i < (int) skills.size(); i++)
+		if (skills[i].level <= GetLevel())
+			LearnSkill(skills[i].skill_id);
+	SetHp(GetMaxHp());
+	SetSp(GetMaxSp());
+	SetExp(exp_list[GetLevel()]);
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetId() const {
-	return actor_id;
+	return data.ID;
 }
 
 ////////////////////////////////////////////////////////////
 bool Game_Actor::IsSkillLearned(int skill_id) {
-	return std::find(skills.begin(), skills.end(), skill_id) != skills.end();
+	return std::find(data.skills.begin(), data.skills.end(), skill_id) != data.skills.end();
 }
 
 ////////////////////////////////////////////////////////////
@@ -86,68 +73,38 @@ bool Game_Actor::IsSkillUsable(int skill_id) {
 ////////////////////////////////////////////////////////////
 void Game_Actor::LearnSkill(int skill_id) {
 	if (skill_id > 0 && !IsSkillLearned(skill_id)) {
-		skills.push_back(skill_id);
-		std::sort(skills.begin(), skills.end());
+		data.skills.push_back(skill_id);
+		std::sort(data.skills.begin(), data.skills.end());
 	}
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Actor::UnlearnSkill(int skill_id) {
-	std::vector<int>::iterator it = std::find(skills.begin(), skills.end(), skill_id);
-	if (it != skills.end())
-		skills.erase(it);
+	std::vector<int16_t>::iterator it = std::find(data.skills.begin(), data.skills.end(), skill_id);
+	if (it != data.skills.end())
+		data.skills.erase(it);
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Actor::SetFace(const std::string& file_name, int index) {
-	face_name.assign(file_name);
-	face_index = index;
+	data.face_name.assign(file_name);
+	data.face_id = index;
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetEquipment(int equip_type) const {
-	switch (equip_type) {
-	case 0:
-		return GetWeaponId();
-	case 1:
-		return GetShieldId();
-	case 2:
-		return GetArmorId();
-	case 3:
-		return GetHelmetId();
-	case 4:
-		return GetAccessoryId();
-	default:
+	if (equip_type < 0 || equip_type >= (int) data.equipped.size())
 		return -1;
-	}
+	return data.equipped[equip_type];
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::SetEquipment(int equip_type, int new_item_id) {
-	int old_item_id = -1;
+	if (equip_type < 0 || equip_type >= (int) data.equipped.size())
+		return -1;
 
-	switch (equip_type) {
-	case 0:
-		old_item_id = weapon_id;
-		weapon_id = new_item_id;
-		break;
-	case 1:
-		old_item_id = shield_id;
-		shield_id = new_item_id;
-		break;
-	case 2:
-		old_item_id = armor_id;
-		armor_id = new_item_id;
-		break;
-	case 3:
-		old_item_id = helmet_id;
-		helmet_id = new_item_id;
-		break;
-	case 4:
-		old_item_id = accessory_id;
-		accessory_id = new_item_id;
-	}
-	
+	int old_item_id = data.equipped[equip_type];
+	data.equipped[equip_type] = new_item_id;
 	return old_item_id;
 }
 
@@ -166,236 +123,276 @@ void Game_Actor::ChangeEquipment(int equip_type, int item_id, bool test) {
 }
 
 ////////////////////////////////////////////////////////////
+const std::vector<int16_t>& Game_Actor::GetStates() const {
+	return data.status;
+}
+
+////////////////////////////////////////////////////////////
+std::vector<int16_t>& Game_Actor::GetStates() {
+	return data.status;
+}
+
+////////////////////////////////////////////////////////////
+int Game_Actor::GetHp() const {
+	return data.current_hp;
+}
+
+////////////////////////////////////////////////////////////
+int Game_Actor::GetSp() const {
+	return data.current_sp;
+}
+
+////////////////////////////////////////////////////////////
+int Game_Actor::GetBaseMaxHp(bool mod) const {
+	int n = data.changed_class
+		? Data::classes[data.class_id - 1].parameter_maxhp[data.level - 1]
+		: Data::actors[data.ID - 1].parameter_maxhp[data.level - 1];
+
+	if (mod)
+		n += data.hp_mod;
+
+	return n;
+}
+
+////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseMaxHp() const {
-	return class_id > 0
-		? Data::classes[class_id - 1].parameter_maxhp[level - 1]
-		: Data::actors[actor_id - 1].parameter_maxhp[level - 1];
+	return GetBaseMaxHp(true);
+}
+
+////////////////////////////////////////////////////////////
+int Game_Actor::GetBaseMaxSp(bool mod) const {
+	int n = data.changed_class
+		? Data::classes[data.class_id - 1].parameter_maxsp[data.level - 1]
+		: Data::actors[data.ID - 1].parameter_maxsp[data.level - 1];
+
+	if (mod)
+		n += data.sp_mod;
+
+	return n;
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseMaxSp() const {
-	return class_id > 0
-		? Data::classes[class_id - 1].parameter_maxsp[level - 1]
-		: Data::actors[actor_id - 1].parameter_maxsp[level - 1];
+	return GetBaseMaxSp(true);
+}
+
+////////////////////////////////////////////////////////////
+int Game_Actor::GetBaseAtk(bool mod, bool equip) const {
+	int n = data.changed_class
+		? Data::classes[data.class_id - 1].parameter_attack[data.level - 1]
+		: Data::actors[data.ID - 1].parameter_attack[data.level - 1];
+
+	if (mod)
+		n += data.attack_mod;
+
+	if (equip)
+		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); it++)
+			if (*it > 0)
+				n += Data::items[*it - 1].atk_points;
+
+	return min(max(n, 1), 999);
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseAtk() const {
-	int n = class_id > 0
-		? Data::classes[class_id - 1].parameter_attack[level - 1]
-		: Data::actors[actor_id - 1].parameter_attack[level - 1];
+	return GetBaseAtk(true, true);
+}
 
-	if (weapon_id > 0) {
-		n += Data::items[weapon_id - 1].atk_points;
-	}
-	if (shield_id > 0) {
-		n += Data::items[shield_id - 1].atk_points;
-	}
-	if (armor_id > 0) {
-		n += Data::items[armor_id - 1].atk_points;
-	}
-	if (helmet_id > 0) {
-		n += Data::items[helmet_id - 1].atk_points;
-	}
-	if (accessory_id > 0) {
-		n += Data::items[accessory_id - 1].atk_points;
-	}
+////////////////////////////////////////////////////////////
+int Game_Actor::GetBaseDef(bool mod, bool equip) const {
+	int n = data.changed_class
+		? Data::classes[data.class_id - 1].parameter_defense[data.level - 1]
+		: Data::actors[data.ID - 1].parameter_defense[data.level - 1];
+
+	if (mod)
+		n += data.defense_mod;
+
+	if (equip)
+		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); it++)
+			if (*it > 0)
+				n += Data::items[*it - 1].def_points;
 
 	return min(max(n, 1), 999);
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseDef() const {
-	int n = class_id > 0
-		? Data::classes[class_id - 1].parameter_defense[level - 1]
-		: Data::actors[actor_id - 1].parameter_defense[level - 1];
+	return GetBaseDef(true, true);
+}
 
-	if (weapon_id > 0) {
-		n += Data::items[weapon_id - 1].def_points;
-	}
-	if (shield_id > 0) {
-		n += Data::items[shield_id - 1].def_points;
-	}
-	if (armor_id > 0) {
-		n += Data::items[armor_id - 1].def_points;
-	}
-	if (helmet_id > 0) {
-		n += Data::items[helmet_id - 1].def_points;
-	}
-	if (accessory_id > 0) {
-		n += Data::items[accessory_id - 1].def_points;
-	}
+////////////////////////////////////////////////////////////
+int Game_Actor::GetBaseSpi(bool mod, bool equip) const {
+	int n = data.changed_class
+		? Data::classes[data.class_id - 1].parameter_spirit[data.level - 1]
+		: Data::actors[data.ID - 1].parameter_spirit[data.level - 1];
+
+	if (mod)
+		n += data.spirit_mod;
+
+	if (equip)
+		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); it++)
+			if (*it > 0)
+				n += Data::items[*it - 1].spi_points;
 
 	return min(max(n, 1), 999);
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseSpi() const {
-	int n = class_id > 0
-		? Data::classes[class_id - 1].parameter_spirit[level - 1]
-		: Data::actors[actor_id - 1].parameter_spirit[level - 1];
+	return GetBaseSpi(true, true);
+}
 
-	if (weapon_id > 0) {
-		n += Data::items[weapon_id - 1].spi_points;
-	}
-	if (shield_id > 0) {
-		n += Data::items[shield_id - 1].spi_points;
-	}
-	if (armor_id > 0) {
-		n += Data::items[armor_id - 1].spi_points;
-	}
-	if (helmet_id > 0) {
-		n += Data::items[helmet_id - 1].spi_points;
-	}
-	if (accessory_id > 0) {
-		n += Data::items[accessory_id - 1].spi_points;
-	}
+////////////////////////////////////////////////////////////
+int Game_Actor::GetBaseAgi(bool mod, bool equip) const {
+	int n = data.changed_class
+		? Data::classes[data.class_id - 1].parameter_agility[data.level - 1]
+		: Data::actors[data.ID - 1].parameter_agility[data.level - 1];
+
+	if (mod)
+		n += data.agility_mod;
+
+	if (equip)
+		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); it++)
+			if (*it > 0)
+				n += Data::items[*it - 1].agi_points;
 
 	return min(max(n, 1), 999);
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseAgi() const {
-	int n = class_id > 0
-		? Data::classes[class_id - 1].parameter_agility[level - 1]
-		: Data::actors[actor_id - 1].parameter_agility[level - 1];
-
-	if (weapon_id > 0) {
-		n += Data::items[weapon_id - 1].agi_points;
-	}
-	if (shield_id > 0) {
-		n += Data::items[shield_id - 1].agi_points;
-	}
-	if (armor_id > 0) {
-		n += Data::items[armor_id - 1].agi_points;
-	}
-	if (helmet_id > 0) {
-		n += Data::items[helmet_id - 1].agi_points;
-	}
-	if (accessory_id > 0) {
-		n += Data::items[accessory_id - 1].agi_points;
-	}
-
-	return min(max(n, 1), 999);
+	return GetBaseAgi(true, true);
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::CalculateExp(int level)
 {
-        double base = Data::actors[actor_id - 1].exp_base;
-        double inflation = Data::actors[actor_id - 1].exp_inflation;
-		double correction = Data::actors[actor_id - 1].exp_correction;
+	double base, inflation, correction;
+	if (data.changed_class) {
+		const RPG::Class& klass = Data::classes[data.class_id - 1];
+		base = klass.exp_base;
+		inflation = klass.exp_inflation;
+		correction = klass.exp_correction;
+	}
+	else {
+		const RPG::Actor& actor = Data::actors[data.ID - 1];
+		base = actor.exp_base;
+		inflation = actor.exp_inflation;
+		correction = actor.exp_correction;
+	}
 
-        int result = 0;
+	int result = 0;
 
-        inflation = 1.5 + (inflation * 0.01);
+	inflation = 1.5 + (inflation * 0.01);
 
-        for (int i = level; i >= 1; i--)
+	for (int i = level; i >= 1; i--)
         {
-                result = result + (int)(correction + base);
-                base = base * inflation;
-                inflation = ((level+1) * 0.002 + 0.8) * (inflation - 1) + 1;
+			result = result + (int)(correction + base);
+			base = base * inflation;
+			inflation = ((level+1) * 0.002 + 0.8) * (inflation - 1) + 1;
         }
-        return min(result, 1000000);
+	return min(result, 1000000);
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Actor::MakeExpList() {
-	for (int i = 1; i < Data::actors[actor_id - 1].final_level; ++i) {
+	int final_level = Data::actors[data.ID - 1].final_level;
+	exp_list.resize(final_level, 0);;
+	for (int i = 1; i < final_level; ++i) {
 		exp_list[i] = CalculateExp(i);
 	}
 }
 
 ////////////////////////////////////////////////////////////
 std::string Game_Actor::GetExpString() {
-	if ((unsigned)level == exp_list.size()) {
+	if ((unsigned)data.level == exp_list.size()) {
 		return "------";
 	} else {
 		std::stringstream ss;
-		ss << exp;
+		ss << data.exp;
 		return ss.str();
 	}
 }
 
 ////////////////////////////////////////////////////////////
 std::string Game_Actor::GetNextExpString() {
-	if ((unsigned)level == exp_list.size()) {
+	if ((unsigned)data.level == exp_list.size()) {
 		return "------";
 	} else {
 		std::stringstream ss;
-		ss << exp_list[level];
+		ss << exp_list[data.level];
 		return ss.str();
 	}
 }
 
 ////////////////////////////////////////////////////////////
 std::string Game_Actor::GetName() const {
-	return name;
+	return data.name;
 }
 
 ////////////////////////////////////////////////////////////
 std::string Game_Actor::GetCharacterName() const {
-	return character_name;
+	return data.sprite_name;
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetCharacterIndex() const {
-	return character_index;
+	return data.sprite_id;
 }
 
 ////////////////////////////////////////////////////////////
 std::string Game_Actor::GetFaceName() const {
-	return face_name;
+	return data.face_name;
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetFaceIndex() const {
-	return face_index;
+	return data.face_id;
 }
 
 ////////////////////////////////////////////////////////////
 std::string Game_Actor::GetTitle() const {
-	return title;
+	return data.title;
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetWeaponId() const {
-	return weapon_id;
+	return data.equipped[0];
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetShieldId() const {
-	return shield_id;
+	return data.equipped[1];
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetArmorId() const {
-	return armor_id;
+	return data.equipped[2];
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetHelmetId() const {
-	return helmet_id;
+	return data.equipped[3];
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetAccessoryId() const {
-	return accessory_id;
+	return data.equipped[4];
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetLevel() const {
-	return level;
+	return data.level;
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetExp() const {
-	return exp;
+	return data.exp;
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Actor::SetExp(int _exp) {
-	exp = _exp;
+	data.exp = _exp;
 }
 
 ////////////////////////////////////////////////////////////
@@ -409,91 +406,134 @@ void Game_Actor::ChangeExp(int exp) {
 
 ////////////////////////////////////////////////////////////
 void Game_Actor::SetLevel(int _level) {
-	level = _level;
+	data.level = _level;
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Actor::ChangeLevel(int level) {
 	int max_level = Player::engine == Player::EngineRpg2k3 ? 99 : 50;
-	this->level = max(min(level, max_level), 1);
+	data.level = max(min(level, max_level), 1);
 	//ChangeExp()
 }
 
 ////////////////////////////////////////////////////////////
 bool Game_Actor::IsEquippable(int item_id) {
-	if (two_swords_style &&
+	if (data.two_weapon &&
 		Data::items[item_id - 1].type == RPG::Item::Type_shield) {
 			return false;
 	}
 
 	// If the actor id is out of range this is an optimization in the ldb file
 	// (all actors missing can equip the item)
-	if (Data::items[item_id - 1].actor_set.size() <= (unsigned)(actor_id - 1)) {
+	if (Data::items[item_id - 1].actor_set.size() <= (unsigned)(data.ID - 1)) {
 		return true;
 	} else {
-		return Data::items[item_id - 1].actor_set.at(actor_id - 1);
+		return Data::items[item_id - 1].actor_set.at(data.ID - 1);
 	}
 }
 
 ////////////////////////////////////////////////////////////
-const std::vector<int>& Game_Actor::GetSkills() const {
-	return skills;
+const std::vector<int16_t>& Game_Actor::GetSkills() const {
+	return data.skills;
 }
 
 ////////////////////////////////////////////////////////////
 bool Game_Actor::GetTwoSwordsStyle() const {
-	return two_swords_style;
+	return data.two_weapon;
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Actor::SetName(const std::string &new_name) {
-	name = new_name;
+	data.name = new_name;
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Actor::SetTitle(const std::string &new_title) {
-	name = new_title;
+	data.title = new_title;
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Actor::SetSprite(const std::string &file, int index, bool transparent) {
-	character_name = file;
-	character_index = index;
-	character_transparent = transparent;
+	data.sprite_name = file;
+	data.sprite_id = index;
+	data.sprite_flags = transparent ? 3 : 0;
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Actor::ChangeBattleCommands(bool add, int id) {
 	if (add) {
-		if (std::find(battle_commands.begin(), battle_commands.end(), id)
-			== battle_commands.end()) {
-			battle_commands.push_back(id);
-			std::sort(battle_commands.begin(), battle_commands.end());
+		if (std::find(data.battle_commands.begin(), data.battle_commands.end(), id)
+			== data.battle_commands.end()) {
+			data.battle_commands.push_back(id);
+			std::sort(data.battle_commands.begin(), data.battle_commands.end());
 		}
 	}
 	else if (id == 0) {
-		battle_commands.clear();
+		data.battle_commands.clear();
 	}
 	else {
 		std::vector<uint32_t>::iterator it;
-		it = std::find(battle_commands.begin(), battle_commands.end(), id);
-		if (it != battle_commands.end())
-			battle_commands.erase(it);
+		it = std::find(data.battle_commands.begin(), data.battle_commands.end(), id);
+		if (it != data.battle_commands.end())
+			data.battle_commands.erase(it);
 	}
 }
 
 ////////////////////////////////////////////////////////////
 const std::vector<uint32_t>& Game_Actor::GetBattleCommands() {
-	return battle_commands;
+	return data.battle_commands;
 }
 
 ////////////////////////////////////////////////////////////
 
 int Game_Actor::GetClass() const {
-	return class_id;
+	return data.class_id;
 }
 
 void Game_Actor::SetClass(int _class_id) {
-	class_id = _class_id;
+	data.class_id = _class_id;
+	MakeExpList();
+}
+
+////////////////////////////////////////////////////////////
+void Game_Actor::SetBaseMaxHp(int maxhp) {
+	data.hp_mod += maxhp - GetBaseMaxHp();
+	SetHp(data.current_hp);
+}
+
+////////////////////////////////////////////////////////////
+void Game_Actor::SetBaseMaxSp(int maxsp) {
+	data.sp_mod += maxsp - GetBaseMaxSp();
+	SetSp(data.current_sp);
+}
+
+////////////////////////////////////////////////////////////
+void Game_Actor::SetHp(int hp) {
+	data.current_hp = min(max(hp, 0), GetMaxHp());
+}
+
+////////////////////////////////////////////////////////////
+void Game_Actor::SetSp(int sp) {
+	data.current_sp = min(max(sp, 0), GetMaxSp());
+}
+
+////////////////////////////////////////////////////////////
+void Game_Actor::SetBaseAtk(int atk) {
+	data.attack_mod += atk - GetBaseAtk();
+}
+
+////////////////////////////////////////////////////////////
+void Game_Actor::SetBaseDef(int def) {
+	data.defense_mod += def - GetBaseDef();
+}
+
+////////////////////////////////////////////////////////////
+void Game_Actor::SetBaseSpi(int spi) {
+	data.spirit_mod += spi - GetBaseSpi();
+}
+
+////////////////////////////////////////////////////////////
+void Game_Actor::SetBaseAgi(int agi) {
+	data.agility_mod += agi - GetBaseAgi();
 }
 

@@ -23,7 +23,7 @@
 ////////////////////////////////////////////////////////////
 #include <string>
 #include <vector>
-#include "reader.h"
+#include "rpg_save.h"
 #include "game_battler.h"
 
 ////////////////////////////////////////////////////////////
@@ -38,11 +38,16 @@ public:
 	Game_Actor(int actor_id);
 
 	////////////////////////////////////////////////////////
-	/// Setups the game actor with the database actor.
+	/// Sets up the game actor
 	/// This is automatically called in the constructor.
-	/// @param actor_id : database actor id
 	////////////////////////////////////////////////////////
-	void Setup(int actor_id);
+	void Setup();
+
+	////////////////////////////////////////////////////////
+	/// Initializes the game actor to the database state
+	/// Sets the skills, HP, SP and experience
+	////////////////////////////////////////////////////////
+	void Init();
 
 	////////////////////////////////////////////////////////
 	/// Learn a new skill.
@@ -75,18 +80,6 @@ public:
 	/// @return Actor ID
 	////////////////////////////////////////////////////////
 	int GetId() const;
-
-	////////////////////////////////////////////////////////
-	/// Gets the maximum hp for the current level
-	/// @return max hp
-	////////////////////////////////////////////////////////
-	int GetBaseMaxHp() const;
-
-	////////////////////////////////////////////////////////
-	/// Gets the maximum sp for the current level
-	/// @return max sp
-	////////////////////////////////////////////////////////
-	int GetBaseMaxSp() const;
 
 	////////////////////////////////////////////////////////
 	/// Calculates the Exp needed for a level up
@@ -214,19 +207,55 @@ public:
 	void ChangeEquipment(int equip_type, int item_id, bool test = false);
 
 	/// @return learned skills list.
-	const std::vector<int>& GetSkills() const;
+	const std::vector<int16_t>& GetSkills() const;
 
-	/// @return atk
+	/// @return Vector containing the ids of all states the actor has
+	const std::vector<int16_t>& GetStates() const;
+	std::vector<int16_t>& GetStates();
+
+	int GetHp() const;
+	void SetHp(int _hp);
+
+	int GetSp() const;
+	void SetSp(int _sp);
+
+	////////////////////////////////////////////////////////
+	/// Gets the stats for the current level
+	/// @param mod : include the modifier bonus
+	/// @param equip : include the equipment bonuses
+	////////////////////////////////////////////////////////
+
+	int GetBaseMaxHp(bool mod) const;
+	int GetBaseMaxSp(bool mod) const;
+	int GetBaseAtk(bool mod, bool equip) const;
+	int GetBaseDef(bool mod, bool equip) const;
+	int GetBaseSpi(bool mod, bool equip) const;
+	int GetBaseAgi(bool mod, bool equip) const;
+
+	////////////////////////////////////////////////////////
+	/// Gets the stats for the current level
+	/// modifier and equipment bonuses are included
+	////////////////////////////////////////////////////////
+
+	int GetBaseMaxHp() const;
+	int GetBaseMaxSp() const;
 	int GetBaseAtk() const;
-
-	/// @return def
 	int GetBaseDef() const;
-
-	/// @return spi
 	int GetBaseSpi() const;
-
-	/// @return agi
 	int GetBaseAgi() const;
+
+	////////////////////////////////////////////////////////
+	/// Sets the base stats by adjusting the modifier bonus
+	/// the existing modifier bonus and equipment bonuses
+	/// are taken into account
+	////////////////////////////////////////////////////////
+
+	void SetBaseMaxHp(int _maxhp);
+	void SetBaseMaxSp(int _maxsp);
+	void SetBaseAtk(int _atk);
+	void SetBaseDef(int _def);
+	void SetBaseSpi(int _spi);
+	void SetBaseAgi(int _agi);
 
 	/// @return true if actor has two weapons
 	bool GetTwoSwordsStyle() const;
@@ -252,26 +281,27 @@ public:
 	const std::vector<uint32_t>& GetBattleCommands();
 
 private:
-	int actor_id;
-	std::string name;
-	std::string character_name;
-	int character_index;
-	bool character_transparent;
-	std::string face_name;
-	int face_index;
-	std::string title;
-	int weapon_id;
-	int shield_id;
-	int armor_id;
-	int helmet_id;
-	int accessory_id;
-	int level;
-	int exp;
-	int class_id;
+	RPG::SaveActor& data;
+	// int actor_id;
+	// std::string name;
+	// std::string character_name;
+	// int character_index;
+	// bool character_transparent;
+	// std::string face_name;
+	// int face_index;
+	// std::string title;
+	// int weapon_id;
+	// int shield_id;
+	// int armor_id;
+	// int helmet_id;
+	// int accessory_id;
+	// int level;
+	// int exp;
+	// int class_id;
 	std::vector<int> exp_list;
-	std::vector<int> skills;
-	bool two_swords_style;
-	std::vector<uint32_t> battle_commands;
+	// std::vector<int> skills;
+	// bool two_swords_style;
+	// std::vector<uint32_t> battle_commands;
 };
 
 #endif

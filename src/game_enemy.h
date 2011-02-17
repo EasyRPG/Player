@@ -25,6 +25,9 @@ class Game_Enemy :
 public:
 	Game_Enemy(int enemy_id);
 
+	const std::vector<int16_t>& GetStates() const;
+	std::vector<int16_t>& GetStates();
+
 	////////////////////////////////////////////////////////
 	/// Gets the maximum hp for the current level
 	/// @return max hp
@@ -49,14 +52,23 @@ public:
 	/// @return agi
 	int GetBaseAgi() const;
 
+	int GetHp() const;
+	void SetHp(int _hp);
+	int GetSp() const;
+	void SetSp(int _sp);
+
 	void SetHidden(bool _hidden);
-	bool IsHidden();
+	bool IsHidden() const;
 	void Transform(int new_enemy_id);
 
 protected:
 	void Setup(int enemy_id);
 
 	int enemy_id;
+	bool hidden;
+	int hp;
+	int sp;
+	std::vector<int16_t> states;
 };
 
 #endif

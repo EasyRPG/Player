@@ -30,30 +30,27 @@
 ////////////////////////////////////////////////////////////
 class Game_Variables_Class {
 public:
+	Game_Variables_Class(std::vector<uint32_t>& variables) :
+		variables(variables) {}
+
 	int& operator[] (int variable_id) {
-		if (variable_id <= 0 || (size_t)variable_id >= Data::variables.size()) {
+		if (!isValidVar(variable_id)) {
 			Output::Warning("Variable index %d is invalid.\n",
 							variable_id);
-
-			if (data.size() == 0) {
-				data.resize(1, 0);
-			}
-			data[0] = 0;
-			return data[0];
+			dummy = 0;
+			return dummy;
 		}
 
-		if ((size_t)variable_id >= data.size())
-			data.resize(variable_id + 1, 0);
-
-		return data[variable_id];
+		return (int&) variables[variable_id - 1];
 	}
 
 	bool isValidVar(int variable_id) {
-		return (variable_id > 0 && (size_t)variable_id < Data::variables.size());
+		return (variable_id > 0 && variable_id < (int) variables.size());
 	}
 
 private:
-	std::vector<int> data;
+	std::vector<uint32_t>& variables;
+	int dummy;
 };
 
 // Global variable

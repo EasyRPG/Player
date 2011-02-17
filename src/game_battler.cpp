@@ -26,48 +26,24 @@
 #include "main_data.h"
 
 ////////////////////////////////////////////////////////////
-Game_Battler::Game_Battler() :
-	hp(0),
-	sp(0),
-	maxhp_plus(0),
-	maxsp_plus(0),
-	atk_plus(0),
-	def_plus(0),
-	spi_plus(0),
-	agi_plus(0),
-	hidden(false),
-	immortal(false),
-	damage_pop(false),
-	damage(false),
-	critical(false),
-	animation_id(0),
-	animation_hit(false),
-	white_flash(false),
-	blink(false) {
-}
-
-////////////////////////////////////////////////////////////
 bool Game_Battler::HasState(int state_id) const {
-	return (std::find(states.begin(), states.end(), state_id) != states.end());
+	return (std::find(GetStates().begin(), GetStates().end(), state_id) != GetStates().end());
 }
 
 ////////////////////////////////////////////////////////////
-const std::vector<int>& Game_Battler::GetStates() const {
-	return states;
-}
-
 bool Game_Battler::IsDead() const {
-	return !hidden && hp == 0 && !immortal;
+	return !IsHidden() && GetHp() == 0 && !IsImmortal();
 }
 
 bool Game_Battler::Exists() const {
-	return !hidden && !IsDead();
+	return !IsHidden() && !IsDead();
 }
 
 const RPG::State* Game_Battler::GetState() {
 	int priority = 0;
 	const RPG::State* the_state = NULL;
 
+	const std::vector<int16_t>& states = GetStates();
 	for (int i = 0; i < (int) states.size(); i++) {
 		const RPG::State* state = &Data::states[states[i]];
 		// Death has highest priority
@@ -84,162 +60,8 @@ const RPG::State* Game_Battler::GetState() {
 }
 
 ////////////////////////////////////////////////////////////
-int Game_Battler::GetHp() const {
-	return hp;
-}
-
-////////////////////////////////////////////////////////////
-int Game_Battler::GetSp() const {
-	return sp;
-}
-
-////////////////////////////////////////////////////////////
-int Game_Battler::GetMaxHp() const {
-	int base_maxhp = GetBaseMaxHp();
-	int n = min(max(base_maxhp + maxhp_plus, 1), 999);
-
-	for (std::vector<int>::const_iterator i = states.begin();
-		i != states.end();
-		i++) {
-			// TODO test needed
-			n *= Data::states[(*i)].hp_change_max / 100;
-	}
-
-	n = min(max(n, 1), 999);
-
-	return n;
-}
-
-////////////////////////////////////////////////////////////
-int Game_Battler::GetMaxSp() const {
-	int base_maxsp = GetBaseMaxSp();
-	int n = min(max(base_maxsp + maxsp_plus, 0), 999);
-
-	for (std::vector<int>::const_iterator i = states.begin();
-		i != states.end();
-		i++) {
-			// TODO test needed
-			n *= Data::states[(*i)].sp_change_max / 100;
-	}
-
-	n = min(max(n, 0), 999);
-
-	return n;
-}
-
-////////////////////////////////////////////////////////////
-void Game_Battler::SetMaxHp(int _maxhp) {
-	maxhp_plus += _maxhp - GetMaxHp(); 
-	hp = min(GetMaxHp(), hp);
-}
-
-////////////////////////////////////////////////////////////
-void Game_Battler::SetMaxSp(int _maxsp) {
-	maxsp_plus += _maxsp - GetMaxSp(); 
-	sp = min(GetMaxSp(), sp);
-}
-
-////////////////////////////////////////////////////////////
-int Game_Battler::GetAtk() {
-	int base_atk = GetBaseAtk();
-	int n = min(max(base_atk + atk_plus, 1), 999);
-
-	for (std::vector<int>::iterator i = states.begin();
-		i != states.end();
-		i++) {
-			// TODO 
-			//n *= Data::states[(*i)]. / 100;
-	}
-
-	n = min(max(n, 1), 999);
-
-	return n;
-}
-
-////////////////////////////////////////////////////////////
-int Game_Battler::GetDef() {
-	int base_def = GetBaseDef();
-	int n = min(max(base_def + def_plus, 1), 999);
-
-	for (std::vector<int>::iterator i = states.begin();
-		i != states.end();
-		i++) {
-			// TODO 
-			//n *= Data::states[(*i)]. / 100;
-	}
-
-	n = min(max(n, 1), 999);
-
-	return n;
-}
-
-////////////////////////////////////////////////////////////
-int Game_Battler::GetSpi() {
-	int base_spi = GetBaseSpi();
-	int n = min(max(base_spi + spi_plus, 1), 999);
-
-	for (std::vector<int>::iterator i = states.begin();
-		i != states.end();
-		i++) {
-			// TODO 
-			//n *= Data::states[(*i)]. / 100;
-	}
-
-	n = min(max(n, 1), 999);
-
-	return n;
-}
-
-////////////////////////////////////////////////////////////
-int Game_Battler::GetAgi() {
-	int base_agi = GetBaseAgi();
-	int n = min(max(base_agi + agi_plus, 1), 999);
-
-	for (std::vector<int>::iterator i = states.begin();
-		i != states.end();
-		i++) {
-			// TODO 
-			//n *= Data::states[(*i)]. / 100;
-	}
-
-	n = min(max(n, 1), 999);
-
-	return n;
-}
-
-////////////////////////////////////////////////////////////
-void Game_Battler::SetHp(int _hp) {
-	hp = min(max(_hp, 0), GetMaxHp());
-}
-
-////////////////////////////////////////////////////////////
-void Game_Battler::SetSp(int _sp) {
-	sp = min(max(_sp, 0), GetMaxSp());
-}
-
-////////////////////////////////////////////////////////////
-void Game_Battler::SetAtk(int _atk) {
-	atk_plus += _atk - GetAtk();
-}
-
-////////////////////////////////////////////////////////////
-void Game_Battler::SetDef(int _def) {
-	def_plus += _def - GetDef();
-}
-
-////////////////////////////////////////////////////////////
-void Game_Battler::SetSpi(int _spi) {
-	spi_plus += _spi - GetSpi();
-}
-
-////////////////////////////////////////////////////////////
-void Game_Battler::SetAgi(int _agi) {
-	agi_plus += _agi - GetAgi();
-}
-
-////////////////////////////////////////////////////////////
 bool Game_Battler::IsSkillUsable(int skill_id) {
-	if (CalculateSkillCost(skill_id) > sp) {
+	if (CalculateSkillCost(skill_id) > GetSp()) {
 		return false;
 	}
 	// ToDo: Check for Movable(?) and Silence
@@ -284,6 +106,7 @@ int Game_Battler::CalculateSkillCost(int skill_id) {
 
 ////////////////////////////////////////////////////////////
 void Game_Battler::AddState(int state_id) {
+	std::vector<int16_t>& states = GetStates();
 	if (state_id > 0 && !HasState(state_id)) {
 		states.push_back(state_id);
 		std::sort(states.begin(), states.end());
@@ -292,7 +115,8 @@ void Game_Battler::AddState(int state_id) {
 
 ////////////////////////////////////////////////////////////
 void Game_Battler::RemoveState(int state_id) {
-	std::vector<int>::iterator it = std::find(states.begin(), states.end(), state_id);
+	std::vector<int16_t>& states = GetStates();
+	std::vector<int16_t>::iterator it = std::find(states.begin(), states.end(), state_id);
 	if (it != states.end())
 		states.erase(it);
 }
@@ -303,12 +127,120 @@ static bool NonPermanent(int state_id) {
 }
 
 void Game_Battler::RemoveStates() {
-	std::vector<int>::iterator end = std::remove_if(states.begin(), states.end(), NonPermanent);
+	std::vector<int16_t>& states = GetStates();
+	std::vector<int16_t>::iterator end = std::remove_if(states.begin(), states.end(), NonPermanent);
 	states.erase(end, states.end());
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Battler::RemoveAllStates() {
+	std::vector<int16_t>& states = GetStates();
 	states.clear();
+}
+
+////////////////////////////////////////////////////////////
+bool Game_Battler::IsHidden() const {
+	return false;
+}
+
+////////////////////////////////////////////////////////////
+bool Game_Battler::IsImmortal() const {
+	return false;
+}
+
+////////////////////////////////////////////////////////////
+int Game_Battler::GetMaxHp() const {
+	int base_maxhp = GetBaseMaxHp();
+	int n = min(max(base_maxhp, 1), 999);
+
+	const std::vector<int16_t>& states = GetStates();
+	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); i++) {
+		// TODO test needed
+		n *= Data::states[(*i)].hp_change_max / 100;
+	}
+
+	n = min(max(n, 1), 999);
+
+	return n;
+}
+
+////////////////////////////////////////////////////////////
+int Game_Battler::GetMaxSp() const {
+	int base_maxsp = GetBaseMaxSp();
+	int n = min(max(base_maxsp, 0), 999);
+
+	const std::vector<int16_t>& states = GetStates();
+	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); i++) {
+		// TODO test needed
+		n *= Data::states[(*i)].sp_change_max / 100;
+	}
+
+	n = min(max(n, 0), 999);
+
+	return n;
+}
+
+////////////////////////////////////////////////////////////
+int Game_Battler::GetAtk() const {
+	int base_atk = GetBaseAtk();
+	int n = min(max(base_atk, 1), 999);
+
+	const std::vector<int16_t>& states = GetStates();
+	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); i++) {
+			// TODO 
+			//n *= Data::states[(*i)]. / 100;
+	}
+
+	n = min(max(n, 1), 999);
+
+	return n;
+}
+
+////////////////////////////////////////////////////////////
+int Game_Battler::GetDef() const {
+	int base_def = GetBaseDef();
+	int n = min(max(base_def, 1), 999);
+
+	const std::vector<int16_t>& states = GetStates();
+	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); i++) {
+			// TODO 
+			//n *= Data::states[(*i)]. / 100;
+	}
+
+	n = min(max(n, 1), 999);
+
+	return n;
+}
+
+////////////////////////////////////////////////////////////
+int Game_Battler::GetSpi() const {
+	int base_spi = GetBaseSpi();
+	int n = min(max(base_spi, 1), 999);
+
+	const std::vector<int16_t>& states = GetStates();
+	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); i++) {
+			// TODO 
+			//n *= Data::states[(*i)]. / 100;
+	}
+
+	n = min(max(n, 1), 999);
+
+	return n;
+}
+
+////////////////////////////////////////////////////////////
+int Game_Battler::GetAgi() const {
+	int base_agi = GetBaseAgi();
+	int n = min(max(base_agi, 1), 999);
+
+	const std::vector<int16_t>& states = GetStates();
+	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); i++) {
+			// TODO 
+			//n *= Data::states[(*i)]. / 100;
+	}
+
+	n = min(max(n, 1), 999);
+
+	return n;
 }
 

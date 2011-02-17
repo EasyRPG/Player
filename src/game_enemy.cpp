@@ -15,6 +15,7 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+#include <algorithm>
 #include "data.h"
 #include "rpg_enemy.h"
 #include "game_enemy.h"
@@ -30,6 +31,16 @@ void Game_Enemy::Setup(int enemy_id) {
 	this->enemy_id = enemy_id;
 	hp = GetMaxHp();
 	sp = GetMaxSp();
+}
+
+////////////////////////////////////////////////////////////
+const std::vector<int16_t>& Game_Enemy::GetStates() const {
+	return states;
+}
+
+////////////////////////////////////////////////////////////
+std::vector<int16_t>& Game_Enemy::GetStates() {
+	return states;
 }
 
 ////////////////////////////////////////////////////////////
@@ -63,12 +74,32 @@ int Game_Enemy::GetBaseAgi() const {
 }
 
 ////////////////////////////////////////////////////////////
+int Game_Enemy::GetHp() const {
+	return hp;
+}
+
+////////////////////////////////////////////////////////////
+int Game_Enemy::GetSp() const {
+	return sp;
+}
+
+////////////////////////////////////////////////////////////
+void Game_Enemy::SetHp(int _hp) {
+	hp = std::min(std::max(_hp, 0), GetMaxHp());
+}
+
+////////////////////////////////////////////////////////////
+void Game_Enemy::SetSp(int _sp) {
+	sp = std::min(std::max(_sp, 0), GetMaxSp());
+}
+
+////////////////////////////////////////////////////////////
 void Game_Enemy::SetHidden(bool _hidden) {
 	hidden = _hidden;
 }
 
 ////////////////////////////////////////////////////////////
-bool Game_Enemy::IsHidden() {
+bool Game_Enemy::IsHidden() const {
 	return hidden;
 }
 

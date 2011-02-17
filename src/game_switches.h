@@ -30,18 +30,26 @@
 ////////////////////////////////////////////////////////////
 class Game_Switches_Class {
 public:
+	Game_Switches_Class(std::vector<bool>& switches) :
+		switches(switches) {}
+
 	std::vector<bool>::reference operator[](int switch_id) {
-		if ((size_t)switch_id >= Data::switches.size())
+		if (!isValidSwitch(switch_id)) {
 			Output::Error("Switch index %d is invalid.", switch_id);
+			dummy.resize(1);
+			return dummy[0];
+		}
 
-		if ((size_t)switch_id >= data.size())
-			data.resize(switch_id + 1, false);
+		return switches[switch_id - 1];
+	}
 
-		return data[switch_id];
+	bool isValidSwitch(int switch_id) {
+		return (switch_id > 0 && switch_id < (int) switches.size());
 	}
 
 private:
-	std::vector<bool> data;
+	std::vector<bool>& switches;
+	std::vector<bool> dummy;
 };
 
 // Global variable

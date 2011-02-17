@@ -38,6 +38,39 @@ void Battle::Battler::NextTurn() {
 	gauge = 0;
 }
 
+int Battle::Battler::GetAtk() const {
+	return GetActor()->GetAtk() + atk_mod;
+}
+
+int Battle::Battler::GetDef() const {
+	return GetActor()->GetDef() + def_mod;
+}
+
+int Battle::Battler::GetSpi() const {
+	return GetActor()->GetSpi() + spi_mod;
+}
+
+int Battle::Battler::GetAgi() const {
+	return GetActor()->GetAgi() + agi_mod;
+}
+
+void Battle::Battler::ModifyAtk(int effect) {
+	atk_mod += effect;
+}
+
+void Battle::Battler::ModifyDef(int effect) {
+	def_mod += effect;
+}
+
+void Battle::Battler::ModifySpi(int effect) {
+	spi_mod += effect;
+}
+
+void Battle::Battler::ModifyAgi(int effect) {
+	agi_mod += effect;
+}
+
+
 ////////////////////////////////////////////////////////////
 Battle::Enemy::Enemy(const RPG::TroopMember* member, int id) :
 	Battler(id),

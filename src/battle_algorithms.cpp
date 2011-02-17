@@ -29,10 +29,10 @@
 ////////////////////////////////////////////////////////////
 void Game_Battle::AttackEnemy(Battle::Ally& ally, Battle::Enemy& enemy) {
 	const RPG::Item& weapon = Data::items[ally.game_actor->GetWeaponId() - 1];
-	double to_hit = 100 - (100 - weapon.hit) * (1 + (1.0 * enemy.game_enemy->GetAgi() / ally.GetActor()->GetAgi() - 1) / 2);
+	double to_hit = 100 - (100 - weapon.hit) * (1 + (1.0 * enemy.GetAgi() / ally.GetAgi() - 1) / 2);
 
 	if (rand() % 100 < to_hit) {
-		int effect = ally.GetActor()->GetAtk() / 2 - enemy.game_enemy->GetDef() / 4;
+		int effect = ally.GetAtk() / 2 - enemy.GetDef() / 4;
 		if (effect < 0)
 			effect = 0;
 		int act_perc = (rand() % 40) - 20;
@@ -171,13 +171,13 @@ void Game_Battle::UseSkillAlly(Battle::Battler& user, const RPG::Skill& skill, B
 			if (skill.affect_sp)
 				actor->SetSp(actor->GetSp() + effect);
 			if (skill.affect_attack)
-				actor->SetAtk(actor->GetAtk() + effect);
+				target.ModifyAtk(effect);
 			if (skill.affect_defense)
-				actor->SetDef(actor->GetDef() + effect);
+				target.ModifyDef(effect);
 			if (skill.affect_spirit)
-				actor->SetSpi(actor->GetSpi() + effect);
+				target.ModifySpi(effect);
 			if (skill.affect_agility)
-				actor->SetAgi(actor->GetAgi() + effect);
+				target.ModifyAgi(effect);
 
 			if (skill.affect_hp || skill.affect_sp)
 				GetScene()->Floater(target.sprite, 9, effect, 60);
@@ -213,7 +213,7 @@ void Game_Battle::UseSkillEnemy(Battle::Battler& user, const RPG::Skill& skill, 
 
 			// FIXME: This is what the help file says, but it doesn't look right
 			int effect = skill.power +
-				user.GetActor()->GetAtk() * skill.pdef_f / 20 + 
+				user.GetAtk() * skill.pdef_f / 20 + 
 				actor->GetDef() * skill.mdef_f / 40;
 
 			if (skill.variance > 0) {
@@ -228,13 +228,13 @@ void Game_Battle::UseSkillEnemy(Battle::Battler& user, const RPG::Skill& skill, 
 			if (skill.affect_sp)
 				actor->SetSp(actor->GetSp() - effect);
 			if (skill.affect_attack)
-				actor->SetAtk(actor->GetAtk() - effect);
+				target.ModifyAtk(-effect);
 			if (skill.affect_defense)
-				actor->SetDef(actor->GetDef() - effect);
+				target.ModifyDef(-effect);
 			if (skill.affect_spirit)
-				actor->SetSpi(actor->GetSpi() - effect);
+				target.ModifySpi(-effect);
 			if (skill.affect_agility)
-				actor->SetAgi(actor->GetAgi() - effect);
+				target.ModifyAgi(-effect);
 
 			if (skill.affect_hp || skill.affect_sp)
 				GetScene()->Floater(target.sprite, Font::ColorDefault, effect, 60);
@@ -349,10 +349,10 @@ void Game_Battle::EnemyAttackAlly(Battle::Enemy& enemy, Battle::Ally& ally) {
 		return;
 
 	int hit = enemy.rpg_enemy->miss ? 70 : 90;
-	double to_hit = 100 - (100 - hit) * (1 + (1.0 * ally.GetActor()->GetAgi() / enemy.game_enemy->GetAgi() - 1) / 2);
+	double to_hit = 100 - (100 - hit) * (1 + (1.0 * ally.GetAgi() / enemy.GetAgi() - 1) / 2);
 
 	if (rand() % 100 < to_hit) {
-		int effect = enemy.game_enemy->GetAtk() / 2 - ally.GetActor()->GetDef() / 4;
+		int effect = enemy.GetAtk() / 2 - ally.GetDef() / 4;
 		if (effect < 0)
 			effect = 0;
 		int act_perc = (rand() % 40) - 20;
