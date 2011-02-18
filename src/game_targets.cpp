@@ -28,25 +28,25 @@ static std::vector<RPG::SaveTarget>& data = Main_Data::game_data.targets;
 
 ////////////////////////////////////////////////////////////
 namespace Game_Targets {
-	RPG::SaveTarget* FindTarget(int id, bool create);
+	std::vector<RPG::SaveTarget>::iterator FindTarget(int id, bool create);
 }
 
 ////////////////////////////////////////////////////////////
-RPG::SaveTarget* Game_Targets::FindTarget(int id, bool create) {
+std::vector<RPG::SaveTarget>::iterator Game_Targets::FindTarget(int id, bool create) {
 	std::vector<RPG::SaveTarget>::iterator it;
 	for (it = data.begin(); it != data.end(); it++)
 		if (it->ID == id)
-			return &*it;
+			return it;
 	if (!create)
-		return NULL;
+		return data.end();
 	data.resize(data.size() + 1);
 	data.back().ID = id;
-	return &data.back();
+	return data.end() - 1;
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Targets::AddTeleportTarget(int map_id, int x, int y, int switch_id) {
-	RPG::SaveTarget* target = FindTarget(map_id, true);
+	std::vector<RPG::SaveTarget>::iterator target = FindTarget(map_id, true);
 
 	target->map_id = map_id;
 	target->map_x = x;
@@ -57,20 +57,21 @@ void Game_Targets::AddTeleportTarget(int map_id, int x, int y, int switch_id) {
 
 ////////////////////////////////////////////////////////////
 void Game_Targets::RemoveTeleportTarget(int map_id) {
-	RPG::SaveTarget* target = FindTarget(map_id, false);
-	if (target == NULL)
+	std::vector<RPG::SaveTarget>::iterator target = FindTarget(map_id, false);
+	if (target == data.end())
 		return;
-	data.erase(std::vector<RPG::SaveTarget>::iterator(target));
+	data.erase(target);
 }
 
 ////////////////////////////////////////////////////////////
 RPG::SaveTarget* Game_Targets::GetTeleportTarget(int map_id) {
-	return FindTarget(map_id, true);
+	std::vector<RPG::SaveTarget>::iterator target = FindTarget(map_id, false);
+	return target == data.end() ? NULL : &*target;
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Targets::SetEscapeTarget(int map_id, int x, int y, int switch_id) {
-	RPG::SaveTarget* target = FindTarget(0, true);
+	std::vector<RPG::SaveTarget>::iterator target = FindTarget(0, true);
 
 	target->map_id = map_id;
 	target->map_x = x;
@@ -81,6 +82,7 @@ void Game_Targets::SetEscapeTarget(int map_id, int x, int y, int switch_id) {
 
 ////////////////////////////////////////////////////////////
 RPG::SaveTarget* Game_Targets::GetEscapeTarget() {
-	return FindTarget(0, false);
+	std::vector<RPG::SaveTarget>::iterator target = FindTarget(0, false);
+	return target == data.end() ? NULL : &*target;
 }
 
