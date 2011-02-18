@@ -1338,7 +1338,7 @@ bool Game_Interpreter_Map::CommandChangeMapTileset() { // code 11710
 }
 
 bool Game_Interpreter_Map::CommandCallEvent() { // code 12330
-	int event_id;
+	int evt_id;
 	int event_page;
 
 	if (child_interpreter != NULL)
@@ -1348,24 +1348,24 @@ bool Game_Interpreter_Map::CommandCallEvent() { // code 12330
 
 	switch (list[index].parameters[0]) {
 		case 0: // Common Event
-			event_id = list[index].parameters[1];
-			child_interpreter->Setup(Data::commonevents[event_id - 1].event_commands, 0, Data::commonevents[event_id - 1].ID, -2);
+			evt_id = list[index].parameters[1];
+			child_interpreter->Setup(Data::commonevents[evt_id - 1].event_commands, 0, Data::commonevents[evt_id - 1].ID, -2);
 			return true;
 		case 1: // Map Event
-			event_id = list[index].parameters[1];
+			evt_id = list[index].parameters[1];
 			event_page = list[index].parameters[2];
 			break;
 		case 2: // Indirect
-			event_id = Game_Variables[list[index].parameters[1]];
+			evt_id = Game_Variables[list[index].parameters[1]];
 			event_page = Game_Variables[list[index].parameters[2]];
 			break;
 		default:
 			return false;
 	}
 
-	Game_Event* event = Game_Map::GetEvents().find(event_id)->second;
+	Game_Event* event = static_cast<Game_Event*>(GetCharacter(evt_id));
 	RPG::EventPage& page = event->GetEvent().pages[event_page - 1];
-	child_interpreter->Setup(page.event_commands, event_id, event->GetX(), event->GetY());
+	child_interpreter->Setup(page.event_commands, evt_id, event->GetX(), event->GetY());
 
 	return true;
 }
@@ -1408,18 +1408,39 @@ bool Game_Interpreter_Map::CommandChangeBattleCommands() { // code 1009
 bool Game_Interpreter_Map::CommandKeyInputProc() { // code 11610
 	int var_id = list[index].parameters[0];
 	bool wait = list[index].parameters[1] != 0;
-	int time_id = list[index].parameters[7];
-	bool time = list[index].parameters[8] != 0;
-	bool check_decision = list[index].parameters[ 3] != 0;
-	bool check_cancel   = list[index].parameters[ 4] != 0;
-	bool check_numbers  = list[index].parameters[ 5] != 0;
-	bool check_arith    = list[index].parameters[ 6] != 0;
-	bool check_shift    = list[index].parameters[ 9] != 0;
-	bool check_down     = list[index].parameters[10] != 0;
-	bool check_left     = list[index].parameters[11] != 0;
-	bool check_right    = list[index].parameters[12] != 0;
-	bool check_up       = list[index].parameters[13] != 0;
+	
+	bool time = false;
+	int time_id = 0;
+
+	bool check_decision = list[index].parameters[3] != 0;
+	bool check_cancel   = list[index].parameters[4] != 0;
+	bool check_numbers  = false;
+	bool check_arith    = false;
+	bool check_shift    = false;
+	bool check_down     = false;
+	bool check_left     = false;
+	bool check_right    = false;
+	bool check_up       = false;
 	int result = 0;
+
+	if (Player::engine == Player::EngineRpg2k) {
+		bool check_dir = list[index].parameters[2] != 0;
+		check_up = check_dir;
+		check_down = check_dir;
+		check_left = check_dir;
+		check_right = check_dir;
+	} else if (Player::engine == Player::EngineRpg2k3) {
+		check_numbers  = list[index].parameters[ 5] != 0;
+		check_arith    = list[index].parameters[ 6] != 0;
+		check_shift    = list[index].parameters[ 9] != 0;
+		check_down     = list[index].parameters[10] != 0;
+		check_left     = list[index].parameters[11] != 0;
+		check_right    = list[index].parameters[12] != 0;
+		check_up       = list[index].parameters[13] != 0;
+
+		time_id = list[index].parameters[7];
+		time = list[index].parameters[8] != 0;
+	}
 
 	if (check_down && Input::IsTriggered(Input::DOWN))
 		result = 1;
