@@ -291,62 +291,62 @@ bool Game_Interpreter::SkipTo(int code, int code2, int min_indent, int max_inden
 ////////////////////////////////////////////////////////////
 bool Game_Interpreter::ExecuteCommand() {
 	switch (list[index].code) {
-		case ShowMessage:
+		case Cmd::ShowMessage:
 			return CommandShowMessage();
-		case ChangeFaceGraphic: 
+		case Cmd::ChangeFaceGraphic: 
 			return CommandChangeFaceGraphic();
-		case ShowChoice: 
+		case Cmd::ShowChoice: 
 			return CommandShowChoices();
-		case ShowChoiceOption:
-			return SkipTo(ShowChoiceEnd);
-		case ShowChoiceEnd:
+		case Cmd::ShowChoiceOption:
+			return SkipTo(Cmd::ShowChoiceEnd);
+		case Cmd::ShowChoiceEnd:
 			return true;
-		case InputNumber: 
+		case Cmd::InputNumber: 
 			return CommandInputNumber();
-		case ControlSwitches: 
+		case Cmd::ControlSwitches: 
 			return CommandControlSwitches();
-		case ControlVars: 
+		case Cmd::ControlVars: 
 			return CommandControlVariables();
-		case ChangeGold: 
+		case Cmd::ChangeGold: 
 			return CommandChangeGold();
-		case ChangeItems: 
+		case Cmd::ChangeItems: 
 			return CommandChangeItems();
-		case ChangePartyMembers:
+		case Cmd::ChangePartyMembers:
 			return CommandChangePartyMember();
-		case ChangeLevel: 
+		case Cmd::ChangeLevel: 
 			return CommandChangeLevel();
-		case ChangeSkills:
+		case Cmd::ChangeSkills:
 			return CommandChangeSkills();
-		case ChangeEquipment:
+		case Cmd::ChangeEquipment:
 			return CommandChangeEquipment();
-		case ChangeHP:
+		case Cmd::ChangeHP:
 			return CommandChangeHP();
-		case ChangeSP:
+		case Cmd::ChangeSP:
 			return CommandChangeSP();
-		case ChangeCondition:
+		case Cmd::ChangeCondition:
 			return CommandChangeCondition();
-		case FullHeal:
+		case Cmd::FullHeal:
 			return CommandFullHeal();
-		case TintScreen:
+		case Cmd::TintScreen:
 			return CommandTintScreen();
-		case FlashScreen:
+		case Cmd::FlashScreen:
 			return CommandFlashScreen();
-		case ShakeScreen:
+		case Cmd::ShakeScreen:
 			return CommandShakeScreen();
-		case Wait:
+		case Cmd::Wait:
 			return CommandWait();
-		case PlayBGM:
+		case Cmd::PlayBGM:
 			return CommandPlayBGM();
-		case FadeOutBGM:
+		case Cmd::FadeOutBGM:
 			return CommandFadeOutBGM();
-		case PlaySound:
+		case Cmd::PlaySound:
 			return CommandPlaySound();
-		case EndEventProcessing:
+		case Cmd::EndEventProcessing:
 			return CommandEndEventProcessing();
-		case Comment:
-		case Comment_2:
+		case Cmd::Comment:
+		case Cmd::Comment_2:
 			return true;
-		case GameOver:
+		case Cmd::GameOver:
 			return CommandGameOver();
 		default:
 			return true;
@@ -440,14 +440,14 @@ void Game_Interpreter::GetStrings(std::vector<std::string>& ret_val) {
 	unsigned int index_temp = index + 1;
 	std::vector<std::string> s_choices;
 	while ( index_temp < list.size() ) {
-		if ( (list[index_temp].code == ShowChoiceOption) && (list[index_temp].indent == current_indent) ) {
+		if ( (list[index_temp].code == Cmd::ShowChoiceOption) && (list[index_temp].indent == current_indent) ) {
 			// Choice found
 			s_choices.push_back(list[index_temp].string);
 		}
 		// If found end of show choice command
-		if ( ( (list[index_temp].code == ShowChoiceEnd) && (list[index_temp].indent == current_indent) ) ||
+		if ( ( (list[index_temp].code == Cmd::ShowChoiceEnd) && (list[index_temp].indent == current_indent) ) ||
 			// Or found Cancel branch
-			( (list[index_temp].code == ShowChoiceOption) && (list[index_temp].indent == current_indent) &&
+			( (list[index_temp].code == Cmd::ShowChoiceOption) && (list[index_temp].indent == current_indent) &&
 			(list[index_temp].string == "") ) ) {
 			
 			break;
@@ -484,14 +484,14 @@ bool Game_Interpreter::CommandShowMessage() { // Code ShowMessage
 
 	for (;;) {
 		// If next event command is the following parts of the message
-		if ( index < list.size() - 1 && list[index+1].code == ShowMessage_2 ) {
+		if ( index < list.size() - 1 && list[index+1].code == Cmd::ShowMessage_2 ) {
 			// Add second (another) line
 			line_count++;
 			Game_Message::texts.push_back(list[index+1].string);
 		} else {
 			// If next event command is show choices
 			std::vector<std::string> s_choices;
-			if ( (index < list.size() - 1) && (list[index+1].code == ShowChoice) ) {
+			if ( (index < list.size() - 1) && (list[index+1].code == Cmd::ShowChoice) ) {
 				GetStrings(s_choices);
 				// If choices fit on screen
 				if (s_choices.size() <= (4 - line_count)) {
@@ -500,7 +500,7 @@ bool Game_Interpreter::CommandShowMessage() { // Code ShowMessage
 					Game_Message::choice_cancel_type = list[index].parameters[0];
 					SetupChoices(s_choices);
 				}
-			} else if ((index < list.size() - 1) && (list[index+1].code == InputNumber) ) {
+			} else if ((index < list.size() - 1) && (list[index+1].code == Cmd::InputNumber) ) {
 				// If next event command is input number
 				// If input number fits on screen
 				if (line_count < 4) {
@@ -537,7 +537,7 @@ void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices) {
 bool Game_Interpreter::ContinuationChoices() {
 	int indent = list[index].indent;
 	for (;;) {
-		if (!SkipTo(ShowChoiceOption, ShowChoiceEnd, indent, indent))
+		if (!SkipTo(Cmd::ShowChoiceOption, Cmd::ShowChoiceEnd, indent, indent))
 			return false;
 		int which = list[index].parameters[0];
 		index++;

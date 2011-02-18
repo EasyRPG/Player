@@ -130,159 +130,159 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 	}
 	
 	switch (list[index].code) {
-		case MessageOptions: 
+		case Cmd::MessageOptions: 
 			return CommandMessageOptions();
-		case ChangeExp: 
+		case Cmd::ChangeExp: 
 			return CommandChangeExp();
-		case ChangeParameters:
+		case Cmd::ChangeParameters:
 			return CommandChangeParameters();
-		case ChangeHeroName:
+		case Cmd::ChangeHeroName:
 			return CommandChangeHeroName();
-		case ChangeHeroTitle:
+		case Cmd::ChangeHeroTitle:
 			return CommandChangeHeroTitle();
-		case ChangeSpriteAssociation:
+		case Cmd::ChangeSpriteAssociation:
 			return CommandChangeSpriteAssociation();
-		case MemorizeLocation:
+		case Cmd::MemorizeLocation:
 			return CommandMemorizeLocation();
-		case RecallToLocation:
+		case Cmd::RecallToLocation:
 			return CommandRecallToLocation();
-		case StoreTerrainID:
+		case Cmd::StoreTerrainID:
 			return CommandStoreTerrainID();
-		case StoreEventID:
+		case Cmd::StoreEventID:
 			return CommandStoreEventID();
-		case MemorizeBGM:
+		case Cmd::MemorizeBGM:
 			return CommandMemorizeBGM();
-		case PlayMemorizedBGM:
+		case Cmd::PlayMemorizedBGM:
 			return CommandPlayMemorizedBGM();
-		case ChangeSystemBGM:
+		case Cmd::ChangeSystemBGM:
 			return CommandChangeSystemBGM();
-		case ChangeSystemSFX:
+		case Cmd::ChangeSystemSFX:
 			return CommandChangeSystemSFX();
-		case ChangeSaveAccess:
+		case Cmd::ChangeSaveAccess:
 			return CommandChangeSaveAccess();
-		case ChangeTeleportAccess:
+		case Cmd::ChangeTeleportAccess:
 			return CommandChangeTeleportAccess();
-		case ChangeEscapeAccess:
+		case Cmd::ChangeEscapeAccess:
 			return CommandChangeEscapeAccess();
-		case ChangeMainMenuAccess:
+		case Cmd::ChangeMainMenuAccess:
 			return CommandChangeMainMenuAccess();
-		case ChangeActorFace:
+		case Cmd::ChangeActorFace:
 			return CommandChangeActorFace();
-		case Teleport:
+		case Cmd::Teleport:
 			return CommandTeleport();
-		case EraseScreen:
+		case Cmd::EraseScreen:
 			return CommandEraseScreen();
-		case ShowScreen:
+		case Cmd::ShowScreen:
 			return CommandShowScreen();
-		case ShowPicture:
+		case Cmd::ShowPicture:
 			return CommandShowPicture();
-		case MovePicture:
+		case Cmd::MovePicture:
 			return CommandMovePicture();
-		case ErasePicture:
+		case Cmd::ErasePicture:
 			return CommandErasePicture();
-		case WeatherEffects:
+		case Cmd::WeatherEffects:
 			return CommandWeatherEffects();
-		case ChangeSystemGraphics:
+		case Cmd::ChangeSystemGraphics:
 			return CommandChangeSystemGraphics();
-		case ChangeScreenTransitions:
+		case Cmd::ChangeScreenTransitions:
 			return CommandChangeScreenTransitions();
-		case ChangeEventLocation:
+		case Cmd::ChangeEventLocation:
 			return CommandChangeEventLocation();
-		case TradeEventLocations:
+		case Cmd::TradeEventLocations:
 			return CommandTradeEventLocations();
-		case TimerOperation:
+		case Cmd::TimerOperation:
 			return CommandTimerOperation();
-		case ChangePBG:
+		case Cmd::ChangePBG:
 			return CommandChangePBG();
-		case Label:
+		case Cmd::Label:
 			return true;
-		case JumpToLabel:
+		case Cmd::JumpToLabel:
 			return CommandJumpToLabel();
-		case Loop:
+		case Cmd::Loop:
 			return true;
-		case BreakLoop:
+		case Cmd::BreakLoop:
 			return CommandBreakLoop();
-		case EndLoop:
+		case Cmd::EndLoop:
 			return CommandEndLoop();
-		case MoveEvent:
+		case Cmd::MoveEvent:
 			return CommandMoveEvent();
-		case OpenShop:
+		case Cmd::OpenShop:
 			return CommandOpenShop();
-		case Transaction:
-		case NoTransaction:
-			return SkipTo(EndShop);
-		case EndShop:
+		case Cmd::Transaction:
+		case Cmd::NoTransaction:
+			return SkipTo(Cmd::EndShop);
+		case Cmd::EndShop:
 			return true;
-		case ShowInn:
+		case Cmd::ShowInn:
 			return CommandShowInn();
-		case Stay:
-		case NoStay:
-			return SkipTo(EndInn);
-		case EndInn:
+		case Cmd::Stay:
+		case Cmd::NoStay:
+			return SkipTo(Cmd::EndInn);
+		case Cmd::EndInn:
 			return true;
-		case EnterHeroName:
+		case Cmd::EnterHeroName:
 			return CommandEnterHeroName();
-		case ReturntoTitleScreen:
+		case Cmd::ReturntoTitleScreen:
 			return CommandReturnToTitleScreen();
-		case OpenSaveMenu:
+		case Cmd::OpenSaveMenu:
 			return CommandOpenSaveMenu();
-		case OpenMainMenu:
+		case Cmd::OpenMainMenu:
 			return CommandOpenMainMenu();
-		case EnemyEncounter:
+		case Cmd::EnemyEncounter:
 			return CommandEnemyEncounter();
-		case VictoryHandler:
-		case EscapeHandler:
-		case DefeatHandler:
-			return SkipTo(EndBattle);
-		case EndBattle:
+		case Cmd::VictoryHandler:
+		case Cmd::EscapeHandler:
+		case Cmd::DefeatHandler:
+			return SkipTo(Cmd::EndBattle);
+		case Cmd::EndBattle:
 			return true;
-		case TeleportTargets:
+		case Cmd::TeleportTargets:
 			return CommandTeleportTargets();
-		case EscapeTarget:
+		case Cmd::EscapeTarget:
 			return CommandEscapeTarget();
-		case SpriteTransparency:
+		case Cmd::SpriteTransparency:
 			return CommandSpriteTransparency();
-		case FlashSprite:
+		case Cmd::FlashSprite:
 			return CommandFlashSprite();
-		case EraseEvent:
+		case Cmd::EraseEvent:
 			return CommandEraseEvent();
-		case ChangeMapTileset:
+		case Cmd::ChangeMapTileset:
 			return CommandChangeMapTileset();
-		case CallEvent:
+		case Cmd::CallEvent:
 			return CommandCallEvent();
-		case ChangeEncounterRate:
+		case Cmd::ChangeEncounterRate:
 			return CommandChangeEncounterRate();
-		case ProceedWithMovement: // FIXME: Causes a hang
+		case Cmd::ProceedWithMovement: // FIXME: Causes a hang
 			return CommandProceedWithMovement();
-		case PlayMovie:
+		case Cmd::PlayMovie:
 			return CommandPlayMovie();
-		case ChangeBattleCommands:
+		case Cmd::ChangeBattleCommands:
 			return CommandChangeBattleCommands();
-		case KeyInputProc:
+		case Cmd::KeyInputProc:
 			return CommandKeyInputProc();
-		case ChangeVehicleGraphic:
+		case Cmd::ChangeVehicleGraphic:
 			return CommandChangeVehicleGraphic();
-		case EnterExitVehicle:
+		case Cmd::EnterExitVehicle:
 			return CommandEnterExitVehicle();
-		case SetVehicleLocation:
+		case Cmd::SetVehicleLocation:
 			return CommandSetVehicleLocation();
-		case TileSubstitution:
+		case Cmd::TileSubstitution:
 			return CommandTileSubstitution();
-		case PanScreen:
+		case Cmd::PanScreen:
 			return CommandPanScreen();
-		case SimulatedAttack:
+		case Cmd::SimulatedAttack:
 			return CommandSimulatedAttack();
-		case ShowBattleAnimation:
+		case Cmd::ShowBattleAnimation:
 			return CommandShowBattleAnimation();
-		case ChangeClass:
+		case Cmd::ChangeClass:
 			return CommandChangeClass();
-		case HaltAllMovement:
+		case Cmd::HaltAllMovement:
 			return CommandHaltAllMovement();
-		case ConditionalBranch: 
+		case Cmd::ConditionalBranch: 
 			return CommandConditionalBranch();
-		case ElseBranch:
-			return SkipTo(EndBranch);
-		case EndBranch:
+		case Cmd::ElseBranch:
+			return SkipTo(Cmd::EndBranch);
+		case Cmd::EndBranch:
 			return true;
 		default:
 			return Game_Interpreter::ExecuteCommand();
@@ -927,7 +927,7 @@ bool Game_Interpreter_Map::CommandJumpToLabel() { // code 12120
 	int label_id = list[index].parameters[0];
 
 	for (int idx = 0; (size_t) idx < list.size(); idx++) {
-		if (list[idx].code != Label)
+		if (list[idx].code != Cmd::Label)
 			continue;
 		if (list[idx].parameters[0] != label_id)
 			continue;
@@ -939,7 +939,7 @@ bool Game_Interpreter_Map::CommandJumpToLabel() { // code 12120
 }
 
 bool Game_Interpreter_Map::CommandBreakLoop() { // code 12220
-	return SkipTo(EndLoop, EndLoop, 0, list[index].indent - 1);
+	return SkipTo(Cmd::EndLoop, Cmd::EndLoop, 0, list[index].indent - 1);
 }
 
 bool Game_Interpreter_Map::CommandEndLoop() { // code 22210
@@ -950,7 +950,7 @@ bool Game_Interpreter_Map::CommandEndLoop() { // code 22210
 			continue;
 		if (list[idx].indent < indent)
 			return false;
-		if (list[idx].code != Loop)
+		if (list[idx].code != Cmd::Loop)
 			continue;
 		index = idx;
 		break;
@@ -1018,9 +1018,9 @@ bool Game_Interpreter_Map::ContinuationOpenShop() {
 	}
 
 	if (!SkipTo(Game_Temp::shop_transaction
-				? Transaction
-				: NoTransaction,
-				EndShop)) {
+				? Cmd::Transaction
+				: Cmd::NoTransaction,
+				Cmd::EndShop)) {
 		return false;
 	}
 
@@ -1112,7 +1112,7 @@ bool Game_Interpreter_Map::ContinuationShowInn() {
 		return true;
 	}
 
-	if (!SkipTo(inn_stay ? Stay : NoStay, EndInn))
+	if (!SkipTo(inn_stay ? Cmd::Stay : Cmd::NoStay, Cmd::EndInn))
 		return false;
 	index++;
 	return true;
@@ -1198,7 +1198,7 @@ bool Game_Interpreter_Map::CommandEnemyEncounter() { // code 10710
 bool Game_Interpreter_Map::ContinuationEnemyEncounter() {
 	switch (Game_Temp::battle_result) {
 		case Game_Temp::BattleVictory:
-			if (!SkipTo(VictoryHandler, EndBattle)) {
+			if (!SkipTo(Cmd::VictoryHandler, Cmd::EndBattle)) {
 				// Was an event battle with no handlers
 				index++;
 				return false;
@@ -1212,7 +1212,7 @@ bool Game_Interpreter_Map::ContinuationEnemyEncounter() {
 				case 1:
 					return CommandEndEventProcessing();
 				case 2:
-					if (!SkipTo(EscapeHandler, EndBattle))
+					if (!SkipTo(Cmd::EscapeHandler, Cmd::EndBattle))
 						return false;
 					index++;
 					return true;
@@ -1224,7 +1224,7 @@ bool Game_Interpreter_Map::ContinuationEnemyEncounter() {
 				case 0:
 					return CommandGameOver();
 				case 1:
-					if (!SkipTo(DefeatHandler, EndBattle))
+					if (!SkipTo(Cmd::DefeatHandler, Cmd::EndBattle))
 						return false;
 					index++;
 					return true;
@@ -1232,7 +1232,7 @@ bool Game_Interpreter_Map::ContinuationEnemyEncounter() {
 					return false;
 			}
 		case Game_Temp::BattleAbort:
-			if (!SkipTo(EndBattle))
+			if (!SkipTo(Cmd::EndBattle))
 				return false;
 			index++;
 			return true;
@@ -1854,6 +1854,6 @@ bool Game_Interpreter_Map::CommandConditionalBranch() { // Code 12010
 	if (result)
 		return true;
 
-	return SkipTo(ElseBranch, EndBranch);
+	return SkipTo(Cmd::ElseBranch, Cmd::EndBranch);
 }
 

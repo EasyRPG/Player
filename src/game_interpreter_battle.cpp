@@ -41,31 +41,31 @@ bool Game_Interpreter_Battle::ExecuteCommand() {
 	}
 	
 	switch (list[index].code) {
-		case CallCommonEvent:
+		case Cmd::CallCommonEvent:
 			return CommandCallCommonEvent();
-		case ForceFlee:
+		case Cmd::ForceFlee:
 			return CommandForceFlee();
-		case EnableCombo:
+		case Cmd::EnableCombo:
 			return CommandEnableCombo();
-		case ChangeMonsterHP:
+		case Cmd::ChangeMonsterHP:
 			return CommandChangeMonsterHP();
-		case ChangeMonsterMP:
+		case Cmd::ChangeMonsterMP:
 			return CommandChangeMonsterMP();
-		case ChangeMonsterCondition:
+		case Cmd::ChangeMonsterCondition:
 			return CommandChangeMonsterCondition();
-		case ShowHiddenMonster:
+		case Cmd::ShowHiddenMonster:
 			return CommandShowHiddenMonster();
-		case ChangeBattleBG:
+		case Cmd::ChangeBattleBG:
 			return CommandChangeBattleBG();
-		case ShowBattleAnimation_B:
+		case Cmd::ShowBattleAnimation_B:
 			return CommandShowBattleAnimation();
-		case TerminateBattle:
+		case Cmd::TerminateBattle:
 			return CommandTerminateBattle();
-		case ConditionalBranch_B: 
+		case Cmd::ConditionalBranch_B: 
 			return CommandConditionalBranch();
-		case ElseBranch:
-			return SkipTo(EndBranch);
-		case EndBranch:
+		case Cmd::ElseBranch_B:
+			return SkipTo(Cmd::EndBranch_B);
+		case Cmd::EndBranch_B:
 			return true;
 		default:
 			return Game_Interpreter::ExecuteCommand();
@@ -295,6 +295,6 @@ bool Game_Interpreter_Battle::CommandConditionalBranch() {
 	if (result)
 		return true;
 
-	return SkipTo(ElseBranch, EndBranch);
+	return SkipTo(Cmd::ElseBranch_B, Cmd::EndBranch_B);
 }
 
