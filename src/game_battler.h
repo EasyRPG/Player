@@ -24,6 +24,7 @@
 #include <string>
 #include <vector>
 #include "rpg_state.h"
+#include "system.h"
 
 class Game_Actor;
 
@@ -45,8 +46,8 @@ public:
 	bool HasState(int state_id) const;
 
 	/// @return Vector containing the ids of all states the battler has
-	virtual const std::vector<int16_t>& GetStates() const = 0;
-	virtual std::vector<int16_t>& GetStates() = 0;
+	virtual const std::vector<int16>& GetStates() const = 0;
+	virtual std::vector<int16>& GetStates() = 0;
 
 	/// @return The highest priority state affecting the battler
 	///  returns NULL if no states

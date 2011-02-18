@@ -187,6 +187,14 @@ protected:
 	bool halt_output;
 	/// Text color
 	int text_color;
+	/// Current speed modifier
+	int speed_modifier;
+	/// Counts the frames since the last char rendering
+	int speed_frame_counter;
+
+	/// Table contains how many frames drawing one single char takes.
+	/// 0 means: 2 chars per frame
+	static const int speed_table[21];
 	
 	/// Used by the number input event
 	Window_NumberInput* number_input_window;

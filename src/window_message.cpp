@@ -39,11 +39,15 @@
 #define wstring string
 #endif
 
+const int Window_Message::speed_table[21] = {0, 0, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
+											7, 7, 8, 8, 9, 9, 10, 10, 11};
+
 ////////////////////////////////////////////////////////////
 Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),
 	contents_x(0), contents_y(0), line_count(0), text_index(-1), text(utf("")),
-	kill_message(false), halt_output(false), number_input_window(NULL)
+	kill_message(false), halt_output(false), speed_modifier(0), 
+	speed_frame_counter(0), number_input_window(NULL)
 {
 	SetContents(Surface::CreateSurface(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
@@ -190,6 +194,7 @@ void Window_Message::InsertNewPage() {
 	contents_y = 2;
 	line_count = 0;
 	text_color = Font::ColorDefault;
+	speed_modifier = 0;
 }
 
 ////////////////////////////////////////////////////////////
@@ -294,8 +299,6 @@ void Window_Message::Update() {
 ////////////////////////////////////////////////////////////
 void Window_Message::UpdateMessage() {
 	// Message Box Show Message rendering loop
-	// At the moment 3 chars per frame are drawn
-	// ToDo: Value must depend on Speedcommand \s
 
 	// Contains at what frame the sleep is over
 	static int sleep_until = -1;
@@ -310,8 +313,19 @@ void Window_Message::UpdateMessage() {
 
 	bool instant_speed = false;
 	int loop_count = 0;
-	int loop_max = 3;
+	int loop_max = speed_table[speed_modifier] == 0 ? 2 : 1;
+
 	while (instant_speed || loop_count < loop_max) {
+		// It's assumed that speed_modifier is between 0 and 20
+		++speed_frame_counter;
+
+		if (speed_table[speed_modifier] != 0 &&
+			speed_table[speed_modifier] != speed_frame_counter) {
+				break;
+		}
+
+		speed_frame_counter = 0;
+
 		++loop_count;
 		++text_index;
 		if ((unsigned)text_index == text.size()) {
@@ -369,7 +383,6 @@ void Window_Message::UpdateMessage() {
 				break;
 			case utf('>'):
 				// Instant speed start
-				// ToDo: Not working properly
 				instant_speed = true;
 				break;
 			case utf('<'):
@@ -546,13 +559,15 @@ std::wstring Window_Message::ParseCommandCode(int call_depth) {
 	case utf('s'):
 	case utf('S'):
 		// Speed modifier
-		// ToDo: Find out how long each \s take
 		if (sub_code >= 0) {
 			is_valid = true;
 			parameter = sub_code;
 		} else {
 			parameter = ParseParameter(is_valid, call_depth);
 		}
+
+		speed_modifier = min(parameter, 20);
+		speed_modifier = max(0, speed_modifier);
 		break;
 	case utf('v'):
 	case utf('V'):

@@ -48,7 +48,7 @@ void Game_Actor::Init() {
 			LearnSkill(skills[i].skill_id);
 	SetHp(GetMaxHp());
 	SetSp(GetMaxSp());
-	SetExp(exp_list[GetLevel()]);
+	SetExp(exp_list[GetLevel() - 1]);
 }
 
 ////////////////////////////////////////////////////////////
