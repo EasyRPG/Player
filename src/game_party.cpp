@@ -23,88 +23,54 @@
 #include "game_party.h"
 #include "game_actors.h"
 #include "game_player.h"
+#include "game_battle.h"
 #include "output.h"
 #include "util_macro.h"
 
 ////////////////////////////////////////////////////////////
-namespace {
-	int gold;
-	int steps;
-	std::vector<Game_Actor*> actors;
-	std::map<int, int> items;
-
-	int battle_count;
-	int win_count;
-	int defeat_count;
-	int run_count;
-}
+static RPG::SaveInventory& data = Main_Data::game_data.inventory;
 
 ////////////////////////////////////////////////////////////
 void Game_Party::Init() {
-	gold = 0;
-	steps = 0;
-	actors.clear();
-	items.clear();
-
-	battle_count = 0;
-	win_count = 0;
-	defeat_count = 0;
-	run_count = 0;
-}
-
-////////////////////////////////////////////////////////////
-void Game_Party::SetupStartingMembers() {
-	actors.clear();
-	for (size_t i = 0; i < Data::system.party.size(); ++i) {
-		Game_Actor* actor = Game_Actors::GetActor(Data::system.party[i]);
-
-		if (actor == NULL) {
-			Output::Warning("Invalid actor (Id: %d) in initial party at index %d.", Data::system.party[i], i);
-		} else {
-			actors.push_back(actor);
-		}
-	}
+	data.Setup();
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Party::GetItems(std::vector<int>& item_list) {
 	item_list.clear();
 
-	std::map<int, int>::iterator it;
-	for (it = items.begin(); it != items.end(); ++it) {
-		item_list.push_back(it->first);
-	}
+	std::vector<int16_t>::iterator it;
+	for (it = data.item_ids.begin(); it != data.item_ids.end(); it++)
+		item_list.push_back(*it);
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Party::ItemNumber(int item_id, bool get_equipped) {
 	if (get_equipped && item_id > 0) {
 		int number = 0;
-		for (size_t i = 0; i < actors.size(); ++i) {
-			if (actors[i]->GetWeaponId() == item_id) {
+		for (int i = 0; i < (int) data.party.size(); i++) {
+			Game_Actor* actor = Game_Actors::GetActor(data.party[i]);
+			if (actor->GetWeaponId() == item_id) {
 				++number;
 			}
-			if (actors[i]->GetShieldId() == item_id) {
+			if (actor->GetShieldId() == item_id) {
 				++number;
 			}
-			if (actors[i]->GetArmorId() == item_id) {
+			if (actor->GetArmorId() == item_id) {
 				++number;
 			}
-			if (actors[i]->GetHelmetId() == item_id) {
+			if (actor->GetHelmetId() == item_id) {
 				++number;
 			}
-			if (actors[i]->GetAccessoryId() == item_id) {
+			if (actor->GetAccessoryId() == item_id) {
 				++number;
 			}
 		}
 		return number;
 	} else {
-		std::map<int, int>::iterator it;
-		it = items.find(item_id);
-
-		if (it != items.end()) {
-			return it->second;
-		}
+		for (int i = 0; i < (int) data.item_ids.size(); i++)
+			if (data.item_ids[i] == item_id)
+				return data.item_counts[i];
 	}
 	
 	return 0;
@@ -113,34 +79,47 @@ int Game_Party::ItemNumber(int item_id, bool get_equipped) {
 
 ////////////////////////////////////////////////////////////
 void Game_Party::GainGold(int n) {
-	int a = gold + n;
-	gold = min(max(a, 0), 999999);
+	data.gold += n;
+	data.gold = std::min(std::max(data.gold, 0), 999999);
 }
 
 void Game_Party::LoseGold(int n) {
-	int a = gold - n;
-	gold = min(max(a, 0), 999999);
+	data.gold -= n;
+	data.gold = std::min(std::max(data.gold, 0), 999999);
 }
 
 ////////////////////////////////////////////////////////////
-void Game_Party::GainItem(int item_id, int amount, bool include_equip) {
-	int total_items;
-	if (item_id > 0 && (uint)item_id <= Data::items.size()) {
-		total_items = ItemNumber(item_id);
-		items[item_id] = min(max(total_items + amount, 0), 99);
-
-		total_items = ItemNumber(item_id);
-		if (total_items <= 0) {
-			items.erase(item_id);
-		}
-	} else {
-		Output::Warning("Can't add item to party.\n%d is not a valid item id.",
-			item_id);
+void Game_Party::GainItem(int item_id, int amount) {
+	if (item_id < 1 || item_id > (int) Data::items.size()) {
+		Output::Warning("Can't add item to party.\n%04d is not a valid item id.",
+						item_id);
+		return;
 	}
+
+	for (int i = 0; i < (int) data.item_ids.size(); i++) {
+		if (data.item_ids[i] != item_id)
+			continue;
+
+		int total_items = data.item_counts[i] + amount;
+		if (total_items < 0)
+			Output::Warning("Can't lose items which you do not have.");
+		if (total_items <= 0) {
+			data.item_ids.erase(data.item_ids.begin() + i);
+			data.item_counts.erase(data.item_counts.begin() + i);
+			data.item_usage.erase(data.item_usage.begin() + i);
+			return;
+		}
+		data.item_counts[i] = std::min(total_items, 99);
+		return;
+	}
+
+	data.item_ids.push_back(item_id);
+	data.item_counts.push_back(std::min(amount, 99));
+	data.item_usage.push_back(Data::items[item_id - 1].uses);
 }
 
-void Game_Party::LoseItem(int item_id, int amount, bool include_equip) {
-	GainItem(item_id, -amount, include_equip);
+void Game_Party::LoseItem(int item_id, int amount) {
+	GainItem(item_id, -amount);
 }
 
 ////////////////////////////////////////////////////////////
@@ -152,7 +131,7 @@ bool Game_Party::IsItemUsable(int item_id) {
 		//} else if (Data::items[item_id - 1].type == RPG::Item::Type_switch) {
 		//	return Data::items[item_id - 1].ocassion_battle;
 		//} else {
-		if (actors.size() > 0 &&
+		if (data.party.size() > 0 &&
 			(Data::items[item_id - 1].type == RPG::Item::Type_medicine ||
 			Data::items[item_id - 1].type == RPG::Item::Type_material ||
 			Data::items[item_id - 1].type == RPG::Item::Type_book)) {
@@ -167,55 +146,120 @@ bool Game_Party::IsItemUsable(int item_id) {
 
 ////////////////////////////////////////////////////////////
 void Game_Party::AddActor(int actor_id) {
-	Game_Actor* actor;
-
-	actor = Game_Actors::GetActor(actor_id);
-
-	// If the party has less than 4 members and this actor is not in the party
-	if ( (actors.size() < 4) && (!IsActorInParty(actor)) ) {
-		actors.push_back(actor);
-		Main_Data::game_player->Refresh();
-	}
+	if (IsActorInParty(actor_id))
+		return;
+	if (data.party.size() >= 4)
+		return;
+	data.party.push_back(actor_id);
+	Main_Data::game_player->Refresh();
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Party::RemoveActor(int actor_id) {
-	if (IsActorInParty(Game_Actors::GetActor(actor_id))) {
-		actors.erase(std::find(actors.begin(), actors.end(), Game_Actors::GetActor(actor_id)));
-		Main_Data::game_player->Refresh();
-	}
+	if (!IsActorInParty(actor_id))
+		return;
+	data.party.erase(std::find(data.party.begin(), data.party.end(), actor_id));
+	Main_Data::game_player->Refresh();
 }
 
 ////////////////////////////////////////////////////////////
-bool Game_Party::IsActorInParty(Game_Actor* actor) {	
-	return ( std::find(actors.begin(), actors.end(), actor) != actors.end() );
+bool Game_Party::IsActorInParty(int actor_id) {	
+	return std::find(data.party.begin(), data.party.end(), actor_id) != data.party.end();
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Party::GetGold() {
-	return gold;
+	return data.gold;
 }
 
 int Game_Party::GetSteps() {
-	return steps;
+	return data.steps;
 }
 
-std::vector<Game_Actor*>& Game_Party::GetActors() {
+std::vector<Game_Actor*> Game_Party::GetActors() {
+	std::vector<Game_Actor*> actors;
+	std::vector<int16_t>::const_iterator it;
+	for (it = data.party.begin(); it != data.party.end(); it++)
+		actors.push_back(Game_Actors::GetActor(*it));
 	return actors;
 }
 
 int Game_Party::GetBattleCount() {
-	return battle_count;
+	return data.battles;
 }
 
 int Game_Party::GetWinCount() {
-	return win_count;
+	return data.victories;
 }
 
 int Game_Party::GetDefeatCount() {
-	return defeat_count;
+	return data.defeats;
 }
 
 int Game_Party::GetRunCount() {
-	return run_count;
+	return data.escapes;
 }
+
+////////////////////////////////////////////////////////////
+void Game_Party::SetTimer(int which, int seconds) {
+	switch (which) {
+		case Timer1:
+			data.timer1_secs = seconds * DEFAULT_FPS;
+			break;
+		case Timer2:
+			data.timer2_secs = seconds * DEFAULT_FPS;
+			break;
+	}
+}
+
+////////////////////////////////////////////////////////////
+void Game_Party::StartTimer(int which, bool visible, bool battle) {
+	switch (which) {
+		case Timer1:
+			data.timer1_active = true;
+			data.timer1_visible = visible;
+			data.timer1_battle = battle;
+			break;
+		case Timer2:
+			data.timer2_active = true;
+			data.timer2_visible = visible;
+			data.timer2_battle = battle;
+			break;
+	}
+}
+
+////////////////////////////////////////////////////////////
+void Game_Party::StopTimer(int which) {
+	switch (which) {
+		case Timer1:
+			data.timer1_active = false;
+			data.timer1_visible = false;
+			break;
+		case Timer2:
+			data.timer2_active = false;
+			data.timer2_visible = false;
+			break;
+	}
+}
+
+////////////////////////////////////////////////////////////
+void Game_Party::UpdateTimers() {
+	bool battle = Game_Battle::GetScene() != NULL;
+	if (data.timer1_active && (!data.timer1_battle || !battle) && data.timer1_secs > 0)
+		data.timer1_secs--;
+	if (data.timer2_active && (!data.timer2_battle || !battle) && data.timer2_secs > 0)
+		data.timer2_secs--;
+}
+
+////////////////////////////////////////////////////////////
+int Game_Party::ReadTimer(int which) {
+	switch (which) {
+		case Timer1:
+			return data.timer1_secs;
+		case Timer2:
+			return data.timer2_secs;
+		default:
+			return 0;
+	}
+}
+

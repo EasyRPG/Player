@@ -30,6 +30,7 @@
 #include "game_system.h"
 #include "game_message.h"
 #include "game_picture.h"
+#include "game_targets.h"
 #include "spriteset_map.h"
 #include "sprite_character.h"
 #include "scene_map.h"
@@ -447,12 +448,12 @@ bool Game_Interpreter_Map::CommandStoreEventID() { // code 10920
 }
 
 bool Game_Interpreter_Map::CommandMemorizeBGM() { // code 11530
-	Game_System::memorized_bgm = Game_System::current_bgm;
+	Game_System::MemorizeBGM();
 	return true;
 }
 
 bool Game_Interpreter_Map::CommandPlayMemorizedBGM() { // code 11540
-	Game_System::BgmPlay(Game_System::memorized_bgm);
+	Game_System::PlayMemorizedBGM();
 	return true;
 }
 
@@ -480,22 +481,22 @@ bool Game_Interpreter_Map::CommandChangeSystemSFX() { //code 10670
 }
 
 bool Game_Interpreter_Map::CommandChangeSaveAccess() { // code 11930
-	Game_System::save_disabled = list[index].parameters[0] == 0;
+	Game_System::SetAllowSave(list[index].parameters[0] != 0);
 	return true;
 }
 
 bool Game_Interpreter_Map::CommandChangeTeleportAccess() { // code 11820
-	Game_System::teleport_disabled = list[index].parameters[0] == 0;
+	Game_System::SetAllowTeleport(list[index].parameters[0] != 0);
 	return true;
 }
 
 bool Game_Interpreter_Map::CommandChangeEscapeAccess() { // code 11840
-	Game_System::escape_disabled = list[index].parameters[0] == 0;
+	Game_System::SetAllowEscape(list[index].parameters[0] != 0);
 	return true;
 }
 
 bool Game_Interpreter_Map::CommandChangeMainMenuAccess() { // code 11960
-	Game_System::main_menu_disabled = list[index].parameters[0] == 0;
+	Game_System::SetAllowMenu(list[index].parameters[0] != 0);
 	return true;
 }
 
@@ -892,14 +893,14 @@ bool Game_Interpreter_Map::CommandTimerOperation() { // code 10230
 		case 0:
 			seconds = ValueOrVariable(list[index].parameters[1],
 									  list[index].parameters[2]);
-			Game_System::SetTimer(timer_id, seconds);
+			Game_Party::SetTimer(timer_id, seconds);
 			break;
 		case 1:
 			visible = list[index].parameters[3] != 0;
 			battle = list[index].parameters[4] != 0;
-			Game_System::StartTimer(timer_id, visible, battle);
+			Game_Party::StartTimer(timer_id, visible, battle);
 		case 2:
-			Game_System::StopTimer(timer_id);
+			Game_Party::StopTimer(timer_id);
 			break;
 		default:
 			return false;
@@ -1245,7 +1246,7 @@ bool Game_Interpreter_Map::CommandTeleportTargets() { // code 11810
 	int map_id = list[index].parameters[1];
 
 	if (list[index].parameters[0] != 0) {
-		Game_System::RemoveTeleportTarget(map_id);
+		Game_Targets::RemoveTeleportTarget(map_id);
 		return true;
 	}
 
@@ -1254,7 +1255,7 @@ bool Game_Interpreter_Map::CommandTeleportTargets() { // code 11810
 	int switch_id = (list[index].parameters[4] != 0)
 		? list[index].parameters[5]
 		: -1;
-	Game_System::AddTeleportTarget(map_id, x, y, switch_id);
+	Game_Targets::AddTeleportTarget(map_id, x, y, switch_id);
 	return true;
 }
 
@@ -1265,7 +1266,7 @@ bool Game_Interpreter_Map::CommandEscapeTarget() { // code 11830
 	int switch_id = (list[index].parameters[3] != 0)
 		? list[index].parameters[4]
 		: -1;
-	Game_System::SetEscapeTarget(map_id, x, y, switch_id);
+	Game_Targets::SetEscapeTarget(map_id, x, y, switch_id);
 	return true;
 }
 
@@ -1693,6 +1694,7 @@ bool Game_Interpreter_Map::CommandHaltAllMovement() { // code 11350
 bool Game_Interpreter_Map::CommandConditionalBranch() { // Code 12010
 	bool result = false;
 	int value1, value2;
+	int actor_id;
 	Game_Actor* actor;
 	Game_Character* character;
 
@@ -1737,7 +1739,7 @@ bool Game_Interpreter_Map::CommandConditionalBranch() { // Code 12010
 			}
 			break;
 		case 2:
-			value1 = Game_System::ReadTimer(Game_System::Timer1);
+			value1 = Game_Party::ReadTimer(Game_Party::Timer1);
 			value2 = list[index].parameters[1] * DEFAULT_FPS;
 			switch (list[index].parameters[2]) {
 				case 0:
@@ -1764,11 +1766,12 @@ bool Game_Interpreter_Map::CommandConditionalBranch() { // Code 12010
 			break;
 		case 5:
 			// Hero
-			actor = Game_Actors::GetActor(list[index].parameters[1]);
+			actor_id = list[index].parameters[1];
+			actor = Game_Actors::GetActor(actor_id);
 			switch (list[index].parameters[2]) {
 				case 0:
 					// Is actor in party
-					result = Game_Party::IsActorInParty(actor);
+					result = Game_Party::IsActorInParty(actor_id);
 					break;
 				case 1:
 					// Name
@@ -1838,7 +1841,7 @@ bool Game_Interpreter_Map::CommandConditionalBranch() { // Code 12010
 			// TODO BGM Playing
 			break;
 		case 10:
-			value1 = Game_System::ReadTimer(Game_System::Timer2);
+			value1 = Game_Party::ReadTimer(Game_Party::Timer2);
 			value2 = list[index].parameters[1] * DEFAULT_FPS;
 			switch (list[index].parameters[2]) {
 				case 0:

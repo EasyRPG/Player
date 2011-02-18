@@ -26,8 +26,6 @@
 #include "player.h"
 #include "util_macro.h"
 
-extern RPG::Save game_data;
-
 ////////////////////////////////////////////////////////////
 Game_Actor::Game_Actor(int actor_id) :
 	data(Main_Data::game_data.party[actor_id - 1]) {

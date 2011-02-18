@@ -69,28 +69,6 @@ namespace Game_System {
 		Transition_Count
 	};
 
-	enum sys_timer {
-		Timer1,
-		Timer2
-	};
-
-	class Timer {
-	public:
-		int value;
-		bool running;
-		bool visible;
-		bool battle;
-
-		Timer() :
-			value(0),
-			running(false),
-			visible(false),
-			battle(false) {}
-
-		void Update();
-	};
-
-
 	class Target {
 	public:
 		int map_id;
@@ -139,11 +117,25 @@ namespace Game_System {
 	void SetSystemName(std::string const& system_name);
 
 	////////////////////////////////////////////////////////
+	/// Get the system music
+	/// @param which : which "context" to set the music for
+	/// @return   : the music
+	////////////////////////////////////////////////////////
+	RPG::Music& GetSystemBGM(int which);
+
+	////////////////////////////////////////////////////////
 	/// Set the system music
 	/// @param which : which "context" to set the music for
 	/// @param bgm   : the music
 	////////////////////////////////////////////////////////
 	void SetSystemBGM(int which, RPG::Music const& bgm);
+
+	////////////////////////////////////////////////////////
+	/// Get the system sound effects
+	/// @param which : which "context" to set the music for
+	/// @return   : the sound
+	////////////////////////////////////////////////////////
+	RPG::Sound& GetSystemSE(int which);
 
 	////////////////////////////////////////////////////////
 	/// Set a system sound effect
@@ -184,6 +176,13 @@ namespace Game_System {
 	/// @return number of frames remaining
 	////////////////////////////////////////////////////////
 	int ReadTimer(int which);
+
+	////////////////////////////////////////////////////////
+	/// Get the system transitions
+	/// @param which : which "context" to get the transition for
+	/// @return : the transition
+	////////////////////////////////////////////////////////
+	int& GetTransition(int which);
 
 	////////////////////////////////////////////////////////
 	/// Set the system transitions
@@ -230,22 +229,37 @@ namespace Game_System {
 	////////////////////////////////////////////////////////
 	Target* GetEscapeTarget();
 
+	bool GetAllowTeleport();
+	void SetAllowTeleport(bool allow);
+	bool GetAllowEscape();
+	void SetAllowEscape(bool allow);
+	bool GetAllowSave();
+	void SetAllowSave(bool allow);
+	bool GetAllowMenu();
+	void SetAllowMenu(bool allow);
+
+	int GetSaveCount();
+
+	RPG::Music& GetCurrentBGM();
+	void MemorizeBGM();
+	void PlayMemorizedBGM();
+
 	/// Menu saving option disabled flag.
-	extern bool save_disabled;
-	extern bool teleport_disabled;
-	extern bool escape_disabled;
-	extern bool main_menu_disabled;
-	extern RPG::Music current_bgm;
-	extern RPG::Music memorized_bgm;
-	extern RPG::Music system_bgm[BGM_Count];
-	extern RPG::Sound system_sfx[SFX_Count];
-	extern Timer timers[2];
-	extern int transitions[Transition_Count];
-	extern std::map<int, Target> teleport_targets;
-	extern Target escape_target;
+	// extern bool save_disabled;
+	// extern bool teleport_disabled;
+	// extern bool escape_disabled;
+	// extern bool main_menu_disabled;
+	// extern RPG::Music current_bgm;
+	// extern RPG::Music memorized_bgm;
+	// extern RPG::Music system_bgm[BGM_Count];
+	// extern RPG::Sound system_sfx[SFX_Count];
+	// extern Timer timers[2];
+	// extern int transitions[Transition_Count];
+	// extern std::map<int, Target> teleport_targets;
+	// extern Target escape_target;
 
 	/// Numbers of saves.
-	extern unsigned int save_count;
+	// extern unsigned int save_count;
 }
 
 #endif

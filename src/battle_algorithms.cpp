@@ -65,7 +65,7 @@ void Game_Battle::UseItem(Battle::Ally& ally, const RPG::Item& item) {
 			break;
 		case 1:
 			// single use
-			Game_Party::LoseItem(item.ID, 1, false);
+			Game_Party::LoseItem(item.ID, 1);
 			break;
 		default:
 			// multiple use

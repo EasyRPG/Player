@@ -354,7 +354,7 @@ bool Game_Player::GetOnVehicle() {
 	// TODO:
 	// else
 	// 	ForceMoveForward();
-	walking_bgm = Game_System::current_bgm;
+	walking_bgm = Game_System::GetCurrentBGM();
 	Game_Map::GetVehicle(type)->GetOn();
 	return true;
 }

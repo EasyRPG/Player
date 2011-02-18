@@ -144,7 +144,7 @@ void Scene_Menu::CreateCommandWindow() {
 		switch(*it) {
 		case Save:
 			// If save is forbidden disable this item
-			if (Game_System::save_disabled) {
+			if (Game_System::GetAllowSave()) {
 				command_window->DisableItem(it - command_options.begin());
 			}
 		case Wait:
@@ -195,7 +195,7 @@ void Scene_Menu::UpdateCommand() {
 			}
 			break;
 		case Save: // Save
-			if (Game_System::save_disabled) {
+			if (Game_System::GetAllowSave()) {
 				Game_System::SePlay(Data::system.buzzer_se);
 			} else {
 				Game_System::SePlay(Data::system.decision_se);

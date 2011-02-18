@@ -754,7 +754,7 @@ bool Game_Interpreter::CommandControlVariables() { // Code ControlVars
 					value = Game_Party::GetGold();
 					break;
 				case 1:
-					value = Game_System::ReadTimer(Game_System::Timer1);
+					value = Game_Party::ReadTimer(Game_Party::Timer1);
 					break;
 				case 2:
 					// Number of heroes in party
@@ -762,7 +762,7 @@ bool Game_Interpreter::CommandControlVariables() { // Code ControlVars
 					break;
 				case 3:
 					// Number of saves
-					value = Game_System::save_count;
+					value = Game_System::GetSaveCount();
 					break;
 				case 4:
 					// Number of battles
@@ -784,7 +784,7 @@ bool Game_Interpreter::CommandControlVariables() { // Code ControlVars
 					// TODO: MIDI play position
 					break;
 				case 9:
-					value = Game_System::ReadTimer(Game_System::Timer2);
+					value = Game_Party::ReadTimer(Game_Party::Timer2);
 					break;
 			}
 			break;

@@ -24,44 +24,22 @@
 #include "main_data.h"
 
 ////////////////////////////////////////////////////////////
-namespace Game_System {
-	bool save_disabled;
-	bool teleport_disabled;
-	bool escape_disabled;
-	bool main_menu_disabled;
-	unsigned int save_count;
-	RPG::Music current_bgm;
-	RPG::Music memorized_bgm;
-	RPG::Music system_bgm[BGM_Count];
-	RPG::Sound system_sfx[SFX_Count];
-	Timer timers[2];
-	int transitions[Transition_Count];
-	std::map<int, Target> teleport_targets;
-	Target escape_target;
-}
 
-static std::string system_name;
+static RPG::SaveSystem& data = Main_Data::game_data.system;
 
 ////////////////////////////////////////////////////////////
 void Game_System::Init() {
-	save_disabled = false;
-	teleport_disabled = false;
-	escape_disabled = false;
-	main_menu_disabled = false;
-	save_count = 0;
-	
-	SetSystemBGM(BGM_Battle, Data::system.battle_music); 
-	SetSystemBGM(BGM_Victory, Data::system.battle_end_music); 
-	SetSystemBGM(BGM_Inn, Data::system.inn_music);
-	SetSystemBGM(BGM_Skiff, Data::system.boat_music);
-	SetSystemBGM(BGM_Ship, Data::system.ship_music);
-	SetSystemBGM(BGM_Airship, Data::system.airship_music);
-	SetSystemBGM(BGM_GameOver, Data::system.gameover_music); 
+	data.Setup();
+}
+
+////////////////////////////////////////////////////////////
+int Game_System::GetSaveCount() {
+	return data.save_count;
 }
 
 ////////////////////////////////////////////////////////////
 void Game_System::BgmPlay(RPG::Music const& bgm) {
-	current_bgm = bgm;
+	data.current_music = bgm;
 	// RPG Maker Hack: (OFF) means play nothing
 	if (!bgm.name.empty() && bgm.name != "(OFF)") {
 		Audio::BGM_Play(bgm.name, bgm.volume, bgm.tempo);
@@ -80,100 +58,128 @@ void Game_System::SePlay(RPG::Sound const& se) {
 
 ////////////////////////////////////////////////////////////
 std::string Game_System::GetSystemName() {
-	if (system_name.empty()) {
-		return Data::system.system_name;
-	} else {
-		return system_name;
-	}
+	return data.graphics_name;
 }
 
 ////////////////////////////////////////////////////////////
 void Game_System::SetSystemName(std::string const& new_system_name) {
-	system_name = new_system_name;
+	data.graphics_name = new_system_name;
 }
 
 ////////////////////////////////////////////////////////////
-void Game_System::SetSystemBGM(int which, RPG::Music const& bgm) {
-	system_bgm[which] = bgm;
+RPG::Music& Game_System::GetSystemBGM(int which) {
+	switch (which) {
+		case BGM_Battle:		return data.battle_music;
+		case BGM_Victory:		return data.battle_end_music;
+		case BGM_Inn:			return data.inn_music;
+		case BGM_Skiff:			return data.boat_music;
+		case BGM_Ship:			return data.ship_music;
+		case BGM_Airship:		return data.airship_music;
+		case BGM_GameOver:		return data.gameover_music;
+	}
+
+	return data.battle_music; // keep the compiler happy
 }
 
 ////////////////////////////////////////////////////////////
-void Game_System::SetSystemSE(int which, RPG::Sound const& sfx) {
-	system_sfx[which] = sfx;
+RPG::Music& Game_System::GetCurrentBGM() {
+	return data.current_music;
 }
 
 ////////////////////////////////////////////////////////////
-void Game_System::Timer::Update() {
-	// TODO: if (<during battle> && !battle) return;
-	if (running && value > 0)
-		value--;
+void Game_System::SetSystemBGM(int which, const RPG::Music& bgm) {
+	GetSystemBGM(which) = bgm;
 }
 
 ////////////////////////////////////////////////////////////
-void Game_System::SetTimer(int which, int seconds) {
-	Timer& timer = timers[which];
-	timer.value = seconds * DEFAULT_FPS;
+void Game_System::MemorizeBGM() {
+	data.stored_music = data.current_music;
 }
 
 ////////////////////////////////////////////////////////////
-void Game_System::StartTimer(int which, bool visible, bool battle) {
-	Timer& timer = timers[which];
-	timer.running = true;
-	timer.visible = visible;
-	timer.battle = battle;
+void Game_System::PlayMemorizedBGM() {
+	BgmPlay(data.stored_music);
 }
 
 ////////////////////////////////////////////////////////////
-void Game_System::StopTimer(int which) {
-	Timer& timer = timers[which];
-	timer.running = false;
-	timer.visible = false;
+RPG::Sound& Game_System::GetSystemSE(int which) {
+	switch (which) {
+		case SFX_Cursor:		return data.cursor_se;
+		case SFX_Decision:		return data.decision_se;
+		case SFX_Cancel:		return data.cancel_se;
+		case SFX_Buzzer:		return data.buzzer_se;
+		case SFX_BeginBattle:	return data.battle_se;
+		case SFX_Escape:		return data.escape_se;
+		case SFX_EnemyAttacks:	return data.enemy_attack_se;
+		case SFX_EnemyDamage:	return data.enemy_damaged_se;
+		case SFX_AllyDamage:	return data.actor_damaged_se;
+		case SFX_Evasion:		return data.dodge_se;
+		case SFX_EnemyKill:		return data.enemy_death_se;
+		case SFX_UseItem:		return data.item_se;
+	}
+	return data.cursor_se; // keep the compiler happy
 }
 
 ////////////////////////////////////////////////////////////
-void Game_System::UpdateTimers() {
-	timers[0].Update();
-	timers[1].Update();
+void Game_System::SetSystemSE(int which, const RPG::Sound& sfx) {
+	GetSystemSE(which) = sfx;
 }
 
 ////////////////////////////////////////////////////////////
-int Game_System::ReadTimer(int which) {
-	Timer& timer = timers[which];
-	return timer.value;
+void Game_System::SetAllowTeleport(bool allow) {
+	data.teleport_allowed = allow;
 }
 
+////////////////////////////////////////////////////////////
+bool Game_System::GetAllowTeleport() {
+	return data.teleport_allowed;
+}
+
+////////////////////////////////////////////////////////////
+void Game_System::SetAllowEscape(bool allow) {
+	data.escape_allowed = allow;
+}
+
+////////////////////////////////////////////////////////////
+bool Game_System::GetAllowEscape() {
+	return data.escape_allowed;
+}
+
+////////////////////////////////////////////////////////////
+void Game_System::SetAllowSave(bool allow) {
+	data.save_allowed = allow;
+}
+
+////////////////////////////////////////////////////////////
+bool Game_System::GetAllowSave() {
+	return data.save_allowed;
+}
+
+////////////////////////////////////////////////////////////
+void Game_System::SetAllowMenu(bool allow) {
+	data.menu_allowed = allow;
+}
+
+////////////////////////////////////////////////////////////
+bool Game_System::GetAllowMenu() {
+	return data.menu_allowed;
+}
+
+////////////////////////////////////////////////////////////
+int& Game_System::GetTransition(int which) {
+	switch (which) {
+		case Transition_TeleportErase:			return data.transition_out;
+		case Transition_TeleportShow:			return data.transition_in;
+		case Transition_BeginBattleErase:		return data.battle_start_fadeout;
+		case Transition_BeginBattleShow:		return data.battle_start_fadein;
+		case Transition_EndBattleErase:			return data.battle_end_fadeout;
+		case Transition_EndBattleShow:			return data.battle_end_fadein;
+	}
+
+	return data.transition_out;	// keep the compiler happy
+}
 ////////////////////////////////////////////////////////////
 void Game_System::SetTransition(int which, int transition) {
-	transitions[which] = transition;
+	GetTransition(which) = transition;
 }
 
-////////////////////////////////////////////////////////////
-void Game_System::AddTeleportTarget(int map_id, int x, int y, int switch_id) {
-	teleport_targets[map_id] = Target(map_id, x, y, switch_id);
-}
-
-////////////////////////////////////////////////////////////
-void Game_System::RemoveTeleportTarget(int map_id) {
-	std::map<int,Target>::iterator it = teleport_targets.find(map_id);
-	if (it != teleport_targets.end())
-		teleport_targets.erase(it);
-}
-
-////////////////////////////////////////////////////////////
-Game_System::Target* Game_System::GetTeleportTarget(int map_id) {
-	std::map<int,Target>::iterator it = teleport_targets.find(map_id);
-	if (it != teleport_targets.end())
-		return &it->second;
-	else
-		return NULL;
-}
-
-////////////////////////////////////////////////////////////
-void Game_System::SetEscapeTarget(int map_id, int x, int y, int switch_id) {
-	escape_target = Target(map_id, x, y, switch_id);
-}
-
-////////////////////////////////////////////////////////////
-Game_System::Target* Game_System::GetEscapeTarget() {
-	return &escape_target;
-}

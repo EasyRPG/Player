@@ -247,7 +247,6 @@ void Scene_Title::CommandNewGame() {
 		Audio::BGM_Stop();
 		Graphics::SetFrameCount(0);
 		CreateGameObjects();
-		Game_Party::SetupStartingMembers();
 		Game_Map::Setup(Data::treemap.start_map_id);
 		Main_Data::game_player->MoveTo(
 			Data::treemap.start_x, Data::treemap.start_y);

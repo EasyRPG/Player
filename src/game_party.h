@@ -73,7 +73,7 @@ namespace Game_Party {
 	/// @param actor : actor object
 	/// @return whether the actor is in party.
 	////////////////////////////////////////////////////////
-	bool IsActorInParty(Game_Actor* actor);
+	bool IsActorInParty(int actor_id);
 
 	////////////////////////////////////////////////////////
 	/// Gain gold.
@@ -111,17 +111,15 @@ namespace Game_Party {
 	/// Gain an amount of items.
 	/// @param item_id : database item id
 	/// @param amount : gained quantity
-	/// @param include_equip : include equipped items
 	////////////////////////////////////////////////////////
-	void GainItem(int item_id, int amount, bool include_equip = false);
+	void GainItem(int item_id, int amount);
 
 	////////////////////////////////////////////////////////
 	/// Lose an amount of items.
 	/// @param item_id : database item id
 	/// @param amount : lost quantity
-	/// @param include_equip : include equipped items
 	////////////////////////////////////////////////////////
-	void LoseItem(int item_id, int amount, bool include_equip = false);
+	void LoseItem(int item_id, int amount);
 
 	////////////////////////////////////////////////////////
 	/// Get if item can be used.
@@ -173,7 +171,7 @@ namespace Game_Party {
 	int GetSteps();
 
 	/// @return actors in party list
-	std::vector<Game_Actor*>& GetActors();
+	std::vector<Game_Actor*> GetActors();
 
 	/// @return number of battles
 	int GetBattleCount();
@@ -186,6 +184,17 @@ namespace Game_Party {
 
 	/// @return number of battles escaped
 	int GetRunCount();
+
+	enum sys_timer {
+		Timer1,
+		Timer2
+	};
+
+	void SetTimer(int which, int seconds);
+	void StartTimer(int which, bool visible, bool battle);
+	void StopTimer(int which);
+	void UpdateTimers();
+	int ReadTimer(int which);
 }
 
 #endif
