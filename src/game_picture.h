@@ -24,6 +24,8 @@
 
 #include <string>
 #include <vector>
+#include "rpg_save.h"
+#include "sprite.h"
 
 ////////////////////////////////////////////////////////////
 /// Picture class
@@ -33,21 +35,6 @@ class Sprite;
 
 class Picture {
 public:
-	class PictureState {
-		PictureState();
-
-		double x;
-		double y;
-		double red;
-		double green;
-		double blue;
-		double saturation;
-		double magnify;
-		double top_trans;
-		double bottom_trans;
-
-		friend class Picture;
-	};
 	Picture(int ID);
 	~Picture();
 
@@ -67,19 +54,7 @@ public:
 	void Update();
 
 private:
-	int ID;
-	std::string name;
-	PictureState finish_state;
-	PictureState current_state;
-	int duration;
-	bool shown;
-	bool scrolls;
-	bool use_trans;
-	bool rotate;
-	bool waver;
-	int speed;
-	int depth;
-	double value;
+	RPG::SavePicture& data;
 
 	static const int waver_speed = 10;
 

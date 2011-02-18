@@ -21,34 +21,17 @@
 
 #include "options.h"
 #include "cache.h"
-#include "game_picture.h"
+#include "main_data.h"
 #include "sprite.h"
+#include "game_picture.h"
 #include <vector>
 
 ////////////////////////////////////////////////////////////
 /// Picture class
 ////////////////////////////////////////////////////////////
 
-Picture::PictureState::PictureState() :
-	red(255.0),
-	green(255.0),
-	blue(255.0),
-	saturation(255.0),
-	magnify(100.0),
-	top_trans(0.0),
-	bottom_trans(0.0)
-{}
-
 Picture::Picture(int ID) :
-	ID(ID),
-	shown(false),
-	scrolls(false),
-	rotate(false),
-	waver(false),
-	speed(0),
-	depth(0),
-	value(0.0),
-	sprite(NULL)
+	data(Main_Data::game_data.pictures[ID - 1]), sprite(NULL)
 {
 	Transition(0);
 }
@@ -63,43 +46,40 @@ Picture::~Picture()
 void Picture::UpdateSprite() {
 	if (sprite == NULL)
 		return;
-	if (!shown)
+	if (data.name.empty())
 		return;
 
-	PictureState& st = current_state;
-
-	sprite->SetX((int)st.x);
-	sprite->SetY((int)st.y);
-	sprite->SetZ(1000 + ID);
-	sprite->SetZoomX(st.magnify / 100.0);
-	sprite->SetZoomY(st.magnify / 100.0);
-	sprite->SetOx((int)(sprite->GetBitmap()->GetWidth() * st.magnify / 200.0));
-	sprite->SetOy((int)(sprite->GetBitmap()->GetHeight() * st.magnify / 200.0));
-	sprite->SetAngle(rotate ? value : 0.0);
-	sprite->SetWaverPhase(waver ? value : 0.0);
-	sprite->SetWaverDepth(waver ? depth : 0);
+	sprite->SetX((int) data.current_x);
+	sprite->SetY((int) data.current_y);
+	sprite->SetZ(1000 + data.ID);
+	sprite->SetZoomX(data.current_magnify / 100.0);
+	sprite->SetZoomY(data.current_magnify / 100.0);
+	sprite->SetOx((int)(sprite->GetBitmap()->GetWidth() * data.current_magnify / 200.0));
+	sprite->SetOy((int)(sprite->GetBitmap()->GetHeight() * data.current_magnify / 200.0));
+	sprite->SetAngle(data.effect_mode == 1 ? data.current_rotation : 0.0);
+	sprite->SetWaverPhase(data.effect_mode == 2 ? data.current_waver : 0.0);
+	sprite->SetWaverDepth(data.effect_mode == 2 ? data.effect2_speed : 0);
 	sprite->SetOpacity(
-		(int)(255 * (100 - st.top_trans) / 100),
-		(int)(255 * (100 - st.bottom_trans) / 100));
-	if (st.bottom_trans != st.top_trans)
+		(int)(255 * (100 - data.current_top_trans) / 100),
+		(int)(255 * (100 - data.current_bot_trans) / 100));
+	if (data.current_bot_trans != data.current_top_trans)
 		sprite->SetBushDepth(sprite->GetHeight() / 2);
-	sprite->SetTone(Tone((int) ((st.red        - 100) * 255 / 100),
-						 (int) ((st.green      - 100) * 255 / 100),
-						 (int) ((st.blue       - 100) * 255 / 100),
-						 (int) ((100 - st.saturation) * 255 / 100)));
+	sprite->SetTone(Tone((int) ((data.current_red        - 100) * 255 / 100),
+						 (int) ((data.current_green      - 100) * 255 / 100),
+						 (int) ((data.current_blue       - 100) * 255 / 100),
+						 (int) ((100 - data.current_sat) * 255 / 100)));
 }
 
 void Picture::Show(const std::string& _name) {
-	name = _name;
-	shown = true;
-	duration = 0;
+	data.name = _name;
+	data.time_left = 0;
 
 	if (sprite != NULL) {
 		delete sprite;
 		sprite = NULL;
 	}
 
-	Bitmap* bitmap = Cache::Picture(name);
+	Bitmap* bitmap = Cache::Picture(data.name);
 	sprite = new Sprite();
 	sprite->SetBitmap(bitmap);
 	sprite->SetOx(bitmap->GetWidth() / 2);
@@ -107,68 +87,70 @@ void Picture::Show(const std::string& _name) {
 }
 
 void Picture::Erase() {
-	shown = false;
+	data.name.clear();
 	if (sprite != NULL)
 		delete sprite;
 	sprite = NULL;
 }
 
 void Picture::UseTransparent(bool flag) {
-	use_trans = flag;
+	data.transparency = flag;
 }
 
 void Picture::Scrolls(bool flag) {
-	scrolls = flag;
+	data.picture_scrolls = flag;
 }
 
 void Picture::Move(int x, int y) {
-	PictureState& st = finish_state;
-	st.x = x;
-	st.y = y;
+	data.finish_x = x;
+	data.finish_y = y;
 }
 
 void Picture::Color(int r, int g, int b, int s) {
-	PictureState& st = finish_state;
-	st.red = r;
-	st.green = g;
-	st.blue = b;
-	st.saturation = s;
+	data.finish_red = r;
+	data.finish_green = g;
+	data.finish_blue = b;
+	data.finish_sat = s;
 }
 
 void Picture::Magnify(int scale) {
-	PictureState& st = finish_state;
-	st.magnify = scale;
+	data.finish_magnify = scale;
 }
 
 void Picture::Transparency(int t, int b) {
-	PictureState& st = finish_state;
-	st.top_trans = t;
-	st.bottom_trans = b;
+	data.finish_top_trans = t;
+	data.finish_bot_trans = b;
 }
 
-void Picture::Rotate(int _speed) {
-	rotate = true;
-	waver = false;
-	speed = _speed;
-	value = 0.0;
+void Picture::Rotate(int speed) {
+	data.effect_mode = 1;
+	data.effect_speed = data.effect2_speed = speed;
+	data.current_rotation = 0;
 }
 
-void Picture::Waver(int _depth) {
-	rotate = false;
-	waver = true;
-	depth = _depth;
-	value = 0.0;
+void Picture::Waver(int depth) {
+	data.effect_mode = 2;
+	data.effect_speed = data.effect2_speed = depth;
+	data.current_waver = 0;
 }
 
 void Picture::StopEffects() {
-	rotate = false;
-	waver = false;
+	data.effect_mode = 0;
 }
 
 void Picture::Transition(int tenths) {
-	duration = tenths * DEFAULT_FPS / 10;
+	data.time_left = tenths * DEFAULT_FPS / 10;
+
 	if (tenths == 0) {
-		current_state = finish_state;
+		data.current_x			= data.finish_x;
+		data.current_y			= data.finish_y;
+		data.current_red		= data.finish_red;
+		data.current_green		= data.finish_green;
+		data.current_blue		= data.finish_blue;
+		data.current_sat		= data.finish_sat;
+		data.current_magnify	= data.finish_magnify;
+		data.current_top_trans	= data.finish_top_trans;
+		data.current_bot_trans	= data.finish_bot_trans;
 		UpdateSprite();
 	}
 }
@@ -178,30 +160,28 @@ static double interpolate(double d, double x0, double x1) {
 }
 
 void Picture::Update() {
-	if (!shown)
+	if (data.name.empty())
 		return;
 
-	if (rotate)
-		value += speed;
-	if (waver)
-		value += waver_speed;
+	if (data.effect_mode == 1)
+		data.current_rotation += data.effect_speed;
+	if (data.effect_mode == 2)
+		data.current_waver += data.effect2_speed;
 
-	if (duration > 0) {
-		PictureState& st = current_state;
-		PictureState& st1 = finish_state;
-		double k = duration;
+	if (data.time_left > 0) {
+		double k = data.time_left;
 
-		st.x = interpolate(k, st.x, st1.x);
-		st.y = interpolate(k, st.y, st1.y);
-		st.red = interpolate(k, st.red, st1.red);
-		st.green = interpolate(k, st.green, st1.green);
-		st.blue = interpolate(k, st.blue, st1.blue);
-		st.saturation = interpolate(k, st.saturation, st1.saturation);
-		st.magnify = interpolate(k, st.magnify, st1.magnify);
-		st.top_trans = interpolate(k, st.top_trans, st1.top_trans);
-		st.bottom_trans = interpolate(k, st.bottom_trans, st1.bottom_trans);
+		data.current_x			= interpolate(k, data.current_x,			data.finish_x);
+		data.current_y			= interpolate(k, data.current_y,			data.finish_y);
+		data.current_red		= interpolate(k, data.current_red,			data.finish_red);
+		data.current_green		= interpolate(k, data.current_green,		data.finish_green);
+		data.current_blue		= interpolate(k, data.current_blue,			data.finish_blue);
+		data.current_sat		= interpolate(k, data.current_sat,			data.finish_sat);
+		data.current_magnify	= interpolate(k, data.current_magnify,		data.finish_magnify);
+		data.current_top_trans	= interpolate(k, data.current_top_trans,	data.finish_top_trans);
+		data.current_bot_trans	= interpolate(k, data.current_bot_trans,	data.finish_bot_trans);
 
-		duration--;
+		data.time_left--;
 	}
 
 	UpdateSprite();
