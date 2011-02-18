@@ -356,20 +356,11 @@ bool Game_Interpreter::ExecuteCommand() {
 ////////////////////////////////////////////////////////////
 
 bool Game_Interpreter::CommandWait() {
-	if (Player::engine == Player::EngineRpg2k) {
+	if (Player::engine == Player::EngineRpg2k || list[index].parameters[1] == 0) {
 		wait_count = list[index].parameters[0] * DEFAULT_FPS / 10;
-	} else {
-		switch (list[index].parameters[1]) {
-			case 0:
-				wait_count = list[index].parameters[0] * DEFAULT_FPS / 10;
-				break;
-			default:
-				// TODO: wait until key pressed
-				wait_count = 0;
-				break;
-		}
-	}
-	return true;
+		return true;
+	} else
+		return Input::IsAnyTriggered();
 }
 
 ////////////////////////////////////////////////////////////
