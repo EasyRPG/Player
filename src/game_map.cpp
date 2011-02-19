@@ -32,19 +32,15 @@
 
 ////////////////////////////////////////////////////////////
 namespace {
-	int chipset_id;
+	RPG::SaveMapInfo& map_info = Main_Data::game_data.map_info;
+	RPG::SavePartyLocation& location = Main_Data::game_data.party_location;
+
 	std::string chipset_name;
 	std::string battleback_name;
 	int display_x;
 	int display_y;
 	bool need_refresh;
-	std::string parallax_name;
-	bool parallax_horz_scroll;
-	bool parallax_vert_scroll;
-	bool parallax_horz_auto;
-	bool parallax_vert_auto;
-	int parallax_horz_speed;
-	int parallax_vert_speed;
+
 	int parallax_auto_x;
 	int parallax_auto_y;
 	int parallax_x;
@@ -52,30 +48,20 @@ namespace {
 
 	std::vector<unsigned char> passages_down;
 	std::vector<unsigned char> passages_up;
-	std::vector<short> terrain_tags;
 	tEventHash events;
 	tCommonEventHash common_events;
 
 	std::auto_ptr<RPG::Map> map;
-	int map_id;
 	int scroll_direction;
 	int scroll_rest;
 	int scroll_speed;
-	int encounter_steps;
 
 	Game_Interpreter* interpreter;
 	Game_Vehicle* vehicles[3];
 
-	uint8 substitutions_down[144];
-	uint8 substitutions_up[144];
-
 	bool pan_locked;
 	bool pan_wait;
 	int pan_speed;
-	int pan_dx;
-	int pan_dy;
-	int pan_x;
-	int pan_y;
 }
 
 ////////////////////////////////////////////////////////////
@@ -85,12 +71,12 @@ void Game_Map::Init() {
 	need_refresh = true;
 	
 	map.reset();
-	map_id = 0;
+	location.map_id = 0;
 	scroll_direction = 0;
 	scroll_rest = 0;
 	scroll_speed = 0;
 	interpreter = new Game_Interpreter_Map(0, true);
-	encounter_steps = 0;
+	map_info.encounter_rate = 0;
 
 	for (int i = 0; i < 3; i++)
 		vehicles[i] = new Game_Vehicle((Game_Vehicle::Type) i);
@@ -98,10 +84,10 @@ void Game_Map::Init() {
 	pan_locked = false;
 	pan_wait = false;
 	pan_speed = 0;
-	pan_dx = 0;
-	pan_dy = 0;
-	pan_x = 0;
-	pan_y = 0;
+	location.pan_finish_x = 0;
+	location.pan_finish_y = 0;
+	location.pan_current_x = 0;
+	location.pan_current_y = 0;
 }
 
 ////////////////////////////////////////////////////////////
@@ -132,9 +118,9 @@ void Game_Map::Quit() {
 void Game_Map::Setup(int _id) {
 	Dispose();
 
-	map_id = _id;
+	location.map_id = _id;
 	char file[12];
-	sprintf(file, "Map%04d.lmu", map_id);
+	sprintf(file, "Map%04d.lmu", location.map_id);
 
 	map = LMU_Reader::LoadMap(file);
 	if (map.get() == NULL) {
@@ -157,7 +143,7 @@ void Game_Map::Setup(int _id) {
 	events.clear();
 
 	for (size_t i = 0; i < map->events.size(); ++i) {
-		events.insert(std::pair<int, Game_Event*>(map->events[i].ID, new Game_Event(map_id, map->events[i])));
+		events.insert(std::pair<int, Game_Event*>(map->events[i].ID, new Game_Event(location.map_id, map->events[i])));
 	}
 
 	for (size_t i = 0; i < Data::commonevents.size(); ++i) {
@@ -167,7 +153,7 @@ void Game_Map::Setup(int _id) {
 	scroll_direction = 2;
 	scroll_rest = 0;
 	scroll_speed = 4;
-	encounter_steps = Data::treemap.maps[map_id - 1].encounter_steps;
+	map_info.encounter_rate = Data::treemap.maps[location.map_id - 1].encounter_steps;
 
 	for (int i = 0; i < 3; i++)
 		vehicles[i]->Refresh();
@@ -175,16 +161,16 @@ void Game_Map::Setup(int _id) {
 	pan_locked = false;
 	pan_wait = false;
 	pan_speed = 0;
-	pan_dx = 0;
-	pan_dy = 0;
-	pan_x = 0;
-	pan_y = 0;
+	location.pan_finish_x = 0;
+	location.pan_finish_y = 0;
+	location.pan_current_x = 0;
+	location.pan_current_y = 0;
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Map::Autoplay() {
 	int parent_index = 0;
-	int current_index = GetMapIndex(map_id);
+	int current_index = GetMapIndex(location.map_id);
 	
 	if ((current_index > -1) && !Data::treemap.maps[current_index].music.name.empty()) {
 		switch(Data::treemap.maps[current_index].music_type) {
@@ -216,7 +202,7 @@ void Game_Map::Autoplay() {
 
 ////////////////////////////////////////////////////////////
 void Game_Map::Refresh() {
-	if (map_id > 0) {
+	if (location.map_id > 0) {
 		
 		for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
 			i->second->Refresh();
@@ -277,7 +263,7 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 	int16 tile_index = (int16)(x + y * map->width);
 
 	int16 tile_id = map->upper_layer[tile_index] - BLOCK_F;
-	tile_id = substitutions_up[tile_id];
+	tile_id = map_info.upper_tiles[tile_id];
 
 	if ((passages_up[tile_id] & bit) == 0)
 		return false;
@@ -287,7 +273,7 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 
 	if (map->lower_layer[tile_index] >= BLOCK_E) {
 		tile_id = map->lower_layer[tile_index] - BLOCK_E;
-		tile_id = substitutions_down[tile_id];
+		tile_id = map_info.lower_tiles[tile_id];
 		tile_id += 18;
 
 		if ((passages_down[tile_id] & bit) == 0)
@@ -461,7 +447,7 @@ void Game_Map::Update() {
 
 ////////////////////////////////////////////////////////////
 int Game_Map::GetMapId() {
-	return map_id;
+	return location.map_id;
 }
 
 int Game_Map::GetWidth() {
@@ -473,15 +459,15 @@ int Game_Map::GetHeight() {
 }
 
 std::vector<RPG::Encounter>& Game_Map::GetEncounterList() {
-	return Data::treemap.maps[map_id - 1].encounters;
+	return Data::treemap.maps[location.map_id - 1].encounters;
 }
 
 int Game_Map::GetEncounterStep() {
-	return encounter_steps;
+	return map_info.encounter_rate;
 }
 
 void Game_Map::SetEncounterStep(int step) {
-	encounter_steps = step;
+	map_info.encounter_rate = step;
 }
 
 std::vector<short>& Game_Map::GetMapDataDown() {
@@ -538,7 +524,7 @@ std::vector<unsigned char>& Game_Map::GetPassagesUp() {
 }
 
 std::vector<short>& Game_Map::GetTerrainTags() {
-	return terrain_tags;
+	return Data::chipsets[map_info.chipset_id - 1].terrain_data;
 }
 
 tEventHash& Game_Map::GetEvents() {
@@ -551,18 +537,18 @@ tCommonEventHash& Game_Map::GetCommonEvents() {
 
 ////////////////////////////////////////////////////////////
 void Game_Map::SetParallaxName(const std::string& name) {
-	parallax_name = name;
+	map_info.parallax_name = name;
 }
 
 void Game_Map::SetParallaxScroll(bool horz, bool vert,
 								 bool horz_auto, bool vert_auto,
 								 int horz_speed, int vert_speed) {
-	parallax_horz_scroll = horz;
-	parallax_vert_scroll = vert;
-	parallax_horz_auto = horz_auto;
-	parallax_vert_auto = vert_auto;
-	parallax_horz_speed = horz_speed;
-	parallax_vert_speed = vert_speed;
+	map_info.parallax_horz = horz;
+	map_info.parallax_vert = vert;
+	map_info.parallax_horz_auto = horz_auto;
+	map_info.parallax_vert_auto = vert_auto;
+	map_info.parallax_horz_speed = horz_speed;
+	map_info.parallax_vert_speed = vert_speed;
 	parallax_auto_x = 0;
 	parallax_auto_y = 0;
 	parallax_x = 0;
@@ -582,19 +568,18 @@ int Game_Map::GetMapIndex(int id) {
 
 ////////////////////////////////////////////////////////////
 void Game_Map::SetChipset(int id) {
-	chipset_id = id;
-	RPG::Chipset &chipset = Data::chipsets[chipset_id - 1];
+	map_info.chipset_id = id;
+	RPG::Chipset &chipset = Data::chipsets[map_info.chipset_id - 1];
 	chipset_name = chipset.chipset_name;
 	passages_down = chipset.passable_data_lower;
 	passages_up = chipset.passable_data_upper;
-	terrain_tags = chipset.terrain_data;
 	if (passages_down.size() < 162)
 		passages_down.resize(162, (unsigned char) 0x0F);
 	if (passages_up.size() < 144)
 		passages_up.resize(144, (unsigned char) 0x0F);
 	for (uint8 i = 0; i < 144; i++) {
-		substitutions_down[i] = i;
-		substitutions_up[i] = i;
+		map_info.lower_tiles[i] = i;
+		map_info.upper_tiles[i] = i;
 	}
 }
 
@@ -605,11 +590,11 @@ Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
 
 ////////////////////////////////////////////////////////////
 void Game_Map::SubstituteDown(int old_id, int new_id) {
-	substitutions_down[old_id] = (uint8) new_id;
+	map_info.lower_tiles[old_id] = (uint8) new_id;
 }
 
 void Game_Map::SubstituteUp(int old_id, int new_id) {
-	substitutions_up[old_id] = (uint8) new_id;
+	map_info.upper_tiles[old_id] = (uint8) new_id;
 }
 
 ////////////////////////////////////////////////////////////
@@ -624,18 +609,18 @@ void Game_Map::UnlockPan() {
 void Game_Map::StartPan(int direction, int distance, int speed, bool wait) {
 	distance *= 128;
 	switch (direction) {
-		case PanUp:		pan_dy -= distance;		break;
-		case PanRight:	pan_dx += distance;		break;
-		case PanDown:	pan_dy += distance;		break;
-		case PanLeft:	pan_dx -= distance;		break;
+		case PanUp:		location.pan_finish_y -= distance;		break;
+		case PanRight:	location.pan_finish_x += distance;		break;
+		case PanDown:	location.pan_finish_y += distance;		break;
+		case PanLeft:	location.pan_finish_x -= distance;		break;
 	}
 	pan_speed = speed;
 	pan_wait = wait;
 }
 
 void Game_Map::ResetPan(int speed, bool wait) {
-	pan_dx = 0;
-	pan_dy = 0;
+	location.pan_finish_x = 0;
+	location.pan_finish_y = 0;
 	pan_speed = speed;
 	pan_wait = wait;
 }
@@ -645,23 +630,23 @@ void Game_Map::UpdatePan() {
 		return;
 
 	int step = 1 << (pan_speed - 1);
-	int dx = pan_dx - pan_x;
-	int dy = pan_dy - pan_y;
+	int dx = location.pan_finish_x - location.pan_current_x;
+	int dy = location.pan_finish_y - location.pan_current_y;
 
 	if (dx > 0)
-		pan_x += std::min(step, dx);
+		location.pan_current_x += std::min(step, dx);
 	else if (dx < 0)
-		pan_x -= std::min(step, -dx);
+		location.pan_current_x -= std::min(step, -dx);
 
 	if (dy > 0)
-		pan_y += std::min(step, dy);
+		location.pan_current_y += std::min(step, dy);
 	else if (dy < 0)
-		pan_y -= std::min(step, -dy);
+		location.pan_current_y -= std::min(step, -dy);
 }
 
 ////////////////////////////////////////////////////////////
 bool Game_Map::IsPanActive() {
-	return pan_x != pan_dx || pan_y != pan_dy;
+	return location.pan_current_x != location.pan_finish_x || location.pan_current_y != location.pan_finish_y;
 }
 
 bool Game_Map::IsPanWaiting() {
@@ -673,23 +658,23 @@ bool Game_Map::IsPanLocked() {
 }
 
 int Game_Map::GetPanX() {
-	return pan_x;
+	return location.pan_current_x;
 }
 
 int Game_Map::GetPanY() {
-	return pan_y;
+	return location.pan_current_y;
 }
 
 ////////////////////////////////////////////////////////////
 void Game_Map::UpdateParallax() {
-	if (parallax_name.empty())
+	if (map_info.parallax_name.empty())
 		return;
 
-	if (parallax_horz_scroll) {
-		if (parallax_horz_auto) {
+	if (map_info.parallax_horz) {
+		if (map_info.parallax_horz_auto) {
 			int step =
-				(parallax_horz_speed > 0) ? 1 << parallax_horz_speed :
-				(parallax_horz_speed < 0) ? 1 << -parallax_horz_speed :
+				(map_info.parallax_horz_speed > 0) ? 1 << map_info.parallax_horz_speed :
+				(map_info.parallax_horz_speed < 0) ? 1 << -map_info.parallax_horz_speed :
 				0;
 			parallax_auto_x += step;
 		}
@@ -697,11 +682,11 @@ void Game_Map::UpdateParallax() {
 	} else
 		parallax_x = 0;
 
-	if (parallax_vert_scroll) {
-		if (parallax_vert_auto) {
+	if (map_info.parallax_vert) {
+		if (map_info.parallax_vert_auto) {
 			int step =
-				(parallax_vert_speed > 0) ? 1 << parallax_vert_speed :
-				(parallax_vert_speed < 0) ? 1 << -parallax_vert_speed :
+				(map_info.parallax_vert_speed > 0) ? 1 << map_info.parallax_vert_speed :
+				(map_info.parallax_vert_speed < 0) ? 1 << -map_info.parallax_vert_speed :
 				0;
 			parallax_auto_y += step;
 		}
@@ -721,6 +706,6 @@ int Game_Map::GetParallaxY() {
 }
 
 const std::string& Game_Map::GetParallaxName() {
-	return parallax_name;
+	return map_info.parallax_name;
 }
 

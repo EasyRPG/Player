@@ -316,6 +316,16 @@ public:
 		DirectionUp = 8
 	};
 
+	enum CharsID {
+		CharPlayer		= 10001,
+		CharBoat		= 10002,
+		CharShip		= 10003,
+		CharAirship		= 10004,
+		CharThisEvent	= 10005
+	};
+
+	static Game_Character* GetCharacter(int character_id, int event_id);
+
 protected:
 	void UpdateMove();
 	void UpdateSelfMovement();

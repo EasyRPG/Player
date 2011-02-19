@@ -18,7 +18,7 @@
 #ifndef _GAME_SCREEN_
 #define _GAME_SCREEN_
 
-#include <map>
+#include <vector>
 #include "plane.h"
 #include "surface.h"
 #include "game_picture.h"
@@ -44,41 +44,17 @@ public:
 	void Weather(int type, int strength);
 	void PlayMovie(const std::string& filename,
 				   int pos_x, int pos_y, int res_x, int res_y);
-	void ShowBattleAnimation(int animation_id, Game_Character* target, bool global);
+	void ShowBattleAnimation(int animation_id, int target_id, bool global);
 	bool IsBattleAnimationWaiting() const;
 	void Update();
 
 private:
-	std::map<int,Picture*> pictures;
+	std::vector<Picture*> pictures;
 
-	double tint_red;
-	double tint_green;
-	double tint_blue;
-	double tint_saturation;
-
-	double tint_finish_red;
-	double tint_finish_green;
-	double tint_finish_blue;
-	double tint_finish_saturation;
-	int tint_duration;
-
-	double flash_red;
-	double flash_green;
-	double flash_blue;
-	double flash_saturation;
-	double flash_level;
-	int flash_timer;
-	int flash_period;
-
-    int shake_power;
-    int shake_speed;
-    int shake_duration;
+	RPG::SaveScreen& data;
+	int flash_sat;		// RPGMaker bug: this isn't saved
+	int flash_period;	// RPGMaker bug: this isn't saved
 	int shake_direction;
-    double shake_position;
-    bool shake_continuous;
-
-	int weather_type;
-	int weather_strength;
 
 	std::string movie_filename;
 	int movie_pos_x;
@@ -94,8 +70,6 @@ private:
 		Weather_Sandstorm
 	};
 
-	BattleAnimation* animation;
-
 protected:
 	struct Snowflake {
 		uint16 x;
@@ -109,6 +83,7 @@ protected:
 	Surface* weather_surface;
 	Bitmap* snow_bitmap;
 	Bitmap* rain_bitmap;
+	BattleAnimation* animation;
 
 	void InitWeather();
 	void StopWeather();

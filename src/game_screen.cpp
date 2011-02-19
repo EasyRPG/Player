@@ -18,14 +18,16 @@
 #include <cstdlib>
 #include "data.h"
 #include "options.h"
+#include "main_data.h"
 #include "game_screen.h"
 
 Game_Screen::Game_Screen() :
-	animation(NULL),
+	data(Main_Data::game_data.screen),
 	weather_plane(NULL),
 	weather_surface(NULL),
 	snow_bitmap(NULL),
-	rain_bitmap(NULL)
+	rain_bitmap(NULL),
+	animation(NULL)
 {
 	Reset();
 }
@@ -42,41 +44,41 @@ Game_Screen::~Game_Screen()
 
 void Game_Screen::Reset()
 {
-	std::map<int, Picture*>::iterator it;
-
+	std::vector<Picture*>::iterator it;
 	for (it = pictures.begin(); it != pictures.end(); ++it) {
-		delete it->second;
+		delete *it;
+		*it = NULL;
 	}
 
-	pictures.clear();
+	pictures.resize(50);
 
-	tint_red = 0;
-	tint_green = 0;
-	tint_blue = 0;
-	tint_saturation = 0;
+	data.tint_current_red = 0;
+	data.tint_current_green = 0;
+	data.tint_current_blue = 0;
+	data.tint_current_sat = 0;
 
-	tint_finish_red = 0;
-	tint_finish_green = 0;
-	tint_finish_blue = 0;
-	tint_finish_saturation = 0;
-	tint_duration = 0;
+	data.tint_finish_red = 0;
+	data.tint_finish_green = 0;
+	data.tint_finish_blue = 0;
+	data.tint_finish_sat = 0;
+	data.tint_time_left = 0;
 
-	flash_red = 0;
-	flash_green = 0;
-	flash_blue = 0;
-	flash_saturation = 0;
-	flash_timer = 0;
+	data.flash_red = 0;
+	data.flash_green = 0;
+	data.flash_blue = 0;
+	flash_sat = 0;
+	data.flash_time_left = 0;
 	flash_period = 0;
 
-	shake_power = 0;
-	shake_speed = 0;
-	shake_duration = 0;
+	data.shake_strength = 0;
+	data.shake_speed = 0;
+	data.shake_time_left = 0;
+	data.shake_position = 0;
+	data.shake_continuous = false;
 	shake_direction = 0;
-	shake_position = 0;
-	shake_continuous = false;
 
-	weather_type = 0;
-	weather_strength = 0;
+	data.weather = 0;
+	data.weather_strength = 0;
 
 	movie_filename = "";
 	movie_pos_x = 0;
@@ -89,81 +91,81 @@ void Game_Screen::Reset()
 }
 
 Picture* Game_Screen::GetPicture(int id) {
-	Picture*& p = pictures[id];
+	Picture*& p = pictures[id - 1];
 	if (p == NULL)
 		p = new Picture(id);
 	return p;
 }
 
 void Game_Screen::TintScreen(int r, int g, int b, int s, int tenths) {
-	tint_finish_red = r;
-	tint_finish_green = g;
-	tint_finish_blue = b;
-	tint_finish_saturation = s;
+	data.tint_finish_red = r;
+	data.tint_finish_green = g;
+	data.tint_finish_blue = b;
+	data.tint_finish_sat = s;
 
-	tint_duration = tenths * DEFAULT_FPS / 10;
+	data.tint_time_left = tenths * DEFAULT_FPS / 10;
 
-	if (tint_duration == 0) {
-		tint_red = tint_finish_red;
-		tint_green = tint_finish_green;
-		tint_blue = tint_finish_blue;
-		tint_saturation = tint_finish_saturation;
+	if (data.tint_time_left == 0) {
+		data.tint_current_red = data.tint_finish_red;
+		data.tint_current_green = data.tint_finish_green;
+		data.tint_current_blue = data.tint_finish_blue;
+		data.tint_current_sat = data.tint_finish_sat;
 	}
 }
 
 void Game_Screen::FlashOnce(int r, int g, int b, int s, int tenths) {
-	flash_red = r;
-	flash_green = g;
-	flash_blue = b;
-	flash_saturation = s;
-	flash_level = 1.0;
+	data.flash_red = r;
+	data.flash_green = g;
+	data.flash_blue = b;
+	flash_sat = s;
+	data.flash_current_level = s;
 
-	flash_timer = tenths * DEFAULT_FPS / 10;
+	data.flash_time_left = tenths * DEFAULT_FPS / 10;
 	flash_period = 0;
 }
 
 void Game_Screen::FlashBegin(int r, int g, int b, int s, int tenths) {
-	flash_red = r;
-	flash_green = g;
-	flash_blue = b;
-	flash_saturation = s;
-	flash_level = 1.0;
+	data.flash_red = r;
+	data.flash_green = g;
+	data.flash_blue = b;
+	flash_sat = s;
+	data.flash_current_level = s;
 
-	flash_timer = tenths * DEFAULT_FPS / 10;
-	flash_period = flash_timer;
+	data.flash_time_left = tenths * DEFAULT_FPS / 10;
+	flash_period = data.flash_time_left;
 }
 
 void Game_Screen::FlashEnd() {
-	flash_timer = 0;
+	data.flash_time_left = 0;
 	flash_period = 0;
 }
 
 void Game_Screen::ShakeOnce(int power, int speed, int tenths) {
-	shake_power = power;
-	shake_speed = speed;
-	shake_duration = tenths * DEFAULT_FPS / 10;
-	shake_position = 0;
-	shake_continuous = false;
+	data.shake_strength = power;
+	data.shake_speed = speed;
+	data.shake_time_left = tenths * DEFAULT_FPS / 10;
+	data.shake_position = 0;
+	data.shake_continuous = false;
 }
 
 void Game_Screen::ShakeBegin(int power, int speed) {
-	shake_power = power;
-	shake_speed = speed;
-	shake_duration = 0;
-	shake_position = 0;
-	shake_continuous = true;
+	data.shake_strength = power;
+	data.shake_speed = speed;
+	data.shake_time_left = 0;
+	data.shake_position = 0;
+	data.shake_continuous = true;
 }
 
 void Game_Screen::ShakeEnd() {
-	shake_duration = 0;
-	shake_continuous = false;
+	data.shake_time_left = 0;
+	data.shake_continuous = false;
 }
 
 void Game_Screen::Weather(int type, int strength) {
-	weather_type = type;
-	weather_strength = strength;
+	data.weather = type;
+	data.weather_strength = strength;
 	StopWeather();
-	if (weather_type != Weather_None)
+	if (data.weather != Weather_None)
 		InitWeather();
 }
 
@@ -176,7 +178,13 @@ void Game_Screen::PlayMovie(const std::string& filename,
 	movie_res_y = res_y;
 }
 
-void Game_Screen::ShowBattleAnimation(int animation_id, Game_Character* target, bool global) {
+void Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool global) {
+	data.battleanim_id = animation_id;
+	data.battleanim_target = target_id;
+	data.battleanim_global = global;
+
+	Game_Character* target = Game_Character::GetCharacter(target_id, target_id);
+
 	animation = new BattleAnimation(target->GetScreenX(), target->GetScreenY(),
 									&Data::animations[animation_id - 1]);
 	animation->SetVisible(true);
@@ -250,7 +258,7 @@ void Game_Screen::InitSnowRain() {
 
 	static const int num_snowflakes[3] = {100, 200, 300};
 
-	for (int i = 0; i < num_snowflakes[weather_strength]; i++) {
+	for (int i = 0; i < num_snowflakes[data.weather_strength]; i++) {
 		Snowflake f;
 		f.x = (short) (rand() * 440.0 / RAND_MAX);
 		f.y = (uint8) rand();
@@ -315,57 +323,57 @@ void Game_Screen::DrawFog() {
 
 	weather_surface->Fill(Color(128,128,128,255));
 	static const int opacities[3] = {128, 160, 192};
-	weather_plane->SetOpacity(opacities[weather_strength]);
+	weather_plane->SetOpacity(opacities[data.weather_strength]);
 }
 
 void Game_Screen::DrawSandstorm() {
 
 	weather_surface->Fill(Color(192,160,128,255));
 	static const int opacities[3] = {128, 160, 192};
-	weather_plane->SetOpacity(opacities[weather_strength]);
+	weather_plane->SetOpacity(opacities[data.weather_strength]);
 	// TODO
 }
 
 void Game_Screen::Update() {
-	if (tint_duration > 0) {
-		tint_red = interpolate(tint_duration, tint_red, tint_finish_red);
-		tint_green = interpolate(tint_duration, tint_green, tint_finish_green);
-		tint_blue = interpolate(tint_duration, tint_blue, tint_finish_blue);
-		tint_saturation = interpolate(tint_duration, tint_saturation, tint_finish_saturation);
-		tint_duration--;
+	if (data.tint_time_left > 0) {
+		data.tint_current_red = interpolate(data.tint_time_left, data.tint_current_red, data.tint_finish_red);
+		data.tint_current_green = interpolate(data.tint_time_left, data.tint_current_green, data.tint_finish_green);
+		data.tint_current_blue = interpolate(data.tint_time_left, data.tint_current_blue, data.tint_finish_blue);
+		data.tint_current_sat = interpolate(data.tint_time_left, data.tint_current_sat, data.tint_finish_sat);
+		data.tint_time_left--;
 	}
 
-	if (flash_timer > 0) {
-		flash_level = interpolate(flash_timer, flash_level, 0);
-		flash_timer--;
-		if (flash_timer <= 0)
-			flash_timer = flash_period;
+	if (data.flash_time_left > 0) {
+		data.flash_current_level = interpolate(data.flash_time_left, data.flash_current_level / 31, 0);
+		data.flash_time_left--;
+		if (data.flash_time_left <= 0)
+			data.flash_time_left = data.flash_continuous ? flash_period : 0;
 	}
 
-    if (shake_continuous || shake_duration > 0 || shake_position != 0) {
-		double delta = (shake_power * shake_speed * shake_direction) / 10.0;
-		if (shake_duration <= 1 && shake_position * (shake_position + delta) < 0)
-			shake_position = 0;
+    if (data.shake_continuous || data.shake_time_left > 0 || data.shake_position != 0) {
+		double delta = (data.shake_strength * data.shake_speed * shake_direction) / 10.0;
+		if (data.shake_time_left <= 1 && data.shake_position * (data.shake_position + delta) < 0)
+			data.shake_position = 0;
 		else
-			shake_position += delta;
-		if (shake_position > shake_power * 2)
+			data.shake_position += delta;
+		if (data.shake_position > data.shake_strength * 2)
 			shake_direction = -1;
-		if (shake_position < -shake_power * 2)
+		if (data.shake_position < -data.shake_strength * 2)
 			shake_direction = 1;
 
-		if (shake_duration > 0)
-			shake_duration--;
+		if (data.shake_time_left > 0)
+			data.shake_time_left--;
 	}
 
-	std::map<int,Picture*>::const_iterator it;
+	std::vector<Picture*>::const_iterator it;
 	for (it = pictures.begin(); it != pictures.end(); it++)
-		it->second->Update();
+		(*it)->Update();
 
 	if (!movie_filename.empty()) {
 		/* update movie */
 	}
 
-	switch (weather_type) {
+	switch (data.weather) {
 		case Weather_None:
 			break;
 		case Weather_Rain:

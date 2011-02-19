@@ -394,7 +394,7 @@ bool Game_Interpreter_Map::CommandChangeSpriteAssociation() { // code 10630
 }
 
 bool Game_Interpreter_Map::CommandMemorizeLocation() { // code 10820
-	Game_Character *player = GetCharacter(CharPlayer);
+	Game_Character *player = Main_Data::game_player;
 	int var_map_id = list[index].parameters[0];
 	int var_x = list[index].parameters[1];
 	int var_y = list[index].parameters[2];
@@ -405,7 +405,7 @@ bool Game_Interpreter_Map::CommandMemorizeLocation() { // code 10820
 }
 
 bool Game_Interpreter_Map::CommandRecallToLocation() { // Code 10830
-	Game_Character *player = GetCharacter(CharPlayer);
+	Game_Character *player = Main_Data::game_player;
 	int var_map_id = list[index].parameters[0];
 	int var_x = list[index].parameters[1];
 	int var_y = list[index].parameters[2];
@@ -1160,7 +1160,7 @@ bool Game_Interpreter_Map::CommandEnemyEncounter() { // code 10710
 	Game_Character *player;
 	switch (list[index].parameters[2]) {
 		case 0:
-			player = GetCharacter(CharPlayer);
+			player = Main_Data::game_player;
 			Game_Temp::battle_terrain_id = Game_Map::GetTerrainTag(player->GetX(), player->GetY());
 			Game_Temp::battle_background = "";
 			break;
@@ -1600,12 +1600,14 @@ bool Game_Interpreter_Map::CommandShowBattleAnimation() { // code 11210
 		return !Main_Data::game_screen->IsBattleAnimationWaiting();
 
 	int animation_id = list[index].parameters[0];
-	int event_id = list[index].parameters[1];
-	Game_Character *event = GetCharacter(event_id);
+	int evt_id = list[index].parameters[1];
 	bool wait = list[index].parameters[2] > 0;
 	bool global = list[index].parameters[3] > 0;
 
-	Main_Data::game_screen->ShowBattleAnimation(animation_id, event, global);
+	if (evt_id == Game_Character::CharThisEvent)
+		evt_id = event_id;
+
+	Main_Data::game_screen->ShowBattleAnimation(animation_id, evt_id, global);
 
 	return !wait;
 }

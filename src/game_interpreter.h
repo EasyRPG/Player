@@ -57,14 +57,6 @@ public:
 		MinSize = -9999999
 	};
 
-	enum CharsID {
-		CharPlayer		= 10001,
-		CharBoat		= 10002,
-		CharShip		= 10003,
-		CharAirship		= 10004,
-		CharThisEvent	= 10005
-	};
-
 protected:
 	friend class Game_Interpreter_Map;
 

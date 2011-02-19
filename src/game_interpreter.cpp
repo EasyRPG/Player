@@ -925,24 +925,7 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 /// Get Character
 ////////////////////////////////////////////////////////////
 Game_Character* Game_Interpreter::GetCharacter(int character_id) {
-
-	switch (character_id) {
-		case CharPlayer:
-			// Player/Hero
-			return Main_Data::game_player;
-		case CharBoat:
-			return Game_Map::GetVehicle(Game_Vehicle::Boat);
-		case CharShip:
-			return Game_Map::GetVehicle(Game_Vehicle::Ship);
-		case CharAirship:
-			return Game_Map::GetVehicle(Game_Vehicle::Airship);
-		case CharThisEvent:
-			// This event
-			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents().find(event_id)->second;
-		default:
-			// Other events
-			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents().find(character_id)->second;
-	}
+	return Game_Character::GetCharacter(character_id, event_id);
 }
 
 ////////////////////////////////////////////////////////////
