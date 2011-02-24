@@ -366,8 +366,9 @@ void Game_Screen::Update() {
 	}
 
 	std::vector<Picture*>::const_iterator it;
-	for (it = pictures.begin(); it != pictures.end(); it++)
-		(*it)->Update();
+	for (it = pictures.begin(); it != pictures.end(); it++) {
+		if(*it) { (*it)->Update(); }
+	}
 
 	if (!movie_filename.empty()) {
 		/* update movie */
