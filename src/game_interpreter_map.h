@@ -34,6 +34,7 @@ class Game_CommonEvent;
 ////////////////////////////////////////////////////////////
 class Game_Interpreter_Map : public Game_Interpreter
 {
+	friend class Game_Interpreter;
 public:
 	Game_Interpreter_Map(int _depth = 0, bool _main_flag = false);
 	~Game_Interpreter_Map();
@@ -43,6 +44,7 @@ public:
 	void EndMoveRoute(RPG::MoveRoute* route);
 
 private:
+	/*
 	bool CommandMessageOptions();
 	bool CommandChangeExp();
 	bool CommandChangeParameters();
@@ -108,6 +110,7 @@ private:
 	bool CommandShowBattleAnimation();
 	bool CommandChangeClass();
 	bool CommandHaltAllMovement();
+	*/
 
 	bool ContinuationOpenShop();
 	bool ContinuationShowInn();

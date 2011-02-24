@@ -40,6 +40,7 @@ public:
 
 	bool ExecuteCommand();
 private:
+	/*
 	bool CommandCallCommonEvent();
 	bool CommandForceFlee();
 	bool CommandEnableCombo();
@@ -51,6 +52,7 @@ private:
 	bool CommandShowBattleAnimation();
 	bool CommandTerminateBattle();
 	bool CommandConditionalBranch();
+	*/
 };
 
 #endif
