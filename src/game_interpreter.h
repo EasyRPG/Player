@@ -74,7 +74,8 @@ protected:
 	int wait_count;
 
 	Game_Interpreter* child_interpreter;
-	bool (Game_Interpreter::*continuation)();
+	typedef bool (Game_Interpreter::*ContinuationFunction)(RPG::EventCommand const& com);
+	ContinuationFunction continuation;
 
 	std::vector<RPG::EventCommand> list;
 
@@ -88,7 +89,7 @@ protected:
 	Game_Character* GetCharacter(int character_id);
 
 	bool SkipTo(int code, int code2 = -1, int min_indent = -1, int max_indent = -1);
-	void SetContinuation(bool (Game_Interpreter::*func)());
+	void SetContinuation(ContinuationFunction func);
 
 	void CancelMenuCall();
 
@@ -100,39 +101,39 @@ protected:
 	////////////////////////////////////////////////////////
 	void CloseMessageWindow();
 
-	bool CommandShowMessage();
-	bool CommandChangeFaceGraphic();
-	bool CommandShowChoices();
-	bool CommandInputNumber();
-	bool CommandControlSwitches();
-	bool CommandControlVariables();
-	bool CommandChangeGold();
-	bool CommandChangeItems();
-	bool CommandChangePartyMember();
-	bool CommandChangeLevel();
-	bool CommandChangeSkills();
-	bool CommandChangeEquipment();
-	bool CommandChangeHP();
-	bool CommandChangeSP();
-	bool CommandChangeCondition();
-	bool CommandFullHeal();
-	bool CommandTintScreen();
-	bool CommandFlashScreen();
-	bool CommandShakeScreen();
-	bool CommandWait();
-	bool CommandPlayBGM();
-	bool CommandFadeOutBGM();
-	bool CommandPlaySound();
-	bool CommandEndEventProcessing();
-	bool CommandGameOver();
+	bool CommandShowMessage(RPG::EventCommand const& com);
+	bool CommandChangeFaceGraphic(RPG::EventCommand const& com);
+	bool CommandShowChoices(RPG::EventCommand const& com);
+	bool CommandInputNumber(RPG::EventCommand const& com);
+	bool CommandControlSwitches(RPG::EventCommand const& com);
+	bool CommandControlVariables(RPG::EventCommand const& com);
+	bool CommandChangeGold(RPG::EventCommand const& com);
+	bool CommandChangeItems(RPG::EventCommand const& com);
+	bool CommandChangePartyMember(RPG::EventCommand const& com);
+	bool CommandChangeLevel(RPG::EventCommand const& com);
+	bool CommandChangeSkills(RPG::EventCommand const& com);
+	bool CommandChangeEquipment(RPG::EventCommand const& com);
+	bool CommandChangeHP(RPG::EventCommand const& com);
+	bool CommandChangeSP(RPG::EventCommand const& com);
+	bool CommandChangeCondition(RPG::EventCommand const& com);
+	bool CommandFullHeal(RPG::EventCommand const& com);
+	bool CommandTintScreen(RPG::EventCommand const& com);
+	bool CommandFlashScreen(RPG::EventCommand const& com);
+	bool CommandShakeScreen(RPG::EventCommand const& com);
+	bool CommandWait(RPG::EventCommand const& com);
+	bool CommandPlayBGM(RPG::EventCommand const& com);
+	bool CommandFadeOutBGM(RPG::EventCommand const& com);
+	bool CommandPlaySound(RPG::EventCommand const& com);
+	bool CommandEndEventProcessing(RPG::EventCommand const& com);
+	bool CommandGameOver(RPG::EventCommand const& com);
 
-	void CommandEnd();
+	bool CommandEnd(RPG::EventCommand const& com);
 
-	virtual bool DefaultContinuation();
-	virtual bool ContinuationChoices();
-	virtual bool ContinuationOpenShop();
-	virtual bool ContinuationShowInn();
-	virtual bool ContinuationEnemyEncounter();
+	virtual bool DefaultContinuation(RPG::EventCommand const& com);
+	virtual bool ContinuationChoices(RPG::EventCommand const& com);
+	virtual bool ContinuationOpenShop(RPG::EventCommand const& com);
+	virtual bool ContinuationShowInn(RPG::EventCommand const& com);
+	virtual bool ContinuationEnemyEncounter(RPG::EventCommand const& com);
 
 	int debug_x;
 	int debug_y;

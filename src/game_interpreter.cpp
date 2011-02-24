@@ -106,7 +106,7 @@ void Game_Interpreter::CancelMenuCall() {
 	// TODO
 }
 
-void Game_Interpreter::SetContinuation(bool (Game_Interpreter::*func)()) {
+void Game_Interpreter::SetContinuation(Game_Interpreter::ContinuationFunction func) {
 	continuation = func;
 }
 
@@ -199,7 +199,7 @@ void Game_Interpreter::Update() {
 		}
 
 		if (continuation) {
-			bool result = (this->*continuation)();
+			bool result = (this->*continuation)(list[index]);
 			continuation = NULL;
 			if (result)
 				continue;
@@ -290,64 +290,66 @@ bool Game_Interpreter::SkipTo(int code, int code2, int min_indent, int max_inden
 /// Execute Command
 ////////////////////////////////////////////////////////////
 bool Game_Interpreter::ExecuteCommand() {
-	switch (list[index].code) {
+	RPG::EventCommand const& com = list[index];
+
+	switch (com.code) {
 		case Cmd::ShowMessage:
-			return CommandShowMessage();
+			return CommandShowMessage(com);
 		case Cmd::ChangeFaceGraphic: 
-			return CommandChangeFaceGraphic();
+			return CommandChangeFaceGraphic(com);
 		case Cmd::ShowChoice: 
-			return CommandShowChoices();
+			return CommandShowChoices(com);
 		case Cmd::ShowChoiceOption:
 			return SkipTo(Cmd::ShowChoiceEnd);
 		case Cmd::ShowChoiceEnd:
 			return true;
 		case Cmd::InputNumber: 
-			return CommandInputNumber();
+			return CommandInputNumber(com);
 		case Cmd::ControlSwitches: 
-			return CommandControlSwitches();
+			return CommandControlSwitches(com);
 		case Cmd::ControlVars: 
-			return CommandControlVariables();
+			return CommandControlVariables(com);
 		case Cmd::ChangeGold: 
-			return CommandChangeGold();
+			return CommandChangeGold(com);
 		case Cmd::ChangeItems: 
-			return CommandChangeItems();
+			return CommandChangeItems(com);
 		case Cmd::ChangePartyMembers:
-			return CommandChangePartyMember();
+			return CommandChangePartyMember(com);
 		case Cmd::ChangeLevel: 
-			return CommandChangeLevel();
+			return CommandChangeLevel(com);
 		case Cmd::ChangeSkills:
-			return CommandChangeSkills();
+			return CommandChangeSkills(com);
 		case Cmd::ChangeEquipment:
-			return CommandChangeEquipment();
+			return CommandChangeEquipment(com);
 		case Cmd::ChangeHP:
-			return CommandChangeHP();
+			return CommandChangeHP(com);
 		case Cmd::ChangeSP:
-			return CommandChangeSP();
+			return CommandChangeSP(com);
 		case Cmd::ChangeCondition:
-			return CommandChangeCondition();
+			return CommandChangeCondition(com);
 		case Cmd::FullHeal:
-			return CommandFullHeal();
+			return CommandFullHeal(com);
 		case Cmd::TintScreen:
-			return CommandTintScreen();
+			return CommandTintScreen(com);
 		case Cmd::FlashScreen:
-			return CommandFlashScreen();
+			return CommandFlashScreen(com);
 		case Cmd::ShakeScreen:
-			return CommandShakeScreen();
+			return CommandShakeScreen(com);
 		case Cmd::Wait:
-			return CommandWait();
+			return CommandWait(com);
 		case Cmd::PlayBGM:
-			return CommandPlayBGM();
+			return CommandPlayBGM(com);
 		case Cmd::FadeOutBGM:
-			return CommandFadeOutBGM();
+			return CommandFadeOutBGM(com);
 		case Cmd::PlaySound:
-			return CommandPlaySound();
+			return CommandPlaySound(com);
 		case Cmd::EndEventProcessing:
-			return CommandEndEventProcessing();
+			return CommandEndEventProcessing(com);
 		case Cmd::Comment:
 		case Cmd::Comment_2:
 			return true;
 		case Cmd::GameOver:
-			return CommandGameOver();
+			return CommandGameOver(com);
 		default:
 			return true;
 	}
@@ -355,7 +357,7 @@ bool Game_Interpreter::ExecuteCommand() {
 
 ////////////////////////////////////////////////////////////
 
-bool Game_Interpreter::CommandWait() {
+bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) {
 	if (Player::engine == Player::EngineRpg2k || list[index].parameters[1] == 0) {
 		wait_count = list[index].parameters[0] * DEFAULT_FPS / 10;
 		return true;
@@ -406,7 +408,7 @@ void Game_Interpreter::InputButton() {
 	}
 }
 
-void Game_Interpreter::CommandEnd() {
+bool Game_Interpreter::CommandEnd(RPG::EventCommand const& com) {
 	CloseMessageWindow();
 	list.clear();
 
@@ -418,6 +420,8 @@ void Game_Interpreter::CommandEnd() {
 	if ((main_flag) && (event_id > 0)) {
 		Game_Map::GetEvents().find(event_id)->second->Unlock();
 	}
+
+	return true;
 }
 
 /////////////////////////////////////////////
@@ -460,7 +464,7 @@ void Game_Interpreter::CloseMessageWindow() {
 ////////////////////////////////////////////////////////////
 /// Command Show Message
 ////////////////////////////////////////////////////////////
-bool Game_Interpreter::CommandShowMessage() { // Code ShowMessage
+bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // Code ShowMessage
 	// If there's a text already, return immediately
 	if (!Game_Message::texts.empty()) {
 		return false;
@@ -470,7 +474,7 @@ bool Game_Interpreter::CommandShowMessage() { // Code ShowMessage
 	Game_Message::message_waiting = true;
 
 	// Set first line
-	Game_Message::texts.push_back(list[index].string);
+	Game_Message::texts.push_back(com.string);
 	line_count++;
 
 	for (;;) {
@@ -488,7 +492,7 @@ bool Game_Interpreter::CommandShowMessage() { // Code ShowMessage
 				if (s_choices.size() <= (4 - line_count)) {
 					index++;
 					Game_Message::choice_start = line_count;
-					Game_Message::choice_cancel_type = list[index].parameters[0];
+					Game_Message::choice_cancel_type = com.parameters[0];
 					SetupChoices(s_choices);
 				}
 			} else if ((index < list.size() - 1) && (list[index+1].code == Cmd::InputNumber) ) {
@@ -497,8 +501,8 @@ bool Game_Interpreter::CommandShowMessage() { // Code ShowMessage
 				if (line_count < 4) {
 					index++;
 					Game_Message::num_input_start = line_count;
-					Game_Message::num_input_digits_max = list[index].parameters[0];
-					Game_Message::num_input_variable_id = list[index].parameters[1];
+					Game_Message::num_input_digits_max = com.parameters[0];
+					Game_Message::num_input_variable_id = com.parameters[1];
 				}
 			}
 
@@ -525,12 +529,12 @@ void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices) {
 	SetContinuation(&Game_Interpreter::ContinuationChoices);
 }
 
-bool Game_Interpreter::ContinuationChoices() {
-	int indent = list[index].indent;
+bool Game_Interpreter::ContinuationChoices(RPG::EventCommand const& com) {
+	int indent = com.indent;
 	for (;;) {
 		if (!SkipTo(Cmd::ShowChoiceOption, Cmd::ShowChoiceEnd, indent, indent))
 			return false;
-		int which = list[index].parameters[0];
+		int which = com.parameters[0];
 		index++;
 		if (which > Game_Message::choice_result)
 			return false;
@@ -545,7 +549,7 @@ bool Game_Interpreter::ContinuationChoices() {
 ////////////////////////////////////////////////////////////
 /// Command Show choices
 ////////////////////////////////////////////////////////////
-bool Game_Interpreter::CommandShowChoices() { // Code ShowChoice
+bool Game_Interpreter::CommandShowChoices(RPG::EventCommand const& com) { // Code ShowChoice
 	if (!Game_Message::texts.empty()) {
 		return false;
 	}
@@ -554,7 +558,7 @@ bool Game_Interpreter::CommandShowChoices() { // Code ShowChoice
 
 	// Choices setup
 	std::vector<std::string> choices;
-	Game_Message::choice_cancel_type = list[index].parameters[0];
+	Game_Message::choice_cancel_type = com.parameters[0];
 	GetStrings(choices);
 	SetupChoices(choices);
 
@@ -564,15 +568,15 @@ bool Game_Interpreter::CommandShowChoices() { // Code ShowChoice
 ////////////////////////////////////////////////////////////
 /// Command control switches
 ////////////////////////////////////////////////////////////
-bool Game_Interpreter::CommandControlSwitches() { // Code ControlSwitches
+bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { // Code ControlSwitches
 	int i;
-	switch (list[index].parameters[0]) {
+	switch (com.parameters[0]) {
 		case 0:
 		case 1:
 			// Single and switch range
-			for (i = list[index].parameters[1]; i <= list[index].parameters[2]; i++) {
-				if (list[index].parameters[3] != 2) {
-					Game_Switches[i] = list[index].parameters[3] == 0;
+			for (i = com.parameters[1]; i <= com.parameters[2]; i++) {
+				if (com.parameters[3] != 2) {
+					Game_Switches[i] = com.parameters[3] == 0;
 				} else {
 					Game_Switches[i] = !Game_Switches[i];
 				}
@@ -580,10 +584,10 @@ bool Game_Interpreter::CommandControlSwitches() { // Code ControlSwitches
 			break;
 		case 2:
 			// Switch from variable
-			if (list[index].parameters[3] != 2) {
-				Game_Switches[list[index].parameters[2]] = list[index].parameters[3] == 0;
+			if (com.parameters[3] != 2) {
+				Game_Switches[com.parameters[2]] = com.parameters[3] == 0;
 			} else {
-				Game_Switches[list[index].parameters[2]] = !Game_Switches[list[index].parameters[2]];
+				Game_Switches[com.parameters[2]] = !Game_Switches[com.parameters[2]];
 			}
 			break;
 		default:
@@ -596,49 +600,49 @@ bool Game_Interpreter::CommandControlSwitches() { // Code ControlSwitches
 ////////////////////////////////////////////////////////////
 /// Command control vars
 ////////////////////////////////////////////////////////////
-bool Game_Interpreter::CommandControlVariables() { // Code ControlVars
+bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { // Code ControlVars
 	int i, value = 0;
 	Game_Actor* actor;
 	Game_Character* character;
 
-	switch (list[index].parameters[4]) {
+	switch (com.parameters[4]) {
 		case 0:
 			// Constant
-			value = list[index].parameters[5];
+			value = com.parameters[5];
 			break;
 		case 1:
 			// Var A ops B
-			value = Game_Variables[list[index].parameters[5]];
+			value = Game_Variables[com.parameters[5]];
 			break;
 		case 2:
 			// Number of var A ops B
-			value = Game_Variables[Game_Variables[list[index].parameters[5]]];
+			value = Game_Variables[Game_Variables[com.parameters[5]]];
 			break;
 		case 3:
 			// Random between range
 			int a, b;
-			a = max(list[index].parameters[5], list[index].parameters[6]);
-			b = min(list[index].parameters[5], list[index].parameters[6]);
+			a = max(com.parameters[5], com.parameters[6]);
+			b = min(com.parameters[5], com.parameters[6]);
 			value = rand() % (a-b+1)+b;
 			break;
 		case 4:
 			// Items
-			switch (list[index].parameters[6]) {
+			switch (com.parameters[6]) {
 				case 0:
 					// Number of items posessed
-					value = Game_Party::ItemNumber(list[index].parameters[5]);
+					value = Game_Party::ItemNumber(com.parameters[5]);
 					break;
 				case 1:
 					// How often the item is equipped
-					value = Game_Party::ItemNumber(list[index].parameters[5], true);
+					value = Game_Party::ItemNumber(com.parameters[5], true);
 					break;
 			}
 			break;
 		case 5:
 			// Hero
-			actor = Game_Actors::GetActor(list[index].parameters[5]);
+			actor = Game_Actors::GetActor(com.parameters[5]);
 			if (actor != NULL) {
-				switch (list[index].parameters[6]) {
+				switch (com.parameters[6]) {
 					case 0:
 						// Level
 						value = actor->GetLevel();
@@ -704,8 +708,8 @@ bool Game_Interpreter::CommandControlVariables() { // Code ControlVars
 			break;
 		case 6:
 			// Characters
-			if (list[index].parameters[6] != 0){
-				character = GetCharacter(list[index].parameters[5]);
+			if (com.parameters[6] != 0){
+				character = GetCharacter(com.parameters[5]);
 			} else {
 				// Special case for Player Map ID
 				character = NULL;
@@ -713,7 +717,7 @@ bool Game_Interpreter::CommandControlVariables() { // Code ControlVars
 			}
 			// Other cases
 			if (character != NULL) {
-				switch (list[index].parameters[6]) {
+				switch (com.parameters[6]) {
 					case 1:
 						// X Coordinate
 						value = character->GetX();
@@ -739,7 +743,7 @@ bool Game_Interpreter::CommandControlVariables() { // Code ControlVars
 			break;
 		case 7:
 			// More
-			switch (list[index].parameters[5]) {
+			switch (com.parameters[5]) {
 				case 0:
 					// Gold
 					value = Game_Party::GetGold();
@@ -783,12 +787,12 @@ bool Game_Interpreter::CommandControlVariables() { // Code ControlVars
 			;
 	}
 
-	switch (list[index].parameters[0]) {
+	switch (com.parameters[0]) {
 		case 0:
 		case 1:
 			// Single and Var range
-			for (i = list[index].parameters[1]; i <= list[index].parameters[2]; i++) {
-				switch (list[index].parameters[3]) {
+			for (i = com.parameters[1]; i <= com.parameters[2]; i++) {
+				switch (com.parameters[3]) {
 					case 0:
 						// Assignement
 						Game_Variables[i] = value;
@@ -827,40 +831,40 @@ bool Game_Interpreter::CommandControlVariables() { // Code ControlVars
 			break;
 
 		case 2:
-			switch (list[index].parameters[3]) {
+			switch (com.parameters[3]) {
 				case 0:
 					// Assignement
-					Game_Variables[list[index].parameters[1]] = value;
+					Game_Variables[com.parameters[1]] = value;
 					break;
 				case 1:
 					// Addition
-					Game_Variables[list[index].parameters[1]] += value;
+					Game_Variables[com.parameters[1]] += value;
 					break;
 				case 2:
 					// Subtraction
-					Game_Variables[list[index].parameters[1]] -= value;
+					Game_Variables[com.parameters[1]] -= value;
 					break;
 				case 3:
 					// Multiplication
-					Game_Variables[list[index].parameters[1]] *= value;
+					Game_Variables[com.parameters[1]] *= value;
 					break;
 				case 4:
 					// Division
 					if (value != 0) {
-						Game_Variables[list[index].parameters[1]] /= value;
+						Game_Variables[com.parameters[1]] /= value;
 					}
 					break;
 				case 5:
 					// Module
 					if (value != 0) {
-						Game_Variables[list[index].parameters[1]] %= value;
+						Game_Variables[com.parameters[1]] %= value;
 					}
 			}
-			if (Game_Variables[list[index].parameters[1]] > MaxSize) {
-				Game_Variables[list[index].parameters[1]] = MaxSize;
+			if (Game_Variables[com.parameters[1]] > MaxSize) {
+				Game_Variables[com.parameters[1]] = MaxSize;
 			}
-			if (Game_Variables[list[index].parameters[1]] < MinSize) {
-				Game_Variables[list[index].parameters[1]] = MinSize;
+			if (Game_Variables[com.parameters[1]] < MinSize) {
+				Game_Variables[com.parameters[1]] = MinSize;
 			}
 	}
 
@@ -931,12 +935,12 @@ Game_Character* Game_Interpreter::GetCharacter(int character_id) {
 ////////////////////////////////////////////////////////////
 /// Change Gold
 ////////////////////////////////////////////////////////////
-bool Game_Interpreter::CommandChangeGold() { // Code 10310
+bool Game_Interpreter::CommandChangeGold(RPG::EventCommand const& com) { // Code 10310
 	int value;
 	value = OperateValue(
-		list[index].parameters[0], 
-		list[index].parameters[1],
-		list[index].parameters[2]
+		com.parameters[0], 
+		com.parameters[1],
+		com.parameters[2]
 	);
 
 	Game_Party::GainGold(value);
@@ -948,21 +952,21 @@ bool Game_Interpreter::CommandChangeGold() { // Code 10310
 ////////////////////////////////////////////////////////////
 /// Change Items
 ////////////////////////////////////////////////////////////
-bool Game_Interpreter::CommandChangeItems() { // Code 10320
+bool Game_Interpreter::CommandChangeItems(RPG::EventCommand const& com) { // Code 10320
 	int value;
 	value = OperateValue(
-		list[index].parameters[0],
-		list[index].parameters[3],
-		list[index].parameters[4]
+		com.parameters[0],
+		com.parameters[3],
+		com.parameters[4]
 	);
 
-	if (list[index].parameters[1] == 0) {
+	if (com.parameters[1] == 0) {
 		// Item by const number
-		Game_Party::GainItem(list[index].parameters[2], value);
+		Game_Party::GainItem(com.parameters[2], value);
 	} else {
 		// Item by variable
 		Game_Party::GainItem(
-			Game_Variables[list[index].parameters[2]],
+			Game_Variables[com.parameters[2]],
 			value
 		);
 	}
@@ -974,7 +978,7 @@ bool Game_Interpreter::CommandChangeItems() { // Code 10320
 ////////////////////////////////////////////////////////////
 /// Input Number
 ////////////////////////////////////////////////////////////
-bool Game_Interpreter::CommandInputNumber() {
+bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) {
 	if (!Game_Message::texts.empty()) {
 		return false;
 	}
@@ -983,8 +987,8 @@ bool Game_Interpreter::CommandInputNumber() {
 
 	Game_Message::texts.clear();
 	Game_Message::num_input_start = 0;
-	Game_Message::num_input_variable_id = list[index].parameters[1];
-	Game_Message::num_input_digits_max = list[index].parameters[0];
+	Game_Message::num_input_variable_id = com.parameters[1];
+	Game_Message::num_input_digits_max = com.parameters[0];
 	
 	// Continue
 	return true;
@@ -993,32 +997,32 @@ bool Game_Interpreter::CommandInputNumber() {
 ////////////////////////////////////////////////////////////
 /// Change Face Graphic
 ////////////////////////////////////////////////////////////
-bool Game_Interpreter::CommandChangeFaceGraphic() { // Code 10130
-	Game_Message::face_name = list[index].string;
-	Game_Message::face_index = list[index].parameters[0];
-	Game_Message::face_left_position = list[index].parameters[1] == 0;
-	Game_Message::face_flipped = list[index].parameters[2] != 0;
+bool Game_Interpreter::CommandChangeFaceGraphic(RPG::EventCommand const& com) { // Code 10130
+	Game_Message::face_name = com.string;
+	Game_Message::face_index = com.parameters[0];
+	Game_Message::face_left_position = com.parameters[1] == 0;
+	Game_Message::face_flipped = com.parameters[2] != 0;
 	return true;
 }
 
 ////////////////////////////////////////////////////////////
 /// Change Party Member
 ////////////////////////////////////////////////////////////
-bool Game_Interpreter::CommandChangePartyMember() { // Code 10330
+bool Game_Interpreter::CommandChangePartyMember(RPG::EventCommand const& com) { // Code 10330
 	Game_Actor* actor;
 	int id;
 
-	if (list[index].parameters[1] == 0) {
-		id = list[index].parameters[2];
+	if (com.parameters[1] == 0) {
+		id = com.parameters[2];
 	} else {
-		id = Game_Variables[list[index].parameters[2]];
+		id = Game_Variables[com.parameters[2]];
 	}
 
 	actor = Game_Actors::GetActor(id);
 
 	if (actor != NULL) {
 
-		if (list[index].parameters[0] == 0) {
+		if (com.parameters[0] == 0) {
 			// Add members
 			Game_Party::AddActor(id);
 
@@ -1037,13 +1041,13 @@ bool Game_Interpreter::CommandChangePartyMember() { // Code 10330
 ////////////////////////////////////////////////////////////
 /// Change Experience
 ////////////////////////////////////////////////////////////
-bool Game_Interpreter::CommandChangeLevel() { // Code 10420
-	std::vector<Game_Actor*> actors = GetActors(list[index].parameters[0],
-												list[index].parameters[1]);
+bool Game_Interpreter::CommandChangeLevel(RPG::EventCommand const& com) { // Code 10420
+	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
+												com.parameters[1]);
 	int value = OperateValue(
-		list[index].parameters[2],
-		list[index].parameters[3],
-		list[index].parameters[4]
+		com.parameters[2],
+		com.parameters[3],
+		com.parameters[4]
 	);
 
 	for (std::vector<Game_Actor*>::iterator i = actors.begin(); 
@@ -1053,7 +1057,7 @@ bool Game_Interpreter::CommandChangeLevel() { // Code 10420
 		actor->ChangeLevel(actor->GetLevel() + value);
 	}
 
-	if (list[index].parameters[5] != 0) {
+	if (com.parameters[5] != 0) {
 		// TODO
 		// Show message increase level
 	} else {
@@ -1075,12 +1079,12 @@ int Game_Interpreter::ValueOrVariable(int mode, int val) {
 	}
 }
 
-bool Game_Interpreter::CommandChangeSkills() { // Code 10440
-	std::vector<Game_Actor*> actors = GetActors(list[index].parameters[0],
-												list[index].parameters[1]);
-	bool remove = list[index].parameters[2] != 0;
-	int skill_id = ValueOrVariable(list[index].parameters[3],
-								   list[index].parameters[4]);
+bool Game_Interpreter::CommandChangeSkills(RPG::EventCommand const& com) { // Code 10440
+	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
+												com.parameters[1]);
+	bool remove = com.parameters[2] != 0;
+	int skill_id = ValueOrVariable(com.parameters[3],
+								   com.parameters[4]);
 
 	for (std::vector<Game_Actor*>::iterator i = actors.begin(); 
 		 i != actors.end(); 
@@ -1095,17 +1099,17 @@ bool Game_Interpreter::CommandChangeSkills() { // Code 10440
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeEquipment() { // Code 10450
-	std::vector<Game_Actor*> actors = GetActors(list[index].parameters[0],
-												list[index].parameters[1]);
+bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { // Code 10450
+	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
+												com.parameters[1]);
 	int item_id;
 	int type;
 	int slot;
 
-	switch (list[index].parameters[2]) {
+	switch (com.parameters[2]) {
 		case 0:
-			item_id = ValueOrVariable(list[index].parameters[3],
-									  list[index].parameters[4]);
+			item_id = ValueOrVariable(com.parameters[3],
+									  com.parameters[4]);
 			type = Data::items[item_id - 1].type;
 			switch (type) {
 				case RPG::Item::Type_weapon:
@@ -1120,7 +1124,7 @@ bool Game_Interpreter::CommandChangeEquipment() { // Code 10450
 			break;
 		case 1:
 			item_id = 0;
-			slot = list[index].parameters[3];
+			slot = com.parameters[3];
 			break;
 		default:
 			return false;
@@ -1136,13 +1140,13 @@ bool Game_Interpreter::CommandChangeEquipment() { // Code 10450
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeHP() { // Code 10460
-	std::vector<Game_Actor*> actors = GetActors(list[index].parameters[0],
-												list[index].parameters[1]);
-	bool remove = list[index].parameters[2] != 0;
-	int amount = ValueOrVariable(list[index].parameters[3],
-								 list[index].parameters[4]);
-	bool lethal = list[index].parameters[5] != 0;
+bool Game_Interpreter::CommandChangeHP(RPG::EventCommand const& com) { // Code 10460
+	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
+												com.parameters[1]);
+	bool remove = com.parameters[2] != 0;
+	int amount = ValueOrVariable(com.parameters[3],
+								 com.parameters[4]);
+	bool lethal = com.parameters[5] != 0;
 
 	if (remove)
 		amount = -amount;
@@ -1160,12 +1164,12 @@ bool Game_Interpreter::CommandChangeHP() { // Code 10460
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeSP() { // Code 10470
-	std::vector<Game_Actor*> actors = GetActors(list[index].parameters[0],
-												list[index].parameters[1]);
-	bool remove = list[index].parameters[2] != 0;
-	int amount = ValueOrVariable(list[index].parameters[3],
-								 list[index].parameters[4]);
+bool Game_Interpreter::CommandChangeSP(RPG::EventCommand const& com) { // Code 10470
+	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
+												com.parameters[1]);
+	bool remove = com.parameters[2] != 0;
+	int amount = ValueOrVariable(com.parameters[3],
+								 com.parameters[4]);
 
 	if (remove)
 		amount = -amount;
@@ -1183,11 +1187,11 @@ bool Game_Interpreter::CommandChangeSP() { // Code 10470
 	return true;
 }
 
-bool Game_Interpreter::CommandChangeCondition() { // Code 10480
-	std::vector<Game_Actor*> actors = GetActors(list[index].parameters[0],
-												list[index].parameters[1]);
-	bool remove = list[index].parameters[2] != 0;
-	int state_id = list[index].parameters[3];
+bool Game_Interpreter::CommandChangeCondition(RPG::EventCommand const& com) { // Code 10480
+	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
+												com.parameters[1]);
+	bool remove = com.parameters[2] != 0;
+	int state_id = com.parameters[3];
 
 	for (std::vector<Game_Actor*>::iterator i = actors.begin(); 
 		 i != actors.end(); 
@@ -1202,9 +1206,9 @@ bool Game_Interpreter::CommandChangeCondition() { // Code 10480
 	return true;
 }
 
-bool Game_Interpreter::CommandFullHeal() { // Code 10490
-	std::vector<Game_Actor*> actors = GetActors(list[index].parameters[0],
-												list[index].parameters[1]);
+bool Game_Interpreter::CommandFullHeal(RPG::EventCommand const& com) { // Code 10490
+	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
+												com.parameters[1]);
 
 	for (std::vector<Game_Actor*>::iterator i = actors.begin(); 
 		 i != actors.end(); 
@@ -1218,42 +1222,42 @@ bool Game_Interpreter::CommandFullHeal() { // Code 10490
 	return true;
 }
 
-bool Game_Interpreter::CommandPlayBGM() { // code 11510
+bool Game_Interpreter::CommandPlayBGM(RPG::EventCommand const& com) { // code 11510
 	RPG::Music music;
-	music.name = list[index].string;
-	music.fadein = list[index].parameters[0];
-	music.volume = list[index].parameters[1];
-	music.tempo = list[index].parameters[2];
-	music.balance = list[index].parameters[3];
+	music.name = com.string;
+	music.fadein = com.parameters[0];
+	music.volume = com.parameters[1];
+	music.tempo = com.parameters[2];
+	music.balance = com.parameters[3];
 	Game_System::BgmPlay(music);
 	return true;
 }
 
-bool Game_Interpreter::CommandFadeOutBGM() { // code 11520
-	int fadeout = list[index].parameters[0];
+bool Game_Interpreter::CommandFadeOutBGM(RPG::EventCommand const& com) { // code 11520
+	int fadeout = com.parameters[0];
 	Audio::BGM_Fade(fadeout);
 	return true;
 }
 
-bool Game_Interpreter::CommandPlaySound() { // code 11550
+bool Game_Interpreter::CommandPlaySound(RPG::EventCommand const& com) { // code 11550
 	RPG::Sound sound;
-	sound.name = list[index].string;
-	sound.volume = list[index].parameters[0];
-	sound.tempo = list[index].parameters[1];
-	sound.balance = list[index].parameters[2];
+	sound.name = com.string;
+	sound.volume = com.parameters[0];
+	sound.tempo = com.parameters[1];
+	sound.balance = com.parameters[2];
 	Game_System::SePlay(sound);
 	return true;
 }
 
 ////////////////////////////////////////////////////////////
-bool Game_Interpreter::CommandTintScreen() { // code 11030
+bool Game_Interpreter::CommandTintScreen(RPG::EventCommand const& com) { // code 11030
 	Game_Screen* screen = Main_Data::game_screen;
-	int r = list[index].parameters[0];
-	int g = list[index].parameters[1];
-	int b = list[index].parameters[2];
-	int s = list[index].parameters[3];
-	int tenths = list[index].parameters[4];
-	bool wait = list[index].parameters[5] != 0;
+	int r = com.parameters[0];
+	int g = com.parameters[1];
+	int b = com.parameters[2];
+	int s = com.parameters[3];
+	int tenths = com.parameters[4];
+	bool wait = com.parameters[5] != 0;
 
 	screen->TintScreen(r, g, b, s, tenths);
 
@@ -1263,17 +1267,17 @@ bool Game_Interpreter::CommandTintScreen() { // code 11030
 	return true;
 }
 
-bool Game_Interpreter::CommandFlashScreen() { // code 11040
+bool Game_Interpreter::CommandFlashScreen(RPG::EventCommand const& com) { // code 11040
 	Game_Screen* screen = Main_Data::game_screen;
-	int r = list[index].parameters[0];
-	int g = list[index].parameters[1];
-	int b = list[index].parameters[2];
-	int s = list[index].parameters[3];
-	int tenths = list[index].parameters[4];
-	bool wait = list[index].parameters[5] != 0;
+	int r = com.parameters[0];
+	int g = com.parameters[1];
+	int b = com.parameters[2];
+	int s = com.parameters[3];
+	int tenths = com.parameters[4];
+	bool wait = com.parameters[5] != 0;
 
 	if (Player::engine == Player::EngineRpg2k3) {
-		switch (list[index].parameters[6]) {
+		switch (com.parameters[6]) {
 			case 0:
 				screen->FlashOnce(r, g, b, s, tenths);
 				if (wait)
@@ -1295,12 +1299,12 @@ bool Game_Interpreter::CommandFlashScreen() { // code 11040
 	return true;
 }
 
-bool Game_Interpreter::CommandShakeScreen() { // code 11050
+bool Game_Interpreter::CommandShakeScreen(RPG::EventCommand const& com) { // code 11050
 	Game_Screen* screen = Main_Data::game_screen;
-	int strength = list[index].parameters[0];
-	int speed = list[index].parameters[1];
-	int tenths = list[index].parameters[2];
-	bool wait = list[index].parameters[3] != 0;
+	int strength = com.parameters[0];
+	int speed = com.parameters[1];
+	int tenths = com.parameters[2];
+	bool wait = com.parameters[3] != 0;
 
 	if (Player::engine == Player::EngineRpg2k) {
 		screen->ShakeOnce(strength, speed, tenths);
@@ -1308,7 +1312,7 @@ bool Game_Interpreter::CommandShakeScreen() { // code 11050
 			wait_count = tenths * DEFAULT_FPS / 10;
 		}
 	} else {
-		switch (list[index].parameters[4]) {
+		switch (com.parameters[4]) {
 			case 0:
 				screen->ShakeOnce(strength, speed, tenths);
 				if (wait) {
@@ -1327,17 +1331,17 @@ bool Game_Interpreter::CommandShakeScreen() { // code 11050
 	return true;
 }
 
-bool Game_Interpreter::CommandEndEventProcessing() { // code 12310
+bool Game_Interpreter::CommandEndEventProcessing(RPG::EventCommand const& com) { // code 12310
 	index = list.size();
 	return true;
 }
 
-bool Game_Interpreter::DefaultContinuation() {
+bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& com) {
 	index++;
 	return true;
 }
 
-bool Game_Interpreter::CommandGameOver() { // code 12420
+bool Game_Interpreter::CommandGameOver(RPG::EventCommand const& com) { // code 12420
 	CloseMessageWindow();
 	Game_Temp::gameover = true;
 	SetContinuation(&Game_Interpreter::DefaultContinuation);
@@ -1347,6 +1351,6 @@ bool Game_Interpreter::CommandGameOver() { // code 12420
 ////////////////////////////////////////////////////////////
 /// Dummy Continuations
 ////////////////////////////////////////////////////////////
-bool Game_Interpreter::ContinuationOpenShop() { return true; }
-bool Game_Interpreter::ContinuationShowInn() { return true; }
-bool Game_Interpreter::ContinuationEnemyEncounter() { return true; }
+bool Game_Interpreter::ContinuationOpenShop(RPG::EventCommand const& com) { return true; }
+bool Game_Interpreter::ContinuationShowInn(RPG::EventCommand const& com) { return true; }
+bool Game_Interpreter::ContinuationEnemyEncounter(RPG::EventCommand const& com) { return true; }

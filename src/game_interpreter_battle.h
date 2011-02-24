@@ -40,17 +40,17 @@ public:
 
 	bool ExecuteCommand();
 private:
-	bool CommandCallCommonEvent();
-	bool CommandForceFlee();
-	bool CommandEnableCombo();
-	bool CommandChangeMonsterHP();
-	bool CommandChangeMonsterMP();
-	bool CommandChangeMonsterCondition();
-	bool CommandShowHiddenMonster();
-	bool CommandChangeBattleBG();
-	bool CommandShowBattleAnimation();
-	bool CommandTerminateBattle();
-	bool CommandConditionalBranch();
+	bool CommandCallCommonEvent(RPG::EventCommand const& com);
+	bool CommandForceFlee(RPG::EventCommand const& com);
+	bool CommandEnableCombo(RPG::EventCommand const& com);
+	bool CommandChangeMonsterHP(RPG::EventCommand const& com);
+	bool CommandChangeMonsterMP(RPG::EventCommand const& com);
+	bool CommandChangeMonsterCondition(RPG::EventCommand const& com);
+	bool CommandShowHiddenMonster(RPG::EventCommand const& com);
+	bool CommandChangeBattleBG(RPG::EventCommand const& com);
+	bool CommandShowBattleAnimation(RPG::EventCommand const& com);
+	bool CommandTerminateBattle(RPG::EventCommand const& com);
+	bool CommandConditionalBranch(RPG::EventCommand const& com);
 };
 
 #endif
