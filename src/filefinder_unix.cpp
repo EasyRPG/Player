@@ -208,13 +208,13 @@ std::string FileFinder::FindImage(const std::string& dir, const std::string& fil
 /// Find sound
 ////////////////////////////////////////////////////////////
 std::string FileFinder::FindSound(const std::string& file) {
-	return Find("sound", file, SOUND_TYPES);
+	return Find("Sound", file, SOUND_TYPES);
 }
 ////////////////////////////////////////////////////////////
 /// Find music
 ////////////////////////////////////////////////////////////
 std::string FileFinder::FindMusic(const std::string& file) {
-	return Find("music", file, MUSIC_TYPES);
+	return Find("Music", file, MUSIC_TYPES);
 }
 
 ////////////////////////////////////////////////////////////
@@ -226,11 +226,15 @@ std::string FileFinder::FindFont(const std::string& file) {
 
 ////////////////////////////////////////////////////////////
 std::string FileFinder::DefaultFont() {
+	return "./IPAfont00302/ipag.ttf";
+	// return "./IPAfont00302/ipam.ttf";
+	/*
 	std::string fonts[] = DEFAULT_FONTS;
 	for (const std::string* pfont = fonts; !pfont->empty(); pfont++)
 		if (!FindFont(*pfont).empty())
 			return *pfont;
 	return "";
+	*/
 }
 
 ////////////////////////////////////////////////////////////
