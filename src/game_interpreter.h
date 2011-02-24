@@ -100,26 +100,33 @@ protected:
 	////////////////////////////////////////////////////////
 	void CloseMessageWindow();
 
-	template<Cmd::CommandCodes Code>
-	bool Command(RPG::EventCommand const& com);
+	bool CommandShowMessage();
+	bool CommandChangeFaceGraphic();
+	bool CommandShowChoices();
+	bool CommandInputNumber();
+	bool CommandControlSwitches();
+	bool CommandControlVariables();
+	bool CommandChangeGold();
+	bool CommandChangeItems();
+	bool CommandChangePartyMember();
+	bool CommandChangeLevel();
+	bool CommandChangeSkills();
+	bool CommandChangeEquipment();
+	bool CommandChangeHP();
+	bool CommandChangeSP();
+	bool CommandChangeCondition();
+	bool CommandFullHeal();
+	bool CommandTintScreen();
+	bool CommandFlashScreen();
+	bool CommandShakeScreen();
+	bool CommandWait();
+	bool CommandPlayBGM();
+	bool CommandFadeOutBGM();
+	bool CommandPlaySound();
+	bool CommandEndEventProcessing();
+	bool CommandGameOver();
 
-	typedef bool (Game_Interpreter::*CommandPointer)(RPG::EventCommand const&);
-	class CodeTable {
-	private:
-		static std::map<unsigned, CommandPointer> code2func_;
-		static std::map<unsigned, std::string> code2str_;
-		static std::map<std::string, unsigned> str2code_;
-
-		CodeTable(CodeTable const&);
-	public:
-		CodeTable();
-
-		static std::string const& ToString(unsigned code);
-		static Cmd::CommandCodes ToCode(char const* str);
-
-		static CommandPointer GetCommand(unsigned code);
-		// static void Erase(Cmd::CommandCodes code);
-	} codeTable_;
+	void CommandEnd();
 
 	virtual bool DefaultContinuation();
 	virtual bool ContinuationChoices();
@@ -132,9 +139,5 @@ protected:
 
 	bool teleport_pending;
 };
-
-#define PP_enum(VAL, CODE) template<> bool Game_Interpreter::Command<Cmd::VAL>(RPG::EventCommand const& com);
-PP_rpgEnumCommandCode(PP_enum)
-#undef PP_enum
 
 #endif
