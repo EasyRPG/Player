@@ -226,15 +226,13 @@ std::string FileFinder::FindFont(const std::string& file) {
 
 ////////////////////////////////////////////////////////////
 std::string FileFinder::DefaultFont() {
-	return "./IPAfont00302/ipag.ttf";
-	// return "./IPAfont00302/ipam.ttf";
-	/*
 	std::string fonts[] = DEFAULT_FONTS;
 	for (const std::string* pfont = fonts; !pfont->empty(); pfont++)
 		if (!FindFont(*pfont).empty())
 			return *pfont;
 	return "";
-	*/
+	// return "IPAfont00302/ipag.ttf";
+	// return "IPAfont00302/ipam.ttf";
 }
 
 ////////////////////////////////////////////////////////////
