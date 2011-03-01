@@ -161,8 +161,10 @@ namespace {
 
 		MyFile(char const* fname) {
 			initFFmpeg();
-			if(av_open_input_file(&this->fmtCtx, fname, NULL, 0, NULL) == 0) {
-				assert(!"file open error");
+
+
+			if(av_open_input_file(&this->fmtCtx, fname, NULL, 0, NULL) != 0) {
+				Output::Error("file open error %s", fname);
 			}
 			for(int i = 0; i < this->fmtCtx->nb_streams; i++) {
 				if(this->fmtCtx->streams[i]->codec->codec_type != CODEC_TYPE_AUDIO)
@@ -221,6 +223,7 @@ namespace {
 
 void boost::throw_exception(std::exception const& exp)
 {
+	Output::Error("exception: %s", exp.what());
 	assert(false);
 }
 
