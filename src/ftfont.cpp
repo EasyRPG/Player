@@ -74,7 +74,7 @@ void FTFont::Init() {
 	std::string path = FileFinder::FindFont(name);
     FT_Error ans = FT_New_Face(library, path.c_str(), 0, &face);
     if (ans != FT_Err_Ok) {
-		Output::Error("Couldn't initialize FreeType face\n");
+		Output::Error("Couldn't initialize FreeType face: %s(%s)\n", name.c_str(), path.c_str());
 		FT_Done_FreeType(library);
 		return;
 	}
