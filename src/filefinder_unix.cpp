@@ -226,15 +226,11 @@ std::string FileFinder::FindFont(const std::string& file) {
 
 ////////////////////////////////////////////////////////////
 std::string FileFinder::DefaultFont() {
-	return "ipag";
-	// return "ipam";
-	/*
-	std::string fonts[] = DEFAULT_FONTS;
+	static std::string fonts[] = DEFAULT_FONTS;
 	for (const std::string* pfont = fonts; !pfont->empty(); pfont++)
 		if (!FindFont(*pfont).empty())
 			return *pfont;
 	return "";
-	*/
 }
 
 ////////////////////////////////////////////////////////////
