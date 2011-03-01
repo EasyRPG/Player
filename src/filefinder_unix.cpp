@@ -221,18 +221,20 @@ std::string FileFinder::FindMusic(const std::string& file) {
 /// Find font
 ////////////////////////////////////////////////////////////
 std::string FileFinder::FindFont(const std::string& file) {
-	return Find("font", file, FONTS_TYPES);
+	return Find("Font", file, FONTS_TYPES);
 }
 
 ////////////////////////////////////////////////////////////
 std::string FileFinder::DefaultFont() {
+	return "ipag";
+	// return "ipam";
+	/*
 	std::string fonts[] = DEFAULT_FONTS;
 	for (const std::string* pfont = fonts; !pfont->empty(); pfont++)
 		if (!FindFont(*pfont).empty())
 			return *pfont;
 	return "";
-	// return "IPAfont00302/ipag.ttf";
-	// return "IPAfont00302/ipam.ttf";
+	*/
 }
 
 ////////////////////////////////////////////////////////////
