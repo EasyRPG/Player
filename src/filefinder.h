@@ -154,6 +154,9 @@ namespace FileFinder {
 		".ttf",
 		".ttc",
 #endif
+#ifdef SUPPORT_OTF
+		".otf",
+#endif
 #ifdef SUPPORT_FON
 		".fon",
 #endif
