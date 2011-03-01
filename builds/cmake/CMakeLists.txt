@@ -53,6 +53,7 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_CURRENT_SOURCE_DIR}/../../../readers/include
 	/opt/local/include/pixman-1
 	/usr/include/pixman-1
+	/usr/local/include/pixman-1
 )
 
 AUX_SOURCE_DIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/../../src SRCS)
