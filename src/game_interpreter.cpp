@@ -492,7 +492,7 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // Cod
 				if (s_choices.size() <= (4 - line_count)) {
 					index++;
 					Game_Message::choice_start = line_count;
-					Game_Message::choice_cancel_type = com.parameters[0];
+					Game_Message::choice_cancel_type = list[index].parameters[0];
 					SetupChoices(s_choices);
 				}
 			} else if ((index < list.size() - 1) && (list[index+1].code == Cmd::InputNumber) ) {
@@ -501,8 +501,8 @@ bool Game_Interpreter::CommandShowMessage(RPG::EventCommand const& com) { // Cod
 				if (line_count < 4) {
 					index++;
 					Game_Message::num_input_start = line_count;
-					Game_Message::num_input_digits_max = com.parameters[0];
-					Game_Message::num_input_variable_id = com.parameters[1];
+					Game_Message::num_input_digits_max = list[index].parameters[0];
+					Game_Message::num_input_variable_id = list[index].parameters[1];
 				}
 			}
 
