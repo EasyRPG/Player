@@ -346,23 +346,23 @@ bool Game_Battle::CheckTurns(int turns, int base, int multiple) {
 }
 
 bool Game_Battle::CheckCondition(const RPG::TroopPageCondition& condition) {
-	if (condition.switch_a && !Game_Switches[condition.switch_a_id])
+	if (condition.flags.switch_a && !Game_Switches[condition.switch_a_id])
 		return false;
 
-	if (condition.switch_b && !Game_Switches[condition.switch_b_id])
+	if (condition.flags.switch_b && !Game_Switches[condition.switch_b_id])
 		return false;
 
-	if (condition.variable && !(Game_Variables[condition.variable_id] >= condition.variable_value))
+	if (condition.flags.variable && !(Game_Variables[condition.variable_id] >= condition.variable_value))
 		return false;
 
-	if (condition.turn && !CheckTurns(GetTurns(), condition.turn_b, condition.turn_a))
+	if (condition.flags.turn && !CheckTurns(GetTurns(), condition.turn_b, condition.turn_a))
 		return false;
 
-	if (condition.turn_enemy && !CheckTurns(GetEnemy(condition.turn_enemy_id).GetTurns(),
+	if (condition.flags.turn_enemy && !CheckTurns(GetEnemy(condition.turn_enemy_id).GetTurns(),
 											condition.turn_enemy_b, condition.turn_enemy_a))
 		return false;
 
-	if (condition.turn_actor) {
+	if (condition.flags.turn_actor) {
 		Battle::Ally* ally = FindAlly(condition.turn_actor_id);
 		if (!ally)
 			return false;
@@ -370,13 +370,13 @@ bool Game_Battle::CheckCondition(const RPG::TroopPageCondition& condition) {
 			return false;
 	}
 
-    if (condition.enemy_hp) {
+    if (condition.flags.enemy_hp) {
 		int hp = GetEnemy(condition.enemy_id).GetActor()->GetHp();
 		if (hp < condition.enemy_hp_min || hp > condition.enemy_hp_max)
 			return false;
 	}
 
-    if (condition.actor_hp) {
+    if (condition.flags.actor_hp) {
 		Battle::Ally* ally = FindAlly(condition.actor_id);
 		if (!ally)
 			return false;
@@ -385,7 +385,7 @@ bool Game_Battle::CheckCondition(const RPG::TroopPageCondition& condition) {
 			return false;
 	}
 
-    if (condition.command_actor) {
+    if (condition.flags.command_actor) {
 		Battle::Ally* ally = FindAlly(condition.actor_id);
 		if (!ally)
 			return false;

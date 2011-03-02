@@ -143,8 +143,8 @@ int Game_Actor::GetSp() const {
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseMaxHp(bool mod) const {
 	int n = data.changed_class
-		? Data::classes[data.class_id - 1].parameter_maxhp[data.level - 1]
-		: Data::actors[data.ID - 1].parameter_maxhp[data.level - 1];
+		? Data::classes[data.class_id - 1].parameters.maxhp[data.level - 1]
+		: Data::actors[data.ID - 1].parameters.maxhp[data.level - 1];
 
 	if (mod)
 		n += data.hp_mod;
@@ -160,8 +160,8 @@ int Game_Actor::GetBaseMaxHp() const {
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseMaxSp(bool mod) const {
 	int n = data.changed_class
-		? Data::classes[data.class_id - 1].parameter_maxsp[data.level - 1]
-		: Data::actors[data.ID - 1].parameter_maxsp[data.level - 1];
+		? Data::classes[data.class_id - 1].parameters.maxsp[data.level - 1]
+		: Data::actors[data.ID - 1].parameters.maxsp[data.level - 1];
 
 	if (mod)
 		n += data.sp_mod;
@@ -177,8 +177,8 @@ int Game_Actor::GetBaseMaxSp() const {
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseAtk(bool mod, bool equip) const {
 	int n = data.changed_class
-		? Data::classes[data.class_id - 1].parameter_attack[data.level - 1]
-		: Data::actors[data.ID - 1].parameter_attack[data.level - 1];
+		? Data::classes[data.class_id - 1].parameters.attack[data.level - 1]
+		: Data::actors[data.ID - 1].parameters.attack[data.level - 1];
 
 	if (mod)
 		n += data.attack_mod;
@@ -199,8 +199,8 @@ int Game_Actor::GetBaseAtk() const {
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseDef(bool mod, bool equip) const {
 	int n = data.changed_class
-		? Data::classes[data.class_id - 1].parameter_defense[data.level - 1]
-		: Data::actors[data.ID - 1].parameter_defense[data.level - 1];
+		? Data::classes[data.class_id - 1].parameters.defense[data.level - 1]
+		: Data::actors[data.ID - 1].parameters.defense[data.level - 1];
 
 	if (mod)
 		n += data.defense_mod;
@@ -221,8 +221,8 @@ int Game_Actor::GetBaseDef() const {
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseSpi(bool mod, bool equip) const {
 	int n = data.changed_class
-		? Data::classes[data.class_id - 1].parameter_spirit[data.level - 1]
-		: Data::actors[data.ID - 1].parameter_spirit[data.level - 1];
+		? Data::classes[data.class_id - 1].parameters.spirit[data.level - 1]
+		: Data::actors[data.ID - 1].parameters.spirit[data.level - 1];
 
 	if (mod)
 		n += data.spirit_mod;
@@ -243,8 +243,8 @@ int Game_Actor::GetBaseSpi() const {
 ////////////////////////////////////////////////////////////
 int Game_Actor::GetBaseAgi(bool mod, bool equip) const {
 	int n = data.changed_class
-		? Data::classes[data.class_id - 1].parameter_agility[data.level - 1]
-		: Data::actors[data.ID - 1].parameter_agility[data.level - 1];
+		? Data::classes[data.class_id - 1].parameters.agility[data.level - 1]
+		: Data::actors[data.ID - 1].parameters.agility[data.level - 1];
 
 	if (mod)
 		n += data.agility_mod;
