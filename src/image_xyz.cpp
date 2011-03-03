@@ -20,6 +20,7 @@
 ////////////////////////////////////////////////////////////
 
 #include <zlib.h>
+#include <vector>
 #include "output.h"
 #include "image_xyz.h"
 
@@ -39,14 +40,14 @@ void ImageXYZ::ReadXYZ(const uint8* data, uint len, bool transparent,
 	uLongf src_size = len - 8;
     Bytef* src_buffer = (Bytef*)&data[8];
     uLongf dst_size = 768 + (w * h);
-    Bytef* dst_buffer = new Bytef[dst_size];
+	std::vector<Bytef> dst_buffer(dst_size);
 
-    int status = uncompress(dst_buffer, &dst_size, src_buffer, src_size);
+    int status = uncompress(&dst_buffer.front(), &dst_size, src_buffer, src_size);
 	if (status != Z_OK) {
 		Output::Error("Error decompressing XYZ file.");
 		return;
 	}
-    const uint8 (*palette)[3] = (const uint8(*)[3]) dst_buffer;
+    const uint8 (*palette)[3] = (const uint8(*)[3]) &dst_buffer.front();
 
 	width = w;
 	height = h;
@@ -64,8 +65,6 @@ void ImageXYZ::ReadXYZ(const uint8* data, uint len, bool transparent,
 			*dst++ = (transparent && pix == 0) ? 0 : 255;
 		}
     }
-
-    delete[] dst_buffer;
 }
 
 ////////////////////////////////////////////////////////////
@@ -74,10 +73,9 @@ void ImageXYZ::ReadXYZ(FILE* stream, bool transparent,
     fseek(stream, 0, SEEK_END);
     long size = ftell(stream);
     fseek(stream, 0, SEEK_SET);
-	uint8* buffer = new uint8[size];
-	fread((void*) buffer, 1, size, stream);
-	ReadXYZ(buffer, (uint) size, transparent, width, height, pixels);
-	delete[] buffer;
+	std::vector<uint8> buffer(size);
+	fread((void*) &buffer.front(), 1, size, stream);
+	ReadXYZ(&buffer.front(), (uint) size, transparent, width, height, pixels);
 }
 
 ////////////////////////////////////////////////////////////

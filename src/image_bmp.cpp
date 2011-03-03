@@ -22,6 +22,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <algorithm>
+#include <vector>
 #include "output.h"
 #include "image_bmp.h"
 
@@ -156,9 +157,8 @@ void ImageBMP::ReadBMP(FILE* stream, bool transparent,
     fseek(stream, 0, SEEK_END);
     long size = ftell(stream);
     fseek(stream, 0, SEEK_SET);
-	uint8* buffer = new uint8[size];
-	fread((void*) buffer, 1, size, stream);
-	ReadBMP(buffer, (uint) size, transparent, width, height, pixels);
-	delete[] buffer;
+	std::vector<uint8> buffer(size);
+	fread((void*) &buffer.front(), 1, size, stream);
+	ReadBMP(&buffer.front(), (uint) size, transparent, width, height, pixels);
 }
 
