@@ -143,22 +143,22 @@ void Game_Event::Refresh() {
 
 bool Game_Event::AreConditionsMet(const RPG::EventPage& page) {
 	// First switch (A)
-	if (page.condition.switch_a && !Game_Switches[page.condition.switch_a_id]) {
+	if (page.condition.flags.switch_a && !Game_Switches[page.condition.switch_a_id]) {
 		return false;
 	}
 
 	// Second switch (B)
-	if (page.condition.switch_b && !Game_Switches[page.condition.switch_b_id]) {
+	if (page.condition.flags.switch_b && !Game_Switches[page.condition.switch_b_id]) {
 		return false;
 	}
 
 	// Variable
 	if (Player::engine == Player::EngineRpg2k) {
-		if (page.condition.variable && !(Game_Variables[page.condition.variable_id] >= page.condition.variable_value)) {
+		if (page.condition.flags.variable && !(Game_Variables[page.condition.variable_id] >= page.condition.variable_value)) {
 			return false;
 		}
 	} else {
-		if (page.condition.variable) {
+		if (page.condition.flags.variable) {
 			switch (page.condition.compare_operator) {
 			case 0: // ==
 				if (!(Game_Variables[page.condition.variable_id] == page.condition.variable_value))
@@ -189,26 +189,26 @@ bool Game_Event::AreConditionsMet(const RPG::EventPage& page) {
 	}
 
 	// Item in possession?
-	if (page.condition.item && !Game_Party::ItemNumber(page.condition.item_id)) {
+	if (page.condition.flags.item && !Game_Party::ItemNumber(page.condition.item_id)) {
 		return false;
 	}
 
 	// Actor in party?
-	if (page.condition.actor) {
+	if (page.condition.flags.actor) {
 		if (!Game_Party::IsActorInParty(page.condition.actor_id)) {
 			return false;
 		}
 	}
 
 	// Timer
-	if (page.condition.timer) {
+	if (page.condition.flags.timer) {
 		int frames = Game_Party::ReadTimer(Game_Party::Timer1);
 		if (frames > page.condition.timer_sec * DEFAULT_FPS)
 			return false;
 	}
 
 	// Timer2
-	if (page.condition.timer2) {
+	if (page.condition.flags.timer2) {
 		int frames = Game_Party::ReadTimer(Game_Party::Timer2);
 		if (frames > page.condition.timer2_sec * DEFAULT_FPS)
 			return false;

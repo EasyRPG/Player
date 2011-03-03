@@ -166,20 +166,27 @@ bool Game_System::GetAllowMenu() {
 }
 
 ////////////////////////////////////////////////////////////
-int& Game_System::GetTransition(int which) {
+int Game_System::GetTransition(int which) {
 	switch (which) {
-		case Transition_TeleportErase:			return data.transition_out;
-		case Transition_TeleportShow:			return data.transition_in;
-		case Transition_BeginBattleErase:		return data.battle_start_fadeout;
-		case Transition_BeginBattleShow:		return data.battle_start_fadein;
-		case Transition_EndBattleErase:			return data.battle_end_fadeout;
-		case Transition_EndBattleShow:			return data.battle_end_fadein;
+		case Transition_TeleportErase:		return data.transition_out;
+		case Transition_TeleportShow:		return data.transition_in;
+		case Transition_BeginBattleErase:	return data.battle_start_fadeout;
+		case Transition_BeginBattleShow:	return data.battle_start_fadein;
+		case Transition_EndBattleErase:		return data.battle_end_fadeout;
+		case Transition_EndBattleShow:		return data.battle_end_fadein;
 	}
 
 	return data.transition_out;	// keep the compiler happy
 }
 ////////////////////////////////////////////////////////////
 void Game_System::SetTransition(int which, int transition) {
-	GetTransition(which) = transition;
+	switch (which) {
+		case Transition_TeleportErase:		data.transition_out			= transition;
+		case Transition_TeleportShow:		data.transition_in			= transition;
+		case Transition_BeginBattleErase:	data.battle_start_fadeout	= transition;
+		case Transition_BeginBattleShow:	data.battle_start_fadein	= transition;
+		case Transition_EndBattleErase:		data.battle_end_fadeout		= transition;
+		case Transition_EndBattleShow:		data.battle_end_fadein		= transition;
+	}
 }
 

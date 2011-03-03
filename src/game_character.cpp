@@ -24,7 +24,6 @@
 #include "game_player.h"
 #include "game_switches.h"
 #include "game_system.h"
-#include "lmu_chunks.h"
 #include "main_data.h"
 #include "util_macro.h"
 #include <cassert>
@@ -365,96 +364,96 @@ void Game_Character::MoveTypeCustom() {
 		} else {
 			RPG::MoveCommand& move_command = move_route->move_commands[move_route_index];
 			switch (move_command.command_id) {
-			case LMU_Reader::ChunkMoveCommands::move_up:
+			case RPG::MoveCommand::Code::move_up:
 				MoveUp(); break;
-			case LMU_Reader::ChunkMoveCommands::move_right:
+			case RPG::MoveCommand::Code::move_right:
 				MoveRight(); break;
-			case LMU_Reader::ChunkMoveCommands::move_down:
+			case RPG::MoveCommand::Code::move_down:
 				MoveDown(); break;
-			case LMU_Reader::ChunkMoveCommands::move_left:
+			case RPG::MoveCommand::Code::move_left:
 				MoveLeft(); break;
-			case LMU_Reader::ChunkMoveCommands::move_upright: break;
-			case LMU_Reader::ChunkMoveCommands::move_downright: break;
-			case LMU_Reader::ChunkMoveCommands::move_downleft: break;
-			case LMU_Reader::ChunkMoveCommands::move_upleft: break;
-			case LMU_Reader::ChunkMoveCommands::move_random:
+			case RPG::MoveCommand::Code::move_upright: break;
+			case RPG::MoveCommand::Code::move_downright: break;
+			case RPG::MoveCommand::Code::move_downleft: break;
+			case RPG::MoveCommand::Code::move_upleft: break;
+			case RPG::MoveCommand::Code::move_random:
 				MoveRandom();
 				break;
-			case LMU_Reader::ChunkMoveCommands::move_towards_hero:
+			case RPG::MoveCommand::Code::move_towards_hero:
 				MoveTowardsPlayer();
 				break;
-			case LMU_Reader::ChunkMoveCommands::move_away_from_hero:
+			case RPG::MoveCommand::Code::move_away_from_hero:
 				MoveAwayFromPlayer();
 				break;
-			case LMU_Reader::ChunkMoveCommands::move_forward:
+			case RPG::MoveCommand::Code::move_forward:
 				MoveForward();
 				break;
-			case LMU_Reader::ChunkMoveCommands::face_up:
+			case RPG::MoveCommand::Code::face_up:
 				TurnUp(); break;
-			case LMU_Reader::ChunkMoveCommands::face_right:
+			case RPG::MoveCommand::Code::face_right:
 				TurnRight(); break;
-			case LMU_Reader::ChunkMoveCommands::face_down:
+			case RPG::MoveCommand::Code::face_down:
 				TurnDown(); break;
-			case LMU_Reader::ChunkMoveCommands::face_left:
+			case RPG::MoveCommand::Code::face_left:
 				TurnLeft(); break;
-			case LMU_Reader::ChunkMoveCommands::turn_90_degree_right:
+			case RPG::MoveCommand::Code::turn_90_degree_right:
 				Turn90DegreeRight();
 				break;
-			case LMU_Reader::ChunkMoveCommands::turn_90_degree_left:
+			case RPG::MoveCommand::Code::turn_90_degree_left:
 				Turn90DegreeLeft();
 				break;
-			case LMU_Reader::ChunkMoveCommands::turn_180_degree:
+			case RPG::MoveCommand::Code::turn_180_degree:
 				Turn180Degree();
 				break;
-			case LMU_Reader::ChunkMoveCommands::turn_90_degree_random:
+			case RPG::MoveCommand::Code::turn_90_degree_random:
 				Turn90DegreeLeftOrRight();
 				break;
-			case LMU_Reader::ChunkMoveCommands::face_random_direction: break;
-			case LMU_Reader::ChunkMoveCommands::face_hero: break;
-			case LMU_Reader::ChunkMoveCommands::face_away_from_hero: break;
-			case LMU_Reader::ChunkMoveCommands::wait: break;
-			case LMU_Reader::ChunkMoveCommands::begin_jump: break;
-			case LMU_Reader::ChunkMoveCommands::end_jump: break;
-			case LMU_Reader::ChunkMoveCommands::lock_facing:
+			case RPG::MoveCommand::Code::face_random_direction: break;
+			case RPG::MoveCommand::Code::face_hero: break;
+			case RPG::MoveCommand::Code::face_away_from_hero: break;
+			case RPG::MoveCommand::Code::wait: break;
+			case RPG::MoveCommand::Code::begin_jump: break;
+			case RPG::MoveCommand::Code::end_jump: break;
+			case RPG::MoveCommand::Code::lock_facing:
 				Lock();
 				break;
-			case LMU_Reader::ChunkMoveCommands::unlock_facing:
+			case RPG::MoveCommand::Code::unlock_facing:
 				Unlock();
 				break;
-			case LMU_Reader::ChunkMoveCommands::increase_movement_speed:
+			case RPG::MoveCommand::Code::increase_movement_speed:
 				move_speed = min(move_speed + 1, 8); break;
-			case LMU_Reader::ChunkMoveCommands::decrease_movement_speed: 
+			case RPG::MoveCommand::Code::decrease_movement_speed: 
 				move_speed = max(move_speed - 1, 1); break;
-			case LMU_Reader::ChunkMoveCommands::increase_movement_frequence: break;
-			case LMU_Reader::ChunkMoveCommands::decrease_movement_frequence: break;
-			case LMU_Reader::ChunkMoveCommands::switch_on: // Parameter A: Switch to turn on
+			case RPG::MoveCommand::Code::increase_movement_frequence: break;
+			case RPG::MoveCommand::Code::decrease_movement_frequence: break;
+			case RPG::MoveCommand::Code::switch_on: // Parameter A: Switch to turn on
 				Game_Switches[move_command.parameter_a] = true;
 				Game_Map::SetNeedRefresh(true);
 				break;
-			case LMU_Reader::ChunkMoveCommands::switch_off: // Parameter A: Switch to turn off
+			case RPG::MoveCommand::Code::switch_off: // Parameter A: Switch to turn off
 				Game_Switches[move_command.parameter_a] = false;
 				Game_Map::SetNeedRefresh(true);
 				break;
-			case LMU_Reader::ChunkMoveCommands::change_graphic: // String: File, Parameter A: index
+			case RPG::MoveCommand::Code::change_graphic: // String: File, Parameter A: index
 				character_name = move_command.parameter_string;
 				character_index = move_command.parameter_a;
 				break;
-			case LMU_Reader::ChunkMoveCommands::play_sound_effect: // String: File, Parameters: Volume, Tempo, Balance
+			case RPG::MoveCommand::Code::play_sound_effect: // String: File, Parameters: Volume, Tempo, Balance
 				if (move_command.parameter_string != "(OFF)") {
 					Audio::SE_Play(move_command.parameter_string,
 						move_command.parameter_a, move_command.parameter_b);
 				}
 				break;
-			case LMU_Reader::ChunkMoveCommands::walk_everywhere_on:
+			case RPG::MoveCommand::Code::walk_everywhere_on:
 				through = true;
 				break;
-			case LMU_Reader::ChunkMoveCommands::walk_everywhere_off:
+			case RPG::MoveCommand::Code::walk_everywhere_off:
 				through = false;
 				break;
-			case LMU_Reader::ChunkMoveCommands::stop_animation: break;
-			case LMU_Reader::ChunkMoveCommands::start_animation: break;
-			case LMU_Reader::ChunkMoveCommands::increase_transp: break; // ???
-			case LMU_Reader::ChunkMoveCommands::decrease_transp: break; // ???
+			case RPG::MoveCommand::Code::stop_animation: break;
+			case RPG::MoveCommand::Code::start_animation: break;
+			case RPG::MoveCommand::Code::increase_transp: break; // ???
+			case RPG::MoveCommand::Code::decrease_transp: break; // ???
 			}
 
 			if (move_route->skippable || !move_failed) {

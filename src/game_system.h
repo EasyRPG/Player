@@ -182,7 +182,7 @@ namespace Game_System {
 	/// @param which : which "context" to get the transition for
 	/// @return : the transition
 	////////////////////////////////////////////////////////
-	int& GetTransition(int which);
+	int GetTransition(int which);
 
 	////////////////////////////////////////////////////////
 	/// Set the system transitions
