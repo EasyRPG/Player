@@ -127,7 +127,7 @@ protected:
 	bool CommandEndEventProcessing(RPG::EventCommand const& com);
 	bool CommandGameOver(RPG::EventCommand const& com);
 
-	bool CommandEnd(RPG::EventCommand const& com);
+	bool CommandEnd();
 
 	virtual bool DefaultContinuation(RPG::EventCommand const& com);
 	virtual bool ContinuationChoices(RPG::EventCommand const& com);

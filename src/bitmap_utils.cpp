@@ -147,7 +147,7 @@ public:
 						   int x0, int x1, int y, const Rect& src_rect, const Matrix& inv);
 	void MaskBlit(uint8* dst_pixels, const uint8* src_pixels, int n);
 	void HSLBlit(uint8* dst_pixels, const uint8* src_pixels, int n,
-					 double hue, double sat, double lum, double loff);
+					int hue, int sat, int lum, int loff);
 	void ToneBlit(uint8* dst_pixels, const uint8* src_pixels, int n, const Tone& tone);
 	void ToneBlit(uint8* dst_pixels, const uint8* src_pixels, int n, const Tone& tone, double factor);
 	void BlendBlit(uint8* dst_pixels, const uint8* src_pixels, int n, const Color& color);
@@ -451,7 +451,7 @@ static inline void RGB_adjust_HSL(uint8& r, uint8& g, uint8& b,
 
 template <class PFsrc, class PFdst>
 void BitmapUtilsT<PFsrc,PFdst>::HSLBlit(uint8* dst_pixels, const uint8* src_pixels, int n,
-										double hue, double sat, double lum, double loff) {
+										int hue, int sat, int lum, int loff) {
 	for (int i = 0; i < n; i++) {
 		uint8 r, g, b, a;
 		pf_src.get_rgba(src_pixels, r, g, b, a);

@@ -34,11 +34,11 @@ Game_Interpreter_Battle::~Game_Interpreter_Battle() {
 /// Execute Command
 ////////////////////////////////////////////////////////////
 bool Game_Interpreter_Battle::ExecuteCommand() {
-	RPG::EventCommand const& com = list[index];
-	
 	if (index >= list.size()) {
-		return CommandEnd(com);
+		return CommandEnd();
 	}
+	
+	RPG::EventCommand const& com = list[index];
 	
 	switch (com.code) {
 		case Cmd::CallCommonEvent:

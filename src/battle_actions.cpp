@@ -51,7 +51,7 @@ bool Battle::CommandAction1::operator()() {
 ////////////////////////////////////////////////////////////
 bool Battle::MoveAction::operator()() {
 	int x = sprite->GetX();
-	int done = false;
+	bool done = false;
 	if (x0 < x1) {
 		x += speed;
 		done = (x >= x1);

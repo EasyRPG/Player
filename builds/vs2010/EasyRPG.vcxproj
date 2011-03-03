@@ -254,7 +254,7 @@
       <AdditionalIncludeDirectories>..\..\..\readers\include;$(EASYDEV_MSVC)\include</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>
       </MultiProcessorCompilation>
-      <DisableSpecificWarnings>4996;4512</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4996;4512;4100</DisableSpecificWarnings>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <FavorSizeOrSpeed>
       </FavorSizeOrSpeed>
@@ -349,6 +349,7 @@
     <ClCompile Include="..\..\src\game_player.cpp" />
     <ClCompile Include="..\..\src\game_screen.cpp" />
     <ClCompile Include="..\..\src\game_system.cpp" />
+    <ClCompile Include="..\..\src\game_targets.cpp" />
     <ClCompile Include="..\..\src\game_temp.cpp" />
     <ClCompile Include="..\..\src\game_troop.cpp" />
     <ClCompile Include="..\..\src\game_unit.cpp" />
@@ -490,6 +491,7 @@
     <ClInclude Include="..\..\src\game_screen.h" />
     <ClInclude Include="..\..\src\game_switches.h" />
     <ClInclude Include="..\..\src\game_system.h" />
+    <ClInclude Include="..\..\src\game_targets.h" />
     <ClInclude Include="..\..\src\game_temp.h" />
     <ClInclude Include="..\..\src\game_troop.h" />
     <ClInclude Include="..\..\src\game_unit.h" />

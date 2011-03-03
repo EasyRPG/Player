@@ -408,7 +408,7 @@ void Game_Interpreter::InputButton() {
 	}
 }
 
-bool Game_Interpreter::CommandEnd(RPG::EventCommand const& com) {
+bool Game_Interpreter::CommandEnd() {
 	CloseMessageWindow();
 	list.clear();
 

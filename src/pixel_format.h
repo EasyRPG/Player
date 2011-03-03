@@ -81,7 +81,7 @@ struct Component {
 		return mask != c.mask;
 	}
 
-	inline uint unpack(uint32 pix) const {
+	inline uint8 unpack(uint32 pix) const {
 		return (uint8)(((pix >> shift) & ((1 << bits) - 1)) << (8 - bits));
 	}
 
@@ -692,7 +692,7 @@ public:
 	inline int b_shift() const {	return mask_b_traits_type::shift(format().b);	}
 	inline int a_shift() const {	return mask_a_traits_type::shift(format().a);	}
 
-	inline bool alpha_type() const {
+	inline PF::AlphaType alpha_type() const {
 		return alpha_type_traits_type::alpha_type(this);
 	}
 

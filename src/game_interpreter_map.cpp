@@ -124,11 +124,11 @@ void Game_Interpreter_Map::EndMoveRoute(RPG::MoveRoute* route) {
 /// Execute Command
 ////////////////////////////////////////////////////////////
 bool Game_Interpreter_Map::ExecuteCommand() {
-	RPG::EventCommand const& com = list[index];
-	
 	if (index >= list.size()) {
-		return CommandEnd(com);
+		return CommandEnd();
 	}
+	
+	RPG::EventCommand const& com = list[index];
 	
 	switch (com.code) {
 		case Cmd::MessageOptions: 

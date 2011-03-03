@@ -244,7 +244,7 @@ public:
 	/// @param loff: luminance offset
 	////////////////////////////////////////////////////////
 	virtual void HSLBlit(uint8* dst_pixels, const uint8* src_pixels, int n,
-						 double hue, double sat, double lum, double loff) = 0;
+						 int hue, int sat, int lum, int loff) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Adjust bitmap tone, without saturation change
