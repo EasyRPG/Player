@@ -24,41 +24,33 @@
 
 ////////////////////////////////////////////////////////////
 typedef std::pair<std::string,std::string> string_pair;
+typedef std::pair<std::string, int> tile_pair;
 
 namespace {
 	std::map<string_pair, Bitmap*> cache;
-	std::map<std::string, std::map<int, Bitmap*> > cache_tiles;
+	std::map<tile_pair, Bitmap*> cache_tiles;
 }
 
 tSystemInfo Cache::system_info;
-
-bool IsCached(const string_pair& key) {
-	return cache.count(key) != 0;
-}
-
-bool IsCached(const std::string& folder_name, const std::string& filename) {
-	string_pair key = string_pair(folder_name, filename);
-	return cache.count(key) != 0;
-}
 
 ////////////////////////////////////////////////////////////
 Bitmap* Cache::LoadBitmap(
 	const std::string& folder_name, 
 	const std::string& filename,
-	bool transparent, 
-	uint32 flags
+	bool const transparent, 
+	uint32 const flags
 ) {
-	string_pair key = string_pair(folder_name, filename);
+	string_pair const key(folder_name, filename);
 
-	if (!IsCached(key)) {
-		std::string path = FileFinder::FindImage(folder_name, filename);
-		if (!path.empty())
-			cache[key] = Bitmap::CreateBitmap(path, transparent, flags);
-		else
-			cache[key] = Bitmap::CreateBitmap(16, 16, Color());
-	}
+	std::map<string_pair, Bitmap*>::iterator const it = cache.find(key);
 
-	return cache[key];
+	if (it == cache.end()) {
+		std::string const path = FileFinder::FindImage(folder_name, filename);
+		return cache.insert(std::make_pair(key, path.empty()
+										   ? Bitmap::CreateBitmap(16, 16, Color())
+										   : Bitmap::CreateBitmap(path, transparent, flags)
+										   )).first->second;
+	} else { return it->second; }
 }
 
 ////////////////////////////////////////////////////////////
@@ -81,13 +73,13 @@ Bitmap* Cache::Charset(const std::string& filename) {
 	return LoadBitmap("CharSet", filename);
 }
 Bitmap* Cache::ExFont() {
-	string_pair hash = string_pair("\x00","ExFont");
+	string_pair const hash("\x00","ExFont");
 
-	if (cache.count(hash) == 0) {
-		cache[hash] = Bitmap::CreateBitmap(exfont_h, sizeof(exfont_h), true);
-	}
+	std::map<string_pair, Bitmap*>::iterator const it = cache.find(hash);
 
-	return cache[hash];
+	if (it == cache.end()) {
+		return cache.insert(std::make_pair(hash, Bitmap::CreateBitmap(exfont_h, sizeof(exfont_h), true))).first->second;
+	} else { return it->second; }
 }
 Bitmap* Cache::Faceset(const std::string& filename) {
 	return LoadBitmap("FaceSet", filename);
@@ -122,7 +114,10 @@ Bitmap* Cache::System2(const std::string& filename) {
 
 ////////////////////////////////////////////////////////////
 Bitmap* Cache::Tile(const std::string& filename, int tile_id) {
-	if (cache_tiles.count(filename) == 0 || cache_tiles[filename].count(tile_id) == 0) {
+	tile_pair const key(filename, tile_id);
+	std::map<tile_pair, Bitmap*>::iterator const it = cache_tiles.find(key);
+
+	if (it == cache_tiles.end()) {
 		Bitmap* chipset = Cache::Chipset(filename);
 		Rect rect = Rect(0, 0, 16, 16);
 
@@ -147,11 +142,8 @@ Bitmap* Cache::Tile(const std::string& filename, int tile_id) {
 		rect.x += sub_tile_id % 6 * 16;
 		rect.y += sub_tile_id / 6 * 16;
 
-
-		Bitmap* tile = Bitmap::CreateBitmap(chipset, rect);
-		cache_tiles[filename][tile_id] = tile;
-	}
-	return cache_tiles[filename][tile_id];
+		return cache_tiles.insert(std::make_pair(key, Bitmap::CreateBitmap(chipset, rect))).first->second;
+	} else { return it->second; }
 }
 
 ////////////////////////////////////////////////////////////
@@ -162,14 +154,9 @@ void Cache::Clear() {
 	}
 	cache.clear();
 
-	/*
-	std::map<std::string, std::map<int, Bitmap*> >::iterator it1_cache_tiles;
-	std::map<int, Bitmap*>::iterator it2_cache_tiles;
-
-	for (it1_cache_tiles = cache_tiles.begin(); it1_cache_tiles != cache_tiles.end(); it1_cache_tiles++) {
-		for (it2_cache_tiles = cache_tiles.cache_tiles.begin(); it2_cache_tiles != it2_cache_tiles.end(); it2_cache_tiles++) {
-			delete it2_cache_tiles->second;
-		}
+	std::map<tile_pair, Bitmap*>::iterator it_tile;
+	for (it_tile = cache_tiles.begin(); it_tile != cache_tiles.end(); it_tile++) {
+		delete it_tile->second;
 	}
-	cache_tiles.clear();*/
+	cache.clear();
 }
