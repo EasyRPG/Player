@@ -86,8 +86,8 @@ void BattleAnimation::Draw(int z_order) {
 	std::vector<RPG::AnimationCellData>::const_iterator it;
 	for (it = anim_frame.cells.begin(); it != anim_frame.cells.end(); it++) {
 		const RPG::AnimationCellData& cell = *it;
-		int sx = cell.ID % 5;
-		int sy = cell.ID / 5;
+		int sx = cell.cell_id % 5;
+		int sy = cell.cell_id / 5;
 		int size = large ? 128 : 96;
 		int zoomed = size * cell.zoom / 100;
 		screen->SetSrcRect(Rect(sx * size, sy * size, size, size));

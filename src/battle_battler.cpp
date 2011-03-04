@@ -74,9 +74,9 @@ void Battle::Battler::ModifyAgi(int effect) {
 ////////////////////////////////////////////////////////////
 Battle::Enemy::Enemy(const RPG::TroopMember* member, int id) :
 	Battler(id),
-	game_enemy(new Game_Enemy(member->ID)),
+	game_enemy(new Game_Enemy(member->enemy_id)),
 	member(member),
-	rpg_enemy(&Data::enemies[member->ID - 1]),
+	rpg_enemy(&Data::enemies[member->enemy_id - 1]),
 	fade(0),
 	defending(false),
 	charged(false),
