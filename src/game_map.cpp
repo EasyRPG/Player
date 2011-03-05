@@ -22,6 +22,7 @@
 #include "game_interpreter_map.h"
 #include "game_temp.h"
 #include "lmu_reader.h"
+#include "reader_lcf.h"
 #include "map_data.h"
 #include "main_data.h"
 #include "output.h"
@@ -122,9 +123,9 @@ void Game_Map::Setup(int _id) {
 	char file[12];
 	sprintf(file, "Map%04d.lmu", location.map_id);
 
-	map = LMU_Reader::LoadMap(file);
+	map = LMU_Reader::Load(file);
 	if (map.get() == NULL) {
-		Output::ErrorStr(Reader::GetError());
+		Output::ErrorStr(LcfReader::GetError());
 	}
 
 	if (map->parallax_flag) {

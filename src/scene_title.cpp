@@ -46,7 +46,7 @@
 #include "options.h"
 #include "output.h"
 #include "player.h"
-#include "reader.h"
+#include "reader_lcf.h"
 #include "scene_battle.h"
 #include "scene_map.h"
 #include "util_macro.h"
@@ -152,10 +152,10 @@ void Scene_Title::LoadDatabase() {
 	Data::Clear();
 
 	if (!LDB_Reader::Load(FileFinder::FindDefault(".", DATABASE_NAME))) {
-		Output::ErrorStr(Reader::GetError());
+		Output::ErrorStr(LcfReader::GetError());
 	}
 	if (!LMT_Reader::Load(FileFinder::FindDefault(".", TREEMAP_NAME))) {
-		Output::ErrorStr(Reader::GetError());
+		Output::ErrorStr(LcfReader::GetError());
 	}
 }
 
