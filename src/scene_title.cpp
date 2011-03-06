@@ -225,7 +225,7 @@ void Scene_Title::PlayTitleMusic() {
 
 ////////////////////////////////////////////////////////////
 bool Scene_Title::CheckValidPlayerLocation() {
-	return (Data::treemap.start_map_id > 0);
+	return (Data::treemap.start.party_map_id > 0);
 }
 
 ////////////////////////////////////////////////////////////
@@ -247,9 +247,9 @@ void Scene_Title::CommandNewGame() {
 		Audio::BGM_Stop();
 		Graphics::SetFrameCount(0);
 		CreateGameObjects();
-		Game_Map::Setup(Data::treemap.start_map_id);
+		Game_Map::Setup(Data::treemap.start.party_map_id);
 		Main_Data::game_player->MoveTo(
-			Data::treemap.start_x, Data::treemap.start_y);
+			Data::treemap.start.party_x, Data::treemap.start.party_y);
 		Main_Data::game_player->Refresh();
 		Game_Map::Autoplay();
 		Scene::Push(new Scene_Map());

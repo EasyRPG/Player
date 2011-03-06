@@ -41,25 +41,25 @@ void Game_Vehicle::LoadSystemSettings() {
 			character_name = Data::system.boat_name;
 			character_index = Data::system.boat_index;
 			bgm = Data::system.boat_music;
-			map_id = Data::treemap.boat_map_id;
-			x = Data::treemap.boat_x;
-			y = Data::treemap.boat_y;
+			map_id = Data::treemap.start.boat_map_id;
+			x = Data::treemap.start.boat_x;
+			y = Data::treemap.start.boat_y;
 			break;
 		case Ship:
 			character_name = Data::system.ship_name;
 			character_index = Data::system.ship_index;
 			bgm = Data::system.ship_music;
-			map_id = Data::treemap.ship_map_id;
-			x = Data::treemap.ship_x;
-			y = Data::treemap.ship_y;
+			map_id = Data::treemap.start.ship_map_id;
+			x = Data::treemap.start.ship_x;
+			y = Data::treemap.start.ship_y;
 			break;
 		case Airship:
 			character_name = Data::system.airship_name;
 			character_index = Data::system.airship_index;
 			bgm = Data::system.airship_music;
-			map_id = Data::treemap.airship_map_id;
-			x = Data::treemap.airship_x;
-			y = Data::treemap.airship_y;
+			map_id = Data::treemap.start.airship_map_id;
+			x = Data::treemap.start.airship_x;
+			y = Data::treemap.start.airship_y;
 			break;
 	}
 }
