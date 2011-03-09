@@ -81,6 +81,7 @@ TARGET_LINK_LIBRARIES(${PROJECT_NAME}
 
 	EasyRPG_Reader
 
+	expat
 	pixman-1
 )
 
