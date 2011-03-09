@@ -154,12 +154,15 @@ Bitmap* FTFont::Render(int c) {
 
 	Surface* bitmap = Surface::CreateSurface(ft_bitmap.width, size + 2, true);
 	bitmap->SetTransparentColor(Color(0,0,0,0));
-	bitmap->Fill(Color(255,255,255,255));
 
 	const int base_line = (face->descender != 0)
 		? bitmap->height() * -face->descender / face->height
 		: 0;
 	int offset = bitmap->height() - face->glyph->bitmap_top - base_line;
+
+	Rect rect = source->GetRect();
+	rect.y += offset;
+	bitmap->FillRect(rect, Color(255,255,255,255));
 
 	bitmap->MaskBlit(0, offset, source, source->GetRect());
 	if (ft_bitmap.pitch < 0)
