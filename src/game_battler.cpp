@@ -150,34 +150,21 @@ bool Game_Battler::IsImmortal() const {
 
 ////////////////////////////////////////////////////////////
 int Game_Battler::GetMaxHp() const {
-	int base_maxhp = GetBaseMaxHp();
-	int n = min(max(base_maxhp, 1), 999);
-
-	const std::vector<int16_t>& states = GetStates();
-	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); i++) {
-		// TODO test needed
-		n *= Data::states[(*i)].hp_change_max / 100;
-	}
-
-	n = min(max(n, 1), 999);
-
-	return n;
+	return GetBaseMaxHp();
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Battler::GetMaxSp() const {
-	int base_maxsp = GetBaseMaxSp();
-	int n = min(max(base_maxsp, 0), 999);
+	return GetBaseMaxSp();
+}
 
-	const std::vector<int16_t>& states = GetStates();
-	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); i++) {
-		// TODO test needed
-		n *= Data::states[(*i)].sp_change_max / 100;
-	}
-
-	n = min(max(n, 0), 999);
-
-	return n;
+////////////////////////////////////////////////////////////
+static int AffectParameter(int const type, int const val) {
+	return
+		type == 0? val / 2 :
+		type == 1? val * 2 :
+		type == 2? val :
+		val;
 }
 
 ////////////////////////////////////////////////////////////
@@ -187,8 +174,10 @@ int Game_Battler::GetAtk() const {
 
 	const std::vector<int16_t>& states = GetStates();
 	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); i++) {
-			// TODO 
-			//n *= Data::states[(*i)]. / 100;
+		if(Data::states[(*i)].affect_attack) {
+			n = AffectParameter(Data::states[(*i)].affect_type, base_atk);
+			break;
+		}
 	}
 
 	n = min(max(n, 1), 999);
@@ -203,8 +192,10 @@ int Game_Battler::GetDef() const {
 
 	const std::vector<int16_t>& states = GetStates();
 	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); i++) {
-			// TODO 
-			//n *= Data::states[(*i)]. / 100;
+		if(Data::states[(*i)].affect_defense) {
+			n = AffectParameter(Data::states[(*i)].affect_type, base_def);
+			break;
+		}
 	}
 
 	n = min(max(n, 1), 999);
@@ -219,8 +210,10 @@ int Game_Battler::GetSpi() const {
 
 	const std::vector<int16_t>& states = GetStates();
 	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); i++) {
-			// TODO 
-			//n *= Data::states[(*i)]. / 100;
+		if(Data::states[(*i)].affect_spirit) {
+			n = AffectParameter(Data::states[(*i)].affect_type, base_spi);
+			break;
+		}
 	}
 
 	n = min(max(n, 1), 999);
@@ -235,8 +228,10 @@ int Game_Battler::GetAgi() const {
 
 	const std::vector<int16_t>& states = GetStates();
 	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); i++) {
-			// TODO 
-			//n *= Data::states[(*i)]. / 100;
+		if(Data::states[(*i)].affect_agility) {
+			n = AffectParameter(Data::states[(*i)].affect_type, base_agi);
+			break;
+		}
 	}
 
 	n = min(max(n, 1), 999);
