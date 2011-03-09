@@ -21,6 +21,8 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "msgbox.h"
+#import <Cocoa/Cocoa.h>
+
 
 // Note to OSX hackers:
 // Cocoa guidelines says only caution icon should be used when the operation is risky (data loss)
