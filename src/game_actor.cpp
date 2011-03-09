@@ -186,7 +186,7 @@ int Game_Actor::GetBaseAtk(bool mod, bool equip) const {
 	if (equip)
 		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); it++)
 			if (*it > 0)
-				n += Data::items[*it - 1].atk_points;
+				n += Data::items[*it - 1].atk_points1;
 
 	return min(max(n, 1), 999);
 }
@@ -208,7 +208,7 @@ int Game_Actor::GetBaseDef(bool mod, bool equip) const {
 	if (equip)
 		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); it++)
 			if (*it > 0)
-				n += Data::items[*it - 1].def_points;
+				n += Data::items[*it - 1].def_points1;
 
 	return min(max(n, 1), 999);
 }
@@ -230,7 +230,7 @@ int Game_Actor::GetBaseSpi(bool mod, bool equip) const {
 	if (equip)
 		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); it++)
 			if (*it > 0)
-				n += Data::items[*it - 1].spi_points;
+				n += Data::items[*it - 1].spi_points1;
 
 	return min(max(n, 1), 999);
 }
@@ -252,7 +252,7 @@ int Game_Actor::GetBaseAgi(bool mod, bool equip) const {
 	if (equip)
 		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); it++)
 			if (*it > 0)
-				n += Data::items[*it - 1].agi_points;
+				n += Data::items[*it - 1].agi_points1;
 
 	return min(max(n, 1), 999);
 }

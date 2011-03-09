@@ -51,14 +51,14 @@ bool Window_BattleItem::CheckEnable(int item_id) {
 		case RPG::Item::Type_accessory:
 			return item.use_skill && CanUseItem(item) && CanUseSkill(item.skill_id);
 		case RPG::Item::Type_medicine:
-			return CanUseItem(item) && !item.ocassion_field && (!item.ko_only || Game_Battle::HaveCorpse());
+			return CanUseItem(item) && !item.occasion_field1 && (!item.ko_only || Game_Battle::HaveCorpse());
 		case RPG::Item::Type_book:
 		case RPG::Item::Type_material:
 			return false;
 		case RPG::Item::Type_special:
 			return CanUseItem(item) && CanUseSkill(item.skill_id);
 		case RPG::Item::Type_switch:
-			return item.ocassion_battle;
+			return item.occasion_battle;
 		default:
 			return false;
 	}

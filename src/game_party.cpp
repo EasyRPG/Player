@@ -137,7 +137,7 @@ bool Game_Party::IsItemUsable(int item_id) {
 			Data::items[item_id - 1].type == RPG::Item::Type_book)) {
 			return true;
 		} else if (Data::items[item_id - 1].type == RPG::Item::Type_switch) {
-			return Data::items[item_id - 1].ocassion_field;
+			return Data::items[item_id - 1].occasion_field2;
 		}
 	}
 

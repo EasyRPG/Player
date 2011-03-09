@@ -138,10 +138,10 @@ void Window_ShopParty::Refresh() {
 				}
 
 				if (current_item != NULL) {
-					int diff_atk = new_item->atk_points - current_item->atk_points;
-					int diff_def = new_item->def_points - current_item->def_points;
-					int diff_spi = new_item->spi_points - current_item->spi_points;
-					int diff_agi = new_item->agi_points - current_item->agi_points;
+					int diff_atk = new_item->atk_points1 - current_item->atk_points1;
+					int diff_def = new_item->def_points1 - current_item->def_points1;
+					int diff_spi = new_item->spi_points1 - current_item->spi_points1;
+					int diff_agi = new_item->agi_points1 - current_item->agi_points1;
 					if (diff_atk > 0 || diff_def > 0 || diff_spi > 0 || diff_agi > 0)
 						contents->Blit(i * 32 + 20, 24, system, Rect(128 + 8 * phase, 0, 8, 8), 255);
 					else if (diff_atk < 0 || diff_def < 0 || diff_spi < 0 || diff_agi < 0)

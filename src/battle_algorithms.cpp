@@ -50,7 +50,7 @@ void Game_Battle::AttackEnemy(Battle::Ally& ally, Battle::Enemy& enemy) {
 void Game_Battle::UseItem(Battle::Ally& ally, const RPG::Item& item) {
 	if (item.type != RPG::Item::Type_medicine)
 		return;
-	if (item.ocassion_field)
+	if (item.occasion_field2)
 		return;
 
 	if (!item.entire_party)
