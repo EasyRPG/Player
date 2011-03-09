@@ -322,13 +322,25 @@ bool Game_Map::IsBush(int x, int y) {
 
 ////////////////////////////////////////////////////////////
 bool Game_Map::IsCounter(int x, int y) {
-	// TODO
-	return false;
+	int const tile_id = map->upper_layer[x + y * map->width];
+	assert(tile_id >= 10000);
+	int const index = map_info.lower_tiles[passages_up[tile_id-10000]];
+	return bool(Data::chipsets[map_info.chipset_id].passable_data_upper[index] & 0x40);
 }
 
 ////////////////////////////////////////////////////////////
 int Game_Map::GetTerrainTag(int x, int y) {
-	return 0;
+	int const chipID = map->lower_layer[x + y * map->width];
+
+	int const index =
+		((0 <= chipID) && (chipID < 3000))? 0 + chipID/1000 :
+		(chipID == 3028)? 3 + 0 :
+		(chipID == 3078)? 3 + 1 :
+		(chipID == 3128)? 3 + 2 :
+		((4000 <= chipID) && (chipID < 5000))?  6 + (chipID-4000)/50 :
+		((5000 <= chipID) && (chipID < 5144))? 18 + passages_up[chipID-5000] :
+		0;
+	return Data::chipsets[map_info.chipset_id].terrain_data[index];
 }
 
 void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
