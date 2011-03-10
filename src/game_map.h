@@ -134,6 +134,14 @@ namespace Game_Map {
 	int GetTerrainTag(int x, int y);
 
 	////////////////////////////////////////////////////////
+	/// Get if a tile can land airship.
+	/// @param x : tile x
+	/// @param y : tile y
+	/// @return terrain tag id
+	////////////////////////////////////////////////////////
+	bool AirshipLandOk(int x, int y);
+
+	////////////////////////////////////////////////////////
 	/// Get designated position event.
 	/// @param x : tile x
 	/// @param y : tile y
@@ -164,7 +172,10 @@ namespace Game_Map {
 	/// Updates the scroll state.
 	////////////////////////////////////////////////////////
 	void UpdateScroll();
-	
+
+	/// @return current map
+	RPG::Map const& GetMap();
+
 	/// @return current map id
 	int GetMapId();
 

@@ -330,18 +330,27 @@ bool Game_Map::IsCounter(int x, int y) {
 }
 
 ////////////////////////////////////////////////////////////
-int Game_Map::GetTerrainTag(int x, int y) {
-	int const chipID = map->lower_layer[x + y * map->width];
-
-	int const index =
-		((0 <= chipID) && (chipID < 3000))? 0 + chipID/1000 :
-		(chipID == 3028)? 3 + 0 :
-		(chipID == 3078)? 3 + 1 :
-		(chipID == 3128)? 3 + 2 :
-		((4000 <= chipID) && (chipID < 5000))?  6 + (chipID-4000)/50 :
-		((5000 <= chipID) && (chipID < 5144))? 18 + passages_up[chipID-5000] :
+int Game_Map::GetTerrainTag(int const x, int const y) {
+	unsigned const chipID = map->lower_layer[x + y * map->width];
+	unsigned const chip_index =
+		(chipID <  3000)?  0 + chipID/1000 :
+		(chipID == 3028)?  3 + 0 :
+		(chipID == 3078)?  3 + 1 :
+		(chipID == 3128)?  3 + 2 :
+		(chipID <  5000)?  6 + (chipID-4000)/50 :
+		(chipID <  5144)? 18 + passages_up[chipID-5000] :
 		0;
-	return Data::chipsets[map_info.chipset_id].terrain_data[index];
+	unsigned const chipset_index = map_info.chipset_id - 1;
+
+	assert(chipset_index < Data::data.chipsets.size());
+	assert(chip_index < Data::data.chipsets[chipset_index].terrain_data.size());
+
+	return Data::data.chipsets[chipset_index].terrain_data[chip_index];
+}
+
+////////////////////////////////////////////////////////////
+bool Game_Map::AirshipLandOk(int const x, int const y) {
+	return Data::data.terrains[GetTerrainTag(x, y) -1].airship_land;
 }
 
 void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
@@ -460,6 +469,11 @@ void Game_Map::Update() {
 }
 
 ////////////////////////////////////////////////////////////
+RPG::Map const& Game_Map::GetMap() {
+	return *map;
+}
+
+
 int Game_Map::GetMapId() {
 	return location.map_id;
 }
