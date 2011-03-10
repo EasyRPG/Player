@@ -28,7 +28,9 @@
 #include "main_data.h"
 #include "player.h"
 #include "util_macro.h"
+
 #include <algorithm>
+#include <cstdlib>
 
 ////////////////////////////////////////////////////////////
 // Constructor
@@ -187,7 +189,7 @@ void Game_Player::Update() {
 	UpdateNonMoving(last_moving);
 }
 
-void Game_Player::UpdateNonMoving(bool last_moving) {
+void Game_Player::UpdateNonMoving(bool const last_moving) {
 	if ( Game_Map::GetInterpreter().IsRunning() ) return;
 
 	if ( IsMoving() ) return;
@@ -195,20 +197,24 @@ void Game_Player::UpdateNonMoving(bool last_moving) {
 	if ( last_moving && CheckTouchEvent() ) return;
 
 	if ( !Game_Message::visible && Input::IsTriggered(Input::DECISION) ) {
-		// TODO 
-		//if ( GetOnOffVehicle() ) return;
+		if ( GetOnOffVehicle() ) return;
 		if ( CheckActionEvent() ) return;
 	}
 
-	if ( last_moving )
-		Game_Map::UpdateEncounterSteps();
+	if (last_moving && UpdateEncounter()) {
+		// TODO: activate battle
+		/*
+		std::vector<RPG::Encounter> const& encounters =
+			Data::treemap.maps[Game_Map::GetMapId() - 1].encounters;
+		int const troop_id = encounters[abs(std::rand() % encounters.size())].troop_id;
+		*/
+	}
 }
 
 bool Game_Player::CheckActionEvent() {
-	// TODO
-	//if ( IsInAirship() ) {
-		//return false;
-	//}
+	if ( InAirship() ) {
+		return false;
+	}
 	int triggers_here[] = { 0 };
 	std::vector<int> triggers(triggers_here, triggers_here + sizeof triggers_here / sizeof(int));
 
@@ -348,9 +354,8 @@ bool Game_Player::GetOnVehicle() {
     vehicle_type = type;
 	if (type == Game_Vehicle::Airship)
 		through = true;
-	// TODO:
-	// else
-	// 	ForceMoveForward();
+	else
+		ForceMoveForward();
 	walking_bgm = Game_System::GetCurrentBGM();
 	Game_Map::GetVehicle(type)->GetOn();
 	return true;
@@ -372,8 +377,7 @@ bool Game_Player::GetOffVehicle() {
 	if (InAirship())
 		direction = 2;
 	else {
-		// TODO
-		// ForceMoveForward();
+		ForceMoveForward();
 		transparent = false;
 	}
 
@@ -410,9 +414,8 @@ bool Game_Player::InAirship() const {
 }
 
 bool Game_Player::AirshipLandOk(int x, int y) const {
-	// TODO:
-	// if (!Game_Map::AirshipLandOk(x, y))
-	// 	return false;
+	if (!Game_Map::AirshipLandOk(x, y))
+		return false;
 	std::vector<Game_Event*> events;
 	Game_Map::GetEventsXY(events, x, y);
 	if (!events.empty())
@@ -428,3 +431,21 @@ bool Game_Player::CanWalk(int x, int y) {
     return result;
 }
 
+////////////////////////////////////////////////////////////
+void Game_Player::MakeEncounterCount() {
+}
+
+////////////////////////////////////////////////////////////
+bool Game_Player::UpdateEncounter() {
+	RPG::Terrain const& terrain =
+		Data::data.terrains[Game_Map::GetTerrainTag(this->x, this->y) - 1];
+	RPG::MapInfo const& mapinfo =
+		Data::treemap.maps[Game_Map::GetMapId() - 1];
+
+	return ((abs(std::rand() % mapinfo.encounter_steps + 1) * terrain.encounter_rate / 100) >= mapinfo.encounter_steps);
+}
+
+////////////////////////////////////////////////////////////
+void Game_Player::ForceMoveForward() {
+	// TODO
+}

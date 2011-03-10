@@ -68,6 +68,10 @@ private:
 	bool CheckEventTriggerThere(const std::vector<int>& triggers);
 	bool GetOnVehicle();
 	bool GetOffVehicle();
+
+	void MakeEncounterCount();
+	bool UpdateEncounter();
+	void ForceMoveForward();
 };
 
 #endif
