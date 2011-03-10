@@ -1373,7 +1373,7 @@ bool Game_Interpreter_Map::CommandCallEvent(RPG::EventCommand const& com) { // c
 bool Game_Interpreter_Map::CommandChangeEncounterRate(RPG::EventCommand const& com) { // code 11740
 	int steps = com.parameters[0];
 
-	Game_Map::SetEncounterStep(steps);
+	Game_Map::SetEncounterRate(steps);
 
 	return true;
 }

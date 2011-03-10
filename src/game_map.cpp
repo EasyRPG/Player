@@ -21,6 +21,7 @@
 #include "game_map.h"
 #include "game_interpreter_map.h"
 #include "game_temp.h"
+#include "game_player.h"
 #include "lmu_reader.h"
 #include "reader_lcf.h"
 #include "map_data.h"
@@ -475,12 +476,28 @@ std::vector<RPG::Encounter>& Game_Map::GetEncounterList() {
 	return Data::treemap.maps[location.map_id - 1].encounters;
 }
 
-int Game_Map::GetEncounterStep() {
+int Game_Map::GetEncounterRate() {
 	return map_info.encounter_rate;
 }
 
-void Game_Map::SetEncounterStep(int step) {
+void Game_Map::SetEncounterRate(int step) {
 	map_info.encounter_rate = step;
+}
+
+int Game_Map::GetEncounterSteps() {
+	return location.encounter_steps;
+}
+
+void Game_Map::UpdateEncounterSteps() {
+	int x = Main_Data::game_player->GetX();
+	int y = Main_Data::game_player->GetY();
+	int terrain_id = GetTerrainTag(x, y);
+	const RPG::Terrain& terrain = Data::terrains[terrain_id - 1];
+	location.encounter_steps += terrain.encounter_rate;
+}
+
+void Game_Map::ResetEncounterSteps() {
+	location.encounter_steps = 0;
 }
 
 std::vector<short>& Game_Map::GetMapDataDown() {

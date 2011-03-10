@@ -112,7 +112,6 @@ void Game_Player::Center(int x, int y) {
 void Game_Player::MoveTo(int x, int y) {
 	Game_Character::MoveTo(x, y);
 	Center(x, y);
-	// MakeEncounterCount();
 
 	// TODO: vehicle stuff
 	/* if in_vehicle?                                    # Riding in vehicle
@@ -201,10 +200,8 @@ void Game_Player::UpdateNonMoving(bool last_moving) {
 		if ( CheckActionEvent() ) return;
 	}
 
-	if ( last_moving ) {
-		// TODO
-//		UpdateEncounter();
-	}
+	if ( last_moving )
+		Game_Map::UpdateEncounterSteps();
 }
 
 bool Game_Player::CheckActionEvent() {
@@ -384,8 +381,6 @@ bool Game_Player::GetOffVehicle() {
     move_speed = 4;
     through = false;
 	Game_System::BgmPlay(walking_bgm);
-	// TODO
-	// MakeEncounterCount();
 
 	return true;
 }

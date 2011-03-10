@@ -178,10 +178,19 @@ namespace Game_Map {
 	std::vector<RPG::Encounter>& GetEncounterList();
 
 	/// @return battle encounter left steps
-	int GetEncounterStep();
+	int GetEncounterRate();
 
 	/// @param battle encounter steps
-	void SetEncounterStep(int step);
+	void SetEncounterRate(int step);
+
+	/// @return number of steps scaled by terrain encounter rate percentage
+	int GetEncounterSteps();
+
+	/// update encounter steps according to terrain
+	void UpdateEncounterSteps();
+
+	/// reset encounter step counter
+	void ResetEncounterSteps();
 
 	/// @return lower layer map data
 	std::vector<short>& GetMapDataDown();
