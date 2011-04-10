@@ -1,4 +1,7 @@
+bin/testgame/test_utils
 bin/testgame/EasyRPG_Player
 bin/testgame/EasyRPG_Player.app
 bin/testgame/EasyRPG_Player.exe
+builds/cmake/libEasyRPG_Player_Static.a
+builds/cmake/libsdl_test_main.a
 doc/
