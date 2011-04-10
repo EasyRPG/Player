@@ -476,7 +476,7 @@ void PixmanBitmap::StretchBlit(Rect dst_rect, Bitmap* _src, Rect src_rect, int o
 	RefreshCallback();
 }
 
-void PixmanBitmap::TransformBlit(Rect dst_rect, Bitmap* _src, Rect src_rect, const Matrix& inv) {
+void PixmanBitmap::TransformBlit(Rect dst_rect, Bitmap* _src, Rect src_rect, const Matrix& inv, int opacity) {
 	PixmanBitmap* src = (PixmanBitmap*) _src;
 	pixman_transform_t xform = {{
 		{ pixman_double_to_fixed(inv.xx), pixman_double_to_fixed(inv.xy), pixman_double_to_fixed(inv.x0) },

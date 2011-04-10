@@ -57,7 +57,7 @@ public:
 	void TiledBlit(int ox, int oy, Rect src_rect, Bitmap* src, Rect dst_rect, int opacity);
 	void StretchBlit(Bitmap* src, Rect src_rect, int opacity);
 	void StretchBlit(Rect dst_rect, Bitmap* src, Rect src_rect, int opacity);
-	void TransformBlit(Rect dst_rect, Bitmap* src, Rect src_rect, const Matrix& inv);
+	void TransformBlit(Rect dst_rect, Bitmap* src, Rect src_rect, const Matrix& inv, int opacity);
 	void MaskBlit(int x, int y, Bitmap* src, Rect src_rect);
 	void WaverBlit(int x, int y, Bitmap* src, Rect src_rect, int depth, double phase, int opacity);
 	void Fill(const Color &color);
