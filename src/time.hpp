@@ -15,8 +15,8 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _EASYRPG_TIME_H_
-#define _EASYRPG_TIME_H_
+#ifndef _EASYRPG_TIME_HPP_
+#define _EASYRPG_TIME_HPP_
 
 ////////////////////////////////////////////////////////////
 // Headers

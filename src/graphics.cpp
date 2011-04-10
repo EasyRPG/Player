@@ -26,7 +26,7 @@
 #include "cache.h"
 #include "baseui.h"
 #include "drawable.h"
-#include "time.h"
+#include "time.hpp"
 #include "util_macro.h"
 #include "player.h"
 

@@ -29,7 +29,7 @@
 #include "options.h"
 #include "output.h"
 #include "player.h"
-#include "time.h"
+#include "time.hpp"
 
 ////////////////////////////////////////////////////////////
 static void HandleScreenOutput(std::string msg, bool is_error) {
