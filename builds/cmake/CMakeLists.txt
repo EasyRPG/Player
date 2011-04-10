@@ -78,6 +78,7 @@ INCLUDE_DIRECTORIES(
 	/opt/local/include/pixman-1
 	/usr/include/pixman-1
 	/usr/local/include/pixman-1
+	/usr/X11/include
 )
 
 # library
