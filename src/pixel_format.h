@@ -22,6 +22,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include <cstring>
 #include <algorithm>
 #include "system.h"
 
@@ -265,7 +266,7 @@ struct bits_traits<TPF, 24> {
 		p[TPF::endian(2)] = (pix >> 16) & 0xFF;
 	}
 	static inline void copy_pixel(uint8* dst, const uint8* src) {
-		memcpy(dst, src, 3);
+		std::memcpy(dst, src, 3);
 	}
 	static inline void set_pixels(uint8* dst, const uint8* src, int n) {
 		for (int i = 0; i < n; i++)
@@ -717,7 +718,7 @@ public:
 	}
 
 	inline void copy_pixels(uint8* dst, const uint8* src, int n) const {
-		memcpy(dst, src, n * bytes);
+		std::memcpy(dst, src, n * bytes);
 	}
 
 	inline void set_pixels(uint8* dst, const uint8* src, int n) const {

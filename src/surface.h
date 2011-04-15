@@ -30,7 +30,7 @@
 #include "bitmap.h"
 #include "matrix.h"
 
-#if defined(DINGOO)
+#if defined(DINGOO) || defined(PSP)
 #define wstring basic_string<wchar_t>
 #endif
 

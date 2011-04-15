@@ -20,7 +20,7 @@
 
 #include <string>
 
-#if defined(DINGOO)
+#if defined(DINGOO) || defined(PSP)
 #undef wstring
 #define wstring basic_string<wchar_t>
 #endif

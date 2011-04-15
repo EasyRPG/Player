@@ -26,7 +26,7 @@
 #include "window_numberinput.h"
 #include "window_selectable.h"
 
-#ifdef DINGOO
+#if defined(DINGOO) || defined(PSP)
 #define NO_WCHAR
 #endif
 

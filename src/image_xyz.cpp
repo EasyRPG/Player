@@ -19,6 +19,8 @@
 // Headers
 ////////////////////////////////////////////////////////////
 
+#include <cstdlib>
+#include <cstring>
 #include <zlib.h>
 #include <vector>
 #include "output.h"

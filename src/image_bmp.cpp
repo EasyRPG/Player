@@ -21,6 +21,7 @@
 
 #include <cstdlib>
 #include <cstdio>
+#include <cstring>
 #include <algorithm>
 #include <vector>
 #include "output.h"
