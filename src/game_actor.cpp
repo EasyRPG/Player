@@ -28,7 +28,7 @@
 
 ////////////////////////////////////////////////////////////
 Game_Actor::Game_Actor(int actor_id) :
-	data(Main_Data::game_data.party[actor_id - 1]) {
+	data(Main_Data::game_data.actors[actor_id - 1]) {
 	data.Setup(actor_id);
 	Setup();
 }
@@ -47,6 +47,11 @@ void Game_Actor::Init() {
 	SetHp(GetMaxHp());
 	SetSp(GetMaxSp());
 	SetExp(exp_list[GetLevel() - 1]);
+}
+
+void Game_Actor::Init(const RPG::SaveActor& save_data) {
+	Init();
+	// Todo: Save loading
 }
 
 ////////////////////////////////////////////////////////////

@@ -20,6 +20,7 @@
 ////////////////////////////////////////////////////////////
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 #include "scene_title.h"
@@ -48,6 +49,7 @@
 #include "player.h"
 #include "reader_lcf.h"
 #include "scene_battle.h"
+#include "scene_load.h"
 #include "scene_map.h"
 #include "util_macro.h"
 #include "window_command.h"
@@ -172,12 +174,12 @@ void Scene_Title::CreateGameObjects() {
 
 ////////////////////////////////////////////////////////////
 bool Scene_Title::CheckContinue() {
-	for (int i = 0; i < 15; i++) {
-		char name[11];
-		sprintf(name, "Save%2d.lsd", i);
-		std::ifstream file(name);
-		if (file.is_open()) {
-			file.close();
+	for (int i = 1; i <= 15; i++) 
+	{
+		std::stringstream ss;
+		ss << "Save" << (i <= 9 ? "0" : "") << i << ".lsd"; 
+
+		if (!FileFinder::FindDefault(".", ss.str()).empty()) {
 			return true;
 		}
 	}
@@ -265,7 +267,7 @@ void Scene_Title::CommandContinue() {
 	}
 
 	// Change scene
-	//Scene::Push(new Scene_Load());
+	Scene::Push(new Scene_Load());
 }
 
 void Scene_Title::CommandShutdown() {

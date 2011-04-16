@@ -19,17 +19,20 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <algorithm>
+#include <sstream>
 #include <vector>
+#include "filefinder.h"
 #include "game_system.h"
 #include "game_party.h"
 #include "input.h"
 #include "data.h"
 #include "scene_file.h"
-#include "window_filetitle.h"
+#include "lsd_reader.h"
+#include "rpg_save.h"
 
 ////////////////////////////////////////////////////////////
-Scene_File::Scene_File(const std::string& message) :
-	title_window(NULL), message(message) {
+Scene_File::Scene_File(std::string message) :
+	help_window(NULL), message(message) {
 	top_index = 0;
 	index = 0;
 }
@@ -37,17 +40,32 @@ Scene_File::Scene_File(const std::string& message) :
 ////////////////////////////////////////////////////////////
 void Scene_File::Start() {
 	// Create the windows
-	title_window = new Window_FileTitle(0, 0, 320, 32);
-	title_window->Set(message);
+	help_window = new Window_Help(0, 0, 320, 32);
+	help_window->SetText(message);
 
 	for (int i = 0; i < 15; i++) {
 		Window_SaveFile *w = new Window_SaveFile(0, 40 + i * 64, 320, 64);
 		w->SetIndex(i);
-		// TODO: read party from save file
-		std::vector<Game_Actor*> party = Game_Party::GetActors();
-		party.push_back(party[0]);
-		w->SetParty(party);
+
+		// Try to access file
+		std::stringstream ss;
+		ss << "Save" << (i <= 8 ? "0" : "") << (i+1) << ".lsd";
+		std::string file = FileFinder::FindDefault(".", ss.str());
+		if (!file.empty()) {
+			// File found
+			std::auto_ptr<RPG::Save> save = LSD_Reader::Load(file);
+			std::vector<Game_Actor*> party;
+			for (size_t j = 0; j < save.get()->inventory.party.size(); j++) {
+				RPG::SaveActor save_actor = save.get()->actors[save.get()->inventory.party[j] - 1];
+				Game_Actor* actor = new Game_Actor(save_actor.ID);
+				actor->Init(save_actor);
+				party.push_back(actor);
+			}
+			w->SetParty(party);
+		}
+
 		w->Refresh();
+
 		file_windows.push_back(w);
 	}
 
@@ -56,8 +74,8 @@ void Scene_File::Start() {
 
 ////////////////////////////////////////////////////////////
 void Scene_File::Terminate() {
-	delete title_window;
-	for (int i = 0; (size_t) i < file_windows.size(); i++)
+	delete help_window;
+	for (size_t i = 0; i < file_windows.size(); i++)
 		delete file_windows[i];
 }
 

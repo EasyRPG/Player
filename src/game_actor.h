@@ -50,6 +50,12 @@ public:
 	void Init();
 
 	////////////////////////////////////////////////////////
+	/// Initializes the game actor to the database state
+	/// and overwrites them with savedata values.
+	////////////////////////////////////////////////////////
+	void Init(const RPG::SaveActor& save_data);
+
+	////////////////////////////////////////////////////////
 	/// Learn a new skill.
 	/// @param skill_id : database skill id
 	////////////////////////////////////////////////////////
@@ -282,26 +288,8 @@ public:
 
 private:
 	RPG::SaveActor& data;
-	// int actor_id;
-	// std::string name;
-	// std::string character_name;
-	// int character_index;
-	// bool character_transparent;
-	// std::string face_name;
-	// int face_index;
-	// std::string title;
-	// int weapon_id;
-	// int shield_id;
-	// int armor_id;
-	// int helmet_id;
-	// int accessory_id;
-	// int level;
-	// int exp;
-	// int class_id;
+
 	std::vector<int> exp_list;
-	// std::vector<int> skills;
-	// bool two_swords_style;
-	// std::vector<uint32_t> battle_commands;
 };
 
 #endif

@@ -39,6 +39,8 @@ Window_SaveFile::Window_SaveFile(int ix, int iy, int iwidth, int iheight) :
 }
 
 Window_SaveFile::~Window_SaveFile() {
+	for (size_t i = 0; i < party.size(); ++i)
+		delete party[i];
 }
 
 void Window_SaveFile::UpdateCursorRect() {
@@ -63,25 +65,27 @@ void Window_SaveFile::Refresh() {
 	if (party.empty())
 		return;
 
-	Game_Actor* actor = party[0];
-	contents->TextDraw(8, 16+2, Font::ColorDefault, actor->GetName());
+	Game_Actor& actor = *party[0];
+
+	contents->TextDraw(8, 16+2, Font::ColorDefault, actor.GetName());
 
 	contents->TextDraw(8, 32+2, 1, Data::terms.lvl_short);
 
 	int lx = Surface::GetTextSize(Data::terms.lvl_short).width;
 	out.str("");
-	out << std::setw(2) << std::setfill(' ') << actor->GetLevel();
+	out << std::setw(2) << std::setfill(' ') << actor.GetLevel();
 	contents->TextDraw(8+lx, 32+2, Font::ColorDefault, out.str());
 
 	contents->TextDraw(42, 32+2, 1, Data::terms.hp_short);
 
 	int hx = Surface::GetTextSize(Data::terms.hp_short).width;
 	out.str("");
-	out << actor->GetHp();
+	out << actor.GetHp();
 	contents->TextDraw(42+hx, 32+2, Font::ColorDefault, out.str());
 
-	for (int i = 0; i < 4 && (size_t) i < party.size(); i++)
+	for (int i = 0; i < 4 && (size_t) i < party.size(); i++) {
 		DrawActorFace(party[i], 88 + i * 56, 0);
+	}
 }
 
 void Window_SaveFile::Update() {

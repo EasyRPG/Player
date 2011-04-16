@@ -354,9 +354,6 @@
     <ClCompile Include="..\..\src\game_vehicle.cpp">
       <Filter>Source Files\Engine\Game</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\window_filetitle.cpp">
-      <Filter>Source Files\Engine\Window</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\window_shopparty.cpp">
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
@@ -491,6 +488,15 @@
     </ClCompile>
     <ClCompile Include="..\..\src\game_targets.cpp">
       <Filter>Source Files\Engine\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\filefinder_unix.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\filefinder_basic.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene_load.cpp">
+      <Filter>Source Files\Engine\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -752,9 +758,6 @@
     <ClInclude Include="..\..\src\gl_bitmap_screen.h">
       <Filter>Source Files\Backend\Graphics\gl</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\time.h">
-      <Filter>Source Files\Backend\Time</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\game_picture.h">
       <Filter>Source Files\Engine\Game</Filter>
     </ClInclude>
@@ -783,9 +786,6 @@
       <Filter>Source Files\Engine\Game</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\window_shopsell.h">
-      <Filter>Source Files\Engine\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\window_filetitle.h">
       <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\window_shopparty.h">
@@ -919,6 +919,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\game_targets.h">
       <Filter>Source Files\Engine\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\time.hpp">
+      <Filter>Source Files\Backend\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene_load.h">
+      <Filter>Source Files\Engine\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

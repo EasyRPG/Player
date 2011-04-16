@@ -23,8 +23,8 @@
 ////////////////////////////////////////////////////////////
 #include <vector>
 #include "scene.h"
+#include "window_help.h"
 #include "window_savefile.h"
-#include "window_filetitle.h"
 
 ////////////////////////////////////////////////////////////
 /// Scene_Item class
@@ -36,7 +36,7 @@ public:
 	/// Constructor.
 	/// @param message : title message
 	////////////////////////////////////////////////////////
-	Scene_File(const std::string& message);
+	Scene_File(std::string message);
 
 	void Start();
 	void Update();
@@ -49,7 +49,7 @@ protected:
 
 	int index;
 	int top_index;
-	Window_FileTitle* title_window;
+	Window_Help* help_window;
 	std::vector<Window_SaveFile*> file_windows;
 	std::string message;
 };
