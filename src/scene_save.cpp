@@ -18,7 +18,10 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <sstream>
 #include "data.h"
+#include "filefinder.h"
+#include "lsd_reader.h"
 #include "scene_save.h"
 #include "scene_file.h"
 
@@ -30,6 +33,18 @@ Scene_Save::Scene_Save() :
 
 ////////////////////////////////////////////////////////////
 void Scene_Save::Action(int index) {
-	// TODO save game
-}
+	std::stringstream ss;
+	ss << "Save" << (index <= 8 ? "0" : "") << (index + 1) << ".lsd";
 
+#ifndef _WIN32
+	// Get the case insensitive filename to make sure that only one savefile
+	// for every slot exists
+	std::string file = FileFinder::FindDefault(".", ss.str());
+	if (file.empty())
+		file = ss.str();
+#else
+	std::string file = ss.str();
+#endif
+
+	LSD_Reader::Save(file, Main_Data::game_data);
+}

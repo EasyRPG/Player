@@ -33,6 +33,7 @@
 #include "scene_map.h"
 #include "scene_skill.h"
 #include "scene_order.h"
+#include "scene_save.h"
 #include "scene_status.h"
 
 ////////////////////////////////////////////////////////////
@@ -145,7 +146,7 @@ void Scene_Menu::CreateCommandWindow() {
 		switch(*it) {
 		case Save:
 			// If save is forbidden disable this item
-			if (Game_System::GetAllowSave()) {
+			if (!Game_System::GetAllowSave()) {
 				command_window->DisableItem(it - command_options.begin());
 			}
 		case Wait:
@@ -196,18 +197,19 @@ void Scene_Menu::UpdateCommand() {
 			}
 			break;
 		case Save: // Save
-			if (Game_System::GetAllowSave()) {
+			if (!Game_System::GetAllowSave()) {
 				Game_System::SePlay(Data::system.buzzer_se);
 			} else {
 				Game_System::SePlay(Data::system.decision_se);
+				Scene::Push(new Scene_Save());
 			}
-
+/*
 #ifdef _DEBUG
 			// Debug Test code to add items
 			for (int i = 1; i < 82; ++i) {
 				Game_Party::GainItem(i, 1);
 			}
-#endif
+#endif*/
 			break;
 		case Order:
 			if (Game_Party::GetActors().size() <= 1) {

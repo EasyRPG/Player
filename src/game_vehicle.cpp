@@ -25,18 +25,20 @@
 #include "game_player.h"
 #include "game_vehicle.h"
 
+////////////////////////////////////////////////////////////
 Game_Vehicle::Game_Vehicle(Type _type) {
-    type = _type;
-    altitude = 0;
-    driving = false;
+	type = _type;
+	altitude = 0;
+	driving = false;
 	direction = 4;
-    walk_anime = false;
-    step_anime = false;
-    LoadSystemSettings();
+	walk_anime = false;
+	step_anime = false;
+	LoadSystemSettings();
 }
 
+////////////////////////////////////////////////////////////
 void Game_Vehicle::LoadSystemSettings() {
-    switch (type) {
+	switch (type) {
 		case Boat:
 			character_name = Data::system.boat_name;
 			character_index = Data::system.boat_index;
@@ -64,6 +66,7 @@ void Game_Vehicle::LoadSystemSettings() {
 	}
 }
 
+////////////////////////////////////////////////////////////
 void Game_Vehicle::Refresh() {
 	if (driving) {
 		map_id = Game_Map::GetMapId();
@@ -89,6 +92,7 @@ void Game_Vehicle::Refresh() {
 	step_anime = driving;
 }
 
+////////////////////////////////////////////////////////////
 void Game_Vehicle::SetPosition(int _map_id, int _x, int _y) {
 	map_id = _map_id;
 	x = _x;
@@ -103,29 +107,30 @@ bool Game_Vehicle::IsTransparent() const {
 	return map_id != Game_Map::GetMapId() || Game_Character::IsTransparent();
 }
 
+////////////////////////////////////////////////////////////
 void Game_Vehicle::GetOn() {
-    driving = true;
-    walk_anime = true;
-    step_anime = true;
-    if (type == Airship)
+	driving = true;
+	walk_anime = true;
+	step_anime = true;
+	if (type == Airship)
 		priority_type = 2;		// Change priority to "Above Characters"
 	Game_System::BgmPlay(bgm);
 }
 
 void Game_Vehicle::GetOff() {
-    driving = false;
+	driving = false;
 	walk_anime = false;
-    step_anime = false;
-    direction = 4;
+	step_anime = false;
+	direction = 4;
 }
 
 void Game_Vehicle::SyncWithPlayer() {
-    x = Main_Data::game_player->GetX();
-    y = Main_Data::game_player->GetY();
+	x = Main_Data::game_player->GetX();
+	y = Main_Data::game_player->GetY();
 	real_x = Main_Data::game_player->GetRealX();
 	real_y = Main_Data::game_player->GetRealY();
-    direction = Main_Data::game_player->GetDirection();
-    UpdateBushDepth();
+	direction = Main_Data::game_player->GetDirection();
+	UpdateBushDepth();
 }
 
 int Game_Vehicle::GetSpeed() const {
@@ -139,9 +144,10 @@ int Game_Vehicle::GetScreenY() const {
 bool Game_Vehicle::IsMovable() {
 	if (type == Airship && altitude < MAX_ALTITUDE)
 		return false;
-    return !IsMoving();
+	return !IsMoving();
 }
 
+////////////////////////////////////////////////////////////
 void Game_Vehicle::Update() {
 	Game_Character::Update();
 	if (type == Airship) {
