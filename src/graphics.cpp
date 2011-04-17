@@ -151,10 +151,10 @@ void Graphics::InternUpdate1(bool reset) {
 	static double wait_frames = 0.0;
 	static double cycles_leftover = 0.0;
 	static uint32 frames = 0;
-	static uint32 next_fps_time = Time::Get() + 1000;
+	static uint32 next_fps_time = Time::GetTicks() + 1000;
 
 	if (reset) {
-		last_time = Time::Get();
+		last_time = Time::GetTicks();
 		next_fps_time = (uint32)last_time + 1000;
 		frames = 0;
 		return;
@@ -166,7 +166,7 @@ void Graphics::InternUpdate1(bool reset) {
 	}
 	
 	for (;;) {
-		current_time = Time::Get();
+		current_time = Time::GetTicks();
 
 		if ((current_time - last_time) >= framerate_interval) {
 			cycles_leftover = wait_frames;
@@ -207,18 +207,18 @@ void Graphics::InternUpdate2(bool reset) {
 	static double update_iterations = 0.0;
 	static bool start = true;
 	static int frames = 0;
-	static uint32 next_fps_time = Time::Get() + 1000; 
+	static uint32 next_fps_time = Time::GetTicks() + 1000; 
 
 	if (reset) {
 		start = true;
 		frames = 0;
-		next_fps_time = Time::Get() + 1000;
+		next_fps_time = Time::GetTicks() + 1000;
 		return;
 	}
 
 	for (;;) {
 		if (start) {
-			current_time = Time::Get() / 1000.0;
+			current_time = Time::GetTicks() / 1000.0;
 			update_iterations = (current_time - last_frame_time) + cycles_leftover;
 
 			/*if (update_iterations > (MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL)) {
@@ -243,7 +243,7 @@ void Graphics::InternUpdate2(bool reset) {
 		
 		frames++;
 
-		if (Time::Get() >= next_fps_time) {
+		if (Time::GetTicks() >= next_fps_time) {
 			next_fps_time += 1000;
 			fps = frames;
 			frames = 0;

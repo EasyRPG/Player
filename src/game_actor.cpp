@@ -284,16 +284,17 @@ int Game_Actor::CalculateExp(int level)
 		correction = actor.exp_correction;
 	}
 
+	// This is the Rpg2k formula! Rpg2k3 needs a different.
 	int result = 0;
 
 	inflation = 1.5 + (inflation * 0.01);
 
 	for (int i = level; i >= 1; i--)
-        {
-			result = result + (int)(correction + base);
-			base = base * inflation;
-			inflation = ((level+1) * 0.002 + 0.8) * (inflation - 1) + 1;
-        }
+	{
+		result = result + (int)(correction + base);
+		base = base * inflation;
+		inflation = ((level+1) * 0.002 + 0.8) * (inflation - 1) + 1;
+	}
 	return min(result, 1000000);
 }
 

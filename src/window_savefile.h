@@ -44,15 +44,32 @@ public:
 	////////////////////////////////////////////////////////
 	void Refresh();
 
+	////////////////////////////////////////////////////////
+	/// Sets the id of the savegame.
+	/// @param id : Savegame id
+	////////////////////////////////////////////////////////
 	void SetIndex(int id);
-	void SetParty(const std::vector<Game_Actor*>& actors);
+
+	////////////////////////////////////////////////////////
+	/// Party data displayed in the savegame slot
+	/// @param actors : face_id and face_name of all party members
+	/// @param name : Name of the First party member
+	/// @param hp : Hp of the First party member
+	/// @param level : Level of the First party member
+	////////////////////////////////////////////////////////
+	void SetParty(const std::vector<std::pair<int, std::string> >& actors,
+		std::string name, int hp, int level);
+
 	void Update();
 
 protected:
 	void UpdateCursorRect();
 
 	int index;
-	std::vector<Game_Actor*> party;
+	std::vector<std::pair<int, std::string> > party;
+	std::string hero_name;
+	int hero_hp;
+	int hero_level;
 };
 
 #endif

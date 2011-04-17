@@ -30,6 +30,9 @@ Window_SaveFile::Window_SaveFile(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) {
 	index = 0;
 
+	hero_hp = 0;
+	hero_level = 0;
+
 	SetContents(Surface::CreateSurface(width - 8, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 	SetZ(9999);
@@ -39,8 +42,6 @@ Window_SaveFile::Window_SaveFile(int ix, int iy, int iwidth, int iheight) :
 }
 
 Window_SaveFile::~Window_SaveFile() {
-	for (size_t i = 0; i < party.size(); ++i)
-		delete party[i];
 }
 
 void Window_SaveFile::UpdateCursorRect() {
@@ -51,40 +52,42 @@ void Window_SaveFile::SetIndex(int id) {
 	index = id;
 }
 
-void Window_SaveFile::SetParty(const std::vector<Game_Actor*>& actors) {
+void Window_SaveFile::SetParty(const std::vector<std::pair<int, std::string> >& actors,
+	std::string name, int hp, int level) {
 	party = actors;
+	hero_name = name;
+	hero_hp = hp;
+	hero_level = level;
 }
 
 void Window_SaveFile::Refresh() {
 	contents->Clear();
 
 	std::ostringstream out;
-	out << "File " << std::setw(2) << std::setfill(' ') << index + 1;
-	contents->TextDraw(4, 0+2, Font::ColorDefault, out.str());
+	out << Data::terms.file << std::setw(2) << std::setfill(' ') << index + 1;
+	contents->TextDraw(4, 0 + 2, Font::ColorDefault, out.str());
 
 	if (party.empty())
 		return;
 
-	Game_Actor& actor = *party[0];
+	contents->TextDraw(8, 16 + 2, Font::ColorDefault, hero_name);
 
-	contents->TextDraw(8, 16+2, Font::ColorDefault, actor.GetName());
-
-	contents->TextDraw(8, 32+2, 1, Data::terms.lvl_short);
+	contents->TextDraw(8, 32 + 2, 1, Data::terms.lvl_short);
 
 	int lx = Surface::GetTextSize(Data::terms.lvl_short).width;
 	out.str("");
-	out << std::setw(2) << std::setfill(' ') << actor.GetLevel();
-	contents->TextDraw(8+lx, 32+2, Font::ColorDefault, out.str());
+	out << std::setw(2) << std::setfill(' ') << hero_level;
+	contents->TextDraw(8 + lx, 32 + 2, Font::ColorDefault, out.str());
 
-	contents->TextDraw(42, 32+2, 1, Data::terms.hp_short);
+	contents->TextDraw(42, 32 + 2, 1, Data::terms.hp_short);
 
 	int hx = Surface::GetTextSize(Data::terms.hp_short).width;
 	out.str("");
-	out << actor.GetHp();
-	contents->TextDraw(42+hx, 32+2, Font::ColorDefault, out.str());
+	out << hero_hp;
+	contents->TextDraw(42 + hx, 32 + 2, Font::ColorDefault, out.str());
 
 	for (int i = 0; i < 4 && (size_t) i < party.size(); i++) {
-		DrawActorFace(party[i], 88 + i * 56, 0);
+		DrawFace(party[i].second, party[i].first, 88 + i * 56, 0);
 	}
 }
 

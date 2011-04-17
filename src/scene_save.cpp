@@ -21,9 +21,12 @@
 #include <sstream>
 #include "data.h"
 #include "filefinder.h"
+#include "game_actor.h"
+#include "game_party.h"
 #include "lsd_reader.h"
 #include "scene_save.h"
 #include "scene_file.h"
+#include "time.hpp"
 
 ////////////////////////////////////////////////////////////
 Scene_Save::Scene_Save() :
@@ -45,6 +48,40 @@ void Scene_Save::Action(int index) {
 #else
 	std::string file = ss.str();
 #endif
+
+	// Maybe find a better place to do this?
+	RPG::SaveTitle title;
+	// No idea what function Rpg_rt uses to generate the timestamp.
+	title.timestamp = (double)Time::GetTimestamp();
+
+	int size = (int)Game_Party::GetActors().size();
+	Game_Actor* actor;
+
+	switch (size) {
+		case 4:
+			actor = Game_Party::GetActors()[3];
+			title.face4_id = actor->GetFaceIndex();
+			title.face4_name = actor->GetFaceName();
+		case 3:
+			actor = Game_Party::GetActors()[2];
+			title.face3_id = actor->GetFaceIndex();
+			title.face3_name = actor->GetFaceName();
+		case 2:
+			actor = Game_Party::GetActors()[1];
+			title.face2_id = actor->GetFaceIndex();
+			title.face2_name = actor->GetFaceName();
+		case 1:
+			actor = Game_Party::GetActors()[0];
+			title.face1_id = actor->GetFaceIndex();
+			title.face1_name = actor->GetFaceName();
+			title.hero_hp = actor->GetHp();
+			title.hero_level = actor->GetLevel();
+			title.hero_name = actor->GetName();
+			break;
+		default:;
+	}
+
+	Main_Data::game_data.title = title;
 
 	LSD_Reader::Save(file, Main_Data::game_data);
 }

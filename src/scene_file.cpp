@@ -21,14 +21,14 @@
 #include <algorithm>
 #include <sstream>
 #include <vector>
+#include "data.h"
 #include "filefinder.h"
 #include "game_system.h"
 #include "game_party.h"
 #include "input.h"
-#include "data.h"
-#include "scene_file.h"
 #include "lsd_reader.h"
 #include "rpg_save.h"
+#include "scene_file.h"
 
 ////////////////////////////////////////////////////////////
 Scene_File::Scene_File(std::string message) :
@@ -53,15 +53,37 @@ void Scene_File::Start() {
 		std::string file = FileFinder::FindDefault(".", ss.str());
 		if (!file.empty()) {
 			// File found
-			std::auto_ptr<RPG::Save> save = LSD_Reader::Load(file);
-			std::vector<Game_Actor*> party;
-			for (size_t j = 0; j < save.get()->inventory.party.size(); j++) {
-				RPG::SaveActor save_actor = save.get()->actors[save.get()->inventory.party[j] - 1];
-				Game_Actor* actor = new Game_Actor(save_actor.ID);
-				actor->Init(save_actor);
-				party.push_back(actor);
+			std::auto_ptr<RPG::Save> savegame = LSD_Reader::Load(file);
+			std::vector<std::pair<int, std::string> > party;
+			
+			// When a face_name is empty the party list ends
+			int party_size = 
+				savegame->title.face1_name.empty() ? 0 :
+				savegame->title.face2_name.empty() ? 1 :
+				savegame->title.face3_name.empty() ? 2 :
+				savegame->title.face4_name.empty() ? 3 : 4;
+
+			party.resize(party_size);
+
+			switch (party_size) {
+				case 4:
+					party[3].first = savegame->title.face4_id;
+					party[3].second = savegame->title.face4_name;
+				case 3:
+					party[2].first = savegame->title.face3_id;
+					party[2].second = savegame->title.face3_name;
+				case 2:
+					party[1].first = savegame->title.face2_id;
+					party[1].second = savegame->title.face2_name;
+				case 1:
+					party[0].first = savegame->title.face1_id;
+					party[0].second = savegame->title.face1_name;
+					break;
+				default:;
 			}
-			w->SetParty(party);
+
+			w->SetParty(party, savegame->title.hero_name, savegame->title.hero_hp,
+				savegame->title.hero_level);
 		}
 
 		w->Refresh();
