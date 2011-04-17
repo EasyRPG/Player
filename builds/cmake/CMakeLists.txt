@@ -144,9 +144,13 @@ FUNCTION(CXX_TEST target libs)
 		"gtest"
 	)
 	IF(${UNIX})
-		TARGET_LINK_LIBRARIES(test_${target} pthread)
+		TARGET_LINK_LIBRARIES(test_${target} ${CMAKE_THREAD_LIBS_INIT})
 	ENDIF()
-	ADD_TEST(test_${target} ${EXECUTABLE_OUTPUT_PATH}/test_${target})
+	ADD_TEST(
+		NAME test_${target}
+		WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH}
+		COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_${target}
+	)
 	ADD_DEPENDENCIES(test_${target} ${PROJECT_NAME})
 
 	SET(TEST_TARGET "${TEST_TARGET};test_${target}" PARENT_SCOPE)
@@ -155,6 +159,8 @@ ENDFUNCTION()
 IF(${APPLE})
 	LINK_DIRECTORIES(/opt/local/lib)
 ENDIF()
+
+CXX_TEST(filefinder "sdl_test_main")
 CXX_TEST(utils "sdl_test_main")
 
 # borrowed from
