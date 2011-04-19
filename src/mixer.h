@@ -26,7 +26,7 @@ namespace Audio {
 class Mixer {
 public:
 
-	static const int MAX_CHANNELS = 8;
+	static const unsigned int MAX_CHANNELS = 8;
 
 	typedef std::list<Channel*> tChannelList;
 	typedef tChannelList::iterator tChannelListIt;

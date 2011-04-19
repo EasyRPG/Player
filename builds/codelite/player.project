@@ -142,8 +142,6 @@
         <File Name="../../src/window_shopparty.h"/>
         <File Name="../../src/window_shop.cpp"/>
         <File Name="../../src/window_shop.h"/>
-        <File Name="../../src/window_filetitle.h"/>
-        <File Name="../../src/window_filetitle.cpp"/>
         <File Name="../../src/window_shopsell.h"/>
         <File Name="../../src/window_shopbuy.cpp"/>
         <File Name="../../src/window_shopbuy.h"/>
@@ -193,6 +191,17 @@
         <VirtualDirectory Name="SDL">
           <File Name="../../src/sdl_audio.cpp"/>
         </VirtualDirectory>
+        <File Name="../../src/audio_stream.cpp"/>
+        <File Name="../../src/audio_stream.h"/>
+        <VirtualDirectory Name="AL">
+          <File Name="../../src/al_audio.cpp"/>
+        </VirtualDirectory>
+        <File Name="../../src/channel.cpp"/>
+        <File Name="../../src/channel.h"/>
+        <File Name="../../src/mixer.cpp"/>
+        <File Name="../../src/mixer.h"/>
+        <File Name="../../src/resampler.cpp"/>
+        <File Name="../../src/resampler.h"/>
       </VirtualDirectory>
       <VirtualDirectory Name="Graphics">
         <File Name="../../src/bitmap.cpp"/>
@@ -294,6 +303,7 @@
           <File Name="../../src/sdl_time.cpp"/>
         </VirtualDirectory>
         <File Name="../../src/time.h"/>
+        <File Name="../../src/time.hpp"/>
       </VirtualDirectory>
     </VirtualDirectory>
     <VirtualDirectory Name="Tools">
@@ -313,9 +323,6 @@
         <File Name="../../src/util_win.cpp"/>
         <File Name="../../src/util_win.h"/>
       </VirtualDirectory>
-      <VirtualDirectory Name="Cocoa">
-        <File Name="../../src/msgbox_cocoa.cpp"/>
-      </VirtualDirectory>
       <VirtualDirectory Name="UNIX">
         <File Name="../../src/filefinder_unix.cpp"/>
       </VirtualDirectory>
@@ -328,6 +335,7 @@
       <File Name="../../src/utils.cpp"/>
       <File Name="../../src/wcwidth.h"/>
       <File Name="../../src/wcwidth.cpp"/>
+      <File Name="../../src/filefinder_basic.cpp"/>
     </VirtualDirectory>
     <File Name="../../src/main.cpp"/>
     <File Name="../../src/main_data.cpp"/>
@@ -337,6 +345,7 @@
     <File Name="../../src/player.h"/>
     <File Name="../../resources/player.rc"/>
     <File Name="../../src/system.h"/>
+    <File Name="../../src/map_data.h"/>
   </VirtualDirectory>
   <Dependencies Name="GTK+ Debug">
     <Project Name="readers"/>
