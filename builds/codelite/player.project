@@ -400,6 +400,7 @@
         <Library Value="SDL_gfx"/>
         <Library Value="z"/>
         <Library Value="readers"/>
+        <Library Value="expat"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/easyrpg.dge" IntermediateDirectory=".obj/Debug" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="no"/>
@@ -438,6 +439,7 @@
         <Library Value="SDL_gfx"/>
         <Library Value="z"/>
         <Library Value="readers"/>
+        <Library Value="expat"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="../../bin/testgame/easyrpg.dge" IntermediateDirectory=".obj/Release" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="" PauseExecWhenProcTerminates="no"/>
