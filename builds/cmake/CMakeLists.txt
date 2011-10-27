@@ -68,7 +68,7 @@ endforeach()
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/../../../readers/include)
 
 # library
-list(APPEND EASYRPG_PLAYER_LIBRARIES EasyRPG_Reader ${PROJECT_NAME}_Static)
+list(APPEND EASYRPG_PLAYER_LIBRARIES ${PROJECT_NAME}_Static EasyRPG_Reader)
 IF(USE_OPENAL)
   LIST(APPEND EASYRPG_PLAYER_LIBRARIES
     avformat avcodec avutil avdevice
@@ -117,7 +117,7 @@ FUNCTION(CXX_TEST target libs)
     NAME test_${target}
     WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH}
     COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_${target})
-  ADD_DEPENDENCIES(test_${target} ${PROJECT_NAME})
+  ADD_DEPENDENCIES(test_${target} ${PROJECT_NAME}_Static)
 ENDFUNCTION()
 
 FOREACH(i filefinder utils)
