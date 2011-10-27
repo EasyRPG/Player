@@ -160,8 +160,8 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	autotiles_ab_screen = NULL;
 	autotiles_d_screen = NULL;
 
-	memset(autotiles_ab, NULL, sizeof(autotiles_ab));
-	memset(autotiles_d, NULL, sizeof(autotiles_d));
+	memset(autotiles_ab, 0, sizeof(autotiles_ab));
+	memset(autotiles_d, 0, sizeof(autotiles_d));
 	
 	int tiles_y = (int)ceil(DisplayUi->GetHeight() / 16.0) + 1;
 	for (int i = 0; i < tiles_y + 2; i++) {
