@@ -57,7 +57,7 @@ IF(CMAKE_SYSTEM_NAME MATCHES "Linux")
 ENDIF()
 
 # FIND_PACKAGE(Boost COMPONENTS serialization REQUIRED)
-foreach(i Expat Freetype Iconv GTest JPEG Pixman PNG SDL SDL_image SDL_mixer SDL_ttf ZLIB)
+foreach(i Expat Freetype Iconv GTest JPEG Pixman PNG SDL SDL_mixer SDL_ttf ZLIB) # SDL_image
   find_package(${i} REQUIRED)
   string(TOUPPER ${i} i)
   string(REPLACE "SDL_" "SDL" i ${i})
