@@ -22,8 +22,7 @@ ADD_DEFINITIONS(
 
 IF(CMAKE_GENERATOR MATCHES "Makefile")
   ADD_DEFINITIONS(
-    -Wall -Werror # -Wextra
-    -Wno-mismatched-tags
+    -Wall -Wextra
     -fno-exceptions -fno-rtti)
 ENDIF()
 
