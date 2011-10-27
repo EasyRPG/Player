@@ -57,7 +57,7 @@ IF(CMAKE_SYSTEM_NAME MATCHES "Linux")
 ENDIF()
 
 # FIND_PACKAGE(Boost COMPONENTS serialization REQUIRED)
-foreach(i Expat Freetype Iconv GTest JPEG Pixman PNG SDL SDL_mixer SDL_ttf ZLIB) # SDL_image
+foreach(i Expat Freetype Iconv JPEG Pixman PNG SDL SDL_mixer SDL_ttf ZLIB) # SDL_image
   find_package(${i} REQUIRED)
   string(TOUPPER ${i} i)
   string(REPLACE "SDL_" "SDL" i ${i})
@@ -107,12 +107,17 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/../../src
   ${GTEST_INCLUDE_DIRS})
 
+find_package(Threads)
+find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
+
 FUNCTION(CXX_TEST target libs)
+
   ADD_EXECUTABLE(test_${target} ${CMAKE_CURRENT_SOURCE_DIR}/../../test/${target}.cpp)
   TARGET_LINK_LIBRARIES(test_${target}
     ${PROJECT_NAME}_Static
     ${libs} ${EASYRPG_PLAYER_LIBRARIES}
-    ${GTEST_LIBRARIES})
+    ${GTEST_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
   ADD_TEST(
     NAME test_${target}
     WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH}
