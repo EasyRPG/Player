@@ -51,9 +51,9 @@ IF(CMAKE_SYSTEM_NAME MATCHES "Linux")
   ADD_DEFINITIONS(-D GTK=1)
 
   # find gtk
-  find_package(GTK REQUIRED)
-  include_directories(${GTK_INCLUDE_DIR})
-  list(APPEND EASYRPG_PLAYER_LIBRARIES ${GTK_LIBRARIES})
+  find_package(GTK2 2.6 REQUIRED gtk)
+  include_directories(${GTK2_INCLUDE_DIRS})
+  list(APPEND EASYRPG_PLAYER_LIBRARIES ${GTK2_LIBRARIES})
 ENDIF()
 
 # FIND_PACKAGE(Boost COMPONENTS serialization REQUIRED)
