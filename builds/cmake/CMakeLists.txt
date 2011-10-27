@@ -68,7 +68,7 @@ endforeach()
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/../../../readers/include)
 
 # library
-list(APPEND EASYRPG_PLAYER_LIBRARIES ${PROJECT_NAME}_Static EasyRPG_Reader)
+list(INSERT EASYRPG_PLAYER_LIBRARIES 0 ${PROJECT_NAME}_Static EasyRPG_Reader)
 IF(USE_OPENAL)
   LIST(APPEND EASYRPG_PLAYER_LIBRARIES
     avformat avcodec avutil avdevice
