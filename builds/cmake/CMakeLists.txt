@@ -121,7 +121,10 @@ FUNCTION(CXX_TEST target libs)
   ADD_TEST(
     NAME test_${target}
     WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH}
-    COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_${target})
+    COMMAND
+      ${EXECUTABLE_OUTPUT_PATH}/test_${target}
+      --gtest_output=xml:${EXECUTABLE_OUTPUT_PATH}/test_${target}.xml
+      --gtest_color=yes)
   ADD_DEPENDENCIES(test_${target} ${PROJECT_NAME}_Static)
 ENDFUNCTION()
 
