@@ -22,7 +22,6 @@ ADD_DEFINITIONS(
 
 IF(CMAKE_GENERATOR MATCHES "Makefile")
   ADD_DEFINITIONS(
-    -Wall -Wextra
     -fno-exceptions -fno-rtti)
 ENDIF()
 
@@ -51,7 +50,7 @@ IF(CMAKE_SYSTEM_NAME MATCHES "Linux")
   ADD_DEFINITIONS(-D GTK=1)
 
   # find gtk
-  find_package(GTK2 2.6 REQUIRED gtk)
+  find_package(GTK2 REQUIRED)
   include_directories(${GTK2_INCLUDE_DIRS})
   list(APPEND EASYRPG_PLAYER_LIBRARIES ${GTK2_LIBRARIES})
 ENDIF()
