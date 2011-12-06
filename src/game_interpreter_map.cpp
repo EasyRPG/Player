@@ -885,7 +885,7 @@ bool Game_Interpreter_Map::CommandTradeEventLocations(RPG::EventCommand const& c
 }
 
 bool Game_Interpreter_Map::CommandTimerOperation(RPG::EventCommand const& com) { // code 10230
-	int timer_id = com.parameters[5];
+	int timer_id = (Player::engine == Player::EngineRpg2k3) ? com.parameters[5] : 0;
 	int seconds;
 	bool visible, battle;
 
