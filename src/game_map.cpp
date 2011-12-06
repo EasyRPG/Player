@@ -155,7 +155,7 @@ void Game_Map::Setup(int _id) {
 	scroll_direction = 2;
 	scroll_rest = 0;
 	scroll_speed = 4;
-	map_info.encounter_rate = Data::treemap.maps[location.map_id - 1].encounter_steps;
+	map_info.encounter_rate = Data::treemap.maps[GetMapIndex(location.map_id)].encounter_steps;
 
 	for (int i = 0; i < 3; i++)
 		vehicles[i]->Refresh();
@@ -487,7 +487,7 @@ int Game_Map::GetHeight() {
 }
 
 std::vector<RPG::Encounter>& Game_Map::GetEncounterList() {
-	return Data::treemap.maps[location.map_id - 1].encounters;
+	return Data::treemap.maps[GetMapIndex(location.map_id)].encounters;
 }
 
 int Game_Map::GetEncounterRate() {
