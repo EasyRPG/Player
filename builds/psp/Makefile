@@ -1,9 +1,9 @@
 TARGET = EasyRPG
-SOURCES = ../../../readers/src ../../src
+SOURCES = ../../lib/readers/src ../../src
 CPPFILES = $(foreach dir,$(SOURCES), $(wildcard $(dir)/*.cpp))
 BINFILES = $(foreach dir,$(DATA), $(wildcard $(dir)/*.*))
 OBJS = $(addsuffix .o,$(BINFILES)) $(CPPFILES:.cpp=.o)
-INCLUDES = ../../../readers/include ../../src
+INCLUDES = ../../lib/readers/include ../../src
 
 INCDIR = $(foreach dir,$(INCLUDES), -iquote $(CURDIR)/$(dir))
 CFLAGS = -O2 -G0 -Wall -Wextra -DPSP -DUSE_SDL

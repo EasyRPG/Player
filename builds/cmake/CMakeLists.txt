@@ -3,7 +3,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 PROJECT(EasyRPG_Player CXX C)
 
 # reader
-ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/../../../readers/builds/cmake ${CMAKE_CURRENT_SOURCE_DIR}/../../../readers/builds/cmake)
+ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/../../lib/readers/builds/cmake ${CMAKE_CURRENT_SOURCE_DIR}/../../lib/readers/builds/cmake)
 
 SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/testgame)
 SET(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
@@ -64,7 +64,7 @@ foreach(i Expat Freetype Iconv JPEG Pixman PNG SDL SDL_mixer SDL_ttf ZLIB) # SDL
   list(APPEND EASYRPG_PLAYER_LIBRARIES ${${i}_LIBRARY}  ${${i}_LIBRARIES})
 endforeach()
 
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/../../../readers/include)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/../../lib/readers/include)
 
 # library
 list(INSERT EASYRPG_PLAYER_LIBRARIES 0 ${PROJECT_NAME}_Static EasyRPG_Reader)
