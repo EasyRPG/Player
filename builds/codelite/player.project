@@ -380,7 +380,7 @@
   <Settings Type="Executable">
     <GlobalSettings>
       <Compiler Options="" C_Options="">
-        <IncludePath Value="../../../readers/include"/>
+        <IncludePath Value="../../lib/readers/include"/>
         <Preprocessor Value="USE_SDL"/>
       </Compiler>
       <Linker Options="-O2"/>
@@ -393,7 +393,7 @@
         <Preprocessor Value="_DEBUG"/>
       </Compiler>
       <Linker Options="$(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --libs)" Required="yes">
-        <LibraryPath Value="../../../readers/builds/codelite/.obj/Debug"/>
+        <LibraryPath Value="../../lib/readers/builds/codelite/.obj/Debug"/>
         <Library Value="SDL_mixer"/>
         <Library Value="SDL_ttf"/>
         <Library Value="SDL_image"/>
@@ -432,7 +432,7 @@
         <Preprocessor Value="DINGOO"/>
       </Compiler>
       <Linker Options="-s;$(shell /opt/mipsel-linux-uclibc/usr/bin/sdl-config --libs)" Required="yes">
-        <LibraryPath Value="../../../readers/builds/codelite/.obj/Release"/>
+        <LibraryPath Value="../../lib/readers/builds/codelite/.obj/Release"/>
         <Library Value="SDL_mixer"/>
         <Library Value="SDL_ttf"/>
         <Library Value="SDL_image"/>
@@ -472,7 +472,7 @@
         <Preprocessor Value="_DEBUG"/>
       </Compiler>
       <Linker Options="$(shell sdl-config --libs);$(shell pkg-config --libs gtk+-2.0)" Required="yes">
-        <LibraryPath Value="../../../readers/builds/codelite/.obj/Debug"/>
+        <LibraryPath Value="../../lib/readers/builds/codelite/.obj/Debug"/>
         <Library Value="SDL_mixer"/>
         <Library Value="SDL_ttf"/>
         <Library Value="SDL_image"/>
@@ -510,7 +510,7 @@
         <Preprocessor Value="GTK"/>
       </Compiler>
       <Linker Options="-s;$(shell sdl-config --libs);$(shell pkg-config --libs gtk+-2.0)" Required="yes">
-        <LibraryPath Value="../../../readers/builds/codelite/.obj/Release"/>
+        <LibraryPath Value="../../lib/readers/builds/codelite/.obj/Release"/>
         <Library Value="SDL_mixer"/>
         <Library Value="SDL_ttf"/>
         <Library Value="SDL_image"/>
@@ -548,7 +548,7 @@
         <Preprocessor Value="_DEBUG"/>
       </Compiler>
       <Linker Options="$(shell /opt/local/bin/sdl-config --libs)" Required="yes">
-        <LibraryPath Value="../../../readers/builds/codelite/.obj/Debug"/>
+        <LibraryPath Value="../../lib/readers/builds/codelite/.obj/Debug"/>
         <Library Value="SDL_mixer"/>
         <Library Value="SDL_ttf"/>
         <Library Value="SDL_image"/>
@@ -591,7 +591,7 @@
         <Preprocessor Value="UNIX"/>
       </Compiler>
       <Linker Options="-s;$(shell sdl-config --libs)" Required="yes">
-        <LibraryPath Value="../../../readers/builds/codelite/.obj/Release"/>
+        <LibraryPath Value="../../lib/readers/builds/codelite/.obj/Release"/>
         <Library Value="SDL_mixer"/>
         <Library Value="SDL_ttf"/>
         <Library Value="SDL_image"/>
@@ -635,7 +635,7 @@ $(IntermediateDirectory)/$(ProjectName).app/Contents/Resources/Player.icns: Play
         <Preprocessor Value="_DEBUG"/>
       </Compiler>
       <Linker Options="$(shell sdl-config --libs)" Required="yes">
-        <LibraryPath Value="../../../readers/builds/codelite/.obj/Debug"/>
+        <LibraryPath Value="../../lib/readers/builds/codelite/.obj/Debug"/>
         <Library Value="SDL_mixer"/>
         <Library Value="SDL_ttf"/>
         <Library Value="SDL_image"/>
@@ -672,7 +672,7 @@ $(IntermediateDirectory)/$(ProjectName).app/Contents/Resources/Player.icns: Play
         <Preprocessor Value="UNIX"/>
       </Compiler>
       <Linker Options="-s;$(shell sdl-config --libs)" Required="yes">
-        <LibraryPath Value="../../../readers/builds/codelite/.obj/Release"/>
+        <LibraryPath Value="../../lib/readers/builds/codelite/.obj/Release"/>
         <Library Value="SDL_mixer"/>
         <Library Value="SDL_ttf"/>
         <Library Value="SDL_image"/>
@@ -712,7 +712,7 @@ $(IntermediateDirectory)/$(ProjectName).app/Contents/Resources/Player.icns: Play
       </Compiler>
       <Linker Options="-mwindows" Required="yes">
         <LibraryPath Value="$(EASYDEV_MINGW)/lib"/>
-        <LibraryPath Value="../../../readers/builds/codelite/.obj/Debug"/>
+        <LibraryPath Value="../../lib/readers/builds/codelite/.obj/Debug"/>
         <Library Value="mingw32"/>
         <Library Value="SDLmain"/>
         <Library Value="SDL"/>
@@ -753,7 +753,7 @@ $(IntermediateDirectory)/$(ProjectName).app/Contents/Resources/Player.icns: Play
       </Compiler>
       <Linker Options="-s;-mwindows" Required="yes">
         <LibraryPath Value="$(EASYDEV_MINGW)/lib"/>
-        <LibraryPath Value="../../../readers/builds/codelite/.obj/Release"/>
+        <LibraryPath Value="../../lib/readers/builds/codelite/.obj/Release"/>
         <Library Value="mingw32"/>
         <Library Value="SDLmain"/>
         <Library Value="SDL"/>

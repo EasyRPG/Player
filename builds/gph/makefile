@@ -12,11 +12,11 @@ BUILD_GP2XWIZ = NO
 BUILD_CAANOO = YES
 
 # Compiler headers
-INCLUDES = ../../../readers/include ../../src
+INCLUDES = ../../lib/readers/include ../../src
 INCDIR = $(foreach dir, $(INCLUDES), -iquote $(wildcard $(dir)))
 
 # Compiler source
-SOURCES = ../../../readers/src ../../src
+SOURCES = ../../lib/readers/src ../../src
 CPPFILES = $(foreach dir, $(SOURCES), $(wildcard $(dir)/*.cpp))
 BINFILES = $(foreach dir, $(DATA), $(wildcard $(dir)/*.*))
 OBJS = $(addsuffix .o, $(BINFILES)) $(CPPFILES:.cpp=.o)

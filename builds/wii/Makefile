@@ -17,9 +17,9 @@ include $(DEVKITPPC)/wii_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	obj
-SOURCES		:=	../../../readers/src ../../src
+SOURCES		:=	../../lib/readers/src ../../src
 DATA		:=	data  
-INCLUDES	:=  ../../../readers/include ../../src
+INCLUDES	:=  ../../lib/readers/include ../../src
 
 #---------------------------------------------------------------------------------
 # options for code generation

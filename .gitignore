@@ -6,3 +6,8 @@ bin/testgame/EasyRPG_Player.exe
 builds/cmake/libEasyRPG_Player_Static.a
 builds/cmake/libsdl_test_main.a
 doc/
+/builds/vs2010/Debug*
+/builds/vs2010/Release*
+/builds/vs2010/*.suo
+/builds/vs2010/*.user
+/builds/vs2010/*.sdf
