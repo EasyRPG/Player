@@ -21,22 +21,22 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <cstdlib>
-#include <cmath>
-#include <iostream>
-#include "cache.h"
-#include "filefinder.h"
-#include "options.h"
-#include "data.h"
-#include "output.h"
-#include "utils.h"
-#include "image_xyz.h"
-#include "image_bmp.h"
-#include "image_png.h"
-#include "text.h"
-#include "pixel_format.h"
-#include "bitmap_utils.h"
-#include "pixman_bitmap.h"
+#  include <cstdlib>
+#  include <cmath>
+#  include <iostream>
+#  include "cache.h"
+#  include "filefinder.h"
+#  include "options.h"
+#  include "data.h"
+#  include "output.h"
+#  include "utils.h"
+#  include "image_xyz.h"
+#  include "image_bmp.h"
+#  include "image_png.h"
+#  include "text.h"
+#  include "pixel_format.h"
+#  include "bitmap_utils.h"
+#  include "pixman_bitmap.h"
 
 ////////////////////////////////////////////////////////////
 
@@ -135,7 +135,7 @@ DynamicFormat PixmanBitmap::ChooseFormat(const DynamicFormat& format) {
 }
 
 ////////////////////////////////////////////////////////////
-static void destroy_func(pixman_image_t *image, void *data) {
+static void destroy_func(pixman_image_t * /* image */, void *data) {
 	free(data);
 }
 
@@ -359,7 +359,7 @@ void PixmanBitmap::Blit(int x, int y, Bitmap* _src, Rect src_rect, int opacity) 
 
 	pixman_image_t* mask;
 	if (opacity < 255) {
-		pixman_color_t tcolor = {0, 0, 0, opacity << 8};
+		pixman_color_t tcolor = {0, 0, 0, static_cast<uint16_t>(opacity << 8)};
 		mask = pixman_image_create_solid_fill(&tcolor);
 	}
 	else
@@ -404,7 +404,7 @@ void PixmanBitmap::TiledBlit(int ox, int oy, Rect src_rect, Bitmap* src, Rect ds
 
 	pixman_image_t* mask;
 	if (opacity < 255) {
-		pixman_color_t tcolor = {0, 0, 0, opacity << 8};
+		pixman_color_t tcolor = {0, 0, 0, static_cast<uint16_t>(opacity << 8)};
 		mask = pixman_image_create_solid_fill(&tcolor);
 	}
 	else
@@ -446,7 +446,7 @@ void PixmanBitmap::StretchBlit(Rect dst_rect, Bitmap* _src, Rect src_rect, int o
 
 	pixman_image_t* mask = (pixman_image_t*) NULL;
 	if (opacity < 255) {
-		pixman_color_t tcolor = {0, 0, 0, opacity << 8};
+		pixman_color_t tcolor = {0, 0, 0, static_cast<uint16_t>(opacity << 8)};
 		mask = pixman_image_create_solid_fill(&tcolor);
 	}
 
@@ -476,7 +476,7 @@ void PixmanBitmap::StretchBlit(Rect dst_rect, Bitmap* _src, Rect src_rect, int o
 	RefreshCallback();
 }
 
-void PixmanBitmap::TransformBlit(Rect dst_rect, Bitmap* _src, Rect src_rect, const Matrix& inv, int opacity) {
+void PixmanBitmap::TransformBlit(Rect dst_rect, Bitmap* _src, Rect /* src_rect */, const Matrix& inv, int /* opacity */) {
 	PixmanBitmap* src = (PixmanBitmap*) _src;
 	pixman_transform_t xform = {{
 		{ pixman_double_to_fixed(inv.xx), pixman_double_to_fixed(inv.xy), pixman_double_to_fixed(inv.x0) },
@@ -520,7 +520,7 @@ void PixmanBitmap::WaverBlit(int x, int y, Bitmap* _src, Rect src_rect, int dept
 
 	pixman_image_t* mask;
 	if (opacity < 255) {
-		pixman_color_t tcolor = {0, 0, 0, opacity << 8};
+		pixman_color_t tcolor = {0, 0, 0, static_cast<uint16_t>(opacity << 8)};
 		mask = pixman_image_create_solid_fill(&tcolor);
 	}
 	else
@@ -556,7 +556,8 @@ static pixman_color_t PixmanColor(const Color &color) {
 
 void PixmanBitmap::Fill(const Color &color) {
 	pixman_color_t pcolor = PixmanColor(color);
-	pixman_rectangle16_t rect = {0, 0, width(), height()};
+	pixman_rectangle16_t rect = {
+    0, 0, static_cast<uint16_t>(width()), static_cast<uint16_t>(height())};
 
 	pixman_image_fill_rectangles(PIXMAN_OP_SRC, bitmap, &pcolor, 1, &rect);
 
@@ -565,7 +566,11 @@ void PixmanBitmap::Fill(const Color &color) {
 
 void PixmanBitmap::FillRect(Rect dst_rect, const Color &color) {
 	pixman_color_t pcolor = PixmanColor(color);
-	pixman_rectangle16_t rect = {dst_rect.x, dst_rect.y, dst_rect.width, dst_rect.height};
+	pixman_rectangle16_t rect = {
+    static_cast<uint16_t>(dst_rect.x),
+    static_cast<uint16_t>(dst_rect.y),
+    static_cast<uint16_t>(dst_rect.width),
+    static_cast<uint16_t>(dst_rect.height)};
 
 	pixman_image_fill_rectangles(PIXMAN_OP_SRC, bitmap, &pcolor, 1, &rect);
 
@@ -574,7 +579,8 @@ void PixmanBitmap::FillRect(Rect dst_rect, const Color &color) {
 
 void PixmanBitmap::Clear() {
 	pixman_color_t pcolor = {0, 0, 0, 0};
-	pixman_rectangle16_t rect = {0, 0, width(), height()};
+	pixman_rectangle16_t rect = {
+    0, 0, static_cast<uint16_t>(width()), static_cast<uint16_t>(height())};
 
 	pixman_image_fill_rectangles(PIXMAN_OP_CLEAR, bitmap, &pcolor, 1, &rect);
 
@@ -583,7 +589,11 @@ void PixmanBitmap::Clear() {
 
 void PixmanBitmap::ClearRect(Rect dst_rect) {
 	pixman_color_t pcolor = {0, 0, 0, 0};
-	pixman_rectangle16_t rect = {dst_rect.x, dst_rect.y, dst_rect.width, dst_rect.height};
+	pixman_rectangle16_t rect = {
+    static_cast<uint16_t>(dst_rect.x),
+    static_cast<uint16_t>(dst_rect.y),
+    static_cast<uint16_t>(dst_rect.width),
+    static_cast<uint16_t>(dst_rect.height)};
 
 	pixman_image_fill_rectangles(PIXMAN_OP_CLEAR, bitmap, &pcolor, 1, &rect);
 
@@ -600,8 +610,12 @@ void PixmanBitmap::OpacityBlit(int x, int y, Bitmap* _src, Rect src_rect, int op
 	}
 
 	if (src == this) {
-		pixman_color_t pcolor = {0, 0, 0, opacity << 8};
-		pixman_rectangle16_t rect = {src_rect.x, src_rect.y, src_rect.width, src_rect.height};
+		pixman_color_t pcolor = {0, 0, 0, static_cast<uint16_t>(opacity << 8)};
+		pixman_rectangle16_t rect = {
+      static_cast<uint16_t>(src_rect.x),
+      static_cast<uint16_t>(src_rect.y),
+      static_cast<uint16_t>(src_rect.width),
+      static_cast<uint16_t>(src_rect.height)};
 
 		pixman_image_fill_rectangles(PIXMAN_OP_IN_REVERSE, bitmap, &pcolor, 1, &rect);
 	}
@@ -609,7 +623,7 @@ void PixmanBitmap::OpacityBlit(int x, int y, Bitmap* _src, Rect src_rect, int op
 		if (opacity > 255)
 			opacity = 255;
 
-		pixman_color_t tcolor = {0, 0, 0, opacity << 8};
+		pixman_color_t tcolor = {0, 0, 0, static_cast<uint16_t>(opacity << 8)};
 		pixman_image_t* mask = pixman_image_create_solid_fill(&tcolor);
 
 		pixman_image_composite32(PIXMAN_OP_OVER,
@@ -643,7 +657,10 @@ void PixmanBitmap::ToneBlit(int x, int y, Bitmap* _src, Rect src_rect, const Ton
 								 src_rect.width, src_rect.height);
 
 	if (tone.gray == 0) {
-		pixman_color_t tcolor = {tone.red << 8, tone.green << 8, tone.blue << 8, 0xFFFF};
+		pixman_color_t tcolor = {
+      static_cast<uint16_t>(tone.red << 8),
+      static_cast<uint16_t>(tone.green << 8),
+      static_cast<uint16_t>(tone.blue << 8), 0xFFFF};
 		pixman_image_t *timage = pixman_image_create_solid_fill(&tcolor);
 
 		pixman_image_composite32(PIXMAN_OP_ADD,
@@ -656,13 +673,15 @@ void PixmanBitmap::ToneBlit(int x, int y, Bitmap* _src, Rect src_rect, const Ton
 		pixman_image_unref(timage);
 	}
 	else {
-		pixman_rectangle16_t rect = {0, 0, src_rect.width, src_rect.height};
+		pixman_rectangle16_t rect = {
+      0, 0, static_cast<uint16_t>(src_rect.width),
+      static_cast<uint16_t>(src_rect.height)};
 
 		PixmanBitmap *gray = new PixmanBitmap(src, src_rect, GetTransparent());
 		pixman_color_t gcolor = {0, 0, 0, 0xFFFF};
 		pixman_image_fill_rectangles(PIXMAN_OP_HSL_SATURATION, gray->bitmap, &gcolor, 1, &rect);
 
-		pixman_color_t acolor = {0, 0, 0, tone.gray << 8};
+		pixman_color_t acolor = {0, 0, 0, static_cast<uint16_t>(tone.gray << 8)};
 		pixman_image_fill_rectangles(PIXMAN_OP_IN_REVERSE, gray->bitmap, &acolor, 1, &rect);
 
 		pixman_image_composite32(PIXMAN_OP_ATOP,
@@ -672,7 +691,10 @@ void PixmanBitmap::ToneBlit(int x, int y, Bitmap* _src, Rect src_rect, const Ton
 								 x, y,
 								 src_rect.width, src_rect.height);
 
-		pixman_color_t tcolor = {tone.red << 8, tone.green << 8, tone.blue << 8, 0xFFFF};
+		pixman_color_t tcolor = {
+      static_cast<uint16_t>(tone.red << 8),
+      static_cast<uint16_t>(tone.green << 8),
+      static_cast<uint16_t>(tone.blue << 8), 0xFFFF};
 		pixman_image_t *timage = pixman_image_create_solid_fill(&tcolor);
 
 		pixman_image_composite32(PIXMAN_OP_ADD,

@@ -302,7 +302,7 @@ struct alpha_type_traits {};
 
 template<class TPF, PF::AlphaType _alpha_type>
 struct alpha_type_traits<TPF, PF::StaticAlpha, _alpha_type> {
-	static inline PF::AlphaType alpha_type(const TPF* pf) {
+	static inline PF::AlphaType alpha_type(const TPF* /* pf */) {
 		return (PF::AlphaType) _alpha_type;
 	}
 };
@@ -388,7 +388,7 @@ struct alpha_traits<TPF, aligned, PF::StaticAlpha, PF::ColorKey> {
 // no alpha or colorkey
 template<class TPF, bool aligned>
 struct alpha_traits<TPF, aligned, PF::StaticAlpha, PF::NoAlpha> {
-	static inline uint8 get_alpha(const TPF* pf, const uint8* p) {
+	static inline uint8 get_alpha(const TPF* /* pf */, const uint8* /* p */) {
 		return 255;
 	}
 	static inline void set_alpha(const TPF* pf, uint8* p, uint8 alpha) {
@@ -547,10 +547,10 @@ template<class TPF, int _bits, int _shift>
 struct mask_traits<TPF, PF::StaticMasks, _bits, _shift> {
 	static const int _byte = _shift / 8;
 	static const int _mask = ((1 << _bits)-1) << _shift;
-	static inline int bits(const Component& c) { return _bits; }
-	static inline int shift(const Component& c) { return _shift; }
-	static inline int byte(const Component& c) { return _byte; }
-	static inline int mask(const Component& c) { return _mask; }
+	static inline int bits(const Component&) { return _bits; }
+	static inline int shift(const Component&) { return _shift; }
+	static inline int byte(const Component&) { return _byte; }
+	static inline int mask(const Component&) { return _mask; }
 };
 
 template<class TPF, int _bits, int _shift>
@@ -577,8 +577,8 @@ struct dynamic_traits_t {
 template <int BITS, int RB, int RS, int GB, int GS, int BB, int BS, int AB, int AS, int ALPHA>
 struct dynamic_traits_t<false, false, BITS, RB, RS, GB, GS, BB, BS, AB, AS, ALPHA> {
 	static const DynamicFormat format;
-	dynamic_traits_t(const DynamicFormat &format) {}
-	void set_format(const DynamicFormat &_format) const {}
+	dynamic_traits_t(const DynamicFormat &) {}
+	void set_format(const DynamicFormat &) const {}
 };
 
 template <int BITS, int RB, int RS, int GB, int GS, int BB, int BS, int AB, int AS, int ALPHA>
