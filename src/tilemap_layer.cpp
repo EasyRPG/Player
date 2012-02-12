@@ -169,9 +169,6 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	}
 	Graphics::RegisterZObj(9999, ID, true);
 	Graphics::RegisterDrawable(ID, this);
-
-	for (uint8 i = 0; i < 144; i++)
-		substitutions[i] = i;
 }
 
 ////////////////////////////////////////////////////////////
@@ -625,6 +622,13 @@ std::vector<unsigned char> TilemapLayer::GetPassable() const {
 }
 void TilemapLayer::SetPassable(std::vector<unsigned char> npassable) {
 	passable = npassable;
+
+	if (substitutions.size() < passable.size())
+	{
+		substitutions.resize(passable.size());
+		for (uint8 i = 0; i < substitutions.size(); i++)
+			substitutions[i] = i;
+	}
 }
 bool TilemapLayer::GetVisible() const {
 	return visible;
