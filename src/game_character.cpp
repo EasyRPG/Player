@@ -100,12 +100,8 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 	for (tEventHash::iterator i = Game_Map::GetEvents().begin(); i != Game_Map::GetEvents().end(); i++) {
 		Game_Event* evnt = i->second;
 		if (evnt->GetX() == new_x && evnt->GetY() == new_y) {
-			if (!evnt->GetThrough() && evnt->GetPriorityType() == 1) {
-				if (this != (const Game_Character*)Main_Data::game_player)
-					return false;
-
-				if (!evnt->GetCharacterName().empty())
-					return false;
+			if (!evnt->GetThrough() && evnt->GetPriorityType() == RPG::EventPage::Layers_same) {
+				return false;
 			}
 		}
 	}
@@ -155,7 +151,7 @@ int Game_Character::GetScreenZ() const {
 	return GetScreenZ(0);
 }
 int Game_Character::GetScreenZ(int height) const {
-	/*if (always_on_top) return 999;*/
+	if (GetPriorityType() == RPG::EventPage::Layers_above) return 999;
 	
 	int z = (real_y - Game_Map::GetDisplayY() + 3) / 8 + 16;
 
