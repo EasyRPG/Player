@@ -70,7 +70,8 @@ private:
 	Bitmap* chipset;
 	BitmapScreen* chipset_screen;
 	std::vector<short> map_data;
-	std::vector<unsigned char> passable;
+	std::vector<uint8> passable;
+	std::vector<uint8> substitutions;
 	bool visible;
 	int ox;
 	int oy;
@@ -121,7 +122,6 @@ private:
 		int z;
 	};
 	std::vector<std::vector<TileData> > data_cache;
-	uint8 substitutions[144];
 };
 
 #endif
