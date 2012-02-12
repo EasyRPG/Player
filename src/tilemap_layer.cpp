@@ -570,20 +570,24 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 				// Calculate the tile Z
 				if (!passable.empty()) {
 					if (tile.ID >= BLOCK_F) {
-						if ((passable[substitutions[tile.ID - BLOCK_F]] & Passable::Above) != 0) tile.z = 32;
+						if ((passable[substitutions[tile.ID - BLOCK_F]] & Passable::Above) != 0)
+							tile.z = 32;
 
 					} else if (tile.ID >= BLOCK_E) {
-						if ((passable[substitutions[tile.ID - BLOCK_E]] & Passable::Above) != 0) tile.z = 16;
+						if ((passable[substitutions[tile.ID - BLOCK_E + 18]] & Passable::Above) != 0)
+							tile.z = 32;
 
 					} else if (tile.ID >= BLOCK_D) {
-						if ((passable[(tile.ID - BLOCK_D) / 50 + 6] & Passable::Wall) != 0) tile.z = 9999;
-						else if ((passable[(tile.ID - BLOCK_D) / 50 + 6] & Passable::Above) != 0) tile.z = 16;
+						if ((passable[(tile.ID - BLOCK_D) / 50 + 6] & (Passable::Wall | Passable::Above)) != 0)
+							tile.z = 32;
 
 					} else if (tile.ID >= BLOCK_C) {
-						if ((passable[(tile.ID - BLOCK_C) / 50 + 3] & Passable::Above) != 0) tile.z = 16;
+						if ((passable[(tile.ID - BLOCK_C) / 50 + 3] & Passable::Above) != 0)
+							tile.z = 32;
 
 					} else {
-						if ((passable[tile.ID / 1000] & Passable::Above) != 0) tile.z = 16;
+						if ((passable[tile.ID / 1000] & Passable::Above) != 0)
+							tile.z = 32;
 					}
 				}
 				data_cache[x][y] = tile;
