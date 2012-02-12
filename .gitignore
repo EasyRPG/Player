@@ -6,4 +6,5 @@ doc/
 /builds/vs2010/Release*
 /builds/vs2010/*.suo
 /builds/vs2010/*.user
-/builds/vs2010/*.sdf
+/builds/vs2010/*.*sdf
+/builds/vs2010/ipch/
