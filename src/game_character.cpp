@@ -150,15 +150,13 @@ int Game_Character::GetScreenY() const {
 int Game_Character::GetScreenZ() const {
 	return GetScreenZ(0);
 }
+
 int Game_Character::GetScreenZ(int height) const {
 	if (GetPriorityType() == RPG::EventPage::Layers_above) return 999;
 	
 	int z = (real_y - Game_Map::GetDisplayY() + 3) / 8 + 16;
 
-	/*if (tile_id > 0)
-		return z + Game_Map::priorities[tile_id] * 16
-	else*/
-		return z + ((height > 16) ? 15 : 0);
+	return z;
 }
 
 ////////////////////////////////////////////////////////////
