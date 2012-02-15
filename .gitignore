@@ -1,8 +1,4 @@
-bin/testgame/test_filefinder
-bin/testgame/test_utils
-bin/testgame/EasyRPG_Player
-bin/testgame/EasyRPG_Player.app
-bin/testgame/EasyRPG_Player.exe
+bin/
 builds/cmake/libEasyRPG_Player_Static.a
 builds/cmake/libsdl_test_main.a
 doc/
@@ -10,4 +6,5 @@ doc/
 /builds/vs2010/Release*
 /builds/vs2010/*.suo
 /builds/vs2010/*.user
-/builds/vs2010/*.sdf
+/builds/vs2010/*.*sdf
+/builds/vs2010/ipch/
