@@ -1,0 +1,60 @@
+EasyRPG Player
+==============
+
+EasyRPG Player is a game interpreter to play RPG Maker 2000, 2003 and EasyRPG
+games. It uses EasyRPG Readers library to read RPG Maker game data.
+
+EasyRPG Player is part of the EasyRPG Project. More information is available
+at the project website:
+
+  https://easy-rpg.org/
+
+
+Documentation
+-------------
+
+Documentation is available at the documentation wiki:
+
+  https://easy-rpg.org/wiki/
+
+
+Requirements
+------------
+
+EasyRPG Readers library. https://github.com/EasyRPG/Readers
+Doxygen to generate source code documentation.
+ffmpeg for video support.
+SDL for screen backend support.
+OpenGL for screen backend support.
+OpenAL for audio backend support.
+SDL_mixer for audio backend support.
+GTK+ for dialog support on GTK+ based desktop environments.
+WinAPI for dialog support on Windows operating systems.
+Freetype for font backend support.
+SDL_ttf for font backend support.
+JPEG library for JPEG image support.
+PNG library for PNG image support.
+Pixman for pixel format handling.
+ZLIB for XYZ image format support.
+Iconv for the character set detection and UTF-8 conversion.
+Expat library for XML backend support.
+
+Some backends are optional. You can select which to use with compiler defines.
+See the documentation for further information.
+
+
+Development
+-----------
+
+EasyRPG Player development is hosted by GitHub.
+Project files are available in Git repositories.
+
+  https://github.com/EasyRPG/Player
+
+See the documentation for further development information.
+
+
+License
+-------
+
+EasyRPG Player is free software. See the file COPYING for copying conditions.
