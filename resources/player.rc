@@ -11,14 +11,14 @@ FILETYPE 0x00000001L
 	{
 		BLOCK "000004E4"
 		{
-			VALUE "Comments", "http://easy-rpg.org/"
+			VALUE "Comments", "https://easy-rpg.org/"
 			VALUE "CompanyName", "EasyRPG Project"
 			VALUE "FileVersion", "0.0.0.0"
 			VALUE "FileDescription", "EasyRPG Player"
-			VALUE "InternalName", "player"
-			VALUE "LegalCopyright", "2005-2010 EasyRPG Project"
+			VALUE "InternalName", "easyrpg-player"
+			VALUE "LegalCopyright", "2005-2012 EasyRPG Project"
 			VALUE "OriginalFilename", "Player.exe"
-			VALUE "ProductName", "EasyRPG"
+			VALUE "ProductName", "EasyRPG Player"
 			VALUE "ProductVersion", "0.0.0.0"
 		}
 	}

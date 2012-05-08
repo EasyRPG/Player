@@ -8,3 +8,6 @@ doc/
 /builds/vs2010/*.user
 /builds/vs2010/*.*sdf
 /builds/vs2010/ipch/
+/builds/psp/PARAM.SFO
+/builds/psp/EBOOT.PBP
+/builds/psp/EasyRPG.elf

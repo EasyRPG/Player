@@ -9,7 +9,7 @@ SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/testgame)
 SET(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
 LINK_DIRECTORIES(${LIBRARY_OUTPUT_PATH})
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake_module")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/Modules")
 
 # SET(USE_OPENAL 1)
 
@@ -107,7 +107,7 @@ include_directories(
   ${GTEST_INCLUDE_DIRS})
 
 find_package(Threads)
-find_package(GTest REQUIRED)
+find_package(GTest)
 include_directories(${GTEST_INCLUDE_DIRS})
 
 FUNCTION(CXX_TEST target libs)
@@ -127,6 +127,8 @@ FUNCTION(CXX_TEST target libs)
   ADD_DEPENDENCIES(test_${target} ${PROJECT_NAME}_Static)
 ENDFUNCTION()
 
-FOREACH(i filefinder utils)
-  CXX_TEST(${i} "sdl_test_main")
-ENDFOREACH()
+if(GTEST_FOUND)
+  FOREACH(i filefinder utils)
+    CXX_TEST(${i} "sdl_test_main")
+  ENDFOREACH()
+endif()

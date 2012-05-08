@@ -4,10 +4,10 @@
 <dict>
 
     <key>CFBundleExecutable</key>
-    <string>Player</string>
+    <string>EasyRPG Player</string>
 
     <key>CFBundleGetInfoString</key>
-    <string>http://easy-rpg.org/</string>
+    <string>https://easy-rpg.org/</string>
 
     <key>CFBundleIconFile</key>
     <string>Player.icns</string>
@@ -19,7 +19,7 @@
     <string>RPGP</string>
 
     <key>CFBundleVersion</key>
-    <string>SVN</string>
+    <string>GIT</string>
 
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
@@ -31,7 +31,7 @@
     <string>APPL</string>
 
     <key>CFBundleShortVersionString</key>
-    <string>SVN</string>
+    <string>GIT</string>
 
 </dict>
 </plist>
