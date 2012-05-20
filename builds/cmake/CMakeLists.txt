@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 PROJECT(EasyRPG_Player CXX C)
 
@@ -66,10 +66,16 @@ ENDIF()
 # FIND_PACKAGE(Boost COMPONENTS serialization REQUIRED)
 foreach(i Expat Freetype Iconv JPEG Pixman PNG SDL SDL_mixer SDL_ttf ZLIB) # SDL_image
   find_package(${i} REQUIRED)
+
   string(TOUPPER ${i} i)
-  string(REPLACE "SDL_" "SDL" i ${i})
-  include_directories(${${i}_INCLUDE_DIR} ${${i}_INCLUDE_DIRS})
-  list(APPEND EASYRPG_PLAYER_LIBRARIES ${${i}_LIBRARY}  ${${i}_LIBRARIES})
+  string(REPLACE "SDL_" "SDL" sdl ${i})
+
+  include_directories(
+    ${${i}_INCLUDE_DIR} ${${i}_INCLUDE_DIRS}
+    ${${sdl}_INCLUDE_DIR} ${${sdl}_INCLUDE_DIRS})
+  list(APPEND EASYRPG_PLAYER_LIBRARIES
+    ${${i}_LIBRARY}  ${${i}_LIBRARIES}
+    ${${sdl}_LIBRARY}  ${${sdl}_LIBRARIES})
 endforeach()
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/../../lib/readers/include)
@@ -110,16 +116,12 @@ endif()
 # test
 ENABLE_TESTING()
 
-ADD_LIBRARY(sdl_test_main STATIC ${CMAKE_CURRENT_SOURCE_DIR}/sdl_test_main.cpp)
-
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../src)
 
 FUNCTION(CXX_TEST target libs)
   get_filename_component(name ${target} NAME_WE)
   ADD_EXECUTABLE(test_${name} ${target})
-  TARGET_LINK_LIBRARIES(test_${name}
-    ${PROJECT_NAME}_Static
-    ${libs} ${EASYRPG_PLAYER_LIBRARIES})
+  TARGET_LINK_LIBRARIES(test_${name} ${libs})
   ADD_TEST(
     NAME test_${name}
     WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH}
@@ -129,5 +131,5 @@ ENDFUNCTION()
 
 file(GLOB TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../test/*.cpp)
 FOREACH(i ${TEST_FILES})
-  CXX_TEST(${i} "sdl_test_main")
+  CXX_TEST(${i} ${PROJECT_NAME}_Static ${EASYRPG_PLAYER_LIBRARIES})
 ENDFOREACH()
