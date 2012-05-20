@@ -1,6 +1,7 @@
 #include <cassert>
 #include <cstdlib>
 #include "utils.h"
+#include <SDL.h>
 
 
 static void LowerCase() {
