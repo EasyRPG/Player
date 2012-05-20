@@ -1,9 +1,14 @@
-#include <gtest/gtest.h>
-
+#include <cassert>
+#include <cstdlib>
 #include "utils.h"
 
 
-TEST(Utils, LowerCase) {
-	ASSERT_EQ(Utils::LowerCase("EasyRPG"), "easyrpg");
-	ASSERT_EQ(Utils::LowerCase("player"), "player");
+static void LowerCase() {
+	assert(Utils::LowerCase("EasyRPG") == "easyrpg");
+	assert(Utils::LowerCase("player") == "player");
+}
+
+int main() {
+  LowerCase();
+  return EXIT_SUCCESS;
 }
