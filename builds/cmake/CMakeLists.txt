@@ -3,7 +3,16 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 PROJECT(EasyRPG_Player CXX C)
 
 # reader
-ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/../../lib/readers/builds/cmake ${CMAKE_CURRENT_SOURCE_DIR}/../../lib/readers/builds/cmake)
+# - ${EASYRPG_READERS_PATH}
+if(NOT EASYRPG_READERS_PATH)
+  set(EASYRPG_READERS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../lib/readers)
+  file(MAKE_DIRECTORY "${EASYRPG_READERS_PATH}/..") # "lib" directory
+  find_package(Git REQUIRED)
+  execute_process(COMMAND ${GIT_EXECUTABLE} clone
+    "https://github.com/EasyRPG/Readers.git"
+    "${EASYRPG_READERS_PATH}")
+endif()
+add_subdirectory(${EASYRPG_READERS_PATH}/builds/cmake ${EASYRPG_READERS_PATH}/builds/cmake)
 
 SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/testgame)
 SET(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
@@ -21,8 +30,7 @@ ADD_DEFINITIONS(
   -D USE_PIXMAN_BITMAP=1)
 
 IF(CMAKE_GENERATOR MATCHES "Makefile")
-  ADD_DEFINITIONS(
-    -fno-exceptions -fno-rtti)
+  ADD_DEFINITIONS(-fno-exceptions -fno-rtti)
 ENDIF()
 
 IF(USE_OPENAL)
@@ -88,47 +96,38 @@ TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${EASYRPG_PLAYER_LIBRARIES})
 ADD_DEPENDENCIES(${PROJECT_NAME} EasyRPG_Reader ${PROJECT_NAME}_Static)
 
 # Doxygen
-FIND_PACKAGE(Doxygen REQUIRED)
-ADD_CUSTOM_TARGET(player_doc
-  ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/../Doxyfile
-  DEPENDS ${SRCS} ${MAIN_FILE}
-  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/..
-  COMMENT "Generating API documentation with Doxygen" VERBATIM)
-ADD_CUSTOM_TARGET(doc)
-ADD_DEPENDENCIES(doc player_doc reader_doc)
+FIND_PACKAGE(Doxygen)
+if(DOXYGEN_FOUND)
+  ADD_CUSTOM_TARGET(player_doc
+    ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/../Doxyfile
+    DEPENDS ${SRCS} ${MAIN_FILE}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/..
+    COMMENT "Generating API documentation with Doxygen" VERBATIM)
+  ADD_CUSTOM_TARGET(doc)
+  ADD_DEPENDENCIES(doc player_doc reader_doc)
+endif()
 
 # test
 ENABLE_TESTING()
 
 ADD_LIBRARY(sdl_test_main STATIC ${CMAKE_CURRENT_SOURCE_DIR}/sdl_test_main.cpp)
 
-include_directories(
-  ${CMAKE_CURRENT_SOURCE_DIR}/../../src
-  ${GTEST_INCLUDE_DIRS})
-
-find_package(Threads)
-find_package(GTest)
-include_directories(${GTEST_INCLUDE_DIRS})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../src)
 
 FUNCTION(CXX_TEST target libs)
-
-  ADD_EXECUTABLE(test_${target} ${CMAKE_CURRENT_SOURCE_DIR}/../../test/${target}.cpp)
-  TARGET_LINK_LIBRARIES(test_${target}
+  get_filename_component(name ${target} NAME_WE)
+  ADD_EXECUTABLE(test_${name} ${target})
+  TARGET_LINK_LIBRARIES(test_${name}
     ${PROJECT_NAME}_Static
-    ${libs} ${EASYRPG_PLAYER_LIBRARIES}
-    ${GTEST_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    ${libs} ${EASYRPG_PLAYER_LIBRARIES})
   ADD_TEST(
-    NAME test_${target}
+    NAME test_${name}
     WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH}
-    COMMAND
-      ${EXECUTABLE_OUTPUT_PATH}/test_${target}
-      --gtest_output=xml:${EXECUTABLE_OUTPUT_PATH}/test_${target}.xml
-      --gtest_color=yes)
-  ADD_DEPENDENCIES(test_${target} ${PROJECT_NAME}_Static)
+    COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_${name})
+  ADD_DEPENDENCIES(test_${name} ${PROJECT_NAME}_Static)
 ENDFUNCTION()
 
-if(GTEST_FOUND)
-  FOREACH(i filefinder utils)
-    CXX_TEST(${i} "sdl_test_main")
-  ENDFOREACH()
-endif()
+file(GLOB TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../test/*.cpp)
+FOREACH(i ${TEST_FILES})
+  CXX_TEST(${i} "sdl_test_main")
+ENDFOREACH()

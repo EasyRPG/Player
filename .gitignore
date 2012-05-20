@@ -1,7 +1,8 @@
-bin/
-builds/cmake/libEasyRPG_Player_Static.a
-builds/cmake/libsdl_test_main.a
-doc/
+/bin/
+/doc/
+/lib/
+/builds/cmake/libEasyRPG_Player_Static.a
+/builds/cmake/libsdl_test_main.a
 /builds/vs2010/Debug*
 /builds/vs2010/Release*
 /builds/vs2010/*.suo

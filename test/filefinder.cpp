@@ -1,5 +1,3 @@
-#include <gtest/gtest.h>
-
 #include "filefinder.h"
 
 /*
