@@ -4,9 +4,12 @@ PROJECT(EasyRPG_Player CXX C)
 
 # reader
 # - ${EASYRPG_READERS_PATH}
+
+set(DEFAULT_EASYRPG_READERS_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../lib/readers")
 if(NOT EASYRPG_READERS_PATH)
-  set(EASYRPG_READERS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../lib/readers)
-  file(MAKE_DIRECTORY "${EASYRPG_READERS_PATH}/..") # "lib" directory
+  set(EASYRPG_READERS_PATH "${DEFAULT_EASYRPG_READERS_PATH}")
+endif()
+if(NOT EXISTS ${EASYRPG_READERS_PATH})
   find_package(Git REQUIRED)
   execute_process(COMMAND ${GIT_EXECUTABLE} clone
     "https://github.com/EasyRPG/Readers.git"
