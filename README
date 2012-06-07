@@ -22,25 +22,13 @@ Requirements
 ------------
 
 EasyRPG Readers library. https://github.com/EasyRPG/Readers
-Doxygen to generate source code documentation.
-ffmpeg for video support.
 SDL for screen backend support.
-OpenGL for screen backend support.
-OpenAL for audio backend support.
-SDL_mixer for audio backend support.
-GTK+ for dialog support on GTK+ based desktop environments.
-WinAPI for dialog support on Windows operating systems.
-Freetype for font backend support.
-SDL_ttf for font backend support.
-JPEG library for JPEG image support.
-PNG library for PNG image support.
-Pixman for pixel format handling.
+SDL_mixer for audio  support.
+SDL_ttf for font support.
+SDL_image for PNG support.
 ZLIB for XYZ image format support.
-Iconv for the character set detection and UTF-8 conversion.
-Expat library for XML backend support.
-
-Some backends are optional. You can select which to use with compiler defines.
-See the documentation for further information.
+GTK+ for dialog support on GTK+ based desktop environments (optional).
+Doxygen to generate source code documentation (optional).
 
 
 Development
