@@ -5,6 +5,8 @@ BINFILES = $(foreach dir,$(DATA), $(wildcard $(dir)/*.*))
 OBJS = $(addsuffix .o,$(BINFILES)) $(CPPFILES:.cpp=.o)
 INCLUDES = ../../lib/readers/include ../../src
 
+BUILD_PRX = 1
+
 INCDIR = $(foreach dir,$(INCLUDES), -iquote $(CURDIR)/$(dir))
 CFLAGS = \
 	-O2 -G0 -Wall -Wextra -D PSP \
