@@ -30,7 +30,7 @@ Game_Vehicle::Game_Vehicle(Type _type) {
 	type = _type;
 	altitude = 0;
 	driving = false;
-	direction = 4;
+	direction = RPG::EventPage::Direction_left;
 	walk_anime = false;
 	step_anime = false;
 	LoadSystemSettings();
@@ -76,16 +76,16 @@ void Game_Vehicle::Refresh() {
 		MoveTo(x, y);
 	switch (type) {
 		case Boat:
-			priority_type = 1;
-			move_speed = 4;
+			priority_type = RPG::EventPage::Layers_same;
+			move_speed = RPG::EventPage::MoveSpeed_normal;
 			break;
 		case Ship:
-			priority_type = 1;
-			move_speed = 5;
+			priority_type = RPG::EventPage::Layers_same;
+			move_speed = RPG::EventPage::MoveSpeed_double;
 			break;
 		case Airship:
-			priority_type = driving ? 2 : 0;
-			move_speed = 6;
+			priority_type = driving ? RPG::EventPage::Layers_above : RPG::EventPage::Layers_below;
+			move_speed = RPG::EventPage::MoveSpeed_fourfold;
 			break;
 	}
 	walk_anime = driving;
@@ -113,7 +113,7 @@ void Game_Vehicle::GetOn() {
 	walk_anime = true;
 	step_anime = true;
 	if (type == Airship)
-		priority_type = 2;		// Change priority to "Above Characters"
+		priority_type = RPG::EventPage::Layers_above;
 	Game_System::BgmPlay(bgm);
 }
 
@@ -121,7 +121,7 @@ void Game_Vehicle::GetOff() {
 	driving = false;
 	walk_anime = false;
 	step_anime = false;
-	direction = 4;
+	direction = RPG::EventPage::Direction_left;
 }
 
 void Game_Vehicle::SyncWithPlayer() {
@@ -158,7 +158,7 @@ void Game_Vehicle::Update() {
 		else if (altitude > 0) {
 			altitude--;
 			if (altitude == 0)
-				priority_type = 0;    // Return priority to "Below Characters"
+				priority_type = RPG::EventPage::Layers_below;
 		}
 	}
 }

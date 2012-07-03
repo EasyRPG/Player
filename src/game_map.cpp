@@ -251,7 +251,28 @@ bool Game_Map::IsValid(int x, int y) {
 bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event) {
 	if (!Game_Map::IsValid(x, y)) return false;
 
-	uint8 bit = (1 << (d / 2 - 1));
+	uint8 bit;
+	switch (d)
+	{
+		case RPG::EventPage::Direction_down:
+			bit = Passable::Down;
+			break;
+
+		case RPG::EventPage::Direction_up:
+			bit = Passable::Up;
+			break;
+
+		case RPG::EventPage::Direction_left:
+			bit = Passable::Left;
+			break;
+
+		case RPG::EventPage::Direction_right:
+			bit = Passable::Right;
+			break;
+
+		default:
+			assert(false);
+	}
 
 	for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
 		if (i->second->GetTileId() >= 0 && i->second != self_event &&
@@ -391,11 +412,11 @@ int Game_Map::RoundY(int y) {
 }
 
 int Game_Map::XwithDirection(int x, int direction) {
-	return RoundX(x + (direction == 6 ? 1 : direction == 4 ? -1 : 0));
+	return RoundX(x + (direction == RPG::EventPage::Direction_right ? 1 : direction == RPG::EventPage::Direction_left ? -1 : 0));
 }
 
 int Game_Map::YwithDirection(int y, int direction) {
-	return RoundY(y + (direction == 2 ? 1 : direction == 8 ? -1 : 0));
+	return RoundY(y + (direction == RPG::EventPage::Direction_down ? 1 : direction == RPG::EventPage::Direction_up ? -1 : 0));
 }
 
 ////////////////////////////////////////////////////////////
