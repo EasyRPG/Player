@@ -161,7 +161,7 @@ std::string FileFinder::FindImage(const std::string& dir, const std::string& nam
 }
 
 std::string FileFinder::FindDefault(const std::string& dir, const std::string& name) {
-	static const char* const no_exts[] = {""};
+	static const char* const no_exts[] = {"", NULL};
 	return FindFile(dir, name, no_exts);
 }
 
