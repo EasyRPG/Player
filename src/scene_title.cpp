@@ -62,12 +62,6 @@ Scene_Title::Scene_Title() :
 
 ////////////////////////////////////////////////////////////
 void Scene_Title::Start() {
-	// Clear the cache when the game returns to title screen
-	// e.g. by pressing F12
-	if (init) {
-		Cache::Clear();
-	}
-
 	LoadDatabase();
 
 	if (!init) {
@@ -92,6 +86,15 @@ void Scene_Title::Start() {
 	}
 
 	CreateCommandWindow();
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Title::Continue() {
+	// Clear the cache when the game returns to title screen
+	// e.g. by pressing F12
+	Cache::Clear();
+
+	Start();
 }
 
 ////////////////////////////////////////////////////////////
@@ -189,6 +192,7 @@ bool Scene_Title::CheckContinue() {
 ////////////////////////////////////////////////////////////
 void Scene_Title::CreateTitleGraphic() {
 	// Load Title Graphic
+	delete title;
 	title = new Sprite();
 	title->SetBitmap(Cache::Title(Data::system.title_name));
 }
@@ -201,6 +205,7 @@ void Scene_Title::CreateCommandWindow() {
 	options.push_back(Data::terms.load_game);
 	options.push_back(Data::terms.exit_game);
 
+	delete command_window;
 	command_window = new Window_Command(options);
 	command_window->SetX(160 - command_window->GetWidth() / 2);
 	command_window->SetY(224 - command_window->GetHeight());

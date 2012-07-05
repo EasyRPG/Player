@@ -36,6 +36,7 @@ public:
 	Scene_Title();
 
 	void Start();
+	void Continue();
 	void Terminate();
 	void TransitionIn();
 	void TransitionOut();

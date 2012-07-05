@@ -150,7 +150,10 @@ Bitmap* Cache::Tile(const std::string& filename, int tile_id) {
 void Cache::Clear() {
 	std::map<string_pair, Bitmap*>::iterator it_cache;
 	for (it_cache = cache.begin(); it_cache != cache.end(); it_cache++) {
-		delete it_cache->second;
+		if (!it_cache->second->IsAttachedToBitmapScreen())
+		{
+			delete it_cache->second;
+		}
 	}
 	cache.clear();
 
@@ -158,5 +161,5 @@ void Cache::Clear() {
 	for (it_tile = cache_tiles.begin(); it_tile != cache_tiles.end(); it_tile++) {
 		delete it_tile->second;
 	}
-	cache.clear();
+	cache_tiles.clear();
 }
