@@ -56,7 +56,7 @@
 
 ////////////////////////////////////////////////////////////
 Scene_Title::Scene_Title() :
-	command_window(NULL), title(NULL), init(false) {
+	command_window(NULL), title(NULL) {
 	type = Scene::Title;
 }
 
@@ -64,6 +64,7 @@ Scene_Title::Scene_Title() :
 void Scene_Title::Start() {
 	LoadDatabase();
 
+	static bool init = false;
 	if (!init) {
 		if (Data::system.ldb_id == 2003) {
 			Output::Debug("Switching to Rpg2003 Interpreter");
@@ -72,10 +73,9 @@ void Scene_Title::Start() {
 
 		FileFinder::InitRtpPaths();
 	}
+	init = true;
 
 	Main_Data::game_data.Setup();
-
-	init = true;
 
 	// Create Game System
 	Game_System::Init();
@@ -192,9 +192,11 @@ bool Scene_Title::CheckContinue() {
 ////////////////////////////////////////////////////////////
 void Scene_Title::CreateTitleGraphic() {
 	// Load Title Graphic
-	delete title;
-	title = new Sprite();
-	title->SetBitmap(Cache::Title(Data::system.title_name));
+	if (title == NULL) // No need to recreate Title on Resume
+	{
+		title = new Sprite();
+		title->SetBitmap(Cache::Title(Data::system.title_name));
+	}
 }
 
 ////////////////////////////////////////////////////////////
