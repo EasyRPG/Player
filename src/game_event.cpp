@@ -65,7 +65,7 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 		tile_id = 0;
 		character_name = "";
 		character_index = 0;
-		direction = 2;
+		direction = RPG::EventPage::Direction_down;
 		//move_type = 0;
 		through = true;
 		trigger = -1;
@@ -80,15 +80,9 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	tile_id = page->character_name.empty() ? page->character_index : 0;
 
 	if (original_direction != page->character_direction) {
-		switch (page->character_direction) {
-		case 0: direction = 8; break;
-		case 1: direction = 6; break;
-		case 2: direction = 2; break;
-		case 3: direction = 4; break;
-		};
-
+		direction = page->character_direction;
 		original_direction = direction;
-		prelock_direction = 0;
+		prelock_direction = -1;
 	}
 
 	if (original_pattern != page->character_pattern) {
@@ -114,7 +108,7 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	// Free resources if needed
 	delete interpreter;
 	interpreter = NULL;
-	if (trigger == TriggerParallelProcess) {
+	if (trigger == RPG::EventPage::Trigger_parallel) {
 		interpreter = new Game_Interpreter_Map();
 	}
 	CheckEventTriggerAuto();
@@ -257,7 +251,7 @@ void Game_Event::Start() {
 }
 
 void Game_Event::CheckEventTriggerAuto() {
-	if (trigger == TriggerAutoStart)
+	if (trigger == RPG::EventPage::Trigger_auto_start)
 	{
 		Start();
 	}
@@ -271,7 +265,7 @@ bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 	if (Game_Map::GetInterpreter().IsRunning())
 		return false;
 
-	if ((trigger == TriggerHeroOrEventTouch) && (Main_Data::game_player->IsInPosition(x, y))) {
+	if ((trigger == RPG::EventPage::Trigger_collision) && (Main_Data::game_player->IsInPosition(x, y))) {
 
 		// TODO check over trigger VX differs from XP here
 		if (!IsJumping()) {

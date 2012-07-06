@@ -68,6 +68,9 @@ void Scene::MainFunction() {
 	if (push_pop_operation == 1) {
 		Start();
 	}
+	else if (push_pop_operation == 2) {
+		Continue();
+	}
 
 	push_pop_operation = 0;
 
@@ -101,6 +104,10 @@ void Scene::MainFunction() {
 
 ////////////////////////////////////////////////////////////
 void Scene::Start() {
+}
+
+////////////////////////////////////////////////////////////
+void Scene::Continue() {
 }
 
 ////////////////////////////////////////////////////////////

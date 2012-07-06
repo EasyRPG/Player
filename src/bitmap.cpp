@@ -126,6 +126,10 @@ void Bitmap::DetachBitmapScreen(BitmapScreen* bitmap) {
 	attached_screen_bitmaps.remove(bitmap);
 }
 
+bool Bitmap::IsAttachedToBitmapScreen() {
+	return attached_screen_bitmaps.size() != 0;
+}
+
 ////////////////////////////////////////////////////////////
 BitmapUtils* Bitmap::Begin() {
 	Lock();

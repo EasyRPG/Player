@@ -110,6 +110,8 @@ public:
 
 	TileOpacity GetTileOpacity(int row, int col);
 
+	virtual bool IsAttachedToBitmapScreen();
+
 protected:
 	friend class Surface;
 	friend class BitmapScreen;

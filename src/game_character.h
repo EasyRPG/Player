@@ -295,27 +295,6 @@ public:
 
 	void SetGraphic(const std::string& name, int index);
 
-	enum Triggers {
-		TriggerPushKey = 0,
-		TriggerHeroTouch,
-		TriggerHeroOrEventTouch,
-		TriggerAutoStart,
-		TriggerParallelProcess
-	};
-
-	enum Priorities {
-		PriorityBelowHero = 0,
-		PrioritySameAsHero,
-		PriorityAboveHero
-	};
-
-	enum Directions {
-		DirectionDown = 2,
-		DirectionLeft = 4,
-		DirectionRight = 6,
-		DirectionUp = 8
-	};
-
 	enum CharsID {
 		CharPlayer		= 10001,
 		CharBoat		= 10002,

@@ -38,9 +38,9 @@ public:
 	Scene_Menu(int menu_index = 0);
 
 	void Start();
+	void Continue();
 	void Update();
 	void Terminate();
-	void Resume();
 
 	////////////////////////////////////////////////////////
 	/// Creates the Window displaying the options.

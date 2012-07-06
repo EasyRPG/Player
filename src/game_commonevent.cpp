@@ -39,7 +39,7 @@ Game_CommonEvent::~Game_CommonEvent() {
 
 ////////////////////////////////////////////////////////////
 void Game_CommonEvent::Refresh() {
-	if ( (GetTrigger() == Game_Character::TriggerParallelProcess) && ( Game_Switches[GetSwitchId()] ) ) {
+	if ( (GetTrigger() == RPG::EventPage::Trigger_parallel) && ( Game_Switches[GetSwitchId()] ) ) {
 		if (interpreter == NULL) {
 			interpreter = battle
 				? (Game_Interpreter*) new Game_Interpreter_Battle()

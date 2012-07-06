@@ -37,10 +37,10 @@ Game_Character::Game_Character() :
 	character_index(0),
 	real_x(0),
 	real_y(0),
-	direction(2),
-	pattern(1),
-	original_direction(2),
-	original_pattern(1),
+	direction(RPG::EventPage::Direction_down),
+	pattern(RPG::EventPage::Frame_middle),
+	original_direction(RPG::EventPage::Direction_down),
+	original_pattern(RPG::EventPage::Frame_middle),
 	last_pattern(0),
 	move_route_forcing(false),
 	through(false),
@@ -49,10 +49,10 @@ Game_Character::Game_Character() :
 	original_move_route(NULL),
 	move_route_index(0),
 	original_move_route_index(0),
-	move_type(0),
-	move_speed(4),
+	move_type(RPG::EventPage::MoveType_stationary),
+	move_speed(RPG::EventPage::MoveSpeed_normal),
 	move_frequency(6),
-	prelock_direction(0),
+	prelock_direction(-1),
 	move_failed(false),
 	locked(false),
 	wait_count(0),
@@ -64,7 +64,7 @@ Game_Character::Game_Character() :
 	turn_enabled(true),
 	direction_fix(false),
 	cycle_stat(false),
-	priority_type(1),
+	priority_type(RPG::EventPage::Layers_same),
 	transparent(false) {
 }
 
@@ -83,8 +83,8 @@ bool Game_Character::IsStopping() const {
 
 ////////////////////////////////////////////////////////////
 bool Game_Character::IsPassable(int x, int y, int d) const {
-	int new_x = x + (d == DirectionRight ? 1 : d == DirectionLeft ? -1 : 0);
-	int new_y = y + (d == DirectionDown ? 1 : d == DirectionUp ? -1 : 0);
+	int new_x = x + (d == RPG::EventPage::Direction_right ? 1 : d == RPG::EventPage::Direction_left ? -1 : 0);
+	int new_y = y + (d == RPG::EventPage::Direction_down ? 1 : d == RPG::EventPage::Direction_up ? -1 : 0);
 
 	if (!Game_Map::IsValid(new_x, new_y))
 		return false;
@@ -93,8 +93,8 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 
 	if (!Game_Map::IsPassable(x, y, d, this))
 		return false;
-	
-	if (!Game_Map::IsPassable(new_x, new_y, 10 - d))
+
+	if (!Game_Map::IsPassable(new_x, new_y, (d + 2) % 4))
 		return false;
 	
 	for (tEventHash::iterator i = Game_Map::GetEvents().begin(); i != Game_Map::GetEvents().end(); i++) {
@@ -125,7 +125,7 @@ void Game_Character::MoveTo(int x, int y) {
 	this->y = y % Game_Map::GetHeight();
 	real_x = x * 128;
 	real_y = y * 128;
-	prelock_direction = 0;
+	prelock_direction = -1;
 }
 
 ////////////////////////////////////////////////////////////
@@ -171,21 +171,21 @@ void Game_Character::Update() {
 	if (anime_count > 24 - move_speed) {
 		if (!step_anime && stop_count > 0) {
 			pattern = original_pattern;
-			last_pattern = last_pattern == 0 ? 2 : 0;
+			last_pattern = last_pattern == RPG::EventPage::Frame_left ? RPG::EventPage::Frame_right : RPG::EventPage::Frame_left;
 		} else {
-			if (last_pattern == 0) {
-				if (pattern == 2) {
-					pattern = 1;
-					last_pattern = 2;
+			if (last_pattern == RPG::EventPage::Frame_left) {
+				if (pattern == RPG::EventPage::Frame_right) {
+					pattern = RPG::EventPage::Frame_middle;
+					last_pattern = RPG::EventPage::Frame_right;
 				} else {
-					pattern = 2;
+					pattern = RPG::EventPage::Frame_right;
 				}
 			} else {
-				if (pattern == 0) {
-					pattern = 1;
-					last_pattern = 0;
+				if (pattern == RPG::EventPage::Frame_left) {
+					pattern = RPG::EventPage::Frame_middle;
+					last_pattern = RPG::EventPage::Frame_left;
 				} else {
-					pattern = 0;
+					pattern = RPG::EventPage::Frame_left;
 				}
 			}
 		}
@@ -230,22 +230,22 @@ void Game_Character::UpdateMove() {
 void Game_Character::UpdateSelfMovement() {
 	if (stop_count > 30 * (5 - move_frequency)) {
 		switch (move_type) {
-		case 1: // Random
+		case RPG::EventPage::MoveType_random:
 			MoveTypeRandom();
 			break;
-		case 2: // Cycle up-down
+		case RPG::EventPage::MoveType_vertical:
 			MoveTypeCycleUpDown();
 			break;
-		case 3: // Cycle left-right
+		case RPG::EventPage::MoveType_horizontal:
 			MoveTypeCycleLeftRight();
 			break;
-		case 4: // Step towards hero
+		case RPG::EventPage::MoveType_toward:
 			MoveTypeTowardsPlayer();
 			break;
-		case 5: // Step away from hero
+		case RPG::EventPage::MoveType_away:
 			MoveTypeAwayFromPlayer();
 			break;
-		case 6: // Custom route
+		case RPG::EventPage::MoveType_custom:
 			MoveTypeCustom();
 			break;
 		}
@@ -461,7 +461,7 @@ void Game_Character::MoveTypeCustom() {
 void Game_Character::MoveDown() {
 	if (turn_enabled) TurnDown();
 
-	if (IsPassable(x, y, DirectionDown)) {
+	if (IsPassable(x, y, RPG::EventPage::Direction_down)) {
 		TurnDown();
 		y += 1;
 		//IncreaseSteps();
@@ -475,7 +475,7 @@ void Game_Character::MoveDown() {
 void Game_Character::MoveLeft() {
 	if (turn_enabled) TurnLeft();
 
-	if (IsPassable(x, y, DirectionLeft)) {
+	if (IsPassable(x, y, RPG::EventPage::Direction_left)) {
 		TurnLeft();
 		x -= 1;
 		//IncreaseSteps();
@@ -489,7 +489,7 @@ void Game_Character::MoveLeft() {
 void Game_Character::MoveRight() {
 	if (turn_enabled) TurnRight();
 
-	if (IsPassable(x, y, DirectionRight)) {
+	if (IsPassable(x, y, RPG::EventPage::Direction_right)) {
 		TurnRight();
 		x += 1;
 		//IncreaseSteps();
@@ -503,7 +503,7 @@ void Game_Character::MoveRight() {
 void Game_Character::MoveUp() {
 	if (turn_enabled) TurnUp();
 
-	if (IsPassable(x, y, DirectionUp)) {
+	if (IsPassable(x, y, RPG::EventPage::Direction_up)) {
 		TurnUp();
 		y -= 1;
 		//IncreaseSteps();
@@ -516,16 +516,16 @@ void Game_Character::MoveUp() {
 
 void Game_Character::MoveForward() {
 	switch (direction) {
-	case DirectionDown:
+	case RPG::EventPage::Direction_down:
 		MoveDown();
 		break;
-	case DirectionLeft:
+	case RPG::EventPage::Direction_left:
 		MoveLeft();
 		break;
-	case DirectionRight:
+	case RPG::EventPage::Direction_right:
 		MoveRight();
 		break;
-	case DirectionUp:
+	case RPG::EventPage::Direction_up:
 		MoveUp();
 		break;
 	}
@@ -590,44 +590,44 @@ void Game_Character::MoveAwayFromPlayer() {
 ////////////////////////////////////////////////////////////
 void Game_Character::TurnDown() {
 	if (!direction_fix) {
-		direction = 2;
+		direction = RPG::EventPage::Direction_down;
 		stop_count = 0;
 	}
 }
 
 void Game_Character::TurnLeft() {
 	if (!direction_fix) {
-		direction = 4;
+		direction = RPG::EventPage::Direction_left;
 		stop_count = 0;
 	}
 }
 
 void Game_Character::TurnRight() {
 	if (!direction_fix) {
-		direction = 6;
+		direction = RPG::EventPage::Direction_right;
 		stop_count = 0;
 	}
 }
 
 void Game_Character::TurnUp() {
 	if (!direction_fix) {
-		direction = 8;
+		direction = RPG::EventPage::Direction_up;
 		stop_count = 0;
 	}
 }
 
 void Game_Character::Turn90DegreeLeft() {
 	switch (direction) {
-	case DirectionDown:
+	case RPG::EventPage::Direction_down:
 		TurnRight();
 		break;
-	case DirectionLeft:
+	case RPG::EventPage::Direction_left:
 		TurnDown();
 		break;
-	case DirectionRight:
+	case RPG::EventPage::Direction_right:
 		TurnUp();
 		break;
-	case DirectionUp:
+	case RPG::EventPage::Direction_up:
 		TurnLeft();
 		break;
 	}
@@ -635,16 +635,16 @@ void Game_Character::Turn90DegreeLeft() {
 
 void Game_Character::Turn90DegreeRight() {
 	switch (direction) {
-	case DirectionDown:
+	case RPG::EventPage::Direction_down:
 		TurnLeft();
 		break;
-	case DirectionLeft:
+	case RPG::EventPage::Direction_left:
 		TurnUp();
 		break;
-	case DirectionRight:
+	case RPG::EventPage::Direction_right:
 		TurnDown();
 		break;
-	case DirectionUp:
+	case RPG::EventPage::Direction_up:
 		TurnRight();
 		break;
 	}
@@ -652,16 +652,16 @@ void Game_Character::Turn90DegreeRight() {
 
 void Game_Character::Turn180Degree() {
 	switch (direction) {
-	case DirectionDown:
+	case RPG::EventPage::Direction_down:
 		TurnUp();
 		break;
-	case DirectionLeft:
+	case RPG::EventPage::Direction_left:
 		TurnRight();
 		break;
-	case DirectionRight:
+	case RPG::EventPage::Direction_right:
 		TurnLeft();
 		break;
-	case DirectionUp:
+	case RPG::EventPage::Direction_up:
 		TurnDown();
 		break;
 	}
@@ -727,7 +727,7 @@ void Game_Character::Unlock() {
 }
 
 void Game_Character::SetDirection(int direction) {
-	if ((!direction_fix) && (direction != 0)) {
+	if ((!direction_fix) && (direction != -1)) {
 		this->direction = direction;
 		stop_count = 0;
 	}
@@ -747,7 +747,7 @@ void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
 	move_route_forcing = true;
 	move_frequency = frequency;
 	move_route_owner = owner;
-	prelock_direction = 0;
+	prelock_direction = -1;
 	wait_count = 0;
 	MoveTypeCustom();
 }

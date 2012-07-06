@@ -62,10 +62,8 @@ void Scene_Menu::Terminate() {
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Menu::Resume() {
+void Scene_Menu::Continue() {
 	if (command_options[command_window->GetIndex()] == Order) {
-		// FixMe: This must be done before fadein but on pop start is not
-		// called. And placing it in TransitionIn is not nice.
 		menustatus_window->Refresh();
 	}
 }
