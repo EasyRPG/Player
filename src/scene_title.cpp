@@ -56,20 +56,15 @@
 
 ////////////////////////////////////////////////////////////
 Scene_Title::Scene_Title() :
-	command_window(NULL), title(NULL), init(false) {
+	command_window(NULL), title(NULL) {
 	type = Scene::Title;
 }
 
 ////////////////////////////////////////////////////////////
 void Scene_Title::Start() {
-	// Clear the cache when the game returns to title screen
-	// e.g. by pressing F12
-	if (init) {
-		Cache::Clear();
-	}
-
 	LoadDatabase();
 
+	static bool init = false;
 	if (!init) {
 		if (Data::system.ldb_id == 2003) {
 			Output::Debug("Switching to Rpg2003 Interpreter");
@@ -78,10 +73,9 @@ void Scene_Title::Start() {
 
 		FileFinder::InitRtpPaths();
 	}
+	init = true;
 
 	Main_Data::game_data.Setup();
-
-	init = true;
 
 	// Create Game System
 	Game_System::Init();
@@ -92,6 +86,15 @@ void Scene_Title::Start() {
 	}
 
 	CreateCommandWindow();
+}
+
+////////////////////////////////////////////////////////////
+void Scene_Title::Continue() {
+	// Clear the cache when the game returns to title screen
+	// e.g. by pressing F12
+	Cache::Clear();
+
+	Start();
 }
 
 ////////////////////////////////////////////////////////////
@@ -189,8 +192,11 @@ bool Scene_Title::CheckContinue() {
 ////////////////////////////////////////////////////////////
 void Scene_Title::CreateTitleGraphic() {
 	// Load Title Graphic
-	title = new Sprite();
-	title->SetBitmap(Cache::Title(Data::system.title_name));
+	if (title == NULL) // No need to recreate Title on Resume
+	{
+		title = new Sprite();
+		title->SetBitmap(Cache::Title(Data::system.title_name));
+	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -201,6 +207,7 @@ void Scene_Title::CreateCommandWindow() {
 	options.push_back(Data::terms.load_game);
 	options.push_back(Data::terms.exit_game);
 
+	delete command_window;
 	command_window = new Window_Command(options);
 	command_window->SetX(160 - command_window->GetWidth() / 2);
 	command_window->SetY(224 - command_window->GetHeight());

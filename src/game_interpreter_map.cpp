@@ -1836,24 +1836,7 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 			// Orientation of char
 			character = GetCharacter(com.parameters[1]);
 			if (character != NULL) {
-				switch (com.parameters[2]) {
-					case 0:
-						// Up 8
-						result = (character->GetDirection() == 8);
-						break;
-					case 1:
-						// Right 6
-						result = (character->GetDirection() == 6);
-						break;
-					case 2:
-						// Down 2
-						result = (character->GetDirection() == 2);
-						break;
-					case 3:
-						// Left 4
-						result = (character->GetDirection() == 4);
-						break;
-				}
+				result = character->GetDirection() == com.parameters[2];
 			}
 			break;
 		case 7:

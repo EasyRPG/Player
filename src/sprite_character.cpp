@@ -71,13 +71,7 @@ void Sprite_Character::Update() {
 	}
 	//SetVisible(character->GetVisible());
 	if (tile_id == 0) {
-		int row = 0;
-		switch (character->GetDirection()) {
-		case Game_Character::DirectionDown: row = 2; break;
-		case Game_Character::DirectionLeft: row = 3; break;
-		case Game_Character::DirectionRight: row = 1; break;
-		case Game_Character::DirectionUp: row = 0; break;
-		}
+		int row = character->GetDirection();
 		r.Set(character->GetPattern() * chara_width, row * chara_height, chara_width, chara_height);
 		SetSrcRect(r);
 	}

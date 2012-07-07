@@ -239,7 +239,7 @@ bool Game_Player::CheckEventTriggerHere(const std::vector<int>& triggers) {
 
 	std::vector<Game_Event*>::iterator i;
 	for (i = events.begin(); i != events.end(); i++) {
-		if ( (*i)->GetPriorityType() == PriorityBelowHero && std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() ) {
+		if ( (*i)->GetPriorityType() == RPG::EventPage::Layers_below && std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() ) {
 			(*i)->Start();
 			result = (*i)->GetStarting();
 		}
@@ -260,7 +260,7 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 
 	std::vector<Game_Event*>::iterator i;
 	for (i = events.begin(); i != events.end(); i++) {
-		if ( (*i)->GetPriorityType() == PrioritySameAsHero && 
+		if ( (*i)->GetPriorityType() == RPG::EventPage::Layers_same && 
 			std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() 
 		) 
 		{
@@ -370,7 +370,7 @@ bool Game_Player::GetOffVehicle() {
 
 	Game_Map::GetVehicle((Game_Vehicle::Type) vehicle_type)->GetOff();
 	if (InAirship())
-		direction = 2;
+		direction = RPG::EventPage::Direction_down;
 	else {
 		// TODO
 		// ForceMoveForward();
