@@ -52,27 +52,27 @@ void Game_Screen::Reset()
 
 	pictures.resize(50);
 
-	data.tint_current_red = 0;
-	data.tint_current_green = 0;
-	data.tint_current_blue = 0;
-	data.tint_current_sat = 0;
+	data.tint_current_red = -1;
+	data.tint_current_green = -1;
+	data.tint_current_blue = -1;
+	data.tint_current_sat = -1;
 
-	data.tint_finish_red = 0;
-	data.tint_finish_green = 0;
-	data.tint_finish_blue = 0;
-	data.tint_finish_sat = 0;
-	data.tint_time_left = 0;
+	data.tint_finish_red = -1;
+	data.tint_finish_green = -1;
+	data.tint_finish_blue = -1;
+	data.tint_finish_sat = -1;
+	data.tint_time_left = -1;
 
-	data.flash_red = 0;
-	data.flash_green = 0;
-	data.flash_blue = 0;
+	data.flash_red = -1;
+	data.flash_green = -1;
+	data.flash_blue = -1;
 	flash_sat = 0;
-	data.flash_time_left = 0;
+	data.flash_time_left = -1;
 	flash_period = 0;
 
-	data.shake_strength = 0;
-	data.shake_speed = 0;
-	data.shake_time_left = 0;
+	data.shake_strength = -1;
+	data.shake_speed = -1;
+	data.shake_time_left = -1;
 	data.shake_position = 0;
 	data.shake_continuous = false;
 	shake_direction = 0;
