@@ -49,10 +49,8 @@ void Scene_Save::Action(int index) {
 	std::string file = ss.str();
 #endif
 
-	// Maybe find a better place to do this?
+	// TODO: Maybe find a better place to setup the save file?
 	RPG::SaveTitle title;
-	// No idea what function Rpg_rt uses to generate the timestamp.
-	title.timestamp = (double)Time::GetTimestamp();
 
 	int size = (int)Game_Party::GetActors().size();
 	Game_Actor* actor;
@@ -82,6 +80,9 @@ void Scene_Save::Action(int index) {
 	}
 
 	Main_Data::game_data.title = title;
+
+	Main_Data::game_data.system.save_slot = index + 1;
+	Main_Data::game_data.system.save_count += 1;
 
 	LSD_Reader::Save(file, Main_Data::game_data);
 }
