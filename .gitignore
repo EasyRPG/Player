@@ -12,6 +12,9 @@
 /builds/psp/PARAM.SFO
 /builds/psp/EBOOT.PBP
 /builds/psp/EasyRPG.elf
+/builds/wii/obj
+/builds/wii/*.elf
+/builds/wii/*.dol
 CMakeCache.txt
 CMakeFiles/
 *.cmake

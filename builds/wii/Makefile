@@ -17,7 +17,7 @@ include $(DEVKITPPC)/wii_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	obj
-SOURCES		:=	../../lib/readers/src ../../src
+SOURCES		:=	../../lib/readers/src ../../src ../../lib/readers/src/generated
 DATA		:=	data  
 INCLUDES	:=  ../../lib/readers/include ../../src
 
@@ -33,14 +33,15 @@ LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS	:=	 -lpixman-1 -lSDL_mixer -lSDL -ljpeg -lpng -lfreetype -lasnd \
+
+LIBS	:=	 -lSDL_mixer -lSDL_image -lSDL_ttf -lSDL -ljpeg -lpng -lfreetype -lasnd \
 			-lvorbisidec -lz -lfat -lwiiuse -lbte -logc -liconv -lm -lwiikeyboard
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib
 #---------------------------------------------------------------------------------
-LIBDIRS	:= 
+LIBDIRS	:= $(PORTLIBS)
 
 #---------------------------------------------------------------------------------
 # no real need to edit anything past this point unless you need to add additional
@@ -81,12 +82,12 @@ export OFILES	:=	$(addsuffix .o,$(BINFILES)) \
 #---------------------------------------------------------------------------------
 # build a list of include paths
 #---------------------------------------------------------------------------------
-export INCLUDE	:=	$(foreach dir,$(INCLUDES), -iquote $(CURDIR)/$(dir)) \
+export INCLUDE	:=	$(foreach dir,$(INCLUDES), -I$(CURDIR)/$(dir)) \
 					$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
 					-I$(CURDIR)/$(BUILD) \
 					-I$(LIBOGC_INC) \
-					-I$(LIBOGC_INC)/SDL \
-					-I$(LIBOGC_INC)/freetype
+					-I$(PORTLIBS)/include/SDL \
+					-I$(PORTLIBS)/include/freetype2
 
 #---------------------------------------------------------------------------------
 # build a list of library paths
