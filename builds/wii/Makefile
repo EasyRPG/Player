@@ -25,7 +25,7 @@ INCLUDES	:=  ../../lib/readers/include ../../src
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS	= -O2 -Wall -Wextra -fno-rtti -DUSE_SDL -DUSE_PIXMAN_BITMAP -DUSE_ALPHA -DUSE_BIG_ENDIAN -DNDEBUG $(MACHDEP) $(INCLUDE)
+CFLAGS	= -O2 -Wall -Wextra -fno-rtti -DUSE_SDL -DUSE_ALPHA -DUSE_BIG_ENDIAN -DNDEBUG $(MACHDEP) $(INCLUDE)
 CXXFLAGS	=	$(CFLAGS) -fno-exceptions
 
 LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
