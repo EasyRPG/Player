@@ -1,6 +1,6 @@
 /bin/
 /doc/
-/lib/
+/lib/readers
 /builds/cmake/libEasyRPG_Player_Static.a
 /builds/cmake/libsdl_test_main.a
 /builds/vs2010/Debug*
@@ -32,5 +32,4 @@ src/Makefile.in
 src/*.o
 src/easyrpg-player
 autom4te.cache/
-
 stamp-h1
