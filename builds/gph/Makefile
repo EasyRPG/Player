@@ -13,10 +13,10 @@ BUILD_CAANOO = YES
 
 # Compiler headers
 INCLUDES = ../../lib/readers/include ../../src
-INCDIR = $(foreach dir, $(INCLUDES), -iquote $(wildcard $(dir)))
+INCDIR = $(foreach dir, $(INCLUDES), -I$(wildcard $(dir)))
 
 # Compiler source
-SOURCES = ../../lib/readers/src ../../src
+SOURCES = ../../lib/readers/src ../../lib/readers/src/generated ../../src
 CPPFILES = $(foreach dir, $(SOURCES), $(wildcard $(dir)/*.cpp))
 BINFILES = $(foreach dir, $(DATA), $(wildcard $(dir)/*.*))
 OBJS = $(addsuffix .o, $(BINFILES)) $(CPPFILES:.cpp=.o)
@@ -24,7 +24,9 @@ OBJS = $(addsuffix .o, $(BINFILES)) $(CPPFILES:.cpp=.o)
 # Compiler flags
 CFLAGS = -O2 -Wall -DGPH -DUSE_SDL `sdl-config --cflags`
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
-LDFLAGS = -lexpat `sdl-config --libs`
+LDFLAGS = -lstdc++ -lexpat -lSDL -lSDL_gfx -lSDL_ttf -lSDL_image -lSDL_mixer\
+          -ljpeg -lpng12 -lz -lfreetype -lvorbisidec -lgcc -lm -lc -lpthread\
+          -ldl `sdl-config --libs`
 
 # Host compiler and extra flags
 ifeq ($(BUILD_GP2XWIZ), YES)
