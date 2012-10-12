@@ -206,11 +206,13 @@ public:
 
 	////////////////////////////////////////////////////////
 	/// Changes the equipment of the actor.
+	/// Removes one instance of that item from the Inventory and adds the old
+	/// one of the actor to it.
+	/// If you don't want this use SetEquipment instead.
 	/// @param equip_type : Type of equipment
 	/// @param item_id : Item to equip
-	/// @param test : For temporary equipment
 	////////////////////////////////////////////////////////
-	void ChangeEquipment(int equip_type, int item_id, bool test = false);
+	void ChangeEquipment(int equip_type, int item_id);
 
 	/// @return learned skills list.
 	const std::vector<int16_t>& GetSkills() const;
@@ -281,10 +283,18 @@ public:
 	/// @param id  : command to add/remove, 0 to remove all commands
 	void ChangeBattleCommands(bool add, int id);
 
+	/// @return Rpg2k3 hero class
 	int GetClass() const;
+	/// @param class_id New Rpg2k3 hero class
 	void SetClass(int class_id);
 
+	/// @return All Rpg2k3 battle commands
 	const std::vector<uint32_t>& GetBattleCommands();
+
+	/// @return Row for Rpg2k3 battles (-1 back, 1 front)
+	int GetBattleRow() const;
+	/// @param battle_row New row for Rpg2k3 battles (-1 back, 1 front)
+	void SetBattleRow(int battle_row);
 
 private:
 	RPG::SaveActor& data;

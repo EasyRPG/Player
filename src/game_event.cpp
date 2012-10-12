@@ -37,11 +37,11 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	map_id(map_id),
 	event(event),
 	erased(false),
-	through(true),
 	page(NULL),
 	interpreter(NULL) {
 
 	ID = event.ID;
+	through = true;
 	
 	MoveTo(event.x, event.y);
 	Refresh();
@@ -104,6 +104,7 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	priority_type = page->priority_type;
 	trigger = page->trigger;
 	list = page->event_commands;
+	through = false;
 	
 	// Free resources if needed
 	delete interpreter;

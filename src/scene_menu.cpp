@@ -194,7 +194,7 @@ void Scene_Menu::UpdateCommand() {
 				menustatus_window->SetIndex(0);
 			}
 			break;
-		case Save: // Save
+		case Save:
 			if (!Game_System::GetAllowSave()) {
 				Game_System::SePlay(Data::system.buzzer_se);
 			} else {
@@ -222,7 +222,7 @@ void Scene_Menu::UpdateCommand() {
 			Game_Temp::battle_wait = !Game_Temp::battle_wait;
 			command_window->SetItemText(menu_index, Game_Temp::battle_wait ? Data::terms.wait_on : Data::terms.wait_off);
 			break;
-		case Quit: // Quit Game
+		case Quit:
 			Game_System::SePlay(Data::system.decision_se);
 			Scene::Push(new Scene_End());
 			break;
@@ -240,18 +240,23 @@ void Scene_Menu::UpdateActorSelection() {
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Data::system.decision_se);
 		switch (command_options[command_window->GetIndex()]) {
-		case Skill: // Tech Skill
+		case Skill:
 			Scene::Push(new Scene_Skill(menustatus_window->GetIndex()));
 			break;
-		case Equipment: // Equipment
+		case Equipment:
 			Scene::Push(new Scene_Equip(menustatus_window->GetIndex()));
 			break;
 		case Status:
 			Scene::Push(new Scene_Status(menustatus_window->GetIndex()));
 			break;
 		case Row:
-			//
+		{
+			Game_Actor* actor = Game_Party::GetActors()[menustatus_window->GetIndex()];
+			actor->GetBattleRow() == -1 ?
+				actor->SetBattleRow(1) : actor->SetBattleRow(-1);
+			menustatus_window->Refresh();
 			break;
+		}
 		default:
 			assert(false);
 			break;
