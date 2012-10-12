@@ -539,3 +539,11 @@ void Game_Actor::SetBaseAgi(int agi) {
 	data.agility_mod += agi - GetBaseAgi();
 }
 
+////////////////////////////////////////////////////////////
+int Game_Actor::GetBattleRow() const {
+	return data.row;
+}
+
+void Game_Actor::SetBattleRow(int battle_row) {
+	data.row = battle_row;
+}
