@@ -88,6 +88,9 @@ private:
 	int def;
 	int spi;
 	int agi;
+
+	/// Needs redraw
+	bool dirty;
 };
 
 #endif

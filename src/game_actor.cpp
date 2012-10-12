@@ -112,16 +112,14 @@ int Game_Actor::SetEquipment(int equip_type, int new_item_id) {
 }
 
 ////////////////////////////////////////////////////////////
-void Game_Actor::ChangeEquipment(int equip_type, int item_id, bool test) {
+void Game_Actor::ChangeEquipment(int equip_type, int item_id) {
 	int prev_item = SetEquipment(equip_type, item_id);
 
-	if (!test) {
-		if (prev_item != 0) {
-			Game_Party::GainItem(prev_item, 1);
-		}
-		if (item_id != 0) {
-			Game_Party::LoseItem(item_id, 1);
-		}
+	if (prev_item != 0) {
+		Game_Party::GainItem(prev_item, 1);
+	}
+	if (item_id != 0) {
+		Game_Party::LoseItem(item_id, 1);
 	}
 }
 
@@ -541,3 +539,11 @@ void Game_Actor::SetBaseAgi(int agi) {
 	data.agility_mod += agi - GetBaseAgi();
 }
 
+////////////////////////////////////////////////////////////
+int Game_Actor::GetBattleRow() const {
+	return data.row;
+}
+
+void Game_Actor::SetBattleRow(int battle_row) {
+	data.row = battle_row;
+}

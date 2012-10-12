@@ -28,7 +28,8 @@ Window_EquipStatus::Window_EquipStatus(int ix, int iy, int iwidth, int iheight, 
 	Window_Base(ix, iy, iwidth, iheight),
 	actor_id(actor_id),
 	draw_params(false),
-	draw_actorname(draw_actorname) {
+	draw_actorname(draw_actorname),
+	dirty(true) {
 
 	SetContents(Surface::CreateSurface(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
@@ -42,19 +43,23 @@ Window_EquipStatus::~Window_EquipStatus() {
 
 ////////////////////////////////////////////////////////////
 void Window_EquipStatus::Refresh() {
-	contents->Clear();
+	if (dirty) {
+		contents->Clear();
 
-	int y_offset;
+		int y_offset;
 
-	if (draw_actorname) {
-		y_offset = 18;
-		DrawActorName(Game_Actors::GetActor(actor_id), 0, 2);
-	} else {
-		y_offset = 2;
-	}
+		if (draw_actorname) {
+			y_offset = 18;
+			DrawActorName(Game_Actors::GetActor(actor_id), 0, 2);
+		} else {
+			y_offset = 2;
+		}
 
-	for (int i = 0; i < 4; ++i) {
-		DrawParameter(0, y_offset + ((12 + 4) * i), i);
+		for (int i = 0; i < 4; ++i) {
+			DrawParameter(0, y_offset + ((12 + 4) * i), i);
+		}
+
+		dirty = false;
 	}
 }
 
@@ -63,13 +68,13 @@ void Window_EquipStatus::SetNewParameters(
 	int new_atk, int new_def, int new_spi, int new_agi) {
 	draw_params = true;
 
-	if (new_atk != atk || new_def != def || new_spi != spi ||
-		new_agi != agi) {
+	dirty = atk != new_atk || def != new_def || spi != new_spi || agi != new_agi;
+	
+	if (dirty) {
 		atk = new_atk;
 		def = new_def;
 		spi = new_spi;
 		agi = new_agi;
-		Refresh();
 	}
 }
 
@@ -77,6 +82,7 @@ void Window_EquipStatus::SetNewParameters(
 void Window_EquipStatus::ClearParameters() {
 	if (draw_params != false) {
 		draw_params = false;
+		dirty = true;
 		Refresh();
 	}
 }
