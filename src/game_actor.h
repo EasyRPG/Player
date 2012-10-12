@@ -206,11 +206,13 @@ public:
 
 	////////////////////////////////////////////////////////
 	/// Changes the equipment of the actor.
+	/// Removes one instance of that item from the Inventory and adds the old
+	/// one of the actor to it.
+	/// If you don't want this use SetEquipment instead.
 	/// @param equip_type : Type of equipment
 	/// @param item_id : Item to equip
-	/// @param test : For temporary equipment
 	////////////////////////////////////////////////////////
-	void ChangeEquipment(int equip_type, int item_id, bool test = false);
+	void ChangeEquipment(int equip_type, int item_id);
 
 	/// @return learned skills list.
 	const std::vector<int16_t>& GetSkills() const;

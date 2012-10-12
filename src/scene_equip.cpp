@@ -104,12 +104,15 @@ void Scene_Equip::UpdateStatusWindow() {
 		equipstatus_window->ClearParameters();
 	} else if (item_window->GetActive()) {
 		Game_Actor* actor = Game_Party::GetActors()[actor_index];
-		Game_Actor temp = *actor;
-		temp.ChangeEquipment(equip_window->GetIndex(),
-			item_window->GetItemId(), true);
+		int old_item = actor->SetEquipment(equip_window->GetIndex(),
+			item_window->GetItemId());
 
 		equipstatus_window->SetNewParameters(
-			temp.GetAtk(), temp.GetDef(), temp.GetSpi(), temp.GetAgi());
+			actor->GetAtk(), actor->GetDef(), actor->GetSpi(), actor->GetAgi());
+
+		actor->SetEquipment(equip_window->GetIndex(), old_item);
+
+		equipstatus_window->Refresh();
 	}
 
 	equipstatus_window->Update();

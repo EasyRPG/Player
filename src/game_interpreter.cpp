@@ -1134,7 +1134,7 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 		 i != actors.end(); 
 		 i++) {
 		Game_Actor* actor = *i;
-		actor->ChangeEquipment(slot, item_id, false);
+		actor->ChangeEquipment(slot, item_id);
 	}
 
 	return true;
