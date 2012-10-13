@@ -36,3 +36,4 @@ src/*.o
 src/easyrpg-player
 autom4te.cache/
 stamp-h1
+*~
