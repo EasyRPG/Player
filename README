@@ -23,7 +23,7 @@ Requirements
 
 EasyRPG Readers library. https://github.com/EasyRPG/Readers
 SDL for screen backend support.
-SDL_mixer for audio  support.
+SDL_mixer for audio support.
 SDL_ttf for font support.
 SDL_image for PNG support.
 ZLIB for XYZ image format support.
