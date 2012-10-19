@@ -1,6 +1,6 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8)
 
-PROJECT(EasyRPG_Player CXX C)
+project(EasyRPG_Player CXX C)
 
 # reader
 # - ${EASYRPG_READERS_PATH}
@@ -17,58 +17,58 @@ if(NOT EXISTS ${EASYRPG_READERS_PATH})
 endif()
 add_subdirectory(${EASYRPG_READERS_PATH}/builds/cmake ${EASYRPG_READERS_PATH}/builds/cmake)
 
-SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/testgame)
-SET(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
-LINK_DIRECTORIES(${LIBRARY_OUTPUT_PATH})
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../bin)
+set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
+link_directories(${LIBRARY_OUTPUT_PATH})
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/Modules")
 
-# SET(USE_OPENAL 1)
+# set(USE_OPENAL 1)
 
-ADD_DEFINITIONS(
+add_definitions(
   ${PNG_DEFINITIONS}
 
   -D UNIX=1
   -D USE_SDL=1
   -D USE_PIXMAN_BITMAP=1)
 
-IF(CMAKE_GENERATOR MATCHES "Makefile")
-  ADD_DEFINITIONS(-fno-exceptions -fno-rtti)
-ENDIF()
+if(CMAKE_GENERATOR MATCHES "Makefile")
+  add_definitions(-fno-exceptions -fno-rtti)
+endif()
 
-IF(USE_OPENAL)
-  FIND_PACKAGE(OpenAL REQUIRED)
-  INCLUDE_DIRECTORIES(${OPENAL_INCLUDE_DIR})
-  ADD_DEFINITIONS(-D USE_OPENAL=1)
-ENDIF()
+if(USE_OPENAL)
+  find_package(OpenAL REQUIRED)
+  include_directories(${OPENAL_INCLUDE_DIR})
+  add_definitions(-D USE_OPENAL=1)
+endif()
 
 # endianess check
-INCLUDE(TestBigEndian)
-TEST_BIG_ENDIAN(IS_BIG_ENDIAN)
-IF(IS_BIG_ENDIAN)
-  ADD_DEFINITIONS(-D READER_BIG_ENDIAN=1)
-ENDIF()
+include(TestBigEndian)
+test_big_endian(IS_BIG_ENDIAN)
+if(IS_BIG_ENDIAN)
+  add_definitions(-D READER_BIG_ENDIAN=1)
+endif()
 
-IF(APPLE)
-  ADD_DEFINITIONS(-D COCOA=1)
-ENDIF()
+if(APPLE)
+  add_definitions(-D COCOA=1)
+endif()
 
-IF(CMAKE_BUILD_TYPE MATCHES "Debug")
-  ADD_DEFINITIONS(-D _DEBUG=1)
-ENDIF()
+if(CMAKE_BUILD_TYPE MATCHES "Debug")
+  add_definitions(-D _DEBUG=1)
+endif()
 
-IF(CMAKE_SYSTEM_NAME MATCHES "Linux")
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
   # find gtk
   find_package(GTK2)
-  IF(GTK2_FOUND)
-    ADD_DEFINITIONS(-D GTK=1)
+  if(GTK2_FOUND)
+    add_definitions(-D GTK=1)
     include_directories(${GTK2_INCLUDE_DIRS})
     list(APPEND EASYRPG_PLAYER_LIBRARIES ${GTK2_LIBRARIES})
-  ENDIF()
-ENDIF()
+  endif()
+endif()
 
-# FIND_PACKAGE(Boost COMPONENTS serialization REQUIRED)
-foreach(i Expat Freetype Iconv JPEG Pixman PNG SDL SDL_mixer SDL_ttf ZLIB) # SDL_image
+# find_package(Boost COMPONENTS serialization REQUIRED)
+foreach(i Iconv Expat Freetype JPEG Pixman PNG SDL SDL_mixer SDL_ttf ZLIB) # SDL_image
   find_package(${i} REQUIRED)
 
   string(TOUPPER ${i} i)
@@ -82,58 +82,55 @@ foreach(i Expat Freetype Iconv JPEG Pixman PNG SDL SDL_mixer SDL_ttf ZLIB) # SDL
     ${${sdl}_LIBRARY}  ${${sdl}_LIBRARIES})
 endforeach()
 
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/../../lib/readers/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../lib/readers/include)
 
 # library
-list(INSERT EASYRPG_PLAYER_LIBRARIES 0 ${PROJECT_NAME}_Static EasyRPG_Reader)
-IF(USE_OPENAL)
-  LIST(APPEND EASYRPG_PLAYER_LIBRARIES
+list(APPEND EASYRPG_PLAYER_LIBRARIES ${PROJECT_NAME}_Static EasyRPG_Reader)
+if(USE_OPENAL)
+  list(APPEND EASYRPG_PLAYER_LIBRARIES
     avformat avcodec avutil avdevice
     ${OPENAL_LIBRARY})
-ENDIF()
+endif()
 
 # entry point
-SET(MAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../../src/main.cpp")
+set(MAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../../src/main.cpp")
 
 # static library
-AUX_SOURCE_DIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/../../src SRCS)
-LIST(REMOVE_ITEM SRCS ${MAIN_FILE})
-ADD_LIBRARY(${PROJECT_NAME}_Static STATIC ${SRCS})
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/../../src SRCS)
+list(REMOVE_ITEM SRCS ${MAIN_FILE})
+add_library(${PROJECT_NAME}_Static STATIC ${SRCS})
 
-ADD_EXECUTABLE(${PROJECT_NAME} MACOSX_BUNDLE ${CMAKE_CURRENT_SOURCE_DIR}/../../src/main.cpp)
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${EASYRPG_PLAYER_LIBRARIES})
+add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${CMAKE_CURRENT_SOURCE_DIR}/../../src/main.cpp)
+target_link_libraries(${PROJECT_NAME} ${EASYRPG_PLAYER_LIBRARIES})
 
-ADD_DEPENDENCIES(${PROJECT_NAME} EasyRPG_Reader ${PROJECT_NAME}_Static)
+add_dependencies(${PROJECT_NAME} EasyRPG_Reader ${PROJECT_NAME}_Static)
 
 # Doxygen
-FIND_PACKAGE(Doxygen)
+find_package(Doxygen)
 if(DOXYGEN_FOUND)
-  ADD_CUSTOM_TARGET(player_doc
+  add_custom_target(player_doc
     ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/../Doxyfile
     DEPENDS ${SRCS} ${MAIN_FILE}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/..
     COMMENT "Generating API documentation with Doxygen" VERBATIM)
-  ADD_CUSTOM_TARGET(doc)
-  ADD_DEPENDENCIES(doc player_doc reader_doc)
+  add_custom_target(doc)
+  add_dependencies(doc player_doc reader_doc)
 endif()
 
 # test
-ENABLE_TESTING()
+enable_testing()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../src)
 
-FUNCTION(CXX_TEST target libs)
-  get_filename_component(name ${target} NAME_WE)
-  ADD_EXECUTABLE(test_${name} ${target})
-  TARGET_LINK_LIBRARIES(test_${name} ${libs})
-  ADD_TEST(
+file(GLOB TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../test/*.cpp)
+foreach(i ${TEST_FILES})
+  get_filename_component(name ${i} NAME_WE)
+  add_executable(test_${name} ${i})
+  target_link_libraries(test_${name} ${EASYRPG_PLAYER_LIBRARIES})
+  add_dependencies(test_${name} ${PROJECT_NAME}_Static)
+
+  add_test(
     NAME test_${name}
     WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH}
     COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_${name})
-  ADD_DEPENDENCIES(test_${name} ${PROJECT_NAME}_Static)
-ENDFUNCTION()
-
-file(GLOB TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../test/*.cpp)
-FOREACH(i ${TEST_FILES})
-  CXX_TEST(${i} ${PROJECT_NAME}_Static ${EASYRPG_PLAYER_LIBRARIES})
-ENDFOREACH()
+endforeach()

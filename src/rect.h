@@ -112,6 +112,7 @@ public:
 	/// Height.
 	int height;
 
+
 	///////////////////////////////////////////////////////
 	/// Adjust a source/destination pair of rectangles
 	/// src is adjusted to fit within ref

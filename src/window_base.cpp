@@ -73,7 +73,7 @@ void Window_Base::DrawActorName(Game_Actor* actor, int cx, int cy) {
 	contents->TextDraw(cx, cy, Font::ColorDefault, actor->GetName());
 }
 
-void Window_Base::DrawActorTitle(Game_Actor* actor, int cx, int cy) {
+void Window_Base::DrawActorTitle(Game_Actor* /* actor */, int /* cx */, int /* cy */) {
 
 }
 
@@ -183,7 +183,7 @@ void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy, bool draw_max) 
 void Window_Base::DrawActorParameter(Game_Actor* actor, int cx, int cy, int type) {
 	std::string name;
 	int value;
-	
+
 	switch (type) {
 	case 0:
 		name = Data::terms.attack;
@@ -206,7 +206,6 @@ void Window_Base::DrawActorParameter(Game_Actor* actor, int cx, int cy, int type
 	}
 
 	// Draw Term
-	Rect rect = contents->GetTextSize(name);
 	contents->TextDraw(cx, cy, 1, name);
 
 	// Draw Value
@@ -217,7 +216,7 @@ void Window_Base::DrawActorParameter(Game_Actor* actor, int cx, int cy, int type
 
 void Window_Base::DrawEquipmentType(Game_Actor* actor, int cx, int cy, int type) {
 	std::string name;
-	
+
 	switch (type) {
 	case 0:
 		name = Data::terms.weapon;

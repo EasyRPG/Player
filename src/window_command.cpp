@@ -57,7 +57,7 @@ void Window_Command::DisableItem(int i) {
 }
 
 ////////////////////////////////////////////////////////////
-void Window_Command::SetItemText(unsigned index, std::string text) {
+void Window_Command::SetItemText(unsigned index, std::string const& text) {
 	if (index < commands.size()) {
 		commands[index] = text;
 		DrawItem(index, Font::ColorDefault);

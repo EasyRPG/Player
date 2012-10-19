@@ -168,7 +168,7 @@ Color Bitmap::GetTransparentColor() const {
 }
 
 ////////////////////////////////////////////////////////////
-void Bitmap::SetTransparentColor(Color color) {
+void Bitmap::SetTransparentColor(Color /* color */) {
 }
 
 ////////////////////////////////////////////////////////////
@@ -273,4 +273,3 @@ uint32 Bitmap::colorkey() const {
 uint8* Bitmap::pointer(int x, int y) {
 	return (uint8*) pixels() + y * pitch() + x * bytes();
 }
-

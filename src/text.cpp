@@ -29,7 +29,7 @@
 #include "wcwidth.h"
 
 ////////////////////////////////////////////////////////////
-void Text::Draw(Surface* dest, int x, int y, int color, std::wstring wtext, Surface::TextAlignment align) {
+void Text::Draw(Surface* dest, int x, int y, int color, std::wstring const& wtext, Surface::TextAlignment align) {
 	if (wtext.length() == 0) return;
 
 	Font* font = dest->GetFont();
@@ -67,7 +67,7 @@ void Text::Draw(Surface* dest, int x, int y, int color, std::wstring wtext, Surf
 	if ((shadow_color.red == 0) &&
 		(shadow_color.green == 0) &&
 		(shadow_color.blue == 0) ) {
-		
+
 		if (text_surface->bytes() >= 3) {
 			shadow_color.blue++;
 		} else {
@@ -171,7 +171,7 @@ void Text::Draw(Surface* dest, int x, int y, int color, std::wstring wtext, Surf
 				++c;
 			}
 		}
-		next_glyph_pos += 6;	
+		next_glyph_pos += 6;
 	}
 
 	Bitmap* text_bmp = Bitmap::CreateBitmap(text_surface, text_surface->GetRect());
@@ -189,7 +189,7 @@ void Text::Draw(Surface* dest, int x, int y, int color, std::wstring wtext, Surf
 	delete text_surface;
 }
 
-void Text::Draw(Surface* dest, int x, int y, int color, std::string text, Surface::TextAlignment align) {
+void Text::Draw(Surface* dest, int x, int y, int color, std::string const& text, Surface::TextAlignment align) {
 	if (text.length() == 0) return;
 
 	std::wstring wtext = Utils::DecodeUTF(text);
