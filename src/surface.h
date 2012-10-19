@@ -206,7 +206,7 @@ public:
 	/// @param dst_rect : destination rect
 	////////////////////////////////////////////////////////
 	virtual void ClearRect(Rect dst_rect);
-	
+
 	////////////////////////////////////////////////////////
 	/// Rotate bitmap hue.
 	/// @param x : x position
@@ -396,8 +396,8 @@ public:
 	/// @param text : text to draw
 	/// @param align : text alignment
 	////////////////////////////////////////////////////////
-	virtual void TextDraw(int x, int y, int color, std::string text, TextAlignment align = Surface::TextAlignLeft);
-	virtual void TextDraw(int x, int y, int color, std::wstring text, TextAlignment align = Surface::TextAlignLeft);
+	virtual void TextDraw(int x, int y, int color, std::string const& text, TextAlignment align = Surface::TextAlignLeft);
+	virtual void TextDraw(int x, int y, int color, std::wstring const& text, TextAlignment align = Surface::TextAlignLeft);
 
 	////////////////////////////////////////////////////////
 	/// Draws text to bitmap.
@@ -409,8 +409,8 @@ public:
 	/// @param text : text to draw
 	/// @param align : text alignment inside bounding rectangle
 	////////////////////////////////////////////////////////
-	virtual void TextDraw(int x, int y, int width, int height, int color, std::string text, TextAlignment align = Surface::TextAlignLeft);
-	virtual void TextDraw(int x, int y, int width, int height, int color, std::wstring text, TextAlignment align = Surface::TextAlignLeft);
+	virtual void TextDraw(int x, int y, int width, int height, int color, std::string const& text, TextAlignment align = Surface::TextAlignLeft);
+	virtual void TextDraw(int x, int y, int width, int height, int color, std::wstring const& text, TextAlignment align = Surface::TextAlignLeft);
 
 	////////////////////////////////////////////////////////
 	/// Draws text to bitmap.
@@ -419,8 +419,8 @@ public:
 	/// @param text : text to draw
 	/// @param align : text alignment inside bounding rectangle
 	////////////////////////////////////////////////////////
-	virtual void TextDraw(Rect rect, int color, std::string text, TextAlignment align = Surface::TextAlignLeft);
-	virtual void TextDraw(Rect rect, int color, std::wstring text, TextAlignment align = Surface::TextAlignLeft);
+	virtual void TextDraw(Rect rect, int color, std::string const& text, TextAlignment align = Surface::TextAlignLeft);
+	virtual void TextDraw(Rect rect, int color, std::wstring const& text, TextAlignment align = Surface::TextAlignLeft);
 
 	////////////////////////////////////////////////////////
 	/// Get space needed to draw some text.

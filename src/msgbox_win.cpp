@@ -105,7 +105,7 @@ LRESULT CALLBACK CBTProc(INT nCode, WPARAM wParam, LPARAM lParam) {
 			// calculate message box starting point
 			pStart.x = (pCenter.x - (nWidth / 2));
 			pStart.y = (pCenter.y - (nHeight / 2));
-    
+
 			// adjust if message box is off desktop
 			if (pStart.x < 0) pStart.x = 0;
 			if (pStart.y < 0) pStart.y = 0;
@@ -143,7 +143,7 @@ void ShowTaskDialog(std::string& msg, std::string& title, LPCTSTR icon) {
 		// TaskDialog
 		size_t pos = msg.find_first_of('\n');
 		std::string content = "";
-		
+
 		if (pos == msg.length() - 1) {
 			msg.resize(pos);
 		}
@@ -176,7 +176,7 @@ void ShowTaskDialog(std::string& msg, std::string& title, LPCTSTR icon) {
 ////////////////////////////////////////////////////////////
 /// Default Message Box with OK button
 ////////////////////////////////////////////////////////////
-void MsgBox::OK(std::string msg, std::string title) {
+void MsgBox::OK(std::string const& msg, std::string const& title) {
 #ifdef _MSC_VER
 	if (WindowsUtils::GetWindowsVersion() >= 6) {
 		ShowTaskDialog(msg, title, TD_INFORMATION_ICON);
@@ -191,7 +191,7 @@ void MsgBox::OK(std::string msg, std::string title) {
 ////////////////////////////////////////////////////////////
 /// Error Message Box
 ////////////////////////////////////////////////////////////
-void MsgBox::Error(std::string msg, std::string title) {
+void MsgBox::Error(std::string const& msg, std::string const& title) {
 #ifdef _MSC_VER
 	if (WindowsUtils::GetWindowsVersion() >= 6) {
 		ShowTaskDialog(msg, title, TD_ERROR_ICON);
@@ -206,7 +206,7 @@ void MsgBox::Error(std::string msg, std::string title) {
 ////////////////////////////////////////////////////////////
 /// Warning Message Box
 ////////////////////////////////////////////////////////////
-void MsgBox::Warning(std::string msg, std::string title) {
+void MsgBox::Warning(std::string const& msg, std::string const& title) {
 #ifdef _MSC_VER
 	if (WindowsUtils::GetWindowsVersion() >= 6) {
 		ShowTaskDialog(msg, title, TD_WARNING_ICON);

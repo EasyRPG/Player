@@ -41,7 +41,7 @@
 class PixmanBitmap : public Surface {
 public:
 	PixmanBitmap(int width, int height, bool transparent);
-	PixmanBitmap(const std::string filename, bool transparent, uint32 flags);
+	PixmanBitmap(const std::string& filename, bool transparent, uint32 flags);
 	PixmanBitmap(const uint8* data, uint bytes, bool transparent, uint32 flags);
 	PixmanBitmap(Bitmap* source, Rect src_rect, bool transparent);
 	PixmanBitmap(void *pixels, int width, int height, int pitch, const DynamicFormat& format);

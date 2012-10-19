@@ -206,7 +206,7 @@ PixmanBitmap::PixmanBitmap(void *pixels, int width, int height, int pitch, const
 	Init(width, height, pixels, pitch, false);
 }
 
-PixmanBitmap::PixmanBitmap(const std::string filename, bool transparent, uint32 flags) {
+PixmanBitmap::PixmanBitmap(const std::string& filename, bool transparent, uint32 flags) {
 	format = (transparent ? pixel_format : opaque_pixel_format);
 	pixman_format = find_format(format);
 
@@ -332,7 +332,7 @@ Bitmap* PixmanBitmap::Resample(int scale_w, int scale_h, const Rect& src_rect) {
 	pixman_transform_init_scale(&xform,
 								pixman_double_to_fixed(zoom_x),
 								pixman_double_to_fixed(zoom_y));
-	
+
 	pixman_image_set_transform(bitmap, &xform);
 
 	pixman_image_composite32(PIXMAN_OP_SRC,
@@ -567,10 +567,10 @@ void PixmanBitmap::Fill(const Color &color) {
 void PixmanBitmap::FillRect(Rect dst_rect, const Color &color) {
 	pixman_color_t pcolor = PixmanColor(color);
 	pixman_rectangle16_t rect = {
-    static_cast<uint16_t>(dst_rect.x),
-    static_cast<uint16_t>(dst_rect.y),
+    static_cast<int16_t>(dst_rect.x),
+    static_cast<int16_t>(dst_rect.y),
     static_cast<uint16_t>(dst_rect.width),
-    static_cast<uint16_t>(dst_rect.height)};
+    static_cast<uint16_t>(dst_rect.height), };
 
 	pixman_image_fill_rectangles(PIXMAN_OP_SRC, bitmap, &pcolor, 1, &rect);
 
@@ -590,10 +590,10 @@ void PixmanBitmap::Clear() {
 void PixmanBitmap::ClearRect(Rect dst_rect) {
 	pixman_color_t pcolor = {0, 0, 0, 0};
 	pixman_rectangle16_t rect = {
-    static_cast<uint16_t>(dst_rect.x),
-    static_cast<uint16_t>(dst_rect.y),
+    static_cast<int16_t>(dst_rect.x),
+    static_cast<int16_t>(dst_rect.y),
     static_cast<uint16_t>(dst_rect.width),
-    static_cast<uint16_t>(dst_rect.height)};
+    static_cast<uint16_t>(dst_rect.height), };
 
 	pixman_image_fill_rectangles(PIXMAN_OP_CLEAR, bitmap, &pcolor, 1, &rect);
 
@@ -612,10 +612,10 @@ void PixmanBitmap::OpacityBlit(int x, int y, Bitmap* _src, Rect src_rect, int op
 	if (src == this) {
 		pixman_color_t pcolor = {0, 0, 0, static_cast<uint16_t>(opacity << 8)};
 		pixman_rectangle16_t rect = {
-      static_cast<uint16_t>(src_rect.x),
-      static_cast<uint16_t>(src_rect.y),
+      static_cast<int16_t>(src_rect.x),
+      static_cast<int16_t>(src_rect.y),
       static_cast<uint16_t>(src_rect.width),
-      static_cast<uint16_t>(src_rect.height)};
+      static_cast<uint16_t>(src_rect.height), };
 
 		pixman_image_fill_rectangles(PIXMAN_OP_IN_REVERSE, bitmap, &pcolor, 1, &rect);
 	}
@@ -849,4 +849,3 @@ void PixmanBitmap::Unlock() {
 }
 
 #endif
-

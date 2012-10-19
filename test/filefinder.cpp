@@ -2,13 +2,13 @@
 #include <SDL.h>
 #include <cstdlib>
 
-/*
-TEST(FileFinder, InitAndQuit) {
+static void InitAndQuit() {
 	FileFinder::Init();
 	FileFinder::Quit();
 }
-*/
 
-int main() {
+extern "C" int main(int, char**) {
+  InitAndQuit();
+
   return EXIT_SUCCESS;
 }
