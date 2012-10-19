@@ -63,7 +63,7 @@ static int FilterUntilFocus(const SDL_Event* evnt);
 #endif
 
 ///////////////////////////////////////////////////////////
-SdlUi::SdlUi(long width, long height, const std::string title, bool fs_flag) :
+SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 	zoom_available(true),
 	toggle_fs_available(false),
 	mode_changing(false),
@@ -193,7 +193,7 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 					return true;
 				} else {
 					int len = 0;
-					while (modes[len]) 
+					while (modes[len])
 						++len;
 
 					for (int i = len-1; i >= 0; --i) {
@@ -223,7 +223,7 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 		// Stop here since we need a window manager for non fullscreen modes
 		return false;
 	}
-	
+
 	// No hard accel and no window manager
 	flags = SDL_SWSURFACE | SDL_FULLSCREEN;
 
@@ -242,7 +242,7 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 	}
 
 	int len = 0;
-	while (modes[len]) 
+	while (modes[len])
 		++len;
 
 	for (int i = len-1; i > 0; --i) {
@@ -324,7 +324,7 @@ bool SdlUi::RefreshDisplayMode() {
 		main_surface = NULL;
 	}
 	#endif
-	
+
 	// Create our window
 	main_window = SDL_SetVideoMode(display_width, display_height, bpp, flags);
 
@@ -334,7 +334,7 @@ bool SdlUi::RefreshDisplayMode() {
 	// Modes below 15 bpp aren't supported
 	if (main_window->format->BitsPerPixel < 15)
 		return false;
-		
+
 	current_display_mode.bpp = main_window->format->BitsPerPixel;
 
 	const DynamicFormat format(
@@ -367,7 +367,7 @@ bool SdlUi::RefreshDisplayMode() {
 											  false,
 											  current_display_mode.bpp);
 
-		if (!main_surface) 
+		if (!main_surface)
 			return false;
 
 	} else {
@@ -483,7 +483,7 @@ void SdlUi::DrawScreenText(const std::string &text, int x, int y, Color color) {
 	uint32 ucolor = main_surface->GetUint32Color(color);
 
 	FontRender8x8::TextDraw(text, (uint8*)main_surface->pixels(), x, y, main_surface->width(), main_surface->height(), main_surface->bytes(), ucolor);
-	
+
 	main_surface->Unlock();
 }
 
@@ -726,7 +726,7 @@ void SdlUi::ProcessJoystickHatEvent(SDL_Event &evnt) {
 
 	// Check hat states
 	if ((evnt.jhat.value & SDL_HAT_RIGHTUP) == SDL_HAT_RIGHTUP)
-		keys[Input::Keys::JOY_HAT_UPPER_RIGHT] = true;	
+		keys[Input::Keys::JOY_HAT_UPPER_RIGHT] = true;
 
 	else if ((evnt.jhat.value & SDL_HAT_RIGHTDOWN)  == SDL_HAT_RIGHTDOWN)
 		keys[Input::Keys::JOY_HAT_LOWER_RIGHT] = true;

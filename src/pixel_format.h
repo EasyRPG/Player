@@ -325,7 +325,7 @@ struct opacity_type_traits {};
 
 template<class TPF, PF::OpacityType _opacity_type>
 struct opacity_type_traits<TPF, PF::StaticAlpha, _opacity_type> {
-	static inline PF::OpacityType opacity_type(const TPF* pf) {
+	static inline PF::OpacityType opacity_type(const TPF* /* pf */) {
 		return _opacity_type;
 	}
 };
@@ -391,7 +391,7 @@ struct alpha_traits<TPF, aligned, PF::StaticAlpha, PF::NoAlpha> {
 	static inline uint8 get_alpha(const TPF* /* pf */, const uint8* /* p */) {
 		return 255;
 	}
-	static inline void set_alpha(const TPF* pf, uint8* p, uint8 alpha) {
+	static inline void set_alpha(const TPF* /* pf */, uint8* /* p */, uint8 /* alpha */) {
 	}
 };
 
@@ -465,7 +465,7 @@ struct rgba_traits<TPF, PF::IsAligned, PF::StaticAlpha, PF::NoAlpha> {
 		a = 255;
 	}
 
-	static inline void set_rgba(const TPF* pf, uint8* p, const uint8& r, const uint8& g, const uint8& b, const uint8& a) {
+	static inline void set_rgba(const TPF* pf, uint8* p, const uint8& r, const uint8& g, const uint8& b, const uint8& /* a */) {
 		p[pf->r_byte()] = r;
 		p[pf->g_byte()] = g;
 		p[pf->b_byte()] = b;
@@ -663,9 +663,9 @@ public:
 
 	inline uint32 rgba_to_uint32(const uint8& r, const uint8& g, const uint8& b, const uint8& a) const {
 		return
-			(((uint32)r >> (8 - r_bits())) << r_shift()) | 
-			(((uint32)g >> (8 - g_bits())) << g_shift()) | 
-			(((uint32)b >> (8 - b_bits())) << b_shift()) | 
+			(((uint32)r >> (8 - r_bits())) << r_shift()) |
+			(((uint32)g >> (8 - g_bits())) << g_shift()) |
+			(((uint32)b >> (8 - b_bits())) << b_shift()) |
 			(((uint32)a >> (8 - a_bits())) << a_shift());
 	}
 
@@ -825,4 +825,3 @@ typedef PixelFormatT<16,PF::DynamicMasks,PF::DynamicAlpha,PF::NoAlpha,PF::NotAli
 ////////////////////////////////////////////////////////////
 
 #endif
-

@@ -56,7 +56,7 @@ public:
 	/// @param index : command index
 	/// @param text : new item text
 	////////////////////////////////////////////////////////
-	void SetItemText(unsigned index, std::string text);
+	void SetItemText(unsigned index, std::string const& text);
 
 protected:
 	std::vector<std::string> commands;

@@ -21,6 +21,8 @@
 #include <cmath>
 #include <cstring>
 #include <algorithm>
+#include <utility>
+
 #include "utils.h"
 #include "cache.h"
 #include "bitmap.h"
@@ -161,8 +163,8 @@ void Surface::TiledBlit(Rect src_rect, Bitmap* src, Rect dst_rect, int opacity) 
 
 	for (int j = 0; j < y_blits; j++) {
 		tile.height = std::min(src_rect.height, dst_rect.height + dst_rect.y - j * src_rect.height);
-		for (int i = 0; i < x_blits; i++) {
-			tile.width = std::min(src_rect.width, dst_rect.width + dst_rect.x - i * src_rect.width);
+    for (int i = 0; i < x_blits; i++) {
+  		tile.width = std::min(src_rect.width, dst_rect.width + dst_rect.x - i * src_rect.width);
 			Blit(dst_rect.x + i * src_rect.width, dst_rect.y + j * src_rect.height, src, tile, opacity);
 		}
 	}
@@ -561,7 +563,7 @@ void Surface::ToneBlit(int x, int y, Bitmap* src, Rect src_rect, const Tone &ton
 			dst_pixels += pitch();
 		}
 	}
-	
+
 	End(src);
 }
 
@@ -590,7 +592,7 @@ void Surface::BlendBlit(int x, int y, Bitmap* src, Rect src_rect, const Color &c
 		src_pixels += src->pitch();
 		dst_pixels += pitch();
 	}
-	
+
 	End(src);
 }
 
@@ -767,7 +769,7 @@ void Surface::SetFont(Font* new_font) {
 	font = new_font;
 }
 
-void Surface::TextDraw(int x, int y, int width, int height, int color, std::wstring wtext, TextAlignment align) {
+void Surface::TextDraw(int x, int y, int width, int height, int color, std::wstring const& wtext, TextAlignment align) {
 	Rect rect = Surface::GetTextSize(wtext);
 	int dx = rect.width - width;
 
@@ -784,24 +786,24 @@ void Surface::TextDraw(int x, int y, int width, int height, int color, std::wstr
 	}
 }
 
-void Surface::TextDraw(int x, int y, int width, int height, int color, std::string text, TextAlignment align) {
+void Surface::TextDraw(int x, int y, int width, int height, int color, std::string const& text, TextAlignment align) {
 	TextDraw(x, y, width, height, color, Utils::DecodeUTF(text), align);
 }
 
-void Surface::TextDraw(Rect rect, int color, std::wstring wtext, TextAlignment align) {
+void Surface::TextDraw(Rect rect, int color, std::wstring const& wtext, TextAlignment align) {
 	TextDraw(rect.x, rect.y, rect.width, rect.height, color, wtext, align);
 }
 
-void Surface::TextDraw(Rect rect, int color, std::string text, TextAlignment align) {
+void Surface::TextDraw(Rect rect, int color, std::string const& text, TextAlignment align) {
 	TextDraw(rect, color, Utils::DecodeUTF(text), align);
 }
 
-void Surface::TextDraw(int x, int y, int color, std::wstring wtext, TextAlignment align) {
+void Surface::TextDraw(int x, int y, int color, std::wstring const& wtext, TextAlignment align) {
 	Text::Draw(this, x, y, color, wtext, align);
 	RefreshCallback();
 }
 
-void Surface::TextDraw(int x, int y, int color, std::string text, TextAlignment align) {
+void Surface::TextDraw(int x, int y, int color, std::string const& text, TextAlignment align) {
 	TextDraw(x, y, color, Utils::DecodeUTF(text), align);
 }
 
@@ -842,4 +844,3 @@ Matrix Matrix::Setup(double angle,
 	m = m.PreMultiply(Matrix::Translation(dst_pos_x, dst_pos_y));
 	return m;
 }
-

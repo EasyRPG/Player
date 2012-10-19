@@ -31,8 +31,8 @@
 /// Registry namespace
 ////////////////////////////////////////////////////////////
 namespace Registry {
-	std::string ReadStrValue(HKEY hkey, std::string key, std::string val);
-	int ReadBinValue(HKEY hkey, std::string key, std::string val, unsigned char* bin);
+	std::string ReadStrValue(HKEY hkey, std::string const& key, std::string const& val);
+	int ReadBinValue(HKEY hkey, std::string const& key, std::string const& val, unsigned char* bin);
 }
 
 #endif

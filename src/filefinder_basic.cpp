@@ -15,7 +15,7 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#if GEKKO || PSP 
+#if GEKKO || PSP
 
 ////////////////////////////////////////////////////////////
 // Headers
@@ -34,7 +34,7 @@ static std::vector<std::string> search_paths;
 ////////////////////////////////////////////////////////////
 // Helper Methods
 ////////////////////////////////////////////////////////////
-static bool FileExists(std::string filename) {
+static bool FileExists(std::string const& filename) {
 	FILE* file = fopen(filename.c_str(), "r");
 	if (file != NULL) {
 		fclose(file);

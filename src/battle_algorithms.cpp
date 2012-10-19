@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////
 // This file is part of EasyRPG Player.
-// 
+//
 // EasyRPG Player is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // EasyRPG Player is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
@@ -75,7 +75,7 @@ void Game_Battle::UseItem(Battle::Ally& ally, const RPG::Item& item) {
 }
 
 ////////////////////////////////////////////////////////////
-void Game_Battle::UseItemAlly(Battle::Ally& ally, const RPG::Item& item, Battle::Ally& target) {
+void Game_Battle::UseItemAlly(Battle::Ally& /* ally */, const RPG::Item& item, Battle::Ally& target) {
 	if (item.ko_only && !target.GetActor()->IsDead())
 		return;
 
@@ -148,7 +148,7 @@ void Game_Battle::UseSkill(Battle::Ally& ally, const RPG::Skill& skill) {
 }
 
 ////////////////////////////////////////////////////////////
-void Game_Battle::UseSkillAlly(Battle::Battler& user, const RPG::Skill& skill, Battle::Battler& target) {
+void Game_Battle::UseSkillAlly(Battle::Battler& /* user */, const RPG::Skill& skill, Battle::Battler& target) {
 	Game_Battler* actor = target.GetActor();
 	bool miss = true;
 
@@ -213,7 +213,7 @@ void Game_Battle::UseSkillEnemy(Battle::Battler& user, const RPG::Skill& skill, 
 
 			// FIXME: This is what the help file says, but it doesn't look right
 			int effect = skill.power +
-				user.GetAtk() * skill.pdef_f / 20 + 
+				user.GetAtk() * skill.pdef_f / 20 +
 				actor->GetDef() * skill.mdef_f / 40;
 
 			if (skill.variance > 0) {
@@ -414,4 +414,3 @@ void Game_Battle::EnemySkill(Battle::Enemy& enemy, const RPG::Skill& skill) {
 
 	enemy.game_enemy->SetSp(enemy.game_enemy->GetSp() - sp);
 }
-

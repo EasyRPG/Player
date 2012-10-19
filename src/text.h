@@ -23,8 +23,8 @@
 
 class Text {
 public:
-	static void Draw(Surface* dest, int x, int y, int color, std::string text, Surface::TextAlignment align = Surface::TextAlignLeft);
-	static void Draw(Surface* dest, int x, int y, int color, std::wstring text, Surface::TextAlignment align = Surface::TextAlignLeft);
+	static void Draw(Surface* dest, int x, int y, int color, std::string const& text, Surface::TextAlignment align = Surface::TextAlignLeft);
+	static void Draw(Surface* dest, int x, int y, int color, std::wstring const& text, Surface::TextAlignment align = Surface::TextAlignLeft);
 };
 
 #endif

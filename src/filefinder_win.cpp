@@ -46,7 +46,7 @@ static std::string fonts_path;
 ////////////////////////////////////////////////////////////
 // Helper Methods
 ////////////////////////////////////////////////////////////
-static bool FileExists(std::string filename) {
+static bool FileExists(std::string const& filename) {
 	std::wstring file = Utils::DecodeUTF(filename);
 	return GetFileAttributes(file.c_str()) != (DWORD)-1;
 }
@@ -108,7 +108,7 @@ std::string GetFontsPath() {
 		return fonts_path;
 	}
 }
-std::string GetFontFilename(std::string name) {
+std::string GetFontFilename(std::string const& name) {
 	std::string real_name = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts", name + " (TrueType)");
 	if (real_name.length() > 0) {
 		if (FileExists(real_name))
@@ -124,7 +124,7 @@ std::string GetFontFilename(std::string name) {
 		if (FileExists(GetFontsPath() + real_name))
 			return GetFontsPath() + real_name;
 	}
-	
+
 	return name;
 }
 
@@ -224,7 +224,7 @@ std::string FileFinder::DefaultFont() {
 
 		init = true;
 	}
-	
+
 	return default_font;
 }
 

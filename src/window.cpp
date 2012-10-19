@@ -59,7 +59,7 @@ Window::Window():
 
 	zobj = Graphics::RegisterZObj(0, ID);
 	Graphics::RegisterDrawable(ID, this);
-	
+
 	windowskin_screen = BitmapScreen::CreateBitmapScreen();
 	contents_screen = BitmapScreen::CreateBitmapScreen();
 
@@ -106,12 +106,12 @@ void Window::Draw(int z_order) {
 	if (!visible) return;
 	if (width <= 0 || height <= 0) return;
 	if (x < -width || x > DisplayUi->GetWidth() || y < -height || y > DisplayUi->GetHeight()) return;
-	
+
 
 	if (windowskin != NULL) {
 		if (width > 4 && height > 4 && (back_opacity * opacity / 255 > 0)) {
 			if (background_needs_refresh) RefreshBackground();
-			
+
 			if (animation_frames > 0) {
 				int ianimation_count = (int)animation_count;
 
@@ -173,19 +173,19 @@ void Window::Draw(int z_order) {
 			Rect src_rect(-min(-ox, 0), -min(-oy, 0),
 						  min(width - 2 * border_x, width - 2 * border_x + ox),
 						  min(height - 2 * border_y, height - 2 * border_y + oy));
-			
+
 			contents_screen->SetOpacityEffect(contents_opacity);
 
 			contents_screen->BlitScreen(max(x + border_x, x + border_x - ox),
 										max(y + border_y, y + border_y - oy), src_rect);
 		}
 	}
-	
+
 	if (pause && pause_frame > 16 && animation_frames <= 0) {
 		Rect src_rect(40, 16, 16, 8);
 		windowskin_screen->BlitScreen(x + width / 2 - 8, y + height - 8, src_rect);
 	}
-	
+
 	if (up_arrow) {
 		Rect src_rect(40, 8, 16, 8);
 		windowskin_screen->BlitScreen(x + width / 2 - 8, y, src_rect);
@@ -230,14 +230,14 @@ void Window::RefreshFrame() {
 
 	up_bitmap->Clear();
 	down_bitmap->Clear();
-	
+
 	Rect src_rect, dst_rect;
 
 	// Border Up
 	src_rect.Set(32 + 8, 0, 16, 8);
 	dst_rect.Set(8, 0, max(width - 16, 1), 8);
 	up_bitmap->TiledBlit(8, 0, src_rect, windowskin, dst_rect, 255);
-	
+
 	// Border Down
 	src_rect.Set(32 + 8, 32 - 8, 16, 8);
 	dst_rect.Set(8, 0, max(width - 16, 1), 8);
@@ -245,7 +245,7 @@ void Window::RefreshFrame() {
 
 	// Upper left corner
 	up_bitmap->Blit(0, 0, windowskin, Rect(32, 0, 8, 8), 255);
-	
+
 	// Upper right corner
 	up_bitmap->Blit(width - 8, 0, windowskin, Rect(64 - 8, 0, 8, 8), 255);
 
