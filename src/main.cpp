@@ -22,18 +22,17 @@
 #include "graphics.h"
 #include "input.h"
 #include "audio.h"
-#include <cstdlib>
 
-#ifdef PSP
-extern "C"
-#endif
-int main(int argc, char* argv[]) {
+#include <cstdlib>
+#include <SDL.h>
+
+extern "C" int main(int argc, char* argv[]) {
 	Player::Init(argc, argv);
 	Graphics::Init();
 	Input::Init();
 	Audio::Init();
 
 	Player::Run();
-	
+
 	return EXIT_SUCCESS;
 }
