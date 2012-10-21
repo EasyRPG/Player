@@ -21,9 +21,17 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include "system.h"
+
 #include <string>
 #include <vector>
 #include <boost/shared_ptr.hpp>
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include FT_BITMAP_H
+#include "font.h"
+#include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
 /// Font class
@@ -37,10 +45,10 @@ typedef boost::shared_ptr<Font> FontRef;
 class Font {
 public:
 	Font(const std::string& name, int size, bool bold, bool italic);
-	virtual ~Font();
+	~Font();
 
-	virtual int GetHeight() = 0;
-	virtual boost::shared_ptr<Bitmap> Render(int glyph) = 0;
+	int GetHeight();
+	boost::shared_ptr<Bitmap> Render(int glyph);
 
 	static FontRef CreateFont(const std::string& name = "", int size = 0, bool bold = false, bool italic = false);
 	static bool Exists(const std::string& name);
@@ -61,6 +69,13 @@ public:
 	const int size;
 	const bool bold;
 	const bool italic;
+ private:
+	static FT_Library library;
+	static int ft_lib_refcount;
+	FT_Face face;
+	bool ft_face_initialized;
+
+	void Init();
 };
 
 #endif
