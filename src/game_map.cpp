@@ -18,6 +18,9 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <cassert>
+
+#include "system.h"
 #include "game_map.h"
 #include "game_interpreter_map.h"
 #include "game_temp.h"
@@ -29,8 +32,7 @@
 #include "output.h"
 #include "util_macro.h"
 #include "game_system.h"
-#include "system.h"
-#include <cassert>
+#include "filefinder.h"
 
 ////////////////////////////////////////////////////////////
 namespace {
@@ -71,7 +73,7 @@ void Game_Map::Init() {
 	display_x = 0;
 	display_y = 0;
 	need_refresh = true;
-	
+
 	map.reset();
 	location.map_id = 0;
 	scroll_direction = 0;
@@ -124,7 +126,7 @@ void Game_Map::Setup(int _id) {
 	char file[12];
 	sprintf(file, "Map%04d.lmu", location.map_id);
 
-	map = LMU_Reader::Load(file);
+	map = LMU_Reader::Load(FileFinder::FindDefault(Main_Data::project_path, file));
 	if (map.get() == NULL) {
 		Output::ErrorStr(LcfReader::GetError());
 	}
@@ -173,7 +175,7 @@ void Game_Map::Setup(int _id) {
 void Game_Map::Autoplay() {
 	int parent_index = 0;
 	int current_index = GetMapIndex(location.map_id);
-	
+
 	if ((current_index > -1) && !Data::treemap.maps[current_index].music.name.empty()) {
 		switch(Data::treemap.maps[current_index].music_type) {
 			case 0: // inherits music from parent
@@ -197,7 +199,7 @@ void Game_Map::Autoplay() {
 					Game_System::BgmPlay(*Game_Temp::map_bgm);
 				}
 		}
-	
+
 	}
 
 }
@@ -205,7 +207,7 @@ void Game_Map::Autoplay() {
 ////////////////////////////////////////////////////////////
 void Game_Map::Refresh() {
 	if (location.map_id > 0) {
-		
+
 		for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
 			i->second->Refresh();
 		}
@@ -315,8 +317,8 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 				autotile_id == 43 ||
 				autotile_id == 45
 			))
-			return true;		
-		
+			return true;
+
 		if ((passages_down[tile_id] & bit) == 0)
 			return false;
 
@@ -773,4 +775,3 @@ int Game_Map::GetParallaxY() {
 const std::string& Game_Map::GetParallaxName() {
 	return map_info.parallax_name;
 }
-

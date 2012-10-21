@@ -24,6 +24,7 @@
 #include "data.h"
 #include "rpg_save.h"
 #include "game_screen.h"
+#include <string>
 
 ////////////////////////////////////////////////////////////
 /// Main Data namespace
@@ -36,7 +37,8 @@ namespace Main_Data {
 	extern Game_Screen* game_screen;
 	extern Game_Player* game_player;
 	extern RPG::Save game_data;
-	
+	extern std::string project_path;
+
 	void Cleanup();
 }
 

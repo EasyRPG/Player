@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////
 // This file is part of EasyRPG Player.
-// 
+//
 // EasyRPG Player is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // EasyRPG Player is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
@@ -53,11 +53,12 @@ void Scene_File::Start() {
 		std::string file = FileFinder::FindDefault(".", ss.str());
 		if (!file.empty()) {
 			// File found
-			std::auto_ptr<RPG::Save> savegame = LSD_Reader::Load(file);
+			std::auto_ptr<RPG::Save> savegame =
+				LSD_Reader::Load(FileFinder::FindDefault(Main_Data::project_path, file));
 			std::vector<std::pair<int, std::string> > party;
-			
+
 			// When a face_name is empty the party list ends
-			int party_size = 
+			int party_size =
 				savegame->title.face1_name.empty() ? 0 :
 				savegame->title.face2_name.empty() ? 1 :
 				savegame->title.face3_name.empty() ? 2 :
@@ -146,4 +147,3 @@ void Scene_File::Update() {
 	if (top_index != old_top_index || index != old_index)
 		Refresh();
 }
-

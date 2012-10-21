@@ -41,6 +41,7 @@ namespace Main_Data {
 	Game_Screen* game_screen = NULL;
 	Game_Player* game_player = NULL;
 	RPG::Save game_data;
+	std::string project_path = ".";
 }
 
 void Main_Data::Cleanup() {
