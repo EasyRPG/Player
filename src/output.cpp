@@ -43,27 +43,27 @@ void boost::throw_exception(std::exception const& exp) {
 
 ////////////////////////////////////////////////////////////
 static void HandleScreenOutput(std::string msg, bool is_error) {
-		std::stringstream ss;
-		ss << msg << "\n\n";
-		if (is_error) {
-			 ss << "EasyRPG Player will close now.\nPress any key to exit...";
-		} else {
-			ss << "Press any key to continue...";
-		}
-		DisplayUi->DrawScreenText(ss.str(), 10, 30 + 10);
-		DisplayUi->UpdateDisplay();
-		Input::ResetKeys();
-		while (!Input::IsAnyPressed()) {
-			Time::Sleep(1);
-			DisplayUi->ProcessEvents();
+	std::stringstream ss;
+	ss << msg << "\n\n";
+	if (is_error) {
+		ss << "EasyRPG Player will close now.\nPress any key to exit...";
+	} else {
+		ss << "Press any key to continue...";
+	}
+	DisplayUi->DrawScreenText(ss.str(), 10, 30 + 10);
+	DisplayUi->UpdateDisplay();
+	Input::ResetKeys();
+	while (!Input::IsAnyPressed()) {
+		Time::Sleep(1);
+		DisplayUi->ProcessEvents();
 
-			if (Player::exit_flag) break;
+		if (Player::exit_flag) break;
 
-			Input::Update();
-		}
-		Input::ResetKeys();
-		Graphics::FrameReset();
-		Graphics::Update();
+		Input::Update();
+	}
+	Input::ResetKeys();
+	Graphics::FrameReset();
+	Graphics::Update();
 }
 
 ////////////////////////////////////////////////////////////
