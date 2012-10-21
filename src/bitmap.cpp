@@ -24,6 +24,8 @@
 #include <algorithm>
 #include <iostream>
 
+#include <boost/make_shared.hpp>
+
 #include "utils.h"
 #include "cache.h"
 #include "bitmap.h"
@@ -50,15 +52,15 @@ BitmapRef Bitmap::Create(int width, int height, const Color& color) {
 }
 
 BitmapRef Bitmap::Create(const std::string& filename, bool transparent, uint32_t flags) {
-	return BitmapRef(new Bitmap(filename, transparent, flags));
+	return boost::make_shared<Bitmap>(filename, transparent, flags);
 }
 
 BitmapRef Bitmap::Create(const uint8_t* data, uint bytes, bool transparent, uint32_t flags) {
-	return BitmapRef(new Bitmap(data, bytes, transparent, flags));
+	return boost::make_shared<Bitmap>(data, bytes, transparent, flags);
 }
 
 BitmapRef Bitmap::Create(Bitmap const& source, Rect src_rect, bool transparent) {
-	return BitmapRef(new Bitmap(source, src_rect, transparent));
+	return boost::make_shared<Bitmap>(source, src_rect, transparent);
 }
 
 void Bitmap::InitBitmap() {
@@ -199,11 +201,11 @@ uint8_t const* Bitmap::pointer(int x, int y) const {
 
 ////////////////////////////////////////////////////////////
 BitmapRef Bitmap::Create(int width, int height, bool transparent, int /* bpp */) {
-	return BitmapRef(new Bitmap(width, height, transparent));
+	return boost::make_shared<Bitmap>(width, height, transparent);
 }
 
 BitmapRef Bitmap::Create(void *pixels, int width, int height, int pitch, const DynamicFormat& format) {
-	return BitmapRef(new Bitmap(pixels, width, height, pitch, format));
+	return boost::make_shared<Bitmap>(pixels, width, height, pitch, format);
 }
 
 ////////////////////////////////////////////////////////////

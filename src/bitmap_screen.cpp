@@ -19,6 +19,8 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <cmath>
+#include <boost/make_shared.hpp>
+
 #include "bitmap_screen.h"
 #include "baseui.h"
 #include "util_macro.h"
@@ -26,7 +28,7 @@
 
 ////////////////////////////////////////////////////////////
 BitmapScreenRef BitmapScreen::Create(BitmapRef const& source) {
-	return BitmapScreenRef(new BitmapScreen(source));
+	return boost::make_shared<BitmapScreen>(source);
 }
 
 ////////////////////////////////////////////////////////////
