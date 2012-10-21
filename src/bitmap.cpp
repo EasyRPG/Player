@@ -58,19 +58,21 @@ BitmapRef Bitmap::Create(const uint8_t* data, uint bytes, bool transparent, uint
 }
 
 BitmapRef Bitmap::Create(Bitmap const& source, Rect src_rect, bool transparent) {
-	return Bitmap::Create(source, src_rect, transparent);
+	return BitmapRef(new Bitmap(source, src_rect, transparent));
 }
 
-////////////////////////////////////////////////////////////
-Bitmap::Bitmap() : opacity(NULL), editing(false) {
+void Bitmap::InitBitmap() {
+	editing = false;
 	font = Font::CreateFont();
 }
 
 ////////////////////////////////////////////////////////////
-Bitmap::~Bitmap() {
-	if (opacity != NULL)
-		delete[] opacity;
+Bitmap::Bitmap() {
+	InitBitmap();
+}
 
+////////////////////////////////////////////////////////////
+Bitmap::~Bitmap() {
 	pixman_image_unref(bitmap);
 }
 
@@ -164,11 +166,11 @@ void Bitmap::CheckPixels(uint32_t flags) {
 	}
 
 	if (flags & Chipset) {
-		opacity = new TileOpacity[16][30];
+		opacity.reset(new opacity_type());
 		for (int row = 0; row < 16; row++) {
 			for (int col = 0; col < 30; col++) {
 				Rect rect(col * 16, row * 16, 16, 16);
-				opacity[row][col] = CheckOpacity(rect);
+				(*opacity)[row][col] = CheckOpacity(rect);
 			}
 		}
 	}
@@ -176,7 +178,7 @@ void Bitmap::CheckPixels(uint32_t flags) {
 
 ////////////////////////////////////////////////////////////
 Bitmap::TileOpacity Bitmap::GetTileOpacity(int row, int col) {
-	return (opacity == NULL) ? Partial : opacity[row][col];
+	return opacity? Partial : (*opacity)[row][col];
 }
 
 
@@ -564,18 +566,24 @@ void Bitmap::ConvertImage(int& width, int& height, void*& pixels, bool transpare
 
 ////////////////////////////////////////////////////////////
 Bitmap::Bitmap(int width, int height, bool transparent) {
+	InitBitmap();
+
 	format = (transparent ? pixel_format : opaque_pixel_format);
 	pixman_format = find_format(format);
 	Init(width, height, (void *) NULL);
 }
 
 Bitmap::Bitmap(void *pixels, int width, int height, int pitch, const DynamicFormat& _format) {
+	InitBitmap();
+
 	format = _format;
 	pixman_format = find_format(format);
 	Init(width, height, pixels, pitch, false);
 }
 
 Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
+	InitBitmap();
+
 	format = (transparent ? pixel_format : opaque_pixel_format);
 	pixman_format = find_format(format);
 
@@ -616,6 +624,8 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 }
 
 Bitmap::Bitmap(const uint8_t* data, uint bytes, bool transparent, uint32_t flags) {
+	InitBitmap();
+
 	format = (transparent ? pixel_format : opaque_pixel_format);
 	pixman_format = find_format(format);
 
@@ -636,6 +646,8 @@ Bitmap::Bitmap(const uint8_t* data, uint bytes, bool transparent, uint32_t flags
 }
 
 Bitmap::Bitmap(Bitmap const& source, Rect src_rect, bool transparent) {
+	InitBitmap();
+
 	format = (transparent ? pixel_format : opaque_pixel_format);
 	pixman_format = find_format(format);
 

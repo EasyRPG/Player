@@ -32,7 +32,9 @@
 #include "matrix.h"
 #include "bitmap_utils.h"
 
+#include <boost/array.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/scoped_ptr.hpp>
 
 #if defined(DINGOO) || defined(PSP)
 #define wstring basic_string<wchar_t>
@@ -187,7 +189,10 @@ protected:
 	DynamicFormat format;
 
 	std::list<BitmapScreen*> attached_screen_bitmaps;
-	TileOpacity (*opacity)[30];
+	typedef boost::array<boost::array<TileOpacity, 30>, 16> opacity_type;
+	boost::scoped_ptr<opacity_type> opacity;
+
+	void InitBitmap();
 
 public:
 
