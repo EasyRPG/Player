@@ -23,12 +23,16 @@
 ////////////////////////////////////////////////////////////
 #include <string>
 #include <vector>
+#include <boost/shared_ptr.hpp>
 
 ////////////////////////////////////////////////////////////
 /// Font class
 ////////////////////////////////////////////////////////////
 
 class Bitmap;
+class Font;
+
+typedef boost::shared_ptr<Font> FontRef;
 
 class Font {
 public:
@@ -36,9 +40,9 @@ public:
 	virtual ~Font();
 
 	virtual int GetHeight() = 0;
-	virtual Bitmap* Render(int glyph) = 0;
-	
-	static Font* CreateFont(const std::string& name = "", int size = 0, bool bold = false, bool italic = false);
+	virtual boost::shared_ptr<Bitmap> Render(int glyph) = 0;
+
+	static FontRef CreateFont(const std::string& name = "", int size = 0, bool bold = false, bool italic = false);
 	static bool Exists(const std::string& name);
 	static void Dispose();
 
@@ -57,9 +61,6 @@ public:
 	const int size;
 	const bool bold;
 	const bool italic;
-protected:
-	static std::vector<Font*> fonts;
 };
 
 #endif
-

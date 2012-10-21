@@ -32,6 +32,8 @@
 #include "player.h"
 #include "util_macro.h"
 #include "utils.h"
+#include "bitmap.h"
+#include "font.h"
 
 #ifdef NO_WCHAR
 // This is a workaround if your system has no wchar
@@ -46,10 +48,10 @@ const int Window_Message::speed_table[21] = {0, 0, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
 Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),
 	contents_x(0), contents_y(0), line_count(0), text_index(-1), text(utf("")),
-	kill_message(false), halt_output(false), speed_modifier(0), 
+	kill_message(false), halt_output(false), speed_modifier(0),
 	speed_frame_counter(0), number_input_window(NULL)
 {
-	SetContents(Surface::CreateSurface(width - 16, height - 16));
+	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	visible = false;
@@ -162,7 +164,7 @@ void Window_Message::InsertNewPage() {
 			break;
 		};
 	}
-	
+
 
 	if (Game_Message::background) {
 		opacity = 255;
@@ -354,7 +356,7 @@ void Window_Message::UpdateMessage() {
 				// These commands support indirect access via \v[]
 				command_result = ParseCommandCode();
 				contents->TextDraw(contents_x, contents_y, text_color, command_result);
-				contents_x += contents->Surface::GetTextSize(command_result).width;
+				contents_x += contents->Bitmap::GetTextSize(command_result).width;
 				break;
 			case utf('\\'):
 				// Show Backslash
@@ -420,7 +422,7 @@ void Window_Message::UpdateMessage() {
 #endif
 
 			contents->TextDraw(contents_x, contents_y, text_color, glyph);
-			contents_x += contents->Surface::GetTextSize(glyph).width;
+			contents_x += contents->Bitmap::GetTextSize(glyph).width;
 		}
 	}
 	loop_count = 0;

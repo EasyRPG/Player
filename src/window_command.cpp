@@ -20,7 +20,7 @@
 ////////////////////////////////////////////////////////////
 #include "window_command.h"
 #include "color.h"
-#include "surface.h"
+#include "bitmap.h"
 #include "util_macro.h"
 
 ////////////////////////////////////////////////////////////
@@ -31,7 +31,7 @@ Window_Command::Window_Command(std::vector<std::string> commands, int width, int
 	index = 0;
 	item_max = commands.size();
 
-	SetContents(Surface::CreateSurface(this->width - 16, item_max * 16));
+	SetContents(Bitmap::Create(this->width - 16, item_max * 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	Refresh();
@@ -68,7 +68,7 @@ void Window_Command::SetItemText(unsigned index, std::string const& text) {
 int Window_Command::GetRequiredWidth(std::vector<std::string>& commands, int width) {
 	if (width < 0) {
 		for (size_t i = 0; i < commands.size(); ++i) {
-			width = max(width, Surface::GetTextSize(commands[i]).width);
+			width = max(width, Bitmap::GetTextSize(commands[i]).width);
 		}
 		return width + 16;
 	} else {

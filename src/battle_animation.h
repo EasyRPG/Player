@@ -24,7 +24,10 @@
 #include "rpg_animation.h"
 #include "drawable.h"
 #include "zobj.h"
-#include "bitmap_screen.h"
+
+#include <boost/shared_ptr.hpp>
+
+class BitmapScreen;
 
 ////////////////////////////////////////////////////////////
 
@@ -55,10 +58,9 @@ protected:
 	bool initialized;
 	bool visible;
 	bool large;
-	BitmapScreen* screen;
+	boost::shared_ptr<BitmapScreen> screen;
 	unsigned long ID;
 	ZObj* zobj;
 };
 
 #endif
-

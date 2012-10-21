@@ -25,6 +25,7 @@
 #include "game_party.h"
 #include "game_switches.h"
 #include "game_battle.h"
+#include "font.h"
 
 ////////////////////////////////////////////////////////////
 void Game_Battle::AttackEnemy(Battle::Ally& ally, Battle::Enemy& enemy) {

@@ -23,13 +23,15 @@
 #include "input.h"
 #include "util_macro.h"
 #include "window_shopnumber.h"
+#include "bitmap.h"
+#include "font.h"
 
 ////////////////////////////////////////////////////////////
-Window_ShopNumber::Window_ShopNumber(int ix, int iy, int iwidth, int iheight) : 
+Window_ShopNumber::Window_ShopNumber(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight),
 	item_max(1), price(0), number(1), item_id(0) {
 
-	SetContents(Surface::CreateSurface(width - 16, height - 16));
+	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 	contents->Clear();
 }
@@ -57,9 +59,9 @@ void Window_ShopNumber::Refresh() {
 	ss << number;
 
 	contents->TextDraw(132, y, Font::ColorDefault, "x");
-	contents->TextDraw(132 + 30, y, Font::ColorDefault, ss.str(), Surface::TextAlignRight);
+	contents->TextDraw(132 + 30, y, Font::ColorDefault, ss.str(), Bitmap::TextAlignRight);
 	SetCursorRect(Rect(132 + 14, y - 2, 20, 16));
-	
+
 	DrawCurrencyValue(GetTotal(), contents->GetWidth(), y + 32);
 }
 

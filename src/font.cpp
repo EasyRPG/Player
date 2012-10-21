@@ -29,10 +29,12 @@
 #include "ftfont.h"
 #endif
 
+#include <boost/weak_ptr.hpp>
+
 ////////////////////////////////////////////////////////////
 /// Static Variables
 ////////////////////////////////////////////////////////////
-std::vector<Font*> Font::fonts;
+static std::vector<boost::weak_ptr<Font> > fonts;
 
 ////////////////////////////////////////////////////////////
 /// Constructor
@@ -60,24 +62,28 @@ bool Font::Exists(const std::string& name) {
 ////////////////////////////////////////////////////////////
 /// Factory
 ////////////////////////////////////////////////////////////
-Font* Font::CreateFont(const std::string& _name, int size, bool bold, bool italic) {
+FontRef Font::CreateFont(const std::string& _name, int size, bool bold, bool italic) {
 	const std::string& name = _name.empty() ? FileFinder::DefaultFont() : _name;
 	if (size == 0)
 		size = default_size;
 
-	std::vector<Font*>::const_iterator it;
+	std::vector<boost::weak_ptr<Font> >::const_iterator it;
 	for (it = fonts.begin(); it != fonts.end(); it++) {
-		Font* font = *it;
+		if(it->expired()) { continue; }
+
+		FontRef font = it->lock();
 		if (font->name == name && font->size == size &&
 			font->bold == bold && font->italic == italic)
 			return font;
 	}
 
+	FontRef font(
 #ifdef USE_SDL_TTF
-	Font* font = new SdlFont(name, size, bold, italic);
+	new SdlFont(name, size, bold, italic)
 #else
-	Font* font = new FTFont(name, size, bold, italic);
+    new FTFont(name, size, bold, italic)
 #endif
+	);
 	fonts.push_back(font);
 	return font;
 }
@@ -86,9 +92,5 @@ Font* Font::CreateFont(const std::string& _name, int size, bool bold, bool itali
 /// Cleanup
 ////////////////////////////////////////////////////////////
 void Font::Dispose() {
-	std::vector<Font*>::const_iterator it;
-	for (it = fonts.begin(); it != fonts.end(); it++)
-		delete *it;
 	fonts.clear();
 }
-

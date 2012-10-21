@@ -95,7 +95,7 @@ void Scene_Menu::CreateCommandWindow() {
 		command_options[3] = Save;
 		command_options[4] = Quit;
 	} else {
-		for (std::vector<int16>::iterator it = Data::system.menu_commands.begin();
+		for (std::vector<int16_t>::iterator it = Data::system.menu_commands.begin();
 			it != Data::system.menu_commands.end(); ++it) {
 				command_options.push_back((CommandOptionType)*it);
 		}

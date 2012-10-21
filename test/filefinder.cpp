@@ -8,7 +8,7 @@ static void InitAndQuit() {
 }
 
 extern "C" int main(int, char**) {
-  InitAndQuit();
+	InitAndQuit();
 
-  return EXIT_SUCCESS;
+	return EXIT_SUCCESS;
 }

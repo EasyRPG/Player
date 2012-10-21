@@ -18,7 +18,6 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-
 #include "data.h"
 #include "cache.h"
 #include "output.h"
@@ -29,16 +28,16 @@
 #include "wcwidth.h"
 
 ////////////////////////////////////////////////////////////
-void Text::Draw(Surface* dest, int x, int y, int color, std::wstring const& wtext, Surface::TextAlignment align) {
+void Text::Draw(Bitmap& dest, int x, int y, int color, std::wstring const& wtext, Bitmap::TextAlignment align) {
 	if (wtext.length() == 0) return;
 
-	Font* font = dest->GetFont();
-	Rect dst_rect = Surface::GetTextSize(wtext);
+	FontRef font = dest.GetFont();
+	Rect dst_rect = Bitmap::GetTextSize(wtext);
 
 	switch (align) {
-	case Surface::TextAlignCenter:
+	case Bitmap::TextAlignCenter:
 		dst_rect.x = x - dst_rect.width / 2; break;
-	case Surface::TextAlignRight:
+	case Bitmap::TextAlignRight:
 		dst_rect.x = x - dst_rect.width; break;
 	default:
 		dst_rect.x = x; break;
@@ -46,19 +45,19 @@ void Text::Draw(Surface* dest, int x, int y, int color, std::wstring const& wtex
 
 	dst_rect.y = y;
 	dst_rect.width += 1; dst_rect.height += 1; // Need place for shadow
-	if (dst_rect.IsOutOfBounds(dest->GetWidth(), dest->GetHeight())) return;
+	if (dst_rect.IsOutOfBounds(dest.GetWidth(), dest.GetHeight())) return;
 
-	Surface* text_surface; // Complete text will be on this surface
-	text_surface = Surface::CreateSurface(dst_rect.width, dst_rect.height, true);
+	BitmapRef text_surface; // Complete text will be on this surface
+	text_surface = Bitmap::Create(dst_rect.width, dst_rect.height, true);
 	#ifndef USE_ALPHA
-	text_surface->SetTransparentColor(dest->GetTransparentColor());
+	text_surface->SetTransparentColor(dest.GetTransparentColor());
 	#endif
 	text_surface->Clear();
 
 	// Load the system file for the shadow and text color
-	Bitmap* system = Cache::System(Data::system.system_name);
+	BitmapRef system = Cache::System(Data::system.system_name);
 	// Load the exfont-file
-	Bitmap* exfont = Cache::ExFont();
+	BitmapRef exfont = Cache::ExFont();
 
 	// Get the Shadow color
 	Color shadow_color(Cache::system_info.sh_color);
@@ -88,7 +87,7 @@ void Text::Draw(Surface* dest, int x, int y, int color, std::wstring const& wtex
 	for (unsigned c = 0; c < wtext.size(); ++c) {
 		Rect next_glyph_rect(next_glyph_pos, 0, 0, 0);
 
-		Bitmap* mask;
+		BitmapRef mask;
 
 		// ExFont-Detection: Check for A-Z or a-z behind the $
 		if (wtext[c] == L'$' && c != wtext.size() - 1 &&
@@ -103,15 +102,14 @@ void Text::Draw(Surface* dest, int x, int y, int color, std::wstring const& wtex
 			}
 			is_exfont = true;
 
-			Surface* mask_s;
-			mask_s = Surface::CreateSurface(12, 12, true);
+			BitmapRef mask_s = Bitmap::Create(12, 12, true);
 
 			// Get exfont from graphic
 			Rect rect_exfont((exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12);
 
 			// Create a mask
 			mask_s->Clear();
-			mask_s->Blit(0, 0, exfont, rect_exfont, 255);
+			mask_s->Blit(0, 0, *exfont, rect_exfont, 255);
 			mask = mask_s;
 		} else {
 			// No ExFont, draw normal text
@@ -126,40 +124,36 @@ void Text::Draw(Surface* dest, int x, int y, int color, std::wstring const& wtex
 		// Get color region from system graphic
 		Rect clip_system(8+16*(color%10), 4+48+16*(color/10), 6, 12);
 
-		Surface* char_surface = Surface::CreateSurface(mask->GetWidth(), mask->GetHeight(), true);
+		BitmapRef char_surface = Bitmap::Create(mask->GetWidth(), mask->GetHeight(), true);
 		#ifndef USE_ALPHA
-		char_surface->SetTransparentColor(dest->GetTransparentColor());
+		char_surface->SetTransparentColor(dest.GetTransparentColor());
 		#endif
 		char_surface->Clear();
 
 		is_full_glyph = is_exfont || (mk_wcwidth(wtext[c]) == 2);
 
 		// Blit gradient color background (twice in case of a full glyph)
-		char_surface->Blit(0, 0, system, clip_system, 255);
+		char_surface->Blit(0, 0, *system, clip_system, 255);
 		if (is_full_glyph) {
-			char_surface->Blit(6, 0, system, clip_system, 255);
+			char_surface->Blit(6, 0, *system, clip_system, 255);
 		}
 		// Blit mask onto background
-		char_surface->MaskBlit(0, 0, mask, mask->GetRect());
+		char_surface->MaskBlit(0, 0, *mask, mask->GetRect());
 
-		Surface* char_shadow = Surface::CreateSurface(mask->GetWidth(), mask->GetHeight(), true);
+		BitmapRef char_shadow = Bitmap::Create(mask->GetWidth(), mask->GetHeight(), true);
 		#ifndef USE_ALPHA
-		char_shadow->SetTransparentColor(dest->GetTransparentColor());
+		char_shadow->SetTransparentColor(dest.GetTransparentColor());
 		#endif
 		char_shadow->Clear();
 
 		// Blit solid color background
 		char_shadow->Fill(shadow_color);
 		// Blit mask onto background
-		char_shadow->MaskBlit(0, 0, mask, mask->GetRect());
+		char_shadow->MaskBlit(0, 0, *mask, mask->GetRect());
 
 		// Blit first shadow and then text
-		text_surface->Blit(next_glyph_rect.x + 1, next_glyph_rect.y + 1, char_shadow, char_shadow->GetRect(), 255);
-		text_surface->Blit(next_glyph_rect.x, next_glyph_rect.y, char_surface, char_surface->GetRect(), 255);
-
-		delete mask;
-		delete char_surface;
-		delete char_shadow;
+		text_surface->Blit(next_glyph_rect.x + 1, next_glyph_rect.y + 1, *char_shadow, char_shadow->GetRect(), 255);
+		text_surface->Blit(next_glyph_rect.x, next_glyph_rect.y, *char_surface, char_surface->GetRect(), 255);
 
 		// If it's a full size glyph, add the size of a half-size glypth twice
 		if (is_full_glyph) {
@@ -174,7 +168,7 @@ void Text::Draw(Surface* dest, int x, int y, int color, std::wstring const& wtex
 		next_glyph_pos += 6;
 	}
 
-	Bitmap* text_bmp = Bitmap::CreateBitmap(text_surface, text_surface->GetRect());
+	BitmapRef text_bmp = Bitmap::Create(*text_surface, text_surface->GetRect());
 
 	Rect src_rect(0, 0, dst_rect.width, dst_rect.height);
 	int iy = dst_rect.y;
@@ -183,13 +177,10 @@ void Text::Draw(Surface* dest, int x, int y, int color, std::wstring const& wtex
 	}
 	int ix = dst_rect.x;
 
-	dest->Blit(ix, iy, text_bmp, src_rect, 255);
-
-	delete text_bmp;
-	delete text_surface;
+	dest.Blit(ix, iy, *text_bmp, src_rect, 255);
 }
 
-void Text::Draw(Surface* dest, int x, int y, int color, std::string const& text, Surface::TextAlignment align) {
+void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Bitmap::TextAlignment align) {
 	if (text.length() == 0) return;
 
 	std::wstring wtext = Utils::DecodeUTF(text);

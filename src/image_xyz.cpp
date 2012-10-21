@@ -19,6 +19,9 @@
 // Headers
 ////////////////////////////////////////////////////////////
 
+#include "system.h"
+#ifdef SUPPORT_XYZ
+
 #include <cstdlib>
 #include <cstring>
 #include <zlib.h>
@@ -27,7 +30,7 @@
 #include "image_xyz.h"
 
 ////////////////////////////////////////////////////////////
-void ImageXYZ::ReadXYZ(const uint8* data, uint len, bool transparent,
+void ImageXYZ::ReadXYZ(const uint8_t* data, uint len, bool transparent,
 					int& width, int& height, void*& pixels) {
 	pixels = NULL;
 
@@ -49,18 +52,18 @@ void ImageXYZ::ReadXYZ(const uint8* data, uint len, bool transparent,
 		Output::Error("Error decompressing XYZ file.");
 		return;
 	}
-    const uint8 (*palette)[3] = (const uint8(*)[3]) &dst_buffer.front();
+    const uint8_t (*palette)[3] = (const uint8_t(*)[3]) &dst_buffer.front();
 
 	width = w;
 	height = h;
 	pixels = malloc(w * h * 4);
 
-    uint8* dst = (uint8*) pixels;
-    const uint8* src = (const uint8*) &dst_buffer[768];
+    uint8_t* dst = (uint8_t*) pixels;
+    const uint8_t* src = (const uint8_t*) &dst_buffer[768];
     for (int y = 0; y < h; y++) {
 		for (int x = 0; x < w; x++) {
-			uint8 pix = *src++;
-			const uint8* color = palette[pix];
+			uint8_t pix = *src++;
+			const uint8_t* color = palette[pix];
 			*dst++ = color[0];
 			*dst++ = color[1];
 			*dst++ = color[2];
@@ -75,10 +78,11 @@ void ImageXYZ::ReadXYZ(FILE* stream, bool transparent,
     fseek(stream, 0, SEEK_END);
     long size = ftell(stream);
     fseek(stream, 0, SEEK_SET);
-	std::vector<uint8> buffer(size);
+	std::vector<uint8_t> buffer(size);
 	fread((void*) &buffer.front(), 1, size, stream);
 	ReadXYZ(&buffer.front(), (uint) size, transparent, width, height, pixels);
 }
 
 ////////////////////////////////////////////////////////////
 
+#endif // SUPPORT_XYZ

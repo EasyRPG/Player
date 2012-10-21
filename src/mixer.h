@@ -37,7 +37,7 @@ public:
 	void DestroyAll();
 	void Destroy(Channel* channel);
 
-	void callback(void* unused, uint8* stream, int len);
+	void callback(void* unused, uint8_t* stream, int len);
 
 private:
 

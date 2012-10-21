@@ -21,6 +21,7 @@
 #include "sprite_character.h"
 #include "cache.h"
 #include "game_map.h"
+#include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
 Sprite_Character::Sprite_Character(Game_Character* character) :
@@ -47,7 +48,7 @@ void Sprite_Character::Update() {
 		character_name = character->GetCharacterName();
 		character_index = character->GetCharacterIndex();
 		if (tile_id > 0) {
-			Bitmap* tile = Cache::Tile(Game_Map::GetChipsetName(), tile_id);
+			BitmapRef tile = Cache::Tile(Game_Map::GetChipsetName(), tile_id);
 			SetBitmap(tile);
 			r.Set(0, 0, 16, 16);
 			SetSrcRect(r);
@@ -55,7 +56,7 @@ void Sprite_Character::Update() {
 			SetOy(16);
 		} else {
 			if (character_name.empty()) {
-				SetBitmap(NULL);
+				SetBitmap(BitmapRef());
 			} else {
 				SetBitmap(Cache::Charset(character_name));
 				chara_width = GetBitmap()->GetWidth() / 4 / 3;

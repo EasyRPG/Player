@@ -23,6 +23,8 @@
 #include "window_keyboard.h"
 #include "game_system.h"
 #include "input.h"
+#include "bitmap.h"
+#include "font.h"
 
 ////////////////////////////////////////////////////////////
 const char * const Window_Keyboard::items[2][9][10] = {
@@ -51,12 +53,12 @@ const char * const Window_Keyboard::items[2][9][10] = {
 };
 
 ////////////////////////////////////////////////////////////
-Window_Keyboard::Window_Keyboard(int ix, int iy, int iwidth, int iheight) : 
+Window_Keyboard::Window_Keyboard(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) {
 	row = 0;
 	col = 0;
 
-	SetContents(Surface::CreateSurface(width - 16, height - 16));
+	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 	SetZ(9999);
 

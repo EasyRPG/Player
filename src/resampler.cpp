@@ -22,24 +22,24 @@
 
 namespace Audio {
 
-static const int32 ST_SAMPLE_MAX = 0x7fff;
-static const int32 ST_SAMPLE_MIN = (-ST_SAMPLE_MAX - 1);
+static const int32_t ST_SAMPLE_MAX = 0x7fff;
+static const int32_t ST_SAMPLE_MIN = (-ST_SAMPLE_MAX - 1);
 
-inline void clip_add(int16& a, int b) {
-	int32 val = a + b;
-	a = (int16) std::max(ST_SAMPLE_MIN, std::min(ST_SAMPLE_MAX, val));
+inline void clip_add(int16_t& a, int b) {
+	int32_t val = a + b;
+	a = (int16_t) std::max(ST_SAMPLE_MIN, std::min(ST_SAMPLE_MAX, val));
 }
 
 class SimpleResampler : public Resampler {
 public:
-	SimpleResampler(uint16 _inrate, uint16 _outrate) : inrate(_inrate), outrate(_outrate) {
+	SimpleResampler(uint16_t _inrate, uint16_t _outrate) : inrate(_inrate), outrate(_outrate) {
 
 	}
-	void merge(int16* data, int d_len, AudioStream* stream, uint16 vol, uint8 balance);
+	void merge(int16_t* data, int d_len, AudioStream* stream, uint16_t vol, uint8_t balance);
 
 private:
-	uint16 inrate;
-	uint16 outrate;
+	uint16_t inrate;
+	uint16_t outrate;
 };
 
 class CopyResampler : public Resampler {
@@ -47,18 +47,18 @@ public:
 	CopyResampler() {
 
 	}
-	void merge(int16* data, int d_len, AudioStream* stream, uint16 vol, uint8 balance);
+	void merge(int16_t* data, int d_len, AudioStream* stream, uint16_t vol, uint8_t balance);
 };
 
-void SimpleResampler::merge(int16* data, int d_len, AudioStream* stream, uint16 vol, uint8 balance) {
+void SimpleResampler::merge(int16_t* data, int d_len, AudioStream* stream, uint16_t vol, uint8_t balance) {
 
 }
 
-void CopyResampler::merge(int16* data, int d_len, AudioStream* stream, uint16 vol, uint8 balance) {
+void CopyResampler::merge(int16_t* data, int d_len, AudioStream* stream, uint16_t vol, uint8_t balance) {
 
 }
 
-Resampler* Resampler::GetInstance(uint16 inrate, uint16 outrate) {
+Resampler* Resampler::GetInstance(uint16_t inrate, uint16_t outrate) {
 	if (inrate == outrate) {
 		return new CopyResampler();
 	} else {

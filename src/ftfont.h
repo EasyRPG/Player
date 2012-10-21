@@ -36,7 +36,7 @@ public:
 	~FTFont();
 
 	int GetHeight();
-	Bitmap* Render(int glyph);
+	boost::shared_ptr<Bitmap> Render(int glyph);
 
 private:
 	static FT_Library library;

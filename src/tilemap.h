@@ -22,8 +22,10 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <vector>
-#include "tilemap_layer.h"
-#include "bitmap.h"
+#include <boost/shared_ptr.hpp>
+
+class Bitmap;
+class TilemapLayer;
 
 ////////////////////////////////////////////////////////////
 /// Tilemap class
@@ -35,8 +37,8 @@ public:
 
 	void Update();
 
-	Bitmap* GetChipset() const;
-	void SetChipset(Bitmap* nchipset);
+	boost::shared_ptr<Bitmap> const& GetChipset() const;
+	void SetChipset(boost::shared_ptr<Bitmap> const& nchipset);
 	std::vector<short> GetMapDataDown() const;
 	void SetMapDataDown(std::vector<short> down);
 	std::vector<short> GetMapDataUp() const;

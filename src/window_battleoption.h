@@ -24,6 +24,7 @@
 #include <string>
 #include <vector>
 #include "window_base.h"
+#include "font.h"
 
 ////////////////////////////////////////////////////////////
 /// Window_BattleOption class.

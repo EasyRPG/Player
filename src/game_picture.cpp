@@ -18,7 +18,7 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-
+#include "bitmap.h"
 #include "options.h"
 #include "cache.h"
 #include "main_data.h"
@@ -79,7 +79,7 @@ void Picture::Show(const std::string& _name) {
 		sprite = NULL;
 	}
 
-	Bitmap* bitmap = Cache::Picture(data.name);
+	BitmapRef bitmap = Cache::Picture(data.name);
 	sprite = new Sprite();
 	sprite->SetBitmap(bitmap);
 	sprite->SetOx(bitmap->GetWidth() / 2);
@@ -186,4 +186,3 @@ void Picture::Update() {
 
 	UpdateSprite();
 }
-

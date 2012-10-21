@@ -251,7 +251,7 @@ bool Game_Map::IsValid(int x, int y) {
 bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event) {
 	if (!Game_Map::IsValid(x, y)) return false;
 
-	uint8 bit;
+	uint8_t bit;
 	switch (d)
 	{
 		case RPG::EventPage::Direction_down:
@@ -283,9 +283,9 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 		}
 	}
 
-	int16 tile_index = (int16)(x + y * map->width);
+	int16_t tile_index = (int16_t)(x + y * map->width);
 
-	int16 tile_id = map->upper_layer[tile_index] - BLOCK_F;
+	int16_t tile_id = map->upper_layer[tile_index] - BLOCK_F;
 	tile_id = map_info.upper_tiles[tile_id];
 
 	if ((passages_up[tile_id] & bit) == 0)
@@ -304,7 +304,7 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 
 	} else if (map->lower_layer[tile_index] >= BLOCK_D) {
 		tile_id = (map->lower_layer[tile_index] - BLOCK_D) / 50;
-		int16 autotile_id = map->lower_layer[tile_index] - BLOCK_D - tile_id * 50;
+		int16_t autotile_id = map->lower_layer[tile_index] - BLOCK_D - tile_id * 50;
 
 		tile_id += 6;
 
@@ -642,7 +642,7 @@ void Game_Map::SetChipset(int id) {
 		passages_down.resize(162, (unsigned char) 0x0F);
 	if (passages_up.size() < 144)
 		passages_up.resize(144, (unsigned char) 0x0F);
-	for (uint8 i = 0; i < 144; i++) {
+	for (uint8_t i = 0; i < 144; i++) {
 		map_info.lower_tiles[i] = i;
 		map_info.upper_tiles[i] = i;
 	}
@@ -655,11 +655,11 @@ Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
 
 ////////////////////////////////////////////////////////////
 void Game_Map::SubstituteDown(int old_id, int new_id) {
-	map_info.lower_tiles[old_id] = (uint8) new_id;
+	map_info.lower_tiles[old_id] = (uint8_t) new_id;
 }
 
 void Game_Map::SubstituteUp(int old_id, int new_id) {
-	map_info.upper_tiles[old_id] = (uint8) new_id;
+	map_info.upper_tiles[old_id] = (uint8_t) new_id;
 }
 
 ////////////////////////////////////////////////////////////

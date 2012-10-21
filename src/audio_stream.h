@@ -19,13 +19,16 @@
 #define _EASYRPG_AUDIOSTREAM_H_
 
 #include "system.h"
+#include <boost/cstdint.hpp>
+
+
 namespace Audio {
 
 class AudioStream {
 public:
 	virtual ~AudioStream();
 
-	virtual int ReadBuffer(int16* buf, const int samples) = 0;
+	virtual int ReadBuffer(int16_t* buf, const int samples) = 0;
 
 	virtual bool IsStereo() = 0;
 
@@ -40,4 +43,4 @@ public:
 }
 
 
-#endif 
+#endif

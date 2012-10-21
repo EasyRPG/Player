@@ -21,13 +21,16 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "bitmap.h"
-#include "bitmap_screen.h"
 #include "color.h"
 #include "drawable.h"
 #include "rect.h"
 #include "tone.h"
 #include "zobj.h"
+
+#include <boost/shared_ptr.hpp>
+
+class Bitmap;
+class BitmapScreen;
 
 ////////////////////////////////////////////////////////////
 /// Sprite class.
@@ -36,7 +39,7 @@ class Sprite : public Drawable {
 public:
 	Sprite();
 	virtual ~Sprite();
-	
+
 	void Draw(int z_order);
 
 	void Flash(int duration);
@@ -46,8 +49,8 @@ public:
 	int GetWidth() const;
 	int GetHeight() const;
 
-	Bitmap* GetBitmap() const;
-	void SetBitmap(Bitmap* bitmap, bool delete_bitmap = false);
+	boost::shared_ptr<Bitmap> const& GetBitmap() const;
+	void SetBitmap(boost::shared_ptr<Bitmap> const& bitmap);
 	Rect GetSrcRect() const;
 	void SetSrcRect(Rect src_rect);
 	void SetSpriteRect(Rect sprite_rect);
@@ -96,9 +99,9 @@ private:
 	unsigned long ID;
 	ZObj* zobj;
 
-	Bitmap* bitmap;
-	BitmapScreen* bitmap_screen;
-	
+	boost::shared_ptr<Bitmap> bitmap;
+	boost::shared_ptr<BitmapScreen> bitmap_screen;
+
 	Rect src_rect;
 	bool visible;
 	int x;

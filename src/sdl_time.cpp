@@ -25,17 +25,17 @@
 #include "SDL.h"
 
 ////////////////////////////////////////////////////////////
-uint32 Time::GetTicks() {
+uint32_t Time::GetTicks() {
 	return SDL_GetTicks();
 }
 
 ////////////////////////////////////////////////////////////
-uint64 Time::GetTimestamp() {
-	return (uint64)std::time(NULL);
+uint64_t Time::GetTimestamp() {
+	return (uint64_t)std::time(NULL);
 }
 
 ////////////////////////////////////////////////////////////
-void Time::Sleep(uint32 time) {
+void Time::Sleep(uint32_t time) {
 	SDL_Delay(time);
 }
 

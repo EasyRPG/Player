@@ -25,9 +25,11 @@
 #include "game_system.h"
 #include "game_temp.h"
 #include "game_party.h"
+#include "bitmap.h"
+#include "font.h"
 
 ////////////////////////////////////////////////////////////
-Window_ShopBuy::Window_ShopBuy(int ix, int iy, int iwidth, int iheight) : 
+Window_ShopBuy::Window_ShopBuy(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
 	index = 0;
 }
@@ -72,12 +74,12 @@ void Window_ShopBuy::DrawItem(int index) {
 
 	std::stringstream ss;
 	ss << Data::items[item_id - 1].price;
-	contents->TextDraw(rect.width + 4, rect.y, enabled ? Font::ColorDefault : Font::ColorDisabled, ss.str(), Surface::TextAlignRight);
+	contents->TextDraw(rect.width + 4, rect.y, enabled ? Font::ColorDefault : Font::ColorDisabled, ss.str(), Bitmap::TextAlignRight);
 }
 
 ////////////////////////////////////////////////////////////
 void Window_ShopBuy::UpdateHelp() {
-	help_window->SetText(GetItemId() == 0 ? "" : 
+	help_window->SetText(GetItemId() == 0 ? "" :
 		Data::items[GetItemId() - 1].description);
 }
 

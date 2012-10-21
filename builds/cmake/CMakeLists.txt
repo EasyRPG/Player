@@ -67,7 +67,6 @@ if(CMAKE_SYSTEM_NAME MATCHES "Linux")
   endif()
 endif()
 
-# find_package(Boost COMPONENTS serialization REQUIRED)
 foreach(i Iconv Expat Freetype JPEG Pixman PNG SDL SDL_mixer SDL_ttf ZLIB) # SDL_image
   find_package(${i} REQUIRED)
 
@@ -81,16 +80,17 @@ foreach(i Iconv Expat Freetype JPEG Pixman PNG SDL SDL_mixer SDL_ttf ZLIB) # SDL
     ${${i}_LIBRARY}  ${${i}_LIBRARIES}
     ${${sdl}_LIBRARY}  ${${sdl}_LIBRARIES})
 endforeach()
-
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../lib/readers/include)
-
-# library
-list(APPEND EASYRPG_PLAYER_LIBRARIES ${PROJECT_NAME}_Static EasyRPG_Reader)
 if(USE_OPENAL)
   list(APPEND EASYRPG_PLAYER_LIBRARIES
     avformat avcodec avutil avdevice
     ${OPENAL_LIBRARY})
 endif()
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../lib/readers/include)
+
+# library
+set(EASYRPG_PLAYER_LIBRARIES_ALL
+  ${EASYRPG_PLAYER_LIBRARIES} ${PROJECT_NAME}_Static EasyRPG_Reader)
 
 # entry point
 set(MAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../../src/main.cpp")
@@ -101,9 +101,21 @@ list(REMOVE_ITEM SRCS ${MAIN_FILE})
 add_library(${PROJECT_NAME}_Static STATIC ${SRCS})
 
 add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${CMAKE_CURRENT_SOURCE_DIR}/../../src/main.cpp)
-target_link_libraries(${PROJECT_NAME} ${EASYRPG_PLAYER_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${EASYRPG_PLAYER_LIBRARIES_ALL})
 
 add_dependencies(${PROJECT_NAME} EasyRPG_Reader ${PROJECT_NAME}_Static)
+
+set(CPACK_PACKAGE_ICON "${CMAKE_CURRENT_SOURC_DIR}/../../resources/player.ico")
+set(CPACK_GENERATOR "DEB" "DMG" "RPM" "NSIS")
+include(CPack)
+
+# if(APPLE)
+#   message(STATUS "${EASYRPG_PLAYER_LIBRARIES}")
+#   include(BundleUtilities)
+#   set(APP_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../bin/${PROJECT_NAME}.app")
+#   verify_app(${APP_DIRECTORY})
+#   copy_and_fixup_bundle("" ${APP_DIRECTORY} ${EASYRPG_PLAYER_LIBRARIES} "")
+# endif()
 
 # Doxygen
 find_package(Doxygen)
@@ -126,7 +138,7 @@ file(GLOB TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../test/*.cpp)
 foreach(i ${TEST_FILES})
   get_filename_component(name ${i} NAME_WE)
   add_executable(test_${name} ${i})
-  target_link_libraries(test_${name} ${EASYRPG_PLAYER_LIBRARIES})
+  target_link_libraries(test_${name} ${EASYRPG_PLAYER_LIBRARIES_ALL})
   add_dependencies(test_${name} ${PROJECT_NAME}_Static)
 
   add_test(

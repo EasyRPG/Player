@@ -23,13 +23,14 @@
 #include "window_actorinfo.h"
 #include "game_actor.h"
 #include "game_party.h"
+#include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
 Window_ActorInfo::Window_ActorInfo(int ix, int iy, int iwidth, int iheight, int actor_id) :
 	Window_Base(ix, iy, iwidth, iheight),
 	actor_id(actor_id) {
 
-	SetContents(Surface::CreateSurface(width - 16, height - 16));
+	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	Refresh();

@@ -39,7 +39,7 @@ public:
 	~SdlFont();
 
 	int GetHeight();
-	Bitmap* Render(int glyph);
+	BitmapRef Render(int glyph);
 
 private:
 	TTF_Font* ttf_font;

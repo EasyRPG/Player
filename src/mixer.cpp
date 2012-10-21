@@ -57,8 +57,8 @@ void Mixer::Destroy(Channel* channel) {
 		}
 }
 
-void Mixer::callback(void* /* unused */, uint8* stream, int len) {
-	int16* buf = (int16*) stream;
+void Mixer::callback(void* /* unused */, uint8_t* stream, int len) {
+	int16_t* buf = (int16_t*) stream;
 
 	len /= 2;
 

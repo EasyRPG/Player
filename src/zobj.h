@@ -22,23 +22,24 @@
 /// Headers
 ///////////////////////////////////////////////////////////
 #include "system.h"
+#include <boost/cstdint.hpp>
 
 ///////////////////////////////////////////////////////////
 /// ZObj class
 ///////////////////////////////////////////////////////////
 class ZObj {
 public:
-	ZObj(int z, uint32 creation, uint32 id);
+	ZObj(int z, uint32_t creation, uint32_t id);
 
 	void SetZ(int z);
 	int GetZ() const ;
-	uint32 GetCreation() const;
-	uint32 GetId() const;
+	uint32_t GetCreation() const;
+	uint32_t GetId() const;
 
 private:
 	int z;
-	uint32 creation;
-	uint32 ID;
+	uint32_t creation;
+	uint32_t ID;
 };
 
 #endif

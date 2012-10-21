@@ -38,14 +38,9 @@
 #include "keys.h"
 #include "output.h"
 #include "player.h"
-#include "sdl_bitmap.h"
-#include "soft_bitmap.h"
-#include "pixman_bitmap.h"
-#ifdef USE_SDL_TTF
-#include <SDL_ttf.h>
-#endif
 #include <cstdlib>
 #include <cstring>
+#include "bitmap.h"
 
 ///////////////////////////////////////////////////////////
 static int FilterUntilFocus(const SDL_Event* evnt);
@@ -68,7 +63,6 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 	toggle_fs_available(false),
 	mode_changing(false),
 	main_window(NULL),
-	main_surface(NULL),
 	back_color(0),
 	mouse_focus(false),
 	mouse_x(0),
@@ -83,7 +77,7 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 	SYS_SetResetCallback(GekkoResetCallback);
 #endif
 
-	uint32 flags = SDL_INIT_VIDEO | SDL_INIT_TIMER;
+	uint32_t flags = SDL_INIT_VIDEO | SDL_INIT_TIMER;
 #if (defined(_DEBUG) || defined(_WIN32))
 	flags |= SDL_INIT_NOPARACHUTE;
 #endif
@@ -129,12 +123,6 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 	SDL_JoystickOpen(0);
 #endif
 
-#ifdef USE_SDL_TTF
-	if (TTF_Init() == -1) {
-		Output::Error("Couldn't initialize SDL_ttf library.\n%s\n", TTF_GetError());
-	}
-#endif
-
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 	ShowCursor(true);
 #else
@@ -144,7 +132,6 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 
 ///////////////////////////////////////////////////////////
 SdlUi::~SdlUi() {
-	delete main_surface;
 #if defined(GPH)
 	chdir("/usr/gp2x");
 	execl("./gp2xmenu", "./gp2xmenu", NULL);
@@ -160,7 +147,7 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 
 	const SDL_VideoInfo *vinfo;
 	SDL_Rect **modes;
-	uint32 flags = SDL_SWSURFACE;
+	uint32_t flags = SDL_SWSURFACE;
 
 	vinfo = SDL_GetVideoInfo();
 
@@ -299,7 +286,7 @@ void SdlUi::EndDisplayModeChange() {
 
 ////////////////////////////////////////////////////////////
 bool SdlUi::RefreshDisplayMode() {
-	uint32 flags = current_display_mode.flags;
+	uint32_t flags = current_display_mode.flags;
 	int display_width = current_display_mode.width;
 	int display_height = current_display_mode.height;
 	int bpp = current_display_mode.bpp;
@@ -313,17 +300,7 @@ bool SdlUi::RefreshDisplayMode() {
 	}
 
 	// Free non zoomed surface
-	#ifdef USE_SDL_BITMAP
-	if (main_surface != NULL && ((SdlBitmap*) main_surface)->bitmap != main_window) {
-		delete main_surface;
-		main_surface = NULL;
-	}
-	#else
-	if (main_surface != NULL) {
-		delete main_surface;
-		main_surface = NULL;
-	}
-	#endif
+	main_surface.reset();
 
 	// Create our window
 	main_window = SDL_SetVideoMode(display_width, display_height, bpp, flags);
@@ -345,24 +322,11 @@ bool SdlUi::RefreshDisplayMode() {
 		main_window->format->Amask,
 		PF::NoAlpha);
 
-	#ifdef USE_SOFT_BITMAP
-		#if 0
-			SoftBitmap::SetFormat(format_B8G8R8A8_a().format());
-		#else
-			SoftBitmap::SetFormat(SoftBitmap::ChooseFormat(format));
-		#endif
-	#endif
-	#ifdef USE_PIXMAN_BITMAP
-		#if 0
-			PixmanBitmap::SetFormat(format_B8G8R8A8_a().format());
-		#else
-			PixmanBitmap::SetFormat(PixmanBitmap::ChooseFormat(format));
-		#endif
-	#endif
+	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
 
 	if (zoom_available && current_display_mode.zoom) {
 		// Create a non zoomed surface as drawing surface
-		main_surface = Surface::CreateSurface(current_display_mode.width,
+		main_surface = Bitmap::Create(current_display_mode.width,
 											  current_display_mode.height,
 											  false,
 											  current_display_mode.bpp);
@@ -371,9 +335,9 @@ bool SdlUi::RefreshDisplayMode() {
 			return false;
 
 	} else {
-		void *pixels = (uint8*) main_window->pixels + main_window->offset;
+		void *pixels = (uint8_t*) main_window->pixels + main_window->offset;
 		// Drawing surface will be the window itself
-		main_surface = Surface::CreateSurfaceFrom(
+		main_surface = Bitmap::Create(
 			pixels, main_window->w, main_window->h, main_window->pitch, format);
 	}
 
@@ -434,20 +398,14 @@ void SdlUi::ProcessEvents() {
 
 ///////////////////////////////////////////////////////////
 void SdlUi::CleanDisplay() {
-#ifdef USE_SDL_BITMAP
-	const SDL_Rect& r = ((SdlBitmap*)main_surface)->bitmap->clip_rect;
-	Rect rect(r.x, r.y, r.w, r.h);
-	main_surface->FillRect(rect, main_surface->GetColor(back_color));
-#else
 	main_surface->FillRect(main_surface->GetRect(), main_surface->GetColor(back_color));
-#endif
 }
 
 ///////////////////////////////////////////////////////////
 void SdlUi::UpdateDisplay() {
 	if (zoom_available && current_display_mode.zoom) {
 		// Blit drawing surface x2 scaled over window surface
-		Blit2X(main_surface, main_window);
+		Blit2X(*main_surface, main_window);
 	}
 
 	SDL_UpdateRect(main_window, 0, 0, 0, 0);
@@ -458,12 +416,8 @@ void SdlUi::BeginScreenCapture() {
 	CleanDisplay();
 }
 
-Bitmap* SdlUi::EndScreenCapture() {
-#ifdef USE_SDL_BITMAP
-	return (Bitmap*)new SdlBitmap(SDL_DisplayFormat(((SdlBitmap*)main_surface)->bitmap));
-#else
-	return Bitmap::CreateBitmap(main_surface, main_surface->GetRect());
-#endif
+BitmapRef SdlUi::EndScreenCapture() {
+	return Bitmap::Create(*main_surface, main_surface->GetRect());
 }
 
 ///////////////////////////////////////////////////////////
@@ -478,24 +432,16 @@ void SdlUi::DrawScreenText(const std::string &text) {
 
 ///////////////////////////////////////////////////////////
 void SdlUi::DrawScreenText(const std::string &text, int x, int y, Color color) {
-	main_surface->Lock();
+	uint32_t ucolor = main_surface->GetUint32Color(color);
 
-	uint32 ucolor = main_surface->GetUint32Color(color);
-
-	FontRender8x8::TextDraw(text, (uint8*)main_surface->pixels(), x, y, main_surface->width(), main_surface->height(), main_surface->bytes(), ucolor);
-
-	main_surface->Unlock();
+	FontRender8x8::TextDraw(text, (uint8_t*)main_surface->pixels(), x, y, main_surface->width(), main_surface->height(), main_surface->bytes(), ucolor);
 }
 
 ///////////////////////////////////////////////////////////
 void SdlUi::DrawScreenText(const std::string &text, Rect dst_rect, Color color) {
-	main_surface->Lock();
+	uint32_t ucolor = main_surface->GetUint32Color(color);
 
-	uint32 ucolor = main_surface->GetUint32Color(color);
-
-	FontRender8x8::TextDraw(text, (uint8*)main_surface->pixels(), dst_rect, main_surface->width(), main_surface->height(), main_surface->bytes(), ucolor);
-
-	main_surface->Unlock();
+	FontRender8x8::TextDraw(text, (uint8_t*)main_surface->pixels(), dst_rect, main_surface->width(), main_surface->height(), main_surface->bytes(), ucolor);
 }
 
 ///////////////////////////////////////////////////////////
@@ -507,14 +453,10 @@ bool SdlUi::ShowCursor(bool flag) {
 }
 
 ///////////////////////////////////////////////////////////
-void SdlUi::Blit2X(Bitmap* src, SDL_Surface* dst_surf) {
-	#ifdef USE_SDL_BITMAP
-	if (((SdlBitmap*)src)->bitmap == dst_surf) return;
-	#endif
-
+void SdlUi::Blit2X(Bitmap const& src, SDL_Surface* dst_surf) {
 	if (SDL_MUSTLOCK(dst_surf)) SDL_LockSurface(dst_surf);
 
-	Surface* dst = Surface::CreateSurfaceFrom(
+	BitmapRef dst = Bitmap::Create(
 		dst_surf->pixels,
 		dst_surf->w,
 		dst_surf->h,
@@ -527,9 +469,7 @@ void SdlUi::Blit2X(Bitmap* src, SDL_Surface* dst_surf) {
 			dst_surf->format->Amask,
 			PF::NoAlpha));
 
-	dst->Blit2x(dst->GetRect(), src, src->GetRect());
-
-	delete dst;
+	dst->Blit2x(dst->GetRect(), src, src.GetRect());
 
 	if (SDL_MUSTLOCK(dst_surf)) SDL_UnlockSurface(dst_surf);
 }
@@ -838,7 +778,7 @@ int SdlUi::GetMousePosY() {
 	return mouse_y;
 }
 
-Surface* SdlUi::GetDisplaySurface() {
+BitmapRef SdlUi::GetDisplaySurface() {
 	return main_surface;
 }
 

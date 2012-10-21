@@ -21,9 +21,15 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "bitmap.h"
-#include "surface.h"
 #include "tone.h"
+#include "rect.h"
+#include "color.h"
+#include <boost/shared_ptr.hpp>
+
+class Bitmap;
+class BitmapScreen;
+
+typedef boost::shared_ptr<BitmapScreen> BitmapScreenRef;
 
 ////////////////////////////////////////////////////////////
 /// Base BitmapScreen class.
@@ -36,16 +42,16 @@ public:
 	////////////////////////////////////////////////////////
 	/// Creates a BitmapScreen object.
 	/// @param source : source bitmap, or NULL.
-	/// @param delete_bitmap : if true, the bitmap will be 
+	/// @param delete_bitmap : if true, the bitmap will be
 	///      deleted when it is replaced or when this object
     ///      is deleted.
 	////////////////////////////////////////////////////////
-	static BitmapScreen* CreateBitmapScreen(Bitmap* source, bool delete_bitmap = false);
+	static BitmapScreenRef Create(boost::shared_ptr<Bitmap> const& source);
 
 	////////////////////////////////////////////////////////
 	/// Creates a BitmapScreen object with no attached bitmap
 	////////////////////////////////////////////////////////
-	static BitmapScreen* CreateBitmapScreen();
+	static BitmapScreenRef Create();
 
 	////////////////////////////////////////////////////////
 	/// Destructor.
@@ -60,17 +66,17 @@ public:
 	////////////////////////////////////////////////////////
 	/// Set source bitmap.
 	/// @param source : source bitmap
-	/// @param delete_bitmap : if true, the bitmap will be 
+	/// @param delete_bitmap : if true, the bitmap will be
 	///      deleted when it is replaced or when this object
     ///      is deleted.
 	////////////////////////////////////////////////////////
-	virtual void SetBitmap(Bitmap* source, bool delete_bitmap = false);
+	virtual void SetBitmap(boost::shared_ptr<Bitmap> const& source);
 
 	////////////////////////////////////////////////////////
 	/// Get source bitmap.
 	/// @return source bitmap
 	////////////////////////////////////////////////////////
-	virtual Bitmap* GetBitmap();
+	virtual boost::shared_ptr<Bitmap> const& GetBitmap();
 
 	////////////////////////////////////////////////////////
 	/// Blit the bitmap to the screen.
@@ -187,11 +193,9 @@ public:
 	virtual void SetWaverEffectPhase(double phase);
 
 protected:
-	BitmapScreen(Bitmap* source, bool delete_bitmap);
+	BitmapScreen(boost::shared_ptr<Bitmap> const& source);
 
-	Bitmap* bitmap;
-
-	bool delete_bitmap;
+	boost::shared_ptr<Bitmap> bitmap;
 
 	bool needs_refresh;
 	bool bitmap_changed;
@@ -212,13 +216,13 @@ protected:
 	double waver_effect_phase;
 	Color flash_effect;
 
-	virtual void BlitScreenIntern(Bitmap* draw_bitmap, int x, int y, Rect src_rect,
+	virtual void BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y, Rect src_rect,
 								  bool need_scale, int bush_y);
 
-	virtual Bitmap* Refresh(Rect& rect, bool& need_scale, int& bush_y);
+	virtual boost::shared_ptr<Bitmap> Refresh(Rect& rect, bool& need_scale, int& bush_y);
 
-	Surface* bitmap_effects;
-	Bitmap* bitmap_scale;
+	boost::shared_ptr<Bitmap> bitmap_effects;
+	boost::shared_ptr<Bitmap> bitmap_scale;
 
 	Rect bitmap_effects_src_rect;
 	Rect bitmap_scale_src_rect;

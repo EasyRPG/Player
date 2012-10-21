@@ -19,6 +19,8 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "tilemap.h"
+#include "tilemap_layer.h"
+#include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
 // Constructor
@@ -46,10 +48,10 @@ void Tilemap::Update() {
 ////////////////////////////////////////////////////////////
 // Properties
 ////////////////////////////////////////////////////////////
-Bitmap* Tilemap::GetChipset() const {
+BitmapRef const& Tilemap::GetChipset() const {
 	return layer_down->GetChipset();
 }
-void Tilemap::SetChipset(Bitmap* chipset) {
+void Tilemap::SetChipset(BitmapRef const& chipset) {
 	layer_down->SetChipset(chipset);
 	layer_up->SetChipset(chipset);
 }

@@ -22,12 +22,14 @@
 #include <sstream>
 #include "game_party.h"
 #include "window_shopstatus.h"
+#include "bitmap.h"
+#include "font.h"
 
 ////////////////////////////////////////////////////////////
 Window_ShopStatus::Window_ShopStatus(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight), item_id(0) {
 
-	SetContents(Surface::CreateSurface(width - 16, height - 16));
+	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	Refresh();
@@ -50,11 +52,11 @@ void Window_ShopStatus::Refresh() {
 		std::stringstream ss;
 		ss << number;
 
-		contents->TextDraw(120, 2, Font::ColorDefault, ss.str(), Surface::TextAlignRight);
+		contents->TextDraw(120, 2, Font::ColorDefault, ss.str(), Bitmap::TextAlignRight);
 
 		ss.str("");
 		ss << Game_Party::ItemNumber(item_id, true);
-		contents->TextDraw(120, 18, Font::ColorDefault, ss.str(), Surface::TextAlignRight);
+		contents->TextDraw(120, 18, Font::ColorDefault, ss.str(), Bitmap::TextAlignRight);
 	}
 }
 
@@ -65,4 +67,3 @@ void Window_ShopStatus::SetItemId(int new_item_id) {
 		Refresh();
 	}
 }
-

@@ -23,6 +23,8 @@
 #include <sstream>
 #include <cstdlib>
 #include <cstdarg>
+#include <exception>
+
 #include "graphics.h"
 #include "input.h"
 #include "msgbox.h"
@@ -30,6 +32,14 @@
 #include "output.h"
 #include "player.h"
 #include "time.hpp"
+
+////////////////////////////////////////////////////////////
+#ifdef BOOST_NO_EXCEPTIONS
+void boost::throw_exception(std::exception const& exp) {
+	Output::Error(exp.what());
+}
+#endif
+
 
 ////////////////////////////////////////////////////////////
 static void HandleScreenOutput(std::string msg, bool is_error) {

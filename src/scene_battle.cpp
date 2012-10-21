@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////
 // This file is part of EasyRPG Player.
-// 
+//
 // EasyRPG Player is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // EasyRPG Player is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
@@ -38,6 +38,7 @@
 #include "battle_animation.h"
 #include "battle_actions.h"
 #include "scene_battle.h"
+#include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
 Scene_Battle::Scene_Battle() {
@@ -50,9 +51,9 @@ Scene_Battle::~Scene_Battle() {
 
 ////////////////////////////////////////////////////////////
 Scene_Battle::FloatText::FloatText(int x, int y, int color, const std::string& text, int _duration) {
-	Rect rect = Surface::GetTextSize(text);
+	Rect rect = Bitmap::GetTextSize(text);
 
-	Surface* graphic = Surface::CreateSurface(rect.width, rect.height);
+	BitmapRef graphic = Bitmap::Create(rect.width, rect.height);
 	graphic->Clear();
 	graphic->TextDraw(-rect.x, -rect.y, color, text);
 
@@ -74,7 +75,7 @@ Scene_Battle::FloatText::~FloatText() {
 
 ////////////////////////////////////////////////////////////
 void Scene_Battle::CreateCursors() {
-	Bitmap* system2 = Cache::System2(Data::system.system2_name);
+	BitmapRef system2 = Cache::System2(Data::system.system2_name);
 
 	ally_cursor = new Sprite();
 	ally_cursor->SetBitmap(system2);
@@ -961,7 +962,7 @@ void Scene_Battle::UpdateSprites() {
 			if (it->fade == 0)
 				it->sprite->SetVisible(false);
 		}
-			
+
 		if (!it->rpg_enemy->levitate)
 			continue;
 		int y = (int) (3 * sin(cycle / 30.0));
@@ -1118,4 +1119,3 @@ void Scene_Battle::CheckFlee() {
 	Game_Temp::battle_result = Game_Temp::BattleEscape;
 	Scene::Pop();
 }
-

@@ -24,9 +24,9 @@ namespace Audio {
 
 class Resampler {
 public:
-	virtual void merge(int16* data, int d_len, AudioStream* stream, uint16 vol, uint8 balance) = 0;
+	virtual void merge(int16_t* data, int d_len, AudioStream* stream, uint16_t vol, uint8_t balance) = 0;
 
-	static Resampler* GetInstance(uint16 inrate, uint16 outrate);
+	static Resampler* GetInstance(uint16_t inrate, uint16_t outrate);
 };
 
 }

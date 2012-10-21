@@ -22,7 +22,7 @@
 #  error "This build doesn't target an os"
 #endif
 
-#if !(defined(USE_SDL)) /*|| defined(USE_OPENGL))*/
+#if !(defined(USE_SDL))
 #  error "This build doesn't target a backend"
 #endif
 
@@ -32,59 +32,33 @@
 // system.h is oriented to what used libraries and OS are capable of.
 #include "options.h"
 
-#ifdef USE_OPENGL
-#  define USE_OPENGL_BITMAP
+#define SUPPORT_BMP
+#define SUPPORT_JPG
+#define SUPPORT_PNG
+#define SUPPORT_XYZ
 
-#  define SUPPORT_ZOOM
-#  define SUPPORT_FULL_SCALING
+/*
+#define SUPPORT_GIF
+#define SUPPORT_TIFF
+*/
 
-#  define USE_SDL_IMAGE
-
-#  ifdef USE_SOIL
-#    define SUPPORT_BMP
-#    define SUPPORT_GIF
-#    define SUPPORT_JPG
-#    define SUPPORT_PNG
-		//#define SUPPORT_XYZ
-#  endif
-#endif
-
-#ifdef USE_SOFT_BITMAP
-#  define SUPPORT_BMP
-	//#define SUPPORT_GIF
-	//#define SUPPORT_JPG
-#  define SUPPORT_PNG
-#  define SUPPORT_XYZ
-
-#  define SUPPORT_TTF
-#  define SUPPORT_FON
-#endif
-
-#ifdef USE_PIXMAN_BITMAP
-#  define SUPPORT_BMP
-	//#define SUPPORT_GIF
-	//#define SUPPORT_JPG
-#  define SUPPORT_PNG
-#  define SUPPORT_XYZ
-
-#  define SUPPORT_TTF
-#  define SUPPORT_FON
-#endif
+#define SUPPORT_TTF
+#define SUPPORT_FON
 
 #ifdef USE_SDL
-#  if !defined(USE_OPENGL_BITMAP) && !defined(USE_SOFT_BITMAP) && !defined(USE_PIXMAN_BITMAP)
-#    define USE_SDL_IMAGE
-#    define USE_SDL_BITMAP
-		//#define USE_RLE
-#    define USE_SDL_TTF
+#  define USE_SDL_MIXER
+
+
+#  ifdef PSP
+#    undef SUPPORT_AUDIO
+#    undef USE_SDL_MIXER
 #  endif
 
-#  define USE_SDL_MIXER
-	
 #  if !defined(DINGOO) && !defined(GEKKO)
 #    define SUPPORT_KEYBOARD
 #    define SUPPORT_MOUSE
 #  endif
+
 #  if !defined(DINGOO)
 #    define SUPPORT_JOYSTICK
 #    define SUPPORT_JOYSTICK_HAT
@@ -92,14 +66,6 @@
 #    define JOYSTICK_AXIS_SENSIBILITY 20000
 #  else
 #    define SUPPORT_KEYBOARD
-#  endif
-
-#  ifdef USE_SDL_IMAGE
-#    define SUPPORT_BMP
-#    define SUPPORT_GIF
-		//#define SUPPORT_JPG
-#    define SUPPORT_PNG
-#    define SUPPORT_XYZ
 #  endif
 
 #  ifdef USE_SDL_MIXER
@@ -110,64 +76,12 @@
 #  endif
 
 #  define SUPPORT_AUDIO
-
-#  ifdef USE_SDL_TTF
-#    define SUPPORT_TTF
-#    define SUPPORT_FON
-#  endif
 #endif
 
 #ifdef _WIN32
 #  define DEFAULT_FONTS { "RM2000", "DejaVuLGCSansMono", "msgothic", "Lucida Console", "MS Sans Serif", "" }
 #else
 #  define DEFAULT_FONTS { "ipag", "ipam", "RM2000", "DejaVuLGCSansMono", "" }
-#endif
-
-#ifdef USE_SDL 
-#  ifdef PSP
-#    undef SUPPORT_AUDIO
-#    undef USE_SDL_MIXER
-
-#    include "SDL.h"
-#  else
-#    include "SDL_stdinc.h"
-#  endif
-	typedef Sint8   int8;
-	typedef Uint8   uint8;
-	typedef Sint16  int16;
-	typedef Uint16  uint16;
-	typedef Sint32  int32;
-	typedef Uint32  uint32;
-	typedef Sint64  int64;
-	typedef Uint64  uint64;
-
-	typedef Uint32  uint;
-#else
-#  if !defined(_MSC_VER) || (_MSC_VER >= 1600)
-#    include <stdint.h>
-
-		typedef int8_t		int8;
-		typedef uint8_t		uint8;
-		typedef int16_t		int16;
-		typedef uint16_t	uint16;
-		typedef int32_t		int32;
-		typedef uint32_t	uint32;
-		typedef int64_t		int64;
-		typedef uint64_t	uint64;
-		
-		typedef uint32_t	uint;
-#  else
-		typedef signed char			int8;
-		typedef	unsigned char		uint8;
-		typedef	signed short		int16;
-		typedef unsigned short		uint16;
-		typedef	signed int			int32;
-		typedef unsigned int		uint32;
-		typedef signed __int64	int64;
-		typedef unsigned __int64	uint64;
-
-		typedef unsigned int	uint;
-#  endif
 #endif
 
 #endif

@@ -63,7 +63,7 @@ protected:
 
 	/// character bitmaps
 	/// bitmaps[actor#][anim phase][equippable]
-	Bitmap* bitmaps[4][3][2];
+	BitmapRef bitmaps[4][3][2];
 
 	/// animation rate
 	static const int anim_rate = 12;

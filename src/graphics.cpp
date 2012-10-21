@@ -21,7 +21,10 @@
 #include <algorithm>
 #include <sstream>
 #include <vector>
+#include <map>
+
 #include "graphics.h"
+#include "bitmap.h"
 #include "bitmap_screen.h"
 #include "cache.h"
 #include "baseui.h"
@@ -33,7 +36,7 @@
 ////////////////////////////////////////////////////////////
 namespace Graphics {
 	bool fps_on_screen;
-	uint32 drawable_id;
+	uint32_t drawable_id;
 
 	void InternUpdate1(bool reset = false);
 	void InternUpdate2(bool reset = false);
@@ -46,25 +49,25 @@ namespace Graphics {
 	int framerate;
 	int framecount;
 	int fps_mode;
-	uint32 timer_wait;
+	uint32_t timer_wait;
 
 	void UpdateTransition();
 
-	BitmapScreen* frozen_screen;
-	BitmapScreen* black_screen;
-	BitmapScreen* screen1;
-	BitmapScreen* screen2;
+	BitmapScreenRef frozen_screen;
+	BitmapScreenRef black_screen;
+	BitmapScreenRef screen1;
+	BitmapScreenRef screen2;
 	bool frozen;
 	TransitionType transition_type;
 	int transition_duration;
 	int transition_frame;
 	bool screen_erased;
 
-	uint32 drawable_creation;
+	uint32_t drawable_creation;
 
 	struct State {
 		State() : zlist_dirty(false) {}
-		std::map<uint32, Drawable*> drawable_map;
+		std::map<uint32_t, Drawable*> drawable_map;
 		std::list<ZObj*> zlist;
 		bool zlist_dirty;
 	};
@@ -85,11 +88,11 @@ void Graphics::Init() {
 	framecount = 0;
 	fps_mode = 0;
 	timer_wait = 0;
-	frozen_screen = BitmapScreen::CreateBitmapScreen();
+	frozen_screen = BitmapScreen::Create();
 
-	black_screen = BitmapScreen::CreateBitmapScreen();
-	Bitmap* black_bitmap = Bitmap::CreateBitmap(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0,0,0,255));
-	black_screen->SetBitmap(black_bitmap, true);
+	black_screen = BitmapScreen::Create();
+	BitmapRef black_bitmap = Bitmap::Create(DisplayUi->GetWidth(), DisplayUi->GetHeight(), Color(0,0,0,255));
+	black_screen->SetBitmap(black_bitmap);
 
 	frozen = false;
 	drawable_creation = 0;
@@ -100,8 +103,8 @@ void Graphics::Init() {
 
 ////////////////////////////////////////////////////////////
 void Graphics::Quit() {
-	std::map<uint32, Drawable*>::iterator it;
-	std::map<uint32, Drawable*> drawable_map_temp = state->drawable_map;
+	std::map<uint32_t, Drawable*>::iterator it;
+	std::map<uint32_t, Drawable*> drawable_map_temp = state->drawable_map;
 
 	for (it = drawable_map_temp.begin(); it != drawable_map_temp.end(); it++) {
 		delete it->second;
@@ -116,15 +119,8 @@ void Graphics::Quit() {
 
 	state->zlist.clear();
 
-	if (frozen_screen) {
-		delete frozen_screen;
-		frozen_screen = NULL;
-	}
-
-	if (black_screen) {
-		delete black_screen;
-		black_screen = NULL;
-	}
+	frozen_screen.reset();
+	black_screen.reset();
 
 	Cache::Clear();
 }
@@ -146,16 +142,16 @@ void Graphics::Update() {
 void Graphics::InternUpdate1(bool reset) {
 	// FIXME: This method needs more comments.
 	static const double framerate_interval = 1000.0 / framerate;
-	static uint32 current_time = 0;
+	static uint32_t current_time = 0;
 	static double last_time = 0;
 	static double wait_frames = 0.0;
 	static double cycles_leftover = 0.0;
-	static uint32 frames = 0;
-	static uint32 next_fps_time = Time::GetTicks() + 1000;
+	static uint32_t frames = 0;
+	static uint32_t next_fps_time = Time::GetTicks() + 1000;
 
 	if (reset) {
 		last_time = Time::GetTicks();
-		next_fps_time = (uint32)last_time + 1000;
+		next_fps_time = (uint32_t)last_time + 1000;
 		frames = 0;
 		return;
 	}
@@ -164,7 +160,7 @@ void Graphics::InternUpdate1(bool reset) {
 		wait_frames -= 1;
 		return;
 	}
-	
+
 	for (;;) {
 		current_time = Time::GetTicks();
 
@@ -189,7 +185,7 @@ void Graphics::InternUpdate1(bool reset) {
 			break;
 
 		} else {
-			Time::Sleep((uint32)(framerate_interval - (current_time - last_time)));
+			Time::Sleep((uint32_t)(framerate_interval - (current_time - last_time)));
 		}
 	}
 }
@@ -207,7 +203,7 @@ void Graphics::InternUpdate2(bool reset) {
 	static double update_iterations = 0.0;
 	static bool start = true;
 	static int frames = 0;
-	static uint32 next_fps_time = Time::GetTicks() + 1000; 
+	static uint32_t next_fps_time = Time::GetTicks() + 1000;
 
 	if (reset) {
 		start = true;
@@ -240,7 +236,7 @@ void Graphics::InternUpdate2(bool reset) {
 		last_frame_time = current_time;
 
 		DrawFrame();
-		
+
 		frames++;
 
 		if (Time::GetTicks() >= next_fps_time) {
@@ -304,7 +300,7 @@ void Graphics::DrawOverlay() {
 }
 
 ////////////////////////////////////////////////////////////
-Bitmap* Graphics::SnapToBitmap() {
+BitmapRef Graphics::SnapToBitmap() {
 	DisplayUi->BeginScreenCapture();
 
 	std::list<ZObj*>::iterator it_zlist;
@@ -317,7 +313,7 @@ Bitmap* Graphics::SnapToBitmap() {
 
 ////////////////////////////////////////////////////////////
 void Graphics::Freeze() {
-	frozen_screen->SetBitmap(SnapToBitmap(), true);
+	frozen_screen->SetBitmap(SnapToBitmap());
 	frozen = true;
 }
 
@@ -346,7 +342,7 @@ void Graphics::Transition(TransitionType type, int duration, bool erase) {
 
 			if (screen_erased)
 				screen1 = black_screen;
-			else 
+			else
 				screen1 = screen2;
 		}
 
@@ -356,7 +352,7 @@ void Graphics::Transition(TransitionType type, int duration, bool erase) {
 		}
 	}
 
-	if (!erase) frozen_screen->SetBitmap(NULL);
+	if (!erase) frozen_screen->SetBitmap(BitmapRef());
 
 	frozen = false;
 	screen_erased = erase;
@@ -541,17 +537,17 @@ void Graphics::SetFrameCount(int nframecount) {
 }
 
 ///////////////////////////////////////////////////////////
-void Graphics::RegisterDrawable(uint32 ID, Drawable* drawable) {
+void Graphics::RegisterDrawable(uint32_t ID, Drawable* drawable) {
 	state->drawable_map[ID] = drawable;
 }
 
-void Graphics::RemoveDrawable(uint32 ID) {
-	std::map<uint32, Drawable*>::iterator it = state->drawable_map.find(ID);
+void Graphics::RemoveDrawable(uint32_t ID) {
+	std::map<uint32_t, Drawable*>::iterator it = state->drawable_map.find(ID);
 	state->drawable_map.erase(it);
 }
 
 ///////////////////////////////////////////////////////////
-ZObj* Graphics::RegisterZObj(int z, uint32 ID) {
+ZObj* Graphics::RegisterZObj(int z, uint32_t ID) {
 	ZObj* zobj = new ZObj(z, drawable_creation++, ID);
 	state->zlist.push_back(zobj);
 
@@ -560,7 +556,7 @@ ZObj* Graphics::RegisterZObj(int z, uint32 ID) {
 	return zobj;
 }
 
-void Graphics::RegisterZObj(int z, uint32 ID, bool multiz) {
+void Graphics::RegisterZObj(int z, uint32_t ID, bool multiz) {
 	ZObj* zobj = new ZObj(z, 999999, ID);
 	state->zlist.push_back(zobj);
 
@@ -568,11 +564,11 @@ void Graphics::RegisterZObj(int z, uint32 ID, bool multiz) {
 }
 
 ///////////////////////////////////////////////////////////
-void Graphics::RemoveZObj(uint32 ID) {
+void Graphics::RemoveZObj(uint32_t ID) {
 	RemoveZObj(ID, false);
 }
 
-void Graphics::RemoveZObj(uint32 ID, bool multiz) {
+void Graphics::RemoveZObj(uint32_t ID, bool multiz) {
 	std::vector<std::list<ZObj*>::iterator> to_erase;
 
 	std::list<ZObj*>::iterator it_zlist;

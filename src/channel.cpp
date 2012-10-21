@@ -20,7 +20,7 @@
 
 namespace Audio {
 
-Channel::Channel(uint16 _rate, uint16 _vol, uint8 _balance, AudioStream* _stream):
+Channel::Channel(uint16_t _rate, uint16_t _vol, uint8_t _balance, AudioStream* _stream):
 rate(_rate),
 vol(_vol),
 balance(_balance),
@@ -36,7 +36,7 @@ Channel::~Channel() {
 }
 
 
-void Channel::Mix(int16 *data, int len) {
+void Channel::Mix(int16_t *data, int len) {
 	resampler->merge(data, len, stream, vol, balance);
 }
 

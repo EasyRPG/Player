@@ -21,19 +21,20 @@
 #include "plane.h"
 #include "graphics.h"
 #include "player.h"
+#include "bitmap.h"
+#include "bitmap_screen.h"
 
 ////////////////////////////////////////////////////////////
 Plane::Plane() :
 	type(TypePlane),
 	ID(Graphics::drawable_id++),
-	bitmap(NULL),
 	visible(true),
 	z(0),
 	ox(0),
 	oy(0) {
-	
-	bitmap_screen = BitmapScreen::CreateBitmapScreen();
-	
+
+	bitmap_screen = BitmapScreen::Create();
+
 	zobj = Graphics::RegisterZObj(0, ID);
 	Graphics::RegisterDrawable(ID, this);
 }
@@ -42,7 +43,6 @@ Plane::Plane() :
 Plane::~Plane() {
 	Graphics::RemoveZObj(ID);
 	Graphics::RemoveDrawable(ID);
-	delete bitmap_screen;
 }
 
 ////////////////////////////////////////////////////////////
@@ -55,12 +55,12 @@ void Plane::Draw(int z_order) {
 }
 
 ////////////////////////////////////////////////////////////
-Bitmap* Plane::GetBitmap() const {
+BitmapRef const& Plane::GetBitmap() const {
 	return bitmap;
 }
-void Plane::SetBitmap(Bitmap* nbitmap, bool delete_bitmap) {
+void Plane::SetBitmap(BitmapRef const& nbitmap) {
 	bitmap = nbitmap;
-	bitmap_screen->SetBitmap(nbitmap, delete_bitmap);
+	bitmap_screen->SetBitmap(nbitmap);
 }
 
 bool Plane::GetVisible() const {

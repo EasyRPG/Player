@@ -29,7 +29,6 @@
 #include "filefinder.h"
 #include "font.h"
 #include "bitmap.h"
-#include "surface.h"
 #include "ftfont.h"
 
 FT_Library FTFont::library;
@@ -116,19 +115,19 @@ int FTFont::GetHeight() {
 	return size + 2;
 }
 
-Bitmap* FTFont::Render(int c) {
+BitmapRef FTFont::Render(int c) {
 	Init();
 
 	FT_Error ans = FT_Load_Char(face, c, FT_LOAD_NO_BITMAP);
     if (ans != FT_Err_Ok) {
 		Output::Error("Couldn't load FreeType character %d\n", c);
-		return NULL;
+		return BitmapRef();
 	}
 
 	ans = FT_Render_Glyph(face->glyph, FT_RENDER_MODE_MONO);
     if (ans != FT_Err_Ok) {
 		Output::Error("Couldn't render FreeType character %d\n", c);
-		return NULL;
+		return BitmapRef();
 	}
 
 	FT_Bitmap ft_bitmap;
@@ -141,18 +140,18 @@ Bitmap* FTFont::Render(int c) {
 
 	if (ft_bitmap.pixel_mode != FT_PIXEL_MODE_GRAY) {
 		Output::Error("FreeType character has wrong format\n", c);
-		return NULL;
+		return BitmapRef();
 	}
 
 	int pitch = ft_bitmap.pitch;
 	if (pitch < 0)
 		pitch = -pitch;
 
-	Surface* source = Surface::CreateSurfaceFrom(
+    BitmapRef source = Bitmap::Create(
 		ft_bitmap.buffer, ft_bitmap.width, ft_bitmap.rows, pitch, format_L8_k().format());
 	source->SetTransparentColor(Color(0,0,0,0));
 
-	Surface* bitmap = Surface::CreateSurface(ft_bitmap.width, size + 2, true);
+    BitmapRef bitmap = Bitmap::Create(ft_bitmap.width, size + 2, true);
 	bitmap->SetTransparentColor(Color(0,0,0,0));
 
 	const int base_line = (face->descender != 0)
@@ -164,14 +163,11 @@ Bitmap* FTFont::Render(int c) {
 	rect.y += offset;
 	bitmap->FillRect(rect, Color(255,255,255,255));
 
-	bitmap->MaskBlit(0, offset, source, source->GetRect());
+	bitmap->MaskBlit(0, offset, *source, source->GetRect());
 	if (ft_bitmap.pitch < 0)
 		bitmap->Flip(bitmap->GetRect(), false, true);
-
-	delete source;
 
 	return bitmap;
 }
 
 #endif
-

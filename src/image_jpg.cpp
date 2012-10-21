@@ -16,7 +16,8 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "system.h"
-#if defined(USE_SOFT_BITMAP) || defined(USE_PIXMAN_BITMAP)
+
+#ifdef SUPPORT_JPG
 
 #include <cstdlib>
 #include <cstdio>
@@ -25,14 +26,14 @@
 #include "output.h"
 #include "image_jpg.h"
 
-void ImageJPG::ReadJPG(FILE * stream, uint8 *data, uint len, int& width,
+void ImageJPG::ReadJPG(FILE * stream, uint8_t *data, unsigned len, int& width,
 						int& height, void*& pixels) {
 
 	struct jpeg_decompress_struct cinfo;
 	int res;
 	int pitch;
 	JSAMPARRAY buffer;
-	uint8* dst;
+	uint8_t* dst;
 	bool from_mem;
 
 	pixels = NULL;
@@ -73,9 +74,9 @@ void ImageJPG::ReadJPG(FILE * stream, uint8 *data, uint len, int& width,
 
 	pixels = malloc(pitch * height);
 
-	dst = (uint8*) pixels;
+	dst = (uint8_t*) pixels;
 
-	while (cinfo.output_scanline < (uint) height) {
+	while (cinfo.output_scanline < (unsigned) height) {
 
 		res = jpeg_read_scanlines(&cinfo, buffer, 1);
 		if (!res) {
@@ -98,5 +99,4 @@ clean_exit:
 	return;
 }
 
-#endif
-
+#endif // SUPPORT_JPG

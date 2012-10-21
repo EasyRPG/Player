@@ -19,14 +19,14 @@
 #define _EASYRPG_IMAGE_JPG_H_
 
 #include "system.h"
-#if defined(USE_SOFT_BITMAP) || defined(USE_PIXMAN_BITMAP)
+#ifdef SUPPORT_JPG
 
 #include <cstdio>
 
 namespace ImageJPG {
-	void ReadJPG(FILE* stream, uint8* data, uint len, int& width, int& height, void*& pixels);
+	void ReadJPG(FILE* stream, uint8_t* data, unsigned len, int& width, int& height, void*& pixels);
 }
 
-#endif
+#endif // SUPPORT_JPG
 
 #endif

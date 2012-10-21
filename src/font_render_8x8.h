@@ -40,7 +40,7 @@ namespace FontRender8x8 {
 	/// @param bpp : Bits per Pixel of surface the pixels are belonging to
 	/// @param color : Color to use
 	///////////////////////////////////////////////////////
-	void TextDraw(const std::string& text, uint8* pixels, int x, int y, int surface_width, int surface_height, int bpp, uint32 color);
+	void TextDraw(const std::string& text, uint8_t* pixels, int x, int y, int surface_width, int surface_height, int bpp, uint32_t color);
 
 	///////////////////////////////////////////////////////
 	/// Draw text to pixels in a rect.
@@ -52,7 +52,7 @@ namespace FontRender8x8 {
 	/// @param bpp : Bits per Pixel of surface the pixels are belonging to
 	/// @param color : Color to use
 	///////////////////////////////////////////////////////
-	void TextDraw(const std::string& text, uint8* pixels, Rect dst_rect, int surface_width, int surface_height, int bpp, uint32 color);
+	void TextDraw(const std::string& text, uint8_t* pixels, Rect dst_rect, int surface_width, int surface_height, int bpp, uint32_t color);
 }
 
 #endif

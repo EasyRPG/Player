@@ -26,7 +26,6 @@
 #include "color.h"
 #include "rect.h"
 #include "system.h"
-#include "surface.h"
 
 class Bitmap;
 
@@ -62,7 +61,7 @@ public:
 	void CleanDisplay();
 	void UpdateDisplay();
 	void BeginScreenCapture();
-	Bitmap* EndScreenCapture();
+	boost::shared_ptr<Bitmap> EndScreenCapture();
 	void SetTitle(const std::string &title);
 	void DrawScreenText(const std::string &text);
 	void DrawScreenText(const std::string &text, int x, int y, Color color = Color(255, 255, 255, 255));
@@ -86,7 +85,7 @@ public:
 	//@}
 
 	/// Get display surface.
-	Surface* GetDisplaySurface();
+	boost::shared_ptr<Bitmap> GetDisplaySurface();
 
 protected:
 	///////////////////////////////////////////////////////
@@ -118,7 +117,7 @@ protected:
 	/// @param src : source bitmap
 	/// @param dst : destination surface
 	///////////////////////////////////////////////////////
-	void Blit2X(Bitmap* src, SDL_Surface* dst);
+	void Blit2X(Bitmap const& src, SDL_Surface* dst);
 
 	///////////////////////////////////////////////////////
 	/// Set app icon.
@@ -137,8 +136,8 @@ protected:
 		bool zoom;
 		int width;
 		int height;
-		uint8 bpp;
-		uint32 flags;
+		uint8_t bpp;
+		uint32_t flags;
 	};
 
 	bool zoom_available;
@@ -159,10 +158,10 @@ protected:
 	SDL_Surface* main_window;
 
 	/// Surface used for zoom.
-	Surface* main_surface;
+	boost::shared_ptr<Bitmap> main_surface;
 
 	/// Color for display background
-	uint32 back_color;
+	uint32_t back_color;
 
 	/// Keys states flags.
 	std::vector<bool> keys;
@@ -181,6 +180,6 @@ protected:
 };
 
 /// Global SdlUi variable.
-extern SdlUi* DisplaySdlUi;
+extern boost::shared_ptr<SdlUi> DisplaySdlUi;
 
 #endif

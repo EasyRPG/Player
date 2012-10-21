@@ -20,10 +20,13 @@
 
 #include <vector>
 #include "plane.h"
-#include "surface.h"
 #include "game_picture.h"
 #include "game_character.h"
 #include "battle_animation.h"
+
+#include <boost/shared_ptr.hpp>
+
+class Bitmap;
 
 class Game_Screen {
 
@@ -72,17 +75,17 @@ private:
 
 protected:
 	struct Snowflake {
-		uint16 x;
-		uint8 y;
-		uint8 life;
+		uint16_t x;
+		uint8_t y;
+		uint8_t life;
 	};
 
 	std::vector<Snowflake> snowflakes;
 
 	Plane* weather_plane;
-	Surface* weather_surface;
-	Bitmap* snow_bitmap;
-	Bitmap* rain_bitmap;
+	boost::shared_ptr<Bitmap> weather_surface;
+	boost::shared_ptr<Bitmap> snow_bitmap;
+	boost::shared_ptr<Bitmap> rain_bitmap;
 	BattleAnimation* animation;
 
 	void InitWeather();
