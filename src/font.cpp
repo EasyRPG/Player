@@ -19,17 +19,16 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <vector>
+#include "system.h"
 #include "filefinder.h"
 #include "output.h"
-#include "system.h"
 #include "font.h"
-
-#include <boost/weak_ptr.hpp>
+#include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
 /// Static Variables
 ////////////////////////////////////////////////////////////
-static std::vector<boost::weak_ptr<Font> > fonts;
+static std::vector<EASYRPG_WEAK_PTR<Font> > fonts;
 
 ////////////////////////////////////////////////////////////
 /// Constructor
@@ -72,7 +71,7 @@ FontRef Font::CreateFont(const std::string& _name, int size, bool bold, bool ita
 	if (size == 0)
 		size = default_size;
 
-	std::vector<boost::weak_ptr<Font> >::const_iterator it;
+	std::vector<EASYRPG_WEAK_PTR<Font> >::const_iterator it;
 	for (it = fonts.begin(); it != fonts.end(); it++) {
 		if(it->expired()) { continue; }
 

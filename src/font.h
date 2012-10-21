@@ -25,30 +25,21 @@
 
 #include <string>
 #include <vector>
-#include <boost/shared_ptr.hpp>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include FT_BITMAP_H
-#include "font.h"
-#include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
 /// Font class
 ////////////////////////////////////////////////////////////
-
-class Bitmap;
-class Font;
-
-typedef boost::shared_ptr<Font> FontRef;
-
 class Font {
 public:
 	Font(const std::string& name, int size, bool bold, bool italic);
 	~Font();
 
 	int GetHeight();
-	boost::shared_ptr<Bitmap> Render(int glyph);
+	BitmapRef Render(int glyph);
 
 	static FontRef CreateFont(const std::string& name = "", int size = 0, bool bold = false, bool italic = false);
 	static bool Exists(const std::string& name);

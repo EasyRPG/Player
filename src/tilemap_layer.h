@@ -23,11 +23,8 @@
 ////////////////////////////////////////////////////////////
 #include <vector>
 #include <map>
+#include "system.h"
 #include "drawable.h"
-#include <boost/shared_ptr.hpp>
-
-class Bitmap;
-class BitmapScreen;
 
 ////////////////////////////////////////////////////////////
 /// TilemapLayer class.
@@ -42,8 +39,8 @@ public:
 
 	void Update();
 
-	boost::shared_ptr<Bitmap> const& GetChipset() const;
-	void SetChipset(boost::shared_ptr<Bitmap> const& nchipset);
+	BitmapRef const& GetChipset() const;
+	void SetChipset(BitmapRef const& nchipset);
 	std::vector<short> GetMapData() const;
 	void SetMapData(std::vector<short> nmap_data);
 	std::vector<unsigned char> GetPassable() const;
@@ -69,8 +66,8 @@ public:
 	void Substitute(int old_id, int new_id);
 
 private:
-	boost::shared_ptr<Bitmap> chipset;
-	boost::shared_ptr<BitmapScreen> chipset_screen;
+	BitmapRef chipset;
+	BitmapScreenRef chipset_screen;
 	std::vector<short> map_data;
 	std::vector<uint8_t> passable;
 	std::vector<uint8_t> substitutions;
@@ -102,13 +99,13 @@ private:
 		TileXY(uint8_t x, uint8_t y) : x(x), y(y), valid(true) {}
 	};
 
-	boost::shared_ptr<BitmapScreen> GenerateAutotiles(int count, const std::map<uint32_t, TileXY>& map);
+	BitmapScreenRef GenerateAutotiles(int count, const std::map<uint32_t, TileXY>& map);
 
 	TileXY GetCachedAutotileAB(short ID, short animID);
 	TileXY GetCachedAutotileD(short ID);
 
-	boost::shared_ptr<BitmapScreen> autotiles_ab_screen;
-	boost::shared_ptr<BitmapScreen> autotiles_d_screen;
+	BitmapScreenRef autotiles_ab_screen;
+	BitmapScreenRef autotiles_d_screen;
 
 	int autotiles_ab_next;
 	int autotiles_d_next;

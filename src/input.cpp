@@ -54,11 +54,11 @@ void Input::Update() {
 	std::vector<bool> keystates = DisplayUi->GetKeyStates();
 
 	// Check button states
-	for (uint i = 0; i < BUTTON_COUNT; ++i) {
+	for (unsigned i = 0; i < BUTTON_COUNT; ++i) {
 		bool pressed = false;
 
 		// Check state of keys assigned to button
-		for (uint e = 0; e < buttons[i].size(); e++) {
+		for (unsigned e = 0; e < buttons[i].size(); e++) {
 			if (keystates[buttons[i][e]]) {
 				pressed = true;
 				break;
@@ -81,14 +81,14 @@ void Input::Update() {
 			repeated[i] = false;
 		}
 	}
-	
+
 	// Press time for directional buttons, the less they have been pressed, the higher their priority will be
 	int dirpress[10];
 
 	// Get max pressed time for each directional button
-	for (uint i = 1; i < 10; i++) {
+	for (unsigned i = 1; i < 10; i++) {
 		dirpress[i] = 0;
-		for (uint e = 0; e < dir_buttons[i].size(); e++) {
+		for (unsigned e = 0; e < dir_buttons[i].size(); e++) {
 			if (dirpress[i] < press_time[dir_buttons[i][e]])
 				dirpress[i] = press_time[dir_buttons[i][e]];
 		}
@@ -102,7 +102,7 @@ void Input::Update() {
 
 	dir4 = 0;
 	dir8 = 0;
-	
+
 	// Check if no opposed keys are being pressed at the same time
 	if (!(dirpress[2] > 0 && dirpress[8] > 0) && !(dirpress[4] > 0 && dirpress[6] > 0)) {
 
@@ -130,7 +130,7 @@ void Input::Update() {
 
 ////////////////////////////////////////////////////////////
 void Input::ResetKeys() {
-	for (uint i = 0; i < BUTTON_COUNT; i++) {
+	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
 		press_time[i] = 0;
 		triggered[i] = false;
 		repeated[i] = false;
@@ -163,7 +163,7 @@ bool Input::IsReleased(InputButton button) {
 }
 
 bool Input::IsAnyPressed() {
-	for (uint i = 0; i < BUTTON_COUNT; i++) {
+	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
 		if (press_time[i] > 0)
 			return true;
 	}
@@ -171,7 +171,7 @@ bool Input::IsAnyPressed() {
 }
 
 bool Input::IsAnyTriggered() {
-	for (uint i = 0; i < BUTTON_COUNT; i++) {
+	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
 		if (triggered[i])
 			return true;
 	}
@@ -179,7 +179,7 @@ bool Input::IsAnyTriggered() {
 }
 
 bool Input::IsAnyRepeated() {
-	for (uint i = 0; i < BUTTON_COUNT; i++) {
+	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
 		if (repeated[i])
 			return true;
 	}
@@ -187,7 +187,7 @@ bool Input::IsAnyRepeated() {
 }
 
 bool Input::IsAnyReleased() {
-	for (uint i = 0; i < BUTTON_COUNT; i++) {
+	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
 		if (released[i])
 			return true;
 	}
@@ -196,7 +196,7 @@ bool Input::IsAnyReleased() {
 
 std::vector<Input::InputButton> Input::GetAllPressed() {
 	std::vector<InputButton> vector;
-	for (uint i = 0; i < BUTTON_COUNT; i++) {
+	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
 		if (press_time[i] > 0)
 			vector.push_back((InputButton)i);
 	}
@@ -205,7 +205,7 @@ std::vector<Input::InputButton> Input::GetAllPressed() {
 
 std::vector<Input::InputButton> Input::GetAllTriggered() {
 	std::vector<InputButton> vector;
-	for (uint i = 0; i < BUTTON_COUNT; i++) {
+	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
 		if (triggered[i])
 			vector.push_back((InputButton)i);
 	}
@@ -214,7 +214,7 @@ std::vector<Input::InputButton> Input::GetAllTriggered() {
 
 std::vector<Input::InputButton> Input::GetAllRepeated() {
 	std::vector<InputButton> vector;
-	for (uint i = 0; i < BUTTON_COUNT; i++) {
+	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
 		if (repeated[i])
 			vector.push_back((InputButton)i);
 	}
@@ -223,7 +223,7 @@ std::vector<Input::InputButton> Input::GetAllRepeated() {
 
 std::vector<Input::InputButton> Input::GetAllReleased() {
 	std::vector<InputButton> vector;
-	for (uint i = 0; i < BUTTON_COUNT; i++) {
+	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
 		if (released[i])
 			vector.push_back((InputButton)i);
 	}

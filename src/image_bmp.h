@@ -22,7 +22,6 @@
 #ifdef SUPPORT_BMP
 
 #include <cstdio>
-#include <boost/cstdint.hpp>
 
 namespace ImageBMP {
 	void ReadBMP(const uint8_t* data, unsigned len, bool transparent, int& width, int& height, void*& pixels);

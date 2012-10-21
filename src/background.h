@@ -22,12 +22,9 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <string>
+#include "system.h"
 #include "drawable.h"
 #include "zobj.h"
-
-#include <boost/shared_ptr.hpp>
-
-class BitmapScreen;
 
 ////////////////////////////////////////////////////////////
 class Background : public Drawable {
@@ -54,12 +51,12 @@ private:
 	ZObj* zobj;
 	bool visible;
 
-	boost::shared_ptr<BitmapScreen> bg_screen;
+	BitmapScreenRef bg_screen;
 	int bg_hscroll;
 	int bg_vscroll;
 	int bg_x;
 	int bg_y;
-	boost::shared_ptr<BitmapScreen> fg_screen;
+	BitmapScreenRef fg_screen;
 	int fg_hscroll;
 	int fg_vscroll;
 	int fg_x;

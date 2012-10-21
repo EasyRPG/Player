@@ -21,15 +21,11 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include "system.h"
 #include "color.h"
 #include "drawable.h"
 #include "tone.h"
 #include "zobj.h"
-
-#include <boost/shared_ptr.hpp>
-
-class Bitmap;
-class BitmapScreen;
 
 ////////////////////////////////////////////////////////////
 /// Plane class
@@ -41,8 +37,8 @@ public:
 
 	void Draw(int z_order);
 
-	boost::shared_ptr<Bitmap> const& GetBitmap() const;
-	void SetBitmap(boost::shared_ptr<Bitmap> const& bitmap);
+	BitmapRef const& GetBitmap() const;
+	void SetBitmap(BitmapRef const& bitmap);
 	bool GetVisible() const;
 	void SetVisible(bool visible);
 	int GetZ() const;
@@ -72,8 +68,8 @@ private:
 	unsigned long ID;
 	ZObj* zobj;
 
-	boost::shared_ptr<Bitmap> bitmap;
-	boost::shared_ptr<BitmapScreen> bitmap_screen;
+	BitmapRef bitmap;
+	BitmapScreenRef bitmap_screen;
 
 	bool visible;
 	int z;

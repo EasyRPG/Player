@@ -19,8 +19,8 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <cmath>
-#include <boost/make_shared.hpp>
 
+#include "system.h"
 #include "bitmap_screen.h"
 #include "baseui.h"
 #include "util_macro.h"
@@ -28,7 +28,7 @@
 
 ////////////////////////////////////////////////////////////
 BitmapScreenRef BitmapScreen::Create(BitmapRef const& source) {
-	return boost::make_shared<BitmapScreen>(source);
+	return EASYRPG_MAKE_SHARED<BitmapScreen>(source);
 }
 
 ////////////////////////////////////////////////////////////

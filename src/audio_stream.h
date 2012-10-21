@@ -19,7 +19,6 @@
 #define _EASYRPG_AUDIOSTREAM_H_
 
 #include "system.h"
-#include <boost/cstdint.hpp>
 
 
 namespace Audio {

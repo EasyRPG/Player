@@ -25,7 +25,6 @@
 #include <cstring>
 #include <algorithm>
 #include "system.h"
-#include <boost/cstdint.hpp>
 
 ////////////////////////////////////////////////////////////
 /// enums

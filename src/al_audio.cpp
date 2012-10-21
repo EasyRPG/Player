@@ -34,7 +34,6 @@ extern "C" {
 }
 
 #include <boost/ptr_container/ptr_vector.hpp>
-#include <boost/shared_ptr.hpp>
 
 #include <cassert>
 #include <list>
@@ -51,41 +50,41 @@ extern "C" {
 
 ////////////////////////////////////////////////////////////
 namespace Audio { namespace {
-		boost::shared_ptr<ALCdevice> device_;
-		boost::shared_ptr<ALCcontext> context_;
+		EASYRPG_SHARED_PTR<ALCdevice> device_;
+		EASYRPG_SHARED_PTR<ALCcontext> context_;
 
 		void delete_source(ALuint* src)
 		{
 			alDeleteSources(1, src);
 			delete src;
 		}
-		boost::shared_ptr<ALuint> create_source()
+		EASYRPG_SHARED_PTR<ALuint> create_source()
 		{
 			ALuint ret = AL_INVALID_VALUE;
 			alGenSources(1, &ret);
 			assert(ret != AL_INVALID_VALUE);
-			return boost::shared_ptr<ALuint>(new ALuint(ret), &delete_source);
+			return EASYRPG_SHARED_PTR<ALuint>(new ALuint(ret), &delete_source);
 		}
 		void delete_buffer(ALuint* buf)
 		{
 			alDeleteBuffers(1, buf);
 			delete buf;
 		}
-		boost::shared_ptr<ALuint> create_buffer()
+		EASYRPG_SHARED_PTR<ALuint> create_buffer()
 		{
 			ALuint ret = AL_INVALID_VALUE;
 			alGenBuffers(1, &ret);
 			assert(ret != AL_INVALID_VALUE);
-			return boost::shared_ptr<ALuint>(new ALuint(ret), &delete_buffer);
+			return EASYRPG_SHARED_PTR<ALuint>(new ALuint(ret), &delete_buffer);
 		}
 
-		std::map<std::string, boost::shared_ptr<ALuint> > musicPool_;
-		std::map<std::string, boost::shared_ptr<ALuint> > soundPool_;
+		std::map<std::string, EASYRPG_SHARED_PTR<ALuint> > musicPool_;
+		std::map<std::string, EASYRPG_SHARED_PTR<ALuint> > soundPool_;
 
-		boost::shared_ptr<ALuint> bgmSource_;
-		boost::shared_ptr<ALuint> bgsSource_;
-		std::list<boost::shared_ptr<ALuint> > seSource_;
-		std::list<boost::shared_ptr<ALuint> > meSource_;
+		EASYRPG_SHARED_PTR<ALuint> bgmSource_;
+		EASYRPG_SHARED_PTR<ALuint> bgsSource_;
+		std::list<EASYRPG_SHARED_PTR<ALuint> > seSource_;
+		std::list<EASYRPG_SHARED_PTR<ALuint> > meSource_;
 } }
 
 ////////////////////////////////////////////////////////////
@@ -151,8 +150,8 @@ namespace {
 			}
 			~MyStream() { avcodec_close(this->codecCtx); }
 
-			boost::shared_ptr<ALuint> createBuffer() const {
-				boost::shared_ptr<ALuint> ret = Audio::create_buffer();
+			EASYRPG_SHARED_PTR<ALuint> createBuffer() const {
+				EASYRPG_SHARED_PTR<ALuint> ret = Audio::create_buffer();
 				alBufferData(*ret, format.toALFormat(), &data.front(), data.size(), format.rate);
 				return ret;
 			}
@@ -197,7 +196,7 @@ namespace {
 	ALuint const& getMusic(std::string const& fname)
 	{
 		using namespace Audio;
-		std::map<std::string, boost::shared_ptr<ALuint> >::iterator i = musicPool_.find(fname);
+		std::map<std::string, EASYRPG_SHARED_PTR<ALuint> >::iterator i = musicPool_.find(fname);
 		if(i == musicPool_.end()) {
 			return *musicPool_.insert(std::make_pair(fname,
 													 MyFile(FileFinder::FindMusic(fname).c_str()).streams[0].createBuffer())).first->second;
@@ -206,25 +205,19 @@ namespace {
 	ALuint const& getSound(std::string const& fname)
 	{
 		using namespace Audio;
-		std::map<std::string, boost::shared_ptr<ALuint> >::iterator i = soundPool_.find(fname);
+		std::map<std::string, EASYRPG_SHARED_PTR<ALuint> >::iterator i = soundPool_.find(fname);
 		if(i == musicPool_.end()) {
 			return *soundPool_.insert(std::make_pair(fname,
 													 MyFile(FileFinder::FindSound(fname).c_str()).streams[0].createBuffer())).first->second;
 		} else return *i->second;
 	}
 
-	void eraseStopped(std::list<boost::shared_ptr<ALuint> >& target) {
-		for(std::list<boost::shared_ptr<ALuint> >::iterator i = target.begin(); i != target.end(); ++i) {
+	void eraseStopped(std::list<EASYRPG_SHARED_PTR<ALuint> >& target) {
+		for(std::list<EASYRPG_SHARED_PTR<ALuint> >::iterator i = target.begin(); i != target.end(); ++i) {
 			ALint stopped; alGetSourcei(*(*i), AL_STOPPED, &stopped);
 			if(stopped == AL_TRUE) { i = target.erase(i); }
 		}
 	}
-}
-
-void boost::throw_exception(std::exception const& exp)
-{
-	Output::Error("exception: %s", exp.what());
-	assert(false);
 }
 
 ////////////////////////////////////////////////////////////
@@ -321,7 +314,7 @@ void Audio::ME_Play(std::string const& file, int volume, int pitch)
 {
 	eraseStopped(seSource_);
 
-	boost::shared_ptr<ALuint> src = create_source();
+	EASYRPG_SHARED_PTR<ALuint> src = create_source();
 
 	alSourcei(*src, AL_BUFFER, getMusic(file));
 	alSourcef(*src, AL_GAIN, volume * 0.01f);
@@ -335,7 +328,7 @@ void Audio::ME_Play(std::string const& file, int volume, int pitch)
 ////////////////////////////////////////////////////////////
 void Audio::ME_Stop()
 {
-	for(std::list<boost::shared_ptr<ALuint> >::iterator i = meSource_.begin(); i != meSource_.end(); ++i) {
+	for(std::list<EASYRPG_SHARED_PTR<ALuint> >::iterator i = meSource_.begin(); i != meSource_.end(); ++i) {
 		alSourceStop(*(*i));
 	}
 	meSource_.clear();
@@ -352,7 +345,7 @@ void Audio::SE_Play(std::string const& file, int volume, int pitch)
 {
 	eraseStopped(seSource_);
 
-	boost::shared_ptr<ALuint> src = create_source();
+	EASYRPG_SHARED_PTR<ALuint> src = create_source();
 
 	alSourcei(*src, AL_BUFFER, getSound(file));
 	alSourcef(*src, AL_GAIN, volume * 0.01f);
@@ -366,7 +359,7 @@ void Audio::SE_Play(std::string const& file, int volume, int pitch)
 ////////////////////////////////////////////////////////////
 void Audio::SE_Stop()
 {
-	for(std::list<boost::shared_ptr<ALuint> >::iterator i = seSource_.begin(); i != seSource_.end(); ++i) {
+	for(std::list<EASYRPG_SHARED_PTR<ALuint> >::iterator i = seSource_.begin(); i != seSource_.end(); ++i) {
 		alSourceStop(*(*i));
 	}
 	seSource_.clear();

@@ -24,10 +24,6 @@
 #include "game_character.h"
 #include "battle_animation.h"
 
-#include <boost/shared_ptr.hpp>
-
-class Bitmap;
-
 class Game_Screen {
 
 public:
@@ -83,9 +79,9 @@ protected:
 	std::vector<Snowflake> snowflakes;
 
 	Plane* weather_plane;
-	boost::shared_ptr<Bitmap> weather_surface;
-	boost::shared_ptr<Bitmap> snow_bitmap;
-	boost::shared_ptr<Bitmap> rain_bitmap;
+	BitmapRef weather_surface;
+	BitmapRef snow_bitmap;
+	BitmapRef rain_bitmap;
 	BattleAnimation* animation;
 
 	void InitWeather();

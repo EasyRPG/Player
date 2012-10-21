@@ -24,13 +24,12 @@
 #include <string>
 #include <list>
 #include <map>
+#include "system.h"
 #include "pixel_format.h"
 #include "color.h"
 #include "rect.h"
 #include "tone.h"
 #include "matrix.h"
-
-class Bitmap;
 
 ////////////////////////////////////////////////////////////
 /// Bitmap utils abstract parent class

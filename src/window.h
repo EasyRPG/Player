@@ -21,13 +21,10 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include "system.h"
 #include "drawable.h"
 #include "zobj.h"
-#include <boost/shared_ptr.hpp>
 #include "rect.h"
-
-class Bitmap;
-class BitmapScreen;
 
 ////////////////////////////////////////////////////////////
 /// Window class
@@ -40,10 +37,10 @@ public:
 	void Draw(int z_order);
 
 	void Update();
-	boost::shared_ptr<Bitmap> const& GetWindowskin() const;
-	void SetWindowskin(boost::shared_ptr<Bitmap> const& nwindowskin);
-	boost::shared_ptr<Bitmap> GetContents() const;
-	void SetContents(boost::shared_ptr<Bitmap> const& ncontents);
+	BitmapRef const& GetWindowskin() const;
+	void SetWindowskin(BitmapRef const& nwindowskin);
+	BitmapRef GetContents() const;
+	void SetContents(BitmapRef const& ncontents);
 	bool GetStretch() const;
 	void SetStretch(bool nstretch);
 	Rect GetCursorRect() const;
@@ -92,7 +89,7 @@ protected:
 	DrawableType type;
 	unsigned long ID;
 	ZObj* zobj;
-	boost::shared_ptr<Bitmap> windowskin, contents;
+	BitmapRef windowskin, contents;
 	bool stretch;
 	Rect cursor_rect;
 	bool active;
@@ -114,7 +111,7 @@ protected:
 	int contents_opacity;
 
 private:
-	boost::shared_ptr<BitmapScreen>
+	BitmapScreenRef
 		windowskin_screen, contents_screen, background, frame_down,
 		frame_up, frame_left, frame_right, cursor1, cursor2;
 

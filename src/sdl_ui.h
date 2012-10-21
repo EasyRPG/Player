@@ -27,8 +27,6 @@
 #include "rect.h"
 #include "system.h"
 
-class Bitmap;
-
 ///////////////////////////////////////////////////////////
 /// SdlUi class.
 ///////////////////////////////////////////////////////////
@@ -61,7 +59,7 @@ public:
 	void CleanDisplay();
 	void UpdateDisplay();
 	void BeginScreenCapture();
-	boost::shared_ptr<Bitmap> EndScreenCapture();
+	BitmapRef EndScreenCapture();
 	void SetTitle(const std::string &title);
 	void DrawScreenText(const std::string &text);
 	void DrawScreenText(const std::string &text, int x, int y, Color color = Color(255, 255, 255, 255));
@@ -85,7 +83,7 @@ public:
 	//@}
 
 	/// Get display surface.
-	boost::shared_ptr<Bitmap> GetDisplaySurface();
+	BitmapRef GetDisplaySurface();
 
 protected:
 	///////////////////////////////////////////////////////
@@ -158,7 +156,7 @@ protected:
 	SDL_Surface* main_window;
 
 	/// Surface used for zoom.
-	boost::shared_ptr<Bitmap> main_surface;
+	BitmapRef main_surface;
 
 	/// Color for display background
 	uint32_t back_color;
@@ -180,6 +178,6 @@ protected:
 };
 
 /// Global SdlUi variable.
-extern boost::shared_ptr<SdlUi> DisplaySdlUi;
+extern EASYRPG_SHARED_PTR<SdlUi> DisplaySdlUi;
 
 #endif

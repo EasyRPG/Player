@@ -21,15 +21,10 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include "system.h"
 #include "tone.h"
 #include "rect.h"
 #include "color.h"
-#include <boost/shared_ptr.hpp>
-
-class Bitmap;
-class BitmapScreen;
-
-typedef boost::shared_ptr<BitmapScreen> BitmapScreenRef;
 
 ////////////////////////////////////////////////////////////
 /// Base BitmapScreen class.
@@ -46,7 +41,7 @@ public:
 	///      deleted when it is replaced or when this object
     ///      is deleted.
 	////////////////////////////////////////////////////////
-	static BitmapScreenRef Create(boost::shared_ptr<Bitmap> const& source);
+	static BitmapScreenRef Create(BitmapRef const& source);
 
 	////////////////////////////////////////////////////////
 	/// Creates a BitmapScreen object with no attached bitmap
@@ -70,13 +65,13 @@ public:
 	///      deleted when it is replaced or when this object
     ///      is deleted.
 	////////////////////////////////////////////////////////
-	void SetBitmap(boost::shared_ptr<Bitmap> const& source);
+	void SetBitmap(BitmapRef const& source);
 
 	////////////////////////////////////////////////////////
 	/// Get source bitmap.
 	/// @return source bitmap
 	////////////////////////////////////////////////////////
-	boost::shared_ptr<Bitmap> const& GetBitmap();
+	BitmapRef const& GetBitmap();
 
 	////////////////////////////////////////////////////////
 	/// Blit the bitmap to the screen.
@@ -192,10 +187,10 @@ public:
 	/// @param waver phase in degrees
 	void SetWaverEffectPhase(double phase);
 
-	BitmapScreen(boost::shared_ptr<Bitmap> const& source);
+	BitmapScreen(BitmapRef const& source);
 
 protected:
-	boost::shared_ptr<Bitmap> bitmap;
+	BitmapRef bitmap;
 
 	bool needs_refresh;
 	bool bitmap_changed;
@@ -219,10 +214,10 @@ protected:
 	void BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y, Rect src_rect,
 								  bool need_scale, int bush_y);
 
-	boost::shared_ptr<Bitmap> Refresh(Rect& rect, bool& need_scale, int& bush_y);
+	BitmapRef Refresh(Rect& rect, bool& need_scale, int& bush_y);
 
-	boost::shared_ptr<Bitmap> bitmap_effects;
-	boost::shared_ptr<Bitmap> bitmap_scale;
+	BitmapRef bitmap_effects;
+	BitmapRef bitmap_scale;
 
 	Rect bitmap_effects_src_rect;
 	Rect bitmap_scale_src_rect;

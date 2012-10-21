@@ -27,11 +27,6 @@
 #include "tone.h"
 #include "zobj.h"
 
-#include <boost/shared_ptr.hpp>
-
-class Bitmap;
-class BitmapScreen;
-
 ////////////////////////////////////////////////////////////
 /// Sprite class.
 ////////////////////////////////////////////////////////////
@@ -49,8 +44,8 @@ public:
 	int GetWidth() const;
 	int GetHeight() const;
 
-	boost::shared_ptr<Bitmap> const& GetBitmap() const;
-	void SetBitmap(boost::shared_ptr<Bitmap> const& bitmap);
+	BitmapRef const& GetBitmap() const;
+	void SetBitmap(BitmapRef const& bitmap);
 	Rect GetSrcRect() const;
 	void SetSrcRect(Rect src_rect);
 	void SetSpriteRect(Rect sprite_rect);
@@ -99,8 +94,8 @@ private:
 	unsigned long ID;
 	ZObj* zobj;
 
-	boost::shared_ptr<Bitmap> bitmap;
-	boost::shared_ptr<BitmapScreen> bitmap_screen;
+	BitmapRef bitmap;
+	BitmapScreenRef bitmap_screen;
 
 	Rect src_rect;
 	bool visible;

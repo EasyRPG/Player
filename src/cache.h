@@ -22,12 +22,9 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <string>
-#include <boost/shared_ptr.hpp>
-#include <boost/cstdint.hpp>
 
+#include "system.h"
 #include "color.h"
-
-class Bitmap;
 
 ////////////////////////////////////////////////////////////
 // Structs
@@ -41,26 +38,26 @@ typedef struct {
 /// Cache namespace
 ////////////////////////////////////////////////////////////
 namespace Cache {
-	boost::shared_ptr<Bitmap> LoadBitmap(const std::string& folder_name, const std::string& filename,
+	BitmapRef LoadBitmap(const std::string& folder_name, const std::string& filename,
 					   bool transparent = true, uint32_t flags = 0);
-	boost::shared_ptr<Bitmap> Backdrop(const std::string& filename);
-	boost::shared_ptr<Bitmap> Battle(const std::string& filename);
-	boost::shared_ptr<Bitmap> Battle2(const std::string& filename);
-	boost::shared_ptr<Bitmap> BattleCharset(const std::string& filename);
-	boost::shared_ptr<Bitmap> BattleWeapon(const std::string& filename);
-	boost::shared_ptr<Bitmap> Charset(const std::string& filename);
-	boost::shared_ptr<Bitmap> ExFont();
-	boost::shared_ptr<Bitmap> Faceset(const std::string& filename);
-	boost::shared_ptr<Bitmap> Frame(const std::string& filename);
-	boost::shared_ptr<Bitmap> Gameover(const std::string& filename);
-	boost::shared_ptr<Bitmap> Monster(const std::string& filename);
-	boost::shared_ptr<Bitmap> Panorama(const std::string& filename);
-	boost::shared_ptr<Bitmap> Picture(const std::string& filename);
-	boost::shared_ptr<Bitmap> Chipset(const std::string& filename);
-	boost::shared_ptr<Bitmap> Title(const std::string& filename);
-	boost::shared_ptr<Bitmap> System(const std::string& filename);
-	boost::shared_ptr<Bitmap> System2(const std::string& filename);
-	boost::shared_ptr<Bitmap> Tile(const std::string& filename, int tile_id);
+	BitmapRef Backdrop(const std::string& filename);
+	BitmapRef Battle(const std::string& filename);
+	BitmapRef Battle2(const std::string& filename);
+	BitmapRef BattleCharset(const std::string& filename);
+	BitmapRef BattleWeapon(const std::string& filename);
+	BitmapRef Charset(const std::string& filename);
+	BitmapRef ExFont();
+	BitmapRef Faceset(const std::string& filename);
+	BitmapRef Frame(const std::string& filename);
+	BitmapRef Gameover(const std::string& filename);
+	BitmapRef Monster(const std::string& filename);
+	BitmapRef Panorama(const std::string& filename);
+	BitmapRef Picture(const std::string& filename);
+	BitmapRef Chipset(const std::string& filename);
+	BitmapRef Title(const std::string& filename);
+	BitmapRef System(const std::string& filename);
+	BitmapRef System2(const std::string& filename);
+	BitmapRef Tile(const std::string& filename, int tile_id);
 	void Clear();
 
 	extern tSystemInfo system_info;

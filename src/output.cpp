@@ -34,9 +34,13 @@
 #include "time.hpp"
 
 ////////////////////////////////////////////////////////////
+#include <boost/config.hpp>
+
 #ifdef BOOST_NO_EXCEPTIONS
+#include <boost/throw_exception.hpp>
+
 void boost::throw_exception(std::exception const& exp) {
-	Output::Error(exp.what());
+	Output::Error("exception: %s", exp.what());
 }
 #endif
 

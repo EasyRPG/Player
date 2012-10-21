@@ -25,6 +25,7 @@
 #include <list>
 #include <pixman.h>
 
+#include "system.h"
 #include "color.h"
 #include "rect.h"
 #include "pixel_format.h"
@@ -32,20 +33,13 @@
 #include "matrix.h"
 #include "bitmap_utils.h"
 
-#include <boost/array.hpp>
-#include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 
 #if defined(DINGOO) || defined(PSP)
 #define wstring basic_string<wchar_t>
 #endif
 
-class Bitmap;
-class BitmapScreen;
 class BitmapUtils;
-class Font;
-
-typedef boost::shared_ptr<Bitmap> BitmapRef;
 
 ////////////////////////////////////////////////////////////
 /// Base Bitmap class.
@@ -189,7 +183,7 @@ protected:
 	DynamicFormat format;
 
 	std::list<BitmapScreen*> attached_screen_bitmaps;
-	typedef boost::array<boost::array<TileOpacity, 30>, 16> opacity_type;
+	typedef EASYRPG_ARRAY<EASYRPG_ARRAY<TileOpacity, 30>, 16> opacity_type;
 	boost::scoped_ptr<opacity_type> opacity;
 
 	void InitBitmap();
@@ -564,10 +558,10 @@ public:
 	static Rect GetTextSize(const std::wstring& text);
 
 	/// @return text drawing font
-	boost::shared_ptr<Font> const& GetFont() const;
+	FontRef const& GetFont() const;
 
 	/// @param text drawing font
-	void SetFont(boost::shared_ptr<Font> const& font);
+	void SetFont(FontRef const& font);
 
 protected:
 	friend class Text;
@@ -581,7 +575,7 @@ protected:
 #endif
 
 	/// Font for text drawing.
-	boost::shared_ptr<Font> font;
+	FontRef font;
 
 	BitmapUtils* Begin(Bitmap const& src);
 	void End(Bitmap const& src);

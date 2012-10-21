@@ -21,12 +21,9 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include "system.h"
 #include "scene.h"
 #include "sprite.h"
-#include "system.h"
-#include <boost/shared_ptr.hpp>
-
-class Bitmap;
 
 ////////////////////////////////////////////////////////////
 /// Scene Logo class.
@@ -48,7 +45,7 @@ public:
 
 private:
 	Sprite* logo;
-	boost::shared_ptr<Bitmap> logo_img;
+	BitmapRef logo_img;
 	int frame_counter;
 };
 

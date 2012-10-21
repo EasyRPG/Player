@@ -23,16 +23,10 @@
 ///////////////////////////////////////////////////////////
 #include <string>
 #include <vector>
+
+#include "system.h"
 #include "color.h"
 #include "rect.h"
-
-#include <boost/shared_ptr.hpp>
-
-///////////////////////////////////////////////////////////
-// Forward declarations
-///////////////////////////////////////////////////////////
-class Color;
-class Bitmap;
 
 ///////////////////////////////////////////////////////////
 /// BaseUi base abstract class.
@@ -51,7 +45,7 @@ public:
 	/// @param title : display title
 	/// @param fullscreen : start in fullscreen flag
 	///////////////////////////////////////////////////////
-	static boost::shared_ptr<BaseUi> CreateBaseUi(long width, long height, const std::string& title, bool fullscreen, bool zoom);
+	static EASYRPG_SHARED_PTR<BaseUi> CreateBaseUi(long width, long height, const std::string& title, bool fullscreen, bool zoom);
 
 	///////////////////////////////////////////////////////
 	/// Begins a display mode change.
@@ -107,7 +101,7 @@ public:
 	/// Ends screen capture and get the drawn contents.
 	/// @return bitmap with drawn contents
 	///////////////////////////////////////////////////////
-	virtual boost::shared_ptr<Bitmap> EndScreenCapture() = 0;
+	virtual BitmapRef EndScreenCapture() = 0;
 
 	///////////////////////////////////////////////////////
 	/// Set display title.
@@ -176,7 +170,7 @@ public:
 	/// @param color : new background color
 	virtual void SetBackcolor(const Color &color) = 0;
 
-	virtual boost::shared_ptr<Bitmap> GetDisplaySurface() = 0;
+	virtual BitmapRef GetDisplaySurface() = 0;
 
 protected:
 	///////////////////////////////////////////////////////
@@ -186,6 +180,6 @@ protected:
 };
 
 /// Global DisplayUi variable.
-extern boost::shared_ptr<BaseUi> DisplayUi;
+extern EASYRPG_SHARED_PTR<BaseUi> DisplayUi;
 
 #endif

@@ -21,13 +21,10 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include "system.h"
 #include "rpg_animation.h"
 #include "drawable.h"
 #include "zobj.h"
-
-#include <boost/shared_ptr.hpp>
-
-class BitmapScreen;
 
 ////////////////////////////////////////////////////////////
 
@@ -58,7 +55,7 @@ protected:
 	bool initialized;
 	bool visible;
 	bool large;
-	boost::shared_ptr<BitmapScreen> screen;
+	BitmapScreenRef screen;
 	unsigned long ID;
 	ZObj* zobj;
 };

@@ -20,8 +20,6 @@
 ////////////////////////////////////////////////////////////
 #include <map>
 
-#include <boost/weak_ptr.hpp>
-
 #include "cache.h"
 #include "filefinder.h"
 #include "exfont.h"
@@ -32,8 +30,8 @@ typedef std::pair<std::string,std::string> string_pair;
 typedef std::pair<std::string, int> tile_pair;
 
 namespace {
-std::map<string_pair, boost::weak_ptr<Bitmap> > cache;
-std::map<tile_pair, boost::weak_ptr<Bitmap> > cache_tiles;
+std::map<string_pair, EASYRPG_WEAK_PTR<Bitmap> > cache;
+std::map<tile_pair, EASYRPG_WEAK_PTR<Bitmap> > cache_tiles;
 }
 
 tSystemInfo Cache::system_info;
@@ -47,7 +45,7 @@ BitmapRef Cache::LoadBitmap(
 ) {
 	string_pair const key(folder_name, filename);
 
-	std::map<string_pair, boost::weak_ptr<Bitmap> >::iterator const it = cache.find(key);
+	std::map<string_pair, EASYRPG_WEAK_PTR<Bitmap> >::iterator const it = cache.find(key);
 
 	if (it == cache.end() || it->second.expired()) {
 		std::string const path = FileFinder::FindImage(folder_name, filename);
@@ -80,7 +78,7 @@ BitmapRef Cache::Charset(const std::string& filename) {
 BitmapRef Cache::ExFont() {
 	string_pair const hash("\x00","ExFont");
 
-	std::map<string_pair, boost::weak_ptr<Bitmap> >::iterator const it = cache.find(hash);
+	std::map<string_pair, EASYRPG_WEAK_PTR<Bitmap> >::iterator const it = cache.find(hash);
 
 	if (it == cache.end() || it->second.expired()) {
 		return(cache[hash] = Bitmap::Create(exfont_h, sizeof(exfont_h), true)).lock();
@@ -120,7 +118,7 @@ BitmapRef Cache::System2(const std::string& filename) {
 ////////////////////////////////////////////////////////////
 BitmapRef Cache::Tile(const std::string& filename, int tile_id) {
 	tile_pair const key(filename, tile_id);
-	std::map<tile_pair, boost::weak_ptr<Bitmap> >::iterator const it = cache_tiles.find(key);
+	std::map<tile_pair, EASYRPG_WEAK_PTR<Bitmap> >::iterator const it = cache_tiles.find(key);
 
 	if (it == cache_tiles.end() || it->second.expired()) {
 		BitmapRef chipset = Cache::Chipset(filename);

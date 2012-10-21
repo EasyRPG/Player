@@ -24,14 +24,10 @@
 #include <string>
 #include <list>
 #include <SDL.h>
-#include <boost/shared_ptr.hpp>
-#include <boost/cstdint.hpp>
 
 #include "system.h"
 #include "drawable.h"
 #include "zobj.h"
-
-class Bitmap;
 
 ////////////////////////////////////////////////////////////
 /// Graphics namespace.
@@ -69,7 +65,7 @@ namespace Graphics {
 	/// Get a bitmap with the actual contents of the screen.
 	/// @return screen contents
 	////////////////////////////////////////////////////////
-	boost::shared_ptr<Bitmap> SnapToBitmap();
+	BitmapRef SnapToBitmap();
 
 	/// Transition types.
 	enum TransitionType {

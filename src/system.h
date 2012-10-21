@@ -32,6 +32,11 @@
 // system.h is oriented to what used libraries and OS are capable of.
 #include "options.h"
 
+/*
+  smart pointer header.
+ */
+#include "memory_management.h"
+
 #define SUPPORT_BMP
 #define SUPPORT_JPG
 #define SUPPORT_PNG
