@@ -67,7 +67,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Linux")
   endif()
 endif()
 
-foreach(i Iconv Expat Freetype JPEG Pixman PNG SDL SDL_mixer SDL_ttf ZLIB) # SDL_image
+foreach(i Iconv Expat Freetype JPEG Pixman PNG SDL SDL_mixer SDL_ttf ZLIB Boost) # SDL_image
   find_package(${i} REQUIRED)
 
   string(TOUPPER ${i} i)
