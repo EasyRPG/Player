@@ -29,11 +29,10 @@ add_definitions(
   ${PNG_DEFINITIONS}
 
   -D UNIX=1
-  -D USE_SDL=1
-  -D USE_PIXMAN_BITMAP=1)
+  -D USE_SDL=1)
 
 if(CMAKE_GENERATOR MATCHES "Makefile")
-  add_definitions(-fno-exceptions -fno-rtti)
+  add_definitions(-fno-rtti)
 endif()
 
 if(USE_OPENAL)
@@ -67,7 +66,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Linux")
   endif()
 endif()
 
-foreach(i Iconv Expat Freetype JPEG Pixman PNG SDL SDL_mixer SDL_ttf ZLIB Boost) # SDL_image
+foreach(i Iconv Expat Freetype JPEG Pixman PNG SDL SDL_mixer ZLIB Boost)
   find_package(${i} REQUIRED)
 
   string(TOUPPER ${i} i)
@@ -84,6 +83,16 @@ if(USE_OPENAL)
   list(APPEND EASYRPG_PLAYER_LIBRARIES
     avformat avcodec avutil avdevice
     ${OPENAL_LIBRARY})
+endif()
+
+find_package(Boost COMPONENTS filesystem system)
+if(Boost_FOUND)
+  list(APPEND EASYRPG_PLAYER_LIBRARIES ${Boost_LIBRARIES})
+else()
+  add_definitions(-DEASYRPG_BOOST_ONLY_HEADER)
+  if(CMAKE_GENERATOR MATCHES "Makefile")
+    add_definitions(-fno-exceptions)
+  endif()
 endif()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../lib/readers/include)
