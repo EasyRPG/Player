@@ -30,7 +30,7 @@
 #include "image_xyz.h"
 
 ////////////////////////////////////////////////////////////
-void ImageXYZ::ReadXYZ(const uint8_t* data, uint len, bool transparent,
+void ImageXYZ::ReadXYZ(const uint8_t* data, unsigned len, bool transparent,
 					int& width, int& height, void*& pixels) {
 	pixels = NULL;
 
@@ -80,7 +80,7 @@ void ImageXYZ::ReadXYZ(FILE* stream, bool transparent,
     fseek(stream, 0, SEEK_SET);
 	std::vector<uint8_t> buffer(size);
 	fread((void*) &buffer.front(), 1, size, stream);
-	ReadXYZ(&buffer.front(), (uint) size, transparent, width, height, pixels);
+	ReadXYZ(&buffer.front(), (unsigned) size, transparent, width, height, pixels);
 }
 
 ////////////////////////////////////////////////////////////

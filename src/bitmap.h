@@ -68,7 +68,7 @@ public:
 	/// @param bytes : size of data
 	/// @param transparent : allow transparency on bitmap
 	////////////////////////////////////////////////////////
-	static BitmapRef Create(const uint8_t* data, uint bytes, bool transparent = true, uint32_t flags = 0);
+	static BitmapRef Create(const uint8_t* data, unsigned bytes, bool transparent = true, uint32_t flags = 0);
 
 	////////////////////////////////////////////////////////
 	/// Creates a bitmap from another.
@@ -593,7 +593,7 @@ protected:
 public:
 	Bitmap(int width, int height, bool transparent);
 	Bitmap(const std::string& filename, bool transparent, uint32_t flags);
-	Bitmap(const uint8_t* data, uint bytes, bool transparent, uint32_t flags);
+	Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t flags);
 	Bitmap(Bitmap const& source, Rect src_rect, bool transparent);
 	Bitmap(void *pixels, int width, int height, int pitch, const DynamicFormat& format);
 
@@ -622,7 +622,7 @@ protected:
 	void Init(int width, int height, void* data, int pitch = 0, bool destroy = true);
 
 	void ReadPNG(FILE* stream, const void *data);
-	void ReadXYZ(const uint8_t *data, uint len);
+	void ReadXYZ(const uint8_t *data, unsigned len);
 	void ReadXYZ(FILE *stream);
 	void ConvertImage(int& width, int& height, void*& pixels, bool transparent);
 

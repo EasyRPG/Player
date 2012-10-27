@@ -68,12 +68,12 @@ int Window_NumberInput::GetNumber() {
 }
 
 ////////////////////////////////////////////////////////////
-void Window_NumberInput::SetNumber(uint inumber) {
-	uint num = 1;
+void Window_NumberInput::SetNumber(unsigned inumber) {
+	unsigned num = 1;
 	for (int i = 0; i < digits_max; ++i) {
 		num *= 10;
 	}
-	number = min(max(inumber, (uint)0), num - 1);
+	number = min(max(inumber, (unsigned)0), num - 1);
 	index = 0;
 	Refresh();
 }

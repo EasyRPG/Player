@@ -54,7 +54,7 @@ BitmapRef Bitmap::Create(const std::string& filename, bool transparent, uint32_t
 	return EASYRPG_MAKE_SHARED<Bitmap>(filename, transparent, flags);
 }
 
-BitmapRef Bitmap::Create(const uint8_t* data, uint bytes, bool transparent, uint32_t flags) {
+BitmapRef Bitmap::Create(const uint8_t* data, unsigned bytes, bool transparent, uint32_t flags) {
 	return EASYRPG_MAKE_SHARED<Bitmap>(data, bytes, transparent, flags);
 }
 
@@ -624,7 +624,7 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 	CheckPixels(flags);
 }
 
-Bitmap::Bitmap(const uint8_t* data, uint bytes, bool transparent, uint32_t flags) {
+Bitmap::Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t flags) {
 	InitBitmap();
 
 	format = (transparent ? pixel_format : opaque_pixel_format);

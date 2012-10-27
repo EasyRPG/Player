@@ -744,7 +744,7 @@ void SdlUi::SetAppIcon() {
 
 ///////////////////////////////////////////////////////////
 void SdlUi::ResetKeys() {
-	for (uint i = 0; i < keys.size(); i++) {
+	for (size_t i = 0; i < keys.size(); i++) {
 		keys[i] = false;
 	}
 }

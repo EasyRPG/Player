@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////
 // This file is part of EasyRPG Player.
-// 
+//
 // EasyRPG Player is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // EasyRPG Player is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
@@ -43,7 +43,7 @@ void Scene_Equip::Start() {
 	equipstatus_window = new Window_EquipStatus(0, 32, 124, 96, actor->GetId());
 	equip_window = new Window_Equip(124, 32, 196, 96, actor->GetId());
 
-	equip_window->SetIndex(equip_index); 
+	equip_window->SetIndex(equip_index);
 
 	for (int i = 0; i < 5; ++i) {
 		item_windows.push_back(new Window_EquipItem(actor->GetId(), i));
@@ -85,8 +85,8 @@ void Scene_Equip::Update() {
 
 ////////////////////////////////////////////////////////////
 void Scene_Equip::UpdateItemWindows() {
-	for (uint i = 0; i < item_windows.size(); ++i) {
-		item_windows[i]->SetVisible((uint)equip_window->GetIndex() == i);
+	for (size_t i = 0; i < item_windows.size(); ++i) {
+		item_windows[i]->SetVisible((unsigned)equip_window->GetIndex() == i);
 		item_windows[i]->Update();
 	}
 

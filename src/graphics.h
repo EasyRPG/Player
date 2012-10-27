@@ -141,6 +141,8 @@ namespace Graphics {
 
 	void Push();
 	void Pop();
+
+	unsigned SecondToFrame(float second);
 }
 
 #endif

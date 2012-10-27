@@ -80,6 +80,11 @@ namespace Graphics {
 }
 
 ////////////////////////////////////////////////////////////
+unsigned SecondToFrame(float const second) {
+	return(second * Graphics::framerate);
+}
+
+////////////////////////////////////////////////////////////
 void Graphics::Init() {
 	overlay_visible = true;
 	fps_on_screen = false;
@@ -580,7 +585,7 @@ void Graphics::RemoveZObj(uint32_t ID, bool multiz) {
 		}
 	}
 
-	for (uint i = 0; i < to_erase.size(); i++) {
+	for (size_t i = 0; i < to_erase.size(); i++) {
 		state->zlist.erase(to_erase[i]);
 	}
 }
