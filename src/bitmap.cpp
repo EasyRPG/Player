@@ -124,11 +124,7 @@ bool Bitmap::GetTransparent() const {
 }
 
 Color Bitmap::GetTransparentColor() const {
-#ifdef USE_ALPHA
-	return Color(0, 0, 0, 0);
-#else
 	return GetColor(colorkey());
-#endif
 }
 
 ////////////////////////////////////////////////////////////

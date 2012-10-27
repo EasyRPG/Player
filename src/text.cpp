@@ -49,9 +49,7 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::wstring const& wtext
 
 	BitmapRef text_surface; // Complete text will be on this surface
 	text_surface = Bitmap::Create(dst_rect.width, dst_rect.height, true);
-	#ifndef USE_ALPHA
 	text_surface->SetTransparentColor(dest.GetTransparentColor());
-	#endif
 	text_surface->Clear();
 
 	// Load the system file for the shadow and text color
@@ -125,9 +123,7 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::wstring const& wtext
 		Rect clip_system(8+16*(color%10), 4+48+16*(color/10), 6, 12);
 
 		BitmapRef char_surface = Bitmap::Create(mask->GetWidth(), mask->GetHeight(), true);
-		#ifndef USE_ALPHA
 		char_surface->SetTransparentColor(dest.GetTransparentColor());
-		#endif
 		char_surface->Clear();
 
 		is_full_glyph = is_exfont || (mk_wcwidth(wtext[c]) == 2);
@@ -141,9 +137,7 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::wstring const& wtext
 		char_surface->MaskBlit(0, 0, *mask, mask->GetRect());
 
 		BitmapRef char_shadow = Bitmap::Create(mask->GetWidth(), mask->GetHeight(), true);
-		#ifndef USE_ALPHA
 		char_shadow->SetTransparentColor(dest.GetTransparentColor());
-		#endif
 		char_shadow->Clear();
 
 		// Blit solid color background
