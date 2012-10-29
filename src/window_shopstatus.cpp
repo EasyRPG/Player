@@ -52,11 +52,11 @@ void Window_ShopStatus::Refresh() {
 		std::stringstream ss;
 		ss << number;
 
-		contents->TextDraw(120, 2, Font::ColorDefault, ss.str(), Bitmap::TextAlignRight);
+		contents->TextDraw(120, 2, Font::ColorDefault, ss.str(), Text::AlignRight);
 
 		ss.str("");
 		ss << Game_Party::ItemNumber(item_id, true);
-		contents->TextDraw(120, 18, Font::ColorDefault, ss.str(), Bitmap::TextAlignRight);
+		contents->TextDraw(120, 18, Font::ColorDefault, ss.str(), Text::AlignRight);
 	}
 }
 

@@ -47,7 +47,7 @@ static std::string fonts_path;
 // Helper Methods
 ////////////////////////////////////////////////////////////
 static bool FileExists(std::string const& filename) {
-	std::wstring file = Utils::DecodeUTF(filename);
+	Utils::wstring file = Utils::ToWideString(filename);
 	return GetFileAttributes(file.c_str()) != (DWORD)-1;
 }
 
@@ -229,8 +229,8 @@ std::string FileFinder::DefaultFont() {
 }
 
 FILE* FileFinder::fopenUTF8(const std::string& name_utf8, const std::string& mode) {
-	std::wstring name_w = Utils::DecodeUTF(name_utf8);
-	std::wstring mode_w = Utils::DecodeUTF(mode);
+	Utils::wstring name_w = Utils::ToWideString(name_utf8);
+	Utils::wstring mode_w = Utils::ToWideString(mode);
 	return _wfopen(name_w.c_str(), mode_w.c_str());
 }
 

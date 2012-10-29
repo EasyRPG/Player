@@ -57,7 +57,7 @@ void Window_TargetStatus::Refresh() {
 		ss << Data::skills[id - 1].sp_cost;
 	}
 
-	contents->TextDraw(contents->GetWidth() - contents->GetTextSize(ss.str()).width, 0, Font::ColorDefault, ss.str(), Bitmap::TextAlignRight);
+	contents->TextDraw(contents->GetWidth() - contents->GetTextSize(ss.str()).width, 0, Font::ColorDefault, ss.str(), Text::AlignRight);
 }
 
 ////////////////////////////////////////////////////////////

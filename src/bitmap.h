@@ -32,12 +32,9 @@
 #include "tone.h"
 #include "matrix.h"
 #include "bitmap_utils.h"
+#include "text.h"
 
 #include <boost/scoped_ptr.hpp>
-
-#if defined(DINGOO) || defined(PSP)
-#define wstring basic_string<wchar_t>
-#endif
 
 class BitmapUtils;
 
@@ -507,13 +504,6 @@ public:
 							 int opacity,
 							 int waver_depth, double waver_phase);
 
-	/// TextDraw alignment options
-	enum TextAlignment {
-		TextAlignLeft,
-		TextAlignCenter,
-		TextAlignRight
-	};
-
 	////////////////////////////////////////////////////////
 	/// Draws text to bitmap.
 	/// @param x : x coordinate where text rendering starts
@@ -522,8 +512,7 @@ public:
 	/// @param text : text to draw
 	/// @param align : text alignment
 	////////////////////////////////////////////////////////
-	void TextDraw(int x, int y, int color, std::string const& text, TextAlignment align = TextAlignLeft);
-	void TextDraw(int x, int y, int color, std::wstring const& text, TextAlignment align = TextAlignLeft);
+	void TextDraw(int x, int y, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
 
 	////////////////////////////////////////////////////////
 	/// Draws text to bitmap.
@@ -535,8 +524,7 @@ public:
 	/// @param text : text to draw
 	/// @param align : text alignment inside bounding rectangle
 	////////////////////////////////////////////////////////
-	void TextDraw(int x, int y, int width, int height, int color, std::string const& text, TextAlignment align = TextAlignLeft);
-	void TextDraw(int x, int y, int width, int height, int color, std::wstring const& text, TextAlignment align = TextAlignLeft);
+	void TextDraw(int x, int y, int width, int height, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
 
 	////////////////////////////////////////////////////////
 	/// Draws text to bitmap.
@@ -545,8 +533,7 @@ public:
 	/// @param text : text to draw
 	/// @param align : text alignment inside bounding rectangle
 	////////////////////////////////////////////////////////
-	void TextDraw(Rect rect, int color, std::string const& text, TextAlignment align = TextAlignLeft);
-	void TextDraw(Rect rect, int color, std::wstring const& text, TextAlignment align = TextAlignLeft);
+	void TextDraw(Rect rect, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
 
 	////////////////////////////////////////////////////////
 	/// Get space needed to draw some text.
@@ -554,8 +541,6 @@ public:
 	/// @param text : text to draw
 	////////////////////////////////////////////////////////
 	static Rect GetTextSize(const std::string& text);
-	/// Wide string version
-	static Rect GetTextSize(const std::wstring& text);
 
 	/// @return text drawing font
 	FontRef const& GetFont() const;
@@ -564,7 +549,7 @@ public:
 	void SetFont(FontRef const& font);
 
 protected:
-	friend class Text;
+	friend void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align);
 	friend class FTFont;
 	friend class BitmapUtils;
 	template <class T1, class T2> friend class BitmapUtilsT;

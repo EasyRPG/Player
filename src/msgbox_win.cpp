@@ -152,9 +152,9 @@ void ShowTaskDialog(std::string& msg, std::string& title, LPCTSTR icon) {
 			msg = msg.substr(0, pos);
 		}
 
-		std::wstring windowTitle = Utils::DecodeUTF(title);
-		std::wstring mainInstruction = Utils::DecodeUTF(msg);
-		std::wstring wcontent = Utils::DecodeUTF(content);
+		Utils::wstring windowTitle = Utils::ToWideString(title);
+		Utils::wstring mainInstruction = Utils::ToWideString(msg);
+		Utils::wstring wcontent = Utils::ToWideString(content);
 
 		// Prepare the Dialog
 		TASKDIALOGCONFIG config;

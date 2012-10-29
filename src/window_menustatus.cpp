@@ -24,6 +24,7 @@
 #include "cache.h"
 #include "game_party.h"
 #include "player.h"
+#include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
 Window_MenuStatus::Window_MenuStatus(int ix, int iy, int iwidth, int iheight) :

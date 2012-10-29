@@ -18,12 +18,24 @@
 #ifndef _EASYRPG_TEXT_H_
 #define _EASYRPG_TEXT_H_
 
-#include "bitmap.h"
+#include "system.h"
+#include <string>
 
-class Text {
-public:
-	static void Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Bitmap::TextAlignment align = Bitmap::TextAlignLeft);
-	static void Draw(Bitmap& dest, int x, int y, int color, std::wstring const& text, Bitmap::TextAlignment align = Bitmap::TextAlignLeft);
-};
+#ifdef _WIN32
+#  define utf(x) L##x
+#else
+#  define utf(x) x
+#endif
+
+namespace Text {
+	/// TextDraw alignment options
+	enum Alignment {
+		AlignLeft,
+		AlignCenter,
+		AlignRight
+	};
+
+	void Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
+}; // namespace Text
 
 #endif

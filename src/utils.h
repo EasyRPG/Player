@@ -19,13 +19,21 @@
 #define _EASYRPG_UTILS_H_
 
 #include <string>
+#include <algorithm>
+#include <cctype>
 
-#if defined(DINGOO) || defined(PSP)
-#undef wstring
-#define wstring basic_string<wchar_t>
-#endif
+#include "system.h"
 
 namespace Utils {
+	typedef std::basic_string<uint16_t> utf16_string;
+	typedef std::basic_string<uint32_t> utf32_string;
+
+#ifdef BOOST_NO_CWCHAR
+	typedef std::basic_string<uint32_t> wstring;
+#else
+	using std::wstring;
+#endif
+
 	////////////////////////////////////////////////////////
 	/// Converts a string to lower case.
 	/// @param str : String to convert.
@@ -34,30 +42,46 @@ namespace Utils {
 	std::string LowerCase(const std::string& str);
 
 	////////////////////////////////////////////////////////
-	/// Converts Utf8 to Utf16 (Windows) or Utf32 (Unix).
+	/// Converts a string to upper case.
 	/// @param str : String to convert.
 	/// @return The converted string
 	////////////////////////////////////////////////////////
-	std::wstring DecodeUTF(const std::string& str);
+	std::string UpperCase(const std::string& str);
 
 	////////////////////////////////////////////////////////
-	/// Converts Utf16 (Windows) or Utf32 (Unix) to Utf8.
+	/// Converts Utf8 to Utf16.
 	/// @param str : String to convert.
 	/// @return The converted string
 	////////////////////////////////////////////////////////
-	std::string EncodeUTF(const std::wstring& wstr);
+	utf16_string DecodeUTF16(const std::string& str);
 
 	////////////////////////////////////////////////////////
-	/// Checks how many chars a passed glyph takes in utf8
-	/// encoding.
-	/// This function only checks the first byte. It cant
-	/// detect wrong encodings. Only use it when your system
-	/// has no support for wstring.
-	/// @param glyph : Start of glyph.
-	/// @return Used bytes by this glyph
+	/// Converts Utf8 to Utf32.
+	/// @param str : String to convert.
+	/// @return The converted string
 	////////////////////////////////////////////////////////
-	int GetUtf8ByteSize(char glyph);
-}
+	utf32_string DecodeUTF32(const std::string& str);
+
+	////////////////////////////////////////////////////////
+	/// Converts Utf16 to Utf8.
+	/// @param str : String to convert.
+	/// @return The converted string
+	////////////////////////////////////////////////////////
+	std::string EncodeUTF(const utf16_string& str);
+
+	////////////////////////////////////////////////////////
+	/// Converts Utf32 to Utf8.
+	/// @param str : String to convert.
+	/// @return The converted string
+	////////////////////////////////////////////////////////
+	std::string EncodeUTF(const utf32_string& str);
+
+	////////////////////////////////////////////////////////
+	/// Converts utf8 string to wstring.
+	/// @param str : String to convert.
+	/// @return The converted string
+	////////////////////////////////////////////////////////
+	wstring ToWideString(const std::string& str);
+} // namespace Utils
 
 #endif
-

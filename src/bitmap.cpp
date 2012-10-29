@@ -307,11 +307,8 @@ void Bitmap::RefreshCallback() {
 
 ////////////////////////////////////////////////////////////
 Rect Bitmap::GetTextSize(const std::string& text) {
-	return GetTextSize(Utils::DecodeUTF(text));
-}
-
-Rect Bitmap::GetTextSize(const std::wstring& text) {
-	int size = mk_wcswidth(text.c_str(), text.size());
+	Utils::wstring tmp = Utils::ToWideString(text);
+	int size = mk_wcswidth(tmp.c_str(), tmp.size());
 
 	if (size == -1) {
 		Output::Warning("Text contains invalid chars.\n"\
@@ -322,8 +319,8 @@ Rect Bitmap::GetTextSize(const std::wstring& text) {
 		return Rect(0, 0, size * 6, 12);
 	}
 }
-////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////
 FontRef const& Bitmap::GetFont() const {
 	return font;
 }
@@ -332,42 +329,30 @@ void Bitmap::SetFont(FontRef const& new_font) {
 	font = new_font;
 }
 
-void Bitmap::TextDraw(int x, int y, int width, int /* height */, int color, std::wstring const& wtext, TextAlignment align) {
-	Rect rect = Bitmap::GetTextSize(wtext);
+void Bitmap::TextDraw(int x, int y, int width, int /* height */, int color, std::string const& text, Text::Alignment align) {
+	Rect rect = Bitmap::GetTextSize(text);
 	int dx = rect.width - width;
 
 	switch (align) {
-		case TextAlignLeft:
-			TextDraw(x, y, color, wtext);
-			break;
-		case TextAlignCenter:
-			TextDraw(x + dx / 2, y, color, wtext);
-			break;
-		case TextAlignRight:
-			TextDraw(x + dx, y, color, wtext);
-			break;
+	case Text::AlignLeft:
+		TextDraw(x, y, color, text);
+		break;
+	case Text::AlignCenter:
+		TextDraw(x + dx / 2, y, color, text);
+		break;
+	case Text::AlignRight:
+		TextDraw(x + dx, y, color, text);
+		break;
 	}
 }
 
-void Bitmap::TextDraw(int x, int y, int width, int height, int color, std::string const& text, TextAlignment align) {
-	TextDraw(x, y, width, height, color, Utils::DecodeUTF(text), align);
+void Bitmap::TextDraw(Rect rect, int color, std::string const& text, Text::Alignment align) {
+	TextDraw(rect.x, rect.y, rect.width, rect.height, color, text, align);
 }
 
-void Bitmap::TextDraw(Rect rect, int color, std::wstring const& wtext, TextAlignment align) {
-	TextDraw(rect.x, rect.y, rect.width, rect.height, color, wtext, align);
-}
-
-void Bitmap::TextDraw(Rect rect, int color, std::string const& text, TextAlignment align) {
-	TextDraw(rect, color, Utils::DecodeUTF(text), align);
-}
-
-void Bitmap::TextDraw(int x, int y, int color, std::wstring const& wtext, TextAlignment align) {
-	Text::Draw(*this, x, y, color, wtext, align);
+void Bitmap::TextDraw(int x, int y, int color, std::string const& text, Text::Alignment align) {
+	Text::Draw(*this, x, y, color, text, align);
 	RefreshCallback();
-}
-
-void Bitmap::TextDraw(int x, int y, int color, std::string const& text, TextAlignment align) {
-	TextDraw(x, y, color, Utils::DecodeUTF(text), align);
 }
 
 ////////////////////////////////////////////////////////////

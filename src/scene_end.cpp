@@ -26,6 +26,7 @@
 #include "scene_menu.h"
 #include "scene_title.h"
 #include "util_macro.h"
+#include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
 Scene_End::Scene_End() :

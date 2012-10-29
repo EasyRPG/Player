@@ -59,7 +59,7 @@ void Window_ShopNumber::Refresh() {
 	ss << number;
 
 	contents->TextDraw(132, y, Font::ColorDefault, "x");
-	contents->TextDraw(132 + 30, y, Font::ColorDefault, ss.str(), Bitmap::TextAlignRight);
+	contents->TextDraw(132 + 30, y, Font::ColorDefault, ss.str(), Text::AlignRight);
 	SetCursorRect(Rect(132 + 14, y - 2, 20, 16));
 
 	DrawCurrencyValue(GetTotal(), contents->GetWidth(), y + 32);

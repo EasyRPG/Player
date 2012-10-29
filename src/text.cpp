@@ -27,17 +27,20 @@
 #include "text.h"
 #include "wcwidth.h"
 
+#include <boost/next_prior.hpp>
+#include <boost/regex/pending/unicode_iterator.hpp>
+
 ////////////////////////////////////////////////////////////
-void Text::Draw(Bitmap& dest, int x, int y, int color, std::wstring const& wtext, Bitmap::TextAlignment align) {
-	if (wtext.length() == 0) return;
+void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align) {
+	if (text.length() == 0) return;
 
 	FontRef font = dest.GetFont();
-	Rect dst_rect = Bitmap::GetTextSize(wtext);
+	Rect dst_rect = Bitmap::GetTextSize(text);
 
 	switch (align) {
-	case Bitmap::TextAlignCenter:
+	case Text::AlignCenter:
 		dst_rect.x = x - dst_rect.width / 2; break;
-	case Bitmap::TextAlignRight:
+	case Text::AlignRight:
 		dst_rect.x = x - dst_rect.width; break;
 	default:
 		dst_rect.x = x; break;
@@ -82,28 +85,31 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::wstring const& wtext
 
 	// This loops always renders a single char, color blends it and then puts
 	// it onto the text_surface (including the drop shadow)
-	for (unsigned c = 0; c < wtext.size(); ++c) {
+	for (boost::u8_to_u32_iterator<std::string::const_iterator>
+			 c(text.begin(), text.begin(), text.end()),
+			 end(text.end(), text.begin(), text.end()); c != end; ++c) {
 		Rect next_glyph_rect(next_glyph_pos, 0, 0, 0);
+
 
 		BitmapRef mask;
 
+		uint32_t const next_c = std::distance(end, c) >= 1? *boost::next(c) : 0;
+
 		// ExFont-Detection: Check for A-Z or a-z behind the $
-		if (wtext[c] == L'$' && c != wtext.size() - 1 &&
-			((wtext[c+1] >= L'a' && wtext[c+1] <= L'z') ||
-			(wtext[c+1] >= L'A' && wtext[c+1] <= L'Z'))) {
+		if (*c == utf('$') && std::isalpha(next_c)) {
 			int exfont_value;
 			// Calculate which exfont shall be rendered
-			if ((wtext[c+1] >= L'a' && wtext[c+1] <= L'z')) {
-				exfont_value = 26 + wtext[c+1] - L'a';
-			} else {
-				exfont_value = wtext[c+1] - L'A';
-			}
+			if (std::islower(next_c)) {
+				exfont_value = 26 + next_c - utf('a');
+			} else if (std::isupper(next_c)) {
+				exfont_value = next_c - utf('A');
+			} else { assert(false); }
 			is_exfont = true;
 
 			BitmapRef mask_s = Bitmap::Create(12, 12, true);
 
 			// Get exfont from graphic
-			Rect rect_exfont((exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12);
+			Rect const rect_exfont((exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12);
 
 			// Create a mask
 			mask_s->Clear();
@@ -112,9 +118,9 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::wstring const& wtext
 		} else {
 			// No ExFont, draw normal text
 
-			mask = font->Render(wtext[c]);
+			mask = font->Render(*c);
 			if (mask == NULL) {
-				Output::Warning("Couldn't render char %lc (%d). Skipping...", wtext[c], (int)wtext[c]);
+				Output::Warning("Couldn't render char %lc (%d). Skipping...", *c, (int)*c);
 				continue;
 			}
 		}
@@ -126,7 +132,7 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::wstring const& wtext
 		char_surface->SetTransparentColor(dest.GetTransparentColor());
 		char_surface->Clear();
 
-		is_full_glyph = is_exfont || (mk_wcwidth(wtext[c]) == 2);
+		is_full_glyph = is_exfont || (mk_wcwidth(*c) == 2);
 
 		// Blit gradient color background (twice in case of a full glyph)
 		char_surface->Blit(0, 0, *system, clip_system, 255);
@@ -172,11 +178,4 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::wstring const& wtext
 	int ix = dst_rect.x;
 
 	dest.Blit(ix, iy, *text_bmp, src_rect, 255);
-}
-
-void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Bitmap::TextAlignment align) {
-	if (text.length() == 0) return;
-
-	std::wstring wtext = Utils::DecodeUTF(text);
-	Draw(dest, x, y, color, wtext, align);
 }

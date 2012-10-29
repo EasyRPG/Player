@@ -22,6 +22,7 @@
 #include "game_system.h"
 #include "input.h"
 #include "util_macro.h"
+#include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
 /// Constructor
@@ -119,7 +120,7 @@ void Window_Selectable::UpdateCursorRect() {
 	} else if (row > GetTopRow() + (GetPageRowMax() - 1)) {
 		SetTopRow(row - (GetPageRowMax() - 1));
 	}
-	
+
 	if (column_max > 1){
 		cursor_width = (width / column_max - 16) + 12;
 		x = (index % column_max * cursor_width) - 4 ;
@@ -131,7 +132,7 @@ void Window_Selectable::UpdateCursorRect() {
 
 	int y = index / column_max * 16 - oy;
 	SetCursorRect(Rect(x, y, cursor_width, 16));
-	
+
 }
 
 ////////////////////////////////////////////////////////////

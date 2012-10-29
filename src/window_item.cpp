@@ -110,7 +110,7 @@ void Window_Item::DrawItem(int index) {
 		ss << number;
 		Font::SystemColor color = enabled ? Font::ColorDefault : Font::ColorDisabled;
 		contents->TextDraw(rect.x + rect.width - 28, rect.y, color, "x");
-		contents->TextDraw(rect.x + rect.width - 6, rect.y, color, ss.str(), Bitmap::TextAlignRight);
+		contents->TextDraw(rect.x + rect.width - 6, rect.y, color, ss.str(), Text::AlignRight);
 	}
 }
 
