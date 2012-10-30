@@ -32,6 +32,7 @@
 #include "output.h"
 #include "player.h"
 #include "time.hpp"
+#include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
 #include <boost/config.hpp>
@@ -110,6 +111,7 @@ void Output::ErrorStr(std::string err) {
 		MsgBox::Error(err, GAME_TITLE);
 	#elif OUTPUT_TYPE == OUTPUT_SCREEN
 		if (DisplayUi != NULL) {
+			DisplayUi->GetDisplaySurface()->Clear();
 			DisplayUi->DrawScreenText("Error:", 10, 30, Color(255, 0, 0, 0));
 			HandleScreenOutput(err, true);
 		} else {
