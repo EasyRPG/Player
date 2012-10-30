@@ -6,6 +6,7 @@ OBJS = $(foreach f,${CPPFILES}, ${OBJ_DIR}/$(abspath ${f}).o)
 INCLUDES = ../../lib/readers/include ../../src
 
 CFLAGS = \
+	-g \
 	-I ${HOME_MINGW_PATH}/include \
 	$(foreach dir,$(INCLUDES), -I $(CURDIR)/$(dir)) \
 	-O2 -Wall -Wextra \
@@ -35,7 +36,7 @@ all : ${TARGET}
 
 .PHONY:clean
 clean :
-	rm -rf ${OBJS_DIR}
+	rm -rf ${OBJ_DIR}
 
 ${TARGET} : ${OBJS} ${OBJ_DIR}/player.o
 	${CXX} ${CXXFLAGS} ${LDFLAGS} ${OBJS} ${LIBS} -o ${TARGET}
