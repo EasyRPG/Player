@@ -40,9 +40,9 @@
 	#include <fat.h>
 #endif
 #if (defined(_WIN32) && !defined(_DEBUG))
-	#include <Windows.h>
-	#include <WinIoCtl.h>
-	#include <DbgHelp.h>
+	#include <windows.h>
+	#include <winioctl.h>
+	#include <dbghelp.h>
 	static void InitMiniDumpWriter();
 #endif
 
@@ -243,9 +243,15 @@ static LONG __stdcall CreateMiniDump(EXCEPTION_POINTERS* pep)
 	GetLocalTime(&time);
 
 	// Player-YYYY-MM-DD-hh-mm-ss.dmp
+#ifdef __MINGW32__
+	swprintf(szDumpName, L"Player_%04d-%02d-%02d-%02d-%02d-%02d.dmp",
+		time.wYear, time.wMonth, time.wDay,
+		time.wHour, time.wMinute, time.wSecond);
+#else
 	swprintf(szDumpName, 40, L"Player_%04d-%02d-%02d-%02d-%02d-%02d.dmp",
 		time.wYear, time.wMonth, time.wDay,
 		time.wHour, time.wMinute, time.wSecond);
+#endif
 
 	HANDLE hFile = CreateFile(szDumpName, GENERIC_READ | GENERIC_WRITE,
 		0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);

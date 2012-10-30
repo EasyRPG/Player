@@ -596,6 +596,7 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 		ImageXYZ::ReadXYZ(stream, transparent, w, h, pixels);
 	else if (ext == "bmp")
 		ImageBMP::ReadBMP(stream, transparent, w, h, pixels);
+	else { assert(false); }
 
 	fclose(stream);
 

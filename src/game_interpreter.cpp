@@ -110,7 +110,7 @@ void Game_Interpreter::SetContinuation(Game_Interpreter::ContinuationFunction fu
 	continuation = func;
 }
 
-void Game_Interpreter::EndMoveRoute(RPG::MoveRoute* route) {
+void Game_Interpreter::EndMoveRoute(RPG::MoveRoute* /* route */) {
 	// This will only ever be called on Game_Interpreter_Map instances
 }
 
@@ -134,7 +134,7 @@ void Game_Interpreter::Update() {
 		if (Game_Map::GetMapId() != map_id) {
 			event_id = 0;
 		}
-		
+
 		/* If there's any active child interpreter, update it */
 		if (child_interpreter != NULL) {
 
@@ -160,7 +160,7 @@ void Game_Interpreter::Update() {
 			if (Main_Data::game_player->GetMoveRouteForcing()) {
 				return;
 			}
-				
+
 			Game_Event* g_event;
 			for (size_t i = 0; i < Game_Map::GetEvents().size(); i++) {
 				g_event = Game_Map::GetEvents().find(i)->second;
@@ -194,7 +194,7 @@ void Game_Interpreter::Update() {
 			Game_Temp::save_calling ||
 			Game_Temp::to_title ||
 			Game_Temp::gameover) {
-			
+
 			return;
 		}
 
@@ -295,27 +295,27 @@ bool Game_Interpreter::ExecuteCommand() {
 	switch (com.code) {
 		case Cmd::ShowMessage:
 			return CommandShowMessage(com);
-		case Cmd::ChangeFaceGraphic: 
+		case Cmd::ChangeFaceGraphic:
 			return CommandChangeFaceGraphic(com);
-		case Cmd::ShowChoice: 
+		case Cmd::ShowChoice:
 			return CommandShowChoices(com);
 		case Cmd::ShowChoiceOption:
 			return SkipTo(Cmd::ShowChoiceEnd);
 		case Cmd::ShowChoiceEnd:
 			return true;
-		case Cmd::InputNumber: 
+		case Cmd::InputNumber:
 			return CommandInputNumber(com);
-		case Cmd::ControlSwitches: 
+		case Cmd::ControlSwitches:
 			return CommandControlSwitches(com);
-		case Cmd::ControlVars: 
+		case Cmd::ControlVars:
 			return CommandControlVariables(com);
-		case Cmd::ChangeGold: 
+		case Cmd::ChangeGold:
 			return CommandChangeGold(com);
-		case Cmd::ChangeItems: 
+		case Cmd::ChangeItems:
 			return CommandChangeItems(com);
 		case Cmd::ChangePartyMembers:
 			return CommandChangePartyMember(com);
-		case Cmd::ChangeLevel: 
+		case Cmd::ChangeLevel:
 			return CommandChangeLevel(com);
 		case Cmd::ChangeSkills:
 			return CommandChangeSkills(com);
@@ -357,7 +357,7 @@ bool Game_Interpreter::ExecuteCommand() {
 
 ////////////////////////////////////////////////////////////
 
-bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) {
+bool Game_Interpreter::CommandWait(RPG::EventCommand const& /* com */) {
 	if (Player::engine == Player::EngineRpg2k || list[index].parameters[1] == 0) {
 		wait_count = list[index].parameters[0] * DEFAULT_FPS / 10;
 		return true;
@@ -370,7 +370,7 @@ bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) {
 ////////////////////////////////////////////////////////////
 void Game_Interpreter::InputButton() {
 	Input::InputButton n = Input::BUTTON_COUNT;
-	
+
 	if (Input::IsTriggered(Input::UP)) {
 		n = Input::UP;
 	} else {
@@ -444,7 +444,7 @@ void Game_Interpreter::GetStrings(std::vector<std::string>& ret_val) {
 			// Or found Cancel branch
 			( (list[index_temp].code == Cmd::ShowChoiceOption) && (list[index_temp].indent == current_indent) &&
 			(list[index_temp].string == "") ) ) {
-			
+
 			break;
 		}
 		// Move on to the next command
@@ -906,8 +906,8 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 	switch (mode) {
 	case 0:
 		// Party
-		for (std::vector<Game_Actor*>::iterator i = Game_Party::GetActors().begin(); 
-			 i != Game_Party::GetActors().end(); 
+		for (std::vector<Game_Actor*>::iterator i = Game_Party::GetActors().begin();
+			 i != Game_Party::GetActors().end();
 			 i++) {
 			actors.push_back(Game_Actors::GetActor((*i)->GetId()));
 		}
@@ -938,7 +938,7 @@ Game_Character* Game_Interpreter::GetCharacter(int character_id) {
 bool Game_Interpreter::CommandChangeGold(RPG::EventCommand const& com) { // Code 10310
 	int value;
 	value = OperateValue(
-		com.parameters[0], 
+		com.parameters[0],
 		com.parameters[1],
 		com.parameters[2]
 	);
@@ -989,7 +989,7 @@ bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) {
 	Game_Message::num_input_start = 0;
 	Game_Message::num_input_variable_id = com.parameters[1];
 	Game_Message::num_input_digits_max = com.parameters[0];
-	
+
 	// Continue
 	return true;
 }
@@ -1050,8 +1050,8 @@ bool Game_Interpreter::CommandChangeLevel(RPG::EventCommand const& com) { // Cod
 		com.parameters[4]
 	);
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin(); 
-		 i != actors.end(); 
+	for (std::vector<Game_Actor*>::iterator i = actors.begin();
+		 i != actors.end();
 		 i++) {
 		Game_Actor* actor = *i;
 		actor->ChangeLevel(actor->GetLevel() + value);
@@ -1086,8 +1086,8 @@ bool Game_Interpreter::CommandChangeSkills(RPG::EventCommand const& com) { // Co
 	int skill_id = ValueOrVariable(com.parameters[3],
 								   com.parameters[4]);
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin(); 
-		 i != actors.end(); 
+	for (std::vector<Game_Actor*>::iterator i = actors.begin();
+		 i != actors.end();
 		 i++) {
 		Game_Actor* actor = *i;
 		if (remove)
@@ -1130,8 +1130,8 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 			return false;
 	}
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin(); 
-		 i != actors.end(); 
+	for (std::vector<Game_Actor*>::iterator i = actors.begin();
+		 i != actors.end();
 		 i++) {
 		Game_Actor* actor = *i;
 		actor->ChangeEquipment(slot, item_id);
@@ -1151,8 +1151,8 @@ bool Game_Interpreter::CommandChangeHP(RPG::EventCommand const& com) { // Code 1
 	if (remove)
 		amount = -amount;
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin(); 
-		 i != actors.end(); 
+	for (std::vector<Game_Actor*>::iterator i = actors.begin();
+		 i != actors.end();
 		 i++) {
 		Game_Actor* actor = *i;
 		int hp = actor->GetHp() + amount;
@@ -1174,8 +1174,8 @@ bool Game_Interpreter::CommandChangeSP(RPG::EventCommand const& com) { // Code 1
 	if (remove)
 		amount = -amount;
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin(); 
-		 i != actors.end(); 
+	for (std::vector<Game_Actor*>::iterator i = actors.begin();
+		 i != actors.end();
 		 i++) {
 		Game_Actor* actor = *i;
 		int sp = actor->GetSp() + amount;
@@ -1193,8 +1193,8 @@ bool Game_Interpreter::CommandChangeCondition(RPG::EventCommand const& com) { //
 	bool remove = com.parameters[2] != 0;
 	int state_id = com.parameters[3];
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin(); 
-		 i != actors.end(); 
+	for (std::vector<Game_Actor*>::iterator i = actors.begin();
+		 i != actors.end();
 		 i++) {
 		Game_Actor* actor = *i;
 		if (remove)
@@ -1210,8 +1210,8 @@ bool Game_Interpreter::CommandFullHeal(RPG::EventCommand const& com) { // Code 1
 	std::vector<Game_Actor*> actors = GetActors(com.parameters[0],
 												com.parameters[1]);
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin(); 
-		 i != actors.end(); 
+	for (std::vector<Game_Actor*>::iterator i = actors.begin();
+		 i != actors.end();
 		 i++) {
 		Game_Actor* actor = *i;
 		actor->SetHp(actor->GetMaxHp());
@@ -1331,17 +1331,17 @@ bool Game_Interpreter::CommandShakeScreen(RPG::EventCommand const& com) { // cod
 	return true;
 }
 
-bool Game_Interpreter::CommandEndEventProcessing(RPG::EventCommand const& com) { // code 12310
+bool Game_Interpreter::CommandEndEventProcessing(RPG::EventCommand const& /* com */) { // code 12310
 	index = list.size();
 	return true;
 }
 
-bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& com) {
+bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& /* com */) {
 	index++;
 	return true;
 }
 
-bool Game_Interpreter::CommandGameOver(RPG::EventCommand const& com) { // code 12420
+bool Game_Interpreter::CommandGameOver(RPG::EventCommand const& /* com */) { // code 12420
 	CloseMessageWindow();
 	Game_Temp::gameover = true;
 	SetContinuation(&Game_Interpreter::DefaultContinuation);
@@ -1351,6 +1351,6 @@ bool Game_Interpreter::CommandGameOver(RPG::EventCommand const& com) { // code 1
 ////////////////////////////////////////////////////////////
 /// Dummy Continuations
 ////////////////////////////////////////////////////////////
-bool Game_Interpreter::ContinuationOpenShop(RPG::EventCommand const& com) { return true; }
-bool Game_Interpreter::ContinuationShowInn(RPG::EventCommand const& com) { return true; }
-bool Game_Interpreter::ContinuationEnemyEncounter(RPG::EventCommand const& com) { return true; }
+bool Game_Interpreter::ContinuationOpenShop(RPG::EventCommand const& /* com */) { return true; }
+bool Game_Interpreter::ContinuationShowInn(RPG::EventCommand const& /* com */) { return true; }
+bool Game_Interpreter::ContinuationEnemyEncounter(RPG::EventCommand const& /* com */) { return true; }

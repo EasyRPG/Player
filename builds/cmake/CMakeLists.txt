@@ -42,10 +42,12 @@ if(USE_OPENAL)
 endif()
 
 # endianess check
-include(TestBigEndian)
-test_big_endian(IS_BIG_ENDIAN)
-if(IS_BIG_ENDIAN)
-  add_definitions(-D READER_BIG_ENDIAN=1)
+if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+  include(TestBigEndian)
+  test_big_endian(IS_BIG_ENDIAN)
+  if(IS_BIG_ENDIAN)
+    add_definitions(-D READER_BIG_ENDIAN=1)
+  endif()
 endif()
 
 if(APPLE)
@@ -66,23 +68,25 @@ if(CMAKE_SYSTEM_NAME MATCHES "Linux")
   endif()
 endif()
 
-foreach(i Iconv Expat Freetype JPEG Pixman PNG SDL SDL_mixer ZLIB Boost)
+foreach(i Iconv Expat Freetype JPEG Pixman PNG SDL ZLIB Boost)
   find_package(${i} REQUIRED)
 
   string(TOUPPER ${i} i)
-  string(REPLACE "SDL_" "SDL" sdl ${i})
 
-  include_directories(
-    ${${i}_INCLUDE_DIR} ${${i}_INCLUDE_DIRS}
-    ${${sdl}_INCLUDE_DIR} ${${sdl}_INCLUDE_DIRS})
-  list(APPEND EASYRPG_PLAYER_LIBRARIES
-    ${${i}_LIBRARY}  ${${i}_LIBRARIES}
-    ${${sdl}_LIBRARY}  ${${sdl}_LIBRARIES})
+  include_directories(${${i}_INCLUDE_DIR} ${${i}_INCLUDE_DIRS})
+  list(APPEND EASYRPG_PLAYER_LIBRARIES ${${i}_LIBRARY}  ${${i}_LIBRARIES})
 endforeach()
 if(USE_OPENAL)
   list(APPEND EASYRPG_PLAYER_LIBRARIES
     avformat avcodec avutil avdevice
     ${OPENAL_LIBRARY})
+endif()
+find_package(SDL_mixer)
+if(SDLMIXER_FOUND)
+  include_directories(${SDLMIXER_INCLUDE_DIR})
+  list(APPEND EASYRPG_PLAYER_LIBRARIES ${SDLMIXER_LIBRARY})
+else()
+  add_definitions(-DNO_SDL_MIXER)
 endif()
 
 find_package(Boost COMPONENTS filesystem system)

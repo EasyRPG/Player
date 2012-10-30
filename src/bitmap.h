@@ -139,10 +139,6 @@ public:
 	bool IsAttachedToBitmapScreen();
 
 protected:
-	friend class BitmapScreen;
-	friend class BitmapUtils;
-	template <class T1, class T2> friend class BitmapUtilsT;
-
 	Bitmap();
 
 	uint8_t bytes() const;
@@ -550,12 +546,11 @@ public:
 
 protected:
 	friend void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align);
-	friend class FTFont;
-	friend class BitmapUtils;
 	template <class T1, class T2> friend class BitmapUtilsT;
+	friend class BitmapScreen;
+	friend class BitmapUtils;
 
 #ifdef USE_SDL
-	friend class SdlBitmap;
 	friend class SdlUi;
 #endif
 

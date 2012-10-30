@@ -104,7 +104,7 @@ void Window_Skill::UpdateHelp() {
 }
 
 ////////////////////////////////////////////////////////////
-bool Window_Skill::CheckInclude(int skill_id) {
+bool Window_Skill::CheckInclude(int /* skill_id */) {
 	return true;
 }
 

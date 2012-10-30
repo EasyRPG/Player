@@ -561,7 +561,7 @@ ZObj* Graphics::RegisterZObj(int z, uint32_t ID) {
 	return zobj;
 }
 
-void Graphics::RegisterZObj(int z, uint32_t ID, bool multiz) {
+void Graphics::RegisterZObj(int z, uint32_t ID, bool /* multiz */) {
 	ZObj* zobj = new ZObj(z, 999999, ID);
 	state->zlist.push_back(zobj);
 

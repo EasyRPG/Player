@@ -19,9 +19,6 @@
 #define _EASYRPG_UTILS_H_
 
 #include <string>
-#include <algorithm>
-#include <cctype>
-
 #include "system.h"
 
 namespace Utils {
@@ -82,6 +79,14 @@ namespace Utils {
 	/// @return The converted string
 	////////////////////////////////////////////////////////
 	wstring ToWideString(const std::string& str);
+
+	////////////////////////////////////////////////////////
+	/// Converts wstring to utf8 string.
+	/// @param str : String to convert.
+	/// @return The converted string
+	////////////////////////////////////////////////////////
+	std::string FromWideString(const wstring& str);
+
 } // namespace Utils
 
 #endif

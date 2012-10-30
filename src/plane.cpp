@@ -46,7 +46,7 @@ Plane::~Plane() {
 }
 
 ////////////////////////////////////////////////////////////
-void Plane::Draw(int z_order) {
+void Plane::Draw(int /* z_order */) {
 	if (!visible || !bitmap) return;
 
 	Rect dst_rect(0, 0, DisplayUi->GetWidth(), DisplayUi->GetHeight());

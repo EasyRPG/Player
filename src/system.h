@@ -80,7 +80,11 @@
 #    define SUPPORT_MP3
 #  endif
 
-#  define SUPPORT_AUDIO
+#  ifdef NO_SDL_MIXER
+#    undef SUPPORT_AUDIO
+#  else
+#    define SUPPORT_AUDIO
+#  endif
 #endif
 
 #ifdef _WIN32

@@ -114,7 +114,7 @@ void Audio::Quit() {
 }
 
 ///////////////////////////////////////////////////////////
-void Audio::BGM_Play(std::string const& file, int volume, int pitch) {
+void Audio::BGM_Play(std::string const& file, int volume, int /* pitch */) {
 	std::string path = FileFinder::FindMusic(file);
 	if (path == "") {
 		Output::Warning("No such file or directory - %s", file.c_str());
@@ -166,7 +166,7 @@ void Audio::BGM_Fade(int fade) {
 }
 
 ////////////////////////////////////////////////////////////
-void Audio::BGS_Play(std::string const& file, int volume, int pitch) {
+void Audio::BGS_Play(std::string const& file, int volume, int /* pitch */) {
 	std::string path = FileFinder::FindMusic(file);
 	if (path == "") {
 		Output::Warning("No such file or directory - %s", file.c_str());
@@ -208,7 +208,7 @@ void me_finish(int channel) {
 }
 
 ///////////////////////////////////////////////////////////
-void Audio::ME_Play(std::string const& file, int volume, int pitch) {
+void Audio::ME_Play(std::string const& file, int volume, int /* pitch */) {
 	std::string path = FileFinder::FindMusic(file);
 	if (path == "") {
 		Output::Warning("No such file or directory - %s", file.c_str());
@@ -241,7 +241,7 @@ void Audio::ME_Fade(int fade) {
 }
 
 ////////////////////////////////////////////////////////////
-void Audio::SE_Play(std::string const& file, int volume, int pitch) {
+void Audio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 	std::string path = FileFinder::FindSound(file);
 	if (path == "") {
 		Output::Warning("No such file or directory - %s", file.c_str());

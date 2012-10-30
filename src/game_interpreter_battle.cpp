@@ -37,9 +37,9 @@ bool Game_Interpreter_Battle::ExecuteCommand() {
 	if (index >= list.size()) {
 		return CommandEnd();
 	}
-	
+
 	RPG::EventCommand const& com = list[index];
-	
+
 	switch (com.code) {
 		case Cmd::CallCommonEvent:
 			return CommandCallCommonEvent(com);
@@ -61,7 +61,7 @@ bool Game_Interpreter_Battle::ExecuteCommand() {
 			return CommandShowBattleAnimation(com);
 		case Cmd::TerminateBattle:
 			return CommandTerminateBattle(com);
-		case Cmd::ConditionalBranch_B: 
+		case Cmd::ConditionalBranch_B:
 			return CommandConditionalBranch(com);
 		case Cmd::ElseBranch_B:
 			return SkipTo(Cmd::EndBranch_B);
@@ -218,7 +218,7 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 	return !wait;
 }
 
-bool Game_Interpreter_Battle::CommandTerminateBattle(RPG::EventCommand const& com) {
+bool Game_Interpreter_Battle::CommandTerminateBattle(RPG::EventCommand const& /* com */) {
 	Game_Battle::Terminate();
 	return true;
 }
@@ -297,4 +297,3 @@ bool Game_Interpreter_Battle::CommandConditionalBranch(RPG::EventCommand const& 
 
 	return SkipTo(Cmd::ElseBranch_B, Cmd::EndBranch_B);
 }
-

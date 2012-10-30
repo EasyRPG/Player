@@ -339,7 +339,7 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 }
 
 ////////////////////////////////////////////////////////////
-bool Game_Map::IsBush(int x, int y) {
+bool Game_Map::IsBush(int /* x */, int /* y */) {
 	// TODO
 	return false;
 }

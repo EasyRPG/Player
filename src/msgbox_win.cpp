@@ -181,10 +181,10 @@ void MsgBox::OK(std::string const& msg, std::string const& title) {
 	if (WindowsUtils::GetWindowsVersion() >= 6) {
 		ShowTaskDialog(msg, title, TD_INFORMATION_ICON);
 	} else {
-		CBTMessageBox(WindowsUtils::GetHwnd(), Utils::DecodeUTF(msg).c_str(), Utils::DecodeUTF(title).c_str(), MB_OK);
+		CBTMessageBox(WindowsUtils::GetHwnd(), Utils::ToWideString(msg).c_str(), Utils::ToWideString(title).c_str(), MB_OK);
 	}
 #else
-	CBTMessageBox(WindowsUtils::GetHwnd(), Utils::DecodeUTF(msg).c_str(), Utils::DecodeUTF(title).c_str(), MB_OK);
+	CBTMessageBox(WindowsUtils::GetHwnd(), Utils::ToWideString(msg).c_str(), Utils::ToWideString(title).c_str(), MB_OK);
 #endif
 }
 
@@ -196,10 +196,10 @@ void MsgBox::Error(std::string const& msg, std::string const& title) {
 	if (WindowsUtils::GetWindowsVersion() >= 6) {
 		ShowTaskDialog(msg, title, TD_ERROR_ICON);
 	} else {
-		CBTMessageBox(WindowsUtils::GetHwnd(), Utils::DecodeUTF(msg).c_str(), Utils::DecodeUTF(title).c_str(), MB_OK | MB_ICONERROR);
+		CBTMessageBox(WindowsUtils::GetHwnd(), Utils::ToWideString(msg).c_str(), Utils::ToWideString(title).c_str(), MB_OK | MB_ICONERROR);
 	}
 #else
-	CBTMessageBox(WindowsUtils::GetHwnd(), Utils::DecodeUTF(msg).c_str(), Utils::DecodeUTF(title).c_str(), MB_OK | MB_ICONERROR);
+	CBTMessageBox(WindowsUtils::GetHwnd(), Utils::ToWideString(msg).c_str(), Utils::ToWideString(title).c_str(), MB_OK | MB_ICONERROR);
 #endif
 }
 
@@ -211,10 +211,10 @@ void MsgBox::Warning(std::string const& msg, std::string const& title) {
 	if (WindowsUtils::GetWindowsVersion() >= 6) {
 		ShowTaskDialog(msg, title, TD_WARNING_ICON);
 	} else {
-		CBTMessageBox(WindowsUtils::GetHwnd(), Utils::DecodeUTF(msg).c_str(), Utils::DecodeUTF(title).c_str(), MB_OK | MB_ICONEXCLAMATION);
+		CBTMessageBox(WindowsUtils::GetHwnd(), Utils::ToWideString(msg).c_str(), Utils::ToWideString(title).c_str(), MB_OK | MB_ICONEXCLAMATION);
 	}
 #else
-	CBTMessageBox(WindowsUtils::GetHwnd(), Utils::DecodeUTF(msg).c_str(), Utils::DecodeUTF(title).c_str(), MB_OK | MB_ICONEXCLAMATION);
+	CBTMessageBox(WindowsUtils::GetHwnd(), Utils::ToWideString(msg).c_str(), Utils::ToWideString(title).c_str(), MB_OK | MB_ICONEXCLAMATION);
 #endif
 }
 

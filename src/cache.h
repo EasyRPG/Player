@@ -38,12 +38,10 @@ typedef struct {
 /// Cache namespace
 ////////////////////////////////////////////////////////////
 namespace Cache {
-	BitmapRef LoadBitmap(const std::string& folder_name, const std::string& filename,
-					   bool transparent = true, uint32_t flags = 0);
 	BitmapRef Backdrop(const std::string& filename);
 	BitmapRef Battle(const std::string& filename);
 	BitmapRef Battle2(const std::string& filename);
-	BitmapRef BattleCharset(const std::string& filename);
+	BitmapRef BattleChar(const std::string& filename);
 	BitmapRef BattleWeapon(const std::string& filename);
 	BitmapRef Charset(const std::string& filename);
 	BitmapRef ExFont();
@@ -57,6 +55,7 @@ namespace Cache {
 	BitmapRef Title(const std::string& filename);
 	BitmapRef System(const std::string& filename);
 	BitmapRef System2(const std::string& filename);
+	BitmapRef frame(const std::string& filename);
 	BitmapRef Tile(const std::string& filename, int tile_id);
 	void Clear();
 

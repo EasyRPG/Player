@@ -20,61 +20,119 @@
 ////////////////////////////////////////////////////////////
 #include <map>
 
+#include <boost/preprocessor/seq/for_each.hpp>
+#include <boost/static_assert.hpp>
+
 #include "cache.h"
 #include "filefinder.h"
 #include "exfont.h"
 #include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
-typedef std::pair<std::string,std::string> string_pair;
-typedef std::pair<std::string, int> tile_pair;
-
 namespace {
-std::map<string_pair, EASYRPG_WEAK_PTR<Bitmap> > cache;
-std::map<tile_pair, EASYRPG_WEAK_PTR<Bitmap> > cache_tiles;
+
+	typedef std::pair<std::string,std::string> string_pair;
+	typedef std::pair<std::string, int> tile_pair;
+
+	std::map<string_pair, EASYRPG_WEAK_PTR<Bitmap> > cache;
+	std::map<tile_pair, EASYRPG_WEAK_PTR<Bitmap> > cache_tiles;
+
+	BitmapRef LoadBitmap(std::string const& folder_name, const std::string& filename,
+						 bool transparent, uint32_t const flags) {
+		string_pair const key(folder_name, filename);
+
+		std::map<string_pair, EASYRPG_WEAK_PTR<Bitmap> >::iterator const it = cache.find(key);
+
+		if (it == cache.end() || it->second.expired()) {
+			std::string const path = FileFinder::FindImage(folder_name, filename);
+			return (cache[key] = path.empty()
+					? Bitmap::Create(16, 16, Color())
+					: Bitmap::Create(path, transparent, flags)
+					).lock();
+		} else { return it->second.lock(); }
+	}
+
+	struct Material {
+		enum Type {
+			REND = -1,
+			Backdrop,
+			Battle,
+			Charset,
+			Chipset,
+			Faceset,
+			Gameover,
+			Monster,
+			Panorama,
+			Picture,
+			System,
+			Title,
+			System2,
+			Battle2,
+			BattleChar,
+			BattleWeapon,
+			Frame,
+			END,
+		};
+
+	}; // struct Material
+
+	struct Spec {
+		char const* directory;
+		bool transparent;
+		int min_width , max_width ;
+		int min_height, max_height;
+	} const spec[] = {
+		{ "Backdrop", false, 320, 320, 160, 160 },
+		{ "Battle", true, 480, 480, 96, 480 },
+		{ "CharSet", true, 288, 288, 256, 256 },
+		{ "ChipSet", true, 480, 480, 256, 256 },
+		{ "FaceSet", true, 192, 192, 192, 192 },
+		{ "GameOver", false, 320, 320, 240, 240 },
+		{ "Monster", false, 16, 320, 16, 160 },
+		{ "Panorama", false, 80, 640, 80, 480 },
+		{ "Picture", true, 1, 640, 1, 480 },
+		{ "System", true, 160, 160, 80, 80 },
+		{ "Title", false, 320, 320, 240, 240 },
+		{ "System2", true, 80, 80, 96, 96 },
+		{ "Battle2", true, 640, 640, 640, 640 },
+		{ "BattleChar", true, 144, 144, 384, 384 },
+		{ "BattleWeapon", true, 192, 192, 512, 512 },
+		{ "frame", true, 320, 320, 240, 240 },
+	};
+
+	template<Material::Type T>
+	BitmapRef LoadBitmap(std::string const& f) {
+		BOOST_STATIC_ASSERT(Material::REND < T && T < Material::END);
+
+		Spec const& s = spec[T];
+		BitmapRef const ret = LoadBitmap(s.directory, f, s.transparent,
+										 T == Material::Chipset? Bitmap::Chipset:
+										 T == Material::System? Bitmap::System:
+										 0);
+
+		assert(s.min_width  <= ret->GetWidth () && ret->GetWidth ()<= s.max_width );
+		assert(s.min_height <= ret->GetHeight() && ret->GetHeight()<= s.max_height);
+
+		return ret;
+	}
+
 }
 
 tSystemInfo Cache::system_info;
 
-////////////////////////////////////////////////////////////
-BitmapRef Cache::LoadBitmap(
-	const std::string& folder_name,
-	const std::string& filename,
-	bool const transparent,
-	uint32_t const flags
-) {
-	string_pair const key(folder_name, filename);
+#define macro(r, data, elem)						\
+	BitmapRef Cache::elem(const std::string& f) {	\
+		return LoadBitmap<Material::elem>(f);		\
+	}												\
 
-	std::map<string_pair, EASYRPG_WEAK_PTR<Bitmap> >::iterator const it = cache.find(key);
+BOOST_PP_SEQ_FOR_EACH(macro, ,
+					  (Backdrop)(Battle)(Battle2)(BattleChar)(BattleWeapon)
+					  (Charset)(Chipset)(Faceset)(Gameover)(Monster)
+					  (Panorama)(Picture)(System)(System2)(Frame)(Title)
+					  )
 
-	if (it == cache.end() || it->second.expired()) {
-		std::string const path = FileFinder::FindImage(folder_name, filename);
-		return (cache[key] = path.empty()
-				? Bitmap::Create(16, 16, Color())
-				: Bitmap::Create(path, transparent, flags)
-				).lock();
-	} else { return it->second.lock(); }
-}
+#undef macro
 
-////////////////////////////////////////////////////////////
-BitmapRef Cache::Backdrop(const std::string& filename) {
-	return LoadBitmap("Backdrop", filename, false);
-}
-BitmapRef Cache::Battle(const std::string& filename) {
-	return LoadBitmap("Battle", filename);
-}
-BitmapRef Cache::Battle2(const std::string& filename) {
-	return LoadBitmap("Battle2", filename);
-}
-BitmapRef Cache::BattleCharset(const std::string& filename) {
-	return LoadBitmap("BattleCharSet", filename);
-}
-BitmapRef Cache::BattleWeapon(const std::string& filename) {
-	return LoadBitmap("BattleWeapon", filename);
-}
-BitmapRef Cache::Charset(const std::string& filename) {
-	return LoadBitmap("CharSet", filename);
-}
 BitmapRef Cache::ExFont() {
 	string_pair const hash("\x00","ExFont");
 
@@ -83,36 +141,6 @@ BitmapRef Cache::ExFont() {
 	if (it == cache.end() || it->second.expired()) {
 		return(cache[hash] = Bitmap::Create(exfont_h, sizeof(exfont_h), true)).lock();
 	} else { return it->second.lock(); }
-}
-BitmapRef Cache::Faceset(const std::string& filename) {
-	return LoadBitmap("FaceSet", filename);
-}
-BitmapRef Cache::Frame(const std::string& filename) {
-	return LoadBitmap("Frame", filename);
-}
-BitmapRef Cache::Gameover(const std::string& filename) {
-	return LoadBitmap("GameOver", filename, false);
-}
-BitmapRef Cache::Monster(const std::string& filename) {
-	return LoadBitmap("Monster", filename);
-}
-BitmapRef Cache::Panorama(const std::string& filename) {
-	return LoadBitmap("Panorama", filename, false);
-}
-BitmapRef Cache::Picture(const std::string& filename) {
-	return LoadBitmap("Picture", filename);
-}
-BitmapRef Cache::Chipset(const std::string& filename) {
-	return LoadBitmap("ChipSet", filename, true, Bitmap::Chipset);
-}
-BitmapRef Cache::Title(const std::string& filename) {
-	return LoadBitmap("Title", filename, false);
-}
-BitmapRef Cache::System(const std::string& filename) {
-	return LoadBitmap("System", filename, true, Bitmap::System);
-}
-BitmapRef Cache::System2(const std::string& filename) {
-	return LoadBitmap("System2", filename);
 }
 
 ////////////////////////////////////////////////////////////

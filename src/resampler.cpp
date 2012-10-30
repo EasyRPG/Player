@@ -50,11 +50,11 @@ public:
 	void merge(int16_t* data, int d_len, AudioStream* stream, uint16_t vol, uint8_t balance);
 };
 
-void SimpleResampler::merge(int16_t* data, int d_len, AudioStream* stream, uint16_t vol, uint8_t balance) {
+void SimpleResampler::merge(int16_t* /* data */, int /* d_len */, AudioStream* /* stream */, uint16_t /* vol */, uint8_t /* balance */) {
 
 }
 
-void CopyResampler::merge(int16_t* data, int d_len, AudioStream* stream, uint16_t vol, uint8_t balance) {
+void CopyResampler::merge(int16_t* /* data */, int /* d_len */, AudioStream* /* stream */, uint16_t /* vol */, uint8_t /* balance */) {
 
 }
 

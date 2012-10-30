@@ -571,7 +571,7 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 	default:;
 		// When this happens text_index was not on a \ during calling
 	}
-	return utf("");
+	return "";
 }
 
 ////////////////////////////////////////////////////////////

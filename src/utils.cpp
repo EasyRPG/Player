@@ -16,6 +16,8 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "utils.h"
+#include <algorithm>
+#include <cctype>
 #include <boost/regex/pending/unicode_iterator.hpp>
 #include <boost/static_assert.hpp>
 
@@ -65,7 +67,6 @@ std::string Utils::EncodeUTF(const Utils::utf32_string& str) {
 					   u32_to_u8_iterator<utf32_string::const_iterator>(str.end  ()));
 }
 
-// invalid wchar_t
 template<size_t WideSize>
 static Utils::wstring ToWideStringImpl(const std::string&);
 template<> // utf16
@@ -81,4 +82,19 @@ Utils::wstring ToWideStringImpl<4>(const std::string& str) {
 
 Utils::wstring Utils::ToWideString(const std::string& str) {
 	return ToWideStringImpl<sizeof(wchar_t)>(str);
+}
+
+template<size_t WideSize>
+static std::string FromWideStringImpl(const Utils::wstring&);
+template<> // utf16
+std::string FromWideStringImpl<2>(const Utils::wstring& str) {
+	return Utils::EncodeUTF(Utils::utf16_string(str.begin(), str.end()));
+}
+template<> // utf32
+std::string FromWideStringImpl<4>(const Utils::wstring& str) {
+	return Utils::EncodeUTF(Utils::utf32_string(str.begin(), str.end()));
+}
+
+std::string Utils::FromWideString(const Utils::wstring& str) {
+	return FromWideStringImpl<sizeof(wchar_t)>(str);
 }

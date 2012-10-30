@@ -619,7 +619,7 @@ void SdlUi::ProcessKeyUpEvent(SDL_Event &evnt) {
 }
 
 ///////////////////////////////////////////////////////////
-void SdlUi::ProcessMouseMotionEvent(SDL_Event &evnt) {
+void SdlUi::ProcessMouseMotionEvent(SDL_Event& /* evnt */) {
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 	mouse_focus = true;
 	mouse_x = evnt.motion.x;
@@ -628,7 +628,7 @@ void SdlUi::ProcessMouseMotionEvent(SDL_Event &evnt) {
 }
 
 ///////////////////////////////////////////////////////////
-void SdlUi::ProcessMouseButtonEvent(SDL_Event &evnt) {
+void SdlUi::ProcessMouseButtonEvent(SDL_Event& /* evnt */) {
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 	switch (evnt.button.button) {
 	case SDL_BUTTON_LEFT:

@@ -23,6 +23,7 @@
 ////////////////////////////////////////////////////////////
 #include <string>
 #include "system.h"
+#include <boost/container/flat_map.hpp>
 
 ////////////////////////////////////////////////////////////
 /// FileFinder contains helper methods for finding case
@@ -45,14 +46,14 @@ namespace FileFinder {
 	/// Quit FileFinder.
 	////////////////////////////////////////////////////////
 	void Quit();
-	
+
 	///////////////////////////////////////////////////////
 	/// Find an image file.
 	/// @param name : the image path and name
 	/// @return path to file
 	///////////////////////////////////////////////////////
 	std::string FindImage(const std::string& dir, const std::string& name);
-	
+
 	///////////////////////////////////////////////////////
 	/// Find a file.
 	/// @param name : the path and name
@@ -93,75 +94,34 @@ namespace FileFinder {
 	/// @param : mode ("r", "w", etc)
 	/// @return: FILE*
 	///////////////////////////////////////////////////////
-	FILE* fopenUTF8(const std::string& name_utf8, const std::string& mode);
+	FILE* fopenUTF8(const std::string& name_utf8, char const* mode);
 
-	/// Available image extension types
-	const char* const IMG_TYPES[] = {
-#ifdef SUPPORT_BMP
-		".bmp",
-#endif
-#ifdef SUPPORT_GIF
-		".gif",
-#endif
-#ifdef SUPPORT_JPG
-		".jpg",
-		".jpeg",
-#endif
-#ifdef SUPPORT_PNG
-		".png",
-#endif
-#ifdef SUPPORT_XYZ
-		".xyz",
-#endif
-		NULL
-	};
+	typedef boost::container::flat_map<std::string, std::string> string_map;
+	struct Directory {
+		std::string base;
+		string_map members;
+	}; // struct Directory
 
-	/// Available audio music extension types
-	const char* const MUSIC_TYPES[] = {
-#ifdef SUPPORT_WAV
-		".wav",
-#endif
-#ifdef SUPPORT_MID
-		".mid",
-		".midi",
-#endif
-#ifdef SUPPORT_OGG
-		".ogg",
-#endif
-#ifdef SUPPORT_MP3
-		".mp3",
-#endif
-		NULL
-	};
+	bool IsRPG2kProject(Directory const& dir);
 
-	/// Available audio music extension types
-	const char* const SOUND_TYPES[] = {
-#ifdef SUPPORT_WAV
-		".wav",
-#endif
-#ifdef SUPPORT_OGG
-		".ogg",
-#endif
-#ifdef SUPPORT_MP3
-		".mp3",
-#endif
-		NULL
-	};
+	bool IsDirectory(std::string const& directory);
+	bool Exists(std::string const& file);
+	bool Exists(Directory const& dir, std::string const& name);
 
-	/// Available fonts types
-	const char* const FONTS_TYPES[] = {
-#ifdef SUPPORT_TTF
-		".ttf",
-		".ttc",
-#endif
-#ifdef SUPPORT_OTF
-		".otf",
-#endif
-#ifdef SUPPORT_FON
-		".fon",
-#endif
-		NULL
-	};
-}
+	std::string MakePath(std::string const& dir, std::string const& name);
+
+	enum Mode { ALL, FILES, DIRECTORIES };
+	Directory GetDirectoryMembers(std::string const& dir, Mode m = ALL);
+
+	typedef boost::container::flat_map<std::string, string_map> sub_members_type;
+	struct ProjectTree {
+		std::string project_path;
+		string_map files, directories;
+		sub_members_type sub_members;
+	}; // struct ProjectTree
+
+	ProjectTree const& GetProjectTree();
+
+} // namespace FileFinder
 
 #endif
