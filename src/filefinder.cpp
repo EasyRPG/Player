@@ -93,15 +93,16 @@ namespace {
 	}
 
 	std::string FindFile(const std::string &dir, const std::string& name, const char* exts[]) {
+		FileFinder::ProjectTree const& tree = FileFinder::GetProjectTree();
+		boost::optional<std::string> const ret = FindFile(tree, dir, name, exts);
+		if(ret != boost::none) { return *ret; }
+
 		for(search_path_list::const_iterator i = search_paths.begin(); i != search_paths.end(); ++i) {
 			boost::optional<std::string> const ret = FindFile(*i, dir, name, exts);
 			if(ret != boost::none) { return *ret; }
 		}
 
-		FileFinder::ProjectTree const& tree = FileFinder::GetProjectTree();
-		boost::optional<std::string> const ret = FindFile(tree, dir, name, exts);
-
-		return(ret != boost::none? *ret : "");
+		return "";
 	}
 
 } // anonymous namespace
