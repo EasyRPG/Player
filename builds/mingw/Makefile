@@ -31,6 +31,8 @@ LIBS += \
 CC=ccache i686-w64-mingw32-gcc
 CXX=ccache i686-w64-mingw32-g++
 
+OBJS += ${OBJ_DIR}/player.o
+
 .PHONY:all
 all : ${TARGET}
 
@@ -38,7 +40,7 @@ all : ${TARGET}
 clean :
 	rm -rf ${OBJ_DIR}
 
-${TARGET} : ${OBJS} ${OBJ_DIR}/player.o
+${TARGET} : ${OBJS}
 	${CXX} ${CXXFLAGS} ${LDFLAGS} ${OBJS} ${LIBS} -o ${TARGET}
 
 ${OBJ_DIR}/%.cpp.o : %.cpp
