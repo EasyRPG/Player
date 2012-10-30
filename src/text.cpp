@@ -27,6 +27,8 @@
 #include "text.h"
 #include "wcwidth.h"
 
+#include <cctype>
+
 #include <boost/next_prior.hpp>
 #include <boost/regex/pending/unicode_iterator.hpp>
 
@@ -99,9 +101,9 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 		if (*c == utf('$') && std::isalpha(next_c)) {
 			int exfont_value;
 			// Calculate which exfont shall be rendered
-			if (std::islower(next_c)) {
+			if (islower(next_c)) {
 				exfont_value = 26 + next_c - utf('a');
-			} else if (std::isupper(next_c)) {
+			} else if (isupper(next_c)) {
 				exfont_value = next_c - utf('A');
 			} else { assert(false); }
 			is_exfont = true;

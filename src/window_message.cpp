@@ -18,7 +18,9 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <cctype>
 #include <sstream>
+
 #include "window_message.h"
 #include "game_actors.h"
 #include "game_map.h"
@@ -340,7 +342,7 @@ void Window_Message::UpdateMessage() {
 
 			std::string command_result;
 
-			switch (std::tolower(*text_index)) {
+			switch (tolower(*text_index)) {
 			case utf('c'):
 			case utf('n'):
 			case utf('s'):
@@ -498,14 +500,14 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 	uint32_t cmd_char = *text_index;
 	if (std::distance(text_index, end) > 3 &&
 		*boost::next(text_index, 2) == utf('\\') &&
-		std::tolower(*boost::next(text_index, 3)) == utf('v')) {
+		tolower(*boost::next(text_index, 3)) == utf('v')) {
 		++(++(++text_index));
 		// The result is an int value, str-to-int is safe in this case
 		std::stringstream ss;
 		ss << ParseCommandCode(++call_depth);
 		ss >> sub_code;
 	}
-	switch (std::tolower(cmd_char)) {
+	switch (tolower(cmd_char)) {
 	case utf('c'):
 		// Color
 		if (sub_code >= 0) {
