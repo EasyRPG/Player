@@ -93,7 +93,7 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 
 		BitmapRef mask;
 
-		uint32_t const next_c = std::distance(end, c) >= 1? *boost::next(c) : 0;
+		uint32_t const next_c = std::distance(c, end) > 1? *boost::next(c) : 0;
 
 		// ExFont-Detection: Check for A-Z or a-z behind the $
 		if (*c == utf('$') && std::isalpha(next_c)) {

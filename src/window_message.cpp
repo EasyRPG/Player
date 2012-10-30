@@ -334,7 +334,7 @@ void Window_Message::UpdateMessage() {
 		if (*text_index == utf('\n')) {
 			instant_speed = false;
 			InsertNewLine();
-		} else if (*text_index == utf('\\') && std::distance(text_index, end) >= 1) {
+		} else if (*text_index == utf('\\') && std::distance(text_index, end) > 1) {
 			// Special message codes
 			++text_index;
 
@@ -396,7 +396,7 @@ void Window_Message::UpdateMessage() {
 			default:;
 			}
 		} else if (*text_index == utf('$')
-				   && std::distance(text_index, end) >= 1
+				   && std::distance(text_index, end) > 1
 				   && std::isalpha(*boost::next(text_index))) {
 			// ExFont
 			contents->TextDraw(contents_x, contents_y, text_color,
@@ -496,7 +496,7 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 	// In that case sub_code contains the result from \v[1]
 	int sub_code = -1;
 	uint32_t cmd_char = *text_index;
-	if (std::distance(text_index, end) >= 3 &&
+	if (std::distance(text_index, end) > 3 &&
 		*boost::next(text_index, 2) == utf('\\') &&
 		std::tolower(*boost::next(text_index, 3)) == utf('v')) {
 		++(++(++text_index));
