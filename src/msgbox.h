@@ -27,9 +27,9 @@
 /// Message Box namespace
 ////////////////////////////////////////////////////////////
 namespace MsgBox {
-	void OK(std::string msg, std::string title);
-	void Error(std::string msg, std::string title);
-	void Warning(std::string msg, std::string title);
+	void OK(std::string const& msg, std::string const& title);
+	void Error(std::string const& msg, std::string const& title);
+	void Warning(std::string const& msg, std::string const& title);
 }
 
 #endif

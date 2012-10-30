@@ -73,7 +73,7 @@ void Window_BattleStatus::RefreshGauge(int i) {
 }
 
 ////////////////////////////////////////////////////////////
-void Window_BattleStatus::DrawGauge(Game_Actor* actor, int index, int cx, int cy) {
+void Window_BattleStatus::DrawGauge(Game_Actor* /* actor */, int index, int cx, int cy) {
 	Bitmap* system2 = Cache::System2(Data::system.system2_name);
 
 	Battle::Ally& ally = Game_Battle::GetAlly(index);

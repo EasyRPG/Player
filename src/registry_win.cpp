@@ -27,7 +27,7 @@
 ////////////////////////////////////////////////////////////
 /// Read String value
 ////////////////////////////////////////////////////////////
-std::string Registry::ReadStrValue(HKEY hkey, std::string key, std::string val) {
+std::string Registry::ReadStrValue(HKEY hkey, std::string const& key, std::string const& val) {
 	char value[1024];
 	DWORD size = 1024;
 	DWORD type = REG_SZ;
@@ -58,7 +58,7 @@ std::string Registry::ReadStrValue(HKEY hkey, std::string key, std::string val) 
 ////////////////////////////////////////////////////////////
 /// Read Binary value
 ////////////////////////////////////////////////////////////
-int Registry::ReadBinValue(HKEY hkey, std::string key, std::string val, unsigned char* bin) {
+int Registry::ReadBinValue(HKEY hkey, std::string const& key, std::string const& val, unsigned char* bin) {
 	DWORD size = 1024;
 	DWORD type = REG_BINARY;
 	HKEY key_handle;

@@ -9,7 +9,7 @@ static void LowerCase() {
 	assert(Utils::LowerCase("player") == "player");
 }
 
-int main() {
+extern "C" int main(int, char**) {
   LowerCase();
   return EXIT_SUCCESS;
 }

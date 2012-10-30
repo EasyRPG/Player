@@ -50,7 +50,7 @@ public:
 	/// @param title : display title
 	/// @param fullscreen : start in fullscreen flag
 	///////////////////////////////////////////////////////
-	static BaseUi* CreateBaseUi(long width, long height, const std::string title, bool fullscreen, bool zoom);
+	static BaseUi* CreateBaseUi(long width, long height, const std::string& title, bool fullscreen, bool zoom);
 
 	///////////////////////////////////////////////////////
 	/// Begins a display mode change.
@@ -168,7 +168,7 @@ public:
 
 	/// @returns mouse y coordinate
 	virtual int GetMousePosY() = 0;
-	
+
 	/// @return background color
 	virtual Color GetBackcolor() = 0;
 
