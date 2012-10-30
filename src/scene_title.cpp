@@ -156,10 +156,10 @@ void Scene_Title::LoadDatabase() {
 	// Load Database
 	Data::Clear();
 
-	if (!LDB_Reader::Load(FileFinder::FindDefault(Main_Data::project_path, DATABASE_NAME))) {
+	if (!LDB_Reader::Load(FileFinder::FindDefault(DATABASE_NAME))) {
 		Output::ErrorStr(LcfReader::GetError());
 	}
-	if (!LMT_Reader::Load(FileFinder::FindDefault(Main_Data::project_path, TREEMAP_NAME))) {
+	if (!LMT_Reader::Load(FileFinder::FindDefault(TREEMAP_NAME))) {
 		Output::ErrorStr(LcfReader::GetError());
 	}
 }
@@ -182,7 +182,7 @@ bool Scene_Title::CheckContinue() {
 		std::stringstream ss;
 		ss << "Save" << (i <= 9 ? "0" : "") << i << ".lsd";
 
-		if (!FileFinder::FindDefault(".", ss.str()).empty()) {
+		if (!FileFinder::FindDefault(ss.str()).empty()) {
 			return true;
 		}
 	}

@@ -62,6 +62,13 @@ namespace FileFinder {
 	std::string FindDefault(const std::string& dir, const std::string& name);
 
 	///////////////////////////////////////////////////////
+	/// Find a file.
+	/// @param name : the path and name
+	/// @return path to file
+	///////////////////////////////////////////////////////
+	std::string FindDefault(const std::string& name);
+
+	///////////////////////////////////////////////////////
 	/// Find a music file.
 	/// @param name : the music path and name
 	/// @return path to file
@@ -102,8 +109,6 @@ namespace FileFinder {
 		string_map members;
 	}; // struct Directory
 
-	bool IsRPG2kProject(Directory const& dir);
-
 	bool IsDirectory(std::string const& directory);
 	bool Exists(std::string const& file);
 	bool Exists(Directory const& dir, std::string const& name);
@@ -121,6 +126,8 @@ namespace FileFinder {
 	}; // struct ProjectTree
 
 	ProjectTree const& GetProjectTree();
+	std::auto_ptr<ProjectTree> CreateProjectTree(std::string const& p);
+	bool IsRPG2kProject(ProjectTree const& dir);
 
 } // namespace FileFinder
 

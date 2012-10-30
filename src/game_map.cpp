@@ -126,7 +126,7 @@ void Game_Map::Setup(int _id) {
 	char file[12];
 	sprintf(file, "Map%04d.lmu", location.map_id);
 
-	map = LMU_Reader::Load(FileFinder::FindDefault(Main_Data::project_path, file));
+	map = LMU_Reader::Load(FileFinder::FindDefault(file));
 	if (map.get() == NULL) {
 		Output::ErrorStr(LcfReader::GetError());
 	}

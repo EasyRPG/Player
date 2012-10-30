@@ -104,27 +104,25 @@ namespace {
 		return(ret != boost::none? *ret : "");
 	}
 
-	std::auto_ptr<FileFinder::ProjectTree> CreateProjectTree(std::string const& p) {
-		using namespace FileFinder;
+} // anonymous namespace
 
-		std::auto_ptr<ProjectTree> tree(new ProjectTree());
-		tree->project_path = p;
+std::auto_ptr<FileFinder::ProjectTree> FileFinder::CreateProjectTree(std::string const& p) {
+	std::auto_ptr<ProjectTree> tree(new ProjectTree());
+	tree->project_path = p;
 
-		Directory mem = GetDirectoryMembers(tree->project_path, ALL);
-		for(string_map::const_iterator i = mem.members.begin(); i != mem.members.end(); ++i) {
-			(IsDirectory(MakePath(tree->project_path, i->second))?
-			 tree->directories : tree->files)[i->first] = i->second;
-		}
-
-		for(string_map::const_iterator i = tree->directories.begin(); i != tree->directories.end(); ++i) {
-			GetDirectoryMembers(MakePath(tree->project_path, i->second), FILES)
-				.members.swap(tree->sub_members[i->first]);
-		}
-
-		return tree;
+	Directory mem = GetDirectoryMembers(tree->project_path, ALL);
+	for(string_map::const_iterator i = mem.members.begin(); i != mem.members.end(); ++i) {
+		(IsDirectory(MakePath(tree->project_path, i->second))?
+		 tree->directories : tree->files)[i->first] = i->second;
 	}
 
-} // anonymous namespace
+	for(string_map::const_iterator i = tree->directories.begin(); i != tree->directories.end(); ++i) {
+		GetDirectoryMembers(MakePath(tree->project_path, i->second), FILES)
+			.members.swap(tree->sub_members[i->first]);
+	}
+
+	return tree;
+}
 
 std::string FileFinder::MakePath(const std::string &dir, std::string const& name) {
 	std::string str = dir.empty()? name : dir + "/" + name;
@@ -312,6 +310,23 @@ std::string FileFinder::FindImage(const std::string& dir, const std::string& nam
 std::string FileFinder::FindDefault(const std::string& dir, const std::string& name) {
 	static const char* no_exts[] = {"", NULL};
 	return FindFile(dir, name, no_exts);
+}
+
+std::string FileFinder::FindDefault(std::string const& name) {
+	ProjectTree const& p = GetProjectTree();
+	string_map const& files = p.files;
+
+	string_map::const_iterator const it = files.find(Utils::LowerCase(name));
+
+	return(it != files.end())? MakePath(p.project_path, it->second) : "";
+}
+
+bool FileFinder::IsRPG2kProject(ProjectTree const& dir) {
+	string_map::const_iterator const
+		ldb_it = dir.files.find(Utils::LowerCase(DATABASE_NAME)),
+		lmt_it = dir.files.find(Utils::LowerCase(TREEMAP_NAME));
+
+	return(ldb_it != dir.files.end() && lmt_it != dir.files.end());
 }
 
 std::string FileFinder::FindMusic(const std::string& name) {

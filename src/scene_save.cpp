@@ -39,16 +39,6 @@ void Scene_Save::Action(int index) {
 	std::stringstream ss;
 	ss << "Save" << (index <= 8 ? "0" : "") << (index + 1) << ".lsd";
 
-#ifndef _WIN32
-	// Get the case insensitive filename to make sure that only one savefile
-	// for every slot exists
-	std::string file = FileFinder::FindDefault(".", ss.str());
-	if (file.empty())
-		file = ss.str();
-#else
-	std::string file = ss.str();
-#endif
-
 	// TODO: Maybe find a better place to setup the save file?
 	RPG::SaveTitle title;
 
@@ -84,5 +74,5 @@ void Scene_Save::Action(int index) {
 	Main_Data::game_data.system.save_slot = index + 1;
 	Main_Data::game_data.system.save_count += 1;
 
-	LSD_Reader::Save(FileFinder::FindDefault(Main_Data::project_path, file), Main_Data::game_data);
+	LSD_Reader::Save(FileFinder::FindDefault(ss.str()), Main_Data::game_data);
 }

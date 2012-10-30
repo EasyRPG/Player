@@ -50,11 +50,11 @@ void Scene_File::Start() {
 		// Try to access file
 		std::stringstream ss;
 		ss << "Save" << (i <= 8 ? "0" : "") << (i+1) << ".lsd";
-		std::string file = FileFinder::FindDefault(".", ss.str());
+		std::string file = FileFinder::FindDefault(ss.str());
 		if (!file.empty()) {
 			// File found
 			std::auto_ptr<RPG::Save> savegame =
-				LSD_Reader::Load(FileFinder::FindDefault(Main_Data::project_path, file));
+				LSD_Reader::Load(FileFinder::FindDefault(file));
 			std::vector<std::pair<int, std::string> > party;
 
 			// When a face_name is empty the party list ends
