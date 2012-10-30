@@ -28,9 +28,9 @@ using boost::u32_to_u8_iterator;
 
 
 template<class T>
-static T tolower(T const& v) { return std::tolower(v); }
+static T tolower(T const& v) { return tolower(v); }
 template<class T>
-static T toupper(T const& v) { return std::toupper(v); }
+static T toupper(T const& v) { return toupper(v); }
 
 std::string Utils::LowerCase(const std::string& str) {
 	std::string result = str;
