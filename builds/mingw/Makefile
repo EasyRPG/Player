@@ -1,4 +1,4 @@
-TARGET = EasyRPG.exe
+TARGET = Player.exe
 SOURCES = ../../src ../../lib/readers/src ../../lib/readers/src/generated
 CPPFILES = $(foreach dir,$(SOURCES), $(wildcard $(dir)/*.cpp))
 OBJ_DIR=build
@@ -10,22 +10,22 @@ CFLAGS = \
 	$(foreach dir,$(INCLUDES), -I $(CURDIR)/$(dir)) \
 	-O2 -Wall -Wextra \
 	-D USE_SDL -D USE_PIXMAN_BITMAP -D NO_SDL_MIXER \
-	-D UNICODE -D _UNICODE
+	-D UNICODE -D _UNICODE -DWIN32 \
+	-I ${HOME_MINGW_PATH}/include/pixman-1 \
+	$(shell ${HOME_MINGW_PATH}/bin/sdl-config --cflags) \
+	$(shell ${HOME_MINGW_PATH}/bin/freetype-config --cflags) \
+
 CXXFLAGS = $(CFLAGS) -fno-exceptions
 ASFLAGS = $(CFLAGS)
 
-LDFLAGS = -flto
+LDFLAGS = -flto -mno-mingw -mwindows -static-libgcc -static-libstdc++
 
-CFLAGS += \
-	-I ${HOME_MINGW_PATH}/include/pixman-1 \
-	$(shell ${HOME_MINGW_PATH}/bin/sdl-config --cflags) \
-	$(shell ${HOME_MINGW_PATH}/bin/freetype-config --cflags)
 LIBS += \
 	-L ${HOME_MINGW_PATH}/lib \
 	-lexpat -lpixman-1 -lpng -ljpeg -lSDLmain \
 	$(shell ${HOME_MINGW_PATH}/bin/sdl-config --libs) \
 	$(shell ${HOME_MINGW_PATH}/bin/freetype-config --libs) \
-	 -lz -lstdc++ -lm \
+	 -lz -lm \
 
 CC=ccache i686-w64-mingw32-gcc
 CXX=ccache i686-w64-mingw32-g++
@@ -37,9 +37,12 @@ all : ${TARGET}
 clean :
 	rm -rf ${OBJS_DIR}
 
-${TARGET} : ${OBJS}
+${TARGET} : ${OBJS} ${OBJ_DIR}/player.o
 	${CXX} ${CXXFLAGS} ${LDFLAGS} ${OBJS} ${LIBS} -o ${TARGET}
 
 ${OBJ_DIR}/%.cpp.o : %.cpp
 	mkdir -p $(dir $@)
 	${CXX}  ${CXXFLAGS} -c $< -o $@
+
+${OBJ_DIR}/player.o :../../resources/player.rc ../../resources/player.ico ../../resources/player.xml
+	i686-w64-mingw32-windres -i $< --input-format=rc -o $@ -O coff

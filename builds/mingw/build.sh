@@ -210,7 +210,7 @@ fi
 
 # boost
 if ! [ -d $HOME_MINGW_PATH/include/boost ] ; then
-    ln -s /usr/include/boost $HOME_MINGW_PATH/include/boost
+    cp -a /usr/include/boost $HOME_MINGW_PATH/include/boost
     cd $BUILD_DIR
 fi
 
