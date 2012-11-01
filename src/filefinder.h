@@ -126,7 +126,7 @@ namespace FileFinder {
 	}; // struct ProjectTree
 
 	ProjectTree const& GetProjectTree();
-	std::auto_ptr<ProjectTree> CreateProjectTree(std::string const& p);
+	EASYRPG_SHARED_PTR<ProjectTree> CreateProjectTree(std::string const& p);
 	bool IsRPG2kProject(ProjectTree const& dir);
 
 } // namespace FileFinder

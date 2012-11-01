@@ -108,10 +108,10 @@ namespace {
 
 } // anonymous namespace
 
-std::auto_ptr<FileFinder::ProjectTree> FileFinder::CreateProjectTree(std::string const& p) {
-	if(!Exists(p) || !IsDirectory(p)) { return std::auto_ptr<ProjectTree>(); }
+EASYRPG_SHARED_PTR<FileFinder::ProjectTree> FileFinder::CreateProjectTree(std::string const& p) {
+	if(!Exists(p) || !IsDirectory(p)) { return EASYRPG_SHARED_PTR<ProjectTree>(); }
 
-	std::auto_ptr<ProjectTree> tree(new ProjectTree());
+	EASYRPG_SHARED_PTR<ProjectTree> tree(new ProjectTree());
 	tree->project_path = p;
 
 	Directory mem = GetDirectoryMembers(tree->project_path, ALL);
@@ -250,7 +250,7 @@ FileFinder::ProjectTree const& FileFinder::GetProjectTree() {
 	static ProjectTree tree_;
 
 	if(tree_.project_path != Main_Data::project_path) {
-		std::auto_ptr<ProjectTree> t = CreateProjectTree(Main_Data::project_path);
+		EASYRPG_SHARED_PTR<ProjectTree> t = CreateProjectTree(Main_Data::project_path);
 		assert(t.get());
 		tree_ = *t;
 	}
