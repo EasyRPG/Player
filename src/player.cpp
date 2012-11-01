@@ -39,7 +39,7 @@
 #ifdef GEKKO
 	#include <fat.h>
 #endif
-#if (defined(_WIN32) && !defined(_DEBUG))
+#if (defined(_WIN32) && defined(NDEBUG))
 	#include <windows.h>
 	#include <winioctl.h>
 	#include <dbghelp.h>
@@ -71,7 +71,7 @@ void Player::Init(int argc, char *argv[]) {
 	}
 #endif
 
-#if (defined(_WIN32) && !defined(_DEBUG))
+#if (defined(_WIN32) && defined(NDEBUG))
 	InitMiniDumpWriter();
 #endif
 
@@ -93,7 +93,7 @@ void Player::Init(int argc, char *argv[]) {
 	}
 
 
-#ifdef _DEBUG
+#ifndef NDEBUG
 	debug_flag = true;
 	window_flag = true; // Debug Build needs no fullscreen
 #endif
@@ -182,7 +182,7 @@ void Player::Exit() {
 	DisplayUi.reset();
 }
 
-#if (defined(_WIN32) && !defined(_DEBUG))
+#if (defined(_WIN32) && defined(NDEBUG))
 ////////////////////////////////////////////////////////////
 // Minidump code for Windows
 // Original Author: Oleg Starodumov (www.debuginfo.com)

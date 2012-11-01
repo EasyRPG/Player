@@ -156,6 +156,8 @@ void Scene_Title::LoadDatabase() {
 	// Load Database
 	Data::Clear();
 
+	assert(FileFinder::IsRPG2kProject(FileFinder::GetProjectTree()));
+
 	if (!LDB_Reader::Load(FileFinder::FindDefault(DATABASE_NAME))) {
 		Output::ErrorStr(LcfReader::GetError());
 	}

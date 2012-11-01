@@ -19,10 +19,13 @@
 
 #ifdef SUPPORT_JPG
 
+#include <cassert>
 #include <cstdlib>
 #include <cstdio>
+#include <cstring>
+
 #include <jpeglib.h>
-#include <cassert>
+
 #include "output.h"
 #include "image_jpg.h"
 

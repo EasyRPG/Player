@@ -85,10 +85,8 @@ void Scene::MainFunction() {
 		Update();
 	}
 
-#ifdef _DEBUG
 	assert(Scene::instance == instances.back() &&
-		"Don't set Scene::instance directly, use Push instead!");
-#endif
+		   "Don't set Scene::instance directly, use Push instead!");
 
 	Graphics::Update();
 

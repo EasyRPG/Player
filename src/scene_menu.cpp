@@ -86,7 +86,7 @@ void Scene_Menu::Update() {
 void Scene_Menu::CreateCommandWindow() {
 	// Create Options Window
 	std::vector<std::string> options;
-	
+
 	if (Player::engine == Player::EngineRpg2k) {
 		command_options.resize(5);
 		command_options[0] = Item;
@@ -201,13 +201,6 @@ void Scene_Menu::UpdateCommand() {
 				Game_System::SePlay(Data::system.decision_se);
 				Scene::Push(new Scene_Save());
 			}
-/*
-#ifdef _DEBUG
-			// Debug Test code to add items
-			for (int i = 1; i < 82; ++i) {
-				Game_Party::GainItem(i, 1);
-			}
-#endif*/
 			break;
 		case Order:
 			if (Game_Party::GetActors().size() <= 1) {

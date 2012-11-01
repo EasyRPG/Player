@@ -30,7 +30,6 @@
 #include <string>
 #include <vector>
 
-#include <boost/ptr_container/ptr_vector.hpp>
 #include <boost/optional.hpp>
 
 #include "system.h"
@@ -62,7 +61,7 @@ namespace {
 	const char* const MOVIE_TYPES[] = {
 		".avi", ".mpg" };
 
-	typedef boost::ptr_vector<FileFinder::ProjectTree> search_path_list;
+	typedef std::vector<EASYRPG_SHARED_PTR<FileFinder::ProjectTree> > search_path_list;
 	search_path_list search_paths;
 	std::string fonts_path;
 
@@ -98,7 +97,9 @@ namespace {
 		if(ret != boost::none) { return *ret; }
 
 		for(search_path_list::const_iterator i = search_paths.begin(); i != search_paths.end(); ++i) {
-			boost::optional<std::string> const ret = FindFile(*i, dir, name, exts);
+			if(! *i) { continue; }
+
+			boost::optional<std::string> const ret = FindFile(*(*i), dir, name, exts);
 			if(ret != boost::none) { return *ret; }
 		}
 
@@ -108,6 +109,8 @@ namespace {
 } // anonymous namespace
 
 std::auto_ptr<FileFinder::ProjectTree> FileFinder::CreateProjectTree(std::string const& p) {
+	if(!Exists(p) || !IsDirectory(p)) { return std::auto_ptr<ProjectTree>(); }
+
 	std::auto_ptr<ProjectTree> tree(new ProjectTree());
 	tree->project_path = p;
 
@@ -247,7 +250,9 @@ FileFinder::ProjectTree const& FileFinder::GetProjectTree() {
 	static ProjectTree tree_;
 
 	if(tree_.project_path != Main_Data::project_path) {
-		tree_ = *CreateProjectTree(Main_Data::project_path);
+		std::auto_ptr<ProjectTree> t = CreateProjectTree(Main_Data::project_path);
+		assert(t.get());
+		tree_ = *t;
 	}
 
 	return tree_;
