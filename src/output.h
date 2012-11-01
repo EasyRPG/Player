@@ -43,13 +43,7 @@ namespace Output {
 	/// Display a string msg.
 	/// @param msg : string to display
 	///////////////////////////////////////////////////////
-	void PostStr(std::string msg);
-
-	///////////////////////////////////////////////////////
-	/// Display a warning with formatted string.
-	/// @param fmt : formatted warning to display
-	///////////////////////////////////////////////////////
-	void Warning(char* fmt, ...);
+	void PostStr(std::string const& msg);
 
 	///////////////////////////////////////////////////////
 	/// Display a warning with formatted string.
@@ -61,14 +55,7 @@ namespace Output {
 	/// Display a warning.
 	/// @param warn : warning to display
 	///////////////////////////////////////////////////////
-	void WarningStr(std::string warn);
-
-	///////////////////////////////////////////////////////
-	/// Raises an error message with formatted string and
-	/// closes the player afterwards.
-	/// @param fmt : formatted error to display
-	///////////////////////////////////////////////////////
-	void Error(char* fmt, ...);
+	void WarningStr(std::string const& warn);
 
 	///////////////////////////////////////////////////////
 	/// Raises an error message with formatted string and
@@ -82,13 +69,7 @@ namespace Output {
 	/// afterwards.
 	/// @param err : error to display
 	///////////////////////////////////////////////////////
-	void ErrorStr(std::string err);
-
-	///////////////////////////////////////////////////////
-	/// Prints a debug message to the console.
-	/// @param fmt : formatted debug text to display
-	///////////////////////////////////////////////////////
-	void Debug(char* fmt, ...);
+	void ErrorStr(std::string const& err);
 
 	///////////////////////////////////////////////////////
 	/// Prints a debug message to the console.
@@ -100,7 +81,7 @@ namespace Output {
 	/// Prints a debug message to the console.
 	/// @param err: formatted debug text to display
 	///////////////////////////////////////////////////////
-	void DebugStr(std::string msg);
+	void DebugStr(std::string const& msg);
 }
 
 #endif

@@ -58,16 +58,6 @@ if(CMAKE_BUILD_TYPE MATCHES "Debug")
   add_definitions(-D _DEBUG=1)
 endif()
 
-if(CMAKE_SYSTEM_NAME MATCHES "Linux")
-  # find gtk
-  find_package(GTK2)
-  if(GTK2_FOUND)
-    add_definitions(-D GTK=1)
-    include_directories(${GTK2_INCLUDE_DIRS})
-    list(APPEND EASYRPG_PLAYER_LIBRARIES ${GTK2_LIBRARIES})
-  endif()
-endif()
-
 foreach(i Iconv Expat Freetype JPEG Pixman PNG SDL ZLIB Boost)
   find_package(${i} REQUIRED)
 
