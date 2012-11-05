@@ -111,7 +111,7 @@ namespace {
 EASYRPG_SHARED_PTR<FileFinder::ProjectTree> FileFinder::CreateProjectTree(std::string const& p) {
 	if(!Exists(p) || !IsDirectory(p)) { return EASYRPG_SHARED_PTR<ProjectTree>(); }
 
-	EASYRPG_SHARED_PTR<ProjectTree> tree(new ProjectTree());
+	EASYRPG_SHARED_PTR<ProjectTree> tree = EASYRPG_MAKE_SHARED<ProjectTree>();
 	tree->project_path = p;
 
 	Directory mem = GetDirectoryMembers(tree->project_path, ALL);
