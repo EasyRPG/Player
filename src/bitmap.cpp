@@ -41,7 +41,6 @@
 #include "pixel_format.h"
 #include "font.h"
 #include "output.h"
-#include "wcwidth.h"
 #include "util_macro.h"
 
 BitmapRef Bitmap::Create(int width, int height, const Color& color) {
@@ -64,7 +63,7 @@ BitmapRef Bitmap::Create(Bitmap const& source, Rect src_rect, bool transparent) 
 
 void Bitmap::InitBitmap() {
 	editing = false;
-	font = Font::CreateFont();
+	font = Font::Default();
 }
 
 ////////////////////////////////////////////////////////////
@@ -78,17 +77,15 @@ Bitmap::~Bitmap() {
 }
 
 ////////////////////////////////////////////////////////////
-Color Bitmap::GetPixel(int x, int y) {
+Color Bitmap::GetPixel(int x, int y) const {
 	if (x < 0 || y < 0 || x >= width() || y >= height())
 		return Color();
 
-	BitmapUtils* bm_utils = Begin();
+	BitmapUtils* bm_utils = Begin(*this);
 
 	const uint8_t* src_pixels = pointer(x, y);
 	uint8_t r, g, b, a;
 	bm_utils->GetPixel(src_pixels, r, g, b, a);
-
-	End();
 
 	return Color(r, g, b, a);
 }
@@ -280,7 +277,7 @@ BitmapUtils* Bitmap::Begin() {
 	return bm_utils;
 }
 
-BitmapUtils* Bitmap::Begin(Bitmap const& src) {
+BitmapUtils* Bitmap::Begin(Bitmap const& src) const {
 	BitmapUtils* bm_utils = BitmapUtils::Create(format, src.format, true);
 	bm_utils->SetDstColorKey(colorkey());
 	bm_utils->SetSrcColorKey(src.colorkey());
@@ -306,21 +303,6 @@ void Bitmap::RefreshCallback() {
 }
 
 ////////////////////////////////////////////////////////////
-Rect Bitmap::GetTextSize(const std::string& text) {
-	Utils::wstring tmp = Utils::ToWideString(text);
-	int size = mk_wcswidth(tmp.c_str(), tmp.size());
-
-	if (size == -1) {
-		Output::Warning("Text contains invalid chars.\n"\
-			"Is the encoding correct?");
-
-		return Rect(0, 0, text.size() * 6, 12);
-	} else {
-		return Rect(0, 0, size * 6, 12);
-	}
-}
-
-////////////////////////////////////////////////////////////
 FontRef const& Bitmap::GetFont() const {
 	return font;
 }
@@ -330,7 +312,7 @@ void Bitmap::SetFont(FontRef const& new_font) {
 }
 
 void Bitmap::TextDraw(int x, int y, int width, int /* height */, int color, std::string const& text, Text::Alignment align) {
-	Rect rect = Bitmap::GetTextSize(text);
+	Rect rect = GetFont()->GetSize(text);
 	int dx = rect.width - width;
 
 	switch (align) {
@@ -343,6 +325,7 @@ void Bitmap::TextDraw(int x, int y, int width, int /* height */, int color, std:
 	case Text::AlignRight:
 		TextDraw(x + dx, y, color, text);
 		break;
+	default: assert(false);
 	}
 }
 

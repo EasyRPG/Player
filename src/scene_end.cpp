@@ -84,7 +84,7 @@ void Scene_End::CreateCommandWindow() {
 
 ////////////////////////////////////////////////////////////
 void Scene_End::CreateHelpWindow() {
-	int text_size = Bitmap::GetTextSize(Data::terms.exit_game_message).width;
+	int text_size = Font::Default()->GetSize(Data::terms.exit_game_message).width;
 
 	help_window = new Window_Help(160 - (text_size + 16)/ 2,
 		72, text_size + 16, 32);

@@ -95,7 +95,7 @@ Rect Window_Keyboard::GetItemRect(int row, int col) {
 
 	const std::string s(items[mode][row][col]);
 	int mw = min_width;
-	int tw = std::max(mw, contents->GetTextSize(s).width) + 8;
+	int tw = std::max(mw, contents->GetFont()->GetSize(s).width) + 8;
 	int dx = (rect.width - tw) / 2;
 	rect.x += dx;
 	rect.width -= 2 * dx;

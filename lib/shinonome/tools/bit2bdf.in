@@ -1,0 +1,70 @@
+#!@PERL@
+# This is a help script to converting font_src.bit to bdf.
+#
+#	programmed by KANOU Hiroki <kanou@mil.allnet.ne.jp>
+#	modified by Yasuyuki Furukawa <Furukawa.Yasuyuki@fujixerox.co.jp>
+#      
+#			* public domain *
+#
+
+$verbose = 0;
+$verbose_min = 100;
+
+@vmeter = ("|", "\\", "-", "/");
+
+for $opt (@ARGV) {
+    if ($opt =~ /^-/) {	# option
+	$verbose = 1 if $opt eq '-V';	# verbose
+	next;
+    } else {
+	$file = $opt;
+	last;
+    }
+}
+
+if ($verbose) {
+    $col = int(`stty  size 2>/dev/null | sed 's/.* //'`) || 80;
+}
+
+$file= "-" unless $file;
+$ch_count = 0;
+open F, $file || die;
+
+while (<F>) {
+    if (/^ENDCHAR/) {
+	$flag = 0;
+	s/\s*#.*//;
+	print;
+	if (($ch_count++ % 100) == 0 && $verbose != 0 && $max_chars > $verbose_min) {
+	    $n = int($ch_count * 100 / $max_chars);
+	    $m = int($n * ($col - 21) / 100);
+	    $l = $col - 20 - $m;
+	    print STDERR "\rprogress|". ("=" x $m). (" " x $l). "$n\%".
+		         $vmeter[$ch_count2++ % 4];
+	}
+    } elsif ($flag == 1) {
+        chomp;
+	tr/pPOo@:;,\\\/./#####       /;
+	print unpack("H*", pack("B*", $_)), "\n";
+    } elsif (/^BITMAP/) {
+	$flag = 1;
+	print;
+    } elsif (/^CHARS\s+(\d+)/) {
+	$max_chars = $1;
+	print;
+    } elsif (/\S/) {
+	print;
+    }
+}
+
+# clear progress bar
+print STDERR "\r" . (" " x ($col - 1)) . "\r" if ($verbose != 0);
+
+if ($ch_count != $max_chars) {
+    print STDERR 
+	"'CHARS' line in $ARGV says that $max_chars glyphs are included,\n",
+	"but actual number of glyphs are $ch_count. check and correct.\n";
+    exit 1;
+} else {
+    exit 0;
+}

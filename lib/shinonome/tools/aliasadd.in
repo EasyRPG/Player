@@ -1,0 +1,134 @@
+#!@GAWK@ -f
+# This is a help script to install fonts.alias
+#
+#	by Yasuyuki Furukawa <Furukawa.Yasuyuki@fujixerox.co.jp>
+#      
+#			* public domain *
+#
+
+func usage() {
+    printf("usage: aliasadd [options] {src}  {dist} > {output}\n");
+    printf("\n");
+    printf("       -d      delete aliases.\n");
+    printf("       -a      add    aliases (default).\n");
+
+    ERROR = " ";
+}
+
+func ismatch(src, dist,  n, m) {
+    #local n, m
+    if (src ~ /^[!#]/ ) {
+	if (src == dist) return TRUE;
+    } else {
+	split (src, n);
+	split (dist, m);
+	if (n[1] == m[1]) {
+	    if (n[2] == m[2])
+		return TRUE;	
+	    else
+		return FUZZY;
+	}
+    }
+    return FALSE;
+}
+
+
+BEGIN {
+    EOF = "@EOF@";
+    if (ARGV[2] == NUL) {
+	usage();
+	exit (1);
+    }
+    TRUE = 1;
+    FALSE = 0;
+    FUZZY = 2;
+    FUZZY2 = 4;
+
+    INSTALL = 0;
+    UNINSTALL = 1;
+
+    FUZZY_STR = "!!,fuzzy...";
+
+    mode = INSTALL;
+
+    n = 1;
+    if (ARGV[n] == "-e" || ARGV[n] == "-u" || ARGV[n] == "-d") {
+	mode = UNINSTALL;
+	delete ARGV[n++];
+    }
+    if (ARGV[n] == "-a") {
+	mode = INSTALL;
+	delete ARGV[n++];
+    }
+    source_file = ARGV[n];
+    delete ARGV[n++];
+
+    for ( i = 0; line != EOF;) {
+	line = EOF;
+	getline line < source_file;
+	if (line == EOF)
+	    break;
+	if (line ~ /^#/)
+	    continue;
+        n = 0;
+	if (line !~ /^[!#]/ ) {
+	    split (line, m);
+	    if (m[1] == m[2])
+		continue;
+	}
+	source_line[i++] = line;
+    }
+}
+
+{
+    n = 0;
+    if (status == FUZZY && $0 ~ /^[!]/) {
+	sub(/^!/, "");
+	status = FUZZY2;
+    }
+    for (i in source_line) {
+	ret = ismatch($0, source_line[n++]);
+	if (ret == TRUE)
+	    next;
+	if (ret == FUZZY)
+	    break;
+    }
+    if (status == FUZZY2) {
+	$0 = "!" $0;
+    }
+
+    if (ret == FUZZY) {
+	if (mode == INSTALL) {
+	    print FUZZY_STR;
+	    print "!" $0;
+	    print "aliasadd: warning: ignored conflicted entry" > "/dev/stderr";
+	    print "                   " $0 > "/dev/stderr";
+	} else {
+	    if (status == FUZZY2)
+	    sub(/^!/, "");
+	    print $0;
+	}
+        status = FALSE;
+    } else {
+	if (status == FUZZY2 || status == FUZZY)
+	    print FUZZY_STR;
+	if ($0 == FUZZY_STR)
+	    status = FUZZY;
+	else {
+	    status = FALSE;
+	    print $0;
+	}
+    }
+    last_line = $0;
+}
+
+END {
+    if (mode == INSTALL) {
+	if (last_line != "") print "";
+
+	n = 0;
+	for (i in source_line) {
+	    print source_line[n++];
+	}
+    }
+}

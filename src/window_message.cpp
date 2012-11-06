@@ -350,16 +350,16 @@ void Window_Message::UpdateMessage() {
 				// These commands support indirect access via \v[]
 				command_result = ParseCommandCode();
 				contents->TextDraw(contents_x, contents_y, text_color, command_result);
-				contents_x += contents->Bitmap::GetTextSize(command_result).width;
+				contents_x += contents->GetFont()->GetSize(command_result).width;
 				break;
 			case utf('\\'):
 				// Show Backslash
 				contents->TextDraw(contents_x, contents_y, text_color, std::string("\\"));
-				contents_x += contents->GetTextSize("\\").width;
+				contents_x += contents->GetFont()->GetSize("\\").width;
 				break;
 			case utf('_'):
 				// Insert half size space
-				contents_x += contents->GetTextSize(" ").width / 2;
+				contents_x += contents->GetFont()->GetSize(" ").width / 2;
 			case utf('$'):
 				// Show Gold Window
 				gold_window->SetY(y == 0 ? 240 - 32 : 0);
@@ -409,7 +409,7 @@ void Window_Message::UpdateMessage() {
 			std::string const glyph(text_index.base(), boost::next(text_index).base());
 
 			contents->TextDraw(contents_x, contents_y, text_color, glyph);
-			contents_x += contents->Bitmap::GetTextSize(glyph).width;
+			contents_x += contents->GetFont()->GetSize(glyph).width;
 		}
 
 		++text_index;

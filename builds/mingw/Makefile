@@ -1,6 +1,10 @@
 TARGET = Player.exe
 SOURCES = ../../src ../../lib/readers/src ../../lib/readers/src/generated
-CPPFILES = $(foreach dir,$(SOURCES), $(wildcard $(dir)/*.cpp))
+SHINONOME_SRCS = \
+	../../lib/shinonome/gothic.cxx \
+	../../lib/shinonome/mincho.cxx \
+	../../lib/shinonome/hankaku.cxx
+CPPFILES = $(foreach dir,$(SOURCES), $(wildcard $(dir)/*.cpp)) ${SHINONOME_SRCS}
 OBJ_DIR=build
 OBJS = $(foreach f,${CPPFILES}, ${OBJ_DIR}/$(abspath ${f}).o)
 INCLUDES = ../../lib/readers/include ../../src
@@ -28,8 +32,10 @@ LIBS += \
 	$(shell ${HOME_MINGW_PATH}/bin/freetype-config --libs) \
 	 -lz -lm \
 
-CC=ccache i686-w64-mingw32-gcc
-CXX=ccache i686-w64-mingw32-g++
+MINGW_PREFIX =i686-w64-mingw32
+
+CC =ccache ${MINGW_PREFIX}-gcc
+CXX=ccache ${MINGW_PREFIX}-g++
 
 OBJS += ${OBJ_DIR}/player.o
 
@@ -46,6 +52,10 @@ ${TARGET} : ${OBJS}
 ${OBJ_DIR}/%.cpp.o : %.cpp
 	mkdir -p $(dir $@)
 	${CXX}  ${CXXFLAGS} -c $< -o $@
+
+SHINONOME_GENERATOR=../../lib/shinonome/generate_cxx_font.rb
+${SHINONOME_SRCS} : ${SHINONOME_GENERATOR}
+	ruby ${SHINONOME_GENERATOR}
 
 ${OBJ_DIR}/player.o :../../resources/player.rc ../../resources/player.ico ../../resources/player.xml
 	i686-w64-mingw32-windres -i $< --input-format=rc -o $@ -O coff

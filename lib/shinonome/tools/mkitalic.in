@@ -1,0 +1,419 @@
+#!@GAWK@ -f
+#
+# -- makes BDF font italic
+#     version 0.00.1
+#     programmed by Yasuyuki Furukawa <furukawa@vinelinux.org>
+#			* public domain *
+#
+
+BEGIN {
+  dy = 3;	# level of slant deep (2; Minimam and deepest)
+  correct = 3;	# level of pixel correction
+  debug = 0;
+  verbose = 0;
+  verbose_min = 100;
+
+  # The table for pixel correction
+  # format:
+  #                   before  <- | ->  after
+  #  "height  offset  pattern... | height  offset  pattern... "
+  # if the offset is zero, the pattern starts from last
+  # slant step immidiately.
+
+  # pattern of 'left down to up right'
+  i = 0;
+  if (correct >= 3) {
+      ptable[i++] = "5 -2 ..@  .@   .@   @..  @.   1 -1 .$";  # fixed
+      ptable[i++] = "5 -4 ... @@@. ..@. .@. @. 2 -2 .$, $, ";
+#     ptable[i++] = "5 -1 ...@. ...@. ..@. .@. @. 1 3 @$";    # XXX
+      ptable[i++] = "5 -2 .....@ ....@ ...@. ..@. @@. 1 0 ...@$";
+      ptable[i++] = "4 -3 ...@ ...@ ..@. @@..  1 -1 .$@";
+      ptable[i++] = "4 -3 ..@  ..@  .@.  @..   1  0 @$";
+      ptable[i++] = "4 -1 .@   .@   @..  @.    2 -1 $, ,$";
+      ptable[i++] = "4 -2 ..@  ..@@ @@.. .@.   2 -1 .$@ @@$";
+      ptable[i++] = "4 -2 .@   .@.  @..  @.    2 -1 $, ,$";
+  }
+  if (correct >= 2) {
+      ptable[i++] = "3 -2 ....@. ..@@.   @@... 1  0 @@$...";
+      ptable[i++] = "3 -1 ..@  .@  .@.        1  0 .,$";
+      ptable[i++] = "3 -2 .@   .@   @.@        1 -1 $@";
+      ptable[i++] = "3 -2 .@   .@.  @..        1 -1 $.";
+      ptable[i++] = "3 -2 .@   .@@  @..        1 -1 $@";
+      ptable[i++] = "3 -1 ..@  .@.  @@.        1  0 .,$";
+      ptable[i++] = "3 -2 @@.  .@.  @..        1 -1 $,";
+      ptable[i++] = "3 -1 @.@  .@.  ...        1  0 .@$";
+      ptable[i++] = "3 -1 ..@  .@.  .@@        1  0 .,$";
+#     ptable[i++] = "3 -2 ..@  .@@  @.@        1  0 @$";  # XXX
+  }
+
+
+  # pattern of 'left up to down right'
+  if (correct >= 3) {
+      ptable[i++] = "6 -2 ..@. ...@. ...@. ...@. ..@. @@. 4 -1 ..$, ...@ ..$, .$,";
+      ptable[i++] = "4 -1 @..  @.@  .@.  .@.   1  1 $@";
+      ptable[i++] = "4 -3 @.   @@@  .@   .@    1 -1 $.";
+      ptable[i++] = "4 -3 ..   @@.  ..@. ..@.  2 -2 @, .$,";
+      ptable[i++] = "3 -2 @..  .@   .@         1 -1 $.";
+      ptable[i++] = "4 -1 .@. .@. ..@. ..@. 1 0 .,$";
+      ptable[i++] = "4 -1 .@. @@. ..@. ..@. 2 -1 @, @@$"; # XXX
+  }
+  if (correct >= 2) {
+      ptable[i++] = "3 -1 @..  .@@  ..         1  0 .,@"; #
+      ptable[i++] = "3 -2 @..  @@.  .@         1 -1 $.";
+      ptable[i++] = "3 -2 @.@  .@   .@         1 -1 $@";
+      ptable[i++] = "3 -1 .@.  .@.  ..@.       1  0 ..$";
+#     ptable[i++] = "4 -2 @.   @.   @.  .@@    1  0 $."; # fixed , XXX
+      ptable[i++] = "4 -1 @.   @.   .@@ ..     2  0 ,$ .,$";
+      ptable[i++] = "3 -1 @.   @.   .@@        1  0 ,$";
+      ptable[i++] = "3 -2 ..   @@.  ..@        1 -1 @,.";
+  }
+
+  # least pattern
+  ptable[i++] = "4 -2 ..@ .@  @@@ ..      2 -1 $@ @,@";
+  ptable[i++] = "3 -1 .@.. @.@. .@@.  1 0 $"   # fixed
+  ptable[i++] = "2 -1 .@  @.          1 -1 $";
+ 
+  init();
+}
+
+
+func init(i, tmp)
+{
+#   local i, tmp;
+    flag = 0;		# reading status
+    line[0];		# image buffer
+    if (ARGV[1] == "-h") {
+	usage();
+	exit(0);
+    }
+    if (ARGV[1] == "-V") {
+	verbose = 1;
+	delete ARGV[1];
+    }
+    if (ARGV[1] == "-d") {
+	debug = 1;
+	delete ARGV[1];
+    }
+    if (ARGV[1] == "-D") {
+	debug = 2;
+	delete ARGV[1];
+    }
+    if (ARGV[1] == "-p") {
+	print_ptable();
+	exit(1);
+    }
+
+    vmeter[0] = "|";
+    vmeter[1] = "\\";
+    vmeter[2] = "-";
+    vmeter[3] = "/";
+
+    "stty size 2> /dev/null" |getline col;
+    sub(/.* /, "", col);
+    if (col !~ /^[1-9]/ || col < 30)
+	col = 0;
+}
+
+func usage() {
+    printf("usage: mkitalic [-V|-d|-p] {input BDF} > {output BDF}\n");
+    printf("      -V   verbose\n");
+    printf("      -p   output pettern table for pixel correction\n");
+    printf("      -d   debug level 1\n");
+    printf("      -D   debug level 2\n");
+}
+
+#
+# error(str)
+#
+# Print the error message and exit
+# with error state.
+#
+func error(str) {
+    printf(str) > "/dev/stderr";
+    exit(1)
+}
+
+#
+# rstr(s, n)
+#
+# Retern a string that repeats
+# pettern s(string).
+#
+func rstr(s, n, i, r) {
+#   local i, r;
+    r = "";
+    for (i = 0; i < n; i++)
+	r = s r;
+    return r;
+}
+
+#
+# subindex(s, t, i)
+#
+# Serach t(string) in s(string).
+#
+func subindex(s, t, i, n, r) {
+#   local n, r;
+    if (n == 0)
+	n = length(s);
+
+    if (i == 0)
+	return index(s, t);
+
+    r = index(substr(s, i, n), t);
+    if (r != 0)
+	return r + i - 1;
+    else
+	return 0
+}
+
+#
+# replace_substr(s, t, i)
+#
+# Replace a part of s(string)
+# to t(string).
+#
+func replace_substr(s, t, i) {
+    return substr(s, 1, i-1) t substr(s, i + length(t));
+}
+
+
+#
+# correct_pixel(line, width, height)
+#
+# Correct the pixels to make pettern
+# more clear after the slanting.
+# Reference the ptable at the BEGIN
+# routine.
+#
+func correct_pixel(line, width, height, x, y, xx, n, nn, d, dd, i, j) {
+#   local x, y, xx, n, nn, d, dd, i, j;
+    if (correct == 0)
+	return;
+
+    # add padding pixels from both side
+    line[height] = rstr(".", width);
+    for (y = 0; y < height + 1; y ++)
+	sub(/.*/, ".&.", line[y]);
+
+    # pattern matching with ptable
+    for (y = dy; y < height ; y += dy) {
+	for (i = 0; ptable[i]; i++) {
+	    split(ptable[i], p, " ");
+	    n = p[2]; d = p[1];
+	    if (y+n < 0 || y+n+d > height + 1)
+		continue;
+	    for (x = 1; x < width && x > 0; x++) {
+		x = subindex(line[y+n], p[3], x);
+		if (x == 0) break;
+		for (j = 1; j < d; j++) {
+		    xx = subindex(line[y+n+j], p[j+3], x);
+		    if (x != xx) break;
+		}
+		if (x == xx) {	# matched !
+		    if (debug > 1)
+			print "$$$$ MATCH with " i " $$$$ (" x ", " y ")";
+		    nn = p[d+4]; dd = p[d+3];
+		    for (j = 0; j < dd; j++)
+			line[y+nn+j] = replace_substr(line[y+nn+j], p[j+d+5], x);
+		    break;
+		}
+	    }
+	}
+    }
+
+    # delete padding pixels from both side
+    for (y = 0; y < height; y ++) {
+      	sub(/^\./, "", line[y]);
+	sub(/\.$/, "", line[y]);
+    }
+}
+
+#
+# make_slant(line, width, height)
+#
+# Just slant the pattern of font.
+#
+func make_slant(line, width, height, y, i, dcount, ncount, tp, ts, te) {
+#   local y, i, dcount, ncuont, tp, ts, te;
+    dcount = dx;
+    ncount = 0;
+    tp = rstr("#", pad);
+
+    for (y = 0; y < height; y++) {
+	if (y % dy == 0) {
+	    ts = rstr( "#", dcount-- - 1);
+	    te = rstr( "#", ncount++) tp;
+	}
+        line[y] = ts substr(line[y], 1, width) te;
+    }
+}
+
+
+#
+# print_ptable()
+#
+# Visualize ptable.
+#
+func print_ptable(i, j, n, d, nn,dd, p, pp) {
+#   local i, j, n, d, nn,dd, p, pp;
+
+    printf("\t#### PATTERN TABLE ####\n");
+    printf("\nFollowing patterns is for pixel correction in slant.\n");
+    printf("Priority between patterns depends on pattern ID.\n");
+
+    for (i = 0; ptable[i]; i++) {
+	split(ptable[i], p, " ");
+	n = p[2]; d = p[1];
+	for (j = 0; j < d; j++)
+	    pp[j] = p[j+3];
+
+	nn = p[d+4]; dd = p[d+3];
+	for (j = 0; j < dd; j++)
+	    p[-n+nn+3+j] = replace_substr(p[-n+nn+3+j], p[j+d+5], 1);
+
+	printf("\n\t--- pattern " i " ---\n\n");
+	for (j = 0; j < d; j++) {
+	    printf(" " pp[j]);
+	    printf(rstr(" ", 7 - length(pp[j])));
+	    if (j == int(d/2))
+		printf(" ==>    ");
+	    else
+		printf("        ");
+
+	    if (j +n < dy) printf(" ");
+	    if (j +n < 0) printf(" ");
+	    printf(pp[j]);
+
+	    printf(rstr(" ", 7 - length(pp[j])));
+	    if (j == int(d/2))
+		printf(" ==>    ");
+	    else
+		printf("        ");
+
+	    printf(p[j+3] "\n");
+	}
+    }
+}
+
+END {
+    if (verbose != 0 && max_chars > verbose_min)
+	printf "\r" rstr(" ", col - 3) "\r" > "/dev/stderr";
+    exit(0);
+}
+
+#
+# MAIN LOOP
+#
+# All of the follows is the main
+# loop routine.
+#
+
+# Change the font property
+/^FONT[ \t]/ {
+    tmp = gsub(/-[R|r]-/, "-I-", $2);
+    if (tmp == 0)
+	error("error: the input font is already italic.\n");
+}
+
+# Change the font property
+/^SLANT[ \t]/ {
+    sub( /\042[R|r]\042/,  "\042I\042", $2);
+}
+
+# Get the metric information from the bounding box.
+/^(BBX|FONTBOUNDINGBOX)[ \t]/ {
+    height = $3;
+    width  = $2;
+    dx     = int((height + dy - 1)/dy);
+    if (height > 0 && width > 0) {
+	$2  = $2 + dx - 1;
+	$4  = $4 - int((dx -1)/2);
+	pad = (8 - ($2 % 8)) % 8;
+    } else
+	pad = 0;
+}
+
+# Get the number of characters.
+/^CHARS[ \t]/ {
+    max_chars = $2;
+}
+
+# Change inner state.
+/^BITMAP/ {
+    flag = 1;
+    count = 0;
+    print $0;
+    next;
+}
+
+# Modify the every font pattern.
+/^ENDCHAR/ {
+    # correct pixel as pre-processing
+    correct_pixel(line, width, height);
+
+    # make simple slant font
+    make_slant(line, width, height);
+
+    # output font image
+    for (y = 0; y < height; y ++) {
+	if (debug == 0) {
+	    gsub(/#/,  ".", line[y]);
+	    gsub(/,/,  ".", line[y]);
+	    gsub(/\$/, "@", line[y]);
+	    gsub(/[.@][.@][.@][.@]/, "&_", line[y]);
+	    gsub(/\.\.\.\._/,"0", line[y]);
+	    gsub(/\.\.\.@_/, "1", line[y]);
+	    gsub(/\.\.@\._/, "2", line[y]);
+	    gsub(/\.\.@@_/,  "3", line[y]);
+	    gsub(/\.@\.\._/, "4", line[y]);
+	    gsub(/\.@\.@_/,  "5", line[y]);
+	    gsub(/\.@@\._/,  "6", line[y]);
+	    gsub(/\.@@@_/,   "7", line[y]);
+	    gsub(/@\.\.\._/, "8", line[y]);
+	    gsub(/@\.\.@_/,  "9", line[y]);
+	    gsub(/@\.@\._/,  "A", line[y]);
+	    gsub(/@\.@@_/,   "B", line[y]);
+	    gsub(/@@\.\._/,  "C", line[y]);
+	    gsub(/@@\.@_/,   "D", line[y]);
+	    gsub(/@@@\._/,   "E", line[y]);
+	    gsub(/@@@@_/,    "F", line[y]);
+	}
+	print line[y];
+    }
+
+    # Display progress bar in verbose mode
+    ch_count++
+    if (verbose != 0 && max_chars > verbose_min) {
+	n = int(ch_count * 100 / max_chars);
+	m = int(n * (col - 21) / 100);
+	l = col - 20 - m;
+	printf "\rprogress|" rstr("=", m) rstr(" ", l) n "%%" vmeter[ch_count % 4]  > "/dev/stderr";
+    }
+
+    flag = 0;
+}
+
+# Default
+{
+    if (flag > 0) {
+	gsub(/0/,   "....");
+	gsub(/1/,   "...@");
+	gsub(/2/,   "..@.");
+	gsub(/3/,   "..@@");
+	gsub(/4/,   ".@..");
+	gsub(/5/,   ".@.@");
+	gsub(/6/,   ".@@.");
+	gsub(/7/,   ".@@@");
+	gsub(/8/,   "@...");
+	gsub(/9/,   "@..@");
+	gsub(/A|a/, "@.@.");
+	gsub(/B|b/, "@.@@");
+	gsub(/C|c/, "@@..");
+	gsub(/D|d/, "@@.@");
+	gsub(/E|e/, "@@@.");
+	gsub(/F|f/, "@@@@");
+	line[count++] = $0;
+    } else
+	print $0;
+}

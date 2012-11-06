@@ -51,7 +51,7 @@ Scene_Battle::~Scene_Battle() {
 
 ////////////////////////////////////////////////////////////
 Scene_Battle::FloatText::FloatText(int x, int y, int color, const std::string& text, int _duration) {
-	Rect rect = Bitmap::GetTextSize(text);
+	Rect rect = Font::Default()->GetSize(text);
 
 	BitmapRef graphic = Bitmap::Create(rect.width, rect.height);
 	graphic->Clear();

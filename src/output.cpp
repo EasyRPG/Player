@@ -57,8 +57,7 @@ static std::ostream& output_time(std::ostream& f = LOG_FILE) {
 
 ////////////////////////////////////////////////////////////
 static void HandleScreenOutput(char const* type, std::string const& msg, bool is_error) {
-	LOG_FILE << type << ":\n";
-	output_time(LOG_FILE) << msg << "\n";
+	output_time(LOG_FILE) << type << ":\n  " << msg << "\n";
 
 	std::stringstream ss;
 	ss << type << ":\n" << msg << "\n\n";

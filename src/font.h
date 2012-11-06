@@ -22,27 +22,25 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "system.h"
-
 #include <string>
-#include <vector>
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
-#include FT_BITMAP_H
+class Color;
+class Rect;
 
 ////////////////////////////////////////////////////////////
 /// Font class
 ////////////////////////////////////////////////////////////
 class Font {
-public:
-	Font(const std::string& name, int size, bool bold, bool italic);
-	~Font();
+ public:
+	virtual ~Font() {}
 
-	int GetHeight();
-	BitmapRef Render(int glyph);
+	virtual Rect GetSize(std::string const& txt) const = 0;
 
-	static FontRef CreateFont(const std::string& name = "", int size = 0, bool bold = false, bool italic = false);
-	static bool Exists(const std::string& name);
+	virtual void Render(Bitmap& bmp, int x, int y, Bitmap const& sys, int color, unsigned glyph) = 0;
+	virtual void Render(Bitmap& bmp, int x, int y, Color const& color, unsigned glyph) = 0;
+
+	static FontRef Create(const std::string& name, int size, bool bold, bool italic);
+	static FontRef Default(bool mincho = false);
 	static void Dispose();
 
 	static const int default_size = 9;
@@ -50,23 +48,21 @@ public:
 	static const bool default_italic = false;
 
 	enum SystemColor {
+		ColorShadow = -1,
 		ColorDefault = 0,
 		ColorDisabled = 3,
 		ColorCritical = 4,
 		ColorKnockout = 5
 	};
 
-	const std::string name;
-	const int size;
-	const bool bold;
-	const bool italic;
- private:
-	static FT_Library library;
-	static int ft_lib_refcount;
-	FT_Face face;
-	bool ft_face_initialized;
+	std::string name;
+	unsigned size;
+	bool bold;
+	bool italic;
 
-	void Init();
+	size_t pixel_size() const { return size * 96 / 72; }
+ protected:
+	Font(const std::string& name, int size, bool bold, bool italic);
 };
 
 #endif

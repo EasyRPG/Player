@@ -35,6 +35,21 @@ if(CMAKE_GENERATOR MATCHES "Makefile")
   add_definitions(-fno-rtti)
 endif()
 
+# shinonome font
+set(SHINONOME_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../lib/shinonome")
+set(SHINONOME_SRCS
+  "${SHINONOME_PATH}/hankaku.cxx" "${SHINONOME_PATH}/latin1.cxx"
+  "${SHINONOME_PATH}/gothic.cxx" "${SHINONOME_PATH}/mincho.cxx")
+include_directories(${SHINONOME_PATH})
+find_package(Ruby)
+if(RUBY_FOUND)
+  set(SHINONOME_GENERATOR "${SHINONOME_PATH}/generate_cxx_font.rb")
+  add_custom_command(
+    OUTPUT ${SHINONOME_SRCS} "${SHINONOME_PATH}/shinonome.hxx"
+    COMMAND "${RUBY_EXECUTABLE}" "${SHINONOME_GENERATOR}"
+    DEPENDS "${SHINONOME_GENERATOR}" WORKING_DIRECTORY "${SHINONOME_PATH}")
+endif()
+
 if(USE_OPENAL)
   find_package(OpenAL REQUIRED)
   include_directories(${OPENAL_INCLUDE_DIR})
@@ -48,10 +63,6 @@ if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
   if(IS_BIG_ENDIAN)
     add_definitions(-D READER_BIG_ENDIAN=1)
   endif()
-endif()
-
-if(APPLE)
-  add_definitions(-D COCOA=1)
 endif()
 
 if(CMAKE_BUILD_TYPE MATCHES "Debug")
@@ -79,17 +90,7 @@ else()
   add_definitions(-DNO_SDL_MIXER)
 endif()
 
-find_package(Boost COMPONENTS filesystem system)
-if(Boost_FOUND)
-  list(APPEND EASYRPG_PLAYER_LIBRARIES ${Boost_LIBRARIES})
-else()
-  add_definitions(-DEASYRPG_BOOST_ONLY_HEADER)
-  if(CMAKE_GENERATOR MATCHES "Makefile")
-    add_definitions(-fno-exceptions)
-  endif()
-endif()
-
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../lib/readers/include)
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../lib/readers/include")
 
 # library
 set(EASYRPG_PLAYER_LIBRARIES_ALL
@@ -101,9 +102,10 @@ set(MAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../../src/main.cpp")
 # static library
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/../../src SRCS)
 list(REMOVE_ITEM SRCS ${MAIN_FILE})
+list(APPEND SRCS ${SHINONOME_SRCS})
 add_library(${PROJECT_NAME}_Static STATIC ${SRCS})
 
-add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${CMAKE_CURRENT_SOURCE_DIR}/../../src/main.cpp)
+add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${MAIN_FILE})
 target_link_libraries(${PROJECT_NAME} ${EASYRPG_PLAYER_LIBRARIES_ALL})
 
 add_dependencies(${PROJECT_NAME} EasyRPG_Reader ${PROJECT_NAME}_Static)

@@ -161,14 +161,6 @@ protected:
 	BitmapUtils* Begin();
 	void End();
 
-	////////////////////////////////////////////////////////
-	/// Get a pixel color.
-	/// @param x : pixel x
-	/// @param y : pixel y
-	/// @return pixel color
-	////////////////////////////////////////////////////////
-	Color GetPixel(int x, int y);
-
 	TileOpacity CheckOpacity(const Rect& rect);
 
 	void CheckPixels(uint32_t flags);
@@ -531,18 +523,27 @@ public:
 	////////////////////////////////////////////////////////
 	void TextDraw(Rect rect, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
 
-	////////////////////////////////////////////////////////
-	/// Get space needed to draw some text.
-	/// This assumes that every char has a size of 6x12.
-	/// @param text : text to draw
-	////////////////////////////////////////////////////////
-	static Rect GetTextSize(const std::string& text);
-
 	/// @return text drawing font
 	FontRef const& GetFont() const;
 
 	/// @param text drawing font
 	void SetFont(FontRef const& font);
+
+	////////////////////////////////////////////////////////
+	/// Get a pixel color.
+	/// @param x : pixel x
+	/// @param y : pixel y
+	/// @return pixel color
+	////////////////////////////////////////////////////////
+	Color GetPixel(int x, int y) const;
+
+	////////////////////////////////////////////////////////
+	/// Get a pixel color.
+	/// @param x : pixel x
+	/// @param y : pixel y
+	/// @param color : pixel color
+	////////////////////////////////////////////////////////
+	void SetPixel(int x, int y, const Color &color);
 
 protected:
 	friend void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align);
@@ -557,17 +558,9 @@ protected:
 	/// Font for text drawing.
 	FontRef font;
 
-	BitmapUtils* Begin(Bitmap const& src);
+    BitmapUtils* Begin(Bitmap const& src) const;
 	void End(Bitmap const& src);
 	void RefreshCallback();
-
-	////////////////////////////////////////////////////////
-	/// Get a pixel color.
-	/// @param x : pixel x
-	/// @param y : pixel y
-	/// @param color : pixel color
-	////////////////////////////////////////////////////////
-	void SetPixel(int x, int y, const Color &color);
 
 	bool editing;
 public:

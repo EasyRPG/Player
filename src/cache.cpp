@@ -31,6 +31,7 @@
 #include "filefinder.h"
 #include "exfont.h"
 #include "bitmap.h"
+#include "output.h"
 
 ////////////////////////////////////////////////////////////
 namespace {
@@ -38,14 +39,17 @@ namespace {
 	typedef std::pair<std::string,std::string> string_pair;
 	typedef std::pair<std::string, int> tile_pair;
 
-	std::map<string_pair, EASYRPG_WEAK_PTR<Bitmap> > cache;
-	std::map<tile_pair, EASYRPG_WEAK_PTR<Bitmap> > cache_tiles;
+	typedef std::map<string_pair, EASYRPG_WEAK_PTR<Bitmap> > cache_type;
+	cache_type cache;
+
+	typedef std::map<tile_pair, EASYRPG_WEAK_PTR<Bitmap> > cache_tiles_type;
+	cache_tiles_type cache_tiles;
 
 	BitmapRef LoadBitmap(std::string const& folder_name, const std::string& filename,
 						 bool transparent, uint32_t const flags) {
 		string_pair const key(folder_name, filename);
 
-		std::map<string_pair, EASYRPG_WEAK_PTR<Bitmap> >::iterator const it = cache.find(key);
+		cache_type::const_iterator const it = cache.find(key);
 
 		if (it == cache.end() || it->second.expired()) {
 			std::string const path = FileFinder::FindImage(folder_name, filename);
@@ -140,7 +144,7 @@ BOOST_PP_SEQ_FOR_EACH(macro, ,
 BitmapRef Cache::ExFont() {
 	string_pair const hash("\x00","ExFont");
 
-	std::map<string_pair, EASYRPG_WEAK_PTR<Bitmap> >::iterator const it = cache.find(hash);
+	cache_type::const_iterator const it = cache.find(hash);
 
 	if (it == cache.end() || it->second.expired()) {
 		return(cache[hash] = Bitmap::Create(exfont_h, sizeof(exfont_h), true)).lock();
@@ -150,7 +154,7 @@ BitmapRef Cache::ExFont() {
 ////////////////////////////////////////////////////////////
 BitmapRef Cache::Tile(const std::string& filename, int tile_id) {
 	tile_pair const key(filename, tile_id);
-	std::map<tile_pair, EASYRPG_WEAK_PTR<Bitmap> >::iterator const it = cache_tiles.find(key);
+	cache_tiles_type::const_iterator const it = cache_tiles.find(key);
 
 	if (it == cache_tiles.end() || it->second.expired()) {
 		BitmapRef chipset = Cache::Chipset(filename);
@@ -183,6 +187,17 @@ BitmapRef Cache::Tile(const std::string& filename, int tile_id) {
 
 ////////////////////////////////////////////////////////////
 void Cache::Clear() {
+	for(cache_type::const_iterator i = cache.begin(); i != cache.end(); ++i) {
+		if(i->second.expired()) { continue; }
+		Output::Debug("possible leak in cached bitmap %s/%s",
+					  i->first.first.c_str(), i->first.second.c_str());
+	}
 	cache.clear();
+
+	for(cache_tiles_type::const_iterator i = cache_tiles.begin(); i != cache_tiles.end(); ++i) {
+		if(i->second.expired()) { continue; }
+		Output::Debug("possible leak in cached tilemap %s/%d",
+					  i->first.first.c_str(), i->first.second);
+	}
 	cache_tiles.clear();
 }

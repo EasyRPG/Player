@@ -76,14 +76,14 @@ void Window_SaveFile::Refresh() {
 
 	contents->TextDraw(8, 32 + 2, 1, Data::terms.lvl_short);
 
-	int lx = Bitmap::GetTextSize(Data::terms.lvl_short).width;
+	int lx = Font::Default()->GetSize(Data::terms.lvl_short).width;
 	out.str("");
 	out << std::setw(2) << std::setfill(' ') << hero_level;
 	contents->TextDraw(8 + lx, 32 + 2, Font::ColorDefault, out.str());
 
 	contents->TextDraw(42, 32 + 2, 1, Data::terms.hp_short);
 
-	int hx = Bitmap::GetTextSize(Data::terms.hp_short).width;
+	int hx = Font::Default()->GetSize(Data::terms.hp_short).width;
 	out.str("");
 	out << hero_hp;
 	contents->TextDraw(42 + hx, 32 + 2, Font::ColorDefault, out.str());

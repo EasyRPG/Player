@@ -37,15 +37,16 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 	if (text.length() == 0) return;
 
 	FontRef font = dest.GetFont();
-	Rect dst_rect = Bitmap::GetTextSize(text);
+	Rect dst_rect = Font::Default()->GetSize(text);
 
 	switch (align) {
 	case Text::AlignCenter:
 		dst_rect.x = x - dst_rect.width / 2; break;
 	case Text::AlignRight:
 		dst_rect.x = x - dst_rect.width; break;
-	default:
+	case Text::AlignLeft:
 		dst_rect.x = x; break;
+	default: assert(false);
 	}
 
 	dst_rect.y = y;
@@ -92,9 +93,6 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 			 end(text.end(), text.begin(), text.end()); c != end; ++c) {
 		Rect next_glyph_rect(next_glyph_pos, 0, 0, 0);
 
-
-		BitmapRef mask;
-
 		uint32_t const next_c = std::distance(c, end) > 1? *boost::next(c) : 0;
 
 		// ExFont-Detection: Check for A-Z or a-z behind the $
@@ -108,54 +106,47 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 			} else { assert(false); }
 			is_exfont = true;
 
-			BitmapRef mask_s = Bitmap::Create(12, 12, true);
+			BitmapRef mask = Bitmap::Create(12, 12, true);
 
 			// Get exfont from graphic
 			Rect const rect_exfont((exfont_value % 13) * 12, (exfont_value / 13) * 12, 12, 12);
 
 			// Create a mask
-			mask_s->Clear();
-			mask_s->Blit(0, 0, *exfont, rect_exfont, 255);
-			mask = mask_s;
-		} else {
-			// No ExFont, draw normal text
+			mask->Clear();
+			mask->Blit(0, 0, *exfont, rect_exfont, 255);
 
-			mask = font->Render(*c);
-			if (mask == NULL) {
-				Output::Warning("Couldn't render char %lc (%d). Skipping...", *c, (int)*c);
-				continue;
+			// Get color region from system graphic
+			Rect clip_system(8+16*(color%10), 4+48+16*(color/10), 6, 12);
+
+			BitmapRef char_surface = Bitmap::Create(mask->GetWidth(), mask->GetHeight(), true);
+			char_surface->SetTransparentColor(dest.GetTransparentColor());
+			char_surface->Clear();
+
+			is_full_glyph = is_exfont || (mk_wcwidth(*c) == 2);
+
+			// Blit gradient color background (twice in case of a full glyph)
+			char_surface->Blit(0, 0, *system, clip_system, 255);
+			if (is_full_glyph) {
+				char_surface->Blit(6, 0, *system, clip_system, 255);
 			}
+			// Blit mask onto background
+			char_surface->MaskBlit(0, 0, *mask, mask->GetRect());
+
+			BitmapRef char_shadow = Bitmap::Create(mask->GetWidth(), mask->GetHeight(), true);
+			char_shadow->SetTransparentColor(dest.GetTransparentColor());
+			char_shadow->Clear();
+
+			// Blit solid color background
+			char_shadow->Fill(shadow_color);
+			// Blit mask onto background
+			char_shadow->MaskBlit(0, 0, *mask, mask->GetRect());
+
+			// Blit first shadow and then text
+			text_surface->Blit(next_glyph_rect.x + 1, next_glyph_rect.y + 1, *char_shadow, char_shadow->GetRect(), 255);
+			text_surface->Blit(next_glyph_rect.x, next_glyph_rect.y, *char_surface, char_surface->GetRect(), 255);
+		} else { // Not ExFont, draw normal text
+			font->Render(*text_surface, next_glyph_rect.x, next_glyph_rect.y, *system, color, *c);
 		}
-
-		// Get color region from system graphic
-		Rect clip_system(8+16*(color%10), 4+48+16*(color/10), 6, 12);
-
-		BitmapRef char_surface = Bitmap::Create(mask->GetWidth(), mask->GetHeight(), true);
-		char_surface->SetTransparentColor(dest.GetTransparentColor());
-		char_surface->Clear();
-
-		is_full_glyph = is_exfont || (mk_wcwidth(*c) == 2);
-
-		// Blit gradient color background (twice in case of a full glyph)
-		char_surface->Blit(0, 0, *system, clip_system, 255);
-		if (is_full_glyph) {
-			char_surface->Blit(6, 0, *system, clip_system, 255);
-		}
-		// Blit mask onto background
-		char_surface->MaskBlit(0, 0, *mask, mask->GetRect());
-
-		BitmapRef char_shadow = Bitmap::Create(mask->GetWidth(), mask->GetHeight(), true);
-		char_shadow->SetTransparentColor(dest.GetTransparentColor());
-		char_shadow->Clear();
-
-		// Blit solid color background
-		char_shadow->Fill(shadow_color);
-		// Blit mask onto background
-		char_shadow->MaskBlit(0, 0, *mask, mask->GetRect());
-
-		// Blit first shadow and then text
-		text_surface->Blit(next_glyph_rect.x + 1, next_glyph_rect.y + 1, *char_shadow, char_shadow->GetRect(), 255);
-		text_surface->Blit(next_glyph_rect.x, next_glyph_rect.y, *char_surface, char_surface->GetRect(), 255);
 
 		// If it's a full size glyph, add the size of a half-size glypth twice
 		if (is_full_glyph) {
@@ -168,6 +159,7 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 			}
 		}
 		next_glyph_pos += 6;
+
 	}
 
 	BitmapRef text_bmp = Bitmap::Create(*text_surface, text_surface->GetRect());

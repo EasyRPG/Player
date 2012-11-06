@@ -103,7 +103,11 @@ namespace FileFinder {
 	///////////////////////////////////////////////////////
 	FILE* fopenUTF8(const std::string& name_utf8, char const* mode);
 
+	/*
+	 * { case lowered path, real path }
+	 */
 	typedef boost::container::flat_map<std::string, std::string> string_map;
+
 	struct Directory {
 		std::string base;
 		string_map members;
@@ -118,7 +122,11 @@ namespace FileFinder {
 	enum Mode { ALL, FILES, DIRECTORIES };
 	Directory GetDirectoryMembers(std::string const& dir, Mode m = ALL);
 
+	/*
+	 * { case lowered directory name, non directory file list }
+	 */
 	typedef boost::container::flat_map<std::string, string_map> sub_members_type;
+
 	struct ProjectTree {
 		std::string project_path;
 		string_map files, directories;
