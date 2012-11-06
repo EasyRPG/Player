@@ -119,8 +119,6 @@ uint16_t const (&ShinonomeFont::get_font(unsigned const glyph, bool& full) const
 
 	unsigned const f = txt[0], s = txt.size() == 2? txt[1] : 0;
 
-	Output::Debug("printing %d (%d, %d)", glyph, f, s);
-
 	full = txt.size() == 2;
 	return txt.size() == 1
 		? ascii_[f]
