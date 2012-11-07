@@ -15,7 +15,9 @@ if(NOT EXISTS ${EASYRPG_READERS_PATH})
     "https://github.com/EasyRPG/Readers.git"
     "${EASYRPG_READERS_PATH}")
 endif()
-add_subdirectory(${EASYRPG_READERS_PATH}/builds/cmake ${EASYRPG_READERS_PATH}/builds/cmake)
+add_subdirectory(
+  ${EASYRPG_READERS_PATH}/builds/cmake
+  ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/${EASYRPG_READERS_PATH}/builds/cmake)
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../bin)
 set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
