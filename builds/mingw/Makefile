@@ -58,4 +58,4 @@ ${SHINONOME_SRCS} : ${SHINONOME_GENERATOR}
 	ruby ${SHINONOME_GENERATOR}
 
 ${OBJ_DIR}/player.o :../../resources/player.rc ../../resources/player.ico ../../resources/player.xml
-	i686-w64-mingw32-windres -i $< --input-format=rc -o $@ -O coff
+	${MINGW_PREFIX}-windres -i $< --input-format=rc -o $@ -O coff
