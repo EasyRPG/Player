@@ -138,6 +138,13 @@ public:
 
 	bool IsAttachedToBitmapScreen();
 
+	/**
+	 * Write PNG converted Bitmap to output stream
+	 * @param os output stream that PNG will be outputed
+	 * @return true if success, otherwise false
+	 */
+	bool WritePNG(std::ostream& os) const;
+
 protected:
 	Bitmap();
 
@@ -586,8 +593,6 @@ public:
 	uint16_t pitch() const;
 
 protected:
-	friend class PixmanBitmapScreen;
-
 	/// Bitmap data.
 	pixman_image_t *bitmap;
 	pixman_format_code_t pixman_format;

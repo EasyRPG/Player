@@ -24,6 +24,8 @@
 #include <algorithm>
 #include <iostream>
 
+#include <boost/scope_exit.hpp>
+
 #include "system.h"
 #include "utils.h"
 #include "cache.h"
@@ -88,6 +90,75 @@ Color Bitmap::GetPixel(int x, int y) const {
 	bm_utils->GetPixel(src_pixels, r, g, b, a);
 
 	return Color(r, g, b, a);
+}
+
+#include <png.h>
+
+static void write_data(png_structp out_ptr, png_bytep data, png_size_t len) {
+	reinterpret_cast<std::ostream*>(png_get_io_ptr(out_ptr))->write(
+																	reinterpret_cast<char const*>(data), len);
+}
+static void flush_stream(png_structp out_ptr) {
+	reinterpret_cast<std::ostream*>(png_get_io_ptr(out_ptr))->flush();
+}
+
+
+bool Bitmap::WritePNG(std::ostream& os) const {
+	size_t const width = GetWidth(), height = GetHeight();
+	size_t const stride = width * 4;
+
+	std::vector<uint32_t> data(width * height);
+
+	EASYRPG_SHARED_PTR<pixman_image_t> dst
+		(pixman_image_create_bits(PIXMAN_a8r8g8b8, width, height, &data.front(), stride),
+		 pixman_image_unref);
+	pixman_image_composite32(PIXMAN_OP_SRC, bitmap, NULL, dst.get(),
+							 0, 0, 0, 0, 0, 0, width, height);
+
+	for(size_t i = 0; i < width * height; ++i) {
+		uint32_t const p = data[i];
+		uint8_t* out = reinterpret_cast<uint8_t*>(&data[i]);
+		uint8_t
+			a = (p >> 24) & 0xff, r = (p >> 16) & 0xff,
+			g = (p >>  8) & 0xff, b = (p >>  0) & 0xff;
+		if(a != 0) {
+			r = (r * 255) / a;
+			g = (g * 255) / a;
+			b = (b * 255) / a;
+		}
+		*out++ = r; *out++ = g; *out++ = b; *out++ = a;
+	}
+
+	std::vector<png_bytep> ptrs(height);
+	for(size_t i = 0; i < ptrs.size(); ++i) {
+		ptrs[i] = reinterpret_cast<png_bytep>(&data[width*i]);
+	}
+
+	png_structp write = NULL;
+	if(!(write = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL))) {
+		Output::Warning("Bitmap::WritePNG: error in png_create_write");
+		return false;
+	}
+
+	png_infop info = NULL;
+	BOOST_SCOPE_EXIT(&write, &info) {
+		png_destroy_write_struct(&write, &info);
+	} BOOST_SCOPE_EXIT_END do {} while(0);
+	if(!(info = png_create_info_struct(write))) {
+		Output::Warning("Bitmap::WritePNG: error in png_create_info_struct");
+		return false;
+	}
+
+	png_set_write_fn(write, &os, &write_data, &flush_stream);
+
+	png_set_IHDR(write, info, width, height, 8,
+				 PNG_COLOR_TYPE_RGB_ALPHA, PNG_INTERLACE_NONE,
+				 PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+	png_write_info(write, info);
+	png_write_image(write, &ptrs.front());
+	png_write_end(write, NULL);
+
+	return true;
 }
 
 ////////////////////////////////////////////////////////////

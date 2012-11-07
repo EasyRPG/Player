@@ -22,11 +22,32 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <string>
+#include <iosfwd>
 
 ////////////////////////////////////////////////////////////
 /// Output Namespace
 ////////////////////////////////////////////////////////////
 namespace Output {
+	/**
+	 * Takes screenshot and save it to Main_Data::project_path
+	 * @return true if success, otherwise false
+	 */
+	bool TakeScreenshot();
+
+	/**
+	 * Takes screenshot and save it to specified file
+	 * @param file file to save
+	 * @return true if success, otherwise false
+	 */
+	bool TakeScreenshot(std::string const& file);
+
+	/**
+	 * Takes screenshot and save it to specified stream
+	 * @param os output stream that PNG will be stored
+	 * @return true if success, otherwise false
+	 */
+	bool TakeScreenshot(std::ostream& os);
+
 	///////////////////////////////////////////////////////
 	/// Display a string with formatted string.
 	/// @param fmt : formatted string to display

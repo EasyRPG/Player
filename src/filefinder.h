@@ -21,8 +21,10 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <string>
 #include "system.h"
+
+#include <string>
+#include <ios>
 #include <boost/container/flat_map.hpp>
 
 ////////////////////////////////////////////////////////////
@@ -103,6 +105,14 @@ namespace FileFinder {
 	///////////////////////////////////////////////////////
 	FILE* fopenUTF8(const std::string& name_utf8, char const* mode);
 
+	/**
+	 * create stream from UTF-8 file name
+	 * @param name UTF-8 string file name
+	 * @param m stream mode
+	 * @return NULL if open failed.
+	 */
+	EASYRPG_SHARED_PTR<std::fstream> openUTF8(const std::string& name, std::ios_base::openmode m);
+
 	/*
 	 * { case lowered path, real path }
 	 */
@@ -113,13 +123,52 @@ namespace FileFinder {
 		string_map members;
 	}; // struct Directory
 
-	bool IsDirectory(std::string const& directory);
+	/**
+	 * Check whether passed file is directory
+	 * @param file File to check
+	 * @return true if file is directory, otherwise false
+	 */
+	bool IsDirectory(std::string const& file);
+
+	/**
+	 * Check whether passed file exists.
+	 * This function maybe case sensitve in some platform.
+	 * @param file File to check
+	 * @return true if file exists, otherwise false
+	 */
 	bool Exists(std::string const& file);
+
+	/**
+	 * Check whether file exists in the directory.
+	 * This function is case insensitive.
+	 * @param dir Directory to check.
+	 * @param file File to check. Don't pass full path.
+	 * @return true if file exists, otherwise false
+	 */
 	bool Exists(Directory const& dir, std::string const& name);
 
+	/**
+	 * Append name to directory.
+	 * @param dir Base directory
+	 * @param name file name to be appended to dir.
+	 * @return normalized path string
+	 */
 	std::string MakePath(std::string const& dir, std::string const& name);
 
-	enum Mode { ALL, FILES, DIRECTORIES };
+	/**
+	 * GetDirectoryMembers memer listing mode.
+	 */
+	enum Mode {
+		ALL, /**< list files and directory */
+		FILES, /**< list only non-directory files */
+		DIRECTORIES, /**< list only directories */
+	};
+	/**
+	 * List directory members
+	 * @param dir directory to list members
+	 * @param m member listing mode.
+	 * @return member list
+	 */
 	Directory GetDirectoryMembers(std::string const& dir, Mode m = ALL);
 
 	/*

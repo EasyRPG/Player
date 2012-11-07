@@ -307,6 +307,19 @@ FILE* FileFinder::fopenUTF8(const std::string& name_utf8, char const* mode) {
 #endif
 }
 
+EASYRPG_SHARED_PTR<std::fstream> FileFinder::openUTF8(const std::string& name,
+													  std::ios_base::openmode m)
+{
+	EASYRPG_SHARED_PTR<std::fstream> ret(new std::fstream(
+#ifdef _WIN32
+		Utils::ToWideString(name).c_str(),
+#else
+		name.c_str(),
+#endif
+		m));
+	return (*ret)? ret : EASYRPG_SHARED_PTR<std::fstream>();
+}
+
 std::string FileFinder::FindImage(const std::string& dir, const std::string& name) {
 	static const char* IMG_TYPES[] = {
 		".bmp",  ".png", ".xyz", ".gif", ".jpg", ".jpeg", NULL };

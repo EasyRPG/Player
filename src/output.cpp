@@ -28,6 +28,7 @@
 #include <sstream>
 #include <exception>
 
+#include "filefinder.h"
 #include "graphics.h"
 #include "input.h"
 #include "options.h"
@@ -35,9 +36,11 @@
 #include "player.h"
 #include "time.hpp"
 #include "bitmap.h"
+#include "main_data.h"
 
 ////////////////////////////////////////////////////////////
 #include <boost/config.hpp>
+#include <boost/lexical_cast.hpp>
 
 #ifdef BOOST_NO_EXCEPTIONS
 #include <boost/throw_exception.hpp>
@@ -57,6 +60,8 @@ static std::ostream& output_time(std::ostream& f = LOG_FILE) {
 
 ////////////////////////////////////////////////////////////
 static void HandleScreenOutput(char const* type, std::string const& msg, bool is_error) {
+	Output::TakeScreenshot();
+
 	output_time(LOG_FILE) << type << ":\n  " << msg << "\n";
 
 	std::stringstream ss;
@@ -81,6 +86,29 @@ static void HandleScreenOutput(char const* type, std::string const& msg, bool is
 	Input::ResetKeys();
 	Graphics::FrameReset();
 	Graphics::Update();
+}
+
+
+bool Output::TakeScreenshot() {
+	int index = 0;
+	std::string p;
+	do {
+		p = FileFinder::MakePath(Main_Data::project_path,
+								 "screenshot_"
+								 + boost::lexical_cast<std::string>(index++)
+								 + ".png");
+	} while(FileFinder::Exists(p));
+	return TakeScreenshot(p);
+}
+
+bool Output::TakeScreenshot(std::string const& file) {
+	EASYRPG_SHARED_PTR<std::fstream> ret =
+		FileFinder::openUTF8(file, std::ios_base::binary | std::ios_base::out);
+	return ret? Output::TakeScreenshot(*ret) : false;
+}
+
+bool Output::TakeScreenshot(std::ostream& os) {
+	return DisplayUi->GetDisplaySurface()->WritePNG(os);
 }
 
 ////////////////////////////////////////////////////////////
@@ -167,7 +195,7 @@ void Output::Debug(const char* fmt, ...) {
 	va_end(args);
 }
 void Output::DebugStr(std::string const& msg) {
-	LOG_FILE << "Debug:\n";
-	output_time(LOG_FILE) << msg <<std::endl;
+	TakeScreenshot();
+	output_time(LOG_FILE) << "Debug:\n " << msg <<std::endl;
 }
 #endif
