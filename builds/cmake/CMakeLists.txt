@@ -52,6 +52,7 @@ if(RUBY_FOUND)
     DEPENDS "${SHINONOME_GENERATOR}" WORKING_DIRECTORY "${SHINONOME_PATH}")
 endif()
 
+# OpenAL
 if(USE_OPENAL)
   find_package(OpenAL REQUIRED)
   include_directories(${OPENAL_INCLUDE_DIR})
@@ -107,10 +108,22 @@ list(REMOVE_ITEM SRCS ${MAIN_FILE})
 list(APPEND SRCS ${SHINONOME_SRCS})
 add_library(${PROJECT_NAME}_Static STATIC ${SRCS})
 
+# executable
 add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${MAIN_FILE})
 target_link_libraries(${PROJECT_NAME} ${EASYRPG_PLAYER_LIBRARIES_ALL})
 
 add_dependencies(${PROJECT_NAME} EasyRPG_Reader ${PROJECT_NAME}_Static)
+
+# RTP Table
+if(NOT WIN32)
+  add_custom_target(
+    rtp_table_bom
+    COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/../../resources/add_bom.sh"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../src/rtp_table.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../src/rtp_table_bom.h"
+    DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/../../src/rtp_table.h")
+  add_dependencies("${PROJECT_NAME}" rtp_table_bom)
+endif()
 
 set(CPACK_PACKAGE_ICON "${CMAKE_CURRENT_SOURC_DIR}/../../resources/player.ico")
 set(CPACK_GENERATOR "DEB" "DMG" "RPM" "NSIS")

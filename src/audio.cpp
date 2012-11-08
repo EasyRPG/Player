@@ -61,7 +61,7 @@ void Audio::ME_Play(std::string const&, int, int) {}
 void Audio::ME_Stop() {}
 
 ////////////////////////////////////////////////////////////
-void Audio::ME_Fade(int fade) {}
+void Audio::ME_Fade(int /* fade */) {}
 
 ////////////////////////////////////////////////////////////
 void Audio::SE_Play(std::string const&, int, int) {}

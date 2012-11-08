@@ -40,6 +40,12 @@
 #include "player.h"
 #include "main_data.h"
 
+#ifdef _MSC_VER
+#  include "rtp_table_bom.h"
+#else
+#  include "rtp_table.h"
+#endif
+
 #ifdef _WIN32
 #  include "dirent_win.h"
 #  include <windows.h>
@@ -91,16 +97,37 @@ namespace {
 		return boost::none;
 	}
 
+	std::string const& translate_rtp(std::string const& dir, std::string const& name) {
+		rtp_table_type const& table =
+			Player::engine == Player::EngineRpg2k3? RTP_TABLE_2003:
+			RTP_TABLE_2000;
+
+		rtp_table_type::const_iterator dir_it = table.find(Utils::LowerCase(dir));
+		if(dir_it == table.end()) { return name; }
+
+		std::map<std::string, std::string>::const_iterator file_it =
+			dir_it->second.find(Utils::LowerCase(name));
+		return (file_it == dir_it->second.end())? name : file_it->second;
+	}
+
 	std::string FindFile(const std::string &dir, const std::string& name, const char* exts[]) {
 		FileFinder::ProjectTree const& tree = FileFinder::GetProjectTree();
 		boost::optional<std::string> const ret = FindFile(tree, dir, name, exts);
 		if(ret != boost::none) { return *ret; }
+
+		std::string const& rtp_name = translate_rtp(dir, name);
+		Output::Debug("RTP name %s(%s)", rtp_name.c_str(), name.c_str());
 
 		for(search_path_list::const_iterator i = search_paths.begin(); i != search_paths.end(); ++i) {
 			if(! *i) { continue; }
 
 			boost::optional<std::string> const ret = FindFile(*(*i), dir, name, exts);
 			if(ret != boost::none) { return *ret; }
+
+			if(&rtp_name == &name) { continue; }
+
+			boost::optional<std::string> const ret_rtp = FindFile(*(*i), dir, rtp_name, exts);
+			if(ret != boost::none) { return *ret_rtp; }
 		}
 
 		return "";
@@ -262,6 +289,16 @@ void FileFinder::Init() {
 	GetProjectTree(); // empty call
 }
 
+static void add_rtp_path(std::string const& p) {
+	using namespace FileFinder;
+	EASYRPG_SHARED_PTR<ProjectTree> tree(CreateProjectTree(p));
+	if(tree) {
+		Output::Debug("Adding %s to RTP path", p.c_str());
+		search_paths.push_back(tree);
+	}
+}
+
+
 void FileFinder::InitRtpPaths() {
 	std::string const version_str =
 		Player::engine == Player::EngineRpg2k? "2000":
@@ -272,25 +309,22 @@ void FileFinder::InitRtpPaths() {
 
 #ifdef _WIN32
 	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\ASCII\\RPG" + version_str, "RuntimePackagePath");
-	if(! rtp_path.empty())
-		search_paths.push_back(CreateProjectTree(rtp_path));
+	if(! rtp_path.empty()) { add_rtp_path(rtp_path); }
 
 	rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\ASCII\\RPG" + version_str, "RuntimePackagePath");
-	if(! rtp_path.empty())
-		search_paths.push_back(CreateProjectTree(rtp_path));
+	if(! rtp_path.empty()) { add_rtp_path(rtp_path); }
 #elif defined(GEKKO)
-	search_paths.push_back(CreateProjectTree("sd:/data/rtp/" + version_str + "/"));
-	search_paths.push_back(CreateProjectTree("usb:/data/rtp/" + version_str + "/"));
+	add_rtp_path("sd:/data/rtp/" + version_str + "/");
+	add_rtp_path("usb:/data/rtp/" + version_str + "/");
 #else
-	search_paths.push_back(CreateProjectTree("/data/rtp/" + version_str + "/"));
+	add_rtp_path("/data/rtp/" + version_str + "/");
 #endif
 
 	if (Player::engine == Player::EngineRpg2k && getenv("RPG2K_RTP_PATH"))
-		search_paths.push_back(CreateProjectTree(getenv("RPG2K_RTP_PATH")));
+		add_rtp_path(getenv("RPG2K_RTP_PATH"));
 	else if (Player::engine == Player::EngineRpg2k3 && getenv("RPG2K3_RTP_PATH"))
-		search_paths.push_back(CreateProjectTree(getenv("RPG2K3_RTP_PATH")));
-	if(getenv("RPG_RTP_PATH"))
-		search_paths.push_back(CreateProjectTree(getenv("RPG_RTP_PATH")));
+		add_rtp_path(getenv("RPG2K3_RTP_PATH"));
+	if(getenv("RPG_RTP_PATH")) { add_rtp_path(getenv("RPG_RTP_PATH")); }
 }
 
 
@@ -311,7 +345,7 @@ EASYRPG_SHARED_PTR<std::fstream> FileFinder::openUTF8(const std::string& name,
 													  std::ios_base::openmode m)
 {
 	EASYRPG_SHARED_PTR<std::fstream> ret(new std::fstream(
-#ifdef _WIN32
+#ifdef _MSC_VER
 		Utils::ToWideString(name).c_str(),
 #else
 		name.c_str(),
