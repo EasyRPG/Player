@@ -73,7 +73,7 @@ public:
 	/// @param src_rect : rect to copy from source bitmap
 	/// @param transparent : allow transparency on bitmap
 	////////////////////////////////////////////////////////
-	static BitmapRef Create(Bitmap const& source, Rect src_rect, bool transparent = true);
+	static BitmapRef Create(Bitmap const& source, Rect const& src_rect, bool transparent = true);
 
 		////////////////////////////////////////////////////////
 	/// Creates surface.
@@ -91,7 +91,7 @@ public:
 	/// @param src_rect : rect to copy from source bitmap
 	/// @param transparent : allow transparency on bitmap
 	////////////////////////////////////////////////////////
-	static BitmapRef Create(Bitmap const& source, Rect src_rect, bool transparent = true);
+	static BitmapRef Create(Bitmap const& source, Rect const& src_rect, bool transparent = true);
 	*/
 
 	////////////////////////////////////////////////////////
@@ -126,7 +126,7 @@ public:
 	/// @param scale_h : resampled height
 	/// @param src_rect : source rect to resample
 	////////////////////////////////////////////////////////
-	BitmapRef Resample(int scale_w, int scale_h, const Rect& src_rect) const;
+	BitmapRef Resample(int scale_w, int scale_h, Rect const& src_rect) const;
 
 	enum TileOpacity {
 		Opaque,
@@ -168,7 +168,7 @@ protected:
 	BitmapUtils* Begin();
 	void End();
 
-	TileOpacity CheckOpacity(const Rect& rect);
+	TileOpacity CheckOpacity(Rect const& rect);
 
 	void CheckPixels(uint32_t flags);
 
@@ -200,7 +200,7 @@ public:
 	/// @param src_rect : source bitmap rect
 	/// @param opacity : opacity for blending with bitmap
 	////////////////////////////////////////////////////////
-	void Blit(int x, int y, Bitmap const& src, Rect src_rect, int opacity);
+	void Blit(int x, int y, Bitmap const& src, Rect const& src_rect, int opacity);
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap in tiles to this one.
@@ -209,7 +209,7 @@ public:
 	/// @param dst_rect : destination rect
 	/// @param opacity : opacity for blending with bitmap
 	////////////////////////////////////////////////////////
-	void TiledBlit(Rect src_rect, Bitmap const& src, Rect dst_rect, int opacity);
+	void TiledBlit(Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, int opacity);
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap in tiles to this one.
@@ -220,7 +220,7 @@ public:
 	/// @param dst_rect : destination rect
 	/// @param opacity : opacity for blending with bitmap
 	////////////////////////////////////////////////////////
-	void TiledBlit(int ox, int oy, Rect src_rect, Bitmap const& src, Rect dst_rect, int opacity);
+	void TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, int opacity);
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap stretched to this one.
@@ -228,7 +228,7 @@ public:
 	/// @param src_rect : source bitmap rect
 	/// @param opacity : opacity for blending with bitmap
 	////////////////////////////////////////////////////////
-	void StretchBlit(Bitmap const& src, Rect src_rect, int opacity);
+	void StretchBlit(Bitmap const& src, Rect const& src_rect, int opacity);
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap stretched to this one.
@@ -237,7 +237,7 @@ public:
 	/// @param src_rect : source bitmap rect
 	/// @param opacity : opacity for blending with bitmap
 	////////////////////////////////////////////////////////
-	void StretchBlit(Rect dst_rect, Bitmap const& src, Rect src_rect, int opacity);
+	void StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, int opacity);
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap flipped
@@ -248,7 +248,7 @@ public:
 	/// @param horizontal : flip horizontally
 	/// @param vertical : flip vertically
 	////////////////////////////////////////////////////////
-	void FlipBlit(int x, int y, Bitmap const& src, Rect src_rect, bool horizontal, bool vertical);
+	void FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, bool horizontal, bool vertical);
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap scaled, rotated and translated
@@ -258,7 +258,7 @@ public:
 	/// @param inv : transformation matrix
 	///  - from destination coordinates to source coordinates
 	////////////////////////////////////////////////////////
-	void TransformBlit(Rect dst_rect, Bitmap const& src, Rect src_rect, const Matrix& inv, int opacity);
+	void TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, const Matrix& inv, int opacity);
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap scaled, rotated and translated
@@ -273,8 +273,8 @@ public:
 	/// @param dst_pos_x : destination origin x
 	/// @param dst_pos_y : destination origin y
 	////////////////////////////////////////////////////////
-	void TransformBlit(Rect dst_rect,
-							   Bitmap const& src, Rect src_rect,
+	void TransformBlit(Rect const& dst_rect,
+							   Bitmap const& src, Rect const& src_rect,
 							   double angle,
 							   double scale_x, double scale_y,
 							   int src_pos_x, int src_pos_y,
@@ -288,7 +288,7 @@ public:
 	/// @param src : source bitmap
 	/// @param src_rect : source bitmap rect
 	////////////////////////////////////////////////////////
-	void MaskBlit(int x, int y, Bitmap const& src, Rect src_rect);
+	void MaskBlit(int x, int y, Bitmap const& src, Rect const& src_rect);
 
 	////////////////////////////////////////////////////////
 	/// Blit source with waver effect.
@@ -299,7 +299,7 @@ public:
 	/// @param depth : wave magnitude
 	/// @param phase : wave phase
 	////////////////////////////////////////////////////////
-	void WaverBlit(int x, int y, Bitmap const& src, Rect src_rect, int depth, double phase, int opacity);
+	void WaverBlit(int x, int y, Bitmap const& src, Rect const& src_rect, int depth, double phase, int opacity);
 
 	////////////////////////////////////////////////////////
 	/// Fill entire bitmap with color.
@@ -312,7 +312,7 @@ public:
 	/// @param dst_rect : destination rect
 	/// @param color : color for filling
 	////////////////////////////////////////////////////////
-	void FillRect(Rect dst_rect, const Color &color);
+	void FillRect(Rect const& dst_rect, const Color &color);
 
 	////////////////////////////////////////////////////////
 	/// Clears the bitmap with transparent pixels.
@@ -323,7 +323,7 @@ public:
 	/// Clears the bitmap rect with transparent pixels.
 	/// @param dst_rect : destination rect
 	////////////////////////////////////////////////////////
-	void ClearRect(Rect dst_rect);
+	void ClearRect(Rect const& dst_rect);
 
 	////////////////////////////////////////////////////////
 	/// Rotate bitmap hue.
@@ -333,7 +333,7 @@ public:
 	/// @param src_rect : source bitmap rect
 	/// @param hue : hue change, degrees
 	////////////////////////////////////////////////////////
-	void HueChangeBlit(int x, int y, Bitmap const& src, Rect src_rect, double hue);
+	void HueChangeBlit(int x, int y, Bitmap const& src, Rect const& src_rect, double hue);
 
 	////////////////////////////////////////////////////////
 	/// Adjust bitmap HSL colors.
@@ -346,7 +346,7 @@ public:
 	/// @param lum : luminance scale
 	/// @param loff: luminance offset
 	////////////////////////////////////////////////////////
-	void HSLBlit(int x, int y, Bitmap const& src, Rect src_rect, double h, double s, double l, double lo);
+	void HSLBlit(int x, int y, Bitmap const& src, Rect const& src_rect, double h, double s, double l, double lo);
 
 	////////////////////////////////////////////////////////
 	/// Adjust bitmap tone.
@@ -356,7 +356,7 @@ public:
 	/// @param src_rect : source bitmap rect
 	/// @param tone : tone to apply
 	////////////////////////////////////////////////////////
-	void ToneBlit(int x, int y, Bitmap const& src, Rect src_rect, const Tone &tone);
+	void ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone &tone);
 
 	////////////////////////////////////////////////////////
 	/// Blend bitmap with color.
@@ -366,7 +366,7 @@ public:
 	/// @param src_rect : source bitmap rect
 	/// @param tone : color to apply
 	////////////////////////////////////////////////////////
-	void BlendBlit(int x, int y, Bitmap const& src, Rect src_rect, const Color &color);
+	void BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Color &color);
 
 	////////////////////////////////////////////////////////
 	/// Change the opacity of a bitmap.
@@ -376,7 +376,7 @@ public:
 	/// @param src_rect : source bitmap rect
 	/// @param opacity : the maximum opacity
 	////////////////////////////////////////////////////////
-	void OpacityBlit(int x, int y, Bitmap const& src, Rect src_rect, int opacity);
+	void OpacityBlit(int x, int y, Bitmap const& src, Rect const& src_rect, int opacity);
 
 	////////////////////////////////////////////////////////
 	/// Flips the bitmap pixels.
@@ -392,7 +392,7 @@ public:
 	/// @param src : source bitmap
 	/// @param src_rect : source bitmap rectangle
 	////////////////////////////////////////////////////////
-	void Blit2x(Rect dst_rect, Bitmap const& src, Rect src_rect);
+	void Blit2x(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect);
 
 	////////////////////////////////////////////////////////
 	/// Calculate the bounding rectangle of a transformed rectangle
@@ -425,7 +425,7 @@ public:
 	/// @param waver_phase : wave phase
 	/// Note: rotation and waver are mutually exclusive
 	////////////////////////////////////////////////////////
-	void EffectsBlit(int x, int y, Bitmap const& src, Rect src_rect,
+	void EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
 							 int top_opacity, int bottom_opacity, int opacity_split,
 							 const Tone& tone,
 							 double zoom_x, double zoom_y, double angle,
@@ -438,7 +438,7 @@ public:
 	/// @param src_rect : source bitmap rectangle
 	/// @param opacity : opacity
 	////////////////////////////////////////////////////////
-	void EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect src_rect,
+	void EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect const& src_rect,
 							 int opacity);
 
 	////////////////////////////////////////////////////////
@@ -451,7 +451,7 @@ public:
 	/// @param opacity_split : boundary between sections,
 	///  (zero is bottom edge)
 	////////////////////////////////////////////////////////
-	void EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect src_rect,
+	void EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect const& src_rect,
 							 int top_opacity, int bottom_opacity, int opacity_split);
 
 	////////////////////////////////////////////////////////
@@ -467,7 +467,7 @@ public:
 	/// @param waver_depth : wave magnitude
 	/// @param waver_phase : wave phase
 	////////////////////////////////////////////////////////
-	void EffectsBlit(int x, int y, Bitmap const& src, Rect src_rect,
+	void EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
 							 int top_opacity, int bottom_opacity, int opacity_split,
 							 double zoom_x, double zoom_y,
 							 int waver_depth, double waver_phase);
@@ -483,7 +483,7 @@ public:
 	/// @param waver_depth : wave magnitude
 	/// @param waver_phase : wave phase
 	////////////////////////////////////////////////////////
-	void EffectsBlit(int x, int y, Bitmap const& src, Rect src_rect,
+	void EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
 							 int top_opacity, int bottom_opacity, int opacity_split,
 							 int waver_depth, double waver_phase);
 
@@ -495,7 +495,7 @@ public:
 	/// @param waver_depth : wave magnitude
 	/// @param waver_phase : wave phase
 	////////////////////////////////////////////////////////
-	void EffectsBlit(int x, int y, Bitmap const& src, Rect src_rect,
+	void EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
 							 int opacity,
 							 int waver_depth, double waver_phase);
 
@@ -528,7 +528,7 @@ public:
 	/// @param text : text to draw
 	/// @param align : text alignment inside bounding rectangle
 	////////////////////////////////////////////////////////
-	void TextDraw(Rect rect, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
+	void TextDraw(Rect const& rect, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
 
 	/// @return text drawing font
 	FontRef const& GetFont() const;
@@ -574,7 +574,7 @@ public:
 	Bitmap(int width, int height, bool transparent);
 	Bitmap(const std::string& filename, bool transparent, uint32_t flags);
 	Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t flags);
-	Bitmap(Bitmap const& source, Rect src_rect, bool transparent);
+	Bitmap(Bitmap const& source, Rect const& src_rect, bool transparent);
 	Bitmap(void *pixels, int width, int height, int pitch, const DynamicFormat& format);
 
 	static DynamicFormat ChooseFormat(const DynamicFormat& format);

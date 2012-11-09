@@ -46,9 +46,9 @@ public:
 
 	BitmapRef const& GetBitmap() const;
 	void SetBitmap(BitmapRef const& bitmap);
-	Rect GetSrcRect() const;
-	void SetSrcRect(Rect src_rect);
-	void SetSpriteRect(Rect sprite_rect);
+	Rect const& GetSrcRect() const;
+	void SetSrcRect(Rect const& src_rect);
+	void SetSpriteRect(Rect const& sprite_rect);
 	bool GetVisible() const;
 	void SetVisible(bool visible);
 	int GetX() const;

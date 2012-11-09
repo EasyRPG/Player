@@ -43,8 +43,8 @@ public:
 	void SetContents(BitmapRef const& ncontents);
 	bool GetStretch() const;
 	void SetStretch(bool nstretch);
-	Rect GetCursorRect() const;
-	void SetCursorRect(Rect ncursor_rect);
+	Rect const& GetCursorRect() const;
+	void SetCursorRect(Rect const& ncursor_rect);
 	bool GetActive() const;
 	void SetActive(bool nactive);
 	bool GetVisible() const;

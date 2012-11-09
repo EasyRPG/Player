@@ -86,14 +86,14 @@ public:
 	/// @param y : y position
 	/// @param src_rect : source rect
 	////////////////////////////////////////////////////////
-	void BlitScreen(int x, int y, Rect src_rect);
+	void BlitScreen(int x, int y, Rect const& src_rect);
 
 	////////////////////////////////////////////////////////
 	/// Blit the bitmap to the screen.
 	/// @param src_rect : source bitmap rect
 	/// @param dst_rect : screen destination rect
 	////////////////////////////////////////////////////////
-	void BlitScreenTiled(Rect src_rect, Rect dst_rect, int ox, int oy);
+	void BlitScreenTiled(Rect const& src_rect, Rect const& dst_rect, int ox, int oy);
 
 	////////////////////////////////////////////////////////
 	/// Clear all effects data.
@@ -101,10 +101,10 @@ public:
 	void ClearEffects();
 
 	/// @return source rect
-	Rect GetSrcRect() const;
+	Rect const& GetSrcRect() const;
 
 	/// @param src_rect : source rect
-	void SetSrcRect(Rect src_rect);
+	void SetSrcRect(Rect const& src_rect);
 
 	/// @return bitmap opacity
 	/// @param which : 0 => top, 1 => bottom (below bush depth)
@@ -170,10 +170,10 @@ public:
 	void SetBlendType(int blend_type);
 
 	/// @return blend color
-	Color GetBlendColor() const;
+	Color const& GetBlendColor() const;
 
 	/// @param blend_color : blend color
-	void SetBlendColor(Color blend_color);
+	void SetBlendColor(Color const& blend_color);
 
 	/// @return waver magnitude in pixels
 	int GetWaverEffectDepth() const;
@@ -211,7 +211,7 @@ protected:
 	double waver_effect_phase;
 	Color flash_effect;
 
-	void BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y, Rect src_rect,
+	void BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y, Rect const& src_rect,
 								  bool need_scale, int bush_y);
 
 	BitmapRef Refresh(Rect& rect, bool& need_scale, int& bush_y);

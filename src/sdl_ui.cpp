@@ -431,14 +431,14 @@ void SdlUi::DrawScreenText(const std::string &text) {
 }
 
 ///////////////////////////////////////////////////////////
-void SdlUi::DrawScreenText(const std::string &text, int x, int y, Color color) {
+void SdlUi::DrawScreenText(const std::string &text, int x, int y, Color const& color) {
 	uint32_t ucolor = main_surface->GetUint32Color(color);
 
 	FontRender8x8::TextDraw(text, (uint8_t*)main_surface->pixels(), x, y, main_surface->width(), main_surface->height(), main_surface->bytes(), ucolor);
 }
 
 ///////////////////////////////////////////////////////////
-void SdlUi::DrawScreenText(const std::string &text, Rect dst_rect, Color color) {
+void SdlUi::DrawScreenText(const std::string &text, Rect const& dst_rect, Color const& color) {
 	uint32_t ucolor = main_surface->GetUint32Color(color);
 
 	FontRender8x8::TextDraw(text, (uint8_t*)main_surface->pixels(), dst_rect, main_surface->width(), main_surface->height(), main_surface->bytes(), ucolor);

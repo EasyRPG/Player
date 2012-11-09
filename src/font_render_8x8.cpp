@@ -127,12 +127,12 @@ void FontRender8x8::TextDraw(const std::string& text, uint8_t* pixels, int x, in
 }
 
 ///////////////////////////////////////////////////////////
-void FontRender8x8::TextDraw(const std::string& text, uint8_t* pixels, Rect dst_rect, int surface_width, int surface_height, int bpp, uint32_t color) {
+void FontRender8x8::TextDraw(const std::string& text, uint8_t* pixels, Rect const& dst_rect, int surface_width, int surface_height, int bpp, uint32_t color) {
 	int x = dst_rect.x;
 	int y = dst_rect.y;
 	int w = dst_rect.width;
 	int h = dst_rect.height;
-	
+
 	if (x + w > surface_width || y + h > surface_height || text.empty()) return;
 
 	int dst_x = x;

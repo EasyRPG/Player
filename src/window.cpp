@@ -378,10 +378,10 @@ void Window::SetStretch(bool nstretch) {
 	stretch = nstretch;
 }
 
-Rect Window::GetCursorRect() const {
+Rect const& Window::GetCursorRect() const {
 	return cursor_rect;
 }
-void Window::SetCursorRect(Rect ncursor_rect) {
+void Window::SetCursorRect(Rect const& ncursor_rect) {
 	if (cursor_rect.width != ncursor_rect.width || cursor_rect.height != ncursor_rect.height) cursor_needs_refresh = true;
 	cursor_rect = ncursor_rect;
 }

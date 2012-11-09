@@ -59,7 +59,7 @@ BitmapRef Bitmap::Create(const uint8_t* data, unsigned bytes, bool transparent, 
 	return EASYRPG_MAKE_SHARED<Bitmap>(data, bytes, transparent, flags);
 }
 
-BitmapRef Bitmap::Create(Bitmap const& source, Rect src_rect, bool transparent) {
+BitmapRef Bitmap::Create(Bitmap const& source, Rect const& src_rect, bool transparent) {
 	return EASYRPG_MAKE_SHARED<Bitmap>(source, src_rect, transparent);
 }
 
@@ -284,8 +284,8 @@ void Bitmap::SetPixel(int x, int y, const Color &color) {
 }
 
 ////////////////////////////////////////////////////////////
-void Bitmap::TransformBlit(Rect dst_rect,
-							Bitmap const& src, Rect src_rect,
+void Bitmap::TransformBlit(Rect const& dst_rect_,
+							Bitmap const& src, Rect const& src_rect,
 							double angle,
 							double scale_x, double scale_y,
 							int src_pos_x, int src_pos_y,
@@ -297,7 +297,7 @@ void Bitmap::TransformBlit(Rect dst_rect,
 	Matrix inv = fwd.Inverse();
 
 	Rect rect = TransformRectangle(fwd, src_rect);
-	dst_rect.Adjust(rect);
+	Rect  dst_rect = dst_rect_; dst_rect.Adjust(rect);
 	if (dst_rect.IsEmpty())
 		return;
 
@@ -305,13 +305,13 @@ void Bitmap::TransformBlit(Rect dst_rect,
 }
 
 ////////////////////////////////////////////////////////////
-void Bitmap::HueChangeBlit(int x, int y, Bitmap const& src, Rect src_rect, double hue) {
+void Bitmap::HueChangeBlit(int x, int y, Bitmap const& src, Rect const& src_rect, double hue) {
 	HSLBlit(x, y, src, src_rect, hue, 1, 1, 0);
 }
 
 ////////////////////////////////////////////////////////////
-void Bitmap::HSLBlit(int x, int y, Bitmap const& src, Rect src_rect, double h, double s, double l, double lo) {
-	Rect dst_rect(x, y, 0, 0);
+void Bitmap::HSLBlit(int x, int y, Bitmap const& src, Rect const& src_rect_, double h, double s, double l, double lo) {
+	Rect dst_rect(x, y, 0, 0), src_rect = src_rect_;
 
 	if (!Rect::AdjustRectangles(src_rect, dst_rect, src.GetRect()))
 		return;
@@ -400,7 +400,7 @@ void Bitmap::TextDraw(int x, int y, int width, int /* height */, int color, std:
 	}
 }
 
-void Bitmap::TextDraw(Rect rect, int color, std::string const& text, Text::Alignment align) {
+void Bitmap::TextDraw(Rect const& rect, int color, std::string const& text, Text::Alignment align) {
 	TextDraw(rect.x, rect.y, rect.width, rect.height, color, text, align);
 }
 
@@ -682,7 +682,7 @@ Bitmap::Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t f
 	CheckPixels(flags);
 }
 
-Bitmap::Bitmap(Bitmap const& source, Rect src_rect, bool transparent) {
+Bitmap::Bitmap(Bitmap const& source, Rect const& src_rect, bool transparent) {
 	InitBitmap();
 
 	format = (transparent ? pixel_format : opaque_pixel_format);
@@ -766,7 +766,7 @@ BitmapRef Bitmap::Resample(int scale_w, int scale_h, const Rect& src_rect) const
 }
 
 ////////////////////////////////////////////////////////////
-void Bitmap::Blit(int x, int y, Bitmap const& src, Rect src_rect, int opacity) {
+void Bitmap::Blit(int x, int y, Bitmap const& src, Rect const& src_rect, int opacity) {
 	if (opacity < 0)
 		return;
 
@@ -800,11 +800,11 @@ pixman_image_t* Bitmap::GetSubimage(Bitmap const& src, const Rect& src_rect) {
 									(uint32_t*) pixels, src.pitch());
 }
 
-void Bitmap::TiledBlit(Rect src_rect, Bitmap const& src, Rect dst_rect, int opacity) {
+void Bitmap::TiledBlit(Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, int opacity) {
 	TiledBlit(0, 0, src_rect, src, dst_rect, opacity);
 }
 
-void Bitmap::TiledBlit(int ox, int oy, Rect src_rect, Bitmap const& src, Rect dst_rect, int opacity) {
+void Bitmap::TiledBlit(int ox, int oy, Rect const& src_rect, Bitmap const& src, Rect const& dst_rect, int opacity) {
 	if (opacity < 0)
 		return;
 
@@ -849,11 +849,11 @@ void Bitmap::TiledBlit(int ox, int oy, Rect src_rect, Bitmap const& src, Rect ds
 	RefreshCallback();
 }
 
-void Bitmap::StretchBlit(Bitmap const&  src, Rect src_rect, int opacity) {
+void Bitmap::StretchBlit(Bitmap const&  src, Rect const& src_rect, int opacity) {
 	StretchBlit(GetRect(), src, src_rect, opacity);
 }
 
-void Bitmap::StretchBlit(Rect dst_rect, Bitmap const& src, Rect src_rect, int opacity) {
+void Bitmap::StretchBlit(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect, int opacity) {
 	if (opacity < 0)
 		return;
 
@@ -889,7 +889,7 @@ void Bitmap::StretchBlit(Rect dst_rect, Bitmap const& src, Rect src_rect, int op
 	RefreshCallback();
 }
 
-void Bitmap::TransformBlit(Rect dst_rect, Bitmap const& src, Rect /* src_rect */, const Matrix& inv, int /* opacity */) {
+void Bitmap::TransformBlit(Rect const& dst_rect, Bitmap const& src, Rect const& /* src_rect */, const Matrix& inv, int /* opacity */) {
 	pixman_transform_t xform = {{
 		{ pixman_double_to_fixed(inv.xx), pixman_double_to_fixed(inv.xy), pixman_double_to_fixed(inv.x0) },
 		{ pixman_double_to_fixed(inv.yx), pixman_double_to_fixed(inv.yy), pixman_double_to_fixed(inv.y0) },
@@ -909,7 +909,7 @@ void Bitmap::TransformBlit(Rect dst_rect, Bitmap const& src, Rect /* src_rect */
 	pixman_image_set_transform(src.bitmap, &xform);
 }
 
-void Bitmap::MaskBlit(int x, int y, Bitmap const& src, Rect src_rect) {
+void Bitmap::MaskBlit(int x, int y, Bitmap const& src, Rect const& src_rect) {
 	pixman_image_composite32(PIXMAN_OP_DISJOINT_IN_REVERSE,
 							 src.bitmap, (pixman_image_t*) NULL, bitmap,
 							 src_rect.x, src_rect.y,
@@ -920,7 +920,7 @@ void Bitmap::MaskBlit(int x, int y, Bitmap const& src, Rect src_rect) {
 	RefreshCallback();
 }
 
-void Bitmap::WaverBlit(int x, int y, Bitmap const& src, Rect src_rect, int depth, double phase, int opacity) {
+void Bitmap::WaverBlit(int x, int y, Bitmap const& src, Rect const& src_rect, int depth, double phase, int opacity) {
 	if (opacity < 0)
 		return;
 
@@ -972,7 +972,7 @@ void Bitmap::Fill(const Color &color) {
 	RefreshCallback();
 }
 
-void Bitmap::FillRect(Rect dst_rect, const Color &color) {
+void Bitmap::FillRect(Rect const& dst_rect, const Color &color) {
 	pixman_color_t pcolor = PixmanColor(color);
 	pixman_rectangle16_t rect = {
     static_cast<int16_t>(dst_rect.x),
@@ -995,7 +995,7 @@ void Bitmap::Clear() {
 	RefreshCallback();
 }
 
-void Bitmap::ClearRect(Rect dst_rect) {
+void Bitmap::ClearRect(Rect const& dst_rect) {
 	pixman_color_t pcolor = {0, 0, 0, 0};
 	pixman_rectangle16_t rect = {
     static_cast<int16_t>(dst_rect.x),
@@ -1008,7 +1008,7 @@ void Bitmap::ClearRect(Rect dst_rect) {
 	RefreshCallback();
 }
 
-void Bitmap::OpacityBlit(int x, int y, Bitmap const& src, Rect src_rect, int opacity) {
+void Bitmap::OpacityBlit(int x, int y, Bitmap const& src, Rect const& src_rect, int opacity) {
 	if (opacity == 255) {
 		if (&src != this)
 			Blit(x, y, src, src_rect, opacity);
@@ -1045,7 +1045,7 @@ void Bitmap::OpacityBlit(int x, int y, Bitmap const& src, Rect src_rect, int opa
 	RefreshCallback();
 }
 
-void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect src_rect, const Tone &tone) {
+void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone &tone) {
 	if (tone == Tone()) {
 		if (&src != this)
 			Blit(x, y, src, src_rect, 255);
@@ -1114,7 +1114,7 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect src_rect, const Tone
 	RefreshCallback();
 }
 
-void Bitmap::BlendBlit(int x, int y, Bitmap const& src, Rect src_rect, const Color& color) {
+void Bitmap::BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Color& color) {
 	if (color.alpha == 0) {
 		if (&src != this)
 			Blit(x, y, src, src_rect, 255);
@@ -1144,7 +1144,7 @@ void Bitmap::BlendBlit(int x, int y, Bitmap const& src, Rect src_rect, const Col
 	RefreshCallback();
 }
 
-void Bitmap::FlipBlit(int x, int y, Bitmap const& src, Rect src_rect, bool horizontal, bool vertical) {
+void Bitmap::FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, bool horizontal, bool vertical) {
 	if (!horizontal && !vertical) {
 		Blit(x, y, src, src_rect, 255);
 		return;
@@ -1193,7 +1193,7 @@ void Bitmap::Flip(const Rect& dst_rect, bool horizontal, bool vertical) {
 	RefreshCallback();
 }
 
-void Bitmap::Blit2x(Rect dst_rect, Bitmap const& src, Rect src_rect) {
+void Bitmap::Blit2x(Rect const& dst_rect, Bitmap const& src, Rect const& src_rect) {
 	pixman_transform_t xform;
 	pixman_transform_init_scale(&xform,
 								pixman_double_to_fixed(0.5),

@@ -24,7 +24,7 @@
 
 ////////////////////////////////////////////////////////////
 // Rotate, Zoom, Single Opacity
-void Bitmap::EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect src_rect, int opacity) {
+void Bitmap::EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect const& src_rect, int opacity) {
 	if (opacity <= 0)
 		return;
 
@@ -40,7 +40,7 @@ void Bitmap::EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect src_rect, in
 
 ////////////////////////////////////////////////////////////
 // Rotate, Zoom, Split Opacity
-void Bitmap::EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect src_rect,
+void Bitmap::EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect const& src_rect,
 						  int top_opacity, int bottom_opacity, int opacity_split) {
 	if (opacity_split <= 0)
 		EffectsBlit(fwd, src, src_rect,  top_opacity);
@@ -60,7 +60,7 @@ void Bitmap::EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect src_rect,
 
 ////////////////////////////////////////////////////////////
 // Waver, Single Opacity
-void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect src_rect,
+void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
 						   int opacity,
 						   int waver_depth, double waver_phase) {
 	if (waver_depth == 0)
@@ -71,7 +71,7 @@ void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect src_rect,
 
 ////////////////////////////////////////////////////////////
 // Waver, Split Opacity
-void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect src_rect,
+void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
 						   int top_opacity, int bottom_opacity, int opacity_split,
 						   int waver_depth, double waver_phase) {
 	if (opacity_split <= 0)
@@ -97,7 +97,7 @@ void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect src_rect,
 
 ////////////////////////////////////////////////////////////
 // Waver, Zoom, Split Opacity
-void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect src_rect,
+void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
 						   int top_opacity, int bottom_opacity, int opacity_split,
 						   double zoom_x, double zoom_y,
 						   int waver_depth, double waver_phase) {
@@ -110,11 +110,12 @@ void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect src_rect,
 }
 
 ////////////////////////////////////////////////////////////
-void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect src_rect,
+void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect_,
 						   int top_opacity, int bottom_opacity, int opacity_split,
 						   const Tone& tone,
 						   double zoom_x, double zoom_y, double angle,
 						   int waver_depth, double waver_phase) {
+	Rect src_rect = src_rect_;
 	bool rotate = angle != 0.0;
 	bool scale = zoom_x != 1.0 || zoom_y != 1.0;
 	bool waver = waver_depth != 0;

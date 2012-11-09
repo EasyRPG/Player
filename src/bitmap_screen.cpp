@@ -74,7 +74,7 @@ void BitmapScreen::BlitScreen(int x, int y) {
 }
 
 ////////////////////////////////////////////////////////////
-void BitmapScreen::BlitScreen(int x, int y, Rect src_rect) {
+void BitmapScreen::BlitScreen(int x, int y, Rect const& src_rect) {
 	if (bitmap == NULL || (opacity_top_effect <= 0 && opacity_bottom_effect <= 0))
 		return;
 
@@ -95,7 +95,7 @@ void BitmapScreen::BlitScreen(int x, int y, Rect src_rect) {
 }
 
 ////////////////////////////////////////////////////////////
-void BitmapScreen::BlitScreenTiled(Rect src_rect, Rect dst_rect, int ox, int oy) {
+void BitmapScreen::BlitScreenTiled(Rect const& src_rect, Rect const& dst_rect, int ox, int oy) {
 	if (bitmap == NULL || (opacity_top_effect <= 0 && opacity_bottom_effect <= 0))
 		return;
 
@@ -189,7 +189,7 @@ void BitmapScreen::ClearEffects() {
 	flash_effect = Color(0,0,0,0);
 }
 
-void BitmapScreen::SetSrcRect(Rect src_rect) {
+void BitmapScreen::SetSrcRect(Rect const& src_rect) {
 	if (src_rect_effect != src_rect) {
 		src_rect_effect = src_rect;
 		needs_refresh = true;
@@ -283,11 +283,11 @@ void BitmapScreen::SetBlendType(int blend_type) {
 	blend_type_effect = blend_type;
 }
 
-void BitmapScreen::SetBlendColor(Color blend_color) {
+void BitmapScreen::SetBlendColor(Color const& blend_color) {
 	blend_color_effect = blend_color;
 }
 
-Rect BitmapScreen::GetSrcRect() const {
+Rect const& BitmapScreen::GetSrcRect() const {
 	return src_rect_effect;
 }
 
@@ -327,7 +327,7 @@ int BitmapScreen::GetBlendType() const {
 	return blend_type_effect;
 }
 
-Color BitmapScreen::GetBlendColor() const {
+Color const& BitmapScreen::GetBlendColor() const {
 	return blend_color_effect;
 }
 
@@ -340,8 +340,8 @@ double BitmapScreen::GetWaverEffectPhase() const {
 }
 
 ////////////////////////////////////////////////////////////
-void BitmapScreen::BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y, Rect src_rect,
-									bool need_scale, int bush_y) {
+void BitmapScreen::BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y,
+									Rect const& src_rect, bool need_scale, int bush_y) {
 	if (! &draw_bitmap)
 		return;
 

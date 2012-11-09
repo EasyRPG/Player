@@ -120,14 +120,14 @@ void Sprite::SetBitmap(BitmapRef const& nbitmap) {
 	bitmap_screen->SetBitmap(bitmap);
 	bitmap_screen->SetSrcRect(src_rect);
 }
-Rect Sprite::GetSrcRect() const {
+Rect const& Sprite::GetSrcRect() const {
 	return src_rect;
 }
 
-void Sprite::SetSrcRect(Rect nsrc_rect) {
+void Sprite::SetSrcRect(Rect const& nsrc_rect) {
 	src_rect = nsrc_rect;
 }
-void Sprite::SetSpriteRect(Rect nsprite_rect) {
+void Sprite::SetSpriteRect(Rect const& nsprite_rect) {
 	bitmap_screen->SetSrcRect(nsprite_rect);
 }
 

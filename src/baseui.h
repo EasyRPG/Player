@@ -123,7 +123,7 @@ public:
 	/// @param y : Y-coordinate where text is displayed
 	/// @param color : Text color
 	///////////////////////////////////////////////////////
-	virtual void DrawScreenText(const std::string &text, int x, int y, Color color = Color(255, 255, 255, 255)) = 0;
+	virtual void DrawScreenText(const std::string &text, int x, int y, Color const& color = Color(255, 255, 255, 255)) = 0;
 
 	///////////////////////////////////////////////////////
 	/// Display text on the screen.
@@ -131,7 +131,7 @@ public:
 	/// @param dst_rect : Rect where text is displayed
 	/// @param color : Text color
 	///////////////////////////////////////////////////////
-	virtual void DrawScreenText(const std::string &text, Rect dst_rect, Color color = Color(255, 255, 255, 255)) = 0;
+	virtual void DrawScreenText(const std::string &text, Rect const& dst_rect, Color const& color = Color(255, 255, 255, 255)) = 0;
 
 	///////////////////////////////////////////////////////
 	/// Set if the cursor should be showed.
