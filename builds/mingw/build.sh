@@ -42,16 +42,6 @@ JOBS=2
 mkdir $BUILD_DIR
 cd $BUILD_DIR
 
-# x264
-if ! [ -f $HOME_MINGW_PATH/include/x264.h ] ; then
-    git clone git://git.videolan.org/x264.git
-    cd x264
-    ./configure $CONFIGURE_FLAGS
-    make
-    make install install-lib-dev install-lib-static
-    cd $BUILD_DIR
-fi
-
 # winpthreads
 if ! [ -f $HOME_MINGW_PATH/include/pthread.h ] ; then
     svn checkout "https://mingw-w64.svn.sourceforge.net/svnroot/mingw-w64/experimental/winpthreads"
@@ -147,44 +137,6 @@ if ! [ -f $HOME_MINGW_PATH/include/ogg/ogg.h ] ; then
     cd $BUILD_DIR
 fi
 
-# libmikmod
-if ! [ -f $HOME_MINGW_PATH/include/mikmod.h ] ; then
-    LIBMIKMOD_VERSION=3.2.0
-    wget --continue \
-        "http://mikmod.shlomifish.org/files/libmikmod-$LIBMIKMOD_VERSION.tar.gz" \
-        -O $SCRIPT_DIR/archive/libmikmod-$LIBMIKMOD_VERSION.tar.gz
-    tar -xf $SCRIPT_DIR/archive/libmikmod-$LIBMIKMOD_VERSION.tar.gz
-    cd libmikmod-$LIBMIKMOD_VERSION
-
-    sed -i -e "s/-Dunix//" libmikmod/Makefile.in
-    sed -i -e "s/`uname`/MinGW/g" configure
-    sed -i -e "s/defined _DLL/defined _DLL_NO/" */mikmod.h.in
-    CC="$CC -msse2" ./configure $CONFIGURE_FLAGS --disable-shared --disable-esd
-
-    make -j $JOBS
-	  make install
-
-    cd $BUILD_DIR
-fi
-
-# FLAC
-if ! [ -f $HOME_MINGW_PATH/include/FLAC/all.h ] ; then
-    FLAC_VERSION=1.2.1
-    wget --continue \
-        "http://sourceforge.net/projects/flac/files/flac-src/flac-$FLAC_VERSION-src/flac-$FLAC_VERSION.tar.gz/download" \
-        -O $SCRIPT_DIR/archive/flac-$FLAC_VERSION.tar.gz
-    tar -xf $SCRIPT_DIR/archive/flac-$FLAC_VERSION.tar.gz
-    cd flac-$FLAC_VERSION
-
-    sed -i -e "s/SUBDIRS = doc include m4 man src examples test build obj/SUBDIRS = doc include m4 man src build obj/" Makefile.*
-
-    ./configure $CONFIGURE_FLAGS
-
-    make -j $JOBS all-am
-	  make install
-    cd $BUILD_DIR
-fi
-
 # libvorbis
 if ! [ -f $HOME_MINGW_PATH/include/vorbis/vorbisfile.h ] ; then
     VORBIS_VERSION=1.3.3
@@ -198,39 +150,6 @@ if ! [ -f $HOME_MINGW_PATH/include/vorbis/vorbisfile.h ] ; then
 	  make install
     cd $BUILD_DIR
 fi
-
-<<SDL_MIXER
-# smpeg
-if ! [ -f $HOME_MINGW_PATH/include/smpeg/smpeg.h ] ; then
-    svn checkout "svn://svn.icculus.org/smpeg/trunk" smpeg
-    cd smpeg
-    ./autogen.sh
-    ./configure $CONFIGURE_FLAGS --disable-gtktest --disable-gtk-player --disable-shared
-    make -j $JOBS
-	  make install
-    cd $BUILD_DIR
-fi
-
-# sdl_mixer
-if ! [ -f $HOME_MINGW_PATH/include/SDL/SDL_mixer.h ] \
-    || ! [ -f $HOME_MINGW_PATH/include/SDL/SDL.h] \
-    || ! [ -f $HOME_MINGW_PATH/include/ogg/ogg.h] \
-    || ! [ -f $HOME_MINGW_PATH/include/mikmod.h] \
-    || ! [ -f $HOME_MINGW_PATH/include/FLAC/all.h] \
-    || ! [ -f $HOME_MINGW_PATH/include/vorbis/vorbisfile.h] \
-    ; then
-    SDL_MIXER_VERSION=1.2.12
-    wget --continue \
-        "http://www.libsdl.org/projects/SDL_mixer/release/SDL_mixer-$SDL_MIXER_VERSION.tar.gz" \
-        -O $SCRIPT_DIR/archive/SDL_mixer-$SDL_MIXER_VERSION.tar.gz
-    tar -xf $SCRIPT_DIR/archive/SDL_mixer-$SDL_MIXER_VERSION.tar.gz
-    cd SDL_mixer-$SDL_MIXER_VERSION
-    ./configure $CONFIGURE_FLAGS --disable-music-mp3 --target=i686-w64-mingw32
-    make -j $JOBS
-	  make install
-    cd $BUILD_DIR
-fi
-SDL_MIXER
 
 # Freetype
 if ! [ -f $HOME_MINGW_PATH/include/ft2build.h ] ; then
