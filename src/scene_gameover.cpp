@@ -35,18 +35,13 @@ Scene_Gameover::Scene_Gameover() {
 ////////////////////////////////////////////////////////////
 void Scene_Gameover::Start() {
 	// Load Background Graphic
-	background = new Sprite();
+	background.reset(new Sprite());
 	background->SetBitmap(Cache::Gameover(Data::system.gameover_name));
 	// Stop current music
 	Audio::BGM_Stop();
 	Audio::BGS_Stop();
 	// Play gameover music
 	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_GameOver));
-}
-
-////////////////////////////////////////////////////////////
-void Scene_Gameover::Terminate() {
-	delete background;
 }
 
 ////////////////////////////////////////////////////////////

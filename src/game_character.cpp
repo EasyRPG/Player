@@ -98,7 +98,7 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 		return false;
 
 	for (tEventHash::iterator i = Game_Map::GetEvents().begin(); i != Game_Map::GetEvents().end(); i++) {
-		Game_Event* evnt = i->second;
+		Game_Event* evnt = i->second.get();
 		if (evnt->GetX() == new_x && evnt->GetY() == new_y) {
 			if (!evnt->GetThrough() && evnt->GetPriorityType() == RPG::EventPage::Layers_same) {
 				return false;
@@ -847,7 +847,7 @@ Game_Character* Game_Character::GetCharacter(int character_id, int event_id) {
 	switch (character_id) {
 		case CharPlayer:
 			// Player/Hero
-			return Main_Data::game_player;
+			return Main_Data::game_player.get();
 		case CharBoat:
 			return Game_Map::GetVehicle(Game_Vehicle::Boat);
 		case CharShip:
@@ -856,9 +856,9 @@ Game_Character* Game_Character::GetCharacter(int character_id, int event_id) {
 			return Game_Map::GetVehicle(Game_Vehicle::Airship);
 		case CharThisEvent:
 			// This event
-			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents().find(event_id)->second;
+			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents().find(event_id)->second.get();
 		default:
 			// Other events
-			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents().find(character_id)->second;
+			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents().find(character_id)->second.get();
 	}
 }

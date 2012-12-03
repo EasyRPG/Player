@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////
 // This file is part of EasyRPG Player.
-// 
+//
 // EasyRPG Player is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // EasyRPG Player is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
@@ -27,41 +27,31 @@
 #include "time.hpp"
 
 ////////////////////////////////////////////////////////////
-Scene_Shop::Scene_Shop() :
-	help_window(NULL),
-	buy_window(NULL),
-	party_window(NULL),
-	status_window(NULL),
-	gold_window(NULL),
-	sell_window(NULL),
-	number_window(NULL),
-	empty_window(NULL),
-	empty_window2(NULL),
-	shop_window(NULL) {
+Scene_Shop::Scene_Shop() {
 	Scene::type = Scene::Shop;
 }
 
 ////////////////////////////////////////////////////////////
 void Scene_Shop::Start() {
-	shop_window = new Window_Shop(0, 160, 320, 80);
-	help_window = new Window_Help(0, 0, 320, 32);
-	gold_window = new Window_Gold(184, 128, 136, 32);
-	empty_window = new Window_Base(0, 32, 320, 128);
-	empty_window2 = new Window_Base(0, 32, 184, 128);
-	buy_window = new Window_ShopBuy(0, 32, 184, 128);
-	party_window = new Window_ShopParty(184, 32, 136, 48);
-	sell_window = new Window_ShopSell(0, 32, 320, 128);
-	status_window = new Window_ShopStatus(184, 80, 136, 48);
-	number_window = new Window_ShopNumber(0, 32, 184, 128);
+	shop_window.reset(new Window_Shop(0, 160, 320, 80));
+	help_window.reset(new Window_Help(0, 0, 320, 32));
+	gold_window.reset(new Window_Gold(184, 128, 136, 32));
+	empty_window.reset(new Window_Base(0, 32, 320, 128));
+	empty_window2.reset(new Window_Base(0, 32, 184, 128));
+	buy_window.reset(new Window_ShopBuy(0, 32, 184, 128));
+	party_window.reset(new Window_ShopParty(184, 32, 136, 48));
+	sell_window.reset(new Window_ShopSell(0, 32, 320, 128));
+	status_window.reset(new Window_ShopStatus(184, 80, 136, 48));
+	number_window.reset(new Window_ShopNumber(0, 32, 184, 128));
 
 	buy_window->SetActive(false);
 	buy_window->SetVisible(false);
-	buy_window->SetHelpWindow(help_window);
+	buy_window->SetHelpWindow(help_window.get());
 
 	sell_window->SetActive(false);
 	sell_window->SetVisible(false);
-	sell_window->SetHelpWindow(help_window);
-	
+	sell_window->SetHelpWindow(help_window.get());
+
 	number_window->SetActive(false);
 	number_window->SetVisible(false);
 
@@ -85,20 +75,6 @@ void Scene_Shop::Start() {
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Shop::Terminate() {
-	delete shop_window;
-	delete help_window;
-	delete gold_window;
-	delete empty_window;
-	delete empty_window2;
-	delete buy_window;
-	delete party_window;	
-	delete sell_window;
-	delete status_window;
-	delete number_window;
-}
-
-////////////////////////////////////////////////////////////
 static void Enable(Window* window, bool state) {
 	window->SetVisible(state);
 	window->SetActive(state);
@@ -113,11 +89,11 @@ void Scene_Shop::SetMode(int nmode) {
 		case BuySellLeave:
 		case BuySellLeave2:
 			empty_window->SetVisible(true);
-			Enable(sell_window, false);
+			Enable(sell_window.get(), false);
 			break;
 		case Sell:
 			empty_window->SetVisible(false);
-			Enable(sell_window, true);
+			Enable(sell_window.get(), true);
 			break;
 		case Buy:
 		case BuyHowMany:
@@ -125,7 +101,7 @@ void Scene_Shop::SetMode(int nmode) {
 		case Bought:
 		case Sold:
 			empty_window->SetVisible(false);
-			Enable(sell_window, false);
+			Enable(sell_window.get(), false);
 			break;
 	}
 
@@ -154,26 +130,26 @@ void Scene_Shop::SetMode(int nmode) {
 		case BuySellLeave:
 		case BuySellLeave2:
 		case Sell:
-			Enable(buy_window, false);
-			Enable(number_window, false);
+			Enable(buy_window.get(), false);
+			Enable(number_window.get(), false);
 			empty_window2->SetVisible(false);
 			break;
 		case Buy:
 			buy_window->Refresh();
-			Enable(buy_window, true);
-			Enable(number_window, false);
+			Enable(buy_window.get(), true);
+			Enable(number_window.get(), false);
 			empty_window2->SetVisible(false);
 			break;
 		case BuyHowMany:
 		case SellHowMany:
-			number_window->Refresh();
-			Enable(buy_window, false);
-			Enable(number_window, true);
+			number_window.get()->Refresh();
+			Enable(buy_window.get(), false);
+			Enable(number_window.get(), true);
 			break;
 		case Bought:
 		case Sold:
-			Enable(buy_window, false);
-			Enable(number_window, false);
+			Enable(buy_window.get(), false);
+			Enable(number_window.get(), false);
 			empty_window2->SetVisible(true);
 
 			timer = DEFAULT_FPS;

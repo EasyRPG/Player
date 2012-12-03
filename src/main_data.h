@@ -25,6 +25,7 @@
 #include "rpg_save.h"
 #include "game_screen.h"
 #include <string>
+#include <boost/scoped_ptr.hpp>
 
 ////////////////////////////////////////////////////////////
 /// Main Data namespace
@@ -34,8 +35,8 @@ class Game_Screen;
 
 namespace Main_Data {
 	// Dynamic Game Data
-	extern Game_Screen* game_screen;
-	extern Game_Player* game_player;
+	extern boost::scoped_ptr<Game_Screen> game_screen;
+	extern boost::scoped_ptr<Game_Player> game_player;
 	extern RPG::Save game_data;
 	extern std::string project_path;
 

@@ -21,9 +21,12 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include "system.h"
 #include "tilemap.h"
 #include "plane.h"
-#include "sprite_character.h"
+
+class Sprite_Character;
+class Game_Character;
 
 ////////////////////////////////////////////////////////////
 /// Spriteset_Map class
@@ -31,7 +34,6 @@
 class Spriteset_Map {
 public:
 	Spriteset_Map();
-	~Spriteset_Map();
 
 	void Update();
 
@@ -49,15 +51,12 @@ public:
 	void SubstituteDown(int old_id, int new_id);
 	/// Substitute tile in upper layer
 	void SubstituteUp(int old_id, int new_id);
-	
+
 protected:
-	Tilemap* tilemap;
-	Plane* panorama;
+	Tilemap tilemap;
+	Plane panorama;
 	std::string panorama_name;
-	std::vector<Sprite_Character*> character_sprites;
-	/*std::vector<Sprite_Picture*> picture_sprites;
-	Weather* weather;
-	Sprite_Timer* timer_sprite;*/
+	std::vector<EASYRPG_SHARED_PTR<Sprite_Character> > character_sprites;
 };
 
 #endif

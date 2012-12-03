@@ -21,6 +21,7 @@
 ////////////////////////////////////////////////////////////
 /// Includes
 ////////////////////////////////////////////////////////////
+#include "system.h"
 #include <vector>
 
 ////////////////////////////////////////////////////////////
@@ -52,7 +53,7 @@ public:
 		Order,
 		SceneMax
 	};
-	
+
 	////////////////////////////////////////////////////////
 	/// Constructor.
 	////////////////////////////////////////////////////////
@@ -78,7 +79,7 @@ public:
 	/// created here.
 	////////////////////////////////////////////////////////
 	virtual void Start();
-	
+
 	////////////////////////////////////////////////////////
 	/// Continue processing.
 	/// This function is executed when returning from a
@@ -101,14 +102,6 @@ public:
 	/// or switching to a nested scene
 	////////////////////////////////////////////////////////
 	virtual void Suspend();
-
-	////////////////////////////////////////////////////////
-	/// Terminate processing.
-	/// This function is executed after the fade out for
-	/// the scene change. All delete operations should be
-	/// done in this func and not in the destructor.
-	////////////////////////////////////////////////////////
-	virtual void Terminate();
 
 	////////////////////////////////////////////////////////
 	/// Does the transition upon starting or resuming
@@ -134,7 +127,7 @@ public:
 	/// @param pop_stack_top : If the scene that is currently
 	/// on the top should be popped
 	////////////////////////////////////////////////////////
-	static void Push(Scene* new_scene, bool pop_stack_top = false);
+	static void Push(EASYRPG_SHARED_PTR<Scene> const& new_scene, bool pop_stack_top = false);
 
 	////////////////////////////////////////////////////////
 	/// Removes the scene that is on the top of the stack
@@ -153,7 +146,7 @@ public:
 	/// @param type : Type of the scene that is searched
 	/// @return : The scene found, or NULL if no such scene exists
 	////////////////////////////////////////////////////////
-	static Scene* Find(SceneType type);
+	static EASYRPG_SHARED_PTR<Scene> Find(SceneType type);
 
 	// Don't write to the following values directly when you want to change
 	// the scene! Use Push and Pop instead!
@@ -162,17 +155,17 @@ public:
 	SceneType type;
 
 	/// Current scene.
-	static Scene* instance;
+	static EASYRPG_SHARED_PTR<Scene> instance;
 
 	/// Old scenes, temporary save for deleting.
-	static std::vector<Scene*> old_instances;
+	static std::vector<EASYRPG_SHARED_PTR<Scene> > old_instances;
 
 	/// Contains name of the Scenes. For Debug purposes.
 	static const char scene_names[SceneMax][12];
 
 private:
 	/// Scene stack
-	static std::vector<Scene*> instances;
+	static std::vector<EASYRPG_SHARED_PTR<Scene> > instances;
 
 	static int push_pop_operation;
 };

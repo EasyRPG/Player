@@ -84,7 +84,7 @@ bool Game_Interpreter_Battle::CommandCallCommonEvent(RPG::EventCommand const& co
 
 	const RPG::CommonEvent& event = Data::commonevents[event_id - 1];
 
-	child_interpreter = new Game_Interpreter_Battle(depth + 1);
+	child_interpreter.reset(new Game_Interpreter_Battle(depth + 1));
 	child_interpreter->Setup(event.event_commands, 0, event.ID, -2);
 
 	return true;

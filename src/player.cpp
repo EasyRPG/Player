@@ -115,11 +115,10 @@ void Player::Init(int argc, char *argv[]) {
 
 ////////////////////////////////////////////////////////////
 void Player::Run() {
-	if (debug_flag) {
-		Scene::Push(new Scene_Title());
-	} else {
-		Scene::Push(new Scene_Logo());
-	}
+	Scene::Push(EASYRPG_SHARED_PTR<Scene>
+				(debug_flag?
+				 static_cast<Scene*>(new Scene_Title()) :
+				 static_cast<Scene*>(new Scene_Logo())));
 
 	reset_flag = false;
 
@@ -129,15 +128,6 @@ void Player::Run() {
 	// Main loop
 	while (Scene::instance->type != Scene::Null) {
 		Scene::instance->MainFunction();
-
-		for (size_t i = 0; i < Scene::old_instances.size(); ++i) {
-			//Output::Debug(Scene::scene_names[Scene::old_instances[i]->type]);
-			if (i > 1) {
-				Scene::old_instances[i]->Terminate();
-			}
-			Graphics::Pop();
-			delete Scene::old_instances[i];
-		}
 		Scene::old_instances.clear();
 	}
 

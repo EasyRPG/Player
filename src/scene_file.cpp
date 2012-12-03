@@ -40,11 +40,12 @@ Scene_File::Scene_File(std::string message) :
 ////////////////////////////////////////////////////////////
 void Scene_File::Start() {
 	// Create the windows
-	help_window = new Window_Help(0, 0, 320, 32);
+	help_window.reset(new Window_Help(0, 0, 320, 32));
 	help_window->SetText(message);
 
 	for (int i = 0; i < 15; i++) {
-		Window_SaveFile *w = new Window_SaveFile(0, 40 + i * 64, 320, 64);
+		EASYRPG_SHARED_PTR<Window_SaveFile>
+			w(new Window_SaveFile(0, 40 + i * 64, 320, 64));
 		w->SetIndex(i);
 
 		// Try to access file
@@ -96,16 +97,9 @@ void Scene_File::Start() {
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_File::Terminate() {
-	delete help_window;
-	for (size_t i = 0; i < file_windows.size(); i++)
-		delete file_windows[i];
-}
-
-////////////////////////////////////////////////////////////
 void Scene_File::Refresh() {
 	for (int i = 0; (size_t) i < file_windows.size(); i++) {
-		Window_SaveFile *w = file_windows[i];
+		Window_SaveFile *w = file_windows[i].get();
 		w->SetY(40 + (i - top_index) * 64);
 		w->SetActive(i == index);
 		w->SetVisible(i >= top_index && i < top_index + 3);

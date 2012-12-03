@@ -24,6 +24,7 @@
 #include "scene.h"
 #include "sprite.h"
 #include "window_command.h"
+#include <boost/scoped_ptr.hpp>
 
 ////////////////////////////////////////////////////////////
 /// Scene Title class
@@ -37,7 +38,6 @@ public:
 
 	void Start();
 	void Continue();
-	void Terminate();
 	void TransitionIn();
 	void TransitionOut();
 	void Suspend();
@@ -103,17 +103,16 @@ public:
 	/// Does a player shutdown.
 	////////////////////////////////////////////////////////
 	void CommandShutdown();
-	
+
 private:
 	/// Displays the options of the title scene
-	Window_Command* command_window;
+	boost::scoped_ptr<Window_Command> command_window;
 
 	/// Background graphic
-	Sprite* title;
+	boost::scoped_ptr<Sprite> title;
 
 	/// contains state of continue button
 	bool continue_enabled;
 };
 
 #endif
-

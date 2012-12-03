@@ -35,25 +35,16 @@ Scene_Status::Scene_Status(int actor_index) :
 void Scene_Status::Start() {
 	int actor = Game_Party::GetActors()[actor_index]->GetId();
 
-	actorinfo_window = new Window_ActorInfo(0, 0, 124, 208, actor);
-	actorstatus_window = new Window_ActorStatus(124, 0, 196, 64, actor);
-	gold_window = new Window_Gold(0, 208, 124, 32);
-	equipstatus_window = new Window_EquipStatus(124, 64, 196, 80, actor, false);
-	equip_window = new Window_Equip(124, 144, 196, 96, actor);
+	actorinfo_window.reset(new Window_ActorInfo(0, 0, 124, 208, actor));
+	actorstatus_window.reset(new Window_ActorStatus(124, 0, 196, 64, actor));
+	gold_window.reset(new Window_Gold(0, 208, 124, 32));
+	equipstatus_window.reset(new Window_EquipStatus(124, 64, 196, 80, actor, false));
+	equip_window.reset(new Window_Equip(124, 144, 196, 96, actor));
 
 	equip_window->SetActive(false);
 	equipstatus_window->SetActive(false);
 
 	equip_window->SetIndex(-1);
-}
-
-////////////////////////////////////////////////////////////
-void Scene_Status::Terminate() {
-	delete actorinfo_window;
-	delete actorstatus_window;
-	delete gold_window;
-	delete equipstatus_window;
-	delete equip_window;
 }
 
 ////////////////////////////////////////////////////////////
@@ -68,10 +59,10 @@ void Scene_Status::Update() {
 	} else if (Game_Party::GetActors().size() > 1 && Input::IsTriggered(Input::RIGHT)) {
 		Game_System::SePlay(Data::system.cursor_se);
 		actor_index = (actor_index + 1) % Game_Party::GetActors().size();
-		Scene::Push(new Scene_Status(actor_index), true);
+		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Status>(actor_index), true);
 	} else if (Game_Party::GetActors().size() > 1 && Input::IsTriggered(Input::LEFT)) {
 		Game_System::SePlay(Data::system.cursor_se);
 		actor_index = (actor_index + Game_Party::GetActors().size() - 1) % Game_Party::GetActors().size();
-		Scene::Push(new Scene_Status(actor_index), true);
+		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Status>(actor_index), true);
 	}
 }

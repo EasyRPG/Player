@@ -29,9 +29,7 @@
 #include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
-Scene_End::Scene_End() :
-	help_window(NULL),
-	command_window(NULL) {
+Scene_End::Scene_End() {
 	Scene::type = Scene::End;
 }
 
@@ -39,12 +37,6 @@ Scene_End::Scene_End() :
 void Scene_End::Start() {
 	CreateCommandWindow();
 	CreateHelpWindow();
-}
-
-////////////////////////////////////////////////////////////
-void Scene_End::Terminate() {
-	delete command_window;
-	delete help_window;
 }
 
 ////////////////////////////////////////////////////////////
@@ -77,7 +69,7 @@ void Scene_End::CreateCommandWindow() {
 	options.push_back(Data::terms.yes);
 	options.push_back(Data::terms.no);
 
-	command_window = new Window_Command(options);
+	command_window.reset(new Window_Command(options));
 	command_window->SetX(160 - command_window->GetWidth() / 2);
 	command_window->SetY(72 + 48);
 }
@@ -86,9 +78,9 @@ void Scene_End::CreateCommandWindow() {
 void Scene_End::CreateHelpWindow() {
 	int text_size = Font::Default()->GetSize(Data::terms.exit_game_message).width;
 
-	help_window = new Window_Help(160 - (text_size + 16)/ 2,
-		72, text_size + 16, 32);
+	help_window.reset(new Window_Help(160 - (text_size + 16)/ 2,
+									  72, text_size + 16, 32));
 	help_window->SetText(Data::terms.exit_game_message);
 
-	command_window->SetHelpWindow(help_window);
+	command_window->SetHelpWindow(help_window.get());
 }

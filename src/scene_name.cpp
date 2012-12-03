@@ -34,25 +34,18 @@ Scene_Name::Scene_Name() :
 void Scene_Name::Start() {
 	// Create the windows
 
-	name_window = new Window_Name(80, 40, 240, 40);
+	name_window.reset(new Window_Name(80, 40, 240, 40));
 	name_window->Set(Game_Temp::hero_name);
 	name_window->Refresh();
 
-	face_window = new Window_Face(0, 0, 80, 80);
+	face_window.reset(new Window_Face(0, 0, 80, 80));
 	face_window->Set(Game_Temp::hero_name_id);
 	face_window->Refresh();
 
-	kbd_window = new Window_Keyboard(0, 80, 320, 160);
+	kbd_window.reset(new Window_Keyboard(0, 80, 320, 160));
 	kbd_window->SetMode(Window_Keyboard::Mode(Game_Temp::hero_name_charset));
 	kbd_window->Refresh();
 	kbd_window->UpdateCursorRect();
-}
-
-////////////////////////////////////////////////////////////
-void Scene_Name::Terminate() {
-	delete kbd_window;
-	delete name_window;
-	delete face_window;
 }
 
 ////////////////////////////////////////////////////////////

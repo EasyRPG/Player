@@ -23,8 +23,7 @@
 ////////////////////////////////////////////////////////////
 #include <vector>
 #include "system.h"
-
-class TilemapLayer;
+#include "tilemap_layer.h"
 
 ////////////////////////////////////////////////////////////
 /// Tilemap class
@@ -32,7 +31,6 @@ class TilemapLayer;
 class Tilemap {
 public:
 	Tilemap();
-	~Tilemap();
 
 	void Update();
 
@@ -66,8 +64,7 @@ public:
 	void SubstituteUp(int old_id, int new_id);
 
 private:
-	TilemapLayer* layer_down;
-	TilemapLayer* layer_up;
+	TilemapLayer layer_down, layer_up;
 };
 
 #endif

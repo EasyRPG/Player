@@ -96,7 +96,7 @@ void Battle::Enemy::CreateSprite() {
 		graphic = new_graphic;
 	}
 
-	sprite = new Sprite();
+	sprite.reset(new Sprite());
 	sprite->SetBitmap(graphic);
 	sprite->SetOx(graphic->GetWidth() / 2);
 	sprite->SetOy(graphic->GetHeight() / 2);
@@ -109,7 +109,6 @@ void Battle::Enemy::CreateSprite() {
 void Battle::Enemy::Transform(int enemy_id) {
 	rpg_enemy = &Data::enemies[enemy_id - 1];
 	game_enemy->Transform(enemy_id);
-	delete sprite;
 	CreateSprite();
 }
 
@@ -135,7 +134,7 @@ void Battle::Ally::CreateSprite() {
 	if (Player::engine != Player::EngineRpg2k3)
 		return;
 
-	sprite = new Sprite();
+	sprite.reset(new Sprite());
 	sprite->SetOx(24);
 	sprite->SetOy(24);
 	sprite->SetX(rpg_actor->battle_x);

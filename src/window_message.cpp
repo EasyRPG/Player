@@ -48,7 +48,9 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),
 	contents_x(0), contents_y(0), line_count(0), text(""),
 	kill_message(false), halt_output(false), speed_modifier(0),
-	speed_frame_counter(0), number_input_window(NULL)
+	speed_frame_counter(0),
+	number_input_window(new Window_NumberInput(0, 0)),
+	gold_window(new Window_Gold(232, 0, 88, 32))
 {
 	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
@@ -60,10 +62,8 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	index = -1;
 	text_color = Font::ColorDefault;
 
-	number_input_window = new Window_NumberInput(0, 0);
 	number_input_window->SetVisible(false);
 
-	gold_window = new Window_Gold(232, 0, 88, 32);
 	gold_window->SetVisible(false);
 
 	Game_Message::Init();
@@ -73,12 +73,6 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 Window_Message::~Window_Message() {
 	TerminateMessage();
 	Game_Message::visible = false;
-
-	// Without this check the player crashes at the end
-	if (!Player::exit_flag) {
-		delete gold_window;
-		delete number_input_window;
-	}
 }
 
 ////////////////////////////////////////////////////////////

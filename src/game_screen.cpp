@@ -23,29 +23,14 @@
 #include "bitmap.h"
 
 Game_Screen::Game_Screen() :
-	data(Main_Data::game_data.screen),
-	weather_plane(NULL),
-	animation(NULL)
+	data(Main_Data::game_data.screen)
 {
 	Reset();
 }
 
-Game_Screen::~Game_Screen()
-{
-	if (animation)
-		delete animation;
-	if (weather_plane)
-		delete weather_plane;
-}
-
 void Game_Screen::Reset()
 {
-	std::vector<Picture*>::iterator it;
-	for (it = pictures.begin(); it != pictures.end(); ++it) {
-		delete *it;
-		*it = NULL;
-	}
-
+	pictures.clear();
 	pictures.resize(50);
 
 	data.tint_current_red = -1;
@@ -87,10 +72,10 @@ void Game_Screen::Reset()
 }
 
 Picture* Game_Screen::GetPicture(int id) {
-	Picture*& p = pictures[id - 1];
-	if (p == NULL)
-		p = new Picture(id);
-	return p;
+	EASYRPG_SHARED_PTR<Picture>& p = pictures[id - 1];
+	if (!p)
+		p.reset(new Picture(id));
+	return p.get();
 }
 
 void Game_Screen::TintScreen(int r, int g, int b, int s, int tenths) {
@@ -181,8 +166,8 @@ void Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool glob
 
 	Game_Character* target = Game_Character::GetCharacter(target_id, target_id);
 
-	animation = new BattleAnimation(target->GetScreenX(), target->GetScreenY(),
-									&Data::animations[animation_id - 1]);
+	animation.reset(new BattleAnimation(target->GetScreenX(), target->GetScreenY(),
+										&Data::animations[animation_id - 1]));
 	animation->SetVisible(true);
 	// FIXME: target
 	// FIXME: global
@@ -226,7 +211,7 @@ static const uint8_t rain_image[] = {
 
 void Game_Screen::InitWeather() {
 	if (weather_plane == NULL) {
-		weather_plane = new Plane();
+		weather_plane.reset(new Plane());
 		weather_surface = Bitmap::Create(320, 240);
 		weather_surface->SetTransparentColor(Color(0,0,0,0));
 		weather_plane->SetBitmap(weather_surface);
@@ -242,9 +227,7 @@ void Game_Screen::InitWeather() {
 }
 
 void Game_Screen::StopWeather() {
-	if (weather_plane != NULL)
-		delete weather_plane;
-	weather_plane = NULL;
+	weather_plane.reset();
 	snowflakes.clear();
 }
 
@@ -361,7 +344,7 @@ void Game_Screen::Update() {
 			data.shake_time_left--;
 	}
 
-	std::vector<Picture*>::const_iterator it;
+	std::vector<EASYRPG_SHARED_PTR<Picture> >::const_iterator it;
 	for (it = pictures.begin(); it != pictures.end(); it++) {
 		if(*it) { (*it)->Update(); }
 	}
@@ -398,8 +381,7 @@ void Game_Screen::Update() {
 	if (animation != NULL) {
 		animation->Update();
 		if (animation->IsDone()) {
-			delete animation;
-			animation = NULL;
+			animation.reset();
 		}
 	}
 }

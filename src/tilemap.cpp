@@ -25,110 +25,100 @@
 ////////////////////////////////////////////////////////////
 // Constructor
 ////////////////////////////////////////////////////////////
-Tilemap::Tilemap() {
-	layer_down = new TilemapLayer(0);
-	layer_up = new TilemapLayer(1);
-}
-
-////////////////////////////////////////////////////////////
-// Destructor
-////////////////////////////////////////////////////////////
-Tilemap::~Tilemap() {
-	delete layer_down;
-	delete layer_up;
+Tilemap::Tilemap(): layer_down(0), layer_up(1) {
 }
 
 ////////////////////////////////////////////////////////////
 // Update
 ////////////////////////////////////////////////////////////
 void Tilemap::Update() {
-	layer_down->Update();
+	layer_down.Update();
 }
 
 ////////////////////////////////////////////////////////////
 // Properties
 ////////////////////////////////////////////////////////////
 BitmapRef const& Tilemap::GetChipset() const {
-	return layer_down->GetChipset();
+	return layer_down.GetChipset();
 }
 void Tilemap::SetChipset(BitmapRef const& chipset) {
-	layer_down->SetChipset(chipset);
-	layer_up->SetChipset(chipset);
+	layer_down.SetChipset(chipset);
+	layer_up.SetChipset(chipset);
 }
 std::vector<short> Tilemap::GetMapDataDown() const {
-	return layer_down->GetMapData();
+	return layer_down.GetMapData();
 }
 void Tilemap::SetMapDataDown(std::vector<short> down) {
-	layer_down->SetMapData(down);
+	layer_down.SetMapData(down);
 }
 std::vector<short> Tilemap::GetMapDataUp() const {
-	return layer_up->GetMapData();
+	return layer_up.GetMapData();
 }
 void Tilemap::SetMapDataUp(std::vector<short> up) {
-	layer_up->SetMapData(up);
+	layer_up.SetMapData(up);
 }
 std::vector<unsigned char> Tilemap::GetPassableDown() const {
-	return layer_down->GetPassable();
+	return layer_down.GetPassable();
 }
 void Tilemap::SetPassableDown(std::vector<unsigned char> down) {
-	layer_down->SetPassable(down);
+	layer_down.SetPassable(down);
 }
 std::vector<unsigned char> Tilemap::GetPassableUp() const {
-	return layer_up->GetPassable();
+	return layer_up.GetPassable();
 }
 void Tilemap::SetPassableUp(std::vector<unsigned char> up) {
-	layer_up->SetPassable(up);
+	layer_up.SetPassable(up);
 }
 bool Tilemap::GetVisible() const {
-	return layer_down->GetVisible();
+	return layer_down.GetVisible();
 }
 void Tilemap::SetVisible(bool nvisible) {
-	layer_down->SetVisible(nvisible);
-	layer_up->SetVisible(nvisible);
+	layer_down.SetVisible(nvisible);
+	layer_up.SetVisible(nvisible);
 }
 int Tilemap::GetOx() const {
-	return layer_down->GetOx();
+	return layer_down.GetOx();
 }
 void Tilemap::SetOx(int nox) {
-	layer_down->SetOx(nox);
-	layer_up->SetOx(nox);
+	layer_down.SetOx(nox);
+	layer_up.SetOx(nox);
 }
 int Tilemap::GetOy() const {
-	return layer_down->GetOy();
+	return layer_down.GetOy();
 }
 void Tilemap::SetOy(int noy) {
-	layer_down->SetOy(noy);
-	layer_up->SetOy(noy);
+	layer_down.SetOy(noy);
+	layer_up.SetOy(noy);
 }
 int Tilemap::GetWidth() const {
-	return layer_down->GetWidth();
+	return layer_down.GetWidth();
 }
 void Tilemap::SetWidth(int nwidth) {
-	layer_down->SetWidth(nwidth);
-	layer_up->SetWidth(nwidth);
+	layer_down.SetWidth(nwidth);
+	layer_up.SetWidth(nwidth);
 }
 int Tilemap::GetHeight() const {
-	return layer_down->GetHeight();
+	return layer_down.GetHeight();
 }
 void Tilemap::SetHeight(int nheight) {
-	layer_down->SetHeight(nheight);
-	layer_up->SetHeight(nheight);
+	layer_down.SetHeight(nheight);
+	layer_up.SetHeight(nheight);
 }
 int Tilemap::GetAnimationSpeed() const {
-	return layer_down->GetAnimationSpeed();
+	return layer_down.GetAnimationSpeed();
 }
 void Tilemap::SetAnimationSpeed(int speed) {
-	layer_down->SetAnimationSpeed(speed);
+	layer_down.SetAnimationSpeed(speed);
 }
 int Tilemap::GetAnimationType() const {
-	return layer_down->GetAnimationType();
+	return layer_down.GetAnimationType();
 }
 void Tilemap::SetAnimationType(int type) {
-	layer_down->SetAnimationType(type);
+	layer_down.SetAnimationType(type);
 }
 void Tilemap::SubstituteDown(int old_id, int new_id) {
-	layer_down->Substitute(old_id, new_id);
+	layer_down.Substitute(old_id, new_id);
 }
 void Tilemap::SubstituteUp(int old_id, int new_id) {
-	layer_up->Substitute(old_id, new_id);
+	layer_up.Substitute(old_id, new_id);
 }

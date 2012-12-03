@@ -24,8 +24,10 @@
 
 #include <string>
 #include <vector>
+#include "system.h"
 #include "rpg_save.h"
 #include "sprite.h"
+#include <boost/scoped_ptr.hpp>
 
 ////////////////////////////////////////////////////////////
 /// Picture class
@@ -36,7 +38,6 @@ class Sprite;
 class Picture {
 public:
 	Picture(int ID);
-	~Picture();
 
 	void Show(const std::string& name);
 	void Erase();
@@ -58,10 +59,9 @@ private:
 
 	static const int waver_speed = 10;
 
-	Sprite* sprite;
+	boost::scoped_ptr<Sprite> sprite;
 
 	void UpdateSprite();
 };
 
 #endif
-

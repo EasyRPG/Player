@@ -394,7 +394,7 @@ bool Game_Interpreter_Map::CommandChangeSpriteAssociation(RPG::EventCommand cons
 }
 
 bool Game_Interpreter_Map::CommandMemorizeLocation(RPG::EventCommand const& com) { // code 10820
-	Game_Character *player = Main_Data::game_player;
+	Game_Character *player = Main_Data::game_player.get();
 	int var_map_id = com.parameters[0];
 	int var_x = com.parameters[1];
 	int var_y = com.parameters[2];
@@ -405,7 +405,7 @@ bool Game_Interpreter_Map::CommandMemorizeLocation(RPG::EventCommand const& com)
 }
 
 bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com) { // Code 10830
-	Game_Character *player = Main_Data::game_player;
+	Game_Character *player = Main_Data::game_player.get();
 	int var_map_id = com.parameters[0];
 	int var_x = com.parameters[1];
 	int var_y = com.parameters[2];
@@ -793,7 +793,7 @@ bool Game_Interpreter_Map::CommandErasePicture(RPG::EventCommand const& com) { /
 
 bool Game_Interpreter_Map::CommandWeatherEffects(RPG::EventCommand const& com) { // code 11070
 #if !(defined(DINGOO) || defined(GEKKO) || defined(PSP) || defined(GPH)) // Rikku2000: Remove Weather Effects for Device with lower CPU
-	Game_Screen* screen = Main_Data::game_screen;
+	Game_Screen* screen = Main_Data::game_screen.get();
 	int type = com.parameters[0];
 	int strength = com.parameters[1];
 	screen->Weather(type, strength);
@@ -1162,7 +1162,7 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 	Game_Character *player;
 	switch (com.parameters[2]) {
 		case 0:
-			player = Main_Data::game_player;
+			player = Main_Data::game_player.get();
 			Game_Temp::battle_terrain_id = Game_Map::GetTerrainTag(player->GetX(), player->GetY());
 			Game_Temp::battle_background = "";
 			break;
@@ -1274,9 +1274,9 @@ bool Game_Interpreter_Map::CommandEscapeTarget(RPG::EventCommand const& com) { /
 
 bool Game_Interpreter_Map::CommandSpriteTransparency(RPG::EventCommand const& com) { // code 11310
 	bool visible = com.parameters[0] != 0;
-	Game_Character* player = Main_Data::game_player;
+	Game_Character* player = Main_Data::game_player.get();
 
-	Scene_Map* scene = (Scene_Map*) Scene::Find(Scene::Map);
+	Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
 	if (!scene)
 		return true;
 
@@ -1299,7 +1299,7 @@ bool Game_Interpreter_Map::CommandFlashSprite(RPG::EventCommand const& com) { //
 	bool wait = com.parameters[6] > 0;
 	Game_Character* event = GetCharacter(event_id);
 
-	Scene_Map* scene = (Scene_Map*) Scene::Find(Scene::Map);
+	Scene_Map* scene = (Scene_Map*) Scene::Find(Scene::Map).get();
 	if (!scene)
 		return true;
 
@@ -1329,7 +1329,7 @@ bool Game_Interpreter_Map::CommandChangeMapTileset(RPG::EventCommand const& com)
 	int chipset_id = com.parameters[0];
 	Game_Map::SetChipset(chipset_id);
 
-	Scene_Map* scene = (Scene_Map*) Scene::Find(Scene::Map);
+	Scene_Map* scene = (Scene_Map*) Scene::Find(Scene::Map).get();
 
 	if (!scene)
 		return true;
@@ -1346,7 +1346,7 @@ bool Game_Interpreter_Map::CommandCallEvent(RPG::EventCommand const& com) { // c
 	if (child_interpreter != NULL)
 		return false;
 
-	child_interpreter = new Game_Interpreter_Map(depth + 1);
+	child_interpreter.reset(new Game_Interpreter_Map(depth + 1));
 
 	switch (com.parameters[0]) {
 		case 0: // Common Event
@@ -1518,7 +1518,7 @@ bool Game_Interpreter_Map::CommandTileSubstitution(RPG::EventCommand const& com)
 	bool upper = com.parameters[0] != 0;
 	int old_id = com.parameters[1];
 	int new_id = com.parameters[2];
-	Scene_Map* scene = (Scene_Map*) Scene::Find(Scene::Map);
+	Scene_Map* scene = (Scene_Map*) Scene::Find(Scene::Map).get();
 	if (!scene)
 		return true;
 

@@ -29,6 +29,7 @@
 #include "game_variables.h"
 #include "game_switches.h"
 #include "font.h"
+#include <boost/scoped_ptr.hpp>
 
 ////////////////////////////////////////////////////////////
 /// Global Variables
@@ -38,8 +39,8 @@ Game_Switches_Class Game_Switches(Main_Data::game_data.system.switches);
 
 namespace Main_Data {
 	// Dynamic Game Data
-	Game_Screen* game_screen = NULL;
-	Game_Player* game_player = NULL;
+	boost::scoped_ptr<Game_Screen> game_screen;
+	boost::scoped_ptr<Game_Player> game_player;
 	RPG::Save game_data;
 	std::string project_path = ".";
 }
@@ -49,8 +50,6 @@ void Main_Data::Cleanup() {
 	Game_Actors::Dispose();
 	Font::Dispose();
 
-	delete game_screen;
-	delete game_player;
-	game_screen = NULL;
-	game_player = NULL;
+	game_screen.reset();
+	game_player.reset();
 }

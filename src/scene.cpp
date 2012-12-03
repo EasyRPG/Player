@@ -30,9 +30,9 @@
 #endif
 
 ////////////////////////////////////////////////////////////
-Scene* Scene::instance;
-std::vector<Scene*> Scene::old_instances;
-std::vector<Scene*> Scene::instances;
+EASYRPG_SHARED_PTR<Scene> Scene::instance;
+std::vector<EASYRPG_SHARED_PTR<Scene> > Scene::old_instances;
+std::vector<EASYRPG_SHARED_PTR<Scene> > Scene::instances;
 const char Scene::scene_names[SceneMax][12] =
 {
 	"Null",
@@ -78,7 +78,7 @@ void Scene::MainFunction() {
 	Resume();
 
 	// Scene loop
-	while (Scene::instance == this) {
+	while (Scene::instance.get() == this) {
 		Player::Update();
 		Graphics::Update();
 		Input::Update();
@@ -95,8 +95,6 @@ void Scene::MainFunction() {
 
 	if (push_pop_operation == 1) {
 		Graphics::Push();
-	} else if (push_pop_operation == 2) {
-		Terminate();
 	}
 }
 
@@ -117,10 +115,6 @@ void Scene::Suspend() {
 }
 
 ////////////////////////////////////////////////////////////
-void Scene::Terminate() {
-}
-
-////////////////////////////////////////////////////////////
 void Scene::TransitionIn() {
 	Graphics::Transition(Graphics::TransitionFadeIn, 12);
 }
@@ -135,7 +129,7 @@ void Scene::Update() {
 }
 
 ////////////////////////////////////////////////////////////
-void Scene::Push(Scene* new_scene, bool pop_stack_top) {
+void Scene::Push(EASYRPG_SHARED_PTR<Scene> const& new_scene, bool pop_stack_top) {
 	if (pop_stack_top) {
 		old_instances.push_back(instances.back());
 		instances.pop_back();
@@ -158,7 +152,7 @@ void Scene::Pop() {
 	instances.pop_back();
 
 	if (instances.size() == 0) {
-		Push(new Scene()); // Null-scene
+		Push(EASYRPG_MAKE_SHARED<Scene>()); // Null-scene
 	} else {
 		instance = instances.back();
 	}
@@ -192,13 +186,13 @@ void Scene::PopUntil(SceneType type) {
 }
 
 ////////////////////////////////////////////////////////////
-Scene* Scene::Find(SceneType type) {
-	std::vector<Scene*>::const_reverse_iterator it;
+EASYRPG_SHARED_PTR<Scene> Scene::Find(SceneType type) {
+	std::vector<EASYRPG_SHARED_PTR<Scene> >::const_reverse_iterator it;
 	for (it = instances.rbegin() ; it != instances.rend(); it++) {
 		if ((*it)->type == type) {
 			return *it;
 		}
 	}
 
-	return NULL;
+	return EASYRPG_SHARED_PTR<Scene>();
 }

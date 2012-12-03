@@ -47,18 +47,11 @@ void Scene_Menu::Start() {
 	CreateCommandWindow();
 
 	// Gold Window
-	gold_window = new Window_Gold(0, 208, 88, 32);
+	gold_window.reset(new Window_Gold(0, 208, 88, 32));
 
 	// Status Window
-	menustatus_window = new Window_MenuStatus(88, 0, 232, 240);
+	menustatus_window.reset(new Window_MenuStatus(88, 0, 232, 240));
 	menustatus_window->SetActive(false);
-}
-
-////////////////////////////////////////////////////////////
-void Scene_Menu::Terminate() {
-	delete command_window;
-	delete gold_window;
-	delete menustatus_window;
 }
 
 ////////////////////////////////////////////////////////////
@@ -136,7 +129,7 @@ void Scene_Menu::CreateCommandWindow() {
 		}
 	}
 
-	command_window = new Window_Command(options, 88);
+	command_window.reset(new Window_Command(options, 88));
 	command_window->SetIndex(menu_index);
 
 	// Disable items
@@ -178,7 +171,7 @@ void Scene_Menu::UpdateCommand() {
 				Game_System::SePlay(Data::system.buzzer_se);
 			} else {
 				Game_System::SePlay(Data::system.decision_se);
-				Scene::Push(new Scene_Item());
+				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Item>());
 			}
 			break;
 		case Skill:
@@ -199,7 +192,7 @@ void Scene_Menu::UpdateCommand() {
 				Game_System::SePlay(Data::system.buzzer_se);
 			} else {
 				Game_System::SePlay(Data::system.decision_se);
-				Scene::Push(new Scene_Save());
+				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Save>());
 			}
 			break;
 		case Order:
@@ -207,7 +200,7 @@ void Scene_Menu::UpdateCommand() {
 				Game_System::SePlay(Data::system.buzzer_se);
 			} else {
 				Game_System::SePlay(Data::system.decision_se);
-				Scene::Push(new Scene_Order());
+				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Order>());
 			}
 			break;
 		case Wait:
@@ -217,7 +210,7 @@ void Scene_Menu::UpdateCommand() {
 			break;
 		case Quit:
 			Game_System::SePlay(Data::system.decision_se);
-			Scene::Push(new Scene_End());
+			Scene::Push(EASYRPG_MAKE_SHARED<Scene_End>());
 			break;
 		}
 	}
@@ -234,13 +227,13 @@ void Scene_Menu::UpdateActorSelection() {
 		Game_System::SePlay(Data::system.decision_se);
 		switch (command_options[command_window->GetIndex()]) {
 		case Skill:
-			Scene::Push(new Scene_Skill(menustatus_window->GetIndex()));
+			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Skill>(menustatus_window->GetIndex()));
 			break;
 		case Equipment:
-			Scene::Push(new Scene_Equip(menustatus_window->GetIndex()));
+			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Equip>(menustatus_window->GetIndex()));
 			break;
 		case Status:
-			Scene::Push(new Scene_Status(menustatus_window->GetIndex()));
+			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Status>(menustatus_window->GetIndex()));
 			break;
 		case Row:
 		{

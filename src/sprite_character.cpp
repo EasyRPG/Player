@@ -34,10 +34,6 @@ Sprite_Character::Sprite_Character(Game_Character* character) :
 }
 
 ////////////////////////////////////////////////////////////
-Sprite_Character::~Sprite_Character() {
-}
-
-////////////////////////////////////////////////////////////
 void Sprite_Character::Update() {
 	Sprite::Update();
 	Rect r;

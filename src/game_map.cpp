@@ -33,6 +33,7 @@
 #include "util_macro.h"
 #include "game_system.h"
 #include "filefinder.h"
+#include <boost/scoped_ptr.hpp>
 
 ////////////////////////////////////////////////////////////
 namespace {
@@ -60,7 +61,7 @@ namespace {
 	int scroll_rest;
 	int scroll_speed;
 
-	Game_Interpreter* interpreter;
+	boost::scoped_ptr<Game_Interpreter> interpreter;
 	Game_Vehicle* vehicles[3];
 
 	bool pan_locked;
@@ -79,7 +80,7 @@ void Game_Map::Init() {
 	scroll_direction = 0;
 	scroll_rest = 0;
 	scroll_speed = 0;
-	interpreter = new Game_Interpreter_Map(0, true);
+	interpreter.reset(new Game_Interpreter_Map(0, true));
 	map_info.encounter_rate = 0;
 
 	for (int i = 0; i < 3; i++)
@@ -96,14 +97,7 @@ void Game_Map::Init() {
 
 ////////////////////////////////////////////////////////////
 void Game_Map::Dispose() {
-	for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
-		delete i->second;
-	}
 	events.clear();
-
-	for (tCommonEventHash::iterator i = common_events.begin(); i != common_events.end(); ++i) {
-		delete i->second;
-	}
 	common_events.clear();
 
 	if (Main_Data::game_screen != NULL) {
@@ -115,7 +109,7 @@ void Game_Map::Dispose() {
 
 void Game_Map::Quit() {
 	Dispose();
-	delete interpreter;
+	interpreter.reset();
 }
 
 ////////////////////////////////////////////////////////////
@@ -147,11 +141,11 @@ void Game_Map::Setup(int _id) {
 	events.clear();
 
 	for (size_t i = 0; i < map->events.size(); ++i) {
-		events.insert(std::pair<int, Game_Event*>(map->events[i].ID, new Game_Event(location.map_id, map->events[i])));
+		events.insert(std::make_pair(map->events[i].ID, EASYRPG_MAKE_SHARED<Game_Event>(location.map_id, map->events[i])));
 	}
 
 	for (size_t i = 0; i < Data::commonevents.size(); ++i) {
-		common_events.insert(std::pair<int, Game_CommonEvent*>(Data::commonevents[i].ID, new Game_CommonEvent(Data::commonevents[i].ID)));
+		common_events.insert(std::make_pair(Data::commonevents[i].ID, EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID)));
 	}
 
 	scroll_direction = 2;
@@ -277,7 +271,7 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 	}
 
 	for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
-		if (i->second->GetTileId() >= 0 && i->second != self_event &&
+		if (i->second->GetTileId() >= 0 && i->second.get() != self_event &&
 			i->second->GetX() == x && i->second->GetY() == y && !i->second->GetThrough()) {
 			// FIXME: What does this do?
 			/*if ((passages_up[i->second->GetTileId()] & bit) != 0)
@@ -382,7 +376,7 @@ void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
 	tEventHash::const_iterator i;
 	for (i = Game_Map::GetEvents().begin(); i != Game_Map::GetEvents().end(); i++) {
 		if (i->second->GetX() == x && i->second->GetY() == y) {
-			result.push_back(i->second);
+			result.push_back(i->second.get());
 		}
 	}
 

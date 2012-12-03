@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////
 // This file is part of EasyRPG Player.
-// 
+//
 // EasyRPG Player is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // EasyRPG Player is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
@@ -37,22 +37,15 @@ Scene_Skill::Scene_Skill(int actor_index, int skill_index) :
 ////////////////////////////////////////////////////////////
 void Scene_Skill::Start() {
 	// Create the windows
-	help_window = new Window_Help(0, 0, 320, 32);
-	skillstatus_window = new Window_SkillStatus(0, 32, 320, 32);
-	skill_window = new Window_Skill(0, 64, 320, 240 - 64);
+	help_window.reset(new Window_Help(0, 0, 320, 32));
+	skillstatus_window.reset(new Window_SkillStatus(0, 32, 320, 32));
+	skill_window.reset(new Window_Skill(0, 64, 320, 240 - 64));
 
 	// Assign actors and help to windows
 	skill_window->SetActor(Game_Party::GetActors()[actor_index]->GetId());
 	skillstatus_window->SetActor(Game_Party::GetActors()[actor_index]->GetId());
 	skill_window->SetIndex(skill_index);
-	skill_window->SetHelpWindow(help_window);
-}
-
-////////////////////////////////////////////////////////////
-void Scene_Skill::Terminate() {
-	delete help_window;
-	delete skillstatus_window;
-	delete skill_window;
+	skill_window->SetHelpWindow(help_window.get());
 }
 
 ////////////////////////////////////////////////////////////
@@ -78,13 +71,13 @@ void Scene_Skill::Update() {
 				Scene::PopUntil(Scene::Map);
 				Game_Map::SetNeedRefresh(true);
 			} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_normal) {
-				Scene::Push(new Scene_ActorTarget(skill_id, actor_index, skill_window->GetIndex()));
+				Scene::Push(EASYRPG_MAKE_SHARED<Scene_ActorTarget>(skill_id, actor_index, skill_window->GetIndex()));
 				skill_index = skill_window->GetIndex();
 			} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_teleport) {
 				// ToDo: Displays the teleport target scene/window
 			} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_escape) {
 				// ToDo: Displays the escape target scene/window
-			} 
+			}
 		} else {
 			Game_System::SePlay(Data::system.buzzer_se);
 		}

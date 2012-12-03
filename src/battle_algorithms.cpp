@@ -41,10 +41,10 @@ void Game_Battle::AttackEnemy(Battle::Ally& ally, Battle::Enemy& enemy) {
 		effect += change;
 
 		enemy.game_enemy->SetHp(enemy.game_enemy->GetHp() - effect);
-		GetScene()->Floater(enemy.sprite, Font::ColorDefault, effect, 60);
+		GetScene()->Floater(enemy.sprite.get(), Font::ColorDefault, effect, 60);
 	}
 	else
-		GetScene()->Floater(enemy.sprite, Font::ColorDefault, Data::terms.miss, 60);
+		GetScene()->Floater(enemy.sprite.get(), Font::ColorDefault, Data::terms.miss, 60);
 }
 
 ////////////////////////////////////////////////////////////
@@ -89,9 +89,9 @@ void Game_Battle::UseItemAlly(Battle::Ally& /* ally */, const RPG::Item& item, B
 	target.GetActor()->SetSp(target.GetActor()->GetSp() + sp);
 
 	if (hp > 0)
-		GetScene()->Floater(target.sprite, 9, hp, 60);
+		GetScene()->Floater(target.sprite.get(), 9, hp, 60);
 	else if (sp > 0)
-		GetScene()->Floater(target.sprite, 9, sp, 60);
+		GetScene()->Floater(target.sprite.get(), 9, sp, 60);
 
 	// Status recovery
 	for (int i = 0; i < (int) item.state_set.size(); i++)
@@ -181,7 +181,7 @@ void Game_Battle::UseSkillAlly(Battle::Battler& /* user */, const RPG::Skill& sk
 				target.ModifyAgi(effect);
 
 			if (skill.affect_hp || skill.affect_sp)
-				GetScene()->Floater(target.sprite, 9, effect, 60);
+				GetScene()->Floater(target.sprite.get(), 9, effect, 60);
 		}
 	}
 
@@ -200,7 +200,7 @@ void Game_Battle::UseSkillAlly(Battle::Battler& /* user */, const RPG::Skill& sk
 	}
 
 	if (miss)
-		GetScene()->Floater(target.sprite, Font::ColorDefault, Data::terms.miss, 60);
+		GetScene()->Floater(target.sprite.get(), Font::ColorDefault, Data::terms.miss, 60);
 }
 
 ////////////////////////////////////////////////////////////
@@ -238,7 +238,7 @@ void Game_Battle::UseSkillEnemy(Battle::Battler& user, const RPG::Skill& skill, 
 				target.ModifyAgi(-effect);
 
 			if (skill.affect_hp || skill.affect_sp)
-				GetScene()->Floater(target.sprite, Font::ColorDefault, effect, 60);
+				GetScene()->Floater(target.sprite.get(), Font::ColorDefault, effect, 60);
 		}
 	}
 
@@ -257,7 +257,7 @@ void Game_Battle::UseSkillEnemy(Battle::Battler& user, const RPG::Skill& skill, 
 	}
 
 	if (miss)
-		GetScene()->Floater(target.sprite, Font::ColorDefault, Data::terms.miss, 60);
+		GetScene()->Floater(target.sprite.get(), Font::ColorDefault, Data::terms.miss, 60);
 }
 
 ////////////////////////////////////////////////////////////
@@ -361,10 +361,10 @@ void Game_Battle::EnemyAttackAlly(Battle::Enemy& enemy, Battle::Ally& ally) {
 		effect += change;
 
 		ally.GetActor()->SetHp(ally.GetActor()->GetHp() - effect);
-		GetScene()->Floater(ally.sprite, Font::ColorDefault, effect, 60);
+		GetScene()->Floater(ally.sprite.get(), Font::ColorDefault, effect, 60);
 	}
 	else
-		GetScene()->Floater(ally.sprite, Font::ColorDefault, Data::terms.miss, 60);
+		GetScene()->Floater(ally.sprite.get(), Font::ColorDefault, Data::terms.miss, 60);
 }
 
 ////////////////////////////////////////////////////////////

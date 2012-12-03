@@ -24,6 +24,7 @@
 #include "system.h"
 #include "scene.h"
 #include "sprite.h"
+#include <boost/scoped_ptr.hpp>
 
 ////////////////////////////////////////////////////////////
 /// Scene Logo class.
@@ -41,10 +42,9 @@ public:
 	void TransitionIn();
 	void TransitionOut();
 	void Update();
-	void Terminate();
 
 private:
-	Sprite* logo;
+	boost::scoped_ptr<Sprite> logo;
 	BitmapRef logo_img;
 	int frame_counter;
 };

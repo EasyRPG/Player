@@ -10,6 +10,7 @@
 #include "battle_animation.h"
 #include "battle_battler.h"
 #include "game_battle.h"
+#include <boost/scoped_ptr.hpp>
 
 namespace Game_Battle {
 	Battle_Interface* scene;
@@ -32,7 +33,7 @@ namespace Game_Battle {
 	const RPG::EnemyAction* enemy_action;
 
 	const RPG::TroopPage* script_page;
-	Game_Interpreter* interpreter;
+	boost::scoped_ptr<Game_Interpreter> interpreter;
 }
 
 ////////////////////////////////////////////////////////////
@@ -76,7 +77,7 @@ void Game_Battle::Init(Battle_Interface* _scene) {
 
 	script_page = NULL;
 
-	interpreter = new Game_Interpreter_Battle();
+	interpreter.reset(new Game_Interpreter_Battle());
 }
 
 void Game_Battle::Quit() {
@@ -87,7 +88,7 @@ void Game_Battle::Quit() {
 	allies.clear();
 	enemies.clear();
 
-	delete interpreter;
+	interpreter.reset();
 
 	scene = NULL;
 }
@@ -535,4 +536,3 @@ void Game_Battle::EnemyActionDone() {
 	if (enemy_action->switch_off)
 		Game_Switches[enemy_action->switch_off_id] = false;
 }
-

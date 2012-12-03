@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////
 // This file is part of EasyRPG Player.
-// 
+//
 // EasyRPG Player is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // EasyRPG Player is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
@@ -27,7 +27,6 @@
 
 ////////////////////////////////////////////////////////////
 Scene_ActorTarget::Scene_ActorTarget(int item_id, int item_index) :
-	target_window(NULL), help_window(NULL), status_window(NULL),
 	id(item_id), index(item_index), use_item(true) {
 	Scene::type = Scene::ActorTarget;
 }
@@ -43,10 +42,10 @@ Scene_ActorTarget::Scene_ActorTarget(
 ////////////////////////////////////////////////////////////
 void Scene_ActorTarget::Start() {
 	// Create the windows
-	help_window = new Window_Help(0, 0, 136, 32);
-	target_window = new Window_ActorTarget(136, 0, 184, 240);
-	status_window = new Window_TargetStatus(0, 32, 136, 32);
-	
+	help_window.reset(new Window_Help(0, 0, 136, 32));
+	target_window.reset(new Window_ActorTarget(136, 0, 184, 240));
+	status_window.reset(new Window_TargetStatus(0, 32, 136, 32));
+
 	target_window->SetActive(true);
 	target_window->SetIndex(0);
 
@@ -66,13 +65,6 @@ void Scene_ActorTarget::Start() {
 		status_window->SetData(id, false);
 		help_window->SetText(Data::skills[id - 1].name);
 	}
-}
-
-////////////////////////////////////////////////////////////
-void Scene_ActorTarget::Terminate() {
-	delete target_window;
-	delete help_window;
-	delete status_window;
 }
 
 ////////////////////////////////////////////////////////////

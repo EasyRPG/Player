@@ -71,7 +71,7 @@ void Game_Interpreter::Clear() {
 	move_route_waiting = false;		// waiting for move completion
 	button_input_variable_id = 0;	// button input variable ID
 	wait_count = 0;					// wait count
-	child_interpreter = NULL;		// child interpreter for common events, etc
+	child_interpreter.reset();		// child interpreter for common events, etc
 	continuation = NULL;			// function to execute to resume command
 	button_timer = 0;
 }
@@ -141,8 +141,7 @@ void Game_Interpreter::Update() {
 			child_interpreter->Update();
 
 			if (!child_interpreter->IsRunning()) {
-				delete child_interpreter;
-				child_interpreter = NULL;
+				child_interpreter.reset();
 			}
 
 			// If child interpreter still exists
@@ -163,7 +162,7 @@ void Game_Interpreter::Update() {
 
 			Game_Event* g_event;
 			for (size_t i = 0; i < Game_Map::GetEvents().size(); i++) {
-				g_event = Game_Map::GetEvents().find(i)->second;
+				g_event = Game_Map::GetEvents().find(i)->second.get();
 
 				if (g_event->GetMoveRouteForcing()) {
 					return;
@@ -1251,7 +1250,7 @@ bool Game_Interpreter::CommandPlaySound(RPG::EventCommand const& com) { // code 
 
 ////////////////////////////////////////////////////////////
 bool Game_Interpreter::CommandTintScreen(RPG::EventCommand const& com) { // code 11030
-	Game_Screen* screen = Main_Data::game_screen;
+	Game_Screen* screen = Main_Data::game_screen.get();
 	int r = com.parameters[0];
 	int g = com.parameters[1];
 	int b = com.parameters[2];
@@ -1268,7 +1267,7 @@ bool Game_Interpreter::CommandTintScreen(RPG::EventCommand const& com) { // code
 }
 
 bool Game_Interpreter::CommandFlashScreen(RPG::EventCommand const& com) { // code 11040
-	Game_Screen* screen = Main_Data::game_screen;
+	Game_Screen* screen = Main_Data::game_screen.get();
 	int r = com.parameters[0];
 	int g = com.parameters[1];
 	int b = com.parameters[2];
@@ -1300,7 +1299,7 @@ bool Game_Interpreter::CommandFlashScreen(RPG::EventCommand const& com) { // cod
 }
 
 bool Game_Interpreter::CommandShakeScreen(RPG::EventCommand const& com) { // code 11050
-	Game_Screen* screen = Main_Data::game_screen;
+	Game_Screen* screen = Main_Data::game_screen.get();
 	int strength = com.parameters[0];
 	int speed = com.parameters[1];
 	int tenths = com.parameters[2];

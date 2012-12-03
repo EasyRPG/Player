@@ -68,15 +68,15 @@ namespace Graphics {
 	struct State {
 		State() : zlist_dirty(false) {}
 		std::map<uint32_t, Drawable*> drawable_map;
-		std::list<ZObj*> zlist;
+		std::list<EASYRPG_SHARED_PTR<ZObj> > zlist;
 		bool zlist_dirty;
 	};
-	State* state;
-	std::vector<State*> stack;
+	EASYRPG_SHARED_PTR<State> state;
+	std::vector<EASYRPG_SHARED_PTR<State> > stack;
 	void Push();
 	void Pop();
 
-	bool SortZObj(const ZObj* first, const ZObj* second);
+	bool SortZObj(EASYRPG_SHARED_PTR<ZObj> const& first, EASYRPG_SHARED_PTR<ZObj> const& second);
 }
 
 ////////////////////////////////////////////////////////////
@@ -102,7 +102,7 @@ void Graphics::Init() {
 	frozen = false;
 	drawable_creation = 0;
 	drawable_id = 0;
-	state = new State();
+	state.reset(new State());
 	screen_erased = false;
 }
 
@@ -116,12 +116,6 @@ void Graphics::Quit() {
 	}
 
 	state->drawable_map.clear();
-
-	std::list<ZObj*>::iterator it_zlist;
-	for (it_zlist = state->zlist.begin(); it_zlist != state->zlist.end(); it_zlist++) {
-		delete *it_zlist;
-	}
-
 	state->zlist.clear();
 
 	frozen_screen.reset();
@@ -283,7 +277,7 @@ void Graphics::DrawFrame() {
 
 	DisplayUi->CleanDisplay();
 
-	std::list<ZObj*>::iterator it_zlist;
+	std::list<EASYRPG_SHARED_PTR<ZObj> >::iterator it_zlist;
 	for (it_zlist = state->zlist.begin(); it_zlist != state->zlist.end(); it_zlist++) {
 		state->drawable_map[(*it_zlist)->GetId()]->Draw((*it_zlist)->GetZ());
 	}
@@ -308,7 +302,7 @@ void Graphics::DrawOverlay() {
 BitmapRef Graphics::SnapToBitmap() {
 	DisplayUi->BeginScreenCapture();
 
-	std::list<ZObj*>::iterator it_zlist;
+	std::list<EASYRPG_SHARED_PTR<ZObj> >::iterator it_zlist;
 	for (it_zlist = state->zlist.begin(); it_zlist != state->zlist.end(); it_zlist++) {
 		state->drawable_map[(*it_zlist)->GetId()]->Draw((*it_zlist)->GetZ());
 	}
@@ -553,16 +547,16 @@ void Graphics::RemoveDrawable(uint32_t ID) {
 
 ///////////////////////////////////////////////////////////
 ZObj* Graphics::RegisterZObj(int z, uint32_t ID) {
-	ZObj* zobj = new ZObj(z, drawable_creation++, ID);
+	EASYRPG_SHARED_PTR<ZObj> zobj(new ZObj(z, drawable_creation++, ID));
 	state->zlist.push_back(zobj);
 
 	state->zlist_dirty = true;
 
-	return zobj;
+	return zobj.get();
 }
 
 void Graphics::RegisterZObj(int z, uint32_t ID, bool /* multiz */) {
-	ZObj* zobj = new ZObj(z, 999999, ID);
+	EASYRPG_SHARED_PTR<ZObj> zobj(new ZObj(z, 999999, ID));
 	state->zlist.push_back(zobj);
 
 	state->zlist_dirty = true;
@@ -574,12 +568,11 @@ void Graphics::RemoveZObj(uint32_t ID) {
 }
 
 void Graphics::RemoveZObj(uint32_t ID, bool multiz) {
-	std::vector<std::list<ZObj*>::iterator> to_erase;
+	std::vector<std::list<EASYRPG_SHARED_PTR<ZObj> >::iterator> to_erase;
 
-	std::list<ZObj*>::iterator it_zlist;
+	std::list<EASYRPG_SHARED_PTR<ZObj> >::iterator it_zlist;
 	for (it_zlist = state->zlist.begin(); it_zlist != state->zlist.end(); it_zlist++) {
 		if ((*it_zlist)->GetId() == ID) {
-			delete *it_zlist;
 			to_erase.push_back(it_zlist);
 			if (!multiz) break;
 		}
@@ -597,7 +590,7 @@ void Graphics::UpdateZObj(ZObj* zobj, int z) {
 }
 
 ///////////////////////////////////////////////////////////
-inline bool Graphics::SortZObj(const ZObj* first, const ZObj* second) {
+inline bool Graphics::SortZObj(EASYRPG_SHARED_PTR<ZObj> const& first, EASYRPG_SHARED_PTR<ZObj> const& second) {
 	if (first->GetZ() < second->GetZ()) return true;
 	else if (first->GetZ() > second->GetZ()) return false;
 	else return first->GetCreation() < second->GetCreation();
@@ -606,13 +599,12 @@ inline bool Graphics::SortZObj(const ZObj* first, const ZObj* second) {
 ///////////////////////////////////////////////////////////
 void Graphics::Push() {
 	stack.push_back(state);
-	state = new State();
+	state.reset(new State());
 }
 
 ///////////////////////////////////////////////////////////
 void Graphics::Pop() {
 	if (stack.size() > 0) {
-		delete state;
 		state = stack.back();
 		stack.pop_back();
 	}
