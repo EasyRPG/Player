@@ -50,7 +50,7 @@ struct Battler {
 	static const int gauge_full = 10000;
 
 	Battler(int id) :
-		ID(id), sprite(NULL), gauge(0), turns(0),
+		ID(id), gauge(0), turns(0),
 		atk_mod(0), def_mod(0), spi_mod(0), agi_mod(0) {}
 
 	virtual Game_Battler* GetActor() = 0;
