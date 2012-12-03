@@ -42,7 +42,10 @@ namespace Main_Data {
 	boost::scoped_ptr<Game_Screen> game_screen;
 	boost::scoped_ptr<Game_Player> game_player;
 	RPG::Save game_data;
-	std::string project_path = ".";
+	std::string project_path =
+		getenv("RPG_TEST_GAME_PATH")? getenv("RPG_TEST_GAME_PATH"):
+		getenv("RPG_GAME_PATH")? getenv("RPG_GAME_PATH"):
+		".";
 }
 
 void Main_Data::Cleanup() {
