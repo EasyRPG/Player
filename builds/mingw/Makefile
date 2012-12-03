@@ -7,7 +7,7 @@ SHINONOME_SRCS = \
 CPPFILES = $(foreach dir,$(SOURCES), $(wildcard $(dir)/*.cpp)) ${SHINONOME_SRCS}
 OBJ_DIR=build
 OBJS = $(foreach f,${CPPFILES}, ${OBJ_DIR}/$(abspath ${f}).o)
-INCLUDES = ../../lib/readers/include ../../src
+INCLUDES = ../../lib/shinonome ../../lib/readers/include ../../src
 
 CFLAGS = \
 	-g \
