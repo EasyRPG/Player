@@ -243,7 +243,7 @@ void Bitmap::CheckPixels(uint32_t flags) {
 
 ////////////////////////////////////////////////////////////
 Bitmap::TileOpacity Bitmap::GetTileOpacity(int row, int col) {
-	return opacity? Partial : (*opacity)[row][col];
+	return opacity? (*opacity)[row][col] : Partial;
 }
 
 
