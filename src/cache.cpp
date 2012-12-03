@@ -118,8 +118,14 @@ namespace {
 										 T == Material::System? Bitmap::System:
 										 0);
 
-		assert(s.min_width  <= ret->GetWidth () && ret->GetWidth ()<= s.max_width );
-		assert(s.min_height <= ret->GetHeight() && ret->GetHeight()<= s.max_height);
+		if(
+		   ret->GetWidth () < s.min_width  || s.max_width  < ret->GetWidth () ||
+		   ret->GetHeight() < s.min_height || s.max_height < ret->GetHeight()
+		   ) {
+			Output::Debug("Image size error in: %s/%s", s.directory, f.c_str());
+			Output::Debug("width  (min, max, actual) = (%d, %d, %d)", s.min_width , s.max_width , ret->GetWidth ());
+			Output::Debug("height (min, max, actual) = (%d, %d, %d)", s.min_height, s.max_height, ret->GetHeight());
+		}
 
 		return ret;
 	}
