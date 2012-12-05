@@ -79,8 +79,9 @@ if ! [ -f $HOME_MINGW_PATH/include/bzlib.h ] ; then
     sed -i -e "s/\$(PREFIX)\/bin\/\([a-z0-9A-Z_][a-z0-9A-Z_]*\)/\$(PREFIX)\/bin\/\1.exe/" Makefile
     sed -i -e "s/sys.stat.h/sys\/stat.h/" bzip2.c
 
-    make -j $JOBS CC=$MINGW_TARGET-gcc AR=$MINGW_TARGET-ar RANLIB=$MINGW_TARGET-ranlib
-	  make PREFIX=$HOME_MINGW_PATH install
+    make -j $JOBS \
+        CC="ccache $MINGW_TARGET-gcc" AR=$MINGW_TARGET-ar \
+        RANLIB=$MINGW_TARGET-ranlib PREFIX=$HOME_MINGW_PATH install
 
     cd $BUILD_DIR
 fi
