@@ -53,6 +53,10 @@ ${OBJ_DIR}/%.cpp.o : %.cpp
 	mkdir -p $(dir $@)
 	${CXX}  ${CXXFLAGS} -c $< -o $@
 
+${OBJ_DIR}/%.cxx.o : %.cxx
+	mkdir -p $(dir $@)
+	${CXX}  ${CXXFLAGS} -c $< -o $@
+
 SHINONOME_GENERATOR=../../lib/shinonome/generate_cxx_font.rb
 ${SHINONOME_SRCS} : ${SHINONOME_GENERATOR}
 	ruby ${SHINONOME_GENERATOR}

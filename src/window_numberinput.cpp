@@ -26,6 +26,8 @@
 #include "bitmap.h"
 #include "font.h"
 
+#include <cstdio>
+
 ////////////////////////////////////////////////////////////
 Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight), digits_max(6) {

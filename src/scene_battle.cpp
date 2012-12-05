@@ -126,7 +126,7 @@ void Scene_Battle::Start() {
 	CreateCursors();
 	CreateWindows();
 
-	animation = NULL;
+	animation.reset();
 	animations.clear();
 
 	if (!Game_Temp::battle_background.empty())

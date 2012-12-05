@@ -42,6 +42,22 @@ JOBS=2
 mkdir $BUILD_DIR
 cd $BUILD_DIR
 
+
+# iconv
+if ! [ -f $HOME_MINGW_PATH/include/iconv.h ] ; then
+    ICONV_VERSION=1.14
+    wget --continue \
+        "http://ftp.gnu.org/pub/gnu/libiconv/libiconv-$ICONV_VERSION.tar.gz" \
+        -O $SCRIPT_DIR/archive/libiconv-$ICONV_VERSION.tar.gz
+    tar -xf $SCRIPT_DIR/archive/libiconv-$ICONV_VERSION.tar.gz
+    cd libiconv-$ICONV_VERSION
+    ./configure $CONFIGURE_FLAGS
+    make -j $JOBS
+	  make install
+
+    cd $BUILD_DIR
+fi
+
 # winpthreads
 if ! [ -f $HOME_MINGW_PATH/include/pthread.h ] ; then
     svn checkout "https://mingw-w64.svn.sourceforge.net/svnroot/mingw-w64/experimental/winpthreads"
@@ -49,6 +65,24 @@ if ! [ -f $HOME_MINGW_PATH/include/pthread.h ] ; then
     ./configure $CONFIGURE_FLAGS
     make
     make install
+fi
+
+# bzip2
+if ! [ -f $HOME_MINGW_PATH/include/bzlib.h ] ; then
+    BZIP2_VERSION=1.0.6
+    wget --continue \
+        "http://www.bzip.org/1.0.6/bzip2-$BZIP2_VERSION.tar.gz" \
+        -O $SCRIPT_DIR/archive/bzip2-$BZIP2_VERSION.tar.gz
+    tar -xf $SCRIPT_DIR/archive/bzip2-$BZIP2_VERSION.tar.gz
+    cd bzip2-$BZIP2_VERSION
+
+    sed -i -e "s/\$(PREFIX)\/bin\/\([a-z0-9A-Z_][a-z0-9A-Z_]*\)/\$(PREFIX)\/bin\/\1.exe/" Makefile
+    sed -i -e "s/sys.stat.h/sys\/stat.h/" bzip2.c
+
+    make -j $JOBS CC=$MINGW_TARGET-gcc AR=$MINGW_TARGET-ar RANLIB=$MINGW_TARGET-ranlib
+	  make PREFIX=$HOME_MINGW_PATH install
+
+    cd $BUILD_DIR
 fi
 
 # zlib
@@ -195,15 +229,14 @@ if ! [ -f $HOME_MINGW_PATH/include/lua.h ] ; then
     cd lua-$LUA_VERSION
 
     sed -i -e "s/CC= gcc/CC=ccache $MINGW_TARGET-gcc/" src/Makefile
-    export ESCAPED_HOME_MINGW_PATH=$(echo $HOME_MINGW_PATH | sed -e "s/\//\\\\\//g")
-    sed -i -e "s/INSTALL_TOP= \/usr\/local/INSTALL_TOP=$ESCAPED_HOME_MINGW_PATH/" Makefile
     sed -i -e "s/AR= ar/AR=$MINGW_TARGET-ar/" src/Makefile
     sed -i -e "s/RANLIB= ranlib/RANLIB=$MINGW_TARGET-ranlib/" src/Makefile
     sed -i -e "s/RANLIB=strip/RANLIB=$MINGW_TARGET-strip/" src/Makefile
-    make -j $JOBS mingw
+    make -j $JOBS PLAT=mingw
 
-    sed -i -e "s/lua luac/lua.exe luac.exe/" Makefile
-	  make install
+	  make INSTALL_TOP=$HOME_MINGW_PATH \
+        "TO_BIN=lua.exe luac.exe lua52.dll" \
+        install
 
     cd $BUILD_DIR
 fi
@@ -222,13 +255,37 @@ fi
 OPENAL_SOFT
 
 # boost
+
 if ! [ -f $HOME_MINGW_PATH/include/boost/shared_ptr.hpp ] ; then
-    rm -rf $HOME_MINGW_PATH/include/boost
-    if [ -d /usr/include/boost ] ; then
-        cp -a /usr/include/boost $HOME_MINGW_PATH/include/boost
-    elif [ -d /opt/local/include/boost ] ; then
-        cp -a /opt/local/include/boost $HOME_MINGW_PATH/include/boost
-    fi
+    BOOST_VERSION=1.52.0
+    BOOST_VERSION_UNDER=$(echo $BOOST_VERSION | sed -e "s/\./_/g")
+    wget --continue --max-redirect=50 \
+        "http://sourceforge.net/projects/boost/files/boost/$BOOST_VERSION/boost-$BOOST_VERSION_UNDER.tar.bz2/download" \
+        -O $SCRIPT_DIR/archive/boost-$BOOST_VERSION_UNDER.tar.bz2
+    tar -xf $SCRIPT_DIR/archive/boost-$BOOST_VERSION_UNDER.tar.bz2
+    cd boost_$BOOST_VERSION_UNDER
+
+    ./bootstrap.sh gcc
+
+    echo "using gcc : 4.6.3 : ccache i686-w64-mingw32-g++ -pipe : ;" > user-config.jam
+    wget --continue --no-check-certificate \
+        -O tools/build/v2/tools/mingw.jam \
+        "https://svn.boost.org/trac/boost/raw-attachment/ticket/6350/mingw.jam"
+
+    ./bjam target-os=windows toolset=gcc \
+        --exec-prefix=$HOME_MINGW_PATH \
+        --without-python --without-mpi --without-context \
+        --build-type=complete --layout=tagged \
+        --user-config=user-config.jam \
+        include=$HOME_MINGW_PATH/include \
+        library-path=$HOME_MINGW_PATH/lib \
+        variant=debug,release \
+        threading=multi threadapi=win32 \
+        link=static runtime-link=static \
+        release debug stage -j $JOBS
+
+    cp -a boost $HOME_MINGW_PATH/include
+
     cd $BUILD_DIR
 fi
 
