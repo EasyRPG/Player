@@ -261,14 +261,14 @@ if ! [ -f $HOME_MINGW_PATH/include/boost/shared_ptr.hpp ] ; then
     BOOST_VERSION=1.52.0
     BOOST_VERSION_UNDER=$(echo $BOOST_VERSION | sed -e "s/\./_/g")
     wget --continue --max-redirect=50 \
-        "http://sourceforge.net/projects/boost/files/boost/$BOOST_VERSION/boost-$BOOST_VERSION_UNDER.tar.bz2/download" \
+        "http://sourceforge.net/projects/boost/files/boost/$BOOST_VERSION/boost_$BOOST_VERSION_UNDER.tar.bz2/download" \
         -O $SCRIPT_DIR/archive/boost-$BOOST_VERSION_UNDER.tar.bz2
     tar -xf $SCRIPT_DIR/archive/boost-$BOOST_VERSION_UNDER.tar.bz2
     cd boost_$BOOST_VERSION_UNDER
 
     ./bootstrap.sh gcc
 
-    echo "using gcc : 4.6.3 : ccache i686-w64-mingw32-g++ -pipe : ;" > user-config.jam
+    echo "using gcc : 4.6.3 : ccache i686-w64-mingw32-g++ : ;" > user-config.jam
     wget --continue --no-check-certificate \
         -O tools/build/v2/tools/mingw.jam \
         "https://svn.boost.org/trac/boost/raw-attachment/ticket/6350/mingw.jam"
