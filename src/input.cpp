@@ -24,10 +24,8 @@
 
 ////////////////////////////////////////////////////////////
 namespace Input {
-	std::vector<int> press_time;
-	std::vector<bool> triggered;
-	std::vector<bool> repeated;
-	std::vector<bool> released;
+	EASYRPG_ARRAY<int, BUTTON_COUNT> press_time;
+	std::bitset<BUTTON_COUNT> triggered, repeated, released;
 	int dir4;
 	int dir8;
 	int start_repeat_time;
@@ -40,10 +38,10 @@ namespace Input {
 void Input::Init() {
 	InitButtons();
 
-	press_time.resize(BUTTON_COUNT, 0);
-	triggered.resize(BUTTON_COUNT, false);
-	repeated.resize(BUTTON_COUNT, false);
-	released.resize(BUTTON_COUNT, false);
+	std::fill_n(press_time.begin(), BUTTON_COUNT, 0);
+	triggered.reset();
+	repeated.reset();
+	released.reset();
 
 	start_repeat_time = 20;
 	repeat_time = 5;
@@ -51,7 +49,7 @@ void Input::Init() {
 
 ////////////////////////////////////////////////////////////
 void Input::Update() {
-	std::vector<bool> keystates = DisplayUi->GetKeyStates();
+	BaseUi::KeyStatus& keystates = DisplayUi->GetKeyStates();
 
 	// Check button states
 	for (unsigned i = 0; i < BUTTON_COUNT; ++i) {
@@ -139,7 +137,7 @@ void Input::ResetKeys() {
 	dir4 = 0;
 	dir8 = 0;
 
-	std::vector<bool> &keystates = DisplayUi->GetKeyStates();
+	BaseUi::KeyStatus &keystates = DisplayUi->GetKeyStates();
 	for (size_t i = 0; i < keystates.size(); ++i) {
 		keystates[i] = false;
 	}

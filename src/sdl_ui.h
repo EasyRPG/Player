@@ -21,11 +21,15 @@
 ///////////////////////////////////////////////////////////
 // Headers
 ///////////////////////////////////////////////////////////
-#include "SDL.h"
 #include "baseui.h"
 #include "color.h"
 #include "rect.h"
 #include "system.h"
+
+extern "C" {
+	union SDL_Event;
+	struct SDL_Surface;
+}
 
 ///////////////////////////////////////////////////////////
 /// SdlUi class.
@@ -56,7 +60,6 @@ public:
 	void Resize(long width, long height);
 	void ToggleFullscreen();
 	void ToggleZoom();
-	void CleanDisplay();
 	void UpdateDisplay();
 	void BeginScreenCapture();
 	BitmapRef EndScreenCapture();
@@ -69,16 +72,9 @@ public:
 	void ProcessEvents();
 
 	bool IsFullscreen();
-	long GetWidth();
-	long GetHeight();
-	std::vector<bool> &GetKeyStates();
 
-	bool GetMouseFocus();
-	int GetMousePosX();
-	int GetMousePosY();
-
-	Color GetBackcolor();
-	void SetBackcolor(const Color &color);
+	uint32_t GetTicks() const;
+	void Sleep(uint32_t time_milli);
 
 	//@}
 
@@ -127,24 +123,10 @@ protected:
 	///////////////////////////////////////////////////////
 	void ResetKeys();
 
-	/// Display mode data struct
-	struct DisplayMode {
-		DisplayMode() : effective(false), zoom(false), width(0), height(0), bpp(0), flags(0) {}
-		bool effective;
-		bool zoom;
-		int width;
-		int height;
-		uint8_t bpp;
-		uint32_t flags;
-	};
-
 	bool zoom_available;
 	bool toggle_fs_available;
 
 	bool RequestVideoMode(int width, int height, bool fullscreen);
-
-	/// Current display mode
-	DisplayMode current_display_mode;
 
 	/// Last display mode
 	DisplayMode last_display_mode;
@@ -154,30 +136,6 @@ protected:
 
 	/// Main SDL window.
 	SDL_Surface* main_window;
-
-	/// Surface used for zoom.
-	BitmapRef main_surface;
-
-	/// Color for display background
-	uint32_t back_color;
-
-	/// Keys states flags.
-	std::vector<bool> keys;
-
-	/// Mouse hovering the window flag.
-	bool mouse_focus;
-
-	/// Mouse x coordinate on screen relative to the window.
-	int mouse_x;
-
-	/// Mouse y coordinate on screen relative to the window.
-	int mouse_y;
-
-	/// Cursor visibility flag
-	bool cursor_visible;
 };
-
-/// Global SdlUi variable.
-extern EASYRPG_SHARED_PTR<SdlUi> DisplaySdlUi;
 
 #endif

@@ -48,6 +48,12 @@ namespace Output {
 	 */
 	bool TakeScreenshot(std::ostream& os);
 
+	/**
+	 * Ignore pause in Warning and Error
+	 * @param whether to ignore pause
+	 */
+	void IgnorePause(bool val);
+
 	///////////////////////////////////////////////////////
 	/// Display a string with formatted string.
 	/// @param fmt : formatted string to display

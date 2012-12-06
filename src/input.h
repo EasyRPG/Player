@@ -22,6 +22,8 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <vector>
+#include <bitset>
+#include "system.h"
 #include "input_buttons.h"
 
 ////////////////////////////////////////////////////////////
@@ -128,16 +130,16 @@ namespace Input {
 	std::vector<InputButton> GetAllReleased();
 
 	/// Buttons press time (in frames).
-	extern std::vector<int> press_time;
+	extern EASYRPG_ARRAY<int, BUTTON_COUNT> press_time;
 
 	/// Buttons trigger state.
-	extern std::vector<bool> triggered;
+	extern std::bitset<BUTTON_COUNT> triggered;
 
 	/// Buttons trigger state.
-	extern std::vector<bool> repeated;
+	extern std::bitset<BUTTON_COUNT> repeated;
 
 	/// Buttons trigger state.
-	extern std::vector<bool> released;
+	extern std::bitset<BUTTON_COUNT> released;
 
 	/// Horizontal and vertical directions state.
 	extern int dir4;

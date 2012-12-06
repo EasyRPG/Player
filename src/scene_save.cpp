@@ -26,7 +26,6 @@
 #include "lsd_reader.h"
 #include "scene_save.h"
 #include "scene_file.h"
-#include "time.hpp"
 
 ////////////////////////////////////////////////////////////
 Scene_Save::Scene_Save() :

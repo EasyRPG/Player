@@ -22,11 +22,12 @@
 // Headers
 ///////////////////////////////////////////////////////////
 #include <string>
-#include <vector>
+#include <bitset>
 
 #include "system.h"
 #include "color.h"
 #include "rect.h"
+#include "keys.h"
 
 ///////////////////////////////////////////////////////////
 /// BaseUi base abstract class.
@@ -45,7 +46,7 @@ public:
 	/// @param title : display title
 	/// @param fullscreen : start in fullscreen flag
 	///////////////////////////////////////////////////////
-	static EASYRPG_SHARED_PTR<BaseUi> CreateBaseUi(long width, long height, const std::string& title, bool fullscreen, bool zoom);
+	static EASYRPG_SHARED_PTR<BaseUi> CreateUi(long width, long height, const std::string& title, bool fullscreen, bool zoom);
 
 	///////////////////////////////////////////////////////
 	/// Begins a display mode change.
@@ -82,7 +83,7 @@ public:
 	///////////////////////////////////////////////////////
 	/// Clean video buffer.
 	///////////////////////////////////////////////////////
-	virtual void CleanDisplay() = 0;
+	void CleanDisplay();
 
 	///////////////////////////////////////////////////////
 	/// Update video buffer.
@@ -146,37 +147,86 @@ public:
 	///////////////////////////////////////////////////////
 	virtual bool IsFullscreen() = 0;
 
+	////////////////////////////////////////////////////////
+	/// Gets ticks in ms for time measurement
+	/// @return time in ms
+	////////////////////////////////////////////////////////
+	virtual uint32_t GetTicks() const = 0;
+
+	////////////////////////////////////////////////////////
+	/// Sleeps some time.
+	/// @param time : ms to sleep
+	////////////////////////////////////////////////////////
+	virtual void Sleep(uint32_t time_milli) = 0;
+
 	/// @returns client width size
-	virtual long GetWidth() = 0;
+	long GetWidth() const;
 
 	/// @returns client height size
-	virtual long GetHeight() = 0;
-
-	/// @returns vector with the all keys pressed states
-	virtual std::vector<bool> &GetKeyStates() = 0;
+	long GetHeight() const;
 
 	/// @returns whether mouse is hovering the display
-	virtual bool GetMouseFocus() = 0;
+	bool GetMouseFocus() const;
 
 	/// @returns mouse x coordinate
-	virtual int GetMousePosX() = 0;
+	int GetMousePosX() const;
 
 	/// @returns mouse y coordinate
-	virtual int GetMousePosY() = 0;
+	int GetMousePosY() const;
 
 	/// @return background color
-	virtual Color GetBackcolor() = 0;
+	Color const& GetBackcolor() const;
 
 	/// @param color : new background color
-	virtual void SetBackcolor(const Color &color) = 0;
+	void SetBackcolor(const Color &color);
 
-	virtual BitmapRef GetDisplaySurface() = 0;
+	BitmapRef const& GetDisplaySurface() const;
+	BitmapRef& GetDisplaySurface();
+
+	typedef std::bitset<Input::Keys::KEYS_COUNT> KeyStatus;
+
+	/// @returns vector with the all keys pressed states
+	KeyStatus& GetKeyStates();
 
 protected:
 	///////////////////////////////////////////////////////
 	/// Protected Constructor. Use CreateBaseUi instead.
 	///////////////////////////////////////////////////////
-	BaseUi() {}
+	BaseUi();
+
+	/// Display mode data struct
+	struct DisplayMode {
+		DisplayMode() : effective(false), zoom(false), width(0), height(0), bpp(0), flags(0) {}
+		bool effective;
+		bool zoom;
+		int width;
+		int height;
+		uint8_t bpp;
+		uint32_t flags;
+	};
+
+	/// Current display mode
+	DisplayMode current_display_mode;
+
+	KeyStatus keys;
+
+	/// Surface used for zoom.
+	BitmapRef main_surface;
+
+	/// Mouse hovering the window flag.
+	bool mouse_focus;
+
+	/// Mouse x coordinate on screen relative to the window.
+	int mouse_x;
+
+	/// Mouse y coordinate on screen relative to the window.
+	int mouse_y;
+
+	/// Cursor visibility flag
+	bool cursor_visible;
+
+	/// Color for display background
+	Color back_color;
 };
 
 /// Global DisplayUi variable.

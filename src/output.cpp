@@ -34,7 +34,6 @@
 #include "options.h"
 #include "output.h"
 #include "player.h"
-#include "time.hpp"
 #include "bitmap.h"
 #include "main_data.h"
 
@@ -58,11 +57,19 @@ static std::ostream& output_time(std::ostream& f = LOG_FILE) {
 			 << "UTC  : " << std::asctime(std::gmtime(&t));
 }
 
+static bool ignore_pause = false;
+
+void Output::IgnorePause(bool const val) {
+	ignore_pause = val;
+}
+
 ////////////////////////////////////////////////////////////
 static void HandleScreenOutput(char const* type, std::string const& msg, bool is_error) {
 	Output::TakeScreenshot();
 
 	output_time(LOG_FILE) << type << ":\n  " << msg << "\n";
+
+	if(ignore_pause) { return; }
 
 	std::stringstream ss;
 	ss << type << ":\n" << msg << "\n\n";
@@ -76,7 +83,7 @@ static void HandleScreenOutput(char const* type, std::string const& msg, bool is
 	DisplayUi->UpdateDisplay();
 	Input::ResetKeys();
 	while (!Input::IsAnyPressed()) {
-		Time::Sleep(1);
+		DisplayUi->Sleep(1);
 		DisplayUi->ProcessEvents();
 
 		if (Player::exit_flag) break;

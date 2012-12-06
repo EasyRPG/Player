@@ -37,3 +37,6 @@ src/easyrpg-player
 autom4te.cache/
 stamp-h1
 *~
+
+easyrpg_log.txt
+/lib/TestGame

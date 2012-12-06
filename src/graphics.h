@@ -23,7 +23,6 @@
 ////////////////////////////////////////////////////////////
 #include <string>
 #include <list>
-#include <SDL.h>
 
 #include "system.h"
 #include "drawable.h"

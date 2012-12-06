@@ -21,6 +21,7 @@
 // Headers
 ///////////////////////////////////////////////////////////
 #include "sdl_ui.h"
+#include <SDL.h>
 #ifdef _WIN32
 	#define WIN32_LEAN_AND_MEAN
 	#ifndef NOMINMAX
@@ -62,14 +63,7 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 	zoom_available(true),
 	toggle_fs_available(false),
 	mode_changing(false),
-	main_window(NULL),
-	back_color(0),
-	mouse_focus(false),
-	mouse_x(0),
-	mouse_y(0),
-	cursor_visible(false) {
-
-	keys.resize(Input::Keys::KEYS_COUNT, false);
+	main_window(NULL) {
 
 #ifdef GEKKO
 	WPAD_Init();
@@ -138,6 +132,16 @@ SdlUi::~SdlUi() {
 #else
 	SDL_Quit();
 #endif
+}
+
+////////////////////////////////////////////////////////////
+uint32_t SdlUi::GetTicks() const {
+	return SDL_GetTicks();
+}
+
+////////////////////////////////////////////////////////////
+void SdlUi::Sleep(uint32_t time) {
+	SDL_Delay(time);
 }
 
 ///////////////////////////////////////////////////////////
@@ -345,15 +349,6 @@ bool SdlUi::RefreshDisplayMode() {
 }
 
 ///////////////////////////////////////////////////////////
-void SdlUi::SetBackcolor(const Color& color) {
-	back_color = main_surface->GetUint32Color(color);
-}
-
-Color SdlUi::GetBackcolor() {
-	return main_surface->GetColor(back_color);
-}
-
-///////////////////////////////////////////////////////////
 #ifdef SUPPORT_FULL_SCALING
 void SdlUi::Resize(long width, long height) {
 	if (mode_changing) {
@@ -394,11 +389,6 @@ void SdlUi::ProcessEvents() {
 		if (Player::exit_flag)
 			break;
 	}
-}
-
-///////////////////////////////////////////////////////////
-void SdlUi::CleanDisplay() {
-	main_surface->FillRect(main_surface->GetRect(), main_surface->GetColor(back_color));
 }
 
 ///////////////////////////////////////////////////////////
@@ -752,34 +742,6 @@ void SdlUi::ResetKeys() {
 ///////////////////////////////////////////////////////////
 bool SdlUi::IsFullscreen() {
 	return (current_display_mode.flags & SDL_FULLSCREEN) == SDL_FULLSCREEN;
-}
-
-long SdlUi::GetWidth() {
-	return current_display_mode.width;
-}
-
-long SdlUi::GetHeight() {
-	return current_display_mode.height;
-}
-
-std::vector<bool> &SdlUi::GetKeyStates() {
-	return keys;
-}
-
-bool SdlUi::GetMouseFocus() {
-	return mouse_focus;
-}
-
-int SdlUi::GetMousePosX() {
-	return mouse_x;
-}
-
-int SdlUi::GetMousePosY() {
-	return mouse_y;
-}
-
-BitmapRef SdlUi::GetDisplaySurface() {
-	return main_surface;
 }
 
 ///////////////////////////////////////////////////////////

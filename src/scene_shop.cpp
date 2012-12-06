@@ -24,7 +24,6 @@
 #include "input.h"
 #include "scene_shop.h"
 #include "output.h"
-#include "time.hpp"
 
 ////////////////////////////////////////////////////////////
 Scene_Shop::Scene_Shop() {
