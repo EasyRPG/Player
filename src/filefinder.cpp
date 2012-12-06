@@ -136,7 +136,7 @@ namespace {
 } // anonymous namespace
 
 EASYRPG_SHARED_PTR<FileFinder::ProjectTree> FileFinder::CreateProjectTree(std::string const& p) {
-	if(!Exists(p) || !IsDirectory(p)) { return EASYRPG_SHARED_PTR<ProjectTree>(); }
+	if(! (Exists(p) && IsDirectory(p))) { return EASYRPG_SHARED_PTR<ProjectTree>(); }
 
 	EASYRPG_SHARED_PTR<ProjectTree> tree = EASYRPG_MAKE_SHARED<ProjectTree>();
 	tree->project_path = p;
@@ -278,7 +278,10 @@ FileFinder::ProjectTree const& FileFinder::GetProjectTree() {
 
 	if(tree_.project_path != Main_Data::project_path) {
 		EASYRPG_SHARED_PTR<ProjectTree> t = CreateProjectTree(Main_Data::project_path);
-		assert(t.get());
+		if(! t) {
+			Output::Error("invalid project path: %s", Main_Data::project_path.c_str());
+			return tree_;
+		}
 		tree_ = *t;
 	}
 

@@ -190,6 +190,8 @@ foreach(i ${TEST_FILES})
     NAME test_${name}
     WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH}
     COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_${name})
+  set_tests_properties(test_${name}
+    PROPERTIES ENVIRONMENT "RPG_TEST_GAME_PATH=${TEST_GAME_PATH}/TestGame")
 endforeach()
 
 file(GLOB LUA_TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../test/lua_script/*.lua)
