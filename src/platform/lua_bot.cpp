@@ -70,6 +70,7 @@ LuaBot::LuaBot(std::string const& script)
 
 	executer_ = lua_newthread(L);
 	assert(executer_);
+	assert(lua_type(L, -1) == LUA_TTHREAD);
 
 	switch(luaL_loadstring(executer_, script_.c_str())) {
 	case 0: // LUA_OK
@@ -93,8 +94,9 @@ void LuaBot::resume() {
 
 	lua_State* const L = vm_.get();
 	assert(L);
+	assert(lua_type(L, -1) == LUA_TTHREAD);
 
-	switch(lua_resume(L, 0)) {
+	switch(lua_resume(executer_, 0)) {
 	case 0: // LUA_OK
 		finish();
 	case LUA_YIELD:

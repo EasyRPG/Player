@@ -182,8 +182,9 @@ void Player::Update() {
 	DisplayUi->ProcessEvents();
 
 	if (exit_flag) {
-		Exit();
-		exit(EXIT_SUCCESS);
+		Scene::PopUntil(Scene::Title);
+		Scene::Pop();
+		Scene::Push(EASYRPG_MAKE_SHARED<Scene>());
 	} else if (reset_flag) {
 		reset_flag = false;
 		Scene::PopUntil(Scene::Title);

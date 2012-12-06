@@ -131,7 +131,7 @@ void Output::Error(const char* fmt, ...) {
 	va_end(args);
 }
 void Output::ErrorStr(std::string const& err) {
-	if (DisplayUi != NULL) {
+	if (DisplayUi) {
 		DisplayUi->DrawScreenText("Error:", 10, 30, Color(255, 0, 0, 0));
 		HandleScreenOutput("Error", err, true);
 	} else {

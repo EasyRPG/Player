@@ -546,18 +546,13 @@ void Graphics::RemoveDrawable(uint32_t ID) {
 
 ///////////////////////////////////////////////////////////
 ZObj* Graphics::RegisterZObj(int z, uint32_t ID) {
-	EASYRPG_SHARED_PTR<ZObj> zobj(new ZObj(z, drawable_creation++, ID));
-	state->zlist.push_back(zobj);
-
+	state->zlist.push_back(EASYRPG_MAKE_SHARED<ZObj>(z, drawable_creation++, ID));
 	state->zlist_dirty = true;
-
-	return zobj.get();
+	return state->zlist.back().get();
 }
 
 void Graphics::RegisterZObj(int z, uint32_t ID, bool /* multiz */) {
-	EASYRPG_SHARED_PTR<ZObj> zobj(new ZObj(z, 999999, ID));
-	state->zlist.push_back(zobj);
-
+	state->zlist.push_back(EASYRPG_MAKE_SHARED<ZObj>(z, 999999, ID));
 	state->zlist_dirty = true;
 }
 

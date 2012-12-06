@@ -55,8 +55,7 @@
 #include "window_command.h"
 
 ////////////////////////////////////////////////////////////
-Scene_Title::Scene_Title() :
-	command_window(NULL), title(NULL) {
+Scene_Title::Scene_Title() {
 	type = Scene::Title;
 }
 
@@ -188,7 +187,7 @@ bool Scene_Title::CheckContinue() {
 ////////////////////////////////////////////////////////////
 void Scene_Title::CreateTitleGraphic() {
 	// Load Title Graphic
-	if (title == NULL) // No need to recreate Title on Resume
+	if (!title) // No need to recreate Title on Resume
 	{
 		title.reset(new Sprite());
 		title->SetBitmap(Cache::Title(Data::system.title_name));
