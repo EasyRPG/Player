@@ -3,6 +3,7 @@
 #include "lua_bot.h"
 #include "player.h"
 #include "output.h"
+#include "input.h"
 
 #include <boost/chrono.hpp>
 #include <boost/thread.hpp>
@@ -39,12 +40,17 @@ void BotUi::ProcessEvents() {
 		return;
 	}
 
-	if(counter_++ > 12) {
-		keys.reset();
-		assert(!bot_->is_finished());
-		bot_->resume();
+	// interval: 0.1ms
+	static const int INTERVAL = 6;
 
+	if(counter_++ > INTERVAL) {
+		keys.reset();
 		counter_ = 0;
+
+		if(Input::IsWaitingInput()) {
+			assert(!bot_->is_finished());
+			bot_->resume();
+		}
 	}
 }
 

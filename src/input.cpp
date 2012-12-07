@@ -35,7 +35,12 @@ namespace Input {
 	int repeat_time;
 	std::vector<std::vector<int> > buttons;
 	std::vector<std::vector<int> > dir_buttons;
+
+	bool wait_input = false;
 }
+
+bool Input::IsWaitingInput() { return wait_input; }
+void Input::WaitInput(bool v) { wait_input = v; }
 
 ////////////////////////////////////////////////////////////
 void Input::Init() {
@@ -52,6 +57,8 @@ void Input::Init() {
 
 ////////////////////////////////////////////////////////////
 void Input::Update() {
+	wait_input = false; // clear each frame
+
 	BaseUi::KeyStatus& keystates = DisplayUi->GetKeyStates();
 
 	// Check button states
@@ -145,39 +152,48 @@ void Input::ResetKeys() {
 
 ////////////////////////////////////////////////////////////
 bool Input::IsPressed(InputButton button) {
+	WaitInput(true);
 	return press_time[button] > 0;
 }
 
 bool Input::IsTriggered(InputButton button) {
+	WaitInput(true);
 	return triggered[button];
 }
 
 bool Input::IsRepeated(InputButton button) {
+	WaitInput(true);
 	return repeated[button];
 }
 
 bool Input::IsReleased(InputButton button) {
+	WaitInput(false);
 	return released[button];
 }
 
 bool Input::IsAnyPressed() {
+	WaitInput(true);
 	return std::find_if(press_time.begin(), press_time.end(),
 						boost::lambda::_1 > 0) != press_time.end();
 }
 
 bool Input::IsAnyTriggered() {
+	WaitInput(true);
 	return triggered.any();
 }
 
 bool Input::IsAnyRepeated() {
+	WaitInput(true);
 	return repeated.any();
 }
 
 bool Input::IsAnyReleased() {
+	WaitInput(false);
 	return released.any();
 }
 
 std::vector<Input::InputButton> Input::GetAllPressed() {
+	WaitInput(true);
 	std::vector<InputButton> vector;
 	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
 		if (press_time[i] > 0)
@@ -187,6 +203,7 @@ std::vector<Input::InputButton> Input::GetAllPressed() {
 }
 
 std::vector<Input::InputButton> Input::GetAllTriggered() {
+	WaitInput(true);
 	std::vector<InputButton> vector;
 	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
 		if (triggered[i])
@@ -196,6 +213,7 @@ std::vector<Input::InputButton> Input::GetAllTriggered() {
 }
 
 std::vector<Input::InputButton> Input::GetAllRepeated() {
+	WaitInput(true);
 	std::vector<InputButton> vector;
 	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
 		if (repeated[i])
@@ -205,6 +223,7 @@ std::vector<Input::InputButton> Input::GetAllRepeated() {
 }
 
 std::vector<Input::InputButton> Input::GetAllReleased() {
+	WaitInput(false);
 	std::vector<InputButton> vector;
 	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
 		if (released[i])

@@ -156,6 +156,9 @@ namespace Input {
 	/// maintained pressed after the start repeat time
 	/// has passed for being repeated again.
 	extern int repeat_time;
+
+	bool IsWaitingInput();
+	void WaitInput(bool val);
 }
 
 #endif
