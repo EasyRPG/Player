@@ -22,6 +22,9 @@
 #include "player.h"
 #include "system.h"
 
+#include <algorithm>
+#include <boost/lambda/lambda.hpp>
+
 ////////////////////////////////////////////////////////////
 namespace Input {
 	EASYRPG_ARRAY<int, BUTTON_COUNT> press_time;
@@ -128,19 +131,16 @@ void Input::Update() {
 
 ////////////////////////////////////////////////////////////
 void Input::ResetKeys() {
+	triggered.reset();
+	repeated.reset();
+	released.reset();
 	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
 		press_time[i] = 0;
-		triggered[i] = false;
-		repeated[i] = false;
-		released[i] = false;
 	}
 	dir4 = 0;
 	dir8 = 0;
 
-	BaseUi::KeyStatus &keystates = DisplayUi->GetKeyStates();
-	for (size_t i = 0; i < keystates.size(); ++i) {
-		keystates[i] = false;
-	}
+	DisplayUi->GetKeyStates().reset();
 }
 
 ////////////////////////////////////////////////////////////
@@ -161,35 +161,20 @@ bool Input::IsReleased(InputButton button) {
 }
 
 bool Input::IsAnyPressed() {
-	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
-		if (press_time[i] > 0)
-			return true;
-	}
-	return false;
+	return std::find_if(press_time.begin(), press_time.end(),
+						boost::lambda::_1 > 0) != press_time.end();
 }
 
 bool Input::IsAnyTriggered() {
-	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
-		if (triggered[i])
-			return true;
-	}
-	return false;
+	return triggered.any();
 }
 
 bool Input::IsAnyRepeated() {
-	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
-		if (repeated[i])
-			return true;
-	}
-	return false;
+	return repeated.any();
 }
 
 bool Input::IsAnyReleased() {
-	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
-		if (released[i])
-			return true;
-	}
-	return false;
+	return released.any();
 }
 
 std::vector<Input::InputButton> Input::GetAllPressed() {
