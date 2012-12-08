@@ -18,10 +18,10 @@ BotUi::BotUi(EASYRPG_SHARED_PTR<BotInterface> const& inf)
 	current_display_mode.height = SCREEN_TARGET_HEIGHT;
 
 	uint32_t const mask[4] = {
-		Utils::IsBigEndian()? 0xff000000 : 0x000000ff,
-		Utils::IsBigEndian()? 0x00ff0000 : 0x0000ff00,
-		Utils::IsBigEndian()? 0x0000ff00 : 0x00ff0000,
-		Utils::IsBigEndian()? 0x000000ff : 0xff000000,
+		Utils::IsBigEndian()? 0xff000000u : 0x000000ffu,
+		Utils::IsBigEndian()? 0x00ff0000u : 0x0000ff00u,
+		Utils::IsBigEndian()? 0x0000ff00u : 0x00ff0000u,
+		Utils::IsBigEndian()? 0x000000ffu : 0xff000000u,
 	};
 
 	DynamicFormat const format
