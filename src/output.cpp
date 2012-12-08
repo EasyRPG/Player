@@ -202,7 +202,6 @@ void Output::Debug(const char* fmt, ...) {
 	va_end(args);
 }
 void Output::DebugStr(std::string const& msg) {
-	TakeScreenshot();
 	output_time(LOG_FILE) << "Debug:\n " << msg <<std::endl;
 }
 #endif

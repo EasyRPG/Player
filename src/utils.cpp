@@ -98,3 +98,12 @@ std::string FromWideStringImpl<4>(const Utils::wstring& str) {
 std::string Utils::FromWideString(const Utils::wstring& str) {
 	return FromWideStringImpl<sizeof(wchar_t)>(str);
 }
+
+bool Utils::IsBigEndian() {
+    union {
+        uint32_t i;
+        char c[4];
+    } d = {0x01020304};
+
+    return(d.c[0] == 1);
+}

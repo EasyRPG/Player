@@ -4,9 +4,11 @@
 #include "player.h"
 #include "output.h"
 #include "input.h"
+#include "utils.h"
 
 #include <boost/chrono.hpp>
 #include <boost/thread.hpp>
+#include <boost/cstdint.hpp>
 
 
 BotUi::BotUi(EASYRPG_SHARED_PTR<BotInterface> const& inf)
@@ -15,20 +17,15 @@ BotUi::BotUi(EASYRPG_SHARED_PTR<BotInterface> const& inf)
 	current_display_mode.width = SCREEN_TARGET_WIDTH;
 	current_display_mode.height = SCREEN_TARGET_HEIGHT;
 
+	uint32_t const mask[4] = {
+		Utils::IsBigEndian()? 0xff000000 : 0x000000ff,
+		Utils::IsBigEndian()? 0x00ff0000 : 0x0000ff00,
+		Utils::IsBigEndian()? 0x0000ff00 : 0x00ff0000,
+		Utils::IsBigEndian()? 0x000000ff : 0xff000000,
+	};
+
 	DynamicFormat const format
-		(8*4,
-#ifdef READER_BIG_ENDIAN
-		 0xff000000,
-		 0x00ff0000,
-		 0x0000ff00,
-		 0x000000ff,
-#else
-		 0x000000ff,
-		 0x0000ff00,
-		 0x00ff0000,
-		 0xff000000,
-#endif
-		 PF::NoAlpha);
+		(8*4, mask[0], mask[1], mask[2], mask[3], PF::NoAlpha);
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
 
 	main_surface = Bitmap::Create(SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT, false, 4);
@@ -66,4 +63,8 @@ uint32_t BotUi::GetTicks() const {
 
 void BotUi::Sleep(uint32_t time) {
 	boost::this_thread::sleep_for(boost::chrono::milliseconds(time));
+}
+
+AudioInterface& BotUi::GetAudio() {
+	return audio_;
 }

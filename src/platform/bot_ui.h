@@ -3,6 +3,7 @@
 
 #include "system.h"
 #include "baseui.h"
+#include "audio.h"
 
 struct BotInterface;
 
@@ -29,9 +30,12 @@ struct BotUi : public BaseUi {
 	uint32_t GetTicks() const;
 	void Sleep(uint32_t time_milli);
 
+	AudioInterface& GetAudio();
+
  private:
 	EASYRPG_SHARED_PTR<BotInterface> bot_;
 	size_t counter_;
+	EmptyAudio audio_;
 }; // struct BotUi
 
 #endif // _BOT_UI_H_

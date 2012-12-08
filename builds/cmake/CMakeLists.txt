@@ -25,8 +25,6 @@ link_directories(${LIBRARY_OUTPUT_PATH})
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/Modules")
 
-# set(USE_OPENAL 1)
-
 add_definitions(
   ${PNG_DEFINITIONS}
 
@@ -52,13 +50,6 @@ if(RUBY_FOUND)
     DEPENDS "${SHINONOME_GENERATOR}" WORKING_DIRECTORY "${SHINONOME_PATH}")
 endif()
 
-# OpenAL
-if(USE_OPENAL)
-  find_package(OpenAL REQUIRED)
-  include_directories(${OPENAL_INCLUDE_DIR})
-  add_definitions(-D USE_OPENAL=1)
-endif()
-
 # endianess check
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
   include(TestBigEndian)
@@ -80,19 +71,27 @@ foreach(i Iconv Expat Freetype JPEG Pixman PNG SDL ZLIB Boost)
   include_directories(${${i}_INCLUDE_DIR} ${${i}_INCLUDE_DIRS})
   list(APPEND EASYRPG_PLAYER_LIBRARIES ${${i}_LIBRARY}  ${${i}_LIBRARIES})
 endforeach()
-if(USE_OPENAL)
-  list(APPEND EASYRPG_PLAYER_LIBRARIES
-    avformat avcodec avutil avdevice
-    ${OPENAL_LIBRARY})
-endif()
+
+# SDL_mixer
 find_package(SDL_mixer)
 if(SDLMIXER_FOUND)
   include_directories(${SDLMIXER_INCLUDE_DIR})
   list(APPEND EASYRPG_PLAYER_LIBRARIES ${SDLMIXER_LIBRARY})
+  add_definitions(-D HAVE_SDL_MIXER=1)
 else()
   add_definitions(-DNO_SDL_MIXER)
 endif()
 
+# OpenAL
+find_package(OpenAL)
+if(OPENAL_FOUND)
+  find_package(SndFile REQUIRED)
+  include_directories(${OPENAL_INCLUDE_DIR} ${SNDFILE_INCLUDE_DIR})
+  list(APPEND EASYRPG_PLAYER_LIBRARIES ${OPENAL_LIBRARY} ${SNDFILE_LIBRARIES})
+  add_definitions(-D HAVE_OPENAL=1)
+endif()
+
+# Lua 5.1
 find_package(Lua51)
 if(LUA51_FOUND)
   include_directories(${LUA_INCLUDE_DIR})
@@ -100,6 +99,7 @@ if(LUA51_FOUND)
   add_definitions(-D HAVE_LUA=1)
 endif()
 
+# Boost (libraries that need to link)
 unset(Boost_FOUND)
 find_package(Boost COMPONENTS thread chrono system)
 if(Boost_FOUND)
@@ -142,8 +142,19 @@ if(NOT WIN32)
   add_dependencies("${PROJECT_NAME}" rtp_table_bom)
 endif()
 
+# CPack
+set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
+set(CPACK_PACKAGE_VERSION "0.1")
 set(CPACK_PACKAGE_ICON "${CMAKE_CURRENT_SOURCE_DIR}/../../resources/player.ico")
 set(CPACK_GENERATOR "DEB" "DMG" "RPM" "NSIS")
+set(CPACK_RESOURCE_FILE_README ${CMAKE_CURRENT_SOURCE_DIR}/../../README)
+
+set(CPACK_DEBIAN_PACKAGE_NAME "easyrpg-player")
+set(CPACK_DEBIAN_PACKAGE_VERSION ${CPACK_PACKAGE_VERSION})
+set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://easy-rpg.org/")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "take_cheeze")
+# set(CPACK_DEBIAN_PACKAGE_DEPENDS )
+
 include(CPack)
 
 # if(APPLE)

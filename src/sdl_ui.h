@@ -26,10 +26,14 @@
 #include "rect.h"
 #include "system.h"
 
+#include <boost/scoped_ptr.hpp>
+
 extern "C" {
 	union SDL_Event;
 	struct SDL_Surface;
 }
+
+struct AudioInterface;
 
 ///////////////////////////////////////////////////////////
 /// SdlUi class.
@@ -76,12 +80,14 @@ public:
 	uint32_t GetTicks() const;
 	void Sleep(uint32_t time_milli);
 
+	AudioInterface& GetAudio();
+
 	//@}
 
 	/// Get display surface.
 	BitmapRef GetDisplaySurface();
 
-protected:
+private:
 	///////////////////////////////////////////////////////
 	/// Refresh the display mode after it was changed.
 	/// @returns whether the change was successful
@@ -136,6 +142,8 @@ protected:
 
 	/// Main SDL window.
 	SDL_Surface* main_window;
+
+	boost::scoped_ptr<AudioInterface> audio_;
 };
 
 #endif

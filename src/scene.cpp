@@ -24,10 +24,7 @@
 #include "input.h"
 #include "player.h"
 #include "output.h"
-
-#ifndef NULL
-#define NULL 0
-#endif
+#include "audio.h"
 
 ////////////////////////////////////////////////////////////
 EASYRPG_SHARED_PTR<Scene> Scene::instance;
@@ -81,6 +78,7 @@ void Scene::MainFunction() {
 	while (Scene::instance.get() == this) {
 		Player::Update();
 		Graphics::Update();
+		Audio().Update();
 		Input::Update();
 		Update();
 	}

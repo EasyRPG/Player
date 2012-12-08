@@ -163,13 +163,13 @@ void Player::Run() {
 
 ////////////////////////////////////////////////////////////
 void Player::Pause() {
-	Audio::BGM_Pause();
+	Audio().BGM_Pause();
 }
 
 ////////////////////////////////////////////////////////////
 void Player::Resume() {
 	Input::ResetKeys();
-	Audio::BGM_Resume();
+	Audio().BGM_Resume();
 	Graphics::FrameReset();
 }
 
@@ -195,7 +195,6 @@ void Player::Update() {
 void Player::Exit() {
 	Main_Data::Cleanup();
 	Graphics::Quit();
-	Audio::Quit();
 	FileFinder::Quit();
 	DisplayUi.reset();
 }

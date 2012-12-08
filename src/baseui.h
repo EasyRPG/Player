@@ -29,6 +29,8 @@
 #include "rect.h"
 #include "keys.h"
 
+class AudioInterface;
+
 ///////////////////////////////////////////////////////////
 /// BaseUi base abstract class.
 ///////////////////////////////////////////////////////////
@@ -158,6 +160,12 @@ public:
 	/// @param time : ms to sleep
 	////////////////////////////////////////////////////////
 	virtual void Sleep(uint32_t time_milli) = 0;
+
+	/**
+	 * Return audio instance
+	 * @return audio implementation
+	 */
+	virtual AudioInterface& GetAudio() = 0;
 
 	/// @returns client width size
 	long GetWidth() const;

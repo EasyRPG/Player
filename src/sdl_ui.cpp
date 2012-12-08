@@ -21,7 +21,6 @@
 // Headers
 ///////////////////////////////////////////////////////////
 #include "sdl_ui.h"
-#include <SDL.h>
 #ifdef _WIN32
 	#define WIN32_LEAN_AND_MEAN
 	#ifndef NOMINMAX
@@ -39,9 +38,17 @@
 #include "keys.h"
 #include "output.h"
 #include "player.h"
+#include "bitmap.h"
+#include "audio.h"
+#include "sdl_audio.h"
+
 #include <cstdlib>
 #include <cstring>
-#include "bitmap.h"
+#include <SDL.h>
+
+AudioInterface& SdlUi::GetAudio() {
+	return *audio_;
+}
 
 ///////////////////////////////////////////////////////////
 static int FilterUntilFocus(const SDL_Event* evnt);
@@ -121,6 +128,12 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 	ShowCursor(true);
 #else
 	ShowCursor(false);
+#endif
+
+#ifdef HAVE_MIXER
+	audio_.reset(new SdlAudio());
+#else
+	audio_.reset(new EmptyAudio());
 #endif
 }
 

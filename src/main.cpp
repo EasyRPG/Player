@@ -30,7 +30,6 @@ extern "C" int main(int argc, char* argv[]) {
 	Player::Init(argc, argv);
 	Graphics::Init();
 	Input::Init();
-	Audio::Init();
 
 	Player::Run();
 

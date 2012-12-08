@@ -434,7 +434,7 @@ void Game_Character::MoveTypeCustom() {
 				break;
 			case RPG::MoveCommand::Code::play_sound_effect: // String: File, Parameters: Volume, Tempo, Balance
 				if (move_command.parameter_string != "(OFF)") {
-					Audio::SE_Play(move_command.parameter_string,
+					Audio().SE_Play(move_command.parameter_string,
 						move_command.parameter_a, move_command.parameter_b);
 				}
 				break;

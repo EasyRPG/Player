@@ -25,6 +25,7 @@
 #include <cstring>
 #include <algorithm>
 #include "system.h"
+#include "utils.h"
 
 ////////////////////////////////////////////////////////////
 /// enums
@@ -647,11 +648,7 @@ public:
 	PixelFormatT(const DynamicFormat& format) : dynamic_traits(format) {}
 
 	static inline int endian(int byte) {
-#ifndef USE_BIG_ENDIAN
-		return byte;
-#else
-		return bytes - 1 - byte;
-#endif
+		return Utils::IsBigEndian()? byte : (bytes - 1 - byte);
 	}
 
 	inline void uint32_to_rgba(uint32_t pix, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) const {

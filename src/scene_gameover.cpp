@@ -38,8 +38,8 @@ void Scene_Gameover::Start() {
 	background.reset(new Sprite());
 	background->SetBitmap(Cache::Gameover(Data::system.gameover_name));
 	// Stop current music
-	Audio::BGM_Stop();
-	Audio::BGS_Stop();
+	Audio().BGM_Stop();
+	Audio().BGS_Stop();
 	// Play gameover music
 	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_GameOver));
 }
