@@ -62,11 +62,9 @@ Scene::Scene() {
 
 ////////////////////////////////////////////////////////////
 void Scene::MainFunction() {
-	if (push_pop_operation == 1) {
-		Start();
-	}
-	else if (push_pop_operation == 2) {
-		Continue();
+	switch(push_pop_operation) {
+	case 1: Start(); break;
+	case 2:Continue(); break;
 	}
 
 	push_pop_operation = 0;
@@ -91,8 +89,9 @@ void Scene::MainFunction() {
 	Suspend();
 	TransitionOut();
 
-	if (push_pop_operation == 1) {
-		Graphics::Push();
+	switch(push_pop_operation) {
+	case 1: Graphics::Push();
+	case 2: Graphics::Pop();
 	}
 }
 

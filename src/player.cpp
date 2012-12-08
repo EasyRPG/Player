@@ -142,6 +142,7 @@ void Player::Init(int argc, char *argv[]) {
 
 ////////////////////////////////////////////////////////////
 void Player::Run() {
+	Scene::Push(EASYRPG_MAKE_SHARED<Scene>());
 	Scene::Push(EASYRPG_SHARED_PTR<Scene>
 				(debug_flag?
 				 static_cast<Scene*>(new Scene_Title()) :
@@ -182,9 +183,7 @@ void Player::Update() {
 	DisplayUi->ProcessEvents();
 
 	if (exit_flag) {
-		Scene::PopUntil(Scene::Title);
-		Scene::Pop();
-		Scene::Push(EASYRPG_MAKE_SHARED<Scene>());
+		Scene::PopUntil(Scene::Null);
 	} else if (reset_flag) {
 		reset_flag = false;
 		Scene::PopUntil(Scene::Title);

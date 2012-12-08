@@ -541,7 +541,7 @@ void Graphics::RegisterDrawable(uint32_t ID, Drawable* drawable) {
 
 void Graphics::RemoveDrawable(uint32_t ID) {
 	std::map<uint32_t, Drawable*>::iterator it = state->drawable_map.find(ID);
-	state->drawable_map.erase(it);
+	if(it != state->drawable_map.end()) { state->drawable_map.erase(it); }
 }
 
 ///////////////////////////////////////////////////////////
