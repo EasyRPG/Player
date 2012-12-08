@@ -98,6 +98,7 @@ void LuaBot::resume() {
 
 	switch(lua_resume(executer_, 0)) {
 	case 0: // LUA_OK
+		Output::Debug("Script ended. Quiting");
 		finish();
 	case LUA_YIELD:
 		break;
