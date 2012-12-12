@@ -16,8 +16,8 @@
 #include <vector>
 
 
-struct ALAudio : protected AudioInterface {
-ALAudio(char const* dev_name = NULL);
+struct ALAudio : public AudioInterface {
+	ALAudio(char const* dev_name = NULL);
 
 	void BGM_Play(std::string const&, int, int);
 	void BGM_Pause();

@@ -46,8 +46,13 @@
 #  include "rtp_table.h"
 #endif
 
-#ifdef _WIN32
+#ifdef __MINGW32__
+#  include <dirent.h>
+#elif defined(_MSC_VER)
 #  include "dirent_win.h"
+#endif
+
+#ifdef _WIN32
 #  include <windows.h>
 #  include <shlobj.h>
 #  include "registry_win.h"

@@ -23,6 +23,7 @@
 ////////////////////////////////////////////////////////////
 
 #include <png.h>
+#include <cstdlib>
 #include "output.h"
 #include "image_png.h"
 

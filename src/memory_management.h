@@ -25,7 +25,7 @@
 typedef uint32_t wchar_t;
 #endif
 
-#ifdef BOOST_NO_CXX11_SMART_PTR
+#if defined(BOOST_NO_CXX11_SMART_PTR)
 #  include <boost/shared_ptr.hpp>
 #  include <boost/weak_ptr.hpp>
 #  include <boost/make_shared.hpp>

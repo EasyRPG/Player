@@ -15,7 +15,8 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-#if (defined(_WIN32) || defined(UNIX)) && !(defined(DINGOO) || defined(GEKKO))
+#if (defined(_WIN32) || defined(UNIX) || defined(EASYRPG_IS_ANDROID)) \
+	&& !(defined(DINGOO) || defined(GEKKO))
 
 ////////////////////////////////////////////////////////////
 // Headers
@@ -26,7 +27,7 @@
 ////////////////////////////////////////////////////////////
 void Input::InitButtons() {
 	buttons.resize(BUTTON_COUNT);
-#if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
+
 	buttons[UP].push_back(Keys::UP);
 	buttons[UP].push_back(Keys::K);
 	buttons[UP].push_back(Keys::KP8);
@@ -69,7 +70,6 @@ void Input::InitButtons() {
 	buttons[DEBUG_THROUGH].push_back(Keys::LCTRL);
 	buttons[DEBUG_THROUGH].push_back(Keys::RCTRL);
 	buttons[TOGGLE_FPS].push_back(Keys::F2);
-#endif
 
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 	buttons[DECISION].push_back(Keys::MOUSE_LEFT);

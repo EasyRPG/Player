@@ -121,6 +121,9 @@ set(MAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../../src/main.cpp")
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/../../src SRCS)
 list(REMOVE_ITEM SRCS ${MAIN_FILE})
 list(APPEND SRCS ${SHINONOME_SRCS})
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+  list(APPEND SRCS "${CMAKE_CURRENT_SOURCE_DIR}/../../resources/player.rc")
+endif()
 add_library(${PROJECT_NAME}_Static STATIC ${SRCS})
 
 # executable
@@ -173,14 +176,6 @@ set(CPACK_DEBIAN_PACKAGE_DEPENDS
 include(CPack)
 
 install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME} DESTINATION bin)
-
-# if(APPLE)
-#   message(STATUS "${EASYRPG_PLAYER_LIBRARIES}")
-#   include(BundleUtilities)
-#   set(APP_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../bin/${PROJECT_NAME}.app")
-#   verify_app(${APP_DIRECTORY})
-#   copy_and_fixup_bundle("" ${APP_DIRECTORY} ${EASYRPG_PLAYER_LIBRARIES} "")
-# endif()
 
 # Doxygen
 find_package(Doxygen)

@@ -24,6 +24,7 @@
 #include "system.h"
 #include "tilemap.h"
 #include "plane.h"
+#include <string>
 
 class Sprite_Character;
 class Game_Character;

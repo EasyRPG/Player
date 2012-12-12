@@ -18,11 +18,18 @@
 #ifndef _SYSTEM_H_
 #define _SYSTEM_H_
 
-#if !(defined(_WIN32) || defined(UNIX) || defined(DINGOO) || defined(GEKKO) || defined(PSP) || defined(GPH))
+#if !(defined(_WIN32) \
+	  || defined(UNIX) \
+	  || defined(DINGOO) \
+	  || defined(GEKKO) \
+	  || defined(PSP) \
+	  || defined(GPH) \
+	  || defined(EASYRPG_IS_ANDROID) \
+	  )
 #  error "This build doesn't target an os"
 #endif
 
-#if !(defined(USE_SDL))
+#if !defined(USE_SDL) && !defined(EASYRPG_IS_ANDROID)
 #  error "This build doesn't target a backend"
 #endif
 

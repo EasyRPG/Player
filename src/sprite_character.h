@@ -22,6 +22,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "sprite.h"
+#include <string>
 
 class Game_Character;
 

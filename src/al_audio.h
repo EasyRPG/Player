@@ -1,3 +1,3 @@
 #ifdef HAVE_OPENAL
-#include "platform/al_auido.h"
+#include "platform/al_audio.h"
 #endif

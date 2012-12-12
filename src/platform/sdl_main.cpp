@@ -15,11 +15,23 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////
+// Headers
+////////////////////////////////////////////////////////////
+#include "player.h"
+#include "graphics.h"
+#include "input.h"
+#include "audio.h"
 
-#ifdef USE_SDL
-#include "platform/sdl_main.cpp"
-#endif
+#include <cstdlib>
+#include <SDL.h>
 
-#ifdef EASYRPG_IS_ANDROID
-#include "platform/android_main.cpp"
-#endif
+extern "C" int main(int argc, char* argv[]) {
+	Player::Init(argc, argv);
+	Graphics::Init();
+	Input::Init();
+
+	Player::Run();
+
+	return EXIT_SUCCESS;
+}

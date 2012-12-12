@@ -2,6 +2,7 @@
 #define _LUA_BOT_H_
 
 #include "system.h"
+#include <string>
 
 extern "C" {
 	struct lua_State;

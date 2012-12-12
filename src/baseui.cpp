@@ -33,6 +33,10 @@ EASYRPG_SHARED_PTR<BaseUi> DisplayUi;
 EASYRPG_SHARED_PTR<BaseUi> BaseUi::CreateUi(long width, long height, const std::string& title, bool fs_flag, bool /* zoom */) {
 #ifdef USE_SDL
 	return EASYRPG_MAKE_SHARED<SdlUi>(width, height, title, fs_flag);
+#elif defined(EASYRPG_IS_ANDROID)
+	// must be initialized
+	assert(DisplayUi);
+	return DisplayUi;
 #else
 #error cannot create UI
 #endif

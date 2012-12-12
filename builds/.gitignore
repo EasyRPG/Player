@@ -1,0 +1,9 @@
+/archive
+
+/*/build
+/*/toolchain.cmake
+
+/android/android
+
+/mingw/mingw
+/mingw/Player.exe

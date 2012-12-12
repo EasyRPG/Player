@@ -125,14 +125,14 @@ void ALAudio::source::play_buffer(EASYRPG_SHARED_PTR<buffer> const& buf) {
 
 bool ALAudio::load_sndfile(std::string const& filename, EASYRPG_SHARED_PTR<buffer> const& buf) {
 	SF_INFO info;
-	SNDFILE* file = sf_open(filename.c_str(), SFM_READ, &info);
+	EASYRPG_SHARED_PTR<SNDFILE> file(sf_open(filename.c_str(), SFM_READ, &info), sf_close);
 	if(! file) { return false; }
 
 	// load data
 	std::vector<int16_t> data;
 	EASYRPG_ARRAY<int16_t, 4096> read_buf;
 	size_t read_size = 0;
-	while((read_size = sf_read_short(file, read_buf.data(), read_buf.size())) != 0) {
+	while((read_size = sf_read_short(file.get(), read_buf.data(), read_buf.size())) != 0) {
 		data.insert(data.end(), read_buf.begin(), read_buf.begin() + read_size);
 	}
 
