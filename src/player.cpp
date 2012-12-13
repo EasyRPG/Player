@@ -115,7 +115,7 @@ void Player::Init(int argc, char *argv[]) {
 	if(luabot_script) {
 		if(FileFinder::Exists(luabot_script)) {
 			std::ifstream ifs(luabot_script);
-			assert(luabot_script);
+			assert(ifs);
 
 			std::istreambuf_iterator<char> const eos;
 			std::string const script(std::istreambuf_iterator<char>(ifs), eos);

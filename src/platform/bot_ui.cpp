@@ -38,7 +38,7 @@ void BotUi::ProcessEvents() {
 	}
 
 	// interval: 0.1ms
-	static const int INTERVAL = 6;
+	static const size_t INTERVAL = 6;
 
 	if(counter_++ > INTERVAL) {
 		keys.reset();

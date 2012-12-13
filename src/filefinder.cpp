@@ -69,8 +69,7 @@
 #endif
 
 namespace {
-	const char* const MOVIE_TYPES[] = {
-		".avi", ".mpg" };
+	const char* const MOVIE_TYPES[] = { ".avi", ".mpg" };
 
 	typedef std::vector<EASYRPG_SHARED_PTR<FileFinder::ProjectTree> > search_path_list;
 	search_path_list search_paths;
@@ -93,9 +92,9 @@ namespace {
 			std::string const lower_name = Utils::LowerCase(name + *c);
 			string_map::const_iterator const name_it = dir_map.find(lower_name);
 			if(name_it != dir_map.end()) {
-				return MakePath(std::string(tree.project_path).append("/")
-								.append(dir_it->second).append("/"),
-								name_it->second);
+				return MakePath
+					(std::string(tree.project_path).append("/")
+					 .append(dir_it->second), name_it->second);
 			}
 		}
 
@@ -134,6 +133,8 @@ namespace {
 			boost::optional<std::string> const ret_rtp = FindFile(*(*i), dir, rtp_name, exts);
 			if(ret != boost::none) { return *ret_rtp; }
 		}
+
+		Output::Debug("Cannot find: %s/%s", dir.c_str(), name.c_str());
 
 		return "";
 	}
@@ -392,7 +393,7 @@ bool FileFinder::IsRPG2kProject(ProjectTree const& dir) {
 
 std::string FileFinder::FindMusic(const std::string& name) {
 	static const char* MUSIC_TYPES[] = {
-		".wav", ".mid", ".midi", ".ogg", ".mp3", NULL };
+		".wav", ".ogg", ".mid", ".midi", ".mp3", NULL };
 	return FindFile("Music", name, MUSIC_TYPES);
 }
 
@@ -458,10 +459,10 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 		switch(m) {
 		case FILES:
 			if(IsDirectory(MakePath(path, name))) { continue; }
-			else{ break; }
+		    break;
 		case DIRECTORIES:
 			if(! IsDirectory(MakePath(path, name))) { continue; }
-			else{ break; }
+			break;
 		case ALL:
 			break;
 		}

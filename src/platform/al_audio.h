@@ -2,11 +2,11 @@
 #define _AL_AUDIO_H_
 
 #if defined(__APPLE__) && defined(__MACH__)
-#include <OpenAL/al.h>
-#include <OpenAL/alc.h>
+#  include <OpenAL/al.h>
+#  include <OpenAL/alc.h>
 #else
-#include <AL/al.h>
-#include <AL/alc.h>
+#  include <AL/al.h>
+#  include <AL/alc.h>
 #endif
 
 #include "system.h"

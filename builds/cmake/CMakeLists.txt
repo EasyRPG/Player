@@ -136,13 +136,12 @@ endforeach()
 
 # RTP Table
 if(NOT WIN32)
-  add_custom_target(
-    rtp_table_bom
+  add_custom_command(
+    OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/../../src/rtp_table_bom.h"
     COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/../../resources/add_bom.sh"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../src/rtp_table.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/../../src/rtp_table_bom.h"
     DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/../../src/rtp_table.h")
-  add_dependencies("${PROJECT_NAME}" rtp_table_bom)
 endif()
 
 # CPack
@@ -152,26 +151,28 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 endif()
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   list(APPEND CPACK_GENERATOR "DEB")
+
+  set(CPACK_DEBIAN_PACKAGE_NAME "easyrpg-player")
+  set(CPACK_DEBIAN_PACKAGE_VERSION ${CPACK_PACKAGE_VERSION})
+  set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://easy-rpg.org/")
+  set(CPACK_DEBIAN_PACKAGE_MAINTAINER "take_cheeze")
+  set(CPACK_DEBIAN_PACKAGE_DEPENDS
+    libexpat1 libfreetype6 libjpeg8 libpixman-1-0 libpng12-0 zlib1g libsdl1.2debian
+    libsdl-mixer1.2 libopenal1 libogg0 libflac8 libvorbis0a libvorbisenc2 libsndfile1
+    liblua5.1-0 libboost-thread-dev libboost-chrono-dev libboost-system-dev libstdc++6
+    libgcc1 libasound2 libpulse0 libxext6 libcaca0 libmikmod2 libvorbisfile3 libmad0
+    libjson0 libslang2 libncurses5 libtinfo5 libwrap0 libasyncns0 libxau6 libxdmcp6)
 endif()
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   list(APPEND CPACK_GENERATOR "DMG")
+
+  set(CPACK_DMG_FORMAT "UDRO")
 endif()
 
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
 set(CPACK_PACKAGE_VERSION "0.1")
 set(CPACK_PACKAGE_ICON "${CMAKE_CURRENT_SOURCE_DIR}/../../resources/player.ico")
 set(CPACK_RESOURCE_FILE_README ${CMAKE_CURRENT_SOURCE_DIR}/../../README)
-
-set(CPACK_DEBIAN_PACKAGE_NAME "easyrpg-player")
-set(CPACK_DEBIAN_PACKAGE_VERSION ${CPACK_PACKAGE_VERSION})
-set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://easy-rpg.org/")
-set(CPACK_DEBIAN_PACKAGE_MAINTAINER "take_cheeze")
-set(CPACK_DEBIAN_PACKAGE_DEPENDS
-  libexpat1 libfreetype6 libjpeg8 libpixman-1-0 libpng12-0 zlib1g libsdl1.2debian
-  libsdl-mixer1.2 libopenal1 libogg0 libflac8 libvorbis0a libvorbisenc2 libsndfile1
-  liblua5.1-0 libboost-thread-dev libboost-chrono-dev libboost-system-dev libstdc++6
-  libgcc1 libasound2 libpulse0 libxext6 libcaca0 libmikmod2 libvorbisfile3 libmad0
-  libjson0 libslang2 libncurses5 libtinfo5 libwrap0 libasyncns0 libxau6 libxdmcp6)
 
 include(CPack)
 
@@ -211,7 +212,7 @@ foreach(i ${TEST_FILES})
 
   add_test(
     NAME test_${name}
-    WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH}
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../lib/TestGame/TestGame"
     COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_${name})
   set_tests_properties(test_${name}
     PROPERTIES ENVIRONMENT "RPG_TEST_GAME_PATH=${TEST_GAME_PATH}/TestGame")
@@ -221,7 +222,7 @@ file(GLOB LUA_TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../test/lua_script/*.lua
 foreach(i ${LUA_TEST_FILES})
   get_filename_component(name "${i}" NAME_WE)
   add_test(NAME lua_test_${name}
-    WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH}
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../lib/TestGame/TestGame"
     COMMAND ${EXECUTABLE_OUTPUT_PATH}/${PROJECT_NAME}_com)
 
   set_tests_properties(lua_test_${name}

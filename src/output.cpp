@@ -49,15 +49,17 @@ void boost::throw_exception(std::exception const& exp) {
 }
 #endif
 
-static std::ofstream LOG_FILE(OUTPUT_FILENAME, std::ios_base::out | std::ios_base::app);
+namespace {
+	static std::ofstream LOG_FILE(OUTPUT_FILENAME, std::ios_base::out | std::ios_base::app);
 
-static std::ostream& output_time(std::ostream& f = LOG_FILE) {
-	std::time_t t = std::time(NULL);
-	return f << "Local: " << std::asctime(std::localtime(&t))
-			 << "UTC  : " << std::asctime(std::gmtime(&t));
+	static std::ostream& output_time() {
+		std::time_t t = std::time(NULL);
+		return LOG_FILE << "Local: " << std::asctime(std::localtime(&t))
+						<< "UTC  : " << std::asctime(std::gmtime(&t));
+	}
+
+	static bool ignore_pause = false;
 }
-
-static bool ignore_pause = false;
 
 void Output::IgnorePause(bool const val) {
 	ignore_pause = val;
@@ -67,7 +69,7 @@ void Output::IgnorePause(bool const val) {
 static void HandleScreenOutput(char const* type, std::string const& msg, bool is_error) {
 	Output::TakeScreenshot();
 
-	output_time(LOG_FILE) << type << ":\n  " << msg << "\n";
+	output_time() << type << ":\n  " << msg << "\n";
 
 	if(ignore_pause) { return; }
 
@@ -126,7 +128,7 @@ void Output::Error(const char* fmt, ...) {
 	char str[256];
 	vsprintf(str, fmt, args);
 
-	Output::ErrorStr((std::string)str);
+	Output::ErrorStr(std::string(str));
 
 	va_end(args);
 }
@@ -155,7 +157,7 @@ void Output::Warning(const char* fmt, ...) {
 
 	vsprintf(str, fmt, args);
 
-	Output::WarningStr((std::string)str);
+	Output::WarningStr(std::string(str));
 
 	va_end(args);
 }
@@ -173,7 +175,7 @@ void Output::Post(const char* fmt, ...) {
 
 	vsprintf(str, fmt, args);
 
-	Output::PostStr((std::string)str);
+	Output::PostStr(std::string(str));
 
 	va_end(args);
 }
@@ -197,11 +199,11 @@ void Output::Debug(const char* fmt, ...) {
 
 	vsprintf(str, fmt, args);
 
-	Output::DebugStr((std::string)str);
+	Output::DebugStr(std::string(str));
 
 	va_end(args);
 }
 void Output::DebugStr(std::string const& msg) {
-	output_time(LOG_FILE) << "Debug:\n " << msg <<std::endl;
+	output_time() << "Debug:\n " << msg <<std::endl;
 }
 #endif

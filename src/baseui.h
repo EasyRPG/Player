@@ -29,7 +29,7 @@
 #include "rect.h"
 #include "keys.h"
 
-class AudioInterface;
+struct AudioInterface;
 
 ///////////////////////////////////////////////////////////
 /// BaseUi base abstract class.

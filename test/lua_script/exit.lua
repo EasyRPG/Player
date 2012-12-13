@@ -1,6 +1,4 @@
--- wait initialization
-skip()
-skip()
+enter() -- skip logo
 
 up()
 enter()
