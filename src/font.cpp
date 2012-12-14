@@ -56,11 +56,12 @@ namespace {
 
 		void Render(Bitmap& bmp, int x, int y, Bitmap const& sys, int color, unsigned glyph);
 		void Render(Bitmap& bmp, int x, int y, Color const& color, unsigned glyph);
+
 	private:
 		uint16_t const (&ascii_)[0x100][HEIGHT];
 		uint16_t const (&font_)[94][94][HEIGHT];
 
-		uint16_t const (&get_font(unsigned glyph, bool& full) const)[12];
+		uint16_t const* get_font(unsigned glyph, bool& full) const;
 	}; // class ShinonomeFont
 
 	void delete_face(FT_Face f) {
@@ -111,7 +112,7 @@ Rect ShinonomeFont::GetSize(std::string const& txt) const {
 	return Rect(0, 0, (sjis_txt.size() - c) * HALF_WIDTH, HEIGHT);
 }
 
-uint16_t const (&ShinonomeFont::get_font(unsigned const glyph, bool& full) const)[12] {
+uint16_t const* ShinonomeFont::get_font(unsigned const glyph, bool& full) const {
     typedef boost::u32_to_u8_iterator<unsigned const*> iterator;
 	std::string const txt = ReaderUtil::Recode(std::string(iterator(&glyph),
 														   iterator(&glyph + 1)),
@@ -139,7 +140,7 @@ void ShinonomeFont::Render(Bitmap& bmp, int const x, int const y, Bitmap const& 
 	}
 
 	bool full = true;
-	uint16_t const (&fnt_bmp)[12] = get_font(glyph, full);
+	uint16_t const* fnt_bmp = get_font(glyph, full);
 
 	size_t const width = full? FULL_WIDTH : HALF_WIDTH;
 
@@ -158,7 +159,7 @@ void ShinonomeFont::Render(Bitmap& bmp, int const x, int const y, Bitmap const& 
 
 void ShinonomeFont::Render(Bitmap& bmp, int x, int y, Color const& color, unsigned glyph) {
 	bool full = true;
-	uint16_t const (&fnt_bmp)[12] = get_font(glyph, full);
+	uint16_t const* fnt_bmp = get_font(glyph, full);
 
 	size_t const width = full? FULL_WIDTH : HALF_WIDTH;
 
