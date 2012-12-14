@@ -248,9 +248,9 @@ if ! [ -f $HOME_BUILD_PATH/include/boost/shared_ptr.hpp ] ; then
     BOOST_VERSION=1.52.0
     BOOST_VERSION_UNDER=$(echo $BOOST_VERSION | sed -e "s/\./_/g")
     wget --continue --no-check-certificate \
-        "https://github.com/ryppl/boost-svn/archive/Boost_$BOOST_VERSION_UNDER.zip" \
-        -O $ARCHIVE_DIR/boost-$BOOST_VERSION_UNDER.tar.bz2
-    tar -xf $ARCHIVE_DIR/boost-$BOOST_VERSION_UNDER.tar.bz2
+        "https://github.com/ryppl/boost-svn/archive/Boost_$BOOST_VERSION_UNDER.tar.gz" \
+        -O $ARCHIVE_DIR/boost-$BOOST_VERSION_UNDER.tar.gz
+    tar -xf $ARCHIVE_DIR/boost-$BOOST_VERSION_UNDER.tar.gz
     cd boost-svn-Boost_$BOOST_VERSION_UNDER
     copy_config
 
