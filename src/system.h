@@ -45,14 +45,14 @@
 #    define SUPPORT_GIF
 #    define SUPPORT_JPG
 #    define SUPPORT_PNG
-		//#define SUPPORT_XYZ
+//#    define SUPPORT_XYZ
 #  endif
 #endif
 
 #ifdef USE_SOFT_BITMAP
 #  define SUPPORT_BMP
-	//#define SUPPORT_GIF
-	//#define SUPPORT_JPG
+//#  define SUPPORT_GIF
+//#  define SUPPORT_JPG
 #  define SUPPORT_PNG
 #  define SUPPORT_XYZ
 
@@ -62,8 +62,8 @@
 
 #ifdef USE_PIXMAN_BITMAP
 #  define SUPPORT_BMP
-	//#define SUPPORT_GIF
-	//#define SUPPORT_JPG
+//#  define SUPPORT_GIF
+//#  define SUPPORT_JPG
 #  define SUPPORT_PNG
 #  define SUPPORT_XYZ
 
@@ -75,7 +75,7 @@
 #  if !defined(USE_OPENGL_BITMAP) && !defined(USE_SOFT_BITMAP) && !defined(USE_PIXMAN_BITMAP)
 #    define USE_SDL_IMAGE
 #    define USE_SDL_BITMAP
-		//#define USE_RLE
+//#    define USE_RLE
 #    define USE_SDL_TTF
 #  endif
 
@@ -97,7 +97,7 @@
 #  ifdef USE_SDL_IMAGE
 #    define SUPPORT_BMP
 #    define SUPPORT_GIF
-		//#define SUPPORT_JPG
+//#    define SUPPORT_JPG
 #    define SUPPORT_PNG
 #    define SUPPORT_XYZ
 #  endif

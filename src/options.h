@@ -21,9 +21,9 @@
 #define RPG2K	1
 #define RPG2K3	2
 
-#define OUTPUT_NONE		0
+#define OUTPUT_NONE	0
 #define OUTPUT_CONSOLE	1
-#define OUTPUT_FILE		2
+#define OUTPUT_FILE	2
 #define OUTPUT_MSGBOX	3
 #define OUTPUT_SCREEN	4
 
@@ -102,18 +102,20 @@
 // OUTPUT_FILENAME
 //		Name of the file for output.
 ////////////////////////////////////////////////////////////
-/*#if defined(DINGOO) || defined(UNIX) && !defined(GTK)
-	#define OUTPUT_TYPE OUTPUT_FILE
+/*
+#if defined(DINGOO) || defined(UNIX) && !defined(GTK)
+#  define OUTPUT_TYPE OUTPUT_FILE
 #elif defined(GEKKO) || defined(PSP)
-	#define OUTPUT_TYPE OUTPUT_CONSOLE
+#  define OUTPUT_TYPE OUTPUT_CONSOLE
 #else
-	#define OUTPUT_TYPE OUTPUT_SCREEN
-#endif*/
+#  define OUTPUT_TYPE OUTPUT_SCREEN
+#endif
+*/
 #ifndef OUTPUT_TYPE
-#define OUTPUT_TYPE OUTPUT_SCREEN
+#  define OUTPUT_TYPE OUTPUT_SCREEN
 #endif
 #ifndef OUTPUT_FILENAME
-#define OUTPUT_FILENAME "easyrpg_log.txt"
+#  define OUTPUT_FILENAME "easyrpg_log.txt"
 #endif
 
 ////////////////////////////////////////////////////////////
