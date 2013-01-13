@@ -345,9 +345,9 @@ bool Game_Map::IsBush(int x, int y) {
 ////////////////////////////////////////////////////////////
 bool Game_Map::IsCounter(int x, int y) {
 	int const tile_id = map->upper_layer[x + y * map->width];
-	assert(tile_id >= 10000);
-	int const index = map_info.lower_tiles[passages_up[tile_id-10000]];
-	return bool(Data::chipsets[map_info.chipset_id].passable_data_upper[index] & 0x40);
+	if (tile_id < BLOCK_F) return false;
+	int const index = map_info.lower_tiles[passages_up[tile_id - BLOCK_F]];
+	return bool(Data::chipsets[map_info.chipset_id].passable_data_upper[index] & Passable::Counter);
 }
 
 ////////////////////////////////////////////////////////////
