@@ -21,6 +21,7 @@
 #include "cache.h"
 #include "filefinder.h"
 #include "exfont.h"
+#include "output.h"
 
 ////////////////////////////////////////////////////////////
 typedef std::pair<std::string,std::string> string_pair;
@@ -46,9 +47,15 @@ Bitmap* Cache::LoadBitmap(
 
 	if (it == cache.end()) {
 		std::string const path = FileFinder::FindImage(folder_name, filename);
-		return cache.insert(std::make_pair(key, path.empty()
-										   ? Bitmap::CreateBitmap(16, 16, Color())
-										   : Bitmap::CreateBitmap(path, transparent, flags)
+
+		// FIXME:
+		// Maybe its better to return a dummy bitmap instead of closing but
+		// this is still better then our last solution (drawing garbage)
+		if (path.empty()) {
+			Output::Error("%s/%s not found", folder_name.c_str(), filename.c_str());
+		}
+
+		return cache.insert(std::make_pair(key, Bitmap::CreateBitmap(path, transparent, flags)
 										   )).first->second;
 	} else { return it->second; }
 }

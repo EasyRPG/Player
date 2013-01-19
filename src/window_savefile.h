@@ -60,6 +60,12 @@ public:
 	void SetParty(const std::vector<std::pair<int, std::string> >& actors,
 		std::string name, int hp, int level);
 
+	////////////////////////////////////////////////////////
+	/// Sets if the savegame is broken.
+	/// Displays an error message in that case.
+	////////////////////////////////////////////////////////
+	void SetCorrupted(bool corrupted);
+
 	void Update();
 
 protected:
@@ -70,6 +76,7 @@ protected:
 	std::string hero_name;
 	int hero_hp;
 	int hero_level;
+	bool corrupted;
 };
 
 #endif

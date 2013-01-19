@@ -96,7 +96,7 @@ void Output::ErrorStr(std::string err) {
 		MsgBox::Error(err, GAME_TITLE);
 	#elif OUTPUT_TYPE == OUTPUT_SCREEN
 		if (DisplayUi != NULL) {
-			DisplayUi->DrawScreenText("Error:", 10, 30, Color(255, 0, 0, 0));
+			DisplayUi->DrawScreenText("Error:", 10, 30, Color(255, 0, 0, 255));
 			HandleScreenOutput(err, true);
 		} else {
 			// Fallback to Console if the display is not ready yet
@@ -149,7 +149,7 @@ void Output::WarningStr(std::string warn) {
 		DisplayUi->ShowCursor(last);
 		Graphics::FrameReset();
 	#elif OUTPUT_TYPE == OUTPUT_SCREEN
-		DisplayUi->DrawScreenText("Warning:", 10, 30, Color(255, 255, 0, 0));
+		DisplayUi->DrawScreenText("Warning:", 10, 30, Color(255, 255, 0, 255));
 		HandleScreenOutput(warn, false);
 	#endif
 }
@@ -193,7 +193,7 @@ void Output::PostStr(std::string msg) {
 		DisplayUi->ShowCursor(last);
 		Graphics::FrameReset();
 	#elif OUTPUT_TYPE == OUTPUT_SCREEN
-		DisplayUi->DrawScreenText("Info:", 10, 30, Color(255, 255, 0, 0));
+		DisplayUi->DrawScreenText("Info:", 10, 30, Color(255, 255, 0, 255));
 		HandleScreenOutput(msg, false);
 	#endif
 }
