@@ -138,7 +138,6 @@ protected:
 	int debug_x;
 	int debug_y;
 
-	bool teleport_pending;
 };
 
 #endif

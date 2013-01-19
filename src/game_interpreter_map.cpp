@@ -521,12 +521,13 @@ bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Co
 	// FIXME: RPG2K3 => facing direction = com.parameters[3]
 
 	Main_Data::game_player->ReserveTeleport(map_id, x, y);
-	teleport_pending = true;
 
 	if (Game_Message::visible) {
 		Game_Message::visible = false;
 		Game_Message::FullClear();
 	}
+
+	Main_Data::game_player->StartTeleport();
 
 	index++;
 
@@ -1351,7 +1352,7 @@ bool Game_Interpreter_Map::CommandCallEvent(RPG::EventCommand const& com) { // c
 	switch (com.parameters[0]) {
 		case 0: // Common Event
 			evt_id = com.parameters[1];
-			child_interpreter->Setup(Data::commonevents[evt_id - 1].event_commands, 0, Data::commonevents[evt_id - 1].ID, -2);
+			child_interpreter->Setup(Data::commonevents[evt_id - 1].event_commands, 0, Data::commonevents[evt_id - 1].ID, -2, Data::commonevents[evt_id - 1].name);
 			return true;
 		case 1: // Map Event
 			evt_id = com.parameters[1];
