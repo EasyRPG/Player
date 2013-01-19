@@ -27,11 +27,8 @@
 
 ////////////////////////////////////////////////////////////
 Window_SaveFile::Window_SaveFile(int ix, int iy, int iwidth, int iheight) : 
-	Window_Base(ix, iy, iwidth, iheight) {
-	index = 0;
-
-	hero_hp = 0;
-	hero_level = 0;
+	Window_Base(ix, iy, iwidth, iheight),
+	index(0), hero_hp(0), hero_level(0), corrupted(false) {
 
 	SetContents(Surface::CreateSurface(width - 8, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
@@ -60,12 +57,21 @@ void Window_SaveFile::SetParty(const std::vector<std::pair<int, std::string> >& 
 	hero_level = level;
 }
 
+void Window_SaveFile::SetCorrupted(bool corrupted) {
+	this->corrupted = corrupted;
+}
+
 void Window_SaveFile::Refresh() {
 	contents->Clear();
 
 	std::ostringstream out;
 	out << Data::terms.file << std::setw(2) << std::setfill(' ') << index + 1;
-	contents->TextDraw(4, 0 + 2, Font::ColorDefault, out.str());
+	contents->TextDraw(4, 2, Font::ColorDefault, out.str());
+
+	if (corrupted) {
+		contents->TextDraw(4, 16 + 2, Font::ColorKnockout, "Savegame corrupted");
+		return;
+	}
 
 	if (party.empty())
 		return;
