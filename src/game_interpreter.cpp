@@ -49,7 +49,6 @@ Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	depth = _depth;
 	main_flag = _main_flag;
 	active = false;
-	teleport_pending = false;
 
 	if (depth > 100) {
 		Output::Warning("Too many event calls (over 9000)");
@@ -412,11 +411,6 @@ void Game_Interpreter::InputButton() {
 bool Game_Interpreter::CommandEnd() {
 	CloseMessageWindow();
 	list.clear();
-
-	if (teleport_pending) {
-		teleport_pending = false;
-		Main_Data::game_player->StartTeleport();
-	}
 
 	if ((main_flag) && (event_id > 0)) {
 		Game_Map::GetEvents().find(event_id)->second->Unlock();

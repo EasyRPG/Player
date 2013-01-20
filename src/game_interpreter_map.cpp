@@ -521,12 +521,13 @@ bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Co
 	// FIXME: RPG2K3 => facing direction = com.parameters[3]
 
 	Main_Data::game_player->ReserveTeleport(map_id, x, y);
-	teleport_pending = true;
 
 	if (Game_Message::visible) {
 		Game_Message::visible = false;
 		Game_Message::FullClear();
 	}
+
+	Main_Data::game_player->StartTeleport();
 
 	index++;
 
