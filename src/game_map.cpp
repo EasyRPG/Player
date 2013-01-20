@@ -118,6 +118,8 @@ void Game_Map::Quit() {
 
 ////////////////////////////////////////////////////////////
 void Game_Map::Setup(int _id) {
+	// Execute remaining events (e.g. ones listed after a teleport)
+	Update();
 	Dispose();
 
 	location.map_id = _id;
