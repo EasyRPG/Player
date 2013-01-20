@@ -133,10 +133,12 @@ LRESULT CALLBACK CBTProc(INT nCode, WPARAM wParam, LPARAM lParam) {
 /// Displays the TaskDialog
 ////////////////////////////////////////////////////////////
 #ifdef _MSC_VER
-void ShowTaskDialog(std::string& msg, std::string& title, LPCTSTR icon) {
+void ShowTaskDialog(std::string const& mesg, std::string const& title, LPCTSTR icon) {
 	TaskDialogIndirectFunc TheTaskDialogIndirectFunc;
 	HINSTANCE hInstLibrary = LoadLibrary(L"comctl32.dll");
 	TheTaskDialogIndirectFunc = (TaskDialogIndirectFunc)GetProcAddress(hInstLibrary, "TaskDialogIndirect");
+
+	std::string msg = mesg;
 
 	if (TheTaskDialogIndirectFunc != NULL) {
 		// The Text after the first \n is placed at the content area of the
