@@ -74,13 +74,13 @@ void Scene_Map::TransitionOut() {
 void Scene_Map::Update() {
 	Game_Map::GetInterpreter().Update();
 
-	UpdateTeleportPlayer();
-
 	Game_Map::Update();
 	Main_Data::game_player->Update();
 	Main_Data::game_screen->Update();
 	spriteset->Update();
 	message_window->Update();
+
+	UpdateTeleportPlayer();
 	
 	if (Game_Temp::gameover) {
 		Game_Temp::gameover = false;
