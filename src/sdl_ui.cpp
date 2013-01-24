@@ -71,7 +71,8 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 	zoom_available(true),
 	toggle_fs_available(false),
 	mode_changing(false),
-	main_window(NULL) {
+	cursor_visible(false),
+	message_overlay(NULL) {
 
 #ifdef GEKKO
 	WPAD_Init();

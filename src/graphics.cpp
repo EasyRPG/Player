@@ -72,7 +72,9 @@ namespace Graphics {
 	};
 	EASYRPG_SHARED_PTR<State> state;
 	std::vector<EASYRPG_SHARED_PTR<State> > stack;
-	void Push();
+	std::map<uint32, Drawable*> global_drawable_map;
+	State* state;
+	std::vector<State*> stack;	void Push();
 	void Pop();
 
 	bool SortZObj(EASYRPG_SHARED_PTR<ZObj> const& first, EASYRPG_SHARED_PTR<ZObj> const& second);
@@ -279,6 +281,11 @@ void Graphics::DrawFrame() {
 	std::list<EASYRPG_SHARED_PTR<ZObj> >::iterator it_zlist;
 	for (it_zlist = state->zlist.begin(); it_zlist != state->zlist.end(); it_zlist++) {
 		state->drawable_map[(*it_zlist)->GetId()]->Draw((*it_zlist)->GetZ());
+	}
+
+	std::map<uint32, Drawable*>::iterator it_gl_map;
+	for(it_gl_map = global_drawable_map.begin(); it_gl_map != global_drawable_map.end(); it_gl_map++) {
+		it_gl_map->second->Draw(10000);
 	}
 
 	if (overlay_visible) {
@@ -536,7 +543,11 @@ void Graphics::SetFrameCount(int nframecount) {
 
 ///////////////////////////////////////////////////////////
 void Graphics::RegisterDrawable(uint32_t ID, Drawable* drawable) {
-	state->drawable_map[ID] = drawable;
+	if (drawable->IsGlobal()) {
+		global_drawable_map[ID] = drawable;
+	} else {
+		state->drawable_map[ID] = drawable;
+	}
 }
 
 void Graphics::RemoveDrawable(uint32_t ID) {
