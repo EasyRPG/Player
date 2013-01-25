@@ -1,4 +1,3 @@
 #!/bin/sh
-autoreconf --i
+autoreconf -i
 automake -a
-
