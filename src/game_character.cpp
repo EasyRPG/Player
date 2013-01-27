@@ -168,7 +168,7 @@ void Game_Character::Update() {
 	else
 		UpdateStop();
 
-	if (anime_count > 24 - move_speed) {
+	if (anime_count > 18 - move_speed) {
 		if (!step_anime && stop_count > 0) {
 			pattern = original_pattern;
 			last_pattern = last_pattern == RPG::EventPage::Frame_left ? RPG::EventPage::Frame_right : RPG::EventPage::Frame_left;
