@@ -640,7 +640,11 @@ void PixmanBitmap::OpacityBlit(int x, int y, Bitmap* _src, Rect src_rect, int op
 }
 
 void PixmanBitmap::ToneBlit(int x, int y, Bitmap* _src, Rect src_rect, const Tone &tone) {
-	if (tone == Tone()) {
+	Surface::ToneBlit(x, y, _src, src_rect, tone);
+	/**
+	TODO: fix pixman toneblit
+	**/
+	/*if (tone == Tone()) {
 		if (_src != this)
 			Blit(x, y, _src, src_rect, 255);
 		return;
@@ -708,7 +712,7 @@ void PixmanBitmap::ToneBlit(int x, int y, Bitmap* _src, Rect src_rect, const Ton
 
 		delete gray;
 	}
-
+	*/
 	RefreshCallback();
 }
 
