@@ -474,9 +474,10 @@ void BitmapUtilsT<PFsrc,PFdst>::ToneBlit(uint8* dst_pixels, const uint8* src_pix
 			r = (uint8)std::max(std::min(r + tone.red,   255), 0);
 			g = (uint8)std::max(std::min(g + tone.green, 255), 0);
 			b = (uint8)std::max(std::min(b + tone.blue,  255), 0);
-			pf_dst.set_rgba(dst_pixels, r, g, b, a);
 		}
+		pf_dst.set_rgba(dst_pixels, r, g, b, a);
 		dst_pixels += pf_dst.bytes;
+		src_pixels += pf_src.bytes;
 	}
 }
 
