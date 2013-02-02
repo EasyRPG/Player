@@ -168,7 +168,16 @@ void Game_Character::Update() {
 	else
 		UpdateStop();
 
-	if (anime_count > 18 - move_speed) {
+	int path_frames[8];
+	path_frames[0] = 16;//!
+	path_frames[1] = 12;//!
+	path_frames[2] = 12;//!
+	path_frames[3] = 8;//!
+	path_frames[4] = 4;//!
+	path_frames[5] = 2;//!
+	path_frames[6] = 1;//?  ** SHOULD BE USED?
+	path_frames[7] = 0;//?  ** SHOULD BE USED?
+	if (anime_count > path_frames[move_speed-1]) {
 		if (!step_anime && stop_count > 0) {
 			pattern = original_pattern;
 			last_pattern = last_pattern == RPG::EventPage::Frame_left ? RPG::EventPage::Frame_right : RPG::EventPage::Frame_left;
