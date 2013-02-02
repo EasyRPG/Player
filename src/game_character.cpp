@@ -168,16 +168,7 @@ void Game_Character::Update() {
 	else
 		UpdateStop();
 
-	int path_frames[8];
-	path_frames[0] = 16;//!
-	path_frames[1] = 12;//!
-	path_frames[2] = 12;//!
-	path_frames[3] = 8;//!
-	path_frames[4] = 4;//!
-	path_frames[5] = 2;//!
-	path_frames[6] = 1;//?  ** SHOULD BE USED?
-	path_frames[7] = 0;//?  ** SHOULD BE USED?
-	if (anime_count > path_frames[move_speed-1]) {
+	if (anime_count > 18 - move_speed * 2) {
 		if (!step_anime && stop_count > 0) {
 			pattern = original_pattern;
 			last_pattern = last_pattern == RPG::EventPage::Frame_left ? RPG::EventPage::Frame_right : RPG::EventPage::Frame_left;
@@ -424,7 +415,7 @@ void Game_Character::MoveTypeCustom() {
 				Unlock();
 				break;
 			case RPG::MoveCommand::Code::increase_movement_speed:
-				move_speed = min(move_speed + 1, 8); break;
+				move_speed = min(move_speed + 1, 6); break;
 			case RPG::MoveCommand::Code::decrease_movement_speed: 
 				move_speed = max(move_speed - 1, 1); break;
 			case RPG::MoveCommand::Code::increase_movement_frequence: break;
