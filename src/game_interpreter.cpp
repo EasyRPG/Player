@@ -49,7 +49,6 @@ Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	depth = _depth;
 	main_flag = _main_flag;
 	active = false;
-	teleport_pending = false;
 
 	if (depth > 100) {
 		Output::Warning("Too many event calls (over 9000)");
@@ -118,17 +117,8 @@ void Game_Interpreter::EndMoveRoute(RPG::MoveRoute* /* route */) {
 /// Update
 ////////////////////////////////////////////////////////////
 void Game_Interpreter::Update() {
-
-	loop_count = 0;
-
-	for (;;) {
-		loop_count++;
-
-		if (loop_count > 100) {
-			Graphics::Update(); // Freeze prevention
-			loop_count = 0;
-		}
-
+	// 10000 based on: https://gist.github.com/4406621
+	for (loop_count = 0; loop_count < 10000; ++loop_count) {
 		/* If map is different than event startup time
 		set event_id to 0 */
 		if (Game_Map::GetMapId() != map_id) {
@@ -224,8 +214,18 @@ void Game_Interpreter::Update() {
 		}
 
 		active = false;
+
+		// FIXME?
+		// After calling SkipTo this index++ will skip execution of e.g. END.
+		// This causes a different timing because loop_count reaches 10000
+		// faster then Player does.
+		// No idea if any game depends on this special case.
 		index++;
 	} // for
+
+	// Executed Events Count exceeded (10000)
+	active = true;
+	Output::Debug("Event %d exceeded execution limit", event_id);
 }
 
 ////////////////////////////////////////////////////////////
@@ -411,11 +411,6 @@ bool Game_Interpreter::CommandEnd() {
 	CloseMessageWindow();
 	list.clear();
 
-	if (teleport_pending) {
-		teleport_pending = false;
-		Main_Data::game_player->StartTeleport();
-	}
-
 	if ((main_flag) && (event_id > 0)) {
 		Game_Map::GetEvents().find(event_id)->second->Unlock();
 	}
@@ -533,7 +528,7 @@ bool Game_Interpreter::ContinuationChoices(RPG::EventCommand const& com) {
 	for (;;) {
 		if (!SkipTo(Cmd::ShowChoiceOption, Cmd::ShowChoiceEnd, indent, indent))
 			return false;
-		int which = com.parameters[0];
+		int which = list[index].parameters[0];
 		index++;
 		if (which > Game_Message::choice_result)
 			return false;

@@ -83,9 +83,6 @@ void Scene_File::Start() {
 					break;
 				default:;
 			}
-
-			w->SetParty(party, savegame->title.hero_name, savegame->title.hero_hp,
-				savegame->title.hero_level);
 		}
 
 		w->Refresh();
