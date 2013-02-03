@@ -53,7 +53,7 @@ void Window_MenuStatus::Refresh() {
 		DrawActorFace(actor, face_x, i*48 + y);
 
 		DrawActorName(actor, 48 + 8, i*48 + 2 + y);
-		DrawActorClass(actor, 48 + 8 + 88, i*48 + 2 + y);
+		DrawActorTitle(actor, 48 + 8 + 88, i*48 + 2 + y);
 		DrawActorLevel(actor, 48 + 8, i*48 + 2 + 16 + y);
 		DrawActorState(actor, 48 + 8 + 42, i*48 + 2 + 16 + y);
 		DrawActorExp(actor, 48 + 8, i*48 + 2 + 16 + 16 + y);

@@ -281,9 +281,9 @@ void Game_Actor::MakeExpList() {
 }
 
 std::string Game_Actor::GetExpString() const {
-	std::stringstream ss;
+		std::stringstream ss;
 	ss << GetExp();
-	return ss.str();
+		return ss.str();
 }
 
 std::string Game_Actor::GetNextExpString() const {
@@ -528,6 +528,10 @@ int Game_Actor::GetClass() const {
 void Game_Actor::SetClass(int _class_id) {
 	data.class_id = _class_id;
 	MakeExpList();
+}
+
+std::string Game_Actor::GetClassName() const {
+	return Data::classes[GetClass() - 1].name;
 }
 
 void Game_Actor::SetBaseMaxHp(int maxhp) {

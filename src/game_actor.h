@@ -537,6 +537,8 @@ public:
 	 * @param class_id mew Rpg2k3 hero class.
 	 */
 	void SetClass(int class_id);
+	/// @return Rpg2k3 hero class name
+	std::string GetClassName() const;
 
 	/**
 	 * Gets battle commands.

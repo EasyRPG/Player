@@ -70,12 +70,12 @@ void Window_Base::DrawActorName(Game_Actor* actor, int cx, int cy) {
 	contents->TextDraw(cx, cy, Font::ColorDefault, actor->GetName());
 }
 
-void Window_Base::DrawActorTitle(Game_Actor* /* actor */, int /* cx */, int /* cy */) {
-
+void Window_Base::DrawActorTitle(Game_Actor* actor, int cx, int cy) {
+	contents->TextDraw(cx, cy, Font::ColorDefault, actor->GetTitle());
 }
 
 void Window_Base::DrawActorClass(Game_Actor* actor, int cx, int cy) {
-	contents->TextDraw(cx, cy, Font::ColorDefault, actor->GetTitle());
+	contents->TextDraw(cx, cy, Font::ColorDefault, actor->GetClassName());
 }
 
 void Window_Base::DrawActorLevel(Game_Actor* actor, int cx, int cy) {
