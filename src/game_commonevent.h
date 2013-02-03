@@ -57,6 +57,9 @@ public:
 	/// @return trigger condition
 	int GetTrigger() const;
 
+	/// @return flag if that event has a switch
+	bool GetSwitchFlag() const;
+
 	/// @return trigger switch id
 	int GetSwitchId() const;
 
