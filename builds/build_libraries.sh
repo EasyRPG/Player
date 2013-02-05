@@ -54,7 +54,7 @@ fi
 
 # png
 if ! [ -f $HOME_BUILD_PATH/include/png.h ] ; then
-    PNG_VERSION=1.5.13
+    PNG_VERSION=1.5.14
     wget --continue \
         "ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng-$PNG_VERSION.tar.gz" \
         -O $ARCHIVE_DIR/libpng-$PNG_VERSION.tar.gz
@@ -162,7 +162,7 @@ fi
 
 # Freetype
 if ! [ -f $HOME_BUILD_PATH/include/ft2build.h ] ; then
-    FREETYPE_VERSION=2.4.10
+    FREETYPE_VERSION=2.4.11
     wget --continue \
         "http://download.savannah.gnu.org/releases/freetype/freetype-$FREETYPE_VERSION.tar.gz" \
         -O $ARCHIVE_DIR/freetype-$FREETYPE_VERSION.tar.gz
