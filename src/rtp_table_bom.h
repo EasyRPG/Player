@@ -1,5 +1,4 @@
-\xEF\xBB\xBF
-#include <boost/assign/list_of.hpp>
+﻿#include <boost/assign/list_of.hpp>
 #include <map>
 
 using boost::assign::list_of;

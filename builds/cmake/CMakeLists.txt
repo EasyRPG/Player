@@ -46,7 +46,7 @@ if(RUBY_FOUND)
   set(SHINONOME_GENERATOR "${SHINONOME_PATH}/generate_cxx_font.rb")
   add_custom_command(
     OUTPUT ${SHINONOME_SRCS} "${SHINONOME_PATH}/shinonome.hxx"
-    COMMAND "${RUBY_EXECUTABLE}" "${SHINONOME_GENERATOR}"
+    COMMAND "${RUBY_EXECUTABLE}" ARGS "${SHINONOME_GENERATOR}"
     DEPENDS "${SHINONOME_GENERATOR}" WORKING_DIRECTORY "${SHINONOME_PATH}")
 endif()
 
@@ -112,7 +112,7 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../lib/readers/include")
 
 # library
 set(EASYRPG_PLAYER_LIBRARIES_ALL
-  ${EASYRPG_PLAYER_LIBRARIES} ${PROJECT_NAME}_Static EasyRPG_Reader)
+  ${EASYRPG_PLAYER_LIBRARIES} "${PROJECT_NAME}_Static" EasyRPG_Reader)
 
 # entry point
 set(MAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../../src/main.cpp")
@@ -126,6 +126,26 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
 endif()
 add_library(${PROJECT_NAME}_Static STATIC ${SRCS})
 
+# RTP Table
+find_package(Ruby)
+if(RUBY_FOUND)
+  add_custom_command(
+    OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/../../src/rtp_table_bom.h"
+    COMMAND "${RUBY_EXECUTABLE}"
+    ARGS
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../resources/add_bom.rb"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../src/rtp_table.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../src/rtp_table_bom.h"
+    DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../src/rtp_table.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../resources/add_bom.rb")
+  execute_process(
+    COMMAND "${RUBY_EXECUTABLE}"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../resources/add_bom.rb"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../src/rtp_table.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../src/rtp_table_bom.h")
+endif()
+
 # executable
 add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${MAIN_FILE})
 add_executable(${PROJECT_NAME}_com ${MAIN_FILE})
@@ -133,16 +153,7 @@ foreach(i ${PROJECT_NAME} ${PROJECT_NAME}_com)
   target_link_libraries(${i} ${EASYRPG_PLAYER_LIBRARIES_ALL})
   add_dependencies(${i} EasyRPG_Reader ${i}_Static)
 endforeach()
-
-# RTP Table
-if(NOT WIN32)
-  add_custom_command(
-    OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/../../src/rtp_table_bom.h"
-    COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/../../resources/add_bom.sh"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../src/rtp_table.h"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../src/rtp_table_bom.h"
-    DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/../../src/rtp_table.h")
-endif()
+install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME} DESTINATION bin)
 
 # CPack
 set(CPACK_GENERATOR "ZIP" "TGZ")
@@ -175,8 +186,6 @@ set(CPACK_PACKAGE_ICON "${CMAKE_CURRENT_SOURCE_DIR}/../../resources/player.ico")
 set(CPACK_RESOURCE_FILE_README ${CMAKE_CURRENT_SOURCE_DIR}/../../README)
 
 include(CPack)
-
-install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME} DESTINATION bin)
 
 # Doxygen
 find_package(Doxygen)
