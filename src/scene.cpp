@@ -90,8 +90,8 @@ void Scene::MainFunction() {
 	TransitionOut();
 
 	switch(push_pop_operation) {
-	case 1: Graphics::Push();
-	case 2: Graphics::Pop();
+	case 1: Graphics::Push(); break;
+	case 2: Graphics::Pop(); break;
 	}
 }
 
