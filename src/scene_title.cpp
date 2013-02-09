@@ -55,8 +55,7 @@
 #include "window_command.h"
 
 ////////////////////////////////////////////////////////////
-Scene_Title::Scene_Title() :
-	command_window(NULL), title(NULL) {
+Scene_Title::Scene_Title() {
 	type = Scene::Title;
 }
 
@@ -123,12 +122,6 @@ void Scene_Title::Suspend() {
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Title::Terminate() {
-	delete command_window;
-	delete title;
-}
-
-////////////////////////////////////////////////////////////
 void Scene_Title::Update() {
 	if (Player::battle_test_flag) {
 		PrepareBattleTest();
@@ -156,10 +149,14 @@ void Scene_Title::LoadDatabase() {
 	// Load Database
 	Data::Clear();
 
-	if (!LDB_Reader::Load(FileFinder::FindDefault(".", DATABASE_NAME))) {
+	if(! FileFinder::IsRPG2kProject(FileFinder::GetProjectTree())) {
+		Output::Debug("%s is not an RPG2k project", Main_Data::project_path.c_str());
+	}
+
+	if (!LDB_Reader::Load(FileFinder::FindDefault(DATABASE_NAME))) {
 		Output::ErrorStr(LcfReader::GetError());
 	}
-	if (!LMT_Reader::Load(FileFinder::FindDefault(".", TREEMAP_NAME))) {
+	if (!LMT_Reader::Load(FileFinder::FindDefault(TREEMAP_NAME))) {
 		Output::ErrorStr(LcfReader::GetError());
 	}
 }
@@ -167,22 +164,22 @@ void Scene_Title::LoadDatabase() {
 ////////////////////////////////////////////////////////////
 void Scene_Title::CreateGameObjects() {
 	Game_Temp::Init();
-	Main_Data::game_screen = new Game_Screen();
+	Main_Data::game_screen.reset(new Game_Screen());
 	Game_Actors::Init();
 	Game_Party::Init();
 	Game_Message::Init();
 	Game_Map::Init();
-	Main_Data::game_player = new Game_Player();
+	Main_Data::game_player.reset(new Game_Player());
 }
 
 ////////////////////////////////////////////////////////////
 bool Scene_Title::CheckContinue() {
-	for (int i = 1; i <= 15; i++) 
+	for (int i = 1; i <= 15; i++)
 	{
 		std::stringstream ss;
-		ss << "Save" << (i <= 9 ? "0" : "") << i << ".lsd"; 
+		ss << "Save" << (i <= 9 ? "0" : "") << i << ".lsd";
 
-		if (!FileFinder::FindDefault(".", ss.str()).empty()) {
+		if (!FileFinder::FindDefault(ss.str()).empty()) {
 			return true;
 		}
 	}
@@ -192,9 +189,9 @@ bool Scene_Title::CheckContinue() {
 ////////////////////////////////////////////////////////////
 void Scene_Title::CreateTitleGraphic() {
 	// Load Title Graphic
-	if (title == NULL) // No need to recreate Title on Resume
+	if (!title) // No need to recreate Title on Resume
 	{
-		title = new Sprite();
+		title.reset(new Sprite());
 		title->SetBitmap(Cache::Title(Data::system.title_name));
 	}
 }
@@ -207,8 +204,7 @@ void Scene_Title::CreateCommandWindow() {
 	options.push_back(Data::terms.load_game);
 	options.push_back(Data::terms.exit_game);
 
-	delete command_window;
-	command_window = new Window_Command(options);
+	command_window.reset(new Window_Command(options));
 	command_window->SetX(160 - command_window->GetWidth() / 2);
 	command_window->SetY(224 - command_window->GetHeight());
 
@@ -244,7 +240,7 @@ void Scene_Title::PrepareBattleTest() {
 	//Game_Troop::can_escape = true;
 	Game_System::BgmPlay(Data::system.battle_music);
 
-	Scene::Push(new Scene_Battle(), true);
+	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Battle>(), true);
 }
 
 ////////////////////////////////////////////////////////////
@@ -253,7 +249,7 @@ void Scene_Title::CommandNewGame() {
 		Output::Warning("The game has no start location set.");
 	} else {
 		Game_System::SePlay(Data::system.decision_se);
-		Audio::BGM_Stop();
+		Audio().BGM_Stop();
 		Graphics::SetFrameCount(0);
 		CreateGameObjects();
 		Game_Map::Setup(Data::treemap.start.party_map_id);
@@ -261,7 +257,7 @@ void Scene_Title::CommandNewGame() {
 			Data::treemap.start.party_x, Data::treemap.start.party_y);
 		Main_Data::game_player->Refresh();
 		Game_Map::Autoplay();
-		Scene::Push(new Scene_Map());
+		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>());
 	}
 }
 
@@ -274,11 +270,11 @@ void Scene_Title::CommandContinue() {
 	}
 
 	// Change scene
-	Scene::Push(new Scene_Load());
+	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Load>());
 }
 
 void Scene_Title::CommandShutdown() {
 	Game_System::SePlay(Data::system.decision_se);
-	Audio::BGS_Fade(800);
+	Audio().BGS_Fade(800);
 	Scene::Pop();
 }

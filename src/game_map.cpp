@@ -18,6 +18,9 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <cassert>
+
+#include "system.h"
 #include "game_map.h"
 #include "game_interpreter_map.h"
 #include "game_temp.h"
@@ -29,8 +32,8 @@
 #include "output.h"
 #include "util_macro.h"
 #include "game_system.h"
-#include "system.h"
-#include <cassert>
+#include "filefinder.h"
+#include <boost/scoped_ptr.hpp>
 
 ////////////////////////////////////////////////////////////
 namespace {
@@ -58,7 +61,7 @@ namespace {
 	int scroll_rest;
 	int scroll_speed;
 
-	Game_Interpreter* interpreter;
+	boost::scoped_ptr<Game_Interpreter> interpreter;
 	Game_Vehicle* vehicles[3];
 
 	bool pan_locked;
@@ -71,13 +74,13 @@ void Game_Map::Init() {
 	display_x = 0;
 	display_y = 0;
 	need_refresh = true;
-	
+
 	map.reset();
 	location.map_id = 0;
 	scroll_direction = 0;
 	scroll_rest = 0;
 	scroll_speed = 0;
-	interpreter = new Game_Interpreter_Map(0, true);
+	interpreter.reset(new Game_Interpreter_Map(0, true));
 	map_info.encounter_rate = 0;
 
 	for (int i = 0; i < 3; i++)
@@ -94,14 +97,7 @@ void Game_Map::Init() {
 
 ////////////////////////////////////////////////////////////
 void Game_Map::Dispose() {
-	for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
-		delete i->second;
-	}
 	events.clear();
-
-	for (tCommonEventHash::iterator i = common_events.begin(); i != common_events.end(); ++i) {
-		delete i->second;
-	}
 	common_events.clear();
 
 	if (Main_Data::game_screen != NULL) {
@@ -113,7 +109,7 @@ void Game_Map::Dispose() {
 
 void Game_Map::Quit() {
 	Dispose();
-	delete interpreter;
+	interpreter.reset();
 }
 
 ////////////////////////////////////////////////////////////
@@ -126,7 +122,7 @@ void Game_Map::Setup(int _id) {
 	char file[12];
 	sprintf(file, "Map%04d.lmu", location.map_id);
 
-	map = LMU_Reader::Load(file);
+	map = LMU_Reader::Load(FileFinder::FindDefault(file));
 	if (map.get() == NULL) {
 		Output::ErrorStr(LcfReader::GetError());
 	}
@@ -147,11 +143,11 @@ void Game_Map::Setup(int _id) {
 	events.clear();
 
 	for (size_t i = 0; i < map->events.size(); ++i) {
-		events.insert(std::pair<int, Game_Event*>(map->events[i].ID, new Game_Event(location.map_id, map->events[i])));
+		events.insert(std::make_pair(map->events[i].ID, EASYRPG_MAKE_SHARED<Game_Event>(location.map_id, map->events[i])));
 	}
 
 	for (size_t i = 0; i < Data::commonevents.size(); ++i) {
-		common_events.insert(std::pair<int, Game_CommonEvent*>(Data::commonevents[i].ID, new Game_CommonEvent(Data::commonevents[i].ID)));
+		common_events.insert(std::make_pair(Data::commonevents[i].ID, EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID)));
 	}
 
 	scroll_direction = 2;
@@ -175,7 +171,7 @@ void Game_Map::Setup(int _id) {
 void Game_Map::Autoplay() {
 	int parent_index = 0;
 	int current_index = GetMapIndex(location.map_id);
-	
+
 	if ((current_index > -1) && !Data::treemap.maps[current_index].music.name.empty()) {
 		switch(Data::treemap.maps[current_index].music_type) {
 			case 0: // inherits music from parent
@@ -199,7 +195,7 @@ void Game_Map::Autoplay() {
 					Game_System::BgmPlay(*Game_Temp::map_bgm);
 				}
 		}
-	
+
 	}
 
 }
@@ -207,7 +203,7 @@ void Game_Map::Autoplay() {
 ////////////////////////////////////////////////////////////
 void Game_Map::Refresh() {
 	if (location.map_id > 0) {
-		
+
 		for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
 			i->second->Refresh();
 		}
@@ -253,7 +249,7 @@ bool Game_Map::IsValid(int x, int y) {
 bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event) {
 	if (!Game_Map::IsValid(x, y)) return false;
 
-	uint8 bit;
+	uint8_t bit;
 	switch (d)
 	{
 		case RPG::EventPage::Direction_down:
@@ -277,7 +273,7 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 	}
 
 	for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
-		if (i->second->GetTileId() >= 0 && i->second != self_event &&
+		if (i->second->GetTileId() >= 0 && i->second.get() != self_event &&
 			i->second->GetX() == x && i->second->GetY() == y && !i->second->GetThrough()) {
 			// FIXME: What does this do?
 			/*if ((passages_up[i->second->GetTileId()] & bit) != 0)
@@ -285,9 +281,9 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 		}
 	}
 
-	int16 tile_index = (int16)(x + y * map->width);
+	int16_t tile_index = (int16_t)(x + y * map->width);
 
-	int16 tile_id = map->upper_layer[tile_index] - BLOCK_F;
+	int16_t tile_id = map->upper_layer[tile_index] - BLOCK_F;
 	tile_id = map_info.upper_tiles[tile_id];
 
 	if ((passages_up[tile_id] & bit) == 0)
@@ -306,7 +302,7 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 
 	} else if (map->lower_layer[tile_index] >= BLOCK_D) {
 		tile_id = (map->lower_layer[tile_index] - BLOCK_D) / 50;
-		int16 autotile_id = map->lower_layer[tile_index] - BLOCK_D - tile_id * 50;
+		int16_t autotile_id = map->lower_layer[tile_index] - BLOCK_D - tile_id * 50;
 
 		tile_id += 6;
 
@@ -317,8 +313,8 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 				autotile_id == 43 ||
 				autotile_id == 45
 			))
-			return true;		
-		
+			return true;
+
 		if ((passages_down[tile_id] & bit) == 0)
 			return false;
 
@@ -339,7 +335,7 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 }
 
 ////////////////////////////////////////////////////////////
-bool Game_Map::IsBush(int x, int y) {
+bool Game_Map::IsBush(int /* x */, int /* y */) {
 	// TODO
 	return false;
 }
@@ -382,7 +378,7 @@ void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
 	tEventHash::const_iterator i;
 	for (i = Game_Map::GetEvents().begin(); i != Game_Map::GetEvents().end(); i++) {
 		if (i->second->GetX() == x && i->second->GetY() == y) {
-			result.push_back(i->second);
+			result.push_back(i->second.get());
 		}
 	}
 
@@ -644,7 +640,7 @@ void Game_Map::SetChipset(int id) {
 		passages_down.resize(162, (unsigned char) 0x0F);
 	if (passages_up.size() < 144)
 		passages_up.resize(144, (unsigned char) 0x0F);
-	for (uint8 i = 0; i < 144; i++) {
+	for (uint8_t i = 0; i < 144; i++) {
 		map_info.lower_tiles[i] = i;
 		map_info.upper_tiles[i] = i;
 	}
@@ -657,11 +653,11 @@ Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
 
 ////////////////////////////////////////////////////////////
 void Game_Map::SubstituteDown(int old_id, int new_id) {
-	map_info.lower_tiles[old_id] = (uint8) new_id;
+	map_info.lower_tiles[old_id] = (uint8_t) new_id;
 }
 
 void Game_Map::SubstituteUp(int old_id, int new_id) {
-	map_info.upper_tiles[old_id] = (uint8) new_id;
+	map_info.upper_tiles[old_id] = (uint8_t) new_id;
 }
 
 ////////////////////////////////////////////////////////////
@@ -775,4 +771,3 @@ int Game_Map::GetParallaxY() {
 const std::string& Game_Map::GetParallaxName() {
 	return map_info.parallax_name;
 }
-

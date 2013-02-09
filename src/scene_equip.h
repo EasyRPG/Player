@@ -27,6 +27,7 @@
 #include "window_equip.h"
 #include "window_equipstatus.h"
 #include "window_help.h"
+#include <boost/scoped_ptr.hpp>
 
 ////////////////////////////////////////////////////////////
 /// Scene Equip class.
@@ -44,7 +45,6 @@ public:
 
 	void Start();
 	void Update();
-	void Terminate();
 
 	////////////////////////////////////////////////////////
 	/// Updates the Item Windows.
@@ -65,7 +65,7 @@ public:
 	/// Updates the Equip Window.
 	////////////////////////////////////////////////////////
 	void UpdateEquipSelection();
-	
+
 	////////////////////////////////////////////////////////
 	/// Updates the Item Window.
 	////////////////////////////////////////////////////////
@@ -78,15 +78,15 @@ private:
 	int equip_index;
 
 	/// Displays available items in a category
-	std::vector<Window_EquipItem*> item_windows;
+	std::vector<EASYRPG_SHARED_PTR<Window_EquipItem> > item_windows;
 	/// Current active item window
-	Window_EquipItem* item_window;
+	EASYRPG_SHARED_PTR<Window_EquipItem> item_window;
 	/// Displays stats of the hero/item
-	Window_EquipStatus* equipstatus_window;
+	boost::scoped_ptr<Window_EquipStatus> equipstatus_window;
 	/// Displays currently equipped items
-	Window_Equip* equip_window;
+	boost::scoped_ptr<Window_Equip> equip_window;
 	/// Displays description about the selected item
-	Window_Help* help_window;
+	boost::scoped_ptr<Window_Help> help_window;
 };
 
 #endif

@@ -1,0 +1,227 @@
+#!@GAWK@ -f
+#
+# This is the simple help script to make src_diff.bit.
+#
+#      Yasuyuki Furukawa <Furukawa.Yasuyuki@fujixerox.co.jp>
+#			* public domain *
+#
+
+func usage() {
+    printf("usage: bdfdiff  {modified bdf}  {orig bdf} > {output bdf}\n");
+    ERROR = " ";
+}
+
+func print_header(file,   line) {
+    #local line;
+
+    while (1) {
+	line = EOF;
+	getline line < file;
+	if (line == EOF || line ~ /^STARTCHAR/)
+	    break;
+	if (line ~ /^CHARS[ \t]/)
+	    line = "CHARS XXX";
+	print line;
+    }
+}
+func print_footer() {
+    printf("ENDFONT\n");
+}
+
+func read_char1 (file,    line, flag) {
+    #local line, flag;
+
+    flag = 0;
+    delete pat1;
+
+    while (1) {
+	line = EOF;
+	getline line < file;
+	if (line == EOF)
+	    break;
+
+	if (line ~ /^ENCODING/) {
+	    char1 = line;
+	    sub(/.*[ \t]+/, "", char1);
+	}
+	if (line ~ /^BITMAP/) {
+	    flag = 1;
+	    continue;
+	}
+	if (line ~ /^BBX[ \t]/) {
+	    bbx1 = line;
+	    continue;
+	}
+	if (line ~ /^SWIDTH[ \t]/) {
+	    swidth1 = line;
+	    continue;
+	}
+	if (line ~ /^DWIDTH[ \t]/) {
+	    dwidth1 = line;
+	    continue;
+	}
+	if (line ~ /^ENDCHAR/) {
+	    endchar1 = line;
+	    break;
+	}
+	if (flag > 0) {
+	    pat1[flag] = toupper(line);
+	    flag++;
+	}
+    }
+    return flag;
+}
+
+func read_char2 (file,    line, flag) {
+    #local line, flag;
+
+    flag = 0;
+    delete pat2;
+
+    while (1) {
+	line = EOF;
+	getline line < file;
+	if (line == EOF)
+	    break;
+
+	if (line ~ /^ENCODING/) {
+	    char2 = line;
+	    sub(/.*[ \t]+/, "", char2);
+	}
+	if (line ~ /^BITMAP/) {
+	    flag = 1;
+	    continue;
+	}
+	if (line ~ /^BBX[ \t]/) {
+	    bbx2 = line;
+	    continue;
+	}
+	if (line ~ /^SWIDTH[ \t]/) {
+	    swidth2 = line;
+	    continue;
+	}
+	if (line ~ /^DWIDTH[ \t]/) {
+	    dwidth2 = line;
+	    continue;
+	}
+	if (line ~ /^ENDCHAR/) {
+	    endchar2 = line;
+	    break;
+	}
+	if (flag > 0) {
+	    pat2[flag] = toupper(line);
+	    flag++;
+	}
+    }
+    return flag;
+}
+
+
+func print_char1 (      i, n) {
+    #local i, n;
+    printf("STARTCHAR %4x\n" , char1);
+    printf("ENCODING %d\n" , char1);
+    printf(swidth1 "\n");
+    printf(dwidth1 "\n");
+    printf(bbx1 "\n");
+    printf("BITMAP\n");
+    i = 1;
+    for (n in pat1)
+	printf(pat1[i++] "\n");
+    printf(endchar1 "\n");
+}
+
+func print_char2 (      i, n) {
+    #local i, n;
+    printf("COMMENT " "STARTCHAR %4x\n" , char2);
+    printf("COMMENT " "ENCODING %d\n" , char2);
+    printf("COMMENT " swidth2 "\n");
+    printf("COMMENT " dwidth2 "\n");
+    printf("COMMENT " bbx2 "\n");
+    printf("COMMENT " "BITMAP\n");
+    i = 1;
+    for (n in pat2)
+	printf("COMMENT " pat2[i++] "\n");
+    printf("COMMENT " endchar2 "\n");
+}
+
+BEGIN {
+    EOF = "";
+    TRUE = 1;
+    FALSE = 0;
+    if (ARGV[2] == NULL) {
+	usage();
+	exit (1);
+    }
+
+    file1 = ARGV[1];
+    file2 = ARGV[2];
+
+    # output header
+    print_header(file1);
+
+    # output chars
+    while (1) {
+	ret1 = read_char1(file1);
+	ret2 = read_char2(file2);
+	if (ret1 == 0 && ret == 0)
+	    exit (0);
+	else if (ret1 == 0) {
+	    ERROR = "FILE1 EOF";
+	    exit (0);
+	} else if (ret2 == 0) {
+	    ERROR = "FILE2 EOF";
+	    exit (0);
+	}
+
+	while (char1 != char2) {
+	    while (char1 > char2) {
+		print_char2();
+		if (read_char2(file2) == 0) {
+		    ERROR = "FILE2 EOF";
+		    exit (0);
+		}
+	    }
+	    while (char1 > char2) {
+		print_char1();
+		if (read_char1(file1) == 0) {
+		    ERROR = "FILE1 EOF";
+		    exit (0);
+		}
+	    }
+	}
+
+	match_flag = TRUE;
+	pat_flag = FALSE;
+	i = 1;
+	for (n in pat1) {
+	    if (!pat_flag && pat1[i] != NULL)
+		pat_flag = TRUE;
+	    if (pat1[i] != pat2[i]) {
+		match_flag = FALSE;
+		break;
+	    }
+	    i++;
+	}
+	if (pat_flag && !match_flag)
+	    print_char1();
+    }
+    # output footer
+}
+
+END {
+    if (ERROR == "FILE2 EOF") {
+	print_char1();
+	while (read_char1(file1))
+	    print_char1();
+	print_footer();
+    } else if (ERROR == "FILE1 EOF") {
+	print_char2();
+	while (read_char2(file2))
+	    print_char2();
+	print_footer();
+    } else if (ERROR != NULL)
+	printf(ERROR) > "/dev/stderr";
+    else
+	print_footer();
+}

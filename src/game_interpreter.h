@@ -26,6 +26,7 @@
 #include "rpg_eventcommand.h"
 #include "system.h"
 #include "command_codes.h"
+#include <boost/scoped_ptr.hpp>
 
 class Game_Event;
 class Game_CommonEvent;
@@ -73,7 +74,7 @@ protected:
 	unsigned int event_id;
 	int wait_count;
 
-	Game_Interpreter* child_interpreter;
+	boost::scoped_ptr<Game_Interpreter> child_interpreter;
 	typedef bool (Game_Interpreter::*ContinuationFunction)(RPG::EventCommand const& com);
 	ContinuationFunction continuation;
 

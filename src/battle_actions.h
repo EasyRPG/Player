@@ -25,6 +25,7 @@
 #include "battle_battler.h"
 #include "battle_animation.h"
 #include "scene_battle.h"
+#include <boost/scoped_ptr.hpp>
 
 ////////////////////////////////////////////////////////////
 
@@ -33,7 +34,7 @@ namespace Battle {
 class Action {
 public:
 	virtual bool operator()() = 0;
-	virtual ~Action();
+	virtual ~Action() {}
 };
 
 class WaitAction : public Action {
@@ -59,12 +60,11 @@ class AnimationAction : public Action {
 public:
 	AnimationAction(const Sprite* target, const RPG::Animation* animation);
 	AnimationAction(int x, int y, const RPG::Animation* animation);
-	~AnimationAction();
 
 	bool operator()();
 
 protected:
-	BattleAnimation* animation;
+	boost::scoped_ptr<BattleAnimation> animation;
 };
 
 class MoveAction : public Action {
@@ -101,4 +101,3 @@ protected:
 }
 
 #endif
-

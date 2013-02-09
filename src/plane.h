@@ -21,8 +21,7 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "bitmap.h"
-#include "bitmap_screen.h"
+#include "system.h"
 #include "color.h"
 #include "drawable.h"
 #include "tone.h"
@@ -38,8 +37,8 @@ public:
 
 	void Draw(int z_order);
 
-	Bitmap* GetBitmap() const;
-	void SetBitmap(Bitmap* bitmap, bool delete_bitmap = false);
+	BitmapRef const& GetBitmap() const;
+	void SetBitmap(BitmapRef const& bitmap);
 	bool GetVisible() const;
 	void SetVisible(bool visible);
 	int GetZ() const;
@@ -69,8 +68,8 @@ private:
 	unsigned long ID;
 	ZObj* zobj;
 
-	Bitmap* bitmap;
-	BitmapScreen* bitmap_screen;
+	BitmapRef bitmap;
+	BitmapScreenRef bitmap_screen;
 
 	bool visible;
 	int z;

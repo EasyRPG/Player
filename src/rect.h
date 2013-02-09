@@ -42,12 +42,12 @@ public:
 	///////////////////////////////////////////////////////
 	/// Equality operator.
 	///////////////////////////////////////////////////////
-	bool operator==(const Rect& other) const;
+	bool operator==(Rect const& other) const;
 
 	///////////////////////////////////////////////////////
 	/// Inequality operator.
 	///////////////////////////////////////////////////////
-	bool operator!=(const Rect& other) const;
+	bool operator!=(Rect const& other) const;
 
 	///////////////////////////////////////////////////////
 	/// Set all rect values simultaneously.
@@ -92,13 +92,13 @@ public:
 	/// @param rect : rect
 	/// @return whether the rect is outside of the scope
 	///////////////////////////////////////////////////////
-	bool IsOutOfBounds(const Rect &rect) const;
+	bool IsOutOfBounds(Rect const& rect) const;
 
 	///////////////////////////////////////////////////////
 	/// Get a sub rect from a given rect.
 	/// @param rect : rect
 	///////////////////////////////////////////////////////
-	Rect GetSubRect(const Rect &rect);
+	Rect GetSubRect(Rect const& rect);
 
 	/// X coordinate.
 	int x;

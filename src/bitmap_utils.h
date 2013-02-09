@@ -24,13 +24,12 @@
 #include <string>
 #include <list>
 #include <map>
+#include "system.h"
 #include "pixel_format.h"
 #include "color.h"
 #include "rect.h"
 #include "tone.h"
 #include "matrix.h"
-
-class Bitmap;
 
 ////////////////////////////////////////////////////////////
 /// Bitmap utils abstract parent class
@@ -46,7 +45,7 @@ public:
 	/// @param b (out) : blue
 	/// @param a (out) : alpha
 	////////////////////////////////////////////////////////
-	virtual void GetPixel(const uint8* src_pixels, uint8& r, uint8& g, uint8& b, uint8& a) = 0;
+	virtual void GetPixel(const uint8_t* src_pixels, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Check the opacity of a pixel row
@@ -55,7 +54,7 @@ public:
 	/// @param all (out) : true if all pixels are opaque
 	/// @param any (out) : true if any pixels are opaque
 	////////////////////////////////////////////////////////
-	virtual void CheckOpacity(const uint8* src_pixels, int n, bool& all, bool& any) = 0;
+	virtual void CheckOpacity(const uint8_t* src_pixels, int n, bool& all, bool& any) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Set a pixel to a given color.
@@ -65,7 +64,7 @@ public:
 	/// @param b : blue
 	/// @param a : alpha
 	////////////////////////////////////////////////////////
-	virtual void SetPixel(uint8* dst_pixels, const uint8& r, const uint8& g, const uint8& b, const uint8& a) = 0;
+	virtual void SetPixel(uint8_t* dst_pixels, const uint8_t& r, const uint8_t& g, const uint8_t& b, const uint8_t& a) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Set multiple pixels to a given value.
@@ -73,7 +72,7 @@ public:
 	/// @param src_pixel : pointer to source pixel
 	/// @param n : number of pixels
 	////////////////////////////////////////////////////////
-	virtual void SetPixels(uint8* dst_pixels, const uint8* src_pixels, int n) = 0;
+	virtual void SetPixels(uint8_t* dst_pixels, const uint8_t* src_pixels, int n) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap to destination with opacity scaling
@@ -82,7 +81,7 @@ public:
 	/// @param n : number of pixels
 	/// @param opacity : opacity scale (255 == unity)
 	////////////////////////////////////////////////////////
-	virtual void Blit(uint8* dst_pixels, const uint8* src_pixels, int n, int opacity);
+	virtual void Blit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int opacity);
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap to destination with opacity scaling
@@ -91,7 +90,7 @@ public:
 	/// @param n : number of pixels
 	/// @param opacity : opacity scale (255 == unity)
 	////////////////////////////////////////////////////////
-	virtual void OpacityBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int opacity) = 0;
+	virtual void OpacityBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int opacity) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap over destination (transparency allows source through)
@@ -99,7 +98,7 @@ public:
 	/// @param src_pixel : pointer to source pixel row
 	/// @param n : number of pixels
 	////////////////////////////////////////////////////////
-	virtual void OverlayBlit(uint8* dst_pixels, const uint8* src_pixels, int n) = 0;
+	virtual void OverlayBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap into destination (transparency is copied)
@@ -107,7 +106,7 @@ public:
 	/// @param src_pixel : pointer to source pixel row
 	/// @param n : number of pixels
 	////////////////////////////////////////////////////////
-	virtual void CopyBlit(uint8* dst_pixels, const uint8* src_pixels, int n) = 0;
+	virtual void CopyBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap to destination with horizontal flip
@@ -115,7 +114,7 @@ public:
 	/// @param src_pixel : pointer to source pixel row
 	/// @param n : number of pixels
 	////////////////////////////////////////////////////////
-	virtual void FlipHBlit(uint8* dst_pixels, const uint8* src_pixels, int n) = 0;
+	virtual void FlipHBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap to destination with scaling and opacity scaling
@@ -126,7 +125,7 @@ public:
 	/// @param step : fixed point source x step (inverse scale factor)
 	/// @param opacity : opacity scale (255 == unity)
 	////////////////////////////////////////////////////////
-	virtual void ScaleBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int x, int step, int opacity);
+	virtual void ScaleBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int x, int step, int opacity);
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap to destination with scaling and opacity scaling
@@ -137,7 +136,7 @@ public:
 	/// @param step : fixed point source x step (inverse scale factor)
 	/// @param opacity : opacity scale (255 == unity)
 	////////////////////////////////////////////////////////
-	virtual void OpacityScaleBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int x, int step, int opacity) = 0;
+	virtual void OpacityScaleBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int x, int step, int opacity) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap over destination with scaling
@@ -148,7 +147,7 @@ public:
 	/// @param x : fixed point source x position
 	/// @param step : fixed point source x step (inverse scale factor)
 	////////////////////////////////////////////////////////
-	virtual void OverlayScaleBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int x, int step) = 0;
+	virtual void OverlayScaleBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int x, int step) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap into destination with scaling
@@ -159,7 +158,7 @@ public:
 	/// @param x : fixed point source x position
 	/// @param step : fixed point source x step (inverse scale factor)
 	////////////////////////////////////////////////////////
-	virtual void CopyScaleBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int x, int step) = 0;
+	virtual void CopyScaleBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int x, int step) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap over destination with transformation and opacity scaling
@@ -173,7 +172,7 @@ public:
 	/// @param inv : inverse (dst->src) transformation matrix
 	/// @param opacity : opacity scale (255 == unity)
 	////////////////////////////////////////////////////////
-	virtual void TransformBlit(uint8* dst_pixels, const uint8* src_pixels, int src_pitch,
+	virtual void TransformBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int src_pitch,
 							   int x0, int x1, int y, const Rect& src_rect, const Matrix& inv,
 							   int opacity);
 
@@ -189,7 +188,7 @@ public:
 	/// @param inv : inverse (dst->src) transformation matrix
 	/// @param opacity : opacity scale (255 == unity)
 	////////////////////////////////////////////////////////
-	virtual void OpacityTransformBlit(uint8* dst_pixels, const uint8* src_pixels, int src_pitch,
+	virtual void OpacityTransformBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int src_pitch,
 									  int x0, int x1, int y, const Rect& src_rect, const Matrix& inv,
 									  int opacity) = 0;
 
@@ -206,7 +205,7 @@ public:
 	/// @param inv : inverse (dst->src) transformation matrix
 	/// @param opacity : opacity scale (255 == unity)
 	////////////////////////////////////////////////////////
-	virtual void OverlayTransformBlit(uint8* dst_pixels, const uint8* src_pixels, int src_pitch,
+	virtual void OverlayTransformBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int src_pitch,
 									  int x0, int x1, int y, const Rect& src_rect, const Matrix& inv) = 0;
 
 	////////////////////////////////////////////////////////
@@ -222,7 +221,7 @@ public:
 	/// @param inv : inverse (dst->src) transformation matrix
 	/// @param opacity : opacity scale (255 == unity)
 	////////////////////////////////////////////////////////
-	virtual void CopyTransformBlit(uint8* dst_pixels, const uint8* src_pixels, int src_pitch,
+	virtual void CopyTransformBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int src_pitch,
 								   int x0, int x1, int y, const Rect& src_rect, const Matrix& inv) = 0;
 
 	////////////////////////////////////////////////////////
@@ -231,7 +230,7 @@ public:
 	/// @param src_pixel : pointer to source pixel row
 	/// @param n : number of pixels
 	////////////////////////////////////////////////////////
-	virtual void MaskBlit(uint8* dst_pixels, const uint8* src_pixels, int n) = 0;
+	virtual void MaskBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Adjust bitmap HSL colors.
@@ -243,7 +242,7 @@ public:
 	/// @param lum : luminance scale
 	/// @param loff: luminance offset
 	////////////////////////////////////////////////////////
-	virtual void HSLBlit(uint8* dst_pixels, const uint8* src_pixels, int n,
+	virtual void HSLBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n,
 						 int hue, int sat, int lum, int loff) = 0;
 
 	////////////////////////////////////////////////////////
@@ -253,7 +252,7 @@ public:
 	/// @param n : number of pixels
 	/// @param tone : tone to apply (gray is ignored)
 	////////////////////////////////////////////////////////
-	virtual void ToneBlit(uint8* dst_pixels, const uint8* src_pixels, int n, const Tone& tone) = 0;
+	virtual void ToneBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, const Tone& tone) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Adjust bitmap tone, with saturation change
@@ -263,7 +262,7 @@ public:
 	/// @param tone : tone to apply
 	/// @param factor : must be (255 - tone.gray) / 255;
 	////////////////////////////////////////////////////////
-	virtual void ToneBlit(uint8* dst_pixels, const uint8* src_pixels, int n, const Tone& tone, double factor) = 0;
+	virtual void ToneBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, const Tone& tone, double factor) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Blend bitmap with color
@@ -272,7 +271,7 @@ public:
 	/// @param n : number of pixels
 	/// @param color : color to apply
 	////////////////////////////////////////////////////////
-	virtual void BlendBlit(uint8* dst_pixels, const uint8* src_pixels, int n, const Color& color) = 0;
+	virtual void BlendBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, const Color& color) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Adjust bitmap opacity
@@ -281,7 +280,7 @@ public:
 	/// @param n : number of pixels
 	/// @param tone : opacity scale (255 = unity)
 	////////////////////////////////////////////////////////
-	virtual void OpacityChangeBlit(uint8* dst_pixels, const uint8* src_pixels, int n, int opacity) = 0;
+	virtual void OpacityChangeBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int opacity) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Flips the bitmap pixels horizontally and vertically.
@@ -289,7 +288,7 @@ public:
 	/// @param pixels_last (in, out) : pointer to the bottom-left pixel
 	/// @param n : number of pixels
 	////////////////////////////////////////////////////////
-	virtual void FlipHV(uint8*& pixels_first, uint8*& pixels_last, int n) = 0;
+	virtual void FlipHV(uint8_t*& pixels_first, uint8_t*& pixels_last, int n) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Flips the bitmap pixels horizontally
@@ -297,7 +296,7 @@ public:
 	/// @param pixels_last (in, out) : pointer to the right-most pixel
 	/// @param n : number of pixels
 	////////////////////////////////////////////////////////
-	virtual void FlipH(uint8*& pixels_left, uint8*& pixels_right, int n) = 0;
+	virtual void FlipH(uint8_t*& pixels_left, uint8_t*& pixels_right, int n) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Flips the bitmap pixels vertically.
@@ -306,7 +305,7 @@ public:
 	/// @param n : number of pixels
 	/// @param tmp_buffer : temporary buffer (size: n pixels)
 	////////////////////////////////////////////////////////
-	virtual void FlipV(uint8*& pixels_first, uint8*& pixels_last, int n, uint8* tmp_buffer) = 0;
+	virtual void FlipV(uint8_t*& pixels_first, uint8_t*& pixels_last, int n, uint8_t* tmp_buffer) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Blit source bitmap into destination scaled 2:1
@@ -315,19 +314,19 @@ public:
 	/// @param src_pixel : pointer to source pixel row
 	/// @param n : number of source pixels
 	////////////////////////////////////////////////////////
-	virtual void Blit2x(uint8* dst_pixels, const uint8* src_pixels, int n) = 0;
+	virtual void Blit2x(uint8_t* dst_pixels, const uint8_t* src_pixels, int n) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Set the color key of the target
 	/// @param colorkey : the color key
 	////////////////////////////////////////////////////////
-	virtual void SetDstColorKey(uint32 colorkey) = 0;
+	virtual void SetDstColorKey(uint32_t colorkey) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Set the color key of the source
 	/// @param colorkey : the color key
 	////////////////////////////////////////////////////////
-	virtual void SetSrcColorKey(uint32 colorkey) = 0;
+	virtual void SetSrcColorKey(uint32_t colorkey) = 0;
 
 	////////////////////////////////////////////////////////
 	/// Set the destination dynamic format

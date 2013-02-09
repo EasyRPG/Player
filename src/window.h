@@ -21,10 +21,10 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include "system.h"
 #include "drawable.h"
-#include "bitmap.h"
-#include "surface.h"
 #include "zobj.h"
+#include "rect.h"
 
 ////////////////////////////////////////////////////////////
 /// Window class
@@ -37,14 +37,14 @@ public:
 	void Draw(int z_order);
 
 	void Update();
-	Bitmap* GetWindowskin() const;
-	void SetWindowskin(Bitmap* nwindowskin, bool delete_bitmap);
-	Surface* GetContents() const;
-	void SetContents(Surface* ncontents);
+	BitmapRef const& GetWindowskin() const;
+	void SetWindowskin(BitmapRef const& nwindowskin);
+	BitmapRef GetContents() const;
+	void SetContents(BitmapRef const& ncontents);
 	bool GetStretch() const;
 	void SetStretch(bool nstretch);
-	Rect GetCursorRect() const;
-	void SetCursorRect(Rect ncursor_rect);
+	Rect const& GetCursorRect() const;
+	void SetCursorRect(Rect const& ncursor_rect);
 	bool GetActive() const;
 	void SetActive(bool nactive);
 	bool GetVisible() const;
@@ -89,8 +89,7 @@ protected:
 	DrawableType type;
 	unsigned long ID;
 	ZObj* zobj;
-	Bitmap* windowskin;
-	Surface* contents;
+	BitmapRef windowskin, contents;
 	bool stretch;
 	Rect cursor_rect;
 	bool active;
@@ -112,15 +111,9 @@ protected:
 	int contents_opacity;
 
 private:
-	BitmapScreen* windowskin_screen;
-	BitmapScreen* contents_screen;
-	BitmapScreen* background;
-	BitmapScreen* frame_down;
-	BitmapScreen* frame_up;
-	BitmapScreen* frame_left;
-	BitmapScreen* frame_right;
-	BitmapScreen* cursor1;
-	BitmapScreen* cursor2;
+	BitmapScreenRef
+		windowskin_screen, contents_screen, background, frame_down,
+		frame_up, frame_left, frame_right, cursor1, cursor2;
 
 	void RefreshBackground();
 	void RefreshFrame();

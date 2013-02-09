@@ -163,7 +163,6 @@ void Game_Vehicle::Update() {
 	}
 }
 
-bool Game_Vehicle::CheckEventTriggerTouch(int x, int y) {
+bool Game_Vehicle::CheckEventTriggerTouch(int /* x */, int /* y */) {
 	return false;
 }
-

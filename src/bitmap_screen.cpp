@@ -19,49 +19,26 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <cmath>
+
+#include "system.h"
 #include "bitmap_screen.h"
 #include "baseui.h"
 #include "util_macro.h"
-
-#if defined(USE_SDL_BITMAP)
-	#include "sdl_bitmap_screen.h"
-#endif
-#if defined(USE_OPENGL_BITMAP)
-	#include "gl_bitmap_screen.h"
-#endif
-#if defined(USE_SOFT_BITMAP)
-	#include "soft_bitmap_screen.h"
-#endif
-#if defined(USE_PIXMAN_BITMAP)
-	#include "pixman_bitmap_screen.h"
-#endif
+#include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
-BitmapScreen* BitmapScreen::CreateBitmapScreen(Bitmap* source, bool delete_bitmap) {
-	#if defined(USE_SDL_BITMAP)
-		return (BitmapScreen*)new SdlBitmapScreen(source, delete_bitmap);
-	#elif defined(USE_OPENGL_BITMAP)
-		return (BitmapScreen*)new GlBitmapScreen(source, delete_bitmap);
-	#elif defined(USE_SOFT_BITMAP)
-		return (BitmapScreen*)new SoftBitmapScreen(source, delete_bitmap);
-	#elif defined(USE_PIXMAN_BITMAP)
-		return (BitmapScreen*)new PixmanBitmapScreen(source, delete_bitmap);
-	#else
-		#error "No bitmap implementation selected"
-	#endif
+BitmapScreenRef BitmapScreen::Create(BitmapRef const& source) {
+	return EASYRPG_MAKE_SHARED<BitmapScreen>(source);
 }
 
 ////////////////////////////////////////////////////////////
-BitmapScreen* BitmapScreen::CreateBitmapScreen() {
-	return CreateBitmapScreen(NULL);
+BitmapScreenRef BitmapScreen::Create() {
+	return Create(BitmapRef());
 }
 
 ////////////////////////////////////////////////////////////
-BitmapScreen::BitmapScreen(Bitmap* bitmap, bool delete_bitmap) :
+BitmapScreen::BitmapScreen(BitmapRef const& bitmap) :
 	bitmap(bitmap),
-	delete_bitmap(delete_bitmap),
-	bitmap_effects(NULL),
-	bitmap_scale(NULL),
 	bitmap_effects_valid(false),
 	bitmap_scale_valid(false) {
 
@@ -86,13 +63,7 @@ BitmapScreen::BitmapScreen(Bitmap* bitmap, bool delete_bitmap) :
 
 ////////////////////////////////////////////////////////////
 BitmapScreen::~BitmapScreen() {
-	if (bitmap_effects != NULL)
-		delete bitmap_effects;
-	if (bitmap_scale != NULL)
-		delete bitmap_scale;
-	if (delete_bitmap && bitmap != NULL) {
-		delete bitmap;
-	} else if (bitmap != NULL) {
+	if (bitmap) {
 		bitmap->DetachBitmapScreen(this);
 	}
 }
@@ -103,7 +74,7 @@ void BitmapScreen::BlitScreen(int x, int y) {
 }
 
 ////////////////////////////////////////////////////////////
-void BitmapScreen::BlitScreen(int x, int y, Rect src_rect) {
+void BitmapScreen::BlitScreen(int x, int y, Rect const& src_rect) {
 	if (bitmap == NULL || (opacity_top_effect <= 0 && opacity_bottom_effect <= 0))
 		return;
 
@@ -115,16 +86,16 @@ void BitmapScreen::BlitScreen(int x, int y, Rect src_rect) {
 	int bush_y = (rect.y + rect.height) - (bush_rect.y + bush_rect.height);
 
 	bool need_scale = false;
-	Bitmap* draw_bitmap = Refresh(rect, need_scale, bush_y);
+	BitmapRef draw_bitmap = Refresh(rect, need_scale, bush_y);
 
 	bitmap_changed = false;
 	needs_refresh = false;
 
-	BlitScreenIntern(draw_bitmap, x, y, rect, need_scale, bush_y);
+	BlitScreenIntern(*draw_bitmap, x, y, rect, need_scale, bush_y);
 }
 
 ////////////////////////////////////////////////////////////
-void BitmapScreen::BlitScreenTiled(Rect src_rect, Rect dst_rect, int ox, int oy) {
+void BitmapScreen::BlitScreenTiled(Rect const& src_rect, Rect const& dst_rect, int ox, int oy) {
 	if (bitmap == NULL || (opacity_top_effect <= 0 && opacity_bottom_effect <= 0))
 		return;
 
@@ -132,7 +103,7 @@ void BitmapScreen::BlitScreenTiled(Rect src_rect, Rect dst_rect, int ox, int oy)
 	int bush_y = 0;
 
 	bool need_scale = false;
-	Bitmap* draw_bitmap = Refresh(rect, need_scale, bush_y);
+	BitmapRef draw_bitmap = Refresh(rect, need_scale, bush_y);
 
 	bitmap_changed = false;
 	needs_refresh = false;
@@ -166,7 +137,7 @@ void BitmapScreen::BlitScreenTiled(Rect src_rect, Rect dst_rect, int ox, int oy)
 				blit_rect.height = y1 - y;
 			if (x + blit_rect.width > x1)
 				blit_rect.width = x1 - x;
-			BlitScreenIntern(draw_bitmap, x, y, blit_rect, need_scale, 0);
+			BlitScreenIntern(*draw_bitmap, x, y, blit_rect, need_scale, 0);
 		}
 	}
 }
@@ -178,13 +149,9 @@ void BitmapScreen::SetDirty() {
 }
 
 ////////////////////////////////////////////////////////////
-void BitmapScreen::SetBitmap(Bitmap* source, bool _delete_bitmap) {
-	if (delete_bitmap && bitmap != NULL) {
-		delete bitmap;
-	} else if (bitmap != NULL)
+void BitmapScreen::SetBitmap(BitmapRef const& source) {
+    if (bitmap)
 		bitmap->DetachBitmapScreen(this);
-
-	delete_bitmap = _delete_bitmap;
 
 	bitmap = source;
 	needs_refresh = true;
@@ -199,7 +166,7 @@ void BitmapScreen::SetBitmap(Bitmap* source, bool _delete_bitmap) {
 }
 
 ////////////////////////////////////////////////////////////
-Bitmap* BitmapScreen::GetBitmap() {
+BitmapRef const& BitmapScreen::GetBitmap() {
 	return bitmap;
 }
 
@@ -222,7 +189,7 @@ void BitmapScreen::ClearEffects() {
 	flash_effect = Color(0,0,0,0);
 }
 
-void BitmapScreen::SetSrcRect(Rect src_rect) {
+void BitmapScreen::SetSrcRect(Rect const& src_rect) {
 	if (src_rect_effect != src_rect) {
 		src_rect_effect = src_rect;
 		needs_refresh = true;
@@ -316,11 +283,11 @@ void BitmapScreen::SetBlendType(int blend_type) {
 	blend_type_effect = blend_type;
 }
 
-void BitmapScreen::SetBlendColor(Color blend_color) {
+void BitmapScreen::SetBlendColor(Color const& blend_color) {
 	blend_color_effect = blend_color;
 }
 
-Rect BitmapScreen::GetSrcRect() const {
+Rect const& BitmapScreen::GetSrcRect() const {
 	return src_rect_effect;
 }
 
@@ -360,7 +327,7 @@ int BitmapScreen::GetBlendType() const {
 	return blend_type_effect;
 }
 
-Color BitmapScreen::GetBlendColor() const {
+Color const& BitmapScreen::GetBlendColor() const {
 	return blend_color_effect;
 }
 
@@ -373,12 +340,12 @@ double BitmapScreen::GetWaverEffectPhase() const {
 }
 
 ////////////////////////////////////////////////////////////
-void BitmapScreen::BlitScreenIntern(Bitmap* draw_bitmap, int x, int y, Rect src_rect,
-									bool need_scale, int bush_y) {
-	if (!draw_bitmap)
+void BitmapScreen::BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y,
+									Rect const& src_rect, bool need_scale, int bush_y) {
+	if (! &draw_bitmap)
 		return;
 
-	Surface* dst = DisplayUi->GetDisplaySurface();
+	BitmapRef dst = DisplayUi->GetDisplaySurface();
 
 	int opacity_split = bush_y;
 
@@ -392,13 +359,13 @@ void BitmapScreen::BlitScreenIntern(Bitmap* draw_bitmap, int x, int y, Rect src_
 }
 
 ////////////////////////////////////////////////////////////
-Bitmap* BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
+BitmapRef BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
 	need_scale = false;
 
 	rect.Adjust(bitmap->GetWidth(), bitmap->GetHeight());
 
 	if (rect.IsOutOfBounds(bitmap->GetWidth(), bitmap->GetHeight()))
-		return NULL;
+	return BitmapRef();
 
 	bool no_tone = tone_effect == Tone();
 	bool no_flash = flash_effect.alpha == 0;
@@ -422,7 +389,7 @@ Bitmap* BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
 	if (bitmap_effects != NULL && bitmap_effects_valid && no_zoom)
 		return bitmap_effects;
 
-	Bitmap *src_bitmap;
+	BitmapRef src_bitmap;
 
 	if (no_effects)
 		src_bitmap = bitmap;
@@ -437,35 +404,34 @@ Bitmap* BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
 		if (bitmap_effects != NULL &&
 			bitmap_effects->GetWidth() < rect.x + rect.width &&
 			bitmap_effects->GetHeight() < rect.y + rect.height) {
-			delete bitmap_effects;
-			bitmap_effects = NULL;
+		bitmap_effects.reset();
 		}
 
-		if (bitmap_effects == NULL)
-			bitmap_effects = Surface::CreateSurface(bitmap->GetWidth(), bitmap->GetHeight(), true);
+		if (!bitmap_effects)
+			bitmap_effects = Bitmap::Create(bitmap->GetWidth(), bitmap->GetHeight(), true);
 
 		bitmap_effects->Clear();
 		if (no_tone && no_flash)
-			bitmap_effects->FlipBlit(rect.x, rect.y, bitmap, rect, flipx_effect, flipy_effect);
+			bitmap_effects->FlipBlit(rect.x, rect.y, *bitmap, rect, flipx_effect, flipy_effect);
 		else if (no_flip && no_flash)
-			bitmap_effects->ToneBlit(rect.x, rect.y, bitmap, rect, tone_effect);
+			bitmap_effects->ToneBlit(rect.x, rect.y, *bitmap, rect, tone_effect);
 		else if (no_flip && no_tone)
-			bitmap_effects->BlendBlit(rect.x, rect.y, bitmap, rect, flash_effect);
+			bitmap_effects->BlendBlit(rect.x, rect.y, *bitmap, rect, flash_effect);
 		else if (no_flash) {
-			bitmap_effects->ToneBlit(rect.x, rect.y, bitmap, rect, tone_effect);
+			bitmap_effects->ToneBlit(rect.x, rect.y, *bitmap, rect, tone_effect);
 			bitmap_effects->Flip(rect, flipx_effect, flipy_effect);
 		}
 		else if (no_tone) {
-			bitmap_effects->BlendBlit(rect.x, rect.y, bitmap, rect, flash_effect);
+			bitmap_effects->BlendBlit(rect.x, rect.y, *bitmap, rect, flash_effect);
 			bitmap_effects->Flip(rect, flipx_effect, flipy_effect);
 		}
 		else if (no_flip) {
-			bitmap_effects->BlendBlit(rect.x, rect.y, bitmap, rect, flash_effect);
-			bitmap_effects->ToneBlit(rect.x, rect.y, bitmap_effects, rect, tone_effect);
+			bitmap_effects->BlendBlit(rect.x, rect.y, *bitmap, rect, flash_effect);
+			bitmap_effects->ToneBlit(rect.x, rect.y, *bitmap_effects, rect, tone_effect);
 		}
 		else {
-			bitmap_effects->BlendBlit(rect.x, rect.y, bitmap, rect, flash_effect);
-			bitmap_effects->ToneBlit(rect.x, rect.y, bitmap_effects, rect, tone_effect);
+			bitmap_effects->BlendBlit(rect.x, rect.y, *bitmap, rect, flash_effect);
+			bitmap_effects->ToneBlit(rect.x, rect.y, *bitmap_effects, rect, tone_effect);
 			bitmap_effects->Flip(rect, flipx_effect, flipy_effect);
 		}
 
@@ -504,8 +470,7 @@ Bitmap* BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
 	current_zoom_x = zoom_x_effect;
 	current_zoom_y = zoom_y_effect;
 
-	if (bitmap_scale != NULL)
-		delete bitmap_scale;
+	bitmap_scale.reset();
 
 	bitmap_scale = src_bitmap->Resample(zoomed_width, zoomed_height, rect);
 
@@ -516,4 +481,3 @@ Bitmap* BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
 	rect = bitmap_scale->GetRect();
 	return bitmap_scale;
 }
-

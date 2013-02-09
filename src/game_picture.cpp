@@ -18,7 +18,7 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-
+#include "bitmap.h"
 #include "options.h"
 #include "cache.h"
 #include "main_data.h"
@@ -31,20 +31,13 @@
 ////////////////////////////////////////////////////////////
 
 Picture::Picture(int ID) :
-	data(Main_Data::game_data.pictures[ID - 1]), sprite(NULL)
+	data(Main_Data::game_data.pictures[ID - 1])
 {
 	Transition(0);
 }
 
-Picture::~Picture()
-{
-	if (sprite != NULL)
-		delete sprite;
-	sprite = NULL;
-}
-
 void Picture::UpdateSprite() {
-	if (sprite == NULL)
+	if (!sprite)
 		return;
 	if (data.name.empty())
 		return;
@@ -74,13 +67,8 @@ void Picture::Show(const std::string& _name) {
 	data.name = _name;
 	data.time_left = 0;
 
-	if (sprite != NULL) {
-		delete sprite;
-		sprite = NULL;
-	}
-
-	Bitmap* bitmap = Cache::Picture(data.name);
-	sprite = new Sprite();
+	BitmapRef bitmap = Cache::Picture(data.name);
+	sprite.reset(new Sprite());
 	sprite->SetBitmap(bitmap);
 	sprite->SetOx(bitmap->GetWidth() / 2);
 	sprite->SetOy(bitmap->GetHeight() / 2);
@@ -88,9 +76,7 @@ void Picture::Show(const std::string& _name) {
 
 void Picture::Erase() {
 	data.name.clear();
-	if (sprite != NULL)
-		delete sprite;
-	sprite = NULL;
+	sprite.reset();
 }
 
 void Picture::UseTransparent(bool flag) {
@@ -186,4 +172,3 @@ void Picture::Update() {
 
 	UpdateSprite();
 }
-

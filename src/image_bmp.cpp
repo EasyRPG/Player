@@ -19,6 +19,9 @@
 // Headers
 ////////////////////////////////////////////////////////////
 
+#include "system.h"
+#ifdef SUPPORT_BMP
+
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
@@ -28,24 +31,24 @@
 #include "image_bmp.h"
 
 ////////////////////////////////////////////////////////////
-static uint16 get_2(const uint8 *p)
+static uint16_t get_2(const uint8_t *p)
 {
     return
-		((uint16) p[0] << 0) |
-		((uint16) p[1] << 8);
+		((uint16_t) p[0] << 0) |
+		((uint16_t) p[1] << 8);
 }
 
-static uint32 get_4(const uint8 *p)
+static uint32_t get_4(const uint8_t *p)
 {
     return
-		((uint32) p[0] <<  0) |
-		((uint32) p[1] <<  8) |
-		((uint32) p[2] << 16) |
-		((uint32) p[3] << 24);
+		((uint32_t) p[0] <<  0) |
+		((uint32_t) p[1] <<  8) |
+		((uint32_t) p[2] << 16) |
+		((uint32_t) p[3] << 24);
 }
 
 ////////////////////////////////////////////////////////////
-void ImageBMP::ReadBMP(const uint8* data, uint len, bool transparent,
+void ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
 					   int& width, int& height, void*& pixels) {
 	pixels = NULL;
 
@@ -62,13 +65,13 @@ void ImageBMP::ReadBMP(const uint8* data, uint len, bool transparent,
 		return;
 	}
 
-	const uint file_size = get_4(&data[2]);
+	const unsigned file_size = get_4(&data[2]);
 	if (file_size != len) {
 		Output::Error("Incorrect BMP file size.");
 		return;
 	}
 
-	const uint bits_offset = get_4(&data[10]);
+	const unsigned bits_offset = get_4(&data[10]);
 
 	// BITMAPINFOHEADER structure
 	//
@@ -87,7 +90,7 @@ void ImageBMP::ReadBMP(const uint8* data, uint len, bool transparent,
 
 	data += 14;
 
-	static const uint BITMAPINFOHEADER_SIZE = 40;
+	static const unsigned BITMAPINFOHEADER_SIZE = 40;
 	if (get_4(&data[0]) != BITMAPINFOHEADER_SIZE) {
 		Output::Error("Incorrect BMP header size.");
 		return;
@@ -126,8 +129,8 @@ void ImageBMP::ReadBMP(const uint8* data, uint len, bool transparent,
 	}
 
 	int num_colors = std::min(256U, (bits_offset - 54) / 4);
-	uint8 (*palette)[4] = (uint8(*)[4]) &data[40];
-	const uint8* src_pixels = &data[bits_offset];
+	uint8_t (*palette)[4] = (uint8_t(*)[4]) &data[40];
+	const uint8_t* src_pixels = &data[bits_offset];
 
 	// Ensure no palette entry is an exact duplicate of #0
 	for (int i = 1; i < num_colors; i++)
@@ -138,12 +141,12 @@ void ImageBMP::ReadBMP(const uint8* data, uint len, bool transparent,
 
 	pixels = malloc(width * height * 4);
 
-	uint8* dst = (uint8*) pixels;
+	uint8_t* dst = (uint8_t*) pixels;
 	for (int y = 0; y < height; y++) {
-		const uint8* src = src_pixels + (vflip ? height - 1 - y : y) * width;
+		const uint8_t* src = src_pixels + (vflip ? height - 1 - y : y) * width;
 		for (int x = 0; x < width; x++) {
-			const uint8& pix = *src++;
-			const uint8* color = palette[pix];
+			const uint8_t& pix = *src++;
+			const uint8_t* color = palette[pix];
 			*dst++ = color[2];
 			*dst++ = color[1];
 			*dst++ = color[0];
@@ -158,8 +161,9 @@ void ImageBMP::ReadBMP(FILE* stream, bool transparent,
     fseek(stream, 0, SEEK_END);
     long size = ftell(stream);
     fseek(stream, 0, SEEK_SET);
-	std::vector<uint8> buffer(size);
+	std::vector<uint8_t> buffer(size);
 	fread((void*) &buffer.front(), 1, size, stream);
-	ReadBMP(&buffer.front(), (uint) size, transparent, width, height, pixels);
+	ReadBMP(&buffer.front(), (unsigned) size, transparent, width, height, pixels);
 }
 
+#endif // SUPPORT_BMP

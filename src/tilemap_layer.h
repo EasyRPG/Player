@@ -23,9 +23,8 @@
 ////////////////////////////////////////////////////////////
 #include <vector>
 #include <map>
+#include "system.h"
 #include "drawable.h"
-#include "bitmap.h"
-#include "bitmap_screen.h"
 
 ////////////////////////////////////////////////////////////
 /// TilemapLayer class.
@@ -35,13 +34,13 @@ public:
 	TilemapLayer(int ilayer);
 	~TilemapLayer();
 
-	void DrawTile(BitmapScreen* screen, int x, int y, int row, int col, bool autotile);
+	void DrawTile(BitmapScreen& screen, int x, int y, int row, int col, bool autotile);
 	void Draw(int z_order);
 
 	void Update();
 
-	Bitmap* GetChipset() const;
-	void SetChipset(Bitmap* nchipset);
+	BitmapRef const& GetChipset() const;
+	void SetChipset(BitmapRef const& nchipset);
 	std::vector<short> GetMapData() const;
 	void SetMapData(std::vector<short> nmap_data);
 	std::vector<unsigned char> GetPassable() const;
@@ -67,11 +66,11 @@ public:
 	void Substitute(int old_id, int new_id);
 
 private:
-	Bitmap* chipset;
-	BitmapScreen* chipset_screen;
+	BitmapRef chipset;
+	BitmapScreenRef chipset_screen;
 	std::vector<short> map_data;
-	std::vector<uint8> passable;
-	std::vector<uint8> substitutions;
+	std::vector<uint8_t> passable;
+	std::vector<uint8_t> substitutions;
 	bool visible;
 	int ox;
 	int oy;
@@ -93,20 +92,20 @@ private:
 	static const int TILES_PER_ROW = 64;
 
 	struct TileXY {
-		uint8 x;
-		uint8 y;
+		uint8_t x;
+		uint8_t y;
 		bool valid;
 		TileXY() : valid(false) {}
-		TileXY(uint8 x, uint8 y) : x(x), y(y), valid(true) {}
+		TileXY(uint8_t x, uint8_t y) : x(x), y(y), valid(true) {}
 	};
 
-	BitmapScreen* GenerateAutotiles(int count, const std::map<uint32, TileXY>& map);
+	BitmapScreenRef GenerateAutotiles(int count, const std::map<uint32_t, TileXY>& map);
 
 	TileXY GetCachedAutotileAB(short ID, short animID);
 	TileXY GetCachedAutotileD(short ID);
 
-	BitmapScreen* autotiles_ab_screen;
-	BitmapScreen* autotiles_d_screen;
+	BitmapScreenRef autotiles_ab_screen;
+	BitmapScreenRef autotiles_d_screen;
 
 	int autotiles_ab_next;
 	int autotiles_d_next;
@@ -114,8 +113,8 @@ private:
 	TileXY autotiles_ab[3][3][16][47];
 	TileXY autotiles_d[12][50];
 
-	std::map<uint32, TileXY> autotiles_ab_map;
-	std::map<uint32, TileXY> autotiles_d_map;
+	std::map<uint32_t, TileXY> autotiles_ab_map;
+	std::map<uint32_t, TileXY> autotiles_d_map;
 
 	struct TileData {
 		short ID;

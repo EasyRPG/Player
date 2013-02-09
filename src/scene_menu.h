@@ -25,6 +25,7 @@
 #include "window_command.h"
 #include "window_gold.h"
 #include "window_menustatus.h"
+#include <boost/scoped_ptr.hpp>
 
 ////////////////////////////////////////////////////////////
 /// Scene Menu class
@@ -40,7 +41,6 @@ public:
 	void Start();
 	void Continue();
 	void Update();
-	void Terminate();
 
 	////////////////////////////////////////////////////////
 	/// Creates the Window displaying the options.
@@ -75,13 +75,13 @@ private:
 	int menu_index;
 
 	/// window displaying the commands
-	Window_Command* command_window;
+	boost::scoped_ptr<Window_Command> command_window;
 
 	/// window displaying the gold amount
-	Window_Gold* gold_window;
+	boost::scoped_ptr<Window_Gold> gold_window;
 
 	/// window displaying the heros and their status
-	Window_MenuStatus* menustatus_window;
+	boost::scoped_ptr<Window_MenuStatus> menustatus_window;
 
 	/// Options available in the Menu
 	std::vector<CommandOptionType> command_options;

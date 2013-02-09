@@ -47,18 +47,11 @@ void Scene_Menu::Start() {
 	CreateCommandWindow();
 
 	// Gold Window
-	gold_window = new Window_Gold(0, 208, 88, 32);
+	gold_window.reset(new Window_Gold(0, 208, 88, 32));
 
 	// Status Window
-	menustatus_window = new Window_MenuStatus(88, 0, 232, 240);
+	menustatus_window.reset(new Window_MenuStatus(88, 0, 232, 240));
 	menustatus_window->SetActive(false);
-}
-
-////////////////////////////////////////////////////////////
-void Scene_Menu::Terminate() {
-	delete command_window;
-	delete gold_window;
-	delete menustatus_window;
 }
 
 ////////////////////////////////////////////////////////////
@@ -86,7 +79,7 @@ void Scene_Menu::Update() {
 void Scene_Menu::CreateCommandWindow() {
 	// Create Options Window
 	std::vector<std::string> options;
-	
+
 	if (Player::engine == Player::EngineRpg2k) {
 		command_options.resize(5);
 		command_options[0] = Item;
@@ -95,7 +88,7 @@ void Scene_Menu::CreateCommandWindow() {
 		command_options[3] = Save;
 		command_options[4] = Quit;
 	} else {
-		for (std::vector<int16>::iterator it = Data::system.menu_commands.begin();
+		for (std::vector<int16_t>::iterator it = Data::system.menu_commands.begin();
 			it != Data::system.menu_commands.end(); ++it) {
 				command_options.push_back((CommandOptionType)*it);
 		}
@@ -136,7 +129,7 @@ void Scene_Menu::CreateCommandWindow() {
 		}
 	}
 
-	command_window = new Window_Command(options, 88);
+	command_window.reset(new Window_Command(options, 88));
 	command_window->SetIndex(menu_index);
 
 	// Disable items
@@ -178,7 +171,7 @@ void Scene_Menu::UpdateCommand() {
 				Game_System::SePlay(Data::system.buzzer_se);
 			} else {
 				Game_System::SePlay(Data::system.decision_se);
-				Scene::Push(new Scene_Item());
+				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Item>());
 			}
 			break;
 		case Skill:
@@ -199,22 +192,15 @@ void Scene_Menu::UpdateCommand() {
 				Game_System::SePlay(Data::system.buzzer_se);
 			} else {
 				Game_System::SePlay(Data::system.decision_se);
-				Scene::Push(new Scene_Save());
+				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Save>());
 			}
-/*
-#ifdef _DEBUG
-			// Debug Test code to add items
-			for (int i = 1; i < 82; ++i) {
-				Game_Party::GainItem(i, 1);
-			}
-#endif*/
 			break;
 		case Order:
 			if (Game_Party::GetActors().size() <= 1) {
 				Game_System::SePlay(Data::system.buzzer_se);
 			} else {
 				Game_System::SePlay(Data::system.decision_se);
-				Scene::Push(new Scene_Order());
+				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Order>());
 			}
 			break;
 		case Wait:
@@ -224,7 +210,7 @@ void Scene_Menu::UpdateCommand() {
 			break;
 		case Quit:
 			Game_System::SePlay(Data::system.decision_se);
-			Scene::Push(new Scene_End());
+			Scene::Push(EASYRPG_MAKE_SHARED<Scene_End>());
 			break;
 		}
 	}
@@ -241,13 +227,13 @@ void Scene_Menu::UpdateActorSelection() {
 		Game_System::SePlay(Data::system.decision_se);
 		switch (command_options[command_window->GetIndex()]) {
 		case Skill:
-			Scene::Push(new Scene_Skill(menustatus_window->GetIndex()));
+			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Skill>(menustatus_window->GetIndex()));
 			break;
 		case Equipment:
-			Scene::Push(new Scene_Equip(menustatus_window->GetIndex()));
+			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Equip>(menustatus_window->GetIndex()));
 			break;
 		case Status:
-			Scene::Push(new Scene_Status(menustatus_window->GetIndex()));
+			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Status>(menustatus_window->GetIndex()));
 			break;
 		case Row:
 		{

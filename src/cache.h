@@ -22,8 +22,9 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <string>
-#include <map>
-#include "bitmap.h"
+
+#include "system.h"
+#include "color.h"
 
 ////////////////////////////////////////////////////////////
 // Structs
@@ -37,26 +38,25 @@ typedef struct {
 /// Cache namespace
 ////////////////////////////////////////////////////////////
 namespace Cache {
-	Bitmap* LoadBitmap(const std::string& folder_name, const std::string& filename,
-					   bool transparent = true, uint32 flags = 0);
-	Bitmap* Backdrop(const std::string& filename);
-	Bitmap* Battle(const std::string& filename);
-	Bitmap* Battle2(const std::string& filename);
-	Bitmap* BattleCharset(const std::string& filename);
-	Bitmap* BattleWeapon(const std::string& filename);
-	Bitmap* Charset(const std::string& filename);
-	Bitmap* ExFont();
-	Bitmap* Faceset(const std::string& filename);
-	Bitmap* Frame(const std::string& filename);
-	Bitmap* Gameover(const std::string& filename);
-	Bitmap* Monster(const std::string& filename);
-	Bitmap* Panorama(const std::string& filename);
-	Bitmap* Picture(const std::string& filename);
-	Bitmap* Chipset(const std::string& filename);
-	Bitmap* Title(const std::string& filename);
-	Bitmap* System(const std::string& filename);
-	Bitmap* System2(const std::string& filename);
-	Bitmap* Tile(const std::string& filename, int tile_id);
+	BitmapRef Backdrop(const std::string& filename);
+	BitmapRef Battle(const std::string& filename);
+	BitmapRef Battle2(const std::string& filename);
+	BitmapRef BattleChar(const std::string& filename);
+	BitmapRef BattleWeapon(const std::string& filename);
+	BitmapRef Charset(const std::string& filename);
+	BitmapRef ExFont();
+	BitmapRef Faceset(const std::string& filename);
+	BitmapRef Frame(const std::string& filename);
+	BitmapRef Gameover(const std::string& filename);
+	BitmapRef Monster(const std::string& filename);
+	BitmapRef Panorama(const std::string& filename);
+	BitmapRef Picture(const std::string& filename);
+	BitmapRef Chipset(const std::string& filename);
+	BitmapRef Title(const std::string& filename);
+	BitmapRef System(const std::string& filename);
+	BitmapRef System2(const std::string& filename);
+	BitmapRef frame(const std::string& filename);
+	BitmapRef Tile(const std::string& filename, int tile_id);
 	void Clear();
 
 	extern tSystemInfo system_info;

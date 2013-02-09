@@ -22,23 +22,11 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <string>
+#include <boost/regex/pending/unicode_iterator.hpp>
 #include "window_gold.h"
 #include "window_numberinput.h"
 #include "window_selectable.h"
-
-#if defined(DINGOO) || defined(PSP)
-#define NO_WCHAR
-#endif
-
-#ifdef NO_WCHAR
-// This is a workaround if your system has no wchar
-#undef wstring
-#define wstring string
-#define wstringstream stringstream
-#define utf(x) x
-#else
-#define utf(x) L##x
-#endif
+#include <boost/scoped_ptr.hpp>
 
 ////////////////////////////////////////////////////////////
 /// Window Message Class.
@@ -147,7 +135,7 @@ public:
 	/// and automatically increased by 1 in every recursion.
 	/// @return The final text output of the code.
 	////////////////////////////////////////////////////////
-	std::wstring ParseCommandCode(int call_depth = 1);
+	std::string ParseCommandCode(int call_depth = 1);
 
 	////////////////////////////////////////////////////////
 	/// Stub. For Choice.
@@ -178,9 +166,9 @@ protected:
 	/// Current number of lines on this page
 	int line_count;
 	/// Index of the next char in text that will be outputted
-	int text_index;
+	boost::u8_to_u32_iterator<std::string::const_iterator> text_index, end;
 	/// text message that will be displayed
-	std::wstring text;
+	std::string text;
 	/// Used by Message kill command \^
 	bool kill_message;
 	/// Prevents new page call when a halt \! was found
@@ -195,10 +183,10 @@ protected:
 	/// Table contains how many frames drawing one single char takes.
 	/// 0 means: 2 chars per frame
 	static const int speed_table[21];
-	
+
 	/// Used by the number input event
-	Window_NumberInput* number_input_window;
-	Window_Gold* gold_window;
+	boost::scoped_ptr<Window_NumberInput> number_input_window;
+	boost::scoped_ptr<Window_Gold> gold_window;
 };
 
 #endif

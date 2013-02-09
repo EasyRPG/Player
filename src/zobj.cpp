@@ -21,7 +21,7 @@
 #include "zobj.h"
 
 ///////////////////////////////////////////////////////////
-ZObj::ZObj(int z, uint32 creation, uint32 ID)  :
+ZObj::ZObj(int z, uint32_t creation, uint32_t ID)  :
 	z(z),
 	creation(creation),
 	ID(ID) {
@@ -35,10 +35,10 @@ int ZObj::GetZ() const {
 	return z;
 }
 
-uint32 ZObj::GetCreation() const {
+uint32_t ZObj::GetCreation() const {
 	return creation;
 }
 
-uint32 ZObj::GetId() const {
+uint32_t ZObj::GetId() const {
 	return ID;
 }

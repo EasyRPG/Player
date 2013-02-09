@@ -18,7 +18,9 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <cctype>
 #include <sstream>
+
 #include "window_message.h"
 #include "game_actors.h"
 #include "game_map.h"
@@ -32,12 +34,11 @@
 #include "player.h"
 #include "util_macro.h"
 #include "utils.h"
+#include "bitmap.h"
+#include "font.h"
+#include "text.h"
 
-#ifdef NO_WCHAR
-// This is a workaround if your system has no wchar
-#undef wstring
-#define wstring string
-#endif
+#include <boost/next_prior.hpp>
 
 const int Window_Message::speed_table[21] = {0, 0, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
 											7, 7, 8, 8, 9, 9, 10, 10, 11};
@@ -45,11 +46,13 @@ const int Window_Message::speed_table[21] = {0, 0, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
 ////////////////////////////////////////////////////////////
 Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),
-	contents_x(0), contents_y(0), line_count(0), text_index(-1), text(utf("")),
-	kill_message(false), halt_output(false), speed_modifier(0), 
-	speed_frame_counter(0), number_input_window(NULL)
+	contents_x(0), contents_y(0), line_count(0), text(""),
+	kill_message(false), halt_output(false), speed_modifier(0),
+	speed_frame_counter(0),
+	number_input_window(new Window_NumberInput(0, 0)),
+	gold_window(new Window_Gold(232, 0, 88, 32))
 {
-	SetContents(Surface::CreateSurface(width - 16, height - 16));
+	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	visible = false;
@@ -59,10 +62,8 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	index = -1;
 	text_color = Font::ColorDefault;
 
-	number_input_window = new Window_NumberInput(0, 0);
 	number_input_window->SetVisible(false);
 
-	gold_window = new Window_Gold(232, 0, 88, 32);
 	gold_window->SetVisible(false);
 
 	Game_Message::Init();
@@ -72,12 +73,6 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 Window_Message::~Window_Message() {
 	TerminateMessage();
 	Game_Message::visible = false;
-
-	// Without this check the player crashes at the end
-	if (!Player::exit_flag) {
-		delete gold_window;
-		delete number_input_window;
-	}
 }
 
 ////////////////////////////////////////////////////////////
@@ -85,14 +80,13 @@ void Window_Message::StartMessageProcessing() {
 	contents->Clear();
 	text.clear();
 	for (size_t i = 0; i < Game_Message::texts.size(); ++i) {
-		std::string line = Game_Message::texts[i];
-#if defined(NO_WCHAR)
+		std::string const line = Game_Message::texts[i];
 		text.append(line + "\n");
-#else
-		text.append(Utils::DecodeUTF(line + "\n"));
-#endif
 	}
 	item_max = Game_Message::choice_max;
+
+	text_index = boost::u8_to_u32_iterator<std::string::const_iterator>(text.begin(), text.begin(), text.end());
+	end = boost::u8_to_u32_iterator<std::string::const_iterator>(text.end(), text.begin(), text.end());
 
 	InsertNewPage();
 }
@@ -110,7 +104,8 @@ void Window_Message::FinishMessageProcessing() {
 		pause = true;
 	}
 
-	text_index = -1;
+	text_index = boost::u8_to_u32_iterator<std::string::const_iterator>();
+	end = boost::u8_to_u32_iterator<std::string::const_iterator>();
 	text.clear();
 }
 
@@ -162,7 +157,7 @@ void Window_Message::InsertNewPage() {
 			break;
 		};
 	}
-	
+
 
 	if (Game_Message::background) {
 		opacity = 255;
@@ -327,43 +322,38 @@ void Window_Message::UpdateMessage() {
 		speed_frame_counter = 0;
 
 		++loop_count;
-		++text_index;
-		if ((unsigned)text_index == text.size()) {
+		if (text_index == end) {
 			FinishMessageProcessing();
 			break;
 		}
 
-		if (text[text_index] == utf('\n')) {
+		if (*text_index == utf('\n')) {
 			instant_speed = false;
 			InsertNewLine();
-		} else if (text[text_index] == utf('\\') && (unsigned)text_index != text.size() - 1) {
+		} else if (*text_index == utf('\\') && std::distance(text_index, end) > 1) {
 			// Special message codes
 			++text_index;
 
-			std::wstring command_result;
+			std::string command_result;
 
-			switch (text[text_index]) {
+			switch (tolower(*text_index)) {
 			case utf('c'):
-			case utf('C'):
 			case utf('n'):
-			case utf('N'):
 			case utf('s'):
-			case utf('S'):
 			case utf('v'):
-			case utf('V'):
 				// These commands support indirect access via \v[]
 				command_result = ParseCommandCode();
 				contents->TextDraw(contents_x, contents_y, text_color, command_result);
-				contents_x += contents->Surface::GetTextSize(command_result).width;
+				contents_x += contents->GetFont()->GetSize(command_result).width;
 				break;
 			case utf('\\'):
 				// Show Backslash
 				contents->TextDraw(contents_x, contents_y, text_color, std::string("\\"));
-				contents_x += contents->GetTextSize("\\").width;
+				contents_x += contents->GetFont()->GetSize("\\").width;
 				break;
 			case utf('_'):
 				// Insert half size space
-				contents_x += contents->GetTextSize(" ").width / 2;
+				contents_x += contents->GetFont()->GetSize(" ").width / 2;
 			case utf('$'):
 				// Show Gold Window
 				gold_window->SetY(y == 0 ? 240 - 32 : 0);
@@ -401,27 +391,22 @@ void Window_Message::UpdateMessage() {
 				break;
 			default:;
 			}
-		} else if (text[text_index] == utf('$') &&
-			(unsigned)text_index != text.size() - 1 &&
-			((text[text_index+1] >= utf('a') && text[text_index+1] <= utf('z')) ||
-			(text[text_index+1] >= utf('A') && text[text_index+1] <= utf('Z')))) {
+		} else if (*text_index == utf('$')
+				   && std::distance(text_index, end) > 1
+				   && std::isalpha(*boost::next(text_index))) {
 			// ExFont
-			contents->TextDraw(contents_x, contents_y, text_color, text.substr(text_index, 2));
+			contents->TextDraw(contents_x, contents_y, text_color,
+							   std::string(text_index.base(), boost::next(text_index, 2).base()));
 			contents_x += 12;
 			++text_index;
 		} else {
-			// Normal Text
-#ifdef NO_WCHAR
-			int utfsize = Utils::GetUtf8ByteSize(text[text_index]);
-			std::string glyph = text.substr(text_index, utfsize);
-			text_index += utfsize - 1;
-#else
-			std::wstring glyph = text.substr(text_index, 1);
-#endif
+			std::string const glyph(text_index.base(), boost::next(text_index).base());
 
 			contents->TextDraw(contents_x, contents_y, text_color, glyph);
-			contents_x += contents->Surface::GetTextSize(glyph).width;
+			contents_x += contents->GetFont()->GetSize(glyph).width;
 		}
+
+		++text_index;
 	}
 	loop_count = 0;
 }
@@ -430,8 +415,8 @@ void Window_Message::UpdateMessage() {
 int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 	++text_index;
 
-	if ((unsigned)text_index == text.size() ||
-		text[text_index] != utf('[')) {
+	if (text_index == end ||
+		*text_index != utf('[')) {
 		--text_index;
 		is_valid = false;
 		return 0;
@@ -440,15 +425,15 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 	++text_index; // Skip the [
 
 	bool null_at_start = false;
-	std::wstringstream ss;
+	std::stringstream ss;
 	for (;;) {
-		if ((unsigned)text_index == text.size()) {
+		if (text_index == end) {
 			break;
-		} else if (text[text_index] == utf('\n')) {
+		} else if (*text_index == utf('\n')) {
 			--text_index;
 			break;
 		}
-		else if (text[text_index] == utf('0')) {
+		else if (*text_index == utf('0')) {
 			// Truncate 0 at the start
 			if (!ss.str().empty()) {
 				ss << '0';
@@ -456,10 +441,10 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 				null_at_start = true;
 			}
 		}
-		else if (text[text_index] >= utf('1') &&
-			text[text_index] <= utf('9')) {
-			ss << text[text_index];
-		} else if (text[text_index] == utf(']')) {
+		else if (*text_index >= utf('1') &&
+			*text_index <= utf('9')) {
+			ss << std::string(text_index.base(), boost::next(text_index).base());
+		} else if (*text_index == utf(']')) {
 			--call_depth;
 			if (call_depth == 0) {
 				break;
@@ -467,11 +452,11 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 		} else {
 			// End of number
 			// Search for ] or line break
-			while ((unsigned)text_index != text.size()) {
-					if (text[text_index] == utf('\n')) {
+			while (text_index == end) {
+					if (*text_index == utf('\n')) {
 						--text_index;
 						break;
-					} else if (text[text_index] == utf(']')) {
+					} else if (*text_index == utf(']')) {
 						--call_depth;
 						if (call_depth == 0) {
 							break;
@@ -500,26 +485,24 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 }
 
 ////////////////////////////////////////////////////////////
-std::wstring Window_Message::ParseCommandCode(int call_depth) {
+std::string Window_Message::ParseCommandCode(int call_depth) {
 	int parameter;
 	bool is_valid;
 	// sub_code is used by chained arguments like \v[\v[1]]
 	// In that case sub_code contains the result from \v[1]
 	int sub_code = -1;
-	wchar_t cmd_char = text[text_index];
-	if ((unsigned)text_index + 3 < text.size() &&
-		text[text_index + 2] == utf('\\') &&
-		(text[text_index + 3] == utf('v') ||
-		 text[text_index + 3] == utf('V'))) {
-		text_index += 3;
+	uint32_t cmd_char = *text_index;
+	if (std::distance(text_index, end) > 3 &&
+		*boost::next(text_index, 2) == utf('\\') &&
+		tolower(*boost::next(text_index, 3)) == utf('v')) {
+		++(++(++text_index));
 		// The result is an int value, str-to-int is safe in this case
-		std::wstringstream ss;
-		ss << ParseCommandCode(++call_depth).c_str();
+		std::stringstream ss;
+		ss << ParseCommandCode(++call_depth);
 		ss >> sub_code;
 	}
-	switch (cmd_char) {
+	switch (tolower(cmd_char)) {
 	case utf('c'):
-	case utf('C'):
 		// Color
 		if (sub_code >= 0) {
 			parameter = sub_code;
@@ -529,7 +512,6 @@ std::wstring Window_Message::ParseCommandCode(int call_depth) {
 		text_color = parameter > 19 ? 0 : parameter;
 		break;
 	case utf('n'):
-	case utf('N'):
 		// Output Hero name
 		if (sub_code >= 0) {
 			is_valid = true;
@@ -546,18 +528,13 @@ std::wstring Window_Message::ParseCommandCode(int call_depth) {
 				actor = Game_Actors::GetActor(parameter);
 			}
 			if (actor != NULL) {
-#ifdef NO_WCHAR
 				return actor->GetName();
-#else
-				return Utils::DecodeUTF(actor->GetName());
-#endif
 			}
 		} else {
 			Output::Warning("Invalid argument for \\n-Command");
 		}
 		break;
 	case utf('s'):
-	case utf('S'):
 		// Speed modifier
 		if (sub_code >= 0) {
 			is_valid = true;
@@ -570,7 +547,6 @@ std::wstring Window_Message::ParseCommandCode(int call_depth) {
 		speed_modifier = max(0, speed_modifier);
 		break;
 	case utf('v'):
-	case utf('V'):
 		// Show Variable value
 		if (sub_code >= 0) {
 			is_valid = true;
@@ -579,19 +555,19 @@ std::wstring Window_Message::ParseCommandCode(int call_depth) {
 			parameter = ParseParameter(is_valid, call_depth);
 		}
 		if (is_valid && Game_Variables.isValidVar(parameter)) {
-			std::wstringstream ss;
+			std::stringstream ss;
 			ss << Game_Variables[parameter];
 			return ss.str();
 		} else {
 			// Invalid Var is always 0
-			std::wstringstream ss;
+			std::stringstream ss;
 			ss << utf('0');
 			return ss.str();
 		}
 	default:;
 		// When this happens text_index was not on a \ during calling
 	}
-	return utf("");
+	return "";
 }
 
 ////////////////////////////////////////////////////////////

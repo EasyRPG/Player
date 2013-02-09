@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////
 // This file is part of EasyRPG Player.
-// 
+//
 // EasyRPG Player is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // EasyRPG Player is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
@@ -40,54 +40,48 @@ Scene_File::Scene_File(std::string message) :
 ////////////////////////////////////////////////////////////
 void Scene_File::Start() {
 	// Create the windows
-	help_window = new Window_Help(0, 0, 320, 32);
+	help_window.reset(new Window_Help(0, 0, 320, 32));
 	help_window->SetText(message);
 
 	for (int i = 0; i < 15; i++) {
-		Window_SaveFile *w = new Window_SaveFile(0, 40 + i * 64, 320, 64);
+		EASYRPG_SHARED_PTR<Window_SaveFile>
+			w(new Window_SaveFile(0, 40 + i * 64, 320, 64));
 		w->SetIndex(i);
 
 		// Try to access file
 		std::stringstream ss;
 		ss << "Save" << (i <= 8 ? "0" : "") << (i+1) << ".lsd";
-		std::string file = FileFinder::FindDefault(".", ss.str());
+		std::string file = FileFinder::FindDefault(ss.str());
 		if (!file.empty()) {
 			// File found
-			std::auto_ptr<RPG::Save> savegame = LSD_Reader::Load(file);
+			std::auto_ptr<RPG::Save> savegame =
+				LSD_Reader::Load(FileFinder::FindDefault(file));
+			std::vector<std::pair<int, std::string> > party;
 
-			if (savegame.get())	{
-				std::vector<std::pair<int, std::string> > party;
-			
-				// When a face_name is empty the party list ends
-				int party_size = 
-					savegame->title.face1_name.empty() ? 0 :
-					savegame->title.face2_name.empty() ? 1 :
-					savegame->title.face3_name.empty() ? 2 :
-					savegame->title.face4_name.empty() ? 3 : 4;
+			// When a face_name is empty the party list ends
+			int party_size =
+				savegame->title.face1_name.empty() ? 0 :
+				savegame->title.face2_name.empty() ? 1 :
+				savegame->title.face3_name.empty() ? 2 :
+				savegame->title.face4_name.empty() ? 3 : 4;
 
-				party.resize(party_size);
+			party.resize(party_size);
 
-				switch (party_size) {
-					case 4:
-						party[3].first = savegame->title.face4_id;
-						party[3].second = savegame->title.face4_name;
-					case 3:
-						party[2].first = savegame->title.face3_id;
-						party[2].second = savegame->title.face3_name;
-					case 2:
-						party[1].first = savegame->title.face2_id;
-						party[1].second = savegame->title.face2_name;
-					case 1:
-						party[0].first = savegame->title.face1_id;
-						party[0].second = savegame->title.face1_name;
-						break;
-					default:;
-				}
-
-				w->SetParty(party, savegame->title.hero_name, savegame->title.hero_hp,
-					savegame->title.hero_level);
-			} else {
-				w->SetCorrupted(true);
+			switch (party_size) {
+				case 4:
+					party[3].first = savegame->title.face4_id;
+					party[3].second = savegame->title.face4_name;
+				case 3:
+					party[2].first = savegame->title.face3_id;
+					party[2].second = savegame->title.face3_name;
+				case 2:
+					party[1].first = savegame->title.face2_id;
+					party[1].second = savegame->title.face2_name;
+				case 1:
+					party[0].first = savegame->title.face1_id;
+					party[0].second = savegame->title.face1_name;
+					break;
+				default:;
 			}
 		}
 
@@ -100,16 +94,9 @@ void Scene_File::Start() {
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_File::Terminate() {
-	delete help_window;
-	for (size_t i = 0; i < file_windows.size(); i++)
-		delete file_windows[i];
-}
-
-////////////////////////////////////////////////////////////
 void Scene_File::Refresh() {
 	for (int i = 0; (size_t) i < file_windows.size(); i++) {
-		Window_SaveFile *w = file_windows[i];
+		Window_SaveFile *w = file_windows[i].get();
 		w->SetY(40 + (i - top_index) * 64);
 		w->SetActive(i == index);
 		w->SetVisible(i >= top_index && i < top_index + 3);
@@ -151,4 +138,3 @@ void Scene_File::Update() {
 	if (top_index != old_top_index || index != old_index)
 		Refresh();
 }
-

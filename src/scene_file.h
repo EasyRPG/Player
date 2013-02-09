@@ -25,6 +25,7 @@
 #include "scene.h"
 #include "window_help.h"
 #include "window_savefile.h"
+#include <boost/scoped_ptr.hpp>
 
 ////////////////////////////////////////////////////////////
 /// Base class used by the Save and Load Scenes.
@@ -40,7 +41,6 @@ public:
 
 	void Start();
 	void Update();
-	void Terminate();
 
 	virtual void Action(int index) = 0;
 
@@ -49,8 +49,8 @@ protected:
 
 	int index;
 	int top_index;
-	Window_Help* help_window;
-	std::vector<Window_SaveFile*> file_windows;
+	boost::scoped_ptr<Window_Help> help_window;
+	std::vector<EASYRPG_SHARED_PTR<Window_SaveFile> > file_windows;
 	std::string message;
 };
 

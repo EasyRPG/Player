@@ -25,6 +25,7 @@
 #include "window_name.h"
 #include "window_face.h"
 #include "window_keyboard.h"
+#include <boost/scoped_ptr.hpp>
 
 ////////////////////////////////////////////////////////////
 /// Scene_Item class
@@ -40,13 +41,12 @@ public:
 
 	void Start();
 	void Update();
-	void Terminate();
 
 private:
 	/// Displays available items
-	Window_Keyboard* kbd_window;
-	Window_Name* name_window;
-	Window_Face* face_window;
+	boost::scoped_ptr<Window_Keyboard> kbd_window;
+	boost::scoped_ptr<Window_Name> name_window;
+	boost::scoped_ptr<Window_Face> face_window;
 	/// index of item selected on startup
 };
 

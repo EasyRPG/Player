@@ -21,8 +21,11 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <string>
 #include "system.h"
+
+#include <string>
+#include <ios>
+#include <boost/container/flat_map.hpp>
 
 ////////////////////////////////////////////////////////////
 /// FileFinder contains helper methods for finding case
@@ -45,20 +48,27 @@ namespace FileFinder {
 	/// Quit FileFinder.
 	////////////////////////////////////////////////////////
 	void Quit();
-	
+
 	///////////////////////////////////////////////////////
 	/// Find an image file.
 	/// @param name : the image path and name
 	/// @return path to file
 	///////////////////////////////////////////////////////
 	std::string FindImage(const std::string& dir, const std::string& name);
-	
+
 	///////////////////////////////////////////////////////
 	/// Find a file.
 	/// @param name : the path and name
 	/// @return path to file
 	///////////////////////////////////////////////////////
 	std::string FindDefault(const std::string& dir, const std::string& name);
+
+	///////////////////////////////////////////////////////
+	/// Find a file.
+	/// @param name : the path and name
+	/// @return path to file
+	///////////////////////////////////////////////////////
+	std::string FindDefault(const std::string& name);
 
 	///////////////////////////////////////////////////////
 	/// Find a music file.
@@ -93,75 +103,89 @@ namespace FileFinder {
 	/// @param : mode ("r", "w", etc)
 	/// @return: FILE*
 	///////////////////////////////////////////////////////
-	FILE* fopenUTF8(const std::string& name_utf8, const std::string& mode);
+	FILE* fopenUTF8(const std::string& name_utf8, char const* mode);
 
-	/// Available image extension types
-	const char* const IMG_TYPES[] = {
-#ifdef SUPPORT_BMP
-		".bmp",
-#endif
-#ifdef SUPPORT_GIF
-		".gif",
-#endif
-#ifdef SUPPORT_JPG
-		".jpg",
-		".jpeg",
-#endif
-#ifdef SUPPORT_PNG
-		".png",
-#endif
-#ifdef SUPPORT_XYZ
-		".xyz",
-#endif
-		NULL
-	};
+	/**
+	 * create stream from UTF-8 file name
+	 * @param name UTF-8 string file name
+	 * @param m stream mode
+	 * @return NULL if open failed.
+	 */
+	EASYRPG_SHARED_PTR<std::fstream> openUTF8(const std::string& name, std::ios_base::openmode m);
 
-	/// Available audio music extension types
-	const char* const MUSIC_TYPES[] = {
-#ifdef SUPPORT_WAV
-		".wav",
-#endif
-#ifdef SUPPORT_MID
-		".mid",
-		".midi",
-#endif
-#ifdef SUPPORT_OGG
-		".ogg",
-#endif
-#ifdef SUPPORT_MP3
-		".mp3",
-#endif
-		NULL
-	};
+	/*
+	 * { case lowered path, real path }
+	 */
+	typedef boost::container::flat_map<std::string, std::string> string_map;
 
-	/// Available audio music extension types
-	const char* const SOUND_TYPES[] = {
-#ifdef SUPPORT_WAV
-		".wav",
-#endif
-#ifdef SUPPORT_OGG
-		".ogg",
-#endif
-#ifdef SUPPORT_MP3
-		".mp3",
-#endif
-		NULL
-	};
+	struct Directory {
+		std::string base;
+		string_map members;
+	}; // struct Directory
 
-	/// Available fonts types
-	const char* const FONTS_TYPES[] = {
-#ifdef SUPPORT_TTF
-		".ttf",
-		".ttc",
-#endif
-#ifdef SUPPORT_OTF
-		".otf",
-#endif
-#ifdef SUPPORT_FON
-		".fon",
-#endif
-		NULL
+	/**
+	 * Check whether passed file is directory
+	 * @param file File to check
+	 * @return true if file is directory, otherwise false
+	 */
+	bool IsDirectory(std::string const& file);
+
+	/**
+	 * Check whether passed file exists.
+	 * This function maybe case sensitve in some platform.
+	 * @param file File to check
+	 * @return true if file exists, otherwise false
+	 */
+	bool Exists(std::string const& file);
+
+	/**
+	 * Check whether file exists in the directory.
+	 * This function is case insensitive.
+	 * @param dir Directory to check.
+	 * @param file File to check. Don't pass full path.
+	 * @return true if file exists, otherwise false
+	 */
+	bool Exists(Directory const& dir, std::string const& name);
+
+	/**
+	 * Append name to directory.
+	 * @param dir Base directory
+	 * @param name file name to be appended to dir.
+	 * @return normalized path string
+	 */
+	std::string MakePath(std::string const& dir, std::string const& name);
+
+	/**
+	 * GetDirectoryMembers memer listing mode.
+	 */
+	enum Mode {
+		ALL, /**< list files and directory */
+		FILES, /**< list only non-directory files */
+		DIRECTORIES, /**< list only directories */
 	};
-}
+	/**
+	 * List directory members
+	 * @param dir directory to list members
+	 * @param m member listing mode.
+	 * @return member list
+	 */
+	Directory GetDirectoryMembers(std::string const& dir, Mode m = ALL);
+
+	/*
+	 * { case lowered directory name, non directory file list }
+	 */
+	typedef boost::container::flat_map<std::string, string_map> sub_members_type;
+
+	struct ProjectTree {
+		std::string project_path;
+		string_map files, directories;
+		sub_members_type sub_members;
+	}; // struct ProjectTree
+
+	ProjectTree const& GetProjectTree();
+	EASYRPG_SHARED_PTR<ProjectTree> CreateProjectTree(std::string const& p);
+	bool IsRPG2kProject(ProjectTree const& dir);
+
+} // namespace FileFinder
 
 #endif

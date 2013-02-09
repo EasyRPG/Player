@@ -19,17 +19,19 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "bitmap.h"
-#include "surface.h"
+#include "bitmap.h"
 #include "cache.h"
 #include "game_party.h"
 #include "game_actor.h"
 #include "window_shopparty.h"
+#include "bitmap.h"
+#include "font.h"
 
 ////////////////////////////////////////////////////////////
 Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) {
 
-	SetContents(Surface::CreateSurface(width - 16, height - 16));
+	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	cycle = 0;
@@ -40,7 +42,7 @@ Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 		Game_Actor *actor = actors[i];
 		const std::string& sprite_name = actor->GetCharacterName();
 		int sprite_id = actor->GetCharacterIndex();
-		Bitmap *bm = Cache::Charset(sprite_name);
+		BitmapRef bm = Cache::Charset(sprite_name);
 		int width = bm->GetWidth() / 4 / 3;
 		int height = bm->GetHeight() / 2 / 4;
 		for (int j = 0; j < 3; j++) {
@@ -48,14 +50,12 @@ Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 			int sy = ((sprite_id / 4) * 4 + 2) * height;
 			Rect src(sx, sy, width, height);
 			for (int k = 0; k < 2; k++) {
-				Surface *bm2 = Surface::CreateSurface(width, height, true);
-				#ifndef USE_ALPHA
+				BitmapRef bm2 = Bitmap::Create(width, height, true);
 				bm2->SetTransparentColor(bm->GetTransparentColor());
-				#endif
 				bm2->Clear();
-				bm2->Blit(0, 0, bm, src, 255);
+				bm2->Blit(0, 0, *bm, src, 255);
 				if (k == 0)
-					bm2->ToneBlit(0, 0, bm2, bm2->GetRect(), Tone(0, 0, 0, 255));
+					bm2->ToneBlit(0, 0, *bm2, bm2->GetRect(), Tone(0, 0, 0, 255));
 				bitmaps[i][j][k] = bm2;
 			}
 		}
@@ -66,17 +66,13 @@ Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 
 ////////////////////////////////////////////////////////////
 Window_ShopParty::~Window_ShopParty() {
-	for (size_t i = 0; i < Game_Party::GetActors().size() && i < 4; i++)
-		for (int j = 0; j < 3; j++)
-			for (int k = 0; k < 2; k++)
-				delete bitmaps[i][j][k];
 }
 
 ////////////////////////////////////////////////////////////
 void Window_ShopParty::Refresh() {
 	contents->Clear();
 
-	Bitmap* system = Cache::System(Data::system.system_name);
+	BitmapRef system = Cache::System(Data::system.system_name);
 
 	const std::vector<Game_Actor*>& actors = Game_Party::GetActors();
 	for (size_t i = 0; i < actors.size() && i < 4; i++) {
@@ -86,16 +82,16 @@ void Window_ShopParty::Refresh() {
 			phase = 1;
 		}
 		bool equippable = item_id == 0 || actor->IsEquippable(item_id);
-		Bitmap *bm = bitmaps[i][phase][equippable ? 1 : 0];
-		contents->Blit(i * 32, 0, bm, bm->GetRect(), 255);
+		BitmapRef bm = bitmaps[i][phase][equippable ? 1 : 0];
+		contents->Blit(i * 32, 0, *bm, bm->GetRect(), 255);
 
 		if (equippable) {
 			//check if item is equipped by each member
 			bool is_equipped = false;
 			for (int j = 0; j < 5; ++j)
 				is_equipped |= (actor->GetEquipment(j) == item_id);
-			if (is_equipped) 
-				contents->Blit(i * 32 + 20, 24, system, Rect(128 + 8 * phase, 24, 8, 8), 255);
+			if (is_equipped)
+				contents->Blit(i * 32 + 20, 24, *system, Rect(128 + 8 * phase, 24, 8, 8), 255);
 			else {
 
 				RPG::Item* new_item = &Data::items[item_id - 1];
@@ -103,7 +99,7 @@ void Window_ShopParty::Refresh() {
 				RPG::Item* current_item = NULL;
 
 				switch (item_type) {
-				
+
 				//get the current equipped item
 				case RPG::Item::Type_weapon:
 					if (actor->GetWeaponId() > 0)
@@ -143,11 +139,11 @@ void Window_ShopParty::Refresh() {
 					int diff_spi = new_item->spi_points1 - current_item->spi_points1;
 					int diff_agi = new_item->agi_points1 - current_item->agi_points1;
 					if (diff_atk > 0 || diff_def > 0 || diff_spi > 0 || diff_agi > 0)
-						contents->Blit(i * 32 + 20, 24, system, Rect(128 + 8 * phase, 0, 8, 8), 255);
+						contents->Blit(i * 32 + 20, 24, *system, Rect(128 + 8 * phase, 0, 8, 8), 255);
 					else if (diff_atk < 0 || diff_def < 0 || diff_spi < 0 || diff_agi < 0)
-						contents->Blit(i * 32 + 20, 24, system, Rect(128 + 8 * phase, 16, 8, 8), 255);
+						contents->Blit(i * 32 + 20, 24, *system, Rect(128 + 8 * phase, 16, 8, 8), 255);
 					else
-						contents->Blit(i * 32 + 20, 24, system, Rect(128 + 8 * phase, 8, 8, 8), 255);
+						contents->Blit(i * 32 + 20, 24, *system, Rect(128 + 8 * phase, 8, 8, 8), 255);
 				}
 			}
 		}

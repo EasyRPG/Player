@@ -20,12 +20,14 @@
 ////////////////////////////////////////////////////////////
 #include <string>
 #include "window_name.h"
+#include "bitmap.h"
+#include "font.h"
 
 ////////////////////////////////////////////////////////////
 Window_Name::Window_Name(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) {
 
-	SetContents(Surface::CreateSurface(width - 16, height - 16));
+	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	name.clear();
@@ -64,4 +66,3 @@ void Window_Name::Erase() {
 const std::string& Window_Name::Get() {
 	return name;
 }
-

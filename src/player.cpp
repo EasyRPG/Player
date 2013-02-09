@@ -31,18 +31,24 @@
 #include "scene_title.h"
 #include "scene_battle.h"
 #include "utils.h"
+#include "bot_ui.h"
+#include "lua_bot.h"
+
 #include <algorithm>
 #include <set>
 #include <locale>
 #include <cstring>
 #include <cstdlib>
+#include <iostream>
+#include <fstream>
+
 #ifdef GEKKO
 	#include <fat.h>
 #endif
-#if (defined(_WIN32) && !defined(_DEBUG))
-	#include <Windows.h>
-	#include <WinIoCtl.h>
-	#include <DbgHelp.h>
+#if (defined(_WIN32) && defined(NDEBUG))
+	#include <windows.h>
+	#include <winioctl.h>
+	#include <dbghelp.h>
 	static void InitMiniDumpWriter();
 #endif
 
@@ -71,7 +77,7 @@ void Player::Init(int argc, char *argv[]) {
 	}
 #endif
 
-#if (defined(_WIN32) && !defined(_DEBUG))
+#if (defined(_WIN32) && defined(NDEBUG))
 	InitMiniDumpWriter();
 #endif
 
@@ -93,7 +99,7 @@ void Player::Init(int argc, char *argv[]) {
 	}
 
 
-#ifdef _DEBUG
+#ifndef NDEBUG
 	debug_flag = true;
 	window_flag = true; // Debug Build needs no fullscreen
 #endif
@@ -102,42 +108,54 @@ void Player::Init(int argc, char *argv[]) {
 
 	FileFinder::Init();
 
-	DisplayUi = BaseUi::CreateBaseUi(
-		SCREEN_TARGET_WIDTH,
-		SCREEN_TARGET_HEIGHT,
-		GAME_TITLE,
-		!window_flag,
-		RUN_ZOOM
-	);
+	DisplayUi.reset();
+
+#if defined(HAVE_LUA) && defined(HAVE_BOOST_LIBRARIES)
+	char const* const luabot_script = getenv("RPG_LUABOT_SCRIPT");
+	if(luabot_script) {
+		if(FileFinder::Exists(luabot_script)) {
+			std::ifstream ifs(luabot_script);
+			assert(ifs);
+
+			std::istreambuf_iterator<char> const eos;
+			std::string const script(std::istreambuf_iterator<char>(ifs), eos);
+
+			DisplayUi = EASYRPG_MAKE_SHARED<BotUi>(EASYRPG_MAKE_SHARED<LuaBot>(script));
+			Output::IgnorePause(true);
+		} else {
+			Output::Debug("luabost script not found in \"%s\"", luabot_script);
+		}
+	}
+#endif
+
+	if(! DisplayUi) {
+		DisplayUi = BaseUi::CreateUi
+			(SCREEN_TARGET_WIDTH,
+			 SCREEN_TARGET_HEIGHT,
+			 GAME_TITLE,
+			 !window_flag,
+			 RUN_ZOOM);
+	}
 
 	init = true;
 }
 
 ////////////////////////////////////////////////////////////
 void Player::Run() {
-	if (debug_flag) {
-		Scene::Push(new Scene_Title());
-	} else {
-		Scene::Push(new Scene_Logo());
-	}
+	Scene::Push(EASYRPG_MAKE_SHARED<Scene>());
+	Scene::Push(EASYRPG_SHARED_PTR<Scene>
+				(debug_flag?
+				 static_cast<Scene*>(new Scene_Title()) :
+				 static_cast<Scene*>(new Scene_Logo())));
 
 	reset_flag = false;
 
 	// Reset frames before starting
 	Graphics::FrameReset();
-	
+
 	// Main loop
 	while (Scene::instance->type != Scene::Null) {
 		Scene::instance->MainFunction();
-
-		for (size_t i = 0; i < Scene::old_instances.size(); ++i) {
-			//Output::Debug(Scene::scene_names[Scene::old_instances[i]->type]);
-			if (i > 1) {
-				Scene::old_instances[i]->Terminate();
-			}
-			Graphics::Pop();
-			delete Scene::old_instances[i];
-		}
 		Scene::old_instances.clear();
 	}
 
@@ -146,13 +164,13 @@ void Player::Run() {
 
 ////////////////////////////////////////////////////////////
 void Player::Pause() {
-	Audio::BGM_Pause();
+	Audio().BGM_Pause();
 }
 
 ////////////////////////////////////////////////////////////
 void Player::Resume() {
 	Input::ResetKeys();
-	Audio::BGM_Resume();
+	Audio().BGM_Resume();
 	Graphics::FrameReset();
 }
 
@@ -165,8 +183,7 @@ void Player::Update() {
 	DisplayUi->ProcessEvents();
 
 	if (exit_flag) {
-		Exit();
-		exit(EXIT_SUCCESS);
+		Scene::PopUntil(Scene::Null);
 	} else if (reset_flag) {
 		reset_flag = false;
 		Scene::PopUntil(Scene::Title);
@@ -177,12 +194,11 @@ void Player::Update() {
 void Player::Exit() {
 	Main_Data::Cleanup();
 	Graphics::Quit();
-	Audio::Quit();
 	FileFinder::Quit();
-	delete DisplayUi;
+	DisplayUi.reset();
 }
 
-#if (defined(_WIN32) && !defined(_DEBUG))
+#if (defined(_WIN32) && defined(NDEBUG))
 ////////////////////////////////////////////////////////////
 // Minidump code for Windows
 // Original Author: Oleg Starodumov (www.debuginfo.com)
@@ -198,34 +214,34 @@ typedef BOOL (__stdcall *MiniDumpWriteDumpFunc) (
 	IN CONST PMINIDUMP_CALLBACK_INFORMATION CallbackParam OPTIONAL
 );
 
-static WCHAR szModulName[_MAX_FNAME]; 
+static WCHAR szModulName[_MAX_FNAME];
 static MiniDumpWriteDumpFunc TheMiniDumpWriteDumpFunc;
 
 static BOOL CALLBACK MyMiniDumpCallback(PVOID,
-	const PMINIDUMP_CALLBACK_INPUT pInput, 
-	PMINIDUMP_CALLBACK_OUTPUT pOutput 
+	const PMINIDUMP_CALLBACK_INPUT pInput,
+	PMINIDUMP_CALLBACK_OUTPUT pOutput
 ) {
 	if (pInput == 0 || pOutput == 0)  {
 		return false;
 	}
 
-	switch (pInput->CallbackType) 
+	switch (pInput->CallbackType)
 	{
 		case IncludeModuleCallback:
 		case IncludeThreadCallback:
 		case ThreadCallback:
 		case ThreadExCallback:
 			return true;
-		case MemoryCallback: 
+		case MemoryCallback:
 		case CancelCallback:
 			return false;
 		case ModuleCallback:
-			// Are data sections available for this module? 
+			// Are data sections available for this module?
 			if (pOutput->ModuleWriteFlags & ModuleWriteDataSeg) {
 				// Exclude all modules but the player itself
 				if (pInput->Module.FullPath == NULL ||
 					wcsicmp(pInput->Module.FullPath, szModulName)) {
-					pOutput->ModuleWriteFlags &= (~ModuleWriteDataSeg); 
+					pOutput->ModuleWriteFlags &= (~ModuleWriteDataSeg);
 				}
 			}
 			return true;
@@ -234,7 +250,7 @@ static BOOL CALLBACK MyMiniDumpCallback(PVOID,
 	return false;
 }
 
-static LONG __stdcall CreateMiniDump(EXCEPTION_POINTERS* pep) 
+static LONG __stdcall CreateMiniDump(EXCEPTION_POINTERS* pep)
 {
 	wchar_t szDumpName[40];
 
@@ -243,29 +259,35 @@ static LONG __stdcall CreateMiniDump(EXCEPTION_POINTERS* pep)
 	GetLocalTime(&time);
 
 	// Player-YYYY-MM-DD-hh-mm-ss.dmp
+#ifdef __MINGW32__
+	swprintf(szDumpName, L"Player_%04d-%02d-%02d-%02d-%02d-%02d.dmp",
+		time.wYear, time.wMonth, time.wDay,
+		time.wHour, time.wMinute, time.wSecond);
+#else
 	swprintf(szDumpName, 40, L"Player_%04d-%02d-%02d-%02d-%02d-%02d.dmp",
 		time.wYear, time.wMonth, time.wDay,
 		time.wHour, time.wMinute, time.wSecond);
+#endif
 
-	HANDLE hFile = CreateFile(szDumpName, GENERIC_READ | GENERIC_WRITE, 
-		0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL); 
+	HANDLE hFile = CreateFile(szDumpName, GENERIC_READ | GENERIC_WRITE,
+		0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if ((hFile != NULL) && (hFile != INVALID_HANDLE_VALUE)) {
-		MINIDUMP_EXCEPTION_INFORMATION mdei; 
-		mdei.ThreadId           = GetCurrentThreadId(); 
-		mdei.ExceptionPointers  = pep; 
-		mdei.ClientPointers     = FALSE; 
+		MINIDUMP_EXCEPTION_INFORMATION mdei;
+		mdei.ThreadId           = GetCurrentThreadId();
+		mdei.ExceptionPointers  = pep;
+		mdei.ClientPointers     = FALSE;
 
-		MINIDUMP_CALLBACK_INFORMATION mci; 
-		mci.CallbackRoutine     = (MINIDUMP_CALLBACK_ROUTINE)MyMiniDumpCallback; 
-		mci.CallbackParam       = 0; 
+		MINIDUMP_CALLBACK_INFORMATION mci;
+		mci.CallbackRoutine     = (MINIDUMP_CALLBACK_ROUTINE)MyMiniDumpCallback;
+		mci.CallbackParam       = 0;
 
 		MINIDUMP_TYPE mdt       = (MINIDUMP_TYPE)(MiniDumpWithPrivateReadWriteMemory |
 									MiniDumpWithDataSegs | MiniDumpWithHandleData |
-									MiniDumpWithFullMemoryInfo | MiniDumpWithThreadInfo | 
-									MiniDumpWithUnloadedModules ); 
+									MiniDumpWithFullMemoryInfo | MiniDumpWithThreadInfo |
+									MiniDumpWithUnloadedModules );
 
-		TheMiniDumpWriteDumpFunc(GetCurrentProcess(), GetCurrentProcessId(), 
+		TheMiniDumpWriteDumpFunc(GetCurrentProcess(), GetCurrentProcessId(),
 			hFile, mdt, (pep != 0) ? &mdei : 0, 0, &mci);
 
 		// Enable NTFS compression to save a lot of disk space
@@ -273,11 +295,11 @@ static LONG __stdcall CreateMiniDump(EXCEPTION_POINTERS* pep)
 		DWORD format = COMPRESSION_FORMAT_DEFAULT;
 		DeviceIoControl(hFile, FSCTL_SET_COMPRESSION, &format, sizeof(USHORT), NULL, 0, &res, NULL);
 
-		CloseHandle(hFile); 
+		CloseHandle(hFile);
 	}
 
 	// Pass to the Windows crash handler
-	return EXCEPTION_CONTINUE_SEARCH; 
+	return EXCEPTION_CONTINUE_SEARCH;
 }
 
 static void InitMiniDumpWriter()
@@ -291,7 +313,7 @@ static void InitMiniDumpWriter()
 		if (TheMiniDumpWriteDumpFunc != NULL) {
 			SetUnhandledExceptionFilter(CreateMiniDump);
 
-			// Extract the module name 
+			// Extract the module name
 			GetModuleFileName(NULL, szModulName, _MAX_FNAME);
 		}
 	}
