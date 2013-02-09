@@ -97,7 +97,6 @@ public:
 	 * Calculates the Exp needed for a level up.
 	 *
 	 * @param level level to calculate exp for.
-	 * @todo Add Formula for RPG2k3.
 	 * @return Needed experience.
 	 */
 	int CalculateExp(int level) const;

@@ -258,18 +258,26 @@ int Game_Actor::CalculateExp(int level) const
 		correction = actor.exp_correction;
 	}
 
-	// This is the Rpg2k formula! Rpg2k3 needs a different.
 	int result = 0;
+	if (Player::engine == Player::EngineRpg2k)/*Rpg2k*/{
+		inflation = 1.5 + (inflation * 0.01);
 
-	inflation = 1.5 + (inflation * 0.01);
-
-	for (int i = level; i >= 1; i--)
-	{
-		result = result + (int)(correction + base);
-		base = base * inflation;
-		inflation = ((level+1) * 0.002 + 0.8) * (inflation - 1) + 1;
+		for (int i = level; i >= 1; i--)
+		{
+			result = result + (int)(correction + base);
+			base = base * inflation;
+			inflation = ((level+1) * 0.002 + 0.8) * (inflation - 1) + 1;
+		}
+	} else /*Rpg2k3*/ {
+		for (int i = 1; i <= level; i++)
+		{
+			result += (int)base;
+			result += i * (int)inflation;
+			result += (int)correction;
+		}
+		printf ("LV: %i : %i\n", level, result);
 	}
-	return min(result, 1000000);
+	return min(result, Player::engine == Player::EngineRpg2k ? 1000000 : 10000000);
 }
 
 void Game_Actor::MakeExpList() {

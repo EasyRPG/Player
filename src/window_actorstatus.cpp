@@ -19,7 +19,7 @@
 #include <iomanip>
 #include <sstream>
 #include "window_actorstatus.h"
-#include "game_actor.h"
+#include "game_actors.h"
 #include "game_party.h"
 #include "bitmap.h"
 
@@ -35,4 +35,39 @@ Window_ActorStatus::Window_ActorStatus(int ix, int iy, int iwidth, int iheight, 
 
 void Window_ActorStatus::Refresh() {
 	contents->Clear();
+
+	DrawStatus();
+}
+
+void Window_ActorStatus::DrawStatus(){
+
+	Game_Actor* actor = Game_Actors::GetActor(actor_id);
+
+	// Draw Hp
+	contents->TextDraw(1, 3, 1, Data::terms.hp_short);
+	DrawMinMax(100,3,actor->GetHp(), actor->GetMaxHp());
+
+	// Draw Sp
+	contents->TextDraw(1, 18, 1, Data::terms.sp_short);
+	DrawMinMax(100,18,actor->GetSp(), actor->GetMaxSp());
+
+	// Draw Exp
+	contents->TextDraw(1, 33, 1, Data::terms.exp_short);
+	DrawMinMax(100,33, -1, -1);
+}
+
+void Window_ActorStatus::DrawMinMax(int cx, int cy, int min, int max){
+	std::stringstream ss;
+	if (max >= 0)
+		ss << min;
+	else
+		ss << Game_Actors::GetActor(actor_id)->GetExpString();
+	contents->TextDraw(cx, cy, Font::ColorDefault, ss.str(), Surface::TextAlignRight);
+	contents->TextDraw(cx, cy, Font::ColorDefault, "/");
+	ss.str("");
+	if (max >= 0)
+		ss << max;
+	else
+		ss << Game_Actors::GetActor(actor_id)->GetNextExpString();
+	contents->TextDraw(cx+48, cy, Font::ColorDefault, ss.str(), Surface::TextAlignRight);
 }
