@@ -13,6 +13,11 @@ static sub_map_type sub_map;
 
 typedef std::map<std::string, std::map<std::string, std::string> > rtp_table_type;
 
+#ifdef _MSC_VER
+// Interpret char literals as utf-8
+#pragma execution_character_set("utf-8")
+#endif
+
 /*
  * { folder: { ASCII, UTF-8 } }
  */
