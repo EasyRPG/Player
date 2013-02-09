@@ -111,7 +111,18 @@ namespace {
 
 		std::map<std::string, std::string>::const_iterator file_it =
 			dir_it->second.find(Utils::LowerCase(name));
-		return (file_it == dir_it->second.end())? name : file_it->second;
+
+		if (file_it == dir_it->second.end()) {
+			// Linear Search: English -> Japanese
+			for (auto it = dir_it->second.begin(); it != file_it; ++it) {
+				if (it->second == name) {
+					return it->first;
+				}
+			}
+			return name;
+		}
+
+		return file_it->second;
 	}
 
 	std::string FindFile(const std::string &dir, const std::string& name, const char* exts[]) {
@@ -128,10 +139,8 @@ namespace {
 			boost::optional<std::string> const ret = FindFile(*(*i), dir, name, exts);
 			if (ret != boost::none) { return *ret; }
 
-			if (&rtp_name == &name) { continue; }
-
 			boost::optional<std::string> const ret_rtp = FindFile(*(*i), dir, rtp_name, exts);
-			if(ret_rtp != boost::none) { return *ret_rtp; }
+			if (ret_rtp != boost::none) { return *ret_rtp; }
 		}
 
 		Output::Debug("Cannot find: %s/%s", dir.c_str(), name.c_str());
