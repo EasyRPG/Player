@@ -131,7 +131,7 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 	ShowCursor(false);
 #endif
 
-#if defined(HAVE_MIXER)
+#if defined(HAVE_SDL_MIXER)
 	audio_.reset(new SdlAudio());
 #elif defined(HAVE_OPENAL)
 	audio_.reset(new ALAudio());
