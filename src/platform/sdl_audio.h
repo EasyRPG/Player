@@ -9,7 +9,7 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 
-struct SdlAudio : protected AudioInterface {
+struct SdlAudio : public AudioInterface {
 	SdlAudio();
 	~SdlAudio();
 

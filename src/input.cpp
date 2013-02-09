@@ -46,7 +46,7 @@ void Input::WaitInput(bool v) { wait_input = v; }
 void Input::Init() {
 	InitButtons();
 
-	std::fill_n(press_time.begin(), BUTTON_COUNT, 0);
+	std::fill(press_time.begin(), press_time.end(), 0);
 	triggered.reset();
 	repeated.reset();
 	released.reset();

@@ -1,10 +1,14 @@
-﻿#include <boost/assign/list_of.hpp>
+﻿#ifndef EASYRPG_RTP_TABLE_BOM
+#define EASYRPG_RTP_TABLE_BOM
+
+#include <boost/assign/list_of.hpp>
 #include <map>
 
 using boost::assign::list_of;
 using boost::assign::map_list_of;
 
 typedef std::map<std::string, std::string> sub_map_type;
+typedef std::pair<std::string, std::string> sub_map_pair;
 static sub_map_type sub_map;
 
 typedef std::map<std::string, std::map<std::string, std::string> > rtp_table_type;
@@ -13,7 +17,7 @@ typedef std::map<std::string, std::map<std::string, std::string> > rtp_table_typ
  * { folder: { ASCII, UTF-8 } }
  */
 rtp_table_type const RTP_TABLE_2003 = map_list_of
-	("backdrop", list_of<sub_map_type::value_type>
+	("backdrop", list_of<sub_map_pair>
 	 ("graveyard", "お墓")
 	 ("shrine", "お寺")
 	 ("dungeon1", "ダンジョン１")
@@ -50,7 +54,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("snowfield", "雪原")
 	 .to_container(sub_map))
 
-	("battle", list_of<sub_map_type::value_type>
+	("battle", list_of<sub_map_pair>
 	 ("misc1", "2003その他1")
 	 ("misc2", "2003その他2")
 	 ("barrier1", "2003バリア")
@@ -107,7 +111,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("paralyze2", "麻痺")
 	 .to_container(sub_map))
 
-	("battlechar", list_of<sub_map_type::value_type>
+	("battlechar", list_of<sub_map_pair>
 	 ("elf-f-1", "エルフ女a")
 	 ("elf-f-2", "エルフ女b")
 	 ("elf-m-1", "エルフ男a")
@@ -174,11 +178,11 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("mage-m-2", "魔術師男b")
 	 .to_container(sub_map))
 
-	("battleweapon", list_of<sub_map_type::value_type>
+	("battleweapon", list_of<sub_map_pair>
 	 ("weapons", "武器")
 	 .to_container(sub_map))
 
-	("charset", list_of<sub_map_type::value_type>
+	("charset", list_of<sub_map_pair>
 	 ("monster1", "オブジェクト1")
 	 ("monster2", "オブジェクト2")
 	 ("object1", "モンスター1")
@@ -196,7 +200,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("animal", "動物")
 	 .to_container(sub_map))
 
-	("chipset", list_of<sub_map_type::value_type>
+	("chipset", list_of<sub_map_pair>
 	 ("dungeon", "ダンジョン")
 	 ("building", "内装")
 	 ("main", "基本")
@@ -204,7 +208,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("ship", "船")
 	 .to_container(sub_map))
 
-	("faceset", list_of<sub_map_type::value_type>
+	("faceset", list_of<sub_map_pair>
 	 ("monster", "モンスター")
 	 ("faces1", "一般1")
 	 ("faces2", "一般2")
@@ -212,11 +216,11 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("hero2", "主人公2")
 	 .to_container(sub_map))
 
-	("gameover", list_of<sub_map_type::value_type>
+	("gameover", list_of<sub_map_pair>
 	 ("gameover", "ゲームオーバー")
 	 .to_container(sub_map))
 
-	("monster", list_of<sub_map_type::value_type>
+	("monster", list_of<sub_map_pair>
 	 ("ariman", "アーリマン")
 	 ("asura", "アスラ")
 	 ("anaconda", "アナコンダ")
@@ -334,7 +338,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("bluedragon", "龍")
 	 .to_container(sub_map))
 
-	("music", list_of<sub_map_type::value_type>
+	("music", list_of<sub_map_pair>
 	 ("spring", "2003いやしの泉")
 	 ("casino", "2003カジノ三昧")
 	 ("arena", "2003コロシアム")
@@ -488,7 +492,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("demonic", "魔王")
 	 .to_container(sub_map))
 
-	("panorama", list_of<sub_map_type::value_type>
+	("panorama", list_of<sub_map_pair>
 	 ("dusk1", "夕焼け1")
 	 ("dusk2", "夕焼け2")
 	 ("dawn1", "夜明け1")
@@ -504,7 +508,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("sky2", "空2")
 	 .to_container(sub_map))
 
-	("sound", list_of<sub_map_type::value_type>
+	("sound", list_of<sub_map_pair>
 	 ("item1", "アイテム1")
 	 ("item2", "アイテム2")
 	 ("jingle1", "あたり1")
@@ -713,20 +717,20 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("magic2", "魔法2")
 	 .to_container(sub_map))
 
-	("system", list_of<sub_map_type::value_type>
+	("system", list_of<sub_map_pair>
 	 ("system1", "システム")
 	 ("system2", "システムa")
 	 ("system3", "システムb")
 	 ("system4", "システムc")
 	 .to_container(sub_map))
 
-	("system2", list_of<sub_map_type::value_type>
+	("system2", list_of<sub_map_pair>
 	 ("system2a", "システム２a")
 	 ("system2b", "システム２b")
 	 ("system2c", "システム２c")
 	 .to_container(sub_map))
 
-	("title", list_of<sub_map_type::value_type>
+	("title", list_of<sub_map_pair>
 	 ("title1", "タイトル1")
 	 ("title2", "タイトル2")
 	 ("title3", "タイトル3")
@@ -735,7 +739,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	;
 
 rtp_table_type const RTP_TABLE_2000 = map_list_of
-	("backdrop", list_of<sub_map_type::value_type>
+	("backdrop", list_of<sub_map_pair>
 	 ("cave1", "ダンジョン1")
 	 ("lavacave2", "ダンジョン2")
 	 ("icecave3", "ダンジョン3")
@@ -763,7 +767,7 @@ rtp_table_type const RTP_TABLE_2000 = map_list_of
 	 ("snow", "雪原")
 	 .to_container(sub_map))
 
-	("battle", list_of<sub_map_type::value_type>
+	("battle", list_of<sub_map_pair>
 	 ("etc", "その他")
 	 ("barrier", "バリア")
 	 ("poison", "ブレス")
@@ -794,7 +798,7 @@ rtp_table_type const RTP_TABLE_2000 = map_list_of
 	 ("paralysis", "麻痺")
 	 .to_container(sub_map))
 
-	("charset", list_of<sub_map_type::value_type>
+	("charset", list_of<sub_map_pair>
 	 ("etc", "その他")
 	 ("barrier", "バリア")
 	 ("poison", "ブレス")
@@ -825,7 +829,7 @@ rtp_table_type const RTP_TABLE_2000 = map_list_of
 	 ("paralysis", "麻痺")
 	 .to_container(sub_map))
 
-	("chipset", list_of<sub_map_type::value_type>
+	("chipset", list_of<sub_map_pair>
 	 ("dungeon", "ダンジョン")
 	 ("inner", "内装")
 	 ("basis", "基本")
@@ -833,7 +837,7 @@ rtp_table_type const RTP_TABLE_2000 = map_list_of
 	 ("ship", "船")
 	 .to_container(sub_map))
 
-	("faceset", list_of<sub_map_type::value_type>
+	("faceset", list_of<sub_map_pair>
 	 ("monsters", "モンスター")
 	 ("people1", "一般1")
 	 ("people2", "一般2")
@@ -841,11 +845,11 @@ rtp_table_type const RTP_TABLE_2000 = map_list_of
 	 ("chara2", "主人公2")
 	 .to_container(sub_map))
 
-	("gameover", list_of<sub_map_type::value_type>
+	("gameover", list_of<sub_map_pair>
 	 ("gameover", "ゲームオーバー")
 	 .to_container(sub_map))
 
-	("monster", list_of<sub_map_type::value_type>
+	("monster", list_of<sub_map_pair>
 	 ("vampire", "ヴァンパイア")
 	 ("hog", "オーク")
 	 ("gargoyle", "ガーゴイル")
@@ -913,7 +917,7 @@ rtp_table_type const RTP_TABLE_2000 = map_list_of
 	 ("greendragon2", "龍")
 	 .to_container(sub_map))
 
-	("music", list_of<sub_map_type::value_type>
+	("music", list_of<sub_map_pair>
 	 ("item", "jアイテム")
 	 ("gag1", "jギャグ1")
 	 ("gag2", "jギャグ2")
@@ -1013,7 +1017,7 @@ rtp_table_type const RTP_TABLE_2000 = map_list_of
 	 ("devil", "魔王")
 	 .to_container(sub_map))
 
-	("panorama", list_of<sub_map_type::value_type>
+	("panorama", list_of<sub_map_pair>
 	 ("dawn1", "夕焼け1")
 	 ("dawn2", "夕焼け2")
 	 ("evening1", "夜明け1")
@@ -1029,7 +1033,7 @@ rtp_table_type const RTP_TABLE_2000 = map_list_of
 	 ("morning2", "空2")
 	 .to_container(sub_map))
 
-	("sound", list_of<sub_map_type::value_type>
+	("sound", list_of<sub_map_pair>
 	 ("item1", "アイテム1")
 	 ("item2", "アイテム2")
 	 ("success1", "あたり1")
@@ -1238,14 +1242,16 @@ rtp_table_type const RTP_TABLE_2000 = map_list_of
 	 ("wall2", "魔法2")
 	 .to_container(sub_map))
 
-	("system", list_of<sub_map_type::value_type>
+	("system", list_of<sub_map_pair>
 	 ("system", "システム")
 	 .to_container(sub_map))
 
-	("title", list_of<sub_map_type::value_type>
+	("title", list_of<sub_map_pair>
 	 ("title1", "タイトル1")
 	 ("title2", "タイトル2")
 	 ("title3", "タイトル3")
 	 ("title4", "タイトル4")
 	 .to_container(sub_map))
 	;
+
+#endif
