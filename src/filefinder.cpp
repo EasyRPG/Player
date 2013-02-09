@@ -252,33 +252,6 @@ std::string FileFinder::FindFont(const std::string& name) {
 #endif
 }
 
-////////////////////////////////////////////////////////////
-std::string FileFinder::DefaultFont() {
-#ifdef _WIN32
-	static std::string default_font = "";
-	static bool init = false;
-
-	if (!init) {
-		std::string fonts[] = DEFAULT_FONTS;
-
-		const std::string* pfont = fonts;
-		while(const std::string* font = pfont++) {
-			if (font->empty()) break;
-
-			default_font = FindFont(*font);
-
-			if (!default_font.empty()) break;
-		}
-
-		init = true;
-	}
-
-	return default_font;
-#else
-	return "DejaVuLGCSansMono";
-#endif
-}
-
 FileFinder::ProjectTree const& FileFinder::GetProjectTree() {
 	static ProjectTree tree_;
 
