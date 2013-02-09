@@ -91,7 +91,9 @@ void BitmapScreen::BlitScreen(int x, int y, Rect const& src_rect) {
 	bitmap_changed = false;
 	needs_refresh = false;
 
-	BlitScreenIntern(*draw_bitmap, x, y, rect, need_scale, bush_y);
+	if(draw_bitmap) {
+		BlitScreenIntern(*draw_bitmap, x, y, rect, need_scale, bush_y);
+	}
 }
 
 ////////////////////////////////////////////////////////////
