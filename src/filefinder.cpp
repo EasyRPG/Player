@@ -107,7 +107,7 @@ namespace {
 			RTP_TABLE_2000;
 
 		rtp_table_type::const_iterator dir_it = table.find(Utils::LowerCase(dir));
-		if(dir_it == table.end()) { return name; }
+		if (dir_it == table.end()) { return name; }
 
 		std::map<std::string, std::string>::const_iterator file_it =
 			dir_it->second.find(Utils::LowerCase(name));
@@ -117,21 +117,21 @@ namespace {
 	std::string FindFile(const std::string &dir, const std::string& name, const char* exts[]) {
 		FileFinder::ProjectTree const& tree = FileFinder::GetProjectTree();
 		boost::optional<std::string> const ret = FindFile(tree, dir, name, exts);
-		if(ret != boost::none) { return *ret; }
+		if (ret != boost::none) { return *ret; }
 
 		std::string const& rtp_name = translate_rtp(dir, name);
 		Output::Debug("RTP name %s(%s)", rtp_name.c_str(), name.c_str());
 
 		for(search_path_list::const_iterator i = search_paths.begin(); i != search_paths.end(); ++i) {
-			if(! *i) { continue; }
+			if (! *i) { continue; }
 
 			boost::optional<std::string> const ret = FindFile(*(*i), dir, name, exts);
-			if(ret != boost::none) { return *ret; }
+			if (ret != boost::none) { return *ret; }
 
-			if(&rtp_name == &name) { continue; }
+			if (&rtp_name == &name) { continue; }
 
 			boost::optional<std::string> const ret_rtp = FindFile(*(*i), dir, rtp_name, exts);
-			if(ret != boost::none) { return *ret_rtp; }
+			if(ret_rtp != boost::none) { return *ret_rtp; }
 		}
 
 		Output::Debug("Cannot find: %s/%s", dir.c_str(), name.c_str());
