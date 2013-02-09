@@ -51,7 +51,6 @@ namespace Main_Data {
 void Main_Data::Cleanup() {
 	Game_Map::Quit();
 	Game_Actors::Dispose();
-	Font::Dispose();
 
 	game_screen.reset();
 	game_player.reset();
