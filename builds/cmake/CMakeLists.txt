@@ -37,9 +37,7 @@ endif()
 
 # shinonome font
 set(SHINONOME_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../lib/shinonome")
-set(SHINONOME_SRCS
-  "${SHINONOME_PATH}/hankaku.cxx" "${SHINONOME_PATH}/latin1.cxx"
-  "${SHINONOME_PATH}/gothic.cxx" "${SHINONOME_PATH}/mincho.cxx")
+set(SHINONOME_SRCS "${SHINONOME_PATH}/gothic.cxx" "${SHINONOME_PATH}/mincho.cxx")
 include_directories(${SHINONOME_PATH})
 find_package(Ruby)
 if(RUBY_FOUND)
@@ -47,7 +45,8 @@ if(RUBY_FOUND)
   add_custom_command(
     OUTPUT ${SHINONOME_SRCS} "${SHINONOME_PATH}/shinonome.hxx"
     COMMAND "${RUBY_EXECUTABLE}" ARGS "${SHINONOME_GENERATOR}"
-    DEPENDS "${SHINONOME_GENERATOR}" WORKING_DIRECTORY "${SHINONOME_PATH}")
+    DEPENDS "${SHINONOME_GENERATOR}"
+    WORKING_DIRECTORY "${SHINONOME_PATH}")
 endif()
 
 # endianess check
