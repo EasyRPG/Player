@@ -179,6 +179,9 @@ void Player::Update() {
 	if (Input::IsTriggered(Input::TOGGLE_FPS)) {
 		Graphics::fps_on_screen = !Graphics::fps_on_screen;
 	}
+	if (Input::IsTriggered(Input::TAKE_SCREENSHOT)) {
+		Output::TakeScreenshot();
+	}
 
 	DisplayUi->ProcessEvents();
 
