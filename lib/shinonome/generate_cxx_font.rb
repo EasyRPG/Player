@@ -1,13 +1,15 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env ruby -Ku
 
 FONT_SIZE = 12
 EMPTY_CHAR = Array.new(FONT_SIZE, 0x0)
+
+kanji_encoding = "JIS_X0208"
 
 require 'iconv'
 
 def skip_until(f, regex)
   while(not f.eof?)
-    l = f.readline()
+    l = f.readline().chomp
     ret = regex.match(l)
     if ret
       return ret
@@ -16,23 +18,69 @@ def skip_until(f, regex)
   return false
 end
 
-def read_font(f, width)
-  code = skip_until(f, /STARTCHAR (\w+)/)
+class Glyph
+  attr_reader :code, :is_full, :data
+
+  def initialize(c, f, d)
+    raise "type error" unless c.instance_of? Fixnum
+    raise "type error" unless d.instance_of? Array
+
+    @code = c
+    @is_full = f
+    @data = d
+  end
+end
+
+
+def read_font(f, half, encoding)
+  code = skip_until(f, /STARTCHAR\s+(\w+)/)
   if not code
     return false
   else
-    code = code[1].hex
+    c = code[1].hex
+    if encoding == "JIS_X0208"
+      encoding = "CP932"
+
+      j1 = (c >> 8) & 0xff
+      j2 = c & 0xff
+
+      s1 = (32 < j1 and j1 <= 94) ? (j1 + 1) / 2 + 112 : (j1 + 1) / 2 + 176
+      s2 = (j1 & 0x01) == 1 ? j2 + 31 + j2 / 96 : j2 + 126
+
+      c = ((s1 & 0xff) << 8) + s2
+      code = ""
+      code << s1
+      code << s2
+    else
+      code = (c < 0x100 ? [c] : [c & 0xff, (c >> 8) & 0xff]).pack("C*")
+    end
+
+    raise "size error" unless code.length == (c < 0x100 ? 1 : 2)
+
+    begin
+      # p Iconv.conv("UTF-8", encoding, code)
+      code = Iconv.conv('UTF-32LE', encoding, code)
+    rescue Iconv::IllegalSequence
+      print "invalid code 0x%02x, 0x%02x\n" % [(c >> 8) & 0xff, c & 0xff]
+      return false
+    end
+
+    raise "invalid code" unless code.length == 4
+
+    code = code.unpack("V")[0]
   end
+
+  width = half ? FONT_SIZE / 2 : FONT_SIZE
 
   skip_until(f, /BITMAP/)
 
-  ret = Array.new(FONT_SIZE)
+  ret = Array.new(FONT_SIZE, 0)
 
-  for y in 0..(FONT_SIZE - 1)
+  for y in 0...FONT_SIZE
     str = f.readline()
 
     tmp = 0
-    for x in 0..(width - 1)
+    for x in 0...width
       if str[x] == ?@
         tmp |= 0x01 << x
       else
@@ -44,152 +92,84 @@ def read_font(f, width)
 
   raise "assert" unless /ENDCHAR/.match(Iconv.conv('UTF-8', 'EUC-JP', f.readline()))
 
-  return [code, ret]
+  return Glyph.new(code, !half, ret)
 end
 
-def read_half(f)
-  ret = Array.new(0x100, nil)
+def read_file(f, encoding, half)
+  ret = {}
   while(true)
-    font = read_font(f, FONT_SIZE / 2)
-    if not font
+    font = read_font(f, half, encoding)
+    if f.eof?
       return ret
-    else
-      ret[font[0]] = font[1]
+    elsif font
+      ret[font.code] = font
     end
   end
 end
 
-def write_half(f, sym, fonts)
-  f.write("#include \"shinonome.hxx\"\n")
-  f.write("#include <boost/cstdint.hpp>\n\n")
-  f.write("uint16_t const %s[0x100][%d] = {\n" % [sym, FONT_SIZE])
-  raise "assert" unless fonts.length <= 0x100
-  fonts.each_index {|idx|
+def write_all(f, sym, data)
+  f.write <<EOS
+#include "shinonome.hxx"
 
-    font = fonts[idx]
-    f.write("  { ")
+ShinonomeGlyph const #{sym}[#{data.size}] = {
+EOS
 
-    if font == nil
-      font = EMPTY_CHAR
-    end
+  code_max = 0
 
-    for l in font
-      f.write("0x%02x, " % [l])
-    end
-
-    f.write("}, // 0x%02x\n" % [idx])
+  data.sort.each { |v|
+    g = v[1]
+    f.write "  { #{g.code}, #{g.is_full}, { #{g.data.join(", ")} } },\n"
+    code_max = [g.code, code_max].max
   }
-  f.write("}; // %s\n" % [sym])
+  f.write "};\n"
+
+  code_max
 end
 
-def read_full(f)
-  ret = Array.new(94, Array.new(94))
-  while(true)
-    font = read_font(f, FONT_SIZE)
-    if not font
-      return ret
-    else
-      ku  = ((font[0] - 0x2100) >> 8*1) & 0xff
-      ten = ((font[0] - 0x0021) >> 8*0) & 0xff
-
-      # raise "invalid ku: %d" % [ku] unless ku < 94
-      # raise "invalid ten: %d" % [ten] unless ten < 94
-
-      ret[ku][ten] = font[1]
-    end
-  end
-end
-
-def write_full(f, sym, fonts)
-  f.write("#include \"shinonome.hxx\"\n")
-  f.write("#include <boost/cstdint.hpp>\n\n")
-  f.write("uint16_t const %s[94][94][%d] = {\n" % [sym, FONT_SIZE])
-  raise "invalid ku max: %d" % [fonts.length-1] unless fonts.length <= 94
-  fonts.each_index {|ku_idx|
-    ku = fonts[ku_idx]
-    raise "invalid ten max: %d" % [ku.length-1] unless ku.length <= 94
-
-    f.write("  { // ku: %2d\n" % [ku_idx + 1])
-    ku.each_index {|ten_idx|
-
-      ten = ku[ten_idx]
-      f.write("    { ")
-
-      if ten == nil
-        ten = EMPTY_CHAR
-      end
-
-      for l in ten
-        f.write("0x%03x, " % [l])
-      end
-
-      f.write("}, // ten: %2d\n" % [ten_idx + 1])
-    }
-    f.write("  }, // ku: %2d\n" % [ku_idx + 1])
-  }
-  f.write("}; // %s\n" % [sym])
-end
-
-# header
-print "Generating Header..."
-header = File.new('./shinonome.hxx', 'w')
-for l in
-  [
-   '#ifndef _INC_SHINONOME_HXX_',
-   '#define _INC_SHINONOME_HXX_',
-   '',
-   '#include <boost/cstdint.hpp>',
-   '',
-   '',
-   'extern "C" {',
-   '',
-   'extern uint16_t const SHINONOME_LATIN1[0x100][%d];' % FONT_SIZE,
-   'extern uint16_t const SHINONOME_HANKAKU[0x100][%d];' % FONT_SIZE,
-   '',
-   'extern uint16_t const SHINONOME_GOTHIC[94][94][%d];' % FONT_SIZE,
-   'extern uint16_t const SHINONOME_MINCHO[94][94][%d];' % FONT_SIZE,
-   '',
-   '}',
-   '',
-   '#endif // _INC_SHINONOME_HXX_',
-   '',
-  ]
-  header.write(l + "\n");
-end
+# loading
+print "Loading Lantin-1..."
+latin = read_file(File.new('./latin1/font_src.bit', 'r'), "latin1", true)
 print "done\n"
 
-print "Genarating Lantin-1..."
-latin = read_half(File.new('./latin1/font_src.bit', 'r'))
-write_half(File.new('./latin1.cxx', 'w'), 'SHINONOME_LATIN1', latin)
+print "Loading Hankaku..."
+hankaku = read_file(File.new('./hankaku/font_src_diff.bit', 'r'), "JIS_X0201", true)
 print "done\n"
 
-print "Generating Hankaku..."
-hankaku = read_half(File.new('./hankaku/font_src_diff.bit', 'r'))
-hankaku.each_index {|x|
-  if hankaku[x] == nil
-    hankaku[x] = latin[x]
-  end
-}
-write_half(File.new('./hankaku.cxx', 'w'), 'SHINONOME_HANKAKU', hankaku)
+print "Loading Gothic..."
+gothic = read_file(File.new('./kanjic/font_src.bit', 'r'), kanji_encoding, false)
 print "done\n"
 
-print "Genarating Gothic..."
-gothic = read_full(File.new('./kanjic/font_src.bit', 'r'))
-write_full(File.new('./gothic.cxx', 'w'), 'SHINONOME_GOTHIC', gothic)
+print "Loading Mincho..."
+mincho = read_file(File.new('./mincho/font_src_diff.bit', 'r'), kanji_encoding, false)
+print "done\n"
+
+# generating
+print "Generating Gothic..."
+gothic_final = gothic.merge(hankaku).merge(latin)
+code_max = write_all(File.new("./gothic.cxx", "w"), "SHINONOME_GOTHIC", gothic_final)
 print "done\n"
 
 print "Generating Mincho..."
-mincho = read_full(File.new('./mincho/font_src_diff.bit', 'r'))
-for ku in 0..93
-  if mincho[ku] == nil
-    mincho[ku] = gothic[ku]
-  else
-    for ten in 0..93
-      if mincho[ku][ten] == nil
-        mincho[ku][ten] = gothic[ku][ten]
-      end
-    end
-  end
-end
-write_full(File.new('./mincho.cxx', 'w'), 'SHINONOME_MINCHO', mincho)
+code_max = [write_all(File.new("./mincho.cxx", "w"), "SHINONOME_MINCHO", mincho), code_max].max
+print "done\n"
+
+# header
+print "Generating Header..."
+File.new('./shinonome.hxx', 'w').write <<EOS
+#ifndef _INC_SHINONOME_HXX_
+#define _INC_SHINONOME_HXX_
+
+#include <boost/cstdint.hpp>
+
+struct ShinonomeGlyph {
+	uint#{code_max < 0x10000 ? 16 : 32}_t code;
+	bool is_full;
+	uint16_t data[#{FONT_SIZE}];
+};
+
+extern ShinonomeGlyph const SHINONOME_GOTHIC[#{gothic_final.size}];
+extern ShinonomeGlyph const SHINONOME_MINCHO[#{mincho.size}];
+
+#endif // _INC_SHINONOME_HXX_
+EOS
 print "done\n"
