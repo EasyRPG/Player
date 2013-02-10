@@ -104,9 +104,9 @@ void Window_Message::FinishMessageProcessing() {
 		pause = true;
 	}
 
-	text_index = boost::u8_to_u32_iterator<std::string::const_iterator>();
-	end = boost::u8_to_u32_iterator<std::string::const_iterator>();
 	text.clear();
+	text_index = boost::u8_to_u32_iterator<std::string::const_iterator>(text.begin(), text.begin(), text.end());
+	end = boost::u8_to_u32_iterator<std::string::const_iterator>(text.end(), text.begin(), text.end());	text.clear();
 }
 
 ////////////////////////////////////////////////////////////
