@@ -32,7 +32,6 @@
 #include "font.h"
 #include "bitmap.h"
 #include "utils.h"
-#include "wcwidth.h"
 
 bool operator<(ShinonomeGlyph const& lhs, uint32_t const code) {
 	return lhs.code < code;
@@ -67,6 +66,7 @@ namespace {
 		ShinonomeFont(function_type func);
 
 		Rect GetSize(std::string const& txt) const;
+		bool IsFullWidth(unsigned code) const;
 
 		void Render(Bitmap& bmp, int x, int y, Bitmap const& sys, int color, unsigned glyph);
 		void Render(Bitmap& bmp, int x, int y, Color const& color, unsigned glyph);
@@ -94,6 +94,10 @@ Rect ShinonomeFont::GetSize(std::string const& txt) const {
 		units += glyph->is_full? 2 : 1;
 	}
 	return Rect(0, 0, units * HALF_WIDTH, HEIGHT);
+}
+
+bool ShinonomeFont::IsFullWidth(unsigned code) const {
+	return func_(code)->is_full;
 }
 
 void ShinonomeFont::Render(Bitmap& bmp, int const x, int const y, Bitmap const& sys, int color, unsigned code) {
