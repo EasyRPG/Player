@@ -114,7 +114,7 @@ namespace {
 
 		if (file_it == dir_it->second.end()) {
 			// Linear Search: English -> Japanese
-			for (auto it = dir_it->second.begin(); it != file_it; ++it) {
+			for (std::map<std::string, std::string>::const_iterator it = dir_it->second.begin(); it != file_it; ++it) {
 				if (it->second == name) {
 					return it->first;
 				}
