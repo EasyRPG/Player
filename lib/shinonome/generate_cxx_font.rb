@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby -Ku
+# encoding: utf-8
 
 FONT_SIZE = 12
 EMPTY_CHAR = Array.new(FONT_SIZE, 0x0)
@@ -48,14 +49,12 @@ def read_font(f, half, encoding)
       s2 = (j1 & 0x01) == 1 ? j2 + 31 + j2 / 96 : j2 + 126
 
       c = ((s1 & 0xff) << 8) + s2
-      code = ""
-      code << s1
-      code << s2
+      code = [s1, s2].pack("CC")
     else
       code = (c < 0x100 ? [c] : [c & 0xff, (c >> 8) & 0xff]).pack("C*")
     end
 
-    raise "size error" unless code.length == (c < 0x100 ? 1 : 2)
+    raise "size error" unless code.bytesize == (c < 0x100 ? 1 : 2)
 
     begin
       # p Iconv.conv("UTF-8", encoding, code)
@@ -65,7 +64,7 @@ def read_font(f, half, encoding)
       return false
     end
 
-    raise "invalid code" unless code.length == 4
+    raise "invalid code" unless code.bytesize == 4
 
     code = code.unpack("V")[0]
   end
