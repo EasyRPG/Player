@@ -180,7 +180,86 @@ std::string FileFinder::MakePath(const std::string &dir, std::string const& name
 	return str;
 }
 
+#ifdef _WIN32
+std::string GetFontsPath() {
+	static std::string fonts_path = "";
+	static bool init = false;
+
+	if (init) {
+		return fonts_path;
+	} else {
+		// Retrieve the Path of the Font Directory
+		TCHAR path[MAX_PATH];
+
+		if (SHGetFolderPath(NULL, CSIDL_FONTS, NULL, SHGFP_TYPE_CURRENT, path) == S_OK)	{
+			char fpath[MAX_PATH];
+#ifdef UNICODE
+			WideCharToMultiByte(CP_ACP, WC_NO_BEST_FIT_CHARS | WC_COMPOSITECHECK, path, MAX_PATH, fpath, MAX_PATH, NULL, NULL);
+#endif
+			fonts_path = FileFinder::MakePath(fpath, "");
+		}
+
+		init = true;
+
+		return fonts_path;
+	}
+}
+
+std::string GetFontFilename(std::string const& name) {
+	std::string real_name = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Fonts", name + " (TrueType)");
+	if (real_name.length() > 0) {
+		if (FileFinder::Exists(real_name))
+			return real_name;
+		if (FileFinder::Exists(GetFontsPath() + real_name))
+			return GetFontsPath() + real_name;
+	}
+
+	real_name = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\Microsoft\\Windows\\CurrentVersion\\Fonts", name + " (TrueType)");
+	if (real_name.length() > 0) {
+		if (FileFinder::Exists(real_name))
+			return real_name;
+		if (FileFinder::Exists(GetFontsPath() + real_name))
+			return GetFontsPath() + real_name;
+	}
+
+	return name;
+}
+#endif
+
 ////////////////////////////////////////////////////////////
+std::string FileFinder::FindFont(const std::string& name) {
+	static const char* FONTS_TYPES[] = {
+		".ttf", ".ttc", ".otf", ".fon", NULL, };
+	std::string path = FindFile("Font", name, FONTS_TYPES);
+
+#ifdef _WIN32
+	if (!path.empty()) {
+		return path;
+	}
+
+	std::string folder_path = "";
+	std::string filename = name;
+
+	size_t separator_pos = path.rfind('\\');
+	if (separator_pos != std::string::npos) {
+		folder_path = path.substr(0, separator_pos);
+		filename = path.substr(separator_pos, path.length() - separator_pos);
+	}
+
+	std::string font_filename = GetFontFilename(filename);
+	if (!font_filename.empty()) {
+		if (FileFinder::Exists(folder_path + font_filename))
+			return folder_path + font_filename;
+
+		if (FileFinder::Exists(fonts_path + font_filename))
+			return fonts_path + font_filename;
+	}
+
+	return "";
+#else
+	return path;
+#endif
+}
 
 FileFinder::ProjectTree const& FileFinder::GetProjectTree() {
 	static ProjectTree tree_;

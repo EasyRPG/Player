@@ -43,6 +43,7 @@ class Font {
 
 	static FontRef Create(const std::string& name, int size, bool bold, bool italic);
 	static FontRef Default(bool mincho = false);
+	static void Dispose();
 
 	static const int default_size = 9;
 	static const bool default_bold = false;

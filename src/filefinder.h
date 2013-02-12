@@ -85,6 +85,13 @@ namespace FileFinder {
 	std::string FindSound(const std::string& name);
 
 	///////////////////////////////////////////////////////
+	/// Find a font file.
+	/// @param name : the font name
+	/// @return path to file
+	///////////////////////////////////////////////////////
+	std::string FindFont(const std::string& name);
+
+	///////////////////////////////////////////////////////
 	/// Open a file specified by a UTF-8 string
 	/// @param : filename in UTF-8
 	/// @param : mode ("r", "w", etc)
