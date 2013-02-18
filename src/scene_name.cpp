@@ -78,6 +78,6 @@ void Scene_Name::Update() {
 			kbd_window->SetMode(Window_Keyboard::Hiragana);
 		} else if(s == Window_Keyboard::TO_KATAKANA) {
 			kbd_window->SetMode(Window_Keyboard::Katakana);
-		} else { name_window->Append(s); }
+		} else { name_window->Append(s == "" ? " " : s); }
 	}
 }
