@@ -90,7 +90,8 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 			 end(text.end(), text.begin(), text.end()); c != end; ++c) {
 		Rect next_glyph_rect(next_glyph_pos, 0, 0, 0);
 
-		uint32_t const next_c = std::distance(c, end) > 1? *boost::next(c) : 0;
+		boost::u8_to_u32_iterator<std::string::const_iterator> next_c_it = boost::next(c);
+		uint32_t const next_c = std::distance(c, end) > 1? *next_c_it : 0;
 
 		// ExFont-Detection: Check for A-Z or a-z behind the $
 		if (*c == utf('$') && std::isalpha(next_c)) {
@@ -149,7 +150,8 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 			// Skip the next character
 			++c;
 		} else {
-			next_glyph_pos += (Font::Default()->IsFullWidth(*c) ? 2 : 1) * 6;
+			std::string const glyph(c.base(), next_c_it.base());
+			next_glyph_pos += Font::Default()->GetSize(glyph).width;
 		}
 	}
 

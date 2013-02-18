@@ -39,8 +39,6 @@ class Font {
 	virtual void Render(Bitmap& bmp, int x, int y, Bitmap const& sys, int color, unsigned glyph) = 0;
 	virtual void Render(Bitmap& bmp, int x, int y, Color const& color, unsigned glyph) = 0;
 
-	virtual bool IsFullWidth(unsigned code) const = 0;
-
 	static FontRef Create(const std::string& name, int size, bool bold, bool italic);
 	static FontRef Default(bool mincho = false);
 	static void Dispose();
