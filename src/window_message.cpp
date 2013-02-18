@@ -382,11 +382,13 @@ void Window_Message::UpdateMessage() {
 			case utf('.'):
 				// 1/4 second sleep
 				sleep_until = Graphics::GetFrameCount() + 60 / 4;
+				++text_index;
 				return;
 				break;
 			case utf('|'):
 				// Second sleep
 				sleep_until = Graphics::GetFrameCount() + 60;
+				++text_index;
 				return;
 				break;
 			default:;
