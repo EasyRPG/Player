@@ -31,8 +31,11 @@
 #endif
 
 ///////////////////////////////////////////////////////////
-SdlAudio::SdlAudio()
-	: me_stopped_bgm(false)
+SdlAudio::SdlAudio() :
+	bgm_volume(0),
+	bgs_channel(0),
+	me_channel(0),
+	me_stopped_bgm(false)
 {
 	if (!(SDL_WasInit(SDL_INIT_AUDIO) & SDL_INIT_AUDIO)) {
 		if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
