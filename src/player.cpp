@@ -156,6 +156,9 @@ void Player::Run() {
 	// Main loop
 	while (Scene::instance->type != Scene::Null) {
 		Scene::instance->MainFunction();
+		for (size_t i = 0; i < Scene::old_instances.size(); ++i) {
+			Graphics::Pop();
+		}
 		Scene::old_instances.clear();
 	}
 
