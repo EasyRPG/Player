@@ -25,7 +25,6 @@
 #include "bitmap.h"
 #include "font.h"
 #include "text.h"
-#include "wcwidth.h"
 
 #include <cctype>
 
@@ -81,9 +80,7 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 	// Where to draw the next glyph (x pos)
 	int next_glyph_pos = 0;
 
-	// The current char is a full size glyph
-	bool is_full_glyph = false;
-	// The current char is an exfont (is_full_glyph must be true too)
+	// The current char is an exfont
 	bool is_exfont = false;
 
 	// This loops always renders a single char, color blends it and then puts
@@ -93,11 +90,12 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 			 end(text.end(), text.begin(), text.end()); c != end; ++c) {
 		Rect next_glyph_rect(next_glyph_pos, 0, 0, 0);
 
-		uint32_t const next_c = std::distance(c, end) > 1? *boost::next(c) : 0;
+		boost::u8_to_u32_iterator<std::string::const_iterator> next_c_it = boost::next(c);
+		uint32_t const next_c = std::distance(c, end) > 1? *next_c_it : 0;
 
 		// ExFont-Detection: Check for A-Z or a-z behind the $
 		if (*c == utf('$') && std::isalpha(next_c)) {
-			int exfont_value;
+			int exfont_value = -1;
 			// Calculate which exfont shall be rendered
 			if (islower(next_c)) {
 				exfont_value = 26 + next_c - utf('a');
@@ -122,13 +120,10 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 			char_surface->SetTransparentColor(dest.GetTransparentColor());
 			char_surface->Clear();
 
-			is_full_glyph = is_exfont || (mk_wcwidth(*c) == 2);
-
-			// Blit gradient color background (twice in case of a full glyph)
+			// Blit gradient color background (twice because of full glyph)
 			char_surface->Blit(0, 0, *system, clip_system, 255);
-			if (is_full_glyph) {
-				char_surface->Blit(6, 0, *system, clip_system, 255);
-			}
+			char_surface->Blit(6, 0, *system, clip_system, 255);
+
 			// Blit mask onto background
 			char_surface->MaskBlit(0, 0, *mask, mask->GetRect());
 
@@ -149,17 +144,15 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 		}
 
 		// If it's a full size glyph, add the size of a half-size glypth twice
-		if (is_full_glyph) {
-			next_glyph_pos += 6;
-			is_full_glyph = false;
-			if (is_exfont) {
-				is_exfont = false;
-				// Skip the next character
-				++c;
-			}
+		if (is_exfont) {
+			is_exfont = false;
+			next_glyph_pos += 12;
+			// Skip the next character
+			++c;
+		} else {
+			std::string const glyph(c.base(), next_c_it.base());
+			next_glyph_pos += Font::Default()->GetSize(glyph).width;
 		}
-		next_glyph_pos += 6;
-
 	}
 
 	BitmapRef text_bmp = Bitmap::Create(*text_surface, text_surface->GetRect());

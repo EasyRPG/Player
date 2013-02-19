@@ -1,7 +1,11 @@
 #ifndef _INC_SHINONOME_HXX_
 #define _INC_SHINONOME_HXX_
 
+#ifdef _MSC_VER
+typedef unsigned short uint16_t;
+#else
 #include <boost/cstdint.hpp>
+#endif
 
 struct ShinonomeGlyph {
 	uint16_t code;

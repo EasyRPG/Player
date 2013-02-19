@@ -156,6 +156,9 @@ void Player::Run() {
 	// Main loop
 	while (Scene::instance->type != Scene::Null) {
 		Scene::instance->MainFunction();
+		for (size_t i = 0; i < Scene::old_instances.size(); ++i) {
+			Graphics::Pop();
+		}
 		Scene::old_instances.clear();
 	}
 
@@ -178,6 +181,9 @@ void Player::Resume() {
 void Player::Update() {
 	if (Input::IsTriggered(Input::TOGGLE_FPS)) {
 		Graphics::fps_on_screen = !Graphics::fps_on_screen;
+	}
+	if (Input::IsTriggered(Input::TAKE_SCREENSHOT)) {
+		Output::TakeScreenshot();
 	}
 
 	DisplayUi->ProcessEvents();

@@ -92,12 +92,6 @@ namespace FileFinder {
 	std::string FindFont(const std::string& name);
 
 	///////////////////////////////////////////////////////
-	/// Get a default font.
-	/// @return path to file
-	///////////////////////////////////////////////////////
-	std::string DefaultFont();
-
-	///////////////////////////////////////////////////////
 	/// Open a file specified by a UTF-8 string
 	/// @param : filename in UTF-8
 	/// @param : mode ("r", "w", etc)

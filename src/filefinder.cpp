@@ -107,31 +107,40 @@ namespace {
 			RTP_TABLE_2000;
 
 		rtp_table_type::const_iterator dir_it = table.find(Utils::LowerCase(dir));
-		if(dir_it == table.end()) { return name; }
+		if (dir_it == table.end()) { return name; }
 
 		std::map<std::string, std::string>::const_iterator file_it =
 			dir_it->second.find(Utils::LowerCase(name));
-		return (file_it == dir_it->second.end())? name : file_it->second;
+
+		if (file_it == dir_it->second.end()) {
+			// Linear Search: English -> Japanese
+			for (std::map<std::string, std::string>::const_iterator it = dir_it->second.begin(); it != file_it; ++it) {
+				if (it->second == name) {
+					return it->first;
+				}
+			}
+			return name;
+		}
+
+		return file_it->second;
 	}
 
 	std::string FindFile(const std::string &dir, const std::string& name, const char* exts[]) {
 		FileFinder::ProjectTree const& tree = FileFinder::GetProjectTree();
 		boost::optional<std::string> const ret = FindFile(tree, dir, name, exts);
-		if(ret != boost::none) { return *ret; }
+		if (ret != boost::none) { return *ret; }
 
 		std::string const& rtp_name = translate_rtp(dir, name);
 		Output::Debug("RTP name %s(%s)", rtp_name.c_str(), name.c_str());
 
 		for(search_path_list::const_iterator i = search_paths.begin(); i != search_paths.end(); ++i) {
-			if(! *i) { continue; }
+			if (! *i) { continue; }
 
 			boost::optional<std::string> const ret = FindFile(*(*i), dir, name, exts);
-			if(ret != boost::none) { return *ret; }
-
-			if(&rtp_name == &name) { continue; }
+			if (ret != boost::none) { return *ret; }
 
 			boost::optional<std::string> const ret_rtp = FindFile(*(*i), dir, rtp_name, exts);
-			if(ret != boost::none) { return *ret_rtp; }
+			if (ret_rtp != boost::none) { return *ret_rtp; }
 		}
 
 		Output::Debug("Cannot find: %s/%s", dir.c_str(), name.c_str());
@@ -252,33 +261,6 @@ std::string FileFinder::FindFont(const std::string& name) {
 #endif
 }
 
-////////////////////////////////////////////////////////////
-std::string FileFinder::DefaultFont() {
-#ifdef _WIN32
-	static std::string default_font = "";
-	static bool init = false;
-
-	if (!init) {
-		std::string fonts[] = DEFAULT_FONTS;
-
-		const std::string* pfont = fonts;
-		while(const std::string* font = pfont++) {
-			if (font->empty()) break;
-
-			default_font = FindFont(*font);
-
-			if (!default_font.empty()) break;
-		}
-
-		init = true;
-	}
-
-	return default_font;
-#else
-	return "DejaVuLGCSansMono";
-#endif
-}
-
 FileFinder::ProjectTree const& FileFinder::GetProjectTree() {
 	static ProjectTree tree_;
 
@@ -317,10 +299,13 @@ void FileFinder::InitRtpPaths() {
 	assert(!version_str.empty());
 
 #ifdef _WIN32
-	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\ASCII\\RPG" + version_str, "RuntimePackagePath");
+	std::string const company =
+		Player::engine == Player::EngineRpg2k? "ASCII": "Enterbrain";
+
+	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\" + company + "\\RPG" + version_str, "RuntimePackagePath");
 	if(! rtp_path.empty()) { add_rtp_path(rtp_path); }
 
-	rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\ASCII\\RPG" + version_str, "RuntimePackagePath");
+	rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\" + company + "\\RPG" + version_str, "RuntimePackagePath");
 	if(! rtp_path.empty()) { add_rtp_path(rtp_path); }
 #elif defined(GEKKO)
 	add_rtp_path("sd:/data/rtp/" + version_str + "/");

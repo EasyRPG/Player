@@ -37,7 +37,6 @@
 #include "font.h"
 #include "bitmap.h"
 #include "utils.h"
-#include "wcwidth.h"
 
 bool operator<(ShinonomeGlyph const& lhs, uint32_t const code) {
 	return lhs.code < code;
@@ -48,9 +47,7 @@ bool operator<(ShinonomeGlyph const& lhs, uint32_t const code) {
 ////////////////////////////////////////////////////////////
 namespace {
 	typedef std::map<std::string, EASYRPG_WEAK_PTR<boost::remove_pointer<FT_Face>::type> > face_cache_type;
-	face_cache_type face_cache;
-
-	ShinonomeGlyph const* find_glyph(ShinonomeGlyph const* data, size_t size, uint32_t code) {
+	face_cache_type face_cache;	ShinonomeGlyph const* find_glyph(ShinonomeGlyph const* data, size_t size, uint32_t code) {
 		ShinonomeGlyph const* ret = std::lower_bound(data, data + size, code);
 		return ret != (data + size)? ret : NULL;
 	}
@@ -83,6 +80,7 @@ namespace {
 		function_type const func_;
 	}; // class ShinonomeFont
 
+
 	void delete_face(FT_Face f) {
 		if(FT_Done_Face(f) != FT_Err_Ok) {
 			Output::Warning("FT_Face deleting error.");
@@ -102,6 +100,7 @@ namespace {
 
 		void Render(Bitmap& bmp, int x, int y, Bitmap const& sys, int color, unsigned glyph);
 		void Render(Bitmap& bmp, int x, int y, Color const& color, unsigned glyph);
+
 	private:
 		static EASYRPG_WEAK_PTR<boost::remove_pointer<FT_Library>::type> library_checker_;
 		EASYRPG_SHARED_PTR<boost::remove_pointer<FT_Library>::type> library_;
@@ -114,7 +113,6 @@ namespace {
 
 	FontRef const gothic = EASYRPG_MAKE_SHARED<ShinonomeFont>(&find_gothic_glyph);
 	FontRef const mincho = EASYRPG_MAKE_SHARED<ShinonomeFont>(&find_mincho_glyph);
-
 } // anonymous namespace
 
 ShinonomeFont::ShinonomeFont(ShinonomeFont::function_type func)
@@ -176,7 +174,7 @@ FTFont::FTFont(const std::string& name, int size, bool bold, bool italic)
 
 Rect FTFont::GetSize(std::string const& txt) const {
 	Utils::wstring tmp = Utils::ToWideString(txt);
-	int const s = mk_wcswidth(tmp.c_str(), tmp.size());
+	int const s = Font::Default()->GetSize(txt).width;
 
 	if (s == -1) {
 		Output::Warning("Text contains invalid chars.\n"\
@@ -184,7 +182,7 @@ Rect FTFont::GetSize(std::string const& txt) const {
 
 		return Rect(0, 0, pixel_size() * txt.size() / 2, pixel_size());
 	} else {
-		return Rect(0, 0, pixel_size() * s / 2, pixel_size());
+		return Rect(0, 0, s, pixel_size());
 	}
 }
 

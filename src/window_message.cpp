@@ -104,9 +104,9 @@ void Window_Message::FinishMessageProcessing() {
 		pause = true;
 	}
 
-	text_index = boost::u8_to_u32_iterator<std::string::const_iterator>();
-	end = boost::u8_to_u32_iterator<std::string::const_iterator>();
 	text.clear();
+	text_index = boost::u8_to_u32_iterator<std::string::const_iterator>(text.begin(), text.begin(), text.end());
+	end = boost::u8_to_u32_iterator<std::string::const_iterator>(text.end(), text.begin(), text.end());
 }
 
 ////////////////////////////////////////////////////////////
@@ -382,11 +382,13 @@ void Window_Message::UpdateMessage() {
 			case utf('.'):
 				// 1/4 second sleep
 				sleep_until = Graphics::GetFrameCount() + 60 / 4;
+				++text_index;
 				return;
 				break;
 			case utf('|'):
 				// Second sleep
 				sleep_until = Graphics::GetFrameCount() + 60;
+				++text_index;
 				return;
 				break;
 			default:;

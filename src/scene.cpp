@@ -53,6 +53,12 @@ const char Scene::scene_names[SceneMax][12] =
 	"Logo",
 	"Order"
 };
+
+enum PushPopOperation {
+	ScenePushed = 1,
+	ScenePopped
+};
+
 int Scene::push_pop_operation = 0;
 
 ////////////////////////////////////////////////////////////
@@ -63,8 +69,13 @@ Scene::Scene() {
 ////////////////////////////////////////////////////////////
 void Scene::MainFunction() {
 	switch(push_pop_operation) {
-	case 1: Start(); break;
-	case 2:Continue(); break;
+	case ScenePushed:
+		Start();
+		break;
+	case ScenePopped:
+		Continue();
+		break;
+	default:;
 	}
 
 	push_pop_operation = 0;
@@ -89,9 +100,12 @@ void Scene::MainFunction() {
 	Suspend();
 	TransitionOut();
 
-	switch(push_pop_operation) {
-	case 1: Graphics::Push(); break;
-	case 2: Graphics::Pop(); break;
+	switch (push_pop_operation) {
+	case ScenePushed:
+		Graphics::Push();
+		break;
+	// Graphics::Pop done in Player Loop
+	default:;
 	}
 }
 
@@ -135,7 +149,7 @@ void Scene::Push(EASYRPG_SHARED_PTR<Scene> const& new_scene, bool pop_stack_top)
 	instances.push_back(new_scene);
 	instance = new_scene;
 
-	push_pop_operation = 1;
+	push_pop_operation = ScenePushed;
 
 	/*Output::Debug("Scene Stack after Push:");
 	for (size_t i = 0; i < instances.size(); ++i) {
@@ -154,7 +168,7 @@ void Scene::Pop() {
 		instance = instances.back();
 	}
 
-	push_pop_operation = 2;
+	push_pop_operation = ScenePopped;
 
 	/*Output::Debug("Scene Stack after Pop:");
 	for (size_t i = 0; i < instances.size(); ++i) {
@@ -173,7 +187,7 @@ void Scene::PopUntil(SceneType type) {
 				instances.pop_back();
 			}
 			instance = instances.back();
-			push_pop_operation = 2;
+			push_pop_operation = ScenePopped;
 			return;
 		}
 		++count;

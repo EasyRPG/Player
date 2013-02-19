@@ -25,6 +25,7 @@
 #include <iostream>
 
 #include <boost/scope_exit.hpp>
+#include <png.h>
 
 #include "system.h"
 #include "utils.h"
@@ -91,8 +92,6 @@ Color Bitmap::GetPixel(int x, int y) const {
 
 	return Color(r, g, b, a);
 }
-
-#include <png.h>
 
 static void write_data(png_structp out_ptr, png_bytep data, png_size_t len) {
 	reinterpret_cast<std::ostream*>(png_get_io_ptr(out_ptr))->write(
@@ -297,7 +296,7 @@ void Bitmap::TransformBlit(Rect const& dst_rect_,
 	Matrix inv = fwd.Inverse();
 
 	Rect rect = TransformRectangle(fwd, src_rect);
-	Rect  dst_rect = dst_rect_; dst_rect.Adjust(rect);
+	Rect dst_rect = dst_rect_; dst_rect.Adjust(rect);
 	if (dst_rect.IsEmpty())
 		return;
 
@@ -1051,7 +1050,43 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 			Blit(x, y, src, src_rect, 255);
 		return;
 	}
+	
+	// FIXME
+	// Pixman ToneBlit is broken.
+	// Slow (working) software implementation:
+	Rect dst_rect(x, y, 0, 0);
+	Rect src_rect_ = src_rect;
 
+
+	if (!Rect::AdjustRectangles(src_rect_, dst_rect, src.GetRect()))
+		return;
+	if (!Rect::AdjustRectangles(dst_rect, src_rect_, GetRect()))
+		return;
+
+	BitmapUtils* bm_utils = Begin(src);
+
+	const uint8_t* src_pixels = src.pointer(src_rect.x, src_rect.y);
+	uint8_t* dst_pixels = pointer(dst_rect.x, dst_rect.y);
+
+	if (tone.gray == 0) {
+		for (int i = 0; i < dst_rect.height; i++) {
+			bm_utils->ToneBlit(dst_pixels, src_pixels, dst_rect.width, tone);
+			src_pixels += src.pitch();
+			dst_pixels += pitch();
+		}
+	} else {
+		double factor = (255 - tone.gray) / 255.0;
+		for (int i = 0; i < dst_rect.height; i++) {
+			bm_utils->ToneBlit(dst_pixels, src_pixels, dst_rect.width, tone, factor);
+			src_pixels += src.pitch();
+			dst_pixels += pitch();
+		}
+	}
+
+	End(src);
+	
+	// Pixman ToneBlit code
+	/*
 	if (&src != this)
 		pixman_image_composite32(PIXMAN_OP_SRC,
 								 src.bitmap, (pixman_image_t*) NULL, bitmap,
@@ -1110,6 +1145,7 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 
 		pixman_image_unref(timage);
 	}
+	*/
 
 	RefreshCallback();
 }
