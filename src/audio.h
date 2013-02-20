@@ -22,100 +22,117 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <string>
+#include <boost/noncopyable.hpp>
 
 ////////////////////////////////////////////////////////////
 /// Base Audio class.
 ////////////////////////////////////////////////////////////
-namespace Audio {
-	///////////////////////////////////////////////////////
-	/// Initializes the Audio System.
-	///////////////////////////////////////////////////////
-	void Init();
+struct AudioInterface : boost::noncopyable {
+	virtual ~AudioInterface() {}
 
-	///////////////////////////////////////////////////////
-	/// Shuts the Audio System down
-	///////////////////////////////////////////////////////
-	void Quit();
+	/**
+	 * Update audio. Must be called each frame.
+	 */
+	virtual void Update() = 0;
 
 	///////////////////////////////////////////////////////
 	/// Plays a background music.
 	/// @param file : File to play
 	/// @param volume : Volume
-	/// @param pitch : 
+	/// @param pitch :
 	///////////////////////////////////////////////////////
-	void BGM_Play(std::string const& file, int volume, int pitch);
+	virtual void BGM_Play(std::string const& file, int volume, int pitch) = 0;
 
 	///////////////////////////////////////////////////////
 	/// Stops the currently playing background music.
 	///////////////////////////////////////////////////////
-	void BGM_Stop();
+	virtual void BGM_Stop() = 0;
 
 	///////////////////////////////////////////////////////
 	/// Does a fade out of the background music.
 	/// @param fade : Fade out time
 	///////////////////////////////////////////////////////
-	void BGM_Fade(int fade);
+	virtual void BGM_Fade(int fade) = 0;
 
 	///////////////////////////////////////////////////////
 	/// Pauses the currently playing background music.
 	///////////////////////////////////////////////////////
-	void BGM_Pause();
+	virtual void BGM_Pause() = 0;
 
 	///////////////////////////////////////////////////////
 	/// Resumes the currently playing background music.
 	///////////////////////////////////////////////////////
-	void BGM_Resume();
+	virtual void BGM_Resume() = 0;
 
 	///////////////////////////////////////////////////////
 	/// Plays a background sound.
 	/// @param file : File to play
 	/// @param volume : Volume
-	/// @param pitch : 
+	/// @param pitch :
 	///////////////////////////////////////////////////////
-	void BGS_Play(std::string const& file, int volume, int pitch);
+	virtual void BGS_Play(std::string const& file, int volume, int pitch) = 0;
 
 	///////////////////////////////////////////////////////
 	/// Stops the currently playing background sound.
 	///////////////////////////////////////////////////////
-	void BGS_Stop();
+	virtual void BGS_Stop() = 0;
 
 	///////////////////////////////////////////////////////
 	/// Does a fade out of the background sound.
 	/// @param fade : Fade out time
 	///////////////////////////////////////////////////////
-	void BGS_Fade(int fade);
+	virtual void BGS_Fade(int fade) = 0;
 
 	///////////////////////////////////////////////////////
 	/// Plays a music effect.
 	/// @param file : File to play
 	/// @param volume : Volume
-	/// @param pitch : 
+	/// @param pitch :
 	///////////////////////////////////////////////////////
-	void ME_Play(std::string const& file, int volume, int pitch);
+	virtual void ME_Play(std::string const& file, int volume, int pitch) = 0;
 
 	///////////////////////////////////////////////////////
 	/// Stops the currently playing music effect.
 	///////////////////////////////////////////////////////
-	void ME_Stop();
+	virtual void ME_Stop() = 0;
 
 	///////////////////////////////////////////////////////
 	/// Does a fade out of the music effect.
 	/// @param fade : Fade out time
 	///////////////////////////////////////////////////////
-	void ME_Fade(int fade);
+	virtual void ME_Fade(int fade) = 0;
 
 	///////////////////////////////////////////////////////
 	/// Plays a sound effect
 	/// @param file : File to play
 	/// @param volume : Volume
-	/// @param pitch : 
+	/// @param pitch :
 	///////////////////////////////////////////////////////
-	void SE_Play(std::string const& file, int volume, int pitch);
+	virtual void SE_Play(std::string const& file, int volume, int pitch) = 0;
 
 	///////////////////////////////////////////////////////
 	/// Stops the currently playing sound effect.
 	///////////////////////////////////////////////////////
-	void SE_Stop();
-}
+	virtual void SE_Stop() = 0;
+};
+
+struct EmptyAudio : public AudioInterface {
+	void BGM_Play(std::string const&, int, int) {}
+	void BGM_Pause() {}
+	void BGM_Resume() {}
+	void BGM_Stop() {}
+	void BGM_Fade(int) {}
+	void BGS_Play(std::string const&, int, int) {}
+	void BGS_Stop() {}
+	void BGS_Fade(int) {}
+	void ME_Play(std::string const&, int, int) {}
+	void ME_Stop() {}
+	void ME_Fade(int /* fade */) {}
+	void SE_Play(std::string const&, int, int) {}
+	void SE_Stop() {}
+	void Update() {}
+};
+
+AudioInterface& Audio();
 
 #endif

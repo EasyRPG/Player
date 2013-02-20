@@ -25,6 +25,7 @@
 #include "game_character.h"
 #include "rpg_event.h"
 #include "game_interpreter.h"
+#include <boost/scoped_ptr.hpp>
 
 ////////////////////////////////////////////////////////////
 /// Game_Event class
@@ -35,11 +36,6 @@ public:
 	/// Constructor.
 	////////////////////////////////////////////////////////
 	Game_Event(int map_id, const RPG::Event& event);
-
-	////////////////////////////////////////////////////////
-	/// Destructor.
-	////////////////////////////////////////////////////////
-	virtual ~Game_Event();
 
 	////////////////////////////////////////////////////////
 	/// Clear Starting Flag.
@@ -88,7 +84,7 @@ private:
 	bool erased;
 	RPG::EventPage* page;
 	std::vector<RPG::EventCommand> list;
-	Game_Interpreter* interpreter;
+	boost::scoped_ptr<Game_Interpreter> interpreter;
 };
 
 #endif

@@ -23,13 +23,17 @@
 #include "input.h"
 #include "main_data.h"
 #include "util_macro.h"
+#include "bitmap.h"
+#include "font.h"
+
+#include <cstdio>
 
 ////////////////////////////////////////////////////////////
-Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) : 
+Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight), digits_max(6) {
 	number = 0;
 
-	SetContents(Surface::CreateSurface(width - 16, height - 16));
+	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 	cursor_width = 14;
 	SetZ(10001);
@@ -54,7 +58,7 @@ void Window_NumberInput::Refresh() {
 	sprintf(s, "%0*d", digits_max, number);
 
 	for (int i = 0; i < digits_max; ++i) {
-		char c[2] = {s[i], '\0'}; 
+		char c[2] = {s[i], '\0'};
 		int x = i * (cursor_width - 2) + 12;
 		contents->TextDraw(x, 2, Font::ColorDefault, c);
 	}
@@ -66,12 +70,12 @@ int Window_NumberInput::GetNumber() {
 }
 
 ////////////////////////////////////////////////////////////
-void Window_NumberInput::SetNumber(uint inumber) {
-	uint num = 1;
+void Window_NumberInput::SetNumber(unsigned inumber) {
+	unsigned num = 1;
 	for (int i = 0; i < digits_max; ++i) {
 		num *= 10;
 	}
-	number = min(max(inumber, (uint)0), num - 1);
+	number = min(max(inumber, (unsigned)0), num - 1);
 	index = 0;
 	Refresh();
 }
@@ -112,7 +116,7 @@ void Window_NumberInput::Update() {
 			number -= n * place;
 			if (Input::IsRepeated(Input::UP)) {
 				n = (n + 1) % 10;
-			} 
+			}
 			if (Input::IsRepeated(Input::DOWN)) {
 				n = (n + 9) % 10;
 			}
@@ -131,7 +135,7 @@ void Window_NumberInput::Update() {
 			Game_System::SePlay(Data::system.cursor_se);
 			index = (index + digits_max - 1) % digits_max;
 		}
-	
+
 		UpdateCursorRect();
 	}
 }

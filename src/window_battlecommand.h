@@ -26,6 +26,7 @@
 #include "window_base.h"
 #include "window_help.h"
 #include "rpg_battlecommand.h"
+#include "font.h"
 
 ////////////////////////////////////////////////////////////
 /// Window_BattleCommand class.

@@ -21,9 +21,10 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "bitmap.h"
-#include "surface.h"
+#include "system.h"
 #include "tone.h"
+#include "rect.h"
+#include "color.h"
 
 ////////////////////////////////////////////////////////////
 /// Base BitmapScreen class.
@@ -36,48 +37,48 @@ public:
 	////////////////////////////////////////////////////////
 	/// Creates a BitmapScreen object.
 	/// @param source : source bitmap, or NULL.
-	/// @param delete_bitmap : if true, the bitmap will be 
+	/// @param delete_bitmap : if true, the bitmap will be
 	///      deleted when it is replaced or when this object
     ///      is deleted.
 	////////////////////////////////////////////////////////
-	static BitmapScreen* CreateBitmapScreen(Bitmap* source, bool delete_bitmap = false);
+	static BitmapScreenRef Create(BitmapRef const& source);
 
 	////////////////////////////////////////////////////////
 	/// Creates a BitmapScreen object with no attached bitmap
 	////////////////////////////////////////////////////////
-	static BitmapScreen* CreateBitmapScreen();
+	static BitmapScreenRef Create();
 
 	////////////////////////////////////////////////////////
 	/// Destructor.
 	////////////////////////////////////////////////////////
-	virtual ~BitmapScreen();
+	~BitmapScreen();
 
 	////////////////////////////////////////////////////////
 	/// Marks the BitmapScreen as dirty.
 	////////////////////////////////////////////////////////
-	virtual void SetDirty();
+	void SetDirty();
 
 	////////////////////////////////////////////////////////
 	/// Set source bitmap.
 	/// @param source : source bitmap
-	/// @param delete_bitmap : if true, the bitmap will be 
+	/// @param delete_bitmap : if true, the bitmap will be
 	///      deleted when it is replaced or when this object
     ///      is deleted.
 	////////////////////////////////////////////////////////
-	virtual void SetBitmap(Bitmap* source, bool delete_bitmap = false);
+	void SetBitmap(BitmapRef const& source);
 
 	////////////////////////////////////////////////////////
 	/// Get source bitmap.
 	/// @return source bitmap
 	////////////////////////////////////////////////////////
-	virtual Bitmap* GetBitmap();
+	BitmapRef const& GetBitmap();
 
 	////////////////////////////////////////////////////////
 	/// Blit the bitmap to the screen.
 	/// @param x : x position
 	/// @param y : y position
 	////////////////////////////////////////////////////////
-	virtual void BlitScreen(int x, int y);
+	void BlitScreen(int x, int y);
 
 	////////////////////////////////////////////////////////
 	/// Blit the bitmap to the screen.
@@ -85,113 +86,111 @@ public:
 	/// @param y : y position
 	/// @param src_rect : source rect
 	////////////////////////////////////////////////////////
-	virtual void BlitScreen(int x, int y, Rect src_rect);
+	void BlitScreen(int x, int y, Rect const& src_rect);
 
 	////////////////////////////////////////////////////////
 	/// Blit the bitmap to the screen.
 	/// @param src_rect : source bitmap rect
 	/// @param dst_rect : screen destination rect
 	////////////////////////////////////////////////////////
-	virtual void BlitScreenTiled(Rect src_rect, Rect dst_rect, int ox, int oy);
+	void BlitScreenTiled(Rect const& src_rect, Rect const& dst_rect, int ox, int oy);
 
 	////////////////////////////////////////////////////////
 	/// Clear all effects data.
 	////////////////////////////////////////////////////////
-	virtual void ClearEffects();
+	void ClearEffects();
 
 	/// @return source rect
-	virtual Rect GetSrcRect() const;
+	Rect const& GetSrcRect() const;
 
 	/// @param src_rect : source rect
-	virtual void SetSrcRect(Rect src_rect);
+	void SetSrcRect(Rect const& src_rect);
 
 	/// @return bitmap opacity
 	/// @param which : 0 => top, 1 => bottom (below bush depth)
-	virtual int GetOpacityEffect(int which = 0) const;
+	int GetOpacityEffect(int which = 0) const;
 
 	/// @param opacity_top : bitmap top opacity (above bush depth)
 	/// @param opacity_bottom : bitmap bottom opacity (below bush depth)
 	///  note: opacity_bottom == -1 => opacity_bottom = (opacity_top + 1) / 2
-	virtual void SetOpacityEffect(int opacity_top, int opacity_bottom = -1);
+	void SetOpacityEffect(int opacity_top, int opacity_bottom = -1);
 
 	/// @return bush depth effect
-	virtual int GetBushDepthEffect() const;
+	int GetBushDepthEffect() const;
 
 	/// @param bush_depth : bush depth effect
-	virtual void SetBushDepthEffect(int bush_depth);
+	void SetBushDepthEffect(int bush_depth);
 
 	/// @return tone effect
-	virtual Tone GetToneEffect() const;
+	Tone GetToneEffect() const;
 
 	/// @param tone : tone effect
-	virtual void SetToneEffect(Tone tone);
+	void SetToneEffect(Tone tone);
 
 	////////////////////////////////////////////////////////
 	/// Flash effect.
 	/// @param color : flash color
 	////////////////////////////////////////////////////////
-	virtual void SetFlashEffect(const Color &color);
+	void SetFlashEffect(const Color &color);
 
 	/// @return horizontal flip
-	virtual bool GetFlipXEffect() const;
+	bool GetFlipXEffect() const;
 
 	/// @param flipx : horizontal flip
-	virtual void SetFlipXEffect(bool flipx);
+	void SetFlipXEffect(bool flipx);
 
 	/// @return vertical flip
-	virtual bool GetFlipYEffect() const;
+	bool GetFlipYEffect() const;
 
 	/// @param flipy : vertical flip
-	virtual void SetFlipYEffect(bool flipy);
+	void SetFlipYEffect(bool flipy);
 
 	/// @return horizontal zoom
-	virtual double GetZoomXEffect() const;
+	double GetZoomXEffect() const;
 
 	/// @param zoom_x : horizontal zoom
-	virtual void SetZoomXEffect(double zoom_x);
+	void SetZoomXEffect(double zoom_x);
 
 	/// @return vertical zoom
-	virtual double GetZoomYEffect() const;
+	double GetZoomYEffect() const;
 
 	/// @param zoom_y : vertical zoom
-	virtual void SetZoomYEffect(double zoom_y);
+	void SetZoomYEffect(double zoom_y);
 
 	/// @return angle of rotation in degrees
-	virtual double GetAngleEffect() const;
+	double GetAngleEffect() const;
 
 	/// @param angle : angle of rotation in degrees
-	virtual void SetAngleEffect(double angle);
+	void SetAngleEffect(double angle);
 
 	/// @return blend type
-	virtual int GetBlendType() const;
+	int GetBlendType() const;
 
 	/// @param blend_type : blend type
-	virtual void SetBlendType(int blend_type);
+	void SetBlendType(int blend_type);
 
 	/// @return blend color
-	virtual Color GetBlendColor() const;
+	Color const& GetBlendColor() const;
 
 	/// @param blend_color : blend color
-	virtual void SetBlendColor(Color blend_color);
+	void SetBlendColor(Color const& blend_color);
 
 	/// @return waver magnitude in pixels
-	virtual int GetWaverEffectDepth() const;
+	int GetWaverEffectDepth() const;
 
 	/// @return waver phase in degrees
-	virtual double GetWaverEffectPhase() const;
+	double GetWaverEffectPhase() const;
 
 	/// @param waver magnitude in pixels
-	virtual void SetWaverEffectDepth(int depth);
+	void SetWaverEffectDepth(int depth);
 
 	/// @param waver phase in degrees
-	virtual void SetWaverEffectPhase(double phase);
+	void SetWaverEffectPhase(double phase);
+
+	BitmapScreen(BitmapRef const& source);
 
 protected:
-	BitmapScreen(Bitmap* source, bool delete_bitmap);
-
-	Bitmap* bitmap;
-
-	bool delete_bitmap;
+	BitmapRef bitmap;
 
 	bool needs_refresh;
 	bool bitmap_changed;
@@ -212,13 +211,13 @@ protected:
 	double waver_effect_phase;
 	Color flash_effect;
 
-	virtual void BlitScreenIntern(Bitmap* draw_bitmap, int x, int y, Rect src_rect,
+	void BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y, Rect const& src_rect,
 								  bool need_scale, int bush_y);
 
-	virtual Bitmap* Refresh(Rect& rect, bool& need_scale, int& bush_y);
+	BitmapRef Refresh(Rect& rect, bool& need_scale, int& bush_y);
 
-	Surface* bitmap_effects;
-	Bitmap* bitmap_scale;
+	BitmapRef bitmap_effects;
+	BitmapRef bitmap_scale;
 
 	Rect bitmap_effects_src_rect;
 	Rect bitmap_scale_src_rect;

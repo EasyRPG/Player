@@ -28,18 +28,18 @@ Color::Color() :
 	alpha(0) {
 }
 
-Color::Color(uint red, uint green, uint blue, uint alpha) :
-	red((uint8)red),
-	green((uint8)green),
-	blue((uint8)blue),
-	alpha((uint8)alpha) {
+Color::Color(unsigned red, unsigned green, unsigned blue, unsigned alpha) :
+	red((uint8_t)red),
+	green((uint8_t)green),
+	blue((uint8_t)blue),
+	alpha((uint8_t)alpha) {
 }
 
 Color::Color(int red, int green, int blue, int alpha) :
-	red((uint8)red),
-	green((uint8)green),
-	blue((uint8)blue),
-	alpha((uint8)alpha) {
+	red((uint8_t)red),
+	green((uint8_t)green),
+	blue((uint8_t)blue),
+	alpha((uint8_t)alpha) {
 }
 
 ////////////////////////////////////////////////////////////
@@ -53,9 +53,9 @@ bool Color::operator!=(const Color &other) const {
 }
 
 ////////////////////////////////////////////////////////////
-void Color::Set(uint red, uint green, uint blue, uint alpha) {
-	red = (uint8)red;
-	green = (uint8)green;
-	blue = (uint8)blue;
-	alpha = (uint8)alpha;
+void Color::Set(unsigned red, unsigned green, unsigned blue, unsigned alpha) {
+	red = (uint8_t)red;
+	green = (uint8_t)green;
+	blue = (uint8_t)blue;
+	alpha = (uint8_t)alpha;
 }

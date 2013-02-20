@@ -37,19 +37,13 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	map_id(map_id),
 	event(event),
 	erased(false),
-	page(NULL),
-	interpreter(NULL) {
+	page(NULL) {
 
 	ID = event.ID;
 	through = true;
-	
+
 	MoveTo(event.x, event.y);
 	Refresh();
-}
-
-////////////////////////////////////////////////////////////
-Game_Event::~Game_Event() {
-	delete interpreter;
 }
 
 ////////////////////////////////////////////////////////////
@@ -70,8 +64,7 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 		through = true;
 		trigger = -1;
 		list.clear();
-		delete interpreter;
-		interpreter = NULL;
+		interpreter.reset();
 		return;
 	}
 	character_name = page->character_name;
@@ -105,12 +98,11 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	trigger = page->trigger;
 	list = page->event_commands;
 	through = false;
-	
+
 	// Free resources if needed
-	delete interpreter;
-	interpreter = NULL;
+	interpreter.reset();
 	if (trigger == RPG::EventPage::Trigger_parallel) {
-		interpreter = new Game_Interpreter_Map();
+		interpreter.reset(new Game_Interpreter_Map());
 	}
 	CheckEventTriggerAuto();
 }
@@ -238,7 +230,7 @@ bool Game_Event::GetDisabled() const {
 
 void Game_Event::Start() {
 	// RGSS scripts consider list empty if size <= 1. Why?
-	if (list.empty() || erased) 
+	if (list.empty() || erased)
 		return;
 
 	starting = true;
@@ -290,10 +282,9 @@ void Game_Event::Update() {
 		}
 		interpreter->Update();
 	}
-	
+
 }
 
 RPG::Event& Game_Event::GetEvent() {
 	return event;
 }
-

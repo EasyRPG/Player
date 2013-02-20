@@ -22,8 +22,8 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <vector>
+#include "system.h"
 #include "tilemap_layer.h"
-#include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
 /// Tilemap class
@@ -31,12 +31,11 @@
 class Tilemap {
 public:
 	Tilemap();
-	~Tilemap();
 
 	void Update();
 
-	Bitmap* GetChipset() const;
-	void SetChipset(Bitmap* nchipset);
+	BitmapRef const& GetChipset() const;
+	void SetChipset(BitmapRef const& nchipset);
 	std::vector<short> GetMapDataDown() const;
 	void SetMapDataDown(std::vector<short> down);
 	std::vector<short> GetMapDataUp() const;
@@ -65,8 +64,7 @@ public:
 	void SubstituteUp(int old_id, int new_id);
 
 private:
-	TilemapLayer* layer_down;
-	TilemapLayer* layer_up;
+	TilemapLayer layer_down, layer_up;
 };
 
 #endif

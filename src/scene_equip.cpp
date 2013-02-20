@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////
 // This file is part of EasyRPG Player.
-// 
+//
 // EasyRPG Player is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // EasyRPG Player is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
@@ -39,32 +39,22 @@ void Scene_Equip::Start() {
 	Game_Actor* actor = Game_Party::GetActors()[actor_index];
 
 	// Create the windows
-	help_window = new Window_Help(0, 0, 320, 32);
-	equipstatus_window = new Window_EquipStatus(0, 32, 124, 96, actor->GetId());
-	equip_window = new Window_Equip(124, 32, 196, 96, actor->GetId());
+	help_window.reset(new Window_Help(0, 0, 320, 32));
+	equipstatus_window.reset(new Window_EquipStatus(0, 32, 124, 96, actor->GetId()));
+	equip_window.reset(new Window_Equip(124, 32, 196, 96, actor->GetId()));
 
-	equip_window->SetIndex(equip_index); 
+	equip_window->SetIndex(equip_index);
 
 	for (int i = 0; i < 5; ++i) {
-		item_windows.push_back(new Window_EquipItem(actor->GetId(), i));
+		item_windows.push_back(EASYRPG_MAKE_SHARED<Window_EquipItem>(actor->GetId(), i));
 	}
 
 	// Assign the help windows
-	equip_window->SetHelpWindow(help_window);
+	equip_window->SetHelpWindow(help_window.get());
 	for (size_t i = 0; i < item_windows.size(); ++i) {
-		item_windows[i]->SetHelpWindow(help_window);
+		item_windows[i]->SetHelpWindow(help_window.get());
 		item_windows[i]->SetActive(false);
 		item_windows[i]->Refresh();
-	}
-}
-
-////////////////////////////////////////////////////////////
-void Scene_Equip::Terminate() {
-	delete help_window;
-	delete equip_window;
-	delete equipstatus_window;
-	for (int i = 0; i < 5; ++i) {
-		delete item_windows[i];
 	}
 }
 
@@ -85,8 +75,8 @@ void Scene_Equip::Update() {
 
 ////////////////////////////////////////////////////////////
 void Scene_Equip::UpdateItemWindows() {
-	for (uint i = 0; i < item_windows.size(); ++i) {
-		item_windows[i]->SetVisible((uint)equip_window->GetIndex() == i);
+	for (size_t i = 0; i < item_windows.size(); ++i) {
+		item_windows[i]->SetVisible((unsigned)equip_window->GetIndex() == i);
 		item_windows[i]->Update();
 	}
 
@@ -131,11 +121,11 @@ void Scene_Equip::UpdateEquipSelection() {
 	} else if (Game_Party::GetActors().size() > 1 && Input::IsTriggered(Input::RIGHT)) {
 		Game_System::SePlay(Data::system.cursor_se);
 		actor_index = (actor_index + 1) % Game_Party::GetActors().size();
-		Scene::Push(new Scene_Equip(actor_index, equip_window->GetIndex()), true);
+		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Equip>(actor_index, equip_window->GetIndex()), true);
 	} else if (Game_Party::GetActors().size() > 1 && Input::IsTriggered(Input::LEFT)) {
 		Game_System::SePlay(Data::system.cursor_se);
 		actor_index = (actor_index + Game_Party::GetActors().size() - 1) % Game_Party::GetActors().size();
-		Scene::Push(new Scene_Equip(actor_index, equip_window->GetIndex()), true);
+		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Equip>(actor_index, equip_window->GetIndex()), true);
 	}
 }
 

@@ -21,25 +21,26 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include "system.h"
 #include <string>
-#include <vector>
+
+class Color;
+class Rect;
 
 ////////////////////////////////////////////////////////////
 /// Font class
 ////////////////////////////////////////////////////////////
-
-class Bitmap;
-
 class Font {
-public:
-	Font(const std::string& name, int size, bool bold, bool italic);
-	virtual ~Font();
+ public:
+	virtual ~Font() {}
 
-	virtual int GetHeight() = 0;
-	virtual Bitmap* Render(int glyph) = 0;
-	
-	static Font* CreateFont(const std::string& name = "", int size = 0, bool bold = false, bool italic = false);
-	static bool Exists(const std::string& name);
+	virtual Rect GetSize(std::string const& txt) const = 0;
+
+	virtual void Render(Bitmap& bmp, int x, int y, Bitmap const& sys, int color, unsigned glyph) = 0;
+	virtual void Render(Bitmap& bmp, int x, int y, Color const& color, unsigned glyph) = 0;
+
+	static FontRef Create(const std::string& name, int size, bool bold, bool italic);
+	static FontRef Default(bool mincho = false);
 	static void Dispose();
 
 	static const int default_size = 9;
@@ -47,19 +48,21 @@ public:
 	static const bool default_italic = false;
 
 	enum SystemColor {
+		ColorShadow = -1,
 		ColorDefault = 0,
 		ColorDisabled = 3,
 		ColorCritical = 4,
 		ColorKnockout = 5
 	};
 
-	const std::string name;
-	const int size;
-	const bool bold;
-	const bool italic;
-protected:
-	static std::vector<Font*> fonts;
+	std::string name;
+	unsigned size;
+	bool bold;
+	bool italic;
+
+	size_t pixel_size() const { return size * 96 / 72; }
+ protected:
+	Font(const std::string& name, int size, bool bold, bool italic);
 };
 
 #endif
-

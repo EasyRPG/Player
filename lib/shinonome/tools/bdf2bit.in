@@ -1,0 +1,106 @@
+#!@GAWK@ -f
+BEGIN {
+    if (ARGV[1] == "-c") {
+	cflag = 1;
+	delete ARGV[1];
+    } else
+	cflag = 0;
+    status = 0;
+}
+
+/^BITMAP/ {
+    status = 1;
+    n = 0;
+    print $0;
+    next;
+}
+/^BBX[ \t]/ {
+    h = $3;
+}
+
+/^COMMENT[ \t]/ {
+    if (cflag)
+	sub(/[ \t]+$/, "");
+}
+
+/^FONT[ \t]/ {
+    if (cflag) {
+	delete a;
+	split ($2, a, /-/);
+	delete a[1];
+	a[2] = "\@FOUNDRY\@";
+	a[3] = "\@FAMILY\@";
+	j = 2;
+	$2 = "";
+	for (i  in a )
+	    $2 = $2 "-"a[j++];
+    }
+}
+
+/^FAMILY_NAME[ \t]/ {
+    if (cflag == 1)
+	$2 = "\"\@FAMILY\@\"";
+}
+
+/^FOUNDRY[ \t]/ {
+    if (cflag)
+	$2 = "\"\@FOUNDRY\@\"";
+}
+
+/^ENDCHAR/ {
+    status = 0;
+    if (n != 0) {
+      if (c > 256)
+	printf($0 " # \033\044\102%c%c\033\050\102\n", c /256 , c % 256);
+      else if (c > 31 && c < 128)
+	printf($0 " # %c\n",c);
+      else
+	printf($0 "\n");
+
+    } else
+      printf($0 "\n");
+    next;
+}
+
+/^ENCODING[ \t]/ {
+  c = $2;
+}
+
+/^BBX[ \t]/ {
+    w = $2;
+}
+
+/^STARTCHAR[ \t]/ {
+    if ($2 ~ /^char/) {
+	sub(/char/, "", $2);
+	printf( $1 " %x\n", $2)
+    }
+    else
+	print $0;
+    next;
+}
+
+{
+    if (status == 1) {
+	gsub(/0/, "....");
+	gsub(/1/, "...@");
+	gsub(/2/, "..@.");
+	gsub(/3/, "..@@");
+	gsub(/4/, ".@..");
+	gsub(/5/, ".@.@");
+	gsub(/6/, ".@@.");
+	gsub(/7/, ".@@@");
+	gsub(/8/, "@...");
+	gsub(/9/, "@..@");
+	gsub(/A|a/, "@.@.");
+	gsub(/B|b/, "@.@@");
+	gsub(/C|c/, "@@..");
+	gsub(/D|d/, "@@.@");
+	gsub(/E|e/, "@@@.");
+	gsub(/F|f/, "@@@@");
+        if(n == 0) n = index( $0, "@");
+	print substr($0, 0, w);
+    } else
+	print $0;
+
+}

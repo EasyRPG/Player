@@ -21,12 +21,12 @@
 #include "data.h"
 #include "color.h"
 #include "cache.h"
-#include "surface.h"
 #include "input.h"
 #include "player.h"
 #include "game_system.h"
 #include "game_actors.h"
 #include "window_battlecommand.h"
+#include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
 Window_BattleCommand::Window_BattleCommand(int x, int y, int width, int height) :
@@ -39,7 +39,7 @@ Window_BattleCommand::Window_BattleCommand(int x, int y, int width, int height) 
 	top_row = 0;
 	cycle = 0;
 
-	SetContents(Surface::CreateSurface(width - 16, height - 16));
+	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	num_rows = contents->GetHeight() / 16;
@@ -211,4 +211,3 @@ int Window_BattleCommand::GetSkillSubset() {
 
 	return idx;
 }
-

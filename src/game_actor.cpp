@@ -49,7 +49,7 @@ void Game_Actor::Init() {
 	SetExp(exp_list[GetLevel() - 1]);
 }
 
-void Game_Actor::Init(const RPG::SaveActor& save_data) {
+void Game_Actor::Init(const RPG::SaveActor& /* save_data */) {
 	Init();
 	// Todo: Save loading
 }
@@ -398,7 +398,7 @@ void Game_Actor::SetExp(int _exp) {
 }
 
 ////////////////////////////////////////////////////////////
-void Game_Actor::ChangeExp(int exp) {
+void Game_Actor::ChangeExp(int /* exp */) {
 	// TODO
 	/*int last_level = level;
 

@@ -24,13 +24,15 @@
 #include "window_savefile.h"
 #include "game_system.h"
 #include "input.h"
+#include "bitmap.h"
+#include "font.h"
 
 ////////////////////////////////////////////////////////////
-Window_SaveFile::Window_SaveFile(int ix, int iy, int iwidth, int iheight) : 
+Window_SaveFile::Window_SaveFile(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight),
 	index(0), hero_hp(0), hero_level(0), corrupted(false) {
 
-	SetContents(Surface::CreateSurface(width - 8, height - 16));
+	SetContents(Bitmap::Create(width - 8, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 	SetZ(9999);
 
@@ -80,14 +82,14 @@ void Window_SaveFile::Refresh() {
 
 	contents->TextDraw(8, 32 + 2, 1, Data::terms.lvl_short);
 
-	int lx = Surface::GetTextSize(Data::terms.lvl_short).width;
+	int lx = Font::Default()->GetSize(Data::terms.lvl_short).width;
 	out.str("");
 	out << std::setw(2) << std::setfill(' ') << hero_level;
 	contents->TextDraw(8 + lx, 32 + 2, Font::ColorDefault, out.str());
 
 	contents->TextDraw(42, 32 + 2, 1, Data::terms.hp_short);
 
-	int hx = Surface::GetTextSize(Data::terms.hp_short).width;
+	int hx = Font::Default()->GetSize(Data::terms.hp_short).width;
 	out.str("");
 	out << hero_hp;
 	contents->TextDraw(42 + hx, 32 + 2, Font::ColorDefault, out.str());
@@ -101,4 +103,3 @@ void Window_SaveFile::Update() {
 	Window_Base::Update();
 	UpdateCursorRect();
 }
-

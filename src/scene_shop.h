@@ -31,6 +31,7 @@
 #include "window_shopstatus.h"
 #include "window_shopsell.h"
 #include "window_shop.h"
+#include <boost/scoped_ptr.hpp>
 
 ////////////////////////////////////////////////////////////
 /// Scene Shop class.
@@ -45,7 +46,6 @@ public:
 	Scene_Shop();
 
 	void Start();
-	void Terminate();
 
 	enum ShopMode {
 		BuySellLeave,
@@ -69,16 +69,16 @@ public:
 
 private:
 	/// Displays available items
-	Window_Help* help_window;
-	Window_ShopBuy* buy_window;
-	Window_ShopParty* party_window;
-	Window_ShopStatus* status_window;
-	Window_Gold* gold_window;
-	Window_ShopSell* sell_window;
-	Window_ShopNumber* number_window;
-	Window_Base* empty_window;
-	Window_Base* empty_window2;
-	Window_Shop* shop_window;
+	boost::scoped_ptr<Window_Help> help_window;
+	boost::scoped_ptr<Window_ShopBuy> buy_window;
+	boost::scoped_ptr<Window_ShopParty> party_window;
+	boost::scoped_ptr<Window_ShopStatus> status_window;
+	boost::scoped_ptr<Window_Gold> gold_window;
+	boost::scoped_ptr<Window_ShopSell> sell_window;
+	boost::scoped_ptr<Window_ShopNumber> number_window;
+	boost::scoped_ptr<Window_Base> empty_window;
+	boost::scoped_ptr<Window_Base> empty_window2;
+	boost::scoped_ptr<Window_Shop> shop_window;
 	int mode;
 	int timer;
 };

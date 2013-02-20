@@ -22,36 +22,36 @@
 #include <cstring>
 
 ///////////////////////////////////////////////////////////
-const uint8* GetPearl8x8FontData();
+const uint8_t* GetPearl8x8FontData();
 
 ///////////////////////////////////////////////////////////
-void DrawChr(uint8 chr, uint8* pixels, int x, int y, int w, int bpp, uint32 color) {
-	static const uint8* font = GetPearl8x8FontData();
+void DrawChr(uint8_t chr, uint8_t* pixels, int x, int y, int w, int bpp, uint32_t color) {
+	static const uint8_t* font = GetPearl8x8FontData();
 
-	const uint8* pchr = font + chr * 8;
+	const uint8_t* pchr = font + chr * 8;
 
 	if (bpp == 1) {
-		uint8* dst_pixels = pixels + x + y * w;
+		uint8_t* dst_pixels = pixels + x + y * w;
 
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
-				if (pchr[i] & (0x80 >> j)) dst_pixels[0] = (uint8)color;
+				if (pchr[i] & (0x80 >> j)) dst_pixels[0] = (uint8_t)color;
 				dst_pixels += 1;
 			}
 			dst_pixels += w - 8;
 		}
 	} else if (bpp == 2) {
-		uint16* dst_pixels = (uint16*)pixels + x + y * w;
+		uint16_t* dst_pixels = (uint16_t*)pixels + x + y * w;
 
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
-				if (pchr[i] & (0x80 >> j)) dst_pixels[0] = (uint16)color;
+				if (pchr[i] & (0x80 >> j)) dst_pixels[0] = (uint16_t)color;
 				dst_pixels += 1;
 			}
 			dst_pixels += w - 8;
 		}
 	} else if (bpp == 3) {
-		uint8* dst_pixels = pixels + x + y * w;
+		uint8_t* dst_pixels = pixels + x + y * w;
 
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
@@ -61,7 +61,7 @@ void DrawChr(uint8 chr, uint8* pixels, int x, int y, int w, int bpp, uint32 colo
 			dst_pixels += w - 8;
 		}
 	} else if (bpp == 4) {
-		uint32* dst_pixels = (uint32*)pixels + x + y * w;
+		uint32_t* dst_pixels = (uint32_t*)pixels + x + y * w;
 
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
@@ -74,7 +74,7 @@ void DrawChr(uint8 chr, uint8* pixels, int x, int y, int w, int bpp, uint32 colo
 }
 
 ///////////////////////////////////////////////////////////
-void FontRender8x8::TextDraw(const std::string& text, uint8* pixels, int x, int y, int surface_width, int surface_height, int bpp, uint32 color) {
+void FontRender8x8::TextDraw(const std::string& text, uint8_t* pixels, int x, int y, int surface_width, int surface_height, int bpp, uint32_t color) {
 	if (x + 8 > surface_width || y + 8 > surface_height || text.empty()) return;
 
 	int dst_x = x;
@@ -82,17 +82,17 @@ void FontRender8x8::TextDraw(const std::string& text, uint8* pixels, int x, int 
 
 	// Invert the text color if the first background pixel matches the text color
 	if (bpp == 1) {
-		uint8* dst_pixels = pixels + x + y * surface_width;
-		if (dst_pixels[0] == (uint8)color) {
+		uint8_t* dst_pixels = pixels + x + y * surface_width;
+		if (dst_pixels[0] == (uint8_t)color) {
 			color = color ^ 0xFFFFFFFF;
 		}
 	} else if (bpp == 2) {
-		uint16* dst_pixels = (uint16*)pixels + x + y * surface_width;
-		if (dst_pixels[0] == (uint16)color) {
+		uint16_t* dst_pixels = (uint16_t*)pixels + x + y * surface_width;
+		if (dst_pixels[0] == (uint16_t)color) {
 			color = color ^ 0xFFFFFFFF;
 		}
 	} else if (bpp == 4) {
-		uint32* dst_pixels = (uint32*)pixels + x + y * surface_width;
+		uint32_t* dst_pixels = (uint32_t*)pixels + x + y * surface_width;
 		if (dst_pixels[0] == color) {
 			color = color ^ 0xFFFFFFFF;
 		}
@@ -114,7 +114,7 @@ void FontRender8x8::TextDraw(const std::string& text, uint8* pixels, int x, int 
 			case '\0':
 				return;
 			default:
-				DrawChr((uint8)text[i], pixels, dst_x, dst_y, surface_width, bpp, color);
+				DrawChr((uint8_t)text[i], pixels, dst_x, dst_y, surface_width, bpp, color);
 				dst_x += 8;
 		}
 
@@ -127,12 +127,12 @@ void FontRender8x8::TextDraw(const std::string& text, uint8* pixels, int x, int 
 }
 
 ///////////////////////////////////////////////////////////
-void FontRender8x8::TextDraw(const std::string& text, uint8* pixels, Rect dst_rect, int surface_width, int surface_height, int bpp, uint32 color) {
+void FontRender8x8::TextDraw(const std::string& text, uint8_t* pixels, Rect const& dst_rect, int surface_width, int surface_height, int bpp, uint32_t color) {
 	int x = dst_rect.x;
 	int y = dst_rect.y;
 	int w = dst_rect.width;
 	int h = dst_rect.height;
-	
+
 	if (x + w > surface_width || y + h > surface_height || text.empty()) return;
 
 	int dst_x = x;
@@ -154,7 +154,7 @@ void FontRender8x8::TextDraw(const std::string& text, uint8* pixels, Rect dst_re
 			case '\0':
 				return;
 			default:
-				DrawChr((uint8)text[i], pixels, dst_x, dst_y, surface_width, bpp, color);
+				DrawChr((uint8_t)text[i], pixels, dst_x, dst_y, surface_width, bpp, color);
 				dst_x += 8;
 		}
 

@@ -19,7 +19,7 @@
 #define _EASYRPG_IMAGE_PNG_H_
 
 #include "system.h"
-#if defined(USE_SOFT_BITMAP) || defined(USE_PIXMAN_BITMAP)
+#ifdef SUPPORT_PNG
 
 #include <cstdio>
 #include "system.h"
@@ -28,6 +28,6 @@ namespace ImagePNG {
 	void ReadPNG(FILE* stream, const void* buffer, bool transparent, int& width, int& height, void*& pixels);
 }
 
-#endif
+#endif // SUPPORT_PNG
 
 #endif

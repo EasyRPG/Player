@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////
 // This file is part of EasyRPG Player.
-// 
+//
 // EasyRPG Player is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // EasyRPG Player is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
@@ -23,6 +23,7 @@
 #include "sprite.h"
 #include "cache.h"
 #include "battle_battler.h"
+#include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
 bool Battle::Battler::IsReady() const {
@@ -87,17 +88,16 @@ Battle::Enemy::Enemy(const RPG::TroopMember* member, int id) :
 }
 
 void Battle::Enemy::CreateSprite() {
-	Bitmap* graphic = Cache::Monster(rpg_enemy->battler_name);
+	BitmapRef graphic = Cache::Monster(rpg_enemy->battler_name);
 	bool hue_change = rpg_enemy->battler_hue != 0;
 	if (hue_change) {
-		Surface* new_graphic = Surface::CreateSurface(graphic->GetWidth(), graphic->GetHeight());
-		new_graphic->HueChangeBlit(0, 0, graphic, graphic->GetRect(), rpg_enemy->battler_hue);
-		delete graphic;
+	    BitmapRef new_graphic = Bitmap::Create(graphic->GetWidth(), graphic->GetHeight());
+		new_graphic->HueChangeBlit(0, 0, *graphic, graphic->GetRect(), rpg_enemy->battler_hue);
 		graphic = new_graphic;
 	}
 
-	sprite = new Sprite();
-	sprite->SetBitmap(graphic, hue_change);
+	sprite.reset(new Sprite());
+	sprite->SetBitmap(graphic);
 	sprite->SetOx(graphic->GetWidth() / 2);
 	sprite->SetOy(graphic->GetHeight() / 2);
 	sprite->SetX(member->x);
@@ -109,7 +109,6 @@ void Battle::Enemy::CreateSprite() {
 void Battle::Enemy::Transform(int enemy_id) {
 	rpg_enemy = &Data::enemies[enemy_id - 1];
 	game_enemy->Transform(enemy_id);
-	delete sprite;
 	CreateSprite();
 }
 
@@ -135,7 +134,7 @@ void Battle::Ally::CreateSprite() {
 	if (Player::engine != Player::EngineRpg2k3)
 		return;
 
-	sprite = new Sprite();
+	sprite.reset(new Sprite());
 	sprite->SetOx(24);
 	sprite->SetOy(24);
 	sprite->SetX(rpg_actor->battle_x);
@@ -158,7 +157,7 @@ void Battle::Ally::SetAnimState(int state) {
 		return;
 
 	sprite_file = ext.battler_name;
-	sprite->SetBitmap(Cache::BattleCharset(sprite_file));
+	sprite->SetBitmap(Cache::BattleChar(sprite_file));
 }
 
 void Battle::Ally::UpdateAnim(int cycle) {
@@ -185,4 +184,3 @@ void Battle::Ally::EnableCombo(int command_id, int multiple) {
 	combo_multiple = multiple;
 	// FIXME: make use of this data
 }
-

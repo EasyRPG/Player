@@ -1,0 +1,161 @@
+#!@GAWK@ -f
+#
+# usage: bdfmarge   diff_bdf  src_bdf > out_bdf
+#
+# marge diff_bdf file with src_bdf file.
+#
+
+func usage() {
+    printf("usage: bdfmarge  {diff bdf}  {src bdf} > {output bdf}\n");
+    ERROR = " ";
+}
+
+func get_next_char(file,   line, ret, tmp) {
+    #local line, ret, tmp;
+    ret = -1;
+    while (1) {
+	line = EOF;
+	getline line < file;
+	if (line == EOF)
+	    break;
+	if (line ~ /^#/ || line ~ /^COMMENT/)
+	    continue;
+	if (line ~ /^STARTCHAR[ \t]/)
+	    next_startchar_line = line;
+	if (line ~ /^ENCODING[ \t]/) {
+	    next_encoding_line = line;
+	    sub(/.*[ \t]+/, "", line);
+	    ret = line;
+	    break;
+	}
+    }
+    return ret;
+}
+
+func print_next_char (diff_file,    line, flag, ret) {
+    #local line, flag, ret;
+    line = EOF;
+    ret = -1;
+    flag = 0;
+    while (1) {
+	getline line < diff_file;
+	if (line == EOF) {
+	    ERROR = "unexcepted EOF in diff_bdf file.\n";
+	    exit (1);
+	}
+	if (flag == 0) {
+	    printf (next_startchar_line "\n");
+	    printf (next_encoding_line "\n");
+	    flag = 1;
+	}
+	print line;
+	if (line ~ /^ENDCHAR/) {
+	    ret = get_next_char(diff_file);
+	    break;
+	}
+    }
+    return ret;
+}
+
+func print_header(file,   line) {
+    #local line;
+
+    while (1) {
+	line = EOF;
+	if (file)
+	    getline line < file;
+	else
+	    getline line;
+	if (line == EOF)
+	    break;
+	if (line ~ /^CHARS[ \t]/)
+	    line = "CHARS "maxchars;
+	print line;
+	if (line ~ /^CHARS[ \t]/)
+	    break;
+    }
+}
+
+func skip_header(file,   line) {
+    #local line;
+
+    while (1) {
+	line = EOF;
+	if (file)
+	    getline line < file;
+	else
+	    getline line;
+	if (line == EOF || line ~ /^CHARS[ \t]/)
+	    break;
+    }
+}
+
+BEGIN {
+    EOF = "";
+    if (ARGV[2] == NUL) {
+	usage();
+	exit (1);
+    }
+
+    diff_file = ARGV[1];
+    delete ARGV[1];
+
+    "grep -h ^ENCODING " diff_file " " ARGV[2] " | sort | uniq | grep -c ^ENCODING" |getline maxchars;
+    gsub(/[ \t]/, "", maxchars);
+
+    print_header(diff_file);
+    skip_header(NULL);
+
+    next_char = get_next_char(diff_file);
+
+    if (next_char == -1) {
+	ERROR = "diff_bdf file may be invalid format.\n";
+	exit(1);
+    }
+    status = 0;
+}
+
+#while(<>)
+{
+    if ($0 ~ /^ENDFONT/)
+	exit (0);
+
+    if ($0 ~ /^CHARS[ \t]/)
+	$2 = maxchars;
+
+    if ($0 ~ /^STARTCHAR[ \t]/) {
+	start_char_line = $0;
+	getline;
+	if ($0 ~ /^ENCODING[ \t]/) {
+	    char = $0;
+	    sub(/.*[ \t]+/, "", char);
+	    if (char > next_char) {
+		while (next_char > 0 && char > next_char)
+		    next_char = print_next_char(diff_file);
+	    }
+	    if (char == next_char) {
+		status = 1;
+		next_char = print_next_char(diff_file);
+		next;
+	    }
+	}
+	print start_char_line;
+    }
+
+    if (status == 0)
+	print $0;
+    else {
+	if ($0 ~ /^ENDCHAR/)
+	    status = 0;
+    }
+}
+
+END {
+    if (ERROR != NULL)
+	printf(ERROR) > "/dev/stderr";
+    else {
+	while (next_char > 0)
+	    next_char = print_next_char(diff_file);
+	printf("ENDFONT\n");
+    }
+}

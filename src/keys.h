@@ -31,7 +31,6 @@ namespace Input {
 		enum InputKey {
 			NONE,
 
-#if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
 			BACKSPACE,
 			TAB,
 			CLEAR,
@@ -128,7 +127,6 @@ namespace Input {
 			CAPS_LOCK,
 			NUM_LOCK,
 			SCROLL_LOCK,
-#endif
 
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 			MOUSE_LEFT,

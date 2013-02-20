@@ -18,12 +18,14 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include "bitmap.h"
 #include "rpg_animation.h"
 #include "output.h"
 #include "graphics.h"
 #include "filefinder.h"
 #include "cache.h"
 #include "battle_animation.h"
+#include "bitmap_screen.h"
 
 ////////////////////////////////////////////////////////////
 BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) :
@@ -33,8 +35,6 @@ BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) 
 
 BattleAnimation::~BattleAnimation() {
 	SetVisible(false);
-	if (screen != NULL)
-		delete screen;
 }
 
 void BattleAnimation::Setup() {
@@ -42,7 +42,7 @@ void BattleAnimation::Setup() {
 		return;
 
 	const std::string& name = animation->animation_name;
-	Bitmap* graphic;
+	BitmapRef graphic;
 
 	if (!FileFinder::FindImage("Battle", name).empty()) {
 		large = false;
@@ -54,11 +54,11 @@ void BattleAnimation::Setup() {
 	}
 	else {
 		Output::Warning("Couldn't find animation: %s", name.c_str());
-		screen = NULL;
+		screen.reset();
 		return;
 	}
 
-	screen = BitmapScreen::CreateBitmapScreen(graphic);
+	screen = BitmapScreen::Create(graphic);
 
 	initialized = true;
 }

@@ -58,7 +58,7 @@ Game_Character::Game_Character() :
 	wait_count(0),
 	anime_count(0),
 	stop_count(0),
-	jump_count(0),	
+	jump_count(0),
 	step_anime(false),
 	walk_anime(true),
 	turn_enabled(true),
@@ -96,9 +96,9 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 
 	if (!Game_Map::IsPassable(new_x, new_y, (d + 2) % 4))
 		return false;
-	
+
 	for (tEventHash::iterator i = Game_Map::GetEvents().begin(); i != Game_Map::GetEvents().end(); i++) {
-		Game_Event* evnt = i->second;
+		Game_Event* evnt = i->second.get();
 		if (evnt->GetX() == new_x && evnt->GetY() == new_y) {
 			if (!evnt->GetThrough() && evnt->GetPriorityType() == RPG::EventPage::Layers_same) {
 				return false;
@@ -151,9 +151,9 @@ int Game_Character::GetScreenZ() const {
 	return GetScreenZ(0);
 }
 
-int Game_Character::GetScreenZ(int height) const {
+int Game_Character::GetScreenZ(int /* height */) const {
 	if (GetPriorityType() == RPG::EventPage::Layers_above) return 999;
-	
+
 	int z = (real_y - Game_Map::GetDisplayY() + 3) / 8 + 16;
 
 	return z;
@@ -416,7 +416,7 @@ void Game_Character::MoveTypeCustom() {
 				break;
 			case RPG::MoveCommand::Code::increase_movement_speed:
 				move_speed = min(move_speed + 1, 6); break;
-			case RPG::MoveCommand::Code::decrease_movement_speed: 
+			case RPG::MoveCommand::Code::decrease_movement_speed:
 				move_speed = max(move_speed - 1, 1); break;
 			case RPG::MoveCommand::Code::increase_movement_frequence: break;
 			case RPG::MoveCommand::Code::decrease_movement_frequence: break;
@@ -434,7 +434,7 @@ void Game_Character::MoveTypeCustom() {
 				break;
 			case RPG::MoveCommand::Code::play_sound_effect: // String: File, Parameters: Volume, Tempo, Balance
 				if (move_command.parameter_string != "(OFF)") {
-					Audio::SE_Play(move_command.parameter_string,
+					Audio().SE_Play(move_command.parameter_string,
 						move_command.parameter_a, move_command.parameter_b);
 				}
 				break;
@@ -533,7 +533,7 @@ void Game_Character::MoveForward() {
 
 void Game_Character::MoveRandom() {
 	switch (rand() % 4) {
-	case 0: 
+	case 0:
 		MoveDown();
 		break;
 	case 1:
@@ -669,7 +669,7 @@ void Game_Character::Turn180Degree() {
 
 void Game_Character::Turn90DegreeLeftOrRight() {
 	int value = rand() % 2;
-	
+
 	if (value == 0) {
 		Turn90DegreeLeft();
 	} else {
@@ -684,7 +684,7 @@ void Game_Character::TurnTowardPlayer() {
 
 	if ( std::abs(sx) > std::abs(sy) ) {
 		(sx > 0) ? TurnLeft() : TurnRight();
-	} 
+	}
 	else if ( std::abs(sx) < std::abs(sy) ) {
 		(sy > 0) ? TurnUp() : TurnDown();
 	}
@@ -847,7 +847,7 @@ Game_Character* Game_Character::GetCharacter(int character_id, int event_id) {
 	switch (character_id) {
 		case CharPlayer:
 			// Player/Hero
-			return Main_Data::game_player;
+			return Main_Data::game_player.get();
 		case CharBoat:
 			return Game_Map::GetVehicle(Game_Vehicle::Boat);
 		case CharShip:
@@ -856,10 +856,9 @@ Game_Character* Game_Character::GetCharacter(int character_id, int event_id) {
 			return Game_Map::GetVehicle(Game_Vehicle::Airship);
 		case CharThisEvent:
 			// This event
-			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents().find(event_id)->second;
+			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents().find(event_id)->second.get();
 		default:
 			// Other events
-			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents().find(character_id)->second;
+			return (Game_Map::GetEvents().empty()) ? NULL : Game_Map::GetEvents().find(character_id)->second.get();
 	}
 }
-

@@ -21,7 +21,7 @@
 #include "data.h"
 #include "color.h"
 #include "cache.h"
-#include "surface.h"
+#include "bitmap.h"
 #include "input.h"
 #include "game_system.h"
 #include "game_temp.h"
@@ -38,7 +38,7 @@ Window_BattleOption::Window_BattleOption(int x, int y, int width, int height) :
 	index = -1;
 	top_row = 0;
 
-	SetContents(Surface::CreateSurface(width - 16, height - 16));
+	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	num_rows = contents->GetHeight() / 16;
@@ -120,4 +120,3 @@ int Window_BattleOption::GetIndex() {
 void Window_BattleOption::SetIndex(int _index) {
 	index = _index;
 }
-

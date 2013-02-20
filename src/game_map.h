@@ -23,13 +23,14 @@
 ////////////////////////////////////////////////////////////
 #include <vector>
 #include <string>
+#include "system.h"
 #include "game_commonevent.h"
 #include "game_event.h"
 #include "game_vehicle.h"
 #include "rpg_encounter.h"
 
-typedef std::map<int, Game_Event*> tEventHash;
-typedef std::map<int, Game_CommonEvent*> tCommonEventHash;
+typedef std::map<int, EASYRPG_SHARED_PTR<Game_Event> > tEventHash;
+typedef std::map<int, EASYRPG_SHARED_PTR<Game_CommonEvent> > tCommonEventHash;
 
 ////////////////////////////////////////////////////////////
 /// Game_Map namespace
@@ -271,13 +272,13 @@ namespace Game_Map {
 
 	int XwithDirection(int x, int direction);
 	int YwithDirection(int y, int direction);
-	
-	
+
+
 	void SetParallaxName(const std::string& name);
 	void SetParallaxScroll(bool horz, bool vert,
 						   bool horz_auto, bool vert_auto,
 						   int horz_speed, int vert_speed);
-	
+
 	////////////////////////////////////////////////////////
 	/// Get the map index from MapInfo vector using map id.
 	/// @param id : map id.

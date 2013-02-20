@@ -21,10 +21,10 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include "system.h"
 #include "rpg_animation.h"
 #include "drawable.h"
 #include "zobj.h"
-#include "bitmap_screen.h"
 
 ////////////////////////////////////////////////////////////
 
@@ -55,10 +55,9 @@ protected:
 	bool initialized;
 	bool visible;
 	bool large;
-	BitmapScreen* screen;
+	BitmapScreenRef screen;
 	unsigned long ID;
 	ZObj* zobj;
 };
 
 #endif
-

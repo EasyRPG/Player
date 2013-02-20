@@ -24,6 +24,7 @@
 #include "scene.h"
 #include "window_help.h"
 #include "window_item.h"
+#include <boost/scoped_ptr.hpp>
 
 ////////////////////////////////////////////////////////////
 /// Scene_Item class
@@ -39,13 +40,12 @@ public:
 
 	void Start();
 	void Update();
-	void Terminate();
 
 private:
 	/// Displays description about the selected item
-	Window_Help* help_window;
+	boost::scoped_ptr<Window_Help> help_window;
 	/// Displays available items
-	Window_Item* item_window;
+	boost::scoped_ptr<Window_Item> item_window;
 	/// index of item selected on startup
 	int item_index;
 };

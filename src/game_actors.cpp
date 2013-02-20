@@ -18,6 +18,7 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include "system.h"
 #include <vector>
 #include "game_actors.h"
 #include "main_data.h"
@@ -25,7 +26,7 @@
 
 ////////////////////////////////////////////////////////////
 namespace {
-	std::vector<Game_Actor*> data;
+	std::vector<EASYRPG_SHARED_PTR<Game_Actor> > data;
 }
 
 ////////////////////////////////////////////////////////////
@@ -37,9 +38,6 @@ void Game_Actors::Init() {
 
 ////////////////////////////////////////////////////////////
 void Game_Actors::Dispose() {
-	for (size_t i = 0; i < data.size(); i++) {
-		delete data[i];
-	}
 	data.clear();
 }
 
@@ -50,9 +48,9 @@ Game_Actor* Game_Actors::GetActor(int actor_id) {
 		return NULL;
 	}
 	else if (!data[actor_id])
-		data[actor_id] = new Game_Actor(actor_id);
+		data[actor_id].reset(new Game_Actor(actor_id));
 
-	return data[actor_id];
+	return data[actor_id].get();
 }
 
 ////////////////////////////////////////////////////////////
