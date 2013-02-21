@@ -33,22 +33,16 @@ Game_CommonEvent::Game_CommonEvent(int common_event_id, bool battle) :
 }
 
 ////////////////////////////////////////////////////////////
-Game_CommonEvent::~Game_CommonEvent() {
-	delete interpreter;
-}
-
-////////////////////////////////////////////////////////////
 void Game_CommonEvent::Refresh() {
 	if ( (GetTrigger() == RPG::EventPage::Trigger_parallel) && ( Game_Switches[GetSwitchId()] ) ) {
-		if (interpreter == NULL) {
-			interpreter = battle
-				? (Game_Interpreter*) new Game_Interpreter_Battle()
-				: (Game_Interpreter*) new Game_Interpreter_Map();
+		if (interpreter.get() == NULL) {
+			interpreter.reset(battle
+							  ? static_cast<Game_Interpreter*>(new Game_Interpreter_Battle())
+							  : static_cast<Game_Interpreter*>(new Game_Interpreter_Map()));
 			Update();
 		}
 	} else {
-		delete interpreter;
-		interpreter = NULL;
+		interpreter.reset();
 	}
 }
 

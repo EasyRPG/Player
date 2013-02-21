@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////
 // This file is part of EasyRPG Player.
-// 
+//
 // EasyRPG Player is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // EasyRPG Player is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
@@ -22,8 +22,9 @@
 #include "graphics.h"
 #include "input.h"
 #include "scene_title.h"
+#include "bitmap.h"
 
-static const uint8 easyrpg_logo[] = {
+static const uint8_t easyrpg_logo[] = {
 	0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0x00, 0x00, 0x0D,
 	0x49, 0x48, 0x44, 0x52, 0x00, 0x00, 0x01, 0x40, 0x00, 0x00, 0x00, 0xF0,
 	0x08, 0x03, 0x00, 0x00, 0x00, 0x46, 0xF3, 0x4D, 0x59, 0x00, 0x00, 0x03,
@@ -913,15 +914,9 @@ Scene_Logo::Scene_Logo() :
 
 ////////////////////////////////////////////////////////////
 void Scene_Logo::Start() {
-	logo = new Sprite();
-	logo_img = Bitmap::CreateBitmap(easyrpg_logo, sizeof(easyrpg_logo), false);
+	logo.reset(new Sprite());
+	logo_img = Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false);
 	logo->SetBitmap(logo_img);
-}
-
-////////////////////////////////////////////////////////////
-void Scene_Logo::Terminate() {
-	delete logo;
-	delete logo_img;
 }
 
 ////////////////////////////////////////////////////////////
@@ -941,6 +936,6 @@ void Scene_Logo::Update() {
 	if (frame_counter == 90 ||
 		Input::IsTriggered(Input::DECISION) ||
 		Input::IsTriggered(Input::CANCEL)) {
-			Scene::Push(new Scene_Title(), true);
+		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Title>(), true);
 	}
 }

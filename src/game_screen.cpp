@@ -20,36 +20,17 @@
 #include "options.h"
 #include "main_data.h"
 #include "game_screen.h"
+#include "bitmap.h"
 
 Game_Screen::Game_Screen() :
-	data(Main_Data::game_data.screen),
-	weather_plane(NULL),
-	weather_surface(NULL),
-	snow_bitmap(NULL),
-	rain_bitmap(NULL),
-	animation(NULL)
+	data(Main_Data::game_data.screen)
 {
 	Reset();
 }
 
-Game_Screen::~Game_Screen()
-{
-	if (animation)
-		delete animation;
-	if (weather_plane)
-		delete weather_plane;
-	if (weather_surface)
-		delete weather_surface;
-}
-
 void Game_Screen::Reset()
 {
-	std::vector<Picture*>::iterator it;
-	for (it = pictures.begin(); it != pictures.end(); ++it) {
-		delete *it;
-		*it = NULL;
-	}
-
+	pictures.clear();
 	pictures.resize(50);
 
 	data.tint_current_red = -1;
@@ -91,10 +72,10 @@ void Game_Screen::Reset()
 }
 
 Picture* Game_Screen::GetPicture(int id) {
-	Picture*& p = pictures[id - 1];
-	if (p == NULL)
-		p = new Picture(id);
-	return p;
+	EASYRPG_SHARED_PTR<Picture>& p = pictures[id - 1];
+	if (!p)
+		p.reset(new Picture(id));
+	return p.get();
 }
 
 void Game_Screen::TintScreen(int r, int g, int b, int s, int tenths) {
@@ -185,8 +166,8 @@ void Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool glob
 
 	Game_Character* target = Game_Character::GetCharacter(target_id, target_id);
 
-	animation = new BattleAnimation(target->GetScreenX(), target->GetScreenY(),
-									&Data::animations[animation_id - 1]);
+	animation.reset(new BattleAnimation(target->GetScreenX(), target->GetScreenY(),
+										&Data::animations[animation_id - 1]));
 	animation->SetVisible(true);
 	// FIXME: target
 	// FIXME: global
@@ -201,7 +182,7 @@ static double interpolate(double d, double x0, double x1)
 	return (x0 * (d - 1) + x1) / d;
 }
 
-static const uint8 snow_image[] = {
+static const uint8_t snow_image[] = {
 	0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00,
 	0x0d, 0x49, 0x48, 0x44, 0x52, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00,
 	0x00, 0x04, 0x02, 0x03, 0x00, 0x00, 0x00, 0xd4, 0x9f, 0x76, 0xed,
@@ -214,7 +195,7 @@ static const uint8 snow_image[] = {
 	0x4e, 0x44, 0xae, 0x42, 0x60, 0x82
 };
 
-static const uint8 rain_image[] = {
+static const uint8_t rain_image[] = {
 	0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00,
 	0x0d, 0x49, 0x48, 0x44, 0x52, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00,
 	0x00, 0x10, 0x01, 0x03, 0x00, 0x00, 0x00, 0x11, 0x44, 0xac, 0x3e,
@@ -230,8 +211,8 @@ static const uint8 rain_image[] = {
 
 void Game_Screen::InitWeather() {
 	if (weather_plane == NULL) {
-		weather_plane = new Plane();
-		weather_surface = Surface::CreateSurface(320, 240);
+		weather_plane.reset(new Plane());
+		weather_surface = Bitmap::Create(320, 240);
 		weather_surface->SetTransparentColor(Color(0,0,0,0));
 		weather_plane->SetBitmap(weather_surface);
 		weather_plane->SetZ(9999);
@@ -239,16 +220,14 @@ void Game_Screen::InitWeather() {
 	weather_surface->Clear();
 
 	if (rain_bitmap == NULL)
-		rain_bitmap = Bitmap::CreateBitmap(rain_image, sizeof(rain_image));
+		rain_bitmap = Bitmap::Create(rain_image, sizeof(rain_image));
 
 	if (snow_bitmap == NULL)
-		snow_bitmap = Bitmap::CreateBitmap(snow_image, sizeof(snow_image));
+		snow_bitmap = Bitmap::Create(snow_image, sizeof(snow_image));
 }
 
 void Game_Screen::StopWeather() {
-	if (weather_plane != NULL)
-		delete weather_plane;
-	weather_plane = NULL;
+	weather_plane.reset();
 	snowflakes.clear();
 }
 
@@ -261,8 +240,8 @@ void Game_Screen::InitSnowRain() {
 	for (int i = 0; i < num_snowflakes[data.weather_strength]; i++) {
 		Snowflake f;
 		f.x = (short) (rand() * 440.0 / RAND_MAX);
-		f.y = (uint8) rand();
-		f.life = (uint8) rand();
+		f.y = (uint8_t) rand();
+		f.life = (uint8_t) rand();
 		snowflakes.push_back(f);
 	}
 }
@@ -275,7 +254,7 @@ void Game_Screen::UpdateSnowRain(int speed) {
 
 	for (it = snowflakes.begin(); it != snowflakes.end(); it++) {
 		Snowflake& f = *it;
-		f.y += (uint8)speed;
+		f.y += (uint8_t)speed;
 		f.life++;
 		if (f.life > snowflake_life)
 			f.life = 0;
@@ -292,7 +271,7 @@ void Game_Screen::DrawRain() {
 		Snowflake& f = *it;
 		if (f.life > snowflake_visible)
 			continue;
-		weather_surface->Blit(f.x - f.y/2, f.y, rain_bitmap, rect, 255);
+		weather_surface->Blit(f.x - f.y/2, f.y, *rain_bitmap, rect, 255);
 	}
 }
 
@@ -315,7 +294,7 @@ void Game_Screen::DrawSnow() {
 		int i = (y / 2) % 18;
 		x += wobble[0][i];
 		y += wobble[1][i];
-		weather_surface->Blit(x, y, snow_bitmap, rect, 255);
+		weather_surface->Blit(x, y, *snow_bitmap, rect, 255);
 	}
 }
 
@@ -365,7 +344,7 @@ void Game_Screen::Update() {
 			data.shake_time_left--;
 	}
 
-	std::vector<Picture*>::const_iterator it;
+	std::vector<EASYRPG_SHARED_PTR<Picture> >::const_iterator it;
 	for (it = pictures.begin(); it != pictures.end(); it++) {
 		if(*it) { (*it)->Update(); }
 	}
@@ -402,9 +381,7 @@ void Game_Screen::Update() {
 	if (animation != NULL) {
 		animation->Update();
 		if (animation->IsDone()) {
-			delete animation;
-			animation = NULL;
+			animation.reset();
 		}
 	}
 }
-

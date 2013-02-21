@@ -42,13 +42,6 @@ void Scene_Order::Start() {
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Order::Terminate() {
-	delete window_left;
-	delete window_right;
-	delete window_confirm;
-}
-
-////////////////////////////////////////////////////////////
 void Scene_Order::Update() {
 	window_left->Update();
 	window_right->Update();
@@ -118,17 +111,17 @@ void Scene_Order::CreateCommandWindow() {
 	options_confirm.push_back("Confirm");
 	options_confirm.push_back("Redo");
 
-	window_left = new Window_Command(options_left, 88, 4);
+	window_left.reset(new Window_Command(options_left, 88, 4));
 	window_left->SetX(68);
 	window_left->SetY(48);
 
-	window_right = new Window_Command(options_right, 88, 4);
+	window_right.reset(new Window_Command(options_right, 88, 4));
 	window_right->SetX(164);
 	window_right->SetY(48);
 	window_right->SetActive(false);
 	window_right->SetIndex(-1);
 
-	window_confirm = new Window_Command(options_confirm, 80);
+	window_confirm.reset(new Window_Command(options_confirm, 80));
 	window_confirm->SetX(120);
 	window_confirm->SetY(144);
 	window_confirm->SetActive(false);

@@ -23,6 +23,7 @@
 ////////////////////////////////////////////////////////////
 #include "scene.h"
 #include "window_command.h"
+#include <boost/scoped_ptr.hpp>
 
 ////////////////////////////////////////////////////////////
 /// Scene Order class.
@@ -45,9 +46,8 @@ private:
 	/// Contains number of rearranged actors
 	int actor_counter;
 
-	Window_Command* window_left;
-	Window_Command* window_right;
-	Window_Command* window_confirm;
+	boost::scoped_ptr<Window_Command>
+		window_left, window_right, window_confirm;
 
 	void CreateCommandWindow();
 
@@ -59,4 +59,3 @@ private:
 };
 
 #endif
-

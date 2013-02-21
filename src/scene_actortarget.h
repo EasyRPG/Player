@@ -25,6 +25,7 @@
 #include "window_actortarget.h"
 #include "window_help.h"
 #include "window_targetstatus.h"
+#include <boost/scoped_ptr.hpp>
 
 ////////////////////////////////////////////////////////////
 /// Scene ActorTarget class.
@@ -50,7 +51,6 @@ public:
 
 	void Start();
 	void Update();
-	void Terminate();
 
 	////////////////////////////////////////////////////////
 	/// Update function used when an item will be used.
@@ -64,11 +64,11 @@ public:
 
 private:
 	/// Contains the actors of the party
-	Window_ActorTarget* target_window;
+	boost::scoped_ptr<Window_ActorTarget> target_window;
 	/// Contains the name of the item/skill that will be used
-	Window_Help* help_window;
+	boost::scoped_ptr<Window_Help> help_window;
 	/// Contains quantity/cost of item/spell
-	Window_TargetStatus* status_window;
+	boost::scoped_ptr<Window_TargetStatus> status_window;
 
 	/// id of item/skill to use
 	int id;

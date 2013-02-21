@@ -33,11 +33,11 @@ class Window_Keyboard : public Window_Base {
 public:
 	////////////////////////////////////////////////////////
 	/// Constructor
-	/// @param idigits_max : The maximum number of digits 
+	/// @param idigits_max : The maximum number of digits
 	///	allowed
 	////////////////////////////////////////////////////////
 	Window_Keyboard(int ix, int iy, int iwidth = 320, int iheight = 80);
-	
+
 	////////////////////////////////////////////////////////
 	/// Destructor
 	////////////////////////////////////////////////////////
@@ -45,23 +45,40 @@ public:
 
 	void CreateContents();
 
+	enum Mode {
+		MODE_REND = -1,
+		Hiragana = 0,
+		Katakana = 1,
+		Letter = 2,
+		Symbol = 3,
+		MODE_END = 4,
+	};
+
 	virtual void UpdateCursorRect();
 	Rect GetItemRect(int row, int col);
 	void Update();
 	void Refresh();
-	void SetMode(int nmode);
-	const char *GetSelected(void);
-	
+	void SetMode(Mode nmode);
+	std::string const& GetSelected(void);
+
+	static const char* const TO_SYMBOL;
+	static const char* const TO_LETTER;
+	static const char* const DONE;
+
+	static std::string TO_KATAKANA;
+	static std::string TO_HIRAGANA;
+	static std::string DONE_JP;
+
 protected:
 	static const int border_x = 8;
 	static const int border_y = 4;
 	static const int row_max = 9;
 	static const int col_max = 10;
 	static const int min_width = 2;
-	static const char * const items[2][row_max][col_max];
+	static std::string items[MODE_END][row_max][col_max];
 	int row_spacing;
 	int col_spacing;
-	int mode;
+	Mode mode;
 	int row;
 	int col;
 };

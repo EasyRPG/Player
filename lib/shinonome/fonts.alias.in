@@ -1,0 +1,86 @@
+!! shinonome12 fonts generic alias
+k12		-@FOUNDRY@-@FAMILY@-medium-r-normal--12-110-75-75-c-120-jisx0208.1990-0
+k12i		-@FOUNDRY@-@FAMILY@-medium-i-normal--12-110-75-75-c-120-jisx0208.1990-0
+k12b		-@FOUNDRY@-@FAMILY@-bold-r-normal--12-110-75-75-c-120-jisx0208.1990-0
+k12bi		-@FOUNDRY@-@FAMILY@-bold-i-normal--12-110-75-75-c-120-jisx0208.1990-0
+
+k12min		-@FOUNDRY@-mincho-medium-r-normal--12-110-75-75-c-120-jisx0208.1990-0
+k12mini		-@FOUNDRY@-mincho-medium-i-normal--12-110-75-75-c-120-jisx0208.1990-0
+k12minb		-@FOUNDRY@-mincho-bold-r-normal--12-110-75-75-c-120-jisx0208.1990-0
+k12minbi	-@FOUNDRY@-mincho-bold-i-normal--12-110-75-75-c-120-jisx0208.1990-0
+
+maru12		-@FOUNDRY@-marumoji-medium-r-normal--12-110-75-75-c-120-jisx0208.1990-0
+maru12i		-@FOUNDRY@-marumoji-medium-i-normal--12-110-75-75-c-120-jisx0208.1990-0
+maru12b		-@FOUNDRY@-marumoji-bold-r-normal--12-110-75-75-c-120-jisx0208.1990-0
+maru12bi	-@FOUNDRY@-marumoji-bold-i-normal--12-110-75-75-c-120-jisx0208.1990-0
+
+r12		-@FOUNDRY@-@FAMILY@-medium-r-normal--12-110-75-75-C-60-ISO8859-1
+r12i		-@FOUNDRY@-@FAMILY@-medium-i-normal--12-110-75-75-C-60-ISO8859-1
+r12b		-@FOUNDRY@-@FAMILY@-bold-r-normal--12-110-75-75-C-60-ISO8859-1
+r12bi		-@FOUNDRY@-@FAMILY@-bold-i-normal--12-110-75-75-C-60-ISO8859-1
+
+rk12		-@FOUNDRY@-@FAMILY@-medium-r-normal--12-110-75-75-C-60-jisx0201.1976-0
+rk12i		-@FOUNDRY@-@FAMILY@-medium-i-normal--12-110-75-75-C-60-jisx0201.1976-0
+rk12b		-@FOUNDRY@-@FAMILY@-bold-r-normal--12-110-75-75-C-60-jisx0201.1976-0
+rk12bi		-@FOUNDRY@-@FAMILY@-bold-i-normal--12-110-75-75-C-60-jisx0201.1976-0
+
+!! shinonome12 fonts alias for compatiblity for jisx0208.1983
+-@FOUNDRY@-@FAMILY@-medium-r-normal--12-110-75-75-c-120-jisx0208.1983-0	-@FOUNDRY@-@FAMILY@-medium-r-normal--12-110-75-75-c-120-jisx0208.1990-0
+-@FOUNDRY@-@FAMILY@-medium-i-normal--12-110-75-75-c-120-jisx0208.1983-0	-@FOUNDRY@-@FAMILY@-medium-i-normal--12-110-75-75-c-120-jisx0208.1990-0
+-@FOUNDRY@-@FAMILY@-bold-r-normal--12-110-75-75-c-120-jisx0208.1983-0	-@FOUNDRY@-@FAMILY@-bold-r-normal--12-110-75-75-c-120-jisx0208.1990-0
+-@FOUNDRY@-@FAMILY@-bold-i-normal--12-110-75-75-c-120-jisx0208.1983-0	-@FOUNDRY@-@FAMILY@-bold-i-normal--12-110-75-75-c-120-jisx0208.1990-0
+
+-@FOUNDRY@-@FAMILY@-medium-r-normal--12-110-75-75-p-120-jisx0208.1983-0	-@FOUNDRY@-@FAMILY@-medium-r-normal--12-110-75-75-p-120-jisx0208.1990-0
+-@FOUNDRY@-@FAMILY@-medium-i-normal--12-110-75-75-p-120-jisx0208.1983-0	-@FOUNDRY@-@FAMILY@-medium-i-normal--12-110-75-75-p-120-jisx0208.1990-0
+-@FOUNDRY@-@FAMILY@-bold-r-normal--12-110-75-75-p-120-jisx0208.1983-0	-@FOUNDRY@-@FAMILY@-bold-r-normal--12-110-75-75-p-120-jisx0208.1990-0
+-@FOUNDRY@-@FAMILY@-bold-i-normal--12-110-75-75-p-120-jisx0208.1983-0	-@FOUNDRY@-@FAMILY@-bold-i-normal--12-110-75-75-p-120-jisx0208.1990-0
+
+-@FOUNDRY@-Mincho-medium-r-normal--12-110-75-75-c-120-jisx0208.1983-0	-@FOUNDRY@-Mincho-medium-r-normal--12-110-75-75-c-120-jisx0208.1990-0
+-@FOUNDRY@-Mincho-medium-i-normal--12-110-75-75-c-120-jisx0208.1983-0	-@FOUNDRY@-Mincho-medium-i-normal--12-110-75-75-c-120-jisx0208.1990-0
+-@FOUNDRY@-Mincho-bold-r-normal--12-110-75-75-c-120-jisx0208.1983-0	-@FOUNDRY@-Mincho-bold-r-normal--12-110-75-75-c-120-jisx0208.1990-0
+-@FOUNDRY@-Mincho-bold-i-normal--12-110-75-75-c-120-jisx0208.1983-0	-@FOUNDRY@-Mincho-bold-i-normal--12-110-75-75-c-120-jisx0208.1990-0
+
+-@FOUNDRY@-Marumoji-medium-r-normal--12-110-75-75-c-120-jisx0208.1983-0	-@FOUNDRY@-Marumoji-medium-r-normal--12-110-75-75-c-120-jisx0208.1990-0
+-@FOUNDRY@-Marumoji-medium-i-normal--12-110-75-75-c-120-jisx0208.1983-0	-@FOUNDRY@-Marumoji-medium-i-normal--12-110-75-75-c-120-jisx0208.1990-0
+-@FOUNDRY@-Marumoji-bold-r-normal--12-110-75-75-c-120-jisx0208.1983-0	-@FOUNDRY@-Marumoji-bold-r-normal--12-110-75-75-c-120-jisx0208.1990-0
+-@FOUNDRY@-Marumoji-bold-i-normal--12-110-75-75-c-120-jisx0208.1983-0	-@FOUNDRY@-Marumoji-bold-i-normal--12-110-75-75-c-120-jisx0208.1990-0
+
+
+!! shinonome12 fonts alias from latin1/hankaku alias for kanjip/mincho/marumoji kanji
+#
+# ISO8859-1/JISX0201.1976-0 for Kanjip
+#
+-@FOUNDRY@-@FAMILY@-medium-r-normal--12-110-75-75-p-120-ISO8859-1	-@FOUNDRY@-@FAMILY@-medium-r-normal--12-110-75-75-C-60-ISO8859-1
+-@FOUNDRY@-@FAMILY@-medium-i-normal--12-110-75-75-p-120-ISO8859-1	-@FOUNDRY@-@FAMILY@-medium-i-normal--12-110-75-75-C-60-ISO8859-1
+-@FOUNDRY@-@FAMILY@-bold-r-normal--12-110-75-75-p-120-ISO8859-1		-@FOUNDRY@-@FAMILY@-bold-r-normal--12-110-75-75-C-60-ISO8859-1
+-@FOUNDRY@-@FAMILY@-bold-i-normal--12-110-75-75-p-120-ISO8859-1		-@FOUNDRY@-@FAMILY@-bold-i-normal--12-110-75-75-C-60-ISO8859-1
+
+-@FOUNDRY@-@FAMILY@-medium-r-normal--12-110-75-75-p-120-JISX0201.1976-0	-@FOUNDRY@-@FAMILY@-medium-r-normal--12-110-75-75-C-60-JISX0201.1976-0
+-@FOUNDRY@-@FAMILY@-medium-i-normal--12-110-75-75-p-120-JISX0201.1976-0	-@FOUNDRY@-@FAMILY@-medium-i-normal--12-110-75-75-C-60-JISX0201.1976-0
+-@FOUNDRY@-@FAMILY@-bold-r-normal--12-110-75-75-p-120-JISX0201.1976-0	-@FOUNDRY@-@FAMILY@-bold-r-normal--12-110-75-75-C-60-JISX0201.1976-0
+-@FOUNDRY@-@FAMILY@-bold-i-normal--12-110-75-75-p-120-JISX0201.1976-0	-@FOUNDRY@-@FAMILY@-bold-i-normal--12-110-75-75-C-60-JISX0201.1976-0
+
+#
+# ISO8859-1/JISX0201.1976-0 for Mincho
+#
+-@FOUNDRY@-mincho-medium-r-Normal--12-110-75-75-C-60-ISO8859-1	-@FOUNDRY@-@FAMILY@-medium-r-normal--12-110-75-75-C-60-ISO8859-1
+-@FOUNDRY@-mincho-medium-i-Normal--12-110-75-75-C-60-ISO8859-1	-@FOUNDRY@-@FAMILY@-medium-i-normal--12-110-75-75-C-60-ISO8859-1
+-@FOUNDRY@-mincho-bold-r-Normal--12-110-75-75-C-60-ISO8859-1	-@FOUNDRY@-@FAMILY@-bold-r-normal--12-110-75-75-C-60-ISO8859-1
+-@FOUNDRY@-mincho-bold-i-Normal--12-110-75-75-C-60-ISO8859-1	-@FOUNDRY@-@FAMILY@-bold-i-normal--12-110-75-75-C-60-ISO8859-1
+
+-@FOUNDRY@-mincho-medium-r-Normal--12-110-75-75-C-60-JISX0201.1976-0	-@FOUNDRY@-@FAMILY@-medium-r-normal--12-110-75-75-C-60-JISX0201.1976-0
+-@FOUNDRY@-mincho-medium-i-Normal--12-110-75-75-C-60-JISX0201.1976-0	-@FOUNDRY@-@FAMILY@-medium-i-normal--12-110-75-75-C-60-JISX0201.1976-0
+-@FOUNDRY@-mincho-bold-r-Normal--12-110-75-75-C-60-JISX0201.1976-0	-@FOUNDRY@-@FAMILY@-bold-r-normal--12-110-75-75-C-60-JISX0201.1976-0
+-@FOUNDRY@-mincho-bold-i-Normal--12-110-75-75-C-60-JISX0201.1976-0	-@FOUNDRY@-@FAMILY@-bold-i-normal--12-110-75-75-C-60-JISX0201.1976-0
+#
+# ISO8859-1/JISX0201.1976-0 for Marumoji
+#
+-@FOUNDRY@-marumoji-medium-r-Normal--12-110-75-75-C-60-ISO8859-1	-@FOUNDRY@-@FAMILY@-medium-r-normal--12-110-75-75-C-60-ISO8859-1
+-@FOUNDRY@-marumoji-medium-i-Normal--12-110-75-75-C-60-ISO8859-1	-@FOUNDRY@-@FAMILY@-medium-i-normal--12-110-75-75-C-60-ISO8859-1
+-@FOUNDRY@-marumoji-bold-r-Normal--12-110-75-75-C-60-ISO8859-1		-@FOUNDRY@-@FAMILY@-bold-r-normal--12-110-75-75-C-60-ISO8859-1
+-@FOUNDRY@-marumoji-bold-i-Normal--12-110-75-75-C-60-ISO8859-1		-@FOUNDRY@-@FAMILY@-bold-i-normal--12-110-75-75-C-60-ISO8859-1
+
+-@FOUNDRY@-marumoji-medium-r-Normal--12-110-75-75-C-60-JISX0201.1976-0	-@FOUNDRY@-@FAMILY@-medium-r-normal--12-110-75-75-C-60-JISX0201.1976-0
+-@FOUNDRY@-marumoji-medium-i-Normal--12-110-75-75-C-60-JISX0201.1976-0	-@FOUNDRY@-@FAMILY@-medium-i-normal--12-110-75-75-C-60-JISX0201.1976-0
+-@FOUNDRY@-marumoji-bold-r-Normal--12-110-75-75-C-60-JISX0201.1976-0	-@FOUNDRY@-@FAMILY@-bold-r-normal--12-110-75-75-C-60-JISX0201.1976-0
+-@FOUNDRY@-marumoji-bold-i-Normal--12-110-75-75-C-60-JISX0201.1976-0	-@FOUNDRY@-@FAMILY@-bold-i-normal--12-110-75-75-C-60-JISX0201.1976-0

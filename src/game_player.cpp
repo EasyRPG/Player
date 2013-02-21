@@ -58,7 +58,7 @@ bool Game_Player::IsPassable(int x, int y, int d) const {
 
 	if (!Game_Map::IsValid(new_x, new_y)) return false;
 
-#ifdef _DEBUG
+#ifndef NDEBUG
 	if (Input::IsPressed(Input::DEBUG_THROUGH)) return true;
 #endif
 
@@ -195,7 +195,7 @@ void Game_Player::UpdateNonMoving(bool last_moving) {
 	if ( last_moving && CheckTouchEvent() ) return;
 
 	if ( !Game_Message::visible && Input::IsTriggered(Input::DECISION) ) {
-		// TODO 
+		// TODO
 		//if ( GetOnOffVehicle() ) return;
 		if ( CheckActionEvent() ) return;
 	}
@@ -260,9 +260,9 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 
 	std::vector<Game_Event*>::iterator i;
 	for (i = events.begin(); i != events.end(); i++) {
-		if ( (*i)->GetPriorityType() == RPG::EventPage::Layers_same && 
-			std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() 
-		) 
+		if ( (*i)->GetPriorityType() == RPG::EventPage::Layers_same &&
+			std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end()
+		)
 		{
 			(*i)->Start();
 			result = true;
@@ -277,9 +277,9 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 
 		std::vector<Game_Event*>::iterator i;
 		for (i = events.begin(); i != events.end(); i++) {
-			if ( (*i)->GetPriorityType() == 1 && 
-				std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() 
-			) 
+			if ( (*i)->GetPriorityType() == 1 &&
+				std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end()
+			)
 			{
 				(*i)->Start();
 				result = true;
@@ -427,4 +427,3 @@ bool Game_Player::CanWalk(int x, int y) {
     vehicle_type = last_vehicle_type;
     return result;
 }
-

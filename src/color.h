@@ -41,7 +41,7 @@ public:
 	/// @param blue : blue component
 	/// @param alpha : alpha component
 	////////////////////////////////////////////////////////
-	Color(uint red, uint green, uint blue, uint alpha);
+	Color(unsigned red, unsigned green, unsigned blue, unsigned alpha);
 
 	////////////////////////////////////////////////////////
 	/// Constructor.
@@ -69,19 +69,19 @@ public:
 	/// @param blue : blue component
 	/// @param alpha : alpha component
 	////////////////////////////////////////////////////////
-	void Set(uint red, uint green, uint blue, uint alpha);
+	void Set(unsigned red, unsigned green, unsigned blue, unsigned alpha);
 
 	/// Red component.
-	uint8 red;
+	uint8_t red;
 
 	/// Green component.
-	uint8 green;
+	uint8_t green;
 
 	/// Blue component.
-	uint8 blue;
+	uint8_t blue;
 
 	/// Alpha component.
-	uint8 alpha;
+	uint8_t alpha;
 };
 
 #endif

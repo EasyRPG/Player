@@ -1,0 +1,263 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_PREREQ(2.12)
+AC_INIT(kanjic/font_src.bit)
+
+
+dnl
+dnl default values
+dnl
+AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)
+
+FAMILY="Fixed"
+FOUNDRY="Misc"
+KANJIC_OUTFILE="shnmk12"
+KANJIP_OUTFILE="shnmk12p"
+MINCHO_OUTFILE="shnmk12min"
+MARUMOJI_OUTFILE="shnmk12maru"
+LATIN1_OUTFILE="shnm6x12a"
+HANKAKU_OUTFILE="shnm6x12r"
+
+AC_DIVERT_POP()
+
+FONTDIR=""
+
+dnl
+dnl Checks for programs.
+dnl
+AC_PROG_INSTALL
+
+AC_PATH_PROG(MKFONTDIR, mkfontdir)
+if test "x$MKFONTDIR" = "x" ; then
+    echo "  Error: mkfontdir is necessary."
+    exit 1
+fi
+
+AC_PATH_PROG(SED, sed)
+if test "x$SED" = "x" ; then
+    echo "  Error: sed is necessary."
+    exit 1
+fi
+
+AC_PATH_PROG(GAWK, gawk)
+
+if test "x$GAWK" = "x" ; then
+	AC_PATH_PROG(GAWK, awk)
+	if test "x$GAWK" = "x" ; then
+	    echo "  Error: GNU awk is necessary, please install it."
+	    exit 1
+	elif $GAWK --copyleft > /dev/null 2>&1 ; then
+	    test 0
+	else
+	    echo "  Error: Your system has only non-GNU awk."
+	    echo "        GNU awk is necessary specially, please install it."
+	    exit 1
+	fi
+fi
+
+AC_PATH_PROG(PERL, perl)
+if test "x$PERL" = "x" ; then
+    echo "  Error: perl is necessary, please install it."
+    exit 1
+fi
+
+dnl
+dnl Check for other options.
+dnl
+AC_ARG_WITH(fontdir,
+[  --with-fontdir=[=DIR]          install font directory],
+    FONTDIR=$withval)
+
+AC_ARG_WITH(compress,
+[  --with-compress=[=TYPE]          compression type for font file (gzip|compress)],
+    COMPRESS=$withval)
+
+AC_ARG_WITH(family,
+[  --with-family=[=NAME]          use font family name instead of \"$FAMILY\"],
+    FAMILY=$withval)
+
+AC_ARG_WITH(foundry,
+[  --with-foundry[=NAME]          use font foundry name instead of \"$FOUNDRY\"],
+    FOUNDRY=$withval)
+
+AC_ARG_WITH(kanjic_outfile,
+[  --with-kanjic_outfile[=NAME]   use const-length kanji font file name instead of \"$KANJIC_OUTFILE\"],
+    KANJIC_OUTFILE=$withval)
+
+AC_ARG_WITH(kanjip_outfile,
+[  --with-kanjip_outfile[=NAME]   use proportional kanji font file name instead of \"$KANJIP_OUTFILE\"],
+    KANJIP_OUTFILE=$withval)
+
+AC_ARG_WITH(mincho_outfile,
+[  --with-mincho_outfile[=NAME]   use michou kanji font file name instead of \"$MINCHO_OUTFILE\"],
+    MARUMOJI_OUTFILE=$withval)
+
+AC_ARG_WITH(marumoji_outfile,
+[  --with-marumoji_outfile[=NAME] use marumoji kanji font file name instead of \"$MARUMOJI_OUTFILE\"],
+    MARUMOJI_OUTFILE=$withval)
+
+AC_ARG_WITH(latin1_outfile,
+[  --with-latin1_outfile[=NAME]   use latin1 font file name instead of \"$LATIN1_OUTFILE\"],
+    LATIN1_OUTFILE=$withval)
+
+AC_ARG_WITH(hankaku_outfile,
+[  --with-hankaku_outfile[=NAME]  use hankaku font file name instead of \"$HANKAKU_OUTFILE\"],
+    HANKAKU_OUTFILE=$withval)
+
+AC_ARG_ENABLE(mincho, 
+[  --disable-mincho	         disable making mincho fonts],
+		MAKE_MINCHO="", MAKE_MINCHO=mincho)
+
+AC_ARG_ENABLE(marumoji, 
+[  --disable-marumoji	         disable making marumoji fonts],
+		MAKE_MARUMOJI="", MAKE_MARUMOJI=marumoji)
+
+AC_ARG_ENABLE(bold, 
+[  --disable-bold	         disable making bold fonts],
+		MAKE_BOLD="", MAKE_BOLD=bold)
+
+AC_ARG_ENABLE(italic, 
+[  --disable-italic	         disable making italic fonts],
+		MAKE_ITALIC="", MAKE_ITALIC=italic)
+
+AC_ARG_ENABLE(bolditalic, 
+[  --enable-bolditalic	         enable making bold italic fonts],
+		MAKE_BOLDITALIC=bold-italic, MAKE_BOLDITALIC="")
+
+AC_ARG_ENABLE(progressbar,
+[  --disable-progressbar          disappear verbose progress bar],
+		PROGRESS="", PROGRESS=-V)
+
+
+dnl
+dnl Search Font directory
+dnl
+if test -z "$FONTDIR" ; then
+    for X11FONTDIR in	/usr/X11R6.4/lib/X11/fonts \
+			/usr/X11R6/lib/X11/fonts \
+			/usr/X11R5/lib/X11/fonts \
+			/usr/X11/lib/X11/fonts \
+			/usr/openwin/lib/X11/fonts \
+			/usr/lib/X11/fonts ; do
+	test -d $X11FONTDIR && break
+    done
+
+    for FONTDIR in	$X11FONTDIR/japanese \
+			$X11FONTDIR/Japanese \
+			$X11FONTDIR/ja_JP.eucJP \
+			$X11FONTDIR/ja_JP \
+			$X11FONTDIR/ja \
+			$X11FONTDIR/misc; do
+	test -d $FONTDIR && break
+    done
+    echo checking font directory ... $FONTDIR
+fi
+
+
+if test "x$COMPRESS" = "x"; then
+    SUFFIX=`ls -1 $FONTDIR/*pcf* 2>/dev/null| head -1 | sed 's/.*\.//'`
+    case $SUFFIX in
+	Z|c*) SUFFIX="Z";;
+	*) SUFFIX="gz";;
+    esac
+    echo checking font file suffix ... $SUFFIX
+else
+    case $COMPRESS in
+	g*|G*) SUFFIX="gz";;
+	c*|C*|Z|z) SUFFIX="Z";;
+	*) echo "Error: invalid compress type: $COMPRESS"
+	   echo "       Please use 'gzip' or 'compress'."
+	   exit
+	   ;;
+    esac
+fi	
+
+
+dnl
+dnl Check alias file
+dnl
+if test -f fonts.alias.in; then
+    ALIASFILE=fonts.alias
+else
+    ALIASFILE=""
+fi
+
+dnl
+dnl  Look up script files.
+dnl
+SCRIPTS=""
+for SCRIPT in tools/*.in; do
+	SCRIPTS="${SCRIPTS} "tools/$(basename ${SCRIPT} .in)
+done
+
+dnl
+dnl Create Makefie
+dnl
+AC_SUBST(FOUNDRY)
+AC_SUBST(FAMILY)
+AC_SUBST(KANJIC_OUTFILE)
+AC_SUBST(KANJIP_OUTFILE)
+AC_SUBST(MINCHO_OUTFILE)
+AC_SUBST(MARUMOJI_OUTFILE)
+AC_SUBST(LATIN1_OUTFILE)
+AC_SUBST(HANKAKU_OUTFILE)
+AC_SUBST(MAKE_MINCHO)
+AC_SUBST(MAKE_MARUMOJI)
+AC_SUBST(MAKE_BOLD)
+AC_SUBST(MAKE_ITALIC)
+AC_SUBST(MAKE_BOLDITALIC)
+AC_SUBST(MKFONTDIR)
+AC_SUBST(GAWK)
+AC_SUBST(PERL)
+AC_SUBST(FONTDIR)
+AC_SUBST(SUFFIX)
+AC_SUBST(PROGRESS)
+
+AC_OUTPUT(Makefile
+	kanjic/Makefile
+	kanjip/Makefile
+	mincho/Makefile
+	marumoji/Makefile
+	latin1/Makefile
+	hankaku/Makefile
+	${SCRIPTS}
+	${ALIASFILE})
+
+chmod +x ${SCRIPTS}
+
+ALIAS_VOID_PATTERN="-e #"
+test "x${MAKE_BOLD}"       = "x" && ALIAS_VOID_PATTERN="-e \\-bold-r-   $ALIAS_VOID_PATTERN"
+test "x${MAKE_ITALIC}"     = "x" && ALIAS_VOID_PATTERN="-e \\-medium-i- $ALIAS_VOID_PATTERN"
+test "x${MAKE_BOLDITALIC}" = "x" && ALIAS_VOID_PATTERN="-e \\-bold-i-   $ALIAS_VOID_PATTERN"
+test "x${MAKE_MINCHO}"     = "x" && ALIAS_VOID_PATTERN="-e \\-mincho-   $ALIAS_VOID_PATTERN"
+test "x${MAKE_MARUMOJI}"   = "x" && ALIAS_VOID_PATTERN="-e \\-marumoji- $ALIAS_VOID_PATTERN"
+
+if test -f "$ALIASFILE"; then
+    sed 'y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/' $ALIASFILE | \
+	grep . | grep -v $ALIAS_VOID_PATTERN | \
+	awk '{if ($1 ~ /^!/ || $1 != $2) print $0;}' > $ALIASFILE-
+    mv -f $ALIASFILE- $ALIASFILE
+fi
+
+
+dnl
+dnl Output build information.
+dnl
+define(PRINT_STATUS, [
+FILE=$2/font_src.bit
+test -f $2/font_src_diff.bit && FILE=$2/font_src_diff.bit
+echo     "      FONT FILE $FONTDIR/$1.$SUFFIX"
+echo -n  "      TARGET "
+sed -n '1,/STARTPROPERTIES /s/^FONT //p' $FILE | sed -e "s/\@FOUNDRY\@/$3/" -e "s/\@FAMILY\@/$4/"
+echo     ""
+])
+
+echo     ""
+echo     "      -- STATUS --" 
+PRINT_STATUS($KANJIC_OUTFILE, kanjic, ${FOUNDRY}, ${FAMILY})
+PRINT_STATUS($KANJIP_OUTFILE, kanjip, ${FOUNDRY}, ${FAMILY})
+test "x${MAKE_MINCHO}" != "x" && \
+    PRINT_STATUS($MINCHO_OUTFILE, mincho, ${FOUNDRY}, "Mincho")
+test "x${MAKE_MARUMOJI}" != "x" && \
+    PRINT_STATUS($MARUMOJI_OUTFILE, marumoji, ${FOUNDRY}, "Marumoji")
+PRINT_STATUS($LATIN1_OUTFILE,  latin1,  ${FOUNDRY}, ${FAMILY})
+PRINT_STATUS($HANKAKU_OUTFILE, hankaku, ${FOUNDRY}, ${FAMILY})

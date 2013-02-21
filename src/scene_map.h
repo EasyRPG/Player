@@ -24,6 +24,7 @@
 #include "scene.h"
 #include "spriteset_map.h"
 #include "window_message.h"
+#include <boost/scoped_ptr.hpp>
 
 ////////////////////////////////////////////////////////////
 /// Scene Map class
@@ -34,10 +35,10 @@ public:
 	/// Constructor
 	////////////////////////////////////////////////////////
 	Scene_Map();
+	~Scene_Map();
 
 	void Start();
 	void Update();
-	void Terminate();
 //	void TransitionIn();
 //	void TransitionOut();
 
@@ -47,13 +48,12 @@ public:
 	void CallMenu();
 	void CallSave();
 	void CallDebug();
-	
-	Spriteset_Map* spriteset;
-	Window_Message* message_window;
+
+	boost::scoped_ptr<Spriteset_Map> spriteset;
+	boost::scoped_ptr<Window_Message> message_window;
 
 private:
 	void UpdateTeleportPlayer();
 };
 
 #endif
-

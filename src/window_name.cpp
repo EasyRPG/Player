@@ -20,12 +20,16 @@
 ////////////////////////////////////////////////////////////
 #include <string>
 #include "window_name.h"
+#include "bitmap.h"
+#include "font.h"
+
+#include <boost/regex/pending/unicode_iterator.hpp>
 
 ////////////////////////////////////////////////////////////
 Window_Name::Window_Name(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) {
 
-	SetContents(Surface::CreateSurface(width - 16, height - 16));
+	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	name.clear();
@@ -56,12 +60,17 @@ void Window_Name::Append(const std::string& text) {
 void Window_Name::Erase() {
 	if (name.size() < 1)
 		return;
-	std::string::iterator it = name.end();
-	name.erase(--it);
+	
+	boost::u8_to_u32_iterator<std::string::const_iterator> name_begin =
+		boost::u8_to_u32_iterator<std::string::const_iterator>(name.begin(), name.begin(), name.begin());
+	boost::u8_to_u32_iterator<std::string::const_iterator> name_end =
+		boost::u8_to_u32_iterator<std::string::const_iterator>(name.end(), name.begin(), name.end());
+	--name_end;
+
+	name = std::string(name_begin.base(), name_end.base());
 	Refresh();
 }
 
 const std::string& Window_Name::Get() {
 	return name;
 }
-

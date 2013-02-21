@@ -42,9 +42,9 @@ void Game_System::BgmPlay(RPG::Music const& bgm) {
 	data.current_music = bgm;
 	// RPG Maker Hack: (OFF) means play nothing
 	if (!bgm.name.empty() && bgm.name != "(OFF)") {
-		Audio::BGM_Play(bgm.name, bgm.volume, bgm.tempo);
+		Audio().BGM_Play(bgm.name, bgm.volume, bgm.tempo);
 	} else {
-		Audio::BGM_Stop();
+		Audio().BGM_Stop();
 	}
 	Graphics::FrameReset();
 }
@@ -52,7 +52,7 @@ void Game_System::BgmPlay(RPG::Music const& bgm) {
 ////////////////////////////////////////////////////////////
 void Game_System::SePlay(RPG::Sound const& se) {
 	if (!se.name.empty() && se.name != "(OFF)") {
-		Audio::SE_Play(se.name, se.volume, se.tempo);
+		Audio().SE_Play(se.name, se.volume, se.tempo);
 	}
 }
 
@@ -189,4 +189,3 @@ void Game_System::SetTransition(int which, int transition) {
 		case Transition_EndBattleShow:		data.battle_end_fadein		= transition;
 	}
 }
-

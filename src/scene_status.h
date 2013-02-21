@@ -27,6 +27,7 @@
 #include "window_equip.h"
 #include "window_equipstatus.h"
 #include "window_gold.h"
+#include <boost/scoped_ptr.hpp>
 
 ////////////////////////////////////////////////////////////
 /// Scene Status class.
@@ -41,18 +42,16 @@ public:
 	Scene_Status(int actor_index);
 
 	void Start();
-	void Terminate();
 	void Update();
 
 private:
 	int actor_index;
 
-	Window_ActorInfo* actorinfo_window;
-	Window_ActorStatus* actorstatus_window;
-	Window_Gold* gold_window;
-	Window_EquipStatus* equipstatus_window;
-	Window_Equip* equip_window;
+	boost::scoped_ptr<Window_ActorInfo> actorinfo_window;
+	boost::scoped_ptr<Window_ActorStatus> actorstatus_window;
+	boost::scoped_ptr<Window_Gold> gold_window;
+	boost::scoped_ptr<Window_EquipStatus> equipstatus_window;
+	boost::scoped_ptr<Window_Equip> equip_window;
 };
 
 #endif
-

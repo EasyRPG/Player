@@ -18,12 +18,16 @@
 #ifndef _EASYRPG_IMAGE_BMP_H_
 #define _EASYRPG_IMAGE_BMP_H_
 
-#include <cstdio>
 #include "system.h"
+#ifdef SUPPORT_BMP
+
+#include <cstdio>
 
 namespace ImageBMP {
-	void ReadBMP(const uint8* data, uint len, bool transparent, int& width, int& height, void*& pixels);
+	void ReadBMP(const uint8_t* data, unsigned len, bool transparent, int& width, int& height, void*& pixels);
 	void ReadBMP(FILE* stream, bool transparent, int& width, int& height, void*& pixels);
 }
+
+#endif // SUPPORT_BMP
 
 #endif

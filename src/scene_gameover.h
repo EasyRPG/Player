@@ -23,6 +23,7 @@
 ////////////////////////////////////////////////////////////
 #include "scene.h"
 #include "sprite.h"
+#include <boost/scoped_ptr.hpp>
 
 ////////////////////////////////////////////////////////////
 /// Scene Game Over class.
@@ -38,11 +39,10 @@ public:
 
 	void Start();
 	void Update();
-	void Terminate();
 
 private:
 	/// Background graphic
-	Sprite* background;
+	boost::scoped_ptr<Sprite> background;
 };
 
 #endif

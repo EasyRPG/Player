@@ -20,7 +20,7 @@
 ////////////////////////////////////////////////////////////
 #include <algorithm>
 #include "bitmap.h"
-#include "surface.h"
+#include "bitmap.h"
 #include "cache.h"
 #include "input.h"
 #include "game_party.h"
@@ -36,7 +36,7 @@ Window_BattleStatus::Window_BattleStatus() :
 	SetBorderX(4);
 	SetBorderY(4);
 
-	SetContents(Surface::CreateSurface(width - 8, height - 8));
+	SetContents(Bitmap::Create(width - 8, height - 8));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	index = -1;
@@ -74,7 +74,7 @@ void Window_BattleStatus::RefreshGauge(int i) {
 
 ////////////////////////////////////////////////////////////
 void Window_BattleStatus::DrawGauge(Game_Actor* /* actor */, int index, int cx, int cy) {
-	Bitmap* system2 = Cache::System2(Data::system.system2_name);
+	BitmapRef system2 = Cache::System2(Data::system.system2_name);
 
 	Battle::Ally& ally = Game_Battle::GetAlly(index);
 	bool full = ally.IsReady();
@@ -88,10 +88,10 @@ void Window_BattleStatus::DrawGauge(Game_Actor* /* actor */, int index, int cx, 
 	Rect dst_rect(cx+16, cy, 25, 16);
 	Rect bar_rect(cx+16, cy, gauge_w, 16);
 
-	contents->Blit(cx+0, cy, system2, gauge_left, 255);
-	contents->StretchBlit(dst_rect, system2, gauge_center, 255);
-	contents->Blit(cx+16+25, cy, system2, gauge_right, 255);
-	contents->StretchBlit(bar_rect, system2, gauge_bar, 255);
+	contents->Blit(cx+0, cy, *system2, gauge_left, 255);
+	contents->StretchBlit(dst_rect, *system2, gauge_center, 255);
+	contents->Blit(cx+16+25, cy, *system2, gauge_right, 255);
+	contents->StretchBlit(bar_rect, *system2, gauge_bar, 255);
 }
 
 ////////////////////////////////////////////////////////////
@@ -165,4 +165,3 @@ void Window_BattleStatus::UpdateCursorRect() {
 	else
 		SetCursorRect(Rect(0, index * 15, contents->GetWidth(), 16));
 }
-

@@ -19,17 +19,17 @@
 #define _GAME_SCREEN_
 
 #include <vector>
+#include "system.h"
 #include "plane.h"
-#include "surface.h"
 #include "game_picture.h"
 #include "game_character.h"
 #include "battle_animation.h"
+#include <boost/scoped_ptr.hpp>
 
 class Game_Screen {
 
 public:
 	Game_Screen();
-	~Game_Screen();
 
 	Picture* GetPicture(int id);
 
@@ -49,7 +49,7 @@ public:
 	void Update();
 
 private:
-	std::vector<Picture*> pictures;
+	std::vector<EASYRPG_SHARED_PTR<Picture> > pictures;
 
 	RPG::SaveScreen& data;
 	int flash_sat;		// RPGMaker bug: this isn't saved
@@ -72,18 +72,18 @@ private:
 
 protected:
 	struct Snowflake {
-		uint16 x;
-		uint8 y;
-		uint8 life;
+		uint16_t x;
+		uint8_t y;
+		uint8_t life;
 	};
 
 	std::vector<Snowflake> snowflakes;
 
-	Plane* weather_plane;
-	Surface* weather_surface;
-	Bitmap* snow_bitmap;
-	Bitmap* rain_bitmap;
-	BattleAnimation* animation;
+	boost::scoped_ptr<Plane> weather_plane;
+	BitmapRef weather_surface;
+	BitmapRef snow_bitmap;
+	BitmapRef rain_bitmap;
+	boost::scoped_ptr<BattleAnimation> animation;
 
 	void InitWeather();
 	void StopWeather();

@@ -18,13 +18,24 @@
 #ifndef _EASYRPG_TEXT_H_
 #define _EASYRPG_TEXT_H_
 
-#include "ftfont.h"
-#include "surface.h"
+#include "system.h"
+#include <string>
 
-class Text {
-public:
-	static void Draw(Surface* dest, int x, int y, int color, std::string const& text, Surface::TextAlignment align = Surface::TextAlignLeft);
-	static void Draw(Surface* dest, int x, int y, int color, std::wstring const& text, Surface::TextAlignment align = Surface::TextAlignLeft);
-};
+#ifdef _WIN32
+#  define utf(x) L##x
+#else
+#  define utf(x) x
+#endif
+
+namespace Text {
+	/// TextDraw alignment options
+	enum Alignment {
+		AlignLeft,
+		AlignCenter,
+		AlignRight
+	};
+
+	void Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
+}; // namespace Text
 
 #endif

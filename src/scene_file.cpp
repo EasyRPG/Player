@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////
 // This file is part of EasyRPG Player.
-// 
+//
 // EasyRPG Player is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // EasyRPG Player is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
@@ -40,26 +40,28 @@ Scene_File::Scene_File(std::string message) :
 ////////////////////////////////////////////////////////////
 void Scene_File::Start() {
 	// Create the windows
-	help_window = new Window_Help(0, 0, 320, 32);
+	help_window.reset(new Window_Help(0, 0, 320, 32));
 	help_window->SetText(message);
 
 	for (int i = 0; i < 15; i++) {
-		Window_SaveFile *w = new Window_SaveFile(0, 40 + i * 64, 320, 64);
+		EASYRPG_SHARED_PTR<Window_SaveFile>
+			w(new Window_SaveFile(0, 40 + i * 64, 320, 64));
 		w->SetIndex(i);
 
 		// Try to access file
 		std::stringstream ss;
 		ss << "Save" << (i <= 8 ? "0" : "") << (i+1) << ".lsd";
-		std::string file = FileFinder::FindDefault(".", ss.str());
+		std::string file = FileFinder::FindDefault(ss.str());
 		if (!file.empty()) {
 			// File found
-			std::auto_ptr<RPG::Save> savegame = LSD_Reader::Load(file);
+			std::auto_ptr<RPG::Save> savegame =
+				LSD_Reader::Load(file);
 
 			if (savegame.get())	{
 				std::vector<std::pair<int, std::string> > party;
-			
+
 				// When a face_name is empty the party list ends
-				int party_size = 
+				int party_size =
 					savegame->title.face1_name.empty() ? 0 :
 					savegame->title.face2_name.empty() ? 1 :
 					savegame->title.face3_name.empty() ? 2 :
@@ -100,16 +102,9 @@ void Scene_File::Start() {
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_File::Terminate() {
-	delete help_window;
-	for (size_t i = 0; i < file_windows.size(); i++)
-		delete file_windows[i];
-}
-
-////////////////////////////////////////////////////////////
 void Scene_File::Refresh() {
 	for (int i = 0; (size_t) i < file_windows.size(); i++) {
-		Window_SaveFile *w = file_windows[i];
+		Window_SaveFile *w = file_windows[i].get();
 		w->SetY(40 + (i - top_index) * 64);
 		w->SetActive(i == index);
 		w->SetVisible(i >= top_index && i < top_index + 3);
@@ -151,4 +146,3 @@ void Scene_File::Update() {
 	if (top_index != old_top_index || index != old_index)
 		Refresh();
 }
-

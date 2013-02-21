@@ -21,11 +21,10 @@
 #include <cmath>
 #include "bitmap.h"
 #include "bitmap_utils.h"
-#include "surface.h"
 
 ////////////////////////////////////////////////////////////
 // Rotate, Zoom, Single Opacity
-void Surface::EffectsBlit(const Matrix &fwd, Bitmap* src, Rect src_rect, int opacity) {
+void Bitmap::EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect const& src_rect, int opacity) {
 	if (opacity <= 0)
 		return;
 
@@ -41,7 +40,7 @@ void Surface::EffectsBlit(const Matrix &fwd, Bitmap* src, Rect src_rect, int opa
 
 ////////////////////////////////////////////////////////////
 // Rotate, Zoom, Split Opacity
-void Surface::EffectsBlit(const Matrix &fwd, Bitmap* src, Rect src_rect,
+void Bitmap::EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect const& src_rect,
 						  int top_opacity, int bottom_opacity, int opacity_split) {
 	if (opacity_split <= 0)
 		EffectsBlit(fwd, src, src_rect,  top_opacity);
@@ -61,7 +60,7 @@ void Surface::EffectsBlit(const Matrix &fwd, Bitmap* src, Rect src_rect,
 
 ////////////////////////////////////////////////////////////
 // Waver, Single Opacity
-void Surface::EffectsBlit(int x, int y, Bitmap* src, Rect src_rect,
+void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
 						   int opacity,
 						   int waver_depth, double waver_phase) {
 	if (waver_depth == 0)
@@ -72,7 +71,7 @@ void Surface::EffectsBlit(int x, int y, Bitmap* src, Rect src_rect,
 
 ////////////////////////////////////////////////////////////
 // Waver, Split Opacity
-void Surface::EffectsBlit(int x, int y, Bitmap* src, Rect src_rect,
+void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
 						   int top_opacity, int bottom_opacity, int opacity_split,
 						   int waver_depth, double waver_phase) {
 	if (opacity_split <= 0)
@@ -98,25 +97,25 @@ void Surface::EffectsBlit(int x, int y, Bitmap* src, Rect src_rect,
 
 ////////////////////////////////////////////////////////////
 // Waver, Zoom, Split Opacity
-void Surface::EffectsBlit(int x, int y, Bitmap* src, Rect src_rect,
+void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
 						   int top_opacity, int bottom_opacity, int opacity_split,
 						   double zoom_x, double zoom_y,
 						   int waver_depth, double waver_phase) {
 	int zoomed_width  = (int)(src_rect.width  * zoom_x);
 	int zoomed_height = (int)(src_rect.height * zoom_y);
-	Bitmap* draw = src->Resample(zoomed_width, zoomed_height, src_rect);
-	EffectsBlit(x, y, draw, draw->GetRect(),
+	BitmapRef draw = src.Resample(zoomed_width, zoomed_height, src_rect);
+	EffectsBlit(x, y, *draw, draw->GetRect(),
 				top_opacity, bottom_opacity, (int) (opacity_split * zoom_y),
 				waver_depth, waver_phase);
-	delete draw;
 }
 
 ////////////////////////////////////////////////////////////
-void Surface::EffectsBlit(int x, int y, Bitmap* src, Rect src_rect,
+void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect_,
 						   int top_opacity, int bottom_opacity, int opacity_split,
 						   const Tone& tone,
 						   double zoom_x, double zoom_y, double angle,
 						   int waver_depth, double waver_phase) {
+	Rect src_rect = src_rect_;
 	bool rotate = angle != 0.0;
 	bool scale = zoom_x != 1.0 || zoom_y != 1.0;
 	bool waver = waver_depth != 0;
@@ -127,7 +126,8 @@ void Surface::EffectsBlit(int x, int y, Bitmap* src, Rect src_rect,
 		(top_opacity < 255 || bottom_opacity < 255);
 	opacity = top_opacity < 255 || bottom_opacity < 255;
 
-	Surface* draw = (Surface*) NULL;
+	Bitmap const* draw = &src;
+	BitmapRef draw_;
 
 	if (tone_change) {
 		if (!rotate && !scale && !opacity && !waver) {
@@ -135,12 +135,12 @@ void Surface::EffectsBlit(int x, int y, Bitmap* src, Rect src_rect,
 			return;
 		}
 
-		bool transparent = src->GetTransparent();
-		draw = CreateSurface(src_rect.width, src_rect.height, transparent);
+		bool transparent = src.GetTransparent();
+		draw_ = Create(src_rect.width, src_rect.height, transparent);
 		if (transparent)
-			draw->Clear();
-		draw->ToneBlit(0, 0, src, src_rect, tone);
-		src = draw;
+			draw_->Clear();
+		draw_->ToneBlit(0, 0, src, src_rect, tone);
+		draw = draw_.get();
 		src_rect.x = 0;
 		src_rect.y = 0;
 	}
@@ -150,16 +150,12 @@ void Surface::EffectsBlit(int x, int y, Bitmap* src, Rect src_rect,
 		EffectsBlit(fwd, src, src_rect, top_opacity, bottom_opacity, opacity_split);
 	}
 	else if (scale)
-		EffectsBlit(x, y, src, src_rect,
+		EffectsBlit(x, y, *draw, src_rect,
 					top_opacity, bottom_opacity, opacity_split,
 					zoom_x, zoom_y,
 					waver_depth, waver_phase);
 	else
-		EffectsBlit(x, y, src, src_rect,
+		EffectsBlit(x, y, *draw, src_rect,
 					top_opacity, bottom_opacity, opacity_split,
 					waver_depth, waver_phase);
-
-	if (draw != NULL)
-		delete draw;
 }
-

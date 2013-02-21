@@ -1,0 +1,197 @@
+●Changelog
+* Tue Feb 13 2001 Yasuyuki Furukawa <Furukawa.Yasuyuki@fujixerox.co.jp>
+  - 1.0.9 Released
+  - fonts.alias.in の半角文字に対するbold, mkitalic の エイリアス
+    設定ミス修正 (Thanks to 倉品さん)
+
+* Mon Jan  8 2001 Yasuyuki Furukawa <Furukawa.Yasuyuki@fujixerox.co.jp>
+  - 1.0.8 Released
+  - mkitalic の FONTBOUNDINGBOXに関するバグ修正
+
+* Fri Oct 20 2000 Yasuyuki Furukawa <Furukawa.Yasuyuki@fujixerox.co.jp>
+  - 1.0.7 Relase
+  - configure が ash でも機能するようにした
+  - Metric情報をおかしくしていたので訂正
+
+* Mon Oct  9 2000 Yasuyuki Furukawa <Furukawa.Yasuyuki@fujixerox.co.jp>
+  - 1.0.6 Release
+  - いくつかの第2水準漢字を整形
+   (安岡版 jiskan16を参考に; http://kanji.zinbun.kyoto-u.ac.jp/~yasuoka/ftp/fonts)
+
+* Mon Oct  2 2000 Yasuyuki Furukawa <Furukawa.Yasuyuki@fujixerox.co.jp>
+  - 1.0.5 Release
+  - 第1次水準漢字パターンの微調整
+  - --disable-progressbar の追加
+  - addalias スクリプトのバグ修正.
+  - fonts.alias 内容の修正
+  - その他のconfigure/Makefile, スクリプト類のクリーンアップ
+
+* Thu Sep 28 2000 Yasuyuki Furukawa <Furukawa.Yasuyuki@fujixerox.co.jp>
+  - 1.0.4 Release
+  - 安定性や汎用性の理由でfonts.alias を変更(外部フォント依存をなくした)
+  - 上記変更で(アップグレード時に)fonts.aliasのインストールに破綻が生じた
+    ので、スクリプト化(addalias)
+
+* Mon Sep 18 2000 Yasuyuki Furukawa <Furukawa.Yasuyuki@fujixerox.co.jp>
+  - 1.0.3 Release
+  - 失礼や勘違いな文体があったので、ドキュメント類を修正
+
+* Sun Sep  17 2000 Yasuyuki Furukawa <Furukawa.Yasuyuki@fujixerox.co.jp>
+  - 1.0.2 Release
+  - 『賜』が「易」ではなく、「昜」にエンバグしていたので修正
+  - 『掌』の冠を「学」の冠としてエンバグしていたのを修正
+  - いつものデザインパターン微調整(平仮名、カタカナ、漢字)
+  - bit2bdf の高速化(狩野宏樹様へ感謝します)
+  - BUGSドキュメントのリファイン
+
+* Sun Sep  9 2000 Yasuyuki Furukawa <Furukawa.Yasuyuki@fujixerox.co.jp>
+  - 東雲 フォント 1.0.1 Release
+  - k14ライクへ糸辺、金辺のデザインの変更 (ただの自己満足...)
+  - いくつかのマイナーな第一水準漢字パターンの微調整
+  - 第2水準の明朝専用漢字フォントパターンを若干追加
+
+* Sun Aug  6 2000 Yasuyuki Furukawa <furukawa@vinelinux.org>
+  - 東雲 フォント 1.0 Release
+  - パターンの微調整
+
+---------------------------------------------
+  kaname-alter(東雲フォントの前身)のChangeLog
+---------------------------------------------
+
+* Sun Aug  6 2000 Yasuyuki Furukawa <furukawa@vinelinux.org>
+  - 3.0 Pre Release (試験リリース)
+  - バージョン2.0から始まった漢字デザインの修正の一応の完了(95%)
+  - 差分管理するための bdfdiff, bdfmargeスクリプトの追加
+  - 任意パスのgawk, Perlへ対応できるようにconfigure.in 周りの書き直し
+  - 上記スクリプトを用いて 丸文字および明朝体フォントを追加
+  - オリジナル要町に含まれるJISX0208.1990規格外の文字データの削除
+  - ギリシャ文字、ロシア文字のプロポーショナル化(kanjip)
+  - JISX0208.1983 -> JISX0208.1990 へ名称変更
+  - ドキュメントの整備
+
+* Sun Jul 11 2000 Yasuyuki Furukawa <furukawa@vinelinux.org>
+  - 2.9.5-6 Release
+  - 『裸』『隋』等の新たに発見した誤デザインの修正
+  - 魚辺のデザインの変更
+  - 第一水準漢字・仮名のデザインの微調整
+  - 第二水準漢字のオリジナルデザインからの修正の推進(80%)
+  - 全角英数字を1ドット細く
+  - 平仮名のデザインの若干の調整
+
+* Wed Jun 8 2000 Yasuyuki Furukawa <furukawa@vinelinux.org>
+  - 2.9.3-4 Release
+  - 第二水準漢字の微調整
+  - プロポーショナル漢字フォントデータが壊れていたので修正
+     (狩野 賢志さんからの報告)
+
+* Thu May 18 2000 Yasuyuki Furukawa <furukawa@vinelinux.org>
+  - 2.9.0-2 Release
+  - 第一水準漢字のデザインの微調整
+  - 第二水準漢字のオリジナルデザインからの修正の推進(40%)
+  - 『黎』『党』等の新たに発見した誤デザインの修正
+  - JISX0208-1990規格外の記号文字の削除
+
+* Tue Mar 07 2000 Yasuyuki Furukawa <furukawa@vinelinux.org>
+  - 2.8.1-2 Release
+  - configure.in の修正
+  - 微量の第一水準漢字のデザイン調整
+  - 若干の第二水準漢字のオリジナルデザインからの修正
+
+* Mon Feb 21 2000 Yasuyuki Furukawa <furukawa@vinelinux.org>
+  - 2.8 Release
+  - 『敲』『腕』等の新たに発見した誤デザインの修正
+  - 女辺、さんずいのデザインの見直し
+  - 第2水準漢字に若干着手
+
+* Sun Feb 6 2000 Yasuyuki Furukawa <furukawa@vinelinux.org>
+  - 2.6-2.7 Release
+  - 平仮名・全角記号の微調整
+  - オリジナル要町改で行われた誤デザインの修正のマージ
+
+* Sun Jan 16 2000 Yasuyuki Furukawa <furukawa@vinelinux.org>
+  - 2.1-2.5 Release
+  - ラテン, 半角のグラフ文字の修正
+  - mkitalicの調整パターンの修正
+  - カタカナ・平仮名・漢字の微調整
+
+* Thu Oct 21 1999 Yasuyuki Furukawa <furukawa@vinelinux.org>
+  - 2.0 Release
+  - 自作のmkitalic (イタリックフォント作成ツール)追加
+  - 第一水準漢字を中心とした漢字デザインの改定
+    (横幅・高さを若干小さめにした)
+  - いくつかの平仮名・カタカナデザインの微調整
+
+* Thu Oct 14 1999 Yasuyuki Furukawa <furukawa@vinelinux.org>
+  - 1.3 Release
+  - 半角カタカナ(JISX0201.1976)の追加
+  - 若干の平仮名およびいくつかの漢字デザインの変更
+  - Xのフォントセットでフォントを指定する場合、うまく
+    要町を認識できないので、
+    フォント名を"MNKANAME" から "Mnkaname"に変えた。
+  - VineSeedへのマージ(!)
+
+* Oct 1999	Yasuyuki Furukawa <furukawa@vinelinux.org>
+  - 1.2 Release
+  - Latin1(ISO8859-1)フォントの追加
+
+* Oct 1999	Yasuyuki Furukawa <furukawa@vinelinux.org>
+  - 1.1 Release
+  - 漢字プロポーショナル・フォント追加
+  - フォントソースをBDFから、エディタで直接変更できる形式へ変更
+
+* Sep 1999	Yasuyuki Furukawa <furukawa@vinelinux.org>
+  - 1.0 Release
+  - 平仮名およびカタカナのみ変更
+  - 漢字固定長フォント(JISX0208.1983)の完成
+
+----------------------
+  誤デザイン修正一覧
+----------------------
+以下はオリジナルの要町-改フォント 1.0.1から改編したものです.
+
+●オリジナル要町-改から新たに修正したもの
+党	「学」の冠になっている.
+裸	ころも偏がしめす偏になっている.
+壊懐	右上の「十」が「亠」になっている.
+敲	旁の「攴」が「支」になっている.
+隸 	左上の「木」が「士」になっている.
+拆	木辺になっている.
+苑腕椀碗 「夕」が「炙の上」に見える.
+冤	「兔」が「免」になっている
+曵	上の「曰」が「日」になっている.
+黏	左上の「禾」がちがう.
+黎	右上が「勿」になっている(縦線が1本多い).
+窈	「幼」の旁が「刀」になっている.
+冑	月の横線の両脇にすき間がない.
+拯	手辺のデザインが…獣辺(?)になっている.
+盍盂盖  ┐
+盒盞盥   > 下の「皿」の縦線が1本多い.
+盧盪蘯  ┘
+緜	旁の「系」が「糸」になっている
+悋	旁が「文」＋「口」ではなく「斉」になっている
+隋	こざとへんが「月」になっている
+贅	右上の「攵」が「丸」になっている
+
+●オリジナルデザインのアイデンティティ(?)から、
+				趣味的に修正したもの
+纏	旁の「广」が「厂」になっている.
+寝	「宀」が「冖」になっている
+実	うかんむりの中が「春」の上のようになっている.
+潅観	潅の旁上部、または観の偏上部が微妙に(?)違う.(わざと?)
+
+●オリジナル要町-改のChangelogにあって未修正だったもの
+
+侈茗	「夕」が「炙の上」になっている
+厥	「欠」が「攵」になっている.
+嫩	「敕」が「刺」になっている.
+寃	「兔」が「免」になっている.
+愆	「ぎょうにんべん」が「にんべん」になっている.
+惴	「山」の縦棒が一本多い.
+暝瞑溟	右下の「六」が「大」になっている.
+獗	「欠」が「犬」になっている.
+穗	右上に余計な点がある.
+糘	「家」の横棒が一本多い()
+聨	二つの「糸の上」が、「系の上」になっている.
+觚	「瓜」が「爪」になっている.
+陞	「土」が「工」になっている.
+鵐	二つの「人」が「入」になっている.

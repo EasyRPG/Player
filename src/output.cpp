@@ -18,56 +18,109 @@
 ////////////////////////////////////////////////////////////
 /// Headers
 ////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <cstdarg>
+#include <ctime>
+
+#include <iomanip>
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <cstdlib>
-#include <cstdarg>
+#include <exception>
+
+#include "filefinder.h"
 #include "graphics.h"
 #include "input.h"
-#include "msgbox.h"
 #include "options.h"
 #include "output.h"
 #include "player.h"
-#include "time.hpp"
+#include "bitmap.h"
+#include "main_data.h"
 
 ////////////////////////////////////////////////////////////
-static void HandleScreenOutput(std::string msg, bool is_error) {
-		std::stringstream ss;
-		ss << msg << "\n\n";
-		if (is_error) {
-			 ss << "EasyRPG Player will close now.\nPress any key to exit...";
-		} else {
-			ss << "Press any key to continue...";
-		}
-		DisplayUi->DrawScreenText(ss.str(), 10, 30 + 10);
-		DisplayUi->UpdateDisplay();
-		Input::ResetKeys();
-		while (!Input::IsAnyPressed()) {
-			Time::Sleep(1);
-			DisplayUi->ProcessEvents();
+#include <boost/config.hpp>
+#include <boost/lexical_cast.hpp>
 
-			if (Player::exit_flag) break;
+#ifdef BOOST_NO_EXCEPTIONS
+#include <boost/throw_exception.hpp>
 
-			Input::Update();
-		}
-		Input::ResetKeys();
-		Graphics::FrameReset();
-		Graphics::Update();
+void boost::throw_exception(std::exception const& exp) {
+	Output::Error("exception: %s", exp.what());
+}
+#endif
+
+namespace {
+	static std::ofstream LOG_FILE(OUTPUT_FILENAME, std::ios_base::out | std::ios_base::app);
+
+	static std::ostream& output_time() {
+		std::time_t t = std::time(NULL);
+		return LOG_FILE << "Local: " << std::asctime(std::localtime(&t))
+						<< "UTC  : " << std::asctime(std::gmtime(&t));
+	}
+
+	static bool ignore_pause = false;
+}
+
+void Output::IgnorePause(bool const val) {
+	ignore_pause = val;
 }
 
 ////////////////////////////////////////////////////////////
-void Output::Error(char* fmt, ...) {
-	va_list args;
-	va_start(args, fmt);
+static void HandleScreenOutput(char const* type, std::string const& msg, bool is_error) {
+	Output::TakeScreenshot();
 
-	char str[256];
-	vsprintf(str, fmt, args);
+	output_time() << type << ":\n  " << msg << "\n";
 
-	Output::ErrorStr((std::string)str);
+	if(ignore_pause) { return; }
 
-	va_end(args);
+	std::stringstream ss;
+	ss << type << ":\n" << msg << "\n\n";
+	if (is_error) {
+		ss << "EasyRPG Player will close now.\nPress any key to exit...";
+	} else {
+		ss << "Press any key to continue...";
+	}
+	DisplayUi->GetDisplaySurface()->Clear();
+	DisplayUi->DrawScreenText(ss.str(), 10, 30 + 10);
+	DisplayUi->UpdateDisplay();
+	Input::ResetKeys();
+	while (!Input::IsAnyPressed()) {
+		DisplayUi->Sleep(1);
+		DisplayUi->ProcessEvents();
+
+		if (Player::exit_flag) break;
+
+		Input::Update();
+	}
+	Input::ResetKeys();
+	Graphics::FrameReset();
+	Graphics::Update();
 }
+
+
+bool Output::TakeScreenshot() {
+	int index = 0;
+	std::string p;
+	do {
+		p = FileFinder::MakePath(Main_Data::project_path,
+								 "screenshot_"
+								 + boost::lexical_cast<std::string>(index++)
+								 + ".png");
+	} while(FileFinder::Exists(p));
+	return TakeScreenshot(p);
+}
+
+bool Output::TakeScreenshot(std::string const& file) {
+	EASYRPG_SHARED_PTR<std::fstream> ret =
+		FileFinder::openUTF8(file, std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
+	return ret? Output::TakeScreenshot(*ret) : false;
+}
+
+bool Output::TakeScreenshot(std::ostream& os) {
+	return DisplayUi->GetDisplaySurface()->WritePNG(os);
+}
+
+////////////////////////////////////////////////////////////
 void Output::Error(const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
@@ -75,54 +128,27 @@ void Output::Error(const char* fmt, ...) {
 	char str[256];
 	vsprintf(str, fmt, args);
 
-	Output::ErrorStr((std::string)str);
+	Output::ErrorStr(std::string(str));
 
 	va_end(args);
 }
-void Output::ErrorStr(std::string err) {
-	#if OUTPUT_TYPE == OUTPUT_CONSOLE
+void Output::ErrorStr(std::string const& err) {
+	if (DisplayUi) {
+		DisplayUi->DrawScreenText("Error:", 10, 30, Color(255, 0, 0, 0));
+		HandleScreenOutput("Error", err, true);
+	} else {
+		// Fallback to Console if the display is not ready yet
 		printf("%s\n", err.c_str());
 		std::cout << std::endl;
 		std::cout << "EasyRPG Player will close now. Press any key..." << std::endl;
-	#elif OUTPUT_TYPE == OUTPUT_FILE
-		std::ofstream file;
-		file.open(OUTPUT_FILENAME, std::ios::out | std::ios::app);
-		file << err;
-		file.close();
-	#elif OUTPUT_TYPE == OUTPUT_MSGBOX
-		if (DisplayUi != NULL) {
-			DisplayUi->ShowCursor(true);
-		}
-		MsgBox::Error(err, GAME_TITLE);
-	#elif OUTPUT_TYPE == OUTPUT_SCREEN
-		if (DisplayUi != NULL) {
-			DisplayUi->DrawScreenText("Error:", 10, 30, Color(255, 0, 0, 255));
-			HandleScreenOutput(err, true);
-		} else {
-			// Fallback to Console if the display is not ready yet
-			printf("%s\n", err.c_str());
-			std::cout << std::endl;
-			std::cout << "EasyRPG Player will close now. Press any key..." << std::endl;
-			std::cin.get();
-		}
-	#endif
+		std::cin.get();
+	}
+
 	Player::Exit();
 	exit(EXIT_FAILURE);
 }
 
 ////////////////////////////////////////////////////////////
-void Output::Warning(char* fmt, ...) {
-	va_list args;
-	va_start(args, fmt);
-
-	char str[256];
-
-	vsprintf(str, fmt, args);
-
-	Output::WarningStr((std::string)str);
-
-	va_end(args);
-}
 void Output::Warning(const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
@@ -131,42 +157,16 @@ void Output::Warning(const char* fmt, ...) {
 
 	vsprintf(str, fmt, args);
 
-	Output::WarningStr((std::string)str);
+	Output::WarningStr(std::string(str));
 
 	va_end(args);
 }
-void Output::WarningStr(std::string warn) {
-	#if OUTPUT_TYPE == OUTPUT_CONSOLE
-		printf("%s\n", warn.c_str());
-	#elif OUTPUT_TYPE == OUTPUT_FILE
-		std::ofstream file;
-		file.open(OUTPUT_FILENAME, std::ios::out | std::ios::app);
-		file << warn;
-		file.close();
-	#elif OUTPUT_TYPE == OUTPUT_MSGBOX
-		bool last = DisplayUi->ShowCursor(true);
-		MsgBox::Warning(warn, GAME_TITLE);
-		DisplayUi->ShowCursor(last);
-		Graphics::FrameReset();
-	#elif OUTPUT_TYPE == OUTPUT_SCREEN
-		DisplayUi->DrawScreenText("Warning:", 10, 30, Color(255, 255, 0, 255));
-		HandleScreenOutput(warn, false);
-	#endif
+void Output::WarningStr(std::string const& warn) {
+	DisplayUi->DrawScreenText("Warning:", 10, 30, Color(255, 255, 0, 0));
+	HandleScreenOutput("Warning", warn, false);
 }
 
 ////////////////////////////////////////////////////////////
-void Output::Post(char* fmt, ...) {
-	va_list args;
-	va_start(args, fmt);
-
-	char str[256];
-
-	vsprintf(str, fmt, args);
-
-	Output::PostStr((std::string)str);
-
-	va_end(args);
-}
 void Output::Post(const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
@@ -175,43 +175,22 @@ void Output::Post(const char* fmt, ...) {
 
 	vsprintf(str, fmt, args);
 
-	Output::PostStr((std::string)str);
+	Output::PostStr(std::string(str));
 
 	va_end(args);
 }
-void Output::PostStr(std::string msg) {
-	#if OUTPUT_TYPE == OUTPUT_CONSOLE
-		printf("%s\n", msg.c_str());
-	#elif OUTPUT_TYPE == OUTPUT_FILE
-		std::ofstream file;
-		file.open(OUTPUT_FILENAME, std::ios::out | std::ios::app);
-		file << msg;
-		file.close();
-	#elif OUTPUT_TYPE == OUTPUT_MSGBOX
-		bool last = DisplayUi->ShowCursor(true);
-		MsgBox::OK(msg, GAME_TITLE);
-		DisplayUi->ShowCursor(last);
-		Graphics::FrameReset();
-	#elif OUTPUT_TYPE == OUTPUT_SCREEN
-		DisplayUi->DrawScreenText("Info:", 10, 30, Color(255, 255, 0, 255));
-		HandleScreenOutput(msg, false);
-	#endif
+void Output::PostStr(std::string const& msg) {
+	DisplayUi->DrawScreenText("Info:", 10, 30, Color(255, 255, 0, 0));
+	HandleScreenOutput("Post", msg, false);
 }
 
 ////////////////////////////////////////////////////////////
-#ifdef _DEBUG
-void Output::Debug(char* fmt, ...) {
-	va_list args;
-	va_start(args, fmt);
-
-	char str[256];
-
-	vsprintf(str, fmt, args);
-
-	Output::DebugStr((std::string)str);
-
-	va_end(args);
+#ifdef NDEBUG
+void Output::Debug(const char*, ...) {
 }
+void Output::DebugStr(std::string const&) {
+}
+#else
 void Output::Debug(const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
@@ -220,18 +199,11 @@ void Output::Debug(const char* fmt, ...) {
 
 	vsprintf(str, fmt, args);
 
-	Output::DebugStr((std::string)str);
+	Output::DebugStr(std::string(str));
 
 	va_end(args);
 }
-void Output::DebugStr(std::string msg) {
-	printf("Debug: %s\n", msg.c_str());
-}
-#else
-void Output::Debug(char*, ...) {
-}
-void Output::Debug(const char*, ...) {
-}
-void Output::DebugStr(std::string) {
+void Output::DebugStr(std::string const& msg) {
+	output_time() << "Debug:\n " << msg <<std::endl;
 }
 #endif

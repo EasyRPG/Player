@@ -21,8 +21,6 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "bitmap.h"
-#include "bitmap_screen.h"
 #include "color.h"
 #include "drawable.h"
 #include "rect.h"
@@ -36,7 +34,7 @@ class Sprite : public Drawable {
 public:
 	Sprite();
 	virtual ~Sprite();
-	
+
 	void Draw(int z_order);
 
 	void Flash(int duration);
@@ -46,11 +44,11 @@ public:
 	int GetWidth() const;
 	int GetHeight() const;
 
-	Bitmap* GetBitmap() const;
-	void SetBitmap(Bitmap* bitmap, bool delete_bitmap = false);
-	Rect GetSrcRect() const;
-	void SetSrcRect(Rect src_rect);
-	void SetSpriteRect(Rect sprite_rect);
+	BitmapRef const& GetBitmap() const;
+	void SetBitmap(BitmapRef const& bitmap);
+	Rect const& GetSrcRect() const;
+	void SetSrcRect(Rect const& src_rect);
+	void SetSpriteRect(Rect const& sprite_rect);
 	bool GetVisible() const;
 	void SetVisible(bool visible);
 	int GetX() const;
@@ -96,9 +94,9 @@ private:
 	unsigned long ID;
 	ZObj* zobj;
 
-	Bitmap* bitmap;
-	BitmapScreen* bitmap_screen;
-	
+	BitmapRef bitmap;
+	BitmapScreenRef bitmap_screen;
+
 	Rect src_rect;
 	bool visible;
 	int x;

@@ -25,6 +25,7 @@
 #include <cstring>
 #include <algorithm>
 #include "system.h"
+#include "utils.h"
 
 ////////////////////////////////////////////////////////////
 /// enums
@@ -43,12 +44,12 @@ namespace PF {
 /// Component struct
 ////////////////////////////////////////////////////////////
 struct Component {
-	uint8 bits;
-	uint8 shift;
-	uint8 byte;
-	uint32 mask;
+	uint8_t bits;
+	uint8_t shift;
+	uint8_t byte;
+	uint32_t mask;
 
-	static inline int count_bits(uint32 mask) {
+	static inline int count_bits(uint32_t mask) {
 		int count = 0;
 		if ((mask & 0xFFFF0000) != 0)
 			count += 16, mask >>= 16;
@@ -67,10 +68,10 @@ struct Component {
 
 	inline void convert_mask() {
 		int bit_count = count_bits(mask);
-		uint32 mask_ex = (~0U >> (32 - bit_count));
-		uint32 mask_lo = mask_ex - mask;
-		shift = (uint8)count_bits(mask_lo) & 0x1F;
-		bits = (uint8)(bit_count - shift);
+		uint32_t mask_ex = (~0U >> (32 - bit_count));
+		uint32_t mask_lo = mask_ex - mask;
+		shift = (uint8_t)count_bits(mask_lo) & 0x1F;
+		bits = (uint8_t)(bit_count - shift);
 		byte = shift / 8;
 	}
 
@@ -82,23 +83,23 @@ struct Component {
 		return mask != c.mask;
 	}
 
-	inline uint8 unpack(uint32 pix) const {
-		return (uint8)(((pix >> shift) & ((1 << bits) - 1)) << (8 - bits));
+	inline uint8_t unpack(uint32_t pix) const {
+		return (uint8_t)(((pix >> shift) & ((1 << bits) - 1)) << (8 - bits));
 	}
 
-	inline uint32 pack(const uint8& x) const {
-		return (((uint32)x >> (8 - bits)) << shift);
+	inline uint32_t pack(const uint8_t& x) const {
+		return (((uint32_t)x >> (8 - bits)) << shift);
 	}
 
 	Component() {}
 
 	Component(unsigned int bits, unsigned int shift) :
-		bits((uint8)bits),
-		shift((uint8)shift),
-		byte((uint8)(shift / 8)),
+		bits((uint8_t)bits),
+		shift((uint8_t)shift),
+		byte((uint8_t)(shift / 8)),
 		mask(((1 << bits)-1) << shift) {}
 
-	Component(uint32 mask) :
+	Component(uint32_t mask) :
 		mask(mask) { convert_mask(); }
 };
 
@@ -125,10 +126,10 @@ public:
 		alpha_type(alpha_type) {}
 
 	DynamicFormat(int bits,
-				  uint32 rmask,
-				  uint32 gmask,
-				  uint32 bmask,
-				  uint32 amask,
+				  uint32_t rmask,
+				  uint32_t gmask,
+				  uint32_t bmask,
+				  uint32_t amask,
 				  PF::AlphaType alpha_type) :
 		bits(bits), bytes((bits + 7) / 8),
 		r(rmask), g(gmask), b(bmask), a(amask),
@@ -155,10 +156,10 @@ public:
 	}
 
 	void Set(int _bits,
-			 uint32 rmask,
-			 uint32 gmask,
-			 uint32 bmask,
-			 uint32 amask,
+			 uint32_t rmask,
+			 uint32_t gmask,
+			 uint32_t bmask,
+			 uint32_t amask,
 			 PF::AlphaType _alpha_type) {
 		bits = _bits;
 		bytes = (bits + 7) / 8;
@@ -188,14 +189,14 @@ public:
 			(alpha_type == PF::Alpha ? (a.shift << 22) : 0);
 	}
 
-	inline void uint32_to_rgba(uint32 pix, uint8& _r, uint8& _g, uint8& _b, uint8& _a) const {
+	inline void uint32_to_rgba(uint32_t pix, uint8_t& _r, uint8_t& _g, uint8_t& _b, uint8_t& _a) const {
 		_r = r.unpack(pix);
 		_g = g.unpack(pix);
 		_b = b.unpack(pix);
 		_a = a.unpack(pix);
 	}
 
-	inline uint32 rgba_to_uint32(const uint8& _r, const uint8& _g, const uint8& _b, const uint8& _a) const {
+	inline uint32_t rgba_to_uint32_t(const uint8_t& _r, const uint8_t& _g, const uint8_t& _b, const uint8_t& _a) const {
 		return r.pack(_r) | g.pack(_g) | b.pack(_b) | a.pack(_a);
 	}
 
@@ -218,57 +219,57 @@ struct bits_traits {
 
 template <class TPF>
 struct bits_traits<TPF, 8> {
-	static inline uint32 get_uint32(const uint8* p) {
-		return (uint32)*(const uint8*)p;
+	static inline uint32_t get_uint32_t(const uint8_t* p) {
+		return (uint32_t)*(const uint8_t*)p;
 	}
-	static inline void set_uint32(uint8* p, uint32 pix) {
-		*(uint8*)p = (uint8) pix;
+	static inline void set_uint32_t(uint8_t* p, uint32_t pix) {
+		*(uint8_t*)p = (uint8_t) pix;
 	}
-	static inline void copy_pixel(uint8* dst, const uint8* src) {
-		*(uint8*)dst = *(const uint8*)src;
+	static inline void copy_pixel(uint8_t* dst, const uint8_t* src) {
+		*(uint8_t*)dst = *(const uint8_t*)src;
 	}
-	static inline void set_pixels(uint8* dst, const uint8* src, int n) {
-		uint8 pixel = (uint8) get_uint32(src);
-		uint8* dst_pix = (uint8*) dst;
+	static inline void set_pixels(uint8_t* dst, const uint8_t* src, int n) {
+		uint8_t pixel = (uint8_t) get_uint32_t(src);
+		uint8_t* dst_pix = (uint8_t*) dst;
 		std::fill(dst_pix, dst_pix + n, pixel);
 	}
 };
 
 template <class TPF>
 struct bits_traits<TPF, 16> {
-	static inline uint32 get_uint32(const uint8* p) {
-		return (uint32)*(const uint16*)p;
+	static inline uint32_t get_uint32_t(const uint8_t* p) {
+		return (uint32_t)*(const uint16_t*)p;
 	}
-	static inline void set_uint32(uint8* p, uint32 pix) {
-		*(uint16*)p = (uint16) pix;
+	static inline void set_uint32_t(uint8_t* p, uint32_t pix) {
+		*(uint16_t*)p = (uint16_t) pix;
 	}
-	static inline void copy_pixel(uint8* dst, const uint8* src) {
-		*(uint16*)dst = *(const uint16*)src;
+	static inline void copy_pixel(uint8_t* dst, const uint8_t* src) {
+		*(uint16_t*)dst = *(const uint16_t*)src;
 	}
-	static inline void set_pixels(uint8* dst, const uint8* src, int n) {
-		uint16 pixel = (uint16) get_uint32(src);
-		uint16* dst_pix = (uint16*) dst;
+	static inline void set_pixels(uint8_t* dst, const uint8_t* src, int n) {
+		uint16_t pixel = (uint16_t) get_uint32_t(src);
+		uint16_t* dst_pix = (uint16_t*) dst;
 		std::fill(dst_pix, dst_pix + n, pixel);
 	}
 };
 
 template <class TPF>
 struct bits_traits<TPF, 24> {
-	static inline uint32 get_uint32(const uint8* p) {
+	static inline uint32_t get_uint32_t(const uint8_t* p) {
 		return
-			((uint32)(p[TPF::endian(2)]) << 16) |
-			((uint32)(p[TPF::endian(1)]) <<  8) |
-			((uint32)(p[TPF::endian(0)]) <<  0);
+			((uint32_t)(p[TPF::endian(2)]) << 16) |
+			((uint32_t)(p[TPF::endian(1)]) <<  8) |
+			((uint32_t)(p[TPF::endian(0)]) <<  0);
 	}
-	static inline void set_uint32(uint8* p, uint32 pix) {
+	static inline void set_uint32_t(uint8_t* p, uint32_t pix) {
 		p[TPF::endian(0)] = (pix >>  0) & 0xFF;
 		p[TPF::endian(1)] = (pix >>  8) & 0xFF;
 		p[TPF::endian(2)] = (pix >> 16) & 0xFF;
 	}
-	static inline void copy_pixel(uint8* dst, const uint8* src) {
+	static inline void copy_pixel(uint8_t* dst, const uint8_t* src) {
 		std::memcpy(dst, src, 3);
 	}
-	static inline void set_pixels(uint8* dst, const uint8* src, int n) {
+	static inline void set_pixels(uint8_t* dst, const uint8_t* src, int n) {
 		for (int i = 0; i < n; i++)
 			copy_pixel(dst + i * 3, src);
 	}
@@ -276,18 +277,18 @@ struct bits_traits<TPF, 24> {
 
 template <class TPF>
 struct bits_traits<TPF, 32> {
-	static inline uint32 get_uint32(const uint8* p) {
-		return *(const uint32*) p;
+	static inline uint32_t get_uint32_t(const uint8_t* p) {
+		return *(const uint32_t*) p;
 	}
-	static inline void set_uint32(uint8* p, uint32 pix) {
-		*(uint32*)p = pix;
+	static inline void set_uint32_t(uint8_t* p, uint32_t pix) {
+		*(uint32_t*)p = pix;
 	}
-	static inline void copy_pixel(uint8* dst, const uint8* src) {
-		*(uint32*)dst = *(const uint32*)src;
+	static inline void copy_pixel(uint8_t* dst, const uint8_t* src) {
+		*(uint32_t*)dst = *(const uint32_t*)src;
 	}
-	static inline void set_pixels(uint8* dst, const uint8* src, int n) {
-		uint32 pixel = get_uint32(src);
-		uint32* dst_pix = (uint32*) dst;
+	static inline void set_pixels(uint8_t* dst, const uint8_t* src, int n) {
+		uint32_t pixel = get_uint32_t(src);
+		uint32_t* dst_pix = (uint32_t*) dst;
 		std::fill(dst_pix, dst_pix + n, pixel);
 	}
 };
@@ -347,13 +348,13 @@ template<class TPF,
 		 bool dynamic_alpha,
 		 int alpha_type>
 struct alpha_traits {
-	static inline uint8 get_alpha(const TPF* pf, const uint8* p) {
-		uint8 r, g, b, a;
+	static inline uint8_t get_alpha(const TPF* pf, const uint8_t* p) {
+		uint8_t r, g, b, a;
 		pf->get_rgba(p, r, g, b, a);
 		return a;
 	}
-	static inline void set_alpha(const TPF* pf, uint8* p, uint8 alpha) {
-		uint8 r, g, b, a;
+	static inline void set_alpha(const TPF* pf, uint8_t* p, uint8_t alpha) {
+		uint8_t r, g, b, a;
 		pf->get_rgba(p, r, g, b, a);
 		pf->set_rgba(p, r, g, b, alpha);
 	}
@@ -362,46 +363,46 @@ struct alpha_traits {
 // dynamic, colorkey
 template <class TPF, bool aligned>
 struct alpha_traits<TPF, aligned, PF::DynamicAlpha, PF::ColorKey> {
-	static inline uint8 get_alpha(const TPF* pf, const uint8* p) {
-		uint32 pix = pf->get_uint32(p);
+	static inline uint8_t get_alpha(const TPF* pf, const uint8_t* p) {
+		uint32_t pix = pf->get_uint32_t(p);
 		return (pf->has_alpha() && pix == pf->colorkey) ? 0 : 255;
 	}
-	static inline void set_alpha(const TPF* pf, uint8* p, uint8 alpha) {
+	static inline void set_alpha(const TPF* pf, uint8_t* p, uint8_t alpha) {
 		if (pf->has_alpha() && alpha == 0)
-			pf->set_uint32(p, pf->colorkey);
+			pf->set_uint32_t(p, pf->colorkey);
 	}
 };
 
 // colorkey
 template <class TPF, bool aligned>
 struct alpha_traits<TPF, aligned, PF::StaticAlpha, PF::ColorKey> {
-	static inline uint8 get_alpha(const TPF* pf, const uint8* p) {
-		uint32 pix = pf->get_uint32(p);
+	static inline uint8_t get_alpha(const TPF* pf, const uint8_t* p) {
+		uint32_t pix = pf->get_uint32_t(p);
 		return (pix == pf->colorkey) ? 0 : 255;
 	}
-	static inline void set_alpha(const TPF* pf, uint8* p, uint8 alpha) {
+	static inline void set_alpha(const TPF* pf, uint8_t* p, uint8_t alpha) {
 		if (alpha == 0)
-			pf->set_uint32(p, pf->colorkey);
+			pf->set_uint32_t(p, pf->colorkey);
 	}
 };
 
 // no alpha or colorkey
 template<class TPF, bool aligned>
 struct alpha_traits<TPF, aligned, PF::StaticAlpha, PF::NoAlpha> {
-	static inline uint8 get_alpha(const TPF* /* pf */, const uint8* /* p */) {
+	static inline uint8_t get_alpha(const TPF* /* pf */, const uint8_t* /* p */) {
 		return 255;
 	}
-	static inline void set_alpha(const TPF* /* pf */, uint8* /* p */, uint8 /* alpha */) {
+	static inline void set_alpha(const TPF* /* pf */, uint8_t* /* p */, uint8_t /* alpha */) {
 	}
 };
 
 // aligned, with alpha
 template<class TPF, bool dynamic_alpha>
 struct alpha_traits<TPF, PF::IsAligned, dynamic_alpha, PF::Alpha> {
-	static inline uint8 get_alpha(const TPF* pf, const uint8* p) {
+	static inline uint8_t get_alpha(const TPF* pf, const uint8_t* p) {
 		return pf->has_alpha() ? p[pf->a_byte()] : 255;
 	}
-	static inline void set_alpha(const TPF* pf, uint8* p, uint8 alpha) {
+	static inline void set_alpha(const TPF* pf, uint8_t* p, uint8_t alpha) {
 		if (pf->has_alpha())
 			p[pf->a_byte()] = alpha;
 	}
@@ -418,14 +419,14 @@ struct rgba_traits {
 // aligned, has alpha
 template<class TPF, bool dynamic_alpha>
 struct rgba_traits<TPF, PF::IsAligned, dynamic_alpha, PF::Alpha> {
-	static inline void get_rgba(const TPF* pf, const uint8* p, uint8& r, uint8& g, uint8& b, uint8& a) {
+	static inline void get_rgba(const TPF* pf, const uint8_t* p, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) {
 		r = p[pf->r_byte()];
 		g = p[pf->g_byte()];
 		b = p[pf->b_byte()];
 		a = pf->has_alpha() ? p[pf->a_byte()] : 255;
 	}
 
-	static inline void set_rgba(const TPF* pf, uint8* p, const uint8& r, const uint8& g, const uint8& b, const uint8& a) {
+	static inline void set_rgba(const TPF* pf, uint8_t* p, const uint8_t& r, const uint8_t& g, const uint8_t& b, const uint8_t& a) {
 		p[pf->r_byte()] = r;
 		p[pf->g_byte()] = g;
 		p[pf->b_byte()] = b;
@@ -437,16 +438,16 @@ struct rgba_traits<TPF, PF::IsAligned, dynamic_alpha, PF::Alpha> {
 // aligned, has colorkey
 template<class TPF, bool dynamic_alpha>
 struct rgba_traits<TPF, PF::IsAligned, dynamic_alpha, PF::ColorKey> {
-	static inline void get_rgba(const TPF* pf, const uint8* p, uint8& r, uint8& g, uint8& b, uint8& a) {
+	static inline void get_rgba(const TPF* pf, const uint8_t* p, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) {
 		r = p[pf->r_byte()];
 		g = p[pf->g_byte()];
 		b = p[pf->b_byte()];
-		a = (pf->has_alpha() && pf->get_uint32(p) == pf->colorkey) ? 0 : 255;
+		a = (pf->has_alpha() && pf->get_uint32_t(p) == pf->colorkey) ? 0 : 255;
 	}
 
-	static inline void set_rgba(const TPF* pf, uint8* p, const uint8& r, const uint8& g, const uint8& b, const uint8& a) {
+	static inline void set_rgba(const TPF* pf, uint8_t* p, const uint8_t& r, const uint8_t& g, const uint8_t& b, const uint8_t& a) {
 		if (pf->has_alpha() && a == 0)
-			pf->set_uint32(p, pf->colorkey);
+			pf->set_uint32_t(p, pf->colorkey);
 		else {
 			p[pf->r_byte()] = r;
 			p[pf->g_byte()] = g;
@@ -458,14 +459,14 @@ struct rgba_traits<TPF, PF::IsAligned, dynamic_alpha, PF::ColorKey> {
 // aligned, no alpha or colorkey
 template<class TPF>
 struct rgba_traits<TPF, PF::IsAligned, PF::StaticAlpha, PF::NoAlpha> {
-	static inline void get_rgba(const TPF* pf, const uint8* p, uint8& r, uint8& g, uint8& b, uint8& a) {
+	static inline void get_rgba(const TPF* pf, const uint8_t* p, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) {
 		r = p[pf->r_byte()];
 		g = p[pf->g_byte()];
 		b = p[pf->b_byte()];
 		a = 255;
 	}
 
-	static inline void set_rgba(const TPF* pf, uint8* p, const uint8& r, const uint8& g, const uint8& b, const uint8& /* a */) {
+	static inline void set_rgba(const TPF* pf, uint8_t* p, const uint8_t& r, const uint8_t& g, const uint8_t& b, const uint8_t& /* a */) {
 		p[pf->r_byte()] = r;
 		p[pf->g_byte()] = g;
 		p[pf->b_byte()] = b;
@@ -475,63 +476,63 @@ struct rgba_traits<TPF, PF::IsAligned, PF::StaticAlpha, PF::NoAlpha> {
 // unaligned, has alpha (dynamic)
 template<class TPF, bool dynamic_alpha>
 struct rgba_traits<TPF, PF::NotAligned, dynamic_alpha, PF::Alpha> {
-	static inline void get_rgba(const TPF* pf, const uint8* p, uint8& r, uint8& g, uint8& b, uint8& a) {
-		const uint32 pix = pf->get_uint32(p);
+	static inline void get_rgba(const TPF* pf, const uint8_t* p, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) {
+		const uint32_t pix = pf->get_uint32_t(p);
 		pf->uint32_to_rgba(pix, r, g, b, a);
 		if (!pf->has_alpha())
 			a = 255;
 	}
-	static inline void set_rgba(const TPF* pf, uint8* p, const uint8& r, const uint8& g, const uint8& b, const uint8& a) {
-		const uint32 pix = pf->rgba_to_uint32(r, g, b, a);
-		pf->set_uint32(p, pix);
+	static inline void set_rgba(const TPF* pf, uint8_t* p, const uint8_t& r, const uint8_t& g, const uint8_t& b, const uint8_t& a) {
+		const uint32_t pix = pf->rgba_to_uint32_t(r, g, b, a);
+		pf->set_uint32_t(p, pix);
 	}
 };
 
 // unaligned, has colorkey
 template<class TPF>
 struct rgba_traits<TPF, PF::NotAligned, PF::StaticAlpha, PF::ColorKey> {
-	static inline void get_rgba(const TPF* pf, const uint8* p, uint8& r, uint8& g, uint8& b, uint8& a) {
-		const uint32 pix = pf->get_uint32(p);
+	static inline void get_rgba(const TPF* pf, const uint8_t* p, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) {
+		const uint32_t pix = pf->get_uint32_t(p);
 		pf->uint32_to_rgba(pix, r, g, b, a);
 		a = pix == pf->colorkey ? 0 : 255;
 	}
 
-	static inline void set_rgba(const TPF* pf, uint8* p, const uint8& r, const uint8& g, const uint8& b, const uint8& a) {
-		const uint32 pix = a == 0
+	static inline void set_rgba(const TPF* pf, uint8_t* p, const uint8_t& r, const uint8_t& g, const uint8_t& b, const uint8_t& a) {
+		const uint32_t pix = a == 0
 			? pf->colorkey
-			: pf->rgba_to_uint32(r, g, b, a);
-		pf->set_uint32(p, pix);
+			: pf->rgba_to_uint32_t(r, g, b, a);
+		pf->set_uint32_t(p, pix);
 	}
 };
 
 // unaligned, has colorkey (dynamic)
 template<class TPF>
 struct rgba_traits<TPF, PF::NotAligned, PF::DynamicAlpha, PF::ColorKey> {
-	static inline void get_rgba(const TPF* pf, const uint8* p, uint8& r, uint8& g, uint8& b, uint8& a) {
-		const uint32 pix = pf->get_uint32(p);
+	static inline void get_rgba(const TPF* pf, const uint8_t* p, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) {
+		const uint32_t pix = pf->get_uint32_t(p);
 		pf->uint32_to_rgba(pix, r, g, b, a);
 		a = (pf->has_alpha() && pix == pf->colorkey) ? 0 : 255;
 	}
 
-	static inline void set_rgba(const TPF* pf, uint8* p, const uint8& r, const uint8& g, const uint8& b, const uint8& a) {
-		const uint32 pix = (pf->has_alpha() && a == 0)
+	static inline void set_rgba(const TPF* pf, uint8_t* p, const uint8_t& r, const uint8_t& g, const uint8_t& b, const uint8_t& a) {
+		const uint32_t pix = (pf->has_alpha() && a == 0)
 			? pf->colorkey
-			: pf->rgba_to_uint32(r, g, b, a);
-		pf->set_uint32(p, pix);
+			: pf->rgba_to_uint32_t(r, g, b, a);
+		pf->set_uint32_t(p, pix);
 	}
 };
 
 // unaligned, no alpha or colorkey
 template<class TPF>
 struct rgba_traits<TPF, PF::NotAligned, PF::StaticAlpha, PF::NoAlpha> {
-	static inline void get_rgba(const TPF* pf, const uint8* p, uint8& r, uint8& g, uint8& b, uint8& a) {
-		const uint32 pix = pf->get_uint32(p);
+	static inline void get_rgba(const TPF* pf, const uint8_t* p, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) {
+		const uint32_t pix = pf->get_uint32_t(p);
 		pf->uint32_to_rgba(pix, r, g, b, a);
 		a = 255;
 	}
-	static inline void set_rgba(const TPF* pf, uint8* p, const uint8& r, const uint8& g, const uint8& b, const uint8& a) {
-		const uint32 pix = pf->rgba_to_uint32(r, g, b, a);
-		pf->set_uint32(p, pix);
+	static inline void set_rgba(const TPF* pf, uint8_t* p, const uint8_t& r, const uint8_t& g, const uint8_t& b, const uint8_t& a) {
+		const uint32_t pix = pf->rgba_to_uint32_t(r, g, b, a);
+		pf->set_uint32_t(p, pix);
 	}
 };
 
@@ -601,7 +602,7 @@ public:
 		colorkey = _colorkey;
 	}
 
-	uint32 colorkey;
+	uint32_t colorkey;
 };
 
 ////////////////////////////////////////////////////////////
@@ -647,26 +648,22 @@ public:
 	PixelFormatT(const DynamicFormat& format) : dynamic_traits(format) {}
 
 	static inline int endian(int byte) {
-#ifndef USE_BIG_ENDIAN
-		return byte;
-#else
-		return bytes - 1 - byte;
-#endif
+		return Utils::IsBigEndian()? (bytes - 1 - byte) : byte;
 	}
 
-	inline void uint32_to_rgba(uint32 pix, uint8& r, uint8& g, uint8& b, uint8& a) const {
-		r = (uint8)(((pix >> r_shift()) & ((1 << r_bits()) - 1)) << (8 - r_bits()));
-		g = (uint8)(((pix >> g_shift()) & ((1 << g_bits()) - 1)) << (8 - g_bits()));
-		b = (uint8)(((pix >> b_shift()) & ((1 << b_bits()) - 1)) << (8 - b_bits()));
-		a = (uint8)(((pix >> a_shift()) & ((1 << a_bits()) - 1)) << (8 - a_bits()));
+	inline void uint32_to_rgba(uint32_t pix, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) const {
+		r = (uint8_t)(((pix >> r_shift()) & ((1 << r_bits()) - 1)) << (8 - r_bits()));
+		g = (uint8_t)(((pix >> g_shift()) & ((1 << g_bits()) - 1)) << (8 - g_bits()));
+		b = (uint8_t)(((pix >> b_shift()) & ((1 << b_bits()) - 1)) << (8 - b_bits()));
+		a = (uint8_t)(((pix >> a_shift()) & ((1 << a_bits()) - 1)) << (8 - a_bits()));
 	}
 
-	inline uint32 rgba_to_uint32(const uint8& r, const uint8& g, const uint8& b, const uint8& a) const {
+	inline uint32_t rgba_to_uint32_t(const uint8_t& r, const uint8_t& g, const uint8_t& b, const uint8_t& a) const {
 		return
-			(((uint32)r >> (8 - r_bits())) << r_shift()) |
-			(((uint32)g >> (8 - g_bits())) << g_shift()) |
-			(((uint32)b >> (8 - b_bits())) << b_shift()) |
-			(((uint32)a >> (8 - a_bits())) << a_shift());
+			(((uint32_t)r >> (8 - r_bits())) << r_shift()) |
+			(((uint32_t)g >> (8 - g_bits())) << g_shift()) |
+			(((uint32_t)b >> (8 - b_bits())) << b_shift()) |
+			(((uint32_t)a >> (8 - a_bits())) << a_shift());
 	}
 
 	inline const DynamicFormat& format() const {
@@ -678,10 +675,10 @@ public:
 	inline int b_byte() const {		return endian(mask_b_traits_type::byte(format().b));	}
 	inline int a_byte() const {		return endian(mask_a_traits_type::byte(format().a));	}
 
-	inline uint32 r_mask() const {	return mask_r_traits_type::mask(format().r);	}
-	inline uint32 g_mask() const {	return mask_g_traits_type::mask(format().g);	}
-	inline uint32 b_mask() const {	return mask_b_traits_type::mask(format().b);	}
-	inline uint32 a_mask() const {	return mask_a_traits_type::mask(format().a);	}
+	inline uint32_t r_mask() const {	return mask_r_traits_type::mask(format().r);	}
+	inline uint32_t g_mask() const {	return mask_g_traits_type::mask(format().g);	}
+	inline uint32_t b_mask() const {	return mask_b_traits_type::mask(format().b);	}
+	inline uint32_t a_mask() const {	return mask_a_traits_type::mask(format().a);	}
 
 	inline int r_bits() const {		return mask_r_traits_type::bits(format().r);	}
 	inline int g_bits() const {		return mask_g_traits_type::bits(format().g);	}
@@ -705,43 +702,43 @@ public:
 		return alpha_type() != PF::NoAlpha;
 	}
 
-	inline uint32 get_uint32(const uint8* p) const {
-		return bits_traits_type::get_uint32(p);
+	inline uint32_t get_uint32_t(const uint8_t* p) const {
+		return bits_traits_type::get_uint32_t(p);
 	}
 
-	inline void set_uint32(uint8* p, uint32 pix) const {
-		bits_traits_type::set_uint32(p, pix);
+	inline void set_uint32_t(uint8_t* p, uint32_t pix) const {
+		bits_traits_type::set_uint32_t(p, pix);
 	}
 
-	inline void copy_pixel(uint8* dst, const uint8* src) const {
+	inline void copy_pixel(uint8_t* dst, const uint8_t* src) const {
 		bits_traits_type::copy_pixel(dst, src);
 	}
 
-	inline void copy_pixels(uint8* dst, const uint8* src, int n) const {
+	inline void copy_pixels(uint8_t* dst, const uint8_t* src, int n) const {
 		std::memcpy(dst, src, n * bytes);
 	}
 
-	inline void set_pixels(uint8* dst, const uint8* src, int n) const {
+	inline void set_pixels(uint8_t* dst, const uint8_t* src, int n) const {
 		bits_traits_type::set_pixels(dst, src, n);
 	}
 
-	inline uint8 opaque() const {
-		return (a_bits() > 0) ? (uint8) (0xFF << (8 - a_bits())) : (uint8) 255;
+	inline uint8_t opaque() const {
+		return (a_bits() > 0) ? (uint8_t) (0xFF << (8 - a_bits())) : (uint8_t) 255;
 	}
 
-	inline uint8 get_alpha(const uint8* p) const {
+	inline uint8_t get_alpha(const uint8_t* p) const {
 		return alpha_traits_type::get_alpha(this, p);
 	}
 
-	inline void set_alpha(uint8* p, uint8 alpha) const {
+	inline void set_alpha(uint8_t* p, uint8_t alpha) const {
 		alpha_traits_type::set_alpha(this, p, alpha);
 	}
 
-	inline void get_rgba(const uint8* p, uint8& r, uint8& g, uint8& b, uint8& a) const {
+	inline void get_rgba(const uint8_t* p, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) const {
 		rgba_traits_type::get_rgba(this, p, r, g, b, a);
 	}
 
-	inline void set_rgba(uint8* p, const uint8& r, const uint8& g, const uint8& b, const uint8& a) const {
+	inline void set_rgba(uint8_t* p, const uint8_t& r, const uint8_t& g, const uint8_t& b, const uint8_t& a) const {
 		rgba_traits_type::set_rgba(this, p, r, g, b, a);
 	}
 

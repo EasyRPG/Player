@@ -1,16 +1,16 @@
 /////////////////////////////////////////////////////////////////////////////
 // This file is part of EasyRPG Player.
-// 
+//
 // EasyRPG Player is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // EasyRPG Player is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
@@ -38,25 +38,26 @@
 #include "battle_animation.h"
 #include "battle_actions.h"
 #include "scene_battle.h"
+#include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
 Scene_Battle::Scene_Battle() {
 	Scene::type = Scene::Battle;
 }
 
-////////////////////////////////////////////////////////////
 Scene_Battle::~Scene_Battle() {
+	Game_Battle::Quit();
 }
 
 ////////////////////////////////////////////////////////////
 Scene_Battle::FloatText::FloatText(int x, int y, int color, const std::string& text, int _duration) {
-	Rect rect = Surface::GetTextSize(text);
+	Rect rect = Font::Default()->GetSize(text);
 
-	Surface* graphic = Surface::CreateSurface(rect.width, rect.height);
+	BitmapRef graphic = Bitmap::Create(rect.width, rect.height);
 	graphic->Clear();
 	graphic->TextDraw(-rect.x, -rect.y, color, text);
 
-	sprite = new Sprite();
+	sprite.reset(new Sprite());
 	sprite->SetBitmap(graphic);
 	sprite->SetOx(rect.width / 2);
 	sprite->SetOy(rect.height + 5);
@@ -68,21 +69,16 @@ Scene_Battle::FloatText::FloatText(int x, int y, int color, const std::string& t
 }
 
 ////////////////////////////////////////////////////////////
-Scene_Battle::FloatText::~FloatText() {
-	delete sprite;
-}
-
-////////////////////////////////////////////////////////////
 void Scene_Battle::CreateCursors() {
-	Bitmap* system2 = Cache::System2(Data::system.system2_name);
+	BitmapRef system2 = Cache::System2(Data::system.system2_name);
 
-	ally_cursor = new Sprite();
+	ally_cursor.reset(new Sprite());
 	ally_cursor->SetBitmap(system2);
 	ally_cursor->SetSrcRect(Rect(0, 16, 16, 16));
 	ally_cursor->SetZ(999);
 	ally_cursor->SetVisible(false);
 
-	enemy_cursor = new Sprite();
+	enemy_cursor.reset(new Sprite());
 	enemy_cursor->SetBitmap(system2);
 	enemy_cursor->SetSrcRect(Rect(0, 0, 16, 16));
 	enemy_cursor->SetZ(999);
@@ -91,19 +87,19 @@ void Scene_Battle::CreateCursors() {
 
 ////////////////////////////////////////////////////////////
 void Scene_Battle::CreateWindows() {
-	help_window = new Window_Help(0, 0, 320, 32);
+	help_window.reset(new Window_Help(0, 0, 320, 32));
 	help_window->SetVisible(false);
 
-	options_window = new Window_BattleOption(0, 172, 76, 68);
+	options_window.reset(new Window_BattleOption(0, 172, 76, 68));
 
-	status_window = new Window_BattleStatus();
+	status_window.reset(new Window_BattleStatus());
 
-	command_window = new Window_BattleCommand(244, 172, 76, 68);
+	command_window.reset(new Window_BattleCommand(244, 172, 76, 68));
 
-	skill_window = new Window_BattleSkill(0, 172, 320, 68);
+	skill_window.reset(new Window_BattleSkill(0, 172, 320, 68));
 	skill_window->SetVisible(false);
 
-	item_window = new Window_BattleItem(0, 172, 320, 68);
+	item_window.reset(new Window_BattleItem(0, 172, 320, 68));
 	item_window->SetVisible(false);
 	item_window->Refresh();
 	item_window->SetIndex(0);
@@ -130,39 +126,15 @@ void Scene_Battle::Start() {
 	CreateCursors();
 	CreateWindows();
 
-	animation = NULL;
+	animation.reset();
 	animations.clear();
 
 	if (!Game_Temp::battle_background.empty())
-		background = new Background(Game_Temp::battle_background);
+		background.reset(new Background(Game_Temp::battle_background));
 	else
-		background = new Background(Game_Temp::battle_terrain_id);
+		background.reset(new Background(Game_Temp::battle_terrain_id));
 
 	SetState(State_Options);
-}
-
-////////////////////////////////////////////////////////////
-void Scene_Battle::Terminate() {
-	delete help_window;
-	delete options_window;
-	delete status_window;
-	delete command_window;
-	delete item_window;
-	delete skill_window;
-
-	if (animation != NULL)
-		delete animation;
-	animation = NULL;
-
-	while (!animations.empty()) {
-		delete animations.front();
-		animations.pop_front();
-	}
-
-	delete background;
-	background = NULL;
-
-	Game_Battle::Quit();
 }
 
 ////////////////////////////////////////////////////////////
@@ -242,12 +214,12 @@ void Scene_Battle::SetState(Scene_Battle::State new_state) {
 			break;
 		case State_Item:
 			item_window->SetVisible(true);
-			item_window->SetHelpWindow(help_window);
+			item_window->SetHelpWindow(help_window.get());
 			help_window->SetVisible(true);
 			break;
 		case State_Skill:
 			skill_window->SetVisible(true);
-			skill_window->SetHelpWindow(help_window);
+			skill_window->SetHelpWindow(help_window.get());
 			help_window->SetVisible(true);
 			break;
 		case State_Victory:
@@ -273,8 +245,7 @@ void Scene_Battle::Message(const std::string& msg, bool pause) {
 void Scene_Battle::Floater(const Sprite* ref, int color, const std::string& text, int duration) {
 	int x = ref->GetX();
 	int y = ref->GetY() - ref->GetOy();
-	FloatText* floater = new FloatText(x, y, color, text, duration);
-	floaters.push_back(floater);
+	floaters.push_back(EASYRPG_MAKE_SHARED<FloatText>(x, y, color, text, duration));
 }
 
 ////////////////////////////////////////////////////////////
@@ -492,15 +463,15 @@ void Scene_Battle::BeginAttack() {
 		ally.sprite->GetOx();
 
 	actions.clear();
-	actions.push_back(new Battle::SpriteAction(&ally, Battle::Ally::WalkingLeft));
-	actions.push_back(new Battle::MoveAction(ally.sprite, x0, x1, 8));
-	actions.push_back(new Battle::SpriteAction(&ally, Battle::Ally::RightHand));
-	actions.push_back(new Battle::WaitAction(15));
-	actions.push_back(new Battle::CommandAction(&Game_Battle::Attack));
-	actions.push_back(new Battle::SpriteAction(&ally, Battle::Ally::WalkingRight));
-	actions.push_back(new Battle::MoveAction(ally.sprite, x1, x0, 8));
-	actions.push_back(new Battle::CommandAction(&Game_Battle::Restart));
-	actions.push_back(new Battle::WaitAction(20));
+	actions.push_back(EASYRPG_MAKE_SHARED<Battle::SpriteAction>(&ally, Battle::Ally::WalkingLeft));
+	actions.push_back(EASYRPG_MAKE_SHARED<Battle::MoveAction>(ally.sprite.get(), x0, x1, 8));
+	actions.push_back(EASYRPG_MAKE_SHARED<Battle::SpriteAction>(&ally, Battle::Ally::RightHand));
+	actions.push_back(EASYRPG_MAKE_SHARED<Battle::WaitAction>(15));
+	actions.push_back(EASYRPG_MAKE_SHARED<Battle::CommandAction>(&Game_Battle::Attack));
+	actions.push_back(EASYRPG_MAKE_SHARED<Battle::SpriteAction>(&ally, Battle::Ally::WalkingRight));
+	actions.push_back(EASYRPG_MAKE_SHARED<Battle::MoveAction>(ally.sprite.get(), x1, x0, 8));
+	actions.push_back(EASYRPG_MAKE_SHARED<Battle::CommandAction>(&Game_Battle::Restart));
+	actions.push_back(EASYRPG_MAKE_SHARED<Battle::WaitAction>(20));
 
 	SetState(State_AllyAction);
 }
@@ -512,11 +483,11 @@ void Scene_Battle::BeginItem() {
 	Game_Battle::SetItem(item_window->GetItemId());
 
 	actions.clear();
-	actions.push_back(new Battle::SpriteAction(&ally, Battle::Ally::Item));
-	actions.push_back(new Battle::WaitAction(60));
-	actions.push_back(new Battle::CommandAction(&Game_Battle::UseItem));
-	actions.push_back(new Battle::CommandAction(&Game_Battle::Restart));
-	actions.push_back(new Battle::WaitAction(20));
+	actions.push_back(EASYRPG_MAKE_SHARED<Battle::SpriteAction>(&ally, Battle::Ally::Item));
+	actions.push_back(EASYRPG_MAKE_SHARED<Battle::WaitAction>(60));
+	actions.push_back(EASYRPG_SHARED_PTR<Battle::CommandAction>(new Battle::CommandAction(&Game_Battle::UseItem)));
+	actions.push_back(EASYRPG_SHARED_PTR<Battle::CommandAction>(new Battle::CommandAction(&Game_Battle::Restart)));
+	actions.push_back(EASYRPG_MAKE_SHARED<Battle::WaitAction>(20));
 
 	SetState(State_AllyAction);
 }
@@ -529,7 +500,7 @@ void Scene_Battle::BeginSkill() {
 	const RPG::Animation* animation = (skill.animation_id != 0)
 		? &Data::animations[skill.animation_id - 1]
 		: NULL;
-	Battle::Action* action = NULL;
+	EASYRPG_SHARED_PTR<Battle::Action> action;
 	int x, y;
 
 	switch (skill.type) {
@@ -542,26 +513,26 @@ void Scene_Battle::BeginSkill() {
 			switch (skill.scope) {
 				case RPG::Skill::Scope_enemy:
 					if (animation != NULL)
-						action = new Battle::AnimationAction(Game_Battle::GetTargetEnemy().sprite, animation);
+						action = EASYRPG_MAKE_SHARED<Battle::AnimationAction>(Game_Battle::GetTargetEnemy().sprite.get(), animation);
 					break;
 				case RPG::Skill::Scope_enemies:
 					if (animation != NULL) {
 						Game_Battle::EnemiesCentroid(x, y);
-						action = new Battle::AnimationAction(x, y, animation);
+						action = EASYRPG_MAKE_SHARED<Battle::AnimationAction>(x, y, animation);
 					}
 					break;
 				case RPG::Skill::Scope_self:
 					if (animation != NULL)
-						action = new Battle::AnimationAction(ally.sprite, animation);
+						action = EASYRPG_MAKE_SHARED<Battle::AnimationAction>(ally.sprite.get(), animation);
 					break;
 				case RPG::Skill::Scope_ally:
 					if (animation != NULL)
-						action = new Battle::AnimationAction(Game_Battle::GetTargetAlly().sprite, animation);
+						action = EASYRPG_MAKE_SHARED<Battle::AnimationAction>(Game_Battle::GetTargetAlly().sprite.get(), animation);
 					break;
 				case RPG::Skill::Scope_party:
 					if (animation != NULL) {
 						Game_Battle::AlliesCentroid(x, y);
-						action = new Battle::AnimationAction(x, y, animation);
+						action = EASYRPG_MAKE_SHARED<Battle::AnimationAction>(x, y, animation);
 					}
 				default:
 					break;
@@ -569,14 +540,14 @@ void Scene_Battle::BeginSkill() {
 	}
 
 	if (action == NULL)
-		action = new Battle::WaitAction(10);
+		action = EASYRPG_MAKE_SHARED<Battle::WaitAction>(10);
 
 	actions.clear();
-	actions.push_back(new Battle::SpriteAction(&ally, anim_state));
+	actions.push_back(EASYRPG_MAKE_SHARED<Battle::SpriteAction>(&ally, anim_state));
 	actions.push_back(action);
-	actions.push_back(new Battle::CommandAction(&Game_Battle::UseSkill));
-	actions.push_back(new Battle::CommandAction(&Game_Battle::Restart));
-	actions.push_back(new Battle::WaitAction(20));
+	actions.push_back(EASYRPG_SHARED_PTR<Battle::CommandAction>(new Battle::CommandAction(&Game_Battle::UseSkill)));
+	actions.push_back(EASYRPG_SHARED_PTR<Battle::CommandAction>(new Battle::CommandAction(&Game_Battle::Restart)));
+	actions.push_back(EASYRPG_MAKE_SHARED<Battle::WaitAction>(20));
 
 	SetState(State_AllyAction);
 }
@@ -630,14 +601,14 @@ void Scene_Battle::EnemyAction() {
 			break;
 		case RPG::EnemyAction::Kind_transformation:
 			Game_Battle::SetMorph(enemy_action->enemy_id);
-			actions.push_back(new Battle::WaitAction(20));
-			actions.push_back(new Battle::CommandAction(&Game_Battle::EnemyTransform));
+			actions.push_back(EASYRPG_MAKE_SHARED<Battle::WaitAction>(20));
+			actions.push_back(EASYRPG_MAKE_SHARED<Battle::CommandAction>(&Game_Battle::EnemyTransform));
 			break;
 	}
 
-	actions.push_back(new Battle::CommandAction(&Game_Battle::EnemyActionDone));
-	actions.push_back(new Battle::CommandAction1(&Scene_Battle::EnemyActionDone, (void*) this));
-	actions.push_back(new Battle::WaitAction(20));
+	actions.push_back(EASYRPG_MAKE_SHARED<Battle::CommandAction>(&Game_Battle::EnemyActionDone));
+	actions.push_back(EASYRPG_MAKE_SHARED<Battle::CommandAction1>(&Scene_Battle::EnemyActionDone, (void*) this));
+	actions.push_back(EASYRPG_MAKE_SHARED<Battle::WaitAction>(20));
 
 	SetState(State_EnemyAction);
 }
@@ -649,42 +620,42 @@ void Scene_Battle::EnemyActionBasic() {
 		{
 			Game_Battle::TargetRandomAlly();
 			Battle::Ally &ally = Game_Battle::GetTargetAlly();
-			actions.push_back(new Battle::WaitAction(20));
-			actions.push_back(new Battle::AnimationAction(ally.sprite, &Data::animations[0]));
-			actions.push_back(new Battle::CommandAction1(&Game_Battle::EnemyAttack, (void*) &ally));
+			actions.push_back(EASYRPG_MAKE_SHARED<Battle::WaitAction>(20));
+			actions.push_back(EASYRPG_MAKE_SHARED<Battle::AnimationAction>(ally.sprite.get(), &Data::animations[0]));
+			actions.push_back(EASYRPG_MAKE_SHARED<Battle::CommandAction1>(&Game_Battle::EnemyAttack, (void*) &ally));
 			break;
 		}
 		case RPG::EnemyAction::Basic_dual_attack:
 		{
 			Game_Battle::TargetRandomAlly();
 			Battle::Ally &ally1 = Game_Battle::GetTargetAlly();
-			actions.push_back(new Battle::WaitAction(20));
-			actions.push_back(new Battle::AnimationAction(ally1.sprite, &Data::animations[0]));
-			actions.push_back(new Battle::CommandAction1(&Game_Battle::EnemyAttack, (void*) &ally1));
+			actions.push_back(EASYRPG_MAKE_SHARED<Battle::WaitAction>(20));
+			actions.push_back(EASYRPG_MAKE_SHARED<Battle::AnimationAction>(ally1.sprite.get(), &Data::animations[0]));
+			actions.push_back(EASYRPG_MAKE_SHARED<Battle::CommandAction1>(&Game_Battle::EnemyAttack, (void*) &ally1));
 			Game_Battle::TargetRandomAlly();
 			Battle::Ally &ally2 = Game_Battle::GetTargetAlly();
-			actions.push_back(new Battle::WaitAction(20));
-			actions.push_back(new Battle::AnimationAction(ally2.sprite, &Data::animations[0]));
-			actions.push_back(new Battle::CommandAction1(&Game_Battle::EnemyAttack, (void*) &ally2));
+			actions.push_back(EASYRPG_MAKE_SHARED<Battle::WaitAction>(20));
+			actions.push_back(EASYRPG_MAKE_SHARED<Battle::AnimationAction>(ally2.sprite.get(), &Data::animations[0]));
+			actions.push_back(EASYRPG_MAKE_SHARED<Battle::CommandAction1>(&Game_Battle::EnemyAttack, (void*) &ally2));
 			break;
 		}
 		case RPG::EnemyAction::Basic_defense:
-			actions.push_back(new Battle::WaitAction(20));
-			actions.push_back(new Battle::CommandAction(&Game_Battle::EnemyDefend));
+			actions.push_back(EASYRPG_MAKE_SHARED<Battle::WaitAction>(20));
+			actions.push_back(EASYRPG_MAKE_SHARED<Battle::CommandAction>(&Game_Battle::EnemyDefend));
 			break;
 		case RPG::EnemyAction::Basic_observe:
-			actions.push_back(new Battle::WaitAction(20));
-			actions.push_back(new Battle::CommandAction(&Game_Battle::EnemyObserve));
+			actions.push_back(EASYRPG_MAKE_SHARED<Battle::WaitAction>(20));
+			actions.push_back(EASYRPG_MAKE_SHARED<Battle::CommandAction>(&Game_Battle::EnemyObserve));
 			break;
 		case RPG::EnemyAction::Basic_charge:
-			actions.push_back(new Battle::WaitAction(20));
-			actions.push_back(new Battle::CommandAction(&Game_Battle::EnemyCharge));
+			actions.push_back(EASYRPG_MAKE_SHARED<Battle::WaitAction>(20));
+			actions.push_back(EASYRPG_MAKE_SHARED<Battle::CommandAction>(&Game_Battle::EnemyCharge));
 			break;
 		case RPG::EnemyAction::Basic_autodestruction:
-			actions.push_back(new Battle::WaitAction(20));
-			actions.push_back(new Battle::CommandAction(&Game_Battle::EnemyDestruct));
+			actions.push_back(EASYRPG_MAKE_SHARED<Battle::WaitAction>(20));
+			actions.push_back(EASYRPG_MAKE_SHARED<Battle::CommandAction>(&Game_Battle::EnemyDestruct));
 		case RPG::EnemyAction::Basic_nothing:
-			actions.push_back(new Battle::WaitAction(20));
+			actions.push_back(EASYRPG_MAKE_SHARED<Battle::WaitAction>(20));
 			break;
 	}
 }
@@ -696,7 +667,7 @@ void Scene_Battle::EnemyActionSkill() {
 	const RPG::Animation* animation = (skill.animation_id != 0)
 		? &Data::animations[skill.animation_id - 1]
 		: NULL;
-	Battle::Action* action = NULL;
+	EASYRPG_SHARED_PTR<Battle::Action> action;
 	int x, y;
 
 	Game_Battle::SetSkill(enemy_action->skill_id);
@@ -704,7 +675,7 @@ void Scene_Battle::EnemyActionSkill() {
 	switch (skill.type) {
 		case RPG::Skill::Type_teleport:
 		case RPG::Skill::Type_escape:
-			action = new Battle::MoveAction(enemy.sprite, enemy.sprite->GetX(), -enemy.sprite->GetWidth(), 8);
+			action = EASYRPG_MAKE_SHARED<Battle::MoveAction>(enemy.sprite.get(), enemy.sprite->GetX(), -enemy.sprite->GetWidth(), 8);
 			break;
 		case RPG::Skill::Type_switch:
 			break;
@@ -714,27 +685,27 @@ void Scene_Battle::EnemyActionSkill() {
 				case RPG::Skill::Scope_enemy:
 					Game_Battle::TargetRandomAlly();
 					if (animation != NULL)
-						action = new Battle::AnimationAction(Game_Battle::GetTargetAlly().sprite, animation);
+						action = EASYRPG_MAKE_SHARED<Battle::AnimationAction>(Game_Battle::GetTargetAlly().sprite.get(), animation);
 					break;
 				case RPG::Skill::Scope_self:
 					if (animation != NULL)
-						action = new Battle::AnimationAction(enemy.sprite, animation);
+						action = EASYRPG_MAKE_SHARED<Battle::AnimationAction>(enemy.sprite.get(), animation);
 					break;
 				case RPG::Skill::Scope_ally:
 					Game_Battle::TargetRandomEnemy();
 					if (animation != NULL)
-						action = new Battle::AnimationAction(Game_Battle::GetTargetEnemy().sprite, animation);
+						action = EASYRPG_MAKE_SHARED<Battle::AnimationAction>(Game_Battle::GetTargetEnemy().sprite.get(), animation);
 					break;
 				case RPG::Skill::Scope_enemies:
 					if (animation != NULL) {
 						Game_Battle::AlliesCentroid(x, y);
-						action = new Battle::AnimationAction(x, y, animation);
+						action = EASYRPG_MAKE_SHARED<Battle::AnimationAction>(x, y, animation);
 					}
 					break;
 				case RPG::Skill::Scope_party:
 					if (animation != NULL) {
 						Game_Battle::EnemiesCentroid(x, y);
-						action = new Battle::AnimationAction(x, y, animation);
+						action = EASYRPG_MAKE_SHARED<Battle::AnimationAction>(x, y, animation);
 					}
 					break;
 				default:
@@ -743,10 +714,10 @@ void Scene_Battle::EnemyActionSkill() {
 	}
 
 	if (action == NULL)
-		action = new Battle::WaitAction(30);
+		action = EASYRPG_MAKE_SHARED<Battle::WaitAction>(30);
 
 	actions.push_back(action);
-	actions.push_back(new Battle::CommandAction(&Game_Battle::EnemySkill));
+	actions.push_back(EASYRPG_SHARED_PTR<Battle::CommandAction>(new Battle::CommandAction(&Game_Battle::EnemySkill)));
 }
 
 ////////////////////////////////////////////////////////////
@@ -780,9 +751,8 @@ void Scene_Battle::ProcessActions() {
 		case State_AllyAction:
 		case State_EnemyAction:
 			if (!actions.empty()) {
-				Battle::Action* action = actions.front();
-				if ((*action)()) {
-					delete action;
+				Battle::Action& action = *actions.front();
+				if (action()) {
 					actions.pop_front();
 				}
 			}
@@ -914,9 +884,8 @@ void Scene_Battle::DoAuto() {
 ////////////////////////////////////////////////////////////
 void Scene_Battle::UpdateBackground() {
 	if (Game_Temp::battle_background != Game_Battle::background_name) {
-		delete background;
 		Game_Temp::battle_background = Game_Battle::background_name;
-		background = new Background(Game_Temp::battle_background);
+		background.reset(new Background(Game_Temp::battle_background));
 	}
 }
 
@@ -961,7 +930,7 @@ void Scene_Battle::UpdateSprites() {
 			if (it->fade == 0)
 				it->sprite->SetVisible(false);
 		}
-			
+
 		if (!it->rpg_enemy->levitate)
 			continue;
 		int y = (int) (3 * sin(cycle / 30.0));
@@ -975,15 +944,15 @@ void Scene_Battle::UpdateSprites() {
 
 ////////////////////////////////////////////////////////////
 void Scene_Battle::UpdateFloaters() {
-	std::vector<FloatText*>::const_iterator it;
-	std::vector<FloatText*>::iterator dst = floaters.begin();
+	std::vector<EASYRPG_SHARED_PTR<FloatText> >::iterator it;
+	std::vector<EASYRPG_SHARED_PTR<FloatText> >::iterator dst = floaters.begin();
 	for (it = floaters.begin(); it != floaters.end(); it++) {
-		FloatText* floater = *it;
+		FloatText* floater = it->get();
 		floater->duration--;
 		if (floater->duration <= 0)
-			delete floater;
+			it->reset();
 		else
-			*dst++ = floater;
+			*dst++ = *it;
 	}
 
 	floaters.erase(dst, floaters.end());
@@ -1007,11 +976,10 @@ void Scene_Battle::ShowAnimation(int animation_id, bool allies, Battle::Ally* al
 	else
 		Game_Battle::EnemiesCentroid(x, y);
 
-	BattleAnimation* new_animation = new BattleAnimation(x, y, rpg_anim);
+	EASYRPG_SHARED_PTR<BattleAnimation> new_animation =
+		EASYRPG_MAKE_SHARED<BattleAnimation>(x, y, rpg_anim);
 
 	if (wait) {
-		if (animation != NULL)
-			delete animation;
 		animation = new_animation;
 	}
 	else
@@ -1023,24 +991,22 @@ void Scene_Battle::UpdateAnimations() {
 	if (animation != NULL) {
 		animation->Update();
 		if (animation->IsDone()) {
-			delete animation;
-			animation = NULL;
+			animation.reset();
 		}
 	}
 
-	for (std::deque<BattleAnimation*>::iterator it = animations.begin(); it != animations.end(); it++) {
-		BattleAnimation* anim = *it;
+	for (std::deque<EASYRPG_SHARED_PTR<BattleAnimation> >::iterator it = animations.begin(); it != animations.end(); it++) {
+		BattleAnimation* anim = it->get();
 		if (anim == NULL)
 			continue;
 		anim->Update();
 		if (anim->IsDone()) {
-			delete anim;
-			*it = NULL;
+			it->reset();
 		}
 	}
 
-	std::deque<BattleAnimation*>::iterator end;
-	end = std::remove(animations.begin(), animations.end(), (BattleAnimation*) NULL);
+	std::deque<EASYRPG_SHARED_PTR<BattleAnimation> >::iterator end;
+	end = std::remove(animations.begin(), animations.end(), EASYRPG_SHARED_PTR<BattleAnimation>());
 	animations.erase(end, animations.end());
 }
 
@@ -1118,4 +1084,3 @@ void Scene_Battle::CheckFlee() {
 	Game_Temp::battle_result = Game_Temp::BattleEscape;
 	Scene::Pop();
 }
-

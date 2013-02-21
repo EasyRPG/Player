@@ -23,9 +23,8 @@
 ////////////////////////////////////////////////////////////
 #include <string>
 #include <list>
-#include "SDL.h"
+
 #include "system.h"
-#include "bitmap.h"
 #include "drawable.h"
 #include "zobj.h"
 
@@ -65,7 +64,7 @@ namespace Graphics {
 	/// Get a bitmap with the actual contents of the screen.
 	/// @return screen contents
 	////////////////////////////////////////////////////////
-	Bitmap* SnapToBitmap();
+	BitmapRef SnapToBitmap();
 
 	/// Transition types.
 	enum TransitionType {
@@ -128,19 +127,21 @@ namespace Graphics {
 	/// @param framecount : frame count since player started
 	void SetFrameCount(int framecount);
 
-	void RegisterDrawable(uint32 ID, Drawable* drawable);
-	void RemoveDrawable(uint32 ID);
-	ZObj* RegisterZObj(int z, uint32 ID);
-	void RegisterZObj(int z, uint32 ID, bool multiz);
-	void RemoveZObj(uint32 ID);
-	void RemoveZObj(uint32 ID, bool multiz);
+	void RegisterDrawable(uint32_t ID, Drawable* drawable);
+	void RemoveDrawable(uint32_t ID);
+	ZObj* RegisterZObj(int z, uint32_t ID);
+	void RegisterZObj(int z, uint32_t ID, bool multiz);
+	void RemoveZObj(uint32_t ID);
+	void RemoveZObj(uint32_t ID, bool multiz);
 	void UpdateZObj(ZObj* zobj, int z);
 
 	extern bool fps_on_screen;
-	extern uint32 drawable_id;
+	extern uint32_t drawable_id;
 
 	void Push();
 	void Pop();
+
+	unsigned SecondToFrame(float second);
 }
 
 #endif

@@ -54,6 +54,7 @@ namespace Input {
 		DEBUG_MENU,
 		DEBUG_THROUGH,
 		TOGGLE_FPS,
+		TAKE_SCREENSHOT,
 		BUTTON_COUNT
 	};
 

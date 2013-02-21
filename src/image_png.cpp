@@ -16,13 +16,14 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "system.h"
-#if defined(USE_SOFT_BITMAP) || defined(USE_PIXMAN_BITMAP)
+#ifdef SUPPORT_PNG
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
 
 #include <png.h>
+#include <cstdlib>
 #include "output.h"
 #include "image_png.h"
 
@@ -116,11 +117,11 @@ void ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 
 	if (transparent && num_palette > 0) {
 		png_color& ck = palette[0];
-		uint8 ck1[4] = {ck.red, ck.green, ck.blue, 255};
-		uint8 ck2[4] = {ck.red, ck.green, ck.blue,   0};
-		uint32 srckey = *(uint32*)ck1;
-		uint32 dstkey = *(uint32*)ck2;
-		uint32* p = (uint32*) pixels;
+		uint8_t ck1[4] = {ck.red, ck.green, ck.blue, 255};
+		uint8_t ck2[4] = {ck.red, ck.green, ck.blue,   0};
+		uint32_t srckey = *(uint32_t*)ck1;
+		uint32_t dstkey = *(uint32_t*)ck2;
+		uint32_t* p = (uint32_t*) pixels;
 		for (unsigned i = 0; i < w * h; i++, p++)
 			if (*p == srckey)
 				*p = dstkey;
@@ -133,4 +134,4 @@ void ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 
 ////////////////////////////////////////////////////////////
 
-#endif
+#endif // SUPPORT_PNG

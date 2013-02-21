@@ -40,6 +40,7 @@
 #include "battle_battler.h"
 #include "battle_animation.h"
 #include "battle_interface.h"
+#include <boost/scoped_ptr.hpp>
 
 namespace Battle {
 class Action;
@@ -58,7 +59,6 @@ public:
 
 	void Start();
 	void Update();
-	void Terminate();
 
 	enum State {
 		State_Options,
@@ -77,9 +77,8 @@ public:
 
 	struct FloatText {
 		FloatText(int x, int y, int color, const std::string& text, int duration);
-		~FloatText();
 		int duration;
-		Sprite* sprite;
+		boost::scoped_ptr<Sprite> sprite;
 	};
 
 private:
@@ -92,25 +91,24 @@ private:
 	int attack_state;
 	int message_timer;
 	const RPG::EnemyAction* enemy_action;
-	std::deque<Battle::Action*> actions;
+	std::deque<EASYRPG_SHARED_PTR<Battle::Action> > actions;
 	int skill_id;
 	int pending_command;
 
-	Window_Help* help_window;
-	Window_BattleOption* options_window;
-	Window_BattleStatus* status_window;
-	Window_BattleCommand* command_window;
-	Window_BattleItem* item_window;
-	Window_BattleSkill* skill_window;
-	Background* background;
+	boost::scoped_ptr<Window_Help> help_window;
+	boost::scoped_ptr<Window_BattleOption> options_window;
+	boost::scoped_ptr<Window_BattleStatus> status_window;
+	boost::scoped_ptr<Window_BattleCommand> command_window;
+	boost::scoped_ptr<Window_BattleItem> item_window;
+	boost::scoped_ptr<Window_BattleSkill> skill_window;
+	boost::scoped_ptr<Background> background;
 
-	BattleAnimation* animation;
-	std::deque<BattleAnimation*> animations;
+	EASYRPG_SHARED_PTR<BattleAnimation> animation;
+	std::deque<EASYRPG_SHARED_PTR<BattleAnimation> > animations;
 
-	std::vector<FloatText*> floaters;
+	std::vector<EASYRPG_SHARED_PTR<FloatText> > floaters;
 
-	Sprite *ally_cursor;
-	Sprite *enemy_cursor;
+	boost::scoped_ptr<Sprite> ally_cursor, enemy_cursor;
 
 	void CreateCursors();
 	void CreateWindows();

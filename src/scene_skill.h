@@ -25,6 +25,7 @@
 #include "window_help.h"
 #include "window_skill.h"
 #include "window_skillstatus.h"
+#include <boost/scoped_ptr.hpp>
 
 ////////////////////////////////////////////////////////////
 /// Scene_Skill class
@@ -39,7 +40,6 @@ public:
 
 	void Start();
 	void Update();
-	void Terminate();
 
 private:
 	/// Actor in the party whose skills are displayed
@@ -47,11 +47,11 @@ private:
 	/// Skill to select at startup
 	int skill_index;
 	/// Displays available skills
-	Window_Skill* skill_window;
+	boost::scoped_ptr<Window_Skill> skill_window;
 	/// Displays information about the actor
-	Window_SkillStatus* skillstatus_window;
+	boost::scoped_ptr<Window_SkillStatus> skillstatus_window;
 	/// Displays description about the selected skill
-	Window_Help* help_window;
+	boost::scoped_ptr<Window_Help> help_window;
 };
 
 #endif

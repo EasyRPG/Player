@@ -39,26 +39,22 @@
 #include "input.h"
 
 ////////////////////////////////////////////////////////////
-Scene_Map::Scene_Map() : 
-	spriteset(NULL),
-	message_window(NULL) {
+Scene_Map::Scene_Map() {
 	type = Scene::Map;
 }
 
 ////////////////////////////////////////////////////////////
 void Scene_Map::Start() {
-	spriteset = new Spriteset_Map();
-	message_window = new Window_Message(0, 240 - 80, 320, 80);
+	spriteset.reset(new Spriteset_Map());
+	message_window.reset(new Window_Message(0, 240 - 80, 320, 80));
 
 	Main_Data::game_screen->Reset();
 	Graphics::FrameReset();
 }
 
 ////////////////////////////////////////////////////////////
-void Scene_Map::Terminate() {
+Scene_Map::~Scene_Map() {
 	Main_Data::game_screen->Reset();
-	delete spriteset;
-	delete message_window;
 }
 
 ////////////////////////////////////////////////////////////
@@ -81,12 +77,12 @@ void Scene_Map::Update() {
 	message_window->Update();
 
 	UpdateTeleportPlayer();
-	
+
 	if (Game_Temp::gameover) {
 		Game_Temp::gameover = false;
-		Scene::Push(new Scene_Gameover());
+		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Gameover>());
 	}
-	
+
 	if (Game_Temp::to_title) {
 		Game_Temp::to_title = false;
 		Scene::PopUntil(Scene::Title);
@@ -147,11 +143,10 @@ void Scene_Map::UpdateTeleportPlayer() {
 
 	Scene::TransitionOut();
 
-	delete spriteset;
 	Main_Data::game_player->PerformTeleport();
 	Game_Map::Autoplay();
 
-	spriteset = new Spriteset_Map();
+	spriteset.reset(new Spriteset_Map());
 
 	Game_Map::Update();
 
@@ -166,19 +161,19 @@ void Scene_Map::UpdateTeleportPlayer() {
 void Scene_Map::CallBattle() {
 	Game_Temp::battle_calling = false;
 
-	Scene::Push(new Scene_Battle());
+	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Battle>());
 }
 
 void Scene_Map::CallShop() {
 	Game_Temp::shop_calling = false;
 
-	Scene::Push(new Scene_Shop());
+	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Shop>());
 }
 
 void Scene_Map::CallName() {
 	Game_Temp::name_calling = false;
 
-	Scene::Push(new Scene_Name());
+	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Name>());
 }
 
 ////////////////////////////////////////////////////////////
@@ -194,16 +189,15 @@ void Scene_Map::CallMenu() {
 
 	// TODO: Main_Data::game_player->Straighten();
 
-	Scene::Push(new Scene_Menu());
+	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Menu>());
 }
 
 void Scene_Map::CallSave() {
 	Game_Temp::save_calling = false;
 
-	Scene::Push(new Scene_Save());
+	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Save>());
 }
 
 void Scene_Map::CallDebug() {
 
 }
-
