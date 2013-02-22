@@ -1368,7 +1368,7 @@ bool Game_Interpreter_Map::CommandCallEvent(RPG::EventCommand const& com) { // c
 
 	Game_Event* event = static_cast<Game_Event*>(GetCharacter(evt_id));
 	RPG::EventPage& page = event->GetEvent().pages[event_page - 1];
-	child_interpreter->Setup(page.event_commands, evt_id, event->GetX(), event->GetY());
+	child_interpreter->Setup(page.event_commands, event->GetId(), event->GetX(), event->GetY());
 
 	return true;
 }
