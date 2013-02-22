@@ -62,7 +62,7 @@ void LuaBot::register_vm(lua_State* const L) {
 LuaBot::LuaBot(std::string const& script)
 	: script_(script), executer_(NULL)
 {
-	vm_.reset(lua_open(), &lua_close);
+	vm_.reset(luaL_newstate(), &lua_close);
 	assert(vm_);
 	lua_State* const L = vm_.get();
 
