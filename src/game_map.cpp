@@ -340,6 +340,7 @@ bool Game_Map::IsBush(int /* x */, int /* y */) {
 
 ////////////////////////////////////////////////////////////
 bool Game_Map::IsCounter(int x, int y) {
+	if (!Game_Map::IsValid(x, y)) return false;
 	int const tile_id = map->upper_layer[x + y * map->width];
 	if (tile_id < BLOCK_F) return false;
 	int const index = map_info.lower_tiles[passages_up[tile_id - BLOCK_F]];
