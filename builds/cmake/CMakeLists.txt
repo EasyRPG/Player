@@ -173,11 +173,6 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     libgcc1 libasound2 libpulse0 libxext6 libcaca0 libmikmod2 libvorbisfile3 libmad0
     libjson0 libslang2 libncurses5 libtinfo5 libwrap0 libasyncns0 libxau6 libxdmcp6)
 endif()
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  list(APPEND CPACK_GENERATOR "DMG")
-
-  set(CPACK_DMG_FORMAT "UDRO")
-endif()
 
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
 set(CPACK_PACKAGE_VERSION "0.1")
