@@ -42,8 +42,9 @@ void Game_CommonEvent::Refresh() {
 								  : static_cast<Game_Interpreter*>(new Game_Interpreter_Map()));
 				Update();
 			}
+		} else {
+			interpreter.reset();
 		}
-
 	} else {
 		interpreter.reset();
 	}

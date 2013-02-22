@@ -469,16 +469,18 @@ void Game_Map::Update() {
 	UpdatePan();
 	UpdateParallax();
 
-	for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
+	for (tEventHash::iterator i = events.begin();
+		i != events.end(); i++) {
+		i->second->Update();
+	}
+
+	for (tCommonEventHash::iterator i = common_events.begin();
+		i != common_events.end(); i++) {
 		i->second->Update();
 	}
 
 	for (int i = 0; i < 3; i++)
 		vehicles[i]->Update();
-
-	for (size_t i = 0; i < common_events.size(); i++) {
-		common_events[i]->Update();
-	}
 }
 
 ////////////////////////////////////////////////////////////
