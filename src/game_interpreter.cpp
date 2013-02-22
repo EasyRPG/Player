@@ -900,11 +900,7 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 	switch (mode) {
 	case 0:
 		// Party
-		for (std::vector<Game_Actor*>::iterator i = Game_Party::GetActors().begin();
-			 i != Game_Party::GetActors().end();
-			 i++) {
-			actors.push_back(Game_Actors::GetActor((*i)->GetId()));
-		}
+		actors = Game_Party::GetActors();
 		break;
 	case 1:
 		// Hero

@@ -101,8 +101,9 @@ void Scene_Order::CreateCommandWindow() {
 	std::vector<std::string> options_right;
 	std::vector<std::string> options_confirm;
 
-	for (std::vector<Game_Actor*>::iterator it = Game_Party::GetActors().begin();
-		it != Game_Party::GetActors().end(); ++it) {
+	std::vector<Game_Actor*> actors = Game_Party::GetActors();
+	for (std::vector<Game_Actor*>::const_iterator it = actors.begin();
+		it != actors.end(); ++it) {
 		options_left.push_back((*it)->GetName());
 		options_right.push_back("");
 	}
@@ -132,9 +133,10 @@ void Scene_Order::CreateCommandWindow() {
 void Scene_Order::Redo() {
 	Game_System::SePlay(Data::system.cancel_se);
 
-	for (std::vector<Game_Actor*>::iterator it = Game_Party::GetActors().begin();
-		it != Game_Party::GetActors().end(); ++it) {
-		int index = it - Game_Party::GetActors().begin();
+	std::vector<Game_Actor*> actors = Game_Party::GetActors();
+	for (std::vector<Game_Actor*>::const_iterator it = actors.begin();
+		it != actors.end(); ++it) {
+		int index = it - actors.begin();
 		window_left->SetItemText(index, (*it)->GetName());
 		window_right->SetItemText(index, "");
 	}
@@ -148,7 +150,7 @@ void Scene_Order::Redo() {
 
 	actor_counter = 0;
 	actors.clear();
-	actors.resize(Game_Party::GetActors().size());
+	actors.resize(actors.size());
 }
 
 void Scene_Order::Confirm() {

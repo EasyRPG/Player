@@ -1103,10 +1103,11 @@ bool Game_Interpreter_Map::ContinuationShowInn(RPG::EventCommand const& /* com *
 	if (!Game_Temp::inn_handlers) {
 		if (inn_stay) {
 			// Full heal
-			for (std::vector<Game_Actor*>::iterator i = Game_Party::GetActors().begin();
-				 i != Game_Party::GetActors().end();
+			std::vector<Game_Actor*> actors = Game_Party::GetActors();
+			for (std::vector<Game_Actor*>::const_iterator i = actors.begin();
+				 i != actors.end();
 				 i++) {
-				Game_Actor* actor = Game_Actors::GetActor((*i)->GetId());
+				Game_Actor* actor = *i;
 				actor->SetHp(actor->GetMaxHp());
 				actor->SetSp(actor->GetMaxSp());
 				actor->RemoveAllStates();
