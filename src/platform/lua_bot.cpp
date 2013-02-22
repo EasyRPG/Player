@@ -96,7 +96,11 @@ void LuaBot::resume() {
 	assert(L);
 	assert(lua_type(L, -1) == LUA_TTHREAD);
 
+#if LUA_VERSION_NUM >= 502
+	switch(lua_resume(executer_, L, 0)) {
+#else
 	switch(lua_resume(executer_, 0)) {
+#endif
 	case 0: // LUA_OK
 		Output::Debug("Script ended. Quiting");
 		finish();
