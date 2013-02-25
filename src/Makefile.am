@@ -131,3 +131,4 @@ easyrpg_player_SOURCES = \
 	../lib/shinonome/gothic.cxx \
 	../lib/shinonome/mincho.cxx
 easyrpg_player_LDADD = $(READERS_DIR)/lib/libreaders.a
+AM_CXXFLAGS = -I$(srcdir)/../lib/shinonome
