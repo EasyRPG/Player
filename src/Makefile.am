@@ -1,8 +1,8 @@
 bin_PROGRAMS = easyrpg-player
 easyrpg_player_SOURCES = \
 	al_audio.cpp \
+	android_ui.cpp \
 	audio.cpp \
-	audio_stream.cpp \
 	background.cpp \
 	baseui.cpp \
 	battle_actions.cpp \
@@ -12,17 +12,14 @@ easyrpg_player_SOURCES = \
 	bitmap.cpp \
 	bitmap_screen.cpp \
 	bitmap_utils.cpp \
+	bot_ui.cpp \
 	cache.cpp \
-	channel.cpp \
 	color.cpp \
 	effects.cpp \
-	filefinder_basic.cpp \
-	filefinder_unix.cpp \
-	filefinder_win.cpp \
+	filefinder.cpp \
 	font.cpp \
 	font_pearl_8x8.cpp \
 	font_render_8x8.cpp \
-	ftfont.cpp \
 	game_actor.cpp \
 	game_actors.cpp \
 	game_battle.cpp \
@@ -46,7 +43,6 @@ easyrpg_player_SOURCES = \
 	game_troop.cpp \
 	game_unit.cpp \
 	game_vehicle.cpp \
-	gl_bitmap_screen.cpp \
 	graphics.cpp \
 	hslrgb.cpp \
 	image_bmp.cpp \
@@ -59,19 +55,14 @@ easyrpg_player_SOURCES = \
 	input_buttons_gph.cpp \
 	input_buttons_psp.cpp \
 	input.cpp \
+	lua_bot.cpp \
 	main.cpp \
 	main_data.cpp \
-	mixer.cpp \
-	msgbox_gtk.cpp \
-	msgbox_win.cpp \
 	output.cpp \
-	pixman_bitmap.cpp \
-	pixman_bitmap_screen.cpp \
 	plane.cpp \
 	player.cpp \
 	rect.cpp \
 	registry_win.cpp \
-	resampler.cpp \
 	scene_actortarget.cpp \
 	scene_battle.cpp \
 	scene.cpp \
@@ -92,24 +83,16 @@ easyrpg_player_SOURCES = \
 	scene_status.cpp \
 	scene_title.cpp \
 	sdl_audio.cpp \
-	sdl_bitmap.cpp \
-	sdl_bitmap_screen.cpp \
-	sdl_font.cpp \
-	sdl_time.cpp \
 	sdl_ui.cpp \
-	soft_bitmap.cpp \
-	soft_bitmap_screen.cpp \
 	sprite_character.cpp \
 	sprite.cpp \
 	spriteset_map.cpp \
-	surface.cpp \
 	text.cpp \
 	tilemap.cpp \
 	tilemap_layer.cpp \
 	tone.cpp \
 	utils.cpp \
 	util_win.cpp \
-	wcwidth.cpp \
 	window_actorinfo.cpp \
 	window_actorstatus.cpp \
 	window_actortarget.cpp \
@@ -144,5 +127,7 @@ easyrpg_player_SOURCES = \
 	window_skill.cpp \
 	window_skillstatus.cpp \
 	window_targetstatus.cpp \
-	zobj.cpp
+	zobj.cpp \
+	../lib/shinonome/gothic.cxx \
+	../lib/shinonome/mincho.cxx
 easyrpg_player_LDADD = $(READERS_DIR)/lib/libreaders.a
