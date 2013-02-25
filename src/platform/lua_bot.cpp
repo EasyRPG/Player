@@ -62,7 +62,7 @@ void LuaBot::register_vm(lua_State* const L) {
 LuaBot::LuaBot(std::string const& script)
 	: script_(script), executer_(NULL)
 {
-	vm_.reset(luaL_newstate(), &lua_close);
+	vm_.reset(lua_open(), &lua_close);
 	assert(vm_);
 	lua_State* const L = vm_.get();
 
@@ -96,11 +96,7 @@ void LuaBot::resume() {
 	assert(L);
 	assert(lua_type(L, -1) == LUA_TTHREAD);
 
-#if LUA_VERSION_NUM >= 502
-	switch(lua_resume(executer_, L, 0)) {
-#else
 	switch(lua_resume(executer_, 0)) {
-#endif
 	case 0: // LUA_OK
 		Output::Debug("Script ended. Quiting");
 		finish();
