@@ -64,15 +64,18 @@ void ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 				 &bit_depth, &color_type, NULL, NULL, NULL);
 
 	png_color black = {0,0,0};
-	png_colorp palette;
+	png_colorp palette = NULL;
 	int num_palette = 0;
 
 	switch (color_type) {
 		case PNG_COLOR_TYPE_PALETTE:
-			if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS))
-				png_set_tRNS_to_alpha(png_ptr);
-			else if (transparent && png_get_valid(png_ptr, info_ptr, PNG_INFO_PLTE))
+			if (!png_get_valid(png_ptr, info_ptr, PNG_INFO_PLTE)) {
+				Output::Error("Palette PNG without PLTE block");
+			}
+			if (transparent) {
 				png_get_PLTE(png_ptr, info_ptr, &palette, &num_palette);
+			}
+			png_set_strip_alpha(png_ptr);
 			png_set_palette_to_rgb(png_ptr);
 			png_set_filler(png_ptr, 0xFF, PNG_FILLER_AFTER);
 			break;
