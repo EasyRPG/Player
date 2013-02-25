@@ -127,5 +127,7 @@ easyrpg_player_SOURCES = \
 	window_skill.cpp \
 	window_skillstatus.cpp \
 	window_targetstatus.cpp \
-	zobj.cpp
+	zobj.cpp \
+	../lib/shinonome/gothic.cxx \
+	../lib/shinonome/mincho.cxx
 easyrpg_player_LDADD = $(READERS_DIR)/lib/libreaders.a
