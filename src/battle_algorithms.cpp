@@ -16,6 +16,11 @@
  */
 
 // Headers
+<<<<<<< HEAD
+=======
+////////////////////////////////////////////////////////////
+#include <cstdlib>
+>>>>>>> c6dd59c... Wii: compile fix
 #include "rpg_item.h"
 #include "rpg_skill.h"
 #include "rpg_enemyaction.h"

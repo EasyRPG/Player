@@ -44,6 +44,10 @@
  */
 #include "memory_management.h"
 
+#ifdef GEKKO
+	#include <cstdint>
+#endif
+
 #define SUPPORT_BMP
 #define SUPPORT_JPG
 #define SUPPORT_PNG

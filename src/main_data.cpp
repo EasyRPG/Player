@@ -16,6 +16,12 @@
  */
 
 // Headers
+<<<<<<< HEAD
+=======
+////////////////////////////////////////////////////////////
+#include <boost/scoped_ptr.hpp>
+#include <cstdlib>
+>>>>>>> c6dd59c... Wii: compile fix
 #include "main_data.h"
 #include "game_actors.h"
 #include "game_party.h"
@@ -27,7 +33,6 @@
 #include "game_variables.h"
 #include "game_switches.h"
 #include "font.h"
-#include <boost/scoped_ptr.hpp>
 
 // Global variables.
 
