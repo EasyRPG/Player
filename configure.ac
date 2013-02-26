@@ -27,7 +27,7 @@ AC_ARG_WITH([readers],[AS_HELP_STRING([--with-readers=DIR],[Location of the Easy
 PKG_CHECK_MODULES([PIXMAN],[pixman-1],[CXXFLAGS="$CXXFLAGS $PIXMAN_CFLAGS" LDFLAGS="$LDFLAGS $PIXMAN_LIBS"])
 PKG_CHECK_MODULES([FREETYPE],[freetype2],[CXXFLAGS="$CXXFLAGS $FREETYPE_CFLAGS" LDFLAGS="$LDFLAGS $FREETYPE_LIBS"])
 m4_ifdef([AM_PATH_SDL],[AM_PATH_SDL([1.2.0],[CXXFLAGS="$CXXFLAGS -DUSE_SDL $SDL_CFLAGS" LDFLAGS="$LDFLAGS $SDL_LIBS"])],[AC_MSG_ERROR['SDL' is required but it doesn't seem to be installed on this system (AM_PATH_SDL macro not found).]])
-AC_CHECK_LIB([SDL_mixer],[Mix_OpenAudio],[],[AC_MSG_ERROR(['SDL_mixer' is required but it doesn't seem to be installed on this system.])])
+AC_CHECK_LIB([SDL_mixer],[Mix_OpenAudio],[CXXFLAGS="$CXXFLAGS -DHAVE_SDL_MIXER" LDFLAGS="$LDFLAGS -lSDL_mixer"],[AC_MSG_ERROR(['SDL_mixer' is required but it doesn't seem to be installed on this system.])])
 AC_CHECK_LIB([png],[png_set_filler],[],[AC_MSG_ERROR(['libpng' is required but it doesn't seem to be installed on this system.])])
 AC_CHECK_LIB([jpeg],[jpeg_mem_src],[],[AC_MSG_ERROR(['libjpeg' (with jpeg_mem_src) is required but it doesn't seem to be installed on this system.])])
 AC_CHECK_LIB([z],[uncompress],[],[AC_MSG_ERROR(['zlib' is required but it doesn't seem to be installed on this system.])])
