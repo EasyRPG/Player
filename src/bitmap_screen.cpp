@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <cmath>
 
 #include "system.h"
@@ -26,17 +24,14 @@
 #include "util_macro.h"
 #include "bitmap.h"
 
-////////////////////////////////////////////////////////////
 BitmapScreenRef BitmapScreen::Create(BitmapRef const& source) {
 	return EASYRPG_MAKE_SHARED<BitmapScreen>(source);
 }
 
-////////////////////////////////////////////////////////////
 BitmapScreenRef BitmapScreen::Create() {
 	return Create(BitmapRef());
 }
 
-////////////////////////////////////////////////////////////
 BitmapScreen::BitmapScreen(BitmapRef const& bitmap) :
 	bitmap(bitmap),
 	bitmap_effects_valid(false),
@@ -61,19 +56,16 @@ BitmapScreen::BitmapScreen(BitmapRef const& bitmap) :
 	}
 }
 
-////////////////////////////////////////////////////////////
 BitmapScreen::~BitmapScreen() {
 	if (bitmap) {
 		bitmap->DetachBitmapScreen(this);
 	}
 }
 
-////////////////////////////////////////////////////////////
 void BitmapScreen::BlitScreen(int x, int y) {
 	BlitScreen(x, y, Rect(0, 0, src_rect_effect.width, src_rect_effect.height));
 }
 
-////////////////////////////////////////////////////////////
 void BitmapScreen::BlitScreen(int x, int y, Rect const& src_rect) {
 	if (bitmap == NULL || (opacity_top_effect <= 0 && opacity_bottom_effect <= 0))
 		return;
@@ -96,7 +88,6 @@ void BitmapScreen::BlitScreen(int x, int y, Rect const& src_rect) {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void BitmapScreen::BlitScreenTiled(Rect const& src_rect, Rect const& dst_rect, int ox, int oy) {
 	if (bitmap == NULL || (opacity_top_effect <= 0 && opacity_bottom_effect <= 0))
 		return;
@@ -144,13 +135,11 @@ void BitmapScreen::BlitScreenTiled(Rect const& src_rect, Rect const& dst_rect, i
 	}
 }
 
-////////////////////////////////////////////////////////////
 void BitmapScreen::SetDirty() {
 	needs_refresh = true;
 	bitmap_changed = true;
 }
 
-////////////////////////////////////////////////////////////
 void BitmapScreen::SetBitmap(BitmapRef const& source) {
     if (bitmap)
 		bitmap->DetachBitmapScreen(this);
@@ -167,12 +156,10 @@ void BitmapScreen::SetBitmap(BitmapRef const& source) {
 	}
 }
 
-////////////////////////////////////////////////////////////
 BitmapRef const& BitmapScreen::GetBitmap() {
 	return bitmap;
 }
 
-////////////////////////////////////////////////////////////
 void BitmapScreen::ClearEffects() {
 	needs_refresh = true;
 
@@ -341,7 +328,6 @@ double BitmapScreen::GetWaverEffectPhase() const {
 	return waver_effect_phase;
 }
 
-////////////////////////////////////////////////////////////
 void BitmapScreen::BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y,
 									Rect const& src_rect, bool need_scale, int bush_y) {
 	if (! &draw_bitmap)
@@ -360,7 +346,6 @@ void BitmapScreen::BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y,
 					 waver_effect_depth, waver_effect_phase);
 }
 
-////////////////////////////////////////////////////////////
 BitmapRef BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
 	need_scale = false;
 

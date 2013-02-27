@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #ifdef _MSC_VER
 #  pragma warning(disable: 4003)
 #endif
@@ -33,7 +31,6 @@
 #include "bitmap.h"
 #include "output.h"
 
-////////////////////////////////////////////////////////////
 namespace {
 
 	typedef std::pair<std::string,std::string> string_pair;
@@ -157,7 +154,6 @@ BitmapRef Cache::ExFont() {
 	} else { return it->second.lock(); }
 }
 
-////////////////////////////////////////////////////////////
 BitmapRef Cache::Tile(const std::string& filename, int tile_id) {
 	tile_pair const key(filename, tile_id);
 	cache_tiles_type::const_iterator const it = cache_tiles.find(key);
@@ -191,7 +187,6 @@ BitmapRef Cache::Tile(const std::string& filename, int tile_id) {
 	} else { return it->second.lock(); }
 }
 
-////////////////////////////////////////////////////////////
 void Cache::Clear() {
 	for(cache_type::const_iterator i = cache.begin(); i != cache.end(); ++i) {
 		if(i->second.expired()) { continue; }

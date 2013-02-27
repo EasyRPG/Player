@@ -1,20 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
+// Headers
 #include <algorithm>
 #include <map>
 #include <cmath>
@@ -25,9 +26,9 @@
 #include "pixel_format.h"
 #include "bitmap_utils.h"
 
-////////////////////////////////////////////////////////////
-/// Traits types
-////////////////////////////////////////////////////////////
+/**
+ * Traits types.
+ */
 template <class BMU,
 		  PF::OpacityType SrcAlpha,
 		  PF::OpacityType DstAlpha>
@@ -118,14 +119,14 @@ struct copy_traits<BMU, true> {
 	}
 };
 
-////////////////////////////////////////////////////////////
-/// BitmapUtils class template
-////////////////////////////////////////////////////////////
+/**
+ * BitmapUtils class template.
+ */
 template <class PFsrc, class PFdst>
 class BitmapUtilsT : public BitmapUtils {
 public:
-	/// implementations of inherited pure virtual methods
-	/// for documentation, see parent BitmapUtils class
+	// Implementations of inherited pure virtual methods.
+	// For documentation, see parent BitmapUtils class.
 	void GetPixel(const uint8_t* src_pixels, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a);
 	void CheckOpacity(const uint8_t* src_pixels, int n, bool& all, bool& any);
 	void SetPixel(uint8_t* dst_pixels, const uint8_t& r, const uint8_t& g, const uint8_t& b, const uint8_t& a);
@@ -195,13 +196,11 @@ public:
 	PFdst pf_dst;
 };
 
-////////////////////////////////////////////////////////////
 template <class PFsrc, class PFdst>
 void BitmapUtilsT<PFsrc,PFdst>::GetPixel(const uint8_t* src_pixel, uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) {
 	pf_src.get_rgba(src_pixel, r, g, b, a);
 }
 
-////////////////////////////////////////////////////////////
 template <class PFsrc, class PFdst>
 void BitmapUtilsT<PFsrc,PFdst>::CheckOpacity(const uint8_t* src_pixels, int n, bool& all, bool& any) {
 	for (int x = 0; x < n; x++) {
@@ -215,13 +214,11 @@ void BitmapUtilsT<PFsrc,PFdst>::CheckOpacity(const uint8_t* src_pixels, int n, b
 	}
 }
 
-////////////////////////////////////////////////////////////
 template <class PFsrc, class PFdst>
 void BitmapUtilsT<PFsrc,PFdst>::SetPixel(uint8_t* dst_pixel, const uint8_t& r, const uint8_t& g, const uint8_t& b, const uint8_t& a) {
 	pf_dst.set_rgba(dst_pixel, r, g, b, a);
 }
 
-////////////////////////////////////////////////////////////
 template <class PFsrc, class PFdst>
 void BitmapUtilsT<PFsrc,PFdst>::SetPixels(uint8_t* dst_pixels, const uint8_t* src_pixel, int n) {
 	uint8_t tmp_pixel[4];
@@ -229,7 +226,6 @@ void BitmapUtilsT<PFsrc,PFdst>::SetPixels(uint8_t* dst_pixels, const uint8_t* sr
 	pf_dst.set_pixels(dst_pixels, tmp_pixel, n);
 }
 
-////////////////////////////////////////////////////////////
 template <class PFsrc, class PFdst>
 void BitmapUtilsT<PFsrc,PFdst>::OpacityBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int opacity) {
 	for (int i = 0; i < n; i++) {
@@ -253,7 +249,6 @@ void BitmapUtilsT<PFsrc,PFdst>::CopyBlit(uint8_t* dst_pixels, const uint8_t* src
 	copy_pixels(dst_pixels, src_pixels, n);
 }
 
-////////////////////////////////////////////////////////////
 template <class PFsrc, class PFdst>
 void BitmapUtilsT<PFsrc,PFdst>::FlipHBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n) {
 	for (int i = 0; i < n; i++) {
@@ -263,7 +258,6 @@ void BitmapUtilsT<PFsrc,PFdst>::FlipHBlit(uint8_t* dst_pixels, const uint8_t* sr
 	}
 }
 
-////////////////////////////////////////////////////////////
 template <class PFsrc, class PFdst>
 void BitmapUtilsT<PFsrc,PFdst>::OpacityScaleBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int x, int step, int opacity) {
 	for (int i = 0; i < n; i++) {
@@ -294,7 +288,6 @@ void BitmapUtilsT<PFsrc,PFdst>::CopyScaleBlit(uint8_t* dst_pixels, const uint8_t
 	}
 }
 
-////////////////////////////////////////////////////////////
 template <class PFsrc, class PFdst>
 void BitmapUtilsT<PFsrc,PFdst>::OpacityTransformBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int src_pitch,
 													 int x0, int x1, int y, const Rect& src_rect, const Matrix& inv,
@@ -317,7 +310,6 @@ void BitmapUtilsT<PFsrc,PFdst>::OpacityTransformBlit(uint8_t* dst_pixels, const 
 	}
 }
 
-////////////////////////////////////////////////////////////
 template <class PFsrc, class PFdst>
 void BitmapUtilsT<PFsrc,PFdst>::OverlayTransformBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int src_pitch,
 													 int x0, int x1, int y, const Rect& src_rect, const Matrix& inv) {
@@ -339,7 +331,6 @@ void BitmapUtilsT<PFsrc,PFdst>::OverlayTransformBlit(uint8_t* dst_pixels, const 
 	}
 }
 
-////////////////////////////////////////////////////////////
 template <class PFsrc, class PFdst>
 void BitmapUtilsT<PFsrc,PFdst>::CopyTransformBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int src_pitch,
 												  int x0, int x1, int y, const Rect& src_rect, const Matrix& inv) {
@@ -361,7 +352,6 @@ void BitmapUtilsT<PFsrc,PFdst>::CopyTransformBlit(uint8_t* dst_pixels, const uin
 	}
 }
 
-////////////////////////////////////////////////////////////
 template <class PFsrc, class PFdst>
 void BitmapUtilsT<PFsrc,PFdst>::MaskBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n) {
 	for (int i = 0; i < n; i++) {
@@ -374,7 +364,6 @@ void BitmapUtilsT<PFsrc,PFdst>::MaskBlit(uint8_t* dst_pixels, const uint8_t* src
 	}
 }
 
-////////////////////////////////////////////////////////////
 static inline void RGB_to_HSL(const uint8_t& r, const uint8_t& g, const uint8_t& b,
 							  int &h, int &s, int &l)
 {
@@ -463,7 +452,6 @@ void BitmapUtilsT<PFsrc,PFdst>::HSLBlit(uint8_t* dst_pixels, const uint8_t* src_
 	}
 }
 
-////////////////////////////////////////////////////////////
 template <class PFsrc, class PFdst>
 void BitmapUtilsT<PFsrc,PFdst>::ToneBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, const Tone& tone) {
 	for (int i = 0; i < n; i++) {
@@ -501,7 +489,6 @@ void BitmapUtilsT<PFsrc,PFdst>::ToneBlit(uint8_t* dst_pixels, const uint8_t* src
 	}
 }
 
-////////////////////////////////////////////////////////////
 template <class PFsrc, class PFdst>
 void BitmapUtilsT<PFsrc,PFdst>::BlendBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, const Color& color) {
 	for (int i = 0; i < n; i++) {
@@ -520,7 +507,6 @@ void BitmapUtilsT<PFsrc,PFdst>::BlendBlit(uint8_t* dst_pixels, const uint8_t* sr
 	}
 }
 
-////////////////////////////////////////////////////////////
 template <class PFsrc, class PFdst>
 void BitmapUtilsT<PFsrc,PFdst>::OpacityChangeBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int opacity) {
 	for (int i = 0; i < n; i++) {
@@ -532,7 +518,6 @@ void BitmapUtilsT<PFsrc,PFdst>::OpacityChangeBlit(uint8_t* dst_pixels, const uin
 	}
 }
 
-////////////////////////////////////////////////////////////
 template <class PFsrc, class PFdst>
 void BitmapUtilsT<PFsrc,PFdst>::FlipHV(uint8_t*& pixels_first, uint8_t*& pixels_last, int n) {
 	for (int i = 0; i < n; i++) {
@@ -572,7 +557,6 @@ void BitmapUtilsT<PFsrc,PFdst>::FlipV(uint8_t*& pixels_up, uint8_t*& pixels_down
 	copy_pixels(pixels_up, tmp_buffer, n);
 }
 
-////////////////////////////////////////////////////////////
 template <class PFsrc, class PFdst>
 void BitmapUtilsT<PFsrc,PFdst>::Blit2x(uint8_t* dst_pixels, const uint8_t* src_pixels, int n) {
 	for (int i = 0; i < n; i++) {
@@ -584,7 +568,6 @@ void BitmapUtilsT<PFsrc,PFdst>::Blit2x(uint8_t* dst_pixels, const uint8_t* src_p
 	}
 }
 
-////////////////////////////////////////////////////////////
 template <class PFsrc, class PFdst>
 void BitmapUtilsT<PFsrc,PFdst>::SetDstColorKey(uint32_t colorkey) {
 	pf_dst.SetColorKey(colorkey);
@@ -615,7 +598,6 @@ const DynamicFormat& BitmapUtilsT<PFsrc,PFdst>::GetSrcFormat() const {
 	return pf_src.Format();
 }
 
-////////////////////////////////////////////////////////////
 void BitmapUtils::Blit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int opacity) {
 	bool opacity_blit = opacity < 255;
 	bool overlay_blit = GetSrcFormat().alpha_type != PF::NoAlpha;
@@ -628,7 +610,6 @@ void BitmapUtils::Blit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, in
 		CopyBlit(dst_pixels, src_pixels, n);
 }
 
-////////////////////////////////////////////////////////////
 void BitmapUtils::ScaleBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int x, int step, int opacity) {
 	bool opacity_blit = opacity < 255;
 	bool overlay_blit = GetSrcFormat().alpha_type != PF::NoAlpha;
@@ -641,7 +622,6 @@ void BitmapUtils::ScaleBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int 
 		CopyScaleBlit(dst_pixels, src_pixels, n, x, step);
 }
 
-////////////////////////////////////////////////////////////
 void BitmapUtils::TransformBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int src_pitch,
 								int x0, int x1, int y, const Rect& src_rect, const Matrix& inv,
 								int opacity) {
@@ -656,7 +636,6 @@ void BitmapUtils::TransformBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, 
 		CopyTransformBlit(dst_pixels, src_pixels, src_pitch, x0, x1, y, src_rect, inv);
 }
 
-////////////////////////////////////////////////////////////
 typedef BitmapUtils* BitmapUtilsP;
 
 static const BitmapUtilsP bitmap_utils[] = {
@@ -768,7 +747,6 @@ static const BitmapUtilsP bitmap_utils[] = {
 	(BitmapUtilsP) NULL
 };
 
-////////////////////////////////////////////////////////////
 std::map<int, BitmapUtils*> BitmapUtils::unary_map;
 typedef std::pair<int, int> int_pair;
 std::map<int_pair, BitmapUtils*> BitmapUtils::binary_map;

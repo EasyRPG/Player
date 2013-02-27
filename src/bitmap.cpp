@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
@@ -69,17 +67,14 @@ void Bitmap::InitBitmap() {
 	font = Font::Default();
 }
 
-////////////////////////////////////////////////////////////
 Bitmap::Bitmap() {
 	InitBitmap();
 }
 
-////////////////////////////////////////////////////////////
 Bitmap::~Bitmap() {
 	pixman_image_unref(bitmap);
 }
 
-////////////////////////////////////////////////////////////
 Color Bitmap::GetPixel(int x, int y) const {
 	if (x < 0 || y < 0 || x >= width() || y >= height())
 		return Color();
@@ -160,7 +155,6 @@ bool Bitmap::WritePNG(std::ostream& os) const {
 	return true;
 }
 
-////////////////////////////////////////////////////////////
 void Bitmap::AttachBitmapScreen(BitmapScreen* bitmap) {
 	attached_screen_bitmaps.push_back(bitmap);
 }
@@ -173,7 +167,6 @@ bool Bitmap::IsAttachedToBitmapScreen() {
 	return attached_screen_bitmaps.size() != 0;
 }
 
-////////////////////////////////////////////////////////////
 int Bitmap::GetWidth() const {
 	return width();
 }
@@ -194,11 +187,9 @@ Color Bitmap::GetTransparentColor() const {
 	return GetColor(colorkey());
 }
 
-////////////////////////////////////////////////////////////
 void Bitmap::SetTransparentColor(Color /* color */) {
 }
 
-////////////////////////////////////////////////////////////
 Bitmap::TileOpacity Bitmap::CheckOpacity(const Rect& rect) {
 	bool all = true;
 	bool any = false;
@@ -222,7 +213,6 @@ Bitmap::TileOpacity Bitmap::CheckOpacity(const Rect& rect) {
 		Bitmap::Transparent;
 }
 
-////////////////////////////////////////////////////////////
 void Bitmap::CheckPixels(uint32_t flags) {
 	if (flags & System) {
 		Cache::system_info.bg_color = GetPixel(0, 32);
@@ -240,28 +230,22 @@ void Bitmap::CheckPixels(uint32_t flags) {
 	}
 }
 
-////////////////////////////////////////////////////////////
 Bitmap::TileOpacity Bitmap::GetTileOpacity(int row, int col) {
 	return opacity? (*opacity)[row][col] : Partial;
 }
 
-
-////////////////////////////////////////////////////////////
 uint8_t Bitmap::bytes() const {
 	return format.bytes;
 }
 
-////////////////////////////////////////////////////////////
 uint8_t* Bitmap::pointer(int x, int y) {
 	return (uint8_t*) pixels() + y * pitch() + x * bytes();
 }
 
-////////////////////////////////////////////////////////////
 uint8_t const* Bitmap::pointer(int x, int y) const {
 	return (uint8_t const*) pixels() + y * pitch() + x * bytes();
 }
 
-////////////////////////////////////////////////////////////
 BitmapRef Bitmap::Create(int width, int height, bool transparent, int /* bpp */) {
 	return EASYRPG_MAKE_SHARED<Bitmap>(width, height, transparent);
 }
@@ -270,7 +254,6 @@ BitmapRef Bitmap::Create(void *pixels, int width, int height, int pitch, const D
 	return EASYRPG_MAKE_SHARED<Bitmap>(pixels, width, height, pitch, format);
 }
 
-////////////////////////////////////////////////////////////
 void Bitmap::SetPixel(int x, int y, const Color &color) {
 	if (x < 0 || y < 0 || x >= width() || y >= height()) return;
 
@@ -282,7 +265,6 @@ void Bitmap::SetPixel(int x, int y, const Color &color) {
 	End();
 }
 
-////////////////////////////////////////////////////////////
 void Bitmap::TransformBlit(Rect const& dst_rect_,
 							Bitmap const& src, Rect const& src_rect,
 							double angle,
@@ -303,12 +285,10 @@ void Bitmap::TransformBlit(Rect const& dst_rect_,
 	TransformBlit(dst_rect, src, src_rect, inv, opacity);
 }
 
-////////////////////////////////////////////////////////////
 void Bitmap::HueChangeBlit(int x, int y, Bitmap const& src, Rect const& src_rect, double hue) {
 	HSLBlit(x, y, src, src_rect, hue, 1, 1, 0);
 }
 
-////////////////////////////////////////////////////////////
 void Bitmap::HSLBlit(int x, int y, Bitmap const& src, Rect const& src_rect_, double h, double s, double l, double lo) {
 	Rect dst_rect(x, y, 0, 0), src_rect = src_rect_;
 
@@ -340,7 +320,6 @@ void Bitmap::HSLBlit(int x, int y, Bitmap const& src, Rect const& src_rect_, dou
 	End(src);
 }
 
-////////////////////////////////////////////////////////////
 BitmapUtils* Bitmap::Begin() {
 	BitmapUtils* bm_utils = BitmapUtils::Create(format, format, false);
 	bm_utils->SetDstColorKey(colorkey());
@@ -372,7 +351,6 @@ void Bitmap::RefreshCallback() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 FontRef const& Bitmap::GetFont() const {
 	return font;
 }
@@ -408,7 +386,6 @@ void Bitmap::TextDraw(int x, int y, int color, std::string const& text, Text::Al
 	RefreshCallback();
 }
 
-////////////////////////////////////////////////////////////
 Rect Bitmap::TransformRectangle(const Matrix& m, const Rect& rect) {
 	int sx0 = rect.x;
 	int sy0 = rect.y;
@@ -434,7 +411,6 @@ Rect Bitmap::TransformRectangle(const Matrix& m, const Rect& rect) {
 	return Rect(dx0, dy0, dx1 - dx0, dy1 - dy0);
 }
 
-////////////////////////////////////////////////////////////
 Matrix Matrix::Setup(double angle,
 					 double scale_x, double scale_y,
 					 int src_pos_x, int src_pos_y,
@@ -499,14 +475,11 @@ pixman_format_code_t Bitmap::find_format(const DynamicFormat& format) {
 	return (pixman_format_code_t) pcode;
 }
 
-////////////////////////////////////////////////////////////
-
 DynamicFormat Bitmap::pixel_format;
 DynamicFormat Bitmap::opaque_pixel_format;
 DynamicFormat Bitmap::image_format;
 DynamicFormat Bitmap::opaque_image_format;
 
-////////////////////////////////////////////////////////////
 void Bitmap::SetFormat(const DynamicFormat& format) {
 	pixel_format = format;
 	opaque_pixel_format = format;
@@ -515,8 +488,6 @@ void Bitmap::SetFormat(const DynamicFormat& format) {
 	opaque_image_format = format_R8G8B8A8_n().format();
 }
 
-
-////////////////////////////////////////////////////////////
 DynamicFormat Bitmap::ChooseFormat(const DynamicFormat& format) {
 	uint32_t amask;
 	amask = (format.a.mask == 0)
@@ -540,7 +511,6 @@ DynamicFormat Bitmap::ChooseFormat(const DynamicFormat& format) {
 	}
 }
 
-////////////////////////////////////////////////////////////
 static void destroy_func(pixman_image_t * /* image */, void *data) {
 	free(data);
 }
@@ -577,7 +547,6 @@ void Bitmap::Init(int width, int height, void* data, int pitch, bool destroy) {
 		pixman_image_set_destroy_function(bitmap, destroy_func, data);
 }
 
-////////////////////////////////////////////////////////////
 void Bitmap::ConvertImage(int& width, int& height, void*& pixels, bool transparent) {
 	const DynamicFormat& img_format = transparent ? image_format : opaque_image_format;
 
@@ -599,7 +568,6 @@ void Bitmap::ConvertImage(int& width, int& height, void*& pixels, bool transpare
 	free(pixels);
 }
 
-////////////////////////////////////////////////////////////
 Bitmap::Bitmap(int width, int height, bool transparent) {
 	InitBitmap();
 
@@ -692,11 +660,9 @@ Bitmap::Bitmap(Bitmap const& source, Rect const& src_rect, bool transparent) {
 	Blit(0, 0, source, src_rect, 255);
 }
 
-////////////////////////////////////////////////////////////
 void* Bitmap::pixels() {
 	return (void*) pixman_image_get_data(bitmap);
 }
-////////////////////////////////////////////////////////////
 void const* Bitmap::pixels() const {
 	return (void const*) pixman_image_get_data(bitmap);
 }
@@ -737,7 +703,6 @@ uint32_t Bitmap::colorkey() const {
 	return 0;
 }
 
-////////////////////////////////////////////////////////////
 BitmapRef Bitmap::Resample(int scale_w, int scale_h, const Rect& src_rect) const {
 	BitmapRef dst(new Bitmap(scale_w, scale_h, GetTransparent()));
 
@@ -764,7 +729,6 @@ BitmapRef Bitmap::Resample(int scale_w, int scale_h, const Rect& src_rect) const
 	return dst;
 }
 
-////////////////////////////////////////////////////////////
 void Bitmap::Blit(int x, int y, Bitmap const& src, Rect const& src_rect, int opacity) {
 	if (opacity < 0)
 		return;
@@ -949,8 +913,6 @@ void Bitmap::WaverBlit(int x, int y, Bitmap const& src, Rect const& src_rect, in
 
 	RefreshCallback();
 }
-
-////////////////////////////////////////////////////////////
 
 static pixman_color_t PixmanColor(const Color &color) {
 	pixman_color_t pcolor;
@@ -1210,7 +1172,6 @@ void Bitmap::FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, boo
 	RefreshCallback();
 }
 
-////////////////////////////////////////////////////////////
 void Bitmap::Flip(const Rect& dst_rect, bool horizontal, bool vertical) {
 	if (!horizontal && !vertical)
 		return;
@@ -1250,7 +1211,6 @@ void Bitmap::Blit2x(Rect const& dst_rect, Bitmap const& src, Rect const& src_rec
 	RefreshCallback();
 }
 
-////////////////////////////////////////////////////////////
 Color Bitmap::GetColor(uint32_t uint32_color) const {
 	uint8_t r, g, b, a;
 	GetColorComponents(uint32_color, r, g, b, a);
