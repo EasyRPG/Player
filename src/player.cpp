@@ -42,6 +42,7 @@
 
 #ifdef GEKKO
 	#include <fat.h>
+	#include <unistd.h>
 #endif
 #if (defined(_WIN32) && defined(NDEBUG))
 	#include <windows.h>
@@ -71,6 +72,10 @@ void Player::Init(int argc, char *argv[]) {
 	if (!fatInitDefault()) {
 		Output::Error("Couldn't mount any storage medium!");
 	}
+	// Wii doesn't provide a correct working directory before mounting
+	char gekko_dir[256];
+	getcwd(gekko_dir, 255);
+	Main_Data::project_path = gekko_dir;
 #endif
 
 #if (defined(_WIN32) && defined(NDEBUG))
