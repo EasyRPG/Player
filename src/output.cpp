@@ -135,6 +135,7 @@ void Output::ErrorStr(std::string const& err) {
 	if (DisplayUi) {
 		DisplayUi->DrawScreenText("Error:", 10, 30, Color(255, 0, 0, 0));
 		HandleScreenOutput("Error", err, true);
+		Player::Exit();
 	} else {
 		// Fallback to Console if the display is not ready yet
 		printf("%s\n", err.c_str());
@@ -143,7 +144,6 @@ void Output::ErrorStr(std::string const& err) {
 		std::cin.get();
 	}
 
-	Player::Exit();
 	exit(EXIT_FAILURE);
 }
 
