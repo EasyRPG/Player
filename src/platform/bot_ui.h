@@ -18,9 +18,6 @@ struct BotUi : public BaseUi {
 	void UpdateDisplay() {}
 	void BeginScreenCapture() {}
 	void SetTitle(const std::string&) {}
-	void DrawScreenText(const std::string&) {}
-	void DrawScreenText(const std::string&, int, int, Color const&) {}
-	void DrawScreenText(const std::string&, Rect const&, Color const&) {}
 	bool ShowCursor(bool) { return false; }
 	bool IsFullscreen() { return false; }
 

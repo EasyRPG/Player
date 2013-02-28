@@ -23,7 +23,6 @@
 ///////////////////////////////////////////////////////////
 #include "baseui.h"
 #include "color.h"
-#include "message_overlay.h"
 #include "rect.h"
 #include "system.h"
 
@@ -69,9 +68,6 @@ public:
 	void BeginScreenCapture();
 	BitmapRef EndScreenCapture();
 	void SetTitle(const std::string &title);
-	void DrawScreenText(const std::string &text);
-	void DrawScreenText(const std::string &text, int x, int y, Color const& color = Color(255, 255, 255, 255));
-	void DrawScreenText(const std::string &text, Rect const& dst_rect, Color const& color = Color(255, 255, 255, 255));
 	bool ShowCursor(bool flag);
 
 	void ProcessEvents();
@@ -144,13 +140,7 @@ private:
 	/// Main SDL window.
 	SDL_Surface* main_window;
 
-
-	/// Used for displaying (warning) messages
-	MessageOverlay* message_overlay;
-
 	boost::scoped_ptr<AudioInterface> audio_;
-
-
 };
 
 #endif

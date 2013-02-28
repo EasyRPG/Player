@@ -81,7 +81,7 @@ static void HandleScreenOutput(char const* type, std::string const& msg, bool is
 		ss << "Press any key to continue...";
 	}
 	DisplayUi->GetDisplaySurface()->Clear();
-	DisplayUi->DrawScreenText(ss.str(), 10, 30 + 10);
+	//DisplayUi->DrawScreenText(ss.str(), 10, 30 + 10);
 	DisplayUi->UpdateDisplay();
 	Input::ResetKeys();
 	while (!Input::IsAnyPressed()) {
@@ -134,7 +134,7 @@ void Output::Error(const char* fmt, ...) {
 }
 void Output::ErrorStr(std::string const& err) {
 	if (DisplayUi) {
-		DisplayUi->DrawScreenText("Error:", 10, 30, Color(255, 0, 0, 0));
+		//DisplayUi->DrawScreenText("Error:", 10, 30, Color(255, 0, 0, 0));
 		HandleScreenOutput("Error", err, true);
 	} else {
 		// Fallback to Console if the display is not ready yet
@@ -162,7 +162,7 @@ void Output::Warning(const char* fmt, ...) {
 	va_end(args);
 }
 void Output::WarningStr(std::string const& warn) {
-	DisplayUi->DrawScreenText("Warning:", 10, 30, Color(255, 255, 0, 0));
+	//DisplayUi->DrawScreenText("Warning:", 10, 30, Color(255, 255, 0, 0));
 	HandleScreenOutput("Warning", warn, false);
 }
 
@@ -180,7 +180,7 @@ void Output::Post(const char* fmt, ...) {
 	va_end(args);
 }
 void Output::PostStr(std::string const& msg) {
-	DisplayUi->DrawScreenText("Info:", 10, 30, Color(255, 255, 0, 0));
+	//DisplayUi->DrawScreenText("Info:", 10, 30, Color(255, 255, 0, 0));
 	HandleScreenOutput("Post", msg, false);
 }
 

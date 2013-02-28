@@ -301,7 +301,7 @@ void Graphics::DrawOverlay() {
 	if (Graphics::fps_on_screen) {
 		std::stringstream text;
 		text << "FPS: " << fps;
-		DisplayUi->DrawScreenText(text.str());
+		//DisplayUi->DrawScreenText(text.str());
 	}
 }
 

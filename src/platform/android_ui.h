@@ -33,9 +33,6 @@ struct AndroidUi : public BaseUi {
 	void BeginScreenCapture();
 	BitmapRef EndScreenCapture();
 	void SetTitle(const std::string &title);
-	void DrawScreenText(const std::string &text);
-	void DrawScreenText(const std::string &text, int x, int y, Color const& color);
-	void DrawScreenText(const std::string &text, Rect const& dst_rect, Color const& color);
 	bool ShowCursor(bool flag);
 	bool IsFullscreen();
 	uint32_t GetTicks() const;

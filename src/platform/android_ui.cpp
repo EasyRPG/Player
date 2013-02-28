@@ -229,12 +229,6 @@ BitmapRef AndroidUi::EndScreenCapture() {
 }
 void AndroidUi::SetTitle(const std::string &title) {
 }
-void AndroidUi::DrawScreenText(const std::string &text) {
-}
-void AndroidUi::DrawScreenText(const std::string &text, int x, int y, Color const& color) {
-}
-void AndroidUi::DrawScreenText(const std::string &text, Rect const& dst_rect, Color const& color) {
-}
 bool AndroidUi::ShowCursor(bool flag) {
 	return false;
 }

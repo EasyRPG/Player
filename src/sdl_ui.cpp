@@ -71,8 +71,7 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 	zoom_available(true),
 	toggle_fs_available(false),
 	mode_changing(false),
-	cursor_visible(false),
-	message_overlay(NULL) {
+	BaseUi() {
 
 #ifdef GEKKO
 	WPAD_Init();
@@ -430,25 +429,6 @@ BitmapRef SdlUi::EndScreenCapture() {
 ///////////////////////////////////////////////////////////
 void SdlUi::SetTitle(const std::string &title) {
 	SDL_WM_SetCaption(title.c_str(), NULL);
-}
-
-///////////////////////////////////////////////////////////
-void SdlUi::DrawScreenText(const std::string &text) {
-	DrawScreenText(text, 10, 10);
-}
-
-///////////////////////////////////////////////////////////
-void SdlUi::DrawScreenText(const std::string &text, int x, int y, Color const& color) {
-	uint32_t ucolor = main_surface->GetUint32Color(color);
-
-	FontRender8x8::TextDraw(text, (uint8_t*)main_surface->pixels(), x, y, main_surface->width(), main_surface->height(), main_surface->bytes(), ucolor);
-}
-
-///////////////////////////////////////////////////////////
-void SdlUi::DrawScreenText(const std::string &text, Rect const& dst_rect, Color const& color) {
-	uint32_t ucolor = main_surface->GetUint32Color(color);
-
-	FontRender8x8::TextDraw(text, (uint8_t*)main_surface->pixels(), dst_rect, main_surface->width(), main_surface->height(), main_surface->bytes(), ucolor);
 }
 
 ///////////////////////////////////////////////////////////
