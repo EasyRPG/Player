@@ -74,7 +74,7 @@ void MessageOverlay::Draw(int z_order) {
 	for (size_t i = 0; i < messages.size(); ++i) {
 		bitmap->Blit(0, i * text_height, *black, black->GetRect(), 128);
 		bitmap->TextDraw(2, i * text_height, bitmap->GetWidth(), text_height,
-			Font::ColorDefault, messages[i]);
+			messages[i].second, messages[i].first);
 	}
 
 	bitmap_screen->BlitScreen(ox, oy);
@@ -95,8 +95,8 @@ unsigned long MessageOverlay::GetId() const {
 }
 
 ////////////////////////////////////////////////////////////
-void MessageOverlay::AddMessage(const std::string& message) {
-	messages.push_back(message);
+void MessageOverlay::AddMessage(const std::string& message, int color) {
+	messages.push_back(std::make_pair(message, color));
 	if (messages.size() > 5) {
 		messages.pop_front();
 	}

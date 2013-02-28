@@ -29,6 +29,7 @@
 #include <exception>
 
 #include "filefinder.h"
+#include "font.h"
 #include "graphics.h"
 #include "input.h"
 #include "options.h"
@@ -65,8 +66,6 @@ namespace {
 	static boost::scoped_ptr<MessageOverlay> message_overlay;
 }
 
-
-
 void Output::IgnorePause(bool const val) {
 	ignore_pause = val;
 }
@@ -101,6 +100,13 @@ static void HandleScreenOutput(char const* type, std::string const& msg, bool is
 	Input::ResetKeys();
 	Graphics::FrameReset();
 	Graphics::Update();
+}
+
+////////////////////////////////////////////////////////////
+static void PrepareScreenOutput() {
+	if (message_overlay == NULL) {
+		message_overlay.reset(new MessageOverlay());
+	}
 }
 
 
@@ -140,7 +146,7 @@ void Output::Error(const char* fmt, ...) {
 }
 void Output::ErrorStr(std::string const& err) {
 	if (DisplayUi) {
-		//DisplayUi->DrawScreenText("Error:", 10, 30, Color(255, 0, 0, 0));
+		PrepareScreenOutput();
 		HandleScreenOutput("Error", err, true);
 	} else {
 		// Fallback to Console if the display is not ready yet
@@ -168,8 +174,8 @@ void Output::Warning(const char* fmt, ...) {
 	va_end(args);
 }
 void Output::WarningStr(std::string const& warn) {
-	//DisplayUi->DrawScreenText("Warning:", 10, 30, Color(255, 255, 0, 0));
-	HandleScreenOutput("Warning", warn, false);
+	PrepareScreenOutput();
+	message_overlay->AddMessage(warn, Font::ColorCritical);
 }
 
 ////////////////////////////////////////////////////////////
@@ -185,9 +191,10 @@ void Output::Post(const char* fmt, ...) {
 
 	va_end(args);
 }
+
 void Output::PostStr(std::string const& msg) {
-	//DisplayUi->DrawScreenText("Info:", 10, 30, Color(255, 255, 0, 0));
-	HandleScreenOutput("Post", msg, false);
+	PrepareScreenOutput();
+	message_overlay->AddMessage(msg, Font::ColorDefault);
 }
 
 ////////////////////////////////////////////////////////////

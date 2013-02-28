@@ -47,7 +47,7 @@ public:
 
 	bool IsGlobal() const;
 
-	void AddMessage(const std::string& message);
+	void AddMessage(const std::string& message, int color);
 
 private:
 	DrawableType type;
@@ -65,7 +65,7 @@ private:
 	int text_height;
 	int message_max;
 
-	std::deque<std::string> messages;
+	std::deque<std::pair<std::string, int> > messages;
 
 	bool dirty;
 
