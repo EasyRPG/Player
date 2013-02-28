@@ -32,7 +32,7 @@ MessageOverlay::MessageOverlay() :
 	ox(0),
 	oy(0),
 	text_height(12),
-	message_max(10),
+	message_max(5),
 	dirty(false),
 	counter(0) {
 	
@@ -97,7 +97,7 @@ unsigned long MessageOverlay::GetId() const {
 ////////////////////////////////////////////////////////////
 void MessageOverlay::AddMessage(const std::string& message, int color) {
 	messages.push_back(std::make_pair(message, color));
-	if (messages.size() > 5) {
+	if (messages.size() > message_max) {
 		messages.pop_front();
 	}
 	dirty = true;
