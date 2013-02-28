@@ -57,8 +57,9 @@ namespace {
 
 	static std::ostream& output_time() {
 		std::time_t t = std::time(NULL);
-		return LOG_FILE << "Local: " << std::asctime(std::localtime(&t))
-						<< "UTC  : " << std::asctime(std::gmtime(&t));
+		char timestr[100];
+		strftime(timestr, 100, "[%Y-%m-%d %H:%M:%S] ", std::localtime(&t));
+		return LOG_FILE << timestr;
 	}
 
 	static bool ignore_pause = false;
@@ -68,6 +69,10 @@ namespace {
 
 void Output::IgnorePause(bool const val) {
 	ignore_pause = val;
+}
+
+static void WriteLog(char const* type, std::string const& msg) {
+	output_time() << type << ": " << msg << "\n";
 }
 
 ////////////////////////////////////////////////////////////
@@ -175,6 +180,7 @@ void Output::Warning(const char* fmt, ...) {
 }
 void Output::WarningStr(std::string const& warn) {
 	PrepareScreenOutput();
+	WriteLog("Warning", warn);
 	message_overlay->AddMessage(warn, Font::ColorCritical);
 }
 
@@ -194,6 +200,7 @@ void Output::Post(const char* fmt, ...) {
 
 void Output::PostStr(std::string const& msg) {
 	PrepareScreenOutput();
+	WriteLog("Info", msg);
 	message_overlay->AddMessage(msg, Font::ColorDefault);
 }
 
@@ -217,6 +224,6 @@ void Output::Debug(const char* fmt, ...) {
 	va_end(args);
 }
 void Output::DebugStr(std::string const& msg) {
-	output_time() << "Debug:\n " << msg <<std::endl;
+	WriteLog("Debug", msg);
 }
 #endif
