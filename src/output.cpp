@@ -36,10 +36,12 @@
 #include "player.h"
 #include "bitmap.h"
 #include "main_data.h"
+#include "message_overlay.h"
 
 ////////////////////////////////////////////////////////////
 #include <boost/config.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/scoped_ptr.hpp>
 
 #ifdef BOOST_NO_EXCEPTIONS
 #include <boost/throw_exception.hpp>
@@ -59,7 +61,11 @@ namespace {
 	}
 
 	static bool ignore_pause = false;
+
+	static boost::scoped_ptr<MessageOverlay> message_overlay;
 }
+
+
 
 void Output::IgnorePause(bool const val) {
 	ignore_pause = val;
@@ -71,7 +77,7 @@ static void HandleScreenOutput(char const* type, std::string const& msg, bool is
 
 	output_time() << type << ":\n  " << msg << "\n";
 
-	if(ignore_pause) { return; }
+	if (ignore_pause) { return; }
 
 	std::stringstream ss;
 	ss << type << ":\n" << msg << "\n\n";

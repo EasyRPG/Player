@@ -72,7 +72,7 @@ void MessageOverlay::Draw(int z_order) {
 
 	bitmap->Clear();
 	for (size_t i = 0; i < messages.size(); ++i) {
-		bitmap->Blit(0, i * text_height, black, black->GetRect(), 128);
+		bitmap->Blit(0, i * text_height, *black, black->GetRect(), 128);
 		bitmap->TextDraw(2, i * text_height, bitmap->GetWidth(), text_height,
 			Font::ColorDefault, messages[i]);
 	}

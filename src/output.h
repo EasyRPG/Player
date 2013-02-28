@@ -24,10 +24,6 @@
 #include <string>
 #include <iosfwd>
 
-#include "message_overlay.h"
-
-#include <boost/scoped_ptr.hpp>
-
 ////////////////////////////////////////////////////////////
 /// Output Namespace
 ////////////////////////////////////////////////////////////
@@ -113,9 +109,6 @@ namespace Output {
 	/// @param err: formatted debug text to display
 	///////////////////////////////////////////////////////
 	void DebugStr(std::string const& msg);
-
-	/// Used for displaying (warning) messages
-	boost::scoped_ptr<MessageOverlay> message_overlay;
 }
 
 #endif
