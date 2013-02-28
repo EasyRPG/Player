@@ -1,20 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
+// Headers
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
@@ -43,7 +44,6 @@
 #include "util_macro.h"
 #include "game_interpreter_map.h"
 
-///////////////////////////////////////////////////////////
 Game_Interpreter_Map::Game_Interpreter_Map(int depth, bool main_flag) :
 	Game_Interpreter(depth, main_flag) {
 }
@@ -55,7 +55,6 @@ Game_Interpreter_Map::~Game_Interpreter_Map() {
 	}
 }
 
-///////////////////////////////////////////////////////////
 int Game_Interpreter_Map::DecodeInt(std::vector<int>::const_iterator& it) {
 	int value = 0;
 
@@ -106,7 +105,6 @@ RPG::MoveCommand Game_Interpreter_Map::DecodeMove(std::vector<int>::const_iterat
 	return cmd;
 }
 
-///////////////////////////////////////////////////////////
 void Game_Interpreter_Map::EndMoveRoute(RPG::MoveRoute* route) {
 	std::vector<pending_move_route>::iterator it;
 	for (it = pending.begin(); it != pending.end(); it++) {
@@ -120,9 +118,9 @@ void Game_Interpreter_Map::EndMoveRoute(RPG::MoveRoute* route) {
 	}
 }
 
-////////////////////////////////////////////////////////////
-/// Execute Command
-////////////////////////////////////////////////////////////
+/**
+ * Execute Command.
+ */
 bool Game_Interpreter_Map::ExecuteCommand() {
 	if (index >= list.size()) {
 		return CommandEnd();
@@ -290,9 +288,9 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 	}
 }
 
-///////////////////////////////////////////////////////////
-/// Commands
-///////////////////////////////////////////////////////////
+/**
+ * Commands
+ */
 bool Game_Interpreter_Map::CommandMessageOptions(RPG::EventCommand const& com) { //code 10120
 	Game_Message::background = com.parameters[0] == 0;
 	Game_Message::position = com.parameters[1];
@@ -1714,9 +1712,9 @@ bool Game_Interpreter_Map::CommandHaltAllMovement(RPG::EventCommand const& /* co
 	return true;
 }
 
-////////////////////////////////////////////////////////////
-/// Conditional Branch
-////////////////////////////////////////////////////////////
+/**
+ * Conditional Branch
+ */
 bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com) { // Code 12010
 	bool result = false;
 	int value1, value2;

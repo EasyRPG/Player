@@ -1,20 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
+// Headers
 #include "battle_battler.h"
 #include "game_switches.h"
 #include "game_variables.h"
@@ -22,7 +23,6 @@
 #include "game_temp.h"
 #include "game_interpreter_battle.h"
 
-///////////////////////////////////////////////////////////
 Game_Interpreter_Battle::Game_Interpreter_Battle(int depth, bool main_flag) :
 	Game_Interpreter(depth, main_flag) {
 }
@@ -30,9 +30,9 @@ Game_Interpreter_Battle::Game_Interpreter_Battle(int depth, bool main_flag) :
 Game_Interpreter_Battle::~Game_Interpreter_Battle() {
 }
 
-////////////////////////////////////////////////////////////
-/// Execute Command
-////////////////////////////////////////////////////////////
+/**
+ * Execute Command.
+ */
 bool Game_Interpreter_Battle::ExecuteCommand() {
 	if (index >= list.size()) {
 		return CommandEnd();
@@ -72,9 +72,7 @@ bool Game_Interpreter_Battle::ExecuteCommand() {
 	}
 }
 
-///////////////////////////////////////////////////////////
-/// Commands
-///////////////////////////////////////////////////////////
+// Commands
 
 bool Game_Interpreter_Battle::CommandCallCommonEvent(RPG::EventCommand const& com) {
 	if (child_interpreter != NULL)
@@ -223,9 +221,9 @@ bool Game_Interpreter_Battle::CommandTerminateBattle(RPG::EventCommand const& /*
 	return true;
 }
 
-////////////////////////////////////////////////////////////
-/// Conditional Branch
-////////////////////////////////////////////////////////////
+/**
+ * Conditional Branch
+ */
 bool Game_Interpreter_Battle::CommandConditionalBranch(RPG::EventCommand const& com) {
 	bool result = false;
 	int value1, value2;
