@@ -54,9 +54,9 @@ private:
 	unsigned long ID;
 	ZObj* zobj;
 
-	Surface* bitmap;
-	Bitmap* black;
-	BitmapScreen* bitmap_screen;
+	BitmapRef bitmap;
+	BitmapRef black;
+	BitmapScreenRef bitmap_screen;
 
 	int z;
 	int ox;

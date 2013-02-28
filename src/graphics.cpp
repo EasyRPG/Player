@@ -72,9 +72,10 @@ namespace Graphics {
 	};
 	EASYRPG_SHARED_PTR<State> state;
 	std::vector<EASYRPG_SHARED_PTR<State> > stack;
-	std::map<uint32, Drawable*> global_drawable_map;
-	State* state;
-	std::vector<State*> stack;	void Push();
+
+	std::map<uint32_t, Drawable*> global_drawable_map;
+	
+	void Push();
 	void Pop();
 
 	bool SortZObj(EASYRPG_SHARED_PTR<ZObj> const& first, EASYRPG_SHARED_PTR<ZObj> const& second);
@@ -283,7 +284,7 @@ void Graphics::DrawFrame() {
 		state->drawable_map[(*it_zlist)->GetId()]->Draw((*it_zlist)->GetZ());
 	}
 
-	std::map<uint32, Drawable*>::iterator it_gl_map;
+	std::map<uint32_t, Drawable*>::iterator it_gl_map;
 	for(it_gl_map = global_drawable_map.begin(); it_gl_map != global_drawable_map.end(); it_gl_map++) {
 		it_gl_map->second->Draw(10000);
 	}
@@ -552,7 +553,7 @@ void Graphics::RegisterDrawable(uint32_t ID, Drawable* drawable) {
 
 void Graphics::RemoveDrawable(uint32_t ID) {
 	std::map<uint32_t, Drawable*>::iterator it = state->drawable_map.find(ID);
-	if(it != state->drawable_map.end()) { state->drawable_map.erase(it); }
+	if (it != state->drawable_map.end()) { state->drawable_map.erase(it); }
 }
 
 ///////////////////////////////////////////////////////////

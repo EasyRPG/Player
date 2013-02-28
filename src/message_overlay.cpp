@@ -21,7 +21,7 @@
 #include "message_overlay.h"
 #include "player.h"
 #include "graphics.h"
-#include "surface.h"
+#include "bitmap.h"
 
 ////////////////////////////////////////////////////////////
 MessageOverlay::MessageOverlay() :
@@ -32,14 +32,14 @@ MessageOverlay::MessageOverlay() :
 	ox(0),
 	oy(0),
 	text_height(12),
-	message_max(5),
+	message_max(10),
 	dirty(false),
 	counter(0) {
 	
-	bitmap_screen = BitmapScreen::CreateBitmapScreen();
+	bitmap_screen = BitmapScreen::Create();
+	black = Bitmap::Create(DisplayUi->GetWidth(), text_height, Color());
 
-	black = Bitmap::CreateBitmap(DisplayUi->GetWidth(), text_height, Color());
-	bitmap = Surface::CreateSurface(DisplayUi->GetWidth(), text_height * message_max, true);
+	bitmap = Bitmap::Create(DisplayUi->GetWidth(), text_height * message_max, true);
 	bitmap_screen->SetBitmap(bitmap);
 	//zobj = Graphics::RegisterZObj(100000, ID);
 	Graphics::RegisterDrawable(ID, this);
@@ -49,9 +49,6 @@ MessageOverlay::MessageOverlay() :
 MessageOverlay::~MessageOverlay() {
 	Graphics::RemoveZObj(ID);
 	Graphics::RemoveDrawable(ID);
-	delete bitmap_screen;
-	delete black;
-	delete bitmap;
 }
 
 bool MessageOverlay::IsGlobal() const { return true; }

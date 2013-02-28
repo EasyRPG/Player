@@ -433,6 +433,9 @@
     <ClCompile Include="..\..\src\battle_battler.cpp">
       <Filter>Source Files\Engine\Game</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\message_overlay.cpp">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\audio.h">
@@ -830,6 +833,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\rtp_table_bom.h">
       <Filter>Source Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\message_overlay.h">
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
