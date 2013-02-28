@@ -1,25 +1,23 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #ifdef USE_SDL
 
-///////////////////////////////////////////////////////////
 // Headers
-///////////////////////////////////////////////////////////
 #include "sdl_ui.h"
 #ifdef _WIN32
 	#define WIN32_LEAN_AND_MEAN
@@ -51,7 +49,6 @@ AudioInterface& SdlUi::GetAudio() {
 	return *audio_;
 }
 
-///////////////////////////////////////////////////////////
 static int FilterUntilFocus(const SDL_Event* evnt);
 
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
@@ -66,7 +63,6 @@ static int FilterUntilFocus(const SDL_Event* evnt);
 	static void GekkoResetCallback();
 #endif
 
-///////////////////////////////////////////////////////////
 SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 	zoom_available(true),
 	toggle_fs_available(false),
@@ -140,7 +136,6 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 #endif
 }
 
-///////////////////////////////////////////////////////////
 SdlUi::~SdlUi() {
 #if defined(GPH)
 	chdir("/usr/gp2x");
@@ -150,17 +145,14 @@ SdlUi::~SdlUi() {
 #endif
 }
 
-////////////////////////////////////////////////////////////
-uint32_t SdlUi::GetTicks() const {
+/uint32_t SdlUi::GetTicks() const {
 	return SDL_GetTicks();
 }
 
-////////////////////////////////////////////////////////////
-void SdlUi::Sleep(uint32_t time) {
+/void SdlUi::Sleep(uint32_t time) {
 	SDL_Delay(time);
 }
 
-///////////////////////////////////////////////////////////
 bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 	// FIXME: Split method into submethods, really, this method isn't nice.
 	// Note to Zhek, don't delete this fixme again.
@@ -268,15 +260,13 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 	return false;
 }
 
-////////////////////////////////////////////////////////////
-void SdlUi::BeginDisplayModeChange() {
+/void SdlUi::BeginDisplayModeChange() {
 	last_display_mode = current_display_mode;
 	current_display_mode.effective = false;
 	mode_changing = true;
 }
 
-////////////////////////////////////////////////////////////
-void SdlUi::EndDisplayModeChange() {
+/void SdlUi::EndDisplayModeChange() {
 	// Check if the new display mode is different from last one
 	if (mode_changing && (
 		current_display_mode.flags != last_display_mode.flags ||
@@ -304,8 +294,7 @@ void SdlUi::EndDisplayModeChange() {
 	}
 }
 
-////////////////////////////////////////////////////////////
-bool SdlUi::RefreshDisplayMode() {
+/bool SdlUi::RefreshDisplayMode() {
 	uint32_t flags = current_display_mode.flags;
 	int display_width = current_display_mode.width;
 	int display_height = current_display_mode.height;
@@ -364,7 +353,6 @@ bool SdlUi::RefreshDisplayMode() {
 	return true;
 }
 
-///////////////////////////////////////////////////////////
 #ifdef SUPPORT_FULL_SCALING
 void SdlUi::Resize(long width, long height) {
 	if (mode_changing) {
@@ -377,7 +365,6 @@ void SdlUi::Resize(long /*width*/, long /*height*/) {
 }
 #endif
 
-///////////////////////////////////////////////////////////
 void SdlUi::ToggleFullscreen() {
 	if (toggle_fs_available && mode_changing) {
 		if ((current_display_mode.flags & SDL_FULLSCREEN) == SDL_FULLSCREEN)
@@ -387,14 +374,12 @@ void SdlUi::ToggleFullscreen() {
 	}
 }
 
-///////////////////////////////////////////////////////////
 void SdlUi::ToggleZoom() {
 	if (zoom_available && mode_changing) {
 		current_display_mode.zoom = !current_display_mode.zoom;
 	}
 }
 
-///////////////////////////////////////////////////////////
 void SdlUi::ProcessEvents() {
 	SDL_Event evnt;
 
@@ -407,7 +392,6 @@ void SdlUi::ProcessEvents() {
 	}
 }
 
-///////////////////////////////////////////////////////////
 void SdlUi::UpdateDisplay() {
 	if (zoom_available && current_display_mode.zoom) {
 		// Blit drawing surface x2 scaled over window surface
@@ -417,7 +401,6 @@ void SdlUi::UpdateDisplay() {
 	SDL_UpdateRect(main_window, 0, 0, 0, 0);
 }
 
-///////////////////////////////////////////////////////////
 void SdlUi::BeginScreenCapture() {
 	CleanDisplay();
 }
@@ -426,31 +409,26 @@ BitmapRef SdlUi::EndScreenCapture() {
 	return Bitmap::Create(*main_surface, main_surface->GetRect());
 }
 
-///////////////////////////////////////////////////////////
 void SdlUi::SetTitle(const std::string &title) {
 	SDL_WM_SetCaption(title.c_str(), NULL);
 }
 
-///////////////////////////////////////////////////////////
 void SdlUi::DrawScreenText(const std::string &text) {
 	DrawScreenText(text, 10, 10);
 }
 
-///////////////////////////////////////////////////////////
 void SdlUi::DrawScreenText(const std::string &text, int x, int y, Color const& color) {
 	uint32_t ucolor = main_surface->GetUint32Color(color);
 
 	FontRender8x8::TextDraw(text, (uint8_t*)main_surface->pixels(), x, y, main_surface->width(), main_surface->height(), main_surface->bytes(), ucolor);
 }
 
-///////////////////////////////////////////////////////////
 void SdlUi::DrawScreenText(const std::string &text, Rect const& dst_rect, Color const& color) {
 	uint32_t ucolor = main_surface->GetUint32Color(color);
 
 	FontRender8x8::TextDraw(text, (uint8_t*)main_surface->pixels(), dst_rect, main_surface->width(), main_surface->height(), main_surface->bytes(), ucolor);
 }
 
-///////////////////////////////////////////////////////////
 bool SdlUi::ShowCursor(bool flag) {
 	bool temp_flag = cursor_visible;
 	cursor_visible = flag;
@@ -458,7 +436,6 @@ bool SdlUi::ShowCursor(bool flag) {
 	return temp_flag;
 }
 
-///////////////////////////////////////////////////////////
 void SdlUi::Blit2X(Bitmap const& src, SDL_Surface* dst_surf) {
 	if (SDL_MUSTLOCK(dst_surf)) SDL_LockSurface(dst_surf);
 
@@ -480,7 +457,6 @@ void SdlUi::Blit2X(Bitmap const& src, SDL_Surface* dst_surf) {
 	if (SDL_MUSTLOCK(dst_surf)) SDL_UnlockSurface(dst_surf);
 }
 
-///////////////////////////////////////////////////////////
 void SdlUi::ProcessEvent(SDL_Event &evnt) {
 	switch (evnt.type) {
 		case SDL_ACTIVEEVENT:
@@ -523,7 +499,6 @@ void SdlUi::ProcessEvent(SDL_Event &evnt) {
 	}
 }
 
-///////////////////////////////////////////////////////////
 void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 #ifdef PAUSE_GAME_WHEN_FOCUS_LOST
 	switch(evnt.active.state) {
@@ -565,7 +540,6 @@ void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 	}
 }
 
-///////////////////////////////////////////////////////////
 void SdlUi::ProcessKeyDownEvent(SDL_Event &evnt) {
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
 	switch (evnt.key.keysym.sym) {
@@ -617,14 +591,12 @@ void SdlUi::ProcessKeyDownEvent(SDL_Event &evnt) {
 #endif
 }
 
-///////////////////////////////////////////////////////////
 void SdlUi::ProcessKeyUpEvent(SDL_Event &evnt) {
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
 	keys[SdlKey2InputKey(evnt.key.keysym.sym)] = false;
 #endif
 }
 
-///////////////////////////////////////////////////////////
 void SdlUi::ProcessMouseMotionEvent(SDL_Event& /* evnt */) {
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 	mouse_focus = true;
@@ -633,7 +605,6 @@ void SdlUi::ProcessMouseMotionEvent(SDL_Event& /* evnt */) {
 #endif
 }
 
-///////////////////////////////////////////////////////////
 void SdlUi::ProcessMouseButtonEvent(SDL_Event& /* evnt */) {
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 	switch (evnt.button.button) {
@@ -650,14 +621,12 @@ void SdlUi::ProcessMouseButtonEvent(SDL_Event& /* evnt */) {
 #endif
 }
 
-///////////////////////////////////////////////////////////
 void SdlUi::ProcessJoystickButtonEvent(SDL_Event &evnt) {
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
 	keys[SdlJKey2InputKey(evnt.jbutton.button)] = evnt.jbutton.state == SDL_PRESSED;
 #endif
 }
 
-///////////////////////////////////////////////////////////
 void SdlUi::ProcessJoystickHatEvent(SDL_Event &evnt) {
 #if defined(USE_JOYSTICK_HAT)  && defined(SUPPORT_JOYSTICK_HAT)
 	// Set all states to false
@@ -697,7 +666,6 @@ void SdlUi::ProcessJoystickHatEvent(SDL_Event &evnt) {
 #endif
 }
 
-///////////////////////////////////////////////////////////
 void SdlUi::ProcessJoystickAxisEvent(SDL_Event &evnt) {
 #if defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)
 	// Horizontal axis
@@ -729,7 +697,6 @@ void SdlUi::ProcessJoystickAxisEvent(SDL_Event &evnt) {
 #endif
 }
 
-///////////////////////////////////////////////////////////
 void SdlUi::SetAppIcon() {
 #ifdef _WIN32
 	SDL_SysWMinfo wminfo;
@@ -748,19 +715,16 @@ void SdlUi::SetAppIcon() {
 #endif
 }
 
-///////////////////////////////////////////////////////////
 void SdlUi::ResetKeys() {
 	for (size_t i = 0; i < keys.size(); i++) {
 		keys[i] = false;
 	}
 }
 
-///////////////////////////////////////////////////////////
 bool SdlUi::IsFullscreen() {
 	return (current_display_mode.flags & SDL_FULLSCREEN) == SDL_FULLSCREEN;
 }
 
-///////////////////////////////////////////////////////////
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
 Input::Keys::InputKey SdlKey2InputKey(SDLKey sdlkey) {
 	switch (sdlkey) {
@@ -863,7 +827,6 @@ Input::Keys::InputKey SdlKey2InputKey(SDLKey sdlkey) {
 }
 #endif
 
-///////////////////////////////////////////////////////////
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
 Input::Keys::InputKey SdlJKey2InputKey(int button_index) {
 	switch (button_index) {
@@ -904,7 +867,6 @@ Input::Keys::InputKey SdlJKey2InputKey(int button_index) {
 }
 #endif
 
-///////////////////////////////////////////////////
 int FilterUntilFocus(const SDL_Event* evnt) {
 	switch (evnt->type) {
 	case SDL_QUIT:
@@ -919,7 +881,6 @@ int FilterUntilFocus(const SDL_Event* evnt) {
 	}
 }
 
-///////////////////////////////////////////////////
 #ifdef GEKKO
 void GekkoResetCallback() {
 	Player::reset_flag = true;

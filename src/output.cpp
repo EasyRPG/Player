@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
-/// Headers
-////////////////////////////////////////////////////////////
+// Headers
 #include <cstdlib>
 #include <cstdarg>
 #include <ctime>
@@ -37,7 +35,6 @@
 #include "bitmap.h"
 #include "main_data.h"
 
-////////////////////////////////////////////////////////////
 #include <boost/config.hpp>
 #include <boost/lexical_cast.hpp>
 
@@ -65,7 +62,6 @@ void Output::IgnorePause(bool const val) {
 	ignore_pause = val;
 }
 
-////////////////////////////////////////////////////////////
 static void HandleScreenOutput(char const* type, std::string const& msg, bool is_error) {
 	Output::TakeScreenshot();
 
@@ -120,7 +116,6 @@ bool Output::TakeScreenshot(std::ostream& os) {
 	return DisplayUi->GetDisplaySurface()->WritePNG(os);
 }
 
-////////////////////////////////////////////////////////////
 void Output::Error(const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
@@ -148,7 +143,6 @@ void Output::ErrorStr(std::string const& err) {
 	exit(EXIT_FAILURE);
 }
 
-////////////////////////////////////////////////////////////
 void Output::Warning(const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
@@ -166,7 +160,6 @@ void Output::WarningStr(std::string const& warn) {
 	HandleScreenOutput("Warning", warn, false);
 }
 
-////////////////////////////////////////////////////////////
 void Output::Post(const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
@@ -184,7 +177,6 @@ void Output::PostStr(std::string const& msg) {
 	HandleScreenOutput("Post", msg, false);
 }
 
-////////////////////////////////////////////////////////////
 #ifdef NDEBUG
 void Output::Debug(const char*, ...) {
 }
