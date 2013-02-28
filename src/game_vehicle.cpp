@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "data.h"
 #include "main_data.h"
 #include "game_system.h"
@@ -25,7 +23,6 @@
 #include "game_player.h"
 #include "game_vehicle.h"
 
-////////////////////////////////////////////////////////////
 Game_Vehicle::Game_Vehicle(Type _type) {
 	type = _type;
 	altitude = 0;
@@ -36,7 +33,6 @@ Game_Vehicle::Game_Vehicle(Type _type) {
 	LoadSystemSettings();
 }
 
-////////////////////////////////////////////////////////////
 void Game_Vehicle::LoadSystemSettings() {
 	switch (type) {
 		case Boat:
@@ -66,7 +62,6 @@ void Game_Vehicle::LoadSystemSettings() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Game_Vehicle::Refresh() {
 	if (driving) {
 		map_id = Game_Map::GetMapId();
@@ -92,7 +87,6 @@ void Game_Vehicle::Refresh() {
 	step_anime = driving;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Vehicle::SetPosition(int _map_id, int _x, int _y) {
 	map_id = _map_id;
 	x = _x;
@@ -107,7 +101,6 @@ bool Game_Vehicle::IsTransparent() const {
 	return map_id != Game_Map::GetMapId() || Game_Character::IsTransparent();
 }
 
-////////////////////////////////////////////////////////////
 void Game_Vehicle::GetOn() {
 	driving = true;
 	walk_anime = true;
@@ -147,7 +140,6 @@ bool Game_Vehicle::IsMovable() {
 	return !IsMoving();
 }
 
-////////////////////////////////////////////////////////////
 void Game_Vehicle::Update() {
 	Game_Character::Update();
 	if (type == Airship) {
