@@ -29,9 +29,8 @@
 #include "font.h"
 #include <boost/scoped_ptr.hpp>
 
-/**
- * Global variables.
- */
+// Global variables.
+
 Game_Variables_Class Game_Variables(Main_Data::game_data.system.variables);
 Game_Switches_Class Game_Switches(Main_Data::game_data.system.switches);
 

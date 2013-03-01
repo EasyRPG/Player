@@ -40,9 +40,7 @@ bool operator<(ShinonomeGlyph const& lhs, uint32_t const code) {
 	return lhs.code < code;
 }
 
-/**
- * Static variables.
- */
+// Static variables.
 namespace {
 	typedef std::map<std::string, EASYRPG_WEAK_PTR<boost::remove_pointer<FT_Face>::type> > face_cache_type;
 	face_cache_type face_cache;	ShinonomeGlyph const* find_glyph(ShinonomeGlyph const* data, size_t size, uint32_t code) {
@@ -237,9 +235,7 @@ void Font::Dispose() {
 	face_cache.clear();
 }
 
-/**
- * Constructor.
- */
+// Constructor.
 Font::Font(const std::string& name, int size, bool bold, bool italic)
 	: name(name)
 	, size(size)

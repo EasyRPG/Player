@@ -81,7 +81,7 @@ void Window::SetOpenAnimation(int frames) {
 
 void Window::SetCloseAnimation(int frames) {
 	(void)frames;
-	// ToDo
+	// TODO
 }
 
 void Window::Draw(int /* z_order */) {

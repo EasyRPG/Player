@@ -148,7 +148,8 @@ void Scene_Map::UpdateTeleportPlayer() {
 	Input::Update();
 }
 
-/// Menu Calling Stuff
+// Scene calling stuff.
+
 void Scene_Map::CallBattle() {
 	Game_Temp::battle_calling = false;
 
@@ -167,7 +168,6 @@ void Scene_Map::CallName() {
 	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Name>());
 }
 
-/// ESC-Menu Call
 void Scene_Map::CallMenu() {
 	Game_Temp::menu_calling = false;
 

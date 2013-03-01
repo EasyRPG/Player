@@ -180,7 +180,7 @@ void Game_Map::Autoplay() {
 				if (&Data::treemap.maps[current_index].music != Game_Temp::map_bgm) {
 					if (Game_Temp::map_bgm != NULL) {
 						if (Data::treemap.maps[current_index].music.name == Game_Temp::map_bgm->name) {
-							// ToDo: Here the volume and pitch must be updated if the song is the same
+							// TODO: Here the volume and pitch must be updated if the song is the same
 							return;
 						}
 					}

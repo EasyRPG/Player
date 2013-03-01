@@ -99,9 +99,6 @@ Color HSL2RGB(ColorHSL col) {
 	return ncol;
 }
 
-/**
- * Ajusts RGB with HSL.
- */
 Color RGBAdjustHSL(Color col, double h, double s, double l) {
 	ColorHSL hsl;
 	Color rgb = col;

@@ -29,7 +29,14 @@
  * Registry namespace
  */
 namespace Registry {
+	/**
+	 * Reads string value.
+	 */
 	std::string ReadStrValue(HKEY hkey, std::string const& key, std::string const& val);
+
+	/**
+	 * Reads binary value.
+	 */
 	int ReadBinValue(HKEY hkey, std::string const& key, std::string const& val, unsigned char* bin);
 }
 
