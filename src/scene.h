@@ -54,12 +54,12 @@ public:
 
 	/**
 	 * Constructor.
-	*/
+	 */
 	Scene();
 
 	/**
 	 * Destructor.
-	*/
+	 */
 	virtual ~Scene() {};
 
 	/**
@@ -67,7 +67,7 @@ public:
 	 * The Scene Main-Function manages a stack and always
 	 * executes the scene that is currently on the top of
 	 * the stack.
-	*/
+	 */
 	virtual void MainFunction();
 
 	/**
@@ -75,14 +75,14 @@ public:
 	 * This function is executed while the screen is faded
 	 * out. All objects needed for the scene should be
 	 * created here.
-	*/
+	 */
 	virtual void Start();
 
 	/**
 	 * Continue processing.
 	 * This function is executed when returning from a
 	 * nested scene (instead of Start).
-	*/
+	 */
 	virtual void Continue();
 
 	/**
@@ -90,7 +90,7 @@ public:
 	 * This function is executed after the fade in,
 	 * either when starting the scene or when returning
 	 * from a nested scene
-	*/
+	 */
 	virtual void Resume();
 
 	/**
@@ -98,25 +98,25 @@ public:
 	 * This function is executed before the fade out for
 	 * the scene change, either when terminating the scene
 	 * or switching to a nested scene
-	*/
+	 */
 	virtual void Suspend();
 
 	/**
 	 * Does the transition upon starting or resuming
 	 * the scene
-	*/
+	 */
 	virtual void TransitionIn();
 
 	/**
 	 * Does the transition upon ending or suspending
 	 * the scene
-	*/
+	 */
 	virtual void TransitionOut();
 
 	/**
 	 * Called every frame.
 	 * The scene should redraw all elements.
-	*/
+	 */
 	virtual void Update();
 
 	/**
@@ -125,12 +125,12 @@ public:
 	 * @param new_scene new scene.
 	 * @param pop_stack_top if the scene that is currently
 	 *                      on the top should be popped.
-	*/
+	 */
 	static void Push(EASYRPG_SHARED_PTR<Scene> const& new_scene, bool pop_stack_top = false);
 
 	/**
 	 * Removes the scene that is on the top of the stack.
-	*/
+	 */
 	static void Pop();
 
 	/**
@@ -138,7 +138,7 @@ public:
 	 * is reached.
 	 *
 	 * @param type type of the scene that is searched.
-	*/
+	 */
 	static void PopUntil(SceneType type);
 
 	/**
@@ -146,7 +146,7 @@ public:
 	 *
 	 * @param type type of the scene that is searched.
 	 * @return the scene found, or NULL if no such scene exists.
-	*/
+	 */
 	static EASYRPG_SHARED_PTR<Scene> Find(SceneType type);
 
 	// Don't write to the following values directly when you want to change

@@ -26,7 +26,7 @@
 #include "pixel_format.h"
 #include "bitmap_utils.h"
 
-//Traits types.
+// Traits types.
 template <class BMU,
 		  PF::OpacityType SrcAlpha,
 		  PF::OpacityType DstAlpha>
