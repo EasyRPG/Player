@@ -26,7 +26,7 @@
 
 /**
  * Window_BattleOption class.
- */*
+ */
 class Window_BattleOption: public Window_Base {
 public:
 	/**

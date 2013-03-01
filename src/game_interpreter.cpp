@@ -422,7 +422,7 @@ bool Game_Interpreter::CommandEnd() {
  * This is just a helper (private) method
  * to avoid repeating code.
  */
-voig Game_Interpreter::GetStrings(std::vector<std::string>& ret_val) {
+void Game_Interpreter::GetStrings(std::vector<std::string>& ret_val) {
 	// Let's find the choices
 	int current_indent = list[index + 1].indent;
 	unsigned int index_temp = index + 1;

@@ -145,11 +145,11 @@ SdlUi::~SdlUi() {
 #endif
 }
 
-/uint32_t SdlUi::GetTicks() const {
+uint32_t SdlUi::GetTicks() const {
 	return SDL_GetTicks();
 }
 
-/void SdlUi::Sleep(uint32_t time) {
+void SdlUi::Sleep(uint32_t time) {
 	SDL_Delay(time);
 }
 
@@ -260,13 +260,13 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 	return false;
 }
 
-/void SdlUi::BeginDisplayModeChange() {
+void SdlUi::BeginDisplayModeChange() {
 	last_display_mode = current_display_mode;
 	current_display_mode.effective = false;
 	mode_changing = true;
 }
 
-/void SdlUi::EndDisplayModeChange() {
+void SdlUi::EndDisplayModeChange() {
 	// Check if the new display mode is different from last one
 	if (mode_changing && (
 		current_display_mode.flags != last_display_mode.flags ||
@@ -294,7 +294,7 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 	}
 }
 
-/bool SdlUi::RefreshDisplayMode() {
+bool SdlUi::RefreshDisplayMode() {
 	uint32_t flags = current_display_mode.flags;
 	int display_width = current_display_mode.width;
 	int display_height = current_display_mode.height;
