@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "scene_equip.h"
 #include "game_actors.h"
 #include "game_party.h"
@@ -27,14 +25,12 @@
 #include "player.h"
 #include "scene_menu.h"
 
-////////////////////////////////////////////////////////////
 Scene_Equip::Scene_Equip(int actor_index, int equip_index) :
 	actor_index(actor_index),
 	equip_index(equip_index) {
 	type = Scene::Equip;
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Equip::Start() {
 	Game_Actor* actor = Game_Party::GetActors()[actor_index];
 
@@ -58,7 +54,6 @@ void Scene_Equip::Start() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Equip::Update() {
 	help_window->Update();
 
@@ -73,7 +68,6 @@ void Scene_Equip::Update() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Equip::UpdateItemWindows() {
 	for (size_t i = 0; i < item_windows.size(); ++i) {
 		item_windows[i]->SetVisible((unsigned)equip_window->GetIndex() == i);
@@ -83,12 +77,10 @@ void Scene_Equip::UpdateItemWindows() {
 	item_window = item_windows[equip_window->GetIndex()];
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Equip::UpdateEquipWindow() {
 	equip_window->Update();
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Equip::UpdateStatusWindow() {
 	if (equip_window->GetActive()) {
 		equipstatus_window->ClearParameters();
@@ -108,7 +100,6 @@ void Scene_Equip::UpdateStatusWindow() {
 	equipstatus_window->Update();
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Equip::UpdateEquipSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Data::system.cancel_se);
@@ -129,7 +120,6 @@ void Scene_Equip::UpdateEquipSelection() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Equip::UpdateItemSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Data::system.cancel_se);

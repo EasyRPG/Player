@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <algorithm>
 #include <string>
 #include <vector>
@@ -28,20 +26,17 @@
 #include "input.h"
 #include "scene_map.h"
 
-////////////////////////////////////////////////////////////
 Scene_Order::Scene_Order() :
 	actor_counter(0) {
 	type = Scene::Order;
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Order::Start() {
 	actors.resize(Game_Party::GetActors().size());
 
 	CreateCommandWindow();
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Order::Update() {
 	window_left->Update();
 	window_right->Update();
@@ -95,7 +90,6 @@ void Scene_Order::UpdateConfirm() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Order::CreateCommandWindow() {
 	std::vector<std::string> options_left;
 	std::vector<std::string> options_right;
@@ -128,7 +122,6 @@ void Scene_Order::CreateCommandWindow() {
 	window_confirm->SetVisible(false);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Order::Redo() {
 	Game_System::SePlay(Data::system.cancel_se);
 
@@ -160,5 +153,5 @@ void Scene_Order::Confirm() {
 		Game_Party::GetActors()[i] = party_actors[actors[i] - 1];
 	}
 
-	// ToDo: Where is the best place to overwrite the character map graphic?
+	// TODO: Where is the best place to overwrite the character map graphic?
 }

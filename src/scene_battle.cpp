@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <algorithm>
 #include <sstream>
 #include "rpg_battlecommand.h"
@@ -40,7 +38,6 @@
 #include "scene_battle.h"
 #include "bitmap.h"
 
-////////////////////////////////////////////////////////////
 Scene_Battle::Scene_Battle() {
 	Scene::type = Scene::Battle;
 }
@@ -49,7 +46,6 @@ Scene_Battle::~Scene_Battle() {
 	Game_Battle::Quit();
 }
 
-////////////////////////////////////////////////////////////
 Scene_Battle::FloatText::FloatText(int x, int y, int color, const std::string& text, int _duration) {
 	Rect rect = Font::Default()->GetSize(text);
 
@@ -68,7 +64,6 @@ Scene_Battle::FloatText::FloatText(int x, int y, int color, const std::string& t
 	duration = _duration;
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::CreateCursors() {
 	BitmapRef system2 = Cache::System2(Data::system.system2_name);
 
@@ -85,7 +80,6 @@ void Scene_Battle::CreateCursors() {
 	enemy_cursor->SetVisible(false);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::CreateWindows() {
 	help_window.reset(new Window_Help(0, 0, 320, 32));
 	help_window->SetVisible(false);
@@ -105,7 +99,6 @@ void Scene_Battle::CreateWindows() {
 	item_window->SetIndex(0);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::Start() {
 	if (Player::battle_test_flag) {
 		if (Player::battle_test_troop_id <= 0) {
@@ -137,7 +130,6 @@ void Scene_Battle::Start() {
 	SetState(State_Options);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::SetState(Scene_Battle::State new_state) {
 	target_state = state;
 	state = new_state;
@@ -232,7 +224,6 @@ void Scene_Battle::SetState(Scene_Battle::State new_state) {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::Message(const std::string& msg, bool pause) {
 	help_window->SetText(msg);
 	help_window->SetVisible(true);
@@ -241,27 +232,23 @@ void Scene_Battle::Message(const std::string& msg, bool pause) {
 		message_timer = 60;
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::Floater(const Sprite* ref, int color, const std::string& text, int duration) {
 	int x = ref->GetX();
 	int y = ref->GetY() - ref->GetOy();
 	floaters.push_back(EASYRPG_MAKE_SHARED<FloatText>(x, y, color, text, duration));
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::Floater(const Sprite* ref, int color, int value, int duration) {
 	std::ostringstream out;
 	out << value;
 	Floater(ref, color, out.str(), duration);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::SetAnimState(Battle::Ally& ally, int state) {
 	ally.SetAnimState(state);
 	ally.UpdateAnim(cycle);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::UpdateAnimState() {
 	Battle::Ally& ally = Game_Battle::GetActiveAlly();
 	int anim_state = Battle::Ally::Idle;
@@ -275,14 +262,12 @@ void Scene_Battle::UpdateAnimState() {
 	SetAnimState(ally, anim_state);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::Restart() {
 	UpdateAnimState();
 	SetState(State_Battle);
 	Game_Battle::GetActiveAlly().last_command = pending_command;
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::Command() {
 	RPG::BattleCommand command = command_window->GetCommand();
 	pending_command = command.ID;
@@ -318,7 +303,6 @@ void Scene_Battle::Command() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::Escape() {
 	if (Game_Battle::Escape())
 		Scene::Pop();
@@ -326,20 +310,17 @@ void Scene_Battle::Escape() {
 		Game_Battle::Restart();
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::Special() {
 	// FIXME: special commands (link to event)
 
 	Game_Battle::Restart();
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::Defend() {
 	Game_Battle::Defend();
 	Game_Battle::Restart();
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::Item() {
 	int item_id = item_window->GetItemId();
 	if (item_id <= 0) {
@@ -386,7 +367,6 @@ void Scene_Battle::Item() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::Skill() {
 	int skill_id = skill_window->GetSkillId();
 	if (skill_id <= 0) {
@@ -399,13 +379,11 @@ void Scene_Battle::Skill() {
 	Skill(skill);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::ItemSkill(const RPG::Item& item) {
 	const RPG::Skill& skill = Data::skills[item.skill_id - 1];
 	Skill(skill);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::Skill(const RPG::Skill& skill) {
 	skill_id = skill.ID;
 
@@ -437,7 +415,6 @@ void Scene_Battle::Skill(const RPG::Skill& skill) {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::TargetDone() {
 	switch (target_state) {
 		case State_Command:
@@ -454,7 +431,6 @@ void Scene_Battle::TargetDone() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::BeginAttack() {
 	Battle::Ally& ally = Game_Battle::GetActiveAlly();
 	Battle::Enemy& enemy = Game_Battle::GetTargetEnemy();
@@ -476,7 +452,6 @@ void Scene_Battle::BeginAttack() {
 	SetState(State_AllyAction);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::BeginItem() {
 	Battle::Ally& ally = Game_Battle::GetActiveAlly();
 
@@ -492,7 +467,6 @@ void Scene_Battle::BeginItem() {
 	SetState(State_AllyAction);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::BeginSkill() {
 	Battle::Ally& ally = Game_Battle::GetActiveAlly();
 	const RPG::Skill& skill = Data::skills[skill_id - 1];
@@ -552,18 +526,15 @@ void Scene_Battle::BeginSkill() {
 	SetState(State_AllyAction);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::DoItem() {
 	Game_Battle::UseItem();
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::DoSkill() {
 	Game_Battle::SetSkill(skill_id);
 	Game_Battle::UseSkill();
 }
 
-////////////////////////////////////////////////////////////
 int Scene_Battle::SkillAnimation(const RPG::Skill& skill, const Battle::Ally& ally) {
 	const std::vector<RPG::BattlerAnimationData>& anim_data = skill.battler_animation_data;
 	std::vector<RPG::BattlerAnimationData>::const_iterator it;
@@ -577,7 +548,6 @@ int Scene_Battle::SkillAnimation(const RPG::Skill& skill, const Battle::Ally& al
 	return Battle::Ally::SkillUse;
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::EnemyAction() {
 	Battle::Enemy& enemy = Game_Battle::GetActiveEnemy();
 
@@ -613,7 +583,6 @@ void Scene_Battle::EnemyAction() {
 	SetState(State_EnemyAction);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::EnemyActionBasic() {
 	switch (enemy_action->basic) {
 		case RPG::EnemyAction::Basic_attack:
@@ -660,7 +629,6 @@ void Scene_Battle::EnemyActionBasic() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::EnemyActionSkill() {
 	Battle::Enemy& enemy = Game_Battle::GetActiveEnemy();
 	const RPG::Skill& skill = Data::skills[enemy_action->skill_id - 1];
@@ -720,13 +688,11 @@ void Scene_Battle::EnemyActionSkill() {
 	actions.push_back(EASYRPG_SHARED_PTR<Battle::CommandAction>(new Battle::CommandAction(&Game_Battle::EnemySkill)));
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::EnemyActionDone(void* param) {
 	Scene_Battle* thiz = (Scene_Battle*) param;
 	thiz->SetState(State_Battle);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::ProcessActions() {
 	switch (state) {
 		case State_Battle:
@@ -761,7 +727,6 @@ void Scene_Battle::ProcessActions() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::ProcessInput() {
 	if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Data::system.decision_se);
@@ -859,7 +824,6 @@ void Scene_Battle::ProcessInput() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::DoAuto() {
 	if (state != State_AutoBattle)
 		return;
@@ -881,7 +845,6 @@ void Scene_Battle::DoAuto() {
 	Game_Battle::Restart();
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::UpdateBackground() {
 	if (Game_Temp::battle_background != Game_Battle::background_name) {
 		Game_Temp::battle_background = Game_Battle::background_name;
@@ -889,7 +852,6 @@ void Scene_Battle::UpdateBackground() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::UpdateCursors() {
 	if (Game_Battle::HaveActiveAlly()) {
 		const Battle::Ally& ally = state == State_TargetAlly && Game_Battle::HaveTargetAlly()
@@ -918,7 +880,6 @@ void Scene_Battle::UpdateCursors() {
 		enemy_cursor->SetVisible(false);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::UpdateSprites() {
 	for (std::vector<Battle::Enemy>::iterator it = Game_Battle::enemies.begin(); it != Game_Battle::enemies.end(); it++) {
 		if (it->sprite->GetVisible() && !it->game_enemy->Exists() && it->fade == 0)
@@ -942,7 +903,6 @@ void Scene_Battle::UpdateSprites() {
 		it->UpdateAnim(cycle);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::UpdateFloaters() {
 	std::vector<EASYRPG_SHARED_PTR<FloatText> >::iterator it;
 	std::vector<EASYRPG_SHARED_PTR<FloatText> >::iterator dst = floaters.begin();
@@ -958,7 +918,6 @@ void Scene_Battle::UpdateFloaters() {
 	floaters.erase(dst, floaters.end());
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::ShowAnimation(int animation_id, bool allies, Battle::Ally* ally, Battle::Enemy* enemy, bool wait) {
 	const RPG::Animation* rpg_anim = &Data::animations[animation_id - 1];
 	int x, y;
@@ -986,7 +945,6 @@ void Scene_Battle::ShowAnimation(int animation_id, bool allies, Battle::Ally* al
 		animations.push_back(new_animation);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::UpdateAnimations() {
 	if (animation != NULL) {
 		animation->Update();
@@ -1010,12 +968,10 @@ void Scene_Battle::UpdateAnimations() {
 	animations.erase(end, animations.end());
 }
 
-////////////////////////////////////////////////////////////
 bool Scene_Battle::IsAnimationWaiting() {
 	return animation != NULL;
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::Update() {
 	options_window->Update();
 	status_window->Update();
@@ -1040,7 +996,6 @@ void Scene_Battle::Update() {
 	UpdateAnimations();
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::CheckWin() {
 	if (state == State_Victory || state == State_Defeat)
 		return;
@@ -1055,7 +1010,6 @@ void Scene_Battle::CheckWin() {
 	Message(Data::terms.victory.empty() ? Data::terms.victory : "Victory");
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::CheckLose() {
 	if (state == State_Victory || state == State_Defeat)
 		return;
@@ -1068,7 +1022,6 @@ void Scene_Battle::CheckLose() {
 	Message(!Data::terms.defeat.empty() ? Data::terms.defeat : "Defeat");
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::CheckAbort() {
 	if (!Game_Battle::terminate)
 		return;
@@ -1076,7 +1029,6 @@ void Scene_Battle::CheckAbort() {
 	Scene::Pop();
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Battle::CheckFlee() {
 	if (!Game_Battle::allies_flee)
 		return;

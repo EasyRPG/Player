@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "scene_logo.h"
 #include "graphics.h"
 #include "input.h"
@@ -906,30 +904,25 @@ static const uint8_t easyrpg_logo[] = {
 	0x00, 0x00, 0x00, 0x49, 0x45, 0x4E, 0x44, 0xAE, 0x42, 0x60, 0x82
 };
 
-////////////////////////////////////////////////////////////
 Scene_Logo::Scene_Logo() :
 	frame_counter(0) {
 	type = Scene::Logo;
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Logo::Start() {
 	logo.reset(new Sprite());
 	logo_img = Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false);
 	logo->SetBitmap(logo_img);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Logo::TransitionIn() {
 	Graphics::Transition(Graphics::TransitionFadeIn, 24);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Logo::TransitionOut() {
 	Graphics::Transition(Graphics::TransitionFadeOut, 24);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Logo::Update() {
 	++frame_counter;
 
