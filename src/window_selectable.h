@@ -58,7 +58,7 @@ public:
 	 * Assigns a help window that displays a description
 	 * about the selected item.
 	 *
-	 * @param help_window the help window.
+	 * @param nhelp_window the help window.
 	 */
 	void SetHelpWindow(Window_Help* nhelp_window);
 	virtual void UpdateCursorRect();

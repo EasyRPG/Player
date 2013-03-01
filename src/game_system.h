@@ -95,7 +95,7 @@ namespace Game_System {
 	 *
 	 * @param bgm music data.
 	 */
-	void BgmPlay(RPG::Music const& bmg);
+	void BgmPlay(RPG::Music const& bgm);
 
 	/**
 	 * Plays a Sound.
@@ -146,7 +146,7 @@ namespace Game_System {
 	 * Sets a system sound effect.
 	 *
 	 * @param which which "context" to set the effect for.
-	 * @param bgm the sound.
+	 * @param sfx the sound effect.
 	 */
 	void SetSystemSE(int which, RPG::Sound const& sfx);
 
@@ -163,7 +163,7 @@ namespace Game_System {
 	 *
 	 * @param which which timer to start.
 	 * @param visible whether the timer is visible.
-	 * @param visible whether the timer runs during battle.
+	 * @param battle whether the timer runs during battle.
 	 */
 	void StartTimer(int which, bool visible, bool battle);
 
@@ -199,17 +199,17 @@ namespace Game_System {
 	 * Sets the system transitions.
 	 *
 	 * @param which which "context" to set the transition for.
-	 * @param trans the transition.
+	 * @param transition the transition.
 	 */
 	void SetTransition(int which, int transition);
 
 	/**
 	 * Sets a teleport target.
 	 *
-	 * @param from_map the map for which the target is used.
 	 * @param map_id the destination map.
 	 * @param x the destination X coordinate.
 	 * @param y the destination Y coordinate.
+	 * @param switch_id the switch ID.
 	 */
 	void AddTeleportTarget(int map_id, int x, int y, int switch_id);
 
@@ -231,17 +231,16 @@ namespace Game_System {
 	/**
 	 * Sets an escape  target.
 	 *
-	 * @param from_map the map for which the target is used.
 	 * @param map_id the destination map.
 	 * @param x the destination X coordinate.
 	 * @param y the destination Y coordinate.
+	 * @param switch_id the switch ID.
 	 */
 	void SetEscapeTarget(int map_id, int x, int y, int switch_id);
 
 	/**
 	 * Finds an escape target.
 	 *
-	 * @param map_id the map for which to obtain the target.
 	 * @return pointer to a Target structure, or NULL.
 	 */
 	Target* GetEscapeTarget();

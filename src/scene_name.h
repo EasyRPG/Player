@@ -33,8 +33,6 @@ class Scene_Name : public Scene {
 public:
 	/**
 	 * Constructor.
-	 *
-	 * @param item_index index to select.
 	 */
 	Scene_Name();
 

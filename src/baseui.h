@@ -46,6 +46,7 @@ public:
 	 * @param height display client height.
 	 * @param title display title.
 	 * @param fullscreen start in fullscreen flag.
+	 * @param zoom start with zoom flag.
 	 */
 	static EASYRPG_SHARED_PTR<BaseUi> CreateUi(long width, long height, const std::string& title, bool fullscreen, bool zoom);
 
@@ -166,7 +167,7 @@ public:
 	/**
 	 * Sleeps some time.
 	 *
-	 * @param time ms to sleep.
+	 * @param time_milli ms to sleep.
 	 */
 	virtual void Sleep(uint32_t time_milli) = 0;
 

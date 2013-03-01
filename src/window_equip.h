@@ -31,6 +31,10 @@ public:
 	/**
 	 * Constructor.
 	 *
+	 * @param ix window x position.
+	 * @param iy window y position.
+	 * @param iwidth window width.
+	 * @param iheight window height.
 	 * @param actor_id actor whose inventory is displayed.
 	 */
 	Window_Equip(int ix, int iy, int iwidth, int iheight, int actor_id);

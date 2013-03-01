@@ -34,7 +34,7 @@ public:
 	 * Constructor.
 	 *
 	 * @param x initial x.
-	 * @param x initial y.
+	 * @param y initial y.
 	 * @param width initial width.
 	 * @param height initial height.
 	 */
@@ -54,7 +54,7 @@ public:
 	 * Sets all rect values simultaneously.
 	 *
 	 * @param x new x.
-	 * @param x new y.
+	 * @param y new y.
 	 * @param width new width.
 	 * @param height new height.
 	 */

@@ -50,7 +50,8 @@ namespace FileFinder {
 	/**
 	 * Finds an image file.
 	 *
-	 * @param name the image path and name.
+	 * @param dir directory to check.
+	 * @param name image file name to check.
 	 * @return path to file.
 	 */
 	std::string FindImage(const std::string& dir, const std::string& name);
@@ -58,7 +59,8 @@ namespace FileFinder {
 	/**
 	 * Finds a file.
 	 *
-	 * @param name the path and name.
+	 * @param dir directory to check.
+	 * @param name file name to check.
 	 * @return path to file.
 	 */
 	std::string FindDefault(const std::string& dir, const std::string& name);
@@ -88,6 +90,7 @@ namespace FileFinder {
 
 	/**
 	 * Finds a font file.
+	 *
 	 * @param name the font name.
 	 * @return path to file.
 	 */
@@ -95,7 +98,8 @@ namespace FileFinder {
 
 	/**
 	 * Opens a file specified by a UTF-8 string.
-	 * @param filename in UTF-8.
+	 *
+	 * @param name_utf8 filename in UTF-8.
 	 * @param mode ("r", "w", etc).
 	 * @return FILE*.
 	 */
@@ -138,11 +142,11 @@ namespace FileFinder {
 	bool Exists(std::string const& file);
 
 	/**
-	 * Checks whether file exists in the directory.
+	 * Checks whether file name exists in the directory.
 	 * This function is case insensitive.
 	 *
 	 * @param dir directory to check.
-	 * @param file file to check. Don't pass full path.
+	 * @param name file name to check. Don't pass full path.
 	 * @return true if file exists, otherwise false.
 	 */
 	bool Exists(Directory const& dir, std::string const& name);

@@ -31,6 +31,10 @@ public:
 	/**
 	 * Constructor.
 	 *
+	 * @param ix window x position.
+	 * @param iy window y position.
+	 * @param iwidth window width.
+	 * @param iheight window height.
 	 * @param actor_id actor whose stats are displayed.
 	 * @param draw_actorname displays the actor name above the items.
 	 */
@@ -49,10 +53,10 @@ public:
 	/**
 	 * Sets the parameter drawn after the ->.
 	 *
-	 * @param atk attack.
-	 * @param def defense.
-	 * @param spi spirit.
-	 * @param agi agility.
+	 * @param new_atk new attack.
+	 * @param new_def new defense.
+	 * @param new_spi new spirit.
+	 * @param new_agi new agility.
 	 */
 	void SetNewParameters(int new_atk, int new_def, int new_spi, int new_agi);
 

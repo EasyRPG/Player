@@ -31,7 +31,6 @@ class Scene_Load : public Scene_File {
 public:
 	/**
 	 * Constructor.
-	 * @param item_index index to select.
 	 */
 	Scene_Load();
 

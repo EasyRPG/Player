@@ -36,7 +36,7 @@ public:
 	/**
 	 * Sets the actor whose skills are displayed.
 	 *
-	 * @param actor_id ID of the actor.
+	 * @param id ID of the actor.
 	 */
 	void SetSubset(int id);
 

@@ -77,7 +77,7 @@ protected:
 	/**
 	 * Redraws a character's time gauge.
 	 *
-	 * @param index character index (0..3).
+	 * @param i character index (0..3).
 	 */
 	void RefreshGauge(int i);
 

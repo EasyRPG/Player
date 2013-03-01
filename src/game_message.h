@@ -73,7 +73,7 @@ namespace Game_Message {
 
 	/**
 	 * Disabled choices:
-	 * choice_disabled[i] is true if choice <i> is disabled (zero-based).
+	 * choice_disabled is true if choice is disabled (zero-based).
 	 */
 	extern std::bitset<8> choice_disabled;
 

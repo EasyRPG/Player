@@ -32,8 +32,10 @@ public:
 	/**
 	 * Constructor.
 	 *
-	 * @param idigits_max the maximum number of digits
-	 *                    allowed.
+	 * @param ix window x position.
+	 * @param iy window y position.
+	 * @param iwidth window width.
+	 * @param iheight window height.
 	 */
 	Window_Keyboard(int ix, int iy, int iwidth = 320, int iheight = 80);
 

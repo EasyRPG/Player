@@ -231,7 +231,7 @@ namespace Game_Map {
 	/**
 	 * Sets battle encounter rate.
 	 *
-	 * @param battle encounter steps.
+	 * @param step encounter steps.
 	 */
 	void SetEncounterRate(int step);
 
