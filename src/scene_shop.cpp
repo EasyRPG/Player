@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "game_temp.h"
 #include "game_system.h"
 #include "game_party.h"
@@ -25,12 +23,10 @@
 #include "scene_shop.h"
 #include "output.h"
 
-////////////////////////////////////////////////////////////
 Scene_Shop::Scene_Shop() {
 	Scene::type = Scene::Shop;
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Shop::Start() {
 	shop_window.reset(new Window_Shop(0, 160, 320, 80));
 	help_window.reset(new Window_Help(0, 0, 320, 32));
@@ -73,7 +69,6 @@ void Scene_Shop::Start() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 static void Enable(Window* window, bool state) {
 	window->SetVisible(state);
 	window->SetActive(state);
@@ -158,7 +153,6 @@ void Scene_Shop::SetMode(int nmode) {
 	shop_window->SetMode(mode);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Shop::Update() {
 	buy_window->Update();
 	sell_window->Update();
@@ -196,7 +190,6 @@ void Scene_Shop::Update() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Shop::UpdateCommandSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Data::system.cancel_se);

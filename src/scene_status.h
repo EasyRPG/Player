@@ -35,6 +35,7 @@ class Scene_Status : public Scene {
 public:
 	/**
 	 * Constructor.
+	 *
 	 * @param actor_index party index of the actor.
 	 */
 	Scene_Status(int actor_index);

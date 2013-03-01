@@ -76,12 +76,13 @@ public:
 
 	/**
 	 * Checks if there is a player start location.
+	 *
 	 * @return true if there is one, false otherwise.
 	 */
 	bool CheckValidPlayerLocation();
 
 	/**
-	 * Initializess a battle test session.
+	 * Initializes a battle test session.
 	 */
 	void PrepareBattleTest();
 
