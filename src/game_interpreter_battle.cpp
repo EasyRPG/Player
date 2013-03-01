@@ -30,9 +30,7 @@ Game_Interpreter_Battle::Game_Interpreter_Battle(int depth, bool main_flag) :
 Game_Interpreter_Battle::~Game_Interpreter_Battle() {
 }
 
-/**
- * Execute Command.
- */
+// Execute Command.
 bool Game_Interpreter_Battle::ExecuteCommand() {
 	if (index >= list.size()) {
 		return CommandEnd();
@@ -221,9 +219,7 @@ bool Game_Interpreter_Battle::CommandTerminateBattle(RPG::EventCommand const& /*
 	return true;
 }
 
-/**
- * Conditional Branch
- */
+// Conditional branch.
 bool Game_Interpreter_Battle::CommandConditionalBranch(RPG::EventCommand const& com) {
 	bool result = false;
 	int value1, value2;

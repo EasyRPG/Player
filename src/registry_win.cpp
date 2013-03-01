@@ -35,9 +35,6 @@
 	#endif
 #endif
 
-/**
- * Read String value.
- */
 std::string Registry::ReadStrValue(HKEY hkey, std::string const& key, std::string const& val) {
 	char value[1024];
 	DWORD size = 1024;
@@ -66,9 +63,6 @@ std::string Registry::ReadStrValue(HKEY hkey, std::string const& key, std::strin
 	return string_value;
 }
 
-/**
- * Read Binary value.
- */
 int Registry::ReadBinValue(HKEY hkey, std::string const& key, std::string const& val, unsigned char* bin) {
 	DWORD size = 1024;
 	DWORD type = REG_BINARY;

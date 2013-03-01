@@ -18,7 +18,7 @@
 #ifndef _SCENE_H_
 #define _SCENE_H_
 
-/// Headers
+// Headers
 #include "system.h"
 #include <vector>
 

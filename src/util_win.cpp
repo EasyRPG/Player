@@ -23,10 +23,6 @@
 #include "SDL_syswm.h"
 #endif
 
-/**
- * Detects the Windows version during runtime.
- * Vista (and later) have version 6 and higher.
- */
 int WindowsUtils::GetWindowsVersion() {
 	static DWORD major_version = 0;
 	if (major_version != 0) {
@@ -40,9 +36,6 @@ int WindowsUtils::GetWindowsVersion() {
 	return osvi.dwMajorVersion;
 }
 
-/**
- * Gets the HWND of the Window.
- */
 HWND WindowsUtils::GetHwnd() {
 #ifdef USE_SDL
 	SDL_SysWMinfo wmi;

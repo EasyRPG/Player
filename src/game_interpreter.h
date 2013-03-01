@@ -83,9 +83,20 @@ protected:
 	int button_timer;
 	bool active;
 
-	// Helper function
+	/**
+	 * Gets strings for choice selection.
+	 * This is just a helper (private) method
+	 * to avoid repeating code.
+	 */
 	void GetStrings(std::vector<std::string>& ret_val);
 
+	/**
+	 * Calculates operated value.
+	 *
+	 * @param operation operation (increase: 0, decrease: 1).
+	 * @param operand_type operand type (0: set, 1: variable).
+	 * @param operand operand (number or var ID).
+	 */
 	int OperateValue(int operation, int operand_type, int operand);
 	Game_Character* GetCharacter(int character_id);
 
@@ -94,6 +105,12 @@ protected:
 
 	void CancelMenuCall();
 
+	/**
+	 * Calculates list of actors.
+	 *
+	 * @param mode 0: party, 1: specific actor, 2: actor referenced by variable.
+	 * @param id actor ID (mode = 1) or variable ID (mode = 2).
+	 */
 	static std::vector<Game_Actor*> GetActors(int mode, int id);
 	static int ValueOrVariable(int mode, int val);
 

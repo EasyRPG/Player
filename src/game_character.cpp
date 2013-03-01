@@ -819,9 +819,7 @@ void Game_Character::SetGraphic(const std::string& name, int index) {
 	character_index = index;
 }
 
-/**
- * Gets Character
- */
+// Gets Character
 Game_Character* Game_Character::GetCharacter(int character_id, int event_id) {
 	switch (character_id) {
 		case CharPlayer:

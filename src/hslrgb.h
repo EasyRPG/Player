@@ -21,6 +21,9 @@
 // Headers
 #include "color.h"
 
+/**
+ * Ajusts RGB with HSL.
+ */
 Color RGBAdjustHSL(Color col, double h, double s, double l);
 
 #endif

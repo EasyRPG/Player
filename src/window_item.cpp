@@ -40,7 +40,7 @@ int Window_Item::GetItemId() {
 }
 
 bool Window_Item::CheckInclude(int item_id) {
-	// Todo:
+	// TODO:
 	// if (Game_Temp::InBattle()) {
 	// 	return item_id == Rpg::Item
 

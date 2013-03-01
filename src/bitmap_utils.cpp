@@ -26,9 +26,7 @@
 #include "pixel_format.h"
 #include "bitmap_utils.h"
 
-/**
- * Traits types.
- */
+//Traits types.
 template <class BMU,
 		  PF::OpacityType SrcAlpha,
 		  PF::OpacityType DstAlpha>
@@ -119,9 +117,7 @@ struct copy_traits<BMU, true> {
 	}
 };
 
-/**
- * BitmapUtils class template.
- */
+// BitmapUtils class template.
 template <class PFsrc, class PFdst>
 class BitmapUtilsT : public BitmapUtils {
 public:
