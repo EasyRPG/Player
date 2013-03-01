@@ -1,43 +1,37 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-// 
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "rpg_item.h"
 #include "rpg_skill.h"
 #include "player.h"
 #include "game_battle.h"
 #include "window_battleitem.h"
 
-////////////////////////////////////////////////////////////
 Window_BattleItem::Window_BattleItem(int ix, int iy, int iwidth, int iheight) :
 	Window_Item(ix, iy, iwidth, iheight), actor_id(0) {}
 
-////////////////////////////////////////////////////////////
 Window_BattleItem::~Window_BattleItem() {
 }
 
-////////////////////////////////////////////////////////////
 void Window_BattleItem::SetActor(int _actor_id) {
 	actor_id = _actor_id;
 }
 
-////////////////////////////////////////////////////////////
 bool Window_BattleItem::CheckEnable(int item_id) {
 	const RPG::Item& item = Data::items[item_id - 1];
 
@@ -64,7 +58,6 @@ bool Window_BattleItem::CheckEnable(int item_id) {
 	}
 }
 
-////////////////////////////////////////////////////////////
 bool Window_BattleItem::CanUseItem(const RPG::Item& item) {
 	if (actor_id <= 0)
 		return false;
@@ -85,7 +78,6 @@ bool Window_BattleItem::CanUseItem(const RPG::Item& item) {
 	return false;
 }
 
-////////////////////////////////////////////////////////////
 bool Window_BattleItem::CanUseSkill(int skill_id) {
 	const RPG::Skill& skill = Data::skills[skill_id - 1];
 	return skill.type != RPG::Skill::Type_switch || skill.occasion_battle;

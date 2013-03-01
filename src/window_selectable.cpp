@@ -1,32 +1,28 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "window_selectable.h"
 #include "game_system.h"
 #include "input.h"
 #include "util_macro.h"
 #include "bitmap.h"
 
-////////////////////////////////////////////////////////////
-/// Constructor
-////////////////////////////////////////////////////////////
+// Constructor
 Window_Selectable::Window_Selectable(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight),
 	item_max(1),
@@ -35,21 +31,17 @@ Window_Selectable::Window_Selectable(int ix, int iy, int iwidth, int iheight) :
 	help_window(NULL) {
 }
 
-////////////////////////////////////////////////////////////
-/// Destructor
-////////////////////////////////////////////////////////////
+// Destructor
 Window_Selectable::~Window_Selectable() {
 }
 
-////////////////////////////////////////////////////////////
 void Window_Selectable::CreateContents() {
 	SetContents(Bitmap::Create(width - 16, max(height - 16, GetRowMax() * 16)));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 }
 
-////////////////////////////////////////////////////////////
-/// Properties
-////////////////////////////////////////////////////////////
+// Properties
+
 int Window_Selectable::GetIndex() const {
 	return index;
 }
@@ -104,9 +96,7 @@ void Window_Selectable::SetHelpWindow(Window_Help* nhelp_window) {
 void Window_Selectable::UpdateHelp() {
 }
 
-////////////////////////////////////////////////////////////
-/// Update Cursor Rect
-////////////////////////////////////////////////////////////
+// Update Cursor Rect
 void Window_Selectable::UpdateCursorRect() {
 	int cursor_width = 0;
 	int x = 0;
@@ -135,9 +125,7 @@ void Window_Selectable::UpdateCursorRect() {
 
 }
 
-////////////////////////////////////////////////////////////
-/// Update
-////////////////////////////////////////////////////////////
+// Update
 void Window_Selectable::Update() {
 	Window_Base::Update();
 	if (active && item_max > 0 && index >= 0) {

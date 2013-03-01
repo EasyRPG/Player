@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <iomanip>
 #include <sstream>
 #include "game_actors.h"
@@ -25,7 +23,6 @@
 #include "bitmap.h"
 #include "font.h"
 
-////////////////////////////////////////////////////////////
 Window_EquipStatus::Window_EquipStatus(int ix, int iy, int iwidth, int iheight, int actor_id, bool draw_actorname) :
 	Window_Base(ix, iy, iwidth, iheight),
 	actor_id(actor_id),
@@ -39,11 +36,9 @@ Window_EquipStatus::Window_EquipStatus(int ix, int iy, int iwidth, int iheight, 
 	Refresh();
 }
 
-////////////////////////////////////////////////////////////
 Window_EquipStatus::~Window_EquipStatus() {
 }
 
-////////////////////////////////////////////////////////////
 void Window_EquipStatus::Refresh() {
 	if (dirty) {
 		contents->Clear();
@@ -65,7 +60,6 @@ void Window_EquipStatus::Refresh() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Window_EquipStatus::SetNewParameters(
 	int new_atk, int new_def, int new_spi, int new_agi) {
 	draw_params = true;
@@ -80,7 +74,6 @@ void Window_EquipStatus::SetNewParameters(
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Window_EquipStatus::ClearParameters() {
 	if (draw_params != false) {
 		draw_params = false;
@@ -89,7 +82,6 @@ void Window_EquipStatus::ClearParameters() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 int Window_EquipStatus::GetNewParameterColor(int old_value, int new_value) {
 	if (old_value == new_value) {
 		return 0;
@@ -100,7 +92,6 @@ int Window_EquipStatus::GetNewParameterColor(int old_value, int new_value) {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Window_EquipStatus::DrawParameter(int cx, int cy, int type) {
 	std::string name;
 	int value;

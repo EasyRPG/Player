@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <iomanip>
 #include <sstream>
 #include "window_skill.h"
@@ -26,23 +24,19 @@
 #include "bitmap.h"
 #include "font.h"
 
-////////////////////////////////////////////////////////////
 Window_Skill::Window_Skill(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight), actor_id(-1) {
 	column_max = 2;
 }
 
-////////////////////////////////////////////////////////////
 Window_Skill::~Window_Skill() {
 }
 
-////////////////////////////////////////////////////////////
 void Window_Skill::SetActor(int actor_id) {
 	this->actor_id = actor_id;
 	Refresh();
 }
 
-////////////////////////////////////////////////////////////
 int Window_Skill::GetSkillId() {
 	if (index < 0) {
 		return 0;
@@ -51,7 +45,6 @@ int Window_Skill::GetSkillId() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Window_Skill::Refresh() {
 	data.clear();
 
@@ -76,7 +69,6 @@ void Window_Skill::Refresh() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Window_Skill::DrawItem(int index) {
 	Rect rect = GetItemRect(index);
 	contents->ClearRect(rect);
@@ -97,18 +89,15 @@ void Window_Skill::DrawItem(int index) {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Window_Skill::UpdateHelp() {
 	help_window->SetText(GetSkillId() == 0 ? "" :
 		Data::skills[GetSkillId() - 1].description);
 }
 
-////////////////////////////////////////////////////////////
 bool Window_Skill::CheckInclude(int /* skill_id */) {
 	return true;
 }
 
-////////////////////////////////////////////////////////////
 bool Window_Skill::CheckEnable(int skill_id) {
 	return Game_Actors::GetActor(actor_id)->IsSkillUsable(skill_id);
 }
