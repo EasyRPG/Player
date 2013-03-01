@@ -52,7 +52,7 @@ namespace Output {
 	/**
 	 * Ignores pause in Warning and Error.
 	 *
-	 * @param whether to ignore pause.
+	 * @param val whether to ignore pause.
 	 */
 	void IgnorePause(bool val);
 
@@ -117,7 +117,7 @@ namespace Output {
 	/**
 	 * Prints a debug message to the console.
 	 *
-	 * @param err formatted debug text to display.
+	 * @param msg formatted debug text to display.
 	 */
 	void DebugStr(std::string const& msg);
 }

@@ -31,8 +31,6 @@ class Scene_Save : public Scene_File {
 public:
 	/**
 	 * Constructor.
-	 *
-	 * @param item_index index to select.
 	 */
 	Scene_Save();
 

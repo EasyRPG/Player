@@ -212,6 +212,8 @@ public:
 	 * Forces a new, temporary, move route.
 	 *
 	 * @param new_route new move route.
+	 * @param frequency frequency.
+	 * @param owner the interpreter which set the route.
 	 */
 	void ForceMoveRoute(RPG::MoveRoute* new_route, int frequency, Game_Interpreter* owner);
 

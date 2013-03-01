@@ -72,7 +72,7 @@ namespace Game_Party {
 	/**
 	 * Gets if an actor is in party.
 	 *
-	 * @param actor actor object.
+	 * @param actor_id database actor ID.
 	 * @return whether the actor is in party.
 	 */
 	bool IsActorInParty(int actor_id);
@@ -107,8 +107,8 @@ namespace Game_Party {
 	 * Gets number of possessed or equipped items.
 	 *
 	 * @param item_id database item ID.
-	 * @get_equipped If true this returns the number
-	 *               of equipped items.
+	 * @param get_equipped if true this returns the number
+	 *                     of equipped items.
 	 * @return number of items.
 	 */
 	int ItemNumber(int item_id, bool get_equipped = false);
@@ -164,16 +164,16 @@ namespace Game_Party {
 	/**
 	 * Random selection of target actor.
 	 *
-	 * @param hp0 : only targets actors with 0 HP.
-	 * @return target actor.
+	 * @//param hp0 : only targets actors with 0 HP.
+	 * @//return target actor.
 	 */
 	//Game_Actor* RandomTargetActor(bool hp0 = false);
 
 	/**
 	 * Smooth selection of target actor.
 	 *
-	 * @param actor_index : actor index in party.
-	 * @return target actor.
+	 * @//param actor_index : actor index in party.
+	 * @//return target actor.
 	 */
 	//Game_Actor* SmoothTargetActor(int actor_index);
 

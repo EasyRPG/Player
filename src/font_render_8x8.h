@@ -47,8 +47,8 @@ namespace FontRender8x8 {
 	 * @param text text to draw.
 	 * @param pixels pixels where text is drawn on.
 	 * @param dst_rect target rect.
-	 * @param width width of surface the pixels are belonging to.
-	 * @param height height of surface the pixels are belonging to.
+	 * @param surface_width width of surface the pixels are belonging to.
+	 * @param surface_height height of surface the pixels are belonging to.
 	 * @param bpp bits per pixel of surface the pixels are belonging to.
 	 * @param color color to use.
 	 */

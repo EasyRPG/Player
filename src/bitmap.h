@@ -46,7 +46,7 @@ public:
 	 *
 	 * @param width surface width.
 	 * @param height surface height.
-	 * @param transparent allow transparency on bitmap.
+	 * @param color color for filling.
 	 */
 	static BitmapRef Create(int width, int height, const Color& color);
 
@@ -55,7 +55,7 @@ public:
 	 *
 	 * @param filename image file to load.
 	 * @param transparent allow transparency on bitmap.
-	 * @param read_only should bitmap be read_only (fast blit).
+	 * @param flags bitmap flags.
 	 */
 	static BitmapRef Create(const std::string& filename, bool transparent = true, uint32_t flags = 0);
 
@@ -65,6 +65,7 @@ public:
 	 * @param data image data.
 	 * @param bytes size of data.
 	 * @param transparent allow transparency on bitmap.
+	 * @param flags bitmap flags.
 	 */
 	static BitmapRef Create(const uint8_t* data, unsigned bytes, bool transparent = true, uint32_t flags = 0);
 
@@ -90,9 +91,9 @@ public:
 	/**
 	 * Creates a copy of an existing bitmap.
 	 *
-	 * @param source : source bitmap
-	 * @param src_rect : rect to copy from source bitmap
-	 * @param transparent : allow transparency on bitmap
+	 * @//param source : source bitmap
+	 * @//param src_rect : rect to copy from source bitmap
+	 * @//param transparent : allow transparency on bitmap
 	 */
 	// static BitmapRef Create(Bitmap const& source, Rect const& src_rect, bool transparent = true);
 
@@ -216,7 +217,7 @@ public:
 	 * @param pixels pointer to pixel data.
 	 * @param width surface width.
 	 * @param height surface height.
-	 * @param height surface pitch.
+	 * @param pitch surface pitch.
 	 * @param format pixel format.
 	*/
 	static BitmapRef Create(void *pixels, int width, int height, int pitch, const DynamicFormat& format);
@@ -246,7 +247,7 @@ public:
 	 * Blits source bitmap in tiles to this one.
 	 *
 	 * @param ox tile start x offset.
-	 * @param ox tile start y offset.
+	 * @param oy tile start y offset.
 	 * @param src_rect source bitmap rect.
 	 * @param src source bitmap.
 	 * @param dst_rect destination rect.
@@ -304,12 +305,13 @@ public:
 	 * @param src source bitmap.
 	 * @param src_rect source bitmap rect.
 	 * @param angle rotation angle (positive is clockwise).
-	 * @param dst_w scaled width.
-	 * @param dst_h scaled height.
+	 * @param scale_x scaled width.
+	 * @param scale_y scaled height.
 	 * @param src_pos_x source origin x.
 	 * @param src_pos_y source origin y.
 	 * @param dst_pos_x destination origin x.
 	 * @param dst_pos_y destination origin y.
+	 * @param opacity opacity.
 	 */
 	void TransformBlit(Rect const& dst_rect,
 							   Bitmap const& src, Rect const& src_rect,
@@ -332,12 +334,13 @@ public:
 	/**
 	 * Blits source bitmap with waver effect.
 	 *
-	 * @param x x position
-	 * @param y y position
+	 * @param x x position.
+	 * @param y y position.
 	 * @param src source bitmap.
 	 * @param src_rect source bitmap rect.
 	 * @param depth wave magnitude.
 	 * @param phase wave phase.
+	 * @param opacity opacity.
 	 */
 	void WaverBlit(int x, int y, Bitmap const& src, Rect const& src_rect, int depth, double phase, int opacity);
 
@@ -371,9 +374,9 @@ public:
 	/**
 	 * Rotates bitmap hue.
 	 *
-	 * @param x x position
-	 * @param y y position
-	 * @param src source bitmap
+	 * @param x x position.
+	 * @param y y position.
+	 * @param src source bitmap.
 	 * @param src_rect source bitmap rect.
 	 * @param hue hue change, degrees.
 	 */
@@ -386,10 +389,10 @@ public:
 	 * @param y y position.
 	 * @param src source bitmap.
 	 * @param src_rect source bitmap rect.
-	 * @param hue hue change, degrees.
-	 * @param sat saturation scale.
-	 * @param lum luminance scale.
-	 * @param loff luminance offset.
+	 * @param h hue change, degrees.
+	 * @param s saturation scale.
+	 * @param l luminance scale.
+	 * @param lo luminance offset.
 	 */
 	void HSLBlit(int x, int y, Bitmap const& src, Rect const& src_rect, double h, double s, double l, double lo);
 
@@ -407,11 +410,11 @@ public:
 	/**
 	 * Blends bitmap with color.
 	 *
-	 * @param x x position-
-	 * @param y y position-
-	 * @param src source bitmap-
-	 * @param src_rect source bitmap rect-
-	 * @param tone color to apply-
+	 * @param x x position.
+	 * @param y y position.
+	 * @param src source bitmap.
+	 * @param src_rect source bitmap rect.
+	 * @param color color to apply.
 	 */
 	void BlendBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Color &color);
 
@@ -462,12 +465,12 @@ public:
 	 * Blits source bitmap with effects.
 	 * Note: rotation and waver are mutually exclusive.
 	 *
-	 * @param x destination x position
-	 * @param y destination y position
-	 * @param src source bitmap
-	 * @param src_rect source bitmap rectangle
-	 * @param top_opacity opacity of top section
-	 * @param bottom_opacity opacity of bottom section
+	 * @param x destination x position.
+	 * @param y destination y position.
+	 * @param src source bitmap.
+	 * @param src_rect source bitmap rectangle.
+	 * @param top_opacity opacity of top section.
+	 * @param bottom_opacity opacity of bottom section.
 	 * @param opacity_split boundary between sections,
 	 *                      (zero is bottom edge).
 	 * @param tone tone to apply.
@@ -511,6 +514,8 @@ public:
 	/**
 	 * Blits source bitmap with scaling, waver and (split) opacity scaling.
 	 *
+	 * @param x x position.
+	 * @param y y position.
 	 * @param src source bitmap.
 	 * @param src_rect source bitmap rectangle.
 	 * @param top_opacity opacity of top section.
@@ -530,6 +535,8 @@ public:
 	/**
 	 * Blits source bitmap with waver and (split) opacity scaling.
 	 *
+	 * @param x x position.
+	 * @param y y position.
 	 * @param src source bitmap.
 	 * @param src_rect source bitmap rectangle.
 	 * @param top_opacity opacity of top section.
@@ -546,6 +553,8 @@ public:
 	/**
 	 * Blits source bitmap with waver and opacity scaling.
 	 *
+	 * @param x x position.
+	 * @param y y position.
 	 * @param src source bitmap.
 	 * @param src_rect source bitmap rectangle.
 	 * @param opacity opacity.
@@ -600,7 +609,7 @@ public:
 	/**
 	 * Sets text drawing font.
 	 *
-	 * @param text drawing font.
+	 * @param font drawing font.
 	 */
 	void SetFont(FontRef const& font);
 

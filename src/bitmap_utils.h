@@ -37,7 +37,7 @@ public:
 	/**
 	 * Gets a pixel color.
 	 *
-	 * @param src_pixel pointer to source pixel.
+	 * @param src_pixels pointer to source pixel.
 	 * @param r (out) red.
 	 * @param g (out) green.
 	 * @param b (out) blue.
@@ -58,7 +58,7 @@ public:
 	/**
 	 * Sets a pixel to a given color.
 	 *
-	 * @param dst_pixel pointer to destination pixel.
+	 * @param dst_pixels pointer to destination pixel.
 	 * @param r red.
 	 * @param g green.
 	 * @param b blue.
@@ -70,7 +70,7 @@ public:
 	 * Sets multiple pixels to a given value.
 	 *
 	 * @param dst_pixels pointer to destination pixel row.
-	 * @param src_pixel pointer to source pixel.
+	 * @param src_pixels pointer to source pixel.
 	 * @param n number of pixels.
 	 */
 	virtual void SetPixels(uint8_t* dst_pixels, const uint8_t* src_pixels, int n) = 0;
@@ -79,7 +79,7 @@ public:
 	 * Blits source bitmap to destination with opacity scaling.
 	 *
 	 * @param dst_pixels pointer to destination pixel row.
-	 * @param src_pixel pointer to source pixels.
+	 * @param src_pixels pointer to source pixels.
 	 * @param n number of pixels.
 	 * @param opacity opacity scale (255 == unity).
 	 */
@@ -89,7 +89,7 @@ public:
 	 * Blits source bitmap to destination with opacity scaling.
 	 *
 	 * @param dst_pixels pointer to destination pixel row.
-	 * @param src_pixel pointer to source pixels.
+	 * @param src_pixels pointer to source pixels.
 	 * @param n number of pixels.
 	 * @param opacity opacity scale (255 == unity).
 	 */
@@ -99,7 +99,7 @@ public:
 	 * Blits source bitmap over destination (transparency allows source through).
 	 *
 	 * @param dst_pixels pointer to destination pixel row.
-	 * @param src_pixel pointer to source pixel row.
+	 * @param src_pixels pointer to source pixel row.
 	 * @param n number of pixels.
 	 */
 	virtual void OverlayBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n) = 0;
@@ -108,7 +108,7 @@ public:
 	 * Blits source bitmap into destination (transparency is copied).
 	 *
 	 * @param dst_pixels pointer to destination pixel row.
-	 * @param src_pixel pointer to source pixel row.
+	 * @param src_pixels pointer to source pixel row.
 	 * @param n number of pixels.
 	 */
 	virtual void CopyBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n) = 0;
@@ -117,7 +117,7 @@ public:
 	 * Blits source bitmap to destination with horizontal flip.
 	 *
 	 * @param dst_pixels pointer to destination pixel row.
-	 * @param src_pixel pointer to source pixel row.
+	 * @param src_pixels pointer to source pixel row.
 	 * @param n number of pixels.
 	 */
 	virtual void FlipHBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n) = 0;
@@ -126,7 +126,7 @@ public:
 	 * Blits source bitmap to destination with scaling and opacity scaling.
 	 *
 	 * @param dst_pixels pointer to destination pixel row.
-	 * @param src_pixel pointer to source pixel row.
+	 * @param src_pixels pointer to source pixel row.
 	 * @param n number of pixels.
 	 * @param x fixed point source x position.
 	 * @param step fixed point source x step (inverse scale factor).
@@ -138,7 +138,7 @@ public:
 	 * Blits source bitmap to destination with scaling and opacity scaling.
 	 *
 	 * @param dst_pixels pointer to destination pixel row.
-	 * @param src_pixel pointer to source pixel row.
+	 * @param src_pixels pointer to source pixel row.
 	 * @param n number of pixels.
 	 * @param x fixed point source x position.
 	 * @param step fixed point source x step (inverse scale factor).
@@ -151,7 +151,7 @@ public:
 	 * (transparency allows source through).
 	 *
 	 * @param dst_pixels pointer to destination pixel row.
-	 * @param src_pixel pointer to source pixel row.
+	 * @param src_pixels pointer to source pixel row.
 	 * @param n number of pixels.
 	 * @param x fixed point source x position.
 	 * @param step fixed point source x step (inverse scale factor).
@@ -163,7 +163,7 @@ public:
 	 * (transparency is copied).
 	 *
 	 * @param dst_pixels pointer to destination pixel row.
-	 * @param src_pixel pointer to source pixel row.
+	 * @param src_pixels pointer to source pixel row.
 	 * @param n number of pixels.
 	 * @param x fixed point source x position.
 	 * @param step fixed point source x step (inverse scale factor).
@@ -174,7 +174,7 @@ public:
 	 * Blits source bitmap over destination with transformation and opacity scaling.
 	 *
 	 * @param dst_pixels pointer to destination pixel row.
-	 * @param src_pixel  pointer to top-left corner of source pixels.
+	 * @param src_pixels  pointer to top-left corner of source pixels.
 	 * @param src_pitch pitch of source data.
 	 * @param x0 destination x coordinate of row left.
 	 * @param x1 destination x coordinate of row right.
@@ -191,7 +191,7 @@ public:
 	 * Blits source bitmap over destination with transformation and opacity scaling.
 	 *
 	 * @param dst_pixels pointer to destination pixel row.
-	 * @param src_pixel pointer to top-left corner of source pixels.
+	 * @param src_pixels pointer to top-left corner of source pixels.
 	 * @param src_pitch pitch of source data.
 	 * @param x0 destination x coordinate of row left.
 	 * @param x1 destination x coordinate of row right.
@@ -209,14 +209,13 @@ public:
 	 * (transparency allows source through).
 	 *
 	 * @param dst_pixels pointer to destination pixel row.
-	 * @param src_pixel pointer to top-left corner of source pixels.
+	 * @param src_pixels pointer to top-left corner of source pixels.
 	 * @param src_pitch pitch of source data.
 	 * @param x0 destination x coordinate of row left.
 	 * @param x1 destination x coordinate of row right.
 	 * @param y destination y coordinat of row.
 	 * @param src_rect source clip rectangle.
 	 * @param inv inverse (dst->src) transformation matrix.
-	 * @param opacity opacity scale (255 == unity).
 	 */
 	virtual void OverlayTransformBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int src_pitch,
 									  int x0, int x1, int y, const Rect& src_rect, const Matrix& inv) = 0;
@@ -226,14 +225,13 @@ public:
 	 * (transparency is copied).
 	 *
 	 * @param dst_pixels pointer to destination pixel row.
-	 * @param src_pixel pointer to top-left corner of source pixels.
+	 * @param src_pixels pointer to top-left corner of source pixels.
 	 * @param src_pitch pitch of source data.
 	 * @param x0 destination x coordinate of row left.
 	 * @param x1 destination x coordinate of row right.
 	 * @param y destination y coordinat of row.
 	 * @param src_rect source clip rectangle.
 	 * @param inv inverse (dst->src) transformation matrix.
-	 * @param opacity opacity scale (255 == unity).
 	 */
 	virtual void CopyTransformBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int src_pitch,
 								   int x0, int x1, int y, const Rect& src_rect, const Matrix& inv) = 0;
@@ -242,7 +240,7 @@ public:
 	 * Replaces destination alpha with source alpha.
 	 *
 	 * @param dst_pixels pointer to destination pixel row.
-	 * @param src_pixel pointer to source pixel row.
+	 * @param src_pixels pointer to source pixel row.
 	 * @param n number of pixels.
 	 */
 	virtual void MaskBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n) = 0;
@@ -251,7 +249,7 @@ public:
 	 * Adjusts bitmap HSL colors.
 	 *
 	 * @param dst_pixels pointer to destination pixel row.
-	 * @param src_pixel pointer to source pixel row.
+	 * @param src_pixels pointer to source pixel row.
 	 * @param n number of pixels.
 	 * @param hue hue change, degrees.
 	 * @param sat saturation scale.
@@ -264,7 +262,7 @@ public:
 	/**
 	 * Adjust bitmap tone, without saturation change
 	 * @param dst_pixels : pointer to destination pixel row
-	 * @param src_pixel : pointer to source pixel row
+	 * @param src_pixels : pointer to source pixel row
 	 * @param n : number of pixels
 	 * @param tone : tone to apply (gray is ignored)
 	 */
@@ -274,7 +272,7 @@ public:
 	 * Adjusts bitmap tone, with saturation change.
 	 *
 	 * @param dst_pixels pointer to destination pixel row.
-	 * @param src_pixel pointer to source pixel row.
+	 * @param src_pixels pointer to source pixel row.
 	 * @param n number of pixels.
 	 * @param tone tone to apply.
 	 * @param factor must be (255 - tone.gray) / 255.
@@ -285,7 +283,7 @@ public:
 	 * Blends bitmap with color.
 	 *
 	 * @param dst_pixels pointer to destination pixel row.
-	 * @param src_pixel pointer to source pixel row.
+	 * @param src_pixels pointer to source pixel row.
 	 * @param n number of pixels.
 	 * @param color color to apply.
 	 */
@@ -295,9 +293,9 @@ public:
 	 * Adjusts bitmap opacity.
 	 *
 	 * @param dst_pixels pointer to destination pixel row.
-	 * @param src_pixel pointer to source pixel row.
+	 * @param src_pixels pointer to source pixel row.
 	 * @param n number of pixels.
-	 * @param tone opacity scale (255 = unity).
+	 * @param opacity opacity scale (255 = unity).
 	 */
 	virtual void OpacityChangeBlit(uint8_t* dst_pixels, const uint8_t* src_pixels, int n, int opacity) = 0;
 
@@ -314,7 +312,7 @@ public:
 	 * Flips the bitmap pixels horizontally.
 	 *
 	 * @param pixels_left (in, out) pointer to the left-most pixel.
-	 * @param pixels_last (in, out) pointer to the right-most pixel.
+	 * @param pixels_right (in, out) pointer to the right-most pixel.
 	 * @param n number of pixels.
 	 */
 	virtual void FlipH(uint8_t*& pixels_left, uint8_t*& pixels_right, int n) = 0;
@@ -322,8 +320,8 @@ public:
 	/**
 	 * Flips the bitmap pixels vertically.
 	 *
-	 * @param pixels_up (in, out) pointer to the upper pixel row.
-	 * @param pixels_down (in, out) pointer to the lower pixel row.
+	 * @param pixels_first (in, out) pointer to the top-left pixel.
+	 * @param pixels_last (in, out) pointer to the bottom-left pixel.
 	 * @param n number of pixels.
 	 * @param tmp_buffer temporary buffer (size: n pixels).
 	 */
@@ -334,7 +332,7 @@ public:
 	 * (transparency is copied).
 	 *
 	 * @param dst_pixels pointer to destination pixel row.
-	 * @param src_pixel pointer to source pixel row.
+	 * @param src_pixels pointer to source pixel row.
 	 * @param n number of source pixels.
 	 */
 	virtual void Blit2x(uint8_t* dst_pixels, const uint8_t* src_pixels, int n) = 0;
@@ -384,10 +382,9 @@ public:
 	/**
 	 * BitmapUtils factory function.
 	 *
-	 * @param bpp bits per pixel.
-	 * @param has_alpha has alpha.
-	 * @param has_colorkey has color-key.
-	 * @param format DynamicFormat.
+	 * @param dst_format destination pixel format.
+	 * @param src_format source pixel format.
+	 * @param need_source true if needs source pixel format.
 	 * @return a BitmapUtils instance for the specified pixel format.
 	 */
 	static BitmapUtils* Create(const DynamicFormat& dst_format,

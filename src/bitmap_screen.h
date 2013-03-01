@@ -37,9 +37,6 @@ public:
 	 * Creates a BitmapScreen object.
 	 *
 	 * @param source source bitmap, or NULL.
-	 * @param delete_bitmap if true, the bitmap will be
-	 *                      deleted when it is replaced
-     *                      or when this object is deleted.
 	 */
 	static BitmapScreenRef Create(BitmapRef const& source);
 
@@ -62,9 +59,6 @@ public:
 	 * Set source bitmap.
 	 *
 	 * @param source source bitmap.
-	 * @param delete_bitmap if true, the bitmap will be
-	 *                      deleted when it is replaced
-     *                      or when this object is deleted.
 	 */
 	void SetBitmap(BitmapRef const& source);
 
@@ -97,6 +91,8 @@ public:
 	 *
 	 * @param src_rect source bitmap rect.
 	 * @param dst_rect screen destination rect.
+	 * @param ox tile start x offset.
+	 * @param oy tile start y offset.
 	 */
 	void BlitScreenTiled(Rect const& src_rect, Rect const& dst_rect, int ox, int oy);
 
@@ -273,7 +269,7 @@ public:
 	/**
 	 * Gets waver effect depth.
 	 *
-	 * @return waver magnitude in pixels.
+	 * @return depth magnitude in pixels.
 	 */
 	int GetWaverEffectDepth() const;
 
@@ -287,14 +283,14 @@ public:
 	/**
 	 * Sets waver effect depth.
 	 *
-	 * @param waver magnitude in pixels.
+	 * @param depth magnitude in pixels.
 	 */
 	void SetWaverEffectDepth(int depth);
 
 	/**
 	 * Sets waver effect phase.
 	 *
-	 * @param waver phase in degrees.
+	 * @param phase phase in degrees.
 	 */
 	void SetWaverEffectPhase(double phase);
 

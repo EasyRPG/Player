@@ -33,8 +33,6 @@ class Window_BattleCommand: public Window_Base {
 public:
 	/**
 	 * Constructor.
-	 *
-	 * @param commands commands to display.
 	 */
 	Window_BattleCommand(int x, int y, int width, int height);
 
@@ -56,12 +54,6 @@ public:
 	 */
 	void SetEnabled(int index, bool enabled);
 
-	/**
-	 * Enables or disables a command.
-	 *
-	 * @param index command index.
-	 * @param enabled whether the command is enabled.
-	 */
 	void SetActor(int actor_id);
 
 	int GetIndex();

@@ -30,6 +30,11 @@ class Window_ShopNumber : public Window_Base {
 public:
 	/**
 	 * Constructor.
+	 *
+	 * @param ix window x position.
+	 * @param iy window y position.
+	 * @param iwidth window width.
+	 * @param iheight window height.
 	 */
 	Window_ShopNumber(int ix, int iy, int iwidth, int iheight);
 	
@@ -54,9 +59,9 @@ public:
 	 * Sets all data needed for the window.
 	 *
 	 * @param item_id item to buy.
-	 * @param max maximum quantity.
+	 * @param item_max item maximum quantity.
 	 * @param price Price of the item.
-	 * @return The currently input number.
+	 * @return the currently input number.
 	 */
 	void SetData(int item_id, int item_max, int price);
 
