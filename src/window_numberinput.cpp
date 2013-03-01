@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "window_numberinput.h"
 #include "game_system.h"
 #include "input.h"
@@ -28,7 +26,6 @@
 
 #include <cstdio>
 
-////////////////////////////////////////////////////////////
 Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight), digits_max(6) {
 	number = 0;
@@ -45,7 +42,6 @@ Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) 
 	UpdateCursorRect();
 }
 
-////////////////////////////////////////////////////////////
 void Window_NumberInput::Refresh() {
 	contents->Clear();
 
@@ -60,12 +56,10 @@ void Window_NumberInput::Refresh() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 int Window_NumberInput::GetNumber() {
 	return number;
 }
 
-////////////////////////////////////////////////////////////
 void Window_NumberInput::SetNumber(unsigned inumber) {
 	unsigned num = 1;
 	for (int i = 0; i < digits_max; ++i) {
@@ -76,12 +70,10 @@ void Window_NumberInput::SetNumber(unsigned inumber) {
 	Refresh();
 }
 
-////////////////////////////////////////////////////////////
 int Window_NumberInput::GetMaxDigits() {
 	return digits_max;
 }
 
-////////////////////////////////////////////////////////////
 void Window_NumberInput::SetMaxDigits(int idigits_max) {
 	// Only accepts values between 1 and 6 as RPGM2K
 	digits_max =
@@ -92,12 +84,10 @@ void Window_NumberInput::SetMaxDigits(int idigits_max) {
 	Refresh();
 }
 
-////////////////////////////////////////////////////////////
 void Window_NumberInput::UpdateCursorRect() {
 	cursor_rect.Set(index * (cursor_width - 2) + 8, 0, cursor_width, 16);
 }
 
-////////////////////////////////////////////////////////////
 void Window_NumberInput::Update() {
 	Window_Selectable::Update();
 	if (active) {

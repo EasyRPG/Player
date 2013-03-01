@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <sstream>
 #include "game_system.h"
 #include "input.h"
@@ -26,7 +24,6 @@
 #include "bitmap.h"
 #include "font.h"
 
-////////////////////////////////////////////////////////////
 Window_ShopNumber::Window_ShopNumber(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight),
 	item_max(1), price(0), number(1), item_id(0) {
@@ -36,7 +33,6 @@ Window_ShopNumber::Window_ShopNumber(int ix, int iy, int iwidth, int iheight) :
 	contents->Clear();
 }
 
-////////////////////////////////////////////////////////////
 void Window_ShopNumber::SetData(int item_id, int item_max, int price) {
 	this->item_id = item_id;
 	this->item_max = min(item_max, 99);
@@ -44,7 +40,6 @@ void Window_ShopNumber::SetData(int item_id, int item_max, int price) {
 	number = 1;
 }
 
-////////////////////////////////////////////////////////////
 void Window_ShopNumber::Refresh() {
 	contents->Clear();
 
@@ -61,12 +56,10 @@ void Window_ShopNumber::Refresh() {
 	DrawCurrencyValue(GetTotal(), contents->GetWidth(), y + 32);
 }
 
-////////////////////////////////////////////////////////////
 int Window_ShopNumber::GetNumber() const {
 	return number;
 }
 
-////////////////////////////////////////////////////////////
 void Window_ShopNumber::Update() {
 	Window_Base::Update();
 
@@ -89,7 +82,6 @@ void Window_ShopNumber::Update() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 int Window_ShopNumber::GetTotal() const {
 	return Data::items[item_id - 1].price * number;
 }
