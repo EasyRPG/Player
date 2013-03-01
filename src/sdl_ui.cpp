@@ -570,13 +570,11 @@ void SdlUi::ProcessKeyDownEvent(SDL_Event &evnt) {
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
 	switch (evnt.key.keysym.sym) {
 	case SDLK_F4:
-#ifdef _WIN32
 		// Close program on LeftAlt+F4
 		if (evnt.key.keysym.mod & KMOD_LALT) {
 			Player::exit_flag = true;
 			return;
 		}
-#endif
 
 		// Toggle fullscreen on F4 and no alt is pressed
 		if (!(evnt.key.keysym.mod & KMOD_RALT) && !(evnt.key.keysym.mod & KMOD_LALT)) {
