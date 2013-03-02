@@ -45,7 +45,7 @@
 #include "memory_management.h"
 
 #ifdef GEKKO
-	#include <cstdint>
+	#include "stdint.h"
 #endif
 
 #define SUPPORT_BMP
