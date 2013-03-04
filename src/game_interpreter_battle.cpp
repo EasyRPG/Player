@@ -27,9 +27,6 @@ Game_Interpreter_Battle::Game_Interpreter_Battle(int depth, bool main_flag) :
 	Game_Interpreter(depth, main_flag) {
 }
 
-Game_Interpreter_Battle::~Game_Interpreter_Battle() {
-}
-
 ////////////////////////////////////////////////////////////
 /// Execute Command
 ////////////////////////////////////////////////////////////

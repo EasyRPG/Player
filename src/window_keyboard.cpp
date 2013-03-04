@@ -90,7 +90,7 @@ namespace {
 } // anonymous namespace
 
 /*
- * hiragana -> katakana -> letter -> symbol -> hiragana ...
+ * hiragana -> katakana -> letter -> symbol -> hiragana -> ...
  */
 
 ////////////////////////////////////////////////////////////
@@ -158,9 +158,6 @@ Window_Keyboard::Window_Keyboard(int ix, int iy, int iwidth, int iheight) :
 		items[Symbol][7][6] = TO_HIRAGANA;
 		items[Hiragana][8][6] = TO_KATAKANA;
 	}
-}
-
-Window_Keyboard::~Window_Keyboard() {
 }
 
 void Window_Keyboard::SetMode(Window_Keyboard::Mode nmode) {

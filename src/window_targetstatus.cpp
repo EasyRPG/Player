@@ -33,10 +33,6 @@ Window_TargetStatus::Window_TargetStatus(int ix, int iy, int iwidth, int iheight
 }
 
 ////////////////////////////////////////////////////////////
-Window_TargetStatus::~Window_TargetStatus() {
-}
-
-////////////////////////////////////////////////////////////
 void Window_TargetStatus::Refresh() {
 	contents->Clear();
 

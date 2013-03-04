@@ -83,10 +83,6 @@ Window_Shop::Window_Shop(int ix, int iy, int iwidth, int iheight) :
 	Refresh();
 }
 
-////////////////////////////////////////////////////////////
-Window_Shop::~Window_Shop() {
-}
-
 void Window_Shop::UpdateCursorRect() {
 	Rect rect;
 	switch (mode) {

@@ -37,10 +37,6 @@ Window_MenuStatus::Window_MenuStatus(int ix, int iy, int iwidth, int iheight) :
 }
 
 ////////////////////////////////////////////////////////////
-Window_MenuStatus::~Window_MenuStatus() {
-}
-
-////////////////////////////////////////////////////////////
 void Window_MenuStatus::Refresh() {
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 	contents->Clear();

@@ -40,9 +40,6 @@ Window_SaveFile::Window_SaveFile(int ix, int iy, int iwidth, int iheight) :
 	UpdateCursorRect();
 }
 
-Window_SaveFile::~Window_SaveFile() {
-}
-
 void Window_SaveFile::UpdateCursorRect() {
 	SetCursorRect(GetActive() ? Rect(0, 0, 48, 16) : Rect());
 }

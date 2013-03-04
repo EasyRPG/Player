@@ -38,10 +38,6 @@ Window_Name::Window_Name(int ix, int iy, int iwidth, int iheight) :
 }
 
 ////////////////////////////////////////////////////////////
-Window_Name::~Window_Name() {
-}
-
-////////////////////////////////////////////////////////////
 void Window_Name::Refresh() {
 	contents->Clear();
 	contents->TextDraw(2, 2, Font::ColorDefault, name);
@@ -60,7 +56,7 @@ void Window_Name::Append(const std::string& text) {
 void Window_Name::Erase() {
 	if (name.size() < 1)
 		return;
-	
+
 	boost::u8_to_u32_iterator<std::string::const_iterator> name_begin =
 		boost::u8_to_u32_iterator<std::string::const_iterator>(name.begin(), name.begin(), name.begin());
 	boost::u8_to_u32_iterator<std::string::const_iterator> name_end =

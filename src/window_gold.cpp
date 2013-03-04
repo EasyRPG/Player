@@ -36,10 +36,6 @@ Window_Gold::Window_Gold(int ix, int iy, int iwidth, int iheight) :
 }
 
 ////////////////////////////////////////////////////////////
-Window_Gold::~Window_Gold() {
-}
-
-////////////////////////////////////////////////////////////
 void Window_Gold::Refresh() {
 	contents->Clear();
 	DrawCurrencyValue(Game_Party::GetGold(), contents->GetWidth(), 2);

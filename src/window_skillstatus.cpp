@@ -33,10 +33,6 @@ Window_SkillStatus::Window_SkillStatus(int ix, int iy, int iwidth, int iheight) 
 }
 
 ////////////////////////////////////////////////////////////
-Window_SkillStatus::~Window_SkillStatus() {
-}
-
-////////////////////////////////////////////////////////////
 void Window_SkillStatus::SetActor(int actor_id) {
 	this->actor_id = actor_id;
 	Refresh();

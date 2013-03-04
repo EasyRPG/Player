@@ -37,10 +37,6 @@ Window_ShopNumber::Window_ShopNumber(int ix, int iy, int iwidth, int iheight) :
 }
 
 ////////////////////////////////////////////////////////////
-Window_ShopNumber::~Window_ShopNumber() {
-}
-
-////////////////////////////////////////////////////////////
 void Window_ShopNumber::SetData(int item_id, int item_max, int price) {
 	this->item_id = item_id;
 	this->item_max = min(item_max, 99);

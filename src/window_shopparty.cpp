@@ -65,10 +65,6 @@ Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 }
 
 ////////////////////////////////////////////////////////////
-Window_ShopParty::~Window_ShopParty() {
-}
-
-////////////////////////////////////////////////////////////
 void Window_ShopParty::Refresh() {
 	contents->Clear();
 

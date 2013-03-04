@@ -37,10 +37,6 @@ Window_ActorStatus::Window_ActorStatus(int ix, int iy, int iwidth, int iheight, 
 }
 
 ////////////////////////////////////////////////////////////
-Window_ActorStatus::~Window_ActorStatus() {
-}
-
-////////////////////////////////////////////////////////////
 void Window_ActorStatus::Refresh() {
 	contents->Clear();
 }

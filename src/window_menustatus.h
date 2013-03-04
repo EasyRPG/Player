@@ -29,7 +29,6 @@
 class Window_MenuStatus : public Window_Selectable {
 public:
 	Window_MenuStatus(int ix, int iy, int iwidth, int iheight);
-	~Window_MenuStatus();
 	void Refresh();
 	void UpdateCursorRect();
 };

@@ -35,10 +35,6 @@ Window_ActorTarget::Window_ActorTarget(int ix, int iy, int iwidth, int iheight) 
 }
 
 ////////////////////////////////////////////////////////////
-Window_ActorTarget::~Window_ActorTarget() {
-}
-
-////////////////////////////////////////////////////////////
 void Window_ActorTarget::Refresh() {
 	contents->Clear();
 

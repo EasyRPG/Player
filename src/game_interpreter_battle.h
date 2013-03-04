@@ -36,7 +36,6 @@ class Game_Interpreter_Battle : public Game_Interpreter
 {
 public:
 	Game_Interpreter_Battle(int _depth = 0, bool _main_flag = false);
-	~Game_Interpreter_Battle();
 
 	bool ExecuteCommand();
 private:
@@ -54,4 +53,3 @@ private:
 };
 
 #endif
-
