@@ -33,7 +33,7 @@ Window_Face::Window_Face(int ix, int iy, int iwidth, int iheight) :
 ////////////////////////////////////////////////////////////
 void Window_Face::Refresh() {
 	contents->Clear();
-	DrawActorFace(Game_Actors::GetActor(actor_id), 8, 8);
+	DrawActorFace(Game_Actors::GetActor(actor_id), 0, 0);
 }
 
 void Window_Face::Set(int id) {

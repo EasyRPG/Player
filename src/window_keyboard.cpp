@@ -198,9 +198,8 @@ void Window_Keyboard::Refresh() {
 
 	for (int j = 0; j < row_max; j++) {
 		for (int i = 0; i < col_max; i++) {
-			const std::string s(items[mode][j][i]);
 			Rect r = GetItemRect(j, i);
-			contents->TextDraw(r.x + 4, r.y + 2, Font::ColorDefault, s);
+			contents->TextDraw(r.x + 4, r.y + 2, Font::ColorDefault, items[mode][j][i]);
 		}
 	}
 }
