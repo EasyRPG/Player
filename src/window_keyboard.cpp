@@ -170,7 +170,7 @@ void Window_Keyboard::SetMode(Window_Keyboard::Mode nmode) {
 	UpdateCursorRect();
 }
 
-std::string const& Window_Keyboard::GetSelected(void) {
+std::string const& Window_Keyboard::GetSelected() const {
 	return items[mode][row][col];
 }
 
@@ -206,10 +206,18 @@ void Window_Keyboard::Update() {
 		if (Input::IsRepeated(Input::DOWN)) {
 			play_cursor = true;
 			row = (row + 1) % row_max;
+
+			if(col > 0 and GetSelected().empty() and not items[mode][row][col - 1].empty()) {
+				col--;
+			}
 		}
 		if (Input::IsRepeated(Input::UP)) {
 			play_cursor = true;
 			row = (row + row_max - 1) % row_max;
+
+			if(col > 0 and GetSelected().empty() and not items[mode][row][col - 1].empty()) {
+				col--;
+			}
 		}
 		if (Input::IsRepeated(Input::RIGHT)) {
 			play_cursor = true;

@@ -54,7 +54,7 @@ public:
 	void Update();
 	void Refresh();
 	void SetMode(Mode nmode);
-	std::string const& GetSelected(void);
+	std::string const& GetSelected() const;
 
 	static const char* const TO_SYMBOL;
 	static const char* const TO_LETTER;
