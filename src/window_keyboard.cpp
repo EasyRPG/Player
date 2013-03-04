@@ -58,7 +58,7 @@ namespace {
 		write_range(k, 5, 1, 0, base + 0x0B, 2); // ka - ko
 		write_range(k, 5, 2, 0, base + 0x15, 2); // sa - so
 		write_range(k, 2, 3, 0, base + 0x1F, 2); // ta - ti
-		write_range(k, 3, 3, 2, base + 0x24, 2); // tu - to
+		write_range(k, 3, 3, 0 + 2, base + 0x24, 2); // tu - to
 		write_range(k, 5, 4, 0, base + 0x2A, 1); // na - no
 		write_range(k, 5, 5, 0, base + 0x2F, 3); // ha - ho
 		write_range(k, 5, 6, 0, base + 0x3E, 1); // ma - mo
@@ -70,14 +70,14 @@ namespace {
 		// right half
 		write_range(k, 5, 0, 5, base + 0x0C, 2); // ga - go
 		write_range(k, 5, 1, 5, base + 0x16, 2); // za - zo
-		write_range(k, 2, 3, 5, base + 0x20, 2); // da - di
-		write_range(k, 3, 3, 7, base + 0x25, 2); // du - do
+		write_range(k, 2, 2, 5, base + 0x20, 2); // da - di
+		write_range(k, 3, 2, 5 + 2, base + 0x25, 2); // du - do
 		write_range(k, 5, 3, 5, base + 0x30, 3); // ba - bo
 		write_range(k, 5, 4, 5, base + 0x31, 3); // pa - po
 		write_range(k, 5, 5, 5, base + 0x01, 2); // small a - o
 		// small other
 		write_char(k[6][5], base + 0x23); // small tu
-		write_range(k, 3, 6, 1, base + 0x43, 2); // small ya - yo
+		write_range(k, 3, 6, 5 + 1, base + 0x43, 2); // small ya - yo
 		write_char(k[6][9], base + 0x4E); // small wa
 		// Symbol
 		write_char(k[7][5], 0x30FC); // cho-on
@@ -110,6 +110,7 @@ std::string Window_Keyboard::items[Window_Keyboard::MODE_END][9][10] = {
 	{"U","V","W","X","Y","u","v","w","x","y"},
 	{"Z","" ,"" ,"" ,"" ,"z",},
 	{"0","1","2","3","4","5","6","7","8","9"},
+	{},
 	{"","","","","","",Window_Keyboard::TO_SYMBOL,"",Window_Keyboard::DONE},
 	},
 
@@ -121,13 +122,16 @@ std::string Window_Keyboard::items[Window_Keyboard::MODE_END][9][10] = {
 	{"$U","$V","$W","$X","$Y","$u","$v","$w","$x","$y"},
 	{"$Z",""  ,""  ,""  ,""  ,"$z"},
 	{},
+	{},
 	{"","","","","","","","",Window_Keyboard::DONE},
 	},
 };
 
 ////////////////////////////////////////////////////////////
-Window_Keyboard::Window_Keyboard(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight) {
+Window_Keyboard::Window_Keyboard(int ix, int iy, int iwidth, int iheight)
+		: Window_Base(ix, iy, iwidth, iheight)
+		, play_cursor(false)
+{
 	row = 0;
 	col = 0;
 
@@ -143,7 +147,7 @@ Window_Keyboard::Window_Keyboard(int ix, int iy, int iwidth, int iheight) :
 	Refresh();
 	UpdateCursorRect();
 
-	if(items[0][0][0].empty()) {
+	if(items[Hiragana][0][0].empty()) {
 		write_kana(items[Hiragana], 0x3040);
 		write_kana(items[Katakana], 0x30A0);
 
@@ -155,7 +159,7 @@ Window_Keyboard::Window_Keyboard(int ix, int iy, int iwidth, int iheight) :
 		write_chars(DONE_JP, done_jp, done_jp + 4);
 
 		items[Hiragana][8][8] = items[Katakana][8][8] = DONE_JP;
-		items[Symbol][7][6] = TO_HIRAGANA;
+		items[Symbol][8][6] = TO_HIRAGANA;
 		items[Hiragana][8][6] = TO_KATAKANA;
 	}
 }
@@ -170,27 +174,18 @@ std::string const& Window_Keyboard::GetSelected(void) {
 	return items[mode][row][col];
 }
 
-Rect Window_Keyboard::GetItemRect(int row, int col) {
-	Rect rect = Rect();
-	int width = col_spacing;
-	int height = row_spacing;
-	rect.width = width;
-	rect.height = height;
-	rect.x = col * width + border_x;
-	rect.y = row * height + border_y;
-
-	const std::string s(items[mode][row][col]);
-	int mw = min_width;
-	int tw = std::max(mw, contents->GetFont()->GetSize(s).width) + 8;
-	int dx = (rect.width - tw) / 2;
-	rect.x += dx;
-	rect.width -= 2 * dx;
-
-	return rect;
+Rect Window_Keyboard::GetItemRect(int row, int col) const {
+	std::string const& str = items[mode][row][col];
+	return Rect(col * col_spacing + border_x,
+				row * row_spacing + border_y,
+				contents->GetFont()->GetSize(str).width + 8,
+				row_spacing);
 }
 
 void Window_Keyboard::UpdateCursorRect() {
-	SetCursorRect(GetItemRect(row, col));
+	Rect r = GetItemRect(row, col);
+	r.y -= 2;
+	SetCursorRect(r);
 }
 
 void Window_Keyboard::Refresh() {
@@ -199,40 +194,50 @@ void Window_Keyboard::Refresh() {
 	for (int j = 0; j < row_max; j++) {
 		for (int i = 0; i < col_max; i++) {
 			Rect r = GetItemRect(j, i);
-			contents->TextDraw(r.x + 4, r.y + 2, Font::ColorDefault, items[mode][j][i]);
+			contents->TextDraw(r.x + 4, r.y, Font::ColorDefault, items[mode][j][i]);
 		}
 	}
 }
 
 void Window_Keyboard::Update() {
 	Window_Base::Update();
+
 	if (active) {
 		if (Input::IsRepeated(Input::DOWN)) {
-			Game_System::SePlay(Data::system.cursor_se);
+			play_cursor = true;
 			row = (row + 1) % row_max;
 		}
 		if (Input::IsRepeated(Input::UP)) {
-			Game_System::SePlay(Data::system.cursor_se);
+			play_cursor = true;
 			row = (row + row_max - 1) % row_max;
 		}
 		if (Input::IsRepeated(Input::RIGHT)) {
-			Game_System::SePlay(Data::system.cursor_se);
+			play_cursor = true;
 			col += 1;
 			if (col >= col_max) {
 				col = 0;
-				row = (row + 1) % row_max;
+				if(mode == Letter) { row = (row + 1) % row_max; }
 			}
 		}
 		if (Input::IsRepeated(Input::LEFT)) {
-			Game_System::SePlay(Data::system.cursor_se);
+			play_cursor = true;
 			col -= 1;
 			if (col < 0) {
 				col = col_max - 1;
-				row = (row + row_max - 1) % row_max;
+				if(mode == Letter) { row = (row + row_max - 1) % row_max; }
 			}
 		}
 
 	}
 
+	if(GetSelected().empty()) {
+		Update();
+		return;
+	}
+
+	if(play_cursor) {
+		Game_System::SePlay(Data::system.cursor_se);
+		play_cursor = false;
+	}
 	UpdateCursorRect();
 }

@@ -50,7 +50,7 @@ public:
 	};
 
 	virtual void UpdateCursorRect();
-	Rect GetItemRect(int row, int col);
+	Rect GetItemRect(int row, int col) const;
 	void Update();
 	void Refresh();
 	void SetMode(Mode nmode);
@@ -76,6 +76,8 @@ protected:
 	Mode mode;
 	int row;
 	int col;
+
+	bool play_cursor;
 };
 
 #endif
