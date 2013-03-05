@@ -8,7 +8,7 @@
 
 #include <boost/chrono.hpp>
 #include <boost/thread.hpp>
-#include <boost/cstdint.hpp>
+#include <stdint.h>
 
 
 BotUi::BotUi(EASYRPG_SHARED_PTR<BotInterface> const& inf)
