@@ -55,6 +55,7 @@ public:
 	static const char* const TO_SYMBOL;
 	static const char* const TO_LETTER;
 	static const char* const DONE;
+	static const char* const SPACE;
 
 	static std::string TO_KATAKANA;
 	static std::string TO_HIRAGANA;

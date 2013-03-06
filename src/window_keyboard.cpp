@@ -34,6 +34,7 @@
 const char* const Window_Keyboard::TO_SYMBOL = "Symbol";
 const char* const Window_Keyboard::TO_LETTER = "Letter";
 const char* const Window_Keyboard::DONE = "Done";
+const char* const Window_Keyboard::SPACE = "SPACE";
 
 std::string Window_Keyboard::TO_KATAKANA;
 std::string Window_Keyboard::TO_HIRAGANA;
@@ -112,7 +113,7 @@ std::string Window_Keyboard::items[Window_Keyboard::MODE_END][9][10] = {
 	{"U","V","W","X","Y","u","v","w","x","y"},
 	{"Z","" ,"" ,"" ,"" ,"z",},
 	{"0","1","2","3","4","5","6","7","8","9"},
-	{},
+	{Window_Keyboard::SPACE},
 	{"","","","","","",Window_Keyboard::TO_SYMBOL,"",Window_Keyboard::DONE},
 	},
 
