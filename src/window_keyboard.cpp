@@ -20,6 +20,8 @@
 ////////////////////////////////////////////////////////////
 #include <algorithm>
 #include <string>
+#include <ciso646>
+
 #include "window_keyboard.h"
 #include "game_system.h"
 #include "input.h"

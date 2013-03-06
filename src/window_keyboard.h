@@ -28,7 +28,6 @@
 /// Window Input Number Class
 /// The number input window
 ////////////////////////////////////////////////////////////
-// Window_Selectable is too badly broken to use as a base class
 class Window_Keyboard : public Window_Base {
 public:
 	////////////////////////////////////////////////////////
@@ -38,10 +37,7 @@ public:
 	////////////////////////////////////////////////////////
 	Window_Keyboard(int ix, int iy, int iwidth = 320, int iheight = 80);
 
-	void CreateContents();
-
 	enum Mode {
-		MODE_REND = -1,
 		Hiragana = 0,
 		Katakana = 1,
 		Letter = 2,
@@ -49,7 +45,7 @@ public:
 		MODE_END = 4,
 	};
 
-	virtual void UpdateCursorRect();
+	void UpdateCursorRect();
 	Rect GetItemRect(int row, int col) const;
 	void Update();
 	void Refresh();
