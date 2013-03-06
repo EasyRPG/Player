@@ -74,7 +74,7 @@ bool Game_Interpreter_Battle::ExecuteCommand() {
 ///////////////////////////////////////////////////////////
 
 bool Game_Interpreter_Battle::CommandCallCommonEvent(RPG::EventCommand const& com) {
-	if (child_interpreter != NULL)
+	if (child_interpreter)
 		return false;
 
 	int event_id = com.parameters[0];

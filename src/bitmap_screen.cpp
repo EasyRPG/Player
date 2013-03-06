@@ -19,6 +19,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <cmath>
+#include <ciso646>
 
 #include "system.h"
 #include "bitmap_screen.h"
@@ -55,7 +56,7 @@ BitmapScreen::BitmapScreen(BitmapRef const& bitmap) :
 	bitmap_effects_src_rect = Rect();
 	bitmap_scale_src_rect = Rect();
 
-	if (bitmap != NULL) {
+	if (bitmap) {
 		src_rect_effect = bitmap->GetRect();
 		bitmap->AttachBitmapScreen(this);
 	}
@@ -75,7 +76,7 @@ void BitmapScreen::BlitScreen(int x, int y) {
 
 ////////////////////////////////////////////////////////////
 void BitmapScreen::BlitScreen(int x, int y, Rect const& src_rect) {
-	if (bitmap == NULL || (opacity_top_effect <= 0 && opacity_bottom_effect <= 0))
+	if (not bitmap || (opacity_top_effect <= 0 && opacity_bottom_effect <= 0))
 		return;
 
 	Rect rect = src_rect_effect.GetSubRect(src_rect);
@@ -98,7 +99,7 @@ void BitmapScreen::BlitScreen(int x, int y, Rect const& src_rect) {
 
 ////////////////////////////////////////////////////////////
 void BitmapScreen::BlitScreenTiled(Rect const& src_rect, Rect const& dst_rect, int ox, int oy) {
-	if (bitmap == NULL || (opacity_top_effect <= 0 && opacity_bottom_effect <= 0))
+	if (not bitmap || (opacity_top_effect <= 0 && opacity_bottom_effect <= 0))
 		return;
 
 	Rect rect = src_rect_effect.GetSubRect(src_rect);
@@ -388,7 +389,7 @@ BitmapRef BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
 	if (no_effects && no_zoom)
 		return bitmap;
 
-	if (bitmap_effects != NULL && bitmap_effects_valid && no_zoom)
+	if (bitmap_effects && bitmap_effects_valid && no_zoom)
 		return bitmap_effects;
 
 	BitmapRef src_bitmap;
@@ -403,7 +404,7 @@ BitmapRef BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
 		current_flip_x = flipx_effect;
 		current_flip_y = flipy_effect;
 
-		if (bitmap_effects != NULL &&
+		if (bitmap_effects &&
 			bitmap_effects->GetWidth() < rect.x + rect.width &&
 			bitmap_effects->GetHeight() < rect.y + rect.height) {
 		bitmap_effects.reset();
@@ -463,7 +464,7 @@ BitmapRef BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
 	if (zoom_changed || scale_rect_changed)
 		bitmap_scale_valid = false;
 
-	if (bitmap_scale != NULL && bitmap_scale_valid) {
+	if (bitmap_scale && bitmap_scale_valid) {
 		bush_y = bush_y * bitmap_scale->GetHeight() / rect.height;
 		rect = bitmap_scale->GetRect();
 		return bitmap_scale;

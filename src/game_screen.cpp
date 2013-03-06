@@ -16,6 +16,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include <cstdlib>
+#include <ciso646>
 #include "data.h"
 #include "options.h"
 #include "main_data.h"
@@ -174,7 +175,7 @@ void Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool glob
 }
 
 bool Game_Screen::IsBattleAnimationWaiting() const {
-	return animation != NULL;
+	return bool(animation);
 }
 
 static double interpolate(double d, double x0, double x1)
@@ -210,7 +211,7 @@ static const uint8_t rain_image[] = {
 };
 
 void Game_Screen::InitWeather() {
-	if (weather_plane == NULL) {
+	if (not weather_plane) {
 		weather_plane.reset(new Plane());
 		weather_surface = Bitmap::Create(320, 240);
 		weather_surface->SetTransparentColor(Color(0,0,0,0));
@@ -219,10 +220,10 @@ void Game_Screen::InitWeather() {
 	}
 	weather_surface->Clear();
 
-	if (rain_bitmap == NULL)
+	if (not rain_bitmap)
 		rain_bitmap = Bitmap::Create(rain_image, sizeof(rain_image));
 
-	if (snow_bitmap == NULL)
+	if (not snow_bitmap)
 		snow_bitmap = Bitmap::Create(snow_image, sizeof(snow_image));
 }
 
@@ -378,7 +379,7 @@ void Game_Screen::Update() {
 			break;
 	}
 
-	if (animation != NULL) {
+	if (animation) {
 		animation->Update();
 		if (animation->IsDone()) {
 			animation.reset();
