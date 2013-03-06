@@ -44,7 +44,7 @@ public:
 	}
 
 	bool isValidSwitch(int switch_id) {
-		return (switch_id > 0 && switch_id < (int) switches.size());
+		return (switch_id > 0 && switch_id <= (int) switches.size());
 	}
 
 private:
