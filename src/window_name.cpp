@@ -53,6 +53,11 @@ void Window_Name::Append(const std::string& text) {
 	Refresh();
 }
 
+void Window_Name::Update() {
+	Rect const name_size = contents->GetFont()->GetSize(name);
+	SetCursorRect(Rect(name_size.width + 2, 0, 16, 16));
+}
+
 void Window_Name::Erase() {
 	if (name.size() < 1)
 		return;

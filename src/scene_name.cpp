@@ -54,6 +54,7 @@ void Scene_Name::Start() {
 ////////////////////////////////////////////////////////////
 void Scene_Name::Update() {
 	kbd_window->Update();
+	name_window->Update();
 
 	if (Input::IsTriggered(Input::CANCEL)) {
 		if (name_window->Get().size() > 0) {

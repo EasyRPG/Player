@@ -44,6 +44,8 @@ public:
 	void Erase();
 	const std::string& Get();
 
+	void Update();
+
 protected:
 	std::string name;
 };
