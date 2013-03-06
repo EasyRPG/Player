@@ -25,6 +25,7 @@
 #include "input.h"
 
 #include <ciso646>
+#include <cassert>
 
 ////////////////////////////////////////////////////////////
 Scene_Name::Scene_Name() :
