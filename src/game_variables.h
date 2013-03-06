@@ -45,7 +45,7 @@ public:
 	}
 
 	bool isValidVar(int variable_id) {
-		return (variable_id > 0 && variable_id < (int) variables.size());
+		return (variable_id > 0 && variable_id <= (int) variables.size());
 	}
 
 private:
