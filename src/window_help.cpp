@@ -34,10 +34,6 @@ Window_Help::Window_Help(int ix, int iy, int iwidth, int iheight) :
 }
 
 ////////////////////////////////////////////////////////////
-Window_Help::~Window_Help() {
-}
-
-////////////////////////////////////////////////////////////
 void Window_Help::SetText(std::string text,	Text::Alignment align) {
 	if (this->text != text || this->align != align) {
 		contents->SetTransparentColor(windowskin->GetTransparentColor());

@@ -32,10 +32,6 @@ Window_Item::Window_Item(int ix, int iy, int iwidth, int iheight) :
 }
 
 ////////////////////////////////////////////////////////////
-Window_Item::~Window_Item() {
-}
-
-////////////////////////////////////////////////////////////
 int Window_Item::GetItemId() {
 	if (index < 0) {
 		return 0;

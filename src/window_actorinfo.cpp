@@ -37,10 +37,6 @@ Window_ActorInfo::Window_ActorInfo(int ix, int iy, int iwidth, int iheight, int 
 }
 
 ////////////////////////////////////////////////////////////
-Window_ActorInfo::~Window_ActorInfo() {
-}
-
-////////////////////////////////////////////////////////////
 void Window_ActorInfo::Refresh() {
 	contents->Clear();
 }

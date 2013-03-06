@@ -36,10 +36,6 @@ Window_Equip::Window_Equip(int ix, int iy, int iwidth, int iheight, int actor_id
 }
 
 ////////////////////////////////////////////////////////////
-Window_Equip::~Window_Equip() {
-}
-
-////////////////////////////////////////////////////////////
 int Window_Equip::GetItemId() {
 	return index < 0 ? 0 : data[index];
 }

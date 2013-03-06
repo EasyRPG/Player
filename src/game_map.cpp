@@ -100,7 +100,7 @@ void Game_Map::Dispose() {
 	events.clear();
 	common_events.clear();
 
-	if (Main_Data::game_screen != NULL) {
+	if (Main_Data::game_screen) {
 		Main_Data::game_screen->Reset();
 	}
 

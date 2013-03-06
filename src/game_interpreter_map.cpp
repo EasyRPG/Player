@@ -1344,7 +1344,7 @@ bool Game_Interpreter_Map::CommandCallEvent(RPG::EventCommand const& com) { // c
 	int evt_id;
 	int event_page;
 
-	if (child_interpreter != NULL)
+	if (child_interpreter)
 		return false;
 
 	child_interpreter.reset(new Game_Interpreter_Map(depth + 1));

@@ -126,7 +126,7 @@ void Game_Interpreter::Update() {
 		}
 
 		/* If there's any active child interpreter, update it */
-		if (child_interpreter != NULL) {
+		if (child_interpreter) {
 
 			child_interpreter->Update();
 
@@ -135,7 +135,7 @@ void Game_Interpreter::Update() {
 			}
 
 			// If child interpreter still exists
-			if (child_interpreter != NULL) {
+			if (child_interpreter) {
 				return;
 			}
 		}

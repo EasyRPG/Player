@@ -36,10 +36,6 @@ Window_ShopStatus::Window_ShopStatus(int ix, int iy, int iwidth, int iheight) :
 }
 
 ////////////////////////////////////////////////////////////
-Window_ShopStatus::~Window_ShopStatus() {
-}
-
-////////////////////////////////////////////////////////////
 void Window_ShopStatus::Refresh() {
 	contents->Clear();
 

@@ -23,10 +23,6 @@ Game_Troop::Game_Troop():
 	interpreter(NULL) {
 }
 
-Game_Troop::~Game_Troop()
-{
-}
-
 tEnemyArray Game_Troop::GetMembers() {
 	return enemies;
 }

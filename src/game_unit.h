@@ -23,8 +23,7 @@ typedef std::vector<Game_Battler*> tBattlerArray;
 
 class Game_Unit {
 public:
-	Game_Unit();
-	~Game_Unit();
+	virtual ~Game_Unit() {}
 
 	virtual tBattlerArray GetMembers();
 	void GetExistingMembers(tBattlerArray& ret_val);
