@@ -24,6 +24,8 @@
 #include "game_temp.h"
 #include "input.h"
 
+#include <ciso646>
+
 ////////////////////////////////////////////////////////////
 Scene_Name::Scene_Name() :
 	kbd_window(NULL), name_window(NULL), face_window(NULL) {
@@ -63,6 +65,8 @@ void Scene_Name::Update() {
 		Game_System::SePlay(Data::system.decision_se);
 		std::string const& s = kbd_window->GetSelected();
 
+		assert(not s.empty());
+
 		if(s == Window_Keyboard::DONE || s == Window_Keyboard::DONE_JP) {
 			Game_Temp::hero_name = name_window->Get();
 			Game_Actor* actor = Game_Actors::GetActor(Game_Temp::hero_name_id);
@@ -78,6 +82,6 @@ void Scene_Name::Update() {
 			kbd_window->SetMode(Window_Keyboard::Hiragana);
 		} else if(s == Window_Keyboard::TO_KATAKANA) {
 			kbd_window->SetMode(Window_Keyboard::Katakana);
-		} else { name_window->Append(s == "" ? " " : s); }
+		} else { name_window->Append(s); }
 	}
 }
