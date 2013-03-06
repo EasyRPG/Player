@@ -35,11 +35,6 @@ public:
 	Window_Name(int ix, int iy, int iwidth, int iheight);
 
 	////////////////////////////////////////////////////////
-	/// Destructor.
-	////////////////////////////////////////////////////////
-	~Window_Name();
-
-	////////////////////////////////////////////////////////
 	/// Renders the current name on the window.
 	////////////////////////////////////////////////////////
 	void Refresh();
@@ -48,6 +43,8 @@ public:
 	void Append(const std::string& text);
 	void Erase();
 	const std::string& Get();
+
+	void Update();
 
 protected:
 	std::string name;

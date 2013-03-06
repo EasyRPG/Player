@@ -20,6 +20,8 @@
 ////////////////////////////////////////////////////////////
 #include <algorithm>
 #include <sstream>
+#include <ciso646>
+
 #include "rpg_battlecommand.h"
 #include "input.h"
 #include "output.h"
@@ -539,7 +541,7 @@ void Scene_Battle::BeginSkill() {
 			}
 	}
 
-	if (action == NULL)
+	if (not action)
 		action = EASYRPG_MAKE_SHARED<Battle::WaitAction>(10);
 
 	actions.clear();
@@ -713,7 +715,7 @@ void Scene_Battle::EnemyActionSkill() {
 			}
 	}
 
-	if (action == NULL)
+	if (not action)
 		action = EASYRPG_MAKE_SHARED<Battle::WaitAction>(30);
 
 	actions.push_back(action);
@@ -988,7 +990,7 @@ void Scene_Battle::ShowAnimation(int animation_id, bool allies, Battle::Ally* al
 
 ////////////////////////////////////////////////////////////
 void Scene_Battle::UpdateAnimations() {
-	if (animation != NULL) {
+	if (animation) {
 		animation->Update();
 		if (animation->IsDone()) {
 			animation.reset();
@@ -1012,7 +1014,7 @@ void Scene_Battle::UpdateAnimations() {
 
 ////////////////////////////////////////////////////////////
 bool Scene_Battle::IsAnimationWaiting() {
-	return animation != NULL;
+	return bool(animation);
 }
 
 ////////////////////////////////////////////////////////////

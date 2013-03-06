@@ -38,10 +38,6 @@ Window_Name::Window_Name(int ix, int iy, int iwidth, int iheight) :
 }
 
 ////////////////////////////////////////////////////////////
-Window_Name::~Window_Name() {
-}
-
-////////////////////////////////////////////////////////////
 void Window_Name::Refresh() {
 	contents->Clear();
 	contents->TextDraw(2, 2, Font::ColorDefault, name);
@@ -57,10 +53,15 @@ void Window_Name::Append(const std::string& text) {
 	Refresh();
 }
 
+void Window_Name::Update() {
+	Rect const name_size = contents->GetFont()->GetSize(name);
+	SetCursorRect(Rect(name_size.width + 2, 0, 16, 16));
+}
+
 void Window_Name::Erase() {
 	if (name.size() < 1)
 		return;
-	
+
 	boost::u8_to_u32_iterator<std::string::const_iterator> name_begin =
 		boost::u8_to_u32_iterator<std::string::const_iterator>(name.begin(), name.begin(), name.begin());
 	boost::u8_to_u32_iterator<std::string::const_iterator> name_end =

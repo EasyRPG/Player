@@ -18,7 +18,7 @@
 #ifndef _MEMORY_MANAGEMENT_H_
 #define _MEMORY_MANAGEMENT_H_
 
-#include <boost/cstdint.hpp>
+#include <stdint.h>
 #include <boost/config.hpp>
 
 #ifdef BOOST_NO_CWCHAR

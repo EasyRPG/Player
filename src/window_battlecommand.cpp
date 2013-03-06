@@ -18,6 +18,8 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <ciso646>
+
 #include "data.h"
 #include "color.h"
 #include "cache.h"
@@ -104,7 +106,7 @@ void Window_BattleCommand::UpdateCursorRect() {
 
 ////////////////////////////////////////////////////////////
 void Window_BattleCommand::Refresh() {
-	if (contents == NULL)
+	if (not contents)
 		return;
 
 	int num_commands = commands.size();

@@ -45,10 +45,6 @@ Window_BattleStatus::Window_BattleStatus() :
 }
 
 ////////////////////////////////////////////////////////////
-Window_BattleStatus::~Window_BattleStatus() {
-}
-
-////////////////////////////////////////////////////////////
 void Window_BattleStatus::Refresh() {
 	contents->Clear();
 

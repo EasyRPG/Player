@@ -276,7 +276,7 @@ void Game_Event::Update() {
 
 	CheckEventTriggerAuto();
 
-	if (interpreter != NULL) {
+	if (interpreter) {
 		if (!interpreter->IsRunning()) {
 			interpreter->Setup(list, event.ID, event.x, event.y);
 		}

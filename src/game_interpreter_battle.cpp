@@ -27,9 +27,6 @@ Game_Interpreter_Battle::Game_Interpreter_Battle(int depth, bool main_flag) :
 	Game_Interpreter(depth, main_flag) {
 }
 
-Game_Interpreter_Battle::~Game_Interpreter_Battle() {
-}
-
 ////////////////////////////////////////////////////////////
 /// Execute Command
 ////////////////////////////////////////////////////////////
@@ -77,7 +74,7 @@ bool Game_Interpreter_Battle::ExecuteCommand() {
 ///////////////////////////////////////////////////////////
 
 bool Game_Interpreter_Battle::CommandCallCommonEvent(RPG::EventCommand const& com) {
-	if (child_interpreter != NULL)
+	if (child_interpreter)
 		return false;
 
 	int event_id = com.parameters[0];

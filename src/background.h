@@ -31,7 +31,7 @@ class Background : public Drawable {
 public:
 	Background(const std::string& name);
 	Background(int terrain_id);
-	virtual ~Background();
+	~Background();
 
 	void Draw(int z_order);
 	void Update();

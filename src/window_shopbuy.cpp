@@ -34,9 +34,6 @@ Window_ShopBuy::Window_ShopBuy(int ix, int iy, int iwidth, int iheight) :
 	index = 0;
 }
 
-Window_ShopBuy::~Window_ShopBuy() {
-}
-
 ////////////////////////////////////////////////////////////
 int Window_ShopBuy::GetItemId() {
 	if (index < 0) {

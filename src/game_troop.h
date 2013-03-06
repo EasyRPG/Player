@@ -30,7 +30,6 @@ class Game_Troop : public Game_Unit {
 
 public:
 	Game_Troop();
-	~Game_Troop();
 
 	void Clear();
 

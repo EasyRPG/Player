@@ -28,7 +28,6 @@
 /// Window Input Number Class
 /// The number input window
 ////////////////////////////////////////////////////////////
-// Window_Selectable is too badly broken to use as a base class
 class Window_Keyboard : public Window_Base {
 public:
 	////////////////////////////////////////////////////////
@@ -38,15 +37,7 @@ public:
 	////////////////////////////////////////////////////////
 	Window_Keyboard(int ix, int iy, int iwidth = 320, int iheight = 80);
 
-	////////////////////////////////////////////////////////
-	/// Destructor
-	////////////////////////////////////////////////////////
-	~Window_Keyboard();
-
-	void CreateContents();
-
 	enum Mode {
-		MODE_REND = -1,
 		Hiragana = 0,
 		Katakana = 1,
 		Letter = 2,
@@ -54,16 +45,17 @@ public:
 		MODE_END = 4,
 	};
 
-	virtual void UpdateCursorRect();
-	Rect GetItemRect(int row, int col);
+	void UpdateCursorRect();
+	Rect GetItemRect(int row, int col) const;
 	void Update();
 	void Refresh();
 	void SetMode(Mode nmode);
-	std::string const& GetSelected(void);
+	std::string const& GetSelected() const;
 
 	static const char* const TO_SYMBOL;
 	static const char* const TO_LETTER;
 	static const char* const DONE;
+	static const char* const SPACE;
 
 	static std::string TO_KATAKANA;
 	static std::string TO_HIRAGANA;
@@ -81,6 +73,8 @@ protected:
 	Mode mode;
 	int row;
 	int col;
+
+	bool play_cursor;
 };
 
 #endif

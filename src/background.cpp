@@ -114,7 +114,7 @@ void Background::Draw(int /* z_order */) {
 								   DisplayUi->GetDisplaySurface()->GetRect(),
 								   Scale(bg_x), Scale(bg_y));
 
-	if (fg_screen != NULL)
+	if (fg_screen)
 		fg_screen->BlitScreenTiled(bg_screen->GetBitmap()->GetRect(),
 								   DisplayUi->GetDisplaySurface()->GetRect(),
 								   Scale(fg_x), Scale(fg_y));

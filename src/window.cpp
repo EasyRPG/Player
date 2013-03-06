@@ -97,7 +97,7 @@ void Window::Draw(int /* z_order */) {
 	if (x < -width || x > DisplayUi->GetWidth() || y < -height || y > DisplayUi->GetHeight()) return;
 
 
-	if (windowskin != NULL) {
+	if (windowskin) {
 		if (width > 4 && height > 4 && (back_opacity * opacity / 255 > 0)) {
 			if (background_needs_refresh) RefreshBackground();
 
@@ -155,7 +155,7 @@ void Window::Draw(int /* z_order */) {
 		}
 	}
 
-	if (contents != NULL) {
+	if (contents) {
 		if (width > 2 * border_x && height > 2 * border_y &&
 			-ox < width - 2 * border_x && -oy < height - 2 * border_y &&
 			contents_opacity > 0 && animation_frames == 0) {

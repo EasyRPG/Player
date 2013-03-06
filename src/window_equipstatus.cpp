@@ -40,10 +40,6 @@ Window_EquipStatus::Window_EquipStatus(int ix, int iy, int iwidth, int iheight, 
 }
 
 ////////////////////////////////////////////////////////////
-Window_EquipStatus::~Window_EquipStatus() {
-}
-
-////////////////////////////////////////////////////////////
 void Window_EquipStatus::Refresh() {
 	if (dirty) {
 		contents->Clear();

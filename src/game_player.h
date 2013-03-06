@@ -31,7 +31,6 @@
 class Game_Player : public Game_Character {
 public:
 	Game_Player();
-	~Game_Player();
 
 	bool IsPassable(int x, int y, int d) const;
 	bool IsTeleporting() const;

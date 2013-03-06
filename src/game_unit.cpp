@@ -18,13 +18,6 @@
 #include "game_unit.h"
 #include "game_battler.h"
 
-Game_Unit::Game_Unit() {
-}
-
-
-Game_Unit::~Game_Unit() {
-}
-
 tBattlerArray Game_Unit::GetMembers() {
 	return tBattlerArray();
 }

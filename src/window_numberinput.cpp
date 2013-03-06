@@ -46,10 +46,6 @@ Window_NumberInput::Window_NumberInput(int ix, int iy, int iwidth, int iheight) 
 }
 
 ////////////////////////////////////////////////////////////
-Window_NumberInput::~Window_NumberInput() {
-}
-
-////////////////////////////////////////////////////////////
 void Window_NumberInput::Refresh() {
 	contents->Clear();
 
