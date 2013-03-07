@@ -36,6 +36,11 @@ namespace Text {
 	};
 
 	void Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
+
+	/**
+	 * Draws text directly dest without memory allocation (used to render errors)
+	 */
+	void DirectDraw(Bitmap& dest, int x, int y, Color color, std::string const& text);
 }; // namespace Text
 
 #endif

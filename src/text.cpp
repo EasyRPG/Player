@@ -36,7 +36,7 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 	if (text.length() == 0) return;
 
 	FontRef font = dest.GetFont();
-	Rect dst_rect = Font::Default()->GetSize(text);
+	Rect dst_rect = font->GetSize(text);
 
 	switch (align) {
 	case Text::AlignCenter:
@@ -143,7 +143,7 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 			font->Render(*text_surface, next_glyph_rect.x, next_glyph_rect.y, *system, color, *c);
 		}
 
-		// If it's a full size glyph, add the size of a half-size glypth twice
+		// If it's a full size glyph, add the size of a half-size glyph twice
 		if (is_exfont) {
 			is_exfont = false;
 			next_glyph_pos += 12;
@@ -151,7 +151,7 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 			++c;
 		} else {
 			std::string const glyph(c.base(), next_c_it.base());
-			next_glyph_pos += Font::Default()->GetSize(glyph).width;
+			next_glyph_pos += font->GetSize(glyph).width;
 		}
 	}
 
@@ -165,4 +165,26 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 	int ix = dst_rect.x;
 
 	dest.Blit(ix, iy, *text_bmp, src_rect, 255);
+}
+
+void Text::DirectDraw(Bitmap& dest, int x, int y, Color color, std::string const& text) {
+	if (text.length() == 0) return;
+
+	FontRef font = dest.GetFont();
+
+	int next_glyph_pos = 0;
+
+	for (boost::u8_to_u32_iterator<std::string::const_iterator>
+			 c(text.begin(), text.begin(), text.end()),
+			 end(text.end(), text.begin(), text.end()); c != end; ++c) {
+		Rect next_glyph_rect(x + next_glyph_pos, y, 0, 0);
+
+		boost::u8_to_u32_iterator<std::string::const_iterator> next_c_it = boost::next(c);
+		uint32_t const next_c = std::distance(c, end) > 1? *next_c_it : 0;
+
+		font->Render(dest, next_glyph_rect.x, next_glyph_rect.y, color, *c);
+
+		std::string const glyph(c.base(), next_c_it.base());
+		next_glyph_pos += font->GetSize(glyph).width;
+	}
 }
