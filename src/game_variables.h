@@ -35,7 +35,7 @@ public:
 
 	int& operator[] (int variable_id) {
 		if (!isValidVar(variable_id)) {
-			Output::Warning("Variable index %d is invalid.\n",
+			Output::Warning("Variable index %d is invalid.",
 							variable_id);
 			dummy = 0;
 			return dummy;

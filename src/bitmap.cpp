@@ -565,7 +565,7 @@ void Bitmap::Init(int width, int height, void* data, int pitch, bool destroy) {
 	bitmap = pixman_image_create_bits(pixman_format, width, height, (uint32_t*) data, pitch);
 
 	if (bitmap == NULL) {
-		Output::Error("Couldn't create %dx%d image.\n", width, height);
+		Output::Error("Couldn't create %dx%d image.", width, height);
 	}
 
 	if (format.bits == 8) {
