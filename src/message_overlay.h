@@ -18,9 +18,7 @@
 #ifndef _MESSAGE_OVERLAY_H_
 #define _MESSAGE_OVERLAY_H_
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <deque>
 #include "bitmap.h"
 #include "bitmap_screen.h"
@@ -29,10 +27,10 @@
 #include "tone.h"
 #include "zobj.h"
 
-////////////////////////////////////////////////////////////
-/// MessageOverlay class.
-/// Displays notifications during the game session.
-////////////////////////////////////////////////////////////
+/**
+ * MessageOverlay class.
+ * Displays notifications during the game session.
+ */
 class MessageOverlay : public Drawable {
 public:
 	MessageOverlay();

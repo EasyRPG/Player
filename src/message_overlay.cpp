@@ -15,15 +15,12 @@
 // along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 /////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "message_overlay.h"
 #include "player.h"
 #include "graphics.h"
 #include "bitmap.h"
 
-////////////////////////////////////////////////////////////
 MessageOverlay::MessageOverlay() :
 	type(TypeMessageOverlay),
 	ID(Graphics::drawable_id++),
@@ -45,7 +42,6 @@ MessageOverlay::MessageOverlay() :
 	Graphics::RegisterDrawable(ID, this);
 }
 
-////////////////////////////////////////////////////////////
 MessageOverlay::~MessageOverlay() {
 	Graphics::RemoveZObj(ID);
 	Graphics::RemoveDrawable(ID);
@@ -53,10 +49,9 @@ MessageOverlay::~MessageOverlay() {
 
 bool MessageOverlay::IsGlobal() const { return true; }
 
-////////////////////////////////////////////////////////////
-void MessageOverlay::Draw(int z_order) {
+void MessageOverlay::Draw(int /*z_order*/) {
 	++counter;
-	if (counter > 120) {
+	if (counter > 240) {
 		counter = 0;
 		if (!messages.empty()) {
 			messages.pop_front();
@@ -94,10 +89,9 @@ unsigned long MessageOverlay::GetId() const {
 	return ID;
 }
 
-////////////////////////////////////////////////////////////
 void MessageOverlay::AddMessage(const std::string& message, int color) {
 	messages.push_back(std::make_pair(message, color));
-	if (messages.size() > message_max) {
+	if (messages.size() > (unsigned)message_max) {
 		messages.pop_front();
 	}
 	dirty = true;
