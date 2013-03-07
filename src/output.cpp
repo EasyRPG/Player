@@ -76,23 +76,24 @@ static void WriteLog(char const* type, std::string const& msg) {
 }
 
 ////////////////////////////////////////////////////////////
-static void HandleScreenOutput(char const* type, std::string const& msg, bool is_error) {
-	Output::TakeScreenshot();
+static void HandleErrorOutput(const std::string& err) {
+	// Drawing directly on the screen because message_overlay is not visible
+	// when faded out
+	BitmapRef surface = DisplayUi->GetDisplaySurface();
+	surface->FillRect(surface->GetRect(), Color(255, 0, 0, 128));
 
-	output_time() << type << ":\n  " << msg << "\n";
+	std::string error = "Error:\n";
+	error += err;
+	error += "\n\nEasyRPG Player will close now. Press any key...";
+
+	Text::DirectDraw(*surface, 11, 11, Color(0, 0, 0, 255), error);
+	Text::DirectDraw(*surface, 10, 10, Color(255, 255, 255, 255), error);
+	DisplayUi->UpdateDisplay();
+
+	Output::TakeScreenshot();
 
 	if (ignore_pause) { return; }
 
-	std::stringstream ss;
-	ss << type << ":\n" << msg << "\n\n";
-	if (is_error) {
-		ss << "EasyRPG Player will close now.\nPress any key to exit...";
-	} else {
-		ss << "Press any key to continue...";
-	}
-	DisplayUi->GetDisplaySurface()->Clear();
-	//DisplayUi->DrawScreenText(ss.str(), 10, 30 + 10);
-	DisplayUi->UpdateDisplay();
 	Input::ResetKeys();
 	while (!Input::IsAnyPressed()) {
 		DisplayUi->Sleep(1);
@@ -104,7 +105,7 @@ static void HandleScreenOutput(char const* type, std::string const& msg, bool is
 	}
 	Input::ResetKeys();
 	Graphics::FrameReset();
-	Graphics::Update();
+	DisplayUi->UpdateDisplay();
 }
 
 ////////////////////////////////////////////////////////////
@@ -150,9 +151,13 @@ void Output::Error(const char* fmt, ...) {
 	va_end(args);
 }
 void Output::ErrorStr(std::string const& err) {
-	if (DisplayUi) {
+	WriteLog("Error", err);
+	static bool recursive_call = false;
+	if (!recursive_call && DisplayUi) {
+		recursive_call = true;
 		PrepareScreenOutput();
-		HandleScreenOutput("Error", err, true);
+		HandleErrorOutput(err);
+		Player::Exit();
 	} else {
 		// Fallback to Console if the display is not ready yet
 		printf("%s\n", err.c_str());
@@ -161,7 +166,6 @@ void Output::ErrorStr(std::string const& err) {
 		std::cin.get();
 	}
 
-	Player::Exit();
 	exit(EXIT_FAILURE);
 }
 

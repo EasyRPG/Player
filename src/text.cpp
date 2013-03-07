@@ -177,14 +177,18 @@ void Text::DirectDraw(Bitmap& dest, int x, int y, Color color, std::string const
 	for (boost::u8_to_u32_iterator<std::string::const_iterator>
 			 c(text.begin(), text.begin(), text.end()),
 			 end(text.end(), text.begin(), text.end()); c != end; ++c) {
-		Rect next_glyph_rect(x + next_glyph_pos, y, 0, 0);
-
 		boost::u8_to_u32_iterator<std::string::const_iterator> next_c_it = boost::next(c);
-		uint32_t const next_c = std::distance(c, end) > 1? *next_c_it : 0;
-
-		font->Render(dest, next_glyph_rect.x, next_glyph_rect.y, color, *c);
 
 		std::string const glyph(c.base(), next_c_it.base());
+		if (*c == '\n') {
+			y += font->GetSize(glyph).height;
+			next_glyph_pos = 0;
+			continue;
+		}
+		Rect next_glyph_rect(x + next_glyph_pos, y, 0, 0);
+
+		font->Render(dest, next_glyph_rect.x, next_glyph_rect.y, color, *c);
+		
 		next_glyph_pos += font->GetSize(glyph).width;
 	}
 }
