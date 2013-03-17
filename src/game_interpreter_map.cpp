@@ -909,6 +909,7 @@ bool Game_Interpreter_Map::CommandTimerOperation(RPG::EventCommand const& com) {
 			visible = com.parameters[3] != 0;
 			battle = com.parameters[4] != 0;
 			Game_Party::StartTimer(timer_id, visible, battle);
+			break;
 		case 2:
 			Game_Party::StopTimer(timer_id);
 			break;
