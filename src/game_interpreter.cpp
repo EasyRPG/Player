@@ -921,7 +921,7 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 Game_Character* Game_Interpreter::GetCharacter(int character_id) {
 	Game_Character* ch = Game_Character::GetCharacter(character_id, event_id);
 	if (ch == NULL) {
-		Output::Warning("Unknown event with id %d", character_id);
+		Output::Warning("Unknown event with id %d", event_id);
 	}
 	return Game_Character::GetCharacter(character_id, event_id);
 }
