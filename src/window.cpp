@@ -196,7 +196,7 @@ void Window::Draw(int /* z_order */) {
 void Window::RefreshBackground() {
 	background_needs_refresh = false;
 
-	BitmapRef bitmap = Bitmap::Create(width, height);
+	BitmapRef bitmap = Bitmap::Create(width, height, false);
 
 	if (stretch) {
 		bitmap->StretchBlit(*windowskin, Rect(0, 0, 32, 32), 255);
