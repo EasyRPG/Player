@@ -22,6 +22,7 @@
 #include "system.h"
 #include "game_party.h"
 #include "game_actors.h"
+#include "game_map.h"
 #include "game_player.h"
 #include "game_battle.h"
 #include "output.h"
@@ -245,10 +246,14 @@ void Game_Party::StopTimer(int which) {
 ////////////////////////////////////////////////////////////
 void Game_Party::UpdateTimers() {
 	bool battle = Game_Battle::GetScene() != NULL;
-	if (data.timer1_active && (!data.timer1_battle || !battle) && data.timer1_secs > 0)
+	if (data.timer1_active && (!data.timer1_battle || !battle) && data.timer1_secs > 0) {
 		data.timer1_secs--;
-	if (data.timer2_active && (!data.timer2_battle || !battle) && data.timer2_secs > 0)
+		Game_Map::SetNeedRefresh(true);
+	} 
+	if (data.timer2_active && (!data.timer2_battle || !battle) && data.timer2_secs > 0) {
 		data.timer2_secs--;
+		Game_Map::SetNeedRefresh(true);
+	}
 }
 
 ////////////////////////////////////////////////////////////

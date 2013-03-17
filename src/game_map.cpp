@@ -138,9 +138,7 @@ void Game_Map::Setup(int _id) {
 	SetChipset(map->chipset_id);
 	display_x = 0;
 	display_y = 0;
-	need_refresh = false;
-
-	events.clear();
+	need_refresh = true;
 
 	for (size_t i = 0; i < map->events.size(); ++i) {
 		events.insert(std::make_pair(map->events[i].ID, EASYRPG_MAKE_SHARED<Game_Event>(location.map_id, map->events[i])));
@@ -342,10 +340,11 @@ bool Game_Map::IsBush(int /* x */, int /* y */) {
 
 ////////////////////////////////////////////////////////////
 bool Game_Map::IsCounter(int x, int y) {
+	if (!Game_Map::IsValid(x, y)) return false;
 	int const tile_id = map->upper_layer[x + y * map->width];
 	if (tile_id < BLOCK_F) return false;
 	int const index = map_info.lower_tiles[passages_up[tile_id - BLOCK_F]];
-	return bool(Data::chipsets[map_info.chipset_id].passable_data_upper[index] & Passable::Counter);
+	return bool(Data::chipsets[map_info.chipset_id - 1].passable_data_upper[index] & Passable::Counter);
 }
 
 ////////////////////////////////////////////////////////////
@@ -419,11 +418,6 @@ int Game_Map::YwithDirection(int y, int direction) {
 
 ////////////////////////////////////////////////////////////
 int Game_Map::CheckEvent(int x, int y) {
-	/*for (size_t i = 0; i < events.size(); i++) {
-		if (events[i]->GetX() == x && events[i]->GetY() == y) {
-			return events[i]->GetId();
-		}
-	}*/
 	tEventHash::iterator i;
 	for (i = events.begin(); i != events.end(); i++) {
 		if (i->second->GetX() == x && i->second->GetY() == y) {
@@ -475,16 +469,18 @@ void Game_Map::Update() {
 	UpdatePan();
 	UpdateParallax();
 
-	for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
+	for (tEventHash::iterator i = events.begin();
+		i != events.end(); i++) {
+		i->second->Update();
+	}
+
+	for (tCommonEventHash::iterator i = common_events.begin();
+		i != common_events.end(); i++) {
 		i->second->Update();
 	}
 
 	for (int i = 0; i < 3; i++)
 		vehicles[i]->Update();
-
-	/*for (size_t i = 0; i < common_events.size(); i++) {
-		common_events[i]->Update();
-	}*/
 }
 
 ////////////////////////////////////////////////////////////

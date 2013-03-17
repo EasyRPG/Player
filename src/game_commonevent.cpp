@@ -34,12 +34,16 @@ Game_CommonEvent::Game_CommonEvent(int common_event_id, bool battle) :
 
 ////////////////////////////////////////////////////////////
 void Game_CommonEvent::Refresh() {
-	if ( (GetTrigger() == RPG::EventPage::Trigger_parallel) && ( Game_Switches[GetSwitchId()] ) ) {
-		if (interpreter.get() == NULL) {
-			interpreter.reset(battle
-							  ? static_cast<Game_Interpreter*>(new Game_Interpreter_Battle())
-							  : static_cast<Game_Interpreter*>(new Game_Interpreter_Map()));
-			Update();
+	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
+		if (GetSwitchFlag() ? Game_Switches[GetSwitchId()] : true) {
+			if (interpreter.get() == NULL) {
+				interpreter.reset(battle
+								  ? static_cast<Game_Interpreter*>(new Game_Interpreter_Battle())
+								  : static_cast<Game_Interpreter*>(new Game_Interpreter_Map()));
+				Update();
+			}
+		} else {
+			interpreter.reset();
 		}
 	} else {
 		interpreter.reset();
@@ -63,6 +67,10 @@ int Game_CommonEvent::GetIndex() const {
 
 std::string Game_CommonEvent::GetName() const {
 	return Data::commonevents[common_event_id - 1].name;
+}
+
+bool Game_CommonEvent::GetSwitchFlag() const {
+	return Data::commonevents[common_event_id - 1].switch_flag;
 }
 
 int Game_CommonEvent::GetSwitchId() const {
