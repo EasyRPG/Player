@@ -46,7 +46,13 @@ namespace {
 	face_cache_type face_cache;
 	ShinonomeGlyph const* find_glyph(ShinonomeGlyph const* data, size_t size, uint32_t code) {
 		ShinonomeGlyph const* ret = std::lower_bound(data, data + size, code);
-		return ret != (data + size)? ret : NULL;
+		if(ret != (data + size) and ret->code == code) {
+			return ret;
+		} else {
+			static ShinonomeGlyph const empty_glyph = { 0, true, {0} };
+			Output::Debug("glyph not found: 0x%04x", code);
+			return &empty_glyph;
+		}
 	}
 
 	ShinonomeGlyph const* find_gothic_glyph(uint32_t code) {
