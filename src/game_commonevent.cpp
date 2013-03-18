@@ -23,6 +23,8 @@
 #include "game_interpreter_battle.h"
 #include "main_data.h"
 
+#include <ciso646>
+
 Game_CommonEvent::Game_CommonEvent(int common_event_id, bool battle) :
 	common_event_id(common_event_id),
 	battle(battle),
@@ -32,7 +34,7 @@ Game_CommonEvent::Game_CommonEvent(int common_event_id, bool battle) :
 void Game_CommonEvent::Refresh() {
 	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
 		if (GetSwitchFlag() ? Game_Switches[GetSwitchId()] : true) {
-			if (interpreter.get() == NULL) {
+			if (not interpreter) {
 				interpreter.reset(battle
 								  ? static_cast<Game_Interpreter*>(new Game_Interpreter_Battle())
 								  : static_cast<Game_Interpreter*>(new Game_Interpreter_Map()));
