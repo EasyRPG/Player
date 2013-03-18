@@ -198,12 +198,13 @@ enable_testing()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../src)
 
-set(TEST_GAME_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../lib/TestGame")
+set(TEST_REPOSITORY_GAME_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../lib/TestGame")
 if(NOT EXISTS ${TEST_GAME_PATH})
   execute_process(COMMAND ${GIT_EXECUTABLE} clone
     "https://github.com/EasyRPG/TestGame.git"
-    "${TEST_GAME_PATH}")
+    "${TEST_REPOSITORY_GAME_PATH}")
 endif()
+set(TEST_GAME_PATH "${TEST_REPOSITORY_GAME_PATH}/TestGame-2000")
 
 
 file(GLOB TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../test/*.cpp)
@@ -214,22 +215,18 @@ foreach(i ${TEST_FILES})
   add_dependencies(test_${name} ${PROJECT_NAME}_Static)
 
   add_test(
-    NAME test_${name}
-    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../lib/TestGame/TestGame"
+    NAME test_${name} WORKING_DIRECTORY ${TEST_GAME_PATH}
     COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_${name})
   set_tests_properties(test_${name}
-    PROPERTIES ENVIRONMENT "RPG_TEST_GAME_PATH=${TEST_GAME_PATH}/TestGame")
+    PROPERTIES ENVIRONMENT "RPG_TEST_GAME_PATH=${TEST_GAME_PATH}")
 endforeach()
 
 file(GLOB LUA_TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../test/lua_script/*.lua)
 foreach(i ${LUA_TEST_FILES})
   get_filename_component(name "${i}" NAME_WE)
-  add_test(NAME lua_test_${name}
-    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../lib/TestGame/TestGame"
+  add_test(NAME lua_test_${name} WORKING_DIRECTORY ${TEST_GAME_PATH}
     COMMAND ${EXECUTABLE_OUTPUT_PATH}/${PROJECT_NAME}_com)
 
-  set_tests_properties(lua_test_${name}
-    PROPERTIES ENVIRONMENT "RPG_LUABOT_SCRIPT=${i}")
-  set_tests_properties(lua_test_${name}
-    PROPERTIES ENVIRONMENT "RPG_TEST_GAME_PATH=${TEST_GAME_PATH}/TestGame")
+  set_tests_properties(lua_test_${name} PROPERTIES ENVIRONMENT
+    "RPG_LUABOT_SCRIPT=${i};RPG_TEST_GAME_PATH=${TEST_GAME_PATH}")
 endforeach()
