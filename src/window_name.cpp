@@ -20,6 +20,8 @@
 #include "window_name.h"
 #include "bitmap.h"
 #include "font.h"
+#include "data.h"
+#include "game_system.h"
 
 #include <boost/regex/pending/unicode_iterator.hpp>
 
@@ -45,8 +47,12 @@ void Window_Name::Set(const std::string& text) {
 }
 
 void Window_Name::Append(const std::string& text) {
-	name += text;
-	Refresh();
+	if(contents->GetFont()->GetSize(name + text).width <= (12 * 6)) {
+		name += text;
+		Refresh();
+	} else {
+		Game_System::SePlay(Data::system.buzzer_se);
+	}
 }
 
 void Window_Name::Update() {
