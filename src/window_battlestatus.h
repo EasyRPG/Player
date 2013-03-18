@@ -1,87 +1,89 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #ifndef _WINDOW_BATTLESTATUS_H_
 #define _WINDOW_BATTLESTATUS_H_
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "window_base.h"
 #include "bitmap.h"
 
-////////////////////////////////////////////////////////////
-/// Window BattleStatus Class.
-/// Displays the party battle status
-////////////////////////////////////////////////////////////
+/**
+ * Window BattleStatus Class.
+ * Displays the party battle status.
+ */
 class Window_BattleStatus : public Window_Base {
 public:
-	////////////////////////////////////////////////////////
-	/// Constructor.
-	////////////////////////////////////////////////////////
+	/**
+	 * Constructor.
+	 */
 	Window_BattleStatus();
 
-	////////////////////////////////////////////////////////
-	/// Renders the current status on the window.
-	////////////////////////////////////////////////////////
+	/**
+	 * Renders the current status on the window.
+	 */
 	void Refresh();
 
-	////////////////////////////////////////////////////////
-	/// Updates the window state
-	////////////////////////////////////////////////////////
+	/**
+	 * Updates the window state.
+	 */
 	void Update();
 
-	////////////////////////////////////////////////////////
-	/// Set the active character
-	/// @param index: character index (0..3)
-	///  returns -1 if no character is ready
-	////////////////////////////////////////////////////////
+	/**
+	 * Sets the active character.
+	 *
+	 * @param index character index (0..3).
+	 *              Returns -1 if no character is ready. FIXME
+	 */
 	void SetActiveCharacter(int index);
 
-	////////////////////////////////////////////////////////
-	/// Get the active character
-	/// @returns: character index (0..3)
-	////////////////////////////////////////////////////////
+	/**
+	 * Gets the active character.
+	 *
+	 * @return character index (0..3).
+	 */
 	int GetActiveCharacter();
 
-	////////////////////////////////////////////////////////
-	/// Select an active character if one is ready
-	////////////////////////////////////////////////////////
+	/**
+	 * Selects an active character if one is ready.
+	 */
 	void ChooseActiveCharacter();
 
 protected:
-	////////////////////////////////////////////////////////
-	/// Updates the cursor rectangle
-	////////////////////////////////////////////////////////
+	/**
+	 * Updates the cursor rectangle.
+	 */
 	void UpdateCursorRect();
 
-	////////////////////////////////////////////////////////
-	/// Redraw a character's time gauge
-	/// @param index: character index (0..3)
-	////////////////////////////////////////////////////////
+	/**
+	 * Redraws a character's time gauge.
+	 *
+	 * @param i character index (0..3).
+	 */
 	void RefreshGauge(int i);
 
-	////////////////////////////////////////////////////////
-	/// Draw a character's time gauge
-	/// @param actor: actor
-	/// @param index: character index (0..3)
-	/// @param x: x coordinate
-	/// @param x: y coordinate
-	////////////////////////////////////////////////////////
+	/**
+	 * Draws a character's time gauge.
+	 *
+	 * @param actor actor.
+	 * @param index character index (0..3).
+	 * @param cx x coordinate.
+	 * @param cy y coordinate.
+	 */
 	void DrawGauge(Game_Actor* actor, int index, int cx, int cy);
 
 	friend class Scene_Battle;

@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <iomanip>
 #include <sstream>
 #include "window_item.h"
@@ -25,13 +23,11 @@
 #include "bitmap.h"
 #include "font.h"
 
-////////////////////////////////////////////////////////////
 Window_Item::Window_Item(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight) {
 	column_max = 2;
 }
 
-////////////////////////////////////////////////////////////
 int Window_Item::GetItemId() {
 	if (index < 0) {
 		return 0;
@@ -40,9 +36,8 @@ int Window_Item::GetItemId() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 bool Window_Item::CheckInclude(int item_id) {
-	// Todo:
+	// TODO:
 	// if (Game_Temp::InBattle()) {
 	// 	return item_id == Rpg::Item
 
@@ -53,12 +48,10 @@ bool Window_Item::CheckInclude(int item_id) {
 	}
 }
 
-////////////////////////////////////////////////////////////
 bool Window_Item::CheckEnable(int item_id) {
 	return Game_Party::IsItemUsable(item_id);
 }
 
-////////////////////////////////////////////////////////////
 void Window_Item::Refresh() {
 	std::vector<int> party_items;
 
@@ -89,7 +82,6 @@ void Window_Item::Refresh() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Window_Item::DrawItem(int index) {
 	Rect rect = GetItemRect(index);
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
@@ -110,7 +102,6 @@ void Window_Item::DrawItem(int index) {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Window_Item::UpdateHelp() {
 	help_window->SetText(GetItemId() == 0 ? "" :
 		Data::items[GetItemId() - 1].description);
