@@ -206,6 +206,11 @@ if(NOT EXISTS ${TEST_GAME_PATH})
 endif()
 set(TEST_GAME_PATH "${TEST_REPOSITORY_GAME_PATH}/TestGame-2000")
 
+set(TEST_ENVS "RPG_TEST_GAME_PATH=${TEST_GAME_PATH}")
+if(EXISTS $ENV{RPG_RTP_PATH})
+  message(STATUS "using rtp path $ENV{RPG_RTP_PATH}")
+  list(APPEND TEST_ENVS "RPG_RTP_PATH=$ENV{RPG_RTP_PATH}")
+endif()
 
 file(GLOB TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../test/*.cpp)
 foreach(i ${TEST_FILES})
@@ -218,7 +223,7 @@ foreach(i ${TEST_FILES})
     NAME test_${name} WORKING_DIRECTORY ${TEST_GAME_PATH}
     COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_${name})
   set_tests_properties(test_${name}
-    PROPERTIES ENVIRONMENT "RPG_TEST_GAME_PATH=${TEST_GAME_PATH}")
+    PROPERTIES ENVIRONMENT "${TEST_ENVS}")
 endforeach()
 
 file(GLOB LUA_TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../test/lua_script/*.lua)
@@ -227,6 +232,7 @@ foreach(i ${LUA_TEST_FILES})
   add_test(NAME lua_test_${name} WORKING_DIRECTORY ${TEST_GAME_PATH}
     COMMAND ${EXECUTABLE_OUTPUT_PATH}/${PROJECT_NAME}_com)
 
-  set_tests_properties(lua_test_${name} PROPERTIES ENVIRONMENT
-    "RPG_LUABOT_SCRIPT=${i};RPG_TEST_GAME_PATH=${TEST_GAME_PATH}")
+  set_tests_properties(lua_test_${name}
+    PROPERTIES ENVIRONMENT
+    "RPG_LUABOT_SCRIPT=${i};${TEST_ENVS}")
 endforeach()
