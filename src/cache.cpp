@@ -30,6 +30,7 @@
 #include "exfont.h"
 #include "bitmap.h"
 #include "output.h"
+#include "player.h"
 
 namespace {
 
@@ -50,6 +51,15 @@ namespace {
 
 		if (it == cache.end() || it->second.expired()) {
 			std::string const path = FileFinder::FindImage(folder_name, filename);
+
+			if (path.empty()) {
+				// TODO:
+				// Load a dummy image with correct size (issue #32)
+				Output::Warning("Image not found: %s/%s\n\nPlayer will exit now.", folder_name.c_str(), filename.c_str());
+				// Delayed termination, otherwise it segfaults in Graphics::Quit
+				Player::exit_flag = true;
+			}
+
 			return (cache[key] = path.empty()
 					? Bitmap::Create(16, 16, Color())
 					: Bitmap::Create(path, transparent, flags)

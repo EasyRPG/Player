@@ -70,6 +70,13 @@ public:
 	int GetTrigger() const;
 
 	/**
+	 * Gets if an event has a switch.
+	 *
+	 * @return flag if that event has a switch.
+	 */
+	bool GetSwitchFlag() const;
+
+	/**
 	 * Gets trigger switch ID.
 	 *
 	 * @return trigger switch ID.

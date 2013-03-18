@@ -863,24 +863,31 @@ bool Game_Interpreter_Map::CommandChangeScreenTransitions(RPG::EventCommand cons
 bool Game_Interpreter_Map::CommandChangeEventLocation(RPG::EventCommand const& com) { // Code 10860
 	int event_id = com.parameters[0];
 	Game_Character *event = GetCharacter(event_id);
-	int x = ValueOrVariable(com.parameters[1], com.parameters[2]);
-	int y = ValueOrVariable(com.parameters[1], com.parameters[3]);
-	event->MoveTo(x, y);
+	if (event != NULL) {
+		int x = ValueOrVariable(com.parameters[1], com.parameters[2]);
+		int y = ValueOrVariable(com.parameters[1], com.parameters[3]);
+		event->MoveTo(x, y);
+	}
 	return true;
 }
 
 bool Game_Interpreter_Map::CommandTradeEventLocations(RPG::EventCommand const& com) { // Code 10870
 	int event1_id = com.parameters[0];
-	Game_Character *event1 = GetCharacter(event1_id);
-	int x1 = event1->GetX();
-	int y1 = event1->GetY();
 	int event2_id = com.parameters[1];
-	Game_Character *event2 = GetCharacter(event2_id);
-	int x2 = event2->GetX();
-	int y2 = event2->GetY();
 
-	event1->MoveTo(x2, y2);
-	event2->MoveTo(x1, y1);
+	Game_Character *event1 = GetCharacter(event1_id);
+	Game_Character *event2 = GetCharacter(event2_id);
+
+	if (event1 != NULL && event2 != NULL) {
+		int x1 = event1->GetX();
+		int y1 = event1->GetY();
+
+		int x2 = event2->GetX();
+		int y2 = event2->GetY();
+
+		event1->MoveTo(x2, y2);
+		event2->MoveTo(x1, y1);
+	}
 
 	return true;
 }
@@ -900,6 +907,7 @@ bool Game_Interpreter_Map::CommandTimerOperation(RPG::EventCommand const& com) {
 			visible = com.parameters[3] != 0;
 			battle = com.parameters[4] != 0;
 			Game_Party::StartTimer(timer_id, visible, battle);
+			break;
 		case 2:
 			Game_Party::StopTimer(timer_id);
 			break;
@@ -964,18 +972,19 @@ bool Game_Interpreter_Map::CommandEndLoop(RPG::EventCommand const& com) { // cod
 bool Game_Interpreter_Map::CommandMoveEvent(RPG::EventCommand const& com) { // code 11330
 	int event_id = com.parameters[0];
 	Game_Character* event = GetCharacter(event_id);
+	if (event != NULL) {
+		RPG::MoveRoute* route = new RPG::MoveRoute;
+		int move_freq = com.parameters[1];
+		route->repeat = com.parameters[2] != 0;
+		route->skippable = com.parameters[3] != 0;
 
-	RPG::MoveRoute* route = new RPG::MoveRoute;
-	int move_freq = com.parameters[1];
-	route->repeat = com.parameters[2] != 0;
-	route->skippable = com.parameters[3] != 0;
+		std::vector<int>::const_iterator it;
+		for (it = com.parameters.begin() + 4; it < com.parameters.end(); )
+			route->move_commands.push_back(DecodeMove(it));
 
-	std::vector<int>::const_iterator it;
-	for (it = com.parameters.begin() + 4; it < com.parameters.end(); )
-		route->move_commands.push_back(DecodeMove(it));
-
-	event->ForceMoveRoute(route, move_freq, this);
-	pending.push_back(pending_move_route(route, event));
+		event->ForceMoveRoute(route, move_freq, this);
+		pending.push_back(pending_move_route(route, event));
+	}
 	return true;
 }
 
@@ -1101,10 +1110,11 @@ bool Game_Interpreter_Map::ContinuationShowInn(RPG::EventCommand const& /* com *
 	if (!Game_Temp::inn_handlers) {
 		if (inn_stay) {
 			// Full heal
-			for (std::vector<Game_Actor*>::iterator i = Game_Party::GetActors().begin();
-				 i != Game_Party::GetActors().end();
+			std::vector<Game_Actor*> actors = Game_Party::GetActors();
+			for (std::vector<Game_Actor*>::const_iterator i = actors.begin();
+				 i != actors.end();
 				 i++) {
-				Game_Actor* actor = Game_Actors::GetActor((*i)->GetId());
+				Game_Actor* actor = *i;
 				actor->SetHp(actor->GetMaxHp());
 				actor->SetSp(actor->GetMaxSp());
 				actor->RemoveAllStates();
@@ -1298,18 +1308,20 @@ bool Game_Interpreter_Map::CommandFlashSprite(RPG::EventCommand const& com) { //
 	bool wait = com.parameters[6] > 0;
 	Game_Character* event = GetCharacter(event_id);
 
-	Scene_Map* scene = (Scene_Map*) Scene::Find(Scene::Map).get();
-	if (!scene)
-		return true;
+	if (event != NULL) {
+		Scene_Map* scene = (Scene_Map*) Scene::Find(Scene::Map).get();
+		if (!scene)
+			return true;
 
-	Sprite_Character* sprite = scene->spriteset->FindCharacter(event);
-	if (!sprite)
-		return true;
+		Sprite_Character* sprite = scene->spriteset->FindCharacter(event);
+		if (!sprite)
+			return true;
 
-	sprite->Flash(color, tenths * DEFAULT_FPS / 10);
+		sprite->Flash(color, tenths * DEFAULT_FPS / 10);
 
-	if (wait)
-		wait_count = tenths * DEFAULT_FPS / 10;
+		if (wait)
+			wait_count = tenths * DEFAULT_FPS / 10;
+	}
 
 	return true;
 }
@@ -1365,8 +1377,10 @@ bool Game_Interpreter_Map::CommandCallEvent(RPG::EventCommand const& com) { // c
 	}
 
 	Game_Event* event = static_cast<Game_Event*>(GetCharacter(evt_id));
-	RPG::EventPage& page = event->GetEvent().pages[event_page - 1];
-	child_interpreter->Setup(page.event_commands, evt_id, event->GetX(), event->GetY());
+	if (event != NULL) {
+		RPG::EventPage& page = event->GetEvent().pages[event_page - 1];
+		child_interpreter->Setup(page.event_commands, event->GetId(), event->GetX(), event->GetY());
+	}
 
 	return true;
 }
@@ -1431,16 +1445,23 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 		check_left = check_dir;
 		check_right = check_dir;
 	} else if (Player::engine == Player::EngineRpg2k3) {
-		check_numbers  = com.parameters[ 5] != 0;
-		check_arith    = com.parameters[ 6] != 0;
-		check_shift    = com.parameters[ 9] != 0;
-		check_down     = com.parameters[10] != 0;
-		check_left     = com.parameters[11] != 0;
-		check_right    = com.parameters[12] != 0;
-		check_up       = com.parameters[13] != 0;
+		size_t param_size = com.parameters.size();
 
-		time_id = com.parameters[7];
-		time = com.parameters[8] != 0;
+		// Optimization: If missing -> default value
+		check_numbers  = param_size > 5 ? com.parameters[5] != 0 : false;
+		check_arith    = param_size > 6 ? com.parameters[6] != 0 : false;
+		check_shift    = param_size > 9 ? com.parameters[9] != 0 : true;
+		check_down     = param_size > 10 ? com.parameters[10] != 0 : true;
+		check_left     = param_size > 11 ? com.parameters[11] != 0 : true;
+		check_right    = param_size > 12 ? com.parameters[12] != 0 : true;
+		check_up       = param_size > 13 ? com.parameters[13] != 0 : true;
+
+		if (param_size > 8) {
+			time_id = com.parameters[7];
+			time = com.parameters[8] != 0;
+		}
+	} else {
+		assert(false);
 	}
 
 	if (check_down && Input::IsTriggered(Input::DOWN))

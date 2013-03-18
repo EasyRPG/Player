@@ -27,6 +27,7 @@
 #include "main_data.h"
 #include "game_map.h"
 #include "game_message.h"
+#include "game_party.h"
 #include "game_player.h"
 #include "game_system.h"
 #include "game_temp.h"
@@ -62,6 +63,8 @@ void Scene_Map::TransitionOut() {
 
 void Scene_Map::Update() {
 	Game_Map::GetInterpreter().Update();
+
+	Game_Party::UpdateTimers();
 
 	Game_Map::Update();
 	Main_Data::game_player->Update();

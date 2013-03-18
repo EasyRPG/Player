@@ -235,11 +235,11 @@ void Game_Interpreter::SetupStartingEvent(Game_Event* ev) {
 	RPG::CommonEvent* common_event;
 	for (size_t i = 0; i < Data::commonevents.size(); i++) {
 		common_event = &Data::commonevents[i];
-
 		// If trigger is auto run, and condition switch is ON
-		if ( (common_event->trigger == RPG::EventPage::Trigger_auto_start) &&
-			Game_Switches[common_event->switch_id]) {
-			Setup(common_event->event_commands, 0);
+		if (common_event->trigger == RPG::EventPage::Trigger_auto_start) {
+			if (common_event->switch_flag ? Game_Switches[common_event->switch_id] : true) {
+				Setup(common_event->event_commands, 0);
+			}
 			return;
 		}
 	}
@@ -856,11 +856,7 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 	switch (mode) {
 	case 0:
 		// Party
-		for (std::vector<Game_Actor*>::iterator i = Game_Party::GetActors().begin();
-			 i != Game_Party::GetActors().end();
-			 i++) {
-			actors.push_back(Game_Actors::GetActor((*i)->GetId()));
-		}
+		actors = Game_Party::GetActors();
 		break;
 	case 1:
 		// Hero
@@ -877,6 +873,10 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 
 // Get Character.
 Game_Character* Game_Interpreter::GetCharacter(int character_id) {
+	Game_Character* ch = Game_Character::GetCharacter(character_id, event_id);
+	if (ch == NULL) {
+		Output::Warning("Unknown event with id %d", event_id);
+	}
 	return Game_Character::GetCharacter(character_id, event_id);
 }
 
