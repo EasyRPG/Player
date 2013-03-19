@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "game_event.h"
 #include "game_actor.h"
 #include "game_actors.h"
@@ -31,7 +29,6 @@
 #include "main_data.h"
 #include "player.h"
 
-////////////////////////////////////////////////////////////
 Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	starting(false),
 	map_id(map_id),
@@ -46,12 +43,10 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	Refresh();
 }
 
-////////////////////////////////////////////////////////////
 void Game_Event::ClearStarting() {
 	starting = false;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Event::Setup(RPG::EventPage* new_page) {
 	page = new_page;
 
@@ -205,7 +200,6 @@ bool Game_Event::AreConditionsMet(const RPG::EventPage& page) {
 	return true;
 }
 
-////////////////////////////////////////////////////////////
 int Game_Event::GetId() const {
 	return ID;
 }
@@ -218,7 +212,6 @@ int Game_Event::GetTrigger() const {
 	return trigger;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Event::SetDisabled(bool dis_flag) {
 	erased = dis_flag;
 }
@@ -226,7 +219,6 @@ void Game_Event::SetDisabled(bool dis_flag) {
 bool Game_Event::GetDisabled() const {
 	return erased;
 }
-////////////////////////////////////////////////////////////
 
 void Game_Event::Start() {
 	// RGSS scripts consider list empty if size <= 1. Why?

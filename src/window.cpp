@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <math.h>
 #include "system.h"
 #include "graphics.h"
@@ -28,7 +26,6 @@
 #include "window.h"
 #include "bitmap.h"
 
-////////////////////////////////////////////////////////////
 Window::Window():
 	type(TypeWindow),
 	ID(Graphics::drawable_id++),
@@ -71,26 +68,22 @@ Window::Window():
 	cursor2 = BitmapScreen::Create();
 }
 
-////////////////////////////////////////////////////////////
 Window::~Window() {
 	Graphics::RemoveZObj(ID);
 	Graphics::RemoveDrawable(ID);
 }
 
-////////////////////////////////////////////////////////////
 void Window::SetOpenAnimation(int frames) {
 	animation_frames = frames;
 	animation_count = 0.0;
 	animation_increment = (height / 2.0) / frames;
 }
 
-////////////////////////////////////////////////////////////
 void Window::SetCloseAnimation(int frames) {
 	(void)frames;
-	// ToDo
+	// TODO
 }
 
-////////////////////////////////////////////////////////////
 void Window::Draw(int /* z_order */) {
 	if (!visible) return;
 	if (width <= 0 || height <= 0) return;
@@ -192,7 +185,6 @@ void Window::Draw(int /* z_order */) {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Window::RefreshBackground() {
 	background_needs_refresh = false;
 
@@ -207,7 +199,6 @@ void Window::RefreshBackground() {
 	background->SetBitmap(bitmap);
 }
 
-////////////////////////////////////////////////////////////
 void Window::RefreshFrame() {
 	frame_needs_refresh = false;
 
@@ -275,7 +266,6 @@ void Window::RefreshFrame() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Window::RefreshCursor() {
 	cursor_needs_refresh = false;
 
@@ -338,7 +328,6 @@ void Window::RefreshCursor() {
 	cursor2->SetBitmap(cursor2_bitmap);
 }
 
-////////////////////////////////////////////////////////////
 void Window::Update() {
 	if (active) {
 		cursor_frame += 1;
@@ -350,7 +339,6 @@ void Window::Update() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 BitmapRef const& Window::GetWindowskin() const {
 	return windowskin;
 }
@@ -523,7 +511,6 @@ void Window::SetContentsOpacity(int ncontents_opacity) {
 	contents_opacity = ncontents_opacity;
 }
 
-////////////////////////////////////////////////////////////
 unsigned long Window::GetId() const {
 	return ID;
 }

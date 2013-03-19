@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <algorithm>
 #include <sstream>
 #include <vector>
@@ -32,7 +30,6 @@
 #include "util_macro.h"
 #include "player.h"
 
-////////////////////////////////////////////////////////////
 namespace Graphics {
 	bool fps_on_screen;
 	uint32_t drawable_id;
@@ -78,12 +75,10 @@ namespace Graphics {
 	bool SortZObj(EASYRPG_SHARED_PTR<ZObj> const& first, EASYRPG_SHARED_PTR<ZObj> const& second);
 }
 
-////////////////////////////////////////////////////////////
 unsigned SecondToFrame(float const second) {
 	return(second * Graphics::framerate);
 }
 
-////////////////////////////////////////////////////////////
 void Graphics::Init() {
 	overlay_visible = true;
 	fps_on_screen = false;
@@ -105,7 +100,6 @@ void Graphics::Init() {
 	screen_erased = false;
 }
 
-////////////////////////////////////////////////////////////
 void Graphics::Quit() {
 	std::map<uint32_t, Drawable*>::iterator it;
 	std::map<uint32_t, Drawable*> drawable_map_temp = state->drawable_map;
@@ -123,7 +117,6 @@ void Graphics::Quit() {
 	Cache::Clear();
 }
 
-////////////////////////////////////////////////////////////
 void Graphics::Update() {
 	if (frozen) return;
 
@@ -136,7 +129,6 @@ void Graphics::Update() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Graphics::InternUpdate1(bool reset) {
 	// FIXME: This method needs more comments.
 	static const double framerate_interval = 1000.0 / framerate;
@@ -188,7 +180,6 @@ void Graphics::InternUpdate1(bool reset) {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Graphics::InternUpdate2(bool reset) {
 	// FIXME: This method needs more comments. Why two InternUpdates?
 	static const int MAXIMUM_FRAME_RATE = framerate;
@@ -247,7 +238,6 @@ void Graphics::InternUpdate2(bool reset) {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Graphics::UpdateTitle() {
 	if (DisplayUi->IsFullscreen()) return;
 
@@ -261,7 +251,6 @@ void Graphics::UpdateTitle() {
 	DisplayUi->SetTitle(title.str());
 }
 
-////////////////////////////////////////////////////////////
 void Graphics::DrawFrame() {
 	if (transition_duration > 0) {
 		UpdateTransition();
@@ -288,7 +277,6 @@ void Graphics::DrawFrame() {
 	DisplayUi->UpdateDisplay();
 }
 
-////////////////////////////////////////////////////////////
 void Graphics::DrawOverlay() {
 	if (Graphics::fps_on_screen) {
 		std::stringstream text;
@@ -297,7 +285,6 @@ void Graphics::DrawOverlay() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 BitmapRef Graphics::SnapToBitmap() {
 	DisplayUi->BeginScreenCapture();
 
@@ -309,13 +296,11 @@ BitmapRef Graphics::SnapToBitmap() {
 	return DisplayUi->EndScreenCapture();
 }
 
-////////////////////////////////////////////////////////////
 void Graphics::Freeze() {
 	frozen_screen->SetBitmap(SnapToBitmap());
 	frozen = true;
 }
 
-////////////////////////////////////////////////////////////
 void Graphics::Transition(TransitionType type, int duration, bool erase) {
 	if (erase && screen_erased) return;
 
@@ -508,7 +493,6 @@ void Graphics::UpdateTransition() {
 	DisplayUi->UpdateDisplay();
 }
 
-////////////////////////////////////////////////////////////
 void Graphics::FrameReset() {
 	switch(fps_mode) {
 	case 1:
@@ -519,14 +503,12 @@ void Graphics::FrameReset() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Graphics::Wait(int duration) {
 	while(duration-- > 0) {
 		Update();
 	}
 }
 
-////////////////////////////////////////////////////////////
 int Graphics::GetFrameCount() {
 	return framecount;
 }
@@ -534,7 +516,6 @@ void Graphics::SetFrameCount(int nframecount) {
 	framecount = nframecount;
 }
 
-///////////////////////////////////////////////////////////
 void Graphics::RegisterDrawable(uint32_t ID, Drawable* drawable) {
 	state->drawable_map[ID] = drawable;
 }
@@ -544,7 +525,6 @@ void Graphics::RemoveDrawable(uint32_t ID) {
 	if(it != state->drawable_map.end()) { state->drawable_map.erase(it); }
 }
 
-///////////////////////////////////////////////////////////
 ZObj* Graphics::RegisterZObj(int z, uint32_t ID) {
 	state->zlist.push_back(EASYRPG_MAKE_SHARED<ZObj>(z, drawable_creation++, ID));
 	state->zlist_dirty = true;
@@ -556,7 +536,6 @@ void Graphics::RegisterZObj(int z, uint32_t ID, bool /* multiz */) {
 	state->zlist_dirty = true;
 }
 
-///////////////////////////////////////////////////////////
 void Graphics::RemoveZObj(uint32_t ID) {
 	RemoveZObj(ID, false);
 }
@@ -577,26 +556,22 @@ void Graphics::RemoveZObj(uint32_t ID, bool multiz) {
 	}
 }
 
-///////////////////////////////////////////////////////////
 void Graphics::UpdateZObj(ZObj* zobj, int z) {
 	zobj->SetZ(z);
 	state->zlist_dirty = true;
 }
 
-///////////////////////////////////////////////////////////
 inline bool Graphics::SortZObj(EASYRPG_SHARED_PTR<ZObj> const& first, EASYRPG_SHARED_PTR<ZObj> const& second) {
 	if (first->GetZ() < second->GetZ()) return true;
 	else if (first->GetZ() > second->GetZ()) return false;
 	else return first->GetCreation() < second->GetCreation();
 }
 
-///////////////////////////////////////////////////////////
 void Graphics::Push() {
 	stack.push_back(state);
 	state.reset(new State());
 }
 
-///////////////////////////////////////////////////////////
 void Graphics::Pop() {
 	if (stack.size() > 0) {
 		state = stack.back();

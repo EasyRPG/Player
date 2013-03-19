@@ -1,36 +1,31 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #ifndef _EASYRPG_PIXEL_FORMAT_H_
 #define _EASYRPG_PIXEL_FORMAT_H_
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <cstring>
 #include <algorithm>
 #include "system.h"
 #include "utils.h"
 
-////////////////////////////////////////////////////////////
-/// enums
-////////////////////////////////////////////////////////////
-
+/** Enums. */
 namespace PF {
 	enum AlphaType { NoAlpha, ColorKey, Alpha };
 	enum OpacityType { Opaque, Binary, Variable };
@@ -40,9 +35,8 @@ namespace PF {
 	enum { NotAligned = false, IsAligned = true };
 }
 
-////////////////////////////////////////////////////////////
-/// Component struct
-////////////////////////////////////////////////////////////
+
+/** Component struct */
 struct Component {
 	uint8_t bits;
 	uint8_t shift;
@@ -103,9 +97,9 @@ struct Component {
 		mask(mask) { convert_mask(); }
 };
 
-////////////////////////////////////////////////////////////
-/// DynamicFormat struct
-////////////////////////////////////////////////////////////
+/**
+ * DynamicFormat struct
+ */
 class DynamicFormat {
 public:
 	int bits;
@@ -209,9 +203,7 @@ public:
 	}
 };
 
-////////////////////////////////////////////////////////////
-/// Bits traits
-////////////////////////////////////////////////////////////
+// Bits traits.
 
 template <class TPF, int bits>
 struct bits_traits {
@@ -293,9 +285,7 @@ struct bits_traits<TPF, 32> {
 	}
 };
 
-////////////////////////////////////////////////////////////
-/// alpha_type_traits
-////////////////////////////////////////////////////////////
+// alpha_type_traits
 
 // general case
 template<class TPF, bool dynamic_alpha, PF::AlphaType alpha_type>
@@ -316,9 +306,7 @@ struct alpha_type_traits<TPF, PF::DynamicAlpha, _alpha_type> {
 };
 
 
-////////////////////////////////////////////////////////////
-/// opacity_type_traits
-////////////////////////////////////////////////////////////
+// opacity_type_traits
 
 // general case
 template<class TPF, bool dynamic_alpha, PF::OpacityType opacity_type>
@@ -338,9 +326,7 @@ struct opacity_type_traits<TPF, PF::DynamicAlpha, _opacity_type> {
 	}
 };
 
-////////////////////////////////////////////////////////////
-/// Alpha traits
-////////////////////////////////////////////////////////////
+// Alpha traits
 
 // general case
 template<class TPF,
@@ -408,9 +394,7 @@ struct alpha_traits<TPF, PF::IsAligned, dynamic_alpha, PF::Alpha> {
 	}
 };
 
-////////////////////////////////////////////////////////////
-/// RGBA traits
-////////////////////////////////////////////////////////////
+// RGBA traits
 
 template<class TPF, bool aligned, bool dynamic_alpha, int alpha>
 struct rgba_traits {
@@ -536,9 +520,7 @@ struct rgba_traits<TPF, PF::NotAligned, PF::StaticAlpha, PF::NoAlpha> {
 	}
 };
 
-////////////////////////////////////////////////////////////
-/// Mask traits
-////////////////////////////////////////////////////////////
+// Mask traits
 
 template<class TPF, bool dynamic, int _bits, int _shift>
 struct mask_traits {
@@ -563,9 +545,7 @@ struct mask_traits<TPF, PF::DynamicMasks, _bits, _shift> {
 	static inline int mask(const Component& c) { return c.mask; }
 };
 
-////////////////////////////////////////////////////////////
-/// Dynamic traits
-////////////////////////////////////////////////////////////
+// Dynamic traits
 
 template <bool DYNAMIC_MASKS, bool DYNAMIC_ALPHA,
 		  int BITS, int RB, int RS, int GB, int GS, int BB, int BS, int AB, int AS, int ALPHA>
@@ -585,10 +565,9 @@ struct dynamic_traits_t<false, false, BITS, RB, RS, GB, GS, BB, BS, AB, AS, ALPH
 template <int BITS, int RB, int RS, int GB, int GS, int BB, int BS, int AB, int AS, int ALPHA>
 const DynamicFormat dynamic_traits_t<false, false, BITS, RB, RS, GB, GS, BB, BS, AB, AS, ALPHA>::format(BITS, RB, RS, GB, GS, BB, BS, AB, AS, (PF::AlphaType) ALPHA);
 
-////////////////////////////////////////////////////////////
-/// PixelFormat abstract base class
-////////////////////////////////////////////////////////////
-
+/**
+ * PixelFormat abstract base class.
+ */
 class PixelFormat {
 public:
 	PixelFormat() : colorkey(0) {}
@@ -605,9 +584,7 @@ public:
 	uint32_t colorkey;
 };
 
-////////////////////////////////////////////////////////////
-/// PixelFormatT template
-////////////////////////////////////////////////////////////
+// PixelFormatT template
 
 template <int BITS,
 		  bool DYNAMIC_MASKS, bool DYNAMIC_ALPHA, int ALPHA, bool ALIGNED,
@@ -817,8 +794,5 @@ typedef PixelFormatT<16,PF::DynamicMasks,PF::StaticAlpha,PF::Alpha,PF::NotAligne
 typedef PixelFormatT<16,PF::DynamicMasks,PF::StaticAlpha,PF::ColorKey,PF::NotAligned,0,0,0,0,0,0,0,0> format_dynamic_16_k;
 typedef PixelFormatT<16,PF::DynamicMasks,PF::StaticAlpha,PF::NoAlpha,PF::NotAligned,0,0,0,0,0,0,0,0> format_dynamic_16_n;
 typedef PixelFormatT<16,PF::DynamicMasks,PF::DynamicAlpha,PF::NoAlpha,PF::NotAligned,0,0,0,0,0,0,0,0> format_dynamic_16_d;
-
-
-////////////////////////////////////////////////////////////
 
 #endif

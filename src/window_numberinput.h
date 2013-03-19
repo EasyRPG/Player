@@ -1,80 +1,85 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #ifndef _WINDOW_NUMBERINPUT_H_
 #define _WINDOW_NUMBERINPUT_H_
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "window_base.h"
 #include "window_selectable.h"
 
-////////////////////////////////////////////////////////////
-/// Window Input Number Class
-/// The number input window
-////////////////////////////////////////////////////////////
+/**
+ * Window Input Number Class.
+ * The number input window.
+ */
 class Window_NumberInput : public Window_Selectable {
 public:
-	////////////////////////////////////////////////////////
-	/// Constructor
-	/// @param idigits_max : The maximum number of digits
-	///	allowed
-	////////////////////////////////////////////////////////
+	/**
+	 * Constructor.
+	 *
+	 * @param ix window x position.
+	 * @param iy window y position.
+	 * @param iwidth window width.
+	 * @param iheight window height.
+	 */
 	Window_NumberInput(int ix, int iy, int iwidth = 320, int iheight = 80);
 
-	////////////////////////////////////////////////////////
-	/// Updates the Window's contents
-	////////////////////////////////////////////////////////
+	/**
+	 * Updates the Window's contents.
+	 */
 	void Refresh();
 
-	////////////////////////////////////////////////////////
-	/// Returns the number value.
-	/// @return The currently inputted number
-	////////////////////////////////////////////////////////
+	/**
+	 * Returns the number value.
+	 *
+	 * @return the currently input number.
+	 */
 	int GetNumber();
 
-	////////////////////////////////////////////////////////
-	/// Sets a new number value
-	/// @param inumber : The new number value
-	////////////////////////////////////////////////////////
+	/**
+	 * Sets a new number value.
+	 *
+	 * @param inumber the new number value.
+	 */
 	void SetNumber(unsigned inumber);
 
-	////////////////////////////////////////////////////////
-	/// Returns the number of displayed digits.
-	/// @return Number of displayed digits.
-	////////////////////////////////////////////////////////
+	/**
+	 * Returns the number of displayed digits.
+	 *
+	 * @return number of displayed digits.
+	 */
 	int GetMaxDigits();
 
-	////////////////////////////////////////////////////////
-	/// Sets the maximal displayed digits
-	/// @param idigits_max : Maximal displayed digits, must
-	/// be a value from 1-6.
-	////////////////////////////////////////////////////////
+	/**
+	 * Sets the maximal displayed digits.
+	 *
+	 * @param idigits_max maximal displayed digits
+	 *                    must be a value from 1-6.
+	 */
 	void SetMaxDigits(int idigits_max);
 
-	////////////////////////////////////////////////////////
-	/// Updates the position of the cursor rectangle
-	////////////////////////////////////////////////////////
+	/**
+	 * Updates the position of the cursor rectangle.
+	 */
 	void UpdateCursorRect();
 
-	////////////////////////////////////////////////////////
-	/// Updates number value according to user input
-	////////////////////////////////////////////////////////
+	/**
+	 * Updates number value according to user input.
+	 */
 	void Update();
 
 protected:
