@@ -31,10 +31,6 @@ add_definitions(
   -D UNIX=1
   -D USE_SDL=1)
 
-if(CMAKE_GENERATOR MATCHES "Makefile")
-  add_definitions(-fno-rtti)
-endif()
-
 # shinonome font
 set(SHINONOME_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../lib/shinonome")
 set(SHINONOME_SRCS "${SHINONOME_PATH}/gothic.cxx" "${SHINONOME_PATH}/mincho.cxx")

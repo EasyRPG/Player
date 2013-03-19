@@ -15,15 +15,20 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef _WIN32
-
 #ifndef _REGISTRY_H_
 #define _REGISTRY_H_
 
 // Headers
 #include <string>
+#ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#else
+enum HKEY {
+	HKEY_LOCAL_MACHINE,
+	HKEY_CURRENT_USER,
+};
+#endif
 
 /**
  * Registry namespace
@@ -39,7 +44,5 @@ namespace Registry {
 	 */
 	int ReadBinValue(HKEY hkey, std::string const& key, std::string const& val, unsigned char* bin);
 }
-
-#endif
 
 #endif

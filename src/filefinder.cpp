@@ -38,6 +38,7 @@
 #include "output.h"
 #include "player.h"
 #include "main_data.h"
+#include "registry.h"
 
 #ifdef _MSC_VER
 #  include "rtp_table_bom.h"
@@ -54,7 +55,6 @@
 #ifdef _WIN32
 #  include <windows.h>
 #  include <shlobj.h>
-#  include "registry_win.h"
 #else
 #  include <dirent.h>
 #  include <unistd.h>
@@ -302,7 +302,6 @@ void FileFinder::InitRtpPaths() {
 
 	assert(!version_str.empty());
 
-#ifdef _WIN32
 	std::string const company =
 		Player::engine == Player::EngineRpg2k? "ASCII": "Enterbrain";
 
@@ -311,7 +310,7 @@ void FileFinder::InitRtpPaths() {
 
 	rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\" + company + "\\RPG" + version_str, "RuntimePackagePath");
 	if(! rtp_path.empty()) { add_rtp_path(rtp_path); }
-#elif defined(GEKKO)
+#ifdef GEKKO
 	add_rtp_path("sd:/data/rtp/" + version_str + "/");
 	add_rtp_path("usb:/data/rtp/" + version_str + "/");
 #else
