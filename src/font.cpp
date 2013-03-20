@@ -17,6 +17,7 @@
 
 // Headers
 #include <map>
+#include <ciso646>
 
 #include <boost/next_prior.hpp>
 #include <boost/regex/pending/unicode_iterator.hpp>
