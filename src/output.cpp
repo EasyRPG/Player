@@ -47,15 +47,19 @@ void boost::throw_exception(std::exception const& exp) {
 #endif
 
 namespace {
-	static std::ofstream LOG_FILE(OUTPUT_FILENAME, std::ios_base::out | std::ios_base::app);
+	std::ofstream LOG_FILE(OUTPUT_FILENAME, std::ios_base::out | std::ios_base::app);
 
-	static std::ostream& output_time() {
+	std::ostream& output_time() {
 		std::time_t t = std::time(NULL);
-		return LOG_FILE << "Local: " << std::asctime(std::localtime(&t))
-						<< "UTC  : " << std::asctime(std::gmtime(&t));
+		char const time_fmt[] = "%Y/%m/%d %a %H:%M:%S";
+		char buf[sizeof(time_fmt) + 10];
+		strftime(buf, sizeof(buf), time_fmt, std::localtime(&t));
+		LOG_FILE << "Local: "  << buf;
+		strftime(buf, sizeof(buf), time_fmt, std::gmtime(&t));
+		return LOG_FILE << ", UTC: " << buf << std::endl;
 	}
 
-	static bool ignore_pause = false;
+	bool ignore_pause = false;
 }
 
 void Output::IgnorePause(bool const val) {

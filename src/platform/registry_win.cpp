@@ -19,7 +19,7 @@
 
 // Headers
 #include <string>
-#include "registry_win.h"
+#include "registry.h"
 #include "utils.h"
 
 /**

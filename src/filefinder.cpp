@@ -20,6 +20,7 @@
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
+#include <ciso646>
 
 #include <algorithm>
 #include <fstream>
@@ -37,6 +38,7 @@
 #include "output.h"
 #include "player.h"
 #include "main_data.h"
+#include "registry.h"
 
 #ifdef _MSC_VER
 #  include "rtp_table_bom.h"
@@ -53,7 +55,6 @@
 #ifdef _WIN32
 #  include <windows.h>
 #  include <shlobj.h>
-#  include "registry_win.h"
 #else
 #  include <dirent.h>
 #  include <unistd.h>
@@ -99,6 +100,12 @@ namespace {
 		return boost::none;
 	}
 
+	bool is_not_ascii_char(uint8_t c) { return c < 0x80; }
+
+	bool is_not_ascii_filename(std::string const& n) {
+		return std::find_if(n.begin(), n.end(), &is_not_ascii_char) != n.end();
+	}
+
 	std::string const& translate_rtp(std::string const& dir, std::string const& name) {
 		rtp_table_type const& table =
 			Player::engine == Player::EngineRpg2k3? RTP_TABLE_2003:
@@ -110,8 +117,8 @@ namespace {
 		std::map<std::string, std::string>::const_iterator file_it =
 			dir_it->second.find(Utils::LowerCase(name));
 
-		if (file_it == dir_it->second.end()) {
-			// Linear Search: English -> Japanese
+		if (file_it == dir_it->second.end() and is_not_ascii_filename(name)) {
+			// Linear Search: Japanese file name to English file name
 			for (std::map<std::string, std::string>::const_iterator it = dir_it->second.begin(); it != file_it; ++it) {
 				if (it->second == name) {
 					return it->first;
@@ -295,7 +302,6 @@ void FileFinder::InitRtpPaths() {
 
 	assert(!version_str.empty());
 
-#ifdef _WIN32
 	std::string const company =
 		Player::engine == Player::EngineRpg2k? "ASCII": "Enterbrain";
 
@@ -304,7 +310,7 @@ void FileFinder::InitRtpPaths() {
 
 	rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\" + company + "\\RPG" + version_str, "RuntimePackagePath");
 	if(! rtp_path.empty()) { add_rtp_path(rtp_path); }
-#elif defined(GEKKO)
+#ifdef GEKKO
 	add_rtp_path("sd:/data/rtp/" + version_str + "/");
 	add_rtp_path("usb:/data/rtp/" + version_str + "/");
 #else
