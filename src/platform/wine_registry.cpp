@@ -84,7 +84,8 @@ struct parse_registry {
 		line.clear();
 		std::string tmp;
 		do {
-			if(not line.empty() and *line.rbegin() == '\\') { line.erase(line.rbegin().base()); }
+			if(not line.empty() and *line.rbegin() == '\\')
+			{ line.resize(line.size() - 1); }
 			std::getline(ifs, tmp);
 			++line_number;
 			line += tmp;
