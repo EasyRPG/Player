@@ -211,7 +211,7 @@ Game_Interpreter& Game_Map::GetInterpreter() {
 }
 
 void Game_Map::ScrollDown(int distance) {
-	display_y = min(display_y + distance, (map->height - 15) * 128);
+	display_y = min(display_y + distance, (GetHeight() - 15) * 128);
 }
 
 void Game_Map::ScrollLeft(int distance) {
@@ -219,7 +219,7 @@ void Game_Map::ScrollLeft(int distance) {
 }
 
 void Game_Map::ScrollRight(int distance) {
-	display_x = min(display_x + distance, (map->width - 20) * 128);
+	display_x = min(display_x + distance, (GetWidth() - 20) * 128);
 }
 
 void Game_Map::ScrollUp(int distance) {
@@ -266,7 +266,7 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 		}
 	}*/
 
-	int const tile_index = x + y * map->width;
+	int const tile_index = x + y * GetWidth();
 
 	int tile_id = map->upper_layer[tile_index] - BLOCK_F;
 	tile_id = map_info.upper_tiles[tile_id];
@@ -326,14 +326,14 @@ bool Game_Map::IsBush(int /* x */, int /* y */) {
 
 bool Game_Map::IsCounter(int x, int y) {
 	if (!Game_Map::IsValid(x, y)) return false;
-	int const tile_id = map->upper_layer[x + y * map->width];
+	int const tile_id = map->upper_layer[x + y * GetWidth()];
 	if (tile_id < BLOCK_F) return false;
 	int const index = map_info.lower_tiles[passages_up[tile_id - BLOCK_F]];
 	return bool(Data::chipsets[map_info.chipset_id - 1].passable_data_upper[index] & Passable::Counter);
 }
 
 int Game_Map::GetTerrainTag(int const x, int const y) {
-	unsigned const chipID = map->lower_layer[x + y * map->width];
+	unsigned const chipID = map->lower_layer[x + y * GetWidth()];
 	unsigned const chip_index =
 		(chipID <  3000)?  0 + chipID/1000 :
 		(chipID == 3028)?  3 + 0 :
