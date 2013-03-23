@@ -319,7 +319,7 @@ bool Game_Map::IsCounter(int x, int y) {
 	int const tile_id = map->upper_layer[x + y * GetWidth()];
 	if (tile_id < BLOCK_F) return false;
 	int const index = map_info.lower_tiles[passages_up[tile_id - BLOCK_F]];
-	return bool(Data::chipsets[map_info.chipset_id - 1].passable_data_upper[index] & Passable::Counter);
+	return !!(Data::chipsets[map_info.chipset_id - 1].passable_data_upper[index] & Passable::Counter);
 }
 
 int Game_Map::GetTerrainTag(int const x, int const y) {
