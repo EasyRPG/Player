@@ -41,14 +41,15 @@ Game_Player::Game_Player():
 
 // Is Passable
 bool Game_Player::IsPassable(int x, int y, int d) const {
-	int new_x = x + (d == 6 ? 1 : d == 4 ? -1 : 0);
-	int new_y = y + (d == 2 ? 1 : d == 8 ? -1 : 0);
+	int new_x = x + (d == RPG::EventPage::Direction_right ? 1 : d == RPG::EventPage::Direction_left ? -1 : 0);
+	int new_y = y + (d == RPG::EventPage::Direction_down ? 1 : d == RPG::EventPage::Direction_up ? -1 : 0);
 
 	if (!Game_Map::IsValid(new_x, new_y)) return false;
 
-#ifndef NDEBUG
-	if (Input::IsPressed(Input::DEBUG_THROUGH)) return true;
-#endif
+	if (Player::debug_flag &&
+		Input::IsPressed(Input::DEBUG_THROUGH)) {
+			return true;
+	}
 
 	return Game_Character::IsPassable(x, y, d);
 }
