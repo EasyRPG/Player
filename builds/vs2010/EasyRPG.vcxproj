@@ -230,7 +230,7 @@
     <ClCompile Include="..\..\src\plane.cpp" />
     <ClCompile Include="..\..\src\player.cpp" />
     <ClCompile Include="..\..\src\rect.cpp" />
-    <ClCompile Include="..\..\src\registry_win.cpp" />
+    <ClCompile Include="..\..\src\registry.cpp" />
     <ClCompile Include="..\..\src\scene.cpp" />
     <ClCompile Include="..\..\src\scene_actortarget.cpp" />
     <ClCompile Include="..\..\src\scene_battle.cpp" />
@@ -361,7 +361,7 @@
     <ClInclude Include="..\..\src\plane.h" />
     <ClInclude Include="..\..\src\player.h" />
     <ClInclude Include="..\..\src\rect.h" />
-    <ClInclude Include="..\..\src\registry_win.h" />
+    <ClInclude Include="..\..\src\registry.h" />
     <ClInclude Include="..\..\src\rtp_table_bom.h" />
     <ClInclude Include="..\..\src\scene.h" />
     <ClInclude Include="..\..\src\scene_actortarget.h" />

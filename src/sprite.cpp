@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <string>
 #include "sprite.h"
 #include "player.h"
@@ -26,9 +24,7 @@
 #include "bitmap.h"
 #include "bitmap_screen.h"
 
-////////////////////////////////////////////////////////////
-/// Constructor
-////////////////////////////////////////////////////////////
+// Constructor
 Sprite::Sprite() :
 	type(TypeSprite),
 	ID(Graphics::drawable_id++),
@@ -47,17 +43,13 @@ Sprite::Sprite() :
 	Graphics::RegisterDrawable(ID, this);
 }
 
-////////////////////////////////////////////////////////////
-/// Destructor
-////////////////////////////////////////////////////////////
+// Destructor
 Sprite::~Sprite() {
 	Graphics::RemoveZObj(ID);
 	Graphics::RemoveDrawable(ID);
 }
 
-////////////////////////////////////////////////////////////
-/// Draw
-////////////////////////////////////////////////////////////
+// Draw
 void Sprite::Draw(int /* z_order */) {
 	if (!visible) return;
 	if (GetWidth() <= 0 || GetHeight() <= 0) return;
@@ -65,17 +57,14 @@ void Sprite::Draw(int /* z_order */) {
 	bitmap_screen->BlitScreen(x - ox, y - oy, src_rect);
 }
 
-////////////////////////////////////////////////////////////
 int Sprite::GetWidth() const {
 	return src_rect.width;
 }
 
-////////////////////////////////////////////////////////////
 int Sprite::GetHeight() const {
 	return src_rect.height;
 }
 
-////////////////////////////////////////////////////////////
 void Sprite::Update() {
 	if (flash_duration != 0) {
 		flash_frame += 1;
@@ -92,7 +81,6 @@ void Sprite::Update() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Sprite::Flash(int duration){
 	bitmap_screen->SetFlashEffect(flash_color);
 	flash_duration = duration;
@@ -105,7 +93,6 @@ void Sprite::Flash(Color color, int duration){
 	bitmap_screen->SetFlashEffect(color);
 }
 
-////////////////////////////////////////////////////////////
 BitmapRef const& Sprite::GetBitmap() const {
 	return bitmap;
 }
@@ -258,7 +245,6 @@ void Sprite::SetWaverPhase(double phase) {
 	bitmap_screen->SetWaverEffectPhase(phase);
 }
 
-////////////////////////////////////////////////////////////
 unsigned long Sprite::GetId() const {
 	return ID;
 }

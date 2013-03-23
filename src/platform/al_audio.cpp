@@ -1,23 +1,21 @@
-////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <cassert>
 #include <boost/assert.hpp>
 
@@ -32,8 +30,8 @@ char const ALAudio::NULL_DEVICE[] = "No Output";
 
 
 namespace {
-	/*
-	 * return true if no error
+	/**	
+	 * @return true if no error
 	 */
 	bool print_al_error() {
 		char const* err = NULL;
@@ -298,7 +296,6 @@ void ALAudio::Update() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 ALAudio::ALAudio(char const* const dev_name) {
 	dev_.reset(alcOpenDevice(dev_name), &alcCloseDevice);
 	BOOST_ASSERT(dev_);
@@ -337,7 +334,6 @@ EASYRPG_SHARED_PTR<ALAudio::buffer> ALAudio::create_buffer() {
 	return EASYRPG_MAKE_SHARED<buffer>(ctx_, ret);
 }
 
-////////////////////////////////////////////////////////////
 void ALAudio::BGM_Play(std::string const& file, int volume, int pitch) {
 	SET_CONTEXT(ctx_);
 
@@ -347,31 +343,26 @@ void ALAudio::BGM_Play(std::string const& file, int volume, int pitch) {
 	bgm_src_->play_buffer(getMusic(file));
 }
 
-////////////////////////////////////////////////////////////
 void ALAudio::BGM_Stop() {
 	SET_CONTEXT(ctx_);
 	alSourceStop(bgm_src_->get());
 }
 
-////////////////////////////////////////////////////////////
 void ALAudio::BGM_Fade(int fade) {
 	SET_CONTEXT(ctx_);
 	bgm_src_->fade_out(fade);
 }
 
-////////////////////////////////////////////////////////////
 void ALAudio::BGM_Pause() {
 	SET_CONTEXT(ctx_);
 	alSourcePause(bgm_src_->get());
 }
 
-////////////////////////////////////////////////////////////
 void ALAudio::BGM_Resume() {
 	SET_CONTEXT(ctx_);
 	alSourcePlay(bgm_src_->get());
 }
 
-////////////////////////////////////////////////////////////
 void ALAudio::BGS_Play(std::string const& file, int volume, int pitch) {
 	SET_CONTEXT(ctx_);
 
@@ -381,19 +372,16 @@ void ALAudio::BGS_Play(std::string const& file, int volume, int pitch) {
 	bgm_src_->play_buffer(getSound(file));
 }
 
-////////////////////////////////////////////////////////////
 void ALAudio::BGS_Stop() {
 	SET_CONTEXT(ctx_);
 	alSourceStop(bgs_src_->get());
 }
 
-////////////////////////////////////////////////////////////
 void ALAudio::BGS_Fade(int fade) {
 	SET_CONTEXT(ctx_);
 	bgs_src_->fade_out(fade);
 }
 
-////////////////////////////////////////////////////////////
 void ALAudio::ME_Play(std::string const& file, int volume, int pitch) {
 	SET_CONTEXT(ctx_);
 
@@ -403,19 +391,16 @@ void ALAudio::ME_Play(std::string const& file, int volume, int pitch) {
 	me_src_->play_buffer(getMusic(file));
 }
 
-////////////////////////////////////////////////////////////
 void ALAudio::ME_Stop() {
 	SET_CONTEXT(ctx_);
 	alSourceStop(me_src_->get());
 }
 
-////////////////////////////////////////////////////////////
 void ALAudio::ME_Fade(int fade) {
 	SET_CONTEXT(ctx_);
 	me_src_->fade_out(fade);
 }
 
-////////////////////////////////////////////////////////////
 void ALAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	SET_CONTEXT(ctx_);
 
@@ -429,7 +414,6 @@ void ALAudio::SE_Play(std::string const& file, int volume, int pitch) {
 	se_src_.push_back(src);
 }
 
-////////////////////////////////////////////////////////////
 void ALAudio::SE_Stop() {
 	SET_CONTEXT(ctx_);
 	for(source_list::iterator i = se_src_.begin(); i < se_src_.end(); ++i) {

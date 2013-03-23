@@ -1,4 +1,21 @@
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
+// Headers
 #include <deque>
 #include <algorithm>
 #include "data.h"
@@ -36,7 +53,6 @@ namespace Game_Battle {
 	boost::scoped_ptr<Game_Interpreter> interpreter;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Battle::Init(Battle_Interface* _scene) {
 	scene = _scene;
 
@@ -93,12 +109,10 @@ void Game_Battle::Quit() {
 	scene = NULL;
 }
 
-////////////////////////////////////////////////////////////
 Battle_Interface* Game_Battle::GetScene() {
 	return scene;
 }
 
-////////////////////////////////////////////////////////////
 Battle::Ally* Game_Battle::FindAlly(int actor_id) {
 	for (std::vector<Battle::Ally>::iterator it = allies.begin(); it != allies.end(); it++)
 		if (it->rpg_actor->ID == actor_id)
@@ -106,7 +120,6 @@ Battle::Ally* Game_Battle::FindAlly(int actor_id) {
 	return NULL;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Battle::AlliesCentroid(int& x, int& y) {
 	x = 0;
 	y = 0;
@@ -118,7 +131,6 @@ void Game_Battle::AlliesCentroid(int& x, int& y) {
 	y /= allies.size();
 }
 
-////////////////////////////////////////////////////////////
 void Game_Battle::EnemiesCentroid(int& x, int& y) {
 	x = 0;
 	y = 0;
@@ -130,8 +142,6 @@ void Game_Battle::EnemiesCentroid(int& x, int& y) {
 	y /= allies.size();
 }
 
-
-////////////////////////////////////////////////////////////
 Battle::Ally& Game_Battle::GetAlly(int i) {
 	return allies[i];
 }
@@ -183,7 +193,6 @@ void Game_Battle::TargetRandomAlly() {
 	target_ally = rand() % allies.size();
 }
 
-////////////////////////////////////////////////////////////
 Battle::Enemy& Game_Battle::GetEnemy(int i) {
 	return enemies[i];
 }
@@ -239,7 +248,6 @@ bool Game_Battle::NextActiveEnemy() {
 	return false;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Battle::ChooseEnemy() {
 	if (target_enemy < 0)
 		target_enemy = 0;
@@ -257,18 +265,15 @@ void Game_Battle::ChooseEnemy() {
 		ClearTargetEnemy();
 }
 
-////////////////////////////////////////////////////////////
 int Game_Battle::GetActiveActor() {
 	Battle::Ally& ally = HaveActiveAlly() ? GetActiveAlly() : GetAlly(0);
 	return ally.game_actor->GetId();
 }
 
-////////////////////////////////////////////////////////////
 int Game_Battle::GetTurns() {
 	return turn_fragments / turn_length;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Battle::Update() {
 	turn_fragments++;
 
@@ -287,7 +292,6 @@ void Game_Battle::Update() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 bool Game_Battle::HaveCorpse() {
 	for (std::vector<Battle::Ally>::iterator it = allies.begin(); it != allies.end(); it++)
 		if (it->GetActor()->IsDead())
@@ -295,7 +299,6 @@ bool Game_Battle::HaveCorpse() {
 	return false;
 }
 
-////////////////////////////////////////////////////////////
 bool Game_Battle::CheckWin() {
 	for (std::vector<Battle::Enemy>::iterator it = enemies.begin(); it != enemies.end(); it++)
 		if (!it->game_enemy->IsDead())
@@ -310,17 +313,14 @@ bool Game_Battle::CheckLose() {
 	return true;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Battle::Terminate() {
 	terminate = true;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Battle::ChangeBackground(const std::string& name) {
 	background_name = name;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Battle::EnemyEscape() {
 	Battle::Enemy& enemy = GetActiveEnemy();
 
@@ -328,20 +328,17 @@ void Game_Battle::EnemyEscape() {
 	enemy.escaped = true;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Battle::MonsterFlee(int id) {
 	SetActiveEnemy(id);
 	if (GetActiveEnemy().game_enemy->Exists())
 		EnemyEscape();
 }
 
-////////////////////////////////////////////////////////////
 void Game_Battle::MonstersFlee() {
 	for (int i = 0; i < (int) enemies.size(); i++)
 		MonsterFlee(i);
 }
 
-////////////////////////////////////////////////////////////
 bool Game_Battle::CheckTurns(int turns, int base, int multiple) {
 	return turns >= base && (turns - base) % multiple == 0;
 }
@@ -412,7 +409,6 @@ void Game_Battle::CheckEvents() {
 		interpreter->Setup(new_page->event_commands, 0);
 }
 
-////////////////////////////////////////////////////////////
 void Game_Battle::Restart() {
 	scene->Restart();
 	Battle::Ally& ally = GetActiveAlly();
@@ -421,7 +417,6 @@ void Game_Battle::Restart() {
 	ClearTargetEnemy();
 }
 
-////////////////////////////////////////////////////////////
 void Game_Battle::SetItem(int id) {
 	item_id = id;
 }
@@ -434,7 +429,6 @@ void Game_Battle::SetMorph(int id) {
 	morph_id = id;
 }
 
-////////////////////////////////////////////////////////////
 bool Game_Battle::Escape() {
 	if (Game_Temp::battle_escape_mode != 0) {
 		// FIXME: escape probability
@@ -471,7 +465,6 @@ void Game_Battle::UseSkill() {
 	ally.defending = false;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Battle::EnemyAttack(void* target) {
 	Battle::Enemy& enemy = GetActiveEnemy();
 	Battle::Ally& ally = *((Battle::Ally*)target);
@@ -528,7 +521,6 @@ void Game_Battle::EnemyTransform() {
 	enemy.Transform(morph_id);
 }
 
-////////////////////////////////////////////////////////////
 void Game_Battle::EnemyActionDone() {
 	if (enemy_action->switch_on)
 		Game_Switches[enemy_action->switch_on_id] = true;

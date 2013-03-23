@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "rpg_item.h"
 #include "rpg_skill.h"
 #include "rpg_enemyaction.h"
@@ -27,7 +25,6 @@
 #include "game_battle.h"
 #include "font.h"
 
-////////////////////////////////////////////////////////////
 void Game_Battle::AttackEnemy(Battle::Ally& ally, Battle::Enemy& enemy) {
 	const RPG::Item& weapon = Data::items[ally.game_actor->GetWeaponId() - 1];
 	double to_hit = 100 - (100 - weapon.hit) * (1 + (1.0 * enemy.GetAgi() / ally.GetAgi() - 1) / 2);
@@ -47,7 +44,6 @@ void Game_Battle::AttackEnemy(Battle::Ally& ally, Battle::Enemy& enemy) {
 		GetScene()->Floater(enemy.sprite.get(), Font::ColorDefault, Data::terms.miss, 60);
 }
 
-////////////////////////////////////////////////////////////
 void Game_Battle::UseItem(Battle::Ally& ally, const RPG::Item& item) {
 	if (item.type != RPG::Item::Type_medicine)
 		return;
@@ -75,7 +71,6 @@ void Game_Battle::UseItem(Battle::Ally& ally, const RPG::Item& item) {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Game_Battle::UseItemAlly(Battle::Ally& /* ally */, const RPG::Item& item, Battle::Ally& target) {
 	if (item.ko_only && !target.GetActor()->IsDead())
 		return;
@@ -99,7 +94,6 @@ void Game_Battle::UseItemAlly(Battle::Ally& /* ally */, const RPG::Item& item, B
 			target.GetActor()->RemoveState(i + 1);
 }
 
-////////////////////////////////////////////////////////////
 void Game_Battle::UseSkill(Battle::Ally& ally, const RPG::Skill& skill) {
 
 	int sp = ally.GetActor()->CalculateSkillCost(skill.ID);
@@ -148,7 +142,6 @@ void Game_Battle::UseSkill(Battle::Ally& ally, const RPG::Skill& skill) {
 	ally.GetActor()->SetSp(ally.GetActor()->GetSp() - sp);
 }
 
-////////////////////////////////////////////////////////////
 void Game_Battle::UseSkillAlly(Battle::Battler& /* user */, const RPG::Skill& skill, Battle::Battler& target) {
 	Game_Battler* actor = target.GetActor();
 	bool miss = true;
@@ -203,7 +196,6 @@ void Game_Battle::UseSkillAlly(Battle::Battler& /* user */, const RPG::Skill& sk
 		GetScene()->Floater(target.sprite.get(), Font::ColorDefault, Data::terms.miss, 60);
 }
 
-////////////////////////////////////////////////////////////
 void Game_Battle::UseSkillEnemy(Battle::Battler& user, const RPG::Skill& skill, Battle::Battler& target) {
 	Game_Battler* actor = target.GetActor();
 	bool miss = true;
@@ -260,7 +252,6 @@ void Game_Battle::UseSkillEnemy(Battle::Battler& user, const RPG::Skill& skill, 
 		GetScene()->Floater(target.sprite.get(), Font::ColorDefault, Data::terms.miss, 60);
 }
 
-////////////////////////////////////////////////////////////
 bool Game_Battle::EnemyActionValid(const RPG::EnemyAction& action, Battle::Enemy& enemy) {
 	switch (action.condition_type) {
 		case RPG::EnemyAction::ConditionType_always:
@@ -314,7 +305,6 @@ bool Game_Battle::EnemyActionValid(const RPG::EnemyAction& action, Battle::Enemy
 	}
 }
 
-////////////////////////////////////////////////////////////
 const RPG::EnemyAction* Game_Battle::ChooseEnemyAction(Battle::Enemy& enemy) {
 	const std::vector<RPG::EnemyAction>& actions = enemy.rpg_enemy->actions;
 	std::vector<int> valid;
@@ -344,7 +334,6 @@ const RPG::EnemyAction* Game_Battle::ChooseEnemyAction(Battle::Enemy& enemy) {
 	return enemy_action;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Battle::EnemyAttackAlly(Battle::Enemy& enemy, Battle::Ally& ally) {
 	if (ally.GetActor()->IsDead())
 		return;
@@ -367,7 +356,6 @@ void Game_Battle::EnemyAttackAlly(Battle::Enemy& enemy, Battle::Ally& ally) {
 		GetScene()->Floater(ally.sprite.get(), Font::ColorDefault, Data::terms.miss, 60);
 }
 
-////////////////////////////////////////////////////////////
 void Game_Battle::EnemySkill(Battle::Enemy& enemy, const RPG::Skill& skill) {
 	int sp = enemy.game_enemy->CalculateSkillCost(skill.ID);
 	if (sp > enemy.game_enemy->GetSp()) // not enough SP

@@ -62,7 +62,7 @@ easyrpg_player_SOURCES = \
 	plane.cpp \
 	player.cpp \
 	rect.cpp \
-	registry_win.cpp \
+	registry.cpp \
 	scene_actortarget.cpp \
 	scene_battle.cpp \
 	scene.cpp \

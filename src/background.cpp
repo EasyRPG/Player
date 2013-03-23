@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <string>
 #include "data.h"
 #include "rpg_terrain.h"
@@ -28,7 +26,6 @@
 #include "bitmap_screen.h"
 #include "bitmap.h"
 
-////////////////////////////////////////////////////////////
 Background::Background(const std::string& name) :
 	ID(Graphics::drawable_id++), zobj(NULL), visible(true),
 	bg_hscroll(0), bg_vscroll(0), bg_x(0), bg_y(0),
@@ -66,13 +63,11 @@ Background::Background(int terrain_id) :
 	}
 }
 
-////////////////////////////////////////////////////////////
 Background::~Background() {
 	Graphics::RemoveZObj(ID);
 	Graphics::RemoveDrawable(ID);
 }
 
-////////////////////////////////////////////////////////////
 int Background::GetZ() const {
 	return z;
 }
@@ -85,7 +80,6 @@ DrawableType Background::GetType() const {
 	return type;
 }
 
-////////////////////////////////////////////////////////////
 void Background::Update(int& rate, int& value) {
 	int step =
 		(rate > 0) ? 1 << rate :
@@ -114,7 +108,7 @@ void Background::Draw(int /* z_order */) {
 								   DisplayUi->GetDisplaySurface()->GetRect(),
 								   Scale(bg_x), Scale(bg_y));
 
-	if (fg_screen != NULL)
+	if (fg_screen)
 		fg_screen->BlitScreenTiled(bg_screen->GetBitmap()->GetRect(),
 								   DisplayUi->GetDisplaySurface()->GetRect(),
 								   Scale(fg_x), Scale(fg_y));

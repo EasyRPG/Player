@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "input.h"
 #include "player.h"
 #include "system.h"
@@ -25,7 +23,6 @@
 #include <algorithm>
 #include <boost/lambda/lambda.hpp>
 
-////////////////////////////////////////////////////////////
 namespace Input {
 	EASYRPG_ARRAY<int, BUTTON_COUNT> press_time;
 	std::bitset<BUTTON_COUNT> triggered, repeated, released;
@@ -42,7 +39,6 @@ namespace Input {
 bool Input::IsWaitingInput() { return wait_input; }
 void Input::WaitInput(bool v) { wait_input = v; }
 
-////////////////////////////////////////////////////////////
 void Input::Init() {
 	InitButtons();
 
@@ -55,7 +51,6 @@ void Input::Init() {
 	repeat_time = 5;
 }
 
-////////////////////////////////////////////////////////////
 void Input::Update() {
 	wait_input = false; // clear each frame
 
@@ -136,7 +131,6 @@ void Input::Update() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Input::ResetKeys() {
 	triggered.reset();
 	repeated.reset();
@@ -150,7 +144,6 @@ void Input::ResetKeys() {
 	DisplayUi->GetKeyStates().reset();
 }
 
-////////////////////////////////////////////////////////////
 bool Input::IsPressed(InputButton button) {
 	WaitInput(true);
 	return press_time[button] > 0;

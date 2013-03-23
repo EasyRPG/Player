@@ -1,24 +1,23 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <map>
+#include <ciso646>
 
 #include <boost/next_prior.hpp>
 #include <boost/regex/pending/unicode_iterator.hpp>
@@ -42,14 +41,19 @@ bool operator<(ShinonomeGlyph const& lhs, uint32_t const code) {
 	return lhs.code < code;
 }
 
-////////////////////////////////////////////////////////////
-/// Static Variables
-////////////////////////////////////////////////////////////
+// Static variables.
 namespace {
 	typedef std::map<std::string, EASYRPG_WEAK_PTR<boost::remove_pointer<FT_Face>::type> > face_cache_type;
-	face_cache_type face_cache;	ShinonomeGlyph const* find_glyph(ShinonomeGlyph const* data, size_t size, uint32_t code) {
+	face_cache_type face_cache;
+	ShinonomeGlyph const* find_glyph(ShinonomeGlyph const* data, size_t size, uint32_t code) {
 		ShinonomeGlyph const* ret = std::lower_bound(data, data + size, code);
-		return ret != (data + size)? ret : NULL;
+		if(ret != (data + size) and ret->code == code) {
+			return ret;
+		} else {
+			static ShinonomeGlyph const empty_glyph = { 0, true, {0} };
+			Output::Debug("glyph not found: 0x%04x", code);
+			return &empty_glyph;
+		}
 	}
 
 	ShinonomeGlyph const* find_gothic_glyph(uint32_t code) {
@@ -239,9 +243,7 @@ void Font::Dispose() {
 	face_cache.clear();
 }
 
-////////////////////////////////////////////////////////////
-/// Constructor
-////////////////////////////////////////////////////////////
+// Constructor.
 Font::Font(const std::string& name, int size, bool bold, bool italic)
 	: name(name)
 	, size(size)
