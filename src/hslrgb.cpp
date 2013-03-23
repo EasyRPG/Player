@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "hslrgb.h"
 #include "util_macro.h"
 
@@ -27,9 +25,9 @@ struct ColorHSL {
 	double l;
 };
 
-////////////////////////////////////////////////////////////
-/// RGB to HSL
-////////////////////////////////////////////////////////////
+/**
+ ** RGB to HSL.
+ */
 ColorHSL RGB2HSL(Color col) {
 	ColorHSL ncol;
 	double vmin, vmax, delta;
@@ -65,9 +63,9 @@ ColorHSL RGB2HSL(Color col) {
 	return ncol;
 }
 
-////////////////////////////////////////////////////////////
-/// Hue to RGB
-////////////////////////////////////////////////////////////
+/**
+ * Hue to RGB.
+ */
 double Hue_2_RGB(double v1, double v2, double vH) {
 	if (vH < 0) vH += 1;
 	if (vH > 1) vH -= 1;
@@ -77,9 +75,9 @@ double Hue_2_RGB(double v1, double v2, double vH) {
 	return v1;
 }
 
-////////////////////////////////////////////////////////////
-/// HSL to RGB
-////////////////////////////////////////////////////////////
+/**
+ * HSL to RGB.
+ */
 Color HSL2RGB(ColorHSL col) {
 	Color ncol(0, 0, 0, 0);
 	if (col.s == 0) {
@@ -101,9 +99,6 @@ Color HSL2RGB(ColorHSL col) {
 	return ncol;
 }
 
-////////////////////////////////////////////////////////////
-/// Ajust RGB with HSL
-////////////////////////////////////////////////////////////
 Color RGBAdjustHSL(Color col, double h, double s, double l) {
 	ColorHSL hsl;
 	Color rgb = col;

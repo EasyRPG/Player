@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <cassert>
 #include "scene.h"
 #include "graphics.h"
@@ -26,7 +24,6 @@
 #include "output.h"
 #include "audio.h"
 
-////////////////////////////////////////////////////////////
 EASYRPG_SHARED_PTR<Scene> Scene::instance;
 std::vector<EASYRPG_SHARED_PTR<Scene> > Scene::old_instances;
 std::vector<EASYRPG_SHARED_PTR<Scene> > Scene::instances;
@@ -61,12 +58,10 @@ enum PushPopOperation {
 
 int Scene::push_pop_operation = 0;
 
-////////////////////////////////////////////////////////////
 Scene::Scene() {
 	type = Scene::Null;
 }
 
-////////////////////////////////////////////////////////////
 void Scene::MainFunction() {
 	switch(push_pop_operation) {
 	case ScenePushed:
@@ -109,37 +104,29 @@ void Scene::MainFunction() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene::Start() {
 }
 
-////////////////////////////////////////////////////////////
 void Scene::Continue() {
 }
 
-////////////////////////////////////////////////////////////
 void Scene::Resume() {
 }
 
-////////////////////////////////////////////////////////////
 void Scene::Suspend() {
 }
 
-////////////////////////////////////////////////////////////
 void Scene::TransitionIn() {
 	Graphics::Transition(Graphics::TransitionFadeIn, 12);
 }
 
-////////////////////////////////////////////////////////////
 void Scene::TransitionOut() {
 	Graphics::Transition(Graphics::TransitionFadeOut, 12, true);
 }
 
-////////////////////////////////////////////////////////////
 void Scene::Update() {
 }
 
-////////////////////////////////////////////////////////////
 void Scene::Push(EASYRPG_SHARED_PTR<Scene> const& new_scene, bool pop_stack_top) {
 	if (pop_stack_top) {
 		old_instances.push_back(instances.back());
@@ -157,7 +144,6 @@ void Scene::Push(EASYRPG_SHARED_PTR<Scene> const& new_scene, bool pop_stack_top)
 	}*/
 }
 
-////////////////////////////////////////////////////////////
 void Scene::Pop() {
 	old_instances.push_back(instances.back());
 	instances.pop_back();
@@ -176,7 +162,6 @@ void Scene::Pop() {
 	}*/
 }
 
-////////////////////////////////////////////////////////////
 void Scene::PopUntil(SceneType type) {
 	int count = 0;
 
@@ -196,7 +181,6 @@ void Scene::PopUntil(SceneType type) {
 	Output::Warning("The requested scene %s was not on the stack", scene_names[type]);
 }
 
-////////////////////////////////////////////////////////////
 EASYRPG_SHARED_PTR<Scene> Scene::Find(SceneType type) {
 	std::vector<EASYRPG_SHARED_PTR<Scene> >::const_reverse_iterator it;
 	for (it = instances.rbegin() ; it != instances.rend(); it++) {

@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "data.h"
 #include "color.h"
 #include "cache.h"
@@ -27,7 +25,6 @@
 #include "game_temp.h"
 #include "window_battleoption.h"
 
-////////////////////////////////////////////////////////////
 Window_BattleOption::Window_BattleOption(int x, int y, int width, int height) :
 	Window_Base(x, y, width, height) {
 
@@ -46,7 +43,6 @@ Window_BattleOption::Window_BattleOption(int x, int y, int width, int height) :
 	Refresh();
 }
 
-////////////////////////////////////////////////////////////
 void Window_BattleOption::SetActive(bool active) {
 	index = active ? 0 : -1;
 	top_row = 0;
@@ -54,7 +50,6 @@ void Window_BattleOption::SetActive(bool active) {
 	Refresh();
 }
 
-////////////////////////////////////////////////////////////
 void Window_BattleOption::Update() {
 	Window_Base::Update();
 
@@ -83,7 +78,6 @@ void Window_BattleOption::Update() {
 	UpdateCursorRect();
 }
 
-////////////////////////////////////////////////////////////
 void Window_BattleOption::UpdateCursorRect() {
 	if (index >= 0)
 		SetCursorRect(Rect(0, (index - top_row) * 16, contents->GetWidth(), 16));
@@ -91,7 +85,6 @@ void Window_BattleOption::UpdateCursorRect() {
 		SetCursorRect(Rect());
 }
 
-////////////////////////////////////////////////////////////
 void Window_BattleOption::Refresh() {
 	contents->Clear();
 	for (int i = 0; i < (int) commands.size(); i++) {
@@ -102,7 +95,6 @@ void Window_BattleOption::Refresh() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Window_BattleOption::DrawItem(int index, Font::SystemColor color) {
 	int y = 16 * (index - top_row);
 	if (y < 0 || y + 16 > contents->GetHeight())
@@ -111,12 +103,10 @@ void Window_BattleOption::DrawItem(int index, Font::SystemColor color) {
 	contents->TextDraw(2, y + 2, color, commands[index]);
 }
 
-////////////////////////////////////////////////////////////
 int Window_BattleOption::GetIndex() {
 	return index;
 }
 
-////////////////////////////////////////////////////////////
 void Window_BattleOption::SetIndex(int _index) {
 	index = _index;
 }

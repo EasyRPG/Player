@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "game_player.h"
 #include "game_actor.h"
 #include "game_map.h"
@@ -30,9 +28,7 @@
 #include "util_macro.h"
 #include <algorithm>
 
-////////////////////////////////////////////////////////////
 // Constructor
-////////////////////////////////////////////////////////////
 Game_Player::Game_Player():
 	teleporting(false),
 	vehicle_type(-1),
@@ -43,15 +39,7 @@ Game_Player::Game_Player():
 	new_y(0) {
 }
 
-////////////////////////////////////////////////////////////
-// Destructor
-////////////////////////////////////////////////////////////
-Game_Player::~Game_Player() {
-}
-
-////////////////////////////////////////////////////////////
 // Is Passable
-////////////////////////////////////////////////////////////
 bool Game_Player::IsPassable(int x, int y, int d) const {
 	int new_x = x + (d == 6 ? 1 : d == 4 ? -1 : 0);
 	int new_y = y + (d == 2 ? 1 : d == 8 ? -1 : 0);
@@ -93,9 +81,7 @@ bool Game_Player::IsTeleporting() const {
 	return teleporting;
 }
 
-////////////////////////////////////////////////////////////
 // Center
-////////////////////////////////////////////////////////////
 void Game_Player::Center(int x, int y) {
 	int center_x = (DisplayUi->GetWidth() / 2 - 16) * 8;
 	int center_y = (DisplayUi->GetHeight() / 2 - 8) * 8;
@@ -106,9 +92,7 @@ void Game_Player::Center(int x, int y) {
 	Game_Map::SetDisplayY(max(0, min((y * 128 - center_y), max_y)));
 }
 
-////////////////////////////////////////////////////////////
 // MoveTo
-////////////////////////////////////////////////////////////
 void Game_Player::MoveTo(int x, int y) {
 	Game_Character::MoveTo(x, y);
 	Center(x, y);
@@ -154,9 +138,7 @@ void Game_Player::UpdateScroll(int last_real_x, int last_real_y) {
 	}
 }
 
-////////////////////////////////////////////////////////////
 // Update
-////////////////////////////////////////////////////////////
 void Game_Player::Update() {
 	bool last_moving = IsMoving();
 

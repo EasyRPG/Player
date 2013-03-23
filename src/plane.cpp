@@ -1,30 +1,27 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "plane.h"
 #include "graphics.h"
 #include "player.h"
 #include "bitmap.h"
 #include "bitmap_screen.h"
 
-////////////////////////////////////////////////////////////
 Plane::Plane() :
 	type(TypePlane),
 	ID(Graphics::drawable_id++),
@@ -39,13 +36,11 @@ Plane::Plane() :
 	Graphics::RegisterDrawable(ID, this);
 }
 
-////////////////////////////////////////////////////////////
 Plane::~Plane() {
 	Graphics::RemoveZObj(ID);
 	Graphics::RemoveDrawable(ID);
 }
 
-////////////////////////////////////////////////////////////
 void Plane::Draw(int /* z_order */) {
 	if (!visible || !bitmap) return;
 
@@ -54,7 +49,6 @@ void Plane::Draw(int /* z_order */) {
 	bitmap_screen->BlitScreenTiled(bitmap->GetRect(), dst_rect, ox, oy);
 }
 
-////////////////////////////////////////////////////////////
 BitmapRef const& Plane::GetBitmap() const {
 	return bitmap;
 }
@@ -125,7 +119,6 @@ void Plane::SetTone(Tone tone) {
 	bitmap_screen->SetToneEffect(tone);
 }
 
-////////////////////////////////////////////////////////////
 unsigned long Plane::GetId() const {
 	return ID;
 }

@@ -1,37 +1,31 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <vector>
 #include "main_data.h"
 #include "game_targets.h"
 
-////////////////////////////////////////////////////////////
-
 static std::vector<RPG::SaveTarget>& data = Main_Data::game_data.targets;
 
-////////////////////////////////////////////////////////////
 namespace Game_Targets {
 	std::vector<RPG::SaveTarget>::iterator FindTarget(int id, bool create);
 }
 
-////////////////////////////////////////////////////////////
 std::vector<RPG::SaveTarget>::iterator Game_Targets::FindTarget(int id, bool create) {
 	std::vector<RPG::SaveTarget>::iterator it;
 	for (it = data.begin(); it != data.end(); it++)
@@ -44,7 +38,6 @@ std::vector<RPG::SaveTarget>::iterator Game_Targets::FindTarget(int id, bool cre
 	return data.end() - 1;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Targets::AddTeleportTarget(int map_id, int x, int y, int switch_id) {
 	std::vector<RPG::SaveTarget>::iterator target = FindTarget(map_id, true);
 
@@ -55,7 +48,6 @@ void Game_Targets::AddTeleportTarget(int map_id, int x, int y, int switch_id) {
 	target->switch_id = switch_id;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Targets::RemoveTeleportTarget(int map_id) {
 	std::vector<RPG::SaveTarget>::iterator target = FindTarget(map_id, false);
 	if (target == data.end())
@@ -63,13 +55,11 @@ void Game_Targets::RemoveTeleportTarget(int map_id) {
 	data.erase(target);
 }
 
-////////////////////////////////////////////////////////////
 RPG::SaveTarget* Game_Targets::GetTeleportTarget(int map_id) {
 	std::vector<RPG::SaveTarget>::iterator target = FindTarget(map_id, false);
 	return target == data.end() ? NULL : &*target;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Targets::SetEscapeTarget(int map_id, int x, int y, int switch_id) {
 	std::vector<RPG::SaveTarget>::iterator target = FindTarget(0, true);
 
@@ -80,7 +70,6 @@ void Game_Targets::SetEscapeTarget(int map_id, int x, int y, int switch_id) {
 	target->switch_id = switch_id;
 }
 
-////////////////////////////////////////////////////////////
 RPG::SaveTarget* Game_Targets::GetEscapeTarget() {
 	std::vector<RPG::SaveTarget>::iterator target = FindTarget(0, false);
 	return target == data.end() ? NULL : &*target;

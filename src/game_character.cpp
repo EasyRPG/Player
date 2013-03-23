@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "audio.h"
 #include "game_character.h"
 #include "game_map.h"
@@ -29,7 +27,6 @@
 #include <cassert>
 #include <cstdlib>
 
-////////////////////////////////////////////////////////////
 Game_Character::Game_Character() :
 	x(0),
 	y(0),
@@ -68,7 +65,6 @@ Game_Character::Game_Character() :
 	transparent(false) {
 }
 
-////////////////////////////////////////////////////////////
 bool Game_Character::IsMoving() const {
 	return real_x != x * 128 || real_y != y * 128;
 }
@@ -81,7 +77,6 @@ bool Game_Character::IsStopping() const {
 	return !(IsMoving() || IsJumping());
 }
 
-////////////////////////////////////////////////////////////
 bool Game_Character::IsPassable(int x, int y, int d) const {
 	int new_x = x + (d == RPG::EventPage::Direction_right ? 1 : d == RPG::EventPage::Direction_left ? -1 : 0);
 	int new_y = y + (d == RPG::EventPage::Direction_down ? 1 : d == RPG::EventPage::Direction_up ? -1 : 0);
@@ -119,7 +114,6 @@ int Game_Character::GetPriorityType() const {
 	return priority_type;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Character::MoveTo(int x, int y) {
 	this->x = x % Game_Map::GetWidth();
 	this->y = y % Game_Map::GetHeight();
@@ -128,12 +122,10 @@ void Game_Character::MoveTo(int x, int y) {
 	prelock_direction = -1;
 }
 
-////////////////////////////////////////////////////////////
 int Game_Character::GetScreenX() const {
 	return (real_x - Game_Map::GetDisplayX() + 3) / 8 + 8;
 }
 
-////////////////////////////////////////////////////////////
 int Game_Character::GetScreenY() const {
 	int y = (real_y - Game_Map::GetDisplayY() + 3) / 8 + 16;
 
@@ -146,7 +138,6 @@ int Game_Character::GetScreenY() const {
 	return y; /*- (jump_peak * jump_peak - n * n) / 2;*/
 }
 
-////////////////////////////////////////////////////////////
 int Game_Character::GetScreenZ() const {
 	return GetScreenZ(0);
 }
@@ -159,7 +150,6 @@ int Game_Character::GetScreenZ(int /* height */) const {
 	return z;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Character::Update() {
 	/*if (IsJumping())
 		UpdateJump();
@@ -205,7 +195,6 @@ void Game_Character::Update() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Game_Character::UpdateMove() {
 	int distance = (1 << move_speed);
 	if (y * 128 > real_y)
@@ -226,7 +215,6 @@ void Game_Character::UpdateMove() {
 		anime_count += 1;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Character::UpdateSelfMovement() {
 	if (stop_count > 30 * (5 - move_frequency)) {
 		switch (move_type) {
@@ -252,7 +240,6 @@ void Game_Character::UpdateSelfMovement() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Game_Character::UpdateStop() {
 	if (step_anime)
 		anime_count += 1;
@@ -263,7 +250,6 @@ void Game_Character::UpdateStop() {
 		stop_count += 1;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Character::MoveTypeRandom() {
 	if (IsStopping()) {
 		switch (rand() % 6) {
@@ -457,7 +443,6 @@ void Game_Character::MoveTypeCustom() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Game_Character::MoveDown() {
 	if (turn_enabled) TurnDown();
 
@@ -586,8 +571,6 @@ void Game_Character::MoveAwayFromPlayer() {
 	}
 }
 
-
-////////////////////////////////////////////////////////////
 void Game_Character::TurnDown() {
 	if (!direction_fix) {
 		direction = RPG::EventPage::Direction_down;
@@ -677,7 +660,6 @@ void Game_Character::Turn90DegreeLeftOrRight() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Game_Character::TurnTowardPlayer() {
 	int sx = DistanceXfromPlayer();
 	int sy = DistanceYfromPlayer();
@@ -710,7 +692,6 @@ int Game_Character::DistanceYfromPlayer() const {
 	return sy;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Character::Lock() {
 	if (!locked) {
 		prelock_direction = direction;
@@ -733,7 +714,6 @@ void Game_Character::SetDirection(int direction) {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
 									int frequency,
 									Game_Interpreter* owner) {
@@ -771,7 +751,6 @@ void Game_Character::DetachMoveRouteOwner(Game_Interpreter* owner) {
 	}
 }
 
-////////////////////////////////////////////////////////////
 int Game_Character::GetX() const {
 	return x;
 }
@@ -840,9 +819,7 @@ void Game_Character::SetGraphic(const std::string& name, int index) {
 	character_index = index;
 }
 
-////////////////////////////////////////////////////////////
-/// Get Character
-////////////////////////////////////////////////////////////
+// Gets Character
 Game_Character* Game_Character::GetCharacter(int character_id, int event_id) {
 	switch (character_id) {
 		case CharPlayer:

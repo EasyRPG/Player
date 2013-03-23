@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <cctype>
 #include <sstream>
 
@@ -43,7 +41,6 @@
 const int Window_Message::speed_table[21] = {0, 0, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
 											7, 7, 8, 8, 9, 9, 10, 10, 11};
 
-////////////////////////////////////////////////////////////
 Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),
 	contents_x(0), contents_y(0), line_count(0), text(""),
@@ -69,13 +66,11 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	Game_Message::Init();
 }
 
-////////////////////////////////////////////////////////////
 Window_Message::~Window_Message() {
 	TerminateMessage();
 	Game_Message::visible = false;
 }
 
-////////////////////////////////////////////////////////////
 void Window_Message::StartMessageProcessing() {
 	contents->Clear();
 	text.clear();
@@ -91,7 +86,6 @@ void Window_Message::StartMessageProcessing() {
 	InsertNewPage();
 }
 
-////////////////////////////////////////////////////////////
 void Window_Message::FinishMessageProcessing() {
 	if (Game_Message::choice_max > 0) {
 		StartChoiceProcessing();
@@ -109,13 +103,11 @@ void Window_Message::FinishMessageProcessing() {
 	end = boost::u8_to_u32_iterator<std::string::const_iterator>(text.end(), text.begin(), text.end());
 }
 
-////////////////////////////////////////////////////////////
 void Window_Message::StartChoiceProcessing() {
 	active = true;
 	index = 0;
 }
 
-////////////////////////////////////////////////////////////
 void Window_Message::StartNumberInputProcessing() {
 	number_input_window->SetMaxDigits(Game_Message::num_input_digits_max);
 	if (!Game_Message::face_name.empty() && Game_Message::face_left_position) {
@@ -129,7 +121,6 @@ void Window_Message::StartNumberInputProcessing() {
 	number_input_window->Update();
 }
 
-////////////////////////////////////////////////////////////
 void Window_Message::InsertNewPage() {
 	contents->Clear();
 
@@ -192,7 +183,6 @@ void Window_Message::InsertNewPage() {
 	speed_modifier = 0;
 }
 
-////////////////////////////////////////////////////////////
 void Window_Message::InsertNewLine() {
 	if (!Game_Message::face_name.empty() && Game_Message::face_left_position) {
 		contents_x = LeftMargin + FaceSize + RightFaceMargin;
@@ -217,7 +207,6 @@ void Window_Message::InsertNewLine() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Window_Message::TerminateMessage() {
 	active = false;
 	pause = false;
@@ -236,7 +225,6 @@ void Window_Message::TerminateMessage() {
 	Game_Message::SemiClear();
 }
 
-////////////////////////////////////////////////////////////
 bool Window_Message::IsNextMessagePossible() {
 	if (Game_Message::num_input_variable_id > 0) {
 		return true;
@@ -249,12 +237,10 @@ bool Window_Message::IsNextMessagePossible() {
 	return true;
 }
 
-////////////////////////////////////////////////////////////
 void Window_Message::ResetWindow() {
 
 }
 
-////////////////////////////////////////////////////////////
 void Window_Message::Update() {
 	Window_Selectable::Update();
 	number_input_window->Update();
@@ -291,7 +277,6 @@ void Window_Message::Update() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Window_Message::UpdateMessage() {
 	// Message Box Show Message rendering loop
 
@@ -413,7 +398,6 @@ void Window_Message::UpdateMessage() {
 	loop_count = 0;
 }
 
-////////////////////////////////////////////////////////////
 int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 	++text_index;
 
@@ -486,7 +470,6 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 	return num;
 }
 
-////////////////////////////////////////////////////////////
 std::string Window_Message::ParseCommandCode(int call_depth) {
 	int parameter;
 	bool is_valid;
@@ -572,7 +555,6 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 	return "";
 }
 
-////////////////////////////////////////////////////////////
 void Window_Message::UpdateCursorRect() {
 	if (index >= 0) {
 		int x_pos = 2;
@@ -592,7 +574,6 @@ void Window_Message::UpdateCursorRect() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Window_Message::WaitForInput() {
 	active = true; // Enables the Pause arrow
 	if (Input::IsTriggered(Input::DECISION) ||
@@ -609,7 +590,6 @@ void Window_Message::WaitForInput() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Window_Message::InputChoice() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		if (Game_Message::choice_cancel_type > 0) {
@@ -629,7 +609,6 @@ void Window_Message::InputChoice() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Window_Message::InputNumber() {
 	if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Data::system.decision_se);
