@@ -104,7 +104,7 @@ void Scene_Battle::CreateWindows() {
 void Scene_Battle::Start() {
 	if (Player::battle_test_flag) {
 		if (Player::battle_test_troop_id <= 0) {
-			Output::Error("Invalid Monster Party Id");
+			Output::Error("Invalid Monster Party ID");
 		} else {
 			Game_Temp::battle_troop_id = Player::battle_test_troop_id;
 			// TODO: Rpg2k does specify a background graphic instead

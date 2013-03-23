@@ -35,7 +35,7 @@ public:
 	Window_Item(int ix, int iy, int iwidth, int iheight);
 
 	/**
-	 * Gets item id of the selected item.
+	 * Gets item ID of the selected item.
 	 *
 	 * @return current selected item ID.
 	 */
