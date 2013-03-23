@@ -256,18 +256,19 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 			assert(false);
 	}
 
-	for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
+	// FIXME: What does this do?
+	/*for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
 		if (i->second->GetTileId() >= 0 && i->second.get() != self_event &&
 			i->second->GetX() == x && i->second->GetY() == y && !i->second->GetThrough()) {
-			// FIXME: What does this do?
-			/*if ((passages_up[i->second->GetTileId()] & bit) != 0)
-				return false;*/
+			
+			if ((passages_up[i->second->GetTileId()] & bit) != 0)
+				return false;
 		}
-	}
+	}*/
 
-	int16_t tile_index = (int16_t)(x + y * map->width);
+	int const tile_index = x + y * map->width;
 
-	int16_t tile_id = map->upper_layer[tile_index] - BLOCK_F;
+	int tile_id = map->upper_layer[tile_index] - BLOCK_F;
 	tile_id = map_info.upper_tiles[tile_id];
 
 	if ((passages_up[tile_id] & bit) == 0)
