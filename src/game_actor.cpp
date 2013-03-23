@@ -373,7 +373,7 @@ bool Game_Actor::IsEquippable(int item_id) {
 			return false;
 	}
 
-	// If the actor id is out of range this is an optimization in the ldb file
+	// If the actor ID is out of range this is an optimization in the ldb file
 	// (all actors missing can equip the item)
 	if (Data::items[item_id - 1].actor_set.size() <= (unsigned)(data.ID - 1)) {
 		return true;

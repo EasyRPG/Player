@@ -41,7 +41,7 @@ public:
 	void Refresh();
 
 	/**
-	 * Sets the id of the item/skill that shall be used.
+	 * Sets the ID of the item/skill that shall be used.
 	 *
 	 * @param id ID of item/skill.
 	 * @param is_item true if ID for an item, otherwise for a skill.
