@@ -1,26 +1,24 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #ifndef _GAME_CHARACTER_H_
 #define _GAME_CHARACTER_H_
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <string>
 #include "rpg_moveroute.h"
 
@@ -28,255 +26,333 @@ class Game_Event;
 class Game_Player;
 class Game_Interpreter;
 
-////////////////////////////////////////////////////////////
-/// Game_Character class.
-////////////////////////////////////////////////////////////
+/**
+ * Game_Character class.
+ */
 class Game_Character {
 public:
-	////////////////////////////////////////////////////////
-	/// Constructor.
-	////////////////////////////////////////////////////////
+	/**
+	 * Constructor.
+	 */
 	Game_Character();
 
-	////////////////////////////////////////////////////////
-	/// Destructor.
-	////////////////////////////////////////////////////////
+	/**
+	 * Destructor.
+	 */
 	virtual ~Game_Character() {}
 
-	////////////////////////////////////////////////////////
-	/// Get if character is moving.
-	/// @return whether the character is moving
-	////////////////////////////////////////////////////////
+	/**
+	 * Gets if character is moving.
+	 *
+	 * @return whether the character is moving.
+	 */
 	virtual bool IsMoving() const;
 
-	////////////////////////////////////////////////////////
-	/// Checks if the character is jumping.
-	/// @return whether the character is jumping
-	////////////////////////////////////////////////////////
+	/**
+	 * Checks if the character is jumping.
+	 *
+	 * @return whether the character is jumping.
+	 */
 	virtual bool IsJumping() const;
 
-	////////////////////////////////////////////////////////
-	/// Checks if the character is stopping.
-	/// @return whether the character is stopping
-	////////////////////////////////////////////////////////
+	/**
+	 * Checks if the character is stopping.
+	 *
+	 * @return whether the character is stopping.
+	 */
 	virtual bool IsStopping() const;
 
-	////////////////////////////////////////////////////////
-	/// Get if character the character can walk in a tile
-	/// with a specific direction.
-	/// @param x : tile x
-	/// @param y : tile y
-	/// @param d : character direction
-	/// @return whether the character can walk through
-	////////////////////////////////////////////////////////
+	/**
+	 * Gets if character the character can walk in a tile
+	 * with a specific direction.
+	 *
+	 * @param x tile x.
+	 * @param y tile y.
+	 * @param d character direction.
+	 * @return whether the character can walk through.
+	 */
 	virtual bool IsPassable(int x, int y, int d) const;
 
-	////////////////////////////////////////////////////////
-	/// Moves the character to a new tile.
-	/// @param x : tile x
-	/// @param y : tile y
-	////////////////////////////////////////////////////////
+	/**
+	 * Moves the character to a new tile.
+	 *
+	 * @param x tile x.
+	 * @param y tile y.
+	 */
 	virtual void MoveTo(int x, int y);
 
-	////////////////////////////////////////////////////////
-	/// Updates character state and actions.
-	////////////////////////////////////////////////////////
+	/**
+	 * Updates character state and actions.
+	 */
 	virtual void Update();
 
-	////////////////////////////////////////////////////////
-	/// Moves on a random route.
-	////////////////////////////////////////////////////////
+	/**
+	 * Moves on a random route.
+	 */
 	void MoveTypeRandom();
 
-	////////////////////////////////////////////////////////
-	/// Moves left to right and switches direction if the
-	/// move failed.
-	////////////////////////////////////////////////////////
+	/**
+	 * Moves left to right and switches direction if the
+	 * move failed.
+	 */
 	void MoveTypeCycleLeftRight();
 
-	////////////////////////////////////////////////////////
-	/// Moves up and down and switches direction if the
-	/// move failed.
-	////////////////////////////////////////////////////////
+	/**
+	 * Moves up and down and switches direction if the
+	 * move failed.
+	 */
 	void MoveTypeCycleUpDown();
 
-	////////////////////////////////////////////////////////
-	/// Walks to the player.
-	////////////////////////////////////////////////////////
+	/**
+	 * Walks to the player.
+	 */
 	void MoveTypeTowardsPlayer();
 
-	////////////////////////////////////////////////////////
-	/// Walks to the player.
-	////////////////////////////////////////////////////////
+	/**
+	 * Walks to the player.
+	 */
 	void MoveTypeAwayFromPlayer();
 
-	////////////////////////////////////////////////////////
-	/// Walks around on a custom move route.
-	////////////////////////////////////////////////////////
+	/**
+	 * Walks around on a custom move route.
+	 */
 	void MoveTypeCustom();
 
-	////////////////////////////////////////////////////////
-	/// Move the character down.
-	////////////////////////////////////////////////////////
+	/**
+	 * Moves the character down.
+	 */
 	void MoveDown();
 
-	////////////////////////////////////////////////////////
-	/// Move the character left.
-	////////////////////////////////////////////////////////
+	/**
+	 * Moves the character left.
+	 */
 	void MoveLeft();
 
-	////////////////////////////////////////////////////////
-	/// Move the character right.
-	////////////////////////////////////////////////////////
+	/**
+	 * Moves the character right.
+	 */
 	void MoveRight();
 
-	////////////////////////////////////////////////////////
-	/// Move the character up.
-	////////////////////////////////////////////////////////
+	/**
+	 * Moves the character up.
+	 */
 	void MoveUp();
 
-	////////////////////////////////////////////////////////
-	/// Move the character forward.
-	////////////////////////////////////////////////////////
+	/**
+	 * Moves the character forward.
+	 */
 	void MoveForward();
 
-	////////////////////////////////////////////////////////
-	/// Does a random movement.
-	////////////////////////////////////////////////////////
+	/**
+	 * Does a random movement.
+	 */
 	void MoveRandom();
 
-	////////////////////////////////////////////////////////
-	/// Does a move to the player hero.
-	////////////////////////////////////////////////////////
+	/**
+	 * Does a move to the player hero.
+	 */
 	void MoveTowardsPlayer();
 
-	////////////////////////////////////////////////////////
-	/// Does a move away from the player hero.
-	////////////////////////////////////////////////////////
+	/**
+	 * Does a move away from the player hero.
+	 */
 	void MoveAwayFromPlayer();
 
-	////////////////////////////////////////////////////////
-	/// Turn the character down.
-	////////////////////////////////////////////////////////
+	/**
+	 * Turns the character down.
+	 */
 	void TurnDown();
 
-	////////////////////////////////////////////////////////
-	/// Turn the character left.
-	////////////////////////////////////////////////////////
+	/**
+	 * Turns the character left.
+	 */
 	void TurnLeft();
 
-	////////////////////////////////////////////////////////
-	/// Turn the character right.
-	////////////////////////////////////////////////////////
+	/**
+	 * Turns the character right.
+	 */
 	void TurnRight();
 
-	////////////////////////////////////////////////////////
-	/// Turn the character up.
-	////////////////////////////////////////////////////////
+	/**
+	 * Turns the character up.
+	 */
 	void TurnUp();
 
-	////////////////////////////////////////////////////////
-	/// Turn the character 90 Degree to the left.
-	////////////////////////////////////////////////////////
+	/**
+	 * Turns the character 90 Degree to the left.
+	 */
 	void Turn90DegreeLeft();
 
-	////////////////////////////////////////////////////////
-	/// Turn the character 90 Degree to the right.
-	////////////////////////////////////////////////////////
+	/**
+	 * Turns the character 90 Degree to the right.
+	 */
 	void Turn90DegreeRight();
 
-	////////////////////////////////////////////////////////
-	/// Turn the character by 180 degree
-	////////////////////////////////////////////////////////
+	/**
+	 * Turns the character by 180 degree
+	 */
 	void Turn180Degree();
 
-	////////////////////////////////////////////////////////
-	/// Turn the character 90 Degree to the left or right
-	/// by using a random number.
-	////////////////////////////////////////////////////////
+	/**
+	 * Turns the character 90 Degree to the left or right
+	 * by using a random number.
+	 */
 	void Turn90DegreeLeftOrRight();
 
-	////////////////////////////////////////////////////////
-	/// Locks character direction.
-	////////////////////////////////////////////////////////
+	/**
+	 * Locks character direction.
+	 */
 	void Lock();
 
 	void Unlock();
 
 	void SetDirection(int direction);
 
-	////////////////////////////////////////////////////////
-	/// Forces a new, temporary, move route
-	/// @param new_route : New move route
-	////////////////////////////////////////////////////////
+	/**
+	 * Forces a new, temporary, move route.
+	 *
+	 * @param new_route new move route.
+	 * @param frequency frequency.
+	 * @param owner the interpreter which set the route.
+	 */
 	void ForceMoveRoute(RPG::MoveRoute* new_route, int frequency, Game_Interpreter* owner);
 
-	////////////////////////////////////////////////////////
-	/// Cancels a previous forced move route
-	/// @param route : Previous move route
-	/// @param owner : The interpreter which set the route
-	////////////////////////////////////////////////////////
+	/**
+	 * Cancels a previous forced move route.
+	 *
+	 * @param route previous move route.
+	 * @param owner the interpreter which set the route.
+	 */
 	void CancelMoveRoute(RPG::MoveRoute* route, Game_Interpreter* owner);
 
-	////////////////////////////////////////////////////////
-	/// Tells the Character to not report back to the owner.
-	/// (Usually because the owner got deleted)
-	/// @param owner : The owner of the move route; if the
-	/// 			 owner is not the real owner this func
-	/// 			 does nothing.
-	////////////////////////////////////////////////////////
+	/**
+	 * Tells the character to not report back to the owner.
+	 * (Usually because the owner got deleted).
+	 *
+	 * @param owner the owner of the move route;
+	 *              if the owner is not the real owner
+	 *              this function does nothing.
+	 */
 	void DetachMoveRouteOwner(Game_Interpreter* owner);
 
-	/// @return screen x coordinate in pixels
+	/**
+	 * Gets screen x coordinate in pixels.
+	 *
+	 * @return screen x coordinate in pixels.
+	 */
 	virtual int GetScreenX() const;
 
-	/// @return screen y coordinate in pixels
+	/**
+	 * Gets screen y coordinate in pixels.
+	 *
+	 * @return screen y coordinate in pixels.
+	 */
 	virtual int GetScreenY() const;
 
-	/// @return screen z coordinate in pixels
+	/**
+	 * Gets screen z coordinate in pixels.
+	 *
+	 * @return screen z coordinate in pixels.
+	 */
 	virtual int GetScreenZ() const;
 
-	/// @param height : character height
-	/// @return screen z coordinate in pixels
+	/**
+	 * Gets screen z coordinate in pixels.
+	 *
+	 * @param height character height.
+	 * @return screen z coordinate in pixels.
+	 */
 	virtual int GetScreenZ(int height) const;
 
-	/// @return x position
+	/**
+	 * Gets x position.
+	 *
+	 * @return x position.
+	 */
 	int GetX() const;
 
-	/// @return y position
+	/**
+	 * Gets y position.
+	 *
+	 * @return y position.
+	 */
 	int GetY() const;
 
-	/// @return tile graphic id
+	/**
+	 * Gets tile graphic ID.
+	 *
+	 * @return tile graphic ID.
+	 */
 	int GetTileId() const;
 
-	/// @return character graphic filename
+	/**
+	 * Gets character graphic filename.
+	 *
+	 * @return character graphic filename.
+	 */
 	std::string GetCharacterName() const;
 
-	/// @return character graphic index
+	/**
+	 * Gets character graphic index.
+	 *
+	 * @return character graphic index.
+	 */
 	int GetCharacterIndex() const;
 
-	/// @return real x
+	/**
+	 * Gets real x.
+	 *
+	 * @return real x.
+	 */
 	int GetRealX() const;
 
-	/// @return real y
+	/**
+	 * Gets real y.
+	 *
+	 * @return real y.
+	 */
 	int GetRealY() const;
 
-	/// @return facing direction
+	/**
+	 * Gets facing direction.
+	 *
+	 * @return facing direction.
+	 */
 	int GetDirection() const;
 
-	/// @return pattern
+	/**
+	 * Gets pattern.
+	 *
+	 * @return pattern.
+	 */
 	int GetPattern() const;
 
-	/// @return move route forcing flag
+	/**
+	 * Gets move router forcing flag.
+	 *
+	 * @return move route forcing flag.
+	 */
 	bool GetMoveRouteForcing() const;
 
-	/// @return through flag
+	/**
+	 * Gets through flag.
+	 *
+	 * @return through flag.
+	 */
 	bool GetThrough() const;
 
-	/// @return animation id
+	/**
+	 * Gets animation ID.
+	 *
+	 * @return animation ID.
+	 */
 	int GetAnimationId() const;
 
-	/// @param animation_id : new animation id
+	/**
+	 * Sets animation ID.
+	 *
+	 * @param animation_id new animation ID.
+	 */
 	void SetAnimationId(int animation_id);
 
 	void TurnTowardPlayer();
@@ -348,7 +424,7 @@ protected:
 	bool turn_enabled;
 	bool direction_fix;
 
-	/// used by cycle left-right, up-down
+	/** used by cycle left-right, up-down */
 	bool cycle_stat;
 
 	int priority_type;

@@ -15,46 +15,34 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SCENE_END_H_
-#define _SCENE_END_H_
+#ifndef _REGISTRY_H_
+#define _REGISTRY_H_
 
 // Headers
-#include "scene.h"
-#include "window_command.h"
-#include "window_help.h"
-#include <boost/scoped_ptr.hpp>
+#include <string>
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#else
+enum HKEY {
+	HKEY_LOCAL_MACHINE,
+	HKEY_CURRENT_USER,
+};
+#endif
 
 /**
- * Scene End class.
- * Displays the "Do you really want to exit?" text.
+ * Registry namespace
  */
-class Scene_End : public Scene {
-
-public:
+namespace Registry {
 	/**
-	 * Constructor.
+	 * Reads string value.
 	 */
-	Scene_End();
-
-	void Start();
-	void Update();
+	std::string ReadStrValue(HKEY hkey, std::string const& key, std::string const& val);
 
 	/**
-	 * Creates the Window displaying the yes and no option.
+	 * Reads binary value.
 	 */
-	void CreateCommandWindow();
-
-	/**
-	 * Creates the Window displaying the confirmation
-	 * text.
-	 */
-	void CreateHelpWindow();
-
-private:
-	/** Help window showing the confirmation text. */
-	boost::scoped_ptr<Window_Help> help_window;
-	/** Command window containing the yes and no option. */
-	boost::scoped_ptr<Window_Command> command_window;
-};
+	int ReadBinValue(HKEY hkey, std::string const& key, std::string const& val, unsigned char* bin);
+}
 
 #endif

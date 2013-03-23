@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "sdl_audio.h"
 #include "filefinder.h"
 #include "output.h"
@@ -30,7 +28,6 @@
 #include "util_win.h"
 #endif
 
-///////////////////////////////////////////////////////////
 SdlAudio::SdlAudio() :
 	bgm_volume(0),
 	bgs_channel(0),
@@ -57,12 +54,10 @@ SdlAudio::SdlAudio() :
 	}*/
 }
 
-///////////////////////////////////////////////////////////
 SdlAudio::~SdlAudio() {
 	Mix_CloseAudio();
 }
 
-///////////////////////////////////////////////////////////
 void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */) {
 	std::string const path = FileFinder::FindMusic(file);
 	if (path.empty()) {
@@ -82,24 +77,20 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */) {
 	}
 }
 
-///////////////////////////////////////////////////////////
 void SdlAudio::BGM_Pause() {
 	// Midi pause is not supported... =.=
 	Mix_PauseMusic();
 }
 
-///////////////////////////////////////////////////////////
 void SdlAudio::BGM_Resume() {
 	Mix_ResumeMusic();
 }
 
-///////////////////////////////////////////////////////////
 void SdlAudio::BGM_Stop() {
 	Mix_HaltMusic();
 	me_stopped_bgm = false;
 }
 
-////////////////////////////////////////////////////////////
 void SdlAudio::BGM_Fade(int fade) {
 #ifdef _WIN32
 	if (WindowsUtils::GetWindowsVersion() >= 6) {
@@ -111,7 +102,6 @@ void SdlAudio::BGM_Fade(int fade) {
 	me_stopped_bgm = false;
 }
 
-////////////////////////////////////////////////////////////
 void SdlAudio::BGS_Play(std::string const& file, int volume, int /* pitch */) {
 	std::string const path = FileFinder::FindMusic(file);
 	if (path.empty()) {
@@ -131,20 +121,17 @@ void SdlAudio::BGS_Play(std::string const& file, int volume, int /* pitch */) {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void SdlAudio::BGS_Stop() {
 	if (Mix_Playing(bgs_channel)) {
 		Mix_HaltChannel(bgs_channel);
 	}
 }
 
-////////////////////////////////////////////////////////////
 void SdlAudio::BGS_Fade(int fade) {
 	Mix_FadeOutChannel(bgs_channel, fade);
 }
 
 /*
-////////////////////////////////////////////////////////////
 void me_finish(int channel) {
 	if (me_channel == channel && me_stopped_bgm) {
 		Mix_VolumeMusic(bgm_volume);
@@ -154,7 +141,6 @@ void me_finish(int channel) {
 }
 */
 
-///////////////////////////////////////////////////////////
 void SdlAudio::ME_Play(std::string const& file, int volume, int /* pitch */) {
 	std::string const path = FileFinder::FindMusic(file);
 	if (path.empty()) {
@@ -176,19 +162,16 @@ void SdlAudio::ME_Play(std::string const& file, int volume, int /* pitch */) {
 	// Mix_ChannelFinished(me_finish);
 }
 
-////////////////////////////////////////////////////////////
 void SdlAudio::ME_Stop() {
 	if (Mix_Playing(me_channel)) {
 		Mix_HaltChannel(me_channel);
 	}
 }
 
-////////////////////////////////////////////////////////////
 void SdlAudio::ME_Fade(int fade) {
 	Mix_FadeOutChannel(me_channel, fade);
 }
 
-////////////////////////////////////////////////////////////
 void SdlAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 	std::string const path = FileFinder::FindSound(file);
 	if (path.empty()) {
@@ -209,7 +192,6 @@ void SdlAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 	sounds[channel] = sound;
 }
 
-////////////////////////////////////////////////////////////
 void SdlAudio::SE_Stop() {
 	for (sounds_type::iterator i = sounds.begin(); i != sounds.end(); i++) {
 		if (Mix_Playing(i->first)) Mix_HaltChannel(i->first);

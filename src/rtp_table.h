@@ -1,3 +1,20 @@
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef EASYRPG_RTP_TABLE_BOM
 #define EASYRPG_RTP_TABLE_BOM
 
@@ -13,12 +30,12 @@ static sub_map_type sub_map;
 
 typedef std::map<std::string, std::map<std::string, std::string> > rtp_table_type;
 
+/** Interprets char literals as utf-8 */
 #ifdef _MSC_VER
-// Interpret char literals as utf-8
 #pragma execution_character_set("utf-8")
 #endif
 
-/*
+/**
  * { folder: { ASCII, UTF-8 } }
  */
 rtp_table_type const RTP_TABLE_2003 = map_list_of

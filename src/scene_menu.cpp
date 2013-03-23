@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <cassert>
 #include "scene_menu.h"
 #include "audio.h"
@@ -36,13 +34,11 @@
 #include "scene_save.h"
 #include "scene_status.h"
 
-////////////////////////////////////////////////////////////
 Scene_Menu::Scene_Menu(int menu_index) :
 	menu_index(menu_index) {
 	type = Scene::Menu;
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Menu::Start() {
 	CreateCommandWindow();
 
@@ -54,14 +50,12 @@ void Scene_Menu::Start() {
 	menustatus_window->SetActive(false);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Menu::Continue() {
 	if (command_options[command_window->GetIndex()] == Order) {
 		menustatus_window->Refresh();
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Menu::Update() {
 	command_window->Update();
 	gold_window->Update();
@@ -75,7 +69,6 @@ void Scene_Menu::Update() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Menu::CreateCommandWindow() {
 	// Create Options Window
 	std::vector<std::string> options;
@@ -157,7 +150,6 @@ void Scene_Menu::CreateCommandWindow() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Menu::UpdateCommand() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Data::system.cancel_se);
@@ -216,7 +208,6 @@ void Scene_Menu::UpdateCommand() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Menu::UpdateActorSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Data::system.cancel_se);

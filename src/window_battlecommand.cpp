@@ -1,23 +1,23 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
+#include <ciso646>
+
 #include "data.h"
 #include "color.h"
 #include "cache.h"
@@ -28,7 +28,6 @@
 #include "window_battlecommand.h"
 #include "bitmap.h"
 
-////////////////////////////////////////////////////////////
 Window_BattleCommand::Window_BattleCommand(int x, int y, int width, int height) :
 	Window_Base(x, y, width, height) {
 
@@ -47,13 +46,11 @@ Window_BattleCommand::Window_BattleCommand(int x, int y, int width, int height) 
 	Refresh();
 }
 
-////////////////////////////////////////////////////////////
 void Window_BattleCommand::SetEnabled(int index, bool enabled) {
 	disabled[index] = enabled;
 	Refresh();
 }
 
-////////////////////////////////////////////////////////////
 void Window_BattleCommand::SetActive(bool active) {
 	index = active ? 0 : -1;
 	top_row = 0;
@@ -61,7 +58,6 @@ void Window_BattleCommand::SetActive(bool active) {
 	Refresh();
 }
 
-////////////////////////////////////////////////////////////
 void Window_BattleCommand::Update() {
 	Window_Base::Update();
 
@@ -94,7 +90,6 @@ void Window_BattleCommand::Update() {
 	UpdateCursorRect();
 }
 
-////////////////////////////////////////////////////////////
 void Window_BattleCommand::UpdateCursorRect() {
 	if (index >= 0)
 		SetCursorRect(Rect(0, (index - top_row) * 16, contents->GetWidth(), 16));
@@ -102,9 +97,8 @@ void Window_BattleCommand::UpdateCursorRect() {
 		SetCursorRect(Rect());
 }
 
-////////////////////////////////////////////////////////////
 void Window_BattleCommand::Refresh() {
-	if (contents == NULL)
+	if (not contents)
 		return;
 
 	int num_commands = commands.size();
@@ -125,7 +119,6 @@ void Window_BattleCommand::Refresh() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Window_BattleCommand::DrawItem(int index, Font::SystemColor color) {
 	int y = 16 * (index - top_row);
 	if (y < 0 || y + 16 > contents->GetHeight())
@@ -134,17 +127,14 @@ void Window_BattleCommand::DrawItem(int index, Font::SystemColor color) {
 	contents->TextDraw(2, y + 2, color, commands[index]);
 }
 
-////////////////////////////////////////////////////////////
 int Window_BattleCommand::GetIndex() {
 	return index;
 }
 
-////////////////////////////////////////////////////////////
 void Window_BattleCommand::SetIndex(int _index) {
 	index = _index;
 }
 
-////////////////////////////////////////////////////////////
 void Window_BattleCommand::SetActor(int _actor_id) {
 	actor_id = (Player::engine == Player::EngineRpg2k3) ? _actor_id : 0;
 	commands.clear();
@@ -172,7 +162,6 @@ void Window_BattleCommand::SetActor(int _actor_id) {
 	Refresh();
 }
 
-////////////////////////////////////////////////////////////
 RPG::BattleCommand Window_BattleCommand::GetCommand() {
 	if (actor_id > 0) {
 		Game_Actor* actor = Game_Actors::GetActor(actor_id);
@@ -193,7 +182,6 @@ RPG::BattleCommand Window_BattleCommand::GetCommand() {
 	return command;
 }
 
-////////////////////////////////////////////////////////////
 int Window_BattleCommand::GetSkillSubset() {
 	if (actor_id == 0)
 		return RPG::Skill::Type_normal;

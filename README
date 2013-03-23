@@ -18,20 +18,33 @@ Documentation is available at the documentation wiki:
   https://easy-rpg.org/wiki/
 
 
+Source code generated documentation is available at:
+
+  https://easy-rpg.org/docs/player/index.html
+
+
 Requirements
 ------------
 
 EasyRPG Readers library. https://github.com/EasyRPG/Readers
 SDL for screen backend support.
-SDL_mixer for audio support.
-SDL_ttf for font support.
-SDL_image for PNG support.
-ZLIB for XYZ image format support.
-GTK+ for dialog support on GTK+ based desktop environments (optional).
-Doxygen to generate source code documentation (optional).
+SDL_mixer for audio mixing.
+Freetype for custom font support.
+Pixman for low level pixel manipulation.
+libpng for PNG image support.
+libjpeg (with jpeg_mem_src) for JPEG image support.
+zlib for XYZ image support.
 
 
-Development
+Daily builds
+------------
+
+Up to date binaries for assorted platforms are available at:
+
+  https://easy-rpg.org/jenkins/view/Player/
+
+
+Source code
 -----------
 
 EasyRPG Player development is hosted by GitHub.
@@ -39,7 +52,34 @@ Project files are available in Git repositories.
 
   https://github.com/EasyRPG/Player
 
-See the documentation for further development information.
+
+Building
+--------
+
+* Autotools method:
+
+  Requirements:
+  autoconf >= 2.68, automake >= 1.11, pkg-config
+
+  Compile with:
+  ./autogen.sh && ./configure CPPFLAGS=-DUNIX --with-readers=/ABSOLUTE/PATH/TO/Readers/build && make
+
+
+* Cmake method:
+
+  Requirements:
+  cmake >= 2.8
+
+  Compile with:
+  cmake PATH/TO/Player/builds/cmake && make
+  If you want to build it with debug mode pass "-D CMAKE_BUILD_TYPE=Debug" to cmake.
+
+
+* Visual Studio method:
+
+  Read detailed instructions at:
+  
+  https://easy-rpg.org/wiki/development/compiling/player/windows/visual-studio
 
 
 License

@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <cassert>
 
 #include "system.h"
@@ -35,7 +33,6 @@
 #include "filefinder.h"
 #include <boost/scoped_ptr.hpp>
 
-////////////////////////////////////////////////////////////
 namespace {
 	RPG::SaveMapInfo& map_info = Main_Data::game_data.map_info;
 	RPG::SavePartyLocation& location = Main_Data::game_data.party_location;
@@ -69,7 +66,6 @@ namespace {
 	int pan_speed;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Map::Init() {
 	display_x = 0;
 	display_y = 0;
@@ -95,12 +91,11 @@ void Game_Map::Init() {
 	location.pan_current_y = 0;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Map::Dispose() {
 	events.clear();
 	common_events.clear();
 
-	if (Main_Data::game_screen != NULL) {
+	if (Main_Data::game_screen) {
 		Main_Data::game_screen->Reset();
 	}
 
@@ -112,7 +107,6 @@ void Game_Map::Quit() {
 	interpreter.reset();
 }
 
-////////////////////////////////////////////////////////////
 void Game_Map::Setup(int _id) {
 	// Execute remaining events (e.g. ones listed after a teleport)
 	Update();
@@ -165,7 +159,6 @@ void Game_Map::Setup(int _id) {
 	location.pan_current_y = 0;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Map::Autoplay() {
 	int parent_index = 0;
 	int current_index = GetMapIndex(location.map_id);
@@ -185,7 +178,7 @@ void Game_Map::Autoplay() {
 				if (&Data::treemap.maps[current_index].music != Game_Temp::map_bgm) {
 					if (Game_Temp::map_bgm != NULL) {
 						if (Data::treemap.maps[current_index].music.name == Game_Temp::map_bgm->name) {
-							// ToDo: Here the volume and pitch must be updated if the song is the same
+							// TODO: Here the volume and pitch must be updated if the song is the same
 							return;
 						}
 					}
@@ -198,7 +191,6 @@ void Game_Map::Autoplay() {
 
 }
 
-////////////////////////////////////////////////////////////
 void Game_Map::Refresh() {
 	if (location.map_id > 0) {
 
@@ -218,32 +210,26 @@ Game_Interpreter& Game_Map::GetInterpreter() {
 	return *interpreter;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Map::ScrollDown(int distance) {
 	display_y = min(display_y + distance, (map->height - 15) * 128);
 }
 
-////////////////////////////////////////////////////////////
 void Game_Map::ScrollLeft(int distance) {
 	display_x = max(display_x - distance, 0);
 }
 
-////////////////////////////////////////////////////////////
 void Game_Map::ScrollRight(int distance) {
 	display_x = min(display_x + distance, (map->width - 20) * 128);
 }
 
-////////////////////////////////////////////////////////////
 void Game_Map::ScrollUp(int distance) {
 	display_y = max(display_y - distance, 0);
 }
 
-////////////////////////////////////////////////////////////
 bool Game_Map::IsValid(int x, int y) {
 	return (x >= 0 && x < GetWidth() && y >= 0 && y < GetHeight());
 }
 
-////////////////////////////////////////////////////////////
 bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event) {
 	if (!Game_Map::IsValid(x, y)) return false;
 
@@ -332,13 +318,11 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 	return true;
 }
 
-////////////////////////////////////////////////////////////
 bool Game_Map::IsBush(int /* x */, int /* y */) {
 	// TODO
 	return false;
 }
 
-////////////////////////////////////////////////////////////
 bool Game_Map::IsCounter(int x, int y) {
 	if (!Game_Map::IsValid(x, y)) return false;
 	int const tile_id = map->upper_layer[x + y * map->width];
@@ -347,7 +331,6 @@ bool Game_Map::IsCounter(int x, int y) {
 	return bool(Data::chipsets[map_info.chipset_id - 1].passable_data_upper[index] & Passable::Counter);
 }
 
-////////////////////////////////////////////////////////////
 int Game_Map::GetTerrainTag(int const x, int const y) {
 	unsigned const chipID = map->lower_layer[x + y * map->width];
 	unsigned const chip_index =
@@ -366,7 +349,6 @@ int Game_Map::GetTerrainTag(int const x, int const y) {
 	return Data::data.chipsets[chipset_index].terrain_data[chip_index];
 }
 
-////////////////////////////////////////////////////////////
 bool Game_Map::AirshipLandOk(int const x, int const y) {
 	return Data::data.terrains[GetTerrainTag(x, y) -1].airship_land;
 }
@@ -416,7 +398,6 @@ int Game_Map::YwithDirection(int y, int direction) {
 	return RoundY(y + (direction == RPG::EventPage::Direction_down ? 1 : direction == RPG::EventPage::Direction_up ? -1 : 0));
 }
 
-////////////////////////////////////////////////////////////
 int Game_Map::CheckEvent(int x, int y) {
 	tEventHash::iterator i;
 	for (i = events.begin(); i != events.end(); i++) {
@@ -428,19 +409,16 @@ int Game_Map::CheckEvent(int x, int y) {
 	return 0;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Map::StartScroll(int direction, int distance, int speed) {
 	scroll_direction = direction;
 	scroll_rest = distance * 128;
 	scroll_speed = speed;
 }
 
-////////////////////////////////////////////////////////////
 bool Game_Map::IsScrolling() {
 	return scroll_rest > 0;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Map::UpdateScroll() {
 	if (scroll_rest > 0) {
 		int distance = (1 << scroll_speed) / 2;
@@ -462,7 +440,6 @@ void Game_Map::UpdateScroll() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Game_Map::Update() {
 	if (need_refresh) Refresh();
 	UpdateScroll();
@@ -483,7 +460,6 @@ void Game_Map::Update() {
 		vehicles[i]->Update();
 }
 
-////////////////////////////////////////////////////////////
 RPG::Map const& Game_Map::GetMap() {
 	return *map;
 }
@@ -537,7 +513,6 @@ std::vector<short>& Game_Map::GetMapDataUp() {
 	return map->upper_layer;
 }
 
-////////////////////////////////////////////////////////////
 std::string& Game_Map::GetChipsetName() {
 	return chipset_name;
 }
@@ -573,7 +548,6 @@ void Game_Map::SetNeedRefresh(bool new_need_refresh) {
 	need_refresh = new_need_refresh;
 }
 
-////////////////////////////////////////////////////////////
 std::vector<unsigned char>& Game_Map::GetPassagesDown() {
 	return passages_down;
 }
@@ -594,7 +568,6 @@ tCommonEventHash& Game_Map::GetCommonEvents() {
 	return common_events;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Map::SetParallaxName(const std::string& name) {
 	map_info.parallax_name = name;
 }
@@ -614,7 +587,6 @@ void Game_Map::SetParallaxScroll(bool horz, bool vert,
 	parallax_y = 0;
 }
 
-////////////////////////////////////////////////////////////
 int Game_Map::GetMapIndex(int id) {
 	for (unsigned int i = 0; i < Data::treemap.maps.size(); ++i) {
 		if (Data::treemap.maps[i].ID == id) {
@@ -625,7 +597,6 @@ int Game_Map::GetMapIndex(int id) {
 	return -1;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Map::SetChipset(int id) {
 	map_info.chipset_id = id;
 	RPG::Chipset &chipset = Data::chipsets[map_info.chipset_id - 1];
@@ -642,12 +613,10 @@ void Game_Map::SetChipset(int id) {
 	}
 }
 
-////////////////////////////////////////////////////////////
 Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
 	return vehicles[which];
 }
 
-////////////////////////////////////////////////////////////
 void Game_Map::SubstituteDown(int old_id, int new_id) {
 	map_info.lower_tiles[old_id] = (uint8_t) new_id;
 }
@@ -656,7 +625,6 @@ void Game_Map::SubstituteUp(int old_id, int new_id) {
 	map_info.upper_tiles[old_id] = (uint8_t) new_id;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Map::LockPan() {
 	pan_locked = true;
 }
@@ -703,7 +671,6 @@ void Game_Map::UpdatePan() {
 		location.pan_current_y -= std::min(step, -dy);
 }
 
-////////////////////////////////////////////////////////////
 bool Game_Map::IsPanActive() {
 	return location.pan_current_x != location.pan_finish_x || location.pan_current_y != location.pan_finish_y;
 }
@@ -724,7 +691,6 @@ int Game_Map::GetPanY() {
 	return location.pan_current_y;
 }
 
-////////////////////////////////////////////////////////////
 void Game_Map::UpdateParallax() {
 	if (map_info.parallax_name.empty())
 		return;

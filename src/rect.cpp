@@ -1,26 +1,23 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "rect.h"
 
-////////////////////////////////////////////////////////////
 Rect::Rect() :
 	x(0),
 	y(0),
@@ -35,17 +32,14 @@ Rect::Rect(int x, int y, int width, int height) :
 	height(height) {
 }
 
-////////////////////////////////////////////////////////////
 bool Rect::operator==(const Rect &other) const {
 	return	x == other.x && y == other.y && width == other.width && height == other.height;
 }
 
-////////////////////////////////////////////////////////////
 bool Rect::operator!=(const Rect &other) const {
 	return	x != other.x || y != other.y || width != other.width || height != other.height;
 }
 
-////////////////////////////////////////////////////////////
 void Rect::Set(int new_x, int new_y, int new_width, int new_height) {
 	x = new_x;
 	y = new_y;
@@ -53,7 +47,6 @@ void Rect::Set(int new_x, int new_y, int new_width, int new_height) {
 	height = new_height;
 }
 
-////////////////////////////////////////////////////////////
 void Rect::Adjust(int max_width, int max_height) {
 	if (x < 0) {
 		width += x;
@@ -69,7 +62,6 @@ void Rect::Adjust(int max_width, int max_height) {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Rect::Adjust(const Rect& rect) {
 	if (x < rect.x) {
 		width += x - rect.x;
@@ -88,12 +80,10 @@ void Rect::Adjust(const Rect& rect) {
 		height = rect.y + rect.height - y;
 }
 
-////////////////////////////////////////////////////////////
 bool Rect::IsEmpty() const {
 	return width <= 0 || height <= 0;
 }
 
-////////////////////////////////////////////////////////////
 bool Rect::IsOutOfBounds(int max_width, int max_height) const {
 	if (width <= 0 || height <= 0) return true;
 	if (x >= max_width || y >= max_height) return true;
@@ -101,7 +91,6 @@ bool Rect::IsOutOfBounds(int max_width, int max_height) const {
 	return false;
 }
 
-////////////////////////////////////////////////////////////
 bool Rect::IsOutOfBounds(const Rect &src_rect) const {
 	if (width <= 0 || height <= 0) return true;
 	if (x >= src_rect.x + src_rect.width || y >= src_rect.y + src_rect.height) return true;
@@ -109,7 +98,6 @@ bool Rect::IsOutOfBounds(const Rect &src_rect) const {
 	return false;
 }
 
-////////////////////////////////////////////////////////////
 Rect Rect::GetSubRect(const Rect &src_rect) {
 	Rect rect = src_rect;
 
@@ -137,7 +125,6 @@ Rect Rect::GetSubRect(const Rect &src_rect) {
 	return rect;
 }
 
-////////////////////////////////////////////////////////////
 bool Rect::AdjustRectangles(Rect& src, Rect& dst, const Rect& ref) {
 	if (src.x < ref.x) {
 		int dx = ref.x - src.x;
@@ -169,7 +156,6 @@ bool Rect::AdjustRectangles(Rect& src, Rect& dst, const Rect& ref) {
 	return src.width > 0 && src.height > 0;
 }
 
-////////////////////////////////////////////////////////////
 void Rect::Double() {
 	x *= 2;
 	y *= 2;
@@ -177,7 +163,6 @@ void Rect::Double() {
 	height *= 2;
 }
 
-////////////////////////////////////////////////////////////
 void Rect::Halve() {
 	x /= 2;
 	y /= 2;

@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "player.h"
 #include "system.h"
 #include "output.h"
@@ -52,7 +50,6 @@
 	static void InitMiniDumpWriter();
 #endif
 
-////////////////////////////////////////////////////////////
 namespace Player {
 	bool exit_flag;
 	bool reset_flag;
@@ -64,7 +61,6 @@ namespace Player {
 	EngineType engine;
 }
 
-////////////////////////////////////////////////////////////
 void Player::Init(int argc, char *argv[]) {
 	static bool init = false;
 
@@ -140,7 +136,6 @@ void Player::Init(int argc, char *argv[]) {
 	init = true;
 }
 
-////////////////////////////////////////////////////////////
 void Player::Run() {
 	Scene::Push(EASYRPG_MAKE_SHARED<Scene>());
 	Scene::Push(EASYRPG_SHARED_PTR<Scene>
@@ -165,19 +160,16 @@ void Player::Run() {
 	Player::Exit();
 }
 
-////////////////////////////////////////////////////////////
 void Player::Pause() {
 	Audio().BGM_Pause();
 }
 
-////////////////////////////////////////////////////////////
 void Player::Resume() {
 	Input::ResetKeys();
 	Audio().BGM_Resume();
 	Graphics::FrameReset();
 }
 
-////////////////////////////////////////////////////////////
 void Player::Update() {
 	if (Input::IsTriggered(Input::TOGGLE_FPS)) {
 		Graphics::fps_on_screen = !Graphics::fps_on_screen;
@@ -196,7 +188,6 @@ void Player::Update() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Player::Exit() {
 	Main_Data::Cleanup();
 	Graphics::Quit();
@@ -205,11 +196,9 @@ void Player::Exit() {
 }
 
 #if (defined(_WIN32) && defined(NDEBUG))
-////////////////////////////////////////////////////////////
 // Minidump code for Windows
 // Original Author: Oleg Starodumov (www.debuginfo.com)
-// Modified by EasyRpg Team
-////////////////////////////////////////////////////////////
+// Modified by EasyRPG Team
 typedef BOOL (__stdcall *MiniDumpWriteDumpFunc) (
 	IN HANDLE hProcess,
 	IN DWORD ProcessId,
