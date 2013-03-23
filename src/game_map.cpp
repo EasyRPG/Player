@@ -256,16 +256,6 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 			assert(false);
 	}
 
-	// FIXME: What does this do?
-	/*for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
-		if (i->second->GetTileId() >= 0 && i->second.get() != self_event &&
-			i->second->GetX() == x && i->second->GetY() == y && !i->second->GetThrough()) {
-			
-			if ((passages_up[i->second->GetTileId()] & bit) != 0)
-				return false;
-		}
-	}*/
-
 	int const tile_index = x + y * GetWidth();
 
 	int tile_id = map->upper_layer[tile_index] - BLOCK_F;
