@@ -32,13 +32,18 @@ int Game_System::GetSaveCount() {
 }
 
 void Game_System::BgmPlay(RPG::Music const& bgm) {
-	data.current_music = bgm;
-	// RPG Maker Hack: (OFF) means play nothing
+	// (OFF) means play nothing
 	if (!bgm.name.empty() && bgm.name != "(OFF)") {
-		Audio().BGM_Play(bgm.name, bgm.volume, bgm.tempo);
+		// Same music: Only adjust volume and speed
+		if (data.current_music.name == bgm.name) {
+			// TODO
+		} else {
+			Audio().BGM_Play(bgm.name, bgm.volume, bgm.tempo);
+		}
 	} else {
 		Audio().BGM_Stop();
 	}
+	data.current_music = bgm;
 	Graphics::FrameReset();
 }
 
