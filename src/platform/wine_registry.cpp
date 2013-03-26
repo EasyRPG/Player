@@ -74,6 +74,7 @@ struct parse_registry {
 	unsigned line_number;
 	section_list result;
 	std::string::const_iterator i, end;
+	std::ifstream stream;
 
 	void error(format const& fmt) {
 		if(line_number > 0) {
@@ -85,19 +86,19 @@ struct parse_registry {
 		}
 	}
 
-	std::istream& getline(std::istream& ifs) {
+	std::istream& getline() {
 		line.clear();
 		std::string tmp;
 		do {
 			if(not line.empty() and *line.rbegin() == '\\')
 			{ line.resize(line.size() - 1); }
-			std::getline(ifs, tmp);
+			std::getline(stream, tmp);
 			++line_number;
 			line += tmp;
-		} while(ifs and not tmp.empty() and *tmp.rbegin() == '\\');
+		} while(stream and not tmp.empty() and *tmp.rbegin() == '\\');
 		if(not line.empty()) { assert(*line.rbegin() != '\\'); }
 		i = line.begin(), end = line.end();
-		return ifs;
+		return stream;
 	}
 
 	template<char term> std::string parse_str() {
@@ -179,7 +180,7 @@ struct parse_registry {
 		for(prefix const* pre = prefixes; not pre->pre.empty(); ++pre) {
 			if(size_t(i - end) < pre->pre.size()) { continue; }
 
-			if(std::string(i, i + pre->pre.size()) != pre->pre) { continue; }
+			if(not std::equal(i, i + pre->pre.size(), pre->pre.begin())) { continue; }
 
 			i += pre->pre.size();
 			switch(pre->type) {
@@ -216,14 +217,14 @@ struct parse_registry {
 
 	parse_registry(std::string const& name)
 			: line_number(0)
+			, stream(name.c_str(), std::ios_base::binary | std::ios_base::in)
 	{
-		std::ifstream ifs(name.c_str(), std::ios_base::binary | std::ios_base::in);
-		if(not ifs) {
+		if(not stream) {
 			error(format("file open error: \"%s\"") % name);
 			return;
 		}
 
-		getline(ifs);
+		getline();
 		if(line != "WINE REGISTRY Version 2") {
 			error(format("file signature error"));
 			return;
@@ -232,18 +233,18 @@ struct parse_registry {
 		section current_section;
 		std::string current_section_name;
 
-		while(getline(ifs)) {
+		while(getline()) {
 			skip_space();
 			if(i >= line.end()) { continue; } // empty line
 
 			switch(*i) {
 				case '[':
 					if(not current_section_name.empty()) {
-						result[current_section_name] = current_section;
-						current_section.clear();
+						assert(result.find(current_section_name) == result.end());
+						result[current_section_name].swap(current_section);
 					}
 					++i; // skip '['
-					current_section_name = parse_str<']'>();
+					parse_str<']'>().swap(current_section_name);
 					break;
 				case '@': break; // skip
 				case '\"': {
@@ -270,9 +271,7 @@ struct parse_registry {
 					return;
 			}
 		}
-		result[current_section_name] = current_section;
-
-		return;
+		current_section.swap(result[current_section_name]);
 	}
 };
 
