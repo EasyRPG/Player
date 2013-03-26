@@ -17,6 +17,7 @@
 
 #include "registry.h"
 #include "output.h"
+#include "filefinder.h"
 
 #include <stdint.h>
 #include <cassert>
@@ -52,7 +53,7 @@ std::string get_wine_prefix() {
 	return
 			getenv("WINEPREFIX")? getenv("WINEPREFIX"):
 			getenv("HOME")? std::string(getenv("HOME")).append("/.wine"):
-			"";
+			std::string();
 }
 
 using boost::container::vector;
@@ -75,9 +76,13 @@ struct parse_registry {
 	std::string::const_iterator i, end;
 
 	void error(format const& fmt) {
-		Output::Warning(
-			"Wine registry error: %s\nline %d: \"%s\"",
-			fmt.str().c_str(), line_number, line.c_str());
+		if(line_number > 0) {
+			Output::Warning(
+				"Wine registry error: %s\nline %d: \"%s\"",
+				fmt.str().c_str(), line_number, line.c_str());
+		} else {
+			Output::Warning( "Wine registry error: %s", fmt.str().c_str());
+		}
 	}
 
 	std::istream& getline(std::istream& ifs) {
@@ -209,14 +214,14 @@ struct parse_registry {
 		while(i < end and std::isspace(*i)) { ++i; }
 	}
 
-	parse_registry(std::string const& name) {
+	parse_registry(std::string const& name)
+			: line_number(0)
+	{
 		std::ifstream ifs(name.c_str(), std::ios_base::binary | std::ios_base::in);
 		if(not ifs) {
 			error(format("file open error: \"%s\"") % name);
 			return;
 		}
-
-		line_number = 1;
 
 		getline(ifs);
 		if(line != "WINE REGISTRY Version 2") {
@@ -275,15 +280,22 @@ section_list const& get_section(HKEY key) {
 	static section_list const empty_sec;
 	static section_list local_machine, current_user;
 
+	std::string const prefix = get_wine_prefix();
+
+	if(prefix.empty() or not FileFinder::Exists(prefix)) {
+		Output::Debug("wine prefix not found: \"%s\"", prefix.c_str());
+		return empty_sec;
+	}
+
 	switch(key) {
 		case HKEY_LOCAL_MACHINE:
 			if(local_machine.empty()) {
-				local_machine = parse_registry(get_wine_prefix() + "/system.reg").result;
+				local_machine = parse_registry(prefix + "/system.reg").result;
 			}
 			return local_machine;
 		case HKEY_CURRENT_USER:
 			if(current_user.empty()) {
-				current_user = parse_registry(get_wine_prefix() + "/user.reg").result;
+				current_user = parse_registry(prefix + "/user.reg").result;
 			}
 			return current_user;
 		default: assert(false); return empty_sec;
