@@ -230,7 +230,7 @@ bool Game_Map::IsValid(int x, int y) {
 	return (x >= 0 && x < GetWidth() && y >= 0 && y < GetHeight());
 }
 
-bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event) {
+bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* /* self_event */) {
 	if (!Game_Map::IsValid(x, y)) return false;
 
 	uint8_t bit;
