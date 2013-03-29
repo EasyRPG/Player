@@ -15,28 +15,20 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "game_interpreter.h"
-#include "game_troop.h"
-#include "rpg_enemy.h"
+#ifndef _SCENE_BATTLE_RPG2K3_H_
+#define _SCENE_BATTLE_RPG2K3_H_
 
-Game_Troop::Game_Troop():
-	interpreter(NULL) {
-}
+#include "scene_battle.h"
 
-tEnemyArray Game_Troop::GetMembers() {
-	return enemies;
-}
+/**
+ * Scene_Battle_RPG2k3 class.
+ * Stub
+ */
+class Scene_Battle_Rpg2k3 : public Scene_Battle {
 
-void Game_Troop::Clear() {
-	interpreter->Clear();
+public:
+	Scene_Battle_Rpg2k3();
+	~Scene_Battle_Rpg2k3();
+};
 
-	enemies.clear();
-
-	turn_count = 0;
-	can_escape = false;
-	can_lose = false;
-	preemptive = false;
-	surprise = false;
-	turn_ending = false;
-	forcing_battler = NULL;
-}
+#endif

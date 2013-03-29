@@ -221,3 +221,6 @@ int Game_Battler::GetAgi() const {
 	return n;
 }
 
+int Game_Battler::GetHue() const {
+	return 0;
+}

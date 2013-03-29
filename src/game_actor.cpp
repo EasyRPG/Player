@@ -323,15 +323,15 @@ int Game_Actor::GetNextExp(int level) const {
 	}
 }
 
-std::string Game_Actor::GetName() const {
+const std::string& Game_Actor::GetName() const {
 	return data.name;
 }
 
-std::string Game_Actor::GetCharacterName() const {
+const std::string& Game_Actor::GetSpriteName() const {
 	return data.sprite_name;
 }
 
-int Game_Actor::GetCharacterIndex() const {
+int Game_Actor::GetSpriteIndex() const {
 	return data.sprite_id;
 }
 
@@ -491,6 +491,22 @@ bool Game_Actor::GetTwoSwordsStyle() const {
 	return data.two_weapon;
 }
 
+bool Game_Actor::GetAutoBattle() const {
+	return data.auto_battle;
+}
+
+int Game_Actor::GetBattleX() const {
+	return Data::actors[data.ID - 1].battle_x;
+}
+
+int Game_Actor::GetBattleY() const {
+	return Data::actors[data.ID - 1].battle_y;
+}
+
+const std::string& Game_Actor::GetSkillName() const {
+	return Data::actors[data.ID - 1].skill_name;
+}
+
 void Game_Actor::SetName(const std::string &new_name) {
 	data.name = new_name;
 }
@@ -584,4 +600,12 @@ int Game_Actor::GetBattleRow() const {
 
 void Game_Actor::SetBattleRow(int battle_row) {
 	data.row = battle_row;
+}
+
+int Game_Actor::GetBattleAnimationId() const {
+	if (Player::engine == Player::EngineRpg2k) {
+		return 0;
+	}
+
+	return Data::battleranimations[Data::actors[data.ID - 1].battler_animation - 1].ID;
 }

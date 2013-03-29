@@ -352,6 +352,7 @@
     <ClCompile Include="..\..\src\game_character.cpp" />
     <ClCompile Include="..\..\src\game_commonevent.cpp" />
     <ClCompile Include="..\..\src\game_enemy.cpp" />
+    <ClCompile Include="..\..\src\game_enemyparty.cpp" />
     <ClCompile Include="..\..\src\game_event.cpp" />
     <ClCompile Include="..\..\src\game_interpreter.cpp" />
     <ClCompile Include="..\..\src\game_interpreter_battle.cpp" />
@@ -365,8 +366,6 @@
     <ClCompile Include="..\..\src\game_system.cpp" />
     <ClCompile Include="..\..\src\game_targets.cpp" />
     <ClCompile Include="..\..\src\game_temp.cpp" />
-    <ClCompile Include="..\..\src\game_troop.cpp" />
-    <ClCompile Include="..\..\src\game_unit.cpp" />
     <ClCompile Include="..\..\src\game_vehicle.cpp" />
     <ClCompile Include="..\..\src\graphics.cpp" />
     <ClCompile Include="..\..\src\hslrgb.cpp" />
@@ -390,7 +389,9 @@
     <ClCompile Include="..\..\src\scene.cpp" />
     <ClCompile Include="..\..\src\scene_actortarget.cpp" />
     <ClCompile Include="..\..\src\scene_battle.cpp" />
+    <ClCompile Include="..\..\src\scene_battle_rpg2k.cpp" />
     <ClCompile Include="..\..\src\scene_debug.cpp" />
+    <ClCompile Include="..\..\src\scene_battle_rpg2k3.cpp" />
     <ClCompile Include="..\..\src\scene_end.cpp" />
     <ClCompile Include="..\..\src\scene_equip.cpp" />
     <ClCompile Include="..\..\src\scene_file.cpp" />
@@ -411,7 +412,9 @@
     <ClCompile Include="..\..\src\sdl_audio.cpp" />
     <ClCompile Include="..\..\src\sdl_ui.cpp" />
     <ClCompile Include="..\..\src\sprite.cpp" />
+    <ClCompile Include="..\..\src\spriteset_battle.cpp" />
     <ClCompile Include="..\..\src\spriteset_map.cpp" />
+    <ClCompile Include="..\..\src\sprite_battler.cpp" />
     <ClCompile Include="..\..\src\sprite_character.cpp" />
     <ClCompile Include="..\..\src\text.cpp" />
     <ClCompile Include="..\..\src\tilemap.cpp" />
@@ -427,9 +430,11 @@
     <ClCompile Include="..\..\src\window_base.cpp" />
     <ClCompile Include="..\..\src\window_battlecommand.cpp" />
     <ClCompile Include="..\..\src\window_battleitem.cpp" />
+    <ClCompile Include="..\..\src\window_battlemessage.cpp" />
     <ClCompile Include="..\..\src\window_battleoption.cpp" />
     <ClCompile Include="..\..\src\window_battleskill.cpp" />
     <ClCompile Include="..\..\src\window_battlestatus.cpp" />
+    <ClCompile Include="..\..\src\window_battlestatus_rpg2k.cpp" />
     <ClCompile Include="..\..\src\window_command.cpp" />
     <ClCompile Include="..\..\src\window_equip.cpp" />
     <ClCompile Include="..\..\src\window_equipitem.cpp" />
@@ -484,6 +489,7 @@
     <ClInclude Include="..\..\src\game_character.h" />
     <ClInclude Include="..\..\src\game_commonevent.h" />
     <ClInclude Include="..\..\src\game_enemy.h" />
+    <ClInclude Include="..\..\src\game_enemyparty.h" />
     <ClInclude Include="..\..\src\game_event.h" />
     <ClInclude Include="..\..\src\game_interpreter.h" />
     <ClInclude Include="..\..\src\game_interpreter_battle.h" />
@@ -498,8 +504,6 @@
     <ClInclude Include="..\..\src\game_system.h" />
     <ClInclude Include="..\..\src\game_targets.h" />
     <ClInclude Include="..\..\src\game_temp.h" />
-    <ClInclude Include="..\..\src\game_troop.h" />
-    <ClInclude Include="..\..\src\game_unit.h" />
     <ClInclude Include="..\..\src\game_variables.h" />
     <ClInclude Include="..\..\src\game_vehicle.h" />
     <ClInclude Include="..\..\src\graphics.h" />
@@ -527,6 +531,8 @@
     <ClInclude Include="..\..\src\scene_actortarget.h" />
     <ClInclude Include="..\..\src\scene_battle.h" />
     <ClInclude Include="..\..\src\scene_debug.h" />
+    <ClInclude Include="..\..\src\scene_battle_rpg2k.h" />
+    <ClInclude Include="..\..\src\scene_battle_rpg2k3.h" />
     <ClInclude Include="..\..\src\scene_end.h" />
     <ClInclude Include="..\..\src\scene_equip.h" />
     <ClInclude Include="..\..\src\scene_file.h" />
@@ -547,7 +553,9 @@
     <ClInclude Include="..\..\src\sdl_audio.h" />
     <ClInclude Include="..\..\src\sdl_ui.h" />
     <ClInclude Include="..\..\src\sprite.h" />
+    <ClInclude Include="..\..\src\spriteset_battle.h" />
     <ClInclude Include="..\..\src\spriteset_map.h" />
+    <ClInclude Include="..\..\src\sprite_battler.h" />
     <ClInclude Include="..\..\src\sprite_character.h" />
     <ClInclude Include="..\..\src\system.h" />
     <ClInclude Include="..\..\src\text.h" />
@@ -565,9 +573,11 @@
     <ClInclude Include="..\..\src\window_base.h" />
     <ClInclude Include="..\..\src\window_battlecommand.h" />
     <ClInclude Include="..\..\src\window_battleitem.h" />
+    <ClInclude Include="..\..\src\window_battlemessage.h" />
     <ClInclude Include="..\..\src\window_battleoption.h" />
     <ClInclude Include="..\..\src\window_battleskill.h" />
     <ClInclude Include="..\..\src\window_battlestatus.h" />
+    <ClInclude Include="..\..\src\window_battlestatus_rpg2k.h" />
     <ClInclude Include="..\..\src\window_command.h" />
     <ClInclude Include="..\..\src\window_equip.h" />
     <ClInclude Include="..\..\src\window_equipitem.h" />

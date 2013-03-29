@@ -30,12 +30,12 @@
 #include "game_map.h"
 #include "game_message.h"
 #include "game_party.h"
+#include "game_enemyparty.h"
 #include "game_player.h"
 #include "game_screen.h"
 #include "game_switches.h"
 #include "game_system.h"
 #include "game_temp.h"
-#include "game_troop.h"
 #include "game_variables.h"
 #include "graphics.h"
 #include "input.h"
@@ -154,6 +154,7 @@ void Scene_Title::CreateGameObjects() {
 	Game_Temp::Init();
 	Main_Data::game_screen.reset(new Game_Screen());
 	Game_Actors::Init();
+	Game_EnemyParty::Init();
 	Game_Party::Init();
 	Game_Message::Init();
 	Game_Map::Init();
@@ -222,7 +223,7 @@ void Scene_Title::PrepareBattleTest() {
 	//Game_Troop::can_escape = true;
 	Game_System::BgmPlay(Data::system.battle_music);
 
-	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Battle>(), true);
+	Scene::Push(Scene_Battle::Create(), true);
 }
 
 void Scene_Title::CommandNewGame() {

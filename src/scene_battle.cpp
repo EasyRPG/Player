@@ -38,6 +38,8 @@
 #include "battle_animation.h"
 #include "battle_actions.h"
 #include "scene_battle.h"
+#include "scene_battle_rpg2k.h"
+#include "scene_battle_rpg2k3.h"
 #include "bitmap.h"
 
 Scene_Battle::Scene_Battle() {
@@ -106,9 +108,7 @@ void Scene_Battle::Start() {
 		if (Player::battle_test_troop_id <= 0) {
 			Output::Error("Invalid Monster Party ID");
 		} else {
-			Game_Temp::battle_troop_id = Player::battle_test_troop_id;
-			// TODO: Rpg2k does specify a background graphic instead
-			Game_Temp::battle_terrain_id = 1;
+			InitBattleTest();
 		}
 	}
 
@@ -896,7 +896,7 @@ void Scene_Battle::UpdateCursors() {
 }
 
 void Scene_Battle::UpdateSprites() {
-	for (std::vector<Battle::Enemy>::iterator it = Game_Battle::enemies.begin(); it != Game_Battle::enemies.end(); it++) {
+	/*for (std::vector<Battle::Enemy>::iterator it = Game_Battle::enemies.begin(); it != Game_Battle::enemies.end(); it++) {
 		if (it->sprite->GetVisible() && !it->game_enemy->Exists() && it->fade == 0)
 			it->fade = 60;
 
@@ -915,7 +915,7 @@ void Scene_Battle::UpdateSprites() {
 	}
 
 	for (std::vector<Battle::Ally>::iterator it = Game_Battle::allies.begin(); it != Game_Battle::allies.end(); it++)
-		it->UpdateAnim(cycle);
+		it->UpdateAnim(cycle);*/
 }
 
 void Scene_Battle::UpdateFloaters() {
@@ -1018,8 +1018,8 @@ void Scene_Battle::CheckWin() {
 	if (!Game_Battle::CheckWin())
 		return;
 
-	for (std::vector<Battle::Ally>::iterator it = Game_Battle::allies.begin(); it != Game_Battle::allies.end(); it++)
-		it->SetAnimState(Battle::Ally::Victory);
+	/*for (std::vector<Battle::Ally>::iterator it = Game_Battle::allies.begin(); it != Game_Battle::allies.end(); it++)
+		it->SetAnimState(Battle::Ally::Victory);*/
 	Game_Temp::battle_result = Game_Temp::BattleVictory;
 	SetState(State_Victory);
 	Message(Data::terms.victory.empty() ? Data::terms.victory : "Victory");
@@ -1050,4 +1050,20 @@ void Scene_Battle::CheckFlee() {
 	Game_Battle::allies_flee = false;
 	Game_Temp::battle_result = Game_Temp::BattleEscape;
 	Scene::Pop();
+}
+
+EASYRPG_SHARED_PTR<Scene_Battle> Scene_Battle::Create()
+{
+	if (Player::engine == Player::EngineRpg2k) {
+		return EASYRPG_MAKE_SHARED<Scene_Battle_Rpg2k>();
+	}
+	else {
+		return EASYRPG_MAKE_SHARED<Scene_Battle_Rpg2k3>();
+	}
+}
+
+void Scene_Battle::InitBattleTest()
+{
+	Game_Temp::battle_troop_id = Player::battle_test_troop_id;
+	Game_Temp::battle_terrain_id = Data::system.battletest_terrain;
 }

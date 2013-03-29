@@ -61,6 +61,20 @@ public:
 	const RPG::State* GetSignificantState();
 
 	/**
+	 * Gets the characters name
+	 *
+	 * @return Character name
+	 */
+	virtual const std::string& GetName() const = 0;
+
+	/**
+	 * Gets the filename of the character sprite
+	 *
+	 * @return Filename of character sprite
+	 */
+	virtual const std::string& GetSpriteName() const = 0;
+
+	/**
 	 * Gets battler HP.
 	 *
 	 * @return current HP.
@@ -213,6 +227,24 @@ public:
 	 * Removes all states.
 	 */
 	void RemoveAllStates();
+	
+	/**
+	 * Gets X position on battlefield
+	 *
+	 * @return X position in battle scene
+	 */
+	virtual int GetBattleX() const = 0;
+
+	/**
+	 * Gets Y position on battlefield
+	 *
+	 * @return Y position in battle scene
+	 */
+	virtual int GetBattleY() const = 0;
+
+	virtual int GetHue() const;
+
+	virtual int GetBattleAnimationId() const = 0;
 };
 
 #endif

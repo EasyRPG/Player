@@ -162,7 +162,7 @@ void Scene_Map::UpdateTeleportPlayer() {
 void Scene_Map::CallBattle() {
 	Game_Temp::battle_calling = false;
 
-	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Battle>());
+	Scene::Push(Scene_Battle::Create());
 }
 
 void Scene_Map::CallShop() {

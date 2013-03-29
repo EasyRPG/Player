@@ -15,17 +15,32 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <vector>
+#ifndef _WINDOW_BATTLEMESSAGE_H_
+#define _WINDOW_BATTLEMESSAGE_H_
 
-class Game_Battler;
+// Headers
+#include <deque>
+#include "window_base.h"
 
-typedef std::vector<Game_Battler*> tBattlerArray;
-
-class Game_Unit {
+/**
+ * Displays messages during a battle
+ */
+class Window_BattleMessage : public Window_Base {
 public:
-	virtual ~Game_Unit() {}
+	Window_BattleMessage(int ix, int iy, int iwidth, int iheight);
+	virtual ~Window_BattleMessage();
 
-	virtual tBattlerArray GetMembers();
-	void GetExistingMembers(tBattlerArray& ret_val);
-	void GetDeadMembers(tBattlerArray& ret_val);
+	void AddMessage(const std::string& message);
+
+	bool AllLinesFilled();
+
+	void Clear();
+
+	void Update();
+
+private:
+	std::string next_message;
+	int num_lines;
 };
+
+#endif

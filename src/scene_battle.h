@@ -38,6 +38,7 @@
 #include "battle_battler.h"
 #include "battle_animation.h"
 #include "battle_interface.h"
+#include "spriteset_battle.h"
 #include <boost/scoped_ptr.hpp>
 
 namespace Battle {
@@ -52,18 +53,27 @@ class SpriteAction;
 class Scene_Battle : public Scene, public Battle_Interface {
 
 public:
-	Scene_Battle();
+	static EASYRPG_SHARED_PTR<Scene_Battle> Create();
+
 	~Scene_Battle();
 
-	void Start();
-	void Update();
+	virtual void Start();
+	virtual void Update();
 
 	enum State {
+		/// Battle has started (Display encounter message)
+		State_Start,
+		/// Menu with Battle, Auto Battle and Escape Option
 		State_Options,
+		/// Selects next Ally
 		State_Battle,
+		/// Auto Battle selected
 		State_AutoBattle,
+		/// Menu with Command, Item, Skill and Defend
 		State_Command,
+		/// Item selection
 		State_Item,
+		/// Skill selection
 		State_Skill,
 		State_TargetEnemy,
 		State_TargetAlly,
@@ -79,7 +89,12 @@ public:
 		boost::scoped_ptr<Sprite> sprite;
 	};
 
-private:
+protected:
+	Scene_Battle();
+
+	/// Contains battle related sprites
+	boost::scoped_ptr<Spriteset_Battle> spriteset;
+
 	friend class Battle::SpriteAction;
 
 	State state;
@@ -108,61 +123,63 @@ private:
 
 	boost::scoped_ptr<Sprite> ally_cursor, enemy_cursor;
 
-	void CreateCursors();
-	void CreateWindows();
+	virtual void InitBattleTest();
 
-	void Message(const std::string& msg, bool pause = true);
-	void Floater(const Sprite* ref, int color, const std::string& text, int duration);
-	void Floater(const Sprite* ref, int color, int value, int duration);
-	void ShowAnimation(int animation_id, bool allies, Battle::Ally* ally, Battle::Enemy* enemy, bool wait);
-	void UpdateAnimations();
-	bool IsAnimationWaiting();
+	virtual void CreateCursors();
+	virtual void CreateWindows();
 
-	void SetState(State state);
-	void SetAnimState(Battle::Ally& ally, int state);
-	void UpdateAnimState();
-	void Restart();
+	virtual void Message(const std::string& msg, bool pause = true);
+	virtual void Floater(const Sprite* ref, int color, const std::string& text, int duration);
+	virtual void Floater(const Sprite* ref, int color, int value, int duration);
+	virtual void ShowAnimation(int animation_id, bool allies, Battle::Ally* ally, Battle::Enemy* enemy, bool wait);
+	virtual void UpdateAnimations();
+	virtual bool IsAnimationWaiting();
 
-	void Command();
-	void Escape();
-	void Special();
-	void Attack();
-	void Defend();
-	void Item();
-	void Skill();
-	void ItemSkill(const RPG::Item& item);
-	void Skill(const RPG::Skill& skill);
-	void TargetDone();
-	void BeginAttack();
-	void BeginItem();
-	void BeginSkill();
+	virtual void SetState(State state);
+	virtual void SetAnimState(Battle::Ally& ally, int state);
+	virtual void UpdateAnimState();
+	virtual void Restart();
+
+	virtual void Command();
+	virtual void Escape();
+	virtual void Special();
+	//virtual void Attack();
+	virtual void Defend();
+	virtual void Item();
+	virtual void Skill();
+	virtual void ItemSkill(const RPG::Item& item);
+	virtual void Skill(const RPG::Skill& skill);
+	virtual void TargetDone();
+	virtual void BeginAttack();
+	virtual void BeginItem();
+	virtual void BeginSkill();
 	void DoAttack();
-	void DoItem();
-	void DoSkill();
+	virtual void DoItem();
+	virtual void DoSkill();
 
-	int SkillAnimation(const RPG::Skill& skill, const Battle::Ally& ally);
+	virtual int SkillAnimation(const RPG::Skill& skill, const Battle::Ally& ally);
 
-	void EnemyAction();
-	void EnemyActionBasic();
-	void EnemyActionSkill();
+	virtual void EnemyAction();
+	virtual void EnemyActionBasic();
+	virtual void EnemyActionSkill();
 
 	static void EnemyActionDone(void* param);
 
-	void ProcessActions();
-	void ProcessInput();
+	virtual void ProcessActions();
+	virtual void ProcessInput();
 	void ChooseEnemy();
-	void DoAuto();
+	virtual void DoAuto();
 
-	void UpdateBackground();
-	void UpdateCursors();
+	virtual void UpdateBackground();
+	virtual void UpdateCursors();
 	void UpdateAttack();
-	void UpdateSprites();
-	void UpdateFloaters();
+	virtual void UpdateSprites();
+	virtual void UpdateFloaters();
 
-	void CheckWin();
-	void CheckLose();
-	void CheckAbort();
-	void CheckFlee();
+	virtual void CheckWin();
+	virtual void CheckLose();
+	virtual void CheckAbort();
+	virtual void CheckFlee();
 
 	// battle_algorithms.cpp
 

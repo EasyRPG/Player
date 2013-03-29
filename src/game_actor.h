@@ -156,21 +156,21 @@ public:
 	 *
 	 * @return name.
 	 */
-	std::string GetName() const;
+	const std::string& GetName() const;
 
 	/**
-	 * Gets actor character graphic filename.
+	 * Gets actor character sprite filename.
 	 *
-	 * @return character graphic filename.
+	 * @return character sprite filename.
 	 */
-	std::string GetCharacterName() const;
+	const std::string& GetSpriteName() const;
 
 	/**
-	 * Gets actor character graphic index.
+	 * Gets actor character sprite index.
 	 *
-	 * @return character graphic index.
+	 * @return character sprite index.
 	 */
-	int GetCharacterIndex() const;
+	int GetSpriteIndex() const;
 
 	/**
 	 * Gets actor face graphic filename.
@@ -494,6 +494,34 @@ public:
 	bool GetTwoSwordsStyle() const;
 
 	/**
+	 * Gets if actor does auto battle.
+	 *
+	 * @return true if actor does two weapons.
+	 */
+	bool GetAutoBattle() const;
+
+	/**
+	 * Gets X position on battlefield
+	 *
+	 * @return X position in battle scene
+	 */
+	int GetBattleX() const;
+
+	/**
+	 * Gets Y position on battlefield
+	 *
+	 * @return Y position in battle scene
+	 */
+	int GetBattleY() const;
+
+	/**
+	 * Gets name of skill menu item
+	 *
+	 * @return name of skill menu item
+	 */
+	const std::string& GetSkillName() const;
+
+	/**
 	 * Sets new actor name.
 	 *
 	 * @param new_name new name.
@@ -563,6 +591,8 @@ public:
 	 * @param battle_row new row for Rpg2k3 battles (-1 front, 1 back).
 	 */
 	void SetBattleRow(int battle_row);
+
+	int GetBattleAnimationId() const;
 
 private:
 	RPG::SaveActor& data;

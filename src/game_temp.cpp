@@ -42,6 +42,7 @@ bool Game_Temp::inn_handlers;
 std::string Game_Temp::hero_name;
 int Game_Temp::hero_name_id;
 int Game_Temp::hero_name_charset;
+bool Game_Temp::battle_running;
 int Game_Temp::battle_troop_id;
 int Game_Temp::battle_terrain_id;
 std::string Game_Temp::battle_background;
@@ -76,6 +77,7 @@ void Game_Temp::Init() {
 	hero_name = "";
 	hero_name_id = 0;
 	hero_name_charset = 0;
+	battle_running = false;
 	battle_troop_id = 0;
 	battle_background = "";
 	battle_mode = 0;

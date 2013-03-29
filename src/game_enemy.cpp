@@ -26,8 +26,7 @@ Game_Enemy::Game_Enemy(int enemy_id) {
 }
 
 void Game_Enemy::Setup(int enemy_id) {
-	//const RPG::Enemy& enemy = Data::enemies[enemy_id - 1];
-	this->enemy_id = enemy_id;
+	Transform(enemy_id);
 	hp = GetMaxHp();
 	sp = GetMaxSp();
 }
@@ -40,28 +39,36 @@ std::vector<int16_t>& Game_Enemy::GetStates() {
 	return states;
 }
 
+const std::string& Game_Enemy::GetName() const {
+	return enemy->name;
+}
+
+const std::string& Game_Enemy::GetSpriteName() const {
+	return enemy->battler_name;
+}
+
 int Game_Enemy::GetBaseMaxHp() const {
-	return Data::enemies[enemy_id - 1].max_hp;
+	return enemy->max_hp;
 }
 
 int Game_Enemy::GetBaseMaxSp() const {
-	return Data::enemies[enemy_id - 1].max_sp;
+	return enemy->max_sp;
 }
 
 int Game_Enemy::GetBaseAtk() const {
-	return Data::enemies[enemy_id - 1].attack;
+	return enemy->attack;
 }
 
 int Game_Enemy::GetBaseDef() const {
-	return Data::enemies[enemy_id - 1].defense;
+	return enemy->defense;
 }
 
 int Game_Enemy::GetBaseSpi() const {
-	return Data::enemies[enemy_id - 1].spirit;
+	return enemy->spirit;
 }
 
 int Game_Enemy::GetBaseAgi() const {
-	return Data::enemies[enemy_id - 1].agility;
+	return enemy->agility;
 }
 
 int Game_Enemy::GetHp() const {
@@ -80,6 +87,26 @@ void Game_Enemy::SetSp(int _sp) {
 	sp = std::min(std::max(_sp, 0), GetMaxSp());
 }
 
+int Game_Enemy::GetBattleX() const {
+	return x;
+}
+
+int Game_Enemy::GetBattleY() const {
+	return y;
+}
+
+void Game_Enemy::SetBattleX(int new_x) {
+	x = new_x;
+}
+
+void Game_Enemy::SetBattleY(int new_y) {
+	y = new_y;
+}
+
+int Game_Enemy::GetHue() const {
+	return enemy->battler_hue;
+}
+
 void Game_Enemy::SetHidden(bool _hidden) {
 	hidden = _hidden;
 }
@@ -90,5 +117,9 @@ bool Game_Enemy::IsHidden() const {
 
 void Game_Enemy::Transform(int new_enemy_id) {
 	enemy_id = new_enemy_id;
+	enemy = &Data::enemies[enemy_id - 1];
 }
 
+int Game_Enemy::GetBattleAnimationId() const {
+	return 0;
+}

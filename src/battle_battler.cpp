@@ -152,6 +152,7 @@ void Battle::Ally::SetAnimState(int state) {
 		return;
 
 	sprite_file = ext.battler_name;
+
 	sprite->SetBitmap(Cache::Battlecharset(sprite_file));
 }
 

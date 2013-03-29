@@ -9,6 +9,7 @@
 
 /cmake/libEasyRPG_Player_Static.a
 /cmake/libsdl_test_main.a
+
 /vs20*/Release*
 /vs20*/Debug*
 /vs20*/Release*
@@ -20,6 +21,8 @@
 /vs20*/*.vsp
 /vs20*/ipch/
 /vs20*/x64/
+/vs2010/*.vsp
+/vs2010/*.psess
 /psp/PARAM.SFO
 /psp/EBOOT.PBP
 /psp/EasyRPG.elf

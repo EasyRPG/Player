@@ -37,8 +37,8 @@ Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 	const std::vector<Game_Actor*>& actors = Game_Party::GetActors();
 	for (size_t i = 0; i < actors.size() && i < 4; i++) {
 		Game_Actor *actor = actors[i];
-		const std::string& sprite_name = actor->GetCharacterName();
-		int sprite_id = actor->GetCharacterIndex();
+		const std::string& sprite_name = actor->GetSpriteName();
+		int sprite_id = actor->GetSpriteIndex();
 		BitmapRef bm = Cache::Charset(sprite_name);
 		int width = bm->GetWidth() / 4 / 3;
 		int height = bm->GetHeight() / 2 / 4;
