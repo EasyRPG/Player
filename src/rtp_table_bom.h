@@ -133,7 +133,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("paralyze2", "麻痺")
 	 .to_container(sub_map))
 
-	("battlechar", list_of<sub_map_pair>
+	("battlecharset", list_of<sub_map_pair>
 	 ("elf-f-1", "エルフ女a")
 	 ("elf-f-2", "エルフ女b")
 	 ("elf-m-1", "エルフ男a")
