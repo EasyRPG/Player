@@ -63,10 +63,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="freetype.lib jpeg.lib libexpat.lib libmad.lib libogg.lib libpng.lib libvorbis.lib libvorbisfile.lib mikmod.lib native_midi.lib SDL.lib SDLmain.lib SDL_image.lib SDL_mixer.lib zlib.lib winmm.lib dxguid.lib pixman_mmx.lib shinonome.lib readers.lib"
+				AdditionalDependencies="unicows.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib freetype.lib jpeg.lib libexpat.lib libmad.lib libogg.lib libpng.lib libvorbis.lib libvorbisfile.lib mikmod.lib native_midi.lib SDL.lib SDLmain.lib SDL_image.lib SDL_mixer.lib zlib.lib winmm.lib dxguid.lib pixman_mmx.lib shinonome.lib readers.lib $(NOINHERIT)"
 				OutputFile="$(OutDir)\PlayerD.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\lib\shinonome\lib\$(ConfigurationName);..\..\lib\readers\lib\$(ConfigurationName);$(EASYDEV_MSVC2005)\lib\release"
+				IgnoreDefaultLibraryNames="kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -144,10 +145,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="freetype.lib jpeg.lib libexpat.lib libmad.lib libogg.lib libpng.lib libvorbis.lib libvorbisfile.lib mikmod.lib native_midi.lib SDL.lib SDLmain.lib SDL_image.lib SDL_mixer.lib zlib.lib winmm.lib dxguid.lib pixman_mmx.lib shinonome.lib readers.lib"
+				AdditionalDependencies="unicows.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib freetype.lib jpeg.lib libexpat.lib libmad.lib libogg.lib libpng.lib libvorbis.lib libvorbisfile.lib mikmod.lib native_midi.lib SDL.lib SDLmain.lib SDL_image.lib SDL_mixer.lib zlib.lib winmm.lib dxguid.lib pixman_mmx.lib shinonome.lib readers.lib $(NOINHERIT)"
 				OutputFile="$(OutDir)\Player.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib\shinonome\lib\$(ConfigurationName);..\..\lib\readers\lib\$(ConfigurationName);$(EASYDEV_MSVC2005)\lib\release"
+				IgnoreDefaultLibraryNames="kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
