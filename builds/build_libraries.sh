@@ -56,7 +56,7 @@ fi
 if ! [ -f $HOME_BUILD_PATH/include/png.h ] ; then
     PNG_VERSION=1.5.14
     wget --continue \
-        "ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng-$PNG_VERSION.tar.gz" \
+        "ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng15/libpng-$PNG_VERSION.tar.gz" \
         -O $ARCHIVE_DIR/libpng-$PNG_VERSION.tar.gz
     tar -xf $ARCHIVE_DIR/libpng-$PNG_VERSION.tar.gz
     cd libpng-$PNG_VERSION
