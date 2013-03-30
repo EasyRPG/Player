@@ -712,7 +712,7 @@ void SdlUi::SetAppIcon() {
 		Output::Error("Wrong SDL version");
 
 	HINSTANCE handle = GetModuleHandle(NULL);
-	HICON icon = LoadIcon(handle, MAKEINTRESOURCE(45678));
+	HICON icon = LoadIcon(handle, MAKEINTRESOURCE(23456));
 
 	if (icon == NULL)
 		Output::Error("Couldn't load icon.");
