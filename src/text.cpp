@@ -57,7 +57,7 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 	// Load the system file for the shadow and text color
 	BitmapRef system = Cache::System(Data::system.system_name);
 	// Load the exfont-file
-	BitmapRef exfont = Cache::ExFont();
+	BitmapRef exfont = Cache::Exfont();
 
 	// Get the Shadow color
 	Color shadow_color(Cache::system_info.sh_color);
