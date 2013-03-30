@@ -16,6 +16,8 @@
  */
 
 // Headers
+#include <boost/scoped_ptr.hpp>
+#include <cstdlib>
 #include "main_data.h"
 #include "game_actors.h"
 #include "game_party.h"
@@ -27,7 +29,6 @@
 #include "game_variables.h"
 #include "game_switches.h"
 #include "font.h"
-#include <boost/scoped_ptr.hpp>
 
 // Global variables.
 

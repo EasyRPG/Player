@@ -16,6 +16,7 @@
  */
 
 // Headers
+#include <cstdlib>
 #include "rpg_item.h"
 #include "rpg_skill.h"
 #include "rpg_enemyaction.h"
