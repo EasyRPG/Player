@@ -73,7 +73,7 @@ void Player::Init(int argc, char *argv[]) {
 	}
 #endif
 
-#if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER > 0x0600)
+#if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER >= 0x0600)
 	InitMiniDumpWriter();
 #endif
 
@@ -195,7 +195,7 @@ void Player::Exit() {
 	DisplayUi.reset();
 }
 
-#if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER > 0x0600)
+#if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER >= 0x0600)
 // Minidump code for Windows
 // Original Author: Oleg Starodumov (www.debuginfo.com)
 // Modified by EasyRPG Team
