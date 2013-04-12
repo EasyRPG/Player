@@ -65,6 +65,20 @@ struct AudioInterface : boost::noncopyable {
 	virtual void BGM_Resume() = 0;
 
 	/**
+	 * Adjusts the volume of the currently playing background music.
+	 *
+	 * @param volume volume
+	 */
+	virtual void BGM_Volume(int volume) = 0;
+
+	/**
+	 * Adjusts the pitch of the currently playing background music.
+	 *
+	 * @param pitch pitch
+	 */
+	virtual void BGM_Pitch(int pitch) = 0;
+
+	/**
 	 * Plays a background sound.
 	 *
 	 * @param file file to play.
@@ -102,7 +116,7 @@ struct AudioInterface : boost::noncopyable {
 	/**
 	 * Does a fade out of the music effect.
 	 *
-	 * @param fade : Fade out time
+	 * @param fade Fade out time
 	 */
 	virtual void ME_Fade(int fade) = 0;
 
@@ -127,12 +141,14 @@ struct EmptyAudio : public AudioInterface {
 	void BGM_Resume() {}
 	void BGM_Stop() {}
 	void BGM_Fade(int) {}
+	void BGM_Volume(int) {}
+	void BGM_Pitch(int) {};
 	void BGS_Play(std::string const&, int, int) {}
 	void BGS_Stop() {}
 	void BGS_Fade(int) {}
 	void ME_Play(std::string const&, int, int) {}
 	void ME_Stop() {}
-	void ME_Fade(int /* fade */) {}
+	void ME_Fade(int) {}
 	void SE_Play(std::string const&, int, int) {}
 	void SE_Stop() {}
 	void Update() {}

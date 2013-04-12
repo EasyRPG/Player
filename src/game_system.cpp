@@ -36,7 +36,12 @@ void Game_System::BgmPlay(RPG::Music const& bgm) {
 	if (!bgm.name.empty() && bgm.name != "(OFF)") {
 		// Same music: Only adjust volume and speed
 		if (data.current_music.name == bgm.name) {
-			// TODO
+			if (data.current_music.volume != bgm.volume) {
+				Audio().BGM_Volume(bgm.volume);
+			}
+			if (data.current_music.tempo != bgm.tempo) {
+				Audio().BGM_Pitch(bgm.tempo);
+			}
 		} else {
 			Audio().BGM_Play(bgm.name, bgm.volume, bgm.tempo);
 		}
