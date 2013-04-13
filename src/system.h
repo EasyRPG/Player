@@ -44,6 +44,10 @@
  */
 #include "memory_management.h"
 
+#ifdef GEKKO
+	#include "stdint.h"
+#endif
+
 #define SUPPORT_BMP
 #define SUPPORT_JPG
 #define SUPPORT_PNG
@@ -57,6 +61,8 @@
 #define SUPPORT_TTF
 #define SUPPORT_FON
 
+#define SUPPORT_ZOOM
+
 #ifdef USE_SDL
 #  define USE_SDL_MIXER
 
@@ -64,6 +70,10 @@
 #  ifdef PSP
 #    undef SUPPORT_AUDIO
 #    undef USE_SDL_MIXER
+#  endif
+
+#  ifdef GEKKO
+#    undef SUPPORT_ZOOM
 #  endif
 
 #  if !defined(DINGOO) && !defined(GEKKO)

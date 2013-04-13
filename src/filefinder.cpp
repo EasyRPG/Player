@@ -394,6 +394,9 @@ std::string FileFinder::FindSound(const std::string& name) {
 bool FileFinder::Exists(std::string const& filename) {
 #ifdef _WIN32
 	return ::GetFileAttributesW(Utils::ToWideString(filename).c_str()) != (DWORD)-1;
+#elif GEKKO
+	struct stat sb;
+	return ::stat(filename.c_str(), &sb) == 0;
 #else
 	return ::access(filename.c_str(), F_OK) != -1;
 #endif

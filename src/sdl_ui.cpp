@@ -188,7 +188,11 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 #ifndef PSP
 					current_display_mode.zoom = (vinfo->current_h > height*2 && vinfo->current_w > width*2);
 #endif
+#if defined(SUPPORT_ZOOM)
 					zoom_available = current_display_mode.zoom;
+#else
+					zoom_available = false;
+#endif
 					return true;
 				} else {
 					int len = 0;
@@ -197,8 +201,10 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 
 					for (int i = len-1; i >= 0; --i) {
 						if (
-							(modes[i]->h == height && modes[i]->w == width) ||
-							(modes[i]->h == height*2 && modes[i]->w == width*2)
+							(modes[i]->h == height && modes[i]->w == width)
+#if defined(SUPPORT_ZOOM)
+							|| (modes[i]->h == height*2 && modes[i]->w == width*2)
+#endif
 						) {
 							current_display_mode.zoom = ((modes[i]->w >> 1) == width);
 							zoom_available = current_display_mode.zoom;
@@ -245,8 +251,10 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 		++len;
 
 	for (int i = len-1; i > 0; --i) {
-		if ((modes[i]->h == height && modes[i]->w == width) ||
-			(modes[i]->h == height*2 && modes[i]->w == width*2)
+		if ((modes[i]->h == height && modes[i]->w == width)
+#if defined(SUPPORT_ZOOM)
+			|| (modes[i]->h == height*2 && modes[i]->w == width*2)
+#endif
 			) {
 				current_display_mode.flags = flags;
 				// FIXME: we have to find a way to make zoom possible only in windowed mode
@@ -704,7 +712,7 @@ void SdlUi::SetAppIcon() {
 		Output::Error("Wrong SDL version");
 
 	HINSTANCE handle = GetModuleHandle(NULL);
-	HICON icon = LoadIcon(handle, MAKEINTRESOURCE(45678));
+	HICON icon = LoadIcon(handle, MAKEINTRESOURCE(23456));
 
 	if (icon == NULL)
 		Output::Error("Couldn't load icon.");

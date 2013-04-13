@@ -15,18 +15,19 @@ include $(DEVKITPPC)/wii_rules
 # SOURCES is a list of directories containing source code
 # INCLUDES is a list of directories containing extra header files
 #---------------------------------------------------------------------------------
-TARGET		:=	$(notdir $(CURDIR))
+TARGET		:=	boot
 BUILD		:=	obj
-SOURCES		:=	../../lib/readers/src ../../src ../../lib/readers/src/generated
+SOURCES		:=	../../lib/readers/src ../../src ../../lib/readers/src/generated ../../lib/shinonome
+#SOURCES		:=	../../src
 DATA		:=	data  
-INCLUDES	:=  ../../lib/readers/include ../../src
+INCLUDES	:=  ../../lib/readers/include ../../src ../../lib/shinonome
 
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS	= -O2 -Wall -Wextra -fno-rtti -DUSE_SDL -DUSE_ALPHA -DUSE_BIG_ENDIAN -DNDEBUG $(MACHDEP) $(INCLUDE)
-CXXFLAGS	=	$(CFLAGS) -fno-exceptions
+CFLAGS	= -O2 -Wall -Wextra -fno-rtti -DUSE_SDL -DHAVE_SDL_MIXER -DUSE_BIG_ENDIAN -DNDEBUG $(MACHDEP) $(INCLUDE)
+CXXFLAGS	=	$(CFLAGS) -fno-exceptions -std=c++0x
 
 LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 
@@ -34,8 +35,8 @@ LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
 
-LIBS	:=	 -lSDL_mixer -lSDL_image -lSDL_ttf -lSDL -ljpeg -lpng -lfreetype -lasnd \
-			-lvorbisidec -lz -lfat -lwiiuse -lbte -logc -liconv -lm -lwiikeyboard
+LIBS	:=	 -lSDL_mixer -lSDL -lpixman-1 -ljpeg -lpng -lfreetype -lmad \
+			-liconv -lvorbisidec -lz -lfat -lwiiuse -lbte -logc -lm -lwiikeyboard
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
@@ -61,7 +62,9 @@ export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 # automatically build a list of object files for our project
 #---------------------------------------------------------------------------------
 CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
-CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
+_CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
+_CXXFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cxx)))
+CPPFILES	:=  $(_CXXFILES) $(_CPPFILES)
 sFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.S)))
 BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*)))
@@ -76,8 +79,9 @@ else
 endif
 
 export OFILES	:=	$(addsuffix .o,$(BINFILES)) \
-					$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) \
-					$(sFILES:.s=.o) $(SFILES:.S=.o)
+					$(_CPPFILES:.cpp=.o) $(CFILES:.c=.o) \
+					$(sFILES:.s=.o) $(SFILES:.S=.o) \
+					$(_CXXFILES:.cxx=.o) 
 
 #---------------------------------------------------------------------------------
 # build a list of include paths
@@ -86,6 +90,7 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES), -I$(CURDIR)/$(dir)) \
 					$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
 					-I$(CURDIR)/$(BUILD) \
 					-I$(LIBOGC_INC) \
+					-I$(PORTLIBS)/include \
 					-I$(PORTLIBS)/include/SDL \
 					-I$(PORTLIBS)/include/freetype2
 
@@ -93,7 +98,8 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES), -I$(CURDIR)/$(dir)) \
 # build a list of library paths
 #---------------------------------------------------------------------------------
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib) \
-					-L$(LIBOGC_LIB)
+					-L$(LIBOGC_LIB) \
+					-L$(PORTLIBS)/lib
 
 export OUTPUT	:=	$(CURDIR)/$(TARGET)
 .PHONY: $(BUILD) clean
@@ -112,7 +118,6 @@ clean:
 run:
 	wiiload $(TARGET).dol
 
-
 #---------------------------------------------------------------------------------
 else
 
@@ -123,6 +128,13 @@ DEPENDS	:=	$(OFILES:.o=.d)
 #---------------------------------------------------------------------------------
 $(OUTPUT).dol: $(OUTPUT).elf
 $(OUTPUT).elf: $(OFILES)
+
+#---------------------------------------------------------------------------------
+# Custom build rule for shinonome (has .cxx extension)
+#---------------------------------------------------------------------------------
+%.o: %.cxx
+	@echo $(notdir $<)
+	@$(CXX) -MMD -MP -MF $(DEPSDIR)/$*.d $(CXXFLAGS) -c $< -o $@ $(ERROR_FILTER)
 
 #---------------------------------------------------------------------------------
 # This rule links in binary data with the .jpg extension

@@ -83,8 +83,8 @@ namespace {
 			Title,
 			System2,
 			Battle2,
-			BattleChar,
-			BattleWeapon,
+			Battlecharset,
+			Battleweapon,
 			Frame,
 			END,
 		};
@@ -110,9 +110,9 @@ namespace {
 		{ "Title", false, 320, 320, 240, 240 },
 		{ "System2", true, 80, 80, 96, 96 },
 		{ "Battle2", true, 640, 640, 640, 640 },
-		{ "BattleChar", true, 144, 144, 384, 384 },
+		{ "BattleCharSet", true, 144, 144, 384, 384 },
 		{ "BattleWeapon", true, 192, 192, 512, 512 },
-		{ "frame", true, 320, 320, 240, 240 },
+		{ "Frame", true, 320, 320, 240, 240 },
 	};
 
 	template<Material::Type T>
@@ -147,14 +147,14 @@ tSystemInfo Cache::system_info;
 	}												\
 
 BOOST_PP_SEQ_FOR_EACH(macro, ,
-					  (Backdrop)(Battle)(Battle2)(BattleChar)(BattleWeapon)
+					  (Backdrop)(Battle)(Battle2)(Battlecharset)(Battleweapon)
 					  (Charset)(Chipset)(Faceset)(Gameover)(Monster)
 					  (Panorama)(Picture)(System)(System2)(Frame)(Title)
 					  )
 
 #undef macro
 
-BitmapRef Cache::ExFont() {
+BitmapRef Cache::Exfont() {
 	string_pair const hash("\x00","ExFont");
 
 	cache_type::const_iterator const it = cache.find(hash);

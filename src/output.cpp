@@ -26,6 +26,10 @@
 #include <sstream>
 #include <exception>
 
+#ifdef GEKKO
+	#include <unistd.h>
+#endif
+
 #include "filefinder.h"
 #include "graphics.h"
 #include "input.h"
@@ -135,15 +139,21 @@ void Output::ErrorStr(std::string const& err) {
 	if (DisplayUi) {
 		DisplayUi->DrawScreenText("Error:", 10, 30, Color(255, 0, 0, 0));
 		HandleScreenOutput("Error", err, true);
+		Player::Exit();
 	} else {
 		// Fallback to Console if the display is not ready yet
-		printf("%s\n", err.c_str());
+		std::cout << err << std::endl;
 		std::cout << std::endl;
-		std::cout << "EasyRPG Player will close now. Press any key..." << std::endl;
+		std::cout << "EasyRPG Player will close now.";
+#ifdef GEKKO
+		// Wii stdin is non-blocking
+		sleep(5);
+#else
+		std::cout << " Press any key..." << std::endl;
 		std::cin.get();
+#endif
 	}
 
-	Player::Exit();
 	exit(EXIT_FAILURE);
 }
 

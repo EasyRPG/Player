@@ -447,6 +447,9 @@ void Bitmap::initialize_formats() {
 	add_pair(PIXMAN_x2b10g10r10, DynamicFormat(32,10,0,10,10,10,20,0,0,PF::NoAlpha));
 	add_pair(PIXMAN_a2b10g10r10, DynamicFormat(32,10,0,10,10,10,20,2,30,PF::Alpha));
 
+	add_pair(PIXMAN_r8g8b8a8, DynamicFormat(32,8,24,8,16,8,8,8,0,PF::Alpha));
+	add_pair(PIXMAN_r8g8b8x8, DynamicFormat(32,8,24,8,16,8,8,8,0,PF::NoAlpha));
+
 	add_pair(PIXMAN_r8g8b8, DynamicFormat(24,8,16,8,8,8,0,0,0,PF::NoAlpha));
 	add_pair(PIXMAN_b8g8r8, DynamicFormat(24,8,0,8,8,8,16,0,0,PF::NoAlpha));
 
@@ -470,8 +473,18 @@ pixman_format_code_t Bitmap::find_format(const DynamicFormat& format) {
 	initialize_formats();
 	int dcode = format.code_alpha();
 	int pcode = formats_map[dcode];
-	if (pcode == 0)
-		Output::Error("Couldn't find Pixman format");
+	if (pcode == 0) {
+		// To fix add a pair to initialize_formats that maps the outputted
+		// DynamicFormat to a pixman format
+		Output::Error("%s\nDynamicFormat(%d, %d, %d, %d, %d, %d, %d, %d, %d, %s)",
+		"Couldn't find Pixman format for",
+		format.bits,
+		format.r.bits, format.r.shift,
+		format.g.bits, format.g.shift,
+		format.b.bits, format.b.shift,
+		format.a.bits, format.a.shift,
+		format.alpha_type == PF::Alpha ? "PF::Alpha" : "PF::NoAlpha");
+	}
 	return (pixman_format_code_t) pcode;
 }
 
