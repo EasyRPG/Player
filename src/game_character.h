@@ -144,6 +144,26 @@ public:
 	void MoveForward();
 
 	/**
+	 * Moves the character diagonal (downleft), moves down if blocked.
+	 */
+	void MoveDownLeft();
+
+	/**
+	 * Moves the character diagonal (downright), moves down if blocked.
+	 */
+	void MoveDownRight();
+
+	/**
+	 * Moves the character diagonal (upleft), moves up if blocked.
+	 */
+	void MoveUpLeft();
+
+	/**
+	 * Moves the character diagonal (downright), moves up if blocked.
+	 */
+	void MoveUpRight();
+
+	/**
 	 * Does a random movement.
 	 */
 	void MoveRandom();
@@ -200,10 +220,43 @@ public:
 	void Turn90DegreeLeftOrRight();
 
 	/**
-	 * Locks character direction.
+	 * Character looks in a random direction
+	 */
+	void FaceRandomDirection();
+
+	/**
+	 * Character looks towards the hero.
+	 */
+	void FaceTowardsHero();
+
+	/**
+	 * Character looks away from the the hero.
+	 */
+	void FaceAwayFromHero();
+
+	/**
+	 * Character waits.
+	 */
+	void Wait();
+
+	/**
+	 * Jump action begins. Does nothing when EndJump-Command is missing.
+	 */
+	void BeginJump();
+	
+	/**
+	 * Jump action ends.
+	 */
+	void EndJump();
+
+	/**
+	 * Locks character facing direction.
 	 */
 	void Lock();
 
+	/**
+	 * Unlocks character facing direction.
+	 */
 	void Unlock();
 
 	void SetDirection(int direction);
