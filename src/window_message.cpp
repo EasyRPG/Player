@@ -312,67 +312,67 @@ void Window_Message::UpdateMessage() {
 			break;
 		}
 
-		if (*text_index == utf('\n')) {
+		if (*text_index == '\n') {
 			instant_speed = false;
 			InsertNewLine();
-		} else if (*text_index == utf('\\') && std::distance(text_index, end) > 1) {
+		} else if (*text_index == '\\' && std::distance(text_index, end) > 1) {
 			// Special message codes
 			++text_index;
 
 			std::string command_result;
 
 			switch (tolower(*text_index)) {
-			case utf('c'):
-			case utf('n'):
-			case utf('s'):
-			case utf('v'):
+			case 'c':
+			case 'n':
+			case 's':
+			case 'v':
 				// These commands support indirect access via \v[]
 				command_result = ParseCommandCode();
 				contents->TextDraw(contents_x, contents_y, text_color, command_result);
 				contents_x += contents->GetFont()->GetSize(command_result).width;
 				break;
-			case utf('\\'):
+			case '\\':
 				// Show Backslash
 				contents->TextDraw(contents_x, contents_y, text_color, std::string("\\"));
 				contents_x += contents->GetFont()->GetSize("\\").width;
 				break;
-			case utf('_'):
+			case '_':
 				// Insert half size space
 				contents_x += contents->GetFont()->GetSize(" ").width / 2;
 				break;
-			case utf('$'):
+			case '$':
 				// Show Gold Window
 				gold_window->SetY(y == 0 ? 240 - 32 : 0);
 				gold_window->Refresh();
 				gold_window->SetOpenAnimation(5);
 				gold_window->SetVisible(true);
 				break;
-			case utf('!'):
+			case '!':
 				// Text pause
 				halt_output = true;
 				pause = true;
 				break;
-			case utf('^'):
+			case '^':
 				// Force message close
 				// The close happens at the end of the message, not where
 				// the ^ is encoutered
 				kill_message = true;
 				break;
-			case utf('>'):
+			case '>':
 				// Instant speed start
 				instant_speed = true;
 				break;
-			case utf('<'):
+			case '<':
 				// Instant speed stop
 				instant_speed = false;
 				break;
-			case utf('.'):
+			case '.':
 				// 1/4 second sleep
 				sleep_until = Graphics::GetFrameCount() + 60 / 4;
 				++text_index;
 				return;
 				break;
-			case utf('|'):
+			case '|':
 				// Second sleep
 				sleep_until = Graphics::GetFrameCount() + 60;
 				++text_index;
@@ -380,7 +380,7 @@ void Window_Message::UpdateMessage() {
 				break;
 			default:;
 			}
-		} else if (*text_index == utf('$')
+		} else if (*text_index == '$'
 				   && std::distance(text_index, end) > 1
 				   && std::isalpha(*boost::next(text_index))) {
 			// ExFont
@@ -404,7 +404,7 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 	++text_index;
 
 	if (text_index == end ||
-		*text_index != utf('[')) {
+		*text_index != '[') {
 		--text_index;
 		is_valid = false;
 		return 0;
@@ -417,11 +417,11 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 	for (;;) {
 		if (text_index == end) {
 			break;
-		} else if (*text_index == utf('\n')) {
+		} else if (*text_index == '\n') {
 			--text_index;
 			break;
 		}
-		else if (*text_index == utf('0')) {
+		else if (*text_index == '0') {
 			// Truncate 0 at the start
 			if (!ss.str().empty()) {
 				ss << '0';
@@ -429,10 +429,10 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 				null_at_start = true;
 			}
 		}
-		else if (*text_index >= utf('1') &&
-			*text_index <= utf('9')) {
+		else if (*text_index >= '1' &&
+			*text_index <= '9') {
 			ss << std::string(text_index.base(), boost::next(text_index).base());
-		} else if (*text_index == utf(']')) {
+		} else if (*text_index == ']') {
 			--call_depth;
 			if (call_depth == 0) {
 				break;
@@ -441,10 +441,10 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 			// End of number
 			// Search for ] or line break
 			while (text_index != end) {
-					if (*text_index == utf('\n')) {
+					if (*text_index == '\n') {
 						--text_index;
 						break;
-					} else if (*text_index == utf(']')) {
+					} else if (*text_index == ']') {
 						--call_depth;
 						if (call_depth == 0) {
 							break;
@@ -480,8 +480,8 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 	int sub_code = -1;
 	uint32_t cmd_char = *text_index;
 	if (std::distance(text_index, end) > 3 &&
-		*boost::next(text_index, 2) == utf('\\') &&
-		tolower(*boost::next(text_index, 3)) == utf('v')) {
+		*boost::next(text_index, 2) == '\\' &&
+		tolower(*boost::next(text_index, 3)) == 'v') {
 		++(++(++text_index));
 		// The result is an int value, str-to-int is safe in this case
 		std::stringstream ss;
@@ -489,7 +489,7 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 		ss >> sub_code;
 	}
 	switch (tolower(cmd_char)) {
-	case utf('c'):
+	case 'c':
 		// Color
 		if (sub_code >= 0) {
 			parameter = sub_code;
@@ -498,7 +498,7 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 		}
 		text_color = parameter > 19 ? 0 : parameter;
 		break;
-	case utf('n'):
+	case 'n':
 		// Output Hero name
 		if (sub_code >= 0) {
 			is_valid = true;
@@ -521,7 +521,7 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 			Output::Warning("Invalid argument for \\n-Command");
 		}
 		break;
-	case utf('s'):
+	case 's':
 		// Speed modifier
 		if (sub_code >= 0) {
 			is_valid = true;
@@ -533,7 +533,7 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 		speed_modifier = min(parameter, 20);
 		speed_modifier = max(0, speed_modifier);
 		break;
-	case utf('v'):
+	case 'v':
 		// Show Variable value
 		if (sub_code >= 0) {
 			is_valid = true;
