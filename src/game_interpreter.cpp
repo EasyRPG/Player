@@ -906,6 +906,20 @@ bool Game_Interpreter::CommandChangeItems(RPG::EventCommand const& com) { // Cod
 		com.parameters[4]
 	);
 
+	// Add item can't be used to remove an item and
+	// remove item can't be used to add one
+	if (com.parameters[0] == 1) {
+		// Substract
+		if (value > 0) {
+			return true;
+		}
+	} else {
+		// Add
+		if (value < 0) {
+			return true;
+		}
+	}
+
 	if (com.parameters[1] == 0) {
 		// Item by const number
 		Game_Party::GainItem(com.parameters[2], value);
