@@ -313,17 +313,9 @@ bool Game_Interpreter_Map::CommandChangeExp(RPG::EventCommand const& com) { // C
 		 i != actors.end();
 		 i++) {
 		Game_Actor* actor = *i;
-		actor->SetExp(actor->GetExp() + value);
+		actor->ChangeExp(actor->GetExp() + value, com.parameters[5] != 0);
 	}
 
-	if (com.parameters[5] != 0) {
-		// TODO
-		// Show message increase level
-	} else {
-		// Don't show message increase level
-	}
-
-	// Continue
 	return true;
 }
 

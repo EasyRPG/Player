@@ -58,15 +58,17 @@ public:
 	 * Learns a new skill.
 	 *
 	 * @param skill_id database skill ID.
+	 * @return If skill was learned (fails if already had the skill)
 	 */
-	void LearnSkill(int skill_id);
+	bool LearnSkill(int skill_id);
 
 	/**
 	 * Unlearns a skill.
 	 *
 	 * @param skill_id database skill ID.
+	 * @return If skill was unlearned (fails if didn't had the skill)
 	 */
-	void UnlearnSkill(int skill_id);
+	bool UnlearnSkill(int skill_id);
 
 	/**
 	 * Checks if the actor has the skill learned.
@@ -221,15 +223,17 @@ public:
 	 * Changes exp of actor.
 	 *
 	 * @param exp new exp.
+	 * @param level_up_message Whether to show level up message and learned skills.
 	 */
-	void ChangeExp(int exp);
+	void ChangeExp(int exp, bool level_up_message);
 
 	/**
 	 * Changes level of actor.
 	 *
 	 * @param level new level.
+	 * @param level_up_message Whether to show level up message and learned skills.
 	 */
-	void ChangeLevel(int level);
+	void ChangeLevel(int level, bool level_up_message);
 
 	/**
 	 * Sets level of actor.

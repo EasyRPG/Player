@@ -1006,17 +1006,9 @@ bool Game_Interpreter::CommandChangeLevel(RPG::EventCommand const& com) { // Cod
 		 i != actors.end();
 		 i++) {
 		Game_Actor* actor = *i;
-		actor->ChangeLevel(actor->GetLevel() + value);
+		actor->ChangeLevel(actor->GetLevel() + value, com.parameters[5] != 0);
 	}
 
-	if (com.parameters[5] != 0) {
-		// TODO
-		// Show message increase level
-	} else {
-		// Don't show message increase level
-	}
-
-	// Continue
 	return true;
 }
 
