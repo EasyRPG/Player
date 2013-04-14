@@ -440,7 +440,7 @@ int Window_Message::ParseParameter(bool& is_valid, int call_depth) {
 		} else {
 			// End of number
 			// Search for ] or line break
-			while (text_index == end) {
+			while (text_index != end) {
 					if (*text_index == utf('\n')) {
 						--text_index;
 						break;
@@ -548,7 +548,7 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 		} else {
 			// Invalid Var is always 0
 			std::stringstream ss;
-			ss << utf('0');
+			ss << "0";
 			return ss.str();
 		}
 	default:;
