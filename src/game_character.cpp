@@ -554,18 +554,21 @@ void Game_Character::MoveForward() {
 }
 
 void Game_Character::MoveDownLeft() {
-
+	// Todo
 }
 
 void Game_Character::MoveDownRight() {
+	// Todo
 }
 
 
 void Game_Character::MoveUpLeft() {
+	// Todo
 }
 
 
 void Game_Character::MoveUpRight() {
+	// Todo
 }
 
 
@@ -726,21 +729,27 @@ void Game_Character::TurnTowardPlayer() {
 }
 
 void Game_Character::FaceRandomDirection() {
+	// Todo
 }
 
 void Game_Character::FaceTowardsHero() {
+	// Todo
 }
 
 void Game_Character::FaceAwayFromHero() {
+	// Todo
 }
 
 void Game_Character::Wait() {
+	// Todo
 }
 
 void Game_Character::BeginJump() {
+	// Todo
 }
 
 void Game_Character::EndJump() {
+	// Todo
 }
 
 int Game_Character::DistanceXfromPlayer() const {
