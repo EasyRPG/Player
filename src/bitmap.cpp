@@ -1167,20 +1167,21 @@ void Bitmap::FlipBlit(int x, int y, Bitmap const& src, Rect const& src_rect, boo
 								pixman_int_to_fixed(vertical ? -1 : 1));
 
 	pixman_transform_translate((pixman_transform_t*) NULL, &xform,
-							   pixman_int_to_fixed(horizontal ? src_rect.width : 0),
-							   pixman_int_to_fixed(vertical ? src_rect.height : 0));
+							   pixman_int_to_fixed(horizontal ? src.GetWidth() : 0),
+							   pixman_int_to_fixed(vertical ? src.GetHeight() : 0));
 
-	pixman_image_set_transform(bitmap, &xform);
+	pixman_image_set_transform(src.bitmap, &xform);
 
 	pixman_image_composite32(PIXMAN_OP_SRC,
 							 src.bitmap, (pixman_image_t*) NULL, bitmap,
-							 src_rect.x, src_rect.y,
+							 horizontal ? src.GetWidth() - src_rect.x - src_rect.width : src_rect.x,
+							 vertical ? src.GetHeight() - src_rect.y - src_rect.height : src_rect.y,
 							 0, 0,
 							 x, y,
 							 src_rect.width, src_rect.height);
 
 	pixman_transform_init_identity(&xform);
-	pixman_image_set_transform(bitmap, &xform);
+	pixman_image_set_transform(src.bitmap, &xform);
 
 	RefreshCallback();
 }
