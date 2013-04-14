@@ -548,9 +548,9 @@ bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { //
 		case 2:
 			// Switch from variable
 			if (com.parameters[3] != 2) {
-				Game_Switches[com.parameters[2]] = com.parameters[3] == 0;
+				Game_Switches[Game_Variables[com.parameters[1]]] = com.parameters[3] == 0;
 			} else {
-				Game_Switches[com.parameters[2]] = !Game_Switches[com.parameters[2]];
+				Game_Switches[Game_Variables[com.parameters[1]]] = !Game_Switches[Game_Variables[com.parameters[1]]];
 			}
 			break;
 		default:
