@@ -472,8 +472,7 @@ protected:
 	double anime_count;
 	int stop_count;
 	int jump_count;
-	bool step_anime;
-	bool walk_anime;
+	bool walk_animation;
 	bool turn_enabled;
 	bool direction_fix;
 

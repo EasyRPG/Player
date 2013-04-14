@@ -56,8 +56,7 @@ Game_Character::Game_Character() :
 	anime_count(0),
 	stop_count(0),
 	jump_count(0),
-	step_anime(false),
-	walk_anime(true),
+	walk_animation(true),
 	turn_enabled(true),
 	direction_fix(false),
 	cycle_stat(false),
@@ -159,7 +158,7 @@ void Game_Character::Update() {
 		UpdateStop();
 
 	if (anime_count > 18 - move_speed * 2) {
-		if (!step_anime && stop_count > 0) {
+		if (stop_count > 0) {
 			pattern = original_pattern;
 			last_pattern = last_pattern == RPG::EventPage::Frame_left ? RPG::EventPage::Frame_right : RPG::EventPage::Frame_left;
 		} else {
@@ -209,10 +208,8 @@ void Game_Character::UpdateMove() {
 	if (y * 128 < real_y)
 		real_y = max(real_y - distance, y * 128);
 
-	if (walk_anime)
+	if (walk_animation)
 		anime_count += 1.5;
-	else if (step_anime)
-		anime_count += 1;
 }
 
 void Game_Character::UpdateSelfMovement() {
@@ -241,9 +238,7 @@ void Game_Character::UpdateSelfMovement() {
 }
 
 void Game_Character::UpdateStop() {
-	if (step_anime)
-		anime_count += 1;
-	else if (pattern != original_pattern)
+	if (pattern != original_pattern)
 		anime_count += 1.5;
 
 	//if (!starting || !IsLock())
@@ -465,10 +460,10 @@ void Game_Character::MoveTypeCustom() {
 				through = false;
 				break;
 			case RPG::MoveCommand::Code::stop_animation:
-				// walk_animation = false;
+				walk_animation = false;
 				break;
 			case RPG::MoveCommand::Code::start_animation:
-				// walk_animation = true;
+				walk_animation = true;
 				break;
 			case RPG::MoveCommand::Code::increase_transp:
 				transparent = true;
