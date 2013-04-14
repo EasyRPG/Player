@@ -93,15 +93,21 @@ void Game_Party::GainItem(int item_id, int amount) {
 			continue;
 
 		int total_items = data.item_counts[i] + amount;
-		if (total_items < 0)
-			Output::Warning("Can't lose items which you do not have.");
+
 		if (total_items <= 0) {
 			data.item_ids.erase(data.item_ids.begin() + i);
 			data.item_counts.erase(data.item_counts.begin() + i);
 			data.item_usage.erase(data.item_usage.begin() + i);
 			return;
 		}
+
 		data.item_counts[i] = std::min(total_items, 99);
+		return;
+	}
+
+	// Item isn't in the inventory yet
+	
+	if (amount <= 0) {
 		return;
 	}
 
