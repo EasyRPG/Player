@@ -172,15 +172,15 @@ void Window_Message::InsertNewPage() {
 		contents_x += 12;
 	}
 
-	if (Game_Message::num_input_start == 0 && Game_Message::num_input_variable_id > 0) {
-		// If there is an input window on the first line
-		StartNumberInputProcessing();
-	}
-
 	contents_y = 2;
 	line_count = 0;
 	text_color = Font::ColorDefault;
 	speed_modifier = 0;
+
+	if (Game_Message::num_input_start == 0 && Game_Message::num_input_variable_id > 0) {
+		// If there is an input window on the first line
+		StartNumberInputProcessing();
+	}
 }
 
 void Window_Message::InsertNewLine() {
