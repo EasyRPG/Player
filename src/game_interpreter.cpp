@@ -780,6 +780,8 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 						// Module
 						if (value != 0) {
 							Game_Variables[i] %= value;
+						} else {
+							Game_Variables[i] = 0;
 						}
 				}
 				if (Game_Variables[i] > MaxSize) {
