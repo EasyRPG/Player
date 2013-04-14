@@ -339,6 +339,7 @@ void Window_Message::UpdateMessage() {
 			case utf('_'):
 				// Insert half size space
 				contents_x += contents->GetFont()->GetSize(" ").width / 2;
+				break;
 			case utf('$'):
 				// Show Gold Window
 				gold_window->SetY(y == 0 ? 240 - 32 : 0);
