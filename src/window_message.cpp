@@ -342,6 +342,7 @@ void Window_Message::UpdateMessage() {
 			case utf('$'):
 				// Show Gold Window
 				gold_window->SetY(y == 0 ? 240 - 32 : 0);
+				gold_window->Refresh();
 				gold_window->SetOpenAnimation(5);
 				gold_window->SetVisible(true);
 				break;
