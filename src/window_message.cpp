@@ -44,8 +44,8 @@ const int Window_Message::speed_table[21] = {0, 0, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
 Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	Window_Selectable(ix, iy, iwidth, iheight),
 	contents_x(0), contents_y(0), line_count(0), text(""),
-	kill_message(false), halt_output(false), speed_modifier(0),
-	speed_frame_counter(0),
+	kill_message(false), speed_modifier(0),
+	speed_frame_counter(0), new_page_after_pause(false),
 	number_input_window(new Window_NumberInput(0, 0)),
 	gold_window(new Window_Gold(232, 0, 88, 32))
 {
@@ -310,11 +310,29 @@ void Window_Message::UpdateMessage() {
 		if (text_index == end) {
 			FinishMessageProcessing();
 			break;
+		} else if (line_count == 4) {
+			pause = true;
+			new_page_after_pause = true;
+			break;
 		}
 
 		if (*text_index == '\n') {
 			instant_speed = false;
 			InsertNewLine();
+			if (pause) {
+				break;
+			}
+		} else if (*text_index == '\f') {
+			instant_speed = false;
+			++text_index;
+			if (*text_index == '\n') {
+				++text_index;
+			}
+			if (text_index != end) {
+				pause = true;
+				new_page_after_pause = true;
+			}
+			break;
 		} else if (*text_index == '\\' && std::distance(text_index, end) > 1) {
 			// Special message codes
 			++text_index;
@@ -349,7 +367,6 @@ void Window_Message::UpdateMessage() {
 				break;
 			case '!':
 				// Text pause
-				halt_output = true;
 				pause = true;
 				break;
 			case '^':
@@ -582,12 +599,12 @@ void Window_Message::WaitForInput() {
 		Input::IsTriggered(Input::CANCEL)) {
 		active = false;
 		pause = false;
-		if (halt_output) {
-			halt_output = false;
-		}
 
 		if (text.empty()) {
 			TerminateMessage();
+		} else if (text_index != end && new_page_after_pause) {
+			new_page_after_pause = false;
+			InsertNewPage();
 		}
 	}
 }

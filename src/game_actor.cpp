@@ -379,6 +379,7 @@ void Game_Actor::SetLevel(int _level) {
 
 void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 	const std::vector<RPG::Learning>& skills = Data::actors[data.ID - 1].skills;
+	bool level_up = false;
 
 	if (level_up_message && new_level > data.level) {
 		std::stringstream ss;
@@ -386,6 +387,7 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 		ss << Data::terms.level << " " << new_level;
 		ss << Data::terms.level_up;
 		Game_Message::texts.push_back(ss.str());
+		level_up = true;
 	}
 
 	for (std::vector<RPG::Learning>::const_iterator it = skills.begin();
@@ -396,8 +398,14 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 				ss << Data::skills[it->skill_id - 1].name;
 				ss << Data::terms.skill_learned;
 				Game_Message::texts.push_back(ss.str());
+				level_up = true;
 			}
 		}
+	}
+
+	if (level_up) {
+		Game_Message::texts.back().append("\f");
+		Game_Message::message_waiting = true;
 	}
 
 	SetLevel(new_level);

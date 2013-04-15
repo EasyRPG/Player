@@ -173,14 +173,14 @@ protected:
 	std::string text;
 	/** Used by Message kill command \^. */
 	bool kill_message;
-	/** Prevents new page call when a halt \! was found. */
-	bool halt_output;
 	/** Text color. */
 	int text_color;
 	/** Current speed modifier. */
 	int speed_modifier;
 	/** Counts the frames since the last char rendering. */
 	int speed_frame_counter;
+	/** If true inserts a new page after pause ended */
+	bool new_page_after_pause;
 
 	/**
 	 * Table contains how many frames drawing one single char takes.
