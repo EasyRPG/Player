@@ -99,6 +99,11 @@ void Game_Interpreter::CancelMenuCall() {
 	// TODO
 }
 
+void Game_Interpreter::SetupWait(int duration) {
+	CloseMessageWindow();
+	wait_count = duration * DEFAULT_FPS / 10;
+}
+
 void Game_Interpreter::SetContinuation(Game_Interpreter::ContinuationFunction func) {
 	continuation = func;
 }
@@ -201,6 +206,7 @@ void Game_Interpreter::Update() {
 		}
 
 		if (!ExecuteCommand()) {
+			CloseMessageWindow();
 			active = true;
 			return;
 		}
@@ -218,6 +224,7 @@ void Game_Interpreter::Update() {
 	// Executed Events Count exceeded (10000)
 	active = true;
 	Output::Debug("Event %d exceeded execution limit", event_id);
+	CloseMessageWindow();
 }
 
 // Setup Starting Event
@@ -342,7 +349,7 @@ bool Game_Interpreter::ExecuteCommand() {
 
 bool Game_Interpreter::CommandWait(RPG::EventCommand const& /* com */) {
 	if (Player::engine == Player::EngineRpg2k || list[index].parameters[1] == 0) {
-		wait_count = list[index].parameters[0] * DEFAULT_FPS / 10;
+		SetupWait(list[index].parameters[0]);
 		return true;
 	} else
 		return Input::IsAnyTriggered();
@@ -1205,7 +1212,7 @@ bool Game_Interpreter::CommandTintScreen(RPG::EventCommand const& com) { // code
 	screen->TintScreen(r, g, b, s, tenths);
 
 	if (wait)
-		wait_count = tenths * DEFAULT_FPS / 10;
+		SetupWait(tenths);
 
 	return true;
 }
@@ -1224,7 +1231,7 @@ bool Game_Interpreter::CommandFlashScreen(RPG::EventCommand const& com) { // cod
 			case 0:
 				screen->FlashOnce(r, g, b, s, tenths);
 				if (wait)
-					wait_count = tenths * DEFAULT_FPS / 10;
+					SetupWait(tenths);
 				break;
 			case 1:
 				screen->FlashBegin(r, g, b, s, tenths);
@@ -1236,7 +1243,7 @@ bool Game_Interpreter::CommandFlashScreen(RPG::EventCommand const& com) { // cod
 	} else {
 		screen->FlashOnce(r, g, b, s, tenths);
 		if (wait)
-			wait_count = tenths * DEFAULT_FPS / 10;
+			SetupWait(tenths);
 	}
 
 	return true;
@@ -1252,14 +1259,14 @@ bool Game_Interpreter::CommandShakeScreen(RPG::EventCommand const& com) { // cod
 	if (Player::engine == Player::EngineRpg2k) {
 		screen->ShakeOnce(strength, speed, tenths);
 		if (wait) {
-			wait_count = tenths * DEFAULT_FPS / 10;
+			SetupWait(tenths);
 		}
 	} else {
 		switch (com.parameters[4]) {
 			case 0:
 				screen->ShakeOnce(strength, speed, tenths);
 				if (wait) {
-					wait_count = tenths * DEFAULT_FPS / 10;
+					SetupWait(tenths);
 				}
 				break;
 			case 1:

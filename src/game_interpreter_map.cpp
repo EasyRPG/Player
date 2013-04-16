@@ -769,7 +769,7 @@ bool Game_Interpreter_Map::CommandMovePicture(RPG::EventCommand const& com) { //
 	}
 
 	if (wait)
-		wait_count = tenths * DEFAULT_FPS / 10;
+		SetupWait(tenths);
 
 	return true;
 }
@@ -1312,7 +1312,7 @@ bool Game_Interpreter_Map::CommandFlashSprite(RPG::EventCommand const& com) { //
 		sprite->Flash(color, tenths * DEFAULT_FPS / 10);
 
 		if (wait)
-			wait_count = tenths * DEFAULT_FPS / 10;
+			SetupWait(tenths);
 	}
 
 	return true;
