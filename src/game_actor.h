@@ -76,7 +76,7 @@ public:
 	 * @param skill_id ID of skill to check.
 	 * @return true if skill has been learned.
 	 */
-	bool IsSkillLearned(int skill_id);
+	bool IsSkillLearned(int skill_id) const;
 
 	/**
 	 * Checks if the actor can use the skill.
@@ -84,7 +84,7 @@ public:
 	 * @param skill_id ID of skill to check.
 	 * @return true if skill can be used.
 	 */
-	bool IsSkillUsable(int skill_id);
+	bool IsSkillUsable(int skill_id) const;
 
 	/**
 	 * Gets the actor ID.
@@ -100,7 +100,7 @@ public:
 	 * @todo Add Formula for RPG2k3.
 	 * @return Needed experience.
 	 */
-	int CalculateExp(int level);
+	int CalculateExp(int level) const;
 
 	/**
 	 * Calculates the Experience curve for every level.
@@ -112,14 +112,30 @@ public:
 	 *
 	 * @return Exp-String or ------ if Level is max.
 	 */
-	std::string GetExpString();
+	std::string GetExpString() const;
 
 	/**
 	 * Converts the Exp for the next LV to a string.
 	 *
 	 * @return Exp-String or ------ if Level is max.
 	 */
-	std::string GetNextExpString();
+	std::string GetNextExpString() const;
+
+	/**
+	 * Returns how many Exp are needed for a level up based on the current
+	 * level.
+	 *
+	 * @return Exp needed or -1 if max level.
+	 */
+	int GetNextExp() const;
+
+	/**
+	 * Return how many Exp are needed for a level up.
+	 *
+	 * @param level to return NextExp for.
+	 * @return Exp needed or -1 if max level / invalid.
+	 */
+	int GetNextExp(int level) const;
 
 	/**
 	 * Gets actor name.
@@ -206,6 +222,13 @@ public:
 	int GetLevel() const;
 
 	/**
+	 * Gets final level of current actor.
+	 *
+	 * @return final level
+	 */
+	int GetMaxLevel() const;
+
+	/**
 	* Gets actor current experience points.
 	*
 	* @return current experience points.
@@ -248,7 +271,7 @@ public:
 	 * @param item_id ID of item to check.
 	 * @return true if it can equip the item.
 	 */
-	bool IsEquippable(int item_id);
+	bool IsEquippable(int item_id) const;
 
 	/**
 	 * Sets face graphic of actor.

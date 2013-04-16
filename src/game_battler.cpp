@@ -56,7 +56,7 @@ const RPG::State* Game_Battler::GetState() {
 	return the_state;
 }
 
-bool Game_Battler::IsSkillUsable(int skill_id) {
+bool Game_Battler::IsSkillUsable(int skill_id) const {
 	if (CalculateSkillCost(skill_id) > GetSp()) {
 		return false;
 	}
@@ -91,7 +91,7 @@ bool Game_Battler::IsSkillUsable(int skill_id) {
 	return false;
 }
 
-int Game_Battler::CalculateSkillCost(int skill_id) {
+int Game_Battler::CalculateSkillCost(int skill_id) const {
 	const RPG::Skill& skill = Data::skills[skill_id - 1];
 	return (Player::engine == Player::EngineRpg2k3 &&
 			skill.sp_type == RPG::Skill::SpType_percent)

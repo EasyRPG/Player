@@ -55,11 +55,11 @@ int Game_Actor::GetId() const {
 	return data.ID;
 }
 
-bool Game_Actor::IsSkillLearned(int skill_id) {
+bool Game_Actor::IsSkillLearned(int skill_id) const{
 	return std::find(data.skills.begin(), data.skills.end(), skill_id) != data.skills.end();
 }
 
-bool Game_Actor::IsSkillUsable(int skill_id) {
+bool Game_Actor::IsSkillUsable(int skill_id) const{
 	if (!IsSkillLearned(skill_id)) {
 		return false;
 	} else {
@@ -242,7 +242,7 @@ int Game_Actor::GetBaseAgi() const {
 	return GetBaseAgi(true, true);
 }
 
-int Game_Actor::CalculateExp(int level)
+int Game_Actor::CalculateExp(int level) const
 {
 	double base, inflation, correction;
 	if (data.changed_class) {
@@ -280,23 +280,35 @@ void Game_Actor::MakeExpList() {
 	}
 }
 
-std::string Game_Actor::GetExpString() {
-	if ((unsigned)data.level == exp_list.size()) {
+std::string Game_Actor::GetExpString() const {
+	if ((unsigned)GetLevel() == exp_list.size()) {
 		return "------";
 	} else {
 		std::stringstream ss;
-		ss << data.exp;
+		ss << GetExp();
 		return ss.str();
 	}
 }
 
-std::string Game_Actor::GetNextExpString() {
-	if ((unsigned)data.level == exp_list.size()) {
+std::string Game_Actor::GetNextExpString() const {
+	if (GetNextExp() == -1) {
 		return "------";
 	} else {
 		std::stringstream ss;
-		ss << exp_list[data.level];
+		ss << GetNextExp();
 		return ss.str();
+	}
+}
+
+int Game_Actor::GetNextExp() const {
+	return GetNextExp(GetLevel());
+}
+
+int Game_Actor::GetNextExp(int level) const {
+	if ((unsigned)level >= exp_list.size() || level <= 0) {
+		return -1;
+	} else {
+		return exp_list[level];
 	}
 }
 
@@ -348,70 +360,98 @@ int Game_Actor::GetLevel() const {
 	return data.level;
 }
 
+int Game_Actor::GetMaxLevel() const {
+	return Data::actors[data.ID - 1].final_level;
+}
+
 int Game_Actor::GetExp() const {
 	return data.exp;
 }
 
 void Game_Actor::SetExp(int _exp) {
-	data.exp = _exp;
+	data.exp = min(max(_exp, 0), 999999);
 }
 
 void Game_Actor::ChangeExp(int exp, bool level_up_message) {
-	int new_level = data.level;
+	int new_level = GetLevel();
+	int new_exp = min(max(exp, 0), 999999);
 
-	data.exp = min(max(exp, 0), 999999);
-
-	for (int i = new_level; i < Data::actors[data.ID - 1].final_level; ++i) {
-		if (exp_list[i] > data.exp) {
-			break;
+	if (new_exp > GetExp()) {
+		// Skill learning, up to current level
+		for (int i = GetLevel() + 1; i <= GetMaxLevel(); ++i) {
+			if (GetNextExp(new_level) != -1 && GetNextExp(new_level) > new_exp) {
+				break;
+			}
+			new_level++;
 		}
-		new_level++;
+	} else if (new_exp < GetExp()) {
+		for (int i = GetLevel(); i > 1; --i) {
+			if (new_exp >= GetNextExp(i - 1)) {
+				break;
+			}
+			new_level--;
+		}
 	}
 
 	if (new_level != data.level) {
 		ChangeLevel(new_level, level_up_message);
 	}
+
+	SetExp(new_exp);
 }
 
 void Game_Actor::SetLevel(int _level) {
-	data.level = _level;
+	data.level = min(max(_level, 1), Data::actors[data.ID - 1].final_level);
 }
 
 void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 	const std::vector<RPG::Learning>& skills = Data::actors[data.ID - 1].skills;
 	bool level_up = false;
 
-	if (level_up_message && new_level > data.level) {
-		std::stringstream ss;
-		ss << data.name << " ";
-		ss << Data::terms.level << " " << new_level;
-		ss << Data::terms.level_up;
-		Game_Message::texts.push_back(ss.str());
-		level_up = true;
-	}
+	if (new_level > data.level) {
+		if (level_up_message) {
+			std::stringstream ss;
+			ss << data.name << " ";
+			ss << Data::terms.level << " " << new_level;
+			ss << Data::terms.level_up;
+			Game_Message::texts.push_back(ss.str());
+			level_up = true;
+		}
 
-	for (std::vector<RPG::Learning>::const_iterator it = skills.begin();
-		it != skills.end(); ++it) {
-		if (it->level > data.level && it->level <= new_level) {
-			if (LearnSkill(it->skill_id) && level_up_message) {
-				std::stringstream ss;
-				ss << Data::skills[it->skill_id - 1].name;
-				ss << Data::terms.skill_learned;
-				Game_Message::texts.push_back(ss.str());
-				level_up = true;
+		// Learn new skills
+		for (std::vector<RPG::Learning>::const_iterator it = skills.begin();
+			it != skills.end(); ++it) {
+			if (it->level > data.level && it->level <= new_level) {
+				if (LearnSkill(it->skill_id) && level_up_message) {
+					std::stringstream ss;
+					ss << Data::skills[it->skill_id - 1].name;
+					ss << Data::terms.skill_learned;
+					Game_Message::texts.push_back(ss.str());
+					level_up = true;
+				}
 			}
 		}
-	}
 
-	if (level_up) {
-		Game_Message::texts.back().append("\f");
-		Game_Message::message_waiting = true;
+		if (level_up) {
+			Game_Message::texts.back().append("\f");
+			Game_Message::message_waiting = true;
+		}
+		SetLevel(new_level);
+	} else if (new_level < data.level) {
+		// Set HP and SP to maximum possible value
+		SetLevel(new_level);
+		SetHp(GetHp());
+		SetSp(GetSp());
+		int min_exp = GetNextExp(GetLevel() - 1);
+		if (min_exp == -1) {
+			SetExp(0);
+		} else {
+			SetExp(GetNextExp(min_exp));
+		}
 	}
-
-	SetLevel(new_level);
 }
 
-bool Game_Actor::IsEquippable(int item_id) {
+bool Game_Actor::IsEquippable(int item_id) const {
 	if (data.two_weapon &&
 		Data::items[item_id - 1].type == RPG::Item::Type_shield) {
 			return false;

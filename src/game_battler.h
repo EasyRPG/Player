@@ -180,7 +180,7 @@ public:
 	 * @param skill_id ID of skill to check.
 	 * @return true if skill can be used.
 	 */
-	virtual bool IsSkillUsable(int skill_id);
+	virtual bool IsSkillUsable(int skill_id) const;
 
 	/**
 	 * Calculates the Skill costs including all modifiers.
@@ -188,7 +188,7 @@ public:
 	 * @param skill_id ID of skill to calculate.
 	 * @return needed skill cost.
 	 */
-	int CalculateSkillCost(int skill_id);
+	int CalculateSkillCost(int skill_id) const;
 
 	/**
 	 * Adds a State.
