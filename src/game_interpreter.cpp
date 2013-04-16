@@ -101,7 +101,12 @@ void Game_Interpreter::CancelMenuCall() {
 
 void Game_Interpreter::SetupWait(int duration) {
 	CloseMessageWindow();
-	wait_count = duration * DEFAULT_FPS / 10;
+	if (duration == 0) {
+		// 0.0 waits 1 frame
+		wait_count = 1;
+	} else {
+		wait_count = duration * DEFAULT_FPS / 10;
+	}
 }
 
 void Game_Interpreter::SetContinuation(Game_Interpreter::ContinuationFunction func) {
