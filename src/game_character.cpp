@@ -88,17 +88,8 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 	if (!Game_Map::IsPassable(x, y, d, this))
 		return false;
 
-	if (!Game_Map::IsPassable(new_x, new_y, (d + 2) % 4))
+	if (!Game_Map::IsPassable(new_x, new_y, (d + 2) % 4, this))
 		return false;
-
-	for (tEventHash::iterator i = Game_Map::GetEvents().begin(); i != Game_Map::GetEvents().end(); i++) {
-		Game_Event* evnt = i->second.get();
-		if (evnt->GetX() == new_x && evnt->GetY() == new_y) {
-			if (!evnt->GetThrough() && evnt->GetPriorityType() == RPG::EventPage::Layers_same) {
-				return false;
-			}
-		}
-	}
 
 	if (Main_Data::game_player->GetX() == new_x && Main_Data::game_player->GetY() == new_y) {
 		if (!Main_Data::game_player->GetThrough() && !character_name.empty()) {
