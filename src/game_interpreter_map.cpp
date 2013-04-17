@@ -1799,7 +1799,13 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 			break;
 		case 4:
 			// Item
-			result = (Game_Party::ItemNumber(com.parameters[1]) > 0);
+			if (com.parameters[2] == 0) {
+				// Having
+				result = Game_Party::ItemNumber(com.parameters[1]) > 0;
+			} else {
+				// Not having
+				result = Game_Party::ItemNumber(com.parameters[1]) == 0;
+			}
 			break;
 		case 5:
 			// Hero
