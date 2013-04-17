@@ -281,13 +281,9 @@ void Game_Actor::MakeExpList() {
 }
 
 std::string Game_Actor::GetExpString() const {
-	if ((unsigned)GetLevel() == exp_list.size()) {
-		return "------";
-	} else {
-		std::stringstream ss;
-		ss << GetExp();
-		return ss.str();
-	}
+	std::stringstream ss;
+	ss << GetExp();
+	return ss.str();
 }
 
 std::string Game_Actor::GetNextExpString() const {
