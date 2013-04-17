@@ -36,13 +36,13 @@ bool Game_Battler::Exists() const {
 	return !IsHidden() && !IsDead();
 }
 
-const RPG::State* Game_Battler::GetState() {
+const RPG::State* Game_Battler::GetSignificantState() {
 	int priority = 0;
 	const RPG::State* the_state = NULL;
 
 	const std::vector<int16_t>& states = GetStates();
 	for (int i = 0; i < (int) states.size(); i++) {
-		const RPG::State* state = &Data::states[states[i]];
+		const RPG::State* state = &Data::states[states[i] - 1];
 		// Death has highest priority
 		if (state->ID == 1)
 			return state;

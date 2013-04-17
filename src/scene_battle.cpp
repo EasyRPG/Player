@@ -256,7 +256,7 @@ void Scene_Battle::UpdateAnimState() {
 	int anim_state = Battle::Ally::Idle;
 	if (ally.defending)
 		anim_state = Battle::Ally::Defending;
-	const RPG::State* state = ally.GetActor()->GetState();
+	const RPG::State* state = ally.GetActor()->GetSignificantState();
 	if (state)
 		anim_state = state->battler_animation_id == 100
 			? 7

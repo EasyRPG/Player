@@ -53,12 +53,12 @@ public:
 	virtual std::vector<int16_t>& GetStates() = 0;
 
 	/**
-	 * Gets current battler state.
+	 * Gets current battler state with highest priority.
 	 *
 	 * @return the highest priority state affecting the battler.
 	 *         Returns NULL if no states.
 	 */
-	const RPG::State* GetState();
+	const RPG::State* GetSignificantState();
 
 	/**
 	 * Gets battler HP.
