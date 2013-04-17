@@ -413,6 +413,7 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 
 	int old_level = GetLevel();
 	SetLevel(new_level);
+	new_level = GetLevel(); // Level adjusted to max
 
 	if (new_level > old_level) {
 		if (level_up_message) {
