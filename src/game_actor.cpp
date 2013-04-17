@@ -140,7 +140,7 @@ int Game_Actor::GetBaseMaxHp(bool mod) const {
 	if (mod)
 		n += data.hp_mod;
 
-	return n;
+	return min(max(n, 1), 999);
 }
 
 int Game_Actor::GetBaseMaxHp() const {
@@ -155,7 +155,7 @@ int Game_Actor::GetBaseMaxSp(bool mod) const {
 	if (mod)
 		n += data.sp_mod;
 
-	return n;
+	return min(max(n, 0), 999);
 }
 
 int Game_Actor::GetBaseMaxSp() const {
