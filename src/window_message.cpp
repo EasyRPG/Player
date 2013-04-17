@@ -612,17 +612,17 @@ void Window_Message::WaitForInput() {
 void Window_Message::InputChoice() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		if (Game_Message::choice_cancel_type > 0) {
-			Game_System::SePlay(Data::system.cancel_se);
+			Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 			Game_Message::choice_result = Game_Message::choice_cancel_type - 1; // Cancel
 			TerminateMessage();
 		}
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		if (Game_Message::choice_disabled.test(index)) {
-			Game_System::SePlay(Data::system.buzzer_se);
+			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 			return;
 		}
 
-		Game_System::SePlay(Data::system.decision_se);
+		Game_System::SePlay(Main_Data::game_data.system.decision_se);
 		Game_Message::choice_result = index;
 		TerminateMessage();
 	}
@@ -630,7 +630,7 @@ void Window_Message::InputChoice() {
 
 void Window_Message::InputNumber() {
 	if (Input::IsTriggered(Input::DECISION)) {
-		Game_System::SePlay(Data::system.decision_se);
+		Game_System::SePlay(Main_Data::game_data.system.decision_se);
 		Game_Variables[Game_Message::num_input_variable_id] = number_input_window->GetNumber();
 		Game_Map::SetNeedRefresh(true);
 		TerminateMessage();

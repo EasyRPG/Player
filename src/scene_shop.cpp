@@ -192,7 +192,7 @@ void Scene_Shop::Update() {
 
 void Scene_Shop::UpdateCommandSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Data::system.cancel_se);
+		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		switch (shop_window->GetChoice()) {
@@ -212,7 +212,7 @@ void Scene_Shop::UpdateBuySelection() {
 	party_window->SetItemId(buy_window->GetItemId());
 
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Data::system.cancel_se);
+		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		if (Game_Temp::shop_sells) {
 			SetMode(BuySellLeave2);
 		} else {
@@ -223,7 +223,7 @@ void Scene_Shop::UpdateBuySelection() {
 
 		//checks the money and number of items possessed before buy
 		if (buy_window->CheckEnable(item_id)) {
-			Game_System::SePlay(Data::system.decision_se);
+			Game_System::SePlay(Main_Data::game_data.system.decision_se);
 
 			RPG::Item& item = Data::items[item_id - 1];
 
@@ -238,14 +238,14 @@ void Scene_Shop::UpdateBuySelection() {
 			SetMode(BuyHowMany);
 		}
 		else {
-			Game_System::SePlay(Data::system.buzzer_se);
+			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 		}
 	}
 }
 
 void Scene_Shop::UpdateSellSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Data::system.cancel_se);
+		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		if (Game_Temp::shop_buys) {
 			SetMode(BuySellLeave2);
 		} else {
@@ -258,19 +258,19 @@ void Scene_Shop::UpdateSellSelection() {
 
 		if (item_id > 0 && Data::items[item_id - 1].price > 0) {
 			RPG::Item& item = Data::items[item_id - 1];
-			Game_System::SePlay(Data::system.decision_se);
+			Game_System::SePlay(Main_Data::game_data.system.decision_se);
 			number_window->SetData(item_id, Game_Party::ItemNumber(item_id), item.price);
 			SetMode(SellHowMany);
 		}
 		else {
-			Game_System::SePlay(Data::system.buzzer_se);
+			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 		}
 	}
 }
 
 void Scene_Shop::UpdateNumberInput() {
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Data::system.cancel_se);
+		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		switch (shop_window->GetChoice()) {
 		case Buy:
 			SetMode(Buy); break;
@@ -297,7 +297,7 @@ void Scene_Shop::UpdateNumberInput() {
 			status_window->Refresh();
 			SetMode(Sold); break;
 		}
-		Game_System::SePlay(Data::system.decision_se);
+		Game_System::SePlay(Main_Data::game_data.system.decision_se);
 
 		Game_Temp::shop_transaction = true;
 	}

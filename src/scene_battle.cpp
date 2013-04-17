@@ -326,14 +326,14 @@ void Scene_Battle::Defend() {
 void Scene_Battle::Item() {
 	int item_id = item_window->GetItemId();
 	if (item_id <= 0) {
-		Game_System::SePlay(Data::system.buzzer_se);
+		Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 		return;
 	}
 
 	const RPG::Item& item = Data::items[item_id - 1];
 	switch (item.type) {
 		case RPG::Item::Type_normal:
-			Game_System::SePlay(Data::system.buzzer_se);
+			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 			break;
 		case RPG::Item::Type_weapon:
 		case RPG::Item::Type_shield:
@@ -344,7 +344,7 @@ void Scene_Battle::Item() {
 				ItemSkill(item);
 			else
 				// can't be used
-				Game_System::SePlay(Data::system.buzzer_se);
+				Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 			break;
 		case RPG::Item::Type_medicine:
 			if (item.entire_party)
@@ -357,7 +357,7 @@ void Scene_Battle::Item() {
 		case RPG::Item::Type_book:
 		case RPG::Item::Type_material:
 			// can't be used in battle?
-			Game_System::SePlay(Data::system.buzzer_se);
+			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 			break;
 		case RPG::Item::Type_special:
 			ItemSkill(item);
@@ -372,7 +372,7 @@ void Scene_Battle::Item() {
 void Scene_Battle::Skill() {
 	int skill_id = skill_window->GetSkillId();
 	if (skill_id <= 0) {
-		Game_System::SePlay(Data::system.buzzer_se);
+		Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 		return;
 	}
 
@@ -731,7 +731,7 @@ void Scene_Battle::ProcessActions() {
 
 void Scene_Battle::ProcessInput() {
 	if (Input::IsTriggered(Input::DECISION)) {
-		Game_System::SePlay(Data::system.decision_se);
+		Game_System::SePlay(Main_Data::game_data.system.decision_se);
 		switch (state) {
 			case State_Options:
 				switch (options_window->GetIndex()) {
@@ -780,7 +780,7 @@ void Scene_Battle::ProcessInput() {
 	}
 
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Data::system.cancel_se);
+		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		switch (state) {
 			case State_Options:
 				Scene::Pop();

@@ -118,7 +118,7 @@ void Window_BattleStatus::Update() {
 
 	if (active && index >= 0) {
 		if (Input::IsRepeated(Input::DOWN)) {
-			Game_System::SePlay(Data::system.cursor_se);
+			Game_System::SePlay(Main_Data::game_data.system.cursor_se);
 			for (int i = 1; i < num_actors; i++) {
 				int new_index = (index + i) % num_actors;
 				if (Game_Battle::GetAlly(new_index).IsReady()) {
@@ -128,7 +128,7 @@ void Window_BattleStatus::Update() {
 			}
 		}
 		if (Input::IsRepeated(Input::UP)) {
-			Game_System::SePlay(Data::system.cursor_se);
+			Game_System::SePlay(Main_Data::game_data.system.cursor_se);
 			for (int i = num_actors - 1; i > 0; i--) {
 				int new_index = (index + i) % num_actors;
 				if (Game_Battle::GetAlly(new_index).IsReady()) {
