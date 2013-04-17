@@ -122,6 +122,21 @@ public:
 	std::string GetNextExpString() const;
 
 	/**
+	 * Returns how many Exp are minimum for current level.
+	 *
+	 * @return Exp needed or -1 if invalid.
+	 */
+	int GetBaseExp() const;
+
+	/**
+	 * Returns how many Exp are minimum for a level.
+	 *
+	 * @param level to return base Exp for.
+	 * @return Exp needed or -1 if invalid.
+	 */
+	int GetBaseExp(int level) const;
+
+	/**
 	 * Returns how many Exp are needed for a level up based on the current
 	 * level.
 	 *
@@ -237,13 +252,16 @@ public:
 
 	/**
 	 * Sets exp of actor.
+	 * The value is set directly without any adjustments to other actor
+	 * attributes. Use ChangeExp to do a proper level change.
 	 *
 	 * @param _exp exp to set.
 	 */
 	void SetExp(int _exp);
 
 	/**
-	 * Changes exp of actor.
+	 * Changes exp of actor and handles level changing based on the new
+	 * experience.
 	 *
 	 * @param exp new exp.
 	 * @param level_up_message Whether to show level up message and learned skills.
@@ -251,7 +269,8 @@ public:
 	void ChangeExp(int exp, bool level_up_message);
 
 	/**
-	 * Changes level of actor.
+	 * Changes level of actor and handles experience changes, skill
+	 * learning and other attributes based on the new level.
 	 *
 	 * @param level new level.
 	 * @param level_up_message Whether to show level up message and learned skills.
@@ -260,6 +279,8 @@ public:
 
 	/**
 	 * Sets level of actor.
+	 * The value is set directly without any adjustments to other actor
+	 * attributes. Use ChangeLevel to do a proper level change.
 	 *
 	 * @param _level level to set.
 	 */

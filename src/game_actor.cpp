@@ -69,7 +69,7 @@ bool Game_Actor::IsSkillUsable(int skill_id) const{
 
 bool Game_Actor::LearnSkill(int skill_id) {
 	if (skill_id > 0 && !IsSkillLearned(skill_id)) {
-		data.skills.push_back(skill_id);
+		data.skills.push_back((int16_t)skill_id);
 		std::sort(data.skills.begin(), data.skills.end());
 		return true;
 	}
@@ -101,7 +101,7 @@ int Game_Actor::SetEquipment(int equip_type, int new_item_id) {
 		return -1;
 
 	int old_item_id = data.equipped[equip_type];
-	data.equipped[equip_type] = new_item_id;
+	data.equipped[equip_type] = (short)new_item_id;
 	return old_item_id;
 }
 
@@ -300,12 +300,20 @@ std::string Game_Actor::GetNextExpString() const {
 	}
 }
 
+int Game_Actor::GetBaseExp() const {
+	return GetBaseExp(GetLevel());
+}
+
+int Game_Actor::GetBaseExp(int level) const {
+	return GetNextExp(level - 1);
+}
+
 int Game_Actor::GetNextExp() const {
 	return GetNextExp(GetLevel());
 }
 
 int Game_Actor::GetNextExp(int level) const {
-	if ((unsigned)level >= exp_list.size() || level <= 0) {
+	if (level >= GetMaxLevel() || level <= 0) {
 		return -1;
 	} else {
 		return exp_list[level];
@@ -377,7 +385,6 @@ void Game_Actor::ChangeExp(int exp, bool level_up_message) {
 	int new_exp = min(max(exp, 0), 999999);
 
 	if (new_exp > GetExp()) {
-		// Skill learning, up to current level
 		for (int i = GetLevel() + 1; i <= GetMaxLevel(); ++i) {
 			if (GetNextExp(new_level) != -1 && GetNextExp(new_level) > new_exp) {
 				break;
@@ -393,22 +400,25 @@ void Game_Actor::ChangeExp(int exp, bool level_up_message) {
 		}
 	}
 
+	SetExp(new_exp);
+
 	if (new_level != data.level) {
 		ChangeLevel(new_level, level_up_message);
 	}
-
-	SetExp(new_exp);
 }
 
 void Game_Actor::SetLevel(int _level) {
-	data.level = min(max(_level, 1), Data::actors[data.ID - 1].final_level);
+	data.level = min(max(_level, 1), GetMaxLevel());
 }
 
 void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 	const std::vector<RPG::Learning>& skills = Data::actors[data.ID - 1].skills;
 	bool level_up = false;
 
-	if (new_level > data.level) {
+	int old_level = GetLevel();
+	SetLevel(new_level);
+
+	if (new_level > old_level) {
 		if (level_up_message) {
 			std::stringstream ss;
 			ss << data.name << " ";
@@ -421,7 +431,8 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 		// Learn new skills
 		for (std::vector<RPG::Learning>::const_iterator it = skills.begin();
 			it != skills.end(); ++it) {
-			if (it->level > data.level && it->level <= new_level) {
+			// Skill learning, up to current level
+			if (it->level > old_level && it->level <= new_level) {
 				if (LearnSkill(it->skill_id) && level_up_message) {
 					std::stringstream ss;
 					ss << Data::skills[it->skill_id - 1].name;
@@ -436,17 +447,19 @@ void Game_Actor::ChangeLevel(int new_level, bool level_up_message) {
 			Game_Message::texts.back().append("\f");
 			Game_Message::message_waiting = true;
 		}
-		SetLevel(new_level);
-	} else if (new_level < data.level) {
+
+		// Experience adjustment:
+		// At least level minimum
+		SetExp(max(GetBaseExp(), GetExp()));
+	} else if (new_level < old_level) {
 		// Set HP and SP to maximum possible value
-		SetLevel(new_level);
 		SetHp(GetHp());
 		SetSp(GetSp());
-		int min_exp = GetNextExp(GetLevel() - 1);
-		if (min_exp == -1) {
-			SetExp(0);
-		} else {
-			SetExp(GetNextExp(min_exp));
+
+		// Experience adjustment:
+		// Level minimum if higher then Level maximum
+		if (GetExp() >= GetNextExp()) {
+			SetExp(GetBaseExp());
 		}
 	}
 }
