@@ -1292,15 +1292,7 @@ bool Game_Interpreter_Map::CommandFlashSprite(RPG::EventCommand const& com) { //
 	Game_Character* event = GetCharacter(event_id);
 
 	if (event != NULL) {
-		Scene_Map* scene = (Scene_Map*) Scene::Find(Scene::Map).get();
-		if (!scene)
-			return true;
-
-		Sprite_Character* sprite = scene->spriteset->FindCharacter(event);
-		if (!sprite)
-			return true;
-
-		sprite->Flash(color, tenths * DEFAULT_FPS / 10);
+		event->SetFlash(color, tenths * DEFAULT_FPS / 10);
 
 		if (wait)
 			SetupWait(tenths);

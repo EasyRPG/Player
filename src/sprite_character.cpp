@@ -69,6 +69,13 @@ void Sprite_Character::Update() {
 		SetSrcRect(r);
 	}
 
+	if (character->IsFlashPending()) {
+		Color col;
+		int dur;
+		character->GetFlashParameters(col, dur);
+		Flash(col, dur);
+	}
+
 	SetVisible(character->GetVisible());
 	if (GetVisible()) {
 		SetOpacity(character->GetOpacity());

@@ -20,6 +20,7 @@
 
 // Headers
 #include <string>
+#include "color.h"
 #include "rpg_moveroute.h"
 
 class Game_Event;
@@ -449,6 +450,32 @@ public:
 	 */
 	virtual void SetVisible(bool visible);
 
+	/**
+	 * Gets whether a flash animation is pending for that character.
+	 * If yes the settings can be retrieved via GetFlashParameters.
+	 *
+	 * @return Whether a flash is pending
+	 */
+	bool IsFlashPending() const;
+
+	/**
+	 * Used to pass Flash settings to the character sprite.
+	 * After extracting IsFlashPending returns false.
+	 *
+	 * @param color Flash color is written here
+	 * @param duration Flash duration is written here
+	 */
+	void GetFlashParameters(Color& color, int& duration);
+
+	/**
+	 * Sets the Flash effect settings.
+	 * After calling this IsFlashPending returns true.
+	 * 
+	 * @param color Flash color
+	 * @param duration Flash duration
+	 */
+	void SetFlash(Color color, int duration);
+
 	virtual void UpdateBushDepth();
 
 	void SetGraphic(const std::string& name, int index);
@@ -512,6 +539,10 @@ protected:
 
 	int opacity;
 	bool visible;
+
+	bool flash_pending;
+	int flash_duration;
+	Color flash_color;
 };
 
 #endif

@@ -62,7 +62,8 @@ Game_Character::Game_Character() :
 	cycle_stat(false),
 	priority_type(RPG::EventPage::Layers_same),
 	opacity(255),
-	visible(true) {
+	visible(true),
+	flash_pending(false) {
 }
 
 bool Game_Character::IsMoving() const {
@@ -892,6 +893,26 @@ bool Game_Character::GetVisible() const {
 
 void Game_Character::SetVisible(bool visible) {
 	this->visible = visible;
+}
+
+bool Game_Character::IsFlashPending() const {
+	return flash_pending;
+}
+
+void Game_Character::GetFlashParameters(Color& color, int& duration) {
+	flash_pending = false;
+	color = flash_color;
+	duration = flash_duration;
+}
+
+void Game_Character::SetFlash(Color color, int duration) {
+	flash_pending = true;
+	flash_duration = duration;
+	flash_color = color;
+	if (duration == 0) {
+		// 0.0 flash
+		duration = DEFAULT_FPS;
+	}
 }
 
 void Game_Character::UpdateBushDepth() {
