@@ -197,9 +197,11 @@ void Game_Party::SetTimer(int which, int seconds) {
 	switch (which) {
 		case Timer1:
 			data.timer1_secs = seconds * DEFAULT_FPS;
+			Game_Map::SetNeedRefresh(true);
 			break;
 		case Timer2:
 			data.timer2_secs = seconds * DEFAULT_FPS;
+			Game_Map::SetNeedRefresh(true);
 			break;
 	}
 }
