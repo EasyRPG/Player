@@ -76,7 +76,7 @@ void Window_ShopNumber::Update() {
 		}
 
 		if (last_number != number) {
-			Game_System::SePlay(Data::system.cursor_se);
+			Game_System::SePlay(Main_Data::game_data.system.cursor_se);
 			Refresh();
 		}
 	}

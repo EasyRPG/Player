@@ -20,6 +20,7 @@
 
 // Headers
 #include <string>
+#include "color.h"
 #include "rpg_moveroute.h"
 
 class Game_Event;
@@ -144,6 +145,26 @@ public:
 	void MoveForward();
 
 	/**
+	 * Moves the character diagonal (downleft), moves down if blocked.
+	 */
+	void MoveDownLeft();
+
+	/**
+	 * Moves the character diagonal (downright), moves down if blocked.
+	 */
+	void MoveDownRight();
+
+	/**
+	 * Moves the character diagonal (upleft), moves up if blocked.
+	 */
+	void MoveUpLeft();
+
+	/**
+	 * Moves the character diagonal (downright), moves up if blocked.
+	 */
+	void MoveUpRight();
+
+	/**
 	 * Does a random movement.
 	 */
 	void MoveRandom();
@@ -200,10 +221,43 @@ public:
 	void Turn90DegreeLeftOrRight();
 
 	/**
-	 * Locks character direction.
+	 * Character looks in a random direction
+	 */
+	void FaceRandomDirection();
+
+	/**
+	 * Character looks towards the hero.
+	 */
+	void FaceTowardsHero();
+
+	/**
+	 * Character looks away from the the hero.
+	 */
+	void FaceAwayFromHero();
+
+	/**
+	 * Character waits.
+	 */
+	void Wait();
+
+	/**
+	 * Jump action begins. Does nothing when EndJump-Command is missing.
+	 */
+	void BeginJump();
+	
+	/**
+	 * Jump action ends.
+	 */
+	void EndJump();
+
+	/**
+	 * Locks character facing direction.
 	 */
 	void Lock();
 
+	/**
+	 * Unlocks character facing direction.
+	 */
 	void Unlock();
 
 	void SetDirection(int direction);
@@ -365,7 +419,62 @@ public:
 
 	virtual bool CheckEventTriggerTouch(int x, int y) = 0;
 
-	virtual bool IsTransparent() const;
+	/**
+	 * Gets current opacity of character.
+	 *
+	 * @return opacity (0 = Invisible, 255 = opaque)
+	 */
+	virtual int GetOpacity() const;
+
+	/**
+	 * Sets opacity of the character.
+	 *
+	 * @param opacity New opacity (0 = Invisible, 255 = opaque)
+	 */
+	virtual void SetOpacity(int opacity);
+
+	/**
+	 * Gets if the character is visible.
+	 *
+	 * @return if visible, when true Opaque value is used
+	 */
+	virtual bool GetVisible() const;
+
+	/**
+	 * Makes character visible/not visible.
+	 * This has a higher priority then the Opacity setting.
+	 * Needed for the "SetHeroTransparency" command because this can't be
+	 * altered via the "Increase Transparency" move command.
+	 *
+	 * @param visable true: visible, false: invisible
+	 */
+	virtual void SetVisible(bool visible);
+
+	/**
+	 * Gets whether a flash animation is pending for that character.
+	 * If yes the settings can be retrieved via GetFlashParameters.
+	 *
+	 * @return Whether a flash is pending
+	 */
+	bool IsFlashPending() const;
+
+	/**
+	 * Used to pass Flash settings to the character sprite.
+	 * After extracting IsFlashPending returns false.
+	 *
+	 * @param color Flash color is written here
+	 * @param duration Flash duration is written here
+	 */
+	void GetFlashParameters(Color& color, int& duration);
+
+	/**
+	 * Sets the Flash effect settings.
+	 * After calling this IsFlashPending returns true.
+	 * 
+	 * @param color Flash color
+	 * @param duration Flash duration
+	 */
+	void SetFlash(Color color, int duration);
 
 	virtual void UpdateBushDepth();
 
@@ -419,8 +528,7 @@ protected:
 	double anime_count;
 	int stop_count;
 	int jump_count;
-	bool step_anime;
-	bool walk_anime;
+	bool walk_animation;
 	bool turn_enabled;
 	bool direction_fix;
 
@@ -428,7 +536,13 @@ protected:
 	bool cycle_stat;
 
 	int priority_type;
-	bool transparent;
+
+	int opacity;
+	bool visible;
+
+	bool flash_pending;
+	int flash_duration;
+	Color flash_color;
 };
 
 #endif

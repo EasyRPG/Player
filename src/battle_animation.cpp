@@ -97,7 +97,11 @@ void BattleAnimation::Draw(int /* z_order */) {
 }
 
 void BattleAnimation::Update() {
-	frame++;
+	static bool update = true;
+	if (update) {
+		frame++;
+	}
+	update = !update;
 }
 
 void BattleAnimation::SetFrame(int _frame) {

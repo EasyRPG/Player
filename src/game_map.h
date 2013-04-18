@@ -110,7 +110,7 @@ namespace Game_Map {
 	 * @param y tile y.
 	 * @param d direction (0, 2, 4, 6, 8, 10).
 	 *		    0,10 = determine if all directions are impassable.
-	 * @param self_event ignores self.
+	 * @param self_event Current character for doing passability check
 	 * @return whether is passable.
 	 */
 	bool IsPassable(int x, int y, int d, const Game_Character* self_event = NULL);

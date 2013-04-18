@@ -28,8 +28,7 @@ Game_Vehicle::Game_Vehicle(Type _type) {
 	altitude = 0;
 	driving = false;
 	direction = RPG::EventPage::Direction_left;
-	walk_anime = false;
-	step_anime = false;
+	walk_animation = false;
 	LoadSystemSettings();
 }
 
@@ -83,8 +82,7 @@ void Game_Vehicle::Refresh() {
 			move_speed = RPG::EventPage::MoveSpeed_fourfold;
 			break;
 	}
-	walk_anime = driving;
-	step_anime = driving;
+	walk_animation = driving;
 }
 
 void Game_Vehicle::SetPosition(int _map_id, int _x, int _y) {
@@ -97,14 +95,13 @@ bool Game_Vehicle::IsInPosition(int x, int y) const {
 	return map_id == Game_Map::GetMapId() && Game_Character::IsInPosition(x, y);
 }
 
-bool Game_Vehicle::IsTransparent() const {
-	return map_id != Game_Map::GetMapId() || Game_Character::IsTransparent();
+bool Game_Vehicle::GetVisible() const {
+	return map_id != Game_Map::GetMapId() || !Game_Character::GetVisible();
 }
 
 void Game_Vehicle::GetOn() {
 	driving = true;
-	walk_anime = true;
-	step_anime = true;
+	walk_animation = true;
 	if (type == Airship)
 		priority_type = RPG::EventPage::Layers_above;
 	Game_System::BgmPlay(bgm);
@@ -112,8 +109,7 @@ void Game_Vehicle::GetOn() {
 
 void Game_Vehicle::GetOff() {
 	driving = false;
-	walk_anime = false;
-	step_anime = false;
+	walk_animation = false;
 	direction = RPG::EventPage::Direction_left;
 }
 

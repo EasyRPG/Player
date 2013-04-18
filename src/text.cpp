@@ -91,13 +91,13 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 		uint32_t const next_c = std::distance(c, end) > 1? *next_c_it : 0;
 
 		// ExFont-Detection: Check for A-Z or a-z behind the $
-		if (*c == utf('$') && std::isalpha(next_c)) {
+		if (*c == '$' && std::isalpha(next_c)) {
 			int exfont_value = -1;
 			// Calculate which exfont shall be rendered
 			if (islower(next_c)) {
-				exfont_value = 26 + next_c - utf('a');
+				exfont_value = 26 + next_c - 'a';
 			} else if (isupper(next_c)) {
-				exfont_value = next_c - utf('A');
+				exfont_value = next_c - 'A';
 			} else { assert(false); }
 			is_exfont = true;
 

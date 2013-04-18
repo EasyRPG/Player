@@ -21,12 +21,6 @@
 #include "system.h"
 #include <string>
 
-#ifdef _WIN32
-#  define utf(x) L##x
-#else
-#  define utf(x) x
-#endif
-
 namespace Text {
 	/** TextDraw alignment options. */
 	enum Alignment {
