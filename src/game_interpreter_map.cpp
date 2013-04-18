@@ -380,6 +380,7 @@ bool Game_Interpreter_Map::CommandChangeSpriteAssociation(RPG::EventCommand cons
 	int idx = com.parameters[1];
 	bool transparent = com.parameters[2] != 0;
 	actor->SetSprite(file, idx, transparent);
+	Main_Data::game_player->Refresh();
 	return true;
 }
 
