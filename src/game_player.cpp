@@ -75,6 +75,8 @@ void Game_Player::PerformTeleport() {
 		Game_Map::Setup(new_map_id);
 	}
 
+	Main_Data::game_player->SetOpacity(255);
+
 	MoveTo(new_x, new_y);
 }
 
@@ -357,7 +359,7 @@ bool Game_Player::GetOffVehicle() {
 	else {
 		// TODO
 		// ForceMoveForward();
-		transparent = false;
+		opacity = 255;
 	}
 
     vehicle_getting_off = true;

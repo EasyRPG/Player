@@ -418,7 +418,36 @@ public:
 
 	virtual bool CheckEventTriggerTouch(int x, int y) = 0;
 
-	virtual bool IsTransparent() const;
+	/**
+	 * Gets current opacity of character.
+	 *
+	 * @return opacity (0 = Invisible, 255 = opaque)
+	 */
+	virtual int GetOpacity() const;
+
+	/**
+	 * Sets opacity of the character.
+	 *
+	 * @param opacity New opacity (0 = Invisible, 255 = opaque)
+	 */
+	virtual void SetOpacity(int opacity);
+
+	/**
+	 * Gets if the character is visible.
+	 *
+	 * @return if visible, when true Opaque value is used
+	 */
+	virtual bool GetVisible() const;
+
+	/**
+	 * Makes character visible/not visible.
+	 * This has a higher priority then the Opacity setting.
+	 * Needed for the "SetHeroTransparency" command because this can't be
+	 * altered via the "Increase Transparency" move command.
+	 *
+	 * @param visable true: visible, false: invisible
+	 */
+	virtual void SetVisible(bool visible);
 
 	virtual void UpdateBushDepth();
 
@@ -480,7 +509,9 @@ protected:
 	bool cycle_stat;
 
 	int priority_type;
-	bool transparent;
+
+	int opacity;
+	bool visible;
 };
 
 #endif

@@ -95,8 +95,8 @@ bool Game_Vehicle::IsInPosition(int x, int y) const {
 	return map_id == Game_Map::GetMapId() && Game_Character::IsInPosition(x, y);
 }
 
-bool Game_Vehicle::IsTransparent() const {
-	return map_id != Game_Map::GetMapId() || Game_Character::IsTransparent();
+bool Game_Vehicle::GetVisible() const {
+	return map_id != Game_Map::GetMapId() || !Game_Character::GetVisible();
 }
 
 void Game_Vehicle::GetOn() {

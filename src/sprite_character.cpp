@@ -62,23 +62,24 @@ void Sprite_Character::Update() {
 			}
 		}
 	}
-	//SetVisible(character->GetVisible());
+
 	if (tile_id == 0) {
 		int row = character->GetDirection();
 		r.Set(character->GetPattern() * chara_width, row * chara_height, chara_width, chara_height);
 		SetSrcRect(r);
 	}
+
+	SetVisible(character->GetVisible());
+	if (GetVisible()) {
+		SetOpacity(character->GetOpacity());
+	}
+
 	SetX(character->GetScreenX());
 	SetY(character->GetScreenY());
 	SetZ(character->GetScreenZ(chara_height));
-	//SetOpacity(character->GetOpacity());
+	
 	//SetBlendType(character->GetBlendType());
 	//SetBushDepth(character->GetBushDepth());
-	/*if (character->GetAnimationId() != 0) {
-		RPG::Animation animation = Data::animations[character->GetAnimationId()]
-		this->Animation(animation, true);
-		character->SetAnimationId(0);
-	}*/
 }
 
 Game_Character* Sprite_Character::GetCharacter() {

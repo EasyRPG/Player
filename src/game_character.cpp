@@ -61,7 +61,8 @@ Game_Character::Game_Character() :
 	direction_fix(false),
 	cycle_stat(false),
 	priority_type(RPG::EventPage::Layers_same),
-	transparent(false) {
+	opacity(255),
+	visible(true) {
 }
 
 bool Game_Character::IsMoving() const {
@@ -457,10 +458,10 @@ void Game_Character::MoveTypeCustom() {
 				walk_animation = true;
 				break;
 			case RPG::MoveCommand::Code::increase_transp:
-				transparent = true;
+				SetOpacity(max(40, GetOpacity() - 45));
 				break;
 			case RPG::MoveCommand::Code::decrease_transp:
-				transparent = false;
+				SetOpacity(GetOpacity() + 45);
 				break;
 			}
 
@@ -877,8 +878,20 @@ bool Game_Character::IsInPosition(int x, int y) const {
 	return ((this->x == x) && (this->y == y));
 }
 
-bool Game_Character::IsTransparent() const {
-	return transparent;
+void Game_Character::SetOpacity(int opacity) {
+	this->opacity = min(max(0, opacity), 255);
+}
+
+int Game_Character::GetOpacity() const {
+	return opacity;
+}
+
+bool Game_Character::GetVisible() const {
+	return visible;
+}
+
+void Game_Character::SetVisible(bool visible) {
+	this->visible = visible;
 }
 
 void Game_Character::UpdateBushDepth() {

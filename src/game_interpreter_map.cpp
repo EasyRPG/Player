@@ -1276,16 +1276,7 @@ bool Game_Interpreter_Map::CommandEscapeTarget(RPG::EventCommand const& com) { /
 bool Game_Interpreter_Map::CommandSpriteTransparency(RPG::EventCommand const& com) { // code 11310
 	bool visible = com.parameters[0] != 0;
 	Game_Character* player = Main_Data::game_player.get();
-
-	Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
-	if (!scene)
-		return true;
-
-	Sprite_Character* sprite = scene->spriteset->FindCharacter(player);
-	if (!sprite)
-		return true;
-
-	sprite->SetVisible(visible);
+	player->SetVisible(visible);
 
 	return true;
 }
