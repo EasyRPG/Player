@@ -251,13 +251,13 @@ void TilemapLayer::Draw(int z_order) {
 					} else if (tile.ID < BLOCK_C) {
 						// If Blocks A1, A2, B
 
-						// Draw the tile from autile cache
+						// Draw the tile from autotile cache
 						TileXY pos = GetCachedAutotileAB(tile.ID, animation_step_ab);
 						DrawTile(*autotiles_ab_screen, map_draw_x, map_draw_y, pos.y, pos.x, true);
 					} else {
 						// If blocks D1-D12
 
-						// Draw the tile from autile cache
+						// Draw the tile from autotile cache
 						TileXY pos = GetCachedAutotileD(tile.ID);
 						DrawTile(*autotiles_d_screen, map_draw_x, map_draw_y, pos.y, pos.x, true);
 					}
@@ -469,7 +469,7 @@ void TilemapLayer::GenerateAutotileD(short ID) {
 BitmapScreenRef TilemapLayer::GenerateAutotiles(int count, const std::map<uint32_t, TileXY>& map) {
 	int rows = (count + TILES_PER_ROW - 1) / TILES_PER_ROW;
 	BitmapRef tiles = Bitmap::Create(TILES_PER_ROW * 16, rows * 16);
-	tiles->Fill(Color(255,255,0,255));
+	tiles->Clear();
 	Rect rect(0, 0, 8, 8);
 
 	std::map<uint32_t, TileXY>::const_iterator it;
