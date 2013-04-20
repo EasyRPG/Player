@@ -103,7 +103,7 @@ namespace {
 		{ "ChipSet", true, 480, 480, 256, 256 },
 		{ "FaceSet", true, 192, 192, 192, 192 },
 		{ "GameOver", false, 320, 320, 240, 240 },
-		{ "Monster", false, 16, 320, 16, 160 },
+		{ "Monster", true, 16, 320, 16, 160 },
 		{ "Panorama", false, 80, 640, 80, 480 },
 		{ "Picture", true, 1, 640, 1, 480 },
 		{ "System", true, 160, 160, 80, 80 },
