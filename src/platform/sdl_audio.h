@@ -36,6 +36,8 @@ struct SdlAudio : public AudioInterface {
 	void BGM_Resume();
 	void BGM_Stop();
 	void BGM_Fade(int);
+	void BGM_Volume(int);
+	void BGM_Pitch(int);
 	void BGS_Play(std::string const&, int, int);
 	void BGS_Stop();
 	void BGS_Fade(int);

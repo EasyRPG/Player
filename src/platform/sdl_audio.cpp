@@ -69,8 +69,7 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */) {
 		Output::Warning("Couldn't load %s BGM.\n%s\n", file.c_str(), Mix_GetError());
 		return;
 	}
-	bgm_volume = volume * MIX_MAX_VOLUME / 100;
-	Mix_VolumeMusic(bgm_volume);
+	BGM_Volume(volume);
 	if (!me_stopped_bgm && Mix_PlayMusic(bgm.get(), -1) == -1) {
 		Output::Warning("Couldn't play %s BGM.\n%s\n", file.c_str(), Mix_GetError());
 		return;
@@ -89,6 +88,15 @@ void SdlAudio::BGM_Resume() {
 void SdlAudio::BGM_Stop() {
 	Mix_HaltMusic();
 	me_stopped_bgm = false;
+}
+
+void SdlAudio::BGM_Volume(int volume) {
+	bgm_volume = volume * MIX_MAX_VOLUME / 100;
+	Mix_VolumeMusic(bgm_volume);
+}
+
+void SdlAudio::BGM_Pitch(int /* pitch */) {
+	// TODO
 }
 
 void SdlAudio::BGM_Fade(int fade) {
