@@ -53,13 +53,13 @@ void Scene_Name::Update() {
 
 	if (Input::IsTriggered(Input::CANCEL)) {
 		if (name_window->Get().size() > 0) {
-			Game_System::SePlay(Data::system.cancel_se);
+			Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 			name_window->Erase();
 		}
 		else
-			Game_System::SePlay(Data::system.buzzer_se);
+			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		Game_System::SePlay(Data::system.decision_se);
+		Game_System::SePlay(Main_Data::game_data.system.decision_se);
 		std::string const& s = kbd_window->GetSelected();
 
 		assert(not s.empty());
@@ -68,9 +68,14 @@ void Scene_Name::Update() {
 			Game_Temp::hero_name = name_window->Get();
 			Game_Actor* actor = Game_Actors::GetActor(Game_Temp::hero_name_id);
 			if (actor != NULL) {
-				actor->SetName(name_window->Get());
+				if (name_window->Get().empty()) {
+					name_window->Set(actor->GetName());
+					name_window->Refresh();
+				} else {
+					actor->SetName(name_window->Get());
+					Scene::Pop();
+				}
 			}
-			Scene::Pop();
 		} else if(s == Window_Keyboard::TO_SYMBOL) {
 			kbd_window->SetMode(Window_Keyboard::Symbol);
 		} else if(s == Window_Keyboard::TO_LETTER) {

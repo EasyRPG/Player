@@ -313,17 +313,9 @@ bool Game_Interpreter_Map::CommandChangeExp(RPG::EventCommand const& com) { // C
 		 i != actors.end();
 		 i++) {
 		Game_Actor* actor = *i;
-		actor->SetExp(actor->GetExp() + value);
+		actor->ChangeExp(actor->GetExp() + value, com.parameters[5] != 0);
 	}
 
-	if (com.parameters[5] != 0) {
-		// TODO
-		// Show message increase level
-	} else {
-		// Don't show message increase level
-	}
-
-	// Continue
 	return true;
 }
 
@@ -388,6 +380,7 @@ bool Game_Interpreter_Map::CommandChangeSpriteAssociation(RPG::EventCommand cons
 	int idx = com.parameters[1];
 	bool transparent = com.parameters[2] != 0;
 	actor->SetSprite(file, idx, transparent);
+	Main_Data::game_player->Refresh();
 	return true;
 }
 
@@ -777,7 +770,7 @@ bool Game_Interpreter_Map::CommandMovePicture(RPG::EventCommand const& com) { //
 	}
 
 	if (wait)
-		wait_count = tenths * DEFAULT_FPS / 10;
+		SetupWait(tenths);
 
 	return true;
 }
@@ -1284,16 +1277,7 @@ bool Game_Interpreter_Map::CommandEscapeTarget(RPG::EventCommand const& com) { /
 bool Game_Interpreter_Map::CommandSpriteTransparency(RPG::EventCommand const& com) { // code 11310
 	bool visible = com.parameters[0] != 0;
 	Game_Character* player = Main_Data::game_player.get();
-
-	Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
-	if (!scene)
-		return true;
-
-	Sprite_Character* sprite = scene->spriteset->FindCharacter(player);
-	if (!sprite)
-		return true;
-
-	sprite->SetVisible(visible);
+	player->SetVisible(visible);
 
 	return true;
 }
@@ -1309,18 +1293,10 @@ bool Game_Interpreter_Map::CommandFlashSprite(RPG::EventCommand const& com) { //
 	Game_Character* event = GetCharacter(event_id);
 
 	if (event != NULL) {
-		Scene_Map* scene = (Scene_Map*) Scene::Find(Scene::Map).get();
-		if (!scene)
-			return true;
-
-		Sprite_Character* sprite = scene->spriteset->FindCharacter(event);
-		if (!sprite)
-			return true;
-
-		sprite->Flash(color, tenths * DEFAULT_FPS / 10);
+		event->SetFlash(color, tenths * DEFAULT_FPS / 10);
 
 		if (wait)
-			wait_count = tenths * DEFAULT_FPS / 10;
+			SetupWait(tenths);
 	}
 
 	return true;
@@ -1807,7 +1783,13 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 			break;
 		case 4:
 			// Item
-			result = (Game_Party::ItemNumber(com.parameters[1]) > 0);
+			if (com.parameters[2] == 0) {
+				// Having
+				result = Game_Party::ItemNumber(com.parameters[1]) > 0;
+			} else {
+				// Not having
+				result = Game_Party::ItemNumber(com.parameters[1]) == 0;
+			}
 			break;
 		case 5:
 			// Hero

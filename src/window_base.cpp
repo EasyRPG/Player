@@ -95,7 +95,7 @@ void Window_Base::DrawActorState(Game_Actor* actor, int cx, int cy) {
 	if (states.size() == 0) {
 		contents->TextDraw(cx, cy, Font::ColorDefault, Data::terms.normal_status);
 	} else {
-		const RPG::State* state = actor->GetState();
+		const RPG::State* state = actor->GetSignificantState();
 		contents->TextDraw(cx, cy, state->color, state->name);
 	}
 }

@@ -58,15 +58,17 @@ public:
 	 * Learns a new skill.
 	 *
 	 * @param skill_id database skill ID.
+	 * @return If skill was learned (fails if already had the skill)
 	 */
-	void LearnSkill(int skill_id);
+	bool LearnSkill(int skill_id);
 
 	/**
 	 * Unlearns a skill.
 	 *
 	 * @param skill_id database skill ID.
+	 * @return If skill was unlearned (fails if didn't had the skill)
 	 */
-	void UnlearnSkill(int skill_id);
+	bool UnlearnSkill(int skill_id);
 
 	/**
 	 * Checks if the actor has the skill learned.
@@ -74,7 +76,7 @@ public:
 	 * @param skill_id ID of skill to check.
 	 * @return true if skill has been learned.
 	 */
-	bool IsSkillLearned(int skill_id);
+	bool IsSkillLearned(int skill_id) const;
 
 	/**
 	 * Checks if the actor can use the skill.
@@ -82,7 +84,7 @@ public:
 	 * @param skill_id ID of skill to check.
 	 * @return true if skill can be used.
 	 */
-	bool IsSkillUsable(int skill_id);
+	bool IsSkillUsable(int skill_id) const;
 
 	/**
 	 * Gets the actor ID.
@@ -98,7 +100,7 @@ public:
 	 * @todo Add Formula for RPG2k3.
 	 * @return Needed experience.
 	 */
-	int CalculateExp(int level);
+	int CalculateExp(int level) const;
 
 	/**
 	 * Calculates the Experience curve for every level.
@@ -110,14 +112,45 @@ public:
 	 *
 	 * @return Exp-String or ------ if Level is max.
 	 */
-	std::string GetExpString();
+	std::string GetExpString() const;
 
 	/**
 	 * Converts the Exp for the next LV to a string.
 	 *
 	 * @return Exp-String or ------ if Level is max.
 	 */
-	std::string GetNextExpString();
+	std::string GetNextExpString() const;
+
+	/**
+	 * Returns how many Exp are minimum for current level.
+	 *
+	 * @return Exp needed or -1 if invalid.
+	 */
+	int GetBaseExp() const;
+
+	/**
+	 * Returns how many Exp are minimum for a level.
+	 *
+	 * @param level to return base Exp for.
+	 * @return Exp needed or -1 if invalid.
+	 */
+	int GetBaseExp(int level) const;
+
+	/**
+	 * Returns how many Exp are needed for a level up based on the current
+	 * level.
+	 *
+	 * @return Exp needed or -1 if max level.
+	 */
+	int GetNextExp() const;
+
+	/**
+	 * Return how many Exp are needed for a level up.
+	 *
+	 * @param level to return NextExp for.
+	 * @return Exp needed or -1 if max level / invalid.
+	 */
+	int GetNextExp(int level) const;
 
 	/**
 	 * Gets actor name.
@@ -204,6 +237,13 @@ public:
 	int GetLevel() const;
 
 	/**
+	 * Gets final level of current actor.
+	 *
+	 * @return final level
+	 */
+	int GetMaxLevel() const;
+
+	/**
 	* Gets actor current experience points.
 	*
 	* @return current experience points.
@@ -212,27 +252,37 @@ public:
 
 	/**
 	 * Sets exp of actor.
+	 * The value is adjusted to the boundary 0 up 999999.
+	 * Other actor attributes are not altered. Use ChangeExp to do a proper 
+	 * experience change.
 	 *
 	 * @param _exp exp to set.
 	 */
 	void SetExp(int _exp);
 
 	/**
-	 * Changes exp of actor.
+	 * Changes exp of actor and handles level changing based on the new
+	 * experience.
 	 *
 	 * @param exp new exp.
+	 * @param level_up_message Whether to show level up message and learned skills.
 	 */
-	void ChangeExp(int exp);
+	void ChangeExp(int exp, bool level_up_message);
 
 	/**
-	 * Changes level of actor.
+	 * Changes level of actor and handles experience changes, skill
+	 * learning and other attributes based on the new level.
 	 *
 	 * @param level new level.
+	 * @param level_up_message Whether to show level up message and learned skills.
 	 */
-	void ChangeLevel(int level);
+	void ChangeLevel(int level, bool level_up_message);
 
 	/**
 	 * Sets level of actor.
+	 * The value is adjusted to the boundary 1 up to max level.
+	 * Other actor attributes are not altered. Use ChangeLevel to do a proper 
+	 * level change.
 	 *
 	 * @param _level level to set.
 	 */
@@ -244,7 +294,7 @@ public:
 	 * @param item_id ID of item to check.
 	 * @return true if it can equip the item.
 	 */
-	bool IsEquippable(int item_id);
+	bool IsEquippable(int item_id) const;
 
 	/**
 	 * Sets face graphic of actor.

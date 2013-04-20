@@ -56,13 +56,14 @@ Game_Character::Game_Character() :
 	anime_count(0),
 	stop_count(0),
 	jump_count(0),
-	step_anime(false),
-	walk_anime(true),
+	walk_animation(true),
 	turn_enabled(true),
 	direction_fix(false),
 	cycle_stat(false),
 	priority_type(RPG::EventPage::Layers_same),
-	transparent(false) {
+	opacity(255),
+	visible(true),
+	flash_pending(false) {
 }
 
 bool Game_Character::IsMoving() const {
@@ -89,17 +90,8 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 	if (!Game_Map::IsPassable(x, y, d, this))
 		return false;
 
-	if (!Game_Map::IsPassable(new_x, new_y, (d + 2) % 4))
+	if (!Game_Map::IsPassable(new_x, new_y, (d + 2) % 4, this))
 		return false;
-
-	for (tEventHash::iterator i = Game_Map::GetEvents().begin(); i != Game_Map::GetEvents().end(); i++) {
-		Game_Event* evnt = i->second.get();
-		if (evnt->GetX() == new_x && evnt->GetY() == new_y) {
-			if (!evnt->GetThrough() && evnt->GetPriorityType() == RPG::EventPage::Layers_same) {
-				return false;
-			}
-		}
-	}
 
 	if (Main_Data::game_player->GetX() == new_x && Main_Data::game_player->GetY() == new_y) {
 		if (!Main_Data::game_player->GetThrough() && !character_name.empty()) {
@@ -159,7 +151,7 @@ void Game_Character::Update() {
 		UpdateStop();
 
 	if (anime_count > 18 - move_speed * 2) {
-		if (!step_anime && stop_count > 0) {
+		if (stop_count > 0) {
 			pattern = original_pattern;
 			last_pattern = last_pattern == RPG::EventPage::Frame_left ? RPG::EventPage::Frame_right : RPG::EventPage::Frame_left;
 		} else {
@@ -209,10 +201,8 @@ void Game_Character::UpdateMove() {
 	if (y * 128 < real_y)
 		real_y = max(real_y - distance, y * 128);
 
-	if (walk_anime)
+	if (walk_animation)
 		anime_count += 1.5;
-	else if (step_anime)
-		anime_count += 1;
 }
 
 void Game_Character::UpdateSelfMovement() {
@@ -241,9 +231,7 @@ void Game_Character::UpdateSelfMovement() {
 }
 
 void Game_Character::UpdateStop() {
-	if (step_anime)
-		anime_count += 1;
-	else if (pattern != original_pattern)
+	if (pattern != original_pattern)
 		anime_count += 1.5;
 
 	//if (!starting || !IsLock())
@@ -345,17 +333,29 @@ void Game_Character::MoveTypeCustom() {
 			RPG::MoveCommand& move_command = move_route->move_commands[move_route_index];
 			switch (move_command.command_id) {
 			case RPG::MoveCommand::Code::move_up:
-				MoveUp(); break;
+				MoveUp();
+				break;
 			case RPG::MoveCommand::Code::move_right:
-				MoveRight(); break;
+				MoveRight();
+				break;
 			case RPG::MoveCommand::Code::move_down:
-				MoveDown(); break;
+				MoveDown();
+				break;
 			case RPG::MoveCommand::Code::move_left:
-				MoveLeft(); break;
-			case RPG::MoveCommand::Code::move_upright: break;
-			case RPG::MoveCommand::Code::move_downright: break;
-			case RPG::MoveCommand::Code::move_downleft: break;
-			case RPG::MoveCommand::Code::move_upleft: break;
+				MoveLeft();
+				break;
+			case RPG::MoveCommand::Code::move_upright:
+				MoveUpRight();
+				break;
+			case RPG::MoveCommand::Code::move_downright:
+				MoveDownRight();
+				break;
+			case RPG::MoveCommand::Code::move_downleft:
+				MoveDownLeft();
+				break;
+			case RPG::MoveCommand::Code::move_upleft:
+				MoveUpLeft();
+				break;
 			case RPG::MoveCommand::Code::move_random:
 				MoveRandom();
 				break;
@@ -369,13 +369,17 @@ void Game_Character::MoveTypeCustom() {
 				MoveForward();
 				break;
 			case RPG::MoveCommand::Code::face_up:
-				TurnUp(); break;
+				TurnUp();
+				break;
 			case RPG::MoveCommand::Code::face_right:
-				TurnRight(); break;
+				TurnRight();
+				break;
 			case RPG::MoveCommand::Code::face_down:
-				TurnDown(); break;
+				TurnDown();
+				break;
 			case RPG::MoveCommand::Code::face_left:
-				TurnLeft(); break;
+				TurnLeft();
+				break;
 			case RPG::MoveCommand::Code::turn_90_degree_right:
 				Turn90DegreeRight();
 				break;
@@ -388,12 +392,24 @@ void Game_Character::MoveTypeCustom() {
 			case RPG::MoveCommand::Code::turn_90_degree_random:
 				Turn90DegreeLeftOrRight();
 				break;
-			case RPG::MoveCommand::Code::face_random_direction: break;
-			case RPG::MoveCommand::Code::face_hero: break;
-			case RPG::MoveCommand::Code::face_away_from_hero: break;
-			case RPG::MoveCommand::Code::wait: break;
-			case RPG::MoveCommand::Code::begin_jump: break;
-			case RPG::MoveCommand::Code::end_jump: break;
+			case RPG::MoveCommand::Code::face_random_direction:
+				FaceRandomDirection();
+				break;
+			case RPG::MoveCommand::Code::face_hero:
+				FaceTowardsHero();
+				break;
+			case RPG::MoveCommand::Code::face_away_from_hero:
+				FaceAwayFromHero();
+				break;
+			case RPG::MoveCommand::Code::wait:
+				Wait();
+				break;
+			case RPG::MoveCommand::Code::begin_jump:
+				BeginJump();
+				break;
+			case RPG::MoveCommand::Code::end_jump:
+				EndJump();
+				break;
 			case RPG::MoveCommand::Code::lock_facing:
 				Lock();
 				break;
@@ -401,11 +417,17 @@ void Game_Character::MoveTypeCustom() {
 				Unlock();
 				break;
 			case RPG::MoveCommand::Code::increase_movement_speed:
-				move_speed = min(move_speed + 1, 6); break;
+				move_speed = min(move_speed + 1, 6);
+				break;
 			case RPG::MoveCommand::Code::decrease_movement_speed:
-				move_speed = max(move_speed - 1, 1); break;
-			case RPG::MoveCommand::Code::increase_movement_frequence: break;
-			case RPG::MoveCommand::Code::decrease_movement_frequence: break;
+				move_speed = max(move_speed - 1, 1);
+				break;
+			case RPG::MoveCommand::Code::increase_movement_frequence:
+				move_frequency = min(move_frequency - 1, 1);
+				break;
+			case RPG::MoveCommand::Code::decrease_movement_frequence:
+				move_frequency = max(move_frequency - 1, 1);
+				break;
 			case RPG::MoveCommand::Code::switch_on: // Parameter A: Switch to turn on
 				Game_Switches[move_command.parameter_a] = true;
 				Game_Map::SetNeedRefresh(true);
@@ -430,10 +452,18 @@ void Game_Character::MoveTypeCustom() {
 			case RPG::MoveCommand::Code::walk_everywhere_off:
 				through = false;
 				break;
-			case RPG::MoveCommand::Code::stop_animation: break;
-			case RPG::MoveCommand::Code::start_animation: break;
-			case RPG::MoveCommand::Code::increase_transp: break; // ???
-			case RPG::MoveCommand::Code::decrease_transp: break; // ???
+			case RPG::MoveCommand::Code::stop_animation:
+				walk_animation = false;
+				break;
+			case RPG::MoveCommand::Code::start_animation:
+				walk_animation = true;
+				break;
+			case RPG::MoveCommand::Code::increase_transp:
+				SetOpacity(max(40, GetOpacity() - 45));
+				break;
+			case RPG::MoveCommand::Code::decrease_transp:
+				SetOpacity(GetOpacity() + 45);
+				break;
 			}
 
 			if (move_route->skippable || !move_failed) {
@@ -515,6 +545,25 @@ void Game_Character::MoveForward() {
 		break;
 	}
 }
+
+void Game_Character::MoveDownLeft() {
+	// Todo
+}
+
+void Game_Character::MoveDownRight() {
+	// Todo
+}
+
+
+void Game_Character::MoveUpLeft() {
+	// Todo
+}
+
+
+void Game_Character::MoveUpRight() {
+	// Todo
+}
+
 
 void Game_Character::MoveRandom() {
 	switch (rand() % 4) {
@@ -672,6 +721,30 @@ void Game_Character::TurnTowardPlayer() {
 	}
 }
 
+void Game_Character::FaceRandomDirection() {
+	// Todo
+}
+
+void Game_Character::FaceTowardsHero() {
+	// Todo
+}
+
+void Game_Character::FaceAwayFromHero() {
+	// Todo
+}
+
+void Game_Character::Wait() {
+	// Todo
+}
+
+void Game_Character::BeginJump() {
+	// Todo
+}
+
+void Game_Character::EndJump() {
+	// Todo
+}
+
 int Game_Character::DistanceXfromPlayer() const {
 	int sx = x - Main_Data::game_player->x;
 	if (Game_Map::LoopHorizontal()) {
@@ -806,8 +879,40 @@ bool Game_Character::IsInPosition(int x, int y) const {
 	return ((this->x == x) && (this->y == y));
 }
 
-bool Game_Character::IsTransparent() const {
-	return transparent;
+void Game_Character::SetOpacity(int opacity) {
+	this->opacity = min(max(0, opacity), 255);
+}
+
+int Game_Character::GetOpacity() const {
+	return opacity;
+}
+
+bool Game_Character::GetVisible() const {
+	return visible;
+}
+
+void Game_Character::SetVisible(bool visible) {
+	this->visible = visible;
+}
+
+bool Game_Character::IsFlashPending() const {
+	return flash_pending;
+}
+
+void Game_Character::GetFlashParameters(Color& color, int& duration) {
+	flash_pending = false;
+	color = flash_color;
+	duration = flash_duration;
+}
+
+void Game_Character::SetFlash(Color color, int duration) {
+	flash_pending = true;
+	flash_duration = duration;
+	flash_color = color;
+	if (duration == 0) {
+		// 0.0 flash
+		duration = DEFAULT_FPS;
+	}
 }
 
 void Game_Character::UpdateBushDepth() {

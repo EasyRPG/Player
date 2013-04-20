@@ -99,6 +99,16 @@ void Game_Interpreter::CancelMenuCall() {
 	// TODO
 }
 
+void Game_Interpreter::SetupWait(int duration) {
+	CloseMessageWindow();
+	if (duration == 0) {
+		// 0.0 waits 1 frame
+		wait_count = 1;
+	} else {
+		wait_count = duration * DEFAULT_FPS / 10;
+	}
+}
+
 void Game_Interpreter::SetContinuation(Game_Interpreter::ContinuationFunction func) {
 	continuation = func;
 }
@@ -201,6 +211,7 @@ void Game_Interpreter::Update() {
 		}
 
 		if (!ExecuteCommand()) {
+			CloseMessageWindow();
 			active = true;
 			return;
 		}
@@ -218,6 +229,7 @@ void Game_Interpreter::Update() {
 	// Executed Events Count exceeded (10000)
 	active = true;
 	Output::Debug("Event %d exceeded execution limit", event_id);
+	CloseMessageWindow();
 }
 
 // Setup Starting Event
@@ -342,7 +354,7 @@ bool Game_Interpreter::ExecuteCommand() {
 
 bool Game_Interpreter::CommandWait(RPG::EventCommand const& /* com */) {
 	if (Player::engine == Player::EngineRpg2k || list[index].parameters[1] == 0) {
-		wait_count = list[index].parameters[0] * DEFAULT_FPS / 10;
+		SetupWait(list[index].parameters[0]);
 		return true;
 	} else
 		return Input::IsAnyTriggered();
@@ -548,9 +560,9 @@ bool Game_Interpreter::CommandControlSwitches(RPG::EventCommand const& com) { //
 		case 2:
 			// Switch from variable
 			if (com.parameters[3] != 2) {
-				Game_Switches[com.parameters[2]] = com.parameters[3] == 0;
+				Game_Switches[Game_Variables[com.parameters[1]]] = com.parameters[3] == 0;
 			} else {
-				Game_Switches[com.parameters[2]] = !Game_Switches[com.parameters[2]];
+				Game_Switches[Game_Variables[com.parameters[1]]] = !Game_Switches[Game_Variables[com.parameters[1]]];
 			}
 			break;
 		default:
@@ -780,6 +792,8 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 						// Module
 						if (value != 0) {
 							Game_Variables[i] %= value;
+						} else {
+							Game_Variables[i] = 0;
 						}
 				}
 				if (Game_Variables[i] > MaxSize) {
@@ -904,6 +918,20 @@ bool Game_Interpreter::CommandChangeItems(RPG::EventCommand const& com) { // Cod
 		com.parameters[4]
 	);
 
+	// Add item can't be used to remove an item and
+	// remove item can't be used to add one
+	if (com.parameters[0] == 1) {
+		// Substract
+		if (value > 0) {
+			return true;
+		}
+	} else {
+		// Add
+		if (value < 0) {
+			return true;
+		}
+	}
+
 	if (com.parameters[1] == 0) {
 		// Item by const number
 		Game_Party::GainItem(com.parameters[2], value);
@@ -990,17 +1018,9 @@ bool Game_Interpreter::CommandChangeLevel(RPG::EventCommand const& com) { // Cod
 		 i != actors.end();
 		 i++) {
 		Game_Actor* actor = *i;
-		actor->ChangeLevel(actor->GetLevel() + value);
+		actor->ChangeLevel(actor->GetLevel() + value, com.parameters[5] != 0);
 	}
 
-	if (com.parameters[5] != 0) {
-		// TODO
-		// Show message increase level
-	} else {
-		// Don't show message increase level
-	}
-
-	// Continue
 	return true;
 }
 
@@ -1197,7 +1217,7 @@ bool Game_Interpreter::CommandTintScreen(RPG::EventCommand const& com) { // code
 	screen->TintScreen(r, g, b, s, tenths);
 
 	if (wait)
-		wait_count = tenths * DEFAULT_FPS / 10;
+		SetupWait(tenths);
 
 	return true;
 }
@@ -1216,7 +1236,7 @@ bool Game_Interpreter::CommandFlashScreen(RPG::EventCommand const& com) { // cod
 			case 0:
 				screen->FlashOnce(r, g, b, s, tenths);
 				if (wait)
-					wait_count = tenths * DEFAULT_FPS / 10;
+					SetupWait(tenths);
 				break;
 			case 1:
 				screen->FlashBegin(r, g, b, s, tenths);
@@ -1228,7 +1248,7 @@ bool Game_Interpreter::CommandFlashScreen(RPG::EventCommand const& com) { // cod
 	} else {
 		screen->FlashOnce(r, g, b, s, tenths);
 		if (wait)
-			wait_count = tenths * DEFAULT_FPS / 10;
+			SetupWait(tenths);
 	}
 
 	return true;
@@ -1244,14 +1264,14 @@ bool Game_Interpreter::CommandShakeScreen(RPG::EventCommand const& com) { // cod
 	if (Player::engine == Player::EngineRpg2k) {
 		screen->ShakeOnce(strength, speed, tenths);
 		if (wait) {
-			wait_count = tenths * DEFAULT_FPS / 10;
+			SetupWait(tenths);
 		}
 	} else {
 		switch (com.parameters[4]) {
 			case 0:
 				screen->ShakeOnce(strength, speed, tenths);
 				if (wait) {
-					wait_count = tenths * DEFAULT_FPS / 10;
+					SetupWait(tenths);
 				}
 				break;
 			case 1:

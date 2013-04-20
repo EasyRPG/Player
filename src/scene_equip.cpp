@@ -102,19 +102,19 @@ void Scene_Equip::UpdateStatusWindow() {
 
 void Scene_Equip::UpdateEquipSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Data::system.cancel_se);
+		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		Game_System::SePlay(Data::system.decision_se);
+		Game_System::SePlay(Main_Data::game_data.system.decision_se);
 		equip_window->SetActive(false);
 		item_window->SetActive(true);
 		item_window->SetIndex(0);
 	} else if (Game_Party::GetActors().size() > 1 && Input::IsTriggered(Input::RIGHT)) {
-		Game_System::SePlay(Data::system.cursor_se);
+		Game_System::SePlay(Main_Data::game_data.system.cursor_se);
 		actor_index = (actor_index + 1) % Game_Party::GetActors().size();
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Equip>(actor_index, equip_window->GetIndex()), true);
 	} else if (Game_Party::GetActors().size() > 1 && Input::IsTriggered(Input::LEFT)) {
-		Game_System::SePlay(Data::system.cursor_se);
+		Game_System::SePlay(Main_Data::game_data.system.cursor_se);
 		actor_index = (actor_index + Game_Party::GetActors().size() - 1) % Game_Party::GetActors().size();
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Equip>(actor_index, equip_window->GetIndex()), true);
 	}
@@ -122,12 +122,12 @@ void Scene_Equip::UpdateEquipSelection() {
 
 void Scene_Equip::UpdateItemSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Data::system.cancel_se);
+		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		equip_window->SetActive(true);
 		item_window->SetActive(false);
 		item_window->SetIndex(-1);
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		Game_System::SePlay(Data::system.decision_se);
+		Game_System::SePlay(Main_Data::game_data.system.decision_se);
 
 		Game_Party::GetActors()[actor_index]->ChangeEquipment(
 			equip_window->GetIndex(), item_window->GetItemId());

@@ -53,12 +53,12 @@ public:
 	virtual std::vector<int16_t>& GetStates() = 0;
 
 	/**
-	 * Gets current battler state.
+	 * Gets current battler state with highest priority.
 	 *
 	 * @return the highest priority state affecting the battler.
 	 *         Returns NULL if no states.
 	 */
-	const RPG::State* GetState();
+	const RPG::State* GetSignificantState();
 
 	/**
 	 * Gets battler HP.
@@ -180,7 +180,7 @@ public:
 	 * @param skill_id ID of skill to check.
 	 * @return true if skill can be used.
 	 */
-	virtual bool IsSkillUsable(int skill_id);
+	virtual bool IsSkillUsable(int skill_id) const;
 
 	/**
 	 * Calculates the Skill costs including all modifiers.
@@ -188,7 +188,7 @@ public:
 	 * @param skill_id ID of skill to calculate.
 	 * @return needed skill cost.
 	 */
-	int CalculateSkillCost(int skill_id);
+	int CalculateSkillCost(int skill_id) const;
 
 	/**
 	 * Adds a State.

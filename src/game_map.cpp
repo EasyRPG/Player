@@ -230,10 +230,10 @@ bool Game_Map::IsValid(int x, int y) {
 	return (x >= 0 && x < GetWidth() && y >= 0 && y < GetHeight());
 }
 
-bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* /* self_event */) {
+bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event) {
 	if (!Game_Map::IsValid(x, y)) return false;
 
-	uint8_t bit;
+	uint8_t bit = 0;
 	switch (d)
 	{
 		case RPG::EventPage::Direction_down:
@@ -256,13 +256,34 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* /* self_eve
 			assert(false);
 	}
 
+	int tile_id;
+
+	if (self_event) {
+		for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
+			Game_Event* evnt = i->second.get();
+			if (evnt != self_event && evnt->GetX() == x && evnt->GetY() == y) {
+				if (!evnt->GetThrough()) {
+					if (evnt->GetPriorityType() == RPG::EventPage::Layers_same) {
+						return false;
+					}
+					else if (evnt->GetTileId() >= 0 && evnt->GetPriorityType() == RPG::EventPage::Layers_below) {
+						// Event layer Chipset Tile
+						tile_id = i->second->GetTileId();
+						return (passages_up[tile_id] & bit) != 0;
+					}
+				}
+			}
+		}
+	}
+
 	int const tile_index = x + y * GetWidth();
 
-	int tile_id = map->upper_layer[tile_index] - BLOCK_F;
+	tile_id = map->upper_layer[tile_index] - BLOCK_F;
 	tile_id = map_info.upper_tiles[tile_id];
 
-	if ((passages_up[tile_id] & bit) == 0)
+	if ((passages_up[tile_id] & bit) == 0) {
 		return false;
+	}
 
 	if ((passages_up[tile_id] & Passable::Above) == 0)
 		return true;

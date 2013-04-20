@@ -111,10 +111,10 @@ void Scene_File::Update() {
 		file_windows[i]->Update();
 
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Data::system.cancel_se);
+		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		Game_System::SePlay(Data::system.decision_se);
+		Game_System::SePlay(Main_Data::game_data.system.decision_se);
 		Action(index);
 		Scene::Pop();
 	}
@@ -123,14 +123,14 @@ void Scene_File::Update() {
 	int old_index = index;
 
 	if (Input::IsRepeated(Input::DOWN)) {
-		Game_System::SePlay(Data::system.cursor_se);
+		Game_System::SePlay(Main_Data::game_data.system.cursor_se);
 		index++;
 		if ((size_t) index >= file_windows.size())
 			index--;
 		top_index = std::max(top_index, index - 3 + 1);
 	}
 	if (Input::IsRepeated(Input::UP)) {
-		Game_System::SePlay(Data::system.cursor_se);
+		Game_System::SePlay(Main_Data::game_data.system.cursor_se);
 		index--;
 		if (index < 0)
 			index++;
