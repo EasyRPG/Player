@@ -50,7 +50,7 @@ void Window_BattleStatus::Refresh() {
 		DrawActorName(actor, 4, y);
 		DrawActorState(actor, 80, y);
 		DrawActorHp(actor, 136, y, true);
-		DrawGauge(actor, i, 192, y);
+		//DrawGauge(actor, i, 192, y);
 		DrawActorSp(actor, 202, y, false);
 	}
 }
@@ -59,7 +59,7 @@ void Window_BattleStatus::RefreshGauge(int i) {
 	int y = i * 15;
 	contents->ClearRect(Rect(192, y, 44, 15));
 	Game_Actor* actor = Game_Battle::allies[i].game_actor;
-	DrawGauge(actor, i, 192, y);
+	//DrawGauge(actor, i, 192, y);
 	DrawActorSp(actor, 202, y, false);
 }
 
@@ -113,8 +113,8 @@ void Window_BattleStatus::Update() {
 	Window_Base::Update();
 
 	int num_actors = Game_Battle::allies.size();
-	for (int i = 0; i < num_actors; i++)
-		RefreshGauge(i);
+	/*for (int i = 0; i < num_actors; i++)
+		RefreshGauge(i);*/
 
 	if (active && index >= 0) {
 		if (Input::IsRepeated(Input::DOWN)) {

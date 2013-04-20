@@ -28,9 +28,13 @@
 Window_BattleOption::Window_BattleOption(int x, int y, int width, int height) :
 	Window_Base(x, y, width, height) {
 
-	commands.push_back(Data::terms.battle_fight);
-	commands.push_back(Data::terms.battle_auto);
-	commands.push_back(Data::terms.battle_escape);
+	//commands.push_back(Data::terms.battle_fight);
+	//commands.push_back(Data::terms.battle_auto);
+	//commands.push_back(Data::terms.battle_escape);
+
+	commands.push_back("Victory");
+	commands.push_back("Defeat");
+	commands.push_back("Escape");
 
 	index = -1;
 	top_row = 0;
@@ -87,12 +91,20 @@ void Window_BattleOption::UpdateCursorRect() {
 
 void Window_BattleOption::Refresh() {
 	contents->Clear();
-	for (int i = 0; i < (int) commands.size(); i++) {
+
+	Font::SystemColor color = Font::ColorDefault;
+
+	DrawItem(0, color);
+	color = Game_Temp::battle_defeat_mode == 0 ? Font::ColorDisabled : Font::ColorDefault;
+	DrawItem(1, color);
+	color = Game_Temp::battle_escape_mode == 0 ? Font::ColorDisabled : Font::ColorDefault;
+	DrawItem(2, color);
+	/*for (int i = 0; i < (int) commands.size(); i++) {
 		Font::SystemColor color = (i == 2 && Game_Temp::battle_escape_mode == 0)
 			? Font::ColorDisabled
 			: Font::ColorDefault;
 		DrawItem(i, color);
-	}
+	}*/
 }
 
 void Window_BattleOption::DrawItem(int index, Font::SystemColor color) {
