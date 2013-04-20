@@ -118,8 +118,10 @@ void Scene_Battle::Start() {
 	auto_battle = false;
 	enemy_action = NULL;
 
-	CreateCursors();
+	//CreateCursors();
 	CreateWindows();
+
+	help_window->SetText("Battle System not implemented yet. Select result.");
 
 	animation.reset();
 	animations.clear();
@@ -191,6 +193,7 @@ void Scene_Battle::SetState(Scene_Battle::State new_state) {
 
 	switch (state) {
 		case State_Options:
+			help_window->SetVisible(true);
 			options_window->SetVisible(true);
 			status_window->SetVisible(true);
 			status_window->SetX(76);
@@ -736,15 +739,25 @@ void Scene_Battle::ProcessInput() {
 			case State_Options:
 				switch (options_window->GetIndex()) {
 					case 0:
-						auto_battle = false;
-						SetState(State_Battle);
+						Game_Temp::battle_result = Game_Temp::BattleVictory;
+						Scene::Pop();
+						//auto_battle = false;
+						//SetState(State_Battle);
 						break;
 					case 1:
-						auto_battle = true;
-						SetState(State_Battle);
+						if (Game_Temp::battle_defeat_mode != 0) {
+							Game_Temp::battle_result = Game_Temp::BattleDefeat;
+							Scene::Pop();
+						}
+						//auto_battle = true;
+						//SetState(State_Battle);
 						break;
 					case 2:
-						Escape();
+						if (Game_Temp::battle_escape_mode != 0) {
+							Game_Temp::battle_result = Game_Temp::BattleEscape;
+							Scene::Pop();
+						}
+						//Escape();
 						break;
 				}
 				break;
@@ -985,14 +998,14 @@ void Scene_Battle::Update() {
 	Game_Battle::SetActiveAlly(status_window->GetActiveCharacter());
 	command_window->SetActor(Game_Battle::GetActiveActor());
 
-	cycle++;
+	//cycle++;
 
 	ProcessActions();
 	ProcessInput();
 	DoAuto();
 
 	UpdateBackground();
-	UpdateCursors();
+	//UpdateCursors();
 	UpdateSprites();
 	UpdateFloaters();
 	UpdateAnimations();
