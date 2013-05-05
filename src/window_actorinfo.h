@@ -37,12 +37,13 @@ public:
 	 * Renders the stats on the window.
 	 */
 	void Refresh();
-
+	
 	/**
 	 * Draws the actor face and information
 	 */
 	void DrawInfo();
-private:
+
+>>>>>>> remotes/upstream/masterprivate:
 	int actor_id;
 };
 

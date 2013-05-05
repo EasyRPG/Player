@@ -22,6 +22,7 @@
 #include "game_actors.h"
 #include "game_party.h"
 #include "bitmap.h"
+#include "font.h"
 
 Window_ActorStatus::Window_ActorStatus(int ix, int iy, int iwidth, int iheight, int actor_id) :
 	Window_Base(ix, iy, iwidth, iheight),
@@ -62,12 +63,12 @@ void Window_ActorStatus::DrawMinMax(int cx, int cy, int min, int max){
 		ss << min;
 	else
 		ss << Game_Actors::GetActor(actor_id)->GetExpString();
-	contents->TextDraw(cx, cy, Font::ColorDefault, ss.str(), Surface::TextAlignRight);
+	contents->TextDraw(cx, cy, Font::ColorDefault, ss.str(), Text::AlignRight);
 	contents->TextDraw(cx, cy, Font::ColorDefault, "/");
 	ss.str("");
 	if (max >= 0)
 		ss << max;
 	else
 		ss << Game_Actors::GetActor(actor_id)->GetNextExpString();
-	contents->TextDraw(cx+48, cy, Font::ColorDefault, ss.str(), Surface::TextAlignRight);
+	contents->TextDraw(cx+48, cy, Font::ColorDefault, ss.str(), Text::AlignRight);
 }

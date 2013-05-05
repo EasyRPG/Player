@@ -22,6 +22,7 @@
 #include "game_actors.h"
 #include "game_party.h"
 #include "bitmap.h"
+#include "font.h"
 
 Window_ActorInfo::Window_ActorInfo(int ix, int iy, int iwidth, int iheight, int actor_id) :
 	Window_Base(ix, iy, iwidth, iheight),
@@ -42,7 +43,7 @@ void Window_ActorInfo::Refresh() {
 void Window_ActorInfo::DrawInfo() {
 
 	// Draw Header
-	contents->TextDraw(contents->GetWidth(), 5, Font::ColorDefault, "<---", Surface::TextAlignRight);
+	contents->TextDraw(contents->GetWidth(), 5, Font::ColorDefault, "<---", Text::AlignRight);
 
 	// Draw Face
 	DrawActorFace(Game_Actors::GetActor(actor_id), 0, 0);
@@ -67,6 +68,6 @@ void Window_ActorInfo::DrawInfo() {
 	contents->TextDraw(3, 170, 1, Data::terms.lvl_short);
 	std::stringstream ss;
 	ss << Game_Actors::GetActor(actor_id)->GetLevel();
-	contents->TextDraw(79, 170, Font::ColorDefault, ss.str(), Surface::TextAlignRight);
+	contents->TextDraw(79, 170, Font::ColorDefault, ss.str(), Text::AlignRight);
 
 }
