@@ -536,7 +536,12 @@ public:
 	 * @param class_id mew Rpg2k3 hero class.
 	 */
 	void SetClass(int class_id);
-	/// @return Rpg2k3 hero class name
+
+	/**
+	 * Gets the actor's class name as a string.
+	 * 
+	 * @return Rpg2k3 hero class name
+	 */
 	std::string GetClassName() const;
 
 	/**
@@ -549,13 +554,13 @@ public:
 	/**
 	 * Gets battle row for Rpg2k3 battles.
 	 *
-	 * @return row for Rpg2k3 battles (-1 back, 1 front).
+	 * @return row for Rpg2k3 battles (-1 front, 1 back).
 	 */
 	int GetBattleRow() const;
 	/**
 	 * Sets battle row for Rpg2k3 battles.
 	 *
-	 * @param battle_row new row for Rpg2k3 battles (-1 back, 1 front).
+	 * @param battle_row new row for Rpg2k3 battles (-1 front, 1 back).
 	 */
 	void SetBattleRow(int battle_row);
 

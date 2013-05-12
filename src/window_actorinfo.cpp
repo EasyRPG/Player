@@ -42,8 +42,9 @@ void Window_ActorInfo::Refresh() {
 
 void Window_ActorInfo::DrawInfo() {
 
-	// Draw Header
-	contents->TextDraw(contents->GetWidth(), 5, Font::ColorDefault, "<---", Text::AlignRight);
+	// Draw Row formation.
+	std::string battle_row = Game_Actors::GetActor(actor_id)->GetBattleRow() == 1 ? "Back" : "Front";
+	contents->TextDraw(contents->GetWidth(), 5, Font::ColorDefault, battle_row, Text::AlignRight);
 
 	// Draw Face
 	DrawActorFace(Game_Actors::GetActor(actor_id), 0, 0);

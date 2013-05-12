@@ -275,7 +275,6 @@ int Game_Actor::CalculateExp(int level) const
 			result += i * (int)inflation;
 			result += (int)correction;
 		}
-		printf ("LV: %i : %i\n", level, result);
 	}
 	return min(result, Player::engine == Player::EngineRpg2k ? 1000000 : 10000000);
 }
@@ -539,7 +538,10 @@ void Game_Actor::SetClass(int _class_id) {
 }
 
 std::string Game_Actor::GetClassName() const {
-	return Data::classes[GetClass() - 1].name;
+    if (GetClass() <= 0) {
+        return "";
+    }
+    return Data::classes[GetClass() - 1].name;
 }
 
 void Game_Actor::SetBaseMaxHp(int maxhp) {
