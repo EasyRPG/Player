@@ -176,7 +176,7 @@ void Scene_Battle_Rpg2k::RefreshCommandWindow() {
 void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 	target_state = state;
 	state = new_state;
-	if (state == State_Battle && auto_battle)
+	if (state == State_SelectActor && auto_battle)
 		state = State_AutoBattle;
 
 	options_window->SetActive(false);
@@ -191,29 +191,29 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 	case State_Start:
 		battle_message_window->SetActive(true);
 		break;
-	case State_Options:
+	case State_SelectOption:
 		options_window->SetActive(true);
 		break;
-	case State_Battle:
+	case State_SelectActor:
 		status_window->SetActive(true);
 		break;
 	case State_AutoBattle:
 		break;
-	case State_Command:
+	case State_SelectCommand:
 		command_window->SetActive(true);
 		RefreshCommandWindow();
 		break;
-	case State_TargetEnemy:
+	case State_SelectEnemyTarget:
 		break;
-	case State_TargetAlly:
+	case State_SelectAllyTarget:
 		status_window->SetActive(true);
 		break;
-	case State_Item:
+	case State_SelectItem:
 		item_window->SetActive(true);
 		//item_window->SetActor(Game_Battle::GetActiveActor());
 		item_window->Refresh();
 		break;
-	case State_Skill:
+	case State_SelectSkill:
 		skill_window->SetActive(true);
 		skill_window->SetActor(active_actor->GetId());
 		skill_window->SetIndex(0);
@@ -238,43 +238,43 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 	case State_Start:
 		battle_message_window->SetVisible(true);
 		break;
-	case State_Options:
+	case State_SelectOption:
 		options_window->SetVisible(true);
 		status_window->SetVisible(true);
 		status_window->SetX(76);
 		status_window->SetIndex(-1);
 		break;
-	case State_Battle:
+	case State_SelectActor:
 		ActivateNextActor();
 		break;
 	case State_AutoBattle:
 		// no-op
 		break;
-	case State_Command:
+	case State_SelectCommand:
 		status_window->SetVisible(true);
 		command_window->SetVisible(true);
 		status_window->SetX(0);
 		break;
-	case State_TargetEnemy:
+	case State_SelectEnemyTarget:
 		CreateBattleTargetWindow();
 		status_window->SetVisible(true);
 		command_window->SetVisible(true);
 		target_window->SetActive(true);
 		target_window->SetVisible(true);
 		break;
-	case State_TargetAlly:
+	case State_SelectAllyTarget:
 	case State_AllyAction:
 	case State_EnemyAction:
 		status_window->SetVisible(true);
 		status_window->SetX(0);
 		command_window->SetVisible(true);
 		break;
-	case State_Item:
+	case State_SelectItem:
 		item_window->SetVisible(true);
 		item_window->SetHelpWindow(help_window.get());
 		help_window->SetVisible(true);
 		break;
-	case State_Skill:
+	case State_SelectSkill:
 		skill_window->SetVisible(true);
 		skill_window->SetHelpWindow(help_window.get());
 		help_window->SetVisible(true);
@@ -293,10 +293,10 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 	switch (state) {
 	case State_Start:
 		if (DisplayMonstersInMessageWindow()) {
-			SetState(State_Options);
+			SetState(State_SelectOption);
 		}
 		break;
-	case State_Battle:
+	case State_SelectActor:
 	case State_AutoBattle:
 		Game_Battle::Update();
 
@@ -336,40 +336,40 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 		case State_Start:
 			// no-op
 			break;
-		case State_Options:
+		case State_SelectOption:
 			switch (options_window->GetIndex()) {
 			case 0: // Battle
 				auto_battle = false;
-				SetState(State_Battle);
+				SetState(State_SelectActor);
 				break;
 			case 1: // Auto Battle
 				auto_battle = true;
 				Output::Post("Auto Battle not implemented yet.\nSorry :)");
-				//SetState(State_Battle);
+				//SetState(State_SelectActor);
 				break;
 			case 2: // Escape
 				//Escape();
 				break;
 			}
 			break;
-		case State_Battle:
-			SetState(State_Command);
+		case State_SelectActor:
+			SetState(State_SelectCommand);
 			ActivateNextActor();
 			break;
 		case State_AutoBattle:
 			// no-op
 			break;
-		case State_Command:
+		case State_SelectCommand:
 			CommandSelected();
 			break;
-		case State_TargetEnemy:
-		case State_TargetAlly:
+		case State_SelectEnemyTarget:
+		case State_SelectAllyTarget:
 			//TargetDone();
 			break;
-		case State_Item:
+		case State_SelectItem:
 			Item();
 			break;
-		case State_Skill:
+		case State_SelectSkill:
 			Skill();
 			break;
 		case State_AllyAction:
@@ -386,23 +386,23 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 		Game_System::SePlay(Data::system.cancel_se);
 		switch (state) {
 		case State_Start:
-		case State_Options:
+		case State_SelectOption:
 			// no-op
 			break;
-		case State_Battle:
+		case State_SelectActor:
 		case State_AutoBattle:
-			SetState(State_Options);
+			SetState(State_SelectOption);
 			break;
-		case State_Command:
-			SetState(State_Options);
+		case State_SelectCommand:
+			SetState(State_SelectOption);
 			break;
-		case State_TargetEnemy:
-		case State_Item:
-		case State_Skill:
-			SetState(State_Command);
+		case State_SelectEnemyTarget:
+		case State_SelectItem:
+		case State_SelectSkill:
+			SetState(State_SelectCommand);
 			break;
-		case State_TargetAlly:
-			SetState(State_Item);
+		case State_SelectAllyTarget:
+			SetState(State_SelectItem);
 			break;
 		case State_AllyAction:
 		case State_EnemyAction:
@@ -415,7 +415,7 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 		}
 	}
 
-	/*if (state == State_TargetEnemy && Game_Battle::HaveTargetEnemy()) {
+	/*if (state == State_SelectEnemyTarget && Game_Battle::HaveTargetEnemy()) {
 		if (Input::IsRepeated(Input::DOWN))
 			Game_Battle::TargetNextEnemy();
 		if (Input::IsRepeated(Input::UP))
@@ -423,7 +423,7 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 		Game_Battle::ChooseEnemy();
 	}
 
-	if (state == State_TargetAlly && Game_Battle::HaveTargetAlly()) {
+	if (state == State_SelectAllyTarget && Game_Battle::HaveTargetAlly()) {
 		if (Input::IsRepeated(Input::DOWN))
 			Game_Battle::TargetNextAlly();
 		if (Input::IsRepeated(Input::UP))
@@ -434,16 +434,16 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 void Scene_Battle_Rpg2k::CommandSelected() {
 	switch (command_window->GetIndex()) {
 		case 0: // Attack
-			SetState(State_TargetEnemy);
+			SetState(State_SelectEnemyTarget);
 			break;
 		case 1: // Skill
-			SetState(State_Skill);
+			SetState(State_SelectSkill);
 			break;
 		case 2: // Defense
 			// Defend();
 			break;
 		case 3: // Item
-			SetState(State_Item);
+			SetState(State_SelectItem);
 			break;
 		default:
 			// no-op
@@ -473,7 +473,7 @@ void Scene_Battle_Rpg2k::ActivateNextActor() {
 	for (size_t i = 0; i < allies.size(); ++i) {
 		if ((size_t)actor_index == allies.size()) {
 			// ToDo Start Battle
-			SetState(Scene_Battle::State_Battle);
+			SetState(Scene_Battle::State_SelectActor);
 			return;
 		}
 
@@ -487,7 +487,7 @@ void Scene_Battle_Rpg2k::ActivateNextActor() {
 		break;
 	}
 
-	SetState(Scene_Battle::State_Command);
+	SetState(Scene_Battle::State_SelectCommand);
 }
 
 void Scene_Battle_Rpg2k::ActivatePreviousActor() {

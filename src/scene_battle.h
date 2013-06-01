@@ -61,26 +61,36 @@ public:
 	virtual void Update();
 
 	enum State {
-		/// Battle has started (Display encounter message)
+		/** Battle has started (Display encounter message) */
 		State_Start,
-		/// Menu with Battle, Auto Battle and Escape Option
-		State_Options,
-		/// Selects next Ally
-		State_Battle,
-		/// Auto Battle selected
+		/** Menu with Battle, Auto Battle and Escape Options */
+		State_SelectOption,
+		/** Selects next actor who has to move */
+		State_SelectActor,
+		/** Auto battle command selected */
 		State_AutoBattle,
-		/// Menu with Command, Item, Skill and Defend
-		State_Command,
-		/// Item selection
-		State_Item,
-		/// Skill selection
-		State_Skill,
-		State_TargetEnemy,
-		State_TargetAlly,
+		/** Menu with abilities of current Actor (e.g. Command, Item, Skill and Defend) */
+		State_SelectCommand,
+		/** Item selection is active */
+		State_SelectItem,
+		/** Skill selection menu is active */
+		State_SelectSkill,
+		/** Player selects enemy target */
+		State_SelectEnemyTarget,
+		/** Player selects allied target */
+		State_SelectAllyTarget,
+		/** Battle Running */
+		State_Battle,
+		/** Battle Running, ally does move */
 		State_AllyAction,
+		/** Battle running, enemy does move */
 		State_EnemyAction,
+		/** Battle ended with a victory */
 		State_Victory,
-		State_Defeat
+		/** Battle ended with a defeat */
+		State_Defeat,
+		/** Escape command selected */
+		State_TryEscape
 	};
 
 	struct FloatText {
