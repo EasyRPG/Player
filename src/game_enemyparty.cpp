@@ -22,7 +22,7 @@
 #include "main_data.h"
 #include "rpg_enemy.h"
 
-static boost::ptr_vector<Game_Battler> enemies;
+static boost::ptr_vector<Game_Enemy> enemies;
 static Game_Interpreter* interpreter;
 static RPG::Troop* troop;
 
@@ -42,13 +42,13 @@ void Game_EnemyParty::Setup(int battle_troop_id) {
 	}
 }
 
-boost::ptr_vector<Game_Battler>& Game_EnemyParty::GetEnemies() {
+boost::ptr_vector<Game_Enemy>& Game_EnemyParty::GetEnemies() {
 	return enemies;
 }
 
-std::vector<Game_Battler*> Game_EnemyParty::GetAliveEnemies() {
-	std::vector<Game_Battler*> alive;
-	boost::ptr_vector<Game_Battler>::iterator it;
+std::vector<Game_Enemy*> Game_EnemyParty::GetAliveEnemies() {
+	std::vector<Game_Enemy*> alive;
+	boost::ptr_vector<Game_Enemy>::iterator it;
 	for (it = enemies.begin(); it != enemies.end(); ++it) {
 		if (!it->IsDead()) {
 			alive.push_back(&*it);

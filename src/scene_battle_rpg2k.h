@@ -40,12 +40,15 @@
 #include "battle_battler.h"
 #include "battle_animation.h"
 #include "battle_interface.h"
+#include "game_battleaction.h"
 #include <boost/scoped_ptr.hpp>
 
 namespace Battle {
 class Action;
 class SpriteAction;
 }
+
+typedef std::pair<Game_Battler*, EASYRPG_SHARED_PTR<Game_BattleAction::Action>> BattlerActionPair;
 
 /**
  * Scene_Battle class.
@@ -89,20 +92,31 @@ private:
 
 	void ProcessActions();
 	void ProcessInput();
+	void OptionSelected();
 	void CommandSelected();
 
-	void Attack();
-	void Defend();
-	void Item();
-	void Skill();
+	void AttackSelected();
+	void DefendSelected();
+	void ItemSelected();
+	void SkillSelected();
+	void EnemySelected();
 
 	void SelectNextActor();
 	void SelectPreviousActor();
+
+	void CreateExecutionOrder();
+	void CreateEnemyActions();
+
+	void NextTurn();
 
 	int actor_index;
 	Game_Actor* active_actor;
 
 	bool DisplayMonstersInMessageWindow();
+
+	std::deque<BattlerActionPair> battle_actions;
+
+	int turn;
 };
 
 #endif

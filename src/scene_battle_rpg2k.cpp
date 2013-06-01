@@ -42,7 +42,8 @@
 ////////////////////////////////////////////////////////////
 Scene_Battle_Rpg2k::Scene_Battle_Rpg2k() : Scene_Battle(),
 actor_index(0),
-active_actor(NULL)
+active_actor(NULL),
+turn(0)
 {
 }
 
@@ -136,9 +137,9 @@ void Scene_Battle_Rpg2k::CreateBattleOptionWindow() {
 
 void Scene_Battle_Rpg2k::CreateBattleTargetWindow() {
 	std::vector<std::string> commands;
-	std::vector<Game_Battler*> enemies = Game_EnemyParty::GetAliveEnemies();
+	std::vector<Game_Enemy*> enemies = Game_EnemyParty::GetAliveEnemies();
 
-	for (std::vector<Game_Battler*>::iterator it = enemies.begin();
+	for (std::vector<Game_Enemy*>::iterator it = enemies.begin();
 		it != enemies.end(); ++it) {
 		commands.push_back((*it)->GetName());
 	}
@@ -258,18 +259,20 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		status_window->SetX(0);
 		break;
 	case State_SelectEnemyTarget:
-		CreateBattleTargetWindow();
 		status_window->SetVisible(true);
 		command_window->SetVisible(true);
 		target_window->SetActive(true);
 		target_window->SetVisible(true);
 		break;
 	case State_SelectAllyTarget:
-	case State_AllyAction:
-	case State_EnemyAction:
 		status_window->SetVisible(true);
 		status_window->SetX(0);
 		command_window->SetVisible(true);
+		break;
+	case State_AllyAction:
+	case State_EnemyAction:
+	case State_Battle:
+		battle_message_window->SetVisible(true);
 		break;
 	case State_SelectItem:
 		item_window->SetVisible(true);
@@ -317,15 +320,16 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 			EnemyAction();
 
 		break;
+	case State_Battle:
+		if (!battle_actions.empty()) {
+			if (battle_actions.front().second->Execute()) {
+				battle_actions.pop_front();
+			}
+		} else {
+			NextTurn();
+		}
 	case State_AllyAction:
 	case State_EnemyAction:
-		/*if (!actions.empty()) {
-			Battle::Action* action = actions.front();
-			if ((*action)()) {
-				delete action;
-				actions.pop_front();
-			}
-		}*/
 	default:
 		break;
 	}
@@ -339,20 +343,7 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 			// no-op
 			break;
 		case State_SelectOption:
-			switch (options_window->GetIndex()) {
-			case 0: // Battle
-				auto_battle = false;
-				SetState(State_SelectActor);
-				break;
-			case 1: // Auto Battle
-				auto_battle = true;
-				Output::Post("Auto Battle not implemented yet.\nSorry :)");
-				//SetState(State_SelectActor);
-				break;
-			case 2: // Escape
-				//Escape();
-				break;
-			}
+			OptionSelected();
 			break;
 		case State_SelectActor:
 			SetState(State_SelectCommand);
@@ -365,14 +356,16 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 			CommandSelected();
 			break;
 		case State_SelectEnemyTarget:
+			EnemySelected();
+			break;
 		case State_SelectAllyTarget:
 			//TargetDone();
 			break;
 		case State_SelectItem:
-			Item();
+			ItemSelected();
 			break;
 		case State_SelectSkill:
-			Skill();
+			SkillSelected();
 			break;
 		case State_AllyAction:
 		case State_EnemyAction:
@@ -396,6 +389,7 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 			SetState(State_SelectOption);
 			break;
 		case State_SelectCommand:
+			--actor_index;
 			SelectPreviousActor();
 			break;
 		case State_SelectEnemyTarget:
@@ -433,16 +427,40 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 	}*/
 }
 
+void Scene_Battle_Rpg2k::NextTurn() {
+	++turn;
+	actor_index = 0;
+	SetState(State_SelectOption);
+}
+
+void Scene_Battle_Rpg2k::OptionSelected() {
+	switch (options_window->GetIndex()) {
+	case 0: // Battle
+		CreateBattleTargetWindow();
+		auto_battle = false;
+		SetState(State_SelectActor);
+		break;
+	case 1: // Auto Battle
+		auto_battle = true;
+		Output::Post("Auto Battle not implemented yet.\nSorry :)");
+		//SetState(State_SelectActor);
+		break;
+	case 2: // Escape
+		//Escape();
+		break;
+	}
+}
+
 void Scene_Battle_Rpg2k::CommandSelected() {
 	switch (command_window->GetIndex()) {
 		case 0: // Attack
-			SetState(State_SelectEnemyTarget);
+			AttackSelected();
 			break;
 		case 1: // Skill
 			SetState(State_SelectSkill);
 			break;
 		case 2: // Defense
-			// Defend();
+			DefendSelected();
 			break;
 		case 3: // Item
 			SetState(State_SelectItem);
@@ -453,28 +471,37 @@ void Scene_Battle_Rpg2k::CommandSelected() {
 	}
 }
 
-void Scene_Battle_Rpg2k::Attack() {
+void Scene_Battle_Rpg2k::AttackSelected() {
+	SetState(State_SelectEnemyTarget);
+}
+	
+void Scene_Battle_Rpg2k::DefendSelected() {
+
+}
+
+void Scene_Battle_Rpg2k::ItemSelected() {
 
 }
 	
-void Scene_Battle_Rpg2k::Defend() {
+void Scene_Battle_Rpg2k::SkillSelected() {
 
 }
 
-void Scene_Battle_Rpg2k::Item() {
+void Scene_Battle_Rpg2k::EnemySelected() {
+	Game_Enemy* target = static_cast<Game_Enemy*>(Game_EnemyParty::GetAliveEnemies()[target_window->GetIndex()]);
+	BattlerActionPair battler_action(active_actor, EASYRPG_MAKE_SHARED<Game_BattleAction::AttackSingle>(active_actor, target));
+	battle_actions.push_back(battler_action);
 
-}
-	
-void Scene_Battle_Rpg2k::Skill() {
-
+	SetState(State_SelectActor);
 }
 
 void Scene_Battle_Rpg2k::SelectNextActor() {
 	std::vector<Game_Actor*> allies = Game_Party::GetActors();
 
 	if ((size_t)actor_index == allies.size()) {
-		// ToDo Start Battle
-		SetState(Scene_Battle::State_SelectActor);
+		SetState(State_Battle);
+		CreateEnemyActions();
+		CreateExecutionOrder();
 		return;
 	}
 
@@ -501,14 +528,32 @@ void Scene_Battle_Rpg2k::SelectPreviousActor() {
 	}
 	
 	actor_index--;
+	battle_actions.pop_front();
 	active_actor = allies[actor_index];	
 
 	if (active_actor->GetAutoBattle()) {
 		SelectPreviousActor();
+		battle_actions.pop_front();
 		return;
 	}
 
 	SetState(State_SelectActor);
+}
+
+static bool BattlerSort(BattlerActionPair first, BattlerActionPair second) {
+	return first.first->GetAgi() > second.first->GetAgi();
+}
+
+void Scene_Battle_Rpg2k::CreateExecutionOrder() {
+	std::sort(battle_actions.begin(), battle_actions.end(), BattlerSort);
+}
+
+void Scene_Battle_Rpg2k::CreateEnemyActions() {
+	std::vector<Game_Enemy*> alive_enemies = Game_EnemyParty::GetAliveEnemies();
+	std::vector<Game_Enemy*>::const_iterator it;
+	for (it = alive_enemies.begin(); it != alive_enemies.end(); ++it) {
+		battle_actions.push_back(BattlerActionPair(*it, EASYRPG_MAKE_SHARED<Game_BattleAction::AttackSingle>(*it, Game_Party::GetActors()[1])));
+	}
 }
 
 bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
@@ -518,7 +563,7 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 	++tick_count;
 
 	if (tick_count == tick_limit) {
-		const boost::ptr_vector<Game_Battler>& enemies = Game_EnemyParty::GetEnemies();
+		const boost::ptr_vector<Game_Enemy>& enemies = Game_EnemyParty::GetEnemies();
 		if ((size_t)next_monster < enemies.size()) {
 			battle_message_window->AddMessage(enemies[next_monster].GetName() + Data::terms.encounter);
 			tick_count = 0;

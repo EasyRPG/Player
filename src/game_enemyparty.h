@@ -52,14 +52,14 @@ namespace Game_EnemyParty {
 	 *
 	 * @return list of party members
 	 */
-	boost::ptr_vector<Game_Battler>& GetEnemies();
+	boost::ptr_vector<Game_Enemy>& GetEnemies();
 
 	/**
 	 * Gets a list with all alive party members
 	 *
 	 * @return list of alive party members
 	 */
-	std::vector<Game_Battler*> GetAliveEnemies();
+	std::vector<Game_Enemy*> GetAliveEnemies();
 }
 
 #endif

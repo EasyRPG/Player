@@ -15,34 +15,21 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Headers
-#include "spriteset_battle.h"
-#include "cache.h"
+#include "game_battleaction.h"
 #include "game_battler.h"
-#include "game_enemy.h"
-#include "game_enemyparty.h"
+//#include "game_battlecommand.h"
 #include "game_temp.h"
 #include "main_data.h"
-#include "sprite_battler.h"
+#include "game_message.h"
+#include "game_actor.h"
 
-Spriteset_Battle::Spriteset_Battle() {
-	//if (!Game_Temp::battle_background.empty()) {
-		background.reset(new Background(Game_Temp::battle_background));
-	//}
-
-	// Create the enemy sprites
-	boost::ptr_vector<Game_Enemy>::iterator it;
-	boost::ptr_vector<Game_Enemy>& enemies = Game_EnemyParty::GetEnemies();
-	for (it = enemies.begin(); it != enemies.end(); it++) {
-		enemy_sprites.push_back(new Sprite_Battler(static_cast<Game_Battler*>(&*it)));
-	}
-
-	Update();
+Game_BattleAction::AttackSingle::AttackSingle(Game_Battler* source, Game_Battler* target) {
+	this->source = source;
+	this->target = target;
+	this->animation = NULL;
 }
 
-void Spriteset_Battle::Update() {
-	boost::ptr_vector<Sprite_Battler>::iterator it;
-	for (it = enemy_sprites.begin(); it != enemy_sprites.end(); it++) {
-		it->Update();
-	}
+bool Game_BattleAction::AttackSingle::Execute() {
+
+	return true;
 }
