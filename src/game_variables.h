@@ -46,6 +46,10 @@ public:
 		return (variable_id > 0 && variable_id <= (int) variables.size());
 	}
 
+	int size (){
+		return variables.size();
+	}
+
 private:
 	std::vector<uint32_t>& variables;
 	int dummy;
