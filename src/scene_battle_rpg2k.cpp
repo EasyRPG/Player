@@ -98,6 +98,8 @@ void Scene_Battle_Rpg2k::InitBattleTest() {
 	Game_Temp::battle_troop_id = Player::battle_test_troop_id;
 	Game_Temp::battle_background = Data::system.battletest_background;
 
+	Game_Party::SetupBattleTestMembers();
+
 	Game_EnemyParty::Setup(Game_Temp::battle_troop_id);
 }
 
@@ -245,7 +247,7 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		status_window->SetIndex(-1);
 		break;
 	case State_SelectActor:
-		ActivateNextActor();
+		SelectNextActor();
 		break;
 	case State_AutoBattle:
 		// no-op
@@ -354,7 +356,7 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 			break;
 		case State_SelectActor:
 			SetState(State_SelectCommand);
-			ActivateNextActor();
+			SelectNextActor();
 			break;
 		case State_AutoBattle:
 			// no-op
@@ -394,7 +396,7 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 			SetState(State_SelectOption);
 			break;
 		case State_SelectCommand:
-			SetState(State_SelectOption);
+			SelectPreviousActor();
 			break;
 		case State_SelectEnemyTarget:
 		case State_SelectItem:
@@ -467,30 +469,46 @@ void Scene_Battle_Rpg2k::Skill() {
 
 }
 
-void Scene_Battle_Rpg2k::ActivateNextActor() {
+void Scene_Battle_Rpg2k::SelectNextActor() {
 	std::vector<Game_Actor*> allies = Game_Party::GetActors();
 
-	for (size_t i = 0; i < allies.size(); ++i) {
-		if ((size_t)actor_index == allies.size()) {
-			// ToDo Start Battle
-			SetState(Scene_Battle::State_SelectActor);
-			return;
-		}
+	if ((size_t)actor_index == allies.size()) {
+		// ToDo Start Battle
+		SetState(Scene_Battle::State_SelectActor);
+		return;
+	}
 
-		active_actor = allies[actor_index];
-		status_window->SetIndex(actor_index);
-		actor_index++;
+	active_actor = allies[actor_index];
+	status_window->SetIndex(actor_index);
+	actor_index++;
 
-		if (active_actor->GetAutoBattle()) {
-			// Automatic stuff
-		}
-		break;
+	if (active_actor->GetAutoBattle()) {
+		// ToDo Automatic stuff
+		SelectNextActor();
+		return;
 	}
 
 	SetState(Scene_Battle::State_SelectCommand);
 }
 
-void Scene_Battle_Rpg2k::ActivatePreviousActor() {
+void Scene_Battle_Rpg2k::SelectPreviousActor() {
+	std::vector<Game_Actor*> allies = Game_Party::GetActors();
+
+	if (allies[0] == active_actor) {
+		SetState(State_SelectOption);
+		actor_index = 0;
+		return;
+	}
+	
+	actor_index--;
+	active_actor = allies[actor_index];	
+
+	if (active_actor->GetAutoBattle()) {
+		SelectPreviousActor();
+		return;
+	}
+
+	SetState(State_SelectActor);
 }
 
 bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {

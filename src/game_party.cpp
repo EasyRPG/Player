@@ -32,6 +32,25 @@ void Game_Party::Init() {
 	data.Setup();
 }
 
+void Game_Party::SetupBattleTestMembers() {
+	data.party.clear();
+	
+	std::vector<RPG::TestBattler>::const_iterator it;
+	for (it = Data::system.battletest_data.begin();
+		it != Data::system.battletest_data.end(); ++it) {
+		AddActor(it->ID);
+		Game_Actor* actor = Game_Actors::GetActor(it->ID);
+		actor->SetEquipment(0, it->weapon_id);
+		actor->SetEquipment(1, it->shield_id);
+		actor->SetEquipment(1, it->armor_id);
+		actor->SetEquipment(1, it->helmet_id);
+		actor->SetEquipment(1, it->accessory_id);
+		actor->SetLevel(it->level);
+	}
+
+	Main_Data::game_player->Refresh();
+}
+
 void Game_Party::GetItems(std::vector<int>& item_list) {
 	item_list.clear();
 

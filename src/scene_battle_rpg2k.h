@@ -96,8 +96,8 @@ private:
 	void Item();
 	void Skill();
 
-	void ActivateNextActor();
-	void ActivatePreviousActor();
+	void SelectNextActor();
+	void SelectPreviousActor();
 
 	int actor_index;
 	Game_Actor* active_actor;

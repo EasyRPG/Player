@@ -41,7 +41,7 @@ namespace Game_Party {
 	/**
 	 * Setups battle test party.
 	 */
-	//void SetupBattleTestMembers();
+	void SetupBattleTestMembers();
 
 	/**
 	 * Refreshes party members.
