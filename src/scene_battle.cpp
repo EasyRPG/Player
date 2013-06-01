@@ -94,10 +94,10 @@ void Scene_Battle::CreateWindows() {
 
 	command_window.reset(new Window_BattleCommand(244, 172, 76, 68));
 
-	skill_window.reset(new Window_BattleSkill(0, 172, 320, 68));
+	skill_window.reset(new Window_Skill(0, 172, 320, 68));
 	skill_window->SetVisible(false);
 
-	item_window.reset(new Window_BattleItem(0, 172, 320, 68));
+	item_window.reset(new Window_Item(0, 172, 320, 68));
 	item_window->SetVisible(false);
 	item_window->Refresh();
 	item_window->SetIndex(0);
@@ -166,7 +166,7 @@ void Scene_Battle::SetState(Scene_Battle::State new_state) {
 			break;
 		case State_Item:
 			item_window->SetActive(true);
-			item_window->SetActor(Game_Battle::GetActiveActor());
+			//item_window->SetActor(Game_Battle::GetActiveActor());
 			item_window->Refresh();
 			break;
 		case State_Skill:
@@ -284,13 +284,13 @@ void Scene_Battle::Command() {
 			break;
 		case RPG::BattleCommand::Type_skill:
 			SetState(State_Skill);
-			skill_window->SetSubset(RPG::Skill::Type_normal);
+			//skill_window->SetSubset(RPG::Skill::Type_normal);
 			break;
 		case RPG::BattleCommand::Type_subskill:
 		{
 			int subset = command_window->GetSkillSubset();
 			SetState(State_Skill);
-			skill_window->SetSubset(subset);
+			//skill_window->SetSubset(subset);
 		}
 			break;
 		case RPG::BattleCommand::Type_defense:

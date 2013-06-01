@@ -99,5 +99,5 @@ void Sprite_Battler::SetAnimationState(int state) {
 		return;
 
 	sprite_file = ext.battler_name;
-	SetBitmap(Cache::BattleCharset(sprite_file));
+	SetBitmap(Cache::Battlecharset(sprite_file));
 }

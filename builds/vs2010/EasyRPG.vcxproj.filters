@@ -298,13 +298,7 @@
     <ClCompile Include="..\..\src\window_battlecommand.cpp">
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\window_battleitem.cpp">
-      <Filter>Source Files\Engine\Window</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\window_battleoption.cpp">
-      <Filter>Source Files\Engine\Window</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\window_battleskill.cpp">
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\window_battlestatus.cpp">
@@ -708,13 +702,7 @@
     <ClInclude Include="..\..\src\window_battlecommand.h">
       <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\window_battleitem.h">
-      <Filter>Source Files\Engine\Window</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\window_battleoption.h">
-      <Filter>Source Files\Engine\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\window_battleskill.h">
       <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\window_battlestatus.h">

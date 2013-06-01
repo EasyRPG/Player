@@ -46,6 +46,17 @@ boost::ptr_vector<Game_Battler>& Game_EnemyParty::GetEnemies() {
 	return enemies;
 }
 
+std::vector<Game_Battler*> Game_EnemyParty::GetAliveEnemies() {
+	std::vector<Game_Battler*> alive;
+	boost::ptr_vector<Game_Battler>::iterator it;
+	for (it = enemies.begin(); it != enemies.end(); ++it) {
+		if (!it->IsDead()) {
+			alive.push_back(&*it);
+		}
+	}
+	return alive;
+}
+
 void Game_EnemyParty::Clear() {
 	interpreter->Clear();
 

@@ -108,12 +108,12 @@ void Scene_Battle_Rpg2k::CreateWindows() {
 	CreateBattleMessageWindow();
 
 	help_window.reset(new Window_Help(0, 0, 320, 32));
-	item_window.reset(new Window_BattleItem(0, 160, 320, 80));
+	item_window.reset(new Window_Item(0, 160, 320, 80));
 	item_window->SetHelpWindow(help_window.get());
 	item_window->Refresh();
 	item_window->SetIndex(0);
 
-	skill_window.reset(new Window_BattleSkill(0, 160, 320, 80));
+	skill_window.reset(new Window_Skill(0, 160, 320, 80));
 	skill_window->SetHelpWindow(help_window.get());
 
 	status_window.reset(new Window_BattleStatus_Rpg2k(0, 160, 320 - 76, 80));
@@ -134,14 +134,14 @@ void Scene_Battle_Rpg2k::CreateBattleOptionWindow() {
 
 void Scene_Battle_Rpg2k::CreateBattleTargetWindow() {
 	std::vector<std::string> commands;
-	/*for (std::vector<Battle::Enemy*>::iterator it = Game_Battle::enemies.begin();
-		it != Game_Battle::enemies.end(); ++it) {
-		if (!((*it)->game_enemy->IsDead())) {
-			commands.push_back((*it)->rpg_enemy->name);
-		}
-	}*/
+	std::vector<Game_Battler*> enemies = Game_EnemyParty::GetAliveEnemies();
 
-	target_window.reset(new Window_Command(commands, 136));
+	for (std::vector<Game_Battler*>::iterator it = enemies.begin();
+		it != enemies.end(); ++it) {
+		commands.push_back((*it)->GetName());
+	}
+
+	target_window.reset(new Window_Command(commands, 136, 4));
 	target_window->SetHeight(80);
 	target_window->SetY(160);
 	target_window->SetZ(200);
@@ -210,12 +210,12 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_Item:
 		item_window->SetActive(true);
-		item_window->SetActor(Game_Battle::GetActiveActor());
+		//item_window->SetActor(Game_Battle::GetActiveActor());
 		item_window->Refresh();
 		break;
 	case State_Skill:
 		skill_window->SetActive(true);
-		skill_window->SetActor(Game_Battle::GetActiveActor());
+		skill_window->SetActor(active_actor->GetId());
 		skill_window->SetIndex(0);
 		break;
 	case State_AllyAction:
@@ -256,6 +256,7 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		status_window->SetX(0);
 		break;
 	case State_TargetEnemy:
+		CreateBattleTargetWindow();
 		status_window->SetVisible(true);
 		command_window->SetVisible(true);
 		target_window->SetActive(true);
@@ -414,7 +415,7 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 		}
 	}
 
-	if (state == State_TargetEnemy && Game_Battle::HaveTargetEnemy()) {
+	/*if (state == State_TargetEnemy && Game_Battle::HaveTargetEnemy()) {
 		if (Input::IsRepeated(Input::DOWN))
 			Game_Battle::TargetNextEnemy();
 		if (Input::IsRepeated(Input::UP))
@@ -427,7 +428,7 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 			Game_Battle::TargetNextAlly();
 		if (Input::IsRepeated(Input::UP))
 			Game_Battle::TargetPreviousAlly();
-	}
+	}*/
 }
 
 void Scene_Battle_Rpg2k::CommandSelected() {

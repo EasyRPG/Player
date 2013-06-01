@@ -30,8 +30,8 @@
 #include "drawable.h"
 #include "zobj.h"
 #include "window_help.h"
-#include "window_battleitem.h"
-#include "window_battleskill.h"
+#include "window_item.h"
+#include "window_skill.h"
 #include "window_battleoption.h"
 #include "window_battlecommand.h"
 #include "window_battlestatus.h"
@@ -112,8 +112,8 @@ protected:
 	boost::scoped_ptr<Window_BattleOption> options_window;
 	boost::scoped_ptr<Window_BattleStatus> status_window;
 	boost::scoped_ptr<Window_BattleCommand> command_window;
-	boost::scoped_ptr<Window_BattleItem> item_window;
-	boost::scoped_ptr<Window_BattleSkill> skill_window;
+	boost::scoped_ptr<Window_Item> item_window;
+	boost::scoped_ptr<Window_Skill> skill_window;
 	boost::scoped_ptr<Background> background;
 
 	EASYRPG_SHARED_PTR<BattleAnimation> animation;

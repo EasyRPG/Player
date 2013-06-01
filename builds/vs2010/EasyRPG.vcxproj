@@ -429,10 +429,8 @@
     <ClCompile Include="..\..\src\window_actortarget.cpp" />
     <ClCompile Include="..\..\src\window_base.cpp" />
     <ClCompile Include="..\..\src\window_battlecommand.cpp" />
-    <ClCompile Include="..\..\src\window_battleitem.cpp" />
     <ClCompile Include="..\..\src\window_battlemessage.cpp" />
     <ClCompile Include="..\..\src\window_battleoption.cpp" />
-    <ClCompile Include="..\..\src\window_battleskill.cpp" />
     <ClCompile Include="..\..\src\window_battlestatus.cpp" />
     <ClCompile Include="..\..\src\window_battlestatus_rpg2k.cpp" />
     <ClCompile Include="..\..\src\window_command.cpp" />
@@ -572,10 +570,8 @@
     <ClInclude Include="..\..\src\window_actortarget.h" />
     <ClInclude Include="..\..\src\window_base.h" />
     <ClInclude Include="..\..\src\window_battlecommand.h" />
-    <ClInclude Include="..\..\src\window_battleitem.h" />
     <ClInclude Include="..\..\src\window_battlemessage.h" />
     <ClInclude Include="..\..\src\window_battleoption.h" />
-    <ClInclude Include="..\..\src\window_battleskill.h" />
     <ClInclude Include="..\..\src\window_battlestatus.h" />
     <ClInclude Include="..\..\src\window_battlestatus_rpg2k.h" />
     <ClInclude Include="..\..\src\window_command.h" />

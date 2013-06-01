@@ -30,8 +30,8 @@
 #include "drawable.h"
 #include "zobj.h"
 #include "window_help.h"
-#include "window_battleitem.h"
-#include "window_battleskill.h"
+#include "window_item.h"
+#include "window_skill.h"
 #include "window_battleoption.h"
 
 #include "window_command.h"
@@ -67,16 +67,16 @@ protected:
 	void SetState(State new_state);
 
 private:
-	/// Displays Fight, Autobattle, Flee
+	/** Displays Fight, Autobattle, Flee */
 	boost::scoped_ptr<Window_Command> options_window;
-	/// Displays list of enemies
+	/** Displays list of enemies */
 	boost::scoped_ptr<Window_Command> target_window;
-	/// Displays Attack, Defense, Magic, Item
+	/** Displays Attack, Defense, Magic, Item */
 	boost::scoped_ptr<Window_Command> command_window;
-	boost::scoped_ptr<Window_BattleItem> item_window;
-	boost::scoped_ptr<Window_BattleSkill> skill_window;
+	boost::scoped_ptr<Window_Item> item_window;
+	boost::scoped_ptr<Window_Skill> skill_window;
 	boost::scoped_ptr<Window_Help> help_window;
-	/// Displays allies status
+	/** Displays allies status */
 	boost::scoped_ptr<Window_BattleStatus_Rpg2k> status_window;
 	boost::scoped_ptr<Window_BattleMessage> battle_message_window;
 
