@@ -451,9 +451,6 @@
     <ClCompile Include="..\..\src\game_enemyparty.cpp">
       <Filter>Source Files\Engine\Game</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\window_battlemessage.cpp">
-      <Filter>Source Files\Engine\Window</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\game_battleaction.cpp">
       <Filter>Source Files\Engine\Game</Filter>
     </ClCompile>
@@ -872,9 +869,6 @@
     </ClInclude>
     <ClInclude Include="..\..\src\game_enemyparty.h">
       <Filter>Source Files\Engine\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\window_battlemessage.h">
-      <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\game_battleaction.h">
       <Filter>Source Files\Engine\Game</Filter>

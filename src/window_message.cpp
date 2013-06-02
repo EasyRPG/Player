@@ -333,6 +333,10 @@ void Window_Message::UpdateMessage() {
 				new_page_after_pause = true;
 			}
 			break;
+		} else if (*text_index == '\r') {
+			// This is used by the battle messagebox to force a new page
+			InsertNewPage();
+			++text_index;
 		} else if (*text_index == '\\' && std::distance(text_index, end) > 1) {
 			// Special message codes
 			++text_index;

@@ -31,6 +31,8 @@
 #include "game_party.h"
 #include "game_enemy.h"
 #include "game_enemyparty.h"
+#include "game_interpreter_battle.h"
+#include "game_message.h"
 #include "game_switches.h"
 #include "game_battle.h"
 #include "battle_battler.h"
@@ -63,6 +65,7 @@ void Scene_Battle_Rpg2k::Start() {
 	//Game_Battle::Init(this);
 
 	spriteset.reset(new Spriteset_Battle());
+	interpreter.reset(new Game_Interpreter_Battle());
 	CreateWindows();
 
 	SetState(State_Start);
@@ -76,7 +79,7 @@ void Scene_Battle_Rpg2k::Update() {
 	item_window->Update();
 	skill_window->Update();
 	target_window->Update();
-	battle_message_window->Update();
+	message_window->Update();
 
 	ProcessActions();
 	ProcessInput();
@@ -165,9 +168,9 @@ void Scene_Battle_Rpg2k::CreateBattleCommandWindow() {
 
 
 void Scene_Battle_Rpg2k::CreateBattleMessageWindow() {
-	battle_message_window.reset(new Window_BattleMessage(0, 160, 320, 80));
+	message_window.reset(new Window_Message(0, 160, 320, 80));
 
-	battle_message_window->SetZ(300);
+	message_window->SetZ(300);
 }
 
 void Scene_Battle_Rpg2k::RefreshCommandWindow() {
@@ -188,11 +191,11 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 	item_window->SetActive(false);
 	skill_window->SetActive(false);
 	target_window->SetActive(false);
-	battle_message_window->SetActive(false);
+	message_window->SetActive(false);
 
 	switch (state) {
 	case State_Start:
-		battle_message_window->SetActive(true);
+		message_window->SetActive(true);
 		break;
 	case State_SelectOption:
 		options_window->SetActive(true);
@@ -235,11 +238,11 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 	skill_window->SetVisible(false);
 	help_window->SetVisible(false);
 	target_window->SetVisible(false);
-	battle_message_window->SetVisible(false);
+	message_window->SetVisible(false);
 
 	switch (state) {
 	case State_Start:
-		battle_message_window->SetVisible(true);
+		message_window->SetVisible(true);
 		break;
 	case State_SelectOption:
 		options_window->SetVisible(true);
@@ -272,7 +275,7 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 	case State_AllyAction:
 	case State_EnemyAction:
 	case State_Battle:
-		battle_message_window->SetVisible(true);
+		message_window->SetVisible(true);
 		break;
 	case State_SelectItem:
 		item_window->SetVisible(true);
@@ -557,25 +560,31 @@ void Scene_Battle_Rpg2k::CreateEnemyActions() {
 }
 
 bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
-	static int tick_count = 0;
-	static int next_monster = 0;
-	static int tick_limit = 8;
-	++tick_count;
+	static bool first = true;
 
-	if (tick_count == tick_limit) {
-		const boost::ptr_vector<Game_Enemy>& enemies = Game_EnemyParty::GetEnemies();
-		if ((size_t)next_monster < enemies.size()) {
-			battle_message_window->AddMessage(enemies[next_monster].GetName() + Data::terms.encounter);
-			tick_count = 0;
-			next_monster++;
-			tick_limit = 8;
-
-			if (battle_message_window->AllLinesFilled() || (size_t)next_monster == enemies.size()) {
-				tick_limit = 15;
-			}
-		} else {
+	if (!first) {
+		if (!Game_Message::message_waiting) {
 			return true;
 		}
 	}
+
+	first = false;
+
+	const boost::ptr_vector<Game_Enemy>& enemies = Game_EnemyParty::GetEnemies();
+	static int i = 0;
+	for (boost::ptr_vector<Game_Enemy>::const_iterator it = enemies.begin();
+		it != enemies.end(); ++it) {
+		Game_Message::texts.push_back("\\>" + it->GetName() + Data::terms.encounter);
+		if (i == 3) {
+			i = 0;
+			Game_Message::texts.back().append("\\|\r");
+		} else {
+			Game_Message::texts.back().append("\\.");
+		}
+		++i;
+	}
+	Game_Message::texts.back().append("\\|\\^");
+
+	Game_Message::message_waiting = true;
 	return false;
 }
