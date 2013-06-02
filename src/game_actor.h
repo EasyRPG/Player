@@ -594,6 +594,8 @@ public:
 
 	int GetBattleAnimationId() const;
 
+	BattlerType GetType() const;
+
 private:
 	RPG::SaveActor& data;
 

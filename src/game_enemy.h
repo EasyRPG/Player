@@ -129,6 +129,8 @@ public:
 
 	int GetBattleAnimationId() const;
 
+	BattlerType GetType() const;
+
 protected:
 	void Setup(int enemy_id);
 

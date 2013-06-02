@@ -48,7 +48,7 @@ class Action;
 class SpriteAction;
 }
 
-typedef std::pair<Game_Battler*, EASYRPG_SHARED_PTR<Game_BattleAction::Action>> BattlerActionPair;
+typedef std::pair<Game_Battler*, EASYRPG_SHARED_PTR<Game_BattleAction::ActionBase>> BattlerActionPair;
 
 /**
  * Scene_Battle class.

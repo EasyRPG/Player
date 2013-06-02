@@ -609,3 +609,7 @@ int Game_Actor::GetBattleAnimationId() const {
 
 	return Data::battleranimations[Data::actors[data.ID - 1].battler_animation - 1].ID;
 }
+
+Game_Battler::BattlerType Game_Actor::GetType() const {
+	return Game_Battler::Type_Ally;
+}

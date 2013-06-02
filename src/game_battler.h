@@ -245,6 +245,13 @@ public:
 	virtual int GetHue() const;
 
 	virtual int GetBattleAnimationId() const = 0;
+
+	enum BattlerType {
+		Type_Ally,
+		Type_Enemy
+	};
+
+	virtual BattlerType GetType() const = 0;
 };
 
 #endif

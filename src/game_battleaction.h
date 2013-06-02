@@ -33,20 +33,62 @@ class Game_Battler;
  */
 namespace Game_BattleAction {
 
-class Action {
+class ActionBase {
 public:
-	virtual bool Execute() = 0;
+	enum ActionState {
+		State_PreAction,
+		State_Action,
+		State_PostAction
+	};
+
+	ActionBase();
+
+	virtual bool Execute();
+
+	virtual void PreAction() = 0;
+	virtual void Action() = 0;
+	virtual void PostAction() = 0;
+	virtual bool Again() = 0;
+
+	void PlayAnimation(BattleAnimation* animation);
+
+private:
+	int state;
+	BattleAnimation* animation;
 };
 
-class AttackSingle : public Action {
+class SingleTargetAction : public ActionBase {
 public:
-	AttackSingle(Game_Battler* source, Game_Battler* target);
-	bool Execute();
+	SingleTargetAction(Game_Battler* source, Game_Battler* target);
+
+	virtual bool Again();
 
 protected:
 	Game_Battler* source;
 	Game_Battler* target;
-	BattleAnimation* animation;
+};
+
+class GroupTargetAction : public ActionBase {
+public:
+	GroupTargetAction();
+
+	virtual bool Again();
+};
+
+class PartyTargetAction : public GroupTargetAction {
+
+};
+
+class AttackSingle : public SingleTargetAction {
+public:
+	AttackSingle(Game_Battler* source, Game_Battler* target);
+
+	void PreAction();
+	void Action();
+	void PostAction();
+
+private:
+	int damage;
 };
 
 }
