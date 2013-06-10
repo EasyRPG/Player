@@ -22,6 +22,7 @@
 #include <vector>
 #include "scene.h"
 #include "window_command.h"
+#include "window_varlist.h"
 #include <boost/scoped_ptr.hpp>
 
 /**
@@ -76,7 +77,7 @@ private:
 	/** Displays a range selection for current var type. */
 	EASYRPG_SHARED_PTR<Window_Command> range_window;
 	/** Displays the vars inside the current range. */
-	EASYRPG_SHARED_PTR<Window_Command> var_window;
+	EASYRPG_SHARED_PTR<Window_VarList> var_window;
 	/** Integer Editor. */
 	//boost::scoped_ptr<Window> integeredit_window;
 };

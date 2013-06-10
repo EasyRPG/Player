@@ -73,10 +73,7 @@ void Scene_Debug::CreateVarListWindow() {
 	for (int i = range_index; i <= Game_Variables.size() / 10; i++)
 		vars.push_back(std::string("%4d:", i));
 
-	var_window.reset(new Window_Command(vars));
+	var_window.reset(new Window_VarList(vars));
 
-	var_window->SetWidth(224);
-	var_window->SetHeight(176);
-	var_window->SetX(96);
-	var_window->SetY(32);
+
 }
