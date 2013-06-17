@@ -38,6 +38,16 @@ public:
 	 */
 	void Refresh();
 
+	/**
+	 * Draws the actor status
+	 */
+	void DrawStatus();
+	
+	/**
+	 * Draws min and max separated by a "/" in cx, cy
+	 */
+	void Window_ActorStatus::DrawMinMax(int cx, int cy, int min, int max);
+
 private:
 	int actor_id;
 };
