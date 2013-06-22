@@ -16,10 +16,13 @@
  */
 
 // Headers
+#include <sstream>
+#include <iomanip>
 #include "window_varlist.h"
 #include "game_switches.h"
 #include "game_variables.h"
 #include "bitmap.h"
+
 
 
 Window_VarList::Window_VarList(std::vector<std::string> commands) :
@@ -36,18 +39,35 @@ Window_VarList::~Window_VarList() {
 }
 
 void Window_VarList::Refresh() {
-	Window_Command::Refresh();
+	contents->Clear();
 	for (int i = 0; i < item_max; i++) {
+		DrawItem(i, Font::ColorDefault);
 		DrawItemValue(i);
 	}
 }
 
 void Window_VarList::DrawItemValue(int index){
 	if (show_switch){
-		contents->TextDraw(0, 16 * index + 2, Font::ColorDefault, Game_Switches[range*10+index] ? "[ON]" : "[OFF]");
+		contents->TextDraw(GetWidth() - 16, 16 * index + 2, Font::ColorDefault, Game_Switches[range*10+index+1] ? "[ON]" : "[OFF]", Text::AlignRight);
 	}
 	else {
-		std::string ss = std::string("%d", Game_Variables[range*10+index]);
-		contents->TextDraw(0, 16 * index + 2, Font::ColorDefault, ss);
+		std::stringstream ss;
+		ss  << Game_Variables[range*10+index];
+		contents->TextDraw(GetWidth() - 16, 16 * index + 2, Font::ColorDefault, ss.str(), Text::AlignRight);
 	}
+}
+
+void Window_VarList::UpdateList(int first_value){
+	std::stringstream ss;
+	range = first_value;
+	for (int i = 0; i < 11; i++){
+		ss.str("");
+		ss << std::setw(4) << (first_value * 10 + i + 1);
+		this->SetItemText(i, ss.str());
+	}
+}
+
+void Window_VarList::SetShowSwitch(bool _switch) {
+	show_switch = _switch;
+	Refresh();
 }

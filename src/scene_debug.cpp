@@ -17,8 +17,11 @@
 
 // Headers
 #include <vector>
+#include <sstream>
+#include <iomanip>
 #include "input.h"
 #include "game_variables.h"
+#include "game_switches.h"
 #include "game_system.h"
 #include "scene_debug.h"
 
@@ -27,17 +30,24 @@ Scene_Debug::Scene_Debug() {
 }
 
 void Scene_Debug::Start() {
-	current_var_type = TypeInt;
+	current_var_type = TypeSwitch;
+	range_index = 0;
 	CreateRangeWindow();
+	CreateVarListWindow();
 
 	range_window->SetActive(true);
-	
+	var_window->SetActive(false);
+	var_window->Refresh();
 }
 
 void Scene_Debug::Update() {
 	range_window->Update();
+	if (range_index != range_window->GetIndex()){
+		var_window->UpdateList(range_window->GetIndex());
+		range_index = range_window->GetIndex();
+		var_window->Refresh();
+	}
 	var_window->Update();
-	var_index = range_window->GetIndex() * 10 + var_window->GetIndex();
 
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
@@ -46,34 +56,62 @@ void Scene_Debug::Update() {
 		else {
 			var_window->SetActive(false);
 			range_window->SetActive(true);
+			var_window->Refresh();
 		}
 	} else if (Input::IsTriggered(Input::DECISION)) {
+		var_window->Refresh();
 		if (range_window->GetActive()){
 			range_window->SetActive(false);
-			range_window->SetActive(true);
+			var_window->SetActive(true);
 		}
+	} else if (range_window->GetActive() && (Input::IsTriggered(Input::LEFT) || Input::IsTriggered(Input::RIGHT))) {
+		var_window->Refresh();
+		if (current_var_type == TypeSwitch) {
+			current_var_type = TypeInt;
+			var_window->SetShowSwitch(false);
+		} else{
+			current_var_type = TypeSwitch;
+			var_window->SetShowSwitch(true);
+		}
+		UpdateRangeListWindow();
 	}
 }
 
 void Scene_Debug::CreateRangeWindow() {
 	
 	std::vector<std::string> ranges;
-	for (int i = 0; i <= Game_Variables.size() / 10; i++)
-		ranges.push_back(std::string("I [ %4d-%4d ]", i * 10 + 1, i*10+11 < Game_Variables.size() ? i*10+11 : Game_Variables.size()));
-	range_window.reset(new Window_Command(ranges));
+	int range_size = Game_Switches.size() / 10;
+	for (int i = 0; i < Game_Switches.size() / 10; i++)
+		ranges.push_back("");
+	range_window.reset(new Window_Command(ranges, 96));
 
-	range_window->SetWidth(96);
 	range_window->SetHeight(176);
 	range_window->SetY(32);
+	UpdateRangeListWindow();
+}
+	
+void Scene_Debug::UpdateRangeListWindow() {
+	std::stringstream ss;
+	int size = current_var_type == TypeSwitch ? Game_Switches.size() : Game_Variables.size();
+	for (int i = 0; i <= size / 10; i++){
+		ss.str("");
+		ss  << ((current_var_type == TypeSwitch) ? "Sw[" : "Vr[")
+			<< std::setfill('0') << std::setw(4) << (i * 10 + 1)
+			<< "-"
+			<< std::setw(4) << (1, i*10+10 < Game_Variables.size() ? i*10+10 : Game_Variables.size()) << "]";
+		range_window->SetItemText(i, ss.str());
+		if (i*10+10 >= Game_Variables.size())
+			break;
+	}
 }
 
 void Scene_Debug::CreateVarListWindow() {
 	
 	std::vector<std::string> vars;
-	for (int i = range_index; i <= Game_Variables.size() / 10; i++)
-		vars.push_back(std::string("%4d:", i));
-
+	for (int i = 0; i < 10; i++)
+		vars.push_back("");
 	var_window.reset(new Window_VarList(vars));
-
-
+	var_window->SetX(range_window->GetWidth());
+	var_window->SetY(range_window->GetY());
+	var_window->UpdateList(range_window->GetIndex());
 }

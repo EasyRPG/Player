@@ -38,11 +38,24 @@ public:
 	Window_VarList(std::vector<std::string> commands);
 	~Window_VarList();
 
-	
+	/**
+	* UpdateList.
+	* 
+	* @param starting value.
+	*/
+	void UpdateList(int first_value);
+
 	/**
 	 * Refreshes the window contents.
 	 */
-	void Refresh();
+	void  Refresh();
+
+	/**
+	 * Indicate if item value displayed on the window correspond to switches or variables.
+	 *
+	 * @param true to display switches, false to display variables.
+	 */
+	void SetShowSwitch(bool _switch);
 
 private:
 

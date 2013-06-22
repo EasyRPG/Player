@@ -45,6 +45,10 @@ public:
 		return (switch_id > 0 && switch_id <= (int) switches.size());
 	}
 
+	int size (){
+		return switches.size();
+	}
+
 private:
 	std::vector<bool>& switches;
 	std::vector<bool> dummy;
