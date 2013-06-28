@@ -38,6 +38,10 @@ public:
 	 */
 	void Refresh();
 
+	/**
+	 * Draws the actor face and information
+	 */
+	void DrawInfo();
 private:
 	int actor_id;
 };
