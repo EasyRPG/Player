@@ -168,7 +168,7 @@ void Scene_Battle_Rpg2k::CreateBattleCommandWindow() {
 
 
 void Scene_Battle_Rpg2k::CreateBattleMessageWindow() {
-	message_window.reset(new Window_Message(0, 160, 320, 80));
+	message_window.reset(new Window_BattleMessage(0, 160, 320, 80));
 
 	message_window->SetZ(300);
 }
@@ -301,6 +301,7 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 	switch (state) {
 	case State_Start:
 		if (DisplayMonstersInMessageWindow()) {
+			message_window->SetMessageMode(Window_BattleMessage::Mode_Normal);
 			SetState(State_SelectOption);
 		}
 		break;
@@ -324,11 +325,13 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 
 		break;
 	case State_Battle:
+		message_window->SetMessageMode(Window_BattleMessage::Mode_Action);
 		if (!battle_actions.empty()) {
 			if (battle_actions.front().second->Execute()) {
 				battle_actions.pop_front();
 			}
 		} else {
+			message_window->SetMessageMode(Window_BattleMessage::Mode_Normal);
 			NextTurn();
 		}
 	case State_AllyAction:
@@ -568,22 +571,15 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 		}
 	}
 
+	message_window->SetMessageMode(Window_BattleMessage::Mode_EnemyEncounter);
+
 	first = false;
 
 	const boost::ptr_vector<Game_Enemy>& enemies = Game_EnemyParty().GetEnemies();
-	static int i = 0;
 	for (boost::ptr_vector<Game_Enemy>::const_iterator it = enemies.begin();
 		it != enemies.end(); ++it) {
-		Game_Message::texts.push_back("\\>" + it->GetName() + Data::terms.encounter);
-		if (i == 3) {
-			i = 0;
-			Game_Message::texts.back().append("\\|\r");
-		} else {
-			Game_Message::texts.back().append("\\.");
-		}
-		++i;
+		Game_Message::texts.push_back(it->GetName() + Data::terms.encounter);
 	}
-	Game_Message::texts.back().append("\\|\\^");
 
 	Game_Message::message_waiting = true;
 	return false;

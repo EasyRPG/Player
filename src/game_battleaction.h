@@ -38,7 +38,8 @@ public:
 	enum ActionState {
 		State_PreAction,
 		State_Action,
-		State_PostAction
+		State_PostAction,
+		State_Finished
 	};
 
 	ActionBase();
@@ -55,6 +56,7 @@ public:
 private:
 	int state;
 	BattleAnimation* animation;
+	int wait;
 };
 
 class SingleTargetAction : public ActionBase {

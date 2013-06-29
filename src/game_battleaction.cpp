@@ -28,7 +28,8 @@
 
 Game_BattleAction::ActionBase::ActionBase() :
 	state(State_PreAction),
-	animation(NULL) {
+	animation(NULL),
+	wait(30) {
 		// no-op
 }
 
@@ -46,9 +47,9 @@ bool Game_BattleAction::ActionBase::Execute() {
 		return false;
 	}
 
-	if (Game_Message::message_waiting) {
-		return false;
-	}
+	//if (Game_Message::message_waiting) {
+	//	return false;
+	//}
 
 	switch(state) {
 		case State_PreAction:
@@ -60,7 +61,20 @@ bool Game_BattleAction::ActionBase::Execute() {
 			state = State_PostAction;
 			break;
 		case State_PostAction:
+			if (wait--) {
+				return false;
+			}
+			wait = 30;
+
 			PostAction();
+			state = State_Finished;
+			break;
+		case State_Finished:
+			if (wait--) {
+				return false;
+			}
+			wait = 30;
+
 			if (Again()) {
 				state = State_PreAction;
 			} else {
@@ -95,8 +109,8 @@ Game_BattleAction::AttackSingle::AttackSingle(Game_Battler* source, Game_Battler
 }
 
 void Game_BattleAction::AttackSingle::PreAction() {
+	Game_Message::texts.push_back("\r");
 	Game_Message::texts.push_back(source->GetName() + Data::terms.attacking);
-	Game_Message::message_waiting = true;
 }
 
 void Game_BattleAction::AttackSingle::Action() {
@@ -168,5 +182,4 @@ void Game_BattleAction::AttackSingle::PostAction() {
 	}
 
 	Game_Message::texts.push_back(ss.str());
-	Game_Message::message_waiting = true;
 }

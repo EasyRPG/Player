@@ -36,7 +36,7 @@
 
 #include "window_command.h"
 #include "window_battlestatus_rpg2k.h"
-#include "window_message.h"
+#include "window_battlemessage.h"
 #include "battle_battler.h"
 #include "battle_animation.h"
 #include "battle_interface.h"
@@ -81,7 +81,7 @@ private:
 	boost::scoped_ptr<Window_Help> help_window;
 	/** Displays allies status */
 	boost::scoped_ptr<Window_BattleStatus_Rpg2k> status_window;
-	boost::scoped_ptr<Window_Message> message_window;
+	boost::scoped_ptr<Window_BattleMessage> message_window;
 
 	void CreateBattleOptionWindow();
 	void CreateBattleTargetWindow();
