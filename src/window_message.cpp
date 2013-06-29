@@ -531,7 +531,7 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 			Game_Actor* actor = NULL;
 			if (parameter == 0) {
 				// Party hero
-				actor = Game_Party::GetActors()[0];
+				actor = Game_Party().GetActors()[0];
 			} else {
 				actor = Game_Actors::GetActor(parameter);
 			}

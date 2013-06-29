@@ -49,14 +49,14 @@ bool Window_Item::CheckInclude(int item_id) {
 }
 
 bool Window_Item::CheckEnable(int item_id) {
-	return Game_Party::IsItemUsable(item_id);
+	return Game_Party().IsItemUsable(item_id);
 }
 
 void Window_Item::Refresh() {
 	std::vector<int> party_items;
 
 	data.clear();
-	Game_Party::GetItems(party_items);
+	Game_Party().GetItems(party_items);
 
 	for (size_t i = 0; i < party_items.size(); ++i) {
 		if (this->CheckInclude(party_items[i])) {
@@ -90,7 +90,7 @@ void Window_Item::DrawItem(int index) {
 	int item_id = data[index];
 
 	if (item_id > 0) {
-		int number = Game_Party::ItemNumber(item_id);
+		int number = Game_Party().ItemNumber(item_id);
 		bool enabled = CheckEnable(item_id);
 		DrawItemName(&Data::items[item_id - 1], rect.x, rect.y, enabled);
 

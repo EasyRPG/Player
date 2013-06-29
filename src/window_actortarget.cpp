@@ -36,16 +36,16 @@ void Window_ActorTarget::Refresh() {
 
 	DisplayUi->SetBackcolor(Cache::system_info.bg_color);
 
-	item_max = Game_Party::GetActors().size();
+	item_max = Game_Party().GetActors().size();
 
 	int y = 0;
 	for (int i = 0; i < item_max; ++i) {
-		DrawActorFace(Game_Party::GetActors()[i], 0, i * 48 + y);
-		DrawActorName(Game_Party::GetActors()[i], 48 + 8, i * 48 + 2 + y);
-		DrawActorLevel(Game_Party::GetActors()[i], 48 + 8, i * 48 + 2 + 16 + y);
-		DrawActorState(Game_Party::GetActors()[i], 48 + 8, i * 48 + 2 + 16 + 16 + y);
-		DrawActorHp(Game_Party::GetActors()[i], 48 + 8 + 58, i * 48 + 2 + 16 + y);
-		DrawActorSp(Game_Party::GetActors()[i], 48 + 8 + 58, i * 48 + 2 + 16 + 16 + y);
+		DrawActorFace(Game_Party().GetActors()[i], 0, i * 48 + y);
+		DrawActorName(Game_Party().GetActors()[i], 48 + 8, i * 48 + 2 + y);
+		DrawActorLevel(Game_Party().GetActors()[i], 48 + 8, i * 48 + 2 + 16 + y);
+		DrawActorState(Game_Party().GetActors()[i], 48 + 8, i * 48 + 2 + 16 + 16 + y);
+		DrawActorHp(Game_Party().GetActors()[i], 48 + 8 + 58, i * 48 + 2 + 16 + y);
+		DrawActorSp(Game_Party().GetActors()[i], 48 + 8 + 58, i * 48 + 2 + 16 + 16 + y);
 
 		y += 10;
 	}

@@ -15,33 +15,5 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SPRITESET_BATTLE_H_
-#define _SPRITESET_BATTLE_H_
-
 // Headers
-#include "tilemap.h"
-#include "background.h"
-#include "sprite_battler.h"
-#include "sprite_character.h"
-#include <boost/scoped_ptr.hpp>
-#include <boost/ptr_container/ptr_vector.hpp> 
-
-class Game_Enemy;
-/**
- * Spriteset_Battle class.
- */
-class Spriteset_Battle {
-public:
-	Spriteset_Battle();
-
-	void Update();
-	Sprite_Battler* FindCharacter(Game_Enemy* character) const;
-
-protected:
-	boost::scoped_ptr<Background> background;
-	boost::ptr_vector<Sprite_Battler> enemy_sprites;
-	/*std::vector<Sprite_Picture*> picture_sprites;
-	Sprite_Timer* timer_sprite;*/
-};
-
-#endif
+#include "game_party_base.h"

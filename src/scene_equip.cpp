@@ -32,7 +32,7 @@ Scene_Equip::Scene_Equip(int actor_index, int equip_index) :
 }
 
 void Scene_Equip::Start() {
-	Game_Actor* actor = Game_Party::GetActors()[actor_index];
+	Game_Actor* actor = Game_Party().GetActors()[actor_index];
 
 	// Create the windows
 	help_window.reset(new Window_Help(0, 0, 320, 32));
@@ -85,7 +85,7 @@ void Scene_Equip::UpdateStatusWindow() {
 	if (equip_window->GetActive()) {
 		equipstatus_window->ClearParameters();
 	} else if (item_window->GetActive()) {
-		Game_Actor* actor = Game_Party::GetActors()[actor_index];
+		Game_Actor* actor = Game_Party().GetActors()[actor_index];
 		int old_item = actor->SetEquipment(equip_window->GetIndex(),
 			item_window->GetItemId());
 
@@ -109,13 +109,13 @@ void Scene_Equip::UpdateEquipSelection() {
 		equip_window->SetActive(false);
 		item_window->SetActive(true);
 		item_window->SetIndex(0);
-	} else if (Game_Party::GetActors().size() > 1 && Input::IsTriggered(Input::RIGHT)) {
+	} else if (Game_Party().GetActors().size() > 1 && Input::IsTriggered(Input::RIGHT)) {
 		Game_System::SePlay(Main_Data::game_data.system.cursor_se);
-		actor_index = (actor_index + 1) % Game_Party::GetActors().size();
+		actor_index = (actor_index + 1) % Game_Party().GetActors().size();
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Equip>(actor_index, equip_window->GetIndex()), true);
-	} else if (Game_Party::GetActors().size() > 1 && Input::IsTriggered(Input::LEFT)) {
+	} else if (Game_Party().GetActors().size() > 1 && Input::IsTriggered(Input::LEFT)) {
 		Game_System::SePlay(Main_Data::game_data.system.cursor_se);
-		actor_index = (actor_index + Game_Party::GetActors().size() - 1) % Game_Party::GetActors().size();
+		actor_index = (actor_index + Game_Party().GetActors().size() - 1) % Game_Party().GetActors().size();
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Equip>(actor_index, equip_window->GetIndex()), true);
 	}
 }
@@ -129,7 +129,7 @@ void Scene_Equip::UpdateItemSelection() {
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Main_Data::game_data.system.decision_se);
 
-		Game_Party::GetActors()[actor_index]->ChangeEquipment(
+		Game_Party().GetActors()[actor_index]->ChangeEquipment(
 			equip_window->GetIndex(), item_window->GetItemId());
 
 		equip_window->SetActive(true);

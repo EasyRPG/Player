@@ -32,7 +32,7 @@ Spriteset_Battle::Spriteset_Battle() {
 
 	// Create the enemy sprites
 	boost::ptr_vector<Game_Enemy>::iterator it;
-	boost::ptr_vector<Game_Enemy>& enemies = Game_EnemyParty::GetEnemies();
+	boost::ptr_vector<Game_Enemy>& enemies = Game_EnemyParty().GetEnemies();
 	for (it = enemies.begin(); it != enemies.end(); it++) {
 		enemy_sprites.push_back(new Sprite_Battler(static_cast<Game_Battler*>(&*it)));
 	}
@@ -45,4 +45,16 @@ void Spriteset_Battle::Update() {
 	for (it = enemy_sprites.begin(); it != enemy_sprites.end(); it++) {
 		it->Update();
 	}
+}
+
+// Finds the sprite for a specific character
+Sprite_Battler* Spriteset_Battle::FindCharacter(Game_Enemy* character) const
+{
+	/*boost::ptr_vector<Sprite_Battler>::iterator it;
+	for (it = enemy_sprites.begin(); it != enemy_sprites.end(); it++) {
+		static_cast<Sprite_Character*>(*it)
+		if (sprite->GetCharacter() == character)
+			return sprite;
+	}*/
+	return NULL;
 }

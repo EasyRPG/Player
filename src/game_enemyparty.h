@@ -21,7 +21,9 @@
 // Headers
 #include <vector>
 #include "rpg_troop.h"
+#include "game_party_base.h"
 #include <boost/ptr_container/ptr_vector.hpp>
+#include <boost/noncopyable.hpp>
 
 class Game_Enemy;
 class Game_Interpreter;
@@ -29,11 +31,12 @@ class Game_Interpreter;
 /**
  * Manages the enemy party during battles.
  */
-namespace Game_EnemyParty {
+class Game_EnemyParty_Class : public Game_Party_Base, boost::noncopyable {
+public:
 	/**
 	 * Initializes Game_Enemy_Party.
 	 */
-	void Init();
+	Game_EnemyParty_Class();
 
 	/**
 	 * Setups initial enemy party.
@@ -60,6 +63,13 @@ namespace Game_EnemyParty {
 	 * @return list of alive party members
 	 */
 	std::vector<Game_Enemy*> GetAliveEnemies();
-}
+
+private:
+	boost::ptr_vector<Game_Enemy> enemies;
+	Game_Interpreter* interpreter;
+	RPG::Troop* troop;
+};
+
+Game_EnemyParty_Class& Game_EnemyParty();
 
 #endif

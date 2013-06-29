@@ -22,15 +22,11 @@
 #include "main_data.h"
 #include "rpg_enemy.h"
 
-static boost::ptr_vector<Game_Enemy> enemies;
-static Game_Interpreter* interpreter;
-static RPG::Troop* troop;
-
-void Game_EnemyParty::Init() {
-	interpreter = NULL;
+Game_EnemyParty_Class::Game_EnemyParty_Class() {
+	//interpreter = NULL;
 }
 
-void Game_EnemyParty::Setup(int battle_troop_id) {
+void Game_EnemyParty_Class::Setup(int battle_troop_id) {
 	troop = &Data::troops[battle_troop_id - 1];
 	std::vector<RPG::TroopMember>::const_iterator ei;
 	for (ei = troop->members.begin(); ei != troop->members.end(); ei++)	{
@@ -42,11 +38,11 @@ void Game_EnemyParty::Setup(int battle_troop_id) {
 	}
 }
 
-boost::ptr_vector<Game_Enemy>& Game_EnemyParty::GetEnemies() {
+boost::ptr_vector<Game_Enemy>& Game_EnemyParty_Class::GetEnemies() {
 	return enemies;
 }
 
-std::vector<Game_Enemy*> Game_EnemyParty::GetAliveEnemies() {
+std::vector<Game_Enemy*> Game_EnemyParty_Class::GetAliveEnemies() {
 	std::vector<Game_Enemy*> alive;
 	boost::ptr_vector<Game_Enemy>::iterator it;
 	for (it = enemies.begin(); it != enemies.end(); ++it) {
@@ -57,8 +53,18 @@ std::vector<Game_Enemy*> Game_EnemyParty::GetAliveEnemies() {
 	return alive;
 }
 
-void Game_EnemyParty::Clear() {
+void Game_EnemyParty_Class::Clear() {
 	interpreter->Clear();
 
 	enemies.clear();
+}
+
+Game_EnemyParty_Class& Game_EnemyParty() {
+	static bool init = false;
+	static boost::scoped_ptr<Game_EnemyParty_Class> instance;
+	if (!init) {
+		instance.reset(new Game_EnemyParty_Class());
+		init = true;
+	}
+	return *instance;
 }

@@ -171,27 +171,27 @@ bool Game_Event::AreConditionsMet(const RPG::EventPage& page) {
 	}
 
 	// Item in possession?
-	if (page.condition.flags.item && !Game_Party::ItemNumber(page.condition.item_id)) {
+	if (page.condition.flags.item && !Game_Party().ItemNumber(page.condition.item_id)) {
 		return false;
 	}
 
 	// Actor in party?
 	if (page.condition.flags.actor) {
-		if (!Game_Party::IsActorInParty(page.condition.actor_id)) {
+		if (!Game_Party().IsActorInParty(page.condition.actor_id)) {
 			return false;
 		}
 	}
 
 	// Timer
 	if (page.condition.flags.timer) {
-		int frames = Game_Party::ReadTimer(Game_Party::Timer1);
+		int frames = Game_Party().ReadTimer(Game_Party().Timer1);
 		if (frames > page.condition.timer_sec * DEFAULT_FPS)
 			return false;
 	}
 
 	// Timer2
 	if (page.condition.flags.timer2) {
-		int frames = Game_Party::ReadTimer(Game_Party::Timer2);
+		int frames = Game_Party().ReadTimer(Game_Party().Timer2);
 		if (frames > page.condition.timer2_sec * DEFAULT_FPS)
 			return false;
 	}

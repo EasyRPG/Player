@@ -59,7 +59,7 @@ void Game_Battle::Init(Battle_Interface* _scene) {
 	troop = &Data::troops[Game_Temp::battle_troop_id - 1];
 
 	allies.clear();
-	const std::vector<Game_Actor*>& actors = Game_Party::GetActors();
+	const std::vector<Game_Actor*>& actors = Game_Party().GetActors();
 	std::vector<Game_Actor*>::const_iterator ai;
 	for (ai = actors.begin(); ai != actors.end(); ai++)
 		allies.push_back(Battle::Ally(*ai, ai - actors.begin()));

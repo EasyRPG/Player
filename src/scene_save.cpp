@@ -37,24 +37,24 @@ void Scene_Save::Action(int index) {
 	// TODO: Maybe find a better place to setup the save file?
 	RPG::SaveTitle title;
 
-	int size = (int)Game_Party::GetActors().size();
+	int size = (int)Game_Party().GetActors().size();
 	Game_Actor* actor;
 
 	switch (size) {
 		case 4:
-			actor = Game_Party::GetActors()[3];
+			actor = Game_Party().GetActors()[3];
 			title.face4_id = actor->GetFaceIndex();
 			title.face4_name = actor->GetFaceName();
 		case 3:
-			actor = Game_Party::GetActors()[2];
+			actor = Game_Party().GetActors()[2];
 			title.face3_id = actor->GetFaceIndex();
 			title.face3_name = actor->GetFaceName();
 		case 2:
-			actor = Game_Party::GetActors()[1];
+			actor = Game_Party().GetActors()[1];
 			title.face2_id = actor->GetFaceIndex();
 			title.face2_name = actor->GetFaceName();
 		case 1:
-			actor = Game_Party::GetActors()[0];
+			actor = Game_Party().GetActors()[0];
 			title.face1_id = actor->GetFaceIndex();
 			title.face1_name = actor->GetFaceName();
 			title.hero_hp = actor->GetHp();

@@ -21,17 +21,21 @@
 // Headers
 #include <vector>
 #include <map>
+#include "game_party_base.h"
 #include "game_actor.h"
 #include "main_data.h"
+
+#include <boost/noncopyable.hpp>
 
 /**
  * Game_Party class.
  */
-namespace Game_Party {
+class Game_Party_Class : public Game_Party_Base, boost::noncopyable {
+public:
 	/**
 	 * Initializes Game_Party.
 	 */
-	void Init();
+	Game_Party_Class();
 
 	/**
 	 * Setups initial party.
@@ -204,6 +208,8 @@ namespace Game_Party {
 	void StopTimer(int which);
 	void UpdateTimers();
 	int ReadTimer(int which);
-}
+};
+
+Game_Party_Class& Game_Party();
 
 #endif

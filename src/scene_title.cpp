@@ -154,8 +154,6 @@ void Scene_Title::CreateGameObjects() {
 	Game_Temp::Init();
 	Main_Data::game_screen.reset(new Game_Screen());
 	Game_Actors::Init();
-	Game_EnemyParty::Init();
-	Game_Party::Init();
 	Game_Message::Init();
 	Game_Map::Init();
 	Main_Data::game_player.reset(new Game_Player());
@@ -219,7 +217,7 @@ bool Scene_Title::CheckValidPlayerLocation() {
 
 void Scene_Title::PrepareBattleTest() {
 	CreateGameObjects();
-	//Game_Party::SetupBattleTestMembers();
+	//Game_Party().SetupBattleTestMembers();
 	//Game_Troop::can_escape = true;
 	Game_System::BgmPlay(Data::system.battle_music);
 
