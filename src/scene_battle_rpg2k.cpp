@@ -62,10 +62,8 @@ void Scene_Battle_Rpg2k::Start() {
 		}
 	}
 
-	//Game_Battle::Init(this);
+	Game_Battle::Init();
 
-	spriteset.reset(new Spriteset_Battle());
-	interpreter.reset(new Game_Interpreter_Battle());
 	CreateWindows();
 
 	SetState(State_Start);
@@ -84,7 +82,7 @@ void Scene_Battle_Rpg2k::Update() {
 	ProcessActions();
 	ProcessInput();
 
-	spriteset->Update();
+	Game_Battle::Update();
 	/*DoAuto();
 
 	UpdateBackground();

@@ -20,10 +20,10 @@
 #include "bitmap.h"
 #include "cache.h"
 #include "main_data.h"
+#include "player.h"
 #include "rpg_battleranimation.h"
 #include "rpg_battleranimationextension.h"
 
-////////////////////////////////////////////////////////////
 Sprite_Battler::Sprite_Battler(Game_Battler* battler) :
 	battler(battler),
 	anim_state(Idle),
@@ -71,8 +71,14 @@ void Sprite_Battler::SetBattler(Game_Battler* new_battler) {
 
 void Sprite_Battler::Update() {
 	Sprite::Update();
-
-	if (anim_state > 0) {
+	
+	if (Player::engine == Player::EngineRpg2k) {
+		static int opacity = 255;
+		if (anim_state == Dead && opacity > 0) {
+			opacity -= 10;
+			SetOpacity(opacity);
+		}
+	} else if (anim_state > 0) {
 		static const int frames[] = {0,1,2,1};
 		int frame = frames[cycle / 15];
 		if (frame == sprite_frame)
@@ -93,11 +99,13 @@ void Sprite_Battler::Update() {
 void Sprite_Battler::SetAnimationState(int state) {
 	anim_state = state;
 
-	const RPG::BattlerAnimation& anim = Data::battleranimations[battler->GetBattleAnimationId() - 1];
-	const RPG::BattlerAnimationExtension& ext = anim.base_data[anim_state - 1];
-	if (ext.battler_name == sprite_file)
-		return;
+	if (Player::engine == Player::EngineRpg2k3) {
+		const RPG::BattlerAnimation& anim = Data::battleranimations[battler->GetBattleAnimationId() - 1];
+		const RPG::BattlerAnimationExtension& ext = anim.base_data[anim_state - 1];
+		if (ext.battler_name == sprite_file)
+			return;
 
-	sprite_file = ext.battler_name;
-	SetBitmap(Cache::Battlecharset(sprite_file));
+		sprite_file = ext.battler_name;
+		SetBitmap(Cache::Battlecharset(sprite_file));
+	}
 }

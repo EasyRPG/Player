@@ -39,6 +39,7 @@ public:
 		State_PreAction,
 		State_Action,
 		State_PostAction,
+		State_ResultAction,
 		State_Finished
 	};
 
@@ -49,9 +50,13 @@ public:
 	virtual void PreAction() = 0;
 	virtual void Action() = 0;
 	virtual void PostAction() = 0;
+	virtual void ResultAction() = 0;
 	virtual bool Again() = 0;
 
 	void PlayAnimation(BattleAnimation* animation);
+
+protected:
+	bool result;
 
 private:
 	int state;
@@ -64,6 +69,7 @@ public:
 	SingleTargetAction(Game_Battler* source, Game_Battler* target);
 
 	virtual bool Again();
+	virtual void ResultAction();
 
 protected:
 	Game_Battler* source;

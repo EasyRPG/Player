@@ -29,7 +29,7 @@ bool Game_Battler::HasState(int state_id) const {
 }
 
 bool Game_Battler::IsDead() const {
-	return !IsHidden() && GetHp() == 0 && !IsImmortal();
+	return HasState(1);
 }
 
 bool Game_Battler::Exists() const {

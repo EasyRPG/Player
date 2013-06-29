@@ -25,8 +25,11 @@
 #include "game_message.h"
 #include "game_actor.h"
 #include "game_system.h"
+#include "game_battle.h"
+#include "spriteset_battle.h"
 
 Game_BattleAction::ActionBase::ActionBase() :
+	result(false),
 	state(State_PreAction),
 	animation(NULL),
 	wait(30) {
@@ -67,6 +70,15 @@ bool Game_BattleAction::ActionBase::Execute() {
 			wait = 30;
 
 			PostAction();
+			state = result ? State_ResultAction : State_Finished;
+			break;
+		case State_ResultAction:
+			if (wait--) {
+				return false;
+			}
+			wait = 30;
+
+			ResultAction();
 			state = State_Finished;
 			break;
 		case State_Finished:
@@ -96,6 +108,21 @@ source(source), target(target) {
 
 bool Game_BattleAction::SingleTargetAction::Again() {
 	return false;
+}
+
+void Game_BattleAction::SingleTargetAction::ResultAction() {
+	if (target->GetSignificantState()->ID == 1) {
+		Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
+		if (target_sprite) {
+			target_sprite->SetAnimationState(Sprite_Battler::Dead);
+		}
+	}
+
+	if (target->GetType() == Game_Battler::Type_Ally) {
+		Game_Message::texts.push_back(target->GetName() + target->GetSignificantState()->message_actor);
+	} else {
+		Game_Message::texts.push_back(target->GetName() + target->GetSignificantState()->message_enemy);
+	}
 }
 
 bool Game_BattleAction::GroupTargetAction::Again() {
@@ -151,6 +178,9 @@ void Game_BattleAction::AttackSingle::Action() {
 		effect += change;
 		damage = effect;
 		target->SetHp(target->GetHp() - effect);
+		if (target->IsDead()) {
+			result = true;
+		}
 	}
 	else {
 		damage = -1;

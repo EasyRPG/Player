@@ -572,6 +572,15 @@ void Game_Actor::SetBaseMaxSp(int maxsp) {
 
 void Game_Actor::SetHp(int hp) {
 	data.current_hp = min(max(hp, 0), GetMaxHp());
+
+	if (data.current_hp == 0) {
+		// Death
+		RemoveAllStates();
+		AddState(1);
+	} else {
+		// Back to life
+		RemoveState(1);
+	}
 }
 
 void Game_Actor::SetSp(int sp) {

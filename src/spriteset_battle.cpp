@@ -48,13 +48,12 @@ void Spriteset_Battle::Update() {
 }
 
 // Finds the sprite for a specific character
-Sprite_Battler* Spriteset_Battle::FindCharacter(Game_Enemy* character) const
+Sprite_Battler* Spriteset_Battle::FindBattler(Game_Battler* battler)
 {
-	/*boost::ptr_vector<Sprite_Battler>::iterator it;
+	boost::ptr_vector<Sprite_Battler>::iterator it;
 	for (it = enemy_sprites.begin(); it != enemy_sprites.end(); it++) {
-		static_cast<Sprite_Character*>(*it)
-		if (sprite->GetCharacter() == character)
-			return sprite;
-	}*/
+		if (it->GetBattler() == battler)
+			return &*it;
+	}
 	return NULL;
 }

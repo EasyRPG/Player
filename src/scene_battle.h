@@ -102,9 +102,6 @@ public:
 protected:
 	Scene_Battle();
 
-	/// Contains battle related sprites
-	boost::scoped_ptr<Spriteset_Battle> spriteset;
-
 	friend class Battle::SpriteAction;
 
 	State state;

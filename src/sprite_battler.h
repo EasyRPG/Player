@@ -28,6 +28,7 @@ class Game_Character;
  * Sprite_Battler class, used for static battle sprites
  */
 class Sprite_Battler : public Sprite {
+public:
 	enum AnimationState {
 		Idle = 1,
 		RightHand,
@@ -43,7 +44,6 @@ class Sprite_Battler : public Sprite {
 		Item
 	};
 
-public:
 	/**
 	 * Constructor.
 	 *

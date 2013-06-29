@@ -27,6 +27,7 @@
 #include "battle_animation.h"
 #include "battle_battler.h"
 #include "game_battle.h"
+#include "spriteset_battle.h"
 #include <boost/scoped_ptr.hpp>
 
 namespace Game_Battle {
@@ -50,7 +51,29 @@ namespace Game_Battle {
 	const RPG::EnemyAction* enemy_action;
 
 	const RPG::TroopPage* script_page;
+
 	boost::scoped_ptr<Game_Interpreter> interpreter;
+	/** Contains battle related sprites */
+	boost::scoped_ptr<Spriteset_Battle> spriteset;
+}
+
+void Game_Battle::Init() {
+	interpreter.reset(new Game_Interpreter_Battle(0, true));
+	spriteset.reset(new Spriteset_Battle());
+}
+
+void Game_Battle::Quit() {
+	interpreter.reset();
+	spriteset.reset();
+}
+
+void Game_Battle::Update() {
+	interpreter->Update();
+	spriteset->Update();
+}
+
+Spriteset_Battle& Game_Battle::GetSpriteset() {
+	return *spriteset;
 }
 
 void Game_Battle::Init(Battle_Interface* _scene) {
@@ -95,7 +118,7 @@ void Game_Battle::Init(Battle_Interface* _scene) {
 
 	interpreter.reset(new Game_Interpreter_Battle());
 }
-
+/*
 void Game_Battle::Quit() {
 	// Remove conditions which end after battle
 	for (std::vector<Battle::Ally>::iterator it = allies.begin(); it != allies.end(); it++)
@@ -108,7 +131,7 @@ void Game_Battle::Quit() {
 
 	scene = NULL;
 }
-
+*/
 Battle_Interface* Game_Battle::GetScene() {
 	return scene;
 }
@@ -273,7 +296,7 @@ int Game_Battle::GetActiveActor() {
 int Game_Battle::GetTurns() {
 	return turn_fragments / turn_length;
 }
-
+/*
 void Game_Battle::Update() {
 	turn_fragments++;
 
@@ -291,7 +314,7 @@ void Game_Battle::Update() {
 		}
 	}
 }
-
+*/
 bool Game_Battle::HaveCorpse() {
 	for (std::vector<Battle::Ally>::iterator it = allies.begin(); it != allies.end(); it++)
 		if (it->GetActor()->IsDead())

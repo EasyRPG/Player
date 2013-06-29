@@ -117,8 +117,6 @@ private:
 	std::deque<BattlerActionPair> battle_actions;
 
 	int turn;
-
-	boost::scoped_ptr<Game_Interpreter> interpreter;
 };
 
 #endif

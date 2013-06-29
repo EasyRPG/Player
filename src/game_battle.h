@@ -20,7 +20,34 @@
 #include "battle_battler.h"
 #include "battle_interface.h"
 
+class Spriteset_Battle;
+
 namespace Game_Battle {
+	/**
+	 * Initialize Game_Battle.
+	 */
+	void Init();
+
+	/**
+	 * Quits (frees) Game_Battle.
+	 */
+	void Quit();
+
+	/**
+	 * Updates the battle state.
+	 */
+	void Update();
+
+	/**
+	 * Gets the game interpreter.
+	 *
+	 * @return the game interpreter.
+	 */
+	Game_Interpreter& GetInterpreter();
+
+	Spriteset_Battle& GetSpriteset();
+
+	//// Old battle stuff
 	extern const RPG::Troop* troop;
 	extern std::vector<Battle::Ally> allies;
 	extern std::vector<Battle::Enemy> enemies;
@@ -35,7 +62,7 @@ namespace Game_Battle {
 	static const int turn_length = 333; // frames
 
 	void Init(Battle_Interface* scene);
-	void Quit();
+	//void Quit();
 
 	Battle_Interface* GetScene();
 
@@ -71,7 +98,7 @@ namespace Game_Battle {
 	void ChooseEnemy();
 	int GetActiveActor();
 	int GetTurns();
-	void Update();
+	//void Update();
 	bool HaveCorpse();
 	bool CheckWin();
 	bool CheckLose();
