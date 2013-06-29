@@ -46,7 +46,7 @@ public:
 	/**
 	 * Draws min and max separated by a "/" in cx, cy
 	 */
-	void Window_ActorStatus::DrawMinMax(int cx, int cy, int min, int max);
+	void DrawMinMax(int cx, int cy, int min, int max);
 
 private:
 	int actor_id;

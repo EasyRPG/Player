@@ -21,6 +21,7 @@
 // Headers
 #include <png.h>
 #include <cstdlib>
+#include <cstring>
 #include "output.h"
 #include "image_png.h"
 
