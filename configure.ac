@@ -11,12 +11,14 @@ AM_SILENT_RULES([yes])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
 
+CXXFLAGS="$CXXFLAGS -std=c++0x"
 
 # Checks for programs.
 AC_PROG_CXX
 m4_ifdef([PKG_CHECK_MODULES],[],[AC_MSG_ERROR['pkg-config' is required but it doesn't seem to be installed on this system (PKG_CHECK_MODULES macro not found).]])
 
 # Checks for libraries.
+LDFLAGS="$LDFLAGS -Wl,--no-as-needed"
 AC_ARG_WITH([readers],[AS_HELP_STRING([--with-readers=DIR],[Location of the EasyRPG 'readers' library])],[
 	CXXFLAGS="$CXXFLAGS -I$withval/include"
 	LDFLAGS="$LDFLAGS -L$withval/lib"
