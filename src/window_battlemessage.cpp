@@ -32,7 +32,10 @@ Window_BattleMessage::Window_BattleMessage(int ix, int iy, int iwidth, int iheig
 }
 
 void Window_BattleMessage::SetMessageMode(Window_BattleMessage::MessageMode new_mode) {
-	mode = new_mode;
+	if (new_mode != mode) {
+		mode = new_mode;
+		Game_Message::SemiClear();
+	}
 }
 
 void Window_BattleMessage::UpdateMessage() {

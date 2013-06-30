@@ -71,6 +71,24 @@ void Game_EnemyParty_Class::Clear() {
 	enemies.clear();
 }
 
+int Game_EnemyParty_Class::GetExp() const {
+	boost::ptr_vector<Game_Enemy>::const_iterator it;
+	int sum = 0;
+	for (it = enemies.begin(); it != enemies.end(); ++it) {
+		sum += it->GetExp();
+	}
+	return sum;
+}
+
+int Game_EnemyParty_Class::GetMoney() const {
+	boost::ptr_vector<Game_Enemy>::const_iterator it;
+	int sum = 0;
+	for (it = enemies.begin(); it != enemies.end(); ++it) {
+		sum += it->GetMoney();
+	}
+	return sum;
+}
+
 Game_EnemyParty_Class& Game_EnemyParty() {
 	static bool init = false;
 	static boost::scoped_ptr<Game_EnemyParty_Class> instance;

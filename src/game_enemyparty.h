@@ -68,6 +68,20 @@ public:
 	 */
 	std::vector<Game_Enemy*> GetAliveEnemies();
 
+	/**
+	 * Sums up the experience points of all enemy party members.
+	 *
+	 * @return All experience points
+	 */
+	int GetExp() const;
+
+	/**
+	 * Sums up the money of all enemy party members.
+	 *
+	 * @return All money
+	 */
+	int GetMoney() const;
+
 private:
 	boost::ptr_vector<Game_Enemy> enemies;
 	Game_Interpreter* interpreter;

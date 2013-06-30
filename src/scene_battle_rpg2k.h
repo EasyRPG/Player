@@ -69,6 +69,11 @@ protected:
 	void CreateWindows();
 	void SetState(State new_state);
 
+	bool CheckWin();
+	bool CheckLose();
+	bool CheckAbort();
+	bool CheckFlee();
+
 private:
 	/** Displays Fight, Autobattle, Flee */
 	boost::scoped_ptr<Window_Command> options_window;

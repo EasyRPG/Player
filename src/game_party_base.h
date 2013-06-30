@@ -75,6 +75,12 @@ public:
 	 */
 	virtual Game_Battler* GetRandomDeadBattler();
 
+	/**
+	 * Tests if all party members are dead.
+	 * @return Whether all are dead.
+	 */
+	virtual bool IsAnyAlive();
+
 private:
 
 };

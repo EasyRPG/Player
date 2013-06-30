@@ -183,10 +183,10 @@ protected:
 	virtual void UpdateSprites();
 	virtual void UpdateFloaters();
 
-	virtual void CheckWin();
-	virtual void CheckLose();
-	virtual void CheckAbort();
-	virtual void CheckFlee();
+	virtual bool CheckWin();
+	virtual bool CheckLose();
+	virtual bool CheckAbort();
+	virtual bool CheckFlee();
 
 	// battle_algorithms.cpp
 

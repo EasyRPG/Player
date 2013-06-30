@@ -1011,45 +1011,49 @@ void Scene_Battle::Update() {
 	UpdateAnimations();
 }
 
-void Scene_Battle::CheckWin() {
+bool Scene_Battle::CheckWin() {
 	if (state == State_Victory || state == State_Defeat)
-		return;
+		return true;
 
 	if (!Game_Battle::CheckWin())
-		return;
+		return true;
 
 	/*for (std::vector<Battle::Ally>::iterator it = Game_Battle::allies.begin(); it != Game_Battle::allies.end(); it++)
 		it->SetAnimState(Battle::Ally::Victory);*/
 	Game_Temp::battle_result = Game_Temp::BattleVictory;
 	SetState(State_Victory);
 	Message(Data::terms.victory.empty() ? Data::terms.victory : "Victory");
+	return true;
 }
 
-void Scene_Battle::CheckLose() {
+bool Scene_Battle::CheckLose() {
 	if (state == State_Victory || state == State_Defeat)
-		return;
+		return true;
 
 	if (!Game_Battle::CheckLose())
-		return;
+		return true;
 
 	Game_Temp::battle_result = Game_Temp::BattleDefeat;
 	SetState(State_Defeat);
 	Message(!Data::terms.defeat.empty() ? Data::terms.defeat : "Defeat");
+	return true;
 }
 
-void Scene_Battle::CheckAbort() {
+bool Scene_Battle::CheckAbort() {
 	if (!Game_Battle::terminate)
-		return;
+		return true;
 	Game_Temp::battle_result = Game_Temp::BattleAbort;
 	Scene::Pop();
+	return true;
 }
 
-void Scene_Battle::CheckFlee() {
+bool Scene_Battle::CheckFlee() {
 	if (!Game_Battle::allies_flee)
-		return;
+		return true;
 	Game_Battle::allies_flee = false;
 	Game_Temp::battle_result = Game_Temp::BattleEscape;
 	Scene::Pop();
+	return true;
 }
 
 EASYRPG_SHARED_PTR<Scene_Battle> Scene_Battle::Create()

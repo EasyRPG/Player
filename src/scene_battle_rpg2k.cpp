@@ -287,10 +287,7 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_Victory:
 	case State_Defeat:
-		status_window->SetVisible(true);
-		status_window->SetX(0);
-		command_window->SetVisible(true);
-		help_window->SetVisible(true);
+		message_window->SetVisible(true);
 		break;
 	}
 }
@@ -327,11 +324,19 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 		if (!battle_actions.empty()) {
 			if (battle_actions.front().second->Execute()) {
 				battle_actions.pop_front();
+				message_window->SetMessageMode(Window_BattleMessage::Mode_Normal);
+				if (CheckWin() ||
+					CheckLose() ||
+					CheckAbort() ||
+					CheckFlee()) {
+						return;
+				}
 			}
 		} else {
 			message_window->SetMessageMode(Window_BattleMessage::Mode_Normal);
 			NextTurn();
 		}
+		break;
 	case State_AllyAction:
 	case State_EnemyAction:
 	default:
@@ -578,7 +583,62 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 		it != enemies.end(); ++it) {
 		Game_Message::texts.push_back(it->GetName() + Data::terms.encounter);
 	}
-
 	Game_Message::message_waiting = true;
+
+	return false;
+}
+
+
+bool Scene_Battle_Rpg2k::CheckWin() {
+	if (!Game_EnemyParty().IsAnyAlive()) {
+		Game_Temp::battle_result = Game_Temp::BattleVictory;
+		SetState(State_Victory);
+
+		Game_Message::texts.push_back(Data::terms.victory);
+
+		std::stringstream ss;
+		ss << Game_EnemyParty().GetExp() << Data::terms.exp_received;
+		Game_Message::texts.push_back(ss.str());
+
+		ss.str("");
+		ss << Data::terms.gold_recieved_a << " " << Game_EnemyParty().GetMoney() << Data::terms.gold << Data::terms.gold_recieved_b;
+		Game_Message::texts.push_back(ss.str());
+
+		Game_System::BgmPlay(Data::system.battle_end_music);
+
+		return true;
+	}
+
+	return false;
+}
+
+bool Scene_Battle_Rpg2k::CheckLose() {
+	if (!Game_Party().IsAnyAlive()) {
+		Game_Temp::battle_result = Game_Temp::BattleDefeat;
+		SetState(State_Defeat);
+		Game_Message::texts.push_back(Data::terms.defeat);
+
+		return true;
+	}
+
+	return false;
+}
+
+bool Scene_Battle_Rpg2k::CheckAbort() {
+	/*if (!Game_Battle::terminate)
+		return;
+	Game_Temp::battle_result = Game_Temp::BattleAbort;
+	Scene::Pop();*/
+
+	return false;
+}
+
+bool Scene_Battle_Rpg2k::CheckFlee() {
+	/*if (!Game_Battle::allies_flee)
+		return;
+	Game_Battle::allies_flee = false;
+	Game_Temp::battle_result = Game_Temp::BattleEscape;
+	Scene::Pop();*/
+
 	return false;
 }

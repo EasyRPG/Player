@@ -116,6 +116,7 @@ void Game_BattleAction::SingleTargetAction::ResultAction() {
 		Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
 		if (target_sprite) {
 			target_sprite->SetAnimationState(Sprite_Battler::Dead);
+			Game_System::SePlay(Data::system.enemy_death_se);
 		}
 	}
 

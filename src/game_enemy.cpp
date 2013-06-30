@@ -136,3 +136,11 @@ int Game_Enemy::GetBattleAnimationId() const {
 Game_Battler::BattlerType Game_Enemy::GetType() const {
 	return Game_Battler::Type_Enemy;
 }
+
+int Game_Enemy::GetExp() const {
+	return enemy->exp;
+}
+
+int Game_Enemy::GetMoney() const {
+	return enemy->gold;
+}

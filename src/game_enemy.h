@@ -129,6 +129,10 @@ public:
 
 	int GetBattleAnimationId() const;
 
+	int GetExp() const;
+
+	int GetMoney() const;
+
 	BattlerType GetType() const;
 
 protected:
