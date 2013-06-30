@@ -55,6 +55,11 @@ public:
 	 */
 	void UpdateItemSelection();
 
+	/**
+	 * Gets an int with the current switch/variable selected.
+	 */
+	int GetIndex();
+
 	enum VarType {
 		TypeInt,
 		TypeSwitch
@@ -65,8 +70,6 @@ private:
 	VarType current_var_type;
 	/** Current range being displayed. */
 	int range_index;
-	/** Current item selected for edition. */
-	int var_index;
 
 	/** Creates Range window. */
 	void CreateRangeWindow();

@@ -60,9 +60,13 @@ void Scene_Debug::Update() {
 		}
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		var_window->Refresh();
-		if (range_window->GetActive()){
+		if (range_window->GetActive()) {
 			range_window->SetActive(false);
 			var_window->SetActive(true);
+		} else if (var_window->GetActive()) {
+			if (current_var_type == TypeSwitch)
+				Game_Switches[GetIndex()] = !Game_Switches[GetIndex()];
+			var_window->Refresh();
 		}
 	} else if (range_window->GetActive() && (Input::IsTriggered(Input::LEFT) || Input::IsTriggered(Input::RIGHT))) {
 		var_window->Refresh();
@@ -114,4 +118,8 @@ void Scene_Debug::CreateVarListWindow() {
 	var_window->SetX(range_window->GetWidth());
 	var_window->SetY(range_window->GetY());
 	var_window->UpdateList(range_window->GetIndex());
+}
+
+int Scene_Debug::GetIndex() {
+	return (range_index * 10 + var_window->GetIndex() + 1);
 }
