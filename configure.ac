@@ -11,6 +11,7 @@ AM_SILENT_RULES([yes])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
 
+CXXFLAGS="$CXXFLAGS -std=c++0x"
 
 # Checks for programs.
 AC_PROG_CXX
