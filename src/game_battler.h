@@ -25,6 +25,7 @@
 #include "system.h"
 
 class Game_Actor;
+class Game_Party_Base;
 
 /**
  * Game_Battler class.
@@ -252,6 +253,14 @@ public:
 	};
 
 	virtual BattlerType GetType() const = 0;
+
+	/**
+	 * Convenience function to access the party based on the type of this
+	 * battler. This function does not ensure that the battler is in the
+	 * party.
+	 * @return Party this member probably belongs to. 
+	 */
+	Game_Party_Base& GetParty() const;
 };
 
 #endif

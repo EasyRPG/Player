@@ -556,7 +556,7 @@ void Scene_Battle_Rpg2k::CreateEnemyActions() {
 	std::vector<Game_Enemy*> alive_enemies = Game_EnemyParty().GetAliveEnemies();
 	std::vector<Game_Enemy*>::const_iterator it;
 	for (it = alive_enemies.begin(); it != alive_enemies.end(); ++it) {
-		battle_actions.push_back(BattlerActionPair(*it, EASYRPG_MAKE_SHARED<Game_BattleAction::AttackSingle>(*it, Game_Party().GetActors()[1])));
+		battle_actions.push_back(BattlerActionPair(*it, EASYRPG_MAKE_SHARED<Game_BattleAction::AttackSingle>(*it, Game_Party().GetRandomAliveBattler())));
 	}
 }
 

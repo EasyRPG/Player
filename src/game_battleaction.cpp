@@ -19,6 +19,7 @@
 #include "game_battleaction.h"
 #include "game_battler.h"
 //#include "game_battlecommand.h"
+#include "game_party_base.h"
 #include "game_enemy.h"
 #include "game_temp.h"
 #include "main_data.h"
@@ -143,6 +144,11 @@ void Game_BattleAction::AttackSingle::PreAction() {
 void Game_BattleAction::AttackSingle::Action() {
 	double to_hit;
 
+	if (target->IsDead()) {
+		// Repoint to a different target if the selected one is dead
+		target = target->GetParty().GetRandomAliveBattler();
+	}
+
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		Game_Actor* ally = static_cast<Game_Actor*>(source);
 		RPG::Animation* anim;
@@ -155,13 +161,12 @@ void Game_BattleAction::AttackSingle::Action() {
 			anim = &Data::animations[Data::items[ally->GetWeaponId() - 1].animation_id - 1];
 			hit_chance = Data::items[ally->GetWeaponId() - 1].hit;
 		}
+		
 		PlayAnimation(new BattleAnimation(target->GetBattleX(), target->GetBattleY(), anim));
 
 		to_hit = 100 - (100 - hit_chance) * (1 + (1.0 * target->GetAgi() / ally->GetAgi() - 1) / 2);
 	} else {
 		// Source is Enemy
-		if (target->IsDead())
-			return;
 
 		//int hit = src->IsMissingOften() ? 70 : 90;
 		int hit = 70;

@@ -29,7 +29,8 @@ Sprite_Battler::Sprite_Battler(Game_Battler* battler) :
 	anim_state(Idle),
 	cycle(0),
 	sprite_file(""),
-	sprite_frame(-1) {
+	sprite_frame(-1),
+	fade_out(255) {
 	
 	// Not animated
 	if (battler->GetBattleAnimationId() == 0) {
@@ -73,10 +74,9 @@ void Sprite_Battler::Update() {
 	Sprite::Update();
 	
 	if (Player::engine == Player::EngineRpg2k) {
-		static int opacity = 255;
-		if (anim_state == Dead && opacity > 0) {
-			opacity -= 10;
-			SetOpacity(opacity);
+		if (anim_state == Dead && fade_out > 0) {
+			fade_out -= 15;
+			SetOpacity(fade_out);
 		}
 	} else if (anim_state > 0) {
 		static const int frames[] = {0,1,2,1};

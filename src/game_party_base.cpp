@@ -52,8 +52,8 @@ Game_Battler* Game_Party_Base::GetRandomAliveBattler() {
 	if (battlers.empty()) {
 		return NULL;
 	}
-
-	return battlers[rand() / (RAND_MAX / (battlers.size() + 1) + 1)];
+	int ra = rand() / (RAND_MAX / battlers.size() + 1);
+	return battlers[ra];
 }
 
 Game_Battler* Game_Party_Base::GetRandomDeadBattler() {
@@ -63,5 +63,5 @@ Game_Battler* Game_Party_Base::GetRandomDeadBattler() {
 		return NULL;
 	}
 
-	return battlers[rand() / (RAND_MAX / (battlers.size() + 1) + 1)];
+	return battlers[rand() / (RAND_MAX / battlers.size() + 1)];
 }

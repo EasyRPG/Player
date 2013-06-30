@@ -21,6 +21,9 @@
 #include "player.h"
 #include "game_battler.h"
 #include "game_actor.h"
+#include "game_party_base.h"
+#include "game_party.h"
+#include "game_enemyparty.h"
 #include "util_macro.h"
 #include "main_data.h"
 
@@ -223,4 +226,12 @@ int Game_Battler::GetAgi() const {
 
 int Game_Battler::GetHue() const {
 	return 0;
+}
+
+Game_Party_Base& Game_Battler::GetParty() const {
+	if (GetType() == Type_Ally) {
+		return Game_Party();
+	} else {
+		return Game_EnemyParty();
+	}
 }
