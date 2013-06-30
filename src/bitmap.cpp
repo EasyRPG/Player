@@ -135,7 +135,7 @@ bool Bitmap::WritePNG(std::ostream& os) const {
 	}
 
 	png_infop info = NULL;
-	BOOST_SCOPE_EXIT(&write, &info) {
+	BOOST_SCOPE_EXIT((&write)(&info)) {
 		png_destroy_write_struct(&write, &info);
 	} BOOST_SCOPE_EXIT_END do {} while(0);
 	if(!(info = png_create_info_struct(write))) {
