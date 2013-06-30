@@ -150,6 +150,11 @@ void Game_BattleAction::AttackSingle::Action() {
 		target = target->GetParty().GetRandomAliveBattler();
 	}
 
+	Sprite_Battler* source_sprite = Game_Battle::GetSpriteset().FindBattler(source);
+	if (source_sprite) {
+		source_sprite->SetAnimationState(Sprite_Battler::SkillUse);
+	}
+
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		Game_Actor* ally = static_cast<Game_Actor*>(source);
 		RPG::Animation* anim;
@@ -215,6 +220,11 @@ void Game_BattleAction::AttackSingle::PostAction() {
 		Game_System::SePlay(target_is_ally ?
 			Data::system.actor_damaged_se :
 			Data::system.enemy_damaged_se);
+
+		Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(target);
+		if (target_sprite) {
+			target_sprite->SetAnimationState(Sprite_Battler::Damage);
+		}
 	}
 
 	Game_Message::texts.push_back(ss.str());
