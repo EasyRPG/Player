@@ -84,7 +84,6 @@ void Scene_Debug::Update() {
 void Scene_Debug::CreateRangeWindow() {
 	
 	std::vector<std::string> ranges;
-	int range_size = Game_Switches.size() / 10;
 	for (int i = 0; i < Game_Switches.size() / 10; i++)
 		ranges.push_back("");
 	range_window.reset(new Window_Command(ranges, 96));

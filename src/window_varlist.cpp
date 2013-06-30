@@ -62,7 +62,7 @@ void Window_VarList::UpdateList(int first_value){
 	range = first_value;
 	for (int i = 0; i < 11; i++){
 		ss.str("");
-		ss << std::setw(4) << (first_value * 10 + i + 1);
+		ss << std::setfill('0') << std::setw(4) << (first_value * 10 + i + 1) << ":";
 		this->SetItemText(i, ss.str());
 	}
 }
