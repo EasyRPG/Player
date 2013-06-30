@@ -32,6 +32,20 @@ Game_Party_Class::Game_Party_Class() {
 	data.Setup();
 }
 
+Game_Battler* Game_Party_Class::GetBattler(int index) {
+	std::vector<Game_Actor*> actors = GetActors();
+
+	if (index < 0 || index >= actors.size()) {
+		return NULL;
+	}
+
+	return actors[index];
+}
+
+int Game_Party_Class::GetBattlerCount() const {
+	return GetActors().size();
+}
+
 void Game_Party_Class::SetupBattleTestMembers() {
 	data.party.clear();
 	
@@ -188,7 +202,7 @@ int Game_Party_Class::GetSteps() {
 	return data.steps;
 }
 
-std::vector<Game_Actor*> Game_Party_Class::GetActors() {
+std::vector<Game_Actor*> Game_Party_Class::GetActors() const {
 	std::vector<Game_Actor*> actors;
 	std::vector<int16_t>::const_iterator it;
 	for (it = data.party.begin(); it != data.party.end(); it++)

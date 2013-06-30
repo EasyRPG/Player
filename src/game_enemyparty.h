@@ -38,6 +38,10 @@ public:
 	 */
 	Game_EnemyParty_Class();
 
+	Game_Battler* GetBattler(int index);
+
+	int GetBattlerCount() const;
+
 	/**
 	 * Setups initial enemy party.
 	 * 

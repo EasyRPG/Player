@@ -26,6 +26,18 @@ Game_EnemyParty_Class::Game_EnemyParty_Class() {
 	//interpreter = NULL;
 }
 
+Game_Battler* Game_EnemyParty_Class::GetBattler(int index) {
+	if (index < 0 || index >= enemies.size()) {
+		return NULL;
+	}
+
+	return &enemies[index];
+}
+
+int Game_EnemyParty_Class::GetBattlerCount() const {
+	return enemies.size();
+}
+
 void Game_EnemyParty_Class::Setup(int battle_troop_id) {
 	troop = &Data::troops[battle_troop_id - 1];
 	std::vector<RPG::TroopMember>::const_iterator ei;

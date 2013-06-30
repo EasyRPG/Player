@@ -28,13 +28,55 @@
 #include <boost/ptr_container/ptr_vector.hpp>
 
 /**
- * Game_Party_Base class. Base class of the two Parties (Allied and Enemy)
+ * Base class of the two Parties (Allied and Enemy)
  */
 class Game_Party_Base {
 public:
+	/**
+	 * Gets a battler from the party by position in the party
+	 * @param int Index of member to return
+	 * @return Party battler
+	 */
+	virtual Game_Battler* GetBattler(int index) = 0;
+
+	/**
+	 * Returns how many members are in the party
+	 * @return Number of members in the party
+	 */
+	virtual int GetBattlerCount() const = 0;
+
+	/**
+	 * Returns a list of all battlers in the party
+	 * @param out List of all battlers
+	 */
+	virtual void GetBattlers(std::vector<Game_Battler*>& out);
+
+	/**
+	 * Returns a list of all alive battlers in the party
+	 * @param out List of all dead battlers
+	 */
+	virtual void GetAliveBattlers(std::vector<Game_Battler*>& out);
+
+	/**
+	 * Returns a list of all dead battlers in the party
+	 * @param out List of all dead battlers
+	 */
+	virtual void GetDeadBattlers(std::vector<Game_Battler*>& out);
+
+	/**
+	 * Gets a random alive battler from the party
+	 * @return Random alive battler
+	 */
+	virtual Game_Battler* GetRandomAliveBattler();
+
+	/**
+	 * Gets a random dead battler from the party
+	 * @return Random dead battler
+	 */
+	virtual Game_Battler* GetRandomDeadBattler();
 
 private:
-	boost::ptr_vector<Game_Battler> members;
+
 };
 
 #endif

@@ -37,6 +37,10 @@ public:
 	 */
 	Game_Party_Class();
 
+	Game_Battler* GetBattler(int index);
+
+	int GetBattlerCount() const;
+
 	/**
 	 * Setups initial party.
 	 */
@@ -160,7 +164,7 @@ public:
 	 *
 	 * @return actors in party list.
 	 */
-	std::vector<Game_Actor*> GetActors();
+	std::vector<Game_Actor*> GetActors() const;
 
 	/**
 	 * Gets number of battles.
