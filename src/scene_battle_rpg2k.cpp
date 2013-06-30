@@ -247,6 +247,7 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		status_window->SetVisible(true);
 		status_window->SetX(76);
 		status_window->SetIndex(-1);
+		status_window->Refresh();
 		break;
 	case State_SelectActor:
 		SelectNextActor();

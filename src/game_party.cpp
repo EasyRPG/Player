@@ -59,7 +59,9 @@ void Game_Party_Class::SetupBattleTestMembers() {
 		actor->SetEquipment(1, it->armor_id);
 		actor->SetEquipment(1, it->helmet_id);
 		actor->SetEquipment(1, it->accessory_id);
-		actor->SetLevel(it->level);
+		actor->ChangeLevel(it->level, false);
+		actor->SetHp(actor->GetMaxHp());
+		actor->SetSp(actor->GetMaxSp());
 	}
 
 	Main_Data::game_player->Refresh();

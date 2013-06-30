@@ -275,6 +275,8 @@ void Game_BattleAction::AttackSingleSkill::Action() {
 		source_sprite->SetAnimationState(Sprite_Battler::SkillUse);
 	}
 
+	source->SetSp(source->GetSp() - skill->sp_cost);
+
 	if (source->GetType() == Game_Battler::Type_Ally) {
 		Game_Actor* ally = static_cast<Game_Actor*>(source);
 		RPG::Animation* anim;
