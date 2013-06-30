@@ -51,15 +51,15 @@ void Window_Skill::Refresh() {
 			data.push_back(skills[i]);
 	}
 
-	CreateContents();
-
-	contents->Clear();
-
 	if (data.size() == 0) {
 		data.push_back(0);
 	}
 
 	item_max = data.size();
+
+	CreateContents();
+
+	contents->Clear();
 
 	for (int i = 0; i < item_max; ++i) {
 		DrawItem(i);

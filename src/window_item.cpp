@@ -73,9 +73,6 @@ void Window_Item::Refresh() {
 	CreateContents();
 
 	contents->Clear();
-	Rect rect(0, 0, contents->GetWidth(), contents->GetHeight());
-	contents->SetTransparentColor(windowskin->GetTransparentColor());
-	contents->ClearRect(rect);
 
 	for (int i = 0; i < item_max; ++i) {
 		DrawItem(i);
@@ -84,7 +81,6 @@ void Window_Item::Refresh() {
 
 void Window_Item::DrawItem(int index) {
 	Rect rect = GetItemRect(index);
-	contents->SetTransparentColor(windowskin->GetTransparentColor());
 	contents->ClearRect(rect);
 
 	int item_id = data[index];
