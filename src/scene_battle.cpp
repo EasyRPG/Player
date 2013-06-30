@@ -135,7 +135,7 @@ void Scene_Battle::Start() {
 }
 
 void Scene_Battle::SetState(Scene_Battle::State new_state) {
-	target_state = state;
+	previous_state = state;
 	state = new_state;
 	if (state == State_SelectActor && auto_battle)
 		state = State_AutoBattle;
@@ -373,8 +373,8 @@ void Scene_Battle::Item() {
 }
 
 void Scene_Battle::Skill() {
-	int skill_id = skill_window->GetSkillId();
-	if (skill_id <= 0) {
+	int skill_id = skill_window->GetSkill()->ID;
+	if (skill_id == NULL) {
 		Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 		return;
 	}
@@ -421,7 +421,7 @@ void Scene_Battle::Skill(const RPG::Skill& skill) {
 }
 
 void Scene_Battle::TargetDone() {
-	switch (target_state) {
+	switch (previous_state) {
 		case State_SelectCommand:
 			BeginAttack();
 			break;

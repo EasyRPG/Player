@@ -53,7 +53,7 @@ void Scene_Skill::Update() {
 		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		int skill_id = skill_window->GetSkillId();
+		int skill_id = skill_window->GetSkill()->ID;
 
 		Game_Actor* actor = Game_Party().GetActors()[actor_index];
 

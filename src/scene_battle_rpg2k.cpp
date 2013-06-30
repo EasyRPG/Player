@@ -178,7 +178,7 @@ void Scene_Battle_Rpg2k::RefreshCommandWindow() {
 }
 
 void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
-	target_state = state;
+	previous_state = state;
 	state = new_state;
 	if (state == State_SelectActor && auto_battle)
 		state = State_AutoBattle;
@@ -322,7 +322,11 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 	case State_Battle:
 		message_window->SetMessageMode(Window_BattleMessage::Mode_Action);
 		if (!battle_actions.empty()) {
-			if (battle_actions.front().second->Execute()) {
+			if (battle_actions.front().second->GetSource()->IsDead()) {
+				// No zombies allowed ;)
+				battle_actions.pop_front();
+			}
+			else if (battle_actions.front().second->Execute()) {
 				battle_actions.pop_front();
 				message_window->SetMessageMode(Window_BattleMessage::Mode_Normal);
 				if (CheckWin() ||
@@ -346,7 +350,6 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 
 void Scene_Battle_Rpg2k::ProcessInput() {
 	if (Input::IsTriggered(Input::DECISION)) {
-		Game_System::SePlay(Data::system.decision_se);
 		switch (state) {
 		case State_Start:
 			// no-op
@@ -443,6 +446,8 @@ void Scene_Battle_Rpg2k::NextTurn() {
 }
 
 void Scene_Battle_Rpg2k::OptionSelected() {
+	Game_System::SePlay(Data::system.decision_se);
+
 	switch (options_window->GetIndex()) {
 	case 0: // Battle
 		CreateBattleTargetWindow();
@@ -461,6 +466,8 @@ void Scene_Battle_Rpg2k::OptionSelected() {
 }
 
 void Scene_Battle_Rpg2k::CommandSelected() {
+	Game_System::SePlay(Data::system.decision_se);
+
 	switch (command_window->GetIndex()) {
 		case 0: // Attack
 			AttackSelected();
@@ -481,25 +488,90 @@ void Scene_Battle_Rpg2k::CommandSelected() {
 }
 
 void Scene_Battle_Rpg2k::AttackSelected() {
+	Game_System::SePlay(Data::system.decision_se);
+
 	SetState(State_SelectEnemyTarget);
 }
 	
 void Scene_Battle_Rpg2k::DefendSelected() {
-
+	Game_System::SePlay(Data::system.decision_se);
 }
 
 void Scene_Battle_Rpg2k::ItemSelected() {
-
+	Game_System::SePlay(Data::system.decision_se);
 }
 	
 void Scene_Battle_Rpg2k::SkillSelected() {
+	RPG::Skill* skill = skill_window->GetSkill();
 
+	if (!skill || !active_actor->IsSkillUsable(skill->ID)) {
+		Game_System::SePlay(Data::system.buzzer_se);
+		return;
+	}
+
+	Game_System::SePlay(Data::system.decision_se);
+
+	switch (skill->type) {
+	case RPG::Skill::Type_teleport:
+	case RPG::Skill::Type_escape:
+	case RPG::Skill::Type_switch:
+		//BeginSkill();
+		return;
+	case RPG::Skill::Type_normal:
+	default:
+		break;
+	}
+
+	switch (skill->scope) {
+		case RPG::Skill::Scope_enemy:
+			//Game_Battle::SetTargetEnemy(0);
+			SetState(State_SelectEnemyTarget);
+			break;
+		case RPG::Skill::Scope_ally:
+			//Game_Battle::TargetActiveAlly();
+			SetState(State_SelectAllyTarget);
+			break;
+		case RPG::Skill::Scope_enemies: {
+			BattlerActionPair battler_action(active_actor, EASYRPG_MAKE_SHARED<Game_BattleAction::PartyTargetAction>(active_actor, &Game_EnemyParty()));
+			battle_actions.push_back(battler_action);
+			break;
+		}
+		case RPG::Skill::Scope_self:
+			break;
+		case RPG::Skill::Scope_party: {
+			BattlerActionPair battler_action(active_actor, EASYRPG_MAKE_SHARED<Game_BattleAction::PartyTargetAction>(active_actor, &Game_Party()));
+			battle_actions.push_back(battler_action);
+			break;
+		}
+	}
 }
 
 void Scene_Battle_Rpg2k::EnemySelected() {
 	Game_Enemy* target = static_cast<Game_Enemy*>(Game_EnemyParty().GetAliveEnemies()[target_window->GetIndex()]);
-	BattlerActionPair battler_action(active_actor, EASYRPG_MAKE_SHARED<Game_BattleAction::AttackSingle>(active_actor, target));
-	battle_actions.push_back(battler_action);
+
+	switch (previous_state) {
+		case State_SelectCommand:
+		{
+			BattlerActionPair battler_action(active_actor, EASYRPG_MAKE_SHARED<Game_BattleAction::AttackSingleNormal>(active_actor, target));
+			battle_actions.push_back(battler_action);
+			break;
+		}
+		case State_SelectSkill:
+		{
+			BattlerActionPair battler_action(active_actor, EASYRPG_MAKE_SHARED<Game_BattleAction::AttackSingleSkill>(active_actor, target, skill_window->GetSkill()));
+			battle_actions.push_back(battler_action);
+			break;
+		}
+		case State_SelectItem:
+		{
+			// Todo
+			//BattlerActionPair battler_action(active_actor, EASYRPG_MAKE_SHARED<Game_BattleAction::AttackSingleItem>(active_actor, target));
+			//battle_actions.push_back(battler_action);
+			break;
+		}
+		default:
+			assert("Invalid previous state for enemy selection" && false);
+	}
 
 	SetState(State_SelectActor);
 }
@@ -561,7 +633,7 @@ void Scene_Battle_Rpg2k::CreateEnemyActions() {
 	std::vector<Game_Enemy*> alive_enemies = Game_EnemyParty().GetAliveEnemies();
 	std::vector<Game_Enemy*>::const_iterator it;
 	for (it = alive_enemies.begin(); it != alive_enemies.end(); ++it) {
-		battle_actions.push_back(BattlerActionPair(*it, EASYRPG_MAKE_SHARED<Game_BattleAction::AttackSingle>(*it, Game_Party().GetRandomAliveBattler())));
+		battle_actions.push_back(BattlerActionPair(*it, EASYRPG_MAKE_SHARED<Game_BattleAction::AttackSingleNormal>(*it, Game_Party().GetRandomAliveBattler())));
 	}
 }
 

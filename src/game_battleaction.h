@@ -27,6 +27,7 @@
 #include "battle_animation.h"
 
 class Game_Battler;
+class Game_Party_Base;
 
 /**
  * Game Battle Action
@@ -43,11 +44,11 @@ public:
 		State_Finished
 	};
 
-	ActionBase();
+	ActionBase(Game_Battler* source);
 
 	virtual bool Execute();
 
-	virtual void PreAction() = 0;
+	virtual void PreAction();
 	virtual void Action() = 0;
 	virtual void PostAction() = 0;
 	virtual void ResultAction() = 0;
@@ -55,8 +56,11 @@ public:
 
 	void PlayAnimation(BattleAnimation* animation);
 
+	Game_Battler* GetSource();
+
 protected:
 	bool result;
+	Game_Battler* source;
 
 private:
 	int state;
@@ -72,31 +76,49 @@ public:
 	virtual void ResultAction();
 
 protected:
-	Game_Battler* source;
 	Game_Battler* target;
 };
 
 class GroupTargetAction : public ActionBase {
 public:
-	GroupTargetAction();
+	GroupTargetAction(Game_Battler* source);
 
 	virtual bool Again();
 };
 
 class PartyTargetAction : public GroupTargetAction {
+public:
+	PartyTargetAction(Game_Battler* source, Game_Party_Base* target);
 
+	void Action();
+	void PostAction();
+	void ResultAction();
+
+protected:
+	Game_Party_Base* target;
 };
 
-class AttackSingle : public SingleTargetAction {
+class AttackSingleNormal : public SingleTargetAction {
 public:
-	AttackSingle(Game_Battler* source, Game_Battler* target);
+	AttackSingleNormal(Game_Battler* source, Game_Battler* target);
 
-	void PreAction();
 	void Action();
 	void PostAction();
 
 private:
 	int damage;
+};
+
+class AttackSingleSkill : public SingleTargetAction {
+public:
+	AttackSingleSkill(Game_Battler* source, Game_Battler* target, RPG::Skill* skill);
+
+	void Action();
+	void PostAction();
+
+private:
+	int damage;
+	RPG::Skill* skill;
 };
 
 }

@@ -45,7 +45,7 @@ public:
 	 *
 	 * @return current selected skill ID.
 	 */
-	int GetSkillId();
+	RPG::Skill* GetSkill();
 
 	/**
 	 * Refreshes the skill list.

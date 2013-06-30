@@ -60,11 +60,15 @@ namespace Game_Battle {
 void Game_Battle::Init() {
 	interpreter.reset(new Game_Interpreter_Battle(0, true));
 	spriteset.reset(new Spriteset_Battle());
+
+	Game_Temp::battle_running = true;
 }
 
 void Game_Battle::Quit() {
 	interpreter.reset();
 	spriteset.reset();
+
+	Game_Temp::battle_running = false;
 }
 
 void Game_Battle::Update() {

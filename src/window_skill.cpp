@@ -34,12 +34,12 @@ void Window_Skill::SetActor(int actor_id) {
 	Refresh();
 }
 
-int Window_Skill::GetSkillId() {
-	if (index < 0) {
-		return 0;
-	} else {
-		return data[index];
+RPG::Skill* Window_Skill::GetSkill() {
+	if (index < 0 || index >= (int)Data::skills.size() || data[index] == 0) {
+		return NULL;
 	}
+
+	return &Data::skills[data[index] - 1];
 }
 
 void Window_Skill::Refresh() {
@@ -87,8 +87,8 @@ void Window_Skill::DrawItem(int index) {
 }
 
 void Window_Skill::UpdateHelp() {
-	help_window->SetText(GetSkillId() == 0 ? "" :
-		Data::skills[GetSkillId() - 1].description);
+	help_window->SetText(GetSkill() == NULL ? "" :
+		GetSkill()->description);
 }
 
 bool Window_Skill::CheckInclude(int /* skill_id */) {

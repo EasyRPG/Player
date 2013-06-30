@@ -24,6 +24,7 @@
 #include "game_party_base.h"
 #include "game_party.h"
 #include "game_enemyparty.h"
+#include "game_temp.h"
 #include "util_macro.h"
 #include "main_data.h"
 
@@ -75,7 +76,10 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 	if (Data::skills[skill_id - 1].type == RPG::Skill::Type_normal) {
 		int scope = Data::skills[skill_id - 1].scope;
 
-		if (scope == RPG::Skill::Scope_self ||
+		if (Game_Temp::battle_running) {
+			return true;
+		}
+		else if (scope == RPG::Skill::Scope_self ||
 			scope == RPG::Skill::Scope_ally ||
 			scope == RPG::Skill::Scope_party) {
 			// TODO: A skill is also acceptable when it cures a status
@@ -83,12 +87,12 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 					Data::skills[skill_id - 1].affect_sp);
 		}
 	} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_switch) {
-		// TODO:
-		// if (Game_Temp::IsInBattle()) {
-		// return Data::skills[skill_id - 1].occasion_battle;
-		// else {
-		return Data::skills[skill_id - 1].occasion_field;
-		// }
+		if (Game_Temp::battle_running) {
+			return Data::skills[skill_id - 1].occasion_battle;
+		}
+		else {
+			return Data::skills[skill_id - 1].occasion_field;
+		}
 	}
 
 	return false;

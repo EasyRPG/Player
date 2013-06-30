@@ -105,7 +105,7 @@ protected:
 	friend class Battle::SpriteAction;
 
 	State state;
-	State target_state;
+	State previous_state;
 	bool auto_battle;
 	int cycle;
 	int attack_state;
