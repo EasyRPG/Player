@@ -71,3 +71,14 @@ void Window_VarList::SetShowSwitch(bool _switch) {
 	show_switch = _switch;
 	Refresh();
 }
+
+void Window_VarList::SetActive(bool nactive) {
+	Window::SetActive(nactive);
+	if (nactive)
+		index = hidden_index;
+	else {
+		hidden_index = index;
+		index = -1;
+	}
+	Refresh();
+}

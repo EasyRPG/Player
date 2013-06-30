@@ -57,6 +57,13 @@ public:
 	 */
 	void SetShowSwitch(bool _switch);
 
+	/**
+	 * Overwrite SetActive to hide/show selection rect when window is unnactive
+	 *
+	 * @param bool indicating if window will be enabled or disabled.
+	 */
+	void SetActive(bool nactive);
+
 private:
 
 	/**
@@ -67,6 +74,7 @@ private:
 	void DrawItemValue(int index);
 
 	int range;
+	int hidden_index;
 	bool show_switch;
 
 };
