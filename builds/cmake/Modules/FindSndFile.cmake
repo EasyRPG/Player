@@ -2,6 +2,8 @@
 # SNDFILE_INCLUDE_DIR
 # SndFile_FOUND
 
+include(FindPackageHandleStandardArgs)
+
 find_library(OGG_LIBRARY ogg)
 find_library(FLAC_LIBRARY FLAC)
 find_library(VORBIS_LIBRARY vorbis)
@@ -18,13 +20,8 @@ if((EXISTS ${SNDFILE_LIBRARY}) AND (EXISTS ${SNDFILE_INCLUDE_DIR}))
   endforeach()
 
   list(APPEND SNDFILE_LIBRARIES "${SNDFILE_LIBRARY}")
-
-  message(STATUS "Found sndfile: ${SNDFILE_LIBRARIES}")
-else()
-  set(SndFile_FOUND FALSE)
-  if(SndFile_FIND_REQUIRED)
-    message(SEND_ERROR "sndfile not found")
-  else()
-    message(STATUS "sndfile not found")
-  endif()
+  message(STATUS "sndfile dependencies: ${SNDFILE_LIBRARIES}")
 endif()
+
+find_package_handle_standard_args(SndFile
+	REQUIRED_VARS SNDFILE_INCLUDE_DIR SNDFILE_LIBRARIES)
