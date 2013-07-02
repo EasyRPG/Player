@@ -1,13 +1,7 @@
+include(FindPackageHandleStandardArgs)
+
 find_path(EXPAT_INCLUDE_DIR expat.h)
 find_library(EXPAT_LIBRARY expat)
-if((EXISTS ${EXPAT_INCLUDE_DIR}) AND (EXISTS ${EXPAT_LIBRARY}))
-  set(Expat_FOUND TRUE)
-  message(STATUS "Expat found: ${EXPAT_LIBRARY}")
-else()
-  set(Expat_FOUND FALSE)
-  if(Expat_FOUND_REQUIRED)
-    message(SEND_ERROR "Expat not found")
-  else()
-    message(STATUS "Expat not found")
-  endif()
-endif()
+
+find_package_handle_standard_args(Expat
+	REQUIRED_VARS EXPAT_INCLUDE_DIR EXPAT_LIBRARY)

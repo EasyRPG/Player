@@ -1,20 +1,11 @@
-find_path(ICONV_INCLUDE_DIR iconv.h HINTS "/opt/local/include")
-find_library(ICONV_LIBRARY iconv HINTS "/opt/local/lib")
+include(FindPackageHandleStandardArgs)
 
-if(EXISTS ${ICONV_INCLUDE_DIR})
-  message(STATUS "iconv.h found: ${ICONV_INCLUDE_DIR}")
-  set(Iconv_FOUND TRUE)
+find_path(ICONV_INCLUDE_DIR iconv.h)
+find_library(ICONV_LIBRARY iconv)
 
-  if(NOT EXISTS ${ICONV_LIBRARY})
-    set(ICONV_LIBRARY "")
-  else()
-    message(STATUS "iconv library found: ${ICONV_LIBRARY}")
-  endif()
-else()
-  set(Iconv_FOUND FALSE)
-  if(Iconv_FOUND_REQUIRED)
-    message(SEND_ERROR "Iconv not found")
-  else()
-    message(STATUS "Iconv not found")
-  endif()
+if(NOT (EXISTS "${ICONV_LIBRARY}"))
+	unset(ICONV_LIBRARY)
 endif()
+
+find_package_handle_standard_args(Iconv
+	REQUIRED_VARS ICONV_INCLUDE_DIR)
