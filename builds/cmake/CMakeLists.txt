@@ -96,9 +96,9 @@ if(OPENAL_FOUND)
   add_definitions(-D HAVE_OPENAL=1)
 endif()
 
-# Lua 5.1
-find_package(Lua51)
-if(LUA51_FOUND)
+# Lua
+find_package(Lua)
+if(Lua_FOUND)
   include_directories(${LUA_INCLUDE_DIR})
   list(APPEND EASYRPG_PLAYER_LIBRARIES ${LUA_LIBRARIES})
   add_definitions(-D HAVE_LUA=1)
