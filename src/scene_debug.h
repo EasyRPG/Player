@@ -23,6 +23,7 @@
 #include "scene.h"
 #include "window_command.h"
 #include "window_varlist.h"
+#include "window_integereditor.h"
 #include <boost/scoped_ptr.hpp>
 
 /**
@@ -77,12 +78,15 @@ private:
 	/** Creates variable list View window. */
 	void CreateVarListWindow();
 
+	/** Creates integer type variable edition window. */
+	void CreateIntegerEditWindow();
+
 	/** Displays a range selection for current var type. */
 	EASYRPG_SHARED_PTR<Window_Command> range_window;
 	/** Displays the vars inside the current range. */
 	EASYRPG_SHARED_PTR<Window_VarList> var_window;
 	/** Integer Editor. */
-	//boost::scoped_ptr<Window> integeredit_window;
+	boost::scoped_ptr<Window_IntegerEditor> integeredit_window;
 };
 
 #endif

@@ -58,11 +58,16 @@ public:
 	void SetShowSwitch(bool _switch);
 
 	/**
-	 * Overwrite SetActive to hide/show selection rect when window is unnactive
+	 * Overwrite SetActive to hide/show selection rect when window is disabled.
 	 *
 	 * @param bool indicating if window will be enabled or disabled.
 	 */
 	void SetActive(bool nactive);
+
+	/**
+	 * Overwrite GetIndex to return the hidden index when the window is disabled.
+	 */
+	int GetIndex();
 
 private:
 

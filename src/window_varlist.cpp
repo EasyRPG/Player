@@ -31,6 +31,7 @@ Window_Command(commands, 224, 10), show_switch(true), range(0) {
 	SetY(32);
 	SetHeight(176);
 	SetWidth(224);
+	hidden_index = 0;
 }
 
 
@@ -52,7 +53,7 @@ void Window_VarList::DrawItemValue(int index){
 	}
 	else {
 		std::stringstream ss;
-		ss  << Game_Variables[range*10+index];
+		ss  << Game_Variables[range*10+index+1];
 		contents->TextDraw(GetWidth() - 16, 16 * index + 2, Font::ColorDefault, ss.str(), Text::AlignRight);
 	}
 }
@@ -81,4 +82,11 @@ void Window_VarList::SetActive(bool nactive) {
 		index = -1;
 	}
 	Refresh();
+}
+
+int Window_VarList::GetIndex() {
+	if (GetActive())
+		return index;
+	else
+		return hidden_index;
 }

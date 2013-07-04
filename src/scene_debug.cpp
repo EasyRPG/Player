@@ -24,6 +24,7 @@
 #include "game_switches.h"
 #include "game_system.h"
 #include "scene_debug.h"
+#include "player.h"
 
 Scene_Debug::Scene_Debug() {
 	Scene::type = Scene::Debug;
@@ -34,6 +35,7 @@ void Scene_Debug::Start() {
 	range_index = 0;
 	CreateRangeWindow();
 	CreateVarListWindow();
+	CreateIntegerEditWindow();
 
 	range_window->SetActive(true);
 	var_window->SetActive(false);
@@ -49,14 +51,21 @@ void Scene_Debug::Update() {
 	}
 	var_window->Update();
 
+	if (integeredit_window->GetActive())
+		integeredit_window->Update();
+
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		if (range_window->GetActive())
 			Scene::Pop();
-		else {
+		else if (var_window->GetActive()) {
 			var_window->SetActive(false);
 			range_window->SetActive(true);
 			var_window->Refresh();
+		} else if (integeredit_window->GetActive()) {
+			integeredit_window->SetVisible(false);
+			integeredit_window->SetActive(false);
+			var_window->SetActive(true);
 		}
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		var_window->Refresh();
@@ -66,6 +75,18 @@ void Scene_Debug::Update() {
 		} else if (var_window->GetActive()) {
 			if (current_var_type == TypeSwitch)
 				Game_Switches[GetIndex()] = !Game_Switches[GetIndex()];
+			else {
+				var_window->SetActive(false);
+				integeredit_window->SetValue(Game_Variables[GetIndex()]);
+				integeredit_window->SetVisible(true);
+				integeredit_window->SetActive(true);
+			}
+			var_window->Refresh();
+		} else if (integeredit_window->GetActive()) {
+			Game_Variables[GetIndex()] = integeredit_window->GetValue();
+			integeredit_window->SetActive(false);
+			integeredit_window->SetVisible(false);
+			var_window->SetActive(true);
 			var_window->Refresh();
 		}
 	} else if (range_window->GetActive() && (Input::IsTriggered(Input::LEFT) || Input::IsTriggered(Input::RIGHT))) {
@@ -117,6 +138,10 @@ void Scene_Debug::CreateVarListWindow() {
 	var_window->SetX(range_window->GetWidth());
 	var_window->SetY(range_window->GetY());
 	var_window->UpdateList(range_window->GetIndex());
+}
+
+void Scene_Debug::CreateIntegerEditWindow() {
+	integeredit_window.reset(new Window_IntegerEditor(Player::engine == Player::EngineRpg2k ? 7 : 8));
 }
 
 int Scene_Debug::GetIndex() {
