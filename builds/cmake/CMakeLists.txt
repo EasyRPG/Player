@@ -17,13 +17,15 @@ if(NOT EXISTS ${EASYRPG_READERS_PATH})
 endif()
 add_subdirectory(
   ${EASYRPG_READERS_PATH}/builds/cmake
-  ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/${EASYRPG_READERS_PATH}/builds/cmake)
+  ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/EasyRPG_Readers)
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../bin)
 set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
 link_directories(${LIBRARY_OUTPUT_PATH})
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/Modules")
+list(APPEND CMAKE_MODULE_PATH
+	"${CMAKE_CURRENT_SOURCE_DIR}/../../lib/readers/builds/cmake/Modules"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Modules")
 
 add_definitions(
   ${PNG_DEFINITIONS}
@@ -68,15 +70,6 @@ if(CMAKE_BUILD_TYPE MATCHES "Debug")
   add_definitions(-D _DEBUG=1)
 endif()
 
-foreach(i Iconv Expat Freetype JPEG Pixman PNG SDL ZLIB Boost)
-  find_package(${i} REQUIRED)
-
-  string(TOUPPER ${i} i)
-
-  include_directories(${${i}_INCLUDE_DIR} ${${i}_INCLUDE_DIRS})
-  list(APPEND EASYRPG_PLAYER_LIBRARIES ${${i}_LIBRARY}  ${${i}_LIBRARIES})
-endforeach()
-
 # SDL_mixer
 find_package(SDL_mixer)
 if(SDLMIXER_FOUND)
@@ -114,6 +107,16 @@ if(Boost_FOUND)
 endif()
 
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../lib/readers/include")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../src")
+
+foreach(i Expat Freetype JPEG Pixman ZLIB PNG SDL Boost Iconv)
+  find_package(${i} REQUIRED)
+
+  string(TOUPPER ${i} i)
+
+  include_directories(${${i}_INCLUDE_DIR} ${${i}_INCLUDE_DIRS})
+  list(APPEND EASYRPG_PLAYER_LIBRARIES ${${i}_LIBRARY}  ${${i}_LIBRARIES})
+endforeach()
 
 # library
 set(EASYRPG_PLAYER_LIBRARIES_ALL
@@ -201,8 +204,6 @@ endif()
 
 # test
 enable_testing()
-
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../src)
 
 set(TEST_GAME_REPOSITORY_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../lib/TestGame")
 if(NOT EXISTS ${TEST_GAME_REPOSITORY_PATH})
