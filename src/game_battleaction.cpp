@@ -18,7 +18,6 @@
 #include <sstream>
 #include "game_battleaction.h"
 #include "game_battler.h"
-//#include "game_battlecommand.h"
 #include "game_party_base.h"
 #include "game_enemy.h"
 #include "game_temp.h"
@@ -90,7 +89,7 @@ bool Game_BattleAction::SingleTargetAction::Execute() {
 			wait = 30;
 
 			PostAction();
-			state = result ? State_ResultAction : State_Finished;
+			state = algorithm->GetAffectedConditions().empty() ? State_Finished : State_ResultAction;
 			break;
 		case State_ResultAction:
 			if (wait--) {
@@ -203,12 +202,10 @@ void Game_BattleAction::PartyTargetAction::ResultAction() {
 Game_BattleAction::AttackSingleNormal::AttackSingleNormal(Game_Battler* source, Game_Battler* target) :
 	SingleTargetAction(source, target)
 {
-	// no-op
+	algorithm.reset(new Game_BattleAlgorithm::Normal(source, target));
 }
 
 void Game_BattleAction::AttackSingleNormal::Action() {
-	double to_hit;
-
 	if (target->IsDead()) {
 		// Repoint to a different target if the selected one is dead
 		target = target->GetParty().GetRandomAliveBattler();
@@ -219,46 +216,14 @@ void Game_BattleAction::AttackSingleNormal::Action() {
 		source_sprite->SetAnimationState(Sprite_Battler::SkillUse);
 	}
 
-	if (source->GetType() == Game_Battler::Type_Ally) {
-		Game_Actor* ally = static_cast<Game_Actor*>(source);
-		RPG::Animation* anim;
-		int hit_chance = 80; // FIXME
-		if (ally->GetWeaponId() == 0) {
-			// No Weapon
-			// Todo: Two Sword style
-			anim = &Data::animations[Data::actors[ally->GetId() - 1].unarmed_animation - 1];
-		} else {
-			anim = &Data::animations[Data::items[ally->GetWeaponId() - 1].animation_id - 1];
-			hit_chance = Data::items[ally->GetWeaponId() - 1].hit;
-		}
-		
-		PlayAnimation(new BattleAnimation(target->GetBattleX(), target->GetBattleY(), anim));
+	algorithm->Execute();
 
-		to_hit = 100 - (100 - hit_chance) * (1 + (1.0 * target->GetAgi() / ally->GetAgi() - 1) / 2);
-	} else {
-		// Source is Enemy
-
-		//int hit = src->IsMissingOften() ? 70 : 90;
-		int hit = 70;
-		to_hit = 100 - (100 - hit) * (1 + (1.0 * target->GetAgi() / source->GetAgi() - 1) / 2);
+	if (algorithm->GetAnimation()) {
+		PlayAnimation(new BattleAnimation(target->GetBattleX(), target->GetBattleY(), algorithm->GetAnimation()));
 	}
 
-	// Damage calculation
-	if (rand() % 100 < to_hit) {
-		int effect = source->GetAtk() / 2 - target->GetDef() / 4;
-		if (effect < 0)
-			effect = 0;
-		int act_perc = (rand() % 40) - 20;
-		int change = effect * act_perc / 100;
-		effect += change;
-		damage = effect;
-		target->SetHp(target->GetHp() - effect);
-		if (target->IsDead()) {
-			result = true;
-		}
-	}
-	else {
-		damage = -1;
+	if (algorithm->GetAffectedHp()) {
+		target->ChangeHp(-*algorithm->GetAffectedHp());
 	}
 }
 
@@ -268,16 +233,16 @@ void Game_BattleAction::AttackSingleNormal::PostAction() {
 	std::stringstream ss;
 	ss << target->GetName();
 
-	if (damage == -1) {
+	if (!algorithm->GetAffectedHp()) {
 		ss << Data::terms.dodge;
 		Game_System::SePlay(Data::system.dodge_se);
 	} else {
-		if (damage == 0) {
+		if (*algorithm->GetAffectedHp() == 0) {
 			ss << (target_is_ally ?
 				Data::terms.actor_undamaged :
 				Data::terms.enemy_undamaged);
 		} else {
-			ss << " " << damage << (target_is_ally ?
+			ss << " " << *algorithm->GetAffectedHp() << (target_is_ally ?
 				Data::terms.actor_damaged :
 				Data::terms.enemy_damaged);
 		}

@@ -88,6 +88,12 @@ public:
 	virtual void SetHp(int hp) = 0;
 
 	/**
+	 * Sets the current battler HP.
+	 * Also handles death condition.
+	 */
+	virtual void ChangeHp(int hp) = 0;
+
+	/**
 	 * Gets the battler max HP.
 	 *
 	 * @return current max HP.

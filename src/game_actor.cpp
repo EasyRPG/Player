@@ -572,6 +572,10 @@ void Game_Actor::SetBaseMaxSp(int maxsp) {
 
 void Game_Actor::SetHp(int hp) {
 	data.current_hp = min(max(hp, 0), GetMaxHp());
+}
+
+void Game_Actor::ChangeHp(int hp) {
+	SetHp(GetHp() + hp);
 
 	if (data.current_hp == 0) {
 		// Death

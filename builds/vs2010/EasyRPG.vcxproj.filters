@@ -460,6 +460,9 @@
     <ClCompile Include="..\..\src\window_battlemessage.cpp">
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\game_battlealgorithm.cpp">
+      <Filter>Source Files\Engine\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\audio.h">
@@ -884,6 +887,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\window_battlemessage.h">
       <Filter>Source Files\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game_battlealgorithm.h">
+      <Filter>Source Files\Engine\Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

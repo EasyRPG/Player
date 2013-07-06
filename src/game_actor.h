@@ -346,6 +346,7 @@ public:
 
 	int GetHp() const;
 	void SetHp(int _hp);
+	void ChangeHp(int hp);
 
 	int GetSp() const;
 	void SetSp(int _sp);

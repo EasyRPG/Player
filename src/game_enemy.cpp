@@ -81,8 +81,12 @@ int Game_Enemy::GetSp() const {
 
 void Game_Enemy::SetHp(int _hp) {
 	hp = std::min(std::max(_hp, 0), GetMaxHp());
+}
 
-	if (hp == 0) {
+void Game_Enemy::ChangeHp(int hp) {
+	SetHp(GetHp() + hp);
+
+	if (this->hp == 0) {
 		// Death
 		RemoveAllStates();
 		AddState(1);

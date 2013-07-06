@@ -18,6 +18,7 @@
 #ifndef _EASYRPG_GAME_BATTLEACTION_H_
 #define _EASYRPG_GAME_BATTLEACTION_H_
 
+#include <boost/scoped_ptr.hpp>
 #include <vector>
 #include "rpg_animation.h"
 #include "rpg_item.h"
@@ -25,6 +26,7 @@
 #include "sprite.h"
 
 #include "battle_animation.h"
+#include "game_battlealgorithm.h"
 
 class Game_Battler;
 class Game_Party_Base;
@@ -63,6 +65,7 @@ protected:
 	int state;
 	BattleAnimation* animation;
 	int wait;
+	boost::scoped_ptr<Game_BattleAlgorithm::AlgorithmBase> algorithm;
 };
 
 class SingleTargetAction : public ActionBase {
