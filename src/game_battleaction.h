@@ -46,13 +46,12 @@ public:
 
 	ActionBase(Game_Battler* source);
 
-	virtual bool Execute();
+	virtual bool Execute() = 0;
 
 	virtual void PreAction();
 	virtual void Action() = 0;
 	virtual void PostAction() = 0;
 	virtual void ResultAction() = 0;
-	virtual bool Again() = 0;
 
 	void PlayAnimation(BattleAnimation* animation);
 
@@ -61,8 +60,6 @@ public:
 protected:
 	bool result;
 	Game_Battler* source;
-
-private:
 	int state;
 	BattleAnimation* animation;
 	int wait;
@@ -72,30 +69,35 @@ class SingleTargetAction : public ActionBase {
 public:
 	SingleTargetAction(Game_Battler* source, Game_Battler* target);
 
-	virtual bool Again();
+	virtual bool Execute();
+
 	virtual void ResultAction();
 
 protected:
 	Game_Battler* target;
 };
 
-class GroupTargetAction : public ActionBase {
-public:
-	GroupTargetAction(Game_Battler* source);
-
-	virtual bool Again();
-};
-
-class PartyTargetAction : public GroupTargetAction {
+class PartyTargetAction : public ActionBase {
 public:
 	PartyTargetAction(Game_Battler* source, Game_Party_Base* target);
+
+	virtual bool Execute();
+	virtual void ResultAction();
+
+protected:
+	Game_Party_Base* target;
+
+	std::vector<Game_Battler*> alive;
+	std::vector<Game_Battler*>::iterator current_target;
+};
+
+class AttackPartyNormal : public PartyTargetAction {
+public:
+	AttackPartyNormal(Game_Battler* source, Game_Party_Base* target);
 
 	void Action();
 	void PostAction();
 	void ResultAction();
-
-protected:
-	Game_Party_Base* target;
 };
 
 class AttackSingleNormal : public SingleTargetAction {
@@ -112,6 +114,18 @@ private:
 class AttackSingleSkill : public SingleTargetAction {
 public:
 	AttackSingleSkill(Game_Battler* source, Game_Battler* target, RPG::Skill* skill);
+
+	void Action();
+	void PostAction();
+
+private:
+	int damage;
+	RPG::Skill* skill;
+};
+
+class AttackPartySkill : public PartyTargetAction {
+public:
+	AttackPartySkill(Game_Battler* source, Game_Party_Base* target, RPG::Skill* skill);
 
 	void Action();
 	void PostAction();

@@ -38,7 +38,25 @@ Game_BattleAction::ActionBase::ActionBase(Game_Battler* source) :
 		// no-op
 }
 
-bool Game_BattleAction::ActionBase::Execute() {
+void Game_BattleAction::ActionBase::PreAction() {
+	Game_Message::texts.push_back("\r");
+	Game_Message::texts.push_back(source->GetName() + Data::terms.attacking);
+}
+
+void Game_BattleAction::ActionBase::PlayAnimation(BattleAnimation* animation) {
+	this->animation = animation;
+}
+
+Game_Battler* Game_BattleAction::ActionBase::GetSource() {
+	return source;
+}
+
+Game_BattleAction::SingleTargetAction::SingleTargetAction(Game_Battler* source, Game_Battler* target) :
+	ActionBase(source), target(target) {
+	// no-op
+}
+
+bool Game_BattleAction::SingleTargetAction::Execute() {
 	if (animation) {
 		if (!animation->GetVisible())
 			animation->SetVisible(true);
@@ -89,35 +107,9 @@ bool Game_BattleAction::ActionBase::Execute() {
 			}
 			wait = 30;
 
-			if (Again()) {
-				state = State_PreAction;
-			} else {
-				return true;
-			}
+			return true;
 	}
 
-	return false;
-}
-
-void Game_BattleAction::ActionBase::PreAction() {
-	Game_Message::texts.push_back("\r");
-	Game_Message::texts.push_back(source->GetName() + Data::terms.attacking);
-}
-
-void Game_BattleAction::ActionBase::PlayAnimation(BattleAnimation* animation) {
-	this->animation = animation;
-}
-
-Game_Battler* Game_BattleAction::ActionBase::GetSource() {
-	return source;
-}
-
-Game_BattleAction::SingleTargetAction::SingleTargetAction(Game_Battler* source, Game_Battler* target) :
-	ActionBase(source), target(target) {
-	// no-op
-}
-
-bool Game_BattleAction::SingleTargetAction::Again() {
 	return false;
 }
 
@@ -137,13 +129,75 @@ void Game_BattleAction::SingleTargetAction::ResultAction() {
 	}
 }
 
-Game_BattleAction::GroupTargetAction::GroupTargetAction(Game_Battler* source) :
-	ActionBase(source) {
-	// no-op
+Game_BattleAction::PartyTargetAction::PartyTargetAction(Game_Battler* source, Game_Party_Base* target) :
+	ActionBase(source), target(target) {
+
+	target->GetAliveBattlers(alive);
+	current_target = alive.begin();
 }
 
-bool Game_BattleAction::GroupTargetAction::Again() {
-	return true;
+bool Game_BattleAction::PartyTargetAction::Execute() {
+	if (animation) {
+		if (!animation->GetVisible())
+			animation->SetVisible(true);
+
+		if (animation->GetFrame() >= animation->GetFrames()) {
+			delete animation;
+			animation = NULL;
+		} else {
+			animation->Update();
+		}
+		return false;
+	}
+
+	//if (Game_Message::message_waiting) {
+	//	return false;
+	//}
+
+
+	switch (state) {
+		case State_PreAction:
+			PreAction();
+			state = State_Action;
+			break;
+		case State_Action:
+			Action();
+			state = State_PostAction;
+			break;
+		case State_PostAction:
+			if (wait--) {
+				return false;
+			}
+			wait = 30;
+
+			PostAction();
+			state = result ? State_ResultAction : State_Finished;
+			break;
+		case State_ResultAction:
+			if (wait--) {
+				return false;
+			}
+			wait = 30;
+
+			ResultAction();
+			state = State_Finished;
+			break;
+		case State_Finished:
+			if (wait--) {
+				return false;
+			}
+			wait = 30;
+
+			++current_target;
+			state = State_PreAction;
+			return current_target == alive.end();
+	}
+
+	return false;
+}
+
+void Game_BattleAction::PartyTargetAction::ResultAction() {
+
 }
 
 Game_BattleAction::AttackSingleNormal::AttackSingleNormal(Game_Battler* source, Game_Battler* target) :
@@ -240,20 +294,20 @@ void Game_BattleAction::AttackSingleNormal::PostAction() {
 	Game_Message::texts.push_back(ss.str());
 }
 
-Game_BattleAction::PartyTargetAction::PartyTargetAction(Game_Battler* source, Game_Party_Base* target) :
-	GroupTargetAction(source), target(target) {
+Game_BattleAction::AttackPartyNormal::AttackPartyNormal(Game_Battler* source, Game_Party_Base* target) :
+	PartyTargetAction(source, target) {
 	// no-op
 }
 
-void Game_BattleAction::PartyTargetAction::Action() {
+void Game_BattleAction::AttackPartyNormal::Action() {
 	
 }
 
-void Game_BattleAction::PartyTargetAction::PostAction() {
+void Game_BattleAction::AttackPartyNormal::PostAction() {
 
 }
 
-void Game_BattleAction::PartyTargetAction::ResultAction() {
+void Game_BattleAction::AttackPartyNormal::ResultAction() {
 
 }
 
@@ -323,4 +377,51 @@ void Game_BattleAction::AttackSingleSkill::Action() {
 
 void Game_BattleAction::AttackSingleSkill::PostAction() {
 
+}
+
+Game_BattleAction::AttackPartySkill::AttackPartySkill(Game_Battler* source, Game_Party_Base* target, RPG::Skill* skill) :
+	PartyTargetAction(source, target), skill(skill) {
+	// no-op
+}
+
+void Game_BattleAction::AttackPartySkill::Action() {
+	if (current_target == alive.begin()) {
+		PlayAnimation(new BattleAnimation(160, 120,
+			&Data::animations[skill->animation_id == 0 ? 0 : skill->animation_id - 1]));
+	}
+
+	damage = 50;
+	result = false;
+}
+
+void Game_BattleAction::AttackPartySkill::PostAction() {
+	bool target_is_ally = (*current_target)->GetType() == Game_Battler::Type_Ally;
+
+	std::stringstream ss;
+	ss << (*current_target)->GetName();
+
+	if (damage == -1) {
+		ss << Data::terms.dodge;
+		Game_System::SePlay(Data::system.dodge_se);
+	} else {
+		if (damage == 0) {
+			ss << (target_is_ally ?
+				Data::terms.actor_undamaged :
+			Data::terms.enemy_undamaged);
+		} else {
+			ss << " " << damage << (target_is_ally ?
+				Data::terms.actor_damaged :
+			Data::terms.enemy_damaged);
+		}
+		Game_System::SePlay(target_is_ally ?
+			Data::system.actor_damaged_se :
+		Data::system.enemy_damaged_se);
+
+		Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler((*current_target));
+		if (target_sprite) {
+			target_sprite->SetAnimationState(Sprite_Battler::Damage);
+		}
+	}
+
+	Game_Message::texts.push_back(ss.str());
 }

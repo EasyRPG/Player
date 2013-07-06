@@ -525,23 +525,23 @@ void Scene_Battle_Rpg2k::SkillSelected() {
 
 	switch (skill->scope) {
 		case RPG::Skill::Scope_enemy:
-			//Game_Battle::SetTargetEnemy(0);
 			SetState(State_SelectEnemyTarget);
 			break;
 		case RPG::Skill::Scope_ally:
-			//Game_Battle::TargetActiveAlly();
 			SetState(State_SelectAllyTarget);
 			break;
 		case RPG::Skill::Scope_enemies: {
-			BattlerActionPair battler_action(active_actor, EASYRPG_MAKE_SHARED<Game_BattleAction::PartyTargetAction>(active_actor, &Game_EnemyParty()));
+			BattlerActionPair battler_action(active_actor, EASYRPG_MAKE_SHARED<Game_BattleAction::AttackPartySkill>(active_actor, &Game_EnemyParty(), skill));
 			battle_actions.push_back(battler_action);
+			SetState(State_SelectActor);
 			break;
 		}
 		case RPG::Skill::Scope_self:
 			break;
 		case RPG::Skill::Scope_party: {
-			BattlerActionPair battler_action(active_actor, EASYRPG_MAKE_SHARED<Game_BattleAction::PartyTargetAction>(active_actor, &Game_Party()));
+			BattlerActionPair battler_action(active_actor, EASYRPG_MAKE_SHARED<Game_BattleAction::AttackPartySkill>(active_actor, &Game_Party(), skill));
 			battle_actions.push_back(battler_action);
+			SetState(State_SelectActor);
 			break;
 		}
 	}
