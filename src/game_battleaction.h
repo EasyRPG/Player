@@ -60,7 +60,6 @@ public:
 	Game_Battler* GetSource();
 
 protected:
-	bool result;
 	Game_Battler* source;
 	int state;
 	BattleAnimation* animation;
@@ -100,7 +99,6 @@ public:
 
 	void Action();
 	void PostAction();
-	void ResultAction();
 };
 
 class AttackSingleNormal : public SingleTargetAction {
@@ -109,9 +107,6 @@ public:
 
 	void Action();
 	void PostAction();
-
-private:
-	int damage;
 };
 
 class AttackSingleSkill : public SingleTargetAction {
@@ -122,7 +117,6 @@ public:
 	void PostAction();
 
 private:
-	int damage;
 	RPG::Skill* skill;
 };
 
@@ -134,7 +128,6 @@ public:
 	void PostAction();
 
 private:
-	int damage;
 	RPG::Skill* skill;
 };
 

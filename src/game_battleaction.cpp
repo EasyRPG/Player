@@ -29,7 +29,6 @@
 #include "spriteset_battle.h"
 
 Game_BattleAction::ActionBase::ActionBase(Game_Battler* source) :
-	result(false),
 	state(State_PreAction),
 	animation(NULL),
 	wait(30),
@@ -170,7 +169,7 @@ bool Game_BattleAction::PartyTargetAction::Execute() {
 			wait = 30;
 
 			PostAction();
-			state = result ? State_ResultAction : State_Finished;
+			state = algorithm->GetAffectedConditions().empty() ? State_Finished : State_ResultAction;
 			break;
 		case State_ResultAction:
 			if (wait--) {
@@ -196,7 +195,19 @@ bool Game_BattleAction::PartyTargetAction::Execute() {
 }
 
 void Game_BattleAction::PartyTargetAction::ResultAction() {
+	if ((*current_target)->GetSignificantState()->ID == 1) {
+		Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(*current_target);
+		if (target_sprite) {
+			target_sprite->SetAnimationState(Sprite_Battler::Dead);
+			Game_System::SePlay(Data::system.enemy_death_se);
+		}
+	}
 
+	if ((*current_target)->GetType() == Game_Battler::Type_Ally) {
+		Game_Message::texts.push_back((*current_target)->GetName() + (*current_target)->GetSignificantState()->message_actor);
+	} else {
+		Game_Message::texts.push_back((*current_target)->GetName() + (*current_target)->GetSignificantState()->message_enemy);
+	}
 }
 
 Game_BattleAction::AttackSingleNormal::AttackSingleNormal(Game_Battler* source, Game_Battler* target) :
@@ -272,72 +283,13 @@ void Game_BattleAction::AttackPartyNormal::PostAction() {
 
 }
 
-void Game_BattleAction::AttackPartyNormal::ResultAction() {
-
-}
-
 Game_BattleAction::AttackSingleSkill::AttackSingleSkill(Game_Battler* source, Game_Battler* target, RPG::Skill* skill) :
 	SingleTargetAction(source, target), skill(skill) {
 	// no-op
 }
 
 void Game_BattleAction::AttackSingleSkill::Action() {
-	double to_hit;
-
-	if (target->IsDead()) {
-		// Repoint to a different target if the selected one is dead
-		target = target->GetParty().GetRandomAliveBattler();
-	}
-
-	Sprite_Battler* source_sprite = Game_Battle::GetSpriteset().FindBattler(source);
-	if (source_sprite) {
-		source_sprite->SetAnimationState(Sprite_Battler::SkillUse);
-	}
-
-	source->SetSp(source->GetSp() - skill->sp_cost);
-
-	if (source->GetType() == Game_Battler::Type_Ally) {
-		Game_Actor* ally = static_cast<Game_Actor*>(source);
-		RPG::Animation* anim;
-		int hit_chance = 80; // FIXME
-		if (ally->GetWeaponId() == 0) {
-			// No Weapon
-			// Todo: Two Sword style
-			anim = &Data::animations[Data::actors[ally->GetId() - 1].unarmed_animation - 1];
-		} else {
-			anim = &Data::animations[Data::items[ally->GetWeaponId() - 1].animation_id - 1];
-			hit_chance = Data::items[ally->GetWeaponId() - 1].hit;
-		}
-
-		PlayAnimation(new BattleAnimation(target->GetBattleX(), target->GetBattleY(),
-			&Data::animations[skill->animation_id == 0 ? 0 : skill->animation_id - 1]));
-
-		to_hit = 100 - (100 - hit_chance) * (1 + (1.0 * target->GetAgi() / ally->GetAgi() - 1) / 2);
-	} else {
-		// Source is Enemy
-
-		//int hit = src->IsMissingOften() ? 70 : 90;
-		int hit = 70;
-		to_hit = 100 - (100 - hit) * (1 + (1.0 * target->GetAgi() / source->GetAgi() - 1) / 2);
-	}
-
-	// Damage calculation
-	if (rand() % 100 < to_hit) {
-		int effect = source->GetAtk() / 2 - target->GetDef() / 4;
-		if (effect < 0)
-			effect = 0;
-		int act_perc = (rand() % 40) - 20;
-		int change = effect * act_perc / 100;
-		effect += change;
-		damage = effect;
-		target->SetHp(target->GetHp() - effect);
-		if (target->IsDead()) {
-			result = true;
-		}
-	}
-	else {
-		damage = -1;
-	}
+	// Todo
 }
 
 void Game_BattleAction::AttackSingleSkill::PostAction() {
@@ -350,13 +302,26 @@ Game_BattleAction::AttackPartySkill::AttackPartySkill(Game_Battler* source, Game
 }
 
 void Game_BattleAction::AttackPartySkill::Action() {
-	if (current_target == alive.begin()) {
-		PlayAnimation(new BattleAnimation(160, 120,
-			&Data::animations[skill->animation_id == 0 ? 0 : skill->animation_id - 1]));
+	algorithm.reset(new Game_BattleAlgorithm::Skill(source, *current_target, *skill));
+
+	Sprite_Battler* source_sprite = Game_Battle::GetSpriteset().FindBattler(source);
+	if (source_sprite) {
+		source_sprite->SetAnimationState(Sprite_Battler::SkillUse);
 	}
 
-	damage = 50;
-	result = false;
+	algorithm->Execute();
+
+	if (current_target == alive.begin()) {
+		source->SetSp(source->GetSp() - skill->sp_cost);
+		if (algorithm->GetAnimation()) {
+			PlayAnimation(new BattleAnimation(160, 120,
+				algorithm->GetAnimation()));
+		}
+	}
+
+	if (algorithm->GetAffectedHp()) {
+		(*current_target)->ChangeHp(-*algorithm->GetAffectedHp());
+	}
 }
 
 void Game_BattleAction::AttackPartySkill::PostAction() {
@@ -365,16 +330,16 @@ void Game_BattleAction::AttackPartySkill::PostAction() {
 	std::stringstream ss;
 	ss << (*current_target)->GetName();
 
-	if (damage == -1) {
+	if (!algorithm->GetAffectedHp()) {
 		ss << Data::terms.dodge;
 		Game_System::SePlay(Data::system.dodge_se);
 	} else {
-		if (damage == 0) {
+		if (*algorithm->GetAffectedHp() == 0) {
 			ss << (target_is_ally ?
 				Data::terms.actor_undamaged :
 			Data::terms.enemy_undamaged);
 		} else {
-			ss << " " << damage << (target_is_ally ?
+			ss << " " << *algorithm->GetAffectedHp() << (target_is_ally ?
 				Data::terms.actor_damaged :
 			Data::terms.enemy_damaged);
 		}

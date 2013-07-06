@@ -124,6 +124,64 @@ Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Battler* target, R
 }
 
 bool Game_BattleAlgorithm::Skill::Execute() {
+	animation = &Data::animations[skill.animation_id == 0 ? 0 : skill.animation_id - 1];
+
+	if (skill.type == RPG::Skill::Type_normal) {
+		bool miss = true;
+
+		if (skill.power > 0) {
+			if (rand() % 100 < skill.hit) {
+				miss = false;
+
+				// FIXME: is this still affected by stats for allies?
+				int effect = skill.power;
+
+				if (skill.variance > 0) {
+					int var_perc = skill.variance * 5;
+					int act_perc = rand() % (var_perc * 2) - var_perc;
+					int change = effect * act_perc / 100;
+					effect += change;
+				}
+
+				if (skill.affect_hp) {
+					this->hp = effect;
+
+					if (target->GetHp() - this->hp <= 0) {
+						// Death state
+						conditions.push_back(Data::states[0]);
+					}
+				}
+				if (skill.affect_sp)
+					this->sp = effect;
+				if (skill.affect_attack)
+					this->attack = effect;
+				if (skill.affect_defense)
+					this->defense = effect;
+				if (skill.affect_spirit)
+					this->spirit = effect;
+				if (skill.affect_agility)
+					this->agility = agility;
+			}
+		}
+
+		for (int i = 0; i < (int) skill.state_effects.size(); i++) {
+			if (!skill.state_effects[i])
+				continue;
+			if (rand() % 100 >= skill.hit)
+				continue;
+
+			miss = false;
+
+			//if (skill.state_effect)
+				conditions.push_back(Data::states[i]);
+			//	actor->AddState(i + 1);
+			//else
+			//	actor->RemoveState(i + 1);
+		}
+
+		return !miss;
+	}
+
 	return false;
 }
 
