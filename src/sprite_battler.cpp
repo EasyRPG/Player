@@ -31,8 +31,7 @@ Sprite_Battler::Sprite_Battler(Game_Battler* battler) :
 	sprite_file(""),
 	sprite_frame(-1),
 	fade_out(255),
-	flash_counter(0),
-	flashing(false) {
+	flash_counter(0) {
 	
 	// Not animated
 	if (battler->GetBattleAnimationId() == 0) {
@@ -81,7 +80,7 @@ void Sprite_Battler::Update() {
 		}
 		else if (anim_state == Dead && fade_out > 0) {
 			fade_out -= 15;
-			SetOpacity(fade_out);
+			SetOpacity(std::max(0, fade_out));
 		}
 		else if (anim_state == Damage) {
 			flash_counter = (flash_counter + 1) % 10;
@@ -109,7 +108,6 @@ void Sprite_Battler::SetAnimationState(int state) {
 	anim_state = state;
 
 	flash_counter = 0;
-	flashing = false;
 
 	if (Player::engine == Player::EngineRpg2k3) {
 		const RPG::BattlerAnimation& anim = Data::battleranimations[battler->GetBattleAnimationId() - 1];

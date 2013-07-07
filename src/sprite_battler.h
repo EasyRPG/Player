@@ -73,7 +73,6 @@ protected:
 	int sprite_frame;
 	int fade_out;
 	int flash_counter;
-	bool flashing;
 };
 
 #endif

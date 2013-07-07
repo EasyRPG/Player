@@ -162,6 +162,13 @@ public:
 	virtual const RPG::Sound* GetResultSe() const;
 
 	/**
+	 * Gets the sound effect that is played when the target died.
+	 *
+	 * @return death se
+	 */
+	virtual const RPG::Sound* GetDeathSe() const;
+
+	/**
 	 * This is used to handle a corner case in the RPG2k battle system.
 	 * When a battler dies because his hp reached 0 the "[NAME] has fallen"
 	 * message is displayed on a new line. When the death is caused by a
@@ -173,6 +180,8 @@ public:
 
 	/**
 	 * Returns all inflicted/healed conditions.
+	 * This must be called before calling Execute, otherwise the conditions
+	 * are reported incorrectly.
 	 *
 	 * @param out filled with all conditions in text form
 	 */

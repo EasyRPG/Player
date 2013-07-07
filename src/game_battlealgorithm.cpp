@@ -153,21 +153,21 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 	if (GetAffectedDefense()) {
 		std::stringstream ss;
 		ss << (*current_target)->GetName();
-		ss << " " << Data::terms.attack << " " << *GetAffectedDefense();
+		ss << " " << Data::terms.defense << " " << *GetAffectedDefense();
 		out.push_back(ss.str());
 	}
 
 	if (GetAffectedSpirit()) {
 		std::stringstream ss;
 		ss << (*current_target)->GetName();
-		ss << " " << Data::terms.attack << " " << *GetAffectedSpirit();
+		ss << " " << Data::terms.spirit << " " << *GetAffectedSpirit();
 		out.push_back(ss.str());
 	}
 
 	if (GetAffectedAgility()) {
 		std::stringstream ss;
 		ss << (*current_target)->GetName();
-		ss << " " << Data::terms.attack << " " << *GetAffectedAgility();
+		ss << " " << Data::terms.agility << " " << *GetAffectedAgility();
 		out.push_back(ss.str());
 	}
 
@@ -177,12 +177,23 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 
 	for (; it != conditions.end(); ++it) {
 		if ((*current_target)->HasState(it->ID)) {
-			out.push_back(it->message_already);
+			if (!it->message_already.empty()) {
+				out.push_back(it->message_already);
+			}
 		} else {
+			std::stringstream ss;
+			ss << (*current_target)->GetName();
+
 			if ((*current_target)->GetType() == Game_Battler::Type_Ally) {
-				out.push_back(it->message_actor);
+				ss << it->message_actor;
 			} else {
-				out.push_back(it->message_enemy);
+				ss << it->message_enemy;
+			}
+			out.push_back(ss.str());
+
+			// Reporting ends with death state
+			if (it->ID == 1) {
+				return;
 			}
 		}
 	}
@@ -255,6 +266,11 @@ const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetResultSe() const {
 			&Data::system.actor_damaged_se :
 		&Data::system.enemy_damaged_se);
 	}
+}
+
+const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetDeathSe() const {
+	return ((*current_target)->GetType() == Game_Battler::Type_Ally ?
+		NULL : &Data::system.enemy_death_se);
 }
 
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target) :

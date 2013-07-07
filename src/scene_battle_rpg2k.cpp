@@ -82,7 +82,9 @@ void Scene_Battle_Rpg2k::Update() {
 	battle_message_window->Update();
 	message_window->Update();
 
-	ProcessActions();
+	if (!message_window->GetVisible()) {
+		ProcessActions();
+	}
 
 	ProcessInput();
 
@@ -337,6 +339,8 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 			}
 		} else {
 			NextTurn();
+			actor_index = 0;
+			SetState(State_SelectOption);
 		}
 		break;
 	case State_AllyAction:
@@ -360,10 +364,12 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			battle_message_window->Clear();
 
 			action->Execute();
-			action->Apply();
 
 			battle_result_messages.clear();
 			action->GetResultMessages(battle_result_messages);
+
+			action->Apply();
+
 			battle_result_messages_it = battle_result_messages.begin();
 
 			battle_message_window->Push(action->GetStartMessage());
@@ -396,8 +402,9 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			battle_action_wait = 30;
 
 			if (battle_result_messages_it != battle_result_messages.end()) {
+				Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
+
 				if (battle_result_messages_it == battle_result_messages.begin()) {
-					Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
 					if (target_sprite) {
 						target_sprite->SetAnimationState(Sprite_Battler::Damage);
 					}
@@ -405,6 +412,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 					if (action->GetResultSe()) {
 						Game_System::SePlay(*action->GetResultSe());
 					}
+				} else {
+					target_sprite->SetAnimationState(Sprite_Battler::Idle);
 				}
 
 				if (battle_result_messages_it != battle_result_messages.begin()) {
@@ -421,6 +430,17 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			if (battle_result_messages_it == battle_result_messages.end()) {
 				battle_action_state = BattleActionState_Finished;
+
+				if (action->GetTarget()->IsDead()) {
+					if (action->GetDeathSe()) {
+						Game_System::SePlay(*action->GetDeathSe());
+					}
+
+					Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
+					if (target_sprite) {
+						target_sprite->SetAnimationState(Sprite_Battler::Dead);
+					}
+				}
 			}
 			
 			break;
@@ -430,13 +450,8 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			}
 			battle_action_wait = 30;
 
-			Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
-			if (target_sprite) {
-				target_sprite->SetAnimationState(Sprite_Battler::Idle);
-			}
-
 			if (action->TargetNext()) {
-				first = true;
+				first = false;
 				battle_action_state = BattleActionState_Start;
 				return false;
 			}
@@ -533,8 +548,6 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 void Scene_Battle_Rpg2k::NextTurn() {
 	Game_Battle::NextTurn();
 	Game_Battle::UpdateEvents();
-	actor_index = 0;
-	SetState(State_SelectOption);
 }
 
 void Scene_Battle_Rpg2k::OptionSelected() {
@@ -667,6 +680,8 @@ void Scene_Battle_Rpg2k::SelectNextActor() {
 		SetState(State_Battle);
 		CreateEnemyActions();
 		CreateExecutionOrder();
+
+		NextTurn();
 		return;
 	}
 
