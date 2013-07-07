@@ -731,7 +731,7 @@ BitmapRef Bitmap::Resample(int scale_w, int scale_h, const Rect& src_rect) const
 
 	pixman_image_composite32(PIXMAN_OP_SRC,
 							 bitmap, (pixman_image_t*) NULL, dst->bitmap,
-							 src_rect.x, src_rect.y,
+							 src_rect.x / zoom_x, src_rect.y / zoom_y,
 							 0, 0,
 							 0, 0,
 							 scale_w, scale_h);

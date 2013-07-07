@@ -86,11 +86,10 @@ void BattleAnimation::Draw(int /* z_order */) {
 		int sx = cell.cell_id % 5;
 		int sy = cell.cell_id / 5;
 		int size = large ? 128 : 96;
-		//int zoomed = size * cell.zoom / 100; // FIXME: zoom broken
-		int zoomed = size;
+		int zoomed = size * cell.zoom / 100;
 		screen->SetSrcRect(Rect(sx * size, sy * size, size, size));
-		//screen->SetZoomXEffect(cell.zoom / 100.0);
-		//screen->SetZoomYEffect(cell.zoom / 100.0);
+		screen->SetZoomXEffect(cell.zoom / 100.0);
+		screen->SetZoomYEffect(cell.zoom / 100.0);
 		screen->SetToneEffect(Tone(cell.tone_red, cell.tone_green, cell.tone_blue, cell.tone_gray));
 		screen->SetOpacityEffect(255 * (100 - cell.transparency) / 100);
 		screen->BlitScreen(x + cell.x - zoomed / 2, y + cell.y - zoomed / 2);
