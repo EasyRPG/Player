@@ -22,11 +22,10 @@
 #include "main_data.h"
 #include "rpg_enemy.h"
 
-Game_EnemyParty_Class::Game_EnemyParty_Class() {
-	//interpreter = NULL;
+Game_EnemyParty::Game_EnemyParty() {
 }
 
-Game_Battler* Game_EnemyParty_Class::GetBattler(int index) {
+Game_Battler* Game_EnemyParty::GetBattler(int index) {
 	if (index < 0 || index >= (int)enemies.size()) {
 		return NULL;
 	}
@@ -34,11 +33,11 @@ Game_Battler* Game_EnemyParty_Class::GetBattler(int index) {
 	return &enemies[index];
 }
 
-int Game_EnemyParty_Class::GetBattlerCount() const {
+int Game_EnemyParty::GetBattlerCount() const {
 	return enemies.size();
 }
 
-void Game_EnemyParty_Class::Setup(int battle_troop_id) {
+void Game_EnemyParty::Setup(int battle_troop_id) {
 	enemies.clear();
 	troop = &Data::troops[battle_troop_id - 1];
 	std::vector<RPG::TroopMember>::const_iterator ei;
@@ -51,11 +50,11 @@ void Game_EnemyParty_Class::Setup(int battle_troop_id) {
 	}
 }
 
-boost::ptr_vector<Game_Enemy>& Game_EnemyParty_Class::GetEnemies() {
+boost::ptr_vector<Game_Enemy>& Game_EnemyParty::GetEnemies() {
 	return enemies;
 }
 
-std::vector<Game_Enemy*> Game_EnemyParty_Class::GetAliveEnemies() {
+std::vector<Game_Enemy*> Game_EnemyParty::GetAliveEnemies() {
 	std::vector<Game_Enemy*> alive;
 	boost::ptr_vector<Game_Enemy>::iterator it;
 	for (it = enemies.begin(); it != enemies.end(); ++it) {
@@ -66,11 +65,7 @@ std::vector<Game_Enemy*> Game_EnemyParty_Class::GetAliveEnemies() {
 	return alive;
 }
 
-void Game_EnemyParty_Class::Clear() {
-	enemies.clear();
-}
-
-int Game_EnemyParty_Class::GetExp() const {
+int Game_EnemyParty::GetExp() const {
 	boost::ptr_vector<Game_Enemy>::const_iterator it;
 	int sum = 0;
 	for (it = enemies.begin(); it != enemies.end(); ++it) {
@@ -79,21 +74,11 @@ int Game_EnemyParty_Class::GetExp() const {
 	return sum;
 }
 
-int Game_EnemyParty_Class::GetMoney() const {
+int Game_EnemyParty::GetMoney() const {
 	boost::ptr_vector<Game_Enemy>::const_iterator it;
 	int sum = 0;
 	for (it = enemies.begin(); it != enemies.end(); ++it) {
 		sum += it->GetMoney();
 	}
 	return sum;
-}
-
-Game_EnemyParty_Class& Game_EnemyParty() {
-	static bool init = false;
-	static boost::scoped_ptr<Game_EnemyParty_Class> instance;
-	if (!init) {
-		instance.reset(new Game_EnemyParty_Class());
-		init = true;
-	}
-	return *instance;
 }

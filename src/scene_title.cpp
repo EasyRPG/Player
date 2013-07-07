@@ -157,6 +157,7 @@ void Scene_Title::CreateGameObjects() {
 	Game_Message::Init();
 	Game_Map::Init();
 	Main_Data::game_player.reset(new Game_Player());
+	Main_Data::game_party.reset(new Game_Party());
 }
 
 bool Scene_Title::CheckContinue() {
@@ -217,7 +218,6 @@ bool Scene_Title::CheckValidPlayerLocation() {
 
 void Scene_Title::PrepareBattleTest() {
 	CreateGameObjects();
-	//Game_Party().SetupBattleTestMembers();
 	//Game_Troop::can_escape = true;
 
 	Scene::Push(Scene_Battle::Create(), true);

@@ -32,7 +32,7 @@ Scene_Order::Scene_Order() :
 }
 
 void Scene_Order::Start() {
-	actors.resize(Game_Party().GetActors().size());
+	actors.resize(Main_Data::game_party->GetActors().size());
 
 	CreateCommandWindow();
 }
@@ -59,14 +59,14 @@ void Scene_Order::UpdateOrder() {
 		} else {
 			Game_System::SePlay(Main_Data::game_data.system.decision_se);
 			window_left->SetItemText(window_left->GetIndex(), "");
-			window_right->SetItemText(actor_counter, Game_Party().GetActors()[window_left->GetIndex()]->GetName());
+			window_right->SetItemText(actor_counter, Main_Data::game_party->GetActors()[window_left->GetIndex()]->GetName());
 
 			actors[actor_counter] = window_left->GetIndex() + 1;
 
 			++actor_counter;
 
 			// Display Confirm/Redo window
-			if (actor_counter == (int)Game_Party().GetActors().size()) {
+			if (actor_counter == (int)Main_Data::game_party->GetActors().size()) {
 				window_left->SetIndex(-1);
 				window_left->SetActive(false);
 				window_confirm->SetIndex(0);
@@ -95,7 +95,7 @@ void Scene_Order::CreateCommandWindow() {
 	std::vector<std::string> options_right;
 	std::vector<std::string> options_confirm;
 
-	std::vector<Game_Actor*> actors = Game_Party().GetActors();
+	std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
 	for (std::vector<Game_Actor*>::const_iterator it = actors.begin();
 		it != actors.end(); ++it) {
 		options_left.push_back((*it)->GetName());
@@ -126,7 +126,7 @@ void Scene_Order::CreateCommandWindow() {
 void Scene_Order::Redo() {
 	Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 
-	std::vector<Game_Actor*> actors = Game_Party().GetActors();
+	std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
 	for (std::vector<Game_Actor*>::const_iterator it = actors.begin();
 		it != actors.end(); ++it) {
 		int index = it - actors.begin();
@@ -149,10 +149,10 @@ void Scene_Order::Redo() {
 void Scene_Order::Confirm() {
 	Game_System::SePlay(Main_Data::game_data.system.decision_se);
 
-	std::vector<Game_Actor*> party_actors = Game_Party().GetActors();
+	std::vector<Game_Actor*> party_actors = Main_Data::game_party->GetActors();
 
 	for (size_t i = 0; i < party_actors.size(); ++i) {
-		Game_Party().GetActors()[i] = party_actors[actors[i] - 1];
+		Main_Data::game_party->GetActors()[i] = party_actors[actors[i] - 1];
 	}
 
 	// TODO: Where is the best place to overwrite the character map graphic?

@@ -290,12 +290,12 @@ bool Game_Player::CheckEventTriggerTouch(int x, int y) {
 void Game_Player::Refresh() {
 	Game_Actor* actor;
 
-	if (Game_Party().GetActors().empty()) {
+	if (Main_Data::game_party->GetActors().empty()) {
 		character_name.clear();
 		return;
 	}
 
-	actor = Game_Party().GetActors()[0];
+	actor = Main_Data::game_party->GetActors()[0];
 
 	character_name = actor->GetSpriteName();
 	character_index = actor->GetSpriteIndex();

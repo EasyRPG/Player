@@ -73,7 +73,7 @@ void Scene_Map::TransitionOut() {
 void Scene_Map::Update() {
 	Game_Map::GetInterpreter().Update();
 
-	Game_Party().UpdateTimers();
+	Main_Data::game_party->UpdateTimers();
 
 	Game_Map::Update();
 	Main_Data::game_player->Update();

@@ -585,11 +585,11 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			switch (com.parameters[6]) {
 				case 0:
 					// Number of items posessed
-					value = Game_Party().ItemNumber(com.parameters[5]);
+					value = Main_Data::game_party->ItemNumber(com.parameters[5]);
 					break;
 				case 1:
 					// How often the item is equipped
-					value = Game_Party().ItemNumber(com.parameters[5], true);
+					value = Main_Data::game_party->ItemNumber(com.parameters[5], true);
 					break;
 			}
 			break;
@@ -701,14 +701,14 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			switch (com.parameters[5]) {
 				case 0:
 					// Gold
-					value = Game_Party().GetGold();
+					value = Main_Data::game_party->GetGold();
 					break;
 				case 1:
-					value = Game_Party().ReadTimer(Game_Party().Timer1);
+					value = Main_Data::game_party->ReadTimer(Main_Data::game_party->Timer1);
 					break;
 				case 2:
 					// Number of heroes in party
-					value = Game_Party().GetActors().size();
+					value = Main_Data::game_party->GetActors().size();
 					break;
 				case 3:
 					// Number of saves
@@ -716,25 +716,25 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 					break;
 				case 4:
 					// Number of battles
-					value = Game_Party().GetBattleCount();
+					value = Main_Data::game_party->GetBattleCount();
 					break;
 				case 5:
 					// Number of wins
-					value = Game_Party().GetWinCount();
+					value = Main_Data::game_party->GetWinCount();
 					break;
 				case 6:
 					// Number of defeats
-					value = Game_Party().GetDefeatCount();
+					value = Main_Data::game_party->GetDefeatCount();
 					break;
 				case 7:
 					// Number of escapes (aka run away)
-					value = Game_Party().GetRunCount();
+					value = Main_Data::game_party->GetRunCount();
 					break;
 				case 8:
 					// TODO: MIDI play position
 					break;
 				case 9:
-					value = Game_Party().ReadTimer(Game_Party().Timer2);
+					value = Main_Data::game_party->ReadTimer(Main_Data::game_party->Timer2);
 					break;
 			}
 			break;
@@ -852,7 +852,7 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 	switch (mode) {
 	case 0:
 		// Party
-		actors = Game_Party().GetActors();
+		actors = Main_Data::game_party->GetActors();
 		break;
 	case 1:
 		// Hero
@@ -885,7 +885,7 @@ bool Game_Interpreter::CommandChangeGold(RPG::EventCommand const& com) { // Code
 		com.parameters[2]
 	);
 
-	Game_Party().GainGold(value);
+	Main_Data::game_party->GainGold(value);
 
 	// Continue
 	return true;
@@ -916,10 +916,10 @@ bool Game_Interpreter::CommandChangeItems(RPG::EventCommand const& com) { // Cod
 
 	if (com.parameters[1] == 0) {
 		// Item by const number
-		Game_Party().GainItem(com.parameters[2], value);
+		Main_Data::game_party->GainItem(com.parameters[2], value);
 	} else {
 		// Item by variable
-		Game_Party().GainItem(
+		Main_Data::game_party->GainItem(
 			Game_Variables[com.parameters[2]],
 			value
 		);
@@ -972,11 +972,11 @@ bool Game_Interpreter::CommandChangePartyMember(RPG::EventCommand const& com) { 
 
 		if (com.parameters[0] == 0) {
 			// Add members
-			Game_Party().AddActor(id);
+			Main_Data::game_party->AddActor(id);
 
 		} else {
 			// Remove members
-			Game_Party().RemoveActor(id);
+			Main_Data::game_party->RemoveActor(id);
 		}
 	}
 

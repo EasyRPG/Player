@@ -20,6 +20,8 @@
 #include <cstdlib>
 #include "main_data.h"
 #include "game_actors.h"
+#include "game_party.h"
+#include "game_enemyparty.h"
 #include "game_player.h"
 #include "game_screen.h"
 #include "game_map.h"
@@ -36,6 +38,9 @@ namespace Main_Data {
 	// Dynamic Game Data
 	boost::scoped_ptr<Game_Screen> game_screen;
 	boost::scoped_ptr<Game_Player> game_player;
+	boost::scoped_ptr<Game_Party> game_party;
+	boost::scoped_ptr<Game_EnemyParty> game_enemyparty;
+
 	RPG::Save game_data;
 	std::string project_path =
 		getenv("RPG_TEST_GAME_PATH")? getenv("RPG_TEST_GAME_PATH"):
@@ -50,4 +55,6 @@ void Main_Data::Cleanup() {
 
 	game_screen.reset();
 	game_player.reset();
+	game_party.reset();
+	game_enemyparty.reset();
 }

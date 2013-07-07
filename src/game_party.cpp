@@ -28,11 +28,11 @@
 
 static RPG::SaveInventory& data = Main_Data::game_data.inventory;
 
-Game_Party_Class::Game_Party_Class() {
+Game_Party::Game_Party() {
 	data.Setup();
 }
 
-Game_Battler* Game_Party_Class::GetBattler(int index) {
+Game_Battler* Game_Party::GetBattler(int index) {
 	std::vector<Game_Actor*> actors = GetActors();
 
 	if (index < 0 || index >= actors.size()) {
@@ -42,11 +42,11 @@ Game_Battler* Game_Party_Class::GetBattler(int index) {
 	return actors[index];
 }
 
-int Game_Party_Class::GetBattlerCount() const {
+int Game_Party::GetBattlerCount() const {
 	return GetActors().size();
 }
 
-void Game_Party_Class::SetupBattleTestMembers() {
+void Game_Party::SetupBattleTestMembers() {
 	data.party.clear();
 	
 	std::vector<RPG::TestBattler>::const_iterator it;
@@ -67,7 +67,7 @@ void Game_Party_Class::SetupBattleTestMembers() {
 	Main_Data::game_player->Refresh();
 }
 
-void Game_Party_Class::GetItems(std::vector<int>& item_list) {
+void Game_Party::GetItems(std::vector<int>& item_list) {
 	item_list.clear();
 
 	std::vector<int16_t>::iterator it;
@@ -75,7 +75,7 @@ void Game_Party_Class::GetItems(std::vector<int>& item_list) {
 		item_list.push_back(*it);
 }
 
-int Game_Party_Class::ItemNumber(int item_id, bool get_equipped) {
+int Game_Party::ItemNumber(int item_id, bool get_equipped) {
 	if (get_equipped && item_id > 0) {
 		int number = 0;
 		for (int i = 0; i < (int) data.party.size(); i++) {
@@ -106,17 +106,17 @@ int Game_Party_Class::ItemNumber(int item_id, bool get_equipped) {
 	return 0;
 }
 
-void Game_Party_Class::GainGold(int n) {
+void Game_Party::GainGold(int n) {
 	data.gold += n;
 	data.gold = std::min(std::max(data.gold, 0), 999999);
 }
 
-void Game_Party_Class::LoseGold(int n) {
+void Game_Party::LoseGold(int n) {
 	data.gold -= n;
 	data.gold = std::min(std::max(data.gold, 0), 999999);
 }
 
-void Game_Party_Class::GainItem(int item_id, int amount) {
+void Game_Party::GainItem(int item_id, int amount) {
 	if (item_id < 1 || item_id > (int) Data::items.size()) {
 		Output::Warning("Can't add item to party.\n%04d is not a valid item ID.",
 						item_id);
@@ -151,11 +151,11 @@ void Game_Party_Class::GainItem(int item_id, int amount) {
 	data.item_usage.push_back(Data::items[item_id - 1].uses);
 }
 
-void Game_Party_Class::LoseItem(int item_id, int amount) {
+void Game_Party::LoseItem(int item_id, int amount) {
 	GainItem(item_id, -amount);
 }
 
-bool Game_Party_Class::IsItemUsable(int item_id) {
+bool Game_Party::IsItemUsable(int item_id) {
 	if (item_id > 0 && item_id <= (int)Data::items.size()) {
 		//TODO: if (Game_Temp::IsInBattle()) {
 		//if (Data::items[item_id - 1].type == RPG::Item::Type_medicine) {
@@ -176,7 +176,7 @@ bool Game_Party_Class::IsItemUsable(int item_id) {
 	return false;
 }
 
-void Game_Party_Class::AddActor(int actor_id) {
+void Game_Party::AddActor(int actor_id) {
 	if (IsActorInParty(actor_id))
 		return;
 	if (data.party.size() >= 4)
@@ -185,26 +185,26 @@ void Game_Party_Class::AddActor(int actor_id) {
 	Main_Data::game_player->Refresh();
 }
 
-void Game_Party_Class::RemoveActor(int actor_id) {
+void Game_Party::RemoveActor(int actor_id) {
 	if (!IsActorInParty(actor_id))
 		return;
 	data.party.erase(std::find(data.party.begin(), data.party.end(), actor_id));
 	Main_Data::game_player->Refresh();
 }
 
-bool Game_Party_Class::IsActorInParty(int actor_id) {	
+bool Game_Party::IsActorInParty(int actor_id) {	
 	return std::find(data.party.begin(), data.party.end(), actor_id) != data.party.end();
 }
 
-int Game_Party_Class::GetGold() {
+int Game_Party::GetGold() {
 	return data.gold;
 }
 
-int Game_Party_Class::GetSteps() {
+int Game_Party::GetSteps() {
 	return data.steps;
 }
 
-std::vector<Game_Actor*> Game_Party_Class::GetActors() const {
+std::vector<Game_Actor*> Game_Party::GetActors() const {
 	std::vector<Game_Actor*> actors;
 	std::vector<int16_t>::const_iterator it;
 	for (it = data.party.begin(); it != data.party.end(); it++)
@@ -212,19 +212,19 @@ std::vector<Game_Actor*> Game_Party_Class::GetActors() const {
 	return actors;
 }
 
-int Game_Party_Class::GetBattleCount() {
+int Game_Party::GetBattleCount() {
 	return data.battles;
 }
 
-int Game_Party_Class::GetWinCount() {
+int Game_Party::GetWinCount() {
 	return data.victories;
 }
 
-int Game_Party_Class::GetDefeatCount() {
+int Game_Party::GetDefeatCount() {
 	return data.defeats;
 }
 
-int Game_Party_Class::GetRunCount() {
+int Game_Party::GetRunCount() {
 	return data.escapes;
 }
 
@@ -242,7 +242,7 @@ void Game_Party::ApplyDamage(int damage) {
 	}
 }
 
-void Game_Party_Class::SetTimer(int which, int seconds) {
+void Game_Party::SetTimer(int which, int seconds) {
 	switch (which) {
 		case Timer1:
 			data.timer1_secs = seconds * DEFAULT_FPS;
@@ -255,7 +255,7 @@ void Game_Party_Class::SetTimer(int which, int seconds) {
 	}
 }
 
-void Game_Party_Class::StartTimer(int which, bool visible, bool battle) {
+void Game_Party::StartTimer(int which, bool visible, bool battle) {
 	switch (which) {
 		case Timer1:
 			data.timer1_active = true;
@@ -270,7 +270,7 @@ void Game_Party_Class::StartTimer(int which, bool visible, bool battle) {
 	}
 }
 
-void Game_Party_Class::StopTimer(int which) {
+void Game_Party::StopTimer(int which) {
 	switch (which) {
 		case Timer1:
 			data.timer1_active = false;
@@ -283,7 +283,7 @@ void Game_Party_Class::StopTimer(int which) {
 	}
 }
 
-void Game_Party_Class::UpdateTimers() {
+void Game_Party::UpdateTimers() {
 	bool battle = Game_Battle::GetScene() != NULL;
 	if (data.timer1_active && (!data.timer1_battle || !battle) && data.timer1_secs > 0) {
 		data.timer1_secs--;
@@ -295,7 +295,7 @@ void Game_Party_Class::UpdateTimers() {
 	}
 }
 
-int Game_Party_Class::ReadTimer(int which) {
+int Game_Party::ReadTimer(int which) {
 	switch (which) {
 		case Timer1:
 			return data.timer1_secs;
@@ -304,14 +304,4 @@ int Game_Party_Class::ReadTimer(int which) {
 		default:
 			return 0;
 	}
-}
-
-Game_Party_Class& Game_Party() {
-	static bool init = false;
-	static boost::scoped_ptr<Game_Party_Class> instance;
-	if (!init) {
-		instance.reset(new Game_Party_Class());
-		init = true;
-	}
-	return *instance;
 }

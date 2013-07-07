@@ -39,12 +39,12 @@ void Window_MenuStatus::Refresh() {
 
 	DisplayUi->SetBackcolor(Cache::system_info.bg_color);
 
-	item_max = Game_Party().GetActors().size();
+	item_max = Main_Data::game_party->GetActors().size();
 
 	int y = 0;
 	for (int i = 0; i < item_max; ++i)
 	{
-		Game_Actor* actor = Game_Party().GetActors()[i];
+		Game_Actor* actor = Main_Data::game_party->GetActors()[i];
 
 		int face_x = 0;
 		if (Player::engine == Player::EngineRpg2k3) {

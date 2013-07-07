@@ -33,7 +33,7 @@ Window_BattleStatus_Rpg2k::Window_BattleStatus_Rpg2k(int ix, int iy, int iwidth,
 	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
-	item_max = Game_Party().GetActors().size();
+	item_max = Main_Data::game_party->GetActors().size();
 
 	Refresh();
 }
@@ -44,9 +44,9 @@ Window_BattleStatus_Rpg2k::~Window_BattleStatus_Rpg2k() {
 void Window_BattleStatus_Rpg2k::Refresh() {
 	contents->Clear();
 
-	for (size_t i = 0; i < Game_Party().GetActors().size() && i < 4; i++) {
+	for (size_t i = 0; i < Main_Data::game_party->GetActors().size() && i < 4; i++) {
 		int y = 2 + i * 16;
-		Game_Actor* actor = Game_Party().GetActors()[i];
+		Game_Actor* actor = Main_Data::game_party->GetActors()[i];
 		DrawActorName(actor, 0, y);
 		DrawActorState(actor, 84, y);
 		DrawActorHp(actor, 138, y, true);

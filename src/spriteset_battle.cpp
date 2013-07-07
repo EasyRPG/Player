@@ -34,7 +34,7 @@ Spriteset_Battle::Spriteset_Battle() {
 
 	// Create the enemy sprites
 	boost::ptr_vector<Game_Enemy>::iterator it;
-	boost::ptr_vector<Game_Enemy>& enemies = Game_EnemyParty().GetEnemies();
+	boost::ptr_vector<Game_Enemy>& enemies = Main_Data::game_enemyparty->GetEnemies();
 	for (it = enemies.begin(); it != enemies.end(); it++) {
 		enemy_sprites.push_back(new Sprite_Battler(static_cast<Game_Battler*>(&*it)));
 	}

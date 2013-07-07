@@ -21,21 +21,20 @@
 // Headers
 #include <vector>
 #include "rpg_troop.h"
+#include "game_enemy.h"
 #include "game_party_base.h"
 #include <boost/ptr_container/ptr_vector.hpp>
 #include <boost/noncopyable.hpp>
 
-class Game_Enemy;
-
 /**
  * Manages the enemy party during battles.
  */
-class Game_EnemyParty_Class : public Game_Party_Base, boost::noncopyable {
+class Game_EnemyParty : public Game_Party_Base, boost::noncopyable {
 public:
 	/**
 	 * Initializes Game_Enemy_Party.
 	 */
-	Game_EnemyParty_Class();
+	Game_EnemyParty();
 
 	Game_Battler* GetBattler(int index);
 
@@ -47,11 +46,6 @@ public:
 	 * @param battle_troop_id ID of the enemy party
 	 */
 	void Setup(int battle_troop_id);
-
-	/**
-	 * Clears the party
-	 */
-	void Clear();
 
 	/**
 	 * Gets a list with all party members
@@ -85,7 +79,5 @@ private:
 	boost::ptr_vector<Game_Enemy> enemies;
 	RPG::Troop* troop;
 };
-
-Game_EnemyParty_Class& Game_EnemyParty();
 
 #endif

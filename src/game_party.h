@@ -30,12 +30,12 @@
 /**
  * Game_Party class.
  */
-class Game_Party_Class : public Game_Party_Base, boost::noncopyable {
+class Game_Party : public Game_Party_Base, boost::noncopyable {
 public:
 	/**
 	 * Initializes Game_Party.
 	 */
-	Game_Party_Class();
+	Game_Party();
 
 	Game_Battler* GetBattler(int index);
 
@@ -213,7 +213,5 @@ public:
 	void UpdateTimers();
 	int ReadTimer(int which);
 };
-
-Game_Party_Class& Game_Party();
 
 #endif

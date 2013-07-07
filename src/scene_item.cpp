@@ -50,7 +50,7 @@ void Scene_Item::Update() {
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		int item_id = item_window->GetItemId();
 
-		if (Game_Party().IsItemUsable(item_id)) {
+		if (Main_Data::game_party->IsItemUsable(item_id)) {
 			Game_System::SePlay(Main_Data::game_data.system.decision_se);
 
 			if (Data::items[item_id - 1].type == RPG::Item::Type_switch) {

@@ -91,7 +91,7 @@ void Game_Battle::Init(Battle_Interface* _scene) {
 	troop = &Data::troops[Game_Temp::battle_troop_id - 1];
 
 	allies.clear();
-	const std::vector<Game_Actor*>& actors = Game_Party().GetActors();
+	const std::vector<Game_Actor*>& actors = Main_Data::game_party->GetActors();
 	std::vector<Game_Actor*>::const_iterator ai;
 	for (ai = actors.begin(); ai != actors.end(); ai++)
 		allies.push_back(Battle::Ally(*ai, ai - actors.begin()));
@@ -409,7 +409,7 @@ bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
 	}*/
 
     if (condition.flags.enemy_hp) {
-		Game_Battler* enemy = Game_EnemyParty().GetBattler(condition.enemy_id);
+		Game_Battler* enemy = Main_Data::game_enemyparty->GetBattler(condition.enemy_id);
 		int hp = enemy->GetHp();
 		if (hp < condition.enemy_hp_min || hp > condition.enemy_hp_max)
 			return false;
