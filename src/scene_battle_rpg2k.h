@@ -148,8 +148,6 @@ private:
 	std::vector<std::string>::iterator battle_result_messages_it;
 	int battle_action_wait;
 	int battle_action_state;
-
-	int turn;
 };
 
 #endif

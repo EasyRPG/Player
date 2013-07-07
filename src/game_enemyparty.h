@@ -26,7 +26,6 @@
 #include <boost/noncopyable.hpp>
 
 class Game_Enemy;
-class Game_Interpreter;
 
 /**
  * Manages the enemy party during battles.
@@ -84,7 +83,6 @@ public:
 
 private:
 	boost::ptr_vector<Game_Enemy> enemies;
-	Game_Interpreter* interpreter;
 	RPG::Troop* troop;
 };
 

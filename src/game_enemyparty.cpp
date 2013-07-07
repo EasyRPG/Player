@@ -27,7 +27,7 @@ Game_EnemyParty_Class::Game_EnemyParty_Class() {
 }
 
 Game_Battler* Game_EnemyParty_Class::GetBattler(int index) {
-	if (index < 0 || index >= enemies.size()) {
+	if (index < 0 || index >= (int)enemies.size()) {
 		return NULL;
 	}
 
@@ -66,8 +66,6 @@ std::vector<Game_Enemy*> Game_EnemyParty_Class::GetAliveEnemies() {
 }
 
 void Game_EnemyParty_Class::Clear() {
-	interpreter->Clear();
-
 	enemies.clear();
 }
 

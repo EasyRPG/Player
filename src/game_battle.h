@@ -47,6 +47,12 @@ namespace Game_Battle {
 
 	Spriteset_Battle& GetSpriteset();
 
+	bool AreConditionsMet(const RPG::TroopPageCondition& condition);
+	void UpdateEvents();
+	void NextTurn();
+
+	static int turn;
+
 	//// Old battle stuff
 	extern const RPG::Troop* troop;
 	extern std::vector<Battle::Ally> allies;
@@ -97,7 +103,7 @@ namespace Game_Battle {
 
 	void ChooseEnemy();
 	int GetActiveActor();
-	int GetTurns();
+	int GetTurn();
 	//void Update();
 	bool HaveCorpse();
 	bool CheckWin();
@@ -112,8 +118,6 @@ namespace Game_Battle {
 	void MonstersFlee();
 
 	bool CheckTurns(int turns, int base, int multiple);
-	bool CheckCondition(const RPG::TroopPageCondition& condition);
-	void CheckEvents();
 
 	void Restart();
 

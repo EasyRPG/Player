@@ -19,6 +19,8 @@
 #include <deque>
 #include <algorithm>
 #include "data.h"
+#include "game_actors.h"
+#include "game_enemyparty.h"
 #include "game_party.h"
 #include "game_temp.h"
 #include "game_switches.h"
@@ -62,6 +64,9 @@ void Game_Battle::Init() {
 	spriteset.reset(new Spriteset_Battle());
 
 	Game_Temp::battle_running = true;
+	turn = 0;
+
+	troop = &Data::troops[Game_Temp::battle_troop_id - 1];
 }
 
 void Game_Battle::Quit() {
@@ -297,8 +302,10 @@ int Game_Battle::GetActiveActor() {
 	return ally.game_actor->GetId();
 }
 
-int Game_Battle::GetTurns() {
-	return turn_fragments / turn_length;
+int Game_Battle::GetTurn() {
+	return turn;
+
+	//return turn_fragments / turn_length;
 }
 /*
 void Game_Battle::Update() {
@@ -367,10 +374,14 @@ void Game_Battle::MonstersFlee() {
 }
 
 bool Game_Battle::CheckTurns(int turns, int base, int multiple) {
-	return turns >= base && (turns - base) % multiple == 0;
+	if (multiple == 0) {
+		return turns >= base && (turns - base) == 0;
+	} else {
+		return turns >= base && (turns - base) % multiple == 0;
+	}
 }
 
-bool Game_Battle::CheckCondition(const RPG::TroopPageCondition& condition) {
+bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
 	if (condition.flags.switch_a && !Game_Switches[condition.switch_a_id])
 		return false;
 
@@ -380,9 +391,11 @@ bool Game_Battle::CheckCondition(const RPG::TroopPageCondition& condition) {
 	if (condition.flags.variable && !(Game_Variables[condition.variable_id] >= condition.variable_value))
 		return false;
 
-	if (condition.flags.turn && !CheckTurns(GetTurns(), condition.turn_b, condition.turn_a))
+	if (condition.flags.turn && !CheckTurns(GetTurn(), condition.turn_b, condition.turn_a))
 		return false;
 
+	/*
+	TODO RPG 2k3
 	if (condition.flags.turn_enemy && !CheckTurns(GetEnemy(condition.turn_enemy_id).GetTurns(),
 											condition.turn_enemy_b, condition.turn_enemy_a))
 		return false;
@@ -393,22 +406,23 @@ bool Game_Battle::CheckCondition(const RPG::TroopPageCondition& condition) {
 			return false;
 		if (!CheckTurns(ally->GetTurns(), condition.turn_actor_b, condition.turn_actor_a))
 			return false;
-	}
+	}*/
 
     if (condition.flags.enemy_hp) {
-		int hp = GetEnemy(condition.enemy_id).GetActor()->GetHp();
+		Game_Battler* enemy = Game_EnemyParty().GetBattler(condition.enemy_id);
+		int hp = enemy->GetHp();
 		if (hp < condition.enemy_hp_min || hp > condition.enemy_hp_max)
 			return false;
 	}
 
     if (condition.flags.actor_hp) {
-		Battle::Ally* ally = FindAlly(condition.actor_id);
-		if (!ally)
-			return false;
-		int hp = ally->GetActor()->GetHp();
+		Game_Actor* actor = Game_Actors::GetActor(condition.actor_id);
+		int hp = actor->GetHp();
 		if (hp < condition.actor_hp_min || hp > condition.actor_hp_max)
 			return false;
 	}
+	/*
+	TODO RPG2k3
 
     if (condition.flags.command_actor) {
 		Battle::Ally* ally = FindAlly(condition.actor_id);
@@ -416,17 +430,17 @@ bool Game_Battle::CheckCondition(const RPG::TroopPageCondition& condition) {
 			return false;
 		if (ally->last_command != condition.command_id)
 			return false;
-	}
+	}*/
 
 	return true;
 }
 
-void Game_Battle::CheckEvents() {
+void Game_Battle::UpdateEvents() {
 	const RPG::TroopPage* new_page = NULL;
 	std::vector<RPG::TroopPage>::const_reverse_iterator it;
 	for (it = troop->pages.rbegin(); it != troop->pages.rend(); it++) {
 		const RPG::TroopPage& page = *it;
-		if (CheckCondition(page.condition)) {
+		if (AreConditionsMet(page.condition)) {
 			new_page = &*it;
 			break;
 		}
@@ -554,4 +568,8 @@ void Game_Battle::EnemyActionDone() {
 
 	if (enemy_action->switch_off)
 		Game_Switches[enemy_action->switch_off_id] = false;
+}
+
+void Game_Battle::NextTurn() {
+	++turn;
 }

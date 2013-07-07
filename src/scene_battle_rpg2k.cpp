@@ -46,7 +46,6 @@
 Scene_Battle_Rpg2k::Scene_Battle_Rpg2k() : Scene_Battle(),
 actor_index(0),
 active_actor(NULL),
-turn(0),
 battle_action_wait(30),
 battle_action_state(BattleActionState_Start)
 {
@@ -84,7 +83,10 @@ void Scene_Battle_Rpg2k::Update() {
 	message_window->Update();
 
 	ProcessActions();
-	ProcessInput();
+
+	if (!message_window->GetVisible()) {
+		ProcessInput();
+	}
 
 	Game_Battle::Update();
 	/*DoAuto();
@@ -307,6 +309,7 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 	switch (state) {
 	case State_Start:
 		if (DisplayMonstersInMessageWindow()) {
+			Game_Battle::UpdateEvents();
 			SetState(State_SelectOption);
 		}
 		break;
@@ -542,7 +545,8 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 }
 
 void Scene_Battle_Rpg2k::NextTurn() {
-	++turn;
+	Game_Battle::NextTurn();
+	Game_Battle::UpdateEvents();
 	actor_index = 0;
 	SetState(State_SelectOption);
 }
