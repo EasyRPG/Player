@@ -89,14 +89,6 @@ void Scene_Battle_Rpg2k::Update() {
 	Game_Battle::Update();
 
 	Main_Data::game_screen->Update();
-
-	/*DoAuto();
-
-	UpdateBackground();
-	UpdateCursors();
-	UpdateSprites();
-	UpdateFloaters();
-	UpdateAnimations();*/
 }
 
 void Scene_Battle_Rpg2k::Terminate() {
@@ -536,21 +528,6 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 			break;
 		}
 	}
-
-	/*if (state == State_SelectEnemyTarget && Game_Battle::HaveTargetEnemy()) {
-		if (Input::IsRepeated(Input::DOWN))
-			Game_Battle::TargetNextEnemy();
-		if (Input::IsRepeated(Input::UP))
-			Game_Battle::TargetPreviousEnemy();
-		Game_Battle::ChooseEnemy();
-	}
-
-	if (state == State_SelectAllyTarget && Game_Battle::HaveTargetAlly()) {
-		if (Input::IsRepeated(Input::DOWN))
-			Game_Battle::TargetNextAlly();
-		if (Input::IsRepeated(Input::UP))
-			Game_Battle::TargetPreviousAlly();
-	}*/
 }
 
 void Scene_Battle_Rpg2k::NextTurn() {
