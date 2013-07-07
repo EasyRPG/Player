@@ -145,6 +145,7 @@ private:
 	std::deque<BattleAlgorithmRef> battle_actions;
 	std::vector<std::string> battle_result_messages;
 	std::vector<std::string>::iterator battle_result_messages_it;
+	boost::ptr_vector<Game_Enemy>::const_iterator enemy_iterator;
 	int battle_action_wait;
 	int battle_action_state;
 };

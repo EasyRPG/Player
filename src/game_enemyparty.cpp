@@ -39,6 +39,7 @@ int Game_EnemyParty_Class::GetBattlerCount() const {
 }
 
 void Game_EnemyParty_Class::Setup(int battle_troop_id) {
+	enemies.clear();
 	troop = &Data::troops[battle_troop_id - 1];
 	std::vector<RPG::TroopMember>::const_iterator ei;
 	for (ei = troop->members.begin(); ei != troop->members.end(); ei++)	{

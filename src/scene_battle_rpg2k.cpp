@@ -41,6 +41,7 @@
 #include "battle_actions.h"
 #include "scene_battle_rpg2k.h"
 #include "scene_battle.h"
+#include "scene_gameover.h"
 
 ////////////////////////////////////////////////////////////
 Scene_Battle_Rpg2k::Scene_Battle_Rpg2k() : Scene_Battle(),
@@ -62,9 +63,13 @@ void Scene_Battle_Rpg2k::Start() {
 		} else {
 			InitBattleTest();
 		}
+	} else {
+		Game_EnemyParty().Setup(Game_Temp::battle_troop_id);
 	}
 
 	Game_Battle::Init();
+
+	Game_System::BgmPlay(Data::system.battle_music);
 
 	CreateWindows();
 
@@ -403,7 +408,6 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			if (battle_result_messages_it != battle_result_messages.end()) {
 				Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
-
 				if (battle_result_messages_it == battle_result_messages.begin()) {
 					if (target_sprite) {
 						target_sprite->SetAnimationState(Sprite_Battler::Damage);
@@ -413,7 +417,9 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 						Game_System::SePlay(*action->GetResultSe());
 					}
 				} else {
-					target_sprite->SetAnimationState(Sprite_Battler::Idle);
+					if (target_sprite) {
+						target_sprite->SetAnimationState(Sprite_Battler::Idle);
+					}
 				}
 
 				if (battle_result_messages_it != battle_result_messages.begin()) {
@@ -449,6 +455,13 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 				return false;
 			}
 			battle_action_wait = 30;
+
+			if (!action->GetTarget()->IsDead()) {
+				Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
+				if (target_sprite) {
+					target_sprite->SetAnimationState(Sprite_Battler::Idle);
+				}
+			}
 
 			if (action->TargetNext()) {
 				first = false;
@@ -504,8 +517,14 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 		case State_EnemyAction:
 			break;
 		case State_Victory:
-		case State_Defeat:
 			Scene::Pop();
+			break;
+		case State_Defeat:
+			if (Player::battle_test_flag || Game_Temp::battle_defeat_mode != 0) {
+				Scene::Pop();
+			} else {
+				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Gameover>());
+			}
 			break;
 		}
 	}
@@ -739,8 +758,11 @@ void Scene_Battle_Rpg2k::CreateEnemyActions() {
 bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 	static bool first = true;
 	static int sleep_until = -1;
-	static const boost::ptr_vector<Game_Enemy>& enemies = Game_EnemyParty().GetEnemies();
-	static boost::ptr_vector<Game_Enemy>::const_iterator it = enemies.begin();
+
+	if (first) {
+		enemy_iterator = Game_EnemyParty().GetEnemies().begin();
+		first = false;
+	}
 
 	if (sleep_until > -1) {
 		if (Graphics::GetFrameCount() >= sleep_until) {
@@ -751,8 +773,9 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 		}
 	}
 
-	if (it == enemies.end()) {
+	if (enemy_iterator == Game_EnemyParty().GetEnemies().end()) {
 		battle_message_window->Clear();
+		first = true; // reset static var
 		return true;
 	}
 
@@ -760,7 +783,7 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 		battle_message_window->Clear();
 	}
 
-	battle_message_window->Push(it->GetName() + Data::terms.encounter);
+	battle_message_window->Push(enemy_iterator->GetName() + Data::terms.encounter);
 
 	if (battle_message_window->GetLineCount() == 4) {
 		// Half second sleep
@@ -770,7 +793,7 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 		sleep_until = Graphics::GetFrameCount() + 60 / 10;
 	}
 
-	++it;
+	++enemy_iterator;
 
 	return false;
 }

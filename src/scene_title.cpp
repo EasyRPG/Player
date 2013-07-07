@@ -219,7 +219,6 @@ void Scene_Title::PrepareBattleTest() {
 	CreateGameObjects();
 	//Game_Party().SetupBattleTestMembers();
 	//Game_Troop::can_escape = true;
-	Game_System::BgmPlay(Data::system.battle_music);
 
 	Scene::Push(Scene_Battle::Create(), true);
 }
