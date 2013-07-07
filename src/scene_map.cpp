@@ -57,6 +57,11 @@ Scene_Map::~Scene_Map() {
 	Main_Data::game_screen->Reset();
 }
 
+
+void Scene_Map::Continue() {
+	Game_Map::Autoplay();
+}
+
 /*void Scene_Map::TransitionIn() {
 	Graphics::Transition((Graphics::TransitionType)Data::system.transition_in, 12);
 }
@@ -161,6 +166,8 @@ void Scene_Map::UpdateTeleportPlayer() {
 
 void Scene_Map::CallBattle() {
 	Game_Temp::battle_calling = false;
+	Game_Temp::battle_terrain_id = Game_Map::GetTerrainTag(Main_Data::game_player->GetX(), Main_Data::game_player->GetY());
+	Game_Temp::battle_background = "";
 
 	Scene::Push(Scene_Battle::Create());
 }

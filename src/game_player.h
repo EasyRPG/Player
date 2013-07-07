@@ -50,6 +50,8 @@ public:
 	bool CanWalk(int x, int y);
 	void BeginMove();
 
+	int GetRandomEncounter();
+
 private:
 	bool teleporting;
 	int vehicle_type;

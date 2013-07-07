@@ -253,6 +253,13 @@ namespace Game_Map {
 	void ResetEncounterSteps();
 
 	/**
+	 * Gets possible encounters at a location. Also scans areas.
+	 *
+	 * @param out Possible encounters
+	 */
+	void GetEncountersAt(int x, int y, std::vector<int>& out);
+
+	/**
 	 * Gets lower layer map data.
 	 *
 	 * @return lower layer map data.

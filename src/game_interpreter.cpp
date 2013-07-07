@@ -177,7 +177,7 @@ void Game_Interpreter::Update() {
 			return;
 		}
 
-		if (//Game_Temp::battle_calling ||
+		if (Game_Temp::battle_calling ||
 			Game_Temp::shop_calling ||
 //			Game_Temp::inn_calling ||
 			Game_Temp::name_calling ||

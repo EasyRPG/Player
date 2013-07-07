@@ -69,6 +69,7 @@ void Scene_Battle_Rpg2k::Start() {
 
 	Game_Battle::Init();
 
+	Game_Temp::map_bgm = NULL; // Play map BGM on Scene_Map return
 	Game_System::BgmPlay(Data::system.battle_music);
 
 	CreateWindows();

@@ -38,6 +38,7 @@ public:
 	~Scene_Map();
 
 	void Start();
+	void Continue();
 	void Update();
 //	void TransitionIn();
 //	void TransitionOut();

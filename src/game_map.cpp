@@ -157,6 +157,8 @@ void Game_Map::Setup(int _id) {
 	location.pan_finish_y = 0;
 	location.pan_current_x = 0;
 	location.pan_current_y = 0;
+
+	location.encounter_steps = map_info.encounter_rate;
 }
 
 void Game_Map::Autoplay() {
@@ -510,11 +512,54 @@ void Game_Map::UpdateEncounterSteps() {
 	int y = Main_Data::game_player->GetY();
 	int terrain_id = GetTerrainTag(x, y);
 	const RPG::Terrain& terrain = Data::terrains[terrain_id - 1];
-	location.encounter_steps += terrain.encounter_rate;
+
+	// TODO: Add more randomness to this assignment
+	location.encounter_steps -= terrain.encounter_rate / 100;
+
+	if (location.encounter_steps <= 0) {
+		location.encounter_steps = GetEncounterRate();
+
+		std::vector<int> encounters;
+		GetEncountersAt(Main_Data::game_player->GetX(), Main_Data::game_player->GetY(), encounters);
+
+		if (encounters.empty()) {
+			// No enemies on this map :(
+			return;
+		}
+
+		Game_Temp::battle_troop_id = encounters[rand() / (RAND_MAX / encounters.size() + 1)];
+		Game_Temp::battle_calling = true;
+	}
 }
 
 void Game_Map::ResetEncounterSteps() {
 	location.encounter_steps = 0;
+}
+
+void Game_Map::GetEncountersAt(int x, int y, std::vector<int>& out) {
+	for (unsigned int i = 0; i < Data::treemap.maps.size(); ++i) {
+		RPG::MapInfo& map = Data::treemap.maps[i];
+
+		if (map.ID == location.map_id) {
+			std::vector<RPG::Encounter>& encounters = map.encounters;
+			for (std::vector<RPG::Encounter>::iterator it = encounters.begin();
+				it != encounters.end(); ++it) {
+					out.push_back((*it).troop_id);
+			}
+		} else if (map.parent_map == location.map_id && map.type == 2) {
+			// Area
+			Rect area_rect(map.area_rect.l, map.area_rect.t, map.area_rect.r - map.area_rect.l, map.area_rect.b - map.area_rect.t);
+			Rect player_rect(x, y, 1, 1);
+
+			if (!player_rect.IsOutOfBounds(area_rect)) {
+				std::vector<RPG::Encounter>& encounters = map.encounters;
+				for (std::vector<RPG::Encounter>::iterator it = encounters.begin();
+					it != encounters.end(); ++it) {
+						out.push_back((*it).troop_id);
+				}
+			}
+		}
+	}
 }
 
 std::vector<short>& Game_Map::GetMapDataDown() {
