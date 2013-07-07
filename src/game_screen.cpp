@@ -22,6 +22,7 @@
 #include "options.h"
 #include "main_data.h"
 #include "game_screen.h"
+#include "game_system.h"
 #include "bitmap.h"
 
 Game_Screen::Game_Screen() :
@@ -165,11 +166,18 @@ void Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool glob
 
 	Game_Character* target = Game_Character::GetCharacter(target_id, target_id);
 
+	RPG::Animation& anim = Data::animations[animation_id - 1];
 	animation.reset(new BattleAnimation(target->GetScreenX(), target->GetScreenY(),
-										&Data::animations[animation_id - 1]));
+										&anim));
 	animation->SetVisible(true);
 	// FIXME: target
 	// FIXME: global
+
+	animation_timings.clear();
+	for (std::vector<RPG::AnimationTiming>::const_iterator it = anim.timings.begin();
+		it != anim.timings.end(); ++it) {
+			animation_timings[it->frame] = *it;
+	}
 }
 
 bool Game_Screen::IsBattleAnimationWaiting() const {
@@ -275,6 +283,18 @@ void Game_Screen::Update() {
 		animation->Update();
 		if (animation->IsDone()) {
 			animation.reset();
+		} else {
+			PlayBattleAnimationSound();
+		}
+	}
+}
+
+void Game_Screen::PlayBattleAnimationSound() {
+	if (animation) {
+		if (animation_timings.find(animation->GetFrame()) != animation_timings.end()) {
+			const RPG::AnimationTiming& timing = animation_timings[animation->GetFrame()];
+			Game_System::SePlay(timing.se);
+			animation_timings.erase(animation->GetFrame());
 		}
 	}
 }

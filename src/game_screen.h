@@ -15,9 +15,10 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _GAME_SCREEN_
-#define _GAME_SCREEN_
+#ifndef _EASYRPG_GAME_SCREEN_H_
+#define _EASYRPG_GAME_SCREEN_H_
 
+#include <map>
 #include <vector>
 #include "system.h"
 #include "plane.h"
@@ -99,6 +100,8 @@ public:
 private:
 	std::vector<EASYRPG_SHARED_PTR<Picture> > pictures;
 
+	std::map<int, RPG::AnimationTiming> animation_timings;
+
 	RPG::SaveScreen& data;
 	int flash_sat;		// RPGMaker bug: this isn't saved
 	int flash_period;	// RPGMaker bug: this isn't saved
@@ -118,5 +121,7 @@ protected:
 	void StopWeather();
 	void InitSnowRain();
 	void UpdateSnowRain(int speed);
+	void PlayBattleAnimationSound();
 };
-#endif // __game_screen__
+
+#endif
