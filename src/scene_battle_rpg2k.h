@@ -33,6 +33,7 @@
 #include "window_item.h"
 #include "window_skill.h"
 #include "window_battleoption.h"
+#include "window_message.h"
 
 #include "window_command.h"
 #include "window_battlestatus_rpg2k.h"
@@ -40,7 +41,6 @@
 #include "battle_battler.h"
 #include "battle_animation.h"
 #include "battle_interface.h"
-#include "game_battleaction.h"
 #include <boost/scoped_ptr.hpp>
 
 namespace Battle {
@@ -48,7 +48,11 @@ class Action;
 class SpriteAction;
 }
 
-typedef std::pair<Game_Battler*, EASYRPG_SHARED_PTR<Game_BattleAction::ActionBase>> BattlerActionPair;
+namespace Game_BattleAlgorithm {
+	class AlgorithmBase;
+}
+
+typedef EASYRPG_SHARED_PTR<Game_BattleAlgorithm::AlgorithmBase> BattleAlgorithmRef;
 
 /**
  * Scene_Battle class.
@@ -63,6 +67,23 @@ public:
 	void Start();
 	void Update();
 	void Terminate();
+
+	enum BattleActionState {
+		/**
+		 * Called once at the beginning of the Action.
+		 * Used to execute the algorithm to play an optional battle animation.
+		 */
+		BattleActionState_Start,
+		/**
+		 * Used to apply the new conditions that were caused.
+		 * Called once for each condition.
+		 */
+		BattleActionState_Result,
+		/**
+		 * Action execution finished (no function is called here)
+		 */
+		BattleActionState_Finished
+	};
 
 protected:
 	void InitBattleTest();
@@ -86,7 +107,8 @@ private:
 	boost::scoped_ptr<Window_Help> help_window;
 	/** Displays allies status */
 	boost::scoped_ptr<Window_BattleStatus_Rpg2k> status_window;
-	boost::scoped_ptr<Window_BattleMessage> message_window;
+	boost::scoped_ptr<Window_BattleMessage> battle_message_window;
+	boost::scoped_ptr<Window_Message> message_window;
 
 	void CreateBattleOptionWindow();
 	void CreateBattleTargetWindow();
@@ -96,6 +118,7 @@ private:
 	void RefreshCommandWindow();
 
 	void ProcessActions();
+	bool ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action);
 	void ProcessInput();
 	void OptionSelected();
 	void CommandSelected();
@@ -119,7 +142,12 @@ private:
 
 	bool DisplayMonstersInMessageWindow();
 
-	std::deque<BattlerActionPair> battle_actions;
+	std::deque<BattleAlgorithmRef> battle_actions;
+	boost::scoped_ptr<BattleAnimation> battle_animation;
+	std::vector<std::string> battle_result_messages;
+	std::vector<std::string>::iterator battle_result_messages_it;
+	int battle_action_wait;
+	int battle_action_state;
 
 	int turn;
 };

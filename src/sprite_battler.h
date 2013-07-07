@@ -58,7 +58,7 @@ public:
 	 */
 	void Update();
 
-	Game_Battler* GetBattler();
+	Game_Battler* GetBattler() const;
 
 	void SetBattler(Game_Battler* new_battler);
 

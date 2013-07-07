@@ -64,7 +64,7 @@ Sprite_Battler::Sprite_Battler(Game_Battler* battler) :
 Sprite_Battler::~Sprite_Battler() {
 }
 
-Game_Battler* Sprite_Battler::GetBattler() {
+Game_Battler* Sprite_Battler::GetBattler() const {
 	return battler;
 }
 

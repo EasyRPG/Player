@@ -124,6 +124,7 @@ protected:
 	boost::scoped_ptr<Background> background;
 
 	EASYRPG_SHARED_PTR<BattleAnimation> animation;
+
 	std::deque<EASYRPG_SHARED_PTR<BattleAnimation> > animations;
 
 	std::vector<EASYRPG_SHARED_PTR<FloatText> > floaters;

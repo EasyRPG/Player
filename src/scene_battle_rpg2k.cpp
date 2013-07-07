@@ -35,6 +35,7 @@
 #include "game_message.h"
 #include "game_switches.h"
 #include "game_battle.h"
+#include "game_battlealgorithm.h"
 #include "battle_battler.h"
 #include "battle_animation.h"
 #include "battle_actions.h"
@@ -45,7 +46,9 @@
 Scene_Battle_Rpg2k::Scene_Battle_Rpg2k() : Scene_Battle(),
 actor_index(0),
 active_actor(NULL),
-turn(0)
+turn(0),
+battle_action_wait(30),
+battle_action_state(BattleActionState_Start)
 {
 }
 
@@ -77,6 +80,7 @@ void Scene_Battle_Rpg2k::Update() {
 	item_window->Update();
 	skill_window->Update();
 	target_window->Update();
+	battle_message_window->Update();
 	message_window->Update();
 
 	ProcessActions();
@@ -166,9 +170,11 @@ void Scene_Battle_Rpg2k::CreateBattleCommandWindow() {
 
 
 void Scene_Battle_Rpg2k::CreateBattleMessageWindow() {
-	message_window.reset(new Window_BattleMessage(0, 160, 320, 80));
-
+	message_window.reset(new Window_Message(0, 160, 320, 80));
 	message_window->SetZ(300);
+
+	battle_message_window.reset(new Window_BattleMessage(0, 160, 320, 80));
+	battle_message_window.reset(new Window_BattleMessage(0, 160, 320, 80));
 }
 
 void Scene_Battle_Rpg2k::RefreshCommandWindow() {
@@ -189,11 +195,12 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 	item_window->SetActive(false);
 	skill_window->SetActive(false);
 	target_window->SetActive(false);
+	battle_message_window->SetActive(false);
 	message_window->SetActive(false);
 
 	switch (state) {
 	case State_Start:
-		message_window->SetActive(true);
+		battle_message_window->SetActive(true);
 		break;
 	case State_SelectOption:
 		options_window->SetActive(true);
@@ -224,8 +231,10 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_AllyAction:
 	case State_EnemyAction:
+		break;
 	case State_Victory:
 	case State_Defeat:
+		message_window->SetActive(true);
 		break;
 	}
 
@@ -236,11 +245,12 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 	skill_window->SetVisible(false);
 	help_window->SetVisible(false);
 	target_window->SetVisible(false);
+	battle_message_window->SetVisible(false);
 	message_window->SetVisible(false);
 
 	switch (state) {
 	case State_Start:
-		message_window->SetVisible(true);
+		battle_message_window->SetVisible(true);
 		break;
 	case State_SelectOption:
 		options_window->SetVisible(true);
@@ -274,7 +284,7 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 	case State_AllyAction:
 	case State_EnemyAction:
 	case State_Battle:
-		message_window->SetVisible(true);
+		battle_message_window->SetVisible(true);
 		break;
 	case State_SelectItem:
 		item_window->SetVisible(true);
@@ -297,7 +307,6 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 	switch (state) {
 	case State_Start:
 		if (DisplayMonstersInMessageWindow()) {
-			message_window->SetMessageMode(Window_BattleMessage::Mode_Normal);
 			SetState(State_SelectOption);
 		}
 		break;
@@ -321,15 +330,13 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 
 		break;
 	case State_Battle:
-		message_window->SetMessageMode(Window_BattleMessage::Mode_Action);
 		if (!battle_actions.empty()) {
-			if (battle_actions.front().second->GetSource()->IsDead()) {
+			if (battle_actions.front()->GetSource()->IsDead()) {
 				// No zombies allowed ;)
 				battle_actions.pop_front();
 			}
-			else if (battle_actions.front().second->Execute()) {
+			else if (ProcessBattleAction(battle_actions.front().get())) {
 				battle_actions.pop_front();
-				message_window->SetMessageMode(Window_BattleMessage::Mode_Normal);
 				if (CheckWin() ||
 					CheckLose() ||
 					CheckAbort() ||
@@ -338,7 +345,6 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 				}
 			}
 		} else {
-			message_window->SetMessageMode(Window_BattleMessage::Mode_Normal);
 			NextTurn();
 		}
 		break;
@@ -347,6 +353,101 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 	default:
 		break;
 	}
+}
+
+bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
+	static bool first = true;
+
+	if (battle_animation) {
+		if (!battle_animation->GetVisible())
+			battle_animation->SetVisible(true);
+
+		if (battle_animation->GetFrame() >= battle_animation->GetFrames()) {
+			battle_animation.reset();
+		} else {
+			battle_animation->Update();
+		}
+		return false;
+	}
+
+	Sprite_Battler* source_sprite;
+
+	switch (battle_action_state) {
+		case BattleActionState_Start:
+			battle_message_window->Clear();
+
+			action->Execute();
+			action->Apply();
+
+			battle_result_messages.clear();
+			action->GetResultMessages(battle_result_messages);
+			battle_result_messages_it = battle_result_messages.begin();
+
+			battle_message_window->Push(action->GetStartMessage());
+
+			if (first) {
+				if (action->GetAnimation()) {
+					battle_animation.reset(new BattleAnimation(
+						action->GetTarget()->GetBattleX(),
+						action->GetTarget()->GetBattleY(),
+						action->GetAnimation()));
+				}
+			}
+
+			source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
+			if (source_sprite) {
+				source_sprite->SetAnimationState(Sprite_Battler::SkillUse);
+			}
+			
+			battle_action_state = BattleActionState_Result;
+			break;
+		case BattleActionState_Result:
+			if (battle_action_wait--) {
+				return false;
+			}
+			battle_action_wait = 30;
+
+			if (battle_result_messages_it != battle_result_messages.end()) {
+				if (battle_result_messages_it == battle_result_messages.begin()) {
+					Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
+					if (target_sprite) {
+						target_sprite->SetAnimationState(Sprite_Battler::Damage);
+					}
+				}
+
+				if (battle_result_messages_it != battle_result_messages.begin()) {
+					battle_message_window->Pop();
+				}
+				battle_message_window->Push(*battle_result_messages_it);
+				++battle_result_messages_it;
+			} else {
+				if (action->GetKilledByAttack()) {
+					battle_message_window->Push(action->GetDeathMessage());
+				}
+				battle_action_state = BattleActionState_Finished;
+			}
+			
+			break;
+		case BattleActionState_Finished:
+			if (battle_action_wait--) {
+				return false;
+			}
+			battle_action_wait = 30;
+
+			if (action->TargetNext()) {
+				first = false;
+				battle_action_state = BattleActionState_Start;
+				return false;
+			}
+
+			// Reset variables
+			battle_action_state = BattleActionState_Start;
+			first = false;
+
+			return true;
+	}
+
+	return false;
 }
 
 void Scene_Battle_Rpg2k::ProcessInput() {
@@ -530,17 +631,16 @@ void Scene_Battle_Rpg2k::SkillSelected() {
 		case RPG::Skill::Scope_ally:
 			SetState(State_SelectAllyTarget);
 			break;
-		case RPG::Skill::Scope_enemies: {
-			BattlerActionPair battler_action(active_actor, EASYRPG_MAKE_SHARED<Game_BattleAction::AttackPartySkill>(active_actor, &Game_EnemyParty(), skill));
-			battle_actions.push_back(battler_action);
+		case RPG::Skill::Scope_enemies:
+			battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, &Game_EnemyParty(), *skill_window->GetSkill()));
 			SetState(State_SelectActor);
 			break;
-		}
 		case RPG::Skill::Scope_self:
+			battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, active_actor, *skill_window->GetSkill()));
+			SetState(State_SelectActor);
 			break;
 		case RPG::Skill::Scope_party: {
-			BattlerActionPair battler_action(active_actor, EASYRPG_MAKE_SHARED<Game_BattleAction::AttackPartySkill>(active_actor, &Game_Party(), skill));
-			battle_actions.push_back(battler_action);
+			battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, &Game_Party(), *skill_window->GetSkill()));
 			SetState(State_SelectActor);
 			break;
 		}
@@ -552,22 +652,15 @@ void Scene_Battle_Rpg2k::EnemySelected() {
 
 	switch (previous_state) {
 		case State_SelectCommand:
-		{
-			BattlerActionPair battler_action(active_actor, EASYRPG_MAKE_SHARED<Game_BattleAction::AttackSingleNormal>(active_actor, target));
-			battle_actions.push_back(battler_action);
+			battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(active_actor, target));
 			break;
-		}
 		case State_SelectSkill:
-		{
-			BattlerActionPair battler_action(active_actor, EASYRPG_MAKE_SHARED<Game_BattleAction::AttackSingleSkill>(active_actor, target, skill_window->GetSkill()));
-			battle_actions.push_back(battler_action);
+			battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, target, *skill_window->GetSkill()));
 			break;
-		}
 		case State_SelectItem:
 		{
+			//battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, target, *item_window->GetItem()));
 			// Todo
-			//BattlerActionPair battler_action(active_actor, EASYRPG_MAKE_SHARED<Game_BattleAction::AttackSingleItem>(active_actor, target));
-			//battle_actions.push_back(battler_action);
 			break;
 		}
 		default:
@@ -622,8 +715,8 @@ void Scene_Battle_Rpg2k::SelectPreviousActor() {
 	SetState(State_SelectActor);
 }
 
-static bool BattlerSort(BattlerActionPair first, BattlerActionPair second) {
-	return first.first->GetAgi() > second.first->GetAgi();
+static bool BattlerSort(BattleAlgorithmRef first, BattleAlgorithmRef second) {
+	return first->GetSource()->GetAgi() > second->GetSource()->GetAgi();
 }
 
 void Scene_Battle_Rpg2k::CreateExecutionOrder() {
@@ -634,29 +727,45 @@ void Scene_Battle_Rpg2k::CreateEnemyActions() {
 	std::vector<Game_Enemy*> alive_enemies = Game_EnemyParty().GetAliveEnemies();
 	std::vector<Game_Enemy*>::const_iterator it;
 	for (it = alive_enemies.begin(); it != alive_enemies.end(); ++it) {
-		battle_actions.push_back(BattlerActionPair(*it, EASYRPG_MAKE_SHARED<Game_BattleAction::AttackSingleNormal>(*it, Game_Party().GetRandomAliveBattler())));
+		battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(*it, Game_Party().GetRandomAliveBattler()));
 	}
 }
 
 bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 	static bool first = true;
+	static int sleep_until = -1;
+	static const boost::ptr_vector<Game_Enemy>& enemies = Game_EnemyParty().GetEnemies();
+	static boost::ptr_vector<Game_Enemy>::const_iterator it = enemies.begin();
 
-	if (!first) {
-		if (!Game_Message::message_waiting) {
-			return true;
+	if (sleep_until > -1) {
+		if (Graphics::GetFrameCount() >= sleep_until) {
+			// Sleep over
+			sleep_until = -1;
+		} else {
+			return false;
 		}
 	}
 
-	message_window->SetMessageMode(Window_BattleMessage::Mode_EnemyEncounter);
-
-	first = false;
-
-	const boost::ptr_vector<Game_Enemy>& enemies = Game_EnemyParty().GetEnemies();
-	for (boost::ptr_vector<Game_Enemy>::const_iterator it = enemies.begin();
-		it != enemies.end(); ++it) {
-		Game_Message::texts.push_back(it->GetName() + Data::terms.encounter);
+	if (it == enemies.end()) {
+		battle_message_window->Clear();
+		return true;
 	}
-	Game_Message::message_waiting = true;
+
+	if (battle_message_window->GetLineCount() == 4) {
+		battle_message_window->Clear();
+	}
+
+	battle_message_window->Push(it->GetName() + Data::terms.encounter);
+
+	if (battle_message_window->GetLineCount() == 4) {
+		// Half second sleep
+		sleep_until = Graphics::GetFrameCount() + 60 / 2;
+	} else {
+		// 1/10 second sleep
+		sleep_until = Graphics::GetFrameCount() + 60 / 10;
+	}
+
+	++it;
 
 	return false;
 }

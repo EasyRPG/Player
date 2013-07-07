@@ -35,7 +35,7 @@ public:
 	Spriteset_Battle();
 
 	void Update();
-	Sprite_Battler* FindBattler(Game_Battler* battler);
+	Sprite_Battler* FindBattler(const Game_Battler* battler);
 
 protected:
 	boost::scoped_ptr<Background> background;

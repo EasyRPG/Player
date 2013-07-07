@@ -20,44 +20,32 @@
 
 // Headers
 #include <deque>
-#include "window_message.h"
+#include "window_base.h"
 
 /**
  * Displays messages during a battle
  */
-class Window_BattleMessage : public Window_Message {
+class Window_BattleMessage : public Window_Base {
 
 public:
-	enum MessageMode {
-		/** Behaves like a normal message box */
-		Mode_Normal,
-		/** Special logic for the enemy listing at beginning of battle */
-		Mode_EnemyEncounter,
-		/** Special logic for displaying actions during battle step */
-		Mode_Action
-	};
-
 	Window_BattleMessage(int ix, int iy, int iwidth, int iheight);
 
-	/**
-	 * Starts message processing by reading all
-	 * non-displayed from Game_Message.
-	 */
-	void StartMessageProcessing();
+	void Push(const std::string& message);
 
-	/**
-	 * Ends the message processing.
-	 */
-	void FinishMessageProcessing();
+	void Pop();
 
-	void SetMessageMode(MessageMode new_mode);
-	void UpdateMessage();
+	void Clear();
+
+	int GetLineCount();
+
+	void Refresh();
+
+	void Update();
 
 private:
-	void UpdateMessageEnemyEncounter();
-	void UpdateMessageAction();
+	std::vector<std::string> lines;
 
-	MessageMode mode;
+	bool needs_refresh;
 };
 
 #endif

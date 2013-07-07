@@ -348,7 +348,6 @@
     <ClCompile Include="..\..\src\game_actor.cpp" />
     <ClCompile Include="..\..\src\game_actors.cpp" />
     <ClCompile Include="..\..\src\game_battle.cpp" />
-    <ClCompile Include="..\..\src\game_battleaction.cpp" />
     <ClCompile Include="..\..\src\game_battlealgorithm.cpp" />
     <ClCompile Include="..\..\src\game_battler.cpp" />
     <ClCompile Include="..\..\src\game_character.cpp" />
@@ -486,7 +485,6 @@
     <ClInclude Include="..\..\src\game_actor.h" />
     <ClInclude Include="..\..\src\game_actors.h" />
     <ClInclude Include="..\..\src\game_battle.h" />
-    <ClInclude Include="..\..\src\game_battleaction.h" />
     <ClInclude Include="..\..\src\game_battlealgorithm.h" />
     <ClInclude Include="..\..\src\game_battler.h" />
     <ClInclude Include="..\..\src\game_character.h" />
