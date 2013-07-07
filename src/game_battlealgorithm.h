@@ -148,6 +148,20 @@ public:
 	virtual std::string GetStartMessage() const = 0;
 
 	/**
+	 * Gets the sound effect that is played when the action is starting.
+	 *
+	 * @return start se
+	 */
+	virtual const RPG::Sound* GetStartSe() const;
+
+	/**
+	 * Gets the sound effect that is played then the action took place.
+	 *
+	 * @return result se
+	 */
+	virtual const RPG::Sound* GetResultSe() const;
+
+	/**
 	 * This is used to handle a corner case in the RPG2k battle system.
 	 * When a battler dies because his hp reached 0 the "[NAME] has fallen"
 	 * message is displayed on a new line. When the death is caused by a

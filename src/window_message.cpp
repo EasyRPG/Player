@@ -27,6 +27,7 @@
 #include "game_player.h"
 #include "game_system.h"
 #include "game_variables.h"
+#include "game_temp.h"
 #include "graphics.h"
 #include "input.h"
 #include "player.h"
@@ -249,7 +250,11 @@ void Window_Message::Update() {
 		// The Event Page ended but the MsgBox was used in this Event
 		// It can be closed now.
 		TerminateMessage();
-		SetCloseAnimation(5);
+		if (Game_Temp::battle_running) {
+			SetCloseAnimation(0);
+		} else {
+			SetCloseAnimation(5);
+		}
 		// Remove this when the Close Animation is implemented
 		// The close animation must set the visible false flag
 		visible = false;
@@ -270,7 +275,12 @@ void Window_Message::Update() {
 		//printf("Text: %s\n", text.c_str());
 		if (!visible) {
 			// The MessageBox is not open yet but text output is needed
-			SetOpenAnimation(5);
+			// Open and Close Animations are skipped in battle
+			if (Game_Temp::battle_running) {
+				SetOpenAnimation(0);
+			} else {
+				SetOpenAnimation(5);
+			}
 			visible = true;
 		}
 		Game_Message::visible = true;

@@ -79,12 +79,6 @@ void Sprite_Battler::Update() {
 		if (anim_state == Idle) {
 			SetOpacity(255);
 		}
-		else if (anim_state == SkillUse) {
-			if (!flashing) {
-				flashing = true;
-				Flash(Color(255, 255, 255, 100), 15);
-			}
-		}
 		else if (anim_state == Dead && fade_out > 0) {
 			fade_out -= 15;
 			SetOpacity(fade_out);

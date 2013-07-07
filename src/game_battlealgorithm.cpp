@@ -114,6 +114,10 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetDeathMessage() const {
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::string>& out) const {
+	if (!success) {
+		out.push_back((*current_target)->GetName() + Data::terms.dodge);
+	}
+
 	bool target_is_ally = (*current_target)->GetType() == Game_Battler::Type_Ally;
 
 	if (GetAffectedHp()) {
@@ -235,6 +239,24 @@ bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {
 	return false;
 }
 
+const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetStartSe() const {
+	if (source->GetType() == Game_Battler::Type_Enemy) {
+		return &Data::system.enemy_attack_se;
+	} else {
+		return NULL;
+	}
+}
+
+const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetResultSe() const {
+	if (!success) {
+		return &Data::system.dodge_se;
+	} else {
+		return ((*current_target)->GetType() == Game_Battler::Type_Ally ?
+			&Data::system.actor_damaged_se :
+		&Data::system.enemy_damaged_se);
+	}
+}
+
 Game_BattleAlgorithm::Normal::Normal(Game_Battler* source, Game_Battler* target) :
 	AlgorithmBase(source, target) {
 	// no-op
@@ -282,6 +304,7 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 
 		if ((*current_target)->GetHp() - this->hp <= 0) {
 			// Death state
+			killed_by_attack_damage = true;
 			conditions.push_back(Data::states[0]);
 		}
 	}
@@ -339,6 +362,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 					if ((*current_target)->GetHp() - this->hp <= 0) {
 						// Death state
+						killed_by_attack_damage = true;
 						conditions.push_back(Data::states[0]);
 					}
 				}
@@ -414,6 +438,7 @@ void Game_BattleAlgorithm::Skill::GetResultMessages(std::vector<std::string>& ou
 
 	AlgorithmBase::GetResultMessages(out);
 }
+
 
 Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Battler* target, RPG::Item& item) :
 	AlgorithmBase(source, target), item(item) {

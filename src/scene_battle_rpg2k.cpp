@@ -84,9 +84,7 @@ void Scene_Battle_Rpg2k::Update() {
 
 	ProcessActions();
 
-	if (!message_window->GetVisible()) {
-		ProcessInput();
-	}
+	ProcessInput();
 
 	Game_Battle::Update();
 
@@ -201,7 +199,6 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 	skill_window->SetActive(false);
 	target_window->SetActive(false);
 	battle_message_window->SetActive(false);
-	message_window->SetActive(false);
 
 	switch (state) {
 	case State_Start:
@@ -236,10 +233,8 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_AllyAction:
 	case State_EnemyAction:
-		break;
 	case State_Victory:
 	case State_Defeat:
-		message_window->SetActive(true);
 		break;
 	}
 
@@ -251,7 +246,6 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 	help_window->SetVisible(false);
 	target_window->SetVisible(false);
 	battle_message_window->SetVisible(false);
-	message_window->SetVisible(false);
 
 	switch (state) {
 	case State_Start:
@@ -303,7 +297,6 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_Victory:
 	case State_Defeat:
-		message_window->SetVisible(true);
 		break;
 	}
 }
@@ -395,7 +388,11 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
 			if (source_sprite) {
-				source_sprite->SetAnimationState(Sprite_Battler::SkillUse);
+				source_sprite->Flash(Color(255, 255, 255, 100), 15);
+			}
+
+			if (action->GetStartSe()) {
+				Game_System::SePlay(*action->GetStartSe());
 			}
 			
 			battle_action_state = BattleActionState_Result;
@@ -412,6 +409,10 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 					if (target_sprite) {
 						target_sprite->SetAnimationState(Sprite_Battler::Damage);
 					}
+
+					if (action->GetResultSe()) {
+						Game_System::SePlay(*action->GetResultSe());
+					}
 				}
 
 				if (battle_result_messages_it != battle_result_messages.begin()) {
@@ -425,6 +426,10 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 				}
 				battle_action_state = BattleActionState_Finished;
 			}
+
+			if (battle_result_messages_it == battle_result_messages.end()) {
+				battle_action_state = BattleActionState_Finished;
+			}
 			
 			break;
 		case BattleActionState_Finished:
@@ -433,15 +438,20 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			}
 			battle_action_wait = 30;
 
+			Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
+			if (target_sprite) {
+				target_sprite->SetAnimationState(Sprite_Battler::Idle);
+			}
+
 			if (action->TargetNext()) {
-				first = false;
+				first = true;
 				battle_action_state = BattleActionState_Start;
 				return false;
 			}
 
 			// Reset variables
 			battle_action_state = BattleActionState_Start;
-			first = false;
+			first = true;
 
 			return true;
 	}
@@ -456,7 +466,10 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 			// no-op
 			break;
 		case State_SelectOption:
-			OptionSelected();
+			// Interpreter message boxes pop up in this state
+			if (!message_window->GetVisible()) {
+				OptionSelected();
+			}
 			break;
 		case State_SelectActor:
 			SetState(State_SelectCommand);
@@ -798,7 +811,10 @@ bool Scene_Battle_Rpg2k::CheckLose() {
 	if (!Game_Party().IsAnyAlive()) {
 		Game_Temp::battle_result = Game_Temp::BattleDefeat;
 		SetState(State_Defeat);
+
 		Game_Message::texts.push_back(Data::terms.defeat);
+
+		Game_System::BgmPlay(Data::system.gameover_music);
 
 		return true;
 	}
