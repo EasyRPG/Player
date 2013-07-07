@@ -143,7 +143,6 @@ private:
 	bool DisplayMonstersInMessageWindow();
 
 	std::deque<BattleAlgorithmRef> battle_actions;
-	boost::scoped_ptr<BattleAnimation> battle_animation;
 	std::vector<std::string> battle_result_messages;
 	std::vector<std::string>::iterator battle_result_messages_it;
 	int battle_action_wait;

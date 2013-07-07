@@ -160,15 +160,20 @@ void Game_Screen::PlayMovie(const std::string& filename,
 }
 
 void Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool global) {
-	data.battleanim_id = animation_id;
 	data.battleanim_target = target_id;
-	data.battleanim_global = global;
 
 	Game_Character* target = Game_Character::GetCharacter(target_id, target_id);
+	ShowBattleAnimation(animation_id, target->GetScreenX(), target->GetScreenY(), global);
+}
+
+void Game_Screen::ShowBattleAnimation(int animation_id, int target_x, int target_y, bool global) {
+	data.battleanim_id = animation_id;
+	
+	data.battleanim_global = global;
 
 	RPG::Animation& anim = Data::animations[animation_id - 1];
-	animation.reset(new BattleAnimation(target->GetScreenX(), target->GetScreenY(),
-										&anim));
+	animation.reset(new BattleAnimation(target_x, target_y,
+		&anim));
 	animation->SetVisible(true);
 	// FIXME: target
 	// FIXME: global
@@ -281,10 +286,10 @@ void Game_Screen::Update() {
 
 	if (animation) {
 		animation->Update();
+		PlayBattleAnimationSound();
+
 		if (animation->IsDone()) {
 			animation.reset();
-		} else {
-			PlayBattleAnimationSound();
 		}
 	}
 }

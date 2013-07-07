@@ -89,6 +89,9 @@ void Scene_Battle_Rpg2k::Update() {
 	}
 
 	Game_Battle::Update();
+
+	Main_Data::game_screen->Update();
+
 	/*DoAuto();
 
 	UpdateBackground();
@@ -361,15 +364,7 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
 	static bool first = true;
 
-	if (battle_animation) {
-		if (!battle_animation->GetVisible())
-			battle_animation->SetVisible(true);
-
-		if (battle_animation->GetFrame() >= battle_animation->GetFrames()) {
-			battle_animation.reset();
-		} else {
-			battle_animation->Update();
-		}
+	if (Main_Data::game_screen->IsBattleAnimationWaiting()) {
 		return false;
 	}
 
@@ -390,10 +385,11 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 
 			if (first) {
 				if (action->GetAnimation()) {
-					battle_animation.reset(new BattleAnimation(
+					Main_Data::game_screen->ShowBattleAnimation(
+						action->GetAnimation()->ID,
 						action->GetTarget()->GetBattleX(),
 						action->GetTarget()->GetBattleY(),
-						action->GetAnimation()));
+						false);
 				}
 			}
 

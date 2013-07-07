@@ -48,6 +48,7 @@ public:
 	void PlayMovie(const std::string& filename,
 				   int pos_x, int pos_y, int res_x, int res_y);
 	void ShowBattleAnimation(int animation_id, int target_id, bool global);
+	void ShowBattleAnimation(int animation_id, int target_x, int target_y, bool global);
 	bool IsBattleAnimationWaiting() const;
 	void Update();
 
