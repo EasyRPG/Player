@@ -166,8 +166,6 @@ void Scene_Map::UpdateTeleportPlayer() {
 
 void Scene_Map::CallBattle() {
 	Game_Temp::battle_calling = false;
-	Game_Temp::battle_terrain_id = Game_Map::GetTerrainTag(Main_Data::game_player->GetX(), Main_Data::game_player->GetY());
-	Game_Temp::battle_background = "";
 
 	Scene::Push(Scene_Battle::Create());
 }

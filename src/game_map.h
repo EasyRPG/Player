@@ -261,6 +261,14 @@ namespace Game_Map {
 	void GetEncountersAt(int x, int y, std::vector<int>& out);
 
 	/**
+	 * Updates all battle data based on the current player position and starts
+	 * the battle.
+	 *
+	 * @return true if battle starts, false if no monsters are at the current map position
+	 */
+	bool PrepareEncounter();
+
+	/**
 	 * Gets lower layer map data.
 	 *
 	 * @return lower layer map data.

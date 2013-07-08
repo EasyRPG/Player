@@ -31,6 +31,8 @@
 #include "util_macro.h"
 #include "game_system.h"
 #include "filefinder.h"
+#include "player.h"
+#include "input.h"
 #include <boost/scoped_ptr.hpp>
 
 namespace {
@@ -508,6 +510,11 @@ int Game_Map::GetEncounterSteps() {
 }
 
 void Game_Map::UpdateEncounterSteps() {
+	if (Player::debug_flag &&
+		Input::IsPressed(Input::DEBUG_THROUGH)) {
+			return;
+	}
+
 	int x = Main_Data::game_player->GetX();
 	int y = Main_Data::game_player->GetY();
 	int terrain_id = GetTerrainTag(x, y);
@@ -517,17 +524,7 @@ void Game_Map::UpdateEncounterSteps() {
 
 	if (location.encounter_steps <= 0) {
 		ResetEncounterSteps();
-
-		std::vector<int> encounters;
-		GetEncountersAt(x, y, encounters);
-
-		if (encounters.empty()) {
-			// No enemies on this map :(
-			return;
-		}
-
-		Game_Temp::battle_troop_id = encounters[rand() / (RAND_MAX / encounters.size() + 1)];
-		Game_Temp::battle_calling = true;
+		PrepareEncounter();
 	}
 }
 
@@ -564,6 +561,26 @@ void Game_Map::GetEncountersAt(int x, int y, std::vector<int>& out) {
 			}
 		}
 	}
+}
+
+bool Game_Map::PrepareEncounter() {
+	int x = Main_Data::game_player->GetX();
+	int y = Main_Data::game_player->GetY();
+
+	std::vector<int> encounters;
+	GetEncountersAt(x, y, encounters);
+
+	if (encounters.empty()) {
+		// No enemies on this map :(
+		return false;
+	}
+
+	Game_Temp::battle_terrain_id = Game_Map::GetTerrainTag(Main_Data::game_player->GetX(), Main_Data::game_player->GetY());
+	Game_Temp::battle_background = "";
+	Game_Temp::battle_troop_id = encounters[rand() / (RAND_MAX / encounters.size() + 1)];
+	Game_Temp::battle_calling = true;
+
+	return true;
 }
 
 std::vector<short>& Game_Map::GetMapDataDown() {
