@@ -323,11 +323,11 @@ bool Game_BattleAlgorithm::Normal::Execute() {
 	}
 	else {
 		this->success = false;
-		return false;
+		return this->success;
 	}
 
 	this->success = true;
-	return true;
+	return this->success;
 }
 
 void Game_BattleAlgorithm::Normal::Apply() {
@@ -361,7 +361,10 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 				this->success = true;
 
 				// FIXME: is this still affected by stats for allies?
-				int effect = skill.power;
+				// FIXME: This is what the help file says, but it doesn't look right
+				int effect = skill.power +
+					source->GetAtk() * skill.pdef_f / 20 +
+					(*current_target)->GetDef() * skill.mdef_f / 40;
 
 				if (skill.variance > 0) {
 					int var_perc = skill.variance * 5;
@@ -400,6 +403,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 			this->success = true;
 
+			// TODO
 			//if (skill.state_effect)
 				conditions.push_back(Data::states[i]);
 			//	actor->AddState(i + 1);
