@@ -158,7 +158,7 @@ void Game_Map::Setup(int _id) {
 	location.pan_current_x = 0;
 	location.pan_current_y = 0;
 
-	location.encounter_steps = map_info.encounter_rate;
+	ResetEncounterSteps();
 }
 
 void Game_Map::Autoplay() {
@@ -513,14 +513,13 @@ void Game_Map::UpdateEncounterSteps() {
 	int terrain_id = GetTerrainTag(x, y);
 	const RPG::Terrain& terrain = Data::terrains[terrain_id - 1];
 
-	// TODO: Add more randomness to this assignment
-	location.encounter_steps -= terrain.encounter_rate / 100;
+	location.encounter_steps -= terrain.encounter_rate;
 
 	if (location.encounter_steps <= 0) {
-		location.encounter_steps = GetEncounterRate();
+		ResetEncounterSteps();
 
 		std::vector<int> encounters;
-		GetEncountersAt(Main_Data::game_player->GetX(), Main_Data::game_player->GetY(), encounters);
+		GetEncountersAt(x, y, encounters);
 
 		if (encounters.empty()) {
 			// No enemies on this map :(
@@ -533,7 +532,12 @@ void Game_Map::UpdateEncounterSteps() {
 }
 
 void Game_Map::ResetEncounterSteps() {
-	location.encounter_steps = 0;
+	int rate = GetEncounterRate();
+	int throw_one = rand() / (RAND_MAX / rate + 1);
+	int throw_two = rand() / (RAND_MAX / rate + 1);
+
+	// *100 to handle terrain rate better
+	location.encounter_steps = (throw_one + throw_two + 1) * 100;
 }
 
 void Game_Map::GetEncountersAt(int x, int y, std::vector<int>& out) {
