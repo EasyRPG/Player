@@ -530,11 +530,13 @@ void Game_Map::UpdateEncounterSteps() {
 
 void Game_Map::ResetEncounterSteps() {
 	int rate = GetEncounterRate();
-	int throw_one = rand() / (RAND_MAX / rate + 1);
-	int throw_two = rand() / (RAND_MAX / rate + 1);
+	if (rate > 0) {
+		int throw_one = rand() / (RAND_MAX / rate + 1);
+		int throw_two = rand() / (RAND_MAX / rate + 1);
 
-	// *100 to handle terrain rate better
-	location.encounter_steps = (throw_one + throw_two + 1) * 100;
+		// *100 to handle terrain rate better
+		location.encounter_steps = (throw_one + throw_two + 1) * 100;
+	}
 }
 
 void Game_Map::GetEncountersAt(int x, int y, std::vector<int>& out) {
@@ -564,6 +566,10 @@ void Game_Map::GetEncountersAt(int x, int y, std::vector<int>& out) {
 }
 
 bool Game_Map::PrepareEncounter() {
+	if (GetEncounterRate() <= 0) {
+		return false;
+	}
+
 	int x = Main_Data::game_player->GetX();
 	int y = Main_Data::game_player->GetY();
 

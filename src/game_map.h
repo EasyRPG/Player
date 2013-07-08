@@ -264,7 +264,8 @@ namespace Game_Map {
 	 * Updates all battle data based on the current player position and starts
 	 * the battle.
 	 *
-	 * @return true if battle starts, false if no monsters are at the current map position
+	 * @return true if battle starts, false if no monsters are at the current
+	 * map position or encounter rate is 0
 	 */
 	bool PrepareEncounter();
 
