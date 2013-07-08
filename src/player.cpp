@@ -84,17 +84,37 @@ void Player::Init(int argc, char *argv[]) {
 	reset_flag = false;
 
 	// Command line parser
-	if((argc > 1) && Utils::LowerCase(argv[1]) == "battletest") {
+	std::set<std::string> args;
+	for (int i = 1; i < argc; ++i) {
+		args.insert(Utils::LowerCase(argv[i]));
+	}
+
+	window_flag = args.find("window") != args.end();
+	debug_flag = args.find("testplay") != args.end();
+	hide_title_flag = args.find("hidetitle") != args.end();
+
+	std::set<std::string>::const_iterator btest_it = args.find("battletest");
+
+	battle_test_troop_id = 0;
+	if (args.find("battletest") != args.end()) {
+		// Take the number directly after battle_test as the troop id
+		// If this fails take the 4th argument (RPG_RT style)
 		battle_test_flag = true;
-		battle_test_troop_id = (argc > 4)? atoi(argv[4]) : 0;
+
+		for (int i = 1; i < argc; ++i) {
+			if (Utils::LowerCase(argv[i]) == "battletest") {
+				if (i + 1 < argc) {
+					battle_test_troop_id = atoi(argv[i + 1]); 
+				}
+				break;
+			}
+		}
+
+		if (battle_test_troop_id == 0 && argc > 4) {
+			battle_test_troop_id = atoi(argv[4]);
+		}
 	} else {
-		std::set<std::string> args;
 		battle_test_flag = false;
-		battle_test_troop_id = 0;
-		for(int i = 1; i < argc; ++i) { args.insert(Utils::LowerCase(argv[i])); }
-		window_flag = args.find("window") != args.end();
-		debug_flag = args.find("testplay") != args.end();
-		hide_title_flag = args.find("hidetitle") != args.end();
 	}
 
 	engine = EngineRpg2k;
