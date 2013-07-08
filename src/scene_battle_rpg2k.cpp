@@ -93,7 +93,9 @@ void Scene_Battle_Rpg2k::Update() {
 		ProcessActions();
 	}
 
-	ProcessInput();
+	if (!Game_Message::message_waiting) {
+		ProcessInput();
+	}
 
 	Game_Battle::Update();
 
@@ -801,23 +803,36 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 	return false;
 }
 
-
 bool Scene_Battle_Rpg2k::CheckWin() {
 	if (!Main_Data::game_enemyparty->IsAnyAlive()) {
 		Game_Temp::battle_result = Game_Temp::BattleVictory;
 		SetState(State_Victory);
 
+		int exp = Main_Data::game_enemyparty->GetExp();
+		int money = Main_Data::game_enemyparty->GetMoney();
+
 		Game_Message::texts.push_back(Data::terms.victory);
 
 		std::stringstream ss;
-		ss << Main_Data::game_enemyparty->GetExp() << Data::terms.exp_received;
+		ss << exp << Data::terms.exp_received;
 		Game_Message::texts.push_back(ss.str());
 
 		ss.str("");
-		ss << Data::terms.gold_recieved_a << " " << Main_Data::game_enemyparty->GetMoney() << Data::terms.gold << Data::terms.gold_recieved_b;
+		ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b;
 		Game_Message::texts.push_back(ss.str());
 
 		Game_System::BgmPlay(Data::system.battle_end_music);
+
+		// Update attributes
+		std::vector<Game_Battler*> ally_battlers;
+		Main_Data::game_party->GetAliveBattlers(ally_battlers);
+
+		for (std::vector<Game_Battler*>::iterator it = ally_battlers.begin();
+			it != ally_battlers.end(); ++it) {
+				Game_Actor* actor = static_cast<Game_Actor*>(*it);
+				actor->ChangeExp(actor->GetExp() + exp, true);
+		}
+		Main_Data::game_party->GainGold(money);
 
 		return true;
 	}
