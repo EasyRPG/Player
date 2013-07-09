@@ -26,7 +26,7 @@
 
 
 Window_VarList::Window_VarList(std::vector<std::string> commands) :
-Window_Command(commands, 224, 10), show_switch(true), range(0) {
+Window_Command(commands, 224, 10), show_switch(true), first_var(0) {
 	SetX(0);
 	SetY(32);
 	SetHeight(176);
@@ -41,29 +41,38 @@ Window_VarList::~Window_VarList() {
 
 void Window_VarList::Refresh() {
 	contents->Clear();
-	for (int i = 0; i < item_max; i++) {
-		DrawItem(i, Font::ColorDefault);
+	for (int i = 0; i < 10; i++) {
+		if (!show_switch && Game_Variables.isValidVar(first_var+i)) {
+			DrawItem(i, Font::ColorDefault);
+		}
 		DrawItemValue(i);
 	}
 }
 
 void Window_VarList::DrawItemValue(int index){
 	if (show_switch){
-		contents->TextDraw(GetWidth() - 16, 16 * index + 2, Font::ColorDefault, Game_Switches[range*10+index+1] ? "[ON]" : "[OFF]", Text::AlignRight);
+		if (!Game_Switches.isValidSwitch(first_var+index))
+			return;
+		DrawItem(index, Font::ColorDefault);
+		contents->TextDraw(GetWidth() - 16, 16 * index + 2, (!Game_Switches[first_var+index]) ? Font::ColorCritical : Font::ColorDefault, Game_Switches[first_var+index] ? "[ON]" : "[OFF]", Text::AlignRight);
 	}
 	else {
+		if (!Game_Variables.isValidVar(first_var+index))
+			return;
+		DrawItem(index, Font::ColorDefault);
 		std::stringstream ss;
-		ss  << Game_Variables[range*10+index+1];
-		contents->TextDraw(GetWidth() - 16, 16 * index + 2, Font::ColorDefault, ss.str(), Text::AlignRight);
+		ss  << Game_Variables[first_var+index];
+		contents->TextDraw(GetWidth() - 16, 16 * index + 2, (Game_Variables[first_var+index] < 0) ? Font::ColorCritical : Font::ColorDefault, ss.str(), Text::AlignRight);
 	}
 }
 
 void Window_VarList::UpdateList(int first_value){
-	std::stringstream ss;
-	range = first_value;
-	for (int i = 0; i < 11; i++){
+	static std::stringstream ss;
+	first_var = first_value;
+	for (int i = 0; i < 10; i++){
 		ss.str("");
-		ss << std::setfill('0') << std::setw(4) << (first_value * 10 + i + 1) << ":";
+		if ((show_switch && Game_Switches.isValidSwitch(first_var+i)) || ((!show_switch && Game_Variables.isValidVar(first_var+i))))
+			ss << std::setfill('0') << std::setw(4) << (first_value + i) << ":";
 		this->SetItemText(i, ss.str());
 	}
 }
@@ -85,8 +94,5 @@ void Window_VarList::SetActive(bool nactive) {
 }
 
 int Window_VarList::GetIndex() {
-	if (GetActive())
-		return index;
-	else
-		return hidden_index;
+	return GetActive() ? index : hidden_index;
 }

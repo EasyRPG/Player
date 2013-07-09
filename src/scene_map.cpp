@@ -197,5 +197,6 @@ void Scene_Map::CallSave() {
 }
 
 void Scene_Map::CallDebug() {
-	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Debug>());
+	if (Player::debug_flag)
+		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Debug>());
 }

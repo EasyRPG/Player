@@ -55,7 +55,7 @@ public:
 	 *
 	 * @param inumber the new number value.
 	 */
-	void SetNumber(unsigned inumber);
+	void SetNumber(int inumber);
 
 	/**
 	 * Returns the number of displayed digits.
@@ -73,6 +73,21 @@ public:
 	void SetMaxDigits(int idigits_max);
 
 	/**
+	 * Gets whether the +- operator is displayed before the numbers.
+	 *
+	 * @return the current operator state
+	 */
+	bool GetShowOperator();
+
+	/**
+	 * Enables or Disables the +- operator before the numbers.
+	 * By default no negative values are possible.
+	 *
+	 * @param show Show operators
+	 */
+	void SetShowOperator(bool show);
+
+	/**
 	 * Updates the position of the cursor rectangle.
 	 */
 	void UpdateCursorRect();
@@ -83,10 +98,12 @@ public:
 	void Update();
 
 protected:
-	unsigned int number;
+	unsigned number;
 	int digits_max;
 	unsigned int cursor_width;
 	unsigned int index;
+	bool show_operator;
+	bool plus;
 };
 
 #endif

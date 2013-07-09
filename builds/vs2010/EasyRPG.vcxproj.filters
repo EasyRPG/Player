@@ -439,9 +439,6 @@
     <ClCompile Include="..\..\src\window_varlist.cpp">
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\window_integereditor.cpp">
-      <Filter>Source Files\Engine\Window</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\audio.h">
@@ -844,9 +841,6 @@
       <Filter>Source Files\Engine\Scene</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\window_varlist.h">
-      <Filter>Source Files\Engine\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\window_integereditor.h">
       <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
   </ItemGroup>

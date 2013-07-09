@@ -20,11 +20,12 @@
 
 // Headers
 #include <vector>
-#include "scene.h"
-#include "window_command.h"
-#include "window_varlist.h"
-#include "window_integereditor.h"
 #include <boost/scoped_ptr.hpp>
+#include "scene.h"
+
+class Window_Command;
+class Window_VarList;
+class Window_NumberInput;
 
 /**
  * Scene Equip class.
@@ -69,6 +70,8 @@ public:
 private:
 	/** Current variables being displayed (Switches or Integers). */
 	VarType current_var_type;
+	/** Current Page being displayed */
+	int range_page;
 	/** Current range being displayed. */
 	int range_index;
 
@@ -78,15 +81,15 @@ private:
 	/** Creates variable list View window. */
 	void CreateVarListWindow();
 
-	/** Creates integer type variable edition window. */
-	void CreateIntegerEditWindow();
+	/** Creates number input window. */
+	void CreateNumberInputWindow();
 
 	/** Displays a range selection for current var type. */
-	EASYRPG_SHARED_PTR<Window_Command> range_window;
+	boost::scoped_ptr<Window_Command> range_window;
 	/** Displays the vars inside the current range. */
-	EASYRPG_SHARED_PTR<Window_VarList> var_window;
-	/** Integer Editor. */
-	boost::scoped_ptr<Window_IntegerEditor> integeredit_window;
+	boost::scoped_ptr<Window_VarList> var_window;
+	/** Number Editor. */
+	boost::scoped_ptr<Window_NumberInput> numberinput_window;
 };
 
 #endif

@@ -279,7 +279,6 @@
     <ClCompile Include="..\..\src\window_face.cpp" />
     <ClCompile Include="..\..\src\window_gold.cpp" />
     <ClCompile Include="..\..\src\window_help.cpp" />
-    <ClCompile Include="..\..\src\window_integereditor.cpp" />
     <ClCompile Include="..\..\src\window_item.cpp" />
     <ClCompile Include="..\..\src\window_keyboard.cpp" />
     <ClCompile Include="..\..\src\window_menustatus.cpp" />
@@ -416,7 +415,6 @@
     <ClInclude Include="..\..\src\window_face.h" />
     <ClInclude Include="..\..\src\window_gold.h" />
     <ClInclude Include="..\..\src\window_help.h" />
-    <ClInclude Include="..\..\src\window_integereditor.h" />
     <ClInclude Include="..\..\src\window_item.h" />
     <ClInclude Include="..\..\src\window_keyboard.h" />
     <ClInclude Include="..\..\src\window_menustatus.h" />
