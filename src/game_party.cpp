@@ -23,6 +23,7 @@
 #include "game_map.h"
 #include "game_player.h"
 #include "game_battle.h"
+#include "game_temp.h"
 #include "output.h"
 #include "util_macro.h"
 
@@ -156,20 +157,23 @@ void Game_Party::LoseItem(int item_id, int amount) {
 }
 
 bool Game_Party::IsItemUsable(int item_id) {
-	if (item_id > 0 && item_id <= (int)Data::items.size()) {
-		//TODO: if (Game_Temp::IsInBattle()) {
-		//if (Data::items[item_id - 1].type == RPG::Item::Type_medicine) {
-		//	return !Data::items[item_id - 1].ocassion_field;
-		//} else if (Data::items[item_id - 1].type == RPG::Item::Type_switch) {
-		//	return Data::items[item_id - 1].ocassion_battle;
-		//} else {
-		if (data.party.size() > 0 &&
-			(Data::items[item_id - 1].type == RPG::Item::Type_medicine ||
-			Data::items[item_id - 1].type == RPG::Item::Type_material ||
-			Data::items[item_id - 1].type == RPG::Item::Type_book)) {
-			return true;
-		} else if (Data::items[item_id - 1].type == RPG::Item::Type_switch) {
-			return Data::items[item_id - 1].occasion_field2;
+	RPG::Item& item = Data::items[item_id - 1];
+
+	if (item_id > 0 && item_id <= (int)Data::items.size() && data.party.size() > 0) {
+		if (Game_Temp::battle_running) {
+			if (item.type == RPG::Item::Type_medicine) {
+				return !item.occasion_field1;
+			} else if (item.type == RPG::Item::Type_switch) {
+				return item.occasion_battle;
+			}
+		} else {
+			if (item.type == RPG::Item::Type_medicine ||
+				item.type == RPG::Item::Type_material ||
+				item.type == RPG::Item::Type_book) {
+					return true;
+			} else if (item.type == RPG::Item::Type_switch) {
+				return item.occasion_field2;
+			}
 		}
 	}
 
