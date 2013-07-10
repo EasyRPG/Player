@@ -40,6 +40,10 @@ void Scene_Item::Start() {
 	item_window->SetIndex(item_index);
 }
 
+void Scene_Item::Continue() {
+	item_window->Refresh();
+}
+
 void Scene_Item::Update() {
 	help_window->Update();
 	item_window->Update();

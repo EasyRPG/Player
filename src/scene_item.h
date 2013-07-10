@@ -38,6 +38,7 @@ public:
 	Scene_Item(int item_index = 0);
 
 	void Start();
+	void Continue();
 	void Update();
 
 private:

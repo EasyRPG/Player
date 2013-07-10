@@ -71,6 +71,10 @@ void Window_Item::Refresh() {
 	item_max = data.size();
 
 	CreateContents();
+	
+	if (index > 0 && index >= item_max) {
+		--index;
+	} 
 
 	contents->Clear();
 
