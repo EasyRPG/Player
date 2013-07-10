@@ -355,6 +355,21 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 			SetState(State_SelectOption);
 		}
 		break;
+	case State_SelectEnemyTarget: {
+		static int flash_count = 0;
+
+		Game_Enemy* target = static_cast<Game_Enemy*>(Main_Data::game_enemyparty->GetAliveEnemies()[target_window->GetIndex()]);
+		Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(target);
+		if (sprite) {
+			++flash_count;
+
+			if (flash_count == 60) {
+				sprite->Flash(Color(255, 255, 255, 100), 15);
+				flash_count = 0;
+			}
+		}
+		break;
+	}
 	case State_AllyAction:
 	case State_EnemyAction:
 	default:
