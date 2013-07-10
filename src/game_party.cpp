@@ -35,7 +35,7 @@ Game_Party::Game_Party() {
 Game_Battler* Game_Party::GetBattler(int index) {
 	std::vector<Game_Actor*> actors = GetActors();
 
-	if (index < 0 || index >= actors.size()) {
+	if (index < 0 || (size_t)index >= actors.size()) {
 		return NULL;
 	}
 
@@ -136,7 +136,7 @@ void Game_Party::GainItem(int item_id, int amount) {
 			return;
 		}
 
-		data.item_counts[i] = std::min(total_items, 99);
+		data.item_counts[i] = (uint8_t)std::min(total_items, 99);
 		return;
 	}
 
@@ -146,9 +146,9 @@ void Game_Party::GainItem(int item_id, int amount) {
 		return;
 	}
 
-	data.item_ids.push_back(item_id);
-	data.item_counts.push_back(std::min(amount, 99));
-	data.item_usage.push_back(Data::items[item_id - 1].uses);
+	data.item_ids.push_back((int16_t)item_id);
+	data.item_counts.push_back((uint8_t)std::min(amount, 99));
+	data.item_usage.push_back((uint8_t)Data::items[item_id - 1].uses);
 }
 
 void Game_Party::LoseItem(int item_id, int amount) {
@@ -176,12 +176,27 @@ bool Game_Party::IsItemUsable(int item_id) {
 	return false;
 }
 
+void Game_Party::UseItem(int item_id, Game_Actor* target) {
+	if (target) {
+		target->UseItem(item_id);
+	} else {
+		std::vector<Game_Actor*> actors = GetActors();
+		std::vector<Game_Actor*>::iterator it;
+		for (it = actors.begin(); it != actors.end(); ++it) {
+			(*it)->UseItem(item_id);
+		}
+	}
+
+	// Todo usage count
+	LoseItem(item_id, 1);
+}
+
 void Game_Party::AddActor(int actor_id) {
 	if (IsActorInParty(actor_id))
 		return;
 	if (data.party.size() >= 4)
 		return;
-	data.party.push_back(actor_id);
+	data.party.push_back((int16_t)actor_id);
 	Main_Data::game_player->Refresh();
 }
 

@@ -55,6 +55,16 @@ int Game_Actor::GetId() const {
 	return data.ID;
 }
 
+void Game_Actor::UseItem(int item_id) {
+	const RPG::Item& item = Data::items[item_id - 1];
+
+	if (item.type == RPG::Item::Type_book) {
+		LearnSkill(item.skill_id);
+	} else {
+		Game_Battler::UseItem(item_id);
+	}
+}
+
 bool Game_Actor::IsSkillLearned(int skill_id) const{
 	return std::find(data.skills.begin(), data.skills.end(), skill_id) != data.skills.end();
 }
@@ -584,6 +594,10 @@ void Game_Actor::ChangeHp(int hp) {
 	} else {
 		// Back to life
 		RemoveState(1);
+		if (GetHp() <= 0) {
+			// Reviving gives at least 1 Hp
+			SetHp(1);
+		}
 	}
 }
 

@@ -204,6 +204,13 @@ public:
 	virtual bool IsSkillUsable(int skill_id) const;
 
 	/**
+	 * Applies the effects of an item.
+	 *
+	 * @param item_id ID if item to use
+	 */
+	virtual void UseItem(int item_id);
+
+	/**
 	 * Calculates the Skill costs including all modifiers.
 	 *
 	 * @param skill_id ID of skill to calculate.

@@ -98,6 +98,42 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 	return false;
 }
 
+void Game_Battler::UseItem(int item_id) {
+	const RPG::Item& item = Data::items[item_id - 1];
+
+	if (item.type == RPG::Item::Type_medicine) {
+		int hp_change = item.recover_hp * GetMaxHp() / 100 + item.recover_hp_rate;
+		int sp_change = item.recover_sp * GetMaxSp() / 100 + item.recover_sp_rate;
+
+		if (IsDead()) {
+			// Check if item can revive
+			if (item.state_set.empty() || !item.state_set[0]) {
+				return;
+			}
+
+			// Revive gives at least 1 Hp
+			if (hp_change == 0) {
+				ChangeHp(1);
+			}
+		} else if (item.ko_only) {
+			// Must be dead
+			return;
+		}
+
+		ChangeHp(hp_change);
+		SetSp(GetSp() + sp_change);
+
+		for (std::vector<bool>::const_iterator it = item.state_set.begin();
+			it != item.state_set.end(); ++it) {
+			if (*it) {
+				RemoveState(*it);
+			}
+		}
+	} else if (item.type == RPG::Item::Type_material) {
+		// TODO
+	}
+}
+
 int Game_Battler::CalculateSkillCost(int skill_id) const {
 	const RPG::Skill& skill = Data::skills[skill_id - 1];
 	return (Player::engine == Player::EngineRpg2k3 &&
@@ -109,7 +145,7 @@ int Game_Battler::CalculateSkillCost(int skill_id) const {
 void Game_Battler::AddState(int state_id) {
 	std::vector<int16_t>& states = GetStates();
 	if (state_id > 0 && !HasState(state_id)) {
-		states.push_back(state_id);
+		states.push_back((int16_t)state_id);
 		std::sort(states.begin(), states.end());
 	}
 }

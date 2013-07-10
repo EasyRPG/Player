@@ -19,6 +19,7 @@
 #include "window_actortarget.h"
 #include "baseui.h"
 #include "cache.h"
+#include "game_actor.h"
 #include "game_party.h"
 #include "bitmap.h"
 
@@ -59,4 +60,13 @@ void Window_ActorTarget::UpdateCursorRect() {
 	} else {
 		cursor_rect.Set(48 + 4, index * (48 + 10), 120, 48);
 	}
+}
+
+Game_Actor* Window_ActorTarget::GetActor() {
+	int ind = GetIndex();
+	if (ind >= -10 && ind < 0) {
+		ind = -ind;
+	}
+
+	return static_cast<Game_Actor*>(Main_Data::game_party->GetBattler(ind));
 }

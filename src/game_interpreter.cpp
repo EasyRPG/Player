@@ -1094,9 +1094,10 @@ bool Game_Interpreter::CommandChangeHP(RPG::EventCommand const& com) { // Code 1
 		 i++) {
 		Game_Actor* actor = *i;
 		int hp = actor->GetHp() + amount;
-		if (hp < 0)
-			hp = lethal ? 0 : 1;
-		actor->SetHp(hp);
+		if (!lethal && hp <= 0) {
+			amount += hp * (-1) + 1;
+		}
+		actor->ChangeHp(amount);
 	}
 
 	return true;
@@ -1152,7 +1153,7 @@ bool Game_Interpreter::CommandFullHeal(RPG::EventCommand const& com) { // Code 1
 		 i != actors.end();
 		 i++) {
 		Game_Actor* actor = *i;
-		actor->SetHp(actor->GetMaxHp());
+		actor->ChangeHp(actor->GetMaxHp());
 		actor->SetSp(actor->GetMaxSp());
 		actor->RemoveAllStates();
 	}

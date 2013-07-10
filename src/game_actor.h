@@ -55,6 +55,13 @@ public:
 	void Init(const RPG::SaveActor& save_data);
 
 	/**
+	 * Applies the effects of an item.
+	 *
+	 * @param item_id ID if item to use
+	 */
+	void UseItem(int item_id);
+
+	/**
 	 * Learns a new skill.
 	 *
 	 * @param skill_id database skill ID.

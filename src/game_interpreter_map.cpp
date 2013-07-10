@@ -1111,7 +1111,7 @@ bool Game_Interpreter_Map::ContinuationShowInn(RPG::EventCommand const& /* com *
 				 i != actors.end();
 				 i++) {
 				Game_Actor* actor = *i;
-				actor->SetHp(actor->GetMaxHp());
+				actor->ChangeHp(actor->GetMaxHp());
 				actor->SetSp(actor->GetMaxSp());
 				actor->RemoveAllStates();
 			}
@@ -1600,10 +1600,7 @@ bool Game_Interpreter_Map::CommandSimulatedAttack(RPG::EventCommand const& com) 
 		}
 
 		result = std::max(0, result);
-
-		int hp = actor->GetHp() - result;
-		hp = std::max(0, hp);
-		actor->SetHp(hp);
+		actor->ChangeHp(-result);
 
 		if (com.parameters[6] != 0)
 			Game_Variables[com.parameters[7]] = result;

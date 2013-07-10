@@ -146,6 +146,14 @@ public:
 	bool IsItemUsable(int item_id);
 
 	/**
+	 * Uses an item on an actor
+	 *
+	 * @param item_id ID of item to use
+	 * @param target Target the item is used on (or NULL if its for the party)
+	 */
+	void UseItem(int item_id, Game_Actor* target = NULL);
+
+	/**
 	 * Gets gold possessed.
 	 *
 	 * @return gold possessed.
