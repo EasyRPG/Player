@@ -34,6 +34,7 @@ class Game_Party_Base {
 public:
 	/**
 	 * Gets a battler from the party by position in the party
+	 *
 	 * @param int Index of member to return
 	 * @return Party battler
 	 */
@@ -41,27 +42,39 @@ public:
 
 	/**
 	 * Returns how many members are in the party
+	 *
 	 * @return Number of members in the party
 	 */
 	virtual int GetBattlerCount() const = 0;
 
 	/**
 	 * Returns a list of all battlers in the party
+	 *
 	 * @param out List of all battlers
 	 */
 	virtual void GetBattlers(std::vector<Game_Battler*>& out);
 
 	/**
 	 * Returns a list of all alive battlers in the party
+	 *
 	 * @param out List of all dead battlers
 	 */
 	virtual void GetAliveBattlers(std::vector<Game_Battler*>& out);
 
 	/**
 	 * Returns a list of all dead battlers in the party
+	 *
 	 * @param out List of all dead battlers
 	 */
 	virtual void GetDeadBattlers(std::vector<Game_Battler*>& out);
+
+	/**
+	 * Return the next alive battler in the party based on the passed battler.
+	 *
+	 * @param battler Battler
+	 * @return Battler after the provided one, NULL if battler isn't in party at all.
+	 */
+	virtual Game_Battler* GetNextAliveBattler(Game_Battler* battler);
 
 	/**
 	 * Gets a random alive battler from the party
@@ -71,12 +84,14 @@ public:
 
 	/**
 	 * Gets a random dead battler from the party
+	 *
 	 * @return Random dead battler
 	 */
 	virtual Game_Battler* GetRandomDeadBattler();
 
 	/**
 	 * Tests if all party members are dead.
+	 *
 	 * @return Whether all are dead.
 	 */
 	virtual bool IsAnyAlive();

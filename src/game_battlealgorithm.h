@@ -43,9 +43,20 @@ namespace Game_BattleAlgorithm {
 
 class AlgorithmBase {
 public:
-	const Game_Battler* GetSource() const;
+	Game_Battler* GetSource() const;
 
-	const Game_Battler* GetTarget() const;
+	Game_Battler* GetTarget() const;
+
+	/**
+	 * Allows changing of the target.
+	 * Purpose is to allow attacking someone else if the old target is
+	 * already dead (don't call this when attacking a party).
+	 * This function doesn't adjust the algorithm if new and old target types
+	 * mismatch (ally instead of enemy e.g.).
+	 *
+	 * @param target new target
+	 */
+	void SetTarget(Game_Battler* target);
 
 	bool TargetNext();
 
@@ -138,6 +149,14 @@ public:
 	 * Applies the results (last Execute-call) of the algorithm to the target.
 	 */
 	virtual void Apply();
+
+	/**
+	 * Tests if it makes sense to apply an action on the target when it is
+	 * dead.
+	 *
+	 * @return true if valid, in case of false another target should be selected.
+	 */
+	virtual bool IsDeadTargetValid();
 
 	/**
 	 * Gets the message that is displayed when the action is invoked.

@@ -16,6 +16,7 @@
  */
 
 #include <cstdlib>
+#include <list>
 #include "game_party_base.h"
 
 void Game_Party_Base::GetBattlers(std::vector<Game_Battler*>& out) {
@@ -44,6 +45,29 @@ void Game_Party_Base::GetDeadBattlers(std::vector<Game_Battler*>& out) {
 			out.push_back(battler);
 		}
 	}
+}
+
+Game_Battler* Game_Party_Base::GetNextAliveBattler(Game_Battler* battler) {
+	std::vector<Game_Battler*> battlers;
+	GetBattlers(battlers);
+
+	if (std::find(battlers.begin(), battlers.end(), battler) == battlers.end()) {
+		return NULL;
+	}
+
+	std::list<Game_Battler*> battler_list;
+	for (std::vector<Game_Battler*>::iterator it = battlers.begin();
+		it != battlers.end(); ++it) {
+		battler_list.push_back(*it);
+	}
+
+	Game_Battler* start_battler = battler;
+
+	do {
+		battler = *++(std::find(battler_list.begin(), battler_list.end(), battler));
+	} while (battler->IsDead() || battler != start_battler);
+
+	return battler;
 }
 
 Game_Battler* Game_Party_Base::GetRandomAliveBattler() {

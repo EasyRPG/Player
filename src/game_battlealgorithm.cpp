@@ -32,8 +32,7 @@ Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source, Game_Ba
 	source(source) {
 	Reset();
 
-	targets.push_back(target);
-	current_target = targets.begin();
+	SetTarget(target);
 }
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source, Game_Party_Base* target) :
@@ -196,12 +195,17 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 	}
 }
 
-const Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetSource() const {
+Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetSource() const {
 	return source;
 }
 
-const Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetTarget() const {
+Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetTarget() const {
 	return *current_target;
+}
+
+void Game_BattleAlgorithm::AlgorithmBase::SetTarget(Game_Battler* target) {
+	targets.push_back(target);
+	current_target = targets.begin();
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::Apply() {
@@ -236,6 +240,10 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	for (; it != conditions.end(); ++it) {
 		(*current_target)->AddState(it->ID);
 	}
+}
+
+bool Game_BattleAlgorithm::AlgorithmBase::IsDeadTargetValid() {
+	return (!(*current_target)->IsDead());
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {
