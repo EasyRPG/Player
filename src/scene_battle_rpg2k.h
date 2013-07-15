@@ -20,12 +20,13 @@
 
 // Headers
 #include <deque>
+#include "scene.h"
+#include "scene_battle.h"
 #include "rpg_troopmember.h"
 #include "rpg_actor.h"
 #include "rpg_enemy.h"
 #include "game_actor.h"
 #include "game_enemy.h"
-#include "scene.h"
 #include "background.h"
 #include "drawable.h"
 #include "zobj.h"
@@ -36,11 +37,9 @@
 #include "window_message.h"
 
 #include "window_command.h"
-#include "window_battlestatus_rpg2k.h"
 #include "window_battlemessage.h"
 #include "battle_battler.h"
 #include "battle_animation.h"
-#include "battle_interface.h"
 #include <boost/scoped_ptr.hpp>
 
 namespace Battle {
@@ -52,8 +51,6 @@ namespace Game_BattleAlgorithm {
 	class AlgorithmBase;
 }
 
-typedef EASYRPG_SHARED_PTR<Game_BattleAlgorithm::AlgorithmBase> BattleAlgorithmRef;
-
 /**
  * Scene_Battle class.
  * Manages the battles.
@@ -64,8 +61,6 @@ public:
 	Scene_Battle_Rpg2k();
 	~Scene_Battle_Rpg2k();
 
-	void Start();
-	void Update();
 	void Terminate();
 
 	enum BattleActionState {
@@ -86,29 +81,12 @@ public:
 	};
 
 protected:
-	void InitBattleTest();
-	void CreateWindows();
 	void SetState(State new_state);
 
 	bool CheckWin();
 	bool CheckLose();
 	bool CheckAbort();
 	bool CheckFlee();
-
-private:
-	/** Displays Fight, Autobattle, Flee */
-	boost::scoped_ptr<Window_Command> options_window;
-	/** Displays list of enemies */
-	boost::scoped_ptr<Window_Command> target_window;
-	/** Displays Attack, Defense, Magic, Item */
-	boost::scoped_ptr<Window_Command> command_window;
-	boost::scoped_ptr<Window_Item> item_window;
-	boost::scoped_ptr<Window_Skill> skill_window;
-	boost::scoped_ptr<Window_Help> help_window;
-	/** Displays allies status */
-	boost::scoped_ptr<Window_BattleStatus_Rpg2k> status_window;
-	boost::scoped_ptr<Window_BattleMessage> battle_message_window;
-	boost::scoped_ptr<Window_Message> message_window;
 
 	void CreateBattleOptionWindow();
 	void CreateBattleTargetWindow();
@@ -120,9 +98,9 @@ private:
 	void ProcessActions();
 	bool ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action);
 	void ProcessInput();
+
 	void OptionSelected();
 	void CommandSelected();
-
 	void AttackSelected();
 	void DefendSelected();
 	void ItemSelected();
@@ -135,14 +113,9 @@ private:
 	void CreateExecutionOrder();
 	void CreateEnemyActions();
 
-	void NextTurn();
-
-	int actor_index;
-	Game_Actor* active_actor;
-
 	bool DisplayMonstersInMessageWindow();
 
-	std::deque<BattleAlgorithmRef> battle_actions;
+	boost::scoped_ptr<Window_BattleMessage> battle_message_window;
 	std::vector<std::string> battle_result_messages;
 	std::vector<std::string>::iterator battle_result_messages_it;
 	boost::ptr_vector<Game_Enemy>::const_iterator enemy_iterator;

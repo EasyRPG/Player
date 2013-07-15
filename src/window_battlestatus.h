@@ -19,19 +19,19 @@
 #define _WINDOW_BATTLESTATUS_H_
 
 // Headers
-#include "window_base.h"
+#include "window_selectable.h"
 #include "bitmap.h"
 
 /**
  * Window BattleStatus Class.
  * Displays the party battle status.
  */
-class Window_BattleStatus : public Window_Base {
+class Window_BattleStatus : public Window_Selectable {
 public:
 	/**
 	 * Constructor.
 	 */
-	Window_BattleStatus();
+	Window_BattleStatus(int ix, int iy, int iwidth, int iheight);
 
 	/**
 	 * Renders the current status on the window.
@@ -87,8 +87,6 @@ protected:
 	void DrawGauge(Game_Actor* actor, int index, int cx, int cy);
 
 	friend class Scene_Battle;
-
-	int index;
 };
 
 #endif

@@ -303,7 +303,7 @@ void Game_Party::StopTimer(int which) {
 }
 
 void Game_Party::UpdateTimers() {
-	bool battle = Game_Battle::GetScene() != NULL;
+	bool battle = Game_Temp::battle_running;
 	if (data.timer1_active && (!data.timer1_battle || !battle) && data.timer1_secs > 0) {
 		data.timer1_secs--;
 		Game_Map::SetNeedRefresh(true);

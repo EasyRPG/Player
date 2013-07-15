@@ -32,12 +32,13 @@
 #include "window_help.h"
 #include "window_item.h"
 #include "window_skill.h"
+#include "window_command.h"
 #include "window_battleoption.h"
 #include "window_battlecommand.h"
 #include "window_battlestatus.h"
+#include "window_message.h"
 #include "battle_battler.h"
 #include "battle_animation.h"
-#include "battle_interface.h"
 #include "spriteset_battle.h"
 #include <boost/scoped_ptr.hpp>
 
@@ -46,11 +47,17 @@ class Action;
 class SpriteAction;
 }
 
+namespace Game_BattleAlgorithm {
+	class AlgorithmBase;
+}
+
+typedef EASYRPG_SHARED_PTR<Game_BattleAlgorithm::AlgorithmBase> BattleAlgorithmRef;
+
 /**
  * Scene_Battle class.
  * Manages the battles.
  */
-class Scene_Battle : public Scene, public Battle_Interface {
+class Scene_Battle : public Scene {
 
 public:
 	static EASYRPG_SHARED_PTR<Scene_Battle> Create();
@@ -104,90 +111,33 @@ protected:
 
 	friend class Battle::SpriteAction;
 
-	State state;
-	State previous_state;
-	bool auto_battle;
-	int cycle;
-	int attack_state;
-	int message_timer;
-	const RPG::EnemyAction* enemy_action;
-	std::deque<EASYRPG_SHARED_PTR<Battle::Action> > actions;
-	int skill_id;
-	int pending_command;
-
-	boost::scoped_ptr<Window_Help> help_window;
-	boost::scoped_ptr<Window_BattleOption> options_window;
-	boost::scoped_ptr<Window_BattleStatus> status_window;
-	boost::scoped_ptr<Window_BattleCommand> command_window;
-	boost::scoped_ptr<Window_Item> item_window;
-	boost::scoped_ptr<Window_Skill> skill_window;
-	boost::scoped_ptr<Background> background;
-
-	EASYRPG_SHARED_PTR<BattleAnimation> animation;
-
-	std::deque<EASYRPG_SHARED_PTR<BattleAnimation> > animations;
-
-	std::vector<EASYRPG_SHARED_PTR<FloatText> > floaters;
-
-	boost::scoped_ptr<Sprite> ally_cursor, enemy_cursor;
-
 	virtual void InitBattleTest();
 
 	virtual void CreateCursors();
 	virtual void CreateWindows();
 
-	virtual void Message(const std::string& msg, bool pause = true);
-	virtual void Floater(const Sprite* ref, int color, const std::string& text, int duration);
-	virtual void Floater(const Sprite* ref, int color, int value, int duration);
-	virtual void ShowAnimation(int animation_id, bool allies, Battle::Ally* ally, Battle::Enemy* enemy, bool wait);
-	virtual void UpdateAnimations();
-	virtual bool IsAnimationWaiting();
+	virtual void CreateBattleOptionWindow() = 0;
+	virtual void CreateBattleTargetWindow() = 0;
+	virtual void CreateBattleCommandWindow() = 0;
+	virtual void CreateBattleMessageWindow() = 0;
 
-	virtual void SetState(State state);
-	virtual void SetAnimState(Battle::Ally& ally, int state);
-	virtual void UpdateAnimState();
-	virtual void Restart();
+	virtual void ProcessActions() = 0;
+	virtual void ProcessInput() = 0;
 
-	virtual void Command();
-	virtual void Escape();
-	virtual void Special();
-	//virtual void Attack();
-	virtual void Defend();
-	virtual void Item();
-	virtual void Skill();
-	virtual void ItemSkill(const RPG::Item& item);
-	virtual void Skill(const RPG::Skill& skill);
-	virtual void TargetDone();
-	virtual void BeginAttack();
-	virtual void BeginItem();
-	virtual void BeginSkill();
-	void DoAttack();
-	virtual void DoItem();
-	virtual void DoSkill();
+	virtual void SetState(Scene_Battle::State new_state) = 0;
 
-	virtual int SkillAnimation(const RPG::Skill& skill, const Battle::Ally& ally);
-
-	virtual void EnemyAction();
-	virtual void EnemyActionBasic();
-	virtual void EnemyActionSkill();
-
-	static void EnemyActionDone(void* param);
-
-	virtual void ProcessActions();
-	virtual void ProcessInput();
-	void ChooseEnemy();
-	virtual void DoAuto();
+	virtual void NextTurn();
 
 	virtual void UpdateBackground();
-	virtual void UpdateCursors();
-	void UpdateAttack();
-	virtual void UpdateSprites();
-	virtual void UpdateFloaters();
 
-	virtual bool CheckWin();
-	virtual bool CheckLose();
-	virtual bool CheckAbort();
-	virtual bool CheckFlee();
+	/**
+	 * Convenience function, sets the animation state of the target if it has
+	 * a valid battler sprite, does nothing otherwise.
+	 *
+	 * @param target Battler whose anim state is changed
+	 * @param new_state new animation state
+	 */
+	virtual void SetAnimationState(Game_Battler* target, int new_state);
 
 	// battle_algorithms.cpp
 
@@ -202,6 +152,39 @@ protected:
 	const RPG::EnemyAction* ChooseEnemyAction(Battle::Enemy& enemy);
 	void EnemyAttackAlly(Battle::Enemy& enemy, Battle::Ally& ally);
 	void EnemySkill(Battle::Enemy& enemy, const RPG::Skill& skill);
+
+	// Variables
+	State state;
+	State previous_state;
+	bool auto_battle;
+	int cycle;
+	int attack_state;
+	int message_timer;
+	const RPG::EnemyAction* enemy_action;
+	std::deque<EASYRPG_SHARED_PTR<Battle::Action> > actions;
+	int skill_id;
+	int pending_command;
+
+
+	int actor_index;
+	Game_Actor* active_actor;
+
+	/** Displays Fight, Autobattle, Flee */
+	boost::scoped_ptr<Window_Command> options_window;
+	/** Displays list of enemies */
+	boost::scoped_ptr<Window_Command> target_window;
+	/** Displays Attack, Defense, Magic, Item */
+	boost::scoped_ptr<Window_Command> command_window;
+	boost::scoped_ptr<Window_Item> item_window;
+	boost::scoped_ptr<Window_Skill> skill_window;
+	boost::scoped_ptr<Window_Help> help_window;
+	/** Displays allies status */
+	boost::scoped_ptr<Window_BattleStatus> status_window;
+	boost::scoped_ptr<Window_Message> message_window;
+
+	boost::scoped_ptr<Background> background;
+
+	std::deque<BattleAlgorithmRef> battle_actions;
 };
 
 #endif

@@ -179,6 +179,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <DisableSpecificWarnings>4996;4512</DisableSpecificWarnings>
+      <ProgramDataBaseFileName>$(TargetDir)$(TargetName).pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -331,7 +332,6 @@
     <ClCompile Include="..\..\src\audio.cpp" />
     <ClCompile Include="..\..\src\background.cpp" />
     <ClCompile Include="..\..\src\baseui.cpp" />
-    <ClCompile Include="..\..\src\battle_actions.cpp" />
     <ClCompile Include="..\..\src\battle_algorithms.cpp" />
     <ClCompile Include="..\..\src\battle_animation.cpp" />
     <ClCompile Include="..\..\src\battle_battler.cpp" />
@@ -434,7 +434,6 @@
     <ClCompile Include="..\..\src\window_battlemessage.cpp" />
     <ClCompile Include="..\..\src\window_battleoption.cpp" />
     <ClCompile Include="..\..\src\window_battlestatus.cpp" />
-    <ClCompile Include="..\..\src\window_battlestatus_rpg2k.cpp" />
     <ClCompile Include="..\..\src\window_command.cpp" />
     <ClCompile Include="..\..\src\window_equip.cpp" />
     <ClCompile Include="..\..\src\window_equipitem.cpp" />
@@ -467,10 +466,8 @@
     <ClInclude Include="..\..\src\audio.h" />
     <ClInclude Include="..\..\src\background.h" />
     <ClInclude Include="..\..\src\baseui.h" />
-    <ClInclude Include="..\..\src\battle_actions.h" />
     <ClInclude Include="..\..\src\battle_animation.h" />
     <ClInclude Include="..\..\src\battle_battler.h" />
-    <ClInclude Include="..\..\src\battle_interface.h" />
     <ClInclude Include="..\..\src\bitmap.h" />
     <ClInclude Include="..\..\src\bitmap_screen.h" />
     <ClInclude Include="..\..\src\bitmap_utils.h" />
@@ -577,7 +574,6 @@
     <ClInclude Include="..\..\src\window_battlemessage.h" />
     <ClInclude Include="..\..\src\window_battleoption.h" />
     <ClInclude Include="..\..\src\window_battlestatus.h" />
-    <ClInclude Include="..\..\src\window_battlestatus_rpg2k.h" />
     <ClInclude Include="..\..\src\window_command.h" />
     <ClInclude Include="..\..\src\window_equip.h" />
     <ClInclude Include="..\..\src\window_equipitem.h" />

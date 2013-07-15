@@ -205,9 +205,11 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 	Battle::Enemy* enemy = (!allies && target >= 0) ? &Game_Battle::GetEnemy(target) : NULL;
 
 	if (active)
-		return !Game_Battle::GetScene()->IsAnimationWaiting();
+		return Main_Data::game_screen->IsBattleAnimationWaiting();
 
-	Game_Battle::GetScene()->ShowAnimation(animation_id, allies, ally, enemy, wait);
+	// TODO
+	//Main_Data::game_screen->ShowBattleAnimation(animation_id);
+
 	return !wait;
 }
 

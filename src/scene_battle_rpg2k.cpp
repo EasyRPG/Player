@@ -38,15 +38,12 @@
 #include "game_battlealgorithm.h"
 #include "battle_battler.h"
 #include "battle_animation.h"
-#include "battle_actions.h"
 #include "scene_battle_rpg2k.h"
 #include "scene_battle.h"
 #include "scene_gameover.h"
 
 ////////////////////////////////////////////////////////////
 Scene_Battle_Rpg2k::Scene_Battle_Rpg2k() : Scene_Battle(),
-actor_index(0),
-active_actor(NULL),
 battle_action_wait(30),
 battle_action_state(BattleActionState_Start)
 {
@@ -54,86 +51,6 @@ battle_action_state(BattleActionState_Start)
 
 ////////////////////////////////////////////////////////////
 Scene_Battle_Rpg2k::~Scene_Battle_Rpg2k() {
-}
-
-void Scene_Battle_Rpg2k::Start() {
-	if (Player::battle_test_flag) {
-		if (Player::battle_test_troop_id <= 0) {
-			Output::Error("Invalid Monster Party Id");
-		} else {
-			InitBattleTest();
-		}
-	} else {
-		Main_Data::game_enemyparty.reset(new Game_EnemyParty());
-		Main_Data::game_enemyparty->Setup(Game_Temp::battle_troop_id);
-	}
-
-	Game_Battle::Init();
-
-	Game_Temp::map_bgm = NULL; // Play map BGM on Scene_Map return
-	Game_System::BgmPlay(Data::system.battle_music);
-
-	Game_System::SePlay(Data::system.battle_se);
-
-	CreateWindows();
-
-	SetState(State_Start);
-}
-
-void Scene_Battle_Rpg2k::Update() {
-	options_window->Update();
-	status_window->Update();
-	command_window->Update();
-	help_window->Update();
-	item_window->Update();
-	skill_window->Update();
-	target_window->Update();
-	battle_message_window->Update();
-	message_window->Update();
-
-	if (!message_window->GetVisible()) {
-		ProcessActions();
-	}
-
-	if (!Game_Message::message_waiting) {
-		ProcessInput();
-	}
-
-	Game_Battle::Update();
-
-	Main_Data::game_screen->Update();
-}
-
-void Scene_Battle_Rpg2k::Terminate() {
-
-}
-
-void Scene_Battle_Rpg2k::InitBattleTest() {
-	Game_Temp::battle_troop_id = Player::battle_test_troop_id;
-	Game_Temp::battle_background = Data::system.battletest_background;
-
-	Main_Data::game_party->SetupBattleTestMembers();
-
-	Main_Data::game_enemyparty.reset(new Game_EnemyParty());
-	Main_Data::game_enemyparty->Setup(Game_Temp::battle_troop_id);
-}
-
-void Scene_Battle_Rpg2k::CreateWindows() {
-	CreateBattleOptionWindow();
-	CreateBattleTargetWindow();
-	CreateBattleCommandWindow();
-	CreateBattleMessageWindow();
-
-	help_window.reset(new Window_Help(0, 0, 320, 32));
-	item_window.reset(new Window_Item(0, 160, 320, 80));
-	item_window->SetHelpWindow(help_window.get());
-	item_window->Refresh();
-	item_window->SetIndex(0);
-
-	skill_window.reset(new Window_Skill(0, 160, 320, 80));
-	skill_window->SetHelpWindow(help_window.get());
-
-	status_window.reset(new Window_BattleStatus_Rpg2k(0, 160, 320 - 76, 80));
 }
 
 void Scene_Battle_Rpg2k::CreateBattleOptionWindow() {
@@ -182,9 +99,7 @@ void Scene_Battle_Rpg2k::CreateBattleMessageWindow() {
 	message_window.reset(new Window_Message(0, 160, 320, 80));
 	message_window->SetZ(300);
 
-	battle_message_window.reset(new Window_BattleMessage(0, 160, 320, 80));
-	battle_message_window.reset(new Window_BattleMessage(0, 160, 320, 80));
-}
+	battle_message_window.reset(new Window_BattleMessage(0, 160, 320, 80));}
 
 void Scene_Battle_Rpg2k::RefreshCommandWindow() {
 	std::string skill_name = active_actor->GetSkillName();
@@ -330,8 +245,8 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 				help_window->SetVisible(false);
 		}
 
-		while (Game_Battle::NextActiveEnemy())
-			EnemyAction();
+		/*while (Game_Battle::NextActiveEnemy())
+			EnemyAction();*/
 
 		break;
 	case State_Battle:
@@ -389,6 +304,10 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 	switch (battle_action_state) {
 		case BattleActionState_Start:
 			battle_message_window->Clear();
+
+			if (!action->IsDeadTargetValid()) {
+				action->SetTarget(action->GetTarget()->GetParty().GetNextAliveBattler(action->GetTarget()));
+			}
 
 			action->Execute();
 
@@ -584,11 +503,6 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 			break;
 		}
 	}
-}
-
-void Scene_Battle_Rpg2k::NextTurn() {
-	Game_Battle::NextTurn();
-	Game_Battle::UpdateEvents();
 }
 
 void Scene_Battle_Rpg2k::OptionSelected() {

@@ -39,10 +39,10 @@ void Game_Battle::AttackEnemy(Battle::Ally& ally, Battle::Enemy& enemy) {
 		effect += change;
 
 		enemy.game_enemy->SetHp(enemy.game_enemy->GetHp() - effect);
-		GetScene()->Floater(enemy.sprite.get(), Font::ColorDefault, effect, 60);
+		//GetScene()->Floater(enemy.sprite.get(), Font::ColorDefault, effect, 60);
 	}
-	else
-		GetScene()->Floater(enemy.sprite.get(), Font::ColorDefault, Data::terms.miss, 60);
+	//else
+	//	GetScene()->Floater(enemy.sprite.get(), Font::ColorDefault, Data::terms.miss, 60);
 }
 
 void Game_Battle::UseItem(Battle::Ally& ally, const RPG::Item& item) {
@@ -84,10 +84,10 @@ void Game_Battle::UseItemAlly(Battle::Ally& /* ally */, const RPG::Item& item, B
 	int sp = item.recover_sp * target.GetActor()->GetMaxSp() / 100 + item.recover_sp_rate;
 	target.GetActor()->SetSp(target.GetActor()->GetSp() + sp);
 
-	if (hp > 0)
+	/*if (hp > 0)
 		GetScene()->Floater(target.sprite.get(), 9, hp, 60);
 	else if (sp > 0)
-		GetScene()->Floater(target.sprite.get(), 9, sp, 60);
+		GetScene()->Floater(target.sprite.get(), 9, sp, 60);*/
 
 	// Status recovery
 	for (int i = 0; i < (int) item.state_set.size(); i++)
@@ -174,8 +174,8 @@ void Game_Battle::UseSkillAlly(Battle::Battler& /* user */, const RPG::Skill& sk
 			if (skill.affect_agility)
 				target.ModifyAgi(effect);
 
-			if (skill.affect_hp || skill.affect_sp)
-				GetScene()->Floater(target.sprite.get(), 9, effect, 60);
+			/*if (skill.affect_hp || skill.affect_sp)
+				GetScene()->Floater(target.sprite.get(), 9, effect, 60);*/
 		}
 	}
 
@@ -193,8 +193,8 @@ void Game_Battle::UseSkillAlly(Battle::Battler& /* user */, const RPG::Skill& sk
 			actor->RemoveState(i + 1);
 	}
 
-	if (miss)
-		GetScene()->Floater(target.sprite.get(), Font::ColorDefault, Data::terms.miss, 60);
+	//if (miss)
+	//	GetScene()->Floater(target.sprite.get(), Font::ColorDefault, Data::terms.miss, 60);
 }
 
 void Game_Battle::UseSkillEnemy(Battle::Battler& user, const RPG::Skill& skill, Battle::Battler& target) {
@@ -230,8 +230,8 @@ void Game_Battle::UseSkillEnemy(Battle::Battler& user, const RPG::Skill& skill, 
 			if (skill.affect_agility)
 				target.ModifyAgi(-effect);
 
-			if (skill.affect_hp || skill.affect_sp)
-				GetScene()->Floater(target.sprite.get(), Font::ColorDefault, effect, 60);
+			//if (skill.affect_hp || skill.affect_sp)
+			//	GetScene()->Floater(target.sprite.get(), Font::ColorDefault, effect, 60);
 		}
 	}
 
@@ -249,8 +249,8 @@ void Game_Battle::UseSkillEnemy(Battle::Battler& user, const RPG::Skill& skill, 
 			actor->AddState(i + 1);
 	}
 
-	if (miss)
-		GetScene()->Floater(target.sprite.get(), Font::ColorDefault, Data::terms.miss, 60);
+	///if (miss)
+	//	GetScene()->Floater(target.sprite.get(), Font::ColorDefault, Data::terms.miss, 60);
 }
 
 bool Game_Battle::EnemyActionValid(const RPG::EnemyAction& action, Battle::Enemy& enemy) {
@@ -351,10 +351,10 @@ void Game_Battle::EnemyAttackAlly(Battle::Enemy& enemy, Battle::Ally& ally) {
 		effect += change;
 
 		ally.GetActor()->SetHp(ally.GetActor()->GetHp() - effect);
-		GetScene()->Floater(ally.sprite.get(), Font::ColorDefault, effect, 60);
+		//GetScene()->Floater(ally.sprite.get(), Font::ColorDefault, effect, 60);
 	}
-	else
-		GetScene()->Floater(ally.sprite.get(), Font::ColorDefault, Data::terms.miss, 60);
+	//else
+	//	GetScene()->Floater(ally.sprite.get(), Font::ColorDefault, Data::terms.miss, 60);
 }
 
 void Game_Battle::EnemySkill(Battle::Enemy& enemy, const RPG::Skill& skill) {

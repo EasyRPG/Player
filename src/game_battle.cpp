@@ -33,8 +33,6 @@
 #include <boost/scoped_ptr.hpp>
 
 namespace Game_Battle {
-	Battle_Interface* scene;
-
 	const RPG::Troop* troop;
 	std::vector<Battle::Ally> allies;
 	std::vector<Battle::Enemy> enemies;
@@ -85,48 +83,6 @@ Spriteset_Battle& Game_Battle::GetSpriteset() {
 	return *spriteset;
 }
 
-void Game_Battle::Init(Battle_Interface* _scene) {
-	scene = _scene;
-
-	troop = &Data::troops[Game_Temp::battle_troop_id - 1];
-
-	allies.clear();
-	const std::vector<Game_Actor*>& actors = Main_Data::game_party->GetActors();
-	std::vector<Game_Actor*>::const_iterator ai;
-	for (ai = actors.begin(); ai != actors.end(); ai++)
-		allies.push_back(Battle::Ally(*ai, ai - actors.begin()));
-
-	enemies.clear();
-	std::vector<RPG::TroopMember>::const_iterator ei;
-	for (ei = troop->members.begin(); ei != troop->members.end(); ei++)
-		enemies.push_back(Battle::Enemy(&*ei, ei - troop->members.begin()));
-
-	for (std::vector<Battle::Enemy>::iterator it = enemies.begin(); it != enemies.end(); it++)
-		it->CreateSprite();
-
-	for (std::vector<Battle::Ally>::iterator it = allies.begin(); it != allies.end(); it++)
-		it->CreateSprite();
-
-	int gauge = Game_Temp::battle_first_strike ? Battle::Battler::gauge_full : 0;
-	for (std::vector<Battle::Ally>::iterator it = allies.begin(); it != allies.end(); it++)
-		it->gauge = gauge;
-
-	background_name = Game_Temp::battle_background;
-
-	active_enemy = -1;
-	active_ally = -1;
-	target_enemy = -1;
-	target_ally = -1;
-	terminate = false;
-	allies_flee = false;
-	item_id = -1;
-	skill_id = -1;
-	morph_id = -1;
-
-	script_page = NULL;
-
-	interpreter.reset(new Game_Interpreter_Battle());
-}
 /*
 void Game_Battle::Quit() {
 	// Remove conditions which end after battle
@@ -141,9 +97,6 @@ void Game_Battle::Quit() {
 	scene = NULL;
 }
 */
-Battle_Interface* Game_Battle::GetScene() {
-	return scene;
-}
 
 Battle::Ally* Game_Battle::FindAlly(int actor_id) {
 	for (std::vector<Battle::Ally>::iterator it = allies.begin(); it != allies.end(); it++)
@@ -451,7 +404,7 @@ void Game_Battle::UpdateEvents() {
 }
 
 void Game_Battle::Restart() {
-	scene->Restart();
+	//scene->Restart();
 	Battle::Ally& ally = GetActiveAlly();
 	ally.NextTurn();
 	ClearTargetAlly();
@@ -505,7 +458,7 @@ void Game_Battle::UseSkill() {
 	UseSkill(ally, skill);
 	ally.defending = false;
 }
-
+/*
 void Game_Battle::EnemyAttack(void* target) {
 	Battle::Enemy& enemy = GetActiveEnemy();
 	Battle::Ally& ally = *((Battle::Ally*)target);
@@ -569,7 +522,7 @@ void Game_Battle::EnemyActionDone() {
 	if (enemy_action->switch_off)
 		Game_Switches[enemy_action->switch_off_id] = false;
 }
-
+*/
 void Game_Battle::NextTurn() {
 	++turn;
 }

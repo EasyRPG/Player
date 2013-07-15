@@ -27,14 +27,12 @@
 #include "game_battle.h"
 #include "window_battlestatus.h"
 
-Window_BattleStatus::Window_BattleStatus() :
-	Window_Base(0, 172, 244, 68) {
+Window_BattleStatus::Window_BattleStatus(int ix, int iy, int iwidth, int iheight) :
+	Window_Selectable(ix, iy, iwidth, iheight) {
 
-	SetBorderX(4);
-	SetBorderY(4);
+	SetContents(Bitmap::Create(width - 16, height - 16));
 
-	SetContents(Bitmap::Create(width - 8, height - 8));
-	contents->SetTransparentColor(windowskin->GetTransparentColor());
+	item_max = Main_Data::game_party->GetActors().size();
 
 	index = -1;
 
@@ -44,14 +42,14 @@ Window_BattleStatus::Window_BattleStatus() :
 void Window_BattleStatus::Refresh() {
 	contents->Clear();
 
-	for (size_t i = 0; i < Game_Battle::allies.size() && i < 4; i++) {
-		int y = i * 15;
-		Game_Actor* actor = Game_Battle::allies[i].game_actor;
-		DrawActorName(actor, 4, y);
-		DrawActorState(actor, 80, y);
-		DrawActorHp(actor, 136, y, true);
+	for (size_t i = 0; i < Main_Data::game_party->GetActors().size() && i < 4; i++) {
+		int y = 2 + i * 16;
+		Game_Actor* actor = Main_Data::game_party->GetActors()[i];
+		DrawActorName(actor, 0, y);
+		DrawActorState(actor, 84, y);
+		DrawActorHp(actor, 138, y, true);
 		//DrawGauge(actor, i, 192, y);
-		DrawActorSp(actor, 202, y, false);
+		DrawActorSp(actor, 198, y, false);
 	}
 }
 

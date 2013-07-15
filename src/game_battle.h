@@ -18,7 +18,6 @@
 // Headers
 #include "rpg_troop.h"
 #include "battle_battler.h"
-#include "battle_interface.h"
 
 class Spriteset_Battle;
 
@@ -67,10 +66,7 @@ namespace Game_Battle {
 	static const int gauge_full = Battle::Battler::gauge_full;
 	static const int turn_length = 333; // frames
 
-	void Init(Battle_Interface* scene);
 	//void Quit();
-
-	Battle_Interface* GetScene();
 
 	Battle::Ally* FindAlly(int actor_id);
 	void AlliesCentroid(int& x, int& y);
@@ -130,7 +126,7 @@ namespace Game_Battle {
 	void Attack();
 	void UseItem();
 	void UseSkill();
-
+	/*
 	void EnemyAttack(void* target);
 	void EnemyDefend();
 	void EnemyObserve();
@@ -140,7 +136,7 @@ namespace Game_Battle {
 	void EnemyTransform();
 
 	void EnemyActionDone();
-
+	*/
 	void AttackEnemy(Battle::Ally& ally, Battle::Enemy& enemy);
 	void UseItem(Battle::Ally& ally, const RPG::Item& item);
 	void UseItemAlly(Battle::Ally& ally, const RPG::Item& item, Battle::Ally& target);

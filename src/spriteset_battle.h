@@ -39,7 +39,7 @@ public:
 
 protected:
 	boost::scoped_ptr<Background> background;
-	boost::ptr_vector<Sprite_Battler> enemy_sprites;
+	boost::ptr_vector<Sprite_Battler> sprites;
 	/*std::vector<Sprite_Picture*> picture_sprites;
 	Sprite_Timer* timer_sprite;*/
 };
