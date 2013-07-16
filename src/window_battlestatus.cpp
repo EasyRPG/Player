@@ -25,6 +25,7 @@
 #include "game_actor.h"
 #include "game_system.h"
 #include "game_battle.h"
+#include "player.h"
 #include "window_battlestatus.h"
 
 Window_BattleStatus::Window_BattleStatus(int ix, int iy, int iwidth, int iheight) :
@@ -110,36 +111,38 @@ void Window_BattleStatus::ChooseActiveCharacter() {
 void Window_BattleStatus::Update() {
 	Window_Base::Update();
 
-	int num_actors = Game_Battle::allies.size();
-	/*for (int i = 0; i < num_actors; i++)
-		RefreshGauge(i);*/
+	if (Player::engine == Player::EngineRpg2k3) {
+		int num_actors = Game_Battle::allies.size();
+		/*for (int i = 0; i < num_actors; i++)
+			RefreshGauge(i);*/
 
-	if (active && index >= 0) {
-		if (Input::IsRepeated(Input::DOWN)) {
-			Game_System::SePlay(Main_Data::game_data.system.cursor_se);
-			for (int i = 1; i < num_actors; i++) {
-				int new_index = (index + i) % num_actors;
-				if (Game_Battle::GetAlly(new_index).IsReady()) {
-					index = new_index;
-					break;
+		if (active && index >= 0) {
+			if (Input::IsRepeated(Input::DOWN)) {
+				Game_System::SePlay(Main_Data::game_data.system.cursor_se);
+				for (int i = 1; i < num_actors; i++) {
+					int new_index = (index + i) % num_actors;
+					if (Game_Battle::GetAlly(new_index).IsReady()) {
+						index = new_index;
+						break;
+					}
+				}
+			}
+			if (Input::IsRepeated(Input::UP)) {
+				Game_System::SePlay(Main_Data::game_data.system.cursor_se);
+				for (int i = num_actors - 1; i > 0; i--) {
+					int new_index = (index + i) % num_actors;
+					if (Game_Battle::GetAlly(new_index).IsReady()) {
+						index = new_index;
+						break;
+					}
 				}
 			}
 		}
-		if (Input::IsRepeated(Input::UP)) {
-			Game_System::SePlay(Main_Data::game_data.system.cursor_se);
-			for (int i = num_actors - 1; i > 0; i--) {
-				int new_index = (index + i) % num_actors;
-				if (Game_Battle::GetAlly(new_index).IsReady()) {
-					index = new_index;
-					break;
-				}
-			}
-		}
+
+		ChooseActiveCharacter();
+
+		UpdateCursorRect();
 	}
-
-	ChooseActiveCharacter();
-
-	UpdateCursorRect();
 }
 
 void Window_BattleStatus::UpdateCursorRect() {
