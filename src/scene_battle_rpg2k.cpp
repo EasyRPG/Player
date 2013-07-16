@@ -42,15 +42,19 @@
 #include "scene_battle.h"
 #include "scene_gameover.h"
 
-////////////////////////////////////////////////////////////
 Scene_Battle_Rpg2k::Scene_Battle_Rpg2k() : Scene_Battle(),
 battle_action_wait(30),
 battle_action_state(BattleActionState_Start)
 {
 }
 
-////////////////////////////////////////////////////////////
 Scene_Battle_Rpg2k::~Scene_Battle_Rpg2k() {
+}
+
+void Scene_Battle_Rpg2k::Update() {
+	battle_message_window->Update();
+
+	Scene_Battle::Update();
 }
 
 void Scene_Battle_Rpg2k::CreateBattleOptionWindow() {

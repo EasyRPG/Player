@@ -61,7 +61,7 @@ public:
 	Scene_Battle_Rpg2k();
 	~Scene_Battle_Rpg2k();
 
-	void Terminate();
+	void Update();
 
 	enum BattleActionState {
 		/**
