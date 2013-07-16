@@ -526,3 +526,21 @@ void Game_Battle::EnemyActionDone() {
 void Game_Battle::NextTurn() {
 	++turn;
 }
+
+void Game_Battle::UpdateGauges() {
+	std::vector<Game_Battler*> battlers;
+	Main_Data::game_enemyparty->GetBattlers(battlers);
+	Main_Data::game_party->GetBattlers(battlers);
+
+	int max_agi = 1;
+
+	for (std::vector<Game_Battler*>::const_iterator it = battlers.begin();
+		it != battlers.end(); ++it) {
+		max_agi = std::max(max_agi, (*it)->GetAgi());
+	}
+
+	for (std::vector<Game_Battler*>::const_iterator it = battlers.begin();
+		it != battlers.end(); ++it) {
+		(*it)->UpdateGauge(1000 / max_agi);
+	}
+}

@@ -28,6 +28,12 @@
 #include "util_macro.h"
 #include "main_data.h"
 
+#define EASYRPG_GAUGE_MAX_VALUE 120000
+
+Game_Battler::Game_Battler() : gauge(EASYRPG_GAUGE_MAX_VALUE / 2) {
+	// no-op
+}
+
 bool Game_Battler::HasState(int state_id) const {
 	return (std::find(GetStates().begin(), GetStates().end(), state_id) != GetStates().end());
 }
@@ -274,4 +280,25 @@ Game_Party_Base& Game_Battler::GetParty() const {
 	} else {
 		return *Main_Data::game_enemyparty;
 	}
+}
+
+int Game_Battler::GetGauge() {
+	return gauge / (EASYRPG_GAUGE_MAX_VALUE / 100);
+}
+
+void Game_Battler::SetGauge(int new_gauge) {
+	new_gauge = min(max(new_gauge, 0), 100);
+
+	gauge = new_gauge * (EASYRPG_GAUGE_MAX_VALUE / 100);
+}
+
+bool Game_Battler::IsGaugeFull() {
+	return gauge >= EASYRPG_GAUGE_MAX_VALUE;
+}
+
+void Game_Battler::UpdateGauge(int multiplier) {
+	if (gauge > EASYRPG_GAUGE_MAX_VALUE) {
+		return;
+	}
+	gauge += GetAgi() * multiplier;
 }

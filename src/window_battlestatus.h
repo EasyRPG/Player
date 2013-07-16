@@ -70,23 +70,18 @@ protected:
 	void UpdateCursorRect();
 
 	/**
-	 * Redraws a character's time gauge.
-	 *
-	 * @param i character index (0..3).
+	 * Redraws the characters time gauge.
 	 */
-	void RefreshGauge(int i);
+	void RefreshGauge();
 
 	/**
 	 * Draws a character's time gauge.
 	 *
 	 * @param actor actor.
-	 * @param index character index (0..3).
 	 * @param cx x coordinate.
 	 * @param cy y coordinate.
 	 */
-	void DrawGauge(Game_Actor* actor, int index, int cx, int cy);
-
-	friend class Scene_Battle;
+	void DrawGauge(Game_Actor* actor, int cx, int cy);
 };
 
 #endif

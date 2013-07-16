@@ -35,7 +35,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	// Game_Battler();
+	Game_Battler();
 
 	/**
 	 * Gets if battler has a state.
@@ -274,6 +274,44 @@ public:
 	 * @return Party this member probably belongs to. 
 	 */
 	Game_Party_Base& GetParty() const;
+
+	/**
+	 * Gets the current state of the battle gauge in percent.
+	 * Used by RPG2k3 battle system.
+	 *
+	 * @return gauge in percent
+	 */
+	int GetGauge();
+
+	/**
+	 * Sets the gauge to a new percentage in range 0-100
+	 * Used by RPG2k3 battle system.
+	 *
+	 * @param new_gauge new gauge value in percent
+	 */
+	void SetGauge(int new_gauge);
+
+	/**
+	 * Increments the gauge by current agi.
+	 * The size of the step is altered by the multiplier (usually based on
+	 * the highest agi of all battlers)
+	 * Used by RPG2k3 battle system.
+	 *
+	 * @param multiplier gauge increment factor
+	 */
+	void UpdateGauge(int multiplier);
+
+	/**
+	 * Tests if the battler is ready for an action.
+	 * Used by RPG2k3 battle system.
+	 *
+	 * @return If gauge is full
+	 */
+	bool IsGaugeFull();
+
+protected:
+	/** Gauge for RPG2k3 Battle */
+	int gauge;
 };
 
 #endif

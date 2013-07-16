@@ -52,6 +52,11 @@ namespace Game_Battle {
 
 	static int turn;
 
+	/**
+	 * Updates the gauge of all battlers based on the highest agi of all.
+	 */
+	void UpdateGauges();
+
 	//// Old battle stuff
 	extern const RPG::Troop* troop;
 	extern std::vector<Battle::Ally> allies;

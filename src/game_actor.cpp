@@ -26,6 +26,7 @@
 #include "util_macro.h"
 
 Game_Actor::Game_Actor(int actor_id) :
+	Game_Battler(),
 	data(Main_Data::game_data.actors[actor_id - 1]) {
 	data.Setup(actor_id);
 

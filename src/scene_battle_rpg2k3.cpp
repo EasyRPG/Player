@@ -47,6 +47,12 @@ Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3() : Scene_Battle()
 Scene_Battle_Rpg2k3::~Scene_Battle_Rpg2k3() {
 }
 
+void Scene_Battle_Rpg2k3::Update() {
+	Game_Battle::UpdateGauges();
+
+	Scene_Battle::Update();
+}
+
 void Scene_Battle_Rpg2k3::CreateCursors() {
 	BitmapRef system2 = Cache::System2(Data::system.system2_name);
 

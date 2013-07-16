@@ -21,7 +21,7 @@
 #include "rpg_enemy.h"
 #include "game_enemy.h"
 
-Game_Enemy::Game_Enemy(int enemy_id) {
+Game_Enemy::Game_Enemy(int enemy_id) : Game_Battler() {
 	Setup(enemy_id);
 }
 

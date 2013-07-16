@@ -63,6 +63,8 @@ public:
 	Scene_Battle_Rpg2k3();
 	~Scene_Battle_Rpg2k3();
 
+	void Update();
+
 protected:
 
 	void CreateCursors();
