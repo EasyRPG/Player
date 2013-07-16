@@ -204,6 +204,7 @@ Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetTarget() const {
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::SetTarget(Game_Battler* target) {
+	targets.clear();
 	targets.push_back(target);
 	current_target = targets.begin();
 }

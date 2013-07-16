@@ -51,23 +51,29 @@ Game_Battler* Game_Party_Base::GetNextAliveBattler(Game_Battler* battler) {
 	std::vector<Game_Battler*> battlers;
 	GetBattlers(battlers);
 
-	if (std::find(battlers.begin(), battlers.end(), battler) == battlers.end()) {
+	std::vector<Game_Battler*>::const_iterator it;
+	it = std::find(battlers.begin(), battlers.end(), battler);
+
+	if (it == battlers.end()) {
 		return NULL;
 	}
 
-	std::list<Game_Battler*> battler_list;
-	for (std::vector<Game_Battler*>::iterator it = battlers.begin();
-		it != battlers.end(); ++it) {
-		battler_list.push_back(*it);
+	for (++it; it != battlers.end(); ++it) {
+		Game_Battler* b = *it;
+		if (!b->IsDead()) {
+			return b;
+		}
 	}
 
-	Game_Battler* start_battler = battler;
+	// None found after battler, try from the beginning now
+	for (it = battlers.begin(); *it != battler; ++it) {
+		Game_Battler* b = *it;
+		if (!b->IsDead()) {
+			return b;
+		}
+	}
 
-	do {
-		battler = *++(std::find(battler_list.begin(), battler_list.end(), battler));
-	} while (battler->IsDead() || battler != start_battler);
-
-	return battler;
+	return NULL;
 }
 
 Game_Battler* Game_Party_Base::GetRandomAliveBattler() {
