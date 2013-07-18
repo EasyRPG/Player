@@ -107,6 +107,7 @@ void Scene_Battle::CreateWindows() {
 	CreateBattleMessageWindow();
 
 	help_window.reset(new Window_Help(0, 0, 320, 32));
+	help_window->SetVisible(false);
 
 	item_window.reset(new Window_Item(0, 160, 320, 80));
 	item_window->SetHelpWindow(help_window.get());
@@ -115,9 +116,6 @@ void Scene_Battle::CreateWindows() {
 
 	skill_window.reset(new Window_Skill(0, 160, 320, 80));
 	skill_window->SetHelpWindow(help_window.get());
-
-	help_window.reset(new Window_Help(0, 0, 320, 32));
-	help_window->SetVisible(false);
 
 	status_window.reset(new Window_BattleStatus(0, 160, 320 - 76, 80));
 }
