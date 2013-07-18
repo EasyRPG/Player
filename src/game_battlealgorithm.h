@@ -33,18 +33,28 @@ namespace RPG {
 
 /**
  * Contains algorithms to handle the different battle attacks, skills and items.
- * The algorithms are only for single targeting, when a party is affected it
- * must be called for each party member.
+ * The algorithms are support single targets and party targets.
+ * For party targets the caller is responsible for retargeting using TargetNext.
  *
- * The action is only simulated and the results can be applied after the
+ * The action is simulated using Execute and the results can be applied after the
  * simulation by calling Apply.
  */
 namespace Game_BattleAlgorithm {
 
 class AlgorithmBase {
 public:
+	/**
+	 * Returns the source of the battle action.
+	 *
+	 * @return source battler
+	 */
 	Game_Battler* GetSource() const;
 
+	/**
+	 * Returns the current target.
+	 *
+	 * @return current target battler 
+	 */
 	Game_Battler* GetTarget() const;
 
 	/**
@@ -58,6 +68,11 @@ public:
 	 */
 	void SetTarget(Game_Battler* target);
 
+	/**
+	 * Changes the target reference to the next target.
+	 *
+	 * @return true if there was a next target available
+	 */
 	bool TargetNext();
 
 	/**
@@ -245,8 +260,8 @@ public:
 
 class Skill : public AlgorithmBase {
 public:
-	Skill(Game_Battler* source, Game_Battler* target, RPG::Skill& skill);
-	Skill(Game_Battler* source, Game_Party_Base* target, RPG::Skill& skill);
+	Skill(Game_Battler* source, Game_Battler* target, const RPG::Skill& skill);
+	Skill(Game_Battler* source, Game_Party_Base* target, const RPG::Skill& skill);
 
 	bool Execute();
 	void Apply();
@@ -255,13 +270,13 @@ public:
 	void GetResultMessages(std::vector<std::string>& out) const;
 
 private:
-	RPG::Skill& skill;
+	const RPG::Skill& skill;
 };
 
 class Item : public AlgorithmBase {
 public:
-	Item(Game_Battler* source, Game_Battler* target, RPG::Item& item);
-	Item(Game_Battler* source, Game_Party_Base* target, RPG::Item& item);
+	Item(Game_Battler* source, Game_Battler* target, const RPG::Item& item);
+	Item(Game_Battler* source, Game_Party_Base* target, const RPG::Item& item);
 
 	bool Execute();
 	void Apply();
@@ -270,7 +285,7 @@ public:
 	void GetResultMessages(std::vector<std::string>& out) const;
 
 private:
-	RPG::Item& item;
+	const RPG::Item& item;
 };
 
 }

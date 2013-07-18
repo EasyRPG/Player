@@ -347,12 +347,12 @@ std::string Game_BattleAlgorithm::Normal::GetStartMessage() const {
 	return source->GetName() + Data::terms.attacking;
 }
 
-Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Battler* target, RPG::Skill& skill) :
+Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Battler* target, const RPG::Skill& skill) :
 	AlgorithmBase(source, target), skill(skill) {
 		// no-op
 }
 
-Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Party_Base* target, RPG::Skill& skill) :
+Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Party_Base* target, const RPG::Skill& skill) :
 	AlgorithmBase(source, target), skill(skill) {
 		// no-op
 }
@@ -466,12 +466,12 @@ void Game_BattleAlgorithm::Skill::GetResultMessages(std::vector<std::string>& ou
 }
 
 
-Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Battler* target, RPG::Item& item) :
+Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Battler* target, const RPG::Item& item) :
 	AlgorithmBase(source, target), item(item) {
 		// no-op
 }
 
-Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Party_Base* target, RPG::Item& item) :
+Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Party_Base* target, const RPG::Item& item) :
 	AlgorithmBase(source, target), item(item) {
 		// no-op
 }
