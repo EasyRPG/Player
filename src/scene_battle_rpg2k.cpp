@@ -648,8 +648,15 @@ void Scene_Battle_Rpg2k::SelectNextActor() {
 	status_window->SetIndex(actor_index);
 	actor_index++;
 
+	if (active_actor->IsDead()) {
+		SelectNextActor();
+		return;
+	}
+
 	if (active_actor->GetAutoBattle()) {
 		// ToDo Automatic stuff
+		battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(active_actor, Main_Data::game_enemyparty->GetRandomAliveBattler()));
+
 		SelectNextActor();
 		return;
 	}
@@ -668,11 +675,15 @@ void Scene_Battle_Rpg2k::SelectPreviousActor() {
 	
 	actor_index--;
 	battle_actions.pop_front();
-	active_actor = allies[actor_index];	
+	active_actor = allies[actor_index];
+
+	if (active_actor->IsDead()) {
+		SelectPreviousActor();
+		return;
+	}
 
 	if (active_actor->GetAutoBattle()) {
 		SelectPreviousActor();
-		battle_actions.pop_front();
 		return;
 	}
 
