@@ -26,20 +26,14 @@
 #include "bitmap_screen.h"
 
 BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) :
-	x(x), y(y), animation(animation), frame(0), initialized(false), visible(false),
+	x(x), y(y), animation(animation), frame(0),
 	ID(Graphics::drawable_id++) {
-}
-
-BattleAnimation::~BattleAnimation() {
-	SetVisible(false);
-}
-
-void BattleAnimation::Setup() {
-	if (initialized)
-		return;
 
 	const std::string& name = animation->animation_name;
 	BitmapRef graphic;
+
+	zobj = Graphics::RegisterZObj(400, ID);
+	Graphics::RegisterDrawable(ID, this);
 
 	if (!FileFinder::FindImage("Battle", name).empty()) {
 		large = false;
@@ -51,13 +45,15 @@ void BattleAnimation::Setup() {
 	}
 	else {
 		Output::Warning("Couldn't find animation: %s", name.c_str());
-		screen.reset();
 		return;
 	}
 
 	screen = BitmapScreen::Create(graphic);
+}
 
-	initialized = true;
+BattleAnimation::~BattleAnimation() {
+	Graphics::RemoveZObj(ID);
+	Graphics::RemoveDrawable(ID);
 }
 
 unsigned long BattleAnimation::GetId() const {
@@ -73,10 +69,13 @@ DrawableType BattleAnimation::GetType() const {
 }
 
 void BattleAnimation::Draw(int /* z_order */) {
+	if (!screen) {
+		// Initialization failed
+		return;
+	}
+
 	if (frame >= (int) animation->frames.size())
 		return;
-
-	Setup();
 
 	const RPG::AnimationFrame& anim_frame = animation->frames[frame];
 
@@ -114,26 +113,6 @@ int BattleAnimation::GetFrame() const {
 
 int BattleAnimation::GetFrames() const {
 	return animation->frames.size();
-}
-
-void BattleAnimation::SetVisible(bool _visible) {
-	if (visible == _visible)
-		return;
-
-	visible = _visible;
-
-	if (visible) {
-		zobj = Graphics::RegisterZObj(GetZ(), ID);
-		Graphics::RegisterDrawable(ID, this);
-	}
-	else {
-		Graphics::RemoveZObj(ID);
-		Graphics::RemoveDrawable(ID);
-	}
-}
-
-bool BattleAnimation::GetVisible() {
-	return visible;
 }
 
 bool BattleAnimation::IsDone() const {

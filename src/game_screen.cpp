@@ -174,7 +174,6 @@ void Game_Screen::ShowBattleAnimation(int animation_id, int target_x, int target
 	RPG::Animation& anim = Data::animations[animation_id - 1];
 	animation.reset(new BattleAnimation(target_x, target_y,
 		&anim));
-	animation->SetVisible(true);
 	// FIXME: target
 	// FIXME: global
 
