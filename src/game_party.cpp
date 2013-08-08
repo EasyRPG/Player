@@ -33,14 +33,14 @@ Game_Party::Game_Party() {
 	data.Setup();
 }
 
-Game_Battler* Game_Party::GetBattler(int index) {
+Game_Actor& Game_Party::operator[] (const int index) {
 	std::vector<Game_Actor*> actors = GetActors();
 
 	if (index < 0 || (size_t)index >= actors.size()) {
-		return NULL;
+		assert(false && "Subscript out of range");
 	}
 
-	return actors[index];
+	return *actors[index];
 }
 
 int Game_Party::GetBattlerCount() const {

@@ -22,7 +22,7 @@
 void Game_Party_Base::GetBattlers(std::vector<Game_Battler*>& out) {
 	int count = GetBattlerCount();
 	for (int i = 0; i < count; ++i) {
-		Game_Battler* battler = GetBattler(i);
+		Game_Battler* battler = &(*this)[i];
 		out.push_back(battler);
 	}
 }
@@ -30,7 +30,7 @@ void Game_Party_Base::GetBattlers(std::vector<Game_Battler*>& out) {
 void Game_Party_Base::GetAliveBattlers(std::vector<Game_Battler*>& out) {
 	int count = GetBattlerCount();
 	for (int i = 0; i < count; ++i) {
-		Game_Battler* battler = GetBattler(i);
+		Game_Battler* battler = &(*this)[i];
 		if (!battler->IsDead()) {
 			out.push_back(battler);
 		}
@@ -40,7 +40,7 @@ void Game_Party_Base::GetAliveBattlers(std::vector<Game_Battler*>& out) {
 void Game_Party_Base::GetDeadBattlers(std::vector<Game_Battler*>& out) {
 	int count = GetBattlerCount();
 	for (int i = 0; i < count; ++i) {
-		Game_Battler* battler = GetBattler(i);
+		Game_Battler* battler = &(*this)[i];
 		if (battler->IsDead()) {
 			out.push_back(battler);
 		}

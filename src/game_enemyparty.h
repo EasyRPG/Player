@@ -36,7 +36,7 @@ public:
 	 */
 	Game_EnemyParty();
 
-	Game_Battler* GetBattler(int index);
+	Game_Enemy& operator[] (const int index);
 
 	int GetBattlerCount() const;
 

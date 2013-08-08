@@ -158,9 +158,9 @@ void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
 void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 	std::vector<std::string> commands;
 
-	Game_Actor* actor = static_cast<Game_Actor*>(Main_Data::game_party->GetBattler(actor_index));
+	Game_Actor& actor = (*Main_Data::game_party)[actor_index];
 
-	const std::vector<uint32_t>& bcmds = actor->GetBattleCommands();
+	const std::vector<uint32_t>& bcmds = actor.GetBattleCommands();
 	std::vector<uint32_t>::const_iterator it;
 	for (it = bcmds.begin(); it != bcmds.end(); it++) {
 		uint32_t bcmd = *it;
@@ -642,7 +642,7 @@ void Scene_Battle_Rpg2k3::SelectNextActor() {
 		return;
 	}
 
-	active_actor = static_cast<Game_Actor*>(Main_Data::game_party->GetBattler(status_window->GetIndex()));
+	active_actor = &(*Main_Data::game_party)[status_window->GetIndex()];
 	actor_index = status_window->GetIndex();
 
 	RefreshCommandWindow();

@@ -38,7 +38,7 @@ public:
 	 * @param int Index of member to return
 	 * @return Party battler
 	 */
-	virtual Game_Battler* GetBattler(int index) = 0;
+	virtual Game_Battler& operator[] (const int index) = 0;
 
 	/**
 	 * Returns how many members are in the party

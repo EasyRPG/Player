@@ -25,12 +25,12 @@
 Game_EnemyParty::Game_EnemyParty() {
 }
 
-Game_Battler* Game_EnemyParty::GetBattler(int index) {
+Game_Enemy& Game_EnemyParty::operator[] (const int index) {
 	if (index < 0 || index >= (int)enemies.size()) {
-		return NULL;
+		assert(false && "Subscript out of range");
 	}
 
-	return &enemies[index];
+	return enemies[index];
 }
 
 int Game_EnemyParty::GetBattlerCount() const {

@@ -98,7 +98,7 @@ int Window_BattleStatus::ChooseActiveCharacter() {
 	index = -1;
 	for (int i = 0; i < item_max; i++) {
 		int new_index = (old_index + i) % item_max;
-		if (Main_Data::game_party->GetBattler(new_index)->IsGaugeFull()) {
+		if ((*Main_Data::game_party)[new_index].IsGaugeFull()) {
 			index = new_index;
 			return index;
 		}
@@ -123,7 +123,7 @@ void Window_BattleStatus::Update() {
 				Game_System::SePlay(Main_Data::game_data.system.cursor_se);
 				for (int i = 1; i < item_max; i++) {
 					int new_index = (index + i) % item_max;
-					if (Main_Data::game_party->GetBattler(new_index)->IsGaugeFull()) {
+					if ((*Main_Data::game_party)[new_index].IsGaugeFull()) {
 						index = new_index;
 						break;
 					}
@@ -133,7 +133,7 @@ void Window_BattleStatus::Update() {
 				Game_System::SePlay(Main_Data::game_data.system.cursor_se);
 				for (int i = item_max - 1; i > 0; i--) {
 					int new_index = (index + i) % item_max;
-					if (Main_Data::game_party->GetBattler(new_index)->IsGaugeFull()) {
+					if ((*Main_Data::game_party)[new_index].IsGaugeFull()) {
 						index = new_index;
 						break;
 					}

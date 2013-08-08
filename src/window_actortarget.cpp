@@ -68,5 +68,5 @@ Game_Actor* Window_ActorTarget::GetActor() {
 		ind = -ind;
 	}
 
-	return static_cast<Game_Actor*>(Main_Data::game_party->GetBattler(ind));
+	return &(*Main_Data::game_party)[ind];
 }

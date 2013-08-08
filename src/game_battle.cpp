@@ -362,8 +362,8 @@ bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
 	}*/
 
     if (condition.flags.enemy_hp) {
-		Game_Battler* enemy = Main_Data::game_enemyparty->GetBattler(condition.enemy_id);
-		int hp = enemy->GetHp();
+		Game_Battler& enemy = (*Main_Data::game_enemyparty)[condition.enemy_id];
+		int hp = enemy.GetHp();
 		if (hp < condition.enemy_hp_min || hp > condition.enemy_hp_max)
 			return false;
 	}
