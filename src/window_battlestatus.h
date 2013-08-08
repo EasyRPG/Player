@@ -44,24 +44,9 @@ public:
 	void Update();
 
 	/**
-	 * Sets the active character.
-	 *
-	 * @param index character index (0..3).
-	 *              Returns -1 if no character is ready. FIXME
-	 */
-	void SetActiveCharacter(int index);
-
-	/**
-	 * Gets the active character.
-	 *
-	 * @return character index (0..3).
-	 */
-	int GetActiveCharacter();
-
-	/**
 	 * Selects an active character if one is ready.
 	 */
-	void ChooseActiveCharacter();
+	int ChooseActiveCharacter();
 
 protected:
 	/**

@@ -48,7 +48,18 @@ Scene_Battle_Rpg2k3::~Scene_Battle_Rpg2k3() {
 }
 
 void Scene_Battle_Rpg2k3::Update() {
-	Game_Battle::UpdateGauges();
+	switch (state) {
+	case State_SelectActor:
+		Game_Battle::UpdateGauges();
+
+		if (status_window->GetIndex() == -1) {
+			if (status_window->ChooseActiveCharacter() != -1) {
+				RefreshCommandWindow();
+			}
+		}
+		break;
+	default:;
+	}
 
 	Scene_Battle::Update();
 }
@@ -146,12 +157,21 @@ void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
 
 void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 	std::vector<std::string> commands;
-	commands.push_back(Data::terms.command_attack);
-	commands.push_back(Data::terms.command_skill);
-	commands.push_back(Data::terms.command_defend);
-	commands.push_back(Data::terms.command_item);
+
+	Game_Actor* actor = static_cast<Game_Actor*>(Main_Data::game_party->GetBattler(actor_index));
+
+	const std::vector<uint32_t>& bcmds = actor->GetBattleCommands();
+	std::vector<uint32_t>::const_iterator it;
+	for (it = bcmds.begin(); it != bcmds.end(); it++) {
+		uint32_t bcmd = *it;
+		if (bcmd <= 0 || bcmd > Data::battlecommands.commands.size())
+			break;
+		const RPG::BattleCommand& command = Data::battlecommands.commands[bcmd - 1];
+		commands.push_back(command.name);
+	}
 
 	command_window.reset(new Window_Command(commands, 76));
+
 	command_window->SetHeight(80);
 	command_window->SetX(320 - 76);
 	command_window->SetY(160);
@@ -163,9 +183,8 @@ void Scene_Battle_Rpg2k3::CreateBattleMessageWindow() {
 }
 
 void Scene_Battle_Rpg2k3::RefreshCommandWindow() {
-	std::string skill_name = active_actor->GetSkillName();
-	command_window->SetItemText(1,
-		skill_name.empty() ? Data::terms.command_skill : skill_name);
+	CreateBattleCommandWindow();
+	command_window->SetActive(false);
 }
 
 void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
@@ -193,8 +212,8 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 	case State_AutoBattle:
 		break;
 	case State_SelectCommand:
-		command_window->SetActive(true);
 		RefreshCommandWindow();
+		command_window->SetActive(true);
 		break;
 	case State_SelectEnemyTarget:
 		break;
@@ -236,12 +255,11 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		status_window->SetIndex(-1);
 		status_window->Refresh();
 		break;
-	case State_SelectActor:
-		//SelectNextActor();
-		break;
 	case State_AutoBattle:
 		// no-op
 		break;
+	case State_SelectActor:
+		command_window->SetIndex(-1);
 	case State_SelectCommand:
 		status_window->SetVisible(true);
 		command_window->SetVisible(true);
@@ -362,8 +380,10 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 			}
 			break;
 		case State_SelectActor:
-			SetState(State_SelectCommand);
-			//SelectNextActor();
+			if (status_window->GetIndex() >= 0) {
+				Game_System::SePlay(Data::system.decision_se);
+				SelectNextActor();
+			}
 			break;
 		case State_AutoBattle:
 			// no-op
@@ -615,4 +635,17 @@ bool Scene_Battle_Rpg2k3::CheckFlee() {
 	Scene::Pop();*/
 
 	return false;
+}
+
+void Scene_Battle_Rpg2k3::SelectNextActor() {
+	if (status_window->GetIndex() < 0) {
+		return;
+	}
+
+	active_actor = static_cast<Game_Actor*>(Main_Data::game_party->GetBattler(status_window->GetIndex()));
+	actor_index = status_window->GetIndex();
+
+	RefreshCommandWindow();
+
+	SetState(Scene_Battle::State_SelectCommand);
 }

@@ -93,33 +93,27 @@ void Window_BattleStatus::DrawGauge(Game_Actor* actor, int cx, int cy) {
 	contents->StretchBlit(bar_rect, *system2, gauge_bar, 255);
 }
 
-void Window_BattleStatus::SetActiveCharacter(int _index) {
-	index = _index;
-	Refresh();
-}
-
-int Window_BattleStatus::GetActiveCharacter() {
-	return index;
-}
-
-void Window_BattleStatus::ChooseActiveCharacter() {
-	int num_actors = Game_Battle::allies.size();
+int Window_BattleStatus::ChooseActiveCharacter() {
 	int old_index = index < 0 ? 0 : index;
 	index = -1;
-	for (int i = 0; i < num_actors; i++) {
-		int new_index = (old_index + i) % num_actors;
-		if (Game_Battle::GetAlly(new_index).IsReady()) {
+	for (int i = 0; i < item_max; i++) {
+		int new_index = (old_index + i) % item_max;
+		if (Main_Data::game_party->GetBattler(new_index)->IsGaugeFull()) {
 			index = new_index;
-			break;
+			return index;
 		}
 	}
 
 	if (index != old_index)
 		UpdateCursorRect();
+
+	return index;
 }
 
 void Window_BattleStatus::Update() {
-	Window_Selectable::Update();
+	// Window Selectable update logic skipped on purpose
+	// (breaks up/down-logic)
+	Window_Base::Update();
 
 	if (Player::engine == Player::EngineRpg2k3) {
 		RefreshGauge();
@@ -129,7 +123,7 @@ void Window_BattleStatus::Update() {
 				Game_System::SePlay(Main_Data::game_data.system.cursor_se);
 				for (int i = 1; i < item_max; i++) {
 					int new_index = (index + i) % item_max;
-					if (Game_Battle::GetAlly(new_index).IsReady()) {
+					if (Main_Data::game_party->GetBattler(new_index)->IsGaugeFull()) {
 						index = new_index;
 						break;
 					}
@@ -139,15 +133,13 @@ void Window_BattleStatus::Update() {
 				Game_System::SePlay(Main_Data::game_data.system.cursor_se);
 				for (int i = item_max - 1; i > 0; i--) {
 					int new_index = (index + i) % item_max;
-					if (Game_Battle::GetAlly(new_index).IsReady()) {
+					if (Main_Data::game_party->GetBattler(new_index)->IsGaugeFull()) {
 						index = new_index;
 						break;
 					}
 				}
 			}
 		}
-
-		ChooseActiveCharacter();
 
 		UpdateCursorRect();
 	}

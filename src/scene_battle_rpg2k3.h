@@ -97,7 +97,7 @@ protected:
 	void SkillSelected();
 	void EnemySelected();
 
-	int actor_index;
+	void SelectNextActor();
 
 	boost::scoped_ptr<Sprite> ally_cursor, enemy_cursor;
 };
