@@ -71,8 +71,6 @@ void Output::IgnorePause(bool const val) {
 }
 
 static void HandleScreenOutput(char const* type, std::string const& msg, bool is_error) {
-	Output::TakeScreenshot();
-
 	output_time() << type << ":\n  " << msg << "\n";
 
 	if(ignore_pause) { return; }
