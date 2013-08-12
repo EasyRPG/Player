@@ -51,8 +51,6 @@ void Sprite_Character::Update() {
 				SetBitmap(BitmapRef());
 			} else {
 				SetBitmap(Cache::Charset(character_name));
-				//chara_width = GetBitmap()->GetWidth() / 4 / 3;
-				//chara_height = GetBitmap()->GetHeight() / 2 / 4;
 				SetOx(chara_width / 2);
 				SetOy(chara_height);
 				int sx = (character_index % 4) * chara_width * 3;
