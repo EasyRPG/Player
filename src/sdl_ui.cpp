@@ -103,7 +103,9 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 		Output::Error("Couldn't initialize SDL.\n%s\n", SDL_GetError());
 	}
 
-#ifndef USE_SDL_1_2
+#ifdef USE_SDL_1_2
+	SetAppIcon();
+#else
 	sdl_window = NULL;
 #endif
 
@@ -112,8 +114,6 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 			Output::Error("No suitable video resolution found. Aborting.");
 		}
 	EndDisplayModeChange();
-
-	SetAppIcon();
 
 	SetTitle(title);
 
@@ -354,8 +354,10 @@ bool SdlUi::RefreshDisplayMode() {
 			SDL_WINDOWPOS_CENTERED,
 			display_width, display_height,
 			SDL_WINDOW_RESIZABLE | flags);
+
 		if (!sdl_window)
 			return false;
+
 		sdl_renderer = SDL_CreateRenderer(sdl_window, -1, 0);
 		if (!sdl_renderer)
 			return false;
@@ -382,6 +384,7 @@ bool SdlUi::RefreshDisplayMode() {
 			SDL_SetWindowFullscreen(sdl_window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 		} else {
 			SDL_SetWindowFullscreen(sdl_window, 0);
+			SetAppIcon();
 			SDL_SetWindowSize(sdl_window, display_width, display_height);
 		}
 	}
@@ -821,6 +824,10 @@ void SdlUi::ProcessJoystickAxisEvent(SDL_Event &evnt) {
 
 void SdlUi::SetAppIcon() {
 #ifdef _WIN32
+	static bool icon_set = false;
+	if (icon_set)
+		return;
+
 	SDL_SysWMinfo wminfo;
 	SDL_VERSION(&wminfo.version)
 
@@ -846,6 +853,8 @@ void SdlUi::SetAppIcon() {
 	window = wminfo.info.win.window;
 #endif
 	SetClassLongPtr(window, GCLP_HICON, (LONG_PTR) icon);
+
+	icon_set = true;
 #endif
 }
 
