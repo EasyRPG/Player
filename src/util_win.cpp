@@ -36,19 +36,4 @@ int WindowsUtils::GetWindowsVersion() {
 	return osvi.dwMajorVersion;
 }
 
-HWND WindowsUtils::GetHwnd() {
-#ifdef USE_SDL
-	SDL_SysWMinfo wmi;
-	SDL_VERSION(&wmi.version);
-
-	if(!SDL_GetWMInfo(&wmi)) {
-		return NULL;
-	}
-
-	return wmi.window;
-#else
-	return NULL;
-#endif
-}
-
 #endif

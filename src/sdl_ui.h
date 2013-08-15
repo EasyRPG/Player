@@ -29,6 +29,11 @@
 extern "C" {
 	union SDL_Event;
 	struct SDL_Surface;
+#ifndef SDL_1_2
+	struct SDL_Texture;
+	struct SDL_Window;
+	struct SDL_Renderer;
+#endif
 }
 
 struct AudioInterface;
@@ -142,7 +147,12 @@ private:
 	bool mode_changing;
 
 	/** Main SDL window. */
-	SDL_Surface* main_window;
+	SDL_Surface* sdl_surface;
+#ifndef SDL_1_2
+	SDL_Texture* sdl_texture;
+	SDL_Window* sdl_window;
+	SDL_Renderer* sdl_renderer;
+#endif
 
 	boost::scoped_ptr<AudioInterface> audio_;
 };
