@@ -159,10 +159,9 @@ void SdlUi::Sleep(uint32_t time) {
 }
 
 bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
+#ifdef USE_SDL_1_2
 	// FIXME: Split method into submethods, really, this method isn't nice.
 	// Note to Zhek, don't delete this fixme again.
-
-#ifdef USE_SDL_1_2
 	const SDL_VideoInfo *vinfo;
 	SDL_Rect **modes;
 	uint32_t flags = SDL_SWSURFACE;
@@ -279,14 +278,13 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 	// Didn't find a suitable video mode
 	return false;
 #else
-	if (sdl_window) {
-		SDL_DestroyWindow(sdl_window);
-	}
-
+	// SDL2 documentation says that resolution dependent code should not be used
+	// anymore. The library takes care of it now.
 	current_display_mode.width = width;
 	current_display_mode.height = height;
 	current_display_mode.bpp = 32;
 	toggle_fs_available = true;
+	current_display_mode.zoom = true;
 
 	return true;
 #endif
