@@ -50,10 +50,18 @@ AudioInterface& SdlUi::GetAudio() {
 	return *audio_;
 }
 
+// SDL 1.2 compatibility
+#ifdef USE_SDL_1_2
+	#define SDL_Keycode SDLKey
+	#define SDL_WINDOW_FULLSCREEN_DESKTOP SDL_FULLSCREEN 
+	#define SDL_WINDOWEVENT SDL_ACTIVEEVENT
+#endif
+
 static int FilterUntilFocus(const SDL_Event* evnt);
+static int FilterUntilFocus_SDL2(void*, SDL_Event* evnt);
 
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
-	static Input::Keys::InputKey SdlKey2InputKey(SDLKey sdlkey);
+	static Input::Keys::InputKey SdlKey2InputKey(SDL_Keycode sdlkey);
 #endif
 
 #if defined(USE_JOYSTICK) && defined(SUPPORT_JOYSTICK)
@@ -68,7 +76,7 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 	zoom_available(true),
 	toggle_fs_available(false),
 	mode_changing(false),
-	main_window(NULL) {
+	sdl_surface(NULL) {
 
 #ifdef GEKKO
 	WPAD_Init();
@@ -84,18 +92,11 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 	// Set some SDL env. variables before starting
 	// These are platform dependant, so every port
 	// needs to set them manually
-#ifdef _WIN32
-	// Tell SDL to use DirectDraw port
-	// in release mode
-#ifndef DEBUG
-	//putenv("SDL_VIDEODRIVER=directx"); // Disables Vsync and Aero under Vista and higher
-	putenv("SDL_AUDIODRIVER=dsound");
-#endif
 
 	// Set window position to the middle of the
 	// screen
 	putenv("SDL_VIDEO_WINDOW_POS=center");
-#elif defined(PSP)
+#if defined(PSP)
 	putenv("SDL_ASPECT_RATIO=4:3");
 #endif
 
@@ -103,13 +104,17 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 		Output::Error("Couldn't initialize SDL.\n%s\n", SDL_GetError());
 	}
 
-	SetAppIcon();
+#ifndef USE_SDL_1_2
+	sdl_window = NULL;
+#endif
 
 	BeginDisplayModeChange();
 		if (!RequestVideoMode(width, height, fs_flag)) {
 			Output::Error("No suitable video resolution found. Aborting.");
 		}
 	EndDisplayModeChange();
+
+	SetAppIcon();
 
 	SetTitle(title);
 
@@ -158,6 +163,7 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 	// FIXME: Split method into submethods, really, this method isn't nice.
 	// Note to Zhek, don't delete this fixme again.
 
+#ifdef USE_SDL_1_2
 	const SDL_VideoInfo *vinfo;
 	SDL_Rect **modes;
 	uint32_t flags = SDL_SWSURFACE;
@@ -273,6 +279,18 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 
 	// Didn't find a suitable video mode
 	return false;
+#else
+	if (sdl_window) {
+		SDL_DestroyWindow(sdl_window);
+	}
+
+	current_display_mode.width = width;
+	current_display_mode.height = height;
+	current_display_mode.bpp = 32;
+	toggle_fs_available = true;
+
+	return true;
+#endif
 }
 
 void SdlUi::BeginDisplayModeChange() {
@@ -316,38 +334,79 @@ bool SdlUi::RefreshDisplayMode() {
 	int bpp = current_display_mode.bpp;
 
 	// Display on screen fps while fullscreen or no window available
-	Graphics::fps_on_screen = (flags & SDL_FULLSCREEN) == SDL_FULLSCREEN || !toggle_fs_available;
+	bool is_fullscreen = (flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP;
+	Graphics::fps_on_screen = is_fullscreen || !toggle_fs_available;
 
 	if (zoom_available && current_display_mode.zoom) {
 		display_width *= 2;
 		display_height *= 2;
 	}
 
+#ifdef USE_SDL_1_2
 	// Free non zoomed surface
 	main_surface.reset();
+	sdl_surface = SDL_SetVideoMode(display_width, display_height, bpp, flags);
+#else
+	if (!sdl_window) {
+		// Create our window
+		sdl_window = SDL_CreateWindow("EasyRPG Player",
+			SDL_WINDOWPOS_CENTERED,
+			SDL_WINDOWPOS_CENTERED,
+			display_width, display_height,
+			SDL_WINDOW_RESIZABLE | flags);
+		if (!sdl_window)
+			return false;
+		sdl_renderer = SDL_CreateRenderer(sdl_window, -1, 0);
+		if (!sdl_renderer)
+			return false;
+		SDL_RenderSetLogicalSize(sdl_renderer, 320, 240);
 
-	// Create our window
-	main_window = SDL_SetVideoMode(display_width, display_height, bpp, flags);
+		//sdl_surface = SDL_SetVideoMode(display_width, display_height, bpp, flags);
+		uint32_t rmask, bmask, gmask, amask;
 
-	if (!main_window)
+		SDL_PixelFormatEnumToMasks(SDL_PIXELFORMAT_ARGB8888,
+			&bpp, &rmask, &gmask, &bmask, &amask);
+
+		sdl_surface = SDL_CreateRGBSurface(0, 320, 240,
+			bpp, rmask, gmask,	bmask, amask);
+
+		sdl_texture = SDL_CreateTexture(sdl_renderer,
+			SDL_PIXELFORMAT_ARGB8888,
+			SDL_TEXTUREACCESS_STREAMING,
+			320, 240);
+
+		if (!sdl_texture)
+			return false;
+	} else {
+		if (is_fullscreen) {
+			SDL_SetWindowFullscreen(sdl_window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+		} else {
+			SDL_SetWindowFullscreen(sdl_window, 0);
+			SDL_SetWindowSize(sdl_window, display_width, display_height);
+		}
+	}
+#endif
+
+	if (!sdl_surface)
 		return false;
 
 	// Modes below 15 bpp aren't supported
-	if (main_window->format->BitsPerPixel < 15)
+	if (sdl_surface->format->BitsPerPixel < 15)
 		return false;
 
-	current_display_mode.bpp = main_window->format->BitsPerPixel;
+	current_display_mode.bpp = sdl_surface->format->BitsPerPixel;
 
 	const DynamicFormat format(
-		main_window->format->BitsPerPixel,
-		main_window->format->Rmask,
-		main_window->format->Gmask,
-		main_window->format->Bmask,
-		main_window->format->Amask,
+		sdl_surface->format->BitsPerPixel,
+		sdl_surface->format->Rmask,
+		sdl_surface->format->Gmask,
+		sdl_surface->format->Bmask,
+		sdl_surface->format->Amask,
 		PF::NoAlpha);
 
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
 
+#ifdef USE_SDL_1_2
 	if (zoom_available && current_display_mode.zoom) {
 		// Create a non zoomed surface as drawing surface
 		main_surface = Bitmap::Create(current_display_mode.width,
@@ -359,11 +418,19 @@ bool SdlUi::RefreshDisplayMode() {
 			return false;
 
 	} else {
-		void *pixels = (uint8_t*) main_window->pixels + main_window->offset;
+		void *pixels = (uint8_t*) sdl_surface->pixels;
 		// Drawing surface will be the window itself
 		main_surface = Bitmap::Create(
-			pixels, main_window->w, main_window->h, main_window->pitch, format);
+			pixels, sdl_surface->w, sdl_surface->h, sdl_surface->pitch, format);
 	}
+#else
+	if (!main_surface) {
+		void *pixels = (uint8_t*) sdl_surface->pixels;
+		// Drawing surface will be the window itself
+		main_surface = Bitmap::Create(
+			pixels, sdl_surface->w, sdl_surface->h, sdl_surface->pitch, format);
+	}
+#endif
 
 	return true;
 }
@@ -382,10 +449,10 @@ void SdlUi::Resize(long /*width*/, long /*height*/) {
 
 void SdlUi::ToggleFullscreen() {
 	if (toggle_fs_available && mode_changing) {
-		if ((current_display_mode.flags & SDL_FULLSCREEN) == SDL_FULLSCREEN)
-			current_display_mode.flags &= ~SDL_FULLSCREEN;
+		if ((current_display_mode.flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
+			current_display_mode.flags &= ~SDL_WINDOW_FULLSCREEN_DESKTOP;
 		else
-			current_display_mode.flags |= SDL_FULLSCREEN;
+			current_display_mode.flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 	}
 }
 
@@ -408,12 +475,18 @@ void SdlUi::ProcessEvents() {
 }
 
 void SdlUi::UpdateDisplay() {
+#ifdef USE_SDL_1_2
 	if (zoom_available && current_display_mode.zoom) {
 		// Blit drawing surface x2 scaled over window surface
-		Blit2X(*main_surface, main_window);
+		Blit2X(*main_surface, sdl_surface);
 	}
-
-	SDL_UpdateRect(main_window, 0, 0, 0, 0);
+	SDL_UpdateRect(sdl_surface, 0, 0, 0, 0);
+#else
+	SDL_UpdateTexture(sdl_texture, NULL, main_surface->pixels(), main_surface->pitch());
+	SDL_RenderClear(sdl_renderer);
+	SDL_RenderCopy(sdl_renderer, sdl_texture, NULL, NULL);
+	SDL_RenderPresent(sdl_renderer);
+#endif
 }
 
 void SdlUi::BeginScreenCapture() {
@@ -425,7 +498,11 @@ BitmapRef SdlUi::EndScreenCapture() {
 }
 
 void SdlUi::SetTitle(const std::string &title) {
+#ifdef USE_SDL_1_2
 	SDL_WM_SetCaption(title.c_str(), NULL);
+#else
+	SDL_SetWindowTitle(sdl_window, title.c_str());
+#endif
 }
 
 void SdlUi::DrawScreenText(const std::string &text) {
@@ -474,7 +551,7 @@ void SdlUi::Blit2X(Bitmap const& src, SDL_Surface* dst_surf) {
 
 void SdlUi::ProcessEvent(SDL_Event &evnt) {
 	switch (evnt.type) {
-		case SDL_ACTIVEEVENT:
+		case SDL_WINDOWEVENT:
 			ProcessActiveEvent(evnt);
 			return;
 
@@ -516,43 +593,67 @@ void SdlUi::ProcessEvent(SDL_Event &evnt) {
 
 void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 #ifdef PAUSE_GAME_WHEN_FOCUS_LOST
-	switch(evnt.active.state) {
-		case SDL_APPINPUTFOCUS:
-			if (!evnt.active.gain) {
+	int state;
+#ifdef USE_SDL_1_2
+	state = evnt.active.state;
+#else
+	state = evnt.window.event;
+#endif
+
+#ifdef USE_SDL_1_2
+	if (state == SDL_APPINPUTFOCUS && !evnt.active.gain) {
+#else
+	if (state == SDL_WINDOWEVENT_FOCUS_LOST) {
+#endif
 #ifdef _WIN32
-				// Prevent the player from hanging when it receives a
-				// focus changed event but actually has focus.
-				// This happens when a MsgBox appears.
-				if (GetActiveWindow() != NULL) {
-					return;
-				}
-#endif
-
-				Player::Pause();
-
-				bool last = ShowCursor(true);
-
-				// Filter SDL events with FilterUntilFocus until focus is
-				// regained
-				SDL_SetEventFilter(&FilterUntilFocus);
-				SDL_WaitEvent(NULL);
-				SDL_SetEventFilter(NULL);
-
-				ShowCursor(last);
-
-				ResetKeys();
-
-				Player::Resume();
-			}
+		// Prevent the player from hanging when it receives a
+		// focus changed event but actually has focus.
+		// This happens when a MsgBox appears.
+		if (GetActiveWindow() != NULL) {
 			return;
+		}
 #endif
 
-#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
-		case SDL_APPMOUSEFOCUS:
-			mouse_focus = evnt.active.gain == 1;
-			return;
+		Player::Pause();
+
+		bool last = ShowCursor(true);
+
+		// Filter SDL events with FilterUntilFocus until focus is
+		// regained
+#ifdef USE_SDL_1_2
+		SDL_SetEventFilter(&FilterUntilFocus);
+#else
+		SDL_SetEventFilter(&FilterUntilFocus_SDL2, NULL);
 #endif
+		SDL_WaitEvent(NULL);
+#ifdef USE_SDL_1_2
+		SDL_SetEventFilter(NULL);
+#else
+		SDL_SetEventFilter(NULL, NULL);
+#endif 
+
+		ShowCursor(last);
+
+		ResetKeys();
+
+		Player::Resume();
+		return;
 	}
+#endif
+#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
+#ifdef USE_SDL_1_2
+	if (state == SDL_APPMOUSEFOCUS) {
+		mouse_focus = evnt.active.gain == 1;
+		return;
+	}
+#else
+	if (state == SDL_WINDOWEVENT_ENTER) {
+		mouse_focus = true;
+	} else if (state == SDL_WINDOWEVENT_LEAVE) {
+		mouse_focus = false;
+	}
+#endif
+#endif
 }
 
 void SdlUi::ProcessKeyDownEvent(SDL_Event &evnt) {
@@ -574,7 +675,7 @@ void SdlUi::ProcessKeyDownEvent(SDL_Event &evnt) {
 		return;
 
 	case SDLK_F5:
-		// Toggle fullscreen on F5
+		// Toggle zoom on F5
 		BeginDisplayModeChange();
 			ToggleZoom();
 		EndDisplayModeChange();
@@ -598,7 +699,11 @@ void SdlUi::ProcessKeyDownEvent(SDL_Event &evnt) {
 		// Continue if return/enter not handled by fullscreen hotkey
 	default:
 		// Update key state
+#ifdef USE_SDL_1_2
 		keys[SdlKey2InputKey(evnt.key.keysym.sym)] = true;
+#else
+		keys[SdlKey2InputKey(evnt.key.keysym.scancode)] = true;
+#endif
 		return;
 	}
 #endif
@@ -606,7 +711,11 @@ void SdlUi::ProcessKeyDownEvent(SDL_Event &evnt) {
 
 void SdlUi::ProcessKeyUpEvent(SDL_Event &evnt) {
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
+#ifdef USE_SDL_1_2
 	keys[SdlKey2InputKey(evnt.key.keysym.sym)] = false;
+#else
+	keys[SdlKey2InputKey(evnt.key.keysym.scancode)] = false;
+#endif
 #endif
 }
 
@@ -715,7 +824,13 @@ void SdlUi::SetAppIcon() {
 	SDL_SysWMinfo wminfo;
 	SDL_VERSION(&wminfo.version)
 
-	if (SDL_GetWMInfo(&wminfo) < 0)
+#ifdef USE_SDL_1_2
+	int success = SDL_GetWMInfo(&wminfo);
+#else
+	SDL_bool success = SDL_GetWindowWMInfo(sdl_window, &wminfo);
+#endif
+
+	if (success < 0)
 		Output::Error("Wrong SDL version");
 
 	HINSTANCE handle = GetModuleHandle(NULL);
@@ -724,7 +839,13 @@ void SdlUi::SetAppIcon() {
 	if (icon == NULL)
 		Output::Error("Couldn't load icon.");
 
-	SetClassLongPtr(wminfo.window, GCLP_HICON, (LONG_PTR) icon);
+	HWND window;
+#ifdef USE_SDL_1_2
+	window = wminfo.window;
+#else
+	window = wminfo.info.win.window;
+#endif
+	SetClassLongPtr(window, GCLP_HICON, (LONG_PTR) icon);
 #endif
 }
 
@@ -735,12 +856,13 @@ void SdlUi::ResetKeys() {
 }
 
 bool SdlUi::IsFullscreen() {
-	return (current_display_mode.flags & SDL_FULLSCREEN) == SDL_FULLSCREEN;
+	return (current_display_mode.flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP;
 }
 
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
-Input::Keys::InputKey SdlKey2InputKey(SDLKey sdlkey) {
+Input::Keys::InputKey SdlKey2InputKey(SDL_Keycode sdlkey) {
 	switch (sdlkey) {
+#ifdef USE_SDL_1_2
 		case SDLK_BACKSPACE		: return Input::Keys::BACKSPACE;
 		case SDLK_TAB			: return Input::Keys::TAB;
 		case SDLK_CLEAR			: return Input::Keys::CLEAR;
@@ -835,6 +957,100 @@ Input::Keys::InputKey SdlKey2InputKey(SDLKey sdlkey) {
 		case SDLK_CAPSLOCK		: return Input::Keys::CAPS_LOCK;
 		case SDLK_NUMLOCK		: return Input::Keys::NUM_LOCK;
 		case SDLK_SCROLLOCK		: return Input::Keys::SCROLL_LOCK;
+#else
+		case SDL_SCANCODE_BACKSPACE		: return Input::Keys::BACKSPACE;
+		case SDL_SCANCODE_TAB			: return Input::Keys::TAB;
+		case SDL_SCANCODE_CLEAR			: return Input::Keys::CLEAR;
+		case SDL_SCANCODE_RETURN		: return Input::Keys::RETURN;
+		case SDL_SCANCODE_PAUSE			: return Input::Keys::PAUSE;
+		case SDL_SCANCODE_ESCAPE		: return Input::Keys::ESCAPE;
+		case SDL_SCANCODE_SPACE			: return Input::Keys::SPACE;
+		case SDL_SCANCODE_PAGEUP		: return Input::Keys::PGUP;
+		case SDL_SCANCODE_PAGEDOWN		: return Input::Keys::PGDN;
+		case SDL_SCANCODE_END			: return Input::Keys::ENDS;
+		case SDL_SCANCODE_HOME			: return Input::Keys::HOME;
+		case SDL_SCANCODE_LEFT			: return Input::Keys::LEFT;
+		case SDL_SCANCODE_UP			: return Input::Keys::UP;
+		case SDL_SCANCODE_RIGHT			: return Input::Keys::RIGHT;
+		case SDL_SCANCODE_DOWN			: return Input::Keys::DOWN;
+		case SDL_SCANCODE_PRINTSCREEN	: return Input::Keys::SNAPSHOT;
+		case SDL_SCANCODE_INSERT		: return Input::Keys::INSERT;
+		case SDL_SCANCODE_DELETE		: return Input::Keys::DEL;
+		case SDL_SCANCODE_LSHIFT		: return Input::Keys::LSHIFT;
+		case SDL_SCANCODE_RSHIFT		: return Input::Keys::RSHIFT;
+		case SDL_SCANCODE_LCTRL			: return Input::Keys::LCTRL;
+		case SDL_SCANCODE_RCTRL			: return Input::Keys::RCTRL;
+		case SDL_SCANCODE_LALT			: return Input::Keys::LALT;
+		case SDL_SCANCODE_RALT			: return Input::Keys::RALT;
+		case SDL_SCANCODE_0				: return Input::Keys::N0;
+		case SDL_SCANCODE_1				: return Input::Keys::N1;
+		case SDL_SCANCODE_2				: return Input::Keys::N2;
+		case SDL_SCANCODE_3				: return Input::Keys::N3;
+		case SDL_SCANCODE_4				: return Input::Keys::N4;
+		case SDL_SCANCODE_5				: return Input::Keys::N5;
+		case SDL_SCANCODE_6				: return Input::Keys::N6;
+		case SDL_SCANCODE_7				: return Input::Keys::N7;
+		case SDL_SCANCODE_8				: return Input::Keys::N8;
+		case SDL_SCANCODE_9				: return Input::Keys::N9;
+		case SDL_SCANCODE_A				: return Input::Keys::A;
+		case SDL_SCANCODE_B				: return Input::Keys::B;
+		case SDL_SCANCODE_C				: return Input::Keys::C;
+		case SDL_SCANCODE_D				: return Input::Keys::D;
+		case SDL_SCANCODE_E				: return Input::Keys::E;
+		case SDL_SCANCODE_F				: return Input::Keys::F;
+		case SDL_SCANCODE_G				: return Input::Keys::G;
+		case SDL_SCANCODE_H				: return Input::Keys::H;
+		case SDL_SCANCODE_I				: return Input::Keys::I;
+		case SDL_SCANCODE_J				: return Input::Keys::J;
+		case SDL_SCANCODE_K				: return Input::Keys::K;
+		case SDL_SCANCODE_L				: return Input::Keys::L;
+		case SDL_SCANCODE_M				: return Input::Keys::M;
+		case SDL_SCANCODE_N				: return Input::Keys::N;
+		case SDL_SCANCODE_O				: return Input::Keys::O;
+		case SDL_SCANCODE_P				: return Input::Keys::P;
+		case SDL_SCANCODE_Q				: return Input::Keys::Q;
+		case SDL_SCANCODE_R				: return Input::Keys::R;
+		case SDL_SCANCODE_S				: return Input::Keys::S;
+		case SDL_SCANCODE_T				: return Input::Keys::T;
+		case SDL_SCANCODE_U				: return Input::Keys::U;
+		case SDL_SCANCODE_V				: return Input::Keys::V;
+		case SDL_SCANCODE_W				: return Input::Keys::W;
+		case SDL_SCANCODE_X				: return Input::Keys::X;
+		case SDL_SCANCODE_Y				: return Input::Keys::Y;
+		case SDL_SCANCODE_Z				: return Input::Keys::Z;
+		case SDL_SCANCODE_MENU			: return Input::Keys::MENU;
+		case SDL_SCANCODE_KP_0			: return Input::Keys::KP0;
+		case SDL_SCANCODE_KP_1			: return Input::Keys::KP1;
+		case SDL_SCANCODE_KP_2			: return Input::Keys::KP2;
+		case SDL_SCANCODE_KP_3			: return Input::Keys::KP3;
+		case SDL_SCANCODE_KP_4			: return Input::Keys::KP4;
+		case SDL_SCANCODE_KP_5			: return Input::Keys::KP5;
+		case SDL_SCANCODE_KP_6			: return Input::Keys::KP6;
+		case SDL_SCANCODE_KP_7			: return Input::Keys::KP7;
+		case SDL_SCANCODE_KP_8			: return Input::Keys::KP8;
+		case SDL_SCANCODE_KP_9			: return Input::Keys::KP9;
+		case SDL_SCANCODE_KP_MULTIPLY	: return Input::Keys::MULTIPLY;
+		case SDL_SCANCODE_KP_PLUS		: return Input::Keys::ADD;
+		case SDL_SCANCODE_KP_ENTER		: return Input::Keys::RETURN;
+		case SDL_SCANCODE_KP_MINUS		: return Input::Keys::SUBTRACT;
+		case SDL_SCANCODE_KP_PERIOD		: return Input::Keys::PERIOD;
+		case SDL_SCANCODE_KP_DIVIDE		: return Input::Keys::DIVIDE;
+		case SDL_SCANCODE_F1			: return Input::Keys::F1;
+		case SDL_SCANCODE_F2			: return Input::Keys::F2;
+		case SDL_SCANCODE_F3			: return Input::Keys::F3;
+		case SDL_SCANCODE_F4			: return Input::Keys::F4;
+		case SDL_SCANCODE_F5			: return Input::Keys::F5;
+		case SDL_SCANCODE_F6			: return Input::Keys::F6;
+		case SDL_SCANCODE_F7			: return Input::Keys::F7;
+		case SDL_SCANCODE_F8			: return Input::Keys::F8;
+		case SDL_SCANCODE_F9			: return Input::Keys::F9;
+		case SDL_SCANCODE_F10			: return Input::Keys::F10;
+		case SDL_SCANCODE_F11			: return Input::Keys::F11;
+		case SDL_SCANCODE_F12			: return Input::Keys::F12;
+		case SDL_SCANCODE_CAPSLOCK		: return Input::Keys::CAPS_LOCK;
+		case SDL_SCANCODE_NUMLOCKCLEAR	: return Input::Keys::NUM_LOCK;
+		case SDL_SCANCODE_SCROLLLOCK	: return Input::Keys::SCROLL_LOCK;
+#endif
 		default					: return Input::Keys::NONE;
 	}
 }
@@ -886,13 +1102,21 @@ int FilterUntilFocus(const SDL_Event* evnt) {
 		Player::exit_flag = true;
 		return 1;
 
-	case SDL_ACTIVEEVENT:
+	case SDL_WINDOWEVENT:
+#ifdef USE_SDL_1_2
 		return evnt->active.state & SDL_APPINPUTFOCUS;
+#else
+		return evnt->window.event == SDL_WINDOWEVENT_FOCUS_GAINED;
+#endif
 
 	default:
 		return 0;
 	}
 }
+
+int FilterUntilFocus_SDL2(void*, SDL_Event* evnt) {
+	return FilterUntilFocus(evnt);
+};
 
 #ifdef GEKKO
 void GekkoResetCallback() {
