@@ -12,17 +12,17 @@ BUILD_DINGOO = NO
 BUILD_GCWZERO = YES
 
 # Host toolchain directory and extra flags
-ifeq ($(BUILD_DINGUX), YES)
+ifeq ($(BUILD_DINGOO), YES)
 	TOOLCHAINDIR = /opt/opendingux-toolchain
 	SYSROOT = $(TOOLCHAINDIR)
-	CFLAGS = -O2 -fomit-frame-pointer -ffunction-sections -ffast-math -G0 -mbranch-likely
+	CFLAGS = -O2 -fomit-frame-pointer -ffunction-sections -ffast-math -G0 -mbranch-likely -std=gnu++11
 	LDFLAGS = -Wl,--gc-sections
 	CXXFLAGS = 
 else
-ifeq ($(BUILD_OPENDINGUX), YES)
+ifeq ($(BUILD_GCWZERO), YES)
 	TOOLCHAINDIR = /opt/gcw0-toolchain
 	SYSROOT = $(TOOLCHAINDIR)/usr/mipsel-gcw0-linux-uclibc/sysroot
-	CFLAGS = -O2 -fomit-frame-pointer -ffunction-sections -ffast-math -G0 -mbranch-likely
+	CFLAGS = -O2 -fomit-frame-pointer -ffunction-sections -ffast-math -G0 -std=gnu++11
 	LDFLAGS = -Wl,--gc-sections
 	CXXFLAGS = 
 endif
