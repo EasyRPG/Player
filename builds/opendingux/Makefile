@@ -1,5 +1,5 @@
 ##################################################################
-#                 Makefile for Dingux/OpenDingux                 #
+#         Makefile for OpenDingux (Dingoo A320/GCW-Zero)         #
 #                            By Shin-NiL                         #
 #                     - Based on Rikku2000's -                   #
 ##################################################################
@@ -8,15 +8,20 @@
 TARGET = EasyRPG.dge
 
 # Compiler Device option
-BUILD_DINGUX = NO
-BUILD_OPENDINGUX = YES
+BUILD_DINGOO = NO
+BUILD_GCWZERO = YES
 
 # Host toolchain directory and extra flags
 ifeq ($(BUILD_DINGUX), YES)
-	TOOLCHAINDIR = /opt/mipsel-linux-uclibc
+	TOOLCHAINDIR = /opt/opendingux-toolchain
+	SYSROOT = $(TOOLCHAINDIR)
+	CFLAGS = -O2 -fomit-frame-pointer -ffunction-sections -ffast-math -G0 -mbranch-likely
+	LDFLAGS = -Wl,--gc-sections
+	CXXFLAGS = 
 else
 ifeq ($(BUILD_OPENDINGUX), YES)
-	TOOLCHAINDIR = /opt/opendingux-toolchain
+	TOOLCHAINDIR = /opt/gcw0-toolchain
+	SYSROOT = $(TOOLCHAINDIR)/usr/mipsel-gcw0-linux-uclibc/sysroot
 	CFLAGS = -O2 -fomit-frame-pointer -ffunction-sections -ffast-math -G0 -mbranch-likely
 	LDFLAGS = -Wl,--gc-sections
 	CXXFLAGS = 
@@ -24,7 +29,7 @@ endif
 endif
 
 BINDIR = $(TOOLCHAINDIR)/usr/bin
-SDL_CONFIG = $(BINDIR)/sdl-config
+SDL_CONFIG = $(SYSROOT)/usr/bin/sdl-config
 
 # Compiler headers
 INCLUDES = ../../lib/readers/include ../../src
