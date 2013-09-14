@@ -130,5 +130,5 @@ easyrpg_player_SOURCES = \
 	zobj.cpp \
 	../lib/shinonome/gothic.cxx \
 	../lib/shinonome/mincho.cxx
-easyrpg_player_LDADD = $(READERS_DIR)/lib/libreaders.a
+easyrpg_player_LDADD = $(READERS_LIB)
 AM_CXXFLAGS = -I$(srcdir)/../lib/shinonome

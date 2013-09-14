@@ -20,10 +20,10 @@ m4_ifdef([PKG_CHECK_MODULES],[],[AC_MSG_ERROR['pkg-config' is required but it do
 
 # Checks for libraries.
 AC_ARG_WITH([readers],[AS_HELP_STRING([--with-readers=DIR],[Location of the EasyRPG 'readers' library])],[
-	CXXFLAGS="$CXXFLAGS -I$withval/include"
+	CPPFLAGS="$CPPFLAGS -I$withval/include"
 	LDFLAGS="$LDFLAGS -L$withval/lib"
 	AC_CHECK_LIB([readers],[ini_parse],[
-		READERS_DIR=$withval
+		READERS_LIB="$withval/lib/libreaders.a"
 	],[AC_MSG_ERROR([EasyRPG 'readers' library does not have been found in the specified path.])])
 ])
 PKG_CHECK_MODULES([PIXMAN],[pixman-1],[CXXFLAGS="$CXXFLAGS $PIXMAN_CFLAGS" LIBS="$LIBS $PIXMAN_LIBS"])
@@ -54,7 +54,7 @@ AC_FUNC_ERROR_AT_LINE
 AC_FUNC_MALLOC
 AC_CHECK_FUNCS([floor getcwd memset putenv strerror])
 
-AC_SUBST(READERS_DIR)
+AC_SUBST(READERS_LIB)
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile])

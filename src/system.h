@@ -18,11 +18,19 @@
 #ifndef _SYSTEM_H_
 #define _SYSTEM_H_
 
+/*
+ * Includes GNU Autotools build configuration parameters.
+ * This option may have defined USE_SDL and others.
+ */
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 #if !(defined(_WIN32) \
-	  || defined(UNIX) \
-	  || defined(DINGOO) \
-	  || defined(GEKKO) \
-	  || defined(PSP) \
+   || defined(UNIX) \
+   || defined(DINGOO) \
+   || defined(GEKKO) \
+   || defined(PSP) \
 	  || defined(GPH) \
 	  || defined(EASYRPG_IS_ANDROID) \
 	  )
@@ -33,19 +41,21 @@
 #  error "This build doesn't target a backend"
 #endif
 
-// TODO?: Combine system.h and options.h ?
-// options.h is oriented to configurations that the EasyRPG user might want
-// to change.
-// system.h is oriented to what used libraries and OS are capable of.
+/*
+ * TODO?: Combine system.h and options.h ?
+ * options.h is oriented to configurations that the EasyRPG user might want
+ * to change.
+ * system.h is oriented to what used libraries and OS are capable of.
+ */
 #include "options.h"
 
 /*
-  smart pointer header.
+ * Smart pointer header.
  */
 #include "memory_management.h"
 
 #ifdef GEKKO
-	#include "stdint.h"
+#  include "stdint.h"
 #endif
 
 #define SUPPORT_BMP
