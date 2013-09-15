@@ -40,6 +40,18 @@ public:
 
 		return switches[switch_id - 1];
 	}
+	
+	std::string GetName(int _id) {
+		if (!isValidSwitch(_id)) {
+			Output::Warning("Switch index %d is invalid.\n",
+				_id);
+			return "";
+		}
+		else{
+			std::string result = Data::switches.at(_id - 1).name;
+			return result;
+		}
+	}
 
 	bool isValidSwitch(int switch_id) {
 		return (switch_id > 0 && switch_id <= (int) switches.size());

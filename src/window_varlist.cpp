@@ -72,7 +72,7 @@ void Window_VarList::UpdateList(int first_value){
 	for (int i = 0; i < 10; i++){
 		ss.str("");
 		if ((show_switch && Game_Switches.isValidSwitch(first_var+i)) || ((!show_switch && Game_Variables.isValidVar(first_var+i))))
-			ss << std::setfill('0') << std::setw(4) << (first_value + i) << ":";
+			ss << std::setfill('0') << std::setw(4) << (first_value + i) << ": " << (show_switch ? Game_Switches.GetName(first_value + i) : Game_Variables.GetName(first_value + i));
 		this->SetItemText(i, ss.str());
 	}
 }
