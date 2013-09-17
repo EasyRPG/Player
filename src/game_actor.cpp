@@ -23,6 +23,7 @@
 #include "game_party.h"
 #include "main_data.h"
 #include "player.h"
+#include "rpg_skill.h"
 #include "util_macro.h"
 
 Game_Actor::Game_Actor(int actor_id) :
@@ -496,6 +497,12 @@ bool Game_Actor::IsEquippable(int item_id) const {
 
 const std::vector<int16_t>& Game_Actor::GetSkills() const {
 	return data.skills;
+}
+
+const RPG::Skill& Game_Actor::GetRandomSkill() const {
+	const std::vector<int16_t>& skills = GetSkills();
+
+	return Data::skills[skills[rand() % (skills.size() + 1)] - 1];
 }
 
 bool Game_Actor::GetTwoSwordsStyle() const {

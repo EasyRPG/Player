@@ -137,6 +137,9 @@ public:
 
 	BattlerType GetType() const;
 
+	bool ActionValid(const RPG::EnemyAction& action);
+	const RPG::EnemyAction* ChooseRandomAction();
+
 protected:
 	void Setup(int enemy_id);
 

@@ -25,8 +25,6 @@
 #include "game_actor.h"
 #include "main_data.h"
 
-#include <boost/noncopyable.hpp>
-
 /**
  * Game_Party class.
  */
@@ -209,6 +207,20 @@ public:
 	 * @param damage How many damage to apply
 	 */
 	void ApplyDamage(int damage);
+
+	/**
+	 * Gets average level of the party (for battle)
+	 *
+	 * @return average level
+	 */
+	int GetAverageLevel();
+
+	/**
+	 * Gets party exhaustion level (for battle)
+	 *
+	 * @return exhaustion level
+	 */
+	int GetFatigue();
 
 	enum sys_timer {
 		Timer1,

@@ -324,3 +324,30 @@ int Game_Party::ReadTimer(int which) {
 			return 0;
 	}
 }
+
+int Game_Party::GetAverageLevel() {
+	int party_lvl = 0;
+
+	std::vector<Game_Actor*> actors = GetActors();
+	std::vector<Game_Actor*>::iterator it;
+
+	for (it = actors.begin(); it != actors.end(); ++it) {
+		party_lvl += (*it)->GetLevel();
+	}
+
+	return party_lvl /= GetBattlerCount();
+}
+
+int Game_Party::GetFatigue() {
+	int party_exh = 0;
+	std::vector<Game_Actor*> actors = GetActors();
+	std::vector<Game_Actor*>::iterator it;
+
+	for (it = actors.begin(); it != actors.end(); ++it) {
+		// FIXME: this is what the help file says, but it looks wrong
+		party_exh += 100 - (200 * (*it)->GetHp() / (*it)->GetMaxHp() -
+			100 * (*it)->GetSp() / (*it)->GetMaxSp() / 3);
+	}
+
+	return party_exh /= GetBattlerCount();
+}

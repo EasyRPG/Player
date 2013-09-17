@@ -28,6 +28,7 @@
 #include "graphics.h"
 #include "filefinder.h"
 #include "cache.h"
+#include "game_battlealgorithm.h"
 #include "game_message.h"
 #include "game_system.h"
 #include "game_temp.h"
@@ -190,5 +191,53 @@ EASYRPG_SHARED_PTR<Scene_Battle> Scene_Battle::Create()
 	}
 	else {
 		return EASYRPG_MAKE_SHARED<Scene_Battle_Rpg2k3>();
+	}
+}
+
+void Scene_Battle::CreateEnemyAction(Game_Enemy* enemy, const RPG::EnemyAction* action) {
+	switch (action->kind) {
+	case RPG::EnemyAction::Kind_basic:
+		battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomAliveBattler()));
+		break;
+	case RPG::EnemyAction::Kind_skill: {
+		const RPG::Skill skill = Data::skills[action->skill_id - 1];
+
+		switch (skill.type) {
+		case RPG::Skill::Type_teleport:
+		case RPG::Skill::Type_escape:
+		case RPG::Skill::Type_switch:
+			//BeginSkill();
+			return;
+		case RPG::Skill::Type_normal:
+		default:
+			break;
+		}
+
+		switch (skill.scope) {
+		case RPG::Skill::Scope_enemy:
+			// ToDo
+			break;
+		case RPG::Skill::Scope_ally:
+			// ToDo
+			break;
+		case RPG::Skill::Scope_enemies:
+			battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_enemyparty.get(), skill));
+			SetState(State_SelectActor);
+			break;
+		case RPG::Skill::Scope_self:
+			battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, enemy, skill));
+			SetState(State_SelectActor);
+			break;
+		case RPG::Skill::Scope_party: {
+			battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_party.get(), *skill_window->GetSkill()));
+			SetState(State_SelectActor);
+			break;
+			}
+		}
+		break;
+		}
+	case RPG::EnemyAction::Kind_transformation:
+		// ToDo
+		break;
 	}
 }

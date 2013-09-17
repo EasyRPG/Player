@@ -19,7 +19,10 @@
 #include <algorithm>
 #include "data.h"
 #include "rpg_enemy.h"
+#include "game_battle.h"
 #include "game_enemy.h"
+#include "game_party.h"
+#include "game_switches.h"
 
 Game_Enemy::Game_Enemy(int enemy_id) : Game_Battler() {
 	Setup(enemy_id);
@@ -147,4 +150,76 @@ int Game_Enemy::GetExp() const {
 
 int Game_Enemy::GetMoney() const {
 	return enemy->gold;
+}
+
+bool Game_Enemy::ActionValid(const RPG::EnemyAction& action) {
+	switch (action.condition_type) {
+	case RPG::EnemyAction::ConditionType_always:
+		return true;
+	case RPG::EnemyAction::ConditionType_switch:
+		return Game_Switches[action.switch_id];
+	case RPG::EnemyAction::ConditionType_turn:
+		{
+			int interval = action.condition_param2 == 0 ? 1 : action.condition_param2;
+			int turns = Game_Battle::GetTurn();
+			return (turns - action.condition_param1) % interval == 0;
+		}
+	case RPG::EnemyAction::ConditionType_actors:
+		{
+			int count = 0;
+			for (std::vector<Battle::Enemy>::const_iterator it = Game_Battle::enemies.begin(); it != Game_Battle::enemies.end(); it++)
+				if (it->game_enemy->Exists())
+					count++;
+			return count >= action.condition_param1 && count <= action.condition_param2;
+		}
+	case RPG::EnemyAction::ConditionType_hp:
+		{
+			int hp_percent = GetHp() * 100 / GetMaxHp();
+			return hp_percent >= action.condition_param1 && hp_percent <= action.condition_param2;
+		}
+	case RPG::EnemyAction::ConditionType_sp:
+		{
+			int sp_percent = GetSp() * 100 / GetMaxSp();
+			return sp_percent >= action.condition_param1 && sp_percent <= action.condition_param2;
+		}
+	case RPG::EnemyAction::ConditionType_party_lvl:
+		{
+			int party_lvl = Main_Data::game_party->GetAverageLevel();
+			return party_lvl >= action.condition_param1 && party_lvl <= action.condition_param2;
+		}
+	case RPG::EnemyAction::ConditionType_party_fatigue:
+		{
+			int party_exh = Main_Data::game_party->GetFatigue();
+			return party_exh >= action.condition_param1 && party_exh <= action.condition_param2;
+		}
+	default:
+		return true;
+	}
+}
+
+const RPG::EnemyAction* Game_Enemy::ChooseRandomAction() {
+	const std::vector<RPG::EnemyAction>& actions = enemy->actions;
+	std::vector<int> valid;
+	std::vector<RPG::EnemyAction>::const_iterator it;
+	int total = 0;
+	for (int i = 0; i < (int) actions.size(); i++) {
+		const RPG::EnemyAction& action = actions[i];
+		if (ActionValid(action)) {
+			valid.push_back(i);
+			total += action.rating;
+		}
+	}
+
+	int which = rand() % total;
+	for (std::vector<int>::const_iterator it = valid.begin(); it != valid.end(); it++) {
+		const RPG::EnemyAction& action = actions[*it];
+		if (which >= action.rating) {
+			which -= action.rating;
+			continue;
+		}
+
+		return &action;
+	}
+
+	return NULL;
 }

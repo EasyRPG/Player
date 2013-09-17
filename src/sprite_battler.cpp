@@ -35,7 +35,6 @@ Sprite_Battler::Sprite_Battler(Game_Battler* battler) :
 	
 	// Not animated -> Monster
 	if (battler->GetBattleAnimationId() == 0) {
-		anim_state = 0;
 		graphic = Cache::Monster(battler->GetSpriteName());
 		SetOx(graphic->GetWidth() / 2);
 		SetOy(graphic->GetHeight() / 2);
@@ -81,6 +80,14 @@ void Sprite_Battler::Update() {
 		else if (anim_state == Dead && fade_out > 0) {
 			fade_out -= 15;
 			SetOpacity(std::max(0, fade_out));
+		}
+		else if (anim_state == LeftHand) {
+			static int cycl = 30;
+			--cycl;
+			if (cycl == 0) {
+				SetAnimationState(Idle);
+				cycl = 30;
+			}
 		}
 		else if (anim_state == Damage) {
 			flash_counter = (flash_counter + 1) % 10;

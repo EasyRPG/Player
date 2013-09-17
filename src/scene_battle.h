@@ -165,10 +165,10 @@ protected:
 	void UseSkillAlly(Battle::Battler& ally, const RPG::Skill& skill, Battle::Battler& target);
 	void UseSkillEnemy(Battle::Battler& ally, const RPG::Skill& skill, Battle::Battler& target);
 
-	bool EnemyActionValid(const RPG::EnemyAction& action, Battle::Enemy& enemy);
-	const RPG::EnemyAction* ChooseEnemyAction(Battle::Enemy& enemy);
 	void EnemyAttackAlly(Battle::Enemy& enemy, Battle::Ally& ally);
 	void EnemySkill(Battle::Enemy& enemy, const RPG::Skill& skill);
+
+	void CreateEnemyAction(Game_Enemy* enemy, const RPG::EnemyAction* action);
 
 	// Variables
 	State state;

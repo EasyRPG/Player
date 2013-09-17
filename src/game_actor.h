@@ -24,6 +24,10 @@
 #include "rpg_save.h"
 #include "game_battler.h"
 
+namespace RPG {
+	class Skill;
+};
+
 /**
  * Game_Actor class.
  */
@@ -342,6 +346,13 @@ public:
 	 * @return learned skills list.
 	 */
 	const std::vector<int16_t>& GetSkills() const;
+
+	/**
+	 * Gets a random skill
+
+	 * @return random skill
+	 */
+	const RPG::Skill& Game_Actor::GetRandomSkill() const;
 
 	/**
 	 * Gets actor states list.

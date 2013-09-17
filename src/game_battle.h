@@ -19,6 +19,7 @@
 #include "rpg_troop.h"
 #include "battle_battler.h"
 
+class Game_Interpreter;
 class Spriteset_Battle;
 
 namespace Game_Battle {
@@ -148,9 +149,7 @@ namespace Game_Battle {
 	void UseSkill(Battle::Ally& ally, const RPG::Skill& skill);
 	void UseSkillAlly(Battle::Battler& user, const RPG::Skill& skill, Battle::Battler& target);
 	void UseSkillEnemy(Battle::Battler& user, const RPG::Skill& skill, Battle::Battler& target);
-	bool EnemyActionValid(const RPG::EnemyAction& action, Battle::Enemy& enemy);
 	void EnemyAttackAlly(Battle::Enemy& enemy, Battle::Ally& ally);
 	void EnemySkill(Battle::Enemy& enemy, const RPG::Skill& skill);
-	const RPG::EnemyAction* ChooseEnemyAction(Battle::Enemy& enemy);
 }
 

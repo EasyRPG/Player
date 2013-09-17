@@ -702,7 +702,10 @@ void Scene_Battle_Rpg2k::CreateEnemyActions() {
 	std::vector<Game_Enemy*> alive_enemies = Main_Data::game_enemyparty->GetAliveEnemies();
 	std::vector<Game_Enemy*>::const_iterator it;
 	for (it = alive_enemies.begin(); it != alive_enemies.end(); ++it) {
-		battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(*it, Main_Data::game_party->GetRandomAliveBattler()));
+		const RPG::EnemyAction* action = (*it)->ChooseRandomAction();
+		if (action) {
+			CreateEnemyAction(*it, action);
+		}
 	}
 }
 

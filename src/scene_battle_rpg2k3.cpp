@@ -51,7 +51,7 @@ Scene_Battle_Rpg2k3::~Scene_Battle_Rpg2k3() {
 
 void Scene_Battle_Rpg2k3::Update() {
 	switch (state) {
-	case State_SelectActor:
+	case State_SelectActor: {
 		Game_Battle::UpdateGauges();
 
 		if (status_window->GetIndex() == -1) {
@@ -59,7 +59,21 @@ void Scene_Battle_Rpg2k3::Update() {
 				RefreshCommandWindow();
 			}
 		}
+
+		std::vector<Game_Enemy*> enemies = Main_Data::game_enemyparty->GetAliveEnemies();
+
+		for (std::vector<Game_Enemy*>::iterator it = enemies.begin();
+			it != enemies.end(); ++it) {
+			if ((*it)->IsGaugeFull()) {
+				const RPG::EnemyAction* action = (*it)->ChooseRandomAction();
+				if (action) {
+					CreateEnemyAction(*it, action);
+				}
+			}
+		}
+
 		break;
+	}
 	default:;
 	}
 
@@ -402,8 +416,6 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 	switch (battle_action_state) {
 	case BattleActionState_Start:
-		//battle_message_window->Clear();
-
 		if (!action->IsDeadTargetValid()) {
 			action->SetTarget(action->GetTarget()->GetParty().GetNextAliveBattler(action->GetTarget()));
 		}
@@ -411,8 +423,6 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		action->GetSource()->SetGauge(0);
 
 		action->Execute();
-
-		//action->Apply();
 
 		if (action->GetAnimation()) {
 			Main_Data::game_screen->ShowBattleAnimation(
@@ -434,10 +444,6 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		battle_action_state = BattleActionState_Result;
 		break;
 	case BattleActionState_Result:
-		/*if (battle_action_wait--) {
-			return false;
-		}*/
-
 		do {
 			if (first) {
 				first = false;
@@ -459,17 +465,6 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 		battle_action_wait = 30;
 
-		/*if (action->GetTarget()->IsDead()) {
-				if (action->GetDeathSe()) {
-					Game_System::SePlay(*action->GetDeathSe());
-				}
-
-				Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
-				if (target_sprite) {
-					target_sprite->SetAnimationState(Sprite_Battler::Dead);
-				}
-			}
-		}*/
 		battle_action_state = BattleActionState_Finished;
 
 		break;
