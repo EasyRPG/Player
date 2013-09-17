@@ -33,7 +33,7 @@ Sprite_Battler::Sprite_Battler(Game_Battler* battler) :
 	fade_out(255),
 	flash_counter(0) {
 	
-	// Not animated
+	// Not animated -> Monster
 	if (battler->GetBattleAnimationId() == 0) {
 		anim_state = 0;
 		graphic = Cache::Monster(battler->GetSpriteName());
@@ -74,7 +74,7 @@ void Sprite_Battler::SetBattler(Game_Battler* new_battler) {
 void Sprite_Battler::Update() {
 	Sprite::Update();
 	
-	if (Player::engine == Player::EngineRpg2k) {
+	if (battler->GetBattleAnimationId() <= 0) {
 		if (anim_state == Idle) {
 			SetOpacity(255);
 		}
@@ -87,35 +87,49 @@ void Sprite_Battler::Update() {
 			SetOpacity(flash_counter > 5 ? 50 : 255);
 		}
 	} else if (anim_state > 0) {
-		static const int frames[] = {0,1,2,1};
-		int frame = frames[cycle / 15];
-		if (frame == sprite_frame)
-			return;
+		if (Player::engine == Player::EngineRpg2k3) {
+			static const int frames[] = {0,1,2,1};
+			int frame = frames[cycle / 15];
+			if (frame == sprite_frame)
+				return;
 
-		const RPG::BattlerAnimation& anim = Data::battleranimations[battler->GetBattleAnimationId() - 1];
-		const RPG::BattlerAnimationExtension& ext = anim.base_data[anim_state - 1];
+			const RPG::BattlerAnimation& anim = Data::battleranimations[battler->GetBattleAnimationId() - 1];
+			const RPG::BattlerAnimationExtension& ext = anim.base_data[anim_state - 1];
 
-		SetSrcRect(Rect(frame * 48, ext.battler_index * 48, 48, 48));
+			SetSrcRect(Rect(frame * 48, ext.battler_index * 48, 48, 48));
 
-		++cycle;
-		if (cycle == 60) {
-			cycle = 0;
+			++cycle;
+			if (cycle == 60) {
+				cycle = 0;
+
+				if (loop_state == IdleAnimationAfterFinish) {
+					SetAnimationState(Idle);
+				}
+			}
 		}
 	}
 }
 
-void Sprite_Battler::SetAnimationState(int state) {
+void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 	anim_state = state;
 
 	flash_counter = 0;
 
-	if (Player::engine == Player::EngineRpg2k3) {
-		const RPG::BattlerAnimation& anim = Data::battleranimations[battler->GetBattleAnimationId() - 1];
-		const RPG::BattlerAnimationExtension& ext = anim.base_data[anim_state - 1];
-		if (ext.battler_name == sprite_file)
-			return;
+	loop_state = loop;
 
-		sprite_file = ext.battler_name;
-		SetBitmap(Cache::Battlecharset(sprite_file));
+	if (Player::engine == Player::EngineRpg2k3) {
+		if (battler->GetBattleAnimationId() > 0) {
+			const RPG::BattlerAnimation& anim = Data::battleranimations[battler->GetBattleAnimationId() - 1];
+			const RPG::BattlerAnimationExtension& ext = anim.base_data[anim_state - 1];
+			if (ext.battler_name == sprite_file)
+				return;
+
+			sprite_file = ext.battler_name;
+			SetBitmap(Cache::Battlecharset(sprite_file));
+		}
 	}
+}
+
+bool Sprite_Battler::IsIdling() {
+	return anim_state == Idle;
 }

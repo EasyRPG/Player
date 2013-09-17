@@ -63,23 +63,6 @@ public:
 
 	void Update();
 
-	enum BattleActionState {
-		/**
-		 * Called once at the beginning of the Action.
-		 * Used to execute the algorithm to play an optional battle animation.
-		 */
-		BattleActionState_Start,
-		/**
-		 * Used to apply the new conditions that were caused.
-		 * Called once for each condition.
-		 */
-		BattleActionState_Result,
-		/**
-		 * Action execution finished (no function is called here)
-		 */
-		BattleActionState_Finished
-	};
-
 protected:
 	void SetState(State new_state);
 

@@ -248,9 +248,8 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsDeadTargetValid() {
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {
-	++current_target;
-
-	if (current_target != targets.end()) {
+	if (current_target + 1 != targets.end()) {
+		++current_target;
 		return true;
 	}
 	return false;

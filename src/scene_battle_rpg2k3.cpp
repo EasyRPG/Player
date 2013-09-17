@@ -40,7 +40,9 @@
 #include "battle_animation.h"
 #include "scene_gameover.h"
 
-Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3() : Scene_Battle()
+Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3() : Scene_Battle(),
+	battle_action_wait(30),
+	battle_action_state(BattleActionState_Start)
 {
 }
 
@@ -297,6 +299,27 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 }
 
 void Scene_Battle_Rpg2k3::ProcessActions() {
+	if (!battle_actions.empty()) {
+		printf("Processing action");
+		if (battle_actions.front()->GetSource()->IsDead()) {
+			// No zombies allowed ;)
+			battle_actions.pop_front();
+		}
+		else if (ProcessBattleAction(battle_actions.front().get())) {
+			battle_actions.pop_front();
+			if (CheckWin() ||
+				CheckLose() ||
+				CheckAbort() ||
+				CheckFlee()) {
+					return;
+			}
+		}
+	} else {
+		NextTurn();
+		//actor_index = 0;
+		//SetState(State_SelectOption);
+	}
+
 	switch (state) {
 	case State_Start:
 		SetState(State_SelectOption);
@@ -355,7 +378,7 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 			}
 		}
 		break;
-								  }
+	}
 	case State_AllyAction:
 	case State_EnemyAction:
 	default:
@@ -364,6 +387,121 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 }
 
 bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action) {
+	if (Main_Data::game_screen->IsBattleAnimationWaiting()) {
+		return false;
+	}
+
+	Sprite_Battler* source_sprite;
+	source_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetSource());
+
+	if (source_sprite && !source_sprite->IsIdling()) {
+		return false;
+	}
+
+	bool first = true;
+
+	switch (battle_action_state) {
+	case BattleActionState_Start:
+		//battle_message_window->Clear();
+
+		if (!action->IsDeadTargetValid()) {
+			action->SetTarget(action->GetTarget()->GetParty().GetNextAliveBattler(action->GetTarget()));
+		}
+
+		action->GetSource()->SetGauge(0);
+
+		action->Execute();
+
+		//action->Apply();
+
+		if (action->GetAnimation()) {
+			Main_Data::game_screen->ShowBattleAnimation(
+				action->GetAnimation()->ID,
+				action->GetTarget()->GetBattleX(),
+				action->GetTarget()->GetBattleY(),
+				false);
+		}
+
+		if (source_sprite) {
+			source_sprite->Flash(Color(255, 255, 255, 100), 15);
+			source_sprite->SetAnimationState(Sprite_Battler::LeftHand, Sprite_Battler::IdleAnimationAfterFinish);
+		}
+
+		if (action->GetStartSe()) {
+			Game_System::SePlay(*action->GetStartSe());
+		}
+
+		battle_action_state = BattleActionState_Result;
+		break;
+	case BattleActionState_Result:
+		/*if (battle_action_wait--) {
+			return false;
+		}*/
+
+		do {
+			if (first) {
+				first = false;
+			} else {
+				action->Execute();
+			}
+
+			Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
+			if (target_sprite) {
+				target_sprite->SetAnimationState(Sprite_Battler::Damage, Sprite_Battler::IdleAnimationAfterFinish);
+			}
+
+			action->Apply();
+		} while (action->TargetNext());
+
+		if (action->GetResultSe()) {
+			Game_System::SePlay(*action->GetResultSe());
+		}
+
+		battle_action_wait = 30;
+
+		/*if (action->GetTarget()->IsDead()) {
+				if (action->GetDeathSe()) {
+					Game_System::SePlay(*action->GetDeathSe());
+				}
+
+				Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
+				if (target_sprite) {
+					target_sprite->SetAnimationState(Sprite_Battler::Dead);
+				}
+			}
+		}*/
+		battle_action_state = BattleActionState_Finished;
+
+		break;
+	case BattleActionState_Finished:
+		if (battle_action_wait--) {
+			return false;
+		}
+		battle_action_wait = 30;
+
+		Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
+
+		if (action->GetTarget()->IsDead()) {
+			if (action->GetDeathSe()) {
+				Game_System::SePlay(*action->GetDeathSe());
+			}
+
+
+			if (target_sprite) {
+				target_sprite->SetAnimationState(Sprite_Battler::Dead);
+			}
+		} else {
+			if (target_sprite) {
+				target_sprite->SetAnimationState(Sprite_Battler::Idle);
+			}
+		}
+
+		// Reset variables
+		battle_action_state = BattleActionState_Start;
+
+		return true;
+	}
+
 	return false;
 }
 
@@ -432,6 +570,7 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 			break;
 		case State_SelectCommand:
 			--actor_index;
+			SetState(State_SelectActor);
 			//SelectPreviousActor();
 			break;
 		case State_SelectEnemyTarget:
@@ -477,21 +616,30 @@ void Scene_Battle_Rpg2k3::OptionSelected() {
 void Scene_Battle_Rpg2k3::CommandSelected() {
 	Game_System::SePlay(Data::system.decision_se);
 
-	switch (command_window->GetIndex()) {
-	case 0: // Attack
+	const RPG::BattleCommand& command = 
+		Data::battlecommands.commands[active_actor->GetBattleCommands()[command_window->GetIndex()] - 1];
+
+	switch (command.type) {
+	case RPG::BattleCommand::Type_attack:
 		AttackSelected();
 		break;
-	case 1: // Skill
-		SetState(State_SelectSkill);
-		break;
-	case 2: // Defense
+	case RPG::BattleCommand::Type_defense:
 		DefendSelected();
 		break;
-	case 3: // Item
+	case RPG::BattleCommand::Type_escape:
+		//EscapeSelected();
+		break;
+	case RPG::BattleCommand::Type_item:
 		SetState(State_SelectItem);
 		break;
-	default:
-		// no-op
+	case RPG::BattleCommand::Type_skill:
+		SetState(State_SelectSkill);
+		break;
+	case RPG::BattleCommand::Type_special:
+		//SpecialSelected()
+		break;
+	case RPG::BattleCommand::Type_subskill:
+		//SubskillSelected()
 		break;
 	}
 }

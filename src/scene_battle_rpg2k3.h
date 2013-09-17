@@ -100,6 +100,9 @@ protected:
 	void SelectNextActor();
 
 	boost::scoped_ptr<Sprite> ally_cursor, enemy_cursor;
+
+	int battle_action_wait;
+	int battle_action_state;
 };
 
 #endif

@@ -44,6 +44,11 @@ public:
 		Item
 	};
 
+	enum LoopState {
+		IdleAnimationAfterFinish,
+		LoopAnimation,
+	};
+
 	/**
 	 * Constructor.
 	 *
@@ -62,7 +67,14 @@ public:
 
 	void SetBattler(Game_Battler* new_battler);
 
-	void SetAnimationState(int state);
+	void SetAnimationState(int state, LoopState loop = LoopAnimation);
+
+	/**
+	 * Returns true when the state is idle.
+	 *
+	 * @return Whether state is idle
+	 */
+	bool IsIdling();
 
 protected:
 	Game_Battler* battler;
@@ -73,6 +85,7 @@ protected:
 	int sprite_frame;
 	int fade_out;
 	int flash_counter;
+	LoopState loop_state;
 };
 
 #endif
