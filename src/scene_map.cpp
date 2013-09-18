@@ -24,6 +24,7 @@
 #include "scene_shop.h"
 #include "scene_save.h"
 #include "scene_battle.h"
+#include "scene_debug.h"
 #include "main_data.h"
 #include "game_map.h"
 #include "game_message.h"
@@ -97,6 +98,11 @@ void Scene_Map::Update() {
 
 		Game_Temp::menu_calling = true;
 		Game_Temp::menu_beep = true;
+	}
+
+	if (Input::IsTriggered(Input::DEBUG_MENU))
+	{
+		CallDebug();
 	}
 
 	if (!Main_Data::game_player->IsMoving()) {
@@ -191,5 +197,6 @@ void Scene_Map::CallSave() {
 }
 
 void Scene_Map::CallDebug() {
-
+	if (Player::debug_flag)
+		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Debug>());
 }
