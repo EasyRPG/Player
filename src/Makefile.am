@@ -66,6 +66,7 @@ easyrpg_player_SOURCES = \
 	scene_actortarget.cpp \
 	scene_battle.cpp \
 	scene.cpp \
+	scene_debug.cpp \
 	scene_end.cpp \
 	scene_equip.cpp \
 	scene_file.cpp \
@@ -127,6 +128,7 @@ easyrpg_player_SOURCES = \
 	window_skill.cpp \
 	window_skillstatus.cpp \
 	window_targetstatus.cpp \
+	window_varlist.cpp \
 	zobj.cpp \
 	../lib/shinonome/gothic.cxx \
 	../lib/shinonome/mincho.cxx
