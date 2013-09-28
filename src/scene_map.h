@@ -22,6 +22,7 @@
 #include "scene.h"
 #include "spriteset_map.h"
 #include "window_message.h"
+#include "window_varlist.h"
 #include <boost/scoped_ptr.hpp>
 
 /**
