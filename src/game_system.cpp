@@ -54,7 +54,13 @@ void Game_System::BgmPlay(RPG::Music const& bgm) {
 
 void Game_System::SePlay(RPG::Sound const& se) {
 	if (!se.name.empty() && se.name != "(OFF)") {
-		Audio().SE_Play(se.name, se.volume, se.tempo);
+		// HACK:
+		// Yume Nikki plays hundreds of sound effects at 0% volume on
+		// startup. Probably for caching. This triggers "No free channels"
+		// warnings.
+		if (se.volume > 0) {
+			Audio().SE_Play(se.name, se.volume, se.tempo);
+		}
 	}
 }
 
