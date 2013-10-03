@@ -548,22 +548,25 @@ void Game_Character::MoveForward() {
 
 void Game_Character::MoveDownLeft() {
 	// Todo
+	// BeginMove();
 }
 
 void Game_Character::MoveDownRight() {
 	// Todo
+	// BeginMove();
 }
 
 
 void Game_Character::MoveUpLeft() {
 	// Todo
+	// BeginMove();
 }
 
 
 void Game_Character::MoveUpRight() {
 	// Todo
+	// BeginMove();
 }
-
 
 void Game_Character::MoveRandom() {
 	switch (rand() % 4) {

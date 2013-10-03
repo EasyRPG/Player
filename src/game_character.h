@@ -221,6 +221,12 @@ public:
 	void Turn90DegreeLeftOrRight();
 
 	/**
+	 * Locks character direction.
+	 * Signals a move begin.
+	 */
+	virtual void BeginMove();
+
+	/**
 	 * Character looks in a random direction
 	 */
 	void FaceRandomDirection();
