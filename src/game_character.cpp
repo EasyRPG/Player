@@ -483,6 +483,7 @@ void Game_Character::MoveTypeCustom() {
 void Game_Character::EndMoveRoute() {
 	if (move_route_owner != NULL) {
 		move_route_owner->EndMoveRoute(move_route);
+		move_route_owner = NULL;
 	}
 }
 
