@@ -630,11 +630,19 @@ Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
 }
 
 void Game_Map::SubstituteDown(int old_id, int new_id) {
-	map_info.lower_tiles[old_id] = (uint8_t) new_id;
+	for (size_t i = 0; i < map_info.lower_tiles.size(); ++i) {
+		if (map_info.lower_tiles[i] == old_id) {
+			map_info.lower_tiles[i] = (uint8_t) new_id;
+		}
+	}
 }
 
 void Game_Map::SubstituteUp(int old_id, int new_id) {
-	map_info.upper_tiles[old_id] = (uint8_t) new_id;
+	for (size_t i = 0; i < map_info.upper_tiles.size(); ++i) {
+		if (map_info.upper_tiles[i] == old_id) {
+			map_info.upper_tiles[i] = (uint8_t) new_id;
+		}
+	}
 }
 
 void Game_Map::LockPan() {

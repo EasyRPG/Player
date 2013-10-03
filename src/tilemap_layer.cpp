@@ -670,5 +670,9 @@ DrawableType TilemapLayer::GetType() const {
 }
 
 void TilemapLayer::Substitute(int old_id, int new_id) {
-	substitutions[old_id] = (uint8_t) new_id;
+	for (size_t i = 0; i < substitutions.size(); ++i) {
+		if (substitutions[i] == old_id) {
+			substitutions[i] = (uint8_t) new_id;
+		}
+	}
 }
