@@ -240,15 +240,15 @@ public:
 	/**
 	 * Character looks towards the hero.
 	 */
-	void FaceTowardsHero();
+	void TurnTowardHero();
 
 	/**
 	 * Character looks away from the the hero.
 	 */
-	void FaceAwayFromHero();
+	void TurnAwayFromHero();
 
 	/**
-	 * Character waits.
+	 * Character waits for 20 frames more.
 	 */
 	void Wait();
 
@@ -420,8 +420,6 @@ public:
 	 * @param animation_id new animation ID.
 	 */
 	void SetAnimationId(int animation_id);
-
-	void TurnTowardPlayer();
 
 	int DistanceXfromPlayer() const;
 	int DistanceYfromPlayer() const;

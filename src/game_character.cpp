@@ -184,10 +184,10 @@ void Game_Character::Update() {
 		anime_count = 0;
 	}
 
-	/*if (wait_count > 0) {
-		wait_count -= 1
+	if (wait_count > 0) {
+		wait_count -= 1;
 		return;
-	}*/
+	}
 
 	if (move_route_forcing) {
 		MoveTypeCustom();
@@ -403,10 +403,10 @@ void Game_Character::MoveTypeCustom() {
 				FaceRandomDirection();
 				break;
 			case RPG::MoveCommand::Code::face_hero:
-				FaceTowardsHero();
+				TurnTowardHero();
 				break;
 			case RPG::MoveCommand::Code::face_away_from_hero:
-				FaceAwayFromHero();
+				TurnAwayFromHero();
 				break;
 			case RPG::MoveCommand::Code::wait:
 				Wait();
@@ -734,7 +734,7 @@ void Game_Character::BeginMove() {
 	// no-op
 }
 
-void Game_Character::TurnTowardPlayer() {
+void Game_Character::TurnTowardHero() {
 	int sx = DistanceXfromPlayer();
 	int sy = DistanceYfromPlayer();
 
@@ -746,20 +746,37 @@ void Game_Character::TurnTowardPlayer() {
 	}
 }
 
+void Game_Character::TurnAwayFromHero() {
+	int sx = DistanceXfromPlayer();
+	int sy = DistanceYfromPlayer();
+
+	if ( std::abs(sx) > std::abs(sy) ) {
+		(sx > 0) ? TurnRight() : TurnLeft();
+	}
+	else if ( std::abs(sx) < std::abs(sy) ) {
+		(sy > 0) ? TurnDown() : TurnUp();
+	}
+}
+
 void Game_Character::FaceRandomDirection() {
-	// Todo
-}
-
-void Game_Character::FaceTowardsHero() {
-	// Todo
-}
-
-void Game_Character::FaceAwayFromHero() {
-	// Todo
+	switch (rand() % 4) {
+	case 0:
+		TurnDown();
+		break;
+	case 1:
+		TurnLeft();
+		break;
+	case 2:
+		TurnRight();
+		break;
+	case 3:
+		TurnUp();
+		break;
+	}
 }
 
 void Game_Character::Wait() {
-	// Todo
+	wait_count += 20;
 }
 
 void Game_Character::BeginJump() {
@@ -793,7 +810,7 @@ int Game_Character::DistanceYfromPlayer() const {
 void Game_Character::Lock() {
 	if (!locked) {
 		prelock_direction = direction;
-		TurnTowardPlayer();
+		TurnTowardHero();
 		locked = true;
 	}
 }
