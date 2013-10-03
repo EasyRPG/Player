@@ -421,7 +421,7 @@ void Game_Interpreter::GetStrings(std::vector<std::string>& ret_val) {
 void Game_Interpreter::CloseMessageWindow() {
 	if (Game_Message::visible) {
 		Game_Message::visible = false;
-		Game_Message::FullClear();
+		Game_Message::SemiClear();
 	}
 }
 
