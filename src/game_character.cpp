@@ -45,6 +45,7 @@ Game_Character::Game_Character() :
 	move_route(NULL),
 	original_move_route(NULL),
 	move_route_index(0),
+	move_route_owner(NULL),
 	original_move_route_index(0),
 	move_type(RPG::EventPage::MoveType_stationary),
 	move_speed(RPG::EventPage::MoveSpeed_normal),
@@ -322,9 +323,7 @@ void Game_Character::MoveTypeCustom() {
 				move_route_index = 0;
 			} else if (move_route_forcing) {
 				move_route_forcing = false;
-				if (move_route_owner != NULL) {
-					move_route_owner->EndMoveRoute(move_route);
-				}
+				EndMoveRoute();
 				move_route = original_move_route;
 				move_route_index = original_move_route_index;
 				original_move_route = NULL;
@@ -470,6 +469,12 @@ void Game_Character::MoveTypeCustom() {
 				++move_route_index;
 			}
 		}
+	}
+}
+
+void Game_Character::EndMoveRoute() {
+	if (move_route_owner != NULL) {
+		move_route_owner->EndMoveRoute(move_route);
 	}
 }
 
@@ -798,6 +803,7 @@ void Game_Character::SetDirection(int direction) {
 void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
 									int frequency,
 									Game_Interpreter* owner) {
+	EndMoveRoute();
 	if (original_move_route == NULL) {
 		original_move_route = move_route;
 		original_move_route_index = move_route_index;

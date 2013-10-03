@@ -120,6 +120,12 @@ public:
 	void MoveTypeCustom();
 
 	/**
+	 * Signals the owner of the current move route that the move ended.
+	 * (or was overwritten by a new one)
+	 */
+	void EndMoveRoute();
+
+	/**
 	 * Moves the character down.
 	 */
 	void MoveDown();

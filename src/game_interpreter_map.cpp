@@ -254,7 +254,7 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 			return CommandCallEvent(com);
 		case Cmd::ChangeEncounterRate:
 			return CommandChangeEncounterRate(com);
-		case Cmd::ProceedWithMovement: // FIXME: Causes a hang
+		case Cmd::ProceedWithMovement:
 			return CommandProceedWithMovement(com);
 		case Cmd::PlayMovie:
 			return CommandPlayMovie(com);
