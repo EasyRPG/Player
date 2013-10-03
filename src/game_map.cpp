@@ -351,7 +351,7 @@ int Game_Map::GetTerrainTag(int const x, int const y) {
 		(chipID == 3078)?  3 + 1 :
 		(chipID == 3128)?  3 + 2 :
 		(chipID <  5000)?  6 + (chipID-4000)/50 :
-		(chipID <  5144)? 18 + passages_up[chipID-5000] :
+		(chipID <  5144)? 18 + map_info.lower_tiles[chipID-5000] :
 		0;
 	unsigned const chipset_index = map_info.chipset_id - 1;
 
@@ -630,11 +630,19 @@ Game_Vehicle* Game_Map::GetVehicle(Game_Vehicle::Type which) {
 }
 
 void Game_Map::SubstituteDown(int old_id, int new_id) {
-	map_info.lower_tiles[old_id] = (uint8_t) new_id;
+	for (size_t i = 0; i < map_info.lower_tiles.size(); ++i) {
+		if (map_info.lower_tiles[i] == old_id) {
+			map_info.lower_tiles[i] = (uint8_t) new_id;
+		}
+	}
 }
 
 void Game_Map::SubstituteUp(int old_id, int new_id) {
-	map_info.upper_tiles[old_id] = (uint8_t) new_id;
+	for (size_t i = 0; i < map_info.upper_tiles.size(); ++i) {
+		if (map_info.upper_tiles[i] == old_id) {
+			map_info.upper_tiles[i] = (uint8_t) new_id;
+		}
+	}
 }
 
 void Game_Map::LockPan() {
