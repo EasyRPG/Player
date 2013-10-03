@@ -1443,8 +1443,6 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 		assert(false);
 	}
 
-	bool needs_reset = false;
-
 	if (check_down && Input::IsTriggered(Input::DOWN)) {
 		result = 1;
 	}

@@ -323,7 +323,7 @@ void Game_Character::MoveTypeAwayFromPlayer() {
 }
 
 void Game_Character::MoveTypeCustom() {
-	if (IsStopping()) {
+	if (stop_count > 30 * (5 - move_frequency) && IsStopping()) {
 		move_failed = false;
 		if ((size_t)move_route_index >= move_route->move_commands.size()) {
 			// End of Move list
