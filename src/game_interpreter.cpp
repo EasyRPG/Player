@@ -234,13 +234,6 @@ void Game_Interpreter::Update() {
 
 // Setup Starting Event
 void Game_Interpreter::SetupStartingEvent(Game_Event* ev) {
-
-	if (Game_Temp::common_event_id > 0) {
-		Setup(Data::commonevents[Game_Temp::common_event_id].event_commands, 0);
-		Game_Temp::common_event_id = 0;
-		return;
-	}
-
 	ev->ClearStarting();
 	Setup(ev->GetList(), ev->GetId(), ev->GetX(), ev->GetY());
 

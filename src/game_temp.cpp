@@ -28,7 +28,6 @@ bool Game_Temp::name_calling;
 bool Game_Temp::save_calling;
 bool Game_Temp::to_title;
 bool Game_Temp::gameover;
-int Game_Temp::common_event_id;
 bool Game_Temp::transition_processing;
 Graphics::TransitionType Game_Temp::transition_type;
 bool Game_Temp::transition_erase;
@@ -65,7 +64,6 @@ void Game_Temp::Init() {
 	save_calling = false;
 	to_title = false;
 	gameover = false;
-	common_event_id = 0;
 	transition_processing = false;
 	transition_type = Graphics::TransitionNone;
 	transition_erase = false;
