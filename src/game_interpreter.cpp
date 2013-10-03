@@ -236,18 +236,6 @@ void Game_Interpreter::Update() {
 void Game_Interpreter::SetupStartingEvent(Game_Event* ev) {
 	ev->ClearStarting();
 	Setup(ev->GetList(), ev->GetId(), ev->GetX(), ev->GetY());
-
-	RPG::CommonEvent* common_event;
-	for (size_t i = 0; i < Data::commonevents.size(); i++) {
-		common_event = &Data::commonevents[i];
-		// If trigger is auto run, and condition switch is ON
-		if (common_event->trigger == RPG::EventPage::Trigger_auto_start) {
-			if (common_event->switch_flag ? Game_Switches[common_event->switch_id] : true) {
-				Setup(common_event->event_commands, 0);
-			}
-			return;
-		}
-	}
 }
 
 void Game_Interpreter::SetupStartingEvent(Game_CommonEvent* ev) {
@@ -353,7 +341,6 @@ bool Game_Interpreter::CommandWait(RPG::EventCommand const& /* com */) {
 		return Input::IsAnyTriggered();
 }
 
-// Input Button.
 void Game_Interpreter::InputButton() {
 	Input::InputButton n = Input::BUTTON_COUNT;
 
