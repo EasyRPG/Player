@@ -351,7 +351,7 @@ int Game_Map::GetTerrainTag(int const x, int const y) {
 		(chipID == 3078)?  3 + 1 :
 		(chipID == 3128)?  3 + 2 :
 		(chipID <  5000)?  6 + (chipID-4000)/50 :
-		(chipID <  5144)? 18 + passages_up[chipID-5000] :
+		(chipID <  5144)? 18 + map_info.lower_tiles[chipID-5000] :
 		0;
 	unsigned const chipset_index = map_info.chipset_id - 1;
 
