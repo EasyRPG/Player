@@ -1443,30 +1443,58 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 		assert(false);
 	}
 
-	if (check_down && Input::IsTriggered(Input::DOWN))
+	bool needs_reset = false;
+
+	if (check_down && Input::IsTriggered(Input::DOWN)) {
 		result = 1;
-	if (check_left && Input::IsTriggered(Input::LEFT))
+		needs_reset = true;
+	}
+	if (check_left && Input::IsTriggered(Input::LEFT)) {
 		result = 2;
-	if (check_right && Input::IsTriggered(Input::RIGHT))
+		needs_reset = true;
+	}
+	if (check_right && Input::IsTriggered(Input::RIGHT)) {
 		result = 3;
-	if (check_up && Input::IsTriggered(Input::UP))
+		needs_reset = true;
+	}
+	if (check_up && Input::IsTriggered(Input::UP)) {
 		result = 4;
-	if (check_decision && Input::IsTriggered(Input::DECISION))
+		needs_reset = true;
+	}
+	if (check_decision && Input::IsTriggered(Input::DECISION)) {
 		result = 5;
-	if (check_cancel && Input::IsTriggered(Input::CANCEL))
+		needs_reset = true;
+	}
+	if (check_cancel && Input::IsTriggered(Input::CANCEL)) {
 		result = 6;
-	if (check_shift && Input::IsTriggered(Input::SHIFT))
+		needs_reset = true;
+	}
+	if (check_shift && Input::IsTriggered(Input::SHIFT)) {
 		result = 7;
-	if (check_numbers)
-		for (int i = 0; i < 10; i++)
-			if (Input::IsTriggered((Input::InputButton)(Input::N0 + i)))
+		needs_reset = true;
+	}
+	if (check_numbers) {
+		for (int i = 0; i < 10; ++i) {
+			if (Input::IsTriggered((Input::InputButton)(Input::N0 + i))) {
 				result = 10 + i;
-	if (check_arith)
-		for (int i = 0; i < 5; i++)
-			if (Input::IsTriggered((Input::InputButton)(Input::PLUS + i)))
+				needs_reset = true;
+			}
+		}
+	}
+	if (check_arith) {
+		for (int i = 0; i < 5; ++i) {
+			if (Input::IsTriggered((Input::InputButton)(Input::PLUS + i))) {
 				result = 20 + i;
+				needs_reset = true;
+			}
+		}
+	}
 
 	Game_Variables[var_id] = result;
+
+	if (needs_reset) {
+		Input::ResetKeys();
+	}
 
 	if (!wait)
 		return true;
