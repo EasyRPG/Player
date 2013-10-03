@@ -51,7 +51,7 @@ void Game_CommonEvent::Refresh() {
 void Game_CommonEvent::Update() {
 	if (interpreter) {
 		if (!Game_Map::GetInterpreter().IsRunning()) {
-			interpreter->Setup(GetList(), 0);
+			interpreter->Setup(GetList(), 0, -common_event_id, -2);
 		}
 		interpreter->Update();
 	}

@@ -270,7 +270,7 @@ void Game_Event::Update() {
 
 	if (interpreter) {
 		if (!interpreter->IsRunning()) {
-			interpreter->Setup(list, event.ID, event.x, event.y);
+			interpreter->Setup(list, event.ID, -event.x, event.y);
 		}
 		interpreter->Update();
 	}
