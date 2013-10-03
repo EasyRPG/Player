@@ -488,6 +488,20 @@ public:
 	 */
 	void SetFlash(Color color, int duration);
 
+	/**
+	 * Tests if animation type is any fixed state.
+	 *
+	 * @return Whether direction is fixed
+	 */
+	bool IsDirectionFixed();
+
+	/**
+	 * Tests if animation type is any continious state.
+	 *
+	 * @return Whether anim is continious 
+	 */
+	bool IsContinuous();
+
 	virtual void UpdateBushDepth();
 
 	void SetGraphic(const std::string& name, int index);
@@ -522,6 +536,7 @@ protected:
 	bool move_route_forcing;
 	bool through;
 	int animation_id;
+	int animation_type;
 	
 	RPG::MoveRoute* move_route;
 	RPG::MoveRoute* original_move_route;
@@ -542,7 +557,6 @@ protected:
 	int jump_count;
 	bool walk_animation;
 	bool turn_enabled;
-	bool direction_fix;
 
 	/** used by cycle left-right, up-down */
 	bool cycle_stat;

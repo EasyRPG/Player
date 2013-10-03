@@ -42,6 +42,7 @@ Game_Character::Game_Character() :
 	move_route_forcing(false),
 	through(false),
 	animation_id(0),
+	animation_type(RPG::EventPage::AnimType_non_continuous),
 	move_route(NULL),
 	original_move_route(NULL),
 	move_route_index(0),
@@ -59,7 +60,6 @@ Game_Character::Game_Character() :
 	jump_count(0),
 	walk_animation(true),
 	turn_enabled(true),
-	direction_fix(false),
 	cycle_stat(false),
 	priority_type(RPG::EventPage::Layers_same),
 	opacity(255),
@@ -144,15 +144,23 @@ int Game_Character::GetScreenZ(int /* height */) const {
 }
 
 void Game_Character::Update() {
-	/*if (IsJumping())
-		UpdateJump();
-	else*/ if (IsMoving())
+	if (IsContinuous()) {
 		UpdateMove();
-	else
 		UpdateStop();
+	} else {
+		/*if (IsJumping())
+			UpdateJump();
+			else*/
+		if (IsMoving()) {
+			UpdateMove();
+		}
+		else {
+			UpdateStop();
+		}
+	}
 
 	if (anime_count > 18 - move_speed * 2) {
-		if (stop_count > 0) {
+		if (!IsContinuous() && stop_count > 0) {
 			pattern = original_pattern;
 			last_pattern = last_pattern == RPG::EventPage::Frame_left ? RPG::EventPage::Frame_right : RPG::EventPage::Frame_left;
 		} else {
@@ -202,7 +210,7 @@ void Game_Character::UpdateMove() {
 	if (y * 128 < real_y)
 		real_y = max(real_y - distance, y * 128);
 
-	if (walk_animation)
+	if (animation_type != RPG::EventPage::AnimType_fixed_graphic && walk_animation)
 		anime_count += 1.5;
 }
 
@@ -629,31 +637,35 @@ void Game_Character::MoveAwayFromPlayer() {
 }
 
 void Game_Character::TurnDown() {
-	if (!direction_fix) {
+	if (!IsDirectionFixed()) {
 		direction = RPG::EventPage::Direction_down;
-		stop_count = 0;
 	}
+
+	stop_count = 0;
 }
 
 void Game_Character::TurnLeft() {
-	if (!direction_fix) {
+	if (!IsDirectionFixed()) {
 		direction = RPG::EventPage::Direction_left;
-		stop_count = 0;
 	}
+
+	stop_count = 0;
 }
 
 void Game_Character::TurnRight() {
-	if (!direction_fix) {
+	if (!IsDirectionFixed()) {
 		direction = RPG::EventPage::Direction_right;
-		stop_count = 0;
 	}
+
+	stop_count = 0;
 }
 
 void Game_Character::TurnUp() {
-	if (!direction_fix) {
+	if (!IsDirectionFixed()) {
 		direction = RPG::EventPage::Direction_up;
-		stop_count = 0;
 	}
+
+	stop_count = 0;
 }
 
 void Game_Character::Turn90DegreeLeft() {
@@ -794,10 +806,11 @@ void Game_Character::Unlock() {
 }
 
 void Game_Character::SetDirection(int direction) {
-	if ((!direction_fix) && (direction != -1)) {
+	if (!IsDirectionFixed() && (direction != -1)) {
 		this->direction = direction;
-		stop_count = 0;
 	}
+
+	stop_count = 0;
 }
 
 void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
@@ -927,6 +940,19 @@ void Game_Character::SetFlash(Color color, int duration) {
 		// 0.0 flash
 		duration = DEFAULT_FPS;
 	}
+}
+
+bool Game_Character::IsDirectionFixed() {
+	return
+		animation_type == RPG::EventPage::AnimType_fixed_continuous ||
+		animation_type == RPG::EventPage::AnimType_fixed_graphic ||
+		animation_type == RPG::EventPage::AnimType_fixed_non_continuous;
+}
+
+bool Game_Character::IsContinuous() {
+	return
+		animation_type == RPG::EventPage::AnimType_continuous ||
+		animation_type == RPG::EventPage::AnimType_fixed_continuous;
 }
 
 void Game_Character::UpdateBushDepth() {
