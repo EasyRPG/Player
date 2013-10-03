@@ -43,6 +43,7 @@
 #include "player.h"
 #include "util_macro.h"
 #include "game_interpreter_map.h"
+#include "reader_util.h"
 
 Game_Interpreter_Map::Game_Interpreter_Map(int depth, bool main_flag) :
 	Game_Interpreter(depth, main_flag) {
@@ -77,7 +78,9 @@ const std::string Game_Interpreter_Map::DecodeString(std::vector<int>::const_ite
 	for (int i = 0; i < len; i++)
 		out << (char) *it++;
 
-	return out.str();
+	std::string result = ReaderUtil::Recode(out.str());
+
+	return result;
 }
 
 RPG::MoveCommand Game_Interpreter_Map::DecodeMove(std::vector<int>::const_iterator& it)
