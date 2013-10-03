@@ -1,0 +1,10 @@
+language: cpp
+before_script:
+  - cmake -D CMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE builds/cmake
+script: make
+after_script:
+  - make test
+env:
+  matrix:
+    - CMAKE_BUILD_TYPE=DEBUG
+    - CMAKE_BUILD_TYPE=RELEASE
