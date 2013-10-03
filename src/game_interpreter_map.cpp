@@ -1447,37 +1447,29 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 
 	if (check_down && Input::IsTriggered(Input::DOWN)) {
 		result = 1;
-		needs_reset = true;
 	}
 	if (check_left && Input::IsTriggered(Input::LEFT)) {
 		result = 2;
-		needs_reset = true;
 	}
 	if (check_right && Input::IsTriggered(Input::RIGHT)) {
 		result = 3;
-		needs_reset = true;
 	}
 	if (check_up && Input::IsTriggered(Input::UP)) {
 		result = 4;
-		needs_reset = true;
 	}
 	if (check_decision && Input::IsTriggered(Input::DECISION)) {
 		result = 5;
-		needs_reset = true;
 	}
 	if (check_cancel && Input::IsTriggered(Input::CANCEL)) {
 		result = 6;
-		needs_reset = true;
 	}
 	if (check_shift && Input::IsTriggered(Input::SHIFT)) {
 		result = 7;
-		needs_reset = true;
 	}
 	if (check_numbers) {
 		for (int i = 0; i < 10; ++i) {
 			if (Input::IsTriggered((Input::InputButton)(Input::N0 + i))) {
 				result = 10 + i;
-				needs_reset = true;
 			}
 		}
 	}
@@ -1485,16 +1477,11 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 		for (int i = 0; i < 5; ++i) {
 			if (Input::IsTriggered((Input::InputButton)(Input::PLUS + i))) {
 				result = 20 + i;
-				needs_reset = true;
 			}
 		}
 	}
 
 	Game_Variables[var_id] = result;
-
-	if (needs_reset) {
-		Input::ResetKeys();
-	}
 
 	if (!wait)
 		return true;
@@ -1509,7 +1496,10 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 
 	button_timer = 0;
 
-	return true;
+	// Command was a success but IsTriggered causes problems when calling
+	// this event multiple times in the same frame...
+	++index;
+	return false;
 }
 
 bool Game_Interpreter_Map::CommandChangeVehicleGraphic(RPG::EventCommand const& com) { // code 10650
