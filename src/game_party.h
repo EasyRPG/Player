@@ -138,46 +138,6 @@ namespace Game_Party {
 	bool IsItemUsable(int item_id);
 
 	/**
-	 * Clears all actors in party actions.
-	 */
-	//void ClearActions();
-
-	/**
-	 * Determines if a command can be input.
-	 *
-	 * @return whether a command can be input.
-	 */
-	//bool IsInputable();
-
-	/**
-	 * Determines if everyone is dead.
-	 *
-	 * @return whether all are dead.
-	 */
-	//bool AreAllDdead();
-
-	/**
-	 * Checks slip damage.
-	 */
-	//void CheckMapSlipDamage();
-
-	/**
-	 * Random selection of target actor.
-	 *
-	 * @//param hp0 : only targets actors with 0 HP.
-	 * @//return target actor.
-	 */
-	//Game_Actor* RandomTargetActor(bool hp0 = false);
-
-	/**
-	 * Smooth selection of target actor.
-	 *
-	 * @//param actor_index : actor index in party.
-	 * @//return target actor.
-	 */
-	//Game_Actor* SmoothTargetActor(int actor_index);
-
-	/**
 	 * Gets gold possessed.
 	 *
 	 * @return gold possessed.
@@ -225,6 +185,14 @@ namespace Game_Party {
 	 * @return number of battles escapes.
 	 */
 	int GetRunCount();
+
+	/**
+	 * Damages all actors in party by the same value.
+	 * Used by damage terrain on the map.
+	 *
+	 * @param damage How many damage to apply
+	 */
+	void ApplyDamage(int damage);
 
 	enum sys_timer {
 		Timer1,

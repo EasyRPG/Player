@@ -479,7 +479,7 @@ void Game_Character::MoveDown() {
 	if (IsPassable(x, y, RPG::EventPage::Direction_down)) {
 		TurnDown();
 		y += 1;
-		//IncreaseSteps();
+		BeginMove();
 		move_failed = false;
 	} else {
 		CheckEventTriggerTouch(x, y + 1);
@@ -493,7 +493,7 @@ void Game_Character::MoveLeft() {
 	if (IsPassable(x, y, RPG::EventPage::Direction_left)) {
 		TurnLeft();
 		x -= 1;
-		//IncreaseSteps();
+		BeginMove();
 		move_failed = false;
 	} else {
 		CheckEventTriggerTouch(x - 1, y);
@@ -507,7 +507,7 @@ void Game_Character::MoveRight() {
 	if (IsPassable(x, y, RPG::EventPage::Direction_right)) {
 		TurnRight();
 		x += 1;
-		//IncreaseSteps();
+		BeginMove();
 		move_failed = false;
 	} else {
 		CheckEventTriggerTouch(x + 1, y);
@@ -521,7 +521,7 @@ void Game_Character::MoveUp() {
 	if (IsPassable(x, y, RPG::EventPage::Direction_up)) {
 		TurnUp();
 		y -= 1;
-		//IncreaseSteps();
+		BeginMove();
 		move_failed = false;
 	} else {
 		CheckEventTriggerTouch(x, y - 1);
@@ -707,6 +707,11 @@ void Game_Character::Turn90DegreeLeftOrRight() {
 	} else {
 		Turn90DegreeRight();
 	}
+}
+
+
+void Game_Character::BeginMove() {
+	// no-op
 }
 
 void Game_Character::TurnTowardPlayer() {

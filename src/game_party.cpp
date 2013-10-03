@@ -193,6 +193,19 @@ int Game_Party::GetRunCount() {
 	return data.escapes;
 }
 
+void Game_Party::ApplyDamage(int damage) {
+	if (damage <= 0) {
+		return;
+	}
+
+	std::vector<Game_Actor*> actors = GetActors();
+
+	for (std::vector<Game_Actor*>::iterator i = actors.begin(); i != actors.end(); i++) {
+		Game_Actor* actor = *i;
+		actor->SetHp(actor->GetHp() - damage);
+	}
+}
+
 void Game_Party::SetTimer(int which, int seconds) {
 	switch (which) {
 		case Timer1:
@@ -256,4 +269,3 @@ int Game_Party::ReadTimer(int which) {
 			return 0;
 	}
 }
-

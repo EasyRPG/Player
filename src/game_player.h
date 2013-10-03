@@ -48,6 +48,7 @@ public:
 	bool InAirship() const;
 	bool AirshipLandOk(int x, int y) const;
 	bool CanWalk(int x, int y);
+	void BeginMove();
 
 private:
 	bool teleporting;
