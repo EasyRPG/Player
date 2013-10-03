@@ -234,27 +234,8 @@ void Game_Interpreter::Update() {
 
 // Setup Starting Event
 void Game_Interpreter::SetupStartingEvent(Game_Event* ev) {
-
-	if (Game_Temp::common_event_id > 0) {
-		Setup(Data::commonevents[Game_Temp::common_event_id].event_commands, 0);
-		Game_Temp::common_event_id = 0;
-		return;
-	}
-
 	ev->ClearStarting();
 	Setup(ev->GetList(), ev->GetId(), ev->GetX(), ev->GetY());
-
-	RPG::CommonEvent* common_event;
-	for (size_t i = 0; i < Data::commonevents.size(); i++) {
-		common_event = &Data::commonevents[i];
-		// If trigger is auto run, and condition switch is ON
-		if (common_event->trigger == RPG::EventPage::Trigger_auto_start) {
-			if (common_event->switch_flag ? Game_Switches[common_event->switch_id] : true) {
-				Setup(common_event->event_commands, 0);
-			}
-			return;
-		}
-	}
 }
 
 void Game_Interpreter::SetupStartingEvent(Game_CommonEvent* ev) {
@@ -360,7 +341,6 @@ bool Game_Interpreter::CommandWait(RPG::EventCommand const& /* com */) {
 		return Input::IsAnyTriggered();
 }
 
-// Input Button.
 void Game_Interpreter::InputButton() {
 	Input::InputButton n = Input::BUTTON_COUNT;
 
@@ -398,6 +378,7 @@ void Game_Interpreter::InputButton() {
 		Game_Variables[button_input_variable_id] = n;
 		Game_Map::SetNeedRefresh(true);
 		button_input_variable_id = 0;
+		Input::ResetKeys();
 	}
 }
 
@@ -440,7 +421,7 @@ void Game_Interpreter::GetStrings(std::vector<std::string>& ret_val) {
 void Game_Interpreter::CloseMessageWindow() {
 	if (Game_Message::visible) {
 		Game_Message::visible = false;
-		Game_Message::FullClear();
+		Game_Message::SemiClear();
 	}
 }
 

@@ -89,7 +89,7 @@ public:
 	 * @return event commands list.
 	 */
 	std::vector<RPG::EventCommand>& GetList();
-
+	void CheckEventTriggerAuto();
 private:
 	int common_event_id;
 	bool battle;
