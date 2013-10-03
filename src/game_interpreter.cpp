@@ -391,6 +391,7 @@ void Game_Interpreter::InputButton() {
 		Game_Variables[button_input_variable_id] = n;
 		Game_Map::SetNeedRefresh(true);
 		button_input_variable_id = 0;
+		Input::ResetKeys();
 	}
 }
 
