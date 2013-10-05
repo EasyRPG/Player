@@ -43,6 +43,7 @@
 #include "player.h"
 #include "util_macro.h"
 #include "game_interpreter_map.h"
+#include "reader_util.h"
 
 Game_Interpreter_Map::Game_Interpreter_Map(int depth, bool main_flag) :
 	Game_Interpreter(depth, main_flag) {
@@ -77,7 +78,9 @@ const std::string Game_Interpreter_Map::DecodeString(std::vector<int>::const_ite
 	for (int i = 0; i < len; i++)
 		out << (char) *it++;
 
-	return out.str();
+	std::string result = ReaderUtil::Recode(out.str());
+
+	return result;
 }
 
 RPG::MoveCommand Game_Interpreter_Map::DecodeMove(std::vector<int>::const_iterator& it)
@@ -251,7 +254,7 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 			return CommandCallEvent(com);
 		case Cmd::ChangeEncounterRate:
 			return CommandChangeEncounterRate(com);
-		case Cmd::ProceedWithMovement: // FIXME: Causes a hang
+		case Cmd::ProceedWithMovement:
 			return CommandProceedWithMovement(com);
 		case Cmd::PlayMovie:
 			return CommandPlayMovie(com);
@@ -1440,28 +1443,41 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 		assert(false);
 	}
 
-	if (check_down && Input::IsTriggered(Input::DOWN))
+	if (check_down && Input::IsTriggered(Input::DOWN)) {
 		result = 1;
-	if (check_left && Input::IsTriggered(Input::LEFT))
+	}
+	if (check_left && Input::IsTriggered(Input::LEFT)) {
 		result = 2;
-	if (check_right && Input::IsTriggered(Input::RIGHT))
+	}
+	if (check_right && Input::IsTriggered(Input::RIGHT)) {
 		result = 3;
-	if (check_up && Input::IsTriggered(Input::UP))
+	}
+	if (check_up && Input::IsTriggered(Input::UP)) {
 		result = 4;
-	if (check_decision && Input::IsTriggered(Input::DECISION))
+	}
+	if (check_decision && Input::IsTriggered(Input::DECISION)) {
 		result = 5;
-	if (check_cancel && Input::IsTriggered(Input::CANCEL))
+	}
+	if (check_cancel && Input::IsTriggered(Input::CANCEL)) {
 		result = 6;
-	if (check_shift && Input::IsTriggered(Input::SHIFT))
+	}
+	if (check_shift && Input::IsTriggered(Input::SHIFT)) {
 		result = 7;
-	if (check_numbers)
-		for (int i = 0; i < 10; i++)
-			if (Input::IsTriggered((Input::InputButton)(Input::N0 + i)))
+	}
+	if (check_numbers) {
+		for (int i = 0; i < 10; ++i) {
+			if (Input::IsTriggered((Input::InputButton)(Input::N0 + i))) {
 				result = 10 + i;
-	if (check_arith)
-		for (int i = 0; i < 5; i++)
-			if (Input::IsTriggered((Input::InputButton)(Input::PLUS + i)))
+			}
+		}
+	}
+	if (check_arith) {
+		for (int i = 0; i < 5; ++i) {
+			if (Input::IsTriggered((Input::InputButton)(Input::PLUS + i))) {
 				result = 20 + i;
+			}
+		}
+	}
 
 	Game_Variables[var_id] = result;
 
@@ -1478,7 +1494,10 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 
 	button_timer = 0;
 
-	return true;
+	// Command was a success but IsTriggered causes problems when calling
+	// this event multiple times in the same frame...
+	++index;
+	return false;
 }
 
 bool Game_Interpreter_Map::CommandChangeVehicleGraphic(RPG::EventCommand const& com) { // code 10650

@@ -91,13 +91,10 @@ void Scene_Map::Update() {
 	// ESC-Menu calling
 	if (Input::IsTriggered(Input::CANCEL))
 	{
-		//if (Game_Map::GetInterpreter().IsRunning())
-			//return;
-		//$game_system.menu_disabled
-
-
-		Game_Temp::menu_calling = true;
-		Game_Temp::menu_beep = true;
+		if (Game_System::GetAllowMenu()) {
+			Game_Temp::menu_calling = true;
+			Game_Temp::menu_beep = true;
+		}
 	}
 
 	if (Input::IsTriggered(Input::DEBUG_MENU))

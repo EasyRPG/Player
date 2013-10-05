@@ -120,6 +120,12 @@ public:
 	void MoveTypeCustom();
 
 	/**
+	 * Signals the owner of the current move route that the move ended.
+	 * (or was overwritten by a new one)
+	 */
+	void EndMoveRoute();
+
+	/**
 	 * Moves the character down.
 	 */
 	void MoveDown();
@@ -221,6 +227,12 @@ public:
 	void Turn90DegreeLeftOrRight();
 
 	/**
+	 * Locks character direction.
+	 * Signals a move begin.
+	 */
+	virtual void BeginMove();
+
+	/**
 	 * Character looks in a random direction
 	 */
 	void FaceRandomDirection();
@@ -228,15 +240,15 @@ public:
 	/**
 	 * Character looks towards the hero.
 	 */
-	void FaceTowardsHero();
+	void TurnTowardHero();
 
 	/**
 	 * Character looks away from the the hero.
 	 */
-	void FaceAwayFromHero();
+	void TurnAwayFromHero();
 
 	/**
-	 * Character waits.
+	 * Character waits for 20 frames more.
 	 */
 	void Wait();
 
@@ -409,8 +421,6 @@ public:
 	 */
 	void SetAnimationId(int animation_id);
 
-	void TurnTowardPlayer();
-
 	int DistanceXfromPlayer() const;
 	int DistanceYfromPlayer() const;
 
@@ -476,6 +486,20 @@ public:
 	 */
 	void SetFlash(Color color, int duration);
 
+	/**
+	 * Tests if animation type is any fixed state.
+	 *
+	 * @return Whether direction is fixed
+	 */
+	bool IsDirectionFixed();
+
+	/**
+	 * Tests if animation type is any continious state.
+	 *
+	 * @return Whether anim is continious 
+	 */
+	bool IsContinuous();
+
 	virtual void UpdateBushDepth();
 
 	void SetGraphic(const std::string& name, int index);
@@ -510,6 +534,7 @@ protected:
 	bool move_route_forcing;
 	bool through;
 	int animation_id;
+	int animation_type;
 	
 	RPG::MoveRoute* move_route;
 	RPG::MoveRoute* original_move_route;
@@ -530,7 +555,6 @@ protected:
 	int jump_count;
 	bool walk_animation;
 	bool turn_enabled;
-	bool direction_fix;
 
 	/** used by cycle left-right, up-down */
 	bool cycle_stat;

@@ -86,7 +86,7 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	move_route = &page->move_route;
 	move_route_index = 0;
 	move_route_forcing = false;
-	//animation_type = page.animation_type;
+	animation_type = page->animation_type;
 	//through = page;
 	//always_on_top = page.overlap;
 	priority_type = page->priority_type;
@@ -270,7 +270,7 @@ void Game_Event::Update() {
 
 	if (interpreter) {
 		if (!interpreter->IsRunning()) {
-			interpreter->Setup(list, event.ID, event.x, event.y);
+			interpreter->Setup(list, event.ID, -event.x, event.y);
 		}
 		interpreter->Update();
 	}
