@@ -31,7 +31,6 @@ PKG_CHECK_MODULES([FREETYPE],[freetype2],[CXXFLAGS="$CXXFLAGS $FREETYPE_CFLAGS" 
 m4_ifdef([AM_PATH_SDL],[AM_PATH_SDL([1.2.0],[CXXFLAGS="$CXXFLAGS -DUSE_SDL $SDL_CFLAGS" LIBS="$LIBS $SDL_LIBS"])],[AC_MSG_ERROR['SDL' is required but it doesn't seem to be installed on this system (AM_PATH_SDL macro not found).]])
 AC_CHECK_LIB([SDL_mixer],[Mix_OpenAudio],[CXXFLAGS="$CXXFLAGS -DHAVE_SDL_MIXER" LIBS="$LIBS -lSDL_mixer"],[AC_MSG_ERROR(['SDL_mixer' is required but it doesn't seem to be installed on this system.])])
 AC_CHECK_LIB([png],[png_set_filler],[],[AC_MSG_ERROR(['libpng' is required but it doesn't seem to be installed on this system.])])
-AC_CHECK_LIB([jpeg],[jpeg_mem_src],[],[AC_MSG_ERROR(['libjpeg' (with jpeg_mem_src) is required but it doesn't seem to be installed on this system.])])
 AC_CHECK_LIB([z],[uncompress],[],[AC_MSG_ERROR(['zlib' is required but it doesn't seem to be installed on this system.])])
 AC_CHECK_LIB([readers],[ini_parse],[],[AC_MSG_ERROR([EasyRPG 'readers' library is required but does not have been found. If you have already compiled it, use ./configure --with-readers=DIR to specify its location.])])
 
