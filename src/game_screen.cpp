@@ -52,6 +52,7 @@ void Game_Screen::Reset()
 	data.flash_blue = -1;
 	flash_sat = 0;
 	data.flash_time_left = -1;
+	data.flash_current_level = 0;
 	flash_period = 0;
 
 	data.shake_strength = -1;
@@ -106,18 +107,18 @@ void Game_Screen::FlashOnce(int r, int g, int b, int s, int tenths) {
 	flash_sat = s;
 	data.flash_current_level = s;
 
+	if (tenths == 0) {
+		// 0.0 duration case
+		tenths = 1;
+	}
+
 	data.flash_time_left = tenths * DEFAULT_FPS / 10;
 	flash_period = 0;
 }
 
 void Game_Screen::FlashBegin(int r, int g, int b, int s, int tenths) {
-	data.flash_red = r;
-	data.flash_green = g;
-	data.flash_blue = b;
-	flash_sat = s;
-	data.flash_current_level = s;
+	FlashOnce(r, g, b, s, tenths);
 
-	data.flash_time_left = tenths * DEFAULT_FPS / 10;
 	flash_period = data.flash_time_left;
 }
 
@@ -328,7 +329,7 @@ void Game_Screen::Update() {
 	}
 
 	if (data.flash_time_left > 0) {
-		data.flash_current_level = interpolate(data.flash_time_left, data.flash_current_level / 31, 0);
+		data.flash_current_level = interpolate(data.flash_time_left, data.flash_current_level, 0);
 		data.flash_time_left--;
 		if (data.flash_time_left <= 0)
 			data.flash_time_left = data.flash_continuous ? flash_period : 0;
