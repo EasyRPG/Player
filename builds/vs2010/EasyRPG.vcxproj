@@ -251,6 +251,7 @@
     <ClCompile Include="..\..\src\scene_skill.cpp" />
     <ClCompile Include="..\..\src\scene_status.cpp" />
     <ClCompile Include="..\..\src\scene_title.cpp" />
+    <ClCompile Include="..\..\src\screen.cpp" />
     <ClCompile Include="..\..\src\sdl_audio.cpp" />
     <ClCompile Include="..\..\src\sdl_ui.cpp" />
     <ClCompile Include="..\..\src\sprite.cpp" />
@@ -385,6 +386,7 @@
     <ClInclude Include="..\..\src\scene_skill.h" />
     <ClInclude Include="..\..\src\scene_status.h" />
     <ClInclude Include="..\..\src\scene_title.h" />
+    <ClInclude Include="..\..\src\screen.h" />
     <ClInclude Include="..\..\src\sdl_audio.h" />
     <ClInclude Include="..\..\src\sdl_ui.h" />
     <ClInclude Include="..\..\src\sprite.h" />

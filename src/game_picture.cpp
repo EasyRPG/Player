@@ -54,10 +54,10 @@ void Picture::UpdateSprite() {
 		(int)(255 * (100 - data.current_bot_trans) / 100));
 	if (data.current_bot_trans != data.current_top_trans)
 		sprite->SetBushDepth(sprite->GetHeight() / 2);
-	sprite->SetTone(Tone((int) ((data.current_red        - 100) * 255 / 100),
-						 (int) ((data.current_green      - 100) * 255 / 100),
-						 (int) ((data.current_blue       - 100) * 255 / 100),
-						 (int) ((100 - data.current_sat) * 255 / 100)));
+	sprite->SetTone(Tone((int) (data.current_red * 128 / 100),
+						 (int) (data.current_green * 128 / 100),
+						 (int) (data.current_blue * 128 / 100),
+						 (int) (data.current_sat * 128 / 100)));
 }
 
 void Picture::Show(const std::string& _name) {

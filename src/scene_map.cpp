@@ -37,6 +37,7 @@
 #include "graphics.h"
 #include "audio.h"
 #include "input.h"
+#include "screen.h"
 
 Scene_Map::Scene_Map() {
 	type = Scene::Map;

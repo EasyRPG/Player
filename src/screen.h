@@ -15,34 +15,40 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _DRAWABLE_H_
-#define _DRAWABLE_H_
+#ifndef _EASYRPG_GRAPHIC_SCREEN_H_
+#define _EASYRPG_GRAPHIC_SCREEN_H_
 
-// What kind of drawable is the current one?
-enum DrawableType {
-	TypeWindow,
-	TypeTilemap,
-	TypeSprite,
-	TypePlane,
-	TypeBackground,
-	TypeDefault,
-	TypeScreen
-};
+// Headers
+#include <string>
+#include "system.h"
+#include "drawable.h"
+#include "zobj.h"
 
-/**
- * Drawable virtual
- */
-class Drawable {
+namespace RPG {
+	class SaveScreen;
+}
+
+class Screen : public Drawable {
 public:
-	virtual ~Drawable() {};
+	Screen(RPG::SaveScreen& data);
+	~Screen();
 
-	virtual void Draw(int z_order) = 0;
+	void Draw(int z_order);
+	void Update();
 
-	virtual unsigned long GetId() const = 0;
+	unsigned long GetId() const;
+	int GetZ() const;
+	DrawableType GetType() const;
 
-	virtual int GetZ() const = 0;
+private:
+	static const int z = 1000;
+	static const DrawableType type = TypeScreen;
 
-	virtual DrawableType GetType() const = 0;
+	RPG::SaveScreen& data;
+
+	unsigned long ID;
+	ZObj* zobj;
+	bool visible;
 };
 
 #endif

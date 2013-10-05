@@ -23,6 +23,7 @@
 #include "main_data.h"
 #include "game_screen.h"
 #include "bitmap.h"
+#include "screen.h"
 
 Game_Screen::Game_Screen() :
 	data(Main_Data::game_data.screen)
@@ -35,10 +36,10 @@ void Game_Screen::Reset()
 	pictures.clear();
 	pictures.resize(50);
 
-	data.tint_current_red = -1;
-	data.tint_current_green = -1;
-	data.tint_current_blue = -1;
-	data.tint_current_sat = -1;
+	data.tint_current_red = 100;
+	data.tint_current_green = 100;
+	data.tint_current_blue = 100;
+	data.tint_current_sat = 100;
 
 	data.tint_finish_red = -1;
 	data.tint_finish_green = -1;
@@ -71,6 +72,8 @@ void Game_Screen::Reset()
 
 	snowflakes.clear();
 	StopWeather();
+
+	screen.reset(new Screen(data));
 }
 
 Picture* Game_Screen::GetPicture(int id) {
