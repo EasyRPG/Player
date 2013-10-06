@@ -70,6 +70,6 @@ void Screen::Draw(int /* z_order */) {
 
 	if (flash_time_left > 0) {
 		BitmapRef flash = Bitmap::Create(320, 240, flash_color);
-		dst->Blit(0, 0, *flash, flash->GetRect(), (int)(flash_current_level * 255 / 31));
+		dst->Blit(0, 0, *flash, flash->GetRect(), flash_current_level);
 	}
 }
