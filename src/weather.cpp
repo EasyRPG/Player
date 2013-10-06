@@ -160,7 +160,7 @@ void Weather::DrawFog() {
 	static const int opacities[3] = {128, 160, 192};
 	int opacity = opacities[Main_Data::game_screen->GetWeatherStrength()];
 
-	weather_surface->Fill(Color(128, 128, 128, 255));
+	weather_surface->Fill(Color(128, 128, 128, opacity));
 }
 
 void Weather::DrawSandstorm() {
