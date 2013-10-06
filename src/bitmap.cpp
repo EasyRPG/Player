@@ -992,10 +992,11 @@ void Bitmap::OpacityBlit(int x, int y, Bitmap const& src, Rect const& src_rect, 
 	if (&src == this) {
 		pixman_color_t pcolor = {0, 0, 0, static_cast<uint16_t>(opacity << 8)};
 		pixman_rectangle16_t rect = {
-      static_cast<int16_t>(src_rect.x),
-      static_cast<int16_t>(src_rect.y),
-      static_cast<uint16_t>(src_rect.width),
-      static_cast<uint16_t>(src_rect.height), };
+			static_cast<int16_t>(src_rect.x),
+			static_cast<int16_t>(src_rect.y),
+			static_cast<uint16_t>(src_rect.width),
+			static_cast<uint16_t>(src_rect.height)
+		};
 
 		pixman_image_fill_rectangles(PIXMAN_OP_IN_REVERSE, bitmap, &pcolor, 1, &rect);
 	}
@@ -1021,8 +1022,9 @@ void Bitmap::OpacityBlit(int x, int y, Bitmap const& src, Rect const& src_rect, 
 
 void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone &tone) {
 	if (tone == Tone()) {
-		if (&src != this)
+		if (&src != this) {
 			Blit(x, y, src, src_rect, 255);
+		}
 		return;
 	}
 
@@ -1036,7 +1038,12 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 
 	// FIXME: Saturation looks incorrect (compared to RPG_RT) for values > 128
 	if (tone.gray != 128) {
-		pixman_color_t gcolor = {tone.gray << 8, 0, 0, 0xFFFF};
+		pixman_color_t gcolor = {
+			static_cast<uint16_t>(tone.gray << 8),
+			0,
+			0,
+			0xFFFF};
+
 		pixman_image_t *gimage = pixman_image_create_solid_fill(&gcolor);
 
 		pixman_image_composite32(PIXMAN_OP_HSL_SATURATION,
@@ -1049,21 +1056,23 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 		pixman_image_unref(gimage);
 	}
 
-	pixman_color_t tcolor = {
-		static_cast<uint16_t>(tone.red << 8),
-		static_cast<uint16_t>(tone.green << 8),
-		static_cast<uint16_t>(tone.blue << 8), 0xFFFF};
+	if (tone.red != 128 || tone.green != 128 || tone.blue != 128) {
+		pixman_color_t tcolor = {
+			static_cast<uint16_t>(tone.red << 8),
+			static_cast<uint16_t>(tone.green << 8),
+			static_cast<uint16_t>(tone.blue << 8), 0xFFFF};
 
-	pixman_image_t *timage = pixman_image_create_solid_fill(&tcolor);
+		pixman_image_t *timage = pixman_image_create_solid_fill(&tcolor);
 
-	pixman_image_composite32(PIXMAN_OP_HARD_LIGHT,
-		timage, src.bitmap, bitmap,
-		src_rect.x, src_rect.y,
-		0, 0,
-		x, y,
-		src_rect.width, src_rect.height);
+		pixman_image_composite32(PIXMAN_OP_HARD_LIGHT,
+			timage, src.bitmap, bitmap,
+			src_rect.x, src_rect.y,
+			0, 0,
+			x, y,
+			src_rect.width, src_rect.height);
 
-	pixman_image_unref(timage);
+		pixman_image_unref(timage);
+	}
 
 	RefreshCallback();
 }
