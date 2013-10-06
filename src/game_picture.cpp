@@ -41,7 +41,7 @@ void Picture::UpdateSprite() {
 
 	sprite->SetX((int) data.current_x);
 	sprite->SetY((int) data.current_y);
-	sprite->SetZ(1000 + data.ID);
+	sprite->SetZ(1100 + data.ID);
 	sprite->SetZoomX(data.current_magnify / 100.0);
 	sprite->SetZoomY(data.current_magnify / 100.0);
 	sprite->SetOx((int)(sprite->GetBitmap()->GetWidth() * data.current_magnify / 200.0));
