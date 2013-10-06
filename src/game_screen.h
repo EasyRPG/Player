@@ -53,7 +53,7 @@ public:
 	/**
 	 * Returns the current screen tone.
 	 *
-	 * @return tone 
+	 * @return Tone 
 	 */
 	Tone GetTone();
 
@@ -66,8 +66,18 @@ public:
 	 */
 	Color GetFlash(int& current_level, int& time_left);
 
+	/**
+	 * Returns the weather type
+	 *
+	 * @return Weather type 
+	 */
 	int GetWeatherType();
 
+	/**
+	 * Returns weather effect strength from (0 low to 2 high)
+	 *
+	 * @return Weather effect strength
+	 */
 	int GetWeatherStrength();
 
 	struct Snowflake {
