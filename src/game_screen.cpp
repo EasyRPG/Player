@@ -38,6 +38,10 @@ Game_Screen::Game_Screen() :
 	data.tint_finish_sat = -1;
 	data.tint_time_left = -1;
 
+
+	data.weather = 0;
+	data.weather_strength = 0;
+
 	Reset();
 }
 
@@ -61,17 +65,11 @@ void Game_Screen::Reset()
 	data.shake_continuous = false;
 	shake_direction = 0;
 
-	data.weather = 0;
-	data.weather_strength = 0;
-
 	movie_filename = "";
 	movie_pos_x = 0;
 	movie_pos_y = 0;
 	movie_res_x = 0;
 	movie_res_y = 0;
-
-	snowflakes.clear();
-	StopWeather();
 }
 
 Picture* Game_Screen::GetPicture(int id) {
@@ -184,7 +182,6 @@ static double interpolate(double d, double x0, double x1)
 }
 
 void Game_Screen::StopWeather() {
-	//weather_plane.reset();
 	snowflakes.clear();
 }
 
