@@ -787,13 +787,11 @@ bool Game_Interpreter_Map::CommandErasePicture(RPG::EventCommand const& com) { /
 }
 
 bool Game_Interpreter_Map::CommandWeatherEffects(RPG::EventCommand const& com) { // code 11070
-#if !(defined(DINGOO) || defined(GEKKO) || defined(PSP) || defined(GPH)) // Rikku2000: Remove Weather Effects for Device with lower CPU
 	Game_Screen* screen = Main_Data::game_screen.get();
 	int type = com.parameters[0];
 	int strength = com.parameters[1];
-	screen->Weather(type, strength);
+	screen->SetWeatherEffect(type, strength);
 	return true;
-#endif
 }
 
 bool Game_Interpreter_Map::CommandChangeSystemGraphics(RPG::EventCommand const& com) { // code 10680

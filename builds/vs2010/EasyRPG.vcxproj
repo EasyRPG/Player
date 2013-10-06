@@ -251,6 +251,7 @@
     <ClCompile Include="..\..\src\scene_skill.cpp" />
     <ClCompile Include="..\..\src\scene_status.cpp" />
     <ClCompile Include="..\..\src\scene_title.cpp" />
+    <ClCompile Include="..\..\src\screen.cpp" />
     <ClCompile Include="..\..\src\sdl_audio.cpp" />
     <ClCompile Include="..\..\src\sdl_ui.cpp" />
     <ClCompile Include="..\..\src\sprite.cpp" />
@@ -262,6 +263,7 @@
     <ClCompile Include="..\..\src\tone.cpp" />
     <ClCompile Include="..\..\src\utils.cpp" />
     <ClCompile Include="..\..\src\util_win.cpp" />
+    <ClCompile Include="..\..\src\weather.cpp" />
     <ClCompile Include="..\..\src\window.cpp" />
     <ClCompile Include="..\..\src\window_actorinfo.cpp" />
     <ClCompile Include="..\..\src\window_actorstatus.cpp" />
@@ -385,6 +387,7 @@
     <ClInclude Include="..\..\src\scene_skill.h" />
     <ClInclude Include="..\..\src\scene_status.h" />
     <ClInclude Include="..\..\src\scene_title.h" />
+    <ClInclude Include="..\..\src\screen.h" />
     <ClInclude Include="..\..\src\sdl_audio.h" />
     <ClInclude Include="..\..\src\sdl_ui.h" />
     <ClInclude Include="..\..\src\sprite.h" />
@@ -398,6 +401,7 @@
     <ClInclude Include="..\..\src\utils.h" />
     <ClInclude Include="..\..\src\util_macro.h" />
     <ClInclude Include="..\..\src\util_win.h" />
+    <ClInclude Include="..\..\src\weather.h" />
     <ClInclude Include="..\..\src\window.h" />
     <ClInclude Include="..\..\src\window_actorinfo.h" />
     <ClInclude Include="..\..\src\window_actorstatus.h" />

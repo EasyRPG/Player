@@ -21,6 +21,7 @@
 // Headers
 #include "scene.h"
 #include "spriteset_map.h"
+#include "weather.h"
 #include "window_message.h"
 #include "window_varlist.h"
 #include <boost/scoped_ptr.hpp>
@@ -53,6 +54,10 @@ public:
 
 private:
 	void UpdateTeleportPlayer();
+
+	boost::scoped_ptr<Screen> screen;
+	boost::scoped_ptr<Weather> weather;
+
 };
 
 #endif

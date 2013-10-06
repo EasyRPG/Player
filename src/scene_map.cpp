@@ -37,6 +37,7 @@
 #include "graphics.h"
 #include "audio.h"
 #include "input.h"
+#include "screen.h"
 
 Scene_Map::Scene_Map() {
 	type = Scene::Map;
@@ -45,6 +46,8 @@ Scene_Map::Scene_Map() {
 void Scene_Map::Start() {
 	spriteset.reset(new Spriteset_Map());
 	message_window.reset(new Window_Message(0, 240 - 80, 320, 80));
+	screen.reset(new Screen());
+	weather.reset(new Weather());
 
 	Main_Data::game_screen->Reset();
 	Graphics::FrameReset();

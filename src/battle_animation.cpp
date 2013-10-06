@@ -65,7 +65,7 @@ unsigned long BattleAnimation::GetId() const {
 }
 
 int BattleAnimation::GetZ() const {
-	return 400;
+	return 1500;
 }
 
 DrawableType BattleAnimation::GetType() const {
