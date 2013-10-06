@@ -41,7 +41,7 @@ public:
 	DrawableType GetType() const;
 
 private:
-	static const int z = 1000;
+	static const int z = 300;
 	static const DrawableType type = TypeScreen;
 
 	unsigned long ID;
