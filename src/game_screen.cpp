@@ -27,14 +27,6 @@
 Game_Screen::Game_Screen() :
 	data(Main_Data::game_data.screen)
 {
-	Reset();
-}
-
-void Game_Screen::Reset()
-{
-	pictures.clear();
-	pictures.resize(50);
-
 	data.tint_current_red = 100;
 	data.tint_current_green = 100;
 	data.tint_current_blue = 100;
@@ -45,6 +37,14 @@ void Game_Screen::Reset()
 	data.tint_finish_blue = -1;
 	data.tint_finish_sat = -1;
 	data.tint_time_left = -1;
+
+	Reset();
+}
+
+void Game_Screen::Reset()
+{
+	pictures.clear();
+	pictures.resize(50);
 
 	data.flash_red = -1;
 	data.flash_green = -1;
@@ -337,7 +337,7 @@ void Game_Screen::Update() {
 		if (data.shake_time_left <= 1 && data.shake_position * (data.shake_position + delta) < 0)
 			data.shake_position = 0;
 		else
-			data.shake_position += delta;
+			data.shake_position += (int)delta;
 		if (data.shake_position > data.shake_strength * 2)
 			shake_direction = -1;
 		if (data.shake_position < -data.shake_strength * 2)
