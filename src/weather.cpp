@@ -124,7 +124,7 @@ void Weather::DrawRain() {
 		const Game_Screen::Snowflake& f = *it;
 		if (f.life > snowflake_visible)
 			continue;
-		weather_surface->Blit(f.x - f.y/2, f.y, *rain_bitmap, rect, 192);
+		weather_surface->Blit(f.x - f.y/2, f.y, *rain_bitmap, rect, 96);
 	}
 }
 
