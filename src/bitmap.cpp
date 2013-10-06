@@ -1025,43 +1025,7 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 			Blit(x, y, src, src_rect, 255);
 		return;
 	}
-	
-	// FIXME
-	// Pixman ToneBlit is broken.
-	// Slow (working) software implementation:
-	Rect dst_rect(x, y, 0, 0);
-	Rect src_rect_ = src_rect;
 
-
-	if (!Rect::AdjustRectangles(src_rect_, dst_rect, src.GetRect()))
-		return;
-	if (!Rect::AdjustRectangles(dst_rect, src_rect_, GetRect()))
-		return;
-
-	BitmapUtils* bm_utils = Begin(src);
-
-	const uint8_t* src_pixels = src.pointer(src_rect.x, src_rect.y);
-	uint8_t* dst_pixels = pointer(dst_rect.x, dst_rect.y);
-
-	if (tone.gray == 0) {
-		for (int i = 0; i < dst_rect.height; i++) {
-			bm_utils->ToneBlit(dst_pixels, src_pixels, dst_rect.width, tone);
-			src_pixels += src.pitch();
-			dst_pixels += pitch();
-		}
-	} else {
-		double factor = (255 - tone.gray) / 255.0;
-		for (int i = 0; i < dst_rect.height; i++) {
-			bm_utils->ToneBlit(dst_pixels, src_pixels, dst_rect.width, tone, factor);
-			src_pixels += src.pitch();
-			dst_pixels += pitch();
-		}
-	}
-
-	End(src);
-	
-	// Pixman ToneBlit code
-	/*
 	if (&src != this)
 		pixman_image_composite32(PIXMAN_OP_SRC,
 								 src.bitmap, (pixman_image_t*) NULL, bitmap,
@@ -1070,57 +1034,36 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 								 x, y,
 								 src_rect.width, src_rect.height);
 
-	if (tone.gray == 0) {
-		pixman_color_t tcolor = {
-      static_cast<uint16_t>(tone.red << 8),
-      static_cast<uint16_t>(tone.green << 8),
-      static_cast<uint16_t>(tone.blue << 8), 0xFFFF};
-		pixman_image_t *timage = pixman_image_create_solid_fill(&tcolor);
+	// FIXME: Saturation looks incorrect (compared to RPG_RT) for values > 128
+	if (tone.gray != 128) {
+		pixman_color_t gcolor = {tone.gray << 8, 0, 0, 0xFFFF};
+		pixman_image_t *gimage = pixman_image_create_solid_fill(&gcolor);
 
-		pixman_image_composite32(PIXMAN_OP_ADD,
-								 timage, src.bitmap, bitmap,
-								 src_rect.x, src_rect.y,
-								 0, 0,
-								 x, y,
-								 src_rect.width, src_rect.height);
+		pixman_image_composite32(PIXMAN_OP_HSL_SATURATION,
+			gimage, (pixman_image_t*) NULL, bitmap,
+			src_rect.x, src_rect.y,
+			0, 0,
+			x, y,
+			src_rect.width, src_rect.height);
 
-		pixman_image_unref(timage);
+		pixman_image_unref(gimage);
 	}
-	else {
-		pixman_rectangle16_t rect = {
-			0, 0, static_cast<uint16_t>(src_rect.width),
-			static_cast<uint16_t>(src_rect.height)};
 
-		BitmapRef gray(new Bitmap(src, src_rect, GetTransparent()));
-		pixman_color_t gcolor = {0, 0, 0, 0xFFFF};
-		pixman_image_fill_rectangles(PIXMAN_OP_HSL_SATURATION, gray->bitmap, &gcolor, 1, &rect);
+	pixman_color_t tcolor = {
+		static_cast<uint16_t>(tone.red << 8),
+		static_cast<uint16_t>(tone.green << 8),
+		static_cast<uint16_t>(tone.blue << 8), 0xFFFF};
 
-		pixman_color_t acolor = {0, 0, 0, static_cast<uint16_t>(tone.gray << 8)};
-		pixman_image_fill_rectangles(PIXMAN_OP_IN_REVERSE, gray->bitmap, &acolor, 1, &rect);
+	pixman_image_t *timage = pixman_image_create_solid_fill(&tcolor);
 
-		pixman_image_composite32(PIXMAN_OP_ATOP,
-								 gray->bitmap, (pixman_image_t*) NULL, bitmap,
-								 src_rect.x, src_rect.y,
-								 0, 0,
-								 x, y,
-								 src_rect.width, src_rect.height);
+	pixman_image_composite32(PIXMAN_OP_HARD_LIGHT,
+		timage, src.bitmap, bitmap,
+		src_rect.x, src_rect.y,
+		0, 0,
+		x, y,
+		src_rect.width, src_rect.height);
 
-		pixman_color_t tcolor = {
-			static_cast<uint16_t>(tone.red << 8),
-			static_cast<uint16_t>(tone.green << 8),
-			static_cast<uint16_t>(tone.blue << 8), 0xFFFF};
-		pixman_image_t *timage = pixman_image_create_solid_fill(&tcolor);
-
-		pixman_image_composite32(PIXMAN_OP_ADD,
-								 timage, src.bitmap, bitmap,
-								 src_rect.x, src_rect.y,
-								 0, 0,
-								 x, y,
-								 src_rect.width, src_rect.height);
-
-		pixman_image_unref(timage);
-	}
-	*/
+	pixman_image_unref(timage);
 
 	RefreshCallback();
 }

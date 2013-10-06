@@ -36,19 +36,19 @@
     <Filter Include="Source Files\Settings">
       <UniqueIdentifier>{36029a79-f366-4072-aafe-fe9606e929ec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Engine\Backend">
+    <Filter Include="Source Files\Backend">
       <UniqueIdentifier>{f9c8e0bf-3d9d-4f20-8d5f-50c487c1b05e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Engine\Backend\Audio">
+    <Filter Include="Source Files\Backend\Audio">
       <UniqueIdentifier>{b67319e7-4226-4593-961c-5cecdc035a6d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Engine\Backend\Graphics">
+    <Filter Include="Source Files\Backend\Graphics">
       <UniqueIdentifier>{7af98abf-21e3-45e7-a449-ffcd3bf061d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Engine\Backend\Input">
+    <Filter Include="Source Files\Backend\Input">
       <UniqueIdentifier>{ffe2c197-01e3-4dde-a82c-6834bd070404}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Engine\Backend\UI">
+    <Filter Include="Source Files\Backend\UI">
       <UniqueIdentifier>{ce2d7343-39dd-458d-b5a6-ab688e16af7f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -59,103 +59,103 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\audio.cpp">
-      <Filter>Source Files\Engine\Backend\Audio</Filter>
+      <Filter>Source Files\Backend\Audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\background.cpp">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\bitmap.cpp">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\bitmap_screen.cpp">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\bitmap_utils.cpp">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\color.cpp">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\effects.cpp">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\font.cpp">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\graphics.cpp">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\hslrgb.cpp">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\image_jpg.cpp">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\image_png.cpp">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\image_xyz.cpp">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\image_bmp.cpp">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\sprite.cpp">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\plane.cpp">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\rect.cpp">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\zobj.cpp">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\text.cpp">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\tilemap.cpp">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\tilemap_layer.cpp">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\tone.cpp">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\window.cpp">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\input.cpp">
-      <Filter>Source Files\Engine\Backend\Input</Filter>
+      <Filter>Source Files\Backend\Input</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\input_buttons_desktop.cpp">
-      <Filter>Source Files\Engine\Backend\Input</Filter>
+      <Filter>Source Files\Backend\Input</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\input_buttons_dingoo.cpp">
-      <Filter>Source Files\Engine\Backend\Input</Filter>
+      <Filter>Source Files\Backend\Input</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\input_buttons_gekko.cpp">
-      <Filter>Source Files\Engine\Backend\Input</Filter>
+      <Filter>Source Files\Backend\Input</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\input_buttons_gph.cpp">
-      <Filter>Source Files\Engine\Backend\Input</Filter>
+      <Filter>Source Files\Backend\Input</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\input_buttons_psp.cpp">
-      <Filter>Source Files\Engine\Backend\Input</Filter>
+      <Filter>Source Files\Backend\Input</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\baseui.cpp">
-      <Filter>Source Files\Engine\Backend\UI</Filter>
+      <Filter>Source Files\Backend\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\sdl_ui.cpp">
-      <Filter>Source Files\Engine\Backend\UI</Filter>
+      <Filter>Source Files\Backend\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\al_audio.cpp">
-      <Filter>Source Files\Engine\Backend\Audio</Filter>
+      <Filter>Source Files\Backend\Audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\sdl_audio.cpp">
-      <Filter>Source Files\Engine\Backend\Audio</Filter>
+      <Filter>Source Files\Backend\Audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\game_vehicle.cpp">
       <Filter>Source Files\Engine\Game</Filter>
@@ -439,103 +439,109 @@
     <ClCompile Include="..\..\src\window_varlist.cpp">
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\screen.cpp">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\weather.cpp">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\audio.h">
-      <Filter>Source Files\Engine\Backend\Audio</Filter>
+      <Filter>Source Files\Backend\Audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\background.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\bitmap.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\bitmap_screen.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\bitmap_utils.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\color.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\drawable.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\exfont.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\font.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\graphics.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\hslrgb.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\image_bmp.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\image_jpg.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\image_png.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\image_xyz.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\pixel_format.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\sprite.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\plane.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\rect.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\zobj.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\text.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\tilemap.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\tilemap_layer.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\tone.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\window.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\input.h">
-      <Filter>Source Files\Engine\Backend\Input</Filter>
+      <Filter>Source Files\Backend\Input</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\input_buttons.h">
-      <Filter>Source Files\Engine\Backend\Input</Filter>
+      <Filter>Source Files\Backend\Input</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\keys.h">
-      <Filter>Source Files\Engine\Backend\Input</Filter>
+      <Filter>Source Files\Backend\Input</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\baseui.h">
-      <Filter>Source Files\Engine\Backend\UI</Filter>
+      <Filter>Source Files\Backend\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\sdl_ui.h">
-      <Filter>Source Files\Engine\Backend\UI</Filter>
+      <Filter>Source Files\Backend\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\sdl_audio.h">
-      <Filter>Source Files\Engine\Backend\Audio</Filter>
+      <Filter>Source Files\Backend\Audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\al_audio.h">
-      <Filter>Source Files\Engine\Backend\Audio</Filter>
+      <Filter>Source Files\Backend\Audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\game_unit.h">
       <Filter>Source Files\Engine\Game</Filter>
@@ -808,7 +814,7 @@
       <Filter>Source Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\map_data.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\main_data.h">
       <Filter>Source Files</Filter>
@@ -826,7 +832,7 @@
       <Filter>Source Files\Engine\Game</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\matrix.h">
-      <Filter>Source Files\Engine\Backend\Graphics</Filter>
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\memory_management.h">
       <Filter>Source Files\Settings</Filter>
@@ -842,6 +848,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\window_varlist.h">
       <Filter>Source Files\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screen.h">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\weather.h">
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

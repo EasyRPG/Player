@@ -17,6 +17,7 @@
 
 // Headers
 #include "tone.h"
+#include "util_macro.h"
 
 Tone::Tone()  :
 	red(0),
@@ -26,10 +27,10 @@ Tone::Tone()  :
 }
 
 Tone::Tone(int red, int green, int blue, int gray) :
-	red(red),
-	green(green),
-	blue(blue),
-	gray(gray) {
+	red(min(255, max(0, red))),
+	green(min(255, max(0, green))),
+	blue(min(255, max(0, blue))),
+	gray(min(255, max(0, gray))) {
 }
 
 bool Tone::operator==(const Tone &other) const {
@@ -41,8 +42,8 @@ bool Tone::operator!=(const Tone &other) const {
 }
 
 void Tone::Set(int nred, int ngreen, int nblue, int ngray) {
-	red = nred;
-	green = ngreen;
-	blue = nblue;
-	gray = ngray;
+	red = min(255, max(0, nred));
+	green = min(255, max(0, ngreen));
+	blue = min(255, max(0, nblue));
+	gray = min(255, max(0, ngray));
 }

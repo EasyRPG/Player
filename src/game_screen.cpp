@@ -27,6 +27,21 @@
 Game_Screen::Game_Screen() :
 	data(Main_Data::game_data.screen)
 {
+	data.tint_current_red = 100;
+	data.tint_current_green = 100;
+	data.tint_current_blue = 100;
+	data.tint_current_sat = 100;
+
+	data.tint_finish_red = -1;
+	data.tint_finish_green = -1;
+	data.tint_finish_blue = -1;
+	data.tint_finish_sat = -1;
+	data.tint_time_left = -1;
+
+
+	data.weather = 0;
+	data.weather_strength = 0;
+
 	Reset();
 }
 
@@ -35,22 +50,12 @@ void Game_Screen::Reset()
 	pictures.clear();
 	pictures.resize(50);
 
-	data.tint_current_red = -1;
-	data.tint_current_green = -1;
-	data.tint_current_blue = -1;
-	data.tint_current_sat = -1;
-
-	data.tint_finish_red = -1;
-	data.tint_finish_green = -1;
-	data.tint_finish_blue = -1;
-	data.tint_finish_sat = -1;
-	data.tint_time_left = -1;
-
 	data.flash_red = -1;
 	data.flash_green = -1;
 	data.flash_blue = -1;
 	flash_sat = 0;
 	data.flash_time_left = -1;
+	data.flash_current_level = 0;
 	flash_period = 0;
 
 	data.shake_strength = -1;
@@ -60,17 +65,11 @@ void Game_Screen::Reset()
 	data.shake_continuous = false;
 	shake_direction = 0;
 
-	data.weather = 0;
-	data.weather_strength = 0;
-
 	movie_filename = "";
 	movie_pos_x = 0;
 	movie_pos_y = 0;
 	movie_res_x = 0;
 	movie_res_y = 0;
-
-	snowflakes.clear();
-	StopWeather();
 }
 
 Picture* Game_Screen::GetPicture(int id) {
@@ -103,18 +102,18 @@ void Game_Screen::FlashOnce(int r, int g, int b, int s, int tenths) {
 	flash_sat = s;
 	data.flash_current_level = s;
 
+	if (tenths == 0) {
+		// 0.0 duration case
+		tenths = 1;
+	}
+
 	data.flash_time_left = tenths * DEFAULT_FPS / 10;
 	flash_period = 0;
 }
 
 void Game_Screen::FlashBegin(int r, int g, int b, int s, int tenths) {
-	data.flash_red = r;
-	data.flash_green = g;
-	data.flash_blue = b;
-	flash_sat = s;
-	data.flash_current_level = s;
+	FlashOnce(r, g, b, s, tenths);
 
-	data.flash_time_left = tenths * DEFAULT_FPS / 10;
 	flash_period = data.flash_time_left;
 }
 
@@ -144,12 +143,10 @@ void Game_Screen::ShakeEnd() {
 	data.shake_continuous = false;
 }
 
-void Game_Screen::Weather(int type, int strength) {
+void Game_Screen::SetWeatherEffect(int type, int strength) {
 	data.weather = type;
 	data.weather_strength = strength;
 	StopWeather();
-	if (data.weather != Weather_None)
-		InitWeather();
 }
 
 void Game_Screen::PlayMovie(const std::string& filename,
@@ -184,52 +181,7 @@ static double interpolate(double d, double x0, double x1)
 	return (x0 * (d - 1) + x1) / d;
 }
 
-static const uint8_t snow_image[] = {
-	0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00,
-	0x0d, 0x49, 0x48, 0x44, 0x52, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00,
-	0x00, 0x04, 0x02, 0x03, 0x00, 0x00, 0x00, 0xd4, 0x9f, 0x76, 0xed,
-	0x00, 0x00, 0x00, 0x09, 0x50, 0x4c, 0x54, 0x45, 0x00, 0x00, 0x00,
-	0xc0, 0xc0, 0xc0, 0xff, 0xff, 0xff, 0x0d, 0x6d, 0xd7, 0xbb, 0x00,
-	0x00, 0x00, 0x01, 0x74, 0x52, 0x4e, 0x53, 0x00, 0x40, 0xe6, 0xd8,
-	0x66, 0x00, 0x00, 0x00, 0x0e, 0x49, 0x44, 0x41, 0x54, 0x08, 0xd7,
-	0x63, 0x10, 0x61, 0xc8, 0x04, 0x42, 0x11, 0x00, 0x03, 0xf0, 0x00,
-	0xfb, 0xb6, 0xa8, 0xf1, 0xda, 0x00, 0x00, 0x00, 0x00, 0x49, 0x45,
-	0x4e, 0x44, 0xae, 0x42, 0x60, 0x82
-};
-
-static const uint8_t rain_image[] = {
-	0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00,
-	0x0d, 0x49, 0x48, 0x44, 0x52, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00,
-	0x00, 0x10, 0x01, 0x03, 0x00, 0x00, 0x00, 0x11, 0x44, 0xac, 0x3e,
-	0x00, 0x00, 0x00, 0x06, 0x50, 0x4c, 0x54, 0x45, 0x00, 0x00, 0x00,
-	0xc0, 0xc0, 0xc0, 0x64, 0x56, 0x3a, 0x71, 0x00, 0x00, 0x00, 0x01,
-	0x74, 0x52, 0x4e, 0x53, 0x00, 0x40, 0xe6, 0xd8, 0x66, 0x00, 0x00,
-	0x00, 0x1f, 0x49, 0x44, 0x41, 0x54, 0x08, 0xd7, 0x63, 0x60, 0x64,
-	0x60, 0x64, 0x60, 0x02, 0x42, 0x16, 0x20, 0xe4, 0x00, 0x42, 0x01,
-	0x20, 0x54, 0x00, 0x42, 0x07, 0x20, 0x6c, 0x60, 0x68, 0x00, 0x00,
-	0x0b, 0xd4, 0x01, 0xff, 0xed, 0x11, 0x33, 0x32, 0x00, 0x00, 0x00,
-	0x00, 0x49, 0x45, 0x4e, 0x44, 0xae, 0x42, 0x60, 0x82
-};
-
-void Game_Screen::InitWeather() {
-	if (not weather_plane) {
-		weather_plane.reset(new Plane());
-		weather_surface = Bitmap::Create(320, 240);
-		weather_surface->SetTransparentColor(Color(0,0,0,0));
-		weather_plane->SetBitmap(weather_surface);
-		weather_plane->SetZ(9999);
-	}
-	weather_surface->Clear();
-
-	if (not rain_bitmap)
-		rain_bitmap = Bitmap::Create(rain_image, sizeof(rain_image));
-
-	if (not snow_bitmap)
-		snow_bitmap = Bitmap::Create(snow_image, sizeof(snow_image));
-}
-
 void Game_Screen::StopWeather() {
-	weather_plane.reset();
 	snowflakes.clear();
 }
 
@@ -249,7 +201,6 @@ void Game_Screen::InitSnowRain() {
 }
 
 static const int snowflake_life = 200;
-static const int snowflake_visible = 150;
 
 void Game_Screen::UpdateSnowRain(int speed) {
 	std::vector<Snowflake>::iterator it;
@@ -263,58 +214,6 @@ void Game_Screen::UpdateSnowRain(int speed) {
 	}
 }
 
-void Game_Screen::DrawRain() {
-	weather_plane->SetOpacity(192);
-
-	Rect rect = rain_bitmap->GetRect();
-
-	std::vector<Snowflake>::iterator it;
-	for (it = snowflakes.begin(); it != snowflakes.end(); it++) {
-		Snowflake& f = *it;
-		if (f.life > snowflake_visible)
-			continue;
-		weather_surface->Blit(f.x - f.y/2, f.y, *rain_bitmap, rect, 255);
-	}
-}
-
-void Game_Screen::DrawSnow() {
-	static const int wobble[2][18] = {
-		{-1,-1, 0, 1, 0, 1, 1, 0,-1,-1, 0, 1, 0, 1, 1, 0,-1, 0},
-		{-1,-1, 0, 0, 1, 1, 0,-1,-1, 0, 1, 0, 1, 1, 0,-1, 0, 0}
-	};
-	weather_plane->SetOpacity(192);
-
-	Rect rect = snow_bitmap->GetRect();
-
-	std::vector<Snowflake>::iterator it;
-	for (it = snowflakes.begin(); it != snowflakes.end(); it++) {
-		Snowflake& f = *it;
-		if (f.life > snowflake_visible)
-			continue;
-		int x = f.x - f.y/2;
-		int y = f.y;
-		int i = (y / 2) % 18;
-		x += wobble[0][i];
-		y += wobble[1][i];
-		weather_surface->Blit(x, y, *snow_bitmap, rect, 255);
-	}
-}
-
-void Game_Screen::DrawFog() {
-
-	weather_surface->Fill(Color(128,128,128,255));
-	static const int opacities[3] = {128, 160, 192};
-	weather_plane->SetOpacity(opacities[data.weather_strength]);
-}
-
-void Game_Screen::DrawSandstorm() {
-
-	weather_surface->Fill(Color(192,160,128,255));
-	static const int opacities[3] = {128, 160, 192};
-	weather_plane->SetOpacity(opacities[data.weather_strength]);
-	// TODO
-}
-
 void Game_Screen::Update() {
 	if (data.tint_time_left > 0) {
 		data.tint_current_red = interpolate(data.tint_time_left, data.tint_current_red, data.tint_finish_red);
@@ -325,7 +224,7 @@ void Game_Screen::Update() {
 	}
 
 	if (data.flash_time_left > 0) {
-		data.flash_current_level = interpolate(data.flash_time_left, data.flash_current_level / 31, 0);
+		data.flash_current_level = interpolate(data.flash_time_left, data.flash_current_level, 0);
 		data.flash_time_left--;
 		if (data.flash_time_left <= 0)
 			data.flash_time_left = data.flash_continuous ? flash_period : 0;
@@ -336,7 +235,7 @@ void Game_Screen::Update() {
 		if (data.shake_time_left <= 1 && data.shake_position * (data.shake_position + delta) < 0)
 			data.shake_position = 0;
 		else
-			data.shake_position += delta;
+			data.shake_position += (int)delta;
 		if (data.shake_position > data.shake_strength * 2)
 			shake_direction = -1;
 		if (data.shake_position < -data.shake_strength * 2)
@@ -359,24 +258,16 @@ void Game_Screen::Update() {
 		case Weather_None:
 			break;
 		case Weather_Rain:
-			InitWeather();
 			InitSnowRain();
 			UpdateSnowRain(4);
-			DrawRain();
 			break;
 		case Weather_Snow:
-			InitWeather();
 			InitSnowRain();
 			UpdateSnowRain(2);
-			DrawSnow();
 			break;
 		case Weather_Fog:
-			InitWeather();
-			DrawFog();
 			break;
 		case Weather_Sandstorm:
-			InitWeather();
-			DrawSandstorm();
 			break;
 	}
 
@@ -386,4 +277,29 @@ void Game_Screen::Update() {
 			animation.reset();
 		}
 	}
+}
+
+Tone Game_Screen::GetTone() {
+	return Tone((int) ((data.tint_current_red) * 128 / 100),
+		(int) ((data.tint_current_green) * 128 / 100),
+		(int) ((data.tint_current_blue) * 128 / 100),
+		(int) ((data.tint_current_sat) * 128 / 100));
+}
+
+Color Game_Screen::GetFlash(int& current_level, int& time_left) {
+	time_left = data.flash_time_left;
+	current_level = data.flash_time_left * 255 / 31;
+	return Color(data.flash_red * 255 / 31, data.flash_green * 255 / 31, data.flash_blue * 255 / 31, 255);
+}
+
+int Game_Screen::GetWeatherType() {
+	return data.weather;
+}
+
+int Game_Screen::GetWeatherStrength() {
+	return data.weather_strength;
+}
+
+const std::vector<Game_Screen::Snowflake>& Game_Screen::GetSnowflakes() {
+	return snowflakes;
 }
