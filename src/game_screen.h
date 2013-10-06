@@ -25,7 +25,6 @@
 #include "game_character.h"
 #include "battle_animation.h"
 #include <boost/scoped_ptr.hpp>
-#include "screen.h"
 
 class Screen;
 
@@ -50,6 +49,9 @@ public:
 	void ShowBattleAnimation(int animation_id, int target_id, bool global);
 	bool IsBattleAnimationWaiting() const;
 	void Update();
+
+	Tone GetTone();
+	Color GetFlash(int& current_level, int& time_left);
 
 private:
 	std::vector<EASYRPG_SHARED_PTR<Picture> > pictures;
@@ -87,7 +89,6 @@ protected:
 	BitmapRef snow_bitmap;
 	BitmapRef rain_bitmap;
 	boost::scoped_ptr<BattleAnimation> animation;
-	boost::scoped_ptr<Screen> screen;
 
 	void InitWeather();
 	void StopWeather();

@@ -46,6 +46,7 @@ Scene_Map::Scene_Map() {
 void Scene_Map::Start() {
 	spriteset.reset(new Spriteset_Map());
 	message_window.reset(new Window_Message(0, 240 - 80, 320, 80));
+	screen.reset(new Screen());
 
 	Main_Data::game_screen->Reset();
 	Graphics::FrameReset();

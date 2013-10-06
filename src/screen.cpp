@@ -17,23 +17,21 @@
 
 // Headers
 #include <string>
-#include "data.h"
-#include "rpg_savescreen.h"
-#include "rpg_terrain.h"
 #include "baseui.h"
-#include "graphics.h"
-#include "cache.h"
-#include "screen.h"
-#include "bitmap_screen.h"
 #include "bitmap.h"
 #include "color.h"
 #include "game_screen.h"
+#include "graphics.h"
+#include "main_data.h"
+#include "screen.h"
 
-Screen::Screen(RPG::SaveScreen& data) :
-	ID(Graphics::drawable_id++), zobj(NULL), visible(true), data(data) {
+Screen::Screen() :
+	ID(Graphics::drawable_id++) {
 
 	zobj = Graphics::RegisterZObj(z, ID);
 	Graphics::RegisterDrawable(ID, this);
+
+	default_tone = Tone(128, 128, 128, 128);
 }
 
 Screen::~Screen() {
@@ -57,22 +55,21 @@ void Screen::Update() {
 }
 
 void Screen::Draw(int /* z_order */) {
-	if (!visible)
-		return;
-
 	BitmapRef dst = DisplayUi->GetDisplaySurface();
 
-	Tone tone = Tone((int) ((data.tint_current_red) * 128 / 100),
-		(int) ((data.tint_current_green) * 128 / 100),
-		(int) ((data.tint_current_blue) * 128 / 100),
-		(int) ((data.tint_current_sat) * 128 / 100));
+	Tone tone = Main_Data::game_screen->GetTone();
 
-	if (tone != Tone(128, 128, 128, 128)) {
+	if (tone != default_tone) {
 		dst->ToneBlit(0, 0, *dst, Rect(0, 0, 320, 240), tone);
 	}
 
-	if (data.flash_time_left > 0) {
-		BitmapRef flash = Bitmap::Create(320, 240, Color(data.flash_red * 255 / 31, data.flash_green * 255 / 31, data.flash_blue * 255 / 31, 255));
-		dst->Blit(0, 0, *flash, flash->GetRect(), (int)(data.flash_current_level * 255 / 31));
+
+	int flash_time_left;
+	int flash_current_level;
+	Color flash_color = Main_Data::game_screen->GetFlash(flash_current_level, flash_time_left);
+
+	if (flash_time_left > 0) {
+		BitmapRef flash = Bitmap::Create(320, 240, flash_color);
+		dst->Blit(0, 0, *flash, flash->GetRect(), (int)(flash_current_level * 255 / 31));
 	}
 }

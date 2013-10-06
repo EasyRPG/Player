@@ -30,7 +30,7 @@ namespace RPG {
 
 class Screen : public Drawable {
 public:
-	Screen(RPG::SaveScreen& data);
+	Screen();
 	~Screen();
 
 	void Draw(int z_order);
@@ -44,11 +44,10 @@ private:
 	static const int z = 1000;
 	static const DrawableType type = TypeScreen;
 
-	RPG::SaveScreen& data;
-
 	unsigned long ID;
 	ZObj* zobj;
-	bool visible;
+
+	Tone default_tone;
 };
 
 #endif

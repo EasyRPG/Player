@@ -23,7 +23,6 @@
 #include "main_data.h"
 #include "game_screen.h"
 #include "bitmap.h"
-#include "screen.h"
 
 Game_Screen::Game_Screen() :
 	data(Main_Data::game_data.screen)
@@ -73,8 +72,6 @@ void Game_Screen::Reset()
 
 	snowflakes.clear();
 	StopWeather();
-
-	screen.reset(new Screen(data));
 }
 
 Picture* Game_Screen::GetPicture(int id) {
@@ -390,4 +387,17 @@ void Game_Screen::Update() {
 			animation.reset();
 		}
 	}
+}
+
+Tone Game_Screen::GetTone() {
+	return Tone((int) ((data.tint_current_red) * 128 / 100),
+		(int) ((data.tint_current_green) * 128 / 100),
+		(int) ((data.tint_current_blue) * 128 / 100),
+		(int) ((data.tint_current_sat) * 128 / 100));
+}
+
+Color Game_Screen::GetFlash(int& current_level, int& time_left) {
+	time_left = data.flash_time_left;
+	current_level = data.flash_time_left * 255 / 31;
+	return Color(data.flash_red * 255 / 31, data.flash_green * 255 / 31, data.flash_blue * 255 / 31, 255);
 }

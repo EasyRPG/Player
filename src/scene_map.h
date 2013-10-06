@@ -53,6 +53,8 @@ public:
 
 private:
 	void UpdateTeleportPlayer();
+
+	boost::scoped_ptr<Screen> screen;
 };
 
 #endif
