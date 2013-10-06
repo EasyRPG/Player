@@ -20,8 +20,9 @@
 
 // Headers
 #include <string>
-#include "system.h"
+#include "bitmap.h"
 #include "drawable.h"
+#include "system.h"
 #include "zobj.h"
 
 namespace RPG {
@@ -56,6 +57,7 @@ private:
 	ZObj* zobj;
 
 	Tone default_tone;
+	BitmapRef flash;
 };
 
 #endif

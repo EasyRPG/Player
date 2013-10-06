@@ -69,7 +69,11 @@ void Screen::Draw(int /* z_order */) {
 	Color flash_color = Main_Data::game_screen->GetFlash(flash_current_level, flash_time_left);
 
 	if (flash_time_left > 0) {
-		BitmapRef flash = Bitmap::Create(320, 240, flash_color);
+		if (!flash) {
+			flash = Bitmap::Create(320, 240, flash_color);
+		} else {
+			flash->Fill(flash_color);
+		}
 		dst->Blit(0, 0, *flash, flash->GetRect(), flash_current_level);
 	}
 }
