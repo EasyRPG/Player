@@ -83,6 +83,7 @@ easyrpg_player_SOURCES = \
 	scene_skill.cpp \
 	scene_status.cpp \
 	scene_title.cpp \
+	screen.cpp \
 	sdl_audio.cpp \
 	sdl_ui.cpp \
 	sprite_character.cpp \
