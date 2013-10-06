@@ -50,7 +50,20 @@ public:
 	bool IsBattleAnimationWaiting() const;
 	void Update();
 
+	/**
+	 * Returns the current screen tone.
+	 *
+	 * @return tone 
+	 */
 	Tone GetTone();
+
+	/**
+	 * Returns the current flash color.
+	 *
+	 * @param current_level Current strength adjusted to 0-255 
+	 * @param time_left how many frames of flashing are left
+	 * @return Flash color
+	 */
 	Color GetFlash(int& current_level, int& time_left);
 
 private:
