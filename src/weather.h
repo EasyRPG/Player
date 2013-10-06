@@ -48,7 +48,7 @@ private:
 	void DrawFog();
 	void DrawSandstorm();
 
-	static const int z = 10000;
+	static const int z = 400;
 	static const DrawableType type = TypeWeather;
 
 	unsigned long ID;
