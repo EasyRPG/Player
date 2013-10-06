@@ -59,6 +59,8 @@ private:
 	BitmapRef weather_surface;
 	BitmapRef snow_bitmap;
 	BitmapRef rain_bitmap;
+
+	bool dirty;
 };
 
 #endif

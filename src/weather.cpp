@@ -28,14 +28,10 @@
 #include "weather.h"
 
 Weather::Weather() :
-	ID(Graphics::drawable_id++) {
+	ID(Graphics::drawable_id++), dirty(false) {
 
 	zobj = Graphics::RegisterZObj(z, ID);
 	Graphics::RegisterDrawable(ID, this);
-
-	weather_screen = BitmapScreen::Create();
-	weather_surface = Bitmap::Create(320, 240);
-	weather_screen->SetBitmap(weather_surface);
 }
 
 Weather::~Weather() {
@@ -59,7 +55,18 @@ void Weather::Update() {
 }
 
 void Weather::Draw(int /* z_order */) {
-	weather_surface->Clear();
+	if (Main_Data::game_screen->GetWeatherType() != Game_Screen::Weather_None) {
+		if (!weather_screen || !weather_surface) {
+			weather_screen = BitmapScreen::Create();
+			weather_surface = Bitmap::Create(320, 240);
+			weather_screen->SetBitmap(weather_surface);
+		}
+	}
+
+	if (dirty && weather_surface) {
+		weather_surface->Clear();
+		dirty = false;
+	}
 
 	switch (Main_Data::game_screen->GetWeatherType()) {
 		case Game_Screen::Weather_None:
@@ -78,7 +85,9 @@ void Weather::Draw(int /* z_order */) {
 			break;
 	}
 
-	weather_screen->BlitScreen(0, 0);
+	if (dirty && weather_screen) {
+		weather_screen->BlitScreen(0, 0);
+	}
 }
 
 static const uint8_t snow_image[] = {
@@ -126,6 +135,8 @@ void Weather::DrawRain() {
 			continue;
 		weather_surface->Blit(f.x - f.y/2, f.y, *rain_bitmap, rect, 96);
 	}
+
+	dirty = true;
 }
 
 void Weather::DrawSnow() {
@@ -154,6 +165,8 @@ void Weather::DrawSnow() {
 		y += wobble[1][i];
 		weather_surface->Blit(x, y, *snow_bitmap, rect, 192);
 	}
+
+	dirty = true;
 }
 
 void Weather::DrawFog() {
@@ -161,6 +174,8 @@ void Weather::DrawFog() {
 	int opacity = opacities[Main_Data::game_screen->GetWeatherStrength()];
 
 	weather_surface->Fill(Color(128, 128, 128, opacity));
+
+	dirty = true;
 }
 
 void Weather::DrawSandstorm() {
@@ -170,4 +185,6 @@ void Weather::DrawSandstorm() {
 	weather_surface->Fill(Color(192, 160, 128, opacity));
 
 	// TODO
+
+	dirty = true;
 }
