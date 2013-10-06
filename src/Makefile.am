@@ -95,6 +95,7 @@ easyrpg_player_SOURCES = \
 	tone.cpp \
 	utils.cpp \
 	util_win.cpp \
+	weather.cpp \
 	window_actorinfo.cpp \
 	window_actorstatus.cpp \
 	window_actortarget.cpp \

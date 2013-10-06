@@ -26,7 +26,8 @@ enum DrawableType {
 	TypePlane,
 	TypeBackground,
 	TypeDefault,
-	TypeScreen
+	TypeScreen,
+	TypeWeather
 };
 
 /**

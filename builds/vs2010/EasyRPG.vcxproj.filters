@@ -442,6 +442,9 @@
     <ClCompile Include="..\..\src\screen.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\weather.cpp">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\audio.h">
@@ -847,6 +850,9 @@
       <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\screen.h">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\weather.h">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
   </ItemGroup>

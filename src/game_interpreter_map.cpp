@@ -791,7 +791,7 @@ bool Game_Interpreter_Map::CommandWeatherEffects(RPG::EventCommand const& com) {
 	Game_Screen* screen = Main_Data::game_screen.get();
 	int type = com.parameters[0];
 	int strength = com.parameters[1];
-	screen->Weather(type, strength);
+	screen->SetWeatherEffect(type, strength);
 	return true;
 #endif
 }

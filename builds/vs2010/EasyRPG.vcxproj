@@ -263,6 +263,7 @@
     <ClCompile Include="..\..\src\tone.cpp" />
     <ClCompile Include="..\..\src\utils.cpp" />
     <ClCompile Include="..\..\src\util_win.cpp" />
+    <ClCompile Include="..\..\src\weather.cpp" />
     <ClCompile Include="..\..\src\window.cpp" />
     <ClCompile Include="..\..\src\window_actorinfo.cpp" />
     <ClCompile Include="..\..\src\window_actorstatus.cpp" />
@@ -400,6 +401,7 @@
     <ClInclude Include="..\..\src\utils.h" />
     <ClInclude Include="..\..\src\util_macro.h" />
     <ClInclude Include="..\..\src\util_win.h" />
+    <ClInclude Include="..\..\src\weather.h" />
     <ClInclude Include="..\..\src\window.h" />
     <ClInclude Include="..\..\src\window_actorinfo.h" />
     <ClInclude Include="..\..\src\window_actorstatus.h" />

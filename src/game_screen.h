@@ -43,7 +43,7 @@ public:
 	void ShakeOnce(int power, int speed, int tenths);
 	void ShakeBegin(int power, int speed);
 	void ShakeEnd();
-	void Weather(int type, int strength);
+	void SetWeatherEffect(int type, int strength);
 	void PlayMovie(const std::string& filename,
 				   int pos_x, int pos_y, int res_x, int res_y);
 	void ShowBattleAnimation(int animation_id, int target_id, bool global);
@@ -66,6 +66,26 @@ public:
 	 */
 	Color GetFlash(int& current_level, int& time_left);
 
+	int GetWeatherType();
+
+	int GetWeatherStrength();
+
+	struct Snowflake {
+		uint16_t x;
+		uint8_t y;
+		uint8_t life;
+	};
+
+	const std::vector<Snowflake>& GetSnowflakes();
+
+	enum Weather {
+		Weather_None,
+		Weather_Rain,
+		Weather_Snow,
+		Weather_Fog,
+		Weather_Sandstorm
+	};
+
 private:
 	std::vector<EASYRPG_SHARED_PTR<Picture> > pictures;
 
@@ -80,36 +100,13 @@ private:
 	int movie_res_x;
 	int movie_res_y;
 
-	enum Weather {
-		Weather_None,
-		Weather_Rain,
-		Weather_Snow,
-		Weather_Fog,
-		Weather_Sandstorm
-	};
-
 protected:
-	struct Snowflake {
-		uint16_t x;
-		uint8_t y;
-		uint8_t life;
-	};
-
 	std::vector<Snowflake> snowflakes;
 
-	boost::scoped_ptr<Plane> weather_plane;
-	BitmapRef weather_surface;
-	BitmapRef snow_bitmap;
-	BitmapRef rain_bitmap;
 	boost::scoped_ptr<BattleAnimation> animation;
 
-	void InitWeather();
 	void StopWeather();
 	void InitSnowRain();
 	void UpdateSnowRain(int speed);
-	void DrawRain();
-	void DrawSnow();
-	void DrawFog();
-	void DrawSandstorm();
 };
 #endif // __game_screen__
