@@ -89,23 +89,6 @@ if(OPENAL_FOUND)
   add_definitions(-D HAVE_OPENAL=1)
 endif()
 
-# Lua
-find_package(Lua)
-if(Lua_FOUND)
-  include_directories(${LUA_INCLUDE_DIR})
-  list(APPEND EASYRPG_PLAYER_LIBRARIES ${LUA_LIBRARIES})
-  add_definitions(-D HAVE_LUA=1)
-endif()
-
-# Boost (libraries that need to link)
-unset(Boost_FOUND)
-find_package(Boost COMPONENTS thread chrono system)
-if(Boost_FOUND)
-  include_directories(${Boost_INCLUDE_DIRS})
-  list(APPEND EASYRPG_PLAYER_LIBRARIES ${Boost_LIBRARIES})
-  add_definitions(-D HAVE_BOOST_LIBRARIES)
-endif()
-
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../lib/readers/include")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../src")
 
@@ -178,9 +161,8 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   set(CPACK_DEBIAN_PACKAGE_DEPENDS
     libexpat1 libfreetype6 libjpeg8 libpixman-1-0 libpng12-0 zlib1g libsdl1.2debian
     libsdl-mixer1.2 libopenal1 libogg0 libflac8 libvorbis0a libvorbisenc2 libsndfile1
-    liblua5.1-0 libboost-thread-dev libboost-chrono-dev libboost-system-dev libstdc++6
-    libgcc1 libasound2 libpulse0 libxext6 libcaca0 libmikmod2 libvorbisfile3 libmad0
-    libjson0 libslang2 libncurses5 libtinfo5 libwrap0 libasyncns0 libxau6 libxdmcp6)
+    libstdc++6 libgcc1 libasound2 libpulse0 libxext6 libcaca0 libmikmod2 libvorbisfile3
+		libmad0 libjson0 libslang2 libncurses5 libtinfo5 libwrap0 libasyncns0 libxau6 libxdmcp6)
 endif()
 
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
@@ -231,15 +213,4 @@ foreach(i ${TEST_FILES})
     COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_${name})
   set_tests_properties(test_${name}
     PROPERTIES ENVIRONMENT "${TEST_ENVS}")
-endforeach()
-
-file(GLOB LUA_TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../test/lua_script/*.lua)
-foreach(i ${LUA_TEST_FILES})
-  get_filename_component(name "${i}" NAME_WE)
-  add_test(NAME lua_test_${name} WORKING_DIRECTORY ${TEST_GAME_PATH}
-    COMMAND ${EXECUTABLE_OUTPUT_PATH}/${PROJECT_NAME}_com)
-
-  set_tests_properties(lua_test_${name}
-    PROPERTIES ENVIRONMENT
-    "RPG_LUABOT_SCRIPT=${i};${TEST_ENVS}")
 endforeach()
