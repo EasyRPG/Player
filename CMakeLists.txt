@@ -11,7 +11,7 @@ if(NOT EASYRPG_READERS_PATH)
 endif()
 find_package(Git REQUIRED)
 if(NOT EXISTS ${EASYRPG_READERS_PATH})
-  execute_process(COMMAND ${GIT_EXECUTABLE} clone
+  execute_process(COMMAND ${GIT_EXECUTABLE} clone "--depth=1"
     "https://github.com/EasyRPG/Readers.git"
     "${EASYRPG_READERS_PATH}")
 endif()
