@@ -9,6 +9,7 @@ before_script:
 script: make all test
 after_script:
   - cat lib/TestGame/TestGame-2000/easyrpg_log.txt
+  - cd ./lib/TestGame/TestGame-2000 && RPG_RTP_PATH="../../../lib" ../../../bin/test_filefinder
 env:
   global:
     - WORKAROUND_CXX_FLAGS="-DBOOST_NO_CXX11_SMART_PTR -DBOOST_NO_CXX11_HDR_ARRAY -DBOOST_NO_RTTI -DBOOST_NO_TYPEID"
