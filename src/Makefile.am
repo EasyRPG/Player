@@ -12,7 +12,6 @@ easyrpg_player_SOURCES = \
 	bitmap.cpp \
 	bitmap_screen.cpp \
 	bitmap_utils.cpp \
-	bot_ui.cpp \
 	cache.cpp \
 	color.cpp \
 	effects.cpp \
@@ -55,7 +54,6 @@ easyrpg_player_SOURCES = \
 	input_buttons_gph.cpp \
 	input_buttons_psp.cpp \
 	input.cpp \
-	lua_bot.cpp \
 	main.cpp \
 	main_data.cpp \
 	output.cpp \
