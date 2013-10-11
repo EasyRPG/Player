@@ -197,8 +197,8 @@ set(TEST_GAME_PATH "${TEST_GAME_REPOSITORY_PATH}/TestGame-2000")
 
 set(TEST_ENVS "RPG_TEST_GAME_PATH=${TEST_GAME_PATH}")
 if(EXISTS $ENV{RPG_RTP_PATH})
-  message(STATUS "using rtp path $ENV{RPG_RTP_PATH}")
   get_filename_component(RPG_RTP_PATH "$ENV{RPG_RTP_PATH}" ABSOLUTE)
+  message(STATUS "using rtp path ${RPG_RTP_PATH}")
   list(APPEND TEST_ENVS "RPG_RTP_PATH=${RPG_RTP_PATH}")
 endif()
 
