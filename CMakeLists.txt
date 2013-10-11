@@ -5,13 +5,13 @@ project(EasyRPG_Player CXX C)
 # reader
 # - ${EASYRPG_READERS_PATH}
 
-set(DEFAULT_EASYRPG_READERS_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../lib/readers")
+set(DEFAULT_EASYRPG_READERS_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/readers")
 if(NOT EASYRPG_READERS_PATH)
   set(EASYRPG_READERS_PATH "${DEFAULT_EASYRPG_READERS_PATH}")
 endif()
 find_package(Git REQUIRED)
 if(NOT EXISTS ${EASYRPG_READERS_PATH})
-  execute_process(COMMAND ${GIT_EXECUTABLE} clone
+  execute_process(COMMAND ${GIT_EXECUTABLE} clone "--depth=1"
     "https://github.com/EasyRPG/Readers.git"
     "${EASYRPG_READERS_PATH}")
 endif()
@@ -19,12 +19,12 @@ add_subdirectory(
   ${EASYRPG_READERS_PATH}/builds/cmake
   ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/EasyRPG_Readers)
 
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../bin)
-set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
+set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 link_directories(${LIBRARY_OUTPUT_PATH})
 
 list(APPEND CMAKE_MODULE_PATH
-	"${CMAKE_CURRENT_SOURCE_DIR}/../../lib/readers/builds/cmake/Modules"
+	"${CMAKE_CURRENT_SOURCE_DIR}/lib/readers/builds/cmake/Modules"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Modules")
 
 add_definitions(
@@ -44,7 +44,7 @@ if(EXISTS ${WINE_EXECUTABLE})
 endif()
 
 # shinonome font
-set(SHINONOME_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../lib/shinonome")
+set(SHINONOME_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/shinonome")
 set(SHINONOME_SRCS "${SHINONOME_PATH}/gothic.cxx" "${SHINONOME_PATH}/mincho.cxx")
 include_directories(${SHINONOME_PATH})
 find_package(Ruby)
@@ -89,25 +89,8 @@ if(OPENAL_FOUND)
   add_definitions(-D HAVE_OPENAL=1)
 endif()
 
-# Lua
-find_package(Lua)
-if(Lua_FOUND)
-  include_directories(${LUA_INCLUDE_DIR})
-  list(APPEND EASYRPG_PLAYER_LIBRARIES ${LUA_LIBRARIES})
-  add_definitions(-D HAVE_LUA=1)
-endif()
-
-# Boost (libraries that need to link)
-unset(Boost_FOUND)
-find_package(Boost COMPONENTS thread chrono system)
-if(Boost_FOUND)
-  include_directories(${Boost_INCLUDE_DIRS})
-  list(APPEND EASYRPG_PLAYER_LIBRARIES ${Boost_LIBRARIES})
-  add_definitions(-D HAVE_BOOST_LIBRARIES)
-endif()
-
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../lib/readers/include")
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../src")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/readers/include")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 foreach(i Expat Freetype JPEG Pixman ZLIB PNG SDL Boost Iconv)
   find_package(${i} REQUIRED)
@@ -123,14 +106,14 @@ set(EASYRPG_PLAYER_LIBRARIES_ALL
   ${EASYRPG_PLAYER_LIBRARIES} "${PROJECT_NAME}_Static" EasyRPG_Reader)
 
 # entry point
-set(MAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../../src/main.cpp")
+set(MAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
 
 # static library
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/../../src SRCS)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src SRCS)
 list(REMOVE_ITEM SRCS ${MAIN_FILE})
 list(APPEND SRCS ${SHINONOME_SRCS})
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-  list(APPEND SRCS "${CMAKE_CURRENT_SOURCE_DIR}/../../resources/player.rc")
+  list(APPEND SRCS "${CMAKE_CURRENT_SOURCE_DIR}/resources/player.rc")
 endif()
 add_library(${PROJECT_NAME}_Static STATIC ${SRCS})
 
@@ -138,20 +121,20 @@ add_library(${PROJECT_NAME}_Static STATIC ${SRCS})
 find_package(Ruby)
 if(RUBY_FOUND)
   add_custom_command(
-    OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/../../src/rtp_table_bom.h"
+    OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/src/rtp_table_bom.h"
     COMMAND "${RUBY_EXECUTABLE}"
     ARGS
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../resources/add_bom.rb"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../src/rtp_table.h"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../src/rtp_table_bom.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/resources/add_bom.rb"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/rtp_table.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/rtp_table_bom.h"
     DEPENDS
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../src/rtp_table.h"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../resources/add_bom.rb")
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/rtp_table.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/resources/add_bom.rb")
   execute_process(
     COMMAND "${RUBY_EXECUTABLE}"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../resources/add_bom.rb"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../src/rtp_table.h"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../src/rtp_table_bom.h")
+    "${CMAKE_CURRENT_SOURCE_DIR}/resources/add_bom.rb"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/rtp_table.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/rtp_table_bom.h")
 endif()
 
 # executable
@@ -178,15 +161,14 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   set(CPACK_DEBIAN_PACKAGE_DEPENDS
     libexpat1 libfreetype6 libjpeg8 libpixman-1-0 libpng12-0 zlib1g libsdl1.2debian
     libsdl-mixer1.2 libopenal1 libogg0 libflac8 libvorbis0a libvorbisenc2 libsndfile1
-    liblua5.1-0 libboost-thread-dev libboost-chrono-dev libboost-system-dev libstdc++6
-    libgcc1 libasound2 libpulse0 libxext6 libcaca0 libmikmod2 libvorbisfile3 libmad0
-    libjson0 libslang2 libncurses5 libtinfo5 libwrap0 libasyncns0 libxau6 libxdmcp6)
+    libstdc++6 libgcc1 libasound2 libpulse0 libxext6 libcaca0 libmikmod2 libvorbisfile3
+		libmad0 libjson0 libslang2 libncurses5 libtinfo5 libwrap0 libasyncns0 libxau6 libxdmcp6)
 endif()
 
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
 set(CPACK_PACKAGE_VERSION "0.1")
-set(CPACK_PACKAGE_ICON "${CMAKE_CURRENT_SOURCE_DIR}/../../resources/player.ico")
-set(CPACK_RESOURCE_FILE_README ${CMAKE_CURRENT_SOURCE_DIR}/../../README)
+set(CPACK_PACKAGE_ICON "${CMAKE_CURRENT_SOURCE_DIR}/resources/player.ico")
+set(CPACK_RESOURCE_FILE_README ${CMAKE_CURRENT_SOURCE_DIR}/README)
 
 include(CPack)
 
@@ -194,9 +176,9 @@ include(CPack)
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
   add_custom_target(player_doc
-    ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/../Doxyfile
+    ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/builds/Doxyfile
     DEPENDS ${SRCS} ${MAIN_FILE}
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/..
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/builds
     COMMENT "Generating API documentation with Doxygen" VERBATIM)
   add_custom_target(doc)
   add_dependencies(doc player_doc reader_doc)
@@ -205,7 +187,7 @@ endif()
 # test
 enable_testing()
 
-set(TEST_GAME_REPOSITORY_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../lib/TestGame")
+set(TEST_GAME_REPOSITORY_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/TestGame")
 if(NOT EXISTS ${TEST_GAME_REPOSITORY_PATH})
   execute_process(COMMAND ${GIT_EXECUTABLE} clone
     "https://github.com/EasyRPG/TestGame.git"
@@ -215,11 +197,12 @@ set(TEST_GAME_PATH "${TEST_GAME_REPOSITORY_PATH}/TestGame-2000")
 
 set(TEST_ENVS "RPG_TEST_GAME_PATH=${TEST_GAME_PATH}")
 if(EXISTS $ENV{RPG_RTP_PATH})
-  message(STATUS "using rtp path $ENV{RPG_RTP_PATH}")
-  list(APPEND TEST_ENVS "RPG_RTP_PATH=$ENV{RPG_RTP_PATH}")
+  get_filename_component(RPG_RTP_PATH "$ENV{RPG_RTP_PATH}" ABSOLUTE)
+  message(STATUS "using rtp path ${RPG_RTP_PATH}")
+  list(APPEND TEST_ENVS "RPG_RTP_PATH=${RPG_RTP_PATH}")
 endif()
 
-file(GLOB TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../test/*.cpp)
+file(GLOB TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp)
 foreach(i ${TEST_FILES})
   get_filename_component(name "${i}" NAME_WE)
   add_executable(test_${name} ${i})
@@ -231,15 +214,4 @@ foreach(i ${TEST_FILES})
     COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_${name})
   set_tests_properties(test_${name}
     PROPERTIES ENVIRONMENT "${TEST_ENVS}")
-endforeach()
-
-file(GLOB LUA_TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../test/lua_script/*.lua)
-foreach(i ${LUA_TEST_FILES})
-  get_filename_component(name "${i}" NAME_WE)
-  add_test(NAME lua_test_${name} WORKING_DIRECTORY ${TEST_GAME_PATH}
-    COMMAND ${EXECUTABLE_OUTPUT_PATH}/${PROJECT_NAME}_com)
-
-  set_tests_properties(lua_test_${name}
-    PROPERTIES ENVIRONMENT
-    "RPG_LUABOT_SCRIPT=${i};${TEST_ENVS}")
 endforeach()

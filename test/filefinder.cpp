@@ -20,6 +20,7 @@ void CheckEnglishFilename() {
 
 int main(int, char**) {
 	FileFinder::Init();
+	FileFinder::InitRtpPaths();
 
 	CheckIsDirectory();
 	CheckIsRPG2kProject();

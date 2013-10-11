@@ -142,15 +142,15 @@ namespace {
 			if (! *i) { continue; }
 
 			boost::optional<std::string> const ret = FindFile(*(*i), dir, name, exts);
-			if (ret != boost::none) { return *ret; }
+			if (ret) { return *ret; }
 
 			boost::optional<std::string> const ret_rtp = FindFile(*(*i), dir, rtp_name, exts);
-			if (ret_rtp != boost::none) { return *ret_rtp; }
+			if (ret_rtp) { return *ret_rtp; }
 		}
 
 		Output::Debug("Cannot find: %s/%s", dir.c_str(), name.c_str());
 
-		return "";
+		return std::string();
 	}
 
 } // anonymous namespace

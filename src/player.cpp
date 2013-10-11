@@ -29,8 +29,6 @@
 #include "scene_title.h"
 #include "scene_battle.h"
 #include "utils.h"
-#include "bot_ui.h"
-#include "lua_bot.h"
 
 #include <algorithm>
 #include <set>
@@ -110,24 +108,6 @@ void Player::Init(int argc, char *argv[]) {
 	FileFinder::Init();
 
 	DisplayUi.reset();
-
-#if defined(HAVE_LUA) && defined(HAVE_BOOST_LIBRARIES)
-	char const* const luabot_script = getenv("RPG_LUABOT_SCRIPT");
-	if(luabot_script) {
-		if(FileFinder::Exists(luabot_script)) {
-			std::ifstream ifs(luabot_script);
-			assert(ifs);
-
-			std::istreambuf_iterator<char> const eos;
-			std::string const script(std::istreambuf_iterator<char>(ifs), eos);
-
-			DisplayUi = EASYRPG_MAKE_SHARED<BotUi>(EASYRPG_MAKE_SHARED<LuaBot>(script));
-			Output::IgnorePause(true);
-		} else {
-			Output::Debug("luabost script not found in \"%s\"", luabot_script);
-		}
-	}
-#endif
 
 	if(! DisplayUi) {
 		DisplayUi = BaseUi::CreateUi
