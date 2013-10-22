@@ -22,7 +22,6 @@ else
 ifeq ($(BUILD_GCWZERO), YES)
 	TOOLCHAINDIR = /opt/gcw0-toolchain
 	SYSROOT = $(TOOLCHAINDIR)/usr/mipsel-gcw0-linux-uclibc/sysroot
-	PIXMAN_CFLAGS = /opt/gcw0-toolchain/usr/mipsel-gcw0-linux-uclibc/sysroot/usr/include/pixman-1
 	CFLAGS = -O2 -fomit-frame-pointer -ffunction-sections -ffast-math -G0 -std=gnu++11
 	LDFLAGS = -Wl,--gc-sections
 	CXXFLAGS = 
@@ -37,23 +36,23 @@ PIXMAN_LIBS = `$(PKG_CONFIG) pixman-1 --libs`
 FREETYPE_CFLAGS = `$(PKG_CONFIG) freetype2 --cflags`
 
 # Compiler headers
-INCLUDES = ../../lib/Readers/include ../../src ../../lib/shinonome
+INCLUDES = ../../lib/Readers/include ../../src  ../../lib/shinonome 
 INCDIR = $(foreach dir, $(INCLUDES), -I$(wildcard $(dir)))
 
 # Compiler source
-SOURCES = ../../lib/Readers/src ../../lib/Readers/src/generated ../../src 
+SOURCES = ../../lib/Readers/src ../../src ../../lib/Readers/src/generated ../../lib/shinonome
 CPPFILES = $(foreach dir, $(SOURCES), $(wildcard $(dir)/*.cpp))
 BINFILES = $(foreach dir, $(DATA), $(wildcard $(dir)/*.*))
 OBJS = $(addsuffix .o, $(BINFILES)) $(CPPFILES:.cpp=.o)
-
+OBJS += gothic.o mincho.o
 
 
 # Compiler flags
 CFLAGS += -O2 -Wall -DUSE_SDL `$(SDL_CONFIG) --cflags` $(PIXMAN_CFLAGS) $(FREETYPE_CFLAGS)
-CXXFLAGS += $(CFLAGS) -fno-exceptions -fno-rtti
+CXXFLAGS += $(CFLAGS) -fexceptions -fno-rtti
 LDFLAGS += -lstdc++ -lexpat -lSDL -lSDL_gfx -lSDL_ttf -lSDL_image -lSDL_mixer\
           -ljpeg -lpng14 -lz -lfreetype -lvorbisidec -lgcc -lm -lc -lpthread\
-          -ldl `$(SDL_CONFIG) --libs` $(PIXMAN_LIBS)
+          -ldl -liconv `$(SDL_CONFIG) --libs` $(PIXMAN_LIBS)
 
 # Host compiler and extra flags
 HOST = $(BINDIR)/mipsel-linux-
@@ -67,6 +66,14 @@ $(TARGET): $(OBJS)
 .cpp.o:
 	$(HOST)gcc $(INCDIR) $(CXXFLAGS) -c $< -o $@
 
+gothic.o: ../../lib/shinonome/gothic.cxx
+	$(HOST)gcc -c ../../lib/shinonome/gothic.cxx
+
+mincho.o: ../../lib/shinonome/mincho.cxx
+	$(HOST)gcc -c ../../lib/shinonome/mincho.cxx
+
+
+
 # Clean Project
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -f $(OBJS) $(TARGET) 
