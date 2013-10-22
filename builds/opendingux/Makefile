@@ -32,11 +32,11 @@ BINDIR = $(TOOLCHAINDIR)/usr/bin
 SDL_CONFIG = $(SYSROOT)/usr/bin/sdl-config
 
 # Compiler headers
-INCLUDES = ../../lib/readers/include ../../src
+INCLUDES = ../../lib/Readers/include ../../src
 INCDIR = $(foreach dir, $(INCLUDES), -I$(wildcard $(dir)))
 
 # Compiler source
-SOURCES = ../../lib/readers/src ../../lib/readers/src/generated ../../src
+SOURCES = ../../lib/Readers/src ../../lib/Readers/src/generated ../../src
 CPPFILES = $(foreach dir, $(SOURCES), $(wildcard $(dir)/*.cpp))
 BINFILES = $(foreach dir, $(DATA), $(wildcard $(dir)/*.*))
 OBJS = $(addsuffix .o, $(BINFILES)) $(CPPFILES:.cpp=.o)
