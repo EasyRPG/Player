@@ -51,7 +51,7 @@ OBJS = $(addsuffix .o, $(BINFILES)) $(CPPFILES:.cpp=.o)
 CFLAGS += -O2 -Wall -DUSE_SDL `$(SDL_CONFIG) --cflags` $(PIXMAN_CFLAGS) $(FREETYPE_CFLAGS)
 CXXFLAGS += $(CFLAGS) -fno-exceptions -fno-rtti
 LDFLAGS += -lstdc++ -lexpat -lSDL -lSDL_gfx -lSDL_ttf -lSDL_image -lSDL_mixer\
-          -ljpeg -lpng12 -lz -lfreetype -lvorbisidec -lgcc -lm -lc -lpthread\
+          -ljpeg -lpng14 -lz -lfreetype -lvorbisidec -lgcc -lm -lc -lpthread\
           -ldl `$(SDL_CONFIG) --libs` $(PIXMAN_LIBS)
 
 # Host compiler and extra flags
