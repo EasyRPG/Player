@@ -22,6 +22,7 @@ else
 ifeq ($(BUILD_GCWZERO), YES)
 	TOOLCHAINDIR = /opt/gcw0-toolchain
 	SYSROOT = $(TOOLCHAINDIR)/usr/mipsel-gcw0-linux-uclibc/sysroot
+	PIXMAN_CFLAGS = /opt/gcw0-toolchain/usr/mipsel-gcw0-linux-uclibc/sysroot/usr/include/pixman-1
 	CFLAGS = -O2 -fomit-frame-pointer -ffunction-sections -ffast-math -G0 -std=gnu++11
 	LDFLAGS = -Wl,--gc-sections
 	CXXFLAGS = 
@@ -31,16 +32,16 @@ endif
 BINDIR = $(TOOLCHAINDIR)/usr/bin
 SDL_CONFIG = $(SYSROOT)/usr/bin/sdl-config
 PKG_CONFIG = $(BINDIR)/pkg-config
-PIXMAN_CFLAGS = `$(PKG_CONFIG) pixman-1 --cflags`
+PIXMAN_CFLAGS = -I$(SYSROOT)/usr/include/pixman-1
 PIXMAN_LIBS = `$(PKG_CONFIG) pixman-1 --libs`
 FREETYPE_CFLAGS = `$(PKG_CONFIG) freetype2 --cflags`
 
 # Compiler headers
-INCLUDES = ../../lib/Readers/include ../../src
+INCLUDES = ../../lib/Readers/include ../../src ../../lib/shinonome
 INCDIR = $(foreach dir, $(INCLUDES), -I$(wildcard $(dir)))
 
 # Compiler source
-SOURCES = ../../lib/Readers/src ../../lib/Readers/src/generated ../../src
+SOURCES = ../../lib/Readers/src ../../lib/Readers/src/generated ../../src 
 CPPFILES = $(foreach dir, $(SOURCES), $(wildcard $(dir)/*.cpp))
 BINFILES = $(foreach dir, $(DATA), $(wildcard $(dir)/*.*))
 OBJS = $(addsuffix .o, $(BINFILES)) $(CPPFILES:.cpp=.o)
