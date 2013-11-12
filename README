@@ -56,7 +56,10 @@ Building
   autoconf >= 2.68, automake >= 1.11, pkg-config
 
   Compile with:
-  ./autogen.sh && ./configure CPPFLAGS=-DUNIX --with-readers=/ABSOLUTE/PATH/TO/Readers/build && make
+  ./configure CPPFLAGS=-DUNIX && make
+
+  Install as super user with:
+  make install
 
 
 * Cmake method:
