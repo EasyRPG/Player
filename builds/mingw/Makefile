@@ -19,7 +19,7 @@ CFLAGS = \
 	-I ${HOME_BUILD_PATH}/include/pixman-1 \
 	$(shell ${HOME_BUILD_PATH}/bin/sdl-config --cflags) \
 	$(shell ${HOME_BUILD_PATH}/bin/freetype-config --cflags) \
-	-DHAVE_OPENAL=1 -DHAVE_LUA=1 -DHABE_BOOST_LIBRARIES=1  -DAL_LIBTYPE_STATIC=1 \
+	-DHAVE_OPENAL=1 -DHABE_BOOST_LIBRARIES=1  -DAL_LIBTYPE_STATIC=1 \
 
 CXXFLAGS = $(CFLAGS) -fexceptions -std=gnu++0x
 ASFLAGS = $(CFLAGS)
@@ -31,7 +31,7 @@ LIBS += \
 	-lexpat -lpixman-1 -lpng -ljpeg -lSDLmain \
 	$(shell ${HOME_BUILD_PATH}/bin/sdl-config --libs) \
 	$(shell ${HOME_BUILD_PATH}/bin/freetype-config --libs) \
-	 -lz -lm -lOpenAL32 -llua \
+	 -lz -lm -lOpenAL32 \
 	-lsndfile -lvorbis -lvorbisenc -lvorbisfile -lFLAC -logg \
 	-lole32 -loleaut32 -lwinmm -lws2_32 \
 
