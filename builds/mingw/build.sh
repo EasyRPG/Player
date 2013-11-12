@@ -23,10 +23,6 @@ export CONFIGURE_FLAGS="--host=$BUILD_TARGET
 export CMAKE_SYSTEM_NAME="Windows"
 export JOBS=2
 
-export LUA_CFLAGS="$CFLAGS"
-export LUA_LDFLAGS="$LDFLAGS"
-export LUA_EXECUTABLE="lua luac"
-
 export BOOST_OPTIONS="threadapi=pthread target-os=windows --without-serialization"
 export PREFIX_PATHS="$MINGW_PATH"
 
