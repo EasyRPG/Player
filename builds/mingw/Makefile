@@ -19,7 +19,7 @@ CFLAGS = \
 	-I ${HOME_BUILD_PATH}/include/pixman-1 \
 	$(shell ${HOME_BUILD_PATH}/bin/sdl-config --cflags) \
 	$(shell ${HOME_BUILD_PATH}/bin/freetype-config --cflags) \
-	-DHAVE_OPENAL=1 -DHABE_BOOST_LIBRARIES=1  -DAL_LIBTYPE_STATIC=1 \
+	-DHAVE_OPENAL=1 -DHAVE_BOOST_LIBRARIES=1  -DAL_LIBTYPE_STATIC=1 \
 
 CXXFLAGS = $(CFLAGS) -fexceptions -std=gnu++0x
 ASFLAGS = $(CFLAGS)
