@@ -18,11 +18,6 @@ Documentation is available at the documentation wiki:
   https://easy-rpg.org/wiki/
 
 
-Source code generated documentation is available at:
-
-  https://easy-rpg.org/docs/player/index.html
-
-
 Requirements
 ------------
 
@@ -32,7 +27,6 @@ SDL_mixer for audio mixing.
 Freetype for custom font support.
 Pixman for low level pixel manipulation.
 libpng for PNG image support.
-libjpeg (with jpeg_mem_src) for JPEG image support.
 zlib for XYZ image support.
 
 
