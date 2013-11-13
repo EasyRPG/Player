@@ -8,11 +8,11 @@
 TARGET = EasyRPG.dge
 
 # Compiler Device option
-BUILD_DINGOO = YES
-BUILD_GCWZERO = NO
+BUILD_DINGOO = NO
+BUILD_GCWZERO = YES
 
 # Host toolchain directory and extra flags
-ifeq ($(BUILD_DINGOO), NO)
+ifeq ($(BUILD_DINGOO), YES)
 	TOOLCHAINDIR = /opt/opendingux-toolchain
 	SYSROOT = $(TOOLCHAINDIR)
 	CFLAGS = -O2 -fomit-frame-pointer -ffunction-sections -ffast-math -G0 -mbranch-likely -std=gnu++11
