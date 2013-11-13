@@ -56,7 +56,7 @@ LDFLAGS += -lstdc++ -lexpat -lSDL -lSDL_gfx -lSDL_ttf -lSDL_image -lSDL_mixer\
 
 # Host compiler and extra flags
 HOST = $(BINDIR)/mipsel-linux-
-CFLAGS += -DOPENDINGUX
+CFLAGS += -DOPENDINGUX -DHAVE_SDL_MIXER
 
 # Start compile
 $(TARGET): $(OBJS)
