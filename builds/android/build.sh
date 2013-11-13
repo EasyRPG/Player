@@ -33,10 +33,6 @@ gl_cv_header_working_stdint_h=yes
 export CMAKE_SYSTEM_NAME="Linux"
 export JOBS=2
 
-export LUA_CFLAGS="-DDLUA_USE_POSIX $CFLAGS"
-export LUA_LDFLAGS="$LDFLAGS"
-export LUA_EXECUTABLE="lua luac"
-
 export BOOST_OPTIONS="threadapi=pthread --without-locale"
 
 source $SCRIPT_DIR/../pre_build.sh

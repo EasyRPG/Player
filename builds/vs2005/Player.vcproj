@@ -287,14 +287,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\bot_ui.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\bot_ui.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\cache.cpp"
 				>
 			</File>
@@ -635,14 +627,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\lua_bot.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\lua_bot.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\main.cpp"
 				>
 			</File>
@@ -744,6 +728,14 @@
 			</File>
 			<File
 				RelativePath="..\..\src\scene_battle.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\scene_debug.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\scene_debug.h"
 				>
 			</File>
 			<File
@@ -875,6 +867,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\screen.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\screen.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\sdl_audio.cpp"
 				>
 			</File>
@@ -968,6 +968,14 @@
 			</File>
 			<File
 				RelativePath="..\..\src\utils.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\weather.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\weather.h"
 				>
 			</File>
 			<File
@@ -1240,6 +1248,14 @@
 			</File>
 			<File
 				RelativePath="..\..\src\window_targetstatus.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\window_varlist.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\window_varlist.h"
 				>
 			</File>
 			<File
