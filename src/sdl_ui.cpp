@@ -166,7 +166,7 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 	current_display_mode.height = height;
 	current_display_mode.width = width;
 
-#ifdef DINGOO
+#ifdef OPENDINGUX
 	// Only one video mode for opendingux (320x240)
 	// SDL_ListModes is broken, we must return here
 	return true;

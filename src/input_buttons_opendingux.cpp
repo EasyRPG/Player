@@ -15,7 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if defined(DINGOO)
+#if defined(OPENDINGUX)
 
 // Headers
 #include "input_buttons.h"

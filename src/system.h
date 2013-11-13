@@ -28,7 +28,7 @@
 
 #if !(defined(_WIN32) \
    || defined(UNIX) \
-   || defined(DINGOO) \
+   || defined(OPENDINGUX) \
    || defined(GEKKO) \
    || defined(PSP) \
 	  || defined(GPH) \
@@ -86,12 +86,12 @@
 #    undef SUPPORT_ZOOM
 #  endif
 
-#  if !defined(DINGOO) && !defined(GEKKO)
+#  if !defined(OPENDINGUX) && !defined(GEKKO)
 #    define SUPPORT_KEYBOARD
 #    define SUPPORT_MOUSE
 #  endif
 
-#  if !defined(DINGOO)
+#  if !defined(OPENDINGUX)
 #    define SUPPORT_JOYSTICK
 #    define SUPPORT_JOYSTICK_HAT
 #    define SUPPORT_JOYSTICK_AXIS
