@@ -8,15 +8,16 @@
 TARGET = EasyRPG.dge
 
 # Compiler Device option
-BUILD_DINGOO = NO
-BUILD_GCWZERO = YES
+BUILD_DINGOO = YES
+BUILD_GCWZERO = NO
 
 # Host toolchain directory and extra flags
-ifeq ($(BUILD_DINGOO), YES)
+ifeq ($(BUILD_DINGOO), NO)
 	TOOLCHAINDIR = /opt/opendingux-toolchain
 	SYSROOT = $(TOOLCHAINDIR)
 	CFLAGS = -O2 -fomit-frame-pointer -ffunction-sections -ffast-math -G0 -mbranch-likely -std=gnu++11
 	LDFLAGS = -Wl,--gc-sections
+	PNG_LIBS = -lpng12
 	CXXFLAGS = 
 else
 ifeq ($(BUILD_GCWZERO), YES)
@@ -24,16 +25,16 @@ ifeq ($(BUILD_GCWZERO), YES)
 	SYSROOT = $(TOOLCHAINDIR)/usr/mipsel-gcw0-linux-uclibc/sysroot
 	CFLAGS = -O2 -fomit-frame-pointer -ffunction-sections -ffast-math -G0 -std=gnu++11
 	LDFLAGS = -Wl,--gc-sections
+	PNG_LIBS = -lpng14
 	CXXFLAGS = 
 endif
 endif
 
 BINDIR = $(TOOLCHAINDIR)/usr/bin
 SDL_CONFIG = $(SYSROOT)/usr/bin/sdl-config
-PKG_CONFIG = $(BINDIR)/pkg-config
 PIXMAN_CFLAGS = -I$(SYSROOT)/usr/include/pixman-1
-PIXMAN_LIBS = `$(PKG_CONFIG) pixman-1 --libs`
-FREETYPE_CFLAGS = `$(PKG_CONFIG) freetype2 --cflags`
+PIXMAN_LIBS =  -lpixman-1
+FREETYPE_CFLAGS = -I$(SYSROOT)/usr/include/freetype2
 
 # Compiler headers
 INCLUDES = ../../lib/Readers/include ../../src  ../../lib/shinonome 
@@ -51,8 +52,8 @@ OBJS += gothic.o mincho.o
 CFLAGS += -O2 -Wall -DUSE_SDL `$(SDL_CONFIG) --cflags` $(PIXMAN_CFLAGS) $(FREETYPE_CFLAGS)
 CXXFLAGS += $(CFLAGS) -fexceptions -fno-rtti
 LDFLAGS += -lstdc++ -lexpat -lSDL -lSDL_gfx -lSDL_ttf -lSDL_image -lSDL_mixer\
-          -ljpeg -lpng14 -lz -lfreetype -lvorbisidec -lgcc -lm -lc -lpthread\
-          -ldl -liconv `$(SDL_CONFIG) --libs` $(PIXMAN_LIBS)
+          -ljpeg -lz -lfreetype -lvorbisidec -lgcc -lm -lc -lpthread\
+          -ldl -liconv `$(SDL_CONFIG) --libs` $(PIXMAN_LIBS) $(PNG_LIBS)
 
 # Host compiler and extra flags
 HOST = $(BINDIR)/mipsel-linux-
