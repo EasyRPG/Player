@@ -17,8 +17,8 @@ LOCAL_SRC_FILES := \
 LOCAL_LDLIBS += -llog -landroid \
 	-L android/lib \
 	$(shell ./android/bin/freetype-config --libs) \
-	-lpng -ljpeg -liconv \
-	-lpixman-1 -lexpat -llua \
+	-lpng -liconv \
+	-lpixman-1 -lexpat \
 	-lsndfile -lvorbis -lvorbisenc -lvorbisfile -logg -lFLAC \
 	-lopenal -lOpenSLES \
 	-lboost_chrono-mt-sd -lboost_thread-mt-sd -lboost_system-mt-sd \
@@ -35,7 +35,7 @@ LOCAL_CPPFLAGS := -std=gnu++11 \
 	-I../../lib/readers/include \
 	-I../../lib/shinonome \
 	-DEASYRPG_IS_ANDROID \
-	-DHAVE_LUA=1 -DHAVE_OPENAL=1 -DHAVE_BOOST_LIBRARIES=1 \
+	-DHAVE_OPENAL=1 -DHAVE_BOOST_LIBRARIES=1 \
 
 LOCAL_STATIC_LIBRARIES := android_native_app_glue
 
