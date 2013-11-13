@@ -166,6 +166,12 @@ bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
 	current_display_mode.height = height;
 	current_display_mode.width = width;
 
+#ifdef DINGOO
+	// Only one video mode for opendingux (320x240)
+	// SDL_ListModes is broken, we must return here
+	return true;
+#endif
+
 	if (vinfo->wm_available) {
 		toggle_fs_available = true;
 		// FIXME: this for may work, but is really confusing. Calling a method
