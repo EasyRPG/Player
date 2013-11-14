@@ -37,11 +37,11 @@ PIXMAN_LIBS =  -lpixman-1
 FREETYPE_CFLAGS = -I$(SYSROOT)/usr/include/freetype2
 
 # Compiler headers
-INCLUDES = ../../lib/Readers/include ../../src  ../../lib/shinonome 
+INCLUDES = ../../lib/readers/include ../../src  ../../lib/shinonome 
 INCDIR = $(foreach dir, $(INCLUDES), -I$(wildcard $(dir)))
 
 # Compiler source
-SOURCES = ../../lib/Readers/src ../../src ../../lib/Readers/src/generated ../../lib/shinonome
+SOURCES = ../../lib/readers/src ../../src ../../lib/Readers/src/generated ../../lib/shinonome
 CPPFILES = $(foreach dir, $(SOURCES), $(wildcard $(dir)/*.cpp))
 BINFILES = $(foreach dir, $(DATA), $(wildcard $(dir)/*.*))
 OBJS = $(addsuffix .o, $(BINFILES)) $(CPPFILES:.cpp=.o)
@@ -49,7 +49,7 @@ OBJS += gothic.o mincho.o
 
 
 # Compiler flags
-CFLAGS += -O2 -Wall -DUSE_SDL `$(SDL_CONFIG) --cflags` $(PIXMAN_CFLAGS) $(FREETYPE_CFLAGS)
+CFLAGS += -O2 -Wall -DUSE_SDL -DHAVE_SDL_MIXER `$(SDL_CONFIG) --cflags` $(PIXMAN_CFLAGS) $(FREETYPE_CFLAGS)
 CXXFLAGS += $(CFLAGS) -fexceptions -fno-rtti
 LDFLAGS += -lstdc++ -lexpat -lSDL -lSDL_gfx -lSDL_ttf -lSDL_image -lSDL_mixer\
           -ljpeg -lz -lfreetype -lvorbisidec -lgcc -lm -lc -lpthread\
@@ -57,7 +57,7 @@ LDFLAGS += -lstdc++ -lexpat -lSDL -lSDL_gfx -lSDL_ttf -lSDL_image -lSDL_mixer\
 
 # Host compiler and extra flags
 HOST = $(BINDIR)/mipsel-linux-
-CFLAGS += -DOPENDINGUX -DHAVE_SDL_MIXER
+CFLAGS += -DOPENDINGUX
 
 # Start compile
 $(TARGET): $(OBJS)
