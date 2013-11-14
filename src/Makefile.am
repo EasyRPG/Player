@@ -49,7 +49,7 @@ easyrpg_player_SOURCES = \
 	image_png.cpp \
 	image_xyz.cpp \
 	input_buttons_desktop.cpp \
-	input_buttons_dingoo.cpp \
+	input_buttons_opendingux.cpp \
 	input_buttons_gekko.cpp \
 	input_buttons_gph.cpp \
 	input_buttons_psp.cpp \

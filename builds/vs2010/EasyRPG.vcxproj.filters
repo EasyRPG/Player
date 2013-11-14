@@ -133,7 +133,7 @@
     <ClCompile Include="..\..\src\input_buttons_desktop.cpp">
       <Filter>Source Files\Backend\Input</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\input_buttons_dingoo.cpp">
+    <ClCompile Include="..\..\src\input_buttons_opendingux.cpp">
       <Filter>Source Files\Backend\Input</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\input_buttons_gekko.cpp">
