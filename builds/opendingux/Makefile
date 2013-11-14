@@ -8,8 +8,8 @@
 TARGET = EasyRPG
 
 # Compiler Device option
-BUILD_DINGOO = YES
-BUILD_GCWZERO = NO
+BUILD_DINGOO = NO
+BUILD_GCWZERO = YES
 
 # Host toolchain directory and extra flags
 ifeq ($(BUILD_DINGOO), YES)
