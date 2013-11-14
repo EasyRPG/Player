@@ -82,7 +82,7 @@
 #    undef USE_SDL_MIXER
 #  endif
 
-#  ifdef GEKKO
+#  if defined(GEKKO) || defined(OPENDINGUX)
 #    undef SUPPORT_ZOOM
 #  endif
 
