@@ -41,7 +41,7 @@ INCLUDES = ../../lib/readers/include ../../src  ../../lib/shinonome
 INCDIR = $(foreach dir, $(INCLUDES), -I$(wildcard $(dir)))
 
 # Compiler source
-SOURCES = ../../lib/readers/src ../../src ../../lib/Readers/src/generated ../../lib/shinonome
+SOURCES = ../../lib/readers/src ../../src ../../lib/readers/src/generated ../../lib/shinonome
 CPPFILES = $(foreach dir, $(SOURCES), $(wildcard $(dir)/*.cpp))
 BINFILES = $(foreach dir, $(DATA), $(wildcard $(dir)/*.*))
 OBJS = $(addsuffix .o, $(BINFILES)) $(CPPFILES:.cpp=.o)
