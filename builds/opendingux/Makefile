@@ -5,11 +5,11 @@
 ##################################################################
 
 # Compiler target file
-TARGET = EasyRPG.dge
+TARGET = EasyRPG
 
 # Compiler Device option
-BUILD_DINGOO = NO
-BUILD_GCWZERO = YES
+BUILD_DINGOO = YES
+BUILD_GCWZERO = NO
 
 # Host toolchain directory and extra flags
 ifeq ($(BUILD_DINGOO), YES)
@@ -33,7 +33,7 @@ endif
 BINDIR = $(TOOLCHAINDIR)/usr/bin
 SDL_CONFIG = $(SYSROOT)/usr/bin/sdl-config
 PIXMAN_CFLAGS = -I$(SYSROOT)/usr/include/pixman-1
-PIXMAN_LIBS =  -lpixman-1
+PIXMAN_LIBS =  $(SYSROOT)/usr/lib/libpixman-1.a
 FREETYPE_CFLAGS = -I$(SYSROOT)/usr/include/freetype2
 
 # Compiler headers
