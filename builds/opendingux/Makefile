@@ -4,15 +4,13 @@
 #                     - Based on Rikku2000's -                   #
 ##################################################################
 
-# Compiler target file
-TARGET = EasyRPG
-
 # Compiler Device option
 BUILD_DINGOO = NO
 BUILD_GCWZERO = YES
 
 # Host toolchain directory and extra flags
 ifeq ($(BUILD_DINGOO), YES)
+	TARGET = dingoo/EasyRPG
 	TOOLCHAINDIR = /opt/opendingux-toolchain
 	SYSROOT = $(TOOLCHAINDIR)
 	CFLAGS = -O2 -fomit-frame-pointer -ffunction-sections -ffast-math -G0 -mbranch-likely -std=gnu++11
@@ -21,6 +19,7 @@ ifeq ($(BUILD_DINGOO), YES)
 	CXXFLAGS = 
 else
 ifeq ($(BUILD_GCWZERO), YES)
+	TARGET = gcw-zero/EasyRPG
 	TOOLCHAINDIR = /opt/gcw0-toolchain
 	SYSROOT = $(TOOLCHAINDIR)/usr/mipsel-gcw0-linux-uclibc/sysroot
 	CFLAGS = -O2 -fomit-frame-pointer -ffunction-sections -ffast-math -G0 -std=gnu++11
