@@ -220,7 +220,7 @@
     <ClCompile Include="..\..\src\image_xyz.cpp" />
     <ClCompile Include="..\..\src\input.cpp" />
     <ClCompile Include="..\..\src\input_buttons_desktop.cpp" />
-    <ClCompile Include="..\..\src\input_buttons_dingoo.cpp" />
+    <ClCompile Include="..\..\src\input_buttons_opendingux.cpp" />
     <ClCompile Include="..\..\src\input_buttons_gekko.cpp" />
     <ClCompile Include="..\..\src\input_buttons_gph.cpp" />
     <ClCompile Include="..\..\src\input_buttons_psp.cpp" />

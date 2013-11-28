@@ -16,7 +16,7 @@
  */
 
 #if (defined(_WIN32) || defined(UNIX) || defined(EASYRPG_IS_ANDROID)) \
-	&& !(defined(DINGOO) || defined(GEKKO))
+	&& !(defined(OPENDINGUX) || defined(GEKKO))
 
 // Headers
 #include "input_buttons.h"
