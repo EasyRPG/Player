@@ -273,3 +273,4 @@ easyrpg_player_SOURCES = \
 	../lib/shinonome/shinonome.hxx \
 	../lib/shinonome/gothic.cxx \
 	../lib/shinonome/mincho.cxx
+easyrpg_player_CPPFLAGS = -I$(srcdir)/../lib/shinonome
