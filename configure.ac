@@ -11,16 +11,14 @@ AM_SILENT_RULES([yes])
 AC_CONFIG_SRCDIR([src/battle_animation.cpp])
 AC_CONFIG_HEADERS([config.h])
 
-CXXFLAGS="$CXXFLAGS -std=c++0x"
-
 # Checks for programs.
 AC_PROG_CXX
 m4_ifdef([PKG_CHECK_MODULES],[],[AC_MSG_ERROR['pkg-config' is required but it doesn't seem to be installed on this system (PKG_CHECK_MODULES macro not found).]])
 
 # Checks for libraries.
 AC_ARG_WITH([readers],[AS_HELP_STRING([--with-readers=DIR],[Location of the EasyRPG 'readers' library])],[
-	CPPFLAGS="$CPPFLAGS -I$withval/include"
-	LDFLAGS="$LDFLAGS -L$withval/lib"
+	READERS_CPPFLAGS="$CPPFLAGS -I$withval/include"
+	READERS_LDFLAGS="$LDFLAGS -L$withval/lib"
 	AC_CHECK_LIB([readers],[ini_parse],[
 		READERS_LIB="$withval/lib/libreaders.a"
 	],[AC_MSG_ERROR([EasyRPG 'readers' library does not have been found in the specified path.])])
@@ -52,6 +50,8 @@ AC_FUNC_ERROR_AT_LINE
 AC_FUNC_MALLOC
 AC_CHECK_FUNCS([floor getcwd memset putenv strerror])
 
+AC_SUBST(READERS_CPPFLAGS)
+AC_SUBST(READERS_CXXFLAGS)
 AC_SUBST(READERS_LIB)
 
 AC_CONFIG_FILES([Makefile

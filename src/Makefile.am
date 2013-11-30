@@ -1,4 +1,5 @@
 bin_PROGRAMS = easyrpg-player
+AM_CXXFLAGS = -std=c++0x
 easyrpg_player_SOURCES = \
 	al_audio.cpp \
 	android_ui.cpp \
@@ -132,5 +133,6 @@ easyrpg_player_SOURCES = \
 	zobj.cpp \
 	../lib/shinonome/gothic.cxx \
 	../lib/shinonome/mincho.cxx
+easyrpg_player_CPPFLAGS = -I$(srcdir)/../lib/shinonome $(READERS_CPPFLAGS)
+easyrpg_player_LDFLAGS = $(READERS_LDFLAGS)
 easyrpg_player_LDADD = $(READERS_LIB)
-AM_CXXFLAGS = -I$(srcdir)/../lib/shinonome
