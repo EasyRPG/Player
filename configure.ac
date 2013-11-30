@@ -22,7 +22,9 @@ m4_ifdef([AM_PATH_SDL],[AM_PATH_SDL([1.2.0],[CXXFLAGS="$CXXFLAGS -DUSE_SDL $SDL_
 AC_CHECK_LIB([SDL_mixer],[Mix_OpenAudio],[CXXFLAGS="$CXXFLAGS -DHAVE_SDL_MIXER" LIBS="$LIBS -lSDL_mixer"],[AC_MSG_ERROR(['SDL_mixer' is required but it doesn't seem to be installed on this system.])])
 AC_CHECK_LIB([png],[png_set_filler],[],[AC_MSG_ERROR(['libpng' is required but it doesn't seem to be installed on this system.])])
 AC_CHECK_LIB([z],[uncompress],[],[AC_MSG_ERROR(['zlib' is required but it doesn't seem to be installed on this system.])])
-AC_CHECK_LIB([readers],[ini_parse],[],[AC_MSG_ERROR([EasyRPG 'readers' library is but it doesn't seem to be installed on this system.])])
+AC_LANG_PUSH([C++])
+AC_CHECK_LIB([readers],[ini_parse],[],[AC_MSG_ERROR([EasyRPG 'readers' library is required but it doesn't seem to be installed on this system.])])
+AC_LANG_POP([C++])
 
 # Checks for header files.
 AC_CHECK_HEADERS([stdint.h stdlib.h string.h unistd.h wchar.h])
