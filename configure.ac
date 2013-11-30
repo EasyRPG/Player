@@ -8,7 +8,6 @@ AM_INIT_AUTOMAKE([1.11 foreign subdir-objects -Wall -Werror -Wno-extra-portabili
 AM_MAINTAINER_MODE([enable])
 AM_SILENT_RULES([yes])
 
-AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([src/battle_animation.cpp])
 AC_CONFIG_HEADERS([config.h])
 
