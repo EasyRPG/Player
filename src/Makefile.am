@@ -1,5 +1,6 @@
 bin_PROGRAMS = easyrpg-player
 AM_CXXFLAGS = -std=c++0x
+EXTRA_DIST = platform
 easyrpg_player_SOURCES = \
 	al_audio.cpp \
 	al_audio.h \
