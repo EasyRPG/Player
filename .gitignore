@@ -1,6 +1,9 @@
 /bin/
 /doc/
 /lib/readers
+/lib/shinonome/.deps/
+/lib/shinonome/.dirstamp
+/lib/shinonome/*.o
 CMakeCache.txt
 CMakeFiles/
 *.cmake
