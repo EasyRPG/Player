@@ -51,7 +51,7 @@ AudioInterface& SdlUi::GetAudio() {
 }
 
 // SDL 1.2 compatibility
-#ifdef USE_SDL_1_2
+#if SDL_MAJOR_VERSION==1
 	#define SDL_Keycode SDLKey
 	#define SDL_WINDOW_FULLSCREEN_DESKTOP SDL_FULLSCREEN 
 	#define SDL_WINDOWEVENT SDL_ACTIVEEVENT
@@ -104,7 +104,7 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 		Output::Error("Couldn't initialize SDL.\n%s\n", SDL_GetError());
 	}
 
-#ifdef USE_SDL_1_2
+#if SDL_MAJOR_VERSION==1
 	SetAppIcon();
 #else
 	sdl_window = NULL;
@@ -160,7 +160,7 @@ void SdlUi::Sleep(uint32_t time) {
 }
 
 bool SdlUi::RequestVideoMode(int width, int height, bool fullscreen) {
-#ifdef USE_SDL_1_2
+#if SDL_MAJOR_VERSION==1
 	// FIXME: Split method into submethods, really, this method isn't nice.
 	// Note to Zhek, don't delete this fixme again.
 	const SDL_VideoInfo *vinfo;
@@ -343,7 +343,7 @@ bool SdlUi::RefreshDisplayMode() {
 		display_height *= 2;
 	}
 
-#ifdef USE_SDL_1_2
+#if SDL_MAJOR_VERSION==1
 	// Free non zoomed surface
 	main_surface.reset();
 	sdl_surface = SDL_SetVideoMode(display_width, display_height, bpp, flags);
@@ -410,7 +410,7 @@ bool SdlUi::RefreshDisplayMode() {
 
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
 
-#ifdef USE_SDL_1_2
+#if SDL_MAJOR_VERSION==1
 	if (zoom_available && current_display_mode.zoom) {
 		// Create a non zoomed surface as drawing surface
 		main_surface = Bitmap::Create(current_display_mode.width,
@@ -479,7 +479,7 @@ void SdlUi::ProcessEvents() {
 }
 
 void SdlUi::UpdateDisplay() {
-#ifdef USE_SDL_1_2
+#if SDL_MAJOR_VERSION==1
 	if (zoom_available && current_display_mode.zoom) {
 		// Blit drawing surface x2 scaled over window surface
 		Blit2X(*main_surface, sdl_surface);
@@ -502,7 +502,7 @@ BitmapRef SdlUi::EndScreenCapture() {
 }
 
 void SdlUi::SetTitle(const std::string &title) {
-#ifdef USE_SDL_1_2
+#if SDL_MAJOR_VERSION==1
 	SDL_WM_SetCaption(title.c_str(), NULL);
 #else
 	SDL_SetWindowTitle(sdl_window, title.c_str());
@@ -598,13 +598,13 @@ void SdlUi::ProcessEvent(SDL_Event &evnt) {
 void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 #ifdef PAUSE_GAME_WHEN_FOCUS_LOST
 	int state;
-#ifdef USE_SDL_1_2
+#if SDL_MAJOR_VERSION==1
 	state = evnt.active.state;
 #else
 	state = evnt.window.event;
 #endif
 
-#ifdef USE_SDL_1_2
+#if SDL_MAJOR_VERSION==1
 	if (state == SDL_APPINPUTFOCUS && !evnt.active.gain) {
 #else
 	if (state == SDL_WINDOWEVENT_FOCUS_LOST) {
@@ -624,13 +624,13 @@ void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 
 		// Filter SDL events with FilterUntilFocus until focus is
 		// regained
-#ifdef USE_SDL_1_2
+#if SDL_MAJOR_VERSION==1
 		SDL_SetEventFilter(&FilterUntilFocus);
 #else
 		SDL_SetEventFilter(&FilterUntilFocus_SDL2, NULL);
 #endif
 		SDL_WaitEvent(NULL);
-#ifdef USE_SDL_1_2
+#if SDL_MAJOR_VERSION==1
 		SDL_SetEventFilter(NULL);
 #else
 		SDL_SetEventFilter(NULL, NULL);
@@ -645,7 +645,7 @@ void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 	}
 #endif
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
-#ifdef USE_SDL_1_2
+#if SDL_MAJOR_VERSION==1
 	if (state == SDL_APPMOUSEFOCUS) {
 		mouse_focus = evnt.active.gain == 1;
 		return;
@@ -703,7 +703,7 @@ void SdlUi::ProcessKeyDownEvent(SDL_Event &evnt) {
 		// Continue if return/enter not handled by fullscreen hotkey
 	default:
 		// Update key state
-#ifdef USE_SDL_1_2
+#if SDL_MAJOR_VERSION==1
 		keys[SdlKey2InputKey(evnt.key.keysym.sym)] = true;
 #else
 		keys[SdlKey2InputKey(evnt.key.keysym.scancode)] = true;
@@ -715,7 +715,7 @@ void SdlUi::ProcessKeyDownEvent(SDL_Event &evnt) {
 
 void SdlUi::ProcessKeyUpEvent(SDL_Event &evnt) {
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
-#ifdef USE_SDL_1_2
+#if SDL_MAJOR_VERSION==1
 	keys[SdlKey2InputKey(evnt.key.keysym.sym)] = false;
 #else
 	keys[SdlKey2InputKey(evnt.key.keysym.scancode)] = false;
@@ -832,7 +832,7 @@ void SdlUi::SetAppIcon() {
 	SDL_SysWMinfo wminfo;
 	SDL_VERSION(&wminfo.version)
 
-#ifdef USE_SDL_1_2
+#if SDL_MAJOR_VERSION==1
 	int success = SDL_GetWMInfo(&wminfo);
 #else
 	SDL_bool success = SDL_GetWindowWMInfo(sdl_window, &wminfo);
@@ -848,7 +848,7 @@ void SdlUi::SetAppIcon() {
 		Output::Error("Couldn't load icon.");
 
 	HWND window;
-#ifdef USE_SDL_1_2
+#if SDL_MAJOR_VERSION==1
 	window = wminfo.window;
 #else
 	window = wminfo.info.win.window;
@@ -872,7 +872,7 @@ bool SdlUi::IsFullscreen() {
 #if defined(USE_KEYBOARD) && defined(SUPPORT_KEYBOARD)
 Input::Keys::InputKey SdlKey2InputKey(SDL_Keycode sdlkey) {
 	switch (sdlkey) {
-#ifdef USE_SDL_1_2
+#if SDL_MAJOR_VERSION==1
 		case SDLK_BACKSPACE		: return Input::Keys::BACKSPACE;
 		case SDLK_TAB			: return Input::Keys::TAB;
 		case SDLK_CLEAR			: return Input::Keys::CLEAR;
@@ -1113,7 +1113,7 @@ int FilterUntilFocus(const SDL_Event* evnt) {
 		return 1;
 
 	case SDL_WINDOWEVENT:
-#ifdef USE_SDL_1_2
+#if SDL_MAJOR_VERSION==1
 		return evnt->active.state & SDL_APPINPUTFOCUS;
 #else
 		return evnt->window.event == SDL_WINDOWEVENT_FOCUS_GAINED;
