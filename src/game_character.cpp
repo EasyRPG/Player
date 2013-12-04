@@ -68,7 +68,7 @@ Game_Character::Game_Character() :
 }
 
 bool Game_Character::IsMoving() const {
-	return real_x != x * 128 || real_y != y * 128;
+	return real_x != x * (8*TITLE_SIZE) || real_y != y * (8*TITLE_SIZE);
 }
 
 bool Game_Character::IsJumping() const {
@@ -110,17 +110,17 @@ int Game_Character::GetPriorityType() const {
 void Game_Character::MoveTo(int x, int y) {
 	this->x = x % Game_Map::GetWidth();
 	this->y = y % Game_Map::GetHeight();
-	real_x = x * 128;
-	real_y = y * 128;
+	real_x = x * (8*TITLE_SIZE);
+	real_y = y * (8*TITLE_SIZE);
 	prelock_direction = -1;
 }
 
 int Game_Character::GetScreenX() const {
-	return (real_x - Game_Map::GetDisplayX() + 3) / 8 + 8;
+	return (real_x - Game_Map::GetDisplayX() + 3) / 8 + (TITLE_SIZE/2);
 }
 
 int Game_Character::GetScreenY() const {
-	int y = (real_y - Game_Map::GetDisplayY() + 3) / 8 + 16;
+	int y = (real_y - Game_Map::GetDisplayY() + 3) / 8 + TITLE_SIZE;
 
 	/*int n;
 	if (jump_count >= jump_peak)
@@ -198,17 +198,17 @@ void Game_Character::Update() {
 
 void Game_Character::UpdateMove() {
 	int distance = (1 << move_speed);
-	if (y * 128 > real_y)
-		real_y = min(real_y + distance, y * 128);
+	if (y * (8*TITLE_SIZE) > real_y)
+		real_y = min(real_y + distance, y * (8*TITLE_SIZE));
 
-	if (x * 128 < real_x)
-		real_x = max(real_x - distance, x * 128);
+	if (x * (8*TITLE_SIZE) < real_x)
+		real_x = max(real_x - distance, x * (8*TITLE_SIZE));
 
-	if (x * 128 > real_x)
-		real_x = min(real_x + distance, x * 128);
+	if (x * (8*TITLE_SIZE) > real_x)
+		real_x = min(real_x + distance, x * (8*TITLE_SIZE));
 
-	if (y * 128 < real_y)
-		real_y = max(real_y - distance, y * 128);
+	if (y * (8*TITLE_SIZE) < real_y)
+		real_y = max(real_y - distance, y * (8*TITLE_SIZE));
 
 	if (animation_type != RPG::EventPage::AnimType_fixed_graphic && walk_animation)
 		anime_count += 1.5;

@@ -211,7 +211,7 @@ Game_Interpreter& Game_Map::GetInterpreter() {
 }
 
 void Game_Map::ScrollDown(int distance) {
-	display_y = min(display_y + distance, (GetHeight() - 15) * 128);
+	display_y = min(display_y + distance, (GetHeight() - 15) * (TITLE_SIZE *8));
 }
 
 void Game_Map::ScrollLeft(int distance) {
@@ -219,7 +219,7 @@ void Game_Map::ScrollLeft(int distance) {
 }
 
 void Game_Map::ScrollRight(int distance) {
-	display_x = min(display_x + distance, (GetWidth() - 20) * 128);
+	display_x = min(display_x + distance, (GetWidth() - 20) * (TITLE_SIZE *8));
 }
 
 void Game_Map::ScrollUp(int distance) {
@@ -423,7 +423,7 @@ int Game_Map::CheckEvent(int x, int y) {
 
 void Game_Map::StartScroll(int direction, int distance, int speed) {
 	scroll_direction = direction;
-	scroll_rest = distance * 128;
+	scroll_rest = distance * (TITLE_SIZE *8);
 	scroll_speed = speed;
 }
 
@@ -654,7 +654,7 @@ void Game_Map::UnlockPan() {
 }
 
 void Game_Map::StartPan(int direction, int distance, int speed, bool wait) {
-	distance *= 128;
+	distance *= (TITLE_SIZE *8);
 	switch (direction) {
 		case PanUp:		location.pan_finish_y -= distance;		break;
 		case PanRight:	location.pan_finish_x += distance;		break;

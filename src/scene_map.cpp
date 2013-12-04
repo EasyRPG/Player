@@ -45,7 +45,7 @@ Scene_Map::Scene_Map() {
 
 void Scene_Map::Start() {
 	spriteset.reset(new Spriteset_Map());
-	message_window.reset(new Window_Message(0, 240 - 80, 320, 80));
+	message_window.reset(new Window_Message(0, SCREEN_TARGET_HEIGHT - 80, SCREEN_TARGET_WIDTH, 80));
 	screen.reset(new Screen());
 	weather.reset(new Weather());
 
