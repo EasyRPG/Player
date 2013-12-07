@@ -1,6 +1,22 @@
 bin_PROGRAMS = easyrpg-player
-AM_CXXFLAGS = -std=c++0x
 EXTRA_DIST = platform
+easyrpg_player_CPPFLAGS = \
+	-I$(srcdir)/../lib/shinonome
+easyrpg_player_CXXFLAGS = \
+	-std=c++0x \
+	$(PIXMAN_CFLAGS) \
+	$(FREETYPE_CFLAGS) \
+	$(SDL_CFLAGS) \
+	$(SDLMIXER_CFLAGS) \
+	$(PNG_CFLAGS) \
+	$(ZLIB_CFLAGS)
+easyrpg_player_LDADD = \
+	$(PIXMAN_LIBS) \
+	$(FREETYPE_LIBS) \
+	$(SDL_LIBS) \
+	$(SDLMIXER_LIBS) \
+	$(PNG_LIBS) \
+	$(ZLIB_LIBS)
 easyrpg_player_SOURCES = \
 	al_audio.cpp \
 	al_audio.h \
@@ -103,7 +119,7 @@ easyrpg_player_SOURCES = \
 	image_xyz.cpp \
 	image_xyz.h \
 	input_buttons_desktop.cpp \
-	input_buttons_gekko.cpp
+	input_buttons_gekko.cpp \
 	input_buttons_gph.cpp \
 	input_buttons.h \
 	input_buttons_opendingux.cpp \
@@ -274,4 +290,3 @@ easyrpg_player_SOURCES = \
 	../lib/shinonome/shinonome.hxx \
 	../lib/shinonome/gothic.cxx \
 	../lib/shinonome/mincho.cxx
-easyrpg_player_CPPFLAGS = -I$(srcdir)/../lib/shinonome
