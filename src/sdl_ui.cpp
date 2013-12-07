@@ -15,6 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "system.h"
 #ifdef USE_SDL
 
 // Headers
