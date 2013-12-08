@@ -64,6 +64,7 @@ Game_Interpreter::~Game_Interpreter() {
 void Game_Interpreter::Clear() {
 	map_id = 0;						// map ID when starting up
 	event_id = 0;					// event ID
+	StateAftercall=-1;
 	//Game_Message::message_waiting = false;	// waiting for message to end
 	move_route_waiting = false;		// waiting for move completion
 	button_input_variable_id = 0;	// button input variable ID
@@ -224,6 +225,19 @@ void Game_Interpreter::Update() {
 		// faster then Player does.
 		// No idea if any game depends on this special case.
 		index++;
+		
+		// If you are a father and do not have child after an stack call 
+		// reduce index
+		if(((StateAftercall!=(-1))&&(!child_interpreter))&&((index)==(StateAftercall+2)))
+		{
+		index=StateAftercall+1;
+		StateAftercall=-1;
+		}
+		//the setup got correctly  set so remove the stack info
+		if(((StateAftercall!=(-1))&&(!child_interpreter))&&((index)==(StateAftercall+1)))
+		{
+		StateAftercall=-1;
+		}
 	} // for
 
 	// Executed Events Count exceeded (10000)
@@ -262,8 +276,9 @@ bool Game_Interpreter::SkipTo(int code, int code2, int min_indent, int max_inden
 		index = idx;
 		return true;
 	}
-
-	return false;
+	// if you do not find it set the page size so the easy do not stuck
+		index = list.size()-1;
+		return true;
 }
 
 // Execute Command.
