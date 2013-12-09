@@ -78,9 +78,9 @@ private:
 	 */
 	void DrawItemValue(int index);
 
+	bool show_switch;
 	int first_var;
 	int hidden_index;
-	bool show_switch;
 
 };
 

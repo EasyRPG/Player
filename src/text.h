@@ -30,6 +30,6 @@ namespace Text {
 	};
 
 	void Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
-}; // namespace Text
+} // namespace Text
 
 #endif

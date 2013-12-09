@@ -416,7 +416,7 @@ bool Game_Player::CanWalk(int x, int y) {
 void Game_Player::BeginMove() {
 	int terrain_id = Game_Map::GetTerrainTag(x, y);
 	const RPG::Terrain& terrain = Data::terrains[terrain_id - 1];
-	if (!terrain.on_damage_se || terrain.on_damage_se && terrain.damage > 0) {
+	if (!terrain.on_damage_se || (terrain.on_damage_se && (terrain.damage > 0))) {
 		Game_System::SePlay(terrain.footstep);
 	}
 	Game_Party::ApplyDamage(terrain.damage);
