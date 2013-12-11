@@ -251,7 +251,6 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 		case Cmd::ChangeMapTileset:
 			return CommandChangeMapTileset(com);
 		case Cmd::CallEvent:
-				StateAftercall=index;
 			return CommandCallEvent(com);
 		case Cmd::ChangeEncounterRate:
 			return CommandChangeEncounterRate(com);
