@@ -65,7 +65,7 @@ protected:
 	bool main_flag;
 
 	int loop_count;
-
+	
 	bool move_route_waiting;
 
 	int button_input_variable_id;

@@ -418,6 +418,8 @@ bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com)
 	}
 
 	Main_Data::game_player->ReserveTeleport(map_id, x, y);
+	Main_Data::game_player->StartTeleport();
+
 	index++;
 
 	return false;

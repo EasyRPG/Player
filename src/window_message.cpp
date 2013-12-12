@@ -245,7 +245,7 @@ void Window_Message::Update() {
 	Window_Selectable::Update();
 	number_input_window->Update();
 
-	if (visible && !Game_Message::visible) {
+	if (!IsNextMessagePossible() && visible && !Game_Message::visible) {
 		// The Event Page ended but the MsgBox was used in this Event
 		// It can be closed now.
 		TerminateMessage();
