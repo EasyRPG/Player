@@ -97,12 +97,6 @@ void Player::Init(int argc, char *argv[]) {
 		hide_title_flag = args.find("hidetitle") != args.end();
 	}
 
-
-#ifndef NDEBUG
-	debug_flag = true;
-	window_flag = true; // Debug Build needs no fullscreen
-#endif
-
 	engine = EngineRpg2k;
 
 	FileFinder::Init();
