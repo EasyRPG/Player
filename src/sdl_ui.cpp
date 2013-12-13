@@ -376,6 +376,8 @@ bool SdlUi::RefreshDisplayMode() {
 		if (!sdl_window)
 			return false;
 
+		SetAppIcon();
+
 		sdl_renderer = SDL_CreateRenderer(sdl_window, -1, 0);
 		if (!sdl_renderer)
 			return false;
