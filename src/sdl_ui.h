@@ -25,11 +25,12 @@
 #include "system.h"
 
 #include <boost/scoped_ptr.hpp>
+#include <SDL.h>
 
 extern "C" {
 	union SDL_Event;
 	struct SDL_Surface;
-#ifndef SDL_1_2
+#if SDL_MAJOR_VERSION > 1
 	struct SDL_Texture;
 	struct SDL_Window;
 	struct SDL_Renderer;
@@ -147,8 +148,9 @@ private:
 	bool mode_changing;
 
 	/** Main SDL window. */
+#if SDL_MAJOR_VERSION==1
 	SDL_Surface* sdl_surface;
-#ifndef SDL_1_2
+#else
 	SDL_Texture* sdl_texture;
 	SDL_Window* sdl_window;
 	SDL_Renderer* sdl_renderer;

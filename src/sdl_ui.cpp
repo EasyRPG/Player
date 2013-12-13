@@ -44,7 +44,6 @@
 
 #include <cstdlib>
 #include <cstring>
-#include <SDL.h>
 
 AudioInterface& SdlUi::GetAudio() {
 	return *audio_;
@@ -75,8 +74,7 @@ static int FilterUntilFocus_SDL2(void*, SDL_Event* evnt);
 SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 	zoom_available(true),
 	toggle_fs_available(false),
-	mode_changing(false),
-	sdl_surface(NULL) {
+	mode_changing(false) {
 
 #ifdef GEKKO
 	WPAD_Init();
@@ -105,6 +103,8 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 	}
 
 #if SDL_MAJOR_VERSION==1
+	sdl_surface = NULL;
+
 	SetAppIcon();
 #else
 	sdl_window = NULL;
@@ -347,49 +347,6 @@ bool SdlUi::RefreshDisplayMode() {
 	// Free non zoomed surface
 	main_surface.reset();
 	sdl_surface = SDL_SetVideoMode(display_width, display_height, bpp, flags);
-#else
-	if (!sdl_window) {
-		// Create our window
-		sdl_window = SDL_CreateWindow("EasyRPG Player",
-			SDL_WINDOWPOS_CENTERED,
-			SDL_WINDOWPOS_CENTERED,
-			display_width, display_height,
-			SDL_WINDOW_RESIZABLE | flags);
-
-		if (!sdl_window)
-			return false;
-
-		sdl_renderer = SDL_CreateRenderer(sdl_window, -1, 0);
-		if (!sdl_renderer)
-			return false;
-		SDL_RenderSetLogicalSize(sdl_renderer, 320, 240);
-
-		//sdl_surface = SDL_SetVideoMode(display_width, display_height, bpp, flags);
-		uint32_t rmask, bmask, gmask, amask;
-
-		SDL_PixelFormatEnumToMasks(SDL_PIXELFORMAT_ARGB8888,
-			&bpp, &rmask, &gmask, &bmask, &amask);
-
-		sdl_surface = SDL_CreateRGBSurface(0, 320, 240,
-			bpp, rmask, gmask,	bmask, amask);
-
-		sdl_texture = SDL_CreateTexture(sdl_renderer,
-			SDL_PIXELFORMAT_ARGB8888,
-			SDL_TEXTUREACCESS_STREAMING,
-			320, 240);
-
-		if (!sdl_texture)
-			return false;
-	} else {
-		if (is_fullscreen) {
-			SDL_SetWindowFullscreen(sdl_window, SDL_WINDOW_FULLSCREEN_DESKTOP);
-		} else {
-			SDL_SetWindowFullscreen(sdl_window, 0);
-			SetAppIcon();
-			SDL_SetWindowSize(sdl_window, display_width, display_height);
-		}
-	}
-#endif
 
 	if (!sdl_surface)
 		return false;
@@ -407,6 +364,65 @@ bool SdlUi::RefreshDisplayMode() {
 		sdl_surface->format->Bmask,
 		sdl_surface->format->Amask,
 		PF::NoAlpha);
+#else
+	if (!sdl_window) {
+		// Create our window
+		sdl_window = SDL_CreateWindow("EasyRPG Player",
+			SDL_WINDOWPOS_CENTERED,
+			SDL_WINDOWPOS_CENTERED,
+			display_width, display_height,
+			SDL_WINDOW_RESIZABLE | flags);
+
+		if (!sdl_window)
+			return false;
+
+		sdl_renderer = SDL_CreateRenderer(sdl_window, -1, 0);
+		if (!sdl_renderer)
+			return false;
+		SDL_RenderSetLogicalSize(sdl_renderer, 320, 240);
+
+		uint32_t rmask, bmask, gmask, amask;
+
+		uint32_t const texture_format =
+			SDL_BYTEORDER == SDL_LIL_ENDIAN
+			? SDL_PIXELFORMAT_ABGR8888
+			: SDL_PIXELFORMAT_RGBA8888;
+
+		sdl_texture = SDL_CreateTexture(sdl_renderer,
+			texture_format,
+			SDL_TEXTUREACCESS_STREAMING,
+			SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
+
+		if (!sdl_texture)
+			return false;
+	} else {
+		if (is_fullscreen) {
+			SDL_SetWindowFullscreen(sdl_window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+		} else {
+			SDL_SetWindowFullscreen(sdl_window, 0);
+			SetAppIcon();
+			SDL_SetWindowSize(sdl_window, display_width, display_height);
+		}
+	}
+
+	#if SDL_BYTEORDER == SDL_LIL_ENDIAN
+	const DynamicFormat format(
+		32,
+		0x000000FF,
+		0x0000FF00,
+		0x00FF0000,
+		0xFF000000,
+		PF::NoAlpha);
+	#else
+	const DynamicFormat format(
+		32,
+		0xFF000000,
+		0x00FF0000,
+		0x0000FF00,
+		0x000000FF,
+		PF::NoAlpha);
+	#endif
+#endif
 
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
 
@@ -429,10 +445,9 @@ bool SdlUi::RefreshDisplayMode() {
 	}
 #else
 	if (!main_surface) {
-		void *pixels = (uint8_t*) sdl_surface->pixels;
 		// Drawing surface will be the window itself
 		main_surface = Bitmap::Create(
-			pixels, sdl_surface->w, sdl_surface->h, sdl_surface->pitch, format);
+			320, 240, Color(0, 0, 0, 255));
 	}
 #endif
 
