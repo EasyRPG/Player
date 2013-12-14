@@ -332,7 +332,6 @@ bool SdlUi::RefreshDisplayMode() {
 	uint32_t flags = current_display_mode.flags;
 	int display_width = current_display_mode.width;
 	int display_height = current_display_mode.height;
-	int bpp = current_display_mode.bpp;
 
 	// Display on screen fps while fullscreen or no window available
 	bool is_fullscreen = (flags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP;
@@ -344,6 +343,8 @@ bool SdlUi::RefreshDisplayMode() {
 	}
 
 #if SDL_MAJOR_VERSION==1
+	int bpp = current_display_mode.bpp;
+
 	// Free non zoomed surface
 	main_surface.reset();
 	sdl_surface = SDL_SetVideoMode(display_width, display_height, bpp, flags);
@@ -381,7 +382,7 @@ bool SdlUi::RefreshDisplayMode() {
 		sdl_renderer = SDL_CreateRenderer(sdl_window, -1, 0);
 		if (!sdl_renderer)
 			return false;
-		SDL_RenderSetLogicalSize(sdl_renderer, 320, 240);
+		SDL_RenderSetLogicalSize(sdl_renderer, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
 
 		uint32_t const texture_format =
 			SDL_BYTEORDER == SDL_LIL_ENDIAN
