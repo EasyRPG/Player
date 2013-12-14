@@ -383,8 +383,6 @@ bool SdlUi::RefreshDisplayMode() {
 			return false;
 		SDL_RenderSetLogicalSize(sdl_renderer, 320, 240);
 
-		uint32_t rmask, bmask, gmask, amask;
-
 		uint32_t const texture_format =
 			SDL_BYTEORDER == SDL_LIL_ENDIAN
 			? SDL_PIXELFORMAT_ABGR8888
@@ -402,8 +400,15 @@ bool SdlUi::RefreshDisplayMode() {
 			SDL_SetWindowFullscreen(sdl_window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 		} else {
 			SDL_SetWindowFullscreen(sdl_window, 0);
+			if ((last_display_mode.flags & SDL_WINDOW_FULLSCREEN_DESKTOP)
+					== SDL_WINDOW_FULLSCREEN_DESKTOP) {
+				// Restore to pre-fullscreen size
+				SDL_SetWindowSize(sdl_window, 0, 0);
+			}
+			else {
+				SDL_SetWindowSize(sdl_window, display_width, display_height);
+			}
 			SetAppIcon();
-			SDL_SetWindowSize(sdl_window, display_width, display_height);
 		}
 	}
 
