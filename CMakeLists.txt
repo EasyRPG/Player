@@ -72,9 +72,9 @@ endif()
 
 # SDL_mixer
 find_package(SDL2_mixer)
-if(SDLMIXER_FOUND)
-  include_directories(${SDLMIXER_INCLUDE_DIR})
-  list(APPEND EASYRPG_PLAYER_LIBRARIES ${SDLMIXER_LIBRARY})
+if(SDL2_MIXER_FOUND)
+  include_directories(${SDL2_MIXER_INCLUDE_DIR})
+  list(APPEND EASYRPG_PLAYER_LIBRARIES ${SDL2_MIXER_LIBRARY})
   add_definitions(-D HAVE_SDL_MIXER=1)
 else()
   add_definitions(-DNO_SDL_MIXER)
