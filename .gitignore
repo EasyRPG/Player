@@ -6,7 +6,6 @@
 /lib/shinonome/*.o
 CMakeCache.txt
 CMakeFiles/
-*.cmake
 aclocal.m4
 config.h
 config.h.in
