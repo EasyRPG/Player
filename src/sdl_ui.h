@@ -52,7 +52,7 @@ public:
 	 * @param title window title.
 	 * @param fullscreen start in fullscreen flag.
 	 */
-	SdlUi(long width, long height, const std::string& title,	bool fullscreen);
+	SdlUi(long width, long height, const std::string& title, bool fullscreen);
 
 	/**
 	 * Destructor.
