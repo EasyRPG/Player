@@ -25,10 +25,16 @@
 #include "system.h"
 
 #include <boost/scoped_ptr.hpp>
+#include <SDL.h>
 
 extern "C" {
 	union SDL_Event;
 	struct SDL_Surface;
+#if SDL_MAJOR_VERSION > 1
+	struct SDL_Texture;
+	struct SDL_Window;
+	struct SDL_Renderer;
+#endif
 }
 
 struct AudioInterface;
@@ -46,7 +52,7 @@ public:
 	 * @param title window title.
 	 * @param fullscreen start in fullscreen flag.
 	 */
-	SdlUi(long width, long height, const std::string& title,	bool fullscreen);
+	SdlUi(long width, long height, const std::string& title, bool fullscreen);
 
 	/**
 	 * Destructor.
@@ -142,7 +148,13 @@ private:
 	bool mode_changing;
 
 	/** Main SDL window. */
-	SDL_Surface* main_window;
+#if SDL_MAJOR_VERSION==1
+	SDL_Surface* sdl_surface;
+#else
+	SDL_Texture* sdl_texture;
+	SDL_Window* sdl_window;
+	SDL_Renderer* sdl_renderer;
+#endif
 
 	boost::scoped_ptr<AudioInterface> audio_;
 };

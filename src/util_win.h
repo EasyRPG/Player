@@ -34,11 +34,6 @@ namespace WindowsUtils {
 	 * Vista (and later) have version 6 and higher.
 	 */
 	int GetWindowsVersion();
-
-	/**
-	 * Gets the HWND of the Window.
-	 */
-	HWND GetHwnd();
 }
 
 #endif

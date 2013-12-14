@@ -22,12 +22,14 @@ Requirements
 ------------
 
 EasyRPG Readers library. https://github.com/EasyRPG/Readers
-SDL for screen backend support.
-SDL_mixer for audio mixing.
+SDL2 for screen backend support.
+SDL2_mixer for audio mixing.
 Freetype for custom font support.
 Pixman for low level pixel manipulation.
 libpng for PNG image support.
 zlib for XYZ image support.
+
+SDL and SDL_mixer are supported, but deprecated.
 
 
 Daily builds
