@@ -18,8 +18,12 @@ m4_ifdef([PKG_CHECK_MODULES],[],[AC_MSG_ERROR['pkg-config' is required but it do
 # Checks for libraries.
 PKG_CHECK_MODULES([PIXMAN],[pixman-1])
 PKG_CHECK_MODULES([FREETYPE],[freetype2])
-PKG_CHECK_MODULES([SDL],[sdl],[AC_DEFINE(USE_SDL,[1],[Enable SDL])])
-PKG_CHECK_MODULES([SDLMIXER],[SDL_mixer],[AC_DEFINE(HAVE_SDL_MIXER,[1],[Enable SDL_Mixer])])
+PKG_CHECK_MODULES([SDL],[sdl2],[AC_DEFINE(USE_SDL,[1],[Enable SDL2])],[
+	PKG_CHECK_MODULES([SDL],[sdl],[AC_DEFINE(USE_SDL,[1],[Enable SDL])])
+])
+PKG_CHECK_MODULES([SDLMIXER],[SDL2_mixer],[AC_DEFINE(HAVE_SDL_MIXER,[1],[Enable SDL2_Mixer])],[
+	PKG_CHECK_MODULES([SDLMIXER],[SDL_mixer],[AC_DEFINE(HAVE_SDL_MIXER,[1],[Enable SDL_Mixer])])
+])
 PKG_CHECK_MODULES([PNG],[libpng])
 PKG_CHECK_MODULES([ZLIB],[zlib])
 

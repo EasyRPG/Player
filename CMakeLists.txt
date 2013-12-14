@@ -71,7 +71,7 @@ if(CMAKE_BUILD_TYPE MATCHES "Debug")
 endif()
 
 # SDL_mixer
-find_package(SDL_mixer)
+find_package(SDL2_mixer)
 if(SDLMIXER_FOUND)
   include_directories(${SDLMIXER_INCLUDE_DIR})
   list(APPEND EASYRPG_PLAYER_LIBRARIES ${SDLMIXER_LIBRARY})
@@ -92,7 +92,7 @@ endif()
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/readers/include")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
 
-foreach(i Expat Freetype JPEG Pixman ZLIB PNG SDL Boost Iconv)
+foreach(i Expat Freetype JPEG Pixman ZLIB PNG SDL2 Boost Iconv)
   find_package(${i} REQUIRED)
 
   string(TOUPPER ${i} i)
@@ -159,8 +159,8 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://easy-rpg.org/")
   set(CPACK_DEBIAN_PACKAGE_MAINTAINER "take_cheeze")
   set(CPACK_DEBIAN_PACKAGE_DEPENDS
-    libexpat1 libfreetype6 libjpeg8 libpixman-1-0 libpng12-0 zlib1g libsdl1.2debian
-    libsdl-mixer1.2 libopenal1 libogg0 libflac8 libvorbis0a libvorbisenc2 libsndfile1
+    libexpat1 libfreetype6 libjpeg8 libpixman-1-0 libpng12-0 zlib1g libsdl2-2.0-0
+    libsdl2-mixer-2.0-0 libopenal1 libogg0 libflac8 libvorbis0a libvorbisenc2 libsndfile1
     libstdc++6 libgcc1 libasound2 libpulse0 libxext6 libcaca0 libmikmod2 libvorbisfile3
 		libmad0 libjson0 libslang2 libncurses5 libtinfo5 libwrap0 libasyncns0 libxau6 libxdmcp6)
 endif()
