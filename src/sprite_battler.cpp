@@ -72,6 +72,8 @@ void Sprite_Battler::SetBattler(Game_Battler* new_battler) {
 
 void Sprite_Battler::Update() {
 	Sprite::Update();
+
+	++cycle;
 	
 	if (battler->GetBattleAnimationId() <= 0) {
 		if (anim_state == Idle) {
@@ -82,16 +84,18 @@ void Sprite_Battler::Update() {
 			SetOpacity(std::max(0, fade_out));
 		}
 		else if (anim_state == LeftHand) {
-			static int cycl = 30;
-			--cycl;
-			if (cycl == 0) {
+			if (cycle == 60) {
 				SetAnimationState(Idle);
-				cycl = 30;
+				cycle = 0;
 			}
 		}
 		else if (anim_state == Damage) {
 			flash_counter = (flash_counter + 1) % 10;
 			SetOpacity(flash_counter > 5 ? 50 : 255);
+			if (cycle == 60) {
+				SetAnimationState(Idle);
+				cycle = 0;
+			}
 		}
 	} else if (anim_state > 0) {
 		if (Player::engine == Player::EngineRpg2k3) {
@@ -123,6 +127,8 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 	flash_counter = 0;
 
 	loop_state = loop;
+
+	cycle = 0;
 
 	if (Player::engine == Player::EngineRpg2k3) {
 		if (battler->GetBattleAnimationId() > 0) {
