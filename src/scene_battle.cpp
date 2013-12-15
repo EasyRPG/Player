@@ -200,7 +200,7 @@ void Scene_Battle::CreateEnemyAction(Game_Enemy* enemy, const RPG::EnemyAction* 
 		battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomAliveBattler()));
 		break;
 	case RPG::EnemyAction::Kind_skill: {
-		const RPG::Skill skill = Data::skills[action->skill_id - 1];
+		const RPG::Skill& skill = Data::skills[action->skill_id - 1];
 
 		switch (skill.type) {
 		case RPG::Skill::Type_teleport:
