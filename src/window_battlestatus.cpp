@@ -51,6 +51,7 @@ void Window_BattleStatus::Refresh() {
 		DrawActorName(actor, 4, y);
 		DrawActorState(actor, 84, y);
 		DrawActorHp(actor, 138, y, true);
+		DrawActorSp(actor, 198, y, false);
 	}
 
 	RefreshGauge();

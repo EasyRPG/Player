@@ -302,7 +302,7 @@ void Game_Battler::UpdateGauge(int multiplier) {
 	}
 	gauge += GetAgi() * multiplier;
 
-	printf("%s: %.2f\n", GetName().c_str(), ((float)gauge / EASYRPG_GAUGE_MAX_VALUE) * 100);
+	//printf("%s: %.2f\n", GetName().c_str(), ((float)gauge / EASYRPG_GAUGE_MAX_VALUE) * 100);
 }
 
 const BattleAlgorithmRef Game_Battler::GetBattleAlgorithm() const {
