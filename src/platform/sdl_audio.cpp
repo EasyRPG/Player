@@ -42,7 +42,11 @@ SdlAudio::SdlAudio() :
 #ifdef GEKKO
 	int const frequency = 32000;
 #else
+#if SDL_MAJOR_VERSION==1
 	int const frequency = MIX_DEFAULT_FREQUENCY;
+#else
+	int const frequency = 16000;
+#endif
 #endif
 	if (Mix_OpenAudio(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) < 0) {
 		Output::Error("Couldn't initialize audio.\n%s\n", Mix_GetError());
