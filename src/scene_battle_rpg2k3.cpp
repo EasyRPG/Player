@@ -618,7 +618,6 @@ void Scene_Battle_Rpg2k3::OptionSelected() {
 
 	switch (options_window->GetIndex()) {
 	case 0: // Battle
-		CreateBattleTargetWindow();
 		auto_battle = false;
 		SetState(State_SelectActor);
 		break;
@@ -666,6 +665,8 @@ void Scene_Battle_Rpg2k3::CommandSelected() {
 
 void Scene_Battle_Rpg2k3::AttackSelected() {
 	Game_System::SePlay(Data::system.decision_se);
+
+	CreateBattleTargetWindow();
 
 	SetState(State_SelectEnemyTarget);
 }
