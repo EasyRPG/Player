@@ -109,7 +109,6 @@ void Sprite_Battler::Update() {
 
 			SetSrcRect(Rect(frame * 48, ext.battler_index * 48, 48, 48));
 
-			++cycle;
 			if (cycle == 60) {
 				cycle = 0;
 

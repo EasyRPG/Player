@@ -47,6 +47,8 @@ class Action;
 class SpriteAction;
 }
 
+typedef std::pair<EASYRPG_SHARED_PTR<Sprite>, int> FloatText;
+
 /**
  * Scene_Battle class.
  * Manages the battles.
@@ -63,7 +65,7 @@ protected:
 
 	void CreateCursors();
 	void UpdateCursors();
-	void FloatText(int x, int y, int color, const std::string& text, int _duration);
+	void DrawFloatText(int x, int y, int color, const std::string& text, int _duration);
 
 	void RefreshCommandWindow();
 
@@ -94,6 +96,7 @@ protected:
 	void SelectNextActor();
 
 	boost::scoped_ptr<Sprite> ally_cursor, enemy_cursor;
+	std::vector<FloatText> floating_texts;
 
 	int battle_action_wait;
 	int battle_action_state;

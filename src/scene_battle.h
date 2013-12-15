@@ -113,12 +113,6 @@ public:
 		BattleActionState_Finished
 	};
 
-	struct FloatText {
-		FloatText(int x, int y, int color, const std::string& text, int duration);
-		int duration;
-		boost::scoped_ptr<Sprite> sprite;
-	};
-
 protected:
 	Scene_Battle();
 

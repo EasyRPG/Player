@@ -16,6 +16,7 @@
  */
 
 // Headers
+#include <boost/lexical_cast.hpp>
 #include "scene_battle_rpg2k3.h"
 #include "scene_battle.h"
 #include "rpg_battlecommand.h"
@@ -77,6 +78,17 @@ void Scene_Battle_Rpg2k3::Update() {
 	default:;
 	}
 
+	for (std::vector<FloatText>::iterator it = floating_texts.begin();
+		it != floating_texts.end();) {
+		(*it).second -= 1;
+		if ((*it).second <= 0) {
+			it = floating_texts.erase(it);
+		}
+		else {
+			++it;
+		}
+	}
+
 	Scene_Battle::Update();
 }
 
@@ -125,22 +137,24 @@ void Scene_Battle_Rpg2k3::UpdateCursors() {
 		enemy_cursor->SetVisible(false);*/
 }
 
-void Scene_Battle_Rpg2k3::FloatText(int x, int y, int color, const std::string& text, int _duration) {
-	/*Rect rect = Font::Default()->GetSize(text);
+void Scene_Battle_Rpg2k3::DrawFloatText(int x, int y, int color, const std::string& text, int _duration) {
+	Rect rect = Font::Default()->GetSize(text);
 
 	BitmapRef graphic = Bitmap::Create(rect.width, rect.height);
 	graphic->Clear();
 	graphic->TextDraw(-rect.x, -rect.y, color, text);
 
-	sprite.reset(new Sprite());
-	sprite->SetBitmap(graphic);
-	sprite->SetOx(rect.width / 2);
-	sprite->SetOy(rect.height + 5);
-	sprite->SetX(x);
-	sprite->SetY(y);
-	sprite->SetZ(500+y);
+	Sprite* floating_text = new Sprite();
+	floating_text->SetBitmap(graphic);
+	floating_text->SetOx(rect.width / 2);
+	floating_text->SetOy(rect.height + 5);
+	floating_text->SetX(x);
+	floating_text->SetY(y);
+	floating_text->SetZ(500 + y);
 
-	duration = _duration;*/
+	FloatText float_text = FloatText(EASYRPG_SHARED_PTR<Sprite>(floating_text), _duration);
+
+	floating_texts.push_back(float_text);
 }
 
 void Scene_Battle_Rpg2k3::CreateBattleOptionWindow() {
@@ -314,7 +328,6 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 
 void Scene_Battle_Rpg2k3::ProcessActions() {
 	if (!battle_actions.empty()) {
-		printf("Processing action\n");
 		if (battle_actions.front()->IsDead()) {
 			// No zombies allowed ;)
 			RemoveCurrentAction();
@@ -420,6 +433,8 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			action->SetTarget(action->GetTarget()->GetParty().GetNextAliveBattler(action->GetTarget()));
 		}
 
+		printf("Action: %s\n", action->GetSource()->GetName().c_str());
+
 		action->GetSource()->SetGauge(0);
 
 		action->Execute();
@@ -457,6 +472,15 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			}
 
 			action->Apply();
+
+			DrawFloatText(
+				action->GetTarget()->GetBattleX(),
+				action->GetTarget()->GetBattleY(),
+				0,
+				action->GetSuccess() ? boost::lexical_cast<std::string>(*action->GetAffectedHp()) : Data::terms.miss,
+				30);
+
+			status_window->Refresh();
 		} while (action->TargetNext());
 
 		if (action->GetResultSe()) {
@@ -480,7 +504,6 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			if (action->GetDeathSe()) {
 				Game_System::SePlay(*action->GetDeathSe());
 			}
-
 
 			if (target_sprite) {
 				target_sprite->SetAnimationState(Sprite_Battler::Dead);

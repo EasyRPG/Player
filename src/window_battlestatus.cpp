@@ -51,18 +51,21 @@ void Window_BattleStatus::Refresh() {
 		DrawActorName(actor, 4, y);
 		DrawActorState(actor, 84, y);
 		DrawActorHp(actor, 138, y, true);
-		DrawActorSp(actor, 198, y, false);
 	}
+
+	RefreshGauge();
 }
 
 void Window_BattleStatus::RefreshGauge() {
-	contents->ClearRect(Rect(198, 0, 25 + 16, 15 * item_max));
+	if (Player::engine == Player::EngineRpg2k3) {
+		contents->ClearRect(Rect(198, 0, 25 + 16, 15 * item_max));
 
-	for (int i = 0; i < item_max; ++i) {
-		Game_Actor* actor = Main_Data::game_party->GetActors()[i];
-		int y = 2 + i * 16;
-		DrawGauge(actor, 198 - 10, y - 2);
-		DrawActorSp(actor, 198, y, false);
+		for (int i = 0; i < item_max; ++i) {
+			Game_Actor* actor = Main_Data::game_party->GetActors()[i];
+			int y = 2 + i * 16;
+			DrawGauge(actor, 198 - 10, y - 2);
+			DrawActorSp(actor, 198, y, false);
+		}
 	}
 }
 
