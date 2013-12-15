@@ -47,10 +47,6 @@ class Action;
 class SpriteAction;
 }
 
-namespace Game_BattleAlgorithm {
-	class AlgorithmBase;
-}
-
 /**
  * Scene_Battle class.
  * Manages the battles.

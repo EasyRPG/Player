@@ -27,6 +27,12 @@
 class Game_Actor;
 class Game_Party_Base;
 
+namespace Game_BattleAlgorithm {
+	class AlgorithmBase;
+}
+
+typedef EASYRPG_SHARED_PTR<Game_BattleAlgorithm::AlgorithmBase> BattleAlgorithmRef;
+
 /**
  * Game_Battler class.
  */
@@ -281,7 +287,7 @@ public:
 	 *
 	 * @return gauge in percent
 	 */
-	int GetGauge();
+	int GetGauge() const;
 
 	/**
 	 * Sets the gauge to a new percentage in range 0-100
@@ -307,11 +313,28 @@ public:
 	 *
 	 * @return If gauge is full
 	 */
-	bool IsGaugeFull();
+	bool IsGaugeFull() const;
+
+	/**
+	* Gets the current BattleAlgorithm (action to execute in battle)
+
+	* @return Current algorithm or NULL if none
+	*/
+	const BattleAlgorithmRef GetBattleAlgorithm() const;
+
+	/**
+	 * Assigns a new battle algorithm (action to execute in battle) to the
+	 * battler.
+	 *
+	 * @param battle_algorithm New algorithm to assign
+	 */
+	void SetBattleAlgorithm(const BattleAlgorithmRef battle_algorithm);
 
 protected:
 	/** Gauge for RPG2k3 Battle */
 	int gauge;
+
+	BattleAlgorithmRef battle_algorithm;
 };
 
 #endif

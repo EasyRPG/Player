@@ -64,7 +64,7 @@ void Scene_Battle_Rpg2k3::Update() {
 
 		for (std::vector<Game_Enemy*>::iterator it = enemies.begin();
 			it != enemies.end(); ++it) {
-			if ((*it)->IsGaugeFull()) {
+			if ((*it)->IsGaugeFull() && !(*it)->GetBattleAlgorithm()) {
 				const RPG::EnemyAction* action = (*it)->ChooseRandomAction();
 				if (action) {
 					CreateEnemyAction(*it, action);
@@ -314,13 +314,13 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 
 void Scene_Battle_Rpg2k3::ProcessActions() {
 	if (!battle_actions.empty()) {
-		printf("Processing action");
-		if (battle_actions.front()->GetSource()->IsDead()) {
+		printf("Processing action\n");
+		if (battle_actions.front()->IsDead()) {
 			// No zombies allowed ;)
-			battle_actions.pop_front();
+			RemoveCurrentAction();
 		}
-		else if (ProcessBattleAction(battle_actions.front().get())) {
-			battle_actions.pop_front();
+		else if (ProcessBattleAction(battle_actions.front()->GetBattleAlgorithm().get())) {
+			RemoveCurrentAction();
 			if (CheckWin() ||
 				CheckLose() ||
 				CheckAbort() ||
@@ -359,12 +359,12 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 		break;
 	case State_Battle:
 		if (!battle_actions.empty()) {
-			if (battle_actions.front()->GetSource()->IsDead()) {
+			if (battle_actions.front()->IsDead()) {
 				// No zombies allowed ;)
-				battle_actions.pop_front();
+				RemoveCurrentAction();
 			}
-			else if (ProcessBattleAction(battle_actions.front().get())) {
-				battle_actions.pop_front();
+			else if (ProcessBattleAction(battle_actions.front()->GetBattleAlgorithm().get())) {
+				RemoveCurrentAction();
 				if (CheckWin() ||
 					CheckLose() ||
 					CheckAbort() ||
@@ -682,15 +682,18 @@ void Scene_Battle_Rpg2k3::SkillSelected() {
 		SetState(State_SelectAllyTarget);
 		break;
 	case RPG::Skill::Scope_enemies:
-		battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, Main_Data::game_enemyparty.get(), *skill_window->GetSkill()));
+		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, Main_Data::game_enemyparty.get(), *skill_window->GetSkill()));
+		battle_actions.push_back(active_actor);
 		SetState(State_SelectActor);
 		break;
 	case RPG::Skill::Scope_self:
-		battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, active_actor, *skill_window->GetSkill()));
+		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, active_actor, *skill_window->GetSkill()));
+		battle_actions.push_back(active_actor);
 		SetState(State_SelectActor);
 		break;
 	case RPG::Skill::Scope_party: {
-		battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, Main_Data::game_party.get(), *skill_window->GetSkill()));
+		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, Main_Data::game_party.get(), *skill_window->GetSkill()));
+		battle_actions.push_back(active_actor);
 		SetState(State_SelectActor);
 		break;
 								  }
@@ -702,14 +705,17 @@ void Scene_Battle_Rpg2k3::EnemySelected() {
 
 	switch (previous_state) {
 	case State_SelectCommand:
-		battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(active_actor, target));
+		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(active_actor, target));
+		battle_actions.push_back(active_actor);
 		break;
 	case State_SelectSkill:
-		battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, target, *skill_window->GetSkill()));
+		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, target, *skill_window->GetSkill()));
+		battle_actions.push_back(active_actor);
 		break;
 	case State_SelectItem:
 		{
-			//battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, target, *item_window->GetItem()));
+			//active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, target, *item_window->GetItem()));
+			// battle_actions.push_back(active_actor);
 			// Todo
 			break;
 		}

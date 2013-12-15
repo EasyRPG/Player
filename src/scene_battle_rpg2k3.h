@@ -47,12 +47,6 @@ class Action;
 class SpriteAction;
 }
 
-namespace Game_BattleAlgorithm {
-	class AlgorithmBase;
-}
-
-typedef EASYRPG_SHARED_PTR<Game_BattleAlgorithm::AlgorithmBase> BattleAlgorithmRef;
-
 /**
  * Scene_Battle class.
  * Manages the battles.

@@ -197,7 +197,8 @@ EASYRPG_SHARED_PTR<Scene_Battle> Scene_Battle::Create()
 void Scene_Battle::CreateEnemyAction(Game_Enemy* enemy, const RPG::EnemyAction* action) {
 	switch (action->kind) {
 	case RPG::EnemyAction::Kind_basic:
-		battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomAliveBattler()));
+		enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomAliveBattler()));
+		battle_actions.push_back(enemy);
 		break;
 	case RPG::EnemyAction::Kind_skill: {
 		const RPG::Skill& skill = Data::skills[action->skill_id - 1];
@@ -221,15 +222,18 @@ void Scene_Battle::CreateEnemyAction(Game_Enemy* enemy, const RPG::EnemyAction* 
 			// ToDo
 			break;
 		case RPG::Skill::Scope_enemies:
-			battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_enemyparty.get(), skill));
+			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_enemyparty.get(), skill));
+			battle_actions.push_back(enemy);
 			SetState(State_SelectActor);
 			break;
 		case RPG::Skill::Scope_self:
-			battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, enemy, skill));
+			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, enemy, skill));
+			battle_actions.push_back(enemy);
 			SetState(State_SelectActor);
 			break;
 		case RPG::Skill::Scope_party: {
-			battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_party.get(), *skill_window->GetSkill()));
+			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_party.get(), *skill_window->GetSkill()));
+			battle_actions.push_back(enemy);
 			SetState(State_SelectActor);
 			break;
 			}
@@ -240,4 +244,9 @@ void Scene_Battle::CreateEnemyAction(Game_Enemy* enemy, const RPG::EnemyAction* 
 		// ToDo
 		break;
 	}
+}
+
+void Scene_Battle::RemoveCurrentAction() {
+	battle_actions.front()->SetBattleAlgorithm(NULL);
+	battle_actions.pop_front();
 }

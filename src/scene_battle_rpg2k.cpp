@@ -26,6 +26,7 @@
 #include "graphics.h"
 #include "filefinder.h"
 #include "cache.h"
+#include "game_battler.h"
 #include "game_system.h"
 #include "game_temp.h"
 #include "game_party.h"
@@ -255,12 +256,12 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 		break;
 	case State_Battle:
 		if (!battle_actions.empty()) {
-			if (battle_actions.front()->GetSource()->IsDead()) {
+			if (battle_actions.front()->IsDead()) {
 				// No zombies allowed ;)
-				battle_actions.pop_front();
+				RemoveCurrentAction();
 			}
-			else if (ProcessBattleAction(battle_actions.front().get())) {
-				battle_actions.pop_front();
+			else if (ProcessBattleAction(battle_actions.front()->GetBattleAlgorithm().get())) {
+				RemoveCurrentAction();
 				if (CheckWin() ||
 					CheckLose() ||
 					CheckAbort() ||
@@ -594,15 +595,18 @@ void Scene_Battle_Rpg2k::SkillSelected() {
 			SetState(State_SelectAllyTarget);
 			break;
 		case RPG::Skill::Scope_enemies:
-			battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, Main_Data::game_enemyparty.get(), *skill_window->GetSkill()));
+			active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, Main_Data::game_enemyparty.get(), *skill_window->GetSkill()));
+			battle_actions.push_back(active_actor);
 			SetState(State_SelectActor);
 			break;
 		case RPG::Skill::Scope_self:
-			battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, active_actor, *skill_window->GetSkill()));
+			active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, active_actor, *skill_window->GetSkill()));
+			battle_actions.push_back(active_actor);
 			SetState(State_SelectActor);
 			break;
 		case RPG::Skill::Scope_party: {
-			battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, Main_Data::game_party.get(), *skill_window->GetSkill()));
+			active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, Main_Data::game_party.get(), *skill_window->GetSkill()));
+			battle_actions.push_back(active_actor);
 			SetState(State_SelectActor);
 			break;
 		}
@@ -614,14 +618,17 @@ void Scene_Battle_Rpg2k::EnemySelected() {
 
 	switch (previous_state) {
 		case State_SelectCommand:
-			battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(active_actor, target));
+			active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(active_actor, target));
+			battle_actions.push_back(active_actor);
 			break;
 		case State_SelectSkill:
-			battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, target, *skill_window->GetSkill()));
+			active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, target, *skill_window->GetSkill()));
+			battle_actions.push_back(active_actor);
 			break;
 		case State_SelectItem:
 		{
-			//battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, target, *item_window->GetItem()));
+			//active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, target, *item_window->GetItem()));
+			//battle_actions.push_back(active_actor);
 			// Todo
 			break;
 		}
@@ -655,7 +662,8 @@ void Scene_Battle_Rpg2k::SelectNextActor() {
 
 	if (active_actor->GetAutoBattle()) {
 		// ToDo Automatic stuff
-		battle_actions.push_back(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(active_actor, Main_Data::game_enemyparty->GetRandomAliveBattler()));
+		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(active_actor, Main_Data::game_enemyparty->GetRandomAliveBattler()));
+		battle_actions.push_back(active_actor);
 
 		SelectNextActor();
 		return;
@@ -674,7 +682,7 @@ void Scene_Battle_Rpg2k::SelectPreviousActor() {
 	}
 	
 	actor_index--;
-	battle_actions.pop_front();
+	RemoveCurrentAction();
 	active_actor = allies[actor_index];
 
 	if (active_actor->IsDead()) {
@@ -690,8 +698,8 @@ void Scene_Battle_Rpg2k::SelectPreviousActor() {
 	SetState(State_SelectActor);
 }
 
-static bool BattlerSort(BattleAlgorithmRef first, BattleAlgorithmRef second) {
-	return first->GetSource()->GetAgi() > second->GetSource()->GetAgi();
+static bool BattlerSort(Game_Battler* first, Game_Battler* second) {
+	return first->GetAgi() > second->GetAgi();
 }
 
 void Scene_Battle_Rpg2k::CreateExecutionOrder() {

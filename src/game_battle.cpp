@@ -541,6 +541,8 @@ void Game_Battle::UpdateGauges() {
 
 	for (std::vector<Game_Battler*>::const_iterator it = battlers.begin();
 		it != battlers.end(); ++it) {
-		(*it)->UpdateGauge(1000 / max_agi);
+		if (!(*it)->GetBattleAlgorithm()) {
+			(*it)->UpdateGauge(1000 / max_agi);
+		}
 	}
 }

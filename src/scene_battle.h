@@ -47,11 +47,7 @@ class Action;
 class SpriteAction;
 }
 
-namespace Game_BattleAlgorithm {
-	class AlgorithmBase;
-}
-
-typedef EASYRPG_SHARED_PTR<Game_BattleAlgorithm::AlgorithmBase> BattleAlgorithmRef;
+class Game_Battler;
 
 /**
  * Scene_Battle class.
@@ -170,6 +166,8 @@ protected:
 
 	void CreateEnemyAction(Game_Enemy* enemy, const RPG::EnemyAction* action);
 
+	void RemoveCurrentAction();
+
 	// Variables
 	State state;
 	State previous_state;
@@ -201,7 +199,7 @@ protected:
 
 	boost::scoped_ptr<Background> background;
 
-	std::deque<BattleAlgorithmRef> battle_actions;
+	std::deque<Game_Battler*> battle_actions;
 };
 
 #endif

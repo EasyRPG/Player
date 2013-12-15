@@ -282,7 +282,7 @@ Game_Party_Base& Game_Battler::GetParty() const {
 	}
 }
 
-int Game_Battler::GetGauge() {
+int Game_Battler::GetGauge() const {
 	return gauge / (EASYRPG_GAUGE_MAX_VALUE / 100);
 }
 
@@ -292,7 +292,7 @@ void Game_Battler::SetGauge(int new_gauge) {
 	gauge = new_gauge * (EASYRPG_GAUGE_MAX_VALUE / 100);
 }
 
-bool Game_Battler::IsGaugeFull() {
+bool Game_Battler::IsGaugeFull() const {
 	return gauge >= EASYRPG_GAUGE_MAX_VALUE;
 }
 
@@ -301,4 +301,14 @@ void Game_Battler::UpdateGauge(int multiplier) {
 		return;
 	}
 	gauge += GetAgi() * multiplier;
+
+	printf("%s: %.2f\n", GetName().c_str(), ((float)gauge / EASYRPG_GAUGE_MAX_VALUE) * 100);
+}
+
+const BattleAlgorithmRef Game_Battler::GetBattleAlgorithm() const {
+	return battle_algorithm;
+}
+
+void Game_Battler::SetBattleAlgorithm(BattleAlgorithmRef battle_algorithm) {
+	this->battle_algorithm = battle_algorithm;
 }
