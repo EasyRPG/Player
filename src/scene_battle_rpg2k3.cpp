@@ -322,6 +322,9 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_Victory:
 	case State_Defeat:
+		status_window->SetVisible(true);
+		command_window->SetVisible(true);
+		status_window->SetX(0);
 		break;
 	}
 }
@@ -758,6 +761,21 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		int exp = Main_Data::game_enemyparty->GetExp();
 		int money = Main_Data::game_enemyparty->GetMoney();
 
+		Game_Message::texts.push_back(Data::terms.victory + "\f");
+
+		std::stringstream ss;
+		ss << exp << Data::terms.exp_received << "\f";
+		Game_Message::texts.push_back(ss.str());
+
+		ss.str("");
+		ss << Data::terms.gold_recieved_a << " " << money << Data::terms.gold << Data::terms.gold_recieved_b << "\f";
+		Game_Message::texts.push_back(ss.str());
+
+		message_window->SetHeight(32);
+		Game_Message::fixed_position = true;
+		Game_Message::position = 0;
+		Game_Message::message_waiting = true;
+
 		Game_System::BgmPlay(Data::system.battle_end_music);
 
 		// Update attributes
@@ -781,6 +799,13 @@ bool Scene_Battle_Rpg2k3::CheckLose() {
 	if (!Main_Data::game_party->IsAnyAlive()) {
 		Game_Temp::battle_result = Game_Temp::BattleDefeat;
 		SetState(State_Defeat);
+
+		message_window->SetHeight(32);
+		Game_Message::fixed_position = true;
+		Game_Message::position = 0;
+		Game_Message::message_waiting = true;
+
+		Game_Message::texts.push_back(Data::terms.defeat);
 
 		Game_System::BgmPlay(Data::system.gameover_music);
 
