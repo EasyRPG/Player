@@ -26,7 +26,7 @@
 
 namespace RPG {
 	class Skill;
-};
+}
 
 /**
  * Game_Actor class.
@@ -352,7 +352,7 @@ public:
 
 	 * @return random skill
 	 */
-	const RPG::Skill& Game_Actor::GetRandomSkill() const;
+	const RPG::Skill& GetRandomSkill() const;
 
 	/**
 	 * Gets actor states list.

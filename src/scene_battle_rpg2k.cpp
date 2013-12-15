@@ -147,6 +147,9 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 	case State_SelectAllyTarget:
 		status_window->SetActive(true);
 		break;
+	case State_Battle:
+		// no-op
+		break;
 	case State_SelectItem:
 		item_window->SetActive(true);
 		//item_window->SetActor(Game_Battle::GetActiveActor());
@@ -161,6 +164,8 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 	case State_EnemyAction:
 	case State_Victory:
 	case State_Defeat:
+	case State_TryEscape:
+		// no-op
 		break;
 	}
 
@@ -223,6 +228,8 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_Victory:
 	case State_Defeat:
+	case State_TryEscape:
+		// no-op
 		break;
 	}
 }
@@ -292,6 +299,7 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 	}
 	case State_AllyAction:
 	case State_EnemyAction:
+		// no-op
 	default:
 		break;
 	}
@@ -453,6 +461,9 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 		case State_SelectAllyTarget:
 			//TargetDone();
 			break;
+		case State_Battle:
+			// no-op
+			break;
 		case State_SelectItem:
 			ItemSelected();
 			break;
@@ -461,6 +472,7 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 			break;
 		case State_AllyAction:
 		case State_EnemyAction:
+			// no-op
 			break;
 		case State_Victory:
 			Scene::Pop();
@@ -471,6 +483,9 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 			} else {
 				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Gameover>());
 			}
+			break;
+		case State_TryEscape:
+			// no-op
 			break;
 		}
 	}
@@ -500,11 +515,15 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 			break;
 		case State_AllyAction:
 		case State_EnemyAction:
+		case State_Battle:
 			// no-op
 			break;
 		case State_Victory:
 		case State_Defeat:
 			Scene::Pop();
+			break;
+		case State_TryEscape:
+			// no-op
 			break;
 		}
 	}

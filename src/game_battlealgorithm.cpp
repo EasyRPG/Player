@@ -210,8 +210,6 @@ void Game_BattleAlgorithm::AlgorithmBase::SetTarget(Game_Battler* target) {
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::Apply() {
-	bool target_is_ally = (*current_target)->GetType() == Game_Battler::Type_Ally;
-
 	if (GetAffectedHp()) {
 		(*current_target)->ChangeHp(-*GetAffectedHp());
 	}

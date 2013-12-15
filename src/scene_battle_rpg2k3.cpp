@@ -241,12 +241,15 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		status_window->SetActive(true);
 		break;
 	case State_AutoBattle:
+		// no-op
 		break;
 	case State_SelectCommand:
 		RefreshCommandWindow();
 		command_window->SetActive(true);
 		break;
 	case State_SelectEnemyTarget:
+	case State_Battle:
+		// no-op
 		break;
 	case State_SelectAllyTarget:
 		status_window->SetActive(true);
@@ -265,6 +268,8 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 	case State_EnemyAction:
 	case State_Victory:
 	case State_Defeat:
+	case State_TryEscape:
+		// no-op
 		break;
 	}
 
@@ -310,6 +315,7 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 	case State_AllyAction:
 	case State_EnemyAction:
 	case State_Battle:
+		// no-op
 		break;
 	case State_SelectItem:
 		item_window->SetVisible(true);
@@ -326,6 +332,9 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		status_window->SetVisible(true);
 		command_window->SetVisible(true);
 		status_window->SetX(0);
+		break;
+	case State_TryEscape:
+		// no-op
 		break;
 	}
 }
@@ -370,9 +379,6 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 				help_window->SetVisible(false);
 		}
 
-		/*while (Game_Battle::NextActiveEnemy())
-			EnemyAction();*/
-
 		break;
 	case State_Battle:
 		if (!battle_actions.empty()) {
@@ -382,14 +388,15 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 			}
 			else if (ProcessBattleAction(battle_actions.front()->GetBattleAlgorithm().get())) {
 				RemoveCurrentAction();
-				if (CheckWin() ||
-					CheckLose() ||
-					CheckAbort() ||
-					CheckFlee()) {
-						return;
-				}
 			}
 		} else {
+			if (CheckWin() ||
+				CheckLose() ||
+				CheckAbort() ||
+				CheckFlee()) {
+				return;
+			}
+
 			NextTurn();
 			actor_index = 0;
 			SetState(State_SelectOption);
@@ -437,7 +444,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 			action->SetTarget(action->GetTarget()->GetParty().GetNextAliveBattler(action->GetTarget()));
 		}
 
-		printf("Action: %s\n", action->GetSource()->GetName().c_str());
+		//printf("Action: %s\n", action->GetSource()->GetName().c_str());
 
 		action->Execute();
 
@@ -563,6 +570,8 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 			break;
 		case State_AllyAction:
 		case State_EnemyAction:
+		case State_Battle:
+			// no-op
 			break;
 		case State_Victory:
 			Scene::Pop();
@@ -573,6 +582,9 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 			} else {
 				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Gameover>());
 			}
+			break;
+		case State_TryEscape:
+			// no-op
 			break;
 		}
 	}
@@ -601,6 +613,7 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 		case State_SelectAllyTarget:
 			SetState(State_SelectItem);
 			break;
+		case State_Battle:
 		case State_AllyAction:
 		case State_EnemyAction:
 			// no-op
@@ -608,6 +621,9 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 		case State_Victory:
 		case State_Defeat:
 			Scene::Pop();
+			break;
+		case State_TryEscape:
+			// no-op
 			break;
 		}
 	}
