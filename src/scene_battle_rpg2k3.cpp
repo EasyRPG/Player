@@ -69,6 +69,7 @@ void Scene_Battle_Rpg2k3::Update() {
 				const RPG::EnemyAction* action = (*it)->ChooseRandomAction();
 				if (action) {
 					CreateEnemyAction(*it, action);
+					(*it)->SetGauge(0);
 				}
 			}
 		}
@@ -438,8 +439,6 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 		printf("Action: %s\n", action->GetSource()->GetName().c_str());
 
-		action->GetSource()->SetGauge(0);
-
 		action->Execute();
 
 		if (action->GetAnimation()) {
@@ -749,9 +748,11 @@ void Scene_Battle_Rpg2k3::EnemySelected() {
 		assert("Invalid previous state for enemy selection" && false);
 	}
 
+	active_actor->SetGauge(0);
+	status_window->SetIndex(-1);
+
 	SetState(State_SelectActor);
 }
-
 
 bool Scene_Battle_Rpg2k3::CheckWin() {
 	if (!Main_Data::game_enemyparty->IsAnyAlive()) {
