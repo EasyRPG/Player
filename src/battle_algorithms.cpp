@@ -77,11 +77,11 @@ void Game_Battle::UseItemAlly(Battle::Ally& /* ally */, const RPG::Item& item, B
 		return;
 
 	// HP recovery
-	int hp = item.recover_hp * target.GetActor()->GetMaxHp() / 100 + item.recover_hp_rate;
+	int hp = item.recover_hp_rate * target.GetActor()->GetMaxHp() / 100 + item.recover_hp;
 	target.GetActor()->SetHp(target.GetActor()->GetHp() + hp);
 
 	// SP recovery
-	int sp = item.recover_sp * target.GetActor()->GetMaxSp() / 100 + item.recover_sp_rate;
+	int sp = item.recover_sp_rate * target.GetActor()->GetMaxSp() / 100 + item.recover_sp;
 	target.GetActor()->SetSp(target.GetActor()->GetSp() + sp);
 
 	/*if (hp > 0)

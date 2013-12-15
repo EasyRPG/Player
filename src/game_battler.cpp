@@ -108,8 +108,8 @@ void Game_Battler::UseItem(int item_id) {
 	const RPG::Item& item = Data::items[item_id - 1];
 
 	if (item.type == RPG::Item::Type_medicine) {
-		int hp_change = item.recover_hp * GetMaxHp() / 100 + item.recover_hp_rate;
-		int sp_change = item.recover_sp * GetMaxSp() / 100 + item.recover_sp_rate;
+		int hp_change = item.recover_hp_rate * GetMaxHp() / 100 + item.recover_hp;
+		int sp_change = item.recover_sp_rate * GetMaxSp() / 100 + item.recover_sp;
 
 		if (IsDead()) {
 			// Check if item can revive
