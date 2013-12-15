@@ -414,5 +414,5 @@ void Game_Player::BeginMove() {
 	if (!terrain.on_damage_se || (terrain.on_damage_se && (terrain.damage > 0))) {
 		Game_System::SePlay(terrain.footstep);
 	}
-	Game_Party::ApplyDamage(terrain.damage);
+	Main_Data::game_party->ApplyDamage(terrain.damage);
 }
