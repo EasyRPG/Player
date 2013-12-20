@@ -615,6 +615,16 @@ void SdlUi::ProcessEvent(SDL_Event &evnt) {
 		case SDL_JOYAXISMOTION:
 			ProcessJoystickAxisEvent(evnt);
 			return;
+		
+#if SDL_MAJOR_VERSION>1
+		case SDL_FINGERDOWN:
+			ProcessFingerDownEvent(evnt);
+			return;
+
+		case SDL_FINGERUP:
+			ProcessFingerUpEvent(evnt);
+			return;
+#endif
 	}
 }
 
@@ -845,6 +855,154 @@ void SdlUi::ProcessJoystickAxisEvent(SDL_Event &evnt) {
 	}
 #endif
 }
+
+#if SDL_MAJOR_VERSION>1
+#include <android/log.h>
+#include <jni.h>
+#include <SDL_system.h>
+void SdlUi::ProcessFingerDownEvent(SDL_Event& evnt) {
+	JNIEnv* jni = (JNIEnv*)SDL_AndroidGetJNIEnv();
+	jobject sdl_activity = (jobject)SDL_AndroidGetActivity();
+	jclass cls = jni->GetObjectClass(sdl_activity);
+	jmethodID method_getScreenHeight = jni->GetMethodID(cls, "getScreenHeight", "()I");
+	int screen_height = jni->CallIntMethod(sdl_activity, method_getScreenHeight);
+	jmethodID method_getScreenWidth = jni->GetMethodID(cls, "getScreenWidth", "()I");
+	int screen_width = jni->CallIntMethod(sdl_activity, method_getScreenWidth);
+	jmethodID method_getPixels = jni->GetMethodID(cls, "getPixels", "(D)I");
+	float button_size = jni->CallIntMethod(sdl_activity, method_getPixels, 60.0);
+	float cross_size = jni->CallIntMethod(sdl_activity, method_getPixels, 150.0);
+	jni->DeleteLocalRef(sdl_activity);
+
+	float x = evnt.tfinger.x;
+	float y = evnt.tfinger.y;
+
+	float a_x = 0.75;
+	float a_y = 0.8;
+	float a_x2 = a_x + button_size / screen_width;
+	float a_y2 = a_y + button_size / screen_height;
+
+	float b_x = 0.85;
+	float b_y = 0.7;
+	float b_x2 = b_x + button_size / screen_width;
+	float b_y2 = b_y + button_size / screen_height;
+
+	//__android_log_print(ANDROID_LOG_INFO, "EasyRPG", "A %f %f", a_x2,a_y2);
+
+	float cross_x = 0.03;
+	float cross_y = 0.6;
+	float cross_x2 = cross_x + cross_size / screen_width;
+	float cross_dir_width = (cross_x2 - cross_x) / 3;
+	float cross_y2 = cross_y + cross_size / screen_height;
+	float cross_dir_width_y = (cross_y2 - cross_y) / 3;
+
+	__android_log_print(ANDROID_LOG_INFO, "EasyRPG", "A %f %f %f", cross_x,cross_x2,cross_dir_width);
+
+	if (x >= a_x && x <= a_x2 && y >= a_y && y <= a_y2) {
+		// A pressed
+		__android_log_print(ANDROID_LOG_INFO, "EasyRPG", "A %f %f", evnt.tfinger.x, evnt.tfinger.y);
+	}
+	else if (x >= b_x && x <= b_x2 && y >= b_y && y <= b_y2) {
+		// B pressed
+		__android_log_print(ANDROID_LOG_INFO, "EasyRPG", "B %f %f", evnt.tfinger.x, evnt.tfinger.y);
+	}
+	else if (x >= cross_x + cross_dir_width && x <= cross_x + cross_dir_width*2 && y >= cross_y && y <= cross_y + cross_dir_width_y) {
+	// Up pressed
+	__android_log_print(ANDROID_LOG_INFO, "EasyRPG", "Up %f %f", evnt.tfinger.x, evnt.tfinger.y);
+	}
+	else if (x >= cross_x + cross_dir_width && x <= cross_x + cross_dir_width*2 && y >= cross_y + cross_dir_width_y*2 && y <= cross_y + cross_dir_width_y*3) {
+	// Down pressed
+	__android_log_print(ANDROID_LOG_INFO, "EasyRPG", "Down %f %f", evnt.tfinger.x, evnt.tfinger.y);
+	}
+	else if (x >= cross_x && x <= cross_x + cross_dir_width && y >= cross_y + cross_dir_width_y && y <= cross_y + cross_dir_width_y*2) {
+	// Left pressed
+	__android_log_print(ANDROID_LOG_INFO, "EasyRPG", "Left %f %f", evnt.tfinger.x, evnt.tfinger.y);
+	}
+	else if (x >= cross_x + cross_dir_width*2 && x <= cross_x + cross_dir_width*3 && y >= cross_y + cross_dir_width_y && y <= cross_y + cross_dir_width_y*2) {
+	// Right pressed
+	__android_log_print(ANDROID_LOG_INFO, "EasyRPG", "Right %f %f", evnt.tfinger.x, evnt.tfinger.y);
+	}
+	else {
+		__android_log_print(ANDROID_LOG_INFO, "EasyRPG", "Finger down %f %f", evnt.tfinger.x, evnt.tfinger.y);
+	}
+
+	keys[Input::Keys::RETURN] = x >= a_x && x <= a_x2 && y >= a_y && y <= a_y2;
+	keys[Input::Keys::ESCAPE] = x >= b_x && x <= b_x2 && y >= b_y && y <= b_y2;
+	keys[Input::Keys::UP] = x >= cross_x + cross_dir_width && x <= cross_x + cross_dir_width*2 && y >= cross_y && y <= cross_y + cross_dir_width_y;
+	keys[Input::Keys::DOWN] = x >= cross_x + cross_dir_width && x <= cross_x + cross_dir_width*2 && y >= cross_y + cross_dir_width_y*2 && y <= cross_y + cross_dir_width_y*3;
+	keys[Input::Keys::LEFT] = x >= cross_x && x <= cross_x + cross_dir_width && y >= cross_y + cross_dir_width_y && y <= cross_y + cross_dir_width_y*2;
+	keys[Input::Keys::RIGHT] = x >= cross_x + cross_dir_width*2 && x <= cross_x + cross_dir_width*3 && y >= cross_y + cross_dir_width_y && y <= cross_y + cross_dir_width_y*2;
+}
+
+void SdlUi::ProcessFingerUpEvent(SDL_Event& evnt) {
+	JNIEnv* jni = (JNIEnv*)SDL_AndroidGetJNIEnv();
+	jobject sdl_activity = (jobject)SDL_AndroidGetActivity();
+	jclass cls = jni->GetObjectClass(sdl_activity);
+	jmethodID method_getScreenHeight = jni->GetMethodID(cls, "getScreenHeight", "()I");
+	int screen_height = jni->CallIntMethod(sdl_activity, method_getScreenHeight);
+	jmethodID method_getScreenWidth = jni->GetMethodID(cls, "getScreenWidth", "()I");
+	int screen_width = jni->CallIntMethod(sdl_activity, method_getScreenWidth);
+	jmethodID method_getPixels = jni->GetMethodID(cls, "getPixels", "(D)I");
+	float button_size = jni->CallIntMethod(sdl_activity, method_getPixels, 60.0);
+	float cross_size = jni->CallIntMethod(sdl_activity, method_getPixels, 150.0);
+	jni->DeleteLocalRef(sdl_activity);
+
+	float x = evnt.tfinger.x;
+	float y = evnt.tfinger.y;
+
+	float a_x = 0.75;
+	float a_y = 0.8;
+	float a_x2 = a_x + button_size / screen_width;
+	float a_y2 = a_y + button_size / screen_height;
+
+	float b_x = 0.85;
+	float b_y = 0.7;
+	float b_x2 = b_x + button_size / screen_width;
+	float b_y2 = b_y + button_size / screen_height;
+
+	//__android_log_print(ANDROID_LOG_INFO, "EasyRPG", "A %f %f", a_x2,a_y2);
+
+	float cross_x = 0.03;
+	float cross_y = 0.6;
+	float cross_x2 = cross_x + cross_size / screen_width;
+	float cross_dir_width = (cross_x2 - cross_x) / 3;
+	float cross_y2 = cross_y + cross_size / screen_height;
+	float cross_dir_width_y = (cross_y2 - cross_y) / 3;
+
+	if (x >= a_x && x <= a_x2 && y >= a_y && y <= a_y2) {
+		// A pressed
+		__android_log_print(ANDROID_LOG_INFO, "EasyRPG", "up A %f %f", evnt.tfinger.x, evnt.tfinger.y);
+		keys[Input::Keys::RETURN] = false;
+	}
+	else if (x >= b_x && x <= b_x2 && y >= b_y && y <= b_y2) {
+		// B pressed
+		__android_log_print(ANDROID_LOG_INFO, "EasyRPG", "up B %f %f", evnt.tfinger.x, evnt.tfinger.y);
+		keys[Input::Keys::ESCAPE] = false;
+	}
+	else if (x >= cross_x + cross_dir_width && x <= cross_x + cross_dir_width*2 && y >= cross_y && y <= cross_y + cross_dir_width_y) {
+	// Up pressed
+	__android_log_print(ANDROID_LOG_INFO, "EasyRPG", "up Up %f %f", evnt.tfinger.x, evnt.tfinger.y);
+	keys[Input::Keys::UP] = false;
+	}
+	else if (x >= cross_x + cross_dir_width && x <= cross_x + cross_dir_width*2 && y >= cross_y + cross_dir_width_y*2 && y <= cross_y + cross_dir_width_y*3) {
+	// Down pressed
+	__android_log_print(ANDROID_LOG_INFO, "EasyRPG", "up Down %f %f", evnt.tfinger.x, evnt.tfinger.y);
+	keys[Input::Keys::DOWN] = false;
+	}
+	else if (x >= cross_x && x <= cross_x + cross_dir_width && y >= cross_y + cross_dir_width_y && y <= cross_y + cross_dir_width_y*2) {
+	// Left pressed
+	__android_log_print(ANDROID_LOG_INFO, "EasyRPG", "up Left %f %f", evnt.tfinger.x, evnt.tfinger.y);
+	keys[Input::Keys::LEFT] = false;
+	}
+	else if (x >= cross_x + cross_dir_width*2 && x <= cross_x + cross_dir_width*3 && y >= cross_y + cross_dir_width_y && y <= cross_y + cross_dir_width_y*2) {
+	// Right pressed
+	__android_log_print(ANDROID_LOG_INFO, "EasyRPG", "up Right %f %f", evnt.tfinger.x, evnt.tfinger.y);
+	keys[Input::Keys::RIGHT] = false;
+	}
+	else {
+		__android_log_print(ANDROID_LOG_INFO, "EasyRPG", "Fingerup %f %f", evnt.tfinger.x, evnt.tfinger.y);
+	}
+}
+#endif
 
 void SdlUi::SetAppIcon() {
 #ifdef _WIN32
