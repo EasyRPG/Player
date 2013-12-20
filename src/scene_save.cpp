@@ -24,6 +24,7 @@
 #include "lsd_reader.h"
 #include "scene_save.h"
 #include "scene_file.h"
+#include "reader_util.h"
 
 Scene_Save::Scene_Save() :
 	Scene_File(Data::terms.save_game_message) {
@@ -69,5 +70,6 @@ void Scene_Save::Action(int index) {
 	Main_Data::game_data.system.save_slot = index + 1;
 	Main_Data::game_data.system.save_count += 1;
 
-	LSD_Reader::Save(FileFinder::FindDefault(ss.str()), Main_Data::game_data);
+	LSD_Reader::Save(FileFinder::FindDefault(ss.str()), Main_Data::game_data,
+		ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)));
 }

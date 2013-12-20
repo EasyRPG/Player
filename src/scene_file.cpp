@@ -27,6 +27,7 @@
 #include "lsd_reader.h"
 #include "rpg_save.h"
 #include "scene_file.h"
+#include "reader_util.h"
 
 Scene_File::Scene_File(std::string message) :
 	help_window(NULL), message(message) {
@@ -51,7 +52,7 @@ void Scene_File::Start() {
 		if (!file.empty()) {
 			// File found
 			std::auto_ptr<RPG::Save> savegame =
-				LSD_Reader::Load(file);
+				LSD_Reader::Load(file, ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)));
 
 			if (savegame.get())	{
 				std::vector<std::pair<int, std::string> > party;
