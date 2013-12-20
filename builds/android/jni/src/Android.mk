@@ -22,10 +22,9 @@ LOCAL_SRC_FILES := SDL_android_main.c \
 	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/lib/readers/src/*.cpp)) \
 	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/lib/readers/src/generated/*.cpp)) \	
 
-#LOCAL_SHARED_LIBRARIES := SDL2 SDL2_mixer pixman png iconv
+LOCAL_SHARED_LIBRARIES := SDL2 SDL2_mixer iconv smpeg2 #freetype2-static pixman png 
 
-LOCAL_LDLIBS := -L$(EASYDEV_ANDROID)/libs/armeabi-v7a -lGLESv1_CM -llog -lz \
-	-lSDL2 -lSDL2_mixer -lpixman -liconv -lpng -lsmpeg2 -lfreetype2-static
+LOCAL_LDLIBS := -L$(EASYDEV_ANDROID)/libs/armeabi-v7a -lGLESv1_CM -llog -lz -lfreetype2-static -lpixman -lpng
 
 LOCAL_CFLAGS := -O2 -Wall -Wextra -fno-rtti -DUSE_SDL -DHAVE_SDL_MIXER -DNDEBUG -DUNIX
 LOCAL_CPPFLAGS	=	$(LOCAL_C_FLAGS) -fno-exceptions -std=c++0x
