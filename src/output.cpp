@@ -30,6 +30,10 @@
 	#include <unistd.h>
 #endif
 
+#ifdef __ANDROID__
+	#include <android/log.h>
+#endif
+
 #include "filefinder.h"
 #include "graphics.h"
 #include "input.h"
@@ -82,6 +86,11 @@ static void HandleScreenOutput(char const* type, std::string const& msg, bool is
 	} else {
 		ss << "Press any key to continue...";
 	}
+	
+#ifdef __ANDROID__
+	__android_log_print(is_error ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, "EasyRPG Player", "%s", msg.c_str());
+#endif
+
 	DisplayUi->GetDisplaySurface()->Clear();
 	DisplayUi->DrawScreenText(ss.str(), 10, 30 + 10);
 	DisplayUi->UpdateDisplay();

@@ -38,6 +38,7 @@ namespace Main_Data {
 	extern RPG::Save game_data;
 	extern std::string project_path;
 
+	void Init();
 	void Cleanup();
 }
 

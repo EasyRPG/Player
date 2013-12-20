@@ -30,20 +30,59 @@
 #include "game_switches.h"
 #include "font.h"
 
+#ifdef __ANDROID__
+	#include <jni.h>
+	#include <SDL_system.h>
+#endif
+
+#ifdef GEKKO
+	#include <unistd.h>
+#endif
+
 // Global variables.
 
 Game_Variables_Class Game_Variables(Main_Data::game_data.system.variables);
 Game_Switches_Class Game_Switches(Main_Data::game_data.system.switches);
+
+static std::string GetProjectPath() {
+#ifdef __ANDROID__
+	// Invoke "String getProjectPath()" in EasyRPG Activity via JNI
+	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+	jobject sdl_activity = (jobject)SDL_AndroidGetActivity();
+	jclass cls = env->GetObjectClass(sdl_activity);
+	jmethodID jni_getProjectPath = env->GetMethodID(cls , "getProjectPath", "()Ljava/lang/String;");
+	jstring return_string = (jstring)env->CallObjectMethod(sdl_activity, jni_getProjectPath);
+	
+	const char *js = env->GetStringUTFChars(return_string, NULL);
+	std::string cs(js);
+
+	env->ReleaseStringUTFChars(return_string, js);
+	env->DeleteLocalRef(sdl_activity);
+
+	return cs;
+#elif GEKKO
+	// Wii doesn't provide a correct working directory before mounting
+	char gekko_dir[256];
+	getcwd(gekko_dir, 255);
+	Main_Data::project_path = gekko_dir;
+#else
+	return std::string(".");
+#endif
+}
 
 namespace Main_Data {
 	// Dynamic Game Data
 	boost::scoped_ptr<Game_Screen> game_screen;
 	boost::scoped_ptr<Game_Player> game_player;
 	RPG::Save game_data;
-	std::string project_path =
+	std::string project_path = ".";
+}
+
+void Main_Data::Init() {
+	project_path =
 		getenv("RPG_TEST_GAME_PATH")? getenv("RPG_TEST_GAME_PATH"):
 		getenv("RPG_GAME_PATH")? getenv("RPG_GAME_PATH"):
-		".";
+		GetProjectPath();
 }
 
 void Main_Data::Cleanup() {
