@@ -61,10 +61,11 @@ public class SDLActivity extends Activity {
         // Set up the surface
         mSurface = new SDLSurface(getApplication());
 
-        mLayout = new AbsoluteLayout(this);
-        mLayout.addView(mSurface);
+        // Overwritten by EasyRpgPlayerActivity
+        // mLayout = new AbsoluteLayout(this);
+        // mLayout.addView(mSurface);
 
-        setContentView(mLayout);
+        // setContentView(mLayout);
     }
 
     // Events
