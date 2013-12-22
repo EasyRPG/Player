@@ -169,6 +169,11 @@ void Player::Exit() {
 	Graphics::Quit();
 	FileFinder::Quit();
 	DisplayUi.reset();
+	
+#ifdef __ANDROID__
+	// Workaround Segfault under Android
+	exit(0);
+#endif
 }
 
 #if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER >= 0x0600)
