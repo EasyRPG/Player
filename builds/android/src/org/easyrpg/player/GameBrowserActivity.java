@@ -36,32 +36,40 @@ public class GameBrowserActivity extends ListActivity {
 		setTitle("Select RPG Maker 2000/2003 Game");
 
 		List<String> values = new ArrayList<String>();
-		File dir = new File(path);
-		if (!dir.exists()) {
-			if (!dir.mkdirs()) {
-				values.add("Creating " + path + " directory failed");
-			}
-		}
-
-		if (!dir.canRead() || !dir.isDirectory()) {
-			values.add(path + " not readable");
-		} else {
-
-			File[] list = dir.listFiles();
-			if (list != null) {
-				for (File file : list) {
-					if (!file.getName().startsWith(".") && isRpg2kGame(file)) {
-						values.add(file.getName());
-					}
+		
+		String state = Environment.getExternalStorageState();
+		if (Environment.MEDIA_MOUNTED.equals(state)) {
+		
+			File dir = new File(path);
+			if (!dir.exists()) {
+				if (!dir.mkdirs()) {
+					values.add("Creating " + path + " directory failed");
 				}
 			}
-
-			if (values.size() == 0) {
-				values.add("No games found in " + path);
+	
+			if (!dir.canRead() || !dir.isDirectory()) {
+				values.add(path + " not readable");
 			} else {
-				error = false;
+	
+				File[] list = dir.listFiles();
+				if (list != null) {
+					for (File file : list) {
+						if (!file.getName().startsWith(".") && isRpg2kGame(file)) {
+							values.add(file.getName());
+						}
+					}
+				}
+	
+				if (values.size() == 0) {
+					values.add("No games found in " + path);
+				} else {
+					error = false;
+				}
 			}
+		} else {
+			values.add("No external storage (e.g. SD card) found");
 		}
+
 		Collections.sort(values);
 
 		// Put the data into the list
