@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -13,6 +14,8 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.*;
 import android.graphics.Paint.Style;
@@ -22,6 +25,9 @@ import android.graphics.Paint.Style;
  */
 
 public class EasyRpgPlayerActivity extends SDLActivity {
+	ImageView aView, bView, cView;
+	boolean uiVisible = true;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,10 +39,67 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	    drawCross();
 	
 	    setContentView(mLayout);
-	    
-	    //setHasOptionsMenu(true);
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.player_menu, menu);
+	    Log.v("Player", "onCreateOption");
+	    return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle item selection
+	    switch (item.getItemId()) {
+	        case R.id.toggle_fps:
+	            toggleFps();
+	            return true;
+	        case R.id.toggle_ui:
+	        	if (uiVisible) {
+	        		mLayout.removeView(aView);
+	        		mLayout.removeView(bView);
+	        		mLayout.removeView(cView);
+	        	} else {
+	        		mLayout.addView(aView);
+	        		mLayout.addView(bView);
+	        		mLayout.addView(cView);
+	        	}
+	        	uiVisible = !uiVisible;
+	            return true;
+	        case R.id.end_game:
+        		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+    			alertDialogBuilder.setTitle("EasyRPG Player");
+     
+    			// set dialog message
+    			alertDialogBuilder
+    				.setMessage("Do you really want to quit?")
+    				.setCancelable(false)
+    				.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+    					public void onClick(DialogInterface dialog,int id) {
+    						endGame();
+    					}
+    				  })
+    				.setNegativeButton("No",new DialogInterface.OnClickListener() {
+    					public void onClick(DialogInterface dialog,int id) {
+    						dialog.cancel();
+    					}
+    				});
+     
+    				// create alert dialog
+    				AlertDialog alertDialog = alertDialogBuilder.create();
 
+    				// show it
+    				alertDialog.show();
+	        	return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}
+	
+	public static native void toggleFps();
+	public static native void endGame();
 	
 	/**
 	 * Used by the native code to retrieve the selected game in the browser.
@@ -49,13 +112,13 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	}
 	
 	/**
-	 * Used by timidity of SDL_mixer to find the config file for the instruments.
+	 * Used by timidity of SDL_mixer to find the timidity folder for the instruments.
 	 * Invoked via JNI.
 	 * 
 	 * @return Full path to the timidity.cfg
 	 */
-	public String getTimidityConfigPath() {
-		String str = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/timidity/timidity.cfg";
+	public String getTimidityPath() {
+		String str = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/timidity";
 		//Log.v("SDL", "getTimidity " + str);
 		return str;
 	}
@@ -123,9 +186,9 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 		c.drawCircle(iconSize / 2, iconSize / 2, iconSize / 2 - 5, circlePaint);
 		
 		// Add to screen layout
-		ImageView aView = new ImageView(this);
+		aView = new ImageView(this);
 		aView.setImageBitmap(abBmp);
-		ImageView bView = new ImageView(this);
+		bView = new ImageView(this);
 		bView.setImageBitmap(abBmp);
 		setLayoutPosition(aView, 0.75, 0.8);
 		setLayoutPosition(bView, 0.85, 0.7);
@@ -165,7 +228,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 		c.drawPath(path, crossPaint);
 		
 		// Add to screen layout
-		ImageView cView = new ImageView(this);
+		cView = new ImageView(this);
 		cView.setImageBitmap(cBmp);
 		setLayoutPosition(cView, 0.03, 0.6);
 		mLayout.addView(cView);

@@ -16,6 +16,7 @@ LOCAL_C_INCLUDES := \
 
 # Add your application source files here...
 LOCAL_SRC_FILES := SDL_android_main.c \
+	org_easyrpg_player_EasyRpgPlayerActivity.cpp \
 	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/src/*.cpp)) \
 	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/src/*.c)) \
 	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/lib/shinonome/*.cxx)) \

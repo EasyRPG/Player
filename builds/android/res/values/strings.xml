@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">EasyRPG Player</string>
+	<string name="toggle_fps">Toggle FPS</string>
+	<string name="toggle_ui">Toggle Virtual Buttons</string>
+	<string name="end_game">End Game</string>
+	<string name="west_europe">Western Europe (Default)</string>
+	<string name="east_europe">Eastern Europe</string>
+	<string name="japan">Japan</string>
+	<string name="cancel">Cancel</string>
 </resources>
