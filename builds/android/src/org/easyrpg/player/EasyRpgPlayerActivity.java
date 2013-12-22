@@ -4,6 +4,8 @@ import org.libsdl.app.SDLActivity;
 
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -31,7 +33,10 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	    drawCross();
 	
 	    setContentView(mLayout);
+	    
+	    //setHasOptionsMenu(true);
 	}
+
 	
 	/**
 	 * Used by the native code to retrieve the selected game in the browser.
@@ -51,7 +56,19 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	 */
 	public String getTimidityConfigPath() {
 		String str = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/timidity/timidity.cfg";
-		Log.v("SDL", "getTimidity " + str);
+		//Log.v("SDL", "getTimidity " + str);
+		return str;
+	}
+	
+	/**
+	 * Used by the native code to retrieve the RTP directory.
+	 * Invoked via JNI.
+	 * 
+	 * @return Full path to the RTP
+	 */
+	public String getRtpPath() {
+		String str = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/rtp";
+		//Log.v("SDL", "getRtpPath " + str);
 		return str;
 	}
 	
