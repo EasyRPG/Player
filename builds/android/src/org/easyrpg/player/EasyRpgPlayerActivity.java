@@ -16,6 +16,8 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.*;
 import android.graphics.Paint.Style;
@@ -32,13 +34,11 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-	    mLayout = new RelativeLayout(this);
+	    mLayout = (RelativeLayout)findViewById(R.id.main_layout);
 	    mLayout.addView(mSurface);
 	    
 	    drawButtons();
 	    drawCross();
-	
-	    setContentView(mLayout);
 	}
 	
 	@Override

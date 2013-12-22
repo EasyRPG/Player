@@ -31,7 +31,9 @@
         <activity
         		android:label="@string/app_name"
         		android:name="org.easyrpg.player.EasyRpgPlayerActivity"
-				android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+				android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+				android:screenOrientation="landscape">
+		</activity>
     </application>
 
     <!-- Android 2.3.3 -->

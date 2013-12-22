@@ -235,7 +235,7 @@ public class GameBrowserActivity extends ListActivity {
 			// Connect after OpenIni to prevent signal by toggle function
 			rg.setOnCheckedChangeListener(new RadioGroupOnClickListener(this, context));
 		}
-		
+
 		private void OpenIni() throws IOException {
 			iniReader = new SimpleIniEncodingReader(iniFile);
 			String encoding = iniReader.getEncoding();

@@ -2,8 +2,11 @@ package org.libsdl.app;
 
 import java.util.Arrays;
 
+import org.easyrpg.player.R;
+
 import android.app.*;
 import android.content.*;
+import android.content.pm.ActivityInfo;
 import android.view.*;
 import android.view.inputmethod.BaseInputConnection;
 import android.view.inputmethod.EditorInfo;
@@ -56,6 +59,8 @@ public class SDLActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         //Log.v("SDL", "onCreate()");
         super.onCreate(savedInstanceState);
+        
+        setContentView(R.layout.main);
         
         // So we can call stuff from static callbacks
         mSingleton = this;
