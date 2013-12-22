@@ -3,11 +3,13 @@ package org.easyrpg.player;
 import org.libsdl.app.SDLActivity;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.content.res.Resources;
 import android.graphics.*;
@@ -39,6 +41,18 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	 */
 	public String getProjectPath() {
 		return getIntent().getStringExtra("project_path");
+	}
+	
+	/**
+	 * Used by timidity of SDL_mixer to find the config file for the instruments.
+	 * Invoked via JNI.
+	 * 
+	 * @return Full path to the timidity.cfg
+	 */
+	public String getTimidityConfigPath() {
+		String str = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/timidity/timidity.cfg";
+		Log.v("SDL", "getTimidity " + str);
+		return str;
 	}
 	
 	/**
