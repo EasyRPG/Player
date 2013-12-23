@@ -39,6 +39,8 @@ struct SdlAudio : public AudioInterface {
 	void BGM_Volume(int);
 	void BGM_Pitch(int);
 	void BGS_Play(std::string const&, int, int);
+	void BGS_Pause();
+	void BGS_Resume();
 	void BGS_Stop();
 	void BGS_Fade(int);
 	void ME_Play(std::string const&, int, int);
@@ -51,6 +53,7 @@ struct SdlAudio : public AudioInterface {
  private:
 	EASYRPG_SHARED_PTR<Mix_Music> bgm;
 	int bgm_volume;
+	bool bgm_playing;
 	EASYRPG_SHARED_PTR<Mix_Chunk> bgs;
 	int bgs_channel;
 	EASYRPG_SHARED_PTR<Mix_Chunk> me;
