@@ -42,7 +42,7 @@ public class GameBrowserActivity extends ListActivity {
 		setContentView(R.layout.game_browser);
 
 		path = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/games";
-		setTitle("Select RPG Maker 2000/2003 Game");
+		//setTitle("Select RPG Maker 2000/2003 Game");
 
 		List<String> values = new ArrayList<String>();
 		

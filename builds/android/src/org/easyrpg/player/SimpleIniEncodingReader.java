@@ -10,8 +10,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
-import android.util.Log;
-
 /**
  * Reads the encoding from the RPG_RT.ini file
  */
@@ -33,7 +31,7 @@ public class SimpleIniEncodingReader {
 			String line;
 			line = br.readLine();
 			while (line != null) {
-				Log.v("Ini", line);
+				//Log.v("Ini", line);
 				lines.add(line);
 				line = br.readLine();
 			}
@@ -58,20 +56,20 @@ public class SimpleIniEncodingReader {
 				continue;
 			}
 			if (sectionFound) {
-				Log.v("Ini", line);
+				//Log.v("Ini", line);
 				if (!line.isEmpty() && line.trim().charAt(0) == '[') {
 					sectionFound = false;
 				} else {
-					Log.v("Ini", line);
+					//Log.v("Ini", line);
 					String[] entry = line.toLowerCase().split("=", 2);
 					if (entry[0].trim().equals("encoding")) {
-						Log.v("Ini", "Enc" + entry[1]);
+						//Log.v("Ini", "Enc" + entry[1]);
 						return entry[1];
 					}
 				}
 			}
 		}
-		Log.v("Ini", "Enc1252");
+		//Log.v("Ini", "Enc1252");
 		return "1252";
 	}
 	

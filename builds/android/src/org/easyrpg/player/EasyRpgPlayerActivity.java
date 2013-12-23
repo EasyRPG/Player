@@ -4,6 +4,7 @@ import org.libsdl.app.SDLActivity;
 
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,8 +17,6 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.*;
 import android.graphics.Paint.Style;
@@ -39,6 +38,14 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	    
 	    drawButtons();
 	    drawCross();
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if (keyCode == KeyEvent.KEYCODE_BACK ) {
+	        showEndGameDialog();
+	    }
+	    return super.onKeyDown(keyCode, event);
 	}
 	
 	@Override
@@ -69,33 +76,36 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	        	uiVisible = !uiVisible;
 	            return true;
 	        case R.id.end_game:
-        		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-    			alertDialogBuilder.setTitle("EasyRPG Player");
-     
-    			// set dialog message
-    			alertDialogBuilder
-    				.setMessage("Do you really want to quit?")
-    				.setCancelable(false)
-    				.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-    					public void onClick(DialogInterface dialog,int id) {
-    						endGame();
-    					}
-    				  })
-    				.setNegativeButton("No",new DialogInterface.OnClickListener() {
-    					public void onClick(DialogInterface dialog,int id) {
-    						dialog.cancel();
-    					}
-    				});
-     
-    				// create alert dialog
-    				AlertDialog alertDialog = alertDialogBuilder.create();
-
-    				// show it
-    				alertDialog.show();
+	        	showEndGameDialog();
 	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
+	}
+
+	private void showEndGameDialog() {
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+		alertDialogBuilder.setTitle("EasyRPG Player");
+    
+		// set dialog message
+		alertDialogBuilder
+			.setMessage("Do you really want to quit?")
+			.setCancelable(false)
+			.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,int id) {
+					endGame();
+				}
+			  })
+			.setNegativeButton("No",new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,int id) {
+					dialog.cancel();
+				}
+			});
+    
+			// create alert dialog
+			AlertDialog alertDialog = alertDialogBuilder.create();
+
+			alertDialog.show();
 	}
 	
 	public static native void toggleFps();
@@ -190,8 +200,8 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 		aView.setImageBitmap(abBmp);
 		bView = new ImageView(this);
 		bView.setImageBitmap(abBmp);
-		setLayoutPosition(aView, 0.75, 0.8);
-		setLayoutPosition(bView, 0.85, 0.7);
+		setLayoutPositionRight(aView, 0.13, 0.7);
+		setLayoutPositionRight(bView, 0.03, 0.6);
 		mLayout.addView(aView);
 		mLayout.addView(bView);
 	}
@@ -230,7 +240,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 		// Add to screen layout
 		cView = new ImageView(this);
 		cView.setImageBitmap(cBmp);
-		setLayoutPosition(cView, 0.03, 0.6);
+		setLayoutPosition(cView, 0.03, 0.5);
 		mLayout.addView(cView);
 	}
 	
@@ -251,6 +261,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
     /**
      * Moves a view to a screen position.
      * Position is from 0 to 1 and converted to screen pixel.
+     * Alignment is top left.
      * 
      * @param view View to move
      * @param x X position from 0 to 1
@@ -262,8 +273,29 @@ public class EasyRpgPlayerActivity extends SDLActivity {
         float screenHeightDp = displayMetrics.heightPixels / displayMetrics.density;
         
     	RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-    	params.leftMargin = getPixels(screenWidthDp * x); //Your X coordinate
-    	params.topMargin = getPixels(screenHeightDp * y); //Your Y coordinate
+    	params.leftMargin = getPixels(screenWidthDp * x);
+    	params.topMargin = getPixels(screenHeightDp * y);
+    	view.setLayoutParams(params);        
+	}
+	
+    /**
+     * Moves a view to a screen position.
+     * Position is from 0 to 1 and converted to screen pixel.
+     * Alignment is top right.
+     * 
+     * @param view View to move
+     * @param x X position from 0 to 1
+     * @param y Y position from 0 to 1
+     */
+	private void setLayoutPositionRight(View view, double x, double y) {
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        float screenWidthDp = displayMetrics.widthPixels / displayMetrics.density;
+        float screenHeightDp = displayMetrics.heightPixels / displayMetrics.density;
+        
+    	RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+    	params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
+    	params.rightMargin = getPixels(screenWidthDp * x);
+    	params.topMargin = getPixels(screenHeightDp * y);
     	view.setLayoutParams(params);        
 	}
 }

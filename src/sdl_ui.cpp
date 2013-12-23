@@ -890,18 +890,22 @@ void SdlUi::ProcessFingerEvent(SDL_Event& evnt, bool finger_down) {
 	float x = evnt.tfinger.x;
 	float y = evnt.tfinger.y;
 
-	float a_x = 0.75;
-	float a_y = 0.8;
-	float a_x2 = a_x + button_size / screen_width;
+	// Bounding box of button a
+	float a_x2 = 1 - 0.13;
+	float a_y = 0.7;
+	float a_x = a_x2 - button_size / screen_width;
 	float a_y2 = a_y + button_size / screen_height;
 
-	float b_x = 0.85;
-	float b_y = 0.7;
-	float b_x2 = b_x + button_size / screen_width;
+	// Bounding box of button b
+	float b_x2 = 1 - 0.03;
+	float b_y = 0.6;
+	float b_x = b_x2 - button_size / screen_width;
 	float b_y2 = b_y + button_size / screen_height;
 
+	// Bunding box of the cross
+	// One direction has 1/3 of box size
 	float cross_x = 0.03;
-	float cross_y = 0.6;
+	float cross_y = 0.5;
 	float cross_x2 = cross_x + cross_size / screen_width;
 	float cross_dir_width = (cross_x2 - cross_x) / 3;
 	float cross_y2 = cross_y + cross_size / screen_height;
