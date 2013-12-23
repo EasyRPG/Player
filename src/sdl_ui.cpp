@@ -59,6 +59,7 @@ AudioInterface& SdlUi::GetAudio() {
 	#define SDL_WINDOWEVENT SDL_ACTIVEEVENT
 #endif
 
+static bool filtering_done;
 static int FilterUntilFocus(const SDL_Event* evnt);
 static int FilterUntilFocus_SDL2(void*, SDL_Event* evnt);
 
@@ -654,21 +655,21 @@ void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 		}
 #endif
 
-// SDL2 for Android sends no focus lost event when Home is pressed
-// but when game resumes -> hangs with blackscreen... SDL2 bug?
-#ifndef __ANDROID__
 		Player::Pause();
 
 		bool last = ShowCursor(true);
 
 		// Filter SDL events with FilterUntilFocus until focus is
 		// regained
+		filtering_done = false;
 #if SDL_MAJOR_VERSION==1
 		SDL_SetEventFilter(&FilterUntilFocus);
 #else
 		SDL_SetEventFilter(&FilterUntilFocus_SDL2, NULL);
 #endif
+
 		SDL_WaitEvent(NULL);
+
 #if SDL_MAJOR_VERSION==1
 		SDL_SetEventFilter(NULL);
 #else
@@ -678,7 +679,6 @@ void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 		ShowCursor(last);
 
 		Player::Resume();
-#endif
 		ResetKeys();
 
 		return;
@@ -933,6 +933,9 @@ void SdlUi::ProcessFingerEvent(SDL_Event& evnt, bool finger_down) {
 		keys[Input::Keys::LEFT] = !left_hit & keys[Input::Keys::LEFT];
 		keys[Input::Keys::RIGHT] = !right_hit & keys[Input::Keys::RIGHT];
 	}
+#else
+	(void)finger_down;
+	(void)evnt;
 #endif
 }
 #endif
@@ -1221,18 +1224,25 @@ Input::Keys::InputKey SdlJKey2InputKey(int button_index) {
 #endif
 
 int FilterUntilFocus(const SDL_Event* evnt) {
-	//__android_log_print(ANDROID_LOG_INFO, "EasyRPG Player", "FilterUntilFocus");
+	// Prevent throwing events away received after focus gained but filter
+	// not detached.
+	if (filtering_done) {
+		return true;
+	}
+
 	switch (evnt->type) {
 	case SDL_QUIT:
+		filtering_done = true;
 		Player::exit_flag = true;
 		return 1;
 
 	case SDL_WINDOWEVENT:
 #if SDL_MAJOR_VERSION==1
-		return evnt->active.state & SDL_APPINPUTFOCUS;
+		filtering_done = !!(evnt->active.state & SDL_APPINPUTFOCUS);
 #else
-		return evnt->window.event == SDL_WINDOWEVENT_FOCUS_GAINED;
+		filtering_done = evnt->window.event == SDL_WINDOWEVENT_FOCUS_GAINED;
 #endif
+		return filtering_done;
 
 	default:
 		return 0;
