@@ -46,7 +46,7 @@ public class SDLActivity extends Activity {
     static {
         System.loadLibrary("SDL2");
         //System.loadLibrary("SDL2_image");
-        System.loadLibrary("smpeg2");
+        //System.loadLibrary("smpeg2");
         System.loadLibrary("SDL2_mixer");
         //System.loadLibrary("SDL2_net");
         //System.loadLibrary("SDL2_ttf");
@@ -565,7 +565,8 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
     // Key events
     @Override
     public boolean onKey(View  v, int keyCode, KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.KEYCODE_MENU) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_MENU ||
+        	event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
         	return false;
         }
     	
