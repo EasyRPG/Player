@@ -53,9 +53,9 @@ struct SdlAudio : public AudioInterface {
  private:
 	EASYRPG_SHARED_PTR<Mix_Music> bgm;
 	int bgm_volume;
-	bool bgm_playing;
 	EASYRPG_SHARED_PTR<Mix_Chunk> bgs;
 	int bgs_channel;
+	bool bgs_playing;
 	EASYRPG_SHARED_PTR<Mix_Chunk> me;
 	int me_channel;
 	bool me_stopped_bgm;

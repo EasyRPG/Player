@@ -28,9 +28,9 @@
 SdlAudio::SdlAudio() :
 	bgm_volume(0),
 	bgs_channel(0),
+	bgs_playing(false),
 	me_channel(0),
-	me_stopped_bgm(false),
-	bgm_playing(false)
+	me_stopped_bgm(false)
 {
 	if (!(SDL_WasInit(SDL_INIT_AUDIO) & SDL_INIT_AUDIO)) {
 		if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
@@ -76,7 +76,7 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */) {
 	// SDL2_mixer produces noise when playing wav.
 	// Workaround: Use Mix_LoadWAV
 	// https://bugzilla.libsdl.org/show_bug.cgi?id=2094
-	if (bgm_playing) {
+	if (bgs_playing) {
 		BGS_Stop();
 	}
 	if (Mix_GetMusicType(bgm.get()) == MUS_WAV) {
@@ -170,7 +170,7 @@ void SdlAudio::BGS_Play(std::string const& file, int volume, int /* pitch */) {
 		Output::Warning("Couldn't play %s BGS.\n%s\n", file.c_str(), Mix_GetError());
 		return;
 	}
-	bgm_playing = true;
+	bgs_playing = true;
 }
 
 void SdlAudio::BGS_Pause() {
@@ -186,7 +186,7 @@ void SdlAudio::BGS_Resume() {
 void SdlAudio::BGS_Stop() {
 	if (Mix_Playing(bgs_channel)) {
 		Mix_HaltChannel(bgs_channel);
-		bgm_playing = false;
+		bgs_playing = false;
 	}
 }
 
