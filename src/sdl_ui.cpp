@@ -92,12 +92,14 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 #endif
 
 	// Set some SDL env. variables before starting
-	// These are platform dependant, so every port
+	// These are platform dependent, so every port
 	// needs to set them manually
 
 	// Set window position to the middle of the
 	// screen
+#ifndef GEKKO
 	putenv("SDL_VIDEO_WINDOW_POS=center");
+#endif
 #if defined(PSP)
 	putenv("SDL_ASPECT_RATIO=4:3");
 #endif
