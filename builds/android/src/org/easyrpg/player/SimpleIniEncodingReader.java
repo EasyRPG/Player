@@ -59,7 +59,7 @@ public class SimpleIniEncodingReader {
 			}
 			if (sectionFound) {
 				Log.v("Ini", line);
-				if (line.trim().charAt(0) == '[') {
+				if (!line.isEmpty() && line.trim().charAt(0) == '[') {
 					sectionFound = false;
 				} else {
 					Log.v("Ini", line);
@@ -91,7 +91,7 @@ public class SimpleIniEncodingReader {
 				continue;
 			}
 			if (sectionFound) {
-				if (line.trim().charAt(0) == '[') {
+				if (!line.isEmpty() && line.trim().charAt(0) == '[') {
 					// End of section and not found -> insert a new entry
 					lines.add(index+1, newEnc);
 					return;
