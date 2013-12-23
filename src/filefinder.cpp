@@ -336,6 +336,7 @@ void FileFinder::InitRtpPaths() {
 
 	env->ReleaseStringUTFChars(return_string, js);
 	env->DeleteLocalRef(sdl_activity);
+	env->DeleteLocalRef(cls);
 
 	add_rtp_path(cs + "/" + version_str + "/");
 #else

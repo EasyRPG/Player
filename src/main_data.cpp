@@ -58,6 +58,7 @@ static std::string GetProjectPath() {
 
 	env->ReleaseStringUTFChars(return_string, js);
 	env->DeleteLocalRef(sdl_activity);
+	env->DeleteLocalRef(cls);
 
 	return cs;
 #elif GEKKO

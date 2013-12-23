@@ -654,6 +654,8 @@ void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 		}
 #endif
 
+// SDL2 for Android sends no focus lost event when Home is pressed
+// but when game resumes -> hangs with blackscreen... SDL2 bug?
 		Player::Pause();
 
 		bool last = ShowCursor(true);
@@ -674,9 +676,10 @@ void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 
 		ShowCursor(last);
 
+		Player::Resume();
+
 		ResetKeys();
 
-		Player::Resume();
 		return;
 	}
 #endif
@@ -870,17 +873,18 @@ void SdlUi::ProcessFingerUpEvent(SDL_Event& evnt) {
 
 void SdlUi::ProcessFingerEvent(SDL_Event& evnt, bool finger_down) {
 #ifdef __ANDROID__
-	JNIEnv* jni = (JNIEnv*)SDL_AndroidGetJNIEnv();
+	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
 	jobject sdl_activity = (jobject)SDL_AndroidGetActivity();
-	jclass cls = jni->GetObjectClass(sdl_activity);
-	jmethodID method_getScreenHeight = jni->GetMethodID(cls, "getScreenHeight", "()I");
-	int screen_height = jni->CallIntMethod(sdl_activity, method_getScreenHeight);
-	jmethodID method_getScreenWidth = jni->GetMethodID(cls, "getScreenWidth", "()I");
-	int screen_width = jni->CallIntMethod(sdl_activity, method_getScreenWidth);
-	jmethodID method_getPixels = jni->GetMethodID(cls, "getPixels", "(D)I");
-	float button_size = jni->CallIntMethod(sdl_activity, method_getPixels, 60.0);
-	float cross_size = jni->CallIntMethod(sdl_activity, method_getPixels, 150.0);
-	jni->DeleteLocalRef(sdl_activity);
+	jclass cls = env->GetObjectClass(sdl_activity);
+	jmethodID method_getScreenHeight = env->GetMethodID(cls, "getScreenHeight", "()I");
+	int screen_height = env->CallIntMethod(sdl_activity, method_getScreenHeight);
+	jmethodID method_getScreenWidth = env->GetMethodID(cls, "getScreenWidth", "()I");
+	int screen_width = env->CallIntMethod(sdl_activity, method_getScreenWidth);
+	jmethodID method_getPixels = env->GetMethodID(cls, "getPixels", "(D)I");
+	float button_size = env->CallIntMethod(sdl_activity, method_getPixels, 60.0);
+	float cross_size = env->CallIntMethod(sdl_activity, method_getPixels, 150.0);
+	env->DeleteLocalRef(cls);
+	env->DeleteLocalRef(sdl_activity);
 
 	float x = evnt.tfinger.x;
 	float y = evnt.tfinger.y;
@@ -1212,6 +1216,7 @@ Input::Keys::InputKey SdlJKey2InputKey(int button_index) {
 #endif
 
 int FilterUntilFocus(const SDL_Event* evnt) {
+	//__android_log_print(ANDROID_LOG_INFO, "EasyRPG Player", "FilterUntilFocus");
 	switch (evnt->type) {
 	case SDL_QUIT:
 		Player::exit_flag = true;
