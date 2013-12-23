@@ -656,6 +656,7 @@ void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 
 // SDL2 for Android sends no focus lost event when Home is pressed
 // but when game resumes -> hangs with blackscreen... SDL2 bug?
+#ifndef __ANDROID__
 		Player::Pause();
 
 		bool last = ShowCursor(true);
@@ -677,7 +678,7 @@ void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 		ShowCursor(last);
 
 		Player::Resume();
-
+#endif
 		ResetKeys();
 
 		return;
