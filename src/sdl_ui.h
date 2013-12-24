@@ -115,6 +115,11 @@ private:
 	void ProcessJoystickButtonEvent(SDL_Event &evnt);
 	void ProcessJoystickHatEvent(SDL_Event &evnt);
 	void ProcessJoystickAxisEvent(SDL_Event &evnt);
+#if SDL_MAJOR_VERSION>1
+	void ProcessFingerDownEvent(SDL_Event & evnt);
+	void ProcessFingerUpEvent(SDL_Event & evnt);
+	void ProcessFingerEvent(SDL_Event & evnt, bool finger_down);
+#endif
 
 	/** @} */
 

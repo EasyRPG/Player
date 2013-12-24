@@ -62,6 +62,11 @@
 #  include <sys/stat.h>
 #endif
 
+#ifdef __ANDROID__
+#   include <jni.h>
+#   include <SDL_system.h>
+#endif
+
 // MinGW shlobj.h does not define this
 #ifndef SHGFP_TYPE_CURRENT
 #define SHGFP_TYPE_CURRENT 0
@@ -296,8 +301,8 @@ static void add_rtp_path(std::string const& p) {
 
 void FileFinder::InitRtpPaths() {
 	std::string const version_str =
-		Player::engine == Player::EngineRpg2k? "2000":
-		Player::engine == Player::EngineRpg2k3? "2003":
+		Player::engine == Player::EngineRpg2k ? "2000":
+		Player::engine == Player::EngineRpg2k3 ? "2003":
 		"";
 
 	assert(!version_str.empty());
@@ -306,13 +311,34 @@ void FileFinder::InitRtpPaths() {
 		Player::engine == Player::EngineRpg2k? "ASCII": "Enterbrain";
 
 	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\" + company + "\\RPG" + version_str, "RuntimePackagePath");
-	if(! rtp_path.empty()) { add_rtp_path(rtp_path); }
+	if (!rtp_path.empty()) {
+		add_rtp_path(rtp_path);
+	}
 
 	rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\" + company + "\\RPG" + version_str, "RuntimePackagePath");
-	if(! rtp_path.empty()) { add_rtp_path(rtp_path); }
+	if (!rtp_path.empty()) {
+		add_rtp_path(rtp_path);
+	}
+
 #ifdef GEKKO
 	add_rtp_path("sd:/data/rtp/" + version_str + "/");
 	add_rtp_path("usb:/data/rtp/" + version_str + "/");
+#elif __ANDROID__
+	// Invoke "String getRtpPath()" in EasyRPG Activity via JNI
+	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+	jobject sdl_activity = (jobject)SDL_AndroidGetActivity();
+	jclass cls = env->GetObjectClass(sdl_activity);
+	jmethodID jni_getRtpPath = env->GetMethodID(cls , "getRtpPath", "()Ljava/lang/String;");
+	jstring return_string = (jstring)env->CallObjectMethod(sdl_activity, jni_getRtpPath);
+	
+	const char *js = env->GetStringUTFChars(return_string, NULL);
+	std::string cs(js);
+
+	env->ReleaseStringUTFChars(return_string, js);
+	env->DeleteLocalRef(sdl_activity);
+	env->DeleteLocalRef(cls);
+
+	add_rtp_path(cs + "/" + version_str + "/");
 #else
 	add_rtp_path("/data/rtp/" + version_str + "/");
 #endif
@@ -321,9 +347,10 @@ void FileFinder::InitRtpPaths() {
 		add_rtp_path(getenv("RPG2K_RTP_PATH"));
 	else if (Player::engine == Player::EngineRpg2k3 && getenv("RPG2K3_RTP_PATH"))
 		add_rtp_path(getenv("RPG2K3_RTP_PATH"));
-	if(getenv("RPG_RTP_PATH")) { add_rtp_path(getenv("RPG_RTP_PATH")); }
+	if (getenv("RPG_RTP_PATH")) {
+		add_rtp_path(getenv("RPG_RTP_PATH"));
+	}
 }
-
 
 void FileFinder::Quit() {
 	search_paths.clear();
