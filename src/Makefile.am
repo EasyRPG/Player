@@ -20,8 +20,6 @@ easyrpg_player_LDADD = \
 easyrpg_player_SOURCES = \
 	al_audio.cpp \
 	al_audio.h \
-	android_ui.cpp \
-	android_ui.h \
 	audio.cpp \
 	audio.h \
 	background.cpp \
