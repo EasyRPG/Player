@@ -20,6 +20,7 @@
 #include "scene_map.h"
 #include "scene_menu.h"
 #include "scene_title.h"
+#include "scene_end.h"
 #include "scene_name.h"
 #include "scene_shop.h"
 #include "scene_save.h"
@@ -93,10 +94,8 @@ void Scene_Map::Update() {
 	// ESC-Menu calling
 	if (Input::IsTriggered(Input::CANCEL))
 	{
-		if (Game_System::GetAllowMenu()) {
-			Game_Temp::menu_calling = true;
-			Game_Temp::menu_beep = true;
-		}
+		Game_Temp::menu_calling = true;
+		Game_Temp::menu_beep = true;
 	}
 
 	if (Input::IsTriggered(Input::DEBUG_MENU))
@@ -186,7 +185,12 @@ void Scene_Map::CallMenu() {
 
 	// TODO: Main_Data::game_player->Straighten();
 
-	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Menu>());
+	if (Game_System::GetAllowMenu()) {
+		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Menu>());
+	}
+	else {
+		Scene::Push(EASYRPG_MAKE_SHARED<Scene_End>());
+	}
 }
 
 void Scene_Map::CallSave() {

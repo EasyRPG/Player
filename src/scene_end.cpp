@@ -66,6 +66,7 @@ void Scene_End::CreateCommandWindow() {
 	command_window.reset(new Window_Command(options));
 	command_window->SetX(160 - command_window->GetWidth() / 2);
 	command_window->SetY(72 + 48);
+	command_window->SetIndex(1);
 }
 
 void Scene_End::CreateHelpWindow() {
