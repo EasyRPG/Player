@@ -35,6 +35,10 @@ public:
 	Scene_Load();
 
 	virtual void Action(int index);
+
+private:
+	void CreateGameObjects();
+	void SetupSavegameData(std::auto_ptr<RPG::Save> save);
 };
 
 #endif

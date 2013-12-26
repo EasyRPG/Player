@@ -117,7 +117,6 @@ void Scene_File::Update() {
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Main_Data::game_data.system.decision_se);
 		Action(index);
-		Scene::Pop();
 	}
 
 	int old_top_index = top_index;

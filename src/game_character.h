@@ -256,7 +256,7 @@ public:
 	 * Jump action begins. Does nothing when EndJump-Command is missing.
 	 */
 	void BeginJump();
-	
+
 	/**
 	 * Jump action ends.
 	 */
@@ -335,14 +335,18 @@ public:
 	 *
 	 * @return x position.
 	 */
-	int GetX() const;
+	virtual int GetX() const;
+
+	virtual void SetX(int new_x) { x = new_x; };
 
 	/**
 	 * Gets y position.
 	 *
 	 * @return y position.
 	 */
-	int GetY() const;
+	virtual int GetY() const;
+
+	virtual void SetY(int new_y) { y = new_y; }
 
 	/**
 	 * Gets tile graphic ID.

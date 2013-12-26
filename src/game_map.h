@@ -57,9 +57,14 @@ namespace Game_Map {
 	void Setup(int map_id);
 
 	/**
+	 * Replaces default values after save loading with correct ones.
+	 */
+	void Fixup();
+
+	/**
 	 * Runs map.
 	 */
-	void Autoplay();
+	void PlayBgm();
 
 	/**
 	 * Refreshes the map.

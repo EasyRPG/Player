@@ -20,6 +20,7 @@
 
 // Headers
 #include "rpg_music.h"
+#include "rpg_savepartylocation.h"
 #include "game_character.h"
 #include <vector>
 
@@ -29,6 +30,11 @@
 class Game_Player : public Game_Character {
 public:
 	Game_Player();
+
+	int GetX() const;
+	void SetX(int new_x);
+	int GetY() const;
+	void SetY(int new_y);
 
 	bool IsPassable(int x, int y, int d) const;
 	bool IsTeleporting() const;
@@ -51,6 +57,8 @@ public:
 	void BeginMove();
 
 private:
+	RPG::SavePartyLocation& location;
+
 	bool teleporting;
 	int vehicle_type;
 	bool vehicle_getting_on;

@@ -68,7 +68,7 @@ Game_Character::Game_Character() :
 }
 
 bool Game_Character::IsMoving() const {
-	return real_x != x * 128 || real_y != y * 128;
+	return real_x != GetX() * 128 || real_y != GetY() * 128;
 }
 
 bool Game_Character::IsJumping() const {
@@ -108,10 +108,10 @@ int Game_Character::GetPriorityType() const {
 }
 
 void Game_Character::MoveTo(int x, int y) {
-	this->x = x % Game_Map::GetWidth();
-	this->y = y % Game_Map::GetHeight();
-	real_x = x * 128;
-	real_y = y * 128;
+	SetX(x % Game_Map::GetWidth());
+	SetY(y % Game_Map::GetHeight());
+	real_x = GetX() * 128;
+	real_y = GetY() * 128;
 	prelock_direction = -1;
 }
 
@@ -198,17 +198,17 @@ void Game_Character::Update() {
 
 void Game_Character::UpdateMove() {
 	int distance = (1 << move_speed);
-	if (y * 128 > real_y)
-		real_y = min(real_y + distance, y * 128);
+	if (GetY() * 128 > real_y)
+		real_y = min(real_y + distance, GetY() * 128);
 
-	if (x * 128 < real_x)
-		real_x = max(real_x - distance, x * 128);
+	if (GetX() * 128 < real_x)
+		real_x = max(real_x - distance, GetX() * 128);
 
-	if (x * 128 > real_x)
-		real_x = min(real_x + distance, x * 128);
+	if (GetX() * 128 > real_x)
+		real_x = min(real_x + distance, GetX() * 128);
 
-	if (y * 128 < real_y)
-		real_y = max(real_y - distance, y * 128);
+	if (GetY() * 128 < real_y)
+		real_y = max(real_y - distance, GetY() * 128);
 
 	if (animation_type != RPG::EventPage::AnimType_fixed_graphic && walk_animation)
 		anime_count += 1.5;
@@ -280,8 +280,8 @@ void Game_Character::MoveTypeCycleUpDown() {
 
 void Game_Character::MoveTypeTowardsPlayer() {
 	if (IsStopping()) {
-		int sx = x - Main_Data::game_player->GetX();
-		int sy = y - Main_Data::game_player->GetY();
+		int sx = GetX() - Main_Data::game_player->GetX();
+		int sy = GetY() - Main_Data::game_player->GetY();
 
 		if ( std::abs(sx) + std::abs(sy) >= 20 ) {
 			MoveRandom();
@@ -302,8 +302,8 @@ void Game_Character::MoveTypeTowardsPlayer() {
 
 void Game_Character::MoveTypeAwayFromPlayer() {
 	if (IsStopping()) {
-		int sx = x - Main_Data::game_player->GetX();
-		int sy = y - Main_Data::game_player->GetY();
+		int sx = GetX() - Main_Data::game_player->GetX();
+		int sy = GetY() - Main_Data::game_player->GetY();
 
 		if ( std::abs(sx) + std::abs(sy) >= 20 ) {
 			MoveRandom();
@@ -490,13 +490,13 @@ void Game_Character::EndMoveRoute() {
 void Game_Character::MoveDown() {
 	if (turn_enabled) TurnDown();
 
-	if (IsPassable(x, y, RPG::EventPage::Direction_down)) {
+	if (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_down)) {
 		TurnDown();
-		y += 1;
+		SetY(GetY() + 1);
 		BeginMove();
 		move_failed = false;
 	} else {
-		CheckEventTriggerTouch(x, y + 1);
+		CheckEventTriggerTouch(GetX(), GetY() + 1);
 		move_failed = true;
 	}
 }
@@ -504,13 +504,13 @@ void Game_Character::MoveDown() {
 void Game_Character::MoveLeft() {
 	if (turn_enabled) TurnLeft();
 
-	if (IsPassable(x, y, RPG::EventPage::Direction_left)) {
+	if (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_left)) {
 		TurnLeft();
-		x -= 1;
+		SetX(GetX() - 1);
 		BeginMove();
 		move_failed = false;
 	} else {
-		CheckEventTriggerTouch(x - 1, y);
+		CheckEventTriggerTouch(GetX() - 1, GetY());
 		move_failed = true;
 	}
 }
@@ -518,13 +518,13 @@ void Game_Character::MoveLeft() {
 void Game_Character::MoveRight() {
 	if (turn_enabled) TurnRight();
 
-	if (IsPassable(x, y, RPG::EventPage::Direction_right)) {
+	if (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_right)) {
 		TurnRight();
-		x += 1;
+		SetX(GetX() + 1);
 		BeginMove();
 		move_failed = false;
 	} else {
-		CheckEventTriggerTouch(x + 1, y);
+		CheckEventTriggerTouch(GetX() + 1, GetY());
 		move_failed = true;
 	}
 }
@@ -532,13 +532,13 @@ void Game_Character::MoveRight() {
 void Game_Character::MoveUp() {
 	if (turn_enabled) TurnUp();
 
-	if (IsPassable(x, y, RPG::EventPage::Direction_up)) {
+	if (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_up)) {
 		TurnUp();
-		y -= 1;
+		SetY(GetY() - 1);
 		BeginMove();
 		move_failed = false;
 	} else {
-		CheckEventTriggerTouch(x, y - 1);
+		CheckEventTriggerTouch(GetX(), GetY() - 1);
 		move_failed = true;
 	}
 }
@@ -789,7 +789,7 @@ void Game_Character::EndJump() {
 }
 
 int Game_Character::DistanceXfromPlayer() const {
-	int sx = x - Main_Data::game_player->x;
+	int sx = GetX() - Main_Data::game_player->GetX();
 	if (Game_Map::LoopHorizontal()) {
 		if (std::abs(sx) > Game_Map::GetWidth() / 2) {
 			sx -= Game_Map::GetWidth();
@@ -799,7 +799,7 @@ int Game_Character::DistanceXfromPlayer() const {
 }
 
 int Game_Character::DistanceYfromPlayer() const {
-	int sy = y - Main_Data::game_player->y;
+	int sy = GetY() - Main_Data::game_player->GetY();
 	if (Game_Map::LoopVertical()) {
 		if (std::abs(sy) > Game_Map::GetHeight() / 2) {
 			sy -= Game_Map::GetHeight();
@@ -921,7 +921,7 @@ void Game_Character::SetAnimationId(int new_animation_id) {
 }
 
 bool Game_Character::IsInPosition(int x, int y) const {
-	return ((this->x == x) && (this->y == y));
+	return ((GetX() == x) && (GetY() == y));
 }
 
 void Game_Character::SetOpacity(int opacity) {

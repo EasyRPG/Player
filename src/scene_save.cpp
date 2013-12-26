@@ -72,4 +72,6 @@ void Scene_Save::Action(int index) {
 
 	LSD_Reader::Save(FileFinder::FindDefault(ss.str()), Main_Data::game_data,
 		ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)));
+
+	Scene::Pop();
 }

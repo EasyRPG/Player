@@ -49,7 +49,6 @@ void Scene_Map::Start() {
 	screen.reset(new Screen());
 	weather.reset(new Weather());
 
-	Main_Data::game_screen->Reset();
 	Graphics::FrameReset();
 }
 
@@ -146,7 +145,7 @@ void Scene_Map::UpdateTeleportPlayer() {
 	Scene::TransitionOut();
 
 	Main_Data::game_player->PerformTeleport();
-	Game_Map::Autoplay();
+	Game_Map::PlayBgm();
 
 	spriteset.reset(new Spriteset_Map());
 

@@ -39,24 +39,24 @@ void Game_Vehicle::LoadSystemSettings() {
 			character_index = Data::system.boat_index;
 			bgm = Data::system.boat_music;
 			map_id = Data::treemap.start.boat_map_id;
-			x = Data::treemap.start.boat_x;
-			y = Data::treemap.start.boat_y;
+			SetX(Data::treemap.start.boat_x);
+			SetY(Data::treemap.start.boat_y);
 			break;
 		case Ship:
 			character_name = Data::system.ship_name;
 			character_index = Data::system.ship_index;
 			bgm = Data::system.ship_music;
 			map_id = Data::treemap.start.ship_map_id;
-			x = Data::treemap.start.ship_x;
-			y = Data::treemap.start.ship_y;
+			SetX(Data::treemap.start.ship_x);
+			SetY(Data::treemap.start.ship_y);
 			break;
 		case Airship:
 			character_name = Data::system.airship_name;
 			character_index = Data::system.airship_index;
 			bgm = Data::system.airship_music;
 			map_id = Data::treemap.start.airship_map_id;
-			x = Data::treemap.start.airship_x;
-			y = Data::treemap.start.airship_y;
+			SetX(Data::treemap.start.airship_x);
+			SetY(Data::treemap.start.airship_y);
 			break;
 	}
 }
@@ -67,7 +67,7 @@ void Game_Vehicle::Refresh() {
 		SyncWithPlayer();
 	}
 	else if (map_id == Game_Map::GetMapId())
-		MoveTo(x, y);
+		MoveTo(GetX(), GetY());
 	switch (type) {
 		case Boat:
 			priority_type = RPG::EventPage::Layers_same;
@@ -87,8 +87,8 @@ void Game_Vehicle::Refresh() {
 
 void Game_Vehicle::SetPosition(int _map_id, int _x, int _y) {
 	map_id = _map_id;
-	x = _x;
-	y = _y;
+	SetX(_x);
+	SetY(_y);
 }
 
 bool Game_Vehicle::IsInPosition(int x, int y) const {
@@ -114,8 +114,8 @@ void Game_Vehicle::GetOff() {
 }
 
 void Game_Vehicle::SyncWithPlayer() {
-	x = Main_Data::game_player->GetX();
-	y = Main_Data::game_player->GetY();
+	SetX(Main_Data::game_player->GetX());
+	SetY(Main_Data::game_player->GetY());
 	real_x = Main_Data::game_player->GetRealX();
 	real_y = Main_Data::game_player->GetRealY();
 	direction = Main_Data::game_player->GetDirection();

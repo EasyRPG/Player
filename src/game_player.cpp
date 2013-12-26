@@ -30,6 +30,7 @@
 
 // Constructor
 Game_Player::Game_Player():
+	location(Main_Data::game_data.party_location),
 	teleporting(false),
 	vehicle_type(-1),
 	vehicle_getting_on(false),
@@ -37,6 +38,22 @@ Game_Player::Game_Player():
 	new_map_id(0),
 	new_x(0),
 	new_y(0) {
+}
+
+int Game_Player::GetX() const {
+	return location.position_x;
+}
+
+void Game_Player::SetX(int new_x) {
+	location.position_x = new_x;
+}
+
+int Game_Player::GetY() const {
+	return location.position_y;
+}
+
+void Game_Player::SetY(int new_y) {
+	location.position_y = new_y;
 }
 
 // Is Passable
@@ -220,7 +237,7 @@ bool Game_Player::CheckEventTriggerHere(const std::vector<int>& triggers) {
 	bool result = false;
 
 	std::vector<Game_Event*> events;
-	Game_Map::GetEventsXY(events, this->x, this->y);
+	Game_Map::GetEventsXY(events, GetX(), GetY());
 
 	std::vector<Game_Event*>::iterator i;
 	for (i = events.begin(); i != events.end(); i++) {
@@ -237,8 +254,8 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 
 	bool result = false;
 
-	int front_x = Game_Map::XwithDirection(x, direction);
-	int front_y = Game_Map::YwithDirection(y, direction);
+	int front_x = Game_Map::XwithDirection(GetX(), direction);
+	int front_y = Game_Map::YwithDirection(GetY(), direction);
 
 	std::vector<Game_Event*> events;
 	Game_Map::GetEventsXY(events, front_x, front_y);
@@ -255,8 +272,8 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 	}
 
 	if ( !result && Game_Map::IsCounter(front_x, front_y) ) {
-		front_x = Game_Map::XwithDirection(x, direction);
-		front_y = Game_Map::YwithDirection(y, direction);
+		front_x = Game_Map::XwithDirection(GetX(), direction);
+		front_y = Game_Map::YwithDirection(GetY(), direction);
 
 		Game_Map::GetEventsXY(events, front_x, front_y);
 
@@ -280,7 +297,7 @@ bool Game_Player::CheckEventTriggerTouch(int x, int y) {
 	bool result = false;
 
 	std::vector<Game_Event*> events;
-	Game_Map::GetEventsXY(events, x, y);
+	Game_Map::GetEventsXY(events, GetX(), GetY());
 
 	std::vector<Game_Event*>::iterator i;
 	for (i = events.begin(); i != events.end(); i++) {
@@ -316,11 +333,11 @@ bool Game_Player::GetOnOffVehicle() {
 }
 
 bool Game_Player::GetOnVehicle() {
-    int front_x = Game_Map::XwithDirection(x, direction);
-    int front_y = Game_Map::YwithDirection(y, direction);
+	int front_x = Game_Map::XwithDirection(GetX(), direction);
+	int front_y = Game_Map::YwithDirection(GetY(), direction);
 	Game_Vehicle::Type type;
 
-	if (Game_Map::GetVehicle(Game_Vehicle::Airship)->IsInPosition(x, y))
+	if (Game_Map::GetVehicle(Game_Vehicle::Airship)->IsInPosition(GetX(), GetY()))
 		type = Game_Vehicle::Airship;
     else if (Game_Map::GetVehicle(Game_Vehicle::Ship)->IsInPosition(front_x, front_y))
 		type = Game_Vehicle::Ship;
@@ -343,12 +360,12 @@ bool Game_Player::GetOnVehicle() {
 
 bool Game_Player::GetOffVehicle() {
 	if (InAirship()) {
-		if (!AirshipLandOk(x, y))
+		if (!AirshipLandOk(GetX(), GetY()))
 			return false;
 	}
 	else {
-		int front_x = Game_Map::XwithDirection(x, direction);
-		int front_y = Game_Map::YwithDirection(y, direction);
+		int front_x = Game_Map::XwithDirection(GetX(), direction);
+		int front_y = Game_Map::YwithDirection(GetY(), direction);
 		if (!CanWalk(front_x, front_y))
 			return false;
 	}
@@ -396,10 +413,10 @@ bool Game_Player::InAirship() const {
 
 bool Game_Player::AirshipLandOk(int x, int y) const {
 	// TODO:
-	// if (!Game_Map::AirshipLandOk(x, y))
+	// if (!Game_Map::AirshipLandOk(GetX(), GetY()))
 	// 	return false;
 	std::vector<Game_Event*> events;
-	Game_Map::GetEventsXY(events, x, y);
+	Game_Map::GetEventsXY(events, GetX(), GetY());
 	if (!events.empty())
 		return false;
 	return true;
@@ -408,13 +425,13 @@ bool Game_Player::AirshipLandOk(int x, int y) const {
 bool Game_Player::CanWalk(int x, int y) {
 	int last_vehicle_type = vehicle_type;
     vehicle_type = -1;
-    bool result = IsPassable(x, y, direction);
+	bool result = IsPassable(GetX(), GetY(), direction);
     vehicle_type = last_vehicle_type;
     return result;
 }
 
 void Game_Player::BeginMove() {
-	int terrain_id = Game_Map::GetTerrainTag(x, y);
+	int terrain_id = Game_Map::GetTerrainTag(GetX(), GetY());
 	const RPG::Terrain& terrain = Data::terrains[terrain_id - 1];
 	if (!terrain.on_damage_se || (terrain.on_damage_se && (terrain.damage > 0))) {
 		Game_System::SePlay(terrain.footstep);

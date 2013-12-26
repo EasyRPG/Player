@@ -32,6 +32,13 @@ void Game_Actors::Init() {
 		GetActor(i)->Init();
 }
 
+
+void Game_Actors::Fixup() {
+	for (size_t i = 1; i < data.size(); ++i) {
+		GetActor(i)->Fixup();
+	}
+}
+
 void Game_Actors::Dispose() {
 	data.clear();
 }
