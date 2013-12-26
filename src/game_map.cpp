@@ -135,6 +135,8 @@ void Game_Map::SetupFromSave() {
 		common_events.insert(std::make_pair(Data::commonevents[i].ID, EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID)));
 	}
 
+	interpreter->SetupFromSave(Main_Data::game_data.events.events);
+
 	map_info.Fixup(*map.get());
 }
 
