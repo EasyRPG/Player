@@ -32,7 +32,7 @@
 #include "output.h"
 #include "player.h"
 
-namespace {
+namespace cache_anon {
 
 	typedef std::pair<std::string,std::string> string_pair;
 	typedef std::pair<std::string, int> tile_pair;
@@ -137,6 +137,8 @@ namespace {
 	}
 
 }
+
+using namespace cache_anon;
 
 tSystemInfo Cache::system_info;
 
