@@ -45,6 +45,7 @@
 #include "game_interpreter_map.h"
 #include "reader_util.h"
 #include "filefinder.h"
+#include "reader_lcf.h"
 
 Game_Interpreter_Map::Game_Interpreter_Map(int depth, bool main_flag) :
 	Game_Interpreter(depth, main_flag) {
@@ -71,20 +72,47 @@ bool Game_Interpreter_Map::SetupFromSave(const std::vector<RPG::SaveEventCommand
 	return false;
 }
 
+// Taken from readers because a kitten is killed when reader_structs is included
+static int GetEventCommandSize(const std::vector<RPG::EventCommand>& commands) {
+	std::vector<RPG::EventCommand>::const_iterator it;
+
+	int result = 0;
+	for (it = commands.begin(); it != commands.end(); ++it) {
+		result += LcfReader::IntSize(it->code);
+		result += LcfReader::IntSize(it->indent);
+		result += LcfReader::IntSize(it->string.size());
+		result += ReaderUtil::Recode(it->string, FileFinder::FindDefault(INI_NAME)).size();
+
+		int count = it->parameters.size();
+		result += LcfReader::IntSize(count);
+		for (int i = 0; i < count; i++)
+			result += LcfReader::IntSize(it->parameters[i]);
+	}
+	result += 4; // No idea why but then it fits
+
+	return result;
+}
+
 std::vector<RPG::SaveEventCommands> Game_Interpreter_Map::GetSaveData() const {
 	std::vector<RPG::SaveEventCommands> save;
 
 	const Game_Interpreter_Map* save_interpreter = this;
 
+	int id = 0;
+
+	int i = 1;
+
 	while (save_interpreter != NULL) {
 		RPG::SaveEventCommands save_commands;
 		save_commands.commands = save_interpreter->list;
 		save_commands.current_command = save_interpreter->index;
+		save_commands.commands_size = GetEventCommandSize(save_commands.commands);
+		save_commands.ID = i++;
 		save.push_back(save_commands);
 		save_interpreter = static_cast<Game_Interpreter_Map*>(save_interpreter->child_interpreter.get());
 	}
 
-	save.back().ID;
+	save.back().ID = event_id;
 
 	save.back().current_command++;
 
