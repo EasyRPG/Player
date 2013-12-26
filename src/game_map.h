@@ -30,6 +30,8 @@
 typedef std::map<int, EASYRPG_SHARED_PTR<Game_Event> > tEventHash;
 typedef std::map<int, EASYRPG_SHARED_PTR<Game_CommonEvent> > tCommonEventHash;
 
+#define SCREEN_TILE_WIDTH 256
+
 /**
  * Game_Map namespace
  */

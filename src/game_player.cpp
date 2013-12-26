@@ -297,7 +297,7 @@ bool Game_Player::CheckEventTriggerTouch(int x, int y) {
 	bool result = false;
 
 	std::vector<Game_Event*> events;
-	Game_Map::GetEventsXY(events, GetX(), GetY());
+	Game_Map::GetEventsXY(events, x, y);
 
 	std::vector<Game_Event*>::iterator i;
 	for (i = events.begin(); i != events.end(); i++) {
@@ -416,7 +416,7 @@ bool Game_Player::AirshipLandOk(int x, int y) const {
 	// if (!Game_Map::AirshipLandOk(GetX(), GetY()))
 	// 	return false;
 	std::vector<Game_Event*> events;
-	Game_Map::GetEventsXY(events, GetX(), GetY());
+	Game_Map::GetEventsXY(events, x, y);
 	if (!events.empty())
 		return false;
 	return true;
@@ -425,7 +425,7 @@ bool Game_Player::AirshipLandOk(int x, int y) const {
 bool Game_Player::CanWalk(int x, int y) {
 	int last_vehicle_type = vehicle_type;
     vehicle_type = -1;
-	bool result = IsPassable(GetX(), GetY(), direction);
+	bool result = IsPassable(x, y, direction);
     vehicle_type = last_vehicle_type;
     return result;
 }
