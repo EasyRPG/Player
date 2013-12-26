@@ -31,22 +31,22 @@
  */
 class Sprite;
 
-class Picture {
+class Game_Picture {
 public:
-	Picture(int ID);
+	Game_Picture(int ID);
 
 	void Show(const std::string& name);
 	void Erase();
-	void UseTransparent(bool flag);
-	void Scrolls(bool flag);
-	void Move(int x, int y);
-	void Color(int r, int g, int b, int s);
-	void Magnify(int scale);
-	void Transparency(int t, int b);
-	void Rotate(int speed);
-	void Waver(int depth);
+	void SetTransparent(bool flag);
+	void SetScrolls(bool flag);
+	void SetMovementEffect(int x, int y);
+	void SetColorEffect(int r, int g, int b, int s);
+	void SetZoomEffect(int scale);
+	void SetTransparencyEffect(int top, int bottom);
+	void SetRotationEffect(int speed);
+	void SetWaverEffect(int depth);
 	void StopEffects();
-	void Transition(int tenths);
+	void SetTransition(int tenths);
 
 	void Update();
 

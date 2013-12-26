@@ -685,7 +685,7 @@ bool Game_Interpreter_Map::CommandShowScreen(RPG::EventCommand const& com) {
 
 bool Game_Interpreter_Map::CommandShowPicture(RPG::EventCommand const& com) { // code 11110
 	int pic_id = com.parameters[0];
-	Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
+	Game_Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
 	std::string const& pic_name = com.string;
 	int x = ValueOrVariable(com.parameters[1], com.parameters[2]);
 	int y = ValueOrVariable(com.parameters[1], com.parameters[3]);
@@ -715,24 +715,24 @@ bool Game_Interpreter_Map::CommandShowPicture(RPG::EventCommand const& com) { //
 	}
 
 	picture->Show(pic_name);
-	picture->UseTransparent(use_trans);
-	picture->Scrolls(scrolls);
+	picture->SetTransparent(use_trans);
+	picture->SetScrolls(scrolls);
 
-	picture->Move(x, y);
-	picture->Color(red, green, blue, saturation);
-	picture->Magnify(magnify);
-	picture->Transparency(top_trans, bottom_trans);
-	picture->Transition(0);
+	picture->SetMovementEffect(x, y);
+	picture->SetColorEffect(red, green, blue, saturation);
+	picture->SetZoomEffect(magnify);
+	picture->SetTransparencyEffect(top_trans, bottom_trans);
+	picture->SetTransition(0);
 
 	switch (effect) {
 		case 0:
 			picture->StopEffects();
 			break;
 		case 1:
-			picture->Rotate(speed);
+			picture->SetRotationEffect(speed);
 			break;
 		case 2:
-			picture->Waver(speed);
+			picture->SetWaverEffect(speed);
 			break;
 	}
 
@@ -741,7 +741,7 @@ bool Game_Interpreter_Map::CommandShowPicture(RPG::EventCommand const& com) { //
 
 bool Game_Interpreter_Map::CommandMovePicture(RPG::EventCommand const& com) { // code 11120
 	int pic_id = com.parameters[0];
-	Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
+	Game_Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
 	int x = ValueOrVariable(com.parameters[1], com.parameters[2]);
 	int y = ValueOrVariable(com.parameters[1], com.parameters[3]);
 	int magnify = com.parameters[5];
@@ -769,21 +769,21 @@ bool Game_Interpreter_Map::CommandMovePicture(RPG::EventCommand const& com) { //
 		}
 	}
 
-	picture->Move(x, y);
-	picture->Color(red, green, blue, saturation);
-	picture->Magnify(magnify);
-	picture->Transparency(top_trans, bottom_trans);
-	picture->Transition(tenths);
+	picture->SetMovementEffect(x, y);
+	picture->SetColorEffect(red, green, blue, saturation);
+	picture->SetZoomEffect(magnify);
+	picture->SetTransparencyEffect(top_trans, bottom_trans);
+	picture->SetTransition(tenths);
 
 	switch (effect) {
 		case 0:
 			picture->StopEffects();
 			break;
 		case 1:
-			picture->Rotate(speed);
+			picture->SetRotationEffect(speed);
 			break;
 		case 2:
-			picture->Waver(speed);
+			picture->SetWaverEffect(speed);
 			break;
 	}
 
@@ -795,7 +795,7 @@ bool Game_Interpreter_Map::CommandMovePicture(RPG::EventCommand const& com) { //
 
 bool Game_Interpreter_Map::CommandErasePicture(RPG::EventCommand const& com) { // code 11130
 	int pic_id = com.parameters[0];
-	Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
+	Game_Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
 	picture->Erase();
 
 	return true;
