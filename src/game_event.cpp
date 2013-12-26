@@ -50,6 +50,8 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEv
 	erased(false),
 	page(NULL) {
 
+	ID = data.ID;
+
 	// ToDo: Get/SetMapId
 	if (data.map_id > 0) {
 		this->map_id = data.map_id;
@@ -60,7 +62,7 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEv
 	
 	if (!data.event_data.commands.empty()) {
 		interpreter.reset(new Game_Interpreter_Map());
-		static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(data.event_data.commands);
+		static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(data.event_data.commands, event.ID);
 	}
 
 	Refresh();
@@ -324,6 +326,7 @@ const RPG::SaveMapEvent& Game_Event::GetSaveData() {
 	if (interpreter) {
 		data.event_data.commands = static_cast<Game_Interpreter_Map*>(interpreter.get())->GetSaveData();
 	}
+	data.ID = ID;
 
 	return data;
 }

@@ -33,7 +33,7 @@
 #include "filefinder.h"
 #include <boost/scoped_ptr.hpp>
 
-namespace {
+namespace map_anon {
 	RPG::SaveMapInfo& map_info = Main_Data::game_data.map_info;
 	RPG::SavePartyLocation& location = Main_Data::game_data.party_location;
 
@@ -63,6 +63,8 @@ namespace {
 	bool pan_wait;
 	int pan_speed;
 }
+
+using namespace map_anon;
 
 void Game_Map::Init() {
 	map_info.pan_x = 0;
@@ -149,7 +151,7 @@ void Game_Map::SetupFromSave() {
 		common_events.insert(std::make_pair(Data::commonevents[i].ID, EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID, false, Main_Data::game_data.common_events[i])));
 	}
 
-	static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(Main_Data::game_data.events.events);
+	static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(Main_Data::game_data.events.events, 0);
 
 	map_info.Fixup(*map.get());
 }
@@ -197,8 +199,9 @@ void Game_Map::SetupCommon(int _id) {
 }
 
 void Game_Map::PrepareSave() {
-	Main_Data::game_data.events.events = static_cast<Game_Interpreter_Map*>(interpreter.get())
-		->GetSaveData();
+	Main_Data::game_data.events.events =
+		static_cast<Game_Interpreter_Map*>(interpreter.get())
+			->GetSaveData();
 
 	map_info.events.clear();
 
