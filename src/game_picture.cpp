@@ -33,6 +33,10 @@ Game_Picture::Game_Picture(int ID) :
 	SetTransition(0);
 }
 
+Game_Picture::~Game_Picture() {
+	data.name = "";
+}
+
 void Game_Picture::UpdateSprite() {
 	if (!sprite)
 		return;

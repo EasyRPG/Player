@@ -34,6 +34,7 @@ class Sprite;
 class Game_Picture {
 public:
 	Game_Picture(int ID);
+	~Game_Picture();
 
 	void Show(const std::string& name);
 	void Erase();
