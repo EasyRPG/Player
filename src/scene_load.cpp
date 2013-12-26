@@ -71,6 +71,8 @@ void Scene_Load::SetupSavegameData(std::auto_ptr<RPG::Save> save) {
 	Main_Data::game_data.system.Fixup();
 	Game_Actors::Fixup();
 
+	Main_Data::game_player->MoveTo(
+		save->party_location.position_x, save->party_location.position_y);
 	Main_Data::game_player->Refresh();
 	Game_Map::Fixup();
 	Game_Map::PlayBgm();
