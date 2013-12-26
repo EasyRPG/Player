@@ -48,8 +48,7 @@ void Scene_Load::Action(int index) {
 
 	SetupSavegameData(save);
 
-
-	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>(), true);
+	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>(true), true);
 }
 
 void Scene_Load::CreateGameObjects() {

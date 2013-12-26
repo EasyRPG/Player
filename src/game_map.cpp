@@ -39,8 +39,6 @@ namespace {
 
 	std::string chipset_name;
 	std::string battleback_name;
-	//int display_x;
-	//int display_y;
 	bool need_refresh;
 
 	int parallax_auto_x;

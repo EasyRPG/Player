@@ -40,7 +40,8 @@
 #include "input.h"
 #include "screen.h"
 
-Scene_Map::Scene_Map() {
+Scene_Map::Scene_Map(bool from_save) :
+	from_save(from_save) {
 	type = Scene::Map;
 }
 
@@ -49,6 +50,12 @@ void Scene_Map::Start() {
 	message_window.reset(new Window_Message(0, 240 - 80, 320, 80));
 	screen.reset(new Screen());
 	weather.reset(new Weather());
+
+	// Called here instead of Scene Load, otherwise wrong graphic stack
+	// is used.
+	if (from_save) {
+		Main_Data::game_screen->CreatePicturesFromSave();
+	}
 
 	Graphics::FrameReset();
 }

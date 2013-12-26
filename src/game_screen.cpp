@@ -45,6 +45,22 @@ Game_Screen::Game_Screen() :
 	Reset();
 }
 
+void Game_Screen::CreatePicturesFromSave() {
+	std::vector<RPG::SavePicture>& save_pics = Main_Data::game_data.pictures;
+
+	pictures.resize(save_pics.size());
+
+	for (size_t id = 1; id < save_pics.size(); ++id) {
+		if (!save_pics[id - 1].name.empty()) {
+			save_pics[id - 1].Fixup();
+			pictures[id - 1].reset(new Game_Picture(id));
+			int time_left = save_pics[id - 1].time_left;
+			pictures[id - 1]->Show(save_pics[id - 1].name);
+			pictures[id - 1]->SetTransition(time_left * DEFAULT_FPS / 10);
+		}
+	}
+}
+
 void Game_Screen::Reset()
 {
 	pictures.clear();
@@ -73,6 +89,14 @@ void Game_Screen::Reset()
 }
 
 Game_Picture* Game_Screen::GetPicture(int id) {
+	if (id <= 0) {
+		return NULL;
+	}
+	if (id > pictures.size()) {
+		// Some games use more pictures then RPG_RT officially supported
+		Main_Data::game_data.pictures.resize(id);
+		pictures.resize(id);
+	}
 	EASYRPG_SHARED_PTR<Game_Picture>& p = pictures[id - 1];
 	if (!p)
 		p.reset(new Game_Picture(id));
@@ -247,7 +271,9 @@ void Game_Screen::Update() {
 
 	std::vector<EASYRPG_SHARED_PTR<Game_Picture> >::const_iterator it;
 	for (it = pictures.begin(); it != pictures.end(); it++) {
-		if(*it) { (*it)->Update(); }
+		if (*it) {
+			(*it)->Update();
+		}
 	}
 
 	if (!movie_filename.empty()) {

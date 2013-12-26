@@ -33,6 +33,8 @@ class Game_Screen {
 public:
 	Game_Screen();
 
+	void CreatePicturesFromSave();
+
 	Game_Picture* GetPicture(int id);
 
 	void Reset();
