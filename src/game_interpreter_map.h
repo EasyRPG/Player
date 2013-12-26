@@ -49,6 +49,13 @@ public:
 	*/
 	bool SetupFromSave(const std::vector<RPG::SaveEventCommands>& save, int index = 0);
 
+	/**
+	 * Generates a SaveEventCommands vector needed for the savefile.
+	 *
+	 * @return interpreter commands stored in SaveEventCommands
+	 */
+	std::vector<RPG::SaveEventCommands> GetSaveData() const;
+
 	bool ExecuteCommand();
 
 	void EndMoveRoute(RPG::MoveRoute* route);

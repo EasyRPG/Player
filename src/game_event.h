@@ -108,6 +108,8 @@ public:
 
 	RPG::Event& GetEvent();
 
+	const RPG::SaveMapEvent& GetSaveData();
+
 private:
 	// Not a reference on purpose.
 	// Events change during map change and old are destroyed, breaking the

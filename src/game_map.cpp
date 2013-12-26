@@ -196,6 +196,29 @@ void Game_Map::SetupCommon(int _id) {
 	pan_speed = 0;
 }
 
+void Game_Map::PrepareSave() {
+	Main_Data::game_data.events.events = static_cast<Game_Interpreter_Map*>(interpreter.get())
+		->GetSaveData();
+
+	map_info.events.clear();
+
+	map_info.events.resize(map->events.size());
+
+	for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
+		map_info.events[i->first - 1] =
+			i->second->GetSaveData();
+	}
+
+	std::vector<RPG::SaveCommonEvent>& save_common_events = Main_Data::game_data.common_events;
+	save_common_events.clear();
+	save_common_events.resize(Data::commonevents.size());
+
+	for (tCommonEventHash::iterator i = common_events.begin(); i != common_events.end(); ++i) {
+		save_common_events[i->first - 1].event_data =
+			i->second->GetSaveData();
+	}
+}
+
 void Game_Map::PlayBgm() {
 	int parent_index = 0;
 	int current_index = GetMapIndex(location.map_id);
@@ -230,7 +253,6 @@ void Game_Map::PlayBgm() {
 
 void Game_Map::Refresh() {
 	if (location.map_id > 0) {
-
 		for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
 			i->second->Refresh();
 		}

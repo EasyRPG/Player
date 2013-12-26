@@ -99,6 +99,9 @@ public:
 	 */
 	std::vector<RPG::EventCommand>& GetList();
 	void CheckEventTriggerAuto();
+
+	RPG::SaveEventData GetSaveData();
+
 private:
 	int common_event_id;
 	bool battle;

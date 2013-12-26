@@ -20,6 +20,7 @@
 #include "data.h"
 #include "filefinder.h"
 #include "game_actor.h"
+#include "game_map.h"
 #include "game_party.h"
 #include "lsd_reader.h"
 #include "scene_save.h"
@@ -69,6 +70,8 @@ void Scene_Save::Action(int index) {
 
 	Main_Data::game_data.system.save_slot = index + 1;
 	Main_Data::game_data.system.save_count += 1;
+
+	Game_Map::PrepareSave();
 
 	LSD_Reader::Save(FileFinder::FindDefault(ss.str()), Main_Data::game_data,
 		ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)));

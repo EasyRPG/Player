@@ -108,3 +108,13 @@ void Game_CommonEvent::CheckEventTriggerAuto() {
 		}
 	}
 }
+
+RPG::SaveEventData Game_CommonEvent::GetSaveData() {
+	RPG::SaveEventData event_data;
+
+	if (interpreter) {
+		event_data.commands = static_cast<Game_Interpreter_Map*>(interpreter.get())->GetSaveData();
+	}
+
+	return event_data;
+}

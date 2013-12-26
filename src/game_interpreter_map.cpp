@@ -71,6 +71,26 @@ bool Game_Interpreter_Map::SetupFromSave(const std::vector<RPG::SaveEventCommand
 	return false;
 }
 
+std::vector<RPG::SaveEventCommands> Game_Interpreter_Map::GetSaveData() const {
+	std::vector<RPG::SaveEventCommands> save;
+
+	const Game_Interpreter_Map* save_interpreter = this;
+
+	while (save_interpreter != NULL) {
+		RPG::SaveEventCommands save_commands;
+		save_commands.commands = save_interpreter->list;
+		save_commands.current_command = save_interpreter->index;
+		save.push_back(save_commands);
+		save_interpreter = static_cast<Game_Interpreter_Map*>(save_interpreter->child_interpreter.get());
+	}
+
+	save.back().ID;
+
+	save.back().current_command++;
+
+	return save;
+}
+
 int Game_Interpreter_Map::DecodeInt(std::vector<int>::const_iterator& it) {
 	int value = 0;
 

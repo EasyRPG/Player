@@ -57,10 +57,10 @@ namespace Game_Map {
 	void Setup(int map_id);
 
 	/**
-	* Setups a map from a savegame.
-	*
-	* @param map_id map ID.
-	*/
+	 * Setups a map from a savegame.
+	 *
+	 * @param map_id map ID.
+	 */
 	void SetupFromSave();
 
 	/**
@@ -69,6 +69,11 @@ namespace Game_Map {
 	 * @param map_id map ID.
 	 */
 	void SetupCommon(int _id);
+
+	/**
+	 * Copies event data into RPG::Save data.
+	 */
+	void PrepareSave();
 
 	/**
 	 * Runs map.

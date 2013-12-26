@@ -319,3 +319,11 @@ void Game_Event::Update() {
 RPG::Event& Game_Event::GetEvent() {
 	return event;
 }
+
+const RPG::SaveMapEvent& Game_Event::GetSaveData() {
+	if (interpreter) {
+		data.event_data.commands = static_cast<Game_Interpreter_Map*>(interpreter.get())->GetSaveData();
+	}
+
+	return data;
+}
