@@ -95,14 +95,6 @@ void Game_Interpreter::Setup(const std::vector<RPG::EventCommand>& _list, int _e
 	CancelMenuCall();
 }
 
-void Game_Interpreter::SetupFromSave(const std::vector<RPG::SaveEventCommands>& save) {
-	if (save.size() > 0) {
-		// ToDo: Setup child interpreters
-		Setup(save.back().commands, 0);
-		index = save.back().current_command;
-	}
-}
-
 void Game_Interpreter::CancelMenuCall() {
 	// TODO
 }

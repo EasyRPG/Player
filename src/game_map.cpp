@@ -126,14 +126,30 @@ void Game_Map::SetupFromSave() {
 	SetupCommon(location.map_id);
 
 	for (size_t i = 0; i < map->events.size(); ++i) {
-		events.insert(std::make_pair(map->events[i].ID, EASYRPG_MAKE_SHARED<Game_Event>(location.map_id, map->events[i], map_info.events[i])));
+		EASYRPG_SHARED_PTR<Game_Event> evnt;
+		if (i < map_info.events.size()) {
+			evnt = EASYRPG_MAKE_SHARED<Game_Event>(location.map_id, map->events[i], map_info.events[i]);
+		}
+		else {
+			evnt = EASYRPG_MAKE_SHARED<Game_Event>(location.map_id, map->events[i]);
+		}
+
+		events.insert(std::make_pair(map->events[i].ID, evnt));
 	}
 
 	for (size_t i = 0; i < Data::commonevents.size(); ++i) {
-		common_events.insert(std::make_pair(Data::commonevents[i].ID, EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID)));
+		EASYRPG_SHARED_PTR<Game_CommonEvent> evnt;
+		if (i < Main_Data::game_data.common_events.size()) {
+			evnt = EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID, false, Main_Data::game_data.common_events[i]);
+		}
+		else {
+			evnt = EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID);
+		}
+
+		common_events.insert(std::make_pair(Data::commonevents[i].ID, EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID, false, Main_Data::game_data.common_events[i])));
 	}
 
-	interpreter->SetupFromSave(Main_Data::game_data.events.events);
+	static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(Main_Data::game_data.events.events);
 
 	map_info.Fixup(*map.get());
 }

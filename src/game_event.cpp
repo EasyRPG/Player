@@ -57,6 +57,12 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEv
 
 	this->data = data;
 	MoveTo(data.position_x, data.position_y);
+	
+	if (!data.event_data.commands.empty()) {
+		interpreter.reset(new Game_Interpreter_Map());
+		static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(data.event_data.commands);
+	}
+
 	Refresh();
 }
 

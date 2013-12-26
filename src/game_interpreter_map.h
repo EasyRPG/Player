@@ -39,6 +39,16 @@ public:
 	Game_Interpreter_Map(int _depth = 0, bool _main_flag = false);
 	~Game_Interpreter_Map();
 
+	/**
+	* Parses a SaveEventCommand to create an interpreter.
+	*
+	* @param save event to load.
+	* @param index index in the event list.
+	*
+	* @return If the setup was successful (fails when index out of range)
+	*/
+	bool SetupFromSave(const std::vector<RPG::SaveEventCommands>& save, int index = 0);
+
 	bool ExecuteCommand();
 
 	void EndMoveRoute(RPG::MoveRoute* route);

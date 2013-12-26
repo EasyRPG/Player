@@ -57,6 +57,20 @@ Game_Interpreter_Map::~Game_Interpreter_Map() {
 	}
 }
 
+bool Game_Interpreter_Map::SetupFromSave(const std::vector<RPG::SaveEventCommands>& save, int index) {
+	if (index < save.size()) {
+		Setup(save[index].commands, 0);
+		this->index = save[index].current_command;
+		child_interpreter.reset(new Game_Interpreter_Map());
+		bool result = static_cast<Game_Interpreter_Map*>(child_interpreter.get())->SetupFromSave(save, index + 1);
+		if (!result) {
+			child_interpreter.reset();
+		}
+		return true;
+	}
+	return false;
+}
+
 int Game_Interpreter_Map::DecodeInt(std::vector<int>::const_iterator& it) {
 	int value = 0;
 

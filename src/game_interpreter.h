@@ -43,13 +43,6 @@ public:
 	void Clear();
 	void Setup(const std::vector<RPG::EventCommand>& _list, int _event_id, int dbg_x = -1, int dbg_y = -1);
 
-	/**
-	 * Parses a SaveEventCommand to create an interpreter.
-	 *
-	 * @param save event to load.
-	 */
-	void SetupFromSave(const std::vector<RPG::SaveEventCommands>& save);
-
 	bool IsRunning() const;
 	void Update();
 
