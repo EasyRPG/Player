@@ -66,7 +66,7 @@ Game_Character::Game_Character() :
 }
 
 bool Game_Character::IsMoving() const {
-	return real_x != GetX() * 128 || real_y != GetY() * 128;
+	return real_x != GetX() * SCREEN_TILE_WIDTH || real_y != GetY() * SCREEN_TILE_WIDTH;
 }
 
 bool Game_Character::IsJumping() const {
@@ -108,17 +108,17 @@ int Game_Character::GetPriorityType() const {
 void Game_Character::MoveTo(int x, int y) {
 	SetX(x % Game_Map::GetWidth());
 	SetY(y % Game_Map::GetHeight());
-	real_x = GetX() * 128;
-	real_y = GetY() * 128;
+	real_x = GetX() * SCREEN_TILE_WIDTH;
+	real_y = GetY() * SCREEN_TILE_WIDTH;
 	prelock_direction = -1;
 }
 
 int Game_Character::GetScreenX() const {
-	return (real_x - Game_Map::GetDisplayX() + 3) / 8 + 8;
+	return (real_x - Game_Map::GetDisplayX() + 3) / (SCREEN_TILE_WIDTH / 16) + 8;
 }
 
 int Game_Character::GetScreenY() const {
-	int y = (real_y - Game_Map::GetDisplayY() + 3) / 8 + 16;
+	int y = (real_y - Game_Map::GetDisplayY() + 3) / (SCREEN_TILE_WIDTH / 16) + 16;
 
 	/*int n;
 	if (jump_count >= jump_peak)
@@ -136,7 +136,7 @@ int Game_Character::GetScreenZ() const {
 int Game_Character::GetScreenZ(int /* height */) const {
 	if (GetPriorityType() == RPG::EventPage::Layers_above) return 999;
 
-	int z = (real_y - Game_Map::GetDisplayY() + 3) / 8 + 16;
+	int z = (real_y - Game_Map::GetDisplayY() + 3) / 8 + (SCREEN_TILE_WIDTH / 8);
 
 	return z;
 }
@@ -195,18 +195,18 @@ void Game_Character::Update() {
 }
 
 void Game_Character::UpdateMove() {
-	int distance = (1 << move_speed);
-	if (GetY() * 128 > real_y)
-		real_y = min(real_y + distance, GetY() * 128);
+	int distance = ((SCREEN_TILE_WIDTH / 128) << move_speed);
+	if (GetY() * SCREEN_TILE_WIDTH > real_y)
+		real_y = min(real_y + distance, GetY() * SCREEN_TILE_WIDTH);
 
-	if (GetX() * 128 < real_x)
-		real_x = max(real_x - distance, GetX() * 128);
+	if (GetX() * SCREEN_TILE_WIDTH < real_x)
+		real_x = max(real_x - distance, GetX() * SCREEN_TILE_WIDTH);
 
-	if (GetX() * 128 > real_x)
-		real_x = min(real_x + distance, GetX() * 128);
+	if (GetX() * SCREEN_TILE_WIDTH > real_x)
+		real_x = min(real_x + distance, GetX() * SCREEN_TILE_WIDTH);
 
-	if (GetY() * 128 < real_y)
-		real_y = max(real_y - distance, GetY() * 128);
+	if (GetY() * SCREEN_TILE_WIDTH < real_y)
+		real_y = max(real_y - distance, GetY() * SCREEN_TILE_WIDTH);
 
 	if (animation_type != RPG::EventPage::AnimType_fixed_graphic && walk_animation)
 		anime_count += 1.5;

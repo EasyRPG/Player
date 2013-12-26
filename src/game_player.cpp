@@ -103,13 +103,13 @@ bool Game_Player::IsTeleporting() const {
 
 // Center
 void Game_Player::Center(int x, int y) {
-	int center_x = (DisplayUi->GetWidth() / 2 - 16) * 8;
-	int center_y = (DisplayUi->GetHeight() / 2 - 8) * 8;
+	int center_x = (DisplayUi->GetWidth() - (SCREEN_TILE_WIDTH / 8)) * 8;
+	int center_y = (DisplayUi->GetHeight() - (SCREEN_TILE_WIDTH / 16)) * 8;
 
-	int max_x = (Game_Map::GetWidth() - DisplayUi->GetWidth() / 16) * 128;
-	int max_y = (Game_Map::GetHeight() - DisplayUi->GetHeight() / 16) * 128;
-	Game_Map::SetDisplayX(max(0, min((x * 128 - center_x), max_x)));
-	Game_Map::SetDisplayY(max(0, min((y * 128 - center_y), max_y)));
+	int max_x = (Game_Map::GetWidth() - DisplayUi->GetWidth() / 16) * 256;
+	int max_y = (Game_Map::GetHeight() - DisplayUi->GetHeight() / 16) * 256;
+	Game_Map::SetDisplayX(max(0, min((x * SCREEN_TILE_WIDTH - center_x), max_x)));
+	Game_Map::SetDisplayY(max(0, min((y * SCREEN_TILE_WIDTH - center_y), max_y)));
 }
 
 // MoveTo
@@ -125,8 +125,8 @@ void Game_Player::MoveTo(int x, int y) {
 }
 
 void Game_Player::UpdateScroll(int last_real_x, int last_real_y) {
-	int center_x = (DisplayUi->GetWidth() / 2 - 16) * 8;
-	int center_y = (DisplayUi->GetHeight() / 2 - 8) * 8;
+	int center_x = (DisplayUi->GetWidth() - (SCREEN_TILE_WIDTH / 8)) * 8;
+	int center_y = (DisplayUi->GetHeight() - (SCREEN_TILE_WIDTH / 16)) * 8;
 
 	if (Game_Map::IsPanLocked())
 		return;

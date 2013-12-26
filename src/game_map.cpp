@@ -67,8 +67,8 @@ namespace map_anon {
 using namespace map_anon;
 
 void Game_Map::Init() {
-	map_info.pan_x = 0;
-	map_info.pan_y = 0;
+	map_info.position_x = 0;
+	map_info.position_y = 0;
 	need_refresh = true;
 
 	map.reset();
@@ -217,6 +217,7 @@ void Game_Map::PrepareSave() {
 	save_common_events.resize(Data::commonevents.size());
 
 	for (tCommonEventHash::iterator i = common_events.begin(); i != common_events.end(); ++i) {
+		save_common_events[i->first - 1].ID = i->first;
 		save_common_events[i->first - 1].event_data =
 			i->second->GetSaveData();
 	}
@@ -273,19 +274,19 @@ Game_Interpreter& Game_Map::GetInterpreter() {
 }
 
 void Game_Map::ScrollDown(int distance) {
-	map_info.pan_y = min(map_info.pan_y + distance, (GetHeight() - 15) * 128);
+	map_info.position_y = min(map_info.position_y + distance, (GetHeight() - 15) * SCREEN_TILE_WIDTH);
 }
 
 void Game_Map::ScrollLeft(int distance) {
-	map_info.pan_x = max(map_info.pan_x - distance, 0);
+	map_info.position_x = max(map_info.position_x - distance, 0);
 }
 
 void Game_Map::ScrollRight(int distance) {
-	map_info.pan_x = min(map_info.pan_x + distance, (GetWidth() - 20) * 128);
+	map_info.position_x = min(map_info.position_x + distance, (GetWidth() - 20) * SCREEN_TILE_WIDTH);
 }
 
 void Game_Map::ScrollUp(int distance) {
-	map_info.pan_y = max(map_info.pan_y - distance, 0);
+	map_info.position_y = max(map_info.position_y - distance, 0);
 }
 
 bool Game_Map::IsValid(int x, int y) {
@@ -485,7 +486,7 @@ int Game_Map::CheckEvent(int x, int y) {
 
 void Game_Map::StartScroll(int direction, int distance, int speed) {
 	scroll_direction = direction;
-	scroll_rest = distance * 128;
+	scroll_rest = distance * SCREEN_TILE_WIDTH;
 	scroll_speed = speed;
 }
 
@@ -602,17 +603,17 @@ void Game_Map::SetBattlebackName(std::string new_battleback_name) {
 }
 
 int Game_Map::GetDisplayX() {
-	return map_info.pan_x;
+	return map_info.position_x;
 }
 void Game_Map::SetDisplayX(int new_display_x) {
-	map_info.pan_x = new_display_x;
+	map_info.position_x = new_display_x;
 }
 
 int Game_Map::GetDisplayY() {
-	return map_info.pan_y;
+	return map_info.position_y;
 }
 void Game_Map::SetDisplayY(int new_display_y) {
-	map_info.pan_y = new_display_y;
+	map_info.position_y = new_display_y;
 }
 
 bool Game_Map::GetNeedRefresh() {
@@ -716,7 +717,7 @@ void Game_Map::UnlockPan() {
 }
 
 void Game_Map::StartPan(int direction, int distance, int speed, bool wait) {
-	distance *= 128;
+	distance *= SCREEN_TILE_WIDTH;
 	switch (direction) {
 		case PanUp:		location.pan_finish_y -= distance;		break;
 		case PanRight:	location.pan_finish_x += distance;		break;
@@ -785,7 +786,7 @@ void Game_Map::UpdateParallax() {
 				0;
 			parallax_auto_x += step;
 		}
-		parallax_x = map_info.pan_x * 4 + parallax_auto_x;
+		parallax_x = map_info.position_x * 4 + parallax_auto_x;
 	} else
 		parallax_x = 0;
 
@@ -797,18 +798,18 @@ void Game_Map::UpdateParallax() {
 				0;
 			parallax_auto_y += step;
 		}
-		parallax_y = map_info.pan_y * 4 + parallax_auto_y;
+		parallax_y = map_info.position_y * 4 + parallax_auto_y;
 	} else
 		parallax_y = 0;
 }
 
 int Game_Map::GetParallaxX() {
-	int px = parallax_x - map_info.pan_x * 8;
+	int px = parallax_x - map_info.position_x * (SCREEN_TILE_WIDTH / 16);
 	return (px < 0) ? -(-px / 64) : (px / 64);
 }
 
 int Game_Map::GetParallaxY() {
-	int py = parallax_y - map_info.pan_y * 8;
+	int py = parallax_y - map_info.position_y * (SCREEN_TILE_WIDTH / 16);
 	return (py < 0) ? -(-py / 64) : (py / 64);
 }
 
