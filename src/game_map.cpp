@@ -108,32 +108,7 @@ void Game_Map::Quit() {
 }
 
 void Game_Map::Setup(int _id) {
-	// Execute remaining events (e.g. ones listed after a teleport)
-	Update();
-	Dispose();
-
-	location.map_id = _id;
-	char file[12];
-	sprintf(file, "Map%04d.lmu", location.map_id);
-
-	map = LMU_Reader::Load(FileFinder::FindDefault(file),
-				ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)));
-	if (map.get() == NULL) {
-		Output::ErrorStr(LcfReader::GetError());
-	}
-
-	if (map->parallax_flag) {
-		SetParallaxName(map->parallax_name);
-		SetParallaxScroll(map->parallax_loop_x, map->parallax_loop_y,
-						  map->parallax_auto_loop_x, map->parallax_auto_loop_y,
-						  map->parallax_sx, map->parallax_sy);
-	} else
-		SetParallaxName("");
-
-	SetChipset(map->chipset_id);
-	map_info.pan_x = 0;
-	map_info.pan_y = 0;
-	need_refresh = true;
+	SetupCommon(_id);
 
 	for (size_t i = 0; i < map->events.size(); ++i) {
 		events.insert(std::make_pair(map->events[i].ID, EASYRPG_MAKE_SHARED<Game_Event>(location.map_id, map->events[i])));
@@ -142,6 +117,55 @@ void Game_Map::Setup(int _id) {
 	for (size_t i = 0; i < Data::commonevents.size(); ++i) {
 		common_events.insert(std::make_pair(Data::commonevents[i].ID, EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID)));
 	}
+
+	location.pan_finish_x = 0;
+	location.pan_finish_y = 0;
+	location.pan_current_x = 0;
+	location.pan_current_y = 0;
+}
+
+void Game_Map::SetupFromSave() {
+	SetupCommon(location.map_id);
+
+	for (size_t i = 0; i < map->events.size(); ++i) {
+		events.insert(std::make_pair(map->events[i].ID, EASYRPG_MAKE_SHARED<Game_Event>(location.map_id, map->events[i], map_info.events[i])));
+	}
+
+	for (size_t i = 0; i < Data::commonevents.size(); ++i) {
+		common_events.insert(std::make_pair(Data::commonevents[i].ID, EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID)));
+	}
+
+	map_info.Fixup(*map.get());
+}
+
+void Game_Map::SetupCommon(int _id) {
+	// Execute remaining events (e.g. ones listed after a teleport)
+	Update();
+	Dispose();
+
+	location.map_id = _id;
+
+	char file[12];
+	sprintf(file, "Map%04d.lmu", location.map_id);
+
+	map = LMU_Reader::Load(FileFinder::FindDefault(file),
+		ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)));
+	if (map.get() == NULL) {
+		Output::ErrorStr(LcfReader::GetError());
+	}
+
+	if (map->parallax_flag) {
+		SetParallaxName(map->parallax_name);
+		SetParallaxScroll(map->parallax_loop_x, map->parallax_loop_y,
+			map->parallax_auto_loop_x, map->parallax_auto_loop_y,
+			map->parallax_sx, map->parallax_sy);
+	}
+	else {
+		SetParallaxName("");
+	}
+
+	SetChipset(map->chipset_id);
+	need_refresh = true;
 
 	scroll_direction = 2;
 	scroll_rest = 0;
@@ -154,14 +178,6 @@ void Game_Map::Setup(int _id) {
 	pan_locked = false;
 	pan_wait = false;
 	pan_speed = 0;
-	location.pan_finish_x = 0;
-	location.pan_finish_y = 0;
-	location.pan_current_x = 0;
-	location.pan_current_y = 0;
-}
-
-void Game_Map::Fixup() {
-	map_info.Fixup(*map.get());
 }
 
 void Game_Map::PlayBgm() {

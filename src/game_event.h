@@ -36,6 +36,17 @@ public:
 	Game_Event(int map_id, const RPG::Event& event);
 
 	/**
+	 * Constructor.
+	 * Create event from save data.
+	 */
+	Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEvent& data);
+
+	int GetX() const;
+	void SetX(int new_x);
+	int GetY() const;
+	void SetY(int new_y);
+
+	/**
 	 * Clears starting flag.
 	 */
 	void ClearStarting();
@@ -98,6 +109,11 @@ public:
 	RPG::Event& GetEvent();
 
 private:
+	// Not a reference on purpose.
+	// Events change during map change and old are destroyed, breaking the
+	// reference.
+	RPG::SaveMapEvent data;
+
 	int ID;
 	bool starting;
 	int trigger;

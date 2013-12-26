@@ -43,6 +43,39 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	Refresh();
 }
 
+Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEvent& data) :
+	starting(false),
+	map_id(map_id),
+	event(event),
+	erased(false),
+	page(NULL) {
+
+	// ToDo: Get/SetMapId
+	if (data.map_id > 0) {
+		this->map_id = data.map_id;
+	}
+
+	this->data = data;
+	MoveTo(data.position_x, data.position_y);
+	Refresh();
+}
+
+int Game_Event::GetX() const {
+	return data.position_x;
+}
+
+void Game_Event::SetX(int new_x) {
+	data.position_x = new_x;
+}
+
+int Game_Event::GetY() const {
+	return data.position_y;
+}
+
+void Game_Event::SetY(int new_y) {
+	data.position_y = new_y;
+}
+
 void Game_Event::ClearStarting() {
 	starting = false;
 }

@@ -57,9 +57,18 @@ namespace Game_Map {
 	void Setup(int map_id);
 
 	/**
-	 * Replaces default values after save loading with correct ones.
+	* Setups a map from a savegame.
+	*
+	* @param map_id map ID.
+	*/
+	void SetupFromSave();
+
+	/**
+	 * Shared code of the Setup methods.
+	 *
+	 * @param map_id map ID.
 	 */
-	void Fixup();
+	void SetupCommon(int _id);
 
 	/**
 	 * Runs map.

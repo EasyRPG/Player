@@ -28,8 +28,6 @@
 #include <cstdlib>
 
 Game_Character::Game_Character() :
-	x(0),
-	y(0),
 	tile_id(0),
 	character_index(0),
 	real_x(0),
@@ -867,14 +865,6 @@ void Game_Character::DetachMoveRouteOwner(Game_Interpreter* owner) {
 	if (owner == move_route_owner) {
 		move_route_owner = NULL;
 	}
-}
-
-int Game_Character::GetX() const {
-	return x;
-}
-
-int Game_Character::GetY() const {
-	return y;
 }
 
 int Game_Character::GetTileId() const {

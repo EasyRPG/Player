@@ -21,6 +21,7 @@
 // Headers
 #include <string>
 #include "rpg_music.h"
+#include "rpg_savevehiclelocation.h"
 #include "game_character.h"
 
 /**
@@ -37,6 +38,10 @@ public:
 	};
 
 	Game_Vehicle(Type _type);
+	int GetX() const;
+	void SetX(int new_x);
+	int GetY() const;
+	void SetY(int new_y);
 	void LoadSystemSettings();
 	void Refresh();
 	void SetPosition(int _map_id, int _x, int _y);
@@ -52,6 +57,8 @@ public:
 	virtual bool CheckEventTriggerTouch(int x, int y);
 
 protected:
+	RPG::SaveVehicleLocation& data;
+
 	int map_id;
 	Type type;
 	int altitude;

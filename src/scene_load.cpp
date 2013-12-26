@@ -62,8 +62,6 @@ void Scene_Load::CreateGameObjects() {
 }
 
 void Scene_Load::SetupSavegameData(std::auto_ptr<RPG::Save> save) {
-	Game_Map::Setup(save->party_location.map_id);
-
 	RPG::SaveSystem system = Main_Data::game_data.system;
 
 	Main_Data::game_data = *save.get();
@@ -71,9 +69,11 @@ void Scene_Load::SetupSavegameData(std::auto_ptr<RPG::Save> save) {
 	Main_Data::game_data.system.Fixup();
 	Game_Actors::Fixup();
 
+	Game_Map::SetupFromSave();
+
 	Main_Data::game_player->MoveTo(
 		save->party_location.position_x, save->party_location.position_y);
 	Main_Data::game_player->Refresh();
-	Game_Map::Fixup();
+	
 	Game_Map::PlayBgm();
 }

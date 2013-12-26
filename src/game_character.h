@@ -335,18 +335,28 @@ public:
 	 *
 	 * @return x position.
 	 */
-	virtual int GetX() const;
+	virtual int GetX() const = 0;
 
-	virtual void SetX(int new_x) { x = new_x; };
+	/**
+	 * Sets x position.
+	 *
+	 * @param new_x new x position.
+	 */
+	virtual void SetX(int new_x) = 0;
 
 	/**
 	 * Gets y position.
 	 *
 	 * @return y position.
 	 */
-	virtual int GetY() const;
+	virtual int GetY() const = 0;
 
-	virtual void SetY(int new_y) { y = new_y; }
+	/**
+	* Sets y position.
+	*
+	* @param new_y new y position.
+	*/
+	virtual void SetY(int new_y) = 0;
 
 	/**
 	 * Gets tile graphic ID.
@@ -523,8 +533,6 @@ protected:
 	void UpdateSelfMovement();
 	void UpdateStop();
 
-	int x;
-	int y;
 	int tile_id;
 	std::string character_name;
 	int character_index;

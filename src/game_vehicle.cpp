@@ -23,13 +23,33 @@
 #include "game_player.h"
 #include "game_vehicle.h"
 
-Game_Vehicle::Game_Vehicle(Type _type) {
+Game_Vehicle::Game_Vehicle(Type _type) :
+	data(_type == Boat ? Main_Data::game_data.boat_location :
+		 _type == Ship ? Main_Data::game_data.ship_location :
+		 Main_Data::game_data.airship_location) {
+	assert(_type >= 0 && _type <= 2 && "Invalid Vehicle index");
 	type = _type;
 	altitude = 0;
 	driving = false;
 	direction = RPG::EventPage::Direction_left;
 	walk_animation = false;
 	LoadSystemSettings();
+}
+
+int Game_Vehicle::GetX() const {
+	return data.position_x;
+}
+
+void Game_Vehicle::SetX(int new_x) {
+	data.position_x = new_x;
+}
+
+int Game_Vehicle::GetY() const {
+	return data.position_y;
+}
+
+void Game_Vehicle::SetY(int new_y) {
+	data.position_y = new_y;
 }
 
 void Game_Vehicle::LoadSystemSettings() {
