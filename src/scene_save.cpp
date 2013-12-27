@@ -73,7 +73,13 @@ void Scene_Save::Action(int index) {
 
 	Game_Map::PrepareSave();
 
-	LSD_Reader::Save(FileFinder::FindDefault(ss.str()), Main_Data::game_data,
+	std::string filename = FileFinder::FindDefault(*tree, ss.str());
+
+	if (filename.empty()) {
+		filename = ss.str();
+	}
+
+	LSD_Reader::Save(filename, Main_Data::game_data,
 		ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)));
 
 	Scene::Pop();

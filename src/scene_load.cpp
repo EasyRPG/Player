@@ -41,7 +41,7 @@ void Scene_Load::Action(int index) {
 	std::stringstream ss;
 	ss << "Save" << (index <= 8 ? "0" : "") << (index + 1) << ".lsd";
 
-	std::auto_ptr<RPG::Save> save = LSD_Reader::Load(FileFinder::FindDefault(ss.str()),
+	std::auto_ptr<RPG::Save> save = LSD_Reader::Load(FileFinder::FindDefault(*tree, ss.str()),
 		ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)));
 
 	CreateGameObjects();

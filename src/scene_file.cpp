@@ -20,7 +20,6 @@
 #include <sstream>
 #include <vector>
 #include "data.h"
-#include "filefinder.h"
 #include "game_system.h"
 #include "game_party.h"
 #include "input.h"
@@ -40,6 +39,9 @@ void Scene_File::Start() {
 	help_window.reset(new Window_Help(0, 0, 320, 32));
 	help_window->SetText(message);
 
+	// Refresh File Finder Save Folder
+	tree = FileFinder::CreateProjectTree(Main_Data::project_path, false);
+
 	for (int i = 0; i < 15; i++) {
 		EASYRPG_SHARED_PTR<Window_SaveFile>
 			w(new Window_SaveFile(0, 40 + i * 64, 320, 64));
@@ -48,7 +50,7 @@ void Scene_File::Start() {
 		// Try to access file
 		std::stringstream ss;
 		ss << "Save" << (i <= 8 ? "0" : "") << (i+1) << ".lsd";
-		std::string file = FileFinder::FindDefault(ss.str());
+		std::string file = FileFinder::FindDefault(*tree, ss.str());
 		if (!file.empty()) {
 			// File found
 			std::auto_ptr<RPG::Save> savegame =

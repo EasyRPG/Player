@@ -21,6 +21,7 @@
 // Headers
 #include <vector>
 #include "scene.h"
+#include "filefinder.h"
 #include "window_help.h"
 #include "window_savefile.h"
 #include <boost/scoped_ptr.hpp>
@@ -51,6 +52,8 @@ protected:
 	boost::scoped_ptr<Window_Help> help_window;
 	std::vector<EASYRPG_SHARED_PTR<Window_SaveFile> > file_windows;
 	std::string message;
+
+	EASYRPG_SHARED_PTR<FileFinder::ProjectTree> tree;
 };
 
 #endif
