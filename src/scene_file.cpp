@@ -87,6 +87,7 @@ void Scene_File::Start() {
 
 				w->SetParty(party, savegame->title.hero_name, savegame->title.hero_hp,
 					savegame->title.hero_level);
+				w->SetValid(true);
 			} else {
 				w->SetCorrupted(true);
 			}
@@ -110,35 +111,51 @@ void Scene_File::Refresh() {
 }
 
 void Scene_File::Update() {
-	for (int i = 0; (size_t) i < file_windows.size(); i++)
-		file_windows[i]->Update();
-
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		Game_System::SePlay(Main_Data::game_data.system.decision_se);
-		Action(index);
+		if (file_windows[index]->IsValid()) {
+			Game_System::SePlay(Main_Data::game_data.system.decision_se);
+			Action(index);
+		}
+		else {
+			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
+		}
 	}
 
 	int old_top_index = top_index;
 	int old_index = index;
 
 	if (Input::IsRepeated(Input::DOWN)) {
-		Game_System::SePlay(Main_Data::game_data.system.cursor_se);
-		index++;
-		if ((size_t) index >= file_windows.size())
-			index--;
-		top_index = std::max(top_index, index - 3 + 1);
+		if (Input::IsTriggered(Input::DOWN) || index < file_windows.size() - 1) {
+			Game_System::SePlay(Main_Data::game_data.system.cursor_se);
+			index = (index + 1) % file_windows.size();
+		}
+
+		//top_index = std::max(top_index, index - 3 + 1);
 	}
 	if (Input::IsRepeated(Input::UP)) {
-		Game_System::SePlay(Main_Data::game_data.system.cursor_se);
-		index--;
-		if (index < 0)
-			index++;
+		if (Input::IsTriggered(Input::UP) || index >= 1) {
+			Game_System::SePlay(Main_Data::game_data.system.cursor_se);
+			index = (index - 1 + file_windows.size()) % file_windows.size();
+		}
+			
+		//top_index = std::min(top_index, index);
+	}
+
+	if (index > top_index) {
+		top_index = std::max(top_index, index - 3 + 1);
+	}
+	else if (index < top_index) {
 		top_index = std::min(top_index, index);
 	}
 
+	//top_index = std::min(top_index, std::max(top_index, index - 3 + 1));
+
 	if (top_index != old_top_index || index != old_index)
 		Refresh();
+
+	for (int i = 0; (size_t)i < file_windows.size(); i++)
+		file_windows[i]->Update();
 }

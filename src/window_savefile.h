@@ -56,6 +56,21 @@ public:
 		std::string name, int hp, int level);
 
 	/**
+	 * Gets if the slot holds a valid save.
+	 * (not corrupted or empty)
+	 *
+	 * @return Whether save is valid
+	 */
+	bool IsValid();
+
+	/**
+	 * Sets if there is a savegame in the slot.
+	 *
+	 * @param valid true if valid
+	 */
+	void SetValid(bool valid);
+
+	/**
 	 * Sets if the savegame is broken.
 	 * Displays an error message in that case.
 	 */
@@ -72,6 +87,7 @@ protected:
 	int hero_hp;
 	int hero_level;
 	bool corrupted;
+	bool valid;
 };
 
 #endif
