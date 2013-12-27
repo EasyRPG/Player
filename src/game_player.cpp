@@ -38,6 +38,9 @@ Game_Player::Game_Player():
 	new_map_id(0),
 	new_x(0),
 	new_y(0) {
+	// Make RPG_RT happy
+	// Otherwise current event not resumed after loading o_O
+	location.unknown_83 = 2;
 }
 
 int Game_Player::GetX() const {
