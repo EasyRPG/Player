@@ -18,6 +18,8 @@
 // Headers
 #include <vector>
 #include "audio.h"
+#include "baseui.h"
+#include "cache.h"
 #include "game_system.h"
 #include "input.h"
 #include "scene_end.h"
@@ -33,6 +35,8 @@ Scene_End::Scene_End() {
 void Scene_End::Start() {
 	CreateCommandWindow();
 	CreateHelpWindow();
+
+	DisplayUi->SetBackcolor(Cache::system_info.bg_color);
 }
 
 void Scene_End::Update() {

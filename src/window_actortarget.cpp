@@ -34,8 +34,6 @@ Window_ActorTarget::Window_ActorTarget(int ix, int iy, int iwidth, int iheight) 
 void Window_ActorTarget::Refresh() {
 	contents->Clear();
 
-	DisplayUi->SetBackcolor(Cache::system_info.bg_color);
-
 	item_max = Game_Party::GetActors().size();
 
 	int y = 0;

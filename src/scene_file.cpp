@@ -19,6 +19,8 @@
 #include <algorithm>
 #include <sstream>
 #include <vector>
+#include "baseui.h"
+#include "cache.h"
 #include "data.h"
 #include "game_system.h"
 #include "game_party.h"
@@ -35,6 +37,8 @@ Scene_File::Scene_File(std::string message) :
 }
 
 void Scene_File::Start() {
+	DisplayUi->SetBackcolor(Cache::system_info.bg_color);
+
 	// Create the windows
 	help_window.reset(new Window_Help(0, 0, 320, 32));
 	help_window->SetText(message);
