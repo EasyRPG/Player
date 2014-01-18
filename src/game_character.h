@@ -42,6 +42,105 @@ public:
 	 */
 	virtual ~Game_Character() {}
 
+
+	/**
+	* Gets x position.
+	*
+	* @return x position.
+	*/
+	virtual int GetX() const = 0;
+
+	/**
+	* Sets x position.
+	*
+	* @param new_x new x position.
+	*/
+	virtual void SetX(int new_x) = 0;
+
+	/**
+	 * Gets y position.
+	 *
+	 * @return y position.
+	 */
+	virtual int GetY() const = 0;
+
+	/**
+	 * Sets y position.
+	 *
+	 * @param new_y new y position.
+	 */
+	virtual void SetY(int new_y) = 0;
+
+	/**
+	 * Gets the map id the character was inititialy on.
+	 *
+	 * @return map id.
+	 */
+	virtual int GetMapId() const = 0;
+
+	/**
+	 * Sets the map id the character was inititialy on.
+	 *
+	 * @param new_map_id New map id of character.
+	 */
+	virtual void SetMapId(int new_map_id) = 0;
+
+	/**
+	 * Gets character facing direction.
+	 *
+	 * @return current facing direction.
+	 */
+	virtual int GetDirection() const = 0;
+
+	/**
+	 * Sets character facing direction.
+	 *
+	 * @param new_direction New current facing direction.
+	 */
+	virtual void SetDirection(int new_direction) = 0;
+
+	/**
+	 * Gets facing direction before direction was locked.
+	 *
+	 * @return facing direction before lock.
+	 */
+	virtual int GetPrelockDirection() const = 0;
+
+	/**
+	 * Sets character facing used before locking.
+	 *
+	 * @param new_direction New prelock facing direction.
+	 */
+	virtual void SetPrelockDirection(int new_direction) = 0;
+
+	/**
+	 * Gets whether facing is locked.
+	 *
+	 * @return facing locked
+	 */
+	virtual bool IsFacingLocked() const = 0;
+
+	/**
+	 * Enables or disables locked facing direction.
+	 *
+	 * @param locked true: locked, false: unlocked.
+	 */
+	virtual void SetFacingLocked(bool locked) = 0;
+
+	/**
+	 * Gets the event layer (top, same, below)
+	 *
+	 * @return event layer
+	 */
+	virtual int GetLayer() const = 0;
+
+	/**
+	 * Sets the event layer (top, same, below)
+	 *
+	 * @param new_layer New event layer
+	 */
+	virtual void SetLayer(int new_layer) = 0;
+
 	/**
 	 * Gets if character is moving.
 	 *
@@ -272,7 +371,7 @@ public:
 	 */
 	void Unlock();
 
-	void SetDirection(int direction);
+	void SetFacingDirection(int direction);
 
 	/**
 	 * Forces a new, temporary, move route.
@@ -331,34 +430,6 @@ public:
 	virtual int GetScreenZ(int height) const;
 
 	/**
-	 * Gets x position.
-	 *
-	 * @return x position.
-	 */
-	virtual int GetX() const = 0;
-
-	/**
-	 * Sets x position.
-	 *
-	 * @param new_x new x position.
-	 */
-	virtual void SetX(int new_x) = 0;
-
-	/**
-	 * Gets y position.
-	 *
-	 * @return y position.
-	 */
-	virtual int GetY() const = 0;
-
-	/**
-	* Sets y position.
-	*
-	* @param new_y new y position.
-	*/
-	virtual void SetY(int new_y) = 0;
-
-	/**
 	 * Gets tile graphic ID.
 	 *
 	 * @return tile graphic ID.
@@ -392,13 +463,6 @@ public:
 	 * @return real y.
 	 */
 	int GetRealY() const;
-
-	/**
-	 * Gets facing direction.
-	 *
-	 * @return facing direction.
-	 */
-	int GetDirection() const;
 
 	/**
 	 * Gets pattern.
@@ -439,7 +503,6 @@ public:
 	int DistanceYfromPlayer() const;
 
 	virtual bool IsInPosition(int x, int y) const;
-	int GetPriorityType() const;
 
 	virtual bool CheckEventTriggerTouch(int x, int y) = 0;
 
@@ -538,7 +601,6 @@ protected:
 	int character_index;
 	int real_x;
 	int real_y;
-	int direction;
 	int pattern;
 	int original_direction;
 	int original_pattern;
@@ -557,9 +619,7 @@ protected:
 	int move_type;
 	int move_speed;
 	int move_frequency;
-	int prelock_direction;
 	bool move_failed;
-	bool locked;
 	int wait_count;
 
 	double anime_count;
@@ -570,8 +630,6 @@ protected:
 
 	/** used by cycle left-right, up-down */
 	bool cycle_stat;
-
-	int priority_type;
 
 	int opacity;
 	bool visible;

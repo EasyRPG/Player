@@ -196,6 +196,10 @@ void Game_Map::SetupCommon(int _id) {
 	pan_locked = false;
 	pan_wait = false;
 	pan_speed = 0;
+
+	// Make RPG_RT happy
+	// Otherwise current event not resumed after loading
+	location.map_save_count = map->save_count;
 }
 
 void Game_Map::PrepareSave() {
@@ -326,10 +330,10 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 			Game_Event* evnt = i->second.get();
 			if (evnt != self_event && evnt->GetX() == x && evnt->GetY() == y) {
 				if (!evnt->GetThrough()) {
-					if (evnt->GetPriorityType() == RPG::EventPage::Layers_same) {
+					if (evnt->GetLayer() == RPG::EventPage::Layers_same) {
 						return false;
 					}
-					else if (evnt->GetTileId() >= 0 && evnt->GetPriorityType() == RPG::EventPage::Layers_below) {
+					else if (evnt->GetTileId() >= 0 && evnt->GetLayer() == RPG::EventPage::Layers_below) {
 						// Event layer Chipset Tile
 						tile_id = i->second->GetTileId();
 						return (passages_up[tile_id] & bit) != 0;

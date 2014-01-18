@@ -38,9 +38,6 @@ Game_Player::Game_Player():
 	new_map_id(0),
 	new_x(0),
 	new_y(0) {
-	// Make RPG_RT happy
-	// Otherwise current event not resumed after loading o_O
-	location.unknown_83 = 2;
 }
 
 int Game_Player::GetX() const {
@@ -57,6 +54,46 @@ int Game_Player::GetY() const {
 
 void Game_Player::SetY(int new_y) {
 	location.position_y = new_y;
+}
+
+int Game_Player::GetMapId() const {
+	return location.map_id;
+}
+
+void Game_Player::SetMapId(int new_map_id) {
+	location.map_id = new_map_id;
+}
+
+int Game_Player::GetDirection() const {
+	return location.direction;
+}
+
+void Game_Player::SetDirection(int new_direction) {
+	location.direction = new_direction;
+}
+
+int Game_Player::GetPrelockDirection() const {
+	return location.prelock_direction;
+}
+
+void Game_Player::SetPrelockDirection(int new_direction) {
+	location.prelock_direction = new_direction;
+}
+
+bool Game_Player::IsFacingLocked() const {
+	return location.lock_facing;
+}
+
+void Game_Player::SetFacingLocked(bool locked) {
+	location.lock_facing = locked;
+}
+
+int Game_Player::GetLayer() const {
+	return location.layer;
+}
+
+void Game_Player::SetLayer(int new_layer) {
+	location.layer = new_layer;
 }
 
 // Is Passable
@@ -244,7 +281,7 @@ bool Game_Player::CheckEventTriggerHere(const std::vector<int>& triggers) {
 
 	std::vector<Game_Event*>::iterator i;
 	for (i = events.begin(); i != events.end(); i++) {
-		if ( (*i)->GetPriorityType() == RPG::EventPage::Layers_below && std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() ) {
+		if ( (*i)->GetLayer() == RPG::EventPage::Layers_below && std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() ) {
 			(*i)->Start();
 			result = (*i)->GetStarting();
 		}
@@ -257,15 +294,15 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 
 	bool result = false;
 
-	int front_x = Game_Map::XwithDirection(GetX(), direction);
-	int front_y = Game_Map::YwithDirection(GetY(), direction);
+	int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
+	int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
 
 	std::vector<Game_Event*> events;
 	Game_Map::GetEventsXY(events, front_x, front_y);
 
 	std::vector<Game_Event*>::iterator i;
 	for (i = events.begin(); i != events.end(); i++) {
-		if ( (*i)->GetPriorityType() == RPG::EventPage::Layers_same &&
+		if ( (*i)->GetLayer() == RPG::EventPage::Layers_same &&
 			std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end()
 		)
 		{
@@ -275,14 +312,14 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 	}
 
 	if ( !result && Game_Map::IsCounter(front_x, front_y) ) {
-		front_x = Game_Map::XwithDirection(GetX(), direction);
-		front_y = Game_Map::YwithDirection(GetY(), direction);
+		front_x = Game_Map::XwithDirection(GetX(), GetDirection());
+		front_y = Game_Map::YwithDirection(GetY(), GetDirection());
 
 		Game_Map::GetEventsXY(events, front_x, front_y);
 
 		std::vector<Game_Event*>::iterator i;
 		for (i = events.begin(); i != events.end(); i++) {
-			if ( (*i)->GetPriorityType() == 1 &&
+			if ( (*i)->GetLayer() == 1 &&
 				std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end()
 			)
 			{
@@ -304,7 +341,7 @@ bool Game_Player::CheckEventTriggerTouch(int x, int y) {
 
 	std::vector<Game_Event*>::iterator i;
 	for (i = events.begin(); i != events.end(); i++) {
-		if ( (*i)->GetPriorityType() == 1 && ((*i)->GetTrigger() == 1 || (*i)->GetTrigger() == 2) ) {
+		if ( (*i)->GetLayer() == 1 && ((*i)->GetTrigger() == 1 || (*i)->GetTrigger() == 2) ) {
 			(*i)->Start();
 			result = true;
 		}
@@ -336,8 +373,8 @@ bool Game_Player::GetOnOffVehicle() {
 }
 
 bool Game_Player::GetOnVehicle() {
-	int front_x = Game_Map::XwithDirection(GetX(), direction);
-	int front_y = Game_Map::YwithDirection(GetY(), direction);
+	int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
+	int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
 	Game_Vehicle::Type type;
 
 	if (Game_Map::GetVehicle(Game_Vehicle::Airship)->IsInPosition(GetX(), GetY()))
@@ -367,15 +404,15 @@ bool Game_Player::GetOffVehicle() {
 			return false;
 	}
 	else {
-		int front_x = Game_Map::XwithDirection(GetX(), direction);
-		int front_y = Game_Map::YwithDirection(GetY(), direction);
+		int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
+		int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
 		if (!CanWalk(front_x, front_y))
 			return false;
 	}
 
 	Game_Map::GetVehicle((Game_Vehicle::Type) vehicle_type)->GetOff();
 	if (InAirship())
-		direction = RPG::EventPage::Direction_down;
+		SetDirection(RPG::EventPage::Direction_down);
 	else {
 		// TODO
 		// ForceMoveForward();
@@ -428,7 +465,7 @@ bool Game_Player::AirshipLandOk(int x, int y) const {
 bool Game_Player::CanWalk(int x, int y) {
 	int last_vehicle_type = vehicle_type;
     vehicle_type = -1;
-	bool result = IsPassable(x, y, direction);
+	bool result = IsPassable(x, y, GetDirection());
     vehicle_type = last_vehicle_type;
     return result;
 }

@@ -31,7 +31,7 @@ Game_Vehicle::Game_Vehicle(Type _type) :
 	type = _type;
 	altitude = 0;
 	driving = false;
-	direction = RPG::EventPage::Direction_left;
+	SetDirection(RPG::EventPage::Direction_left);
 	walk_animation = false;
 	LoadSystemSettings();
 }
@@ -50,6 +50,46 @@ int Game_Vehicle::GetY() const {
 
 void Game_Vehicle::SetY(int new_y) {
 	data.position_y = new_y;
+}
+
+int Game_Vehicle::GetMapId() const {
+	return data.map_id;
+}
+
+void Game_Vehicle::SetMapId(int new_map_id) {
+	data.map_id = new_map_id;
+}
+
+int Game_Vehicle::GetDirection() const {
+	return data.direction;
+}
+
+void Game_Vehicle::SetDirection(int new_direction) {
+	data.direction = new_direction;
+}
+
+int Game_Vehicle::GetPrelockDirection() const {
+	return data.prelock_direction;
+}
+
+void Game_Vehicle::SetPrelockDirection(int new_direction) {
+	data.prelock_direction = new_direction;
+}
+
+bool Game_Vehicle::IsFacingLocked() const {
+	return data.lock_facing;
+}
+
+void Game_Vehicle::SetFacingLocked(bool locked) {
+	data.lock_facing = locked;
+}
+
+int Game_Vehicle::GetLayer() const {
+	return data.layer;
+}
+
+void Game_Vehicle::SetLayer(int new_layer) {
+	data.layer = new_layer;
 }
 
 void Game_Vehicle::LoadSystemSettings() {
@@ -90,15 +130,15 @@ void Game_Vehicle::Refresh() {
 		MoveTo(GetX(), GetY());
 	switch (type) {
 		case Boat:
-			priority_type = RPG::EventPage::Layers_same;
+			SetLayer(RPG::EventPage::Layers_same);
 			move_speed = RPG::EventPage::MoveSpeed_normal;
 			break;
 		case Ship:
-			priority_type = RPG::EventPage::Layers_same;
+			SetLayer(RPG::EventPage::Layers_same);
 			move_speed = RPG::EventPage::MoveSpeed_double;
 			break;
 		case Airship:
-			priority_type = driving ? RPG::EventPage::Layers_above : RPG::EventPage::Layers_below;
+			SetLayer(driving ? RPG::EventPage::Layers_above : RPG::EventPage::Layers_below);
 			move_speed = RPG::EventPage::MoveSpeed_fourfold;
 			break;
 	}
@@ -122,15 +162,16 @@ bool Game_Vehicle::GetVisible() const {
 void Game_Vehicle::GetOn() {
 	driving = true;
 	walk_animation = true;
-	if (type == Airship)
-		priority_type = RPG::EventPage::Layers_above;
+	if (type == Airship) {
+		SetLayer(RPG::EventPage::Layers_above);
+	}
 	Game_System::BgmPlay(bgm);
 }
 
 void Game_Vehicle::GetOff() {
 	driving = false;
 	walk_animation = false;
-	direction = RPG::EventPage::Direction_left;
+	SetDirection(RPG::EventPage::Direction_left);
 }
 
 void Game_Vehicle::SyncWithPlayer() {
@@ -138,7 +179,7 @@ void Game_Vehicle::SyncWithPlayer() {
 	SetY(Main_Data::game_player->GetY());
 	real_x = Main_Data::game_player->GetRealX();
 	real_y = Main_Data::game_player->GetRealY();
-	direction = Main_Data::game_player->GetDirection();
+	SetDirection(Main_Data::game_player->GetDirection());
 	UpdateBushDepth();
 }
 
@@ -166,7 +207,7 @@ void Game_Vehicle::Update() {
 		else if (altitude > 0) {
 			altitude--;
 			if (altitude == 0)
-				priority_type = RPG::EventPage::Layers_below;
+				SetLayer(RPG::EventPage::Layers_below);
 		}
 	}
 }

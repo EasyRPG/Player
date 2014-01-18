@@ -682,8 +682,7 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 						value = character->GetY();
 						break;
 					case 3:
-						// TODO Orientation
-						// Needs testing
+						// Orientation
 						value = character->GetDirection();
 						break;
 					case 4:

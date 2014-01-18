@@ -41,10 +41,25 @@ public:
 	 */
 	Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEvent& data);
 
+	/**
+	 * Implementation of abstract methods
+	 */
+	/** @{ */
 	int GetX() const;
 	void SetX(int new_x);
 	int GetY() const;
 	void SetY(int new_y);
+	int GetMapId() const;
+	void SetMapId(int new_map_id);
+	int GetDirection() const;
+	void SetDirection(int new_direction);
+	int GetPrelockDirection() const;
+	void SetPrelockDirection(int new_direction);
+	bool IsFacingLocked() const;
+	void SetFacingLocked(bool locked);
+	int GetLayer() const;
+	void SetLayer(int new_layer);
+	/** @} */
 
 	/**
 	 * Clears starting flag.
@@ -119,7 +134,6 @@ private:
 	int ID;
 	bool starting;
 	int trigger;
-	int map_id;
 	RPG::Event event;
 	bool erased;
 	RPG::EventPage* page;

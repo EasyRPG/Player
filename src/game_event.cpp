@@ -31,7 +31,6 @@
 
 Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	starting(false),
-	map_id(map_id),
 	event(event),
 	erased(false),
 	page(NULL) {
@@ -45,17 +44,11 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 
 Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEvent& data) :
 	starting(false),
-	map_id(map_id),
 	event(event),
 	erased(false),
 	page(NULL) {
 
 	ID = data.ID;
-
-	// ToDo: Get/SetMapId
-	if (data.map_id > 0) {
-		this->map_id = data.map_id;
-	}
 
 	this->data = data;
 	MoveTo(data.position_x, data.position_y);
@@ -84,6 +77,46 @@ void Game_Event::SetY(int new_y) {
 	data.position_y = new_y;
 }
 
+int Game_Event::GetMapId() const {
+	return data.map_id;
+}
+
+void Game_Event::SetMapId(int new_map_id) {
+	data.map_id = new_map_id;
+}
+
+int Game_Event::GetDirection() const {
+	return data.direction;
+}
+
+void Game_Event::SetDirection(int new_direction) {
+	data.direction = new_direction;
+}
+
+int Game_Event::GetPrelockDirection() const {
+	return data.prelock_direction;
+}
+
+void Game_Event::SetPrelockDirection(int new_direction) {
+	data.prelock_direction = new_direction;
+}
+
+bool Game_Event::IsFacingLocked() const {
+	return data.lock_facing;
+}
+
+void Game_Event::SetFacingLocked(bool locked) {
+	data.lock_facing = locked;
+}
+
+int Game_Event::GetLayer() const {
+	return data.layer;
+}
+
+void Game_Event::SetLayer(int new_layer) {
+	data.layer = new_layer;
+}
+
 void Game_Event::ClearStarting() {
 	starting = false;
 }
@@ -95,7 +128,7 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 		tile_id = 0;
 		character_name = "";
 		character_index = 0;
-		direction = RPG::EventPage::Direction_down;
+		SetFacingDirection(RPG::EventPage::Direction_down);
 		//move_type = 0;
 		through = true;
 		trigger = -1;
@@ -109,9 +142,9 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	tile_id = page->character_name.empty() ? page->character_index : 0;
 
 	if (original_direction != page->character_direction) {
-		direction = page->character_direction;
-		original_direction = direction;
-		prelock_direction = -1;
+		SetFacingDirection(page->character_direction);
+		original_direction = GetDirection();
+		SetPrelockDirection(-1);
 	}
 
 	if (original_pattern != page->character_pattern) {
@@ -130,7 +163,7 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	animation_type = page->animation_type;
 	//through = page;
 	//always_on_top = page.overlap;
-	priority_type = page->priority_type;
+	SetLayer(page->layer);
 	trigger = page->trigger;
 	list = page->event_commands;
 	through = false;

@@ -38,10 +38,27 @@ public:
 	};
 
 	Game_Vehicle(Type _type);
+
+	/**
+	 * Implementation of abstract methods
+	 */
+	/** @{ */
 	int GetX() const;
 	void SetX(int new_x);
 	int GetY() const;
 	void SetY(int new_y);
+	int GetMapId() const;
+	void SetMapId(int new_map_id);
+	int GetDirection() const;
+	void SetDirection(int new_direction);
+	int GetPrelockDirection() const;
+	void SetPrelockDirection(int new_direction);
+	bool IsFacingLocked() const;
+	void SetFacingLocked(bool locked);
+	int GetLayer() const;
+	void SetLayer(int new_layer);
+	/** @} */
+
 	void LoadSystemSettings();
 	void Refresh();
 	void SetPosition(int _map_id, int _x, int _y);
