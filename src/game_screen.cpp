@@ -52,7 +52,6 @@ void Game_Screen::CreatePicturesFromSave() {
 
 	for (size_t id = 1; id < save_pics.size(); ++id) {
 		if (!save_pics[id - 1].name.empty()) {
-			save_pics[id - 1].Fixup();
 			pictures[id - 1].reset(new Game_Picture(id));
 			int time_left = save_pics[id - 1].time_left;
 			pictures[id - 1]->Show(save_pics[id - 1].name);

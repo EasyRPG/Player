@@ -66,6 +66,7 @@ void Scene_Load::SetupSavegameData(std::auto_ptr<RPG::Save> save) {
 	Main_Data::game_data = *save.get();
 
 	Main_Data::game_data.system.Fixup();
+	Main_Data::game_data.screen.Fixup();
 	Game_Actors::Fixup();
 
 	Game_Map::SetupFromSave();
