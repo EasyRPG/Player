@@ -602,7 +602,6 @@ protected:
 	int real_x;
 	int real_y;
 	int pattern;
-	int original_direction;
 	int original_pattern;
 	int last_pattern;
 	bool move_route_forcing;

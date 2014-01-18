@@ -38,6 +38,7 @@ Game_Player::Game_Player():
 	new_map_id(0),
 	new_x(0),
 	new_y(0) {
+	SetDirection(RPG::EventPage::Direction_down);
 }
 
 int Game_Player::GetX() const {

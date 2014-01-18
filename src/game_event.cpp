@@ -38,6 +38,7 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	ID = event.ID;
 	through = true;
 
+	SetMapId(map_id);
 	MoveTo(event.x, event.y);
 	Refresh();
 }
@@ -141,9 +142,8 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 
 	tile_id = page->character_name.empty() ? page->character_index : 0;
 
-	if (original_direction != page->character_direction) {
+	if (GetDirection() != page->character_direction) {
 		SetFacingDirection(page->character_direction);
-		original_direction = GetDirection();
 		SetPrelockDirection(-1);
 	}
 

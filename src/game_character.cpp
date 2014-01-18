@@ -33,7 +33,6 @@ Game_Character::Game_Character() :
 	real_x(0),
 	real_y(0),
 	pattern(RPG::EventPage::Frame_middle),
-	original_direction(RPG::EventPage::Direction_down),
 	original_pattern(RPG::EventPage::Frame_middle),
 	last_pattern(0),
 	move_route_forcing(false),
