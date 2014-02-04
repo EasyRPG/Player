@@ -92,27 +92,93 @@ void Game_Vehicle::SetLayer(int new_layer) {
 	data.layer = new_layer;
 }
 
+int Game_Vehicle::GetMoveSpeed() const {
+	return data.move_speed;
+}
+
+void Game_Vehicle::SetMoveSpeed(int speed) {
+	data.move_speed = speed;
+}
+
+int Game_Vehicle::GetMoveFrequency() const {
+	return data.move_frequency;
+}
+
+void Game_Vehicle::SetMoveFrequency(int frequency) {
+	data.move_frequency = frequency;
+}
+
+const RPG::MoveRoute& Game_Vehicle::GetMoveRoute() const {
+	return data.move_route;
+}
+
+void Game_Vehicle::SetMoveRoute(const RPG::MoveRoute& move_route) {
+	data.move_route = move_route;
+}
+
+const std::string& Game_Vehicle::GetSpriteName() const {
+	return data.sprite_name;
+}
+
+void Game_Vehicle::SetSpriteName(const std::string& sprite_name) {
+	data.sprite_name = sprite_name;
+}
+
+int Game_Vehicle::GetSpriteIndex() const {
+	return data.sprite_id;
+}
+
+void Game_Vehicle::SetSpriteIndex(int index) {
+	data.sprite_id = index;
+}
+
+Color Game_Vehicle::GetFlashColor() const {
+	return Color(data.flash_red, data.flash_green, data.flash_blue, 0);
+}
+
+void Game_Vehicle::SetFlashColor(const Color& flash_color) {
+	data.flash_red = flash_color.red;
+	data.flash_blue = flash_color.blue;
+	data.flash_green = flash_color.green;
+}
+
+int Game_Vehicle::GetFlashLevel() const {
+	return data.flash_current_level;
+}
+
+void Game_Vehicle::SetFlashLevel(int flash_level) {
+	data.flash_current_level = flash_level;
+}
+
+int Game_Vehicle::GetFlashTimeLeft() const {
+	return data.flash_time_left;
+}
+
+void Game_Vehicle::SetFlashTimeLeft(int time_left) {
+	data.flash_time_left = time_left;
+}
+
 void Game_Vehicle::LoadSystemSettings() {
 	switch (type) {
 		case Boat:
-			character_name = Data::system.boat_name;
-			character_index = Data::system.boat_index;
+			SetSpriteName(Data::system.boat_name);
+			SetSpriteIndex(Data::system.boat_index);
 			bgm = Data::system.boat_music;
 			map_id = Data::treemap.start.boat_map_id;
 			SetX(Data::treemap.start.boat_x);
 			SetY(Data::treemap.start.boat_y);
 			break;
 		case Ship:
-			character_name = Data::system.ship_name;
-			character_index = Data::system.ship_index;
+			SetSpriteName(Data::system.ship_name);
+			SetSpriteIndex(Data::system.ship_index);
 			bgm = Data::system.ship_music;
 			map_id = Data::treemap.start.ship_map_id;
 			SetX(Data::treemap.start.ship_x);
 			SetY(Data::treemap.start.ship_y);
 			break;
 		case Airship:
-			character_name = Data::system.airship_name;
-			character_index = Data::system.airship_index;
+			SetSpriteName(Data::system.airship_name);
+			SetSpriteIndex(Data::system.airship_index);
 			bgm = Data::system.airship_music;
 			map_id = Data::treemap.start.airship_map_id;
 			SetX(Data::treemap.start.airship_x);
@@ -131,15 +197,15 @@ void Game_Vehicle::Refresh() {
 	switch (type) {
 		case Boat:
 			SetLayer(RPG::EventPage::Layers_same);
-			move_speed = RPG::EventPage::MoveSpeed_normal;
+			SetMoveSpeed(RPG::EventPage::MoveSpeed_normal);
 			break;
 		case Ship:
 			SetLayer(RPG::EventPage::Layers_same);
-			move_speed = RPG::EventPage::MoveSpeed_double;
+			SetMoveSpeed(RPG::EventPage::MoveSpeed_double);
 			break;
 		case Airship:
 			SetLayer(driving ? RPG::EventPage::Layers_above : RPG::EventPage::Layers_below);
-			move_speed = RPG::EventPage::MoveSpeed_fourfold;
+			SetMoveSpeed(RPG::EventPage::MoveSpeed_fourfold);
 			break;
 	}
 	walk_animation = driving;
@@ -181,10 +247,6 @@ void Game_Vehicle::SyncWithPlayer() {
 	real_y = Main_Data::game_player->GetRealY();
 	SetDirection(Main_Data::game_player->GetDirection());
 	UpdateBushDepth();
-}
-
-int Game_Vehicle::GetSpeed() const {
-	return move_speed;
 }
 
 int Game_Vehicle::GetScreenY() const {

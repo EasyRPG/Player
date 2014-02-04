@@ -58,7 +58,7 @@ public:
 
 	bool ExecuteCommand();
 
-	void EndMoveRoute(RPG::MoveRoute* route);
+	void EndMoveRoute(Game_Character* moving_character);
 
 private:
 	bool CommandMessageOptions(RPG::EventCommand const& com);
@@ -137,9 +137,7 @@ private:
 	const std::string DecodeString(std::vector<int>::const_iterator& it);
 	RPG::MoveCommand DecodeMove(std::vector<int>::const_iterator& it);
 
-	typedef std::pair<RPG::MoveRoute*,Game_Character*> pending_move_route;
-	std::vector<pending_move_route> pending;
+	std::vector<Game_Character*> pending;
 };
 
 #endif
-

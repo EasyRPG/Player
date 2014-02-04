@@ -52,7 +52,7 @@ public:
 	void SetupChoices(const std::vector<std::string>& choices);
 
 	virtual bool ExecuteCommand();
-	virtual void EndMoveRoute(RPG::MoveRoute* route);
+	virtual void EndMoveRoute(Game_Character* moving_character);
 
 	enum Sizes {
 		MaxSize = 9999999,

@@ -52,9 +52,9 @@ Game_Interpreter_Map::Game_Interpreter_Map(int depth, bool main_flag) :
 }
 
 Game_Interpreter_Map::~Game_Interpreter_Map() {
-	std::vector<pending_move_route>::iterator it;
+	std::vector<Game_Character*>::iterator it;
 	for (it = pending.begin(); it != pending.end(); it++) {
-		(*it).second->DetachMoveRouteOwner(this);
+		(*it)->DetachMoveRouteOwner(this);
 	}
 }
 
@@ -171,10 +171,10 @@ RPG::MoveCommand Game_Interpreter_Map::DecodeMove(std::vector<int>::const_iterat
 	return cmd;
 }
 
-void Game_Interpreter_Map::EndMoveRoute(RPG::MoveRoute* route) {
-	std::vector<pending_move_route>::iterator it;
+void Game_Interpreter_Map::EndMoveRoute(Game_Character* moving_character) {
+	std::vector<Game_Character*>::iterator it;
 	for (it = pending.begin(); it != pending.end(); it++) {
-		if ((*it).first == route) {
+		if ((*it) == moving_character) {
 			break;
 		}
 	}
@@ -1054,7 +1054,7 @@ bool Game_Interpreter_Map::CommandMoveEvent(RPG::EventCommand const& com) { // c
 			route->move_commands.push_back(DecodeMove(it));
 
 		event->ForceMoveRoute(route, move_freq, this);
-		pending.push_back(pending_move_route(route, event));
+		pending.push_back(event);
 	}
 	return true;
 }
@@ -1371,7 +1371,8 @@ bool Game_Interpreter_Map::CommandFlashSprite(RPG::EventCommand const& com) { //
 	Game_Character* event = GetCharacter(event_id);
 
 	if (event != NULL) {
-		event->SetFlash(color, tenths * DEFAULT_FPS / 10);
+		event->SetFlashColor(color);
+		event->SetFlashTimeLeft(tenths * DEFAULT_FPS / 10);
 
 		if (wait)
 			SetupWait(tenths);
@@ -1796,9 +1797,9 @@ bool Game_Interpreter_Map::CommandChangeClass(RPG::EventCommand const& com) { //
 }
 
 bool Game_Interpreter_Map::CommandHaltAllMovement(RPG::EventCommand const& /* com */) { // code 11350
-	std::vector<pending_move_route>::iterator it;
+	std::vector<Game_Character*>::iterator it;
 	for (it = pending.begin(); it != pending.end(); it++)
-		it->second->CancelMoveRoute(it->first, this);
+		(*it)->CancelMoveRoute(this);
 	pending.clear();
 	return true;
 }

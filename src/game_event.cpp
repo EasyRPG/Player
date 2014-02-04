@@ -118,6 +118,72 @@ void Game_Event::SetLayer(int new_layer) {
 	data.layer = new_layer;
 }
 
+int Game_Event::GetMoveSpeed() const {
+	return data.move_speed;
+}
+
+void Game_Event::SetMoveSpeed(int speed) {
+	data.move_speed = speed;
+}
+
+int Game_Event::GetMoveFrequency() const {
+	return data.move_frequency;
+}
+
+void Game_Event::SetMoveFrequency(int frequency) {
+	data.move_frequency = frequency;
+}
+
+const RPG::MoveRoute& Game_Event::GetMoveRoute() const {
+	return data.move_route;
+}
+
+void Game_Event::SetMoveRoute(const RPG::MoveRoute& move_route) {
+	data.move_route = move_route;
+}
+
+const std::string& Game_Event::GetSpriteName() const {
+	return data.sprite_name;
+}
+
+void Game_Event::SetSpriteName(const std::string& sprite_name) {
+	data.sprite_name = sprite_name;
+}
+
+int Game_Event::GetSpriteIndex() const {
+	return data.sprite_id;
+}
+
+void Game_Event::SetSpriteIndex(int index) {
+	data.sprite_id = index;
+}
+
+Color Game_Event::GetFlashColor() const {
+	return Color(data.flash_red, data.flash_green, data.flash_blue, 0);
+}
+
+void Game_Event::SetFlashColor(const Color& flash_color) {
+	data.flash_red = flash_color.red;
+	data.flash_blue = flash_color.blue;
+	data.flash_green = flash_color.green;
+}
+
+int Game_Event::GetFlashLevel() const {
+	return data.flash_current_level;
+}
+
+void Game_Event::SetFlashLevel(int flash_level) {
+	data.flash_current_level = flash_level;
+}
+
+int Game_Event::GetFlashTimeLeft() const {
+	return data.flash_time_left;
+}
+
+void Game_Event::SetFlashTimeLeft(int time_left) {
+	data.flash_time_left = time_left;
+}
+
 void Game_Event::ClearStarting() {
 	starting = false;
 }
@@ -127,8 +193,8 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 
 	if (page == NULL) {
 		tile_id = 0;
-		character_name = "";
-		character_index = 0;
+		SetSpriteName("");
+		SetSpriteIndex(0);
 		SetFacingDirection(RPG::EventPage::Direction_down);
 		//move_type = 0;
 		through = true;
@@ -137,8 +203,8 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 		interpreter.reset();
 		return;
 	}
-	character_name = page->character_name;
-	character_index = page->character_index;
+	SetSpriteName(page->character_name);
+	SetSpriteIndex(page->character_index);
 
 	tile_id = page->character_name.empty() ? page->character_index : 0;
 
@@ -155,9 +221,9 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	//opacity = page.translucent ? 192 : 255;
 	//blend_type = page.blend_type;
 	move_type = page->move_type;
-	move_speed = page->move_speed;
-	move_frequency = page->move_frequency;
-	move_route = &page->move_route;
+	SetMoveSpeed(page->move_speed);
+	SetMoveFrequency(page->move_frequency);
+	SetMoveRoute(page->move_route);
 	move_route_index = 0;
 	move_route_forcing = false;
 	animation_type = page->animation_type;

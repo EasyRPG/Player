@@ -97,6 +97,72 @@ void Game_Player::SetLayer(int new_layer) {
 	location.layer = new_layer;
 }
 
+int Game_Player::GetMoveSpeed() const {
+	return location.move_speed;
+}
+
+void Game_Player::SetMoveSpeed(int speed) {
+	location.move_speed = speed;
+}
+
+int Game_Player::GetMoveFrequency() const {
+	return location.move_frequency;
+}
+
+void Game_Player::SetMoveFrequency(int frequency) {
+	location.move_frequency = frequency;
+}
+
+const RPG::MoveRoute& Game_Player::GetMoveRoute() const {
+	return location.move_route;
+}
+
+void Game_Player::SetMoveRoute(const RPG::MoveRoute& move_route) {
+	location.move_route = move_route;
+}
+
+const std::string& Game_Player::GetSpriteName() const {
+	return location.sprite_name;
+}
+
+void Game_Player::SetSpriteName(const std::string& sprite_name) {
+	location.sprite_name = sprite_name;
+}
+
+int Game_Player::GetSpriteIndex() const {
+	return location.sprite_id;
+}
+
+void Game_Player::SetSpriteIndex(int index) {
+	location.sprite_id = index;
+}
+
+Color Game_Player::GetFlashColor() const {
+	return Color(location.flash_red, location.flash_green, location.flash_blue, 0);
+}
+
+void Game_Player::SetFlashColor(const Color& flash_color) {
+	location.flash_red = flash_color.red;
+	location.flash_blue = flash_color.blue;
+	location.flash_green = flash_color.green;
+}
+
+int Game_Player::GetFlashLevel() const {
+	return location.flash_current_level;
+}
+
+void Game_Player::SetFlashLevel(int flash_level) {
+	location.flash_current_level = flash_level;
+}
+
+int Game_Player::GetFlashTimeLeft() const {
+	return location.flash_time_left;
+}
+
+void Game_Player::SetFlashTimeLeft(int time_left) {
+	location.flash_time_left = time_left;
+}
+
 // Is Passable
 bool Game_Player::IsPassable(int x, int y, int d) const {
 	int new_x = x + (d == RPG::EventPage::Direction_right ? 1 : d == RPG::EventPage::Direction_left ? -1 : 0);
@@ -354,14 +420,14 @@ void Game_Player::Refresh() {
 	Game_Actor* actor;
 
 	if (Game_Party::GetActors().empty()) {
-		character_name.clear();
+		SetSpriteName("");
 		return;
 	}
 
 	actor = Game_Party::GetActors()[0];
 
-	character_name = actor->GetCharacterName();
-	character_index = actor->GetCharacterIndex();
+	SetSpriteName(actor->GetCharacterName());
+	SetSpriteIndex(actor->GetCharacterIndex());
 }
 
 bool Game_Player::GetOnOffVehicle() {
@@ -420,9 +486,9 @@ bool Game_Player::GetOffVehicle() {
 		opacity = 255;
 	}
 
-    vehicle_getting_off = true;
-    move_speed = 4;
-    through = false;
+	vehicle_getting_off = true;
+	SetMoveSpeed(4);
+	through = false;
 	Game_System::BgmPlay(walking_bgm);
 
 	return true;

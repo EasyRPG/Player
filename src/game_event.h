@@ -59,6 +59,22 @@ public:
 	void SetFacingLocked(bool locked);
 	int GetLayer() const;
 	void SetLayer(int new_layer);
+	int GetMoveSpeed() const;
+	void SetMoveSpeed(int speed);
+	int GetMoveFrequency() const;
+	void SetMoveFrequency(int frequency);
+	const RPG::MoveRoute& GetMoveRoute() const;
+	void SetMoveRoute(const RPG::MoveRoute& move_route);
+	const std::string& GetSpriteName() const;
+	void SetSpriteName(const std::string& sprite_name);
+	int GetSpriteIndex() const;
+	void SetSpriteIndex(int index);
+	Color GetFlashColor() const;
+	void SetFlashColor(const Color& flash_color);
+	int GetFlashLevel() const;
+	void SetFlashLevel(int flash_level);
+	int GetFlashTimeLeft() const;
+	void SetFlashTimeLeft(int time_left);
 	/** @} */
 
 	/**

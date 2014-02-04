@@ -29,7 +29,6 @@
 
 Game_Character::Game_Character() :
 	tile_id(0),
-	character_index(0),
 	real_x(0),
 	real_y(0),
 	pattern(RPG::EventPage::Frame_middle),
@@ -39,14 +38,11 @@ Game_Character::Game_Character() :
 	through(false),
 	animation_id(0),
 	animation_type(RPG::EventPage::AnimType_non_continuous),
-	move_route(NULL),
 	original_move_route(NULL),
 	move_route_index(0),
 	move_route_owner(NULL),
 	original_move_route_index(0),
 	move_type(RPG::EventPage::MoveType_stationary),
-	move_speed(RPG::EventPage::MoveSpeed_normal),
-	move_frequency(6),
 	move_failed(false),
 	wait_count(0),
 	anime_count(0),
@@ -56,8 +52,7 @@ Game_Character::Game_Character() :
 	turn_enabled(true),
 	cycle_stat(false),
 	opacity(255),
-	visible(true),
-	flash_pending(false) {
+	visible(true) {
 }
 
 bool Game_Character::IsMoving() const {
@@ -88,7 +83,7 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 		return false;
 
 	if (Main_Data::game_player->GetX() == new_x && Main_Data::game_player->GetY() == new_y) {
-		if (!Main_Data::game_player->GetThrough() && !character_name.empty()) {
+		if (!Main_Data::game_player->GetThrough() && !GetSpriteName().empty()) {
 			return false;
 		}
 	}
@@ -148,7 +143,7 @@ void Game_Character::Update() {
 		}
 	}
 
-	if (anime_count > 18 - move_speed * 2) {
+	if (anime_count > 18 - GetMoveSpeed() * 2) {
 		if (!IsContinuous() && stop_count > 0) {
 			pattern = original_pattern;
 			last_pattern = last_pattern == RPG::EventPage::Frame_left ? RPG::EventPage::Frame_right : RPG::EventPage::Frame_left;
@@ -186,7 +181,7 @@ void Game_Character::Update() {
 }
 
 void Game_Character::UpdateMove() {
-	int distance = ((SCREEN_TILE_WIDTH / 128) << move_speed);
+	int distance = ((SCREEN_TILE_WIDTH / 128) << GetMoveSpeed());
 	if (GetY() * SCREEN_TILE_WIDTH > real_y)
 		real_y = min(real_y + distance, GetY() * SCREEN_TILE_WIDTH);
 
@@ -204,7 +199,7 @@ void Game_Character::UpdateMove() {
 }
 
 void Game_Character::UpdateSelfMovement() {
-	if (stop_count > 30 * (5 - move_frequency)) {
+	if (stop_count > 30 * (5 - GetMoveFrequency())) {
 		switch (move_type) {
 		case RPG::EventPage::MoveType_random:
 			MoveTypeRandom();
@@ -312,21 +307,21 @@ void Game_Character::MoveTypeAwayFromPlayer() {
 }
 
 void Game_Character::MoveTypeCustom() {
-	if (stop_count > 30 * (5 - move_frequency) && IsStopping()) {
+	if (stop_count > 30 * (5 - GetMoveFrequency()) && IsStopping()) {
 		move_failed = false;
-		if ((size_t)move_route_index >= move_route->move_commands.size()) {
+		if ((size_t)move_route_index >= GetMoveRoute().move_commands.size()) {
 			// End of Move list
-			if (move_route->repeat) {
+			if (GetMoveRoute().repeat) {
 				move_route_index = 0;
 			} else if (move_route_forcing) {
 				move_route_forcing = false;
 				EndMoveRoute();
-				move_route = original_move_route;
+				SetMoveRoute(*original_move_route);
 				move_route_index = original_move_route_index;
 				original_move_route = NULL;
 			}
 		} else {
-			RPG::MoveCommand& move_command = move_route->move_commands[move_route_index];
+			const RPG::MoveCommand& move_command = GetMoveRoute().move_commands[move_route_index];
 			switch (move_command.command_id) {
 			case RPG::MoveCommand::Code::move_up:
 				MoveUp();
@@ -413,16 +408,16 @@ void Game_Character::MoveTypeCustom() {
 				Unlock();
 				break;
 			case RPG::MoveCommand::Code::increase_movement_speed:
-				move_speed = min(move_speed + 1, 6);
+				SetMoveSpeed(min(GetMoveSpeed() + 1, 6));
 				break;
 			case RPG::MoveCommand::Code::decrease_movement_speed:
-				move_speed = max(move_speed - 1, 1);
+				SetMoveSpeed(max(GetMoveSpeed() - 1, 1));
 				break;
 			case RPG::MoveCommand::Code::increase_movement_frequence:
-				move_frequency = min(move_frequency - 1, 1);
+				SetMoveFrequency(min(GetMoveFrequency() - 1, 1));
 				break;
 			case RPG::MoveCommand::Code::decrease_movement_frequence:
-				move_frequency = max(move_frequency - 1, 1);
+				SetMoveFrequency(max(GetMoveFrequency() - 1, 1));
 				break;
 			case RPG::MoveCommand::Code::switch_on: // Parameter A: Switch to turn on
 				Game_Switches[move_command.parameter_a] = true;
@@ -433,8 +428,8 @@ void Game_Character::MoveTypeCustom() {
 				Game_Map::SetNeedRefresh(true);
 				break;
 			case RPG::MoveCommand::Code::change_graphic: // String: File, Parameter A: index
-				character_name = move_command.parameter_string;
-				character_index = move_command.parameter_a;
+				SetSpriteName(move_command.parameter_string);
+				SetSpriteIndex(move_command.parameter_a);
 				break;
 			case RPG::MoveCommand::Code::play_sound_effect: // String: File, Parameters: Volume, Tempo, Balance
 				if (move_command.parameter_string != "(OFF)") {
@@ -462,7 +457,7 @@ void Game_Character::MoveTypeCustom() {
 				break;
 			}
 
-			if (move_route->skippable || !move_failed) {
+			if (GetMoveRoute().skippable || !move_failed) {
 				++move_route_index;
 			}
 		}
@@ -471,7 +466,7 @@ void Game_Character::MoveTypeCustom() {
 
 void Game_Character::EndMoveRoute() {
 	if (move_route_owner != NULL) {
-		move_route_owner->EndMoveRoute(move_route);
+		move_route_owner->EndMoveRoute(this);
 		move_route_owner = NULL;
 	}
 }
@@ -825,29 +820,28 @@ void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
 									Game_Interpreter* owner) {
 	EndMoveRoute();
 	if (original_move_route == NULL) {
-		original_move_route = move_route;
+		//original_move_route = GetMoveRoute(); FIXME
 		original_move_route_index = move_route_index;
-		original_move_frequency = move_frequency;
+		original_move_frequency = GetMoveFrequency();
 	}
-	move_route = new_route;
+	SetMoveRoute(*new_route);
 	move_route_index = 0;
 	move_route_forcing = true;
-	move_frequency = frequency;
+	SetMoveFrequency(frequency);
 	move_route_owner = owner;
 	SetPrelockDirection(-1);
 	wait_count = 0;
 	MoveTypeCustom();
 }
 
-void Game_Character::CancelMoveRoute(RPG::MoveRoute* route, Game_Interpreter* owner) {
+void Game_Character::CancelMoveRoute(Game_Interpreter* owner) {
 	if (!move_route_forcing ||
-		move_route_owner != owner ||
-		move_route != route)
+		move_route_owner != owner)
 		return;
 
 	move_route_forcing = false;
 	move_route_owner = NULL;
-	move_route = original_move_route;
+	SetMoveRoute(*original_move_route);
 	move_route_index = original_move_route_index;
 	original_move_route = NULL;
 }
@@ -860,14 +854,6 @@ void Game_Character::DetachMoveRouteOwner(Game_Interpreter* owner) {
 
 int Game_Character::GetTileId() const {
 	return tile_id;
-}
-
-std::string Game_Character::GetCharacterName() const {
-	return character_name;
-}
-
-int Game_Character::GetCharacterIndex() const {
-	return character_index;
 }
 
 int Game_Character::GetRealX() const {
@@ -918,23 +904,7 @@ void Game_Character::SetVisible(bool visible) {
 }
 
 bool Game_Character::IsFlashPending() const {
-	return flash_pending;
-}
-
-void Game_Character::GetFlashParameters(Color& color, int& duration) {
-	flash_pending = false;
-	color = flash_color;
-	duration = flash_duration;
-}
-
-void Game_Character::SetFlash(Color color, int duration) {
-	flash_pending = true;
-	flash_duration = duration;
-	flash_color = color;
-	if (duration == 0) {
-		// 0.0 flash
-		duration = DEFAULT_FPS;
-	}
+	return GetFlashTimeLeft() > 0;
 }
 
 bool Game_Character::IsDirectionFixed() {
@@ -955,8 +925,8 @@ void Game_Character::UpdateBushDepth() {
 }
 
 void Game_Character::SetGraphic(const std::string& name, int index) {
-	character_name = name;
-	character_index = index;
+	SetSpriteName(name);
+	SetSpriteIndex(index);
 }
 
 // Gets Character

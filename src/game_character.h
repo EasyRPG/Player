@@ -128,18 +128,130 @@ public:
 	virtual void SetFacingLocked(bool locked) = 0;
 
 	/**
-	 * Gets the event layer (top, same, below)
+	 * Gets the event layer (top, same, below).
 	 *
 	 * @return event layer
 	 */
 	virtual int GetLayer() const = 0;
 
 	/**
-	 * Sets the event layer (top, same, below)
+	 * Sets the event layer (top, same, below).
 	 *
 	 * @param new_layer New event layer
 	 */
 	virtual void SetLayer(int new_layer) = 0;
+
+	/**
+	 * Gets character movement speed.
+	 *
+	 * @return character movement speed 
+	 */
+	virtual int GetMoveSpeed() const = 0;
+
+	/**
+	 * Sets character movement speed.
+	 *
+	 * @param speed new movement speed
+	 */
+	virtual void SetMoveSpeed(int speed) = 0;
+
+	/**
+	 * Gets character movement frequency.
+	 *
+	 * @return character movement frequency
+	 */
+	virtual int GetMoveFrequency() const = 0;
+
+	/**
+	 * Sets character movement frequency.
+	 *
+	 * @param frequency new character movement frequency
+	 */
+	virtual void SetMoveFrequency(int frequency) = 0;
+
+	/**
+	 * Returns custom move route, if any.
+	 *
+	 * @return custom move route
+	 */
+	virtual const RPG::MoveRoute& GetMoveRoute() const = 0;
+
+	/**
+	 * Sets a new custom move route.
+	 *
+	 * @param move_route new custom move route
+	 */
+	virtual void SetMoveRoute(const RPG::MoveRoute& move_route) = 0;
+
+	/**
+	 * Gets sprite name. Usually the name of the graphic file.
+	 *
+	 * @return sprite name
+	 */
+	virtual const std::string& GetSpriteName() const = 0;
+
+	/**
+	 * Sets sprite name. Usually the name of the graphic file.
+	 *
+	 * @param sprite_name new sprite name
+	 */
+	virtual void SetSpriteName(const std::string& sprite_name) = 0;
+
+	/**
+	 * Gets sprite index of character.
+	 *
+	 * @return sprite index
+	 */
+	virtual int GetSpriteIndex() const = 0;
+
+	/**
+	 * Sets sprite index of character.
+	 *
+	 * @param index new sprite index
+	 */
+	virtual void SetSpriteIndex(int index) = 0;
+
+	/**
+	 * Gets flash effect color.
+	 *
+	 * @return flash color
+	 */
+	virtual Color GetFlashColor() const = 0;
+
+	/**
+	 * Sets flash effect color.
+	 *
+	 * @param flash_color new flash color
+	 */
+	virtual void SetFlashColor(const Color& flash_color) = 0;
+
+	/**
+	 * Returns intensity of flash effect.
+	 *
+	 * @return flash intensity
+	 */
+	virtual int GetFlashLevel() const = 0;
+
+	/**
+	 * Sets intensity of flash effect.
+	 *
+	 * @param flash_level new flash intensity
+	 */
+	virtual void SetFlashLevel(int flash_level) = 0;
+
+	/**
+	 * Returns how many flash effect time is left.
+	 *
+	 * @return time left
+	 */
+	virtual int GetFlashTimeLeft() const = 0;
+
+	/**
+	 * Set how long the flash effect will take.
+	 *
+	 * @param time_left flash duration
+	 */
+	virtual void SetFlashTimeLeft(int time_left) = 0;
 
 	/**
 	 * Gets if character is moving.
@@ -385,10 +497,9 @@ public:
 	/**
 	 * Cancels a previous forced move route.
 	 *
-	 * @param route previous move route.
 	 * @param owner the interpreter which set the route.
 	 */
-	void CancelMoveRoute(RPG::MoveRoute* route, Game_Interpreter* owner);
+	void CancelMoveRoute(Game_Interpreter* owner);
 
 	/**
 	 * Tells the character to not report back to the owner.
@@ -435,20 +546,6 @@ public:
 	 * @return tile graphic ID.
 	 */
 	int GetTileId() const;
-
-	/**
-	 * Gets character graphic filename.
-	 *
-	 * @return character graphic filename.
-	 */
-	std::string GetCharacterName() const;
-
-	/**
-	 * Gets character graphic index.
-	 *
-	 * @return character graphic index.
-	 */
-	int GetCharacterIndex() const;
 
 	/**
 	 * Gets real x.
@@ -539,29 +636,11 @@ public:
 
 	/**
 	 * Gets whether a flash animation is pending for that character.
-	 * If yes the settings can be retrieved via GetFlashParameters.
+	 * A flash is pending when there is flash time left.
 	 *
 	 * @return Whether a flash is pending
 	 */
 	bool IsFlashPending() const;
-
-	/**
-	 * Used to pass Flash settings to the character sprite.
-	 * After extracting IsFlashPending returns false.
-	 *
-	 * @param color Flash color is written here
-	 * @param duration Flash duration is written here
-	 */
-	void GetFlashParameters(Color& color, int& duration);
-
-	/**
-	 * Sets the Flash effect settings.
-	 * After calling this IsFlashPending returns true.
-	 * 
-	 * @param color Flash color
-	 * @param duration Flash duration
-	 */
-	void SetFlash(Color color, int duration);
 
 	/**
 	 * Tests if animation type is any fixed state.
@@ -571,9 +650,9 @@ public:
 	bool IsDirectionFixed();
 
 	/**
-	 * Tests if animation type is any continious state.
+	 * Tests if animation type is any continuous state.
 	 *
-	 * @return Whether anim is continious 
+	 * @return Whether animation is continuous 
 	 */
 	bool IsContinuous();
 
@@ -597,8 +676,6 @@ protected:
 	void UpdateStop();
 
 	int tile_id;
-	std::string character_name;
-	int character_index;
 	int real_x;
 	int real_y;
 	int pattern;
@@ -609,15 +686,12 @@ protected:
 	int animation_id;
 	int animation_type;
 	
-	RPG::MoveRoute* move_route;
 	RPG::MoveRoute* original_move_route;
 	int move_route_index;
 	Game_Interpreter* move_route_owner;
 	int original_move_route_index;
 	int original_move_frequency;
 	int move_type;
-	int move_speed;
-	int move_frequency;
 	bool move_failed;
 	int wait_count;
 
@@ -632,10 +706,6 @@ protected:
 
 	int opacity;
 	bool visible;
-
-	bool flash_pending;
-	int flash_duration;
-	Color flash_color;
 };
 
 #endif
