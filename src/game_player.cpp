@@ -39,6 +39,7 @@ Game_Player::Game_Player():
 	new_x(0),
 	new_y(0) {
 	SetDirection(RPG::EventPage::Direction_down);
+	SetMoveSpeed(4);
 }
 
 int Game_Player::GetX() const {
