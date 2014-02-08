@@ -116,6 +116,29 @@ void Game_Vehicle::SetMoveRoute(const RPG::MoveRoute& move_route) {
 	data.move_route = move_route;
 }
 
+int Game_Vehicle::GetOriginalMoveRouteIndex() const {
+	return data.original_move_route_index;
+}
+
+void Game_Vehicle::SetOriginalMoveRouteIndex(int new_index) {
+	data.original_move_route_index = new_index;
+}
+
+int Game_Vehicle::GetMoveRouteIndex() const {
+	return data.move_route_index;
+}
+
+void Game_Vehicle::SetMoveRouteIndex(int new_index) {
+	data.move_route_index = new_index;
+}
+
+bool Game_Vehicle::IsMoveRouteOverwritten() const {
+	return data.move_route_overwrite;
+}
+
+void Game_Vehicle::SetMoveRouteOverwritten(bool force) {
+	data.move_route_overwrite = force;
+}
 const std::string& Game_Vehicle::GetSpriteName() const {
 	return data.sprite_name;
 }

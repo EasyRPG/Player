@@ -170,18 +170,60 @@ public:
 	virtual void SetMoveFrequency(int frequency) = 0;
 
 	/**
-	 * Returns custom move route, if any.
+	 * Returns the custom move route assigned via a MoveEvent.
 	 *
 	 * @return custom move route
 	 */
 	virtual const RPG::MoveRoute& GetMoveRoute() const = 0;
 
 	/**
-	 * Sets a new custom move route.
+	 * Sets a new custom move route. Used to assign a new MoveEvent.
 	 *
 	 * @param move_route new custom move route
 	 */
 	virtual void SetMoveRoute(const RPG::MoveRoute& move_route) = 0;
+
+	/**
+	 * Returns current index of a "Movement Type Custom" move route.
+	 * 
+	 * @return current original move route index
+	 */
+	virtual int GetOriginalMoveRouteIndex() const = 0;
+
+	/**
+	 * Sets current index of a "Movement Type Custom" move route.
+	 *
+	 * @param new_index New move route index
+	 */
+	virtual void SetOriginalMoveRouteIndex(int new_index) = 0;
+
+	/**
+	 * Returns current index of the route assigned via a MoveEvent.
+	 *
+	 * @return current move route index 
+	 */
+	virtual int GetMoveRouteIndex() const = 0;
+
+	/**
+	 * Sets current index of a MoveEvent move route.
+	 *
+	 * @param new_index New custom move route index
+	 */
+	virtual void SetMoveRouteIndex(int new_index) = 0;
+
+	/**
+	 * Gets wheter move route is overwritten by event.
+	 *
+	 * @return move route overwritten 
+	 */
+	virtual bool IsMoveRouteOverwritten() const = 0;
+
+	/**
+	 * Enables/Disables overwriting of move routes.
+	 *
+	 * @param force true: Use default move scheme, false: Use custom move route
+	 */
+	virtual void SetMoveRouteOverwritten(bool force) = 0;
 
 	/**
 	 * Gets sprite name. Usually the name of the graphic file.
@@ -569,13 +611,6 @@ public:
 	int GetPattern() const;
 
 	/**
-	 * Gets move router forcing flag.
-	 *
-	 * @return move route forcing flag.
-	 */
-	bool GetMoveRouteForcing() const;
-
-	/**
 	 * Gets through flag.
 	 *
 	 * @return through flag.
@@ -681,15 +716,12 @@ protected:
 	int pattern;
 	int original_pattern;
 	int last_pattern;
-	bool move_route_forcing;
 	bool through;
 	int animation_id;
 	int animation_type;
 	
 	RPG::MoveRoute original_move_route;
-	int move_route_index;
 	Game_Interpreter* move_route_owner;
-	int original_move_route_index;
 	int original_move_frequency;
 	int move_type;
 	bool move_failed;

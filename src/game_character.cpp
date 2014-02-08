@@ -34,13 +34,10 @@ Game_Character::Game_Character() :
 	pattern(RPG::EventPage::Frame_middle),
 	original_pattern(RPG::EventPage::Frame_middle),
 	last_pattern(0),
-	move_route_forcing(false),
 	through(false),
 	animation_id(0),
 	animation_type(RPG::EventPage::AnimType_non_continuous),
-	move_route_index(0),
 	move_route_owner(NULL),
-	original_move_route_index(0),
 	move_type(RPG::EventPage::MoveType_stationary),
 	move_failed(false),
 	wait_count(0),
@@ -172,7 +169,7 @@ void Game_Character::Update() {
 		return;
 	}
 
-	if (move_route_forcing) {
+	if (IsMoveRouteOverwritten()) {
 		MoveTypeCustom();
 	} else if (!IsFacingLocked()) {
 		UpdateSelfMovement();
@@ -306,21 +303,31 @@ void Game_Character::MoveTypeAwayFromPlayer() {
 }
 
 void Game_Character::MoveTypeCustom() {
+	// Detect if custom movement or event overwrite
+	const RPG::MoveRoute* active_route;
+	int active_route_index;
+	bool overwrite_changed = IsMoveRouteOverwritten();
+	if (IsMoveRouteOverwritten()) {
+		active_route = &GetMoveRoute();
+		active_route_index = GetMoveRouteIndex();
+	}
+	else {
+		active_route = &original_move_route;
+		active_route_index = GetOriginalMoveRouteIndex();
+	}
+
 	if (stop_count > 30 * (5 - GetMoveFrequency()) && IsStopping()) {
 		move_failed = false;
-		if ((size_t)move_route_index >= GetMoveRoute().move_commands.size()) {
+		if ((size_t)active_route_index >= active_route->move_commands.size()) {
 			// End of Move list
-			if (GetMoveRoute().repeat) {
-				move_route_index = 0;
-			} else if (move_route_forcing) {
-				move_route_forcing = false;
+			if (active_route->repeat) {
+				active_route_index = 0;
+			} else if (IsMoveRouteOverwritten()) {
+				SetMoveRouteOverwritten(false);
 				EndMoveRoute();
-				SetMoveRoute(original_move_route);
-				move_route_index = original_move_route_index;
-				original_move_route = RPG::MoveRoute();
 			}
 		} else {
-			const RPG::MoveCommand& move_command = GetMoveRoute().move_commands[move_route_index];
+			const RPG::MoveCommand& move_command = active_route->move_commands[active_route_index];
 			switch (move_command.command_id) {
 			case RPG::MoveCommand::Code::move_up:
 				MoveUp();
@@ -456,9 +463,28 @@ void Game_Character::MoveTypeCustom() {
 				break;
 			}
 
-			if (GetMoveRoute().skippable || !move_failed) {
-				++move_route_index;
+			if (active_route->skippable || !move_failed) {
+				++active_route_index;
 			}
+		}
+	}
+
+	// When the overwrite status changed the active_index belongs to the
+	// current non-active move route
+	if (overwrite_changed != IsMoveRouteOverwritten()) {
+		if (IsMoveRouteOverwritten()) {
+			SetOriginalMoveRouteIndex(active_route_index);
+		}
+		else {
+			SetMoveRouteIndex(active_route_index);
+		}
+	}
+	else {
+		if (IsMoveRouteOverwritten()) {
+			SetMoveRouteIndex(active_route_index);
+		}
+		else {
+			SetOriginalMoveRouteIndex(active_route_index);
 		}
 	}
 }
@@ -468,6 +494,7 @@ void Game_Character::EndMoveRoute() {
 		move_route_owner->EndMoveRoute(this);
 		move_route_owner = NULL;
 	}
+	SetMoveFrequency(original_move_frequency);
 }
 
 void Game_Character::MoveDown() {
@@ -819,13 +846,11 @@ void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
 									Game_Interpreter* owner) {
 	EndMoveRoute();
 
-	original_move_route = GetMoveRoute();
-	original_move_route_index = move_route_index;
 	original_move_frequency = GetMoveFrequency();
 
 	SetMoveRoute(*new_route);
-	move_route_index = 0;
-	move_route_forcing = true;
+	SetMoveRouteIndex(0);
+	SetMoveRouteOverwritten(true);
 	SetMoveFrequency(frequency);
 	move_route_owner = owner;
 	SetPrelockDirection(-1);
@@ -834,15 +859,12 @@ void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
 }
 
 void Game_Character::CancelMoveRoute(Game_Interpreter* owner) {
-	if (!move_route_forcing ||
+	if (!IsMoveRouteOverwritten() ||
 		move_route_owner != owner)
 		return;
 
-	move_route_forcing = false;
+	SetMoveRouteOverwritten(false);
 	move_route_owner = NULL;
-	SetMoveRoute(original_move_route);
-	move_route_index = original_move_route_index;
-	original_move_route = RPG::MoveRoute();
 }
 
 void Game_Character::DetachMoveRouteOwner(Game_Interpreter* owner) {
@@ -865,10 +887,6 @@ int Game_Character::GetRealY() const {
 
 int Game_Character::GetPattern() const {
 	return pattern;
-}
-
-bool Game_Character::GetMoveRouteForcing() const {
-	return move_route_forcing;
 }
 
 bool Game_Character::GetThrough() const {

@@ -142,6 +142,30 @@ void Game_Event::SetMoveRoute(const RPG::MoveRoute& move_route) {
 	data.move_route = move_route;
 }
 
+int Game_Event::GetOriginalMoveRouteIndex() const {
+	return data.original_move_route_index;
+}
+
+void Game_Event::SetOriginalMoveRouteIndex(int new_index) {
+	data.original_move_route_index = new_index;
+}
+
+int Game_Event::GetMoveRouteIndex() const {
+	return data.move_route_index;
+}
+
+void Game_Event::SetMoveRouteIndex(int new_index) {
+	data.move_route_index = new_index;
+}
+
+bool Game_Event::IsMoveRouteOverwritten() const {
+	return data.move_route_overwrite;
+}
+
+void Game_Event::SetMoveRouteOverwritten(bool force) {
+	data.move_route_overwrite = force;
+}
+
 const std::string& Game_Event::GetSpriteName() const {
 	return data.sprite_name;
 }
@@ -223,12 +247,11 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	move_type = page->move_type;
 	SetMoveSpeed(page->move_speed);
 	SetMoveFrequency(page->move_frequency);
-	SetMoveRoute(page->move_route);
-	move_route_index = 0;
-	move_route_forcing = false;
+	original_move_route = page->move_route;
+	SetOriginalMoveRouteIndex(0);
+	SetMoveRouteOverwritten(false);
 	animation_type = page->animation_type;
-	//through = page;
-	//always_on_top = page.overlap;
+
 	SetLayer(page->layer);
 	trigger = page->trigger;
 	list = page->event_commands;

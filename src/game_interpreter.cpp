@@ -148,7 +148,7 @@ void Game_Interpreter::Update() {
 
 		// If waiting for a move to end
 		if (move_route_waiting) {
-			if (Main_Data::game_player->GetMoveRouteForcing()) {
+			if (Main_Data::game_player->IsMoveRouteOverwritten()) {
 				return;
 			}
 
@@ -156,7 +156,7 @@ void Game_Interpreter::Update() {
 			for (size_t i = 0; i < Game_Map::GetEvents().size(); i++) {
 				g_event = Game_Map::GetEvents().find(i)->second.get();
 
-				if (g_event->GetMoveRouteForcing()) {
+				if (g_event->IsMoveRouteOverwritten()) {
 					return;
 				}
 			}

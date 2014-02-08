@@ -121,6 +121,30 @@ void Game_Player::SetMoveRoute(const RPG::MoveRoute& move_route) {
 	location.move_route = move_route;
 }
 
+int Game_Player::GetOriginalMoveRouteIndex() const {
+	return location.original_move_route_index;
+}
+
+void Game_Player::SetOriginalMoveRouteIndex(int new_index) {
+	location.original_move_route_index = new_index;
+}
+
+int Game_Player::GetMoveRouteIndex() const {
+	return location.move_route_index;
+}
+
+void Game_Player::SetMoveRouteIndex(int new_index) {
+	location.move_route_index = new_index;
+}
+
+bool Game_Player::IsMoveRouteOverwritten() const {
+	return location.move_route_overwrite;
+}
+
+void Game_Player::SetMoveRouteOverwritten(bool force) {
+	location.move_route_overwrite = force;
+}
+
 const std::string& Game_Player::GetSpriteName() const {
 	return location.sprite_name;
 }
@@ -497,7 +521,7 @@ bool Game_Player::GetOffVehicle() {
 bool Game_Player::IsMovable() const {
 	if (IsMoving())
 		return false;
-	if (GetMoveRouteForcing())
+	if (IsMoveRouteOverwritten())
 		return false;
 	if (vehicle_getting_on)
 		return false;
