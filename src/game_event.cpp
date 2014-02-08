@@ -267,6 +267,35 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	CheckEventTriggerAuto();
 }
 
+void Game_Event::SetupFromSave(RPG::EventPage* new_page) {
+	page = new_page;
+
+	if (page == NULL) {
+		tile_id = 0;
+		through = true;
+		trigger = -1;
+		list.clear();
+		interpreter.reset();
+		return;
+	}
+
+	data.Fixup(*new_page);
+
+	tile_id = page->character_name.empty() ? page->character_index : 0;
+
+	if (original_pattern != page->character_pattern) {
+		pattern = page->character_pattern;
+		original_pattern = pattern;
+	}
+
+	move_type = page->move_type;
+	original_move_route = page->move_route;
+	animation_type = page->animation_type;
+	trigger = page->trigger;
+	list = page->event_commands;
+	through = false;
+}
+
 void Game_Event::Refresh() {
 	RPG::EventPage* new_page = NULL;
 	if (!erased) {
@@ -284,10 +313,7 @@ void Game_Event::Refresh() {
 	// Only update the page pointer when game is loaded,
 	// don't setup event, already done
 	if (from_save) {
-		page = new_page;
-		original_move_route = page->move_route;
-		original_move_frequency = page->move_frequency;
-		data.Fixup(*page);
+		SetupFromSave(new_page);
 		from_save = false;
 	}
 	else if (new_page != this->page) {

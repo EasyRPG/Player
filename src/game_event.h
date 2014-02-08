@@ -94,6 +94,7 @@ public:
 	void Refresh();
 
 	void Setup(RPG::EventPage* new_page);
+	void SetupFromSave(RPG::EventPage* new_page);
 
 	/**
 	 * Gets event ID.
