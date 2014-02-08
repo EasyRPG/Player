@@ -161,6 +161,7 @@ private:
 	RPG::EventPage* page;
 	std::vector<RPG::EventCommand> list;
 	boost::scoped_ptr<Game_Interpreter> interpreter;
+	bool from_save;
 };
 
 #endif

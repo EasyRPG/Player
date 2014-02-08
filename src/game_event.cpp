@@ -33,7 +33,8 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	starting(false),
 	event(event),
 	erased(false),
-	page(NULL) {
+	page(NULL),
+	from_save(false) {
 
 	ID = event.ID;
 	through = true;
@@ -47,7 +48,8 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEv
 	starting(false),
 	event(event),
 	erased(false),
-	page(NULL) {
+	page(NULL),
+	from_save(true) {
 
 	ID = data.ID;
 
@@ -279,7 +281,16 @@ void Game_Event::Refresh() {
 		}
 	}
 
-	if (new_page != this->page) {
+	// Only update the page pointer when game is loaded,
+	// don't setup event, already done
+	if (from_save) {
+		page = new_page;
+		original_move_route = page->move_route;
+		original_move_frequency = page->move_frequency;
+		data.Fixup(*page);
+		from_save = false;
+	}
+	else if (new_page != this->page) {
 		ClearStarting();
 		Setup(new_page);
 		CheckEventTriggerAuto();
