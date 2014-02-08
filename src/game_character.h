@@ -686,7 +686,7 @@ protected:
 	int animation_id;
 	int animation_type;
 	
-	RPG::MoveRoute* original_move_route;
+	RPG::MoveRoute original_move_route;
 	int move_route_index;
 	Game_Interpreter* move_route_owner;
 	int original_move_route_index;
