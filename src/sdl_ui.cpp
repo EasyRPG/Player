@@ -1253,7 +1253,7 @@ int FilterUntilFocus(const SDL_Event* evnt) {
 
 int FilterUntilFocus_SDL2(void*, SDL_Event* evnt) {
 	return FilterUntilFocus(evnt);
-};
+}
 
 #ifdef GEKKO
 void GekkoResetCallback() {
