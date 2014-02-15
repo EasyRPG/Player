@@ -86,7 +86,7 @@ namespace {
 			Battlecharset,
 			Battleweapon,
 			Frame,
-			END,
+			END
 		};
 
 	}; // struct Material

@@ -43,7 +43,7 @@ public:
 		Katakana = 1,
 		Letter = 2,
 		Symbol = 3,
-		MODE_END = 4,
+		MODE_END = 4
 	};
 
 	void UpdateCursorRect();
