@@ -98,10 +98,10 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 	// Set window position to the middle of the
 	// screen
 #ifndef GEKKO
-	putenv("SDL_VIDEO_WINDOW_POS=center");
+	putenv(const_cast<char *>("SDL_VIDEO_WINDOW_POS=center"));
 #endif
 #if defined(PSP)
-	putenv("SDL_ASPECT_RATIO=4:3");
+	putenv(const_cast<char *>("SDL_ASPECT_RATIO=4:3"));
 #endif
 
 	if (SDL_Init(flags) < 0) {
@@ -1253,7 +1253,7 @@ int FilterUntilFocus(const SDL_Event* evnt) {
 
 int FilterUntilFocus_SDL2(void*, SDL_Event* evnt) {
 	return FilterUntilFocus(evnt);
-};
+}
 
 #ifdef GEKKO
 void GekkoResetCallback() {

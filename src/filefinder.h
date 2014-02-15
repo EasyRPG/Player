@@ -166,7 +166,7 @@ namespace FileFinder {
 	enum Mode {
 		ALL, /**< list files and directory */
 		FILES, /**< list only non-directory files */
-		DIRECTORIES, /**< list only directories */
+		DIRECTORIES /**< list only directories */
 	};
 	/**
 	 * Lists directory members.

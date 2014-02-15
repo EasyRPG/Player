@@ -26,7 +26,7 @@
 #else
 enum HKEY {
 	HKEY_LOCAL_MACHINE,
-	HKEY_CURRENT_USER,
+	HKEY_CURRENT_USER
 };
 #endif
 

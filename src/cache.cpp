@@ -86,7 +86,7 @@ namespace {
 			Battlecharset,
 			Battleweapon,
 			Frame,
-			END,
+			END
 		};
 
 	}; // struct Material
@@ -126,12 +126,11 @@ namespace {
 										 0);
 
 		if(
-		   ret->GetWidth () < s.min_width  || s.max_width  < ret->GetWidth () ||
-		   ret->GetHeight() < s.min_height || s.max_height < ret->GetHeight()
-		   ) {
-			Output::Debug("Image size error in: %s/%s", s.directory, f.c_str());
-			Output::Debug("width  (min, max, actual) = (%d, %d, %d)", s.min_width , s.max_width , ret->GetWidth ());
-			Output::Debug("height (min, max, actual) = (%d, %d, %d)", s.min_height, s.max_height, ret->GetHeight());
+			ret->GetWidth () < s.min_width  || s.max_width  < ret->GetWidth () ||
+			ret->GetHeight() < s.min_height || s.max_height < ret->GetHeight()
+		) {
+			Output::Debug("Image size error in: %s/%s\nwidth  (min, max, actual) = (%d, %d, %d)\nheight (min, max, actual) = (%d, %d, %d)",
+						  s.directory, f.c_str(), s.min_width , s.max_width , ret->GetWidth (), s.min_height, s.max_height, ret->GetHeight());
 		}
 
 		return ret;

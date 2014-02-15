@@ -310,12 +310,17 @@ void FileFinder::InitRtpPaths() {
 	std::string const company =
 		Player::engine == Player::EngineRpg2k? "ASCII": "Enterbrain";
 
-	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\" + company + "\\RPG" + version_str, "RuntimePackagePath");
+	// Original 2003 RTP installer registry key is upper case
+	// and Wine registry is case insensitive
+	std::string const key =
+		Player::engine == Player::EngineRpg2k? "RuntimePackagePath": "RUNTIMEPACKAGEPATH";
+
+	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\" + company + "\\RPG" + version_str, key);
 	if (!rtp_path.empty()) {
 		add_rtp_path(rtp_path);
 	}
 
-	rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\" + company + "\\RPG" + version_str, "RuntimePackagePath");
+	rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\" + company + "\\RPG" + version_str, key);
 	if (!rtp_path.empty()) {
 		add_rtp_path(rtp_path);
 	}
