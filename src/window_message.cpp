@@ -110,7 +110,7 @@ void Window_Message::StartChoiceProcessing() {
 
 void Window_Message::StartNumberInputProcessing() {
 	number_input_window->SetMaxDigits(Game_Message::num_input_digits_max);
-	if (!Game_Message::face_name.empty() && Game_Message::face_left_position) {
+	if (!Game_Message::GetFaceName().empty() && !Game_Message::IsFaceRightPosition()) {
 		number_input_window->SetX(LeftMargin + FaceSize + RightFaceMargin);
 	} else {
 		number_input_window->SetX(x);
@@ -124,13 +124,13 @@ void Window_Message::StartNumberInputProcessing() {
 void Window_Message::InsertNewPage() {
 	contents->Clear();
 
-	if (Game_Message::fixed_position) {
-		y = Game_Message::position * 80;
+	if (Game_Message::IsPositionFixed()) {
+		y = Game_Message::GetPosition() * 80;
 	} else {
 		// Move Message Box to prevent player hiding
 		int disp = Main_Data::game_player->GetScreenY();
 
-		switch (Game_Message::position) {
+		switch (Game_Message::GetPosition()) {
 		case 0: // Up
 			y = disp > (16 * 7) ? 0 : 2 * 80;
 			break;
@@ -150,19 +150,19 @@ void Window_Message::InsertNewPage() {
 	}
 
 
-	if (Game_Message::background) {
-		opacity = 255;
-	} else {
+	if (Game_Message::IsTransparent()) {
 		opacity = 0;
+	} else {
+		opacity = 255;
 	}
 
-	if (!Game_Message::face_name.empty()) {
-		if (Game_Message::face_left_position) {
+	if (!Game_Message::GetFaceName().empty()) {
+		if (!Game_Message::IsFaceRightPosition()) {
 			contents_x = LeftMargin + FaceSize + RightFaceMargin;
-			DrawFace(Game_Message::face_name, Game_Message::face_index, LeftMargin, TopMargin, Game_Message::face_flipped);
+			DrawFace(Game_Message::GetFaceName(), Game_Message::GetFaceIndex(), LeftMargin, TopMargin, Game_Message::IsFaceFlipped());
 		} else {
 			contents_x = 0;
-			DrawFace(Game_Message::face_name, Game_Message::face_index, 248, TopMargin, Game_Message::face_flipped);
+			DrawFace(Game_Message::GetFaceName(), Game_Message::GetFaceIndex(), 248, TopMargin, Game_Message::IsFaceFlipped());
 		}
 	} else {
 		contents_x = 0;
@@ -184,7 +184,7 @@ void Window_Message::InsertNewPage() {
 }
 
 void Window_Message::InsertNewLine() {
-	if (!Game_Message::face_name.empty() && Game_Message::face_left_position) {
+	if (!Game_Message::GetFaceName().empty() && !Game_Message::IsFaceRightPosition()) {
 		contents_x = LeftMargin + FaceSize + RightFaceMargin;
 	} else {
 		contents_x = 0;
@@ -580,8 +580,8 @@ void Window_Message::UpdateCursorRect() {
 		int y_pos = (Game_Message::choice_start + index) * 16;
 		int width = contents->GetWidth();
 
-		if (!Game_Message::face_name.empty()) {
-			if (Game_Message::face_left_position) {
+		if (!Game_Message::GetFaceName().empty()) {
+			if (!Game_Message::IsFaceRightPosition()) {
 				x_pos += LeftMargin + FaceSize + RightFaceMargin;
 			}
 			width = width - LeftMargin - FaceSize - RightFaceMargin - 4;

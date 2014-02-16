@@ -98,8 +98,6 @@ std::vector<RPG::SaveEventCommands> Game_Interpreter_Map::GetSaveData() const {
 
 	const Game_Interpreter_Map* save_interpreter = this;
 
-	int id = 0;
-
 	int i = 1;
 
 	while (save_interpreter != NULL) {
@@ -358,10 +356,10 @@ bool Game_Interpreter_Map::ExecuteCommand() {
  * Commands
  */
 bool Game_Interpreter_Map::CommandMessageOptions(RPG::EventCommand const& com) { //code 10120
-	Game_Message::background = com.parameters[0] == 0;
-	Game_Message::position = com.parameters[1];
-	Game_Message::fixed_position = com.parameters[2] == 0;
-	Game_Message::dont_halt = com.parameters[3] != 0;
+	Game_Message::SetTransparent(com.parameters[0] != 0);
+	Game_Message::SetPosition(com.parameters[1]);
+	Game_Message::SetPositionFixed(com.parameters[2] == 0);
+	Game_Message::SetContinueEvents(com.parameters[3] != 0);
 	return true;
 }
 

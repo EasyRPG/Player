@@ -49,6 +49,7 @@ Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	depth = _depth;
 	main_flag = _main_flag;
 	active = false;
+	index = 0;
 
 	if (depth > 100) {
 		Output::Warning("Too many event calls (over 9000)");
@@ -947,10 +948,10 @@ bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) {
 
 // Change Face Graphic.
 bool Game_Interpreter::CommandChangeFaceGraphic(RPG::EventCommand const& com) { // Code 10130
-	Game_Message::face_name = com.string;
-	Game_Message::face_index = com.parameters[0];
-	Game_Message::face_left_position = com.parameters[1] == 0;
-	Game_Message::face_flipped = com.parameters[2] != 0;
+	Game_Message::SetFaceName(com.string);
+	Game_Message::SetFaceIndex(com.parameters[0]);
+	Game_Message::SetFaceRightPosition(com.parameters[1] != 0);
+	Game_Message::SetFaceFlipped(com.parameters[2] != 0);
 	return true;
 }
 

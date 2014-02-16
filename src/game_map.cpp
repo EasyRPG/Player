@@ -206,6 +206,7 @@ void Game_Map::PrepareSave() {
 	Main_Data::game_data.events.events =
 		static_cast<Game_Interpreter_Map*>(interpreter.get())
 			->GetSaveData();
+	Main_Data::game_data.events.events_size = Main_Data::game_data.events.events.size();
 
 	map_info.events.clear();
 
