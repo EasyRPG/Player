@@ -100,6 +100,10 @@ std::vector<RPG::SaveEventCommands> Game_Interpreter_Map::GetSaveData() const {
 
 	int i = 1;
 
+	if (save_interpreter->list.empty()) {
+		return save;
+	}
+
 	while (save_interpreter != NULL) {
 		RPG::SaveEventCommands save_commands;
 		save_commands.commands = save_interpreter->list;
