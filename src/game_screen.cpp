@@ -27,21 +27,6 @@
 Game_Screen::Game_Screen() :
 	data(Main_Data::game_data.screen)
 {
-	data.tint_current_red = 100;
-	data.tint_current_green = 100;
-	data.tint_current_blue = 100;
-	data.tint_current_sat = 100;
-
-	data.tint_finish_red = -1;
-	data.tint_finish_green = -1;
-	data.tint_finish_blue = -1;
-	data.tint_finish_sat = -1;
-	data.tint_time_left = -1;
-
-
-	data.weather = 0;
-	data.weather_strength = 0;
-
 	Reset();
 }
 
@@ -65,17 +50,17 @@ void Game_Screen::Reset()
 	pictures.clear();
 	pictures.resize(50);
 
-	data.flash_red = -1;
-	data.flash_green = -1;
-	data.flash_blue = -1;
+	data.flash_red = 0;
+	data.flash_green = 0;
+	data.flash_blue = 0;
 	flash_sat = 0;
-	data.flash_time_left = -1;
+	data.flash_time_left = 0;
 	data.flash_current_level = 0;
 	flash_period = 0;
 
-	data.shake_strength = -1;
-	data.shake_speed = -1;
-	data.shake_time_left = -1;
+	data.shake_strength = 0;
+	data.shake_speed = 0;
+	data.shake_time_left = 0;
 	data.shake_position = 0;
 	data.shake_continuous = false;
 	shake_direction = 0;
@@ -109,6 +94,16 @@ void Game_Screen::TintScreen(int r, int g, int b, int s, int tenths) {
 	data.tint_finish_sat = s;
 
 	data.tint_time_left = tenths * DEFAULT_FPS / 10;
+
+	if (data.tint_current_red < 0 ||
+		data.tint_current_green < 0 ||
+		data.tint_current_blue < 0 ||
+		data.tint_current_sat < 0) {
+		data.tint_current_red = 100;
+		data.tint_current_green = 100;
+		data.tint_current_blue = 100;
+		data.tint_current_sat = 100;
+	}
 
 	if (data.tint_time_left == 0) {
 		data.tint_current_red = data.tint_finish_red;
