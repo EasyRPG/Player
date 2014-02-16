@@ -54,6 +54,9 @@ protected:
 	std::string message;
 
 	EASYRPG_SHARED_PTR<FileFinder::ProjectTree> tree;
+
+	double latest_time;
+	int latest_slot;
 };
 
 #endif

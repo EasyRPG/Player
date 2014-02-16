@@ -31,7 +31,7 @@
 #include "reader_util.h"
 
 Scene_File::Scene_File(std::string message) :
-	help_window(NULL), message(message) {
+	help_window(NULL), message(message), latest_time(0), latest_slot(0) {
 	top_index = 0;
 	index = 0;
 }
@@ -92,6 +92,11 @@ void Scene_File::Start() {
 				w->SetParty(party, savegame->title.hero_name, savegame->title.hero_hp,
 					savegame->title.hero_level);
 				w->SetValid(true);
+
+				if (savegame->title.timestamp > latest_time) {
+					latest_time = savegame->title.timestamp;
+					latest_slot = i;
+				}
 			} else {
 				w->SetCorrupted(true);
 			}
@@ -101,6 +106,8 @@ void Scene_File::Start() {
 
 		file_windows.push_back(w);
 	}
+
+	index = latest_slot;
 
 	Refresh();
 }
