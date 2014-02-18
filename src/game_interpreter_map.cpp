@@ -705,7 +705,13 @@ bool Game_Interpreter_Map::CommandShowPicture(RPG::EventCommand const& com) { //
 		// Rpg2k does not support this option
 		bottom_trans = top_trans;
 	} else {
-		bottom_trans = com.parameters[14];
+		// Corner case when 2k maps are used in 2k3 and don't contain this chunk
+		size_t param_size = com.parameters.size();
+		if (param_size > 14) {
+			bottom_trans = com.parameters[14];
+		} else {
+			bottom_trans = top_trans;
+		}
 	}
 
 	picture->Show(pic_name);
@@ -739,6 +745,7 @@ bool Game_Interpreter_Map::CommandMovePicture(RPG::EventCommand const& com) { //
 	int x = ValueOrVariable(com.parameters[1], com.parameters[2]);
 	int y = ValueOrVariable(com.parameters[1], com.parameters[3]);
 	int magnify = com.parameters[5];
+		Output::Debug("Parameter 6 (top trans): %d",com.parameters[16]);
 	int top_trans = com.parameters[6];
 	int red = com.parameters[8];
 	int green = com.parameters[9];
@@ -754,7 +761,13 @@ bool Game_Interpreter_Map::CommandMovePicture(RPG::EventCommand const& com) { //
 		// Rpg2k does not support this option
 		bottom_trans = top_trans;
 	} else {
-		bottom_trans = com.parameters[16];
+		// Corner case when 2k maps are used in 2k3 and don't contain this chunk
+		size_t param_size = com.parameters.size();
+		if (param_size > 16) {
+			bottom_trans = com.parameters[16];
+		} else {
+			bottom_trans = top_trans;
+		}
 	}
 
 	picture->Move(x, y);
