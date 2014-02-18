@@ -745,7 +745,6 @@ bool Game_Interpreter_Map::CommandMovePicture(RPG::EventCommand const& com) { //
 	int x = ValueOrVariable(com.parameters[1], com.parameters[2]);
 	int y = ValueOrVariable(com.parameters[1], com.parameters[3]);
 	int magnify = com.parameters[5];
-		Output::Debug("Parameter 6 (top trans): %d",com.parameters[16]);
 	int top_trans = com.parameters[6];
 	int red = com.parameters[8];
 	int green = com.parameters[9];
