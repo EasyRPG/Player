@@ -160,7 +160,9 @@ void Player::Update() {
 		Scene::PopUntil(Scene::Null);
 	} else if (reset_flag) {
 		reset_flag = false;
-		Scene::PopUntil(Scene::Title);
+		if(Scene::instance->type != Scene::Logo) {
+			Scene::PopUntil(Scene::Title);
+		}
 	}
 }
 
