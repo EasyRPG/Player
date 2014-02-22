@@ -70,6 +70,8 @@ void Game_Screen::Reset()
 	movie_pos_y = 0;
 	movie_res_x = 0;
 	movie_res_y = 0;
+
+	StopWeather();
 }
 
 Game_Picture* Game_Screen::GetPicture(int id) {
@@ -162,9 +164,14 @@ void Game_Screen::ShakeEnd() {
 }
 
 void Game_Screen::SetWeatherEffect(int type, int strength) {
-	data.weather = type;
-	data.weather_strength = strength;
-	StopWeather();
+	// Some games call weather effects in a parallel process
+	// This causes issues in the rendering (weather rendered too fast)
+	if (data.weather != type ||
+		data.weather_strength != strength) {
+		StopWeather();
+		data.weather = type;
+		data.weather_strength = strength;
+	}
 }
 
 void Game_Screen::PlayMovie(const std::string& filename,
@@ -200,6 +207,7 @@ static double interpolate(double d, double x0, double x1)
 }
 
 void Game_Screen::StopWeather() {
+	data.weather = Weather_None;
 	snowflakes.clear();
 }
 
