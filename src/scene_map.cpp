@@ -99,15 +99,18 @@ void Scene_Map::Update() {
 		return;
 
 	// ESC-Menu calling
-	if (Input::IsTriggered(Input::CANCEL))
-	{
+	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_Temp::menu_calling = true;
 		Game_Temp::menu_beep = true;
 	}
 
-	if (Input::IsTriggered(Input::DEBUG_MENU))
-	{
-		CallDebug();
+	if (Player::debug_flag) {
+		if (Input::IsTriggered(Input::DEBUG_MENU)) {
+			CallDebug();
+		}
+		else if (Input::IsTriggered(Input::DEBUG_SAVE)) {
+			CallSave();
+		}
 	}
 
 	if (!Main_Data::game_player->IsMoving()) {
@@ -207,6 +210,7 @@ void Scene_Map::CallSave() {
 }
 
 void Scene_Map::CallDebug() {
-	if (Player::debug_flag)
+	if (Player::debug_flag) {
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Debug>());
+	}
 }
