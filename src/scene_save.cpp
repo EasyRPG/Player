@@ -32,6 +32,19 @@ Scene_Save::Scene_Save() :
 	Scene::type = Scene::Save;
 }
 
+void Scene_Save::Start() {
+	Scene_File::Start();
+
+	for (int i = 0; i < 15; i++) {
+		file_windows[i]->SetHasSave(true);
+		file_windows[i]->Refresh();
+	}
+
+	index = 0;
+
+	Refresh();
+}
+
 void Scene_Save::Action(int index) {
 	std::stringstream ss;
 	ss << "Save" << (index <= 8 ? "0" : "") << (index + 1) << ".lsd";
@@ -83,4 +96,8 @@ void Scene_Save::Action(int index) {
 		ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)));
 
 	Scene::Pop();
+}
+
+bool Scene_Save::IsSlotValid(int index) {
+	return true;
 }

@@ -27,7 +27,7 @@
 
 Window_SaveFile::Window_SaveFile(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight),
-	index(0), hero_hp(0), hero_level(0), corrupted(false), valid(false) {
+	index(0), hero_hp(0), hero_level(0), corrupted(false), has_save(false) {
 
 	SetContents(Bitmap::Create(width - 8, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
@@ -66,11 +66,11 @@ void Window_SaveFile::SetCorrupted(bool corrupted) {
 }
 
 bool Window_SaveFile::IsValid() {
-	return !corrupted && valid;
+	return has_save && !corrupted;
 }
 
-void Window_SaveFile::SetValid(bool valid) {
-	this->valid = valid;
+void Window_SaveFile::SetHasSave(bool valid) {
+	this->has_save = valid;
 }
 
 void Window_SaveFile::Refresh() {
@@ -78,7 +78,7 @@ void Window_SaveFile::Refresh() {
 
 	std::ostringstream out;
 	out << Data::terms.file << std::setw(2) << std::setfill(' ') << index + 1;
-	contents->TextDraw(4, 2, valid ? Font::ColorDefault : Font::ColorDisabled, out.str());
+	contents->TextDraw(4, 2, has_save ? Font::ColorDefault : Font::ColorDisabled, out.str());
 
 	if (corrupted) {
 		contents->TextDraw(4, 16 + 2, Font::ColorKnockout, "Savegame corrupted");

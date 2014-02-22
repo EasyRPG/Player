@@ -57,7 +57,6 @@ public:
 
 	/**
 	 * Gets if the slot holds a valid save.
-	 * (not corrupted or empty)
 	 *
 	 * @return Whether save is valid
 	 */
@@ -66,9 +65,9 @@ public:
 	/**
 	 * Sets if there is a savegame in the slot.
 	 *
-	 * @param valid true if valid
+	 * @param has_save true if has save
 	 */
-	void SetValid(bool valid);
+	void SetHasSave(bool has_save);
 
 	/**
 	 * Sets if the savegame is broken.
@@ -87,7 +86,7 @@ protected:
 	int hero_hp;
 	int hero_level;
 	bool corrupted;
-	bool valid;
+	bool has_save;
 };
 
 #endif

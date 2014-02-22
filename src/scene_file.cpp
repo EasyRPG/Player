@@ -91,7 +91,7 @@ void Scene_File::Start() {
 
 				w->SetParty(party, savegame->title.hero_name, savegame->title.hero_hp,
 					savegame->title.hero_level);
-				w->SetValid(true);
+				w->SetHasSave(true);
 
 				if (savegame->title.timestamp > latest_time) {
 					latest_time = savegame->title.timestamp;
@@ -126,7 +126,7 @@ void Scene_File::Update() {
 		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		if (file_windows[index]->IsValid()) {
+		if (IsSlotValid(index)) {
 			Game_System::SePlay(Main_Data::game_data.system.decision_se);
 			Action(index);
 		}

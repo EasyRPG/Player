@@ -78,3 +78,7 @@ void Scene_Load::SetupSavegameData(std::auto_ptr<RPG::Save> save) {
 	
 	Game_Map::PlayBgm();
 }
+
+bool Scene_Load::IsSlotValid(int index) {
+	return file_windows[index]->IsValid();
+}

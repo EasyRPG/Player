@@ -44,6 +44,8 @@ public:
 
 	virtual void Action(int index) = 0;
 
+	virtual bool IsSlotValid(int index) = 0;
+
 protected:
 	void Refresh();
 
