@@ -154,6 +154,12 @@ void Game_Map::SetupFromSave() {
 	static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(Main_Data::game_data.events.events, 0);
 
 	map_info.Fixup(*map.get());
+
+	// FIXME: Handle Pan correctly
+	location.pan_current_x = 0;
+	location.pan_current_y = 0;
+	location.pan_finish_x = 0;
+	location.pan_finish_y = 0;
 }
 
 void Game_Map::SetupCommon(int _id) {
