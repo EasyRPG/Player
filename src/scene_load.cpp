@@ -25,6 +25,7 @@
 #include "game_message.h"
 #include "game_party.h"
 #include "game_player.h"
+#include "game_system.h"
 #include "game_temp.h"
 #include "lsd_reader.h"
 #include "scene_load.h"
@@ -75,8 +76,10 @@ void Scene_Load::SetupSavegameData(std::auto_ptr<RPG::Save> save) {
 	Main_Data::game_player->MoveTo(
 		save->party_location.position_x, save->party_location.position_y);
 	Main_Data::game_player->Refresh();
-	
-	Game_Map::PlayBgm();
+
+	RPG::Music current_music = Main_Data::game_data.system.current_music;
+	Main_Data::game_data.system.current_music = RPG::Music();
+	Game_System::BgmPlay(current_music);
 }
 
 bool Scene_Load::IsSlotValid(int index) {
