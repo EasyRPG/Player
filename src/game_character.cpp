@@ -118,7 +118,7 @@ int Game_Character::GetScreenZ() const {
 int Game_Character::GetScreenZ(int /* height */) const {
 	if (GetLayer() == RPG::EventPage::Layers_above) return 999;
 
-	int z = (real_y - Game_Map::GetDisplayY() + 3) / 8 + (SCREEN_TILE_WIDTH / 8);
+	int z = (real_y - Game_Map::GetDisplayY() + 3) / 16 + (SCREEN_TILE_WIDTH / 16);
 
 	return z;
 }
