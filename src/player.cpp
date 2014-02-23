@@ -17,17 +17,28 @@
 
 // Headers
 #include "player.h"
-#include "system.h"
-#include "output.h"
 #include "audio.h"
-#include "graphics.h"
-#include "input.h"
 #include "cache.h"
 #include "filefinder.h"
+#include "game_actors.h"
+#include "game_message.h"
+#include "game_map.h"
+#include "game_party.h"
+#include "game_player.h"
+#include "game_system.h"
+#include "game_temp.h"
+#include "graphics.h"
+#include "input.h"
+#include "ldb_reader.h"
+#include "lmt_reader.h"
 #include "main_data.h"
+#include "output.h"
+#include "reader_lcf.h"
 #include "scene_logo.h"
+#include "scene_map.h"
 #include "scene_title.h"
 #include "scene_battle.h"
+#include "system.h"
 #include "utils.h"
 
 #include <algorithm>
@@ -56,6 +67,10 @@ namespace Player {
 	bool window_flag;
 	bool battle_test_flag;
 	int battle_test_troop_id;
+	bool new_game_flag;
+	int player_x;
+	int player_y;
+	int start_map_id;
 	EngineType engine;
 }
 
@@ -79,6 +94,10 @@ void Player::Init(int argc, char *argv[]) {
 
 	exit_flag = false;
 	reset_flag = false;
+	new_game_flag = false;
+	player_x = -1;
+	player_y = -1;
+	start_map_id = -1;
 
 	// Command line parser
 	if((argc > 1) && Utils::LowerCase(argv[1]) == "battletest") {
@@ -118,6 +137,12 @@ void Player::Run() {
 				(debug_flag?
 				 static_cast<Scene*>(new Scene_Title()) :
 				 static_cast<Scene*>(new Scene_Logo())));
+	if (Player::debug_flag && Player::new_game_flag) {
+		// Scene_Logo does setup in non-debug mode
+		CreateGameObjects();
+		SetupPlayerSpawn();
+		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>());
+	}
 
 	reset_flag = false;
 
@@ -160,7 +185,7 @@ void Player::Update() {
 		Scene::PopUntil(Scene::Null);
 	} else if (reset_flag) {
 		reset_flag = false;
-		if(Scene::instance->type != Scene::Logo) {
+		if (Scene::instance->type != Scene::Logo) {
 			Scene::PopUntil(Scene::Title);
 		}
 	}
@@ -176,6 +201,66 @@ void Player::Exit() {
 	// Workaround Segfault under Android
 	exit(0);
 #endif
+}
+
+void Player::CreateGameObjects() {
+	LoadDatabase();
+
+	static bool init = false;
+	if (!init) {
+		if (Data::system.ldb_id == 2003) {
+			Output::Debug("Switching to Rpg2003 Interpreter");
+			Player::engine = Player::EngineRpg2k3;
+		}
+
+		FileFinder::InitRtpPaths();
+	}
+	init = true;
+
+	Main_Data::game_data.Setup();
+
+	Game_System::Init();
+	Game_Temp::Init();
+	Main_Data::game_screen.reset(new Game_Screen());
+	Game_Actors::Init();
+	Game_Party::Init();
+	Game_Message::Init();
+	Game_Map::Init();
+	Main_Data::game_player.reset(new Game_Player());
+
+	Graphics::FrameReset();
+}
+
+void Player::LoadDatabase() {
+	// Load Database
+	Data::Clear();
+
+	if(! FileFinder::IsRPG2kProject(FileFinder::GetProjectTree())) {
+		Output::Debug("%s is not an RPG2k project", Main_Data::project_path.c_str());
+	}
+
+	if (!LDB_Reader::Load(FileFinder::FindDefault(DATABASE_NAME),
+		ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)))) {
+		Output::ErrorStr(LcfReader::GetError());
+	}
+	if (!LMT_Reader::Load(FileFinder::FindDefault(TREEMAP_NAME),
+		ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)))) {
+		Output::ErrorStr(LcfReader::GetError());
+	}
+}
+
+void Player::SetupPlayerSpawn() {
+	int map_id = Player::start_map_id == -1 ?
+		Data::treemap.start.party_map_id : Player::start_map_id;
+	int x_pos = Player::player_x == -1 ?
+		Data::treemap.start.party_x : Player::player_x;
+	int y_pos = Player::player_y == -1 ?
+		Data::treemap.start.party_y : Player::player_y;
+
+	Game_Map::Setup(map_id);
+	Main_Data::game_player->MoveTo(x_pos, y_pos);
+	Main_Data::game_player->Refresh();
+	Game_Map::Autoplay();
 }
 
 #if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER >= 0x0600)

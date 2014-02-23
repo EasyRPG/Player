@@ -19,8 +19,10 @@
 #include "scene_logo.h"
 #include "graphics.h"
 #include "input.h"
+#include "scene_map.h"
 #include "scene_title.h"
 #include "bitmap.h"
+#include "player.h"
 
 static const uint8_t easyrpg_logo[] = {
 	0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0x00, 0x00, 0x0D,
@@ -915,20 +917,20 @@ void Scene_Logo::Start() {
 	logo->SetBitmap(logo_img);
 }
 
-void Scene_Logo::TransitionIn() {
-	Graphics::Transition(Graphics::TransitionFadeIn, 24);
-}
-
-void Scene_Logo::TransitionOut() {
-	Graphics::Transition(Graphics::TransitionFadeOut, 24);
-}
-
 void Scene_Logo::Update() {
+	if (frame_counter == 0) {
+		Player::CreateGameObjects();
+	}
+
 	++frame_counter;
 
-	if (frame_counter == 90 ||
+	if (frame_counter == 60 ||
 		Input::IsTriggered(Input::DECISION) ||
 		Input::IsTriggered(Input::CANCEL)) {
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Title>(), true);
+		if (Player::new_game_flag) {
+			Player::SetupPlayerSpawn();
+			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>());
+		}
 	}
 }

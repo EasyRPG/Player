@@ -26,26 +26,15 @@
 #include "bitmap.h"
 #include "cache.h"
 #include "filefinder.h"
-#include "game_actors.h"
 #include "game_map.h"
-#include "game_message.h"
-#include "game_party.h"
 #include "game_player.h"
-#include "game_screen.h"
-#include "game_switches.h"
 #include "game_system.h"
-#include "game_temp.h"
-#include "game_troop.h"
-#include "game_variables.h"
 #include "graphics.h"
 #include "input.h"
-#include "ldb_reader.h"
-#include "lmt_reader.h"
 #include "main_data.h"
 #include "options.h"
 #include "output.h"
 #include "player.h"
-#include "reader_lcf.h"
 #include "scene_battle.h"
 #include "scene_load.h"
 #include "scene_map.h"
@@ -57,24 +46,6 @@ Scene_Title::Scene_Title() {
 }
 
 void Scene_Title::Start() {
-	LoadDatabase();
-
-	static bool init = false;
-	if (!init) {
-		if (Data::system.ldb_id == 2003) {
-			Output::Debug("Switching to Rpg2003 Interpreter");
-			Player::engine = Player::EngineRpg2k3;
-		}
-
-		FileFinder::InitRtpPaths();
-	}
-	init = true;
-
-	Main_Data::game_data.Setup();
-
-	// Create Game System
-	Game_System::Init();
-
 	if (!Player::battle_test_flag) {
 		CreateTitleGraphic();
 		PlayTitleMusic();
@@ -87,6 +58,8 @@ void Scene_Title::Continue() {
 	// Clear the cache when the game returns to title screen
 	// e.g. by pressing F12
 	Cache::Clear();
+
+	Player::CreateGameObjects();
 
 	Start();
 }
@@ -132,34 +105,6 @@ void Scene_Title::Update() {
 			CommandShutdown();
 		}
 	}
-}
-
-void Scene_Title::LoadDatabase() {
-	// Load Database
-	Data::Clear();
-
-	if(! FileFinder::IsRPG2kProject(FileFinder::GetProjectTree())) {
-		Output::Debug("%s is not an RPG2k project", Main_Data::project_path.c_str());
-	}
-
-	if (!LDB_Reader::Load(FileFinder::FindDefault(DATABASE_NAME),
-			ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)))) {
-		Output::ErrorStr(LcfReader::GetError());
-	}
-	if (!LMT_Reader::Load(FileFinder::FindDefault(TREEMAP_NAME),
-			ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)))) {
-		Output::ErrorStr(LcfReader::GetError());
-	}
-}
-
-void Scene_Title::CreateGameObjects() {
-	Game_Temp::Init();
-	Main_Data::game_screen.reset(new Game_Screen());
-	Game_Actors::Init();
-	Game_Party::Init();
-	Game_Message::Init();
-	Game_Map::Init();
-	Main_Data::game_player.reset(new Game_Player());
 }
 
 bool Scene_Title::CheckContinue() {
@@ -219,7 +164,6 @@ bool Scene_Title::CheckValidPlayerLocation() {
 }
 
 void Scene_Title::PrepareBattleTest() {
-	CreateGameObjects();
 	//Game_Party::SetupBattleTestMembers();
 	//Game_Troop::can_escape = true;
 	Game_System::BgmPlay(Data::system.battle_music);
@@ -234,12 +178,7 @@ void Scene_Title::CommandNewGame() {
 		Game_System::SePlay(Main_Data::game_data.system.decision_se);
 		Audio().BGM_Stop();
 		Graphics::SetFrameCount(0);
-		CreateGameObjects();
-		Game_Map::Setup(Data::treemap.start.party_map_id);
-		Main_Data::game_player->MoveTo(
-			Data::treemap.start.party_x, Data::treemap.start.party_y);
-		Main_Data::game_player->Refresh();
-		Game_Map::Autoplay();
+		Player::SetupPlayerSpawn();
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>());
 	}
 }

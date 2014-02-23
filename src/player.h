@@ -32,22 +32,22 @@ namespace Player {
 
 	/**
 	 * Initializes EasyRPG Player.
-	*/
+	 */
 	void Init(int argc, char *argv[]);
 
 	/**
 	 * Runs the game engine.
-	*/
+	 */
 	void Run();
 
 	/**
 	 * Pauses the game engine.
-	*/
+	 */
 	void Pause();
 
 	/**
 	 * Resumes the game engine.
-	*/
+	 */
 	void Resume();
 
 	/**
@@ -59,6 +59,17 @@ namespace Player {
 	 * Exits EasyRPG Player.
 	 */
 	void Exit();
+
+	/**
+	 * (Re)Initializes all game objects
+	 */
+	void CreateGameObjects();
+
+	/**
+	 * Loads all databases.
+	 */
+	void LoadDatabase();
+	void SetupPlayerSpawn();
 
 	/** Exit flag, if true will exit application on next Player::Update. */
 	extern bool exit_flag;
@@ -80,6 +91,11 @@ namespace Player {
 
 	/** Battle Test Troop ID to fight with if battle test is run. */
 	extern int battle_test_troop_id;
+
+	extern int player_x;
+	extern int player_y;
+	extern int start_map_id;
+	extern bool new_game_flag;
 
 	/** Currently interpreted engine. */
 	extern EngineType engine;
