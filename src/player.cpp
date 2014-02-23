@@ -68,8 +68,8 @@ namespace Player {
 	bool battle_test_flag;
 	int battle_test_troop_id;
 	bool new_game_flag;
-	int player_x;
-	int player_y;
+	int party_x_position;
+	int party_y_position;
 	int start_map_id;
 	EngineType engine;
 }
@@ -92,26 +92,7 @@ void Player::Init(int argc, char *argv[]) {
 	InitMiniDumpWriter();
 #endif
 
-	exit_flag = false;
-	reset_flag = false;
-	new_game_flag = false;
-	player_x = -1;
-	player_y = -1;
-	start_map_id = -1;
-
-	// Command line parser
-	if((argc > 1) && Utils::LowerCase(argv[1]) == "battletest") {
-		battle_test_flag = true;
-		battle_test_troop_id = (argc > 4)? atoi(argv[4]) : 0;
-	} else {
-		std::set<std::string> args;
-		battle_test_flag = false;
-		battle_test_troop_id = 0;
-		for(int i = 1; i < argc; ++i) { args.insert(Utils::LowerCase(argv[i])); }
-		window_flag = args.find("window") != args.end();
-		debug_flag = args.find("testplay") != args.end();
-		hide_title_flag = args.find("hidetitle") != args.end();
-	}
+	ParseCommandLine(argc, argv);
 
 	engine = EngineRpg2k;
 
@@ -133,15 +114,20 @@ void Player::Init(int argc, char *argv[]) {
 
 void Player::Run() {
 	Scene::Push(EASYRPG_MAKE_SHARED<Scene>());
-	Scene::Push(EASYRPG_SHARED_PTR<Scene>
-				(debug_flag?
-				 static_cast<Scene*>(new Scene_Title()) :
-				 static_cast<Scene*>(new Scene_Logo())));
-	if (Player::debug_flag && Player::new_game_flag) {
+
+	if (Player::debug_flag) {
 		// Scene_Logo does setup in non-debug mode
 		CreateGameObjects();
 		SetupPlayerSpawn();
-		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>());
+		Scene::Push(EASYRPG_SHARED_PTR<Scene>(
+			static_cast<Scene*>(new Scene_Title())));
+		if (Player::new_game_flag) {
+			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>());
+		}
+	}
+	else {
+		Scene::Push(EASYRPG_SHARED_PTR<Scene>(
+			static_cast<Scene*>(new Scene_Logo())));
 	}
 
 	reset_flag = false;
@@ -203,6 +189,62 @@ void Player::Exit() {
 #endif
 }
 
+void Player::ParseCommandLine(int argc, char *argv[]) {
+	window_flag = false;
+	debug_flag = false;
+	hide_title_flag = false;
+	exit_flag = false;
+	reset_flag = false;
+	battle_test_flag = false;
+	new_game_flag = false;
+	party_x_position = -1;
+	party_y_position = -1;
+	start_map_id = -1;
+
+	std::vector<std::string> args;
+
+	for (int i = 1; i < argc; ++i) {
+		args.push_back(Utils::LowerCase(argv[i]));
+	}
+
+	std::vector<std::string>::const_iterator it;
+
+	for (it = args.begin(); it != args.end(); ++it) {
+		if (*it == "window" || *it == "--window") {
+			window_flag = true;
+		}
+		else if (*it == "testplay" || *it == "--test-play") {
+			debug_flag = true;
+		}
+		else if (*it == "hidetitle" || *it == "--hide-title") {
+			hide_title_flag = true;
+		}
+		else if (*it == "battletest") {
+			battle_test_flag = true;
+			battle_test_troop_id = (argc > 4) ? atoi(argv[4]) : 0;
+		}
+		else if (*it == "--new-game") {
+			new_game_flag = true;
+		}
+		else if (*it == "--map") {
+			++it;
+			if (it != args.end()) {
+				start_map_id = atoi((*it).c_str());
+			}
+		}
+		else if (*it == "--position") {
+			++it;
+			if (it != args.end()) {
+				party_x_position = atoi((*it).c_str());
+			}
+			++it;
+			if (it != args.end()) {
+				party_y_position = atoi((*it).c_str());
+			}
+		}
+	}
+}
+
 void Player::CreateGameObjects() {
 	LoadDatabase();
 
@@ -252,10 +294,10 @@ void Player::LoadDatabase() {
 void Player::SetupPlayerSpawn() {
 	int map_id = Player::start_map_id == -1 ?
 		Data::treemap.start.party_map_id : Player::start_map_id;
-	int x_pos = Player::player_x == -1 ?
-		Data::treemap.start.party_x : Player::player_x;
-	int y_pos = Player::player_y == -1 ?
-		Data::treemap.start.party_y : Player::player_y;
+	int x_pos = Player::party_x_position == -1 ?
+		Data::treemap.start.party_x : Player::party_x_position;
+	int y_pos = Player::party_y_position == -1 ?
+		Data::treemap.start.party_y : Player::party_y_position;
 
 	Game_Map::Setup(map_id);
 	Main_Data::game_player->MoveTo(x_pos, y_pos);

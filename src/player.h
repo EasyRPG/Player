@@ -61,6 +61,11 @@ namespace Player {
 	void Exit();
 
 	/**
+	 * Parses the command line arguments.
+	 */
+	void ParseCommandLine(int argc, char *argv[]);
+
+	/**
 	 * (Re)Initializes all game objects
 	 */
 	void CreateGameObjects();
@@ -69,6 +74,10 @@ namespace Player {
 	 * Loads all databases.
 	 */
 	void LoadDatabase();
+
+	/**
+	 * Moves the player to the start map.
+	 */
 	void SetupPlayerSpawn();
 
 	/** Exit flag, if true will exit application on next Player::Update. */
@@ -92,9 +101,16 @@ namespace Player {
 	/** Battle Test Troop ID to fight with if battle test is run. */
 	extern int battle_test_troop_id;
 
-	extern int player_x;
-	extern int player_y;
+	/** Overwrite party x position */
+	extern int party_x_position;
+
+	/** Overwrite porty y position */
+	extern int party_y_position;
+
+	/** Overwrite start map */
 	extern int start_map_id;
+
+	/** New game flag, if true a new game starts directly. */
 	extern bool new_game_flag;
 
 	/** Currently interpreted engine. */

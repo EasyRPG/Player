@@ -97,6 +97,9 @@ void Game_Player::Center(int x, int y) {
 
 // MoveTo
 void Game_Player::MoveTo(int x, int y) {
+	x = max(0, min(x, Game_Map::GetWidth() - 1));
+	y = max(0, min(y, Game_Map::GetHeight() - 1));
+
 	Game_Character::MoveTo(x, y);
 	Center(x, y);
 
