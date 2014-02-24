@@ -19,8 +19,12 @@
 #include "audio.h"
 #include "system.h"
 #include "baseui.h"
+#include "player.h"
 
 AudioInterface& Audio() {
 	static EmptyAudio default_;
-	return DisplayUi? DisplayUi->GetAudio() : default_;
+	if (Player::no_audio_flag || !DisplayUi) {
+		return default_;
+	}
+	return DisplayUi->GetAudio();
 }

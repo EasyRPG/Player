@@ -71,6 +71,7 @@ namespace Player {
 	int party_x_position;
 	int party_y_position;
 	int start_map_id;
+	bool no_audio_flag;
 	EngineType engine;
 }
 
@@ -200,6 +201,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	party_x_position = -1;
 	party_y_position = -1;
 	start_map_id = -1;
+	no_audio_flag = false;
 
 	std::vector<std::string> args;
 
@@ -223,10 +225,17 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			battle_test_flag = true;
 			battle_test_troop_id = (argc > 4) ? atoi(argv[4]) : 0;
 		}
+		else if (*it == "--battle-test") {
+			++it;
+			if (it != args.end()) {
+				battle_test_flag = true;
+				battle_test_troop_id = atoi((*it).c_str());
+			}
+		}
 		else if (*it == "--new-game") {
 			new_game_flag = true;
 		}
-		else if (*it == "--map") {
+		else if (*it == "--map-id") {
 			++it;
 			if (it != args.end()) {
 				start_map_id = atoi((*it).c_str());
@@ -241,6 +250,9 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			if (it != args.end()) {
 				party_y_position = atoi((*it).c_str());
 			}
+		}
+		else if (*it == "--no-audio") {
+			no_audio_flag = true;
 		}
 	}
 }

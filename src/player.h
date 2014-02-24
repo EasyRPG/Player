@@ -113,6 +113,9 @@ namespace Player {
 	/** New game flag, if true a new game starts directly. */
 	extern bool new_game_flag;
 
+	/** Mutes audio playback */
+	extern bool no_audio_flag;
+
 	/** Currently interpreted engine. */
 	extern EngineType engine;
 }
