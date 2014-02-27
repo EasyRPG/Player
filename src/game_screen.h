@@ -33,7 +33,9 @@ class Game_Screen {
 public:
 	Game_Screen();
 
-	Picture* GetPicture(int id);
+	void CreatePicturesFromSave();
+
+	Game_Picture* GetPicture(int id);
 
 	void Reset();
 	void TintScreen(int r, int g, int b, int s, int tenths);
@@ -97,7 +99,7 @@ public:
 	};
 
 private:
-	std::vector<EASYRPG_SHARED_PTR<Picture> > pictures;
+	std::vector<EASYRPG_SHARED_PTR<Game_Picture> > pictures;
 
 	RPG::SaveScreen& data;
 	int flash_sat;		// RPGMaker bug: this isn't saved

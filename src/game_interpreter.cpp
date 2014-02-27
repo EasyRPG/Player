@@ -49,6 +49,7 @@ Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	depth = _depth;
 	main_flag = _main_flag;
 	active = false;
+	index = 0;
 
 	if (depth > 100) {
 		Output::Warning("Too many event calls (over 9000)");
@@ -113,7 +114,7 @@ void Game_Interpreter::SetContinuation(Game_Interpreter::ContinuationFunction fu
 	continuation = func;
 }
 
-void Game_Interpreter::EndMoveRoute(RPG::MoveRoute* /* route */) {
+void Game_Interpreter::EndMoveRoute(Game_Character*) {
 	// This will only ever be called on Game_Interpreter_Map instances
 }
 
@@ -148,7 +149,7 @@ void Game_Interpreter::Update() {
 
 		// If waiting for a move to end
 		if (move_route_waiting) {
-			if (Main_Data::game_player->GetMoveRouteForcing()) {
+			if (Main_Data::game_player->IsMoveRouteOverwritten()) {
 				return;
 			}
 
@@ -156,7 +157,7 @@ void Game_Interpreter::Update() {
 			for (size_t i = 0; i < Game_Map::GetEvents().size(); i++) {
 				g_event = Game_Map::GetEvents().find(i)->second.get();
 
-				if (g_event->GetMoveRouteForcing()) {
+				if (g_event->IsMoveRouteOverwritten()) {
 					return;
 				}
 			}
@@ -682,8 +683,7 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 						value = character->GetY();
 						break;
 					case 3:
-						// TODO Orientation
-						// Needs testing
+						// Orientation
 						value = character->GetDirection();
 						break;
 					case 4:
@@ -948,10 +948,10 @@ bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) {
 
 // Change Face Graphic.
 bool Game_Interpreter::CommandChangeFaceGraphic(RPG::EventCommand const& com) { // Code 10130
-	Game_Message::face_name = com.string;
-	Game_Message::face_index = com.parameters[0];
-	Game_Message::face_left_position = com.parameters[1] == 0;
-	Game_Message::face_flipped = com.parameters[2] != 0;
+	Game_Message::SetFaceName(com.string);
+	Game_Message::SetFaceIndex(com.parameters[0]);
+	Game_Message::SetFaceRightPosition(com.parameters[1] != 0);
+	Game_Message::SetFaceFlipped(com.parameters[2] != 0);
 	return true;
 }
 

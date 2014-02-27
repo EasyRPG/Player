@@ -30,6 +30,8 @@
 typedef std::map<int, EASYRPG_SHARED_PTR<Game_Event> > tEventHash;
 typedef std::map<int, EASYRPG_SHARED_PTR<Game_CommonEvent> > tCommonEventHash;
 
+#define SCREEN_TILE_WIDTH 256
+
 /**
  * Game_Map namespace
  */
@@ -57,9 +59,28 @@ namespace Game_Map {
 	void Setup(int map_id);
 
 	/**
+	 * Setups a map from a savegame.
+	 *
+	 * @param map_id map ID.
+	 */
+	void SetupFromSave();
+
+	/**
+	 * Shared code of the Setup methods.
+	 *
+	 * @param map_id map ID.
+	 */
+	void SetupCommon(int _id);
+
+	/**
+	 * Copies event data into RPG::Save data.
+	 */
+	void PrepareSave();
+
+	/**
 	 * Runs map.
 	 */
-	void Autoplay();
+	void PlayBgm();
 
 	/**
 	 * Refreshes the map.

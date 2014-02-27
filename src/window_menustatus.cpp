@@ -37,8 +37,6 @@ void Window_MenuStatus::Refresh() {
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 	contents->Clear();
 
-	DisplayUi->SetBackcolor(Cache::system_info.bg_color);
-
 	item_max = Game_Party::GetActors().size();
 
 	int y = 0;

@@ -27,13 +27,17 @@
 /**
  * Picture class.
 */
-Picture::Picture(int ID) :
+Game_Picture::Game_Picture(int ID) :
 	data(Main_Data::game_data.pictures[ID - 1])
 {
-	Transition(0);
+	SetTransition(0);
 }
 
-void Picture::UpdateSprite() {
+Game_Picture::~Game_Picture() {
+	data.name = "";
+}
+
+void Game_Picture::UpdateSprite() {
 	if (!sprite)
 		return;
 	if (data.name.empty())
@@ -60,7 +64,7 @@ void Picture::UpdateSprite() {
 						 (int) (data.current_sat * 128 / 100)));
 }
 
-void Picture::Show(const std::string& _name) {
+void Game_Picture::Show(const std::string& _name) {
 	data.name = _name;
 	data.time_left = 0;
 
@@ -71,57 +75,57 @@ void Picture::Show(const std::string& _name) {
 	sprite->SetOy(bitmap->GetHeight() / 2);
 }
 
-void Picture::Erase() {
+void Game_Picture::Erase() {
 	data.name.clear();
 	sprite.reset();
 }
 
-void Picture::UseTransparent(bool flag) {
+void Game_Picture::SetTransparent(bool flag) {
 	data.transparency = flag;
 }
 
-void Picture::Scrolls(bool flag) {
+void Game_Picture::SetScrolls(bool flag) {
 	data.picture_scrolls = flag;
 }
 
-void Picture::Move(int x, int y) {
+void Game_Picture::SetMovementEffect(int x, int y) {
 	data.finish_x = x;
 	data.finish_y = y;
 }
 
-void Picture::Color(int r, int g, int b, int s) {
+void Game_Picture::SetColorEffect(int r, int g, int b, int s) {
 	data.finish_red = r;
 	data.finish_green = g;
 	data.finish_blue = b;
 	data.finish_sat = s;
 }
 
-void Picture::Magnify(int scale) {
+void Game_Picture::SetZoomEffect(int scale) {
 	data.finish_magnify = scale;
 }
 
-void Picture::Transparency(int t, int b) {
-	data.finish_top_trans = t;
-	data.finish_bot_trans = b;
+void Game_Picture::SetTransparencyEffect(int top, int bottom) {
+	data.finish_top_trans = top;
+	data.finish_bot_trans = bottom;
 }
 
-void Picture::Rotate(int speed) {
+void Game_Picture::SetRotationEffect(int speed) {
 	data.effect_mode = 1;
 	data.effect_speed = data.effect2_speed = speed;
 	data.current_rotation = 0;
 }
 
-void Picture::Waver(int depth) {
+void Game_Picture::SetWaverEffect(int depth) {
 	data.effect_mode = 2;
 	data.effect_speed = data.effect2_speed = depth;
 	data.current_waver = 0;
 }
 
-void Picture::StopEffects() {
+void Game_Picture::StopEffects() {
 	data.effect_mode = 0;
 }
 
-void Picture::Transition(int tenths) {
+void Game_Picture::SetTransition(int tenths) {
 	data.time_left = tenths * DEFAULT_FPS / 10;
 
 	if (tenths == 0) {
@@ -142,7 +146,7 @@ static double interpolate(double d, double x0, double x1) {
 	return (x0 * (d - 1) + x1) / d;
 }
 
-void Picture::Update() {
+void Game_Picture::Update() {
 	if (data.name.empty())
 		return;
 

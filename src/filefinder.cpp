@@ -160,13 +160,13 @@ namespace {
 
 } // anonymous namespace
 
-EASYRPG_SHARED_PTR<FileFinder::ProjectTree> FileFinder::CreateProjectTree(std::string const& p) {
+EASYRPG_SHARED_PTR<FileFinder::ProjectTree> FileFinder::CreateProjectTree(std::string const& p, bool recursive) {
 	if(! (Exists(p) && IsDirectory(p))) { return EASYRPG_SHARED_PTR<ProjectTree>(); }
 
 	EASYRPG_SHARED_PTR<ProjectTree> tree = EASYRPG_MAKE_SHARED<ProjectTree>();
 	tree->project_path = p;
 
-	Directory mem = GetDirectoryMembers(tree->project_path, ALL);
+	Directory mem = GetDirectoryMembers(tree->project_path, recursive ? ALL : FILES);
 	for(string_map::const_iterator i = mem.members.begin(); i != mem.members.end(); ++i) {
 		(IsDirectory(MakePath(tree->project_path, i->second))?
 		 tree->directories : tree->files)[i->first] = i->second;
@@ -395,12 +395,16 @@ std::string FileFinder::FindDefault(const std::string& dir, const std::string& n
 }
 
 std::string FileFinder::FindDefault(std::string const& name) {
-	ProjectTree const& p = GetProjectTree();
+	return FindDefault(GetProjectTree(), name);
+}
+
+std::string FileFinder::FindDefault(const ProjectTree& tree, const std::string& name) {
+	ProjectTree const& p = tree;
 	string_map const& files = p.files;
 
 	string_map::const_iterator const it = files.find(Utils::LowerCase(name));
 
-	return(it != files.end())? MakePath(p.project_path, it->second) : "";
+	return(it != files.end()) ? MakePath(p.project_path, it->second) : "";
 }
 
 bool FileFinder::IsRPG2kProject(ProjectTree const& dir) {

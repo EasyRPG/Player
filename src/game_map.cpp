@@ -33,14 +33,12 @@
 #include "filefinder.h"
 #include <boost/scoped_ptr.hpp>
 
-namespace {
+namespace map_anon {
 	RPG::SaveMapInfo& map_info = Main_Data::game_data.map_info;
 	RPG::SavePartyLocation& location = Main_Data::game_data.party_location;
 
 	std::string chipset_name;
 	std::string battleback_name;
-	int display_x;
-	int display_y;
 	bool need_refresh;
 
 	int parallax_auto_x;
@@ -66,9 +64,11 @@ namespace {
 	int pan_speed;
 }
 
+using namespace map_anon;
+
 void Game_Map::Init() {
-	display_x = 0;
-	display_y = 0;
+	map_info.position_x = 0;
+	map_info.position_y = 0;
 	need_refresh = true;
 
 	map.reset();
@@ -108,32 +108,7 @@ void Game_Map::Quit() {
 }
 
 void Game_Map::Setup(int _id) {
-	// Execute remaining events (e.g. ones listed after a teleport)
-	Update();
-	Dispose();
-
-	location.map_id = _id;
-	char file[12];
-	sprintf(file, "Map%04d.lmu", location.map_id);
-
-	map = LMU_Reader::Load(FileFinder::FindDefault(file),
-				ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)));
-	if (map.get() == NULL) {
-		Output::ErrorStr(LcfReader::GetError());
-	}
-
-	if (map->parallax_flag) {
-		SetParallaxName(map->parallax_name);
-		SetParallaxScroll(map->parallax_loop_x, map->parallax_loop_y,
-						  map->parallax_auto_loop_x, map->parallax_auto_loop_y,
-						  map->parallax_sx, map->parallax_sy);
-	} else
-		SetParallaxName("");
-
-	SetChipset(map->chipset_id);
-	display_x = 0;
-	display_y = 0;
-	need_refresh = true;
+	SetupCommon(_id);
 
 	for (size_t i = 0; i < map->events.size(); ++i) {
 		events.insert(std::make_pair(map->events[i].ID, EASYRPG_MAKE_SHARED<Game_Event>(location.map_id, map->events[i])));
@@ -142,6 +117,79 @@ void Game_Map::Setup(int _id) {
 	for (size_t i = 0; i < Data::commonevents.size(); ++i) {
 		common_events.insert(std::make_pair(Data::commonevents[i].ID, EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID)));
 	}
+
+	location.pan_finish_x = 0;
+	location.pan_finish_y = 0;
+	location.pan_current_x = 0;
+	location.pan_current_y = 0;
+}
+
+void Game_Map::SetupFromSave() {
+	SetupCommon(location.map_id);
+
+	for (size_t i = 0; i < map->events.size(); ++i) {
+		EASYRPG_SHARED_PTR<Game_Event> evnt;
+		if (i < map_info.events.size()) {
+			evnt = EASYRPG_MAKE_SHARED<Game_Event>(location.map_id, map->events[i], map_info.events[i]);
+		}
+		else {
+			evnt = EASYRPG_MAKE_SHARED<Game_Event>(location.map_id, map->events[i]);
+		}
+
+		events.insert(std::make_pair(map->events[i].ID, evnt));
+	}
+
+	for (size_t i = 0; i < Data::commonevents.size(); ++i) {
+		EASYRPG_SHARED_PTR<Game_CommonEvent> evnt;
+		if (i < Main_Data::game_data.common_events.size()) {
+			evnt = EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID, false, Main_Data::game_data.common_events[i]);
+		}
+		else {
+			evnt = EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID);
+		}
+
+		common_events.insert(std::make_pair(Data::commonevents[i].ID, EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID, false, Main_Data::game_data.common_events[i])));
+	}
+
+	static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(Main_Data::game_data.events.events, 0);
+
+	map_info.Fixup(*map.get());
+
+	// FIXME: Handle Pan correctly
+	location.pan_current_x = 0;
+	location.pan_current_y = 0;
+	location.pan_finish_x = 0;
+	location.pan_finish_y = 0;
+}
+
+void Game_Map::SetupCommon(int _id) {
+	// Execute remaining events (e.g. ones listed after a teleport)
+	Update();
+	Dispose();
+
+	location.map_id = _id;
+
+	char file[12];
+	sprintf(file, "Map%04d.lmu", location.map_id);
+
+	map = LMU_Reader::Load(FileFinder::FindDefault(file),
+		ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)));
+	if (map.get() == NULL) {
+		Output::ErrorStr(LcfReader::GetError());
+	}
+
+	if (map->parallax_flag) {
+		SetParallaxName(map->parallax_name);
+		SetParallaxScroll(map->parallax_loop_x, map->parallax_loop_y,
+			map->parallax_auto_loop_x, map->parallax_auto_loop_y,
+			map->parallax_sx, map->parallax_sy);
+	}
+	else {
+		SetParallaxName("");
+	}
+
+	SetChipset(map->chipset_id);
+	need_refresh = true;
 
 	scroll_direction = 2;
 	scroll_rest = 0;
@@ -154,13 +202,39 @@ void Game_Map::Setup(int _id) {
 	pan_locked = false;
 	pan_wait = false;
 	pan_speed = 0;
-	location.pan_finish_x = 0;
-	location.pan_finish_y = 0;
-	location.pan_current_x = 0;
-	location.pan_current_y = 0;
+
+	// Make RPG_RT happy
+	// Otherwise current event not resumed after loading
+	location.map_save_count = map->save_count;
 }
 
-void Game_Map::Autoplay() {
+void Game_Map::PrepareSave() {
+	Main_Data::game_data.events.events =
+		static_cast<Game_Interpreter_Map*>(interpreter.get())
+			->GetSaveData();
+	Main_Data::game_data.events.events_size = Main_Data::game_data.events.events.size();
+
+	map_info.events.clear();
+
+	map_info.events.resize(map->events.size());
+
+	for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
+		map_info.events[i->first - 1] =
+			i->second->GetSaveData();
+	}
+
+	std::vector<RPG::SaveCommonEvent>& save_common_events = Main_Data::game_data.common_events;
+	save_common_events.clear();
+	save_common_events.resize(Data::commonevents.size());
+
+	for (tCommonEventHash::iterator i = common_events.begin(); i != common_events.end(); ++i) {
+		save_common_events[i->first - 1].ID = i->first;
+		save_common_events[i->first - 1].event_data =
+			i->second->GetSaveData();
+	}
+}
+
+void Game_Map::PlayBgm() {
 	int parent_index = 0;
 	int current_index = GetMapIndex(location.map_id);
 
@@ -194,7 +268,6 @@ void Game_Map::Autoplay() {
 
 void Game_Map::Refresh() {
 	if (location.map_id > 0) {
-
 		for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
 			i->second->Refresh();
 		}
@@ -212,19 +285,19 @@ Game_Interpreter& Game_Map::GetInterpreter() {
 }
 
 void Game_Map::ScrollDown(int distance) {
-	display_y = min(display_y + distance, (GetHeight() - 15) * 128);
+	map_info.position_y = min(map_info.position_y + distance, (GetHeight() - 15) * SCREEN_TILE_WIDTH);
 }
 
 void Game_Map::ScrollLeft(int distance) {
-	display_x = max(display_x - distance, 0);
+	map_info.position_x = max(map_info.position_x - distance, 0);
 }
 
 void Game_Map::ScrollRight(int distance) {
-	display_x = min(display_x + distance, (GetWidth() - 20) * 128);
+	map_info.position_x = min(map_info.position_x + distance, (GetWidth() - 20) * SCREEN_TILE_WIDTH);
 }
 
 void Game_Map::ScrollUp(int distance) {
-	display_y = max(display_y - distance, 0);
+	map_info.position_y = max(map_info.position_y - distance, 0);
 }
 
 bool Game_Map::IsValid(int x, int y) {
@@ -264,10 +337,10 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 			Game_Event* evnt = i->second.get();
 			if (evnt != self_event && evnt->GetX() == x && evnt->GetY() == y) {
 				if (!evnt->GetThrough()) {
-					if (evnt->GetPriorityType() == RPG::EventPage::Layers_same) {
+					if (evnt->GetLayer() == RPG::EventPage::Layers_same) {
 						return false;
 					}
-					else if (evnt->GetTileId() >= 0 && evnt->GetPriorityType() == RPG::EventPage::Layers_below) {
+					else if (evnt->GetTileId() >= 0 && evnt->GetLayer() == RPG::EventPage::Layers_below) {
 						// Event layer Chipset Tile
 						tile_id = i->second->GetTileId();
 						return (passages_up[tile_id] & bit) != 0;
@@ -424,7 +497,7 @@ int Game_Map::CheckEvent(int x, int y) {
 
 void Game_Map::StartScroll(int direction, int distance, int speed) {
 	scroll_direction = direction;
-	scroll_rest = distance * 128;
+	scroll_rest = distance * SCREEN_TILE_WIDTH;
 	scroll_speed = speed;
 }
 
@@ -541,17 +614,17 @@ void Game_Map::SetBattlebackName(std::string new_battleback_name) {
 }
 
 int Game_Map::GetDisplayX() {
-	return display_x;
+	return map_info.position_x;
 }
 void Game_Map::SetDisplayX(int new_display_x) {
-	display_x = new_display_x;
+	map_info.position_x = new_display_x;
 }
 
 int Game_Map::GetDisplayY() {
-	return display_y;
+	return map_info.position_y;
 }
 void Game_Map::SetDisplayY(int new_display_y) {
-	display_y = new_display_y;
+	map_info.position_y = new_display_y;
 }
 
 bool Game_Map::GetNeedRefresh() {
@@ -655,7 +728,7 @@ void Game_Map::UnlockPan() {
 }
 
 void Game_Map::StartPan(int direction, int distance, int speed, bool wait) {
-	distance *= 128;
+	distance *= SCREEN_TILE_WIDTH;
 	switch (direction) {
 		case PanUp:		location.pan_finish_y -= distance;		break;
 		case PanRight:	location.pan_finish_x += distance;		break;
@@ -724,7 +797,7 @@ void Game_Map::UpdateParallax() {
 				0;
 			parallax_auto_x += step;
 		}
-		parallax_x = display_x * 4 + parallax_auto_x;
+		parallax_x = map_info.position_x * 4 + parallax_auto_x;
 	} else
 		parallax_x = 0;
 
@@ -736,18 +809,18 @@ void Game_Map::UpdateParallax() {
 				0;
 			parallax_auto_y += step;
 		}
-		parallax_y = display_y * 4 + parallax_auto_y;
+		parallax_y = map_info.position_y * 4 + parallax_auto_y;
 	} else
 		parallax_y = 0;
 }
 
 int Game_Map::GetParallaxX() {
-	int px = parallax_x - display_x * 8;
+	int px = parallax_x - map_info.position_x * (SCREEN_TILE_WIDTH / 16);
 	return (px < 0) ? -(-px / 64) : (px / 64);
 }
 
 int Game_Map::GetParallaxY() {
-	int py = parallax_y - display_y * 8;
+	int py = parallax_y - map_info.position_y * (SCREEN_TILE_WIDTH / 16);
 	return (py < 0) ? -(-py / 64) : (py / 64);
 }
 

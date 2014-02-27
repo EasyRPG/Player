@@ -239,7 +239,7 @@ void Scene_Title::CommandNewGame() {
 		Main_Data::game_player->MoveTo(
 			Data::treemap.start.party_x, Data::treemap.start.party_y);
 		Main_Data::game_player->Refresh();
-		Game_Map::Autoplay();
+		Game_Map::PlayBgm();
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>());
 	}
 }

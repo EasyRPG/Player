@@ -27,22 +27,22 @@
 Game_Screen::Game_Screen() :
 	data(Main_Data::game_data.screen)
 {
-	data.tint_current_red = 100;
-	data.tint_current_green = 100;
-	data.tint_current_blue = 100;
-	data.tint_current_sat = 100;
-
-	data.tint_finish_red = -1;
-	data.tint_finish_green = -1;
-	data.tint_finish_blue = -1;
-	data.tint_finish_sat = -1;
-	data.tint_time_left = -1;
-
-
-	data.weather = 0;
-	data.weather_strength = 0;
-
 	Reset();
+}
+
+void Game_Screen::CreatePicturesFromSave() {
+	std::vector<RPG::SavePicture>& save_pics = Main_Data::game_data.pictures;
+
+	pictures.resize(save_pics.size());
+
+	for (size_t id = 1; id < save_pics.size(); ++id) {
+		if (!save_pics[id - 1].name.empty()) {
+			pictures[id - 1].reset(new Game_Picture(id));
+			int time_left = save_pics[id - 1].time_left;
+			pictures[id - 1]->Show(save_pics[id - 1].name);
+			pictures[id - 1]->SetTransition(time_left * DEFAULT_FPS / 10);
+		}
+	}
 }
 
 void Game_Screen::Reset()
@@ -50,17 +50,17 @@ void Game_Screen::Reset()
 	pictures.clear();
 	pictures.resize(50);
 
-	data.flash_red = -1;
-	data.flash_green = -1;
-	data.flash_blue = -1;
+	data.flash_red = 0;
+	data.flash_green = 0;
+	data.flash_blue = 0;
 	flash_sat = 0;
-	data.flash_time_left = -1;
+	data.flash_time_left = 0;
 	data.flash_current_level = 0;
 	flash_period = 0;
 
-	data.shake_strength = -1;
-	data.shake_speed = -1;
-	data.shake_time_left = -1;
+	data.shake_strength = 0;
+	data.shake_speed = 0;
+	data.shake_time_left = 0;
 	data.shake_position = 0;
 	data.shake_continuous = false;
 	shake_direction = 0;
@@ -70,12 +70,22 @@ void Game_Screen::Reset()
 	movie_pos_y = 0;
 	movie_res_x = 0;
 	movie_res_y = 0;
+
+	StopWeather();
 }
 
-Picture* Game_Screen::GetPicture(int id) {
-	EASYRPG_SHARED_PTR<Picture>& p = pictures[id - 1];
+Game_Picture* Game_Screen::GetPicture(int id) {
+	if (id <= 0) {
+		return NULL;
+	}
+	if (id > pictures.size()) {
+		// Some games use more pictures then RPG_RT officially supported
+		Main_Data::game_data.pictures.resize(id);
+		pictures.resize(id);
+	}
+	EASYRPG_SHARED_PTR<Game_Picture>& p = pictures[id - 1];
 	if (!p)
-		p.reset(new Picture(id));
+		p.reset(new Game_Picture(id));
 	return p.get();
 }
 
@@ -86,6 +96,16 @@ void Game_Screen::TintScreen(int r, int g, int b, int s, int tenths) {
 	data.tint_finish_sat = s;
 
 	data.tint_time_left = tenths * DEFAULT_FPS / 10;
+
+	if (data.tint_current_red < 0 ||
+		data.tint_current_green < 0 ||
+		data.tint_current_blue < 0 ||
+		data.tint_current_sat < 0) {
+		data.tint_current_red = 100;
+		data.tint_current_green = 100;
+		data.tint_current_blue = 100;
+		data.tint_current_sat = 100;
+	}
 
 	if (data.tint_time_left == 0) {
 		data.tint_current_red = data.tint_finish_red;
@@ -144,9 +164,14 @@ void Game_Screen::ShakeEnd() {
 }
 
 void Game_Screen::SetWeatherEffect(int type, int strength) {
-	data.weather = type;
-	data.weather_strength = strength;
-	StopWeather();
+	// Some games call weather effects in a parallel process
+	// This causes issues in the rendering (weather rendered too fast)
+	if (data.weather != type ||
+		data.weather_strength != strength) {
+		StopWeather();
+		data.weather = type;
+		data.weather_strength = strength;
+	}
 }
 
 void Game_Screen::PlayMovie(const std::string& filename,
@@ -182,6 +207,7 @@ static double interpolate(double d, double x0, double x1)
 }
 
 void Game_Screen::StopWeather() {
+	data.weather = Weather_None;
 	snowflakes.clear();
 }
 
@@ -245,9 +271,11 @@ void Game_Screen::Update() {
 			data.shake_time_left--;
 	}
 
-	std::vector<EASYRPG_SHARED_PTR<Picture> >::const_iterator it;
+	std::vector<EASYRPG_SHARED_PTR<Game_Picture> >::const_iterator it;
 	for (it = pictures.begin(); it != pictures.end(); it++) {
-		if(*it) { (*it)->Update(); }
+		if (*it) {
+			(*it)->Update();
+		}
 	}
 
 	if (!movie_filename.empty()) {
