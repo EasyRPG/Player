@@ -155,7 +155,7 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\lib\readers\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
@@ -164,8 +164,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\$(ConfigurationName);..\..\lib\readers\lib\$(ConfigurationName);$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\$(ConfigurationName)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;zlib.lib;winmm.lib;Imm32.lib;Version.lib;pixman.lib;shinonome.lib;readers.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\$(ConfigurationName);..\..\lib\liblcf\lib\$(ConfigurationName);$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\$(ConfigurationName)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;zlib.lib;winmm.lib;Imm32.lib;Version.lib;pixman.lib;shinonome.lib;liblcf.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -173,7 +173,7 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\lib\readers\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
@@ -182,8 +182,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\Debug;..\..\lib\readers\lib\Debug;$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\Debug;$(DXSDK_DIR)\Lib\x86</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;zlib.lib;winmm.lib;dxguid.lib;pixman.lib;shinonome.lib;readers.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\Debug;..\..\lib\liblcf\lib\Debug;$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\Debug;$(DXSDK_DIR)\Lib\x86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;zlib.lib;winmm.lib;dxguid.lib;pixman.lib;shinonome.lib;liblcf.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -191,7 +191,7 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\lib\readers\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;_WIN64;_AMD64_;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
@@ -200,8 +200,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\$(ConfigurationName);..\..\lib\readers\lib\$(ConfigurationName);$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\$(ConfigurationName)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;zlib.lib;winmm.lib;Imm32.lib;Version.lib;pixman.lib;shinonome64.lib;readers64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\$(ConfigurationName);..\..\lib\liblcf\lib\$(ConfigurationName);$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\$(ConfigurationName)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;zlib.lib;winmm.lib;Imm32.lib;Version.lib;pixman.lib;shinonome64.lib;liblcf64.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -209,7 +209,7 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\lib\readers\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;_WIN64;_AMD64_;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
@@ -218,8 +218,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\Debug;..\..\lib\readers\lib\Debug;$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\Debug;;$(DXSDK_DIR)\Lib\x64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;zlib.lib;winmm.lib;dxguid.lib;pixman.lib;shinonome64.lib;readers64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\Debug;..\..\lib\liblcf\lib\Debug;$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\Debug;;$(DXSDK_DIR)\Lib\x64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;zlib.lib;winmm.lib;dxguid.lib;pixman.lib;shinonome64.lib;liblcf64.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -229,7 +229,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\lib\readers\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -242,8 +242,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\$(ConfigurationName);..\..\lib\readers\lib\$(ConfigurationName);$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\$(ConfigurationName)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;zlib.lib;winmm.lib;Imm32.lib;Version.lib;pixman.lib;shinonome.lib;readers.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\$(ConfigurationName);..\..\lib\liblcf\lib\$(ConfigurationName);$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\$(ConfigurationName)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;zlib.lib;winmm.lib;Imm32.lib;Version.lib;pixman.lib;shinonome.lib;liblcf.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <Profile>true</Profile>
     </Link>
@@ -254,7 +254,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\lib\readers\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -267,8 +267,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\Release;..\..\lib\readers\lib\Release;$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\Release;$(DXSDK_DIR)\Lib\x86</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;zlib.lib;winmm.lib;dxguid.lib;pixman.lib;shinonome.lib;readers.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\Release;..\..\lib\liblcf\lib\Release;$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\Release;$(DXSDK_DIR)\Lib\x86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;zlib.lib;winmm.lib;dxguid.lib;pixman.lib;shinonome.lib;liblcf.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <Profile>true</Profile>
     </Link>
@@ -279,7 +279,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\lib\readers\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;_WIN64;_AMD64_;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -292,8 +292,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\$(ConfigurationName);..\..\lib\readers\lib\$(ConfigurationName);$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\$(ConfigurationName)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;zlib.lib;winmm.lib;Imm32.lib;Version.lib;pixman.lib;shinonome64.lib;readers64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\$(ConfigurationName);..\..\lib\liblcf\lib\$(ConfigurationName);$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\$(ConfigurationName)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;zlib.lib;winmm.lib;Imm32.lib;Version.lib;pixman.lib;shinonome64.lib;liblcf64.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <Profile>true</Profile>
     </Link>
@@ -304,7 +304,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\lib\readers\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;_WIN64;_AMD64_;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -317,8 +317,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\Release;..\..\lib\readers\lib\Release;$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\Release;$(DXSDK_DIR)\Lib\x64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;zlib.lib;winmm.lib;dxguid.lib;pixman.lib;shinonome64.lib;readers64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\Release;..\..\lib\liblcf\lib\Release;$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\Release;$(DXSDK_DIR)\Lib\x64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;zlib.lib;winmm.lib;dxguid.lib;pixman.lib;shinonome64.lib;liblcf64.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <Profile>true</Profile>
     </Link>
