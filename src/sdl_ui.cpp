@@ -30,6 +30,9 @@
 #elif GEKKO
 	#include <gccore.h>
 	#include <wiiuse/wpad.h>
+#elif __ANDROID__
+	#include <jni.h>
+	#include <SDL_system.h>
 #endif
 #include "color.h"
 #include "font_render_8x8.h"
@@ -56,6 +59,7 @@ AudioInterface& SdlUi::GetAudio() {
 	#define SDL_WINDOWEVENT SDL_ACTIVEEVENT
 #endif
 
+static bool filtering_done;
 static int FilterUntilFocus(const SDL_Event* evnt);
 static int FilterUntilFocus_SDL2(void*, SDL_Event* evnt);
 
@@ -88,14 +92,16 @@ SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 #endif
 
 	// Set some SDL env. variables before starting
-	// These are platform dependant, so every port
+	// These are platform dependent, so every port
 	// needs to set them manually
 
 	// Set window position to the middle of the
 	// screen
-	putenv("SDL_VIDEO_WINDOW_POS=center");
+#ifndef GEKKO
+	putenv(const_cast<char *>("SDL_VIDEO_WINDOW_POS=center"));
+#endif
 #if defined(PSP)
-	putenv("SDL_ASPECT_RATIO=4:3");
+	putenv(const_cast<char *>("SDL_ASPECT_RATIO=4:3"));
 #endif
 
 	if (SDL_Init(flags) < 0) {
@@ -615,6 +621,16 @@ void SdlUi::ProcessEvent(SDL_Event &evnt) {
 		case SDL_JOYAXISMOTION:
 			ProcessJoystickAxisEvent(evnt);
 			return;
+		
+#if SDL_MAJOR_VERSION>1
+		case SDL_FINGERDOWN:
+			ProcessFingerDownEvent(evnt);
+			return;
+
+		case SDL_FINGERUP:
+			ProcessFingerUpEvent(evnt);
+			return;
+#endif
 	}
 }
 
@@ -647,12 +663,15 @@ void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 
 		// Filter SDL events with FilterUntilFocus until focus is
 		// regained
+		filtering_done = false;
 #if SDL_MAJOR_VERSION==1
 		SDL_SetEventFilter(&FilterUntilFocus);
 #else
 		SDL_SetEventFilter(&FilterUntilFocus_SDL2, NULL);
 #endif
+
 		SDL_WaitEvent(NULL);
+
 #if SDL_MAJOR_VERSION==1
 		SDL_SetEventFilter(NULL);
 #else
@@ -661,9 +680,9 @@ void SdlUi::ProcessActiveEvent(SDL_Event &evnt) {
 
 		ShowCursor(last);
 
+		Player::Resume();
 		ResetKeys();
 
-		Player::Resume();
 		return;
 	}
 #endif
@@ -845,6 +864,83 @@ void SdlUi::ProcessJoystickAxisEvent(SDL_Event &evnt) {
 	}
 #endif
 }
+
+#if SDL_MAJOR_VERSION>1
+void SdlUi::ProcessFingerDownEvent(SDL_Event& evnt) {
+	ProcessFingerEvent(evnt, true);
+}
+
+void SdlUi::ProcessFingerUpEvent(SDL_Event& evnt) {
+	ProcessFingerEvent(evnt, false);
+}
+
+void SdlUi::ProcessFingerEvent(SDL_Event& evnt, bool finger_down) {
+#ifdef __ANDROID__
+	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+	jobject sdl_activity = (jobject)SDL_AndroidGetActivity();
+	jclass cls = env->GetObjectClass(sdl_activity);
+	jmethodID method_getScreenHeight = env->GetMethodID(cls, "getScreenHeight", "()I");
+	int screen_height = env->CallIntMethod(sdl_activity, method_getScreenHeight);
+	jmethodID method_getScreenWidth = env->GetMethodID(cls, "getScreenWidth", "()I");
+	int screen_width = env->CallIntMethod(sdl_activity, method_getScreenWidth);
+	jmethodID method_getPixels = env->GetMethodID(cls, "getPixels", "(D)I");
+	float button_size = env->CallIntMethod(sdl_activity, method_getPixels, 60.0);
+	float cross_size = env->CallIntMethod(sdl_activity, method_getPixels, 150.0);
+	env->DeleteLocalRef(cls);
+	env->DeleteLocalRef(sdl_activity);
+
+	float x = evnt.tfinger.x;
+	float y = evnt.tfinger.y;
+
+	// Bounding box of button a
+	float a_x2 = 1 - 0.13;
+	float a_y = 0.7;
+	float a_x = a_x2 - button_size / screen_width;
+	float a_y2 = a_y + button_size / screen_height;
+
+	// Bounding box of button b
+	float b_x2 = 1 - 0.03;
+	float b_y = 0.6;
+	float b_x = b_x2 - button_size / screen_width;
+	float b_y2 = b_y + button_size / screen_height;
+
+	// Bunding box of the cross
+	// One direction has 1/3 of box size
+	float cross_x = 0.03;
+	float cross_y = 0.5;
+	float cross_x2 = cross_x + cross_size / screen_width;
+	float cross_dir_width = (cross_x2 - cross_x) / 3;
+	float cross_y2 = cross_y + cross_size / screen_height;
+	float cross_dir_width_y = (cross_y2 - cross_y) / 3;
+	
+	bool a_hit = (x >= a_x && x <= a_x2 && y >= a_y && y <= a_y2);
+	bool b_hit = (x >= b_x && x <= b_x2 && y >= b_y && y <= b_y2);
+	bool up_hit = (x >= cross_x + cross_dir_width && x <= cross_x + cross_dir_width*2 && y >= cross_y && y <= cross_y + cross_dir_width_y);
+	bool down_hit = (x >= cross_x + cross_dir_width && x <= cross_x + cross_dir_width*2 && y >= cross_y + cross_dir_width_y*2 && y <= cross_y + cross_dir_width_y*3);
+	bool left_hit = (x >= cross_x && x <= cross_x + cross_dir_width && y >= cross_y + cross_dir_width_y && y <= cross_y + cross_dir_width_y*2);
+	bool right_hit = (x >= cross_x + cross_dir_width*2 && x <= cross_x + cross_dir_width*3 && y >= cross_y + cross_dir_width_y && y <= cross_y + cross_dir_width_y*2);
+	
+	if (finger_down) {
+		keys[Input::Keys::RETURN] = a_hit;
+		keys[Input::Keys::ESCAPE] = b_hit;
+		keys[Input::Keys::UP] = up_hit;
+		keys[Input::Keys::DOWN] = down_hit;
+		keys[Input::Keys::LEFT] = left_hit;
+		keys[Input::Keys::RIGHT] = right_hit;
+	} else {
+		keys[Input::Keys::RETURN] = !a_hit & keys[Input::Keys::RETURN];
+		keys[Input::Keys::ESCAPE] = !b_hit & keys[Input::Keys::ESCAPE];
+		keys[Input::Keys::UP] = !up_hit & keys[Input::Keys::UP];
+		keys[Input::Keys::DOWN] = !down_hit & keys[Input::Keys::DOWN];
+		keys[Input::Keys::LEFT] = !left_hit & keys[Input::Keys::LEFT];
+		keys[Input::Keys::RIGHT] = !right_hit & keys[Input::Keys::RIGHT];
+	}
+#else
+	(void)finger_down;
+	(void)evnt;
+#endif
+}
+#endif
 
 void SdlUi::SetAppIcon() {
 #ifdef _WIN32
@@ -1130,17 +1226,25 @@ Input::Keys::InputKey SdlJKey2InputKey(int button_index) {
 #endif
 
 int FilterUntilFocus(const SDL_Event* evnt) {
+	// Prevent throwing events away received after focus gained but filter
+	// not detached.
+	if (filtering_done) {
+		return true;
+	}
+
 	switch (evnt->type) {
 	case SDL_QUIT:
+		filtering_done = true;
 		Player::exit_flag = true;
 		return 1;
 
 	case SDL_WINDOWEVENT:
 #if SDL_MAJOR_VERSION==1
-		return evnt->active.state & SDL_APPINPUTFOCUS;
+		filtering_done = !!(evnt->active.state & SDL_APPINPUTFOCUS);
 #else
-		return evnt->window.event == SDL_WINDOWEVENT_FOCUS_GAINED;
+		filtering_done = evnt->window.event == SDL_WINDOWEVENT_FOCUS_GAINED;
 #endif
+		return filtering_done;
 
 	default:
 		return 0;

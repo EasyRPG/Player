@@ -12,11 +12,11 @@ BUILD_GP2XWIZ = NO
 BUILD_CAANOO = YES
 
 # Compiler headers
-INCLUDES = ../../lib/readers/include ../../src
+INCLUDES = ../../lib/liblcf/include ../../src
 INCDIR = $(foreach dir, $(INCLUDES), -I$(wildcard $(dir)))
 
 # Compiler source
-SOURCES = ../../lib/readers/src ../../lib/readers/src/generated ../../src
+SOURCES = ../../lib/liblcf/src ../../lib/liblcf/src/generated ../../src
 CPPFILES = $(foreach dir, $(SOURCES), $(wildcard $(dir)/*.cpp))
 BINFILES = $(foreach dir, $(DATA), $(wildcard $(dir)/*.*))
 OBJS = $(addsuffix .o, $(BINFILES)) $(CPPFILES:.cpp=.o)

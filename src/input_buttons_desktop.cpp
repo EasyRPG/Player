@@ -15,7 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if (defined(_WIN32) || defined(UNIX) || defined(EASYRPG_IS_ANDROID)) \
+#if (defined(_WIN32) || defined(UNIX)) \
 	&& !(defined(OPENDINGUX) || defined(GEKKO))
 
 // Headers
@@ -66,6 +66,7 @@ void Input::InitButtons() {
 	buttons[DEBUG_MENU].push_back(Keys::F9);
 	buttons[DEBUG_THROUGH].push_back(Keys::LCTRL);
 	buttons[DEBUG_THROUGH].push_back(Keys::RCTRL);
+	buttons[DEBUG_SAVE].push_back(Keys::F11);
 	buttons[TAKE_SCREENSHOT].push_back(Keys::F10);
 	buttons[TOGGLE_FPS].push_back(Keys::F2);
 

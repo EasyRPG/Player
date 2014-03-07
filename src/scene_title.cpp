@@ -142,10 +142,12 @@ void Scene_Title::LoadDatabase() {
 		Output::Debug("%s is not an RPG2k project", Main_Data::project_path.c_str());
 	}
 
-	if (!LDB_Reader::Load(FileFinder::FindDefault(DATABASE_NAME))) {
+	if (!LDB_Reader::Load(FileFinder::FindDefault(DATABASE_NAME),
+			ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)))) {
 		Output::ErrorStr(LcfReader::GetError());
 	}
-	if (!LMT_Reader::Load(FileFinder::FindDefault(TREEMAP_NAME))) {
+	if (!LMT_Reader::Load(FileFinder::FindDefault(TREEMAP_NAME),
+			ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)))) {
 		Output::ErrorStr(LcfReader::GetError());
 	}
 }
@@ -235,7 +237,7 @@ void Scene_Title::CommandNewGame() {
 		Main_Data::game_player->MoveTo(
 			Data::treemap.start.party_x, Data::treemap.start.party_y);
 		Main_Data::game_player->Refresh();
-		Game_Map::Autoplay();
+		Game_Map::PlayBgm();
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>());
 	}
 }

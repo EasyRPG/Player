@@ -34,11 +34,11 @@ void Sprite_Character::Update() {
 	Sprite::Update();
 	Rect r;
 	if (tile_id != character->GetTileId() ||
-		character_name != character->GetCharacterName() ||
-		character_index != character->GetCharacterIndex()) {
+		character_name != character->GetSpriteName() ||
+		character_index != character->GetSpriteIndex()) {
 		tile_id = character->GetTileId();
-		character_name = character->GetCharacterName();
-		character_index = character->GetCharacterIndex();
+		character_name = character->GetSpriteName();
+		character_index = character->GetSpriteIndex();
 		if (tile_id > 0) {
 			BitmapRef tile = Cache::Tile(Game_Map::GetChipsetName(), tile_id);
 			SetBitmap(tile);
@@ -68,9 +68,8 @@ void Sprite_Character::Update() {
 	}
 
 	if (character->IsFlashPending()) {
-		Color col;
-		int dur;
-		character->GetFlashParameters(col, dur);
+		Color col = character->GetFlashColor();
+		int dur = character->GetFlashTimeLeft();
 		Flash(col, dur);
 	}
 

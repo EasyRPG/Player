@@ -20,6 +20,7 @@
 
 // Headers
 #include "rpg_music.h"
+#include "rpg_savepartylocation.h"
 #include "game_character.h"
 #include <vector>
 
@@ -29,6 +30,48 @@
 class Game_Player : public Game_Character {
 public:
 	Game_Player();
+
+	/**
+	 * Implementation of abstract methods
+	 */
+	/** @{ */
+	int GetX() const;
+	void SetX(int new_x);
+	int GetY() const;
+	void SetY(int new_y);
+	int GetMapId() const;
+	void SetMapId(int new_map_id);
+	int GetDirection() const;
+	void SetDirection(int new_direction);
+	int GetPrelockDirection() const;
+	void SetPrelockDirection(int new_direction);
+	bool IsFacingLocked() const;
+	void SetFacingLocked(bool locked);
+	int GetLayer() const;
+	void SetLayer(int new_layer);
+	int GetMoveSpeed() const;
+	void SetMoveSpeed(int speed);
+	int GetMoveFrequency() const;
+	void SetMoveFrequency(int frequency);
+	const RPG::MoveRoute& GetMoveRoute() const;
+	void SetMoveRoute(const RPG::MoveRoute& move_route);
+	int GetOriginalMoveRouteIndex() const;
+	void SetOriginalMoveRouteIndex(int new_index);
+	int GetMoveRouteIndex() const;
+	void SetMoveRouteIndex(int new_index);
+	bool IsMoveRouteOverwritten() const;
+	void SetMoveRouteOverwritten(bool force);
+	const std::string& GetSpriteName() const;
+	void SetSpriteName(const std::string& sprite_name);
+	int GetSpriteIndex() const;
+	void SetSpriteIndex(int index);
+	Color GetFlashColor() const;
+	void SetFlashColor(const Color& flash_color);
+	int GetFlashLevel() const;
+	void SetFlashLevel(int flash_level);
+	int GetFlashTimeLeft() const;
+	void SetFlashTimeLeft(int time_left);
+	/** @} */
 
 	bool IsPassable(int x, int y, int d) const;
 	bool IsTeleporting() const;
@@ -51,6 +94,8 @@ public:
 	void BeginMove();
 
 private:
+	RPG::SavePartyLocation& location;
+
 	bool teleporting;
 	int vehicle_type;
 	bool vehicle_getting_on;

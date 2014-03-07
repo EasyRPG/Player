@@ -48,9 +48,8 @@ void Game_Actor::Init() {
 	SetExp(exp_list[GetLevel() - 1]);
 }
 
-void Game_Actor::Init(const RPG::SaveActor& /* save_data */) {
-	Init();
-	// TODO: Save loading
+void Game_Actor::Fixup() {
+	data.Fixup();
 }
 
 int Game_Actor::GetId() const {

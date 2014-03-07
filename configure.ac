@@ -31,7 +31,7 @@ PKG_CHECK_MODULES([ZLIB],[zlib])
 AC_CHECK_HEADERS([stdint.h stdlib.h string.h unistd.h wchar.h])
 AC_LANG_PUSH([C++])
 AC_CHECK_HEADERS([boost/foreach.hpp],[],[AC_MSG_ERROR(['boost' is required but it doesn't seem to be installed on this system.])])
-AC_CHECK_HEADERS([reader_options.h],[],[AC_MSG_ERROR([EasyRPG 'readers' library is required but it doesn't seem to be installed on this system.])])
+AC_CHECK_HEADERS([reader_options.h],[],[AC_MSG_ERROR(['liblcf' is required but it doesn't seem to be installed on this system.])])
 AC_LANG_POP([C++])
 
 # Checks for typedefs, structures, and compiler characteristics.

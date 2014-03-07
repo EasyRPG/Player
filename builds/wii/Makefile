@@ -17,10 +17,10 @@ include $(DEVKITPPC)/wii_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	boot
 BUILD		:=	obj
-SOURCES		:=	../../lib/readers/src ../../src ../../lib/readers/src/generated ../../lib/shinonome
+SOURCES		:=	../../lib/liblcf/src ../../src ../../lib/liblcf/src/generated ../../lib/shinonome
 #SOURCES		:=	../../src
 DATA		:=	data  
-INCLUDES	:=  ../../lib/readers/include ../../src ../../lib/shinonome
+INCLUDES	:=  ../../lib/liblcf/include ../../src ../../lib/shinonome
 
 #---------------------------------------------------------------------------------
 # options for code generation

@@ -53,10 +53,10 @@ public:
 	void Init();
 
 	/**
-	 * Initializes the game actor to the database state
-	 * and overwrites them with savedata values.
+	 * Used after savegame loading to replace savegame default values with
+	 * database ones.
 	 */
-	void Init(const RPG::SaveActor& save_data);
+	void Fixup();
 
 	/**
 	 * Applies the effects of an item.

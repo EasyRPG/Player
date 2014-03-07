@@ -1,13 +1,13 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EasyRPG", "EasyRPG.vcxproj", "{9B294371-4E85-42E0-95C8-39DF9573D69D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D892967A-6B8E-4AC5-9D38-785D748796D0} = {D892967A-6B8E-4AC5-9D38-785D748796D0}
 		{8C64E9D9-2622-4404-B1AB-62848DEC4ECA} = {8C64E9D9-2622-4404-B1AB-62848DEC4ECA}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "readers", "..\..\lib\readers\builds\vs2010\readers.vcxproj", "{D892967A-6B8E-4AC5-9D38-785D748796D0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "liblcf", "..\..\lib\liblcf\builds\vs2010\liblcf.vcxproj", "{D892967A-6B8E-4AC5-9D38-785D748796D0}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "shinonome", "..\..\lib\shinonome\builds\vs2010\shinonome.vcxproj", "{8C64E9D9-2622-4404-B1AB-62848DEC4ECA}"
 EndProject

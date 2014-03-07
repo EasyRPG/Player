@@ -69,7 +69,7 @@ namespace {
 	}
 
 	struct ShinonomeFont : public Font {
-		enum { HEIGHT = 12, FULL_WIDTH = HEIGHT, HALF_WIDTH = FULL_WIDTH / 2, };
+		enum { HEIGHT = 12, FULL_WIDTH = HEIGHT, HALF_WIDTH = FULL_WIDTH / 2 };
 
 		typedef ShinonomeGlyph const*(*function_type)(uint32_t);
 

@@ -20,6 +20,7 @@
 #include "scene_map.h"
 #include "scene_menu.h"
 #include "scene_title.h"
+#include "scene_end.h"
 #include "scene_name.h"
 #include "scene_shop.h"
 #include "scene_save.h"
@@ -39,7 +40,8 @@
 #include "input.h"
 #include "screen.h"
 
-Scene_Map::Scene_Map() {
+Scene_Map::Scene_Map(bool from_save) :
+	from_save(from_save) {
 	type = Scene::Map;
 }
 
@@ -49,7 +51,12 @@ void Scene_Map::Start() {
 	screen.reset(new Screen());
 	weather.reset(new Weather());
 
-	Main_Data::game_screen->Reset();
+	// Called here instead of Scene Load, otherwise wrong graphic stack
+	// is used.
+	if (from_save) {
+		Main_Data::game_screen->CreatePicturesFromSave();
+	}
+
 	Graphics::FrameReset();
 }
 
@@ -102,17 +109,18 @@ void Scene_Map::Update() {
 		return;
 
 	// ESC-Menu calling
-	if (Input::IsTriggered(Input::CANCEL))
-	{
-		if (Game_System::GetAllowMenu()) {
-			Game_Temp::menu_calling = true;
-			Game_Temp::menu_beep = true;
-		}
+	if (Input::IsTriggered(Input::CANCEL)) {
+		Game_Temp::menu_calling = true;
+		Game_Temp::menu_beep = true;
 	}
 
-	if (Input::IsTriggered(Input::DEBUG_MENU))
-	{
-		CallDebug();
+	if (Player::debug_flag) {
+		if (Input::IsTriggered(Input::DEBUG_MENU)) {
+			CallDebug();
+		}
+		else if (Input::IsTriggered(Input::DEBUG_SAVE)) {
+			CallSave();
+		}
 	}
 
 	if (!Main_Data::game_player->IsMoving()) {
@@ -156,7 +164,7 @@ void Scene_Map::UpdateTeleportPlayer() {
 	Scene::TransitionOut();
 
 	Main_Data::game_player->PerformTeleport();
-	Game_Map::Autoplay();
+	Game_Map::PlayBgm();
 
 	spriteset.reset(new Spriteset_Map());
 
@@ -197,7 +205,12 @@ void Scene_Map::CallMenu() {
 
 	// TODO: Main_Data::game_player->Straighten();
 
-	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Menu>());
+	if (Game_System::GetAllowMenu()) {
+		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Menu>());
+	}
+	else {
+		Scene::Push(EASYRPG_MAKE_SHARED<Scene_End>());
+	}
 }
 
 void Scene_Map::CallSave() {
@@ -207,6 +220,7 @@ void Scene_Map::CallSave() {
 }
 
 void Scene_Map::CallDebug() {
-	if (Player::debug_flag)
+	if (Player::debug_flag) {
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Debug>());
+	}
 }

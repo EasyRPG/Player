@@ -36,6 +36,54 @@ public:
 	Game_Event(int map_id, const RPG::Event& event);
 
 	/**
+	 * Constructor.
+	 * Create event from save data.
+	 */
+	Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEvent& data);
+
+	/**
+	 * Implementation of abstract methods
+	 */
+	/** @{ */
+	int GetX() const;
+	void SetX(int new_x);
+	int GetY() const;
+	void SetY(int new_y);
+	int GetMapId() const;
+	void SetMapId(int new_map_id);
+	int GetDirection() const;
+	void SetDirection(int new_direction);
+	int GetPrelockDirection() const;
+	void SetPrelockDirection(int new_direction);
+	bool IsFacingLocked() const;
+	void SetFacingLocked(bool locked);
+	int GetLayer() const;
+	void SetLayer(int new_layer);
+	int GetMoveSpeed() const;
+	void SetMoveSpeed(int speed);
+	int GetMoveFrequency() const;
+	void SetMoveFrequency(int frequency);
+	const RPG::MoveRoute& GetMoveRoute() const;
+	void SetMoveRoute(const RPG::MoveRoute& move_route);
+	int GetOriginalMoveRouteIndex() const;
+	void SetOriginalMoveRouteIndex(int new_index);
+	int GetMoveRouteIndex() const;
+	void SetMoveRouteIndex(int new_index);
+	bool IsMoveRouteOverwritten() const;
+	void SetMoveRouteOverwritten(bool force);
+	const std::string& GetSpriteName() const;
+	void SetSpriteName(const std::string& sprite_name);
+	int GetSpriteIndex() const;
+	void SetSpriteIndex(int index);
+	Color GetFlashColor() const;
+	void SetFlashColor(const Color& flash_color);
+	int GetFlashLevel() const;
+	void SetFlashLevel(int flash_level);
+	int GetFlashTimeLeft() const;
+	void SetFlashTimeLeft(int time_left);
+	/** @} */
+
+	/**
 	 * Clears starting flag.
 	 */
 	void ClearStarting();
@@ -46,6 +94,7 @@ public:
 	void Refresh();
 
 	void Setup(RPG::EventPage* new_page);
+	void SetupFromSave(RPG::EventPage* new_page);
 
 	/**
 	 * Gets event ID.
@@ -97,16 +146,23 @@ public:
 
 	RPG::Event& GetEvent();
 
+	const RPG::SaveMapEvent& GetSaveData();
+
 private:
+	// Not a reference on purpose.
+	// Events change during map change and old are destroyed, breaking the
+	// reference.
+	RPG::SaveMapEvent data;
+
 	int ID;
 	bool starting;
 	int trigger;
-	int map_id;
 	RPG::Event event;
 	bool erased;
 	RPG::EventPage* page;
 	std::vector<RPG::EventCommand> list;
 	boost::scoped_ptr<Game_Interpreter> interpreter;
+	bool from_save;
 };
 
 #endif

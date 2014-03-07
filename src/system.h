@@ -31,13 +31,12 @@
    || defined(OPENDINGUX) \
    || defined(GEKKO) \
    || defined(PSP) \
-	  || defined(GPH) \
-	  || defined(EASYRPG_IS_ANDROID) \
+   || defined(GPH) \
 	  )
 #  error "This build doesn't target an os"
 #endif
 
-#if !defined(USE_SDL) && !defined(EASYRPG_IS_ANDROID)
+#if !defined(USE_SDL)
 #  error "This build doesn't target a backend"
 #endif
 

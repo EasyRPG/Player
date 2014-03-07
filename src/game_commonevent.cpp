@@ -23,12 +23,23 @@
 #include "game_interpreter_battle.h"
 #include "main_data.h"
 
-#include <ciso646>
-
 Game_CommonEvent::Game_CommonEvent(int common_event_id, bool battle) :
 	common_event_id(common_event_id),
 	battle(battle),
 	interpreter(NULL) {
+}
+
+Game_CommonEvent::Game_CommonEvent(int common_event_id, bool battle, const RPG::SaveCommonEvent& data) :
+	common_event_id(common_event_id),
+	battle(battle),
+	interpreter(NULL) {
+
+	if (!data.event_data.commands.empty()) {
+		interpreter.reset(new Game_Interpreter_Map());
+		static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(data.event_data.commands, 0);
+	}
+
+	Refresh();
 }
 
 void Game_CommonEvent::Refresh() {
@@ -36,7 +47,7 @@ void Game_CommonEvent::Refresh() {
 
 	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
 		if (GetSwitchFlag() ? Game_Switches[GetSwitchId()] : true) {
-			if (not interpreter) {
+			if (!interpreter) {
 				interpreter.reset(battle
 								  ? static_cast<Game_Interpreter*>(new Game_Interpreter_Battle())
 								  : static_cast<Game_Interpreter*>(new Game_Interpreter_Map()));
@@ -94,4 +105,14 @@ void Game_CommonEvent::CheckEventTriggerAuto() {
 			}
 		}
 	}
+}
+
+RPG::SaveEventData Game_CommonEvent::GetSaveData() {
+	RPG::SaveEventData event_data;
+
+	if (interpreter) {
+		event_data.commands = static_cast<Game_Interpreter_Map*>(interpreter.get())->GetSaveData();
+	}
+
+	return event_data;
 }
