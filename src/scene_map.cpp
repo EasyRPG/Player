@@ -66,7 +66,7 @@ Scene_Map::~Scene_Map() {
 
 
 void Scene_Map::Continue() {
-	Game_Map::Autoplay();
+	Game_Map::PlayBgm();
 }
 
 /*void Scene_Map::TransitionIn() {

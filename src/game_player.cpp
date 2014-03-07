@@ -446,8 +446,8 @@ void Game_Player::Refresh() {
 
 	actor = Main_Data::game_party->GetActors()[0];
 
-	SetSpriteName(actor->GetCharacterName());
-	SetSpriteIndex(actor->GetCharacterIndex());
+	SetSpriteName(actor->GetSpriteName());
+	SetSpriteIndex(actor->GetSpriteIndex());
 }
 
 bool Game_Player::GetOnOffVehicle() {
