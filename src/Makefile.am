@@ -131,6 +131,8 @@ easyrpg_player_SOURCES = \
 	map_data.h \
 	matrix.h \
 	memory_management.h \
+	message_overlay.cpp \
+	message_overlay.h \
 	options.h \
 	output.cpp \
 	output.h \
