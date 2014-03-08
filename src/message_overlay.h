@@ -27,6 +27,15 @@
 #include "tone.h"
 #include "zobj.h"
 
+class MessageOverlayItem {
+public:
+	MessageOverlayItem(const std::string& text, Color color);
+
+	std::string text;
+	Color color;
+	bool hidden;
+};
+
 /**
  * MessageOverlay class.
  * Displays notifications during the game session.
@@ -47,6 +56,8 @@ public:
 
 	void AddMessage(const std::string& message, Color color);
 
+	void SetShowAll(bool show_all);
+
 private:
 	DrawableType type;
 	unsigned long ID;
@@ -63,11 +74,13 @@ private:
 	int text_height;
 	int message_max;
 
-	std::deque<std::pair<std::string, Color> > messages;
+	std::deque<MessageOverlayItem> messages;
 
 	bool dirty;
 
 	int counter;
+
+	bool show_all;
 };
 
 #endif

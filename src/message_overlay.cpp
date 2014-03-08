@@ -29,9 +29,10 @@ MessageOverlay::MessageOverlay() :
 	ox(0),
 	oy(0),
 	text_height(12),
-	message_max(5),
+	message_max(10),
 	dirty(false),
-	counter(0) {
+	counter(0),
+	show_all(false) {
 	
 	bitmap_screen = BitmapScreen::Create();
 	black = Bitmap::Create(DisplayUi->GetWidth(), text_height, Color());
@@ -47,14 +48,23 @@ MessageOverlay::~MessageOverlay() {
 	Graphics::RemoveDrawable(ID);
 }
 
-bool MessageOverlay::IsGlobal() const { return true; }
+bool MessageOverlay::IsGlobal() const {
+	return true;
+}
 
 void MessageOverlay::Draw(int /*z_order*/) {
+	std::deque<MessageOverlayItem>::iterator it;
+
 	++counter;
-	if (counter > 240) {
+	if (counter > 300) {
 		counter = 0;
 		if (!messages.empty()) {
-			messages.pop_front();
+			for (it = messages.begin(); it != messages.end(); ++it) {
+				if (!it->hidden) {
+					it->hidden = true;
+					break;
+				}
+			}
 			dirty = true;
 		}
 	} else {
@@ -66,10 +76,16 @@ void MessageOverlay::Draw(int /*z_order*/) {
 	if (!dirty) return;
 
 	bitmap->Clear();
-	for (size_t i = 0; i < messages.size(); ++i) {
-		bitmap->Blit(0, i * text_height, *black, black->GetRect(), 128);
-		bitmap->TextDraw(2, i * text_height, bitmap->GetWidth(), text_height,
-			messages[i].second, messages[i].first);
+
+	int i = 0;
+
+	for (it = messages.begin(); it != messages.end(); ++it) {
+		if (!it->hidden || show_all) {
+			bitmap->Blit(0, i * text_height, *black, black->GetRect(), 128);
+			bitmap->TextDraw(2, i * text_height, bitmap->GetWidth(), text_height,
+				it->color, it->text);
+			++i;
+		}
 	}
 
 	bitmap_screen->BlitScreen(ox, oy);
@@ -90,9 +106,19 @@ unsigned long MessageOverlay::GetId() const {
 }
 
 void MessageOverlay::AddMessage(const std::string& message, Color color) {
-	messages.push_back(std::make_pair(message, color));
+	messages.push_back(MessageOverlayItem(message, color));
 	if (messages.size() > (unsigned)message_max) {
 		messages.pop_front();
 	}
 	dirty = true;
+}
+
+void MessageOverlay::SetShowAll(bool show_all) {
+	this->show_all = show_all;
+	dirty = true;
+}
+
+MessageOverlayItem::MessageOverlayItem(const std::string& text, Color color) :
+	text(text), color(color), hidden(false) {
+	// no-op
 }

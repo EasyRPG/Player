@@ -76,8 +76,12 @@ void Output::IgnorePause(bool const val) {
 	ignore_pause = val;
 }
 
-static void WriteLog(char const* type, std::string const& msg) {
+static void WriteLog(std::string const& type, std::string const& msg) {
 	output_time() << type << ": " << msg << "\n";
+
+	#ifdef __ANDROID__
+		__android_log_print(type == "Error" ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, "EasyRPG Player", "%s", msg.c_str());
+	#endif
 }
 
 static void HandleErrorOutput(const std::string& err) {
@@ -95,11 +99,6 @@ static void HandleErrorOutput(const std::string& err) {
 	DisplayUi->UpdateDisplay();
 
 	if (ignore_pause) { return; }
-
-
-	#ifdef __ANDROID__
-		__android_log_print(is_error ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, "EasyRPG Player", "%s", msg.c_str());
-	#endif
 
 	Input::ResetKeys();
 	while (!Input::IsAnyPressed()) {
@@ -144,6 +143,13 @@ bool Output::TakeScreenshot(std::ostream& os) {
 	return DisplayUi->GetDisplaySurface()->WritePNG(os);
 }
 
+void Output::ToggleLog() {
+	PrepareScreenOutput();
+	static bool show_log = true;
+	message_overlay->SetShowAll(show_log);
+	show_log = !show_log;
+}
+
 void Output::Error(const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
@@ -155,6 +161,7 @@ void Output::Error(const char* fmt, ...) {
 
 	va_end(args);
 }
+
 void Output::ErrorStr(std::string const& err) {
 	WriteLog("Error", err);
 	static bool recursive_call = false;
@@ -162,8 +169,6 @@ void Output::ErrorStr(std::string const& err) {
 		recursive_call = true;
 		PrepareScreenOutput();
 		HandleErrorOutput(err);
-		Player::Exit();
-		Player::Exit();
 	} else {
 		// Fallback to Console if the display is not ready yet
 		std::cout << err << std::endl;
