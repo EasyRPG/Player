@@ -76,6 +76,10 @@ void Output::IgnorePause(bool const val) {
 	ignore_pause = val;
 }
 
+static void WriteLog(char const* type, std::string const& msg) {
+	output_time() << type << ": " << msg << "\n";
+}
+
 static void HandleErrorOutput(const std::string& err) {
 	// Drawing directly on the screen because message_overlay is not visible
 	// when faded out

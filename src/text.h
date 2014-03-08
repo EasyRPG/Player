@@ -35,5 +35,5 @@ namespace Text {
 	 * Draws text directly to dest without memory allocation (used to render errors)
 	 */
 	void DirectDraw(Bitmap& dest, int x, int y, Color color, std::string const& text);
-
+}
 #endif

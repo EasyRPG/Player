@@ -116,7 +116,6 @@ public:
 	 */
 	virtual void SetTitle(const std::string &title) = 0;
 
-
 	/**
 	 * Sets if the cursor should be shown.
 	 *

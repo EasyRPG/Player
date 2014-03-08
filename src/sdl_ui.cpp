@@ -78,7 +78,7 @@ static int FilterUntilFocus_SDL2(void*, SDL_Event* evnt);
 SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
 	zoom_available(true),
 	toggle_fs_available(false),
-	main_window(NULL),
+	mode_changing(false),
 	BaseUi() {
 
 #ifdef GEKKO
