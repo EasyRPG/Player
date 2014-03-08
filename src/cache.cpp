@@ -53,11 +53,8 @@ namespace cache_anon {
 			std::string const path = FileFinder::FindImage(folder_name, filename);
 
 			if (path.empty()) {
-				// TODO:
 				// Load a dummy image with correct size (issue #32)
-				Output::Warning("Image not found: %s/%s\n\nPlayer will exit now.", folder_name.c_str(), filename.c_str());
-				// Delayed termination, otherwise it segfaults in Graphics::Quit
-				Player::exit_flag = true;
+				Output::Error("Image not found: %s/%s", folder_name.c_str(), filename.c_str());
 			}
 
 			return (cache[key] = path.empty()
