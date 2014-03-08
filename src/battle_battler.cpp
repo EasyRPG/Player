@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "data.h"
 #include "player.h"
 #include "sprite.h"
@@ -25,7 +23,6 @@
 #include "battle_battler.h"
 #include "bitmap.h"
 
-////////////////////////////////////////////////////////////
 bool Battle::Battler::IsReady() const {
 	return gauge >= gauge_full;
 }
@@ -72,7 +69,6 @@ void Battle::Battler::ModifyAgi(int effect) {
 }
 
 
-////////////////////////////////////////////////////////////
 Battle::Enemy::Enemy(const RPG::TroopMember* member, int id) :
 	Battler(id),
 	game_enemy(new Game_Enemy(member->enemy_id)),
@@ -116,7 +112,6 @@ bool Battle::Enemy::CanAct() const {
 	return GetActor()->Exists() && !escaped;
 }
 
-////////////////////////////////////////////////////////////
 Battle::Ally::Ally(Game_Actor* game_actor, int id) :
 	Battler(id),
 	game_actor(game_actor),
@@ -157,7 +152,7 @@ void Battle::Ally::SetAnimState(int state) {
 		return;
 
 	sprite_file = ext.battler_name;
-	sprite->SetBitmap(Cache::BattleChar(sprite_file));
+	sprite->SetBitmap(Cache::Battlecharset(sprite_file));
 }
 
 void Battle::Ally::UpdateAnim(int cycle) {

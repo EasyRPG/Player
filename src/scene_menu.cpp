@@ -1,26 +1,25 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <cassert>
 #include "scene_menu.h"
 #include "audio.h"
+#include "cache.h"
 #include "graphics.h"
 #include "game_party.h"
 #include "game_system.h"
@@ -36,14 +35,14 @@
 #include "scene_save.h"
 #include "scene_status.h"
 
-////////////////////////////////////////////////////////////
 Scene_Menu::Scene_Menu(int menu_index) :
 	menu_index(menu_index) {
 	type = Scene::Menu;
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Menu::Start() {
+	DisplayUi->SetBackcolor(Cache::system_info.bg_color);
+
 	CreateCommandWindow();
 
 	// Gold Window
@@ -54,14 +53,12 @@ void Scene_Menu::Start() {
 	menustatus_window->SetActive(false);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Menu::Continue() {
 	if (command_options[command_window->GetIndex()] == Order) {
 		menustatus_window->Refresh();
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Menu::Update() {
 	command_window->Update();
 	gold_window->Update();
@@ -75,7 +72,6 @@ void Scene_Menu::Update() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Menu::CreateCommandWindow() {
 	// Create Options Window
 	std::vector<std::string> options;
@@ -157,10 +153,9 @@ void Scene_Menu::CreateCommandWindow() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Menu::UpdateCommand() {
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Data::system.cancel_se);
+		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		menu_index = command_window->GetIndex();
@@ -168,9 +163,9 @@ void Scene_Menu::UpdateCommand() {
 		switch (command_options[menu_index]) {
 		case Item:
 			if (Game_Party::GetActors().empty()) {
-				Game_System::SePlay(Data::system.buzzer_se);
+				Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 			} else {
-				Game_System::SePlay(Data::system.decision_se);
+				Game_System::SePlay(Main_Data::game_data.system.decision_se);
 				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Item>());
 			}
 			break;
@@ -179,9 +174,9 @@ void Scene_Menu::UpdateCommand() {
 		case Status:
 		case Row:
 			if (Game_Party::GetActors().empty()) {
-				Game_System::SePlay(Data::system.buzzer_se);
+				Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 			} else {
-				Game_System::SePlay(Data::system.decision_se);
+				Game_System::SePlay(Main_Data::game_data.system.decision_se);
 				command_window->SetActive(false);
 				menustatus_window->SetActive(true);
 				menustatus_window->SetIndex(0);
@@ -189,42 +184,41 @@ void Scene_Menu::UpdateCommand() {
 			break;
 		case Save:
 			if (!Game_System::GetAllowSave()) {
-				Game_System::SePlay(Data::system.buzzer_se);
+				Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 			} else {
-				Game_System::SePlay(Data::system.decision_se);
+				Game_System::SePlay(Main_Data::game_data.system.decision_se);
 				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Save>());
 			}
 			break;
 		case Order:
 			if (Game_Party::GetActors().size() <= 1) {
-				Game_System::SePlay(Data::system.buzzer_se);
+				Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 			} else {
-				Game_System::SePlay(Data::system.decision_se);
+				Game_System::SePlay(Main_Data::game_data.system.decision_se);
 				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Order>());
 			}
 			break;
 		case Wait:
-			Game_System::SePlay(Data::system.decision_se);
+			Game_System::SePlay(Main_Data::game_data.system.decision_se);
 			Game_Temp::battle_wait = !Game_Temp::battle_wait;
 			command_window->SetItemText(menu_index, Game_Temp::battle_wait ? Data::terms.wait_on : Data::terms.wait_off);
 			break;
 		case Quit:
-			Game_System::SePlay(Data::system.decision_se);
+			Game_System::SePlay(Main_Data::game_data.system.decision_se);
 			Scene::Push(EASYRPG_MAKE_SHARED<Scene_End>());
 			break;
 		}
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Menu::UpdateActorSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Data::system.cancel_se);
+		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		command_window->SetActive(true);
 		menustatus_window->SetActive(false);
 		menustatus_window->SetIndex(-1);
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		Game_System::SePlay(Data::system.decision_se);
+		Game_System::SePlay(Main_Data::game_data.system.decision_se);
 		switch (command_options[command_window->GetIndex()]) {
 		case Skill:
 			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Skill>(menustatus_window->GetIndex()));

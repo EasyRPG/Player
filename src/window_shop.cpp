@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <string>
 #include "input.h"
 #include "scene.h"
@@ -28,7 +26,6 @@
 #include "bitmap.h"
 #include "font.h"
 
-////////////////////////////////////////////////////////////
 Window_Shop::Window_Shop(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) {
 
@@ -83,10 +80,6 @@ Window_Shop::Window_Shop(int ix, int iy, int iwidth, int iheight) :
 	Refresh();
 }
 
-////////////////////////////////////////////////////////////
-Window_Shop::~Window_Shop() {
-}
-
 void Window_Shop::UpdateCursorRect() {
 	Rect rect;
 	switch (mode) {
@@ -102,7 +95,6 @@ void Window_Shop::UpdateCursorRect() {
 	SetCursorRect(rect);
 }
 
-////////////////////////////////////////////////////////////
 void Window_Shop::Refresh() {
 	contents->Clear();
 
@@ -146,13 +138,11 @@ void Window_Shop::Refresh() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Window_Shop::SetMode(int nmode) {
 	mode = nmode;
 	Refresh();
 }
 
-////////////////////////////////////////////////////////////
 int Window_Shop::GetChoice() const {
 	return choice;
 }
@@ -161,7 +151,6 @@ void Window_Shop::SetChoice(int nchoice) {
 	choice = nchoice;
 }
 
-////////////////////////////////////////////////////////////
 void Window_Shop::Update() {
 	Window_Base::Update();
 
@@ -176,7 +165,7 @@ void Window_Shop::Update() {
 					else {
 						index = 1;
 					}
-					Game_System::SePlay(Data::system.cursor_se);
+					Game_System::SePlay(Main_Data::game_data.system.cursor_se);
 				}
 				if (Input::IsRepeated(Input::UP)) {
 					if (index > 1) {
@@ -185,10 +174,10 @@ void Window_Shop::Update() {
 					else {
 						index = leave_index;
 					}
-					Game_System::SePlay(Data::system.cursor_se);
+					Game_System::SePlay(Main_Data::game_data.system.cursor_se);
 				}
 				if (Input::IsTriggered(Input::DECISION)) {
-					Game_System::SePlay(Data::system.decision_se);
+					Game_System::SePlay(Main_Data::game_data.system.decision_se);
 					if (index == buy_index)
 						choice = Scene_Shop::Buy;
 					if (index == sell_index)

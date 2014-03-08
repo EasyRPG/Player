@@ -1,223 +1,346 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #ifndef _GAME_ACTOR_H_
 #define _GAME_ACTOR_H_
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <string>
 #include <vector>
 #include "rpg_save.h"
 #include "game_battler.h"
 
-////////////////////////////////////////////////////////////
-/// Game_Actor class
-////////////////////////////////////////////////////////////
+/**
+ * Game_Actor class.
+ */
 class Game_Actor : public Game_Battler {
 public:
-	////////////////////////////////////////////////////////
-	/// Constructor.
-	/// @param actor_id : database actor id
-	////////////////////////////////////////////////////////
+	/**
+	 * Constructor.
+	 *
+	 * @param actor_id database actor ID.
+	 */
 	Game_Actor(int actor_id);
 
-	////////////////////////////////////////////////////////
-	/// Sets up the game actor
-	/// This is automatically called in the constructor.
-	////////////////////////////////////////////////////////
+	/**
+	 * Sets up the game actor
+	 * This is automatically called in the constructor.
+	 */
 	void Setup();
 
-	////////////////////////////////////////////////////////
-	/// Initializes the game actor to the database state
-	/// Sets the skills, HP, SP and experience
-	////////////////////////////////////////////////////////
+	/**
+	 * Initializes the game actor to the database state.
+	 * Sets the skills, HP, SP and experience.
+	 */
 	void Init();
 
-	////////////////////////////////////////////////////////
-	/// Initializes the game actor to the database state
-	/// and overwrites them with savedata values.
-	////////////////////////////////////////////////////////
-	void Init(const RPG::SaveActor& save_data);
+	/**
+	 * Used after savegame loading to replace savegame default values with
+	 * database ones.
+	 */
+	void Fixup();
 
-	////////////////////////////////////////////////////////
-	/// Learn a new skill.
-	/// @param skill_id : database skill id
-	////////////////////////////////////////////////////////
-	void LearnSkill(int skill_id);
+	/**
+	 * Learns a new skill.
+	 *
+	 * @param skill_id database skill ID.
+	 * @return If skill was learned (fails if already had the skill)
+	 */
+	bool LearnSkill(int skill_id);
 
-	////////////////////////////////////////////////////////
-	/// Unlearn a skill.
-	/// @param skill_id : database skill id
-	////////////////////////////////////////////////////////
-	void UnlearnSkill(int skill_id);
+	/**
+	 * Unlearns a skill.
+	 *
+	 * @param skill_id database skill ID.
+	 * @return If skill was unlearned (fails if didn't had the skill)
+	 */
+	bool UnlearnSkill(int skill_id);
 
-	////////////////////////////////////////////////////////
-	/// Checks if the actor has the skill learned
-	/// @param skill_id : id of skill to check
-	/// @return true if skill has been learned
-	////////////////////////////////////////////////////////
-	bool IsSkillLearned(int skill_id);
+	/**
+	 * Checks if the actor has the skill learned.
+	 *
+	 * @param skill_id ID of skill to check.
+	 * @return true if skill has been learned.
+	 */
+	bool IsSkillLearned(int skill_id) const;
 
-	////////////////////////////////////////////////////////
-	/// Checks if the actor can use the skill
-	/// @param skill_id : id of skill to check
-	/// @return true if skill can be used
-	////////////////////////////////////////////////////////
-	bool IsSkillUsable(int skill_id);
+	/**
+	 * Checks if the actor can use the skill.
+	 *
+	 * @param skill_id ID of skill to check.
+	 * @return true if skill can be used.
+	 */
+	bool IsSkillUsable(int skill_id) const;
 
-	////////////////////////////////////////////////////////
-	/// Gets the actor ID.
-	/// @return Actor ID
-	////////////////////////////////////////////////////////
+	/**
+	 * Gets the actor ID.
+	 *
+	 * @return Actor ID
+	 */
 	int GetId() const;
 
-	////////////////////////////////////////////////////////
-	/// Calculates the Exp needed for a level up
-	/// @param level : Level to calculate exp for
-	/// @todo Add Formula for RPG2k3
-	/// @return Needed experience
-	////////////////////////////////////////////////////////
-	int CalculateExp(int level);
+	/**
+	 * Calculates the Exp needed for a level up.
+	 *
+	 * @param level level to calculate exp for.
+	 * @return Needed experience.
+	 */
+	int CalculateExp(int level) const;
 
-	////////////////////////////////////////////////////////
-	/// Calculates the Experience curve for every level
-	////////////////////////////////////////////////////////
+	/**
+	 * Calculates the Experience curve for every level.
+	 */
 	void MakeExpList();
 
-	////////////////////////////////////////////////////////
-	/// Converts the currect Exp to a string
-	/// @return Exp-String or ------ if Level is max
-	////////////////////////////////////////////////////////
-	std::string GetExpString();
+	/**
+	 * Converts the currect Exp to a string.
+	 *
+	 * @return Exp-String or ------ if Level is max.
+	 */
+	std::string GetExpString() const;
 
-	////////////////////////////////////////////////////////
-	/// Converts the Exp for the next LV to a string
-	/// @return Exp-String or ------ if Level is max
-	////////////////////////////////////////////////////////
-	std::string GetNextExpString();
+	/**
+	 * Converts the Exp for the next LV to a string.
+	 *
+	 * @return Exp-String or ------ if Level is max.
+	 */
+	std::string GetNextExpString() const;
 
-	/// @return name.
+	/**
+	 * Returns how many Exp are minimum for current level.
+	 *
+	 * @return Exp needed or -1 if invalid.
+	 */
+	int GetBaseExp() const;
+
+	/**
+	 * Returns how many Exp are minimum for a level.
+	 *
+	 * @param level to return base Exp for.
+	 * @return Exp needed or -1 if invalid.
+	 */
+	int GetBaseExp(int level) const;
+
+	/**
+	 * Returns how many Exp are needed for a level up based on the current
+	 * level.
+	 *
+	 * @return Exp needed or -1 if max level.
+	 */
+	int GetNextExp() const;
+
+	/**
+	 * Return how many Exp are needed for a level up.
+	 *
+	 * @param level to return NextExp for.
+	 * @return Exp needed or -1 if max level / invalid.
+	 */
+	int GetNextExp(int level) const;
+
+	/**
+	 * Gets actor name.
+	 *
+	 * @return name.
+	 */
 	std::string GetName() const;
 
-	/// @return character graphic filename.
+	/**
+	 * Gets actor character graphic filename.
+	 *
+	 * @return character graphic filename.
+	 */
 	std::string GetCharacterName() const;
 
-	/// @return character graphic index.
+	/**
+	 * Gets actor character graphic index.
+	 *
+	 * @return character graphic index.
+	 */
 	int GetCharacterIndex() const;
 
-	/// @return face graphic filename.
+	/**
+	 * Gets actor face graphic filename.
+	 *
+	 * @return face graphic filename.
+	 */
 	std::string GetFaceName() const;
 
-	/// @return face graphic index.
+	/**
+	 * Gets actor face graphic index.
+	 *
+	 * @return face graphic index.
+	 */
 	int GetFaceIndex() const;
 
-	/// @return title
+	/**
+	 * Gets actor title.
+	 *
+	 * @return title.
+	 */
 	std::string GetTitle() const;
 
-	/// @return equipped weapon id
+	/**
+	 * Gets actor equipped weapon ID.
+	 *
+	 * @return equipped weapon ID.
+	 */
 	int GetWeaponId() const;
 
-	/// @return equipped shield id
+	/**
+	 * Gets actor equipped shield ID.
+	 *
+	 * @return equipped shield ID.
+	 */
 	int GetShieldId() const;
 
-	/// @return equipped armor id
+	/**
+	 * Gets actor equipped armor ID.
+	 *
+	 * @return equipped armor ID.
+	 */
 	int GetArmorId() const;
 
-	/// @return equipped helmet id
+	/**
+	 * Gets actor equipped helmet ID.
+	 *
+	 * @return equipped helmet ID.
+	 */
 	int GetHelmetId() const;
 
-	/// @return equipped accessory id
+	/**
+	 * Gets actor equipped accesory ID.
+	 *
+	 * @return equipped accessory ID.
+	 */
 	int GetAccessoryId() const;
 
-	/// @return current level.
+	/**
+	 * Gets actor current level.
+	 *
+	 * @return current level.
+	 */
 	int GetLevel() const;
 
-	/// @return current experience points.
+	/**
+	 * Gets final level of current actor.
+	 *
+	 * @return final level
+	 */
+	int GetMaxLevel() const;
+
+	/**
+	* Gets actor current experience points.
+	*
+	* @return current experience points.
+	*/
 	int GetExp() const;
 
-	////////////////////////////////////////////////////////
-	/// Set exp of actor.
-	/// @param _exp : exp to set
-	////////////////////////////////////////////////////////
+	/**
+	 * Sets exp of actor.
+	 * The value is adjusted to the boundary 0 up 999999.
+	 * Other actor attributes are not altered. Use ChangeExp to do a proper 
+	 * experience change.
+	 *
+	 * @param _exp exp to set.
+	 */
 	void SetExp(int _exp);
 
-	////////////////////////////////////////////////////////
-	/// Change exp of actor.
-	/// @param exp : 
-	////////////////////////////////////////////////////////
-	void ChangeExp(int exp);
+	/**
+	 * Changes exp of actor and handles level changing based on the new
+	 * experience.
+	 *
+	 * @param exp new exp.
+	 * @param level_up_message Whether to show level up message and learned skills.
+	 */
+	void ChangeExp(int exp, bool level_up_message);
 
-	////////////////////////////////////////////////////////
-	/// Change level of actor.
-	/// @param level : new level 
-	////////////////////////////////////////////////////////
-	void ChangeLevel(int level);
+	/**
+	 * Changes level of actor and handles experience changes, skill
+	 * learning and other attributes based on the new level.
+	 *
+	 * @param level new level.
+	 * @param level_up_message Whether to show level up message and learned skills.
+	 */
+	void ChangeLevel(int level, bool level_up_message);
 
-	////////////////////////////////////////////////////////
-	/// Set level of actor.
-	/// @param _level : level to set
-	////////////////////////////////////////////////////////
+	/**
+	 * Sets level of actor.
+	 * The value is adjusted to the boundary 1 up to max level.
+	 * Other actor attributes are not altered. Use ChangeLevel to do a proper 
+	 * level change.
+	 *
+	 * @param _level level to set.
+	 */
 	void SetLevel(int _level);
 
-	////////////////////////////////////////////////////////
-	/// Checks if the actor can equip the item
-	/// @param item_id : id of item to check
-	/// @return true if it can equip the item
-	////////////////////////////////////////////////////////
-	bool IsEquippable(int item_id);
+	/**
+	 * Checks if the actor can equip the item.
+	 *
+	 * @param item_id ID of item to check.
+	 * @return true if it can equip the item.
+	 */
+	bool IsEquippable(int item_id) const;
 
-	////////////////////////////////////////////////////////
-	/// Set face graphic of actor.
-	/// @param file_name : file containing new face
-	/// @param index : index of face graphic in the file
-	////////////////////////////////////////////////////////
+	/**
+	 * Sets face graphic of actor.
+	 * @param file_name file containing new face.
+	 * @param index index of face graphic in the file.
+	 */
 	void SetFace(const std::string& file_name, int index);
 
-	////////////////////////////////////////////////////////
-	/// Gets the equipped equipment based on the type
-	/// @param equip_type : Type of equipment
-	/// @return item_id or 0 if no equipment or -1 if invalid
-	////////////////////////////////////////////////////////
+	/**
+	 * Gets the equipped equipment based on the type.
+	 * @param equip_type type of equipment.
+	 * @return item_id or 0 if no equipment or -1 if invalid.
+	 */
 	int GetEquipment(int equip_type) const;
 
-	////////////////////////////////////////////////////////
-	/// Sets the equipment based on the type
-	/// @param equip_type : Type of equipment
-	/// @param new_item_id : Item to equip
-	/// @return item_id of old item, or 0 if no equipment or -1 if invalid
-	////////////////////////////////////////////////////////
+	/**
+	 * Sets the equipment based on the type.
+	 *
+	 * @param equip_type type of equipment.
+	 * @param new_item_id item to equip.
+	 * @return item_id of old item, or 0 if no equipment or -1 if invalid.
+	 */
 	int SetEquipment(int equip_type, int new_item_id);
 
-	////////////////////////////////////////////////////////
-	/// Changes the equipment of the actor.
-	/// Removes one instance of that item from the Inventory and adds the old
-	/// one of the actor to it.
-	/// If you don't want this use SetEquipment instead.
-	/// @param equip_type : Type of equipment
-	/// @param item_id : Item to equip
-	////////////////////////////////////////////////////////
+	/**
+	 * Changes the equipment of the actor.
+	 * Removes one instance of that item from the Inventory.
+	 * and adds the old one of the actor to it.
+	 * If you don't want this use SetEquipment instead.
+	 *
+	 * @param equip_type type of equipment.
+	 * @param item_id item to equip.
+	 */
 	void ChangeEquipment(int equip_type, int item_id);
 
-	/// @return learned skills list.
+	/**
+	 * Gets learned skills list.
+	 *
+	 * @return learned skills list.
+	 */
 	const std::vector<int16_t>& GetSkills() const;
 
-	/// @return Vector containing the ids of all states the actor has
+	/**
+	 * Gets actor states list.
+	 *
+	 * @return vector containing the IDs of all states the actor has.
+	 */
 	const std::vector<int16_t>& GetStates() const;
 	std::vector<int16_t>& GetStates();
 
@@ -227,73 +350,218 @@ public:
 	int GetSp() const;
 	void SetSp(int _sp);
 
-	////////////////////////////////////////////////////////
-	/// Gets the stats for the current level
-	/// @param mod : include the modifier bonus
-	/// @param equip : include the equipment bonuses
-	////////////////////////////////////////////////////////
-
+	/**
+	 * Gets the max HP for the current level.
+	 *
+	 * @param mod include the modifier bonus.
+	 */
 	int GetBaseMaxHp(bool mod) const;
+
+	/**
+	 * Gets the max SP for the current level.
+	 *
+	 * @param mod include the modifier bonus.
+	 */
 	int GetBaseMaxSp(bool mod) const;
+
+	/**
+	 * Gets the attack for the current level.
+	 *
+	 * @param mod include the modifier bonus.
+	 * @param equip include the equipment bonuses.
+	 */
 	int GetBaseAtk(bool mod, bool equip) const;
+
+	/**
+	 * Gets the defense for the current level.
+	 *
+	 * @param mod include the modifier bonus.
+	 * @param equip include the equipment bonuses.
+	 */
 	int GetBaseDef(bool mod, bool equip) const;
+
+	/**
+	 * Gets the spirit for the current level.
+	 *
+	 * @param mod include the modifier bonus.
+	 * @param equip include the equipment bonuses.
+	 */
 	int GetBaseSpi(bool mod, bool equip) const;
+
+	/**
+	 * Gets the agility for the current level.
+	 *
+	 * @param mod include the modifier bonus.
+	 * @param equip include the equipment bonuses.
+	 */
 	int GetBaseAgi(bool mod, bool equip) const;
 
-	////////////////////////////////////////////////////////
-	/// Gets the stats for the current level
-	/// modifier and equipment bonuses are included
-	////////////////////////////////////////////////////////
-
+	/**
+	 * Gets the max HP for the current level.
+	 * Modifier and equipment bonuses are included.
+	 */
 	int GetBaseMaxHp() const;
+
+	/**
+	 * Gets the max SP for the current level.
+	 * Modifier and equipment bonuses are included.
+	 */
 	int GetBaseMaxSp() const;
+
+	/**
+	 * Gets the attack for the current level.
+	 * Modifier and equipment bonuses are included.
+	 */
 	int GetBaseAtk() const;
+
+	/**
+	 * Gets the defense for the current level.
+	 * Modifier and equipment bonuses are included.
+	 */
 	int GetBaseDef() const;
+
+	/**
+	 * Gets the spirit for the current level.
+	 * Modifier and equipment bonuses are included.
+	 */
 	int GetBaseSpi() const;
+
+	/**
+	 * Gets the agility for the current level.
+	 * Modifier and equipment bonuses are included.
+	 */
 	int GetBaseAgi() const;
 
-	////////////////////////////////////////////////////////
-	/// Sets the base stats by adjusting the modifier bonus
-	/// the existing modifier bonus and equipment bonuses
-	/// are taken into account
-	////////////////////////////////////////////////////////
-
+	/**
+	 * Sets the base max HP by adjusting the modifier bonus.
+	 * The existing modifier bonus and equipment bonuses
+	 * are taken into account.
+	 *
+	 * @param _maxhp max HP.
+	 */
 	void SetBaseMaxHp(int _maxhp);
+
+	/**
+	 * Sets the base max SP by adjusting the modifier bonus.
+	 * The existing modifier bonus and equipment bonuses
+	 * are taken into account.
+	 *
+	 * @param _maxsp max SP.
+	 */
 	void SetBaseMaxSp(int _maxsp);
+
+	/**
+	 * Sets the base attack by adjusting the modifier bonus.
+	 * The existing modifier bonus and equipment bonuses
+	 * are taken into account.
+	 *
+	 * @param _atk attack.
+	 */
 	void SetBaseAtk(int _atk);
+
+	/**
+	 * Sets the base defense by adjusting the modifier bonus.
+	 * The existing modifier bonus and equipment bonuses
+	 * are taken into account.
+	 *
+	 * @param _def defense.
+	 */
 	void SetBaseDef(int _def);
+
+	/**
+	 * Sets the base spirit by adjusting the modifier bonus.
+	 * The existing modifier bonus and equipment bonuses
+	 * are taken into account.
+	 *
+	 * @param _spi spirit.
+	 */
 	void SetBaseSpi(int _spi);
+
+	/**
+	 * Sets the base agility by adjusting the modifier bonus.
+	 * The existing modifier bonus and equipment bonuses
+	 * are taken into account.
+	 *
+	 * @param _agi agility.
+	 */
 	void SetBaseAgi(int _agi);
 
-	/// @return true if actor has two weapons
+	/**
+	 * Gets if actor has two weapons.
+	 *
+	 * @return true if actor has two weapons.
+	 */
 	bool GetTwoSwordsStyle() const;
 
-	/// @param new_name : new name
+	/**
+	 * Sets new actor name.
+	 *
+	 * @param new_name new name.
+	 */
 	void SetName(const std::string &new_name);
 
-	/// @param new_title : new title
+	/**
+	 * Sets new actor title.
+	 *
+	 * @param new_title new title.
+	 */
 	void SetTitle(const std::string &new_title);
 
-	/// @param file : graphic file
-	/// @param index : graphic index
-	/// @param transparent : transparent flag
+	/**
+	 * Sets actor sprite.
+	 *
+	 * @param file graphic file.
+	 * @param index graphic index.
+	 * @param transparent transparent flag.
+	 */
 	void SetSprite(const std::string &file, int index, bool transparent);
 
-	/// @param add : true => add the command, false => remove the command
-	/// @param id  : command to add/remove, 0 to remove all commands
+	/**
+	 * Changes battle commands.
+	 *
+	 * @param add true => add the command, false => remove the command.
+	 * @param id command to add/remove, 0 to remove all commands.
+	 */
 	void ChangeBattleCommands(bool add, int id);
 
-	/// @return Rpg2k3 hero class
+	/**
+	 * Gets Rpg2k3 hero class.
+	 *
+	 * @return Rpg2k3 hero class.
+	 */
 	int GetClass() const;
-	/// @param class_id New Rpg2k3 hero class
+	/**
+	 * Sets new Rpg2k3 hero class.
+	 *
+	 * @param class_id mew Rpg2k3 hero class.
+	 */
 	void SetClass(int class_id);
 
-	/// @return All Rpg2k3 battle commands
+	/**
+	 * Gets the actor's class name as a string.
+	 * 
+	 * @return Rpg2k3 hero class name
+	 */
+	std::string GetClassName() const;
+
+	/**
+	 * Gets battle commands.
+	 *
+	 * @return all Rpg2k3 battle commands.
+	 */
 	const std::vector<uint32_t>& GetBattleCommands();
 
-	/// @return Row for Rpg2k3 battles (-1 back, 1 front)
+	/**
+	 * Gets battle row for Rpg2k3 battles.
+	 *
+	 * @return row for Rpg2k3 battles (-1 front, 1 back).
+	 */
 	int GetBattleRow() const;
-	/// @param battle_row New row for Rpg2k3 battles (-1 back, 1 front)
+	/**
+	 * Sets battle row for Rpg2k3 battles.
+	 *
+	 * @param battle_row new row for Rpg2k3 battles (-1 front, 1 back).
+	 */
 	void SetBattleRow(int battle_row);
 
 private:

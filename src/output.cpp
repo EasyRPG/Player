@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
-/// Headers
-////////////////////////////////////////////////////////////
+// Headers
 #include <cstdlib>
 #include <cstdarg>
 #include <ctime>
@@ -27,6 +25,14 @@
 #include <fstream>
 #include <sstream>
 #include <exception>
+
+#ifdef GEKKO
+	#include <unistd.h>
+#endif
+
+#ifdef __ANDROID__
+	#include <android/log.h>
+#endif
 
 #include "filefinder.h"
 #include "font.h"
@@ -39,7 +45,6 @@
 #include "main_data.h"
 #include "message_overlay.h"
 
-////////////////////////////////////////////////////////////
 #include <boost/config.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/scoped_ptr.hpp>
@@ -53,16 +58,16 @@ void boost::throw_exception(std::exception const& exp) {
 #endif
 
 namespace {
-	static std::ofstream LOG_FILE(OUTPUT_FILENAME, std::ios_base::out | std::ios_base::app);
+	std::ofstream LOG_FILE(OUTPUT_FILENAME, std::ios_base::out | std::ios_base::app);
 
-	static std::ostream& output_time() {
+	std::ostream& output_time() {
 		std::time_t t = std::time(NULL);
 		char timestr[100];
 		strftime(timestr, 100, "[%Y-%m-%d %H:%M:%S] ", std::localtime(&t));
 		return LOG_FILE << timestr;
 	}
 
-	static bool ignore_pause = false;
+	bool ignore_pause = false;
 
 	static boost::scoped_ptr<MessageOverlay> message_overlay;
 }
@@ -71,11 +76,6 @@ void Output::IgnorePause(bool const val) {
 	ignore_pause = val;
 }
 
-static void WriteLog(char const* type, std::string const& msg) {
-	output_time() << type << ": " << msg << "\n";
-}
-
-////////////////////////////////////////////////////////////
 static void HandleErrorOutput(const std::string& err) {
 	// Drawing directly on the screen because message_overlay is not visible
 	// when faded out
@@ -90,9 +90,12 @@ static void HandleErrorOutput(const std::string& err) {
 	Text::DirectDraw(*surface, 10, 10, Color(255, 255, 255, 255), error);
 	DisplayUi->UpdateDisplay();
 
-	Output::TakeScreenshot();
-
 	if (ignore_pause) { return; }
+
+
+	#ifdef __ANDROID__
+		__android_log_print(is_error ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, "EasyRPG Player", "%s", msg.c_str());
+	#endif
 
 	Input::ResetKeys();
 	while (!Input::IsAnyPressed()) {
@@ -138,7 +141,6 @@ bool Output::TakeScreenshot(std::ostream& os) {
 	return DisplayUi->GetDisplaySurface()->WritePNG(os);
 }
 
-////////////////////////////////////////////////////////////
 void Output::Error(const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
@@ -158,18 +160,24 @@ void Output::ErrorStr(std::string const& err) {
 		PrepareScreenOutput();
 		HandleErrorOutput(err);
 		Player::Exit();
+		Player::Exit();
 	} else {
 		// Fallback to Console if the display is not ready yet
-		printf("%s\n", err.c_str());
+		std::cout << err << std::endl;
 		std::cout << std::endl;
-		std::cout << "EasyRPG Player will close now. Press any key..." << std::endl;
+		std::cout << "EasyRPG Player will close now.";
+#ifdef GEKKO
+		// Wii stdin is non-blocking
+		sleep(5);
+#else
+		std::cout << " Press any key..." << std::endl;
 		std::cin.get();
+#endif
 	}
 
 	exit(EXIT_FAILURE);
 }
 
-////////////////////////////////////////////////////////////
 void Output::Warning(const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
@@ -188,7 +196,6 @@ void Output::WarningStr(std::string const& warn) {
 	message_overlay->AddMessage(warn, Font::ColorCritical);
 }
 
-////////////////////////////////////////////////////////////
 void Output::Post(const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
@@ -208,7 +215,6 @@ void Output::PostStr(std::string const& msg) {
 	message_overlay->AddMessage(msg, Font::ColorDefault);
 }
 
-////////////////////////////////////////////////////////////
 #ifdef NDEBUG
 void Output::Debug(const char*, ...) {
 }

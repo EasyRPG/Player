@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "data.h"
 #include "cache.h"
 #include "output.h"
@@ -31,7 +29,6 @@
 #include <boost/next_prior.hpp>
 #include <boost/regex/pending/unicode_iterator.hpp>
 
-////////////////////////////////////////////////////////////
 void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, Text::Alignment align) {
 	if (text.length() == 0) return;
 
@@ -60,7 +57,7 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 	// Load the system file for the shadow and text color
 	BitmapRef system = Cache::System(Data::system.system_name);
 	// Load the exfont-file
-	BitmapRef exfont = Cache::ExFont();
+	BitmapRef exfont = Cache::Exfont();
 
 	// Get the Shadow color
 	Color shadow_color(Cache::system_info.sh_color);
@@ -94,13 +91,13 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 		uint32_t const next_c = std::distance(c, end) > 1? *next_c_it : 0;
 
 		// ExFont-Detection: Check for A-Z or a-z behind the $
-		if (*c == utf('$') && std::isalpha(next_c)) {
+		if (*c == '$' && std::isalpha(next_c)) {
 			int exfont_value = -1;
 			// Calculate which exfont shall be rendered
 			if (islower(next_c)) {
-				exfont_value = 26 + next_c - utf('a');
+				exfont_value = 26 + next_c - 'a';
 			} else if (isupper(next_c)) {
-				exfont_value = next_c - utf('A');
+				exfont_value = next_c - 'A';
 			} else { assert(false); }
 			is_exfont = true;
 

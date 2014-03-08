@@ -1,12 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug SDL1.2|Win32">
+      <Configuration>Debug SDL1.2</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug SDL1.2|x64">
+      <Configuration>Debug SDL1.2</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release SDL1.2|Win32">
+      <Configuration>Release SDL1.2</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release SDL1.2|x64">
+      <Configuration>Release SDL1.2</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
@@ -28,12 +44,28 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug SDL1.2|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug SDL1.2|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release SDL1.2|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -45,23 +77,46 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release SDL1.2|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug SDL1.2|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug SDL1.2|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release SDL1.2|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release SDL1.2|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\bin\</OutDir>
+    <TargetName>PlayerD</TargetName>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug SDL1.2|Win32'">
     <OutDir>..\..\bin\</OutDir>
     <TargetName>PlayerD</TargetName>
     <LinkIncremental>true</LinkIncremental>
@@ -71,7 +126,17 @@
     <TargetName>Player64D</TargetName>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug SDL1.2|x64'">
+    <OutDir>..\..\bin\</OutDir>
+    <TargetName>Player64D</TargetName>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\bin\</OutDir>
+    <TargetName>Player</TargetName>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release SDL1.2|Win32'">
     <OutDir>..\..\bin\</OutDir>
     <TargetName>Player</TargetName>
     <LinkIncremental>false</LinkIncremental>
@@ -81,11 +146,16 @@
     <TargetName>Player64</TargetName>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release SDL1.2|x64'">
+    <OutDir>..\..\bin\</OutDir>
+    <TargetName>Player64</TargetName>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\lib\readers\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
@@ -94,8 +164,26 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\$(ConfigurationName);..\..\lib\readers\lib\$(ConfigurationName);$(EASYDEV_MSVC)\lib\$(PlatformShortName)\$(ConfigurationName)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;zlib.lib;winmm.lib;dxguid.lib;pixman.lib;shinonome.lib;readers.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\$(ConfigurationName);..\..\lib\liblcf\lib\$(ConfigurationName);$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\$(ConfigurationName)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;zlib.lib;winmm.lib;Imm32.lib;Version.lib;pixman.lib;shinonome.lib;liblcf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug SDL1.2|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <DisableSpecificWarnings>4996;4512</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\Debug;..\..\lib\liblcf\lib\Debug;$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\Debug;$(DXSDK_DIR)\Lib\x86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;zlib.lib;winmm.lib;dxguid.lib;pixman.lib;shinonome.lib;liblcf.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -103,7 +191,7 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\lib\readers\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;_WIN64;_AMD64_;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
@@ -112,8 +200,26 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\$(ConfigurationName);..\..\lib\readers\lib\$(ConfigurationName);$(EASYDEV_MSVC)\lib\$(PlatformShortName)\$(ConfigurationName)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;zlib.lib;winmm.lib;dxguid.lib;pixman.lib;shinonome64.lib;readers64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\$(ConfigurationName);..\..\lib\liblcf\lib\$(ConfigurationName);$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\$(ConfigurationName)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;zlib.lib;winmm.lib;Imm32.lib;Version.lib;pixman.lib;shinonome64.lib;liblcf64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug SDL1.2|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;_WIN64;_AMD64_;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <DisableSpecificWarnings>4996;4512</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\Debug;..\..\lib\liblcf\lib\Debug;$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\Debug;;$(DXSDK_DIR)\Lib\x64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;zlib.lib;winmm.lib;dxguid.lib;pixman.lib;shinonome64.lib;liblcf64.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -123,7 +229,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\lib\readers\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -136,8 +242,33 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\$(ConfigurationName);..\..\lib\readers\lib\$(ConfigurationName);$(EASYDEV_MSVC)\lib\$(PlatformShortName)\$(ConfigurationName)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;zlib.lib;winmm.lib;dxguid.lib;pixman.lib;shinonome.lib;readers.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\$(ConfigurationName);..\..\lib\liblcf\lib\$(ConfigurationName);$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\$(ConfigurationName)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;zlib.lib;winmm.lib;Imm32.lib;Version.lib;pixman.lib;shinonome.lib;liblcf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
+      <Profile>true</Profile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release SDL1.2|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <DisableSpecificWarnings>4996;4512</DisableSpecificWarnings>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\Release;..\..\lib\liblcf\lib\Release;$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\Release;$(DXSDK_DIR)\Lib\x86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;zlib.lib;winmm.lib;dxguid.lib;pixman.lib;shinonome.lib;liblcf.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <Profile>true</Profile>
     </Link>
@@ -148,7 +279,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\lib\readers\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;_WIN64;_AMD64_;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -161,8 +292,33 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\$(ConfigurationName);..\..\lib\readers\lib\$(ConfigurationName);$(EASYDEV_MSVC)\lib\$(PlatformShortName)\$(ConfigurationName)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;zlib.lib;winmm.lib;dxguid.lib;pixman.lib;shinonome64.lib;readers64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\$(ConfigurationName);..\..\lib\liblcf\lib\$(ConfigurationName);$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\$(ConfigurationName)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;zlib.lib;winmm.lib;Imm32.lib;Version.lib;pixman.lib;shinonome64.lib;liblcf64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
+      <Profile>true</Profile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release SDL1.2|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;_WIN64;_AMD64_;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <DisableSpecificWarnings>4996;4512</DisableSpecificWarnings>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>..\..\lib\shinonome\lib\Release;..\..\lib\liblcf\lib\Release;$(EASYDEV_MSVC)\lib\$(PlatformToolset)\$(PlatformShortName)\Release;$(DXSDK_DIR)\Lib\x64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freetype.lib;jpeg.lib;libexpat.lib;libmad.lib;libogg.lib;libpng.lib;libvorbis.lib;libvorbisfile.lib;mikmod.lib;native_midi.lib;SDL.lib;SDLmain.lib;SDL_image.lib;SDL_mixer.lib;zlib.lib;winmm.lib;dxguid.lib;pixman.lib;shinonome64.lib;liblcf64.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <Profile>true</Profile>
     </Link>
@@ -220,7 +376,7 @@
     <ClCompile Include="..\..\src\image_xyz.cpp" />
     <ClCompile Include="..\..\src\input.cpp" />
     <ClCompile Include="..\..\src\input_buttons_desktop.cpp" />
-    <ClCompile Include="..\..\src\input_buttons_dingoo.cpp" />
+    <ClCompile Include="..\..\src\input_buttons_opendingux.cpp" />
     <ClCompile Include="..\..\src\input_buttons_gekko.cpp" />
     <ClCompile Include="..\..\src\input_buttons_gph.cpp" />
     <ClCompile Include="..\..\src\input_buttons_psp.cpp" />
@@ -231,10 +387,11 @@
     <ClCompile Include="..\..\src\plane.cpp" />
     <ClCompile Include="..\..\src\player.cpp" />
     <ClCompile Include="..\..\src\rect.cpp" />
-    <ClCompile Include="..\..\src\registry_win.cpp" />
+    <ClCompile Include="..\..\src\registry.cpp" />
     <ClCompile Include="..\..\src\scene.cpp" />
     <ClCompile Include="..\..\src\scene_actortarget.cpp" />
     <ClCompile Include="..\..\src\scene_battle.cpp" />
+    <ClCompile Include="..\..\src\scene_debug.cpp" />
     <ClCompile Include="..\..\src\scene_end.cpp" />
     <ClCompile Include="..\..\src\scene_equip.cpp" />
     <ClCompile Include="..\..\src\scene_file.cpp" />
@@ -251,6 +408,7 @@
     <ClCompile Include="..\..\src\scene_skill.cpp" />
     <ClCompile Include="..\..\src\scene_status.cpp" />
     <ClCompile Include="..\..\src\scene_title.cpp" />
+    <ClCompile Include="..\..\src\screen.cpp" />
     <ClCompile Include="..\..\src\sdl_audio.cpp" />
     <ClCompile Include="..\..\src\sdl_ui.cpp" />
     <ClCompile Include="..\..\src\sprite.cpp" />
@@ -262,6 +420,7 @@
     <ClCompile Include="..\..\src\tone.cpp" />
     <ClCompile Include="..\..\src\utils.cpp" />
     <ClCompile Include="..\..\src\util_win.cpp" />
+    <ClCompile Include="..\..\src\weather.cpp" />
     <ClCompile Include="..\..\src\window.cpp" />
     <ClCompile Include="..\..\src\window_actorinfo.cpp" />
     <ClCompile Include="..\..\src\window_actorstatus.cpp" />
@@ -296,6 +455,7 @@
     <ClCompile Include="..\..\src\window_skill.cpp" />
     <ClCompile Include="..\..\src\window_skillstatus.cpp" />
     <ClCompile Include="..\..\src\window_targetstatus.cpp" />
+    <ClCompile Include="..\..\src\window_varlist.cpp" />
     <ClCompile Include="..\..\src\zobj.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -363,11 +523,12 @@
     <ClInclude Include="..\..\src\plane.h" />
     <ClInclude Include="..\..\src\player.h" />
     <ClInclude Include="..\..\src\rect.h" />
-    <ClInclude Include="..\..\src\registry_win.h" />
+    <ClInclude Include="..\..\src\registry.h" />
     <ClInclude Include="..\..\src\rtp_table_bom.h" />
     <ClInclude Include="..\..\src\scene.h" />
     <ClInclude Include="..\..\src\scene_actortarget.h" />
     <ClInclude Include="..\..\src\scene_battle.h" />
+    <ClInclude Include="..\..\src\scene_debug.h" />
     <ClInclude Include="..\..\src\scene_end.h" />
     <ClInclude Include="..\..\src\scene_equip.h" />
     <ClInclude Include="..\..\src\scene_file.h" />
@@ -384,6 +545,7 @@
     <ClInclude Include="..\..\src\scene_skill.h" />
     <ClInclude Include="..\..\src\scene_status.h" />
     <ClInclude Include="..\..\src\scene_title.h" />
+    <ClInclude Include="..\..\src\screen.h" />
     <ClInclude Include="..\..\src\sdl_audio.h" />
     <ClInclude Include="..\..\src\sdl_ui.h" />
     <ClInclude Include="..\..\src\sprite.h" />
@@ -397,6 +559,7 @@
     <ClInclude Include="..\..\src\utils.h" />
     <ClInclude Include="..\..\src\util_macro.h" />
     <ClInclude Include="..\..\src\util_win.h" />
+    <ClInclude Include="..\..\src\weather.h" />
     <ClInclude Include="..\..\src\window.h" />
     <ClInclude Include="..\..\src\window_actorinfo.h" />
     <ClInclude Include="..\..\src\window_actorstatus.h" />
@@ -431,6 +594,7 @@
     <ClInclude Include="..\..\src\window_skill.h" />
     <ClInclude Include="..\..\src\window_skillstatus.h" />
     <ClInclude Include="..\..\src\window_targetstatus.h" />
+    <ClInclude Include="..\..\src\window_varlist.h" />
     <ClInclude Include="..\..\src\zobj.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

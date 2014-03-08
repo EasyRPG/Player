@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "scene_skill.h"
 #include "game_map.h"
 #include "game_party.h"
@@ -28,13 +26,11 @@
 #include "scene_map.h"
 #include "scene_menu.h"
 
-////////////////////////////////////////////////////////////
 Scene_Skill::Scene_Skill(int actor_index, int skill_index) :
 	actor_index(actor_index), skill_index(skill_index) {
 	Scene::type = Scene::Skill;
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Skill::Start() {
 	// Create the windows
 	help_window.reset(new Window_Help(0, 0, 320, 32));
@@ -48,14 +44,13 @@ void Scene_Skill::Start() {
 	skill_window->SetHelpWindow(help_window.get());
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Skill::Update() {
 	help_window->Update();
 	skillstatus_window->Update();
 	skill_window->Update();
 
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Data::system.cancel_se);
+		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		int skill_id = skill_window->GetSkillId();
@@ -63,7 +58,7 @@ void Scene_Skill::Update() {
 		Game_Actor* actor = Game_Party::GetActors()[actor_index];
 
 		if (actor->IsSkillUsable(skill_id)) {
-			Game_System::SePlay(Data::system.decision_se);
+			Game_System::SePlay(Main_Data::game_data.system.decision_se);
 
 			if (Data::skills[skill_id - 1].type == RPG::Skill::Type_switch) {
 				actor->SetSp(actor->GetSp() - actor->CalculateSkillCost(skill_id));
@@ -74,12 +69,12 @@ void Scene_Skill::Update() {
 				Scene::Push(EASYRPG_MAKE_SHARED<Scene_ActorTarget>(skill_id, actor_index, skill_window->GetIndex()));
 				skill_index = skill_window->GetIndex();
 			} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_teleport) {
-				// ToDo: Displays the teleport target scene/window
+				// TODO: Displays the teleport target scene/window
 			} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_escape) {
-				// ToDo: Displays the escape target scene/window
+				// TODO: Displays the escape target scene/window
 			}
 		} else {
-			Game_System::SePlay(Data::system.buzzer_se);
+			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 		}
 	}
 }

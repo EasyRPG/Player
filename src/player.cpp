@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "player.h"
 #include "system.h"
 #include "output.h"
@@ -31,8 +29,6 @@
 #include "scene_title.h"
 #include "scene_battle.h"
 #include "utils.h"
-#include "bot_ui.h"
-#include "lua_bot.h"
 
 #include <algorithm>
 #include <set>
@@ -52,7 +48,6 @@
 	static void InitMiniDumpWriter();
 #endif
 
-////////////////////////////////////////////////////////////
 namespace Player {
 	bool exit_flag;
 	bool reset_flag;
@@ -64,7 +59,6 @@ namespace Player {
 	EngineType engine;
 }
 
-////////////////////////////////////////////////////////////
 void Player::Init(int argc, char *argv[]) {
 	static bool init = false;
 
@@ -77,7 +71,9 @@ void Player::Init(int argc, char *argv[]) {
 	}
 #endif
 
-#if (defined(_WIN32) && defined(NDEBUG))
+	Main_Data::Init();
+
+#if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER >= 0x0600)
 	InitMiniDumpWriter();
 #endif
 
@@ -98,35 +94,11 @@ void Player::Init(int argc, char *argv[]) {
 		hide_title_flag = args.find("hidetitle") != args.end();
 	}
 
-
-#ifndef NDEBUG
-	debug_flag = true;
-	window_flag = true; // Debug Build needs no fullscreen
-#endif
-
 	engine = EngineRpg2k;
 
 	FileFinder::Init();
 
 	DisplayUi.reset();
-
-#if defined(HAVE_LUA) && defined(HAVE_BOOST_LIBRARIES)
-	char const* const luabot_script = getenv("RPG_LUABOT_SCRIPT");
-	if(luabot_script) {
-		if(FileFinder::Exists(luabot_script)) {
-			std::ifstream ifs(luabot_script);
-			assert(ifs);
-
-			std::istreambuf_iterator<char> const eos;
-			std::string const script(std::istreambuf_iterator<char>(ifs), eos);
-
-			DisplayUi = EASYRPG_MAKE_SHARED<BotUi>(EASYRPG_MAKE_SHARED<LuaBot>(script));
-			Output::IgnorePause(true);
-		} else {
-			Output::Debug("luabost script not found in \"%s\"", luabot_script);
-		}
-	}
-#endif
 
 	if(! DisplayUi) {
 		DisplayUi = BaseUi::CreateUi
@@ -140,7 +112,6 @@ void Player::Init(int argc, char *argv[]) {
 	init = true;
 }
 
-////////////////////////////////////////////////////////////
 void Player::Run() {
 	Scene::Push(EASYRPG_MAKE_SHARED<Scene>());
 	Scene::Push(EASYRPG_SHARED_PTR<Scene>
@@ -165,19 +136,16 @@ void Player::Run() {
 	Player::Exit();
 }
 
-////////////////////////////////////////////////////////////
 void Player::Pause() {
 	Audio().BGM_Pause();
 }
 
-////////////////////////////////////////////////////////////
 void Player::Resume() {
 	Input::ResetKeys();
 	Audio().BGM_Resume();
 	Graphics::FrameReset();
 }
 
-////////////////////////////////////////////////////////////
 void Player::Update() {
 	if (Input::IsTriggered(Input::TOGGLE_FPS)) {
 		Graphics::fps_on_screen = !Graphics::fps_on_screen;
@@ -192,24 +160,28 @@ void Player::Update() {
 		Scene::PopUntil(Scene::Null);
 	} else if (reset_flag) {
 		reset_flag = false;
-		Scene::PopUntil(Scene::Title);
+		if(Scene::instance->type != Scene::Logo) {
+			Scene::PopUntil(Scene::Title);
+		}
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Player::Exit() {
 	Main_Data::Cleanup();
 	Graphics::Quit();
 	FileFinder::Quit();
 	DisplayUi.reset();
+	
+#ifdef __ANDROID__
+	// Workaround Segfault under Android
+	exit(0);
+#endif
 }
 
-#if (defined(_WIN32) && defined(NDEBUG))
-////////////////////////////////////////////////////////////
+#if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER >= 0x0600)
 // Minidump code for Windows
 // Original Author: Oleg Starodumov (www.debuginfo.com)
-// Modified by EasyRpg Team
-////////////////////////////////////////////////////////////
+// Modified by EasyRPG Team
 typedef BOOL (__stdcall *MiniDumpWriteDumpFunc) (
 	IN HANDLE hProcess,
 	IN DWORD ProcessId,

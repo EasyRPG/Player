@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #ifdef _MSC_VER
 #  pragma warning(disable: 4003)
 #endif
@@ -32,9 +30,9 @@
 #include "exfont.h"
 #include "bitmap.h"
 #include "output.h"
+#include "player.h"
 
-////////////////////////////////////////////////////////////
-namespace {
+namespace cache_anon {
 
 	typedef std::pair<std::string,std::string> string_pair;
 	typedef std::pair<std::string, int> tile_pair;
@@ -53,6 +51,15 @@ namespace {
 
 		if (it == cache.end() || it->second.expired()) {
 			std::string const path = FileFinder::FindImage(folder_name, filename);
+
+			if (path.empty()) {
+				// TODO:
+				// Load a dummy image with correct size (issue #32)
+				Output::Warning("Image not found: %s/%s\n\nPlayer will exit now.", folder_name.c_str(), filename.c_str());
+				// Delayed termination, otherwise it segfaults in Graphics::Quit
+				Player::exit_flag = true;
+			}
+
 			return (cache[key] = path.empty()
 					? Bitmap::Create(16, 16, Color())
 					: Bitmap::Create(path, transparent, flags)
@@ -76,10 +83,10 @@ namespace {
 			Title,
 			System2,
 			Battle2,
-			BattleChar,
-			BattleWeapon,
+			Battlecharset,
+			Battleweapon,
 			Frame,
-			END,
+			END
 		};
 
 	}; // struct Material
@@ -96,16 +103,16 @@ namespace {
 		{ "ChipSet", true, 480, 480, 256, 256 },
 		{ "FaceSet", true, 192, 192, 192, 192 },
 		{ "GameOver", false, 320, 320, 240, 240 },
-		{ "Monster", false, 16, 320, 16, 160 },
+		{ "Monster", true, 16, 320, 16, 160 },
 		{ "Panorama", false, 80, 640, 80, 480 },
 		{ "Picture", true, 1, 640, 1, 480 },
 		{ "System", true, 160, 160, 80, 80 },
 		{ "Title", false, 320, 320, 240, 240 },
 		{ "System2", true, 80, 80, 96, 96 },
 		{ "Battle2", true, 640, 640, 640, 640 },
-		{ "BattleChar", true, 144, 144, 384, 384 },
+		{ "BattleCharSet", true, 144, 144, 384, 384 },
 		{ "BattleWeapon", true, 192, 192, 512, 512 },
-		{ "frame", true, 320, 320, 240, 240 },
+		{ "Frame", true, 320, 320, 240, 240 },
 	};
 
 	template<Material::Type T>
@@ -119,18 +126,19 @@ namespace {
 										 0);
 
 		if(
-		   ret->GetWidth () < s.min_width  || s.max_width  < ret->GetWidth () ||
-		   ret->GetHeight() < s.min_height || s.max_height < ret->GetHeight()
-		   ) {
-			Output::Debug("Image size error in: %s/%s", s.directory, f.c_str());
-			Output::Debug("width  (min, max, actual) = (%d, %d, %d)", s.min_width , s.max_width , ret->GetWidth ());
-			Output::Debug("height (min, max, actual) = (%d, %d, %d)", s.min_height, s.max_height, ret->GetHeight());
+			ret->GetWidth () < s.min_width  || s.max_width  < ret->GetWidth () ||
+			ret->GetHeight() < s.min_height || s.max_height < ret->GetHeight()
+		) {
+			Output::Debug("Image size error in: %s/%s\nwidth  (min, max, actual) = (%d, %d, %d)\nheight (min, max, actual) = (%d, %d, %d)",
+						  s.directory, f.c_str(), s.min_width , s.max_width , ret->GetWidth (), s.min_height, s.max_height, ret->GetHeight());
 		}
 
 		return ret;
 	}
 
 }
+
+using namespace cache_anon;
 
 tSystemInfo Cache::system_info;
 
@@ -140,14 +148,14 @@ tSystemInfo Cache::system_info;
 	}												\
 
 BOOST_PP_SEQ_FOR_EACH(macro, ,
-					  (Backdrop)(Battle)(Battle2)(BattleChar)(BattleWeapon)
+					  (Backdrop)(Battle)(Battle2)(Battlecharset)(Battleweapon)
 					  (Charset)(Chipset)(Faceset)(Gameover)(Monster)
 					  (Panorama)(Picture)(System)(System2)(Frame)(Title)
 					  )
 
 #undef macro
 
-BitmapRef Cache::ExFont() {
+BitmapRef Cache::Exfont() {
 	string_pair const hash("\x00","ExFont");
 
 	cache_type::const_iterator const it = cache.find(hash);
@@ -157,7 +165,6 @@ BitmapRef Cache::ExFont() {
 	} else { return it->second.lock(); }
 }
 
-////////////////////////////////////////////////////////////
 BitmapRef Cache::Tile(const std::string& filename, int tile_id) {
 	tile_pair const key(filename, tile_id);
 	cache_tiles_type::const_iterator const it = cache_tiles.find(key);
@@ -191,7 +198,6 @@ BitmapRef Cache::Tile(const std::string& filename, int tile_id) {
 	} else { return it->second.lock(); }
 }
 
-////////////////////////////////////////////////////////////
 void Cache::Clear() {
 	for(cache_type::const_iterator i = cache.begin(); i != cache.end(); ++i) {
 		if(i->second.expired()) { continue; }

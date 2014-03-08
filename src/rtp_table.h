@@ -1,3 +1,20 @@
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef EASYRPG_RTP_TABLE_BOM
 #define EASYRPG_RTP_TABLE_BOM
 
@@ -13,12 +30,12 @@ static sub_map_type sub_map;
 
 typedef std::map<std::string, std::map<std::string, std::string> > rtp_table_type;
 
+/** Interprets char literals as utf-8 */
 #ifdef _MSC_VER
-// Interpret char literals as utf-8
 #pragma execution_character_set("utf-8")
 #endif
 
-/*
+/**
  * { folder: { ASCII, UTF-8 } }
  */
 rtp_table_type const RTP_TABLE_2003 = map_list_of
@@ -116,7 +133,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("paralyze2", "麻痺")
 	 .to_container(sub_map))
 
-	("battlechar", list_of<sub_map_pair>
+	("battlecharset", list_of<sub_map_pair>
 	 ("elf-f-1", "エルフ女a")
 	 ("elf-f-2", "エルフ女b")
 	 ("elf-m-1", "エルフ男a")
@@ -188,10 +205,10 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 .to_container(sub_map))
 
 	("charset", list_of<sub_map_pair>
-	 ("monster1", "オブジェクト1")
-	 ("monster2", "オブジェクト2")
-	 ("object1", "モンスター1")
-	 ("object2", "モンスター2")
+	 ("object1", "オブジェクト1")
+	 ("object2", "オブジェクト2")
+	 ("monster1", "モンスター1")
+	 ("monster2", "モンスター2")
 	 ("char1", "一般1")
 	 ("char2", "一般2")
 	 ("char3", "一般3")
@@ -804,34 +821,21 @@ rtp_table_type const RTP_TABLE_2000 = map_list_of
 	 .to_container(sub_map))
 
 	("charset", list_of<sub_map_pair>
-	 ("etc", "その他")
-	 ("barrier", "バリア")
-	 ("poison", "ブレス")
-	 ("up", "上昇")
-	 ("down", "下降")
-	 ("cold", "冷気")
-	 ("sword1", "剣1")
-	 ("sword2", "剣2")
-	 ("absorption", "吸収")
-	 ("sun", "回復")
-	 ("earth", "大地")
-	 ("hit", "打撃")
-	 ("axe", "斧")
-	 ("dark", "暗黒")
-	 ("spear", "槍")
-	 ("water", "水")
-	 ("sphere", "治療")
-	 ("fire1", "炎1")
-	 ("fire2", "炎2")
-	 ("explosion", "爆発")
-	 ("fang", "爪")
-	 ("arrow", "矢")
-	 ("holy", "神聖")
-	 ("ray", "蘇生")
-	 ("zip", "雷")
-	 ("whip", "鞭")
-	 ("wind", "風")
-	 ("paralysis", "麻痺")
+	 ("object1", "オブジェクト1")
+	 ("object2", "オブジェクト2")
+	 ("monster1", "モンスター1")
+	 ("monster2", "モンスター2")
+	 ("people1", "一般1")
+	 ("people7", "一般2")
+	 ("people3", "一般3")
+	 ("people4", "一般4")
+	 ("people5", "一般5")
+	 ("chara1", "主人公1")
+	 ("chara2", "主人公2")
+	 ("chara3", "主人公3")
+	 ("chara4", "主人公4")
+	 ("vehicle", "乗り物")
+	 ("animal", "動物")
 	 .to_container(sub_map))
 
 	("chipset", list_of<sub_map_pair>

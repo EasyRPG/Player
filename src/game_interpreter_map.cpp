@@ -1,20 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
+// Headers
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
@@ -42,20 +43,84 @@
 #include "player.h"
 #include "util_macro.h"
 #include "game_interpreter_map.h"
+#include "reader_util.h"
+#include "filefinder.h"
+#include "reader_lcf.h"
 
-///////////////////////////////////////////////////////////
 Game_Interpreter_Map::Game_Interpreter_Map(int depth, bool main_flag) :
 	Game_Interpreter(depth, main_flag) {
 }
 
 Game_Interpreter_Map::~Game_Interpreter_Map() {
-	std::vector<pending_move_route>::iterator it;
+	std::vector<Game_Character*>::iterator it;
 	for (it = pending.begin(); it != pending.end(); it++) {
-		(*it).second->DetachMoveRouteOwner(this);
+		(*it)->DetachMoveRouteOwner(this);
 	}
 }
 
-///////////////////////////////////////////////////////////
+bool Game_Interpreter_Map::SetupFromSave(const std::vector<RPG::SaveEventCommands>& save, int _event_id, int index) {
+	if (index < save.size()) {
+		Setup(save[index].commands, _event_id);
+		this->index = save[index].current_command;
+		child_interpreter.reset(new Game_Interpreter_Map());
+		bool result = static_cast<Game_Interpreter_Map*>(child_interpreter.get())->SetupFromSave(save, _event_id, index + 1);
+		if (!result) {
+			child_interpreter.reset();
+		}
+		return true;
+	}
+	return false;
+}
+
+// Taken from readers because a kitten is killed when reader_structs is included
+static int GetEventCommandSize(const std::vector<RPG::EventCommand>& commands) {
+	std::vector<RPG::EventCommand>::const_iterator it;
+
+	int result = 0;
+	for (it = commands.begin(); it != commands.end(); ++it) {
+		result += LcfReader::IntSize(it->code);
+		result += LcfReader::IntSize(it->indent);
+		result += LcfReader::IntSize(it->string.size());
+		result += ReaderUtil::Recode(it->string, FileFinder::FindDefault(INI_NAME)).size();
+
+		int count = it->parameters.size();
+		result += LcfReader::IntSize(count);
+		for (int i = 0; i < count; i++)
+			result += LcfReader::IntSize(it->parameters[i]);
+	}
+	result += 4; // No idea why but then it fits
+
+	return result;
+}
+
+std::vector<RPG::SaveEventCommands> Game_Interpreter_Map::GetSaveData() const {
+	std::vector<RPG::SaveEventCommands> save;
+
+	const Game_Interpreter_Map* save_interpreter = this;
+
+	int i = 1;
+
+	if (save_interpreter->list.empty()) {
+		return save;
+	}
+
+	while (save_interpreter != NULL) {
+		RPG::SaveEventCommands save_commands;
+		save_commands.commands = save_interpreter->list;
+		save_commands.current_command = save_interpreter->index;
+		save_commands.commands_size = GetEventCommandSize(save_commands.commands);
+		save_commands.ID = i++;
+		save.push_back(save_commands);
+		save_interpreter = static_cast<Game_Interpreter_Map*>(save_interpreter->child_interpreter.get());
+	}
+
+	save.back().ID = event_id;
+
+	save.back().current_command++;
+
+	return save;
+}
+
 int Game_Interpreter_Map::DecodeInt(std::vector<int>::const_iterator& it) {
 	int value = 0;
 
@@ -78,7 +143,9 @@ const std::string Game_Interpreter_Map::DecodeString(std::vector<int>::const_ite
 	for (int i = 0; i < len; i++)
 		out << (char) *it++;
 
-	return out.str();
+	std::string result = ReaderUtil::Recode(out.str(), FileFinder::FindDefault(INI_NAME));
+
+	return result;
 }
 
 RPG::MoveCommand Game_Interpreter_Map::DecodeMove(std::vector<int>::const_iterator& it)
@@ -106,11 +173,10 @@ RPG::MoveCommand Game_Interpreter_Map::DecodeMove(std::vector<int>::const_iterat
 	return cmd;
 }
 
-///////////////////////////////////////////////////////////
-void Game_Interpreter_Map::EndMoveRoute(RPG::MoveRoute* route) {
-	std::vector<pending_move_route>::iterator it;
+void Game_Interpreter_Map::EndMoveRoute(Game_Character* moving_character) {
+	std::vector<Game_Character*>::iterator it;
 	for (it = pending.begin(); it != pending.end(); it++) {
-		if ((*it).first == route) {
+		if ((*it) == moving_character) {
 			break;
 		}
 	}
@@ -120,9 +186,9 @@ void Game_Interpreter_Map::EndMoveRoute(RPG::MoveRoute* route) {
 	}
 }
 
-////////////////////////////////////////////////////////////
-/// Execute Command
-////////////////////////////////////////////////////////////
+/**
+ * Execute Command.
+ */
 bool Game_Interpreter_Map::ExecuteCommand() {
 	if (index >= list.size()) {
 		return CommandEnd();
@@ -253,7 +319,7 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 			return CommandCallEvent(com);
 		case Cmd::ChangeEncounterRate:
 			return CommandChangeEncounterRate(com);
-		case Cmd::ProceedWithMovement: // FIXME: Causes a hang
+		case Cmd::ProceedWithMovement:
 			return CommandProceedWithMovement(com);
 		case Cmd::PlayMovie:
 			return CommandPlayMovie(com);
@@ -290,14 +356,14 @@ bool Game_Interpreter_Map::ExecuteCommand() {
 	}
 }
 
-///////////////////////////////////////////////////////////
-/// Commands
-///////////////////////////////////////////////////////////
+/**
+ * Commands
+ */
 bool Game_Interpreter_Map::CommandMessageOptions(RPG::EventCommand const& com) { //code 10120
-	Game_Message::background = com.parameters[0] == 0;
-	Game_Message::position = com.parameters[1];
-	Game_Message::fixed_position = com.parameters[2] == 0;
-	Game_Message::dont_halt = com.parameters[3] != 0;
+	Game_Message::SetTransparent(com.parameters[0] != 0);
+	Game_Message::SetPosition(com.parameters[1]);
+	Game_Message::SetPositionFixed(com.parameters[2] == 0);
+	Game_Message::SetContinueEvents(com.parameters[3] != 0);
 	return true;
 }
 
@@ -315,17 +381,9 @@ bool Game_Interpreter_Map::CommandChangeExp(RPG::EventCommand const& com) { // C
 		 i != actors.end();
 		 i++) {
 		Game_Actor* actor = *i;
-		actor->SetExp(actor->GetExp() + value);
+		actor->ChangeExp(actor->GetExp() + value, com.parameters[5] != 0);
 	}
 
-	if (com.parameters[5] != 0) {
-		// TODO
-		// Show message increase level
-	} else {
-		// Don't show message increase level
-	}
-
-	// Continue
 	return true;
 }
 
@@ -390,6 +448,7 @@ bool Game_Interpreter_Map::CommandChangeSpriteAssociation(RPG::EventCommand cons
 	int idx = com.parameters[1];
 	bool transparent = com.parameters[2] != 0;
 	actor->SetSprite(file, idx, transparent);
+	Main_Data::game_player->Refresh();
 	return true;
 }
 
@@ -424,6 +483,8 @@ bool Game_Interpreter_Map::CommandRecallToLocation(RPG::EventCommand const& com)
 	}
 
 	Main_Data::game_player->ReserveTeleport(map_id, x, y);
+	Main_Data::game_player->StartTeleport();
+
 	index++;
 
 	return false;
@@ -688,7 +749,7 @@ bool Game_Interpreter_Map::CommandShowScreen(RPG::EventCommand const& com) {
 
 bool Game_Interpreter_Map::CommandShowPicture(RPG::EventCommand const& com) { // code 11110
 	int pic_id = com.parameters[0];
-	Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
+	Game_Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
 	std::string const& pic_name = com.string;
 	int x = ValueOrVariable(com.parameters[1], com.parameters[2]);
 	int y = ValueOrVariable(com.parameters[1], com.parameters[3]);
@@ -708,28 +769,34 @@ bool Game_Interpreter_Map::CommandShowPicture(RPG::EventCommand const& com) { //
 		// Rpg2k does not support this option
 		bottom_trans = top_trans;
 	} else {
-		bottom_trans = com.parameters[14];
+		// Corner case when 2k maps are used in 2k3 and don't contain this chunk
+		size_t param_size = com.parameters.size();
+		if (param_size > 14) {
+			bottom_trans = com.parameters[14];
+		} else {
+			bottom_trans = top_trans;
+		}
 	}
 
 	picture->Show(pic_name);
-	picture->UseTransparent(use_trans);
-	picture->Scrolls(scrolls);
+	picture->SetTransparent(use_trans);
+	picture->SetScrolls(scrolls);
 
-	picture->Move(x, y);
-	picture->Color(red, green, blue, saturation);
-	picture->Magnify(magnify);
-	picture->Transparency(top_trans, bottom_trans);
-	picture->Transition(0);
+	picture->SetMovementEffect(x, y);
+	picture->SetColorEffect(red, green, blue, saturation);
+	picture->SetZoomEffect(magnify);
+	picture->SetTransparencyEffect(top_trans, bottom_trans);
+	picture->SetTransition(0);
 
 	switch (effect) {
 		case 0:
 			picture->StopEffects();
 			break;
 		case 1:
-			picture->Rotate(speed);
+			picture->SetRotationEffect(speed);
 			break;
 		case 2:
-			picture->Waver(speed);
+			picture->SetWaverEffect(speed);
 			break;
 	}
 
@@ -738,7 +805,7 @@ bool Game_Interpreter_Map::CommandShowPicture(RPG::EventCommand const& com) { //
 
 bool Game_Interpreter_Map::CommandMovePicture(RPG::EventCommand const& com) { // code 11120
 	int pic_id = com.parameters[0];
-	Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
+	Game_Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
 	int x = ValueOrVariable(com.parameters[1], com.parameters[2]);
 	int y = ValueOrVariable(com.parameters[1], com.parameters[3]);
 	int magnify = com.parameters[5];
@@ -757,49 +824,53 @@ bool Game_Interpreter_Map::CommandMovePicture(RPG::EventCommand const& com) { //
 		// Rpg2k does not support this option
 		bottom_trans = top_trans;
 	} else {
-		bottom_trans = com.parameters[16];
+		// Corner case when 2k maps are used in 2k3 and don't contain this chunk
+		size_t param_size = com.parameters.size();
+		if (param_size > 16) {
+			bottom_trans = com.parameters[16];
+		} else {
+			bottom_trans = top_trans;
+		}
 	}
 
-	picture->Move(x, y);
-	picture->Color(red, green, blue, saturation);
-	picture->Magnify(magnify);
-	picture->Transparency(top_trans, bottom_trans);
-	picture->Transition(tenths);
+	picture->SetMovementEffect(x, y);
+	picture->SetColorEffect(red, green, blue, saturation);
+	picture->SetZoomEffect(magnify);
+	picture->SetTransparencyEffect(top_trans, bottom_trans);
+	picture->SetTransition(tenths);
 
 	switch (effect) {
 		case 0:
 			picture->StopEffects();
 			break;
 		case 1:
-			picture->Rotate(speed);
+			picture->SetRotationEffect(speed);
 			break;
 		case 2:
-			picture->Waver(speed);
+			picture->SetWaverEffect(speed);
 			break;
 	}
 
 	if (wait)
-		wait_count = tenths * DEFAULT_FPS / 10;
+		SetupWait(tenths);
 
 	return true;
 }
 
 bool Game_Interpreter_Map::CommandErasePicture(RPG::EventCommand const& com) { // code 11130
 	int pic_id = com.parameters[0];
-	Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
+	Game_Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
 	picture->Erase();
 
 	return true;
 }
 
 bool Game_Interpreter_Map::CommandWeatherEffects(RPG::EventCommand const& com) { // code 11070
-#if !(defined(DINGOO) || defined(GEKKO) || defined(PSP) || defined(GPH)) // Rikku2000: Remove Weather Effects for Device with lower CPU
 	Game_Screen* screen = Main_Data::game_screen.get();
 	int type = com.parameters[0];
 	int strength = com.parameters[1];
-	screen->Weather(type, strength);
+	screen->SetWeatherEffect(type, strength);
 	return true;
-#endif
 }
 
 bool Game_Interpreter_Map::CommandChangeSystemGraphics(RPG::EventCommand const& com) { // code 10680
@@ -865,24 +936,31 @@ bool Game_Interpreter_Map::CommandChangeScreenTransitions(RPG::EventCommand cons
 bool Game_Interpreter_Map::CommandChangeEventLocation(RPG::EventCommand const& com) { // Code 10860
 	int event_id = com.parameters[0];
 	Game_Character *event = GetCharacter(event_id);
-	int x = ValueOrVariable(com.parameters[1], com.parameters[2]);
-	int y = ValueOrVariable(com.parameters[1], com.parameters[3]);
-	event->MoveTo(x, y);
+	if (event != NULL) {
+		int x = ValueOrVariable(com.parameters[1], com.parameters[2]);
+		int y = ValueOrVariable(com.parameters[1], com.parameters[3]);
+		event->MoveTo(x, y);
+	}
 	return true;
 }
 
 bool Game_Interpreter_Map::CommandTradeEventLocations(RPG::EventCommand const& com) { // Code 10870
 	int event1_id = com.parameters[0];
-	Game_Character *event1 = GetCharacter(event1_id);
-	int x1 = event1->GetX();
-	int y1 = event1->GetY();
 	int event2_id = com.parameters[1];
-	Game_Character *event2 = GetCharacter(event2_id);
-	int x2 = event2->GetX();
-	int y2 = event2->GetY();
 
-	event1->MoveTo(x2, y2);
-	event2->MoveTo(x1, y1);
+	Game_Character *event1 = GetCharacter(event1_id);
+	Game_Character *event2 = GetCharacter(event2_id);
+
+	if (event1 != NULL && event2 != NULL) {
+		int x1 = event1->GetX();
+		int y1 = event1->GetY();
+
+		int x2 = event2->GetX();
+		int y2 = event2->GetY();
+
+		event1->MoveTo(x2, y2);
+		event2->MoveTo(x1, y1);
+	}
 
 	return true;
 }
@@ -902,6 +980,7 @@ bool Game_Interpreter_Map::CommandTimerOperation(RPG::EventCommand const& com) {
 			visible = com.parameters[3] != 0;
 			battle = com.parameters[4] != 0;
 			Game_Party::StartTimer(timer_id, visible, battle);
+			break;
 		case 2:
 			Game_Party::StopTimer(timer_id);
 			break;
@@ -966,18 +1045,19 @@ bool Game_Interpreter_Map::CommandEndLoop(RPG::EventCommand const& com) { // cod
 bool Game_Interpreter_Map::CommandMoveEvent(RPG::EventCommand const& com) { // code 11330
 	int event_id = com.parameters[0];
 	Game_Character* event = GetCharacter(event_id);
+	if (event != NULL) {
+		RPG::MoveRoute* route = new RPG::MoveRoute;
+		int move_freq = com.parameters[1];
+		route->repeat = com.parameters[2] != 0;
+		route->skippable = com.parameters[3] != 0;
 
-	RPG::MoveRoute* route = new RPG::MoveRoute;
-	int move_freq = com.parameters[1];
-	route->repeat = com.parameters[2] != 0;
-	route->skippable = com.parameters[3] != 0;
+		std::vector<int>::const_iterator it;
+		for (it = com.parameters.begin() + 4; it < com.parameters.end(); )
+			route->move_commands.push_back(DecodeMove(it));
 
-	std::vector<int>::const_iterator it;
-	for (it = com.parameters.begin() + 4; it < com.parameters.end(); )
-		route->move_commands.push_back(DecodeMove(it));
-
-	event->ForceMoveRoute(route, move_freq, this);
-	pending.push_back(pending_move_route(route, event));
+		event->ForceMoveRoute(route, move_freq, this);
+		pending.push_back(event);
+	}
 	return true;
 }
 
@@ -1103,10 +1183,11 @@ bool Game_Interpreter_Map::ContinuationShowInn(RPG::EventCommand const& /* com *
 	if (!Game_Temp::inn_handlers) {
 		if (inn_stay) {
 			// Full heal
-			for (std::vector<Game_Actor*>::iterator i = Game_Party::GetActors().begin();
-				 i != Game_Party::GetActors().end();
+			std::vector<Game_Actor*> actors = Game_Party::GetActors();
+			for (std::vector<Game_Actor*>::const_iterator i = actors.begin();
+				 i != actors.end();
 				 i++) {
-				Game_Actor* actor = Game_Actors::GetActor((*i)->GetId());
+				Game_Actor* actor = *i;
 				actor->SetHp(actor->GetMaxHp());
 				actor->SetSp(actor->GetMaxSp());
 				actor->RemoveAllStates();
@@ -1276,16 +1357,7 @@ bool Game_Interpreter_Map::CommandEscapeTarget(RPG::EventCommand const& com) { /
 bool Game_Interpreter_Map::CommandSpriteTransparency(RPG::EventCommand const& com) { // code 11310
 	bool visible = com.parameters[0] != 0;
 	Game_Character* player = Main_Data::game_player.get();
-
-	Scene_Map* scene = (Scene_Map*)Scene::Find(Scene::Map).get();
-	if (!scene)
-		return true;
-
-	Sprite_Character* sprite = scene->spriteset->FindCharacter(player);
-	if (!sprite)
-		return true;
-
-	sprite->SetVisible(visible);
+	player->SetVisible(visible);
 
 	return true;
 }
@@ -1300,18 +1372,13 @@ bool Game_Interpreter_Map::CommandFlashSprite(RPG::EventCommand const& com) { //
 	bool wait = com.parameters[6] > 0;
 	Game_Character* event = GetCharacter(event_id);
 
-	Scene_Map* scene = (Scene_Map*) Scene::Find(Scene::Map).get();
-	if (!scene)
-		return true;
+	if (event != NULL) {
+		event->SetFlashColor(color);
+		event->SetFlashTimeLeft(tenths * DEFAULT_FPS / 10);
 
-	Sprite_Character* sprite = scene->spriteset->FindCharacter(event);
-	if (!sprite)
-		return true;
-
-	sprite->Flash(color, tenths * DEFAULT_FPS / 10);
-
-	if (wait)
-		wait_count = tenths * DEFAULT_FPS / 10;
+		if (wait)
+			SetupWait(tenths);
+	}
 
 	return true;
 }
@@ -1344,7 +1411,7 @@ bool Game_Interpreter_Map::CommandCallEvent(RPG::EventCommand const& com) { // c
 	int evt_id;
 	int event_page;
 
-	if (child_interpreter != NULL)
+	if (child_interpreter)
 		return false;
 
 	child_interpreter.reset(new Game_Interpreter_Map(depth + 1));
@@ -1367,8 +1434,10 @@ bool Game_Interpreter_Map::CommandCallEvent(RPG::EventCommand const& com) { // c
 	}
 
 	Game_Event* event = static_cast<Game_Event*>(GetCharacter(evt_id));
-	RPG::EventPage& page = event->GetEvent().pages[event_page - 1];
-	child_interpreter->Setup(page.event_commands, evt_id, event->GetX(), event->GetY());
+	if (event != NULL) {
+		RPG::EventPage& page = event->GetEvent().pages[event_page - 1];
+		child_interpreter->Setup(page.event_commands, event->GetId(), event->GetX(), event->GetY());
+	}
 
 	return true;
 }
@@ -1433,40 +1502,60 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 		check_left = check_dir;
 		check_right = check_dir;
 	} else if (Player::engine == Player::EngineRpg2k3) {
-		check_numbers  = com.parameters[ 5] != 0;
-		check_arith    = com.parameters[ 6] != 0;
-		check_shift    = com.parameters[ 9] != 0;
-		check_down     = com.parameters[10] != 0;
-		check_left     = com.parameters[11] != 0;
-		check_right    = com.parameters[12] != 0;
-		check_up       = com.parameters[13] != 0;
+		size_t param_size = com.parameters.size();
 
-		time_id = com.parameters[7];
-		time = com.parameters[8] != 0;
+		// Optimization: If missing -> default value
+		check_numbers  = param_size > 5 ? com.parameters[5] != 0 : false;
+		check_arith    = param_size > 6 ? com.parameters[6] != 0 : false;
+		check_shift    = param_size > 9 ? com.parameters[9] != 0 : true;
+		check_down     = param_size > 10 ? com.parameters[10] != 0 : true;
+		check_left     = param_size > 11 ? com.parameters[11] != 0 : true;
+		check_right    = param_size > 12 ? com.parameters[12] != 0 : true;
+		check_up       = param_size > 13 ? com.parameters[13] != 0 : true;
+
+		if (param_size > 8) {
+			time_id = com.parameters[7];
+			time = com.parameters[8] != 0;
+		}
+	} else {
+		assert(false);
 	}
 
-	if (check_down && Input::IsTriggered(Input::DOWN))
+	if (check_down && Input::IsTriggered(Input::DOWN)) {
 		result = 1;
-	if (check_left && Input::IsTriggered(Input::LEFT))
+	}
+	if (check_left && Input::IsTriggered(Input::LEFT)) {
 		result = 2;
-	if (check_right && Input::IsTriggered(Input::RIGHT))
+	}
+	if (check_right && Input::IsTriggered(Input::RIGHT)) {
 		result = 3;
-	if (check_up && Input::IsTriggered(Input::UP))
+	}
+	if (check_up && Input::IsTriggered(Input::UP)) {
 		result = 4;
-	if (check_decision && Input::IsTriggered(Input::DECISION))
+	}
+	if (check_decision && Input::IsTriggered(Input::DECISION)) {
 		result = 5;
-	if (check_cancel && Input::IsTriggered(Input::CANCEL))
+	}
+	if (check_cancel && Input::IsTriggered(Input::CANCEL)) {
 		result = 6;
-	if (check_shift && Input::IsTriggered(Input::SHIFT))
+	}
+	if (check_shift && Input::IsTriggered(Input::SHIFT)) {
 		result = 7;
-	if (check_numbers)
-		for (int i = 0; i < 10; i++)
-			if (Input::IsTriggered((Input::InputButton)(Input::N0 + i)))
+	}
+	if (check_numbers) {
+		for (int i = 0; i < 10; ++i) {
+			if (Input::IsTriggered((Input::InputButton)(Input::N0 + i))) {
 				result = 10 + i;
-	if (check_arith)
-		for (int i = 0; i < 5; i++)
-			if (Input::IsTriggered((Input::InputButton)(Input::PLUS + i)))
+			}
+		}
+	}
+	if (check_arith) {
+		for (int i = 0; i < 5; ++i) {
+			if (Input::IsTriggered((Input::InputButton)(Input::PLUS + i))) {
 				result = 20 + i;
+			}
+		}
+	}
 
 	Game_Variables[var_id] = result;
 
@@ -1483,7 +1572,10 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 
 	button_timer = 0;
 
-	return true;
+	// Command was a success but IsTriggered causes problems when calling
+	// this event multiple times in the same frame...
+	++index;
+	return false;
 }
 
 bool Game_Interpreter_Map::CommandChangeVehicleGraphic(RPG::EventCommand const& com) { // code 10650
@@ -1707,16 +1799,16 @@ bool Game_Interpreter_Map::CommandChangeClass(RPG::EventCommand const& com) { //
 }
 
 bool Game_Interpreter_Map::CommandHaltAllMovement(RPG::EventCommand const& /* com */) { // code 11350
-	std::vector<pending_move_route>::iterator it;
+	std::vector<Game_Character*>::iterator it;
 	for (it = pending.begin(); it != pending.end(); it++)
-		it->second->CancelMoveRoute(it->first, this);
+		(*it)->CancelMoveRoute(this);
 	pending.clear();
 	return true;
 }
 
-////////////////////////////////////////////////////////////
-/// Conditional Branch
-////////////////////////////////////////////////////////////
+/**
+ * Conditional Branch
+ */
 bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com) { // Code 12010
 	bool result = false;
 	int value1, value2;
@@ -1788,7 +1880,13 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 			break;
 		case 4:
 			// Item
-			result = (Game_Party::ItemNumber(com.parameters[1]) > 0);
+			if (com.parameters[2] == 0) {
+				// Having
+				result = Game_Party::ItemNumber(com.parameters[1]) > 0;
+			} else {
+				// Not having
+				result = Game_Party::ItemNumber(com.parameters[1]) == 0;
+			}
 			break;
 		case 5:
 			// Hero

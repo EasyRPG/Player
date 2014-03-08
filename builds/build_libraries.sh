@@ -56,7 +56,7 @@ fi
 if ! [ -f $HOME_BUILD_PATH/include/png.h ] ; then
     PNG_VERSION=1.5.14
     wget --continue \
-        "ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng-$PNG_VERSION.tar.gz" \
+        "ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng15/libpng-$PNG_VERSION.tar.gz" \
         -O $ARCHIVE_DIR/libpng-$PNG_VERSION.tar.gz
     tar -xf $ARCHIVE_DIR/libpng-$PNG_VERSION.tar.gz
     cd libpng-$PNG_VERSION
@@ -192,25 +192,6 @@ if ! [ -f $HOME_BUILD_PATH/include/pixman-1/pixman.h ] ; then
     CFLAGS="$CFLAGS -DSIZE_MAX=\"((size_t)-1)\"" ./configure $CONFIGURE_FLAGS
     make SUBDIRS=pixman -j $JOBS
 	  make SUBDIRS=pixman install
-    cd $BUILD_DIR
-fi
-
-# Lua
-if ! [ -f $HOME_BUILD_PATH/include/lua.h ] ; then
-    LUA_VERSION=5.1.5
-    wget --continue \
-        "http://www.lua.org/ftp/lua-$LUA_VERSION.tar.gz" \
-        -O $ARCHIVE_DIR/lua-$LUA_VERSION.tar.gz
-    tar -xf $ARCHIVE_DIR/lua-$LUA_VERSION.tar.gz
-    cd lua-$LUA_VERSION
-    copy_config
-    sed -i -e "s/cv->decimal_point\[0\]/'.'/" src/llex.c
-    sed -i -e "s/localeconv()/NULL/" src/llex.c
-    make -j $JOBS \
-        CC="$CC" AR="$AR rvs" RANLIB="$RANLIB" \
-        MYCFLAGS="$LUA_CFLAGS" MYLDFLAGS="$LUA_LDFLAGS" generic
-	  make INSTALL_TOP=$HOME_BUILD_PATH TO_BIN="$LUA_EXECUTABLE" install
-
     cd $BUILD_DIR
 fi
 

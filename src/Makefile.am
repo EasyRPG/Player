@@ -1,134 +1,290 @@
 bin_PROGRAMS = easyrpg-player
+EXTRA_DIST = platform
+easyrpg_player_CPPFLAGS = \
+	-I$(srcdir)/../lib/shinonome
+easyrpg_player_CXXFLAGS = \
+	-std=c++0x \
+	$(PIXMAN_CFLAGS) \
+	$(FREETYPE_CFLAGS) \
+	$(SDL_CFLAGS) \
+	$(SDLMIXER_CFLAGS) \
+	$(PNG_CFLAGS) \
+	$(ZLIB_CFLAGS)
+easyrpg_player_LDADD = \
+	$(PIXMAN_LIBS) \
+	$(FREETYPE_LIBS) \
+	$(SDL_LIBS) \
+	$(SDLMIXER_LIBS) \
+	$(PNG_LIBS) \
+	$(ZLIB_LIBS)
 easyrpg_player_SOURCES = \
 	al_audio.cpp \
-	android_ui.cpp \
+	al_audio.h \
 	audio.cpp \
+	audio.h \
 	background.cpp \
+	background.h \
 	baseui.cpp \
+	baseui.h \
 	battle_actions.cpp \
+	battle_actions.h \
 	battle_algorithms.cpp \
 	battle_animation.cpp \
+	battle_animation.h \
 	battle_battler.cpp \
+	battle_battler.h \
+	battle_interface.h \
 	bitmap.cpp \
+	bitmap.h \
 	bitmap_screen.cpp \
+	bitmap_screen.h \
 	bitmap_utils.cpp \
-	bot_ui.cpp \
+	bitmap_utils.h \
 	cache.cpp \
+	cache.h \
 	color.cpp \
+	color.h \
+	dirent_win.h \
+	docmain.h \
+	drawable.h \
 	effects.cpp \
+	exfont.h \
 	filefinder.cpp \
+	filefinder.h \
 	font.cpp \
+	font.h \
 	font_pearl_8x8.cpp \
 	font_render_8x8.cpp \
+	font_render_8x8.h \
 	game_actor.cpp \
+	game_actor.h \
 	game_actors.cpp \
+	game_actors.h \
 	game_battle.cpp \
+	game_battle.h \
 	game_battler.cpp \
+	game_battler.h \
 	game_character.cpp \
+	game_character.h \
 	game_commonevent.cpp \
+	game_commonevent.h \
 	game_enemy.cpp \
+	game_enemy.h \
 	game_event.cpp \
+	game_event.h \
 	game_interpreter_battle.cpp \
+	game_interpreter_battle.h \
 	game_interpreter.cpp \
+	game_interpreter.h \
 	game_interpreter_map.cpp \
+	game_interpreter_map.h \
 	game_map.cpp \
+	game_map.h \
 	game_message.cpp \
+	game_message.h \
 	game_party.cpp \
+	game_party.h \
 	game_picture.cpp \
+	game_picture.h \
 	game_player.cpp \
+	game_player.h \
 	game_screen.cpp \
+	game_screen.h \
+	game_switches.h \
 	game_system.cpp \
+	game_system.h \
 	game_targets.cpp \
+	game_targets.h \
 	game_temp.cpp \
+	game_temp.h \
 	game_troop.cpp \
+	game_troop.h \
 	game_unit.cpp \
+	game_unit.h \
+	game_variables.h \
 	game_vehicle.cpp \
+	game_vehicle.h \
 	graphics.cpp \
+	graphics.h \
 	hslrgb.cpp \
+	hslrgb.h \
 	image_bmp.cpp \
+	image_bmp.h \
 	image_jpg.cpp \
+	image_jpg.h \
 	image_png.cpp \
+	image_png.h \
 	image_xyz.cpp \
+	image_xyz.h \
 	input_buttons_desktop.cpp \
-	input_buttons_dingoo.cpp \
 	input_buttons_gekko.cpp \
 	input_buttons_gph.cpp \
+	input_buttons.h \
+	input_buttons_opendingux.cpp \
 	input_buttons_psp.cpp \
 	input.cpp \
-	lua_bot.cpp \
+	input.h \
+	keys.h \
 	main.cpp \
 	main_data.cpp \
+	main_data.h \
+	map_data.h \
+	matrix.h \
+	memory_management.h \
+	options.h \
 	output.cpp \
+	output.h \
+	pixel_format.h \
 	plane.cpp \
+	plane.h \
 	player.cpp \
+	player.h \
 	rect.cpp \
-	registry_win.cpp \
+	rect.h \
+	registry.cpp \
+	registry.h \
+	rtp_table_bom.h \
+	rtp_table.h \
 	scene_actortarget.cpp \
+	scene_actortarget.h \
 	scene_battle.cpp \
+	scene_battle.h \
 	scene.cpp \
+	scene_debug.cpp \
+	scene_debug.h \
 	scene_end.cpp \
+	scene_end.h \
 	scene_equip.cpp \
+	scene_equip.h \
 	scene_file.cpp \
+	scene_file.h \
 	scene_gameover.cpp \
+	scene_gameover.h \
+	scene.h \
 	scene_item.cpp \
+	scene_item.h \
 	scene_load.cpp \
+	scene_load.h \
 	scene_logo.cpp \
+	scene_logo.h \
 	scene_map.cpp \
+	scene_map.h \
 	scene_menu.cpp \
+	scene_menu.h \
 	scene_name.cpp \
+	scene_name.h \
 	scene_order.cpp \
+	scene_order.h \
 	scene_save.cpp \
+	scene_save.h \
 	scene_shop.cpp \
+	scene_shop.h \
 	scene_skill.cpp \
+	scene_skill.h \
 	scene_status.cpp \
+	scene_status.h \
 	scene_title.cpp \
+	scene_title.h \
+	screen.cpp \
+	screen.h \
 	sdl_audio.cpp \
+	sdl_audio.h \
 	sdl_ui.cpp \
+	sdl_ui.h \
 	sprite_character.cpp \
+	sprite_character.h \
 	sprite.cpp \
+	sprite.h \
 	spriteset_map.cpp \
+	spriteset_map.h \
+	system.h \
 	text.cpp \
+	text.h \
 	tilemap.cpp \
+	tilemap.h \
 	tilemap_layer.cpp \
+	tilemap_layer.h \
 	tone.cpp \
+	tone.h \
+	util_macro.h \
 	utils.cpp \
+	utils.h \
 	util_win.cpp \
+	util_win.h \
+	weather.cpp \
+	weather.h \
 	window_actorinfo.cpp \
+	window_actorinfo.h \
 	window_actorstatus.cpp \
+	window_actorstatus.h \
 	window_actortarget.cpp \
+	window_actortarget.h \
 	window_base.cpp \
+	window_base.h \
 	window_battlecommand.cpp \
+	window_battlecommand.h \
 	window_battleitem.cpp \
+	window_battleitem.h \
 	window_battleoption.cpp \
+	window_battleoption.h \
 	window_battleskill.cpp \
+	window_battleskill.h \
 	window_battlestatus.cpp \
+	window_battlestatus.h \
 	window_command.cpp \
+	window_command.h \
 	window.cpp \
 	window_equip.cpp \
+	window_equip.h \
 	window_equipitem.cpp \
+	window_equipitem.h \
 	window_equipstatus.cpp \
+	window_equipstatus.h \
 	window_face.cpp \
+	window_face.h \
 	window_gold.cpp \
+	window_gold.h \
+	window.h \
 	window_help.cpp \
+	window_help.h \
 	window_item.cpp \
+	window_item.h \
 	window_keyboard.cpp \
+	window_keyboard.h \
 	window_menustatus.cpp \
+	window_menustatus.h \
 	window_message.cpp \
+	window_message.h \
 	window_name.cpp \
+	window_name.h \
 	window_numberinput.cpp \
+	window_numberinput.h \
 	window_savefile.cpp \
+	window_savefile.h \
 	window_selectable.cpp \
+	window_selectable.h \
 	window_shopbuy.cpp \
+	window_shopbuy.h \
 	window_shop.cpp \
+	window_shop.h \
 	window_shopnumber.cpp \
+	window_shopnumber.h \
 	window_shopparty.cpp \
+	window_shopparty.h \
 	window_shopsell.cpp \
+	window_shopsell.h \
 	window_shopstatus.cpp \
+	window_shopstatus.h \
 	window_skill.cpp \
+	window_skill.h \
 	window_skillstatus.cpp \
+	window_skillstatus.h \
 	window_targetstatus.cpp \
+	window_targetstatus.h \
+	window_varlist.cpp \
+	window_varlist.h \
 	zobj.cpp \
+	zobj.h \
+	../lib/shinonome/shinonome.hxx \
 	../lib/shinonome/gothic.cxx \
 	../lib/shinonome/mincho.cxx
-easyrpg_player_LDADD = $(READERS_DIR)/lib/libreaders.a
-AM_CXXFLAGS = -I$(srcdir)/../lib/shinonome

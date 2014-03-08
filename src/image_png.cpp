@@ -1,40 +1,36 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include "system.h"
 #ifdef SUPPORT_PNG
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
-
 #include <png.h>
 #include <cstdlib>
+#include <cstring>
 #include "output.h"
 #include "image_png.h"
 
-////////////////////////////////////////////////////////////
 static void read_data(png_structp png_ptr, png_bytep data, png_size_t length) {
     png_bytep* bufp = (png_bytep*) png_get_io_ptr(png_ptr);
 	memcpy(data, *bufp, length);
 	*bufp += length;
 }
 
-////////////////////////////////////////////////////////////
 void ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 					int& width, int& height, void*& pixels) {
 	pixels = NULL;
@@ -134,7 +130,5 @@ void ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 
 	png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 }
-
-////////////////////////////////////////////////////////////
 
 #endif // SUPPORT_PNG

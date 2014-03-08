@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "bitmap.h"
 #include "rpg_animation.h"
 #include "output.h"
@@ -27,7 +25,6 @@
 #include "battle_animation.h"
 #include "bitmap_screen.h"
 
-////////////////////////////////////////////////////////////
 BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) :
 	x(x), y(y), animation(animation), frame(0), initialized(false), visible(false),
 	ID(Graphics::drawable_id++) {
@@ -68,7 +65,7 @@ unsigned long BattleAnimation::GetId() const {
 }
 
 int BattleAnimation::GetZ() const {
-	return 400;
+	return 1500;
 }
 
 DrawableType BattleAnimation::GetType() const {
@@ -100,7 +97,11 @@ void BattleAnimation::Draw(int /* z_order */) {
 }
 
 void BattleAnimation::Update() {
-	frame++;
+	static bool update = true;
+	if (update) {
+		frame++;
+	}
+	update = !update;
 }
 
 void BattleAnimation::SetFrame(int _frame) {

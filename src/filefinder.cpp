@@ -1,27 +1,26 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <cerrno>
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
+#include <ciso646>
 
 #include <algorithm>
 #include <fstream>
@@ -39,6 +38,7 @@
 #include "output.h"
 #include "player.h"
 #include "main_data.h"
+#include "registry.h"
 
 #ifdef _MSC_VER
 #  include "rtp_table_bom.h"
@@ -55,12 +55,16 @@
 #ifdef _WIN32
 #  include <windows.h>
 #  include <shlobj.h>
-#  include "registry_win.h"
 #else
 #  include <dirent.h>
 #  include <unistd.h>
 #  include <sys/types.h>
 #  include <sys/stat.h>
+#endif
+
+#ifdef __ANDROID__
+#   include <jni.h>
+#   include <SDL_system.h>
 #endif
 
 // MinGW shlobj.h does not define this
@@ -101,6 +105,12 @@ namespace {
 		return boost::none;
 	}
 
+	bool is_not_ascii_char(uint8_t c) { return c < 0x80; }
+
+	bool is_not_ascii_filename(std::string const& n) {
+		return std::find_if(n.begin(), n.end(), &is_not_ascii_char) != n.end();
+	}
+
 	std::string const& translate_rtp(std::string const& dir, std::string const& name) {
 		rtp_table_type const& table =
 			Player::engine == Player::EngineRpg2k3? RTP_TABLE_2003:
@@ -112,8 +122,8 @@ namespace {
 		std::map<std::string, std::string>::const_iterator file_it =
 			dir_it->second.find(Utils::LowerCase(name));
 
-		if (file_it == dir_it->second.end()) {
-			// Linear Search: English -> Japanese
+		if (file_it == dir_it->second.end() and is_not_ascii_filename(name)) {
+			// Linear Search: Japanese file name to English file name
 			for (std::map<std::string, std::string>::const_iterator it = dir_it->second.begin(); it != file_it; ++it) {
 				if (it->second == name) {
 					return it->first;
@@ -137,26 +147,26 @@ namespace {
 			if (! *i) { continue; }
 
 			boost::optional<std::string> const ret = FindFile(*(*i), dir, name, exts);
-			if (ret != boost::none) { return *ret; }
+			if (ret) { return *ret; }
 
 			boost::optional<std::string> const ret_rtp = FindFile(*(*i), dir, rtp_name, exts);
-			if (ret_rtp != boost::none) { return *ret_rtp; }
+			if (ret_rtp) { return *ret_rtp; }
 		}
 
 		Output::Debug("Cannot find: %s/%s", dir.c_str(), name.c_str());
 
-		return "";
+		return std::string();
 	}
 
 } // anonymous namespace
 
-EASYRPG_SHARED_PTR<FileFinder::ProjectTree> FileFinder::CreateProjectTree(std::string const& p) {
+EASYRPG_SHARED_PTR<FileFinder::ProjectTree> FileFinder::CreateProjectTree(std::string const& p, bool recursive) {
 	if(! (Exists(p) && IsDirectory(p))) { return EASYRPG_SHARED_PTR<ProjectTree>(); }
 
 	EASYRPG_SHARED_PTR<ProjectTree> tree = EASYRPG_MAKE_SHARED<ProjectTree>();
 	tree->project_path = p;
 
-	Directory mem = GetDirectoryMembers(tree->project_path, ALL);
+	Directory mem = GetDirectoryMembers(tree->project_path, recursive ? ALL : FILES);
 	for(string_map::const_iterator i = mem.members.begin(); i != mem.members.end(); ++i) {
 		(IsDirectory(MakePath(tree->project_path, i->second))?
 		 tree->directories : tree->files)[i->first] = i->second;
@@ -226,7 +236,6 @@ std::string GetFontFilename(std::string const& name) {
 }
 #endif
 
-////////////////////////////////////////////////////////////
 std::string FileFinder::FindFont(const std::string& name) {
 	static const char* FONTS_TYPES[] = {
 		".ttf", ".ttc", ".otf", ".fon", NULL, };
@@ -292,24 +301,49 @@ static void add_rtp_path(std::string const& p) {
 
 void FileFinder::InitRtpPaths() {
 	std::string const version_str =
-		Player::engine == Player::EngineRpg2k? "2000":
-		Player::engine == Player::EngineRpg2k3? "2003":
+		Player::engine == Player::EngineRpg2k ? "2000":
+		Player::engine == Player::EngineRpg2k3 ? "2003":
 		"";
 
 	assert(!version_str.empty());
 
-#ifdef _WIN32
 	std::string const company =
 		Player::engine == Player::EngineRpg2k? "ASCII": "Enterbrain";
 
-	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\" + company + "\\RPG" + version_str, "RuntimePackagePath");
-	if(! rtp_path.empty()) { add_rtp_path(rtp_path); }
+	// Original 2003 RTP installer registry key is upper case
+	// and Wine registry is case insensitive
+	std::string const key =
+		Player::engine == Player::EngineRpg2k? "RuntimePackagePath": "RUNTIMEPACKAGEPATH";
 
-	rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\" + company + "\\RPG" + version_str, "RuntimePackagePath");
-	if(! rtp_path.empty()) { add_rtp_path(rtp_path); }
-#elif defined(GEKKO)
+	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\" + company + "\\RPG" + version_str, key);
+	if (!rtp_path.empty()) {
+		add_rtp_path(rtp_path);
+	}
+
+	rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\" + company + "\\RPG" + version_str, key);
+	if (!rtp_path.empty()) {
+		add_rtp_path(rtp_path);
+	}
+
+#ifdef GEKKO
 	add_rtp_path("sd:/data/rtp/" + version_str + "/");
 	add_rtp_path("usb:/data/rtp/" + version_str + "/");
+#elif __ANDROID__
+	// Invoke "String getRtpPath()" in EasyRPG Activity via JNI
+	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+	jobject sdl_activity = (jobject)SDL_AndroidGetActivity();
+	jclass cls = env->GetObjectClass(sdl_activity);
+	jmethodID jni_getRtpPath = env->GetMethodID(cls , "getRtpPath", "()Ljava/lang/String;");
+	jstring return_string = (jstring)env->CallObjectMethod(sdl_activity, jni_getRtpPath);
+	
+	const char *js = env->GetStringUTFChars(return_string, NULL);
+	std::string cs(js);
+
+	env->ReleaseStringUTFChars(return_string, js);
+	env->DeleteLocalRef(sdl_activity);
+	env->DeleteLocalRef(cls);
+
+	add_rtp_path(cs + "/" + version_str + "/");
 #else
 	add_rtp_path("/data/rtp/" + version_str + "/");
 #endif
@@ -318,9 +352,10 @@ void FileFinder::InitRtpPaths() {
 		add_rtp_path(getenv("RPG2K_RTP_PATH"));
 	else if (Player::engine == Player::EngineRpg2k3 && getenv("RPG2K3_RTP_PATH"))
 		add_rtp_path(getenv("RPG2K3_RTP_PATH"));
-	if(getenv("RPG_RTP_PATH")) { add_rtp_path(getenv("RPG_RTP_PATH")); }
+	if (getenv("RPG_RTP_PATH")) {
+		add_rtp_path(getenv("RPG_RTP_PATH"));
+	}
 }
-
 
 void FileFinder::Quit() {
 	search_paths.clear();
@@ -350,7 +385,7 @@ EASYRPG_SHARED_PTR<std::fstream> FileFinder::openUTF8(const std::string& name,
 
 std::string FileFinder::FindImage(const std::string& dir, const std::string& name) {
 	static const char* IMG_TYPES[] = {
-		".bmp",  ".png", ".xyz", ".gif", ".jpg", ".jpeg", NULL };
+		".bmp",  ".png", ".xyz", /*".gif", ".jpg", ".jpeg",*/ NULL };
 	return FindFile(dir, name, IMG_TYPES);
 }
 
@@ -360,12 +395,16 @@ std::string FileFinder::FindDefault(const std::string& dir, const std::string& n
 }
 
 std::string FileFinder::FindDefault(std::string const& name) {
-	ProjectTree const& p = GetProjectTree();
+	return FindDefault(GetProjectTree(), name);
+}
+
+std::string FileFinder::FindDefault(const ProjectTree& tree, const std::string& name) {
+	ProjectTree const& p = tree;
 	string_map const& files = p.files;
 
 	string_map::const_iterator const it = files.find(Utils::LowerCase(name));
 
-	return(it != files.end())? MakePath(p.project_path, it->second) : "";
+	return(it != files.end()) ? MakePath(p.project_path, it->second) : "";
 }
 
 bool FileFinder::IsRPG2kProject(ProjectTree const& dir) {
@@ -391,6 +430,9 @@ std::string FileFinder::FindSound(const std::string& name) {
 bool FileFinder::Exists(std::string const& filename) {
 #ifdef _WIN32
 	return ::GetFileAttributesW(Utils::ToWideString(filename).c_str()) != (DWORD)-1;
+#elif GEKKO
+	struct stat sb;
+	return ::stat(filename.c_str(), &sb) == 0;
 #else
 	return ::access(filename.c_str(), F_OK) != -1;
 #endif

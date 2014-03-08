@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "spriteset_map.h"
 #include "cache.h"
 #include "game_map.h"
@@ -26,9 +24,7 @@
 #include "game_character.h"
 #include "game_player.h"
 
-////////////////////////////////////////////////////////////
-/// Constructor
-////////////////////////////////////////////////////////////
+// Constructor
 Spriteset_Map::Spriteset_Map() {
 	tilemap.SetWidth(Game_Map::GetWidth());
 	tilemap.SetHeight(Game_Map::GetHeight());
@@ -51,12 +47,10 @@ Spriteset_Map::Spriteset_Map() {
 	Update();
 }
 
-////////////////////////////////////////////////////////////
-/// Update
-////////////////////////////////////////////////////////////
+// Update
 void Spriteset_Map::Update() {
-	tilemap.SetOx(Game_Map::GetDisplayX() / 8);
-	tilemap.SetOy(Game_Map::GetDisplayY() / 8);
+	tilemap.SetOx(Game_Map::GetDisplayX() / (SCREEN_TILE_WIDTH / 16));
+	tilemap.SetOy(Game_Map::GetDisplayY() / (SCREEN_TILE_WIDTH / 16));
 	tilemap.Update();
 	for (size_t i = 0; i < character_sprites.size(); i++) {
 		character_sprites[i]->Update();
@@ -70,9 +64,7 @@ void Spriteset_Map::Update() {
 	panorama.SetOy(Game_Map::GetParallaxY());
 }
 
-////////////////////////////////////////////////////////////
-/// Find the sprite for a specific character
-////////////////////////////////////////////////////////////
+// Finds the sprite for a specific character
 Sprite_Character* Spriteset_Map::FindCharacter(Game_Character* character) const
 {
 	std::vector<EASYRPG_SHARED_PTR<Sprite_Character> >::const_iterator it;

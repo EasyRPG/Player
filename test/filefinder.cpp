@@ -1,22 +1,30 @@
 #include "filefinder.h"
-#include <SDL.h>
 #include <cstdlib>
+#include <ciso646>
 
-static void CheckIsRPG2kProject() {
+namespace {
+void CheckIsRPG2kProject() {
 	EASYRPG_SHARED_PTR<FileFinder::ProjectTree> const
 		tree = FileFinder::CreateProjectTree(".");
 	assert(FileFinder::IsRPG2kProject(*tree));
 }
 
-static void CheckIsDirectory() {
+void CheckIsDirectory() {
 	assert(FileFinder::IsDirectory("."));
 }
 
-extern "C" int main(int, char**) {
+void CheckEnglishFilename() {
+	assert(not FileFinder::FindImage("Backdrop", "castle").empty());
+}
+}
+
+int main(int, char**) {
 	FileFinder::Init();
+	FileFinder::InitRtpPaths();
 
 	CheckIsDirectory();
 	CheckIsRPG2kProject();
+	CheckEnglishFilename();
 
 	FileFinder::Quit();
 

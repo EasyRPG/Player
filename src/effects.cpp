@@ -1,28 +1,25 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <cmath>
 #include "bitmap.h"
 #include "bitmap_utils.h"
 
-////////////////////////////////////////////////////////////
 // Rotate, Zoom, Single Opacity
 void Bitmap::EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect const& src_rect, int opacity) {
 	if (opacity <= 0)
@@ -38,7 +35,6 @@ void Bitmap::EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect const& src_r
 	TransformBlit(dst_rect, src, src_rect, inv, opacity);
 }
 
-////////////////////////////////////////////////////////////
 // Rotate, Zoom, Split Opacity
 void Bitmap::EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect const& src_rect,
 						  int top_opacity, int bottom_opacity, int opacity_split) {
@@ -58,7 +54,6 @@ void Bitmap::EffectsBlit(const Matrix &fwd, Bitmap const& src, Rect const& src_r
 	}
 }
 
-////////////////////////////////////////////////////////////
 // Waver, Single Opacity
 void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
 						   int opacity,
@@ -69,7 +64,6 @@ void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
 		WaverBlit(x, y, src, src_rect, waver_depth, waver_phase, opacity);
 }
 
-////////////////////////////////////////////////////////////
 // Waver, Split Opacity
 void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
 						   int top_opacity, int bottom_opacity, int opacity_split,
@@ -95,7 +89,6 @@ void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
 	}
 }
 
-////////////////////////////////////////////////////////////
 // Waver, Zoom, Split Opacity
 void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
 						   int top_opacity, int bottom_opacity, int opacity_split,
@@ -109,7 +102,6 @@ void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect,
 				waver_depth, waver_phase);
 }
 
-////////////////////////////////////////////////////////////
 void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect_,
 						   int top_opacity, int bottom_opacity, int opacity_split,
 						   const Tone& tone,
@@ -146,7 +138,7 @@ void Bitmap::EffectsBlit(int x, int y, Bitmap const& src, Rect const& src_rect_,
 	}
 
 	if (rotate) {
-		Matrix fwd = Matrix::Setup(angle, zoom_x, zoom_y, src_rect.x, src_rect.y, x, y);
+		Matrix fwd = Matrix::Setup(1.0-angle, zoom_x, zoom_y, (src_rect.width - src_rect.x) / 2, (src_rect.height - src_rect.y) /2, x, y);
 		EffectsBlit(fwd, src, src_rect, top_opacity, bottom_opacity, opacity_split);
 	}
 	else if (scale)

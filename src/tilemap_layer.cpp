@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <cstring>
 #include <math.h>
 #include "tilemap_layer.h"
@@ -28,10 +26,8 @@
 #include "bitmap.h"
 #include "bitmap_screen.h"
 
-////////////////////////////////////////////////////////////
 // Blocks subtiles IDs
 // Mess with this code and you will die in 3 days...
-////////////////////////////////////////////////////////////
 // [tile-id][row][col]
 static const int8_t BlockA_Subtiles_IDS[47][2][2] = {
 #define N -1
@@ -140,7 +136,6 @@ static const uint8_t BlockD_Subtiles_IDS[50][2][2][2] = {
     {{{0, 0}, {0, 0}}, {{0, 0}, {0, 0}}}
 };
 
-////////////////////////////////////////////////////////////
 TilemapLayer::TilemapLayer(int ilayer) :
 	visible(true),
 	ox(0),
@@ -169,13 +164,11 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	Graphics::RegisterDrawable(ID, this);
 }
 
-////////////////////////////////////////////////////////////
 TilemapLayer::~TilemapLayer() {
 	Graphics::RemoveZObj(ID, true);
 	Graphics::RemoveDrawable(ID);
 }
 
-////////////////////////////////////////////////////////////
 void TilemapLayer::DrawTile(BitmapScreen& screen, int x, int y, int row, int col, bool autotile) {
 	if (!autotile && screen.GetBitmap()->GetTileOpacity(row, col) == Bitmap::Transparent)
 		return;
@@ -183,7 +176,6 @@ void TilemapLayer::DrawTile(BitmapScreen& screen, int x, int y, int row, int col
 	screen.BlitScreen(x, y, rect);
 }
 
-////////////////////////////////////////////////////////////
 void TilemapLayer::Draw(int z_order) {
 	if (!visible) return;
 
@@ -259,13 +251,13 @@ void TilemapLayer::Draw(int z_order) {
 					} else if (tile.ID < BLOCK_C) {
 						// If Blocks A1, A2, B
 
-						// Draw the tile from autile cache
+						// Draw the tile from autotile cache
 						TileXY pos = GetCachedAutotileAB(tile.ID, animation_step_ab);
 						DrawTile(*autotiles_ab_screen, map_draw_x, map_draw_y, pos.y, pos.x, true);
 					} else {
 						// If blocks D1-D12
 
-						// Draw the tile from autile cache
+						// Draw the tile from autotile cache
 						TileXY pos = GetCachedAutotileD(tile.ID);
 						DrawTile(*autotiles_d_screen, map_draw_x, map_draw_y, pos.y, pos.x, true);
 					}
@@ -297,7 +289,6 @@ void TilemapLayer::Draw(int z_order) {
 	}
 }
 
-////////////////////////////////////////////////////////////
 TilemapLayer::TileXY TilemapLayer::GetCachedAutotileAB(short ID, short animID) {
 	short block = ID / 1000;
 	short b_subtile = (ID - block * 1000) / 50;
@@ -311,7 +302,6 @@ TilemapLayer::TileXY TilemapLayer::GetCachedAutotileD(short ID) {
 	return autotiles_d[block][subtile];
 }
 
-////////////////////////////////////////////////////////////
 void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 	// Calculate the block to use
 	//	1: A1 + Upper B (Grass + Coast)
@@ -411,7 +401,6 @@ void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 	autotiles_ab[animID][block][b_subtile][a_subtile] = tile_xy;
 }
 
-////////////////////////////////////////////////////////////
 void TilemapLayer::GenerateAutotileD(short ID) {
 	// Calculate the D block id
 	short block = (ID - 4000) / 50;
@@ -477,11 +466,10 @@ void TilemapLayer::GenerateAutotileD(short ID) {
 }
 
 
-////////////////////////////////////////////////////////////
 BitmapScreenRef TilemapLayer::GenerateAutotiles(int count, const std::map<uint32_t, TileXY>& map) {
 	int rows = (count + TILES_PER_ROW - 1) / TILES_PER_ROW;
 	BitmapRef tiles = Bitmap::Create(TILES_PER_ROW * 16, rows * 16);
-	tiles->Fill(Color(255,255,0,255));
+	tiles->Clear();
 	Rect rect(0, 0, 8, 8);
 
 	std::map<uint32_t, TileXY>::const_iterator it;
@@ -507,7 +495,6 @@ BitmapScreenRef TilemapLayer::GenerateAutotiles(int count, const std::map<uint32
 	return BitmapScreen::Create(tiles);
 }
 
-////////////////////////////////////////////////////////////
 void TilemapLayer::Update() {
 	animation_frame += 1;
 
@@ -535,7 +522,6 @@ void TilemapLayer::Update() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 BitmapRef const& TilemapLayer::GetChipset() const {
 	return chipset;
 }
@@ -671,12 +657,10 @@ void TilemapLayer::SetAnimationType(int type) {
 	animation_type = type;
 }
 
-////////////////////////////////////////////////////////////
 int TilemapLayer::GetZ() const {
 	return -1;
 }
 
-////////////////////////////////////////////////////////////
 unsigned long TilemapLayer::GetId() const {
 	return ID;
 }
@@ -686,5 +670,9 @@ DrawableType TilemapLayer::GetType() const {
 }
 
 void TilemapLayer::Substitute(int old_id, int new_id) {
-	substitutions[old_id] = (uint8_t) new_id;
+	for (size_t i = 0; i < substitutions.size(); ++i) {
+		if (substitutions[i] == old_id) {
+			substitutions[i] = (uint8_t) new_id;
+		}
+	}
 }

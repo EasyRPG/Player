@@ -9,21 +9,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Source Files\Backend">
-      <UniqueIdentifier>{f9c8e0bf-3d9d-4f20-8d5f-50c487c1b05e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Backend\Audio">
-      <UniqueIdentifier>{b67319e7-4226-4593-961c-5cecdc035a6d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Backend\Graphics">
-      <UniqueIdentifier>{7af98abf-21e3-45e7-a449-ffcd3bf061d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Backend\Input">
-      <UniqueIdentifier>{ffe2c197-01e3-4dde-a82c-6834bd070404}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Backend\UI">
-      <UniqueIdentifier>{ce2d7343-39dd-458d-b5a6-ab688e16af7f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Engine">
       <UniqueIdentifier>{150af59c-bdd7-4871-9896-fcbaa91f995b}</UniqueIdentifier>
     </Filter>
@@ -50,6 +35,21 @@
     </Filter>
     <Filter Include="Source Files\Settings">
       <UniqueIdentifier>{36029a79-f366-4072-aafe-fe9606e929ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Backend">
+      <UniqueIdentifier>{f9c8e0bf-3d9d-4f20-8d5f-50c487c1b05e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Backend\Audio">
+      <UniqueIdentifier>{b67319e7-4226-4593-961c-5cecdc035a6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Backend\Graphics">
+      <UniqueIdentifier>{7af98abf-21e3-45e7-a449-ffcd3bf061d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Backend\Input">
+      <UniqueIdentifier>{ffe2c197-01e3-4dde-a82c-6834bd070404}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Backend\UI">
+      <UniqueIdentifier>{ce2d7343-39dd-458d-b5a6-ab688e16af7f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -133,7 +133,7 @@
     <ClCompile Include="..\..\src\input_buttons_desktop.cpp">
       <Filter>Source Files\Backend\Input</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\input_buttons_dingoo.cpp">
+    <ClCompile Include="..\..\src\input_buttons_opendingux.cpp">
       <Filter>Source Files\Backend\Input</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\input_buttons_gekko.cpp">
@@ -403,9 +403,6 @@
     <ClCompile Include="..\..\src\util_win.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\registry_win.cpp">
-      <Filter>Source Files\Tools</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\output.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
@@ -434,6 +431,21 @@
       <Filter>Source Files\Engine\Game</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\message_overlay.cpp">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\registry.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene_debug.cpp">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\window_varlist.cpp">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\screen.cpp">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\weather.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
@@ -786,9 +798,6 @@
     <ClInclude Include="..\..\src\util_win.h">
       <Filter>Source Files\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\registry_win.h">
-      <Filter>Source Files\Tools</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\output.h">
       <Filter>Source Files\Tools</Filter>
     </ClInclude>
@@ -835,6 +844,21 @@
       <Filter>Source Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\message_overlay.h">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\registry.h">
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene_debug.h">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\window_varlist.h">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\screen.h">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\weather.h">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
   </ItemGroup>

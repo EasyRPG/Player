@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <algorithm>
 #include <string>
 #include <vector>
@@ -28,20 +26,17 @@
 #include "input.h"
 #include "scene_map.h"
 
-////////////////////////////////////////////////////////////
 Scene_Order::Scene_Order() :
 	actor_counter(0) {
 	type = Scene::Order;
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Order::Start() {
 	actors.resize(Game_Party::GetActors().size());
 
 	CreateCommandWindow();
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Order::Update() {
 	window_left->Update();
 	window_right->Update();
@@ -56,13 +51,13 @@ void Scene_Order::Update() {
 
 void Scene_Order::UpdateOrder() {
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Data::system.cancel_se);
+		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		if (std::find(actors.begin(), actors.end(), window_left->GetIndex() + 1) != actors.end()) {
-			Game_System::SePlay(Data::system.cancel_se);
+			Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		} else {
-			Game_System::SePlay(Data::system.decision_se);
+			Game_System::SePlay(Main_Data::game_data.system.decision_se);
 			window_left->SetItemText(window_left->GetIndex(), "");
 			window_right->SetItemText(actor_counter, Game_Party::GetActors()[window_left->GetIndex()]->GetName());
 
@@ -95,14 +90,14 @@ void Scene_Order::UpdateConfirm() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Order::CreateCommandWindow() {
 	std::vector<std::string> options_left;
 	std::vector<std::string> options_right;
 	std::vector<std::string> options_confirm;
 
-	for (std::vector<Game_Actor*>::iterator it = Game_Party::GetActors().begin();
-		it != Game_Party::GetActors().end(); ++it) {
+	std::vector<Game_Actor*> actors = Game_Party::GetActors();
+	for (std::vector<Game_Actor*>::const_iterator it = actors.begin();
+		it != actors.end(); ++it) {
 		options_left.push_back((*it)->GetName());
 		options_right.push_back("");
 	}
@@ -128,13 +123,13 @@ void Scene_Order::CreateCommandWindow() {
 	window_confirm->SetVisible(false);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Order::Redo() {
-	Game_System::SePlay(Data::system.cancel_se);
+	Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 
-	for (std::vector<Game_Actor*>::iterator it = Game_Party::GetActors().begin();
-		it != Game_Party::GetActors().end(); ++it) {
-		int index = it - Game_Party::GetActors().begin();
+	std::vector<Game_Actor*> actors = Game_Party::GetActors();
+	for (std::vector<Game_Actor*>::const_iterator it = actors.begin();
+		it != actors.end(); ++it) {
+		int index = it - actors.begin();
 		window_left->SetItemText(index, (*it)->GetName());
 		window_right->SetItemText(index, "");
 	}
@@ -148,11 +143,11 @@ void Scene_Order::Redo() {
 
 	actor_counter = 0;
 	actors.clear();
-	actors.resize(Game_Party::GetActors().size());
+	actors.resize(actors.size());
 }
 
 void Scene_Order::Confirm() {
-	Game_System::SePlay(Data::system.decision_se);
+	Game_System::SePlay(Main_Data::game_data.system.decision_se);
 
 	std::vector<Game_Actor*> party_actors = Game_Party::GetActors();
 
@@ -160,5 +155,5 @@ void Scene_Order::Confirm() {
 		Game_Party::GetActors()[i] = party_actors[actors[i] - 1];
 	}
 
-	// ToDo: Where is the best place to overwrite the character map graphic?
+	// TODO: Where is the best place to overwrite the character map graphic?
 }

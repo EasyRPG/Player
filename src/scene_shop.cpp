@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include "game_temp.h"
 #include "game_system.h"
 #include "game_party.h"
@@ -25,12 +23,10 @@
 #include "scene_shop.h"
 #include "output.h"
 
-////////////////////////////////////////////////////////////
 Scene_Shop::Scene_Shop() {
 	Scene::type = Scene::Shop;
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Shop::Start() {
 	shop_window.reset(new Window_Shop(0, 160, 320, 80));
 	help_window.reset(new Window_Help(0, 0, 320, 32));
@@ -73,7 +69,6 @@ void Scene_Shop::Start() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 static void Enable(Window* window, bool state) {
 	window->SetVisible(state);
 	window->SetActive(state);
@@ -158,7 +153,6 @@ void Scene_Shop::SetMode(int nmode) {
 	shop_window->SetMode(mode);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Shop::Update() {
 	buy_window->Update();
 	sell_window->Update();
@@ -196,10 +190,9 @@ void Scene_Shop::Update() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Shop::UpdateCommandSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Data::system.cancel_se);
+		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		switch (shop_window->GetChoice()) {
@@ -219,7 +212,7 @@ void Scene_Shop::UpdateBuySelection() {
 	party_window->SetItemId(buy_window->GetItemId());
 
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Data::system.cancel_se);
+		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		if (Game_Temp::shop_sells) {
 			SetMode(BuySellLeave2);
 		} else {
@@ -230,7 +223,7 @@ void Scene_Shop::UpdateBuySelection() {
 
 		//checks the money and number of items possessed before buy
 		if (buy_window->CheckEnable(item_id)) {
-			Game_System::SePlay(Data::system.decision_se);
+			Game_System::SePlay(Main_Data::game_data.system.decision_se);
 
 			RPG::Item& item = Data::items[item_id - 1];
 
@@ -245,14 +238,14 @@ void Scene_Shop::UpdateBuySelection() {
 			SetMode(BuyHowMany);
 		}
 		else {
-			Game_System::SePlay(Data::system.buzzer_se);
+			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 		}
 	}
 }
 
 void Scene_Shop::UpdateSellSelection() {
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Data::system.cancel_se);
+		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		if (Game_Temp::shop_buys) {
 			SetMode(BuySellLeave2);
 		} else {
@@ -265,19 +258,19 @@ void Scene_Shop::UpdateSellSelection() {
 
 		if (item_id > 0 && Data::items[item_id - 1].price > 0) {
 			RPG::Item& item = Data::items[item_id - 1];
-			Game_System::SePlay(Data::system.decision_se);
+			Game_System::SePlay(Main_Data::game_data.system.decision_se);
 			number_window->SetData(item_id, Game_Party::ItemNumber(item_id), item.price);
 			SetMode(SellHowMany);
 		}
 		else {
-			Game_System::SePlay(Data::system.buzzer_se);
+			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 		}
 	}
 }
 
 void Scene_Shop::UpdateNumberInput() {
 	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Data::system.cancel_se);
+		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		switch (shop_window->GetChoice()) {
 		case Buy:
 			SetMode(Buy); break;
@@ -304,7 +297,7 @@ void Scene_Shop::UpdateNumberInput() {
 			status_window->Refresh();
 			SetMode(Sold); break;
 		}
-		Game_System::SePlay(Data::system.decision_se);
+		Game_System::SePlay(Main_Data::game_data.system.decision_se);
 
 		Game_Temp::shop_transaction = true;
 	}

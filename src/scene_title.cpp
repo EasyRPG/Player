@@ -1,23 +1,21 @@
-/////////////////////////////////////////////////////////////////////////////
-// This file is part of EasyRPG Player.
-//
-// EasyRPG Player is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// EasyRPG Player is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
-/////////////////////////////////////////////////////////////////////////////
+/*
+ * This file is part of EasyRPG Player.
+ *
+ * EasyRPG Player is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EasyRPG Player is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-////////////////////////////////////////////////////////////
 // Headers
-////////////////////////////////////////////////////////////
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -54,12 +52,10 @@
 #include "util_macro.h"
 #include "window_command.h"
 
-////////////////////////////////////////////////////////////
 Scene_Title::Scene_Title() {
 	type = Scene::Title;
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Title::Start() {
 	LoadDatabase();
 
@@ -87,7 +83,6 @@ void Scene_Title::Start() {
 	CreateCommandWindow();
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Title::Continue() {
 	// Clear the cache when the game returns to title screen
 	// e.g. by pressing F12
@@ -96,7 +91,6 @@ void Scene_Title::Continue() {
 	Start();
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Title::TransitionIn() {
 	if (!Player::battle_test_flag) {
 		Graphics::Transition(Graphics::TransitionErase, 1, true);
@@ -104,24 +98,20 @@ void Scene_Title::TransitionIn() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Title::TransitionOut() {
 	if (!Player::battle_test_flag) {
 		Graphics::Transition(Graphics::TransitionFadeOut, 12, true);
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Title::Resume() {
 	command_window->SetVisible(true);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Title::Suspend() {
 	command_window->SetVisible(false);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Title::Update() {
 	if (Player::battle_test_flag) {
 		PrepareBattleTest();
@@ -144,7 +134,6 @@ void Scene_Title::Update() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Title::LoadDatabase() {
 	// Load Database
 	Data::Clear();
@@ -153,15 +142,16 @@ void Scene_Title::LoadDatabase() {
 		Output::Debug("%s is not an RPG2k project", Main_Data::project_path.c_str());
 	}
 
-	if (!LDB_Reader::Load(FileFinder::FindDefault(DATABASE_NAME))) {
+	if (!LDB_Reader::Load(FileFinder::FindDefault(DATABASE_NAME),
+			ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)))) {
 		Output::ErrorStr(LcfReader::GetError());
 	}
-	if (!LMT_Reader::Load(FileFinder::FindDefault(TREEMAP_NAME))) {
+	if (!LMT_Reader::Load(FileFinder::FindDefault(TREEMAP_NAME),
+			ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)))) {
 		Output::ErrorStr(LcfReader::GetError());
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Title::CreateGameObjects() {
 	Game_Temp::Init();
 	Main_Data::game_screen.reset(new Game_Screen());
@@ -172,7 +162,6 @@ void Scene_Title::CreateGameObjects() {
 	Main_Data::game_player.reset(new Game_Player());
 }
 
-////////////////////////////////////////////////////////////
 bool Scene_Title::CheckContinue() {
 	for (int i = 1; i <= 15; i++)
 	{
@@ -186,7 +175,6 @@ bool Scene_Title::CheckContinue() {
 	return false;
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Title::CreateTitleGraphic() {
 	// Load Title Graphic
 	if (!title) // No need to recreate Title on Resume
@@ -196,7 +184,6 @@ void Scene_Title::CreateTitleGraphic() {
 	}
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Title::CreateCommandWindow() {
 	// Create Options Window
 	std::vector<std::string> options;
@@ -222,18 +209,15 @@ void Scene_Title::CreateCommandWindow() {
 	command_window->SetVisible(false);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Title::PlayTitleMusic() {
 	// Play music
 	Game_System::BgmPlay(Data::system.title_music);
 }
 
-////////////////////////////////////////////////////////////
 bool Scene_Title::CheckValidPlayerLocation() {
 	return (Data::treemap.start.party_map_id > 0);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Title::PrepareBattleTest() {
 	CreateGameObjects();
 	//Game_Party::SetupBattleTestMembers();
@@ -243,12 +227,11 @@ void Scene_Title::PrepareBattleTest() {
 	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Battle>(), true);
 }
 
-////////////////////////////////////////////////////////////
 void Scene_Title::CommandNewGame() {
 	if (!CheckValidPlayerLocation()) {
 		Output::Warning("The game has no start location set.");
 	} else {
-		Game_System::SePlay(Data::system.decision_se);
+		Game_System::SePlay(Main_Data::game_data.system.decision_se);
 		Audio().BGM_Stop();
 		Graphics::SetFrameCount(0);
 		CreateGameObjects();
@@ -256,16 +239,16 @@ void Scene_Title::CommandNewGame() {
 		Main_Data::game_player->MoveTo(
 			Data::treemap.start.party_x, Data::treemap.start.party_y);
 		Main_Data::game_player->Refresh();
-		Game_Map::Autoplay();
+		Game_Map::PlayBgm();
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>());
 	}
 }
 
 void Scene_Title::CommandContinue() {
 	if (continue_enabled) {
-		Game_System::SePlay(Data::system.decision_se);
+		Game_System::SePlay(Main_Data::game_data.system.decision_se);
 	} else {
-		Game_System::SePlay(Data::system.buzzer_se);
+		Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 		return;
 	}
 
@@ -274,7 +257,7 @@ void Scene_Title::CommandContinue() {
 }
 
 void Scene_Title::CommandShutdown() {
-	Game_System::SePlay(Data::system.decision_se);
+	Game_System::SePlay(Main_Data::game_data.system.decision_se);
 	Audio().BGS_Fade(800);
 	Scene::Pop();
 }
