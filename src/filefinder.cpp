@@ -105,7 +105,7 @@ namespace {
 		return boost::none;
 	}
 
-	bool is_not_ascii_char(uint8_t c) { return c < 0x80; }
+	bool is_not_ascii_char(uint8_t c) { return c > 0x80; }
 
 	bool is_not_ascii_filename(std::string const& n) {
 		return std::find_if(n.begin(), n.end(), &is_not_ascii_char) != n.end();
@@ -117,21 +117,23 @@ namespace {
 			RTP_TABLE_2000;
 
 		rtp_table_type::const_iterator dir_it = table.find(Utils::LowerCase(dir));
+		std::string lower_name = Utils::LowerCase(name);
+
 		if (dir_it == table.end()) { return name; }
 
 		std::map<std::string, std::string>::const_iterator file_it =
-			dir_it->second.find(Utils::LowerCase(name));
-
-		if (file_it == dir_it->second.end() and is_not_ascii_filename(name)) {
-			// Linear Search: Japanese file name to English file name
-			for (std::map<std::string, std::string>::const_iterator it = dir_it->second.begin(); it != file_it; ++it) {
-				if (it->second == name) {
-					return it->first;
+			dir_it->second.find(lower_name);
+		if (file_it == dir_it->second.end()) {
+			if (is_not_ascii_filename(lower_name)) {
+				// Linear Search: Japanese file name to English file name
+				for (std::map<std::string, std::string>::const_iterator it = dir_it->second.begin(); it != file_it; ++it) {
+					if (it->second == lower_name) {
+						return it->first;
+					}
 				}
 			}
 			return name;
 		}
-
 		return file_it->second;
 	}
 
