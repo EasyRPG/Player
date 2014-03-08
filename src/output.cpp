@@ -90,8 +90,8 @@ static void HandleErrorOutput(const std::string& err) {
 	error += err;
 	error += "\n\nEasyRPG Player will close now. Press any key...";
 
-	Text::DirectDraw(*surface, 11, 11, Color(0, 0, 0, 255), error);
-	Text::DirectDraw(*surface, 10, 10, Color(255, 255, 255, 255), error);
+	Text::Draw(*surface, 11, 11, Color(0, 0, 0, 255), error);
+	Text::Draw(*surface, 10, 10, Color(255, 255, 255, 255), error);
 	DisplayUi->UpdateDisplay();
 
 	if (ignore_pause) { return; }
@@ -115,7 +115,6 @@ static void HandleErrorOutput(const std::string& err) {
 	DisplayUi->UpdateDisplay();
 }
 
-////////////////////////////////////////////////////////////
 static void PrepareScreenOutput() {
 	if (message_overlay == NULL) {
 		message_overlay.reset(new MessageOverlay());
@@ -197,7 +196,7 @@ void Output::Warning(const char* fmt, ...) {
 void Output::WarningStr(std::string const& warn) {
 	PrepareScreenOutput();
 	WriteLog("Warning", warn);
-	message_overlay->AddMessage(warn, Font::ColorCritical);
+	message_overlay->AddMessage(warn, Color(255, 255, 0, 255));
 }
 
 void Output::Post(const char* fmt, ...) {
@@ -216,7 +215,7 @@ void Output::Post(const char* fmt, ...) {
 void Output::PostStr(std::string const& msg) {
 	PrepareScreenOutput();
 	WriteLog("Info", msg);
-	message_overlay->AddMessage(msg, Font::ColorDefault);
+	message_overlay->AddMessage(msg, Color(255, 255, 255, 255));
 }
 
 #ifdef NDEBUG

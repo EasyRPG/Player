@@ -386,6 +386,33 @@ void Bitmap::TextDraw(int x, int y, int color, std::string const& text, Text::Al
 	RefreshCallback();
 }
 
+void Bitmap::TextDraw(int x, int y, int width, int /* height */, Color color, std::string const& text, Text::Alignment align) {
+	Rect rect = GetFont()->GetSize(text);
+	int dx = rect.width - width;
+
+	switch (align) {
+	case Text::AlignLeft:
+		TextDraw(x, y, color, text);
+		break;
+	case Text::AlignCenter:
+		TextDraw(x + dx / 2, y, color, text);
+		break;
+	case Text::AlignRight:
+		TextDraw(x + dx, y, color, text);
+		break;
+	default: assert(false);
+	}
+}
+
+void Bitmap::TextDraw(Rect const& rect, Color color, std::string const& text, Text::Alignment align) {
+	TextDraw(rect.x, rect.y, rect.width, rect.height, color, text, align);
+}
+
+void Bitmap::TextDraw(int x, int y, Color color, std::string const& text) {
+	Text::Draw(*this, x, y, color, text);
+	RefreshCallback();
+}
+
 Rect Bitmap::TransformRectangle(const Matrix& m, const Rect& rect) {
 	int sx0 = rect.x;
 	int sy0 = rect.y;

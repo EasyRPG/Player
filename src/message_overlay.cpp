@@ -89,7 +89,7 @@ unsigned long MessageOverlay::GetId() const {
 	return ID;
 }
 
-void MessageOverlay::AddMessage(const std::string& message, int color) {
+void MessageOverlay::AddMessage(const std::string& message, Color color) {
 	messages.push_back(std::make_pair(message, color));
 	if (messages.size() > (unsigned)message_max) {
 		messages.pop_front();

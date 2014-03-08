@@ -164,7 +164,7 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 	dest.Blit(ix, iy, *text_bmp, src_rect, 255);
 }
 
-void Text::DirectDraw(Bitmap& dest, int x, int y, Color color, std::string const& text) {
+void Text::Draw(Bitmap& dest, int x, int y, Color color, std::string const& text) {
 	if (text.length() == 0) return;
 
 	FontRef font = dest.GetFont();
