@@ -57,7 +57,7 @@ void boost::throw_exception(std::exception const& exp) {
 }
 #endif
 
-namespace {
+namespace output_anon {
 	std::ofstream LOG_FILE(OUTPUT_FILENAME, std::ios_base::out | std::ios_base::app);
 
 	std::ostream& output_time() {
@@ -69,8 +69,10 @@ namespace {
 
 	bool ignore_pause = false;
 
-	static boost::scoped_ptr<MessageOverlay> message_overlay;
+	MessageOverlay* message_overlay = NULL;
 }
+
+using namespace output_anon;
 
 void Output::IgnorePause(bool const val) {
 	ignore_pause = val;
@@ -115,11 +117,10 @@ static void HandleErrorOutput(const std::string& err) {
 }
 
 static void PrepareScreenOutput() {
-	if (message_overlay == NULL) {
-		message_overlay.reset(new MessageOverlay());
+	if (!message_overlay) {
+		message_overlay = new MessageOverlay();
 	}
 }
-
 
 bool Output::TakeScreenshot() {
 	int index = 0;
