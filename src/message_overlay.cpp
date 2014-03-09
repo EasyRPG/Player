@@ -22,7 +22,6 @@
 
 MessageOverlay::MessageOverlay() :
 	type(TypeMessageOverlay),
-	bitmap(NULL),
 	z(100),
 	ox(0),
 	oy(0),
