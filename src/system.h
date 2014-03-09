@@ -26,16 +26,6 @@
 #  include <config.h>
 #endif
 
-#if !(defined(_WIN32) \
-   || defined(UNIX) \
-   || defined(OPENDINGUX) \
-   || defined(GEKKO) \
-   || defined(PSP) \
-   || defined(GPH) \
-	  )
-#  error "This build doesn't target an os"
-#endif
-
 #if !defined(USE_SDL)
 #  error "This build doesn't target a backend"
 #endif
