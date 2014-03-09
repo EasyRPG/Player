@@ -648,14 +648,6 @@ void TilemapLayer::SetAnimationType(int type) {
 	animation_type = type;
 }
 
-int TilemapLayer::GetZ() const {
-	return -1;
-}
-
-DrawableType TilemapLayer::GetType() const {
-	return type;
-}
-
 void TilemapLayer::Substitute(int old_id, int new_id) {
 	for (size_t i = 0; i < substitutions.size(); ++i) {
 		if (substitutions[i] == old_id) {

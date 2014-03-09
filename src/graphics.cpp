@@ -67,8 +67,7 @@ namespace Graphics {
 	};
 	EASYRPG_SHARED_PTR<State> state;
 	std::vector<EASYRPG_SHARED_PTR<State> > stack;
-
-	std::map<uint32_t, Drawable*> global_drawable_map;
+	EASYRPG_SHARED_PTR<State> global_state;
 	
 	void Push();
 	void Pop();
@@ -97,18 +96,26 @@ void Graphics::Init() {
 	frozen = false;
 	drawable_creation = 0;
 	state.reset(new State());
+	global_state.reset(new State());
 	screen_erased = false;
 }
 
 void Graphics::Quit() {
 	std::list<Drawable*>::iterator it;
-	std::list<Drawable*> drawable_map_temp = state->drawable_list;
+	std::list<Drawable*> drawable_list_temp = state->drawable_list;
 
-	for (it = drawable_map_temp.begin(); it != drawable_map_temp.end(); it++) {
+	for (it = drawable_list_temp.begin(); it != drawable_list_temp.end(); it++) {
+		delete *it;
+	}
+
+	drawable_list_temp = global_state->drawable_list;
+
+	for (it = drawable_list_temp.begin(); it != drawable_list_temp.end(); it++) {
 		delete *it;
 	}
 
 	state->drawable_list.clear();
+	global_state->drawable_list.clear();
 
 	frozen_screen.reset();
 	black_screen.reset();
@@ -262,6 +269,11 @@ void Graphics::DrawFrame() {
 		state->zlist_dirty = false;
 	}
 
+	if (global_state->zlist_dirty) {
+		global_state->drawable_list.sort(SortDrawableList);
+		global_state->zlist_dirty = false;
+	}
+
 	DisplayUi->CleanDisplay();
 
 	std::list<Drawable*>::iterator it_list;
@@ -269,9 +281,8 @@ void Graphics::DrawFrame() {
 		(*it_list)->Draw();
 	}
 
-	std::map<uint32_t, Drawable*>::iterator it_gl_map;
-	for(it_gl_map = global_drawable_map.begin(); it_gl_map != global_drawable_map.end(); it_gl_map++) {
-		it_gl_map->second->Draw();
+	for (it_list = global_state->drawable_list.begin(); it_list != global_state->drawable_list.end(); it_list++) {
+		(*it_list)->Draw();
 	}
 
 	if (overlay_visible) {
@@ -297,6 +308,10 @@ BitmapRef Graphics::SnapToBitmap() {
 		(*it_list)->Draw();
 	}
 
+	for (it_list = global_state->drawable_list.begin(); it_list != global_state->drawable_list.end(); it_list++) {
+		(*it_list)->Draw();
+	}
+
 	return DisplayUi->EndScreenCapture();
 }
 
@@ -316,6 +331,11 @@ void Graphics::Transition(TransitionType type, int duration, bool erase) {
 		if (state->zlist_dirty) {
 			state->drawable_list.sort(SortDrawableList);
 			state->zlist_dirty = false;
+		}
+
+		if (global_state->zlist_dirty) {
+			global_state->drawable_list.sort(SortDrawableList);
+			global_state->zlist_dirty = false;
 		}
 
 		if (!frozen) Freeze();
@@ -522,7 +542,7 @@ void Graphics::SetFrameCount(int nframecount) {
 
 void Graphics::RegisterDrawable(Drawable* drawable) {
 	if (drawable->IsGlobal()) {
-		//global_drawable_map[ID] = drawable;
+		global_state->drawable_list.push_back(drawable);
 	} else {
 		state->drawable_list.push_back(drawable);
 	}
@@ -531,10 +551,14 @@ void Graphics::RegisterDrawable(Drawable* drawable) {
 void Graphics::RemoveDrawable(Drawable* drawable) {
 	std::list<Drawable*>::iterator it = std::find(state->drawable_list.begin(), state->drawable_list.end(), drawable);
 	if (it != state->drawable_list.end()) { state->drawable_list.erase(it); }
+
+	it = std::find(global_state->drawable_list.begin(), global_state->drawable_list.end(), drawable);
+	if (it != global_state->drawable_list.end()) { global_state->drawable_list.erase(it); }
 }
 
 void Graphics::UpdateZCallback() {
 	state->zlist_dirty = true;
+	global_state->zlist_dirty = true;
 }
 
 inline bool Graphics::SortDrawableList(const Drawable* first, const Drawable* second) {
