@@ -98,6 +98,7 @@ void Graphics::Init() {
 	state.reset(new State());
 	global_state.reset(new State());
 	screen_erased = false;
+
 }
 
 void Graphics::Quit() {
@@ -296,7 +297,7 @@ void Graphics::DrawOverlay() {
 	if (Graphics::fps_on_screen) {
 		std::stringstream text;
 		text << "FPS: " << fps;
-		//DisplayUi->DrawScreenText(text.str());
+		DisplayUi->GetDisplaySurface()->TextDraw(2, 2, Color(255, 255, 255, 255), text.str());
 	}
 }
 

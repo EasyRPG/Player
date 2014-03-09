@@ -53,9 +53,6 @@ easyrpg_player_SOURCES = \
 	filefinder.h \
 	font.cpp \
 	font.h \
-	font_pearl_8x8.cpp \
-	font_render_8x8.cpp \
-	font_render_8x8.h \
 	game_actor.cpp \
 	game_actor.h \
 	game_actors.cpp \

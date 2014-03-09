@@ -343,8 +343,6 @@
     <ClCompile Include="..\..\src\effects.cpp" />
     <ClCompile Include="..\..\src\filefinder.cpp" />
     <ClCompile Include="..\..\src\font.cpp" />
-    <ClCompile Include="..\..\src\font_pearl_8x8.cpp" />
-    <ClCompile Include="..\..\src\font_render_8x8.cpp" />
     <ClCompile Include="..\..\src\game_actor.cpp" />
     <ClCompile Include="..\..\src\game_actors.cpp" />
     <ClCompile Include="..\..\src\game_battle.cpp" />
@@ -476,7 +474,6 @@
     <ClInclude Include="..\..\src\exfont.h" />
     <ClInclude Include="..\..\src\filefinder.h" />
     <ClInclude Include="..\..\src\font.h" />
-    <ClInclude Include="..\..\src\font_render_8x8.h" />
     <ClInclude Include="..\..\src\game_actor.h" />
     <ClInclude Include="..\..\src\game_actors.h" />
     <ClInclude Include="..\..\src\game_battle.h" />
