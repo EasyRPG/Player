@@ -25,26 +25,18 @@
 #include "main_data.h"
 #include "screen.h"
 
-Screen::Screen() :
-	ID(Graphics::drawable_id++) {
-
-	zobj = Graphics::RegisterZObj(z, ID);
-	Graphics::RegisterDrawable(ID, this);
+Screen::Screen() {
+	Graphics::RegisterDrawable(this);
 
 	default_tone = Tone(128, 128, 128, 128);
 }
 
 Screen::~Screen() {
-	Graphics::RemoveZObj(ID);
-	Graphics::RemoveDrawable(ID);
+	Graphics::RemoveDrawable(this);
 }
 
 int Screen::GetZ() const {
 	return z;
-}
-
-unsigned long Screen::GetId() const {
-	return ID;
 }
 
 DrawableType Screen::GetType() const {
@@ -54,7 +46,7 @@ DrawableType Screen::GetType() const {
 void Screen::Update() {
 }
 
-void Screen::Draw(int /* z_order */) {
+void Screen::Draw() {
 	BitmapRef dst = DisplayUi->GetDisplaySurface();
 
 	Tone tone = Main_Data::game_screen->GetTone();
@@ -62,7 +54,6 @@ void Screen::Draw(int /* z_order */) {
 	if (tone != default_tone) {
 		dst->ToneBlit(0, 0, *dst, Rect(0, 0, 320, 240), tone);
 	}
-
 
 	int flash_time_left;
 	int flash_current_level;

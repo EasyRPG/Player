@@ -285,8 +285,6 @@ easyrpg_player_SOURCES = \
 	window_targetstatus.h \
 	window_varlist.cpp \
 	window_varlist.h \
-	zobj.cpp \
-	zobj.h \
 	../lib/shinonome/shinonome.hxx \
 	../lib/shinonome/gothic.cxx \
 	../lib/shinonome/mincho.cxx

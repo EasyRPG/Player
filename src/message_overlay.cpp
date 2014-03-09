@@ -23,7 +23,6 @@
 
 MessageOverlay::MessageOverlay() :
 	type(TypeMessageOverlay),
-	ID(Graphics::drawable_id++),
 	bitmap(NULL),
 	z(100000),
 	ox(0),
@@ -39,20 +38,19 @@ MessageOverlay::MessageOverlay() :
 
 	bitmap = Bitmap::Create(DisplayUi->GetWidth(), text_height * message_max, true);
 	bitmap_screen->SetBitmap(bitmap);
-	//zobj = Graphics::RegisterZObj(100000, ID);
-	Graphics::RegisterDrawable(ID, this);
+
+	Graphics::RegisterDrawable(this);
 }
 
 MessageOverlay::~MessageOverlay() {
-	Graphics::RemoveZObj(ID);
-	Graphics::RemoveDrawable(ID);
+	Graphics::RemoveDrawable(this);
 }
 
 bool MessageOverlay::IsGlobal() const {
 	return true;
 }
 
-void MessageOverlay::Draw(int /*z_order*/) {
+void MessageOverlay::Draw() {
 	std::deque<MessageOverlayItem>::iterator it;
 
 	++counter;
@@ -99,10 +97,6 @@ int MessageOverlay::GetZ() const {
 
 DrawableType MessageOverlay::GetType() const {
 	return type;
-}
-
-unsigned long MessageOverlay::GetId() const {
-	return ID;
 }
 
 void MessageOverlay::AddMessage(const std::string& message, Color color) {

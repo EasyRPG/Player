@@ -26,8 +26,8 @@
 #include "bitmap_screen.h"
 
 BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) :
-	x(x), y(y), animation(animation), frame(0), initialized(false), visible(false),
-	ID(Graphics::drawable_id++) {
+	x(x), y(y), animation(animation), frame(0), initialized(false), visible(false)
+	{
 }
 
 BattleAnimation::~BattleAnimation() {
@@ -60,10 +60,6 @@ void BattleAnimation::Setup() {
 	initialized = true;
 }
 
-unsigned long BattleAnimation::GetId() const {
-	return ID;
-}
-
 int BattleAnimation::GetZ() const {
 	return 1500;
 }
@@ -72,7 +68,7 @@ DrawableType BattleAnimation::GetType() const {
 	return TypeDefault;
 }
 
-void BattleAnimation::Draw(int /* z_order */) {
+void BattleAnimation::Draw() {
 	if (frame >= (int) animation->frames.size())
 		return;
 
@@ -123,12 +119,10 @@ void BattleAnimation::SetVisible(bool _visible) {
 	visible = _visible;
 
 	if (visible) {
-		zobj = Graphics::RegisterZObj(GetZ(), ID);
-		Graphics::RegisterDrawable(ID, this);
+		Graphics::RegisterDrawable(this);
 	}
 	else {
-		Graphics::RemoveZObj(ID);
-		Graphics::RemoveDrawable(ID);
+		Graphics::RemoveDrawable(this);
 	}
 }
 

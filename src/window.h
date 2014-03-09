@@ -21,7 +21,6 @@
 // Headers
 #include "system.h"
 #include "drawable.h"
-#include "zobj.h"
 #include "rect.h"
 
 /**
@@ -32,7 +31,7 @@ public:
 	Window();
 	virtual ~Window();
 
-	void Draw(int z_order);
+	void Draw();
 
 	void Update();
 	BitmapRef const& GetWindowskin() const;
@@ -80,13 +79,11 @@ public:
 	void SetOpenAnimation(int frames);
 	void SetCloseAnimation(int frames);
 
-	unsigned long GetId() const;
 	DrawableType GetType() const;
 
 protected:
 	DrawableType type;
 	unsigned long ID;
-	ZObj* zobj;
 	BitmapRef windowskin, contents;
 	bool stretch;
 	Rect cursor_rect;

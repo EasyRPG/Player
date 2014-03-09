@@ -147,8 +147,6 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	animation_step_c(0),
 	animation_speed(24),
 	animation_type(1),
-	ID(Graphics::drawable_id++),
-	type(TypeTilemap),
 	layer(ilayer) {
 
 	chipset_screen = BitmapScreen::Create();
@@ -158,15 +156,8 @@ TilemapLayer::TilemapLayer(int ilayer) :
 
 	int tiles_y = (int)ceil(DisplayUi->GetHeight() / 16.0) + 1;
 	for (int i = 0; i < tiles_y + 2; i++) {
-		Graphics::RegisterZObj(16 * i, ID, true);
+		tilemap_tiles.push_back(EASYRPG_MAKE_SHARED<TilemapTile>(this, 16 * i));
 	}
-	Graphics::RegisterZObj(9999, ID, true);
-	Graphics::RegisterDrawable(ID, this);
-}
-
-TilemapLayer::~TilemapLayer() {
-	Graphics::RemoveZObj(ID, true);
-	Graphics::RemoveDrawable(ID);
 }
 
 void TilemapLayer::DrawTile(BitmapScreen& screen, int x, int y, int row, int col, bool autotile) {
@@ -661,10 +652,6 @@ int TilemapLayer::GetZ() const {
 	return -1;
 }
 
-unsigned long TilemapLayer::GetId() const {
-	return ID;
-}
-
 DrawableType TilemapLayer::GetType() const {
 	return type;
 }
@@ -675,4 +662,28 @@ void TilemapLayer::Substitute(int old_id, int new_id) {
 			substitutions[i] = (uint8_t) new_id;
 		}
 	}
+}
+
+TilemapTile::TilemapTile(TilemapLayer* tilemap, int z) :
+	type(TypeTilemap),
+	tilemap(tilemap),
+	z(z)
+{
+	Graphics::RegisterDrawable(this);
+}
+
+TilemapTile::~TilemapTile() {
+	Graphics::RemoveDrawable(this);
+}
+
+void TilemapTile::Draw() {
+	tilemap->Draw(GetZ());
+}
+
+int TilemapTile::GetZ() const {
+	return z;
+}
+
+DrawableType TilemapTile::GetType() const {
+	return type;
 }

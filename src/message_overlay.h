@@ -25,7 +25,6 @@
 #include "color.h"
 #include "drawable.h"
 #include "tone.h"
-#include "zobj.h"
 
 class MessageOverlayItem {
 public:
@@ -45,11 +44,10 @@ public:
 	MessageOverlay();
 	virtual ~MessageOverlay();
 
-	void Draw(int z_order);
+	void Draw();
 
 	int GetZ() const;
 
-	unsigned long GetId() const;
 	DrawableType GetType() const;
 
 	bool IsGlobal() const;
@@ -60,8 +58,6 @@ public:
 
 private:
 	DrawableType type;
-	unsigned long ID;
-	ZObj* zobj;
 
 	BitmapRef bitmap;
 	BitmapRef black;

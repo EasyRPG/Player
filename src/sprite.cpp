@@ -27,7 +27,6 @@
 // Constructor
 Sprite::Sprite() :
 	type(TypeSprite),
-	ID(Graphics::drawable_id++),
 	visible(true),
 	x(0),
 	y(0),
@@ -39,18 +38,16 @@ Sprite::Sprite() :
 
 	bitmap_screen = BitmapScreen::Create();
 
-	zobj = Graphics::RegisterZObj(0, ID);
-	Graphics::RegisterDrawable(ID, this);
+	Graphics::RegisterDrawable(this);
 }
 
 // Destructor
 Sprite::~Sprite() {
-	Graphics::RemoveZObj(ID);
-	Graphics::RemoveDrawable(ID);
+	Graphics::RemoveDrawable(this);
 }
 
 // Draw
-void Sprite::Draw(int /* z_order */) {
+void Sprite::Draw() {
 	if (!visible) return;
 	if (GetWidth() <= 0 || GetHeight() <= 0) return;
 
@@ -143,7 +140,7 @@ int Sprite::GetZ() const {
 	return z;
 }
 void Sprite::SetZ(int nz) {
-	if (z != nz) Graphics::UpdateZObj(zobj, nz);
+	if (z != nz) Graphics::UpdateZCallback();
 	z = nz;
 }
 
@@ -243,10 +240,6 @@ double Sprite::GetWaverPhase() const {
 }
 void Sprite::SetWaverPhase(double phase) {
 	bitmap_screen->SetWaverEffectPhase(phase);
-}
-
-unsigned long Sprite::GetId() const {
-	return ID;
 }
 
 DrawableType Sprite::GetType() const {

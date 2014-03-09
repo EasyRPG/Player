@@ -27,23 +27,21 @@
 #include "bitmap.h"
 
 Background::Background(const std::string& name) :
-	ID(Graphics::drawable_id++), zobj(NULL), visible(true),
+	visible(true),
 	bg_hscroll(0), bg_vscroll(0), bg_x(0), bg_y(0),
 	fg_hscroll(0), fg_vscroll(0), fg_x(0), fg_y(0) {
 
-	zobj = Graphics::RegisterZObj(0, ID);
-	Graphics::RegisterDrawable(ID, this);
+	Graphics::RegisterDrawable(this);
 
 	bg_screen = BitmapScreen::Create(Cache::Backdrop(name));
 }
 
 Background::Background(int terrain_id) :
-	ID(Graphics::drawable_id++), zobj(NULL), visible(true),
+	visible(true),
 	bg_hscroll(0), bg_vscroll(0), bg_x(0), bg_y(0),
 	fg_hscroll(0), fg_vscroll(0), fg_x(0), fg_y(0) {
 
-	zobj = Graphics::RegisterZObj(0, ID);
-	Graphics::RegisterDrawable(ID, this);
+	Graphics::RegisterDrawable(this);
 
 	const RPG::Terrain& terrain = Data::terrains[terrain_id - 1];
 
@@ -64,16 +62,11 @@ Background::Background(int terrain_id) :
 }
 
 Background::~Background() {
-	Graphics::RemoveZObj(ID);
-	Graphics::RemoveDrawable(ID);
+	Graphics::RemoveDrawable(this);
 }
 
 int Background::GetZ() const {
 	return z;
-}
-
-unsigned long Background::GetId() const {
-	return ID;
 }
 
 DrawableType Background::GetType() const {
@@ -99,7 +92,7 @@ int Background::Scale(int x) {
 	return x > 0 ? x / 64 : -(-x / 64);
 }
 
-void Background::Draw(int /* z_order */) {
+void Background::Draw() {
 	if (!visible)
 		return;
 

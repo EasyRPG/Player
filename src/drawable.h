@@ -37,9 +37,7 @@ class Drawable {
 public:
 	virtual ~Drawable() {};
 
-	virtual void Draw(int z_order) = 0;
-
-	virtual unsigned long GetId() const = 0;
+	virtual void Draw() = 0;
 
 	virtual int GetZ() const = 0;
 
