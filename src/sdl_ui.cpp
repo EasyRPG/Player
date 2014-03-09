@@ -35,7 +35,6 @@
 	#include <SDL_system.h>
 #endif
 #include "color.h"
-#include "font_render_8x8.h"
 #include "graphics.h"
 #include "keys.h"
 #include "output.h"
