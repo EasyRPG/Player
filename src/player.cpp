@@ -153,6 +153,9 @@ void Player::Update() {
 	if (Input::IsTriggered(Input::TAKE_SCREENSHOT)) {
 		Output::TakeScreenshot();
 	}
+	if (Input::IsTriggered(Input::SHOW_LOG)) {
+		Output::ToggleLog();
+	}
 
 	DisplayUi->ProcessEvents();
 

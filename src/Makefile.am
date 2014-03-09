@@ -53,9 +53,6 @@ easyrpg_player_SOURCES = \
 	filefinder.h \
 	font.cpp \
 	font.h \
-	font_pearl_8x8.cpp \
-	font_render_8x8.cpp \
-	font_render_8x8.h \
 	game_actor.cpp \
 	game_actor.h \
 	game_actors.cpp \
@@ -131,6 +128,8 @@ easyrpg_player_SOURCES = \
 	map_data.h \
 	matrix.h \
 	memory_management.h \
+	message_overlay.cpp \
+	message_overlay.h \
 	options.h \
 	output.cpp \
 	output.h \
@@ -283,8 +282,6 @@ easyrpg_player_SOURCES = \
 	window_targetstatus.h \
 	window_varlist.cpp \
 	window_varlist.h \
-	zobj.cpp \
-	zobj.h \
 	../lib/shinonome/shinonome.hxx \
 	../lib/shinonome/gothic.cxx \
 	../lib/shinonome/mincho.cxx

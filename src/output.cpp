@@ -35,6 +35,7 @@
 #endif
 
 #include "filefinder.h"
+#include "font.h"
 #include "graphics.h"
 #include "input.h"
 #include "options.h"
@@ -42,9 +43,11 @@
 #include "player.h"
 #include "bitmap.h"
 #include "main_data.h"
+#include "message_overlay.h"
 
 #include <boost/config.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/scoped_ptr.hpp>
 
 #ifdef BOOST_NO_EXCEPTIONS
 #include <boost/throw_exception.hpp>
@@ -54,46 +57,51 @@ void boost::throw_exception(std::exception const& exp) {
 }
 #endif
 
-namespace {
+namespace output_anon {
 	std::ofstream LOG_FILE(OUTPUT_FILENAME, std::ios_base::out | std::ios_base::app);
 
 	std::ostream& output_time() {
 		std::time_t t = std::time(NULL);
-		char const time_fmt[] = "%Y/%m/%d %a %H:%M:%S";
-		char buf[sizeof(time_fmt) + 10];
-		strftime(buf, sizeof(buf), time_fmt, std::localtime(&t));
-		LOG_FILE << "Local: "  << buf;
-		strftime(buf, sizeof(buf), time_fmt, std::gmtime(&t));
-		return LOG_FILE << ", UTC: " << buf << std::endl;
+		char timestr[100];
+		strftime(timestr, 100, "[%Y-%m-%d %H:%M:%S] ", std::localtime(&t));
+		return LOG_FILE << timestr;
 	}
 
 	bool ignore_pause = false;
+
+	MessageOverlay* message_overlay = NULL;
 }
+
+using namespace output_anon;
 
 void Output::IgnorePause(bool const val) {
 	ignore_pause = val;
 }
 
-static void HandleScreenOutput(char const* type, std::string const& msg, bool is_error) {
-	output_time() << type << ":\n  " << msg << "\n";
+static void WriteLog(std::string const& type, std::string const& msg) {
+	output_time() << type << ": " << msg << "\n";
 
-	if(ignore_pause) { return; }
+	#ifdef __ANDROID__
+		__android_log_print(type == "Error" ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, "EasyRPG Player", "%s", msg.c_str());
+	#endif
+}
 
-	std::stringstream ss;
-	ss << type << ":\n" << msg << "\n\n";
-	if (is_error) {
-		ss << "EasyRPG Player will close now.\nPress any key to exit...";
-	} else {
-		ss << "Press any key to continue...";
-	}
-	
-#ifdef __ANDROID__
-	__android_log_print(is_error ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, "EasyRPG Player", "%s", msg.c_str());
-#endif
+static void HandleErrorOutput(const std::string& err) {
+	// Drawing directly on the screen because message_overlay is not visible
+	// when faded out
+	BitmapRef surface = DisplayUi->GetDisplaySurface();
+	surface->FillRect(surface->GetRect(), Color(255, 0, 0, 128));
 
-	DisplayUi->GetDisplaySurface()->Clear();
-	DisplayUi->DrawScreenText(ss.str(), 10, 30 + 10);
+	std::string error = "Error:\n";
+	error += err;
+	error += "\n\nEasyRPG Player will close now. Press any key...";
+
+	Text::Draw(*surface, 11, 11, Color(0, 0, 0, 255), error);
+	Text::Draw(*surface, 10, 10, Color(255, 255, 255, 255), error);
 	DisplayUi->UpdateDisplay();
+
+	if (ignore_pause) { return; }
+
 	Input::ResetKeys();
 	while (!Input::IsAnyPressed()) {
 		DisplayUi->Sleep(1);
@@ -105,9 +113,14 @@ static void HandleScreenOutput(char const* type, std::string const& msg, bool is
 	}
 	Input::ResetKeys();
 	Graphics::FrameReset();
-	Graphics::Update();
+	DisplayUi->UpdateDisplay();
 }
 
+static void PrepareScreenOutput() {
+	if (!message_overlay) {
+		message_overlay = new MessageOverlay();
+	}
+}
 
 bool Output::TakeScreenshot() {
 	int index = 0;
@@ -131,6 +144,13 @@ bool Output::TakeScreenshot(std::ostream& os) {
 	return DisplayUi->GetDisplaySurface()->WritePNG(os);
 }
 
+void Output::ToggleLog() {
+	PrepareScreenOutput();
+	static bool show_log = true;
+	message_overlay->SetShowAll(show_log);
+	show_log = !show_log;
+}
+
 void Output::Error(const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
@@ -142,11 +162,14 @@ void Output::Error(const char* fmt, ...) {
 
 	va_end(args);
 }
+
 void Output::ErrorStr(std::string const& err) {
-	if (DisplayUi) {
-		DisplayUi->DrawScreenText("Error:", 10, 30, Color(255, 0, 0, 0));
-		HandleScreenOutput("Error", err, true);
-		Player::Exit();
+	WriteLog("Error", err);
+	static bool recursive_call = false;
+	if (!recursive_call && DisplayUi) {
+		recursive_call = true;
+		PrepareScreenOutput();
+		HandleErrorOutput(err);
 	} else {
 		// Fallback to Console if the display is not ready yet
 		std::cout << err << std::endl;
@@ -177,8 +200,9 @@ void Output::Warning(const char* fmt, ...) {
 	va_end(args);
 }
 void Output::WarningStr(std::string const& warn) {
-	DisplayUi->DrawScreenText("Warning:", 10, 30, Color(255, 255, 0, 0));
-	HandleScreenOutput("Warning", warn, false);
+	PrepareScreenOutput();
+	WriteLog("Warning", warn);
+	message_overlay->AddMessage(warn, Color(255, 255, 0, 255));
 }
 
 void Output::Post(const char* fmt, ...) {
@@ -193,9 +217,11 @@ void Output::Post(const char* fmt, ...) {
 
 	va_end(args);
 }
+
 void Output::PostStr(std::string const& msg) {
-	DisplayUi->DrawScreenText("Info:", 10, 30, Color(255, 255, 0, 0));
-	HandleScreenOutput("Post", msg, false);
+	PrepareScreenOutput();
+	WriteLog("Info", msg);
+	message_overlay->AddMessage(msg, Color(255, 255, 255, 255));
 }
 
 #ifdef NDEBUG
@@ -217,6 +243,6 @@ void Output::Debug(const char* fmt, ...) {
 	va_end(args);
 }
 void Output::DebugStr(std::string const& msg) {
-	output_time() << "Debug:\n " << msg <<std::endl;
+	WriteLog("Debug", msg);
 }
 #endif

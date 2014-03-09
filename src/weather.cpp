@@ -28,23 +28,17 @@
 #include "weather.h"
 
 Weather::Weather() :
-	ID(Graphics::drawable_id++), dirty(false) {
+	dirty(false) {
 
-	zobj = Graphics::RegisterZObj(z, ID);
-	Graphics::RegisterDrawable(ID, this);
+	Graphics::RegisterDrawable(this);
 }
 
 Weather::~Weather() {
-	Graphics::RemoveZObj(ID);
-	Graphics::RemoveDrawable(ID);
+	Graphics::RemoveDrawable(this);
 }
 
 int Weather::GetZ() const {
 	return z;
-}
-
-unsigned long Weather::GetId() const {
-	return ID;
 }
 
 DrawableType Weather::GetType() const {
@@ -54,7 +48,7 @@ DrawableType Weather::GetType() const {
 void Weather::Update() {
 }
 
-void Weather::Draw(int /* z_order */) {
+void Weather::Draw() {
 	if (Main_Data::game_screen->GetWeatherType() != Game_Screen::Weather_None) {
 		if (!weather_screen || !weather_surface) {
 			weather_screen = BitmapScreen::Create();

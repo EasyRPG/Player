@@ -28,7 +28,6 @@
 
 Window::Window():
 	type(TypeWindow),
-	ID(Graphics::drawable_id++),
 	stretch(true),
 	active(true),
 	visible(true),
@@ -53,8 +52,7 @@ Window::Window():
 	animation_count(0.0),
 	animation_increment(0.0) {
 
-	zobj = Graphics::RegisterZObj(0, ID);
-	Graphics::RegisterDrawable(ID, this);
+	Graphics::RegisterDrawable(this);
 
 	windowskin_screen = BitmapScreen::Create();
 	contents_screen = BitmapScreen::Create();
@@ -69,8 +67,7 @@ Window::Window():
 }
 
 Window::~Window() {
-	Graphics::RemoveZObj(ID);
-	Graphics::RemoveDrawable(ID);
+	Graphics::RemoveDrawable(this);
 }
 
 void Window::SetOpenAnimation(int frames) {
@@ -84,7 +81,7 @@ void Window::SetCloseAnimation(int frames) {
 	// TODO
 }
 
-void Window::Draw(int /* z_order */) {
+void Window::Draw() {
 	if (!visible) return;
 	if (width <= 0 || height <= 0) return;
 	if (x < -width || x > DisplayUi->GetWidth() || y < -height || y > DisplayUi->GetHeight()) return;
@@ -449,7 +446,7 @@ int Window::GetZ() const {
 	return z;
 }
 void Window::SetZ(int nz) {
-	if (z != nz) Graphics::UpdateZObj(zobj, nz);
+	if (z != nz) Graphics::UpdateZCallback();
 	z = nz;
 }
 
@@ -509,10 +506,6 @@ int Window::GetContentsOpacity() const {
 }
 void Window::SetContentsOpacity(int ncontents_opacity) {
 	contents_opacity = ncontents_opacity;
-}
-
-unsigned long Window::GetId() const {
-	return ID;
 }
 
 DrawableType Window::GetType() const {

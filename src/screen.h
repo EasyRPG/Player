@@ -23,7 +23,6 @@
 #include "bitmap.h"
 #include "drawable.h"
 #include "system.h"
-#include "zobj.h"
 
 namespace RPG {
 	class SaveScreen;
@@ -42,19 +41,15 @@ public:
 	Screen();
 	~Screen();
 
-	void Draw(int z_order);
+	void Draw();
 	void Update();
 
-	unsigned long GetId() const;
 	int GetZ() const;
 	DrawableType GetType() const;
 
 private:
 	static const int z = 1050;
 	static const DrawableType type = TypeScreen;
-
-	unsigned long ID;
-	ZObj* zobj;
 
 	Tone default_tone;
 	BitmapRef flash;

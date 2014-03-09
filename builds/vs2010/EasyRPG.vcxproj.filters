@@ -27,9 +27,6 @@
     <Filter Include="Source Files\Tools">
       <UniqueIdentifier>{5c38e5d1-df70-4c50-8e06-d9e813ecfdfa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Tools\Font 8x8">
-      <UniqueIdentifier>{743c23f6-e9cd-4953-9517-aae64f9c6776}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Tools\Filefinder">
       <UniqueIdentifier>{1ac112ed-4c8f-45bf-85d2-1ebc5098935f}</UniqueIdentifier>
     </Filter>
@@ -107,9 +104,6 @@
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\rect.cpp">
-      <Filter>Source Files\Backend\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\zobj.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\text.cpp">
@@ -391,12 +385,6 @@
     <ClCompile Include="..\..\src\cache.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\font_pearl_8x8.cpp">
-      <Filter>Source Files\Tools\Font 8x8</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\font_render_8x8.cpp">
-      <Filter>Source Files\Tools\Font 8x8</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\filefinder.cpp">
       <Filter>Source Files\Tools\Filefinder</Filter>
     </ClCompile>
@@ -429,6 +417,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\battle_battler.cpp">
       <Filter>Source Files\Engine\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\message_overlay.cpp">
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\registry.cpp">
       <Filter>Source Files\Tools</Filter>
@@ -502,9 +493,6 @@
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\rect.h">
-      <Filter>Source Files\Backend\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\zobj.h">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\text.h">
@@ -783,9 +771,6 @@
     <ClInclude Include="..\..\src\cache.h">
       <Filter>Source Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\font_render_8x8.h">
-      <Filter>Source Files\Tools\Font 8x8</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\filefinder.h">
       <Filter>Source Files\Tools\Filefinder</Filter>
     </ClInclude>
@@ -839,6 +824,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\rtp_table_bom.h">
       <Filter>Source Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\message_overlay.h">
+      <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\registry.h">
       <Filter>Source Files\Tools</Filter>

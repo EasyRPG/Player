@@ -28,7 +28,6 @@
 #include "scene.h"
 #include "background.h"
 #include "drawable.h"
-#include "zobj.h"
 #include "window_help.h"
 #include "window_battleitem.h"
 #include "window_battleskill.h"
