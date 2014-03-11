@@ -23,6 +23,7 @@
 #include "graphics.h"
 #include "input.h"
 #include "cache.h"
+#include "reader_util.h"
 #include "filefinder.h"
 #include "main_data.h"
 #include "scene_logo.h"
@@ -103,7 +104,9 @@ void Player::Init(int argc, char *argv[]) {
 #ifdef READ_INI_GAME_TITLE
 	INIReader ini(FileFinder::FindDefault(INI_NAME));
 	if(ini.ParseError() != -1) {
-		game_title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
+		std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
+		std::string encoding = ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME));
+		game_title = ReaderUtil::Recode(title, encoding);
 	}
 #else
 	game_title = GAME_TITLE;
