@@ -29,6 +29,7 @@
 #include "scene_title.h"
 #include "scene_battle.h"
 #include "utils.h"
+#include "inireader.h"
 
 #include <algorithm>
 #include <set>
@@ -57,6 +58,7 @@ namespace Player {
 	bool battle_test_flag;
 	int battle_test_troop_id;
 	EngineType engine;
+	std::string game_title;
 }
 
 void Player::Init(int argc, char *argv[]) {
@@ -98,13 +100,22 @@ void Player::Init(int argc, char *argv[]) {
 
 	FileFinder::Init();
 
+#ifdef READ_INI_GAME_TITLE
+	INIReader ini(FileFinder::FindDefault(INI_NAME));
+	if(ini.ParseError() != -1) {
+		game_title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
+	}
+#else
+	game_title = GAME_TITLE;
+#endif
+
 	DisplayUi.reset();
 
 	if(! DisplayUi) {
 		DisplayUi = BaseUi::CreateUi
 			(SCREEN_TARGET_WIDTH,
 			 SCREEN_TARGET_HEIGHT,
-			 GAME_TITLE,
+			 game_title,
 			 !window_flag,
 			 RUN_ZOOM);
 	}
