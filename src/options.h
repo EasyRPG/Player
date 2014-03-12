@@ -63,8 +63,6 @@
 /** INI configuration filename. */
 #define INI_NAME "RPG_RT.ini"
 
-/** Read game title from ini file. */
-#define READ_INI_GAME_TITLE 1
 /** Database filename. */
 #define DATABASE_NAME "RPG_RT.ldb"
 

@@ -101,16 +101,12 @@ void Player::Init(int argc, char *argv[]) {
 
 	FileFinder::Init();
 
-#ifdef READ_INI_GAME_TITLE
 	INIReader ini(FileFinder::FindDefault(INI_NAME));
 	if(ini.ParseError() != -1) {
 		std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
 		std::string encoding = ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME));
 		game_title = ReaderUtil::Recode(title, encoding);
 	}
-#else
-	game_title = GAME_TITLE;
-#endif
 
 	DisplayUi.reset();
 
