@@ -11,7 +11,8 @@ LOCAL_CPP_EXTENSION := .cxx .cpp
 LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/$(PLAYER_PATH)/src \
 	$(LOCAL_PATH)/$(PLAYER_PATH)/lib/shinonome \
-	$(LOCAL_PATH)/$(PLAYER_PATH)/lib/liblcf/include \
+	$(LOCAL_PATH)/$(PLAYER_PATH)/lib/liblcf/src \
+	$(LOCAL_PATH)/$(PLAYER_PATH)/lib/liblcf/src/generated \
 	$(EASYDEV_ANDROID)/include
 
 # Add your application source files here...

@@ -155,7 +155,7 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\src;..\..\lib\liblcf\src\generated;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
@@ -173,7 +173,7 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\src;..\..\lib\liblcf\src\generated;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
@@ -191,7 +191,7 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\src;..\..\lib\liblcf\src\generated;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;_WIN64;_AMD64_;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
@@ -209,7 +209,7 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\src;..\..\lib\liblcf\src\generated;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;_WIN64;_AMD64_;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
@@ -229,7 +229,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\src;..\..\lib\liblcf\src\generated;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -254,7 +254,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\src;..\..\lib\liblcf\src\generated;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -279,7 +279,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\src;..\..\lib\liblcf\src\generated;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;_WIN64;_AMD64_;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -304,7 +304,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\src;..\..\lib\liblcf\src\generated;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;_WIN64;_AMD64_;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>

@@ -12,7 +12,7 @@ BUILD_GP2XWIZ = NO
 BUILD_CAANOO = YES
 
 # Compiler headers
-INCLUDES = ../../lib/liblcf/include ../../src
+INCLUDES = ../../src ../../lib/liblcf/src ../../lib/liblcf/src/generated
 INCDIR = $(foreach dir, $(INCLUDES), -I$(wildcard $(dir)))
 
 # Compiler source

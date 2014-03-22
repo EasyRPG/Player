@@ -3,7 +3,7 @@ SOURCES = ../../src ../../lib/liblcf/src ../../lib/liblcf/src/generated
 CPPFILES = $(foreach dir,$(SOURCES), $(wildcard $(dir)/*.cpp))
 BINFILES = $(foreach dir,$(DATA), $(wildcard $(dir)/*.*))
 OBJS = $(addsuffix .o,$(BINFILES)) $(CPPFILES:.cpp=.o)
-INCLUDES = ../../lib/liblcf/include ../../src
+INCLUDES = ../../src ../../lib/liblcf/src ../../lib/liblcf/src/generated
 
 INCDIR = $(foreach dir,$(INCLUDES), -iquote $(CURDIR)/$(dir))
 CFLAGS = \

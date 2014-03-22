@@ -20,7 +20,7 @@ BUILD		:=	obj
 SOURCES		:=	../../lib/liblcf/src ../../src ../../lib/liblcf/src/generated ../../lib/shinonome
 #SOURCES		:=	../../src
 DATA		:=	data  
-INCLUDES	:=  ../../lib/liblcf/include ../../src ../../lib/shinonome
+INCLUDES	:=  ../../src ../../lib/shinonome ../../lib/liblcf/src ../../lib/liblcf/src/generated
 
 #---------------------------------------------------------------------------------
 # options for code generation
