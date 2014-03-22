@@ -89,7 +89,8 @@ if(OPENAL_FOUND)
   add_definitions(-D HAVE_OPENAL=1)
 endif()
 
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/include")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src/generated")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 foreach(i Expat Freetype JPEG Pixman ZLIB PNG SDL2 Boost Iconv)
