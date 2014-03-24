@@ -4,6 +4,7 @@ easyrpg_player_CPPFLAGS = \
 	-I$(srcdir)/../lib/shinonome
 easyrpg_player_CXXFLAGS = \
 	-std=c++0x \
+	$(LCF_CFLAGS) \
 	$(PIXMAN_CFLAGS) \
 	$(FREETYPE_CFLAGS) \
 	$(SDL_CFLAGS) \
@@ -11,6 +12,7 @@ easyrpg_player_CXXFLAGS = \
 	$(PNG_CFLAGS) \
 	$(ZLIB_CFLAGS)
 easyrpg_player_LDADD = \
+	$(LCF_LIBS) \
 	$(PIXMAN_LIBS) \
 	$(FREETYPE_LIBS) \
 	$(SDL_LIBS) \
