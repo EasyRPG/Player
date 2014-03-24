@@ -50,3 +50,4 @@ resources/player.aps
 /builds/wii/obj
 /builds/wii/*.elf
 /builds/wii/*.dol
+compile
