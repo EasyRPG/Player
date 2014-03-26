@@ -205,7 +205,7 @@ if(EXISTS $ENV{RPG_RTP_PATH})
   list(APPEND TEST_ENVS "RPG_RTP_PATH=${RPG_RTP_PATH}")
 endif()
 
-file(GLOB TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp)
+file(GLOB TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp)
 foreach(i ${TEST_FILES})
   get_filename_component(name "${i}" NAME_WE)
   add_executable(test_${name} ${i})
