@@ -216,11 +216,8 @@ void Game_Map::PrepareSave() {
 
 	map_info.events.clear();
 
-	map_info.events.resize(map->events.size());
-
 	for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
-		map_info.events[i->first - 1] =
-			i->second->GetSaveData();
+		map_info.events.push_back(i->second->GetSaveData());
 	}
 
 	std::vector<RPG::SaveCommonEvent>& save_common_events = Main_Data::game_data.common_events;
@@ -228,9 +225,9 @@ void Game_Map::PrepareSave() {
 	save_common_events.resize(Data::commonevents.size());
 
 	for (tCommonEventHash::iterator i = common_events.begin(); i != common_events.end(); ++i) {
-		save_common_events[i->first - 1].ID = i->first;
-		save_common_events[i->first - 1].event_data =
-			i->second->GetSaveData();
+		save_common_events.push_back(RPG::SaveCommonEvent());
+		save_common_events.back().ID = i->first;
+		save_common_events.back().event_data = i->second->GetSaveData();
 	}
 }
 
