@@ -52,27 +52,12 @@ Project files are available in Git repositories.
 Building
 --------
 
-* Autotools method:
-
-  Requirements:
-  autoconf >= 2.68, automake >= 1.11, pkg-config
+* Makefile method:
 
   Compile with:
-  ./configure CPPFLAGS=-DUNIX && make
 
-  Install as super user with:
-  make install
-
-
-* Cmake method:
-
-  Requirements:
-  cmake >= 2.8
-
-  Compile with:
-  cmake PATH/TO/Player/builds/cmake && make
-  If you want to build it with debug mode,
-   pass "-D CMAKE_BUILD_TYPE=Debug" to cmake.
+  ./configure
+  make
 
 
 * Visual Studio method:
