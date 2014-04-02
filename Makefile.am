@@ -1,2 +1,2 @@
-SUBDIRS = src
-EXTRA_DIST = builds lib Modules resources test CMakeLists.txt
+SUBDIRS = src tests
+EXTRA_DIST = builds lib Modules resources CMakeLists.txt
