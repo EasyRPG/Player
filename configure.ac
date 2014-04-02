@@ -50,5 +50,7 @@ AC_FUNC_MALLOC
 AC_CHECK_FUNCS([floor getcwd memset putenv strerror])
 
 AC_CONFIG_FILES([Makefile
-                 src/Makefile])
+                 src/Makefile
+                 tests/Makefile])
+
 AC_OUTPUT
