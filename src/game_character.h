@@ -317,7 +317,7 @@ public:
 	virtual bool IsStopping() const;
 
 	/**
-	 * Gets if character the character can walk in a tile
+	 * Gets if the character can walk in a tile
 	 * with a specific direction.
 	 *
 	 * @param x tile x.
@@ -326,6 +326,15 @@ public:
 	 * @return whether the character can walk through.
 	 */
 	virtual bool IsPassable(int x, int y, int d) const;
+
+	/**
+	 * Gets if the character can jump to a tile.
+	 *
+	 * @param x tile x.
+	 * @param y tile y.
+	 * @return whether the character can jump to.
+	 */
+	virtual bool IsLandable(int x, int y) const;
 
 	/**
 	 * Moves the character to a new tile.
@@ -507,13 +516,15 @@ public:
 
 	/**
 	 * Jump action begins. Does nothing when EndJump-Command is missing.
+	 *
+	 * @return index of the EndJump move command or the index of StartJump if not found.
 	 */
-	void BeginJump();
+	int Jump();
 
 	/**
 	 * Jump action ends.
 	 */
-	void EndJump();
+//	void EndJump();
 
 	/**
 	 * Locks character facing direction.
@@ -707,6 +718,7 @@ public:
 
 protected:
 	void UpdateMove();
+	void UpdateJump();
 	void UpdateSelfMovement();
 	void UpdateStop();
 
@@ -725,11 +737,15 @@ protected:
 	int original_move_frequency;
 	int move_type;
 	bool move_failed;
+	int move_count;
 	int wait_count;
+
+	int jump_peak;
+	int jump_x;
+	int jump_y;
 
 	double anime_count;
 	int stop_count;
-	int jump_count;
 	bool walk_animation;
 	bool turn_enabled;
 

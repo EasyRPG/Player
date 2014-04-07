@@ -24,6 +24,7 @@
 #include "game_system.h"
 #include "main_data.h"
 #include "util_macro.h"
+#include <math.h>
 #include <cassert>
 #include <cstdlib>
 
@@ -40,10 +41,10 @@ Game_Character::Game_Character() :
 	move_route_owner(NULL),
 	move_type(RPG::EventPage::MoveType_stationary),
 	move_failed(false),
+	move_count(0),
 	wait_count(0),
 	anime_count(0),
 	stop_count(0),
-	jump_count(0),
 	walk_animation(true),
 	turn_enabled(true),
 	cycle_stat(false),
@@ -52,12 +53,36 @@ Game_Character::Game_Character() :
 }
 
 bool Game_Character::IsMoving() const {
+	//TODO: delete this line once move_count is settled for UpdateMove();
+	if (move_count > 0) return false; //Jumping
+
 	return real_x != GetX() * SCREEN_TILE_WIDTH || real_y != GetY() * SCREEN_TILE_WIDTH;
 }
 
 bool Game_Character::IsJumping() const {
-	return jump_count > 0;
+	//TODO: switch this definition once move_count is settled for UpdateMove();
+	return move_count > 0;
 }
+/*
+	// Detect if custom movement or event overwrite
+	const RPG::MoveRoute* active_route;
+	int active_route_index;
+	if (IsMoveRouteOverwritten()) {
+		active_route = &GetMoveRoute();
+		active_route_index = GetMoveRouteIndex();
+	}
+	else {
+		active_route = &original_move_route;
+		active_route_index = GetOriginalMoveRouteIndex();
+	}
+
+	if (active_route_index >= active_route->move_commands.size())
+		return false;
+
+	const RPG::MoveCommand& move_command = active_route->move_commands[active_route_index];
+	return (IsMoving() && move_command.command_id == RPG::MoveCommand::Code::end_jump);
+}
+*/
 
 bool Game_Character::IsStopping() const {
 	return !(IsMoving() || IsJumping());
@@ -87,6 +112,25 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 	return true;
 }
 
+bool Game_Character::IsLandable(int x, int y) const
+{
+	if (!Game_Map::IsValid(x, y))
+		return false;
+
+	if (through) return true;
+
+	if (!Game_Map::IsLandable(x, y, this))
+		return false;
+
+	if (Main_Data::game_player->GetX() == x && Main_Data::game_player->GetY() == y) {
+		if (!Main_Data::game_player->GetThrough() && !GetSpriteName().empty()) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
 void Game_Character::MoveTo(int x, int y) {
 	SetX(x % Game_Map::GetWidth());
 	SetY(y % Game_Map::GetHeight());
@@ -102,13 +146,13 @@ int Game_Character::GetScreenX() const {
 int Game_Character::GetScreenY() const {
 	int y = (real_y - Game_Map::GetDisplayY() + 3) / (SCREEN_TILE_WIDTH / 16) + 16;
 
-	/*int n;
-	if (jump_count >= jump_peak)
-		n = jump_count - jump_peak;
+	int n;
+	if (move_count >= jump_peak)
+		n = move_count - jump_peak;
 	else
-		n = jump_peak - jump_count;*/
+		n = jump_peak - move_count;
 
-	return y; /*- (jump_peak * jump_peak - n * n) / 2;*/
+	return y - (jump_peak * jump_peak - n * n) / 2;
 }
 
 int Game_Character::GetScreenZ() const {
@@ -128,10 +172,9 @@ void Game_Character::Update() {
 		UpdateMove();
 		UpdateStop();
 	} else {
-		/*if (IsJumping())
+		if (IsJumping())
 			UpdateJump();
-			else*/
-		if (IsMoving()) {
+		else if (IsMoving()) {
 			UpdateMove();
 		}
 		else {
@@ -192,6 +235,20 @@ void Game_Character::UpdateMove() {
 
 	if (animation_type != RPG::EventPage::AnimType_fixed_graphic && walk_animation)
 		anime_count += 1.5;
+}
+
+void Game_Character::UpdateJump() {
+	static double x_step;
+	static double y_step;
+
+	if (move_count == jump_peak*2) {//First frame?
+		x_step = (GetX()*SCREEN_TILE_WIDTH-real_x) / (jump_peak*2);
+		y_step = (GetY()*SCREEN_TILE_WIDTH-real_y) / (jump_peak*2);
+	}
+	move_count--;
+
+	real_x += x_step;
+	real_y += y_step;
 }
 
 void Game_Character::UpdateSelfMovement() {
@@ -402,11 +459,11 @@ void Game_Character::MoveTypeCustom() {
 				Wait();
 				break;
 			case RPG::MoveCommand::Code::begin_jump:
-				BeginJump();
+				active_route_index = Jump();
 				break;
-			case RPG::MoveCommand::Code::end_jump:
-				EndJump();
-				break;
+//			case RPG::MoveCommand::Code::end_jump:
+//			  EndJump();
+//				break;
 			case RPG::MoveCommand::Code::lock_facing:
 				Lock();
 				break;
@@ -790,13 +847,221 @@ void Game_Character::Wait() {
 	wait_count += 20;
 }
 
-void Game_Character::BeginJump() {
-	// Todo
+int Game_Character::Jump() {
+	jump_x = GetX();
+	jump_y = GetY();
+	int plus_x = 0;
+	int plus_y = 0;
+
+	const RPG::MoveRoute* jump_route;
+	int jump_index;
+	if (IsMoveRouteOverwritten()) {
+		jump_route = &GetMoveRoute();
+		jump_index = GetMoveRouteIndex();
+	}
+	else {
+		jump_route = &original_move_route;
+		jump_index = GetOriginalMoveRouteIndex();
+	}
+
+	int start_jump_index = jump_index; //To return it if End Jump is not found
+	bool jump_end_found = false;
+	while (!jump_end_found)
+	{
+		const RPG::MoveCommand& move_command = jump_route->move_commands[jump_index];
+		switch (move_command.command_id) {
+		case RPG::MoveCommand::Code::move_up:
+			plus_y--;
+			break;
+		case RPG::MoveCommand::Code::move_right:
+			plus_x++;
+			break;
+		case RPG::MoveCommand::Code::move_down:
+			plus_y++;
+			break;
+		case RPG::MoveCommand::Code::move_left:
+			plus_x--;
+			break;
+		case RPG::MoveCommand::Code::move_upright:
+			plus_x++;
+			plus_y--;
+			break;
+		case RPG::MoveCommand::Code::move_downright:
+			plus_x++;
+			plus_y++;
+			break;
+		case RPG::MoveCommand::Code::move_downleft:
+			plus_x--;
+			plus_y++;
+			break;
+		case RPG::MoveCommand::Code::move_upleft:
+			plus_x--;
+			plus_y--;
+			break;
+		case RPG::MoveCommand::Code::move_random:
+			switch (rand() % 4)
+			{
+			case 0:
+				plus_x++;
+				break;
+			case 1:
+				plus_x--;
+				break;
+			case 2:
+				plus_y++;
+				break;
+			case 3:
+				plus_y--;
+				break;
+			}
+			break;
+		case RPG::MoveCommand::Code::move_towards_hero:
+			if (DistanceXfromPlayer() != 0 || DistanceYfromPlayer() != 0) {
+				if ( std::abs(DistanceXfromPlayer()) > std::abs(DistanceYfromPlayer()) ) {
+					if (DistanceXfromPlayer() > 0) {
+						plus_x--;
+					} else {
+						plus_x++;
+					}
+				} else {
+					if (DistanceYfromPlayer() > 0) {
+						plus_y--;
+					} else {
+						plus_y++;
+					}
+				}
+			}
+			break;
+		case RPG::MoveCommand::Code::move_away_from_hero:
+			if (DistanceXfromPlayer() != 0 || DistanceYfromPlayer() != 0) {
+				if ( std::abs(DistanceXfromPlayer()) > std::abs(DistanceYfromPlayer()) ) {
+					if (DistanceXfromPlayer() > 0) {
+						plus_x++;
+					} else {
+						plus_x--;
+					}
+				} else {
+					if (DistanceYfromPlayer() > 0) {
+						plus_y++;
+					} else {
+						plus_y--;
+					}
+				}
+			}
+			break;
+		case RPG::MoveCommand::Code::move_forward:
+			switch (GetDirection()) {
+			case RPG::EventPage::Direction_down:
+				plus_y++;
+				break;
+			case RPG::EventPage::Direction_left:
+				plus_x--;
+				break;
+			case RPG::EventPage::Direction_right:
+				plus_x++;
+				break;
+			case RPG::EventPage::Direction_up:
+				plus_y--;
+				break;
+			}
+			break;
+		case RPG::MoveCommand::Code::lock_facing:
+			Lock();
+			break;
+		case RPG::MoveCommand::Code::unlock_facing:
+			Unlock();
+			break;
+		case RPG::MoveCommand::Code::increase_movement_speed:
+			SetMoveSpeed(min(GetMoveSpeed() + 1, 6));
+			break;
+		case RPG::MoveCommand::Code::decrease_movement_speed:
+			SetMoveSpeed(max(GetMoveSpeed() - 1, 1));
+			break;
+		case RPG::MoveCommand::Code::increase_movement_frequence:
+			SetMoveFrequency(min(GetMoveFrequency() - 1, 1));
+			break;
+		case RPG::MoveCommand::Code::decrease_movement_frequence:
+			SetMoveFrequency(max(GetMoveFrequency() - 1, 1));
+			break;
+		case RPG::MoveCommand::Code::switch_on: // Parameter A: Switch to turn on
+			Game_Switches[move_command.parameter_a] = true;
+			Game_Map::SetNeedRefresh(true);
+			break;
+		case RPG::MoveCommand::Code::switch_off: // Parameter A: Switch to turn off
+			Game_Switches[move_command.parameter_a] = false;
+			Game_Map::SetNeedRefresh(true);
+			break;
+		case RPG::MoveCommand::Code::change_graphic: // String: File, Parameter A: index
+			SetSpriteName(move_command.parameter_string);
+			SetSpriteIndex(move_command.parameter_a);
+			break;
+		case RPG::MoveCommand::Code::play_sound_effect: // String: File, Parameters: Volume, Tempo, Balance
+			if (move_command.parameter_string != "(OFF)") {
+				Audio().SE_Play(move_command.parameter_string,
+					move_command.parameter_a, move_command.parameter_b);
+			}
+			break;
+		case RPG::MoveCommand::Code::walk_everywhere_on:
+			through = true;
+			break;
+		case RPG::MoveCommand::Code::walk_everywhere_off:
+			through = false;
+			break;
+		case RPG::MoveCommand::Code::stop_animation:
+			walk_animation = false;
+			break;
+		case RPG::MoveCommand::Code::start_animation:
+			walk_animation = true;
+			break;
+		case RPG::MoveCommand::Code::increase_transp:
+			SetOpacity(max(40, GetOpacity() - 45));
+			break;
+		case RPG::MoveCommand::Code::decrease_transp:
+			SetOpacity(GetOpacity() + 45);
+			break;
+
+
+		case RPG::MoveCommand::Code::end_jump:
+			jump_end_found = true;
+			break;
+		}
+
+		if (!jump_end_found)
+			jump_index++;
+		if (jump_index >= (int)jump_route->move_commands.size())
+			break;
+	}
+
+	if (!jump_end_found)
+		return start_jump_index;
+
+	if (!IsLandable(jump_x + plus_x, jump_y + plus_y)) {
+		move_failed = true;
+		return jump_index;
+	}
+
+	SetX(jump_x + plus_x);
+	SetY(jump_y + plus_y);
+	
+	//TODO: C++11 got round() function defined in math.h
+	float distance = sqrt((float)(plus_x * plus_x + plus_y * plus_y));
+	if (distance >= floor(distance)+0.5) distance = ceil(distance);
+	else distance = floor(distance);
+
+
+	jump_peak = 10 + (int)distance - GetMoveSpeed();
+	move_count = jump_peak * 2;
+
+	stop_count = 0;
+	move_failed = false;
+
+	return jump_index;
 }
 
-void Game_Character::EndJump() {
-	// Todo
-}
+//void Game_Character::EndJump() {
+
+//}
+
 
 int Game_Character::DistanceXfromPlayer() const {
 	int sx = GetX() - Main_Data::game_player->GetX();
