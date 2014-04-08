@@ -84,7 +84,7 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src/generated")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
 
-foreach(i Expat Pixman ZLIB PNG SDL2 Boost Iconv)
+foreach(i Expat Freetype Pixman ZLIB PNG SDL2 Boost Iconv)
   find_package(${i} REQUIRED)
 
   string(TOUPPER ${i} i)
@@ -151,7 +151,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://easy-rpg.org/")
   set(CPACK_DEBIAN_PACKAGE_MAINTAINER "take_cheeze")
   set(CPACK_DEBIAN_PACKAGE_DEPENDS
-    libexpat1 libpixman-1-0 libpng12-0 zlib1g libsdl2-2.0-0
+    libexpat1 libfreetype6 libpixman-1-0 libpng12-0 zlib1g libsdl2-2.0-0
     libsdl2-mixer-2.0-0 libogg0 libvorbis0a libstdc++6 libgcc1 libmikmod2
     libvorbisfile3 libmad0)
 endif()
