@@ -1,5 +1,5 @@
-#ifndef _INC_SHINONOME_HXX_
-#define _INC_SHINONOME_HXX_
+#ifndef _INC_SHINONOME_H_
+#define _INC_SHINONOME_H_
 
 #include <stdint.h>
 
@@ -12,4 +12,4 @@ struct ShinonomeGlyph {
 extern ShinonomeGlyph const SHINONOME_GOTHIC[7190];
 extern ShinonomeGlyph const SHINONOME_MINCHO[488];
 
-#endif // _INC_SHINONOME_HXX_
+#endif // _INC_SHINONOME_H_

@@ -11,7 +11,7 @@ before_script:
   - cd liblcf
   - autoreconf -i
   - ./configure --prefix $PWD/build
-  - make install -j4
+  - make install -j2
   - cd ..
   - autoreconf -i
   - ./configure CXXFLAGS="-O0 -Wall -Wextra -ansi -pedantic"

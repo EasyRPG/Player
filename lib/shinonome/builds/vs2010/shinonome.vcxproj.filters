@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\gothic.cxx" />
-    <ClCompile Include="..\..\mincho.cxx" />
+    <ClCompile Include="..\..\..\..\src\gothic.cpp" />
+    <ClCompile Include="..\..\..\..\src\mincho.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\shinonome.hxx" />
+    <ClInclude Include="..\..\..\..\src\shinonome.h" />
   </ItemGroup>
 </Project>

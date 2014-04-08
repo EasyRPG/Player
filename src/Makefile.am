@@ -1,7 +1,5 @@
 bin_PROGRAMS = easyrpg-player
 EXTRA_DIST = platform
-easyrpg_player_CPPFLAGS = \
-	-I$(top_builddir)/lib/shinonome
 easyrpg_player_CXXFLAGS = \
 	-std=c++0x \
 	$(LCF_CFLAGS) \
@@ -97,6 +95,7 @@ easyrpg_player_SOURCES = \
 	game_variables.h \
 	game_vehicle.cpp \
 	game_vehicle.h \
+	gothic.cpp \
 	graphics.cpp \
 	graphics.h \
 	hslrgb.cpp \
@@ -126,6 +125,7 @@ easyrpg_player_SOURCES = \
 	memory_management.h \
 	message_overlay.cpp \
 	message_overlay.h \
+	mincho.cpp \
 	options.h \
 	output.cpp \
 	output.h \
@@ -283,7 +283,4 @@ easyrpg_player_SOURCES = \
 	window_targetstatus.cpp \
 	window_targetstatus.h \
 	window_varlist.cpp \
-	window_varlist.h \
-	$(top_builddir)/lib/shinonome/shinonome.hxx \
-	$(top_builddir)/lib/shinonome/gothic.cxx \
-	$(top_builddir)/lib/shinonome/mincho.cxx
+	window_varlist.h

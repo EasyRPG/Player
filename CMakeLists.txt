@@ -45,17 +45,17 @@ if(EXISTS ${WINE_EXECUTABLE})
 endif()
 
 # shinonome font
-set(SHINONOME_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/shinonome")
-set(SHINONOME_SRCS "${SHINONOME_PATH}/gothic.cxx" "${SHINONOME_PATH}/mincho.cxx")
+set(SHINONOME_PATH "${CMAKE_CURRENT_SOURCE_DIR}/src")
+set(SHINONOME_SRCS "${SHINONOME_PATH}/gothic.cpp" "${SHINONOME_PATH}/mincho.cpp")
 include_directories(${SHINONOME_PATH})
 find_package(Ruby)
 if(RUBY_FOUND)
-  set(SHINONOME_GENERATOR "${SHINONOME_PATH}/generate_cxx_font.rb")
+  set(SHINONOME_GENERATOR "${CMAKE_CURRENT_SOURCE_DIR}/lib/shinonome/generate_cxx_font.rb")
   add_custom_command(
-    OUTPUT ${SHINONOME_SRCS} "${SHINONOME_PATH}/shinonome.hxx"
+    OUTPUT ${SHINONOME_SRCS} "${SHINONOME_PATH}/shinonome.h"
     COMMAND "${RUBY_EXECUTABLE}" ARGS "${SHINONOME_GENERATOR}"
     DEPENDS "${SHINONOME_GENERATOR}"
-    WORKING_DIRECTORY "${SHINONOME_PATH}")
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib/shinonome")
 endif()
 
 # endianess check
