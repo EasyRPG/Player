@@ -12,7 +12,7 @@ before_script:
   - cd liblcf
   - autoreconf -i
   - ./configure --prefix $PWD/build
-  - make install -j4
+  - make install -j2
   - cd ..
   - autoreconf -i
   - export PKG_CONFIG_PATH=$PWD/liblcf/build/lib/pkgconfig

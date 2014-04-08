@@ -1,4 +1,4 @@
-#include "shinonome.hxx"
+#include "shinonome.h"
 
 ShinonomeGlyph const SHINONOME_GOTHIC[7187] = {
   { 0, false, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
