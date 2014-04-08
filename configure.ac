@@ -4,7 +4,8 @@
 AC_PREREQ([2.69])
 AC_INIT([easyrpg-player],[0.1.3],[https://github.com/EasyRPG/Player/issues],[easyrpg-player],[https://easy-rpg.org/])
 
-AM_INIT_AUTOMAKE([1.11 foreign subdir-objects -Wall -Werror -Wno-extra-portability])
+AC_CONFIG_AUX_DIR([builds/autoconf])
+AM_INIT_AUTOMAKE([1.11 foreign subdir-objects -Wall -Werror])
 AM_MAINTAINER_MODE([enable])
 AM_SILENT_RULES([yes])
 
