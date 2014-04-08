@@ -24,7 +24,7 @@ Requirements
 liblcf for RPG Maker data reading. https://github.com/EasyRPG/liblcf
 SDL2 for screen backend support.
 SDL2_mixer for audio mixing.
-Freetype for custom font support.
+FreeType for font support.
 Pixman for low level pixel manipulation.
 libpng for PNG image support.
 zlib for XYZ image support.
