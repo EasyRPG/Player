@@ -284,6 +284,6 @@ easyrpg_player_SOURCES = \
 	window_targetstatus.h \
 	window_varlist.cpp \
 	window_varlist.h \
-	../lib/shinonome/shinonome.hxx \
-	../lib/shinonome/gothic.cxx \
-	../lib/shinonome/mincho.cxx
+	$(top_builddir)/lib/shinonome/shinonome.hxx \
+	$(top_builddir)/lib/shinonome/gothic.cxx \
+	$(top_builddir)/lib/shinonome/mincho.cxx
