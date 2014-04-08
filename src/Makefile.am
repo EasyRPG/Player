@@ -1,7 +1,7 @@
 bin_PROGRAMS = easyrpg-player
 EXTRA_DIST = platform
 easyrpg_player_CPPFLAGS = \
-	-I$(srcdir)/../lib/shinonome
+	-I$(top_builddir)/lib/shinonome
 easyrpg_player_CXXFLAGS = \
 	-std=c++0x \
 	$(LCF_CFLAGS) \
@@ -20,8 +20,6 @@ easyrpg_player_LDADD = \
 	$(PNG_LIBS) \
 	$(ZLIB_LIBS)
 easyrpg_player_SOURCES = \
-	al_audio.cpp \
-	al_audio.h \
 	audio.cpp \
 	audio.h \
 	background.cpp \

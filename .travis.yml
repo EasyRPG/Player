@@ -6,8 +6,13 @@ before_script:
   - echo "\n" | sudo add-apt-repository ppa:costamagnagianfranco/autoconf
   - echo "\n" | sudo add-apt-repository ppa:zoogie/sdl2-snapshots
   - sudo apt-get update -qq
-  - sudo apt-get install -qq autoconf libboost1.48-dev libsdl2-dev libsdl2-mixer-dev libpixman-1-dev
-  - mkdir m4
+  - sudo apt-get install -qq libexpat1-dev autoconf automake libboost1.48-dev libsdl2-dev libsdl2-mixer-dev libpixman-1-dev
+  - git clone --depth 1 https://github.com/EasyRPG/liblcf
+  - cd liblcf
+  - autoreconf -i
+  - ./configure --prefix $PWD/build
+  - make install -j4
+  - cd ..
   - autoreconf -i
   - ./configure CXXFLAGS="-O0 -Wall -Wextra -ansi -pedantic"
 script: make distcheck
