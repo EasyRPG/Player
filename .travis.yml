@@ -1,16 +1,20 @@
 language: cpp
 compiler:
-  - clang
   - gcc
+  - clang
 before_script:
-  - echo "\n" | sudo add-apt-repository ppa:costamagnagianfranco/autoconf
-  - echo "\n" | sudo add-apt-repository ppa:zoogie/sdl2-snapshots
+  - sudo add-apt-repository -y ppa:dns/gnu
+  - sudo add-apt-repository -y ppa:cjohnston/ci
+  - sudo add-apt-repository -y ppa:zoogie/sdl2-snapshots
   - sudo apt-get update -qq
-  - sudo apt-get install -qq autoconf libboost1.48-dev libsdl2-dev libsdl2-mixer-dev libpixman-1-dev
-  - mkdir m4
+  - sudo apt-get install -qq libexpat1-dev autoconf automake libboost1.48-dev libsdl2-dev libsdl2-mixer-dev libpixman-1-dev
+  - git clone https://github.com/EasyRPG/liblcf
+  - cd liblcf
   - autoreconf -i
+  - ./configure --prefix $PWD/build
+  - make install -j4
+  - cd ..
+  - autoreconf -i
+  - export PKG_CONFIG_PATH=$PWD/liblcf/build/lib/pkgconfig
   - ./configure CXXFLAGS="-O0 -Wall -Wextra -ansi -pedantic"
-script: make distcheck
-after_script:
-  - cat lib/TestGame/TestGame-2000/easyrpg_log.txt
-  - cat Testing/Temporary/LastTest.log
+script: make distcheck -j2
