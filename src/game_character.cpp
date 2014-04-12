@@ -54,36 +54,14 @@ Game_Character::Game_Character() :
 }
 
 bool Game_Character::IsMoving() const {
-	//TODO: delete this line once move_count is settled for UpdateMove();
 	if (move_count > 0) return false; //Jumping
 
 	return real_x != GetX() * SCREEN_TILE_WIDTH || real_y != GetY() * SCREEN_TILE_WIDTH;
 }
 
 bool Game_Character::IsJumping() const {
-	//TODO: switch this definition once move_count is settled for UpdateMove();
 	return move_count > 0;
 }
-/*
-	// Detect if custom movement or event overwrite
-	const RPG::MoveRoute* active_route;
-	int active_route_index;
-	if (IsMoveRouteOverwritten()) {
-		active_route = &GetMoveRoute();
-		active_route_index = GetMoveRouteIndex();
-	}
-	else {
-		active_route = &original_move_route;
-		active_route_index = GetOriginalMoveRouteIndex();
-	}
-
-	if (active_route_index >= active_route->move_commands.size())
-		return false;
-
-	const RPG::MoveCommand& move_command = active_route->move_commands[active_route_index];
-	return (IsMoving() && move_command.command_id == RPG::MoveCommand::Code::end_jump);
-}
-*/
 
 bool Game_Character::IsStopping() const {
 	return !(IsMoving() || IsJumping());
