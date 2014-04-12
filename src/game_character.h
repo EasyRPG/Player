@@ -515,16 +515,24 @@ public:
 	void Wait();
 
 	/**
-	 * Jump action begins. Does nothing when EndJump-Command is missing.
+	 * Jump action begins. Ends the movement when EndJump is missing.
 	 *
-	 * @return index of the EndJump move command or the index of StartJump if not found.
+	 * @param current_route Current move route
+	 * @param current_index Index in the current route
+	 *
+	 * @return current_index if EndJump found, otherwise end of route.
 	 */
-	int Jump();
+	int BeginJump(const RPG::MoveRoute* current_route, int current_index);
 
 	/**
 	 * Jump action ends.
+	 *
+	 * @param current_route Current move route
+	 * @param current_index Index in the current route
+	 *
+	 * @return current_index if jump was successful, else index of BeginJump.
 	 */
-//	void EndJump();
+	int EndJump(const RPG::MoveRoute* current_route, int current_index);
 
 	/**
 	 * Locks character facing direction.
@@ -740,9 +748,13 @@ protected:
 	int move_count;
 	int wait_count;
 
+	bool jumping;
 	int jump_peak;
+	int jump_index;
 	int jump_x;
 	int jump_y;
+	int jump_plus_x;
+	int jump_plus_y;
 
 	double anime_count;
 	int stop_count;
