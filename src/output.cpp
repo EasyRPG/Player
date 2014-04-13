@@ -58,7 +58,7 @@ void boost::throw_exception(std::exception const& exp) {
 #endif
 
 namespace output_anon {
-	std::ofstream LOG_FILE(FileFinder::MakePath(Main_Data::project_path, OUTPUT_FILENAME), std::ios_base::out | std::ios_base::app);
+	std::ofstream LOG_FILE(FileFinder::MakePath(Main_Data::project_path, OUTPUT_FILENAME).c_str(), std::ios_base::out | std::ios_base::app);
 
 	std::ostream& output_time() {
 		std::time_t t = std::time(NULL);
