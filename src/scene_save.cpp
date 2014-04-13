@@ -89,7 +89,7 @@ void Scene_Save::Action(int index) {
 	std::string filename = FileFinder::FindDefault(*tree, ss.str());
 
 	if (filename.empty()) {
-		filename = ss.str();
+		filename = Main_Data::project_path + "/" + ss.str();
 	}
 
 	LSD_Reader::Save(filename, Main_Data::game_data,
