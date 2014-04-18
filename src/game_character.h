@@ -317,7 +317,7 @@ public:
 	virtual bool IsStopping() const;
 
 	/**
-	 * Gets if character the character can walk in a tile
+	 * Gets if the character can walk in a tile
 	 * with a specific direction.
 	 *
 	 * @param x tile x.
@@ -326,6 +326,15 @@ public:
 	 * @return whether the character can walk through.
 	 */
 	virtual bool IsPassable(int x, int y, int d) const;
+
+	/**
+	 * Gets if the character can jump to a tile.
+	 *
+	 * @param x tile x.
+	 * @param y tile y.
+	 * @return whether the character can jump to.
+	 */
+	virtual bool IsLandable(int x, int y) const;
 
 	/**
 	 * Moves the character to a new tile.
@@ -506,14 +515,24 @@ public:
 	void Wait();
 
 	/**
-	 * Jump action begins. Does nothing when EndJump-Command is missing.
+	 * Jump action begins. Ends the movement when EndJump is missing.
+	 *
+	 * @param current_route Current move route
+	 * @param current_index Index in the current route
+	 *
+	 * @return current_index if EndJump found, otherwise end of route.
 	 */
-	void BeginJump();
+	int BeginJump(const RPG::MoveRoute* current_route, int current_index);
 
 	/**
 	 * Jump action ends.
+	 *
+	 * @param current_route Current move route
+	 * @param current_index Index in the current route
+	 *
+	 * @return current_index if jump was successful, else index of BeginJump.
 	 */
-	void EndJump();
+	int EndJump(const RPG::MoveRoute* current_route, int current_index);
 
 	/**
 	 * Locks character facing direction.
@@ -707,6 +726,7 @@ public:
 
 protected:
 	void UpdateMove();
+	void UpdateJump();
 	void UpdateSelfMovement();
 	void UpdateStop();
 
@@ -725,11 +745,19 @@ protected:
 	int original_move_frequency;
 	int move_type;
 	bool move_failed;
+	int move_count;
 	int wait_count;
+
+	bool jumping;
+	int jump_peak;
+	int jump_index;
+	int jump_x;
+	int jump_y;
+	int jump_plus_x;
+	int jump_plus_y;
 
 	double anime_count;
 	int stop_count;
-	int jump_count;
 	bool walk_animation;
 	bool turn_enabled;
 
