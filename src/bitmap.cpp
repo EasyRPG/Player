@@ -981,7 +981,7 @@ void Bitmap::FillRect(Rect const& dst_rect, const Color &color) {
 	static_cast<uint16_t>(dst_rect.width),
 	static_cast<uint16_t>(dst_rect.height), };
 
-	pixman_image_fill_rectangles(PIXMAN_OP_SRC, bitmap, &pcolor, 1, &rect);
+	pixman_image_fill_rectangles(PIXMAN_OP_OVER, bitmap, &pcolor, 1, &rect);
 
 	RefreshCallback();
 }
