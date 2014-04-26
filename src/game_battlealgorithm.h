@@ -20,7 +20,6 @@
 
 #include <string>
 #include <vector>
-#include <boost/optional/optional.hpp>
 
 class Game_Actor;
 class Game_Battler;
@@ -80,44 +79,44 @@ public:
 	/**
 	 * Gets how many Hp were gained/lost.
 	 *
-	 * @return Hp change or empty element when algorithm didn't affect Hp
+	 * @return Hp change or -1 when algorithm didn't affect Hp
 	 */
-	boost::optional<int> GetAffectedHp() const;
+	int GetAffectedHp() const;
 
 	/**
 	 * Gets how many Sp were gained/lost.
 	 *
-	 * @return Sp change or empty element when algorithm didn't affect Sp
+	 * @return Sp change or -1 when algorithm didn't affect Sp
 	 */
-	boost::optional<int> GetAffectedSp() const;
+	int GetAffectedSp() const;
 
 	/**
 	 * Gets how many Attack was gained/lost.
 	 *
-	 * @return Attack change or empty element when algorithm didn't affect Attack
+	 * @return Attack change or -1 when algorithm didn't affect Attack
 	 */
-	boost::optional<int> GetAffectedAttack() const;
+	int GetAffectedAttack() const;
 
 	/**
 	 * Gets how many Defense was gained/lost.
 	 *
-	 * @return Defense change or empty element when algorithm didn't affect Defense
+	 * @return Defense change or -1 when algorithm didn't affect Defense
 	 */
-	boost::optional<int> GetAffectedDefense() const;
+	int GetAffectedDefense() const;
 
 	/**
 	 * Gets how many Spirit was gained/lost.
 	 *
-	 * @return Defense change or empty element when algorithm didn't affect Spirit
+	 * @return Defense change or -1 when algorithm didn't affect Spirit
 	 */
-	boost::optional<int> GetAffectedSpirit() const;
+	int GetAffectedSpirit() const;
 
 	/**
 	 * Gets how many Agility was gained/lost.
 	 *
-	 * @return Defense change or empty element when algorithm didn't affect Agility
+	 * @return Defense change or -1 when algorithm didn't affect Agility
 	 */
-	boost::optional<int> GetAffectedAgility() const;
+	int GetAffectedAgility() const;
 
 	/**
 	 * Gets the Battle Animation that is assigned to the Algorithm

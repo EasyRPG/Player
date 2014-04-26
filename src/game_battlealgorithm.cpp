@@ -56,28 +56,28 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	animation = NULL;
 }
 
-boost::optional<int> Game_BattleAlgorithm::AlgorithmBase::GetAffectedHp() const {
-	return hp != -1 ? hp : boost::optional<int>();
+int Game_BattleAlgorithm::AlgorithmBase::GetAffectedHp() const {
+	return hp;
 }
 
-boost::optional<int> Game_BattleAlgorithm::AlgorithmBase::GetAffectedSp() const {
-	return sp != -1 ? hp : boost::optional<int>();
+int Game_BattleAlgorithm::AlgorithmBase::GetAffectedSp() const {
+	return sp;
 }
 
-boost::optional<int> Game_BattleAlgorithm::AlgorithmBase::GetAffectedAttack() const {
-	return attack != -1 ? hp : boost::optional<int>();
+int Game_BattleAlgorithm::AlgorithmBase::GetAffectedAttack() const {
+	return attack;
 }
 
-boost::optional<int> Game_BattleAlgorithm::AlgorithmBase::GetAffectedDefense() const {
-	return defense != -1 ? hp : boost::optional<int>();
+int Game_BattleAlgorithm::AlgorithmBase::GetAffectedDefense() const {
+	return defense;
 }
 
-boost::optional<int> Game_BattleAlgorithm::AlgorithmBase::GetAffectedSpirit() const {
-	return spirit != -1 ? hp : boost::optional<int>();
+int Game_BattleAlgorithm::AlgorithmBase::GetAffectedSpirit() const {
+	return spirit;
 }
 
-boost::optional<int> Game_BattleAlgorithm::AlgorithmBase::GetAffectedAgility() const {
-	return agility != -1 ? hp : boost::optional<int>();
+int Game_BattleAlgorithm::AlgorithmBase::GetAffectedAgility() const {
+	return agility;
 }
 
 const std::vector<RPG::State>& Game_BattleAlgorithm::AlgorithmBase::GetAffectedConditions() const {
@@ -116,54 +116,54 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 
 	bool target_is_ally = (*current_target)->GetType() == Game_Battler::Type_Ally;
 
-	if (GetAffectedHp()) {
+	if (GetAffectedHp() != -1) {
 		std::stringstream ss;
 		ss << (*current_target)->GetName();
 
-		if (*GetAffectedHp() == 0) {
+		if (GetAffectedHp() == 0) {
 			ss << (target_is_ally ?
 				Data::terms.actor_undamaged :
 			Data::terms.enemy_undamaged);
 		} else {
-			ss << " " << *GetAffectedHp() << (target_is_ally ?
+			ss << " " << GetAffectedHp() << (target_is_ally ?
 				Data::terms.actor_damaged :
 			Data::terms.enemy_damaged);
 		}
 		out.push_back(ss.str());
 	}
 
-	if (GetAffectedSp()) {
+	if (GetAffectedSp() != -1) {
 		std::stringstream ss;
 		ss << (*current_target)->GetName();
-		ss << " " << Data::terms.attack << " " << *GetAffectedSp();
+		ss << " " << Data::terms.attack << " " << GetAffectedSp();
 		out.push_back(ss.str());
 	}
 
-	if (GetAffectedAttack()) {
+	if (GetAffectedAttack() != -1) {
 		std::stringstream ss;
 		ss << (*current_target)->GetName();
-		ss << " " << Data::terms.attack << " " << *GetAffectedSp();
+		ss << " " << Data::terms.attack << " " << GetAffectedSp();
 		out.push_back(ss.str());
 	}
 
-	if (GetAffectedDefense()) {
+	if (GetAffectedDefense() != -1) {
 		std::stringstream ss;
 		ss << (*current_target)->GetName();
-		ss << " " << Data::terms.defense << " " << *GetAffectedDefense();
+		ss << " " << Data::terms.defense << " " << GetAffectedDefense();
 		out.push_back(ss.str());
 	}
 
-	if (GetAffectedSpirit()) {
+	if (GetAffectedSpirit() != -1) {
 		std::stringstream ss;
 		ss << (*current_target)->GetName();
-		ss << " " << Data::terms.spirit << " " << *GetAffectedSpirit();
+		ss << " " << Data::terms.spirit << " " << GetAffectedSpirit();
 		out.push_back(ss.str());
 	}
 
-	if (GetAffectedAgility()) {
+	if (GetAffectedAgility() != -1) {
 		std::stringstream ss;
 		ss << (*current_target)->GetName();
-		ss << " " << Data::terms.agility << " " << *GetAffectedAgility();
+		ss << " " << Data::terms.agility << " " << GetAffectedAgility();
 		out.push_back(ss.str());
 	}
 
@@ -211,11 +211,11 @@ void Game_BattleAlgorithm::AlgorithmBase::SetTarget(Game_Battler* target) {
 
 void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	if (GetAffectedHp()) {
-		(*current_target)->ChangeHp(-*GetAffectedHp());
+		(*current_target)->ChangeHp(-GetAffectedHp());
 	}
 
 	if (GetAffectedSp()) {
-		(*current_target)->SetSp((*current_target)->GetSp() -*GetAffectedSp());
+		(*current_target)->SetSp((*current_target)->GetSp() -GetAffectedSp());
 	}
 
 	// TODO

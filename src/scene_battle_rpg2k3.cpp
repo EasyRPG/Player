@@ -486,7 +486,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 				action->GetTarget()->GetBattleX(),
 				action->GetTarget()->GetBattleY(),
 				0,
-				action->GetSuccess() ? boost::lexical_cast<std::string>(*action->GetAffectedHp()) : Data::terms.miss,
+				action->GetSuccess() && action->GetAffectedHp() != -1 ? boost::lexical_cast<std::string>(action->GetAffectedHp()) : Data::terms.miss,
 				30);
 
 			status_window->Refresh();
