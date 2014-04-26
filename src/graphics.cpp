@@ -32,7 +32,6 @@
 
 namespace Graphics {
 	bool fps_on_screen;
-	uint32_t drawable_id;
 
 	void InternUpdate1(bool reset = false);
 	void InternUpdate2(bool reset = false);
@@ -63,16 +62,17 @@ namespace Graphics {
 
 	struct State {
 		State() : zlist_dirty(false) {}
-		std::map<uint32_t, Drawable*> drawable_map;
-		std::list<EASYRPG_SHARED_PTR<ZObj> > zlist;
+		std::list<Drawable*> drawable_list;
 		bool zlist_dirty;
 	};
 	EASYRPG_SHARED_PTR<State> state;
 	std::vector<EASYRPG_SHARED_PTR<State> > stack;
+	EASYRPG_SHARED_PTR<State> global_state;
+	
 	void Push();
 	void Pop();
 
-	bool SortZObj(EASYRPG_SHARED_PTR<ZObj> const& first, EASYRPG_SHARED_PTR<ZObj> const& second);
+	bool SortDrawableList(const Drawable* first, const Drawable* second);
 }
 
 unsigned SecondToFrame(float const second) {
@@ -95,21 +95,28 @@ void Graphics::Init() {
 
 	frozen = false;
 	drawable_creation = 0;
-	drawable_id = 0;
 	state.reset(new State());
+	global_state.reset(new State());
 	screen_erased = false;
+
 }
 
 void Graphics::Quit() {
-	std::map<uint32_t, Drawable*>::iterator it;
-	std::map<uint32_t, Drawable*> drawable_map_temp = state->drawable_map;
+	std::list<Drawable*>::iterator it;
+	std::list<Drawable*> drawable_list_temp = state->drawable_list;
 
-	for (it = drawable_map_temp.begin(); it != drawable_map_temp.end(); it++) {
-		delete it->second;
+	for (it = drawable_list_temp.begin(); it != drawable_list_temp.end(); it++) {
+		delete *it;
 	}
 
-	state->drawable_map.clear();
-	state->zlist.clear();
+	drawable_list_temp = global_state->drawable_list;
+
+	for (it = drawable_list_temp.begin(); it != drawable_list_temp.end(); it++) {
+		delete *it;
+	}
+
+	state->drawable_list.clear();
+	global_state->drawable_list.clear();
 
 	frozen_screen.reset();
 	black_screen.reset();
@@ -242,7 +249,7 @@ void Graphics::UpdateTitle() {
 	if (DisplayUi->IsFullscreen()) return;
 
 	std::stringstream title;
-	title << GAME_TITLE;
+	title << Player::game_title;
 
 	if (!fps_on_screen) {
 		title << " - FPS " << fps;
@@ -259,15 +266,24 @@ void Graphics::DrawFrame() {
 	if (screen_erased) return;
 
 	if (state->zlist_dirty) {
-		state->zlist.sort(SortZObj);
+		state->drawable_list.sort(SortDrawableList);
 		state->zlist_dirty = false;
+	}
+
+	if (global_state->zlist_dirty) {
+		global_state->drawable_list.sort(SortDrawableList);
+		global_state->zlist_dirty = false;
 	}
 
 	DisplayUi->CleanDisplay();
 
-	std::list<EASYRPG_SHARED_PTR<ZObj> >::iterator it_zlist;
-	for (it_zlist = state->zlist.begin(); it_zlist != state->zlist.end(); it_zlist++) {
-		state->drawable_map[(*it_zlist)->GetId()]->Draw((*it_zlist)->GetZ());
+	std::list<Drawable*>::iterator it_list;
+	for (it_list = state->drawable_list.begin(); it_list != state->drawable_list.end(); it_list++) {
+		(*it_list)->Draw();
+	}
+
+	for (it_list = global_state->drawable_list.begin(); it_list != global_state->drawable_list.end(); it_list++) {
+		(*it_list)->Draw();
 	}
 
 	if (overlay_visible) {
@@ -281,16 +297,20 @@ void Graphics::DrawOverlay() {
 	if (Graphics::fps_on_screen) {
 		std::stringstream text;
 		text << "FPS: " << fps;
-		DisplayUi->DrawScreenText(text.str());
+		DisplayUi->GetDisplaySurface()->TextDraw(2, 2, Color(255, 255, 255, 255), text.str());
 	}
 }
 
 BitmapRef Graphics::SnapToBitmap() {
 	DisplayUi->BeginScreenCapture();
 
-	std::list<EASYRPG_SHARED_PTR<ZObj> >::iterator it_zlist;
-	for (it_zlist = state->zlist.begin(); it_zlist != state->zlist.end(); it_zlist++) {
-		state->drawable_map[(*it_zlist)->GetId()]->Draw((*it_zlist)->GetZ());
+	std::list<Drawable*>::iterator it_list;
+	for (it_list = state->drawable_list.begin(); it_list != state->drawable_list.end(); it_list++) {
+		(*it_list)->Draw();
+	}
+
+	for (it_list = global_state->drawable_list.begin(); it_list != global_state->drawable_list.end(); it_list++) {
+		(*it_list)->Draw();
 	}
 
 	return DisplayUi->EndScreenCapture();
@@ -310,8 +330,13 @@ void Graphics::Transition(TransitionType type, int duration, bool erase) {
 		transition_duration = type == TransitionErase ? 1 : duration;
 
 		if (state->zlist_dirty) {
-			state->zlist.sort(SortZObj);
+			state->drawable_list.sort(SortDrawableList);
 			state->zlist_dirty = false;
+		}
+
+		if (global_state->zlist_dirty) {
+			global_state->drawable_list.sort(SortDrawableList);
+			global_state->zlist_dirty = false;
 		}
 
 		if (!frozen) Freeze();
@@ -516,55 +541,30 @@ void Graphics::SetFrameCount(int nframecount) {
 	framecount = nframecount;
 }
 
-void Graphics::RegisterDrawable(uint32_t ID, Drawable* drawable) {
-	state->drawable_map[ID] = drawable;
-}
-
-void Graphics::RemoveDrawable(uint32_t ID) {
-	std::map<uint32_t, Drawable*>::iterator it = state->drawable_map.find(ID);
-	if(it != state->drawable_map.end()) { state->drawable_map.erase(it); }
-}
-
-ZObj* Graphics::RegisterZObj(int z, uint32_t ID) {
-	state->zlist.push_back(EASYRPG_MAKE_SHARED<ZObj>(z, drawable_creation++, ID));
-	state->zlist_dirty = true;
-	return state->zlist.back().get();
-}
-
-void Graphics::RegisterZObj(int z, uint32_t ID, bool /* multiz */) {
-	state->zlist.push_back(EASYRPG_MAKE_SHARED<ZObj>(z, 999999, ID));
-	state->zlist_dirty = true;
-}
-
-void Graphics::RemoveZObj(uint32_t ID) {
-	RemoveZObj(ID, false);
-}
-
-void Graphics::RemoveZObj(uint32_t ID, bool multiz) {
-	std::vector<std::list<EASYRPG_SHARED_PTR<ZObj> >::iterator> to_erase;
-
-	std::list<EASYRPG_SHARED_PTR<ZObj> >::iterator it_zlist;
-	for (it_zlist = state->zlist.begin(); it_zlist != state->zlist.end(); it_zlist++) {
-		if ((*it_zlist)->GetId() == ID) {
-			to_erase.push_back(it_zlist);
-			if (!multiz) break;
-		}
-	}
-
-	for (size_t i = 0; i < to_erase.size(); i++) {
-		state->zlist.erase(to_erase[i]);
+void Graphics::RegisterDrawable(Drawable* drawable) {
+	if (drawable->IsGlobal()) {
+		global_state->drawable_list.push_back(drawable);
+	} else {
+		state->drawable_list.push_back(drawable);
 	}
 }
 
-void Graphics::UpdateZObj(ZObj* zobj, int z) {
-	zobj->SetZ(z);
-	state->zlist_dirty = true;
+void Graphics::RemoveDrawable(Drawable* drawable) {
+	std::list<Drawable*>::iterator it = std::find(state->drawable_list.begin(), state->drawable_list.end(), drawable);
+	if (it != state->drawable_list.end()) { state->drawable_list.erase(it); }
+
+	it = std::find(global_state->drawable_list.begin(), global_state->drawable_list.end(), drawable);
+	if (it != global_state->drawable_list.end()) { global_state->drawable_list.erase(it); }
 }
 
-inline bool Graphics::SortZObj(EASYRPG_SHARED_PTR<ZObj> const& first, EASYRPG_SHARED_PTR<ZObj> const& second) {
+void Graphics::UpdateZCallback() {
+	state->zlist_dirty = true;
+	global_state->zlist_dirty = true;
+}
+
+inline bool Graphics::SortDrawableList(const Drawable* first, const Drawable* second) {
 	if (first->GetZ() < second->GetZ()) return true;
-	else if (first->GetZ() > second->GetZ()) return false;
-	else return first->GetCreation() < second->GetCreation();
+	return false;
 }
 
 void Graphics::Push() {

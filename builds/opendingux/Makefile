@@ -36,7 +36,7 @@ PIXMAN_LIBS =  $(SYSROOT)/usr/lib/libpixman-1.a
 FREETYPE_CFLAGS = -I$(SYSROOT)/usr/include/freetype2
 
 # Compiler headers
-INCLUDES = ../../lib/liblcf/include ../../src  ../../lib/shinonome 
+INCLUDES = ../../src ../../lib/shinonome ../../lib/liblcf/src ../../lib/liblcf/src/generated
 INCDIR = $(foreach dir, $(INCLUDES), -I$(wildcard $(dir)))
 
 # Compiler source

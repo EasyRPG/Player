@@ -263,9 +263,8 @@ bool Game_Interpreter::SkipTo(int code, int code2, int min_indent, int max_inden
 		index = idx;
 		return true;
 	}
-	// if you do not find it set the page size so the easy do not stuck
-		index = list.size()-1;
-		return true;
+
+	return true;
 }
 
 // Execute Command.

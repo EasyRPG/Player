@@ -155,7 +155,7 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\src;..\..\lib\liblcf\src\generated;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
@@ -173,7 +173,7 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\src;..\..\lib\liblcf\src\generated;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
@@ -192,7 +192,7 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\src;..\..\lib\liblcf\src\generated;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;_WIN64;_AMD64_;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
@@ -210,7 +210,7 @@
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\src;..\..\lib\liblcf\src\generated;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;_WIN64;_AMD64_;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
@@ -230,7 +230,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\src;..\..\lib\liblcf\src\generated;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -255,7 +255,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\src;..\..\lib\liblcf\src\generated;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -280,7 +280,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\src;..\..\lib\liblcf\src\generated;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;_WIN64;_AMD64_;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -305,7 +305,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\lib\liblcf\include;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\lib\liblcf\src;..\..\lib\liblcf\src\generated;..\..\lib\shinonome;$(EASYDEV_MSVC)\include;$(EASYDEV_MSVC)\include\SDL1_2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>MSVC;USE_SDL;HAVE_SDL_MIXER;XML_STATIC;_WIN64;_AMD64_;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -343,8 +343,6 @@
     <ClCompile Include="..\..\src\effects.cpp" />
     <ClCompile Include="..\..\src\filefinder.cpp" />
     <ClCompile Include="..\..\src\font.cpp" />
-    <ClCompile Include="..\..\src\font_pearl_8x8.cpp" />
-    <ClCompile Include="..\..\src\font_render_8x8.cpp" />
     <ClCompile Include="..\..\src\game_actor.cpp" />
     <ClCompile Include="..\..\src\game_actors.cpp" />
     <ClCompile Include="..\..\src\game_battle.cpp" />
@@ -383,6 +381,7 @@
     <ClCompile Include="..\..\src\input_buttons_psp.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\main_data.cpp" />
+    <ClCompile Include="..\..\src\message_overlay.cpp" />
     <ClCompile Include="..\..\src\output.cpp" />
     <ClCompile Include="..\..\src\plane.cpp" />
     <ClCompile Include="..\..\src\player.cpp" />
@@ -459,7 +458,6 @@
     <ClCompile Include="..\..\src\window_skillstatus.cpp" />
     <ClCompile Include="..\..\src\window_targetstatus.cpp" />
     <ClCompile Include="..\..\src\window_varlist.cpp" />
-    <ClCompile Include="..\..\src\zobj.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\al_audio.h" />
@@ -478,7 +476,6 @@
     <ClInclude Include="..\..\src\exfont.h" />
     <ClInclude Include="..\..\src\filefinder.h" />
     <ClInclude Include="..\..\src\font.h" />
-    <ClInclude Include="..\..\src\font_render_8x8.h" />
     <ClInclude Include="..\..\src\game_actor.h" />
     <ClInclude Include="..\..\src\game_actors.h" />
     <ClInclude Include="..\..\src\game_battle.h" />
@@ -518,6 +515,7 @@
     <ClInclude Include="..\..\src\map_data.h" />
     <ClInclude Include="..\..\src\matrix.h" />
     <ClInclude Include="..\..\src\memory_management.h" />
+    <ClInclude Include="..\..\src\message_overlay.h" />
     <ClInclude Include="..\..\src\options.h" />
     <ClInclude Include="..\..\src\output.h" />
     <ClInclude Include="..\..\src\pixel_format.h" />
@@ -599,7 +597,6 @@
     <ClInclude Include="..\..\src\window_skillstatus.h" />
     <ClInclude Include="..\..\src\window_targetstatus.h" />
     <ClInclude Include="..\..\src\window_varlist.h" />
-    <ClInclude Include="..\..\src\zobj.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

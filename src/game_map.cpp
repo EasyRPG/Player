@@ -220,11 +220,8 @@ void Game_Map::PrepareSave() {
 
 	map_info.events.clear();
 
-	map_info.events.resize(map->events.size());
-
 	for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
-		map_info.events[i->first - 1] =
-			i->second->GetSaveData();
+		map_info.events.push_back(i->second->GetSaveData());
 	}
 
 	std::vector<RPG::SaveCommonEvent>& save_common_events = Main_Data::game_data.common_events;
@@ -232,9 +229,9 @@ void Game_Map::PrepareSave() {
 	save_common_events.resize(Data::commonevents.size());
 
 	for (tCommonEventHash::iterator i = common_events.begin(); i != common_events.end(); ++i) {
-		save_common_events[i->first - 1].ID = i->first;
-		save_common_events[i->first - 1].event_data =
-			i->second->GetSaveData();
+		save_common_events.push_back(RPG::SaveCommonEvent());
+		save_common_events.back().ID = i->first;
+		save_common_events.back().event_data = i->second->GetSaveData();
 	}
 }
 
@@ -406,6 +403,100 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 	}
 
 	return true;
+}
+
+bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event)
+{
+    int tile_id;
+
+    if (self_event) {
+        for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
+            Game_Event* evnt = i->second.get();
+            if (evnt != self_event && evnt->GetX() == x && evnt->GetY() == y) {
+                if (!evnt->GetThrough()) {
+                    if (evnt->GetLayer() == RPG::EventPage::Layers_same) {
+                        return false;
+                    }
+                    else if (evnt->GetTileId() >= 0 && evnt->GetLayer() == RPG::EventPage::Layers_below) {
+                        // Event layer Chipset Tile
+                        tile_id = i->second->GetTileId();
+                        return (passages_up[tile_id] & Passable::Down ||
+                                passages_up[tile_id] & Passable::Right ||
+                                passages_up[tile_id] & Passable::Left ||
+                                passages_up[tile_id] & Passable::Up);
+                    }
+                }
+            }
+        }
+    }
+
+    int const tile_index = x + y * GetWidth();
+
+    tile_id = map->upper_layer[tile_index] - BLOCK_F;
+    tile_id = map_info.upper_tiles[tile_id];
+
+    if ((passages_up[tile_id] & Passable::Down) == 0 &&
+        (passages_up[tile_id] & Passable::Right) == 0 &&
+        (passages_up[tile_id] & Passable::Left) == 0 &&
+        (passages_up[tile_id] & Passable::Up) == 0) {
+        return false;
+    }
+
+    if ((passages_up[tile_id] & Passable::Above) == 0)
+        return true;
+
+    if (map->lower_layer[tile_index] >= BLOCK_E) {
+        tile_id = map->lower_layer[tile_index] - BLOCK_E;
+        tile_id = map_info.lower_tiles[tile_id];
+        tile_id += 18;
+
+        if ((passages_down[tile_id] & Passable::Down) == 0 &&
+            (passages_down[tile_id] & Passable::Right) == 0 &&
+            (passages_down[tile_id] & Passable::Left) == 0 &&
+            (passages_down[tile_id] & Passable::Up) == 0)
+            return false;
+
+    } else if (map->lower_layer[tile_index] >= BLOCK_D) {
+        tile_id = (map->lower_layer[tile_index] - BLOCK_D) / 50;
+        int16_t autotile_id = map->lower_layer[tile_index] - BLOCK_D - tile_id * 50;
+
+        tile_id += 6;
+
+        if (((passages_down[tile_id] & Passable::Wall) != 0) && (
+                (autotile_id >= 20 && autotile_id <= 23) ||
+                (autotile_id >= 33 && autotile_id <= 37) ||
+                autotile_id == 42 ||
+                autotile_id == 43 ||
+                autotile_id == 45
+            ))
+            return true;
+
+        if ((passages_down[tile_id] & Passable::Down) == 0 &&
+            (passages_down[tile_id] & Passable::Right) == 0 &&
+            (passages_down[tile_id] & Passable::Left) == 0 &&
+            (passages_down[tile_id] & Passable::Up) == 0)
+            return false;
+
+    } else if (map->lower_layer[tile_index] >= BLOCK_C) {
+        tile_id = (map->lower_layer[tile_index] - BLOCK_C) / 50 + 3;
+
+        if ((passages_down[tile_id] & Passable::Down) == 0 &&
+            (passages_down[tile_id] & Passable::Right) == 0 &&
+            (passages_down[tile_id] & Passable::Left) == 0 &&
+            (passages_down[tile_id] & Passable::Up) == 0)
+            return false;
+
+    } else if (map->lower_layer[tile_index] < BLOCK_C) {
+        tile_id = map->lower_layer[tile_index] / 1000;
+
+        if ((passages_down[tile_id] & Passable::Down) == 0 &&
+            (passages_down[tile_id] & Passable::Right) == 0 &&
+            (passages_down[tile_id] & Passable::Left) == 0 &&
+            (passages_down[tile_id] & Passable::Up) == 0)
+            return false;
+    }
+
+    return true;
 }
 
 bool Game_Map::IsBush(int /* x */, int /* y */) {

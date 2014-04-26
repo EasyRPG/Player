@@ -19,9 +19,10 @@ add_subdirectory(
   ${LIBLCF_PATH}/builds/cmake
   ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/liblcf)
 
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
-set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
-link_directories(${LIBRARY_OUTPUT_PATH})
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/bin)
+set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/lib)
+#link_directories(${LIBRARY_OUTPUT_PATH})
+#cmake_policy(CMP0015 NEW)
 
 list(APPEND CMAKE_MODULE_PATH
 	"${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/builds/cmake/Modules"
@@ -89,7 +90,8 @@ if(OPENAL_FOUND)
   add_definitions(-D HAVE_OPENAL=1)
 endif()
 
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/include")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src/generated")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 foreach(i Expat Freetype JPEG Pixman ZLIB PNG SDL2 Boost Iconv)

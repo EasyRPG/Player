@@ -208,9 +208,13 @@ void Scene_Map::CallMenu() {
 	if (Game_System::GetAllowMenu()) {
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Menu>());
 	}
+	/*
+	FIXME:
+	The intention was that you can still exit the game with ESC when the menu
+	is disabled. But this conflicts with parallel events listening for ESC.
 	else {
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_End>());
-	}
+	}*/
 }
 
 void Scene_Map::CallSave() {

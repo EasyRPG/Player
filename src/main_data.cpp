@@ -64,7 +64,7 @@ static std::string GetProjectPath() {
 	// Wii doesn't provide a correct working directory before mounting
 	char gekko_dir[256];
 	getcwd(gekko_dir, 255);
-	Main_Data::project_path = gekko_dir;
+	return std::string(gekko_dir);
 #else
 	return std::string(".");
 #endif

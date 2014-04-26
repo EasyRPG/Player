@@ -163,12 +163,15 @@ void Scene_Title::CreateGameObjects() {
 }
 
 bool Scene_Title::CheckContinue() {
+	EASYRPG_SHARED_PTR<FileFinder::ProjectTree> tree;
+	tree = FileFinder::CreateProjectTree(Main_Data::project_path, false);
+
 	for (int i = 1; i <= 15; i++)
 	{
 		std::stringstream ss;
 		ss << "Save" << (i <= 9 ? "0" : "") << i << ".lsd";
 
-		if (!FileFinder::FindDefault(ss.str()).empty()) {
+		if (!FileFinder::FindDefault(*tree, ss.str()).empty()) {
 			return true;
 		}
 	}

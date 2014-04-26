@@ -29,7 +29,6 @@
 #include "game_enemy.h"
 #include "background.h"
 #include "drawable.h"
-#include "zobj.h"
 #include "window_help.h"
 #include "window_item.h"
 #include "window_skill.h"

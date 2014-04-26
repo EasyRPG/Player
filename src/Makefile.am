@@ -4,6 +4,7 @@ easyrpg_player_CPPFLAGS = \
 	-I$(srcdir)/../lib/shinonome
 easyrpg_player_CXXFLAGS = \
 	-std=c++0x \
+	$(LCF_CFLAGS) \
 	$(PIXMAN_CFLAGS) \
 	$(FREETYPE_CFLAGS) \
 	$(SDL_CFLAGS) \
@@ -11,6 +12,7 @@ easyrpg_player_CXXFLAGS = \
 	$(PNG_CFLAGS) \
 	$(ZLIB_CFLAGS)
 easyrpg_player_LDADD = \
+	$(LCF_LIBS) \
 	$(PIXMAN_LIBS) \
 	$(FREETYPE_LIBS) \
 	$(SDL_LIBS) \
@@ -50,9 +52,6 @@ easyrpg_player_SOURCES = \
 	filefinder.h \
 	font.cpp \
 	font.h \
-	font_pearl_8x8.cpp \
-	font_render_8x8.cpp \
-	font_render_8x8.h \
 	game_actor.cpp \
 	game_actor.h \
 	game_actors.cpp \
@@ -130,6 +129,8 @@ easyrpg_player_SOURCES = \
 	map_data.h \
 	matrix.h \
 	memory_management.h \
+	message_overlay.cpp \
+	message_overlay.h \
 	options.h \
 	output.cpp \
 	output.h \
@@ -288,8 +289,6 @@ easyrpg_player_SOURCES = \
 	window_targetstatus.h \
 	window_varlist.cpp \
 	window_varlist.h \
-	zobj.cpp \
-	zobj.h \
 	../lib/shinonome/shinonome.hxx \
 	../lib/shinonome/gothic.cxx \
 	../lib/shinonome/mincho.cxx

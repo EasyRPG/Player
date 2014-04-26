@@ -23,12 +23,14 @@
 #include "graphics.h"
 #include "input.h"
 #include "cache.h"
+#include "reader_util.h"
 #include "filefinder.h"
 #include "main_data.h"
 #include "scene_logo.h"
 #include "scene_title.h"
 #include "scene_battle.h"
 #include "utils.h"
+#include "inireader.h"
 
 #include <algorithm>
 #include <set>
@@ -57,6 +59,7 @@ namespace Player {
 	bool battle_test_flag;
 	int battle_test_troop_id;
 	EngineType engine;
+	std::string game_title;
 }
 
 void Player::Init(int argc, char *argv[]) {
@@ -118,13 +121,20 @@ void Player::Init(int argc, char *argv[]) {
 
 	FileFinder::Init();
 
+	INIReader ini(FileFinder::FindDefault(INI_NAME));
+	if(ini.ParseError() != -1) {
+		std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
+		std::string encoding = ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME));
+		game_title = ReaderUtil::Recode(title, encoding);
+	}
+
 	DisplayUi.reset();
 
 	if(! DisplayUi) {
 		DisplayUi = BaseUi::CreateUi
 			(SCREEN_TARGET_WIDTH,
 			 SCREEN_TARGET_HEIGHT,
-			 GAME_TITLE,
+			 game_title,
 			 !window_flag,
 			 RUN_ZOOM);
 	}
@@ -172,6 +182,9 @@ void Player::Update() {
 	}
 	if (Input::IsTriggered(Input::TAKE_SCREENSHOT)) {
 		Output::TakeScreenshot();
+	}
+	if (Input::IsTriggered(Input::SHOW_LOG)) {
+		Output::ToggleLog();
 	}
 
 	DisplayUi->ProcessEvents();

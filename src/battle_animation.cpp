@@ -26,14 +26,10 @@
 #include "bitmap_screen.h"
 
 BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) :
-	x(x), y(y), animation(animation), frame(0),
-	ID(Graphics::drawable_id++) {
-
+	x(x), y(y), animation(animation), frame(0)
+{
 	const std::string& name = animation->animation_name;
 	BitmapRef graphic;
-
-	zobj = Graphics::RegisterZObj(400, ID);
-	Graphics::RegisterDrawable(ID, this);
 
 	if (!FileFinder::FindImage("Battle", name).empty()) {
 		large = false;
@@ -49,15 +45,12 @@ BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) 
 	}
 
 	screen = BitmapScreen::Create(graphic);
+
+	Graphics::RegisterDrawable(this);
 }
 
 BattleAnimation::~BattleAnimation() {
-	Graphics::RemoveZObj(ID);
-	Graphics::RemoveDrawable(ID);
-}
-
-unsigned long BattleAnimation::GetId() const {
-	return ID;
+	Graphics::RemoveDrawable(this);
 }
 
 int BattleAnimation::GetZ() const {
@@ -68,7 +61,7 @@ DrawableType BattleAnimation::GetType() const {
 	return TypeDefault;
 }
 
-void BattleAnimation::Draw(int /* z_order */) {
+void BattleAnimation::Draw() {
 	if (!screen) {
 		// Initialization failed
 		return;
