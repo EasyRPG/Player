@@ -1074,7 +1074,7 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 		pixman_image_t *gimage = pixman_image_create_solid_fill(&gcolor);
 
 		pixman_image_composite32(PIXMAN_OP_HSL_SATURATION,
-			gimage, (pixman_image_t*) NULL, bitmap,
+			gimage, src.bitmap, bitmap,
 			src_rect.x, src_rect.y,
 			0, 0,
 			x, y,
