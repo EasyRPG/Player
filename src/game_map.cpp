@@ -888,7 +888,7 @@ void Game_Map::UpdateParallax() {
 				0;
 			parallax_auto_x += step;
 		}
-		parallax_x = map_info.position_x * 4 + parallax_auto_x;
+		parallax_x = map_info.position_x * 2 + parallax_auto_x;
 	} else
 		parallax_x = 0;
 
@@ -900,18 +900,18 @@ void Game_Map::UpdateParallax() {
 				0;
 			parallax_auto_y += step;
 		}
-		parallax_y = map_info.position_y * 4 + parallax_auto_y;
+		parallax_y = map_info.position_y * 2 + parallax_auto_y;
 	} else
 		parallax_y = 0;
 }
 
 int Game_Map::GetParallaxX() {
-	int px = parallax_x - map_info.position_x * (SCREEN_TILE_WIDTH / 16);
+	int px = parallax_x - map_info.position_x * (SCREEN_TILE_WIDTH / 64);
 	return (px < 0) ? -(-px / 64) : (px / 64);
 }
 
 int Game_Map::GetParallaxY() {
-	int py = parallax_y - map_info.position_y * (SCREEN_TILE_WIDTH / 16);
+	int py = parallax_y - map_info.position_y * (SCREEN_TILE_WIDTH / 64);
 	return (py < 0) ? -(-py / 64) : (py / 64);
 }
 
