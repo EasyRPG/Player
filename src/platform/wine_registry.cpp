@@ -339,7 +339,7 @@ std::string Registry::ReadStrValue(HKEY hkey, std::string const& key, std::strin
 			path.assign(get_wine_prefix()).append("/drive_")
 					.append(&drive, 1).append(ret.begin() + 2, ret.end());
 			break;
-		case 'Z': path.assign(ret.begin() + 2, ret.end()); break;
+		case 'z': path.assign(ret.begin() + 2, ret.end()); break;
 	}
 	std::replace(path.begin(), path.end(), '\\', '/');
 
