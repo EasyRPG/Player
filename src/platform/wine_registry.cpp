@@ -164,7 +164,7 @@ struct parse_registry {
 		using phoenix::push_back;
 
 		enum { STRING, BINARY, INTEGER };
-		struct prefix {
+		static struct prefix {
 			std::string pre;
 			int type;
 		} const prefixes[] = {
