@@ -44,7 +44,7 @@ void Window_TargetStatus::Refresh() {
 
 	std::stringstream ss;
 	if (use_item) {
-		ss << Main_Data::game_party->ItemNumber(id);
+		ss << Main_Data::game_party->GetItemCount(id);
 	} else {
 		ss << Data::skills[id - 1].sp_cost;
 	}

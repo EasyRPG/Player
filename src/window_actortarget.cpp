@@ -65,6 +65,9 @@ Game_Actor* Window_ActorTarget::GetActor() {
 	if (ind >= -10 && ind < 0) {
 		ind = -ind;
 	}
+	else if (ind == -100) {
+		return NULL;
+	}
 
 	return &(*Main_Data::game_party)[ind];
 }

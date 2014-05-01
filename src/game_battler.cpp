@@ -67,6 +67,8 @@ const RPG::State* Game_Battler::GetSignificantState() {
 }
 
 bool Game_Battler::IsSkillUsable(int skill_id) const {
+	const RPG::Skill& skill = Data::skills[skill_id - 1];
+
 	if (CalculateSkillCost(skill_id) > GetSp()) {
 		return false;
 	}
@@ -79,8 +81,8 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 	//} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_escape) {
 	//	return is_there_an_escape_set;
 	//} else
-	if (Data::skills[skill_id - 1].type == RPG::Skill::Type_normal) {
-		int scope = Data::skills[skill_id - 1].scope;
+	if (skill.type == RPG::Skill::Type_normal) {
+		int scope = skill.scope;
 
 		if (Game_Temp::battle_running) {
 			return true;
@@ -88,9 +90,10 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 		else if (scope == RPG::Skill::Scope_self ||
 			scope == RPG::Skill::Scope_ally ||
 			scope == RPG::Skill::Scope_party) {
-			// TODO: A skill is also acceptable when it cures a status
-			return (Data::skills[skill_id - 1].affect_hp ||
-					Data::skills[skill_id - 1].affect_sp);
+
+			return (skill.affect_hp ||
+					skill.affect_sp ||
+					skill.state_effect);
 		}
 	} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_switch) {
 		if (Game_Temp::battle_running) {
@@ -104,7 +107,7 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 	return false;
 }
 
-void Game_Battler::UseItem(int item_id) {
+bool Game_Battler::UseItem(int item_id) {
 	const RPG::Item& item = Data::items[item_id - 1];
 
 	if (item.type == RPG::Item::Type_medicine) {
@@ -114,7 +117,7 @@ void Game_Battler::UseItem(int item_id) {
 		if (IsDead()) {
 			// Check if item can revive
 			if (item.state_set.empty() || !item.state_set[0]) {
-				return;
+				return false;
 			}
 
 			// Revive gives at least 1 Hp
@@ -123,7 +126,7 @@ void Game_Battler::UseItem(int item_id) {
 			}
 		} else if (item.ko_only) {
 			// Must be dead
-			return;
+			return false;
 		}
 
 		ChangeHp(hp_change);
@@ -135,9 +138,50 @@ void Game_Battler::UseItem(int item_id) {
 				RemoveState(*it);
 			}
 		}
+
+		// TODO
+		return true;
 	} else if (item.type == RPG::Item::Type_material) {
 		// TODO
+		return false;
 	}
+
+	return false;
+}
+
+bool Game_Battler::UseSkill(int skill_id) {
+	const RPG::Skill& skill = Data::skills[skill_id - 1];
+
+	switch (skill.type) {
+		case RPG::Skill::Type_normal: {
+			int effect = skill.power;
+
+			if (skill.variance > 0) {
+				int var_perc = skill.variance * 5;
+				int act_perc = rand() % (var_perc * 2) - var_perc;
+				int change = effect * act_perc / 100;
+				effect += change;
+			}
+
+			if (skill.affect_hp) {
+				ChangeHp(effect);
+			}
+			if (skill.affect_sp) {
+				SetSp(GetSp() + effect);
+			}
+
+			// ToDo
+			return true;
+		}
+		case RPG::Skill::Type_teleport:
+		case RPG::Skill::Type_escape:
+			// ToDo: Show Teleport/Escape target menu
+			break;
+		case RPG::Skill::Type_switch:
+			break;
+	}
+
+	return false;
 }
 
 int Game_Battler::CalculateSkillCost(int skill_id) const {

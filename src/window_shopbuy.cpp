@@ -77,5 +77,5 @@ bool Window_ShopBuy::CheckEnable(int item_id) {
 	return (
 		item_id > 0 &&
 		Data::items[item_id - 1].price <= Main_Data::game_party->GetGold() &&
-		Main_Data::game_party->ItemNumber(item_id) < 99);
+		Main_Data::game_party->GetItemCount(item_id) < 99);
 }

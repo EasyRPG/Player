@@ -61,8 +61,7 @@ void Scene_Skill::Update() {
 			Game_System::SePlay(Main_Data::game_data.system.decision_se);
 
 			if (Data::skills[skill_id - 1].type == RPG::Skill::Type_switch) {
-				actor->SetSp(actor->GetSp() - actor->CalculateSkillCost(skill_id));
-				Game_Switches[Data::skills[skill_id - 1].switch_id] = true;
+				actor->UseSkill(skill_id);
 				Scene::PopUntil(Scene::Map);
 				Game_Map::SetNeedRefresh(true);
 			} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_normal) {

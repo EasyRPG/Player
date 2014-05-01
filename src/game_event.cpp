@@ -371,7 +371,7 @@ bool Game_Event::AreConditionsMet(const RPG::EventPage& page) {
 	}
 
 	// Item in possession?
-	if (page.condition.flags.item && !Main_Data::game_party->ItemNumber(page.condition.item_id)) {
+	if (page.condition.flags.item && !Main_Data::game_party->GetItemCount(page.condition.item_id)) {
 		return false;
 	}
 

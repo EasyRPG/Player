@@ -83,13 +83,17 @@ void Scene_ActorTarget::Update() {
 
 void Scene_ActorTarget::UpdateItem() {
 	if (Input::IsTriggered(Input::DECISION)) {
-		if (Main_Data::game_party->ItemNumber(id) <= 0) {
+		if (Main_Data::game_party->GetItemCount(id) <= 0) {
 			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 			return;
 		}
-		Main_Data::game_party->UseItem(id, target_window->GetActor());
+		if (Main_Data::game_party->UseItem(id, target_window->GetActor())) {
+			Game_System::SePlay(Main_Data::game_data.system.item_se);
+		}
+		else {
+			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
+		}
 
-		Game_System::SePlay(Main_Data::game_data.system.item_se);
 
 		status_window->Refresh();
 		target_window->Refresh();
@@ -97,5 +101,21 @@ void Scene_ActorTarget::UpdateItem() {
 }
 
 void Scene_ActorTarget::UpdateSkill() {
+	if (Input::IsTriggered(Input::DECISION)) {
+		Game_Actor* actor = static_cast<Game_Actor*>(&(*Main_Data::game_party)[actor_index]);
 
+		if (actor->GetSp() < actor->CalculateSkillCost(id - 1)) {
+			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
+			return;
+		}
+		if (Main_Data::game_party->UseSkill(id, actor, target_window->GetActor())) {
+			Game_System::SePlay(Main_Data::game_data.system.item_se);
+		}
+		else {
+			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
+		}
+
+		status_window->Refresh();
+		target_window->Refresh();
+	}
 }

@@ -1879,10 +1879,10 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 			// Item
 			if (com.parameters[2] == 0) {
 				// Having
-				result = Main_Data::game_party->ItemNumber(com.parameters[1]) > 0;
+				result = Main_Data::game_party->GetItemCount(com.parameters[1]) > 0;
 			} else {
 				// Not having
-				result = Main_Data::game_party->ItemNumber(com.parameters[1]) == 0;
+				result = Main_Data::game_party->GetItemCount(com.parameters[1]) == 0;
 			}
 			break;
 		case 5:

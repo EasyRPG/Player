@@ -86,7 +86,7 @@ void Window_Item::DrawItem(int index) {
 	int item_id = data[index];
 
 	if (item_id > 0) {
-		int number = Main_Data::game_party->ItemNumber(item_id);
+		int number = Main_Data::game_party->GetItemCount(item_id);
 		bool enabled = CheckEnable(item_id);
 		DrawItemName(&Data::items[item_id - 1], rect.x, rect.y, enabled);
 

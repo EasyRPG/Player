@@ -259,7 +259,7 @@ void Scene_Shop::UpdateSellSelection() {
 		if (item_id > 0 && Data::items[item_id - 1].price > 0) {
 			RPG::Item& item = Data::items[item_id - 1];
 			Game_System::SePlay(Main_Data::game_data.system.decision_se);
-			number_window->SetData(item_id, Main_Data::game_party->ItemNumber(item_id), item.price);
+			number_window->SetData(item_id, Main_Data::game_party->GetItemCount(item_id), item.price);
 			SetMode(SellHowMany);
 		}
 		else {

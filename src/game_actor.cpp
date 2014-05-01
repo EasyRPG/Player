@@ -56,14 +56,20 @@ int Game_Actor::GetId() const {
 	return data.ID;
 }
 
-void Game_Actor::UseItem(int item_id) {
+bool Game_Actor::UseItem(int item_id) {
 	const RPG::Item& item = Data::items[item_id - 1];
 
 	if (item.type == RPG::Item::Type_book) {
-		LearnSkill(item.skill_id);
+		return LearnSkill(item.skill_id);
 	} else {
-		Game_Battler::UseItem(item_id);
+		return Game_Battler::UseItem(item_id);
 	}
+}
+
+bool Game_Actor::UseSkill(int skill_id) {
+	//const RPG::Skill& skill = Data::skills[skill_id - 1];
+
+	return Game_Battler::UseSkill(skill_id);
 }
 
 bool Game_Actor::IsSkillLearned(int skill_id) const{

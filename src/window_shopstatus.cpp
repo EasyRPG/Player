@@ -36,7 +36,7 @@ void Window_ShopStatus::Refresh() {
 	contents->Clear();
 
 	if (item_id != 0) {
-		int number = Main_Data::game_party->ItemNumber(item_id);
+		int number = Main_Data::game_party->GetItemCount(item_id);
 
 		contents->TextDraw(0, 2, 1, Data::terms.possessed_items);
 		contents->TextDraw(0, 18, 1, Data::terms.equipped_items);
@@ -47,7 +47,7 @@ void Window_ShopStatus::Refresh() {
 		contents->TextDraw(120, 2, Font::ColorDefault, ss.str(), Text::AlignRight);
 
 		ss.str("");
-		ss << Main_Data::game_party->ItemNumber(item_id, true);
+		ss << Main_Data::game_party->GetItemCount(item_id, true);
 		contents->TextDraw(120, 18, Font::ColorDefault, ss.str(), Text::AlignRight);
 	}
 }

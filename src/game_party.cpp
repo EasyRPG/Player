@@ -76,7 +76,7 @@ void Game_Party::GetItems(std::vector<int>& item_list) {
 		item_list.push_back(*it);
 }
 
-int Game_Party::ItemNumber(int item_id, bool get_equipped) {
+int Game_Party::GetItemCount(int item_id, bool get_equipped) {
 	if (get_equipped && item_id > 0) {
 		int number = 0;
 		for (int i = 0; i < (int) data.party.size(); i++) {
@@ -180,19 +180,46 @@ bool Game_Party::IsItemUsable(int item_id) {
 	return false;
 }
 
-void Game_Party::UseItem(int item_id, Game_Actor* target) {
+bool Game_Party::UseItem(int item_id, Game_Actor* target) {
+	bool was_used = false;
+
 	if (target) {
-		target->UseItem(item_id);
+		was_used = target->UseItem(item_id);
 	} else {
 		std::vector<Game_Actor*> actors = GetActors();
 		std::vector<Game_Actor*>::iterator it;
 		for (it = actors.begin(); it != actors.end(); ++it) {
-			(*it)->UseItem(item_id);
+			was_used |= (*it)->UseItem(item_id);
 		}
 	}
 
 	// Todo usage count
-	LoseItem(item_id, 1);
+	if (was_used) {
+		LoseItem(item_id, 1);
+	}
+
+	return was_used;
+}
+
+bool Game_Party::UseSkill(int skill_id, Game_Actor* source, Game_Actor* target) {
+	bool was_used = false;
+
+	if (target) {
+		was_used = target->UseSkill(skill_id);
+	}
+	else {
+		std::vector<Game_Actor*> actors = GetActors();
+		std::vector<Game_Actor*>::iterator it;
+		for (it = actors.begin(); it != actors.end(); ++it) {
+			was_used |= (*it)->UseSkill(skill_id);
+		}
+	}
+
+	if (was_used) {
+		source->SetSp(source->GetSp() - source->CalculateSkillCost(skill_id));
+	}
+
+	return was_used;
 }
 
 void Game_Party::AddActor(int actor_id) {

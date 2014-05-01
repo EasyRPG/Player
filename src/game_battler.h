@@ -211,10 +211,23 @@ public:
 
 	/**
 	 * Applies the effects of an item.
+	 * Tests if using that item makes any sense (e.g. for HP healing
+	 * items if there are any HP to heal)
 	 *
 	 * @param item_id ID if item to use
+	 * @return true if item affected anything
 	 */
-	virtual void UseItem(int item_id);
+	virtual bool UseItem(int item_id);
+
+	/**
+	 * Applies the effects of a skill.
+	 * Tests if using that skill makes any sense (e.g. for HP healing
+	 * skills if there are any HP to heal)
+	 *
+	 * @param skill_id ID of skill to use
+	 * @return true if skill affected anything
+	 */
+	virtual bool UseSkill(int skill_id);
 
 	/**
 	 * Calculates the Skill costs including all modifiers.

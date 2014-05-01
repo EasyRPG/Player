@@ -117,7 +117,7 @@ public:
 	 *                     of equipped items.
 	 * @return number of items.
 	 */
-	int ItemNumber(int item_id, bool get_equipped = false);
+	int GetItemCount(int item_id, bool get_equipped = false);
 
 	/**
 	 * Gains an amount of items.
@@ -144,12 +144,25 @@ public:
 	bool IsItemUsable(int item_id);
 
 	/**
-	 * Uses an item on an actor
+	 * Uses an item on an actor.
+	 * Tests if using that item makes any sense (e.g. for HP healing
+	 * items if there are any HP to heal)
 	 *
 	 * @param item_id ID of item to use
 	 * @param target Target the item is used on (or NULL if its for the party)
 	 */
-	void UseItem(int item_id, Game_Actor* target = NULL);
+	bool UseItem(int item_id, Game_Actor* target = NULL);
+
+	/**
+	* Uses a skill on an actor.
+	* Tests if using that skill makes any sense (e.g. for HP healing
+	* skills if there are any HP to heal)
+	*
+	* @param skill_id ID of skill to use
+	* @param source Actor using the skill
+	* @param target Target the skill is used on (or NULL if its for the party)
+	*/
+	bool UseSkill(int skill_id, Game_Actor* source, Game_Actor* target = NULL);
 
 	/**
 	 * Gets gold possessed.

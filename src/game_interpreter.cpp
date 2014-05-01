@@ -585,11 +585,11 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			switch (com.parameters[6]) {
 				case 0:
 					// Number of items posessed
-					value = Main_Data::game_party->ItemNumber(com.parameters[5]);
+					value = Main_Data::game_party->GetItemCount(com.parameters[5]);
 					break;
 				case 1:
 					// How often the item is equipped
-					value = Main_Data::game_party->ItemNumber(com.parameters[5], true);
+					value = Main_Data::game_party->GetItemCount(com.parameters[5], true);
 					break;
 			}
 			break;
