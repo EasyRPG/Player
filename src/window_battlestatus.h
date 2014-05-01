@@ -28,6 +28,19 @@
  */
 class Window_BattleStatus : public Window_Selectable {
 public:
+	enum ChoiceMode {
+		/** Allow selection of any actor */
+		ChoiceMode_All,
+		/** Allow selection of alive actors */
+		ChoiceMode_Alive,
+		/** Allow selection of dead actors */
+		ChoiceMode_Dead,
+		/** Allow selection of ready (gauge full) actors (RPG2k3 only) */
+		ChoiceMode_Ready,
+		/** Don't allow changing the current selection (if any) */
+		ChoiceMode_None
+	};
+
 	/**
 	 * Constructor.
 	 */
@@ -48,6 +61,13 @@ public:
 	 */
 	int ChooseActiveCharacter();
 
+	/**
+	 * Defines which characters can be selected in the dialog.
+	 *
+	 * @param new_mode new selection mode
+	 */
+	void SetChoiceMode(ChoiceMode new_mode);
+
 protected:
 	/**
 	 * Updates the cursor rectangle.
@@ -67,6 +87,15 @@ protected:
 	 * @param cy y coordinate.
 	 */
 	void DrawGauge(Game_Actor* actor, int cx, int cy);
+
+	/**
+	 * Tests whether actor is selectable in current ChoiceMode.
+	 *
+	 * @return true: selection possible 
+	 */
+	bool IsChoiceValid(const Game_Battler& battler) const;
+
+	ChoiceMode mode;
 };
 
 #endif

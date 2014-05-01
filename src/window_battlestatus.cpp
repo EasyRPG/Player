@@ -29,7 +29,7 @@
 #include "window_battlestatus.h"
 
 Window_BattleStatus::Window_BattleStatus(int ix, int iy, int iwidth, int iheight) :
-	Window_Selectable(ix, iy, iwidth, iheight) {
+	Window_Selectable(ix, iy, iwidth, iheight), mode(ChoiceMode_All) {
 
 	SetBorderX(4);
 
@@ -114,6 +114,10 @@ int Window_BattleStatus::ChooseActiveCharacter() {
 	return index;
 }
 
+void Window_BattleStatus::SetChoiceMode(ChoiceMode new_mode) {
+	mode = new_mode;
+}
+
 void Window_BattleStatus::Update() {
 	// Window Selectable update logic skipped on purpose
 	// (breaks up/down-logic)
@@ -121,32 +125,32 @@ void Window_BattleStatus::Update() {
 
 	if (Player::engine == Player::EngineRpg2k3) {
 		RefreshGauge();
+	}
 
-		if (active && index >= 0) {
-			if (Input::IsRepeated(Input::DOWN)) {
-				Game_System::SePlay(Main_Data::game_data.system.cursor_se);
-				for (int i = 1; i < item_max; i++) {
-					int new_index = (index + i) % item_max;
-					if ((*Main_Data::game_party)[new_index].IsGaugeFull()) {
-						index = new_index;
-						break;
-					}
-				}
-			}
-			if (Input::IsRepeated(Input::UP)) {
-				Game_System::SePlay(Main_Data::game_data.system.cursor_se);
-				for (int i = item_max - 1; i > 0; i--) {
-					int new_index = (index + i) % item_max;
-					if ((*Main_Data::game_party)[new_index].IsGaugeFull()) {
-						index = new_index;
-						break;
-					}
+	if (active && index >= 0) {
+		if (Input::IsRepeated(Input::DOWN)) {
+			Game_System::SePlay(Main_Data::game_data.system.cursor_se);
+			for (int i = 1; i < item_max; i++) {
+				int new_index = (index + i) % item_max;
+				if (IsChoiceValid((*Main_Data::game_party)[new_index])) {
+					index = new_index;
+					break;
 				}
 			}
 		}
-
-		UpdateCursorRect();
+		if (Input::IsRepeated(Input::UP)) {
+			Game_System::SePlay(Main_Data::game_data.system.cursor_se);
+			for (int i = item_max - 1; i > 0; i--) {
+				int new_index = (index + i) % item_max;
+				if (IsChoiceValid((*Main_Data::game_party)[new_index])) {
+					index = new_index;
+					break;
+				}
+			}
+		}
 	}
+
+	UpdateCursorRect();
 }
 
 void Window_BattleStatus::UpdateCursorRect() {
@@ -154,4 +158,22 @@ void Window_BattleStatus::UpdateCursorRect() {
 		SetCursorRect(Rect());
 	else
 		SetCursorRect(Rect(0, index * 15, contents->GetWidth(), 16));
+}
+
+bool Window_BattleStatus::IsChoiceValid(const Game_Battler& battler) const {
+	switch (mode) {
+		case ChoiceMode_All:
+			return true;
+		case ChoiceMode_Alive:
+			return !battler.IsDead();
+		case ChoiceMode_Dead:
+			return battler.IsDead();
+		case ChoiceMode_Ready:
+			return battler.IsGaugeFull();
+		case ChoiceMode_None:
+			return false;
+		default:
+			assert(false && "Invalid Choice");
+			return false;
+	}
 }

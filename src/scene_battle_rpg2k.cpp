@@ -459,7 +459,7 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 			EnemySelected();
 			break;
 		case State_SelectAllyTarget:
-			//TargetDone();
+			AllySelected();
 			break;
 		case State_Battle:
 			// no-op
@@ -612,6 +612,7 @@ void Scene_Battle_Rpg2k::SkillSelected() {
 			break;
 		case RPG::Skill::Scope_ally:
 			SetState(State_SelectAllyTarget);
+			status_window->SetChoiceMode(Window_BattleStatus::ChoiceMode_Alive);
 			break;
 		case RPG::Skill::Scope_enemies:
 			active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, Main_Data::game_enemyparty.get(), *skill_window->GetSkill()));
@@ -630,6 +631,28 @@ void Scene_Battle_Rpg2k::SkillSelected() {
 			break;
 		}
 	}
+}
+
+void Scene_Battle_Rpg2k::AllySelected() {
+	Game_Actor& target = (*Main_Data::game_party)[status_window->GetIndex()];
+
+	switch (previous_state) {
+	case State_SelectSkill:
+		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, &target, *skill_window->GetSkill()));
+		battle_actions.push_back(active_actor);
+		break;
+	case State_SelectItem:
+	{
+		//active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, target, *item_window->GetItem()));
+		//battle_actions.push_back(active_actor);
+		// Todo
+		break;
+	}
+	default:
+		assert("Invalid previous state for ally selection" && false);
+	}
+
+	SetState(State_SelectActor);
 }
 
 void Scene_Battle_Rpg2k::EnemySelected() {

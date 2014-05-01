@@ -296,6 +296,7 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_SelectActor:
 		command_window->SetIndex(-1);
+		status_window->SetChoiceMode(Window_BattleStatus::ChoiceMode_Ready);
 	case State_SelectCommand:
 		status_window->SetVisible(true);
 		command_window->SetVisible(true);

@@ -83,6 +83,7 @@ protected:
 	void DefendSelected();
 	void ItemSelected();
 	void SkillSelected();
+	void AllySelected();
 	void EnemySelected();
 
 	void SelectNextActor();
