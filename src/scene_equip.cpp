@@ -24,6 +24,7 @@
 #include "input.h"
 #include "player.h"
 #include "scene_menu.h"
+#include "rpg_item.h"
 
 Scene_Equip::Scene_Equip(int actor_index, int equip_index) :
 	actor_index(actor_index),
@@ -87,7 +88,7 @@ void Scene_Equip::UpdateStatusWindow() {
 	} else if (item_window->GetActive()) {
 		Game_Actor* actor = Main_Data::game_party->GetActors()[actor_index];
 		int old_item = actor->SetEquipment(equip_window->GetIndex(),
-			item_window->GetItemId());
+			item_window->GetItem()->ID);
 
 		equipstatus_window->SetNewParameters(
 			actor->GetAtk(), actor->GetDef(), actor->GetSpi(), actor->GetAgi());
@@ -130,7 +131,7 @@ void Scene_Equip::UpdateItemSelection() {
 		Game_System::SePlay(Main_Data::game_data.system.decision_se);
 
 		Main_Data::game_party->GetActors()[actor_index]->ChangeEquipment(
-			equip_window->GetIndex(), item_window->GetItemId());
+			equip_window->GetIndex(), item_window->GetItem()->ID);
 
 		equip_window->SetActive(true);
 		item_window->SetActive(false);

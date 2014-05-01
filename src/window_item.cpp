@@ -28,12 +28,12 @@ Window_Item::Window_Item(int ix, int iy, int iwidth, int iheight) :
 	column_max = 2;
 }
 
-int Window_Item::GetItemId() {
-	if (index < 0) {
-		return 0;
-	} else {
-		return data[index];
+const RPG::Item* Window_Item::GetItem() const {
+	if (index < 0 || index >= (int)Data::items.size() || data[index] == 0) {
+		return NULL;
 	}
+
+	return &Data::items[data[index] - 1];
 }
 
 bool Window_Item::CheckInclude(int item_id) {
@@ -99,6 +99,6 @@ void Window_Item::DrawItem(int index) {
 }
 
 void Window_Item::UpdateHelp() {
-	help_window->SetText(GetItemId() == 0 ? "" :
-		Data::items[GetItemId() - 1].description);
+	help_window->SetText(GetItem() == NULL ? "" :
+		Data::items[GetItem()->ID - 1].description);
 }

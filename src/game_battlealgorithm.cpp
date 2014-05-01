@@ -19,7 +19,9 @@
 #include "game_actor.h"
 #include "game_battlealgorithm.h"
 #include "game_battler.h"
+#include "game_party.h"
 #include "game_party_base.h"
+#include "game_switches.h"
 #include "game_system.h"
 #include "game_temp.h"
 #include "main_data.h"
@@ -50,6 +52,8 @@ void Game_BattleAlgorithm::AlgorithmBase::Reset() {
 	defense = -1;
 	spirit = -1;
 	agility = -1;
+	switch_id = -1;
+	healing = false;
 	success = false;
 	killed_by_attack_damage = false;
 	critical_hit = false;
@@ -78,6 +82,14 @@ int Game_BattleAlgorithm::AlgorithmBase::GetAffectedSpirit() const {
 
 int Game_BattleAlgorithm::AlgorithmBase::GetAffectedAgility() const {
 	return agility;
+}
+
+int Game_BattleAlgorithm::AlgorithmBase::GetAffectedSwitch() const {
+	return switch_id;
+}
+
+bool Game_BattleAlgorithm::AlgorithmBase::IsPositive() const {
+	return healing;
 }
 
 const std::vector<RPG::State>& Game_BattleAlgorithm::AlgorithmBase::GetAffectedConditions() const {
@@ -120,22 +132,41 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 		std::stringstream ss;
 		ss << (*current_target)->GetName();
 
-		if (GetAffectedHp() == 0) {
-			ss << (target_is_ally ?
-				Data::terms.actor_undamaged :
-			Data::terms.enemy_undamaged);
-		} else {
-			ss << " " << GetAffectedHp() << (target_is_ally ?
-				Data::terms.actor_damaged :
-			Data::terms.enemy_damaged);
+		if (IsPositive()) {
+			if (!(*current_target)->IsDead()) {
+				ss << " ";
+				ss << Data::terms.health_points << " " << GetAffectedHp();
+				ss << Data::terms.hp_recovery;
+				out.push_back(ss.str());
+			}
 		}
-		out.push_back(ss.str());
+		else {
+			if (GetAffectedHp() == 0) {
+				ss << (target_is_ally ?
+					Data::terms.actor_undamaged :
+					Data::terms.enemy_undamaged);
+			}
+			else {
+				ss << " " << GetAffectedHp() << (target_is_ally ?
+					Data::terms.actor_damaged :
+					Data::terms.enemy_damaged);
+			}
+			out.push_back(ss.str());
+		}
 	}
 
 	if (GetAffectedSp() != -1) {
 		std::stringstream ss;
 		ss << (*current_target)->GetName();
-		ss << " " << Data::terms.attack << " " << GetAffectedSp();
+
+		if (IsPositive()) {
+			ss << " ";
+			ss << Data::terms.spirit_points << " " << GetAffectedSp();
+			ss << Data::terms.hp_recovery;
+		}
+		else {
+			ss << " " << Data::terms.attack << " " << GetAffectedSp();
+		}
 		out.push_back(ss.str());
 	}
 
@@ -172,13 +203,23 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 	// TODO: Handle healing
 
 	for (; it != conditions.end(); ++it) {
+		std::stringstream ss;
+		ss << (*current_target)->GetName();
+
 		if ((*current_target)->HasState(it->ID)) {
+			if (IsPositive()) {
+				ss << it->message_recovery;
+				out.push_back(ss.str());
+			}
 			if (!it->message_already.empty()) {
-				out.push_back(it->message_already);
+				ss << it->message_already;
+				out.push_back(ss.str());
 			}
 		} else {
-			std::stringstream ss;
-			ss << (*current_target)->GetName();
+			// Positive case doesn't report anything in case of uselessness
+			if (IsPositive()) {
+				continue;
+			}
 
 			if ((*current_target)->GetType() == Game_Battler::Type_Ally) {
 				ss << it->message_actor;
@@ -210,34 +251,44 @@ void Game_BattleAlgorithm::AlgorithmBase::SetTarget(Game_Battler* target) {
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::Apply() {
-	if (GetAffectedHp()) {
-		(*current_target)->ChangeHp(-GetAffectedHp());
+	if (GetAffectedHp() != -1) {
+		int hp = GetAffectedHp();
+		(*current_target)->ChangeHp(IsPositive() ? hp : -hp);
 	}
 
-	if (GetAffectedSp()) {
-		(*current_target)->SetSp((*current_target)->GetSp() -GetAffectedSp());
+	if (GetAffectedSp() != -1) {
+		int sp = GetAffectedSp();
+		(*current_target)->SetSp((*current_target)->GetSp() + (IsPositive() ? sp : -sp));
 	}
 
 	// TODO
-	if (GetAffectedAttack()) {
+	if (GetAffectedAttack() != -1) {
 	}
 
-	if (GetAffectedDefense()) {
+	if (GetAffectedDefense() != -1) {
 	}
 
-	if (GetAffectedSpirit()) {
+	if (GetAffectedSpirit() != -1) {
 	}
 
-	if (GetAffectedAgility()) {
+	if (GetAffectedAgility() != -1) {
 	}
 	// End TODO
+	if (GetAffectedSwitch() != -1) {
+		Game_Switches[GetAffectedSwitch()] = true;
+	}
 
 	std::vector<RPG::State>::const_iterator it = conditions.begin();
 
 	// TODO: Handle healing
 
 	for (; it != conditions.end(); ++it) {
-		(*current_target)->AddState(it->ID);
+		if (IsPositive()) {
+			(*current_target)->RemoveState(it->ID);
+		}
+		else {
+			(*current_target)->AddState(it->ID);
+		}
 	}
 }
 
@@ -354,6 +405,11 @@ Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Party_Base* target
 		// no-op
 }
 
+bool Game_BattleAlgorithm::Skill::IsDeadTargetValid() {
+	// ToDo
+	return (!(*current_target)->IsDead());
+}
+
 bool Game_BattleAlgorithm::Skill::Execute() {
 	Reset();
 
@@ -462,7 +518,6 @@ void Game_BattleAlgorithm::Skill::GetResultMessages(std::vector<std::string>& ou
 	AlgorithmBase::GetResultMessages(out);
 }
 
-
 Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Battler* target, const RPG::Item& item) :
 	AlgorithmBase(source, target), item(item) {
 		// no-op
@@ -473,11 +528,52 @@ Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Party_Base* target, 
 		// no-op
 }
 
+bool Game_BattleAlgorithm::Item::IsDeadTargetValid() {
+	return item.type == RPG::Item::Type_medicine;
+}
+
 bool Game_BattleAlgorithm::Item::Execute() {
 	Reset();
 
-	success = false;
-	return success;
+	switch (item.type) {
+		case RPG::Item::Type_medicine:
+		case RPG::Item::Type_switch:
+			break;
+		default:
+			assert("Unsupported battle item type");
+	}
+
+	this->success = false;
+
+	if (item.type == RPG::Item::Type_medicine) {
+		this->healing = true;
+
+		// HP recovery
+		if (item.recover_hp != 0 || item.recover_hp_rate != 0) {
+			this->hp = item.recover_hp_rate * (*current_target)->GetMaxHp() / 100 + item.recover_hp;
+		}
+
+		// SP recovery
+		if (item.recover_sp != 0 || item.recover_sp_rate != 0) {
+			this->sp = item.recover_sp_rate * (*current_target)->GetMaxSp() / 100 + item.recover_sp;
+		}
+
+		for (int i = 0; i < (int)item.state_set.size(); i++) {
+			if (item.state_set[i]) {
+				this->conditions.push_back(Data::states[i]);
+			}
+		}
+
+		this->success = true;
+	}
+	else if (item.type == RPG::Item::Type_switch) {
+		switch_id = item.switch_id;
+		this->success = true;
+	}
+
+	Main_Data::game_party->GainItem(item.ID, -1);
+
+	return this->success;
 }
 
 void Game_BattleAlgorithm::Item::Apply() {
@@ -485,9 +581,9 @@ void Game_BattleAlgorithm::Item::Apply() {
 }
 
 std::string Game_BattleAlgorithm::Item::GetStartMessage() const {
-	return source->GetName() + " TODO USE ITEM MSG";
+	return source->GetName() + " " + item.name + Data::terms.use_item;
 }
 
 void Game_BattleAlgorithm::Item::GetResultMessages(std::vector<std::string>& out) const {
-
+	AlgorithmBase::GetResultMessages(out);
 }

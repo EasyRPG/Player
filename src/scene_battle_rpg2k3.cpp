@@ -697,7 +697,7 @@ void Scene_Battle_Rpg2k3::ItemSelected() {
 }
 
 void Scene_Battle_Rpg2k3::SkillSelected() {
-	RPG::Skill* skill = skill_window->GetSkill();
+	const RPG::Skill* skill = skill_window->GetSkill();
 
 	if (!skill || !active_actor->IsSkillUsable(skill->ID)) {
 		Game_System::SePlay(Data::system.buzzer_se);

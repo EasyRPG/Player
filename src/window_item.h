@@ -35,11 +35,11 @@ public:
 	Window_Item(int ix, int iy, int iwidth, int iheight);
 
 	/**
-	 * Gets item ID of the selected item.
+	 * Gets item.
 	 *
-	 * @return current selected item ID.
+	 * @return current selected item.
 	 */
-	int GetItemId();
+	const RPG::Item* GetItem() const;
 
 	/**
 	 * Checks if the item should be in the list.

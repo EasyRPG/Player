@@ -582,11 +582,33 @@ void Scene_Battle_Rpg2k::DefendSelected() {
 }
 
 void Scene_Battle_Rpg2k::ItemSelected() {
+	const RPG::Item* item = item_window->GetItem();
+
+	if (!item || !Main_Data::game_party->IsItemUsable(item->ID)) {
+		Game_System::SePlay(Data::system.buzzer_se);
+		return;
+	}
+
 	Game_System::SePlay(Data::system.decision_se);
+
+	if (item->entire_party) {
+		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, Main_Data::game_party.get(), *item_window->GetItem()));
+		battle_actions.push_back(active_actor);
+		SetState(State_SelectActor);
+	}
+	else {
+		if (item->type == RPG::Item::Type_switch) {
+			// ToDo
+		}
+		else {
+			SetState(State_SelectAllyTarget);
+			status_window->SetChoiceMode(Window_BattleStatus::ChoiceMode_All);
+		}
+	}
 }
 	
 void Scene_Battle_Rpg2k::SkillSelected() {
-	RPG::Skill* skill = skill_window->GetSkill();
+	const RPG::Skill* skill = skill_window->GetSkill();
 
 	if (!skill || !active_actor->IsSkillUsable(skill->ID)) {
 		Game_System::SePlay(Data::system.buzzer_se);
@@ -596,14 +618,14 @@ void Scene_Battle_Rpg2k::SkillSelected() {
 	Game_System::SePlay(Data::system.decision_se);
 
 	switch (skill->type) {
-	case RPG::Skill::Type_teleport:
-	case RPG::Skill::Type_escape:
-	case RPG::Skill::Type_switch:
-		//BeginSkill();
-		return;
-	case RPG::Skill::Type_normal:
-	default:
-		break;
+		case RPG::Skill::Type_teleport:
+		case RPG::Skill::Type_escape:
+		case RPG::Skill::Type_switch:
+			//BeginSkill();
+			return;
+		case RPG::Skill::Type_normal:
+		default:
+			break;
 	}
 
 	switch (skill->scope) {
@@ -642,12 +664,9 @@ void Scene_Battle_Rpg2k::AllySelected() {
 		battle_actions.push_back(active_actor);
 		break;
 	case State_SelectItem:
-	{
-		//active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, target, *item_window->GetItem()));
-		//battle_actions.push_back(active_actor);
-		// Todo
+		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, &target, *item_window->GetItem()));
+		battle_actions.push_back(active_actor);
 		break;
-	}
 	default:
 		assert("Invalid previous state for ally selection" && false);
 	}
@@ -668,12 +687,9 @@ void Scene_Battle_Rpg2k::EnemySelected() {
 			battle_actions.push_back(active_actor);
 			break;
 		case State_SelectItem:
-		{
-			//active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, target, *item_window->GetItem()));
-			//battle_actions.push_back(active_actor);
-			// Todo
+			active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, target, *item_window->GetItem()));
+			battle_actions.push_back(active_actor);
 			break;
-		}
 		default:
 			assert("Invalid previous state for enemy selection" && false);
 	}

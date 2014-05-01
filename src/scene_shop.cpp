@@ -252,7 +252,7 @@ void Scene_Shop::UpdateSellSelection() {
 			Scene::Pop();
 		}
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		int item_id = sell_window->GetItemId();
+		int item_id = sell_window->GetItem() == NULL ? 0 : sell_window->GetItem()->ID;
 		status_window->SetItemId(item_id);
 		party_window->SetItemId(item_id);
 
@@ -281,7 +281,7 @@ void Scene_Shop::UpdateNumberInput() {
 		int item_id;
 		switch (shop_window->GetChoice()) {
 		case Buy:
-			item_id = buy_window->GetItemId();
+			item_id = sell_window->GetItem() == NULL ? 0 : sell_window->GetItem()->ID;
 			Main_Data::game_party->LoseGold(number_window->GetTotal());
 			Main_Data::game_party->GainItem(item_id, number_window->GetNumber());
 			gold_window->Refresh();
@@ -289,7 +289,7 @@ void Scene_Shop::UpdateNumberInput() {
 			status_window->Refresh();
 			SetMode(Bought); break;
 		case Sell:
-			item_id = sell_window->GetItemId();
+			item_id = sell_window->GetItem() == NULL ? 0 : sell_window->GetItem()->ID;
 			Main_Data::game_party->GainGold(number_window->GetTotal());
 			Main_Data::game_party->LoseItem(item_id, number_window->GetNumber());
 			gold_window->Refresh();

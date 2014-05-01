@@ -107,16 +107,30 @@ public:
 	/**
 	 * Gets how many Spirit was gained/lost.
 	 *
-	 * @return Defense change or -1 when algorithm didn't affect Spirit
+	 * @return Spirit change or -1 when algorithm didn't affect Spirit
 	 */
 	int GetAffectedSpirit() const;
 
 	/**
 	 * Gets how many Agility was gained/lost.
 	 *
-	 * @return Defense change or -1 when algorithm didn't affect Agility
+	 * @return Agility change or -1 when algorithm didn't affect Agility
 	 */
 	int GetAffectedAgility() const;
+
+	/**
+	 * Gets activated switch.
+	 *
+	 * @return switch id or -1 when algorithm didn't affect a switch
+	 */
+	int GetAffectedSwitch() const;
+
+	/**
+	 * Gets whether the action was positive (e.g. healing) instead of demage.
+	 *
+	 * @return Whether action was positive
+	 */
+	bool IsPositive() const;
 
 	/**
 	 * Gets the Battle Animation that is assigned to the Algorithm
@@ -238,7 +252,9 @@ protected:
 	int defense;
 	int spirit;
 	int agility;
+	int switch_id;
 
+	bool healing;
 	bool success;
 	bool killed_by_attack_damage;
 	bool critical_hit;
@@ -264,6 +280,7 @@ public:
 	Skill(Game_Battler* source, Game_Battler* target, const RPG::Skill& skill);
 	Skill(Game_Battler* source, Game_Party_Base* target, const RPG::Skill& skill);
 
+	bool IsDeadTargetValid();
 	bool Execute();
 	void Apply();
 
@@ -279,6 +296,7 @@ public:
 	Item(Game_Battler* source, Game_Battler* target, const RPG::Item& item);
 	Item(Game_Battler* source, Game_Party_Base* target, const RPG::Item& item);
 
+	bool IsDeadTargetValid();
 	bool Execute();
 	void Apply();
 

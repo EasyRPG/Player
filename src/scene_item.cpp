@@ -52,7 +52,7 @@ void Scene_Item::Update() {
 		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		int item_id = item_window->GetItemId();
+		int item_id = item_window->GetItem() == NULL ? 0 : item_window->GetItem()->ID;
 
 		if (Main_Data::game_party->IsItemUsable(item_id)) {
 			Game_System::SePlay(Main_Data::game_data.system.decision_se);

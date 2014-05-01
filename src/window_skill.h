@@ -43,9 +43,9 @@ public:
 	/**
 	 * Gets skill.
 	 *
-	 * @return current selected skill ID.
+	 * @return current selected skill.
 	 */
-	RPG::Skill* GetSkill();
+	const RPG::Skill* GetSkill() const;
 
 	/**
 	 * Refreshes the skill list.

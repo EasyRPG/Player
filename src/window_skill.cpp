@@ -34,7 +34,7 @@ void Window_Skill::SetActor(int actor_id) {
 	Refresh();
 }
 
-RPG::Skill* Window_Skill::GetSkill() {
+const RPG::Skill* Window_Skill::GetSkill() const {
 	if (index < 0 || index >= (int)Data::skills.size() || data[index] == 0) {
 		return NULL;
 	}
