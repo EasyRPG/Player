@@ -37,7 +37,6 @@
 #include "game_switches.h"
 #include "game_battle.h"
 #include "game_battlealgorithm.h"
-#include "battle_battler.h"
 #include "battle_animation.h"
 #include "scene_battle_rpg2k.h"
 #include "scene_battle.h"

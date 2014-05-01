@@ -36,7 +36,6 @@
 #include "window_battlecommand.h"
 #include "window_battlestatus.h"
 #include "window_message.h"
-#include "battle_battler.h"
 #include "battle_animation.h"
 #include "spriteset_battle.h"
 #include <boost/scoped_ptr.hpp>
@@ -146,7 +145,7 @@ protected:
 	virtual void SetAnimationState(Game_Battler* target, int new_state);
 
 	// battle_algorithms.cpp
-
+	/*
 	void AttackEnemy(Battle::Ally& ally, Battle::Enemy& enemy);
 	void UseItem(Battle::Ally& ally, const RPG::Item& item);
 	void UseItemAlly(Battle::Ally& ally, const RPG::Item& item, Battle::Ally& target);
@@ -156,7 +155,7 @@ protected:
 
 	void EnemyAttackAlly(Battle::Enemy& enemy, Battle::Ally& ally);
 	void EnemySkill(Battle::Enemy& enemy, const RPG::Skill& skill);
-
+	*/
 	void CreateEnemyAction(Game_Enemy* enemy, const RPG::EnemyAction* action);
 
 	void RemoveCurrentAction();

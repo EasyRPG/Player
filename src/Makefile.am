@@ -28,11 +28,8 @@ easyrpg_player_SOURCES = \
 	background.h \
 	baseui.cpp \
 	baseui.h \
-	battle_algorithms.cpp \
 	battle_animation.cpp \
 	battle_animation.h \
-	battle_battler.cpp \
-	battle_battler.h \
 	bitmap.cpp \
 	bitmap.h \
 	bitmap_screen.cpp \
