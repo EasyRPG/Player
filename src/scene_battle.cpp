@@ -164,6 +164,8 @@ void Scene_Battle::InitBattleTest()
 }
 
 void Scene_Battle::NextTurn() {
+	auto_battle = false;
+
 	Game_Battle::NextTurn();
 	Game_Battle::UpdateEvents();
 }

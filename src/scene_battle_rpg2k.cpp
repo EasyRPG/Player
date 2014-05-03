@@ -15,7 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Headers
+
 #include <algorithm>
 #include <sstream>
 #include "rpg_battlecommand.h"
@@ -66,8 +66,6 @@ void Scene_Battle_Rpg2k::CreateBattleOptionWindow() {
 	options_window.reset(new Window_Command(commands, 76));
 	options_window->SetHeight(80);
 	options_window->SetY(160);
-	// TODO: Auto Battle not implemented
-	options_window->DisableItem(1);
 }
 
 void Scene_Battle_Rpg2k::CreateBattleTargetWindow() {
@@ -114,8 +112,6 @@ void Scene_Battle_Rpg2k::RefreshCommandWindow() {
 void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 	previous_state = state;
 	state = new_state;
-	if (state == State_SelectActor && auto_battle)
-		state = State_AutoBattle;
 
 	options_window->SetActive(false);
 	status_window->SetActive(false);
@@ -192,7 +188,7 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		SelectNextActor();
 		break;
 	case State_AutoBattle:
-		// no-op
+		SetState(State_SelectActor);
 		break;
 	case State_SelectCommand:
 		status_window->SetVisible(true);
@@ -547,8 +543,7 @@ void Scene_Battle_Rpg2k::OptionSelected() {
 		break;
 	case 1: // Auto Battle
 		auto_battle = true;
-		Output::Post("Auto Battle not implemented yet.\nSorry :)");
-		//SetState(State_SelectActor);
+		SetState(State_AutoBattle);
 		break;
 	case 2: // Escape
 		//Escape();
@@ -741,8 +736,8 @@ void Scene_Battle_Rpg2k::SelectNextActor() {
 		return;
 	}
 
-	if (active_actor->GetAutoBattle()) {
-		// ToDo Automatic stuff
+	if (auto_battle || active_actor->GetAutoBattle()) {
+		// ToDo: Auto battle logic is dumb
 		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(active_actor, Main_Data::game_enemyparty->GetRandomAliveBattler()));
 		battle_actions.push_back(active_actor);
 
