@@ -691,6 +691,11 @@ std::string Game_BattleAlgorithm::NormalDual::GetStartMessage() const {
 	return source->GetName() + " TODO DUAL";
 }
 
+bool Game_BattleAlgorithm::NormalDual::Execute() {
+	Output::Warning("Battle: Enemy Double Attack not implemented");
+	return true;
+}
+
 Game_BattleAlgorithm::Defend::Defend(Game_Battler* source) :
 	AlgorithmBase(source) {
 	// no-op
@@ -700,6 +705,11 @@ std::string Game_BattleAlgorithm::Defend::GetStartMessage() const {
 	return source->GetName() + Data::terms.defending;
 }
 
+bool Game_BattleAlgorithm::Defend::Execute() {
+	Output::Warning("Battle: Defend not implemented");
+	return true;
+}
+
 Game_BattleAlgorithm::Observe::Observe(Game_Battler* source) :
 AlgorithmBase(source) {
 	// no-op
@@ -707,7 +717,11 @@ AlgorithmBase(source) {
 
 std::string Game_BattleAlgorithm::Observe::GetStartMessage() const {
 	return source->GetName() + Data::terms.observing;
+}
 
+bool Game_BattleAlgorithm::Observe::Execute() {
+	// Observe only prints the start message
+	return true;
 }
 
 Game_BattleAlgorithm::Charge::Charge(Game_Battler* source) :
@@ -719,6 +733,11 @@ std::string Game_BattleAlgorithm::Charge::GetStartMessage() const {
 	return source->GetName() + Data::terms.focus;
 }
 
+bool Game_BattleAlgorithm::Charge::Execute() {
+	Output::Warning("Battle: Enemy Charge not implemented");
+	return true;
+}
+
 Game_BattleAlgorithm::SelfDestruct::SelfDestruct(Game_Battler* source) :
 AlgorithmBase(source) {
 	// no-op
@@ -728,6 +747,11 @@ std::string Game_BattleAlgorithm::SelfDestruct::GetStartMessage() const {
 	return source->GetName() + Data::terms.autodestruction;
 }
 
+bool Game_BattleAlgorithm::SelfDestruct::Execute() {
+	Output::Warning("Battle: Enemy SelfDestruct not implemented");
+	return true;
+}
+
 Game_BattleAlgorithm::Escape::Escape(Game_Battler* source) :
 AlgorithmBase(source) {
 	// no-op
@@ -735,6 +759,11 @@ AlgorithmBase(source) {
 
 std::string Game_BattleAlgorithm::Escape::GetStartMessage() const {
 	return source->GetName() + Data::terms.enemy_escape;
+}
+
+bool Game_BattleAlgorithm::Escape::Execute() {
+	Output::Warning("Battle: Enemy Escape not implemented");
+	return true;
 }
 
 Game_BattleAlgorithm::Transform::Transform(Game_Battler* source, int new_monster_id) :

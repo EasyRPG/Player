@@ -224,8 +224,6 @@ void Scene_Battle::AllySelected() {
 	}
 
 	battle_actions.push_back(active_actor);
-
-	SetState(State_SelectActor);
 }
 
 void Scene_Battle::AttackSelected() {
@@ -236,6 +234,11 @@ void Scene_Battle::AttackSelected() {
 
 void Scene_Battle::DefendSelected() {
 	Game_System::SePlay(Data::system.decision_se);
+
+	active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Defend>(active_actor));
+	battle_actions.push_back(active_actor);
+
+	SetState(State_SelectActor);
 }
 
 void Scene_Battle::ItemSelected() {
@@ -363,7 +366,8 @@ void Scene_Battle::CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAct
 			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomAliveBattler()));
 			break;
 		case RPG::EnemyAction::Basic_dual_attack:
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::NormalDual>(enemy, Main_Data::game_party->GetRandomAliveBattler()));
+			// ToDo: Must be NormalDual, not implemented
+			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomAliveBattler()));
 			break;
 		case RPG::EnemyAction::Basic_defense:
 			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Defend>(enemy));

@@ -318,7 +318,7 @@ public:
 	NormalDual(Game_Battler* source, Game_Battler* target);
 
 	std::string GetStartMessage() const;
-	bool Execute() { return true; }
+	bool Execute();
 };
 
 class Defend : public AlgorithmBase {
@@ -326,7 +326,7 @@ public:
 	Defend(Game_Battler* source);
 
 	std::string GetStartMessage() const;
-	bool Execute() { return true; }
+	bool Execute();
 };
 
 class Observe : public AlgorithmBase {
@@ -334,7 +334,7 @@ public:
 	Observe(Game_Battler* source);
 
 	std::string GetStartMessage() const;
-	bool Execute() { return true; }
+	bool Execute();
 };
 
 class Charge : public AlgorithmBase {
@@ -342,7 +342,7 @@ public:
 	Charge(Game_Battler* source);
 
 	std::string GetStartMessage() const;
-	bool Execute() { return true; }
+	bool Execute();
 };
 
 class SelfDestruct : public AlgorithmBase {
@@ -350,7 +350,7 @@ public:
 	SelfDestruct(Game_Battler* source);
 
 	std::string GetStartMessage() const;
-	bool Execute() { return true; }
+	bool Execute();
 };
 
 class Escape : public AlgorithmBase {
@@ -358,7 +358,7 @@ public:
 	Escape(Game_Battler* source);
 
 	std::string GetStartMessage() const;
-	bool Execute() { return true; }
+	bool Execute();
 };
 
 class Transform : public AlgorithmBase {
