@@ -181,6 +181,8 @@ protected:
 	boost::scoped_ptr<Background> background;
 
 	std::deque<Game_Battler*> battle_actions;
+
+	const RPG::Item* skill_item;
 };
 
 #endif

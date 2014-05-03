@@ -299,8 +299,6 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 
 	std::vector<RPG::State>::const_iterator it = conditions.begin();
 
-	// TODO: Handle healing
-
 	for (; it != conditions.end(); ++it) {
 		if (IsPositive()) {
 			(*current_target)->RemoveState(it->ID);
@@ -340,6 +338,10 @@ const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetStartSe() const {
 }
 
 const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetResultSe() const {
+	if (healing) {
+		return NULL;
+	}
+
 	if (!success) {
 		return &Data::system.dodge_se;
 	} else {
@@ -422,39 +424,57 @@ std::string Game_BattleAlgorithm::Normal::GetStartMessage() const {
 	return source->GetName() + Data::terms.attacking;
 }
 
-Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Battler* target, const RPG::Skill& skill) :
-	AlgorithmBase(source, target), skill(skill) {
-		// no-op
+Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Battler* target, const RPG::Skill& skill, const RPG::Item* item) :
+	AlgorithmBase(source, target), skill(skill), item(item) {
+	// no-op
 }
 
-Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Party_Base* target, const RPG::Skill& skill) :
-	AlgorithmBase(source, target), skill(skill) {
-		// no-op
+Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Party_Base* target, const RPG::Skill& skill, const RPG::Item* item) :
+	AlgorithmBase(source, target), skill(skill), item(item) {
+	// no-op
 }
 
-Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, const RPG::Skill& skill) :
-AlgorithmBase(source), skill(skill) {
+Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, const RPG::Skill& skill, const RPG::Item* item) :
+	AlgorithmBase(source), skill(skill), item(item) {
 	// no-op
 }
 
 bool Game_BattleAlgorithm::Skill::IsTargetValid() {
-	// ToDo
 	if (current_target == targets.end()) {
 		return true;
 	}
+
+	if (source->GetType() == Game_Battler::Type_Ally) {
+		if (skill.scope == RPG::Skill::Scope_ally ||
+			skill.scope == RPG::Skill::Scope_party) {
+			return true;
+		}
+	}
+
 	return (!(*current_target)->IsDead());
 }
 
 bool Game_BattleAlgorithm::Skill::Execute() {
+	if (item && item->skill_id != skill.ID) {
+		assert(false && "Item skill mismatch");
+	}
+
 	Reset();
 
 	animation = &Data::animations[skill.animation_id == 0 ? NULL : skill.animation_id - 1];
 
 	this->success = false;
 
+	if (source->GetType() == Game_Battler::Type_Ally) {
+		this->healing =
+			skill.scope == RPG::Skill::Scope_ally ||
+			skill.scope == RPG::Skill::Scope_party ||
+			skill.scope == RPG::Skill::Scope_self;
+	}
+
 	if (skill.type == RPG::Skill::Type_normal) {
 		if (skill.power > 0) {
-			if (rand() % 100 < skill.hit) {
+			if (healing || rand() % 100 < skill.hit) {
 				this->success = true;
 
 				// FIXME: is this still affected by stats for allies?
@@ -500,12 +520,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 			this->success = true;
 
-			// TODO
-			//if (skill.state_effect)
-				conditions.push_back(Data::states[i]);
-			//	actor->AddState(i + 1);
-			//else
-			//	actor->RemoveState(i + 1);
+			conditions.push_back(Data::states[i]);
 		}
 
 		return this->success;
@@ -524,11 +539,20 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 void Game_BattleAlgorithm::Skill::Apply() {
 	AlgorithmBase::Apply();
 
-	source->SetSp(source->GetSp() - source->CalculateSkillCost(skill.ID));
+	if (item) {
+		Main_Data::game_party->GainItem(item->ID, -1);
+	}
+	else {
+		source->SetSp(source->GetSp() - source->CalculateSkillCost(skill.ID));
+	}
 }
 
 std::string Game_BattleAlgorithm::Skill::GetStartMessage() const {
 	// TODO: How to handle using_message2?
+	if (item && item->using_message == 0) {
+		// Use item message
+		return Item(source, *item).GetStartMessage();
+	}
 	return source->GetName() + skill.using_message1;
 }
 
@@ -632,13 +656,13 @@ bool Game_BattleAlgorithm::Item::Execute() {
 		this->success = true;
 	}
 
-	Main_Data::game_party->GainItem(item.ID, -1);
-
 	return this->success;
 }
 
 void Game_BattleAlgorithm::Item::Apply() {
 	AlgorithmBase::Apply();
+
+	Main_Data::game_party->GainItem(item.ID, -1);
 }
 
 std::string Game_BattleAlgorithm::Item::GetStartMessage() const {

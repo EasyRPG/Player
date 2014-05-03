@@ -163,8 +163,13 @@ bool Game_Party::IsItemUsable(int item_id) {
 		if (Game_Temp::battle_running) {
 			if (item.type == RPG::Item::Type_medicine) {
 				return !item.occasion_field1;
-			} else if (item.type == RPG::Item::Type_switch) {
+			}
+			else if (item.type == RPG::Item::Type_switch) {
 				return item.occasion_battle;
+			}
+			else if (item.type == RPG::Item::Type_special) {
+				// ToDo: Proper check
+				return true;
 			}
 		} else {
 			if (item.type == RPG::Item::Type_medicine ||

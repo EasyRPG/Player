@@ -45,7 +45,8 @@
 
 Scene_Battle::Scene_Battle() :
 	actor_index(0),
-	active_actor(NULL)
+	active_actor(NULL),
+	skill_item(NULL)
 {
 	Scene::type = Scene::Battle;
 }

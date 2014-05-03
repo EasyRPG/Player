@@ -278,9 +278,9 @@ public:
 
 class Skill : public AlgorithmBase {
 public:
-	Skill(Game_Battler* source, Game_Battler* target, const RPG::Skill& skill);
-	Skill(Game_Battler* source, Game_Party_Base* target, const RPG::Skill& skill);
-	Skill(Game_Battler* source, const RPG::Skill& skill);
+	Skill(Game_Battler* source, Game_Battler* target, const RPG::Skill& skill, const RPG::Item* item = NULL);
+	Skill(Game_Battler* source, Game_Party_Base* target, const RPG::Skill& skill, const RPG::Item* item = NULL);
+	Skill(Game_Battler* source, const RPG::Skill& skill, const RPG::Item* item = NULL);
 
 	bool IsTargetValid();
 	bool Execute();
@@ -292,6 +292,7 @@ public:
 
 private:
 	const RPG::Skill& skill;
+	const RPG::Item* item;
 };
 
 class Item : public AlgorithmBase {

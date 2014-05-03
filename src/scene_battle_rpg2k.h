@@ -82,6 +82,9 @@ protected:
 	void DefendSelected();
 	void ItemSelected();
 	void SkillSelected();
+
+	void AssignSkill(const RPG::Skill* skill);
+
 	void AllySelected();
 	void EnemySelected();
 
