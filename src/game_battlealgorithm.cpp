@@ -19,6 +19,7 @@
 #include "game_actor.h"
 #include "game_battlealgorithm.h"
 #include "game_battler.h"
+#include "game_enemy.h"
 #include "game_party.h"
 #include "game_party_base.h"
 #include "game_switches.h"
@@ -29,6 +30,13 @@
 #include "rpg_state.h"
 #include "rpg_skill.h"
 #include "rpg_item.h"
+
+Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source) :
+source(source) {
+	Reset();
+
+	current_target = targets.end();
+}
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source, Game_Battler* target) :
 	source(source) {
@@ -108,9 +116,12 @@ bool Game_BattleAlgorithm::AlgorithmBase::GetKilledByAttack() const {
 	return killed_by_attack_damage;
 }
 
-
 std::string Game_BattleAlgorithm::AlgorithmBase::GetDeathMessage() const {
 	if (!killed_by_attack_damage) {
+		return "";
+	}
+
+	if (current_target == targets.end()) {
 		return "";
 	}
 
@@ -122,6 +133,10 @@ std::string Game_BattleAlgorithm::AlgorithmBase::GetDeathMessage() const {
 }
 
 void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::string>& out) const {
+	if (current_target == targets.end()) {
+		return;
+	}
+
 	if (!success) {
 		out.push_back((*current_target)->GetName() + Data::terms.dodge);
 	}
@@ -241,6 +256,10 @@ Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetSource() const {
 }
 
 Game_Battler* Game_BattleAlgorithm::AlgorithmBase::GetTarget() const {
+	if (current_target == targets.end()) {
+		return NULL;
+	}
+
 	return *current_target;
 }
 
@@ -293,10 +312,18 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::IsDeadTargetValid() {
+	if (current_target == targets.end()) {
+		return true;
+	}
+
 	return (!(*current_target)->IsDead());
 }
 
 bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {
+	if (current_target == targets.end()) {
+		return false;
+	}
+
 	if (current_target + 1 != targets.end()) {
 		++current_target;
 		return true;
@@ -586,4 +613,76 @@ std::string Game_BattleAlgorithm::Item::GetStartMessage() const {
 
 void Game_BattleAlgorithm::Item::GetResultMessages(std::vector<std::string>& out) const {
 	AlgorithmBase::GetResultMessages(out);
+}
+
+Game_BattleAlgorithm::NormalDual::NormalDual(Game_Battler* source, Game_Battler* target) :
+	AlgorithmBase(source, target) {
+	// no-op
+}
+
+std::string Game_BattleAlgorithm::NormalDual::GetStartMessage() const {
+	return source->GetName() + " TODO DUAL";
+}
+
+Game_BattleAlgorithm::Defend::Defend(Game_Battler* source) :
+	AlgorithmBase(source) {
+	// no-op
+}
+
+std::string Game_BattleAlgorithm::Defend::GetStartMessage() const {
+	return source->GetName() + Data::terms.defending;
+}
+
+Game_BattleAlgorithm::Observe::Observe(Game_Battler* source) :
+AlgorithmBase(source) {
+	// no-op
+}
+
+std::string Game_BattleAlgorithm::Observe::GetStartMessage() const {
+	return source->GetName() + Data::terms.observing;
+
+}
+
+Game_BattleAlgorithm::Charge::Charge(Game_Battler* source) :
+AlgorithmBase(source) {
+	// no-op
+}
+
+std::string Game_BattleAlgorithm::Charge::GetStartMessage() const {
+	return source->GetName() + Data::terms.focus;
+}
+
+Game_BattleAlgorithm::SelfDestruct::SelfDestruct(Game_Battler* source) :
+AlgorithmBase(source) {
+	// no-op
+}
+
+std::string Game_BattleAlgorithm::SelfDestruct::GetStartMessage() const {
+	return source->GetName() + Data::terms.autodestruction;
+}
+
+Game_BattleAlgorithm::Escape::Escape(Game_Battler* source) :
+AlgorithmBase(source) {
+	// no-op
+}
+
+std::string Game_BattleAlgorithm::Escape::GetStartMessage() const {
+	return source->GetName() + Data::terms.enemy_escape;
+}
+
+Game_BattleAlgorithm::Transform::Transform(Game_Battler* source, int new_monster_id) :
+AlgorithmBase(source), new_monster_id(new_monster_id) {
+	// no-op
+}
+
+std::string Game_BattleAlgorithm::Transform::GetStartMessage() const {
+	return source->GetName() + Data::terms.enemy_transform;
+}
+
+bool Game_BattleAlgorithm::Transform::Execute() {
+	return true;
+}
+
+void Game_BattleAlgorithm::Transform::Apply() {
+	static_cast<Game_Enemy*>(source)->Transform(new_monster_id);
 }

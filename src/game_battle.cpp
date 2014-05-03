@@ -1,19 +1,19 @@
 /*
- * This file is part of EasyRPG Player.
- *
- * EasyRPG Player is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * EasyRPG Player is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
- */
+* This file is part of EasyRPG Player.
+*
+* EasyRPG Player is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* EasyRPG Player is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 // Headers
 #include <deque>
@@ -27,7 +27,6 @@
 #include "game_variables.h"
 #include "game_interpreter_battle.h"
 #include "battle_animation.h"
-//#include "battle_battler.h"
 #include "game_battle.h"
 #include "spriteset_battle.h"
 #include <boost/scoped_ptr.hpp>
@@ -67,6 +66,10 @@ void Game_Battle::Update() {
 	spriteset->Update();
 }
 
+void Game_Battle::Terminate() {
+	terminate = true;
+}
+
 Spriteset_Battle& Game_Battle::GetSpriteset() {
 	return *spriteset;
 }
@@ -99,19 +102,15 @@ void Game_Battle::ChangeBackground(const std::string& name) {
 	background_name = name;
 }
 
-void Game_Battle::Terminate() {
-	terminate = true;
-}
-
 /*
 void Game_Battle::Quit() {
-	// Remove conditions which end after battle
-	for (std::vector<Battle::Ally>::iterator it = allies.begin(); it != allies.end(); it++)
-		it->GetActor()->RemoveStates();
+// Remove conditions which end after battle
+for (std::vector<Battle::Ally>::iterator it = allies.begin(); it != allies.end(); it++)
+it->GetActor()->RemoveStates();
 
-	interpreter.reset();
+interpreter.reset();
 
-	scene = NULL;
+scene = NULL;
 }
 */
 
@@ -124,7 +123,8 @@ int Game_Battle::GetTurn() {
 bool Game_Battle::CheckTurns(int turns, int base, int multiple) {
 	if (multiple == 0) {
 		return turns >= base && (turns - base) == 0;
-	} else {
+	}
+	else {
 		return turns >= base && (turns - base) % multiple == 0;
 	}
 }
@@ -145,25 +145,25 @@ bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
 	/*
 	TODO RPG 2k3
 	if (condition.flags.turn_enemy && !CheckTurns(GetEnemy(condition.turn_enemy_id).GetTurns(),
-											condition.turn_enemy_b, condition.turn_enemy_a))
-		return false;
+	condition.turn_enemy_b, condition.turn_enemy_a))
+	return false;
 
 	if (condition.flags.turn_actor) {
-		Battle::Ally* ally = FindAlly(condition.turn_actor_id);
-		if (!ally)
-			return false;
-		if (!CheckTurns(ally->GetTurns(), condition.turn_actor_b, condition.turn_actor_a))
-			return false;
+	Battle::Ally* ally = FindAlly(condition.turn_actor_id);
+	if (!ally)
+	return false;
+	if (!CheckTurns(ally->GetTurns(), condition.turn_actor_b, condition.turn_actor_a))
+	return false;
 	}*/
 
-    if (condition.flags.enemy_hp) {
+	if (condition.flags.enemy_hp) {
 		Game_Battler& enemy = (*Main_Data::game_enemyparty)[condition.enemy_id];
 		int hp = enemy.GetHp();
 		if (hp < condition.enemy_hp_min || hp > condition.enemy_hp_max)
 			return false;
 	}
 
-    if (condition.flags.actor_hp) {
+	if (condition.flags.actor_hp) {
 		Game_Actor* actor = Game_Actors::GetActor(condition.actor_id);
 		int hp = actor->GetHp();
 		if (hp < condition.actor_hp_min || hp > condition.actor_hp_max)
@@ -172,12 +172,12 @@ bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
 	/*
 	TODO RPG2k3
 
-    if (condition.flags.command_actor) {
-		Battle::Ally* ally = FindAlly(condition.actor_id);
-		if (!ally)
-			return false;
-		if (ally->last_command != condition.command_id)
-			return false;
+	if (condition.flags.command_actor) {
+	Battle::Ally* ally = FindAlly(condition.actor_id);
+	if (!ally)
+	return false;
+	if (ally->last_command != condition.command_id)
+	return false;
 	}*/
 
 	return true;

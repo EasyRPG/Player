@@ -394,9 +394,6 @@
     <ClCompile Include="..\..\src\main_data.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\battle_algorithms.cpp">
-      <Filter>Source Files\Engine\Game</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\message_overlay.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
@@ -441,9 +438,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\battle_animation.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\battle_battler.cpp">
-      <Filter>Source Files\Engine\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -854,9 +848,6 @@
     </ClInclude>
     <ClInclude Include="..\..\src\battle_animation.h">
       <Filter>Source Files\Backend\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\battle_battler.h">
-      <Filter>Source Files\Engine\Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

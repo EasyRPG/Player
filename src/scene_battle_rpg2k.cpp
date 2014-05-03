@@ -326,11 +326,11 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			battle_result_messages.clear();
 			action->GetResultMessages(battle_result_messages);
 
+			battle_message_window->Push(action->GetStartMessage());
+
 			action->Apply();
 
 			battle_result_messages_it = battle_result_messages.begin();
-
-			battle_message_window->Push(action->GetStartMessage());
 
 			if (first) {
 				if (action->GetAnimation()) {
@@ -351,7 +351,12 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 				Game_System::SePlay(*action->GetStartSe());
 			}
 			
-			battle_action_state = BattleActionState_Result;
+			if (!action->GetTarget()) {
+				battle_action_state = BattleActionState_Finished;
+			}
+			else {
+				battle_action_state = BattleActionState_Result;
+			}
 			break;
 		case BattleActionState_Result:
 			if (battle_action_wait--) {
@@ -390,7 +395,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			if (battle_result_messages_it == battle_result_messages.end()) {
 				battle_action_state = BattleActionState_Finished;
 
-				if (action->GetTarget()->IsDead()) {
+				if (action->GetTarget() && action->GetTarget()->IsDead()) {
 					if (action->GetDeathSe()) {
 						Game_System::SePlay(*action->GetDeathSe());
 					}
@@ -409,7 +414,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			}
 			battle_action_wait = 30;
 
-			if (!action->GetTarget()->IsDead()) {
+			if (action->GetTarget() && !action->GetTarget()->IsDead()) {
 				Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
 				if (target_sprite) {
 					target_sprite->SetAnimationState(Sprite_Battler::Idle);

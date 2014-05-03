@@ -237,6 +237,7 @@ public:
 	virtual void GetResultMessages(std::vector<std::string>& out) const;
 
 protected:
+	AlgorithmBase(Game_Battler* source);
 	AlgorithmBase(Game_Battler* source, Game_Battler* target);
 	AlgorithmBase(Game_Battler* source, Game_Party_Base* target);
 
@@ -305,6 +306,66 @@ public:
 
 private:
 	const RPG::Item& item;
+};
+
+class NormalDual : public AlgorithmBase {
+public:
+	NormalDual(Game_Battler* source, Game_Battler* target);
+
+	std::string GetStartMessage() const;
+	bool Execute() { return true; }
+};
+
+class Defend : public AlgorithmBase {
+public:
+	Defend(Game_Battler* source);
+
+	std::string GetStartMessage() const;
+	bool Execute() { return true; }
+};
+
+class Observe : public AlgorithmBase {
+public:
+	Observe(Game_Battler* source);
+
+	std::string GetStartMessage() const;
+	bool Execute() { return true; }
+};
+
+class Charge : public AlgorithmBase {
+public:
+	Charge(Game_Battler* source);
+
+	std::string GetStartMessage() const;
+	bool Execute() { return true; }
+};
+
+class SelfDestruct : public AlgorithmBase {
+public:
+	SelfDestruct(Game_Battler* source);
+
+	std::string GetStartMessage() const;
+	bool Execute() { return true; }
+};
+
+class Escape : public AlgorithmBase {
+public:
+	Escape(Game_Battler* source);
+
+	std::string GetStartMessage() const;
+	bool Execute() { return true; }
+};
+
+class Transform : public AlgorithmBase {
+public:
+	Transform(Game_Battler* source, int new_monster_id);
+
+	std::string GetStartMessage() const;
+	bool Execute();
+	void Apply();
+
+private:
+	int new_monster_id;
 };
 
 }

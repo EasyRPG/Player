@@ -196,56 +196,101 @@ EASYRPG_SHARED_PTR<Scene_Battle> Scene_Battle::Create()
 void Scene_Battle::CreateEnemyAction(Game_Enemy* enemy, const RPG::EnemyAction* action) {
 	switch (action->kind) {
 	case RPG::EnemyAction::Kind_basic:
-		enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomAliveBattler()));
-		battle_actions.push_back(enemy);
+		CreateEnemyActionBasic(enemy, action);
 		break;
-	case RPG::EnemyAction::Kind_skill: {
-		const RPG::Skill& skill = Data::skills[action->skill_id - 1];
-
-		switch (skill.type) {
-		case RPG::Skill::Type_teleport:
-		case RPG::Skill::Type_escape:
-		case RPG::Skill::Type_switch:
-			//BeginSkill();
-			return;
-		case RPG::Skill::Type_normal:
-		default:
-			break;
-		}
-
-		switch (skill.scope) {
-		case RPG::Skill::Scope_enemy:
-			// ToDo
-			break;
-		case RPG::Skill::Scope_ally:
-			// ToDo
-			break;
-		case RPG::Skill::Scope_enemies:
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_party.get(), skill));
-			battle_actions.push_back(enemy);
-			SetState(State_SelectActor);
-			break;
-		case RPG::Skill::Scope_self:
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, enemy, skill));
-			battle_actions.push_back(enemy);
-			SetState(State_SelectActor);
-			break;
-		case RPG::Skill::Scope_party: {
-			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_enemyparty.get(), *skill_window->GetSkill()));
-			battle_actions.push_back(enemy);
-			SetState(State_SelectActor);
-			break;
-			}
-		}
+	case RPG::EnemyAction::Kind_skill:
+		CreateEnemyActionSkill(enemy, action);
+		return;
 		break;
-		}
 	case RPG::EnemyAction::Kind_transformation:
 		// ToDo
-		break;
+		enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Transform>(enemy, action->enemy_id));
+		battle_actions.push_back(enemy);
+	}
+}
+
+void Scene_Battle::CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAction* action) {
+	if (action->kind != RPG::EnemyAction::Kind_basic) {
+		return;
+	}
+
+	switch (action->basic) {
+		case RPG::EnemyAction::Basic_attack:
+			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(enemy, Main_Data::game_party->GetRandomAliveBattler()));
+			break;
+		case RPG::EnemyAction::Basic_dual_attack:
+			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::NormalDual>(enemy, Main_Data::game_party->GetRandomAliveBattler()));
+			break;
+		case RPG::EnemyAction::Basic_defense:
+			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Defend>(enemy));
+			break;
+		case RPG::EnemyAction::Basic_observe:
+			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Observe>(enemy));
+			break;
+		case RPG::EnemyAction::Basic_charge:
+			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Charge>(enemy));
+			break;
+		case RPG::EnemyAction::Basic_autodestruction:
+			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::SelfDestruct>(enemy));
+			break;
+		case RPG::EnemyAction::Basic_escape:
+			enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Escape>(enemy));
+			break;
+		case RPG::EnemyAction::Basic_nothing:
+			// no-op
+			break;
+	}
+
+	if (action->basic != RPG::EnemyAction::Basic_nothing) {
+		battle_actions.push_back(enemy);
 	}
 }
 
 void Scene_Battle::RemoveCurrentAction() {
 	battle_actions.front()->SetBattleAlgorithm(NULL);
 	battle_actions.pop_front();
+}
+
+void Scene_Battle::CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAction* action) {
+	if (action->kind != RPG::EnemyAction::Kind_skill) {
+		return;
+	}
+
+	const RPG::Skill& skill = Data::skills[action->skill_id - 1];
+
+	switch (skill.type) {
+	case RPG::Skill::Type_teleport:
+	case RPG::Skill::Type_escape:
+	case RPG::Skill::Type_switch:
+		//BeginSkill();
+		return;
+	case RPG::Skill::Type_normal:
+	default:
+		break;
+	}
+
+	switch (skill.scope) {
+	case RPG::Skill::Scope_enemy:
+		// ToDo
+		break;
+	case RPG::Skill::Scope_ally:
+		// ToDo
+		break;
+	case RPG::Skill::Scope_enemies:
+		enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_party.get(), skill));
+		battle_actions.push_back(enemy);
+		SetState(State_SelectActor);
+		break;
+	case RPG::Skill::Scope_self:
+		enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, enemy, skill));
+		battle_actions.push_back(enemy);
+		SetState(State_SelectActor);
+		break;
+	case RPG::Skill::Scope_party: {
+									  enemy->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(enemy, Main_Data::game_enemyparty.get(), *skill_window->GetSkill()));
+									  battle_actions.push_back(enemy);
+									  SetState(State_SelectActor);
+									  break;
+	}
+	}
 }

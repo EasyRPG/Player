@@ -33,30 +33,7 @@ Sprite_Battler::Sprite_Battler(Game_Battler* battler) :
 	fade_out(255),
 	flash_counter(0) {
 	
-	// Not animated -> Monster
-	if (battler->GetBattleAnimationId() == 0) {
-		graphic = Cache::Monster(battler->GetSpriteName());
-		SetOx(graphic->GetWidth() / 2);
-		SetOy(graphic->GetHeight() / 2);
-
-		/*bool hue_change = battler->GetHue() != 0;
-		if (hue_change) {
-			BitmapRef new_graphic = Bitmap::Create(graphic->GetWidth(), graphic->GetHeight());
-			new_graphic->HueChangeBlit(0, 0, graphic.get(), graphic->GetRect(), battler->GetHue());
-			graphic = new_graphic;
-		}*/
-
-		SetBitmap(graphic);
-	} else { // animated
-		SetOx(24);
-		SetOy(24);
-		SetAnimationState(anim_state);
-	}
-		
-	SetX(battler->GetBattleX());
-	SetY(battler->GetBattleY());
-	SetZ(battler->GetBattleY()); // Not a typo
-	SetVisible(!battler->IsHidden());
+	CreateSprite();
 }
 
 Sprite_Battler::~Sprite_Battler() {
@@ -71,6 +48,13 @@ void Sprite_Battler::SetBattler(Game_Battler* new_battler) {
 }
 
 void Sprite_Battler::Update() {
+	if (sprite_name != battler->GetSpriteName() ||
+		hue != battler->GetHue()) {
+
+		CreateSprite();
+	}
+	CreateSprite();
+
 	Sprite::Update();
 
 	++cycle;
@@ -144,4 +128,35 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 
 bool Sprite_Battler::IsIdling() {
 	return anim_state == Idle;
+}
+
+void Sprite_Battler::CreateSprite() {
+	sprite_name = battler->GetSpriteName();
+	hue = battler->GetHue();
+
+	// Not animated -> Monster
+	if (battler->GetBattleAnimationId() == 0) {
+		graphic = Cache::Monster(sprite_name);
+		SetOx(graphic->GetWidth() / 2);
+		SetOy(graphic->GetHeight() / 2);
+
+		bool hue_change = hue != 0;
+		if (hue_change) {
+			BitmapRef new_graphic = Bitmap::Create(graphic->GetWidth(), graphic->GetHeight());
+			new_graphic->HueChangeBlit(0, 0, *graphic, graphic->GetRect(), hue);
+			graphic = new_graphic;
+		}
+
+		SetBitmap(graphic);
+	}
+	else { // animated
+		SetOx(24);
+		SetOy(24);
+		SetAnimationState(anim_state);
+	}
+
+	SetX(battler->GetBattleX());
+	SetY(battler->GetBattleY());
+	SetZ(battler->GetBattleY()); // Not a typo
+	SetVisible(!battler->IsHidden());
 }

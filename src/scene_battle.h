@@ -144,22 +144,11 @@ protected:
 	 */
 	virtual void SetAnimationState(Game_Battler* target, int new_state);
 
-	// battle_algorithms.cpp
-	/*
-	void AttackEnemy(Battle::Ally& ally, Battle::Enemy& enemy);
-	void UseItem(Battle::Ally& ally, const RPG::Item& item);
-	void UseItemAlly(Battle::Ally& ally, const RPG::Item& item, Battle::Ally& target);
-	void UseSkill(Battle::Ally& ally, const RPG::Skill& skill);
-	void UseSkillAlly(Battle::Battler& ally, const RPG::Skill& skill, Battle::Battler& target);
-	void UseSkillEnemy(Battle::Battler& ally, const RPG::Skill& skill, Battle::Battler& target);
-
-	void EnemyAttackAlly(Battle::Enemy& enemy, Battle::Ally& ally);
-	void EnemySkill(Battle::Enemy& enemy, const RPG::Skill& skill);
-	*/
 	void CreateEnemyAction(Game_Enemy* enemy, const RPG::EnemyAction* action);
+	void CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAction* action);
+	void CreateEnemyActionSkill(Game_Enemy* enemy, const RPG::EnemyAction* action);
 
 	void RemoveCurrentAction();
-
 	// Variables
 	State state;
 	State previous_state;

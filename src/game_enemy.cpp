@@ -152,7 +152,7 @@ int Game_Enemy::GetMoney() const {
 	return enemy->gold;
 }
 
-bool Game_Enemy::ActionValid(const RPG::EnemyAction& action) {
+bool Game_Enemy::IsActionValid(const RPG::EnemyAction& action) {
 	switch (action.condition_type) {
 	case RPG::EnemyAction::ConditionType_always:
 		return true;
@@ -205,7 +205,7 @@ const RPG::EnemyAction* Game_Enemy::ChooseRandomAction() {
 	int total = 0;
 	for (int i = 0; i < (int) actions.size(); i++) {
 		const RPG::EnemyAction& action = actions[i];
-		if (ActionValid(action)) {
+		if (IsActionValid(action)) {
 			valid.push_back(i);
 			total += action.rating;
 		}

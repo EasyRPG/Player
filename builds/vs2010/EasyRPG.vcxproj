@@ -332,9 +332,7 @@
     <ClCompile Include="..\..\src\audio.cpp" />
     <ClCompile Include="..\..\src\background.cpp" />
     <ClCompile Include="..\..\src\baseui.cpp" />
-    <ClCompile Include="..\..\src\battle_algorithms.cpp" />
     <ClCompile Include="..\..\src\battle_animation.cpp" />
-    <ClCompile Include="..\..\src\battle_battler.cpp" />
     <ClCompile Include="..\..\src\bitmap.cpp" />
     <ClCompile Include="..\..\src\bitmap_screen.cpp" />
     <ClCompile Include="..\..\src\bitmap_utils.cpp" />
@@ -465,7 +463,6 @@
     <ClInclude Include="..\..\src\background.h" />
     <ClInclude Include="..\..\src\baseui.h" />
     <ClInclude Include="..\..\src\battle_animation.h" />
-    <ClInclude Include="..\..\src\battle_battler.h" />
     <ClInclude Include="..\..\src\bitmap.h" />
     <ClInclude Include="..\..\src\bitmap_screen.h" />
     <ClInclude Include="..\..\src\bitmap_utils.h" />

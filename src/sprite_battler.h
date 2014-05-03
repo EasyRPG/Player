@@ -77,6 +77,11 @@ public:
 	bool IsIdling();
 
 protected:
+	void CreateSprite();
+
+	std::string sprite_name;
+	int hue;
+
 	Game_Battler* battler;
 	BitmapRef graphic;
 	int anim_state;
