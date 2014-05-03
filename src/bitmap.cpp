@@ -314,6 +314,8 @@ void Bitmap::HSLBlit(int x, int y, Bitmap const& src, Rect const& src_rect_, dou
 
 	for (int i = 0; i < dst_rect.height; i++) {
 		bm_utils->HSLBlit(dst_pixels, src_pixels, dst_rect.width, hue, sat, lum, loff);
+
+		src_pixels += pitch();
 		dst_pixels += pitch();
 	}
 
