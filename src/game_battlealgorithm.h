@@ -359,6 +359,9 @@ public:
 
 	std::string GetStartMessage() const;
 	bool Execute();
+	void Apply();
+
+	void GetResultMessages(std::vector<std::string>& out) const;
 };
 
 class Transform : public AlgorithmBase {

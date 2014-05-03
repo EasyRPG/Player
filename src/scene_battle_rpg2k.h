@@ -79,6 +79,8 @@ protected:
 	void OptionSelected();
 	void CommandSelected();
 
+	void Escape();
+
 	void SelectNextActor();
 	void SelectPreviousActor();
 

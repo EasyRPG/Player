@@ -158,8 +158,9 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 	case State_EnemyAction:
 	case State_Victory:
 	case State_Defeat:
-	case State_TryEscape:
 		// no-op
+	case State_Escape:
+		battle_message_window->SetActive(true);
 		break;
 	}
 
@@ -222,8 +223,10 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_Victory:
 	case State_Defeat:
-	case State_TryEscape:
 		// no-op
+		break;
+	case State_Escape:
+		battle_message_window->SetVisible(true);
 		break;
 	}
 }
@@ -294,6 +297,10 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 	case State_AllyAction:
 	case State_EnemyAction:
 		// no-op
+		break;
+	case State_Escape:
+		Escape();
+		break;
 	default:
 		break;
 	}
@@ -486,7 +493,7 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Gameover>());
 			}
 			break;
-		case State_TryEscape:
+		case State_Escape:
 			// no-op
 			break;
 		}
@@ -524,7 +531,7 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 		case State_Defeat:
 			Scene::Pop();
 			break;
-		case State_TryEscape:
+		case State_Escape:
 			// no-op
 			break;
 		}
@@ -545,7 +552,7 @@ void Scene_Battle_Rpg2k::OptionSelected() {
 		SetState(State_AutoBattle);
 		break;
 	case 2: // Escape
-		//Escape();
+		SetState(State_Escape);
 		break;
 	}
 }
@@ -569,6 +576,46 @@ void Scene_Battle_Rpg2k::CommandSelected() {
 		default:
 			// no-op
 			break;
+	}
+}
+
+void Scene_Battle_Rpg2k::Escape() {
+	static bool escaping = true;
+	static bool escape_success = false;
+
+	if (escaping) {
+		battle_message_window->Clear();
+
+		Game_BattleAlgorithm::Escape escape_alg = Game_BattleAlgorithm::Escape::Escape(&(*Main_Data::game_party)[0]);
+
+		escape_success = escape_alg.Execute();
+		escape_alg.Apply();
+
+		battle_result_messages.clear();
+		escape_alg.GetResultMessages(battle_result_messages);
+
+		battle_message_window->Push(battle_result_messages[0]);
+		escaping = false;
+	}
+	else {
+		static int counter = 0;
+		++counter;
+
+		if (counter > 60) {
+			escaping = true;
+			counter = 0;
+
+			if (escape_success) {
+				Scene::Pop();
+			}
+			else {
+				SetState(State_Battle);
+				CreateEnemyActions();
+				CreateExecutionOrder();
+
+				NextTurn();
+			}
+		}
 	}
 }
 

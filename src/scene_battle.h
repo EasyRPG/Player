@@ -91,7 +91,7 @@ public:
 		/** Battle ended with a defeat */
 		State_Defeat,
 		/** Escape command selected */
-		State_TryEscape
+		State_Escape
 	};
 
 	enum BattleActionState {

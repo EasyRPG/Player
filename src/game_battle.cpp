@@ -42,6 +42,8 @@ namespace Game_Battle {
 	boost::scoped_ptr<Game_Interpreter> interpreter;
 	/** Contains battle related sprites */
 	boost::scoped_ptr<Spriteset_Battle> spriteset;
+
+	int escape_fail_count;
 }
 
 void Game_Battle::Init() {
@@ -50,6 +52,7 @@ void Game_Battle::Init() {
 
 	Game_Temp::battle_running = true;
 	turn = 0;
+	escape_fail_count = 0;
 
 	troop = &Data::troops[Game_Temp::battle_troop_id - 1];
 }

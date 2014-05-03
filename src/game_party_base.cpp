@@ -99,3 +99,18 @@ Game_Battler* Game_Party_Base::GetRandomDeadBattler() {
 bool Game_Party_Base::IsAnyAlive() {
 	return GetRandomAliveBattler() != NULL;
 }
+
+int Game_Party_Base::GetAverageAgility() {
+	std::vector<Game_Battler*> battlers;
+	int agi = 0;
+
+	GetBattlers(battlers);
+
+	std::vector<Game_Battler*>::const_iterator it;
+
+	for (it = battlers.begin(); it != battlers.end(); ++it) {
+		agi += (*it)->GetAgi();
+	}
+
+	return agi /= battlers.size();
+}

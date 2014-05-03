@@ -96,6 +96,13 @@ public:
 	 */
 	virtual bool IsAnyAlive();
 
+	/**
+	 * Gets average agility of the party (for battle)
+	 *
+	 * @return average agility
+	 */
+	virtual int GetAverageAgility();
+
 private:
 
 };

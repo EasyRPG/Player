@@ -17,9 +17,11 @@
 
 #include <sstream>
 #include "game_actor.h"
+#include "game_battle.h"
 #include "game_battlealgorithm.h"
 #include "game_battler.h"
 #include "game_enemy.h"
+#include "game_enemyparty.h"
 #include "game_party.h"
 #include "game_party_base.h"
 #include "game_switches.h"
@@ -214,8 +216,6 @@ void Game_BattleAlgorithm::AlgorithmBase::GetResultMessages(std::vector<std::str
 	}
 
 	std::vector<RPG::State>::const_iterator it = conditions.begin();
-
-	// TODO: Handle healing
 
 	for (; it != conditions.end(); ++it) {
 		std::stringstream ss;
@@ -753,17 +753,62 @@ bool Game_BattleAlgorithm::SelfDestruct::Execute() {
 }
 
 Game_BattleAlgorithm::Escape::Escape(Game_Battler* source) :
-AlgorithmBase(source) {
+	AlgorithmBase(source) {
 	// no-op
 }
 
 std::string Game_BattleAlgorithm::Escape::GetStartMessage() const {
-	return source->GetName() + Data::terms.enemy_escape;
+	// Only monsters can escape during a battle phase
+	
+	if (source->GetType() == Game_Battler::Type_Enemy) {
+		return source->GetName() + Data::terms.enemy_escape;
+	}
+
+	return "";
 }
 
 bool Game_BattleAlgorithm::Escape::Execute() {
-	Output::Warning("Battle: Enemy Escape not implemented");
-	return true;
+	Reset();
+
+	// Monsters always escape
+	this->success = true;
+
+	// TODO: Preemptive attack has 100% escape ratio
+
+	if (source->GetType() == Game_Battler::Type_Ally) {
+		int ally_agi = Main_Data::game_party->GetAverageAgility();
+		int enemy_agi = Main_Data::game_enemyparty->GetAverageAgility();
+
+		double to_hit = 1.5 * (ally_agi / enemy_agi);
+
+		// Every failed escape is worth 10% higher escape chance (see help file)
+		for (int i = 0; i < Game_Battle::escape_fail_count; ++i) {
+			to_hit += (to_hit * 0.1);
+		}
+
+		to_hit *= 100;
+
+		this->success = rand() % 100 < (int)to_hit;
+	}
+
+	return this->success;
+}
+
+void Game_BattleAlgorithm::Escape::Apply() {
+	if (!this->success) {
+		Game_Battle::escape_fail_count += 1;
+	}
+}
+
+void Game_BattleAlgorithm::Escape::GetResultMessages(std::vector<std::string>& out) const {
+	if (source->GetType() == Game_Battler::Type_Ally) {
+		if (this->success) {
+			out.push_back(Data::terms.escape_success);
+		}
+		else {
+			out.push_back(Data::terms.escape_failure);
+		}
+	}
 }
 
 Game_BattleAlgorithm::Transform::Transform(Game_Battler* source, int new_monster_id) :

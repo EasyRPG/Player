@@ -367,7 +367,7 @@ int Game_Party::GetAverageLevel() {
 		party_lvl += (*it)->GetLevel();
 	}
 
-	return party_lvl /= GetBattlerCount();
+	return party_lvl /= actors.size();
 }
 
 int Game_Party::GetFatigue() {
@@ -381,5 +381,5 @@ int Game_Party::GetFatigue() {
 			100 * (*it)->GetSp() / (*it)->GetMaxSp() / 3);
 	}
 
-	return party_exh /= GetBattlerCount();
+	return party_exh /= actors.size();
 }

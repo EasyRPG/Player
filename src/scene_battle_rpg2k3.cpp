@@ -267,7 +267,7 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 	case State_EnemyAction:
 	case State_Victory:
 	case State_Defeat:
-	case State_TryEscape:
+	case State_Escape:
 		// no-op
 		break;
 	}
@@ -333,7 +333,7 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		command_window->SetVisible(true);
 		status_window->SetX(0);
 		break;
-	case State_TryEscape:
+	case State_Escape:
 		// no-op
 		break;
 	}
@@ -583,7 +583,7 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 				Scene::Push(EASYRPG_MAKE_SHARED<Scene_Gameover>());
 			}
 			break;
-		case State_TryEscape:
+		case State_Escape:
 			// no-op
 			break;
 		}
@@ -622,7 +622,7 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 		case State_Defeat:
 			Scene::Pop();
 			break;
-		case State_TryEscape:
+		case State_Escape:
 			// no-op
 			break;
 		}

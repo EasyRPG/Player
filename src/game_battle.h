@@ -59,4 +59,6 @@ namespace Game_Battle {
 	static int turn;
 	extern bool terminate;
 	extern std::string background_name;
+
+	extern int escape_fail_count;
 }
