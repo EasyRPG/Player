@@ -915,10 +915,10 @@ bool Game_Interpreter::CommandChangeItems(RPG::EventCommand const& com) { // Cod
 
 	if (com.parameters[1] == 0) {
 		// Item by const number
-		Main_Data::game_party->GainItem(com.parameters[2], value);
+		Main_Data::game_party->AddItem(com.parameters[2], value);
 	} else {
 		// Item by variable
-		Main_Data::game_party->GainItem(
+		Main_Data::game_party->AddItem(
 			Game_Variables[com.parameters[2]],
 			value
 		);

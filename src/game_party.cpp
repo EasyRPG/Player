@@ -117,7 +117,7 @@ void Game_Party::LoseGold(int n) {
 	data.gold = std::min(std::max(data.gold, 0), 999999);
 }
 
-void Game_Party::GainItem(int item_id, int amount) {
+void Game_Party::AddItem(int item_id, int amount) {
 	if (item_id < 1 || item_id > (int) Data::items.size()) {
 		Output::Warning("Can't add item to party.\n%04d is not a valid item ID.",
 						item_id);
@@ -152,8 +152,8 @@ void Game_Party::GainItem(int item_id, int amount) {
 	data.item_usage.push_back((uint8_t)Data::items[item_id - 1].uses);
 }
 
-void Game_Party::LoseItem(int item_id, int amount) {
-	GainItem(item_id, -amount);
+void Game_Party::RemoveItem(int item_id, int amount) {
+	AddItem(item_id, -amount);
 }
 
 bool Game_Party::IsItemUsable(int item_id) {
@@ -200,7 +200,7 @@ bool Game_Party::UseItem(int item_id, Game_Actor* target) {
 
 	// Todo usage count
 	if (was_used) {
-		LoseItem(item_id, 1);
+		RemoveItem(item_id, 1);
 	}
 
 	return was_used;

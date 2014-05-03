@@ -125,7 +125,7 @@ public:
 	 * @param item_id database item ID.
 	 * @param amount gained quantity.
 	 */
-	void GainItem(int item_id, int amount);
+	void AddItem(int item_id, int amount);
 
 	/**
 	 * Loses an amount of items.
@@ -133,7 +133,7 @@ public:
 	 * @param item_id database item ID.
 	 * @param amount lost quantity.
 	 */
-	void LoseItem(int item_id, int amount);
+	void RemoveItem(int item_id, int amount);
 
 	/**
 	 * Gets if item can be used.

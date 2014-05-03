@@ -283,7 +283,7 @@ void Scene_Shop::UpdateNumberInput() {
 		case Buy:
 			item_id = sell_window->GetItem() == NULL ? 0 : sell_window->GetItem()->ID;
 			Main_Data::game_party->LoseGold(number_window->GetTotal());
-			Main_Data::game_party->GainItem(item_id, number_window->GetNumber());
+			Main_Data::game_party->AddItem(item_id, number_window->GetNumber());
 			gold_window->Refresh();
 			buy_window->Refresh();
 			status_window->Refresh();
@@ -291,7 +291,7 @@ void Scene_Shop::UpdateNumberInput() {
 		case Sell:
 			item_id = sell_window->GetItem() == NULL ? 0 : sell_window->GetItem()->ID;
 			Main_Data::game_party->GainGold(number_window->GetTotal());
-			Main_Data::game_party->LoseItem(item_id, number_window->GetNumber());
+			Main_Data::game_party->RemoveItem(item_id, number_window->GetNumber());
 			gold_window->Refresh();
 			sell_window->Refresh();
 			status_window->Refresh();

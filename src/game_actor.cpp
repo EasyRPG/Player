@@ -126,10 +126,10 @@ void Game_Actor::ChangeEquipment(int equip_type, int item_id) {
 	int prev_item = SetEquipment(equip_type, item_id);
 
 	if (prev_item != 0) {
-		Main_Data::game_party->GainItem(prev_item, 1);
+		Main_Data::game_party->AddItem(prev_item, 1);
 	}
 	if (item_id != 0) {
-		Main_Data::game_party->LoseItem(item_id, 1);
+		Main_Data::game_party->RemoveItem(item_id, 1);
 	}
 }
 
