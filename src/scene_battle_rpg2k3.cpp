@@ -440,7 +440,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 	switch (battle_action_state) {
 	case BattleActionState_Start:
-		if (!action->IsDeadTargetValid()) {
+		if (!action->IsTargetValid()) {
 			action->SetTarget(action->GetTarget()->GetParty().GetNextAliveBattler(action->GetTarget()));
 		}
 

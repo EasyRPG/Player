@@ -317,7 +317,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 		case BattleActionState_Start:
 			battle_message_window->Clear();
 
-			if (!action->IsDeadTargetValid()) {
+			if (!action->IsTargetValid()) {
 				action->SetTarget(action->GetTarget()->GetParty().GetNextAliveBattler(action->GetTarget()));
 			}
 
@@ -333,7 +333,7 @@ bool Scene_Battle_Rpg2k::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase
 			battle_result_messages_it = battle_result_messages.begin();
 
 			if (first) {
-				if (action->GetAnimation()) {
+				if (action->GetTarget() && action->GetAnimation()) {
 					Main_Data::game_screen->ShowBattleAnimation(
 						action->GetAnimation()->ID,
 						action->GetTarget()->GetBattleX(),
@@ -602,7 +602,9 @@ void Scene_Battle_Rpg2k::ItemSelected() {
 	}
 	else {
 		if (item->type == RPG::Item::Type_switch) {
-			// ToDo
+			active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, *item_window->GetItem()));
+			battle_actions.push_back(active_actor);
+			SetState(State_SelectActor);
 		}
 		else {
 			SetState(State_SelectAllyTarget);
@@ -625,7 +627,9 @@ void Scene_Battle_Rpg2k::SkillSelected() {
 		case RPG::Skill::Type_teleport:
 		case RPG::Skill::Type_escape:
 		case RPG::Skill::Type_switch:
-			//BeginSkill();
+			active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, *skill_window->GetSkill()));
+			battle_actions.push_back(active_actor);
+			SetState(State_SelectActor);
 			return;
 		case RPG::Skill::Type_normal:
 		default:

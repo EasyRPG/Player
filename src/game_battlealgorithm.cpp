@@ -311,7 +311,7 @@ void Game_BattleAlgorithm::AlgorithmBase::Apply() {
 	}
 }
 
-bool Game_BattleAlgorithm::AlgorithmBase::IsDeadTargetValid() {
+bool Game_BattleAlgorithm::AlgorithmBase::IsTargetValid() {
 	if (current_target == targets.end()) {
 		return true;
 	}
@@ -432,15 +432,23 @@ Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Party_Base* target
 		// no-op
 }
 
-bool Game_BattleAlgorithm::Skill::IsDeadTargetValid() {
+Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, const RPG::Skill& skill) :
+AlgorithmBase(source), skill(skill) {
+	// no-op
+}
+
+bool Game_BattleAlgorithm::Skill::IsTargetValid() {
 	// ToDo
+	if (current_target == targets.end()) {
+		return true;
+	}
 	return (!(*current_target)->IsDead());
 }
 
 bool Game_BattleAlgorithm::Skill::Execute() {
 	Reset();
 
-	animation = &Data::animations[skill.animation_id == 0 ? 0 : skill.animation_id - 1];
+	animation = &Data::animations[skill.animation_id == 0 ? NULL : skill.animation_id - 1];
 
 	this->success = false;
 
@@ -502,6 +510,13 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 		return this->success;
 	}
+	else if (skill.type == RPG::Skill::Type_switch) {
+		switch_id = skill.switch_id;
+		this->success = true;
+	}
+	else {
+		assert(false && "Unsupported skill type");
+	}
 
 	return this->success;
 }
@@ -514,8 +529,18 @@ void Game_BattleAlgorithm::Skill::Apply() {
 
 std::string Game_BattleAlgorithm::Skill::GetStartMessage() const {
 	// TODO: How to handle using_message2?
-	return source->GetName() + " " + skill.using_message1;
+	return source->GetName() + skill.using_message1;
 }
+
+const RPG::Sound* Game_BattleAlgorithm::Skill::GetStartSe() const {
+	if (skill.type == RPG::Skill::Type_switch) {
+		return &skill.sound_effect;
+	}
+	else {
+		return AlgorithmBase::GetStartSe();
+	}
+}
+
 
 void Game_BattleAlgorithm::Skill::GetResultMessages(std::vector<std::string>& out) const {
 	if (!success) {
@@ -555,7 +580,16 @@ Game_BattleAlgorithm::Item::Item(Game_Battler* source, Game_Party_Base* target, 
 		// no-op
 }
 
-bool Game_BattleAlgorithm::Item::IsDeadTargetValid() {
+Game_BattleAlgorithm::Item::Item(Game_Battler* source, const RPG::Item& item) :
+AlgorithmBase(source), item(item) {
+	// no-op
+}
+
+bool Game_BattleAlgorithm::Item::IsTargetValid() {
+	if (current_target == targets.end()) {
+		return true;
+	}
+
 	return item.type == RPG::Item::Type_medicine;
 }
 
@@ -613,6 +647,15 @@ std::string Game_BattleAlgorithm::Item::GetStartMessage() const {
 
 void Game_BattleAlgorithm::Item::GetResultMessages(std::vector<std::string>& out) const {
 	AlgorithmBase::GetResultMessages(out);
+}
+
+const RPG::Sound* Game_BattleAlgorithm::Item::GetStartSe() const {
+	if (item.type == RPG::Item::Type_switch) {
+		return &Data::system.item_se;
+	}
+	else {
+		return AlgorithmBase::GetStartSe();
+	}
 }
 
 Game_BattleAlgorithm::NormalDual::NormalDual(Game_Battler* source, Game_Battler* target) :

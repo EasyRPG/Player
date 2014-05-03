@@ -181,12 +181,12 @@ public:
 	virtual void Apply();
 
 	/**
-	 * Tests if it makes sense to apply an action on the target when it is
-	 * dead.
+	 * Tests if it makes sense to apply an action on the target.
+	 * E.g. when it is dead.
 	 *
 	 * @return true if valid, in case of false another target should be selected.
 	 */
-	virtual bool IsDeadTargetValid();
+	virtual bool IsTargetValid();
 
 	/**
 	 * Gets the message that is displayed when the action is invoked.
@@ -280,12 +280,14 @@ class Skill : public AlgorithmBase {
 public:
 	Skill(Game_Battler* source, Game_Battler* target, const RPG::Skill& skill);
 	Skill(Game_Battler* source, Game_Party_Base* target, const RPG::Skill& skill);
+	Skill(Game_Battler* source, const RPG::Skill& skill);
 
-	bool IsDeadTargetValid();
+	bool IsTargetValid();
 	bool Execute();
 	void Apply();
 
 	std::string GetStartMessage() const;
+	virtual const RPG::Sound* GetStartSe() const;
 	void GetResultMessages(std::vector<std::string>& out) const;
 
 private:
@@ -296,12 +298,14 @@ class Item : public AlgorithmBase {
 public:
 	Item(Game_Battler* source, Game_Battler* target, const RPG::Item& item);
 	Item(Game_Battler* source, Game_Party_Base* target, const RPG::Item& item);
+	Item(Game_Battler* source, const RPG::Item& item);
 
-	bool IsDeadTargetValid();
+	bool IsTargetValid();
 	bool Execute();
 	void Apply();
 
 	std::string GetStartMessage() const;
+	virtual const RPG::Sound* GetStartSe() const;
 	void GetResultMessages(std::vector<std::string>& out) const;
 
 private:
