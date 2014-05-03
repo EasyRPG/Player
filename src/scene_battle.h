@@ -135,6 +135,15 @@ protected:
 
 	virtual void UpdateBackground();
 
+	virtual void EnemySelected();
+	virtual void AllySelected();
+	virtual void AttackSelected();
+	virtual void DefendSelected();
+	virtual void ItemSelected();
+	virtual void SkillSelected();
+
+	virtual void AssignSkill(const RPG::Skill* skill);
+
 	/**
 	 * Convenience function, sets the animation state of the target if it has
 	 * a valid battler sprite, does nothing otherwise.

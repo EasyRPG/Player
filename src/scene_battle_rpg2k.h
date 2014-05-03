@@ -78,15 +78,6 @@ protected:
 
 	void OptionSelected();
 	void CommandSelected();
-	void AttackSelected();
-	void DefendSelected();
-	void ItemSelected();
-	void SkillSelected();
-
-	void AssignSkill(const RPG::Skill* skill);
-
-	void AllySelected();
-	void EnemySelected();
 
 	void SelectNextActor();
 	void SelectPreviousActor();

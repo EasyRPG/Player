@@ -15,7 +15,6 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Headers
 #include <boost/lexical_cast.hpp>
 #include "scene_battle_rpg2k3.h"
 #include "scene_battle.h"
@@ -51,31 +50,32 @@ Scene_Battle_Rpg2k3::~Scene_Battle_Rpg2k3() {
 
 void Scene_Battle_Rpg2k3::Update() {
 	switch (state) {
-	case State_SelectActor: {
-		Game_Battle::UpdateGauges();
+		case State_SelectActor: {
+			Game_Battle::UpdateEvents();
+			Game_Battle::UpdateGauges();
 
-		if (status_window->GetIndex() == -1) {
-			if (status_window->ChooseActiveCharacter() != -1) {
-				RefreshCommandWindow();
-			}
-		}
-
-		std::vector<Game_Enemy*> enemies = Main_Data::game_enemyparty->GetAliveEnemies();
-
-		for (std::vector<Game_Enemy*>::iterator it = enemies.begin();
-			it != enemies.end(); ++it) {
-			if ((*it)->IsGaugeFull() && !(*it)->GetBattleAlgorithm()) {
-				const RPG::EnemyAction* action = (*it)->ChooseRandomAction();
-				if (action) {
-					CreateEnemyAction(*it, action);
-					(*it)->SetGauge(0);
+			if (status_window->GetIndex() == -1) {
+				if (status_window->ChooseActiveCharacter() != -1) {
+					RefreshCommandWindow();
 				}
 			}
-		}
 
-		break;
-	}
-	default:;
+			std::vector<Game_Enemy*> enemies = Main_Data::game_enemyparty->GetAliveEnemies();
+
+			for (std::vector<Game_Enemy*>::iterator it = enemies.begin();
+				it != enemies.end(); ++it) {
+				if ((*it)->IsGaugeFull() && !(*it)->GetBattleAlgorithm()) {
+					const RPG::EnemyAction* action = (*it)->ChooseRandomAction();
+					if (action) {
+						CreateEnemyAction(*it, action);
+						(*it)->SetGauge(0);
+					}
+				}
+			}
+
+			break;
+		}
+		default:;
 	}
 
 	for (std::vector<FloatText>::iterator it = floating_texts.begin();
@@ -346,6 +346,7 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 			RemoveCurrentAction();
 		}
 		else if (ProcessBattleAction(battle_actions.front()->GetBattleAlgorithm().get())) {
+			NextTurn();
 			RemoveCurrentAction();
 			if (CheckWin() ||
 				CheckLose() ||
@@ -355,72 +356,71 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 			}
 		}
 	} else {
-		NextTurn();
 		//actor_index = 0;
 		//SetState(State_SelectOption);
 	}
 
 	switch (state) {
-	case State_Start:
-		SetState(State_SelectOption);
-		break;
-	case State_SelectActor:
-	case State_AutoBattle:
-		Game_Battle::Update();
-
-		CheckWin();
-		CheckLose();
-		CheckAbort();
-		CheckFlee();
-
-		if (help_window->GetVisible() && message_timer > 0) {
-			message_timer--;
-			if (message_timer <= 0)
-				help_window->SetVisible(false);
-		}
-
-		break;
-	case State_Battle:
-		if (!battle_actions.empty()) {
-			if (battle_actions.front()->IsDead()) {
-				// No zombies allowed ;)
-				RemoveCurrentAction();
-			}
-			else if (ProcessBattleAction(battle_actions.front()->GetBattleAlgorithm().get())) {
-				RemoveCurrentAction();
-			}
-		} else {
-			if (CheckWin() ||
-				CheckLose() ||
-				CheckAbort() ||
-				CheckFlee()) {
-				return;
-			}
-
-			NextTurn();
-			actor_index = 0;
+		case State_Start:
 			SetState(State_SelectOption);
-		}
-		break;
-	case State_SelectEnemyTarget: {
-		static int flash_count = 0;
+			break;
+		case State_SelectActor:
+		case State_AutoBattle:
+			Game_Battle::Update();
 
-		Game_Enemy* target = static_cast<Game_Enemy*>(Main_Data::game_enemyparty->GetAliveEnemies()[target_window->GetIndex()]);
-		Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(target);
-		if (sprite) {
-			++flash_count;
+			CheckWin();
+			CheckLose();
+			CheckAbort();
+			CheckFlee();
 
-			if (flash_count == 60) {
-				sprite->Flash(Color(255, 255, 255, 100), 15);
-				flash_count = 0;
+			if (help_window->GetVisible() && message_timer > 0) {
+				message_timer--;
+				if (message_timer <= 0)
+					help_window->SetVisible(false);
 			}
+
+			break;
+		case State_Battle:
+			if (!battle_actions.empty()) {
+				if (battle_actions.front()->IsDead()) {
+					// No zombies allowed ;)
+					RemoveCurrentAction();
+				}
+				else if (ProcessBattleAction(battle_actions.front()->GetBattleAlgorithm().get())) {
+					RemoveCurrentAction();
+				}
+			} else {
+				if (CheckWin() ||
+					CheckLose() ||
+					CheckAbort() ||
+					CheckFlee()) {
+					return;
+				}
+
+				NextTurn();
+				actor_index = 0;
+				SetState(State_SelectOption);
+			}
+			break;
+		case State_SelectEnemyTarget: {
+			static int flash_count = 0;
+
+			Game_Enemy* target = static_cast<Game_Enemy*>(Main_Data::game_enemyparty->GetAliveEnemies()[target_window->GetIndex()]);
+			Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(target);
+			if (sprite) {
+				++flash_count;
+
+				if (flash_count == 60) {
+					sprite->Flash(Color(255, 255, 255, 100), 15);
+					flash_count = 0;
+				}
+			}
+			break;
 		}
-		break;
-	}
-	case State_AllyAction:
-	case State_EnemyAction:
-	default:
-		break;
+		case State_AllyAction:
+		case State_EnemyAction:
+		default:
+			break;
 	}
 }
 
@@ -560,7 +560,7 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 			EnemySelected();
 			break;
 		case State_SelectAllyTarget:
-			//TargetDone();
+			AllySelected();
 			break;
 		case State_SelectItem:
 			ItemSelected();
@@ -680,95 +680,20 @@ void Scene_Battle_Rpg2k3::CommandSelected() {
 }
 
 void Scene_Battle_Rpg2k3::AttackSelected() {
-	Game_System::SePlay(Data::system.decision_se);
-
 	CreateBattleTargetWindow();
 
-	SetState(State_SelectEnemyTarget);
+	Scene_Battle::AttackSelected();
 }
 
 void Scene_Battle_Rpg2k3::DefendSelected() {
-	Game_System::SePlay(Data::system.decision_se);
-}
-
-void Scene_Battle_Rpg2k3::ItemSelected() {
-	Game_System::SePlay(Data::system.decision_se);
-}
-
-void Scene_Battle_Rpg2k3::SkillSelected() {
-	const RPG::Skill* skill = skill_window->GetSkill();
-
-	if (!skill || !active_actor->IsSkillUsable(skill->ID)) {
-		Game_System::SePlay(Data::system.buzzer_se);
-		return;
-	}
-
-	Game_System::SePlay(Data::system.decision_se);
-
-	switch (skill->type) {
-	case RPG::Skill::Type_teleport:
-	case RPG::Skill::Type_escape:
-	case RPG::Skill::Type_switch:
-		//BeginSkill();
-		return;
-	case RPG::Skill::Type_normal:
-	default:
-		break;
-	}
-
-	switch (skill->scope) {
-	case RPG::Skill::Scope_enemy:
-		SetState(State_SelectEnemyTarget);
-		break;
-	case RPG::Skill::Scope_ally:
-		SetState(State_SelectAllyTarget);
-		break;
-	case RPG::Skill::Scope_enemies:
-		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, Main_Data::game_enemyparty.get(), *skill_window->GetSkill()));
-		battle_actions.push_back(active_actor);
-		SetState(State_SelectActor);
-		break;
-	case RPG::Skill::Scope_self:
-		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, active_actor, *skill_window->GetSkill()));
-		battle_actions.push_back(active_actor);
-		SetState(State_SelectActor);
-		break;
-	case RPG::Skill::Scope_party: {
-		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, Main_Data::game_party.get(), *skill_window->GetSkill()));
-		battle_actions.push_back(active_actor);
-		SetState(State_SelectActor);
-		break;
-								  }
-	}
+	Scene_Battle::DefendSelected();
 }
 
 void Scene_Battle_Rpg2k3::EnemySelected() {
-	Game_Enemy* target = static_cast<Game_Enemy*>(Main_Data::game_enemyparty->GetAliveEnemies()[target_window->GetIndex()]);
-
-	switch (previous_state) {
-	case State_SelectCommand:
-		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Normal>(active_actor, target));
-		battle_actions.push_back(active_actor);
-		break;
-	case State_SelectSkill:
-		active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Skill>(active_actor, target, *skill_window->GetSkill()));
-		battle_actions.push_back(active_actor);
-		break;
-	case State_SelectItem:
-		{
-			//active_actor->SetBattleAlgorithm(EASYRPG_MAKE_SHARED<Game_BattleAlgorithm::Item>(active_actor, target, *item_window->GetItem()));
-			// battle_actions.push_back(active_actor);
-			// Todo
-			break;
-		}
-	default:
-		assert("Invalid previous state for enemy selection" && false);
-	}
+	Scene_Battle::EnemySelected();
 
 	active_actor->SetGauge(0);
 	status_window->SetIndex(-1);
-
-	SetState(State_SelectActor);
 }
 
 bool Scene_Battle_Rpg2k3::CheckWin() {
