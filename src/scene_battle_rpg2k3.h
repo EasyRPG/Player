@@ -86,11 +86,10 @@ protected:
 	void OptionSelected();
 	void CommandSelected();
 	void AttackSelected();
-	void DefendSelected();
-
-	void EnemySelected();
 
 	void SelectNextActor();
+
+	void ActionSelectedCallback(Game_Battler* for_battler);
 
 	boost::scoped_ptr<Sprite> ally_cursor, enemy_cursor;
 	std::vector<FloatText> floating_texts;

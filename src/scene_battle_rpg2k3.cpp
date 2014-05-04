@@ -68,7 +68,6 @@ void Scene_Battle_Rpg2k3::Update() {
 					const RPG::EnemyAction* action = (*it)->ChooseRandomAction();
 					if (action) {
 						CreateEnemyAction(*it, action);
-						(*it)->SetGauge(0);
 					}
 				}
 			}
@@ -685,17 +684,6 @@ void Scene_Battle_Rpg2k3::AttackSelected() {
 	Scene_Battle::AttackSelected();
 }
 
-void Scene_Battle_Rpg2k3::DefendSelected() {
-	Scene_Battle::DefendSelected();
-}
-
-void Scene_Battle_Rpg2k3::EnemySelected() {
-	Scene_Battle::EnemySelected();
-
-	active_actor->SetGauge(0);
-	status_window->SetIndex(-1);
-}
-
 bool Scene_Battle_Rpg2k3::CheckWin() {
 	if (!Main_Data::game_enemyparty->IsAnyAlive()) {
 		Game_Temp::battle_result = Game_Temp::BattleVictory;
@@ -788,4 +776,14 @@ void Scene_Battle_Rpg2k3::SelectNextActor() {
 	RefreshCommandWindow();
 
 	SetState(Scene_Battle::State_SelectCommand);
+}
+
+void Scene_Battle_Rpg2k3::ActionSelectedCallback(Game_Battler* for_battler) {
+	for_battler->SetGauge(0);
+
+	if (for_battler->GetType() == Game_Battler::Type_Ally) {
+		status_window->SetIndex(-1);
+	}
+
+	Scene_Battle::ActionSelectedCallback(for_battler);
 }

@@ -145,6 +145,14 @@ protected:
 	virtual void AssignSkill(const RPG::Skill* skill);
 
 	/**
+	 * Executed when selection an action (normal, skill, item, ...) and
+	 * (if needed) choosing an attack target was finished. 
+	 *
+	 * @param for_battler Battler whose action was selected.
+	 */
+	virtual void ActionSelectedCallback(Game_Battler* for_battler);
+
+	/**
 	 * Convenience function, sets the animation state of the target if it has
 	 * a valid battler sprite, does nothing otherwise.
 	 *
