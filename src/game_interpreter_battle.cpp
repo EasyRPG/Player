@@ -128,7 +128,7 @@ bool Game_Interpreter_Battle::CommandChangeMonsterHP(RPG::EventCommand const& co
 	bool lose = com.parameters[1] > 0;
 	int hp = enemy.GetHp();
 
-	int change;
+	int change = 0;
 	switch (com.parameters[2]) {
 	case 0:
 		change = com.parameters[3];
@@ -155,7 +155,7 @@ bool Game_Interpreter_Battle::CommandChangeMonsterMP(RPG::EventCommand const& co
 	bool lose = com.parameters[1] > 0;
 	int sp = enemy.GetSp();
 
-	int change;
+	int change = 0;
 	switch (com.parameters[2]) {
 	case 0:
 		change = com.parameters[3];

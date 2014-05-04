@@ -47,7 +47,7 @@ public:
 				_id);
 			return "";
 		}
-		else{
+		else {
 			std::string result = Data::switches.at(_id - 1).name;
 			return result;
 		}
@@ -57,8 +57,8 @@ public:
 		return (switch_id > 0 && switch_id <= (int) switches.size());
 	}
 
-	int size (){
-		return switches.size();
+	int size () {
+		return (int)switches.size();
 	}
 
 private:

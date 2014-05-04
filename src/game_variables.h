@@ -56,8 +56,8 @@ public:
 		return (variable_id > 0 && variable_id <= (int) variables.size());
 	}
 
-	int size (){
-		return variables.size();
+	int size () {
+		return (int)variables.size();
 	}
 
 private:
