@@ -40,6 +40,7 @@ endif()
 # wine checking
 find_program(WINE_EXECUTABLE wine)
 if(EXISTS ${WINE_EXECUTABLE})
+  message(STATUS "wine registry enabled")
   add_definitions(-DHAVE_WINE=1)
 endif()
 
