@@ -21,6 +21,7 @@
 #include "bitmap.h"
 #include "cache.h"
 #include "input.h"
+#include "game_enemyparty.h"
 #include "game_party.h"
 #include "game_actor.h"
 #include "game_system.h"
@@ -28,14 +29,21 @@
 #include "player.h"
 #include "window_battlestatus.h"
 
-Window_BattleStatus::Window_BattleStatus(int ix, int iy, int iwidth, int iheight) :
-	Window_Selectable(ix, iy, iwidth, iheight), mode(ChoiceMode_All) {
+Window_BattleStatus::Window_BattleStatus(int ix, int iy, int iwidth, int iheight, bool enemy) :
+	Window_Selectable(ix, iy, iwidth, iheight), mode(ChoiceMode_All), enemy(enemy) {
 
 	SetBorderX(4);
 
 	SetContents(Bitmap::Create(width - 8, height - 16));
 
-	item_max = Main_Data::game_party->GetBattlerCount();
+	if (enemy) {
+		item_max = Main_Data::game_enemyparty->GetBattlerCount();
+	}
+	else {
+		item_max = Main_Data::game_party->GetBattlerCount();
+	}
+
+	item_max = std::min(item_max, 4);
 
 	index = -1;
 
@@ -45,9 +53,17 @@ Window_BattleStatus::Window_BattleStatus(int ix, int iy, int iwidth, int iheight
 void Window_BattleStatus::Refresh() {
 	contents->Clear();
 
-	for (int i = 0; i < item_max && i < 4; i++) {
+	for (int i = 0; i < item_max; i++) {
 		int y = 2 + i * 16;
-		Game_Actor* actor = Main_Data::game_party->GetActors()[i];
+
+		Game_Battler* actor;
+		if (enemy) {
+			actor = &(*Main_Data::game_enemyparty)[i];
+		}
+		else {
+			actor = &(*Main_Data::game_party)[i];
+		}
+
 		DrawActorName(actor, 4, y);
 		DrawActorState(actor, 84, y);
 		DrawActorHp(actor, 138, y, true);
@@ -62,7 +78,14 @@ void Window_BattleStatus::RefreshGauge() {
 		contents->ClearRect(Rect(198, 0, 25 + 16, 15 * item_max));
 
 		for (int i = 0; i < item_max; ++i) {
-			Game_Actor* actor = Main_Data::game_party->GetActors()[i];
+			Game_Battler* actor;
+			if (enemy) {
+				actor = &(*Main_Data::game_enemyparty)[i];
+			}
+			else {
+				actor = &(*Main_Data::game_party)[i];
+			}
+
 			int y = 2 + i * 16;
 			DrawGauge(actor, 198 - 10, y - 2);
 			DrawActorSp(actor, 198, y, false);

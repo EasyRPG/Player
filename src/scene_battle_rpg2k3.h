@@ -96,6 +96,8 @@ protected:
 
 	int battle_action_wait;
 	int battle_action_state;
+
+	boost::scoped_ptr<Window_BattleStatus> enemy_status_window;
 };
 
 #endif

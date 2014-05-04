@@ -51,8 +51,10 @@ Scene_Battle_Rpg2k3::~Scene_Battle_Rpg2k3() {
 void Scene_Battle_Rpg2k3::Update() {
 	switch (state) {
 		case State_SelectActor: {
-			Game_Battle::UpdateEvents();
-			Game_Battle::UpdateGauges();
+			if (battle_actions.empty()) {
+				Game_Battle::UpdateEvents();
+				Game_Battle::UpdateGauges();
+			}
 
 			if (status_window->GetIndex() == -1) {
 				if (status_window->ChooseActiveCharacter() != -1) {
@@ -89,6 +91,8 @@ void Scene_Battle_Rpg2k3::Update() {
 	}
 
 	Scene_Battle::Update();
+
+	//enemy_status_window->Update();
 }
 
 void Scene_Battle_Rpg2k3::CreateCursors() {
@@ -167,6 +171,9 @@ void Scene_Battle_Rpg2k3::CreateBattleOptionWindow() {
 	options_window->SetY(160);
 	// TODO: Auto Battle not implemented
 	options_window->DisableItem(1);
+
+	enemy_status_window.reset(new Window_BattleStatus(0, 0, 320 - 76, 80, true));
+	enemy_status_window->SetVisible(false);
 }
 
 void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {

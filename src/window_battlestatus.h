@@ -44,7 +44,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_BattleStatus(int ix, int iy, int iwidth, int iheight);
+	Window_BattleStatus(int ix, int iy, int iwidth, int iheight, bool enemy = false);
 
 	/**
 	 * Renders the current status on the window.
@@ -87,6 +87,9 @@ protected:
 	bool IsChoiceValid(const Game_Battler& battler) const;
 
 	ChoiceMode mode;
+
+	// Debug helper
+	bool enemy;
 };
 
 #endif
