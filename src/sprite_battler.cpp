@@ -53,7 +53,6 @@ void Sprite_Battler::Update() {
 
 		CreateSprite();
 	}
-	CreateSprite();
 
 	Sprite::Update();
 
