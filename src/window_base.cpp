@@ -66,7 +66,7 @@ void Window_Base::DrawActorFace(Game_Actor* actor, int cx, int cy) {
 	DrawFace(actor->GetFaceName(), actor->GetFaceIndex(), cx, cy);
 }
 
-void Window_Base::DrawActorName(Game_Actor* actor, int cx, int cy) {
+void Window_Base::DrawActorName(Game_Battler* actor, int cx, int cy) {
 	contents->TextDraw(cx, cy, Font::ColorDefault, actor->GetName());
 }
 
@@ -88,7 +88,7 @@ void Window_Base::DrawActorLevel(Game_Actor* actor, int cx, int cy) {
 	contents->TextDraw(cx + 24, cy, Font::ColorDefault, ss.str(), Text::AlignRight);
 }
 
-void Window_Base::DrawActorState(Game_Actor* actor, int cx, int cy) {
+void Window_Base::DrawActorState(Game_Battler* actor, int cx, int cy) {
 	std::vector<int16_t> states = actor->GetStates();
 
 	// Unit has Normal state if no state is set
@@ -117,7 +117,7 @@ void Window_Base::DrawActorExp(Game_Actor* actor, int cx, int cy) {
 	contents->TextDraw(cx + 12, cy, Font::ColorDefault, ss.str(), Text::AlignLeft);
 }
 
-void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy, bool draw_max) {
+void Window_Base::DrawActorHp(Game_Battler* actor, int cx, int cy, bool draw_max) {
 	// Draw HP-String
 	contents->TextDraw(cx, cy, 1, Data::terms.hp_short);
 
@@ -148,7 +148,7 @@ void Window_Base::DrawActorHp(Game_Actor* actor, int cx, int cy, bool draw_max) 
 	contents->TextDraw(cx + 18, cy, Font::ColorDefault, ss.str(), Text::AlignRight);
 }
 
-void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy, bool draw_max) {
+void Window_Base::DrawActorSp(Game_Battler* actor, int cx, int cy, bool draw_max) {
 	// Draw SP-String
 	contents->TextDraw(cx, cy, 1, Data::terms.sp_short);
 
@@ -177,7 +177,7 @@ void Window_Base::DrawActorSp(Game_Actor* actor, int cx, int cy, bool draw_max) 
 	contents->TextDraw(cx + 18, cy, Font::ColorDefault, ss.str(), Text::AlignRight);
 }
 
-void Window_Base::DrawActorParameter(Game_Actor* actor, int cx, int cy, int type) {
+void Window_Base::DrawActorParameter(Game_Battler* actor, int cx, int cy, int type) {
 	std::string name;
 	int value;
 
@@ -261,4 +261,31 @@ void Window_Base::DrawCurrencyValue(int money, int cx, int cy) {
 	contents->TextDraw(cx, cy, 1, Data::terms.gold, Text::AlignRight);
 
 	contents->TextDraw(cx - gold_text_size.width, cy, Font::ColorDefault, gold.str(), Text::AlignRight);
+}
+
+void Window_Base::DrawGauge(Game_Battler* actor, int cx, int cy) {
+	BitmapRef system2 = Cache::System2(Data::system.system2_name);
+
+	bool full = actor->IsGaugeFull();
+	int gauge_w = actor->GetGauge() / 4;
+
+	// Which gauge (0 - 2)
+	int gauge_y = 32 + 2 * 16;
+
+	// Three components of the gauge
+	Rect gauge_left(0, gauge_y, 16, 16);
+	Rect gauge_center(16, gauge_y, 16, 16);
+	Rect gauge_right(32, gauge_y, 16, 16);
+
+	// Full or not full bar
+	Rect gauge_bar(full ? 64 : 48, gauge_y, 16, 16);
+
+	Rect dst_rect(cx + 16, cy, 25, 16);
+	Rect bar_rect(cx + 16, cy, gauge_w, 16);
+
+	contents->Blit(cx + 0, cy, *system2, gauge_left, 255);
+	contents->Blit(cx + 16 + 25, cy, *system2, gauge_right, 255);
+
+	contents->StretchBlit(dst_rect, *system2, gauge_center, 255);
+	contents->StretchBlit(bar_rect, *system2, gauge_bar, 255);
 }

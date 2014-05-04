@@ -80,15 +80,6 @@ protected:
 	void RefreshGauge();
 
 	/**
-	 * Draws a character's time gauge.
-	 *
-	 * @param actor actor.
-	 * @param cx x coordinate.
-	 * @param cy y coordinate.
-	 */
-	void DrawGauge(Game_Actor* actor, int cx, int cy);
-
-	/**
 	 * Tests whether actor is selectable in current ChoiceMode.
 	 *
 	 * @return true: selection possible 
