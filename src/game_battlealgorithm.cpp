@@ -32,6 +32,7 @@
 #include "rpg_state.h"
 #include "rpg_skill.h"
 #include "rpg_item.h"
+#include "sprite_battler.h"
 
 Game_BattleAlgorithm::AlgorithmBase::AlgorithmBase(Game_Battler* source) :
 source(source) {
@@ -317,6 +318,10 @@ bool Game_BattleAlgorithm::AlgorithmBase::IsTargetValid() {
 	return (!(*current_target)->IsDead());
 }
 
+int Game_BattleAlgorithm::AlgorithmBase::GetSourceAnimationState() const {
+	return Sprite_Battler::AnimationState_Idle;
+}
+
 bool Game_BattleAlgorithm::AlgorithmBase::TargetNext() {
 	if (current_target == targets.end()) {
 		return false;
@@ -424,6 +429,10 @@ std::string Game_BattleAlgorithm::Normal::GetStartMessage() const {
 	return source->GetName() + Data::terms.attacking;
 }
 
+int Game_BattleAlgorithm::Normal::GetSourceAnimationState() const {
+	return Sprite_Battler::AnimationState_LeftHand;
+}
+
 Game_BattleAlgorithm::Skill::Skill(Game_Battler* source, Game_Battler* target, const RPG::Skill& skill, const RPG::Item* item) :
 	AlgorithmBase(source, target), skill(skill), item(item) {
 	// no-op
@@ -472,7 +481,8 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 			skill.scope == RPG::Skill::Scope_self;
 	}
 
-	if (skill.type == RPG::Skill::Type_normal) {
+	if (skill.type == RPG::Skill::Type_normal ||
+		skill.type >= RPG::Skill::Type_custom) {
 		if (skill.power > 0) {
 			if (healing || rand() % 100 < skill.hit) {
 				this->success = true;
@@ -554,6 +564,10 @@ std::string Game_BattleAlgorithm::Skill::GetStartMessage() const {
 		return Item(source, *item).GetStartMessage();
 	}
 	return source->GetName() + skill.using_message1;
+}
+
+int Game_BattleAlgorithm::Skill::GetSourceAnimationState() const {
+	return Sprite_Battler::AnimationState_SkillUse;
 }
 
 const RPG::Sound* Game_BattleAlgorithm::Skill::GetStartSe() const {
@@ -669,6 +683,10 @@ std::string Game_BattleAlgorithm::Item::GetStartMessage() const {
 	return source->GetName() + " " + item.name + Data::terms.use_item;
 }
 
+int Game_BattleAlgorithm::Item::GetSourceAnimationState() const {
+	return Sprite_Battler::AnimationState_Item;
+}
+
 void Game_BattleAlgorithm::Item::GetResultMessages(std::vector<std::string>& out) const {
 	AlgorithmBase::GetResultMessages(out);
 }
@@ -708,6 +726,10 @@ std::string Game_BattleAlgorithm::Defend::GetStartMessage() const {
 bool Game_BattleAlgorithm::Defend::Execute() {
 	Output::Warning("Battle: Defend not implemented");
 	return true;
+}
+
+int Game_BattleAlgorithm::Defend::GetSourceAnimationState() const {
+	return Sprite_Battler::AnimationState_Defending;
 }
 
 Game_BattleAlgorithm::Observe::Observe(Game_Battler* source) :

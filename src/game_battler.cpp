@@ -81,7 +81,8 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 	//} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_escape) {
 	//	return is_there_an_escape_set;
 	//} else
-	if (skill.type == RPG::Skill::Type_normal) {
+	if (skill.type == RPG::Skill::Type_normal ||
+		skill.type >= RPG::Skill::Type_custom) {
 		int scope = skill.scope;
 
 		if (Game_Temp::battle_running) {
@@ -95,12 +96,12 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 					skill.affect_sp ||
 					skill.state_effect);
 		}
-	} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_switch) {
+	} else if (skill.type == RPG::Skill::Type_switch) {
 		if (Game_Temp::battle_running) {
-			return Data::skills[skill_id - 1].occasion_battle;
+			return skill.occasion_battle;
 		}
 		else {
-			return Data::skills[skill_id - 1].occasion_field;
+			return skill.occasion_field;
 		}
 	}
 

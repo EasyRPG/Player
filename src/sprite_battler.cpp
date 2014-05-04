@@ -26,7 +26,7 @@
 
 Sprite_Battler::Sprite_Battler(Game_Battler* battler) :
 	battler(battler),
-	anim_state(Idle),
+	anim_state(AnimationState_Idle),
 	cycle(0),
 	sprite_file(""),
 	sprite_frame(-1),
@@ -59,24 +59,24 @@ void Sprite_Battler::Update() {
 	++cycle;
 	
 	if (battler->GetBattleAnimationId() <= 0) {
-		if (anim_state == Idle) {
+		if (anim_state == AnimationState_Idle) {
 			SetOpacity(255);
 		}
-		else if (anim_state == Dead && fade_out > 0) {
+		else if (anim_state == AnimationState_Dead && fade_out > 0) {
 			fade_out -= 15;
 			SetOpacity(std::max(0, fade_out));
 		}
-		else if (anim_state == LeftHand) {
+		else if (anim_state == AnimationState_LeftHand) {
 			if (cycle == 60) {
-				SetAnimationState(Idle);
+				SetAnimationState(AnimationState_Idle);
 				cycle = 0;
 			}
 		}
-		else if (anim_state == Damage) {
+		else if (anim_state == AnimationState_Damage) {
 			flash_counter = (flash_counter + 1) % 10;
 			SetOpacity(flash_counter > 5 ? 50 : 255);
 			if (cycle == 60) {
-				SetAnimationState(Idle);
+				SetAnimationState(AnimationState_Idle);
 				cycle = 0;
 			}
 		}
@@ -95,8 +95,8 @@ void Sprite_Battler::Update() {
 			if (cycle == 60) {
 				cycle = 0;
 
-				if (loop_state == IdleAnimationAfterFinish) {
-					SetAnimationState(Idle);
+				if (loop_state == LoopState_IdleAnimationAfterFinish) {
+					SetAnimationState(AnimationState_Idle);
 				}
 			}
 		}
@@ -126,7 +126,7 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 }
 
 bool Sprite_Battler::IsIdling() {
-	return anim_state == Idle;
+	return anim_state == AnimationState_Idle;
 }
 
 void Sprite_Battler::CreateSprite() {

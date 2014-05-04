@@ -454,7 +454,7 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 		action->Execute();
 
-		if (action->GetAnimation()) {
+		if (action->GetTarget() && action->GetAnimation()) {
 			Main_Data::game_screen->ShowBattleAnimation(
 				action->GetAnimation()->ID,
 				action->GetTarget()->GetBattleX(),
@@ -464,7 +464,9 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 		if (source_sprite) {
 			source_sprite->Flash(Color(255, 255, 255, 100), 15);
-			source_sprite->SetAnimationState(Sprite_Battler::LeftHand, Sprite_Battler::IdleAnimationAfterFinish);
+			source_sprite->SetAnimationState(
+				action->GetSourceAnimationState(),
+				Sprite_Battler::LoopState_IdleAnimationAfterFinish);
 		}
 
 		if (action->GetStartSe()) {
@@ -483,17 +485,19 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 			Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
 			if (target_sprite) {
-				target_sprite->SetAnimationState(Sprite_Battler::Damage, Sprite_Battler::IdleAnimationAfterFinish);
+				target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Damage, Sprite_Battler::LoopState_IdleAnimationAfterFinish);
 			}
 
 			action->Apply();
 
-			DrawFloatText(
-				action->GetTarget()->GetBattleX(),
-				action->GetTarget()->GetBattleY(),
-				0,
-				action->GetSuccess() && action->GetAffectedHp() != -1 ? boost::lexical_cast<std::string>(action->GetAffectedHp()) : Data::terms.miss,
-				30);
+			if (action->GetTarget()) {
+				DrawFloatText(
+					action->GetTarget()->GetBattleX(),
+					action->GetTarget()->GetBattleY(),
+					0,
+					action->GetSuccess() && action->GetAffectedHp() != -1 ? boost::lexical_cast<std::string>(action->GetAffectedHp()) : Data::terms.miss,
+					30);
+			}
 
 			status_window->Refresh();
 		} while (action->TargetNext());
@@ -513,19 +517,22 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 		}
 		battle_action_wait = 30;
 
-		Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
+		if (action->GetTarget()) {
+			Sprite_Battler* target_sprite = Game_Battle::GetSpriteset().FindBattler(action->GetTarget());
 
-		if (action->GetTarget()->IsDead()) {
-			if (action->GetDeathSe()) {
-				Game_System::SePlay(*action->GetDeathSe());
-			}
+			if (action->GetTarget()->IsDead()) {
+				if (action->GetDeathSe()) {
+					Game_System::SePlay(*action->GetDeathSe());
+				}
 
-			if (target_sprite) {
-				target_sprite->SetAnimationState(Sprite_Battler::Dead);
+				if (target_sprite) {
+					target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Dead);
+				}
 			}
-		} else {
-			if (target_sprite) {
-				target_sprite->SetAnimationState(Sprite_Battler::Idle);
+			else {
+				if (target_sprite) {
+					target_sprite->SetAnimationState(Sprite_Battler::AnimationState_Idle);
+				}
 			}
 		}
 

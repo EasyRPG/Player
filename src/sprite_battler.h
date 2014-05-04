@@ -25,28 +25,28 @@
 class Game_Character;
 
 /**
- * Sprite_Battler class, used for static battle sprites
+ * Sprite_Battler class, used for battle sprites
  */
 class Sprite_Battler : public Sprite {
 public:
 	enum AnimationState {
-		Idle = 1,
-		RightHand,
-		LeftHand,
-		SkillUse,
-		Dead,
-		Damage,
-		BadStatus,
-		Defending,
-		WalkingLeft,
-		WalkingRight,
-		Victory,
-		Item
+		AnimationState_Idle = 1,
+		AnimationState_RightHand,
+		AnimationState_LeftHand,
+		AnimationState_SkillUse,
+		AnimationState_Dead,
+		AnimationState_Damage,
+		AnimationState_BadStatus,
+		AnimationState_Defending,
+		AnimationState_WalkingLeft,
+		AnimationState_WalkingRight,
+		AnimationState_Victory,
+		AnimationState_Item
 	};
 
 	enum LoopState {
-		IdleAnimationAfterFinish,
-		LoopAnimation,
+		LoopState_IdleAnimationAfterFinish,
+		LoopState_LoopAnimation,
 	};
 
 	/**
@@ -67,7 +67,7 @@ public:
 
 	void SetBattler(Game_Battler* new_battler);
 
-	void SetAnimationState(int state, LoopState loop = LoopAnimation);
+	void SetAnimationState(int state, LoopState loop = LoopState_LoopAnimation);
 
 	/**
 	 * Returns true when the state is idle.

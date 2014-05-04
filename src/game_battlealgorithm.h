@@ -197,6 +197,13 @@ public:
 	virtual std::string GetStartMessage() const = 0;
 
 	/**
+	 * Gets animation state id of the source character.
+	 *
+	 * @return animation state
+	 */
+	virtual int GetSourceAnimationState() const;
+
+	/**
 	 * Gets the sound effect that is played when the action is starting.
 	 *
 	 * @return start se
@@ -274,6 +281,7 @@ public:
 	void Apply();
 
 	std::string GetStartMessage() const;
+	int GetSourceAnimationState() const;
 };
 
 class Skill : public AlgorithmBase {
@@ -287,6 +295,7 @@ public:
 	void Apply();
 
 	std::string GetStartMessage() const;
+	int GetSourceAnimationState() const;
 	virtual const RPG::Sound* GetStartSe() const;
 	void GetResultMessages(std::vector<std::string>& out) const;
 
@@ -306,8 +315,10 @@ public:
 	void Apply();
 
 	std::string GetStartMessage() const;
-	virtual const RPG::Sound* GetStartSe() const;
+	int GetSourceAnimationState() const;
+	const RPG::Sound* GetStartSe() const;
 	void GetResultMessages(std::vector<std::string>& out) const;
+
 
 private:
 	const RPG::Item& item;
@@ -326,6 +337,7 @@ public:
 	Defend(Game_Battler* source);
 
 	std::string GetStartMessage() const;
+	int GetSourceAnimationState() const;
 	bool Execute();
 };
 
