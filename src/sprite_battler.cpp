@@ -121,6 +121,7 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 
 			sprite_file = ext.battler_name;
 			SetBitmap(Cache::Battlecharset(sprite_file));
+			SetSrcRect(Rect(0, ext.battler_index * 48, 48, 48));
 		}
 	}
 }
