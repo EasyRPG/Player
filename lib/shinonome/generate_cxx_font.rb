@@ -6,8 +6,6 @@ EMPTY_CHAR = Array.new(FONT_SIZE, 0x0)
 
 kanji_encoding = "JIS_X0208"
 
-require 'iconv'
-
 def skip_until(f, regex)
   while(not f.eof?)
     l = f.readline().chomp
@@ -57,9 +55,8 @@ def read_font(f, half, encoding)
     raise "size error" unless code.bytesize == (c < 0x100 ? 1 : 2)
 
     begin
-      # p Iconv.conv("UTF-8", encoding, code)
-      code = Iconv.conv('UTF-32LE', encoding, code)
-    rescue Iconv::IllegalSequence
+      code = code.force_encoding(encoding).encode('UTF-32LE')
+    rescue Encoding::InvalidByteSequenceError
       print "invalid code 0x%02x, 0x%02x\n" % [(c >> 8) & 0xff, c & 0xff]
       return false
     end
@@ -89,7 +86,7 @@ def read_font(f, half, encoding)
     ret[y] = tmp
   end
 
-  raise "assert" unless /ENDCHAR/.match(Iconv.conv('UTF-8', 'EUC-JP', f.readline()))
+  raise "assert" unless /ENDCHAR/.match(f.readline().encode('UTF-8', 'EUC-JP'))
 
   return Glyph.new(code, !half, ret)
 end
@@ -126,12 +123,12 @@ EOS
 end
 
 # loading
-print "Loading Lantin-1..."
-latin = read_file(File.new('./latin1/font_src.bit', 'r'), "latin1", true)
+print "Loading Latin-1..."
+latin = read_file(File.new('./latin1/font_src.bit', 'r'), "ISO-8859-1", true)
 print "done\n"
 
 print "Loading Hankaku..."
-hankaku = read_file(File.new('./hankaku/font_src_diff.bit', 'r'), "JIS_X0201", true)
+hankaku = read_file(File.new('./hankaku/font_src_diff.bit', 'r'), "CP932", true)
 print "done\n"
 
 print "Loading Gothic..."
