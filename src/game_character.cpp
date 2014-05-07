@@ -639,49 +639,57 @@ void Game_Character::MoveForward() {
 }
 
 void Game_Character::MoveDownLeft() {
-	// Todo
-	// BeginMove();
-
 	if (jumping) {
 		jump_plus_x--;
 		jump_plus_y++;
 		return;
 	}
+
+	SetX(GetX() - 1);
+	SetY(GetY() + 1);
+	BeginMove();
+	move_failed = false;
 }
 
 void Game_Character::MoveDownRight() {
-	// Todo
-	// BeginMove();
-
 	if (jumping) {
 		jump_plus_x++;
 		jump_plus_y++;
 		return;
 	}
+
+	SetX(GetX() + 1);
+	SetY(GetY() + 1);
+	BeginMove();
+	move_failed = false;
 }
 
 
 void Game_Character::MoveUpLeft() {
-	// Todo
-	// BeginMove();
-
 	if (jumping) {
 		jump_plus_x--;
 		jump_plus_y--;
 		return;
 	}
+
+	SetX(GetX() - 1);
+	SetY(GetY() - 1);
+	BeginMove();
+	move_failed = false;
 }
 
 
 void Game_Character::MoveUpRight() {
-	// Todo
-	// BeginMove();
-
 	if (jumping) {
 		jump_plus_x++;
 		jump_plus_y--;
 		return;
 	}
+
+	SetX(GetX() + 1);
+	SetY(GetY() - 1);
+	BeginMove();
+	move_failed = false;
 }
 
 void Game_Character::MoveRandom() {
