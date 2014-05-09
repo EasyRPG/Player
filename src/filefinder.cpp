@@ -175,7 +175,7 @@ EASYRPG_SHARED_PTR<FileFinder::ProjectTree> FileFinder::CreateProjectTree(std::s
 	}
 
 	for(string_map::const_iterator i = tree->directories.begin(); i != tree->directories.end(); ++i) {
-		GetDirectoryMembers(MakePath(tree->project_path, i->second), FILES)
+		GetDirectoryMembers(MakePath(tree->project_path, i->second), RECURSIVE)
 			.members.swap(tree->sub_members[i->first]);
 	}
 
@@ -465,7 +465,7 @@ bool FileFinder::IsDirectory(std::string const& dir) {
 #endif
 }
 
-FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, FileFinder::Mode const m) {
+FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, FileFinder::Mode const m, const std::string& parent) {
 	assert(FileFinder::Exists(path));
 	assert(FileFinder::IsDirectory(path));
 
@@ -508,6 +508,15 @@ FileFinder::Directory FileFinder::GetDirectoryMembers(const std::string& path, F
 			break;
 		case ALL:
 			break;
+		case RECURSIVE:
+			if(IsDirectory(MakePath(path, name))) {
+				Directory rdir = GetDirectoryMembers(MakePath(path, name), RECURSIVE, MakePath(parent, name));
+				result.members.insert(rdir.members.begin(), rdir.members.end());
+				continue;
+			}
+
+			result.members[Utils::LowerCase(MakePath(parent, name))] = MakePath(parent, name);
+			continue;
 		}
 		result.members[Utils::LowerCase(name)] = name;
 	}
