@@ -86,6 +86,7 @@ protected:
 	void OptionSelected();
 	void CommandSelected();
 	void AttackSelected();
+	void SubskillSelected();
 
 	void Escape();
 

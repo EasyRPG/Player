@@ -684,15 +684,17 @@ void Scene_Battle_Rpg2k3::CommandSelected() {
 		break;
 	case RPG::BattleCommand::Type_skill:
 		Game_System::SePlay(Data::system.decision_se);
+		skill_window->SetSubsetFilter(0);
 		SetState(State_SelectSkill);
 		break;
 	case RPG::BattleCommand::Type_special:
 		Game_System::SePlay(Data::system.decision_se);
+		Output::Warning("Battle: Event calling unsupported");
 		//SpecialSelected()
 		break;
 	case RPG::BattleCommand::Type_subskill:
 		Game_System::SePlay(Data::system.decision_se);
-		//SubskillSelected()
+		SubskillSelected();
 		break;
 	}
 }
@@ -701,6 +703,29 @@ void Scene_Battle_Rpg2k3::AttackSelected() {
 	CreateBattleTargetWindow();
 
 	Scene_Battle::AttackSelected();
+}
+
+void Scene_Battle_Rpg2k3::SubskillSelected() {
+	// Resolving a subskill battle command to skill id
+	int subskill = RPG::Skill::Type_custom;
+
+	const std::vector<uint32_t>& bcmds = active_actor->GetBattleCommands();
+	// Get ID of battle command
+	int command_id = Data::battlecommands.commands[bcmds[command_window->GetIndex()] - 1].ID - 1;
+
+	// Loop through all battle commands smaller then that ID and count subsets
+	std::vector<RPG::BattleCommand>::const_iterator it;
+	int i = 0;
+	for (it = Data::battlecommands.commands.begin(); it != Data::battlecommands.commands.end() && i < command_id; it++) {
+		if ((*it).type == RPG::BattleCommand::Type_subskill) {
+			++subskill;
+		}
+		++i;
+	}
+
+	// skill subset is 4 (Type_custom) + counted subsets
+	skill_window->SetSubsetFilter(subskill);
+	SetState(State_SelectSkill);
 }
 
 void Scene_Battle_Rpg2k3::Escape() {
