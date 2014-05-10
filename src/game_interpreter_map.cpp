@@ -457,7 +457,7 @@ bool Game_Interpreter_Map::CommandMemorizeLocation(RPG::EventCommand const& com)
 	int var_map_id = com.parameters[0];
 	int var_x = com.parameters[1];
 	int var_y = com.parameters[2];
- 	Game_Variables[var_map_id] = Game_Map::GetMapId();
+	Game_Variables[var_map_id] = Game_Map::GetMapId();
 	Game_Variables[var_x] = player->GetX();
 	Game_Variables[var_y] = player->GetY();
 	return true;
@@ -494,7 +494,7 @@ bool Game_Interpreter_Map::CommandStoreTerrainID(RPG::EventCommand const& com) {
 	int x = ValueOrVariable(com.parameters[0], com.parameters[1]);
 	int y = ValueOrVariable(com.parameters[0], com.parameters[2]);
 	int var_id = com.parameters[3];
- 	Game_Variables[var_id] = Game_Map::GetTerrainTag(x, y);
+	Game_Variables[var_id] = Game_Map::GetTerrainTag(x, y);
 	return true;
 }
 

@@ -15,7 +15,6 @@
 * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
 */
 
-// Headers
 #include <deque>
 #include <algorithm>
 #include "data.h"
@@ -24,6 +23,7 @@
 #include "game_party.h"
 #include "game_temp.h"
 #include "game_switches.h"
+#include "game_system.h"
 #include "game_variables.h"
 #include "game_interpreter_battle.h"
 #include "battle_animation.h"
@@ -199,4 +199,13 @@ void Game_Battle::UpdateEvents() {
 
 	if (new_page != NULL && new_page != script_page)
 		interpreter->Setup(new_page->event_commands, 0);
+}
+
+bool Game_Battle::IsEscapeAllowed() {
+	if (Game_Temp::battle_escape_mode == -1) {
+		return Game_System::GetAllowEscape();
+	}
+	else {
+		return !Game_Temp::battle_escape_mode;
+	}
 }

@@ -83,7 +83,7 @@ void Game_Temp::Init() {
 	battle_mode = 0;
 	battle_terrain_id = 0;
 	battle_formation = 0;
-	battle_escape_mode = 0;
+	battle_escape_mode = -1;
 	battle_defeat_mode = 0;
 	battle_first_strike = false;
 	battle_wait = false;

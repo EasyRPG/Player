@@ -168,10 +168,8 @@ void Scene_Battle_Rpg2k3::CreateBattleOptionWindow() {
 	// TODO: Auto Battle not implemented
 	options_window->DisableItem(1);
 
-	if (!Player::battle_test_flag && !Game_Temp::battle_escape_mode) {
-		// No escape
-		options_window->DisableItem(2);
-	}
+	// No escape. FIXME: Only enabled when party has initiative.
+	options_window->DisableItem(2);
 
 	enemy_status_window.reset(new Window_BattleStatus(0, 0, 320 - 76, 80, true));
 	enemy_status_window->SetVisible(false);
@@ -194,6 +192,7 @@ void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
 
 void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 	std::vector<std::string> commands;
+	std::vector<int> disabled_items;
 
 	Game_Actor* actor;
 
@@ -207,16 +206,26 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 	if (actor) {
 		const std::vector<uint32_t>& bcmds = actor->GetBattleCommands();
 		std::vector<uint32_t>::const_iterator it;
+		int i = 0;
 		for (it = bcmds.begin(); it != bcmds.end(); it++) {
 			uint32_t bcmd = *it;
 			if (bcmd <= 0 || bcmd > Data::battlecommands.commands.size())
 				break;
 			const RPG::BattleCommand& command = Data::battlecommands.commands[bcmd - 1];
 			commands.push_back(command.name);
+
+			if (!Game_Battle::IsEscapeAllowed() && command.type == RPG::BattleCommand::Type_escape) {
+				disabled_items.push_back(i);
+			}
+			++i;
 		}
 	}
 
 	command_window.reset(new Window_Command(commands, 76));
+
+	for (std::vector<int>::iterator it = disabled_items.begin(); it != disabled_items.end(); ++it) {
+		command_window->DisableItem(*it);
+	}
 
 	command_window->SetHeight(80);
 	command_window->SetX(320 - 76);
@@ -634,43 +643,49 @@ void Scene_Battle_Rpg2k3::OptionSelected() {
 			Game_System::SePlay(Data::system.buzzer_se);
 			break;
 		case 2: // Escape
-			if (!Player::battle_test_flag && !Game_Temp::battle_escape_mode) {
-				Game_System::SePlay(Data::system.buzzer_se);
-			}
-			else {
-				Game_System::SePlay(Data::system.decision_se);
-				//Escape();
-			}
+			// FIXME : Only enabled when party has initiative.
+			Game_System::SePlay(Data::system.buzzer_se);
+			//SetState(State_Escape);
 			break;
 	}
 }
 
 void Scene_Battle_Rpg2k3::CommandSelected() {
-	Game_System::SePlay(Data::system.decision_se);
-
 	const RPG::BattleCommand& command = 
 		Data::battlecommands.commands[active_actor->GetBattleCommands()[command_window->GetIndex()] - 1];
 
 	switch (command.type) {
 	case RPG::BattleCommand::Type_attack:
+		Game_System::SePlay(Data::system.decision_se);
 		AttackSelected();
 		break;
 	case RPG::BattleCommand::Type_defense:
+		Game_System::SePlay(Data::system.decision_se);
 		DefendSelected();
 		break;
 	case RPG::BattleCommand::Type_escape:
-		//EscapeSelected();
+		if (!Game_Battle::IsEscapeAllowed()) {
+			Game_System::SePlay(Data::system.buzzer_se);
+		}
+		else {
+			Game_System::SePlay(Data::system.decision_se);
+			SetState(State_Escape);
+		}
 		break;
 	case RPG::BattleCommand::Type_item:
+		Game_System::SePlay(Data::system.decision_se);
 		SetState(State_SelectItem);
 		break;
 	case RPG::BattleCommand::Type_skill:
+		Game_System::SePlay(Data::system.decision_se);
 		SetState(State_SelectSkill);
 		break;
 	case RPG::BattleCommand::Type_special:
+		Game_System::SePlay(Data::system.decision_se);
 		//SpecialSelected()
 		break;
 	case RPG::BattleCommand::Type_subskill:
+		Game_System::SePlay(Data::system.decision_se);
 		//SubskillSelected()
 		break;
 	}

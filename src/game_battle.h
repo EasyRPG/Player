@@ -56,6 +56,8 @@ namespace Game_Battle {
 	bool AreConditionsMet(const RPG::TroopPageCondition& condition);
 	void UpdateEvents();
 
+	bool IsEscapeAllowed();
+
 	static int turn;
 	extern bool terminate;
 	extern std::string background_name;

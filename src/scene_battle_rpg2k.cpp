@@ -66,7 +66,7 @@ void Scene_Battle_Rpg2k::CreateBattleOptionWindow() {
 	options_window->SetHeight(80);
 	options_window->SetY(160);
 	
-	if (!Player::battle_test_flag && !Game_Temp::battle_escape_mode) {
+	if (!Game_Battle::IsEscapeAllowed()) {
 		// No escape
 		options_window->DisableItem(2);
 	}
@@ -555,7 +555,7 @@ void Scene_Battle_Rpg2k::OptionSelected() {
 			Game_System::SePlay(Data::system.decision_se);
 			break;
 		case 2: // Escape
-			if (!Player::battle_test_flag && !Game_Temp::battle_escape_mode) {
+			if (!Game_Battle::IsEscapeAllowed()) {
 				Game_System::SePlay(Data::system.buzzer_se);
 			}
 			else {
