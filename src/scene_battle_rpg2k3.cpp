@@ -168,6 +168,11 @@ void Scene_Battle_Rpg2k3::CreateBattleOptionWindow() {
 	// TODO: Auto Battle not implemented
 	options_window->DisableItem(1);
 
+	if (!Player::battle_test_flag && !Game_Temp::battle_escape_mode) {
+		// No escape
+		options_window->DisableItem(2);
+	}
+
 	enemy_status_window.reset(new Window_BattleStatus(0, 0, 320 - 76, 80, true));
 	enemy_status_window->SetVisible(false);
 }
@@ -616,21 +621,27 @@ void Scene_Battle_Rpg2k3::ProcessInput() {
 }
 
 void Scene_Battle_Rpg2k3::OptionSelected() {
-	Game_System::SePlay(Data::system.decision_se);
-
 	switch (options_window->GetIndex()) {
-	case 0: // Battle
-		auto_battle = false;
-		SetState(State_SelectActor);
-		break;
-	case 1: // Auto Battle
-		auto_battle = true;
-		Output::Post("Auto Battle not implemented yet.\nSorry :)");
-		//SetState(State_SelectActor);
-		break;
-	case 2: // Escape
-		//Escape();
-		break;
+		case 0: // Battle
+			Game_System::SePlay(Data::system.decision_se);
+			auto_battle = false;
+			SetState(State_SelectActor);
+			break;
+		case 1: // Auto Battle
+			//auto_battle = true;
+			Output::Post("Auto Battle not implemented yet. Sorry :)");
+			//SetState(State_SelectActor);
+			Game_System::SePlay(Data::system.buzzer_se);
+			break;
+		case 2: // Escape
+			if (!Player::battle_test_flag && !Game_Temp::battle_escape_mode) {
+				Game_System::SePlay(Data::system.buzzer_se);
+			}
+			else {
+				Game_System::SePlay(Data::system.decision_se);
+				//Escape();
+			}
+			break;
 	}
 }
 

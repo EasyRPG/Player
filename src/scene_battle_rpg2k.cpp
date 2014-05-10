@@ -65,6 +65,11 @@ void Scene_Battle_Rpg2k::CreateBattleOptionWindow() {
 	options_window.reset(new Window_Command(commands, 76));
 	options_window->SetHeight(80);
 	options_window->SetY(160);
+	
+	if (!Player::battle_test_flag && !Game_Temp::battle_escape_mode) {
+		// No escape
+		options_window->DisableItem(2);
+	}
 }
 
 void Scene_Battle_Rpg2k::CreateBattleTargetWindow() {
@@ -537,21 +542,27 @@ void Scene_Battle_Rpg2k::ProcessInput() {
 }
 
 void Scene_Battle_Rpg2k::OptionSelected() {
-	Game_System::SePlay(Data::system.decision_se);
-
 	switch (options_window->GetIndex()) {
-	case 0: // Battle
-		CreateBattleTargetWindow();
-		auto_battle = false;
-		SetState(State_SelectActor);
-		break;
-	case 1: // Auto Battle
-		auto_battle = true;
-		SetState(State_AutoBattle);
-		break;
-	case 2: // Escape
-		SetState(State_Escape);
-		break;
+		case 0: // Battle
+			Game_System::SePlay(Data::system.decision_se);
+			CreateBattleTargetWindow();
+			auto_battle = false;
+			SetState(State_SelectActor);
+			break;
+		case 1: // Auto Battle
+			auto_battle = true;
+			SetState(State_AutoBattle);
+			Game_System::SePlay(Data::system.decision_se);
+			break;
+		case 2: // Escape
+			if (!Player::battle_test_flag && !Game_Temp::battle_escape_mode) {
+				Game_System::SePlay(Data::system.buzzer_se);
+			}
+			else {
+				Game_System::SePlay(Data::system.decision_se);
+				SetState(State_Escape);
+			}
+			break;
 	}
 }
 
