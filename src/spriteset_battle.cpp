@@ -56,7 +56,6 @@ void Spriteset_Battle::Update() {
 	}
 }
 
-// Finds the sprite for a specific character
 Sprite_Battler* Spriteset_Battle::FindBattler(const Game_Battler* battler)
 {
 	boost::ptr_vector<Sprite_Battler>::iterator it;
@@ -66,21 +65,3 @@ Sprite_Battler* Spriteset_Battle::FindBattler(const Game_Battler* battler)
 	}
 	return NULL;
 }
-
-/*
-if (it->sprite->GetVisible() && !it->game_enemy->Exists() && it->fade == 0)
-it->fade = 60;
-
-if (it->fade > 0) {
-it->sprite->SetOpacity(it->fade * 255 / 60);
-it->fade--;
-if (it->fade == 0)
-it->sprite->SetVisible(false);
-}
-
-if (!it->rpg_enemy->levitate)
-continue;
-int y = (int) (3 * sin(cycle / 30.0));
-it->sprite->SetY(it->member->y + y);
-it->sprite->SetZ(it->member->y + y);
-*/

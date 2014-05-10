@@ -62,9 +62,11 @@ void Sprite_Battler::Update() {
 		if (anim_state == AnimationState_Idle) {
 			SetOpacity(255);
 		}
-		else if (anim_state == AnimationState_Dead && fade_out > 0) {
-			fade_out -= 15;
-			SetOpacity(std::max(0, fade_out));
+		else if (anim_state == AnimationState_Dead) {
+			if (fade_out > 0) {
+				fade_out -= 15;
+				SetOpacity(std::max(0, fade_out));
+			}
 		}
 		else if (anim_state == AnimationState_Damage) {
 			flash_counter = (flash_counter + 1) % 10;
