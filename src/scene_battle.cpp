@@ -52,8 +52,6 @@ Scene_Battle::Scene_Battle() :
 }
 
 Scene_Battle::~Scene_Battle() {
-	Game_Temp::battle_escape_mode = -1;
-
 	Game_Battle::Quit();
 }
 

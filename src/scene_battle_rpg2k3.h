@@ -87,6 +87,8 @@ protected:
 	void CommandSelected();
 	void AttackSelected();
 
+	void Escape();
+
 	void SelectNextActor();
 
 	void ActionSelectedCallback(Game_Battler* for_battler);

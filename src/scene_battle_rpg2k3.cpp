@@ -360,7 +360,9 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 		status_window->SetX(0);
 		break;
 	case State_Escape:
-		// no-op
+		status_window->SetVisible(true);
+		command_window->SetVisible(true);
+		status_window->SetX(0);
 		break;
 	}
 }
@@ -415,6 +417,10 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 		}
 		case State_AllyAction:
 		case State_EnemyAction:
+			break;
+		case State_Escape:
+			Escape();
+			break;
 		default:
 			break;
 	}
@@ -695,6 +701,25 @@ void Scene_Battle_Rpg2k3::AttackSelected() {
 	CreateBattleTargetWindow();
 
 	Scene_Battle::AttackSelected();
+}
+
+void Scene_Battle_Rpg2k3::Escape() {
+	Game_BattleAlgorithm::Escape escape_alg = Game_BattleAlgorithm::Escape::Escape(active_actor);
+	active_actor->SetGauge(0);
+
+	bool escape_success = escape_alg.Execute();
+	escape_alg.Apply();
+
+	if (!escape_success) {
+		std::vector<std::string> battle_result_messages;
+		escape_alg.GetResultMessages(battle_result_messages);
+		SetState(State_SelectActor);
+		ShowNotification(battle_result_messages[0]);
+	}
+	else {
+		// ToDo: Run away animation
+		Scene::Pop();
+	}
 }
 
 bool Scene_Battle_Rpg2k3::CheckWin() {

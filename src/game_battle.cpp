@@ -62,6 +62,8 @@ void Game_Battle::Quit() {
 	spriteset.reset();
 
 	Game_Temp::battle_running = false;
+
+	Game_Temp::battle_escape_mode = -1;
 }
 
 void Game_Battle::Update() {
