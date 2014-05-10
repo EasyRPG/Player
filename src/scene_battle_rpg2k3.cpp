@@ -707,7 +707,7 @@ void Scene_Battle_Rpg2k3::AttackSelected() {
 
 void Scene_Battle_Rpg2k3::SubskillSelected() {
 	// Resolving a subskill battle command to skill id
-	int subskill = RPG::Skill::Type_custom;
+	int subskill = RPG::Skill::Type_subskill;
 
 	const std::vector<uint32_t>& bcmds = active_actor->GetBattleCommands();
 	// Get ID of battle command
@@ -723,7 +723,7 @@ void Scene_Battle_Rpg2k3::SubskillSelected() {
 		++i;
 	}
 
-	// skill subset is 4 (Type_custom) + counted subsets
+	// skill subset is 4 (Type_subskill) + counted subsets
 	skill_window->SetSubsetFilter(subskill);
 	SetState(State_SelectSkill);
 }

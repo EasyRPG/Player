@@ -82,7 +82,7 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 	//	return is_there_an_escape_set;
 	//} else
 	if (skill.type == RPG::Skill::Type_normal ||
-		skill.type >= RPG::Skill::Type_custom) {
+		skill.type >= RPG::Skill::Type_subskill) {
 		int scope = skill.scope;
 
 		if (Game_Temp::battle_running) {

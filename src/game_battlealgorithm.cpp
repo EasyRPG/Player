@@ -488,7 +488,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 	}
 
 	if (skill.type == RPG::Skill::Type_normal ||
-		skill.type >= RPG::Skill::Type_custom) {
+		skill.type >= RPG::Skill::Type_subskill) {
 		if (skill.power > 0) {
 			if (healing || rand() % 100 < skill.hit) {
 				this->success = true;
