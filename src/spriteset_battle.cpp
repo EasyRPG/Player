@@ -43,25 +43,25 @@ Spriteset_Battle::Spriteset_Battle() {
 
 	std::vector<Game_Battler*>::iterator it;
 	for (it = battler.begin(); it != battler.end(); it++) {
-		sprites.push_back(new Sprite_Battler(*it));
+		sprites.push_back(EASYRPG_MAKE_SHARED<Sprite_Battler>(*it));
 	}
 
 	Update();
 }
 
 void Spriteset_Battle::Update() {
-	boost::ptr_vector<Sprite_Battler>::iterator it;
+	std::vector<EASYRPG_SHARED_PTR<Sprite_Battler> >::iterator it;
 	for (it = sprites.begin(); it != sprites.end(); it++) {
-		it->Update();
+		(*it)->Update();
 	}
 }
 
 Sprite_Battler* Spriteset_Battle::FindBattler(const Game_Battler* battler)
 {
-	boost::ptr_vector<Sprite_Battler>::iterator it;
+	std::vector<EASYRPG_SHARED_PTR<Sprite_Battler> >::iterator it;
 	for (it = sprites.begin(); it != sprites.end(); it++) {
-		if (it->GetBattler() == battler)
-			return &*it;
+		if ((*it)->GetBattler() == battler)
+			return it->get();
 	}
 	return NULL;
 }

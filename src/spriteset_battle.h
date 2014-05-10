@@ -24,7 +24,6 @@
 #include "sprite_battler.h"
 #include "sprite_character.h"
 #include <boost/scoped_ptr.hpp>
-#include <boost/ptr_container/ptr_vector.hpp> 
 
 class Game_Battler;
 /**
@@ -39,7 +38,7 @@ public:
 
 protected:
 	boost::scoped_ptr<Background> background;
-	boost::ptr_vector<Sprite_Battler> sprites;
+	std::vector<EASYRPG_SHARED_PTR<Sprite_Battler> > sprites;
 	/*std::vector<Sprite_Picture*> picture_sprites;
 	Sprite_Timer* timer_sprite;*/
 };
