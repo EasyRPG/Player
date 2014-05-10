@@ -18,12 +18,10 @@
 #ifndef __GAME_ENEMY_PARTY__
 #define __GAME_ENEMY_PARTY__
 
-// Headers
 #include <vector>
 #include "rpg_troop.h"
 #include "game_enemy.h"
 #include "game_party_base.h"
-#include <boost/ptr_container/ptr_vector.hpp>
 #include <boost/noncopyable.hpp>
 
 /**
@@ -52,7 +50,7 @@ public:
 	 *
 	 * @return list of party members
 	 */
-	boost::ptr_vector<Game_Enemy>& GetEnemies();
+	std::vector<EASYRPG_SHARED_PTR<Game_Enemy> >& GetEnemies();
 
 	/**
 	 * Gets a list with all alive party members
@@ -76,7 +74,7 @@ public:
 	int GetMoney() const;
 
 private:
-	boost::ptr_vector<Game_Enemy> enemies;
+	std::vector<EASYRPG_SHARED_PTR<Game_Enemy> > enemies;
 	RPG::Troop* troop;
 };
 

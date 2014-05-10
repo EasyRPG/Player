@@ -30,7 +30,7 @@ Game_Enemy& Game_EnemyParty::operator[] (const int index) {
 		assert(false && "Subscript out of range");
 	}
 
-	return enemies[index];
+	return *enemies[index];
 }
 
 int Game_EnemyParty::GetBattlerCount() const {
@@ -42,7 +42,7 @@ void Game_EnemyParty::Setup(int battle_troop_id) {
 	troop = &Data::troops[battle_troop_id - 1];
 	std::vector<RPG::TroopMember>::const_iterator ei;
 	for (ei = troop->members.begin(); ei != troop->members.end(); ei++)	{
-		Game_Enemy* enemy = new Game_Enemy(ei->enemy_id);
+		EASYRPG_SHARED_PTR<Game_Enemy> enemy = EASYRPG_MAKE_SHARED<Game_Enemy>(ei->enemy_id);
 		enemy->SetBattleX(ei->x);
 		enemy->SetBattleY(ei->y);
 		enemy->SetHidden(ei->invisible);
@@ -50,35 +50,35 @@ void Game_EnemyParty::Setup(int battle_troop_id) {
 	}
 }
 
-boost::ptr_vector<Game_Enemy>& Game_EnemyParty::GetEnemies() {
+std::vector<EASYRPG_SHARED_PTR<Game_Enemy> >& Game_EnemyParty::GetEnemies() {
 	return enemies;
 }
 
 std::vector<Game_Enemy*> Game_EnemyParty::GetAliveEnemies() {
 	std::vector<Game_Enemy*> alive;
-	boost::ptr_vector<Game_Enemy>::iterator it;
+	std::vector<EASYRPG_SHARED_PTR<Game_Enemy> >::iterator it;
 	for (it = enemies.begin(); it != enemies.end(); ++it) {
-		if (!it->IsDead()) {
-			alive.push_back(&*it);
+		if (!(*it)->IsDead()) {
+			alive.push_back(it->get());
 		}
 	}
 	return alive;
 }
 
 int Game_EnemyParty::GetExp() const {
-	boost::ptr_vector<Game_Enemy>::const_iterator it;
+	std::vector<EASYRPG_SHARED_PTR<Game_Enemy> >::const_iterator it;
 	int sum = 0;
 	for (it = enemies.begin(); it != enemies.end(); ++it) {
-		sum += it->GetExp();
+		sum += (*it)->GetExp();
 	}
 	return sum;
 }
 
 int Game_EnemyParty::GetMoney() const {
-	boost::ptr_vector<Game_Enemy>::const_iterator it;
+	std::vector<EASYRPG_SHARED_PTR<Game_Enemy> >::const_iterator it;
 	int sum = 0;
 	for (it = enemies.begin(); it != enemies.end(); ++it) {
-		sum += it->GetMoney();
+		sum += (*it)->GetMoney();
 	}
 	return sum;
 }

@@ -24,6 +24,7 @@
 #include "game_party_base.h"
 #include "game_actor.h"
 #include "main_data.h"
+#include <boost/noncopyable.hpp>
 
 /**
  * Game_Party class.

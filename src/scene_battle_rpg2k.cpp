@@ -733,7 +733,7 @@ bool Scene_Battle_Rpg2k::DisplayMonstersInMessageWindow() {
 		battle_message_window->Clear();
 	}
 
-	battle_message_window->Push(enemy_iterator->GetName() + Data::terms.encounter);
+	battle_message_window->Push((*enemy_iterator)->GetName() + Data::terms.encounter);
 
 	if (battle_message_window->GetLineCount() == 4) {
 		// Half second sleep

@@ -18,14 +18,10 @@
 #ifndef _GAME_PARTY_BASE_H_
 #define _GAME_PARTY_BASE_H_
 
-// Headers
 #include <vector>
 #include <map>
 #include "game_actor.h"
 #include "main_data.h"
-
-#include <boost/noncopyable.hpp>
-#include <boost/ptr_container/ptr_vector.hpp>
 
 /**
  * Base class of the two Parties (Allied and Enemy)
