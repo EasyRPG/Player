@@ -343,11 +343,6 @@ public:
 	 */
 	void SetBattleAlgorithm(const BattleAlgorithmRef battle_algorithm);
 
-	/**
-	 * Removes the current battle algorithm.
-	 */
-	void RemoveBattleAlgorithm();
-
 protected:
 	/** Gauge for RPG2k3 Battle */
 	int gauge;
