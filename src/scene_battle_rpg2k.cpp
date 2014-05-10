@@ -757,6 +757,9 @@ bool Scene_Battle_Rpg2k::CheckWin() {
 		int exp = Main_Data::game_enemyparty->GetExp();
 		int money = Main_Data::game_enemyparty->GetMoney();
 
+		Game_Message::SetPositionFixed(true);
+		Game_Message::SetPosition(2);
+
 		Game_Message::texts.push_back(Data::terms.victory);
 
 		std::stringstream ss;
@@ -790,6 +793,9 @@ bool Scene_Battle_Rpg2k::CheckLose() {
 	if (!Main_Data::game_party->IsAnyAlive()) {
 		Game_Temp::battle_result = Game_Temp::BattleDefeat;
 		SetState(State_Defeat);
+
+		Game_Message::SetPositionFixed(true);
+		Game_Message::SetPosition(2);
 
 		Game_Message::texts.push_back(Data::terms.defeat);
 

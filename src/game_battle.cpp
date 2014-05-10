@@ -20,6 +20,7 @@
 #include "data.h"
 #include "game_actors.h"
 #include "game_enemyparty.h"
+#include "game_message.h"
 #include "game_party.h"
 #include "game_temp.h"
 #include "game_switches.h"
@@ -55,6 +56,9 @@ void Game_Battle::Init() {
 	escape_fail_count = 0;
 
 	troop = &Data::troops[Game_Temp::battle_troop_id - 1];
+
+	message_is_fixed = Game_Message::IsPositionFixed();
+	message_position = Game_Message::GetPosition();
 }
 
 void Game_Battle::Quit() {
@@ -64,6 +68,9 @@ void Game_Battle::Quit() {
 	Game_Temp::battle_running = false;
 
 	Game_Temp::battle_escape_mode = -1;
+
+	Game_Message::SetPositionFixed(message_is_fixed);
+	Game_Message::SetPosition(message_position);
 }
 
 void Game_Battle::Update() {

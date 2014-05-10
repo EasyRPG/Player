@@ -59,6 +59,8 @@ namespace Game_Battle {
 	bool IsEscapeAllowed();
 
 	static int turn;
+	static bool message_is_fixed;
+	static int message_position;
 	extern bool terminate;
 	extern std::string background_name;
 
