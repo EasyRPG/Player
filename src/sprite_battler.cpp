@@ -66,12 +66,6 @@ void Sprite_Battler::Update() {
 			fade_out -= 15;
 			SetOpacity(std::max(0, fade_out));
 		}
-		else if (anim_state == AnimationState_LeftHand) {
-			if (cycle == 60) {
-				SetAnimationState(AnimationState_Idle);
-				cycle = 0;
-			}
-		}
 		else if (anim_state == AnimationState_Damage) {
 			flash_counter = (flash_counter + 1) % 10;
 			SetOpacity(flash_counter > 5 ? 50 : 255);
@@ -80,10 +74,16 @@ void Sprite_Battler::Update() {
 				cycle = 0;
 			}
 		}
+		else {
+			if (cycle == 60) {
+				SetAnimationState(AnimationState_Idle);
+				cycle = 0;
+			}
+		}
 	} else if (anim_state > 0) {
 		if (Player::engine == Player::EngineRpg2k3) {
 			static const int frames[] = {0,1,2,1};
-			int frame = frames[cycle / 15];
+			int frame = frames[cycle / 10];
 			if (frame == sprite_frame)
 				return;
 
@@ -92,7 +92,7 @@ void Sprite_Battler::Update() {
 
 			SetSrcRect(Rect(frame * 48, ext.battler_index * 48, 48, 48));
 
-			if (cycle == 60) {
+			if (cycle == 40) {
 				cycle = 0;
 
 				if (loop_state == LoopState_IdleAnimationAfterFinish) {
