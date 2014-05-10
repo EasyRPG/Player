@@ -361,3 +361,7 @@ const BattleAlgorithmRef Game_Battler::GetBattleAlgorithm() const {
 void Game_Battler::SetBattleAlgorithm(BattleAlgorithmRef battle_algorithm) {
 	this->battle_algorithm = battle_algorithm;
 }
+
+void Game_Battler::RemoveBattleAlgorithm() {
+	this->battle_algorithm.reset();
+}

@@ -385,7 +385,7 @@ void Scene_Battle::CreateEnemyActionBasic(Game_Enemy* enemy, const RPG::EnemyAct
 }
 
 void Scene_Battle::RemoveCurrentAction() {
-	battle_actions.front()->SetBattleAlgorithm((BattleAlgorithmRef)NULL);
+	battle_actions.front()->RemoveBattleAlgorithm();
 	battle_actions.pop_front();
 }
 
