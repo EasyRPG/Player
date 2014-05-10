@@ -241,8 +241,6 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 		break;
 	case State_SelectActor:
 	case State_AutoBattle:
-		Game_Battle::Update();
-
 		CheckWin();
 		CheckLose();
 		CheckAbort();
