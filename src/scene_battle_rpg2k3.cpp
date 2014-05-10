@@ -367,9 +367,6 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 					return;
 			}
 		}
-	} else {
-		//actor_index = 0;
-		//SetState(State_SelectOption);
 	}
 
 	switch (state) {
@@ -378,8 +375,6 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 			break;
 		case State_SelectActor:
 		case State_AutoBattle:
-			Game_Battle::Update();
-
 			CheckWin();
 			CheckLose();
 			CheckAbort();
@@ -393,26 +388,7 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 
 			break;
 		case State_Battle:
-			if (!battle_actions.empty()) {
-				if (battle_actions.front()->IsDead()) {
-					// No zombies allowed ;)
-					RemoveCurrentAction();
-				}
-				else if (ProcessBattleAction(battle_actions.front()->GetBattleAlgorithm().get())) {
-					RemoveCurrentAction();
-				}
-			} else {
-				if (CheckWin() ||
-					CheckLose() ||
-					CheckAbort() ||
-					CheckFlee()) {
-					return;
-				}
-
-				NextTurn();
-				actor_index = 0;
-				SetState(State_SelectOption);
-			}
+			// no-op
 			break;
 		case State_SelectEnemyTarget: {
 			static int flash_count = 0;
