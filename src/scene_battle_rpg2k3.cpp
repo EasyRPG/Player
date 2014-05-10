@@ -369,24 +369,18 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 		}
 	}
 
+	if (help_window->GetVisible() && message_timer > 0) {
+		message_timer--;
+		if (message_timer <= 0)
+			help_window->SetVisible(false);
+	}
+
 	switch (state) {
 		case State_Start:
 			SetState(State_SelectOption);
 			break;
 		case State_SelectActor:
 		case State_AutoBattle:
-			CheckWin();
-			CheckLose();
-			CheckAbort();
-			CheckFlee();
-
-			if (help_window->GetVisible() && message_timer > 0) {
-				message_timer--;
-				if (message_timer <= 0)
-					help_window->SetVisible(false);
-			}
-
-			break;
 		case State_Battle:
 			// no-op
 			break;
@@ -428,6 +422,8 @@ bool Scene_Battle_Rpg2k3::ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBas
 
 	switch (battle_action_state) {
 	case BattleActionState_Start:
+		ShowNotification(action->GetStartMessage());
+
 		if (!action->IsTargetValid()) {
 			action->SetTarget(action->GetTarget()->GetParty().GetNextAliveBattler(action->GetTarget()));
 		}
@@ -680,6 +676,15 @@ bool Scene_Battle_Rpg2k3::CheckWin() {
 		Game_Temp::battle_result = Game_Temp::BattleVictory;
 		SetState(State_Victory);
 
+		std::vector<Game_Battler*> battlers;
+		Main_Data::game_party->GetAliveBattlers(battlers);
+		for (std::vector<Game_Battler*>::const_iterator it = battlers.begin(); it != battlers.end(); ++it) {
+			Sprite_Battler* sprite = Game_Battle::GetSpriteset().FindBattler(*it);
+			if (sprite) {
+				sprite->SetAnimationState(Sprite_Battler::AnimationState_Victory);
+			}
+		}
+
 		int exp = Main_Data::game_enemyparty->GetExp();
 		int money = Main_Data::game_enemyparty->GetMoney();
 
@@ -787,4 +792,13 @@ void Scene_Battle_Rpg2k3::ActionSelectedCallback(Game_Battler* for_battler) {
 	}
 
 	Scene_Battle::ActionSelectedCallback(for_battler);
+}
+
+void Scene_Battle_Rpg2k3::ShowNotification(const std::string& text) {
+	if (text.empty()) {
+		return;
+	}
+	help_window->SetVisible(true);
+	message_timer = 60;
+	help_window->SetText(text);
 }

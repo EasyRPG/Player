@@ -91,6 +91,8 @@ protected:
 
 	void ActionSelectedCallback(Game_Battler* for_battler);
 
+	void ShowNotification(const std::string& text);
+
 	boost::scoped_ptr<Sprite> ally_cursor, enemy_cursor;
 	std::vector<FloatText> floating_texts;
 
