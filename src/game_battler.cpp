@@ -342,6 +342,10 @@ bool Game_Battler::IsGaugeFull() const {
 }
 
 void Game_Battler::UpdateGauge(int multiplier) {
+	if (IsDead()) {
+		return;
+	}
+
 	if (gauge > EASYRPG_GAUGE_MAX_VALUE) {
 		return;
 	}
