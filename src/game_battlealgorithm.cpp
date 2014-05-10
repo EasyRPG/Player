@@ -350,11 +350,16 @@ const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetResultSe() const {
 
 	if (!success) {
 		return &Data::system.dodge_se;
-	} else {
-		return ((*current_target)->GetType() == Game_Battler::Type_Ally ?
-			&Data::system.actor_damaged_se :
-		&Data::system.enemy_damaged_se);
 	}
+	else {
+		if (current_target != targets.end()) {
+			return ((*current_target)->GetType() == Game_Battler::Type_Ally ?
+				&Data::system.actor_damaged_se :
+				&Data::system.enemy_damaged_se);
+		}
+	}
+
+	return NULL;
 }
 
 const RPG::Sound* Game_BattleAlgorithm::AlgorithmBase::GetDeathSe() const {
@@ -854,6 +859,9 @@ bool Game_BattleAlgorithm::Escape::Execute() {
 		to_hit *= 100;
 
 		this->success = rand() % 100 < (int)to_hit;
+	}
+	else {
+		Output::Warning("Battle: Enemy Escape not implemented");
 	}
 
 	return this->success;
