@@ -33,7 +33,7 @@ Window_Base::Window_Base(int x, int y, int width, int height) {
 	SetY(y);
 	SetWidth(width);
 	SetHeight(height);
-	SetZ(100);
+	SetZ(3000);
 }
 
 void Window_Base::Update() {

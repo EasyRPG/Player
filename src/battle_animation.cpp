@@ -15,7 +15,6 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Headers
 #include "bitmap.h"
 #include "rpg_animation.h"
 #include "output.h"

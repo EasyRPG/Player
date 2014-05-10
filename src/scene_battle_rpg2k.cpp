@@ -84,7 +84,7 @@ void Scene_Battle_Rpg2k::CreateBattleTargetWindow() {
 	target_window.reset(new Window_Command(commands, 136, 4));
 	target_window->SetHeight(80);
 	target_window->SetY(160);
-	target_window->SetZ(200);
+	target_window->SetZ(3001);
 }
 
 void Scene_Battle_Rpg2k::CreateBattleCommandWindow() {
@@ -103,7 +103,7 @@ void Scene_Battle_Rpg2k::CreateBattleCommandWindow() {
 
 void Scene_Battle_Rpg2k::CreateBattleMessageWindow() {
 	message_window.reset(new Window_Message(0, 160, 320, 80));
-	message_window->SetZ(300);
+	message_window->SetZ(3002);
 
 	battle_message_window.reset(new Window_BattleMessage(0, 160, 320, 80));}
 
@@ -151,7 +151,6 @@ void Scene_Battle_Rpg2k::SetState(Scene_Battle::State new_state) {
 		break;
 	case State_SelectItem:
 		item_window->SetActive(true);
-		//item_window->SetActor(Game_Battle::GetActiveActor());
 		item_window->Refresh();
 		break;
 	case State_SelectSkill:

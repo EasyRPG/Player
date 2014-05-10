@@ -268,7 +268,7 @@ void Game_Screen::Update() {
 			data.flash_time_left = data.flash_continuous ? flash_period : 0;
 	}
 
-    if (data.shake_continuous || data.shake_time_left > 0 || data.shake_position != 0) {
+	if (data.shake_continuous || data.shake_time_left > 0 || data.shake_position != 0) {
 		double delta = (data.shake_strength * data.shake_speed * shake_direction) / 10.0;
 		if (data.shake_time_left <= 1 && data.shake_position * (data.shake_position + delta) < 0)
 			data.shake_position = 0;

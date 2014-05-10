@@ -187,7 +187,7 @@ void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
 	target_window.reset(new Window_Command(commands, 136, 4));
 	target_window->SetHeight(80);
 	target_window->SetY(160);
-	target_window->SetZ(200);
+	target_window->SetZ(3001);
 }
 
 void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
@@ -234,7 +234,7 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 
 void Scene_Battle_Rpg2k3::CreateBattleMessageWindow() {
 	message_window.reset(new Window_Message(0, 160, 320, 80));
-	message_window->SetZ(300);
+	message_window->SetZ(3002);
 }
 
 void Scene_Battle_Rpg2k3::RefreshCommandWindow() {
