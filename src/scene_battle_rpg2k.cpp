@@ -594,7 +594,7 @@ void Scene_Battle_Rpg2k::Escape() {
 	if (escaping) {
 		battle_message_window->Clear();
 
-		Game_BattleAlgorithm::Escape escape_alg = Game_BattleAlgorithm::Escape::Escape(&(*Main_Data::game_party)[0]);
+		Game_BattleAlgorithm::Escape escape_alg = Game_BattleAlgorithm::Escape(&(*Main_Data::game_party)[0]);
 
 		escape_success = escape_alg.Execute();
 		escape_alg.Apply();

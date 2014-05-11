@@ -729,7 +729,7 @@ void Scene_Battle_Rpg2k3::SubskillSelected() {
 }
 
 void Scene_Battle_Rpg2k3::Escape() {
-	Game_BattleAlgorithm::Escape escape_alg = Game_BattleAlgorithm::Escape::Escape(active_actor);
+	Game_BattleAlgorithm::Escape escape_alg = Game_BattleAlgorithm::Escape(active_actor);
 	active_actor->SetGauge(0);
 
 	bool escape_success = escape_alg.Execute();
