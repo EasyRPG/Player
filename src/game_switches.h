@@ -61,6 +61,10 @@ public:
 		return (int)switches.size();
 	}
 
+	void Reset() {
+		std::fill(switches.begin(), switches.end(), false);
+	}
+
 private:
 	std::vector<bool>& switches;
 	std::vector<bool> dummy;

@@ -69,6 +69,8 @@ namespace map_anon {
 using namespace map_anon;
 
 void Game_Map::Init() {
+	Dispose();
+
 	map_info.position_x = 0;
 	map_info.position_y = 0;
 	need_refresh = true;

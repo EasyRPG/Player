@@ -24,7 +24,9 @@
 #include "game_message.h"
 #include "game_party.h"
 #include "game_player.h"
+#include "game_switches.h"
 #include "game_temp.h"
+#include "game_variables.h"
 #include "graphics.h"
 #include "inireader.h"
 #include "input.h"
@@ -218,6 +220,8 @@ void Player::Exit() {
 }
 
 void Player::CreateGameObjects() {
+	Game_Switches.Reset();
+	Game_Variables.Reset();
 	Game_Temp::Init();
 	Main_Data::game_screen.reset(new Game_Screen());
 	Game_Actors::Init();

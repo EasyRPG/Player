@@ -60,6 +60,10 @@ public:
 		return (int)variables.size();
 	}
 
+	void Reset() {
+		std::fill(variables.begin(), variables.end(), 0);
+	}
+
 private:
 	std::vector<uint32_t>& variables;
 	int dummy;
