@@ -614,6 +614,8 @@ void Scene_Battle_Rpg2k::Escape() {
 			counter = 0;
 
 			if (escape_success) {
+				Game_Temp::battle_result = Game_Temp::BattleEscape;
+
 				Scene::Pop();
 			}
 			else {
