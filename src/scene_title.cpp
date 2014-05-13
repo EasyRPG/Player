@@ -219,7 +219,7 @@ void Scene_Title::CommandNewGame() {
 		Output::Warning("The game has no start location set.");
 	} else {
 		Game_System::SePlay(Main_Data::game_data.system.decision_se);
-		Audio().BGM_Stop();
+		Game_System::BgmStop();
 		Graphics::SetFrameCount(0);
 		Player::CreateGameObjects();
 		Game_Map::Setup(Data::treemap.start.party_map_id);

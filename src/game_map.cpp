@@ -264,9 +264,7 @@ void Game_Map::PlayBgm() {
 					Game_System::BgmPlay(*Game_Temp::map_bgm);
 				}
 		}
-
 	}
-
 }
 
 void Game_Map::Refresh() {

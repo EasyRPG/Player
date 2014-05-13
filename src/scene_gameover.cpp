@@ -17,13 +17,11 @@
 
 // Headers
 #include "scene_gameover.h"
-#include "audio.h"
 #include "bitmap.h"
 #include "cache.h"
 #include "game_system.h"
-#include "graphics.h"
 #include "input.h"
-#include "scene_title.h"
+#include "main_data.h"
 
 Scene_Gameover::Scene_Gameover() {
 	type = Scene::Gameover;
@@ -33,9 +31,6 @@ void Scene_Gameover::Start() {
 	// Load Background Graphic
 	background.reset(new Sprite());
 	background->SetBitmap(Cache::Gameover(Data::system.gameover_name));
-	// Stop current music
-	Audio().BGM_Stop();
-	Audio().BGS_Stop();
 	// Play gameover music
 	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_GameOver));
 }
