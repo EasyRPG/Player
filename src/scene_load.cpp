@@ -22,12 +22,10 @@
 #include "game_actor.h"
 #include "game_actors.h"
 #include "game_map.h"
-#include "game_message.h"
-#include "game_party.h"
 #include "game_player.h"
 #include "game_system.h"
-#include "game_temp.h"
 #include "lsd_reader.h"
+#include "player.h"
 #include "scene_load.h"
 #include "scene_file.h"
 #include "scene_map.h"
@@ -45,20 +43,11 @@ void Scene_Load::Action(int index) {
 	std::auto_ptr<RPG::Save> save = LSD_Reader::Load(FileFinder::FindDefault(*tree, ss.str()),
 		ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)));
 
-	CreateGameObjects();
+	Player::CreateGameObjects();
 
 	SetupSavegameData(save);
 
 	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>(true), true);
-}
-
-void Scene_Load::CreateGameObjects() {
-	Game_Temp::Init();
-	Main_Data::game_screen.reset(new Game_Screen());
-	Game_Actors::Init();
-	Game_Message::Init();
-	Game_Map::Init();
-	Main_Data::game_player.reset(new Game_Player());
 }
 
 void Scene_Load::SetupSavegameData(std::auto_ptr<RPG::Save> save) {

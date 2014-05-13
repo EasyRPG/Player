@@ -26,16 +26,12 @@
 #include "bitmap.h"
 #include "cache.h"
 #include "filefinder.h"
-#include "game_actors.h"
 #include "game_map.h"
-#include "game_message.h"
-#include "game_party.h"
 #include "game_enemyparty.h"
 #include "game_player.h"
 #include "game_screen.h"
 #include "game_switches.h"
 #include "game_system.h"
-#include "game_temp.h"
 #include "game_variables.h"
 #include "graphics.h"
 #include "input.h"
@@ -152,16 +148,6 @@ void Scene_Title::LoadDatabase() {
 	}
 }
 
-void Scene_Title::CreateGameObjects() {
-	Game_Temp::Init();
-	Main_Data::game_screen.reset(new Game_Screen());
-	Game_Actors::Init();
-	Game_Message::Init();
-	Game_Map::Init();
-	Main_Data::game_player.reset(new Game_Player());
-	Main_Data::game_party.reset(new Game_Party());
-}
-
 bool Scene_Title::CheckContinue() {
 	EASYRPG_SHARED_PTR<FileFinder::ProjectTree> tree;
 	tree = FileFinder::CreateProjectTree(Main_Data::project_path, false);
@@ -222,7 +208,7 @@ bool Scene_Title::CheckValidPlayerLocation() {
 }
 
 void Scene_Title::PrepareBattleTest() {
-	CreateGameObjects();
+	Player::CreateGameObjects();
 	//Game_Troop::can_escape = true;
 
 	Scene::Push(Scene_Battle::Create(), true);
@@ -235,7 +221,7 @@ void Scene_Title::CommandNewGame() {
 		Game_System::SePlay(Main_Data::game_data.system.decision_se);
 		Audio().BGM_Stop();
 		Graphics::SetFrameCount(0);
-		CreateGameObjects();
+		Player::CreateGameObjects();
 		Game_Map::Setup(Data::treemap.start.party_map_id);
 		Main_Data::game_player->MoveTo(
 			Data::treemap.start.party_x, Data::treemap.start.party_y);
