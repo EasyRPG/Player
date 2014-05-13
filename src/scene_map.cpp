@@ -66,7 +66,14 @@ Scene_Map::~Scene_Map() {
 
 
 void Scene_Map::Continue() {
-	Game_Map::PlayBgm();
+	if (Game_Temp::battle_calling) {
+		// Came from battle
+		Game_Temp::battle_calling = false;
+		Game_System::BgmPlay(Main_Data::game_data.system.before_battle_music);
+	}
+	else {
+		Game_Map::PlayBgm();
+	}
 }
 
 /*void Scene_Map::TransitionIn() {
@@ -178,7 +185,7 @@ void Scene_Map::UpdateTeleportPlayer() {
 // Scene calling stuff.
 
 void Scene_Map::CallBattle() {
-	Game_Temp::battle_calling = false;
+	Main_Data::game_data.system.before_battle_music = Main_Data::game_data.system.current_music;
 
 	Scene::Push(Scene_Battle::Create());
 }
