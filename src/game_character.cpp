@@ -554,9 +554,9 @@ void Game_Character::MoveDown() {
 	}
 
 	if (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_down)) {
-		TurnDown();
 		SetY(GetY() + 1);
 		BeginMove();
+		stop_count = 0;
 		move_failed = false;
 	} else {
 		CheckEventTriggerTouch(GetX(), GetY() + 1);
@@ -573,9 +573,9 @@ void Game_Character::MoveLeft() {
 	}
 
 	if (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_left)) {
-		TurnLeft();
 		SetX(GetX() - 1);
 		BeginMove();
+		stop_count = 0;
 		move_failed = false;
 	} else {
 		CheckEventTriggerTouch(GetX() - 1, GetY());
@@ -592,9 +592,9 @@ void Game_Character::MoveRight() {
 	}
 
 	if (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_right)) {
-		TurnRight();
 		SetX(GetX() + 1);
 		BeginMove();
+		stop_count = 0;
 		move_failed = false;
 	} else {
 		CheckEventTriggerTouch(GetX() + 1, GetY());
@@ -611,9 +611,9 @@ void Game_Character::MoveUp() {
 	}
 
 	if (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_up)) {
-		TurnUp();
 		SetY(GetY() - 1);
 		BeginMove();
+		stop_count = 0;
 		move_failed = false;
 	} else {
 		CheckEventTriggerTouch(GetX(), GetY() - 1);
@@ -639,6 +639,8 @@ void Game_Character::MoveForward() {
 }
 
 void Game_Character::MoveDownLeft() {
+	if (turn_enabled) TurnLeft();
+
 	if (jumping) {
 		jump_plus_x--;
 		jump_plus_y++;
@@ -648,10 +650,13 @@ void Game_Character::MoveDownLeft() {
 	SetX(GetX() - 1);
 	SetY(GetY() + 1);
 	BeginMove();
+	stop_count = 0;
 	move_failed = false;
 }
 
 void Game_Character::MoveDownRight() {
+	if (turn_enabled) TurnRight();
+
 	if (jumping) {
 		jump_plus_x++;
 		jump_plus_y++;
@@ -661,11 +666,14 @@ void Game_Character::MoveDownRight() {
 	SetX(GetX() + 1);
 	SetY(GetY() + 1);
 	BeginMove();
+	stop_count = 0;
 	move_failed = false;
 }
 
 
 void Game_Character::MoveUpLeft() {
+	if (turn_enabled) TurnLeft();
+
 	if (jumping) {
 		jump_plus_x--;
 		jump_plus_y--;
@@ -675,11 +683,14 @@ void Game_Character::MoveUpLeft() {
 	SetX(GetX() - 1);
 	SetY(GetY() - 1);
 	BeginMove();
+	stop_count = 0;
 	move_failed = false;
 }
 
 
 void Game_Character::MoveUpRight() {
+	if (turn_enabled) TurnRight();
+
 	if (jumping) {
 		jump_plus_x++;
 		jump_plus_y--;
@@ -689,6 +700,7 @@ void Game_Character::MoveUpRight() {
 	SetX(GetX() + 1);
 	SetY(GetY() - 1);
 	BeginMove();
+	stop_count = 0;
 	move_failed = false;
 }
 
@@ -751,32 +763,24 @@ void Game_Character::TurnDown() {
 	if (!IsDirectionFixed()) {
 		SetDirection(RPG::EventPage::Direction_down);
 	}
-
-	stop_count = 0;
 }
 
 void Game_Character::TurnLeft() {
 	if (!IsDirectionFixed()) {
 		SetDirection(RPG::EventPage::Direction_left);
 	}
-
-	stop_count = 0;
 }
 
 void Game_Character::TurnRight() {
 	if (!IsDirectionFixed()) {
 		SetDirection(RPG::EventPage::Direction_right);
 	}
-
-	stop_count = 0;
 }
 
 void Game_Character::TurnUp() {
 	if (!IsDirectionFixed()) {
 		SetDirection(RPG::EventPage::Direction_up);
 	}
-
-	stop_count = 0;
 }
 
 void Game_Character::Turn90DegreeLeft() {
@@ -972,8 +976,8 @@ int Game_Character::DistanceYfromPlayer() const {
 void Game_Character::Lock() {
 	if (!IsFacingLocked()) {
 		SetPrelockDirection(GetDirection());
-		TurnTowardHero();
 		SetFacingLocked(true);
+		turn_enabled = false;
 	}
 }
 
@@ -981,6 +985,7 @@ void Game_Character::Unlock() {
 	if (IsFacingLocked()) {
 		SetFacingLocked(false);
 		SetFacingDirection(GetPrelockDirection());
+		turn_enabled = true;
 	}
 }
 
