@@ -368,6 +368,11 @@ void Scene_Battle_Rpg2k3::SetState(Scene_Battle::State new_state) {
 }
 
 void Scene_Battle_Rpg2k3::ProcessActions() {
+	if (Main_Data::game_party->GetBattlerCount() == 0) {
+		Game_Temp::battle_result = Game_Temp::BattleVictory;
+		Scene::Pop();
+	}
+
 	if (!battle_actions.empty()) {
 		if (battle_actions.front()->IsDead()) {
 			// No zombies allowed ;)
@@ -376,11 +381,8 @@ void Scene_Battle_Rpg2k3::ProcessActions() {
 		else if (ProcessBattleAction(battle_actions.front()->GetBattleAlgorithm().get())) {
 			NextTurn();
 			RemoveCurrentAction();
-			if (CheckWin() ||
-				CheckLose() ||
-				CheckAbort() ||
-				CheckFlee()) {
-					return;
+			if (CheckResultConditions()) {
+				return;
 			}
 		}
 	}
@@ -837,6 +839,10 @@ bool Scene_Battle_Rpg2k3::CheckFlee() {
 	Scene::Pop();*/
 
 	return false;
+}
+
+bool Scene_Battle_Rpg2k3::CheckResultConditions() {
+	return CheckLose() || CheckWin() || CheckAbort() || CheckFlee();
 }
 
 void Scene_Battle_Rpg2k3::SelectNextActor() {

@@ -64,6 +64,7 @@ protected:
 	bool CheckLose();
 	bool CheckAbort();
 	bool CheckFlee();
+	bool CheckResultConditions();
 
 	void CreateBattleOptionWindow();
 	void CreateBattleTargetWindow();
@@ -73,6 +74,7 @@ protected:
 	void RefreshCommandWindow();
 
 	void ProcessActions();
+
 	bool ProcessBattleAction(Game_BattleAlgorithm::AlgorithmBase* action);
 	void ProcessInput();
 

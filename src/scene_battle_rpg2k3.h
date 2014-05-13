@@ -73,6 +73,7 @@ protected:
 	bool CheckLose();
 	bool CheckAbort();
 	bool CheckFlee();
+	bool CheckResultConditions();
 
 	void CreateBattleOptionWindow();
 	void CreateBattleTargetWindow();

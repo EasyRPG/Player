@@ -241,23 +241,18 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 		if (DisplayMonstersInMessageWindow()) {
 			Game_Battle::UpdateEvents();
 			SetState(State_SelectOption);
+			CheckResultConditions();
 		}
 		break;
 	case State_SelectActor:
 	case State_AutoBattle:
-		CheckWin();
-		CheckLose();
-		CheckAbort();
-		CheckFlee();
+		CheckResultConditions();
 
 		if (help_window->GetVisible() && message_timer > 0) {
 			message_timer--;
 			if (message_timer <= 0)
 				help_window->SetVisible(false);
 		}
-
-		/*while (Game_Battle::NextActiveEnemy())
-			EnemyAction();*/
 
 		break;
 	case State_Battle:
@@ -268,11 +263,8 @@ void Scene_Battle_Rpg2k::ProcessActions() {
 			}
 			else if (ProcessBattleAction(battle_actions.front()->GetBattleAlgorithm().get())) {
 				RemoveCurrentAction();
-				if (CheckWin() ||
-					CheckLose() ||
-					CheckAbort() ||
-					CheckFlee()) {
-						return;
+				if (CheckResultConditions()) {
+					return;
 				}
 			}
 		} else {
@@ -825,4 +817,8 @@ bool Scene_Battle_Rpg2k::CheckFlee() {
 	Scene::Pop();*/
 
 	return false;
+}
+
+bool Scene_Battle_Rpg2k::CheckResultConditions() {
+	return CheckLose() || CheckWin() || CheckAbort() || CheckFlee();
 }

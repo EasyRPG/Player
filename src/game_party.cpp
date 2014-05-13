@@ -363,6 +363,10 @@ int Game_Party::GetAverageLevel() {
 	std::vector<Game_Actor*> actors = GetActors();
 	std::vector<Game_Actor*>::iterator it;
 
+	if (actors.empty()) {
+		return 0;
+	}
+
 	for (it = actors.begin(); it != actors.end(); ++it) {
 		party_lvl += (*it)->GetLevel();
 	}
@@ -374,6 +378,10 @@ int Game_Party::GetFatigue() {
 	int party_exh = 0;
 	std::vector<Game_Actor*> actors = GetActors();
 	std::vector<Game_Actor*>::iterator it;
+
+	if (actors.empty()) {
+		return 0;
+	}
 
 	for (it = actors.begin(); it != actors.end(); ++it) {
 		// FIXME: this is what the help file says, but it looks wrong
