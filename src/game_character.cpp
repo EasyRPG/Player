@@ -83,6 +83,9 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 
 	if (through) return true;
 
+	if (!Game_Map::IsPassable(x, y, d, this))
+		return false;
+
 	if (!Game_Map::IsPassable(new_x, new_y, (d + 2) % 4, this))
 		return false;
 
