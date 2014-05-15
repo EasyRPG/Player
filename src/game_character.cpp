@@ -642,7 +642,12 @@ void Game_Character::MoveForward() {
 }
 
 void Game_Character::MoveDownLeft() {
-	if (turn_enabled) TurnLeft();
+	if (turn_enabled) {
+		if (GetDirection() % 2 == 0)
+			TurnDown();
+		else
+			TurnLeft();
+	}
 
 	if (jumping) {
 		jump_plus_x--;
@@ -650,15 +655,25 @@ void Game_Character::MoveDownLeft() {
 		return;
 	}
 
-	SetX(GetX() - 1);
-	SetY(GetY() + 1);
-	BeginMove();
-	stop_count = 0;
-	move_failed = false;
+	if ((IsPassable(GetX(), GetY(), RPG::EventPage::Direction_left)
+		&& IsPassable(GetX() - 1, GetY(), RPG::EventPage::Direction_down))
+		|| (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_down)
+		&& IsPassable(GetX(), GetY() + 1, RPG::EventPage::Direction_left))) {
+		SetX(GetX() - 1);
+		SetY(GetY() + 1);
+		BeginMove();
+		stop_count = 0;
+		move_failed = false;
+	}
 }
 
 void Game_Character::MoveDownRight() {
-	if (turn_enabled) TurnRight();
+	if (turn_enabled) {
+		if (GetDirection() % 2 == 0)
+			TurnDown();
+		else
+			TurnRight();
+	}
 
 	if (jumping) {
 		jump_plus_x++;
@@ -666,16 +681,26 @@ void Game_Character::MoveDownRight() {
 		return;
 	}
 
-	SetX(GetX() + 1);
-	SetY(GetY() + 1);
-	BeginMove();
-	stop_count = 0;
-	move_failed = false;
+	if ((IsPassable(GetX(), GetY(), RPG::EventPage::Direction_right)
+		&& IsPassable(GetX() + 1, GetY(), RPG::EventPage::Direction_down))
+		|| (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_down)
+		&& IsPassable(GetX(), GetY() + 1, RPG::EventPage::Direction_right))) {
+		SetX(GetX() + 1);
+		SetY(GetY() + 1);
+		BeginMove();
+		stop_count = 0;
+		move_failed = false;
+	}
 }
 
 
 void Game_Character::MoveUpLeft() {
-	if (turn_enabled) TurnLeft();
+	if (turn_enabled) {
+		if (GetDirection() % 2 == 0)
+			TurnUp();
+		else
+			TurnLeft();
+	}
 
 	if (jumping) {
 		jump_plus_x--;
@@ -683,16 +708,26 @@ void Game_Character::MoveUpLeft() {
 		return;
 	}
 
-	SetX(GetX() - 1);
-	SetY(GetY() - 1);
-	BeginMove();
-	stop_count = 0;
-	move_failed = false;
+	if ((IsPassable(GetX(), GetY(), RPG::EventPage::Direction_left)
+		&& IsPassable(GetX() - 1, GetY(), RPG::EventPage::Direction_up))
+		|| (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_up)
+		&& IsPassable(GetX(), GetY() - 1, RPG::EventPage::Direction_left))) {
+		SetX(GetX() - 1);
+		SetY(GetY() - 1);
+		BeginMove();
+		stop_count = 0;
+		move_failed = false;
+	}
 }
 
 
 void Game_Character::MoveUpRight() {
-	if (turn_enabled) TurnRight();
+	if (turn_enabled) {
+		if (GetDirection() % 2 == 0)
+			TurnUp();
+		else
+			TurnRight();
+	}
 
 	if (jumping) {
 		jump_plus_x++;
@@ -700,11 +735,16 @@ void Game_Character::MoveUpRight() {
 		return;
 	}
 
-	SetX(GetX() + 1);
-	SetY(GetY() - 1);
-	BeginMove();
-	stop_count = 0;
-	move_failed = false;
+	if ((IsPassable(GetX(), GetY(), RPG::EventPage::Direction_right)
+		&& IsPassable(GetX() + 1, GetY(), RPG::EventPage::Direction_up))
+		|| (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_up)
+		&& IsPassable(GetX(), GetY() - 1, RPG::EventPage::Direction_right))) {
+		SetX(GetX() + 1);
+		SetY(GetY() - 1);
+		BeginMove();
+		stop_count = 0;
+		move_failed = false;
+	}
 }
 
 void Game_Character::MoveRandom() {
