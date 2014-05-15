@@ -314,6 +314,8 @@ void Bitmap::HSLBlit(int x, int y, Bitmap const& src, Rect const& src_rect_, dou
 
 	for (int i = 0; i < dst_rect.height; i++) {
 		bm_utils->HSLBlit(dst_pixels, src_pixels, dst_rect.width, hue, sat, lum, loff);
+
+		src_pixels += pitch();
 		dst_pixels += pitch();
 	}
 
@@ -758,7 +760,7 @@ BitmapRef Bitmap::Resample(int scale_w, int scale_h, const Rect& src_rect) const
 
 	pixman_image_composite32(PIXMAN_OP_SRC,
 							 bitmap, (pixman_image_t*) NULL, dst->bitmap,
-							 src_rect.x, src_rect.y,
+							 src_rect.x / zoom_x, src_rect.y / zoom_y,
 							 0, 0,
 							 0, 0,
 							 scale_w, scale_h);

@@ -19,6 +19,7 @@
 #include "window_actortarget.h"
 #include "baseui.h"
 #include "cache.h"
+#include "game_actor.h"
 #include "game_party.h"
 #include "bitmap.h"
 
@@ -34,16 +35,16 @@ Window_ActorTarget::Window_ActorTarget(int ix, int iy, int iwidth, int iheight) 
 void Window_ActorTarget::Refresh() {
 	contents->Clear();
 
-	item_max = Game_Party::GetActors().size();
+	item_max = Main_Data::game_party->GetActors().size();
 
 	int y = 0;
 	for (int i = 0; i < item_max; ++i) {
-		DrawActorFace(Game_Party::GetActors()[i], 0, i * 48 + y);
-		DrawActorName(Game_Party::GetActors()[i], 48 + 8, i * 48 + 2 + y);
-		DrawActorLevel(Game_Party::GetActors()[i], 48 + 8, i * 48 + 2 + 16 + y);
-		DrawActorState(Game_Party::GetActors()[i], 48 + 8, i * 48 + 2 + 16 + 16 + y);
-		DrawActorHp(Game_Party::GetActors()[i], 48 + 8 + 58, i * 48 + 2 + 16 + y);
-		DrawActorSp(Game_Party::GetActors()[i], 48 + 8 + 58, i * 48 + 2 + 16 + 16 + y);
+		DrawActorFace(Main_Data::game_party->GetActors()[i], 0, i * 48 + y);
+		DrawActorName(Main_Data::game_party->GetActors()[i], 48 + 8, i * 48 + 2 + y);
+		DrawActorLevel(Main_Data::game_party->GetActors()[i], 48 + 8, i * 48 + 2 + 16 + y);
+		DrawActorState(Main_Data::game_party->GetActors()[i], 48 + 8, i * 48 + 2 + 16 + 16 + y);
+		DrawActorHp(Main_Data::game_party->GetActors()[i], 48 + 8 + 58, i * 48 + 2 + 16 + y);
+		DrawActorSp(Main_Data::game_party->GetActors()[i], 48 + 8 + 58, i * 48 + 2 + 16 + 16 + y);
 
 		y += 10;
 	}
@@ -57,4 +58,16 @@ void Window_ActorTarget::UpdateCursorRect() {
 	} else {
 		cursor_rect.Set(48 + 4, index * (48 + 10), 120, 48);
 	}
+}
+
+Game_Actor* Window_ActorTarget::GetActor() {
+	int ind = GetIndex();
+	if (ind >= -10 && ind < 0) {
+		ind = -ind;
+	}
+	else if (ind == -100) {
+		return NULL;
+	}
+
+	return &(*Main_Data::game_party)[ind];
 }

@@ -28,19 +28,15 @@ Window_Item::Window_Item(int ix, int iy, int iwidth, int iheight) :
 	column_max = 2;
 }
 
-int Window_Item::GetItemId() {
-	if (index < 0) {
-		return 0;
-	} else {
-		return data[index];
+const RPG::Item* Window_Item::GetItem() const {
+	if (index < 0 || index >= (int)Data::items.size() || data[index] == 0) {
+		return NULL;
 	}
+
+	return &Data::items[data[index] - 1];
 }
 
 bool Window_Item::CheckInclude(int item_id) {
-	// TODO:
-	// if (Game_Temp::InBattle()) {
-	// 	return item_id == Rpg::Item
-
 	if (data.size() == 0 && item_id == 0) {
 		return true;
 	} else {
@@ -49,14 +45,14 @@ bool Window_Item::CheckInclude(int item_id) {
 }
 
 bool Window_Item::CheckEnable(int item_id) {
-	return Game_Party::IsItemUsable(item_id);
+	return Main_Data::game_party->IsItemUsable(item_id);
 }
 
 void Window_Item::Refresh() {
 	std::vector<int> party_items;
 
 	data.clear();
-	Game_Party::GetItems(party_items);
+	Main_Data::game_party->GetItems(party_items);
 
 	for (size_t i = 0; i < party_items.size(); ++i) {
 		if (this->CheckInclude(party_items[i])) {
@@ -71,11 +67,12 @@ void Window_Item::Refresh() {
 	item_max = data.size();
 
 	CreateContents();
+	
+	if (index > 0 && index >= item_max) {
+		--index;
+	} 
 
 	contents->Clear();
-	Rect rect(0, 0, contents->GetWidth(), contents->GetHeight());
-	contents->SetTransparentColor(windowskin->GetTransparentColor());
-	contents->ClearRect(rect);
 
 	for (int i = 0; i < item_max; ++i) {
 		DrawItem(i);
@@ -84,13 +81,12 @@ void Window_Item::Refresh() {
 
 void Window_Item::DrawItem(int index) {
 	Rect rect = GetItemRect(index);
-	contents->SetTransparentColor(windowskin->GetTransparentColor());
 	contents->ClearRect(rect);
 
 	int item_id = data[index];
 
 	if (item_id > 0) {
-		int number = Game_Party::ItemNumber(item_id);
+		int number = Main_Data::game_party->GetItemCount(item_id);
 		bool enabled = CheckEnable(item_id);
 		DrawItemName(&Data::items[item_id - 1], rect.x, rect.y, enabled);
 
@@ -103,6 +99,6 @@ void Window_Item::DrawItem(int index) {
 }
 
 void Window_Item::UpdateHelp() {
-	help_window->SetText(GetItemId() == 0 ? "" :
-		Data::items[GetItemId() - 1].description);
+	help_window->SetText(GetItem() == NULL ? "" :
+		Data::items[GetItem()->ID - 1].description);
 }

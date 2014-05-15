@@ -38,8 +38,8 @@ void Scene_Skill::Start() {
 	skill_window.reset(new Window_Skill(0, 64, 320, 240 - 64));
 
 	// Assign actors and help to windows
-	skill_window->SetActor(Game_Party::GetActors()[actor_index]->GetId());
-	skillstatus_window->SetActor(Game_Party::GetActors()[actor_index]->GetId());
+	skill_window->SetActor(Main_Data::game_party->GetActors()[actor_index]->GetId());
+	skillstatus_window->SetActor(Main_Data::game_party->GetActors()[actor_index]->GetId());
 	skill_window->SetIndex(skill_index);
 	skill_window->SetHelpWindow(help_window.get());
 }
@@ -53,16 +53,15 @@ void Scene_Skill::Update() {
 		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		int skill_id = skill_window->GetSkillId();
+		int skill_id = skill_window->GetSkill()->ID;
 
-		Game_Actor* actor = Game_Party::GetActors()[actor_index];
+		Game_Actor* actor = Main_Data::game_party->GetActors()[actor_index];
 
 		if (actor->IsSkillUsable(skill_id)) {
 			Game_System::SePlay(Main_Data::game_data.system.decision_se);
 
 			if (Data::skills[skill_id - 1].type == RPG::Skill::Type_switch) {
-				actor->SetSp(actor->GetSp() - actor->CalculateSkillCost(skill_id));
-				Game_Switches[Data::skills[skill_id - 1].switch_id] = true;
+				actor->UseSkill(skill_id);
 				Scene::PopUntil(Scene::Map);
 				Game_Map::SetNeedRefresh(true);
 			} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_normal) {

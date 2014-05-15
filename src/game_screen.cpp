@@ -22,6 +22,7 @@
 #include "options.h"
 #include "main_data.h"
 #include "game_screen.h"
+#include "game_system.h"
 #include "bitmap.h"
 
 Game_Screen::Game_Screen() :
@@ -184,17 +185,28 @@ void Game_Screen::PlayMovie(const std::string& filename,
 }
 
 void Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool global) {
-	data.battleanim_id = animation_id;
 	data.battleanim_target = target_id;
-	data.battleanim_global = global;
 
 	Game_Character* target = Game_Character::GetCharacter(target_id, target_id);
+	ShowBattleAnimation(animation_id, target->GetScreenX(), target->GetScreenY(), global);
+}
 
-	animation.reset(new BattleAnimation(target->GetScreenX(), target->GetScreenY(),
-										&Data::animations[animation_id - 1]));
-	animation->SetVisible(true);
+void Game_Screen::ShowBattleAnimation(int animation_id, int target_x, int target_y, bool global) {
+	data.battleanim_id = animation_id;
+	
+	data.battleanim_global = global;
+
+	RPG::Animation& anim = Data::animations[animation_id - 1];
+	animation.reset(new BattleAnimation(target_x, target_y,
+		&anim));
 	// FIXME: target
 	// FIXME: global
+
+	animation_timings.clear();
+	for (std::vector<RPG::AnimationTiming>::const_iterator it = anim.timings.begin();
+		it != anim.timings.end(); ++it) {
+			animation_timings[it->frame] = *it;
+	}
 }
 
 bool Game_Screen::IsBattleAnimationWaiting() const {
@@ -256,7 +268,7 @@ void Game_Screen::Update() {
 			data.flash_time_left = data.flash_continuous ? flash_period : 0;
 	}
 
-    if (data.shake_continuous || data.shake_time_left > 0 || data.shake_position != 0) {
+	if (data.shake_continuous || data.shake_time_left > 0 || data.shake_position != 0) {
 		double delta = (data.shake_strength * data.shake_speed * shake_direction) / 10.0;
 		if (data.shake_time_left <= 1 && data.shake_position * (data.shake_position + delta) < 0)
 			data.shake_position = 0;
@@ -301,8 +313,20 @@ void Game_Screen::Update() {
 
 	if (animation) {
 		animation->Update();
+		PlayBattleAnimationSound();
+
 		if (animation->IsDone()) {
 			animation.reset();
+		}
+	}
+}
+
+void Game_Screen::PlayBattleAnimationSound() {
+	if (animation) {
+		if (animation_timings.find(animation->GetFrame()) != animation_timings.end()) {
+			const RPG::AnimationTiming& timing = animation_timings[animation->GetFrame()];
+			Game_System::SePlay(timing.se);
+			animation_timings.erase(animation->GetFrame());
 		}
 	}
 }

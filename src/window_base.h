@@ -50,19 +50,20 @@ public:
 	/** @{ */
 	void DrawFace(std::string face_name, int face_index, int cx, int cy, bool flip = false);
 	void DrawActorFace(Game_Actor* actor, int cx, int cy);
-	void DrawActorName(Game_Actor* actor, int cx, int cy);
+	void DrawActorName(Game_Battler* actor, int cx, int cy);
 	void DrawActorTitle(Game_Actor* actor, int cx, int cy);
 	void DrawActorClass(Game_Actor* actor, int cx, int cy);
 	void DrawActorLevel(Game_Actor* actor, int cx, int cy);
-	void DrawActorState(Game_Actor* actor, int cx, int cy);
+	void DrawActorState(Game_Battler* actor, int cx, int cy);
 	void DrawActorExp(Game_Actor* actor, int cx, int cy);
-	void DrawActorHp(Game_Actor* actor, int cx, int cy, bool draw_max = true);
-	void DrawActorSp(Game_Actor* actor, int cx, int cy, bool draw_max = true);
-	void DrawActorParameter(Game_Actor* actor, int cx, int cy, int type);
+	void DrawActorHp(Game_Battler* actor, int cx, int cy, bool draw_max = true);
+	void DrawActorSp(Game_Battler* actor, int cx, int cy, bool draw_max = true);
+	void DrawActorParameter(Game_Battler* actor, int cx, int cy, int type);
 	void DrawEquipmentType(Game_Actor* actor, int cx, int cy, int type);
 	void DrawItemName(RPG::Item* item, int cx, int cy, bool enabled = true);
 	void DrawSkillName(RPG::Skill* skill, int cx, int cy, bool enabled = true);
 	void DrawCurrencyValue(int money, int cx, int cy);
+	void DrawGauge(Game_Battler* actor, int cx, int cy);
 	/** @} */
 
 protected:

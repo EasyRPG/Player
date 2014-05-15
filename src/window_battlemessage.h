@@ -15,47 +15,37 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _WINDOW_BATTLESKILL_H_
-#define _WINDOW_BATTLESKILL_H_
+#ifndef _WINDOW_BATTLEMESSAGE_H_
+#define _WINDOW_BATTLEMESSAGE_H_
 
 // Headers
-#include <vector>
-#include "window_skill.h"
+#include <deque>
+#include "window_base.h"
 
 /**
- * Window_BattleSkill class.
+ * Displays messages during a battle
  */
-class Window_BattleSkill : public Window_Skill {
+class Window_BattleMessage : public Window_Base {
 
 public:
-	/**
-	 * Constructor.
-	 */
-	Window_BattleSkill(int ix, int iy, int iwidth, int iheight);
+	Window_BattleMessage(int ix, int iy, int iwidth, int iheight);
 
-	/**
-	 * Sets the actor whose skills are displayed.
-	 *
-	 * @param id ID of the actor.
-	 */
-	void SetSubset(int id);
+	void Push(const std::string& message);
 
-	/**
-	 * Checks if the skill should be in the list.
-	 *
-	 * @param skill_id skill to check.
-	 */
-	bool CheckInclude(int skill_id);
+	void Pop();
 
-	/**
-	 * Chechs if skill should be enabled.
-	 *
-	 * @param skill_id skill to check.
-	 */
-	bool CheckEnable(int skill_id);
+	void Clear();
+
+	int GetLineCount();
+
+	void Refresh();
+
+	void Update();
 
 private:
-	int subset;
+	std::vector<std::string> lines;
+
+	bool needs_refresh;
 };
 
 #endif

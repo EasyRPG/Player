@@ -214,12 +214,6 @@
     <ClCompile Include="..\..\src\game_temp.cpp">
       <Filter>Source Files\Engine\Game</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\game_troop.cpp">
-      <Filter>Source Files\Engine\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game_unit.cpp">
-      <Filter>Source Files\Engine\Game</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\scene_title.cpp">
       <Filter>Source Files\Engine\Scene</Filter>
     </ClCompile>
@@ -298,13 +292,7 @@
     <ClCompile Include="..\..\src\window_battlecommand.cpp">
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\window_battleitem.cpp">
-      <Filter>Source Files\Engine\Window</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\window_battleoption.cpp">
-      <Filter>Source Files\Engine\Window</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\window_battleskill.cpp">
       <Filter>Source Files\Engine\Window</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\window_battlestatus.cpp">
@@ -406,18 +394,6 @@
     <ClCompile Include="..\..\src\main_data.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\battle_actions.cpp">
-      <Filter>Source Files\Engine\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\battle_algorithms.cpp">
-      <Filter>Source Files\Engine\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\battle_animation.cpp">
-      <Filter>Source Files\Engine\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\battle_battler.cpp">
-      <Filter>Source Files\Engine\Game</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\message_overlay.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
@@ -434,6 +410,33 @@
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\weather.cpp">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sprite_battler.cpp">
+      <Filter>Source Files\Engine\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\spriteset_battle.cpp">
+      <Filter>Source Files\Engine\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene_battle_rpg2k.cpp">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene_battle_rpg2k3.cpp">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game_enemyparty.cpp">
+      <Filter>Source Files\Engine\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game_party_base.cpp">
+      <Filter>Source Files\Engine\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\window_battlemessage.cpp">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game_battlealgorithm.cpp">
+      <Filter>Source Files\Engine\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\battle_animation.cpp">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
@@ -531,9 +534,6 @@
     <ClInclude Include="..\..\src\al_audio.h">
       <Filter>Source Files\Backend\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\game_unit.h">
-      <Filter>Source Files\Engine\Game</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\game_variables.h">
       <Filter>Source Files\Engine\Game</Filter>
     </ClInclude>
@@ -601,9 +601,6 @@
       <Filter>Source Files\Engine\Game</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\game_temp.h">
-      <Filter>Source Files\Engine\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\game_troop.h">
       <Filter>Source Files\Engine\Game</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\scene_title.h">
@@ -687,13 +684,7 @@
     <ClInclude Include="..\..\src\window_battlecommand.h">
       <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\window_battleitem.h">
-      <Filter>Source Files\Engine\Window</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\window_battleoption.h">
-      <Filter>Source Files\Engine\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\window_battleskill.h">
       <Filter>Source Files\Engine\Window</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\window_battlestatus.h">
@@ -804,18 +795,6 @@
     <ClInclude Include="..\..\src\main_data.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\battle_actions.h">
-      <Filter>Source Files\Engine\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\battle_animation.h">
-      <Filter>Source Files\Engine\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\battle_battler.h">
-      <Filter>Source Files\Engine\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\battle_interface.h">
-      <Filter>Source Files\Engine\Game</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\matrix.h">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
@@ -841,6 +820,33 @@
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\weather.h">
+      <Filter>Source Files\Backend\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sprite_battler.h">
+      <Filter>Source Files\Engine\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\spriteset_battle.h">
+      <Filter>Source Files\Engine\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene_battle_rpg2k.h">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene_battle_rpg2k3.h">
+      <Filter>Source Files\Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game_enemyparty.h">
+      <Filter>Source Files\Engine\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game_party_base.h">
+      <Filter>Source Files\Engine\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\window_battlemessage.h">
+      <Filter>Source Files\Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game_battlealgorithm.h">
+      <Filter>Source Files\Engine\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\battle_animation.h">
       <Filter>Source Files\Backend\Graphics</Filter>
     </ClInclude>
   </ItemGroup>

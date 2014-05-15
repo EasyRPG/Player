@@ -57,7 +57,7 @@ void Window_ShopBuy::Refresh() {
 
 void Window_ShopBuy::DrawItem(int index) {
 	int item_id = data[index];
-	bool enabled = Data::items[item_id - 1].price <= Game_Party::GetGold();
+	bool enabled = Data::items[item_id - 1].price <= Main_Data::game_party->GetGold();
 	Rect rect = GetItemRect(index);
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 	contents->ClearRect(rect);
@@ -76,6 +76,6 @@ void Window_ShopBuy::UpdateHelp() {
 bool Window_ShopBuy::CheckEnable(int item_id) {
 	return (
 		item_id > 0 &&
-		Data::items[item_id - 1].price <= Game_Party::GetGold() &&
-		Game_Party::ItemNumber(item_id) < 99);
+		Data::items[item_id - 1].price <= Main_Data::game_party->GetGold() &&
+		Main_Data::game_party->GetItemCount(item_id) < 99);
 }

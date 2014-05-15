@@ -29,7 +29,7 @@ Scene_Status::Scene_Status(int actor_index) :
 }
 
 void Scene_Status::Start() {
-	int actor = Game_Party::GetActors()[actor_index]->GetId();
+	int actor = Main_Data::game_party->GetActors()[actor_index]->GetId();
 
 	actorinfo_window.reset(new Window_ActorInfo(0, 0, 124, 208, actor));
 	actorstatus_window.reset(new Window_ActorStatus(124, 0, 196, 64, actor));
@@ -51,13 +51,13 @@ void Scene_Status::Update() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		Scene::Pop();
-	} else if (Game_Party::GetActors().size() > 1 && Input::IsTriggered(Input::RIGHT)) {
+	} else if (Main_Data::game_party->GetActors().size() > 1 && Input::IsTriggered(Input::RIGHT)) {
 		Game_System::SePlay(Main_Data::game_data.system.cursor_se);
-		actor_index = (actor_index + 1) % Game_Party::GetActors().size();
+		actor_index = (actor_index + 1) % Main_Data::game_party->GetActors().size();
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Status>(actor_index), true);
-	} else if (Game_Party::GetActors().size() > 1 && Input::IsTriggered(Input::LEFT)) {
+	} else if (Main_Data::game_party->GetActors().size() > 1 && Input::IsTriggered(Input::LEFT)) {
 		Game_System::SePlay(Main_Data::game_data.system.cursor_se);
-		actor_index = (actor_index + Game_Party::GetActors().size() - 1) % Game_Party::GetActors().size();
+		actor_index = (actor_index + Main_Data::game_party->GetActors().size() - 1) % Main_Data::game_party->GetActors().size();
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Status>(actor_index), true);
 	}
 }

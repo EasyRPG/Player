@@ -48,11 +48,6 @@ public:
 	void LoadDatabase();
 
 	/**
-	 * Initializes all game classes.
-	 */
-	void CreateGameObjects();
-
-	/**
 	 * Checks if there are any savegames for the game.
 	 *
 	 * @return true if there are any, false otherwise.

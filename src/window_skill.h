@@ -43,9 +43,9 @@ public:
 	/**
 	 * Gets skill.
 	 *
-	 * @return current selected skill ID.
+	 * @return current selected skill.
 	 */
-	int GetSkillId();
+	const RPG::Skill* GetSkill() const;
 
 	/**
 	 * Refreshes the skill list.
@@ -72,16 +72,25 @@ public:
 	virtual bool CheckInclude(int skill_id);
 
 	/**
-	 * Chechs if skill should be enabled.
+	 * Checks if skill should be enabled.
 	 *
 	 * @param skill_id skill to check.
 	 */
 	virtual bool CheckEnable(int skill_id);
 
+	/**
+	 * Filters skill window by subset.
+	 *
+	 * @param subset Subset to filter for (0 for no subset)
+	 */
+	void SetSubsetFilter(int subset);
+
 protected:
 	std::vector<int> data;
 
 	int actor_id;
+
+	int subset;
 };
 
 #endif

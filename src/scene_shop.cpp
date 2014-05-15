@@ -231,7 +231,7 @@ void Scene_Shop::UpdateBuySelection() {
 			if (item.price == 0) {
 				max = 99;
 			} else {
-				max = Game_Party::GetGold() / item.price;
+				max = Main_Data::game_party->GetGold() / item.price;
 			}
 			number_window->SetData(item_id, max, item.price);
 
@@ -252,14 +252,14 @@ void Scene_Shop::UpdateSellSelection() {
 			Scene::Pop();
 		}
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		int item_id = sell_window->GetItemId();
+		int item_id = sell_window->GetItem() == NULL ? 0 : sell_window->GetItem()->ID;
 		status_window->SetItemId(item_id);
 		party_window->SetItemId(item_id);
 
 		if (item_id > 0 && Data::items[item_id - 1].price > 0) {
 			RPG::Item& item = Data::items[item_id - 1];
 			Game_System::SePlay(Main_Data::game_data.system.decision_se);
-			number_window->SetData(item_id, Game_Party::ItemNumber(item_id), item.price);
+			number_window->SetData(item_id, Main_Data::game_party->GetItemCount(item_id), item.price);
 			SetMode(SellHowMany);
 		}
 		else {
@@ -281,17 +281,17 @@ void Scene_Shop::UpdateNumberInput() {
 		int item_id;
 		switch (shop_window->GetChoice()) {
 		case Buy:
-			item_id = buy_window->GetItemId();
-			Game_Party::LoseGold(number_window->GetTotal());
-			Game_Party::GainItem(item_id, number_window->GetNumber());
+			item_id = sell_window->GetItem() == NULL ? 0 : sell_window->GetItem()->ID;
+			Main_Data::game_party->LoseGold(number_window->GetTotal());
+			Main_Data::game_party->AddItem(item_id, number_window->GetNumber());
 			gold_window->Refresh();
 			buy_window->Refresh();
 			status_window->Refresh();
 			SetMode(Bought); break;
 		case Sell:
-			item_id = sell_window->GetItemId();
-			Game_Party::GainGold(number_window->GetTotal());
-			Game_Party::LoseItem(item_id, number_window->GetNumber());
+			item_id = sell_window->GetItem() == NULL ? 0 : sell_window->GetItem()->ID;
+			Main_Data::game_party->GainGold(number_window->GetTotal());
+			Main_Data::game_party->RemoveItem(item_id, number_window->GetNumber());
 			gold_window->Refresh();
 			sell_window->Refresh();
 			status_window->Refresh();

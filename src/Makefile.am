@@ -28,14 +28,8 @@ easyrpg_player_SOURCES = \
 	background.h \
 	baseui.cpp \
 	baseui.h \
-	battle_actions.cpp \
-	battle_actions.h \
-	battle_algorithms.cpp \
 	battle_animation.cpp \
 	battle_animation.h \
-	battle_battler.cpp \
-	battle_battler.h \
-	battle_interface.h \
 	bitmap.cpp \
 	bitmap.h \
 	bitmap_screen.cpp \
@@ -61,6 +55,8 @@ easyrpg_player_SOURCES = \
 	game_actors.h \
 	game_battle.cpp \
 	game_battle.h \
+	game_battlealgorithm.cpp \
+	game_battlealgorithm.h \
 	game_battler.cpp \
 	game_battler.h \
 	game_character.cpp \
@@ -69,6 +65,8 @@ easyrpg_player_SOURCES = \
 	game_commonevent.h \
 	game_enemy.cpp \
 	game_enemy.h \
+	game_enemyparty.cpp \
+	game_enemyparty.h \
 	game_event.cpp \
 	game_event.h \
 	game_interpreter_battle.cpp \
@@ -83,6 +81,8 @@ easyrpg_player_SOURCES = \
 	game_message.h \
 	game_party.cpp \
 	game_party.h \
+	game_party_base.cpp \
+	game_party_base.h \
 	game_picture.cpp \
 	game_picture.h \
 	game_player.cpp \
@@ -96,10 +96,6 @@ easyrpg_player_SOURCES = \
 	game_targets.h \
 	game_temp.cpp \
 	game_temp.h \
-	game_troop.cpp \
-	game_troop.h \
-	game_unit.cpp \
-	game_unit.h \
 	game_variables.h \
 	game_vehicle.cpp \
 	game_vehicle.h \
@@ -150,6 +146,10 @@ easyrpg_player_SOURCES = \
 	scene_actortarget.h \
 	scene_battle.cpp \
 	scene_battle.h \
+	scene_battle_rpg2k.cpp \
+	scene_battle_rpg2k.h \
+	scene_battle_rpg2k3.cpp \
+	scene_battle_rpg2k3.h \
 	scene.cpp \
 	scene_debug.cpp \
 	scene_debug.h \
@@ -192,10 +192,14 @@ easyrpg_player_SOURCES = \
 	sdl_audio.h \
 	sdl_ui.cpp \
 	sdl_ui.h \
+	sprite_battler.cpp \
+	sprite_battler.h \
 	sprite_character.cpp \
 	sprite_character.h \
 	sprite.cpp \
 	sprite.h \
+	spriteset_battle.cpp \
+	spriteset_battle.h \
 	spriteset_map.cpp \
 	spriteset_map.h \
 	system.h \
@@ -224,12 +228,10 @@ easyrpg_player_SOURCES = \
 	window_base.h \
 	window_battlecommand.cpp \
 	window_battlecommand.h \
-	window_battleitem.cpp \
-	window_battleitem.h \
+	window_battlemessage.cpp \
+	window_battlemessage.h \
 	window_battleoption.cpp \
 	window_battleoption.h \
-	window_battleskill.cpp \
-	window_battleskill.h \
 	window_battlestatus.cpp \
 	window_battlestatus.h \
 	window_command.cpp \

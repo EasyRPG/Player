@@ -17,6 +17,8 @@
 
 // Headers
 #include "scene_actortarget.h"
+#include "game_actors.h"
+#include "game_party.h"
 #include "game_system.h"
 #include "input.h"
 #include "main_data.h"
@@ -72,18 +74,48 @@ void Scene_ActorTarget::Update() {
 	} else {
 		UpdateSkill();
 	}
-}
 
-void Scene_ActorTarget::UpdateItem() {
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		Scene::Pop();
 	}
 }
 
+void Scene_ActorTarget::UpdateItem() {
+	if (Input::IsTriggered(Input::DECISION)) {
+		if (Main_Data::game_party->GetItemCount(id) <= 0) {
+			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
+			return;
+		}
+		if (Main_Data::game_party->UseItem(id, target_window->GetActor())) {
+			Game_System::SePlay(Main_Data::game_data.system.item_se);
+		}
+		else {
+			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
+		}
+
+
+		status_window->Refresh();
+		target_window->Refresh();
+	}
+}
+
 void Scene_ActorTarget::UpdateSkill() {
-	if (Input::IsTriggered(Input::CANCEL)) {
-		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
-		Scene::Pop();
+	if (Input::IsTriggered(Input::DECISION)) {
+		Game_Actor* actor = static_cast<Game_Actor*>(&(*Main_Data::game_party)[actor_index]);
+
+		if (actor->GetSp() < actor->CalculateSkillCost(id - 1)) {
+			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
+			return;
+		}
+		if (Main_Data::game_party->UseSkill(id, actor, target_window->GetActor())) {
+			Game_System::SePlay(Main_Data::game_data.system.item_se);
+		}
+		else {
+			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
+		}
+
+		status_window->Refresh();
+		target_window->Refresh();
 	}
 }

@@ -15,31 +15,32 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __game_troop__
-#define __game_troop__
+#ifndef _SPRITESET_BATTLE_H_
+#define _SPRITESET_BATTLE_H_
 
-#include <vector>
-#include "game_unit.h"
+// Headers
+#include "tilemap.h"
+#include "background.h"
+#include "sprite_battler.h"
+#include "sprite_character.h"
+#include <boost/scoped_ptr.hpp>
 
-class Game_Enemy;
-class Game_Interpreter;
-
-typedef std::vector<Game_Battler*> tEnemyArray;
-
-class Game_Troop : public Game_Unit {
-
+class Game_Battler;
+/**
+ * Spriteset_Battle class.
+ */
+class Spriteset_Battle {
 public:
-	Game_Troop();
+	Spriteset_Battle();
 
-	void Clear();
+	void Update();
+	Sprite_Battler* FindBattler(const Game_Battler* battler);
 
-	tEnemyArray GetMembers();
-
-private:
-	tEnemyArray enemies;
-	Game_Interpreter* interpreter;
-	int turn_count;
-	bool can_escape, can_lose, preemptive, surprise, turn_ending;
-	Game_Enemy* forcing_battler;
+protected:
+	boost::scoped_ptr<Background> background;
+	std::vector<EASYRPG_SHARED_PTR<Sprite_Battler> > sprites;
+	/*std::vector<Sprite_Picture*> picture_sprites;
+	Sprite_Timer* timer_sprite;*/
 };
-#endif // __game_troop__
+
+#endif
