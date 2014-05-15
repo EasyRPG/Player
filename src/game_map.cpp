@@ -749,6 +749,7 @@ bool Game_Map::PrepareEncounter() {
 	Game_Temp::battle_terrain_id = Game_Map::GetTerrainTag(Main_Data::game_player->GetX(), Main_Data::game_player->GetY());
 	Game_Temp::battle_background = "";
 	Game_Temp::battle_troop_id = encounters[rand() / (RAND_MAX / encounters.size() + 1)];
+	Game_Temp::battle_escape_mode = -1;
 	Game_Temp::battle_calling = true;
 
 	return true;
