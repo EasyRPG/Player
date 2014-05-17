@@ -138,10 +138,10 @@ void Player::Run() {
 	if (Player::debug_flag) {
 		// Scene_Logo does setup in non-debug mode
 		CreateGameObjects();
-		SetupPlayerSpawn();
 		Scene::Push(EASYRPG_SHARED_PTR<Scene>(
 			static_cast<Scene*>(new Scene_Title())));
 		if (Player::new_game_flag) {
+			SetupPlayerSpawn();
 			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>());
 		}
 	}
