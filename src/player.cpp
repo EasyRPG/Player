@@ -322,10 +322,12 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			no_rtp_flag = true;
 		}
 		else if (*it == "--version" || *it == "-v") {
-			// TODO -> print version information
+			PrintVersion();
+			exit(0);
 		}
 		else if (*it == "--help" || *it == "-h" || *it == "/?") {
-			// TODO -> print usage information
+			PrintUsage();
+			exit(0);
 		}
 	}
 }
@@ -404,6 +406,66 @@ std::string Player::GetEncoding() {
 	}
 
 	return encoding;
+}
+
+void Player::PrintVersion() {
+	std::cout << "EasyRPG Player " << PLAYER_VERSION << std::endl;
+}
+
+void Player::PrintUsage() {
+	std::cout << "EasyRPG Player - An open source interpreter for RPG Maker 2000/2003 games." << std::endl << std::endl;
+
+	std::cout << "Options:" << std::endl;
+	//                                                  "                                Line end marker -> "
+	std::cout << "      " << "--battle-test=N      " << "Start a battle test with monster party N." << std::endl;
+
+	std::cout << "      " << "--encoding=N         " << "Instead of using the default platform encoding or" << std::endl;
+	std::cout << "      " << "                     " << "the one in RPG_RT.ini the encoding N is used." << std::endl;
+
+	std::cout << "      " << "--engine=ENGINE      " << "Disable auto detection of the simulated engine." << std::endl;
+	std::cout << "      " << "                     " << "Possible options:" << std::endl;
+	std::cout << "      " << "                     " << " rpg2k  - RPG Maker 2000 engine" << std::endl;
+	std::cout << "      " << "                     " << " rpg2k3 - RPG Maker 2003 engine" << std::endl;
+
+	std::cout << "      " << "--fullscreen         " << "Start in fullscreen mode." << std::endl;
+
+	std::cout << "      " << "--hide-title         " << "Hide the title background image and center the" << std::endl;
+	std::cout << "      " << "                     " << "command menu." << std::endl;
+
+	std::cout << "      " << "--load-game-id=N     " << "Skip the title scene and load SaveN.lsd" << std::endl;
+	std::cout << "      " << "                     " << "(N is padded to two digits)." << std::endl;
+
+	std::cout << "      " << "--new-game           " << "Skip the title scene and start a new game directly." << std::endl;
+
+	std::cout << "      " << "--no-audio           " << "Disable audio (in case you prefer your own music)." << std::endl;
+
+	std::cout << "      " << "--no-rtp             " << "Disable support for the Runtime Package (RTP)." << std::endl;
+
+	std::cout << "      " << "--project-path=PATH  " << "Instead of using the working directory the game in" << std::endl;
+	std::cout << "      " << "                     " << "PATH is used." << std::endl;
+
+	std::cout << "      " << "--start-map-id=N     " << "Overwrite the map used for new games and use." << std::endl;
+	std::cout << "      " << "                     " << "MapN.lmu instead (N is padded to four digits)." << std::endl;
+
+	std::cout << "      " << "--start-position=X,Y " << "Overwrite the party start position and move the" << std::endl;
+	std::cout << "      " << "                     " << "party to position (X, Y)." << std::endl;
+
+	std::cout << "      " << "--test-play          " << "Enable TestPlay mode." << std::endl;
+
+	std::cout << "      " << "--window             " << "Start in window mode." << std::endl;
+
+	std::cout << "  -v, " << "--version            " << "Display program version and exit." << std::endl;
+
+	std::cout << "  -h, " << "--help               " << "Display this help and exit." << std::endl << std::endl;
+
+	std::cout << "For compatibility with the legacy RPG Maker runtime the following arguments" << std::endl;
+	std::cout << "are supported:" << std::endl;
+	std::cout << "      " << "BattleTest N         " << "Same as --battle-test. When N is not a valid number" << std::endl;
+	std::cout << "      " << "                     " << "the 4th argument is used as the party id." << std::endl;
+	std::cout << "      " << "HideTitle            " << "Same as --hide-title." << std::endl;
+	std::cout << "      " << "TestPlay             " << "Same as --test-play." << std::endl << std::endl;
+
+	std::cout << "Alex, EV0001 and the EasyRPG authors wish you a lot of fun!" << std::endl;
 }
 
 #if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER >= 0x0600)

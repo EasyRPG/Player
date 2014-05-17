@@ -88,6 +88,12 @@ namespace Player {
 	 */
 	std::string GetEncoding();
 
+	/** Output program version on stdout */
+	void PrintVersion();
+
+	/** Output program usage information on stdout */
+	void PrintUsage();
+
 	/** Exit flag, if true will exit application on next Player::Update. */
 	extern bool exit_flag;
 
