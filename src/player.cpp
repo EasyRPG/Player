@@ -76,6 +76,7 @@ namespace Player {
 	int party_x_position;
 	int party_y_position;
 	int start_map_id;
+	bool no_rtp_flag;
 	bool no_audio_flag;
 	EngineType engine;
 	std::string game_title;
@@ -207,6 +208,7 @@ void Player::Exit() {
 }
 
 void Player::ParseCommandLine(int argc, char *argv[]) {
+	engine = EngineNone;
 	window_flag = false;
 	debug_flag = false;
 	hide_title_flag = false;
@@ -217,6 +219,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	party_x_position = -1;
 	party_y_position = -1;
 	start_map_id = -1;
+	no_rtp_flag = false;
 	no_audio_flag = false;
 
 	std::vector<std::string> args;
@@ -286,7 +289,15 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			}
 		}
 		else if (*it == "--engine") {
-			// TODO
+			++it;
+			if (it != args.end()) {
+				if (*it == "rpg2k" || *it == "2000") {
+					engine = EngineRpg2k;
+				}
+				else if (*it == "rpg2k3" || *it == "2003") {
+					engine = EngineRpg2k3;
+				}
+			}
 		}
 		else if (*it == "--encoding") {
 			// TODO
@@ -295,7 +306,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			no_audio_flag = true;
 		}
 		else if (*it == "--no-rtp") {
-			// TODO
+			no_rtp_flag = true;
 		}
 		else if (*it == "--version" || *it == "-v") {
 			// TODO
@@ -311,12 +322,19 @@ void Player::CreateGameObjects() {
 	if (!init) {
 		LoadDatabase();
 
-		if (Data::system.ldb_id == 2003) {
-			Output::Debug("Switching to Rpg2003 Interpreter");
-			Player::engine = Player::EngineRpg2k3;
+		if (engine == EngineNone) {
+			if (Data::system.ldb_id == 2003) {
+				Output::Debug("Switching to Rpg2003 Interpreter");
+				Player::engine = Player::EngineRpg2k3;
+			}
+			else {
+				Player::engine = Player::EngineRpg2k;
+			}
 		}
 
-		FileFinder::InitRtpPaths();
+		if (!no_rtp_flag) {
+			FileFinder::InitRtpPaths();
+		}
 	}
 	init = true;
 

@@ -26,6 +26,7 @@
  */
 namespace Player {
 	enum EngineType {
+		EngineNone,
 		EngineRpg2k,
 		EngineRpg2k3
 	};
@@ -112,6 +113,9 @@ namespace Player {
 
 	/** New game flag, if true a new game starts directly. */
 	extern bool new_game_flag;
+
+	/** Prevent adding of RTP paths to the file finder */
+	extern bool no_rtp_flag;
 
 	/** Mutes audio playback */
 	extern bool no_audio_flag;
