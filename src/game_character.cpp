@@ -53,6 +53,12 @@ Game_Character::Game_Character() :
 	visible(true) {
 }
 
+Game_Character::~Game_Character() {
+	if (move_route_owner != NULL) {
+		move_route_owner->EndMoveRoute(this);
+	}
+}
+
 bool Game_Character::IsMoving() const {
 	if (move_count > 0) return false; //Jumping
 

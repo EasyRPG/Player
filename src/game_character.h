@@ -40,8 +40,7 @@ public:
 	/**
 	 * Destructor.
 	 */
-	virtual ~Game_Character() {}
-
+	virtual ~Game_Character();
 
 	/**
 	* Gets x position.
