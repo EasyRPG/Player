@@ -23,9 +23,9 @@
 #include "game_map.h"
 #include "game_party.h"
 #include "lsd_reader.h"
+#include "player.h"
 #include "scene_save.h"
 #include "scene_file.h"
-#include "reader_util.h"
 
 Scene_Save::Scene_Save() :
 	Scene_File(Data::terms.save_game_message) {
@@ -92,8 +92,7 @@ void Scene_Save::Action(int index) {
 		filename = FileFinder::MakePath(Main_Data::project_path, ss.str());
 	}
 
-	LSD_Reader::Save(filename, Main_Data::game_data,
-		ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)));
+	LSD_Reader::Save(filename, Main_Data::game_data, Player::GetEncoding());
 
 	Scene::Pop();
 }

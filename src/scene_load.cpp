@@ -29,7 +29,6 @@
 #include "scene_load.h"
 #include "scene_file.h"
 #include "scene_map.h"
-#include "reader_util.h"
 
 Scene_Load::Scene_Load() :
 	Scene_File(Data::terms.load_game_message) {
@@ -41,7 +40,7 @@ void Scene_Load::Action(int index) {
 	ss << "Save" << (index <= 8 ? "0" : "") << (index + 1) << ".lsd";
 
 	std::auto_ptr<RPG::Save> save = LSD_Reader::Load(FileFinder::FindDefault(*tree, ss.str()),
-		ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)));
+		Player::GetEncoding());
 
 	Player::CreateGameObjects();
 
@@ -67,7 +66,7 @@ void Scene_Load::SetupSavegameData(std::auto_ptr<RPG::Save> save) {
 	Main_Data::game_player->Refresh();
 
 	RPG::Music current_music = Main_Data::game_data.system.current_music;
-	Main_Data::game_data.system.current_music = RPG::Music();
+	Game_System::BgmStop();
 	Game_System::BgmPlay(current_music);
 }
 

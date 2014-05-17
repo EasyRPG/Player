@@ -73,11 +73,13 @@ namespace Player {
 	bool battle_test_flag;
 	int battle_test_troop_id;
 	bool new_game_flag;
+	int load_game_id;
 	int party_x_position;
 	int party_y_position;
 	int start_map_id;
 	bool no_rtp_flag;
 	bool no_audio_flag;
+	std::string encoding;
 	EngineType engine;
 	std::string game_title;
 }
@@ -94,22 +96,25 @@ void Player::Init(int argc, char *argv[]) {
 	}
 #endif
 
-	Main_Data::Init();
-
 #if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER >= 0x0600)
 	InitMiniDumpWriter();
 #endif
 
 	ParseCommandLine(argc, argv);
 
+	if (Main_Data::project_path.empty()) {
+		// Not overwritten by --project-path
+		Main_Data::Init();
+	}
+
 	engine = EngineRpg2k;
 
 	FileFinder::Init();
 
 	INIReader ini(FileFinder::FindDefault(INI_NAME));
-	if(ini.ParseError() != -1) {
+	if (ini.ParseError() != -1) {
 		std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
-		std::string encoding = ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME));
+		std::string encoding = Player::GetEncoding();
 		game_title = ReaderUtil::Recode(title, encoding);
 	}
 
@@ -216,11 +221,13 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	reset_flag = false;
 	battle_test_flag = false;
 	new_game_flag = false;
+	load_game_id;
 	party_x_position = -1;
 	party_y_position = -1;
 	start_map_id = -1;
 	no_rtp_flag = false;
 	no_audio_flag = false;
+	encoding = -1;
 
 	std::vector<std::string> args;
 
@@ -251,26 +258,29 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 				battle_test_troop_id = atoi((*it).c_str());
 			}
 		}
-		else if (*it == "--game-directory") {
-			// TODO
+		else if (*it == "--project-path") {
+			++it;
+			if (it != args.end()) {
+				Main_Data::project_path = *it;
+			}
 		}
 		else if (*it == "--new-game") {
 			new_game_flag = true;
 		}
 		else if (*it == "--load-game") {
-			// TODO
+			// TODO -> load game by filename
 		}
 		else if (*it == "--load-game-id") {
-			// TODO
+			// TODO -> load game Save[XX].lsd
 		}
 		else if (*it == "--database") {
-			// TODO
+			// TODO -> overwrite database file
 		}
 		else if (*it == "--map-tree") {
-			// TODO
+			// TODO -> overwrite map tree file
 		}
 		else if (*it == "--start-map") {
-			// TODO
+			// TODO -> overwrite start map by filename
 		}
 		else if (*it == "--start-map-id") {
 			++it;
@@ -300,7 +310,10 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			}
 		}
 		else if (*it == "--encoding") {
-			// TODO
+			++it;
+			if (it != args.end()) {
+				encoding = atoi((*it).c_str());
+			}
 		}
 		else if (*it == "--no-audio") {
 			no_audio_flag = true;
@@ -309,10 +322,10 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			no_rtp_flag = true;
 		}
 		else if (*it == "--version" || *it == "-v") {
-			// TODO
+			// TODO -> print version information
 		}
 		else if (*it == "--help" || *it == "-h" || *it == "/?") {
-			// TODO
+			// TODO -> print usage information
 		}
 	}
 }
@@ -363,12 +376,10 @@ void Player::LoadDatabase() {
 		Output::Debug("%s is not an RPG2k project", Main_Data::project_path.c_str());
 	}
 
-	if (!LDB_Reader::Load(FileFinder::FindDefault(DATABASE_NAME),
-		ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)))) {
+	if (!LDB_Reader::Load(FileFinder::FindDefault(DATABASE_NAME), Player::GetEncoding())) {
 		Output::ErrorStr(LcfReader::GetError());
 	}
-	if (!LMT_Reader::Load(FileFinder::FindDefault(TREEMAP_NAME),
-		ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)))) {
+	if (!LMT_Reader::Load(FileFinder::FindDefault(TREEMAP_NAME), Player::GetEncoding())) {
 		Output::ErrorStr(LcfReader::GetError());
 	}
 }
@@ -385,6 +396,14 @@ void Player::SetupPlayerSpawn() {
 	Main_Data::game_player->MoveTo(x_pos, y_pos);
 	Main_Data::game_player->Refresh();
 	Game_Map::PlayBgm();
+}
+
+std::string Player::GetEncoding() {
+	if (encoding.empty()) {
+		encoding = ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME));
+	}
+
+	return encoding;
 }
 
 #if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER >= 0x0600)

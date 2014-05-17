@@ -81,6 +81,13 @@ namespace Player {
 	 */
 	void SetupPlayerSpawn();
 
+	/**
+	 * Gets current codepage.
+	 *
+	 * @return current codepage
+	 */
+	std::string GetEncoding();
+
 	/** Exit flag, if true will exit application on next Player::Update. */
 	extern bool exit_flag;
 
@@ -105,7 +112,7 @@ namespace Player {
 	/** Overwrite party x position */
 	extern int party_x_position;
 
-	/** Overwrite porty y position */
+	/** Overwrite party y position */
 	extern int party_y_position;
 
 	/** Overwrite start map */
@@ -114,11 +121,17 @@ namespace Player {
 	/** New game flag, if true a new game starts directly. */
 	extern bool new_game_flag;
 
+	/** If set, savegame is loaded directly */
+	extern int load_game_id;
+
 	/** Prevent adding of RTP paths to the file finder */
 	extern bool no_rtp_flag;
 
 	/** Mutes audio playback */
 	extern bool no_audio_flag;
+
+	/** Encoding used */
+	extern std::string encoding;
 
 	/** Currently interpreted engine. */
 	extern EngineType engine;
