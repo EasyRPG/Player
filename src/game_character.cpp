@@ -198,10 +198,12 @@ void Game_Character::Update() {
 		return;
 	}
 
-	if (IsMoveRouteOverwritten()) {
-		MoveTypeCustom();
-	} else if (!IsFacingLocked()) {
-		UpdateSelfMovement();
+	if (stop_count > ((GetMoveFrequency() == 8) ? 0 : pow(2, 9 - GetMoveFrequency()))) {
+		if (IsMoveRouteOverwritten()) {
+			MoveTypeCustom();
+		} else if (!IsFacingLocked()) {
+			UpdateSelfMovement();
+		}
 	}
 }
 
@@ -238,27 +240,25 @@ void Game_Character::UpdateJump() {
 }
 
 void Game_Character::UpdateSelfMovement() {
-	if (stop_count > 30 * (5 - GetMoveFrequency())) {
-		switch (move_type) {
-		case RPG::EventPage::MoveType_random:
-			MoveTypeRandom();
-			break;
-		case RPG::EventPage::MoveType_vertical:
-			MoveTypeCycleUpDown();
-			break;
-		case RPG::EventPage::MoveType_horizontal:
-			MoveTypeCycleLeftRight();
-			break;
-		case RPG::EventPage::MoveType_toward:
-			MoveTypeTowardsPlayer();
-			break;
-		case RPG::EventPage::MoveType_away:
-			MoveTypeAwayFromPlayer();
-			break;
-		case RPG::EventPage::MoveType_custom:
-			MoveTypeCustom();
-			break;
-		}
+	switch (move_type) {
+	case RPG::EventPage::MoveType_random:
+		MoveTypeRandom();
+		break;
+	case RPG::EventPage::MoveType_vertical:
+		MoveTypeCycleUpDown();
+		break;
+	case RPG::EventPage::MoveType_horizontal:
+		MoveTypeCycleLeftRight();
+		break;
+	case RPG::EventPage::MoveType_toward:
+		MoveTypeTowardsPlayer();
+		break;
+	case RPG::EventPage::MoveType_away:
+		MoveTypeAwayFromPlayer();
+		break;
+	case RPG::EventPage::MoveType_custom:
+		MoveTypeCustom();
+		break;
 	}
 }
 
@@ -289,7 +289,12 @@ void Game_Character::MoveTypeCycleLeftRight() {
 	if (IsStopping()) {
 		cycle_stat ? MoveLeft() : MoveRight();
 
-		cycle_stat = move_failed ? !cycle_stat : cycle_stat;
+		if (move_failed) {
+			Wait();
+			stop_count = 0;
+			// TODO: After waiting, try once more in the same direction
+			cycle_stat = move_failed ? !cycle_stat : cycle_stat;
+		}
 	}
 }
 
@@ -297,7 +302,12 @@ void Game_Character::MoveTypeCycleUpDown() {
 	if (IsStopping()) {
 		cycle_stat ? MoveUp() : MoveDown();
 
-		cycle_stat = move_failed ? !cycle_stat : cycle_stat;
+		if (move_failed) {
+			Wait();
+			stop_count = 0;
+			// TODO: After waiting, try once more in the same direction
+			cycle_stat = !cycle_stat;
+		}
 	}
 }
 
@@ -359,7 +369,7 @@ void Game_Character::MoveTypeCustom() {
 		active_route_index = GetOriginalMoveRouteIndex();
 	}
 
-	if (stop_count > 30 * (5 - GetMoveFrequency()) && IsStopping()) {
+	if (IsStopping()) {
 		move_failed = false;
 		if ((size_t)active_route_index >= active_route->move_commands.size()) {
 			// End of Move list
@@ -659,11 +669,11 @@ void Game_Character::MoveDownLeft() {
 		&& IsPassable(GetX() - 1, GetY(), RPG::EventPage::Direction_down))
 		|| (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_down)
 		&& IsPassable(GetX(), GetY() + 1, RPG::EventPage::Direction_left))) {
-		SetX(GetX() - 1);
-		SetY(GetY() + 1);
-		BeginMove();
-		stop_count = 0;
-		move_failed = false;
+			SetX(GetX() - 1);
+			SetY(GetY() + 1);
+			BeginMove();
+			stop_count = 0;
+			move_failed = false;
 	}
 }
 
@@ -685,11 +695,11 @@ void Game_Character::MoveDownRight() {
 		&& IsPassable(GetX() + 1, GetY(), RPG::EventPage::Direction_down))
 		|| (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_down)
 		&& IsPassable(GetX(), GetY() + 1, RPG::EventPage::Direction_right))) {
-		SetX(GetX() + 1);
-		SetY(GetY() + 1);
-		BeginMove();
-		stop_count = 0;
-		move_failed = false;
+			SetX(GetX() + 1);
+			SetY(GetY() + 1);
+			BeginMove();
+			stop_count = 0;
+			move_failed = false;
 	}
 }
 
@@ -712,11 +722,11 @@ void Game_Character::MoveUpLeft() {
 		&& IsPassable(GetX() - 1, GetY(), RPG::EventPage::Direction_up))
 		|| (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_up)
 		&& IsPassable(GetX(), GetY() - 1, RPG::EventPage::Direction_left))) {
-		SetX(GetX() - 1);
-		SetY(GetY() - 1);
-		BeginMove();
-		stop_count = 0;
-		move_failed = false;
+			SetX(GetX() - 1);
+			SetY(GetY() - 1);
+			BeginMove();
+			stop_count = 0;
+			move_failed = false;
 	}
 }
 
@@ -739,11 +749,11 @@ void Game_Character::MoveUpRight() {
 		&& IsPassable(GetX() + 1, GetY(), RPG::EventPage::Direction_up))
 		|| (IsPassable(GetX(), GetY(), RPG::EventPage::Direction_up)
 		&& IsPassable(GetX(), GetY() - 1, RPG::EventPage::Direction_right))) {
-		SetX(GetX() + 1);
-		SetY(GetY() - 1);
-		BeginMove();
-		stop_count = 0;
-		move_failed = false;
+			SetX(GetX() + 1);
+			SetY(GetY() - 1);
+			BeginMove();
+			stop_count = 0;
+			move_failed = false;
 	}
 }
 
@@ -805,24 +815,32 @@ void Game_Character::MoveAwayFromPlayer() {
 void Game_Character::TurnDown() {
 	if (!IsDirectionFixed()) {
 		SetDirection(RPG::EventPage::Direction_down);
+		move_failed = false;
+		stop_count = pow(2, 8 - GetMoveFrequency());
 	}
 }
 
 void Game_Character::TurnLeft() {
 	if (!IsDirectionFixed()) {
 		SetDirection(RPG::EventPage::Direction_left);
+		move_failed = false;
+		stop_count = pow(2, 8 - GetMoveFrequency());
 	}
 }
 
 void Game_Character::TurnRight() {
 	if (!IsDirectionFixed()) {
 		SetDirection(RPG::EventPage::Direction_right);
+		move_failed = false;
+		stop_count = pow(2, 8 - GetMoveFrequency());
 	}
 }
 
 void Game_Character::TurnUp() {
 	if (!IsDirectionFixed()) {
 		SetDirection(RPG::EventPage::Direction_up);
+		move_failed = false;
+		stop_count = pow(2, 8 - GetMoveFrequency());
 	}
 }
 
@@ -1037,7 +1055,7 @@ void Game_Character::SetFacingDirection(int direction) {
 		SetDirection(direction);
 	}
 
-	stop_count = 0;
+	stop_count = pow(2, 8 - GetMoveFrequency());
 }
 
 void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
