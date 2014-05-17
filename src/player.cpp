@@ -267,21 +267,21 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		else if (*it == "--new-game") {
 			new_game_flag = true;
 		}
-		else if (*it == "--load-game") {
-			// TODO -> load game by filename
-		}
 		else if (*it == "--load-game-id") {
-			// TODO -> load game Save[XX].lsd
+			// IMPORTANT - TODO -> load game Save[XX].lsd
+		}
+		/*else if (*it == "--load-game") {
+			// load game by filename
 		}
 		else if (*it == "--database") {
-			// TODO -> overwrite database file
+			// overwrite database file
 		}
 		else if (*it == "--map-tree") {
-			// TODO -> overwrite map tree file
+			// overwrite map tree file
 		}
 		else if (*it == "--start-map") {
-			// TODO -> overwrite start map by filename
-		}
+			// overwrite start map by filename
+		}*/
 		else if (*it == "--start-map-id") {
 			++it;
 			if (it != args.end()) {
@@ -374,15 +374,35 @@ void Player::LoadDatabase() {
 	// Load Database
 	Data::Clear();
 
-	if(! FileFinder::IsRPG2kProject(FileFinder::GetProjectTree())) {
-		Output::Debug("%s is not an RPG2k project", Main_Data::project_path.c_str());
+	if (!FileFinder::IsRPG2kProject(FileFinder::GetProjectTree()) &&
+		!FileFinder::IsEasyRpgProject(FileFinder::GetProjectTree())) {
+		Output::Debug("%s is not a supported project", Main_Data::project_path.c_str());
 	}
 
-	if (!LDB_Reader::Load(FileFinder::FindDefault(DATABASE_NAME), Player::GetEncoding())) {
-		Output::ErrorStr(LcfReader::GetError());
+	// Try loading EasyRPG project files first, then fallback to normal RPG Maker
+	std::string edb = FileFinder::FindDefault(DATABASE_NAME_EASYRPG);
+	std::string emt = FileFinder::FindDefault(TREEMAP_NAME_EASYRPG);
+
+	bool easyrpg_project = !edb.empty() && !emt.empty();
+
+	if (easyrpg_project) {
+		if (!LDB_Reader::LoadXml(edb)) {
+			Output::ErrorStr(LcfReader::GetError());
+		}
+		if (!LMT_Reader::LoadXml(emt)) {
+			Output::ErrorStr(LcfReader::GetError());
+		}
 	}
-	if (!LMT_Reader::Load(FileFinder::FindDefault(TREEMAP_NAME), Player::GetEncoding())) {
-		Output::ErrorStr(LcfReader::GetError());
+	else {
+		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
+		std::string lmt = FileFinder::FindDefault(TREEMAP_NAME);
+
+		if (!LDB_Reader::Load(ldb, Player::GetEncoding())) {
+			Output::ErrorStr(LcfReader::GetError());
+		}
+		if (!LMT_Reader::Load(lmt, Player::GetEncoding())) {
+			Output::ErrorStr(LcfReader::GetError());
+		}
 	}
 }
 

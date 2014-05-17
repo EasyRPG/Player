@@ -417,6 +417,14 @@ bool FileFinder::IsRPG2kProject(ProjectTree const& dir) {
 	return(ldb_it != dir.files.end() && lmt_it != dir.files.end());
 }
 
+bool FileFinder::IsEasyRpgProject(ProjectTree const& dir){
+	string_map::const_iterator const
+		ldb_it = dir.files.find(Utils::LowerCase(DATABASE_NAME_EASYRPG)),
+		lmt_it = dir.files.find(Utils::LowerCase(TREEMAP_NAME_EASYRPG));
+
+	return(ldb_it != dir.files.end() && lmt_it != dir.files.end());
+}
+
 std::string FileFinder::FindMusic(const std::string& name) {
 	static const char* MUSIC_TYPES[] = {
 		".wav", ".ogg", ".mid", ".midi", ".mp3", NULL };

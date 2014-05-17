@@ -56,9 +56,11 @@
 
 /** Database filename. */
 #define DATABASE_NAME "RPG_RT.ldb"
+#define DATABASE_NAME_EASYRPG "EASY_RT.edb"
 
 /** Map tree filename. */
 #define TREEMAP_NAME "RPG_RT.lmt"
+#define TREEMAP_NAME_EASYRPG "EASY_RT.emt"
 
 /** Default fps rate. */
 #define DEFAULT_FPS 60

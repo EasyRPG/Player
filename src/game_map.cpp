@@ -173,12 +173,24 @@ void Game_Map::SetupCommon(int _id) {
 
 	location.map_id = _id;
 
+	// Try loading EasyRPG map files first, then fallback to normal RPG Maker
 	char file[12];
-	sprintf(file, "Map%04d.lmu", location.map_id);
+	sprintf(file, "Map%04d.emu", location.map_id);
 
-	map = LMU_Reader::Load(FileFinder::FindDefault(file), Player::GetEncoding());
-	if (map.get() == NULL) {
-		Output::ErrorStr(LcfReader::GetError());
+	std::string map_file = FileFinder::FindDefault(file);
+	if (map_file.empty()) {
+		sprintf(file, "Map%04d.lmu", location.map_id);
+
+		map = LMU_Reader::Load(FileFinder::FindDefault(file), Player::GetEncoding());
+		if (map.get() == NULL) {
+			Output::ErrorStr(LcfReader::GetError());
+		}
+	}
+	else {
+		map = LMU_Reader::LoadXml(map_file);
+		if (map.get() == NULL) {
+			Output::ErrorStr(LcfReader::GetError());
+		}
 	}
 
 	if (map->parallax_flag) {
