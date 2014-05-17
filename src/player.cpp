@@ -16,21 +16,29 @@
  */
 
 // Headers
-#include "player.h"
-#include "system.h"
-#include "output.h"
 #include "audio.h"
-#include "graphics.h"
-#include "input.h"
 #include "cache.h"
-#include "reader_util.h"
 #include "filefinder.h"
+#include "game_actors.h"
+#include "game_map.h"
+#include "game_message.h"
+#include "game_party.h"
+#include "game_player.h"
+#include "game_switches.h"
+#include "game_temp.h"
+#include "game_variables.h"
+#include "graphics.h"
+#include "inireader.h"
+#include "input.h"
 #include "main_data.h"
+#include "output.h"
+#include "player.h"
+#include "reader_util.h"
+#include "scene_battle.h"
 #include "scene_logo.h"
 #include "scene_title.h"
-#include "scene_battle.h"
+#include "system.h"
 #include "utils.h"
-#include "inireader.h"
 
 #include <algorithm>
 #include <set>
@@ -84,17 +92,37 @@ void Player::Init(int argc, char *argv[]) {
 	reset_flag = false;
 
 	// Command line parser
-	if((argc > 1) && Utils::LowerCase(argv[1]) == "battletest") {
+	std::set<std::string> args;
+	for (int i = 1; i < argc; ++i) {
+		args.insert(Utils::LowerCase(argv[i]));
+	}
+
+	window_flag = args.find("window") != args.end();
+	debug_flag = args.find("testplay") != args.end();
+	hide_title_flag = args.find("hidetitle") != args.end();
+
+	std::set<std::string>::const_iterator btest_it = args.find("battletest");
+
+	battle_test_troop_id = 0;
+	if (args.find("battletest") != args.end()) {
+		// Take the number directly after battle_test as the troop id
+		// If this fails take the 4th argument (RPG_RT style)
 		battle_test_flag = true;
-		battle_test_troop_id = (argc > 4)? atoi(argv[4]) : 0;
+
+		for (int i = 1; i < argc; ++i) {
+			if (Utils::LowerCase(argv[i]) == "battletest") {
+				if (i + 1 < argc) {
+					battle_test_troop_id = atoi(argv[i + 1]); 
+				}
+				break;
+			}
+		}
+
+		if (battle_test_troop_id == 0 && argc > 4) {
+			battle_test_troop_id = atoi(argv[4]);
+		}
 	} else {
-		std::set<std::string> args;
 		battle_test_flag = false;
-		battle_test_troop_id = 0;
-		for(int i = 1; i < argc; ++i) { args.insert(Utils::LowerCase(argv[i])); }
-		window_flag = args.find("window") != args.end();
-		debug_flag = args.find("testplay") != args.end();
-		hide_title_flag = args.find("hidetitle") != args.end();
 	}
 
 	engine = EngineRpg2k;
@@ -189,6 +217,18 @@ void Player::Exit() {
 	// Workaround Segfault under Android
 	exit(0);
 #endif
+}
+
+void Player::CreateGameObjects() {
+	Game_Switches.Reset();
+	Game_Variables.Reset();
+	Game_Temp::Init();
+	Main_Data::game_screen.reset(new Game_Screen());
+	Game_Actors::Init();
+	Game_Message::Init();
+	Game_Map::Init();
+	Main_Data::game_player.reset(new Game_Player());
+	Main_Data::game_party.reset(new Game_Party());
 }
 
 #if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER >= 0x0600)

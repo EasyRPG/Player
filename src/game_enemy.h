@@ -20,15 +20,32 @@
 
 // Headers
 #include "game_battler.h"
+#include "rpg_enemy.h"
 
-class Game_Enemy :
-	public Game_Battler
+/**
+ * Represents a single enemy in the battle scene
+ */
+class Game_Enemy : public Game_Battler
 {
 public:
 	Game_Enemy(int enemy_id);
 
 	const std::vector<int16_t>& GetStates() const;
 	std::vector<int16_t>& GetStates();
+
+	/**
+	 * Gets the characters name
+	 *
+	 * @return Character name
+	 */
+	const std::string& GetName() const;
+
+	/**
+	 * Gets the filename of the enemy sprite
+	 *
+	 * @return Filename of enemy sprite
+	 */
+	const std::string& GetSpriteName() const;
 
 	/**
 	 * Gets the maximum HP for the current level.
@@ -72,8 +89,39 @@ public:
 	 */
 	int GetBaseAgi() const;
 
+	/**
+	 * Gets enemy X position
+	 *
+	 * @return enemy X position
+	 */
+	int GetBattleX() const;
+	/**
+	 * Gets enemy Y position
+	 *
+	 * @return enemy Y position
+	 */
+	int GetBattleY() const;
+
+	/**
+	 * Sets enemy X position
+	 * 
+	 * @param new_x New X position
+	 */
+	void SetBattleX(int new_x);
+
+	/**
+	 * Sets enemy Y position
+	 * 
+	 * @param new_y New Y position
+	 */
+	void SetBattleY(int new_y);
+
+	int GetHue() const;
+
 	int GetHp() const;
 	void SetHp(int _hp);
+	void ChangeHp(int hp);
+
 	int GetSp() const;
 	void SetSp(int _sp);
 
@@ -81,14 +129,30 @@ public:
 	bool IsHidden() const;
 	void Transform(int new_enemy_id);
 
+	int GetBattleAnimationId() const;
+
+	int GetExp() const;
+
+	int GetMoney() const;
+
+	BattlerType GetType() const;
+
+	bool IsActionValid(const RPG::EnemyAction& action);
+	const RPG::EnemyAction* ChooseRandomAction();
+
 protected:
 	void Setup(int enemy_id);
+
+	int x;
+	int y;
 
 	int enemy_id;
 	bool hidden;
 	int hp;
 	int sp;
 	std::vector<int16_t> states;
+
+	RPG::Enemy* enemy;
 };
 
 #endif

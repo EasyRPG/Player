@@ -60,6 +60,11 @@ namespace Player {
 	 */
 	void Exit();
 
+	/**
+	 * Initializes all game classes.
+	 */
+	void CreateGameObjects();
+
 	/** Exit flag, if true will exit application on next Player::Update. */
 	extern bool exit_flag;
 

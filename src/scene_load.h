@@ -38,7 +38,6 @@ public:
 	bool IsSlotValid(int index);
 
 private:
-	void CreateGameObjects();
 	void SetupSavegameData(std::auto_ptr<RPG::Save> save);
 };
 

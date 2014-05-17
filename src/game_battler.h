@@ -25,6 +25,13 @@
 #include "system.h"
 
 class Game_Actor;
+class Game_Party_Base;
+
+namespace Game_BattleAlgorithm {
+	class AlgorithmBase;
+}
+
+typedef EASYRPG_SHARED_PTR<Game_BattleAlgorithm::AlgorithmBase> BattleAlgorithmRef;
 
 /**
  * Game_Battler class.
@@ -34,7 +41,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	// Game_Battler();
+	Game_Battler();
 
 	/**
 	 * Gets if battler has a state.
@@ -61,6 +68,20 @@ public:
 	const RPG::State* GetSignificantState();
 
 	/**
+	 * Gets the characters name
+	 *
+	 * @return Character name
+	 */
+	virtual const std::string& GetName() const = 0;
+
+	/**
+	 * Gets the filename of the character sprite
+	 *
+	 * @return Filename of character sprite
+	 */
+	virtual const std::string& GetSpriteName() const = 0;
+
+	/**
 	 * Gets battler HP.
 	 *
 	 * @return current HP.
@@ -71,6 +92,12 @@ public:
 	 * Sets the current battler HP.
 	 */
 	virtual void SetHp(int hp) = 0;
+
+	/**
+	 * Sets the current battler HP.
+	 * Also handles death condition.
+	 */
+	virtual void ChangeHp(int hp) = 0;
 
 	/**
 	 * Gets the battler max HP.
@@ -183,6 +210,26 @@ public:
 	virtual bool IsSkillUsable(int skill_id) const;
 
 	/**
+	 * Applies the effects of an item.
+	 * Tests if using that item makes any sense (e.g. for HP healing
+	 * items if there are any HP to heal)
+	 *
+	 * @param item_id ID if item to use
+	 * @return true if item affected anything
+	 */
+	virtual bool UseItem(int item_id);
+
+	/**
+	 * Applies the effects of a skill.
+	 * Tests if using that skill makes any sense (e.g. for HP healing
+	 * skills if there are any HP to heal)
+	 *
+	 * @param skill_id ID of skill to use
+	 * @return true if skill affected anything
+	 */
+	virtual bool UseSkill(int skill_id);
+
+	/**
 	 * Calculates the Skill costs including all modifiers.
 	 *
 	 * @param skill_id ID of skill to calculate.
@@ -213,6 +260,94 @@ public:
 	 * Removes all states.
 	 */
 	void RemoveAllStates();
+	
+	/**
+	 * Gets X position on battlefield
+	 *
+	 * @return X position in battle scene
+	 */
+	virtual int GetBattleX() const = 0;
+
+	/**
+	 * Gets Y position on battlefield
+	 *
+	 * @return Y position in battle scene
+	 */
+	virtual int GetBattleY() const = 0;
+
+	virtual int GetHue() const;
+
+	virtual int GetBattleAnimationId() const = 0;
+
+	enum BattlerType {
+		Type_Ally,
+		Type_Enemy
+	};
+
+	virtual BattlerType GetType() const = 0;
+
+	/**
+	 * Convenience function to access the party based on the type of this
+	 * battler. This function does not ensure that the battler is in the
+	 * party.
+	 * @return Party this member probably belongs to. 
+	 */
+	Game_Party_Base& GetParty() const;
+
+	/**
+	 * Gets the current state of the battle gauge in percent.
+	 * Used by RPG2k3 battle system.
+	 *
+	 * @return gauge in percent
+	 */
+	int GetGauge() const;
+
+	/**
+	 * Sets the gauge to a new percentage in range 0-100
+	 * Used by RPG2k3 battle system.
+	 *
+	 * @param new_gauge new gauge value in percent
+	 */
+	void SetGauge(int new_gauge);
+
+	/**
+	 * Increments the gauge by current agi.
+	 * The size of the step is altered by the multiplier (usually based on
+	 * the highest agi of all battlers)
+	 * Used by RPG2k3 battle system.
+	 *
+	 * @param multiplier gauge increment factor
+	 */
+	void UpdateGauge(int multiplier);
+
+	/**
+	 * Tests if the battler is ready for an action.
+	 * Used by RPG2k3 battle system.
+	 *
+	 * @return If gauge is full
+	 */
+	bool IsGaugeFull() const;
+
+	/**
+	* Gets the current BattleAlgorithm (action to execute in battle)
+
+	* @return Current algorithm or NULL if none
+	*/
+	const BattleAlgorithmRef GetBattleAlgorithm() const;
+
+	/**
+	 * Assigns a new battle algorithm (action to execute in battle) to the
+	 * battler.
+	 *
+	 * @param battle_algorithm New algorithm to assign
+	 */
+	void SetBattleAlgorithm(const BattleAlgorithmRef battle_algorithm);
+
+protected:
+	/** Gauge for RPG2k3 Battle */
+	int gauge;
+
+	BattleAlgorithmRef battle_algorithm;
 };
 
 #endif

@@ -457,7 +457,7 @@ bool Game_Interpreter_Map::CommandMemorizeLocation(RPG::EventCommand const& com)
 	int var_map_id = com.parameters[0];
 	int var_x = com.parameters[1];
 	int var_y = com.parameters[2];
- 	Game_Variables[var_map_id] = Game_Map::GetMapId();
+	Game_Variables[var_map_id] = Game_Map::GetMapId();
 	Game_Variables[var_x] = player->GetX();
 	Game_Variables[var_y] = player->GetY();
 	return true;
@@ -494,7 +494,7 @@ bool Game_Interpreter_Map::CommandStoreTerrainID(RPG::EventCommand const& com) {
 	int x = ValueOrVariable(com.parameters[0], com.parameters[1]);
 	int y = ValueOrVariable(com.parameters[0], com.parameters[2]);
 	int var_id = com.parameters[3];
- 	Game_Variables[var_id] = Game_Map::GetTerrainTag(x, y);
+	Game_Variables[var_id] = Game_Map::GetTerrainTag(x, y);
 	return true;
 }
 
@@ -974,15 +974,15 @@ bool Game_Interpreter_Map::CommandTimerOperation(RPG::EventCommand const& com) {
 		case 0:
 			seconds = ValueOrVariable(com.parameters[1],
 									  com.parameters[2]);
-			Game_Party::SetTimer(timer_id, seconds);
+			Main_Data::game_party->SetTimer(timer_id, seconds);
 			break;
 		case 1:
 			visible = com.parameters[3] != 0;
 			battle = com.parameters[4] != 0;
-			Game_Party::StartTimer(timer_id, visible, battle);
+			Main_Data::game_party->StartTimer(timer_id, visible, battle);
 			break;
 		case 2:
-			Game_Party::StopTimer(timer_id);
+			Main_Data::game_party->StopTimer(timer_id);
 			break;
 		default:
 			return false;
@@ -1161,7 +1161,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 
 	Game_Message::choice_max = 2;
 	Game_Message::choice_disabled.reset();
-	if (Game_Party::GetGold() < Game_Temp::inn_price)
+	if (Main_Data::game_party->GetGold() < Game_Temp::inn_price)
 		Game_Message::choice_disabled.set(0);
 
 	CloseMessageWindow();
@@ -1178,17 +1178,17 @@ bool Game_Interpreter_Map::ContinuationShowInn(RPG::EventCommand const& /* com *
 	Game_Temp::inn_calling = false;
 
 	if (inn_stay)
-		Game_Party::GainGold(-Game_Temp::inn_price);
+		Main_Data::game_party->GainGold(-Game_Temp::inn_price);
 
 	if (!Game_Temp::inn_handlers) {
 		if (inn_stay) {
 			// Full heal
-			std::vector<Game_Actor*> actors = Game_Party::GetActors();
+			std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
 			for (std::vector<Game_Actor*>::const_iterator i = actors.begin();
 				 i != actors.end();
 				 i++) {
 				Game_Actor* actor = *i;
-				actor->SetHp(actor->GetMaxHp());
+				actor->ChangeHp(actor->GetMaxHp());
 				actor->SetSp(actor->GetMaxSp());
 				actor->RemoveAllStates();
 			}
@@ -1678,10 +1678,7 @@ bool Game_Interpreter_Map::CommandSimulatedAttack(RPG::EventCommand const& com) 
 		}
 
 		result = std::max(0, result);
-
-		int hp = actor->GetHp() - result;
-		hp = std::max(0, hp);
-		actor->SetHp(hp);
+		actor->ChangeHp(-result);
 
 		if (com.parameters[6] != 0)
 			Game_Variables[com.parameters[7]] = result;
@@ -1857,7 +1854,7 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 			}
 			break;
 		case 2:
-			value1 = Game_Party::ReadTimer(Game_Party::Timer1);
+			value1 = Main_Data::game_party->ReadTimer(Main_Data::game_party->Timer1);
 			value2 = com.parameters[1] * DEFAULT_FPS;
 			switch (com.parameters[2]) {
 				case 0:
@@ -1872,20 +1869,20 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 			// Gold
 			if (com.parameters[2] == 0) {
 				// Greater than or equal
-				result = (Game_Party::GetGold() >= com.parameters[1]);
+				result = (Main_Data::game_party->GetGold() >= com.parameters[1]);
 			} else {
 				// Less than or equal
-				result = (Game_Party::GetGold() <= com.parameters[1]);
+				result = (Main_Data::game_party->GetGold() <= com.parameters[1]);
 			}
 			break;
 		case 4:
 			// Item
 			if (com.parameters[2] == 0) {
 				// Having
-				result = Game_Party::ItemNumber(com.parameters[1]) > 0;
+				result = Main_Data::game_party->GetItemCount(com.parameters[1]) > 0;
 			} else {
 				// Not having
-				result = Game_Party::ItemNumber(com.parameters[1]) == 0;
+				result = Main_Data::game_party->GetItemCount(com.parameters[1]) == 0;
 			}
 			break;
 		case 5:
@@ -1895,7 +1892,7 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 			switch (com.parameters[2]) {
 				case 0:
 					// Is actor in party
-					result = Game_Party::IsActorInParty(actor_id);
+					result = Main_Data::game_party->IsActorInParty(actor_id);
 					break;
 				case 1:
 					// Name
@@ -1948,7 +1945,7 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 			// TODO BGM Playing
 			break;
 		case 10:
-			value1 = Game_Party::ReadTimer(Game_Party::Timer2);
+			value1 = Main_Data::game_party->ReadTimer(Main_Data::game_party->Timer2);
 			value2 = com.parameters[1] * DEFAULT_FPS;
 			switch (com.parameters[2]) {
 				case 0:

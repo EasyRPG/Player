@@ -21,6 +21,8 @@
 // Headers
 #include "window_selectable.h"
 
+class Game_Actor;
+
 /**
  * Window_ActorTarget class.
  */
@@ -35,6 +37,7 @@ public:
 	void Refresh();
 	void UpdateCursorRect();
 
+	Game_Actor* GetActor();
 private:
 
 };

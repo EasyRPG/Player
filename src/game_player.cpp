@@ -28,7 +28,6 @@
 #include "util_macro.h"
 #include <algorithm>
 
-// Constructor
 Game_Player::Game_Player():
 	location(Main_Data::game_data.party_location),
 	teleporting(false),
@@ -188,7 +187,6 @@ void Game_Player::SetFlashTimeLeft(int time_left) {
 	location.flash_time_left = time_left;
 }
 
-// Is Passable
 bool Game_Player::IsPassable(int x, int y, int d) const {
 	int new_x = x + (d == RPG::EventPage::Direction_right ? 1 : d == RPG::EventPage::Direction_left ? -1 : 0);
 	int new_y = y + (d == RPG::EventPage::Direction_down ? 1 : d == RPG::EventPage::Direction_up ? -1 : 0);
@@ -233,7 +231,6 @@ bool Game_Player::IsTeleporting() const {
 	return teleporting;
 }
 
-// Center
 void Game_Player::Center(int x, int y) {
 	int center_x = (DisplayUi->GetWidth() - (SCREEN_TILE_WIDTH / 8)) * 8;
 	int center_y = (DisplayUi->GetHeight() - (SCREEN_TILE_WIDTH / 16)) * 8;
@@ -244,7 +241,6 @@ void Game_Player::Center(int x, int y) {
 	Game_Map::SetDisplayY(max(0, min((y * SCREEN_TILE_WIDTH - center_y), max_y)));
 }
 
-// MoveTo
 void Game_Player::MoveTo(int x, int y) {
 	Game_Character::MoveTo(x, y);
 	Center(x, y);
@@ -290,7 +286,6 @@ void Game_Player::UpdateScroll(int last_real_x, int last_real_y) {
 	}
 }
 
-// Update
 void Game_Player::Update() {
 	bool last_moving = IsMoving();
 
@@ -322,19 +317,19 @@ void Game_Player::Update() {
 }
 
 void Game_Player::UpdateNonMoving(bool last_moving) {
-	if ( Game_Map::GetInterpreter().IsRunning() ) return;
+	if (Game_Map::GetInterpreter().IsRunning()) return;
 
-	if ( IsMoving() ) return;
+	if (IsMoving() ) return;
 
-	if ( last_moving && CheckTouchEvent() ) return;
+	if (last_moving && CheckTouchEvent()) return;
 
-	if ( !Game_Message::visible && Input::IsTriggered(Input::DECISION) ) {
+	if (!Game_Message::visible && Input::IsTriggered(Input::DECISION)) {
 		// TODO
 		//if ( GetOnOffVehicle() ) return;
 		if ( CheckActionEvent() ) return;
 	}
 
-	if ( last_moving )
+	if (last_moving)
 		Game_Map::UpdateEncounterSteps();
 }
 
@@ -444,15 +439,15 @@ bool Game_Player::CheckEventTriggerTouch(int x, int y) {
 void Game_Player::Refresh() {
 	Game_Actor* actor;
 
-	if (Game_Party::GetActors().empty()) {
+	if (Main_Data::game_party->GetActors().empty()) {
 		SetSpriteName("");
 		return;
 	}
 
-	actor = Game_Party::GetActors()[0];
+	actor = Main_Data::game_party->GetActors()[0];
 
-	SetSpriteName(actor->GetCharacterName());
-	SetSpriteIndex(actor->GetCharacterIndex());
+	SetSpriteName(actor->GetSpriteName());
+	SetSpriteIndex(actor->GetSpriteIndex());
 }
 
 bool Game_Player::GetOnOffVehicle() {
@@ -568,5 +563,5 @@ void Game_Player::BeginMove() {
 	if (!terrain.on_damage_se || (terrain.on_damage_se && (terrain.damage > 0))) {
 		Game_System::SePlay(terrain.footstep);
 	}
-	Game_Party::ApplyDamage(terrain.damage);
+	Main_Data::game_party->ApplyDamage(terrain.damage);
 }

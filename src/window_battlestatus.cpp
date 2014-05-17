@@ -21,20 +21,29 @@
 #include "bitmap.h"
 #include "cache.h"
 #include "input.h"
+#include "game_enemyparty.h"
 #include "game_party.h"
 #include "game_actor.h"
 #include "game_system.h"
 #include "game_battle.h"
+#include "player.h"
 #include "window_battlestatus.h"
 
-Window_BattleStatus::Window_BattleStatus() :
-	Window_Base(0, 172, 244, 68) {
+Window_BattleStatus::Window_BattleStatus(int ix, int iy, int iwidth, int iheight, bool enemy) :
+	Window_Selectable(ix, iy, iwidth, iheight), mode(ChoiceMode_All), enemy(enemy) {
 
 	SetBorderX(4);
-	SetBorderY(4);
 
-	SetContents(Bitmap::Create(width - 8, height - 8));
-	contents->SetTransparentColor(windowskin->GetTransparentColor());
+	SetContents(Bitmap::Create(width - 8, height - 16));
+
+	if (enemy) {
+		item_max = Main_Data::game_enemyparty->GetBattlerCount();
+	}
+	else {
+		item_max = Main_Data::game_party->GetBattlerCount();
+	}
+
+	item_max = std::min(item_max, 4);
 
 	index = -1;
 
@@ -44,84 +53,82 @@ Window_BattleStatus::Window_BattleStatus() :
 void Window_BattleStatus::Refresh() {
 	contents->Clear();
 
-	for (size_t i = 0; i < Game_Battle::allies.size() && i < 4; i++) {
-		int y = i * 15;
-		Game_Actor* actor = Game_Battle::allies[i].game_actor;
+	for (int i = 0; i < item_max; i++) {
+		int y = 2 + i * 16;
+
+		Game_Battler* actor;
+		if (enemy) {
+			actor = &(*Main_Data::game_enemyparty)[i];
+		}
+		else {
+			actor = &(*Main_Data::game_party)[i];
+		}
+
 		DrawActorName(actor, 4, y);
-		DrawActorState(actor, 80, y);
-		DrawActorHp(actor, 136, y, true);
-		//DrawGauge(actor, i, 192, y);
-		DrawActorSp(actor, 202, y, false);
+		DrawActorState(actor, 84, y);
+		DrawActorHp(actor, 138, y, true);
+		DrawActorSp(actor, 198, y, false);
+	}
+
+	RefreshGauge();
+}
+
+void Window_BattleStatus::RefreshGauge() {
+	if (Player::engine == Player::EngineRpg2k3) {
+		contents->ClearRect(Rect(198, 0, 25 + 16, 15 * item_max));
+
+		for (int i = 0; i < item_max; ++i) {
+			Game_Battler* actor;
+			if (enemy) {
+				actor = &(*Main_Data::game_enemyparty)[i];
+			}
+			else {
+				actor = &(*Main_Data::game_party)[i];
+			}
+
+			int y = 2 + i * 16;
+			DrawGauge(actor, 198 - 10, y - 2);
+			DrawActorSp(actor, 198, y, false);
+		}
 	}
 }
 
-void Window_BattleStatus::RefreshGauge(int i) {
-	int y = i * 15;
-	contents->ClearRect(Rect(192, y, 44, 15));
-	Game_Actor* actor = Game_Battle::allies[i].game_actor;
-	//DrawGauge(actor, i, 192, y);
-	DrawActorSp(actor, 202, y, false);
-}
-
-void Window_BattleStatus::DrawGauge(Game_Actor* /* actor */, int index, int cx, int cy) {
-	BitmapRef system2 = Cache::System2(Data::system.system2_name);
-
-	Battle::Ally& ally = Game_Battle::GetAlly(index);
-	bool full = ally.IsReady();
-	int gauge_w = ally.gauge * 25 / Game_Battle::gauge_full;
-	int speed = 2; // FIXME: how to determine?
-	int gauge_y = 32 + speed * 16;
-	Rect gauge_left(0, gauge_y, 16, 16);
-	Rect gauge_center(16, gauge_y, 16, 16);
-	Rect gauge_right(32, gauge_y, 16, 16);
-	Rect gauge_bar(full ? 64 : 48, gauge_y, 16, 16);
-	Rect dst_rect(cx+16, cy, 25, 16);
-	Rect bar_rect(cx+16, cy, gauge_w, 16);
-
-	contents->Blit(cx+0, cy, *system2, gauge_left, 255);
-	contents->StretchBlit(dst_rect, *system2, gauge_center, 255);
-	contents->Blit(cx+16+25, cy, *system2, gauge_right, 255);
-	contents->StretchBlit(bar_rect, *system2, gauge_bar, 255);
-}
-
-void Window_BattleStatus::SetActiveCharacter(int _index) {
-	index = _index;
-	Refresh();
-}
-
-int Window_BattleStatus::GetActiveCharacter() {
-	return index;
-}
-
-void Window_BattleStatus::ChooseActiveCharacter() {
-	int num_actors = Game_Battle::allies.size();
+int Window_BattleStatus::ChooseActiveCharacter() {
 	int old_index = index < 0 ? 0 : index;
 	index = -1;
-	for (int i = 0; i < num_actors; i++) {
-		int new_index = (old_index + i) % num_actors;
-		if (Game_Battle::GetAlly(new_index).IsReady()) {
+	for (int i = 0; i < item_max; i++) {
+		int new_index = (old_index + i) % item_max;
+		if ((*Main_Data::game_party)[new_index].IsGaugeFull()) {
 			index = new_index;
-			break;
+			return index;
 		}
 	}
 
 	if (index != old_index)
 		UpdateCursorRect();
+
+	return index;
+}
+
+void Window_BattleStatus::SetChoiceMode(ChoiceMode new_mode) {
+	mode = new_mode;
 }
 
 void Window_BattleStatus::Update() {
+	// Window Selectable update logic skipped on purpose
+	// (breaks up/down-logic)
 	Window_Base::Update();
 
-	int num_actors = Game_Battle::allies.size();
-	/*for (int i = 0; i < num_actors; i++)
-		RefreshGauge(i);*/
+	if (Player::engine == Player::EngineRpg2k3) {
+		RefreshGauge();
+	}
 
 	if (active && index >= 0) {
 		if (Input::IsRepeated(Input::DOWN)) {
 			Game_System::SePlay(Main_Data::game_data.system.cursor_se);
-			for (int i = 1; i < num_actors; i++) {
-				int new_index = (index + i) % num_actors;
-				if (Game_Battle::GetAlly(new_index).IsReady()) {
+			for (int i = 1; i < item_max; i++) {
+				int new_index = (index + i) % item_max;
+				if (IsChoiceValid((*Main_Data::game_party)[new_index])) {
 					index = new_index;
 					break;
 				}
@@ -129,17 +136,15 @@ void Window_BattleStatus::Update() {
 		}
 		if (Input::IsRepeated(Input::UP)) {
 			Game_System::SePlay(Main_Data::game_data.system.cursor_se);
-			for (int i = num_actors - 1; i > 0; i--) {
-				int new_index = (index + i) % num_actors;
-				if (Game_Battle::GetAlly(new_index).IsReady()) {
+			for (int i = item_max - 1; i > 0; i--) {
+				int new_index = (index + i) % item_max;
+				if (IsChoiceValid((*Main_Data::game_party)[new_index])) {
 					index = new_index;
 					break;
 				}
 			}
 		}
 	}
-
-	ChooseActiveCharacter();
 
 	UpdateCursorRect();
 }
@@ -149,4 +154,22 @@ void Window_BattleStatus::UpdateCursorRect() {
 		SetCursorRect(Rect());
 	else
 		SetCursorRect(Rect(0, index * 15, contents->GetWidth(), 16));
+}
+
+bool Window_BattleStatus::IsChoiceValid(const Game_Battler& battler) const {
+	switch (mode) {
+		case ChoiceMode_All:
+			return true;
+		case ChoiceMode_Alive:
+			return !battler.IsDead();
+		case ChoiceMode_Dead:
+			return battler.IsDead();
+		case ChoiceMode_Ready:
+			return battler.IsGaugeFull();
+		case ChoiceMode_None:
+			return false;
+		default:
+			assert(false && "Invalid Choice");
+			return false;
+	}
 }

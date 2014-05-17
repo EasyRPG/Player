@@ -279,9 +279,26 @@ namespace Game_Map {
 	void UpdateEncounterSteps();
 
 	/**
-	 * Resets encounter step counter.
+	 * Resets encounter step counter based on the encounter rate using
+	 * Gaussian distribution.
 	 */
 	void ResetEncounterSteps();
+
+	/**
+	 * Gets possible encounters at a location. Also scans areas.
+	 *
+	 * @param out Possible encounters
+	 */
+	void GetEncountersAt(int x, int y, std::vector<int>& out);
+
+	/**
+	 * Updates all battle data based on the current player position and starts
+	 * the battle.
+	 *
+	 * @return true if battle starts, false if no monsters are at the current
+	 * map position or encounter rate is 0
+	 */
+	bool PrepareEncounter();
 
 	/**
 	 * Gets lower layer map data.

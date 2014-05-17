@@ -23,13 +23,49 @@
 #include "game_map.h"
 #include "game_player.h"
 #include "game_battle.h"
+#include "game_temp.h"
 #include "output.h"
 #include "util_macro.h"
 
 static RPG::SaveInventory& data = Main_Data::game_data.inventory;
 
-void Game_Party::Init() {
+Game_Party::Game_Party() {
 	data.Setup();
+}
+
+Game_Actor& Game_Party::operator[] (const int index) {
+	std::vector<Game_Actor*> actors = GetActors();
+
+	if (index < 0 || (size_t)index >= actors.size()) {
+		assert(false && "Subscript out of range");
+	}
+
+	return *actors[index];
+}
+
+int Game_Party::GetBattlerCount() const {
+	return GetActors().size();
+}
+
+void Game_Party::SetupBattleTestMembers() {
+	data.party.clear();
+	
+	std::vector<RPG::TestBattler>::const_iterator it;
+	for (it = Data::system.battletest_data.begin();
+		it != Data::system.battletest_data.end(); ++it) {
+		AddActor(it->actor_id);
+		Game_Actor* actor = Game_Actors::GetActor(it->actor_id);
+		actor->SetEquipment(0, it->weapon_id);
+		actor->SetEquipment(1, it->shield_id);
+		actor->SetEquipment(1, it->armor_id);
+		actor->SetEquipment(1, it->helmet_id);
+		actor->SetEquipment(1, it->accessory_id);
+		actor->ChangeLevel(it->level, false);
+		actor->SetHp(actor->GetMaxHp());
+		actor->SetSp(actor->GetMaxSp());
+	}
+
+	Main_Data::game_player->Refresh();
 }
 
 void Game_Party::GetItems(std::vector<int>& item_list) {
@@ -40,7 +76,7 @@ void Game_Party::GetItems(std::vector<int>& item_list) {
 		item_list.push_back(*it);
 }
 
-int Game_Party::ItemNumber(int item_id, bool get_equipped) {
+int Game_Party::GetItemCount(int item_id, bool get_equipped) {
 	if (get_equipped && item_id > 0) {
 		int number = 0;
 		for (int i = 0; i < (int) data.party.size(); i++) {
@@ -81,7 +117,7 @@ void Game_Party::LoseGold(int n) {
 	data.gold = std::min(std::max(data.gold, 0), 999999);
 }
 
-void Game_Party::GainItem(int item_id, int amount) {
+void Game_Party::AddItem(int item_id, int amount) {
 	if (item_id < 1 || item_id > (int) Data::items.size()) {
 		Output::Warning("Can't add item to party.\n%04d is not a valid item ID.",
 						item_id);
@@ -101,7 +137,7 @@ void Game_Party::GainItem(int item_id, int amount) {
 			return;
 		}
 
-		data.item_counts[i] = std::min(total_items, 99);
+		data.item_counts[i] = (uint8_t)std::min(total_items, 99);
 		return;
 	}
 
@@ -111,34 +147,84 @@ void Game_Party::GainItem(int item_id, int amount) {
 		return;
 	}
 
-	data.item_ids.push_back(item_id);
-	data.item_counts.push_back(std::min(amount, 99));
-	data.item_usage.push_back(Data::items[item_id - 1].uses);
+	data.item_ids.push_back((int16_t)item_id);
+	data.item_counts.push_back((uint8_t)std::min(amount, 99));
+	data.item_usage.push_back((uint8_t)Data::items[item_id - 1].uses);
 }
 
-void Game_Party::LoseItem(int item_id, int amount) {
-	GainItem(item_id, -amount);
+void Game_Party::RemoveItem(int item_id, int amount) {
+	AddItem(item_id, -amount);
 }
 
 bool Game_Party::IsItemUsable(int item_id) {
-	if (item_id > 0 && item_id <= (int)Data::items.size()) {
-		//TODO: if (Game_Temp::IsInBattle()) {
-		//if (Data::items[item_id - 1].type == RPG::Item::Type_medicine) {
-		//	return !Data::items[item_id - 1].ocassion_field;
-		//} else if (Data::items[item_id - 1].type == RPG::Item::Type_switch) {
-		//	return Data::items[item_id - 1].ocassion_battle;
-		//} else {
-		if (data.party.size() > 0 &&
-			(Data::items[item_id - 1].type == RPG::Item::Type_medicine ||
-			Data::items[item_id - 1].type == RPG::Item::Type_material ||
-			Data::items[item_id - 1].type == RPG::Item::Type_book)) {
-			return true;
-		} else if (Data::items[item_id - 1].type == RPG::Item::Type_switch) {
-			return Data::items[item_id - 1].occasion_field2;
+	RPG::Item& item = Data::items[item_id - 1];
+
+	if (item_id > 0 && item_id <= (int)Data::items.size() && data.party.size() > 0) {
+		if (Game_Temp::battle_running) {
+			if (item.type == RPG::Item::Type_medicine) {
+				return !item.occasion_field1;
+			}
+			else if (item.type == RPG::Item::Type_switch) {
+				return item.occasion_battle;
+			}
+			else if (item.type == RPG::Item::Type_special) {
+				// ToDo: Proper check
+				return true;
+			}
+		} else {
+			if (item.type == RPG::Item::Type_medicine ||
+				item.type == RPG::Item::Type_material ||
+				item.type == RPG::Item::Type_book) {
+					return true;
+			} else if (item.type == RPG::Item::Type_switch) {
+				return item.occasion_field2;
+			}
 		}
 	}
 
 	return false;
+}
+
+bool Game_Party::UseItem(int item_id, Game_Actor* target) {
+	bool was_used = false;
+
+	if (target) {
+		was_used = target->UseItem(item_id);
+	} else {
+		std::vector<Game_Actor*> actors = GetActors();
+		std::vector<Game_Actor*>::iterator it;
+		for (it = actors.begin(); it != actors.end(); ++it) {
+			was_used |= (*it)->UseItem(item_id);
+		}
+	}
+
+	// Todo usage count
+	if (was_used) {
+		RemoveItem(item_id, 1);
+	}
+
+	return was_used;
+}
+
+bool Game_Party::UseSkill(int skill_id, Game_Actor* source, Game_Actor* target) {
+	bool was_used = false;
+
+	if (target) {
+		was_used = target->UseSkill(skill_id);
+	}
+	else {
+		std::vector<Game_Actor*> actors = GetActors();
+		std::vector<Game_Actor*>::iterator it;
+		for (it = actors.begin(); it != actors.end(); ++it) {
+			was_used |= (*it)->UseSkill(skill_id);
+		}
+	}
+
+	if (was_used) {
+		source->SetSp(source->GetSp() - source->CalculateSkillCost(skill_id));
+	}
+
+	return was_used;
 }
 
 void Game_Party::AddActor(int actor_id) {
@@ -146,7 +232,7 @@ void Game_Party::AddActor(int actor_id) {
 		return;
 	if (data.party.size() >= 4)
 		return;
-	data.party.push_back(actor_id);
+	data.party.push_back((int16_t)actor_id);
 	Main_Data::game_player->Refresh();
 }
 
@@ -169,7 +255,7 @@ int Game_Party::GetSteps() {
 	return data.steps;
 }
 
-std::vector<Game_Actor*> Game_Party::GetActors() {
+std::vector<Game_Actor*> Game_Party::GetActors() const {
 	std::vector<Game_Actor*> actors;
 	std::vector<int16_t>::const_iterator it;
 	for (it = data.party.begin(); it != data.party.end(); it++)
@@ -192,6 +278,7 @@ int Game_Party::GetDefeatCount() {
 int Game_Party::GetRunCount() {
 	return data.escapes;
 }
+
 
 void Game_Party::ApplyDamage(int damage) {
 	if (damage <= 0) {
@@ -248,7 +335,7 @@ void Game_Party::StopTimer(int which) {
 }
 
 void Game_Party::UpdateTimers() {
-	bool battle = Game_Battle::GetScene() != NULL;
+	bool battle = Game_Temp::battle_running;
 	if (data.timer1_active && (!data.timer1_battle || !battle) && data.timer1_secs > 0) {
 		data.timer1_secs--;
 		Game_Map::SetNeedRefresh(true);
@@ -268,4 +355,39 @@ int Game_Party::ReadTimer(int which) {
 		default:
 			return 0;
 	}
+}
+
+int Game_Party::GetAverageLevel() {
+	int party_lvl = 0;
+
+	std::vector<Game_Actor*> actors = GetActors();
+	std::vector<Game_Actor*>::iterator it;
+
+	if (actors.empty()) {
+		return 0;
+	}
+
+	for (it = actors.begin(); it != actors.end(); ++it) {
+		party_lvl += (*it)->GetLevel();
+	}
+
+	return party_lvl /= actors.size();
+}
+
+int Game_Party::GetFatigue() {
+	int party_exh = 0;
+	std::vector<Game_Actor*> actors = GetActors();
+	std::vector<Game_Actor*>::iterator it;
+
+	if (actors.empty()) {
+		return 0;
+	}
+
+	for (it = actors.begin(); it != actors.end(); ++it) {
+		// FIXME: this is what the help file says, but it looks wrong
+		party_exh += 100 - (200 * (*it)->GetHp() / (*it)->GetMaxHp() -
+			100 * (*it)->GetSp() / (*it)->GetMaxSp() / 3);
+	}
+
+	return party_exh /= actors.size();
 }

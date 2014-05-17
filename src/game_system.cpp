@@ -52,6 +52,11 @@ void Game_System::BgmPlay(RPG::Music const& bgm) {
 	Graphics::FrameReset();
 }
 
+void Game_System::BgmStop() {
+	data.current_music.name = "(OFF)";
+	Audio().BGM_Stop();
+}
+
 void Game_System::SePlay(RPG::Sound const& se) {
 	if (!se.name.empty() && se.name != "(OFF)") {
 		// HACK:

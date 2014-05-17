@@ -547,6 +547,7 @@ void Graphics::RegisterDrawable(Drawable* drawable) {
 	} else {
 		state->drawable_list.push_back(drawable);
 	}
+	UpdateZCallback();
 }
 
 void Graphics::RemoveDrawable(Drawable* drawable) {

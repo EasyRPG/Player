@@ -21,11 +21,13 @@
 #include "window_skill.h"
 #include "game_actor.h"
 #include "game_actors.h"
+#include "game_temp.h"
 #include "bitmap.h"
 #include "font.h"
+#include "player.h"
 
 Window_Skill::Window_Skill(int ix, int iy, int iwidth, int iheight) :
-	Window_Selectable(ix, iy, iwidth, iheight), actor_id(-1) {
+	Window_Selectable(ix, iy, iwidth, iheight), actor_id(-1), subset(0) {
 	column_max = 2;
 }
 
@@ -34,12 +36,12 @@ void Window_Skill::SetActor(int actor_id) {
 	Refresh();
 }
 
-int Window_Skill::GetSkillId() {
-	if (index < 0) {
-		return 0;
-	} else {
-		return data[index];
+const RPG::Skill* Window_Skill::GetSkill() const {
+	if (index < 0 || index >= (int)Data::skills.size() || data[index] == 0) {
+		return NULL;
 	}
+
+	return &Data::skills[data[index] - 1];
 }
 
 void Window_Skill::Refresh() {
@@ -51,15 +53,15 @@ void Window_Skill::Refresh() {
 			data.push_back(skills[i]);
 	}
 
-	CreateContents();
-
-	contents->Clear();
-
 	if (data.size() == 0) {
 		data.push_back(0);
 	}
 
 	item_max = data.size();
+
+	CreateContents();
+
+	contents->Clear();
 
 	for (int i = 0; i < item_max; ++i) {
 		DrawItem(i);
@@ -87,14 +89,32 @@ void Window_Skill::DrawItem(int index) {
 }
 
 void Window_Skill::UpdateHelp() {
-	help_window->SetText(GetSkillId() == 0 ? "" :
-		Data::skills[GetSkillId() - 1].description);
+	help_window->SetText(GetSkill() == NULL ? "" :
+		GetSkill()->description);
 }
 
-bool Window_Skill::CheckInclude(int /* skill_id */) {
-	return true;
+bool Window_Skill::CheckInclude(int skill_id) {
+	if (!Game_Temp::battle_running) {
+		return true;
+	}
+
+	if (Player::engine == Player::EngineRpg2k) {
+		return true;
+	}
+	else {
+		if (subset > 0) {
+			return Data::skills[skill_id - 1].type == subset;
+		}
+		else {
+			return Data::skills[skill_id - 1].type < RPG::Skill::Type_subskill;
+		}
+	}
 }
 
 bool Window_Skill::CheckEnable(int skill_id) {
 	return Game_Actors::GetActor(actor_id)->IsSkillUsable(skill_id);
+}
+
+void Window_Skill::SetSubsetFilter(int subset) {
+	this->subset = subset;
 }

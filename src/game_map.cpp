@@ -31,6 +31,8 @@
 #include "util_macro.h"
 #include "game_system.h"
 #include "filefinder.h"
+#include "player.h"
+#include "input.h"
 #include <boost/scoped_ptr.hpp>
 
 namespace map_anon {
@@ -67,6 +69,8 @@ namespace map_anon {
 using namespace map_anon;
 
 void Game_Map::Init() {
+	Dispose();
+
 	map_info.position_x = 0;
 	map_info.position_y = 0;
 	need_refresh = true;
@@ -206,6 +210,8 @@ void Game_Map::SetupCommon(int _id) {
 	// Make RPG_RT happy
 	// Otherwise current event not resumed after loading
 	location.map_save_count = map->save_count;
+
+	ResetEncounterSteps();
 }
 
 void Game_Map::PrepareSave() {
@@ -258,9 +264,7 @@ void Game_Map::PlayBgm() {
 					Game_System::BgmPlay(*Game_Temp::map_bgm);
 				}
 		}
-
 	}
-
 }
 
 void Game_Map::Refresh() {
@@ -671,15 +675,83 @@ int Game_Map::GetEncounterSteps() {
 }
 
 void Game_Map::UpdateEncounterSteps() {
+	if (Player::debug_flag &&
+		Input::IsPressed(Input::DEBUG_THROUGH)) {
+			return;
+	}
+
 	int x = Main_Data::game_player->GetX();
 	int y = Main_Data::game_player->GetY();
 	int terrain_id = GetTerrainTag(x, y);
 	const RPG::Terrain& terrain = Data::terrains[terrain_id - 1];
-	location.encounter_steps += terrain.encounter_rate;
+
+	location.encounter_steps -= terrain.encounter_rate;
+
+	if (location.encounter_steps <= 0) {
+		ResetEncounterSteps();
+		PrepareEncounter();
+	}
 }
 
 void Game_Map::ResetEncounterSteps() {
-	location.encounter_steps = 0;
+	int rate = GetEncounterRate();
+	if (rate > 0) {
+		int throw_one = rand() / (RAND_MAX / rate + 1);
+		int throw_two = rand() / (RAND_MAX / rate + 1);
+
+		// *100 to handle terrain rate better
+		location.encounter_steps = (throw_one + throw_two + 1) * 100;
+	}
+}
+
+void Game_Map::GetEncountersAt(int x, int y, std::vector<int>& out) {
+	for (unsigned int i = 0; i < Data::treemap.maps.size(); ++i) {
+		RPG::MapInfo& map = Data::treemap.maps[i];
+
+		if (map.ID == location.map_id) {
+			std::vector<RPG::Encounter>& encounters = map.encounters;
+			for (std::vector<RPG::Encounter>::iterator it = encounters.begin();
+				it != encounters.end(); ++it) {
+					out.push_back((*it).troop_id);
+			}
+		} else if (map.parent_map == location.map_id && map.type == 2) {
+			// Area
+			Rect area_rect(map.area_rect.l, map.area_rect.t, map.area_rect.r - map.area_rect.l, map.area_rect.b - map.area_rect.t);
+			Rect player_rect(x, y, 1, 1);
+
+			if (!player_rect.IsOutOfBounds(area_rect)) {
+				std::vector<RPG::Encounter>& encounters = map.encounters;
+				for (std::vector<RPG::Encounter>::iterator it = encounters.begin();
+					it != encounters.end(); ++it) {
+						out.push_back((*it).troop_id);
+				}
+			}
+		}
+	}
+}
+
+bool Game_Map::PrepareEncounter() {
+	if (GetEncounterRate() <= 0) {
+		return false;
+	}
+
+	int x = Main_Data::game_player->GetX();
+	int y = Main_Data::game_player->GetY();
+
+	std::vector<int> encounters;
+	GetEncountersAt(x, y, encounters);
+
+	if (encounters.empty()) {
+		// No enemies on this map :(
+		return false;
+	}
+
+	Game_Temp::battle_terrain_id = Game_Map::GetTerrainTag(Main_Data::game_player->GetX(), Main_Data::game_player->GetY());
+	Game_Temp::battle_background = "";
+	Game_Temp::battle_troop_id = encounters[rand() / (RAND_MAX / encounters.size() + 1)];
+	Game_Temp::battle_calling = true;
+
+	return true;
 }
 
 std::vector<short>& Game_Map::GetMapDataDown() {

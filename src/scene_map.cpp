@@ -64,6 +64,18 @@ Scene_Map::~Scene_Map() {
 	Main_Data::game_screen->Reset();
 }
 
+
+void Scene_Map::Continue() {
+	if (Game_Temp::battle_calling) {
+		// Came from battle
+		Game_Temp::battle_calling = false;
+		Game_System::BgmPlay(Main_Data::game_data.system.before_battle_music);
+	}
+	else {
+		Game_Map::PlayBgm();
+	}
+}
+
 /*void Scene_Map::TransitionIn() {
 	Graphics::Transition((Graphics::TransitionType)Data::system.transition_in, 12);
 }
@@ -75,7 +87,7 @@ void Scene_Map::TransitionOut() {
 void Scene_Map::Update() {
 	Game_Map::GetInterpreter().Update();
 
-	Game_Party::UpdateTimers();
+	Main_Data::game_party->UpdateTimers();
 
 	Game_Map::Update();
 	Main_Data::game_player->Update();
@@ -84,6 +96,11 @@ void Scene_Map::Update() {
 	message_window->Update();
 
 	UpdateTeleportPlayer();
+
+	if (!Main_Data::game_party->IsAnyAlive()) {
+		// Empty party is allowed
+		Game_Temp::gameover = Main_Data::game_party->GetBattlerCount() > 0;
+	}
 
 	if (Game_Temp::gameover) {
 		Game_Temp::gameover = false;
@@ -168,9 +185,9 @@ void Scene_Map::UpdateTeleportPlayer() {
 // Scene calling stuff.
 
 void Scene_Map::CallBattle() {
-	Game_Temp::battle_calling = false;
+	Main_Data::game_data.system.before_battle_music = Main_Data::game_data.system.current_music;
 
-	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Battle>());
+	Scene::Push(Scene_Battle::Create());
 }
 
 void Scene_Map::CallShop() {

@@ -40,6 +40,10 @@ void Scene_Item::Start() {
 	item_window->SetIndex(item_index);
 }
 
+void Scene_Item::Continue() {
+	item_window->Refresh();
+}
+
 void Scene_Item::Update() {
 	help_window->Update();
 	item_window->Update();
@@ -48,9 +52,9 @@ void Scene_Item::Update() {
 		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		int item_id = item_window->GetItemId();
+		int item_id = item_window->GetItem() == NULL ? 0 : item_window->GetItem()->ID;
 
-		if (Game_Party::IsItemUsable(item_id)) {
+		if (Main_Data::game_party->IsItemUsable(item_id)) {
 			Game_System::SePlay(Main_Data::game_data.system.decision_se);
 
 			if (Data::items[item_id - 1].type == RPG::Item::Type_switch) {

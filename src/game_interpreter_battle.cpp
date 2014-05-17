@@ -16,7 +16,9 @@
  */
 
 // Headers
-#include "battle_battler.h"
+#include "game_actors.h"
+#include "game_enemyparty.h"
+#include "game_party.h"
 #include "game_switches.h"
 #include "game_variables.h"
 #include "game_battle.h"
@@ -85,19 +87,19 @@ bool Game_Interpreter_Battle::CommandCallCommonEvent(RPG::EventCommand const& co
 
 bool Game_Interpreter_Battle::CommandForceFlee(RPG::EventCommand const& com) {
 	bool check = com.parameters[2] == 0;
-
+	// TODO
 	switch (com.parameters[0]) {
 	case 0:
 		if (!check || Game_Temp::battle_mode != Game_Temp::BattlePincer)
-		Game_Battle::allies_flee = true;
+		//Game_Battle::allies_flee = true;
 	    break;
 	case 1:
 		if (!check || Game_Temp::battle_mode != Game_Temp::BattleSurround)
-			Game_Battle::MonstersFlee();
+			//Game_Battle::MonstersFlee();
 	    break;
 	case 2:
 		if (!check || Game_Temp::battle_mode != Game_Temp::BattleSurround)
-			Game_Battle::MonsterFlee(com.parameters[1]);
+			//Game_Battle::MonsterFlee(com.parameters[1]);
 	    break;
 	}
 
@@ -105,25 +107,28 @@ bool Game_Interpreter_Battle::CommandForceFlee(RPG::EventCommand const& com) {
 }
 
 bool Game_Interpreter_Battle::CommandEnableCombo(RPG::EventCommand const& com) {
-	Battle::Ally* ally = Game_Battle::FindAlly(com.parameters[0]);
-	if (!ally)
+	int actor_id = com.parameters[0];
+
+	if (!Main_Data::game_party->IsActorInParty(actor_id)) {
 		return true;
+	}
 
 	int command_id = com.parameters[1];
 	int multiple = com.parameters[2];
 
-	ally->EnableCombo(command_id, multiple);
+	// TODO
+	// Game_Actors::GetActor(actor_id)->EnableCombo(command_id, multiple);
 
 	return true;
 }
 
 bool Game_Interpreter_Battle::CommandChangeMonsterHP(RPG::EventCommand const& com) {
 	int id = com.parameters[0];
-	Battle::Enemy& enemy = Game_Battle::GetEnemy(id);
+	Game_Enemy& enemy = (*Main_Data::game_enemyparty)[id];
 	bool lose = com.parameters[1] > 0;
-	int hp = enemy.GetActor()->GetHp();
+	int hp = enemy.GetHp();
 
-	int change;
+	int change = 0;
 	switch (com.parameters[2]) {
 	case 0:
 		change = com.parameters[3];
@@ -139,22 +144,18 @@ bool Game_Interpreter_Battle::CommandChangeMonsterHP(RPG::EventCommand const& co
 	if (lose)
 		change = -change;
 
-	hp += change;
-	if (com.parameters[4] && hp <= 0)
-		hp = 1;
-
-	enemy.GetActor()->SetHp(hp);
+	enemy.ChangeHp(change);
 
 	return true;
 }
 
 bool Game_Interpreter_Battle::CommandChangeMonsterMP(RPG::EventCommand const& com) {
 	int id = com.parameters[0];
-	Battle::Enemy& enemy = Game_Battle::GetEnemy(id);
+	Game_Enemy& enemy = (*Main_Data::game_enemyparty)[id];
 	bool lose = com.parameters[1] > 0;
-	int sp = enemy.GetActor()->GetSp();
+	int sp = enemy.GetSp();
 
-	int change;
+	int change = 0;
 	switch (com.parameters[2]) {
 	case 0:
 		change = com.parameters[3];
@@ -169,25 +170,25 @@ bool Game_Interpreter_Battle::CommandChangeMonsterMP(RPG::EventCommand const& co
 
 	sp += change;
 
-	enemy.GetActor()->SetSp(sp);
+	enemy.SetSp(sp);
 
 	return true;
 }
 
 bool Game_Interpreter_Battle::CommandChangeMonsterCondition(RPG::EventCommand const& com) {
-	Battle::Enemy& enemy = Game_Battle::GetEnemy(com.parameters[0]);
+	Game_Enemy& enemy = (*Main_Data::game_enemyparty)[com.parameters[0]];
 	bool remove = com.parameters[1] > 0;
 	int state_id = com.parameters[2];
 	if (remove)
-		enemy.GetActor()->RemoveState(state_id);
+		enemy.RemoveState(state_id);
 	else
-		enemy.GetActor()->AddState(state_id);
+		enemy.AddState(state_id);
 	return true;
 }
 
 bool Game_Interpreter_Battle::CommandShowHiddenMonster(RPG::EventCommand const& com) {
-	Battle::Enemy& enemy = Game_Battle::GetEnemy(com.parameters[0]);
-	enemy.game_enemy->SetHidden(false);
+	Game_Enemy& enemy = (*Main_Data::game_enemyparty)[com.parameters[0]];
+	enemy.SetHidden(false);
 	return true;
 }
 
@@ -201,13 +202,16 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(RPG::EventCommand const
 	int target = com.parameters[1];
 	bool wait = com.parameters[2] != 0;
 	bool allies = com.parameters[3] != 0;
-	Battle::Ally* ally = (allies && target >= 0) ? Game_Battle::FindAlly(target) : NULL;
-	Battle::Enemy* enemy = (!allies && target >= 0) ? &Game_Battle::GetEnemy(target) : NULL;
+
+	// TODO
+	//Battle::Ally* ally = (allies && target >= 0) ? Game_Battle::FindAlly(target) : NULL;
+	//Battle::Enemy* enemy = (!allies && target >= 0) ? &Game_Battle::GetEnemy(target) : NULL;
 
 	if (active)
-		return !Game_Battle::GetScene()->IsAnimationWaiting();
+		return Main_Data::game_screen->IsBattleAnimationWaiting();
 
-	Game_Battle::GetScene()->ShowAnimation(animation_id, allies, ally, enemy, wait);
+	//Main_Data::game_screen->ShowBattleAnimation(animation_id);
+
 	return !wait;
 }
 
@@ -220,7 +224,6 @@ bool Game_Interpreter_Battle::CommandTerminateBattle(RPG::EventCommand const& /*
 bool Game_Interpreter_Battle::CommandConditionalBranch(RPG::EventCommand const& com) {
 	bool result = false;
 	int value1, value2;
-	Battle::Ally* ally;
 
 	switch (com.parameters[0]) {
 		case 0:
@@ -262,24 +265,25 @@ bool Game_Interpreter_Battle::CommandConditionalBranch(RPG::EventCommand const& 
 					break;
 			}
 			break;
+		// TODO
 		case 2:
 			// Hero can act
-			ally = Game_Battle::FindAlly(com.parameters[1]);
-			result = (ally != NULL && ally->CanAct());
+			/*ally = Game_Battle::FindAlly(com.parameters[1]);
+			result = (ally != NULL && ally->CanAct());*/
 			break;
 		case 3:
 			// Monster can act
-			result = Game_Battle::GetEnemy(com.parameters[1]).CanAct();
+			//result = Game_Battle::GetEnemy(com.parameters[1]).CanAct();
 			break;
 		case 4:
 			// Monster is the current target
-			result = Game_Battle::HaveTargetEnemy() &&
-				Game_Battle::GetTargetEnemy().ID == com.parameters[1];
+			/*result = Game_Battle::HaveTargetEnemy() &&
+				Game_Battle::GetTargetEnemy().ID == com.parameters[1];*/
 			break;
 		case 5:
 			// Hero uses the ... command
-			ally = Game_Battle::FindAlly(com.parameters[1]);
-			result = (ally != NULL && ally->last_command == com.parameters[2]);
+			/*ally = Game_Battle::FindAlly(com.parameters[1]);
+			result = (ally != NULL && ally->last_command == com.parameters[2]);*/
 			break;
 	}
 
