@@ -248,16 +248,34 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 				battle_test_troop_id = atoi((*it).c_str());
 			}
 		}
+		else if (*it == "--game-directory") {
+			// TODO
+		}
 		else if (*it == "--new-game") {
 			new_game_flag = true;
 		}
-		else if (*it == "--map-id") {
+		else if (*it == "--load-game") {
+			// TODO
+		}
+		else if (*it == "--load-game-id") {
+			// TODO
+		}
+		else if (*it == "--database") {
+			// TODO
+		}
+		else if (*it == "--map-tree") {
+			// TODO
+		}
+		else if (*it == "--start-map") {
+			// TODO
+		}
+		else if (*it == "--start-map-id") {
 			++it;
 			if (it != args.end()) {
 				start_map_id = atoi((*it).c_str());
 			}
 		}
-		else if (*it == "--position") {
+		else if (*it == "--start-position") {
 			++it;
 			if (it != args.end()) {
 				party_x_position = atoi((*it).c_str());
@@ -267,8 +285,23 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 				party_y_position = atoi((*it).c_str());
 			}
 		}
+		else if (*it == "--engine") {
+			// TODO
+		}
+		else if (*it == "--encoding") {
+			// TODO
+		}
 		else if (*it == "--no-audio") {
 			no_audio_flag = true;
+		}
+		else if (*it == "--no-rtp") {
+			// TODO
+		}
+		else if (*it == "--version" || *it == "-v") {
+			// TODO
+		}
+		else if (*it == "--help" || *it == "-h" || *it == "/?") {
+			// TODO
 		}
 	}
 }
