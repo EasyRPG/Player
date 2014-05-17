@@ -16,28 +16,33 @@
  */
 
 // Headers
-#include "player.h"
 #include "audio.h"
 #include "cache.h"
 #include "filefinder.h"
 #include "game_actors.h"
-#include "game_message.h"
 #include "game_map.h"
+#include "game_message.h"
+#include "game_enemyparty.h"
 #include "game_party.h"
 #include "game_player.h"
+#include "game_switches.h"
 #include "game_system.h"
 #include "game_temp.h"
+#include "game_variables.h"
 #include "graphics.h"
+#include "inireader.h"
 #include "input.h"
 #include "ldb_reader.h"
 #include "lmt_reader.h"
 #include "main_data.h"
 #include "output.h"
+#include "player.h"
 #include "reader_lcf.h"
+#include "reader_util.h"
+#include "scene_battle.h"
 #include "scene_logo.h"
 #include "scene_map.h"
 #include "scene_title.h"
-#include "scene_battle.h"
 #include "system.h"
 #include "utils.h"
 
@@ -73,6 +78,7 @@ namespace Player {
 	int start_map_id;
 	bool no_audio_flag;
 	EngineType engine;
+	std::string game_title;
 }
 
 void Player::Init(int argc, char *argv[]) {
@@ -99,13 +105,20 @@ void Player::Init(int argc, char *argv[]) {
 
 	FileFinder::Init();
 
+	INIReader ini(FileFinder::FindDefault(INI_NAME));
+	if(ini.ParseError() != -1) {
+		std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
+		std::string encoding = ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME));
+		game_title = ReaderUtil::Recode(title, encoding);
+	}
+
 	DisplayUi.reset();
 
 	if(! DisplayUi) {
 		DisplayUi = BaseUi::CreateUi
 			(SCREEN_TARGET_WIDTH,
 			 SCREEN_TARGET_HEIGHT,
-			 GAME_TITLE,
+			 game_title,
 			 !window_flag,
 			 RUN_ZOOM);
 	}
@@ -164,6 +177,9 @@ void Player::Update() {
 	}
 	if (Input::IsTriggered(Input::TAKE_SCREENSHOT)) {
 		Output::TakeScreenshot();
+	}
+	if (Input::IsTriggered(Input::SHOW_LOG)) {
+		Output::ToggleLog();
 	}
 
 	DisplayUi->ProcessEvents();
@@ -258,10 +274,10 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 }
 
 void Player::CreateGameObjects() {
-	LoadDatabase();
-
 	static bool init = false;
 	if (!init) {
+		LoadDatabase();
+
 		if (Data::system.ldb_id == 2003) {
 			Output::Debug("Switching to Rpg2003 Interpreter");
 			Player::engine = Player::EngineRpg2k3;
@@ -273,14 +289,17 @@ void Player::CreateGameObjects() {
 
 	Main_Data::game_data.Setup();
 
+	Game_Actors::Init();
+	Game_Map::Init();
+	Game_Message::Init();
+	Game_Switches.Reset();
 	Game_System::Init();
 	Game_Temp::Init();
-	Main_Data::game_screen.reset(new Game_Screen());
-	Game_Actors::Init();
-	Game_Party::Init();
-	Game_Message::Init();
-	Game_Map::Init();
+	Game_Variables.Reset();
+	Main_Data::game_enemyparty.reset(new Game_EnemyParty());
+	Main_Data::game_party.reset(new Game_Party());
 	Main_Data::game_player.reset(new Game_Player());
+	Main_Data::game_screen.reset(new Game_Screen());
 
 	Graphics::FrameReset();
 }
@@ -314,7 +333,7 @@ void Player::SetupPlayerSpawn() {
 	Game_Map::Setup(map_id);
 	Main_Data::game_player->MoveTo(x_pos, y_pos);
 	Main_Data::game_player->Refresh();
-	Game_Map::Autoplay();
+	Game_Map::PlayBgm();
 }
 
 #if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER >= 0x0600)

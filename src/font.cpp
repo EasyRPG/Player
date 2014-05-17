@@ -164,7 +164,7 @@ void ShinonomeFont::Render(Bitmap& bmp, int x, int y, Color const& color, unsign
 
 	for(size_t y_ = 0; y_ < HEIGHT; ++y_) {
 		for(size_t x_ = 0; x_ < width; ++x_) {
-			if(glyph->data[y] & (0x1 << x_)) {
+			if(glyph->data[y_] & (0x1 << x_)) {
 				bmp.SetPixel(x + x_, y + y_, color);
 			}
 		}
@@ -201,12 +201,12 @@ void FTFont::Render(Bitmap& bmp, int const x, int const y, Color const& color, u
 	}
 
 	if (FT_Load_Char(face_.get(), glyph, FT_LOAD_NO_BITMAP) != FT_Err_Ok) {
-		Output::Error("Couldn't load FreeType character %d\n", glyph);
+		Output::Error("Couldn't load FreeType character %d", glyph);
 		return;
 	}
 
     if (FT_Render_Glyph(face_->glyph, FT_RENDER_MODE_MONO) != FT_Err_Ok) {
-		Output::Error("Couldn't render FreeType character %d\n", glyph);
+		Output::Error("Couldn't render FreeType character %d", glyph);
 		return;
 	}
 
@@ -257,7 +257,7 @@ bool FTFont::check_face() {
 		if(library_checker_.expired()) {
 			FT_Library lib;
 			if(FT_Init_FreeType(&lib) != FT_Err_Ok) {
-				Output::Error("Couldn't initialize FreeType\n");
+				Output::Error("Couldn't initialize FreeType");
 				return false;
 			}
 			library_.reset(lib, delete_library);
@@ -273,7 +273,7 @@ bool FTFont::check_face() {
 			std::string const face_path = FileFinder::FindFont(name);
 			FT_Face face;
 			if(FT_New_Face(library_.get(), face_path.c_str(), 0, &face) != FT_Err_Ok) {
-				Output::Error("Couldn't initialize FreeType face: %s(%s)\n",
+				Output::Error("Couldn't initialize FreeType face: %s(%s)",
 							  name.c_str(), face_path.c_str());
 				return false;
 			}
@@ -308,7 +308,7 @@ bool FTFont::check_face() {
 		}
 
 		if (FT_Set_Char_Size(face_.get(), sz, sz, dpi, dpi) != FT_Err_Ok) {
-			Output::Error("Couldn't set FreeType face size\n");
+			Output::Error("Couldn't set FreeType face size");
 			return false;
 		}
 		current_size_ = size;

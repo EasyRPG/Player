@@ -11,7 +11,8 @@ LOCAL_CPP_EXTENSION := .cxx .cpp
 LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/$(PLAYER_PATH)/src \
 	$(LOCAL_PATH)/$(PLAYER_PATH)/lib/shinonome \
-	$(LOCAL_PATH)/$(PLAYER_PATH)/lib/readers/include \
+	$(LOCAL_PATH)/$(PLAYER_PATH)/lib/liblcf/src \
+	$(LOCAL_PATH)/$(PLAYER_PATH)/lib/liblcf/src/generated \
 	$(EASYDEV_ANDROID)/include
 
 # Add your application source files here...
@@ -20,8 +21,8 @@ LOCAL_SRC_FILES := SDL_android_main.c \
 	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/src/*.cpp)) \
 	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/src/*.c)) \
 	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/lib/shinonome/*.cxx)) \
-	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/lib/readers/src/*.cpp)) \
-	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/lib/readers/src/generated/*.cpp)) \	
+	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/lib/liblcf/src/*.cpp)) \
+	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/lib/liblcf/src/generated/*.cpp)) \	
 
 LOCAL_SHARED_LIBRARIES := SDL2 SDL2_mixer iconv #smpeg2 #freetype2-static pixman png 
 

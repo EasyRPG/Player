@@ -49,8 +49,8 @@ Spriteset_Map::Spriteset_Map() {
 
 // Update
 void Spriteset_Map::Update() {
-	tilemap.SetOx(Game_Map::GetDisplayX() / 8);
-	tilemap.SetOy(Game_Map::GetDisplayY() / 8);
+	tilemap.SetOx(Game_Map::GetDisplayX() / (SCREEN_TILE_WIDTH / 16));
+	tilemap.SetOy(Game_Map::GetDisplayY() / (SCREEN_TILE_WIDTH / 16));
 	tilemap.Update();
 	for (size_t i = 0; i < character_sprites.size(); i++) {
 		character_sprites[i]->Update();

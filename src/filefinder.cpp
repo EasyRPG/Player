@@ -105,7 +105,7 @@ namespace {
 		return boost::none;
 	}
 
-	bool is_not_ascii_char(uint8_t c) { return c < 0x80; }
+	bool is_not_ascii_char(uint8_t c) { return c > 0x80; }
 
 	bool is_not_ascii_filename(std::string const& n) {
 		return std::find_if(n.begin(), n.end(), &is_not_ascii_char) != n.end();
@@ -117,21 +117,23 @@ namespace {
 			RTP_TABLE_2000;
 
 		rtp_table_type::const_iterator dir_it = table.find(Utils::LowerCase(dir));
+		std::string lower_name = Utils::LowerCase(name);
+
 		if (dir_it == table.end()) { return name; }
 
 		std::map<std::string, std::string>::const_iterator file_it =
-			dir_it->second.find(Utils::LowerCase(name));
-
-		if (file_it == dir_it->second.end() and is_not_ascii_filename(name)) {
-			// Linear Search: Japanese file name to English file name
-			for (std::map<std::string, std::string>::const_iterator it = dir_it->second.begin(); it != file_it; ++it) {
-				if (it->second == name) {
-					return it->first;
+			dir_it->second.find(lower_name);
+		if (file_it == dir_it->second.end()) {
+			if (is_not_ascii_filename(lower_name)) {
+				// Linear Search: Japanese file name to English file name
+				for (std::map<std::string, std::string>::const_iterator it = dir_it->second.begin(); it != file_it; ++it) {
+					if (it->second == lower_name) {
+						return it->first;
+					}
 				}
 			}
 			return name;
 		}
-
 		return file_it->second;
 	}
 
@@ -160,13 +162,13 @@ namespace {
 
 } // anonymous namespace
 
-EASYRPG_SHARED_PTR<FileFinder::ProjectTree> FileFinder::CreateProjectTree(std::string const& p) {
+EASYRPG_SHARED_PTR<FileFinder::ProjectTree> FileFinder::CreateProjectTree(std::string const& p, bool recursive) {
 	if(! (Exists(p) && IsDirectory(p))) { return EASYRPG_SHARED_PTR<ProjectTree>(); }
 
 	EASYRPG_SHARED_PTR<ProjectTree> tree = EASYRPG_MAKE_SHARED<ProjectTree>();
 	tree->project_path = p;
 
-	Directory mem = GetDirectoryMembers(tree->project_path, ALL);
+	Directory mem = GetDirectoryMembers(tree->project_path, recursive ? ALL : FILES);
 	for(string_map::const_iterator i = mem.members.begin(); i != mem.members.end(); ++i) {
 		(IsDirectory(MakePath(tree->project_path, i->second))?
 		 tree->directories : tree->files)[i->first] = i->second;
@@ -395,12 +397,16 @@ std::string FileFinder::FindDefault(const std::string& dir, const std::string& n
 }
 
 std::string FileFinder::FindDefault(std::string const& name) {
-	ProjectTree const& p = GetProjectTree();
+	return FindDefault(GetProjectTree(), name);
+}
+
+std::string FileFinder::FindDefault(const ProjectTree& tree, const std::string& name) {
+	ProjectTree const& p = tree;
 	string_map const& files = p.files;
 
 	string_map::const_iterator const it = files.find(Utils::LowerCase(name));
 
-	return(it != files.end())? MakePath(p.project_path, it->second) : "";
+	return(it != files.end()) ? MakePath(p.project_path, it->second) : "";
 }
 
 bool FileFinder::IsRPG2kProject(ProjectTree const& dir) {

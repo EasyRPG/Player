@@ -118,6 +118,9 @@ namespace Player {
 
 	/** Currently interpreted engine. */
 	extern EngineType engine;
+
+	/** Game title. */
+	extern std::string game_title;
 }
 
 #endif

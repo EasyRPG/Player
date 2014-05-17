@@ -34,7 +34,10 @@ public:
 	 */
 	Scene_Save();
 
-	virtual void Action(int index);
+	void Start();
+
+	void Action(int index);
+	bool IsSlotValid(int index);
 };
 
 #endif

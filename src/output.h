@@ -50,6 +50,11 @@ namespace Output {
 	bool TakeScreenshot(std::ostream& os);
 
 	/**
+	 * Shows/Hides the output log overlay.
+	 */
+	void ToggleLog();
+
+	/**
 	 * Ignores pause in Warning and Error.
 	 *
 	 * @param val whether to ignore pause.

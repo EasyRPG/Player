@@ -30,7 +30,7 @@
 #include <vector>
 
 #include <boost/variant.hpp>
-#include <boost/container/flat_map.hpp>
+#include <boost/unordered_map.hpp>
 #include <boost/container/vector.hpp>
 #include <boost/optional.hpp>
 #include <boost/regex/pending/unicode_iterator.hpp>
@@ -42,6 +42,7 @@
 #include <boost/spirit/include/qi_char.hpp>
 #include <boost/spirit/include/qi_symbols.hpp>
 #include <boost/spirit/include/qi_uint.hpp>
+#include <boost/spirit/include/qi_no_skip.hpp>
 #include <boost/spirit/include/support_ascii.hpp>
 #include <boost/spirit/include/phoenix_core.hpp>
 #include <boost/spirit/include/phoenix_bind.hpp>
@@ -61,8 +62,8 @@ using boost::format;
 
 typedef vector<uint8_t> binary_type;
 typedef boost::variant<std::string, binary_type, uint32_t> section_value;
-typedef boost::container::flat_map<std::string, section_value> section;
-typedef boost::container::flat_map<std::string, section> section_list;
+typedef boost::unordered_map<std::string, section_value> section;
+typedef boost::unordered_map<std::string, section> section_list;
 
 namespace spirit = boost::spirit;
 namespace qi = spirit::qi;
@@ -96,75 +97,71 @@ struct parse_registry {
 			++line_number;
 			line += tmp;
 		} while(stream and not tmp.empty() and *tmp.rbegin() == '\\');
-		if(not line.empty()) { assert(*line.rbegin() != '\\'); }
+		assert(line.empty() or *line.rbegin() != '\\');
 		i = line.begin(), end = line.end();
 		return stream;
 	}
 
-	template<char term> std::string parse_str() {
-		using qi::phrase_parse;
-		using qi::char_;
-		using qi::symbols;
-		using qi::uint_parser;
+	vector<uint16_t> escaped, utf16;
+	qi::symbols<char, uint16_t> escape;
 
-		symbols<char, char> escape;
-		escape.add
-				("\\a", '\a')("\\b", '\b')("\\e", '\x1B')("\\f", '\f')
-				("\\n", '\n')("\\r", '\r')("\\t", '\t')("\\v", '\v')
-				("\\\\", '\\')("\\\"", '"');
-
-		std::string ret;
-		if(not phrase_parse(
-			   i, end, *(escape | ~char_(term)) >> term, ~char_, ret)) {
-
+	template<char TERM> std::string parse_str() {
+		std::string::const_iterator str_beg = i, str_end = i - 1;
+		bool has_escape_char = false;
+		do {
+			++str_end;
+			std::string::const_iterator const next_str_end = std::find(str_end, end, TERM);
+			if (not has_escape_char) {
+				has_escape_char = std::find(str_end, next_str_end, '\\') != next_str_end;
+			}
+			str_end = next_str_end;
+		} while (str_end < end and str_end[-1] == '\\' and str_end[-2] != '\\');
+		if(str_end >= end) {
 			error(format("string parse error"));
 			return std::string();
 		}
+		i = str_end + 1; // skip term char
+
+		if (has_escape_char) { return std::string(str_beg, str_end); }
 
 		typedef boost::u8_to_u32_iterator<std::string::const_iterator> u8_to_u32;
-		typedef boost::u32_to_u16_iterator<vector<uint32_t>::const_iterator> u32_to_u16;
+		typedef boost::u32_to_u16_iterator<u8_to_u32> u32_to_u16;
 		typedef boost::u16_to_u32_iterator<vector<uint16_t>::const_iterator> u16_to_u32;
-		typedef boost::u32_to_u8_iterator<vector<uint32_t>::const_iterator> u32_to_u8;
+		typedef boost::u32_to_u8_iterator<u16_to_u32> u32_to_u8;
 
 		// utf-8 -> utf-16
-		vector<uint32_t> utf32(
-			u8_to_u32(ret.begin(), ret.begin(), ret.end()),
-			u8_to_u32(ret.end(), ret.begin(), ret.end()));
-		vector<uint16_t> utf16(u32_to_u16(utf32.begin()), u32_to_u16(utf32.end()));
+		utf16.assign(
+				u32_to_u16(u8_to_u32(str_beg, str_beg, str_end)),
+				u32_to_u16(u8_to_u32(str_end, str_beg, str_end)));
+		vector<uint16_t>::const_iterator escaping = utf16.begin(), escaping_end = utf16.end();
+		escaped.clear();
+		qi::uint_parser<uint16_t, 8, 1, 3> octal;
+		qi::uint_parser<uint16_t, 16, 1, 4> hex;
 
-		vector<uint16_t> escaped;
-		escaped.reserve(utf16.size());
-		vector<uint16_t>::const_iterator
-				escaping = utf16.begin(), escaping_end = utf16.end();
-		uint_parser<uint16_t, 8, 1, 3> octal;
-		uint_parser<uint16_t, 16, 1, 4> hex;
-
-		if(not phrase_parse(
+		if(not qi::parse(
 			   escaping, escaping_end,
-			   *(('\\' >> (('x' >> hex) | octal)) | char_),
-			   ~char_, escaped) or escaping != utf16.end()) {
-			Output::Debug("unicode escaping error");
+			   *(escape | ('\\' >> (('x' >> hex) | octal)) | qi::char_),
+			   escaped) or escaping != escaping_end) {
+			error(format("escaping error"));
+			return std::string();
 		}
 
 		// utf-16 -> utf-8
-		utf32.assign(u16_to_u32(escaped.begin(), escaped.begin(), escaped.end()),
-					 u16_to_u32(escaped.end(), escaped.begin(), escaped.end()));
-		ret.assign(u32_to_u8(utf32.begin()), u32_to_u8(utf32.end()));
-
-		return ret;
+		return std::string(
+				u32_to_u8(u16_to_u32(escaped.begin(), escaped.begin(), escaped.end())),
+				u32_to_u8(u16_to_u32(escaped.end  (), escaped.begin(), escaped.end())));
 	}
 
 	section_value parse_value() {
 		using qi::phrase_parse;
 		using qi::_1;
-		using qi::uint_parser;
 		using qi::char_;
 		using qi::uint_;
 		using spirit::ascii::space;
 		using phoenix::push_back;
 
 		enum { STRING, BINARY, INTEGER };
-		struct prefix {
+		static struct prefix {
 			std::string pre;
 			int type;
 		} const prefixes[] = {
@@ -178,9 +175,8 @@ struct parse_registry {
 		};
 
 		for(prefix const* pre = prefixes; not pre->pre.empty(); ++pre) {
-			if(size_t(i - end) < pre->pre.size()) { continue; }
-
-			if(not std::equal(i, i + pre->pre.size(), pre->pre.begin())) { continue; }
+			if(size_t(i - end) < pre->pre.size() or
+                           not std::equal(i, i + pre->pre.size(), pre->pre.begin())) { continue; }
 
 			i += pre->pre.size();
 			switch(pre->type) {
@@ -188,7 +184,7 @@ struct parse_registry {
 					return (*i == '\'')? std::string() : parse_str<'\"'>();
 				case BINARY: {
 					binary_type ret;
-					uint_parser<uint8_t, 16, 2, 2> octed;
+					qi::uint_parser<uint8_t, 16, 2, 2> octed;
 					if(not phrase_parse(i, end, -("(" >> uint_ >> ")") >> ":" >>
 										octed[push_back(phoenix::ref(ret), _1)] % ',' >>
 										-char_(')'), space)) {
@@ -198,7 +194,7 @@ struct parse_registry {
 				}
 				case INTEGER: {
 					uint32_t ret;
-					uint_parser<uint32_t, 16, 8, 8> dword;
+                                        qi::uint_parser<uint32_t, 16, 8, 8> dword;
 					if(not phrase_parse(i, end, dword, space, ret)) {
 						error(format("cannot parse %s") % pre->pre);
 					}
@@ -224,6 +220,11 @@ struct parse_registry {
 			return;
 		}
 
+		escape.add
+				("\\a", '\a')("\\b", '\b')("\\e", '\x1B')("\\f", '\f')
+				("\\n", '\n')("\\r", '\r')("\\t", '\t')("\\v", '\v')
+				("\\\\", '\\')("\\\"", '"');
+
 		getline();
 		if(line != "WINE REGISTRY Version 2") {
 			error(format("file signature error"));
@@ -235,7 +236,7 @@ struct parse_registry {
 
 		while(getline()) {
 			skip_space();
-			if(i >= line.end()) { continue; } // empty line
+			if(i >= end) { continue; } // empty line
 
 			switch(*i) {
 				case '[':
@@ -255,7 +256,7 @@ struct parse_registry {
 					++i; // skip '\"'
 					std::string const val_name = parse_str<'\"'>();
 					skip_space();
-					if(i >= line.end() or *i != '=') {
+					if(i >= end or *i != '=') {
 						error(format("unexpected char or end of line"));
 						return;
 					}
@@ -289,12 +290,12 @@ section_list const& get_section(HKEY key) {
 	switch(key) {
 		case HKEY_LOCAL_MACHINE:
 			if(local_machine.empty()) {
-				local_machine = parse_registry(prefix + "/system.reg").result;
+                        	parse_registry(prefix + "/system.reg").result.swap(local_machine);
 			}
 			return local_machine;
 		case HKEY_CURRENT_USER:
 			if(current_user.empty()) {
-				current_user = parse_registry(prefix + "/user.reg").result;
+                        	parse_registry(prefix + "/user.reg").result.swap(current_user);
 			}
 			return current_user;
 		default: assert(false); return empty_sec;
@@ -311,17 +312,18 @@ section_value_opt get_value(section_list const& sec, std::string const& key, std
 }
 template<class T>
 T const& get_value_with_type(HKEY hkey, std::string const& key, std::string const& val) {
-	static T const err_val;
+  static T const err_val;
+  T const* ptr;
 	section_value_opt const v = get_value(get_section(hkey), key, val);
 	if(v == boost::none) {
 		Output::Debug("registry not found: %s, %s", key.c_str(), val.c_str());
 		return err_val;
 	}
-	if(not boost::get<T>(&*v)) {
+	if(not (ptr = boost::get<T>(&*v))) {
 		Output::Debug("type mismatch: %s, %s", key.c_str(), val.c_str());
 		return err_val;
 	}
-	return boost::get<T const>(*v);
+	return *ptr;
 }
 }
 
@@ -339,7 +341,7 @@ std::string Registry::ReadStrValue(HKEY hkey, std::string const& key, std::strin
 			path.assign(get_wine_prefix()).append("/drive_")
 					.append(&drive, 1).append(ret.begin() + 2, ret.end());
 			break;
-		case 'Z': path.assign(ret.begin() + 2, ret.end()); break;
+		case 'z': path.assign(ret.begin() + 2, ret.end()); break;
 	}
 	std::replace(path.begin(), path.end(), '\\', '/');
 

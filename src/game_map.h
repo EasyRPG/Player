@@ -30,6 +30,8 @@
 typedef std::map<int, EASYRPG_SHARED_PTR<Game_Event> > tEventHash;
 typedef std::map<int, EASYRPG_SHARED_PTR<Game_CommonEvent> > tCommonEventHash;
 
+#define SCREEN_TILE_WIDTH 256
+
 /**
  * Game_Map namespace
  */
@@ -57,9 +59,28 @@ namespace Game_Map {
 	void Setup(int map_id);
 
 	/**
+	 * Setups a map from a savegame.
+	 *
+	 * @param map_id map ID.
+	 */
+	void SetupFromSave();
+
+	/**
+	 * Shared code of the Setup methods.
+	 *
+	 * @param map_id map ID.
+	 */
+	void SetupCommon(int _id);
+
+	/**
+	 * Copies event data into RPG::Save data.
+	 */
+	void PrepareSave();
+
+	/**
 	 * Runs map.
 	 */
-	void Autoplay();
+	void PlayBgm();
 
 	/**
 	 * Refreshes the map.
@@ -114,6 +135,16 @@ namespace Game_Map {
 	 * @return whether is passable.
 	 */
 	bool IsPassable(int x, int y, int d, const Game_Character* self_event = NULL);
+
+    /**
+     * Gets if a tile coordinate can be jumped to.
+     *
+     * @param x tile x.
+     * @param y tile y.
+     * @param self_event Current character attemping to jump.
+     * @return whether is posible to jump.
+     */
+    bool IsLandable(int x, int y, const Game_Character* self_event = NULL);
 
 	/**
 	 * Gets if a tile has bush flag.
@@ -248,9 +279,26 @@ namespace Game_Map {
 	void UpdateEncounterSteps();
 
 	/**
-	 * Resets encounter step counter.
+	 * Resets encounter step counter based on the encounter rate using
+	 * Gaussian distribution.
 	 */
 	void ResetEncounterSteps();
+
+	/**
+	 * Gets possible encounters at a location. Also scans areas.
+	 *
+	 * @param out Possible encounters
+	 */
+	void GetEncountersAt(int x, int y, std::vector<int>& out);
+
+	/**
+	 * Updates all battle data based on the current player position and starts
+	 * the battle.
+	 *
+	 * @return true if battle starts, false if no monsters are at the current
+	 * map position or encounter rate is 0
+	 */
+	bool PrepareEncounter();
 
 	/**
 	 * Gets lower layer map data.

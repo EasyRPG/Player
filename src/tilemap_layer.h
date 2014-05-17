@@ -24,13 +24,31 @@
 #include "system.h"
 #include "drawable.h"
 
+class TilemapLayer;
+
+class TilemapTile : public Drawable {
+public:
+	TilemapTile(TilemapLayer* tilemap, int z);
+	~TilemapTile();
+
+	void Draw();
+
+	int GetZ() const;
+
+	DrawableType GetType() const;
+
+private:
+	DrawableType type;
+	TilemapLayer* tilemap;
+	int z;
+};
+
 /**
  * TilemapLayer class.
  */
-class TilemapLayer : public Drawable {
+class TilemapLayer {
 public:
 	TilemapLayer(int ilayer);
-	~TilemapLayer();
 
 	void DrawTile(BitmapScreen& screen, int x, int y, int row, int col, bool autotile);
 	void Draw(int z_order);
@@ -58,9 +76,6 @@ public:
 	int GetAnimationType() const;
 	void SetAnimationType(int type);
 
-	int GetZ() const;
-	unsigned long GetId() const;
-	DrawableType GetType() const;
 	void Substitute(int old_id, int new_id);
 
 private:
@@ -79,9 +94,6 @@ private:
 	char animation_step_c;
 	int animation_speed;
 	int animation_type;
-
-	unsigned long ID;
-	DrawableType type;
 	int layer;
 
 	void GenerateAutotileAB(short ID, short animID);
@@ -119,6 +131,7 @@ private:
 		int z;
 	};
 	std::vector<std::vector<TileData> > data_cache;
+	std::vector<EASYRPG_SHARED_PTR<TilemapTile> > tilemap_tiles;
 };
 
 #endif

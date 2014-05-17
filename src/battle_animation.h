@@ -22,25 +22,20 @@
 #include "system.h"
 #include "rpg_animation.h"
 #include "drawable.h"
-#include "zobj.h"
 
 class BattleAnimation : public Drawable {
 public:
 	BattleAnimation(int x, int y, const RPG::Animation* animation);
 	~BattleAnimation();
 
-	void Draw(int z_order);
-	unsigned long GetId() const;
+	void Draw();
 	int GetZ() const;
 	DrawableType GetType() const;
 
-	void Setup();
 	void Update();
 	int GetFrame() const;
 	int GetFrames() const;
 	void SetFrame(int);
-	void SetVisible(bool visible);
-	bool GetVisible();
 	bool IsDone() const;
 
 protected:
@@ -48,12 +43,8 @@ protected:
 	int y;
 	const RPG::Animation* animation;
 	int frame;
-	bool initialized;
-	bool visible;
 	bool large;
 	BitmapScreenRef screen;
-	unsigned long ID;
-	ZObj* zobj;
 };
 
 #endif

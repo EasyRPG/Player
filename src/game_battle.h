@@ -15,110 +15,54 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Headers
 #include "rpg_troop.h"
-#include "battle_battler.h"
-#include "battle_interface.h"
+
+class Game_Interpreter;
+class Spriteset_Battle;
 
 namespace Game_Battle {
-	extern const RPG::Troop* troop;
-	extern std::vector<Battle::Ally> allies;
-	extern std::vector<Battle::Enemy> enemies;
-	extern bool active;
-	extern int turn_fragments;
-	extern bool terminate;
-	extern bool allies_flee;
-	extern std::string background_name;
-	extern const RPG::EnemyAction* enemy_action;
+	/**
+	 * Initialize Game_Battle.
+	 */
+	void Init();
 
-	static const int gauge_full = Battle::Battler::gauge_full;
-	static const int turn_length = 333; // frames
-
-	void Init(Battle_Interface* scene);
+	/**
+	 * Quits (frees) Game_Battle.
+	 */
 	void Quit();
 
-	Battle_Interface* GetScene();
-
-	Battle::Ally* FindAlly(int actor_id);
-	void AlliesCentroid(int& x, int& y);
-	void EnemiesCentroid(int& x, int& y);
-
-	Battle::Ally& GetAlly(int i);
-	void SetTargetAlly(int target);
-	void ClearTargetAlly();
-	Battle::Ally& GetTargetAlly();
-	bool HaveTargetAlly();
-	void TargetNextAlly();
-	void TargetPreviousAlly();
-	void SetActiveAlly(int active);
-	Battle::Ally& GetActiveAlly();
-	bool HaveActiveAlly();
-	void TargetActiveAlly();
-	void TargetRandomAlly();
-
-	Battle::Enemy& GetEnemy(int i);
-	void SetTargetEnemy(int target);
-	void ClearTargetEnemy();
-	Battle::Enemy& GetTargetEnemy();
-	bool HaveTargetEnemy();
-	void TargetNextEnemy();
-	void TargetPreviousEnemy();
-	void SetActiveEnemy(int active);
-	Battle::Enemy& GetActiveEnemy();
-	void TargetRandomEnemy();
-	bool NextActiveEnemy();
-
-	void ChooseEnemy();
-	int GetActiveActor();
-	int GetTurns();
+	/**
+	 * Updates the battle state.
+	 */
 	void Update();
-	bool HaveCorpse();
-	bool CheckWin();
-	bool CheckLose();
 	void Terminate();
+
+	Spriteset_Battle& GetSpriteset();
+
+	void NextTurn();
+
+
+	/**
+	 * Updates the gauge of all battlers based on the highest agi of all.
+	 */
+	void UpdateGauges();
 
 	void ChangeBackground(const std::string& name);
 
-	void EnemyEscape();
 
-	void MonsterFlee(int id);
-	void MonstersFlee();
-
+	int GetTurn();
 	bool CheckTurns(int turns, int base, int multiple);
-	bool CheckCondition(const RPG::TroopPageCondition& condition);
-	void CheckEvents();
 
-	void Restart();
+	bool AreConditionsMet(const RPG::TroopPageCondition& condition);
+	void UpdateEvents();
 
-	void SetItem(int id);
-	void SetSkill(int id);
-	void SetMorph(int id);
+	bool IsEscapeAllowed();
 
-	bool Escape();
-	void Defend();
-	void Attack();
-	void UseItem();
-	void UseSkill();
+	static int turn;
+	static bool message_is_fixed;
+	static int message_position;
+	extern bool terminate;
+	extern std::string background_name;
 
-	void EnemyAttack(void* target);
-	void EnemyDefend();
-	void EnemyObserve();
-	void EnemyCharge();
-	void EnemyDestruct();
-	void EnemySkill();
-	void EnemyTransform();
-
-	void EnemyActionDone();
-
-	void AttackEnemy(Battle::Ally& ally, Battle::Enemy& enemy);
-	void UseItem(Battle::Ally& ally, const RPG::Item& item);
-	void UseItemAlly(Battle::Ally& ally, const RPG::Item& item, Battle::Ally& target);
-	void UseSkill(Battle::Ally& ally, const RPG::Skill& skill);
-	void UseSkillAlly(Battle::Battler& user, const RPG::Skill& skill, Battle::Battler& target);
-	void UseSkillEnemy(Battle::Battler& user, const RPG::Skill& skill, Battle::Battler& target);
-	bool EnemyActionValid(const RPG::EnemyAction& action, Battle::Enemy& enemy);
-	void EnemyAttackAlly(Battle::Enemy& enemy, Battle::Ally& ally);
-	void EnemySkill(Battle::Enemy& enemy, const RPG::Skill& skill);
-	const RPG::EnemyAction* ChooseEnemyAction(Battle::Enemy& enemy);
+	extern int escape_fail_count;
 }
-

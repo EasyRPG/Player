@@ -314,6 +314,8 @@ void Bitmap::HSLBlit(int x, int y, Bitmap const& src, Rect const& src_rect_, dou
 
 	for (int i = 0; i < dst_rect.height; i++) {
 		bm_utils->HSLBlit(dst_pixels, src_pixels, dst_rect.width, hue, sat, lum, loff);
+
+		src_pixels += pitch();
 		dst_pixels += pitch();
 	}
 
@@ -383,6 +385,33 @@ void Bitmap::TextDraw(Rect const& rect, int color, std::string const& text, Text
 
 void Bitmap::TextDraw(int x, int y, int color, std::string const& text, Text::Alignment align) {
 	Text::Draw(*this, x, y, color, text, align);
+	RefreshCallback();
+}
+
+void Bitmap::TextDraw(int x, int y, int width, int /* height */, Color color, std::string const& text, Text::Alignment align) {
+	Rect rect = GetFont()->GetSize(text);
+	int dx = rect.width - width;
+
+	switch (align) {
+	case Text::AlignLeft:
+		TextDraw(x, y, color, text);
+		break;
+	case Text::AlignCenter:
+		TextDraw(x + dx / 2, y, color, text);
+		break;
+	case Text::AlignRight:
+		TextDraw(x + dx, y, color, text);
+		break;
+	default: assert(false);
+	}
+}
+
+void Bitmap::TextDraw(Rect const& rect, Color color, std::string const& text, Text::Alignment align) {
+	TextDraw(rect.x, rect.y, rect.width, rect.height, color, text, align);
+}
+
+void Bitmap::TextDraw(int x, int y, Color color, std::string const& text) {
+	Text::Draw(*this, x, y, color, text);
 	RefreshCallback();
 }
 
@@ -548,7 +577,7 @@ void Bitmap::Init(int width, int height, void* data, int pitch, bool destroy) {
 	bitmap = pixman_image_create_bits(pixman_format, width, height, (uint32_t*) data, pitch);
 
 	if (bitmap == NULL) {
-		Output::Error("Couldn't create %dx%d image.\n", width, height);
+		Output::Error("Couldn't create %dx%d image.", width, height);
 	}
 
 	if (format.bits == 8) {
@@ -731,7 +760,7 @@ BitmapRef Bitmap::Resample(int scale_w, int scale_h, const Rect& src_rect) const
 
 	pixman_image_composite32(PIXMAN_OP_SRC,
 							 bitmap, (pixman_image_t*) NULL, dst->bitmap,
-							 src_rect.x, src_rect.y,
+							 src_rect.x / zoom_x, src_rect.y / zoom_y,
 							 0, 0,
 							 0, 0,
 							 scale_w, scale_h);
@@ -939,9 +968,9 @@ static pixman_color_t PixmanColor(const Color &color) {
 void Bitmap::Fill(const Color &color) {
 	pixman_color_t pcolor = PixmanColor(color);
 	pixman_rectangle16_t rect = {
-    0, 0, static_cast<uint16_t>(width()), static_cast<uint16_t>(height())};
+	0, 0, static_cast<uint16_t>(width()), static_cast<uint16_t>(height())};
 
-	pixman_image_fill_rectangles(PIXMAN_OP_SRC, bitmap, &pcolor, 1, &rect);
+	pixman_image_fill_rectangles(PIXMAN_OP_OVER, bitmap, &pcolor, 1, &rect);
 
 	RefreshCallback();
 }
@@ -949,12 +978,12 @@ void Bitmap::Fill(const Color &color) {
 void Bitmap::FillRect(Rect const& dst_rect, const Color &color) {
 	pixman_color_t pcolor = PixmanColor(color);
 	pixman_rectangle16_t rect = {
-    static_cast<int16_t>(dst_rect.x),
-    static_cast<int16_t>(dst_rect.y),
-    static_cast<uint16_t>(dst_rect.width),
-    static_cast<uint16_t>(dst_rect.height), };
+	static_cast<int16_t>(dst_rect.x),
+	static_cast<int16_t>(dst_rect.y),
+	static_cast<uint16_t>(dst_rect.width),
+	static_cast<uint16_t>(dst_rect.height), };
 
-	pixman_image_fill_rectangles(PIXMAN_OP_SRC, bitmap, &pcolor, 1, &rect);
+	pixman_image_fill_rectangles(PIXMAN_OP_OVER, bitmap, &pcolor, 1, &rect);
 
 	RefreshCallback();
 }
@@ -962,7 +991,7 @@ void Bitmap::FillRect(Rect const& dst_rect, const Color &color) {
 void Bitmap::Clear() {
 	pixman_color_t pcolor = {0, 0, 0, 0};
 	pixman_rectangle16_t rect = {
-    0, 0, static_cast<uint16_t>(width()), static_cast<uint16_t>(height())};
+	0, 0, static_cast<uint16_t>(width()), static_cast<uint16_t>(height())};
 
 	pixman_image_fill_rectangles(PIXMAN_OP_CLEAR, bitmap, &pcolor, 1, &rect);
 
@@ -1047,7 +1076,7 @@ void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, con
 		pixman_image_t *gimage = pixman_image_create_solid_fill(&gcolor);
 
 		pixman_image_composite32(PIXMAN_OP_HSL_SATURATION,
-			gimage, (pixman_image_t*) NULL, bitmap,
+			gimage, src.bitmap, bitmap,
 			src_rect.x, src_rect.y,
 			0, 0,
 			x, y,

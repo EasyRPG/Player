@@ -34,11 +34,11 @@ Window_ShopParty::Window_ShopParty(int ix, int iy, int iwidth, int iheight) :
 	cycle = 0;
 	item_id = 0;
 
-	const std::vector<Game_Actor*>& actors = Game_Party::GetActors();
+	const std::vector<Game_Actor*>& actors = Main_Data::game_party->GetActors();
 	for (size_t i = 0; i < actors.size() && i < 4; i++) {
 		Game_Actor *actor = actors[i];
-		const std::string& sprite_name = actor->GetCharacterName();
-		int sprite_id = actor->GetCharacterIndex();
+		const std::string& sprite_name = actor->GetSpriteName();
+		int sprite_id = actor->GetSpriteIndex();
 		BitmapRef bm = Cache::Charset(sprite_name);
 		int width = bm->GetWidth() / 4 / 3;
 		int height = bm->GetHeight() / 2 / 4;
@@ -66,7 +66,7 @@ void Window_ShopParty::Refresh() {
 
 	BitmapRef system = Cache::System(Data::system.system_name);
 
-	const std::vector<Game_Actor*>& actors = Game_Party::GetActors();
+	const std::vector<Game_Actor*>& actors = Main_Data::game_party->GetActors();
 	for (size_t i = 0; i < actors.size() && i < 4; i++) {
 		Game_Actor *actor = actors[i];
 		int phase = (cycle / anim_rate) % 4;

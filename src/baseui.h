@@ -24,6 +24,7 @@
 
 #include "system.h"
 #include "color.h"
+#include "font.h"
 #include "rect.h"
 #include "keys.h"
 
@@ -114,33 +115,6 @@ public:
 	 * @param title title string.
 	 */
 	virtual void SetTitle(const std::string &title) = 0;
-
-	/**
-	 * Displays white text in the top left corner of the screen.
-	 * Used by the FPS-Display.
-	 *
-	 * @param text text to display.
-	 */
-	virtual void DrawScreenText(const std::string &text) = 0;
-
-	/**
-	 * Displays text on the screen.
-	 *
-	 * @param text text to display.
-	 * @param x X-coordinate where text is displayed.
-	 * @param y Y-coordinate where text is displayed.
-	 * @param color Text color.
-	 */
-	virtual void DrawScreenText(const std::string &text, int x, int y, Color const& color = Color(255, 255, 255, 255)) = 0;
-
-	/**
-	 * Displays text on the screen.
-	 *
-	 * @param text text to display.
-	 * @param dst_rect Rect where text is displayed.
-	 * @param color Text color.
-	 */
-	virtual void DrawScreenText(const std::string &text, Rect const& dst_rect, Color const& color = Color(255, 255, 255, 255)) = 0;
 
 	/**
 	 * Sets if the cursor should be shown.

@@ -12,15 +12,16 @@ include $(DEVKITPPC)/wii_rules
 #---------------------------------------------------------------------------------
 # TARGET is the name of the output
 # BUILD is the directory where object files & intermediate files will be placed
+# TOPDIR is the directory from where relative paths to source files are resolved
 # SOURCES is a list of directories containing source code
 # INCLUDES is a list of directories containing extra header files
 #---------------------------------------------------------------------------------
 TARGET		:=	boot
 BUILD		:=	obj
-SOURCES		:=	../../lib/readers/src ../../src ../../lib/readers/src/generated ../../lib/shinonome
-#SOURCES		:=	../../src
+TOPDIR		:=	$(subst /builds/wii,,$(CURDIR))
+SOURCES		:=	src lib/shinonome
 DATA		:=	data  
-INCLUDES	:=  ../../lib/readers/include ../../src ../../lib/shinonome
+INCLUDES	:=	src lib/shinonome
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -28,14 +29,13 @@ INCLUDES	:=  ../../lib/readers/include ../../src ../../lib/shinonome
 
 CFLAGS	= -O2 -Wall -Wextra -fno-rtti -DUSE_SDL -DHAVE_SDL_MIXER -DUSE_BIG_ENDIAN -DNDEBUG $(MACHDEP) $(INCLUDE)
 CXXFLAGS	=	$(CFLAGS) -fno-exceptions -std=c++0x
-
-LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
+LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,easyrpg-player-wii.map
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
 
-LIBS	:=	 -lSDL_mixer -lSDL -lpixman-1 -ljpeg -lpng -lfreetype -lmad \
+LIBS	:=	 -llcf -lexpat -lSDL_mixer -lSDL -lpixman-1 -lpng -lfreetype -lmad \
 			-liconv -lvorbisidec -lz -lfat -lwiiuse -lbte -logc -lm -lwiikeyboard
 
 #---------------------------------------------------------------------------------
@@ -53,7 +53,7 @@ ifneq ($(BUILD),$(notdir $(CURDIR)))
 
 export OUTPUT	:=	$(CURDIR)/$(TARGET)
 
-export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
+export VPATH	:=	$(foreach dir,$(SOURCES),$(TOPDIR)/$(dir)) \
 					$(foreach dir,$(DATA),$(CURDIR)/$(dir))
 
 export DEPSDIR	:=	$(CURDIR)/$(BUILD)
@@ -61,12 +61,12 @@ export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 #---------------------------------------------------------------------------------
 # automatically build a list of object files for our project
 #---------------------------------------------------------------------------------
-CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
-_CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
-_CXXFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cxx)))
+CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(TOPDIR)/$(dir)/*.c)))
+_CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(TOPDIR)/$(dir)/*.cpp)))
+_CXXFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(TOPDIR)/$(dir)/*.cxx)))
 CPPFILES	:=  $(_CXXFILES) $(_CPPFILES)
-sFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
-SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.S)))
+sFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(TOPDIR)/$(dir)/*.s)))
+SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(TOPDIR)/$(dir)/*.S)))
 BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*)))
 
 #---------------------------------------------------------------------------------
@@ -86,13 +86,15 @@ export OFILES	:=	$(addsuffix .o,$(BINFILES)) \
 #---------------------------------------------------------------------------------
 # build a list of include paths
 #---------------------------------------------------------------------------------
-export INCLUDE	:=	$(foreach dir,$(INCLUDES), -I$(CURDIR)/$(dir)) \
+export INCLUDE	:=	$(foreach dir,$(INCLUDES), -I$(TOPDIR)/$(dir)) \
 					$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
 					-I$(CURDIR)/$(BUILD) \
 					-I$(LIBOGC_INC) \
 					-I$(PORTLIBS)/include \
-					-I$(PORTLIBS)/include/SDL \
-					-I$(PORTLIBS)/include/freetype2
+					-I$(LIBOGC_INC)/SDL \
+					-I$(PORTLIBS)/include/pixman-1 \
+					-I$(PORTLIBS)/include/freetype2 \
+					-I$(PORTLIBS)/include/liblcf
 
 #---------------------------------------------------------------------------------
 # build a list of library paths
@@ -107,7 +109,7 @@ export OUTPUT	:=	$(CURDIR)/$(TARGET)
 #---------------------------------------------------------------------------------
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
-	@make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
+	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
 
 #---------------------------------------------------------------------------------
 clean:
@@ -117,6 +119,22 @@ clean:
 #---------------------------------------------------------------------------------
 run:
 	wiiload $(TARGET).dol
+
+#---------------------------------------------------------------------------------
+echoconf:
+	@echo Folder Configuration:
+	@echo ---------------------
+	@echo TOPDIR: $(TOPDIR)
+	@echo
+	@echo INCLUDE: $(INCLUDE)
+	@echo
+	@echo LIBPATHS: $(LIBPATHS)
+	@echo
+
+#---------------------------------------------------------------------------------
+addr2line:
+	@echo "Enter address(es) from stack dump (press ctrl+c to exit):"
+	@powerpc-eabi-addr2line -f -i -C -e boot.elf
 
 #---------------------------------------------------------------------------------
 else
@@ -137,12 +155,6 @@ $(OUTPUT).elf: $(OFILES)
 	@$(CXX) -MMD -MP -MF $(DEPSDIR)/$*.d $(CXXFLAGS) -c $< -o $@ $(ERROR_FILTER)
 
 #---------------------------------------------------------------------------------
-# This rule links in binary data with the .jpg extension
-#---------------------------------------------------------------------------------
-%.jpg.o	:	%.jpg
-#---------------------------------------------------------------------------------
-	@echo $(notdir $<)
-	$(bin2o)
 
 -include $(DEPENDS)
 

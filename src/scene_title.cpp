@@ -27,14 +27,21 @@
 #include "cache.h"
 #include "filefinder.h"
 #include "game_map.h"
+#include "game_enemyparty.h"
 #include "game_player.h"
+#include "game_screen.h"
+#include "game_switches.h"
 #include "game_system.h"
+#include "game_variables.h"
 #include "graphics.h"
 #include "input.h"
+#include "ldb_reader.h"
+#include "lmt_reader.h"
 #include "main_data.h"
 #include "options.h"
 #include "output.h"
 #include "player.h"
+#include "reader_lcf.h"
 #include "scene_battle.h"
 #include "scene_load.h"
 #include "scene_map.h"
@@ -108,12 +115,15 @@ void Scene_Title::Update() {
 }
 
 bool Scene_Title::CheckContinue() {
+	EASYRPG_SHARED_PTR<FileFinder::ProjectTree> tree;
+	tree = FileFinder::CreateProjectTree(Main_Data::project_path, false);
+
 	for (int i = 1; i <= 15; i++)
 	{
 		std::stringstream ss;
 		ss << "Save" << (i <= 9 ? "0" : "") << i << ".lsd";
 
-		if (!FileFinder::FindDefault(ss.str()).empty()) {
+		if (!FileFinder::FindDefault(*tree, ss.str()).empty()) {
 			return true;
 		}
 	}
@@ -164,11 +174,10 @@ bool Scene_Title::CheckValidPlayerLocation() {
 }
 
 void Scene_Title::PrepareBattleTest() {
-	//Game_Party::SetupBattleTestMembers();
-	//Game_Troop::can_escape = true;
-	Game_System::BgmPlay(Data::system.battle_music);
+	Player::CreateGameObjects();
 
-	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Battle>(), true);
+
+	Scene::Push(Scene_Battle::Create(), true);
 }
 
 void Scene_Title::CommandNewGame() {
@@ -176,7 +185,7 @@ void Scene_Title::CommandNewGame() {
 		Output::Warning("The game has no start location set.");
 	} else {
 		Game_System::SePlay(Main_Data::game_data.system.decision_se);
-		Audio().BGM_Stop();
+		Game_System::BgmStop();
 		Graphics::SetFrameCount(0);
 		Player::SetupPlayerSpawn();
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>());

@@ -22,27 +22,28 @@
 #include "options.h"
 #include "main_data.h"
 #include "game_screen.h"
+#include "game_system.h"
 #include "bitmap.h"
 
 Game_Screen::Game_Screen() :
 	data(Main_Data::game_data.screen)
 {
-	data.tint_current_red = 100;
-	data.tint_current_green = 100;
-	data.tint_current_blue = 100;
-	data.tint_current_sat = 100;
-
-	data.tint_finish_red = -1;
-	data.tint_finish_green = -1;
-	data.tint_finish_blue = -1;
-	data.tint_finish_sat = -1;
-	data.tint_time_left = -1;
-
-
-	data.weather = 0;
-	data.weather_strength = 0;
-
 	Reset();
+}
+
+void Game_Screen::CreatePicturesFromSave() {
+	std::vector<RPG::SavePicture>& save_pics = Main_Data::game_data.pictures;
+
+	pictures.resize(save_pics.size());
+
+	for (size_t id = 1; id < save_pics.size(); ++id) {
+		if (!save_pics[id - 1].name.empty()) {
+			pictures[id - 1].reset(new Game_Picture(id));
+			int time_left = save_pics[id - 1].time_left;
+			pictures[id - 1]->Show(save_pics[id - 1].name);
+			pictures[id - 1]->SetTransition(time_left * DEFAULT_FPS / 10);
+		}
+	}
 }
 
 void Game_Screen::Reset()
@@ -50,17 +51,17 @@ void Game_Screen::Reset()
 	pictures.clear();
 	pictures.resize(50);
 
-	data.flash_red = -1;
-	data.flash_green = -1;
-	data.flash_blue = -1;
+	data.flash_red = 0;
+	data.flash_green = 0;
+	data.flash_blue = 0;
 	flash_sat = 0;
-	data.flash_time_left = -1;
+	data.flash_time_left = 0;
 	data.flash_current_level = 0;
 	flash_period = 0;
 
-	data.shake_strength = -1;
-	data.shake_speed = -1;
-	data.shake_time_left = -1;
+	data.shake_strength = 0;
+	data.shake_speed = 0;
+	data.shake_time_left = 0;
 	data.shake_position = 0;
 	data.shake_continuous = false;
 	shake_direction = 0;
@@ -70,12 +71,22 @@ void Game_Screen::Reset()
 	movie_pos_y = 0;
 	movie_res_x = 0;
 	movie_res_y = 0;
+
+	StopWeather();
 }
 
-Picture* Game_Screen::GetPicture(int id) {
-	EASYRPG_SHARED_PTR<Picture>& p = pictures[id - 1];
+Game_Picture* Game_Screen::GetPicture(int id) {
+	if (id <= 0) {
+		return NULL;
+	}
+	if (id > pictures.size()) {
+		// Some games use more pictures then RPG_RT officially supported
+		Main_Data::game_data.pictures.resize(id);
+		pictures.resize(id);
+	}
+	EASYRPG_SHARED_PTR<Game_Picture>& p = pictures[id - 1];
 	if (!p)
-		p.reset(new Picture(id));
+		p.reset(new Game_Picture(id));
 	return p.get();
 }
 
@@ -86,6 +97,16 @@ void Game_Screen::TintScreen(int r, int g, int b, int s, int tenths) {
 	data.tint_finish_sat = s;
 
 	data.tint_time_left = tenths * DEFAULT_FPS / 10;
+
+	if (data.tint_current_red < 0 ||
+		data.tint_current_green < 0 ||
+		data.tint_current_blue < 0 ||
+		data.tint_current_sat < 0) {
+		data.tint_current_red = 100;
+		data.tint_current_green = 100;
+		data.tint_current_blue = 100;
+		data.tint_current_sat = 100;
+	}
 
 	if (data.tint_time_left == 0) {
 		data.tint_current_red = data.tint_finish_red;
@@ -144,9 +165,14 @@ void Game_Screen::ShakeEnd() {
 }
 
 void Game_Screen::SetWeatherEffect(int type, int strength) {
-	data.weather = type;
-	data.weather_strength = strength;
-	StopWeather();
+	// Some games call weather effects in a parallel process
+	// This causes issues in the rendering (weather rendered too fast)
+	if (data.weather != type ||
+		data.weather_strength != strength) {
+		StopWeather();
+		data.weather = type;
+		data.weather_strength = strength;
+	}
 }
 
 void Game_Screen::PlayMovie(const std::string& filename,
@@ -159,17 +185,28 @@ void Game_Screen::PlayMovie(const std::string& filename,
 }
 
 void Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool global) {
-	data.battleanim_id = animation_id;
 	data.battleanim_target = target_id;
-	data.battleanim_global = global;
 
 	Game_Character* target = Game_Character::GetCharacter(target_id, target_id);
+	ShowBattleAnimation(animation_id, target->GetScreenX(), target->GetScreenY(), global);
+}
 
-	animation.reset(new BattleAnimation(target->GetScreenX(), target->GetScreenY(),
-										&Data::animations[animation_id - 1]));
-	animation->SetVisible(true);
+void Game_Screen::ShowBattleAnimation(int animation_id, int target_x, int target_y, bool global) {
+	data.battleanim_id = animation_id;
+	
+	data.battleanim_global = global;
+
+	RPG::Animation& anim = Data::animations[animation_id - 1];
+	animation.reset(new BattleAnimation(target_x, target_y,
+		&anim));
 	// FIXME: target
 	// FIXME: global
+
+	animation_timings.clear();
+	for (std::vector<RPG::AnimationTiming>::const_iterator it = anim.timings.begin();
+		it != anim.timings.end(); ++it) {
+			animation_timings[it->frame] = *it;
+	}
 }
 
 bool Game_Screen::IsBattleAnimationWaiting() const {
@@ -182,6 +219,7 @@ static double interpolate(double d, double x0, double x1)
 }
 
 void Game_Screen::StopWeather() {
+	data.weather = Weather_None;
 	snowflakes.clear();
 }
 
@@ -230,7 +268,7 @@ void Game_Screen::Update() {
 			data.flash_time_left = data.flash_continuous ? flash_period : 0;
 	}
 
-    if (data.shake_continuous || data.shake_time_left > 0 || data.shake_position != 0) {
+	if (data.shake_continuous || data.shake_time_left > 0 || data.shake_position != 0) {
 		double delta = (data.shake_strength * data.shake_speed * shake_direction) / 10.0;
 		if (data.shake_time_left <= 1 && data.shake_position * (data.shake_position + delta) < 0)
 			data.shake_position = 0;
@@ -245,9 +283,11 @@ void Game_Screen::Update() {
 			data.shake_time_left--;
 	}
 
-	std::vector<EASYRPG_SHARED_PTR<Picture> >::const_iterator it;
+	std::vector<EASYRPG_SHARED_PTR<Game_Picture> >::const_iterator it;
 	for (it = pictures.begin(); it != pictures.end(); it++) {
-		if(*it) { (*it)->Update(); }
+		if (*it) {
+			(*it)->Update();
+		}
 	}
 
 	if (!movie_filename.empty()) {
@@ -273,8 +313,20 @@ void Game_Screen::Update() {
 
 	if (animation) {
 		animation->Update();
+		PlayBattleAnimationSound();
+
 		if (animation->IsDone()) {
 			animation.reset();
+		}
+	}
+}
+
+void Game_Screen::PlayBattleAnimationSound() {
+	if (animation) {
+		if (animation_timings.find(animation->GetFrame()) != animation_timings.end()) {
+			const RPG::AnimationTiming& timing = animation_timings[animation->GetFrame()];
+			Game_System::SePlay(timing.se);
+			animation_timings.erase(animation->GetFrame());
 		}
 	}
 }

@@ -21,10 +21,9 @@
 #include "main_data.h"
 #include "game_actors.h"
 #include "game_party.h"
+#include "game_enemyparty.h"
 #include "game_player.h"
 #include "game_screen.h"
-#include "game_troop.h"
-#include "game_message.h"
 #include "game_map.h"
 #include "game_variables.h"
 #include "game_switches.h"
@@ -65,7 +64,7 @@ static std::string GetProjectPath() {
 	// Wii doesn't provide a correct working directory before mounting
 	char gekko_dir[256];
 	getcwd(gekko_dir, 255);
-	Main_Data::project_path = gekko_dir;
+	return std::string(gekko_dir);
 #else
 	return std::string(".");
 #endif
@@ -75,6 +74,9 @@ namespace Main_Data {
 	// Dynamic Game Data
 	boost::scoped_ptr<Game_Screen> game_screen;
 	boost::scoped_ptr<Game_Player> game_player;
+	boost::scoped_ptr<Game_Party> game_party;
+	boost::scoped_ptr<Game_EnemyParty> game_enemyparty;
+
 	RPG::Save game_data;
 	std::string project_path = ".";
 }
@@ -93,4 +95,6 @@ void Main_Data::Cleanup() {
 
 	game_screen.reset();
 	game_player.reset();
+	game_party.reset();
+	game_enemyparty.reset();
 }

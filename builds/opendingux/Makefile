@@ -36,11 +36,11 @@ PIXMAN_LIBS =  $(SYSROOT)/usr/lib/libpixman-1.a
 FREETYPE_CFLAGS = -I$(SYSROOT)/usr/include/freetype2
 
 # Compiler headers
-INCLUDES = ../../lib/readers/include ../../src  ../../lib/shinonome 
+INCLUDES = ../../src ../../lib/shinonome ../../lib/liblcf/src ../../lib/liblcf/src/generated
 INCDIR = $(foreach dir, $(INCLUDES), -I$(wildcard $(dir)))
 
 # Compiler source
-SOURCES = ../../lib/readers/src ../../src ../../lib/readers/src/generated ../../lib/shinonome
+SOURCES = ../../lib/liblcf/src ../../src ../../lib/liblcf/src/generated ../../lib/shinonome
 CPPFILES = $(foreach dir, $(SOURCES), $(wildcard $(dir)/*.cpp))
 BINFILES = $(foreach dir, $(DATA), $(wildcard $(dir)/*.*))
 OBJS = $(addsuffix .o, $(BINFILES)) $(CPPFILES:.cpp=.o)

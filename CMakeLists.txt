@@ -2,29 +2,30 @@ cmake_minimum_required(VERSION 2.8)
 
 project(EasyRPG_Player CXX C)
 
-# reader
-# - ${EASYRPG_READERS_PATH}
+# liblcf
+# - ${LIBLCF_PATH}
 
-set(DEFAULT_EASYRPG_READERS_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/readers")
-if(NOT EASYRPG_READERS_PATH)
-  set(EASYRPG_READERS_PATH "${DEFAULT_EASYRPG_READERS_PATH}")
+set(DEFAULT_LIBLCF_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf")
+if(NOT LIBLCF_PATH)
+  set(LIBLCF_PATH "${DEFAULT_LIBLCF_PATH}")
 endif()
 find_package(Git REQUIRED)
-if(NOT EXISTS ${EASYRPG_READERS_PATH})
+if(NOT EXISTS ${LIBLCF_PATH})
   execute_process(COMMAND ${GIT_EXECUTABLE} clone "--depth=1"
-    "https://github.com/EasyRPG/Readers.git"
-    "${EASYRPG_READERS_PATH}")
+    "https://github.com/EasyRPG/liblcf.git"
+    "${LIBLCF_PATH}")
 endif()
 add_subdirectory(
-  ${EASYRPG_READERS_PATH}/builds/cmake
-  ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/EasyRPG_Readers)
+  ${LIBLCF_PATH}/builds/cmake
+  ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/liblcf)
 
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
-set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
-link_directories(${LIBRARY_OUTPUT_PATH})
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/bin)
+set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/lib)
+#link_directories(${LIBRARY_OUTPUT_PATH})
+#cmake_policy(CMP0015 NEW)
 
 list(APPEND CMAKE_MODULE_PATH
-	"${CMAKE_CURRENT_SOURCE_DIR}/lib/readers/builds/cmake/Modules"
+	"${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/builds/cmake/Modules"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Modules")
 
 add_definitions(
@@ -40,6 +41,7 @@ endif()
 # wine checking
 find_program(WINE_EXECUTABLE wine)
 if(EXISTS ${WINE_EXECUTABLE})
+  message(STATUS "wine registry enabled")
   add_definitions(-DHAVE_WINE=1)
 endif()
 
@@ -62,7 +64,7 @@ if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
   include(TestBigEndian)
   test_big_endian(IS_BIG_ENDIAN)
   if(IS_BIG_ENDIAN)
-    add_definitions(-D READER_BIG_ENDIAN=1)
+    add_definitions(-D LCF_BIG_ENDIAN=1)
   endif()
 endif()
 
@@ -89,7 +91,8 @@ if(OPENAL_FOUND)
   add_definitions(-D HAVE_OPENAL=1)
 endif()
 
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/readers/include")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src/generated")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 foreach(i Expat Freetype JPEG Pixman ZLIB PNG SDL2 Boost Iconv)
@@ -103,7 +106,7 @@ endforeach()
 
 # library
 set(EASYRPG_PLAYER_LIBRARIES_ALL
-  ${EASYRPG_PLAYER_LIBRARIES} "${PROJECT_NAME}_Static" EasyRPG_Reader)
+  ${EASYRPG_PLAYER_LIBRARIES} "${PROJECT_NAME}_Static" liblcf)
 
 # entry point
 set(MAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
@@ -142,7 +145,7 @@ add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${MAIN_FILE})
 add_executable(${PROJECT_NAME}_com ${MAIN_FILE})
 foreach(i ${PROJECT_NAME} ${PROJECT_NAME}_com)
   target_link_libraries(${i} ${EASYRPG_PLAYER_LIBRARIES_ALL})
-  add_dependencies(${i} EasyRPG_Reader ${i}_Static)
+  add_dependencies(${i} liblcf ${i}_Static)
 endforeach()
 install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME} DESTINATION bin)
 
@@ -181,7 +184,7 @@ if(DOXYGEN_FOUND)
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/builds
     COMMENT "Generating API documentation with Doxygen" VERBATIM)
   add_custom_target(doc)
-  add_dependencies(doc player_doc reader_doc)
+  add_dependencies(doc player_doc liblcf_doc)
 endif()
 
 # test

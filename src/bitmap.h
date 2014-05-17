@@ -570,7 +570,7 @@ public:
 	 *
 	 * @param x x coordinate where text rendering starts.
 	 * @param y y coordinate where text rendering starts.
-	 * @param color text color.
+	 * @param color system color index.
 	 * @param text text to draw.
 	 * @param align text alignment.
 	 */
@@ -583,7 +583,7 @@ public:
 	 * @param y y coordinate of bounding rectangle.
 	 * @param width width of bounding rectangle.
 	 * @param height height of bounding rectangle.
-	 * @param color text color.
+	 * @param color system color index.
 	 * @param text text to draw.
 	 * @param align text alignment inside bounding rectangle.
 	 */
@@ -593,11 +593,44 @@ public:
 	 * Draws text to bitmap.
 	 *
 	 * @param rect bounding rectangle.
-	 * @param color text color.
+	 * @param color system color index.
 	 * @param text text to draw.
 	 * @param align text alignment inside bounding rectangle.
 	 */
 	void TextDraw(Rect const& rect, int color, std::string const& text, Text::Alignment align = Text::AlignLeft);
+
+	/**
+	 * Draws text to bitmap.
+	 *
+	 * @param x x coordinate where text rendering starts.
+	 * @param y y coordinate where text rendering starts.
+	 * @param color text color.
+	 * @param text text to draw.
+	 */
+	void TextDraw(int x, int y, Color color, std::string const& text);
+
+	/**
+	 * Draws text to bitmap.
+	 *
+	 * @param x x coordinate of bounding rectangle.
+	 * @param y y coordinate of bounding rectangle.
+	 * @param width width of bounding rectangle.
+	 * @param height height of bounding rectangle.
+	 * @param color text color.
+	 * @param text text to draw.
+	 * @param align text alignment inside bounding rectangle.
+	 */
+	void TextDraw(int x, int y, int width, int height, Color color, std::string const& text, Text::Alignment align = Text::AlignLeft);
+
+	/**
+	 * Draws text to bitmap.
+	 *
+	 * @param rect bounding rectangle.
+	 * @param color text color.
+	 * @param text text to draw.
+	 * @param align text alignment inside bounding rectangle.
+	 */
+	void TextDraw(Rect const& rect, Color color, std::string const& text, Text::Alignment align = Text::AlignLeft);
 
 	/**
 	 * Gets text drawing font.

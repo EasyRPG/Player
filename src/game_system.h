@@ -98,6 +98,11 @@ namespace Game_System {
 	void BgmPlay(RPG::Music const& bgm);
 
 	/**
+	 * Stops playing music.
+	 */
+	void BgmStop();
+
+	/**
 	 * Plays a Sound.
 	 *
 	 * @param se sound data.

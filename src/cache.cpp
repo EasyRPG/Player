@@ -32,7 +32,7 @@
 #include "output.h"
 #include "player.h"
 
-namespace {
+namespace cache_anon {
 
 	typedef std::pair<std::string,std::string> string_pair;
 	typedef std::pair<std::string, int> tile_pair;
@@ -53,11 +53,8 @@ namespace {
 			std::string const path = FileFinder::FindImage(folder_name, filename);
 
 			if (path.empty()) {
-				// TODO:
 				// Load a dummy image with correct size (issue #32)
-				Output::Warning("Image not found: %s/%s\n\nPlayer will exit now.", folder_name.c_str(), filename.c_str());
-				// Delayed termination, otherwise it segfaults in Graphics::Quit
-				Player::exit_flag = true;
+				Output::Error("Image not found: %s/%s", folder_name.c_str(), filename.c_str());
 			}
 
 			return (cache[key] = path.empty()
@@ -137,6 +134,8 @@ namespace {
 	}
 
 }
+
+using namespace cache_anon;
 
 tSystemInfo Cache::system_info;
 

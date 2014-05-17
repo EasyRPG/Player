@@ -24,6 +24,10 @@
 #include "rpg_save.h"
 #include "game_battler.h"
 
+namespace RPG {
+	class Skill;
+}
+
 /**
  * Game_Actor class.
  */
@@ -49,10 +53,30 @@ public:
 	void Init();
 
 	/**
-	 * Initializes the game actor to the database state
-	 * and overwrites them with savedata values.
+	 * Used after savegame loading to replace savegame default values with
+	 * database ones.
 	 */
-	void Init(const RPG::SaveActor& save_data);
+	void Fixup();
+
+	/**
+	 * Applies the effects of an item.
+	 * Tests if using that item makes any sense (e.g. for HP healing
+	 * items if there are any HP to heal)
+	 *
+	 * @param item_id ID if item to use
+	 * @return true if item affected anything
+	 */
+	virtual bool UseItem(int item_id);
+
+	/**
+	 * Applies the effects of a skill.
+	 * Tests if using that skill makes any sense (e.g. for HP healing
+	 * skills if there are any HP to heal)
+	 *
+	 * @param skill_id ID of skill to use
+	 * @return true if skill affected anything
+	 */
+	virtual bool UseSkill(int skill_id);
 
 	/**
 	 * Learns a new skill.
@@ -156,21 +180,21 @@ public:
 	 *
 	 * @return name.
 	 */
-	std::string GetName() const;
+	const std::string& GetName() const;
 
 	/**
-	 * Gets actor character graphic filename.
+	 * Gets actor character sprite filename.
 	 *
-	 * @return character graphic filename.
+	 * @return character sprite filename.
 	 */
-	std::string GetCharacterName() const;
+	const std::string& GetSpriteName() const;
 
 	/**
-	 * Gets actor character graphic index.
+	 * Gets actor character sprite index.
 	 *
-	 * @return character graphic index.
+	 * @return character sprite index.
 	 */
-	int GetCharacterIndex() const;
+	int GetSpriteIndex() const;
 
 	/**
 	 * Gets actor face graphic filename.
@@ -337,6 +361,13 @@ public:
 	const std::vector<int16_t>& GetSkills() const;
 
 	/**
+	 * Gets a random skill
+
+	 * @return random skill
+	 */
+	const RPG::Skill& GetRandomSkill() const;
+
+	/**
 	 * Gets actor states list.
 	 *
 	 * @return vector containing the IDs of all states the actor has.
@@ -346,6 +377,7 @@ public:
 
 	int GetHp() const;
 	void SetHp(int _hp);
+	void ChangeHp(int hp);
 
 	int GetSp() const;
 	void SetSp(int _sp);
@@ -494,6 +526,34 @@ public:
 	bool GetTwoSwordsStyle() const;
 
 	/**
+	 * Gets if actor does auto battle.
+	 *
+	 * @return true if actor does two weapons.
+	 */
+	bool GetAutoBattle() const;
+
+	/**
+	 * Gets X position on battlefield
+	 *
+	 * @return X position in battle scene
+	 */
+	int GetBattleX() const;
+
+	/**
+	 * Gets Y position on battlefield
+	 *
+	 * @return Y position in battle scene
+	 */
+	int GetBattleY() const;
+
+	/**
+	 * Gets name of skill menu item
+	 *
+	 * @return name of skill menu item
+	 */
+	const std::string& GetSkillName() const;
+
+	/**
 	 * Sets new actor name.
 	 *
 	 * @param new_name new name.
@@ -563,6 +623,10 @@ public:
 	 * @param battle_row new row for Rpg2k3 battles (-1 front, 1 back).
 	 */
 	void SetBattleRow(int battle_row);
+
+	int GetBattleAnimationId() const;
+
+	BattlerType GetType() const;
 
 private:
 	RPG::SaveActor& data;

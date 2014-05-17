@@ -19,6 +19,7 @@
 #include <cassert>
 #include "scene_menu.h"
 #include "audio.h"
+#include "cache.h"
 #include "graphics.h"
 #include "game_party.h"
 #include "game_system.h"
@@ -40,6 +41,8 @@ Scene_Menu::Scene_Menu(int menu_index) :
 }
 
 void Scene_Menu::Start() {
+	DisplayUi->SetBackcolor(Cache::system_info.bg_color);
+
 	CreateCommandWindow();
 
 	// Gold Window
@@ -137,12 +140,12 @@ void Scene_Menu::CreateCommandWindow() {
 		case Quit:
 			break;
 		case Order:
-			if (Game_Party::GetActors().size() <= 1) {
+			if (Main_Data::game_party->GetActors().size() <= 1) {
 				command_window->DisableItem(it - command_options.begin());
 			}
 			break;
 		default:
-			if (Game_Party::GetActors().empty()) {
+			if (Main_Data::game_party->GetActors().empty()) {
 				command_window->DisableItem(it - command_options.begin());
 			}
 			break;
@@ -159,7 +162,7 @@ void Scene_Menu::UpdateCommand() {
 
 		switch (command_options[menu_index]) {
 		case Item:
-			if (Game_Party::GetActors().empty()) {
+			if (Main_Data::game_party->GetActors().empty()) {
 				Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 			} else {
 				Game_System::SePlay(Main_Data::game_data.system.decision_se);
@@ -170,7 +173,7 @@ void Scene_Menu::UpdateCommand() {
 		case Equipment:
 		case Status:
 		case Row:
-			if (Game_Party::GetActors().empty()) {
+			if (Main_Data::game_party->GetActors().empty()) {
 				Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 			} else {
 				Game_System::SePlay(Main_Data::game_data.system.decision_se);
@@ -188,7 +191,7 @@ void Scene_Menu::UpdateCommand() {
 			}
 			break;
 		case Order:
-			if (Game_Party::GetActors().size() <= 1) {
+			if (Main_Data::game_party->GetActors().size() <= 1) {
 				Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 			} else {
 				Game_System::SePlay(Main_Data::game_data.system.decision_se);
@@ -228,7 +231,7 @@ void Scene_Menu::UpdateActorSelection() {
 			break;
 		case Row:
 		{
-			Game_Actor* actor = Game_Party::GetActors()[menustatus_window->GetIndex()];
+			Game_Actor* actor = Main_Data::game_party->GetActors()[menustatus_window->GetIndex()];
 			actor->GetBattleRow() == -1 ?
 				actor->SetBattleRow(1) : actor->SetBattleRow(-1);
 			menustatus_window->Refresh();
