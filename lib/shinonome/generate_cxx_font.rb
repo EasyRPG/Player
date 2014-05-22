@@ -131,6 +131,10 @@ print "Loading Hankaku..."
 hankaku = read_file(File.new('./hankaku/font_src_diff.bit', 'r'), "CP932", true)
 print "done\n"
 
+print "Loading Cyrillic..."
+cyrillic = read_file(File.new('./cyrillic/font_src.bit', 'r'), kanji_encoding, true)
+print "done\n"
+
 print "Loading Gothic..."
 gothic = read_file(File.new('./kanjic/font_src.bit', 'r'), kanji_encoding, false)
 print "done\n"
@@ -141,7 +145,7 @@ print "done\n"
 
 # generating
 print "Generating Gothic..."
-gothic_final = gothic.merge(hankaku).merge(latin)
+gothic_final = gothic.merge(cyrillic).merge(hankaku).merge(latin)
 code_max = write_all(File.new("./gothic.cxx", "w"), "SHINONOME_GOTHIC", gothic_final)
 print "done\n"
 
