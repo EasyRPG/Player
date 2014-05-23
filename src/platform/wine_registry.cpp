@@ -273,6 +273,8 @@ struct parse_registry {
 			}
 		}
 		current_section.swap(result[current_section_name]);
+
+		Output::Debug("loaded registry: %s", name.c_str());
 	}
 };
 
