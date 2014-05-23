@@ -102,7 +102,7 @@ struct parse_registry {
 		return stream;
 	}
 
-	vector<uint16_t> escaped, utf16;
+	vector<uint16_t> escaped;
 	qi::symbols<char, uint16_t> escape;
 
 	template<char TERM> std::string parse_str() {
@@ -124,24 +124,17 @@ struct parse_registry {
 
 		if (not has_escape_char) { return std::string(str_beg, str_end); }
 
-		typedef boost::u8_to_u32_iterator<std::string::const_iterator> u8_to_u32;
-		typedef boost::u32_to_u16_iterator<u8_to_u32> u32_to_u16;
 		typedef boost::u16_to_u32_iterator<vector<uint16_t>::const_iterator> u16_to_u32;
 		typedef boost::u32_to_u8_iterator<u16_to_u32> u32_to_u8;
 
 		// utf-8 -> utf-16
-		utf16.assign(
-				u32_to_u16(u8_to_u32(str_beg, str_beg, str_end)),
-				u32_to_u16(u8_to_u32(str_end, str_beg, str_end)));
-		vector<uint16_t>::const_iterator escaping = utf16.begin(), escaping_end = utf16.end();
 		escaped.clear();
 		qi::uint_parser<uint16_t, 8, 1, 3> octal;
 		qi::uint_parser<uint16_t, 16, 1, 4> hex;
-
 		if(not qi::parse(
-			   escaping, escaping_end,
-			   *(escape | ('\\' >> (('x' >> hex) | octal)) | qi::char_),
-			   escaped) or escaping != escaping_end) {
+			   str_beg, str_end,
+			   *(escape | ('\\' >> (('x' >> hex) | octal)) | qi::char_), escaped)
+		   or str_beg != str_end) {
 			error(format("escaping error"));
 			return std::string();
 		}
