@@ -122,7 +122,7 @@ struct parse_registry {
 		}
 		i = str_end + 1; // skip term char
 
-		if (has_escape_char) { return std::string(str_beg, str_end); }
+		if (not has_escape_char) { return std::string(str_beg, str_end); }
 
 		typedef boost::u8_to_u32_iterator<std::string::const_iterator> u8_to_u32;
 		typedef boost::u32_to_u16_iterator<u8_to_u32> u32_to_u16;
