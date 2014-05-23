@@ -79,7 +79,7 @@ void Output::IgnorePause(bool const val) {
 }
 
 static void WriteLog(std::string const& type, std::string const& msg) {
-	output_time() << type << ": " << msg << "\n";
+	output_time() << type << ": " << msg << std::endl;
 
 	#ifdef __ANDROID__
 		__android_log_print(type == "Error" ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, "EasyRPG Player", "%s", msg.c_str());
