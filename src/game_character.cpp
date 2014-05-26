@@ -51,6 +51,7 @@ Game_Character::Game_Character() :
 	walk_animation(true),
 	cycle_stat(false),
 	opacity(255),
+	original_move_frequency(-1),
 	visible(true) {
 }
 
@@ -526,6 +527,10 @@ void Game_Character::MoveTypeCustom() {
 					++active_route_index;
 				}
 			} while (jumping);
+
+			if ((size_t)active_route_index >= active_route->move_commands.size()) {
+				stop_count = 256;
+			}
 		}
 	}
 
@@ -1065,7 +1070,6 @@ void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
 	move_route_owner = owner;
 	SetPrelockDirection(-1);
 	wait_count = 0;
-	MoveTypeCustom();
 }
 
 void Game_Character::CancelMoveRoute(Game_Interpreter* owner) {
