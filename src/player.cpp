@@ -208,6 +208,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	exit_flag = false;
 	reset_flag = false;
 	battle_test_flag = false;
+	battle_test_troop_id = 0;
 	new_game_flag = false;
 	load_game_id = -1;
 	party_x_position = -1;
@@ -237,7 +238,14 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		}
 		else if (*it == "battletest") {
 			battle_test_flag = true;
-			battle_test_troop_id = (argc > 4) ? atoi(argv[4]) : 0;
+			++it;
+			if (it != args.end()) {
+				battle_test_troop_id = atoi((*it).c_str());
+			}
+			if (battle_test_troop_id == 0) {
+				--it;
+				battle_test_troop_id = (argc > 4) ? atoi(argv[4]) : 0;
+			}
 		}
 		else if (*it == "--battle-test") {
 			++it;
@@ -456,16 +464,16 @@ void Player::PrintUsage() {
 
 	std::cout << "Options:" << std::endl;
 	//                                                  "                                Line end marker -> "
-	std::cout << "      " << "--battle-test=N      " << "Start a battle test with monster party N." << std::endl;
+	std::cout << "      " << "--battle-test N      " << "Start a battle test with monster party N." << std::endl;
 
 	std::cout << "      " << "--disable-audio      " << "Disable audio (in case you prefer your own music)." << std::endl;
 
 	std::cout << "      " << "--disable-rtp        " << "Disable support for the Runtime Package (RTP)." << std::endl;
 
-	std::cout << "      " << "--encoding=N         " << "Instead of using the default platform encoding or" << std::endl;
+	std::cout << "      " << "--encoding N         " << "Instead of using the default platform encoding or" << std::endl;
 	std::cout << "      " << "                     " << "the one in RPG_RT.ini the encoding N is used." << std::endl;
 
-	std::cout << "      " << "--engine=ENGINE      " << "Disable auto detection of the simulated engine." << std::endl;
+	std::cout << "      " << "--engine ENGINE      " << "Disable auto detection of the simulated engine." << std::endl;
 	std::cout << "      " << "                     " << "Possible options:" << std::endl;
 	std::cout << "      " << "                     " << " rpg2k  - RPG Maker 2000 engine" << std::endl;
 	std::cout << "      " << "                     " << " rpg2k3 - RPG Maker 2003 engine" << std::endl;
@@ -475,19 +483,21 @@ void Player::PrintUsage() {
 	std::cout << "      " << "--hide-title         " << "Hide the title background image and center the" << std::endl;
 	std::cout << "      " << "                     " << "command menu." << std::endl;
 
-	std::cout << "      " << "--load-game-id=N     " << "Skip the title scene and load SaveN.lsd" << std::endl;
+	std::cout << "      " << "--load-game-id N     " << "Skip the title scene and load SaveN.lsd" << std::endl;
 	std::cout << "      " << "                     " << "(N is padded to two digits)." << std::endl;
 
 	std::cout << "      " << "--new-game           " << "Skip the title scene and start a new game directly." << std::endl;
 
-	std::cout << "      " << "--project-path=PATH  " << "Instead of using the working directory the game in" << std::endl;
+	std::cout << "      " << "--project-path PATH  " << "Instead of using the working directory the game in" << std::endl;
 	std::cout << "      " << "                     " << "PATH is used." << std::endl;
 
-	std::cout << "      " << "--start-map-id=N     " << "Overwrite the map used for new games and use." << std::endl;
+	std::cout << "      " << "--start-map-id N     " << "Overwrite the map used for new games and use." << std::endl;
 	std::cout << "      " << "                     " << "MapN.lmu instead (N is padded to four digits)." << std::endl;
+	std::cout << "      " << "                     " << "Incompatible with --load-game-id." << std::endl;
 
-	std::cout << "      " << "--start-position=X,Y " << "Overwrite the party start position and move the" << std::endl;
+	std::cout << "      " << "--start-position X Y " << "Overwrite the party start position and move the" << std::endl;
 	std::cout << "      " << "                     " << "party to position (X, Y)." << std::endl;
+	std::cout << "      " << "                     " << "Incompatible with --load-game-id." << std::endl;
 
 	std::cout << "      " << "--test-play          " << "Enable TestPlay mode." << std::endl;
 
