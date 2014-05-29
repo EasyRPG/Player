@@ -77,6 +77,13 @@ namespace Player {
 	void LoadDatabase();
 
 	/**
+	 * Loads savegame data.
+	 *
+	 * @param save_file Savegame file to load
+	 */
+	void LoadSavegame(const std::string& save_file);
+
+	/**
 	 * Moves the player to the start map.
 	 */
 	void SetupPlayerSpawn();

@@ -34,6 +34,7 @@
 #include "input.h"
 #include "ldb_reader.h"
 #include "lmt_reader.h"
+#include "lsd_reader.h"
 #include "main_data.h"
 #include "output.h"
 #include "player.h"
@@ -135,20 +136,7 @@ void Player::Init(int argc, char *argv[]) {
 void Player::Run() {
 	Scene::Push(EASYRPG_MAKE_SHARED<Scene>());
 
-	if (Player::debug_flag) {
-		// Scene_Logo does setup in non-debug mode
-		CreateGameObjects();
-		Scene::Push(EASYRPG_SHARED_PTR<Scene>(
-			static_cast<Scene*>(new Scene_Title())));
-		if (Player::new_game_flag) {
-			SetupPlayerSpawn();
-			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>());
-		}
-	}
-	else {
-		Scene::Push(EASYRPG_SHARED_PTR<Scene>(
-			static_cast<Scene*>(new Scene_Logo())));
-	}
+	Scene::Push(EASYRPG_SHARED_PTR<Scene>(static_cast<Scene*>(new Scene_Logo())));
 
 	reset_flag = false;
 
@@ -221,7 +209,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	reset_flag = false;
 	battle_test_flag = false;
 	new_game_flag = false;
-	load_game_id;
+	load_game_id = -1;
 	party_x_position = -1;
 	party_y_position = -1;
 	start_map_id = -1;
@@ -261,14 +249,18 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		else if (*it == "--project-path") {
 			++it;
 			if (it != args.end()) {
-				Main_Data::project_path = *it;
+				// case sensitive
+				Main_Data::project_path = argv[it - args.begin() + 1];
 			}
 		}
 		else if (*it == "--new-game") {
 			new_game_flag = true;
 		}
 		else if (*it == "--load-game-id") {
-			// IMPORTANT - TODO -> load game Save[XX].lsd
+			++it;
+			if (it != args.end()) {
+				load_game_id = atoi((*it).c_str());
+			}
 		}
 		/*else if (*it == "--load-game") {
 			// load game by filename
@@ -315,10 +307,10 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 				encoding = atoi((*it).c_str());
 			}
 		}
-		else if (*it == "--no-audio") {
+		else if (*it == "--disable-audio") {
 			no_audio_flag = true;
 		}
-		else if (*it == "--no-rtp") {
+		else if (*it == "--disable-rtp") {
 			no_rtp_flag = true;
 		}
 		else if (*it == "--version" || *it == "-v") {
@@ -406,6 +398,33 @@ void Player::LoadDatabase() {
 	}
 }
 
+void Player::LoadSavegame(const std::string& save_name) {
+	std::auto_ptr<RPG::Save> save = LSD_Reader::Load(save_name, Player::GetEncoding());
+
+	if (!save.get()) {
+		Output::Error("%s", LcfReader::GetError().c_str());
+	}
+
+	RPG::SaveSystem system = Main_Data::game_data.system;
+
+	Main_Data::game_data = *save.get();
+
+	Main_Data::game_data.party_location.Fixup();
+	Main_Data::game_data.system.Fixup();
+	Main_Data::game_data.screen.Fixup();
+	Game_Actors::Fixup();
+
+	Game_Map::SetupFromSave();
+
+	Main_Data::game_player->MoveTo(
+		save->party_location.position_x, save->party_location.position_y);
+	Main_Data::game_player->Refresh();
+
+	RPG::Music current_music = Main_Data::game_data.system.current_music;
+	Game_System::BgmStop();
+	Game_System::BgmPlay(current_music);
+}
+
 void Player::SetupPlayerSpawn() {
 	int map_id = Player::start_map_id == -1 ?
 		Data::treemap.start.party_map_id : Player::start_map_id;
@@ -439,6 +458,10 @@ void Player::PrintUsage() {
 	//                                                  "                                Line end marker -> "
 	std::cout << "      " << "--battle-test=N      " << "Start a battle test with monster party N." << std::endl;
 
+	std::cout << "      " << "--disable-audio      " << "Disable audio (in case you prefer your own music)." << std::endl;
+
+	std::cout << "      " << "--disable-rtp        " << "Disable support for the Runtime Package (RTP)." << std::endl;
+
 	std::cout << "      " << "--encoding=N         " << "Instead of using the default platform encoding or" << std::endl;
 	std::cout << "      " << "                     " << "the one in RPG_RT.ini the encoding N is used." << std::endl;
 
@@ -456,10 +479,6 @@ void Player::PrintUsage() {
 	std::cout << "      " << "                     " << "(N is padded to two digits)." << std::endl;
 
 	std::cout << "      " << "--new-game           " << "Skip the title scene and start a new game directly." << std::endl;
-
-	std::cout << "      " << "--no-audio           " << "Disable audio (in case you prefer your own music)." << std::endl;
-
-	std::cout << "      " << "--no-rtp             " << "Disable support for the Runtime Package (RTP)." << std::endl;
 
 	std::cout << "      " << "--project-path=PATH  " << "Instead of using the working directory the game in" << std::endl;
 	std::cout << "      " << "                     " << "PATH is used." << std::endl;
