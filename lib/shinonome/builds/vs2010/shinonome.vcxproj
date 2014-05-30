@@ -19,11 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\gothic.cxx" />
-    <ClCompile Include="..\..\src\mincho.cxx" />
+    <ClCompile Include="..\..\gothic.cxx" />
+    <ClCompile Include="..\..\mincho.cxx" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\shinonome.hxx" />
+    <ClInclude Include="..\..\shinonome.hxx" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8C64E9D9-2622-4404-B1AB-62848DEC4ECA}</ProjectGuid>
