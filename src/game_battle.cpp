@@ -67,8 +67,6 @@ void Game_Battle::Quit() {
 
 	Game_Temp::battle_running = false;
 
-	Game_Temp::battle_escape_mode = -1;
-
 	Game_Message::SetPositionFixed(message_is_fixed);
 	Game_Message::SetPosition(message_position);
 }
@@ -215,6 +213,6 @@ bool Game_Battle::IsEscapeAllowed() {
 		return Game_System::GetAllowEscape();
 	}
 	else {
-		return !Game_Temp::battle_escape_mode;
+		return !!Game_Temp::battle_escape_mode;
 	}
 }
