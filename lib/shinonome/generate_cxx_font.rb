@@ -145,7 +145,7 @@ print "done\n"
 
 # generating
 print "Generating Gothic..."
-gothic_final = gothic.merge(hankaku).merge(latin)
+gothic_final = gothic.merge(cyrillic).merge(hankaku).merge(latin)
 code_max = write_all(File.new("./gothic.cxx", "w"), "SHINONOME_GOTHIC", gothic_final)
 print "done\n"
 
