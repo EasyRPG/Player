@@ -757,7 +757,7 @@ protected:
 	int jump_plus_y;
 
 	double anime_count;
-	int stop_count;
+	double stop_count;
 	bool walk_animation;
 
 	/** used by cycle left-right, up-down */

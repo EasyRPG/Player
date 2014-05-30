@@ -198,7 +198,7 @@ void Game_Character::Update() {
 		return;
 	}
 
-	if (stop_count > ((GetMoveFrequency() == 8) ? 0 : pow(2, 9 - GetMoveFrequency()))) {
+	if (stop_count >= ((GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency()))) {
 		if (IsMoveRouteOverwritten()) {
 			MoveTypeCustom();
 		} else if (!IsFacingLocked()) {
@@ -823,25 +823,25 @@ void Game_Character::MoveAwayFromPlayer() {
 void Game_Character::TurnDown() {
 	SetDirection(RPG::EventPage::Direction_down);
 	move_failed = false;
-	stop_count = pow(2, 8 - GetMoveFrequency());
+	stop_count = pow(2.0, 8 - GetMoveFrequency());
 }
 
 void Game_Character::TurnLeft() {
 	SetDirection(RPG::EventPage::Direction_left);
 	move_failed = false;
-	stop_count = pow(2, 8 - GetMoveFrequency());
+	stop_count = pow(2.0, 8 - GetMoveFrequency());
 }
 
 void Game_Character::TurnRight() {
 	SetDirection(RPG::EventPage::Direction_right);
 	move_failed = false;
-	stop_count = pow(2, 8 - GetMoveFrequency());
+	stop_count = pow(2.0, 8 - GetMoveFrequency());
 }
 
 void Game_Character::TurnUp() {
 	SetDirection(RPG::EventPage::Direction_up);
 	move_failed = false;
-	stop_count = pow(2, 8 - GetMoveFrequency());
+	stop_count = pow(2.0, 8 - GetMoveFrequency());
 }
 
 void Game_Character::Turn90DegreeLeft() {
@@ -1053,7 +1053,7 @@ void Game_Character::SetFacingDirection(int direction) {
 		SetDirection(direction);
 	}
 
-	stop_count = pow(2, 8 - GetMoveFrequency());
+	stop_count = pow(2.0, 8 - GetMoveFrequency());
 }
 
 void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
