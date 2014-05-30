@@ -5,7 +5,7 @@ AC_PREREQ([2.69])
 AC_INIT([easyrpg-player],[0.1.3],[https://github.com/EasyRPG/Player/issues],[easyrpg-player],[https://easy-rpg.org/])
 
 AC_CONFIG_AUX_DIR([builds/autoconf])
-AM_INIT_AUTOMAKE([1.11 foreign subdir-objects -Wall -Werror])
+AM_INIT_AUTOMAKE([1.11.4 foreign subdir-objects -Wall -Werror])
 AM_MAINTAINER_MODE([enable])
 AM_SILENT_RULES([yes])
 
@@ -51,7 +51,6 @@ AC_FUNC_MALLOC
 AC_CHECK_FUNCS([floor getcwd memset putenv strerror])
 
 AC_CONFIG_FILES([Makefile
-                 src/Makefile
-                 tests/Makefile])
+                 src/Makefile])
 
 AC_OUTPUT
