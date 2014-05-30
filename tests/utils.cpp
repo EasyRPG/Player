@@ -1,8 +1,6 @@
 #include <cassert>
 #include <cstdlib>
 #include "utils.h"
-#include <SDL.h>
-
 
 static void LowerCase() {
 	assert(Utils::LowerCase("EasyRPG") == "easyrpg");
@@ -10,6 +8,7 @@ static void LowerCase() {
 }
 
 extern "C" int main(int, char**) {
-  LowerCase();
-  return EXIT_SUCCESS;
+	LowerCase();
+
+	return EXIT_SUCCESS;
 }
