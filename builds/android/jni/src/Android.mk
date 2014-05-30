@@ -6,10 +6,11 @@ LOCAL_MODULE := main
 
 PLAYER_PATH := ../../../..
 
-LOCAL_CPP_EXTENSION := .cpp
+LOCAL_CPP_EXTENSION := .cxx .cpp
 
 LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/$(PLAYER_PATH)/src \
+	$(LOCAL_PATH)/$(PLAYER_PATH)/lib/shinonome \
 	$(LOCAL_PATH)/$(PLAYER_PATH)/lib/liblcf/src \
 	$(LOCAL_PATH)/$(PLAYER_PATH)/lib/liblcf/src/generated \
 	$(EASYDEV_ANDROID)/include
@@ -19,6 +20,7 @@ LOCAL_SRC_FILES := SDL_android_main.c \
 	org_easyrpg_player_EasyRpgPlayerActivity.cpp \
 	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/src/*.cpp)) \
 	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/src/*.c)) \
+	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/lib/shinonome/*.cxx)) \
 	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/lib/liblcf/src/*.cpp)) \
 	$(patsubst $(LOCAL_PATH)/%, %, $(wildcard $(LOCAL_PATH)/$(PLAYER_PATH)/lib/liblcf/src/generated/*.cpp)) \	
 

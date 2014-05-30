@@ -45,17 +45,17 @@ if(EXISTS ${WINE_EXECUTABLE})
 endif()
 
 # shinonome font
-set(SHINONOME_PATH "${CMAKE_CURRENT_SOURCE_DIR}/src")
-set(SHINONOME_SRCS "${SHINONOME_PATH}/gothic.cpp" "${SHINONOME_PATH}/mincho.cpp")
+set(SHINONOME_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/shinonome")
+set(SHINONOME_SRCS "${SHINONOME_PATH}/gothic.cxx" "${SHINONOME_PATH}/mincho.cxx")
 include_directories(${SHINONOME_PATH})
 find_package(Ruby)
 if(RUBY_FOUND)
-  set(SHINONOME_GENERATOR "${CMAKE_CURRENT_SOURCE_DIR}/lib/shinonome/generate_cxx_font.rb")
+  set(SHINONOME_GENERATOR "${SHINONOME_PATH}/generate_cxx_font.rb")
   add_custom_command(
-    OUTPUT ${SHINONOME_SRCS} "${SHINONOME_PATH}/shinonome.h"
+    OUTPUT ${SHINONOME_SRCS} "${SHINONOME_PATH}/shinonome.hxx"
     COMMAND "${RUBY_EXECUTABLE}" ARGS "${SHINONOME_GENERATOR}"
     DEPENDS "${SHINONOME_GENERATOR}"
-    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib/shinonome")
+    WORKING_DIRECTORY "${SHINONOME_PATH}")
 endif()
 
 # endianess check
@@ -79,6 +79,15 @@ if(SDL2_MIXER_FOUND)
   add_definitions(-D HAVE_SDL_MIXER=1)
 else()
   add_definitions(-DNO_SDL_MIXER)
+endif()
+
+# OpenAL
+find_package(OpenAL)
+if(OPENAL_FOUND)
+  find_package(SndFile REQUIRED)
+  include_directories(${OPENAL_INCLUDE_DIR} ${SNDFILE_INCLUDE_DIR})
+  list(APPEND EASYRPG_PLAYER_LIBRARIES ${OPENAL_LIBRARY} ${SNDFILE_LIBRARIES})
+  add_definitions(-D HAVE_OPENAL=1)
 endif()
 
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src")
@@ -153,8 +162,9 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   set(CPACK_DEBIAN_PACKAGE_MAINTAINER "take_cheeze")
   set(CPACK_DEBIAN_PACKAGE_DEPENDS
     libexpat1 libfreetype6 libpixman-1-0 libpng12-0 zlib1g libsdl2-2.0-0
-    libsdl2-mixer-2.0-0 libogg0 libvorbis0a libstdc++6 libgcc1 libmikmod2
-    libvorbisfile3 libmad0)
+    libsdl2-mixer-2.0-0 libopenal1 libogg0 libflac8 libvorbis0a libvorbisenc2 libsndfile1
+    libstdc++6 libgcc1 libasound2 libpulse0 libxext6 libcaca0 libmikmod2 libvorbisfile3
+    libmad0 libjson0 libslang2 libncurses5 libtinfo5 libwrap0 libasyncns0 libxau6 libxdmcp6)
 endif()
 
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME})

@@ -1,4 +1,4 @@
-#include "shinonome.h"
+#include "shinonome.hxx"
 
 ShinonomeGlyph const SHINONOME_MINCHO[488] = {
   { 12354, true, { 8, 208, 62, 72, 248, 328, 556, 554, 530, 266, 196, 0 } },

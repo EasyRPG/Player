@@ -36,14 +36,15 @@ PIXMAN_LIBS =  $(SYSROOT)/usr/lib/libpixman-1.a
 FREETYPE_CFLAGS = -I$(SYSROOT)/usr/include/freetype2
 
 # Compiler headers
-INCLUDES = ../../src ../../lib/liblcf/src ../../lib/liblcf/src/generated
+INCLUDES = ../../src ../../lib/shinonome ../../lib/liblcf/src ../../lib/liblcf/src/generated
 INCDIR = $(foreach dir, $(INCLUDES), -I$(wildcard $(dir)))
 
 # Compiler source
-SOURCES = ../../lib/liblcf/src ../../src ../../lib/liblcf/src/generated
+SOURCES = ../../lib/liblcf/src ../../src ../../lib/liblcf/src/generated ../../lib/shinonome
 CPPFILES = $(foreach dir, $(SOURCES), $(wildcard $(dir)/*.cpp))
 BINFILES = $(foreach dir, $(DATA), $(wildcard $(dir)/*.*))
 OBJS = $(addsuffix .o, $(BINFILES)) $(CPPFILES:.cpp=.o)
+OBJS += gothic.o mincho.o
 
 
 # Compiler flags
@@ -64,6 +65,12 @@ $(TARGET): $(OBJS)
 
 .cpp.o:
 	$(HOST)gcc $(INCDIR) $(CXXFLAGS) -c $< -o $@
+
+gothic.o: ../../lib/shinonome/gothic.cxx
+	$(HOST)gcc -c ../../lib/shinonome/gothic.cxx
+
+mincho.o: ../../lib/shinonome/mincho.cxx
+	$(HOST)gcc -c ../../lib/shinonome/mincho.cxx
 
 
 
