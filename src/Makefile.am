@@ -20,6 +20,8 @@ easyrpg_player_LDADD = \
 	$(PNG_LIBS) \
 	$(ZLIB_LIBS)
 easyrpg_player_SOURCES = \
+	al_audio.cpp \
+	al_audio.h \
 	audio.cpp \
 	audio.h \
 	background.cpp \
