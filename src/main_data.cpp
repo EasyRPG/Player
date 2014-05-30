@@ -78,7 +78,7 @@ namespace Main_Data {
 	boost::scoped_ptr<Game_EnemyParty> game_enemyparty;
 
 	RPG::Save game_data;
-	std::string project_path = ".";
+	std::string project_path;
 }
 
 void Main_Data::Init() {

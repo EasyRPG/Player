@@ -17,6 +17,8 @@
 
 // Headers
 #include <cassert>
+#include <iomanip>
+#include <sstream>
 
 #include "system.h"
 #include "game_map.h"
@@ -173,13 +175,25 @@ void Game_Map::SetupCommon(int _id) {
 
 	location.map_id = _id;
 
-	char file[12];
-	sprintf(file, "Map%04d.lmu", location.map_id);
+	// Try loading EasyRPG map files first, then fallback to normal RPG Maker
+	std::stringstream ss;
+	ss << "Map" << std::setfill('0') << std::setw(4) << location.map_id << ".emu";
 
-	map = LMU_Reader::Load(FileFinder::FindDefault(file),
-		ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)));
-	if (map.get() == NULL) {
-		Output::ErrorStr(LcfReader::GetError());
+	std::string map_file = FileFinder::FindDefault(ss.str());
+	if (map_file.empty()) {
+		ss.str("");
+		ss << "Map" << std::setfill('0') << std::setw(4) << location.map_id << ".lmu";
+
+		map = LMU_Reader::Load(FileFinder::FindDefault(ss.str()), Player::GetEncoding());
+		if (map.get() == NULL) {
+			Output::ErrorStr(LcfReader::GetError());
+		}
+	}
+	else {
+		map = LMU_Reader::LoadXml(map_file);
+		if (map.get() == NULL) {
+			Output::ErrorStr(LcfReader::GetError());
+		}
 	}
 
 	if (map->parallax_flag) {

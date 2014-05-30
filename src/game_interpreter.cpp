@@ -332,12 +332,14 @@ bool Game_Interpreter::ExecuteCommand() {
 	}
 }
 
-bool Game_Interpreter::CommandWait(RPG::EventCommand const& /* com */) {
-	if (Player::engine == Player::EngineRpg2k || list[index].parameters[1] == 0) {
-		SetupWait(list[index].parameters[0]);
+bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) {
+	if (com.parameters.size() <= 1 ||
+		(com.parameters.size() > 1 && com.parameters[1] == 0)) {
+		SetupWait(com.parameters[0]);
 		return true;
-	} else
+	} else {
 		return Input::IsAnyTriggered();
+	}
 }
 
 void Game_Interpreter::InputButton() {
