@@ -201,7 +201,6 @@ bool Game_Enemy::IsActionValid(const RPG::EnemyAction& action) {
 const RPG::EnemyAction* Game_Enemy::ChooseRandomAction() {
 	const std::vector<RPG::EnemyAction>& actions = enemy->actions;
 	std::vector<int> valid;
-	std::vector<RPG::EnemyAction>::const_iterator it;
 	int total = 0;
 	for (int i = 0; i < (int) actions.size(); i++) {
 		const RPG::EnemyAction& action = actions[i];

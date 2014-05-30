@@ -199,16 +199,14 @@ void Game_Interpreter::Update() {
 				return;
 		}
 
-		if (list.empty()) {
-			if (!Main_Data::game_player->IsTeleporting() && main_flag) {
-				if (Game_Map::GetNeedRefresh()) {
-					Game_Map::Refresh();
-				}
+		if (!Main_Data::game_player->IsTeleporting() && main_flag) {
+			if (Game_Map::GetNeedRefresh()) {
+				Game_Map::Refresh();
 			}
+		}
 
-			if (list.empty()) {
-				return;
-			}
+		if (list.empty()) {
+			return;
 		}
 
 		if (!ExecuteCommand()) {

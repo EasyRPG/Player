@@ -334,21 +334,33 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 	int tile_id;
 
 	if (self_event) {
+		bool pass = false;
 		for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
 			Game_Event* evnt = i->second.get();
 			if (evnt != self_event && evnt->GetX() == x && evnt->GetY() == y) {
 				if (!evnt->GetThrough()) {
 					if (evnt->GetLayer() == RPG::EventPage::Layers_same) {
-						return false;
+						if (self_event->GetX() == x && self_event->GetY() == y)
+							pass = true;
+						else 
+							return false;
 					}
-					else if (evnt->GetTileId() >= 0 && evnt->GetLayer() == RPG::EventPage::Layers_below) {
+					else if (evnt->GetTileId() > 0 && evnt->GetLayer() == RPG::EventPage::Layers_below) {
 						// Event layer Chipset Tile
-						tile_id = i->second->GetTileId();
-						return (passages_up[tile_id] & bit) != 0;
+						tile_id = evnt->GetTileId();
+						if ((passages_up[tile_id] & Passable::Above) != 0)
+							if ((passages_down[tile_id] & bit) == 0)
+								return false;
+						if ((passages_up[tile_id] & bit) != 0)
+							pass = true;
+						else
+							return false;
 					}
 				}
 			}
 		}
+		if (pass) // All events here are passable
+			return true;
 	}
 
 	int const tile_index = x + y * GetWidth();
@@ -539,7 +551,7 @@ void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
 
 	tEventHash::const_iterator i;
 	for (i = Game_Map::GetEvents().begin(); i != Game_Map::GetEvents().end(); i++) {
-		if (i->second->GetX() == x && i->second->GetY() == y) {
+		if (i->second->GetRealX() == x * SCREEN_TILE_WIDTH && i->second->GetRealY() == y * SCREEN_TILE_WIDTH) {
 			result.push_back(i->second.get());
 		}
 	}

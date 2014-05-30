@@ -187,20 +187,6 @@ void Game_Player::SetFlashTimeLeft(int time_left) {
 	location.flash_time_left = time_left;
 }
 
-bool Game_Player::IsPassable(int x, int y, int d) const {
-	int new_x = x + (d == RPG::EventPage::Direction_right ? 1 : d == RPG::EventPage::Direction_left ? -1 : 0);
-	int new_y = y + (d == RPG::EventPage::Direction_down ? 1 : d == RPG::EventPage::Direction_up ? -1 : 0);
-
-	if (!Game_Map::IsValid(new_x, new_y)) return false;
-
-	if (Player::debug_flag &&
-		Input::IsPressed(Input::DEBUG_THROUGH)) {
-			return true;
-	}
-
-	return Game_Character::IsPassable(x, y, d);
-}
-
 void Game_Player::ReserveTeleport(int map_id, int x, int y) {
 	new_map_id = map_id;
 	new_x = x;
@@ -289,8 +275,8 @@ void Game_Player::UpdateScroll(int last_real_x, int last_real_y) {
 void Game_Player::Update() {
 	bool last_moving = IsMoving();
 
-	if (!IsMoving() && !Game_Map::GetInterpreter().IsRunning()
-		/*move_route_forcing || Game_Temp::message_window_showing*/) {
+	if (!IsMoving() && !Game_Map::GetInterpreter().IsRunning() && !IsMoveRouteOverwritten()
+		/*|| Game_Temp::message_window_showing*/) {
 		switch (Input::dir4) {
 			case 2:
 				MoveDown();
