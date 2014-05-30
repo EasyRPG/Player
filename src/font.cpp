@@ -29,7 +29,7 @@
 #include FT_MODULE_H
 
 #include "reader_util.h"
-#include "shinonome.h"
+#include "shinonome.hxx"
 
 #include "filefinder.h"
 #include "output.h"

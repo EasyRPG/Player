@@ -105,7 +105,7 @@ end
 
 def write_all(f, sym, data)
   f.write <<EOS
-#include "shinonome.h"
+#include "shinonome.hxx"
 
 ShinonomeGlyph const #{sym}[#{data.size}] = {
 EOS
@@ -145,18 +145,19 @@ print "done\n"
 
 # generating
 print "Generating Gothic..."
-code_max = write_all(File.new("../../src/gothic.cpp", "w"), "SHINONOME_GOTHIC", gothic_final)
+gothic_final = gothic.merge(hankaku).merge(latin)
+code_max = write_all(File.new("./gothic.cxx", "w"), "SHINONOME_GOTHIC", gothic_final)
 print "done\n"
 
 print "Generating Mincho..."
-code_max = [write_all(File.new("../../src/mincho.cpp", "w"), "SHINONOME_MINCHO", mincho), code_max].max
+code_max = [write_all(File.new("./mincho.cxx", "w"), "SHINONOME_MINCHO", mincho), code_max].max
 print "done\n"
 
 # header
 print "Generating Header..."
-File.new('../../src/shinonome.h', 'w').write <<EOS
-#ifndef _INC_SHINONOME_H_
-#define _INC_SHINONOME_H_
+File.new('./shinonome.hxx', 'w').write <<EOS
+#ifndef _INC_SHINONOME_HXX_
+#define _INC_SHINONOME_HXX_
 
 #include <stdint.h>
 
@@ -169,6 +170,6 @@ struct ShinonomeGlyph {
 extern ShinonomeGlyph const SHINONOME_GOTHIC[#{gothic_final.size}];
 extern ShinonomeGlyph const SHINONOME_MINCHO[#{mincho.size}];
 
-#endif // _INC_SHINONOME_H_
+#endif // _INC_SHINONOME_HXX_
 EOS
 print "done\n"

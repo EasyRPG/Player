@@ -19,9 +19,9 @@ include $(DEVKITPPC)/wii_rules
 TARGET		:=	boot
 BUILD		:=	obj
 TOPDIR		:=	$(subst /builds/wii,,$(CURDIR))
-SOURCES		:=	src
-DATA		:=	data
-INCLUDES	:=	src
+SOURCES		:=	src lib/shinonome
+DATA		:=	data  
+INCLUDES	:=	src lib/shinonome
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -63,7 +63,8 @@ export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 #---------------------------------------------------------------------------------
 CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(TOPDIR)/$(dir)/*.c)))
 _CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(TOPDIR)/$(dir)/*.cpp)))
-CPPFILES	:=  $(_CPPFILES)
+_CXXFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(TOPDIR)/$(dir)/*.cxx)))
+CPPFILES	:=  $(_CXXFILES) $(_CPPFILES)
 sFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(TOPDIR)/$(dir)/*.s)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(TOPDIR)/$(dir)/*.S)))
 BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*)))
@@ -79,7 +80,8 @@ endif
 
 export OFILES	:=	$(addsuffix .o,$(BINFILES)) \
 					$(_CPPFILES:.cpp=.o) $(CFILES:.c=.o) \
-					$(sFILES:.s=.o) $(SFILES:.S=.o)
+					$(sFILES:.s=.o) $(SFILES:.S=.o) \
+					$(_CXXFILES:.cxx=.o) 
 
 #---------------------------------------------------------------------------------
 # build a list of include paths
@@ -144,6 +146,15 @@ DEPENDS	:=	$(OFILES:.o=.d)
 #---------------------------------------------------------------------------------
 $(OUTPUT).dol: $(OUTPUT).elf
 $(OUTPUT).elf: $(OFILES)
+
+#---------------------------------------------------------------------------------
+# Custom build rule for shinonome (has .cxx extension)
+#---------------------------------------------------------------------------------
+%.o: %.cxx
+	@echo $(notdir $<)
+	@$(CXX) -MMD -MP -MF $(DEPSDIR)/$*.d $(CXXFLAGS) -c $< -o $@ $(ERROR_FILTER)
+
+#---------------------------------------------------------------------------------
 
 -include $(DEPENDS)
 

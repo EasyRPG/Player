@@ -28,8 +28,9 @@ FreeType for font support.
 Pixman for low level pixel manipulation.
 libpng for PNG image support.
 zlib for XYZ image support.
+boost headers.
 
-SDL and SDL_mixer are supported, but deprecated.
+SDL and SDL_mixer 1.2 are still supported but deprecated.
 
 
 Daily builds
@@ -54,17 +55,67 @@ Building
 
 * Makefile method:
 
-  Compile with:
+  Building requirements:
 
-  ./configure
-  make
+    pkg-config
+    make
+
+  1. Unpack the tarball with:
+
+    tar xf easyrpg-player-0.2.tar.xz
+
+  2. Enter in the package directory with:
+
+    cd easyrpg-player-0.2
+
+  3. Compile with:
+
+    ./configure
+    make
+
+
+  Specific building requirements from source tree (Git):
+
+    autoconf >= 2.69
+    automake >= 1.11.4
+
+  To generate the "configure" script, run:
+
+    autoreconf -i
+
+  Then follow the "3. Compile with:" section.
+
+
+  Read more detailed instructions at:
+
+  https://easy-rpg.org/wiki/development/compiling/player/autotools
+  https://easy-rpg.org/wiki/development/compiling/player/cmake
 
 
 * Visual Studio method:
 
   Read detailed instructions at:
-  
+
   https://easy-rpg.org/wiki/development/compiling/player/windows/visual-studio
+
+
+Running EasyRPG Player
+----------------------
+
+Run the easyrpg-player executable from a RPG Maker 2000 or 2003 game
+project folder (same place as RPG_RT.exe).
+
+
+Bug reporting
+-------------
+
+Available options:
+
+* File an issue at https://github.com/EasyRPG/Player/issues
+
+* Open a thread at https://easy-rpg.org/forums/
+
+* Chat with us via IRC: #easyrpg at irc.freenode.net
 
 
 License
