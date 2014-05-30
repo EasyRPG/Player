@@ -216,7 +216,6 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 	start_map_id = -1;
 	no_rtp_flag = false;
 	no_audio_flag = false;
-	encoding = -1;
 
 	std::vector<std::string> args;
 
@@ -312,7 +311,7 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		else if (*it == "--encoding") {
 			++it;
 			if (it != args.end()) {
-				encoding = atoi((*it).c_str());
+				encoding = *it;
 			}
 		}
 		else if (*it == "--disable-audio") {
