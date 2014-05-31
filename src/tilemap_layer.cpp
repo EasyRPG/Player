@@ -156,7 +156,7 @@ TilemapLayer::TilemapLayer(int ilayer) :
 
 	int tiles_y = (int)ceil(DisplayUi->GetHeight() / (float)TITLE_SIZE) + 1;
 	for (int i = 0; i < tiles_y + 2; i++) {
-		Graphics::RegisterZObj(TITLE_SIZE * i, ID, true);
+		tilemap_tiles.push_back(EASYRPG_MAKE_SHARED<TilemapTile>(this, TITLE_SIZE * i));
 	}
 }
 
