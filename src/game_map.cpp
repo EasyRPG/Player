@@ -541,12 +541,10 @@ bool Game_Map::IsCounter(int x, int y) {
 int Game_Map::GetTerrainTag(int const x, int const y) {
 	unsigned const chipID = map->lower_layer[x + y * GetWidth()];
 	unsigned const chip_index =
-		(chipID <  3000)?  0 + chipID/1000 :
-		(chipID == 3028)?  3 + 0 :
-		(chipID == 3078)?  3 + 1 :
-		(chipID == 3128)?  3 + 2 :
+		(chipID <  3050)?  0 + chipID/1000 :
+		(chipID <  4000)?  4 + (chipID-3050)/50 :
 		(chipID <  5000)?  6 + (chipID-4000)/50 :
-		(chipID <  5144)? 18 + map_info.lower_tiles[chipID-5000] :
+		(chipID <  5144)? 18 + (chipID-5000) :
 		0;
 	unsigned const chipset_index = map_info.chipset_id - 1;
 
