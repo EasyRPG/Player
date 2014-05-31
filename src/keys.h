@@ -125,6 +125,8 @@ namespace Input {
 			CAPS_LOCK,
 			NUM_LOCK,
 			SCROLL_LOCK,
+			AC_BACK,
+			SELECT,
 
 #if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
 			MOUSE_LEFT,

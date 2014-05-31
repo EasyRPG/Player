@@ -26,7 +26,6 @@ package org.easyrpg.player;
 
 import org.libsdl.app.SDLActivity;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.KeyEvent;
@@ -58,13 +57,6 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		try {
-			if (Build.VERSION.SDK_INT >= 11) {
-				// Api 11: FLAG_HARDWARE_ACCELERATED
-				getWindow().setFlags(0x01000000, 0x01000000);
-			}
-		} catch (Exception e) {}
-		
 	    mLayout = (RelativeLayout)findViewById(R.id.main_layout);
 	    mLayout.addView(mSurface);
 	    
@@ -74,7 +66,9 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-	    if (keyCode == KeyEvent.KEYCODE_BACK ) {
+	    if ((keyCode == KeyEvent.KEYCODE_BACK )&&(!
+	    		event.isAltPressed())) 
+	    {
 	        showEndGameDialog();
 	    }
 	    return super.onKeyDown(keyCode, event);
