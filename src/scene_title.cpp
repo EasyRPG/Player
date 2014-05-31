@@ -147,8 +147,8 @@ void Scene_Title::CreateCommandWindow() {
 	options.push_back(Data::terms.exit_game);
 
 	command_window.reset(new Window_Command(options));
-	command_window->SetX(160 - command_window->GetWidth() / 2);
-	command_window->SetY(224 - command_window->GetHeight());
+	command_window->SetX((SCREEN_TARGET_WIDTH/2) - command_window->GetWidth() / 2);
+	command_window->SetY(((SCREEN_TARGET_HEIGHT/4)*3) - command_window->GetHeight());
 
 	// Enable load game if available
 	continue_enabled = CheckContinue();

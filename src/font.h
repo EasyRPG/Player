@@ -41,7 +41,9 @@ class Font {
 	static FontRef Default(bool mincho = false);
 	static void Dispose();
 
-	static const int default_size = 9;
+	//static const int default_size = 9 *(TITLE_SIZE/16);
+	static const int default_size = 18;
+	
 	static const bool default_bold = false;
 	static const bool default_italic = false;
 

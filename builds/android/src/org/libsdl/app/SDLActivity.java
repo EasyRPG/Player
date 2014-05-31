@@ -566,7 +566,7 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
     @Override
     public boolean onKey(View  v, int keyCode, KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.KEYCODE_MENU ||
-        	event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+        		((keyCode == KeyEvent.KEYCODE_BACK )&&(!event.isAltPressed())) ) {
         	return false;
         }
     	

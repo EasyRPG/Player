@@ -32,7 +32,7 @@ Window_Selectable::Window_Selectable(int ix, int iy, int iwidth, int iheight) :
 }
 
 void Window_Selectable::CreateContents() {
-	SetContents(Bitmap::Create(width - 16, max(height - 16, GetRowMax() * 16)));
+	SetContents(Bitmap::Create(width - TITLE_SIZE, max(height - TITLE_SIZE, GetRowMax() * TITLE_SIZE)));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 }
 
@@ -52,15 +52,15 @@ int Window_Selectable::GetRowMax() const {
 	return (item_max + column_max - 1) / column_max;
 }
 int Window_Selectable::GetTopRow() const {
-	return oy / 16;
+	return oy / TITLE_SIZE;
 }
 void Window_Selectable::SetTopRow(int row) {
 	if (row < 0) row = 0;
 	if (row > GetRowMax() - 1) row = GetRowMax() - 1;
-	SetOy(row * 16);
+	SetOy(row * TITLE_SIZE);
 }
 int Window_Selectable::GetPageRowMax() const {
-	return (height - 16) / 16;
+	return (height - TITLE_SIZE) / TITLE_SIZE;
 }
 int Window_Selectable::GetPageItemMax() {
 	return GetPageRowMax() * column_max;
@@ -74,7 +74,7 @@ Rect Window_Selectable::GetItemRect(int index) {
 	if (rect.x > 0){
 		rect.x += 8;
 	}
-	rect.y = index / column_max * 16 + 2;
+	rect.y = index / column_max * TITLE_SIZE + 2;
 	return rect;
 }
 
@@ -108,16 +108,16 @@ void Window_Selectable::UpdateCursorRect() {
 	}
 
 	if (column_max > 1){
-		cursor_width = (width / column_max - 16) + 12;
+		cursor_width = (width / column_max - TITLE_SIZE) + 12;
 		x = (index % column_max * cursor_width) - 4 ;
 	}
 	else{
-		cursor_width = (width / column_max - 16) + 8;
-		x = (index % column_max * (cursor_width + 16)) - 4;
+		cursor_width = (width / column_max - TITLE_SIZE) + 8;
+		x = (index % column_max * (cursor_width + TITLE_SIZE)) - 4;
 	}
 
-	int y = index / column_max * 16 - oy;
-	SetCursorRect(Rect(x, y, cursor_width, 16));
+	int y = index / column_max * TITLE_SIZE - oy;
+	SetCursorRect(Rect(x, y, cursor_width, TITLE_SIZE));
 
 }
 

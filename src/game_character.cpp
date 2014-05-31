@@ -65,7 +65,7 @@ bool Game_Character::IsMoving() const {
 	if (move_count > 0) return false; //Jumping
 
 	return real_x != GetX() * SCREEN_TILE_WIDTH || real_y != GetY() * SCREEN_TILE_WIDTH;
-}
+	}
 
 bool Game_Character::IsJumping() const {
 	return move_count > 0;

@@ -22,13 +22,13 @@
 #include "util_macro.h"
 
 Window_Command::Window_Command(std::vector<std::string> commands, int width, int max_item) :
-	Window_Selectable(0, 0, GetRequiredWidth(commands, width), (max_item == -1 ? commands.size() : max_item) * 16 + 16),
+	Window_Selectable(0, 0, GetRequiredWidth(commands, width), (max_item == -1 ? commands.size() : max_item) * TITLE_SIZE + TITLE_SIZE),
 	commands(commands) {
 
 	index = 0;
 	item_max = commands.size();
 
-	SetContents(Bitmap::Create(this->width - 16, item_max * 16));
+	SetContents(Bitmap::Create(this->width - TITLE_SIZE, item_max * TITLE_SIZE));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
 
 	Refresh();
@@ -42,8 +42,8 @@ void Window_Command::Refresh() {
 }
 
 void Window_Command::DrawItem(int index, Font::SystemColor color) {
-	contents->ClearRect(Rect(0, 16 * index, contents->GetWidth() - 0, 16));
-	contents->TextDraw(0, 16 * index + 2, color, commands[index]);
+	contents->ClearRect(Rect(0, TITLE_SIZE * index, contents->GetWidth() - 0, TITLE_SIZE));
+	contents->TextDraw(0, TITLE_SIZE * index + 2, color, commands[index]);
 }
 
 void Window_Command::DisableItem(int i) {
@@ -62,7 +62,7 @@ int Window_Command::GetRequiredWidth(std::vector<std::string>& commands, int wid
 		for (size_t i = 0; i < commands.size(); ++i) {
 			width = std::max(width, Font::Default()->GetSize(commands[i]).width);
 		}
-		return width + 16;
+		return width + TITLE_SIZE;
 	} else {
 		return width;
 	}

@@ -37,6 +37,7 @@ class Game_CommonEvent;
 class Game_Interpreter
 {
 public:
+	int StateAftercall;
 	Game_Interpreter(int _depth = 0, bool _main_flag = false);
 	virtual ~Game_Interpreter();
 

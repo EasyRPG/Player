@@ -25,8 +25,8 @@ Sprite_Character::Sprite_Character(Game_Character* character) :
 	character(character),
 	tile_id(0),
 	character_index(0),
-	chara_width(24),
-	chara_height(32) {
+	chara_width(24*(TITLE_SIZE/16)),
+	chara_height(32*(TITLE_SIZE/16)) {
 	Update();
 }
 
@@ -42,7 +42,7 @@ void Sprite_Character::Update() {
 		if (tile_id > 0) {
 			BitmapRef tile = Cache::Tile(Game_Map::GetChipsetName(), tile_id);
 			SetBitmap(tile);
-			r.Set(0, 0, 16, 16);
+			r.Set(0, 0, 32, 32);
 			SetSrcRect(r);
 			SetOx(8);
 			SetOy(16);

@@ -27,6 +27,9 @@
 /** Targeted screen default height. */
 #define SCREEN_TARGET_HEIGHT 240
 
+/** Working with hi resolutions. default 16 */
+#define TITLE_SIZE 16
+
 /** Targeted screen bits per pixel. */
 #define SCREEN_TARGET_BPP 32
 
