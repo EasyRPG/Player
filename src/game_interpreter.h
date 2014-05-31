@@ -43,6 +43,7 @@ public:
 
 	void Clear();
 	void Setup(const std::vector<RPG::EventCommand>& _list, int _event_id, int dbg_x = -1, int dbg_y = -1);
+
 	bool IsRunning() const;
 	void Update();
 
@@ -52,7 +53,7 @@ public:
 	void SetupChoices(const std::vector<std::string>& choices);
 
 	virtual bool ExecuteCommand();
-	virtual void EndMoveRoute(RPG::MoveRoute* route);
+	virtual void EndMoveRoute(Game_Character* moving_character);
 
 	enum Sizes {
 		MaxSize = 9999999,

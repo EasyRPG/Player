@@ -23,9 +23,11 @@
 #include "game_party.h"
 #include "main_data.h"
 #include "player.h"
+#include "rpg_skill.h"
 #include "util_macro.h"
 
 Game_Actor::Game_Actor(int actor_id) :
+	Game_Battler(),
 	data(Main_Data::game_data.actors[actor_id - 1]) {
 	data.Setup(actor_id);
 
@@ -46,13 +48,28 @@ void Game_Actor::Init() {
 	SetExp(exp_list[GetLevel() - 1]);
 }
 
-void Game_Actor::Init(const RPG::SaveActor& /* save_data */) {
-	Init();
-	// TODO: Save loading
+void Game_Actor::Fixup() {
+	data.Fixup();
 }
 
 int Game_Actor::GetId() const {
 	return data.ID;
+}
+
+bool Game_Actor::UseItem(int item_id) {
+	const RPG::Item& item = Data::items[item_id - 1];
+
+	if (item.type == RPG::Item::Type_book) {
+		return LearnSkill(item.skill_id);
+	} else {
+		return Game_Battler::UseItem(item_id);
+	}
+}
+
+bool Game_Actor::UseSkill(int skill_id) {
+	//const RPG::Skill& skill = Data::skills[skill_id - 1];
+
+	return Game_Battler::UseSkill(skill_id);
 }
 
 bool Game_Actor::IsSkillLearned(int skill_id) const{
@@ -109,10 +126,10 @@ void Game_Actor::ChangeEquipment(int equip_type, int item_id) {
 	int prev_item = SetEquipment(equip_type, item_id);
 
 	if (prev_item != 0) {
-		Game_Party::GainItem(prev_item, 1);
+		Main_Data::game_party->AddItem(prev_item, 1);
 	}
 	if (item_id != 0) {
-		Game_Party::LoseItem(item_id, 1);
+		Main_Data::game_party->RemoveItem(item_id, 1);
 	}
 }
 
@@ -323,15 +340,15 @@ int Game_Actor::GetNextExp(int level) const {
 	}
 }
 
-std::string Game_Actor::GetName() const {
+const std::string& Game_Actor::GetName() const {
 	return data.name;
 }
 
-std::string Game_Actor::GetCharacterName() const {
+const std::string& Game_Actor::GetSpriteName() const {
 	return data.sprite_name;
 }
 
-int Game_Actor::GetCharacterIndex() const {
+int Game_Actor::GetSpriteIndex() const {
 	return data.sprite_id;
 }
 
@@ -487,8 +504,30 @@ const std::vector<int16_t>& Game_Actor::GetSkills() const {
 	return data.skills;
 }
 
+const RPG::Skill& Game_Actor::GetRandomSkill() const {
+	const std::vector<int16_t>& skills = GetSkills();
+
+	return Data::skills[skills[rand() % (skills.size() + 1)] - 1];
+}
+
 bool Game_Actor::GetTwoSwordsStyle() const {
 	return data.two_weapon;
+}
+
+bool Game_Actor::GetAutoBattle() const {
+	return data.auto_battle;
+}
+
+int Game_Actor::GetBattleX() const {
+	return Data::actors[data.ID - 1].battle_x;
+}
+
+int Game_Actor::GetBattleY() const {
+	return Data::actors[data.ID - 1].battle_y;
+}
+
+const std::string& Game_Actor::GetSkillName() const {
+	return Data::actors[data.ID - 1].skill_name;
 }
 
 void Game_Actor::SetName(const std::string &new_name) {
@@ -558,6 +597,23 @@ void Game_Actor::SetHp(int hp) {
 	data.current_hp = min(max(hp, 0), GetMaxHp());
 }
 
+void Game_Actor::ChangeHp(int hp) {
+	SetHp(GetHp() + hp);
+
+	if (data.current_hp == 0) {
+		// Death
+		RemoveAllStates();
+		AddState(1);
+	} else {
+		// Back to life
+		RemoveState(1);
+		if (GetHp() <= 0) {
+			// Reviving gives at least 1 Hp
+			SetHp(1);
+		}
+	}
+}
+
 void Game_Actor::SetSp(int sp) {
 	data.current_sp = min(max(sp, 0), GetMaxSp());
 }
@@ -584,4 +640,16 @@ int Game_Actor::GetBattleRow() const {
 
 void Game_Actor::SetBattleRow(int battle_row) {
 	data.row = battle_row;
+}
+
+int Game_Actor::GetBattleAnimationId() const {
+	if (Player::engine == Player::EngineRpg2k) {
+		return 0;
+	}
+
+	return Data::battleranimations[Data::actors[data.ID - 1].battler_animation - 1].ID;
+}
+
+Game_Battler::BattlerType Game_Actor::GetType() const {
+	return Game_Battler::Type_Ally;
 }

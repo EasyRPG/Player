@@ -19,7 +19,9 @@
 #define _GAME_ACTORS_H_
 
 // Headers
+#include <vector>
 #include "game_actor.h"
+#include "rpg_saveactor.h"
 
 /**
  * Game_Actors namespace.
@@ -29,6 +31,12 @@ namespace Game_Actors {
 	 * Initializes Game Actors.
 	 */
 	void Init();
+
+	/**
+	 * Used after savegame loading to replace savegame default values with
+	 * database ones.
+	 */
+	void Fixup();
 
 	/**
 	 * Disposes Game Actors.

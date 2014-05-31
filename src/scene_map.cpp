@@ -20,6 +20,7 @@
 #include "scene_map.h"
 #include "scene_menu.h"
 #include "scene_title.h"
+#include "scene_end.h"
 #include "scene_name.h"
 #include "scene_shop.h"
 #include "scene_save.h"
@@ -39,7 +40,8 @@
 #include "input.h"
 #include "screen.h"
 
-Scene_Map::Scene_Map() {
+Scene_Map::Scene_Map(bool from_save) :
+	from_save(from_save) {
 	type = Scene::Map;
 }
 
@@ -49,12 +51,29 @@ void Scene_Map::Start() {
 	screen.reset(new Screen());
 	weather.reset(new Weather());
 
-	Main_Data::game_screen->Reset();
+	// Called here instead of Scene Load, otherwise wrong graphic stack
+	// is used.
+	if (from_save) {
+		Main_Data::game_screen->CreatePicturesFromSave();
+	}
+
 	Graphics::FrameReset();
 }
 
 Scene_Map::~Scene_Map() {
 	Main_Data::game_screen->Reset();
+}
+
+
+void Scene_Map::Continue() {
+	if (Game_Temp::battle_calling) {
+		// Came from battle
+		Game_Temp::battle_calling = false;
+		Game_System::BgmPlay(Main_Data::game_data.system.before_battle_music);
+	}
+	else {
+		Game_Map::PlayBgm();
+	}
 }
 
 /*void Scene_Map::TransitionIn() {
@@ -68,7 +87,7 @@ void Scene_Map::TransitionOut() {
 void Scene_Map::Update() {
 	Game_Map::GetInterpreter().Update();
 
-	Game_Party::UpdateTimers();
+	Main_Data::game_party->UpdateTimers();
 
 	Game_Map::Update();
 	Main_Data::game_player->Update();
@@ -77,6 +96,11 @@ void Scene_Map::Update() {
 	message_window->Update();
 
 	UpdateTeleportPlayer();
+
+	if (!Main_Data::game_party->IsAnyAlive()) {
+		// Empty party is allowed
+		Game_Temp::gameover = Main_Data::game_party->GetBattlerCount() > 0;
+	}
 
 	if (Game_Temp::gameover) {
 		Game_Temp::gameover = false;
@@ -92,17 +116,18 @@ void Scene_Map::Update() {
 		return;
 
 	// ESC-Menu calling
-	if (Input::IsTriggered(Input::CANCEL))
-	{
-		if (Game_System::GetAllowMenu()) {
-			Game_Temp::menu_calling = true;
-			Game_Temp::menu_beep = true;
-		}
+	if (Input::IsTriggered(Input::CANCEL)) {
+		Game_Temp::menu_calling = true;
+		Game_Temp::menu_beep = true;
 	}
 
-	if (Input::IsTriggered(Input::DEBUG_MENU))
-	{
-		CallDebug();
+	if (Player::debug_flag) {
+		if (Input::IsTriggered(Input::DEBUG_MENU)) {
+			CallDebug();
+		}
+		else if (Input::IsTriggered(Input::DEBUG_SAVE)) {
+			CallSave();
+		}
 	}
 
 	if (!Main_Data::game_player->IsMoving()) {
@@ -146,7 +171,7 @@ void Scene_Map::UpdateTeleportPlayer() {
 	Scene::TransitionOut();
 
 	Main_Data::game_player->PerformTeleport();
-	Game_Map::Autoplay();
+	Game_Map::PlayBgm();
 
 	spriteset.reset(new Spriteset_Map());
 
@@ -160,9 +185,9 @@ void Scene_Map::UpdateTeleportPlayer() {
 // Scene calling stuff.
 
 void Scene_Map::CallBattle() {
-	Game_Temp::battle_calling = false;
+	Main_Data::game_data.system.before_battle_music = Main_Data::game_data.system.current_music;
 
-	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Battle>());
+	Scene::Push(Scene_Battle::Create());
 }
 
 void Scene_Map::CallShop() {
@@ -187,7 +212,16 @@ void Scene_Map::CallMenu() {
 
 	// TODO: Main_Data::game_player->Straighten();
 
-	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Menu>());
+	if (Game_System::GetAllowMenu()) {
+		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Menu>());
+	}
+	/*
+	FIXME:
+	The intention was that you can still exit the game with ESC when the menu
+	is disabled. But this conflicts with parallel events listening for ESC.
+	else {
+		Scene::Push(EASYRPG_MAKE_SHARED<Scene_End>());
+	}*/
 }
 
 void Scene_Map::CallSave() {
@@ -197,6 +231,7 @@ void Scene_Map::CallSave() {
 }
 
 void Scene_Map::CallDebug() {
-	if (Player::debug_flag)
+	if (Player::debug_flag) {
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Debug>());
+	}
 }

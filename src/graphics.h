@@ -24,7 +24,6 @@
 
 #include "system.h"
 #include "drawable.h"
-#include "zobj.h"
 
 /**
  * Graphics namespace.
@@ -134,16 +133,12 @@ namespace Graphics {
 	 */
 	void SetFrameCount(int framecount);
 
-	void RegisterDrawable(uint32_t ID, Drawable* drawable);
-	void RemoveDrawable(uint32_t ID);
-	ZObj* RegisterZObj(int z, uint32_t ID);
-	void RegisterZObj(int z, uint32_t ID, bool multiz);
-	void RemoveZObj(uint32_t ID);
-	void RemoveZObj(uint32_t ID, bool multiz);
-	void UpdateZObj(ZObj* zobj, int z);
+	void RegisterDrawable(Drawable* drawable);
+	void RemoveDrawable(Drawable* drawable);
+
+	void UpdateZCallback();
 
 	extern bool fps_on_screen;
-	extern uint32_t drawable_id;
 
 	void Push();
 	void Pop();

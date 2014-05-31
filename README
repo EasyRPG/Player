@@ -1,11 +1,11 @@
 EasyRPG Player
 ==============
 
-EasyRPG Player is a game interpreter to play RPG Maker 2000, 2003 and EasyRPG
-games. It uses EasyRPG Readers library to read RPG Maker game data.
+EasyRPG Player is a game interpreter to play RPG Maker 2000, 2003 and
+EasyRPG games. It uses liblcf to read RPG Maker game data.
 
-EasyRPG Player is part of the EasyRPG Project. More information is available
-at the project website:
+EasyRPG Player is part of the EasyRPG Project. More information is
+available at the project website:
 
   https://easy-rpg.org/
 
@@ -21,13 +21,16 @@ Documentation is available at the documentation wiki:
 Requirements
 ------------
 
-EasyRPG Readers library. https://github.com/EasyRPG/Readers
-SDL for screen backend support.
-SDL_mixer for audio mixing.
-Freetype for custom font support.
+liblcf for RPG Maker data reading. https://github.com/EasyRPG/liblcf
+SDL2 for screen backend support.
+SDL2_mixer for audio mixing.
+FreeType for font support.
 Pixman for low level pixel manipulation.
 libpng for PNG image support.
 zlib for XYZ image support.
+boost headers.
+
+SDL and SDL_mixer 1.2 are still supported but deprecated.
 
 
 Daily builds
@@ -50,36 +53,73 @@ Project files are available in Git repositories.
 Building
 --------
 
-* Autotools method:
+* Makefile method:
 
-  Requirements:
-  autoconf >= 2.68, automake >= 1.11, pkg-config
+  Building requirements:
 
-  Compile with:
-  ./configure CPPFLAGS=-DUNIX && make
+    pkg-config
+    make
 
-  Install as super user with:
-  make install
+  1. Unpack the tarball with:
+
+    tar xf easyrpg-player-0.2.tar.xz
+
+  2. Enter in the package directory with:
+
+    cd easyrpg-player-0.2
+
+  3. Compile with:
+
+    ./configure
+    make
 
 
-* Cmake method:
+  Specific building requirements from source tree (Git):
 
-  Requirements:
-  cmake >= 2.8
+    autoconf >= 2.69
+    automake >= 1.11.4
 
-  Compile with:
-  cmake PATH/TO/Player/builds/cmake && make
-  If you want to build it with debug mode pass "-D CMAKE_BUILD_TYPE=Debug" to cmake.
+  To generate the "configure" script, run:
+
+    autoreconf -i
+
+  Then follow the "3. Compile with:" section.
+
+
+  Read more detailed instructions at:
+
+  https://easy-rpg.org/wiki/development/compiling/player/autotools
+  https://easy-rpg.org/wiki/development/compiling/player/cmake
 
 
 * Visual Studio method:
 
   Read detailed instructions at:
-  
+
   https://easy-rpg.org/wiki/development/compiling/player/windows/visual-studio
+
+
+Running EasyRPG Player
+----------------------
+
+Run the easyrpg-player executable from a RPG Maker 2000 or 2003 game
+project folder (same place as RPG_RT.exe).
+
+
+Bug reporting
+-------------
+
+Available options:
+
+* File an issue at https://github.com/EasyRPG/Player/issues
+
+* Open a thread at https://easy-rpg.org/forums/
+
+* Chat with us via IRC: #easyrpg at irc.freenode.net
 
 
 License
 -------
 
-EasyRPG Player is free software. See the file COPYING for copying conditions.
+EasyRPG Player is free software. See the file COPYING for copying
+conditions.

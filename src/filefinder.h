@@ -30,6 +30,7 @@
  * insensitive files paths.
  */
 namespace FileFinder {
+
 	/**
 	 * Initializes FileFinder.
 	 */
@@ -46,6 +47,22 @@ namespace FileFinder {
 	 * Quits FileFinder.
 	 */
 	void Quit();
+
+	/*
+	* { case lowered path, real path }
+	*/
+	typedef boost::container::flat_map<std::string, std::string> string_map;
+
+	/*
+	* { case lowered directory name, non directory file list }
+	*/
+	typedef boost::container::flat_map<std::string, string_map> sub_members_type;
+
+	struct ProjectTree {
+		std::string project_path;
+		string_map files, directories;
+		sub_members_type sub_members;
+	}; // struct ProjectTree
 
 	/**
 	 * Finds an image file.
@@ -72,6 +89,15 @@ namespace FileFinder {
 	 * @return path to file.
 	 */
 	std::string FindDefault(const std::string& name);
+
+	/**
+	 * Finds a file in a custom project tree.
+	 *
+	 * @param tree Project tree to search
+	 * @param name the path and name
+	 * @return path to file.
+	 */
+	std::string FindDefault(const ProjectTree& tree, const std::string& name);
 
 	/**
 	 * Finds a music file.
@@ -113,11 +139,6 @@ namespace FileFinder {
 	 * @return NULL if open failed.
 	 */
 	EASYRPG_SHARED_PTR<std::fstream> openUTF8(const std::string& name, std::ios_base::openmode m);
-
-	/*
-	 * { case lowered path, real path }
-	 */
-	typedef boost::container::flat_map<std::string, std::string> string_map;
 
 	struct Directory {
 		std::string base;
@@ -166,7 +187,7 @@ namespace FileFinder {
 	enum Mode {
 		ALL, /**< list files and directory */
 		FILES, /**< list only non-directory files */
-		DIRECTORIES, /**< list only directories */
+		DIRECTORIES /**< list only directories */
 	};
 	/**
 	 * Lists directory members.
@@ -177,21 +198,11 @@ namespace FileFinder {
 	 */
 	Directory GetDirectoryMembers(std::string const& dir, Mode m = ALL);
 
-	/*
-	 * { case lowered directory name, non directory file list }
-	 */
-	typedef boost::container::flat_map<std::string, string_map> sub_members_type;
-
-	struct ProjectTree {
-		std::string project_path;
-		string_map files, directories;
-		sub_members_type sub_members;
-	}; // struct ProjectTree
-
 	ProjectTree const& GetProjectTree();
-	EASYRPG_SHARED_PTR<ProjectTree> CreateProjectTree(std::string const& p);
-	bool IsRPG2kProject(ProjectTree const& dir);
+	EASYRPG_SHARED_PTR<ProjectTree> CreateProjectTree(std::string const& p, bool recursive = true);
 
+	bool IsRPG2kProject(ProjectTree const& dir);
+	bool IsEasyRpgProject(ProjectTree const& dir);
 } // namespace FileFinder
 
 #endif

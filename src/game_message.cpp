@@ -17,16 +17,10 @@
 
 // Headers
 #include "game_message.h"
+#include "main_data.h"
 
 namespace Game_Message {
 	std::vector<std::string> texts;
-
-	std::string face_name;
-	int face_index;
-	bool face_flipped;
-	bool face_left_position;
-
-	bool background;
 
 	int choice_start;
 	int num_input_start;
@@ -39,9 +33,6 @@ namespace Game_Message {
 	int num_input_variable_id;
 	int num_input_digits_max;
 
-	int position;
-	bool fixed_position;
-	bool dont_halt;
 	bool message_waiting;
 
 	bool visible;
@@ -49,10 +40,9 @@ namespace Game_Message {
 	int choice_result;
 }
 
-void Game_Message::Init() {
-	background = true;
-	position = 2;
+RPG::SaveSystem& data = Main_Data::game_data.system;
 
+void Game_Message::Init() {
 	FullClear();
 }
 
@@ -69,8 +59,9 @@ void Game_Message::SemiClear() {
 
 void Game_Message::FullClear() {
 	SemiClear();
-	face_name.clear();
-	face_index = 0;
+	SetFaceName("");
+	SetFaceIndex(0);
+
 	/*background = true;
 	position = 2;
 	fixed_position = false;
@@ -79,4 +70,68 @@ void Game_Message::FullClear() {
 
 bool Game_Message::Busy() {
 	return texts.size() > 0;
+}
+
+std::string Game_Message::GetFaceName() {
+	return data.face_name;
+}
+
+void Game_Message::SetFaceName(const std::string& face) {
+	data.face_name = face;
+}
+
+int Game_Message::GetFaceIndex() {
+	return data.face_id;
+}
+
+void Game_Message::SetFaceIndex(int index) {
+	data.face_id = index;
+}
+
+bool Game_Message::IsFaceFlipped() {
+	return data.face_flip;
+}
+
+void Game_Message::SetFaceFlipped(bool flipped) {
+	data.face_flip = flipped;
+}
+
+bool Game_Message::IsFaceRightPosition() {
+	return data.face_right;
+}
+
+void Game_Message::SetFaceRightPosition(bool right) {
+	data.face_right = false;
+}
+
+bool Game_Message::IsTransparent() {
+	return data.message_transparent;
+}
+
+void Game_Message::SetTransparent(bool transparent) {
+	data.message_transparent = transparent;
+}
+
+int Game_Message::GetPosition() {
+	return data.message_position;
+}
+
+void Game_Message::SetPosition(int new_position) {
+	data.message_position = new_position;
+}
+
+bool Game_Message::IsPositionFixed() {
+	return !data.message_prevent_overlap;
+}
+
+void Game_Message::SetPositionFixed(bool fixed) {
+	data.message_prevent_overlap = !fixed;
+}
+
+bool Game_Message::GetContinueEvents() {
+	return data.message_continue_events;
+}
+
+void Game_Message::SetContinueEvents(bool continue_events) {
+	data.message_continue_events = continue_events;
 }

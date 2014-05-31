@@ -33,7 +33,7 @@ public:
 
 	int& operator[] (int variable_id) {
 		if (!isValidVar(variable_id)) {
-			Output::Warning("Variable index %d is invalid.\n",
+			Output::Warning("Variable index %d is invalid.",
 							variable_id);
 			dummy = 0;
 			return dummy;
@@ -56,8 +56,12 @@ public:
 		return (variable_id > 0 && variable_id <= (int) variables.size());
 	}
 
-	int size (){
-		return variables.size();
+	int size () {
+		return (int)variables.size();
+	}
+
+	void Reset() {
+		std::fill(variables.begin(), variables.end(), 0);
 	}
 
 private:

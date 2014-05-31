@@ -34,10 +34,11 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Scene_Map();
+	Scene_Map(bool from_save = false);
 	~Scene_Map();
 
 	void Start();
+	void Continue();
 	void Update();
 //	void TransitionIn();
 //	void TransitionOut();
@@ -58,6 +59,7 @@ private:
 	boost::scoped_ptr<Screen> screen;
 	boost::scoped_ptr<Weather> weather;
 
+	bool from_save;
 };
 
 #endif

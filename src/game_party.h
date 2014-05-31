@@ -21,17 +21,24 @@
 // Headers
 #include <vector>
 #include <map>
+#include "game_party_base.h"
 #include "game_actor.h"
 #include "main_data.h"
+#include <boost/noncopyable.hpp>
 
 /**
  * Game_Party class.
  */
-namespace Game_Party {
+class Game_Party : public Game_Party_Base, boost::noncopyable {
+public:
 	/**
 	 * Initializes Game_Party.
 	 */
-	void Init();
+	Game_Party();
+
+	Game_Actor& operator[] (const int index);
+
+	int GetBattlerCount() const;
 
 	/**
 	 * Setups initial party.
@@ -41,7 +48,7 @@ namespace Game_Party {
 	/**
 	 * Setups battle test party.
 	 */
-	//void SetupBattleTestMembers();
+	void SetupBattleTestMembers();
 
 	/**
 	 * Refreshes party members.
@@ -111,7 +118,7 @@ namespace Game_Party {
 	 *                     of equipped items.
 	 * @return number of items.
 	 */
-	int ItemNumber(int item_id, bool get_equipped = false);
+	int GetItemCount(int item_id, bool get_equipped = false);
 
 	/**
 	 * Gains an amount of items.
@@ -119,7 +126,7 @@ namespace Game_Party {
 	 * @param item_id database item ID.
 	 * @param amount gained quantity.
 	 */
-	void GainItem(int item_id, int amount);
+	void AddItem(int item_id, int amount);
 
 	/**
 	 * Loses an amount of items.
@@ -127,7 +134,7 @@ namespace Game_Party {
 	 * @param item_id database item ID.
 	 * @param amount lost quantity.
 	 */
-	void LoseItem(int item_id, int amount);
+	void RemoveItem(int item_id, int amount);
 
 	/**
 	 * Gets if item can be used.
@@ -136,6 +143,27 @@ namespace Game_Party {
 	 * @return whether the item can be used.
 	 */
 	bool IsItemUsable(int item_id);
+
+	/**
+	 * Uses an item on an actor.
+	 * Tests if using that item makes any sense (e.g. for HP healing
+	 * items if there are any HP to heal)
+	 *
+	 * @param item_id ID of item to use
+	 * @param target Target the item is used on (or NULL if its for the party)
+	 */
+	bool UseItem(int item_id, Game_Actor* target = NULL);
+
+	/**
+	* Uses a skill on an actor.
+	* Tests if using that skill makes any sense (e.g. for HP healing
+	* skills if there are any HP to heal)
+	*
+	* @param skill_id ID of skill to use
+	* @param source Actor using the skill
+	* @param target Target the skill is used on (or NULL if its for the party)
+	*/
+	bool UseSkill(int skill_id, Game_Actor* source, Game_Actor* target = NULL);
 
 	/**
 	 * Gets gold possessed.
@@ -156,7 +184,7 @@ namespace Game_Party {
 	 *
 	 * @return actors in party list.
 	 */
-	std::vector<Game_Actor*> GetActors();
+	std::vector<Game_Actor*> GetActors() const;
 
 	/**
 	 * Gets number of battles.
@@ -194,6 +222,20 @@ namespace Game_Party {
 	 */
 	void ApplyDamage(int damage);
 
+	/**
+	 * Gets average level of the party (for battle)
+	 *
+	 * @return average level
+	 */
+	int GetAverageLevel();
+
+	/**
+	 * Gets party exhaustion level (for battle)
+	 *
+	 * @return exhaustion level
+	 */
+	int GetFatigue();
+
 	enum sys_timer {
 		Timer1,
 		Timer2
@@ -204,6 +246,6 @@ namespace Game_Party {
 	void StopTimer(int which);
 	void UpdateTimers();
 	int ReadTimer(int which);
-}
+};
 
 #endif

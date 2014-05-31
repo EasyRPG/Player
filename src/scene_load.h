@@ -34,7 +34,8 @@ public:
 	 */
 	Scene_Load();
 
-	virtual void Action(int index);
+	void Action(int index);
+	bool IsSlotValid(int index);
 };
 
 #endif

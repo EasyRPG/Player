@@ -27,6 +27,7 @@
 #include "game_player.h"
 #include "game_system.h"
 #include "game_variables.h"
+#include "game_temp.h"
 #include "graphics.h"
 #include "input.h"
 #include "player.h"
@@ -110,7 +111,7 @@ void Window_Message::StartChoiceProcessing() {
 
 void Window_Message::StartNumberInputProcessing() {
 	number_input_window->SetMaxDigits(Game_Message::num_input_digits_max);
-	if (!Game_Message::face_name.empty() && Game_Message::face_left_position) {
+	if (!Game_Message::GetFaceName().empty() && !Game_Message::IsFaceRightPosition()) {
 		number_input_window->SetX(LeftMargin + FaceSize + RightFaceMargin);
 	} else {
 		number_input_window->SetX(x);
@@ -124,13 +125,13 @@ void Window_Message::StartNumberInputProcessing() {
 void Window_Message::InsertNewPage() {
 	contents->Clear();
 
-	if (Game_Message::fixed_position) {
-		y = Game_Message::position * 80;
+	if (Game_Message::IsPositionFixed()) {
+		y = Game_Message::GetPosition() * 80;
 	} else {
 		// Move Message Box to prevent player hiding
 		int disp = Main_Data::game_player->GetScreenY();
 
-		switch (Game_Message::position) {
+		switch (Game_Message::GetPosition()) {
 		case 0: // Up
 			y = disp > (16 * 7) ? 0 : 2 * 80;
 			break;
@@ -150,19 +151,19 @@ void Window_Message::InsertNewPage() {
 	}
 
 
-	if (Game_Message::background) {
-		opacity = 255;
-	} else {
+	if (Game_Message::IsTransparent()) {
 		opacity = 0;
+	} else {
+		opacity = 255;
 	}
 
-	if (!Game_Message::face_name.empty()) {
-		if (Game_Message::face_left_position) {
+	if (!Game_Message::GetFaceName().empty()) {
+		if (!Game_Message::IsFaceRightPosition()) {
 			contents_x = LeftMargin + FaceSize + RightFaceMargin;
-			DrawFace(Game_Message::face_name, Game_Message::face_index, LeftMargin, TopMargin, Game_Message::face_flipped);
+			DrawFace(Game_Message::GetFaceName(), Game_Message::GetFaceIndex(), LeftMargin, TopMargin, Game_Message::IsFaceFlipped());
 		} else {
 			contents_x = 0;
-			DrawFace(Game_Message::face_name, Game_Message::face_index, 248, TopMargin, Game_Message::face_flipped);
+			DrawFace(Game_Message::GetFaceName(), Game_Message::GetFaceIndex(), 248, TopMargin, Game_Message::IsFaceFlipped());
 		}
 	} else {
 		contents_x = 0;
@@ -184,7 +185,7 @@ void Window_Message::InsertNewPage() {
 }
 
 void Window_Message::InsertNewLine() {
-	if (!Game_Message::face_name.empty() && Game_Message::face_left_position) {
+	if (!Game_Message::GetFaceName().empty() && !Game_Message::IsFaceRightPosition()) {
 		contents_x = LeftMargin + FaceSize + RightFaceMargin;
 	} else {
 		contents_x = 0;
@@ -245,11 +246,15 @@ void Window_Message::Update() {
 	Window_Selectable::Update();
 	number_input_window->Update();
 
-	if (visible && !Game_Message::visible) {
+	if (!IsNextMessagePossible() && visible && !Game_Message::visible) {
 		// The Event Page ended but the MsgBox was used in this Event
 		// It can be closed now.
 		TerminateMessage();
-		SetCloseAnimation(5);
+		if (Game_Temp::battle_running) {
+			SetCloseAnimation(0);
+		} else {
+			SetCloseAnimation(5);
+		}
 		// Remove this when the Close Animation is implemented
 		// The close animation must set the visible false flag
 		visible = false;
@@ -270,7 +275,12 @@ void Window_Message::Update() {
 		//printf("Text: %s\n", text.c_str());
 		if (!visible) {
 			// The MessageBox is not open yet but text output is needed
-			SetOpenAnimation(5);
+			// Open and Close Animations are skipped in battle
+			if (Game_Temp::battle_running) {
+				SetOpenAnimation(0);
+			} else {
+				SetOpenAnimation(5);
+			}
 			visible = true;
 		}
 		Game_Message::visible = true;
@@ -527,7 +537,7 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 			Game_Actor* actor = NULL;
 			if (parameter == 0) {
 				// Party hero
-				actor = Game_Party::GetActors()[0];
+				actor = Main_Data::game_party->GetActors()[0];
 			} else {
 				actor = Game_Actors::GetActor(parameter);
 			}
@@ -580,8 +590,8 @@ void Window_Message::UpdateCursorRect() {
 		int y_pos = (Game_Message::choice_start + index) * 16;
 		int width = contents->GetWidth();
 
-		if (!Game_Message::face_name.empty()) {
-			if (Game_Message::face_left_position) {
+		if (!Game_Message::GetFaceName().empty()) {
+			if (!Game_Message::IsFaceRightPosition()) {
 				x_pos += LeftMargin + FaceSize + RightFaceMargin;
 			}
 			width = width - LeftMargin - FaceSize - RightFaceMargin - 4;

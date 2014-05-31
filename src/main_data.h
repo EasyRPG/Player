@@ -30,14 +30,19 @@
  */
 class Game_Player;
 class Game_Screen;
+class Game_Party;
+class Game_EnemyParty;
 
 namespace Main_Data {
 	// Dynamic Game Data
 	extern boost::scoped_ptr<Game_Screen> game_screen;
 	extern boost::scoped_ptr<Game_Player> game_player;
+	extern boost::scoped_ptr<Game_Party> game_party;
+	extern boost::scoped_ptr<Game_EnemyParty> game_enemyparty;
 	extern RPG::Save game_data;
 	extern std::string project_path;
 
+	void Init();
 	void Cleanup();
 }
 

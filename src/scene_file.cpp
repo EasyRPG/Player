@@ -19,25 +19,32 @@
 #include <algorithm>
 #include <sstream>
 #include <vector>
+#include "baseui.h"
+#include "cache.h"
 #include "data.h"
-#include "filefinder.h"
 #include "game_system.h"
 #include "game_party.h"
 #include "input.h"
 #include "lsd_reader.h"
+#include "player.h"
 #include "rpg_save.h"
 #include "scene_file.h"
 
 Scene_File::Scene_File(std::string message) :
-	help_window(NULL), message(message) {
+	help_window(NULL), message(message), latest_time(0), latest_slot(0) {
 	top_index = 0;
 	index = 0;
 }
 
 void Scene_File::Start() {
+	DisplayUi->SetBackcolor(Cache::system_info.bg_color);
+
 	// Create the windows
 	help_window.reset(new Window_Help(0, 0, 320, 32));
 	help_window->SetText(message);
+
+	// Refresh File Finder Save Folder
+	tree = FileFinder::CreateProjectTree(Main_Data::project_path, false);
 
 	for (int i = 0; i < 15; i++) {
 		EASYRPG_SHARED_PTR<Window_SaveFile>
@@ -47,11 +54,11 @@ void Scene_File::Start() {
 		// Try to access file
 		std::stringstream ss;
 		ss << "Save" << (i <= 8 ? "0" : "") << (i+1) << ".lsd";
-		std::string file = FileFinder::FindDefault(ss.str());
+		std::string file = FileFinder::FindDefault(*tree, ss.str());
 		if (!file.empty()) {
 			// File found
 			std::auto_ptr<RPG::Save> savegame =
-				LSD_Reader::Load(file);
+				LSD_Reader::Load(file, Player::GetEncoding());
 
 			if (savegame.get())	{
 				std::vector<std::pair<int, std::string> > party;
@@ -84,6 +91,12 @@ void Scene_File::Start() {
 
 				w->SetParty(party, savegame->title.hero_name, savegame->title.hero_hp,
 					savegame->title.hero_level);
+				w->SetHasSave(true);
+
+				if (savegame->title.timestamp > latest_time) {
+					latest_time = savegame->title.timestamp;
+					latest_slot = i;
+				}
 			} else {
 				w->SetCorrupted(true);
 			}
@@ -93,6 +106,8 @@ void Scene_File::Start() {
 
 		file_windows.push_back(w);
 	}
+
+	index = latest_slot;
 
 	Refresh();
 }
@@ -107,36 +122,51 @@ void Scene_File::Refresh() {
 }
 
 void Scene_File::Update() {
-	for (int i = 0; (size_t) i < file_windows.size(); i++)
-		file_windows[i]->Update();
-
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		Game_System::SePlay(Main_Data::game_data.system.decision_se);
-		Action(index);
-		Scene::Pop();
+		if (IsSlotValid(index)) {
+			Game_System::SePlay(Main_Data::game_data.system.decision_se);
+			Action(index);
+		}
+		else {
+			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
+		}
 	}
 
 	int old_top_index = top_index;
 	int old_index = index;
 
 	if (Input::IsRepeated(Input::DOWN)) {
-		Game_System::SePlay(Main_Data::game_data.system.cursor_se);
-		index++;
-		if ((size_t) index >= file_windows.size())
-			index--;
-		top_index = std::max(top_index, index - 3 + 1);
+		if (Input::IsTriggered(Input::DOWN) || index < file_windows.size() - 1) {
+			Game_System::SePlay(Main_Data::game_data.system.cursor_se);
+			index = (index + 1) % file_windows.size();
+		}
+
+		//top_index = std::max(top_index, index - 3 + 1);
 	}
 	if (Input::IsRepeated(Input::UP)) {
-		Game_System::SePlay(Main_Data::game_data.system.cursor_se);
-		index--;
-		if (index < 0)
-			index++;
+		if (Input::IsTriggered(Input::UP) || index >= 1) {
+			Game_System::SePlay(Main_Data::game_data.system.cursor_se);
+			index = (index - 1 + file_windows.size()) % file_windows.size();
+		}
+			
+		//top_index = std::min(top_index, index);
+	}
+
+	if (index > top_index) {
+		top_index = std::max(top_index, index - 3 + 1);
+	}
+	else if (index < top_index) {
 		top_index = std::min(top_index, index);
 	}
 
+	//top_index = std::min(top_index, std::max(top_index, index - 3 + 1));
+
 	if (top_index != old_top_index || index != old_index)
 		Refresh();
+
+	for (int i = 0; (size_t)i < file_windows.size(); i++)
+		file_windows[i]->Update();
 }

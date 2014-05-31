@@ -24,7 +24,6 @@
 
 Plane::Plane() :
 	type(TypePlane),
-	ID(Graphics::drawable_id++),
 	visible(true),
 	z(0),
 	ox(0),
@@ -32,16 +31,14 @@ Plane::Plane() :
 
 	bitmap_screen = BitmapScreen::Create();
 
-	zobj = Graphics::RegisterZObj(0, ID);
-	Graphics::RegisterDrawable(ID, this);
+	Graphics::RegisterDrawable(this);
 }
 
 Plane::~Plane() {
-	Graphics::RemoveZObj(ID);
-	Graphics::RemoveDrawable(ID);
+	Graphics::RemoveDrawable(this);
 }
 
-void Plane::Draw(int /* z_order */) {
+void Plane::Draw() {
 	if (!visible || !bitmap) return;
 
 	Rect dst_rect(0, 0, DisplayUi->GetWidth(), DisplayUi->GetHeight());
@@ -67,7 +64,7 @@ int Plane::GetZ() const {
 	return z;
 }
 void Plane::SetZ(int nz) {
-	if (z != nz) Graphics::UpdateZObj(zobj, nz);
+	if (z != nz) Graphics::UpdateZCallback();
 	z = nz;
 }
 int Plane::GetOx() const {
@@ -117,10 +114,6 @@ Tone Plane::GetTone() const {
 }
 void Plane::SetTone(Tone tone) {
 	bitmap_screen->SetToneEffect(tone);
-}
-
-unsigned long Plane::GetId() const {
-	return ID;
 }
 
 DrawableType Plane::GetType() const {

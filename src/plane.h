@@ -23,7 +23,6 @@
 #include "color.h"
 #include "drawable.h"
 #include "tone.h"
-#include "zobj.h"
 
 /**
  * Plane class.
@@ -33,7 +32,7 @@ public:
 	Plane();
 	virtual ~Plane();
 
-	void Draw(int z_order);
+	void Draw();
 
 	BitmapRef const& GetBitmap() const;
 	void SetBitmap(BitmapRef const& bitmap);
@@ -58,13 +57,10 @@ public:
 	Tone GetTone() const;
 	void SetTone(Tone tone);
 
-	unsigned long GetId() const;
 	DrawableType GetType() const;
 
 private:
 	DrawableType type;
-	unsigned long ID;
-	ZObj* zobj;
 
 	BitmapRef bitmap;
 	BitmapScreenRef bitmap_screen;

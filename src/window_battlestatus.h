@@ -19,19 +19,32 @@
 #define _WINDOW_BATTLESTATUS_H_
 
 // Headers
-#include "window_base.h"
+#include "window_selectable.h"
 #include "bitmap.h"
 
 /**
  * Window BattleStatus Class.
  * Displays the party battle status.
  */
-class Window_BattleStatus : public Window_Base {
+class Window_BattleStatus : public Window_Selectable {
 public:
+	enum ChoiceMode {
+		/** Allow selection of any actor */
+		ChoiceMode_All,
+		/** Allow selection of alive actors */
+		ChoiceMode_Alive,
+		/** Allow selection of dead actors */
+		ChoiceMode_Dead,
+		/** Allow selection of ready (gauge full) actors (RPG2k3 only) */
+		ChoiceMode_Ready,
+		/** Don't allow changing the current selection (if any) */
+		ChoiceMode_None
+	};
+
 	/**
 	 * Constructor.
 	 */
-	Window_BattleStatus();
+	Window_BattleStatus(int ix, int iy, int iwidth, int iheight, bool enemy = false);
 
 	/**
 	 * Renders the current status on the window.
@@ -44,24 +57,16 @@ public:
 	void Update();
 
 	/**
-	 * Sets the active character.
-	 *
-	 * @param index character index (0..3).
-	 *              Returns -1 if no character is ready. FIXME
-	 */
-	void SetActiveCharacter(int index);
-
-	/**
-	 * Gets the active character.
-	 *
-	 * @return character index (0..3).
-	 */
-	int GetActiveCharacter();
-
-	/**
 	 * Selects an active character if one is ready.
 	 */
-	void ChooseActiveCharacter();
+	int ChooseActiveCharacter();
+
+	/**
+	 * Defines which characters can be selected in the dialog.
+	 *
+	 * @param new_mode new selection mode
+	 */
+	void SetChoiceMode(ChoiceMode new_mode);
 
 protected:
 	/**
@@ -70,25 +75,21 @@ protected:
 	void UpdateCursorRect();
 
 	/**
-	 * Redraws a character's time gauge.
-	 *
-	 * @param i character index (0..3).
+	 * Redraws the characters time gauge.
 	 */
-	void RefreshGauge(int i);
+	void RefreshGauge();
 
 	/**
-	 * Draws a character's time gauge.
+	 * Tests whether actor is selectable in current ChoiceMode.
 	 *
-	 * @param actor actor.
-	 * @param index character index (0..3).
-	 * @param cx x coordinate.
-	 * @param cy y coordinate.
+	 * @return true: selection possible 
 	 */
-	void DrawGauge(Game_Actor* actor, int index, int cx, int cy);
+	bool IsChoiceValid(const Game_Battler& battler) const;
 
-	friend class Scene_Battle;
+	ChoiceMode mode;
 
-	int index;
+	// Debug helper
+	bool enemy;
 };
 
 #endif

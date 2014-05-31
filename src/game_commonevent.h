@@ -39,6 +39,15 @@ public:
 	Game_CommonEvent(int common_event_id, bool battle = false);
 
 	/**
+	* Constructor for loading savegame data.
+	*
+	* @param common_event_id database common event ID.
+	* @param battle FIXME.
+	* @param data savegame data.
+	 */
+	Game_CommonEvent(int common_event_id, bool battle, const RPG::SaveCommonEvent& data);
+
+	/**
 	 * Refreshes the common event.
 	 */
 	void Refresh();
@@ -90,6 +99,9 @@ public:
 	 */
 	std::vector<RPG::EventCommand>& GetList();
 	void CheckEventTriggerAuto();
+
+	RPG::SaveEventData GetSaveData();
+
 private:
 	int common_event_id;
 	bool battle;

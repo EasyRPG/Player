@@ -21,15 +21,25 @@
 #include "player.h"
 #include "game_battler.h"
 #include "game_actor.h"
+#include "game_party_base.h"
+#include "game_party.h"
+#include "game_enemyparty.h"
+#include "game_temp.h"
 #include "util_macro.h"
 #include "main_data.h"
+
+#define EASYRPG_GAUGE_MAX_VALUE 120000
+
+Game_Battler::Game_Battler() : gauge(EASYRPG_GAUGE_MAX_VALUE / 2) {
+	// no-op
+}
 
 bool Game_Battler::HasState(int state_id) const {
 	return (std::find(GetStates().begin(), GetStates().end(), state_id) != GetStates().end());
 }
 
 bool Game_Battler::IsDead() const {
-	return !IsHidden() && GetHp() == 0 && !IsImmortal();
+	return HasState(1);
 }
 
 bool Game_Battler::Exists() const {
@@ -57,6 +67,8 @@ const RPG::State* Game_Battler::GetSignificantState() {
 }
 
 bool Game_Battler::IsSkillUsable(int skill_id) const {
+	const RPG::Skill& skill = Data::skills[skill_id - 1];
+
 	if (CalculateSkillCost(skill_id) > GetSp()) {
 		return false;
 	}
@@ -69,23 +81,105 @@ bool Game_Battler::IsSkillUsable(int skill_id) const {
 	//} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_escape) {
 	//	return is_there_an_escape_set;
 	//} else
-	if (Data::skills[skill_id - 1].type == RPG::Skill::Type_normal) {
-		int scope = Data::skills[skill_id - 1].scope;
+	if (skill.type == RPG::Skill::Type_normal ||
+		skill.type >= RPG::Skill::Type_subskill) {
+		int scope = skill.scope;
 
-		if (scope == RPG::Skill::Scope_self ||
+		if (Game_Temp::battle_running) {
+			return true;
+		}
+		else if (scope == RPG::Skill::Scope_self ||
 			scope == RPG::Skill::Scope_ally ||
 			scope == RPG::Skill::Scope_party) {
-			// TODO: A skill is also acceptable when it cures a status
-			return (Data::skills[skill_id - 1].affect_hp ||
-					Data::skills[skill_id - 1].affect_sp);
+
+			return (skill.affect_hp ||
+					skill.affect_sp ||
+					skill.state_effect);
 		}
-	} else if (Data::skills[skill_id - 1].type == RPG::Skill::Type_switch) {
-		// TODO:
-		// if (Game_Temp::IsInBattle()) {
-		// return Data::skills[skill_id - 1].occasion_battle;
-		// else {
-		return Data::skills[skill_id - 1].occasion_field;
-		// }
+	} else if (skill.type == RPG::Skill::Type_switch) {
+		if (Game_Temp::battle_running) {
+			return skill.occasion_battle;
+		}
+		else {
+			return skill.occasion_field;
+		}
+	}
+
+	return false;
+}
+
+bool Game_Battler::UseItem(int item_id) {
+	const RPG::Item& item = Data::items[item_id - 1];
+
+	if (item.type == RPG::Item::Type_medicine) {
+		int hp_change = item.recover_hp_rate * GetMaxHp() / 100 + item.recover_hp;
+		int sp_change = item.recover_sp_rate * GetMaxSp() / 100 + item.recover_sp;
+
+		if (IsDead()) {
+			// Check if item can revive
+			if (item.state_set.empty() || !item.state_set[0]) {
+				return false;
+			}
+
+			// Revive gives at least 1 Hp
+			if (hp_change == 0) {
+				ChangeHp(1);
+			}
+		} else if (item.ko_only) {
+			// Must be dead
+			return false;
+		}
+
+		ChangeHp(hp_change);
+		SetSp(GetSp() + sp_change);
+
+		for (std::vector<bool>::const_iterator it = item.state_set.begin();
+			it != item.state_set.end(); ++it) {
+			if (*it) {
+				RemoveState(*it);
+			}
+		}
+
+		// TODO
+		return true;
+	} else if (item.type == RPG::Item::Type_material) {
+		// TODO
+		return false;
+	}
+
+	return false;
+}
+
+bool Game_Battler::UseSkill(int skill_id) {
+	const RPG::Skill& skill = Data::skills[skill_id - 1];
+
+	switch (skill.type) {
+		case RPG::Skill::Type_normal: {
+			int effect = skill.power;
+
+			if (skill.variance > 0) {
+				int var_perc = skill.variance * 5;
+				int act_perc = rand() % (var_perc * 2) - var_perc;
+				int change = effect * act_perc / 100;
+				effect += change;
+			}
+
+			if (skill.affect_hp) {
+				ChangeHp(effect);
+			}
+			if (skill.affect_sp) {
+				SetSp(GetSp() + effect);
+			}
+
+			// ToDo
+			return true;
+		}
+		case RPG::Skill::Type_teleport:
+		case RPG::Skill::Type_escape:
+			// ToDo: Show Teleport/Escape target menu
+			break;
+		case RPG::Skill::Type_switch:
+			break;
 	}
 
 	return false;
@@ -102,7 +196,7 @@ int Game_Battler::CalculateSkillCost(int skill_id) const {
 void Game_Battler::AddState(int state_id) {
 	std::vector<int16_t>& states = GetStates();
 	if (state_id > 0 && !HasState(state_id)) {
-		states.push_back(state_id);
+		states.push_back((int16_t)state_id);
 		std::sort(states.begin(), states.end());
 	}
 }
@@ -221,3 +315,49 @@ int Game_Battler::GetAgi() const {
 	return n;
 }
 
+int Game_Battler::GetHue() const {
+	return 0;
+}
+
+Game_Party_Base& Game_Battler::GetParty() const {
+	if (GetType() == Type_Ally) {
+		return *Main_Data::game_party;
+	} else {
+		return *Main_Data::game_enemyparty;
+	}
+}
+
+int Game_Battler::GetGauge() const {
+	return gauge / (EASYRPG_GAUGE_MAX_VALUE / 100);
+}
+
+void Game_Battler::SetGauge(int new_gauge) {
+	new_gauge = min(max(new_gauge, 0), 100);
+
+	gauge = new_gauge * (EASYRPG_GAUGE_MAX_VALUE / 100);
+}
+
+bool Game_Battler::IsGaugeFull() const {
+	return gauge >= EASYRPG_GAUGE_MAX_VALUE;
+}
+
+void Game_Battler::UpdateGauge(int multiplier) {
+	if (IsDead()) {
+		return;
+	}
+
+	if (gauge > EASYRPG_GAUGE_MAX_VALUE) {
+		return;
+	}
+	gauge += GetAgi() * multiplier;
+
+	//printf("%s: %.2f\n", GetName().c_str(), ((float)gauge / EASYRPG_GAUGE_MAX_VALUE) * 100);
+}
+
+const BattleAlgorithmRef Game_Battler::GetBattleAlgorithm() const {
+	return battle_algorithm;
+}
+
+void Game_Battler::SetBattleAlgorithm(BattleAlgorithmRef battle_algorithm) {
+	this->battle_algorithm = battle_algorithm;
+}

@@ -44,16 +44,81 @@
 #include "util_macro.h"
 #include "game_interpreter_map.h"
 #include "reader_util.h"
+#include "filefinder.h"
+#include "reader_lcf.h"
 
 Game_Interpreter_Map::Game_Interpreter_Map(int depth, bool main_flag) :
 	Game_Interpreter(depth, main_flag) {
 }
 
 Game_Interpreter_Map::~Game_Interpreter_Map() {
-	std::vector<pending_move_route>::iterator it;
+	std::vector<Game_Character*>::iterator it;
 	for (it = pending.begin(); it != pending.end(); it++) {
-		(*it).second->DetachMoveRouteOwner(this);
+		(*it)->DetachMoveRouteOwner(this);
 	}
+}
+
+bool Game_Interpreter_Map::SetupFromSave(const std::vector<RPG::SaveEventCommands>& save, int _event_id, int index) {
+	if (index < save.size()) {
+		Setup(save[index].commands, _event_id);
+		this->index = save[index].current_command;
+		child_interpreter.reset(new Game_Interpreter_Map());
+		bool result = static_cast<Game_Interpreter_Map*>(child_interpreter.get())->SetupFromSave(save, _event_id, index + 1);
+		if (!result) {
+			child_interpreter.reset();
+		}
+		return true;
+	}
+	return false;
+}
+
+// Taken from readers because a kitten is killed when reader_structs is included
+static int GetEventCommandSize(const std::vector<RPG::EventCommand>& commands) {
+	std::vector<RPG::EventCommand>::const_iterator it;
+
+	int result = 0;
+	for (it = commands.begin(); it != commands.end(); ++it) {
+		result += LcfReader::IntSize(it->code);
+		result += LcfReader::IntSize(it->indent);
+		result += LcfReader::IntSize(it->string.size());
+		result += ReaderUtil::Recode(it->string, Player::GetEncoding()).size();
+
+		int count = it->parameters.size();
+		result += LcfReader::IntSize(count);
+		for (int i = 0; i < count; i++)
+			result += LcfReader::IntSize(it->parameters[i]);
+	}
+	result += 4; // No idea why but then it fits
+
+	return result;
+}
+
+std::vector<RPG::SaveEventCommands> Game_Interpreter_Map::GetSaveData() const {
+	std::vector<RPG::SaveEventCommands> save;
+
+	const Game_Interpreter_Map* save_interpreter = this;
+
+	int i = 1;
+
+	if (save_interpreter->list.empty()) {
+		return save;
+	}
+
+	while (save_interpreter != NULL) {
+		RPG::SaveEventCommands save_commands;
+		save_commands.commands = save_interpreter->list;
+		save_commands.current_command = save_interpreter->index;
+		save_commands.commands_size = GetEventCommandSize(save_commands.commands);
+		save_commands.ID = i++;
+		save.push_back(save_commands);
+		save_interpreter = static_cast<Game_Interpreter_Map*>(save_interpreter->child_interpreter.get());
+	}
+
+	save.back().ID = event_id;
+
+	save.back().current_command++;
+
+	return save;
 }
 
 int Game_Interpreter_Map::DecodeInt(std::vector<int>::const_iterator& it) {
@@ -78,7 +143,7 @@ const std::string Game_Interpreter_Map::DecodeString(std::vector<int>::const_ite
 	for (int i = 0; i < len; i++)
 		out << (char) *it++;
 
-	std::string result = ReaderUtil::Recode(out.str());
+	std::string result = ReaderUtil::Recode(out.str(), Player::GetEncoding());
 
 	return result;
 }
@@ -108,10 +173,10 @@ RPG::MoveCommand Game_Interpreter_Map::DecodeMove(std::vector<int>::const_iterat
 	return cmd;
 }
 
-void Game_Interpreter_Map::EndMoveRoute(RPG::MoveRoute* route) {
-	std::vector<pending_move_route>::iterator it;
+void Game_Interpreter_Map::EndMoveRoute(Game_Character* moving_character) {
+	std::vector<Game_Character*>::iterator it;
 	for (it = pending.begin(); it != pending.end(); it++) {
-		if ((*it).first == route) {
+		if ((*it) == moving_character) {
 			break;
 		}
 	}
@@ -296,10 +361,10 @@ bool Game_Interpreter_Map::ExecuteCommand() {
  * Commands
  */
 bool Game_Interpreter_Map::CommandMessageOptions(RPG::EventCommand const& com) { //code 10120
-	Game_Message::background = com.parameters[0] == 0;
-	Game_Message::position = com.parameters[1];
-	Game_Message::fixed_position = com.parameters[2] == 0;
-	Game_Message::dont_halt = com.parameters[3] != 0;
+	Game_Message::SetTransparent(com.parameters[0] != 0);
+	Game_Message::SetPosition(com.parameters[1]);
+	Game_Message::SetPositionFixed(com.parameters[2] == 0);
+	Game_Message::SetContinueEvents(com.parameters[3] != 0);
 	return true;
 }
 
@@ -393,7 +458,7 @@ bool Game_Interpreter_Map::CommandMemorizeLocation(RPG::EventCommand const& com)
 	int var_map_id = com.parameters[0];
 	int var_x = com.parameters[1];
 	int var_y = com.parameters[2];
- 	Game_Variables[var_map_id] = Game_Map::GetMapId();
+	Game_Variables[var_map_id] = Game_Map::GetMapId();
 	Game_Variables[var_x] = player->GetX();
 	Game_Variables[var_y] = player->GetY();
 	return true;
@@ -430,7 +495,7 @@ bool Game_Interpreter_Map::CommandStoreTerrainID(RPG::EventCommand const& com) {
 	int x = ValueOrVariable(com.parameters[0], com.parameters[1]);
 	int y = ValueOrVariable(com.parameters[0], com.parameters[2]);
 	int var_id = com.parameters[3];
- 	Game_Variables[var_id] = Game_Map::GetTerrainTag(x, y);
+	Game_Variables[var_id] = Game_Map::GetTerrainTag(x, y);
 	return true;
 }
 
@@ -440,7 +505,7 @@ bool Game_Interpreter_Map::CommandStoreEventID(RPG::EventCommand const& com) { /
 	int var_id = com.parameters[3];
 	std::vector<Game_Event*> events;
 	Game_Map::GetEventsXY(events, x, y);
- 	Game_Variables[var_id] = events.size() > 0 ? events[0]->GetId() : 0;
+	Game_Variables[var_id] = events.size() > 0 ? events.back()->GetId() : 0;
 	return true;
 }
 
@@ -685,7 +750,7 @@ bool Game_Interpreter_Map::CommandShowScreen(RPG::EventCommand const& com) {
 
 bool Game_Interpreter_Map::CommandShowPicture(RPG::EventCommand const& com) { // code 11110
 	int pic_id = com.parameters[0];
-	Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
+	Game_Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
 	std::string const& pic_name = com.string;
 	int x = ValueOrVariable(com.parameters[1], com.parameters[2]);
 	int y = ValueOrVariable(com.parameters[1], com.parameters[3]);
@@ -705,28 +770,34 @@ bool Game_Interpreter_Map::CommandShowPicture(RPG::EventCommand const& com) { //
 		// Rpg2k does not support this option
 		bottom_trans = top_trans;
 	} else {
-		bottom_trans = com.parameters[14];
+		// Corner case when 2k maps are used in 2k3 and don't contain this chunk
+		size_t param_size = com.parameters.size();
+		if (param_size > 14) {
+			bottom_trans = com.parameters[14];
+		} else {
+			bottom_trans = top_trans;
+		}
 	}
 
 	picture->Show(pic_name);
-	picture->UseTransparent(use_trans);
-	picture->Scrolls(scrolls);
+	picture->SetTransparent(use_trans);
+	picture->SetScrolls(scrolls);
 
-	picture->Move(x, y);
-	picture->Color(red, green, blue, saturation);
-	picture->Magnify(magnify);
-	picture->Transparency(top_trans, bottom_trans);
-	picture->Transition(0);
+	picture->SetMovementEffect(x, y);
+	picture->SetColorEffect(red, green, blue, saturation);
+	picture->SetZoomEffect(magnify);
+	picture->SetTransparencyEffect(top_trans, bottom_trans);
+	picture->SetTransition(0);
 
 	switch (effect) {
 		case 0:
 			picture->StopEffects();
 			break;
 		case 1:
-			picture->Rotate(speed);
+			picture->SetRotationEffect(speed);
 			break;
 		case 2:
-			picture->Waver(speed);
+			picture->SetWaverEffect(speed);
 			break;
 	}
 
@@ -735,7 +806,7 @@ bool Game_Interpreter_Map::CommandShowPicture(RPG::EventCommand const& com) { //
 
 bool Game_Interpreter_Map::CommandMovePicture(RPG::EventCommand const& com) { // code 11120
 	int pic_id = com.parameters[0];
-	Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
+	Game_Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
 	int x = ValueOrVariable(com.parameters[1], com.parameters[2]);
 	int y = ValueOrVariable(com.parameters[1], com.parameters[3]);
 	int magnify = com.parameters[5];
@@ -754,24 +825,30 @@ bool Game_Interpreter_Map::CommandMovePicture(RPG::EventCommand const& com) { //
 		// Rpg2k does not support this option
 		bottom_trans = top_trans;
 	} else {
-		bottom_trans = com.parameters[16];
+		// Corner case when 2k maps are used in 2k3 and don't contain this chunk
+		size_t param_size = com.parameters.size();
+		if (param_size > 16) {
+			bottom_trans = com.parameters[16];
+		} else {
+			bottom_trans = top_trans;
+		}
 	}
 
-	picture->Move(x, y);
-	picture->Color(red, green, blue, saturation);
-	picture->Magnify(magnify);
-	picture->Transparency(top_trans, bottom_trans);
-	picture->Transition(tenths);
+	picture->SetMovementEffect(x, y);
+	picture->SetColorEffect(red, green, blue, saturation);
+	picture->SetZoomEffect(magnify);
+	picture->SetTransparencyEffect(top_trans, bottom_trans);
+	picture->SetTransition(tenths);
 
 	switch (effect) {
 		case 0:
 			picture->StopEffects();
 			break;
 		case 1:
-			picture->Rotate(speed);
+			picture->SetRotationEffect(speed);
 			break;
 		case 2:
-			picture->Waver(speed);
+			picture->SetWaverEffect(speed);
 			break;
 	}
 
@@ -783,7 +860,7 @@ bool Game_Interpreter_Map::CommandMovePicture(RPG::EventCommand const& com) { //
 
 bool Game_Interpreter_Map::CommandErasePicture(RPG::EventCommand const& com) { // code 11130
 	int pic_id = com.parameters[0];
-	Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
+	Game_Picture* picture = Main_Data::game_screen->GetPicture(pic_id);
 	picture->Erase();
 
 	return true;
@@ -898,15 +975,15 @@ bool Game_Interpreter_Map::CommandTimerOperation(RPG::EventCommand const& com) {
 		case 0:
 			seconds = ValueOrVariable(com.parameters[1],
 									  com.parameters[2]);
-			Game_Party::SetTimer(timer_id, seconds);
+			Main_Data::game_party->SetTimer(timer_id, seconds);
 			break;
 		case 1:
 			visible = com.parameters[3] != 0;
 			battle = com.parameters[4] != 0;
-			Game_Party::StartTimer(timer_id, visible, battle);
+			Main_Data::game_party->StartTimer(timer_id, visible, battle);
 			break;
 		case 2:
-			Game_Party::StopTimer(timer_id);
+			Main_Data::game_party->StopTimer(timer_id);
 			break;
 		default:
 			return false;
@@ -980,7 +1057,8 @@ bool Game_Interpreter_Map::CommandMoveEvent(RPG::EventCommand const& com) { // c
 			route->move_commands.push_back(DecodeMove(it));
 
 		event->ForceMoveRoute(route, move_freq, this);
-		pending.push_back(pending_move_route(route, event));
+		pending.push_back(event);
+		event->MoveTypeCustom();
 	}
 	return true;
 }
@@ -1085,7 +1163,7 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 
 	Game_Message::choice_max = 2;
 	Game_Message::choice_disabled.reset();
-	if (Game_Party::GetGold() < Game_Temp::inn_price)
+	if (Main_Data::game_party->GetGold() < Game_Temp::inn_price)
 		Game_Message::choice_disabled.set(0);
 
 	CloseMessageWindow();
@@ -1102,17 +1180,17 @@ bool Game_Interpreter_Map::ContinuationShowInn(RPG::EventCommand const& /* com *
 	Game_Temp::inn_calling = false;
 
 	if (inn_stay)
-		Game_Party::GainGold(-Game_Temp::inn_price);
+		Main_Data::game_party->GainGold(-Game_Temp::inn_price);
 
 	if (!Game_Temp::inn_handlers) {
 		if (inn_stay) {
 			// Full heal
-			std::vector<Game_Actor*> actors = Game_Party::GetActors();
+			std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
 			for (std::vector<Game_Actor*>::const_iterator i = actors.begin();
 				 i != actors.end();
 				 i++) {
 				Game_Actor* actor = *i;
-				actor->SetHp(actor->GetMaxHp());
+				actor->ChangeHp(actor->GetMaxHp());
 				actor->SetSp(actor->GetMaxSp());
 				actor->RemoveAllStates();
 			}
@@ -1297,7 +1375,8 @@ bool Game_Interpreter_Map::CommandFlashSprite(RPG::EventCommand const& com) { //
 	Game_Character* event = GetCharacter(event_id);
 
 	if (event != NULL) {
-		event->SetFlash(color, tenths * DEFAULT_FPS / 10);
+		event->SetFlashColor(color);
+		event->SetFlashTimeLeft(tenths * DEFAULT_FPS / 10);
 
 		if (wait)
 			SetupWait(tenths);
@@ -1601,10 +1680,7 @@ bool Game_Interpreter_Map::CommandSimulatedAttack(RPG::EventCommand const& com) 
 		}
 
 		result = std::max(0, result);
-
-		int hp = actor->GetHp() - result;
-		hp = std::max(0, hp);
-		actor->SetHp(hp);
+		actor->ChangeHp(-result);
 
 		if (com.parameters[6] != 0)
 			Game_Variables[com.parameters[7]] = result;
@@ -1722,9 +1798,9 @@ bool Game_Interpreter_Map::CommandChangeClass(RPG::EventCommand const& com) { //
 }
 
 bool Game_Interpreter_Map::CommandHaltAllMovement(RPG::EventCommand const& /* com */) { // code 11350
-	std::vector<pending_move_route>::iterator it;
+	std::vector<Game_Character*>::iterator it;
 	for (it = pending.begin(); it != pending.end(); it++)
-		it->second->CancelMoveRoute(it->first, this);
+		(*it)->CancelMoveRoute(this);
 	pending.clear();
 	return true;
 }
@@ -1780,7 +1856,7 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 			}
 			break;
 		case 2:
-			value1 = Game_Party::ReadTimer(Game_Party::Timer1);
+			value1 = Main_Data::game_party->ReadTimer(Main_Data::game_party->Timer1);
 			value2 = com.parameters[1] * DEFAULT_FPS;
 			switch (com.parameters[2]) {
 				case 0:
@@ -1795,20 +1871,20 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 			// Gold
 			if (com.parameters[2] == 0) {
 				// Greater than or equal
-				result = (Game_Party::GetGold() >= com.parameters[1]);
+				result = (Main_Data::game_party->GetGold() >= com.parameters[1]);
 			} else {
 				// Less than or equal
-				result = (Game_Party::GetGold() <= com.parameters[1]);
+				result = (Main_Data::game_party->GetGold() <= com.parameters[1]);
 			}
 			break;
 		case 4:
 			// Item
 			if (com.parameters[2] == 0) {
 				// Having
-				result = Game_Party::ItemNumber(com.parameters[1]) > 0;
+				result = Main_Data::game_party->GetItemCount(com.parameters[1]) > 0;
 			} else {
 				// Not having
-				result = Game_Party::ItemNumber(com.parameters[1]) == 0;
+				result = Main_Data::game_party->GetItemCount(com.parameters[1]) == 0;
 			}
 			break;
 		case 5:
@@ -1818,7 +1894,7 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 			switch (com.parameters[2]) {
 				case 0:
 					// Is actor in party
-					result = Game_Party::IsActorInParty(actor_id);
+					result = Main_Data::game_party->IsActorInParty(actor_id);
 					break;
 				case 1:
 					// Name
@@ -1871,7 +1947,7 @@ bool Game_Interpreter_Map::CommandConditionalBranch(RPG::EventCommand const& com
 			// TODO BGM Playing
 			break;
 		case 10:
-			value1 = Game_Party::ReadTimer(Game_Party::Timer2);
+			value1 = Main_Data::game_party->ReadTimer(Main_Data::game_party->Timer2);
 			value2 = com.parameters[1] * DEFAULT_FPS;
 			switch (com.parameters[2]) {
 				case 0:

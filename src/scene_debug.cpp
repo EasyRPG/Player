@@ -19,6 +19,7 @@
 #include <vector>
 #include <sstream>
 #include <iomanip>
+#include "baseui.h"
 #include "cache.h"
 #include "input.h"
 #include "game_variables.h"
@@ -36,6 +37,7 @@ Scene_Debug::Scene_Debug() {
 
 void Scene_Debug::Start() {
 	DisplayUi->SetBackcolor(Cache::system_info.bg_color);
+
 	current_var_type = TypeSwitch;
 	range_index = 0;
 	range_page = 0;

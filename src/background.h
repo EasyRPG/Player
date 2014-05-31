@@ -22,7 +22,6 @@
 #include <string>
 #include "system.h"
 #include "drawable.h"
-#include "zobj.h"
 
 class Background : public Drawable {
 public:
@@ -30,10 +29,9 @@ public:
 	Background(int terrain_id);
 	~Background();
 
-	void Draw(int z_order);
+	void Draw();
 	void Update();
 
-	unsigned long GetId() const;
 	int GetZ() const;
 	DrawableType GetType() const;
 
@@ -44,8 +42,6 @@ private:
 	static void Update(int& rate, int& value);
 	static int Scale(int x);
 
-	unsigned long ID;
-	ZObj* zobj;
 	bool visible;
 
 	BitmapScreenRef bg_screen;

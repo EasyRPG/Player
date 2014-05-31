@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=EasyRPG
+Comment=EasyRPG Player
+MimeType=application/x-ms-dos-executable;
+Exec=run.sh %f
+Terminal=false
+Type=Application
+StartupNotify=true
+Icon=easyrpg
+Categories=games

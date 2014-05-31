@@ -49,6 +49,7 @@ Game_Interpreter::Game_Interpreter(int _depth, bool _main_flag) {
 	depth = _depth;
 	main_flag = _main_flag;
 	active = false;
+	index = 0;
 
 	if (depth > 100) {
 		Output::Warning("Too many event calls (over 9000)");
@@ -114,7 +115,7 @@ void Game_Interpreter::SetContinuation(Game_Interpreter::ContinuationFunction fu
 	continuation = func;
 }
 
-void Game_Interpreter::EndMoveRoute(RPG::MoveRoute* /* route */) {
+void Game_Interpreter::EndMoveRoute(Game_Character*) {
 	// This will only ever be called on Game_Interpreter_Map instances
 }
 
@@ -149,7 +150,7 @@ void Game_Interpreter::Update() {
 
 		// If waiting for a move to end
 		if (move_route_waiting) {
-			if (Main_Data::game_player->GetMoveRouteForcing()) {
+			if (Main_Data::game_player->IsMoveRouteOverwritten()) {
 				return;
 			}
 
@@ -157,7 +158,7 @@ void Game_Interpreter::Update() {
 			for (size_t i = 0; i < Game_Map::GetEvents().size(); i++) {
 				g_event = Game_Map::GetEvents().find(i)->second.get();
 
-				if (g_event->GetMoveRouteForcing()) {
+				if (g_event->IsMoveRouteOverwritten()) {
 					return;
 				}
 			}
@@ -178,7 +179,7 @@ void Game_Interpreter::Update() {
 			return;
 		}
 
-		if (//Game_Temp::battle_calling ||
+		if (Game_Temp::battle_calling ||
 			Game_Temp::shop_calling ||
 //			Game_Temp::inn_calling ||
 			Game_Temp::name_calling ||
@@ -199,16 +200,14 @@ void Game_Interpreter::Update() {
 				return;
 		}
 
-		if (list.empty()) {
-			if (!Main_Data::game_player->IsTeleporting() && main_flag) {
-				if (Game_Map::GetNeedRefresh()) {
-					Game_Map::Refresh();
-				}
+		if (!Main_Data::game_player->IsTeleporting() && main_flag) {
+			if (Game_Map::GetNeedRefresh()) {
+				Game_Map::Refresh();
 			}
+		}
 
-			if (list.empty()) {
-				return;
-			}
+		if (list.empty()) {
+			return;
 		}
 
 		if (!ExecuteCommand()) {
@@ -276,9 +275,8 @@ bool Game_Interpreter::SkipTo(int code, int code2, int min_indent, int max_inden
 		index = idx;
 		return true;
 	}
-	// if you do not find it set the page size so the easy do not stuck
-		index = list.size()-1;
-		return true;
+
+	return true;
 }
 
 // Execute Command.
@@ -348,12 +346,14 @@ bool Game_Interpreter::ExecuteCommand() {
 	}
 }
 
-bool Game_Interpreter::CommandWait(RPG::EventCommand const& /* com */) {
-	if (Player::engine == Player::EngineRpg2k || list[index].parameters[1] == 0) {
-		SetupWait(list[index].parameters[0]);
+bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) {
+	if (com.parameters.size() <= 1 ||
+		(com.parameters.size() > 1 && com.parameters[1] == 0)) {
+		SetupWait(com.parameters[0]);
 		return true;
-	} else
+	} else {
 		return Input::IsAnyTriggered();
+	}
 }
 
 void Game_Interpreter::InputButton() {
@@ -599,11 +599,11 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			switch (com.parameters[6]) {
 				case 0:
 					// Number of items posessed
-					value = Game_Party::ItemNumber(com.parameters[5]);
+					value = Main_Data::game_party->GetItemCount(com.parameters[5]);
 					break;
 				case 1:
 					// How often the item is equipped
-					value = Game_Party::ItemNumber(com.parameters[5], true);
+					value = Main_Data::game_party->GetItemCount(com.parameters[5], true);
 					break;
 			}
 			break;
@@ -696,8 +696,7 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 						value = character->GetY();
 						break;
 					case 3:
-						// TODO Orientation
-						// Needs testing
+						// Orientation
 						value = character->GetDirection();
 						break;
 					case 4:
@@ -715,14 +714,14 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 			switch (com.parameters[5]) {
 				case 0:
 					// Gold
-					value = Game_Party::GetGold();
+					value = Main_Data::game_party->GetGold();
 					break;
 				case 1:
-					value = Game_Party::ReadTimer(Game_Party::Timer1);
+					value = Main_Data::game_party->ReadTimer(Main_Data::game_party->Timer1);
 					break;
 				case 2:
 					// Number of heroes in party
-					value = Game_Party::GetActors().size();
+					value = Main_Data::game_party->GetActors().size();
 					break;
 				case 3:
 					// Number of saves
@@ -730,25 +729,25 @@ bool Game_Interpreter::CommandControlVariables(RPG::EventCommand const& com) { /
 					break;
 				case 4:
 					// Number of battles
-					value = Game_Party::GetBattleCount();
+					value = Main_Data::game_party->GetBattleCount();
 					break;
 				case 5:
 					// Number of wins
-					value = Game_Party::GetWinCount();
+					value = Main_Data::game_party->GetWinCount();
 					break;
 				case 6:
 					// Number of defeats
-					value = Game_Party::GetDefeatCount();
+					value = Main_Data::game_party->GetDefeatCount();
 					break;
 				case 7:
 					// Number of escapes (aka run away)
-					value = Game_Party::GetRunCount();
+					value = Main_Data::game_party->GetRunCount();
 					break;
 				case 8:
 					// TODO: MIDI play position
 					break;
 				case 9:
-					value = Game_Party::ReadTimer(Game_Party::Timer2);
+					value = Main_Data::game_party->ReadTimer(Main_Data::game_party->Timer2);
 					break;
 			}
 			break;
@@ -866,7 +865,7 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 	switch (mode) {
 	case 0:
 		// Party
-		actors = Game_Party::GetActors();
+		actors = Main_Data::game_party->GetActors();
 		break;
 	case 1:
 		// Hero
@@ -899,7 +898,7 @@ bool Game_Interpreter::CommandChangeGold(RPG::EventCommand const& com) { // Code
 		com.parameters[2]
 	);
 
-	Game_Party::GainGold(value);
+	Main_Data::game_party->GainGold(value);
 
 	// Continue
 	return true;
@@ -930,10 +929,10 @@ bool Game_Interpreter::CommandChangeItems(RPG::EventCommand const& com) { // Cod
 
 	if (com.parameters[1] == 0) {
 		// Item by const number
-		Game_Party::GainItem(com.parameters[2], value);
+		Main_Data::game_party->AddItem(com.parameters[2], value);
 	} else {
 		// Item by variable
-		Game_Party::GainItem(
+		Main_Data::game_party->AddItem(
 			Game_Variables[com.parameters[2]],
 			value
 		);
@@ -962,10 +961,10 @@ bool Game_Interpreter::CommandInputNumber(RPG::EventCommand const& com) {
 
 // Change Face Graphic.
 bool Game_Interpreter::CommandChangeFaceGraphic(RPG::EventCommand const& com) { // Code 10130
-	Game_Message::face_name = com.string;
-	Game_Message::face_index = com.parameters[0];
-	Game_Message::face_left_position = com.parameters[1] == 0;
-	Game_Message::face_flipped = com.parameters[2] != 0;
+	Game_Message::SetFaceName(com.string);
+	Game_Message::SetFaceIndex(com.parameters[0]);
+	Game_Message::SetFaceRightPosition(com.parameters[1] != 0);
+	Game_Message::SetFaceFlipped(com.parameters[2] != 0);
 	return true;
 }
 
@@ -986,11 +985,11 @@ bool Game_Interpreter::CommandChangePartyMember(RPG::EventCommand const& com) { 
 
 		if (com.parameters[0] == 0) {
 			// Add members
-			Game_Party::AddActor(id);
+			Main_Data::game_party->AddActor(id);
 
 		} else {
 			// Remove members
-			Game_Party::RemoveActor(id);
+			Main_Data::game_party->RemoveActor(id);
 		}
 	}
 
@@ -1108,9 +1107,10 @@ bool Game_Interpreter::CommandChangeHP(RPG::EventCommand const& com) { // Code 1
 		 i++) {
 		Game_Actor* actor = *i;
 		int hp = actor->GetHp() + amount;
-		if (hp < 0)
-			hp = lethal ? 0 : 1;
-		actor->SetHp(hp);
+		if (!lethal && hp <= 0) {
+			amount += hp * (-1) + 1;
+		}
+		actor->ChangeHp(amount);
 	}
 
 	return true;
@@ -1166,7 +1166,7 @@ bool Game_Interpreter::CommandFullHeal(RPG::EventCommand const& com) { // Code 1
 		 i != actors.end();
 		 i++) {
 		Game_Actor* actor = *i;
-		actor->SetHp(actor->GetMaxHp());
+		actor->ChangeHp(actor->GetMaxHp());
 		actor->SetSp(actor->GetMaxSp());
 		actor->RemoveAllStates();
 	}

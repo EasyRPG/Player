@@ -22,7 +22,6 @@
 #include <string>
 #include "drawable.h"
 #include "system.h"
-#include "zobj.h"
 
 class Bitmap;
 class BitmapScreen;
@@ -35,10 +34,9 @@ public:
 	Weather();
 	~Weather();
 
-	void Draw(int z_order);
+	void Draw();
 	void Update();
 
-	unsigned long GetId() const;
 	int GetZ() const;
 	DrawableType GetType() const;
 
@@ -50,9 +48,6 @@ private:
 
 	static const int z = 1001;
 	static const DrawableType type = TypeWeather;
-
-	unsigned long ID;
-	ZObj* zobj;
 
 	BitmapScreenRef weather_screen;
 	//boost::scoped_ptr<Plane> weather_plane;

@@ -16,16 +16,31 @@
  */
 
 // Headers
-#include "data.h"
+#include <sstream>
+#include "filefinder.h"
+#include "player.h"
 #include "scene_load.h"
 #include "scene_file.h"
+#include "scene_map.h"
 
 Scene_Load::Scene_Load() :
 	Scene_File(Data::terms.load_game_message) {
 	Scene::type = Scene::Load;
 }
 
-void Scene_Load::Action(int /* index */) {
-	// TODO load game
+void Scene_Load::Action(int index) {
+	std::stringstream ss;
+	ss << "Save" << (index <= 8 ? "0" : "") << (index + 1) << ".lsd";
+
+	std::string save_name = FileFinder::FindDefault(*tree, ss.str());
+
+	Player::CreateGameObjects();	
+
+	Player::LoadSavegame(save_name);
+
+	Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>(true), true);
 }
 
+bool Scene_Load::IsSlotValid(int index) {
+	return file_windows[index]->IsValid();
+}

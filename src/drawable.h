@@ -25,10 +25,10 @@ enum DrawableType {
 	TypeSprite,
 	TypePlane,
 	TypeBackground,
-	TypeDefault,
 	TypeScreen,
-	TypeWeather
-};
+	TypeWeather,
+	TypeMessageOverlay,
+	TypeDefault};
 
 /**
  * Drawable virtual
@@ -37,13 +37,13 @@ class Drawable {
 public:
 	virtual ~Drawable() {};
 
-	virtual void Draw(int z_order) = 0;
-
-	virtual unsigned long GetId() const = 0;
+	virtual void Draw() = 0;
 
 	virtual int GetZ() const = 0;
 
 	virtual DrawableType GetType() const = 0;
+
+	virtual bool IsGlobal() const { return false; }
 };
 
 #endif

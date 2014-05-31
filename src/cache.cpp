@@ -32,7 +32,7 @@
 #include "output.h"
 #include "player.h"
 
-namespace {
+namespace cache_anon {
 
 	typedef std::pair<std::string,std::string> string_pair;
 	typedef std::pair<std::string, int> tile_pair;
@@ -53,11 +53,8 @@ namespace {
 			std::string const path = FileFinder::FindImage(folder_name, filename);
 
 			if (path.empty()) {
-				// TODO:
 				// Load a dummy image with correct size (issue #32)
-				Output::Warning("Image not found: %s/%s\n\nPlayer will exit now.", folder_name.c_str(), filename.c_str());
-				// Delayed termination, otherwise it segfaults in Graphics::Quit
-				Player::exit_flag = true;
+				Output::Error("Image not found: %s/%s", folder_name.c_str(), filename.c_str());
 			}
 
 			return (cache[key] = path.empty()
@@ -86,7 +83,7 @@ namespace {
 			Battlecharset,
 			Battleweapon,
 			Frame,
-			END,
+			END
 		};
 
 	}; // struct Material
@@ -126,18 +123,19 @@ namespace {
 										 0);
 
 		if(
-		   ret->GetWidth () < s.min_width  || s.max_width  < ret->GetWidth () ||
-		   ret->GetHeight() < s.min_height || s.max_height < ret->GetHeight()
-		   ) {
-			Output::Debug("Image size error in: %s/%s", s.directory, f.c_str());
-			Output::Debug("width  (min, max, actual) = (%d, %d, %d)", s.min_width , s.max_width , ret->GetWidth ());
-			Output::Debug("height (min, max, actual) = (%d, %d, %d)", s.min_height, s.max_height, ret->GetHeight());
+			ret->GetWidth () < s.min_width  || s.max_width  < ret->GetWidth () ||
+			ret->GetHeight() < s.min_height || s.max_height < ret->GetHeight()
+		) {
+			Output::Debug("Image size error in: %s/%s\nwidth  (min, max, actual) = (%d, %d, %d)\nheight (min, max, actual) = (%d, %d, %d)",
+						  s.directory, f.c_str(), s.min_width , s.max_width , ret->GetWidth (), s.min_height, s.max_height, ret->GetHeight());
 		}
 
 		return ret;
 	}
 
 }
+
+using namespace cache_anon;
 
 tSystemInfo Cache::system_info;
 

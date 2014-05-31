@@ -39,9 +39,26 @@ public:
 	Game_Interpreter_Map(int _depth = 0, bool _main_flag = false);
 	~Game_Interpreter_Map();
 
+	/**
+	* Parses a SaveEventCommand to create an interpreter.
+	*
+	* @param save event to load.
+	* @param index index in the event list.
+	*
+	* @return If the setup was successful (fails when index out of range)
+	*/
+	bool SetupFromSave(const std::vector<RPG::SaveEventCommands>& save, int _event_id, int index = 0);
+
+	/**
+	 * Generates a SaveEventCommands vector needed for the savefile.
+	 *
+	 * @return interpreter commands stored in SaveEventCommands
+	 */
+	std::vector<RPG::SaveEventCommands> GetSaveData() const;
+
 	bool ExecuteCommand();
 
-	void EndMoveRoute(RPG::MoveRoute* route);
+	void EndMoveRoute(Game_Character* moving_character);
 
 private:
 	bool CommandMessageOptions(RPG::EventCommand const& com);
@@ -120,9 +137,7 @@ private:
 	const std::string DecodeString(std::vector<int>::const_iterator& it);
 	RPG::MoveCommand DecodeMove(std::vector<int>::const_iterator& it);
 
-	typedef std::pair<RPG::MoveRoute*,Game_Character*> pending_move_route;
-	std::vector<pending_move_route> pending;
+	std::vector<Game_Character*> pending;
 };
 
 #endif
-

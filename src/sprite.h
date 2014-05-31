@@ -23,7 +23,6 @@
 #include "drawable.h"
 #include "rect.h"
 #include "tone.h"
-#include "zobj.h"
 
 /**
  * Sprite class.
@@ -33,7 +32,7 @@ public:
 	Sprite();
 	virtual ~Sprite();
 
-	void Draw(int z_order);
+	void Draw();
 
 	void Flash(int duration);
 	void Flash(Color color, int duration);
@@ -84,13 +83,10 @@ public:
 	double GetWaverPhase() const;
 	void SetWaverPhase(double phase);
 
-	unsigned long GetId() const;
 	DrawableType GetType() const;
 
 private:
 	DrawableType type;
-	unsigned long ID;
-	ZObj* zobj;
 
 	BitmapRef bitmap;
 	BitmapScreenRef bitmap_screen;

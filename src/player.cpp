@@ -16,18 +16,35 @@
  */
 
 // Headers
-#include "player.h"
-#include "system.h"
-#include "output.h"
 #include "audio.h"
-#include "graphics.h"
-#include "input.h"
 #include "cache.h"
 #include "filefinder.h"
+#include "game_actors.h"
+#include "game_map.h"
+#include "game_message.h"
+#include "game_enemyparty.h"
+#include "game_party.h"
+#include "game_player.h"
+#include "game_switches.h"
+#include "game_system.h"
+#include "game_temp.h"
+#include "game_variables.h"
+#include "graphics.h"
+#include "inireader.h"
+#include "input.h"
+#include "ldb_reader.h"
+#include "lmt_reader.h"
+#include "lsd_reader.h"
 #include "main_data.h"
-#include "scene_logo.h"
-#include "scene_title.h"
+#include "output.h"
+#include "player.h"
+#include "reader_lcf.h"
+#include "reader_util.h"
 #include "scene_battle.h"
+#include "scene_logo.h"
+#include "scene_map.h"
+#include "scene_title.h"
+#include "system.h"
 #include "utils.h"
 
 #include <algorithm>
@@ -40,7 +57,6 @@
 
 #ifdef GEKKO
 	#include <fat.h>
-	#include <unistd.h>
 #endif
 #if (defined(_WIN32) && defined(NDEBUG))
 	#include <windows.h>
@@ -57,7 +73,16 @@ namespace Player {
 	bool window_flag;
 	bool battle_test_flag;
 	int battle_test_troop_id;
+	bool new_game_flag;
+	int load_game_id;
+	int party_x_position;
+	int party_y_position;
+	int start_map_id;
+	bool no_rtp_flag;
+	bool no_audio_flag;
+	std::string encoding;
 	EngineType engine;
+	std::string game_title;
 }
 
 void Player::Init(int argc, char *argv[]) {
@@ -70,42 +95,27 @@ void Player::Init(int argc, char *argv[]) {
 	if (!fatInitDefault()) {
 		Output::Error("Couldn't mount any storage medium!");
 	}
-	// Wii doesn't provide a correct working directory before mounting
-	char gekko_dir[256];
-	getcwd(gekko_dir, 255);
-	Main_Data::project_path = gekko_dir;
 #endif
 
 #if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER >= 0x0600)
 	InitMiniDumpWriter();
 #endif
 
-	exit_flag = false;
-	reset_flag = false;
+	ParseCommandLine(argc, argv);
 
-	// Command line parser
-	if((argc > 1) && Utils::LowerCase(argv[1]) == "battletest") {
-		battle_test_flag = true;
-		battle_test_troop_id = (argc > 4)? atoi(argv[4]) : 0;
-	} else {
-		std::set<std::string> args;
-		battle_test_flag = false;
-		battle_test_troop_id = 0;
-		for(int i = 1; i < argc; ++i) { args.insert(Utils::LowerCase(argv[i])); }
-		window_flag = args.find("window") != args.end();
-		debug_flag = args.find("testplay") != args.end();
-		hide_title_flag = args.find("hidetitle") != args.end();
+	if (Main_Data::project_path.empty()) {
+		// Not overwritten by --project-path
+		Main_Data::Init();
 	}
 
-
-#ifndef NDEBUG
-	debug_flag = true;
-	window_flag = true; // Debug Build needs no fullscreen
-#endif
-
-	engine = EngineRpg2k;
-
 	FileFinder::Init();
+
+	INIReader ini(FileFinder::FindDefault(INI_NAME));
+	if (ini.ParseError() != -1) {
+		std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
+		std::string encoding = Player::GetEncoding();
+		game_title = ReaderUtil::Recode(title, encoding);
+	}
 
 	DisplayUi.reset();
 
@@ -113,7 +123,7 @@ void Player::Init(int argc, char *argv[]) {
 		DisplayUi = BaseUi::CreateUi
 			(SCREEN_TARGET_WIDTH,
 			 SCREEN_TARGET_HEIGHT,
-			 GAME_TITLE,
+			 game_title,
 			 !window_flag,
 			 RUN_ZOOM);
 	}
@@ -123,10 +133,8 @@ void Player::Init(int argc, char *argv[]) {
 
 void Player::Run() {
 	Scene::Push(EASYRPG_MAKE_SHARED<Scene>());
-	Scene::Push(EASYRPG_SHARED_PTR<Scene>
-				(debug_flag?
-				 static_cast<Scene*>(new Scene_Title()) :
-				 static_cast<Scene*>(new Scene_Logo())));
+
+	Scene::Push(EASYRPG_SHARED_PTR<Scene>(static_cast<Scene*>(new Scene_Logo())));
 
 	reset_flag = false;
 
@@ -162,6 +170,9 @@ void Player::Update() {
 	if (Input::IsTriggered(Input::TAKE_SCREENSHOT)) {
 		Output::TakeScreenshot();
 	}
+	if (Input::IsTriggered(Input::SHOW_LOG)) {
+		Output::ToggleLog();
+	}
 
 	DisplayUi->ProcessEvents();
 
@@ -169,7 +180,9 @@ void Player::Update() {
 		Scene::PopUntil(Scene::Null);
 	} else if (reset_flag) {
 		reset_flag = false;
-		Scene::PopUntil(Scene::Title);
+		if (Scene::instance->type != Scene::Logo) {
+			Scene::PopUntil(Scene::Title);
+		}
 	}
 }
 
@@ -178,6 +191,327 @@ void Player::Exit() {
 	Graphics::Quit();
 	FileFinder::Quit();
 	DisplayUi.reset();
+	
+#ifdef __ANDROID__
+	// Workaround Segfault under Android
+	exit(0);
+#endif
+}
+
+void Player::ParseCommandLine(int argc, char *argv[]) {
+	engine = EngineNone;
+	window_flag = false;
+	debug_flag = false;
+	hide_title_flag = false;
+	exit_flag = false;
+	reset_flag = false;
+	battle_test_flag = false;
+	battle_test_troop_id = 0;
+	new_game_flag = false;
+	load_game_id = -1;
+	party_x_position = -1;
+	party_y_position = -1;
+	start_map_id = -1;
+	no_rtp_flag = false;
+	no_audio_flag = false;
+
+	std::vector<std::string> args;
+
+	for (int i = 1; i < argc; ++i) {
+		args.push_back(Utils::LowerCase(argv[i]));
+	}
+
+	std::vector<std::string>::const_iterator it;
+
+	for (it = args.begin(); it != args.end(); ++it) {
+		if (*it == "window" || *it == "--window") {
+			window_flag = true;
+		}
+		else if (*it == "testplay" || *it == "--test-play") {
+			debug_flag = true;
+		}
+		else if (*it == "hidetitle" || *it == "--hide-title") {
+			hide_title_flag = true;
+		}
+		else if (*it == "battletest") {
+			battle_test_flag = true;
+			++it;
+			if (it != args.end()) {
+				battle_test_troop_id = atoi((*it).c_str());
+			}
+			if (battle_test_troop_id == 0) {
+				--it;
+				battle_test_troop_id = (argc > 4) ? atoi(argv[4]) : 0;
+			}
+		}
+		else if (*it == "--battle-test") {
+			++it;
+			if (it != args.end()) {
+				battle_test_flag = true;
+				battle_test_troop_id = atoi((*it).c_str());
+			}
+		}
+		else if (*it == "--project-path") {
+			++it;
+			if (it != args.end()) {
+				// case sensitive
+				Main_Data::project_path = argv[it - args.begin() + 1];
+			}
+		}
+		else if (*it == "--new-game") {
+			new_game_flag = true;
+		}
+		else if (*it == "--load-game-id") {
+			++it;
+			if (it != args.end()) {
+				load_game_id = atoi((*it).c_str());
+			}
+		}
+		/*else if (*it == "--load-game") {
+			// load game by filename
+		}
+		else if (*it == "--database") {
+			// overwrite database file
+		}
+		else if (*it == "--map-tree") {
+			// overwrite map tree file
+		}
+		else if (*it == "--start-map") {
+			// overwrite start map by filename
+		}*/
+		else if (*it == "--start-map-id") {
+			++it;
+			if (it != args.end()) {
+				start_map_id = atoi((*it).c_str());
+			}
+		}
+		else if (*it == "--start-position") {
+			++it;
+			if (it != args.end()) {
+				party_x_position = atoi((*it).c_str());
+			}
+			++it;
+			if (it != args.end()) {
+				party_y_position = atoi((*it).c_str());
+			}
+		}
+		else if (*it == "--engine") {
+			++it;
+			if (it != args.end()) {
+				if (*it == "rpg2k" || *it == "2000") {
+					engine = EngineRpg2k;
+				}
+				else if (*it == "rpg2k3" || *it == "2003") {
+					engine = EngineRpg2k3;
+				}
+			}
+		}
+		else if (*it == "--encoding") {
+			++it;
+			if (it != args.end()) {
+				encoding = *it;
+			}
+		}
+		else if (*it == "--disable-audio") {
+			no_audio_flag = true;
+		}
+		else if (*it == "--disable-rtp") {
+			no_rtp_flag = true;
+		}
+		else if (*it == "--version" || *it == "-v") {
+			PrintVersion();
+			exit(0);
+		}
+		else if (*it == "--help" || *it == "-h" || *it == "/?") {
+			PrintUsage();
+			exit(0);
+		}
+	}
+}
+
+void Player::CreateGameObjects() {
+	static bool init = false;
+	if (!init) {
+		LoadDatabase();
+
+		if (Player::engine == EngineNone) {
+			if (Data::system.ldb_id == 2003) {
+				Output::Debug("Switching to Rpg2003 Interpreter");
+				Player::engine = Player::EngineRpg2k3;
+			}
+			else {
+				Player::engine = Player::EngineRpg2k;
+			}
+		}
+
+		if (!no_rtp_flag) {
+			FileFinder::InitRtpPaths();
+		}
+	}
+	init = true;
+
+	Main_Data::game_data.Setup();
+
+	Game_Actors::Init();
+	Game_Map::Init();
+	Game_Message::Init();
+	Game_Switches.Reset();
+	Game_System::Init();
+	Game_Temp::Init();
+	Game_Variables.Reset();
+	Main_Data::game_enemyparty.reset(new Game_EnemyParty());
+	Main_Data::game_party.reset(new Game_Party());
+	Main_Data::game_player.reset(new Game_Player());
+	Main_Data::game_screen.reset(new Game_Screen());
+
+	Graphics::FrameReset();
+}
+
+void Player::LoadDatabase() {
+	// Load Database
+	Data::Clear();
+
+	if (!FileFinder::IsRPG2kProject(FileFinder::GetProjectTree()) &&
+		!FileFinder::IsEasyRpgProject(FileFinder::GetProjectTree())) {
+		Output::Debug("%s is not a supported project", Main_Data::project_path.c_str());
+	}
+
+	// Try loading EasyRPG project files first, then fallback to normal RPG Maker
+	std::string edb = FileFinder::FindDefault(DATABASE_NAME_EASYRPG);
+	std::string emt = FileFinder::FindDefault(TREEMAP_NAME_EASYRPG);
+
+	bool easyrpg_project = !edb.empty() && !emt.empty();
+
+	if (easyrpg_project) {
+		if (!LDB_Reader::LoadXml(edb)) {
+			Output::ErrorStr(LcfReader::GetError());
+		}
+		if (!LMT_Reader::LoadXml(emt)) {
+			Output::ErrorStr(LcfReader::GetError());
+		}
+	}
+	else {
+		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
+		std::string lmt = FileFinder::FindDefault(TREEMAP_NAME);
+
+		if (!LDB_Reader::Load(ldb, Player::GetEncoding())) {
+			Output::ErrorStr(LcfReader::GetError());
+		}
+		if (!LMT_Reader::Load(lmt, Player::GetEncoding())) {
+			Output::ErrorStr(LcfReader::GetError());
+		}
+	}
+}
+
+void Player::LoadSavegame(const std::string& save_name) {
+	std::auto_ptr<RPG::Save> save = LSD_Reader::Load(save_name, Player::GetEncoding());
+
+	if (!save.get()) {
+		Output::Error("%s", LcfReader::GetError().c_str());
+	}
+
+	RPG::SaveSystem system = Main_Data::game_data.system;
+
+	Main_Data::game_data = *save.get();
+
+	Main_Data::game_data.party_location.Fixup();
+	Main_Data::game_data.system.Fixup();
+	Main_Data::game_data.screen.Fixup();
+	Game_Actors::Fixup();
+
+	Game_Map::SetupFromSave();
+
+	Main_Data::game_player->MoveTo(
+		save->party_location.position_x, save->party_location.position_y);
+	Main_Data::game_player->Refresh();
+
+	RPG::Music current_music = Main_Data::game_data.system.current_music;
+	Game_System::BgmStop();
+	Game_System::BgmPlay(current_music);
+}
+
+void Player::SetupPlayerSpawn() {
+	int map_id = Player::start_map_id == -1 ?
+		Data::treemap.start.party_map_id : Player::start_map_id;
+	int x_pos = Player::party_x_position == -1 ?
+		Data::treemap.start.party_x : Player::party_x_position;
+	int y_pos = Player::party_y_position == -1 ?
+		Data::treemap.start.party_y : Player::party_y_position;
+
+	Game_Map::Setup(map_id);
+	Main_Data::game_player->MoveTo(x_pos, y_pos);
+	Main_Data::game_player->Refresh();
+	Game_Map::PlayBgm();
+}
+
+std::string Player::GetEncoding() {
+	if (encoding.empty()) {
+		encoding = ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME));
+	}
+
+	return encoding;
+}
+
+void Player::PrintVersion() {
+	std::cout << "EasyRPG Player " << PLAYER_VERSION << std::endl;
+}
+
+void Player::PrintUsage() {
+	std::cout << "EasyRPG Player - An open source interpreter for RPG Maker 2000/2003 games." << std::endl << std::endl;
+
+	std::cout << "Options:" << std::endl;
+	//                                                  "                                Line end marker -> "
+	std::cout << "      " << "--battle-test N      " << "Start a battle test with monster party N." << std::endl;
+
+	std::cout << "      " << "--disable-audio      " << "Disable audio (in case you prefer your own music)." << std::endl;
+
+	std::cout << "      " << "--disable-rtp        " << "Disable support for the Runtime Package (RTP)." << std::endl;
+
+	std::cout << "      " << "--encoding N         " << "Instead of using the default platform encoding or" << std::endl;
+	std::cout << "      " << "                     " << "the one in RPG_RT.ini the encoding N is used." << std::endl;
+
+	std::cout << "      " << "--engine ENGINE      " << "Disable auto detection of the simulated engine." << std::endl;
+	std::cout << "      " << "                     " << "Possible options:" << std::endl;
+	std::cout << "      " << "                     " << " rpg2k  - RPG Maker 2000 engine" << std::endl;
+	std::cout << "      " << "                     " << " rpg2k3 - RPG Maker 2003 engine" << std::endl;
+
+	std::cout << "      " << "--fullscreen         " << "Start in fullscreen mode." << std::endl;
+
+	std::cout << "      " << "--hide-title         " << "Hide the title background image and center the" << std::endl;
+	std::cout << "      " << "                     " << "command menu." << std::endl;
+
+	std::cout << "      " << "--load-game-id N     " << "Skip the title scene and load SaveN.lsd" << std::endl;
+	std::cout << "      " << "                     " << "(N is padded to two digits)." << std::endl;
+
+	std::cout << "      " << "--new-game           " << "Skip the title scene and start a new game directly." << std::endl;
+
+	std::cout << "      " << "--project-path PATH  " << "Instead of using the working directory the game in" << std::endl;
+	std::cout << "      " << "                     " << "PATH is used." << std::endl;
+
+	std::cout << "      " << "--start-map-id N     " << "Overwrite the map used for new games and use." << std::endl;
+	std::cout << "      " << "                     " << "MapN.lmu instead (N is padded to four digits)." << std::endl;
+	std::cout << "      " << "                     " << "Incompatible with --load-game-id." << std::endl;
+
+	std::cout << "      " << "--start-position X Y " << "Overwrite the party start position and move the" << std::endl;
+	std::cout << "      " << "                     " << "party to position (X, Y)." << std::endl;
+	std::cout << "      " << "                     " << "Incompatible with --load-game-id." << std::endl;
+
+	std::cout << "      " << "--test-play          " << "Enable TestPlay mode." << std::endl;
+
+	std::cout << "      " << "--window             " << "Start in window mode." << std::endl;
+
+	std::cout << "  -v, " << "--version            " << "Display program version and exit." << std::endl;
+
+	std::cout << "  -h, " << "--help               " << "Display this help and exit." << std::endl << std::endl;
+
+	std::cout << "For compatibility with the legacy RPG Maker runtime the following arguments" << std::endl;
+	std::cout << "are supported:" << std::endl;
+	std::cout << "      " << "BattleTest N         " << "Same as --battle-test. When N is not a valid number" << std::endl;
+	std::cout << "      " << "                     " << "the 4th argument is used as the party id." << std::endl;
+	std::cout << "      " << "HideTitle            " << "Same as --hide-title." << std::endl;
+	std::cout << "      " << "TestPlay             " << "Same as --test-play." << std::endl << std::endl;
+
+	std::cout << "Alex, EV0001 and the EasyRPG authors wish you a lot of fun!" << std::endl;
 }
 
 #if (defined(_WIN32) && defined(NDEBUG) && defined(WINVER) && WINVER >= 0x0600)

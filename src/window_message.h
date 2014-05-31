@@ -59,12 +59,12 @@ public:
 	 * Starts message processing by reading all
 	 * non-displayed from Game_Message.
 	 */
-	void StartMessageProcessing();
+	virtual void StartMessageProcessing();
 
 	/**
 	 * Ends the message processing.
 	 */
-	void FinishMessageProcessing();
+	virtual void FinishMessageProcessing();
 
 	/**
 	 * Does the initial steps to start a choice selection.
@@ -111,7 +111,7 @@ public:
 	 * Continues outputting more text. Also handles the
 	 * CommandCode parsing.
 	 */
-	void UpdateMessage();
+	virtual void UpdateMessage();
 
 	/**
 	 * Parses the parameter part of a \-message-command.

@@ -62,6 +62,11 @@
 #  include <sys/stat.h>
 #endif
 
+#ifdef __ANDROID__
+#   include <jni.h>
+#   include <SDL_system.h>
+#endif
+
 // MinGW shlobj.h does not define this
 #ifndef SHGFP_TYPE_CURRENT
 #define SHGFP_TYPE_CURRENT 0
@@ -100,7 +105,7 @@ namespace {
 		return boost::none;
 	}
 
-	bool is_not_ascii_char(uint8_t c) { return c < 0x80; }
+	bool is_not_ascii_char(uint8_t c) { return c > 0x80; }
 
 	bool is_not_ascii_filename(std::string const& n) {
 		return std::find_if(n.begin(), n.end(), &is_not_ascii_char) != n.end();
@@ -112,21 +117,23 @@ namespace {
 			RTP_TABLE_2000;
 
 		rtp_table_type::const_iterator dir_it = table.find(Utils::LowerCase(dir));
+		std::string lower_name = Utils::LowerCase(name);
+
 		if (dir_it == table.end()) { return name; }
 
 		std::map<std::string, std::string>::const_iterator file_it =
-			dir_it->second.find(Utils::LowerCase(name));
-
-		if (file_it == dir_it->second.end() and is_not_ascii_filename(name)) {
-			// Linear Search: Japanese file name to English file name
-			for (std::map<std::string, std::string>::const_iterator it = dir_it->second.begin(); it != file_it; ++it) {
-				if (it->second == name) {
-					return it->first;
+			dir_it->second.find(lower_name);
+		if (file_it == dir_it->second.end()) {
+			if (is_not_ascii_filename(lower_name)) {
+				// Linear Search: Japanese file name to English file name
+				for (std::map<std::string, std::string>::const_iterator it = dir_it->second.begin(); it != file_it; ++it) {
+					if (it->second == lower_name) {
+						return it->first;
+					}
 				}
 			}
 			return name;
 		}
-
 		return file_it->second;
 	}
 
@@ -155,13 +162,13 @@ namespace {
 
 } // anonymous namespace
 
-EASYRPG_SHARED_PTR<FileFinder::ProjectTree> FileFinder::CreateProjectTree(std::string const& p) {
+EASYRPG_SHARED_PTR<FileFinder::ProjectTree> FileFinder::CreateProjectTree(std::string const& p, bool recursive) {
 	if(! (Exists(p) && IsDirectory(p))) { return EASYRPG_SHARED_PTR<ProjectTree>(); }
 
 	EASYRPG_SHARED_PTR<ProjectTree> tree = EASYRPG_MAKE_SHARED<ProjectTree>();
 	tree->project_path = p;
 
-	Directory mem = GetDirectoryMembers(tree->project_path, ALL);
+	Directory mem = GetDirectoryMembers(tree->project_path, recursive ? ALL : FILES);
 	for(string_map::const_iterator i = mem.members.begin(); i != mem.members.end(); ++i) {
 		(IsDirectory(MakePath(tree->project_path, i->second))?
 		 tree->directories : tree->files)[i->first] = i->second;
@@ -296,8 +303,8 @@ static void add_rtp_path(std::string const& p) {
 
 void FileFinder::InitRtpPaths() {
 	std::string const version_str =
-		Player::engine == Player::EngineRpg2k? "2000":
-		Player::engine == Player::EngineRpg2k3? "2003":
+		Player::engine == Player::EngineRpg2k ? "2000":
+		Player::engine == Player::EngineRpg2k3 ? "2003":
 		"";
 
 	assert(!version_str.empty());
@@ -305,14 +312,40 @@ void FileFinder::InitRtpPaths() {
 	std::string const company =
 		Player::engine == Player::EngineRpg2k? "ASCII": "Enterbrain";
 
-	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\" + company + "\\RPG" + version_str, "RuntimePackagePath");
-	if(! rtp_path.empty()) { add_rtp_path(rtp_path); }
+	// Original 2003 RTP installer registry key is upper case
+	// and Wine registry is case insensitive
+	std::string const key =
+		Player::engine == Player::EngineRpg2k? "RuntimePackagePath": "RUNTIMEPACKAGEPATH";
 
-	rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\" + company + "\\RPG" + version_str, "RuntimePackagePath");
-	if(! rtp_path.empty()) { add_rtp_path(rtp_path); }
+	std::string rtp_path = Registry::ReadStrValue(HKEY_CURRENT_USER, "Software\\" + company + "\\RPG" + version_str, key);
+	if (!rtp_path.empty()) {
+		add_rtp_path(rtp_path);
+	}
+
+	rtp_path = Registry::ReadStrValue(HKEY_LOCAL_MACHINE, "Software\\" + company + "\\RPG" + version_str, key);
+	if (!rtp_path.empty()) {
+		add_rtp_path(rtp_path);
+	}
+
 #ifdef GEKKO
 	add_rtp_path("sd:/data/rtp/" + version_str + "/");
 	add_rtp_path("usb:/data/rtp/" + version_str + "/");
+#elif __ANDROID__
+	// Invoke "String getRtpPath()" in EasyRPG Activity via JNI
+	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+	jobject sdl_activity = (jobject)SDL_AndroidGetActivity();
+	jclass cls = env->GetObjectClass(sdl_activity);
+	jmethodID jni_getRtpPath = env->GetMethodID(cls , "getRtpPath", "()Ljava/lang/String;");
+	jstring return_string = (jstring)env->CallObjectMethod(sdl_activity, jni_getRtpPath);
+	
+	const char *js = env->GetStringUTFChars(return_string, NULL);
+	std::string cs(js);
+
+	env->ReleaseStringUTFChars(return_string, js);
+	env->DeleteLocalRef(sdl_activity);
+	env->DeleteLocalRef(cls);
+
+	add_rtp_path(cs + "/" + version_str + "/");
 #else
 	add_rtp_path("/data/rtp/" + version_str + "/");
 #endif
@@ -321,9 +354,10 @@ void FileFinder::InitRtpPaths() {
 		add_rtp_path(getenv("RPG2K_RTP_PATH"));
 	else if (Player::engine == Player::EngineRpg2k3 && getenv("RPG2K3_RTP_PATH"))
 		add_rtp_path(getenv("RPG2K3_RTP_PATH"));
-	if(getenv("RPG_RTP_PATH")) { add_rtp_path(getenv("RPG_RTP_PATH")); }
+	if (getenv("RPG_RTP_PATH")) {
+		add_rtp_path(getenv("RPG_RTP_PATH"));
+	}
 }
-
 
 void FileFinder::Quit() {
 	search_paths.clear();
@@ -363,18 +397,30 @@ std::string FileFinder::FindDefault(const std::string& dir, const std::string& n
 }
 
 std::string FileFinder::FindDefault(std::string const& name) {
-	ProjectTree const& p = GetProjectTree();
+	return FindDefault(GetProjectTree(), name);
+}
+
+std::string FileFinder::FindDefault(const ProjectTree& tree, const std::string& name) {
+	ProjectTree const& p = tree;
 	string_map const& files = p.files;
 
 	string_map::const_iterator const it = files.find(Utils::LowerCase(name));
 
-	return(it != files.end())? MakePath(p.project_path, it->second) : "";
+	return(it != files.end()) ? MakePath(p.project_path, it->second) : "";
 }
 
 bool FileFinder::IsRPG2kProject(ProjectTree const& dir) {
 	string_map::const_iterator const
 		ldb_it = dir.files.find(Utils::LowerCase(DATABASE_NAME)),
 		lmt_it = dir.files.find(Utils::LowerCase(TREEMAP_NAME));
+
+	return(ldb_it != dir.files.end() && lmt_it != dir.files.end());
+}
+
+bool FileFinder::IsEasyRpgProject(ProjectTree const& dir){
+	string_map::const_iterator const
+		ldb_it = dir.files.find(Utils::LowerCase(DATABASE_NAME_EASYRPG)),
+		lmt_it = dir.files.find(Utils::LowerCase(TREEMAP_NAME_EASYRPG));
 
 	return(ldb_it != dir.files.end() && lmt_it != dir.files.end());
 }

@@ -18,9 +18,11 @@
 #ifdef _WIN32
 
 // Headers
+#include "system.h"
 #include "util_win.h"
+
 #ifdef USE_SDL
-#include "SDL_syswm.h"
+#  include "SDL_syswm.h"
 #endif
 
 int WindowsUtils::GetWindowsVersion() {
@@ -34,21 +36,6 @@ int WindowsUtils::GetWindowsVersion() {
 	GetVersionEx(&osvi);
 
 	return osvi.dwMajorVersion;
-}
-
-HWND WindowsUtils::GetHwnd() {
-#ifdef USE_SDL
-	SDL_SysWMinfo wmi;
-	SDL_VERSION(&wmi.version);
-
-	if(!SDL_GetWMInfo(&wmi)) {
-		return NULL;
-	}
-
-	return wmi.window;
-#else
-	return NULL;
-#endif
 }
 
 #endif

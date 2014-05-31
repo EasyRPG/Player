@@ -26,18 +26,7 @@
 #  include <config.h>
 #endif
 
-#if !(defined(_WIN32) \
-   || defined(UNIX) \
-   || defined(DINGOO) \
-   || defined(GEKKO) \
-   || defined(PSP) \
-	  || defined(GPH) \
-	  || defined(EASYRPG_IS_ANDROID) \
-	  )
-#  error "This build doesn't target an os"
-#endif
-
-#if !defined(USE_SDL) && !defined(EASYRPG_IS_ANDROID)
+#if !defined(USE_SDL)
 #  error "This build doesn't target a backend"
 #endif
 
@@ -82,16 +71,16 @@
 #    undef USE_SDL_MIXER
 #  endif
 
-#  ifdef GEKKO
+#  if defined(GEKKO) || defined(OPENDINGUX)
 #    undef SUPPORT_ZOOM
 #  endif
 
-#  if !defined(DINGOO) && !defined(GEKKO)
+#  if !defined(OPENDINGUX) && !defined(GEKKO)
 #    define SUPPORT_KEYBOARD
 #    define SUPPORT_MOUSE
 #  endif
 
-#  if !defined(DINGOO)
+#  if !defined(OPENDINGUX)
 #    define SUPPORT_JOYSTICK
 #    define SUPPORT_JOYSTICK_HAT
 #    define SUPPORT_JOYSTICK_AXIS

@@ -26,28 +26,29 @@
  */
 namespace Player {
 	enum EngineType {
+		EngineNone,
 		EngineRpg2k,
 		EngineRpg2k3
 	};
 
 	/**
 	 * Initializes EasyRPG Player.
-	*/
+	 */
 	void Init(int argc, char *argv[]);
 
 	/**
 	 * Runs the game engine.
-	*/
+	 */
 	void Run();
 
 	/**
 	 * Pauses the game engine.
-	*/
+	 */
 	void Pause();
 
 	/**
 	 * Resumes the game engine.
-	*/
+	 */
 	void Resume();
 
 	/**
@@ -59,6 +60,46 @@ namespace Player {
 	 * Exits EasyRPG Player.
 	 */
 	void Exit();
+
+	/**
+	 * Parses the command line arguments.
+	 */
+	void ParseCommandLine(int argc, char *argv[]);
+
+	/**
+	 * (Re)Initializes all game objects
+	 */
+	void CreateGameObjects();
+
+	/**
+	 * Loads all databases.
+	 */
+	void LoadDatabase();
+
+	/**
+	 * Loads savegame data.
+	 *
+	 * @param save_file Savegame file to load
+	 */
+	void LoadSavegame(const std::string& save_file);
+
+	/**
+	 * Moves the player to the start map.
+	 */
+	void SetupPlayerSpawn();
+
+	/**
+	 * Gets current codepage.
+	 *
+	 * @return current codepage
+	 */
+	std::string GetEncoding();
+
+	/** Output program version on stdout */
+	void PrintVersion();
+
+	/** Output program usage information on stdout */
+	void PrintUsage();
 
 	/** Exit flag, if true will exit application on next Player::Update. */
 	extern bool exit_flag;
@@ -81,8 +122,35 @@ namespace Player {
 	/** Battle Test Troop ID to fight with if battle test is run. */
 	extern int battle_test_troop_id;
 
+	/** Overwrite party x position */
+	extern int party_x_position;
+
+	/** Overwrite party y position */
+	extern int party_y_position;
+
+	/** Overwrite start map */
+	extern int start_map_id;
+
+	/** New game flag, if true a new game starts directly. */
+	extern bool new_game_flag;
+
+	/** If set, savegame is loaded directly */
+	extern int load_game_id;
+
+	/** Prevent adding of RTP paths to the file finder */
+	extern bool no_rtp_flag;
+
+	/** Mutes audio playback */
+	extern bool no_audio_flag;
+
+	/** Encoding used */
+	extern std::string encoding;
+
 	/** Currently interpreted engine. */
 	extern EngineType engine;
+
+	/** Game title. */
+	extern std::string game_title;
 }
 
 #endif
