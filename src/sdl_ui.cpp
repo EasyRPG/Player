@@ -733,6 +733,7 @@ void SdlUi::ProcessKeyDownEvent(SDL_Event &evnt) {
 		keys[SdlKey2InputKey(evnt.key.keysym.sym)] = true;
 #else
 		keys[SdlKey2InputKey(evnt.key.keysym.scancode)] = true;
+
 #endif
 		return;
 	}
@@ -1163,6 +1164,9 @@ Input::Keys::InputKey SdlKey2InputKey(SDL_Keycode sdlkey) {
 		case SDL_SCANCODE_CAPSLOCK		: return Input::Keys::CAPS_LOCK;
 		case SDL_SCANCODE_NUMLOCKCLEAR	: return Input::Keys::NUM_LOCK;
 		case SDL_SCANCODE_SCROLLLOCK	: return Input::Keys::SCROLL_LOCK;
+		case SDL_SCANCODE_AC_BACK		: return Input::Keys::AC_BACK;
+		case SDL_SCANCODE_SELECT		: return Input::Keys::SELECT;
+
 #endif
 		default					: return Input::Keys::NONE;
 	}
