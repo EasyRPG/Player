@@ -151,7 +151,7 @@ void ShinonomeFont::Render(Bitmap& bmp, int const x, int const y, Bitmap const& 
 	for(size_t y_ = 0; y_ < HEIGHT; ++y_) {
 		for(size_t x_ = 0; x_ < width; ++x_) {
 			if(glyph->data[y_] & (0x1 << x_)) {
-				bmp.SetPixel(x + x_, y + y_, sys.GetPixel(src_x + x_, src_y + y_));
+				bmp.SetPixel(x + x_, y + y_, sys.GetPixel(src_x + x_, src_y + y_ + 2));
 			}
 		}
 	}
