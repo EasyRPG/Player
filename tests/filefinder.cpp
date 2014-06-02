@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include "filefinder.h"
+#include "player.h"
 
 namespace filefinder_test_anon {
 
@@ -22,6 +23,7 @@ namespace filefinder_test_anon {
 using namespace filefinder_test_anon;
 
 int main(int, char**) {
+	Player::engine = Player::EngineRpg2k;
 	FileFinder::Init();
 	FileFinder::InitRtpPaths();
 
