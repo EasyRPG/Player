@@ -145,13 +145,13 @@ void ShinonomeFont::Render(Bitmap& bmp, int const x, int const y, Bitmap const& 
 	size_t const width = glyph->is_full? FULL_WIDTH : HALF_WIDTH;
 
 	unsigned const
-		src_x = color == ColorShadow? 16 : color % 10 * 16 + (16 - width) / 2,
-	    src_y = color == ColorShadow? 32 : color / 10 * 16 + 48 + (16 - HEIGHT) / 2;
+		src_x = color == ColorShadow? 16 : color % 10 * 16 + 2,
+		src_y = color == ColorShadow? 32 : color / 10 * 16 + 48 + 16 - HEIGHT;
 
 	for(size_t y_ = 0; y_ < HEIGHT; ++y_) {
 		for(size_t x_ = 0; x_ < width; ++x_) {
 			if(glyph->data[y_] & (0x1 << x_)) {
-				bmp.SetPixel(x + x_, y + y_, sys.GetPixel(src_x + x_, src_y + y_ + 2));
+				bmp.SetPixel(x + x_, y + y_, sys.GetPixel(src_x + x_, src_y + y_));
 			}
 		}
 	}
