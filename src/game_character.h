@@ -696,7 +696,7 @@ public:
 	bool IsFlashPending() const;
 
 	/**
-	 * Tests if animation type is any fixed state.
+	 * Tests if animation type is any fixed state or if the direction is locked.
 	 *
 	 * @return Whether direction is fixed
 	 */
@@ -705,9 +705,16 @@ public:
 	/**
 	 * Tests if animation type is any continuous state.
 	 *
-	 * @return Whether animation is continuous 
+	 * @return Whether animation is continuous
 	 */
 	bool IsContinuous();
+
+	/**
+	 * Tests if animation is of the type spin.
+	 *
+	 * @return Whether animation is spin type
+	 */
+	bool IsSpinning();
 
 	virtual void UpdateBushDepth();
 

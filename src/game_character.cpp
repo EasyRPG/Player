@@ -160,7 +160,7 @@ int Game_Character::GetScreenZ(int /* height */) const {
 }
 
 void Game_Character::Update() {
-	if (IsContinuous()) {
+	if (IsContinuous() || IsSpinning()) {
 		UpdateMove();
 		UpdateStop();
 	} else {
@@ -175,7 +175,9 @@ void Game_Character::Update() {
 	}
 
 	if (anime_count > 18 - GetMoveSpeed() * 2) {
-		if (!IsContinuous() && stop_count > 0) {
+		if (IsSpinning()) {
+			Turn90DegreeRight();
+		} else if (!IsContinuous() && stop_count > 0) {
 			pattern = original_pattern;
 			last_pattern = last_pattern == RPG::EventPage::Frame_left ? RPG::EventPage::Frame_right : RPG::EventPage::Frame_left;
 		} else {
@@ -227,8 +229,10 @@ void Game_Character::UpdateMove() {
 	if (GetY() * SCREEN_TILE_WIDTH < real_y)
 		real_y = max(real_y - distance, GetY() * SCREEN_TILE_WIDTH);
 
-	if (animation_type != RPG::EventPage::AnimType_fixed_graphic && walk_animation)
-		anime_count += 1.5;
+	anime_count += 
+		(IsSpinning() ? 1.0 :
+		(animation_type != RPG::EventPage::AnimType_fixed_graphic && walk_animation) ? 1.5 :
+		0);
 }
 
 void Game_Character::UpdateJump() {
@@ -569,7 +573,7 @@ void Game_Character::EndMoveRoute() {
 }
 
 void Game_Character::MoveDown() {
-	if (!IsDirectionFixed()) TurnDown();
+	if (!IsDirectionFixed() && !IsSpinning()) TurnDown();
 
 	if (jumping) {
 		jump_plus_y++;
@@ -588,7 +592,7 @@ void Game_Character::MoveDown() {
 }
 
 void Game_Character::MoveLeft() {
-	if (!IsDirectionFixed()) TurnLeft();
+	if (!IsDirectionFixed() && !IsSpinning()) TurnLeft();
 
 	if (jumping) {
 		jump_plus_x--;
@@ -607,7 +611,7 @@ void Game_Character::MoveLeft() {
 }
 
 void Game_Character::MoveRight() {
-	if (!IsDirectionFixed()) TurnRight();
+	if (!IsDirectionFixed() && !IsSpinning()) TurnRight();
 
 	if (jumping) {
 		jump_plus_x++;
@@ -626,7 +630,7 @@ void Game_Character::MoveRight() {
 }
 
 void Game_Character::MoveUp() {
-	if (!IsDirectionFixed()) TurnUp();
+	if (!IsDirectionFixed() && !IsSpinning()) TurnUp();
 
 	if (jumping) {
 		jump_plus_y--;
@@ -662,7 +666,7 @@ void Game_Character::MoveForward() {
 }
 
 void Game_Character::MoveDownLeft() {
-	if (!IsDirectionFixed()) {
+	if (!IsDirectionFixed() && !IsSpinning()) {
 		if (GetDirection() % 2) {
 			TurnLeft();
 		} else {
@@ -689,7 +693,7 @@ void Game_Character::MoveDownLeft() {
 }
 
 void Game_Character::MoveDownRight() {
-	if (!IsDirectionFixed()) {
+	if (!IsDirectionFixed() && !IsSpinning()) {
 		if (GetDirection() % 2) {
 			TurnRight();
 		} else {
@@ -717,7 +721,7 @@ void Game_Character::MoveDownRight() {
 
 
 void Game_Character::MoveUpLeft() {
-	if (!IsDirectionFixed()) {
+	if (!IsDirectionFixed() && !IsSpinning()) {
 		if (GetDirection() % 2) {
 			TurnLeft();
 		} else {
@@ -745,7 +749,7 @@ void Game_Character::MoveUpLeft() {
 
 
 void Game_Character::MoveUpRight() {
-	if (!IsDirectionFixed()) {
+	if (!IsDirectionFixed() && !IsSpinning()) {
 		if (GetDirection() % 2) {
 			TurnRight();
 		} else {
@@ -829,25 +833,33 @@ void Game_Character::MoveAwayFromPlayer() {
 void Game_Character::TurnDown() {
 	SetDirection(RPG::EventPage::Direction_down);
 	move_failed = false;
-	stop_count = pow(2.0, 8 - GetMoveFrequency());
+	if (!IsSpinning()) {
+		stop_count = pow(2.0, 8 - GetMoveFrequency());
+	}
 }
 
 void Game_Character::TurnLeft() {
 	SetDirection(RPG::EventPage::Direction_left);
 	move_failed = false;
-	stop_count = pow(2.0, 8 - GetMoveFrequency());
+	if (!IsSpinning()) {
+		stop_count = pow(2.0, 8 - GetMoveFrequency());
+	}
 }
 
 void Game_Character::TurnRight() {
 	SetDirection(RPG::EventPage::Direction_right);
 	move_failed = false;
-	stop_count = pow(2.0, 8 - GetMoveFrequency());
+	if (!IsSpinning()) {
+		stop_count = pow(2.0, 8 - GetMoveFrequency());
+	}
 }
 
 void Game_Character::TurnUp() {
 	SetDirection(RPG::EventPage::Direction_up);
 	move_failed = false;
-	stop_count = pow(2.0, 8 - GetMoveFrequency());
+	if (!IsSpinning()) {
+		stop_count = pow(2.0, 8 - GetMoveFrequency());
+	}
 }
 
 void Game_Character::Turn90DegreeLeft() {
@@ -1156,6 +1168,10 @@ bool Game_Character::IsContinuous() {
 	return
 		animation_type == RPG::EventPage::AnimType_continuous ||
 		animation_type == RPG::EventPage::AnimType_fixed_continuous;
+}
+
+bool Game_Character::IsSpinning() {
+	return animation_type == RPG::EventPage::AnimType_spin;
 }
 
 void Game_Character::UpdateBushDepth() {
