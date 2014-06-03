@@ -77,6 +77,17 @@ namespace output_anon {
 		}
 		return *overlay;
 	}
+
+	std::string format_string(char const* fmt, va_list args) {
+		char buf[4096];
+	#if __cplusplus > 199711L
+		int const result = vsnprintf(buf, sizeof(buf), fmt, args);
+	#else
+		int const result = vsprintf(buf, fmt, args);
+	#endif
+		assert(0 <= result && result < int(sizeof(buf)));
+		return std::string(buf, result);
+	}
 }
 
 using namespace output_anon;
@@ -162,12 +173,7 @@ void Output::ToggleLog() {
 void Output::Error(const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
-
-	char str[256];
-	vsprintf(str, fmt, args);
-
-	Output::ErrorStr(std::string(str));
-
+	Output::ErrorStr(format_string(fmt, args));
 	va_end(args);
 }
 
@@ -197,13 +203,7 @@ void Output::ErrorStr(std::string const& err) {
 void Output::Warning(const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
-
-	char str[256];
-
-	vsprintf(str, fmt, args);
-
-	Output::WarningStr(std::string(str));
-
+	Output::WarningStr(format_string(fmt, args));
 	va_end(args);
 }
 void Output::WarningStr(std::string const& warn) {
@@ -213,13 +213,7 @@ void Output::WarningStr(std::string const& warn) {
 void Output::Post(const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
-
-	char str[256];
-
-	vsprintf(str, fmt, args);
-
-	Output::PostStr(std::string(str));
-
+	Output::PostStr(format_string(fmt, args));
 	va_end(args);
 }
 
@@ -236,13 +230,7 @@ void Output::DebugStr(std::string const&) {
 void Output::Debug(const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
-
-	char str[256];
-
-	vsprintf(str, fmt, args);
-
-	Output::DebugStr(std::string(str));
-
+	Output::DebugStr(format_string(fmt, args));
 	va_end(args);
 }
 void Output::DebugStr(std::string const& msg) {
