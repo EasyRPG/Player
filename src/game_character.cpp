@@ -41,6 +41,7 @@ Game_Character::Game_Character() :
 	animation_id(0),
 	animation_type(RPG::EventPage::AnimType_non_continuous),
 	move_route_owner(NULL),
+	original_move_frequency(-1),
 	move_type(RPG::EventPage::MoveType_stationary),
 	move_failed(false),
 	move_count(0),
@@ -51,7 +52,6 @@ Game_Character::Game_Character() :
 	walk_animation(true),
 	cycle_stat(false),
 	opacity(255),
-	original_move_frequency(-1),
 	visible(true) {
 }
 
@@ -975,7 +975,7 @@ int Game_Character::BeginJump(const RPG::MoveRoute* current_route, int current_i
 	// Search EndJump command.
 	// When missing the move route ends directly.
 
-	for (int i = current_index; i < current_route->move_commands.size(); ++i) {
+	for (unsigned int i = current_index; i < current_route->move_commands.size(); ++i) {
 		const RPG::MoveCommand& move_command = current_route->move_commands[i];
 
 		if (move_command.command_id == RPG::MoveCommand::Code::end_jump) {

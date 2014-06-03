@@ -59,7 +59,7 @@ Game_Interpreter_Map::~Game_Interpreter_Map() {
 }
 
 bool Game_Interpreter_Map::SetupFromSave(const std::vector<RPG::SaveEventCommands>& save, int _event_id, int index) {
-	if (index < save.size()) {
+	if (index < (int)save.size()) {
 		Setup(save[index].commands, _event_id);
 		this->index = save[index].current_command;
 		child_interpreter.reset(new Game_Interpreter_Map());

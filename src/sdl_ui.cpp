@@ -75,10 +75,10 @@ static int FilterUntilFocus_SDL2(void*, SDL_Event* evnt);
 #endif
 
 SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
+	BaseUi(),
 	zoom_available(true),
 	toggle_fs_available(false),
-	mode_changing(false),
-	BaseUi() {
+	mode_changing(false) {
 
 #ifdef GEKKO
 	WPAD_Init();

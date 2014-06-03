@@ -113,7 +113,7 @@ void Scene_File::Start() {
 }
 
 void Scene_File::Refresh() {
-	for (int i = 0; (size_t) i < file_windows.size(); i++) {
+	for (unsigned int i = 0; (size_t) i < file_windows.size(); i++) {
 		Window_SaveFile *w = file_windows[i].get();
 		w->SetY(40 + (i - top_index) * 64);
 		w->SetActive(i == index);
@@ -135,8 +135,8 @@ void Scene_File::Update() {
 		}
 	}
 
-	int old_top_index = top_index;
-	int old_index = index;
+	unsigned int old_top_index = top_index;
+	unsigned int old_index = index;
 
 	if (Input::IsRepeated(Input::DOWN)) {
 		if (Input::IsTriggered(Input::DOWN) || index < file_windows.size() - 1) {

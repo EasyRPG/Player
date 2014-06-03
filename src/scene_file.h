@@ -49,8 +49,8 @@ public:
 protected:
 	void Refresh();
 
-	int index;
-	int top_index;
+	unsigned int index;
+	unsigned int top_index;
 	boost::scoped_ptr<Window_Help> help_window;
 	std::vector<EASYRPG_SHARED_PTR<Window_SaveFile> > file_windows;
 	std::string message;
