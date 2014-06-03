@@ -37,7 +37,7 @@
 #include "input.h"
 #include <boost/scoped_ptr.hpp>
 
-namespace map_anon {
+namespace {
 	RPG::SaveMapInfo& map_info = Main_Data::game_data.map_info;
 	RPG::SavePartyLocation& location = Main_Data::game_data.party_location;
 
@@ -67,8 +67,6 @@ namespace map_anon {
 	bool pan_wait;
 	int pan_speed;
 }
-
-using namespace map_anon;
 
 void Game_Map::Init() {
 	Dispose();

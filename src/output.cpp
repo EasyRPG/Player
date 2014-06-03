@@ -57,7 +57,7 @@ void boost::throw_exception(std::exception const& exp) {
 }
 #endif
 
-namespace output_anon {
+namespace {
 	std::ofstream LOG_FILE(FileFinder::MakePath(Main_Data::project_path, OUTPUT_FILENAME).c_str(), std::ios_base::out | std::ios_base::app);
 
 	std::ostream& output_time() {
@@ -89,8 +89,6 @@ namespace output_anon {
 		return std::string(buf, result);
 	}
 }
-
-using namespace output_anon;
 
 void Output::IgnorePause(bool const val) {
 	ignore_pause = val;
