@@ -69,7 +69,14 @@ namespace output_anon {
 
 	bool ignore_pause = false;
 
-	MessageOverlay* message_overlay = NULL;
+	MessageOverlay& message_overlay() {
+		static MessageOverlay* overlay = NULL;
+		assert(DisplayUi);
+		if (!overlay) {
+			overlay = new MessageOverlay();
+		}
+		return *overlay;
+	}
 }
 
 using namespace output_anon;
@@ -78,12 +85,20 @@ void Output::IgnorePause(bool const val) {
 	ignore_pause = val;
 }
 
-static void WriteLog(std::string const& type, std::string const& msg) {
+static void WriteLog(std::string const& type, std::string const& msg, Color const& c = Color()) {
 	output_time() << type << ": " << msg << std::endl;
 
 	#ifdef __ANDROID__
 		__android_log_print(type == "Error" ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, "EasyRPG Player", "%s", msg.c_str());
 	#endif
+
+	if (type != "Debug") {
+		if (DisplayUi) {
+			message_overlay().AddMessage(msg, c);
+		} else {
+			std::cerr << type << ": " << msg << std::endl;
+		}
+	}
 }
 
 static void HandleErrorOutput(const std::string& err) {
@@ -116,12 +131,6 @@ static void HandleErrorOutput(const std::string& err) {
 	DisplayUi->UpdateDisplay();
 }
 
-static void PrepareScreenOutput() {
-	if (!message_overlay) {
-		message_overlay = new MessageOverlay();
-	}
-}
-
 bool Output::TakeScreenshot() {
 	int index = 0;
 	std::string p;
@@ -145,9 +154,8 @@ bool Output::TakeScreenshot(std::ostream& os) {
 }
 
 void Output::ToggleLog() {
-	PrepareScreenOutput();
 	static bool show_log = true;
-	message_overlay->SetShowAll(show_log);
+	message_overlay().SetShowAll(show_log);
 	show_log = !show_log;
 }
 
@@ -168,7 +176,6 @@ void Output::ErrorStr(std::string const& err) {
 	static bool recursive_call = false;
 	if (!recursive_call && DisplayUi) {
 		recursive_call = true;
-		PrepareScreenOutput();
 		HandleErrorOutput(err);
 	} else {
 		// Fallback to Console if the display is not ready yet
@@ -200,9 +207,7 @@ void Output::Warning(const char* fmt, ...) {
 	va_end(args);
 }
 void Output::WarningStr(std::string const& warn) {
-	PrepareScreenOutput();
-	WriteLog("Warning", warn);
-	message_overlay->AddMessage(warn, Color(255, 255, 0, 255));
+	WriteLog("Warning", warn, Color(255, 255, 0, 255));
 }
 
 void Output::Post(const char* fmt, ...) {
@@ -219,9 +224,7 @@ void Output::Post(const char* fmt, ...) {
 }
 
 void Output::PostStr(std::string const& msg) {
-	PrepareScreenOutput();
-	WriteLog("Info", msg);
-	message_overlay->AddMessage(msg, Color(255, 255, 255, 255));
+	WriteLog("Info", msg, Color(255, 255, 255, 255));
 }
 
 #ifdef NDEBUG
