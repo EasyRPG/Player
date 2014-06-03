@@ -139,6 +139,15 @@ bool Game_Vehicle::IsMoveRouteOverwritten() const {
 void Game_Vehicle::SetMoveRouteOverwritten(bool force) {
 	data.move_route_overwrite = force;
 }
+
+bool Game_Vehicle::IsMoveRouteRepeated() const {
+	return data.move_route_repeated;
+}
+
+void Game_Vehicle::SetMoveRouteRepeated(bool force) {
+	data.move_route_repeated = force;
+}
+
 const std::string& Game_Vehicle::GetSpriteName() const {
 	return data.sprite_name;
 }

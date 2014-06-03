@@ -145,6 +145,14 @@ void Game_Player::SetMoveRouteOverwritten(bool force) {
 	location.move_route_overwrite = force;
 }
 
+bool Game_Player::IsMoveRouteRepeated() const {
+	return location.move_route_repeated;
+}
+
+void Game_Player::SetMoveRouteRepeated(bool force) {
+	location.move_route_repeated = force;
+}
+
 const std::string& Game_Player::GetSpriteName() const {
 	return location.sprite_name;
 }

@@ -385,6 +385,8 @@ void Game_Character::MoveTypeCustom() {
 			// End of Move list
 			if (active_route->repeat) {
 				active_route_index = 0;
+				SetMoveRouteRepeated(true);
+				EndMoveRoute();
 			} else if (IsMoveRouteOverwritten()) {
 				SetMoveRouteOverwritten(false);
 				EndMoveRoute();
@@ -539,7 +541,7 @@ void Game_Character::MoveTypeCustom() {
 			} while (jumping);
 
 			if ((size_t)active_route_index >= active_route->move_commands.size()) {
-				stop_count = 256;
+				stop_count = (active_route->repeat ? 0 : 256);
 			}
 		}
 	}
@@ -569,7 +571,10 @@ void Game_Character::EndMoveRoute() {
 		move_route_owner->EndMoveRoute(this);
 		move_route_owner = NULL;
 	}
-	SetMoveFrequency(original_move_frequency);
+
+	if (!IsMoveRouteRepeated()) {
+		SetMoveFrequency(original_move_frequency);
+	}
 }
 
 void Game_Character::MoveDown() {
