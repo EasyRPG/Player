@@ -131,18 +131,24 @@ struct parse_registry {
 		escaped.clear();
 		qi::uint_parser<uint16_t, 8, 1, 3> octal;
 		qi::uint_parser<uint16_t, 16, 1, 4> hex;
+		std::string::const_iterator str_it = str_beg;
 		if(not qi::parse(
-			   str_beg, str_end,
+			   str_it, str_end,
 			   *(escape | ('\\' >> (('x' >> hex) | octal)) | qi::char_), escaped)
-		   or str_beg != str_end) {
+		   or str_it != str_end) {
 			error(format("escaping error"));
 			return std::string();
 		}
 
 		// utf-16 -> utf-8
-		return std::string(
-				u32_to_u8(u16_to_u32(escaped.begin(), escaped.begin(), escaped.end())),
-				u32_to_u8(u16_to_u32(escaped.end  (), escaped.begin(), escaped.end())));
+		try {
+			return std::string(
+					u32_to_u8(u16_to_u32(escaped.begin(), escaped.begin(), escaped.end())),
+					u32_to_u8(u16_to_u32(escaped.end  (), escaped.begin(), escaped.end())));
+		} catch(std::out_of_range const& o) {
+			error(format("Unicode conversion error: %s") % o.what());
+			return std::string(str_beg, str_end);
+		}
 	}
 
 	section_value parse_value() {
