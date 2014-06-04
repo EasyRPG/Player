@@ -211,7 +211,6 @@ void Game_Player::PerformTeleport() {
 	teleporting = false;
 
 	if (Game_Map::GetMapId() != new_map_id) {
-		move_route_owner = NULL;
 		Refresh(); // Reset sprite if it was changed by a move
 		Game_Map::Setup(new_map_id);
 	}

@@ -177,7 +177,7 @@ void Game_Character::Update() {
 	if (anime_count > 18 - GetMoveSpeed() * 2) {
 		if (IsSpinning()) {
 			Turn90DegreeRight();
-		} else if (!IsContinuous() && stop_count > 0) {
+		} else if (!IsContinuous() && IsStopping()) {
 			pattern = original_pattern;
 			last_pattern = last_pattern == RPG::EventPage::Frame_left ? RPG::EventPage::Frame_right : RPG::EventPage::Frame_left;
 		} else {
