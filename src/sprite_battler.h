@@ -46,7 +46,7 @@ public:
 
 	enum LoopState {
 		LoopState_IdleAnimationAfterFinish,
-		LoopState_LoopAnimation,
+		LoopState_LoopAnimation
 	};
 
 	/**
