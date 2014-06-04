@@ -31,7 +31,6 @@ list(APPEND CMAKE_MODULE_PATH
 add_definitions(
   ${PNG_DEFINITIONS}
 
-  -D UNIX=1
   -D USE_SDL=1)
 
 if(CMAKE_GENERATOR MATCHES "Makefile")
@@ -95,7 +94,7 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/lib/liblcf/src/generated")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
 
-foreach(i Expat Freetype JPEG Pixman ZLIB PNG SDL2 Boost Iconv)
+foreach(i Expat Freetype Pixman ZLIB PNG SDL2 Boost Iconv)
   find_package(${i} REQUIRED)
 
   string(TOUPPER ${i} i)
@@ -162,14 +161,14 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://easy-rpg.org/")
   set(CPACK_DEBIAN_PACKAGE_MAINTAINER "take_cheeze")
   set(CPACK_DEBIAN_PACKAGE_DEPENDS
-    libexpat1 libfreetype6 libjpeg8 libpixman-1-0 libpng12-0 zlib1g libsdl2-2.0-0
+    libexpat1 libfreetype6 libpixman-1-0 libpng12-0 zlib1g libsdl2-2.0-0
     libsdl2-mixer-2.0-0 libopenal1 libogg0 libflac8 libvorbis0a libvorbisenc2 libsndfile1
     libstdc++6 libgcc1 libasound2 libpulse0 libxext6 libcaca0 libmikmod2 libvorbisfile3
-		libmad0 libjson0 libslang2 libncurses5 libtinfo5 libwrap0 libasyncns0 libxau6 libxdmcp6)
+    libmad0 libjson0 libslang2 libncurses5 libtinfo5 libwrap0 libasyncns0 libxau6 libxdmcp6)
 endif()
 
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
-set(CPACK_PACKAGE_VERSION "0.1.3")
+set(CPACK_PACKAGE_VERSION "0.2")
 set(CPACK_PACKAGE_ICON "${CMAKE_CURRENT_SOURCE_DIR}/resources/player.ico")
 set(CPACK_RESOURCE_FILE_README ${CMAKE_CURRENT_SOURCE_DIR}/README)
 
@@ -205,7 +204,7 @@ if(EXISTS $ENV{RPG_RTP_PATH})
   list(APPEND TEST_ENVS "RPG_RTP_PATH=${RPG_RTP_PATH}")
 endif()
 
-file(GLOB TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp)
+file(GLOB TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp)
 foreach(i ${TEST_FILES})
   get_filename_component(name "${i}" NAME_WE)
   add_executable(test_${name} ${i})

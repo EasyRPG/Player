@@ -37,8 +37,6 @@ public:
 	Scene_Logo();
 
 	void Start();
-	void TransitionIn();
-	void TransitionOut();
 	void Update();
 
 private:

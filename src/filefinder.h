@@ -200,8 +200,9 @@ namespace FileFinder {
 
 	ProjectTree const& GetProjectTree();
 	EASYRPG_SHARED_PTR<ProjectTree> CreateProjectTree(std::string const& p, bool recursive = true);
-	bool IsRPG2kProject(ProjectTree const& dir);
 
+	bool IsRPG2kProject(ProjectTree const& dir);
+	bool IsEasyRpgProject(ProjectTree const& dir);
 } // namespace FileFinder
 
 #endif

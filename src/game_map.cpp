@@ -17,6 +17,8 @@
 
 // Headers
 #include <cassert>
+#include <iomanip>
+#include <sstream>
 
 #include "system.h"
 #include "game_map.h"
@@ -35,7 +37,7 @@
 #include "input.h"
 #include <boost/scoped_ptr.hpp>
 
-namespace map_anon {
+namespace {
 	RPG::SaveMapInfo& map_info = Main_Data::game_data.map_info;
 	RPG::SavePartyLocation& location = Main_Data::game_data.party_location;
 
@@ -65,8 +67,6 @@ namespace map_anon {
 	bool pan_wait;
 	int pan_speed;
 }
-
-using namespace map_anon;
 
 void Game_Map::Init() {
 	Dispose();
@@ -149,10 +149,10 @@ void Game_Map::SetupFromSave() {
 			evnt = EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID, false, Main_Data::game_data.common_events[i]);
 		}
 		else {
-			evnt = EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID);
+			evnt = EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID, false);
 		}
 
-		common_events.insert(std::make_pair(Data::commonevents[i].ID, EASYRPG_MAKE_SHARED<Game_CommonEvent>(Data::commonevents[i].ID, false, Main_Data::game_data.common_events[i])));
+		common_events.insert(std::make_pair(Data::commonevents[i].ID, evnt));
 	}
 
 	static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(Main_Data::game_data.events.events, 0);
@@ -173,13 +173,25 @@ void Game_Map::SetupCommon(int _id) {
 
 	location.map_id = _id;
 
-	char file[12];
-	sprintf(file, "Map%04d.lmu", location.map_id);
+	// Try loading EasyRPG map files first, then fallback to normal RPG Maker
+	std::stringstream ss;
+	ss << "Map" << std::setfill('0') << std::setw(4) << location.map_id << ".emu";
 
-	map = LMU_Reader::Load(FileFinder::FindDefault(file),
-		ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)));
-	if (map.get() == NULL) {
-		Output::ErrorStr(LcfReader::GetError());
+	std::string map_file = FileFinder::FindDefault(ss.str());
+	if (map_file.empty()) {
+		ss.str("");
+		ss << "Map" << std::setfill('0') << std::setw(4) << location.map_id << ".lmu";
+
+		map = LMU_Reader::Load(FileFinder::FindDefault(ss.str()), Player::GetEncoding());
+		if (map.get() == NULL) {
+			Output::ErrorStr(LcfReader::GetError());
+		}
+	}
+	else {
+		map = LMU_Reader::LoadXml(map_file);
+		if (map.get() == NULL) {
+			Output::ErrorStr(LcfReader::GetError());
+		}
 	}
 
 	if (map->parallax_flag) {
@@ -334,21 +346,33 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 	int tile_id;
 
 	if (self_event) {
+		bool pass = false;
 		for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
 			Game_Event* evnt = i->second.get();
 			if (evnt != self_event && evnt->GetX() == x && evnt->GetY() == y) {
 				if (!evnt->GetThrough()) {
 					if (evnt->GetLayer() == RPG::EventPage::Layers_same) {
-						return false;
+						if (self_event->GetX() == x && self_event->GetY() == y)
+							pass = true;
+						else 
+							return false;
 					}
-					else if (evnt->GetTileId() >= 0 && evnt->GetLayer() == RPG::EventPage::Layers_below) {
+					else if (evnt->GetTileId() > 0 && evnt->GetLayer() == RPG::EventPage::Layers_below) {
 						// Event layer Chipset Tile
-						tile_id = i->second->GetTileId();
-						return (passages_up[tile_id] & bit) != 0;
+						tile_id = evnt->GetTileId();
+						if ((passages_up[tile_id] & Passable::Above) != 0)
+							if ((passages_down[tile_id] & bit) == 0)
+								return false;
+						if ((passages_up[tile_id] & bit) != 0)
+							pass = true;
+						else
+							return false;
 					}
 				}
 			}
 		}
+		if (pass) // All events here are passable
+			return true;
 	}
 
 	int const tile_index = x + y * GetWidth();
@@ -515,12 +539,10 @@ bool Game_Map::IsCounter(int x, int y) {
 int Game_Map::GetTerrainTag(int const x, int const y) {
 	unsigned const chipID = map->lower_layer[x + y * GetWidth()];
 	unsigned const chip_index =
-		(chipID <  3000)?  0 + chipID/1000 :
-		(chipID == 3028)?  3 + 0 :
-		(chipID == 3078)?  3 + 1 :
-		(chipID == 3128)?  3 + 2 :
+		(chipID <  3050)?  0 + chipID/1000 :
+		(chipID <  4000)?  4 + (chipID-3050)/50 :
 		(chipID <  5000)?  6 + (chipID-4000)/50 :
-		(chipID <  5144)? 18 + map_info.lower_tiles[chipID-5000] :
+		(chipID <  5144)? 18 + (chipID-5000) :
 		0;
 	unsigned const chipset_index = map_info.chipset_id - 1;
 
@@ -539,7 +561,7 @@ void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
 
 	tEventHash::const_iterator i;
 	for (i = Game_Map::GetEvents().begin(); i != Game_Map::GetEvents().end(); i++) {
-		if (i->second->GetX() == x && i->second->GetY() == y) {
+		if (i->second->GetRealX() == x * SCREEN_TILE_WIDTH && i->second->GetRealY() == y * SCREEN_TILE_WIDTH) {
 			result.push_back(i->second.get());
 		}
 	}
@@ -749,6 +771,7 @@ bool Game_Map::PrepareEncounter() {
 	Game_Temp::battle_terrain_id = Game_Map::GetTerrainTag(Main_Data::game_player->GetX(), Main_Data::game_player->GetY());
 	Game_Temp::battle_background = "";
 	Game_Temp::battle_troop_id = encounters[rand() / (RAND_MAX / encounters.size() + 1)];
+	Game_Temp::battle_escape_mode = -1;
 	Game_Temp::battle_calling = true;
 
 	return true;

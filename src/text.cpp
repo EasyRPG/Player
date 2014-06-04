@@ -111,15 +111,14 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 			mask->Blit(0, 0, *exfont, rect_exfont, 255);
 
 			// Get color region from system graphic
-			Rect clip_system(8+16*(color%10), 4+48+16*(color/10), 6, 12);
+			Rect clip_system(2+16*(color%10), 4+48+16*(color/10), 12, 12);
 
 			BitmapRef char_surface = Bitmap::Create(mask->GetWidth(), mask->GetHeight(), true);
 			char_surface->SetTransparentColor(dest.GetTransparentColor());
 			char_surface->Clear();
 
-			// Blit gradient color background (twice because of full glyph)
+			// Blit gradient color background
 			char_surface->Blit(0, 0, *system, clip_system, 255);
-			char_surface->Blit(6, 0, *system, clip_system, 255);
 
 			// Blit mask onto background
 			char_surface->MaskBlit(0, 0, *mask, mask->GetRect());

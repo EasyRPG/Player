@@ -39,6 +39,7 @@ BaseUi::BaseUi()
 	, mouse_x(0)
 	, mouse_y(0)
 	, cursor_visible(false)
+	, back_color(0, 0, 0, 255)
 {
 	keys.reset();
 }

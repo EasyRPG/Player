@@ -482,7 +482,7 @@ bool Game_BattleAlgorithm::Skill::Execute() {
 
 	Reset();
 
-	animation = &Data::animations[skill.animation_id == 0 ? NULL : skill.animation_id - 1];
+	animation = skill.animation_id == 0 ? NULL : &Data::animations[skill.animation_id - 1];
 
 	this->success = false;
 
