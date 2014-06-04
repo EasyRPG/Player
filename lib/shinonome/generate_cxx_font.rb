@@ -4,8 +4,6 @@
 FONT_SIZE = 12
 EMPTY_CHAR = Array.new(FONT_SIZE, 0x0)
 
-kanji_encoding = "UTF-32LE"
-
 def skip_until(f, regex)
   while(not f.eof?)
     l = f.readline().chomp
