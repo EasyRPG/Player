@@ -49,6 +49,7 @@ SdlAudio::SdlAudio() :
 	if (Mix_OpenAudio(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) < 0) {
 		Output::Error("Couldn't initialize audio.\n%s\n", Mix_GetError());
 	}
+	Mix_AllocateChannels(32); // Default is MIX_CHANNELS = 8
 	/*int flags = MIX_INIT_MP3;
 	int initted = Mix_Init(flags);
 	if ((initted & flags) != flags) {

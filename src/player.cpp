@@ -115,6 +115,7 @@ void Player::Init(int argc, char *argv[]) {
 		std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
 		std::string encoding = Player::GetEncoding();
 		game_title = ReaderUtil::Recode(title, encoding);
+		no_rtp_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1"? true : no_rtp_flag;
 	}
 
 	DisplayUi.reset();
