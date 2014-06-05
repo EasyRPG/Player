@@ -357,6 +357,10 @@ void FileFinder::InitRtpPaths() {
 	if (getenv("RPG_RTP_PATH")) {
 		add_rtp_path(getenv("RPG_RTP_PATH"));
 	}
+	if (!search_paths.size()) {
+		Output::Warning("RTP not found. If this game does not require it,");
+		Output::Warning("add FullPackageFlag=1 to RPG_RT.ini");
+	}
 }
 
 void FileFinder::Quit() {
