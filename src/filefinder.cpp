@@ -358,8 +358,10 @@ void FileFinder::InitRtpPaths() {
 		add_rtp_path(getenv("RPG_RTP_PATH"));
 	}
 	if (!search_paths.size()) {
-		Output::Warning("RTP not found. If this game does not require it,");
-		Output::Warning("add FullPackageFlag=1 to RPG_RT.ini");
+		Output::Warning("RTP not found. This may create missing file errors.");
+		Output::Warning("Install RTP files or check they are installed fine.");
+		Output::Warning("If this game really does not require RTP, then add");
+		Output::Warning("FullPackageFlag=1 line to the RPG_RT.ini game file.");
 	}
 }
 
