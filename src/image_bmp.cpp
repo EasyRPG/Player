@@ -113,13 +113,7 @@ void ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
 		return;
 	}
 
-	int image_size = get_4(&data[BITMAPFILEHEADER_SIZE + 20]);
-	if (image_size != 0 && image_size != width * height) {
-		Output::Error("Invalid BMP image size.");
-		return;
-	}
-
-	int num_colors = std::min(256U, get_4(&data[BITMAPFILEHEADER_SIZE + 36]));
+	int num_colors = std::min(256U, get_4(&data[BITMAPFILEHEADER_SIZE + 32]));
 	uint8_t (*palette)[4] = (uint8_t(*)[4]) &data[BITMAPFILEHEADER_SIZE + 40];
 	const uint8_t* src_pixels = &data[bits_offset];
 
