@@ -218,13 +218,13 @@ bool Game_Player::IsTeleporting() const {
 }
 
 void Game_Player::Center(int x, int y) {
-	int center_x = (DisplayUi->GetWidth() / 2 - TILE_SIZE) * 8;
-	int center_y = (DisplayUi->GetHeight() / 2 - (TILE_SIZE/2)) * 8;
 
-	int max_x = (Game_Map::GetWidth() - DisplayUi->GetWidth() / TILE_SIZE) * (8*TILE_SIZE);
-	int max_y = (Game_Map::GetHeight() - DisplayUi->GetHeight() / TILE_SIZE) * (8*TILE_SIZE);
-	Game_Map::SetDisplayX(max(0, min((x * (8*TILE_SIZE) - center_x), max_x)));
-	Game_Map::SetDisplayY(max(0, min((y * (8*TILE_SIZE) - center_y), max_y)));
+	int center_x = (DisplayUi->GetWidth() / ( TILE_SIZE/16) - TILE_SIZE) * 8;
+	int center_y = (DisplayUi->GetHeight() / (TILE_SIZE/16) - (TILE_SIZE/2)) * 8;
+	int max_x = (Game_Map::GetWidth() - DisplayUi->GetWidth() / TILE_SIZE) * (SCREEN_TILE_WIDTH);
+	int max_y = (Game_Map::GetHeight() - DisplayUi->GetHeight() / TILE_SIZE) * (SCREEN_TILE_WIDTH);
+	Game_Map::SetDisplayX(max(0, min((x * SCREEN_TILE_WIDTH - center_x), max_x)));
+	Game_Map::SetDisplayY(max(0, min((y * SCREEN_TILE_WIDTH - center_y), max_y)));	
 }
 
 void Game_Player::MoveTo(int x, int y) {
