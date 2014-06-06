@@ -35,6 +35,7 @@ AC_CHECK_HEADERS([boost/foreach.hpp],[],[AC_MSG_ERROR(['boost' is required but i
 AC_LANG_POP([C++])
 
 # Checks for typedefs, structures, and compiler characteristics.
+AC_C_BIGENDIAN
 AC_CHECK_HEADER_STDBOOL
 AC_C_INLINE
 AC_TYPE_INT16_T

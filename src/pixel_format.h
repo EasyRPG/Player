@@ -24,6 +24,7 @@
 #include <algorithm>
 #include "system.h"
 #include "utils.h"
+#include "config.h"
 
 /** Enums. */
 namespace PF {
@@ -747,7 +748,7 @@ public:
 	}
 };
 
-#ifndef USE_BIG_ENDIAN
+#ifndef WORDS_BIGENDIAN
 typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::Alpha,PF::IsAligned,8,16,8,8,8,0,8,24> format_B8G8R8A8_a;
 typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::Alpha,PF::IsAligned,8,0,8,8,8,16,8,24> format_R8G8B8A8_a;
 typedef PixelFormatT<32,PF::StaticMasks,PF::StaticAlpha,PF::Alpha,PF::IsAligned,8,24,8,16,8,8,8,0> format_A8B8G8R8_a;
