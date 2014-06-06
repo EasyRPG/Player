@@ -578,7 +578,7 @@ void Game_Character::EndMoveRoute() {
 }
 
 void Game_Character::MoveDown() {
-	if (!IsDirectionFixed() && !IsSpinning()) TurnDown();
+	if (!IsDirectionFixed()) TurnDown();
 
 	if (jumping) {
 		jump_plus_y++;
@@ -597,7 +597,7 @@ void Game_Character::MoveDown() {
 }
 
 void Game_Character::MoveLeft() {
-	if (!IsDirectionFixed() && !IsSpinning()) TurnLeft();
+	if (!IsDirectionFixed()) TurnLeft();
 
 	if (jumping) {
 		jump_plus_x--;
@@ -616,7 +616,7 @@ void Game_Character::MoveLeft() {
 }
 
 void Game_Character::MoveRight() {
-	if (!IsDirectionFixed() && !IsSpinning()) TurnRight();
+	if (!IsDirectionFixed()) TurnRight();
 
 	if (jumping) {
 		jump_plus_x++;
@@ -635,7 +635,7 @@ void Game_Character::MoveRight() {
 }
 
 void Game_Character::MoveUp() {
-	if (!IsDirectionFixed() && !IsSpinning()) TurnUp();
+	if (!IsDirectionFixed()) TurnUp();
 
 	if (jumping) {
 		jump_plus_y--;
@@ -671,7 +671,7 @@ void Game_Character::MoveForward() {
 }
 
 void Game_Character::MoveDownLeft() {
-	if (!IsDirectionFixed() && !IsSpinning()) {
+	if (!IsDirectionFixed()) {
 		if (GetDirection() % 2) {
 			TurnLeft();
 		} else {
@@ -698,7 +698,7 @@ void Game_Character::MoveDownLeft() {
 }
 
 void Game_Character::MoveDownRight() {
-	if (!IsDirectionFixed() && !IsSpinning()) {
+	if (!IsDirectionFixed()) {
 		if (GetDirection() % 2) {
 			TurnRight();
 		} else {
@@ -726,7 +726,7 @@ void Game_Character::MoveDownRight() {
 
 
 void Game_Character::MoveUpLeft() {
-	if (!IsDirectionFixed() && !IsSpinning()) {
+	if (!IsDirectionFixed()) {
 		if (GetDirection() % 2) {
 			TurnLeft();
 		} else {
@@ -754,7 +754,7 @@ void Game_Character::MoveUpLeft() {
 
 
 void Game_Character::MoveUpRight() {
-	if (!IsDirectionFixed() && !IsSpinning()) {
+	if (!IsDirectionFixed()) {
 		if (GetDirection() % 2) {
 			TurnRight();
 		} else {
@@ -1065,18 +1065,14 @@ void Game_Character::Lock() {
 }
 
 void Game_Character::Unlock() {
-	if (IsFacingLocked()) {
-		SetFacingLocked(false);
-		SetFacingDirection(GetPrelockDirection());
-	}
+	SetFacingLocked(false);
+	SetFacingDirection(GetPrelockDirection());
 }
 
 void Game_Character::SetFacingDirection(int direction) {
 	if (!IsDirectionFixed() && (direction != -1)) {
 		SetDirection(direction);
 	}
-
-	stop_count = pow(2.0, 8 - GetMoveFrequency());
 }
 
 void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
@@ -1166,7 +1162,7 @@ bool Game_Character::IsDirectionFixed() {
 		animation_type == RPG::EventPage::AnimType_fixed_continuous ||
 		animation_type == RPG::EventPage::AnimType_fixed_graphic ||
 		animation_type == RPG::EventPage::AnimType_fixed_non_continuous ||
-		IsFacingLocked();
+		IsFacingLocked() || IsSpinning();
 }
 
 bool Game_Character::IsContinuous() {
