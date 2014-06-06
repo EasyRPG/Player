@@ -37,13 +37,6 @@ if(CMAKE_GENERATOR MATCHES "Makefile")
   add_definitions(-fno-rtti)
 endif()
 
-# wine checking
-find_program(WINE_EXECUTABLE wine)
-if(EXISTS ${WINE_EXECUTABLE})
-  message(STATUS "wine registry enabled")
-  add_definitions(-DHAVE_WINE=1)
-endif()
-
 # shinonome font
 set(SHINONOME_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/shinonome")
 set(SHINONOME_SRCS "${SHINONOME_PATH}/gothic.cxx" "${SHINONOME_PATH}/mincho.cxx")
