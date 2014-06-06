@@ -17,6 +17,8 @@
 
 #ifdef _WIN32
 #  include "platform/registry_win.cpp"
+#elif defined(HAVE_WINE)
+#  include "platform/wine_registry.cpp"
 #else
 #  include "platform/registry_wine.cpp"
 #endif
