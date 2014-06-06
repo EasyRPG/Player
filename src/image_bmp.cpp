@@ -66,7 +66,7 @@ void ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
 
 	const unsigned bits_offset = get_4(&data[10]);
 
-	// BITMAPINFOHEADER structure
+	// BITMAPINFOHEADER structure (BMP 2.x and 3.x)
 	//
 	// 0	4	BITMAPINFOHEADER size
 	// 4	4	width
@@ -79,13 +79,8 @@ void ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
 	// 28	4	Y pixels per meter
 	// 32	4	number of palette colors used
 	// 36	4	number of important palette colors
-	// 40 ... palette
+	// size ... palette (starts at 40 in BMP 2.x/3.x and 108 in BMP 4.x)
 
-	static const unsigned BITMAPINFOHEADER_SIZE = 40;
-	if (get_4(&data[BITMAPFILEHEADER_SIZE + 0]) != BITMAPINFOHEADER_SIZE) {
-		Output::Error("Incorrect BMP header size.");
-		return;
-	}
 
 	width = (int) get_4(&data[BITMAPFILEHEADER_SIZE + 4]);
 	height = (int) get_4(&data[BITMAPFILEHEADER_SIZE + 8]);
@@ -113,14 +108,9 @@ void ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
 		return;
 	}
 
-	int image_size = get_4(&data[BITMAPFILEHEADER_SIZE + 20]);
-	if (image_size != 0 && image_size != width * height) {
-		Output::Error("Invalid BMP image size.");
-		return;
-	}
-
-	int num_colors = std::min(256U, get_4(&data[BITMAPFILEHEADER_SIZE + 36]));
-	uint8_t (*palette)[4] = (uint8_t(*)[4]) &data[BITMAPFILEHEADER_SIZE + 40];
+	int num_colors = std::min(256U, get_4(&data[BITMAPFILEHEADER_SIZE + 32]));
+	uint8_t (*palette)[4] = (uint8_t(*)[4]) &data[BITMAPFILEHEADER_SIZE +
+		get_4(&data[BITMAPFILEHEADER_SIZE + 0])];
 	const uint8_t* src_pixels = &data[bits_offset];
 
 	// Ensure no palette entry is an exact duplicate of #0
