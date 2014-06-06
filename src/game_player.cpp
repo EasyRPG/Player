@@ -242,9 +242,10 @@ void Game_Player::MoveTo(int x, int y) {
 }
 
 void Game_Player::UpdateScroll(int last_real_x, int last_real_y) {
-	int center_x = (DisplayUi->GetWidth() / 2 - TILE_SIZE) * 8;
-	int center_y = (DisplayUi->GetHeight() / 2 - (TILE_SIZE/2)) * 8;
+	int center_x = (DisplayUi->GetWidth() / ( TILE_SIZE/16) - TILE_SIZE) * 8;
+	int center_y = (DisplayUi->GetHeight() / (TILE_SIZE/16) - (TILE_SIZE/2)) * 8;
 
+ 
 	if (Game_Map::IsPanLocked())
 		return;
 

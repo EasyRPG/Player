@@ -64,7 +64,7 @@ void Scene_Battle_Rpg2k::CreateBattleOptionWindow() {
 
 	options_window.reset(new Window_Command(commands, 76));
 	options_window->SetHeight(80);
-	options_window->SetY((SCREEN_TARGET_HEIGHT-80));
+	options_window->SetY(SCREEN_TARGET_HEIGHT-80);
 	
 	if (!Game_Battle::IsEscapeAllowed()) {
 		// No escape
@@ -83,7 +83,7 @@ void Scene_Battle_Rpg2k::CreateBattleTargetWindow() {
 
 	target_window.reset(new Window_Command(commands, 136, 4));
 	target_window->SetHeight(80);
-	target_window->SetY((SCREEN_TARGET_HEIGHT-80));
+	target_window->SetY(SCREEN_TARGET_HEIGHT-80);
 	target_window->SetZ(3001);
 }
 
@@ -97,7 +97,7 @@ void Scene_Battle_Rpg2k::CreateBattleCommandWindow() {
 	command_window.reset(new Window_Command(commands, 76));
 	command_window->SetHeight(80);
 	command_window->SetX(SCREEN_TARGET_WIDTH - 76);
-	command_window->SetY((SCREEN_TARGET_HEIGHT-80));
+	command_window->SetY(SCREEN_TARGET_HEIGHT-80);
 }
 
 

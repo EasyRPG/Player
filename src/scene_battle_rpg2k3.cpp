@@ -164,7 +164,7 @@ void Scene_Battle_Rpg2k3::CreateBattleOptionWindow() {
 
 	options_window.reset(new Window_Command(commands, 76));
 	options_window->SetHeight(80);
-	options_window->SetY((SCREEN_TARGET_HEIGHT-80));
+	options_window->SetY(SCREEN_TARGET_HEIGHT-80);
 	// TODO: Auto Battle not implemented
 	options_window->DisableItem(1);
 
@@ -186,7 +186,7 @@ void Scene_Battle_Rpg2k3::CreateBattleTargetWindow() {
 
 	target_window.reset(new Window_Command(commands, 136, 4));
 	target_window->SetHeight(80);
-	target_window->SetY((SCREEN_TARGET_HEIGHT-80));
+	target_window->SetY(SCREEN_TARGET_HEIGHT-80);
 	target_window->SetZ(3001);
 }
 
@@ -229,11 +229,11 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 
 	command_window->SetHeight(80);
 	command_window->SetX(SCREEN_TARGET_WIDTH - 76);
-	command_window->SetY((SCREEN_TARGET_HEIGHT-80));
+	command_window->SetY(SCREEN_TARGET_HEIGHT-80);
 }
 
 void Scene_Battle_Rpg2k3::CreateBattleMessageWindow() {
-	message_window.reset(new Window_Message(0, (SCREEN_TARGET_WIDTH/2), SCREEN_TARGET_WIDTH, 80));
+	message_window.reset(new Window_Message(0,(SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH, 80));
 	message_window->SetZ(3002);
 }
 
