@@ -461,7 +461,7 @@ bool SdlUi::RefreshDisplayMode() {
 	if (!main_surface) {
 		// Drawing surface will be the window itself
 		main_surface = Bitmap::Create(
-			320, 240, Color(0, 0, 0, 255));
+			SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT, Color(0, 0, 0, 255));
 	}
 #endif
 

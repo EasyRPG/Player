@@ -519,11 +519,11 @@ bool Game_Actor::GetAutoBattle() const {
 }
 
 int Game_Actor::GetBattleX() const {
-	return Data::actors[data.ID - 1].battle_x;
-}
+	return (Data::actors[data.ID - 1].battle_x*SCREEN_TARGET_WIDTH/320);
+	}
 
 int Game_Actor::GetBattleY() const {
-	return Data::actors[data.ID - 1].battle_y;
+	return (Data::actors[data.ID - 1].battle_y*SCREEN_TARGET_HEIGHT/240);
 }
 
 const std::string& Game_Actor::GetSkillName() const {

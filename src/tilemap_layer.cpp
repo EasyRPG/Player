@@ -154,16 +154,16 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	memset(autotiles_ab, 0, sizeof(autotiles_ab));
 	memset(autotiles_d, 0, sizeof(autotiles_d));
 
-	int tiles_y = (int)ceil(DisplayUi->GetHeight() / 16.0) + 1;
+	int tiles_y = (int)ceil(DisplayUi->GetHeight() / (float)TILE_SIZE) + 1;
 	for (int i = 0; i < tiles_y + 2; i++) {
-		tilemap_tiles.push_back(EASYRPG_MAKE_SHARED<TilemapTile>(this, 16 * i));
+		tilemap_tiles.push_back(EASYRPG_MAKE_SHARED<TilemapTile>(this, TILE_SIZE * i));
 	}
 }
 
 void TilemapLayer::DrawTile(BitmapScreen& screen, int x, int y, int row, int col, bool autotile) {
 	if (!autotile && screen.GetBitmap()->GetTileOpacity(row, col) == Bitmap::Transparent)
 		return;
-	Rect rect(col * 16, row * 16, 16, 16);
+	Rect rect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 	screen.BlitScreen(x, y, rect);
 }
 
@@ -171,15 +171,15 @@ void TilemapLayer::Draw(int z_order) {
 	if (!visible) return;
 
 	// Get the number of tiles that can be displayed on window
-	int tiles_x = (int)ceil(DisplayUi->GetWidth() / 16.0);
-	int tiles_y = (int)ceil(DisplayUi->GetHeight() / 16.0);
+	int tiles_x = (int)ceil(DisplayUi->GetWidth() / (float)TILE_SIZE);
+	int tiles_y = (int)ceil(DisplayUi->GetHeight() / (float)TILE_SIZE);
 
 	// If ox or oy are not equal to the tile size draw the next tile too
 	// to prevent black (empty) tiles at the borders
-	if (ox % 16 != 0) {
+	if (ox % TILE_SIZE != 0) {
 		++tiles_x;
 	}
-	if (oy % 16 != 0) {
+	if (oy % TILE_SIZE != 0) {
 		++tiles_y;
 	}
 
@@ -187,13 +187,13 @@ void TilemapLayer::Draw(int z_order) {
 		for (int y = 0; y < tiles_y; y++) {
 
 			// Get the real maps tile coordinates
-			int map_x = ox / 16 + x;
-			int map_y = oy / 16 + y;
+			int map_x = ox / TILE_SIZE + x;
+			int map_y = oy / TILE_SIZE + y;
 
 			if (width <= map_x || height <= map_y) continue;
 
-			int map_draw_x = x * 16 - ox % 16;
-			int map_draw_y = y * 16 - oy % 16;
+			int map_draw_x = x * TILE_SIZE - ox % TILE_SIZE;
+			int map_draw_y = y * TILE_SIZE - oy % TILE_SIZE;
 
 			// Get the tile data
 			TileData &tile = data_cache[map_x][map_y];
@@ -202,8 +202,8 @@ void TilemapLayer::Draw(int z_order) {
 
 			if (map_draw_z > 0) {
 				if (map_draw_z < 9999) {
-					map_draw_z += y * 16;
-					if (y == 0) map_draw_z += 16;
+					map_draw_z += y * TILE_SIZE;
+					if (y == 0) map_draw_z += TILE_SIZE;
 				}
 			}
 
@@ -302,7 +302,7 @@ void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 
 	// Calculate the B block combination
 	short b_subtile = (ID - block * 1000) / 50;
-	if (b_subtile >= 16) {
+	if (b_subtile >= TILE_SIZE) {
 		Output::Warning("Invalid AB autotile ID: %d (b_subtile = %d)",
 						ID, b_subtile);
 		return;
@@ -433,7 +433,7 @@ void TilemapLayer::GenerateAutotileD(short ID) {
 	for (int j = 0; j < 2; j++)
 		for (int i = 0; i < 2; i++)
 			for (int k = 0; k < 2; k++) {
-				quarters_hash <<= 4;
+				quarters_hash <<= 4;//multiply 16
 				quarters_hash |= quarters[j][i][k];
 			}
 
@@ -459,9 +459,9 @@ void TilemapLayer::GenerateAutotileD(short ID) {
 
 BitmapScreenRef TilemapLayer::GenerateAutotiles(int count, const std::map<uint32_t, TileXY>& map) {
 	int rows = (count + TILES_PER_ROW - 1) / TILES_PER_ROW;
-	BitmapRef tiles = Bitmap::Create(TILES_PER_ROW * 16, rows * 16);
+	BitmapRef tiles = Bitmap::Create(TILES_PER_ROW * TILE_SIZE, rows * TILE_SIZE);
 	tiles->Clear();
-	Rect rect(0, 0, 8, 8);
+	Rect rect(0, 0, TILE_SIZE/2, TILE_SIZE/2);
 
 	std::map<uint32_t, TileXY>::const_iterator it;
 	for (it = map.begin(); it != map.end(); it++) {
@@ -473,12 +473,13 @@ BitmapScreenRef TilemapLayer::GenerateAutotiles(int count, const std::map<uint32
 			for (int i = 0; i < 2; i++) {
 				int x = quarters_hash >> 28;
 				quarters_hash <<= 4;
+				
 				int y = quarters_hash >> 28;
 				quarters_hash <<= 4;
-
-				rect.x = (x * 2 + i) * 8;
-				rect.y = (y * 2 + j) * 8;
-				tiles->Blit((dst.x * 2 + i) * 8, (dst.y * 2 + j) * 8, *chipset, rect, 255);
+				
+				rect.x = (x * 2 + i) * (TILE_SIZE/2);
+				rect.y = (y * 2 + j) * (TILE_SIZE/2);
+				tiles->Blit((dst.x * 2 + i) * (TILE_SIZE/2), (dst.y * 2 + j) * (TILE_SIZE/2), *chipset, rect, 255);
 			}
 		}
 	}
