@@ -31,7 +31,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	Window_ShopBuy(int ix, int iy, int iwidth = 320, int iheight = 80);
+	Window_ShopBuy(int ix, int iy, int iwidth = SCREEN_TARGET_WIDTH, int iheight = 80);
 
 	/**
 	 * Gets item ID of the selected item.

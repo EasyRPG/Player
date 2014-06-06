@@ -52,7 +52,7 @@ void Weather::Draw() {
 	if (Main_Data::game_screen->GetWeatherType() != Game_Screen::Weather_None) {
 		if (!weather_screen || !weather_surface) {
 			weather_screen = BitmapScreen::Create();
-			weather_surface = Bitmap::Create(320, 240);
+			weather_surface = Bitmap::Create(SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT);
 			weather_screen->SetBitmap(weather_surface);
 		}
 	}

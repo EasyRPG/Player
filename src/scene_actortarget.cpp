@@ -40,7 +40,7 @@ Scene_ActorTarget::Scene_ActorTarget(
 void Scene_ActorTarget::Start() {
 	// Create the windows
 	help_window.reset(new Window_Help(0, 0, 136, 32));
-	target_window.reset(new Window_ActorTarget(136, 0, 184, 240));
+	target_window.reset(new Window_ActorTarget(136, 0, 184, SCREEN_TARGET_HEIGHT));
 	status_window.reset(new Window_TargetStatus(0, 32, 136, 32));
 
 	target_window->SetActive(true);

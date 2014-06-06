@@ -46,10 +46,10 @@ void Scene_Menu::Start() {
 	CreateCommandWindow();
 
 	// Gold Window
-	gold_window.reset(new Window_Gold(0, 208, 88, 32));
+	gold_window.reset(new Window_Gold(0, (SCREEN_TARGET_HEIGHT-32), 88, 32));
 
 	// Status Window
-	menustatus_window.reset(new Window_MenuStatus(88, 0, 232, 240));
+	menustatus_window.reset(new Window_MenuStatus(88, 0, (SCREEN_TARGET_WIDTH-88), SCREEN_TARGET_HEIGHT));
 	menustatus_window->SetActive(false);
 }
 

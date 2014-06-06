@@ -94,22 +94,22 @@ namespace {
 		int min_width , max_width ;
 		int min_height, max_height;
 	} const spec[] = {
-		{ "Backdrop", false, 320, 320, 160, 160 },
+		{ "Backdrop", false, SCREEN_TARGET_WIDTH, SCREEN_TARGET_WIDTH, (SCREEN_TARGET_WIDTH/2), (SCREEN_TARGET_WIDTH/2) },
 		{ "Battle", true, 480, 480, 96, 480 },
 		{ "CharSet", true, 288, 288, 256, 256 },
 		{ "ChipSet", true, 480, 480, 256, 256 },
 		{ "FaceSet", true, 192, 192, 192, 192 },
-		{ "GameOver", false, 320, 320, 240, 240 },
-		{ "Monster", true, 16, 320, 16, 160 },
+		{ "GameOver", false, SCREEN_TARGET_WIDTH, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT, SCREEN_TARGET_HEIGHT },
+		{ "Monster", true, 16, SCREEN_TARGET_WIDTH, 16, (SCREEN_TARGET_WIDTH/2) },
 		{ "Panorama", false, 80, 640, 80, 480 },
 		{ "Picture", true, 1, 640, 1, 480 },
-		{ "System", true, 160, 160, 80, 80 },
-		{ "Title", false, 320, 320, 240, 240 },
+		{ "System", true, (SCREEN_TARGET_WIDTH/2), (SCREEN_TARGET_WIDTH/2), 80, 80 },
+		{ "Title", false, SCREEN_TARGET_WIDTH, 640, 480, 480 },
 		{ "System2", true, 80, 80, 96, 96 },
 		{ "Battle2", true, 640, 640, 640, 640 },
 		{ "BattleCharSet", true, 144, 144, 384, 384 },
 		{ "BattleWeapon", true, 192, 192, 512, 512 },
-		{ "Frame", true, 320, 320, 240, 240 },
+		{ "Frame", true, SCREEN_TARGET_WIDTH, SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT, SCREEN_TARGET_HEIGHT },
 	};
 
 	template<Material::Type T>

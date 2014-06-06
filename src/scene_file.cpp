@@ -40,7 +40,7 @@ void Scene_File::Start() {
 	DisplayUi->SetBackcolor(Cache::system_info.bg_color);
 
 	// Create the windows
-	help_window.reset(new Window_Help(0, 0, 320, 32));
+	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
 	help_window->SetText(message);
 
 	// Refresh File Finder Save Folder
@@ -48,7 +48,7 @@ void Scene_File::Start() {
 
 	for (int i = 0; i < 15; i++) {
 		EASYRPG_SHARED_PTR<Window_SaveFile>
-			w(new Window_SaveFile(0, 40 + i * 64, 320, 64));
+			w(new Window_SaveFile(0, 40 + i * 64, SCREEN_TARGET_WIDTH, 64));
 		w->SetIndex(i);
 
 		// Try to access file

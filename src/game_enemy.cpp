@@ -104,11 +104,11 @@ void Game_Enemy::SetSp(int _sp) {
 }
 
 int Game_Enemy::GetBattleX() const {
-	return x;
+	return (x*SCREEN_TARGET_WIDTH/320);
 }
 
 int Game_Enemy::GetBattleY() const {
-	return y;
+	return (y*SCREEN_TARGET_HEIGHT/240);
 }
 
 void Game_Enemy::SetBattleX(int new_x) {

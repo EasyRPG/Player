@@ -65,7 +65,7 @@ bool Game_Character::IsMoving() const {
 	if (move_count > 0) return false; //Jumping
 
 	return real_x != GetX() * SCREEN_TILE_WIDTH || real_y != GetY() * SCREEN_TILE_WIDTH;
-}
+	}
 
 bool Game_Character::IsJumping() const {
 	return move_count > 0;
@@ -132,11 +132,11 @@ void Game_Character::MoveTo(int x, int y) {
 }
 
 int Game_Character::GetScreenX() const {
-	return (real_x - Game_Map::GetDisplayX() + 3) / (SCREEN_TILE_WIDTH / 16) + 8;
+	return (real_x - Game_Map::GetDisplayX() + 3) / (SCREEN_TILE_WIDTH / TILE_SIZE) + (TILE_SIZE/2);
 }
 
 int Game_Character::GetScreenY() const {
-	int y = (real_y - Game_Map::GetDisplayY() + 3) / (SCREEN_TILE_WIDTH / 16) + 16;
+	int y = (real_y - Game_Map::GetDisplayY() + 3) / (SCREEN_TILE_WIDTH / TILE_SIZE) + TILE_SIZE;
 
 	int n;
 	if (move_count >= jump_peak)
@@ -154,7 +154,7 @@ int Game_Character::GetScreenZ() const {
 int Game_Character::GetScreenZ(int /* height */) const {
 	if (GetLayer() == RPG::EventPage::Layers_above) return 999;
 
-	int z = (real_y - Game_Map::GetDisplayY() + 3) / 16 + (SCREEN_TILE_WIDTH / 16);
+	int z = (real_y - Game_Map::GetDisplayY() + 3) / TILE_SIZE + (SCREEN_TILE_WIDTH / TILE_SIZE);
 
 	return z;
 }

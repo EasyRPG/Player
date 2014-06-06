@@ -22,10 +22,14 @@
 #define GAME_TITLE "EasyRPG Player"
 
 /** Targeted screen default width. */
+//#define SCREEN_TARGET_WIDTH 640
 #define SCREEN_TARGET_WIDTH 320
 
 /** Targeted screen default height. */
 #define SCREEN_TARGET_HEIGHT 240
+
+/** Working with hi resolutions. default 16 */
+#define TILE_SIZE 16
 
 /** Targeted screen bits per pixel. */
 #define SCREEN_TARGET_BPP 32

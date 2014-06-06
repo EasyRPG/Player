@@ -28,14 +28,14 @@ Scene_Shop::Scene_Shop() {
 }
 
 void Scene_Shop::Start() {
-	shop_window.reset(new Window_Shop(0, 160, 320, 80));
-	help_window.reset(new Window_Help(0, 0, 320, 32));
+	shop_window.reset(new Window_Shop(0, (SCREEN_TARGET_WIDTH/2), SCREEN_TARGET_WIDTH, 80));
+	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
 	gold_window.reset(new Window_Gold(184, 128, 136, 32));
-	empty_window.reset(new Window_Base(0, 32, 320, 128));
+	empty_window.reset(new Window_Base(0, 32, SCREEN_TARGET_WIDTH, 128));
 	empty_window2.reset(new Window_Base(0, 32, 184, 128));
 	buy_window.reset(new Window_ShopBuy(0, 32, 184, 128));
 	party_window.reset(new Window_ShopParty(184, 32, 136, 48));
-	sell_window.reset(new Window_ShopSell(0, 32, 320, 128));
+	sell_window.reset(new Window_ShopSell(0, 32, SCREEN_TARGET_WIDTH, 128));
 	status_window.reset(new Window_ShopStatus(184, 80, 136, 48));
 	number_window.reset(new Window_ShopNumber(0, 32, 184, 128));
 

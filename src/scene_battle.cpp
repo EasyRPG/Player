@@ -107,18 +107,18 @@ void Scene_Battle::CreateWindows() {
 	CreateBattleCommandWindow();
 	CreateBattleMessageWindow();
 
-	help_window.reset(new Window_Help(0, 0, 320, 32));
+	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
 	help_window->SetVisible(false);
 
-	item_window.reset(new Window_Item(0, 160, 320, 80));
+	item_window.reset(new Window_Item(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH, 80));
 	item_window->SetHelpWindow(help_window.get());
 	item_window->Refresh();
 	item_window->SetIndex(0);
 
-	skill_window.reset(new Window_Skill(0, 160, 320, 80));
+	skill_window.reset(new Window_Skill(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH, 80));
 	skill_window->SetHelpWindow(help_window.get());
 
-	status_window.reset(new Window_BattleStatus(0, 160, 320 - 76, 80));
+	status_window.reset(new Window_BattleStatus(0, (SCREEN_TARGET_HEIGHT-80), SCREEN_TARGET_WIDTH - 76, 80));
 }
 
 void Scene_Battle::Update() {
