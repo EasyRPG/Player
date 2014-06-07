@@ -61,10 +61,7 @@ endif()
 # endianess check
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
   include(TestBigEndian)
-  test_big_endian(IS_BIG_ENDIAN)
-  if(IS_BIG_ENDIAN)
-    add_definitions(-D LCF_BIG_ENDIAN=1)
-  endif()
+  test_big_endian(WORDS_BIGENDIAN)
 endif()
 
 if(CMAKE_BUILD_TYPE MATCHES "Debug")
