@@ -24,7 +24,6 @@
 #include <algorithm>
 #include "system.h"
 #include "utils.h"
-#include "config.h"
 
 /** Enums. */
 namespace PF {
