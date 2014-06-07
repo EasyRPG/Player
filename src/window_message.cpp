@@ -388,7 +388,7 @@ void Window_Message::UpdateMessage() {
 			case '^':
 				// Force message close
 				// The close happens at the end of the message, not where
-				// the ^ is encoutered
+				// the ^ is encountered
 				kill_message = true;
 				break;
 			case '>':
