@@ -780,7 +780,7 @@ bool Game_Interpreter_Map::CommandShowPicture(RPG::EventCommand const& com) { //
 
 	picture->Show(pic_name);
 	picture->SetTransparent(use_trans);
-	picture->SetScrolls(scrolls);
+	picture->SetFixedToMap(scrolls);
 
 	picture->SetMovementEffect(x, y);
 	picture->SetColorEffect(red, green, blue, saturation);

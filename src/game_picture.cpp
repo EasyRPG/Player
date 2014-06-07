@@ -21,6 +21,7 @@
 #include "cache.h"
 #include "main_data.h"
 #include "sprite.h"
+#include "game_map.h"
 #include "game_picture.h"
 #include <vector>
 
@@ -28,7 +29,9 @@
  * Picture class.
 */
 Game_Picture::Game_Picture(int ID) :
-	data(Main_Data::game_data.pictures[ID - 1])
+	data(Main_Data::game_data.pictures[ID - 1]),
+	old_map_x(0),
+	old_map_y(0)
 {
 	SetTransition(0);
 }
@@ -43,13 +46,14 @@ void Game_Picture::UpdateSprite() {
 	if (data.name.empty())
 		return;
 
-	sprite->SetX((int) data.current_x);
-	sprite->SetY((int) data.current_y);
+	sprite->SetX((int)data.current_x);
+	sprite->SetY((int)data.current_y);
 	sprite->SetZ(1100 + data.ID);
 	sprite->SetZoomX(data.current_magnify / 100.0);
 	sprite->SetZoomY(data.current_magnify / 100.0);
 	sprite->SetOx((int)(sprite->GetBitmap()->GetWidth() * data.current_magnify / 200.0));
 	sprite->SetOy((int)(sprite->GetBitmap()->GetHeight() * data.current_magnify / 200.0));
+
 	sprite->SetAngle(data.effect_mode == 1 ? data.current_rotation : 0.0);
 	sprite->SetWaverPhase(data.effect_mode == 2 ? data.current_waver : 0.0);
 	sprite->SetWaverDepth(data.effect_mode == 2 ? data.effect2_speed : 0);
@@ -73,6 +77,9 @@ void Game_Picture::Show(const std::string& _name) {
 	sprite->SetBitmap(bitmap);
 	sprite->SetOx(bitmap->GetWidth() / 2);
 	sprite->SetOy(bitmap->GetHeight() / 2);
+
+	old_map_x = Game_Map::GetDisplayX();
+	old_map_y = Game_Map::GetDisplayY();
 }
 
 void Game_Picture::Erase() {
@@ -84,8 +91,8 @@ void Game_Picture::SetTransparent(bool flag) {
 	data.transparency = flag;
 }
 
-void Game_Picture::SetScrolls(bool flag) {
-	data.picture_scrolls = flag;
+void Game_Picture::SetFixedToMap(bool flag) {
+	data.fixed_to_map = flag;
 }
 
 void Game_Picture::SetMovementEffect(int x, int y) {
@@ -149,6 +156,27 @@ static double interpolate(double d, double x0, double x1) {
 void Game_Picture::Update() {
 	if (data.name.empty())
 		return;
+
+	if (data.fixed_to_map) {
+		// Instead of modifying the Ox/Oy offset the real position is altered
+		// based on map scroll because of savegame compatibility with RPG_RT
+
+		if (old_map_x != Game_Map::GetDisplayX()) {
+			int mx = (old_map_x - Game_Map::GetDisplayX()) / TILE_SIZE;
+
+			data.finish_x += mx;
+			data.current_x += mx;
+		}
+		if (old_map_y != Game_Map::GetDisplayY()) {
+			int my = (old_map_y - Game_Map::GetDisplayY()) / TILE_SIZE;
+
+			data.finish_y += my;
+			data.current_y += my;
+		}
+
+		old_map_x = Game_Map::GetDisplayX();
+		old_map_y = Game_Map::GetDisplayY();
+	}
 
 	if (data.effect_mode == 1)
 		data.current_rotation += data.effect_speed;

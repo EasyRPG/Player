@@ -39,7 +39,7 @@ public:
 	void Show(const std::string& name);
 	void Erase();
 	void SetTransparent(bool flag);
-	void SetScrolls(bool flag);
+	void SetFixedToMap(bool flag);
 	void SetMovementEffect(int x, int y);
 	void SetColorEffect(int r, int g, int b, int s);
 	void SetZoomEffect(int scale);
@@ -59,6 +59,9 @@ private:
 	boost::scoped_ptr<Sprite> sprite;
 
 	void UpdateSprite();
+
+	int old_map_x;
+	int old_map_y;
 };
 
 #endif
