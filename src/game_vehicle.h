@@ -69,6 +69,8 @@ public:
 	void SetMoveRouteIndex(int new_index);
 	bool IsMoveRouteOverwritten() const;
 	void SetMoveRouteOverwritten(bool force);
+	bool IsMoveRouteRepeated() const;
+	void SetMoveRouteRepeated(bool force);
 	const std::string& GetSpriteName() const;
 	void SetSpriteName(const std::string& sprite_name);
 	int GetSpriteIndex() const;

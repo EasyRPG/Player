@@ -199,7 +199,7 @@ public:
 	/**
 	 * Returns current index of the route assigned via a MoveEvent.
 	 *
-	 * @return current move route index 
+	 * @return current move route index
 	 */
 	virtual int GetMoveRouteIndex() const = 0;
 
@@ -211,9 +211,9 @@ public:
 	virtual void SetMoveRouteIndex(int new_index) = 0;
 
 	/**
-	 * Gets wheter move route is overwritten by event.
+	 * Gets whether move route is overwritten by event.
 	 *
-	 * @return move route overwritten 
+	 * @return move route overwritten
 	 */
 	virtual bool IsMoveRouteOverwritten() const = 0;
 
@@ -223,6 +223,20 @@ public:
 	 * @param force true: Use default move scheme, false: Use custom move route
 	 */
 	virtual void SetMoveRouteOverwritten(bool force) = 0;
+
+	/**
+	 * Checks if the forced move route has been repeating itself.
+	 *
+	 * @return whether forced move route has been repeating itself
+	 */
+	virtual bool IsMoveRouteRepeated() const = 0;
+
+	/**
+	 * Makes current forced move route repeated/non-repeated.
+	 *
+	 * @param repeat true: Repeated move route, false: Non-repeated move route
+	 */
+	virtual void SetMoveRouteRepeated(bool repeat) = 0;
 
 	/**
 	 * Gets sprite name. Usually the name of the graphic file.
@@ -696,7 +710,7 @@ public:
 	bool IsFlashPending() const;
 
 	/**
-	 * Tests if animation type is any fixed state.
+	 * Tests if animation type is any fixed state or if the direction is locked.
 	 *
 	 * @return Whether direction is fixed
 	 */
@@ -705,9 +719,16 @@ public:
 	/**
 	 * Tests if animation type is any continuous state.
 	 *
-	 * @return Whether animation is continuous 
+	 * @return Whether animation is continuous
 	 */
 	bool IsContinuous();
+
+	/**
+	 * Tests if animation is of the type spin.
+	 *
+	 * @return Whether animation is spin type
+	 */
+	bool IsSpinning();
 
 	virtual void UpdateBushDepth();
 

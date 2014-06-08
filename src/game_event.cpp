@@ -169,6 +169,14 @@ void Game_Event::SetMoveRouteOverwritten(bool force) {
 	data.move_route_overwrite = force;
 }
 
+bool Game_Event::IsMoveRouteRepeated() const {
+	return data.move_route_repeated;
+}
+
+void Game_Event::SetMoveRouteRepeated(bool force) {
+	data.move_route_repeated = force;
+}
+
 const std::string& Game_Event::GetSpriteName() const {
 	return data.sprite_name;
 }
@@ -427,9 +435,6 @@ void Game_Event::Start() {
 		return;
 
 	starting = true;
-
-	if (trigger < 3)
-		Lock();
 
 	if (!Game_Map::GetInterpreter().IsRunning()) {
 		Game_Map::GetInterpreter().SetupStartingEvent(this);

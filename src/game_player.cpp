@@ -145,6 +145,14 @@ void Game_Player::SetMoveRouteOverwritten(bool force) {
 	location.move_route_overwrite = force;
 }
 
+bool Game_Player::IsMoveRouteRepeated() const {
+	return location.move_route_repeated;
+}
+
+void Game_Player::SetMoveRouteRepeated(bool force) {
+	location.move_route_repeated = force;
+}
+
 const std::string& Game_Player::GetSpriteName() const {
 	return location.sprite_name;
 }
@@ -203,7 +211,6 @@ void Game_Player::PerformTeleport() {
 	teleporting = false;
 
 	if (Game_Map::GetMapId() != new_map_id) {
-		move_route_owner = NULL;
 		Refresh(); // Reset sprite if it was changed by a move
 		Game_Map::Setup(new_map_id);
 	}
@@ -361,6 +368,11 @@ bool Game_Player::CheckEventTriggerHere(const std::vector<int>& triggers) {
 		if ( (*i)->GetLayer() == RPG::EventPage::Layers_below && std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() ) {
 			(*i)->Start();
 			result = (*i)->GetStarting();
+			if (!(*i)->IsDirectionFixed() && result) {
+				(*i)->SetPrelockDirection((*i)->GetDirection());
+				(*i)->TurnTowardHero();
+			}
+
 		}
 	}
 	return result;
@@ -385,6 +397,10 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 		{
 			(*i)->Start();
 			result = true;
+			if (!(*i)->IsDirectionFixed() && !(*i)->GetList().empty()) {
+				(*i)->SetPrelockDirection((*i)->GetDirection());
+				(*i)->TurnTowardHero();
+			}
 		}
 	}
 
@@ -402,6 +418,10 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 			{
 				(*i)->Start();
 				result = true;
+				if (!(*i)->IsDirectionFixed() && !(*i)->GetList().empty()) {
+					(*i)->SetPrelockDirection((*i)->GetDirection());
+					(*i)->TurnTowardHero();
+				}
 			}
 		}
 	}
@@ -421,6 +441,11 @@ bool Game_Player::CheckEventTriggerTouch(int x, int y) {
 		if ( (*i)->GetLayer() == 1 && ((*i)->GetTrigger() == 1 || (*i)->GetTrigger() == 2) ) {
 			(*i)->Start();
 			result = true;
+			if (!(*i)->IsDirectionFixed() && !(*i)->GetList().empty()) {
+				(*i)->SetPrelockDirection((*i)->GetDirection());
+				(*i)->TurnTowardHero();
+			}
+
 		}
 	}
 	return result;

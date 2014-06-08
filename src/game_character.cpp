@@ -160,7 +160,7 @@ int Game_Character::GetScreenZ(int /* height */) const {
 }
 
 void Game_Character::Update() {
-	if (IsContinuous()) {
+	if (IsContinuous() || IsSpinning()) {
 		UpdateMove();
 		UpdateStop();
 	} else {
@@ -175,7 +175,9 @@ void Game_Character::Update() {
 	}
 
 	if (anime_count > 18 - GetMoveSpeed() * 2) {
-		if (!IsContinuous() && stop_count > 0) {
+		if (IsSpinning()) {
+			Turn90DegreeRight();
+		} else if (!IsContinuous() && IsStopping()) {
 			pattern = original_pattern;
 			last_pattern = last_pattern == RPG::EventPage::Frame_left ? RPG::EventPage::Frame_right : RPG::EventPage::Frame_left;
 		} else {
@@ -227,8 +229,10 @@ void Game_Character::UpdateMove() {
 	if (GetY() * SCREEN_TILE_WIDTH < real_y)
 		real_y = max(real_y - distance, GetY() * SCREEN_TILE_WIDTH);
 
-	if (animation_type != RPG::EventPage::AnimType_fixed_graphic && walk_animation)
-		anime_count += 1.5;
+	anime_count += 
+		(IsSpinning() ? 1.0 :
+		(animation_type != RPG::EventPage::AnimType_fixed_graphic && walk_animation) ? 1.5 :
+		0);
 }
 
 void Game_Character::UpdateJump() {
@@ -381,6 +385,8 @@ void Game_Character::MoveTypeCustom() {
 			// End of Move list
 			if (active_route->repeat) {
 				active_route_index = 0;
+				SetMoveRouteRepeated(true);
+				EndMoveRoute();
 			} else if (IsMoveRouteOverwritten()) {
 				SetMoveRouteOverwritten(false);
 				EndMoveRoute();
@@ -535,7 +541,7 @@ void Game_Character::MoveTypeCustom() {
 			} while (jumping);
 
 			if ((size_t)active_route_index >= active_route->move_commands.size()) {
-				stop_count = 256;
+				stop_count = (active_route->repeat ? 0 : 256);
 			}
 		}
 	}
@@ -565,7 +571,10 @@ void Game_Character::EndMoveRoute() {
 		move_route_owner->EndMoveRoute(this);
 		move_route_owner = NULL;
 	}
-	SetMoveFrequency(original_move_frequency);
+
+	if (!IsMoveRouteRepeated()) {
+		SetMoveFrequency(original_move_frequency);
+	}
 }
 
 void Game_Character::MoveDown() {
@@ -829,25 +838,33 @@ void Game_Character::MoveAwayFromPlayer() {
 void Game_Character::TurnDown() {
 	SetDirection(RPG::EventPage::Direction_down);
 	move_failed = false;
-	stop_count = pow(2.0, 8 - GetMoveFrequency());
+	if (!IsSpinning()) {
+		stop_count = pow(2.0, 8 - GetMoveFrequency());
+	}
 }
 
 void Game_Character::TurnLeft() {
 	SetDirection(RPG::EventPage::Direction_left);
 	move_failed = false;
-	stop_count = pow(2.0, 8 - GetMoveFrequency());
+	if (!IsSpinning()) {
+		stop_count = pow(2.0, 8 - GetMoveFrequency());
+	}
 }
 
 void Game_Character::TurnRight() {
 	SetDirection(RPG::EventPage::Direction_right);
 	move_failed = false;
-	stop_count = pow(2.0, 8 - GetMoveFrequency());
+	if (!IsSpinning()) {
+		stop_count = pow(2.0, 8 - GetMoveFrequency());
+	}
 }
 
 void Game_Character::TurnUp() {
 	SetDirection(RPG::EventPage::Direction_up);
 	move_failed = false;
-	stop_count = pow(2.0, 8 - GetMoveFrequency());
+	if (!IsSpinning()) {
+		stop_count = pow(2.0, 8 - GetMoveFrequency());
+	}
 }
 
 void Game_Character::Turn90DegreeLeft() {
@@ -1048,18 +1065,14 @@ void Game_Character::Lock() {
 }
 
 void Game_Character::Unlock() {
-	if (IsFacingLocked()) {
-		SetFacingLocked(false);
-		SetFacingDirection(GetPrelockDirection());
-	}
+	SetFacingLocked(false);
+	SetFacingDirection(GetPrelockDirection());
 }
 
 void Game_Character::SetFacingDirection(int direction) {
 	if (!IsDirectionFixed() && (direction != -1)) {
 		SetDirection(direction);
 	}
-
-	stop_count = pow(2.0, 8 - GetMoveFrequency());
 }
 
 void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
@@ -1149,13 +1162,17 @@ bool Game_Character::IsDirectionFixed() {
 		animation_type == RPG::EventPage::AnimType_fixed_continuous ||
 		animation_type == RPG::EventPage::AnimType_fixed_graphic ||
 		animation_type == RPG::EventPage::AnimType_fixed_non_continuous ||
-		IsFacingLocked();
+		IsFacingLocked() || IsSpinning();
 }
 
 bool Game_Character::IsContinuous() {
 	return
 		animation_type == RPG::EventPage::AnimType_continuous ||
 		animation_type == RPG::EventPage::AnimType_fixed_continuous;
+}
+
+bool Game_Character::IsSpinning() {
+	return animation_type == RPG::EventPage::AnimType_spin;
 }
 
 void Game_Character::UpdateBushDepth() {
