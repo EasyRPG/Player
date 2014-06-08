@@ -357,6 +357,12 @@ void FileFinder::InitRtpPaths() {
 	if (getenv("RPG_RTP_PATH")) {
 		add_rtp_path(getenv("RPG_RTP_PATH"));
 	}
+	if (!search_paths.size()) {
+		Output::Warning("RTP not found. This may create missing file errors.");
+		Output::Warning("Install RTP files or check they are installed fine.");
+		Output::Warning("If this game really does not require RTP, then add");
+		Output::Warning("FullPackageFlag=1 line to the RPG_RT.ini game file.");
+	}
 }
 
 void FileFinder::Quit() {
@@ -413,6 +419,14 @@ bool FileFinder::IsRPG2kProject(ProjectTree const& dir) {
 	string_map::const_iterator const
 		ldb_it = dir.files.find(Utils::LowerCase(DATABASE_NAME)),
 		lmt_it = dir.files.find(Utils::LowerCase(TREEMAP_NAME));
+
+	return(ldb_it != dir.files.end() && lmt_it != dir.files.end());
+}
+
+bool FileFinder::IsEasyRpgProject(ProjectTree const& dir){
+	string_map::const_iterator const
+		ldb_it = dir.files.find(Utils::LowerCase(DATABASE_NAME_EASYRPG)),
+		lmt_it = dir.files.find(Utils::LowerCase(TREEMAP_NAME_EASYRPG));
 
 	return(ldb_it != dir.files.end() && lmt_it != dir.files.end());
 }

@@ -334,13 +334,14 @@ EASYRPG_SHARED_PTR<ALAudio::buffer> ALAudio::create_buffer() {
 	return EASYRPG_MAKE_SHARED<buffer>(ctx_, ret);
 }
 
-void ALAudio::BGM_Play(std::string const& file, int volume, int pitch) {
+void ALAudio::BGM_Play(std::string const& file, int volume, int pitch, int fadein) {
 	SET_CONTEXT(ctx_);
 
 	alSourcef(bgm_src_->get(), AL_PITCH, pitch * 0.01f);
 	alSourcei(bgm_src_->get(), AL_LOOPING, AL_TRUE);
 	bgm_src_->set_volume(volume * 0.01f);
 	bgm_src_->play_buffer(getMusic(file));
+	bgm_src_->fade_in(fadein);
 }
 
 void ALAudio::BGM_Stop() {
@@ -363,13 +364,14 @@ void ALAudio::BGM_Resume() {
 	alSourcePlay(bgm_src_->get());
 }
 
-void ALAudio::BGS_Play(std::string const& file, int volume, int pitch) {
+void ALAudio::BGS_Play(std::string const& file, int volume, int pitch, int fadein) {
 	SET_CONTEXT(ctx_);
 
 	BGM_Pitch(pitch);
 	alSourcei(bgs_src_->get(), AL_LOOPING, AL_TRUE);
 	BGM_Volume(volume);
 	bgm_src_->play_buffer(getSound(file));
+	bgm_src_->fade_in(fadein);
 }
 
 void ALAudio::BGS_Stop() {
@@ -392,13 +394,14 @@ void ALAudio::BGM_Pitch(int pitch) {
 	alSourcef(bgs_src_->get(), AL_PITCH, pitch * 0.01f);
 }
 
-void ALAudio::ME_Play(std::string const& file, int volume, int pitch) {
+void ALAudio::ME_Play(std::string const& file, int volume, int pitch, int fadein) {
 	SET_CONTEXT(ctx_);
 
 	alSourcef(me_src_->get(), AL_PITCH, pitch * 0.01f);
 	alSourcei(me_src_->get(), AL_LOOPING, AL_FALSE);
 	me_src_->set_volume(volume * 0.01f);
 	me_src_->play_buffer(getMusic(file));
+	me_src_->fade_in(fadein);
 }
 
 void ALAudio::ME_Stop() {

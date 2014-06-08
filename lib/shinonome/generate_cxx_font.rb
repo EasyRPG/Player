@@ -4,8 +4,6 @@
 FONT_SIZE = 12
 EMPTY_CHAR = Array.new(FONT_SIZE, 0x0)
 
-kanji_encoding = "JIS_X0208"
-
 def skip_until(f, regex)
   while(not f.eof?)
     l = f.readline().chomp
@@ -48,11 +46,13 @@ def read_font(f, half, encoding)
 
       c = ((s1 & 0xff) << 8) + s2
       code = [s1, s2].pack("CC")
+    elsif encoding == "UTF-32LE"
+      code = [c].pack("L<")
     else
       code = (c < 0x100 ? [c] : [c & 0xff, (c >> 8) & 0xff]).pack("C*")
     end
 
-    raise "size error" unless code.bytesize == (c < 0x100 ? 1 : 2)
+    raise "size error" unless code.bytesize == (c < 0x100 ? 1 : 2) || encoding == "UTF-32LE"
 
     begin
       code = code.force_encoding(encoding).encode('UTF-32LE')
@@ -127,25 +127,29 @@ print "Loading Latin-1..."
 latin = read_file(File.new('./latin1/font_src.bit', 'r'), "ISO-8859-1", true)
 print "done\n"
 
+print "Loading Latin Extended A..."
+latin_ext_a = read_file(File.new('./latin-ext-a/font_src.bit', 'r'), "UTF-32LE", true)
+print "done\n"
+
 print "Loading Hankaku..."
 hankaku = read_file(File.new('./hankaku/font_src_diff.bit', 'r'), "CP932", true)
 print "done\n"
 
 print "Loading Cyrillic..."
-cyrillic = read_file(File.new('./cyrillic/font_src.bit', 'r'), kanji_encoding, true)
+cyrillic = read_file(File.new('./cyrillic/font_src.bit', 'r'), "UTF-32LE", true)
 print "done\n"
 
 print "Loading Gothic..."
-gothic = read_file(File.new('./kanjic/font_src.bit', 'r'), kanji_encoding, false)
+gothic = read_file(File.new('./kanjic/font_src.bit', 'r'), "JIS_X0208", false)
 print "done\n"
 
 print "Loading Mincho..."
-mincho = read_file(File.new('./mincho/font_src_diff.bit', 'r'), kanji_encoding, false)
+mincho = read_file(File.new('./mincho/font_src_diff.bit', 'r'), "JIS_X0208", false)
 print "done\n"
 
 # generating
 print "Generating Gothic..."
-gothic_final = gothic.merge(cyrillic).merge(hankaku).merge(latin)
+gothic_final = gothic.merge(cyrillic).merge(hankaku).merge(latin).merge(latin_ext_a)
 code_max = write_all(File.new("./gothic.cxx", "w"), "SHINONOME_GOTHIC", gothic_final)
 print "done\n"
 

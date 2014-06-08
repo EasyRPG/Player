@@ -36,9 +36,9 @@ void Scene_Equip::Start() {
 	Game_Actor* actor = Main_Data::game_party->GetActors()[actor_index];
 
 	// Create the windows
-	help_window.reset(new Window_Help(0, 0, 320, 32));
+	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
 	equipstatus_window.reset(new Window_EquipStatus(0, 32, 124, 96, actor->GetId()));
-	equip_window.reset(new Window_Equip(124, 32, 196, 96, actor->GetId()));
+	equip_window.reset(new Window_Equip(124, 32, (SCREEN_TARGET_WIDTH-124),96, actor->GetId()));
 
 	equip_window->SetIndex(equip_index);
 

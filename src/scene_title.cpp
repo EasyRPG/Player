@@ -53,24 +53,6 @@ Scene_Title::Scene_Title() {
 }
 
 void Scene_Title::Start() {
-	LoadDatabase();
-
-	static bool init = false;
-	if (!init) {
-		if (Data::system.ldb_id == 2003) {
-			Output::Debug("Switching to Rpg2003 Interpreter");
-			Player::engine = Player::EngineRpg2k3;
-		}
-
-		FileFinder::InitRtpPaths();
-	}
-	init = true;
-
-	Main_Data::game_data.Setup();
-
-	// Create Game System
-	Game_System::Init();
-
 	if (!Player::battle_test_flag) {
 		CreateTitleGraphic();
 		PlayTitleMusic();
@@ -83,6 +65,8 @@ void Scene_Title::Continue() {
 	// Clear the cache when the game returns to title screen
 	// e.g. by pressing F12
 	Cache::Clear();
+
+	Player::CreateGameObjects();
 
 	Start();
 }
@@ -130,24 +114,6 @@ void Scene_Title::Update() {
 	}
 }
 
-void Scene_Title::LoadDatabase() {
-	// Load Database
-	Data::Clear();
-
-	if(! FileFinder::IsRPG2kProject(FileFinder::GetProjectTree())) {
-		Output::Debug("%s is not an RPG2k project", Main_Data::project_path.c_str());
-	}
-
-	if (!LDB_Reader::Load(FileFinder::FindDefault(DATABASE_NAME),
-			ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)))) {
-		Output::ErrorStr(LcfReader::GetError());
-	}
-	if (!LMT_Reader::Load(FileFinder::FindDefault(TREEMAP_NAME),
-			ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)))) {
-		Output::ErrorStr(LcfReader::GetError());
-	}
-}
-
 bool Scene_Title::CheckContinue() {
 	EASYRPG_SHARED_PTR<FileFinder::ProjectTree> tree;
 	tree = FileFinder::CreateProjectTree(Main_Data::project_path, false);
@@ -181,8 +147,8 @@ void Scene_Title::CreateCommandWindow() {
 	options.push_back(Data::terms.exit_game);
 
 	command_window.reset(new Window_Command(options));
-	command_window->SetX(160 - command_window->GetWidth() / 2);
-	command_window->SetY(224 - command_window->GetHeight());
+	command_window->SetX((SCREEN_TARGET_WIDTH/2) - command_window->GetWidth() / 2);
+	command_window->SetY(((SCREEN_TARGET_HEIGHT/15)*14) - command_window->GetHeight());
 
 	// Enable load game if available
 	continue_enabled = CheckContinue();
@@ -209,7 +175,7 @@ bool Scene_Title::CheckValidPlayerLocation() {
 
 void Scene_Title::PrepareBattleTest() {
 	Player::CreateGameObjects();
-	//Game_Troop::can_escape = true;
+
 
 	Scene::Push(Scene_Battle::Create(), true);
 }
@@ -221,12 +187,7 @@ void Scene_Title::CommandNewGame() {
 		Game_System::SePlay(Main_Data::game_data.system.decision_se);
 		Game_System::BgmStop();
 		Graphics::SetFrameCount(0);
-		Player::CreateGameObjects();
-		Game_Map::Setup(Data::treemap.start.party_map_id);
-		Main_Data::game_player->MoveTo(
-			Data::treemap.start.party_x, Data::treemap.start.party_y);
-		Main_Data::game_player->Refresh();
-		Game_Map::PlayBgm();
+		Player::SetupPlayerSpawn();
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>());
 	}
 }

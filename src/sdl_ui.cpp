@@ -75,10 +75,10 @@ static int FilterUntilFocus_SDL2(void*, SDL_Event* evnt);
 #endif
 
 SdlUi::SdlUi(long width, long height, const std::string& title, bool fs_flag) :
+	BaseUi(),
 	zoom_available(true),
 	toggle_fs_available(false),
-	mode_changing(false),
-	BaseUi() {
+	mode_changing(false) {
 
 #ifdef GEKKO
 	WPAD_Init();
@@ -461,7 +461,7 @@ bool SdlUi::RefreshDisplayMode() {
 	if (!main_surface) {
 		// Drawing surface will be the window itself
 		main_surface = Bitmap::Create(
-			320, 240, Color(0, 0, 0, 255));
+			SCREEN_TARGET_WIDTH, SCREEN_TARGET_HEIGHT, Color(0, 0, 0, 255));
 	}
 #endif
 
@@ -733,6 +733,7 @@ void SdlUi::ProcessKeyDownEvent(SDL_Event &evnt) {
 		keys[SdlKey2InputKey(evnt.key.keysym.sym)] = true;
 #else
 		keys[SdlKey2InputKey(evnt.key.keysym.scancode)] = true;
+
 #endif
 		return;
 	}
@@ -1163,6 +1164,9 @@ Input::Keys::InputKey SdlKey2InputKey(SDL_Keycode sdlkey) {
 		case SDL_SCANCODE_CAPSLOCK		: return Input::Keys::CAPS_LOCK;
 		case SDL_SCANCODE_NUMLOCKCLEAR	: return Input::Keys::NUM_LOCK;
 		case SDL_SCANCODE_SCROLLLOCK	: return Input::Keys::SCROLL_LOCK;
+		case SDL_SCANCODE_AC_BACK		: return Input::Keys::AC_BACK;
+		case SDL_SCANCODE_SELECT		: return Input::Keys::SELECT;
+
 #endif
 		default					: return Input::Keys::NONE;
 	}

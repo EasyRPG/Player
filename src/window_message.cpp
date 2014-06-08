@@ -292,6 +292,13 @@ void Window_Message::UpdateMessage() {
 
 	// Contains at what frame the sleep is over
 	static int sleep_until = -1;
+	bool instant_speed = false;
+
+	if (Player::debug_flag && Input::IsPressed(Input::SHIFT)) {
+		sleep_until = -1;
+		instant_speed = true;
+	}
+
 	if (sleep_until > -1) {
 		if (Graphics::GetFrameCount() >= sleep_until) {
 			// Sleep over
@@ -301,7 +308,6 @@ void Window_Message::UpdateMessage() {
 		}
 	}
 
-	bool instant_speed = false;
 	int loop_count = 0;
 	int loop_max = speed_table[speed_modifier] == 0 ? 2 : 1;
 
@@ -370,7 +376,7 @@ void Window_Message::UpdateMessage() {
 				break;
 			case '$':
 				// Show Gold Window
-				gold_window->SetY(y == 0 ? 240 - 32 : 0);
+				gold_window->SetY(y == 0 ? SCREEN_TARGET_HEIGHT - 32 : 0);
 				gold_window->Refresh();
 				gold_window->SetOpenAnimation(5);
 				gold_window->SetVisible(true);
@@ -382,7 +388,7 @@ void Window_Message::UpdateMessage() {
 			case '^':
 				// Force message close
 				// The close happens at the end of the message, not where
-				// the ^ is encoutered
+				// the ^ is encountered
 				kill_message = true;
 				break;
 			case '>':

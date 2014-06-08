@@ -27,7 +27,7 @@ INCLUDES	:=	src lib/shinonome
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS	= -O2 -Wall -Wextra -fno-rtti -DUSE_SDL -DHAVE_SDL_MIXER -DUSE_BIG_ENDIAN -DNDEBUG $(MACHDEP) $(INCLUDE)
+CFLAGS	= -O2 -Wall -Wextra -fno-rtti -DUSE_SDL -DHAVE_SDL_MIXER -DWORDS_BIGENDIAN -DNDEBUG $(MACHDEP) $(INCLUDE)
 CXXFLAGS	=	$(CFLAGS) -fno-exceptions -std=c++0x
 LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,easyrpg-player-wii.map
 

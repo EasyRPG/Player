@@ -43,7 +43,7 @@ void Game_System::BgmPlay(RPG::Music const& bgm) {
 				Audio().BGM_Pitch(bgm.tempo);
 			}
 		} else {
-			Audio().BGM_Play(bgm.name, bgm.volume, bgm.tempo);
+			Audio().BGM_Play(bgm.name, bgm.volume, bgm.tempo, bgm.fadein);
 		}
 	} else {
 		Audio().BGM_Stop();

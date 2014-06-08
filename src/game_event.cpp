@@ -31,6 +31,7 @@
 
 Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	starting(false),
+	trigger(-1),
 	event(event),
 	erased(false),
 	page(NULL),

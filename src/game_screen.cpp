@@ -79,7 +79,7 @@ Game_Picture* Game_Screen::GetPicture(int id) {
 	if (id <= 0) {
 		return NULL;
 	}
-	if (id > pictures.size()) {
+	if (id > (int)pictures.size()) {
 		// Some games use more pictures then RPG_RT officially supported
 		Main_Data::game_data.pictures.resize(id);
 		pictures.resize(id);

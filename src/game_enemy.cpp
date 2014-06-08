@@ -104,11 +104,11 @@ void Game_Enemy::SetSp(int _sp) {
 }
 
 int Game_Enemy::GetBattleX() const {
-	return x;
+	return (x*SCREEN_TARGET_WIDTH/320);
 }
 
 int Game_Enemy::GetBattleY() const {
-	return y;
+	return (y*SCREEN_TARGET_HEIGHT/240);
 }
 
 void Game_Enemy::SetBattleX(int new_x) {
@@ -201,7 +201,6 @@ bool Game_Enemy::IsActionValid(const RPG::EnemyAction& action) {
 const RPG::EnemyAction* Game_Enemy::ChooseRandomAction() {
 	const std::vector<RPG::EnemyAction>& actions = enemy->actions;
 	std::vector<int> valid;
-	std::vector<RPG::EnemyAction>::const_iterator it;
 	int total = 0;
 	for (int i = 0; i < (int) actions.size(); i++) {
 		const RPG::EnemyAction& action = actions[i];

@@ -39,6 +39,8 @@ void Input::InitButtons() {
 	buttons[DECISION].push_back(Keys::Z);
 	buttons[DECISION].push_back(Keys::SPACE);
 	buttons[DECISION].push_back(Keys::RETURN);
+	buttons[DECISION].push_back(Keys::SELECT);
+	buttons[CANCEL].push_back(Keys::AC_BACK);
 	buttons[CANCEL].push_back(Keys::X);
 	buttons[CANCEL].push_back(Keys::C);
 	buttons[CANCEL].push_back(Keys::V);
@@ -109,6 +111,7 @@ void Input::InitButtons() {
 	buttons[LEFT].push_back(Keys::JOY_HAT_LEFT);
 	buttons[RIGHT].push_back(Keys::JOY_HAT_RIGHT);
 	buttons[UP].push_back(Keys::JOY_HAT_UP);
+
 #endif
 
 #if defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)

@@ -18,23 +18,18 @@
 #ifndef _OPTIONS_H_
 #define _OPTIONS_H_
 
-#define RPG2K	1
-#define RPG2K3	2
-
-/**
- * Defines RPG Maker compability, RPG2K for RPG Maker 2000
- * and RPG2K3 for RPG Maker 2003.
- */
-#define RPGMAKER RPG2K
-
 /** Window title to show. */
 #define GAME_TITLE "EasyRPG Player"
 
 /** Targeted screen default width. */
+//#define SCREEN_TARGET_WIDTH 640
 #define SCREEN_TARGET_WIDTH 320
 
 /** Targeted screen default height. */
 #define SCREEN_TARGET_HEIGHT 240
+
+/** Working with hi resolutions. default 16 */
+#define TILE_SIZE 16
 
 /** Targeted screen bits per pixel. */
 #define SCREEN_TARGET_BPP 32
@@ -65,9 +60,11 @@
 
 /** Database filename. */
 #define DATABASE_NAME "RPG_RT.ldb"
+#define DATABASE_NAME_EASYRPG "EASY_RT.edb"
 
 /** Map tree filename. */
 #define TREEMAP_NAME "RPG_RT.lmt"
+#define TREEMAP_NAME_EASYRPG "EASY_RT.emt"
 
 /** Default fps rate. */
 #define DEFAULT_FPS 60
@@ -95,5 +92,10 @@
 #define USE_JOYSTICK_AXIS
 
 //#define USE_FIXED_TIMESTEP_FPS
+
+/** Version of player. Should be redefined by build system. */
+#ifndef PLAYER_VERSION
+#  define PLAYER_VERSION "0.2"
+#endif
 
 #endif

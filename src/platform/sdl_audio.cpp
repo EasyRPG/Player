@@ -49,6 +49,7 @@ SdlAudio::SdlAudio() :
 	if (Mix_OpenAudio(frequency, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) < 0) {
 		Output::Error("Couldn't initialize audio.\n%s\n", Mix_GetError());
 	}
+	Mix_AllocateChannels(32); // Default is MIX_CHANNELS = 8
 	/*int flags = MIX_INIT_MP3;
 	int initted = Mix_Init(flags);
 	if ((initted & flags) != flags) {
@@ -60,7 +61,7 @@ SdlAudio::~SdlAudio() {
 	Mix_CloseAudio();
 }
 
-void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */) {
+void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
 	std::string const path = FileFinder::FindMusic(file);
 	if (path.empty()) {
 		Output::Warning("Music not found: %s", file.c_str());
@@ -81,13 +82,20 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */) {
 	}
 	if (Mix_GetMusicType(bgm.get()) == MUS_WAV) {
 		BGM_Stop();
-		BGS_Play(file, volume, 0);
+		BGS_Play(file, volume, 0, fadein);
 		return;
 	}
 #endif
 
 	BGM_Volume(volume);
-	if (!me_stopped_bgm && Mix_PlayMusic(bgm.get(), -1) == -1) {
+	if (!me_stopped_bgm &&
+#ifdef _WIN32
+	    (Mix_GetMusicType(bgm.get()) == MUS_MID && WindowsUtils::GetWindowsVersion() >= 6
+	     ? Mix_PlayMusic(bgm.get(), -1) : Mix_FadeInMusic(bgm.get(), -1, fadein))
+#else
+	     Mix_FadeInMusic(bgm.get(), -1, fadein)
+#endif
+	     == -1) {
 		Output::Warning("Couldn't play %s BGM.\n%s\n", file.c_str(), Mix_GetError());
 		return;
 	}
@@ -152,7 +160,7 @@ void SdlAudio::BGM_Fade(int fade) {
 	me_stopped_bgm = false;
 }
 
-void SdlAudio::BGS_Play(std::string const& file, int volume, int /* pitch */) {
+void SdlAudio::BGS_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
 	std::string const path = FileFinder::FindMusic(file);
 	if (path.empty()) {
 		Output::Warning("Music not found: %s", file.c_str());
@@ -164,7 +172,7 @@ void SdlAudio::BGS_Play(std::string const& file, int volume, int /* pitch */) {
 		Output::Warning("Couldn't load %s BGS.\n%s\n", file.c_str(), Mix_GetError());
 		return;
 	}
-	bgs_channel = Mix_PlayChannel(-1, bgs.get(), -1);
+	bgs_channel = Mix_FadeInChannel(-1, bgs.get(), -1, fadein);
 	Mix_Volume(bgs_channel, volume * MIX_MAX_VOLUME / 100);
 	if (bgs_channel == -1) {
 		Output::Warning("Couldn't play %s BGS.\n%s\n", file.c_str(), Mix_GetError());
@@ -204,7 +212,7 @@ void me_finish(int channel) {
 }
 */
 
-void SdlAudio::ME_Play(std::string const& file, int volume, int /* pitch */) {
+void SdlAudio::ME_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
 	std::string const path = FileFinder::FindMusic(file);
 	if (path.empty()) {
 		Output::Warning("Music not found: %s", file.c_str());
@@ -215,7 +223,7 @@ void SdlAudio::ME_Play(std::string const& file, int volume, int /* pitch */) {
 		Output::Warning("Couldn't load %s ME.\n%s\n", file.c_str(), Mix_GetError());
 		return;
 	}
-	me_channel = Mix_PlayChannel(-1, me.get(), 0);
+	me_channel = Mix_FadeInChannel(-1, me.get(), 0, fadein);
 	Mix_Volume(me_channel, volume * MIX_MAX_VOLUME / 100);
 	if (me_channel == -1) {
 		Output::Warning("Couldn't play %s ME.\n%s\n", file.c_str(), Mix_GetError());

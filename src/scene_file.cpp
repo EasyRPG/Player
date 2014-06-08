@@ -26,9 +26,9 @@
 #include "game_party.h"
 #include "input.h"
 #include "lsd_reader.h"
+#include "player.h"
 #include "rpg_save.h"
 #include "scene_file.h"
-#include "reader_util.h"
 
 Scene_File::Scene_File(std::string message) :
 	help_window(NULL), message(message), latest_time(0), latest_slot(0) {
@@ -40,7 +40,7 @@ void Scene_File::Start() {
 	DisplayUi->SetBackcolor(Cache::system_info.bg_color);
 
 	// Create the windows
-	help_window.reset(new Window_Help(0, 0, 320, 32));
+	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
 	help_window->SetText(message);
 
 	// Refresh File Finder Save Folder
@@ -48,7 +48,7 @@ void Scene_File::Start() {
 
 	for (int i = 0; i < 15; i++) {
 		EASYRPG_SHARED_PTR<Window_SaveFile>
-			w(new Window_SaveFile(0, 40 + i * 64, 320, 64));
+			w(new Window_SaveFile(0, 40 + i * 64, SCREEN_TARGET_WIDTH, 64));
 		w->SetIndex(i);
 
 		// Try to access file
@@ -58,7 +58,7 @@ void Scene_File::Start() {
 		if (!file.empty()) {
 			// File found
 			std::auto_ptr<RPG::Save> savegame =
-				LSD_Reader::Load(file, ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME)));
+				LSD_Reader::Load(file, Player::GetEncoding());
 
 			if (savegame.get())	{
 				std::vector<std::pair<int, std::string> > party;
@@ -113,7 +113,7 @@ void Scene_File::Start() {
 }
 
 void Scene_File::Refresh() {
-	for (int i = 0; (size_t) i < file_windows.size(); i++) {
+	for (unsigned int i = 0; (size_t) i < file_windows.size(); i++) {
 		Window_SaveFile *w = file_windows[i].get();
 		w->SetY(40 + (i - top_index) * 64);
 		w->SetActive(i == index);
@@ -135,8 +135,8 @@ void Scene_File::Update() {
 		}
 	}
 
-	int old_top_index = top_index;
-	int old_index = index;
+	unsigned int old_top_index = top_index;
+	unsigned int old_index = index;
 
 	if (Input::IsRepeated(Input::DOWN)) {
 		if (Input::IsTriggered(Input::DOWN) || index < file_windows.size() - 1) {
