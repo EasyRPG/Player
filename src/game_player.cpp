@@ -368,6 +368,11 @@ bool Game_Player::CheckEventTriggerHere(const std::vector<int>& triggers) {
 		if ( (*i)->GetLayer() == RPG::EventPage::Layers_below && std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() ) {
 			(*i)->Start();
 			result = (*i)->GetStarting();
+			if (!(*i)->IsDirectionFixed() && result) {
+				(*i)->SetPrelockDirection((*i)->GetDirection());
+				(*i)->TurnTowardHero();
+			}
+
 		}
 	}
 	return result;
@@ -392,6 +397,10 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 		{
 			(*i)->Start();
 			result = true;
+			if (!(*i)->IsDirectionFixed() && !(*i)->GetList().empty()) {
+				(*i)->SetPrelockDirection((*i)->GetDirection());
+				(*i)->TurnTowardHero();
+			}
 		}
 	}
 
@@ -409,6 +418,10 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 			{
 				(*i)->Start();
 				result = true;
+				if (!(*i)->IsDirectionFixed() && !(*i)->GetList().empty()) {
+					(*i)->SetPrelockDirection((*i)->GetDirection());
+					(*i)->TurnTowardHero();
+				}
 			}
 		}
 	}
@@ -428,6 +441,11 @@ bool Game_Player::CheckEventTriggerTouch(int x, int y) {
 		if ( (*i)->GetLayer() == 1 && ((*i)->GetTrigger() == 1 || (*i)->GetTrigger() == 2) ) {
 			(*i)->Start();
 			result = true;
+			if (!(*i)->IsDirectionFixed() && !(*i)->GetList().empty()) {
+				(*i)->SetPrelockDirection((*i)->GetDirection());
+				(*i)->TurnTowardHero();
+			}
+
 		}
 	}
 	return result;

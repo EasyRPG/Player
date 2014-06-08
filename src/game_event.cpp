@@ -436,9 +436,6 @@ void Game_Event::Start() {
 
 	starting = true;
 
-	if (trigger < 3)
-		Lock();
-
 	if (!Game_Map::GetInterpreter().IsRunning()) {
 		Game_Map::GetInterpreter().SetupStartingEvent(this);
 	}
