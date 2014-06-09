@@ -387,7 +387,6 @@ void Game_Character::MoveTypeCustom() {
 			if (active_route->repeat) {
 				active_route_index = 0;
 				SetMoveRouteRepeated(true);
-				EndMoveRoute();
 			} else if (IsMoveRouteOverwritten()) {
 				SetMoveRouteOverwritten(false);
 				EndMoveRoute();
@@ -573,9 +572,7 @@ void Game_Character::EndMoveRoute() {
 		move_route_owner = NULL;
 	}
 
-	if (!IsMoveRouteRepeated()) {
-		SetMoveFrequency(original_move_frequency);
-	}
+	SetMoveFrequency(original_move_frequency);
 }
 
 void Game_Character::MoveDown() {
