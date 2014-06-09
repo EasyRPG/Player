@@ -24,6 +24,7 @@
 #include "game_system.h"
 #include "input.h"
 #include "main_data.h"
+#include "game_message.h"
 #include "player.h"
 #include "util_macro.h"
 #include <math.h>
@@ -209,7 +210,7 @@ void Game_Character::Update() {
 	if (stop_count >= ((GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency()))) {
 		if (IsMoveRouteOverwritten()) {
 			MoveTypeCustom();
-		} else if (!IsFacingLocked()) {
+		} else if (!IsFacingLocked() && !Game_Message::visible) {
 			UpdateSelfMovement();
 		}
 	}
