@@ -116,7 +116,7 @@ bool Game_Character::IsLandable(int x, int y) const
 		return false;
 
 	if (Main_Data::game_player->GetX() == x && Main_Data::game_player->GetY() == y) {
-		if (!Main_Data::game_player->GetThrough() && !GetSpriteName().empty()) {
+		if (!Main_Data::game_player->GetThrough() && !GetSpriteName().empty() && (this != Main_Data::game_player.get())) {
 			return false;
 		}
 	}
@@ -161,16 +161,16 @@ int Game_Character::GetScreenZ(int /* height */) const {
 }
 
 void Game_Character::Update() {
-	if (IsContinuous() || IsSpinning()) {
+	if (IsJumping()) {
+		UpdateJump();
+		anime_count += (IsSpinning() ? 1.0 : 0);
+	} else if (IsContinuous() || IsSpinning()) {
 		UpdateMove();
 		UpdateStop();
 	} else {
-		if (IsJumping())
-			UpdateJump();
-		else if (IsMoving()) {
+		if (IsMoving()) {
 			UpdateMove();
-		}
-		else {
+		} else {
 			UpdateStop();
 		}
 	}
