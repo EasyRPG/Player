@@ -351,10 +351,10 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 			Game_Event* evnt = i->second.get();
 			if (evnt != self_event && evnt->GetX() == x && evnt->GetY() == y) {
 				if (!evnt->GetThrough()) {
-					if (evnt->GetLayer() == RPG::EventPage::Layers_same) {
+					if (evnt->GetLayer() == self_event->GetLayer()) {
 						if (self_event->GetX() == x && self_event->GetY() == y)
 							pass = true;
-						else 
+						else
 							return false;
 					}
 					else if (evnt->GetTileId() > 0 && evnt->GetLayer() == RPG::EventPage::Layers_below) {
