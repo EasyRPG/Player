@@ -173,10 +173,25 @@ tSystemInfo Cache::system_info;
 BOOST_PP_SEQ_FOR_EACH(macro, ,
 					  (Backdrop)(Battle)(Battle2)(Battlecharset)(Battleweapon)
 					  (Charset)(Chipset)(Faceset)(Gameover)(Monster)
-					  (Panorama)(Picture)(System)(System2)(Frame)(Title)
+					  (Panorama)(System)(System2)(Frame)(Title)
 					  )
 
 #undef macro
+
+BitmapRef Cache::Picture(const std::string& filename, bool transparent) {
+	Spec const& s = spec[Material::Type::Picture];
+	BitmapRef const ret = LoadBitmap(s.directory, filename, transparent, 0);
+
+	if(
+		ret->GetWidth () < s.min_width  || s.max_width  < ret->GetWidth () ||
+		ret->GetHeight() < s.min_height || s.max_height < ret->GetHeight()
+	) {
+		Output::Debug("Image size error in: %s/%s\nwidth  (min, max, actual) = (%d, %d, %d)\nheight (min, max, actual) = (%d, %d, %d)",
+					  s.directory, filename.c_str(), s.min_width , s.max_width , ret->GetWidth (), s.min_height, s.max_height, ret->GetHeight());
+	}
+
+	return ret;
+}
 
 BitmapRef Cache::Exfont() {
 	string_pair const hash("\x00","ExFont");

@@ -48,7 +48,7 @@ namespace Cache {
 	BitmapRef Gameover(const std::string& filename);
 	BitmapRef Monster(const std::string& filename);
 	BitmapRef Panorama(const std::string& filename);
-	BitmapRef Picture(const std::string& filename);
+	BitmapRef Picture(const std::string& filename, bool transparent);
 	BitmapRef Chipset(const std::string& filename);
 	BitmapRef Title(const std::string& filename);
 	BitmapRef System(const std::string& filename);
