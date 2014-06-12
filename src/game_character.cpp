@@ -1090,10 +1090,6 @@ void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
 }
 
 void Game_Character::CancelMoveRoute(Game_Interpreter* owner) {
-	if (!IsMoveRouteOverwritten() ||
-		move_route_owner != owner)
-		return;
-
 	SetMoveRouteOverwritten(false);
 	move_route_owner = NULL;
 }
