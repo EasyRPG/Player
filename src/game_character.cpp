@@ -210,7 +210,7 @@ void Game_Character::Update() {
 	if (stop_count >= ((GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency()))) {
 		if (IsMoveRouteOverwritten()) {
 			MoveTypeCustom();
-		} else if (!IsFacingLocked() && !Game_Message::visible) {
+		} else if (!Game_Message::visible) {
 			UpdateSelfMovement();
 		}
 	}
@@ -492,7 +492,7 @@ void Game_Character::MoveTypeCustom() {
 					SetMoveSpeed(max(GetMoveSpeed() - 1, 1));
 					break;
 				case RPG::MoveCommand::Code::increase_movement_frequence:
-					SetMoveFrequency(min(GetMoveFrequency() - 1, 1));
+					SetMoveFrequency(min(GetMoveFrequency() + 1, 8));
 					break;
 				case RPG::MoveCommand::Code::decrease_movement_frequence:
 					SetMoveFrequency(max(GetMoveFrequency() - 1, 1));
