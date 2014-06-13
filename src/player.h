@@ -128,6 +128,9 @@ namespace Player {
 	/** Overwrite party y position */
 	extern int party_y_position;
 
+	/** Overwrite starting party members */
+	extern std::vector<int> party_members;
+
 	/** Overwrite start map */
 	extern int start_map_id;
 

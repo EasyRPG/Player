@@ -77,6 +77,11 @@ public:
 	void RemoveActor(int actor_id);
 
 	/**
+	 * Removes all actors from the party.
+	 */
+	void Clear();
+
+	/**
 	 * Gets if an actor is in party.
 	 *
 	 * @param actor_id database actor ID.

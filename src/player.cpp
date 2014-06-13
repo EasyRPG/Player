@@ -77,6 +77,7 @@ namespace Player {
 	int load_game_id;
 	int party_x_position;
 	int party_y_position;
+	std::vector<int> party_members;
 	int start_map_id;
 	bool no_rtp_flag;
 	bool no_audio_flag;
@@ -300,7 +301,11 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			++it;
 			party_y_position = atoi((*it).c_str());
 		}
+		else if (*it == "--start-party") {
+			while (++it != args.end() && isdigit((*it)[0])) {
+				party_members.push_back(atoi((*it).c_str()));
 			}
+			--it;
 		}
 		else if (*it == "--engine") {
 			++it;
@@ -446,6 +451,13 @@ void Player::SetupPlayerSpawn() {
 		Data::treemap.start.party_x : Player::party_x_position;
 	int y_pos = Player::party_y_position == -1 ?
 		Data::treemap.start.party_y : Player::party_y_position;
+	if (party_members.size() > 0) {
+		Main_Data::game_party->Clear();
+		std::vector<int>::iterator member;
+		for (member = party_members.begin(); member != party_members.end(); ++member) {
+			Main_Data::game_party->AddActor(*member);
+		}
+	}
 
 	Game_Map::Setup(map_id);
 	Main_Data::game_player->MoveTo(x_pos, y_pos);
@@ -503,6 +515,10 @@ void Player::PrintUsage() {
 
 	std::cout << "      " << "--start-position X Y " << "Overwrite the party start position and move the" << std::endl;
 	std::cout << "      " << "                     " << "party to position (X, Y)." << std::endl;
+	std::cout << "      " << "                     " << "Incompatible with --load-game-id." << std::endl;
+
+	std::cout << "      " << "--start-party A B... " << "Overwrite the starting party members with the actors" << std::endl;
+	std::cout << "      " << "                     " << "with IDs A, B, C..." << std::endl;
 	std::cout << "      " << "                     " << "Incompatible with --load-game-id." << std::endl;
 
 	std::cout << "      " << "--test-play          " << "Enable TestPlay mode." << std::endl;
