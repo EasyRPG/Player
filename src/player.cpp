@@ -494,7 +494,7 @@ std::string Player::GetEncoding() {
 		if (text.str().size() > 33)
 		{
 			Output::Debug("Text for encoding detection: %s", text.str().c_str());
-			encoding = ReaderUtil::DetectEncoding(text.str().c_str());
+			encoding = ReaderUtil::DetectEncoding(text.str());
 			Output::Debug("Detected encoding: %s", encoding.c_str());
 			// Fixes to ensure proper Windows encodings
 			if (encoding == "Shift_JIS")
