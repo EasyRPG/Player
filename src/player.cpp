@@ -235,11 +235,12 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			hide_title_flag = true;
 		}
 		else if (*it == "battletest") {
-			battle_test_flag = true;
 			++it;
-			if (it != args.end()) {
-				battle_test_troop_id = atoi((*it).c_str());
+			if (it == args.end()) {
+				return;
 			}
+			battle_test_flag = true;
+			battle_test_troop_id = atoi((*it).c_str());
 			if (battle_test_troop_id == 0) {
 				--it;
 				battle_test_troop_id = (argc > 4) ? atoi(argv[4]) : 0;
@@ -247,26 +248,29 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		}
 		else if (*it == "--battle-test") {
 			++it;
-			if (it != args.end()) {
-				battle_test_flag = true;
-				battle_test_troop_id = atoi((*it).c_str());
+			if (it == args.end()) {
+				return;
 			}
+			battle_test_flag = true;
+			battle_test_troop_id = atoi((*it).c_str());
 		}
 		else if (*it == "--project-path") {
 			++it;
-			if (it != args.end()) {
-				// case sensitive
-				Main_Data::project_path = argv[it - args.begin() + 1];
+			if (it == args.end()) {
+				return;
 			}
+			// case sensitive
+			Main_Data::project_path = argv[it - args.begin() + 1];
 		}
 		else if (*it == "--new-game") {
 			new_game_flag = true;
 		}
 		else if (*it == "--load-game-id") {
 			++it;
-			if (it != args.end()) {
-				load_game_id = atoi((*it).c_str());
+			if (it == args.end()) {
+				return;
 			}
+			load_game_id = atoi((*it).c_str());
 		}
 		/*else if (*it == "--load-game") {
 			// load game by filename
@@ -282,36 +286,40 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		}*/
 		else if (*it == "--start-map-id") {
 			++it;
-			if (it != args.end()) {
-				start_map_id = atoi((*it).c_str());
+			if (it == args.end()) {
+				return;
 			}
+			start_map_id = atoi((*it).c_str());
 		}
 		else if (*it == "--start-position") {
 			++it;
-			if (it != args.end()) {
-				party_x_position = atoi((*it).c_str());
+			if (it == args.end() || it == args.end()-1) {
+				return;
 			}
+			party_x_position = atoi((*it).c_str());
 			++it;
-			if (it != args.end()) {
-				party_y_position = atoi((*it).c_str());
+			party_y_position = atoi((*it).c_str());
+		}
 			}
 		}
 		else if (*it == "--engine") {
 			++it;
-			if (it != args.end()) {
-				if (*it == "rpg2k" || *it == "2000") {
-					engine = EngineRpg2k;
-				}
-				else if (*it == "rpg2k3" || *it == "2003") {
-					engine = EngineRpg2k3;
-				}
+			if (it == args.end()) {
+				return;
+			}
+			if (*it == "rpg2k" || *it == "2000") {
+				engine = EngineRpg2k;
+			}
+			else if (*it == "rpg2k3" || *it == "2003") {
+				engine = EngineRpg2k3;
 			}
 		}
 		else if (*it == "--encoding") {
 			++it;
-			if (it != args.end()) {
-				encoding = *it;
+			if (it == args.end()) {
+				return;
 			}
+			encoding = *it;
 		}
 		else if (*it == "--disable-audio") {
 			no_audio_flag = true;
