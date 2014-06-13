@@ -54,6 +54,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 #ifdef GEKKO
 	#include <fat.h>
@@ -109,14 +110,6 @@ void Player::Init(int argc, char *argv[]) {
 	}
 
 	FileFinder::Init();
-
-	INIReader ini(FileFinder::FindDefault(INI_NAME));
-	if (ini.ParseError() != -1) {
-		std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
-		std::string encoding = Player::GetEncoding();
-		game_title = ReaderUtil::Recode(title, encoding);
-		no_rtp_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1"? true : no_rtp_flag;
-	}
 
 	DisplayUi.reset();
 
@@ -334,6 +327,15 @@ void Player::CreateGameObjects() {
 	static bool init = false;
 	if (!init) {
 		LoadDatabase();
+		Player::GetEncoding();
+		LoadDatabase();
+
+		INIReader ini(FileFinder::FindDefault(INI_NAME));
+		if (ini.ParseError() != -1) {
+			std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
+			game_title = ReaderUtil::Recode(title, encoding);
+			no_rtp_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1"? true : no_rtp_flag;
+		}
 
 		if (Player::engine == EngineNone) {
 			if (Data::system.ldb_id == 2003) {
@@ -395,17 +397,17 @@ void Player::LoadDatabase() {
 		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
 		std::string lmt = FileFinder::FindDefault(TREEMAP_NAME);
 
-		if (!LDB_Reader::Load(ldb, Player::GetEncoding())) {
+		if (!LDB_Reader::Load(ldb, encoding)) {
 			Output::ErrorStr(LcfReader::GetError());
 		}
-		if (!LMT_Reader::Load(lmt, Player::GetEncoding())) {
+		if (!LMT_Reader::Load(lmt, encoding)) {
 			Output::ErrorStr(LcfReader::GetError());
 		}
 	}
 }
 
 void Player::LoadSavegame(const std::string& save_name) {
-	std::auto_ptr<RPG::Save> save = LSD_Reader::Load(save_name, Player::GetEncoding());
+	std::auto_ptr<RPG::Save> save = LSD_Reader::Load(save_name, encoding);
 
 	if (!save.get()) {
 		Output::Error("%s", LcfReader::GetError().c_str());
@@ -446,8 +448,88 @@ void Player::SetupPlayerSpawn() {
 }
 
 std::string Player::GetEncoding() {
+	std::ostringstream text;
+
 	if (encoding.empty()) {
 		encoding = ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME));
+	}
+
+	if (encoding.empty()) {
+		text <<
+		Data::terms.menu_save << " " <<
+		Data::terms.menu_quit << " " <<
+		Data::terms.new_game << " " <<
+		Data::terms.load_game << " " <<
+		Data::terms.exit_game << " " <<
+		Data::terms.status << " " <<
+		Data::terms.row << " " <<
+		Data::terms.order << " " <<
+		Data::terms.wait_on << " " <<
+		Data::terms.wait_off << " " <<
+		Data::terms.level << " " <<
+		Data::terms.health_points << " " <<
+		Data::terms.spirit_points << " " <<
+		Data::terms.normal_status << " " <<
+		Data::terms.exp_short << " " <<
+		Data::terms.lvl_short << " " <<
+		Data::terms.hp_short << " " <<
+		Data::terms.sp_short << " " <<
+		Data::terms.sp_cost << " " <<
+		Data::terms.attack << " " <<
+		Data::terms.defense << " " <<
+		Data::terms.spirit << " " <<
+		Data::terms.agility << " " <<
+		Data::terms.weapon << " " <<
+		Data::terms.shield << " " <<
+		Data::terms.armor << " " <<
+		Data::terms.helmet << " " <<
+		Data::terms.accessory << " " <<
+		Data::terms.save_game_message << " " <<
+		Data::terms.load_game_message << " " <<
+		Data::terms.file << " " <<
+		Data::terms.exit_game_message << " " <<
+		Data::terms.yes << " " <<
+		Data::terms.no;
+		// Checks if there are more than the above 33 spaces (no data)
+		if (text.str().size() > 33)
+		{
+			Output::Debug("Text for encoding detection: %s", text.str().c_str());
+			encoding = ReaderUtil::DetectEncoding(text.str().c_str());
+			Output::Debug("Detected encoding: %s", encoding.c_str());
+			// Fixes to ensure proper Windows encodings
+			if (encoding == "Shift_JIS")
+			{
+				encoding = "cp943"; // Japanese
+			}
+			else if (encoding == "ISO-8859-1")
+			{
+				encoding = "windows-1252"; // Occidental
+			}
+			else if (encoding == "ISO-8859-2")
+			{
+				encoding = "windows-1250"; // Central Europe
+			}
+			else if (encoding == "ISO-8859-5")
+			{
+				encoding = "windows-1251"; // Cyrillic
+			}
+			else if (encoding == "ISO-8859-6")
+			{
+				encoding = "windows-1256"; // Arabic
+			}
+			else if (encoding == "ISO-8859-7")
+			{
+				encoding = "windows-1253"; // Greek
+			}
+			else if (encoding == "ISO-8859-8")
+			{
+				encoding = "windows-1255"; // Hebrew
+			}
+		}
+	}
+
+	if (encoding.empty()) {
+		encoding = ReaderUtil::GetLocaleEncoding();
 	}
 
 	return encoding;

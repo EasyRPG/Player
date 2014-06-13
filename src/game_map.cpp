@@ -182,7 +182,7 @@ void Game_Map::SetupCommon(int _id) {
 		ss.str("");
 		ss << "Map" << std::setfill('0') << std::setw(4) << location.map_id << ".lmu";
 
-		map = LMU_Reader::Load(FileFinder::FindDefault(ss.str()), Player::GetEncoding());
+		map = LMU_Reader::Load(FileFinder::FindDefault(ss.str()), Player::encoding);
 		if (map.get() == NULL) {
 			Output::ErrorStr(LcfReader::GetError());
 		}
