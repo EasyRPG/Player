@@ -495,35 +495,42 @@ std::string Player::GetEncoding() {
 		{
 			Output::Debug("Text for encoding detection: %s", text.str().c_str());
 			encoding = ReaderUtil::DetectEncoding(text.str());
-			Output::Debug("Detected encoding: %s", encoding.c_str());
-			// Fixes to ensure proper Windows encodings
-			if (encoding == "Shift_JIS")
+			if (!encoding.empty())
 			{
-				encoding = "cp943"; // Japanese
+				Output::Debug("Detected encoding: %s", encoding.c_str());
+				// Fixes to ensure proper Windows encodings
+				if (encoding == "Shift_JIS")
+				{
+					encoding = "cp943"; // Japanese
+				}
+				else if (encoding == "ISO-8859-1")
+				{
+					encoding = "windows-1252"; // Occidental
+				}
+				else if (encoding == "ISO-8859-2")
+				{
+					encoding = "windows-1250"; // Central Europe
+				}
+				else if (encoding == "ISO-8859-5")
+				{
+					encoding = "windows-1251"; // Cyrillic
+				}
+				else if (encoding == "ISO-8859-6")
+				{
+					encoding = "windows-1256"; // Arabic
+				}
+				else if (encoding == "ISO-8859-7")
+				{
+					encoding = "windows-1253"; // Greek
+				}
+				else if (encoding == "ISO-8859-8")
+				{
+					encoding = "windows-1255"; // Hebrew
+				}
 			}
-			else if (encoding == "ISO-8859-1")
+			else
 			{
-				encoding = "windows-1252"; // Occidental
-			}
-			else if (encoding == "ISO-8859-2")
-			{
-				encoding = "windows-1250"; // Central Europe
-			}
-			else if (encoding == "ISO-8859-5")
-			{
-				encoding = "windows-1251"; // Cyrillic
-			}
-			else if (encoding == "ISO-8859-6")
-			{
-				encoding = "windows-1256"; // Arabic
-			}
-			else if (encoding == "ISO-8859-7")
-			{
-				encoding = "windows-1253"; // Greek
-			}
-			else if (encoding == "ISO-8859-8")
-			{
-				encoding = "windows-1255"; // Hebrew
+				Output::Debug("Encoding not detected");
 			}
 		}
 	}
