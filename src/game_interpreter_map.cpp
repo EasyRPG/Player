@@ -47,6 +47,8 @@
 #include "filefinder.h"
 #include "reader_lcf.h"
 
+std::vector<Game_Character*> Game_Interpreter_Map::pending;
+
 Game_Interpreter_Map::Game_Interpreter_Map(int depth, bool main_flag) :
 	Game_Interpreter(depth, main_flag) {
 }
@@ -1452,7 +1454,13 @@ bool Game_Interpreter_Map::CommandChangeEncounterRate(RPG::EventCommand const& c
 }
 
 bool Game_Interpreter_Map::CommandProceedWithMovement(RPG::EventCommand const& /* com */) { // code 11340
-	return pending.empty();
+	std::vector<Game_Character*>::iterator it;
+	for (it = pending.begin(); it != pending.end(); ++it) {
+		if (!(*it)->IsMoveRouteRepeated()) {
+			return false;
+		}
+	}
+	return true;
 }
 
 bool Game_Interpreter_Map::CommandPlayMovie(RPG::EventCommand const& com) { // code 11560

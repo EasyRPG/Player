@@ -260,7 +260,6 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	SetMoveFrequency(page->move_frequency);
 	original_move_route = page->move_route;
 	SetOriginalMoveRouteIndex(0);
-	SetMoveRouteOverwritten(false);
 	animation_type = page->animation_type;
 
 	SetLayer(page->layer);

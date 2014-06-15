@@ -351,10 +351,10 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 			Game_Event* evnt = i->second.get();
 			if (evnt != self_event && evnt->GetX() == x && evnt->GetY() == y) {
 				if (!evnt->GetThrough()) {
-					if (evnt->GetLayer() == RPG::EventPage::Layers_same) {
+					if (evnt->GetLayer() == self_event->GetLayer()) {
 						if (self_event->GetX() == x && self_event->GetY() == y)
 							pass = true;
-						else 
+						else
 							return false;
 					}
 					else if (evnt->GetTileId() > 0 && evnt->GetLayer() == RPG::EventPage::Layers_below) {
@@ -561,7 +561,7 @@ void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
 
 	tEventHash::const_iterator i;
 	for (i = Game_Map::GetEvents().begin(); i != Game_Map::GetEvents().end(); i++) {
-		if (i->second->GetRealX() == x * SCREEN_TILE_WIDTH && i->second->GetRealY() == y * SCREEN_TILE_WIDTH) {
+		if (i->second->GetX() == x && i->second->GetY() == y) {
 			result.push_back(i->second.get());
 		}
 	}
