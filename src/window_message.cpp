@@ -30,6 +30,7 @@
 #include "game_temp.h"
 #include "graphics.h"
 #include "input.h"
+#include "reader_util.h"
 #include "player.h"
 #include "util_macro.h"
 #include "utils.h"
@@ -56,6 +57,10 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	visible = false;
 	SetZ(10000);
 
+	escape_symbol = ReaderUtil::Recode("\\",Player::encoding);
+	escape_char = (escape_symbol == "\u00A5" ? L'¥' :
+		      (escape_symbol == "\u20A9" ? L'₩' :
+		      '\\'));
 	active = false;
 	index = -1;
 	text_color = Font::ColorDefault;
@@ -349,7 +354,7 @@ void Window_Message::UpdateMessage() {
 				new_page_after_pause = true;
 			}
 			break;
-		} else if (*text_index == '\\' && std::distance(text_index, end) > 1) {
+		} else if (*text_index == escape_char && std::distance(text_index, end) > 1) {
 			// Special message codes
 			++text_index;
 
@@ -364,11 +369,6 @@ void Window_Message::UpdateMessage() {
 				command_result = ParseCommandCode();
 				contents->TextDraw(contents_x, contents_y, text_color, command_result);
 				contents_x += contents->GetFont()->GetSize(command_result).width;
-				break;
-			case '\\':
-				// Show Backslash
-				contents->TextDraw(contents_x, contents_y, text_color, std::string("\\"));
-				contents_x += contents->GetFont()->GetSize("\\").width;
 				break;
 			case '_':
 				// Insert half size space
@@ -411,7 +411,12 @@ void Window_Message::UpdateMessage() {
 				++text_index;
 				return;
 				break;
-			default:;
+			default:
+				if (*text_index == escape_char) {
+					// Show Escape Symbol
+					contents->TextDraw(contents_x, contents_y, text_color, escape_symbol);
+					contents_x += contents->GetFont()->GetSize(escape_symbol).width;
+				}
 			}
 		} else if (*text_index == '$'
 				   && std::distance(text_index, end) > 1
@@ -513,7 +518,7 @@ std::string Window_Message::ParseCommandCode(int call_depth) {
 	int sub_code = -1;
 	uint32_t cmd_char = *text_index;
 	if (std::distance(text_index, end) > 3 &&
-		*boost::next(text_index, 2) == '\\' &&
+		*boost::next(text_index, 2) == escape_char &&
 		tolower(*boost::next(text_index, 3)) == 'v') {
 		++(++(++text_index));
 		// The result is an int value, str-to-int is safe in this case

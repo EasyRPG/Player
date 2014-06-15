@@ -137,7 +137,7 @@ private:
 	const std::string DecodeString(std::vector<int>::const_iterator& it);
 	RPG::MoveCommand DecodeMove(std::vector<int>::const_iterator& it);
 
-	std::vector<Game_Character*> pending;
+	static std::vector<Game_Character*> pending;
 };
 
 #endif

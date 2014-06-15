@@ -77,6 +77,7 @@ namespace Player {
 	int load_game_id;
 	int party_x_position;
 	int party_y_position;
+	std::vector<int> party_members;
 	int start_map_id;
 	bool no_rtp_flag;
 	bool no_audio_flag;
@@ -235,11 +236,12 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 			hide_title_flag = true;
 		}
 		else if (*it == "battletest") {
-			battle_test_flag = true;
 			++it;
-			if (it != args.end()) {
-				battle_test_troop_id = atoi((*it).c_str());
+			if (it == args.end()) {
+				return;
 			}
+			battle_test_flag = true;
+			battle_test_troop_id = atoi((*it).c_str());
 			if (battle_test_troop_id == 0) {
 				--it;
 				battle_test_troop_id = (argc > 4) ? atoi(argv[4]) : 0;
@@ -247,26 +249,29 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		}
 		else if (*it == "--battle-test") {
 			++it;
-			if (it != args.end()) {
-				battle_test_flag = true;
-				battle_test_troop_id = atoi((*it).c_str());
+			if (it == args.end()) {
+				return;
 			}
+			battle_test_flag = true;
+			battle_test_troop_id = atoi((*it).c_str());
 		}
 		else if (*it == "--project-path") {
 			++it;
-			if (it != args.end()) {
-				// case sensitive
-				Main_Data::project_path = argv[it - args.begin() + 1];
+			if (it == args.end()) {
+				return;
 			}
+			// case sensitive
+			Main_Data::project_path = argv[it - args.begin() + 1];
 		}
 		else if (*it == "--new-game") {
 			new_game_flag = true;
 		}
 		else if (*it == "--load-game-id") {
 			++it;
-			if (it != args.end()) {
-				load_game_id = atoi((*it).c_str());
+			if (it == args.end()) {
+				return;
 			}
+			load_game_id = atoi((*it).c_str());
 		}
 		/*else if (*it == "--load-game") {
 			// load game by filename
@@ -282,36 +287,44 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 		}*/
 		else if (*it == "--start-map-id") {
 			++it;
-			if (it != args.end()) {
-				start_map_id = atoi((*it).c_str());
+			if (it == args.end()) {
+				return;
 			}
+			start_map_id = atoi((*it).c_str());
 		}
 		else if (*it == "--start-position") {
 			++it;
-			if (it != args.end()) {
-				party_x_position = atoi((*it).c_str());
+			if (it == args.end() || it == args.end()-1) {
+				return;
 			}
+			party_x_position = atoi((*it).c_str());
 			++it;
-			if (it != args.end()) {
-				party_y_position = atoi((*it).c_str());
+			party_y_position = atoi((*it).c_str());
+		}
+		else if (*it == "--start-party") {
+			while (++it != args.end() && isdigit((*it)[0])) {
+				party_members.push_back(atoi((*it).c_str()));
 			}
+			--it;
 		}
 		else if (*it == "--engine") {
 			++it;
-			if (it != args.end()) {
-				if (*it == "rpg2k" || *it == "2000") {
-					engine = EngineRpg2k;
-				}
-				else if (*it == "rpg2k3" || *it == "2003") {
-					engine = EngineRpg2k3;
-				}
+			if (it == args.end()) {
+				return;
+			}
+			if (*it == "rpg2k" || *it == "2000") {
+				engine = EngineRpg2k;
+			}
+			else if (*it == "rpg2k3" || *it == "2003") {
+				engine = EngineRpg2k3;
 			}
 		}
 		else if (*it == "--encoding") {
 			++it;
-			if (it != args.end()) {
-				encoding = *it;
+			if (it == args.end()) {
+				return;
 			}
+			encoding = *it;
 		}
 		else if (*it == "--disable-audio") {
 			no_audio_flag = true;
@@ -438,6 +451,13 @@ void Player::SetupPlayerSpawn() {
 		Data::treemap.start.party_x : Player::party_x_position;
 	int y_pos = Player::party_y_position == -1 ?
 		Data::treemap.start.party_y : Player::party_y_position;
+	if (party_members.size() > 0) {
+		Main_Data::game_party->Clear();
+		std::vector<int>::iterator member;
+		for (member = party_members.begin(); member != party_members.end(); ++member) {
+			Main_Data::game_party->AddActor(*member);
+		}
+	}
 
 	Game_Map::Setup(map_id);
 	Main_Data::game_player->MoveTo(x_pos, y_pos);
@@ -495,6 +515,10 @@ void Player::PrintUsage() {
 
 	std::cout << "      " << "--start-position X Y " << "Overwrite the party start position and move the" << std::endl;
 	std::cout << "      " << "                     " << "party to position (X, Y)." << std::endl;
+	std::cout << "      " << "                     " << "Incompatible with --load-game-id." << std::endl;
+
+	std::cout << "      " << "--start-party A B... " << "Overwrite the starting party members with the actors" << std::endl;
+	std::cout << "      " << "                     " << "with IDs A, B, C..." << std::endl;
 	std::cout << "      " << "                     " << "Incompatible with --load-game-id." << std::endl;
 
 	std::cout << "      " << "--test-play          " << "Enable TestPlay mode." << std::endl;

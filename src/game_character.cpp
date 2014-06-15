@@ -24,6 +24,7 @@
 #include "game_system.h"
 #include "input.h"
 #include "main_data.h"
+#include "game_message.h"
 #include "player.h"
 #include "util_macro.h"
 #include <math.h>
@@ -115,7 +116,7 @@ bool Game_Character::IsLandable(int x, int y) const
 		return false;
 
 	if (Main_Data::game_player->GetX() == x && Main_Data::game_player->GetY() == y) {
-		if (!Main_Data::game_player->GetThrough() && !GetSpriteName().empty()) {
+		if (!Main_Data::game_player->GetThrough() && !GetSpriteName().empty() && (this != Main_Data::game_player.get())) {
 			return false;
 		}
 	}
@@ -160,16 +161,16 @@ int Game_Character::GetScreenZ(int /* height */) const {
 }
 
 void Game_Character::Update() {
-	if (IsContinuous() || IsSpinning()) {
+	if (IsJumping()) {
+		UpdateJump();
+		anime_count += (IsSpinning() ? 1.0 : 0);
+	} else if (IsContinuous() || IsSpinning()) {
 		UpdateMove();
 		UpdateStop();
 	} else {
-		if (IsJumping())
-			UpdateJump();
-		else if (IsMoving()) {
+		if (IsMoving()) {
 			UpdateMove();
-		}
-		else {
+		} else {
 			UpdateStop();
 		}
 	}
@@ -209,7 +210,7 @@ void Game_Character::Update() {
 	if (stop_count >= ((GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency()))) {
 		if (IsMoveRouteOverwritten()) {
 			MoveTypeCustom();
-		} else if (!IsFacingLocked()) {
+		} else if (!Game_Message::visible) {
 			UpdateSelfMovement();
 		}
 	}
@@ -386,7 +387,6 @@ void Game_Character::MoveTypeCustom() {
 			if (active_route->repeat) {
 				active_route_index = 0;
 				SetMoveRouteRepeated(true);
-				EndMoveRoute();
 			} else if (IsMoveRouteOverwritten()) {
 				SetMoveRouteOverwritten(false);
 				EndMoveRoute();
@@ -492,7 +492,7 @@ void Game_Character::MoveTypeCustom() {
 					SetMoveSpeed(max(GetMoveSpeed() - 1, 1));
 					break;
 				case RPG::MoveCommand::Code::increase_movement_frequence:
-					SetMoveFrequency(min(GetMoveFrequency() - 1, 1));
+					SetMoveFrequency(min(GetMoveFrequency() + 1, 8));
 					break;
 				case RPG::MoveCommand::Code::decrease_movement_frequence:
 					SetMoveFrequency(max(GetMoveFrequency() - 1, 1));
@@ -572,9 +572,7 @@ void Game_Character::EndMoveRoute() {
 		move_route_owner = NULL;
 	}
 
-	if (!IsMoveRouteRepeated()) {
-		SetMoveFrequency(original_move_frequency);
-	}
+	SetMoveFrequency(original_move_frequency);
 }
 
 void Game_Character::MoveDown() {
@@ -1092,10 +1090,6 @@ void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
 }
 
 void Game_Character::CancelMoveRoute(Game_Interpreter* owner) {
-	if (!IsMoveRouteOverwritten() ||
-		move_route_owner != owner)
-		return;
-
 	SetMoveRouteOverwritten(false);
 	move_route_owner = NULL;
 }

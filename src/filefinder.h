@@ -187,16 +187,18 @@ namespace FileFinder {
 	enum Mode {
 		ALL, /**< list files and directory */
 		FILES, /**< list only non-directory files */
-		DIRECTORIES /**< list only directories */
+		DIRECTORIES, /**< list only directories */
+		RECURSIVE /**< list non-directory files recursively */
 	};
 	/**
 	 * Lists directory members.
 	 *
 	 * @param dir directory to list members.
 	 * @param m member listing mode.
+	 * @param parent name of current relative folder (used if m is RECURSIVE)
 	 * @return member list.
 	 */
-	Directory GetDirectoryMembers(std::string const& dir, Mode m = ALL);
+	Directory GetDirectoryMembers(std::string const& dir, Mode m = ALL, std::string const& parent = "");
 
 	ProjectTree const& GetProjectTree();
 	EASYRPG_SHARED_PTR<ProjectTree> CreateProjectTree(std::string const& p, bool recursive = true);

@@ -243,7 +243,11 @@ void Game_Party::RemoveActor(int actor_id) {
 	Main_Data::game_player->Refresh();
 }
 
-bool Game_Party::IsActorInParty(int actor_id) {	
+void Game_Party::Clear() {
+	data.party.clear();
+}
+
+bool Game_Party::IsActorInParty(int actor_id) {
 	return std::find(data.party.begin(), data.party.end(), actor_id) != data.party.end();
 }
 
