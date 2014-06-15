@@ -20,6 +20,7 @@
 
 // Headers
 #include "baseui.h"
+#include <vector>
 
 /**
  * Player namespace.

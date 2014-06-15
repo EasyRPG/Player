@@ -38,6 +38,7 @@
 #include "output.h"
 #include "player.h"
 #include "main_data.h"
+#include "reader_util.h"
 #include "registry.h"
 
 #ifdef _MSC_VER
@@ -87,14 +88,24 @@ namespace {
 		using namespace FileFinder;
 
 		std::string const lower_dir = Utils::LowerCase(dir);
+		std::string const escape_symbol = ReaderUtil::Recode("\\",Player::encoding);
+		std::string corrected_name = Utils::LowerCase(name);
+		if (escape_symbol != "\\") {
+			std::size_t escape_pos = corrected_name.find(escape_symbol);
+			while (escape_pos != std::string::npos) {
+				corrected_name.erase(escape_pos, escape_symbol.length());
+				corrected_name.insert(escape_pos, "/");
+				escape_pos = corrected_name.find(escape_symbol);
+			}
+		}
+
 		string_map::const_iterator dir_it = tree.directories.find(lower_dir);
 		if(dir_it == tree.directories.end()) { return boost::none; }
 
 		string_map const& dir_map = tree.sub_members.find(lower_dir)->second;
 
 		for(char const** c = exts; *c != NULL; ++c) {
-			std::string const lower_name = Utils::LowerCase(name + *c);
-			string_map::const_iterator const name_it = dir_map.find(lower_name);
+			string_map::const_iterator const name_it = dir_map.find(corrected_name + *c);
 			if(name_it != dir_map.end()) {
 				return MakePath
 					(std::string(tree.project_path).append("/")
@@ -460,7 +471,7 @@ bool FileFinder::IsDirectory(std::string const& dir) {
 	return(::GetFileAttributesW(Utils::ToWideString(dir).c_str()) & FILE_ATTRIBUTE_DIRECTORY);
 #else
 	struct stat sb;
-	BOOST_VERIFY(::stat(dir.c_str(), &sb) != -1);
+	BOOST_VERIFY(::lstat(dir.c_str(), &sb) != -1);
 	return S_ISDIR(sb.st_mode);
 #endif
 }
