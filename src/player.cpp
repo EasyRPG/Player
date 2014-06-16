@@ -339,9 +339,8 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 void Player::CreateGameObjects() {
 	static bool init = false;
 	if (!init) {
-		LoadDatabase();
 		Player::GetEncoding();
-		LoadDatabase();
+		Player::LoadDatabase();
 
 		INIReader ini(FileFinder::FindDefault(INI_NAME));
 		if (ini.ParseError() != -1) {
@@ -468,60 +467,21 @@ void Player::SetupPlayerSpawn() {
 }
 
 std::string Player::GetEncoding() {
-	std::ostringstream text;
-
 	if (encoding.empty()) {
 		encoding = ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME));
+	} else {
+		return encoding;
 	}
-
 	if (encoding.empty()) {
-		text <<
-		Data::terms.menu_save << " " <<
-		Data::terms.menu_quit << " " <<
-		Data::terms.new_game << " " <<
-		Data::terms.load_game << " " <<
-		Data::terms.exit_game << " " <<
-		Data::terms.status << " " <<
-		Data::terms.row << " " <<
-		Data::terms.order << " " <<
-		Data::terms.wait_on << " " <<
-		Data::terms.wait_off << " " <<
-		Data::terms.level << " " <<
-		Data::terms.health_points << " " <<
-		Data::terms.spirit_points << " " <<
-		Data::terms.normal_status << " " <<
-		Data::terms.exp_short << " " <<
-		Data::terms.lvl_short << " " <<
-		Data::terms.hp_short << " " <<
-		Data::terms.sp_short << " " <<
-		Data::terms.sp_cost << " " <<
-		Data::terms.attack << " " <<
-		Data::terms.defense << " " <<
-		Data::terms.spirit << " " <<
-		Data::terms.agility << " " <<
-		Data::terms.weapon << " " <<
-		Data::terms.shield << " " <<
-		Data::terms.armor << " " <<
-		Data::terms.helmet << " " <<
-		Data::terms.accessory << " " <<
-		Data::terms.save_game_message << " " <<
-		Data::terms.load_game_message << " " <<
-		Data::terms.file << " " <<
-		Data::terms.exit_game_message << " " <<
-		Data::terms.yes << " " <<
-		Data::terms.no;
-		// Checks if there are more than the above 33 spaces (no data)
-		if (text.str().size() > 33)
-		{
-			Output::Debug("Text for encoding detection: %s", text.str().c_str());
-			encoding = ReaderUtil::DetectEncoding(text.str());
-			Output::Debug("Detected encoding: %s", encoding.c_str());
-		}
+		encoding = ReaderUtil::DetectEncoding(FileFinder::FindDefault(DATABASE_NAME));
+	} else {
+		return encoding;
 	}
-
 	if (encoding.empty()) {
 		Output::Debug("Encoding not detected");
 		encoding = ReaderUtil::GetLocaleEncoding();
+	} else {
+		Output::Debug("Detected encoding: %s", encoding.c_str());
 	}
 
 	return encoding;
