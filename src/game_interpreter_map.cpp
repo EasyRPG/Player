@@ -55,8 +55,13 @@ Game_Interpreter_Map::Game_Interpreter_Map(int depth, bool main_flag) :
 
 Game_Interpreter_Map::~Game_Interpreter_Map() {
 	std::vector<Game_Character*>::iterator it;
-	for (it = pending.begin(); it != pending.end(); it++) {
-		(*it)->DetachMoveRouteOwner(this);
+	std::vector<Game_Character*> toerase;
+	for (it = pending.begin(); it != pending.end(); ++it) {
+		if ((*it)->DetachMoveRouteOwner(this))
+			toerase.push_back(*it);
+	}
+	for (it = toerase.begin(); it != toerase.end(); ++it) {
+		EndMoveRoute(*it);
 	}
 }
 

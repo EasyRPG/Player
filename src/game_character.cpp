@@ -1096,10 +1096,12 @@ void Game_Character::CancelMoveRoute(Game_Interpreter* owner) {
 	move_route_owner = NULL;
 }
 
-void Game_Character::DetachMoveRouteOwner(Game_Interpreter* owner) {
+bool Game_Character::DetachMoveRouteOwner(Game_Interpreter* owner) {
 	if (owner == move_route_owner) {
 		move_route_owner = NULL;
+		return true;
 	}
+	return false;
 }
 
 int Game_Character::GetTileId() const {
