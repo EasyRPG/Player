@@ -83,7 +83,7 @@ static int GetEventCommandSize(const std::vector<RPG::EventCommand>& commands) {
 		result += LcfReader::IntSize(it->code);
 		result += LcfReader::IntSize(it->indent);
 		result += LcfReader::IntSize(it->string.size());
-		result += ReaderUtil::Recode(it->string, Player::GetEncoding()).size();
+		result += ReaderUtil::Recode(it->string, Player::encoding).size();
 
 		int count = it->parameters.size();
 		result += LcfReader::IntSize(count);
@@ -145,7 +145,7 @@ const std::string Game_Interpreter_Map::DecodeString(std::vector<int>::const_ite
 	for (int i = 0; i < len; i++)
 		out << (char) *it++;
 
-	std::string result = ReaderUtil::Recode(out.str(), Player::GetEncoding());
+	std::string result = ReaderUtil::Recode(out.str(), Player::encoding);
 
 	return result;
 }

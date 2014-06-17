@@ -92,7 +92,7 @@ void Scene_Save::Action(int index) {
 		filename = FileFinder::MakePath(Main_Data::project_path, ss.str());
 	}
 
-	LSD_Reader::Save(filename, Main_Data::game_data, Player::GetEncoding());
+	LSD_Reader::Save(filename, Main_Data::game_data, Player::encoding);
 
 	Scene::Pop();
 }

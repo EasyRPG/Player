@@ -54,6 +54,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 #ifdef GEKKO
 	#include <fat.h>
@@ -110,14 +111,6 @@ void Player::Init(int argc, char *argv[]) {
 	}
 
 	FileFinder::Init();
-
-	INIReader ini(FileFinder::FindDefault(INI_NAME));
-	if (ini.ParseError() != -1) {
-		std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
-		std::string encoding = Player::GetEncoding();
-		game_title = ReaderUtil::Recode(title, encoding);
-		no_rtp_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1"? true : no_rtp_flag;
-	}
 
 	DisplayUi.reset();
 
@@ -346,7 +339,15 @@ void Player::ParseCommandLine(int argc, char *argv[]) {
 void Player::CreateGameObjects() {
 	static bool init = false;
 	if (!init) {
-		LoadDatabase();
+		Player::GetEncoding();
+		Player::LoadDatabase();
+
+		INIReader ini(FileFinder::FindDefault(INI_NAME));
+		if (ini.ParseError() != -1) {
+			std::string title = ini.Get("RPG_RT", "GameTitle", GAME_TITLE);
+			game_title = ReaderUtil::Recode(title, encoding);
+			no_rtp_flag = ini.Get("RPG_RT", "FullPackageFlag", "0") == "1"? true : no_rtp_flag;
+		}
 
 		if (Player::engine == EngineNone) {
 			if (Data::system.ldb_id == 2003) {
@@ -408,17 +409,17 @@ void Player::LoadDatabase() {
 		std::string ldb = FileFinder::FindDefault(DATABASE_NAME);
 		std::string lmt = FileFinder::FindDefault(TREEMAP_NAME);
 
-		if (!LDB_Reader::Load(ldb, Player::GetEncoding())) {
+		if (!LDB_Reader::Load(ldb, encoding)) {
 			Output::ErrorStr(LcfReader::GetError());
 		}
-		if (!LMT_Reader::Load(lmt, Player::GetEncoding())) {
+		if (!LMT_Reader::Load(lmt, encoding)) {
 			Output::ErrorStr(LcfReader::GetError());
 		}
 	}
 }
 
 void Player::LoadSavegame(const std::string& save_name) {
-	std::auto_ptr<RPG::Save> save = LSD_Reader::Load(save_name, Player::GetEncoding());
+	std::auto_ptr<RPG::Save> save = LSD_Reader::Load(save_name, encoding);
 
 	if (!save.get()) {
 		Output::Error("%s", LcfReader::GetError().c_str());
@@ -468,6 +469,19 @@ void Player::SetupPlayerSpawn() {
 std::string Player::GetEncoding() {
 	if (encoding.empty()) {
 		encoding = ReaderUtil::GetEncoding(FileFinder::FindDefault(INI_NAME));
+	} else {
+		return encoding;
+	}
+	if (encoding.empty()) {
+		encoding = ReaderUtil::DetectEncoding(FileFinder::FindDefault(DATABASE_NAME));
+	} else {
+		return encoding;
+	}
+	if (encoding.empty()) {
+		Output::Debug("Encoding not detected");
+		encoding = ReaderUtil::GetLocaleEncoding();
+	} else {
+		Output::Debug("Detected encoding: %s", encoding.c_str());
 	}
 
 	return encoding;
