@@ -96,10 +96,10 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 	if (!Game_Map::IsPassable(new_x, new_y, (d + 2) % 4, this))
 		return false;
 
-	if (Main_Data::game_player->GetX() == new_x && Main_Data::game_player->GetY() == new_y) {
-		if (!Main_Data::game_player->GetThrough() && !GetSpriteName().empty()) {
+	if (Main_Data::game_player->GetX() == new_x && Main_Data::game_player->GetY() == new_y
+		&& !Main_Data::game_player->GetThrough() && !GetSpriteName().empty() 
+		&& GetLayer() != RPG::EventPage::Layers_above) {
 			return false;
-		}
 	}
 
 	return true;
