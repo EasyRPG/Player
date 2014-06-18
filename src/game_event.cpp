@@ -135,6 +135,9 @@ int Game_Event::GetMoveFrequency() const {
 
 void Game_Event::SetMoveFrequency(int frequency) {
 	data.move_frequency = frequency;
+	if (original_move_frequency == -1) {
+		original_move_frequency = frequency;
+	}
 }
 
 const RPG::MoveRoute& Game_Event::GetMoveRoute() const {
