@@ -468,8 +468,9 @@ bool FileFinder::Exists(std::string const& filename) {
 bool FileFinder::IsDirectory(std::string const& dir) {
 	assert(Exists(dir));
 #ifdef _WIN32
-	return (::GetFileAttributesW(Utils::ToWideString(dir).c_str()) & (FILE_ATTRIBUTE_DIRECTORY | FILE_ATTRIBUTE_REPARSE_POINT)
-	      == FILE_ATTRIBUTE_DIRECTORY);
+	int attribs = ::GetFileAttributesW(Utils::ToWideString(dir).c_str());
+	return (attribs & (FILE_ATTRIBUTE_DIRECTORY | FILE_ATTRIBUTE_REPARSE_POINT))
+	      == FILE_ATTRIBUTE_DIRECTORY;
 #else
 	struct stat sb;
 	BOOST_VERIFY(::lstat(dir.c_str(), &sb) != -1);
