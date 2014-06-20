@@ -650,7 +650,8 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 		return;
 	}
 
-	int w, h;
+	int w = 0;
+	int h = 0;
 	void* pixels;
 
 	if (ext == "png")

@@ -73,7 +73,12 @@ Window::~Window() {
 void Window::SetOpenAnimation(int frames) {
 	animation_frames = frames;
 	animation_count = 0.0;
-	animation_increment = (height / 2.0) / frames;
+	if (frames > 0) {
+		animation_increment = (height / 2.0) / frames;
+	}
+	else {
+		animation_increment = 0.0;
+	}
 }
 
 void Window::SetCloseAnimation(int frames) {
