@@ -61,6 +61,9 @@ public:
 	virtual void Start();
 	virtual void Update();
 
+	void TransitionIn();
+	void TransitionOut();
+
 	enum State {
 		/** Battle has started (Display encounter message) */
 		State_Start,

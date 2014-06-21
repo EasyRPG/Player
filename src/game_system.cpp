@@ -162,25 +162,90 @@ bool Game_System::GetAllowMenu() {
 }
 
 int Game_System::GetTransition(int which) {
+	int transition = 0;
+
 	switch (which) {
-		case Transition_TeleportErase:		return data.transition_out;
-		case Transition_TeleportShow:		return data.transition_in;
-		case Transition_BeginBattleErase:	return data.battle_start_fadeout;
-		case Transition_BeginBattleShow:	return data.battle_start_fadein;
-		case Transition_EndBattleErase:		return data.battle_end_fadeout;
-		case Transition_EndBattleShow:		return data.battle_end_fadein;
+		case Transition_TeleportErase:
+			transition = data.transition_out;
+			break;
+		case Transition_TeleportShow:
+			transition = data.transition_in;
+			break;
+		case Transition_BeginBattleErase:
+			transition = data.battle_start_fadeout;
+			break;
+		case Transition_BeginBattleShow:
+			transition = data.battle_start_fadein;
+			break;
+		case Transition_EndBattleErase:
+			transition = data.battle_end_fadeout;
+			break;
+		case Transition_EndBattleShow:
+			transition = data.battle_end_fadein;
+			break;
+		default: assert(false && "Bad transition");
 	}
 
-	return data.transition_out;	// keep the compiler happy
+	static const int fades[2][21] = {
+		{
+			Graphics::TransitionFadeOut,
+			Graphics::TransitionRandomBlocks,
+			Graphics::TransitionRandomBlocksUp,
+			Graphics::TransitionRandomBlocksDown,
+			Graphics::TransitionBlindClose,
+			Graphics::TransitionVerticalStripesOut,
+			Graphics::TransitionHorizontalStripesOut,
+			Graphics::TransitionBorderToCenterOut,
+			Graphics::TransitionCenterToBorderOut,
+			Graphics::TransitionScrollUpOut,
+			Graphics::TransitionScrollDownOut,
+			Graphics::TransitionScrollLeftOut,
+			Graphics::TransitionScrollRightOut,
+			Graphics::TransitionVerticalDivision,
+			Graphics::TransitionHorizontalDivision,
+			Graphics::TransitionCrossDivision,
+			Graphics::TransitionZoomIn,
+			Graphics::TransitionMosaicOut,
+			Graphics::TransitionWaveOut,
+			Graphics::TransitionErase,
+			Graphics::TransitionNone
+		},
+		{
+			Graphics::TransitionFadeIn,
+			Graphics::TransitionRandomBlocks,
+			Graphics::TransitionRandomBlocksUp,
+			Graphics::TransitionRandomBlocksDown,
+			Graphics::TransitionBlindOpen,
+			Graphics::TransitionVerticalStripesIn,
+			Graphics::TransitionHorizontalStripesIn,
+			Graphics::TransitionBorderToCenterIn,
+			Graphics::TransitionCenterToBorderIn,
+			Graphics::TransitionScrollUpIn,
+			Graphics::TransitionScrollDownIn,
+			Graphics::TransitionScrollLeftIn,
+			Graphics::TransitionScrollRightIn,
+			Graphics::TransitionVerticalCombine,
+			Graphics::TransitionHorizontalCombine,
+			Graphics::TransitionCrossCombine,
+			Graphics::TransitionZoomOut,
+			Graphics::TransitionMosaicIn,
+			Graphics::TransitionWaveIn,
+			Graphics::TransitionErase,
+			Graphics::TransitionNone,
+		}
+	};
+
+	return fades[which % 2][transition];
 }
 
 void Game_System::SetTransition(int which, int transition) {
 	switch (which) {
-		case Transition_TeleportErase:		data.transition_out			= transition;
-		case Transition_TeleportShow:		data.transition_in			= transition;
-		case Transition_BeginBattleErase:	data.battle_start_fadeout	= transition;
-		case Transition_BeginBattleShow:	data.battle_start_fadein	= transition;
-		case Transition_EndBattleErase:		data.battle_end_fadeout		= transition;
-		case Transition_EndBattleShow:		data.battle_end_fadein		= transition;
+		case Transition_TeleportErase:		data.transition_out			= transition; break;
+		case Transition_TeleportShow:		data.transition_in			= transition; break;
+		case Transition_BeginBattleErase:	data.battle_start_fadeout	= transition; break;
+		case Transition_BeginBattleShow:	data.battle_start_fadein	= transition; break;
+		case Transition_EndBattleErase:		data.battle_end_fadeout		= transition; break;
+		case Transition_EndBattleShow:		data.battle_end_fadein		= transition; break;
+		default: assert(false && "Bad transition");
 	}
 }

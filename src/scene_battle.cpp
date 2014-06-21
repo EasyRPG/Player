@@ -97,6 +97,19 @@ void Scene_Battle::Start() {
 	SetState(State_Start);
 }
 
+void Scene_Battle::TransitionIn() {
+	Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleShow), 32);
+}
+
+void Scene_Battle::TransitionOut() {
+	if (Player::exit_flag) {
+		Scene::TransitionOut();
+	}
+	else {
+		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleErase), 32, true);
+	}
+}
+
 void Scene_Battle::CreateCursors() {
 
 }

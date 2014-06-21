@@ -349,8 +349,8 @@ bool Game_Player::CheckActionEvent() {
 }
 
 bool Game_Player::CheckTouchEvent() {
-	int triggers[] = { 1, 2 };
-	std::vector<int> v_triggers( triggers, triggers + sizeof triggers / sizeof(int) );
+	int triggers[] = { RPG::EventPage::Trigger_touched, RPG::EventPage::Trigger_collision };
+	std::vector<int> v_triggers( triggers, triggers + sizeof(triggers) / sizeof(int) );
 	return CheckEventTriggerHere(v_triggers);
 }
 
@@ -364,7 +364,9 @@ bool Game_Player::CheckEventTriggerHere(const std::vector<int>& triggers) {
 
 	std::vector<Game_Event*>::iterator i;
 	for (i = events.begin(); i != events.end(); i++) {
-		if ( (*i)->GetLayer() == RPG::EventPage::Layers_below && std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() ) {
+		if (((*i)->GetLayer() == RPG::EventPage::Layers_below ||
+			(*i)->GetLayer() == RPG::EventPage::Layers_above)
+			&& std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() ) {
 			(*i)->Start();
 			result = (*i)->GetStarting();
 			if (!(*i)->IsDirectionFixed() && result) {
@@ -437,7 +439,9 @@ bool Game_Player::CheckEventTriggerTouch(int x, int y) {
 
 	std::vector<Game_Event*>::iterator i;
 	for (i = events.begin(); i != events.end(); i++) {
-		if ( (*i)->GetLayer() == 1 && ((*i)->GetTrigger() == 1 || (*i)->GetTrigger() == 2) ) {
+		if ((*i)->GetLayer() == RPG::EventPage::Layers_same &&
+			((*i)->GetTrigger() == RPG::EventPage::Trigger_touched ||
+			(*i)->GetTrigger() == RPG::EventPage::Trigger_collision) ) {
 			(*i)->Start();
 			result = true;
 			if (!(*i)->IsDirectionFixed() && !(*i)->GetList().empty()) {

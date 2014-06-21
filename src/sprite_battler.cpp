@@ -138,7 +138,12 @@ void Sprite_Battler::CreateSprite() {
 
 	// Not animated -> Monster
 	if (battler->GetBattleAnimationId() == 0) {
-		graphic = Cache::Monster(sprite_name);
+		if (sprite_name.empty()) {
+			graphic = Bitmap::Create(0, 0);
+		}
+		else {
+			graphic = Cache::Monster(sprite_name);
+		}
 		SetOx(graphic->GetWidth() / 2);
 		SetOy(graphic->GetHeight() / 2);
 

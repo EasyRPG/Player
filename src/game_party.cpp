@@ -157,6 +157,10 @@ void Game_Party::RemoveItem(int item_id, int amount) {
 }
 
 bool Game_Party::IsItemUsable(int item_id) {
+	if (item_id <= 0 || item_id > Data::items.size()) {
+		return false;
+	}
+
 	RPG::Item& item = Data::items[item_id - 1];
 
 	if (item_id > 0 && item_id <= (int)Data::items.size() && data.party.size() > 0) {

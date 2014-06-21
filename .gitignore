@@ -47,3 +47,8 @@ resources/player.aps
 /builds/wii/obj
 /builds/wii/*.dol
 compile
+CPackConfig.cmake
+CPackSourceConfig.cmake
+CTestTestfile.cmake
+cmake_install.cmake
+liblcf.pc

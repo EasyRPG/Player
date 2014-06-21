@@ -68,7 +68,6 @@ Scene_Map::~Scene_Map() {
 void Scene_Map::Continue() {
 	if (Game_Temp::battle_calling) {
 		// Came from battle
-		Game_Temp::battle_calling = false;
 		Game_System::BgmPlay(Main_Data::game_data.system.before_battle_music);
 	}
 	else {
@@ -76,13 +75,27 @@ void Scene_Map::Continue() {
 	}
 }
 
-/*void Scene_Map::TransitionIn() {
-	Graphics::Transition((Graphics::TransitionType)Data::system.transition_in, 12);
+void Scene_Map::Resume() {
+	Game_Temp::battle_calling = false;
+}
+
+void Scene_Map::TransitionIn() {
+	if (Game_Temp::battle_calling) {
+		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleShow), 32);
+	}
+	else {
+		Scene::TransitionIn();
+	}
 }
 
 void Scene_Map::TransitionOut() {
-	Graphics::Transition((Graphics::TransitionType)Data::system.transition_in, 12, true);
-}*/
+	if (Game_Temp::battle_calling) {
+		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_BeginBattleErase), 32, true);
+	}
+	else {
+		Scene::TransitionOut();
+	}
+}
 
 void Scene_Map::Update() {
 	Game_Map::GetInterpreter().Update();
@@ -168,7 +181,7 @@ void Scene_Map::UpdateTeleportPlayer() {
 	if (!Main_Data::game_player->IsTeleporting())
 		return;
 
-	Scene::TransitionOut();
+	Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportErase), 32, true);
 
 	Main_Data::game_player->PerformTeleport();
 	Game_Map::PlayBgm();
@@ -177,7 +190,7 @@ void Scene_Map::UpdateTeleportPlayer() {
 
 	Game_Map::Update();
 
-	Scene::TransitionIn();
+	Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), 32, false);
 
 	Input::Update();
 }

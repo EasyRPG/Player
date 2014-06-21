@@ -101,7 +101,7 @@ bool Game_Message::IsFaceRightPosition() {
 }
 
 void Game_Message::SetFaceRightPosition(bool right) {
-	data.face_right = false;
+	data.face_right = right;
 }
 
 bool Game_Message::IsTransparent() {

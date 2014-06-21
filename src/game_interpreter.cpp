@@ -199,13 +199,9 @@ void Game_Interpreter::Update() {
 				return;
 		}
 
-		if (Game_Map::GetNeedRefresh()) {
-			if (main_flag) {
-				if (!Main_Data::game_player->IsTeleporting()) {
-					Game_Map::Refresh();
-				}
-			} else {
-				return;
+		if (!Main_Data::game_player->IsTeleporting()) {
+			if (Game_Map::GetNeedRefresh()) {
+				Game_Map::Refresh();
 			}
 		}
 
@@ -487,7 +483,7 @@ void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices) {
 
 	// Set choices to message text
 	unsigned int i;
-	for (i = 0; i < choices.size(); i++) {
+	for (i = 0; i < 4 && i < choices.size(); i++) {
 		Game_Message::texts.push_back(choices[i]);
 	}
 

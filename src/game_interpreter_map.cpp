@@ -881,57 +881,7 @@ bool Game_Interpreter_Map::CommandChangeSystemGraphics(RPG::EventCommand const& 
 }
 
 bool Game_Interpreter_Map::CommandChangeScreenTransitions(RPG::EventCommand const& com) { // code 10690
-	static const int fades[2][21] = {
-		{
-			Graphics::TransitionFadeOut,
-			Graphics::TransitionRandomBlocksUp,
-			Graphics::TransitionBorderToCenterOut,
-			Graphics::TransitionCenterToBorderOut,
-			Graphics::TransitionBlindClose,
-			Graphics::TransitionVerticalStripesOut,
-			Graphics::TransitionHorizontalStripesOut,
-			Graphics::TransitionBorderToCenterOut,
-			Graphics::TransitionCenterToBorderOut,
-			Graphics::TransitionScrollUpOut,
-			Graphics::TransitionScrollDownOut,
-			Graphics::TransitionScrollLeftOut,
-			Graphics::TransitionScrollRightOut,
-			Graphics::TransitionVerticalDivision,
-			Graphics::TransitionHorizontalDivision,
-			Graphics::TransitionCrossDivision,
-			Graphics::TransitionZoomIn,
-			Graphics::TransitionMosaicOut,
-			Graphics::TransitionWaveOut,
-			Graphics::TransitionErase,
-			Graphics::TransitionNone
-		},
-		{
-			Graphics::TransitionFadeIn,
-			Graphics::TransitionRandomBlocksDown,
-			Graphics::TransitionBorderToCenterIn,
-			Graphics::TransitionCenterToBorderIn,
-			Graphics::TransitionBlindOpen,
-			Graphics::TransitionVerticalStripesIn,
-			Graphics::TransitionHorizontalStripesIn,
-			Graphics::TransitionBorderToCenterIn,
-			Graphics::TransitionCenterToBorderIn,
-			Graphics::TransitionScrollUpIn,
-			Graphics::TransitionScrollDownIn,
-			Graphics::TransitionScrollLeftIn,
-			Graphics::TransitionScrollRightIn,
-			Graphics::TransitionVerticalCombine,
-			Graphics::TransitionHorizontalCombine,
-			Graphics::TransitionCrossCombine,
-			Graphics::TransitionZoomOut,
-			Graphics::TransitionMosaicIn,
-			Graphics::TransitionWaveIn,
-			Graphics::TransitionErase,
-			Graphics::TransitionNone,
-		}
-	};
-	int which = com.parameters[0];
-	int trans = fades[which % 2][com.parameters[1]];
-	Game_System::SetTransition(which, trans);
+	Game_System::SetTransition(com.parameters[0], com.parameters[1]);
 	return true;
 }
 

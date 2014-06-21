@@ -40,8 +40,9 @@ public:
 	void Start();
 	void Continue();
 	void Update();
-//	void TransitionIn();
-//	void TransitionOut();
+	void Resume();
+	void TransitionIn();
+	void TransitionOut();
 
 	void CallBattle();
 	void CallShop();

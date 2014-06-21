@@ -379,12 +379,23 @@ void Graphics::UpdateTransition() {
 
 	int percentage = transition_frame * 100 / transition_duration;
 
+	// Fallback to FadeIn/Out for not implemented transition types:
+	// (Remove from here when implemented below)
+	switch (transition_type) {
+	case TransitionRandomBlocks:
+	case TransitionRandomBlocksUp:
+	case TransitionRandomBlocksDown:
+	case TransitionZoomIn:
+	case TransitionZoomOut:
+	case TransitionMosaicIn:
+	case TransitionMosaicOut:
+	case TransitionWaveIn:
+	case TransitionWaveOut:
+		transition_type = TransitionFadeIn;
+	}
+
 	switch (transition_type) {
 	case TransitionFadeIn:
-		screen1->BlitScreen(0, 0);
-		screen2->SetOpacityEffect(255 * percentage / 100);
-		screen2->BlitScreen(0, 0);
-		break;
 	case TransitionFadeOut:
 		screen1->BlitScreen(0, 0);
 		screen2->SetOpacityEffect(255 * percentage / 100);

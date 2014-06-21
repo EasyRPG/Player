@@ -84,7 +84,7 @@ void Window_Message::StartMessageProcessing() {
 		std::string const line = Game_Message::texts[i];
 		text.append(line + "\n");
 	}
-	item_max = Game_Message::choice_max;
+	item_max = min(4, Game_Message::choice_max);
 
 	text_index = boost::u8_to_u32_iterator<std::string::const_iterator>(text.begin(), text.begin(), text.end());
 	end = boost::u8_to_u32_iterator<std::string::const_iterator>(text.end(), text.begin(), text.end());

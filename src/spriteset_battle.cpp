@@ -34,7 +34,7 @@ Spriteset_Battle::Spriteset_Battle() {
 		background.reset(new Background(Data::terrains[Game_Temp::battle_terrain_id - 1].background_name));
 	}
 
-	// Create the enemy sprites
+	// Create the sprites
 	std::vector<Game_Battler*> battler;
 	Main_Data::game_enemyparty->GetBattlers(battler);
 	if (Player::engine == Player::EngineRpg2k3) {

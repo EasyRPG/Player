@@ -934,7 +934,7 @@ void Scene_Logo::Update() {
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Title>(), true);
 		if (Player::new_game_flag) {
 			Player::SetupPlayerSpawn();
-			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>(), true);
+			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>());
 		}
 		else if (Player::load_game_id > 0) {
 			std::stringstream ss;
@@ -942,7 +942,7 @@ void Scene_Logo::Update() {
 
 			std::string save_name = FileFinder::FindDefault(ss.str());
 			Player::LoadSavegame(save_name);
-			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>(true), true);
+			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Map>(true));
 		}
 	}
 }

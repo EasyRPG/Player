@@ -20,6 +20,8 @@
 #include "graphics.h"
 #include "bitmap.h"
 
+#include <boost/algorithm/string.hpp>
+
 MessageOverlay::MessageOverlay() :
 	type(TypeMessageOverlay),
 	z(100),
@@ -52,7 +54,7 @@ void MessageOverlay::Draw() {
 	std::deque<MessageOverlayItem>::iterator it;
 
 	++counter;
-	if (counter > 300) {
+	if (counter > 150) {
 		counter = 0;
 		if (!messages.empty()) {
 			for (it = messages.begin(); it != messages.end(); ++it) {
@@ -98,7 +100,12 @@ DrawableType MessageOverlay::GetType() const {
 }
 
 void MessageOverlay::AddMessage(const std::string& message, Color color) {
-	messages.push_back(MessageOverlayItem(message, color));
+	std::vector<std::string> strs;
+	boost::split(strs, message, boost::is_any_of("\n"));
+
+	for (size_t i = 0; i < strs.size(); i++)
+		messages.push_back(MessageOverlayItem(strs[i], color));
+
 	if (messages.size() > (unsigned)message_max) {
 		messages.pop_front();
 	}
