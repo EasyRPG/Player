@@ -168,7 +168,7 @@ void Scene_Map::UpdateTeleportPlayer() {
 	if (!Main_Data::game_player->IsTeleporting())
 		return;
 
-	Scene::TransitionOut();
+	Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportErase), 32, true);
 
 	Main_Data::game_player->PerformTeleport();
 	Game_Map::PlayBgm();
@@ -177,7 +177,7 @@ void Scene_Map::UpdateTeleportPlayer() {
 
 	Game_Map::Update();
 
-	Scene::TransitionIn();
+	Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), 32, false);
 
 	Input::Update();
 }
