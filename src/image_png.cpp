@@ -31,11 +31,21 @@ static void read_data(png_structp png_ptr, png_bytep data, png_size_t length) {
 	*bufp += length;
 }
 
+static void on_png_warning(png_structp, png_const_charp warn_msg) {
+	Output::Warning("%s", warn_msg);
+}
+
+static void on_png_error(png_structp, png_const_charp error_msg) {
+	Output::Error("%s", error_msg);
+}
+
+typedef PNG_CALLBACK(void, *png_error_ptr, (png_structp, png_const_charp));
+
 void ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 					int& width, int& height, void*& pixels) {
 	pixels = NULL;
 
-	png_struct *png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+	png_struct *png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, on_png_error, on_png_warning);
 	if (png_ptr == NULL) {
 		Output::Error("Couldn't allocate PNG structure");
 		return;
