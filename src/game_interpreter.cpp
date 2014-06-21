@@ -199,7 +199,7 @@ void Game_Interpreter::Update() {
 				return;
 		}
 
-		if (!Main_Data::game_player->IsTeleporting() && main_flag) {
+		if (!Main_Data::game_player->IsTeleporting()) {
 			if (Game_Map::GetNeedRefresh()) {
 				Game_Map::Refresh();
 			}
