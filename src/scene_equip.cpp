@@ -87,8 +87,12 @@ void Scene_Equip::UpdateStatusWindow() {
 		equipstatus_window->ClearParameters();
 	} else if (item_window->GetActive()) {
 		Game_Actor* actor = Main_Data::game_party->GetActors()[actor_index];
+
+		const RPG::Item* current_item = item_window->GetItem();
+		int current_item_id = current_item ? current_item->ID : 0;
+
 		int old_item = actor->SetEquipment(equip_window->GetIndex(),
-			item_window->GetItem()->ID);
+			current_item_id);
 
 		equipstatus_window->SetNewParameters(
 			actor->GetAtk(), actor->GetDef(), actor->GetSpi(), actor->GetAgi());
@@ -130,8 +134,11 @@ void Scene_Equip::UpdateItemSelection() {
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Main_Data::game_data.system.decision_se);
 
+		const RPG::Item* current_item = item_window->GetItem();
+		int current_item_id = current_item ? current_item->ID : 0;
+
 		Main_Data::game_party->GetActors()[actor_index]->ChangeEquipment(
-			equip_window->GetIndex(), item_window->GetItem()->ID);
+			equip_window->GetIndex(), current_item_id);
 
 		equip_window->SetActive(true);
 		item_window->SetActive(false);
