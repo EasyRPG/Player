@@ -39,8 +39,6 @@ static void on_png_error(png_structp, png_const_charp error_msg) {
 	Output::Error("%s", error_msg);
 }
 
-typedef PNG_CALLBACK(void, *png_error_ptr, (png_structp, png_const_charp));
-
 void ImagePNG::ReadPNG(FILE* stream, const void* buffer, bool transparent,
 					int& width, int& height, void*& pixels) {
 	pixels = NULL;

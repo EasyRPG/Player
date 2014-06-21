@@ -579,7 +579,7 @@ bool Game_Interpreter_Map::CommandChangeActorFace(RPG::EventCommand const& com) 
 
 bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Code 10810
 	// TODO: if in battle return true
-	if (Main_Data::game_player->IsTeleporting()) {
+	if (Main_Data::game_player->IsTeleporting() || Game_Temp::transition_processing) {
 			return false;
 	}
 
