@@ -149,13 +149,13 @@ void Scene_File::Update() {
 	if (Input::IsRepeated(Input::UP)) {
 		if (Input::IsTriggered(Input::UP) || index >= 1) {
 			Game_System::SePlay(Main_Data::game_data.system.cursor_se);
-			index = (index - 1 + file_windows.size()) % file_windows.size();
+			index = (index + file_windows.size() - 1) % file_windows.size();
 		}
-			
+
 		//top_index = std::min(top_index, index);
 	}
 
-	if (index > top_index) {
+	if (index > top_index + 2) {
 		top_index = std::max(top_index, index - 3 + 1);
 	}
 	else if (index < top_index) {

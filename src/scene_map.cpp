@@ -180,8 +180,10 @@ void Scene_Map::Update() {
 void Scene_Map::UpdateTeleportPlayer() {
 	if (!Main_Data::game_player->IsTeleporting())
 		return;
+	bool const autotransition = !Game_Temp::transition_erase;
 
-	Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportErase), 32, true);
+	if (autotransition)
+		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportErase), 32, true);
 
 	Main_Data::game_player->PerformTeleport();
 	Game_Map::PlayBgm();
@@ -190,7 +192,8 @@ void Scene_Map::UpdateTeleportPlayer() {
 
 	Game_Map::Update();
 
-	Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), 32, false);
+	if (autotransition)
+		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_TeleportShow), 32, false);
 
 	Input::Update();
 }

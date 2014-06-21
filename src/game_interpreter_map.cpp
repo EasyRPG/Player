@@ -55,8 +55,13 @@ Game_Interpreter_Map::Game_Interpreter_Map(int depth, bool main_flag) :
 
 Game_Interpreter_Map::~Game_Interpreter_Map() {
 	std::vector<Game_Character*>::iterator it;
-	for (it = pending.begin(); it != pending.end(); it++) {
-		(*it)->DetachMoveRouteOwner(this);
+	std::vector<Game_Character*> toerase;
+	for (it = pending.begin(); it != pending.end(); ++it) {
+		if ((*it)->DetachMoveRouteOwner(this))
+			toerase.push_back(*it);
+	}
+	for (it = toerase.begin(); it != toerase.end(); ++it) {
+		EndMoveRoute(*it);
 	}
 }
 
@@ -574,7 +579,7 @@ bool Game_Interpreter_Map::CommandChangeActorFace(RPG::EventCommand const& com) 
 
 bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Code 10810
 	// TODO: if in battle return true
-	if (Main_Data::game_player->IsTeleporting()) {
+	if (Main_Data::game_player->IsTeleporting() || Game_Temp::transition_processing) {
 			return false;
 	}
 

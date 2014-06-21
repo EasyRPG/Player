@@ -96,10 +96,10 @@ bool Game_Character::IsPassable(int x, int y, int d) const {
 	if (!Game_Map::IsPassable(new_x, new_y, (d + 2) % 4, this))
 		return false;
 
-	if (Main_Data::game_player->GetX() == new_x && Main_Data::game_player->GetY() == new_y) {
-		if (!Main_Data::game_player->GetThrough() && !GetSpriteName().empty()) {
+	if (Main_Data::game_player->GetX() == new_x && Main_Data::game_player->GetY() == new_y
+		&& !Main_Data::game_player->GetThrough() && !GetSpriteName().empty() 
+		&& GetLayer() != RPG::EventPage::Layers_above) {
 			return false;
-		}
 	}
 
 	return true;
@@ -1096,10 +1096,12 @@ void Game_Character::CancelMoveRoute(Game_Interpreter* owner) {
 	move_route_owner = NULL;
 }
 
-void Game_Character::DetachMoveRouteOwner(Game_Interpreter* owner) {
+bool Game_Character::DetachMoveRouteOwner(Game_Interpreter* owner) {
 	if (owner == move_route_owner) {
 		move_route_owner = NULL;
+		return true;
 	}
+	return false;
 }
 
 int Game_Character::GetTileId() const {

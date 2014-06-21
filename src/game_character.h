@@ -582,8 +582,9 @@ public:
 	 * @param owner the owner of the move route;
 	 *              if the owner is not the real owner
 	 *              this function does nothing.
+	 * @return true if the owner has been detached, false otherwise
 	 */
-	void DetachMoveRouteOwner(Game_Interpreter* owner);
+	bool DetachMoveRouteOwner(Game_Interpreter* owner);
 
 	/**
 	 * Gets screen x coordinate in pixels.

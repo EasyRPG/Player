@@ -1058,7 +1058,7 @@ void Bitmap::OpacityBlit(int x, int y, Bitmap const& src, Rect const& src_rect, 
 }
 
 void Bitmap::ToneBlit(int x, int y, Bitmap const& src, Rect const& src_rect, const Tone &tone) {
-	if (tone == Tone()) {
+	if (tone == Tone(128,128,128,128)) {
 		if (&src != this) {
 			Blit(x, y, src, src_rect, 255);
 		}
