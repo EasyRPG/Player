@@ -654,13 +654,16 @@ Bitmap::Bitmap(const std::string& filename, bool transparent, uint32_t flags) {
 	int h = 0;
 	void* pixels;
 
-	if (ext == "png")
-		ImagePNG::ReadPNG(stream, (void*) NULL, transparent, w, h, pixels);
-	else if (ext == "xyz")
+	char data[4];
+	size_t bytes = fread(&data, 4, 1, stream);
+	fseek(stream, 0, SEEK_SET);
+
+	if (bytes > 4 && strncmp((char*)data, "XYZ1", 4) == 0)
 		ImageXYZ::ReadXYZ(stream, transparent, w, h, pixels);
-	else if (ext == "bmp")
+	else if (bytes > 2 && strncmp((char*)data, "BM", 2) == 0)
 		ImageBMP::ReadBMP(stream, transparent, w, h, pixels);
-	else { assert(false); }
+	else
+		ImagePNG::ReadPNG(stream, (void*)NULL, transparent, w, h, pixels);
 
 	fclose(stream);
 
@@ -681,7 +684,7 @@ Bitmap::Bitmap(const uint8_t* data, unsigned bytes, bool transparent, uint32_t f
 
 	if (bytes > 4 && strncmp((char*) data, "XYZ1", 4) == 0)
 		ImageXYZ::ReadXYZ(data, bytes, transparent, w, h, pixels);
-	else if (bytes > 2 && strncmp((char*) data, "BM", 4) == 0)
+	else if (bytes > 2 && strncmp((char*) data, "BM", 2) == 0)
 		ImageBMP::ReadBMP(data, bytes, transparent, w, h, pixels);
 	else
 		ImagePNG::ReadPNG((FILE*) NULL, (const void*) data, transparent, w, h, pixels);
