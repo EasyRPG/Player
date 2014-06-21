@@ -487,7 +487,7 @@ void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices) {
 
 	// Set choices to message text
 	unsigned int i;
-	for (i = 0; i < choices.size(); i++) {
+	for (i = 0; i < 4 && choices.size(); i++) {
 		Game_Message::texts.push_back(choices[i]);
 	}
 
