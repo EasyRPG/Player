@@ -58,9 +58,9 @@ public:
 	BitmapRef const& GetChipset() const;
 	void SetChipset(BitmapRef const& nchipset);
 	std::vector<short> GetMapData() const;
-	void SetMapData(std::vector<short> nmap_data);
+	void SetMapData(const std::vector<short>& nmap_data);
 	std::vector<unsigned char> GetPassable() const;
-	void SetPassable(std::vector<unsigned char> npassable);
+	void SetPassable(const std::vector<unsigned char>& npassable);
 	bool GetVisible() const;
 	void SetVisible(bool nvisible);
 	int GetOx() const;
@@ -96,6 +96,7 @@ private:
 	int animation_type;
 	int layer;
 
+	void CreateTileCache(const std::vector<short>& nmap_data);
 	void GenerateAutotileAB(short ID, short animID);
 	void GenerateAutotileD(short ID);
 
@@ -113,7 +114,6 @@ private:
 
 	TileXY GetCachedAutotileAB(short ID, short animID);
 	TileXY GetCachedAutotileD(short ID);
-
 	BitmapScreenRef autotiles_ab_screen;
 	BitmapScreenRef autotiles_d_screen;
 

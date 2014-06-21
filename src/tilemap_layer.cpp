@@ -293,6 +293,50 @@ TilemapLayer::TileXY TilemapLayer::GetCachedAutotileD(short ID) {
 	return autotiles_d[block][subtile];
 }
 
+void TilemapLayer::CreateTileCache(const std::vector<short>& nmap_data) {
+	data_cache.resize(width);
+	for (int x = 0; x < width; x++) {
+		data_cache[x].resize(height);
+		for (int y = 0; y < height; y++) {
+			TileData tile;
+
+			// Get the tile ID
+			tile.ID = nmap_data[x + y * width];
+
+			tile.z = 0;
+
+			// Calculate the tile Z
+			if (!passable.empty()) {
+				if (tile.ID >= BLOCK_F) {
+					if ((passable[substitutions[tile.ID - BLOCK_F]] & Passable::Above) != 0)
+						tile.z = 32;
+
+				}
+				else if (tile.ID >= BLOCK_E) {
+					if ((passable[substitutions[tile.ID - BLOCK_E + 18]] & Passable::Above) != 0)
+						tile.z = 32;
+
+				}
+				else if (tile.ID >= BLOCK_D) {
+					if ((passable[(tile.ID - BLOCK_D) / 50 + 6] & (Passable::Wall | Passable::Above)) != 0)
+						tile.z = 32;
+
+				}
+				else if (tile.ID >= BLOCK_C) {
+					if ((passable[(tile.ID - BLOCK_C) / 50 + 3] & Passable::Above) != 0)
+						tile.z = 32;
+
+				}
+				else {
+					if ((passable[tile.ID / 1000] & Passable::Above) != 0)
+						tile.z = 32;
+				}
+			}
+			data_cache[x][y] = tile;
+		}
+	}
+}
+
 void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 	// Calculate the block to use
 	//	1: A1 + Upper B (Grass + Coast)
@@ -517,54 +561,21 @@ void TilemapLayer::Update() {
 BitmapRef const& TilemapLayer::GetChipset() const {
 	return chipset;
 }
+
 void TilemapLayer::SetChipset(BitmapRef const& nchipset) {
 	chipset = nchipset;
 	chipset_screen->SetBitmap(chipset);
 	chipset_screen->SetSrcRect(chipset->GetRect());
 }
+
 std::vector<short> TilemapLayer::GetMapData() const {
 	return map_data;
 }
-void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
+
+void TilemapLayer::SetMapData(const std::vector<short>& nmap_data) {
 	if (map_data != nmap_data) {
 		// Create the tiles data cache
-		data_cache.resize(width);
-		for (int x = 0; x < width; x++) {
-			data_cache[x].resize(height);
-			for (int y = 0; y < height; y++) {
-				TileData tile;
-
-				// Get the tile ID
-				tile.ID = nmap_data[x + y * width];
-
-				tile.z = 0;
-
-				// Calculate the tile Z
-				if (!passable.empty()) {
-					if (tile.ID >= BLOCK_F) {
-						if ((passable[substitutions[tile.ID - BLOCK_F]] & Passable::Above) != 0)
-							tile.z = 32;
-
-					} else if (tile.ID >= BLOCK_E) {
-						if ((passable[substitutions[tile.ID - BLOCK_E + 18]] & Passable::Above) != 0)
-							tile.z = 32;
-
-					} else if (tile.ID >= BLOCK_D) {
-						if ((passable[(tile.ID - BLOCK_D) / 50 + 6] & (Passable::Wall | Passable::Above)) != 0)
-							tile.z = 32;
-
-					} else if (tile.ID >= BLOCK_C) {
-						if ((passable[(tile.ID - BLOCK_C) / 50 + 3] & Passable::Above) != 0)
-							tile.z = 32;
-
-					} else {
-						if ((passable[tile.ID / 1000] & Passable::Above) != 0)
-							tile.z = 32;
-					}
-				}
-				data_cache[x][y] = tile;
-			}
-		}
+		CreateTileCache(nmap_data);
 
 		if (layer == 0) {
 			autotiles_ab_map.clear();
@@ -593,10 +604,12 @@ void TilemapLayer::SetMapData(std::vector<short> nmap_data) {
 	}
 	map_data = nmap_data;
 }
+
 std::vector<unsigned char> TilemapLayer::GetPassable() const {
 	return passable;
 }
-void TilemapLayer::SetPassable(std::vector<unsigned char> npassable) {
+
+void TilemapLayer::SetPassable(const std::vector<unsigned char>& npassable) {
 	passable = npassable;
 
 	if (substitutions.size() < passable.size())
@@ -606,54 +619,76 @@ void TilemapLayer::SetPassable(std::vector<unsigned char> npassable) {
 			substitutions[i] = i;
 	}
 }
+
 bool TilemapLayer::GetVisible() const {
 	return visible;
 }
+
 void TilemapLayer::SetVisible(bool nvisible) {
 	visible = nvisible;
 }
+
 int TilemapLayer::GetOx() const {
 	return ox;
 }
+
 void TilemapLayer::SetOx(int nox) {
 	ox = nox;
 }
+
 int TilemapLayer::GetOy() const {
 	return oy;
 }
+
 void TilemapLayer::SetOy(int noy) {
 	oy = noy;
 }
+
 int TilemapLayer::GetWidth() const {
 	return width;
 }
+
 void TilemapLayer::SetWidth(int nwidth) {
 	width = nwidth;
 }
+
 int TilemapLayer::GetHeight() const {
 	return height;
 }
+
 void TilemapLayer::SetHeight(int nheight) {
 	height = nheight;
 }
+
 int TilemapLayer::GetAnimationSpeed() const {
 	return animation_speed;
 }
+
 void TilemapLayer::SetAnimationSpeed(int speed) {
 	animation_speed = speed;
 }
+
 int TilemapLayer::GetAnimationType() const {
 	return animation_type;
 }
+
 void TilemapLayer::SetAnimationType(int type) {
 	animation_type = type;
 }
 
 void TilemapLayer::Substitute(int old_id, int new_id) {
+	int subst_count = 0;
+
 	for (size_t i = 0; i < substitutions.size(); ++i) {
 		if (substitutions[i] == old_id) {
+			++subst_count;
 			substitutions[i] = (uint8_t) new_id;
 		}
+	}
+
+	if (subst_count > 0) {
+		// Recalculate z values of all tiles
+		CreateTileCache(map_data);
 	}
 }
 
