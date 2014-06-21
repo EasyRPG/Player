@@ -102,7 +102,12 @@ void Scene_Battle::TransitionIn() {
 }
 
 void Scene_Battle::TransitionOut() {
-	Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleErase), 32, true);
+	if (Player::exit_flag) {
+		Scene::TransitionOut();
+	}
+	else {
+		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleErase), 32, true);
+	}
 }
 
 void Scene_Battle::CreateCursors() {
