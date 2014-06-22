@@ -3,8 +3,9 @@ compiler:
   - clang
 before_script:
   - sudo add-apt-repository ppa:zoogie/sdl2-snapshots -y
+  - sudo add-apt-repository -y ppa:ondrej/php5
   - sudo apt-get update -qq
-  - sudo apt-get install -qq libboost1.48-dev libsdl2-dev libsdl2-mixer-dev libpixman-1-dev
+  - sudo apt-get install -qq libexpat1-dev libicu-dev libboost1.48-dev libsdl2-dev libsdl2-mixer-dev libpixman-1-dev
   - git clone --branch dummy "https://github.com/take-cheeze/RTP.git" $RPG_RTP_PATH
   - CXX="$CXX $WORKAROUND_CXX_FLAGS" cmake -D CMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE .
 script:
