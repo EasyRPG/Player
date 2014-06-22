@@ -26,7 +26,8 @@
 #include "scene_skill.h"
 
 Scene_ActorTarget::Scene_ActorTarget(int item_id, int item_index) :
-	id(item_id), index(item_index), use_item(true) {
+	id(item_id), index(item_index), 
+	actor_index(0), use_item(true) {
 	Scene::type = Scene::ActorTarget;
 }
 

@@ -75,6 +75,8 @@ namespace Game_System {
 		int switch_id;
 		Target()
 			: map_id(0),
+			  x(0),
+			  y(0),
 			  switch_id(0)
 		{}
 		Target(int map_id, int x, int y, int switch_id)
