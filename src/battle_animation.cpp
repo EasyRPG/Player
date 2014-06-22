@@ -72,7 +72,7 @@ void BattleAnimation::Draw() {
 	const RPG::AnimationFrame& anim_frame = animation->frames[frame];
 
 	std::vector<RPG::AnimationCellData>::const_iterator it;
-	for (it = anim_frame.cells.begin(); it != anim_frame.cells.end(); it++) {
+	for (it = anim_frame.cells.begin(); it != anim_frame.cells.end(); ++it) {
 		const RPG::AnimationCellData& cell = *it;
 		int sx = cell.cell_id % 5;
 		int sy = cell.cell_id / 5;

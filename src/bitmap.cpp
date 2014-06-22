@@ -164,7 +164,7 @@ void Bitmap::DetachBitmapScreen(BitmapScreen* bitmap) {
 }
 
 bool Bitmap::IsAttachedToBitmapScreen() {
-	return attached_screen_bitmaps.size() != 0;
+	return !attached_screen_bitmaps.empty();
 }
 
 int Bitmap::GetWidth() const {
@@ -348,7 +348,7 @@ void Bitmap::RefreshCallback() {
 
 	std::list<BitmapScreen*>::iterator it;
 
-	for (it = attached_screen_bitmaps.begin(); it != attached_screen_bitmaps.end(); it++) {
+	for (it = attached_screen_bitmaps.begin(); it != attached_screen_bitmaps.end(); ++it) {
 		(*it)->SetDirty();
 	}
 }

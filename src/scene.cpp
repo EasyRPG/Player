@@ -183,7 +183,7 @@ void Scene::PopUntil(SceneType type) {
 
 EASYRPG_SHARED_PTR<Scene> Scene::Find(SceneType type) {
 	std::vector<EASYRPG_SHARED_PTR<Scene> >::const_reverse_iterator it;
-	for (it = instances.rbegin() ; it != instances.rend(); it++) {
+	for (it = instances.rbegin() ; it != instances.rend(); ++it) {
 		if ((*it)->type == type) {
 			return *it;
 		}

@@ -243,7 +243,7 @@ static const int snowflake_life = 200;
 void Game_Screen::UpdateSnowRain(int speed) {
 	std::vector<Snowflake>::iterator it;
 
-	for (it = snowflakes.begin(); it != snowflakes.end(); it++) {
+	for (it = snowflakes.begin(); it != snowflakes.end(); ++it) {
 		Snowflake& f = *it;
 		f.y += (uint8_t)speed;
 		f.life++;
@@ -284,7 +284,7 @@ void Game_Screen::Update() {
 	}
 
 	std::vector<EASYRPG_SHARED_PTR<Game_Picture> >::const_iterator it;
-	for (it = pictures.begin(); it != pictures.end(); it++) {
+	for (it = pictures.begin(); it != pictures.end(); ++it) {
 		if (*it) {
 			(*it)->Update();
 		}

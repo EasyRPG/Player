@@ -311,7 +311,7 @@ void Game_Event::Refresh() {
 	RPG::EventPage* new_page = NULL;
 	if (!erased) {
 		std::vector<RPG::EventPage>::reverse_iterator i;
-		for (i = event.pages.rbegin(); i != event.pages.rend(); i++) {
+		for (i = event.pages.rbegin(); i != event.pages.rend(); ++i) {
 			// Loop in reverse order to see whether any page meets conditions...
 			if (AreConditionsMet(*i)) {
 				new_page = &(*i);

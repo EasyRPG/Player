@@ -28,7 +28,7 @@ namespace Game_Targets {
 
 std::vector<RPG::SaveTarget>::iterator Game_Targets::FindTarget(int id, bool create) {
 	std::vector<RPG::SaveTarget>::iterator it;
-	for (it = data.begin(); it != data.end(); it++)
+	for (it = data.begin(); it != data.end(); ++it)
 		if (it->ID == id)
 			return it;
 	if (!create)

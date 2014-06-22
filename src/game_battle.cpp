@@ -196,7 +196,7 @@ bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
 void Game_Battle::UpdateEvents() {
 	const RPG::TroopPage* new_page = NULL;
 	std::vector<RPG::TroopPage>::const_reverse_iterator it;
-	for (it = troop->pages.rbegin(); it != troop->pages.rend(); it++) {
+	for (it = troop->pages.rbegin(); it != troop->pages.rend(); ++it) {
 		const RPG::TroopPage& page = *it;
 		if (AreConditionsMet(page.condition)) {
 			new_page = &*it;

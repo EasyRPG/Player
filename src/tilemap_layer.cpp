@@ -508,7 +508,7 @@ BitmapScreenRef TilemapLayer::GenerateAutotiles(int count, const std::map<uint32
 	Rect rect(0, 0, TILE_SIZE/2, TILE_SIZE/2);
 
 	std::map<uint32_t, TileXY>::const_iterator it;
-	for (it = map.begin(); it != map.end(); it++) {
+	for (it = map.begin(); it != map.end(); ++it) {
 		uint32_t quarters_hash = it->first;
 		TileXY dst = it->second;
 

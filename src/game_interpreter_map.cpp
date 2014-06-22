@@ -184,7 +184,7 @@ RPG::MoveCommand Game_Interpreter_Map::DecodeMove(std::vector<int>::const_iterat
 
 void Game_Interpreter_Map::EndMoveRoute(Game_Character* moving_character) {
 	std::vector<Game_Character*>::iterator it;
-	for (it = pending.begin(); it != pending.end(); it++) {
+	for (it = pending.begin(); it != pending.end(); ++it) {
 		if ((*it) == moving_character) {
 			break;
 		}
@@ -388,7 +388,7 @@ bool Game_Interpreter_Map::CommandChangeExp(RPG::EventCommand const& com) { // C
 
 	for (std::vector<Game_Actor*>::iterator i = actors.begin();
 		 i != actors.end();
-		 i++) {
+		 ++i) {
 		Game_Actor* actor = *i;
 		actor->ChangeExp(actor->GetExp() + value, com.parameters[5] != 0);
 	}
@@ -407,7 +407,7 @@ bool Game_Interpreter_Map::CommandChangeParameters(RPG::EventCommand const& com)
 
 	for (std::vector<Game_Actor*>::iterator i = actors.begin();
 		 i != actors.end();
-		 i++) {
+		 ++i) {
 		Game_Actor* actor = *i;
 		switch (com.parameters[3]) {
 			case 0:
@@ -1045,7 +1045,7 @@ bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // co
 
 	Game_Temp::shop_goods.clear();
 	std::vector<int>::const_iterator it;
-	for (it = com.parameters.begin() + 4; it < com.parameters.end(); it++)
+	for (it = com.parameters.begin() + 4; it < com.parameters.end(); ++it)
 		Game_Temp::shop_goods.push_back(*it);
 
 	Game_Temp::shop_transaction = false;
@@ -1146,7 +1146,7 @@ bool Game_Interpreter_Map::ContinuationShowInn(RPG::EventCommand const& /* com *
 			std::vector<Game_Actor*> actors = Main_Data::game_party->GetActors();
 			for (std::vector<Game_Actor*>::const_iterator i = actors.begin();
 				 i != actors.end();
-				 i++) {
+				 ++i) {
 				Game_Actor* actor = *i;
 				actor->ChangeHp(actor->GetMaxHp());
 				actor->SetSp(actor->GetMaxSp());
@@ -1632,7 +1632,7 @@ bool Game_Interpreter_Map::CommandSimulatedAttack(RPG::EventCommand const& com) 
 
 	for (std::vector<Game_Actor*>::iterator i = actors.begin();
 		 i != actors.end();
-		 i++) {
+		 ++i) {
 		Game_Actor* actor = *i;
 		int result = atk;
 		result -= (actor->GetDef() * def) / 400;
@@ -1744,7 +1744,7 @@ bool Game_Interpreter_Map::CommandChangeClass(RPG::EventCommand const& com) { //
 			while (!actor->GetSkills().empty())
 				actor->UnlearnSkill(actor->GetSkills()[0]);
 			std::vector<RPG::Learning>::const_iterator it;
-			for (it = klass.skills.begin(); it != klass.skills.end(); it++) {
+			for (it = klass.skills.begin(); it != klass.skills.end(); ++it) {
 				const RPG::Learning& learn = *it;
 				if (level >= learn.level)
 					actor->LearnSkill(learn.skill_id);
@@ -1763,7 +1763,7 @@ bool Game_Interpreter_Map::CommandChangeClass(RPG::EventCommand const& com) { //
 
 bool Game_Interpreter_Map::CommandHaltAllMovement(RPG::EventCommand const& /* com */) { // code 11350
 	std::vector<Game_Character*>::iterator it;
-	for (it = pending.begin(); it != pending.end(); it++)
+	for (it = pending.begin(); it != pending.end(); ++it)
 		(*it)->CancelMoveRoute(this);
 	pending.clear();
 	return true;

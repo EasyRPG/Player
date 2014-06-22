@@ -252,7 +252,7 @@ int Game_Battler::GetAtk() const {
 	int n = min(max(base_atk, 1), 999);
 
 	const std::vector<int16_t>& states = GetStates();
-	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); i++) {
+	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
 		if(Data::states[(*i)].affect_attack) {
 			n = AffectParameter(Data::states[(*i)].affect_type, base_atk);
 			break;
@@ -269,7 +269,7 @@ int Game_Battler::GetDef() const {
 	int n = min(max(base_def, 1), 999);
 
 	const std::vector<int16_t>& states = GetStates();
-	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); i++) {
+	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
 		if(Data::states[(*i)].affect_defense) {
 			n = AffectParameter(Data::states[(*i)].affect_type, base_def);
 			break;
@@ -286,7 +286,7 @@ int Game_Battler::GetSpi() const {
 	int n = min(max(base_spi, 1), 999);
 
 	const std::vector<int16_t>& states = GetStates();
-	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); i++) {
+	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
 		if(Data::states[(*i)].affect_spirit) {
 			n = AffectParameter(Data::states[(*i)].affect_type, base_spi);
 			break;
@@ -303,7 +303,7 @@ int Game_Battler::GetAgi() const {
 	int n = min(max(base_agi, 1), 999);
 
 	const std::vector<int16_t>& states = GetStates();
-	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); i++) {
+	for (std::vector<int16_t>::const_iterator i = states.begin(); i != states.end(); ++i) {
 		if(Data::states[(*i)].affect_agility) {
 			n = AffectParameter(Data::states[(*i)].affect_type, base_agi);
 			break;

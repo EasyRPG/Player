@@ -37,7 +37,7 @@ Spriteset_Map::Spriteset_Map() {
 	panorama.SetZ(-1000);
 
 	tEventHash events = Game_Map::GetEvents();
-	for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
+	for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
 		character_sprites.push_back(EASYRPG_MAKE_SHARED<Sprite_Character>(i->second.get()));
 	}
 
@@ -68,7 +68,7 @@ void Spriteset_Map::Update() {
 Sprite_Character* Spriteset_Map::FindCharacter(Game_Character* character) const
 {
 	std::vector<EASYRPG_SHARED_PTR<Sprite_Character> >::const_iterator it;
-	for (it = character_sprites.begin(); it != character_sprites.end(); it++) {
+	for (it = character_sprites.begin(); it != character_sprites.end(); ++it) {
 		Sprite_Character* sprite = it->get();
 		if (sprite->GetCharacter() == character)
 			return sprite;

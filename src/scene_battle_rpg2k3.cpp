@@ -207,7 +207,7 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 		const std::vector<uint32_t>& bcmds = actor->GetBattleCommands();
 		std::vector<uint32_t>::const_iterator it;
 		int i = 0;
-		for (it = bcmds.begin(); it != bcmds.end(); it++) {
+		for (it = bcmds.begin(); it != bcmds.end(); ++it) {
 			uint32_t bcmd = *it;
 			if (bcmd <= 0 || bcmd > Data::battlecommands.commands.size())
 				break;
@@ -718,7 +718,7 @@ void Scene_Battle_Rpg2k3::SubskillSelected() {
 	// Loop through all battle commands smaller then that ID and count subsets
 	std::vector<RPG::BattleCommand>::const_iterator it;
 	int i = 0;
-	for (it = Data::battlecommands.commands.begin(); it != Data::battlecommands.commands.end() && i < command_id; it++) {
+	for (it = Data::battlecommands.commands.begin(); it != Data::battlecommands.commands.end() && i < command_id; ++it) {
 		if ((*it).type == RPG::BattleCommand::Type_subskill) {
 			++subskill;
 		}
