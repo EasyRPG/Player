@@ -63,6 +63,8 @@ Game_Interpreter_Map::~Game_Interpreter_Map() {
 	for (it = toerase.begin(); it != toerase.end(); ++it) {
 		EndMoveRoute(*it);
 	}
+
+	list.clear();
 }
 
 bool Game_Interpreter_Map::SetupFromSave(const std::vector<RPG::SaveEventCommands>& save, int _event_id, int index) {
