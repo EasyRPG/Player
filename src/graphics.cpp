@@ -105,13 +105,13 @@ void Graphics::Quit() {
 	std::list<Drawable*>::iterator it;
 	std::list<Drawable*> drawable_list_temp = state->drawable_list;
 
-	for (it = drawable_list_temp.begin(); it != drawable_list_temp.end(); it++) {
+	for (it = drawable_list_temp.begin(); it != drawable_list_temp.end(); ++it) {
 		delete *it;
 	}
 
 	drawable_list_temp = global_state->drawable_list;
 
-	for (it = drawable_list_temp.begin(); it != drawable_list_temp.end(); it++) {
+	for (it = drawable_list_temp.begin(); it != drawable_list_temp.end(); ++it) {
 		delete *it;
 	}
 
@@ -278,11 +278,11 @@ void Graphics::DrawFrame() {
 	DisplayUi->CleanDisplay();
 
 	std::list<Drawable*>::iterator it_list;
-	for (it_list = state->drawable_list.begin(); it_list != state->drawable_list.end(); it_list++) {
+	for (it_list = state->drawable_list.begin(); it_list != state->drawable_list.end(); ++it_list) {
 		(*it_list)->Draw();
 	}
 
-	for (it_list = global_state->drawable_list.begin(); it_list != global_state->drawable_list.end(); it_list++) {
+	for (it_list = global_state->drawable_list.begin(); it_list != global_state->drawable_list.end(); ++it_list) {
 		(*it_list)->Draw();
 	}
 
@@ -305,11 +305,11 @@ BitmapRef Graphics::SnapToBitmap() {
 	DisplayUi->BeginScreenCapture();
 
 	std::list<Drawable*>::iterator it_list;
-	for (it_list = state->drawable_list.begin(); it_list != state->drawable_list.end(); it_list++) {
+	for (it_list = state->drawable_list.begin(); it_list != state->drawable_list.end(); ++it_list) {
 		(*it_list)->Draw();
 	}
 
-	for (it_list = global_state->drawable_list.begin(); it_list != global_state->drawable_list.end(); it_list++) {
+	for (it_list = global_state->drawable_list.begin(); it_list != global_state->drawable_list.end(); ++it_list) {
 		(*it_list)->Draw();
 	}
 

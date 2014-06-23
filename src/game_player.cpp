@@ -363,7 +363,7 @@ bool Game_Player::CheckEventTriggerHere(const std::vector<int>& triggers) {
 	Game_Map::GetEventsXY(events, GetX(), GetY());
 
 	std::vector<Game_Event*>::iterator i;
-	for (i = events.begin(); i != events.end(); i++) {
+	for (i = events.begin(); i != events.end(); ++i) {
 		if (((*i)->GetLayer() == RPG::EventPage::Layers_below ||
 			(*i)->GetLayer() == RPG::EventPage::Layers_above)
 			&& std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() ) {
@@ -391,7 +391,7 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 	Game_Map::GetEventsXY(events, front_x, front_y);
 
 	std::vector<Game_Event*>::iterator i;
-	for (i = events.begin(); i != events.end(); i++) {
+	for (i = events.begin(); i != events.end(); ++i) {
 		if ( (*i)->GetLayer() == RPG::EventPage::Layers_same &&
 			std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end()
 		)
@@ -412,7 +412,7 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 		Game_Map::GetEventsXY(events, front_x, front_y);
 
 		std::vector<Game_Event*>::iterator i;
-		for (i = events.begin(); i != events.end(); i++) {
+		for (i = events.begin(); i != events.end(); ++i) {
 			if ( (*i)->GetLayer() == 1 &&
 				std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end()
 			)
@@ -438,7 +438,7 @@ bool Game_Player::CheckEventTriggerTouch(int x, int y) {
 	Game_Map::GetEventsXY(events, x, y);
 
 	std::vector<Game_Event*>::iterator i;
-	for (i = events.begin(); i != events.end(); i++) {
+	for (i = events.begin(); i != events.end(); ++i) {
 		if ((*i)->GetLayer() == RPG::EventPage::Layers_same &&
 			((*i)->GetTrigger() == RPG::EventPage::Trigger_touched ||
 			(*i)->GetTrigger() == RPG::EventPage::Trigger_collision) ) {

@@ -149,7 +149,7 @@ void Window_BattleCommand::SetActor(int _actor_id) {
 		Game_Actor* actor = Game_Actors::GetActor(actor_id);
 		const std::vector<uint32_t>& bcmds = actor->GetBattleCommands();
 		std::vector<uint32_t>::const_iterator it;
-		for (it = bcmds.begin(); it != bcmds.end(); it++) {
+		for (it = bcmds.begin(); it != bcmds.end(); ++it) {
 			uint32_t bcmd = *it;
 			if (bcmd <= 0 || bcmd > Data::battlecommands.commands.size())
 				break;

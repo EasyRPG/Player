@@ -188,7 +188,7 @@ int Game_Actor::GetBaseAtk(bool mod, bool equip) const {
 		n += data.attack_mod;
 
 	if (equip)
-		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); it++)
+		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it)
 			if (*it > 0)
 				n += Data::items[*it - 1].atk_points1;
 
@@ -208,7 +208,7 @@ int Game_Actor::GetBaseDef(bool mod, bool equip) const {
 		n += data.defense_mod;
 
 	if (equip)
-		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); it++)
+		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it)
 			if (*it > 0)
 				n += Data::items[*it - 1].def_points1;
 
@@ -228,7 +228,7 @@ int Game_Actor::GetBaseSpi(bool mod, bool equip) const {
 		n += data.spirit_mod;
 
 	if (equip)
-		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); it++)
+		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it)
 			if (*it > 0)
 				n += Data::items[*it - 1].spi_points1;
 
@@ -248,7 +248,7 @@ int Game_Actor::GetBaseAgi(bool mod, bool equip) const {
 		n += data.agility_mod;
 
 	if (equip)
-		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); it++)
+		for (std::vector<int16_t>::const_iterator it = data.equipped.begin(); it != data.equipped.end(); ++it)
 			if (*it > 0)
 				n += Data::items[*it - 1].agi_points1;
 

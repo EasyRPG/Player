@@ -997,7 +997,7 @@ bool Game_Interpreter::CommandChangeLevel(RPG::EventCommand const& com) { // Cod
 
 	for (std::vector<Game_Actor*>::iterator i = actors.begin();
 		 i != actors.end();
-		 i++) {
+		 ++i) {
 		Game_Actor* actor = *i;
 		actor->ChangeLevel(actor->GetLevel() + value, com.parameters[5] != 0);
 	}
@@ -1025,7 +1025,7 @@ bool Game_Interpreter::CommandChangeSkills(RPG::EventCommand const& com) { // Co
 
 	for (std::vector<Game_Actor*>::iterator i = actors.begin();
 		 i != actors.end();
-		 i++) {
+		 ++i) {
 		Game_Actor* actor = *i;
 		if (remove)
 			actor->UnlearnSkill(skill_id);
@@ -1069,7 +1069,7 @@ bool Game_Interpreter::CommandChangeEquipment(RPG::EventCommand const& com) { //
 
 	for (std::vector<Game_Actor*>::iterator i = actors.begin();
 		 i != actors.end();
-		 i++) {
+		 ++i) {
 		Game_Actor* actor = *i;
 		actor->ChangeEquipment(slot, item_id);
 	}
@@ -1090,7 +1090,7 @@ bool Game_Interpreter::CommandChangeHP(RPG::EventCommand const& com) { // Code 1
 
 	for (std::vector<Game_Actor*>::iterator i = actors.begin();
 		 i != actors.end();
-		 i++) {
+		 ++i) {
 		Game_Actor* actor = *i;
 		int hp = actor->GetHp() + amount;
 		if (!lethal && hp <= 0) {
@@ -1114,7 +1114,7 @@ bool Game_Interpreter::CommandChangeSP(RPG::EventCommand const& com) { // Code 1
 
 	for (std::vector<Game_Actor*>::iterator i = actors.begin();
 		 i != actors.end();
-		 i++) {
+		 ++i) {
 		Game_Actor* actor = *i;
 		int sp = actor->GetSp() + amount;
 		if (sp < 0)
@@ -1133,7 +1133,7 @@ bool Game_Interpreter::CommandChangeCondition(RPG::EventCommand const& com) { //
 
 	for (std::vector<Game_Actor*>::iterator i = actors.begin();
 		 i != actors.end();
-		 i++) {
+		 ++i) {
 		Game_Actor* actor = *i;
 		if (remove)
 			actor->RemoveState(state_id);
@@ -1150,7 +1150,7 @@ bool Game_Interpreter::CommandFullHeal(RPG::EventCommand const& com) { // Code 1
 
 	for (std::vector<Game_Actor*>::iterator i = actors.begin();
 		 i != actors.end();
-		 i++) {
+		 ++i) {
 		Game_Actor* actor = *i;
 		actor->ChangeHp(actor->GetMaxHp());
 		actor->SetSp(actor->GetMaxSp());

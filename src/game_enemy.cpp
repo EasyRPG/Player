@@ -202,7 +202,7 @@ const RPG::EnemyAction* Game_Enemy::ChooseRandomAction() {
 	const std::vector<RPG::EnemyAction>& actions = enemy->actions;
 	std::vector<int> valid;
 	int total = 0;
-	for (int i = 0; i < (int) actions.size(); i++) {
+	for (int i = 0; i < (int) actions.size(); ++i) {
 		const RPG::EnemyAction& action = actions[i];
 		if (IsActionValid(action)) {
 			valid.push_back(i);
@@ -211,7 +211,7 @@ const RPG::EnemyAction* Game_Enemy::ChooseRandomAction() {
 	}
 
 	int which = rand() % total;
-	for (std::vector<int>::const_iterator it = valid.begin(); it != valid.end(); it++) {
+	for (std::vector<int>::const_iterator it = valid.begin(); it != valid.end(); ++it) {
 		const RPG::EnemyAction& action = actions[*it];
 		if (which >= action.rating) {
 			which -= action.rating;

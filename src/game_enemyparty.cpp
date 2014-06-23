@@ -41,7 +41,7 @@ void Game_EnemyParty::Setup(int battle_troop_id) {
 	enemies.clear();
 	troop = &Data::troops[battle_troop_id - 1];
 	std::vector<RPG::TroopMember>::const_iterator ei;
-	for (ei = troop->members.begin(); ei != troop->members.end(); ei++)	{
+	for (ei = troop->members.begin(); ei != troop->members.end(); ++ei)	{
 		EASYRPG_SHARED_PTR<Game_Enemy> enemy = EASYRPG_MAKE_SHARED<Game_Enemy>(ei->enemy_id);
 		enemy->SetBattleX(ei->x);
 		enemy->SetBattleY(ei->y);

@@ -347,7 +347,7 @@ bool Game_Map::IsPassable(int x, int y, int d, const Game_Character* self_event)
 
 	if (self_event) {
 		bool pass = false;
-		for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
+		for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
 			Game_Event* evnt = i->second.get();
 			if (evnt != self_event && evnt->GetX() == x && evnt->GetY() == y) {
 				if (!evnt->GetThrough()) {
@@ -434,7 +434,7 @@ bool Game_Map::IsLandable(int x, int y, const Game_Character *self_event)
     int tile_id;
 
     if (self_event) {
-        for (tEventHash::iterator i = events.begin(); i != events.end(); i++) {
+        for (tEventHash::iterator i = events.begin(); i != events.end(); ++i) {
             Game_Event* evnt = i->second.get();
             if (evnt != self_event && evnt->GetX() == x && evnt->GetY() == y) {
                 if (!evnt->GetThrough()) {
@@ -560,7 +560,7 @@ void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
 	std::vector<Game_Event*> result;
 
 	tEventHash::const_iterator i;
-	for (i = Game_Map::GetEvents().begin(); i != Game_Map::GetEvents().end(); i++) {
+	for (i = Game_Map::GetEvents().begin(); i != Game_Map::GetEvents().end(); ++i) {
 		if (i->second->GetX() == x && i->second->GetY() == y) {
 			result.push_back(i->second.get());
 		}
@@ -603,7 +603,7 @@ int Game_Map::YwithDirection(int y, int direction) {
 
 int Game_Map::CheckEvent(int x, int y) {
 	tEventHash::iterator i;
-	for (i = events.begin(); i != events.end(); i++) {
+	for (i = events.begin(); i != events.end(); ++i) {
 		if (i->second->GetX() == x && i->second->GetY() == y) {
 			return i->second->GetId();
 		}
@@ -650,16 +650,16 @@ void Game_Map::Update() {
 	UpdateParallax();
 
 	for (tEventHash::iterator i = events.begin();
-		i != events.end(); i++) {
+		i != events.end(); ++i) {
 		i->second->Update();
 	}
 
 	for (tCommonEventHash::iterator i = common_events.begin();
-		i != common_events.end(); i++) {
+		i != common_events.end(); ++i) {
 		i->second->Update();
 	}
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 3; ++i)
 		vehicles[i]->Update();
 }
 

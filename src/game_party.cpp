@@ -72,7 +72,7 @@ void Game_Party::GetItems(std::vector<int>& item_list) {
 	item_list.clear();
 
 	std::vector<int16_t>::iterator it;
-	for (it = data.item_ids.begin(); it != data.item_ids.end(); it++)
+	for (it = data.item_ids.begin(); it != data.item_ids.end(); ++it)
 		item_list.push_back(*it);
 }
 
@@ -266,7 +266,7 @@ int Game_Party::GetSteps() {
 std::vector<Game_Actor*> Game_Party::GetActors() const {
 	std::vector<Game_Actor*> actors;
 	std::vector<int16_t>::const_iterator it;
-	for (it = data.party.begin(); it != data.party.end(); it++)
+	for (it = data.party.begin(); it != data.party.end(); ++it)
 		actors.push_back(Game_Actors::GetActor(*it));
 	return actors;
 }
@@ -295,7 +295,7 @@ void Game_Party::ApplyDamage(int damage) {
 
 	std::vector<Game_Actor*> actors = GetActors();
 
-	for (std::vector<Game_Actor*>::iterator i = actors.begin(); i != actors.end(); i++) {
+	for (std::vector<Game_Actor*>::iterator i = actors.begin(); i != actors.end(); ++i) {
 		Game_Actor* actor = *i;
 		actor->SetHp(actor->GetHp() - damage);
 	}

@@ -123,7 +123,7 @@ void Weather::DrawRain() {
 	const std::vector<Game_Screen::Snowflake>& snowflakes = Main_Data::game_screen->GetSnowflakes();
 
 	std::vector<Game_Screen::Snowflake>::const_iterator it;
-	for (it = snowflakes.begin(); it != snowflakes.end(); it++) {
+	for (it = snowflakes.begin(); it != snowflakes.end(); ++it) {
 		const Game_Screen::Snowflake& f = *it;
 		if (f.life > snowflake_visible)
 			continue;
@@ -148,7 +148,7 @@ void Weather::DrawSnow() {
 	const std::vector<Game_Screen::Snowflake>& snowflakes = Main_Data::game_screen->GetSnowflakes();
 
 	std::vector<Game_Screen::Snowflake>::const_iterator it;
-	for (it = snowflakes.begin(); it != snowflakes.end(); it++) {
+	for (it = snowflakes.begin(); it != snowflakes.end(); ++it) {
 		const Game_Screen::Snowflake& f = *it;
 		if (f.life > snowflake_visible)
 			continue;
