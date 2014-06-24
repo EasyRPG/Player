@@ -392,6 +392,9 @@ void Graphics::UpdateTransition() {
 	case TransitionWaveIn:
 	case TransitionWaveOut:
 		transition_type = TransitionFadeIn;
+		break;
+	default:
+		break;
 	}
 
 	switch (transition_type) {
