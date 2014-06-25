@@ -1016,7 +1016,6 @@ bool Game_Interpreter_Map::CommandMoveEvent(RPG::EventCommand const& com) { // c
 
 		event->ForceMoveRoute(route, move_freq, this);
 		pending.push_back(event);
-		event->MoveTypeCustom();
 	}
 	return true;
 }
