@@ -115,12 +115,14 @@ namespace {
 	};
 
 	template<Material::Type T>
-	BitmapRef LoadDummyBitmap() {
+	BitmapRef LoadDummyBitmap(std::string const& folder_name, const std::string& filename) {
 		BOOST_STATIC_ASSERT(Material::REND < T && T < Material::END);
 
 		Spec const& s = spec[T];
 
-		return Bitmap::Create(s.max_width, s.max_height, false);
+		string_pair const key(folder_name, filename);
+
+		return (cache[key] = Bitmap::Create(s.max_width, s.max_height, false)).lock();
 	}
 
 	template<Material::Type T>
@@ -136,7 +138,7 @@ namespace {
 		if (!ret) {
 			Output::Warning("Image not found: %s/%s", s.directory, f.c_str());
 
-			return LoadDummyBitmap<T>();
+			return LoadDummyBitmap<T>(s.directory, f);
 		}
 
 		if(
