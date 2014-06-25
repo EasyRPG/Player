@@ -54,6 +54,8 @@ namespace {
 
 			if (path.empty()) {
 				// Load a dummy image with correct size (issue #32)
+				return BitmapRef();
+
 				Output::Error("Image not found: %s/%s", folder_name.c_str(), filename.c_str());
 			}
 
@@ -113,14 +115,29 @@ namespace {
 	};
 
 	template<Material::Type T>
+	BitmapRef LoadDummyBitmap() {
+		BOOST_STATIC_ASSERT(Material::REND < T && T < Material::END);
+
+		Spec const& s = spec[T];
+
+		return Bitmap::Create(s.max_width, s.max_height, false);
+	}
+
+	template<Material::Type T>
 	BitmapRef LoadBitmap(std::string const& f) {
 		BOOST_STATIC_ASSERT(Material::REND < T && T < Material::END);
 
 		Spec const& s = spec[T];
-		BitmapRef const ret = LoadBitmap(s.directory, f, s.transparent,
+		BitmapRef ret = LoadBitmap(s.directory, f, s.transparent,
 										 T == Material::Chipset? Bitmap::Chipset:
 										 T == Material::System? Bitmap::System:
 										 0);
+
+		if (!ret) {
+			Output::Warning("Image not found: %s/%s", s.directory, f.c_str());
+
+			return LoadDummyBitmap<T>();
+		}
 
 		if(
 			ret->GetWidth () < s.min_width  || s.max_width  < ret->GetWidth () ||
@@ -132,7 +149,6 @@ namespace {
 
 		return ret;
 	}
-
 }
 
 tSystemInfo Cache::system_info;
