@@ -94,7 +94,9 @@ int Game_Event::GetDirection() const {
 }
 
 void Game_Event::SetDirection(int new_direction) {
-	data.direction = new_direction;
+	if (new_direction != -1) {
+		data.direction = new_direction;
+	}
 }
 
 int Game_Event::GetPrelockDirection() const {
@@ -233,7 +235,7 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 		tile_id = 0;
 		SetSpriteName("");
 		SetSpriteIndex(0);
-		SetFacingDirection(RPG::EventPage::Direction_down);
+		SetDirection(RPG::EventPage::Direction_down);
 		//move_type = 0;
 		through = true;
 		trigger = -1;
@@ -247,7 +249,7 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	tile_id = page->character_name.empty() ? page->character_index : 0;
 
 	if (GetDirection() != page->character_direction) {
-		SetFacingDirection(page->character_direction);
+		SetDirection(page->character_direction);
 		SetPrelockDirection(-1);
 	}
 

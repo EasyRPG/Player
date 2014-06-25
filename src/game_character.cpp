@@ -1073,13 +1073,7 @@ void Game_Character::Lock() {
 
 void Game_Character::Unlock() {
 	SetFacingLocked(false);
-	SetFacingDirection(GetPrelockDirection());
-}
-
-void Game_Character::SetFacingDirection(int direction) {
-	if (!IsDirectionFixed() && (direction != -1)) {
-		SetDirection(direction);
-	}
+	SetDirection(GetPrelockDirection());
 }
 
 void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,

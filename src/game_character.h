@@ -557,8 +557,6 @@ public:
 	 */
 	void Unlock();
 
-	void SetFacingDirection(int direction);
-
 	/**
 	 * Forces a new, temporary, move route.
 	 *
