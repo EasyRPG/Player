@@ -53,16 +53,10 @@ namespace {
 			std::string const path = FileFinder::FindImage(folder_name, filename);
 
 			if (path.empty()) {
-				// Load a dummy image with correct size (issue #32)
 				return BitmapRef();
-
-				Output::Error("Image not found: %s/%s", folder_name.c_str(), filename.c_str());
 			}
 
-			return (cache[key] = path.empty()
-					? Bitmap::Create(16, 16, Color())
-					: Bitmap::Create(path, transparent, flags)
-					).lock();
+			return (cache[key] = Bitmap::Create(path, transparent, flags)).lock();
 		} else { return it->second.lock(); }
 	}
 
@@ -122,7 +116,23 @@ namespace {
 
 		string_pair const key(folder_name, filename);
 
-		return (cache[key] = Bitmap::Create(s.max_width, s.max_height, false)).lock();
+		BitmapRef bitmap = Bitmap::Create(s.max_width, s.max_height, false);
+
+		// ToDo: Maybe use different renderers depending on material
+		// Will look ugly for some image types (especially System)
+
+		// Draw chess board
+		Color color[2] = { Color(255, 255, 255, 255), Color(128, 128, 128, 255) };
+		for (int i = 0; i < s.max_width / 16; ++i) {
+			for (int j = 0; j < s.max_height / 16; ++j) {
+				bitmap->FillRect(Rect(i * 16, j * 16, 16, 16), color[(i + j) % 2]);
+			}
+		}
+
+		// Draw filename
+		bitmap->TextDraw(4, 4, Color(255, 0, 0, 0), folder_name + "/" + filename);
+
+		return (cache[key] = bitmap).lock();
 	}
 
 	template<Material::Type T>
