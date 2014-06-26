@@ -398,6 +398,7 @@ void Game_Character::MoveTypeCustom() {
 			} else if (IsMoveRouteOverwritten()) {
 				SetMoveRouteOverwritten(false);
 				EndMoveRoute();
+				stop_count = 0;
 			}
 		} else {
 			do {
@@ -1072,13 +1073,7 @@ void Game_Character::Lock() {
 
 void Game_Character::Unlock() {
 	SetFacingLocked(false);
-	SetFacingDirection(GetPrelockDirection());
-}
-
-void Game_Character::SetFacingDirection(int direction) {
-	if (!IsDirectionFixed() && (direction != -1)) {
-		SetDirection(direction);
-	}
+	SetDirection(GetPrelockDirection());
 }
 
 void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
@@ -1095,6 +1090,7 @@ void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
 	move_route_owner = owner;
 	SetPrelockDirection(-1);
 	wait_count = 0;
+	stop_count = 256;
 }
 
 void Game_Character::CancelMoveRoute(Game_Interpreter* owner) {

@@ -46,6 +46,7 @@ void Window_Base::Update() {
 }
 
 void Window_Base::DrawFace(std::string face_name, int face_index, int cx, int cy, bool flip) {
+	if (face_name.empty()) { return; }
 	BitmapRef faceset = Cache::Faceset(face_name);
 
 	Rect src_rect(

@@ -24,6 +24,7 @@
 #include "game_party_base.h"
 #include "game_party.h"
 #include "game_enemyparty.h"
+#include "game_switches.h"
 #include "game_temp.h"
 #include "util_macro.h"
 #include "main_data.h"
@@ -179,6 +180,7 @@ bool Game_Battler::UseSkill(int skill_id) {
 			// ToDo: Show Teleport/Escape target menu
 			break;
 		case RPG::Skill::Type_switch:
+			Game_Switches[skill.switch_id] = true;
 			break;
 	}
 

@@ -136,11 +136,11 @@ namespace {
 	}
 
 	template<Material::Type T>
-	BitmapRef LoadBitmap(std::string const& f) {
+	BitmapRef LoadBitmap(std::string const& f, bool transparent) {
 		BOOST_STATIC_ASSERT(Material::REND < T && T < Material::END);
 
 		Spec const& s = spec[T];
-		BitmapRef ret = LoadBitmap(s.directory, f, s.transparent,
+		BitmapRef ret = LoadBitmap(s.directory, f, transparent,
 										 T == Material::Chipset? Bitmap::Chipset:
 										 T == Material::System? Bitmap::System:
 										 0);
@@ -165,18 +165,23 @@ namespace {
 
 tSystemInfo Cache::system_info;
 
-#define macro(r, data, elem)						\
-	BitmapRef Cache::elem(const std::string& f) {	\
-		return LoadBitmap<Material::elem>(f);		\
-	}												\
+#define macro(r, data, elem) \
+	BitmapRef Cache::elem(const std::string& f) { \
+		bool trans = spec[Material::elem].transparent; \
+		return LoadBitmap<Material::elem>(f, trans); \
+	}
 
 BOOST_PP_SEQ_FOR_EACH(macro, ,
 					  (Backdrop)(Battle)(Battle2)(Battlecharset)(Battleweapon)
 					  (Charset)(Chipset)(Faceset)(Gameover)(Monster)
-					  (Panorama)(Picture)(System)(System2)(Frame)(Title)
+					  (Panorama)(System)(System2)(Frame)(Title)
 					  )
 
 #undef macro
+
+BitmapRef Cache::Picture(const std::string& f, bool trans) {
+	return LoadBitmap<Material::Picture>(f, trans);
+}
 
 BitmapRef Cache::Exfont() {
 	string_pair const hash("\x00","ExFont");

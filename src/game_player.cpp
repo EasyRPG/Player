@@ -406,8 +406,8 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 	}
 
 	if ( !result && Game_Map::IsCounter(front_x, front_y) ) {
-		front_x = Game_Map::XwithDirection(GetX(), GetDirection());
-		front_y = Game_Map::YwithDirection(GetY(), GetDirection());
+		front_x = Game_Map::XwithDirection(front_x, GetDirection());
+		front_y = Game_Map::YwithDirection(front_y, GetDirection());
 
 		Game_Map::GetEventsXY(events, front_x, front_y);
 

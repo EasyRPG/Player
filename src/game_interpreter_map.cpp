@@ -787,8 +787,7 @@ bool Game_Interpreter_Map::CommandShowPicture(RPG::EventCommand const& com) { //
 		}
 	}
 
-	picture->Show(pic_name);
-	picture->SetTransparent(use_trans);
+	picture->Show(pic_name, use_trans);
 	picture->SetFixedToMap(scrolls);
 
 	picture->SetMovementEffect(x, y);
@@ -1016,7 +1015,6 @@ bool Game_Interpreter_Map::CommandMoveEvent(RPG::EventCommand const& com) { // c
 
 		event->ForceMoveRoute(route, move_freq, this);
 		pending.push_back(event);
-		event->MoveTypeCustom();
 	}
 	return true;
 }

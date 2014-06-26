@@ -36,9 +36,8 @@ public:
 	Game_Picture(int ID);
 	~Game_Picture();
 
-	void Show(const std::string& name);
+	void Show(const std::string& name, bool transparency);
 	void Erase();
-	void SetTransparent(bool flag);
 	void SetFixedToMap(bool flag);
 	void SetMovementEffect(int x, int y);
 	void SetColorEffect(int r, int g, int b, int s);

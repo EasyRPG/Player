@@ -53,11 +53,12 @@ void Scene_Skill::Update() {
 		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 		Scene::Pop();
 	} else if (Input::IsTriggered(Input::DECISION)) {
-		int skill_id = skill_window->GetSkill()->ID;
+		const RPG::Skill* skill = skill_window->GetSkill();
+		int skill_id = skill ? skill->ID : 0;
 
 		Game_Actor* actor = Main_Data::game_party->GetActors()[actor_index];
 
-		if (actor->IsSkillUsable(skill_id)) {
+		if (skill && actor->IsSkillUsable(skill_id)) {
 			Game_System::SePlay(Main_Data::game_data.system.decision_se);
 
 			if (Data::skills[skill_id - 1].type == RPG::Skill::Type_switch) {

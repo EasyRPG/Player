@@ -68,11 +68,13 @@ void Game_Picture::UpdateSprite() {
 						 (int) (data.current_sat * 128 / 100)));
 }
 
-void Game_Picture::Show(const std::string& _name) {
+void Game_Picture::Show(const std::string& _name, bool _transparency) {
 	data.name = _name;
+	data.transparency = _transparency;
 	data.time_left = 0;
 
-	BitmapRef bitmap = Cache::Picture(data.name);
+	BitmapRef bitmap = Cache::Picture(data.name, data.transparency);
+
 	sprite.reset(new Sprite());
 	sprite->SetBitmap(bitmap);
 	sprite->SetOx(bitmap->GetWidth() / 2);
@@ -85,10 +87,6 @@ void Game_Picture::Show(const std::string& _name) {
 void Game_Picture::Erase() {
 	data.name.clear();
 	sprite.reset();
-}
-
-void Game_Picture::SetTransparent(bool flag) {
-	data.transparency = flag;
 }
 
 void Game_Picture::SetFixedToMap(bool flag) {
