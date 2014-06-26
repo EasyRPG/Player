@@ -19,6 +19,7 @@
 #include <cstdlib>
 #include <cstdarg>
 #include <ctime>
+#include <cstdio>
 
 #include <iomanip>
 #include <iostream>
