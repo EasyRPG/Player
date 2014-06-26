@@ -81,7 +81,8 @@ namespace {
 
 	std::string format_string(char const* fmt, va_list args) {
 		char buf[4096];
-	#if __cplusplus > 199711L
+	// FIXME: devkitppc r27 seems to have broken newlib
+	#if __cplusplus > 199711L && !defined(GEKKO)
 		int const result = vsnprintf(buf, sizeof(buf), fmt, args);
 	#else
 		int const result = vsprintf(buf, fmt, args);
