@@ -68,7 +68,8 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 		return;
 	}
 
-	bgm.reset(Mix_LoadMUS(path.c_str()), &Mix_FreeMusic);
+	SDL_RWops *rw = SDL_RWFromFile(path.c_str(), "rb");
+	bgm.reset(Mix_LoadMUS_RW(rw, 1), &Mix_FreeMusic);
 	if (!bgm) {
 		Output::Warning("Couldn't load %s BGM.\n%s\n", file.c_str(), Mix_GetError());
 		return;
