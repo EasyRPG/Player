@@ -179,7 +179,7 @@ BOOST_PP_SEQ_FOR_EACH(macro, ,
 #undef macro
 
 BitmapRef Cache::Picture(const std::string& filename, bool transparent) {
-	Spec const& s = spec[Material::Type::Picture];
+	Spec const& s = spec[Material::Picture];
 	BitmapRef const ret = LoadBitmap(s.directory, filename, transparent, 0);
 
 	if(
