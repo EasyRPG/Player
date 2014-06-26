@@ -136,11 +136,11 @@ namespace {
 	}
 
 	template<Material::Type T>
-	BitmapRef LoadBitmap(std::string const& f) {
+	BitmapRef LoadBitmap(std::string const& f, bool transparent) {
 		BOOST_STATIC_ASSERT(Material::REND < T && T < Material::END);
 
 		Spec const& s = spec[T];
-		BitmapRef ret = LoadBitmap(s.directory, f, s.transparent,
+		BitmapRef ret = LoadBitmap(s.directory, f, transparent,
 										 T == Material::Chipset? Bitmap::Chipset:
 										 T == Material::System? Bitmap::System:
 										 0);
@@ -165,10 +165,11 @@ namespace {
 
 tSystemInfo Cache::system_info;
 
-#define macro(r, data, elem)						\
-	BitmapRef Cache::elem(const std::string& f) {	\
-		return LoadBitmap<Material::elem>(f);		\
-	}												\
+#define macro(r, data, elem) \
+	BitmapRef Cache::elem(const std::string& f) { \
+		bool trans = spec[Material::elem].transparent; \
+		return LoadBitmap<Material::elem>(f, trans); \
+	}
 
 BOOST_PP_SEQ_FOR_EACH(macro, ,
 					  (Backdrop)(Battle)(Battle2)(Battlecharset)(Battleweapon)
@@ -178,19 +179,8 @@ BOOST_PP_SEQ_FOR_EACH(macro, ,
 
 #undef macro
 
-BitmapRef Cache::Picture(const std::string& filename, bool transparent) {
-	Spec const& s = spec[Material::Picture];
-	BitmapRef const ret = LoadBitmap(s.directory, filename, transparent, 0);
-
-	if(
-		ret->GetWidth () < s.min_width  || s.max_width  < ret->GetWidth () ||
-		ret->GetHeight() < s.min_height || s.max_height < ret->GetHeight()
-	) {
-		Output::Debug("Image size error in: %s/%s\nwidth  (min, max, actual) = (%d, %d, %d)\nheight (min, max, actual) = (%d, %d, %d)",
-					  s.directory, filename.c_str(), s.min_width , s.max_width , ret->GetWidth (), s.min_height, s.max_height, ret->GetHeight());
-	}
-
-	return ret;
+BitmapRef Cache::Picture(const std::string& f, bool trans) {
+	return LoadBitmap<Material::Picture>(f, trans);
 }
 
 BitmapRef Cache::Exfont() {
