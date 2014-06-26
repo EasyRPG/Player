@@ -144,7 +144,7 @@ add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${MAIN_FILE})
 add_executable(${PROJECT_NAME}_com ${MAIN_FILE})
 foreach(i ${PROJECT_NAME} ${PROJECT_NAME}_com)
   target_link_libraries(${i} ${EASYRPG_PLAYER_LIBRARIES_ALL})
-  add_dependencies(${i} liblcf ${i}_Static)
+  add_dependencies(${i} liblcf ${PROJECT_NAME}_Static)
 endforeach()
 install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME} DESTINATION bin)
 
