@@ -54,8 +54,13 @@ void Text::Draw(Bitmap& dest, int x, int y, int color, std::string const& text, 
 	text_surface->SetTransparentColor(dest.GetTransparentColor());
 	text_surface->Clear();
 
-	// Load the system file for the shadow and text color
-	BitmapRef system = Cache::System(Data::system.system_name);
+	BitmapRef system;
+	if (!Data::system.system_name.empty()) {
+		// Load the system file for the shadow and text color
+		system = Cache::System(Data::system.system_name);
+	} else {
+		system = Bitmap::Create(160, 80, false);
+	}
 	// Load the exfont-file
 	BitmapRef exfont = Cache::Exfont();
 

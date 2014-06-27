@@ -133,6 +133,7 @@ void Scene_Title::CreateTitleGraphic() {
 	// Load Title Graphic
 	if (!title) // No need to recreate Title on Resume
 	{
+		if (Data::system.title_name.empty()) { return; }
 		title.reset(new Sprite());
 		title->SetBitmap(Cache::Title(Data::system.title_name));
 	}

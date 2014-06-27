@@ -28,9 +28,11 @@ Scene_Gameover::Scene_Gameover() {
 }
 
 void Scene_Gameover::Start() {
-	// Load Background Graphic
-	background.reset(new Sprite());
-	background->SetBitmap(Cache::Gameover(Data::system.gameover_name));
+	if (!Data::system.gameover_name.empty()) {
+		// Load Background Graphic
+		background.reset(new Sprite());
+		background->SetBitmap(Cache::Gameover(Data::system.gameover_name));
+	}
 	// Play gameover music
 	Game_System::BgmPlay(Game_System::GetSystemBGM(Game_System::BGM_GameOver));
 }

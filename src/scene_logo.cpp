@@ -913,6 +913,7 @@ Scene_Logo::Scene_Logo() :
 }
 
 void Scene_Logo::Start() {
+	Graphics::Transition(Graphics::TransitionFadeIn, 32);
 	logo.reset(new Sprite());
 	if (!Player::debug_flag) {
 		logo_img = Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false);
