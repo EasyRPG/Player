@@ -117,11 +117,11 @@ void Scene::Suspend() {
 }
 
 void Scene::TransitionIn() {
-	Graphics::Transition(Graphics::TransitionFadeIn, 12);
+	Graphics::Transition(Graphics::TransitionFadeIn, 6);
 }
 
 void Scene::TransitionOut() {
-	Graphics::Transition(Graphics::TransitionFadeOut, 12, true);
+	Graphics::Transition(Graphics::TransitionFadeOut, 6, true);
 }
 
 void Scene::Update() {

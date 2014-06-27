@@ -78,14 +78,14 @@ void Scene_Title::TransitionIn() {
 			Graphics::Transition(Graphics::TransitionFadeIn, 32);
 		} else {
 			DisplayUi->SetBackcolor(Cache::system_info.bg_color);
-			Graphics::Transition(Graphics::TransitionFadeIn, 5);
+			Graphics::Transition(Graphics::TransitionFadeIn, 6);
 		}
 	}
 }
 
 void Scene_Title::TransitionOut() {
 	if (!Player::battle_test_flag) {
-		Graphics::Transition(Graphics::TransitionFadeOut, 12, true);
+		Graphics::Transition(Graphics::TransitionFadeOut, 6, true);
 	}
 }
 
@@ -153,7 +153,7 @@ void Scene_Title::CreateCommandWindow() {
 
 	command_window.reset(new Window_Command(options));
 	if (!Player::hide_title_flag) {
-		command_window->SetX(SCREEN_TARGET_WIDTH / 2- command_window->GetWidth() / 2);
+		command_window->SetX(SCREEN_TARGET_WIDTH / 2 - command_window->GetWidth() / 2);
 		command_window->SetY(SCREEN_TARGET_HEIGHT / 15 * 13.25 - command_window->GetHeight());
 	} else {
 		command_window->SetX(SCREEN_TARGET_WIDTH / 2 - command_window->GetWidth() / 2);
@@ -169,7 +169,7 @@ void Scene_Title::CreateCommandWindow() {
 
 	// Set the number of frames for the opening animation to last
 	if (!Player::hide_title_flag) {
-		command_window->SetOpenAnimation(32);
+		command_window->SetOpenAnimation(8);
 	}
 
 	command_window->SetVisible(false);
@@ -218,5 +218,6 @@ void Scene_Title::CommandContinue() {
 void Scene_Title::CommandShutdown() {
 	Game_System::SePlay(Main_Data::game_data.system.decision_se);
 	Audio().BGS_Fade(800);
+	Graphics::Transition(Graphics::TransitionFadeOut, 32, true);
 	Scene::Pop();
 }
