@@ -58,12 +58,12 @@ void Scene_Map::Start() {
 	}
 
 	Graphics::FrameReset();
+	Graphics::Transition(Graphics::TransitionFadeIn, 32);
 }
 
 Scene_Map::~Scene_Map() {
 	Main_Data::game_screen->Reset();
 }
-
 
 void Scene_Map::Continue() {
 	if (Game_Temp::battle_calling) {
