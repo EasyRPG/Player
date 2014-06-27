@@ -53,7 +53,7 @@ Scene_Title::Scene_Title() {
 }
 
 void Scene_Title::Start() {
-	if (!Player::battle_test_flag) {
+	if (!Player::battle_test_flag && !Player::hide_title_flag) {
 		CreateTitleGraphic();
 		PlayTitleMusic();
 	}
@@ -74,7 +74,12 @@ void Scene_Title::Continue() {
 void Scene_Title::TransitionIn() {
 	if (!Player::battle_test_flag) {
 		Graphics::Transition(Graphics::TransitionErase, 1, true);
-		Graphics::Transition(Graphics::TransitionFadeIn, 32);
+		if (!Player::hide_title_flag) {
+			Graphics::Transition(Graphics::TransitionFadeIn, 32);
+		} else {
+			DisplayUi->SetBackcolor(Cache::system_info.bg_color);
+			Graphics::Transition(Graphics::TransitionFadeIn, 5);
+		}
 	}
 }
 
@@ -147,9 +152,13 @@ void Scene_Title::CreateCommandWindow() {
 	options.push_back(Data::terms.exit_game);
 
 	command_window.reset(new Window_Command(options));
-	command_window->SetX((SCREEN_TARGET_WIDTH/2) - command_window->GetWidth() / 2);
-	command_window->SetY(((SCREEN_TARGET_HEIGHT/15)*14) - command_window->GetHeight());
-
+	if (!Player::hide_title_flag) {
+		command_window->SetX(SCREEN_TARGET_WIDTH / 2- command_window->GetWidth() / 2);
+		command_window->SetY(SCREEN_TARGET_HEIGHT / 15 * 13.25 - command_window->GetHeight());
+	} else {
+		command_window->SetX(SCREEN_TARGET_WIDTH / 2 - command_window->GetWidth() / 2);
+		command_window->SetY(SCREEN_TARGET_HEIGHT / 2 - command_window->GetHeight() / 2);
+	}
 	// Enable load game if available
 	continue_enabled = CheckContinue();
 	if (continue_enabled) {
@@ -159,7 +168,9 @@ void Scene_Title::CreateCommandWindow() {
 	}
 
 	// Set the number of frames for the opening animation to last
-	command_window->SetOpenAnimation(32);
+	if (!Player::hide_title_flag) {
+		command_window->SetOpenAnimation(32);
+	}
 
 	command_window->SetVisible(false);
 }
