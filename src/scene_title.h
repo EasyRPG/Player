@@ -37,7 +37,6 @@ public:
 	void Start();
 	void Continue();
 	void TransitionIn();
-	void TransitionOut();
 	void Suspend();
 	void Resume();
 	void Update();

@@ -914,7 +914,7 @@ Scene_Logo::Scene_Logo() :
 
 void Scene_Logo::Start() {
 	logo.reset(new Sprite());
-	if (!Player::debug_flag && !Player::hide_title_flag) {
+	if (!Player::debug_flag) {
 		logo_img = Bitmap::Create(easyrpg_logo, sizeof(easyrpg_logo), false);
 		logo->SetBitmap(logo_img);
 	}
@@ -928,7 +928,6 @@ void Scene_Logo::Update() {
 	++frame_counter;
 
 	if (Player::debug_flag ||
-		Player::hide_title_flag ||
 		frame_counter == 60 ||
 		Input::IsTriggered(Input::DECISION) ||
 		Input::IsTriggered(Input::CANCEL)) {
