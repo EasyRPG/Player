@@ -58,7 +58,6 @@ void Scene_Map::Start() {
 	}
 
 	Graphics::FrameReset();
-	Graphics::Transition(Graphics::TransitionFadeIn, 32);
 }
 
 Scene_Map::~Scene_Map() {
@@ -84,7 +83,7 @@ void Scene_Map::TransitionIn() {
 		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleShow), 32);
 	}
 	else {
-		Scene::TransitionIn();
+		Graphics::Transition(Graphics::TransitionFadeIn, 32);
 	}
 }
 
