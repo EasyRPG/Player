@@ -1346,7 +1346,7 @@ bool Game_Interpreter_Map::CommandEraseEvent(RPG::EventCommand const& /* com */)
 		return true;
 
 	tEventHash& events = Game_Map::GetEvents();
-	events[event_id]->SetDisabled(true);
+	events[event_id]->SetActive(false);
 
 	return true;
 }

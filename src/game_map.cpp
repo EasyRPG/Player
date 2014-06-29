@@ -561,7 +561,7 @@ void Game_Map::GetEventsXY(std::vector<Game_Event*>& events, int x, int y) {
 
 	tEventHash::const_iterator i;
 	for (i = Game_Map::GetEvents().begin(); i != Game_Map::GetEvents().end(); ++i) {
-		if (i->second->GetX() == x && i->second->GetY() == y) {
+		if (i->second->GetX() == x && i->second->GetY() == y && i->second->GetActive()) {
 			result.push_back(i->second.get());
 		}
 	}
