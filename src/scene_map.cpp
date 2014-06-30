@@ -64,7 +64,6 @@ Scene_Map::~Scene_Map() {
 	Main_Data::game_screen->Reset();
 }
 
-
 void Scene_Map::Continue() {
 	if (Game_Temp::battle_calling) {
 		// Came from battle
@@ -84,7 +83,7 @@ void Scene_Map::TransitionIn() {
 		Graphics::Transition((Graphics::TransitionType)Game_System::GetTransition(Game_System::Transition_EndBattleShow), 32);
 	}
 	else {
-		Scene::TransitionIn();
+		Graphics::Transition(Graphics::TransitionFadeIn, 32);
 	}
 }
 

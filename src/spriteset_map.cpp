@@ -23,12 +23,17 @@
 #include "sprite_character.h"
 #include "game_character.h"
 #include "game_player.h"
+#include "bitmap.h"
 
 // Constructor
 Spriteset_Map::Spriteset_Map() {
 	tilemap.SetWidth(Game_Map::GetWidth());
 	tilemap.SetHeight(Game_Map::GetHeight());
-	tilemap.SetChipset(Cache::Chipset(Game_Map::GetChipsetName()));
+	if (!Game_Map::GetChipsetName().empty()) {
+		tilemap.SetChipset(Cache::Chipset(Game_Map::GetChipsetName()));
+	} else {
+		tilemap.SetChipset(Bitmap::Create(480, 256, true));
+	}
 	tilemap.SetPassableDown(Game_Map::GetPassagesDown());
 	tilemap.SetPassableUp(Game_Map::GetPassagesUp());
 	tilemap.SetMapDataDown(Game_Map::GetMapDataDown());
@@ -77,7 +82,11 @@ Sprite_Character* Spriteset_Map::FindCharacter(Game_Character* character) const
 }
 
 void Spriteset_Map::ChipsetUpdated() {
-	tilemap.SetChipset(Cache::Chipset(Game_Map::GetChipsetName()));
+	if (!Game_Map::GetChipsetName().empty()) {
+		tilemap.SetChipset(Cache::Chipset(Game_Map::GetChipsetName()));
+	} else {
+		tilemap.SetChipset(Bitmap::Create(480, 256, true));
+	}
 	tilemap.SetPassableDown(Game_Map::GetPassagesDown());
 	tilemap.SetPassableUp(Game_Map::GetPassagesUp());
 }
