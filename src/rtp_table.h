@@ -556,6 +556,22 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 
 	 // 2000 RTP names not overwritten by Vlad Kovnerov's installation
 	 ("People7", "一般2")
+
+	 // Orphaned Don Miguel's 2000 RTP extras pointing to nearest match
+	 ("Chubby1", "一般3")
+	 ("Chubby2", "一般2")
+	 ("Crown1", "主人公4")
+	 ("Crown2", "モンスター2")
+	 ("Crown3", "モンスター1")
+	 ("Crown4", "動物")
+	 ("Crown5", "一般5")
+	 ("Crown6", "モンスター1")
+	 ("Crown7", "動物")
+	 ("Future1", "一般1")
+	 ("Future2", "一般4")
+	 ("Future3", "一般5")
+	 ("Men1", "一般4")
+	 ("Women1", "一般5")
 	 .to_container(sub_map))
 
 	("chipset", list_of<sub_map_pair>
@@ -583,6 +599,11 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("Inner", "内装")
 	 ("Basis", "基本")
 	 ("Outline", "外観")
+
+	 // Orphaned Don Miguel's 2000 RTP extras pointing to nearest match
+	 ("ChipSet1", "ダンジョン")
+	 ("ChipSet2", "内装")
+	 ("ChipSet3", "船")
 	 .to_container(sub_map))
 
 	("faceset", list_of<sub_map_pair>
