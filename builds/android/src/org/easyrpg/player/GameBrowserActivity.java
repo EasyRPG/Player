@@ -264,13 +264,29 @@ public class GameBrowserActivity extends ListActivity {
 			iniReader = new SimpleIniEncodingReader(iniFile);
 			String encoding = iniReader.getEncoding();
 			RadioButton rb = null;
-			
-			if (encoding.equals("1252")) {
+						
+			if (encoding == null) {
+				rb = (RadioButton)findViewById(R.id.rd_autodetect);
+			} else if (encoding.equals("1252")) {
 				rb = (RadioButton)findViewById(R.id.rd_west);
-			} else if (encoding.equals("1251")) {
+			} else if (encoding.equals("1250")) {
 				rb = (RadioButton)findViewById(R.id.rd_east);
 			} else if (encoding.equals("932")) {
 				rb = (RadioButton)findViewById(R.id.rd_jp);
+			} else if (encoding.equals("1251")) {
+				rb = (RadioButton)findViewById(R.id.rd_cyrillic);
+			} else if (encoding.equals("949")) {
+				rb = (RadioButton)findViewById(R.id.rd_korean);
+			} else if (encoding.equals("936")) {
+				rb = (RadioButton)findViewById(R.id.rd_chinese_simple);
+			} else if (encoding.equals("950")) {
+				rb = (RadioButton)findViewById(R.id.rd_chinese_traditional);
+			} else if (encoding.equals("1253")) {
+				rb = (RadioButton)findViewById(R.id.rd_greek);
+			} else if (encoding.equals("1254")) {
+				rb = (RadioButton)findViewById(R.id.rd_turkish);
+			} else if (encoding.equals("1257")) {
+				rb = (RadioButton)findViewById(R.id.rd_baltic);
 			}
 			
 			if (rb != null) {
@@ -297,16 +313,36 @@ public class GameBrowserActivity extends ListActivity {
 				
 				String encoding = null;
 				
-				if (((RadioButton)findViewById(R.id.rd_west)).isChecked()) {
+				if (((RadioButton)findViewById(R.id.rd_autodetect)).isChecked()) {
+					encoding = "auto";
+				} else if (((RadioButton)findViewById(R.id.rd_west)).isChecked()) {
 					encoding = "1252";
 				} else if (((RadioButton)findViewById(R.id.rd_east)).isChecked()) {
-					encoding = "1251";
-				}  else if (((RadioButton)findViewById(R.id.rd_jp)).isChecked()) {
+					encoding = "1250";
+				} else if (((RadioButton)findViewById(R.id.rd_jp)).isChecked()) {
 					encoding = "932";
+				} else if (((RadioButton)findViewById(R.id.rd_cyrillic)).isChecked()) {
+					encoding = "1251";
+				} else if (((RadioButton)findViewById(R.id.rd_korean)).isChecked()) {
+					encoding = "949";
+				} else if (((RadioButton)findViewById(R.id.rd_chinese_simple)).isChecked()) {
+					encoding = "936";
+				} else if (((RadioButton)findViewById(R.id.rd_chinese_traditional)).isChecked()) {
+					encoding = "950";
+				} else if (((RadioButton)findViewById(R.id.rd_greek)).isChecked()) {
+					encoding = "1253";
+				} else if (((RadioButton)findViewById(R.id.rd_turkish)).isChecked()) {
+					encoding = "1254";
+				} else if (((RadioButton)findViewById(R.id.rd_baltic)).isChecked()) {
+					encoding = "1257";
 				}
 				
 				if (encoding != null) {
-					iniReader.setEncoding(encoding);
+					if (encoding.equals("auto")) {
+						iniReader.deleteEncoding();
+					} else {
+						iniReader.setEncoding(encoding);
+					}
 					try {
 						iniReader.save();
 						Toast.makeText(context, "Region changed to " + v.getText().toString(),
