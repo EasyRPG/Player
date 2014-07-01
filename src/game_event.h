@@ -133,18 +133,18 @@ public:
 	bool AreConditionsMet(const RPG::EventPage& page);
 
 	/**
-	 * Sets disabled flag for the event (enables or disables it).
+	 * Activates or deactivates the event.
 	 *
 	 * @param dis_flag enables or disables the event.
 	 */
-	void SetDisabled(bool dis_flag);
+	void SetActive(bool active);
 
 	/**
-	 * Gets if the event has been disabled.
+	 * Gets if the event is active.
 	 *
-	 * @return if the event has been disabled (via EraseEvent-EventCommand).
+	 * @return if the event is active (or inactive via EraseEvent-EventCommand).
 	 */
-	bool GetDisabled() const;
+	bool GetActive() const;
 
 	RPG::Event& GetEvent();
 
@@ -160,7 +160,6 @@ private:
 	bool starting;
 	int trigger;
 	RPG::Event event;
-	bool erased;
 	RPG::EventPage* page;
 	std::vector<RPG::EventCommand> list;
 	boost::scoped_ptr<Game_Interpreter> interpreter;

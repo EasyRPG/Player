@@ -33,7 +33,6 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	starting(false),
 	trigger(-1),
 	event(event),
-	erased(false),
 	page(NULL),
 	from_save(false) {
 
@@ -48,7 +47,6 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 Game_Event::Game_Event(int map_id, const RPG::Event& event, const RPG::SaveMapEvent& data) :
 	starting(false),
 	event(event),
-	erased(false),
 	page(NULL),
 	from_save(true) {
 
@@ -310,16 +308,22 @@ void Game_Event::SetupFromSave(RPG::EventPage* new_page) {
 }
 
 void Game_Event::Refresh() {
+	if (!data.active) {
+		if (from_save) {
+			SetVisible(false);
+			from_save = false;
+		}
+		return;
+	}
+
 	RPG::EventPage* new_page = NULL;
-	if (!erased) {
-		std::vector<RPG::EventPage>::reverse_iterator i;
-		for (i = event.pages.rbegin(); i != event.pages.rend(); ++i) {
-			// Loop in reverse order to see whether any page meets conditions...
-			if (AreConditionsMet(*i)) {
-				new_page = &(*i);
-				// Stop looking for more...
-				break;
-			}
+	std::vector<RPG::EventPage>::reverse_iterator i;
+	for (i = event.pages.rbegin(); i != event.pages.rend(); ++i) {
+		// Loop in reverse order to see whether any page meets conditions...
+		if (AreConditionsMet(*i)) {
+			new_page = &(*i);
+			// Stop looking for more...
+			break;
 		}
 	}
 
@@ -425,17 +429,18 @@ int Game_Event::GetTrigger() const {
 	return trigger;
 }
 
-void Game_Event::SetDisabled(bool dis_flag) {
-	erased = dis_flag;
+void Game_Event::SetActive(bool active) {
+	data.active = active;
+	SetVisible(active);
 }
 
-bool Game_Event::GetDisabled() const {
-	return erased;
+bool Game_Event::GetActive() const {
+	return data.active;
 }
 
 void Game_Event::Start() {
 	// RGSS scripts consider list empty if size <= 1. Why?
-	if (list.empty() || erased)
+	if (list.empty() || !data.active)
 		return;
 
 	starting = true;
@@ -474,6 +479,9 @@ bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 
 
 void Game_Event::Update() {
+	if (!data.active) {
+		return;
+	}
 	Game_Character::Update();
 
 	CheckEventTriggerAuto();
