@@ -4,11 +4,11 @@
 	<string name="toggle_fps">Toggle FPS</string>
 	<string name="toggle_ui">Toggle Virtual Buttons</string>
 	<string name="end_game">End Game</string>
-	<string name="autodetect">Autodetect</string>
-	<string name="west_europe">Western Europe</string>
-	<string name="east_europe">Central/Eastern Europe</string>
+	<string name="autodetect">Autodetect Region (Recommended)</string>
+	<string name="west_europe">Western European</string>
+	<string name="east_europe">Central/Eastern European</string>
 	<string name="cyrillic">Cyrillic</string>
-	<string name="japan">Japan</string>
+	<string name="japan">Japanese</string>
 	<string name="korean">Korean</string>
 	<string name="chinese_simple">Chinese (Simplified)</string>
 	<string name="chinese_traditional">Chinese (Traditional)</string>
