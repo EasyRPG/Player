@@ -40,6 +40,7 @@ typedef std::map<std::string, std::map<std::string, std::string> > rtp_table_typ
  */
 rtp_table_type const RTP_TABLE_2003 = map_list_of
 	("backdrop", list_of<sub_map_pair>
+	 // RPG Advocate English translation names
 	 ("graveyard", "お墓")
 	 ("shrine", "お寺")
 	 ("dungeon1", "ダンジョン１")
@@ -75,6 +76,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("arena", "闘技場")
 	 ("snowfield", "雪原")
 
+	 // Unknown English translation names used by Spanish games
 	 ("grave", "お墓")
 	 ("temple", "お寺")
 	 ("donjohn1", "ダンジョン１")
@@ -104,6 +106,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("bathhouse", "銭湯")
 	 ("competitionplace", "闘技場")
 
+	 // Russian RTP translation by Vlad Kovnerov
 	 ("Cave", "ダンジョン１")
 	 ("LavaCave", "ダンジョン２")
 	 ("IceCave", "ダンジョン３")
@@ -120,9 +123,24 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("CityHouse", "街中")
 	 ("InsidePyramid", "遺跡")
 	 ("Snow", "雪原")
+
+	 // 2000 RTP names not overwritten by Vlad Kovnerov's installation
+	 ("Cave1", "ダンジョン１")
+	 ("LavaCave2", "ダンジョン２")
+	 ("IceCave3", "ダンジョン３")
+	 ("Cave4", "ダンジョン４")
+	 ("BrickCave5", "ダンジョン５")
+	 ("Galaxy", "宇宙")
+	 ("Canyon", "山道")
+	 ("SnowCanyon", "岩場")
+	 ("WasteRuins", "廃墟")
+	 ("LightSpeed", "異空間")
+	 ("SeaBeach", "砂浜")
+	 ("Greece", "神殿")
 	 .to_container(sub_map))
 
 	("battle", list_of<sub_map_pair>
+	 // RPG Advocate English translation names
 	 ("misc1", "2003その他1")
 	 ("misc2", "2003その他2")
 	 ("barrier1", "2003バリア")
@@ -178,6 +196,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("wind2", "風")
 	 ("paralyze2", "麻痺")
 
+	 // Unknown English translation names used by Spanish games
 	 ("2003addition1", "2003その他1")
 	 ("2003addition2", "2003その他2")
 	 ("2003barrier", "2003バリア")
@@ -233,6 +252,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("wind", "風")
 	 ("paralysis", "麻痺")
 
+	 // Russian RTP translation by Vlad Kovnerov
 	 ("2003-Other1", "2003その他1")
 	 ("2003-Other2", "2003その他2")
 	 ("2003-Barrier", "2003バリア")
@@ -259,9 +279,28 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("2003-Whip", "2003鞭")
 	 ("2003-Wind", "2003風")
 	 ("2003-Paralysis", "2003麻痺")
+
+	 // 2000 RTP names not overwritten by Vlad Kovnerov's installation
+	 ("Etc", "その他")
+	 ("Poison", "ブレス")
+	 ("Up", "上昇")
+	 ("Down", "下降")
+	 ("Cold", "冷気")
+	 ("Sun", "回復")
+	 ("Earth", "大地")
+	 ("Hit", "打撃")
+	 ("Axe", "斧")
+	 ("Sphere", "治療")
+	 ("Explosion", "爆発")
+	 ("Fang", "爪")
+	 ("Arrow", "矢")
+	 ("Ray", "蘇生")
+	 ("Zip", "雷")
+	 ("Whip", "鞭")
 	 .to_container(sub_map))
 
 	("battlecharset", list_of<sub_map_pair>
+	 // RPG Advocate English translation names
 	 ("elf-f-1", "エルフ女a")
 	 ("elf-f-2", "エルフ女b")
 	 ("elf-m-1", "エルフ男a")
@@ -327,6 +366,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("mage-m-1", "魔術師男a")
 	 ("mage-m-2", "魔術師男b")
 
+	 // Unknown English translation names used by Spanish games
 	 ("elfwomana", "エルフ女a")
 	 ("elfwomanb", "エルフ女b")
 	 ("elfmana", "エルフ男a")
@@ -392,6 +432,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("magicteachermana", "魔術師男a")
 	 ("magicteachermanb", "魔術師男b")
 
+	 // Russian RTP translation by Vlad Kovnerov
 	 ("TuanaA", "エルフ女a")
 	 ("TuanaB", "エルフ女b")
 	 ("TemmadA", "エルフ男a")
@@ -459,12 +500,16 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 .to_container(sub_map))
 
 	("battleweapon", list_of<sub_map_pair>
+	 // RPG Advocate English translation name
 	 ("weapons", "武器")
+	 // Unknown English translation name used by Spanish games
 	 ("weapon", "武器")
+	 // Russian RTP translation by Vlad Kovnerov
 	 ("Standart", "武器")
 	 .to_container(sub_map))
 
 	("charset", list_of<sub_map_pair>
+	 // RPG Advocate English translation names
 	 ("object1", "オブジェクト1")
 	 ("object2", "オブジェクト2")
 	 ("monster1", "モンスター1")
@@ -481,6 +526,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("vehicle", "乗り物")
 	 ("animal", "動物")
 
+	 // Unknown English translation names used by Spanish games
 	 ("general1", "一般1")
 	 ("general2", "一般2")
 	 ("general3", "一般3")
@@ -491,6 +537,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("protagonist3", "主人公3")
 	 ("protagonist4", "主人公4")
 
+	 // Russian RTP translation by Vlad Kovnerov
 	 ("Objects1", "オブジェクト1")
 	 ("Objects2", "オブジェクト2")
 	 ("Monsters1", "モンスター1")
@@ -506,44 +553,64 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("Chara4", "主人公4")
 	 ("Vehicles", "乗り物")
 	 ("Animals", "動物")
+
+	 // 2000 RTP names not overwritten by Vlad Kovnerov's installation
+	 ("People7", "一般2")
 	 .to_container(sub_map))
 
 	("chipset", list_of<sub_map_pair>
+	 // RPG Advocate English translation names
 	 ("dungeon", "ダンジョン")
 	 ("building", "内装")
 	 ("main", "基本")
 	 ("town", "外観")
 	 ("ship", "船")
 
+	 // Unknown English translation names used by Spanish games
 	 ("donjohn", "ダンジョン")
 	 ("interior", "内装")
 	 ("basic", "基本")
 	 ("appearance", "外観")
 	 ("boat", "船")
 
+	 // Russian RTP translation by Vlad Kovnerov
 	 ("Internal1", "ダンジョン")
 	 ("Internal2", "内装")
 	 ("World", "基本")
 	 ("Village", "外観")
+
+	 // 2000 RTP names not overwritten by Vlad Kovnerov's installation
+	 ("Inner", "内装")
+	 ("Basis", "基本")
+	 ("Outline", "外観")
 	 .to_container(sub_map))
 
 	("faceset", list_of<sub_map_pair>
+	 // RPG Advocate English translation names
 	 ("monster", "モンスター")
 	 ("faces1", "一般1")
 	 ("faces2", "一般2")
 	 ("hero1", "主人公1")
 	 ("hero2", "主人公2")
 
+	 // Unknown English translation names used by Spanish games
 	 ("general1", "一般1")
 	 ("general2", "一般2")
 	 ("Protagonist1", "主人公1")
 	 ("Protagonist2", "主人公2")
 
+	 // Russian RTP translation by Vlad Kovnerov
 	 ("Monsters", "モンスター")
 	 ("People", "一般1")
 	 ("PeopleAnimal", "一般2")
 	 ("Face1", "主人公1")
 	 ("Face2", "主人公2")
+
+	 // 2000 RTP names not overwritten by Vlad Kovnerov's installation
+	 ("People1", "一般1")
+	 ("People2", "一般2")
+	 ("Chara1", "主人公1")
+	 ("Chara2", "主人公2")
 	 .to_container(sub_map))
 
 	("gameover", list_of<sub_map_pair>
@@ -551,6 +618,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 .to_container(sub_map))
 
 	("monster", list_of<sub_map_pair>
+	 // RPG Advocate English translation names
 	 ("ariman", "アーリマン")
 	 ("asura", "アスラ")
 	 ("anaconda", "アナコンダ")
@@ -667,6 +735,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("ki-rin", "麒麟")
 	 ("bluedragon", "龍")
 
+	 // Unknown English translation names used by Spanish games
 	 ("Ahriman", "アーリマン")
 	 ("MultiArmDemon", "アスラ")
 	 ("PimpSkeleton", "アンデッドナイト")
@@ -728,6 +797,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("ogre", "鬼")
 	 ("giraffe", "麒麟")
 
+	 // Russian RTP translation by Vlad Kovnerov
 	 ("MaliciousFlower", "アーリマン")
 	 ("WeaponMaster", "アスラ")
 	 ("Snake", "アナコンダ")
@@ -817,9 +887,49 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("DarkHorse", "馬")
 	 ("FairyTaleHorse", "麒麟")
 	 ("LongDragon", "龍")
+
+	 // 2000 RTP names not overwritten by Vlad Kovnerov's installation
+	 ("オーク", "Hog")
+	 ("トルーパー", "DarkRider")
+	 ("マーマン", "Aquamen")
+	 ("ケルベロス", "HellHound")
+	 ("コボルト", "Wolfman")
+	 ("デーモン", "FlyingDemon")
+	 ("ドラゴン", "GreenDragon1")
+	 ("トレント", "Oak")
+	 ("リザードマン", "Lizardmen")
+	 ("リッチ", "DarkSpirit")
+	 ("トレント", "Oak")
+	 ("龍", "GreenDragon2")
+	 // Orphaned 2000 names pointing to nearest match
+	 ("Boy1", "インプ")
+	 ("Girl2", "シルフ")
+	 ("Boy3", "ソーサラー")
+	 ("Girl4", "エルフ")
+	 ("Man5", "ダークエルフ")
+	 ("Girl6", "カーミラ")
+	 ("Oldman7", "アンデッドナイト")
+	 ("Granny", "ラクシュミ")
+	 ("Warrior", "ワイト")
+	 ("Redscorpion", "スコーピオン")
+	 ("Princess", "ラクシュミ")
+	 ("Ninja", "シャドウ")
+	 ("Fish", "レモラ")
+	 ("Hero1", "ダークエルフ")
+	 ("Hero2", "カーミラ")
+	 ("Samurai", "オーディン")
+	 ("Death", "レイス")
+	 ("Gnome", "オーガ")
+	 ("King", "タイタン")
+	 ("Thief", "ケットシー")
+	 ("FireScull", "スピリッツ")
+	 ("CloakDemon", "ネクロマンサー")
+	 ("Witch1", "ソーサラー")
+	 ("Witch2", "カーミラ")
 	 .to_container(sub_map))
 
 	("music", list_of<sub_map_pair>
+	 // RPG Advocate English translation names
 	 ("spring", "2003いやしの泉")
 	 ("casino", "2003カジノ三昧")
 	 ("arena", "2003コロシアム")
@@ -972,6 +1082,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("eviltown", "闇市")
 	 ("demonic", "魔王")
 
+	 // Unknown English translation names used by Spanish games
 	 ("2003spring", "2003いやしの泉")
 	 ("2003casino", "2003カジノ三昧")
 	 ("2003colloseum", "2003コロシアム")
@@ -1049,6 +1160,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("SEsea", "SE海")
 	 ("SErainy", "SE雨")
 
+	 // Russian RTP translation by Vlad Kovnerov
 	 ("2003Happiness", "2003いやしの泉")
 	 ("2003Research", "2003カジノ三昧")
 	 ("2003Piracy", "2003コロシアム")
@@ -1104,9 +1216,43 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("SE2003Birds", "SE2003鳥")
 	 ("SERain2", "SE大雨")
 	 ("SERain", "SE雨")
+
+	 // 2000 RTP names not overwritten by Vlad Kovnerov's installation
+	 ("Gag1", "Jギャグ1")
+	 ("Gag2", "Jギャグ2")
+	 ("BattleEnd1", "J戦闘終了1")
+	 ("BattleEnd2", "J戦闘終了2")
+	 ("BattleEnd3", "J戦闘終了3")
+	 ("BattleEnd4", "J戦闘終了4")
+	 ("Doubt", "J疑惑")
+	 ("GostTown1", "ゴーストタウン1")
+	 ("GostTown2", "ゴーストタウン2")
+	 ("Crisis", "ピンチ")
+	 ("Ride1", "乗り物1")
+	 ("Ride2", "乗り物2")
+	 ("Ride3", "乗り物3")
+	 ("Farewell1", "別れ1")
+	 ("Farewell2", "別れ2")
+	 ("Get", "勝利")
+	 ("Peace1", "安らぎ1")
+	 ("Peace2", "安らぎ2")
+	 ("Peace3", "安らぎ3")
+	 ("Anger", "怒り")
+	 ("Search", "探索")
+	 ("Lose", "敗北")
+	 ("Church", "教会")
+	 ("Fiesta", "明るい市場")
+	 ("Energy", "活気")
+	 ("Ship1", "船1")
+	 ("Ship2", "船2")
+	 ("Ship3", "船3")
+	 ("Trial", "試練")
+	 ("Dark", "闇市")
+	 ("Devil", "魔王")
 	 .to_container(sub_map))
 
 	("panorama", list_of<sub_map_pair>
+	 // RPG Advocate English translation names
 	 ("dusk1", "夕焼け1")
 	 ("dusk2", "夕焼け2")
 	 ("dawn1", "夜明け1")
@@ -1121,6 +1267,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("sky1", "空1")
 	 ("sky2", "空2")
 
+	 // Unknown English translation names used by Spanish games
 	 ("eveningglow1", "夕焼け1")
 	 ("eveningglow2", "夕焼け2")
 	 ("nightempty1", "夜空1")
@@ -1132,6 +1279,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("empty1", "空1")
 	 ("empty2", "空2")
 
+	 // Russian RTP translation by Vlad Kovnerov
 	 ("Dawn1", "夕焼け1")
 	 ("Dawn2", "夕焼け2")
 	 ("Evening1", "夜明け1")
@@ -1143,6 +1291,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 .to_container(sub_map))
 
 	("sound", list_of<sub_map_pair>
+	 // RPG Advocate English translation names
 	 ("item1", "アイテム1")
 	 ("item2", "アイテム2")
 	 ("jingle1", "あたり1")
@@ -1350,6 +1499,7 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("magic1", "魔法1")
 	 ("magic2", "魔法2")
 
+	 // Unknown English translation names used by Spanish games
 	 ("Around1", "あたり1")
 	 ("Around2", "あたり2")
 	 ("Upgrade", "アップ")
@@ -1477,14 +1627,65 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 ("Wind7", "風7")
 	 ("Wind8", "風8")
 	 ("Wind9", "風9")
+
+	 // 2000 RTP names not overwritten by Vlad Kovnerov's installation
+	 ("Success1", "あたり1")
+	 ("Success2", "あたり2")
+	 ("Up", "アップ")
+	 ("Glass", "ガシャン")
+	 ("Cansel1", "キャンセル1")
+	 ("Cansel2", "キャンセル2")
+	 ("Numbness1", "しびれ1")
+	 ("Numbness2", "しびれ2")
+	 ("Numbness3", "しびれ3")
+	 ("Down", "ダウン")
+	 ("Power", "にらみ")
+	 ("Breast", "ブレス")
+	 ("Cold1", "冷気1")
+	 ("Cold2", "冷気2")
+	 ("Cold3", "冷気3")
+	 ("Cold4", "冷気4")
+	 ("Cold5", "冷気5")
+	 ("Cold6", "冷気6")
+	 ("Cold7", "冷気7")
+	 ("Cold8", "冷気8")
+	 ("Cold9", "冷気9")
+	 ("Cold10", "冷気10")
+	 ("Cold11", "冷気11")
+	 ("Refer Book", "巻き付き")
+	 ("Fight1", "戦闘1")
+	 ("Fight2", "戦闘2")
+	 ("Kill1", "斬る1")
+	 ("Kill2", "斬る2")
+	 ("Kill3", "斬る3")
+	 ("Kill4", "斬る4")
+	 ("Kill5", "斬る5")
+	 ("Kill6", "暗黒6")
+	 ("Kill7", "斬る7")
+	 ("Kill8", "斬る8")
+	 ("Kill9", "斬る9")
+	 ("Kill10", "斬る10")
+	 ("Kill11", "斬る11")
+	 ("Annihilation1", "消滅1")
+	 ("Annihilation2", "消滅2")
+	 ("Chaos", "混乱")
+	 ("Sand Storm", "砂けむり")
+	 ("Movement", "移動")
+	 ("Rebirth1", "蘇生1")
+	 ("Rebirth2", "蘇生2")
+	 ("Rebirth3", "蘇生3")
+	 ("Sonic1", "音波1")
+	 ("Sonic2", "音波2")
 	 .to_container(sub_map))
 
 	("system", list_of<sub_map_pair>
+	 // RPG Advocate English translation names
 	 ("system1", "システム")
 	 ("system2", "システムa")
 	 ("system3", "システムb")
 	 ("system4", "システムc")
 
+	 // Unknown English translation names used by Spanish games
 	 ("system", "システム")
 	 ("SystemA", "システムA")
 	 ("SystemB", "システムB")
@@ -1492,10 +1693,12 @@ rtp_table_type const RTP_TABLE_2003 = map_list_of
 	 .to_container(sub_map))
 
 	("system2", list_of<sub_map_pair>
+	 // RPG Advocate English translation names
 	 ("system2a", "システム２a")
 	 ("system2b", "システム２b")
 	 ("system2c", "システム２c")
 
+	 // Unknown English translation names used by Spanish games
 	 ("systeméQA", "システム２A")
 	 ("systeméQB", "システム２B")
 	 ("systeméQC", "システム２C")
