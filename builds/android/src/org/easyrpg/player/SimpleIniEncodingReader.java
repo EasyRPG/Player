@@ -129,7 +129,10 @@ public class SimpleIniEncodingReader {
 		}
 		
 		// No [EasyRPG] section found
-		lines.add("[EasyRPG]");
+		// Test passes if [EasyRPG] is last line
+		if (!sectionFound) {
+			lines.add("[EasyRPG]");
+		}
 		lines.add(newEnc);
 	}
 	
