@@ -214,7 +214,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	 */
 	private Paint getPainter() {
 		Paint uiPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		uiPaint.setColor(Color.argb(64, 255, 255, 255));
+		uiPaint.setColor(Color.argb(128, 255, 255, 255));
 		uiPaint.setStyle(Style.STROKE);
 		uiPaint.setStrokeWidth((float)3.0);
 		return uiPaint;
