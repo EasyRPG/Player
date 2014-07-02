@@ -127,8 +127,10 @@ public class GameBrowserActivity extends ListActivity {
 		String dataDir = getApplication().getApplicationInfo().dataDir;
 		
 		// Copy timidity to data folder
-		if (!(new File(dataDir + "/timidity").exists())) {
-			AssetUtils.copyFolder(assetManager, "timidity", dataDir + "/timidity");
+		if (AssetUtils.exists(assetManager, "timidity")) {
+			if (!(new File(dataDir + "/timidity").exists())) {
+				AssetUtils.copyFolder(assetManager, "timidity", dataDir + "/timidity");
+			}
 		}
 	}
 	
