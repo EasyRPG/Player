@@ -34,6 +34,7 @@ import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -62,6 +63,8 @@ public class GameBrowserActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		prepareData();
 
 		setContentView(R.layout.game_browser);
 
@@ -113,6 +116,17 @@ public class GameBrowserActivity extends ListActivity {
 		// Setup long click listener
 		ListView lv = getListView();
 		lv.setOnItemLongClickListener(new OnLongClickListener(this));
+	}
+	
+	private void prepareData() {
+		AssetManager assetManager = getAssets();
+		
+		String dataDir = getApplication().getApplicationInfo().dataDir;
+		
+		// Copy timidity to data folder
+		if (!(new File(dataDir + "/timidity1+").exists())) {
+			AssetUtils.copyFolder(assetManager, "timidity", dataDir + "/timidity");
+		}
 	}
 	
 	/**
