@@ -65,6 +65,7 @@ public class GameBrowserActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		
 		prepareData();
+		startGameStandalone();
 
 		setContentView(R.layout.game_browser);
 
@@ -118,14 +119,40 @@ public class GameBrowserActivity extends ListActivity {
 		lv.setOnItemLongClickListener(new OnLongClickListener(this));
 	}
 	
+	/**
+	 * Copies required runtime data from assets folder to data directory
+	 */
 	private void prepareData() {
 		AssetManager assetManager = getAssets();
-		
 		String dataDir = getApplication().getApplicationInfo().dataDir;
 		
 		// Copy timidity to data folder
-		if (!(new File(dataDir + "/timidity1+").exists())) {
+		if (!(new File(dataDir + "/timidity").exists())) {
 			AssetUtils.copyFolder(assetManager, "timidity", dataDir + "/timidity");
+		}
+	}
+	
+	/**
+	 * Standalone Mode:
+	 * If there is a game folder in assets that folder is copied to the data
+	 * folder and executed.
+	 */
+	private void startGameStandalone() {
+		AssetManager assetManager = getAssets();
+		String dataDir = getApplication().getApplicationInfo().dataDir;
+		
+		// Standalone mode: Copy game in game folder to data folder and launch it
+		if (AssetUtils.exists(assetManager, "game")) {
+			// Copy game and start directly
+			if (!(new File(dataDir + "/game").exists())) {
+				AssetUtils.copyFolder(assetManager, "game", dataDir + "/game");
+			}
+			
+			Intent intent = new Intent(this, EasyRpgPlayerActivity.class);
+			// Path of game passed to PlayerActivity via intent "project_path"
+			intent.putExtra("project_path", dataDir + "/game");
+			startActivity(intent);
+			finish();
 		}
 	}
 	
