@@ -113,7 +113,11 @@ public class AssetUtils {
 	
 	public static boolean exists(AssetManager assetManager, String source) {
 		try {
-			assetManager.list(source);
+			String[] s = assetManager.list(source);
+			if (s == null || s.length == 0) {
+				return false;
+			}
+			
 			return true;
 		} catch (IOException e) {
 			return false;
