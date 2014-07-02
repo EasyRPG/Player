@@ -34,6 +34,7 @@ import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -62,6 +63,9 @@ public class GameBrowserActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		prepareData();
+		startGameStandalone();
 
 		setContentView(R.layout.game_browser);
 
@@ -113,6 +117,45 @@ public class GameBrowserActivity extends ListActivity {
 		// Setup long click listener
 		ListView lv = getListView();
 		lv.setOnItemLongClickListener(new OnLongClickListener(this));
+	}
+	
+	/**
+	 * Copies required runtime data from assets folder to data directory
+	 */
+	private void prepareData() {
+		AssetManager assetManager = getAssets();
+		String dataDir = getApplication().getApplicationInfo().dataDir;
+		
+		// Copy timidity to data folder
+		if (AssetUtils.exists(assetManager, "timidity")) {
+			if (!(new File(dataDir + "/timidity").exists())) {
+				AssetUtils.copyFolder(assetManager, "timidity", dataDir + "/timidity");
+			}
+		}
+	}
+	
+	/**
+	 * Standalone Mode:
+	 * If there is a game folder in assets that folder is copied to the data
+	 * folder and executed.
+	 */
+	private void startGameStandalone() {
+		AssetManager assetManager = getAssets();
+		String dataDir = getApplication().getApplicationInfo().dataDir;
+		
+		// Standalone mode: Copy game in game folder to data folder and launch it
+		if (AssetUtils.exists(assetManager, "game")) {
+			// Copy game and start directly
+			if (!(new File(dataDir + "/game").exists())) {
+				AssetUtils.copyFolder(assetManager, "game", dataDir + "/game");
+			}
+			
+			Intent intent = new Intent(this, EasyRpgPlayerActivity.class);
+			// Path of game passed to PlayerActivity via intent "project_path"
+			intent.putExtra("project_path", dataDir + "/game");
+			startActivity(intent);
+			finish();
+		}
 	}
 	
 	/**
@@ -264,13 +307,29 @@ public class GameBrowserActivity extends ListActivity {
 			iniReader = new SimpleIniEncodingReader(iniFile);
 			String encoding = iniReader.getEncoding();
 			RadioButton rb = null;
-			
-			if (encoding.equals("1252")) {
+						
+			if (encoding == null) {
+				rb = (RadioButton)findViewById(R.id.rd_autodetect);
+			} else if (encoding.equals("1252")) {
 				rb = (RadioButton)findViewById(R.id.rd_west);
-			} else if (encoding.equals("1251")) {
+			} else if (encoding.equals("1250")) {
 				rb = (RadioButton)findViewById(R.id.rd_east);
 			} else if (encoding.equals("932")) {
 				rb = (RadioButton)findViewById(R.id.rd_jp);
+			} else if (encoding.equals("1251")) {
+				rb = (RadioButton)findViewById(R.id.rd_cyrillic);
+			} else if (encoding.equals("949")) {
+				rb = (RadioButton)findViewById(R.id.rd_korean);
+			} else if (encoding.equals("936")) {
+				rb = (RadioButton)findViewById(R.id.rd_chinese_simple);
+			} else if (encoding.equals("950")) {
+				rb = (RadioButton)findViewById(R.id.rd_chinese_traditional);
+			} else if (encoding.equals("1253")) {
+				rb = (RadioButton)findViewById(R.id.rd_greek);
+			} else if (encoding.equals("1254")) {
+				rb = (RadioButton)findViewById(R.id.rd_turkish);
+			} else if (encoding.equals("1257")) {
+				rb = (RadioButton)findViewById(R.id.rd_baltic);
 			}
 			
 			if (rb != null) {
@@ -297,16 +356,36 @@ public class GameBrowserActivity extends ListActivity {
 				
 				String encoding = null;
 				
-				if (((RadioButton)findViewById(R.id.rd_west)).isChecked()) {
+				if (((RadioButton)findViewById(R.id.rd_autodetect)).isChecked()) {
+					encoding = "auto";
+				} else if (((RadioButton)findViewById(R.id.rd_west)).isChecked()) {
 					encoding = "1252";
 				} else if (((RadioButton)findViewById(R.id.rd_east)).isChecked()) {
-					encoding = "1251";
-				}  else if (((RadioButton)findViewById(R.id.rd_jp)).isChecked()) {
+					encoding = "1250";
+				} else if (((RadioButton)findViewById(R.id.rd_jp)).isChecked()) {
 					encoding = "932";
+				} else if (((RadioButton)findViewById(R.id.rd_cyrillic)).isChecked()) {
+					encoding = "1251";
+				} else if (((RadioButton)findViewById(R.id.rd_korean)).isChecked()) {
+					encoding = "949";
+				} else if (((RadioButton)findViewById(R.id.rd_chinese_simple)).isChecked()) {
+					encoding = "936";
+				} else if (((RadioButton)findViewById(R.id.rd_chinese_traditional)).isChecked()) {
+					encoding = "950";
+				} else if (((RadioButton)findViewById(R.id.rd_greek)).isChecked()) {
+					encoding = "1253";
+				} else if (((RadioButton)findViewById(R.id.rd_turkish)).isChecked()) {
+					encoding = "1254";
+				} else if (((RadioButton)findViewById(R.id.rd_baltic)).isChecked()) {
+					encoding = "1257";
 				}
 				
 				if (encoding != null) {
-					iniReader.setEncoding(encoding);
+					if (encoding.equals("auto")) {
+						iniReader.deleteEncoding();
+					} else {
+						iniReader.setEncoding(encoding);
+					}
 					try {
 						iniReader.save();
 						Toast.makeText(context, "Region changed to " + v.getText().toString(),

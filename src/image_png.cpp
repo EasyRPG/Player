@@ -32,7 +32,7 @@ static void read_data(png_structp png_ptr, png_bytep data, png_size_t length) {
 }
 
 static void on_png_warning(png_structp, png_const_charp warn_msg) {
-	Output::Warning("%s", warn_msg);
+	Output::Debug("%s", warn_msg);
 }
 
 static void on_png_error(png_structp, png_const_charp error_msg) {

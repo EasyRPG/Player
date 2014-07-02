@@ -26,9 +26,9 @@ LOCAL_SRC_FILES := SDL_android_main.c \
 
 LOCAL_SHARED_LIBRARIES := SDL2 SDL2_mixer iconv #smpeg2 #freetype2-static pixman png 
 
-LOCAL_LDLIBS := -L$(EASYDEV_ANDROID)/libs/armeabi-v7a -lGLESv1_CM -llog -lz -lfreetype2-static -lpixman -lpng -lcpufeatures
+LOCAL_LDLIBS := -L$(EASYDEV_ANDROID)/libs/armeabi-v7a -lGLESv1_CM -llog -lz -lfreetype2-static -lpixman -lpng -licui18n -licuuc -licudata -lcpufeatures
 
-LOCAL_CFLAGS := -O2 -Wall -Wextra -fno-rtti -DUSE_SDL -DHAVE_SDL_MIXER -DNDEBUG -DUNIX
+LOCAL_CFLAGS := -O2 -Wall -Wextra -fno-rtti -DUSE_SDL -DHAVE_SDL_MIXER -DLCF_SUPPORT_ICU
 LOCAL_CPPFLAGS	=	$(LOCAL_C_FLAGS) -fno-exceptions -std=c++0x
 
 include $(BUILD_SHARED_LIBRARY)

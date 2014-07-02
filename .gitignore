@@ -32,6 +32,8 @@ resources/player.aps
 /builds/archive
 /builds/*/toolchain.cmake
 /builds/android/android
+/builds/android/local.properties
+/builds/android/assets/
 /builds/vs20*/Debug*
 /builds/vs20*/Release*
 /builds/vs20*/*.*sdf

@@ -221,12 +221,6 @@ void Output::PostStr(std::string const& msg) {
 	WriteLog("Info", msg, Color(255, 255, 255, 255));
 }
 
-#ifdef NDEBUG
-void Output::Debug(const char*, ...) {
-}
-void Output::DebugStr(std::string const&) {
-}
-#else
 void Output::Debug(const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
@@ -236,4 +230,3 @@ void Output::Debug(const char* fmt, ...) {
 void Output::DebugStr(std::string const& msg) {
 	WriteLog("Debug", msg);
 }
-#endif

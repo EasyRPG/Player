@@ -94,7 +94,7 @@ public class SimpleIniEncodingReader {
 			}
 		}
 		//Log.v("Ini", "Enc1252");
-		return "1252";
+		return null;
 	}
 	
 	/**
@@ -129,8 +129,40 @@ public class SimpleIniEncodingReader {
 		}
 		
 		// No [EasyRPG] section found
-		lines.add("[EasyRPG]");
+		// Test passes if [EasyRPG] is last line
+		if (!sectionFound) {
+			lines.add("[EasyRPG]");
+		}
 		lines.add(newEnc);
+	}
+	
+	/**
+	 * Deletes the current encoding setting.
+	 */
+	public void deleteEncoding() {
+		boolean sectionFound = false;
+		
+		int index = 0;
+		for (String line : lines) {
+			if (!sectionFound && line.trim().equalsIgnoreCase("[EasyRPG]")) {
+				sectionFound = true;
+				continue;
+			}
+			if (sectionFound) {
+				if (!line.isEmpty() && line.trim().charAt(0) == '[') {
+					// End of section and not found -> nothing to do
+					return;
+				} else {
+					String[] entry = line.toLowerCase().split("=", 2);
+					if (entry[0].trim().equals("encoding")) {
+						lines.remove(index+1);
+						// Iterator is now invalid and we are happy
+						return;
+					}
+				}
+			}
+			index++;
+		}
 	}
 	
 	/**

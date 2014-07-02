@@ -24,6 +24,8 @@
 
 package org.easyrpg.player;
 
+import java.io.File;
+
 import org.libsdl.app.SDLActivity;
 
 import android.os.Build;
@@ -51,24 +53,20 @@ import android.graphics.Paint.Style;
  */
 
 public class EasyRpgPlayerActivity extends SDLActivity {
-	ImageView aView, bView, cView;
-	boolean uiVisible = true;
+	private ImageView aView, bView, cView;
+	private boolean uiVisible = true;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {		
 		super.onCreate(savedInstanceState);
 		
 	    try {
-
  			if (Build.VERSION.SDK_INT >= 11) {
-
  				// Api 11: FLAG_HARDWARE_ACCELERATED
-
  				getWindow().setFlags(0x01000000, 0x01000000);
-
  			}
-
  		} catch (Exception e) {}
+	    
 		mLayout = (RelativeLayout)findViewById(R.id.main_layout);
 	    mLayout.addView(mSurface);
 	    
@@ -78,8 +76,8 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-	    if ((keyCode == KeyEvent.KEYCODE_BACK )&&(!
-	    		event.isAltPressed())) 
+		// Alt-Test for working around ugly Xperia Play button mapping
+	    if ((keyCode == KeyEvent.KEYCODE_BACK) && (!event.isAltPressed()))
 	    {
 	        showEndGameDialog();
 	    }
@@ -166,9 +164,13 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	 * @return Full path to the timidity.cfg
 	 */
 	public String getTimidityPath() {
-		String str = Environment.getExternalStorageDirectory().getPath() + "/easyrpg/timidity";
-		//Log.v("SDL", "getTimidity " + str);
-		return str;
+		//Log.v("SDL", "getTimidity " + getApplication().getApplicationInfo().dataDir);
+		String s = getApplication().getApplicationInfo().dataDir + "/timidity";
+		if (new File(s).exists()) {
+			return s;
+		}
+		
+		return Environment.getExternalStorageDirectory().getPath() + "/easyrpg/timidity";
 	}
 	
 	/**
@@ -212,7 +214,7 @@ public class EasyRpgPlayerActivity extends SDLActivity {
 	 */
 	private Paint getPainter() {
 		Paint uiPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		uiPaint.setColor(Color.argb(64, 255, 255, 255));
+		uiPaint.setColor(Color.argb(128, 255, 255, 255));
 		uiPaint.setStyle(Style.STROKE);
 		uiPaint.setStrokeWidth((float)3.0);
 		return uiPaint;
