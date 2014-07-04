@@ -210,7 +210,14 @@ void Game_Map::SetupCommon(int _id) {
 	scroll_direction = 2;
 	scroll_rest = 0;
 	scroll_speed = 4;
-	map_info.encounter_rate = Data::treemap.maps[GetMapIndex(location.map_id)].encounter_steps;
+
+	int map_id = GetMapIndex(location.map_id);
+	map_info.encounter_rate = Data::treemap.maps[map_id].encounter_steps;
+
+	while (Data::treemap.maps[map_id].save == 0 && Data::treemap.maps[map_id].parent_map != map_id) {
+		map_id = Data::treemap.maps[map_id].parent_map;
+	}
+	Game_System::SetAllowSave(Data::treemap.maps[map_id].save == 1);
 
 	for (int i = 0; i < 3; i++)
 		vehicles[i]->Refresh();
