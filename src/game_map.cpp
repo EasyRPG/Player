@@ -778,9 +778,19 @@ bool Game_Map::PrepareEncounter() {
 	}
 
 	Game_Temp::battle_terrain_id = Game_Map::GetTerrainTag(Main_Data::game_player->GetX(), Main_Data::game_player->GetY());
-	Game_Temp::battle_background = "";
 	Game_Temp::battle_troop_id = encounters[rand() / (RAND_MAX / encounters.size() + 1)];
 	Game_Temp::battle_escape_mode = -1;
+
+	int map_id = GetMapIndex(location.map_id);
+	while (Data::treemap.maps[map_id].background_type == 0 && Data::treemap.maps[map_id].parent_map != map_id) {
+		map_id = Data::treemap.maps[map_id].parent_map;
+	}
+	if (Data::treemap.maps[map_id].background_type == 2) {
+		Game_Temp::battle_background = Data::treemap.maps[map_id].background_name;
+	} else {
+		Game_Temp::battle_background = Data::terrains[Game_Temp::battle_terrain_id - 1].background_name;
+	}
+
 	Game_Temp::battle_calling = true;
 
 	return true;

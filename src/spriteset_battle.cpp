@@ -28,11 +28,7 @@
 #include "sprite_battler.h"
 
 Spriteset_Battle::Spriteset_Battle() {
-	if (!Game_Temp::battle_background.empty()) {
-		background.reset(new Background(Game_Temp::battle_background));
-	} else {
-		background.reset(new Background(Data::terrains[Game_Temp::battle_terrain_id - 1].background_name));
-	}
+	background.reset(new Background(Game_Temp::battle_background));
 
 	// Create the sprites
 	std::vector<Game_Battler*> battler;
