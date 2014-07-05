@@ -57,9 +57,8 @@ Window_Message::Window_Message(int ix, int iy, int iwidth, int iheight) :
 	visible = false;
 	SetZ(10000);
 
-	escape_symbol = ReaderUtil::Recode("\\",Player::encoding);
-	escape_char = (escape_symbol == "\u00A5" ? L'¥' :
-		      (escape_symbol == "\u20A9" ? L'₩' :
+	escape_char = (Player::escape_symbol == "\u00A5" ? L'¥' :
+		      (Player::escape_symbol == "\u20A9" ? L'₩' :
 		      '\\'));
 	active = false;
 	index = -1;
