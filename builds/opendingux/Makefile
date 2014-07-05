@@ -5,27 +5,28 @@
 ##################################################################
 
 # Compiler Device option
-BUILD_DINGOO = NO
-BUILD_GCWZERO = YES
+BUILD_TARGET ?= gcwzero
 
 # Host toolchain directory and extra flags
-ifeq ($(BUILD_DINGOO), YES)
+ifeq ($(BUILD_TARGET), dingoo)
 	TARGET = dingoo/EasyRPG
-	TOOLCHAINDIR = /opt/opendingux-toolchain
+	TOOLCHAINDIR ?= /opt/opendingux-toolchain
 	SYSROOT = $(TOOLCHAINDIR)
 	CFLAGS = -O2 -fomit-frame-pointer -ffunction-sections -ffast-math -G0 -mbranch-likely -std=gnu++11
 	LDFLAGS = -Wl,--gc-sections
 	PNG_LIBS = -lpng12
 	CXXFLAGS = 
 else
-ifeq ($(BUILD_GCWZERO), YES)
+ifeq ($(BUILD_TARGET), gcwzero)
 	TARGET = gcw-zero/EasyRPG
-	TOOLCHAINDIR = /opt/gcw0-toolchain
+	TOOLCHAINDIR ?= /opt/gcw0-toolchain
 	SYSROOT = $(TOOLCHAINDIR)/usr/mipsel-gcw0-linux-uclibc/sysroot
 	CFLAGS = -O2 -fomit-frame-pointer -ffunction-sections -ffast-math -G0 -std=gnu++11
 	LDFLAGS = -Wl,--gc-sections
 	PNG_LIBS = -lpng14
 	CXXFLAGS = 
+else
+$(error Unknown device $(BUILD_TARGET)! Valid choices: dingoo, gcwzero)
 endif
 endif
 
