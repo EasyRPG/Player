@@ -183,7 +183,7 @@ void Game_Character::Update() {
 		}
 	}
 
-	if (anime_count > 18 - GetMoveSpeed() * 2) {
+	if (anime_count > 36.0/(GetMoveSpeed()+1)) {
 		if (IsSpinning()) {
 			Turn90DegreeRight();
 		} else if (!IsContinuous() && IsStopping()) {
@@ -282,7 +282,7 @@ void Game_Character::UpdateSelfMovement() {
 }
 
 void Game_Character::UpdateStop() {
-	if (pattern != original_pattern)
+	if (pattern != original_pattern && !IsContinuous())
 		anime_count += 1.5;
 
 	//if (!starting || !IsLock())
