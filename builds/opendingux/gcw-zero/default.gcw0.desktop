@@ -8,3 +8,4 @@ Type=Application
 StartupNotify=true
 Icon=easyrpg
 Categories=games
+X-OD-Manual=readme.txt
