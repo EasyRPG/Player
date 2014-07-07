@@ -51,8 +51,7 @@ OBJS += gothic.o mincho.o
 # Compiler flags
 CFLAGS += -O2 -Wall -DUSE_SDL -DHAVE_SDL_MIXER `$(SDL_CONFIG) --cflags` $(PIXMAN_CFLAGS) $(FREETYPE_CFLAGS)
 CXXFLAGS += $(CFLAGS) -fexceptions -fno-rtti
-LDFLAGS += -lstdc++ -lexpat -lSDL -lSDL_gfx -lSDL_ttf -lSDL_image -lSDL_mixer\
-          -ljpeg -lz -lfreetype -lvorbisidec -lgcc -lm -lc -lpthread\
+LDFLAGS += -lstdc++ -lexpat -lSDL -lSDL_mixer -lz -lfreetype -lvorbisidec -lgcc -lm -lc -lpthread\
           -ldl -liconv `$(SDL_CONFIG) --libs` $(PIXMAN_LIBS) $(PNG_LIBS)
 
 # Host compiler and extra flags
