@@ -61,8 +61,13 @@ void boost::throw_exception(std::exception const& exp) {
 namespace {
 	std::ofstream LOG_FILE;
 	
-	std::ostream& output_time() {
+	static bool init() {
 		LOG_FILE.open(FileFinder::MakePath(Main_Data::project_path, OUTPUT_FILENAME).c_str(), std::ios_base::out | std::ios_base::app);
+		return true;
+	}
+	
+	std::ostream& output_time() {
+		init();
 		std::time_t t = std::time(NULL);
 		char timestr[100];
 		strftime(timestr, 100, "[%Y-%m-%d %H:%M:%S] ", std::localtime(&t));
