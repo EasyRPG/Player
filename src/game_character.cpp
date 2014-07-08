@@ -184,7 +184,7 @@ void Game_Character::Update() {
 
 	if (anime_count > 36.0/(GetMoveSpeed()+1)) {
 		if (IsSpinning()) {
-			Turn90DegreeRight();
+			SetPrelockDirection((GetPrelockDirection() + 1) % 4);
 		} else if (!IsContinuous() && IsStopping()) {
 			pattern = original_pattern;
 			last_pattern = last_pattern == RPG::EventPage::Frame_left ? RPG::EventPage::Frame_right : RPG::EventPage::Frame_left;
@@ -1162,7 +1162,7 @@ bool Game_Character::IsDirectionFixed() {
 		animation_type == RPG::EventPage::AnimType_fixed_continuous ||
 		animation_type == RPG::EventPage::AnimType_fixed_graphic ||
 		animation_type == RPG::EventPage::AnimType_fixed_non_continuous ||
-		IsFacingLocked() || IsSpinning();
+		IsFacingLocked();
 }
 
 bool Game_Character::IsContinuous() {

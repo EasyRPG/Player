@@ -94,6 +94,9 @@ int Game_Event::GetDirection() const {
 void Game_Event::SetDirection(int new_direction) {
 	if (new_direction != -1) {
 		data.direction = new_direction;
+		if (!IsSpinning()) {
+			SetPrelockDirection(new_direction);
+		}
 	}
 }
 
