@@ -135,7 +135,6 @@ void Game_Character::MoveTo(int x, int y) {
 	SetY(y % Game_Map::GetHeight());
 	real_x = GetX() * SCREEN_TILE_WIDTH;
 	real_y = GetY() * SCREEN_TILE_WIDTH;
-	SetPrelockDirection(-1);
 }
 
 int Game_Character::GetScreenX() const {
@@ -489,10 +488,10 @@ void Game_Character::MoveTypeCustom() {
 					active_route_index = EndJump(active_route, active_route_index);
 					break;
 				case RPG::MoveCommand::Code::lock_facing:
-					Lock();
+					SetFacingLocked(true);
 					break;
 				case RPG::MoveCommand::Code::unlock_facing:
-					Unlock();
+					SetFacingLocked(false);
 					break;
 				case RPG::MoveCommand::Code::increase_movement_speed:
 					SetMoveSpeed(min(GetMoveSpeed() + 1, 6));
@@ -1065,15 +1064,17 @@ int Game_Character::DistanceYfromPlayer() const {
 }
 
 void Game_Character::Lock() {
-	if (!IsFacingLocked()) {
-		SetPrelockDirection(GetDirection());
-		SetFacingLocked(true);
+	if (!IsDirectionFixed()) {
+		int prelock_dir = GetDirection();
+		TurnTowardHero();
+		SetPrelockDirection(prelock_dir);
 	}
 }
 
 void Game_Character::Unlock() {
-	SetFacingLocked(false);
-	SetDirection(GetPrelockDirection());
+	if (!IsDirectionFixed()) {
+		SetDirection(GetPrelockDirection());
+	}
 }
 
 void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
@@ -1088,7 +1089,6 @@ void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
 	SetMoveRouteOverwritten(true);
 	SetMoveFrequency(frequency);
 	move_route_owner = owner;
-	SetPrelockDirection(-1);
 	wait_count = 0;
 	stop_count = 256;
 }

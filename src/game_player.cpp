@@ -369,9 +369,8 @@ bool Game_Player::CheckEventTriggerHere(const std::vector<int>& triggers) {
 			&& std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() ) {
 			(*i)->Start();
 			result = (*i)->GetStarting();
-			if (!(*i)->IsDirectionFixed() && result) {
-				(*i)->SetPrelockDirection((*i)->GetDirection());
-				(*i)->TurnTowardHero();
+			if (result) {
+				(*i)->Lock();
 			}
 
 		}
@@ -398,9 +397,8 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 		{
 			(*i)->Start();
 			result = true;
-			if (!(*i)->IsDirectionFixed() && !(*i)->GetList().empty()) {
-				(*i)->SetPrelockDirection((*i)->GetDirection());
-				(*i)->TurnTowardHero();
+			if (!(*i)->GetList().empty()) {
+				(*i)->Lock();
 			}
 		}
 	}
@@ -419,9 +417,8 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 			{
 				(*i)->Start();
 				result = true;
-				if (!(*i)->IsDirectionFixed() && !(*i)->GetList().empty()) {
-					(*i)->SetPrelockDirection((*i)->GetDirection());
-					(*i)->TurnTowardHero();
+				if (!(*i)->GetList().empty()) {
+					(*i)->Lock();
 				}
 			}
 		}
@@ -444,9 +441,8 @@ bool Game_Player::CheckEventTriggerTouch(int x, int y) {
 			(*i)->GetTrigger() == RPG::EventPage::Trigger_collision) ) {
 			(*i)->Start();
 			result = true;
-			if (!(*i)->IsDirectionFixed() && !(*i)->GetList().empty()) {
-				(*i)->SetPrelockDirection((*i)->GetDirection());
-				(*i)->TurnTowardHero();
+			if (!(*i)->GetList().empty()) {
+				(*i)->Lock();
 			}
 
 		}

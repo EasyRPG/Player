@@ -248,7 +248,7 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 
 	if (GetDirection() != page->character_direction) {
 		SetDirection(page->character_direction);
-		SetPrelockDirection(-1);
+		SetPrelockDirection(page->character_direction);
 	}
 
 	if (original_pattern != page->character_pattern) {
