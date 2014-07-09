@@ -200,7 +200,7 @@ void Game_Event::SetSpriteIndex(int index) {
 }
 
 Color Game_Event::GetFlashColor() const {
-	return Color(data.flash_red, data.flash_green, data.flash_blue, 0);
+	return Color(data.flash_red, data.flash_green, data.flash_blue, 128);
 }
 
 void Game_Event::SetFlashColor(const Color& flash_color) {

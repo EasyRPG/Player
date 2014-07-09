@@ -71,6 +71,8 @@ void Sprite_Character::Update() {
 		Color col = character->GetFlashColor();
 		int dur = character->GetFlashTimeLeft();
 		Flash(col, dur);
+		// TODO: Gradual decrease of Flash Time Left
+		character->SetFlashTimeLeft(0);
 	}
 
 	SetVisible(character->GetVisible());

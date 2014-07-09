@@ -170,7 +170,7 @@ void Game_Player::SetSpriteIndex(int index) {
 }
 
 Color Game_Player::GetFlashColor() const {
-	return Color(location.flash_red, location.flash_green, location.flash_blue, 0);
+	return Color(location.flash_red, location.flash_green, location.flash_blue, 128);
 }
 
 void Game_Player::SetFlashColor(const Color& flash_color) {
@@ -370,10 +370,6 @@ bool Game_Player::CheckEventTriggerHere(const std::vector<int>& triggers) {
 			&& std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() ) {
 			(*i)->Start();
 			result = (*i)->GetStarting();
-			if (result) {
-				(*i)->Lock();
-			}
-
 		}
 	}
 	return result;
@@ -396,11 +392,11 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 			std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end()
 		)
 		{
-			(*i)->Start();
-			result = true;
 			if (!(*i)->GetList().empty()) {
 				(*i)->Lock();
 			}
+			(*i)->Start();
+			result = true;
 		}
 	}
 
@@ -416,11 +412,11 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 				std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end()
 			)
 			{
-				(*i)->Start();
-				result = true;
 				if (!(*i)->GetList().empty()) {
 					(*i)->Lock();
 				}
+				(*i)->Start();
+				result = true;
 			}
 		}
 	}
@@ -440,11 +436,11 @@ bool Game_Player::CheckEventTriggerTouch(int x, int y) {
 		if ((*i)->GetLayer() == RPG::EventPage::Layers_same &&
 			((*i)->GetTrigger() == RPG::EventPage::Trigger_touched ||
 			(*i)->GetTrigger() == RPG::EventPage::Trigger_collision) ) {
-			(*i)->Start();
-			result = true;
 			if (!(*i)->GetList().empty()) {
 				(*i)->Lock();
 			}
+			(*i)->Start();
+			result = true;
 
 		}
 	}
