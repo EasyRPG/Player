@@ -88,7 +88,7 @@ namespace {
 		using namespace FileFinder;
 
 		std::string const lower_dir = Utils::LowerCase(dir);
-		std::string const escape_symbol = ReaderUtil::Recode("\\",Player::encoding);
+		std::string const escape_symbol = Player::escape_symbol;
 		std::string corrected_name = Utils::LowerCase(name);
 		if (escape_symbol != "\\") {
 			std::size_t escape_pos = corrected_name.find(escape_symbol);

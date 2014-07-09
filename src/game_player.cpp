@@ -170,7 +170,7 @@ void Game_Player::SetSpriteIndex(int index) {
 }
 
 Color Game_Player::GetFlashColor() const {
-	return Color(location.flash_red, location.flash_green, location.flash_blue, 0);
+	return Color(location.flash_red, location.flash_green, location.flash_blue, 128);
 }
 
 void Game_Player::SetFlashColor(const Color& flash_color) {
@@ -286,7 +286,8 @@ void Game_Player::UpdateScroll(int last_real_x, int last_real_y) {
 void Game_Player::Update() {
 	bool last_moving = IsMoving();
 
-	if (!IsMoving() && !Game_Map::GetInterpreter().IsRunning() && !IsMoveRouteOverwritten() && !Game_Message::visible) {
+	if (!IsMoving() && !Game_Map::GetInterpreter().IsRunning() 
+		&& !IsMoveRouteOverwritten() && !Game_Message::message_waiting) {
 		switch (Input::dir4) {
 			case 2:
 				MoveDown();
@@ -369,11 +370,6 @@ bool Game_Player::CheckEventTriggerHere(const std::vector<int>& triggers) {
 			&& std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end() ) {
 			(*i)->Start();
 			result = (*i)->GetStarting();
-			if (!(*i)->IsDirectionFixed() && result) {
-				(*i)->SetPrelockDirection((*i)->GetDirection());
-				(*i)->TurnTowardHero();
-			}
-
 		}
 	}
 	return result;
@@ -396,12 +392,11 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 			std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end()
 		)
 		{
+			if (!(*i)->GetList().empty()) {
+				(*i)->Lock();
+			}
 			(*i)->Start();
 			result = true;
-			if (!(*i)->IsDirectionFixed() && !(*i)->GetList().empty()) {
-				(*i)->SetPrelockDirection((*i)->GetDirection());
-				(*i)->TurnTowardHero();
-			}
 		}
 	}
 
@@ -417,12 +412,11 @@ bool Game_Player::CheckEventTriggerThere(const std::vector<int>& triggers) {
 				std::find(triggers.begin(), triggers.end(), (*i)->GetTrigger() ) != triggers.end()
 			)
 			{
+				if (!(*i)->GetList().empty()) {
+					(*i)->Lock();
+				}
 				(*i)->Start();
 				result = true;
-				if (!(*i)->IsDirectionFixed() && !(*i)->GetList().empty()) {
-					(*i)->SetPrelockDirection((*i)->GetDirection());
-					(*i)->TurnTowardHero();
-				}
 			}
 		}
 	}
@@ -442,12 +436,11 @@ bool Game_Player::CheckEventTriggerTouch(int x, int y) {
 		if ((*i)->GetLayer() == RPG::EventPage::Layers_same &&
 			((*i)->GetTrigger() == RPG::EventPage::Trigger_touched ||
 			(*i)->GetTrigger() == RPG::EventPage::Trigger_collision) ) {
+			if (!(*i)->GetList().empty()) {
+				(*i)->Lock();
+			}
 			(*i)->Start();
 			result = true;
-			if (!(*i)->IsDirectionFixed() && !(*i)->GetList().empty()) {
-				(*i)->SetPrelockDirection((*i)->GetDirection());
-				(*i)->TurnTowardHero();
-			}
 
 		}
 	}

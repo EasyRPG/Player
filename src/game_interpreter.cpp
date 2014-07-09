@@ -94,6 +94,7 @@ void Game_Interpreter::Setup(const std::vector<RPG::EventCommand>& _list, int _e
 	index = 0;
 
 	CancelMenuCall();
+	Update();
 }
 
 void Game_Interpreter::CancelMenuCall() {

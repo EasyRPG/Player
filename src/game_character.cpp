@@ -135,7 +135,6 @@ void Game_Character::MoveTo(int x, int y) {
 	SetY(y % Game_Map::GetHeight());
 	real_x = GetX() * SCREEN_TILE_WIDTH;
 	real_y = GetY() * SCREEN_TILE_WIDTH;
-	SetPrelockDirection(-1);
 }
 
 int Game_Character::GetScreenX() const {
@@ -183,9 +182,9 @@ void Game_Character::Update() {
 		}
 	}
 
-	if (anime_count > 18 - GetMoveSpeed() * 2) {
+	if (anime_count > 36.0/(GetMoveSpeed()+1)) {
 		if (IsSpinning()) {
-			Turn90DegreeRight();
+			SetPrelockDirection((GetPrelockDirection() + 1) % 4);
 		} else if (!IsContinuous() && IsStopping()) {
 			pattern = original_pattern;
 			last_pattern = last_pattern == RPG::EventPage::Frame_left ? RPG::EventPage::Frame_right : RPG::EventPage::Frame_left;
@@ -218,7 +217,7 @@ void Game_Character::Update() {
 	if (stop_count >= ((GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency()))) {
 		if (IsMoveRouteOverwritten()) {
 			MoveTypeCustom();
-		} else if (!Game_Message::visible) {
+		} else if (Game_Message::GetContinueEvents() || !Game_Message::message_waiting) {
 			UpdateSelfMovement();
 		}
 	}
@@ -282,7 +281,7 @@ void Game_Character::UpdateSelfMovement() {
 }
 
 void Game_Character::UpdateStop() {
-	if (pattern != original_pattern)
+	if (pattern != original_pattern && !IsContinuous())
 		anime_count += 1.5;
 
 	//if (!starting || !IsLock())
@@ -489,10 +488,10 @@ void Game_Character::MoveTypeCustom() {
 					active_route_index = EndJump(active_route, active_route_index);
 					break;
 				case RPG::MoveCommand::Code::lock_facing:
-					Lock();
+					SetFacingLocked(true);
 					break;
 				case RPG::MoveCommand::Code::unlock_facing:
-					Unlock();
+					SetFacingLocked(false);
 					break;
 				case RPG::MoveCommand::Code::increase_movement_speed:
 					SetMoveSpeed(min(GetMoveSpeed() + 1, 6));
@@ -515,8 +514,7 @@ void Game_Character::MoveTypeCustom() {
 					Game_Map::SetNeedRefresh(true);
 					break;
 				case RPG::MoveCommand::Code::change_graphic: // String: File, Parameter A: index
-					SetSpriteName(move_command.parameter_string);
-					SetSpriteIndex(move_command.parameter_a);
+					SetGraphic(move_command.parameter_string, move_command.parameter_a);
 					break;
 				case RPG::MoveCommand::Code::play_sound_effect: // String: File, Parameters: Volume, Tempo, Balance
 					if (move_command.parameter_string != "(OFF)") {
@@ -1065,15 +1063,17 @@ int Game_Character::DistanceYfromPlayer() const {
 }
 
 void Game_Character::Lock() {
-	if (!IsFacingLocked()) {
-		SetPrelockDirection(GetDirection());
-		SetFacingLocked(true);
+	if (!IsDirectionFixed()) {
+		int prelock_dir = GetDirection();
+		TurnTowardHero();
+		SetPrelockDirection(prelock_dir);
 	}
 }
 
 void Game_Character::Unlock() {
-	SetFacingLocked(false);
-	SetDirection(GetPrelockDirection());
+	if (!IsDirectionFixed()) {
+		SetDirection(GetPrelockDirection());
+	}
 }
 
 void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
@@ -1086,9 +1086,9 @@ void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
 	SetMoveRoute(*new_route);
 	SetMoveRouteIndex(0);
 	SetMoveRouteOverwritten(true);
+	SetMoveRouteRepeated(false);
 	SetMoveFrequency(frequency);
 	move_route_owner = owner;
-	SetPrelockDirection(-1);
 	wait_count = 0;
 	stop_count = 256;
 }
@@ -1162,7 +1162,7 @@ bool Game_Character::IsDirectionFixed() {
 		animation_type == RPG::EventPage::AnimType_fixed_continuous ||
 		animation_type == RPG::EventPage::AnimType_fixed_graphic ||
 		animation_type == RPG::EventPage::AnimType_fixed_non_continuous ||
-		IsFacingLocked() || IsSpinning();
+		IsFacingLocked();
 }
 
 bool Game_Character::IsContinuous() {
@@ -1182,6 +1182,7 @@ void Game_Character::UpdateBushDepth() {
 void Game_Character::SetGraphic(const std::string& name, int index) {
 	SetSpriteName(name);
 	SetSpriteIndex(index);
+	pattern = RPG::EventPage::Frame_middle;
 }
 
 // Gets Character

@@ -1204,7 +1204,6 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 		case 0:
 			player = Main_Data::game_player.get();
 			Game_Temp::battle_terrain_id = Game_Map::GetTerrainTag(player->GetX(), player->GetY());
-			Game_Temp::battle_background = "";
 			break;
 		case 1:
 			Game_Temp::battle_terrain_id = 0;
@@ -1215,7 +1214,7 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 			break;
 		case 2:
 			Game_Temp::battle_terrain_id = com.parameters[8];
-			Game_Temp::battle_background = "";
+			Game_Temp::battle_background = Data::terrains[com.parameters[8] - 1].background_name;
 			break;
 		default:
 			return false;
@@ -1536,8 +1535,6 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 
 	button_timer = 0;
 
-	// Command was a success but IsTriggered causes problems when calling
-	// this event multiple times in the same frame...
 	++index;
 	return false;
 }

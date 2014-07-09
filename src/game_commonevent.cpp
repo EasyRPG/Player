@@ -67,8 +67,9 @@ void Game_CommonEvent::Update() {
 	if (interpreter) {
 		if (!interpreter->IsRunning()) {
 			interpreter->Setup(GetList(), 0, -common_event_id, -2);
+		} else {
+			interpreter->Update();
 		}
-		interpreter->Update();
 	}
 }
 

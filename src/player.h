@@ -150,6 +150,9 @@ namespace Player {
 	/** Encoding used */
 	extern std::string encoding;
 
+	/** Backslash recoded */
+	extern std::string escape_symbol;
+
 	/** Currently interpreted engine. */
 	extern EngineType engine;
 

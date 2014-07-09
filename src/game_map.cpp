@@ -66,6 +66,7 @@ namespace {
 	bool pan_locked;
 	bool pan_wait;
 	int pan_speed;
+	bool ready;
 }
 
 void Game_Map::Init() {
@@ -93,6 +94,7 @@ void Game_Map::Init() {
 	location.pan_finish_y = 0;
 	location.pan_current_x = 0;
 	location.pan_current_y = 0;
+	ready = false;
 }
 
 void Game_Map::Dispose() {
@@ -126,6 +128,7 @@ void Game_Map::Setup(int _id) {
 	location.pan_finish_y = 0;
 	location.pan_current_x = 0;
 	location.pan_current_y = 0;
+	ready = true;
 }
 
 void Game_Map::SetupFromSave() {
@@ -164,9 +167,11 @@ void Game_Map::SetupFromSave() {
 	location.pan_current_y = 0;
 	location.pan_finish_x = 0;
 	location.pan_finish_y = 0;
+	ready = true;
 }
 
 void Game_Map::SetupCommon(int _id) {
+	ready = false;
 	// Execute remaining events (e.g. ones listed after a teleport)
 	Update();
 	Dispose();
@@ -210,7 +215,14 @@ void Game_Map::SetupCommon(int _id) {
 	scroll_direction = 2;
 	scroll_rest = 0;
 	scroll_speed = 4;
-	map_info.encounter_rate = Data::treemap.maps[GetMapIndex(location.map_id)].encounter_steps;
+
+	int current_index = GetMapIndex(location.map_id);
+	map_info.encounter_rate = Data::treemap.maps[current_index].encounter_steps;
+
+	while (Data::treemap.maps[current_index].save == 0 && GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
+		current_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
+	}
+	Game_System::SetAllowSave(Data::treemap.maps[current_index].save == 1);
 
 	for (int i = 0; i < 3; i++)
 		vehicles[i]->Refresh();
@@ -253,28 +265,23 @@ void Game_Map::PlayBgm() {
 	int parent_index = 0;
 	int current_index = GetMapIndex(location.map_id);
 
+	while (Data::treemap.maps[current_index].music_type == 0 && GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
+		current_index = Data::treemap.maps[current_index].parent_map;
+	}
+
 	if ((current_index > -1) && !Data::treemap.maps[current_index].music.name.empty()) {
-		switch(Data::treemap.maps[current_index].music_type) {
-			case 0: // inherits music from parent
-				parent_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
-				if (Data::treemap.maps[parent_index].music.name != "(OFF)" && &Data::treemap.maps[parent_index].music != Game_Temp::map_bgm) {
-					Game_Temp::map_bgm = &Data::treemap.maps[parent_index].music;
-					Game_System::BgmPlay(*Game_Temp::map_bgm);
+		if (Data::treemap.maps[current_index].music_type == 1) {
+			return;
+		}
+		if (&Data::treemap.maps[current_index].music != Game_Temp::map_bgm) {
+			if (Game_Temp::map_bgm != NULL) {
+				if (Data::treemap.maps[current_index].music.name == Game_Temp::map_bgm->name) {
+					// TODO: Here the volume and pitch must be updated if the song is the same
+					return;
 				}
-				break;
-			case 1:  // No Change
-				break;
-			case 2:  // specific map music
-				if (&Data::treemap.maps[current_index].music != Game_Temp::map_bgm) {
-					if (Game_Temp::map_bgm != NULL) {
-						if (Data::treemap.maps[current_index].music.name == Game_Temp::map_bgm->name) {
-							// TODO: Here the volume and pitch must be updated if the song is the same
-							return;
-						}
-					}
-					Game_Temp::map_bgm = &Data::treemap.maps[current_index].music;
-					Game_System::BgmPlay(*Game_Temp::map_bgm);
-				}
+			}
+			Game_Temp::map_bgm = &Data::treemap.maps[parent_index].music;
+			Game_System::BgmPlay(*Game_Temp::map_bgm);
 		}
 	}
 }
@@ -771,9 +778,19 @@ bool Game_Map::PrepareEncounter() {
 	}
 
 	Game_Temp::battle_terrain_id = Game_Map::GetTerrainTag(Main_Data::game_player->GetX(), Main_Data::game_player->GetY());
-	Game_Temp::battle_background = "";
 	Game_Temp::battle_troop_id = encounters[rand() / (RAND_MAX / encounters.size() + 1)];
 	Game_Temp::battle_escape_mode = -1;
+
+	int current_index = GetMapIndex(location.map_id);
+	while (Data::treemap.maps[current_index].background_type == 0 && GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
+		current_index = Data::treemap.maps[current_index].parent_map;
+	}
+	if (Data::treemap.maps[current_index].background_type == 2) {
+		Game_Temp::battle_background = Data::treemap.maps[current_index].background_name;
+	} else {
+		Game_Temp::battle_background = Data::terrains[Game_Temp::battle_terrain_id - 1].background_name;
+	}
+
 	Game_Temp::battle_calling = true;
 
 	return true;
@@ -820,6 +837,10 @@ bool Game_Map::GetNeedRefresh() {
 }
 void Game_Map::SetNeedRefresh(bool new_need_refresh) {
 	need_refresh = new_need_refresh;
+}
+
+bool Game_Map::GetReady() {
+	return ready;
 }
 
 std::vector<unsigned char>& Game_Map::GetPassagesDown() {

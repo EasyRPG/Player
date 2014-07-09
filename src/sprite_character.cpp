@@ -62,7 +62,7 @@ void Sprite_Character::Update() {
 	}
 
 	if (tile_id == 0) {
-		int row = character->GetDirection();
+		int row = (character->IsSpinning() ? character->GetPrelockDirection() : character->GetDirection());
 		r.Set(character->GetPattern() * chara_width, row * chara_height, chara_width, chara_height);
 		SetSrcRect(r);
 	}
@@ -71,6 +71,8 @@ void Sprite_Character::Update() {
 		Color col = character->GetFlashColor();
 		int dur = character->GetFlashTimeLeft();
 		Flash(col, dur);
+		// TODO: Gradual decrease of Flash Time Left
+		character->SetFlashTimeLeft(0);
 	}
 
 	SetVisible(character->GetVisible());

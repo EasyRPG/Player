@@ -83,6 +83,7 @@ namespace Player {
 	bool no_rtp_flag;
 	bool no_audio_flag;
 	std::string encoding;
+	std::string escape_symbol;
 	EngineType engine;
 	std::string game_title;
 }
@@ -340,6 +341,11 @@ void Player::CreateGameObjects() {
 	static bool init = false;
 	if (!init) {
 		Player::GetEncoding();
+		escape_symbol = ReaderUtil::Recode("\\", encoding);
+		if (escape_symbol.empty()) {
+			Output::Error("Invalid encoding: %s.", encoding.c_str());
+		}
+
 		Player::LoadDatabase();
 
 		INIReader ini(FileFinder::FindDefault(INI_NAME));

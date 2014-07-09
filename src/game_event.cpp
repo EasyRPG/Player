@@ -94,6 +94,9 @@ int Game_Event::GetDirection() const {
 void Game_Event::SetDirection(int new_direction) {
 	if (new_direction != -1) {
 		data.direction = new_direction;
+		if (!IsSpinning()) {
+			SetPrelockDirection(new_direction);
+		}
 	}
 }
 
@@ -197,7 +200,7 @@ void Game_Event::SetSpriteIndex(int index) {
 }
 
 Color Game_Event::GetFlashColor() const {
-	return Color(data.flash_red, data.flash_green, data.flash_blue, 0);
+	return Color(data.flash_red, data.flash_green, data.flash_blue, 128);
 }
 
 void Game_Event::SetFlashColor(const Color& flash_color) {
@@ -248,7 +251,7 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 
 	if (GetDirection() != page->character_direction) {
 		SetDirection(page->character_direction);
-		SetPrelockDirection(-1);
+		SetPrelockDirection(page->character_direction);
 	}
 
 	if (original_pattern != page->character_pattern) {
@@ -336,7 +339,6 @@ void Game_Event::Refresh() {
 	else if (new_page != this->page) {
 		ClearStarting();
 		Setup(new_page);
-		CheckEventTriggerAuto();
 	}
 }
 
@@ -451,8 +453,7 @@ void Game_Event::Start() {
 }
 
 void Game_Event::CheckEventTriggerAuto() {
-	if (trigger == RPG::EventPage::Trigger_auto_start)
-	{
+	if (trigger == RPG::EventPage::Trigger_auto_start && Game_Map::GetReady()) {
 		Start();
 	}
 }
@@ -489,8 +490,9 @@ void Game_Event::Update() {
 	if (interpreter) {
 		if (!interpreter->IsRunning()) {
 			interpreter->Setup(list, event.ID, -event.x, event.y);
+		} else {
+			interpreter->Update();
 		}
-		interpreter->Update();
 	}
 
 }
