@@ -66,6 +66,7 @@ namespace {
 	bool pan_locked;
 	bool pan_wait;
 	int pan_speed;
+	bool ready;
 }
 
 void Game_Map::Init() {
@@ -93,6 +94,7 @@ void Game_Map::Init() {
 	location.pan_finish_y = 0;
 	location.pan_current_x = 0;
 	location.pan_current_y = 0;
+	ready = false;
 }
 
 void Game_Map::Dispose() {
@@ -126,6 +128,7 @@ void Game_Map::Setup(int _id) {
 	location.pan_finish_y = 0;
 	location.pan_current_x = 0;
 	location.pan_current_y = 0;
+	ready = true;
 }
 
 void Game_Map::SetupFromSave() {
@@ -164,9 +167,11 @@ void Game_Map::SetupFromSave() {
 	location.pan_current_y = 0;
 	location.pan_finish_x = 0;
 	location.pan_finish_y = 0;
+	ready = true;
 }
 
 void Game_Map::SetupCommon(int _id) {
+	ready = false;
 	// Execute remaining events (e.g. ones listed after a teleport)
 	Update();
 	Dispose();
@@ -832,6 +837,10 @@ bool Game_Map::GetNeedRefresh() {
 }
 void Game_Map::SetNeedRefresh(bool new_need_refresh) {
 	need_refresh = new_need_refresh;
+}
+
+bool Game_Map::GetReady() {
+	return ready;
 }
 
 std::vector<unsigned char>& Game_Map::GetPassagesDown() {

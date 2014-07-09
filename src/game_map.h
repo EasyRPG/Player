@@ -378,6 +378,13 @@ namespace Game_Map {
 	bool GetNeedRefresh();
 
 	/**
+	 * Gets ready flag.
+	 *
+	 * @return ready flag.
+	 */
+	bool GetReady();
+
+	/**
 	 * Gets the game interpreter.
 	 *
 	 * @return the game interpreter.

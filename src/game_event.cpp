@@ -339,7 +339,6 @@ void Game_Event::Refresh() {
 	else if (new_page != this->page) {
 		ClearStarting();
 		Setup(new_page);
-		CheckEventTriggerAuto();
 	}
 }
 
@@ -454,8 +453,7 @@ void Game_Event::Start() {
 }
 
 void Game_Event::CheckEventTriggerAuto() {
-	if (trigger == RPG::EventPage::Trigger_auto_start)
-	{
+	if (trigger == RPG::EventPage::Trigger_auto_start && Game_Map::GetReady()) {
 		Start();
 	}
 }
@@ -492,8 +490,9 @@ void Game_Event::Update() {
 	if (interpreter) {
 		if (!interpreter->IsRunning()) {
 			interpreter->Setup(list, event.ID, -event.x, event.y);
+		} else {
+			interpreter->Update();
 		}
-		interpreter->Update();
 	}
 
 }
