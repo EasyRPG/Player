@@ -514,8 +514,7 @@ void Game_Character::MoveTypeCustom() {
 					Game_Map::SetNeedRefresh(true);
 					break;
 				case RPG::MoveCommand::Code::change_graphic: // String: File, Parameter A: index
-					SetSpriteName(move_command.parameter_string);
-					SetSpriteIndex(move_command.parameter_a);
+					SetGraphic(move_command.parameter_string, move_command.parameter_a);
 					break;
 				case RPG::MoveCommand::Code::play_sound_effect: // String: File, Parameters: Volume, Tempo, Balance
 					if (move_command.parameter_string != "(OFF)") {
@@ -1183,6 +1182,7 @@ void Game_Character::UpdateBushDepth() {
 void Game_Character::SetGraphic(const std::string& name, int index) {
 	SetSpriteName(name);
 	SetSpriteIndex(index);
+	pattern = RPG::EventPage::Frame_middle;
 }
 
 // Gets Character
