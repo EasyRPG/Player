@@ -217,7 +217,7 @@ void Game_Character::Update() {
 	if (stop_count >= ((GetMoveFrequency() > 7) ? 0 : pow(2.0, 9 - GetMoveFrequency()))) {
 		if (IsMoveRouteOverwritten()) {
 			MoveTypeCustom();
-		} else if (!Game_Message::visible) {
+		} else if (Game_Message::GetContinueEvents() || !Game_Message::message_waiting) {
 			UpdateSelfMovement();
 		}
 	}
@@ -1087,6 +1087,7 @@ void Game_Character::ForceMoveRoute(RPG::MoveRoute* new_route,
 	SetMoveRoute(*new_route);
 	SetMoveRouteIndex(0);
 	SetMoveRouteOverwritten(true);
+	SetMoveRouteRepeated(false);
 	SetMoveFrequency(frequency);
 	move_route_owner = owner;
 	wait_count = 0;

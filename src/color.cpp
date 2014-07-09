@@ -47,9 +47,9 @@ bool Color::operator!=(const Color &other) const {
 	return red != other.red || green != other.green || blue != other.blue || alpha != other.alpha;
 }
 
-void Color::Set(unsigned red, unsigned green, unsigned blue, unsigned alpha) {
-	red = (uint8_t)red;
-	green = (uint8_t)green;
-	blue = (uint8_t)blue;
-	alpha = (uint8_t)alpha;
+void Color::Set(unsigned nred, unsigned ngreen, unsigned nblue, unsigned nalpha) {
+	red = (uint8_t)nred;
+	green = (uint8_t)ngreen;
+	blue = (uint8_t)nblue;
+	alpha = (uint8_t)nalpha;
 }

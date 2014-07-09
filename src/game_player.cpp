@@ -286,7 +286,8 @@ void Game_Player::UpdateScroll(int last_real_x, int last_real_y) {
 void Game_Player::Update() {
 	bool last_moving = IsMoving();
 
-	if (!IsMoving() && !Game_Map::GetInterpreter().IsRunning() && !IsMoveRouteOverwritten() && !Game_Message::visible) {
+	if (!IsMoving() && !Game_Map::GetInterpreter().IsRunning() 
+		&& !IsMoveRouteOverwritten() && !Game_Message::message_waiting) {
 		switch (Input::dir4) {
 			case 2:
 				MoveDown();

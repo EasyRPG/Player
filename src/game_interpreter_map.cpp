@@ -1535,8 +1535,6 @@ bool Game_Interpreter_Map::CommandKeyInputProc(RPG::EventCommand const& com) { /
 
 	button_timer = 0;
 
-	// Command was a success but IsTriggered causes problems when calling
-	// this event multiple times in the same frame...
 	++index;
 	return false;
 }
