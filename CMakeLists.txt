@@ -18,6 +18,7 @@ endif()
 add_subdirectory(
   ${LIBLCF_PATH}/builds/cmake
   ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/liblcf)
+link_directories(${ICU_LIBRARY_DIRS})
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/lib)
@@ -85,8 +86,9 @@ endif()
 find_package(OpenAL)
 if(OPENAL_FOUND)
   find_package(SndFile REQUIRED)
-  include_directories(${OPENAL_INCLUDE_DIR} ${SNDFILE_INCLUDE_DIR})
-  list(APPEND EASYRPG_PLAYER_LIBRARIES ${OPENAL_LIBRARY} ${SNDFILE_LIBRARIES})
+  find_package(FluidSynth REQUIRED)
+  include_directories(${OPENAL_INCLUDE_DIR} ${SNDFILE_INCLUDE_DIR} ${FLUIDSYNTH_INCLUDE_DIR})
+  list(APPEND EASYRPG_PLAYER_LIBRARIES ${OPENAL_LIBRARY} ${SNDFILE_LIBRARIES} ${FLUIDSYNTH_LIBRARY})
   add_definitions(-D HAVE_OPENAL=1)
 endif()
 

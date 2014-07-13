@@ -1,0 +1,5 @@
+find_library(FLUIDSYNTH_LIBRARY "fluidsynth")
+find_path(FLUIDSYNTH_INCLUDE_DIR "fluidsynth.h")
+
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(FluidSynth DEFAULT_MSG FLUIDSYNTH_LIBRARY FLUIDSYNTH_INCLUDE_DIR)
