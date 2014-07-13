@@ -179,6 +179,10 @@ void Game_Interpreter::Update() {
 			return;
 		}
 
+		if (Game_Temp::transition_processing) {
+			return;
+		}
+
 		if (Game_Temp::battle_calling ||
 			Game_Temp::shop_calling ||
 //			Game_Temp::inn_calling ||
