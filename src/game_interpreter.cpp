@@ -348,38 +348,15 @@ bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) {
 }
 
 void Game_Interpreter::InputButton() {
-	Input::InputButton n = Input::BUTTON_COUNT;
-
-	if (Input::IsTriggered(Input::UP)) {
-		n = Input::UP;
-	} else {
-		if (Input::IsTriggered(Input::DOWN)) {
-			n = Input::DOWN;
-		} else {
-			if (Input::IsTriggered(Input::LEFT)) {
-				n = Input::LEFT;
-			} else {
-				if (Input::IsTriggered(Input::RIGHT)) {
-					n = Input::RIGHT;
-				} else {
-					if (Input::IsTriggered(Input::DECISION)) {
-						n = Input::DECISION;
-					} else {
-						if (Input::IsTriggered(Input::CANCEL)) {
-							n = Input::CANCEL;
-						} else {
-							if (Input::IsTriggered(Input::SHIFT)) {
-								n = Input::SHIFT;
-							}
-						}
-					}
-				}
-			}
+	int n;
+	for (n = Input::UP; n != Input::N0; ++n) {
+		if (Input::IsTriggered((Input::InputButton) n)) {
+			break;
 		}
-	} // end first if
+	}
 
 	// If a button was pressed
-	if (n != Input::BUTTON_COUNT) {
+	if (n != Input::N0) {
 		// Set variable
 		Game_Variables[button_input_variable_id] = n;
 		Game_Map::SetNeedRefresh(true);

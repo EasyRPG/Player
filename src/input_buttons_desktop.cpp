@@ -47,6 +47,7 @@ void Input::InitButtons() {
 	buttons[CANCEL].push_back(Keys::B);
 	buttons[CANCEL].push_back(Keys::N);
 	buttons[CANCEL].push_back(Keys::ESCAPE);
+	buttons[CANCEL].push_back(Keys::KP0);
 	buttons[SHIFT].push_back(Keys::LSHIFT);
 	buttons[SHIFT].push_back(Keys::RSHIFT);
 	buttons[N0].push_back(Keys::N0);
