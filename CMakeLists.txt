@@ -18,6 +18,7 @@ endif()
 add_subdirectory(
   ${LIBLCF_PATH}/builds/cmake
   ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/liblcf)
+link_directories(${ICU_LIBRARY_DIRS})
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/lib)
