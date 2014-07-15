@@ -146,7 +146,7 @@ TilemapLayer::TilemapLayer(int ilayer) :
 	animation_step_ab(0),
 	animation_step_c(0),
 	animation_speed(24),
-	animation_type(1),
+	animation_type(0),
 	layer(ilayer) {
 
 	chipset_screen = BitmapScreen::Create();
@@ -565,6 +565,10 @@ void TilemapLayer::SetChipset(BitmapRef const& nchipset) {
 	chipset = nchipset;
 	chipset_screen->SetBitmap(chipset);
 	chipset_screen->SetSrcRect(chipset->GetRect());
+	if (autotiles_ab_next != 0 && autotiles_d_screen != 0 && layer == 0) {
+		autotiles_ab_screen = GenerateAutotiles(autotiles_ab_next, autotiles_ab_map);
+		autotiles_d_screen = GenerateAutotiles(autotiles_d_next, autotiles_d_map);
+	}
 }
 
 std::vector<short> TilemapLayer::GetMapData() const {
