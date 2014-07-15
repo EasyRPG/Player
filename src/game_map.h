@@ -413,6 +413,20 @@ namespace Game_Map {
 	std::vector<unsigned char>& GetPassagesUp();
 
 	/**
+	 * Gets chipset animation type.
+	 *
+	 * @return chipset animation type.
+	 */
+	int GetAnimationType();
+
+	/**
+	 * Gets chipset animation speed.
+	 *
+	 * @return chipset animation speed.
+	 */
+	int GetAnimationSpeed();
+
+	/**
 	 * Gets terrain tags list.
 	 *
 	 * @return terrain tags list.

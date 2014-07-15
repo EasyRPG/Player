@@ -49,6 +49,8 @@ namespace {
 	int parallax_auto_y;
 	int parallax_x;
 	int parallax_y;
+	int animation_type;
+	bool animation_fast;
 
 	std::vector<unsigned char> passages_down;
 	std::vector<unsigned char> passages_up;
@@ -850,6 +852,14 @@ std::vector<unsigned char>& Game_Map::GetPassagesUp() {
 	return passages_up;
 }
 
+int Game_Map::GetAnimationType() {
+	return animation_type;
+}
+
+int Game_Map::GetAnimationSpeed() {
+	return (animation_fast ? 12 : 24);
+}
+
 std::vector<short>& Game_Map::GetTerrainTags() {
 	return Data::chipsets[map_info.chipset_id - 1].terrain_data;
 }
@@ -897,6 +907,8 @@ void Game_Map::SetChipset(int id) {
 	chipset_name = chipset.chipset_name;
 	passages_down = chipset.passable_data_lower;
 	passages_up = chipset.passable_data_upper;
+	animation_type = chipset.animation_type;
+	animation_fast = chipset.animation_speed;
 	if (passages_down.size() < 162)
 		passages_down.resize(162, (unsigned char) 0x0F);
 	if (passages_up.size() < 144)

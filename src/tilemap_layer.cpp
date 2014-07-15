@@ -535,14 +535,15 @@ void TilemapLayer::Update() {
 	animation_frame += 1;
 
 	// Step to the next animation frame
+	if (animation_frame % 6 == 0) {
+		animation_step_c = (animation_step_c + 1) % 4;
+	}
 	if (animation_frame == animation_speed) {
 		animation_step_ab = 1;
-		animation_step_c = 1;
 	} else if (animation_frame == animation_speed * 2) {
 		animation_step_ab = 2;
-		animation_step_c = 2;
 	} else if (animation_frame == animation_speed * 3) {
-		if (animation_type == 1) {
+		if (animation_type == 0) {
 			// If animation type is 1-2-3-2
 			animation_step_ab = 1;
 		} else {
@@ -550,10 +551,8 @@ void TilemapLayer::Update() {
 			animation_step_ab = 0;
 			animation_frame = 0;
 		}
-		animation_step_c = 3;
 	} else if (animation_frame >= animation_speed * 4) {
 		animation_step_ab = 0;
-		animation_step_c = 0;
 		animation_frame = 0;
 	}
 }
