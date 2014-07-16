@@ -90,6 +90,7 @@ protected:
 	bool active;
 	bool visible;
 	bool pause;
+	bool closing;
 	bool up_arrow;
 	bool down_arrow;
 	int x;

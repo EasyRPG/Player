@@ -32,6 +32,7 @@ Window::Window():
 	active(true),
 	visible(true),
 	pause(false),
+	closing(false),
 	up_arrow(false),
 	down_arrow(false),
 	x(0),
@@ -82,8 +83,14 @@ void Window::SetOpenAnimation(int frames) {
 }
 
 void Window::SetCloseAnimation(int frames) {
-	(void)frames;
-	// TODO
+	animation_frames = frames;
+	animation_count = (height / 2.0);
+	closing = true;
+	if (frames > 0) {
+		animation_increment = - (height / 2.0) / frames;
+	} else {
+		animation_increment = 0.0;
+	}
 }
 
 void Window::Draw() {
@@ -181,9 +188,13 @@ void Window::Draw() {
 	}
 
 	if (animation_frames > 0) {
-		// Open Animation
+		// Open/Close Animation
 		animation_frames -= 1;
 		animation_count += animation_increment;
+		if (closing && animation_frames <= 0) {
+			visible = false;
+			closing = false;
+		}
 	}
 }
 
