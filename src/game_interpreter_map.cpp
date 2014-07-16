@@ -1072,6 +1072,12 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 	Game_Temp::inn_price = com.parameters[1];
 	Game_Temp::inn_handlers = com.parameters[2] != 0;
 
+	if (Game_Temp::inn_price == 0) {
+		// Skip prompt.
+		Game_Message::choice_result = 0;
+		return ContinuationShowInn(com);
+	}
+
 	Game_Message::message_waiting = true;
 
 	Game_Message::texts.clear();

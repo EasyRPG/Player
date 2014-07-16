@@ -126,6 +126,15 @@ void Window_Message::StartNumberInputProcessing() {
 	number_input_window->Update();
 }
 
+void Window_Message::ShowGoldWindow() {
+	if (!gold_window->GetVisible()) {
+		gold_window->SetY(y == 0 ? SCREEN_TARGET_HEIGHT - 32 : 0);
+		gold_window->Refresh();
+		gold_window->SetOpenAnimation(5);
+		gold_window->SetVisible(true);
+	}
+}
+
 void Window_Message::InsertNewPage() {
 	contents->Clear();
 
@@ -275,6 +284,9 @@ void Window_Message::Update() {
 	}
 	else if (IsNextMessagePossible()) {
 		// Output a new page
+		if (Game_Temp::inn_calling) {
+			ShowGoldWindow();
+		}
 		StartMessageProcessing();
 		//printf("Text: %s\n", text.c_str());
 		if (!visible) {
@@ -375,10 +387,7 @@ void Window_Message::UpdateMessage() {
 				break;
 			case '$':
 				// Show Gold Window
-				gold_window->SetY(y == 0 ? SCREEN_TARGET_HEIGHT - 32 : 0);
-				gold_window->Refresh();
-				gold_window->SetOpenAnimation(5);
-				gold_window->SetVisible(true);
+				ShowGoldWindow();
 				break;
 			case '!':
 				// Text pause
