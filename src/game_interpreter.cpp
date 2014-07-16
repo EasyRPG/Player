@@ -367,6 +367,7 @@ void Game_Interpreter::InputButton() {
 
 bool Game_Interpreter::CommandEnd() {
 	CloseMessageWindow();
+	Game_Message::FullClear();
 	list.clear();
 
 	if ((main_flag) && (event_id > 0)) {
