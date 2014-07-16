@@ -127,7 +127,7 @@ void Window_Message::StartNumberInputProcessing() {
 }
 
 void Window_Message::ShowGoldWindow() {
-	if (!gold_window->GetVisible()) {
+	if (!gold_window->GetVisible() && !Game_Temp::battle_running) {
 		gold_window->SetY(y == 0 ? SCREEN_TARGET_HEIGHT - 32 : 0);
 		gold_window->Refresh();
 		gold_window->SetOpenAnimation(5);
@@ -229,11 +229,11 @@ void Window_Message::TerminateMessage() {
 	Game_Message::message_waiting = false;
 	if (number_input_window->GetVisible()) {
 		number_input_window->SetActive(false);
-		number_input_window->SetVisible(false);
+		number_input_window->SetCloseAnimation(5);
 	}
 
 	if (gold_window->GetVisible()) {
-		gold_window->SetVisible(false);
+		gold_window->SetCloseAnimation(5);
 	}
 	// The other flag resetting is done in Game_Interpreter::CommandEnd
 	Game_Message::SemiClear();
@@ -259,18 +259,22 @@ void Window_Message::Update() {
 	Window_Selectable::Update();
 	number_input_window->Update();
 
-	if (!IsNextMessagePossible() && visible && !Game_Message::visible) {
-		// The Event Page ended but the MsgBox was used in this Event
-		// It can be closed now.
-		TerminateMessage();
-		if (Game_Temp::battle_running) {
-			SetCloseAnimation(0);
-		} else {
-			SetCloseAnimation(5);
+	if (!IsNextMessagePossible() && Game_Message::closing) {
+		if (visible && !closing) {
+			// The Event Page ended but the MsgBox was used in this Event
+			// It can be closed now.
+			TerminateMessage();
+			if (Game_Temp::battle_running) {
+				SetCloseAnimation(0);
+			} else {
+				SetCloseAnimation(5);
+			}
+		} else if (!visible && !closing) {
+			// The closing animation has finished
+			Game_Message::visible = false;
+			Game_Message::closing = false;
+			return;
 		}
-		// Remove this when the Close Animation is implemented
-		// The close animation must set the visible false flag
-		visible = false;
 	}
 	else if (pause) {
 		WaitForInput();

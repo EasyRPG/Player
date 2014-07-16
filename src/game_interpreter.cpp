@@ -144,7 +144,7 @@ void Game_Interpreter::Update() {
 			}
 		}
 
-		if (Game_Message::message_waiting) {
+		if (Game_Message::message_waiting || Game_Message::closing) {
 			return;
 		}
 
@@ -403,8 +403,8 @@ void Game_Interpreter::GetStrings(std::vector<std::string>& ret_val) {
 }
 
 void Game_Interpreter::CloseMessageWindow() {
-	if (Game_Message::visible) {
-		Game_Message::visible = false;
+	if (Game_Message::visible && !Game_Message::closing) {
+		Game_Message::closing = true;
 		Game_Message::SemiClear();
 	}
 }

@@ -34,8 +34,8 @@ namespace Game_Message {
 	int num_input_digits_max;
 
 	bool message_waiting;
-
 	bool visible;
+	bool closing;
 
 	int choice_result;
 }
