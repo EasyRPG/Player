@@ -581,7 +581,8 @@ bool Game_Interpreter_Map::CommandChangeActorFace(RPG::EventCommand const& com) 
 
 bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Code 10810
 	// TODO: if in battle return true
-	if (Main_Data::game_player->IsTeleporting() || Game_Temp::transition_processing) {
+	if (Main_Data::game_player->IsTeleporting() || Game_Temp::transition_processing ||
+		Game_Message::visible) {
 			return false;
 	}
 
@@ -605,7 +606,8 @@ bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Co
 }
 
 bool Game_Interpreter_Map::CommandEraseScreen(RPG::EventCommand const& com) {
-	if (Game_Temp::transition_processing) return false;
+	if (Game_Temp::transition_processing || Game_Message::visible)
+		return false;
 
 	Game_Temp::transition_processing = true;
 	Game_Temp::transition_erase = true;
@@ -681,7 +683,8 @@ bool Game_Interpreter_Map::CommandEraseScreen(RPG::EventCommand const& com) {
 }
 
 bool Game_Interpreter_Map::CommandShowScreen(RPG::EventCommand const& com) {
-	if (Game_Temp::transition_processing) return false;
+	if (Game_Temp::transition_processing || Game_Message::visible)
+		return false;
 
 	Game_Temp::transition_processing = true;
 	Game_Temp::transition_erase = false;
