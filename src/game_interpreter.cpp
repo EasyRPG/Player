@@ -197,7 +197,6 @@ void Game_Interpreter::Update() {
 
 		if (continuation) {
 			bool result = (this->*continuation)(list[index]);
-			continuation = NULL;
 			if (result)
 				continue;
 			else
@@ -474,6 +473,7 @@ void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices) {
 }
 
 bool Game_Interpreter::ContinuationChoices(RPG::EventCommand const& com) {
+	continuation = NULL;
 	int indent = com.indent;
 	for (;;) {
 		if (!SkipTo(Cmd::ShowChoiceOption, Cmd::ShowChoiceEnd, indent, indent))
@@ -1257,6 +1257,7 @@ bool Game_Interpreter::CommandEndEventProcessing(RPG::EventCommand const& /* com
 }
 
 bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& /* com */) {
+	continuation = NULL;
 	index++;
 	return true;
 }

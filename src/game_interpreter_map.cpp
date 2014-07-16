@@ -1051,6 +1051,7 @@ bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // co
 }
 
 bool Game_Interpreter_Map::ContinuationOpenShop(RPG::EventCommand const& /* com */) {
+	continuation = NULL;
 	if (!Game_Temp::shop_handlers) {
 		index++;
 		return true;
@@ -1125,15 +1126,20 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 	if (Main_Data::game_party->GetGold() < Game_Temp::inn_price)
 		Game_Message::choice_disabled.set(0);
 
-	CloseMessageWindow();
 	Game_Temp::inn_calling = true;
 	Game_Message::choice_result = 4;
 
 	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInn));
-	return false;
+	return true;
 }
 
 bool Game_Interpreter_Map::ContinuationShowInn(RPG::EventCommand const& /* com */) {
+	if (Game_Message::visible) {
+		CloseMessageWindow();
+		return false;
+	}
+	continuation = NULL;
+
 	bool inn_stay = Game_Message::choice_result == 0;
 
 	Game_Temp::inn_calling = false;
@@ -1153,6 +1159,8 @@ bool Game_Interpreter_Map::ContinuationShowInn(RPG::EventCommand const& /* com *
 				actor->SetSp(actor->GetMaxSp());
 				actor->RemoveAllStates();
 			}
+			Graphics::Transition(Graphics::TransitionFadeOut, 36, true);
+			Graphics::Transition(Graphics::TransitionFadeIn, 36, false);
 		}
 		index++;
 		return true;
@@ -1241,6 +1249,8 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 }
 
 bool Game_Interpreter_Map::ContinuationEnemyEncounter(RPG::EventCommand const& com) {
+	continuation = NULL;
+
 	switch (Game_Temp::battle_result) {
 		case Game_Temp::BattleVictory:
 			if (!SkipTo(Cmd::VictoryHandler, Cmd::EndBattle)) {
