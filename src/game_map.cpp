@@ -188,17 +188,16 @@ void Game_Map::SetupCommon(int _id) {
 	if (map_file.empty()) {
 		ss.str("");
 		ss << "Map" << std::setfill('0') << std::setw(4) << location.map_id << ".lmu";
+		map_file = FileFinder::FindDefault(ss.str());
 
-		map = LMU_Reader::Load(FileFinder::FindDefault(ss.str()), Player::encoding);
-		if (map.get() == NULL) {
-			Output::ErrorStr(LcfReader::GetError());
-		}
-	}
-	else {
+		map = LMU_Reader::Load(map_file, Player::encoding);
+	} else {
 		map = LMU_Reader::LoadXml(map_file);
-		if (map.get() == NULL) {
-			Output::ErrorStr(LcfReader::GetError());
-		}
+	}
+	Output::Debug("Loading Map %s", map_file.c_str());
+
+	if (map.get() == NULL) {
+		Output::ErrorStr(LcfReader::GetError());
 	}
 
 	if (map->parallax_flag) {
