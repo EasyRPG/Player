@@ -608,7 +608,8 @@ bool Game_Interpreter_Map::CommandEraseScreen(RPG::EventCommand const& com) {
 
 	switch(com.parameters[0]) {
 		case -1:
-			Game_Temp::transition_type = Graphics::TransitionNone;
+			Game_Temp::transition_type = (Graphics::TransitionType)Game_System::GetTransition(
+				Game_System::Transition_TeleportErase);
 			return true;
 		case 0:
 			Game_Temp::transition_type = Graphics::TransitionFadeOut;
@@ -685,7 +686,8 @@ bool Game_Interpreter_Map::CommandShowScreen(RPG::EventCommand const& com) {
 
 	switch(com.parameters[0]) {
 		case -1:
-			Game_Temp::transition_type = Graphics::TransitionNone;
+			Game_Temp::transition_type = (Graphics::TransitionType)Game_System::GetTransition(
+				Game_System::Transition_TeleportShow);
 			return true;
 		case 0:
 			Game_Temp::transition_type = Graphics::TransitionFadeIn;
