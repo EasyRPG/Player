@@ -49,6 +49,8 @@ namespace {
 	int parallax_auto_y;
 	int parallax_x;
 	int parallax_y;
+	int animation_type;
+	bool animation_fast;
 
 	std::vector<unsigned char> passages_down;
 	std::vector<unsigned char> passages_up;
@@ -186,17 +188,16 @@ void Game_Map::SetupCommon(int _id) {
 	if (map_file.empty()) {
 		ss.str("");
 		ss << "Map" << std::setfill('0') << std::setw(4) << location.map_id << ".lmu";
+		map_file = FileFinder::FindDefault(ss.str());
 
-		map = LMU_Reader::Load(FileFinder::FindDefault(ss.str()), Player::encoding);
-		if (map.get() == NULL) {
-			Output::ErrorStr(LcfReader::GetError());
-		}
-	}
-	else {
+		map = LMU_Reader::Load(map_file, Player::encoding);
+	} else {
 		map = LMU_Reader::LoadXml(map_file);
-		if (map.get() == NULL) {
-			Output::ErrorStr(LcfReader::GetError());
-		}
+	}
+	Output::Debug("Loading Map %s", map_file.c_str());
+
+	if (map.get() == NULL) {
+		Output::ErrorStr(LcfReader::GetError());
 	}
 
 	if (map->parallax_flag) {
@@ -262,11 +263,10 @@ void Game_Map::PrepareSave() {
 }
 
 void Game_Map::PlayBgm() {
-	int parent_index = 0;
 	int current_index = GetMapIndex(location.map_id);
 
 	while (Data::treemap.maps[current_index].music_type == 0 && GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
-		current_index = Data::treemap.maps[current_index].parent_map;
+		current_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
 	}
 
 	if ((current_index > -1) && !Data::treemap.maps[current_index].music.name.empty()) {
@@ -280,7 +280,7 @@ void Game_Map::PlayBgm() {
 					return;
 				}
 			}
-			Game_Temp::map_bgm = &Data::treemap.maps[parent_index].music;
+			Game_Temp::map_bgm = &Data::treemap.maps[current_index].music;
 			Game_System::BgmPlay(*Game_Temp::map_bgm);
 		}
 	}
@@ -783,7 +783,7 @@ bool Game_Map::PrepareEncounter() {
 
 	int current_index = GetMapIndex(location.map_id);
 	while (Data::treemap.maps[current_index].background_type == 0 && GetMapIndex(Data::treemap.maps[current_index].parent_map) != current_index) {
-		current_index = Data::treemap.maps[current_index].parent_map;
+		current_index = GetMapIndex(Data::treemap.maps[current_index].parent_map);
 	}
 	if (Data::treemap.maps[current_index].background_type == 2) {
 		Game_Temp::battle_background = Data::treemap.maps[current_index].background_name;
@@ -851,6 +851,14 @@ std::vector<unsigned char>& Game_Map::GetPassagesUp() {
 	return passages_up;
 }
 
+int Game_Map::GetAnimationType() {
+	return animation_type;
+}
+
+int Game_Map::GetAnimationSpeed() {
+	return (animation_fast ? 12 : 24);
+}
+
 std::vector<short>& Game_Map::GetTerrainTags() {
 	return Data::chipsets[map_info.chipset_id - 1].terrain_data;
 }
@@ -898,6 +906,8 @@ void Game_Map::SetChipset(int id) {
 	chipset_name = chipset.chipset_name;
 	passages_down = chipset.passable_data_lower;
 	passages_up = chipset.passable_data_upper;
+	animation_type = chipset.animation_type;
+	animation_fast = chipset.animation_speed;
 	if (passages_down.size() < 162)
 		passages_down.resize(162, (unsigned char) 0x0F);
 	if (passages_up.size() < 144)

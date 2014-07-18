@@ -144,7 +144,7 @@ void Game_Interpreter::Update() {
 			}
 		}
 
-		if (Game_Message::message_waiting) {
+		if (Game_Message::message_waiting || Game_Message::closing) {
 			return;
 		}
 
@@ -179,6 +179,10 @@ void Game_Interpreter::Update() {
 			return;
 		}
 
+		if (Game_Temp::transition_processing) {
+			return;
+		}
+
 		if (Game_Temp::battle_calling ||
 			Game_Temp::shop_calling ||
 //			Game_Temp::inn_calling ||
@@ -193,7 +197,6 @@ void Game_Interpreter::Update() {
 
 		if (continuation) {
 			bool result = (this->*continuation)(list[index]);
-			continuation = NULL;
 			if (result)
 				continue;
 			else
@@ -344,38 +347,15 @@ bool Game_Interpreter::CommandWait(RPG::EventCommand const& com) {
 }
 
 void Game_Interpreter::InputButton() {
-	Input::InputButton n = Input::BUTTON_COUNT;
-
-	if (Input::IsTriggered(Input::UP)) {
-		n = Input::UP;
-	} else {
-		if (Input::IsTriggered(Input::DOWN)) {
-			n = Input::DOWN;
-		} else {
-			if (Input::IsTriggered(Input::LEFT)) {
-				n = Input::LEFT;
-			} else {
-				if (Input::IsTriggered(Input::RIGHT)) {
-					n = Input::RIGHT;
-				} else {
-					if (Input::IsTriggered(Input::DECISION)) {
-						n = Input::DECISION;
-					} else {
-						if (Input::IsTriggered(Input::CANCEL)) {
-							n = Input::CANCEL;
-						} else {
-							if (Input::IsTriggered(Input::SHIFT)) {
-								n = Input::SHIFT;
-							}
-						}
-					}
-				}
-			}
+	int n;
+	for (n = Input::UP; n != Input::N0; ++n) {
+		if (Input::IsTriggered((Input::InputButton) n)) {
+			break;
 		}
-	} // end first if
+	}
 
 	// If a button was pressed
-	if (n != Input::BUTTON_COUNT) {
+	if (n != Input::N0) {
 		// Set variable
 		Game_Variables[button_input_variable_id] = n;
 		Game_Map::SetNeedRefresh(true);
@@ -386,6 +366,7 @@ void Game_Interpreter::InputButton() {
 
 bool Game_Interpreter::CommandEnd() {
 	CloseMessageWindow();
+	Game_Message::FullClear();
 	list.clear();
 
 	if ((main_flag) && (event_id > 0)) {
@@ -421,8 +402,8 @@ void Game_Interpreter::GetStrings(std::vector<std::string>& ret_val) {
 }
 
 void Game_Interpreter::CloseMessageWindow() {
-	if (Game_Message::visible) {
-		Game_Message::visible = false;
+	if (Game_Message::visible && !Game_Message::closing) {
+		Game_Message::closing = true;
 		Game_Message::SemiClear();
 	}
 }
@@ -492,6 +473,7 @@ void Game_Interpreter::SetupChoices(const std::vector<std::string>& choices) {
 }
 
 bool Game_Interpreter::ContinuationChoices(RPG::EventCommand const& com) {
+	continuation = NULL;
 	int indent = com.indent;
 	for (;;) {
 		if (!SkipTo(Cmd::ShowChoiceOption, Cmd::ShowChoiceEnd, indent, indent))
@@ -1275,6 +1257,7 @@ bool Game_Interpreter::CommandEndEventProcessing(RPG::EventCommand const& /* com
 }
 
 bool Game_Interpreter::DefaultContinuation(RPG::EventCommand const& /* com */) {
+	continuation = NULL;
 	index++;
 	return true;
 }

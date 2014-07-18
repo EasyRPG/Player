@@ -29,13 +29,7 @@
 Spriteset_Map::Spriteset_Map() {
 	tilemap.SetWidth(Game_Map::GetWidth());
 	tilemap.SetHeight(Game_Map::GetHeight());
-	if (!Game_Map::GetChipsetName().empty()) {
-		tilemap.SetChipset(Cache::Chipset(Game_Map::GetChipsetName()));
-	} else {
-		tilemap.SetChipset(Bitmap::Create(480, 256, true));
-	}
-	tilemap.SetPassableDown(Game_Map::GetPassagesDown());
-	tilemap.SetPassableUp(Game_Map::GetPassagesUp());
+	ChipsetUpdated();
 	tilemap.SetMapDataDown(Game_Map::GetMapDataDown());
 	tilemap.SetMapDataUp(Game_Map::GetMapDataUp());
 
@@ -89,6 +83,8 @@ void Spriteset_Map::ChipsetUpdated() {
 	}
 	tilemap.SetPassableDown(Game_Map::GetPassagesDown());
 	tilemap.SetPassableUp(Game_Map::GetPassagesUp());
+	tilemap.SetAnimationType(Game_Map::GetAnimationType());
+	tilemap.SetAnimationSpeed(Game_Map::GetAnimationSpeed());
 }
 
 void Spriteset_Map::SubstituteDown(int old_id, int new_id) {

@@ -77,6 +77,11 @@ public:
 	void StartNumberInputProcessing();
 
 	/**
+	 * Shows the Gold Window 
+	 */
+	void ShowGoldWindow();
+
+	/**
 	 * Clears the Messagebox and places the write pointer
 	 * in the top left corner.
 	 */

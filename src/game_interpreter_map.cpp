@@ -581,7 +581,8 @@ bool Game_Interpreter_Map::CommandChangeActorFace(RPG::EventCommand const& com) 
 
 bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Code 10810
 	// TODO: if in battle return true
-	if (Main_Data::game_player->IsTeleporting() || Game_Temp::transition_processing) {
+	if (Main_Data::game_player->IsTeleporting() || Game_Temp::transition_processing ||
+		Game_Message::visible) {
 			return false;
 	}
 
@@ -591,12 +592,6 @@ bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Co
 	// FIXME: RPG2K3 => facing direction = com.parameters[3]
 
 	Main_Data::game_player->ReserveTeleport(map_id, x, y);
-
-	if (Game_Message::visible) {
-		Game_Message::visible = false;
-		Game_Message::FullClear();
-	}
-
 	Main_Data::game_player->StartTeleport();
 
 	index++;
@@ -605,14 +600,16 @@ bool Game_Interpreter_Map::CommandTeleport(RPG::EventCommand const& com) { // Co
 }
 
 bool Game_Interpreter_Map::CommandEraseScreen(RPG::EventCommand const& com) {
-	if (Game_Temp::transition_processing) return false;
+	if (Game_Temp::transition_processing || Game_Message::visible)
+		return false;
 
 	Game_Temp::transition_processing = true;
 	Game_Temp::transition_erase = true;
 
 	switch(com.parameters[0]) {
 		case -1:
-			Game_Temp::transition_type = Graphics::TransitionNone;
+			Game_Temp::transition_type = (Graphics::TransitionType)Game_System::GetTransition(
+				Game_System::Transition_TeleportErase);
 			return true;
 		case 0:
 			Game_Temp::transition_type = Graphics::TransitionFadeOut;
@@ -681,14 +678,16 @@ bool Game_Interpreter_Map::CommandEraseScreen(RPG::EventCommand const& com) {
 }
 
 bool Game_Interpreter_Map::CommandShowScreen(RPG::EventCommand const& com) {
-	if (Game_Temp::transition_processing) return false;
+	if (Game_Temp::transition_processing || Game_Message::visible)
+		return false;
 
 	Game_Temp::transition_processing = true;
 	Game_Temp::transition_erase = false;
 
 	switch(com.parameters[0]) {
 		case -1:
-			Game_Temp::transition_type = Graphics::TransitionNone;
+			Game_Temp::transition_type = (Graphics::TransitionType)Game_System::GetTransition(
+				Game_System::Transition_TeleportShow);
 			return true;
 		case 0:
 			Game_Temp::transition_type = Graphics::TransitionFadeIn;
@@ -1054,6 +1053,7 @@ bool Game_Interpreter_Map::CommandOpenShop(RPG::EventCommand const& com) { // co
 }
 
 bool Game_Interpreter_Map::ContinuationOpenShop(RPG::EventCommand const& /* com */) {
+	continuation = NULL;
 	if (!Game_Temp::shop_handlers) {
 		index++;
 		return true;
@@ -1074,6 +1074,12 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 	int inn_type = com.parameters[0];
 	Game_Temp::inn_price = com.parameters[1];
 	Game_Temp::inn_handlers = com.parameters[2] != 0;
+
+	if (Game_Temp::inn_price == 0) {
+		// Skip prompt.
+		Game_Message::choice_result = 0;
+		return ContinuationShowInn(com);
+	}
 
 	Game_Message::message_waiting = true;
 
@@ -1122,15 +1128,20 @@ bool Game_Interpreter_Map::CommandShowInn(RPG::EventCommand const& com) { // cod
 	if (Main_Data::game_party->GetGold() < Game_Temp::inn_price)
 		Game_Message::choice_disabled.set(0);
 
-	CloseMessageWindow();
 	Game_Temp::inn_calling = true;
 	Game_Message::choice_result = 4;
 
 	SetContinuation(static_cast<ContinuationFunction>(&Game_Interpreter_Map::ContinuationShowInn));
-	return false;
+	return true;
 }
 
 bool Game_Interpreter_Map::ContinuationShowInn(RPG::EventCommand const& /* com */) {
+	if (Game_Message::visible) {
+		CloseMessageWindow();
+		return false;
+	}
+	continuation = NULL;
+
 	bool inn_stay = Game_Message::choice_result == 0;
 
 	Game_Temp::inn_calling = false;
@@ -1150,6 +1161,8 @@ bool Game_Interpreter_Map::ContinuationShowInn(RPG::EventCommand const& /* com *
 				actor->SetSp(actor->GetMaxSp());
 				actor->RemoveAllStates();
 			}
+			Graphics::Transition(Graphics::TransitionFadeOut, 36, true);
+			Graphics::Transition(Graphics::TransitionFadeIn, 36, false);
 		}
 		index++;
 		return true;
@@ -1238,6 +1251,8 @@ bool Game_Interpreter_Map::CommandEnemyEncounter(RPG::EventCommand const& com) {
 }
 
 bool Game_Interpreter_Map::ContinuationEnemyEncounter(RPG::EventCommand const& com) {
+	continuation = NULL;
+
 	switch (Game_Temp::battle_result) {
 		case Game_Temp::BattleVictory:
 			if (!SkipTo(Cmd::VictoryHandler, Cmd::EndBattle)) {

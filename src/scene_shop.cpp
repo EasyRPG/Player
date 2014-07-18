@@ -123,8 +123,12 @@ void Scene_Shop::SetMode(int nmode) {
 	switch (mode) {
 		case BuySellLeave:
 		case BuySellLeave2:
-		case Sell:
 			Enable(buy_window.get(), false);
+			Enable(number_window.get(), false);
+			empty_window2->SetVisible(false);
+			break;
+		case Sell:
+			sell_window->Refresh();
 			Enable(number_window.get(), false);
 			empty_window2->SetVisible(false);
 			break;
@@ -281,7 +285,7 @@ void Scene_Shop::UpdateNumberInput() {
 		int item_id;
 		switch (shop_window->GetChoice()) {
 		case Buy:
-			item_id = sell_window->GetItem() == NULL ? 0 : sell_window->GetItem()->ID;
+			item_id = buy_window->GetItemId();
 			Main_Data::game_party->LoseGold(number_window->GetTotal());
 			Main_Data::game_party->AddItem(item_id, number_window->GetNumber());
 			gold_window->Refresh();
