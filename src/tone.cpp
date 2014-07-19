@@ -19,19 +19,13 @@
 #include "tone.h"
 #include "util_macro.h"
 
-Tone::Tone()  :
-	red(0),
-	green(0),
-	blue(0),
-	gray(0) {
-}
+Tone::Tone() : red(0), green(0), blue(0), gray(0) {}
 
-Tone::Tone(int red, int green, int blue, int gray) :
-	red(min(255, max(0, red))),
-	green(min(255, max(0, green))),
-	blue(min(255, max(0, blue))),
-	gray(min(255, max(0, gray))) {
-}
+Tone::Tone(int red, int green, int blue, int gray)
+    : red(min(255, max(0, red)))
+    , green(min(255, max(0, green)))
+    , blue(min(255, max(0, blue)))
+    , gray(min(255, max(0, gray))) {}
 
 bool Tone::operator==(const Tone &other) const {
 	return red == other.red && green == other.green && blue == other.blue && gray == other.gray;

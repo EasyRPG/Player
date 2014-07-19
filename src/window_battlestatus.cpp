@@ -29,8 +29,8 @@
 #include "player.h"
 #include "window_battlestatus.h"
 
-Window_BattleStatus::Window_BattleStatus(int ix, int iy, int iwidth, int iheight, bool enemy) :
-	Window_Selectable(ix, iy, iwidth, iheight), mode(ChoiceMode_All), enemy(enemy) {
+Window_BattleStatus::Window_BattleStatus(int ix, int iy, int iwidth, int iheight, bool enemy)
+    : Window_Selectable(ix, iy, iwidth, iheight), mode(ChoiceMode_All), enemy(enemy) {
 
 	SetBorderX(4);
 
@@ -38,8 +38,7 @@ Window_BattleStatus::Window_BattleStatus(int ix, int iy, int iwidth, int iheight
 
 	if (enemy) {
 		item_max = Main_Data::game_enemyparty->GetBattlerCount();
-	}
-	else {
+	} else {
 		item_max = Main_Data::game_party->GetBattlerCount();
 	}
 
@@ -59,8 +58,7 @@ void Window_BattleStatus::Refresh() {
 		Game_Battler* actor;
 		if (enemy) {
 			actor = &(*Main_Data::game_enemyparty)[i];
-		}
-		else {
+		} else {
 			actor = &(*Main_Data::game_party)[i];
 		}
 
@@ -81,8 +79,7 @@ void Window_BattleStatus::RefreshGauge() {
 			Game_Battler* actor;
 			if (enemy) {
 				actor = &(*Main_Data::game_enemyparty)[i];
-			}
-			else {
+			} else {
 				actor = &(*Main_Data::game_party)[i];
 			}
 
@@ -104,15 +101,12 @@ int Window_BattleStatus::ChooseActiveCharacter() {
 		}
 	}
 
-	if (index != old_index)
-		UpdateCursorRect();
+	if (index != old_index) UpdateCursorRect();
 
 	return index;
 }
 
-void Window_BattleStatus::SetChoiceMode(ChoiceMode new_mode) {
-	mode = new_mode;
-}
+void Window_BattleStatus::SetChoiceMode(ChoiceMode new_mode) { mode = new_mode; }
 
 void Window_BattleStatus::Update() {
 	// Window Selectable update logic skipped on purpose
@@ -158,18 +152,18 @@ void Window_BattleStatus::UpdateCursorRect() {
 
 bool Window_BattleStatus::IsChoiceValid(const Game_Battler& battler) const {
 	switch (mode) {
-		case ChoiceMode_All:
-			return true;
-		case ChoiceMode_Alive:
-			return !battler.IsDead();
-		case ChoiceMode_Dead:
-			return battler.IsDead();
-		case ChoiceMode_Ready:
-			return battler.IsGaugeFull();
-		case ChoiceMode_None:
-			return false;
-		default:
-			assert(false && "Invalid Choice");
-			return false;
+	case ChoiceMode_All:
+		return true;
+	case ChoiceMode_Alive:
+		return !battler.IsDead();
+	case ChoiceMode_Dead:
+		return battler.IsDead();
+	case ChoiceMode_Ready:
+		return battler.IsGaugeFull();
+	case ChoiceMode_None:
+		return false;
+	default:
+		assert(false && "Invalid Choice");
+		return false;
 	}
 }

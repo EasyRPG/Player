@@ -36,7 +36,7 @@ public:
 	 */
 	Game_Party();
 
-	Game_Actor& operator[] (const int index);
+	Game_Actor& operator[](const int index);
 
 	int GetBattlerCount() const;
 
@@ -53,14 +53,14 @@ public:
 	/**
 	 * Refreshes party members.
 	 */
-	//void Refresh();
+	// void Refresh();
 
 	/**
 	 * Gets maximum level.
 	 *
 	 * @return max party level.
 	 */
-	//int MaxLevel();
+	// int MaxLevel();
 
 	/**
 	 * Adds an actor to the party.
@@ -106,7 +106,7 @@ public:
 	/**
 	 * Increases steps in 1.
 	 */
-	//void IncreaseSteps();
+	// void IncreaseSteps();
 
 	/**
 	 * Returns all items of the party.

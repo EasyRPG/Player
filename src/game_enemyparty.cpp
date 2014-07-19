@@ -22,10 +22,9 @@
 #include "main_data.h"
 #include "rpg_enemy.h"
 
-Game_EnemyParty::Game_EnemyParty() {
-}
+Game_EnemyParty::Game_EnemyParty() {}
 
-Game_Enemy& Game_EnemyParty::operator[] (const int index) {
+Game_Enemy& Game_EnemyParty::operator[](const int index) {
 	if (index < 0 || index >= (int)enemies.size()) {
 		assert(false && "Subscript out of range");
 	}
@@ -33,15 +32,13 @@ Game_Enemy& Game_EnemyParty::operator[] (const int index) {
 	return *enemies[index];
 }
 
-int Game_EnemyParty::GetBattlerCount() const {
-	return enemies.size();
-}
+int Game_EnemyParty::GetBattlerCount() const { return enemies.size(); }
 
 void Game_EnemyParty::Setup(int battle_troop_id) {
 	enemies.clear();
 	troop = &Data::troops[battle_troop_id - 1];
 	std::vector<RPG::TroopMember>::const_iterator ei;
-	for (ei = troop->members.begin(); ei != troop->members.end(); ++ei)	{
+	for (ei = troop->members.begin(); ei != troop->members.end(); ++ei) {
 		EASYRPG_SHARED_PTR<Game_Enemy> enemy = EASYRPG_MAKE_SHARED<Game_Enemy>(ei->enemy_id);
 		enemy->SetBattleX(ei->x);
 		enemy->SetBattleY(ei->y);
@@ -50,9 +47,7 @@ void Game_EnemyParty::Setup(int battle_troop_id) {
 	}
 }
 
-std::vector<EASYRPG_SHARED_PTR<Game_Enemy> >& Game_EnemyParty::GetEnemies() {
-	return enemies;
-}
+std::vector<EASYRPG_SHARED_PTR<Game_Enemy> >& Game_EnemyParty::GetEnemies() { return enemies; }
 
 std::vector<Game_Enemy*> Game_EnemyParty::GetAliveEnemies() {
 	std::vector<Game_Enemy*> alive;

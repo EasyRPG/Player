@@ -25,7 +25,8 @@
 #include "system.h"
 
 namespace ImagePNG {
-	void ReadPNG(FILE* stream, const void* buffer, bool transparent, int& width, int& height, void*& pixels);
+	void ReadPNG(FILE* stream, const void* buffer, bool transparent, int& width, int& height,
+	             void*& pixels);
 }
 
 #endif // SUPPORT_PNG

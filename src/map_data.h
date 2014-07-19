@@ -31,17 +31,16 @@ static const int BLOCK_E_TILES = 144;
 static const int BLOCK_F = 10000;
 static const int BLOCK_F_TILES = 144;
 
-
 /** Passability flags. */
 namespace Passable {
 	enum Passable {
-		Down		= 0x01,
-		Left		= 0x02,
-		Right		= 0x04,
-		Up		= 0x08,
-		Above		= 0x10,
-		Wall		= 0x20,
-		Counter		= 0x40
+		Down = 0x01,
+		Left = 0x02,
+		Right = 0x04,
+		Up = 0x08,
+		Above = 0x10,
+		Wall = 0x20,
+		Counter = 0x40
 	};
 }
 

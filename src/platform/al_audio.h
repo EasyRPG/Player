@@ -75,6 +75,6 @@ private:
 
 	typedef std::vector<EASYRPG_SHARED_PTR<source> > source_list;
 	source_list se_src_;
-};  // struct ALAudio
+}; // struct ALAudio
 
-#endif  // _AL_AUDIO_H_
+#endif // _AL_AUDIO_H_

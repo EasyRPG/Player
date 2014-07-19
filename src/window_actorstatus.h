@@ -42,7 +42,7 @@ public:
 	 * Draws the actor status
 	 */
 	void DrawStatus();
-	
+
 	/**
 	 * Draws min and max separated by a "/" in cx, cy
 	 */

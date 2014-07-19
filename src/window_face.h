@@ -25,7 +25,7 @@
 /**
  * Window Face Class.
  */
-class Window_Face :	public Window_Base {
+class Window_Face : public Window_Base {
 public:
 	/**
 	 * Constructor.

@@ -25,8 +25,7 @@
 #include <ciso646>
 #include <cassert>
 
-Scene_Name::Scene_Name() :
-	kbd_window(NULL), name_window(NULL), face_window(NULL) {
+Scene_Name::Scene_Name() : kbd_window(NULL), name_window(NULL), face_window(NULL) {
 	Scene::type = Scene::Name;
 }
 
@@ -41,7 +40,7 @@ void Scene_Name::Start() {
 	face_window->Set(Game_Temp::hero_name_id);
 	face_window->Refresh();
 
-	kbd_window.reset(new Window_Keyboard(32, 72, 256, (SCREEN_TARGET_WIDTH/2)));
+	kbd_window.reset(new Window_Keyboard(32, 72, 256, (SCREEN_TARGET_WIDTH / 2)));
 	kbd_window->SetMode(Window_Keyboard::Mode(Game_Temp::hero_name_charset));
 	kbd_window->Refresh();
 	kbd_window->UpdateCursorRect();
@@ -55,8 +54,7 @@ void Scene_Name::Update() {
 		if (name_window->Get().size() > 0) {
 			Game_System::SePlay(Main_Data::game_data.system.cancel_se);
 			name_window->Erase();
-		}
-		else
+		} else
 			Game_System::SePlay(Main_Data::game_data.system.buzzer_se);
 	} else if (Input::IsTriggered(Input::DECISION)) {
 		Game_System::SePlay(Main_Data::game_data.system.decision_se);
@@ -64,7 +62,7 @@ void Scene_Name::Update() {
 
 		assert(not s.empty());
 
-		if(s == Window_Keyboard::DONE || s == Window_Keyboard::DONE_JP) {
+		if (s == Window_Keyboard::DONE || s == Window_Keyboard::DONE_JP) {
 			Game_Temp::hero_name = name_window->Get();
 			Game_Actor* actor = Game_Actors::GetActor(Game_Temp::hero_name_id);
 			if (actor != NULL) {
@@ -76,16 +74,18 @@ void Scene_Name::Update() {
 					Scene::Pop();
 				}
 			}
-		} else if(s == Window_Keyboard::TO_SYMBOL) {
+		} else if (s == Window_Keyboard::TO_SYMBOL) {
 			kbd_window->SetMode(Window_Keyboard::Symbol);
-		} else if(s == Window_Keyboard::TO_LETTER) {
+		} else if (s == Window_Keyboard::TO_LETTER) {
 			kbd_window->SetMode(Window_Keyboard::Letter);
-		} else if(s == Window_Keyboard::TO_HIRAGANA) {
+		} else if (s == Window_Keyboard::TO_HIRAGANA) {
 			kbd_window->SetMode(Window_Keyboard::Hiragana);
-		} else if(s == Window_Keyboard::TO_KATAKANA) {
+		} else if (s == Window_Keyboard::TO_KATAKANA) {
 			kbd_window->SetMode(Window_Keyboard::Katakana);
-		} else if(s == Window_Keyboard::SPACE) {
+		} else if (s == Window_Keyboard::SPACE) {
 			name_window->Append(" ");
-		} else { name_window->Append(s); }
+		} else {
+			name_window->Append(s);
+		}
 	}
 }

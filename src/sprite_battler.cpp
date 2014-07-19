@@ -24,32 +24,26 @@
 #include "rpg_battleranimation.h"
 #include "rpg_battleranimationextension.h"
 
-Sprite_Battler::Sprite_Battler(Game_Battler* battler) :
-	battler(battler),
-	anim_state(AnimationState_Idle),
-	cycle(0),
-	sprite_file(""),
-	sprite_frame(-1),
-	fade_out(255),
-	flash_counter(0) {
-	
+Sprite_Battler::Sprite_Battler(Game_Battler* battler)
+    : battler(battler)
+    , anim_state(AnimationState_Idle)
+    , cycle(0)
+    , sprite_file("")
+    , sprite_frame(-1)
+    , fade_out(255)
+    , flash_counter(0) {
+
 	CreateSprite();
 }
 
-Sprite_Battler::~Sprite_Battler() {
-}
+Sprite_Battler::~Sprite_Battler() {}
 
-Game_Battler* Sprite_Battler::GetBattler() const {
-	return battler;
-}
+Game_Battler* Sprite_Battler::GetBattler() const { return battler; }
 
-void Sprite_Battler::SetBattler(Game_Battler* new_battler) {
-	battler = new_battler;
-}
+void Sprite_Battler::SetBattler(Game_Battler* new_battler) { battler = new_battler; }
 
 void Sprite_Battler::Update() {
-	if (sprite_name != battler->GetSpriteName() ||
-		hue != battler->GetHue()) {
+	if (sprite_name != battler->GetSpriteName() || hue != battler->GetHue()) {
 
 		CreateSprite();
 	}
@@ -57,26 +51,23 @@ void Sprite_Battler::Update() {
 	Sprite::Update();
 
 	++cycle;
-	
+
 	if (battler->GetBattleAnimationId() <= 0) {
 		if (anim_state == AnimationState_Idle) {
 			SetOpacity(255);
-		}
-		else if (anim_state == AnimationState_Dead) {
+		} else if (anim_state == AnimationState_Dead) {
 			if (fade_out > 0) {
 				fade_out -= 15;
 				SetOpacity(std::max(0, fade_out));
 			}
-		}
-		else if (anim_state == AnimationState_Damage) {
+		} else if (anim_state == AnimationState_Damage) {
 			flash_counter = (flash_counter + 1) % 10;
 			SetOpacity(flash_counter > 5 ? 50 : 255);
 			if (cycle == 60) {
 				SetAnimationState(AnimationState_Idle);
 				cycle = 0;
 			}
-		}
-		else {
+		} else {
 			if (cycle == 60) {
 				SetAnimationState(AnimationState_Idle);
 				cycle = 0;
@@ -84,12 +75,12 @@ void Sprite_Battler::Update() {
 		}
 	} else if (anim_state > 0) {
 		if (Player::engine == Player::EngineRpg2k3) {
-			static const int frames[] = {0,1,2,1};
+			static const int frames[] = {0, 1, 2, 1};
 			int frame = frames[cycle / 10];
-			if (frame == sprite_frame)
-				return;
+			if (frame == sprite_frame) return;
 
-			const RPG::BattlerAnimation& anim = Data::battleranimations[battler->GetBattleAnimationId() - 1];
+			const RPG::BattlerAnimation& anim =
+			    Data::battleranimations[battler->GetBattleAnimationId() - 1];
 			const RPG::BattlerAnimationExtension& ext = anim.base_data[anim_state - 1];
 
 			SetSrcRect(Rect(frame * 48, ext.battler_index * 48, 48, 48));
@@ -116,10 +107,10 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 
 	if (Player::engine == Player::EngineRpg2k3) {
 		if (battler->GetBattleAnimationId() > 0) {
-			const RPG::BattlerAnimation& anim = Data::battleranimations[battler->GetBattleAnimationId() - 1];
+			const RPG::BattlerAnimation& anim =
+			    Data::battleranimations[battler->GetBattleAnimationId() - 1];
 			const RPG::BattlerAnimationExtension& ext = anim.base_data[anim_state - 1];
-			if (ext.battler_name == sprite_file)
-				return;
+			if (ext.battler_name == sprite_file) return;
 
 			sprite_file = ext.battler_name;
 			SetBitmap(Cache::Battlecharset(sprite_file));
@@ -128,9 +119,7 @@ void Sprite_Battler::SetAnimationState(int state, LoopState loop) {
 	}
 }
 
-bool Sprite_Battler::IsIdling() {
-	return anim_state == AnimationState_Idle;
-}
+bool Sprite_Battler::IsIdling() { return anim_state == AnimationState_Idle; }
 
 void Sprite_Battler::CreateSprite() {
 	sprite_name = battler->GetSpriteName();
@@ -140,8 +129,7 @@ void Sprite_Battler::CreateSprite() {
 	if (battler->GetBattleAnimationId() == 0) {
 		if (sprite_name.empty()) {
 			graphic = Bitmap::Create(0, 0);
-		}
-		else {
+		} else {
 			graphic = Cache::Monster(sprite_name);
 		}
 		SetOx(graphic->GetWidth() / 2);
@@ -155,8 +143,7 @@ void Sprite_Battler::CreateSprite() {
 		}
 
 		SetBitmap(graphic);
-	}
-	else { // animated
+	} else { // animated
 		SetOx(24);
 		SetOy(24);
 		SetAnimationState(anim_state);

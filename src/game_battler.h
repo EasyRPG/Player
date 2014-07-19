@@ -165,7 +165,7 @@ public:
 	 *
 	 * @return max SP.
 	 */
-	virtual int GetBaseMaxSp() const= 0;
+	virtual int GetBaseMaxSp() const = 0;
 
 	/**
 	 * Gets the attack for the current level.
@@ -260,7 +260,7 @@ public:
 	 * Removes all states.
 	 */
 	void RemoveAllStates();
-	
+
 	/**
 	 * Gets X position on battlefield
 	 *
@@ -290,7 +290,7 @@ public:
 	 * Convenience function to access the party based on the type of this
 	 * battler. This function does not ensure that the battler is in the
 	 * party.
-	 * @return Party this member probably belongs to. 
+	 * @return Party this member probably belongs to.
 	 */
 	Game_Party_Base& GetParty() const;
 

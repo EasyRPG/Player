@@ -78,14 +78,16 @@ void Input::Update() {
 
 		if (press_time[i] > 0) {
 			triggered[i] = press_time[i] == 1;
-			repeated[i] = press_time[i] == 1 || (press_time[i] >= start_repeat_time &&	press_time[i] % repeat_time == 0);
+			repeated[i] = press_time[i] == 1 ||
+			              (press_time[i] >= start_repeat_time && press_time[i] % repeat_time == 0);
 		} else {
 			triggered[i] = false;
 			repeated[i] = false;
 		}
 	}
 
-	// Press time for directional buttons, the less they have been pressed, the higher their priority will be
+	// Press time for directional buttons, the less they have been pressed, the higher their
+	// priority will be
 	int dirpress[10];
 
 	// Get max pressed time for each directional button
@@ -124,10 +126,14 @@ void Input::Update() {
 		dir8 = dir4;
 
 		// Check diagonal directions (There is a priority order)
-		if		(dirpress[9] > 0)	dir8 = 9;
-		else if (dirpress[7] > 0)	dir8 = 7;
-		else if (dirpress[3] > 0)	dir8 = 3;
-		else if (dirpress[1] > 0)	dir8 = 1;
+		if (dirpress[9] > 0)
+			dir8 = 9;
+		else if (dirpress[7] > 0)
+			dir8 = 7;
+		else if (dirpress[3] > 0)
+			dir8 = 3;
+		else if (dirpress[1] > 0)
+			dir8 = 1;
 	}
 }
 
@@ -166,8 +172,8 @@ bool Input::IsReleased(InputButton button) {
 
 bool Input::IsAnyPressed() {
 	WaitInput(true);
-	return std::find_if(press_time.begin(), press_time.end(),
-						boost::lambda::_1 > 0) != press_time.end();
+	return std::find_if(press_time.begin(), press_time.end(), boost::lambda::_1 > 0) !=
+	       press_time.end();
 }
 
 bool Input::IsAnyTriggered() {
@@ -189,8 +195,7 @@ std::vector<Input::InputButton> Input::GetAllPressed() {
 	WaitInput(true);
 	std::vector<InputButton> vector;
 	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
-		if (press_time[i] > 0)
-			vector.push_back((InputButton)i);
+		if (press_time[i] > 0) vector.push_back((InputButton)i);
 	}
 	return vector;
 }
@@ -199,8 +204,7 @@ std::vector<Input::InputButton> Input::GetAllTriggered() {
 	WaitInput(true);
 	std::vector<InputButton> vector;
 	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
-		if (triggered[i])
-			vector.push_back((InputButton)i);
+		if (triggered[i]) vector.push_back((InputButton)i);
 	}
 	return vector;
 }
@@ -209,8 +213,7 @@ std::vector<Input::InputButton> Input::GetAllRepeated() {
 	WaitInput(true);
 	std::vector<InputButton> vector;
 	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
-		if (repeated[i])
-			vector.push_back((InputButton)i);
+		if (repeated[i]) vector.push_back((InputButton)i);
 	}
 	return vector;
 }
@@ -219,8 +222,7 @@ std::vector<Input::InputButton> Input::GetAllReleased() {
 	WaitInput(false);
 	std::vector<InputButton> vector;
 	for (unsigned i = 0; i < BUTTON_COUNT; i++) {
-		if (released[i])
-			vector.push_back((InputButton)i);
+		if (released[i]) vector.push_back((InputButton)i);
 	}
 	return vector;
 }

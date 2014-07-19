@@ -50,7 +50,7 @@ private:
 	static const DrawableType type = TypeWeather;
 
 	BitmapScreenRef weather_screen;
-	//boost::scoped_ptr<Plane> weather_plane;
+	// boost::scoped_ptr<Plane> weather_plane;
 	BitmapRef weather_surface;
 	BitmapRef snow_bitmap;
 	BitmapRef rain_bitmap;

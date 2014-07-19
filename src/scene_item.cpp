@@ -26,8 +26,8 @@
 #include "scene_map.h"
 #include "scene_menu.h"
 
-Scene_Item::Scene_Item(int item_index) :
-	help_window(NULL), item_window(NULL), item_index(item_index) {
+Scene_Item::Scene_Item(int item_index)
+    : help_window(NULL), item_window(NULL), item_index(item_index) {
 	Scene::type = Scene::Item;
 }
 
@@ -40,9 +40,7 @@ void Scene_Item::Start() {
 	item_window->SetIndex(item_index);
 }
 
-void Scene_Item::Continue() {
-	item_window->Refresh();
-}
+void Scene_Item::Continue() { item_window->Refresh(); }
 
 void Scene_Item::Update() {
 	help_window->Update();
@@ -62,7 +60,8 @@ void Scene_Item::Update() {
 				Scene::PopUntil(Scene::Map);
 				Game_Map::SetNeedRefresh(true);
 			} else {
-				Scene::Push(EASYRPG_MAKE_SHARED<Scene_ActorTarget>(item_id, item_window->GetIndex()));
+				Scene::Push(
+				    EASYRPG_MAKE_SHARED<Scene_ActorTarget>(item_id, item_window->GetIndex()));
 				item_index = item_window->GetIndex();
 			}
 		} else {

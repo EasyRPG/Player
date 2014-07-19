@@ -20,9 +20,8 @@
 #include "game_actors.h"
 #include "bitmap.h"
 
-Window_Equip::Window_Equip(int ix, int iy, int iwidth, int iheight, int actor_id) :
-	Window_Selectable(ix, iy, iwidth, iheight),
-	actor_id(actor_id) {
+Window_Equip::Window_Equip(int ix, int iy, int iwidth, int iheight, int actor_id)
+    : Window_Selectable(ix, iy, iwidth, iheight), actor_id(actor_id) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
@@ -32,9 +31,7 @@ Window_Equip::Window_Equip(int ix, int iy, int iwidth, int iheight, int actor_id
 	Refresh();
 }
 
-int Window_Equip::GetItemId() {
-	return index < 0 ? 0 : data[index];
-}
+int Window_Equip::GetItemId() { return index < 0 ? 0 : data[index]; }
 
 void Window_Equip::Refresh() {
 	contents->Clear();

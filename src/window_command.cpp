@@ -21,9 +21,10 @@
 #include "bitmap.h"
 #include "util_macro.h"
 
-Window_Command::Window_Command(std::vector<std::string> commands, int width, int max_item) :
-	Window_Selectable(0, 0, GetRequiredWidth(commands, width), (max_item == -1 ? commands.size() : max_item) * 16 + 16),
-	commands(commands) {
+Window_Command::Window_Command(std::vector<std::string> commands, int width, int max_item)
+    : Window_Selectable(0, 0, GetRequiredWidth(commands, width),
+                        (max_item == -1 ? commands.size() : max_item) * 16 + 16)
+    , commands(commands) {
 
 	index = 0;
 	item_max = commands.size();
@@ -46,9 +47,7 @@ void Window_Command::DrawItem(int index, Font::SystemColor color) {
 	contents->TextDraw(0, 16 * index + 2, color, commands[index]);
 }
 
-void Window_Command::DisableItem(int i) {
-	DrawItem(i, Font::ColorDisabled);
-}
+void Window_Command::DisableItem(int i) { DrawItem(i, Font::ColorDisabled); }
 
 void Window_Command::SetItemText(unsigned index, std::string const& text) {
 	if (index < commands.size()) {

@@ -107,7 +107,7 @@ void Input::InitButtons() {
 	buttons[DEBUG_THROUGH].push_back(Keys::JOY_9);
 #endif
 
-#if defined(USE_JOYSTICK_HAT)  && defined(SUPPORT_JOYSTICK_HAT)
+#if defined(USE_JOYSTICK_HAT) && defined(SUPPORT_JOYSTICK_HAT)
 	buttons[DOWN].push_back(Keys::JOY_HAT_DOWN);
 	buttons[LEFT].push_back(Keys::JOY_HAT_LEFT);
 	buttons[RIGHT].push_back(Keys::JOY_HAT_RIGHT);
@@ -115,7 +115,7 @@ void Input::InitButtons() {
 
 #endif
 
-#if defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)
+#if defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)
 	buttons[LEFT].push_back(Keys::JOY_AXIS_X_LEFT);
 	buttons[RIGHT].push_back(Keys::JOY_AXIS_X_RIGHT);
 	buttons[DOWN].push_back(Keys::JOY_AXIS_Y_DOWN);

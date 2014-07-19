@@ -76,17 +76,11 @@ void Game_Battle::Update() {
 	spriteset->Update();
 }
 
-void Game_Battle::Terminate() {
-	terminate = true;
-}
+void Game_Battle::Terminate() { terminate = true; }
 
-Spriteset_Battle& Game_Battle::GetSpriteset() {
-	return *spriteset;
-}
+Spriteset_Battle& Game_Battle::GetSpriteset() { return *spriteset; }
 
-void Game_Battle::NextTurn() {
-	++turn;
-}
+void Game_Battle::NextTurn() { ++turn; }
 
 void Game_Battle::UpdateGauges() {
 	std::vector<Game_Battler*> battlers;
@@ -95,22 +89,20 @@ void Game_Battle::UpdateGauges() {
 
 	int max_agi = 1;
 
-	for (std::vector<Game_Battler*>::const_iterator it = battlers.begin();
-		it != battlers.end(); ++it) {
+	for (std::vector<Game_Battler*>::const_iterator it = battlers.begin(); it != battlers.end();
+	     ++it) {
 		max_agi = std::max(max_agi, (*it)->GetAgi());
 	}
 
-	for (std::vector<Game_Battler*>::const_iterator it = battlers.begin();
-		it != battlers.end(); ++it) {
+	for (std::vector<Game_Battler*>::const_iterator it = battlers.begin(); it != battlers.end();
+	     ++it) {
 		if (!(*it)->GetBattleAlgorithm()) {
 			(*it)->UpdateGauge(1000 / max_agi);
 		}
 	}
 }
 
-void Game_Battle::ChangeBackground(const std::string& name) {
-	background_name = name;
-}
+void Game_Battle::ChangeBackground(const std::string& name) { background_name = name; }
 
 /*
 void Game_Battle::Quit() {
@@ -127,26 +119,24 @@ scene = NULL;
 int Game_Battle::GetTurn() {
 	return turn;
 
-	//return turn_fragments / turn_length;
+	// return turn_fragments / turn_length;
 }
 
 bool Game_Battle::CheckTurns(int turns, int base, int multiple) {
 	if (multiple == 0) {
 		return turns >= base && (turns - base) == 0;
-	}
-	else {
+	} else {
 		return turns >= base && (turns - base) % multiple == 0;
 	}
 }
 
 bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
-	if (condition.flags.switch_a && !Game_Switches[condition.switch_a_id])
-		return false;
+	if (condition.flags.switch_a && !Game_Switches[condition.switch_a_id]) return false;
 
-	if (condition.flags.switch_b && !Game_Switches[condition.switch_b_id])
-		return false;
+	if (condition.flags.switch_b && !Game_Switches[condition.switch_b_id]) return false;
 
-	if (condition.flags.variable && !(Game_Variables[condition.variable_id] >= condition.variable_value))
+	if (condition.flags.variable &&
+	    !(Game_Variables[condition.variable_id] >= condition.variable_value))
 		return false;
 
 	if (condition.flags.turn && !CheckTurns(GetTurn(), condition.turn_b, condition.turn_a))
@@ -169,15 +159,13 @@ bool Game_Battle::AreConditionsMet(const RPG::TroopPageCondition& condition) {
 	if (condition.flags.enemy_hp) {
 		Game_Battler& enemy = (*Main_Data::game_enemyparty)[condition.enemy_id];
 		int hp = enemy.GetHp();
-		if (hp < condition.enemy_hp_min || hp > condition.enemy_hp_max)
-			return false;
+		if (hp < condition.enemy_hp_min || hp > condition.enemy_hp_max) return false;
 	}
 
 	if (condition.flags.actor_hp) {
 		Game_Actor* actor = Game_Actors::GetActor(condition.actor_id);
 		int hp = actor->GetHp();
-		if (hp < condition.actor_hp_min || hp > condition.actor_hp_max)
-			return false;
+		if (hp < condition.actor_hp_min || hp > condition.actor_hp_max) return false;
 	}
 	/*
 	TODO RPG2k3
@@ -211,8 +199,7 @@ void Game_Battle::UpdateEvents() {
 bool Game_Battle::IsEscapeAllowed() {
 	if (Game_Temp::battle_escape_mode == -1) {
 		return Game_System::GetAllowEscape();
-	}
-	else {
+	} else {
 		return !!Game_Temp::battle_escape_mode;
 	}
 }

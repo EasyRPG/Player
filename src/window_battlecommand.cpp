@@ -28,8 +28,8 @@
 #include "window_battlecommand.h"
 #include "bitmap.h"
 
-Window_BattleCommand::Window_BattleCommand(int x, int y, int width, int height) :
-	Window_Base(x, y, width, height) {
+Window_BattleCommand::Window_BattleCommand(int x, int y, int width, int height)
+    : Window_Base(x, y, width, height) {
 
 	SetActor(0);
 
@@ -77,14 +77,11 @@ void Window_BattleCommand::Update() {
 		index += num_commands;
 		index %= num_commands;
 
-		if (index < top_row)
-			top_row = index;
-		if (index > top_row + num_rows - 1)
-			top_row = index - num_rows + 1;
+		if (index < top_row) top_row = index;
+		if (index > top_row + num_rows - 1) top_row = index - num_rows + 1;
 
 		cycle++;
-		if (cycle % 20 == 0 || old_index != index)
-			Refresh();
+		if (cycle % 20 == 0 || old_index != index) Refresh();
 	}
 
 	UpdateCursorRect();
@@ -98,8 +95,7 @@ void Window_BattleCommand::UpdateCursorRect() {
 }
 
 void Window_BattleCommand::Refresh() {
-	if (not contents)
-		return;
+	if (not contents) return;
 
 	int num_commands = commands.size();
 
@@ -112,47 +108,41 @@ void Window_BattleCommand::Refresh() {
 	SetUpArrow(false);
 	SetDownArrow(false);
 	if (active && (cycle / 20) % 2 == 0) {
-		if (top_row > 0)
-			SetUpArrow(true);
-		if (top_row + num_rows < (int) num_commands)
-			SetDownArrow(true);
+		if (top_row > 0) SetUpArrow(true);
+		if (top_row + num_rows < (int)num_commands) SetDownArrow(true);
 	}
 }
 
 void Window_BattleCommand::DrawItem(int index, Font::SystemColor color) {
 	int y = 16 * (index - top_row);
-	if (y < 0 || y + 16 > contents->GetHeight())
-		return;
+	if (y < 0 || y + 16 > contents->GetHeight()) return;
 	contents->ClearRect(Rect(0, y, contents->GetWidth(), 16));
 	contents->TextDraw(2, y + 2, color, commands[index]);
 }
 
-int Window_BattleCommand::GetIndex() {
-	return index;
-}
+int Window_BattleCommand::GetIndex() { return index; }
 
-void Window_BattleCommand::SetIndex(int _index) {
-	index = _index;
-}
+void Window_BattleCommand::SetIndex(int _index) { index = _index; }
 
 void Window_BattleCommand::SetActor(int _actor_id) {
 	actor_id = (Player::engine == Player::EngineRpg2k3) ? _actor_id : 0;
 	commands.clear();
 
 	if (actor_id == 0) {
-		commands.push_back(!Data::terms.command_attack.empty() ? Data::terms.command_attack : "Attack");
-		commands.push_back(!Data::terms.command_defend.empty() ? Data::terms.command_defend : "Defend");
+		commands.push_back(!Data::terms.command_attack.empty() ? Data::terms.command_attack
+		                                                       : "Attack");
+		commands.push_back(!Data::terms.command_defend.empty() ? Data::terms.command_defend
+		                                                       : "Defend");
 		commands.push_back(!Data::terms.command_item.empty() ? Data::terms.command_item : "Item");
-		commands.push_back(!Data::terms.command_skill.empty() ? Data::terms.command_skill : "Skill");
-	}
-	else {
+		commands.push_back(!Data::terms.command_skill.empty() ? Data::terms.command_skill
+		                                                      : "Skill");
+	} else {
 		Game_Actor* actor = Game_Actors::GetActor(actor_id);
 		const std::vector<uint32_t>& bcmds = actor->GetBattleCommands();
 		std::vector<uint32_t>::const_iterator it;
 		for (it = bcmds.begin(); it != bcmds.end(); ++it) {
 			uint32_t bcmd = *it;
-			if (bcmd <= 0 || bcmd > Data::battlecommands.commands.size())
-				break;
+			if (bcmd <= 0 || bcmd > Data::battlecommands.commands.size()) break;
 			const RPG::BattleCommand& command = Data::battlecommands.commands[bcmd - 1];
 			commands.push_back(command.name);
 		}
@@ -169,12 +159,8 @@ RPG::BattleCommand Window_BattleCommand::GetCommand() {
 	}
 
 	RPG::BattleCommand command;
-	static const int types[] = {
-		RPG::BattleCommand::Type_attack,
-		RPG::BattleCommand::Type_defense,
-		RPG::BattleCommand::Type_item,
-		RPG::BattleCommand::Type_special
-	};
+	static const int types[] = {RPG::BattleCommand::Type_attack, RPG::BattleCommand::Type_defense,
+	                            RPG::BattleCommand::Type_item,   RPG::BattleCommand::Type_special};
 
 	command.ID = index + 1;
 	command.name = commands[index];
@@ -183,8 +169,7 @@ RPG::BattleCommand Window_BattleCommand::GetCommand() {
 }
 
 int Window_BattleCommand::GetSkillSubset() {
-	if (actor_id == 0)
-		return RPG::Skill::Type_normal;
+	if (actor_id == 0) return RPG::Skill::Type_normal;
 
 	Game_Actor* actor = Game_Actors::GetActor(actor_id);
 	const std::vector<uint32_t>& bcmds = actor->GetBattleCommands();
@@ -193,8 +178,7 @@ int Window_BattleCommand::GetSkillSubset() {
 	int idx = 4;
 	for (int i = 0; i < bcmd - 1; i++) {
 		const RPG::BattleCommand& command = Data::battlecommands.commands[i];
-		if (command.type == RPG::BattleCommand::Type_subskill)
-			idx++;
+		if (command.type == RPG::BattleCommand::Type_subskill) idx++;
 	}
 
 	return idx;

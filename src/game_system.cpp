@@ -23,13 +23,9 @@
 
 static RPG::SaveSystem& data = Main_Data::game_data.system;
 
-void Game_System::Init() {
-	data.Setup();
-}
+void Game_System::Init() { data.Setup(); }
 
-int Game_System::GetSaveCount() {
-	return data.save_count;
-}
+int Game_System::GetSaveCount() { return data.save_count; }
 
 void Game_System::BgmPlay(RPG::Music const& bgm) {
 	// (OFF) means play nothing
@@ -69,9 +65,7 @@ void Game_System::SePlay(RPG::Sound const& se) {
 	}
 }
 
-std::string Game_System::GetSystemName() {
-	return data.graphics_name;
-}
+std::string Game_System::GetSystemName() { return data.graphics_name; }
 
 void Game_System::SetSystemName(std::string const& new_system_name) {
 	data.graphics_name = new_system_name;
@@ -79,173 +73,155 @@ void Game_System::SetSystemName(std::string const& new_system_name) {
 
 RPG::Music& Game_System::GetSystemBGM(int which) {
 	switch (which) {
-		case BGM_Battle:		return data.battle_music;
-		case BGM_Victory:		return data.battle_end_music;
-		case BGM_Inn:			return data.inn_music;
-		case BGM_Skiff:			return data.boat_music;
-		case BGM_Ship:			return data.ship_music;
-		case BGM_Airship:		return data.airship_music;
-		case BGM_GameOver:		return data.gameover_music;
+	case BGM_Battle:
+		return data.battle_music;
+	case BGM_Victory:
+		return data.battle_end_music;
+	case BGM_Inn:
+		return data.inn_music;
+	case BGM_Skiff:
+		return data.boat_music;
+	case BGM_Ship:
+		return data.ship_music;
+	case BGM_Airship:
+		return data.airship_music;
+	case BGM_GameOver:
+		return data.gameover_music;
 	}
 
 	return data.battle_music; // keep the compiler happy
 }
 
-RPG::Music& Game_System::GetCurrentBGM() {
-	return data.current_music;
-}
+RPG::Music& Game_System::GetCurrentBGM() { return data.current_music; }
 
-void Game_System::SetSystemBGM(int which, const RPG::Music& bgm) {
-	GetSystemBGM(which) = bgm;
-}
+void Game_System::SetSystemBGM(int which, const RPG::Music& bgm) { GetSystemBGM(which) = bgm; }
 
-void Game_System::MemorizeBGM() {
-	data.stored_music = data.current_music;
-}
+void Game_System::MemorizeBGM() { data.stored_music = data.current_music; }
 
-void Game_System::PlayMemorizedBGM() {
-	BgmPlay(data.stored_music);
-}
+void Game_System::PlayMemorizedBGM() { BgmPlay(data.stored_music); }
 
 RPG::Sound& Game_System::GetSystemSE(int which) {
 	switch (which) {
-		case SFX_Cursor:		return data.cursor_se;
-		case SFX_Decision:		return data.decision_se;
-		case SFX_Cancel:		return data.cancel_se;
-		case SFX_Buzzer:		return data.buzzer_se;
-		case SFX_BeginBattle:	return data.battle_se;
-		case SFX_Escape:		return data.escape_se;
-		case SFX_EnemyAttacks:	return data.enemy_attack_se;
-		case SFX_EnemyDamage:	return data.enemy_damaged_se;
-		case SFX_AllyDamage:	return data.actor_damaged_se;
-		case SFX_Evasion:		return data.dodge_se;
-		case SFX_EnemyKill:		return data.enemy_death_se;
-		case SFX_UseItem:		return data.item_se;
+	case SFX_Cursor:
+		return data.cursor_se;
+	case SFX_Decision:
+		return data.decision_se;
+	case SFX_Cancel:
+		return data.cancel_se;
+	case SFX_Buzzer:
+		return data.buzzer_se;
+	case SFX_BeginBattle:
+		return data.battle_se;
+	case SFX_Escape:
+		return data.escape_se;
+	case SFX_EnemyAttacks:
+		return data.enemy_attack_se;
+	case SFX_EnemyDamage:
+		return data.enemy_damaged_se;
+	case SFX_AllyDamage:
+		return data.actor_damaged_se;
+	case SFX_Evasion:
+		return data.dodge_se;
+	case SFX_EnemyKill:
+		return data.enemy_death_se;
+	case SFX_UseItem:
+		return data.item_se;
 	}
 	return data.cursor_se; // keep the compiler happy
 }
 
-void Game_System::SetSystemSE(int which, const RPG::Sound& sfx) {
-	GetSystemSE(which) = sfx;
-}
+void Game_System::SetSystemSE(int which, const RPG::Sound& sfx) { GetSystemSE(which) = sfx; }
 
-void Game_System::SetAllowTeleport(bool allow) {
-	data.teleport_allowed = allow;
-}
+void Game_System::SetAllowTeleport(bool allow) { data.teleport_allowed = allow; }
 
-bool Game_System::GetAllowTeleport() {
-	return data.teleport_allowed;
-}
+bool Game_System::GetAllowTeleport() { return data.teleport_allowed; }
 
-void Game_System::SetAllowEscape(bool allow) {
-	data.escape_allowed = allow;
-}
+void Game_System::SetAllowEscape(bool allow) { data.escape_allowed = allow; }
 
-bool Game_System::GetAllowEscape() {
-	return data.escape_allowed;
-}
+bool Game_System::GetAllowEscape() { return data.escape_allowed; }
 
-void Game_System::SetAllowSave(bool allow) {
-	data.save_allowed = allow;
-}
+void Game_System::SetAllowSave(bool allow) { data.save_allowed = allow; }
 
-bool Game_System::GetAllowSave() {
-	return data.save_allowed;
-}
+bool Game_System::GetAllowSave() { return data.save_allowed; }
 
-void Game_System::SetAllowMenu(bool allow) {
-	data.menu_allowed = allow;
-}
+void Game_System::SetAllowMenu(bool allow) { data.menu_allowed = allow; }
 
-bool Game_System::GetAllowMenu() {
-	return data.menu_allowed;
-}
+bool Game_System::GetAllowMenu() { return data.menu_allowed; }
 
 int Game_System::GetTransition(int which) {
 	int transition = 0;
 
 	switch (which) {
-		case Transition_TeleportErase:
-			transition = data.transition_out;
-			break;
-		case Transition_TeleportShow:
-			transition = data.transition_in;
-			break;
-		case Transition_BeginBattleErase:
-			transition = data.battle_start_fadeout;
-			break;
-		case Transition_BeginBattleShow:
-			transition = data.battle_start_fadein;
-			break;
-		case Transition_EndBattleErase:
-			transition = data.battle_end_fadeout;
-			break;
-		case Transition_EndBattleShow:
-			transition = data.battle_end_fadein;
-			break;
-		default: assert(false && "Bad transition");
+	case Transition_TeleportErase:
+		transition = data.transition_out;
+		break;
+	case Transition_TeleportShow:
+		transition = data.transition_in;
+		break;
+	case Transition_BeginBattleErase:
+		transition = data.battle_start_fadeout;
+		break;
+	case Transition_BeginBattleShow:
+		transition = data.battle_start_fadein;
+		break;
+	case Transition_EndBattleErase:
+		transition = data.battle_end_fadeout;
+		break;
+	case Transition_EndBattleShow:
+		transition = data.battle_end_fadein;
+		break;
+	default:
+		assert(false && "Bad transition");
 	}
 
 	static const int fades[2][21] = {
-		{
-			Graphics::TransitionFadeOut,
-			Graphics::TransitionRandomBlocks,
-			Graphics::TransitionRandomBlocksUp,
-			Graphics::TransitionRandomBlocksDown,
-			Graphics::TransitionBlindClose,
-			Graphics::TransitionVerticalStripesOut,
-			Graphics::TransitionHorizontalStripesOut,
-			Graphics::TransitionBorderToCenterOut,
-			Graphics::TransitionCenterToBorderOut,
-			Graphics::TransitionScrollUpOut,
-			Graphics::TransitionScrollDownOut,
-			Graphics::TransitionScrollLeftOut,
-			Graphics::TransitionScrollRightOut,
-			Graphics::TransitionVerticalDivision,
-			Graphics::TransitionHorizontalDivision,
-			Graphics::TransitionCrossDivision,
-			Graphics::TransitionZoomIn,
-			Graphics::TransitionMosaicOut,
-			Graphics::TransitionWaveOut,
-			Graphics::TransitionErase,
-			Graphics::TransitionNone
-		},
-		{
-			Graphics::TransitionFadeIn,
-			Graphics::TransitionRandomBlocks,
-			Graphics::TransitionRandomBlocksUp,
-			Graphics::TransitionRandomBlocksDown,
-			Graphics::TransitionBlindOpen,
-			Graphics::TransitionVerticalStripesIn,
-			Graphics::TransitionHorizontalStripesIn,
-			Graphics::TransitionBorderToCenterIn,
-			Graphics::TransitionCenterToBorderIn,
-			Graphics::TransitionScrollUpIn,
-			Graphics::TransitionScrollDownIn,
-			Graphics::TransitionScrollLeftIn,
-			Graphics::TransitionScrollRightIn,
-			Graphics::TransitionVerticalCombine,
-			Graphics::TransitionHorizontalCombine,
-			Graphics::TransitionCrossCombine,
-			Graphics::TransitionZoomOut,
-			Graphics::TransitionMosaicIn,
-			Graphics::TransitionWaveIn,
-			Graphics::TransitionErase,
-			Graphics::TransitionNone,
-		}
-	};
+	    {Graphics::TransitionFadeOut,              Graphics::TransitionRandomBlocks,
+	     Graphics::TransitionRandomBlocksUp,       Graphics::TransitionRandomBlocksDown,
+	     Graphics::TransitionBlindClose,           Graphics::TransitionVerticalStripesOut,
+	     Graphics::TransitionHorizontalStripesOut, Graphics::TransitionBorderToCenterOut,
+	     Graphics::TransitionCenterToBorderOut,    Graphics::TransitionScrollUpOut,
+	     Graphics::TransitionScrollDownOut,        Graphics::TransitionScrollLeftOut,
+	     Graphics::TransitionScrollRightOut,       Graphics::TransitionVerticalDivision,
+	     Graphics::TransitionHorizontalDivision,   Graphics::TransitionCrossDivision,
+	     Graphics::TransitionZoomIn,               Graphics::TransitionMosaicOut,
+	     Graphics::TransitionWaveOut,              Graphics::TransitionErase,
+	     Graphics::TransitionNone},
+	    {Graphics::TransitionFadeIn,              Graphics::TransitionRandomBlocks,
+	     Graphics::TransitionRandomBlocksUp,      Graphics::TransitionRandomBlocksDown,
+	     Graphics::TransitionBlindOpen,           Graphics::TransitionVerticalStripesIn,
+	     Graphics::TransitionHorizontalStripesIn, Graphics::TransitionBorderToCenterIn,
+	     Graphics::TransitionCenterToBorderIn,    Graphics::TransitionScrollUpIn,
+	     Graphics::TransitionScrollDownIn,        Graphics::TransitionScrollLeftIn,
+	     Graphics::TransitionScrollRightIn,       Graphics::TransitionVerticalCombine,
+	     Graphics::TransitionHorizontalCombine,   Graphics::TransitionCrossCombine,
+	     Graphics::TransitionZoomOut,             Graphics::TransitionMosaicIn,
+	     Graphics::TransitionWaveIn,              Graphics::TransitionErase,
+	     Graphics::TransitionNone, }};
 
 	return fades[which % 2][transition];
 }
 
 void Game_System::SetTransition(int which, int transition) {
 	switch (which) {
-		case Transition_TeleportErase:		data.transition_out			= transition; break;
-		case Transition_TeleportShow:		data.transition_in			= transition; break;
-		case Transition_BeginBattleErase:	data.battle_start_fadeout	= transition; break;
-		case Transition_BeginBattleShow:	data.battle_start_fadein	= transition; break;
-		case Transition_EndBattleErase:		data.battle_end_fadeout		= transition; break;
-		case Transition_EndBattleShow:		data.battle_end_fadein		= transition; break;
-		default: assert(false && "Bad transition");
+	case Transition_TeleportErase:
+		data.transition_out = transition;
+		break;
+	case Transition_TeleportShow:
+		data.transition_in = transition;
+		break;
+	case Transition_BeginBattleErase:
+		data.battle_start_fadeout = transition;
+		break;
+	case Transition_BeginBattleShow:
+		data.battle_start_fadein = transition;
+		break;
+	case Transition_EndBattleErase:
+		data.battle_end_fadeout = transition;
+		break;
+	case Transition_EndBattleShow:
+		data.battle_end_fadein = transition;
+		break;
+	default:
+		assert(false && "Bad transition");
 	}
 }

@@ -22,7 +22,7 @@
 #include "util_win.h"
 
 #ifdef USE_SDL
-#  include "SDL_syswm.h"
+#include "SDL_syswm.h"
 #endif
 
 int WindowsUtils::GetWindowsVersion() {

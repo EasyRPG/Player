@@ -52,12 +52,10 @@ void Spriteset_Battle::Update() {
 	}
 }
 
-Sprite_Battler* Spriteset_Battle::FindBattler(const Game_Battler* battler)
-{
+Sprite_Battler* Spriteset_Battle::FindBattler(const Game_Battler* battler) {
 	std::vector<EASYRPG_SHARED_PTR<Sprite_Battler> >::iterator it;
 	for (it = sprites.begin(); it != sprites.end(); ++it) {
-		if ((*it)->GetBattler() == battler)
-			return it->get();
+		if ((*it)->GetBattler() == battler) return it->get();
 	}
 	return NULL;
 }

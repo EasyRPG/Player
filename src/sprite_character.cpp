@@ -21,21 +21,20 @@
 #include "game_map.h"
 #include "bitmap.h"
 
-Sprite_Character::Sprite_Character(Game_Character* character) :
-	character(character),
-	tile_id(0),
-	character_index(0),
-	chara_width(24*(TILE_SIZE/16)),
-	chara_height(32*(TILE_SIZE/16)) {
+Sprite_Character::Sprite_Character(Game_Character* character)
+    : character(character)
+    , tile_id(0)
+    , character_index(0)
+    , chara_width(24 * (TILE_SIZE / 16))
+    , chara_height(32 * (TILE_SIZE / 16)) {
 	Update();
 }
 
 void Sprite_Character::Update() {
 	Sprite::Update();
 	Rect r;
-	if (tile_id != character->GetTileId() ||
-		character_name != character->GetSpriteName() ||
-		character_index != character->GetSpriteIndex()) {
+	if (tile_id != character->GetTileId() || character_name != character->GetSpriteName() ||
+	    character_index != character->GetSpriteIndex()) {
 		tile_id = character->GetTileId();
 		character_name = character->GetSpriteName();
 		character_index = character->GetSpriteIndex();
@@ -62,7 +61,8 @@ void Sprite_Character::Update() {
 	}
 
 	if (tile_id == 0) {
-		int row = (character->IsSpinning() ? character->GetPrelockDirection() : character->GetDirection());
+		int row = (character->IsSpinning() ? character->GetPrelockDirection()
+		                                   : character->GetDirection());
 		r.Set(character->GetPattern() * chara_width, row * chara_height, chara_width, chara_height);
 		SetSrcRect(r);
 	}
@@ -83,14 +83,10 @@ void Sprite_Character::Update() {
 	SetX(character->GetScreenX());
 	SetY(character->GetScreenY());
 	SetZ(character->GetScreenZ(chara_height));
-	
-	//SetBlendType(character->GetBlendType());
-	//SetBushDepth(character->GetBushDepth());
+
+	// SetBlendType(character->GetBlendType());
+	// SetBushDepth(character->GetBushDepth());
 }
 
-Game_Character* Sprite_Character::GetCharacter() {
-	return character;
-}
-void Sprite_Character::SetCharacter(Game_Character* new_character) {
-	character = new_character;
-}
+Game_Character* Sprite_Character::GetCharacter() { return character; }
+void Sprite_Character::SetCharacter(Game_Character* new_character) { character = new_character; }

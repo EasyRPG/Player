@@ -48,9 +48,7 @@
 #include "util_macro.h"
 #include "window_command.h"
 
-Scene_Title::Scene_Title() {
-	type = Scene::Title;
-}
+Scene_Title::Scene_Title() { type = Scene::Title; }
 
 void Scene_Title::Start() {
 	if (!Player::battle_test_flag && !Player::hide_title_flag) {
@@ -83,13 +81,9 @@ void Scene_Title::TransitionIn() {
 	}
 }
 
-void Scene_Title::Resume() {
-	command_window->SetVisible(true);
-}
+void Scene_Title::Resume() { command_window->SetVisible(true); }
 
-void Scene_Title::Suspend() {
-	command_window->SetVisible(false);
-}
+void Scene_Title::Suspend() { command_window->SetVisible(false); }
 
 void Scene_Title::Update() {
 	if (Player::battle_test_flag) {
@@ -117,8 +111,7 @@ bool Scene_Title::CheckContinue() {
 	EASYRPG_SHARED_PTR<FileFinder::ProjectTree> tree;
 	tree = FileFinder::CreateProjectTree(Main_Data::project_path, false);
 
-	for (int i = 1; i <= 15; i++)
-	{
+	for (int i = 1; i <= 15; i++) {
 		std::stringstream ss;
 		ss << "Save" << (i <= 9 ? "0" : "") << i << ".lsd";
 
@@ -133,7 +126,9 @@ void Scene_Title::CreateTitleGraphic() {
 	// Load Title Graphic
 	if (!title) // No need to recreate Title on Resume
 	{
-		if (Data::system.title_name.empty()) { return; }
+		if (Data::system.title_name.empty()) {
+			return;
+		}
 		title.reset(new Sprite());
 		title->SetBitmap(Cache::Title(Data::system.title_name));
 	}
@@ -175,13 +170,10 @@ void Scene_Title::PlayTitleMusic() {
 	Game_System::BgmPlay(Data::system.title_music);
 }
 
-bool Scene_Title::CheckValidPlayerLocation() {
-	return (Data::treemap.start.party_map_id > 0);
-}
+bool Scene_Title::CheckValidPlayerLocation() { return (Data::treemap.start.party_map_id > 0); }
 
 void Scene_Title::PrepareBattleTest() {
 	Player::CreateGameObjects();
-
 
 	Scene::Push(Scene_Battle::Create(), true);
 }

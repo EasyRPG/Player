@@ -25,9 +25,8 @@
 
 #include <boost/next_prior.hpp>
 
-Window_BattleMessage::Window_BattleMessage(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight),
-	needs_refresh(true) {
+Window_BattleMessage::Window_BattleMessage(int ix, int iy, int iwidth, int iheight)
+    : Window_Base(ix, iy, iwidth, iheight), needs_refresh(true) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
@@ -77,6 +76,4 @@ void Window_BattleMessage::Update() {
 	}
 }
 
-int Window_BattleMessage::GetLineCount() {
-	return (int)lines.size();
-}
+int Window_BattleMessage::GetLineCount() { return (int)lines.size(); }

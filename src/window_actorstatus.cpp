@@ -24,9 +24,8 @@
 #include "bitmap.h"
 #include "font.h"
 
-Window_ActorStatus::Window_ActorStatus(int ix, int iy, int iwidth, int iheight, int actor_id) :
-	Window_Base(ix, iy, iwidth, iheight),
-	actor_id(actor_id) {
+Window_ActorStatus::Window_ActorStatus(int ix, int iy, int iwidth, int iheight, int actor_id)
+    : Window_Base(ix, iy, iwidth, iheight), actor_id(actor_id) {
 
 	SetContents(Bitmap::Create(width - 16, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
@@ -40,24 +39,24 @@ void Window_ActorStatus::Refresh() {
 	DrawStatus();
 }
 
-void Window_ActorStatus::DrawStatus(){
+void Window_ActorStatus::DrawStatus() {
 
 	Game_Actor* actor = Game_Actors::GetActor(actor_id);
 
 	// Draw Hp
 	contents->TextDraw(1, 3, 1, Data::terms.hp_short);
-	DrawMinMax(100,3,actor->GetHp(), actor->GetMaxHp());
+	DrawMinMax(100, 3, actor->GetHp(), actor->GetMaxHp());
 
 	// Draw Sp
 	contents->TextDraw(1, 18, 1, Data::terms.sp_short);
-	DrawMinMax(100,18,actor->GetSp(), actor->GetMaxSp());
+	DrawMinMax(100, 18, actor->GetSp(), actor->GetMaxSp());
 
 	// Draw Exp
 	contents->TextDraw(1, 33, 1, Data::terms.exp_short);
-	DrawMinMax(100,33, -1, -1);
+	DrawMinMax(100, 33, -1, -1);
 }
 
-void Window_ActorStatus::DrawMinMax(int cx, int cy, int min, int max){
+void Window_ActorStatus::DrawMinMax(int cx, int cy, int min, int max) {
 	std::stringstream ss;
 	if (max >= 0)
 		ss << min;
@@ -70,5 +69,5 @@ void Window_ActorStatus::DrawMinMax(int cx, int cy, int min, int max){
 		ss << max;
 	else
 		ss << Game_Actors::GetActor(actor_id)->GetNextExpString();
-	contents->TextDraw(cx+48, cy, Font::ColorDefault, ss.str(), Text::AlignRight);
+	contents->TextDraw(cx + 48, cy, Font::ColorDefault, ss.str(), Text::AlignRight);
 }

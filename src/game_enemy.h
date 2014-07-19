@@ -25,8 +25,7 @@
 /**
  * Represents a single enemy in the battle scene
  */
-class Game_Enemy : public Game_Battler
-{
+class Game_Enemy : public Game_Battler {
 public:
 	Game_Enemy(int enemy_id);
 
@@ -104,14 +103,14 @@ public:
 
 	/**
 	 * Sets enemy X position
-	 * 
+	 *
 	 * @param new_x New X position
 	 */
 	void SetBattleX(int new_x);
 
 	/**
 	 * Sets enemy Y position
-	 * 
+	 *
 	 * @param new_y New Y position
 	 */
 	void SetBattleY(int new_y);
@@ -156,4 +155,3 @@ protected:
 };
 
 #endif
-

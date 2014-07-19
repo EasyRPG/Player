@@ -24,21 +24,18 @@
 #include "battle_animation.h"
 #include "bitmap_screen.h"
 
-BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) :
-	x(x), y(y), animation(animation), frame(0)
-{
+BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation)
+    : x(x), y(y), animation(animation), frame(0) {
 	const std::string& name = animation->animation_name;
 	BitmapRef graphic;
 
 	if (!FileFinder::FindImage("Battle", name).empty()) {
 		large = false;
 		graphic = Cache::Battle(name);
-	}
-	else if (!FileFinder::FindImage("Battle2", name).empty()) {
+	} else if (!FileFinder::FindImage("Battle2", name).empty()) {
 		large = true;
 		graphic = Cache::Battle2(name);
-	}
-	else {
+	} else {
 		Output::Warning("Couldn't find animation: %s", name.c_str());
 		return;
 	}
@@ -48,17 +45,11 @@ BattleAnimation::BattleAnimation(int x, int y, const RPG::Animation* animation) 
 	Graphics::RegisterDrawable(this);
 }
 
-BattleAnimation::~BattleAnimation() {
-	Graphics::RemoveDrawable(this);
-}
+BattleAnimation::~BattleAnimation() { Graphics::RemoveDrawable(this); }
 
-int BattleAnimation::GetZ() const {
-	return 1500;
-}
+int BattleAnimation::GetZ() const { return 1500; }
 
-DrawableType BattleAnimation::GetType() const {
-	return TypeDefault;
-}
+DrawableType BattleAnimation::GetType() const { return TypeDefault; }
 
 void BattleAnimation::Draw() {
 	if (!screen) {
@@ -66,8 +57,7 @@ void BattleAnimation::Draw() {
 		return;
 	}
 
-	if (frame >= (int) animation->frames.size())
-		return;
+	if (frame >= (int)animation->frames.size()) return;
 
 	const RPG::AnimationFrame& anim_frame = animation->frames[frame];
 
@@ -95,18 +85,10 @@ void BattleAnimation::Update() {
 	update = !update;
 }
 
-void BattleAnimation::SetFrame(int _frame) {
-	frame = _frame;
-}
+void BattleAnimation::SetFrame(int _frame) { frame = _frame; }
 
-int BattleAnimation::GetFrame() const {
-	return frame;
-}
+int BattleAnimation::GetFrame() const { return frame; }
 
-int BattleAnimation::GetFrames() const {
-	return animation->frames.size();
-}
+int BattleAnimation::GetFrames() const { return animation->frames.size(); }
 
-bool BattleAnimation::IsDone() const {
-	return GetFrame() >= GetFrames();
-}
+bool BattleAnimation::IsDone() const { return GetFrame() >= GetFrames(); }

@@ -28,11 +28,11 @@
 #include <exception>
 
 #ifdef GEKKO
-	#include <unistd.h>
+#include <unistd.h>
 #endif
 
 #ifdef __ANDROID__
-	#include <android/log.h>
+#include <android/log.h>
 #endif
 
 #include "filefinder.h"
@@ -61,10 +61,11 @@ void boost::throw_exception(std::exception const& exp) {
 namespace {
 	std::ofstream LOG_FILE;
 	static bool init = false;
-	
+
 	std::ostream& output_time() {
 		if (!init) {
-			LOG_FILE.open(FileFinder::MakePath(Main_Data::project_path, OUTPUT_FILENAME).c_str(), std::ios_base::out | std::ios_base::app);
+			LOG_FILE.open(FileFinder::MakePath(Main_Data::project_path, OUTPUT_FILENAME).c_str(),
+			              std::ios_base::out | std::ios_base::app);
 			init = true;
 		}
 		std::time_t t = std::time(NULL);
@@ -86,26 +87,25 @@ namespace {
 
 	std::string format_string(char const* fmt, va_list args) {
 		char buf[4096];
-	// FIXME: devkitppc r27 seems to have broken newlib
-	#if __cplusplus > 199711L && !defined(GEKKO)
+// FIXME: devkitppc r27 seems to have broken newlib
+#if __cplusplus > 199711L && !defined(GEKKO)
 		int const result = vsnprintf(buf, sizeof(buf), fmt, args);
-	#else
+#else
 		int const result = vsprintf(buf, fmt, args);
-	#endif
+#endif
 		assert(0 <= result && result < int(sizeof(buf)));
 		return std::string(buf, result);
 	}
 }
 
-void Output::IgnorePause(bool const val) {
-	ignore_pause = val;
-}
+void Output::IgnorePause(bool const val) { ignore_pause = val; }
 
 static void WriteLog(std::string const& type, std::string const& msg, Color const& c = Color()) {
 	output_time() << type << ": " << msg << std::endl;
 
 #ifdef __ANDROID__
-	__android_log_print(type == "Error" ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, "EasyRPG Player", "%s", msg.c_str());
+	__android_log_print(type == "Error" ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, "EasyRPG Player",
+	                    "%s", msg.c_str());
 #else
 	std::cerr << type << ": " << msg << std::endl;
 #endif
@@ -131,7 +131,9 @@ static void HandleErrorOutput(const std::string& err) {
 	Text::Draw(*surface, 10, 10, Color(255, 255, 255, 255), error);
 	DisplayUi->UpdateDisplay();
 
-	if (ignore_pause) { return; }
+	if (ignore_pause) {
+		return;
+	}
 
 	Input::ResetKeys();
 	while (!Input::IsAnyPressed()) {
@@ -151,18 +153,17 @@ bool Output::TakeScreenshot() {
 	int index = 0;
 	std::string p;
 	do {
-		p = FileFinder::MakePath(Main_Data::project_path,
-								 "screenshot_"
-								 + boost::lexical_cast<std::string>(index++)
-								 + ".png");
-	} while(FileFinder::Exists(p));
+		p = FileFinder::MakePath(
+		    Main_Data::project_path,
+		    "screenshot_" + boost::lexical_cast<std::string>(index++) + ".png");
+	} while (FileFinder::Exists(p));
 	return TakeScreenshot(p);
 }
 
 bool Output::TakeScreenshot(std::string const& file) {
-	EASYRPG_SHARED_PTR<std::fstream> ret =
-		FileFinder::openUTF8(file, std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
-	return ret? Output::TakeScreenshot(*ret) : false;
+	EASYRPG_SHARED_PTR<std::fstream> ret = FileFinder::openUTF8(
+	    file, std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
+	return ret ? Output::TakeScreenshot(*ret) : false;
 }
 
 bool Output::TakeScreenshot(std::ostream& os) {
@@ -222,9 +223,7 @@ void Output::Post(const char* fmt, ...) {
 	va_end(args);
 }
 
-void Output::PostStr(std::string const& msg) {
-	WriteLog("Info", msg, Color(255, 255, 255, 255));
-}
+void Output::PostStr(std::string const& msg) { WriteLog("Info", msg, Color(255, 255, 255, 255)); }
 
 void Output::Debug(const char* fmt, ...) {
 	va_list args;
@@ -232,6 +231,4 @@ void Output::Debug(const char* fmt, ...) {
 	Output::DebugStr(format_string(fmt, args));
 	va_end(args);
 }
-void Output::DebugStr(std::string const& msg) {
-	WriteLog("Debug", msg);
-}
+void Output::DebugStr(std::string const& msg) { WriteLog("Debug", msg); }

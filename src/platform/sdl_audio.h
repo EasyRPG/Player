@@ -50,7 +50,7 @@ struct SdlAudio : public AudioInterface {
 	void SE_Stop();
 	void Update();
 
- private:
+private:
 	EASYRPG_SHARED_PTR<Mix_Music> bgm;
 	int bgm_volume;
 	EASYRPG_SHARED_PTR<Mix_Chunk> bgs;

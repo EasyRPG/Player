@@ -31,59 +31,22 @@
 // [tile-id][row][col]
 static const int8_t BlockA_Subtiles_IDS[47][2][2] = {
 #define N -1
-	{{N, N}, {N, N}},
-	{{3, N}, {N, N}},
-	{{N, 3}, {N, N}},
-	{{3, 3}, {N, N}},
-	{{N, N}, {N, 3}},
-	{{3, N}, {N, 3}},
-	{{N, 3}, {N, 3}},
-	{{3, 3}, {N, 3}},
-	{{N, N}, {3, N}},
-	{{3, N}, {3, N}},
-	{{N, 3}, {3, N}},
-	{{3, 3}, {3, N}},
-	{{N, N}, {3, 3}},
-	{{3, N}, {3, 3}},
-	{{N, 3}, {3, 3}},
-	{{3, 3}, {3, 3}},
-	{{1, N}, {1, N}},
-	{{1, 3}, {1, N}},
-	{{1, N}, {1, 3}},
-	{{1, 3}, {1, 3}},
-	{{2, 2}, {N, N}},
-	{{2, 2}, {N, 3}},
-	{{2, 2}, {3, N}},
-	{{2, 2}, {3, 3}},
-	{{N, 1}, {N, 1}},
-	{{N, 1}, {3, 1}},
-	{{3, 1}, {N, 1}},
-	{{3, 1}, {3, 1}},
-	{{N, N}, {2, 2}},
-	{{3, N}, {2, 2}},
-	{{N, 3}, {2, 2}},
-	{{3, 3}, {2, 2}},
-	{{1, 1}, {1, 1}},
-	{{2, 2}, {2, 2}},
-	{{0, 2}, {1, N}},
-	{{0, 2}, {1, 3}},
-	{{2, 0}, {N, 1}},
-	{{2, 0}, {3, 1}},
-	{{N, 1}, {2, 0}},
-	{{3, 1}, {2, 0}},
-	{{1, N}, {0, 2}},
-	{{1, 3}, {0, 2}},
-	{{0, 0}, {1, 1}},
-	{{0, 2}, {0, 2}},
-	{{1, 1}, {0, 0}},
-	{{2, 0}, {2, 0}},
-	{{0, 0}, {0, 0}}
+    {{N, N}, {N, N}}, {{3, N}, {N, N}}, {{N, 3}, {N, N}}, {{3, 3}, {N, N}}, {{N, N}, {N, 3}},
+    {{3, N}, {N, 3}}, {{N, 3}, {N, 3}}, {{3, 3}, {N, 3}}, {{N, N}, {3, N}}, {{3, N}, {3, N}},
+    {{N, 3}, {3, N}}, {{3, 3}, {3, N}}, {{N, N}, {3, 3}}, {{3, N}, {3, 3}}, {{N, 3}, {3, 3}},
+    {{3, 3}, {3, 3}}, {{1, N}, {1, N}}, {{1, 3}, {1, N}}, {{1, N}, {1, 3}}, {{1, 3}, {1, 3}},
+    {{2, 2}, {N, N}}, {{2, 2}, {N, 3}}, {{2, 2}, {3, N}}, {{2, 2}, {3, 3}}, {{N, 1}, {N, 1}},
+    {{N, 1}, {3, 1}}, {{3, 1}, {N, 1}}, {{3, 1}, {3, 1}}, {{N, N}, {2, 2}}, {{3, N}, {2, 2}},
+    {{N, 3}, {2, 2}}, {{3, 3}, {2, 2}}, {{1, 1}, {1, 1}}, {{2, 2}, {2, 2}}, {{0, 2}, {1, N}},
+    {{0, 2}, {1, 3}}, {{2, 0}, {N, 1}}, {{2, 0}, {3, 1}}, {{N, 1}, {2, 0}}, {{3, 1}, {2, 0}},
+    {{1, N}, {0, 2}}, {{1, 3}, {0, 2}}, {{0, 0}, {1, 1}}, {{0, 2}, {0, 2}}, {{1, 1}, {0, 0}},
+    {{2, 0}, {2, 0}}, {{0, 0}, {0, 0}}
 #undef N
 };
 
 // [tile-id][row][col][x/y]
 static const uint8_t BlockD_Subtiles_IDS[50][2][2][2] = {
-//     T-L     T-R       B-L     B-R
+    //     T-L     T-R       B-L     B-R
     {{{1, 2}, {1, 2}}, {{1, 2}, {1, 2}}},
     {{{2, 0}, {1, 2}}, {{1, 2}, {1, 2}}},
     {{{1, 2}, {2, 0}}, {{1, 2}, {1, 2}}},
@@ -133,21 +96,20 @@ static const uint8_t BlockD_Subtiles_IDS[50][2][2][2] = {
     {{{0, 1}, {2, 1}}, {{0, 3}, {2, 3}}},
     {{{1, 2}, {1, 2}}, {{1, 2}, {1, 2}}},
     {{{1, 2}, {1, 2}}, {{1, 2}, {1, 2}}},
-    {{{0, 0}, {0, 0}}, {{0, 0}, {0, 0}}}
-};
+    {{{0, 0}, {0, 0}}, {{0, 0}, {0, 0}}}};
 
-TilemapLayer::TilemapLayer(int ilayer) :
-	visible(true),
-	ox(0),
-	oy(0),
-	width(0),
-	height(0),
-	animation_frame(0),
-	animation_step_ab(0),
-	animation_step_c(0),
-	animation_speed(24),
-	animation_type(0),
-	layer(ilayer) {
+TilemapLayer::TilemapLayer(int ilayer)
+    : visible(true)
+    , ox(0)
+    , oy(0)
+    , width(0)
+    , height(0)
+    , animation_frame(0)
+    , animation_step_ab(0)
+    , animation_step_c(0)
+    , animation_speed(24)
+    , animation_type(0)
+    , layer(ilayer) {
 
 	chipset_screen = BitmapScreen::Create();
 
@@ -161,8 +123,7 @@ TilemapLayer::TilemapLayer(int ilayer) :
 }
 
 void TilemapLayer::DrawTile(BitmapScreen& screen, int x, int y, int row, int col, bool autotile) {
-	if (!autotile && screen.GetBitmap()->GetTileOpacity(row, col) == Bitmap::Transparent)
-		return;
+	if (!autotile && screen.GetBitmap()->GetTileOpacity(row, col) == Bitmap::Transparent) return;
 	Rect rect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 	screen.BlitScreen(x, y, rect);
 }
@@ -196,7 +157,7 @@ void TilemapLayer::Draw(int z_order) {
 			int map_draw_y = y * TILE_SIZE - oy % TILE_SIZE;
 
 			// Get the tile data
-			TileData &tile = data_cache[map_x][map_y];
+			TileData& tile = data_cache[map_x][map_y];
 
 			int map_draw_z = tile.z;
 
@@ -311,25 +272,21 @@ void TilemapLayer::CreateTileCache(const std::vector<short>& nmap_data) {
 					if ((passable[substitutions[tile.ID - BLOCK_F]] & Passable::Above) != 0)
 						tile.z = 32;
 
-				}
-				else if (tile.ID >= BLOCK_E) {
+				} else if (tile.ID >= BLOCK_E) {
 					if ((passable[substitutions[tile.ID - BLOCK_E + 18]] & Passable::Above) != 0)
 						tile.z = 32;
 
-				}
-				else if (tile.ID >= BLOCK_D) {
-					if ((passable[(tile.ID - BLOCK_D) / 50 + 6] & (Passable::Wall | Passable::Above)) != 0)
+				} else if (tile.ID >= BLOCK_D) {
+					if ((passable[(tile.ID - BLOCK_D) / 50 + 6] &
+					     (Passable::Wall | Passable::Above)) != 0)
 						tile.z = 32;
 
-				}
-				else if (tile.ID >= BLOCK_C) {
+				} else if (tile.ID >= BLOCK_C) {
 					if ((passable[(tile.ID - BLOCK_C) / 50 + 3] & Passable::Above) != 0)
 						tile.z = 32;
 
-				}
-				else {
-					if ((passable[tile.ID / 1000] & Passable::Above) != 0)
-						tile.z = 32;
+				} else {
+					if ((passable[tile.ID / 1000] & Passable::Above) != 0) tile.z = 32;
 				}
 			}
 			data_cache[x][y] = tile;
@@ -347,21 +304,18 @@ void TilemapLayer::GenerateAutotileAB(short ID, short animID) {
 	// Calculate the B block combination
 	short b_subtile = (ID - block * 1000) / 50;
 	if (b_subtile >= TILE_SIZE) {
-		Output::Warning("Invalid AB autotile ID: %d (b_subtile = %d)",
-						ID, b_subtile);
+		Output::Warning("Invalid AB autotile ID: %d (b_subtile = %d)", ID, b_subtile);
 		return;
 	}
 
 	// Calculate the A block combination
 	short a_subtile = ID - block * 1000 - b_subtile * 50;
 	if (a_subtile >= 47) {
-		Output::Warning("Invalid AB autotile ID: %d (a_subtile = %d)",
-						ID, a_subtile);
+		Output::Warning("Invalid AB autotile ID: %d (a_subtile = %d)", ID, a_subtile);
 		return;
 	}
 
-	if (autotiles_ab[animID][block][b_subtile][a_subtile].valid)
-		return;
+	if (autotiles_ab[animID][block][b_subtile][a_subtile].valid) return;
 
 	uint8_t quarters[2][2][2];
 
@@ -446,8 +400,7 @@ void TilemapLayer::GenerateAutotileD(short ID) {
 	if (block >= 12 || subtile >= 50 || block < 0 || subtile < 0)
 		Output::Error("Index out of range: %d %d", block, subtile);
 
-	if (autotiles_d[block][subtile].valid)
-		return;
+	if (autotiles_d[block][subtile].valid) return;
 
 	uint8_t quarters[2][2][2];
 
@@ -477,11 +430,9 @@ void TilemapLayer::GenerateAutotileD(short ID) {
 	for (int j = 0; j < 2; j++)
 		for (int i = 0; i < 2; i++)
 			for (int k = 0; k < 2; k++) {
-				quarters_hash <<= 4;//multiply 16
+				quarters_hash <<= 4; // multiply 16
 				quarters_hash |= quarters[j][i][k];
 			}
-
-
 
 	// check whether we have already generated this tile
 	std::map<uint32_t, TileXY>::iterator it;
@@ -500,12 +451,11 @@ void TilemapLayer::GenerateAutotileD(short ID) {
 	autotiles_d[block][subtile] = tile_xy;
 }
 
-
 BitmapScreenRef TilemapLayer::GenerateAutotiles(int count, const std::map<uint32_t, TileXY>& map) {
 	int rows = (count + TILES_PER_ROW - 1) / TILES_PER_ROW;
 	BitmapRef tiles = Bitmap::Create(TILES_PER_ROW * TILE_SIZE, rows * TILE_SIZE);
 	tiles->Clear();
-	Rect rect(0, 0, TILE_SIZE/2, TILE_SIZE/2);
+	Rect rect(0, 0, TILE_SIZE / 2, TILE_SIZE / 2);
 
 	std::map<uint32_t, TileXY>::const_iterator it;
 	for (it = map.begin(); it != map.end(); ++it) {
@@ -517,13 +467,14 @@ BitmapScreenRef TilemapLayer::GenerateAutotiles(int count, const std::map<uint32
 			for (int i = 0; i < 2; i++) {
 				int x = quarters_hash >> 28;
 				quarters_hash <<= 4;
-				
+
 				int y = quarters_hash >> 28;
 				quarters_hash <<= 4;
-				
-				rect.x = (x * 2 + i) * (TILE_SIZE/2);
-				rect.y = (y * 2 + j) * (TILE_SIZE/2);
-				tiles->Blit((dst.x * 2 + i) * (TILE_SIZE/2), (dst.y * 2 + j) * (TILE_SIZE/2), *chipset, rect, 255);
+
+				rect.x = (x * 2 + i) * (TILE_SIZE / 2);
+				rect.y = (y * 2 + j) * (TILE_SIZE / 2);
+				tiles->Blit((dst.x * 2 + i) * (TILE_SIZE / 2), (dst.y * 2 + j) * (TILE_SIZE / 2),
+				            *chipset, rect, 255);
 			}
 		}
 	}
@@ -557,9 +508,7 @@ void TilemapLayer::Update() {
 	}
 }
 
-BitmapRef const& TilemapLayer::GetChipset() const {
-	return chipset;
-}
+BitmapRef const& TilemapLayer::GetChipset() const { return chipset; }
 
 void TilemapLayer::SetChipset(BitmapRef const& nchipset) {
 	chipset = nchipset;
@@ -571,9 +520,7 @@ void TilemapLayer::SetChipset(BitmapRef const& nchipset) {
 	}
 }
 
-std::vector<short> TilemapLayer::GetMapData() const {
-	return map_data;
-}
+std::vector<short> TilemapLayer::GetMapData() const { return map_data; }
 
 void TilemapLayer::SetMapData(const std::vector<short>& nmap_data) {
 	if (map_data != nmap_data) {
@@ -608,76 +555,44 @@ void TilemapLayer::SetMapData(const std::vector<short>& nmap_data) {
 	map_data = nmap_data;
 }
 
-std::vector<unsigned char> TilemapLayer::GetPassable() const {
-	return passable;
-}
+std::vector<unsigned char> TilemapLayer::GetPassable() const { return passable; }
 
 void TilemapLayer::SetPassable(const std::vector<unsigned char>& npassable) {
 	passable = npassable;
 
-	if (substitutions.size() < passable.size())
-	{
+	if (substitutions.size() < passable.size()) {
 		substitutions.resize(passable.size());
-		for (uint8_t i = 0; i < substitutions.size(); i++)
-			substitutions[i] = i;
+		for (uint8_t i = 0; i < substitutions.size(); i++) substitutions[i] = i;
 	}
 }
 
-bool TilemapLayer::GetVisible() const {
-	return visible;
-}
+bool TilemapLayer::GetVisible() const { return visible; }
 
-void TilemapLayer::SetVisible(bool nvisible) {
-	visible = nvisible;
-}
+void TilemapLayer::SetVisible(bool nvisible) { visible = nvisible; }
 
-int TilemapLayer::GetOx() const {
-	return ox;
-}
+int TilemapLayer::GetOx() const { return ox; }
 
-void TilemapLayer::SetOx(int nox) {
-	ox = nox;
-}
+void TilemapLayer::SetOx(int nox) { ox = nox; }
 
-int TilemapLayer::GetOy() const {
-	return oy;
-}
+int TilemapLayer::GetOy() const { return oy; }
 
-void TilemapLayer::SetOy(int noy) {
-	oy = noy;
-}
+void TilemapLayer::SetOy(int noy) { oy = noy; }
 
-int TilemapLayer::GetWidth() const {
-	return width;
-}
+int TilemapLayer::GetWidth() const { return width; }
 
-void TilemapLayer::SetWidth(int nwidth) {
-	width = nwidth;
-}
+void TilemapLayer::SetWidth(int nwidth) { width = nwidth; }
 
-int TilemapLayer::GetHeight() const {
-	return height;
-}
+int TilemapLayer::GetHeight() const { return height; }
 
-void TilemapLayer::SetHeight(int nheight) {
-	height = nheight;
-}
+void TilemapLayer::SetHeight(int nheight) { height = nheight; }
 
-int TilemapLayer::GetAnimationSpeed() const {
-	return animation_speed;
-}
+int TilemapLayer::GetAnimationSpeed() const { return animation_speed; }
 
-void TilemapLayer::SetAnimationSpeed(int speed) {
-	animation_speed = speed;
-}
+void TilemapLayer::SetAnimationSpeed(int speed) { animation_speed = speed; }
 
-int TilemapLayer::GetAnimationType() const {
-	return animation_type;
-}
+int TilemapLayer::GetAnimationType() const { return animation_type; }
 
-void TilemapLayer::SetAnimationType(int type) {
-	animation_type = type;
-}
+void TilemapLayer::SetAnimationType(int type) { animation_type = type; }
 
 void TilemapLayer::Substitute(int old_id, int new_id) {
 	int subst_count = 0;
@@ -685,7 +600,7 @@ void TilemapLayer::Substitute(int old_id, int new_id) {
 	for (size_t i = 0; i < substitutions.size(); ++i) {
 		if (substitutions[i] == old_id) {
 			++subst_count;
-			substitutions[i] = (uint8_t) new_id;
+			substitutions[i] = (uint8_t)new_id;
 		}
 	}
 
@@ -695,26 +610,14 @@ void TilemapLayer::Substitute(int old_id, int new_id) {
 	}
 }
 
-TilemapTile::TilemapTile(TilemapLayer* tilemap, int z) :
-	type(TypeTilemap),
-	tilemap(tilemap),
-	z(z)
-{
+TilemapTile::TilemapTile(TilemapLayer* tilemap, int z) : type(TypeTilemap), tilemap(tilemap), z(z) {
 	Graphics::RegisterDrawable(this);
 }
 
-TilemapTile::~TilemapTile() {
-	Graphics::RemoveDrawable(this);
-}
+TilemapTile::~TilemapTile() { Graphics::RemoveDrawable(this); }
 
-void TilemapTile::Draw() {
-	tilemap->Draw(GetZ());
-}
+void TilemapTile::Draw() { tilemap->Draw(GetZ()); }
 
-int TilemapTile::GetZ() const {
-	return z;
-}
+int TilemapTile::GetZ() const { return z; }
 
-DrawableType TilemapTile::GetType() const {
-	return type;
-}
+DrawableType TilemapTile::GetType() const { return type; }

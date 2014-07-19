@@ -30,12 +30,12 @@
 #include "font.h"
 
 #ifdef __ANDROID__
-	#include <jni.h>
-	#include <SDL_system.h>
+#include <jni.h>
+#include <SDL_system.h>
 #endif
 
 #ifdef GEKKO
-	#include <unistd.h>
+#include <unistd.h>
 #endif
 
 // Global variables.
@@ -49,10 +49,10 @@ static std::string GetProjectPath() {
 	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
 	jobject sdl_activity = (jobject)SDL_AndroidGetActivity();
 	jclass cls = env->GetObjectClass(sdl_activity);
-	jmethodID jni_getProjectPath = env->GetMethodID(cls , "getProjectPath", "()Ljava/lang/String;");
+	jmethodID jni_getProjectPath = env->GetMethodID(cls, "getProjectPath", "()Ljava/lang/String;");
 	jstring return_string = (jstring)env->CallObjectMethod(sdl_activity, jni_getProjectPath);
-	
-	const char *js = env->GetStringUTFChars(return_string, NULL);
+
+	const char* js = env->GetStringUTFChars(return_string, NULL);
 	std::string cs(js);
 
 	env->ReleaseStringUTFChars(return_string, js);
@@ -82,10 +82,9 @@ namespace Main_Data {
 }
 
 void Main_Data::Init() {
-	project_path =
-		getenv("RPG_TEST_GAME_PATH")? getenv("RPG_TEST_GAME_PATH"):
-		getenv("RPG_GAME_PATH")? getenv("RPG_GAME_PATH"):
-		GetProjectPath();
+	project_path = getenv("RPG_TEST_GAME_PATH")
+	                   ? getenv("RPG_TEST_GAME_PATH")
+	                   : getenv("RPG_GAME_PATH") ? getenv("RPG_GAME_PATH") : GetProjectPath();
 }
 
 void Main_Data::Cleanup() {

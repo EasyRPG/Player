@@ -22,8 +22,7 @@
 #include "window_command.h"
 #include "font.h"
 
-class Window_VarList : public Window_Command
-{
+class Window_VarList : public Window_Command {
 public:
 	/**
 	 * Constructor.
@@ -40,7 +39,7 @@ public:
 
 	/**
 	* UpdateList.
-	* 
+	*
 	* @param starting value.
 	*/
 	void UpdateList(int first_value);
@@ -48,7 +47,7 @@ public:
 	/**
 	 * Refreshes the window contents.
 	 */
-	void  Refresh();
+	void Refresh();
 
 	/**
 	 * Indicate if item value displayed on the window correspond to switches or variables.
@@ -70,7 +69,6 @@ public:
 	int GetIndex();
 
 private:
-
 	/**
 	 * Draws the value of a variable standing on a row.
 	 *
@@ -81,7 +79,6 @@ private:
 	bool show_switch;
 	int first_var;
 	int hidden_index;
-
 };
 
 #endif

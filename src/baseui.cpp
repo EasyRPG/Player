@@ -26,7 +26,8 @@
 
 EASYRPG_SHARED_PTR<BaseUi> DisplayUi;
 
-EASYRPG_SHARED_PTR<BaseUi> BaseUi::CreateUi(long width, long height, const std::string& title, bool fs_flag, bool /* zoom */) {
+EASYRPG_SHARED_PTR<BaseUi> BaseUi::CreateUi(long width, long height, const std::string& title,
+                                            bool fs_flag, bool /* zoom */) {
 #ifdef USE_SDL
 	return EASYRPG_MAKE_SHARED<SdlUi>(width, height, title, fs_flag);
 #else
@@ -35,53 +36,26 @@ EASYRPG_SHARED_PTR<BaseUi> BaseUi::CreateUi(long width, long height, const std::
 }
 
 BaseUi::BaseUi()
-	: mouse_focus(false)
-	, mouse_x(0)
-	, mouse_y(0)
-	, cursor_visible(false)
-	, back_color(0, 0, 0, 255)
-{
+    : mouse_focus(false), mouse_x(0), mouse_y(0), cursor_visible(false), back_color(0, 0, 0, 255) {
 	keys.reset();
 }
 
-BaseUi::KeyStatus& BaseUi::GetKeyStates() {
-	return keys;
-}
+BaseUi::KeyStatus& BaseUi::GetKeyStates() { return keys; }
 
-BitmapRef const& BaseUi::GetDisplaySurface() const {
-	return main_surface;
-}
-BitmapRef& BaseUi::GetDisplaySurface() {
-	return main_surface;
-}
+BitmapRef const& BaseUi::GetDisplaySurface() const { return main_surface; }
+BitmapRef& BaseUi::GetDisplaySurface() { return main_surface; }
 
-long BaseUi::GetWidth() const {
-	return current_display_mode.width;
-}
+long BaseUi::GetWidth() const { return current_display_mode.width; }
 
-long BaseUi::GetHeight() const {
-	return current_display_mode.height;
-}
+long BaseUi::GetHeight() const { return current_display_mode.height; }
 
-bool BaseUi::GetMouseFocus() const {
-	return mouse_focus;
-}
+bool BaseUi::GetMouseFocus() const { return mouse_focus; }
 
-int BaseUi::GetMousePosX() const {
-	return mouse_x;
-}
+int BaseUi::GetMousePosX() const { return mouse_x; }
 
-int BaseUi::GetMousePosY() const {
-	return mouse_y;
-}
+int BaseUi::GetMousePosY() const { return mouse_y; }
 
-Color const& BaseUi::GetBackcolor() const {
-	return back_color;
-}
-void BaseUi::SetBackcolor(const Color &color) {
-	back_color = color;
-}
+Color const& BaseUi::GetBackcolor() const { return back_color; }
+void BaseUi::SetBackcolor(const Color& color) { back_color = color; }
 
-void BaseUi::CleanDisplay() {
-	main_surface->FillRect(main_surface->GetRect(), back_color);
-}
+void BaseUi::CleanDisplay() { main_surface->FillRect(main_surface->GetRect(), back_color); }

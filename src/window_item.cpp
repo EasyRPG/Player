@@ -23,8 +23,8 @@
 #include "bitmap.h"
 #include "font.h"
 
-Window_Item::Window_Item(int ix, int iy, int iwidth, int iheight) :
-	Window_Selectable(ix, iy, iwidth, iheight) {
+Window_Item::Window_Item(int ix, int iy, int iwidth, int iheight)
+    : Window_Selectable(ix, iy, iwidth, iheight) {
 	column_max = 2;
 }
 
@@ -44,9 +44,7 @@ bool Window_Item::CheckInclude(int item_id) {
 	}
 }
 
-bool Window_Item::CheckEnable(int item_id) {
-	return Main_Data::game_party->IsItemUsable(item_id);
-}
+bool Window_Item::CheckEnable(int item_id) { return Main_Data::game_party->IsItemUsable(item_id); }
 
 void Window_Item::Refresh() {
 	std::vector<int> party_items;
@@ -67,10 +65,10 @@ void Window_Item::Refresh() {
 	item_max = data.size();
 
 	CreateContents();
-	
+
 	if (index > 0 && index >= item_max) {
 		--index;
-	} 
+	}
 
 	contents->Clear();
 
@@ -99,6 +97,5 @@ void Window_Item::DrawItem(int index) {
 }
 
 void Window_Item::UpdateHelp() {
-	help_window->SetText(GetItem() == NULL ? "" :
-		Data::items[GetItem()->ID - 1].description);
+	help_window->SetText(GetItem() == NULL ? "" : Data::items[GetItem()->ID - 1].description);
 }

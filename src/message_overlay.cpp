@@ -22,17 +22,17 @@
 
 #include <boost/algorithm/string.hpp>
 
-MessageOverlay::MessageOverlay() :
-	type(TypeMessageOverlay),
-	z(100),
-	ox(0),
-	oy(0),
-	text_height(12),
-	message_max(10),
-	dirty(false),
-	counter(0),
-	show_all(false) {
-	
+MessageOverlay::MessageOverlay()
+    : type(TypeMessageOverlay)
+    , z(100)
+    , ox(0)
+    , oy(0)
+    , text_height(12)
+    , message_max(10)
+    , dirty(false)
+    , counter(0)
+    , show_all(false) {
+
 	bitmap_screen = BitmapScreen::Create();
 	black = Bitmap::Create(DisplayUi->GetWidth(), text_height, Color());
 
@@ -42,13 +42,9 @@ MessageOverlay::MessageOverlay() :
 	Graphics::RegisterDrawable(this);
 }
 
-MessageOverlay::~MessageOverlay() {
-	Graphics::RemoveDrawable(this);
-}
+MessageOverlay::~MessageOverlay() { Graphics::RemoveDrawable(this); }
 
-bool MessageOverlay::IsGlobal() const {
-	return true;
-}
+bool MessageOverlay::IsGlobal() const { return true; }
 
 void MessageOverlay::Draw() {
 	std::deque<MessageOverlayItem>::iterator it;
@@ -80,8 +76,8 @@ void MessageOverlay::Draw() {
 	for (it = messages.begin(); it != messages.end(); ++it) {
 		if (!it->hidden || show_all) {
 			bitmap->Blit(0, i * text_height, *black, black->GetRect(), 128);
-			bitmap->TextDraw(2, i * text_height, bitmap->GetWidth(), text_height,
-				it->color, it->text);
+			bitmap->TextDraw(2, i * text_height, bitmap->GetWidth(), text_height, it->color,
+			                 it->text);
 			++i;
 		}
 	}
@@ -91,20 +87,15 @@ void MessageOverlay::Draw() {
 	dirty = false;
 }
 
-int MessageOverlay::GetZ() const {
-	return z;
-}
+int MessageOverlay::GetZ() const { return z; }
 
-DrawableType MessageOverlay::GetType() const {
-	return type;
-}
+DrawableType MessageOverlay::GetType() const { return type; }
 
 void MessageOverlay::AddMessage(const std::string& message, Color color) {
 	std::vector<std::string> strs;
 	boost::split(strs, message, boost::is_any_of("\n"));
 
-	for (size_t i = 0; i < strs.size(); i++)
-		messages.push_back(MessageOverlayItem(strs[i], color));
+	for (size_t i = 0; i < strs.size(); i++) messages.push_back(MessageOverlayItem(strs[i], color));
 
 	if (messages.size() > (unsigned)message_max) {
 		messages.pop_front();
@@ -117,7 +108,7 @@ void MessageOverlay::SetShowAll(bool show_all) {
 	dirty = true;
 }
 
-MessageOverlayItem::MessageOverlayItem(const std::string& text, Color color) :
-	text(text), color(color), hidden(false) {
+MessageOverlayItem::MessageOverlayItem(const std::string& text, Color color)
+    : text(text), color(color), hidden(false) {
 	// no-op
 }

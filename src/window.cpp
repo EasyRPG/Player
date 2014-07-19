@@ -26,32 +26,32 @@
 #include "window.h"
 #include "bitmap.h"
 
-Window::Window():
-	type(TypeWindow),
-	stretch(true),
-	active(true),
-	visible(true),
-	pause(false),
-	closing(false),
-	up_arrow(false),
-	down_arrow(false),
-	x(0),
-	y(0),
-	width(0),
-	height(0),
-	z(0),
-	ox(0),
-	oy(0),
-	border_x(8),
-	border_y(8),
-	opacity(255),
-	back_opacity(255),
-	contents_opacity(255),
-	cursor_frame(0),
-	pause_frame(0),
-	animation_frames(0),
-	animation_count(0.0),
-	animation_increment(0.0) {
+Window::Window()
+    : type(TypeWindow)
+    , stretch(true)
+    , active(true)
+    , visible(true)
+    , pause(false)
+    , closing(false)
+    , up_arrow(false)
+    , down_arrow(false)
+    , x(0)
+    , y(0)
+    , width(0)
+    , height(0)
+    , z(0)
+    , ox(0)
+    , oy(0)
+    , border_x(8)
+    , border_y(8)
+    , opacity(255)
+    , back_opacity(255)
+    , contents_opacity(255)
+    , cursor_frame(0)
+    , pause_frame(0)
+    , animation_frames(0)
+    , animation_count(0.0)
+    , animation_increment(0.0) {
 
 	Graphics::RegisterDrawable(this);
 
@@ -67,17 +67,14 @@ Window::Window():
 	cursor2 = BitmapScreen::Create();
 }
 
-Window::~Window() {
-	Graphics::RemoveDrawable(this);
-}
+Window::~Window() { Graphics::RemoveDrawable(this); }
 
 void Window::SetOpenAnimation(int frames) {
 	animation_frames = frames;
 	animation_count = 0.0;
 	if (frames > 0) {
 		animation_increment = (height / 2.0) / frames;
-	}
-	else {
+	} else {
 		animation_increment = 0.0;
 	}
 }
@@ -87,7 +84,7 @@ void Window::SetCloseAnimation(int frames) {
 	animation_count = (height / 2.0);
 	closing = true;
 	if (frames > 0) {
-		animation_increment = - (height / 2.0) / frames;
+		animation_increment = -(height / 2.0) / frames;
 	} else {
 		animation_increment = 0.0;
 	}
@@ -96,8 +93,8 @@ void Window::SetCloseAnimation(int frames) {
 void Window::Draw() {
 	if (!visible) return;
 	if (width <= 0 || height <= 0) return;
-	if (x < -width || x > DisplayUi->GetWidth() || y < -height || y > DisplayUi->GetHeight()) return;
-
+	if (x < -width || x > DisplayUi->GetWidth() || y < -height || y > DisplayUi->GetHeight())
+		return;
 
 	if (windowskin) {
 		if (width > 4 && height > 4 && (back_opacity * opacity / 255 > 0)) {
@@ -129,8 +126,10 @@ void Window::Draw() {
 					frame_up->BlitScreen(x, y + height / 2 - ianimation_count);
 					frame_down->BlitScreen(x, y + height / 2 + ianimation_count - 8);
 				} else {
-					frame_up->BlitScreen(x, y + height / 2 - ianimation_count, Rect(0, 0, width, ianimation_count));
-					frame_down->BlitScreen(x, y + height / 2, Rect(0, 8 - ianimation_count, width, ianimation_count));
+					frame_up->BlitScreen(x, y + height / 2 - ianimation_count,
+					                     Rect(0, 0, width, ianimation_count));
+					frame_down->BlitScreen(x, y + height / 2,
+					                       Rect(0, 8 - ianimation_count, width, ianimation_count));
 				}
 			} else {
 				frame_up->BlitScreen(x, y);
@@ -140,35 +139,34 @@ void Window::Draw() {
 			}
 		}
 
-		if (width > 16 && height > 16 && cursor_rect.width > 4 && cursor_rect.height > 4 && animation_frames == 0) {
+		if (width > 16 && height > 16 && cursor_rect.width > 4 && cursor_rect.height > 4 &&
+		    animation_frames == 0) {
 			if (cursor_needs_refresh) RefreshCursor();
 
-			Rect src_rect(
-				-min(cursor_rect.x + border_x, 0),
-				-min(cursor_rect.y + border_y, 0),
-				min(cursor_rect.width, width - cursor_rect.x + border_x),
-				min(cursor_rect.height, height - cursor_rect.y + border_y)
-			);
+			Rect src_rect(-min(cursor_rect.x + border_x, 0), -min(cursor_rect.y + border_y, 0),
+			              min(cursor_rect.width, width - cursor_rect.x + border_x),
+			              min(cursor_rect.height, height - cursor_rect.y + border_y));
 
 			if (cursor_frame < 16)
-				cursor1->BlitScreen(x + cursor_rect.x + border_x, y + cursor_rect.y + border_y, src_rect);
+				cursor1->BlitScreen(x + cursor_rect.x + border_x, y + cursor_rect.y + border_y,
+				                    src_rect);
 			else
-				cursor2->BlitScreen(x + cursor_rect.x + border_x, y + cursor_rect.y + border_y, src_rect);
+				cursor2->BlitScreen(x + cursor_rect.x + border_x, y + cursor_rect.y + border_y,
+				                    src_rect);
 		}
 	}
 
 	if (contents) {
-		if (width > 2 * border_x && height > 2 * border_y &&
-			-ox < width - 2 * border_x && -oy < height - 2 * border_y &&
-			contents_opacity > 0 && animation_frames == 0) {
+		if (width > 2 * border_x && height > 2 * border_y && -ox < width - 2 * border_x &&
+		    -oy < height - 2 * border_y && contents_opacity > 0 && animation_frames == 0) {
 			Rect src_rect(-min(-ox, 0), -min(-oy, 0),
-						  min(width - 2 * border_x, width - 2 * border_x + ox),
-						  min(height - 2 * border_y, height - 2 * border_y + oy));
+			              min(width - 2 * border_x, width - 2 * border_x + ox),
+			              min(height - 2 * border_y, height - 2 * border_y + oy));
 
 			contents_screen->SetOpacityEffect(contents_opacity);
 
 			contents_screen->BlitScreen(max(x + border_x, x + border_x - ox),
-										max(y + border_y, y + border_y - oy), src_rect);
+			                            max(y + border_y, y + border_y - oy), src_rect);
 		}
 	}
 
@@ -352,9 +350,7 @@ void Window::Update() {
 	}
 }
 
-BitmapRef const& Window::GetWindowskin() const {
-	return windowskin;
-}
+BitmapRef const& Window::GetWindowskin() const { return windowskin; }
 void Window::SetWindowskin(BitmapRef const& nwindowskin) {
 	background_needs_refresh = true;
 	frame_needs_refresh = true;
@@ -363,82 +359,47 @@ void Window::SetWindowskin(BitmapRef const& nwindowskin) {
 	windowskin_screen->SetBitmap(windowskin);
 }
 
-BitmapRef Window::GetContents() const {
-	return contents;
-}
+BitmapRef Window::GetContents() const { return contents; }
 void Window::SetContents(BitmapRef const& ncontents) {
 	contents = ncontents;
 	contents_screen->SetBitmap(contents);
 }
 
-bool Window::GetStretch() const {
-	return stretch;
-}
+bool Window::GetStretch() const { return stretch; }
 void Window::SetStretch(bool nstretch) {
 	if (stretch != nstretch) background_needs_refresh = true;
 	stretch = nstretch;
 }
 
-Rect const& Window::GetCursorRect() const {
-	return cursor_rect;
-}
+Rect const& Window::GetCursorRect() const { return cursor_rect; }
 void Window::SetCursorRect(Rect const& ncursor_rect) {
-	if (cursor_rect.width != ncursor_rect.width || cursor_rect.height != ncursor_rect.height) cursor_needs_refresh = true;
+	if (cursor_rect.width != ncursor_rect.width || cursor_rect.height != ncursor_rect.height)
+		cursor_needs_refresh = true;
 	cursor_rect = ncursor_rect;
 }
 
-bool Window::GetActive() const {
-	return active;
-}
-void Window::SetActive(bool nactive) {
-	active = nactive;
-}
+bool Window::GetActive() const { return active; }
+void Window::SetActive(bool nactive) { active = nactive; }
 
-bool Window::GetVisible() const {
-	return visible;
-}
-void Window::SetVisible(bool nvisible) {
-	visible = nvisible;
-}
+bool Window::GetVisible() const { return visible; }
+void Window::SetVisible(bool nvisible) { visible = nvisible; }
 
-bool Window::GetPause() const {
-	return pause;
-}
-void Window::SetPause(bool npause) {
-	pause = npause;
-}
+bool Window::GetPause() const { return pause; }
+void Window::SetPause(bool npause) { pause = npause; }
 
-bool Window::GetUpArrow() const {
-	return up_arrow;
-}
-void Window::SetUpArrow(bool nup_arrow) {
-	up_arrow = nup_arrow;
-}
+bool Window::GetUpArrow() const { return up_arrow; }
+void Window::SetUpArrow(bool nup_arrow) { up_arrow = nup_arrow; }
 
-bool Window::GetDownArrow() const {
-	return down_arrow;
-}
-void Window::SetDownArrow(bool ndown_arrow) {
-	down_arrow = ndown_arrow;
-}
+bool Window::GetDownArrow() const { return down_arrow; }
+void Window::SetDownArrow(bool ndown_arrow) { down_arrow = ndown_arrow; }
 
-int Window::GetX() const {
-	return x;
-}
-void Window::SetX(int nx) {
-	x = nx;
-}
+int Window::GetX() const { return x; }
+void Window::SetX(int nx) { x = nx; }
 
-int Window::GetY() const {
-	return y;
-}
-void Window::SetY(int ny) {
-	y = ny;
-}
+int Window::GetY() const { return y; }
+void Window::SetY(int ny) { y = ny; }
 
-int Window::GetWidth() const {
-	return width;
-}
+int Window::GetWidth() const { return width; }
 void Window::SetWidth(int nwidth) {
 	if (width != nwidth) {
 		background_needs_refresh = true;
@@ -447,9 +408,7 @@ void Window::SetWidth(int nwidth) {
 	width = nwidth;
 }
 
-int Window::GetHeight() const {
-	return height;
-}
+int Window::GetHeight() const { return height; }
 void Window::SetHeight(int nheight) {
 	if (height != nheight) {
 		background_needs_refresh = true;
@@ -458,45 +417,25 @@ void Window::SetHeight(int nheight) {
 	height = nheight;
 }
 
-int Window::GetZ() const {
-	return z;
-}
+int Window::GetZ() const { return z; }
 void Window::SetZ(int nz) {
 	if (z != nz) Graphics::UpdateZCallback();
 	z = nz;
 }
 
-int Window::GetOx() const {
-	return ox;
-}
-void Window::SetOx(int nox) {
-	ox = nox;
-}
+int Window::GetOx() const { return ox; }
+void Window::SetOx(int nox) { ox = nox; }
 
-int Window::GetOy() const {
-	return oy;
-}
-void Window::SetOy(int noy) {
-	oy = noy;
-}
+int Window::GetOy() const { return oy; }
+void Window::SetOy(int noy) { oy = noy; }
 
-int Window::GetBorderX() const {
-	return border_x;
-}
-void Window::SetBorderX(int x) {
-	border_x = x;
-}
+int Window::GetBorderX() const { return border_x; }
+void Window::SetBorderX(int x) { border_x = x; }
 
-int Window::GetBorderY() const {
-	return border_y;
-}
-void Window::SetBorderY(int y) {
-	border_y = y;
-}
+int Window::GetBorderY() const { return border_y; }
+void Window::SetBorderY(int y) { border_y = y; }
 
-int Window::GetOpacity() const {
-	return opacity;
-}
+int Window::GetOpacity() const { return opacity; }
 void Window::SetOpacity(int nopacity) {
 	opacity = nopacity;
 
@@ -508,22 +447,14 @@ void Window::SetOpacity(int nopacity) {
 	frame_right->SetOpacityEffect(opacity);
 }
 
-int Window::GetBackOpacity() const {
-	return back_opacity;
-}
+int Window::GetBackOpacity() const { return back_opacity; }
 void Window::SetBackOpacity(int nback_opacity) {
 	back_opacity = nback_opacity;
 
 	background->SetOpacityEffect(back_opacity * opacity / 255);
 }
 
-int Window::GetContentsOpacity() const {
-	return contents_opacity;
-}
-void Window::SetContentsOpacity(int ncontents_opacity) {
-	contents_opacity = ncontents_opacity;
-}
+int Window::GetContentsOpacity() const { return contents_opacity; }
+void Window::SetContentsOpacity(int ncontents_opacity) { contents_opacity = ncontents_opacity; }
 
-DrawableType Window::GetType() const {
-	return type;
-}
+DrawableType Window::GetType() const { return type; }

@@ -41,8 +41,8 @@
 #include <boost/scoped_ptr.hpp>
 
 namespace Battle {
-class Action;
-class SpriteAction;
+	class Action;
+	class SpriteAction;
 }
 
 class Game_Battler;
@@ -99,18 +99,18 @@ public:
 
 	enum BattleActionState {
 		/**
-		 * Called once at the beginning of the Action.
-		 * Used to execute the algorithm to play an optional battle animation.
-		 */
+	     * Called once at the beginning of the Action.
+	     * Used to execute the algorithm to play an optional battle animation.
+	     */
 		BattleActionState_Start,
 		/**
-		 * Used to apply the new conditions that were caused.
-		 * Called once for each condition.
-		 */
+	     * Used to apply the new conditions that were caused.
+	     * Called once for each condition.
+	     */
 		BattleActionState_Result,
 		/**
-		 * Action execution finished (no function is called here)
-		 */
+	     * Action execution finished (no function is called here)
+	     */
 		BattleActionState_Finished
 	};
 
@@ -149,7 +149,7 @@ protected:
 
 	/**
 	 * Executed when selection an action (normal, skill, item, ...) and
-	 * (if needed) choosing an attack target was finished. 
+	 * (if needed) choosing an attack target was finished.
 	 *
 	 * @param for_battler Battler whose action was selected.
 	 */
@@ -180,7 +180,6 @@ protected:
 	std::deque<EASYRPG_SHARED_PTR<Battle::Action> > actions;
 	int skill_id;
 	int pending_command;
-
 
 	int actor_index;
 	Game_Actor* active_actor;

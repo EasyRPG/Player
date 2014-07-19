@@ -28,7 +28,6 @@ namespace Input {
 	namespace Keys {
 		enum InputKey {
 			NONE,
-
 			BACKSPACE,
 			TAB,
 			CLEAR,
@@ -171,7 +170,7 @@ namespace Input {
 			JOY_31,
 #endif
 
-#if defined(USE_JOYSTICK_HAT)  && defined(SUPPORT_JOYSTICK_HAT)
+#if defined(USE_JOYSTICK_HAT) && defined(SUPPORT_JOYSTICK_HAT)
 			JOY_HAT_LOWER_LEFT,
 			JOY_HAT_DOWN,
 			JOY_HAT_LOWER_RIGHT,
@@ -182,13 +181,12 @@ namespace Input {
 			JOY_HAT_UPPER_RIGHT,
 #endif
 
-#if defined(USE_JOYSTICK_AXIS)  && defined(SUPPORT_JOYSTICK_AXIS)
+#if defined(USE_JOYSTICK_AXIS) && defined(SUPPORT_JOYSTICK_AXIS)
 			JOY_AXIS_X_LEFT,
 			JOY_AXIS_X_RIGHT,
 			JOY_AXIS_Y_DOWN,
 			JOY_AXIS_Y_UP,
 #endif
-
 			KEYS_COUNT
 		};
 	}

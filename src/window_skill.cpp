@@ -26,8 +26,8 @@
 #include "font.h"
 #include "player.h"
 
-Window_Skill::Window_Skill(int ix, int iy, int iwidth, int iheight) :
-	Window_Selectable(ix, iy, iwidth, iheight), actor_id(-1), subset(0) {
+Window_Skill::Window_Skill(int ix, int iy, int iwidth, int iheight)
+    : Window_Selectable(ix, iy, iwidth, iheight), actor_id(-1), subset(0) {
 	column_max = 2;
 }
 
@@ -49,8 +49,7 @@ void Window_Skill::Refresh() {
 
 	const std::vector<int16_t>& skills = Game_Actors::GetActor(actor_id)->GetSkills();
 	for (size_t i = 0; i < skills.size(); ++i) {
-		if (CheckInclude(skills[i]))
-			data.push_back(skills[i]);
+		if (CheckInclude(skills[i])) data.push_back(skills[i]);
 	}
 
 	if (data.size() == 0) {
@@ -89,8 +88,7 @@ void Window_Skill::DrawItem(int index) {
 }
 
 void Window_Skill::UpdateHelp() {
-	help_window->SetText(GetSkill() == NULL ? "" :
-		GetSkill()->description);
+	help_window->SetText(GetSkill() == NULL ? "" : GetSkill()->description);
 }
 
 bool Window_Skill::CheckInclude(int skill_id) {
@@ -100,12 +98,10 @@ bool Window_Skill::CheckInclude(int skill_id) {
 
 	if (Player::engine == Player::EngineRpg2k) {
 		return true;
-	}
-	else {
+	} else {
 		if (subset > 0) {
 			return Data::skills[skill_id - 1].type == subset;
-		}
-		else {
+		} else {
 			return Data::skills[skill_id - 1].type < RPG::Skill::Type_subskill;
 		}
 	}
@@ -115,6 +111,4 @@ bool Window_Skill::CheckEnable(int skill_id) {
 	return Game_Actors::GetActor(actor_id)->IsSkillUsable(skill_id);
 }
 
-void Window_Skill::SetSubsetFilter(int subset) {
-	this->subset = subset;
-}
+void Window_Skill::SetSubsetFilter(int subset) { this->subset = subset; }

@@ -17,7 +17,7 @@
 
 // Headers
 #ifdef _MSC_VER
-#  pragma warning(disable: 4003)
+#pragma warning(disable : 4003)
 #endif
 
 #include <map>
@@ -34,7 +34,7 @@
 
 namespace {
 
-	typedef std::pair<std::string,std::string> string_pair;
+	typedef std::pair<std::string, std::string> string_pair;
 	typedef std::pair<std::string, int> tile_pair;
 
 	typedef std::map<string_pair, EASYRPG_WEAK_PTR<Bitmap> > cache_type;
@@ -44,7 +44,7 @@ namespace {
 	cache_tiles_type cache_tiles;
 
 	BitmapRef LoadBitmap(std::string const& folder_name, const std::string& filename,
-						 bool transparent, uint32_t const flags) {
+	                     bool transparent, uint32_t const flags) {
 		string_pair const key(folder_name, filename);
 
 		cache_type::const_iterator const it = cache.find(key);
@@ -57,7 +57,9 @@ namespace {
 			}
 
 			return (cache[key] = Bitmap::Create(path, transparent, flags)).lock();
-		} else { return it->second.lock(); }
+		} else {
+			return it->second.lock();
+		}
 	}
 
 	struct Material {
@@ -87,28 +89,26 @@ namespace {
 	struct Spec {
 		char const* directory;
 		bool transparent;
-		int min_width , max_width ;
+		int min_width, max_width;
 		int min_height, max_height;
-	} const spec[] = {
-		{ "Backdrop", false, 320, 320, 160, 160 },
-		{ "Battle", true, 480, 480, 96, 480 },
-		{ "CharSet", true, 288, 288, 256, 256 },
-		{ "ChipSet", true, 480, 480, 256, 256 },
-		{ "FaceSet", true, 192, 192, 192, 192 },
-		{ "GameOver", false, 320, 320, 240, 240 },
-		{ "Monster", true, 16, 320, 16, 160 },
-		{ "Panorama", false, 80, 640, 80, 480 },
-		{ "Picture", true, 1, 640, 1, 480 },
-		{ "System", true, 160, 160, 80, 80 },
-		{ "Title", false, 320, 320, 240, 240 },
-		{ "System2", true, 80, 80, 96, 96 },
-		{ "Battle2", true, 640, 640, 640, 640 },
-		{ "BattleCharSet", true, 144, 144, 384, 384 },
-		{ "BattleWeapon", true, 192, 192, 512, 512 },
-		{ "Frame", true, 320, 320, 240, 240 },
-	};
+	} const spec[] = {{"Backdrop", false, 320, 320, 160, 160},
+	                  {"Battle", true, 480, 480, 96, 480},
+	                  {"CharSet", true, 288, 288, 256, 256},
+	                  {"ChipSet", true, 480, 480, 256, 256},
+	                  {"FaceSet", true, 192, 192, 192, 192},
+	                  {"GameOver", false, 320, 320, 240, 240},
+	                  {"Monster", true, 16, 320, 16, 160},
+	                  {"Panorama", false, 80, 640, 80, 480},
+	                  {"Picture", true, 1, 640, 1, 480},
+	                  {"System", true, 160, 160, 80, 80},
+	                  {"Title", false, 320, 320, 240, 240},
+	                  {"System2", true, 80, 80, 96, 96},
+	                  {"Battle2", true, 640, 640, 640, 640},
+	                  {"BattleCharSet", true, 144, 144, 384, 384},
+	                  {"BattleWeapon", true, 192, 192, 512, 512},
+	                  {"Frame", true, 320, 320, 240, 240}, };
 
-	template<Material::Type T>
+	template <Material::Type T>
 	BitmapRef LoadDummyBitmap(std::string const& folder_name, const std::string& filename) {
 		BOOST_STATIC_ASSERT(Material::REND < T && T < Material::END);
 
@@ -122,7 +122,7 @@ namespace {
 		// Will look ugly for some image types (especially System)
 
 		// Draw chess board
-		Color color[2] = { Color(255, 255, 255, 255), Color(128, 128, 128, 255) };
+		Color color[2] = {Color(255, 255, 255, 255), Color(128, 128, 128, 255)};
 		for (int i = 0; i < s.max_width / 16; ++i) {
 			for (int j = 0; j < s.max_height / 16; ++j) {
 				bitmap->FillRect(Rect(i * 16, j * 16, 16, 16), color[(i + j) % 2]);
@@ -135,15 +135,14 @@ namespace {
 		return (cache[key] = bitmap).lock();
 	}
 
-	template<Material::Type T>
+	template <Material::Type T>
 	BitmapRef LoadBitmap(std::string const& f, bool transparent) {
 		BOOST_STATIC_ASSERT(Material::REND < T && T < Material::END);
 
 		Spec const& s = spec[T];
-		BitmapRef ret = LoadBitmap(s.directory, f, transparent,
-										 T == Material::Chipset? Bitmap::Chipset:
-										 T == Material::System? Bitmap::System:
-										 0);
+		BitmapRef ret = LoadBitmap(
+		    s.directory, f, transparent,
+		    T == Material::Chipset ? Bitmap::Chipset : T == Material::System ? Bitmap::System : 0);
 
 		if (!ret) {
 			Output::Warning("Image not found: %s/%s", s.directory, f.c_str());
@@ -151,12 +150,13 @@ namespace {
 			return LoadDummyBitmap<T>(s.directory, f);
 		}
 
-		if(
-			ret->GetWidth () < s.min_width  || s.max_width  < ret->GetWidth () ||
-			ret->GetHeight() < s.min_height || s.max_height < ret->GetHeight()
-		) {
-			Output::Debug("Image size error in: %s/%s\nwidth  (min, max, actual) = (%d, %d, %d)\nheight (min, max, actual) = (%d, %d, %d)",
-						  s.directory, f.c_str(), s.min_width , s.max_width , ret->GetWidth (), s.min_height, s.max_height, ret->GetHeight());
+		if (ret->GetWidth() < s.min_width || s.max_width < ret->GetWidth() ||
+		    ret->GetHeight() < s.min_height || s.max_height < ret->GetHeight()) {
+			Output::Debug(
+			    "Image size error in: %s/%s\nwidth  (min, max, actual) = (%d, %d, %d)\nheight "
+			    "(min, max, actual) = (%d, %d, %d)",
+			    s.directory, f.c_str(), s.min_width, s.max_width, ret->GetWidth(), s.min_height,
+			    s.max_height, ret->GetHeight());
 		}
 
 		return ret;
@@ -165,17 +165,15 @@ namespace {
 
 tSystemInfo Cache::system_info;
 
-#define macro(r, data, elem) \
-	BitmapRef Cache::elem(const std::string& f) { \
+#define macro(r, data, elem)                           \
+	BitmapRef Cache::elem(const std::string& f) {      \
 		bool trans = spec[Material::elem].transparent; \
-		return LoadBitmap<Material::elem>(f, trans); \
+		return LoadBitmap<Material::elem>(f, trans);   \
 	}
 
 BOOST_PP_SEQ_FOR_EACH(macro, ,
-					  (Backdrop)(Battle)(Battle2)(Battlecharset)(Battleweapon)
-					  (Charset)(Chipset)(Faceset)(Gameover)(Monster)
-					  (Panorama)(System)(System2)(Frame)(Title)
-					  )
+                      (Backdrop)(Battle)(Battle2)(Battlecharset)(Battleweapon)(Charset)(Chipset)(
+                          Faceset)(Gameover)(Monster)(Panorama)(System)(System2)(Frame)(Title))
 
 #undef macro
 
@@ -184,13 +182,15 @@ BitmapRef Cache::Picture(const std::string& f, bool trans) {
 }
 
 BitmapRef Cache::Exfont() {
-	string_pair const hash("\x00","ExFont");
+	string_pair const hash("\x00", "ExFont");
 
 	cache_type::const_iterator const it = cache.find(hash);
 
 	if (it == cache.end() || it->second.expired()) {
-		return(cache[hash] = Bitmap::Create(exfont_h, sizeof(exfont_h), true)).lock();
-	} else { return it->second.lock(); }
+		return (cache[hash] = Bitmap::Create(exfont_h, sizeof(exfont_h), true)).lock();
+	} else {
+		return it->second.lock();
+	}
 }
 
 BitmapRef Cache::Tile(const std::string& filename, int tile_id) {
@@ -222,22 +222,28 @@ BitmapRef Cache::Tile(const std::string& filename, int tile_id) {
 		rect.x += sub_tile_id % 6 * 16;
 		rect.y += sub_tile_id / 6 * 16;
 
-		return(cache_tiles[key] = Bitmap::Create(*chipset, rect)).lock();
-	} else { return it->second.lock(); }
+		return (cache_tiles[key] = Bitmap::Create(*chipset, rect)).lock();
+	} else {
+		return it->second.lock();
+	}
 }
 
 void Cache::Clear() {
-	for(cache_type::const_iterator i = cache.begin(); i != cache.end(); ++i) {
-		if(i->second.expired()) { continue; }
-		Output::Debug("possible leak in cached bitmap %s/%s",
-					  i->first.first.c_str(), i->first.second.c_str());
+	for (cache_type::const_iterator i = cache.begin(); i != cache.end(); ++i) {
+		if (i->second.expired()) {
+			continue;
+		}
+		Output::Debug("possible leak in cached bitmap %s/%s", i->first.first.c_str(),
+		              i->first.second.c_str());
 	}
 	cache.clear();
 
-	for(cache_tiles_type::const_iterator i = cache_tiles.begin(); i != cache_tiles.end(); ++i) {
-		if(i->second.expired()) { continue; }
-		Output::Debug("possible leak in cached tilemap %s/%d",
-					  i->first.first.c_str(), i->first.second);
+	for (cache_tiles_type::const_iterator i = cache_tiles.begin(); i != cache_tiles.end(); ++i) {
+		if (i->second.expired()) {
+			continue;
+		}
+		Output::Debug("possible leak in cached tilemap %s/%d", i->first.first.c_str(),
+		              i->first.second);
 	}
 	cache_tiles.clear();
 }

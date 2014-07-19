@@ -28,12 +28,12 @@
 #include <SDL.h>
 
 extern "C" {
-	union SDL_Event;
-	struct SDL_Surface;
+union SDL_Event;
+struct SDL_Surface;
 #if SDL_MAJOR_VERSION > 1
-	struct SDL_Texture;
-	struct SDL_Window;
-	struct SDL_Renderer;
+struct SDL_Texture;
+struct SDL_Window;
+struct SDL_Renderer;
 #endif
 }
 
@@ -52,7 +52,7 @@ public:
 	 * @param title window title.
 	 * @param fullscreen start in fullscreen flag.
 	 */
-	SdlUi(long width, long height, const std::string& title, bool fullscreen);
+	SdlUi(long width, long height, const std::string &title, bool fullscreen);
 
 	/**
 	 * Destructor.
@@ -82,7 +82,7 @@ public:
 	uint32_t GetTicks() const;
 	void Sleep(uint32_t time_milli);
 
-	AudioInterface& GetAudio();
+	AudioInterface &GetAudio();
 
 	/** @} */
 
@@ -112,10 +112,10 @@ private:
 	void ProcessJoystickButtonEvent(SDL_Event &evnt);
 	void ProcessJoystickHatEvent(SDL_Event &evnt);
 	void ProcessJoystickAxisEvent(SDL_Event &evnt);
-#if SDL_MAJOR_VERSION>1
-	void ProcessFingerDownEvent(SDL_Event & evnt);
-	void ProcessFingerUpEvent(SDL_Event & evnt);
-	void ProcessFingerEvent(SDL_Event & evnt, bool finger_down);
+#if SDL_MAJOR_VERSION > 1
+	void ProcessFingerDownEvent(SDL_Event &evnt);
+	void ProcessFingerUpEvent(SDL_Event &evnt);
+	void ProcessFingerEvent(SDL_Event &evnt, bool finger_down);
 #endif
 
 	/** @} */
@@ -126,7 +126,7 @@ private:
 	 * @param src source bitmap.
 	 * @param dst destination surface.
 	 */
-	void Blit2X(Bitmap const& src, SDL_Surface* dst);
+	void Blit2X(Bitmap const &src, SDL_Surface *dst);
 
 	/**
 	 * Sets app icon.
@@ -149,13 +149,13 @@ private:
 	/** Mode is being changing flag */
 	bool mode_changing;
 
-	/** Main SDL window. */
-#if SDL_MAJOR_VERSION==1
-	SDL_Surface* sdl_surface;
+/** Main SDL window. */
+#if SDL_MAJOR_VERSION == 1
+	SDL_Surface *sdl_surface;
 #else
-	SDL_Texture* sdl_texture;
-	SDL_Window* sdl_window;
-	SDL_Renderer* sdl_renderer;
+	SDL_Texture *sdl_texture;
+	SDL_Window *sdl_window;
+	SDL_Renderer *sdl_renderer;
 #endif
 
 	boost::scoped_ptr<AudioInterface> audio_;

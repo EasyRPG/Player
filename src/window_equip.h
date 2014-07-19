@@ -60,7 +60,6 @@ private:
 	int actor_id;
 
 	std::vector<int> data;
-
 };
 
 #endif

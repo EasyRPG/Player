@@ -28,7 +28,8 @@ enum DrawableType {
 	TypeScreen,
 	TypeWeather,
 	TypeMessageOverlay,
-	TypeDefault};
+	TypeDefault
+};
 
 /**
  * Drawable virtual

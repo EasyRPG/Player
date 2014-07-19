@@ -40,8 +40,8 @@ Spriteset_Map::Spriteset_Map() {
 		character_sprites.push_back(EASYRPG_MAKE_SHARED<Sprite_Character>(i->second.get()));
 	}
 
-	character_sprites.push_back
-		(EASYRPG_MAKE_SHARED<Sprite_Character>(Main_Data::game_player.get()));
+	character_sprites.push_back(
+	    EASYRPG_MAKE_SHARED<Sprite_Character>(Main_Data::game_player.get()));
 
 	Update();
 }
@@ -64,13 +64,11 @@ void Spriteset_Map::Update() {
 }
 
 // Finds the sprite for a specific character
-Sprite_Character* Spriteset_Map::FindCharacter(Game_Character* character) const
-{
+Sprite_Character* Spriteset_Map::FindCharacter(Game_Character* character) const {
 	std::vector<EASYRPG_SHARED_PTR<Sprite_Character> >::const_iterator it;
 	for (it = character_sprites.begin(); it != character_sprites.end(); ++it) {
 		Sprite_Character* sprite = it->get();
-		if (sprite->GetCharacter() == character)
-			return sprite;
+		if (sprite->GetCharacter() == character) return sprite;
 	}
 	return NULL;
 }

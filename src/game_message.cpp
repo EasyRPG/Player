@@ -42,9 +42,7 @@ namespace Game_Message {
 
 RPG::SaveSystem& data = Main_Data::game_data.system;
 
-void Game_Message::Init() {
-	FullClear();
-}
+void Game_Message::Init() { FullClear(); }
 
 void Game_Message::SemiClear() {
 	texts.clear();
@@ -68,69 +66,37 @@ void Game_Message::FullClear() {
 	dont_halt = false;*/
 }
 
-bool Game_Message::Busy() {
-	return texts.size() > 0;
-}
+bool Game_Message::Busy() { return texts.size() > 0; }
 
-std::string Game_Message::GetFaceName() {
-	return data.face_name;
-}
+std::string Game_Message::GetFaceName() { return data.face_name; }
 
-void Game_Message::SetFaceName(const std::string& face) {
-	data.face_name = face;
-}
+void Game_Message::SetFaceName(const std::string& face) { data.face_name = face; }
 
-int Game_Message::GetFaceIndex() {
-	return data.face_id;
-}
+int Game_Message::GetFaceIndex() { return data.face_id; }
 
-void Game_Message::SetFaceIndex(int index) {
-	data.face_id = index;
-}
+void Game_Message::SetFaceIndex(int index) { data.face_id = index; }
 
-bool Game_Message::IsFaceFlipped() {
-	return data.face_flip;
-}
+bool Game_Message::IsFaceFlipped() { return data.face_flip; }
 
-void Game_Message::SetFaceFlipped(bool flipped) {
-	data.face_flip = flipped;
-}
+void Game_Message::SetFaceFlipped(bool flipped) { data.face_flip = flipped; }
 
-bool Game_Message::IsFaceRightPosition() {
-	return data.face_right;
-}
+bool Game_Message::IsFaceRightPosition() { return data.face_right; }
 
-void Game_Message::SetFaceRightPosition(bool right) {
-	data.face_right = right;
-}
+void Game_Message::SetFaceRightPosition(bool right) { data.face_right = right; }
 
-bool Game_Message::IsTransparent() {
-	return data.message_transparent;
-}
+bool Game_Message::IsTransparent() { return data.message_transparent; }
 
-void Game_Message::SetTransparent(bool transparent) {
-	data.message_transparent = transparent;
-}
+void Game_Message::SetTransparent(bool transparent) { data.message_transparent = transparent; }
 
-int Game_Message::GetPosition() {
-	return data.message_position;
-}
+int Game_Message::GetPosition() { return data.message_position; }
 
-void Game_Message::SetPosition(int new_position) {
-	data.message_position = new_position;
-}
+void Game_Message::SetPosition(int new_position) { data.message_position = new_position; }
 
-bool Game_Message::IsPositionFixed() {
-	return !data.message_prevent_overlap;
-}
+bool Game_Message::IsPositionFixed() { return !data.message_prevent_overlap; }
 
-void Game_Message::SetPositionFixed(bool fixed) {
-	data.message_prevent_overlap = !fixed;
-}
+void Game_Message::SetPositionFixed(bool fixed) { data.message_prevent_overlap = !fixed; }
 
-bool Game_Message::GetContinueEvents() {
-	return data.message_continue_events;
-}
+bool Game_Message::GetContinueEvents() { return data.message_continue_events; }
 
 void Game_Message::SetContinueEvents(bool continue_events) {
 	data.message_continue_events = continue_events;

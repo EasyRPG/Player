@@ -31,7 +31,7 @@
  * This class displays the message boxes from
  * ShowMessageBox command code.
  */
-class Window_Message: public Window_Selectable {
+class Window_Message : public Window_Selectable {
 public:
 	Window_Message(int ix, int iy, int iwidth, int iheight);
 	~Window_Message();
@@ -77,7 +77,7 @@ public:
 	void StartNumberInputProcessing();
 
 	/**
-	 * Shows the Gold Window 
+	 * Shows the Gold Window
 	 */
 	void ShowGoldWindow();
 

@@ -26,9 +26,8 @@
 #include "scene_menu.h"
 #include "rpg_item.h"
 
-Scene_Equip::Scene_Equip(int actor_index, int equip_index) :
-	actor_index(actor_index),
-	equip_index(equip_index) {
+Scene_Equip::Scene_Equip(int actor_index, int equip_index)
+    : actor_index(actor_index), equip_index(equip_index) {
 	type = Scene::Equip;
 }
 
@@ -38,7 +37,7 @@ void Scene_Equip::Start() {
 	// Create the windows
 	help_window.reset(new Window_Help(0, 0, SCREEN_TARGET_WIDTH, 32));
 	equipstatus_window.reset(new Window_EquipStatus(0, 32, 124, 96, actor->GetId()));
-	equip_window.reset(new Window_Equip(124, 32, (SCREEN_TARGET_WIDTH-124),96, actor->GetId()));
+	equip_window.reset(new Window_Equip(124, 32, (SCREEN_TARGET_WIDTH - 124), 96, actor->GetId()));
 
 	equip_window->SetIndex(equip_index);
 
@@ -78,9 +77,7 @@ void Scene_Equip::UpdateItemWindows() {
 	item_window = item_windows[equip_window->GetIndex()];
 }
 
-void Scene_Equip::UpdateEquipWindow() {
-	equip_window->Update();
-}
+void Scene_Equip::UpdateEquipWindow() { equip_window->Update(); }
 
 void Scene_Equip::UpdateStatusWindow() {
 	if (equip_window->GetActive()) {
@@ -91,11 +88,10 @@ void Scene_Equip::UpdateStatusWindow() {
 		const RPG::Item* current_item = item_window->GetItem();
 		int current_item_id = current_item ? current_item->ID : 0;
 
-		int old_item = actor->SetEquipment(equip_window->GetIndex(),
-			current_item_id);
+		int old_item = actor->SetEquipment(equip_window->GetIndex(), current_item_id);
 
-		equipstatus_window->SetNewParameters(
-			actor->GetAtk(), actor->GetDef(), actor->GetSpi(), actor->GetAgi());
+		equipstatus_window->SetNewParameters(actor->GetAtk(), actor->GetDef(), actor->GetSpi(),
+		                                     actor->GetAgi());
 
 		actor->SetEquipment(equip_window->GetIndex(), old_item);
 
@@ -120,7 +116,8 @@ void Scene_Equip::UpdateEquipSelection() {
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Equip>(actor_index, equip_window->GetIndex()), true);
 	} else if (Main_Data::game_party->GetActors().size() > 1 && Input::IsTriggered(Input::LEFT)) {
 		Game_System::SePlay(Main_Data::game_data.system.cursor_se);
-		actor_index = (actor_index + Main_Data::game_party->GetActors().size() - 1) % Main_Data::game_party->GetActors().size();
+		actor_index = (actor_index + Main_Data::game_party->GetActors().size() - 1) %
+		              Main_Data::game_party->GetActors().size();
 		Scene::Push(EASYRPG_MAKE_SHARED<Scene_Equip>(actor_index, equip_window->GetIndex()), true);
 	}
 }
@@ -137,8 +134,8 @@ void Scene_Equip::UpdateItemSelection() {
 		const RPG::Item* current_item = item_window->GetItem();
 		int current_item_id = current_item ? current_item->ID : 0;
 
-		Main_Data::game_party->GetActors()[actor_index]->ChangeEquipment(
-			equip_window->GetIndex(), current_item_id);
+		Main_Data::game_party->GetActors()[actor_index]
+		    ->ChangeEquipment(equip_window->GetIndex(), current_item_id);
 
 		equip_window->SetActive(true);
 		item_window->SetActive(false);

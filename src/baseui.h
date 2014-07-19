@@ -49,7 +49,8 @@ public:
 	 * @param fullscreen start in fullscreen flag.
 	 * @param zoom start with zoom flag.
 	 */
-	static EASYRPG_SHARED_PTR<BaseUi> CreateUi(long width, long height, const std::string& title, bool fullscreen, bool zoom);
+	static EASYRPG_SHARED_PTR<BaseUi> CreateUi(long width, long height, const std::string& title,
+	                                           bool fullscreen, bool zoom);
 
 	/**
 	 * Begins a display mode change.
@@ -114,7 +115,7 @@ public:
 	 *
 	 * @param title title string.
 	 */
-	virtual void SetTitle(const std::string &title) = 0;
+	virtual void SetTitle(const std::string& title) = 0;
 
 	/**
 	 * Sets if the cursor should be shown.
@@ -199,7 +200,7 @@ public:
 	 *
 	 * @param color new background color.
 	 */
-	void SetBackcolor(const Color &color);
+	void SetBackcolor(const Color& color);
 
 	BitmapRef const& GetDisplaySurface() const;
 	BitmapRef& GetDisplaySurface();

@@ -31,9 +31,7 @@
 #include "window_varlist.h"
 #include "window_numberinput.h"
 
-Scene_Debug::Scene_Debug() {
-	Scene::type = Scene::Debug;
-}
+Scene_Debug::Scene_Debug() { Scene::type = Scene::Debug; }
 
 void Scene_Debug::Start() {
 	DisplayUi->SetBackcolor(Cache::system_info.bg_color);
@@ -52,15 +50,14 @@ void Scene_Debug::Start() {
 
 void Scene_Debug::Update() {
 	range_window->Update();
-	if (range_index != range_window->GetIndex()){
+	if (range_index != range_window->GetIndex()) {
 		range_index = range_window->GetIndex();
 		var_window->UpdateList(range_page * 100 + range_index * 10 + 1);
 		var_window->Refresh();
 	}
 	var_window->Update();
 
-	if (numberinput_window->GetActive())
-		numberinput_window->Update();
+	if (numberinput_window->GetActive()) numberinput_window->Update();
 
 	if (Input::IsTriggered(Input::CANCEL)) {
 		Game_System::SePlay(Main_Data::game_data.system.cancel_se);
@@ -97,13 +94,14 @@ void Scene_Debug::Update() {
 			var_window->SetActive(true);
 			var_window->Refresh();
 		}
-	} else if (range_window->GetActive() &&  Input::IsTriggered(Input::RIGHT)) {
+	} else if (range_window->GetActive() && Input::IsTriggered(Input::RIGHT)) {
 		range_page++;
-		if (current_var_type == TypeSwitch && !Game_Switches.isValidSwitch(range_page*100+1)) {
+		if (current_var_type == TypeSwitch && !Game_Switches.isValidSwitch(range_page * 100 + 1)) {
 			range_page = 0;
 			current_var_type = TypeInt;
 			var_window->SetShowSwitch(false);
-		} else if (current_var_type == TypeInt && !Game_Variables.isValidVar(range_page*100+1)) {
+		} else if (current_var_type == TypeInt &&
+		           !Game_Variables.isValidVar(range_page * 100 + 1)) {
 			range_page = 0;
 			current_var_type = TypeSwitch;
 			var_window->SetShowSwitch(true);
@@ -116,7 +114,7 @@ void Scene_Debug::Update() {
 		if (current_var_type == TypeSwitch && range_page < 0) {
 			range_page = 0;
 			for (;;)
-				if (Game_Variables.isValidVar(range_page*100 + 101))
+				if (Game_Variables.isValidVar(range_page * 100 + 101))
 					range_page++;
 				else
 					break;
@@ -125,7 +123,7 @@ void Scene_Debug::Update() {
 		} else if (current_var_type == TypeInt && range_page < 0) {
 			range_page = 0;
 			for (;;)
-				if (Game_Switches.isValidSwitch(range_page*100 + 101))
+				if (Game_Switches.isValidSwitch(range_page * 100 + 101))
 					range_page++;
 				else
 					break;
@@ -139,38 +137,31 @@ void Scene_Debug::Update() {
 }
 
 void Scene_Debug::CreateRangeWindow() {
-	
+
 	std::vector<std::string> ranges;
-	for (int i = 0; i < 10; i++)
-		ranges.push_back("");
+	for (int i = 0; i < 10; i++) ranges.push_back("");
 	range_window.reset(new Window_Command(ranges, 96));
 
 	range_window->SetHeight(176);
 	range_window->SetY(32);
 	UpdateRangeListWindow();
 }
-	
+
 void Scene_Debug::UpdateRangeListWindow() {
 	std::stringstream ss;
-	for (int i = 0; i < 10; i++){
+	for (int i = 0; i < 10; i++) {
 		ss.str("");
-		ss  << ((current_var_type == TypeSwitch) ? "Sw[" : "Vr[")
-			<< std::setfill('0')
-			<< std::setw(4)
-			<< (range_page * 100 + i * 10 + 1)
-			<< "-"
-			<< std::setw(4)
-			<< (range_page * 100 + i * 10 + 10) <<
-			"]";
+		ss << ((current_var_type == TypeSwitch) ? "Sw[" : "Vr[") << std::setfill('0')
+		   << std::setw(4) << (range_page * 100 + i * 10 + 1) << "-" << std::setw(4)
+		   << (range_page * 100 + i * 10 + 10) << "]";
 		range_window->SetItemText(i, ss.str());
 	}
 }
 
 void Scene_Debug::CreateVarListWindow() {
-	
+
 	std::vector<std::string> vars;
-	for (int i = 0; i < 10; i++)
-		vars.push_back("");
+	for (int i = 0; i < 10; i++) vars.push_back("");
 	var_window.reset(new Window_VarList(vars));
 	var_window->SetX(range_window->GetWidth());
 	var_window->SetY(range_window->GetY());
@@ -178,8 +169,8 @@ void Scene_Debug::CreateVarListWindow() {
 }
 
 void Scene_Debug::CreateNumberInputWindow() {
-	numberinput_window.reset(new Window_NumberInput(105, 104,
-		Player::engine == Player::EngineRpg2k ? 12*7 + 16 : 12*8 + 16, 32));
+	numberinput_window.reset(new Window_NumberInput(
+	    105, 104, Player::engine == Player::EngineRpg2k ? 12 * 7 + 16 : 12 * 8 + 16, 32));
 	numberinput_window->SetVisible(false);
 	numberinput_window->SetOpacity(255);
 	numberinput_window->SetShowOperator(true);
@@ -188,4 +179,3 @@ void Scene_Debug::CreateNumberInputWindow() {
 int Scene_Debug::GetIndex() {
 	return (range_page * 100 + range_index * 10 + var_window->GetIndex() + 1);
 }
-

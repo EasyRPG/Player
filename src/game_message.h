@@ -70,8 +70,8 @@ namespace Game_Message {
 	 */
 	void SetFaceIndex(int index);
 
-	/** 
-	 * Whether to mirror the face. 
+	/**
+	 * Whether to mirror the face.
 	 *
 	 * @return true: flipped, false: normal
 	 */
@@ -111,7 +111,6 @@ namespace Game_Message {
 	 * @param transparent true: transparent, false: opaque
 	 */
 	void SetTransparent(bool transparent);
-
 
 	/**
 	* Gets the message box position.

@@ -27,29 +27,10 @@
 EASYRPG_SHARED_PTR<Scene> Scene::instance;
 std::vector<EASYRPG_SHARED_PTR<Scene> > Scene::old_instances;
 std::vector<EASYRPG_SHARED_PTR<Scene> > Scene::instances;
-const char Scene::scene_names[SceneMax][12] =
-{
-	"Null",
-	"Title",
-	"Map",
-	"Menu",
-	"Item",
-	"Skill",
-	"Equip",
-	"ActorTarget",
-	"Status",
-	"File",
-	"Save",
-	"Load",
-	"End",
-	"Battle",
-	"Shop",
-	"Name",
-	"Gameover",
-	"Debug",
-	"Logo",
-	"Order"
-};
+const char Scene::scene_names[SceneMax][12] = {
+    "Null",        "Title",  "Map",      "Menu",  "Item", "Skill", "Equip",
+    "ActorTarget", "Status", "File",     "Save",  "Load", "End",   "Battle",
+    "Shop",        "Name",   "Gameover", "Debug", "Logo", "Order"};
 
 enum PushPopOperation {
 	ScenePushed = 1,
@@ -58,19 +39,18 @@ enum PushPopOperation {
 
 int Scene::push_pop_operation = 0;
 
-Scene::Scene() {
-	type = Scene::Null;
-}
+Scene::Scene() { type = Scene::Null; }
 
 void Scene::MainFunction() {
-	switch(push_pop_operation) {
+	switch (push_pop_operation) {
 	case ScenePushed:
 		Start();
 		break;
 	case ScenePopped:
 		Continue();
 		break;
-	default:;
+	default:
+		;
 	}
 
 	push_pop_operation = 0;
@@ -88,7 +68,7 @@ void Scene::MainFunction() {
 	}
 
 	assert(Scene::instance == instances.back() &&
-		   "Don't set Scene::instance directly, use Push instead!");
+	       "Don't set Scene::instance directly, use Push instead!");
 
 	Graphics::Update();
 
@@ -100,32 +80,24 @@ void Scene::MainFunction() {
 		Graphics::Push();
 		break;
 	// Graphics::Pop done in Player Loop
-	default:;
+	default:
+		;
 	}
 }
 
-void Scene::Start() {
-}
+void Scene::Start() {}
 
-void Scene::Continue() {
-}
+void Scene::Continue() {}
 
-void Scene::Resume() {
-}
+void Scene::Resume() {}
 
-void Scene::Suspend() {
-}
+void Scene::Suspend() {}
 
-void Scene::TransitionIn() {
-	Graphics::Transition(Graphics::TransitionFadeIn, 6);
-}
+void Scene::TransitionIn() { Graphics::Transition(Graphics::TransitionFadeIn, 6); }
 
-void Scene::TransitionOut() {
-	Graphics::Transition(Graphics::TransitionFadeOut, 6, true);
-}
+void Scene::TransitionOut() { Graphics::Transition(Graphics::TransitionFadeOut, 6, true); }
 
-void Scene::Update() {
-}
+void Scene::Update() {}
 
 void Scene::Push(EASYRPG_SHARED_PTR<Scene> const& new_scene, bool pop_stack_top) {
 	if (pop_stack_top) {
@@ -140,7 +112,7 @@ void Scene::Push(EASYRPG_SHARED_PTR<Scene> const& new_scene, bool pop_stack_top)
 
 	/*Output::Debug("Scene Stack after Push:");
 	for (size_t i = 0; i < instances.size(); ++i) {
-		Output::Debug(scene_names[instances[i]->type]);
+	    Output::Debug(scene_names[instances[i]->type]);
 	}*/
 }
 
@@ -158,14 +130,14 @@ void Scene::Pop() {
 
 	/*Output::Debug("Scene Stack after Pop:");
 	for (size_t i = 0; i < instances.size(); ++i) {
-		Output::Debug(scene_names[instances[i]->type]);
+	    Output::Debug(scene_names[instances[i]->type]);
 	}*/
 }
 
 void Scene::PopUntil(SceneType type) {
 	int count = 0;
 
-	for (int i = (int)instances.size() - 1 ; i >= 0; --i) {
+	for (int i = (int)instances.size() - 1; i >= 0; --i) {
 		if (instances[i]->type == type) {
 			for (i = 0; i < count; ++i) {
 				old_instances.push_back(instances.back());
@@ -183,7 +155,7 @@ void Scene::PopUntil(SceneType type) {
 
 EASYRPG_SHARED_PTR<Scene> Scene::Find(SceneType type) {
 	std::vector<EASYRPG_SHARED_PTR<Scene> >::const_reverse_iterator it;
-	for (it = instances.rbegin() ; it != instances.rend(); ++it) {
+	for (it = instances.rbegin(); it != instances.rend(); ++it) {
 		if ((*it)->type == type) {
 			return *it;
 		}

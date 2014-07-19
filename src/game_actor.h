@@ -276,7 +276,7 @@ public:
 	/**
 	 * Sets exp of actor.
 	 * The value is adjusted to the boundary 0 up 999999.
-	 * Other actor attributes are not altered. Use ChangeExp to do a proper 
+	 * Other actor attributes are not altered. Use ChangeExp to do a proper
 	 * experience change.
 	 *
 	 * @param _exp exp to set.
@@ -304,7 +304,7 @@ public:
 	/**
 	 * Sets level of actor.
 	 * The value is adjusted to the boundary 1 up to max level.
-	 * Other actor attributes are not altered. Use ChangeLevel to do a proper 
+	 * Other actor attributes are not altered. Use ChangeLevel to do a proper
 	 * level change.
 	 *
 	 * @param _level level to set.
@@ -558,14 +558,14 @@ public:
 	 *
 	 * @param new_name new name.
 	 */
-	void SetName(const std::string &new_name);
+	void SetName(const std::string& new_name);
 
 	/**
 	 * Sets new actor title.
 	 *
 	 * @param new_title new title.
 	 */
-	void SetTitle(const std::string &new_title);
+	void SetTitle(const std::string& new_title);
 
 	/**
 	 * Sets actor sprite.
@@ -574,7 +574,7 @@ public:
 	 * @param index graphic index.
 	 * @param transparent transparent flag.
 	 */
-	void SetSprite(const std::string &file, int index, bool transparent);
+	void SetSprite(const std::string& file, int index, bool transparent);
 
 	/**
 	 * Changes battle commands.
@@ -599,7 +599,7 @@ public:
 
 	/**
 	 * Gets the actor's class name as a string.
-	 * 
+	 *
 	 * @return Rpg2k3 hero class name
 	 */
 	std::string GetClassName() const;

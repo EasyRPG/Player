@@ -41,8 +41,8 @@
 #include <boost/scoped_ptr.hpp>
 
 namespace Battle {
-class Action;
-class SpriteAction;
+	class Action;
+	class SpriteAction;
 }
 
 typedef std::pair<EASYRPG_SHARED_PTR<Sprite>, int> FloatText;
@@ -60,7 +60,6 @@ public:
 	void Update();
 
 protected:
-
 	void CreateCursors();
 	void UpdateCursors();
 	void DrawFloatText(int x, int y, int color, const std::string& text, int _duration);

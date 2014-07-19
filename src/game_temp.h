@@ -53,20 +53,20 @@ public:
 
 	static bool shop_buys;
 	static bool shop_sells;
-	static int shop_type;		// message set A, B, or C
-	static bool shop_handlers;	// custom transaction/no-transaction handlers
+	static int shop_type;      // message set A, B, or C
+	static bool shop_handlers; // custom transaction/no-transaction handlers
 	static std::vector<int> shop_goods;
 	static bool shop_transaction;
 
-	static int inn_type;		// message set A or B
+	static int inn_type; // message set A or B
 	static int inn_price;
-	static bool inn_handlers;	// custom stay/no-stay handlers
+	static bool inn_handlers; // custom stay/no-stay handlers
 	static bool inn_stay;
 
 	static std::string hero_name;
 	static int hero_name_id;
 	static int hero_name_charset;
-	
+
 	static bool battle_running;
 	static int battle_troop_id;
 	static int battle_terrain_id;
@@ -78,7 +78,7 @@ public:
 	static int battle_mode;
 	static int battle_result;
 	static bool battle_wait;
-	
+
 	static RPG::Music* map_bgm;
 
 	enum BattleMode {

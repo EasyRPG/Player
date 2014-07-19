@@ -29,15 +29,10 @@ BitmapScreenRef BitmapScreen::Create(BitmapRef const& source) {
 	return EASYRPG_MAKE_SHARED<BitmapScreen>(source);
 }
 
-BitmapScreenRef BitmapScreen::Create() {
-	return Create(BitmapRef());
-}
+BitmapScreenRef BitmapScreen::Create() { return Create(BitmapRef()); }
 
-BitmapScreen::BitmapScreen(BitmapRef const& bitmap) :
-	bitmap(bitmap),
-	bitmap_effects_valid(false),
-	bitmap_scale_valid(false) {
-
+BitmapScreen::BitmapScreen(BitmapRef const& bitmap)
+    : bitmap(bitmap), bitmap_effects_valid(false), bitmap_scale_valid(false) {
 	ClearEffects();
 	bitmap_changed = true;
 
@@ -68,8 +63,7 @@ void BitmapScreen::BlitScreen(int x, int y) {
 }
 
 void BitmapScreen::BlitScreen(int x, int y, Rect const& src_rect) {
-	if (not bitmap || (opacity_top_effect <= 0 && opacity_bottom_effect <= 0))
-		return;
+	if (not bitmap || (opacity_top_effect <= 0 && opacity_bottom_effect <= 0)) return;
 
 	Rect rect = src_rect_effect.GetSubRect(src_rect);
 
@@ -84,14 +78,13 @@ void BitmapScreen::BlitScreen(int x, int y, Rect const& src_rect) {
 	bitmap_changed = false;
 	needs_refresh = false;
 
-	if(draw_bitmap) {
+	if (draw_bitmap) {
 		BlitScreenIntern(*draw_bitmap, x, y, rect, need_scale, bush_y);
 	}
 }
 
 void BitmapScreen::BlitScreenTiled(Rect const& src_rect, Rect const& dst_rect, int ox, int oy) {
-	if (not bitmap || (opacity_top_effect <= 0 && opacity_bottom_effect <= 0))
-		return;
+	if (not bitmap || (opacity_top_effect <= 0 && opacity_bottom_effect <= 0)) return;
 
 	Rect rect = src_rect_effect.GetSubRect(src_rect);
 	int bush_y = 0;
@@ -106,7 +99,7 @@ void BitmapScreen::BlitScreenTiled(Rect const& src_rect, Rect const& dst_rect, i
 	int height = rect.height;
 
 	if (need_scale) {
-		width  = (int)(width  * zoom_x_effect);
+		width = (int)(width * zoom_x_effect);
 		height = (int)(height * zoom_y_effect);
 	}
 
@@ -127,10 +120,8 @@ void BitmapScreen::BlitScreenTiled(Rect const& src_rect, Rect const& dst_rect, i
 	for (int y = y0; y < y1; y += height) {
 		for (int x = x0; x < x1; x += width) {
 			Rect blit_rect = rect;
-			if (y + blit_rect.height > y1)
-				blit_rect.height = y1 - y;
-			if (x + blit_rect.width > x1)
-				blit_rect.width = x1 - x;
+			if (y + blit_rect.height > y1) blit_rect.height = y1 - y;
+			if (x + blit_rect.width > x1) blit_rect.width = x1 - x;
 			BlitScreenIntern(*draw_bitmap, x, y, blit_rect, need_scale, 0);
 		}
 	}
@@ -142,8 +133,7 @@ void BitmapScreen::SetDirty() {
 }
 
 void BitmapScreen::SetBitmap(BitmapRef const& source) {
-    if (bitmap)
-		bitmap->DetachBitmapScreen(this);
+	if (bitmap) bitmap->DetachBitmapScreen(this);
 
 	bitmap = source;
 	needs_refresh = true;
@@ -157,9 +147,7 @@ void BitmapScreen::SetBitmap(BitmapRef const& source) {
 	}
 }
 
-BitmapRef const& BitmapScreen::GetBitmap() {
-	return bitmap;
-}
+BitmapRef const& BitmapScreen::GetBitmap() { return bitmap; }
 
 void BitmapScreen::ClearEffects() {
 	needs_refresh = true;
@@ -176,7 +164,7 @@ void BitmapScreen::ClearEffects() {
 	angle_effect = 0.0;
 	waver_effect_depth = 0;
 	waver_effect_phase = 0.0;
-	flash_effect = Color(0,0,0,0);
+	flash_effect = Color(0, 0, 0, 0);
 }
 
 void BitmapScreen::SetSrcRect(Rect const& src_rect) {
@@ -191,8 +179,7 @@ void BitmapScreen::SetOpacityEffect(int opacity_top, int opacity_bottom) {
 		opacity_top_effect = opacity_top;
 		needs_refresh = true;
 	}
-	if (opacity_bottom == -1)
-		opacity_bottom = (opacity_top + 1) / 2;
+	if (opacity_bottom == -1) opacity_bottom = (opacity_top + 1) / 2;
 	if (opacity_bottom_effect != opacity_bottom) {
 		opacity_bottom_effect = opacity_bottom;
 		needs_refresh = true;
@@ -213,7 +200,7 @@ void BitmapScreen::SetToneEffect(Tone tone) {
 	}
 }
 
-void BitmapScreen::SetFlashEffect(const Color &color) {
+void BitmapScreen::SetFlashEffect(const Color& color) {
 	if (flash_effect != color) {
 		flash_effect = color;
 		needs_refresh = true;
@@ -269,70 +256,41 @@ void BitmapScreen::SetWaverEffectPhase(double phase) {
 	}
 }
 
-void BitmapScreen::SetBlendType(int blend_type) {
-	blend_type_effect = blend_type;
-}
+void BitmapScreen::SetBlendType(int blend_type) { blend_type_effect = blend_type; }
 
-void BitmapScreen::SetBlendColor(Color const& blend_color) {
-	blend_color_effect = blend_color;
-}
+void BitmapScreen::SetBlendColor(Color const& blend_color) { blend_color_effect = blend_color; }
 
-Rect const& BitmapScreen::GetSrcRect() const {
-	return src_rect_effect;
-}
+Rect const& BitmapScreen::GetSrcRect() const { return src_rect_effect; }
 
 int BitmapScreen::GetOpacityEffect(int which) const {
 	return which > 0 ? opacity_bottom_effect : opacity_top_effect;
 }
 
-int BitmapScreen::GetBushDepthEffect() const {
-	return bush_effect;
-}
+int BitmapScreen::GetBushDepthEffect() const { return bush_effect; }
 
-Tone BitmapScreen::GetToneEffect() const {
-	return tone_effect;
-}
+Tone BitmapScreen::GetToneEffect() const { return tone_effect; }
 
-bool BitmapScreen::GetFlipXEffect() const {
-	return flipx_effect;
-}
+bool BitmapScreen::GetFlipXEffect() const { return flipx_effect; }
 
-bool BitmapScreen::GetFlipYEffect() const {
-	return flipy_effect;
-}
+bool BitmapScreen::GetFlipYEffect() const { return flipy_effect; }
 
-double BitmapScreen::GetZoomXEffect() const {
-	return zoom_x_effect;
-}
+double BitmapScreen::GetZoomXEffect() const { return zoom_x_effect; }
 
-double BitmapScreen::GetZoomYEffect() const {
-	return zoom_y_effect;
-}
+double BitmapScreen::GetZoomYEffect() const { return zoom_y_effect; }
 
-double BitmapScreen::GetAngleEffect() const {
-	return angle_effect;
-}
+double BitmapScreen::GetAngleEffect() const { return angle_effect; }
 
-int BitmapScreen::GetBlendType() const {
-	return blend_type_effect;
-}
+int BitmapScreen::GetBlendType() const { return blend_type_effect; }
 
-Color const& BitmapScreen::GetBlendColor() const {
-	return blend_color_effect;
-}
+Color const& BitmapScreen::GetBlendColor() const { return blend_color_effect; }
 
-int BitmapScreen::GetWaverEffectDepth() const {
-	return waver_effect_depth;
-}
+int BitmapScreen::GetWaverEffectDepth() const { return waver_effect_depth; }
 
-double BitmapScreen::GetWaverEffectPhase() const {
-	return waver_effect_phase;
-}
+double BitmapScreen::GetWaverEffectPhase() const { return waver_effect_phase; }
 
-void BitmapScreen::BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y,
-									Rect const& src_rect, bool need_scale, int bush_y) {
-	if (! &draw_bitmap)
-		return;
+void BitmapScreen::BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y, Rect const& src_rect,
+                                    bool need_scale, int bush_y) {
+	if (!&draw_bitmap) return;
 
 	BitmapRef dst = DisplayUi->GetDisplaySurface();
 
@@ -341,10 +299,9 @@ void BitmapScreen::BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y,
 	double zoom_x = need_scale ? zoom_x_effect : 1.0;
 	double zoom_y = need_scale ? zoom_y_effect : 1.0;
 
-	dst->EffectsBlit(x, y, draw_bitmap, src_rect,
-					 opacity_top_effect, opacity_bottom_effect, opacity_split,
-					 Tone(), zoom_x, zoom_y, angle_effect * 3.14159 / 180,
-					 waver_effect_depth, waver_effect_phase);
+	dst->EffectsBlit(x, y, draw_bitmap, src_rect, opacity_top_effect, opacity_bottom_effect,
+	                 opacity_split, Tone(), zoom_x, zoom_y, angle_effect * 3.14159 / 180,
+	                 waver_effect_depth, waver_effect_phase);
 }
 
 BitmapRef BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
@@ -352,18 +309,15 @@ BitmapRef BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
 
 	rect.Adjust(bitmap->GetWidth(), bitmap->GetHeight());
 
-	if (rect.IsOutOfBounds(bitmap->GetWidth(), bitmap->GetHeight()))
-	return BitmapRef();
+	if (rect.IsOutOfBounds(bitmap->GetWidth(), bitmap->GetHeight())) return BitmapRef();
 
 	bool no_tone = tone_effect == Tone();
 	bool no_flash = flash_effect.alpha == 0;
 	bool no_flip = !flipx_effect && !flipy_effect;
 	bool no_effects = no_tone && no_flash && no_flip;
 	bool no_zoom = zoom_x_effect == 1.0 && zoom_y_effect == 1.0;
-	bool effects_changed = tone_effect != current_tone ||
-		flash_effect != current_flash ||
-		flipx_effect != current_flip_x ||
-		flipy_effect != current_flip_y;
+	bool effects_changed = tone_effect != current_tone || flash_effect != current_flash ||
+	                       flipx_effect != current_flip_x || flipy_effect != current_flip_y;
 	bool effects_rect_changed = rect != bitmap_effects_src_rect;
 
 	if (effects_changed || effects_rect_changed || bitmap_changed) {
@@ -371,11 +325,9 @@ BitmapRef BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
 		bitmap_scale_valid = false;
 	}
 
-	if (no_effects && no_zoom)
-		return bitmap;
+	if (no_effects && no_zoom) return bitmap;
 
-	if (bitmap_effects && bitmap_effects_valid && no_zoom)
-		return bitmap_effects;
+	if (bitmap_effects && bitmap_effects_valid && no_zoom) return bitmap_effects;
 
 	BitmapRef src_bitmap;
 
@@ -389,10 +341,9 @@ BitmapRef BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
 		current_flip_x = flipx_effect;
 		current_flip_y = flipy_effect;
 
-		if (bitmap_effects &&
-			bitmap_effects->GetWidth() < rect.x + rect.width &&
-			bitmap_effects->GetHeight() < rect.y + rect.height) {
-		bitmap_effects.reset();
+		if (bitmap_effects && bitmap_effects->GetWidth() < rect.x + rect.width &&
+		    bitmap_effects->GetHeight() < rect.y + rect.height) {
+			bitmap_effects.reset();
 		}
 
 		if (!bitmap_effects)
@@ -408,16 +359,13 @@ BitmapRef BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
 		else if (no_flash) {
 			bitmap_effects->ToneBlit(rect.x, rect.y, *bitmap, rect, tone_effect);
 			bitmap_effects->Flip(rect, flipx_effect, flipy_effect);
-		}
-		else if (no_tone) {
+		} else if (no_tone) {
 			bitmap_effects->BlendBlit(rect.x, rect.y, *bitmap, rect, flash_effect);
 			bitmap_effects->Flip(rect, flipx_effect, flipy_effect);
-		}
-		else if (no_flip) {
+		} else if (no_flip) {
 			bitmap_effects->BlendBlit(rect.x, rect.y, *bitmap, rect, flash_effect);
 			bitmap_effects->ToneBlit(rect.x, rect.y, *bitmap_effects, rect, tone_effect);
-		}
-		else {
+		} else {
 			bitmap_effects->BlendBlit(rect.x, rect.y, *bitmap, rect, flash_effect);
 			bitmap_effects->ToneBlit(rect.x, rect.y, *bitmap_effects, rect, tone_effect);
 			bitmap_effects->Flip(rect, flipx_effect, flipy_effect);
@@ -429,10 +377,9 @@ BitmapRef BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
 		src_bitmap = bitmap_effects;
 	}
 
-	if (no_zoom || angle_effect != 0.0)
-		return src_bitmap;
+	if (no_zoom || angle_effect != 0.0) return src_bitmap;
 
-	int zoomed_width  = (int)(rect.width  * zoom_x_effect);
+	int zoomed_width = (int)(rect.width * zoom_x_effect);
 	int zoomed_height = (int)(rect.height * zoom_y_effect);
 
 	if (zoomed_width > 640 || zoomed_height > 640) {
@@ -440,14 +387,11 @@ BitmapRef BitmapScreen::Refresh(Rect& rect, bool& need_scale, int& bush_y) {
 		return src_bitmap;
 	}
 
-	bool zoom_changed =
-		zoom_x_effect != current_zoom_x ||
-		zoom_y_effect != current_zoom_y;
+	bool zoom_changed = zoom_x_effect != current_zoom_x || zoom_y_effect != current_zoom_y;
 
 	bool scale_rect_changed = rect != bitmap_scale_src_rect;
 
-	if (zoom_changed || scale_rect_changed)
-		bitmap_scale_valid = false;
+	if (zoom_changed || scale_rect_changed) bitmap_scale_valid = false;
 
 	if (bitmap_scale && bitmap_scale_valid) {
 		bush_y = bush_y * bitmap_scale->GetHeight() / rect.height;

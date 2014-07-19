@@ -22,7 +22,8 @@
 #include "system.h"
 
 namespace ImageXYZ {
-	void ReadXYZ(const uint8_t* data, unsigned len, bool transparent, int& width, int& height, void*& pixels);
+	void ReadXYZ(const uint8_t* data, unsigned len, bool transparent, int& width, int& height,
+	             void*& pixels);
 	void ReadXYZ(FILE* stream, bool transparent, int& width, int& height, void*& pixels);
 }
 

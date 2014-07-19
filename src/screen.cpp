@@ -31,20 +31,13 @@ Screen::Screen() {
 	default_tone = Tone(128, 128, 128, 128);
 }
 
-Screen::~Screen() {
-	Graphics::RemoveDrawable(this);
-}
+Screen::~Screen() { Graphics::RemoveDrawable(this); }
 
-int Screen::GetZ() const {
-	return z;
-}
+int Screen::GetZ() const { return z; }
 
-DrawableType Screen::GetType() const {
-	return type;
-}
+DrawableType Screen::GetType() const { return type; }
 
-void Screen::Update() {
-}
+void Screen::Update() {}
 
 void Screen::Draw() {
 	BitmapRef dst = DisplayUi->GetDisplaySurface();

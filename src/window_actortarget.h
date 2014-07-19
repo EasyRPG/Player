@@ -38,8 +38,8 @@ public:
 	void UpdateCursorRect();
 
 	Game_Actor* GetActor();
-private:
 
+private:
 };
 
 #endif

@@ -166,7 +166,7 @@ public:
 	 *
 	 * @param color flash color.
 	 */
-	void SetFlashEffect(const Color &color);
+	void SetFlashEffect(const Color& color);
 
 	/**
 	 * Gets horizontal flip effect.
@@ -319,7 +319,7 @@ protected:
 	Color flash_effect;
 
 	void BlitScreenIntern(Bitmap const& draw_bitmap, int x, int y, Rect const& src_rect,
-								  bool need_scale, int bush_y);
+	                      bool need_scale, int bush_y);
 
 	BitmapRef Refresh(Rect& rect, bool& need_scale, int& bush_y);
 

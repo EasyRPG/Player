@@ -27,24 +27,15 @@
 #include "output.h"
 #include "image_bmp.h"
 
-static uint16_t get_2(const uint8_t *p)
-{
-    return
-		((uint16_t) p[0] << 0) |
-		((uint16_t) p[1] << 8);
+static uint16_t get_2(const uint8_t* p) { return ((uint16_t)p[0] << 0) | ((uint16_t)p[1] << 8); }
+
+static uint32_t get_4(const uint8_t* p) {
+	return ((uint32_t)p[0] << 0) | ((uint32_t)p[1] << 8) | ((uint32_t)p[2] << 16) |
+	       ((uint32_t)p[3] << 24);
 }
 
-static uint32_t get_4(const uint8_t *p)
-{
-    return
-		((uint32_t) p[0] <<  0) |
-		((uint32_t) p[1] <<  8) |
-		((uint32_t) p[2] << 16) |
-		((uint32_t) p[3] << 24);
-}
-
-void ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
-					   int& width, int& height, void*& pixels) {
+void ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent, int& width, int& height,
+                       void*& pixels) {
 	pixels = NULL;
 
 	// BITMAPFILEHEADER structure
@@ -56,7 +47,7 @@ void ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
 	// 10	4	offset to bitmap data
 	static const unsigned BITMAPFILEHEADER_SIZE = 14;
 
-	if (len < 64 || strncmp((char*) &data[0], "BM", 2) != 0) {
+	if (len < 64 || strncmp((char*)&data[0], "BM", 2) != 0) {
 		Output::Error("Not a valid BMP file.");
 		return;
 	}
@@ -81,21 +72,19 @@ void ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
 	// 36	4	number of important palette colors
 	// size ... palette (starts at 40 in BMP 2.x/3.x and 108 in BMP 4.x)
 
-
-	width = (int) get_4(&data[BITMAPFILEHEADER_SIZE + 4]);
-	height = (int) get_4(&data[BITMAPFILEHEADER_SIZE + 8]);
+	width = (int)get_4(&data[BITMAPFILEHEADER_SIZE + 4]);
+	height = (int)get_4(&data[BITMAPFILEHEADER_SIZE + 8]);
 
 	bool vflip = height > 0;
-	if (!vflip)
-		height = -height;
+	if (!vflip) height = -height;
 
-	const int planes = (int) get_2(&data[BITMAPFILEHEADER_SIZE + 12]);
+	const int planes = (int)get_2(&data[BITMAPFILEHEADER_SIZE + 12]);
 	if (planes != 1) {
 		Output::Error("BMP planes is not 1.");
 		return;
 	}
 
-	const int depth = (int) get_2(&data[BITMAPFILEHEADER_SIZE + 14]);
+	const int depth = (int)get_2(&data[BITMAPFILEHEADER_SIZE + 14]);
 	if (depth != 8) {
 		Output::Error("BMP image is not 8-bit.");
 		return;
@@ -109,22 +98,21 @@ void ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
 	}
 
 	int num_colors = std::min(256U, get_4(&data[BITMAPFILEHEADER_SIZE + 32]));
-	uint8_t (*palette)[4] = (uint8_t(*)[4]) &data[BITMAPFILEHEADER_SIZE +
-		get_4(&data[BITMAPFILEHEADER_SIZE + 0])];
+	uint8_t(*palette)[4] =
+	    (uint8_t(*)[4]) & data[BITMAPFILEHEADER_SIZE + get_4(&data[BITMAPFILEHEADER_SIZE + 0])];
 	const uint8_t* src_pixels = &data[bits_offset];
 
 	// Ensure no palette entry is an exact duplicate of #0
 	for (int i = 1; i < num_colors; i++) {
-		if (palette[i][0] == palette[0][0] &&
-			palette[i][1] == palette[0][1] &&
-			palette[i][2] == palette[0][2]) {
+		if (palette[i][0] == palette[0][0] && palette[i][1] == palette[0][1] &&
+		    palette[i][2] == palette[0][2]) {
 			palette[i][0] ^= 1;
 		}
 	}
 
 	pixels = malloc(width * height * 4);
 
-	uint8_t* dst = (uint8_t*) pixels;
+	uint8_t* dst = (uint8_t*)pixels;
 	for (int y = 0; y < height; y++) {
 		const uint8_t* src = src_pixels + (vflip ? height - 1 - y : y) * width;
 		for (int x = 0; x < width; x++) {
@@ -138,14 +126,13 @@ void ImageBMP::ReadBMP(const uint8_t* data, unsigned len, bool transparent,
 	}
 }
 
-void ImageBMP::ReadBMP(FILE* stream, bool transparent,
-					int& width, int& height, void*& pixels) {
+void ImageBMP::ReadBMP(FILE* stream, bool transparent, int& width, int& height, void*& pixels) {
 	fseek(stream, 0, SEEK_END);
 	long size = ftell(stream);
 	fseek(stream, 0, SEEK_SET);
 	std::vector<uint8_t> buffer(size);
-	fread((void*) &buffer.front(), 1, size, stream);
-	ReadBMP(&buffer.front(), (unsigned) size, transparent, width, height, pixels);
+	fread((void*)&buffer.front(), 1, size, stream);
+	ReadBMP(&buffer.front(), (unsigned)size, transparent, width, height, pixels);
 }
 
 #endif // SUPPORT_BMP

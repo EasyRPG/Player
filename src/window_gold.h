@@ -24,7 +24,7 @@
 /**
  * Window Gold Class.
  */
-class Window_Gold :	public Window_Base {
+class Window_Gold : public Window_Base {
 public:
 	/**
 	 * Constructor.

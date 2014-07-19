@@ -33,12 +33,12 @@ class Game_CommonEvent;
 /**
  * Game_Interpreter_Battle class.
  */
-class Game_Interpreter_Battle : public Game_Interpreter
-{
+class Game_Interpreter_Battle : public Game_Interpreter {
 public:
 	Game_Interpreter_Battle(int _depth = 0, bool _main_flag = false);
 
 	bool ExecuteCommand();
+
 private:
 	bool CommandCallCommonEvent(RPG::EventCommand const& com);
 	bool CommandForceFlee(RPG::EventCommand const& com);

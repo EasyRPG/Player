@@ -23,10 +23,10 @@
 #include "game_player.h"
 #include "game_vehicle.h"
 
-Game_Vehicle::Game_Vehicle(Type _type) :
-	data(_type == Boat ? Main_Data::game_data.boat_location :
-		 _type == Ship ? Main_Data::game_data.ship_location :
-		 Main_Data::game_data.airship_location) {
+Game_Vehicle::Game_Vehicle(Type _type)
+    : data(_type == Boat ? Main_Data::game_data.boat_location
+                         : _type == Ship ? Main_Data::game_data.ship_location
+                                         : Main_Data::game_data.airship_location) {
 	assert(_type >= 0 && _type <= 2 && "Invalid Vehicle index");
 	type = _type;
 	altitude = 0;
@@ -36,133 +36,73 @@ Game_Vehicle::Game_Vehicle(Type _type) :
 	LoadSystemSettings();
 }
 
-int Game_Vehicle::GetX() const {
-	return data.position_x;
-}
+int Game_Vehicle::GetX() const { return data.position_x; }
 
-void Game_Vehicle::SetX(int new_x) {
-	data.position_x = new_x;
-}
+void Game_Vehicle::SetX(int new_x) { data.position_x = new_x; }
 
-int Game_Vehicle::GetY() const {
-	return data.position_y;
-}
+int Game_Vehicle::GetY() const { return data.position_y; }
 
-void Game_Vehicle::SetY(int new_y) {
-	data.position_y = new_y;
-}
+void Game_Vehicle::SetY(int new_y) { data.position_y = new_y; }
 
-int Game_Vehicle::GetMapId() const {
-	return data.map_id;
-}
+int Game_Vehicle::GetMapId() const { return data.map_id; }
 
-void Game_Vehicle::SetMapId(int new_map_id) {
-	data.map_id = new_map_id;
-}
+void Game_Vehicle::SetMapId(int new_map_id) { data.map_id = new_map_id; }
 
-int Game_Vehicle::GetDirection() const {
-	return data.direction;
-}
+int Game_Vehicle::GetDirection() const { return data.direction; }
 
-void Game_Vehicle::SetDirection(int new_direction) {
-	data.direction = new_direction;
-}
+void Game_Vehicle::SetDirection(int new_direction) { data.direction = new_direction; }
 
-int Game_Vehicle::GetPrelockDirection() const {
-	return data.prelock_direction;
-}
+int Game_Vehicle::GetPrelockDirection() const { return data.prelock_direction; }
 
 void Game_Vehicle::SetPrelockDirection(int new_direction) {
 	data.prelock_direction = new_direction;
 }
 
-bool Game_Vehicle::IsFacingLocked() const {
-	return data.lock_facing;
-}
+bool Game_Vehicle::IsFacingLocked() const { return data.lock_facing; }
 
-void Game_Vehicle::SetFacingLocked(bool locked) {
-	data.lock_facing = locked;
-}
+void Game_Vehicle::SetFacingLocked(bool locked) { data.lock_facing = locked; }
 
-int Game_Vehicle::GetLayer() const {
-	return data.layer;
-}
+int Game_Vehicle::GetLayer() const { return data.layer; }
 
-void Game_Vehicle::SetLayer(int new_layer) {
-	data.layer = new_layer;
-}
+void Game_Vehicle::SetLayer(int new_layer) { data.layer = new_layer; }
 
-int Game_Vehicle::GetMoveSpeed() const {
-	return data.move_speed;
-}
+int Game_Vehicle::GetMoveSpeed() const { return data.move_speed; }
 
-void Game_Vehicle::SetMoveSpeed(int speed) {
-	data.move_speed = speed;
-}
+void Game_Vehicle::SetMoveSpeed(int speed) { data.move_speed = speed; }
 
-int Game_Vehicle::GetMoveFrequency() const {
-	return data.move_frequency;
-}
+int Game_Vehicle::GetMoveFrequency() const { return data.move_frequency; }
 
-void Game_Vehicle::SetMoveFrequency(int frequency) {
-	data.move_frequency = frequency;
-}
+void Game_Vehicle::SetMoveFrequency(int frequency) { data.move_frequency = frequency; }
 
-const RPG::MoveRoute& Game_Vehicle::GetMoveRoute() const {
-	return data.move_route;
-}
+const RPG::MoveRoute& Game_Vehicle::GetMoveRoute() const { return data.move_route; }
 
-void Game_Vehicle::SetMoveRoute(const RPG::MoveRoute& move_route) {
-	data.move_route = move_route;
-}
+void Game_Vehicle::SetMoveRoute(const RPG::MoveRoute& move_route) { data.move_route = move_route; }
 
-int Game_Vehicle::GetOriginalMoveRouteIndex() const {
-	return data.original_move_route_index;
-}
+int Game_Vehicle::GetOriginalMoveRouteIndex() const { return data.original_move_route_index; }
 
 void Game_Vehicle::SetOriginalMoveRouteIndex(int new_index) {
 	data.original_move_route_index = new_index;
 }
 
-int Game_Vehicle::GetMoveRouteIndex() const {
-	return data.move_route_index;
-}
+int Game_Vehicle::GetMoveRouteIndex() const { return data.move_route_index; }
 
-void Game_Vehicle::SetMoveRouteIndex(int new_index) {
-	data.move_route_index = new_index;
-}
+void Game_Vehicle::SetMoveRouteIndex(int new_index) { data.move_route_index = new_index; }
 
-bool Game_Vehicle::IsMoveRouteOverwritten() const {
-	return data.move_route_overwrite;
-}
+bool Game_Vehicle::IsMoveRouteOverwritten() const { return data.move_route_overwrite; }
 
-void Game_Vehicle::SetMoveRouteOverwritten(bool force) {
-	data.move_route_overwrite = force;
-}
+void Game_Vehicle::SetMoveRouteOverwritten(bool force) { data.move_route_overwrite = force; }
 
-bool Game_Vehicle::IsMoveRouteRepeated() const {
-	return data.move_route_repeated;
-}
+bool Game_Vehicle::IsMoveRouteRepeated() const { return data.move_route_repeated; }
 
-void Game_Vehicle::SetMoveRouteRepeated(bool force) {
-	data.move_route_repeated = force;
-}
+void Game_Vehicle::SetMoveRouteRepeated(bool force) { data.move_route_repeated = force; }
 
-const std::string& Game_Vehicle::GetSpriteName() const {
-	return data.sprite_name;
-}
+const std::string& Game_Vehicle::GetSpriteName() const { return data.sprite_name; }
 
-void Game_Vehicle::SetSpriteName(const std::string& sprite_name) {
-	data.sprite_name = sprite_name;
-}
+void Game_Vehicle::SetSpriteName(const std::string& sprite_name) { data.sprite_name = sprite_name; }
 
-int Game_Vehicle::GetSpriteIndex() const {
-	return data.sprite_id;
-}
+int Game_Vehicle::GetSpriteIndex() const { return data.sprite_id; }
 
-void Game_Vehicle::SetSpriteIndex(int index) {
-	data.sprite_id = index;
-}
+void Game_Vehicle::SetSpriteIndex(int index) { data.sprite_id = index; }
 
 Color Game_Vehicle::GetFlashColor() const {
 	return Color(data.flash_red, data.flash_green, data.flash_blue, 128);
@@ -174,48 +114,40 @@ void Game_Vehicle::SetFlashColor(const Color& flash_color) {
 	data.flash_green = flash_color.green;
 }
 
-int Game_Vehicle::GetFlashLevel() const {
-	return data.flash_current_level;
-}
+int Game_Vehicle::GetFlashLevel() const { return data.flash_current_level; }
 
-void Game_Vehicle::SetFlashLevel(int flash_level) {
-	data.flash_current_level = flash_level;
-}
+void Game_Vehicle::SetFlashLevel(int flash_level) { data.flash_current_level = flash_level; }
 
-int Game_Vehicle::GetFlashTimeLeft() const {
-	return data.flash_time_left;
-}
+int Game_Vehicle::GetFlashTimeLeft() const { return data.flash_time_left; }
 
-void Game_Vehicle::SetFlashTimeLeft(int time_left) {
-	data.flash_time_left = time_left;
-}
+void Game_Vehicle::SetFlashTimeLeft(int time_left) { data.flash_time_left = time_left; }
 
 void Game_Vehicle::LoadSystemSettings() {
 	switch (type) {
-		case Boat:
-			SetSpriteName(Data::system.boat_name);
-			SetSpriteIndex(Data::system.boat_index);
-			bgm = Data::system.boat_music;
-			map_id = Data::treemap.start.boat_map_id;
-			SetX(Data::treemap.start.boat_x);
-			SetY(Data::treemap.start.boat_y);
-			break;
-		case Ship:
-			SetSpriteName(Data::system.ship_name);
-			SetSpriteIndex(Data::system.ship_index);
-			bgm = Data::system.ship_music;
-			map_id = Data::treemap.start.ship_map_id;
-			SetX(Data::treemap.start.ship_x);
-			SetY(Data::treemap.start.ship_y);
-			break;
-		case Airship:
-			SetSpriteName(Data::system.airship_name);
-			SetSpriteIndex(Data::system.airship_index);
-			bgm = Data::system.airship_music;
-			map_id = Data::treemap.start.airship_map_id;
-			SetX(Data::treemap.start.airship_x);
-			SetY(Data::treemap.start.airship_y);
-			break;
+	case Boat:
+		SetSpriteName(Data::system.boat_name);
+		SetSpriteIndex(Data::system.boat_index);
+		bgm = Data::system.boat_music;
+		map_id = Data::treemap.start.boat_map_id;
+		SetX(Data::treemap.start.boat_x);
+		SetY(Data::treemap.start.boat_y);
+		break;
+	case Ship:
+		SetSpriteName(Data::system.ship_name);
+		SetSpriteIndex(Data::system.ship_index);
+		bgm = Data::system.ship_music;
+		map_id = Data::treemap.start.ship_map_id;
+		SetX(Data::treemap.start.ship_x);
+		SetY(Data::treemap.start.ship_y);
+		break;
+	case Airship:
+		SetSpriteName(Data::system.airship_name);
+		SetSpriteIndex(Data::system.airship_index);
+		bgm = Data::system.airship_music;
+		map_id = Data::treemap.start.airship_map_id;
+		SetX(Data::treemap.start.airship_x);
+		SetY(Data::treemap.start.airship_y);
+		break;
 	}
 }
 
@@ -223,22 +155,21 @@ void Game_Vehicle::Refresh() {
 	if (driving) {
 		map_id = Game_Map::GetMapId();
 		SyncWithPlayer();
-	}
-	else if (map_id == Game_Map::GetMapId())
+	} else if (map_id == Game_Map::GetMapId())
 		MoveTo(GetX(), GetY());
 	switch (type) {
-		case Boat:
-			SetLayer(RPG::EventPage::Layers_same);
-			SetMoveSpeed(RPG::EventPage::MoveSpeed_normal);
-			break;
-		case Ship:
-			SetLayer(RPG::EventPage::Layers_same);
-			SetMoveSpeed(RPG::EventPage::MoveSpeed_double);
-			break;
-		case Airship:
-			SetLayer(driving ? RPG::EventPage::Layers_above : RPG::EventPage::Layers_below);
-			SetMoveSpeed(RPG::EventPage::MoveSpeed_fourfold);
-			break;
+	case Boat:
+		SetLayer(RPG::EventPage::Layers_same);
+		SetMoveSpeed(RPG::EventPage::MoveSpeed_normal);
+		break;
+	case Ship:
+		SetLayer(RPG::EventPage::Layers_same);
+		SetMoveSpeed(RPG::EventPage::MoveSpeed_double);
+		break;
+	case Airship:
+		SetLayer(driving ? RPG::EventPage::Layers_above : RPG::EventPage::Layers_below);
+		SetMoveSpeed(RPG::EventPage::MoveSpeed_fourfold);
+		break;
 	}
 	walk_animation = driving;
 }
@@ -281,13 +212,10 @@ void Game_Vehicle::SyncWithPlayer() {
 	UpdateBushDepth();
 }
 
-int Game_Vehicle::GetScreenY() const {
-	return Game_Character::GetScreenY() - altitude;
-}
+int Game_Vehicle::GetScreenY() const { return Game_Character::GetScreenY() - altitude; }
 
 bool Game_Vehicle::IsMovable() {
-	if (type == Airship && altitude < MAX_ALTITUDE)
-		return false;
+	if (type == Airship && altitude < MAX_ALTITUDE) return false;
 	return !IsMoving();
 }
 
@@ -295,17 +223,12 @@ void Game_Vehicle::Update() {
 	Game_Character::Update();
 	if (type == Airship) {
 		if (driving) {
-			if (altitude < MAX_ALTITUDE)
-				altitude++;
-		}
-		else if (altitude > 0) {
+			if (altitude < MAX_ALTITUDE) altitude++;
+		} else if (altitude > 0) {
 			altitude--;
-			if (altitude == 0)
-				SetLayer(RPG::EventPage::Layers_below);
+			if (altitude == 0) SetLayer(RPG::EventPage::Layers_below);
 		}
 	}
 }
 
-bool Game_Vehicle::CheckEventTriggerTouch(int /* x */, int /* y */) {
-	return false;
-}
+bool Game_Vehicle::CheckEventTriggerTouch(int /* x */, int /* y */) { return false; }

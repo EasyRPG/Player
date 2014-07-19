@@ -23,11 +23,11 @@
  * This option may have defined USE_SDL and others.
  */
 #ifdef HAVE_CONFIG_H
-#  include <config.h>
+#include <config.h>
 #endif
 
 #if !defined(USE_SDL)
-#  error "This build doesn't target a backend"
+#error "This build doesn't target a backend"
 #endif
 
 /*
@@ -44,7 +44,7 @@
 #include "memory_management.h"
 
 #ifdef GEKKO
-#  include "stdint.h"
+#include "stdint.h"
 #endif
 
 #define SUPPORT_BMP
@@ -63,44 +63,43 @@
 #define SUPPORT_ZOOM
 
 #ifdef USE_SDL
-#  define USE_SDL_MIXER
+#define USE_SDL_MIXER
 
+#ifdef PSP
+#undef SUPPORT_AUDIO
+#undef USE_SDL_MIXER
+#endif
 
-#  ifdef PSP
-#    undef SUPPORT_AUDIO
-#    undef USE_SDL_MIXER
-#  endif
+#if defined(GEKKO) || defined(OPENDINGUX)
+#undef SUPPORT_ZOOM
+#endif
 
-#  if defined(GEKKO) || defined(OPENDINGUX)
-#    undef SUPPORT_ZOOM
-#  endif
+#if !defined(OPENDINGUX) && !defined(GEKKO)
+#define SUPPORT_KEYBOARD
+#define SUPPORT_MOUSE
+#endif
 
-#  if !defined(OPENDINGUX) && !defined(GEKKO)
-#    define SUPPORT_KEYBOARD
-#    define SUPPORT_MOUSE
-#  endif
+#if !defined(OPENDINGUX)
+#define SUPPORT_JOYSTICK
+#define SUPPORT_JOYSTICK_HAT
+#define SUPPORT_JOYSTICK_AXIS
+#define JOYSTICK_AXIS_SENSIBILITY 20000
+#else
+#define SUPPORT_KEYBOARD
+#endif
 
-#  if !defined(OPENDINGUX)
-#    define SUPPORT_JOYSTICK
-#    define SUPPORT_JOYSTICK_HAT
-#    define SUPPORT_JOYSTICK_AXIS
-#    define JOYSTICK_AXIS_SENSIBILITY 20000
-#  else
-#    define SUPPORT_KEYBOARD
-#  endif
+#ifdef USE_SDL_MIXER
+#define SUPPORT_WAV
+#define SUPPORT_MID
+#define SUPPORT_OGG
+#define SUPPORT_MP3
+#endif
 
-#  ifdef USE_SDL_MIXER
-#    define SUPPORT_WAV
-#    define SUPPORT_MID
-#    define SUPPORT_OGG
-#    define SUPPORT_MP3
-#  endif
-
-#  ifdef NO_SDL_MIXER
-#    undef SUPPORT_AUDIO
-#  else
-#    define SUPPORT_AUDIO
-#  endif
+#ifdef NO_SDL_MIXER
+#undef SUPPORT_AUDIO
+#else
+#define SUPPORT_AUDIO
+#endif
 #endif
 
 #endif

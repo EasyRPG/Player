@@ -25,7 +25,7 @@
 /**
  * Window Name Class.
  */
-class Window_Name :	public Window_Base {
+class Window_Name : public Window_Base {
 public:
 	/**
 	 * Constructor.

@@ -20,18 +20,12 @@
 #include "filefinder.h"
 #include "output.h"
 
-
 #ifdef _WIN32
 #include "util_win.h"
 #endif
 
-SdlAudio::SdlAudio() :
-	bgm_volume(0),
-	bgs_channel(0),
-	bgs_playing(false),
-	me_channel(0),
-	me_stopped_bgm(false)
-{
+SdlAudio::SdlAudio()
+    : bgm_volume(0), bgs_channel(0), bgs_playing(false), me_channel(0), me_stopped_bgm(false) {
 	if (!(SDL_WasInit(SDL_INIT_AUDIO) & SDL_INIT_AUDIO)) {
 		if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
 			Output::Error("Couldn't initialize audio.\n%s\n", SDL_GetError());
@@ -40,8 +34,8 @@ SdlAudio::SdlAudio() :
 #ifdef GEKKO
 	int const frequency = 32000;
 #else
-#if SDL_MAJOR_VERSION==1
-    int const frequency = MIX_DEFAULT_FREQUENCY;
+#if SDL_MAJOR_VERSION == 1
+	int const frequency = MIX_DEFAULT_FREQUENCY;
 #else
 	int const frequency = 44100;
 #endif
@@ -53,13 +47,11 @@ SdlAudio::SdlAudio() :
 	/*int flags = MIX_INIT_MP3;
 	int initted = Mix_Init(flags);
 	if ((initted & flags) != flags) {
-		Output::Error("Couldn't initialize audio.\n%s\n", Mix_GetError());
+	    Output::Error("Couldn't initialize audio.\n%s\n", Mix_GetError());
 	}*/
 }
 
-SdlAudio::~SdlAudio() {
-	Mix_CloseAudio();
-}
+SdlAudio::~SdlAudio() { Mix_CloseAudio(); }
 
 void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, int fadein) {
 	std::string const path = FileFinder::FindMusic(file);
@@ -68,8 +60,8 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 		return;
 	}
 
-	SDL_RWops *rw = SDL_RWFromFile(path.c_str(), "rb");
-#if SDL_MIXER_MAJOR_VERSION>1
+	SDL_RWops* rw = SDL_RWFromFile(path.c_str(), "rb");
+#if SDL_MIXER_MAJOR_VERSION > 1
 	bgm.reset(Mix_LoadMUS_RW(rw, 1), &Mix_FreeMusic);
 #else
 	bgm.reset(Mix_LoadMUS_RW(rw), &Mix_FreeMusic);
@@ -78,7 +70,7 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 		Output::Warning("Couldn't load %s BGM.\n%s\n", file.c_str(), Mix_GetError());
 		return;
 	}
-#if SDL_MAJOR_VERSION>1
+#if SDL_MAJOR_VERSION > 1
 	// SDL2_mixer produces noise when playing wav.
 	// Workaround: Use Mix_LoadWAV
 	// https://bugzilla.libsdl.org/show_bug.cgi?id=2094
@@ -96,19 +88,20 @@ void SdlAudio::BGM_Play(std::string const& file, int volume, int /* pitch */, in
 	if (!me_stopped_bgm &&
 #ifdef _WIN32
 	    (Mix_GetMusicType(bgm.get()) == MUS_MID && WindowsUtils::GetWindowsVersion() >= 6
-	     ? Mix_PlayMusic(bgm.get(), -1) : Mix_FadeInMusic(bgm.get(), -1, fadein))
+	         ? Mix_PlayMusic(bgm.get(), -1)
+	         : Mix_FadeInMusic(bgm.get(), -1, fadein))
 #else
-	     Mix_FadeInMusic(bgm.get(), -1, fadein)
+	    Mix_FadeInMusic(bgm.get(), -1, fadein)
 #endif
-	     == -1) {
+	        == -1) {
 		Output::Warning("Couldn't play %s BGM.\n%s\n", file.c_str(), Mix_GetError());
 		return;
 	}
 }
 
 void SdlAudio::BGM_Pause() {
-	// Midi pause is not supported... (for some systems -.-)
-#if SDL_MAJOR_VERSION>1
+// Midi pause is not supported... (for some systems -.-)
+#if SDL_MAJOR_VERSION > 1
 	// SDL2_mixer bug, see above
 	if (Mix_GetMusicType(bgm.get()) == MUS_WAV) {
 		BGS_Pause();
@@ -119,7 +112,7 @@ void SdlAudio::BGM_Pause() {
 }
 
 void SdlAudio::BGM_Resume() {
-#if SDL_MAJOR_VERSION>1
+#if SDL_MAJOR_VERSION > 1
 	// SDL2_mixer bug, see above
 	if (Mix_GetMusicType(bgm.get()) == MUS_WAV) {
 		BGS_Resume();
@@ -130,7 +123,7 @@ void SdlAudio::BGM_Resume() {
 }
 
 void SdlAudio::BGM_Stop() {
-#if SDL_MAJOR_VERSION>1
+#if SDL_MAJOR_VERSION > 1
 	// SDL2_mixer bug, see above
 	if (Mix_GetMusicType(bgm.get()) == MUS_WAV) {
 		BGS_Stop();
@@ -155,8 +148,7 @@ void SdlAudio::BGM_Fade(int fade) {
 	// FIXME: Because of design change in Vista and higher reducing Midi volume
 	// alters volume of whole application and mutes it forever when restarted.
 	// Fading out midi music was disabled for Windows.
-	if (Mix_GetMusicType(bgm.get()) == MUS_MID &&
-		WindowsUtils::GetWindowsVersion() >= 6) {
+	if (Mix_GetMusicType(bgm.get()) == MUS_MID && WindowsUtils::GetWindowsVersion() >= 6) {
 		BGM_Stop();
 		return;
 	}
@@ -171,7 +163,7 @@ void SdlAudio::BGS_Play(std::string const& file, int volume, int /* pitch */, in
 		Output::Warning("Music not found: %s", file.c_str());
 		return;
 	}
-	
+
 	bgs.reset(Mix_LoadWAV(path.c_str()), &Mix_FreeChunk);
 	if (!bgs) {
 		Output::Warning("Couldn't load %s BGS.\n%s\n", file.c_str(), Mix_GetError());
@@ -192,9 +184,7 @@ void SdlAudio::BGS_Pause() {
 	}
 }
 
-void SdlAudio::BGS_Resume() {
-	Mix_Resume(bgs_channel);
-}
+void SdlAudio::BGS_Resume() { Mix_Resume(bgs_channel); }
 
 void SdlAudio::BGS_Stop() {
 	if (Mix_Playing(bgs_channel)) {
@@ -203,17 +193,15 @@ void SdlAudio::BGS_Stop() {
 	}
 }
 
-void SdlAudio::BGS_Fade(int fade) {
-	Mix_FadeOutChannel(bgs_channel, fade);
-}
+void SdlAudio::BGS_Fade(int fade) { Mix_FadeOutChannel(bgs_channel, fade); }
 
 /*
 void me_finish(int channel) {
-	if (me_channel == channel && me_stopped_bgm) {
-		Mix_VolumeMusic(bgm_volume);
-		Mix_FadeInMusic(bgm.get(), -1, 1000);
-		me_stopped_bgm = false;
-	}
+    if (me_channel == channel && me_stopped_bgm) {
+        Mix_VolumeMusic(bgm_volume);
+        Mix_FadeInMusic(bgm.get(), -1, 1000);
+        me_stopped_bgm = false;
+    }
 }
 */
 
@@ -244,9 +232,7 @@ void SdlAudio::ME_Stop() {
 	}
 }
 
-void SdlAudio::ME_Fade(int fade) {
-	Mix_FadeOutChannel(me_channel, fade);
-}
+void SdlAudio::ME_Fade(int fade) { Mix_FadeOutChannel(me_channel, fade); }
 
 void SdlAudio::SE_Play(std::string const& file, int volume, int /* pitch */) {
 	std::string const path = FileFinder::FindSound(file);
@@ -275,5 +261,4 @@ void SdlAudio::SE_Stop() {
 	sounds.clear();
 }
 
-void SdlAudio::Update() {
-}
+void SdlAudio::Update() {}

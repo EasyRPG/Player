@@ -29,8 +29,8 @@
 #include "output.h"
 #include "image_jpg.h"
 
-void ImageJPG::ReadJPG(FILE * stream, uint8_t *data, unsigned len, int& width,
-						int& height, void*& pixels) {
+void ImageJPG::ReadJPG(FILE* stream, uint8_t* data, unsigned len, int& width, int& height,
+                       void*& pixels) {
 
 	struct jpeg_decompress_struct cinfo;
 	int res;
@@ -72,14 +72,13 @@ void ImageJPG::ReadJPG(FILE * stream, uint8_t *data, unsigned len, int& width,
 
 	pitch = width * cinfo.output_components;
 
-	buffer = (*cinfo.mem->alloc_sarray)
-		((j_common_ptr) &cinfo, JPOOL_IMAGE, pitch, 1);
+	buffer = (*cinfo.mem->alloc_sarray)((j_common_ptr) & cinfo, JPOOL_IMAGE, pitch, 1);
 
 	pixels = malloc(pitch * height);
 
-	dst = (uint8_t*) pixels;
+	dst = (uint8_t*)pixels;
 
-	while (cinfo.output_scanline < (unsigned) height) {
+	while (cinfo.output_scanline < (unsigned)height) {
 
 		res = jpeg_read_scanlines(&cinfo, buffer, 1);
 		if (!res) {

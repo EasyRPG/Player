@@ -25,9 +25,13 @@
 #include "bitmap.h"
 #include "font.h"
 
-Window_SaveFile::Window_SaveFile(int ix, int iy, int iwidth, int iheight) :
-	Window_Base(ix, iy, iwidth, iheight),
-	index(0), hero_hp(0), hero_level(0), corrupted(false), has_save(false) {
+Window_SaveFile::Window_SaveFile(int ix, int iy, int iwidth, int iheight)
+    : Window_Base(ix, iy, iwidth, iheight)
+    , index(0)
+    , hero_hp(0)
+    , hero_level(0)
+    , corrupted(false)
+    , has_save(false) {
 
 	SetContents(Bitmap::Create(width - 8, height - 16));
 	contents->SetTransparentColor(windowskin->GetTransparentColor());
@@ -49,29 +53,21 @@ void Window_SaveFile::UpdateCursorRect() {
 	SetCursorRect(rect);
 }
 
-void Window_SaveFile::SetIndex(int id) {
-	index = id;
-}
+void Window_SaveFile::SetIndex(int id) { index = id; }
 
 void Window_SaveFile::SetParty(const std::vector<std::pair<int, std::string> >& actors,
-	std::string name, int hp, int level) {
+                               std::string name, int hp, int level) {
 	party = actors;
 	hero_name = name;
 	hero_hp = hp;
 	hero_level = level;
 }
 
-void Window_SaveFile::SetCorrupted(bool corrupted) {
-	this->corrupted = corrupted;
-}
+void Window_SaveFile::SetCorrupted(bool corrupted) { this->corrupted = corrupted; }
 
-bool Window_SaveFile::IsValid() {
-	return has_save && !corrupted;
-}
+bool Window_SaveFile::IsValid() { return has_save && !corrupted; }
 
-void Window_SaveFile::SetHasSave(bool valid) {
-	this->has_save = valid;
-}
+void Window_SaveFile::SetHasSave(bool valid) { this->has_save = valid; }
 
 void Window_SaveFile::Refresh() {
 	contents->Clear();
@@ -85,8 +81,7 @@ void Window_SaveFile::Refresh() {
 		return;
 	}
 
-	if (party.empty())
-		return;
+	if (party.empty()) return;
 
 	contents->TextDraw(8, 16 + 2, Font::ColorDefault, hero_name);
 
@@ -104,7 +99,7 @@ void Window_SaveFile::Refresh() {
 	out << hero_hp;
 	contents->TextDraw(42 + hx, 32 + 2, Font::ColorDefault, out.str());
 
-	for (int i = 0; i < 4 && (size_t) i < party.size(); i++) {
+	for (int i = 0; i < 4 && (size_t)i < party.size(); i++) {
 		DrawFace(party[i].second, party[i].first, 88 + i * 56, 0);
 	}
 }

@@ -35,10 +35,7 @@
 #include "scene_save.h"
 #include "scene_status.h"
 
-Scene_Menu::Scene_Menu(int menu_index) :
-	menu_index(menu_index) {
-	type = Scene::Menu;
-}
+Scene_Menu::Scene_Menu(int menu_index) : menu_index(menu_index) { type = Scene::Menu; }
 
 void Scene_Menu::Start() {
 	DisplayUi->SetBackcolor(Cache::system_info.bg_color);
@@ -46,10 +43,11 @@ void Scene_Menu::Start() {
 	CreateCommandWindow();
 
 	// Gold Window
-	gold_window.reset(new Window_Gold(0, (SCREEN_TARGET_HEIGHT-32), 88, 32));
+	gold_window.reset(new Window_Gold(0, (SCREEN_TARGET_HEIGHT - 32), 88, 32));
 
 	// Status Window
-	menustatus_window.reset(new Window_MenuStatus(88, 0, (SCREEN_TARGET_WIDTH-88), SCREEN_TARGET_HEIGHT));
+	menustatus_window.reset(
+	    new Window_MenuStatus(88, 0, (SCREEN_TARGET_WIDTH - 88), SCREEN_TARGET_HEIGHT));
 	menustatus_window->SetActive(false);
 }
 
@@ -66,8 +64,7 @@ void Scene_Menu::Update() {
 
 	if (command_window->GetActive()) {
 		UpdateCommand();
-	}
-	else if (menustatus_window->GetActive()) {
+	} else if (menustatus_window->GetActive()) {
 		UpdateActorSelection();
 	}
 }
@@ -85,8 +82,8 @@ void Scene_Menu::CreateCommandWindow() {
 		command_options[4] = Quit;
 	} else {
 		for (std::vector<int16_t>::iterator it = Data::system.menu_commands.begin();
-			it != Data::system.menu_commands.end(); ++it) {
-				command_options.push_back((CommandOptionType)*it);
+		     it != Data::system.menu_commands.end(); ++it) {
+			command_options.push_back((CommandOptionType) * it);
 		}
 		command_options.push_back(Quit);
 	}
@@ -94,7 +91,7 @@ void Scene_Menu::CreateCommandWindow() {
 	// Add all menu items
 	std::vector<CommandOptionType>::iterator it;
 	for (it = command_options.begin(); it != command_options.end(); ++it) {
-		switch(*it) {
+		switch (*it) {
 		case Item:
 			options.push_back(Data::terms.command_item);
 			break;
@@ -130,7 +127,7 @@ void Scene_Menu::CreateCommandWindow() {
 
 	// Disable items
 	for (it = command_options.begin(); it != command_options.end(); ++it) {
-		switch(*it) {
+		switch (*it) {
 		case Save:
 			// If save is forbidden disable this item
 			if (!Game_System::GetAllowSave()) {
@@ -201,7 +198,8 @@ void Scene_Menu::UpdateCommand() {
 		case Wait:
 			Game_System::SePlay(Main_Data::game_data.system.decision_se);
 			Game_Temp::battle_wait = !Game_Temp::battle_wait;
-			command_window->SetItemText(menu_index, Game_Temp::battle_wait ? Data::terms.wait_on : Data::terms.wait_off);
+			command_window->SetItemText(
+			    menu_index, Game_Temp::battle_wait ? Data::terms.wait_on : Data::terms.wait_off);
 			break;
 		case Quit:
 			Game_System::SePlay(Main_Data::game_data.system.decision_se);
@@ -229,11 +227,9 @@ void Scene_Menu::UpdateActorSelection() {
 		case Status:
 			Scene::Push(EASYRPG_MAKE_SHARED<Scene_Status>(menustatus_window->GetIndex()));
 			break;
-		case Row:
-		{
+		case Row: {
 			Game_Actor* actor = Main_Data::game_party->GetActors()[menustatus_window->GetIndex()];
-			actor->GetBattleRow() == -1 ?
-				actor->SetBattleRow(1) : actor->SetBattleRow(-1);
+			actor->GetBattleRow() == -1 ? actor->SetBattleRow(1) : actor->SetBattleRow(-1);
 			menustatus_window->Refresh();
 			break;
 		}

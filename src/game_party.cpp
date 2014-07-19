@@ -29,11 +29,9 @@
 
 static RPG::SaveInventory& data = Main_Data::game_data.inventory;
 
-Game_Party::Game_Party() {
-	data.Setup();
-}
+Game_Party::Game_Party() { data.Setup(); }
 
-Game_Actor& Game_Party::operator[] (const int index) {
+Game_Actor& Game_Party::operator[](const int index) {
 	std::vector<Game_Actor*> actors = GetActors();
 
 	if (index < 0 || (size_t)index >= actors.size()) {
@@ -43,16 +41,14 @@ Game_Actor& Game_Party::operator[] (const int index) {
 	return *actors[index];
 }
 
-int Game_Party::GetBattlerCount() const {
-	return GetActors().size();
-}
+int Game_Party::GetBattlerCount() const { return GetActors().size(); }
 
 void Game_Party::SetupBattleTestMembers() {
 	data.party.clear();
-	
+
 	std::vector<RPG::TestBattler>::const_iterator it;
-	for (it = Data::system.battletest_data.begin();
-		it != Data::system.battletest_data.end(); ++it) {
+	for (it = Data::system.battletest_data.begin(); it != Data::system.battletest_data.end();
+	     ++it) {
 		AddActor(it->actor_id);
 		Game_Actor* actor = Game_Actors::GetActor(it->actor_id);
 		actor->SetEquipment(0, it->weapon_id);
@@ -72,14 +68,13 @@ void Game_Party::GetItems(std::vector<int>& item_list) {
 	item_list.clear();
 
 	std::vector<int16_t>::iterator it;
-	for (it = data.item_ids.begin(); it != data.item_ids.end(); ++it)
-		item_list.push_back(*it);
+	for (it = data.item_ids.begin(); it != data.item_ids.end(); ++it) item_list.push_back(*it);
 }
 
 int Game_Party::GetItemCount(int item_id, bool get_equipped) {
 	if (get_equipped && item_id > 0) {
 		int number = 0;
-		for (int i = 0; i < (int) data.party.size(); i++) {
+		for (int i = 0; i < (int)data.party.size(); i++) {
 			Game_Actor* actor = Game_Actors::GetActor(data.party[i]);
 			if (actor->GetWeaponId() == item_id) {
 				++number;
@@ -99,11 +94,10 @@ int Game_Party::GetItemCount(int item_id, bool get_equipped) {
 		}
 		return number;
 	} else {
-		for (int i = 0; i < (int) data.item_ids.size(); i++)
-			if (data.item_ids[i] == item_id)
-				return data.item_counts[i];
+		for (int i = 0; i < (int)data.item_ids.size(); i++)
+			if (data.item_ids[i] == item_id) return data.item_counts[i];
 	}
-	
+
 	return 0;
 }
 
@@ -118,15 +112,13 @@ void Game_Party::LoseGold(int n) {
 }
 
 void Game_Party::AddItem(int item_id, int amount) {
-	if (item_id < 1 || item_id > (int) Data::items.size()) {
-		Output::Warning("Can't add item to party.\n%04d is not a valid item ID.",
-						item_id);
+	if (item_id < 1 || item_id > (int)Data::items.size()) {
+		Output::Warning("Can't add item to party.\n%04d is not a valid item ID.", item_id);
 		return;
 	}
 
-	for (int i = 0; i < (int) data.item_ids.size(); i++) {
-		if (data.item_ids[i] != item_id)
-			continue;
+	for (int i = 0; i < (int)data.item_ids.size(); i++) {
+		if (data.item_ids[i] != item_id) continue;
 
 		int total_items = data.item_counts[i] + amount;
 
@@ -142,7 +134,7 @@ void Game_Party::AddItem(int item_id, int amount) {
 	}
 
 	// Item isn't in the inventory yet
-	
+
 	if (amount <= 0) {
 		return;
 	}
@@ -152,9 +144,7 @@ void Game_Party::AddItem(int item_id, int amount) {
 	data.item_usage.push_back((uint8_t)Data::items[item_id - 1].uses);
 }
 
-void Game_Party::RemoveItem(int item_id, int amount) {
-	AddItem(item_id, -amount);
-}
+void Game_Party::RemoveItem(int item_id, int amount) { AddItem(item_id, -amount); }
 
 bool Game_Party::IsItemUsable(int item_id) {
 	if (item_id <= 0 || item_id > Data::items.size()) {
@@ -167,19 +157,16 @@ bool Game_Party::IsItemUsable(int item_id) {
 		if (Game_Temp::battle_running) {
 			if (item.type == RPG::Item::Type_medicine) {
 				return !item.occasion_field1;
-			}
-			else if (item.type == RPG::Item::Type_switch) {
+			} else if (item.type == RPG::Item::Type_switch) {
 				return item.occasion_battle;
-			}
-			else if (item.type == RPG::Item::Type_special) {
+			} else if (item.type == RPG::Item::Type_special) {
 				// ToDo: Proper check
 				return true;
 			}
 		} else {
-			if (item.type == RPG::Item::Type_medicine ||
-				item.type == RPG::Item::Type_material ||
-				item.type == RPG::Item::Type_book) {
-					return true;
+			if (item.type == RPG::Item::Type_medicine || item.type == RPG::Item::Type_material ||
+			    item.type == RPG::Item::Type_book) {
+				return true;
 			} else if (item.type == RPG::Item::Type_switch) {
 				return item.occasion_field2;
 			}
@@ -215,8 +202,7 @@ bool Game_Party::UseSkill(int skill_id, Game_Actor* source, Game_Actor* target) 
 
 	if (target) {
 		was_used = target->UseSkill(skill_id);
-	}
-	else {
+	} else {
 		std::vector<Game_Actor*> actors = GetActors();
 		std::vector<Game_Actor*>::iterator it;
 		for (it = actors.begin(); it != actors.end(); ++it) {
@@ -232,36 +218,27 @@ bool Game_Party::UseSkill(int skill_id, Game_Actor* source, Game_Actor* target) 
 }
 
 void Game_Party::AddActor(int actor_id) {
-	if (IsActorInParty(actor_id))
-		return;
-	if (data.party.size() >= 4)
-		return;
+	if (IsActorInParty(actor_id)) return;
+	if (data.party.size() >= 4) return;
 	data.party.push_back((int16_t)actor_id);
 	Main_Data::game_player->Refresh();
 }
 
 void Game_Party::RemoveActor(int actor_id) {
-	if (!IsActorInParty(actor_id))
-		return;
+	if (!IsActorInParty(actor_id)) return;
 	data.party.erase(std::find(data.party.begin(), data.party.end(), actor_id));
 	Main_Data::game_player->Refresh();
 }
 
-void Game_Party::Clear() {
-	data.party.clear();
-}
+void Game_Party::Clear() { data.party.clear(); }
 
 bool Game_Party::IsActorInParty(int actor_id) {
 	return std::find(data.party.begin(), data.party.end(), actor_id) != data.party.end();
 }
 
-int Game_Party::GetGold() {
-	return data.gold;
-}
+int Game_Party::GetGold() { return data.gold; }
 
-int Game_Party::GetSteps() {
-	return data.steps;
-}
+int Game_Party::GetSteps() { return data.steps; }
 
 std::vector<Game_Actor*> Game_Party::GetActors() const {
 	std::vector<Game_Actor*> actors;
@@ -271,22 +248,13 @@ std::vector<Game_Actor*> Game_Party::GetActors() const {
 	return actors;
 }
 
-int Game_Party::GetBattleCount() {
-	return data.battles;
-}
+int Game_Party::GetBattleCount() { return data.battles; }
 
-int Game_Party::GetWinCount() {
-	return data.victories;
-}
+int Game_Party::GetWinCount() { return data.victories; }
 
-int Game_Party::GetDefeatCount() {
-	return data.defeats;
-}
+int Game_Party::GetDefeatCount() { return data.defeats; }
 
-int Game_Party::GetRunCount() {
-	return data.escapes;
-}
-
+int Game_Party::GetRunCount() { return data.escapes; }
 
 void Game_Party::ApplyDamage(int damage) {
 	if (damage <= 0) {
@@ -303,42 +271,42 @@ void Game_Party::ApplyDamage(int damage) {
 
 void Game_Party::SetTimer(int which, int seconds) {
 	switch (which) {
-		case Timer1:
-			data.timer1_secs = seconds * DEFAULT_FPS;
-			Game_Map::SetNeedRefresh(true);
-			break;
-		case Timer2:
-			data.timer2_secs = seconds * DEFAULT_FPS;
-			Game_Map::SetNeedRefresh(true);
-			break;
+	case Timer1:
+		data.timer1_secs = seconds * DEFAULT_FPS;
+		Game_Map::SetNeedRefresh(true);
+		break;
+	case Timer2:
+		data.timer2_secs = seconds * DEFAULT_FPS;
+		Game_Map::SetNeedRefresh(true);
+		break;
 	}
 }
 
 void Game_Party::StartTimer(int which, bool visible, bool battle) {
 	switch (which) {
-		case Timer1:
-			data.timer1_active = true;
-			data.timer1_visible = visible;
-			data.timer1_battle = battle;
-			break;
-		case Timer2:
-			data.timer2_active = true;
-			data.timer2_visible = visible;
-			data.timer2_battle = battle;
-			break;
+	case Timer1:
+		data.timer1_active = true;
+		data.timer1_visible = visible;
+		data.timer1_battle = battle;
+		break;
+	case Timer2:
+		data.timer2_active = true;
+		data.timer2_visible = visible;
+		data.timer2_battle = battle;
+		break;
 	}
 }
 
 void Game_Party::StopTimer(int which) {
 	switch (which) {
-		case Timer1:
-			data.timer1_active = false;
-			data.timer1_visible = false;
-			break;
-		case Timer2:
-			data.timer2_active = false;
-			data.timer2_visible = false;
-			break;
+	case Timer1:
+		data.timer1_active = false;
+		data.timer1_visible = false;
+		break;
+	case Timer2:
+		data.timer2_active = false;
+		data.timer2_visible = false;
+		break;
 	}
 }
 
@@ -347,7 +315,7 @@ void Game_Party::UpdateTimers() {
 	if (data.timer1_active && (!data.timer1_battle || !battle) && data.timer1_secs > 0) {
 		data.timer1_secs--;
 		Game_Map::SetNeedRefresh(true);
-	} 
+	}
 	if (data.timer2_active && (!data.timer2_battle || !battle) && data.timer2_secs > 0) {
 		data.timer2_secs--;
 		Game_Map::SetNeedRefresh(true);
@@ -356,12 +324,12 @@ void Game_Party::UpdateTimers() {
 
 int Game_Party::ReadTimer(int which) {
 	switch (which) {
-		case Timer1:
-			return data.timer1_secs;
-		case Timer2:
-			return data.timer2_secs;
-		default:
-			return 0;
+	case Timer1:
+		return data.timer1_secs;
+	case Timer2:
+		return data.timer2_secs;
+	default:
+		return 0;
 	}
 }
 
@@ -394,7 +362,7 @@ int Game_Party::GetFatigue() {
 	for (it = actors.begin(); it != actors.end(); ++it) {
 		// FIXME: this is what the help file says, but it looks wrong
 		party_exh += 100 - (200 * (*it)->GetHp() / (*it)->GetMaxHp() -
-			100 * (*it)->GetSp() / (*it)->GetMaxSp() / 3);
+		                    100 * (*it)->GetSp() / (*it)->GetMaxSp() / 3);
 	}
 
 	return party_exh /= actors.size();

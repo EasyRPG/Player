@@ -23,20 +23,17 @@
 #include "game_interpreter_battle.h"
 #include "main_data.h"
 
-Game_CommonEvent::Game_CommonEvent(int common_event_id, bool battle) :
-	common_event_id(common_event_id),
-	battle(battle),
-	interpreter(NULL) {
-}
+Game_CommonEvent::Game_CommonEvent(int common_event_id, bool battle)
+    : common_event_id(common_event_id), battle(battle), interpreter(NULL) {}
 
-Game_CommonEvent::Game_CommonEvent(int common_event_id, bool battle, const RPG::SaveCommonEvent& data) :
-	common_event_id(common_event_id),
-	battle(battle),
-	interpreter(NULL) {
+Game_CommonEvent::Game_CommonEvent(int common_event_id, bool battle,
+                                   const RPG::SaveCommonEvent& data)
+    : common_event_id(common_event_id), battle(battle), interpreter(NULL) {
 
 	if (!data.event_data.commands.empty()) {
 		interpreter.reset(new Game_Interpreter_Map());
-		static_cast<Game_Interpreter_Map*>(interpreter.get())->SetupFromSave(data.event_data.commands, 0);
+		static_cast<Game_Interpreter_Map*>(interpreter.get())
+		    ->SetupFromSave(data.event_data.commands, 0);
 	}
 
 	Refresh();
@@ -48,9 +45,9 @@ void Game_CommonEvent::Refresh() {
 	if (GetTrigger() == RPG::EventPage::Trigger_parallel) {
 		if (GetSwitchFlag() ? Game_Switches[GetSwitchId()] : true) {
 			if (!interpreter) {
-				interpreter.reset(battle
-								  ? static_cast<Game_Interpreter*>(new Game_Interpreter_Battle())
-								  : static_cast<Game_Interpreter*>(new Game_Interpreter_Map()));
+				interpreter.reset(
+				    battle ? static_cast<Game_Interpreter*>(new Game_Interpreter_Battle())
+				           : static_cast<Game_Interpreter*>(new Game_Interpreter_Map()));
 				Update();
 			}
 		} else {
@@ -73,9 +70,7 @@ void Game_CommonEvent::Update() {
 	}
 }
 
-int Game_CommonEvent::GetIndex() const {
-	return common_event_id;
-}
+int Game_CommonEvent::GetIndex() const { return common_event_id; }
 
 std::string Game_CommonEvent::GetName() const {
 	return Data::commonevents[common_event_id - 1].name;
@@ -89,9 +84,7 @@ int Game_CommonEvent::GetSwitchId() const {
 	return Data::commonevents[common_event_id - 1].switch_id;
 }
 
-int Game_CommonEvent::GetTrigger() const {
-	return Data::commonevents[common_event_id - 1].trigger;
-}
+int Game_CommonEvent::GetTrigger() const { return Data::commonevents[common_event_id - 1].trigger; }
 
 std::vector<RPG::EventCommand>& Game_CommonEvent::GetList() {
 	return Data::commonevents[common_event_id - 1].event_commands;
@@ -100,7 +93,7 @@ std::vector<RPG::EventCommand>& Game_CommonEvent::GetList() {
 void Game_CommonEvent::CheckEventTriggerAuto() {
 	if (GetTrigger() == RPG::EventPage::Trigger_auto_start) {
 		if (GetSwitchFlag() ? Game_Switches[GetSwitchId()] : true) {
-			//printf("%d %d\n", GetSwitchId(), (int)Game_Switches[GetSwitchId()]);
+			// printf("%d %d\n", GetSwitchId(), (int)Game_Switches[GetSwitchId()]);
 			if (!Game_Map::GetInterpreter().IsRunning()) {
 				Game_Map::GetInterpreter().SetupStartingEvent(this);
 			}
