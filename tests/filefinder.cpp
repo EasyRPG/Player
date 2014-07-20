@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include "filefinder.h"
 #include "player.h"
+#include "reader_util.h"
 #include "main_data.h"
 
 namespace {
@@ -23,6 +24,8 @@ namespace {
 
 int main(int, char**) {
 	Main_Data::Init();
+	Player::GetEncoding();
+	Player::escape_symbol = ReaderUtil::Recode("\\", Player::encoding);
 	Player::engine = Player::EngineRpg2k;
 	FileFinder::Init();
 	FileFinder::InitRtpPaths();

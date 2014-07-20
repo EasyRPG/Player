@@ -5,10 +5,12 @@
 /easyrpg-player-*/
 /lib/liblcf/
 /lib/TestGame/
+/lib/RTP/
 .deps/
 CMakeCache.txt
 Makefile
 Makefile.in
+Testing/
 aclocal.m4
 config.h
 config.h.in
