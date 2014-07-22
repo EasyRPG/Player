@@ -19,6 +19,7 @@
 #include <cassert>
 #include <boost/assert.hpp>
 #include <boost/circular_buffer.hpp>
+#include <boost/ref.hpp>
 
 #include "system.h"
 #include "al_audio.h"
@@ -431,7 +432,7 @@ ALAudio::create_loader(source &src, std::string const &filename) const {
 	}
 
 	EASYRPG_SHARED_PTR<buffer_loader> snd = sndfile_loader::create(filename);
-	return snd ? snd : EASYRPG_MAKE_SHARED<midi_loader>(src, filename);
+	return snd ? snd : EASYRPG_MAKE_SHARED<midi_loader>(boost::ref(src), filename);
 }
 
 EASYRPG_SHARED_PTR<ALAudio::buffer_loader>
