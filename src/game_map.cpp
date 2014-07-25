@@ -63,6 +63,7 @@ namespace {
 	int scroll_speed;
 
 	boost::scoped_ptr<Game_Interpreter> interpreter;
+	EASYRPG_SHARED_PTR<Game_Interpreter> parallel_interpreter;
 	Game_Vehicle* vehicles[3];
 
 	bool pan_locked;
@@ -296,12 +297,21 @@ void Game_Map::Refresh() {
 			i->second->Refresh();
 		}
 	}
+
 	need_refresh = false;
 }
 
 Game_Interpreter& Game_Map::GetInterpreter() {
 	assert(interpreter);
 	return *interpreter;
+}
+
+EASYRPG_SHARED_PTR<Game_Interpreter> Game_Map::GetParallelInterpreter() {
+	return parallel_interpreter;
+}
+
+void Game_Map::SetParallelInterpreter(EASYRPG_SHARED_PTR<Game_Interpreter> interpreter) {
+	parallel_interpreter = interpreter;
 }
 
 void Game_Map::ScrollDown(int distance) {
@@ -653,7 +663,7 @@ void Game_Map::UpdateScroll() {
 }
 
 void Game_Map::Update() {
-	if (need_refresh) Refresh();
+	if (GetNeedRefresh()) Refresh();
 	UpdateScroll();
 	UpdatePan();
 	UpdateParallax();

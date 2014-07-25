@@ -392,6 +392,21 @@ namespace Game_Map {
 	Game_Interpreter& GetInterpreter();
 
 	/**
+	 * Gets the currently running parallel interpreter.
+	 *
+	 * @return running parallel interpreter.
+	 */
+	EASYRPG_SHARED_PTR<Game_Interpreter> GetParallelInterpreter();
+
+	/**
+	 * Sets the currently running parallel interpreter.
+	 * Used to hold a 2nd stromg reference to prevent destruction on refresh.
+	 *
+	 * @param interpreter executed interpreter
+	 */
+	void SetParallelInterpreter(EASYRPG_SHARED_PTR<Game_Interpreter> interpreter);
+
+	/**
 	 * Sets the need refresh flag.
 	 *
 	 * @param need_refresh need refresh state.

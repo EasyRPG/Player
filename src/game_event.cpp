@@ -274,7 +274,10 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	through = false;
 
 	// Free resources if needed
-	interpreter.reset();
+	if (interpreter) {
+		interpreter->Clear();
+		interpreter.reset();
+	}
 	if (trigger == RPG::EventPage::Trigger_parallel) {
 		interpreter.reset(new Game_Interpreter_Map());
 	}
@@ -467,7 +470,6 @@ bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 		return false;
 
 	if ((trigger == RPG::EventPage::Trigger_collision) && (Main_Data::game_player->IsInPosition(x, y))) {
-
 		// TODO check over trigger VX differs from XP here
 		if (!IsJumping()) {
 			Start();
@@ -476,8 +478,6 @@ bool Game_Event::CheckEventTriggerTouch(int x, int y) {
 
 	return true;
 }
-
-
 
 void Game_Event::Update() {
 	if (!data.active) {
@@ -488,13 +488,14 @@ void Game_Event::Update() {
 	CheckEventTriggerAuto();
 
 	if (interpreter) {
+		Game_Map::SetParallelInterpreter(interpreter);
 		if (!interpreter->IsRunning()) {
 			interpreter->Setup(list, event.ID, -event.x, event.y);
 		} else {
 			interpreter->Update();
 		}
+		Game_Map::SetParallelInterpreter(EASYRPG_SHARED_PTR<Game_Interpreter>());
 	}
-
 }
 
 RPG::Event& Game_Event::GetEvent() {

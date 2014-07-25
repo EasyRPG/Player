@@ -72,6 +72,7 @@ void Game_Interpreter::Clear() {
 	child_interpreter.reset();		// child interpreter for common events, etc
 	continuation = NULL;			// function to execute to resume command
 	button_timer = 0;
+	list.clear();
 }
 
 // Is interpreter running.
@@ -366,7 +367,12 @@ void Game_Interpreter::InputButton() {
 
 bool Game_Interpreter::CommandEnd() {
 	CloseMessageWindow();
-	Game_Message::FullClear();
+
+	// FIXME: Hangs in some cases when Autostart events start
+	//if (main_flag) {
+	//	Game_Message::FullClear();
+	//}
+
 	list.clear();
 
 	if ((main_flag) && (event_id > 0)) {
