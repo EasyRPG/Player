@@ -402,7 +402,7 @@ namespace Game_Map {
 	 * Sets the currently running parallel interpreter.
 	 * Used to hold a 2nd stromg reference to prevent destruction on refresh.
 	 *
-	 * @param interpreter executed interpreter
+	 * @param interpreter executed interpreter.
 	 */
 	void SetParallelInterpreter(EASYRPG_SHARED_PTR<Game_Interpreter> interpreter);
 

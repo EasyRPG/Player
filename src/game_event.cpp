@@ -37,7 +37,6 @@ Game_Event::Game_Event(int map_id, const RPG::Event& event) :
 	from_save(false) {
 
 	ID = event.ID;
-	through = true;
 
 	SetMapId(map_id);
 	MoveTo(event.x, event.y);
@@ -225,6 +224,10 @@ void Game_Event::SetFlashTimeLeft(int time_left) {
 	data.flash_time_left = time_left;
 }
 
+bool Game_Event::GetThrough() const {
+	return page == NULL || Game_Character::GetThrough();
+}
+
 void Game_Event::ClearStarting() {
 	starting = false;
 }
@@ -238,7 +241,6 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 		SetSpriteIndex(0);
 		SetDirection(RPG::EventPage::Direction_down);
 		//move_type = 0;
-		through = true;
 		trigger = -1;
 		list.clear();
 		interpreter.reset();
@@ -271,7 +273,6 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 	SetLayer(page->layer);
 	trigger = page->trigger;
 	list = page->event_commands;
-	through = false;
 
 	// Free resources if needed
 	if (interpreter) {

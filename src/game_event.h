@@ -120,6 +120,13 @@ public:
 	int GetTrigger() const;
 
 	/**
+	 * Gets through state.
+	 *
+	 * @return Event has through state or has a null-page.
+	 */
+	bool GetThrough() const;
+
+	/**
 	 * Gets event commands list.
 	 *
 	 * @return event commands list.
@@ -149,7 +156,6 @@ public:
 	RPG::Event& GetEvent();
 
 	const RPG::SaveMapEvent& GetSaveData();
-
 private:
 	// Not a reference on purpose.
 	// Events change during map change and old are destroyed, breaking the
