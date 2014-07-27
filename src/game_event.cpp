@@ -260,15 +260,14 @@ void Game_Event::Setup(RPG::EventPage* new_page) {
 		pattern = page->character_pattern;
 		original_pattern = pattern;
 	}
-	//opacity = page.opacity;
-	//opacity = page.translucent ? 192 : 255;
-	//blend_type = page.blend_type;
+	
 	move_type = page->move_type;
 	SetMoveSpeed(page->move_speed);
 	SetMoveFrequency(page->move_frequency);
 	original_move_route = page->move_route;
 	SetOriginalMoveRouteIndex(0);
 	animation_type = page->animation_type;
+	SetOpacity(page->translucent ? 160 : 255);
 
 	SetLayer(page->layer);
 	trigger = page->trigger;
