@@ -179,10 +179,19 @@ include(CPack)
 # Doxygen
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
+  # fake autotools variables
+  set(DX_DOCDIR ${CMAKE_CURRENT_BINARY_DIR}/doc)
+  set(PACKAGE_VERSION ${CPACK_PACKAGE_VERSION})
+  set(srcdir ${CMAKE_CURRENT_SOURCE_DIR})
+  configure_file(builds/Doxyfile.in builds/Doxyfile @ONLY)
+  unset(DX_DOCDIR)
+  unset(PACKAGE_VERSION)
+  unset(srcdir)
+
   add_custom_target(player_doc
-    ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/builds/Doxyfile
+    ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/builds/Doxyfile
     DEPENDS ${SRCS} ${MAIN_FILE}
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/builds
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/builds
     COMMENT "Generating API documentation with Doxygen" VERBATIM)
   add_custom_target(doc)
   add_dependencies(doc player_doc liblcf_doc)
