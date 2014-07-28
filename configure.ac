@@ -53,6 +53,7 @@ AC_FUNC_MALLOC
 AC_CHECK_FUNCS([floor getcwd memset putenv strerror])
 
 # Doxygen source documentation
+m4_include([builds/autoconf/m4/ax_prog_doxygen.m4])
 DX_DOXYGEN_FEATURE(OFF)
 DX_HTML_FEATURE(ON)
 DX_DOT_FEATURE(ON)
