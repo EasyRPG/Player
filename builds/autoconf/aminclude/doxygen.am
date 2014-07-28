@@ -1,0 +1,38 @@
+
+## downloaded and adapted from:
+## http://www.gnu.org/software/autoconf-archive/ax_prog_doxygen.html
+
+## --------------------------------- ##
+## Format-independent Doxygen rules. ##
+## --------------------------------- ##
+
+if DX_COND_doc
+
+## ------------------------------- ##
+## Rules specific for HTML output. ##
+## ------------------------------- ##
+
+if DX_COND_html
+
+DX_CLEAN_HTML = @DX_DOCDIR@
+
+endif DX_COND_html
+
+.PHONY: doxygen-run doxygen-doc
+
+.INTERMEDIATE: doxygen-run
+
+doxygen-run: @DX_DOCDIR@/@PACKAGE@.tag
+
+doxygen-doc: doxygen-run
+
+@DX_DOCDIR@/@PACKAGE@.tag: $(DX_CONFIG) $(pkginclude_HEADERS)
+	rm -rf @DX_DOCDIR@
+	$(DX_ENV) $(DX_DOXYGEN) $(srcdir)/$(DX_CONFIG)
+
+DX_CLEANFILES = \
+	@DX_DOCDIR@/@PACKAGE@.tag \
+	-r \
+	$(DX_CLEAN_HTML)
+
+endif DX_COND_doc

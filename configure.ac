@@ -9,6 +9,7 @@ AM_INIT_AUTOMAKE([1.11.4 foreign subdir-objects -Wall -Werror])
 AM_MAINTAINER_MODE([enable])
 AM_SILENT_RULES([yes])
 
+AC_CONFIG_MACRO_DIR([builds/autoconf/m4])
 AC_CONFIG_SRCDIR([src/battle_animation.cpp])
 AC_CONFIG_HEADERS([config.h])
 
@@ -51,7 +52,14 @@ AC_FUNC_ERROR_AT_LINE
 AC_FUNC_MALLOC
 AC_CHECK_FUNCS([floor getcwd memset putenv strerror])
 
+# Doxygen source documentation
+DX_DOXYGEN_FEATURE(OFF)
+DX_HTML_FEATURE(ON)
+DX_DOT_FEATURE(ON)
+DX_INIT_DOXYGEN(easyrpg-player, builds/Doxyfile, doc)
+
 AC_CONFIG_FILES([Makefile
-                 src/Makefile])
+                 src/Makefile
+                 builds/Doxyfile])
 
 AC_OUTPUT
