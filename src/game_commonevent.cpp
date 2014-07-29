@@ -25,14 +25,12 @@
 
 Game_CommonEvent::Game_CommonEvent(int common_event_id, bool battle) :
 	common_event_id(common_event_id),
-	battle(battle),
-	interpreter(NULL) {
+	battle(battle) {
 }
 
 Game_CommonEvent::Game_CommonEvent(int common_event_id, bool battle, const RPG::SaveCommonEvent& data) :
 	common_event_id(common_event_id),
-	battle(battle),
-	interpreter(NULL) {
+	battle(battle) {
 
 	if (!data.event_data.commands.empty()) {
 		interpreter.reset(new Game_Interpreter_Map());
